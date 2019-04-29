@@ -2,119 +2,100 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF98DFF0
-	for <lists+linux-mmc@lfdr.de>; Mon, 29 Apr 2019 11:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E4BDFFD
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Apr 2019 12:01:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727608AbfD2J5k (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Apr 2019 05:57:40 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:36366 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727560AbfD2J5k (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Apr 2019 05:57:40 -0400
-Received: by mail-vs1-f66.google.com with SMTP id x78so3103541vsc.3
-        for <linux-mmc@vger.kernel.org>; Mon, 29 Apr 2019 02:57:39 -0700 (PDT)
+        id S1727661AbfD2KBV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Apr 2019 06:01:21 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:40720 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727217AbfD2KBV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Apr 2019 06:01:21 -0400
+Received: by mail-vs1-f67.google.com with SMTP id e207so1248865vsd.7
+        for <linux-mmc@vger.kernel.org>; Mon, 29 Apr 2019 03:01:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=5iKcYMeHTvYV/ojGAif7LIimREuXBzjZ/IIn9Py+Bbk=;
-        b=KTRFAg/QdIUZp9cOyAOJyKToCNwB5jdZZ3iUmC4NlCLEd502dosyUJGt2Em5CTT6BI
-         G+PDiK1BmQyJTczToyRZHM3v2L0dPLhRqxnWzB/vXyjnwUAFbECrcIX0OHTgugquVHcq
-         MTc+MpBOo0dRtfP/23qPClXOMT7HYlUpZA6WN47uiI3p3jkllys/RXUpXeoxq+JsqfXd
-         Gmx3ICMPTi4GuJLhms1sK8bR7rnG7Ps+qdDWKNsvaRtlWvD/yJGwkB3EqJvlLEmLBiqQ
-         y/EFQhp8D9oSVk+2IW16s6TKJVI8LmDgYc5fSYxUxmaJWSeRzjJHMpVqJUC436syraRg
-         rmTQ==
+        bh=wu8vgvBuJ0ba1a1wtubjAQOiFEAHkL9wdKCwmj/BeCo=;
+        b=zNwGC9WUEItvbivjH1HnlPfR2Xw8BjgG21df7sQOOm+CmS8MGiuqxkOd+mkg4GeKeI
+         gB+yEpX5Ektbw0vL2PfnJn9i+5op0GXZ8oC+H+LZkWKP73H765lzZzxXpWLP/9so3u2Q
+         1JgRtBL6bFJaCXAbs15cTKLRLbeFA9k5Lh6zEx2nVqN2TSXTV4OgvAozToeirly2+fjm
+         w44XH8ZnRveeNH7iYAMMuzDNACL7g28RErEwv5l7JMjM7A0dNR3OMwl/i9bTI2jLg2as
+         G5hQV8E4Kc08/X83lFii4XceCxNNyrfHyfh76us1WGO4AKfzusgtv8cExnfqEQ31foyr
+         5frw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5iKcYMeHTvYV/ojGAif7LIimREuXBzjZ/IIn9Py+Bbk=;
-        b=GOhZ+8b71sFz5myrxxGi0Fodmyj4BUoWl6gI59nYtNUuNFjDoVVRTjR14T8mKEapSq
-         tEezMs7ocHZLasguOHWE7XA0y4vjawXgrPb8bGOooCSAcKwccyzf3tM/AnLQvIr4aGdA
-         7HlTdKOhRFAHHo1h7WUlvfiZslnTmmYt99ts3cw0aVvJG9Geo7nFs4+T6+j/puQbwMeD
-         YfBpJZB66v0zA+1bC5qh0r7wdhi1QpJ84MsNWKdDpHO2Q42qFR4lSbP8s2wv5mtpnjyW
-         u5PJeAo4Lrlv+Uuwnpm1wyga7kpBIgE3V4LM+NO7C85yQXFTuEshZnpBjz1ejGrzHe4Z
-         j0Lg==
-X-Gm-Message-State: APjAAAUpjUt+RtmuNzcoapVJnZqkTd+BKIUGxTl2407IDENVCmMQJwSd
-        Xjg1KoohmZ9kSFn3SH5bwDCcDMGocVMm9PY1NWaPLQ==
-X-Google-Smtp-Source: APXvYqw+DVB4A+oWlNfEJ4yNNJr2mpCLIYulP2TaMYSs5AmWe1v0HQOvm7D6Arhq68xHL7FgRmeTGLEYBftg5kM/1P8=
-X-Received: by 2002:a67:8155:: with SMTP id c82mr2462997vsd.200.1556531859282;
- Mon, 29 Apr 2019 02:57:39 -0700 (PDT)
+        bh=wu8vgvBuJ0ba1a1wtubjAQOiFEAHkL9wdKCwmj/BeCo=;
+        b=Iesv1VRak5N6IilN4WuPpqGtB9+Pt1XKn6W39fPHxARPtbkkQE2nzFX6U/yYkpzCbV
+         DcOY/3yNTT6DeftV6oTGd4tTHSq5a251ebDFxXxQdscdIlI20ghsxI/2VD/VuSmCB+9Q
+         lrywtqz/ZlXePWeaiQSfZRy0fHhpPdvuwIgx9TfCgrP1pQHzyrXvzDNv1I6xZ0uLT+ur
+         sMOppV1//AlSY+vRRtKpRPGPBqnPVYj5ILiUCeF7JwTB5oFAGKPI8yvm5mGfp7/zpqOB
+         4rcw9WYpwvnvfw4VszEOncvjzL6pWvJqnnDcbQK21MkQNAoV+cv9PmQadifWdCRfjOUj
+         Hblg==
+X-Gm-Message-State: APjAAAXEN5qlID6ZcCoqC48LunCVHwcLph1futrVeLpDC64rcMj348US
+        UNfi7c5+PwW1GupEv21HRZEPsUQwX8mAujP6ZOVxhg==
+X-Google-Smtp-Source: APXvYqyqS5Sf1iB7vb255neQ/NpXaXjA0EXJp+yj0f1nS8TQQzrZVn+UD8BMoxBhqrONGrF77kV0qczcnH4jdIeLuaw=
+X-Received: by 2002:a67:8155:: with SMTP id c82mr2470478vsd.200.1556532079983;
+ Mon, 29 Apr 2019 03:01:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190416183257.247902-1-rrangel@chromium.org> <CAPDyKFqYNMhDKy94zV8Bk80OUiS9JNFf2EmkbhJ0W_N=5=bZJQ@mail.gmail.com>
- <20190424153115.GA186956@google.com>
-In-Reply-To: <20190424153115.GA186956@google.com>
+References: <20190416185705.256369-1-rrangel@chromium.org> <SN6PR04MB4925C1C304B992339621808AFC260@SN6PR04MB4925.namprd04.prod.outlook.com>
+ <20190424155659.GA193321@google.com>
+In-Reply-To: <20190424155659.GA193321@google.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 29 Apr 2019 11:57:02 +0200
-Message-ID: <CAPDyKFqerMeQey0wJW3Ctohh77CJs6-PxSaR=T6ive_Rx-oMMA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] Add trace events for SD registers.
+Date:   Mon, 29 Apr 2019 12:00:43 +0200
+Message-ID: <CAPDyKFpGC2siKvv3dAJWQUJw7O5ajX1PG4BO51xz+F55yJvN8w@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: core: Verify SD bus width
 To:     Raul Rangel <rrangel@chromium.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-trace-devel@vger.kernel.org,
-        Daniel Kurtz <djkurtz@chromium.org>, zwisler@chromium.org,
-        Steven Rostedt <rostedt@goodmis.org>,
+Cc:     Avri Altman <Avri.Altman@wdc.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "djkurtz@chromium.org" <djkurtz@chromium.org>,
+        "zwisler@chromium.org" <zwisler@chromium.org>,
         hongjiefang <hongjiefang@asrmicro.com>,
-        Jennifer Dahm <jennifer.dahm@ni.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Shawn Lin <shawn.lin@rock-chips.com>,
-        Kyle Roeschley <kyle.roeschley@ni.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Simon Horman <horms+renesas@verge.net.au>
+        Kyle Roeschley <kyle.roeschley@ni.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 24 Apr 2019 at 17:31, Raul Rangel <rrangel@chromium.org> wrote:
+On Wed, 24 Apr 2019 at 17:57, Raul Rangel <rrangel@chromium.org> wrote:
 >
-> On Tue, Apr 23, 2019 at 08:29:15AM +0200, Ulf Hansson wrote:
-> > On Tue, 16 Apr 2019 at 20:33, Raul E Rangel <rrangel@chromium.org> wrote:
+> On Thu, Apr 18, 2019 at 06:20:26AM +0000, Avri Altman wrote:
 > > >
-> > > I am not able to make a single event class for all these registers. They
-> > > all have different struct sizes and different printf formats.
+> > > The SD Physical Layer Spec says the following: Since the SD Memory Card
+> > > shall support at least the two bus modes 1-bit or 4-bit width, then any SD
+> > > Card shall set at least bits 0 and 2 (SD_BUS_WIDTH="0101").
 > > >
-> > > Thanks for the reviews!
+> > > This change verifies the card has specified a bus width.
 > > >
-> > > Changes in v2:
-> > > - Made trace_sd_scr print out flags.
-> > > - Add BUILD_BUG_ON to make sure tracing stays in sync with structs.
-> > > - memcpy using sizeof(__entry->raw)
+> > > AMD SDHC Device 7806 can get into a bad state after a card disconnect
+> > > where anything transferred via the DATA lines will always result in a
+> > > zero filled buffer. Currently the driver will continue without error if
+> > > the HC is in this condition. A block device will be created, but reading
+> > > from it will result in a zero buffer. This makes it seem like the SD
+> > > device has been erased, when in actuality the data is never getting
+> > > copied from the DATA lines to the data buffer.
 > > >
-> > > Raul E Rangel (4):
-> > >   mmc: core: Add trace event for SD SCR response
-> > >   mmc: core: Add trace event for SD SSR response
-> > >   mmc: core: Add trace event for SD OCR response
-> > >   mmc: core: Add trace event for CSD response
+> > > SCR is the first command in the SD initialization sequence that uses the
+> > > DATA lines. By checking that the response was invalid, we can abort
+> > > mounting the card.
 > > >
-> > >  drivers/mmc/core/mmc.c     |   4 +
-> > >  drivers/mmc/core/sd.c      |  10 ++
-> > >  drivers/mmc/core/sd_ops.c  |   6 ++
-> > >  include/trace/events/mmc.h | 204 +++++++++++++++++++++++++++++++++++++
-> > >  4 files changed, 224 insertions(+)
+> > > Acked-by: Avri Altman <avri.altman@wdc.com>
 > > >
-> > > --
-> > > 2.21.0.392.gf8f6787159e-goog
-> > >
+> > > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+> > Reviewed-by: Avri Altman <avri.altman@wdc.com>
 > >
-> > Why do you need this? We already have these card registers reflected
-> > though sysfs files, isn't that sufficient?
-> >
-> I was not actually aware that the registers were exposed via sysfs. I
-> was debugging a problem where the host controller was returning all
-> zeros when reading from the card. I wasn't aware that it was returning
-> all zeros until I added tracing. It made it quite easy to diagnose the
-> problem by just diffing the two traces.
+> > Thanks,
+> > Avri
+> Thanks for the review. Should I rebase this on master so it applies
+> cleanly without the MMC trace patches?
 
-This sounds like a quite an unusual problem, and I don't think having
-the buffers printed via tracing is worth it.
-
-Moreover, we already have tracing per command/request (but don't print
-the buffers), that should cover most of error cases during init, don't
-you think?
-
-[...]
+Yes, please do!
 
 Kind regards
 Uffe
