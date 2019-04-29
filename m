@@ -2,124 +2,93 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36011E077
-	for <lists+linux-mmc@lfdr.de>; Mon, 29 Apr 2019 12:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB20BE074
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Apr 2019 12:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727793AbfD2KYy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Apr 2019 06:24:54 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:42211 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727745AbfD2KYy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Apr 2019 06:24:54 -0400
-Received: by mail-ua1-f66.google.com with SMTP id h4so3295162uaj.9
-        for <linux-mmc@vger.kernel.org>; Mon, 29 Apr 2019 03:24:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gPCG35Z0sQWoCgRDLwq42tnfmX+wifRoA3FWD5hwxvc=;
-        b=tLB4/F4wex0McW37xwqLzfYZqBfhM+Bg+Pvur+3g8qDeYazjWIQy/lz5m0zk/FCQVQ
-         XmOtG+UkXnucGqOpekVmieTSCQDorVC/eeJo4j7pRneQgx/AAWdFucmgRQomE6QmtBKC
-         I8ddOlX8EfNwRcQOh4KXqy9HVAFzvv46Mu/YDmYD5GazbztlELwz2tEZxc7huSZj/8F1
-         lH3mIhuq7CJVwV1LlCzLCJ1f6adSoUq7d212wKYvvqeBRXvpswVN/3dkL0jKxw11MVHl
-         j8fUCB5zAQbbieIR089A55ltNxZ8UixUQ3weKX76eUudDUTdTm0Yin/Q8GaFLAM7myjb
-         RI8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gPCG35Z0sQWoCgRDLwq42tnfmX+wifRoA3FWD5hwxvc=;
-        b=GgIx4PyTrLhPwpmvqoIpWfc1IHygzkyljc7YeCVA7olkJ47+gJiDFFlDdafifERxFn
-         VSQr9ug0Y4K3p7a5ERMabiuMyaQt1nN//J2XPrLobour85H4wM/w6kaRM/t6pDWJEdJi
-         R4nmHWjKVLAzyjStLe4W5p867G9h/4XwDBJrMDyDQJxzGhHerHFxF4nP705ldwKYhjF3
-         kyWqQ8EC5BzzcNAg3GVfdpobN11a1fZax2EwZnMDgLbbiEY7HxbfvAOvRLfBDmyaGddd
-         0A6+hBi4x7ngXmxVcuoXhaw9iGZ/DCeK7eppiW69jvbPeYxFTEKVKzgEPaLGW2KDJzVZ
-         Mz1A==
-X-Gm-Message-State: APjAAAV2NwvQ348HnUSUallC9PnNjH1RdnpJYxdgmN47+cOZ1yz83JHk
-        fbw1ssKg0n9Wmq+elu6IVYTw1o7PuT3CNSH90FFxyw==
-X-Google-Smtp-Source: APXvYqxF1WTtM1rV78s3KnjLyCxrofhMMER4xv6KhDMnpmQc+hYEaAbnXgGlRozcA1Fl3/o8EkKoGfFL2x0giENTDUE=
-X-Received: by 2002:ab0:2b13:: with SMTP id e19mr5482164uar.15.1556533492970;
- Mon, 29 Apr 2019 03:24:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <1556244392-15822-1-git-send-email-orito.takao@socionext.com>
-In-Reply-To: <1556244392-15822-1-git-send-email-orito.takao@socionext.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 29 Apr 2019 12:24:16 +0200
-Message-ID: <CAPDyKFouv1MDJXwDryqhC=X4mLycoAigB3x6Xee09U+QNGTa-Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: mmc: add DT bindings for Milbeaut SD controller
-To:     Takao Orito <orito.takao@socionext.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        id S1727725AbfD2KYw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Apr 2019 06:24:52 -0400
+Received: from mail-eopbgr80054.outbound.protection.outlook.com ([40.107.8.54]:38371
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727428AbfD2KYw (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 29 Apr 2019 06:24:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cGoOwDNqInDhXVaWokFzwDPpeUMQsBxPGVm5VqOqcUg=;
+ b=fK1xl1OJSAJXlU6EEyfZtXIrCBQXCTs1DSoIC7GqdXaldEesQhY+zxxoohQU2/Dye1abTHvDBI66b8fAYM5GvKE7s9rhD2q54KMV5Q6xWmntlubBTVXIteFXml2srIGAAdFYSXJlzQGDgGeKITHICX/++DKhvNh9PjNdc8gcrmQ=
+Received: from AM0PR04MB4211.eurprd04.prod.outlook.com (52.134.92.158) by
+ AM0PR04MB6370.eurprd04.prod.outlook.com (20.179.252.11) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1835.13; Mon, 29 Apr 2019 10:24:47 +0000
+Received: from AM0PR04MB4211.eurprd04.prod.outlook.com
+ ([fe80::8cda:4e52:8e87:8f0e]) by AM0PR04MB4211.eurprd04.prod.outlook.com
+ ([fe80::8cda:4e52:8e87:8f0e%2]) with mapi id 15.20.1835.018; Mon, 29 Apr 2019
+ 10:24:47 +0000
+From:   Aisheng Dong <aisheng.dong@nxp.com>
+To:     BOUGH CHEN <haibo.chen@nxp.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+CC:     "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        dl-linux-imx <linux-imx@nxp.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Masami Hiramatsu <masami.hiramatsu@linaro.org>,
-        Jaswinder Singh <jaswinder.singh@linaro.org>,
-        sugaya.taichi@socionext.com, kasai.kazuhiro@socionext.com,
-        kanematsu.shinji@socionext.com
-Content-Type: text/plain; charset="UTF-8"
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: RE: [PATCH v2 2/3] mmc: sdhci-esdhc-imx: add pm_qos to interact with
+ cpuidle
+Thread-Topic: [PATCH v2 2/3] mmc: sdhci-esdhc-imx: add pm_qos to interact with
+ cpuidle
+Thread-Index: AQHU/mlRl0Sri78KF0aMtIsavk3vDKZS7lkw
+Date:   Mon, 29 Apr 2019 10:24:47 +0000
+Message-ID: <AM0PR04MB4211BE04B69C74478AB0E6CB80390@AM0PR04MB4211.eurprd04.prod.outlook.com>
+References: <20190429090310.25484-1-haibo.chen@nxp.com>
+ <20190429090310.25484-3-haibo.chen@nxp.com>
+In-Reply-To: <20190429090310.25484-3-haibo.chen@nxp.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=aisheng.dong@nxp.com; 
+x-originating-ip: [119.31.174.66]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f7e7dc51-5d53-4031-a6de-08d6cc8ce7a7
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:AM0PR04MB6370;
+x-ms-traffictypediagnostic: AM0PR04MB6370:
+x-microsoft-antispam-prvs: <AM0PR04MB637037DFA3361013C4B206C880390@AM0PR04MB6370.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:751;
+x-forefront-prvs: 0022134A87
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(396003)(346002)(136003)(39860400002)(366004)(189003)(199004)(4326008)(86362001)(76176011)(5660300002)(99286004)(25786009)(81156014)(8676002)(81166006)(186003)(11346002)(8936002)(4744005)(7696005)(256004)(476003)(14454004)(54906003)(6246003)(316002)(33656002)(97736004)(229853002)(53936002)(2201001)(6436002)(68736007)(110136005)(52536014)(9686003)(73956011)(2501003)(74316002)(55016002)(44832011)(6506007)(102836004)(2906002)(6116002)(71200400001)(66066001)(486006)(26005)(3846002)(66446008)(64756008)(66556008)(66476007)(66946007)(305945005)(7736002)(71190400001)(478600001)(446003)(76116006);DIR:OUT;SFP:1101;SCL:1;SRVR:AM0PR04MB6370;H:AM0PR04MB4211.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: m4hyUO0t1PSkpkKXJ25aRh0lN6QpQfiApL6wmiGvMXHoldnNy+sVtyPKhADuXZ1aOIsg/M8wQsnuOku9R7Zju+6XHszdIm/iIeUvwymkVBuqGkXx1eBS1E59jV/mhs409IqXIjBmOJ8PIaYKjcOmeZsQtGBg/WwgzsszW1iHczs04kPeQU9cGKfbWAFIZNqGmX5ZhToRKhyD/XFoa40tNGp/QTnTm6wP5emdf4JfvfSth7At5Ez7Sjbo4gpUIZQgyHAoZBJSSAK6Gju2xJNDwkcNU7ZHMOY+PQZqlRQm3RAdVYZGQpq0xSKUOgc9NB5o1GEdbNv9pnzLaAzeM6I958Af/GRqb+a5wryqNi2shD99aKMZz5za88egpUX3Yy/hCT2CHXmH2m+jlJ/JMAXzKh6aDJKGtiWwlbdNFVwK6UM=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7e7dc51-5d53-4031-a6de-08d6cc8ce7a7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Apr 2019 10:24:47.1994
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6370
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 26 Apr 2019 at 04:04, Takao Orito <orito.takao@socionext.com> wrote:
->
-> Signed-off-by: Takao Orito <orito.takao@socionext.com>
-> ---
->  .../devicetree/bindings/mmc/sdhci-milbeaut.txt     | 35 ++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mmc/sdhci-milbeaut.txt
->
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-milbeaut.txt b/Documentation/devicetree/bindings/mmc/sdhci-milbeaut.txt
-> new file mode 100644
-> index 0000000..7008462
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-milbeaut.txt
-> @@ -0,0 +1,35 @@
-> +* SOCIONEXT SDHCI controller
-> +
-> +This file documents differences between the core properties in mmc.txt
-> +and the properties used by the sdhci_milbeaut driver.
-> +
-> +Required properties:
-> +- compatible: "socionext,milbeaut-m10v-sdhci-3.0"
-> +- clocks: Must contain an entry for each entry in clock-names. It is a
-> +  list of phandles and clock-specifier pairs.
-> +  See ../clocks/clock-bindings.txt for details.
-> +- clock-names: Should contain the following two entries:
-> +       "iface" - clock used for sdhci interface
-> +       "core"  - core clock for sdhci controller
-> +
-> +Optional properties:
-> +- vqmmc-supply: phandle to the regulator device tree node, mentioned
-> +  as the VCCQ/VDD_IO supply in the eMMC/SD specs.
-> +- fujitsu,cmd-dat-delay-select: boolean property indicating that this host
-> +  requires the CMD_DAT_DELAY control to be enabled.
-> +- sni,mmc-power-gpio: set property indicating that power on or off needs
-> +  control of gpios.
-
-Please use a vmmc-supply instead of "power-gpio" (which means you need
-to model this as a fixed GPIO regulator).
-
-> +
-> +Example:
-> +       sdhci3: mmc@1b010000 {
-> +               compatible = "socionext,milbeaut-m10v-sdhci-3.0";
-> +               reg = <0x1b010000 0x10000>;
-> +               interrupts = <0 265 0x4>;
-> +               voltage-ranges = <3300 3300>;
-> +               bus-width = <4>;
-> +               clocks = <&clk 7>, <&ahb_clk>;
-> +               clock-names = "core", "iface";
-> +               cap-sdio-irq;
-> +               sni,mmc-power-gpio = <&pinctrl 53 GPIO_ACTIVE_HIGH>;
-> +                       fujitsu,cmd-dat-delay-select;
-> +       };
-> --
-> 1.9.1
->
->
-
-Kind regards
-Uffe
+PiBGcm9tOiBCT1VHSCBDSEVODQo+IFNlbnQ6IE1vbmRheSwgQXByaWwgMjksIDIwMTkgNDo1NiBQ
+TQ0KPiANCj4gT24gc29tZSBTb0NzIHN1Y2ggYXMgaS5NWDdVTFAsIHRoZXJlIGlzIG5vIGJ1c2Zy
+ZXEgZHJpdmVyLCBidXQgY3B1aWRsZSBoYXMNCj4gc29tZSBsZXZlbHMgd2hpY2ggbWF5IGRpc2Fi
+bGUgc3lzdGVtL2J1cyBjbG9ja3MsIHNvIG5lZWQgdG8gYWRkIHBtX3FvcyB0bw0KPiBwcmV2ZW50
+IGNwdWlkbGUgZnJvbSBlbnRlcmluZyBsb3cgbGV2ZWwgaWRsZXMgYW5kIG1ha2Ugc3VyZSBzeXN0
+ZW0vYnVzIGNsb2Nrcw0KPiBhcmUgZW5hYmxlZCB3aGVuIHVzZGhjIGlzIGFjdGl2ZS4NCj4gDQo+
+IFNpZ25lZC1vZmYtYnk6IEFuc29uIEh1YW5nIDxBbnNvbi5IdWFuZ0BueHAuY29tPg0KPiBTaWdu
+ZWQtb2ZmLWJ5OiBIYWlibyBDaGVuIDxoYWliby5jaGVuQG54cC5jb20+DQoNClJldmlld2VkLWJ5
+OiBEb25nIEFpc2hlbmcgPGFpc2hlbmcuZG9uZ0BueHAuY29tPg0KDQpSZWdhcmRzDQpEb25nIEFp
+c2hlbmcNCg==
