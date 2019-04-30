@@ -2,87 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9CAD10086
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Apr 2019 22:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 029E1100C8
+	for <lists+linux-mmc@lfdr.de>; Tue, 30 Apr 2019 22:28:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726028AbfD3UD2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 30 Apr 2019 16:03:28 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:36458 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725996AbfD3UD1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Apr 2019 16:03:27 -0400
-Received: by mail-ot1-f65.google.com with SMTP id b18so4107602otq.3;
-        Tue, 30 Apr 2019 13:03:27 -0700 (PDT)
+        id S1726690AbfD3U2e (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 30 Apr 2019 16:28:34 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:43757 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726006AbfD3U2e (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Apr 2019 16:28:34 -0400
+Received: by mail-wr1-f67.google.com with SMTP id a12so22472896wrq.10
+        for <linux-mmc@vger.kernel.org>; Tue, 30 Apr 2019 13:28:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tYR0s9sQkklCAWRjV7jXlmi9PCAdhd4yUnNe8GUQ6e8=;
-        b=iKHwwFm0ncZW+kXAshLVCHC28psurWQTUGj9bimhWL9ha9I5gl7REkrkzB2xnO/CwN
-         bhtCzdNiS+Qyfc3EjCKc6ojSA8FLnNwclGMzmxDPKoSecC2gMcHb0x07P53XyhW9SSDo
-         +QAo2iGG1ndvjhk4AWqj0hr6DPCFvPrM5qpTjspc1zuCKvqtSc6S9QOFJBoB3/gdXxPd
-         3BvUw9SXwNpo3dnRk9aYRq5C9D6en6VmQrhj1LD1h8bQntRro0jvOCYdDUPcAlGMPJ1K
-         LciPbrOdtZhN+0cXTzFrX+MxO/IO3K1KvR1Tw98+ZXBO2p3RtpKJ6JBoX+sTtgk2aDkR
-         gI8g==
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=6BX6/WUNOoSiFLmAFQqGnF6/PRbz+EhjmT+iJ67/mUY=;
+        b=tYmHnixEDXEt2SAOXn0QJ2Vj/azLQQUXwgXGIkZmZNXwc0/pdtI/uQl2yIUyLmh94g
+         1NR4t88UJ5eNIR58MgE8GCkz4Nkf4+F8vSMhl5t/ePlHWPTxEmeDrz5LzTyPnFPOGwbI
+         fn3HB0SlYx2JPz/gcR+/lxXMP6XAE67l5/sPgAmDCS5Cx/JT8rDzInP37Ay7rfK8o8nL
+         8vCnP3C/8PAY3BhSAMyyLCXVDFXH5YQUII8ULcpyo89oUOiEHag/FhFBUIOVqkK42Job
+         Mq+DeFKSFStprkJWPSDyOXehOIeanq9S5z8s7sCM6T4Ik286C0qudiAxbMEBRwU61Cg4
+         AHqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tYR0s9sQkklCAWRjV7jXlmi9PCAdhd4yUnNe8GUQ6e8=;
-        b=OWxYTj6CRw43E/C/xPIB6PJrnRyEbdQoxAqfvz7GnOEJXOvVPOPwbDeubUNkS52fTR
-         PeYFZkKSrKlfrcP3pfAO7KjHVdfFELyO6IcS+GdL+CPNFt/a+3SitApf3FjgeHZnznKC
-         hH7m8XsG1HSRPn5qjkP413lQA+ddlObrOZLlS35H+fxWKYiv6X6zPAz8oGU+jcuHhkWd
-         Mq32gbkFZTQdxmLFXI6/l6Zua0iqUIcWGhEg76+9hU6t6tgMkBosmLxSpxYOe0e89Vt8
-         B5YUOcfQIRekPCWDJOtWX+nqox0QKAkB2MAB50paGx+fgCy7qyd/ObqPXGqdFVAkbKBz
-         AVmw==
-X-Gm-Message-State: APjAAAWCewNStDUnRWtbrtlLCRUZJmyzsEiE3rJOOf81eNdgAoOBYb8I
-        ftVOV9h19xmB81K+fXa3BtJRsBTqz5R6bVCAkZaHCQ==
-X-Google-Smtp-Source: APXvYqyBm/ugD3AsVu1vS25p2i9ySt1MBCq9E1dkzeWu/yECfAjSSQFEd+AL8pGvWxZi3KOl0eTrA1UI9d9UveNRt6o=
-X-Received: by 2002:a9d:6759:: with SMTP id w25mr7495221otm.348.1556654606958;
- Tue, 30 Apr 2019 13:03:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190423090235.17244-1-jbrunet@baylibre.com> <CAPDyKFoQyPKERckAdU+kkw3go=161PWc+5GAkz7y=xWMGbq+SQ@mail.gmail.com>
- <CAFBinCBGU53h9063jj8n8q3whT=eZ9y6MPaYYqU_K9UXssK_nw@mail.gmail.com>
-In-Reply-To: <CAFBinCBGU53h9063jj8n8q3whT=eZ9y6MPaYYqU_K9UXssK_nw@mail.gmail.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Tue, 30 Apr 2019 22:03:15 +0200
-Message-ID: <CAFBinCC+w6aD6sSk8u=Pt54OKZuo84YMB2mWiLVHFNr329-kEg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] mmc: meson-gx: clean up and tuning update
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>
-Cc:     Jerome Brunet <jbrunet@baylibre.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=6BX6/WUNOoSiFLmAFQqGnF6/PRbz+EhjmT+iJ67/mUY=;
+        b=gIZIBB3WkrxCBSfnWt+vHY/AwPUCnws2XK9SneHHhumfE+4JkiHKeweu72EAWtjhMm
+         YTnK2mcwZ8KBmq398itwo3gqbDgV7mJ8BYp1VP4W0aWHrquKVWPw+YG3MEC+LWBOgCmL
+         2bkdy6cMi3T91WNrwyx6pvUUeMrklBi99z84H6OjzR7R8vouhAsfdq6KYX+hVFJUPu/3
+         B6ylEZ9q8G9hBgRP7OgqLp5IxCOeDv95lxuulVIyPpHCT5kslSImd5APJmhcQXgzPUVQ
+         qeUUZjVEgrXbh0e+V5fe3xIWsNjkxzFlnckz5AEEsz2PuvckQbPD41dvTxresljEP8P7
+         SGxA==
+X-Gm-Message-State: APjAAAVdZIc15bL8Xx7d5/zxrYgy57EWXxC2LEtBEzHKgWO1E6h50i7z
+        neUJjSKDolgy6v4nJuOqqD7urg==
+X-Google-Smtp-Source: APXvYqz2S/xfszL0oWRG5GwXUJqfH6R2Vhb5FSkaVEgWr59FELVaoP/P20oTjWxy+aom60m3VdZUeg==
+X-Received: by 2002:a05:6000:118c:: with SMTP id g12mr7146640wrx.193.1556656112020;
+        Tue, 30 Apr 2019 13:28:32 -0700 (PDT)
+Received: from boomer.lan (cag06-3-82-243-161-21.fbx.proxad.net. [82.243.161.21])
+        by smtp.gmail.com with ESMTPSA id o5sm3076191wmc.16.2019.04.30.13.28.30
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 30 Apr 2019 13:28:31 -0700 (PDT)
+Message-ID: <0bd1e9c25ab11112c9f2913c2cb3483e8802099d.camel@baylibre.com>
+Subject: Re: [PATCH v2 4/7] mmc: meson-gx: disable HS400
+From:   Jerome Brunet <jbrunet@baylibre.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        linux-amlogic@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 30 Apr 2019 22:28:27 +0200
+In-Reply-To: <CAFBinCBpujeLJHr0x9DxqLtRiLt0WLkkOoKcJuh3baWeg_bFeA@mail.gmail.com>
+References: <20190423090235.17244-1-jbrunet@baylibre.com>
+         <20190423090235.17244-5-jbrunet@baylibre.com>
+         <CAFBinCCf8fkBPR5aoPMensjhYKpan_UzG+HCEB5yNaYs+mB8OA@mail.gmail.com>
+         <17c5978419c8778eb1f2c2a6e2aee66e864ac53d.camel@baylibre.com>
+         <CAFBinCCus5T7LvH7aTMYmc5gKoFkZFR-MCMGK8bSV_eAsu9Svw@mail.gmail.com>
+         <936229765eac2bcdacf9a53925bb17c38ea18e3a.camel@baylibre.com>
+         <CAFBinCBpujeLJHr0x9DxqLtRiLt0WLkkOoKcJuh3baWeg_bFeA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Ulf,
+On Tue, 2019-04-30 at 22:02 +0200, Martin Blumenstingl wrote:
+> > Thanks for effort but all this just maintain the blur around HS400 on amlogic.
+> > 
+> > Let me rephrase it:
+> > Tuning (phase or resampling) is meant to compensate the clock round trip in UHS
+> > and HS200 modes. In HS400, this should be taken care of by the data strobe.
+> > But we have not been to enable this reliably enable this on amlogic chipset ...
+> I wasn't aware of this: so far I assumed that we're not setting the
+> phase correctly, end of the story.
+> thank you again for taking your time to explain this!
 
-On Mon, Apr 29, 2019 at 8:40 PM Martin Blumenstingl
-<martin.blumenstingl@googlemail.com> wrote:
->
-> Hi Ulf, Hi Kevin,
->
-> On Mon, Apr 29, 2019 at 12:45 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > On Tue, 23 Apr 2019 at 11:02, Jerome Brunet <jbrunet@baylibre.com> wrote:
-> > >
-> > > The purpose of this series is too improve reliability of the amlogic mmc
-> > > driver on new (g12a) and old ones (axg, gxl, gxbb, etc...)
-> > >
-> > > * The 3 first patches are just harmless clean ups.
-> >
-> > Applied these first three, postponing the the rest until Martin are
-> > happy with all of them. Thanks!
-> thank you for taking the first three patches!
-> I am fine with everything except the patch description of patch 4 and
-> 7 as noted here: [0]
-I did not understand how HS400 works. based on Jerome's latest
-explanation I'm fine with the patches as they are
+No worries. There is the MMC in general, I think I understand it a bit now but 
+I might still be mistaken about some stuff. Then there is the HW we have and the
+related black magic.
+
+I doubt this is the last update in this driver ...
+
+> 
+> > ... and I believe we are back to the original commit message.
+> no need to update the description just to explain how HS400 works in
+> general, so feel free to use my:
+> Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
 
-Martin
