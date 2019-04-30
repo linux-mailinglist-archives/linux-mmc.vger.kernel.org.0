@@ -2,120 +2,153 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C0B0F846
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Apr 2019 14:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7983510081
+	for <lists+linux-mmc@lfdr.de>; Tue, 30 Apr 2019 22:02:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728750AbfD3MG7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 30 Apr 2019 08:06:59 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:51322 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727948AbfD3MG6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Apr 2019 08:06:58 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x3UBv3l2016156;
-        Tue, 30 Apr 2019 14:06:47 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=0TJCqpAByJcnuLJ0JtSeGC0DKLxILjaYjgU3/kNbuek=;
- b=NmBhW31fR9zLCaqeXjHXtkG5/BQARi8G719yE+lA8MT+RIjgdhnjtI1rVcuizf7yT2ha
- fjDWIVwaVZSlTvU+BQ5dakHKoI4uCLaihfSydWw9ymEnQMIQw/okuMvLQsvrMGWXKxXZ
- GvMl+PTikZK8q0t2qdIM6Wp0qCLDy9SPY+96JOdYQJcfWmBAHr/aaxtWiOTacXyqWHrf
- OhfzASaUV7E5u14LxjwzJJcXL1ttxOO+/P3p/A2fZvY4GtqzZxcfIFzrtwOb5hAL8VqO
- AezCbzmDnt4DyRPwqmw/Ndi+MwL2iff+nGvUwXGhPOUAN1SdbLZ9QxNc/dxu4MPizXjI 7Q== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2s61q8dqy5-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Tue, 30 Apr 2019 14:06:47 +0200
-Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 082673A;
-        Tue, 30 Apr 2019 12:06:47 +0000 (GMT)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id D06F22516;
-        Tue, 30 Apr 2019 12:06:46 +0000 (GMT)
-Received: from [10.48.0.237] (10.75.127.48) by SFHDAG6NODE1.st.com
- (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Tue, 30 Apr
- 2019 14:06:46 +0200
-Subject: Re: [PATCH V2 0/5] mmc: mmci: add busy detect for stm32 sdmmc variant
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-References: <1556264798-18540-1-git-send-email-ludovic.Barre@st.com>
- <CAPDyKFqbn=UcbwoH_z+yjrjvHQZaMtmsD=n0yrBV7DAK5VRJEQ@mail.gmail.com>
-From:   Ludovic BARRE <ludovic.barre@st.com>
-Message-ID: <74b91eb4-e5a3-38b2-f732-29cdd058eb6a@st.com>
-Date:   Tue, 30 Apr 2019 14:06:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726218AbfD3UCk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 30 Apr 2019 16:02:40 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:41434 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725996AbfD3UCk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Apr 2019 16:02:40 -0400
+Received: by mail-oi1-f194.google.com with SMTP id v23so12159825oif.8;
+        Tue, 30 Apr 2019 13:02:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3r147tIwezgftcMqyv0BTWw1GGds2ZC5ylXTysMayJ0=;
+        b=Yd6dh8YODaH840dtnqB8JIV0ku0Zs+HUzPE4xdGMwqhIyvdVx0ZwwoCz/cYZK4bZY7
+         xTu677WYvvlU6yyq40DjghNCsKGr9UrNi6tynsVXL/IteW3aeOJVSxUg9c7SIRP0JC6K
+         EGhqpYHFIFXbqdLC+YA9bR3PG2CdFwFEbAaKD0BNVNXjLlINmwyn8uC8kzQ0YIlqmlmb
+         bm/sPNemBW7unwnpv37VGvMzXN+AAIEQUYj0hd4ekUmLEpS6erbEeVlfDKV/pCSwRVZQ
+         mApszl2ASCmOfR0VkUK4+TLYr2DjvYnzzU9zFF+iPtYcHf+BK8v02E1kbrOEQZxuVOK/
+         q8eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3r147tIwezgftcMqyv0BTWw1GGds2ZC5ylXTysMayJ0=;
+        b=Yz68I+Qv/ADaZ5mtpoKxTtI+DRJ6TWO33pfuIKLyLBRyKUtHQ/cEtOxmaCP1HZRGYu
+         lMJFanOslnZl/t4+xVKumZ3PSwu0MgwCttcyNhBOoMLE+tCdQwE6dG2kE7fLKq93CNjv
+         dNJ0DI7UQO/l3EIAfd1VquZRsHvc2jgu8CzgcUIn3rA/KSV/D313/YQNdO4lNXHzgumJ
+         AG/mii1wzsdPPmND4TyD1YUmfKnOsHxM0MOYtDKOUud6gfLGdGG01Jel2CWn9tVorqcV
+         bWnG2MY6K35aJ3ftcQZ8K0xptFn5870my7DmWXLaMrMJECFdqqIHtFmKgl0H/Xt1aMbx
+         PR+A==
+X-Gm-Message-State: APjAAAWT9UTxwlD2U3kSITUC4ycGZRahO/qrqH4rmTi7ZZZDKX1AXBFX
+        Axm4BodwK2BvKmKeaBqcdFB/+xGZK6tCvd+88G4=
+X-Google-Smtp-Source: APXvYqwDdmSQ1hWlPEYCDngS4jp/HbPyU07MOy4Ce9TcozyHCzgare4Eydcg5I08aewFi4Jb4cXyXvgfpEdZ63bO/j4=
+X-Received: by 2002:aca:4482:: with SMTP id r124mr4474985oia.39.1556654558796;
+ Tue, 30 Apr 2019 13:02:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFqbn=UcbwoH_z+yjrjvHQZaMtmsD=n0yrBV7DAK5VRJEQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.48]
-X-ClientProxiedBy: SFHDAG1NODE2.st.com (10.75.127.2) To SFHDAG6NODE1.st.com
- (10.75.127.16)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-04-30_05:,,
- signatures=0
+References: <20190423090235.17244-1-jbrunet@baylibre.com> <20190423090235.17244-5-jbrunet@baylibre.com>
+ <CAFBinCCf8fkBPR5aoPMensjhYKpan_UzG+HCEB5yNaYs+mB8OA@mail.gmail.com>
+ <17c5978419c8778eb1f2c2a6e2aee66e864ac53d.camel@baylibre.com>
+ <CAFBinCCus5T7LvH7aTMYmc5gKoFkZFR-MCMGK8bSV_eAsu9Svw@mail.gmail.com> <936229765eac2bcdacf9a53925bb17c38ea18e3a.camel@baylibre.com>
+In-Reply-To: <936229765eac2bcdacf9a53925bb17c38ea18e3a.camel@baylibre.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Tue, 30 Apr 2019 22:02:27 +0200
+Message-ID: <CAFBinCBpujeLJHr0x9DxqLtRiLt0WLkkOoKcJuh3baWeg_bFeA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/7] mmc: meson-gx: disable HS400
+To:     Jerome Brunet <jbrunet@baylibre.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        linux-amlogic@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Hi Jerome,
+
+On Mon, Apr 29, 2019 at 8:50 PM Jerome Brunet <jbrunet@baylibre.com> wrote:
+>
+> On Mon, 2019-04-29 at 20:31 +0200, Martin Blumenstingl wrote:
+> > Hi Jerome,
+> >
+> > On Mon, Apr 29, 2019 at 10:29 AM Jerome Brunet <jbrunet@baylibre.com> wrote:
+> > > On Sat, 2019-04-27 at 22:02 +0200, Martin Blumenstingl wrote:
+> > > > Hi Jerome,
+> > > >
+> > > > On Tue, Apr 23, 2019 at 11:03 AM Jerome Brunet <jbrunet@baylibre.com> wrote:
+> > > > > At the moment, all our attempts to enable HS400 on Amlogic chipsets have
+> > > > > been unsuccessful or unreliable. Until we can figure out how to enable this
+> > > > > mode safely and reliably, let's force it off.
+> > > > last year I have seen issues with HS400 on my Khadas VIM2: [0]
+> > > > have you tested all other patches from this series and HS400 is still
+> > > > not working for you?
+> > >
+> > > Because HS400 was never really stable to begin with.
+> > > It was a mistake to enable it on the VIM2
+> > >
+> > > > I'm curious because this patch is early in the series and all the
+> > > > tuning fixes and improvements are after this patch.
+> > >
+> > > There are several reasons why this new tuning won't solve the HS400 problem:
+> > > - Signal resampling tuning granularity gets worse when rate rises. The resampling
+> > > is done using the input frequency. We can basically resample up to the value of
+> > > internal divider.
+> > >
+> > > In HS200 - Fin is 1GHz, Fout is 200MHz (1/5) so the resample range is [0, 4]
+> > > In HS400 - Fin should be fdiv5 (400MHZ) and in such case, no resampling is
+> > >            possible (internal div = 1)
+> > >            Even if we keep 1GHz, then out is 333MHz max giving a range of [0, 2]
+> > >            that's not enough to tune
+> > this limitation would be great to have in the description of patch 7
+> > from this series
+>
+> That's not really a limitation. I should probably not have mentioned as it it seems to
+> have made things even more unclear. I disabled HS400 before introducing the new tuning on
+> purpose. Any comment regarding hs400 does not belong in patch 7 IHMO. If you want
+> to add comment regarding hs400, I think it belongs here
+>
+> >
+> > > Going further, tuning the Rx path does not make much sense in HS400 since we
+> > > should be using the data strobe signal to account for the round trip delay of
+> > > the clock and correctly sample Rx. AFAICT, If there is a tuning to be done for
+> > > HS400, it is most likely linked to the data strobe.
+> > it would be great to have a better description as part of the commit
+> > message - with that you can add my:
+> > Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> >
+> > my proposal for an update patch description (apologies I have
+> > incorrectly summarized your findings):
+> > "
+> > At the moment, all our attempts to enable HS400 on Amlogic chipsets have
+> > been unsuccessful or unreliable:
+> > - signal resampling without delay adjustments and phase tuning for the
+> > RX and TX clocks (this caused CRC errors and hangs even without HS400
+> > mode, for example on the Khadas VIM, Khadas VIM2 and libretech-cc
+> > boards)
+> > - signal resampling without delay adjustments and RX clock phase
+> > tuning (some HS200 and HS400 eMMC chips were not recognized, for
+> > example on the Khadas VIM and Khadas VIM2 boards)
+> > - signal resampling tuning with delay adjustments only (works fine for
+> > HS200 and UHS modes but doesn't fix HS400 eMMC chips, for example on
+> > Khadas VIM2)
+> >
+> > Further improvements for the HS400 mode are likely to be linked to the
+> > data strobe signal.
+> > Until we can figure out how to enable this mode safely and reliably,
+> > let's force it off.
+> > "
+>
+> Thanks for effort but all this just maintain the blur around HS400 on amlogic.
+>
+> Let me rephrase it:
+> Tuning (phase or resampling) is meant to compensate the clock round trip in UHS
+> and HS200 modes. In HS400, this should be taken care of by the data strobe.
+> But we have not been to enable this reliably enable this on amlogic chipset ...
+I wasn't aware of this: so far I assumed that we're not setting the
+phase correctly, end of the story.
+thank you again for taking your time to explain this!
+
+> ... and I believe we are back to the original commit message.
+no need to update the description just to explain how HS400 works in
+general, so feel free to use my:
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
 
-On 4/30/19 1:13 PM, Ulf Hansson wrote:
-> On Fri, 26 Apr 2019 at 09:46, Ludovic Barre <ludovic.Barre@st.com> wrote:
->>
->> From: Ludovic Barre <ludovic.barre@st.com>
->>
->> This patch series adds busy detect for stm32 sdmmc variant.
->> Some adaptations are required:
->> -Avoid to check and poll busy status when is not expected.
->> -Clear busy status bit if busy_detect_flag and busy_detect_mask are
->>   different.
->> -Add hardware busy timeout with MMCIDATATIMER register.
->>
->> V2:
->> -mmci_cmd_irq cleanup in separate patch.
->> -simplify the busy_detect_flag exclude
->> -replace sdmmc specific comment in
->> "mmc: mmci: avoid fake busy polling in mmci_irq"
->> to focus on common behavior
->>
->> Ludovic Barre (5):
->>    mmc: mmci: cleanup mmci_cmd_irq for busy detect feature
->>    mmc: mmci: avoid fake busy polling in mmci_irq
->>    mmc: mmci: fix clear of busy detect status
->>    mmc: mmci: add hardware busy timeout feature
->>    mmc: mmci: add busy detect for stm32 sdmmc variant
->>
->>   drivers/mmc/host/mmci.c | 61 ++++++++++++++++++++++++++++++++++++++-----------
->>   drivers/mmc/host/mmci.h |  3 +++
->>   2 files changed, 51 insertions(+), 13 deletions(-)
->>
->> --
->> 2.7.4
->>
-> 
-> Ludovic, just wanted to let you know that I am reviewing and testing
-> this series.
-> 
-> However, while running some tests on Ux500 for validating the busy
-> detection code, even without your series applied, I encounter some odd
-> behaviors. I am looking into the problem to understand better and will
-> let you know as soon as I have some more data to share.
-
-Oops, don't hesitate to share your status, if I could help.
-
-> 
-> Kind regards
-> Uffe
-> 
+Martin
