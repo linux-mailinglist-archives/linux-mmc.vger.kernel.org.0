@@ -2,92 +2,165 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 316BF1032A
-	for <lists+linux-mmc@lfdr.de>; Wed,  1 May 2019 01:12:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D289E10C6D
+	for <lists+linux-mmc@lfdr.de>; Wed,  1 May 2019 19:50:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726190AbfD3XMS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 30 Apr 2019 19:12:18 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:34884 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726086AbfD3XMS (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Apr 2019 19:12:18 -0400
-Received: by mail-oi1-f195.google.com with SMTP id w197so12717625oia.2;
-        Tue, 30 Apr 2019 16:12:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8Kaz0HzSce5UNE/bdT7lOJbyMWjOGQSNQhXNQdmqdS0=;
-        b=cQ5IywG2uJhiQCfZqVl1eYsmJJItNOjy9Dqoz5hB5W1qlOwglUCYXp7ZEiV+fxg6Qi
-         3qN7Q5GPv1zFuhuBrA58BvPCak6tr1qsYO9S9aL2qz3ooU/z4N4zwvRP3kgrnRbn0L2A
-         0thuzqHRY6ewMzet2ivXajl1UrrF43Oo4T/C4RnIRsVcnSnXXtybJr0dFavzeVWzGL9m
-         W+mejUJSIZ4PC8fio4ShzdrBw4SPVxDFJ/yJl7sUvQv0ZYaDHqOtcCGjJXcKuzFpa4To
-         xZOdgdhk5mx3OSFsAFIcSb4j8/p1oAJpvqRWAqXWD/vDrAirGsuF4eD1W+XUc8NU7qZF
-         rpvQ==
-X-Gm-Message-State: APjAAAVzssXweaZvLvy5skCpRK9/UEOG7wVlQk0/4Zd+u0MOr0PrCSYI
-        r9C15YpjU16tBxVbjkdeM1qic0QTAzk=
-X-Google-Smtp-Source: APXvYqzmU7J8Jyis0/HpmPawqrY+cd6LELrQPuOHWXXTQ7fuZCaHzNCH9tMw56lzVdYSKIKHoo0hEA==
-X-Received: by 2002:aca:f4cf:: with SMTP id s198mr4598529oih.153.1556665937217;
-        Tue, 30 Apr 2019 16:12:17 -0700 (PDT)
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com. [209.85.167.182])
-        by smtp.gmail.com with ESMTPSA id p8sm17018925oib.9.2019.04.30.16.12.16
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 30 Apr 2019 16:12:16 -0700 (PDT)
-Received: by mail-oi1-f182.google.com with SMTP id y64so7167440oia.7;
-        Tue, 30 Apr 2019 16:12:16 -0700 (PDT)
-X-Received: by 2002:aca:4e83:: with SMTP id c125mr4539473oib.13.1556665936485;
- Tue, 30 Apr 2019 16:12:16 -0700 (PDT)
+        id S1726079AbfEARum (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 1 May 2019 13:50:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33528 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726069AbfEARum (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 1 May 2019 13:50:42 -0400
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2A4CC2063F;
+        Wed,  1 May 2019 17:50:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1556733041;
+        bh=c1wj1L2mmEp3b5Zc4h0P4p/sRviKAqQNIMtj49lFokg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=gG+sCU7Pn+mQT5F91kLO8vO2FqssmxCjlJLDuSvhFBgsFLDPE20VbFliRvcxUTqYW
+         fVAjvtF/VHvokMcFJ9bJ5f9NiePZ8U7ua4194GOFbGJ191dIFLdVADwBTFhWpXm+Dt
+         U/k/vMGI81AXUxcNqct2TGxXPKcnz7hzbnFdBTc0=
+Received: by mail-qk1-f178.google.com with SMTP id p19so10594044qkm.10;
+        Wed, 01 May 2019 10:50:41 -0700 (PDT)
+X-Gm-Message-State: APjAAAU72fu9/sqAXS1JB7Ui8775tD55q5vdVrK0WISnDjVpoS/a2m/r
+        llC5mlFwFvlH1RJsei1xIyfUsPlsiYpGJodmUQ==
+X-Google-Smtp-Source: APXvYqxaALIZpIXVBCrI5e0AF+QhkCcGm6801hN03DMuRHPJPYGqONfx33oDbS0RZyhIRlVGgu4C1MuY3dbTFHDfvjc=
+X-Received: by 2002:a37:5c81:: with SMTP id q123mr39758359qkb.29.1556733040411;
+ Wed, 01 May 2019 10:50:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190430051723.31345-1-yinbo.zhu@nxp.com>
-In-Reply-To: <20190430051723.31345-1-yinbo.zhu@nxp.com>
-From:   Li Yang <leoyang.li@nxp.com>
-Date:   Tue, 30 Apr 2019 18:12:05 -0500
-X-Gmail-Original-Message-ID: <CADRPPNQ4RYhe5n_ZA_xrhG8VARsvV3cwVgnuinedb2VHKkDzbQ@mail.gmail.com>
-Message-ID: <CADRPPNQ4RYhe5n_ZA_xrhG8VARsvV3cwVgnuinedb2VHKkDzbQ@mail.gmail.com>
-Subject: Re: [PATCH v1] mmc: dt: add DT bindings for ls1028a eSDHC host controller
+References: <20190423114424.3578-1-yinbo.zhu@nxp.com>
+In-Reply-To: <20190423114424.3578-1-yinbo.zhu@nxp.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Wed, 1 May 2019 12:50:29 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+4g+inxc+qcC3oLrXuR+L9AMvXFShGaU5Y3iRDsK3P6A@mail.gmail.com>
+Message-ID: <CAL_Jsq+4g+inxc+qcC3oLrXuR+L9AMvXFShGaU5Y3iRDsK3P6A@mail.gmail.com>
+Subject: Re: [PATCH v1] arm64: ls1028: dtsi: Add esdhc node in dtsi
 To:     Yinbo Zhu <yinbo.zhu@nxp.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
+Cc:     Shawn Guo <shawnguo@kernel.org>, Leo Li <leoyang.li@nxp.com>,
+        Xiaobo Xie <xiaobo.xie@nxp.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Xiaobo Xie <xiaobo.xie@nxp.com>, "Y.b. Lu" <yangbo.lu@nxp.com>,
-        Jiafei Pan <jiafei.pan@nxp.com>
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "Y.b. Lu" <yangbo.lu@nxp.com>, Jiafei Pan <jiafei.pan@nxp.com>,
+        Ashish Kumar <ashish.kumar@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Apr 30, 2019 at 12:16 AM Yinbo Zhu <yinbo.zhu@nxp.com> wrote:
+On Tue, Apr 23, 2019 at 6:42 AM Yinbo Zhu <yinbo.zhu@nxp.com> wrote:
 >
-> From: Yinbo Zhu <yinbo.zhu@nxp.com>
-
-The patch title better to be "dt-bindings: mmc: ..."
+> From: Ashish Kumar <Ashish.Kumar@nxp.com>
 >
-> Add "fsl,ls1028a-esdhc" bindings for ls1028a eSDHC host controller
+> This patch is to add esdhc node and enable SD UHS-I,
+> eMMC HS200 for ls1028ardb/ls1028aqds board.
 >
+> Signed-off-by: Ashish Kumar <Ashish.Kumar@nxp.com>
+> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 > Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
 > ---
->  .../devicetree/bindings/mmc/fsl-esdhc.txt          |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
+>  .../boot/dts/freescale/fsl-ls1028a-qds.dts    |  8 ++++++
+>  .../boot/dts/freescale/fsl-ls1028a-rdb.dts    | 13 +++++++++
+>  .../arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 27 +++++++++++++++++++
+>  3 files changed, 48 insertions(+)
 >
-> diff --git a/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt b/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
-> index 99c5cf8..a7250b9 100644
-> --- a/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
-> +++ b/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
-> @@ -21,6 +21,7 @@ Required properties:
->         "fsl,ls1043a-esdhc"
->         "fsl,ls1046a-esdhc"
->         "fsl,ls2080a-esdhc"
-> +       "fsl,ls1028a-esdhc"
-
-Better to be alphabetical order.
-
->    - clock-frequency : specifies eSDHC base clock frequency.
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
+> index 14c79f4691ea..180e5d2a00d1 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
+> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
+> @@ -42,6 +42,14 @@
+>         status = "okay";
+>  };
 >
->  Optional properties:
+> +&esdhc {
+> +       status = "okay";
+> +};
+> +
+> +&esdhc1 {
+> +       status = "okay";
+> +};
+> +
+>  &i2c0 {
+>         status = "okay";
+>
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+> index f86b054a74ae..1bfaf4294db4 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+> @@ -30,6 +30,19 @@
+>         };
+>  };
+>
+> +&esdhc {
+> +       status = "okay";
+> +       sd-uhs-sdr104;
+> +       sd-uhs-sdr50;
+> +       sd-uhs-sdr25;
+> +       sd-uhs-sdr12;
+> +       };
+> +
+> +&esdhc1 {
+> +       status = "okay";
+> +       mmc-hs200-1_8v;
+> +       };
+> +
+>  &i2c0 {
+>         status = "okay";
+>
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+> index 2896bbcfa3bb..d13cd3fb455b 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+> @@ -274,6 +274,33 @@
+>                         status = "disabled";
+>                 };
+>
+> +               esdhc: esdhc@2140000 {
+
+mmc@...
+
+> +                       compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
+> +                       reg = <0x0 0x2140000 0x0 0x10000>;
+> +                       interrupts = <0 28 0x4>; /* Level high type */
+> +                       clock-frequency = <0>;
+
+Filled in by bootloader? If so, add a comment.
+
+> +                       clocks = <&clockgen 2 1>;
+> +                       voltage-ranges = <1800 1800 3300 3300>;
+> +                       sdhci,auto-cmd12;
+> +                       little-endian;
+> +                       bus-width = <4>;
+> +                       status = "disabled";
+> +               };
+> +
+> +               esdhc1: esdhc@2150000 {
+
+mmc@...
+
+> +                       compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
+> +                       reg = <0x0 0x2150000 0x0 0x10000>;
+> +                       interrupts = <0 63 0x4>; /* Level high type */
+> +                       clock-frequency = <0>;
+> +                       clocks = <&clockgen 2 1>;
+> +                       voltage-ranges = <1800 1800 3300 3300>;
+> +                       sdhci,auto-cmd12;
+> +                       broken-cd;
+> +                       little-endian;
+> +                       bus-width = <4>;
+> +                       status = "disabled";
+> +               };
+> +
+>                 sata: sata@3200000 {
+>                         compatible = "fsl,ls1028a-ahci";
+>                         reg = <0x0 0x3200000 0x0 0x10000>,
 > --
-> 1.7.1
+> 2.17.1
 >
