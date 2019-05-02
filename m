@@ -2,200 +2,160 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF63B11494
-	for <lists+linux-mmc@lfdr.de>; Thu,  2 May 2019 09:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB7C11EEB
+	for <lists+linux-mmc@lfdr.de>; Thu,  2 May 2019 17:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726127AbfEBHx2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 2 May 2019 03:53:28 -0400
-Received: from mga07.intel.com ([134.134.136.100]:17492 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726020AbfEBHx2 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 2 May 2019 03:53:28 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 May 2019 00:53:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,420,1549958400"; 
-   d="scan'208";a="147600272"
-Received: from ahunter-desktop.fi.intel.com ([10.237.72.198])
-  by fmsmga007.fm.intel.com with ESMTP; 02 May 2019 00:53:26 -0700
-From:   Adrian Hunter <adrian.hunter@intel.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>
-Subject: [PATCH] mmc: sdhci-pci: Fix BYT OCP setting
-Date:   Thu,  2 May 2019 10:52:02 +0300
-Message-Id: <20190502075202.26434-1-adrian.hunter@intel.com>
-X-Mailer: git-send-email 2.17.1
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+        id S1726504AbfEBPm4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 2 May 2019 11:42:56 -0400
+Received: from mail-it1-f193.google.com ([209.85.166.193]:37247 "EHLO
+        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727965AbfEBPmz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 2 May 2019 11:42:55 -0400
+Received: by mail-it1-f193.google.com with SMTP id r85so4193990itc.2
+        for <linux-mmc@vger.kernel.org>; Thu, 02 May 2019 08:42:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=HgRltt9mKzKFkWid2jC0d7CivMviw3PVlrovQvkWUY0=;
+        b=dPuT9le9IgnrrFbNziCFPHcw7gr7BllpwC6h0sIzKDHjNarPihygnPtAIqgNaRG0Ll
+         fo0d9COh/fbu1ZG2VoRHIVvwi6rXhK3jMH3ob39Vno7dh1Xzq7tBHrMbb9zizO4ZBfrB
+         Z1AA42TWTmlHnZO5jqlawuMAcY6AC3S5ZyG8qVwEW5QXfZln2tHLGH+55z+1qEq2ouls
+         U9AIqSBxk/lldZcKGvBFBcxokZ/OEb0Ru/WrSnhPD8kZONSGoND7gqg/Tk1Mm+/frs2m
+         sRdUZ+ikERrEFV/KxL1f7Fc5P3CHCPwgjDZl13lrennfWXpFpwN17k7u01P8GpjSnh5o
+         6pQw==
+X-Gm-Message-State: APjAAAXH5eNt/v3I+rZYNbrMlGUZl1zwjW+ylNiFb6TOV6288bHfl3uX
+        lDmDDw4nWdK44nU8iXV05nz/JH2qNjUieg==
+X-Google-Smtp-Source: APXvYqzEE6fGCQnogPRhO8dCkQ+ch5Y4EWRqETjULbeEJ7Mnea0b6DvrcjoovagYfJos3eSUEjIYdg==
+X-Received: by 2002:a02:a1d4:: with SMTP id o20mr3155865jah.49.1556811774318;
+        Thu, 02 May 2019 08:42:54 -0700 (PDT)
+Received: from google.com ([2620:15c:183:0:20b8:dee7:5447:d05])
+        by smtp.gmail.com with ESMTPSA id 127sm33865iox.65.2019.05.02.08.42.53
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 02 May 2019 08:42:53 -0700 (PDT)
+Date:   Thu, 2 May 2019 09:42:49 -0600
+From:   Raul Rangel <rrangel@chromium.org>
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     linux-mmc@vger.kernel.org,
+        "Agrawal, Nitesh-kumar" <Nitesh-kumar.Agrawal@amd.com>,
+        djkurtz@chromium.org, linux-kernel@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        "Sen, Pankaj" <Pankaj.Sen@amd.com>,
+        "Shah, Nehal-bakulchandra" <Nehal-bakulchandra.Shah@amd.com>,
+        Avri Altman <avri.altman@wdc.com>, gene.chen@amd.com,
+        Chris.Wang@amd.com
+Subject: Re: [RFC PATCH 2/2] mmc: sdhci: Quirk for AMD SDHC Device 0x7906
+Message-ID: <20190502154249.GA25027@google.com>
+References: <20190501175457.195855-1-rrangel@chromium.org>
+ <20190501175457.195855-2-rrangel@chromium.org>
+ <08c3dc49-f5cb-401d-b900-12879f469728@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <08c3dc49-f5cb-401d-b900-12879f469728@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Some time ago, a fix was done for the sdhci-acpi driver, refer
-commit 6e1c7d6103fe ("mmc: sdhci-acpi: Reduce Baytrail eMMC/SD/SDIO
-hangs"). The same issue was not expected to affect the sdhci-pci driver,
-but there have been reports to the contrary, so make the same hardware
-setting change.
+Ou Thu, May 02, 2019 at 09:32:16AM +0300, Adrian Hunter wrote:
 
-This patch applies to v5.0+ but before that backports will be required.
+Gene or Chris,
+Can you sign off on the patch.
 
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
----
- drivers/mmc/host/Kconfig          |  1 +
- drivers/mmc/host/sdhci-pci-core.c | 89 +++++++++++++++++++++++++++++++
- 2 files changed, 90 insertions(+)
-
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 9c01310a0d2e..d084a9d63623 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -92,6 +92,7 @@ config MMC_SDHCI_PCI
- 	tristate "SDHCI support on PCI bus"
- 	depends on MMC_SDHCI && PCI
- 	select MMC_CQHCI
-+	select IOSF_MBI if X86
- 	help
- 	  This selects the PCI Secure Digital Host Controller Interface.
- 	  Most controllers found today are PCI devices.
-diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-index a3d7a9db76c5..64e79a19d5ad 100644
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -31,6 +31,10 @@
- #include <linux/mmc/sdhci-pci-data.h>
- #include <linux/acpi.h>
- 
-+#ifdef CONFIG_X86
-+#include <asm/iosf_mbi.h>
-+#endif
-+
- #include "cqhci.h"
- 
- #include "sdhci.h"
-@@ -451,6 +455,50 @@ static const struct sdhci_pci_fixes sdhci_intel_pch_sdio = {
- 	.probe_slot	= pch_hc_probe_slot,
- };
- 
-+#ifdef CONFIG_X86
-+
-+#define BYT_IOSF_SCCEP			0x63
-+#define BYT_IOSF_OCP_NETCTRL0		0x1078
-+#define BYT_IOSF_OCP_TIMEOUT_BASE	GENMASK(10, 8)
-+
-+static void byt_ocp_setting(struct pci_dev *pdev)
-+{
-+	u32 val = 0;
-+
-+	if (pdev->device != PCI_DEVICE_ID_INTEL_BYT_EMMC &&
-+	    pdev->device != PCI_DEVICE_ID_INTEL_BYT_SDIO &&
-+	    pdev->device != PCI_DEVICE_ID_INTEL_BYT_SD &&
-+	    pdev->device != PCI_DEVICE_ID_INTEL_BYT_EMMC2)
-+		return;
-+
-+	if (iosf_mbi_read(BYT_IOSF_SCCEP, MBI_CR_READ, BYT_IOSF_OCP_NETCTRL0,
-+			  &val)) {
-+		dev_err(&pdev->dev, "%s read error\n", __func__);
-+		return;
-+	}
-+
-+	if (!(val & BYT_IOSF_OCP_TIMEOUT_BASE))
-+		return;
-+
-+	val &= ~BYT_IOSF_OCP_TIMEOUT_BASE;
-+
-+	if (iosf_mbi_write(BYT_IOSF_SCCEP, MBI_CR_WRITE, BYT_IOSF_OCP_NETCTRL0,
-+			   val)) {
-+		dev_err(&pdev->dev, "%s write error\n", __func__);
-+		return;
-+	}
-+
-+	dev_dbg(&pdev->dev, "%s completed\n", __func__);
-+}
-+
-+#else
-+
-+static inline void byt_ocp_setting(struct pci_dev *pdev)
-+{
-+}
-+
-+#endif
-+
- enum {
- 	INTEL_DSM_FNS		=  0,
- 	INTEL_DSM_V18_SWITCH	=  3,
-@@ -715,6 +763,8 @@ static void byt_probe_slot(struct sdhci_pci_slot *slot)
- 
- 	byt_read_dsm(slot);
- 
-+	byt_ocp_setting(slot->chip->pdev);
-+
- 	ops->execute_tuning = intel_execute_tuning;
- 	ops->start_signal_voltage_switch = intel_start_signal_voltage_switch;
- 
-@@ -971,7 +1021,44 @@ static const struct sdhci_pci_fixes sdhci_intel_glk_emmc = {
- 	.priv_size		= sizeof(struct intel_host),
- };
- 
-+#ifdef CONFIG_PM_SLEEP
-+
-+static int byt_resume(struct sdhci_pci_chip *chip)
-+{
-+	byt_ocp_setting(chip->pdev);
-+
-+	return sdhci_pci_resume_host(chip);
-+}
-+
-+#define BYT_SPM_OPS .resume = byt_resume,
-+
-+#else
-+
-+#define BYT_SPM_OPS
-+
-+#endif
-+
-+#ifdef CONFIG_PM
-+
-+static int byt_runtime_resume(struct sdhci_pci_chip *chip)
-+{
-+	byt_ocp_setting(chip->pdev);
-+
-+	return sdhci_pci_runtime_resume_host(chip);
-+}
-+
-+#define BYT_RPM_OPS .runtime_resume = byt_runtime_resume,
-+
-+#else
-+
-+#define BYT_RPM_OPS
-+
-+#endif
-+
-+#define BYT_PM_OPS BYT_SPM_OPS BYT_RPM_OPS
-+
- static const struct sdhci_pci_fixes sdhci_ni_byt_sdio = {
-+	BYT_PM_OPS
- 	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
- 			  SDHCI_QUIRK_NO_LED,
- 	.quirks2	= SDHCI_QUIRK2_HOST_OFF_CARD_ON |
-@@ -983,6 +1070,7 @@ static const struct sdhci_pci_fixes sdhci_ni_byt_sdio = {
- };
- 
- static const struct sdhci_pci_fixes sdhci_intel_byt_sdio = {
-+	BYT_PM_OPS
- 	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
- 			  SDHCI_QUIRK_NO_LED,
- 	.quirks2	= SDHCI_QUIRK2_HOST_OFF_CARD_ON |
-@@ -994,6 +1082,7 @@ static const struct sdhci_pci_fixes sdhci_intel_byt_sdio = {
- };
- 
- static const struct sdhci_pci_fixes sdhci_intel_byt_sd = {
-+	BYT_PM_OPS
- 	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
- 			  SDHCI_QUIRK_NO_LED,
- 	.quirks2	= SDHCI_QUIRK2_CARD_ON_NEEDS_BUS_ON |
--- 
-2.17.1
-
+Thanks,
+Raul
+> Cc: some AMD people
+> 
+> On 1/05/19 8:54 PM, Raul E Rangel wrote:
+> > AMD SDHC 0x7906 requires a hard reset to clear all internal state.
+> > Otherwise it can get into a bad state where the DATA lines are always
+> > read as zeros.
+> > 
+> > This change requires firmware that can transition the device into
+> > D3Cold for it to work correctly. If the firmware does not support
+> > transitioning to D3Cold then the power state transitions are a no-op.
+> > 
+> > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+> > ---
+> > 
+> >  drivers/mmc/host/sdhci-pci-core.c | 51 ++++++++++++++++++++++++++++++-
+> >  1 file changed, 50 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+> > index 99b0fec2836b..532fbcbd373b 100644
+> > --- a/drivers/mmc/host/sdhci-pci-core.c
+> > +++ b/drivers/mmc/host/sdhci-pci-core.c
+> > @@ -25,6 +25,7 @@
+> >  #include <linux/mmc/mmc.h>
+> >  #include <linux/scatterlist.h>
+> >  #include <linux/io.h>
+> > +#include <linux/iopoll.h>
+> >  #include <linux/gpio.h>
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/mmc/slot-gpio.h>
+> > @@ -1498,11 +1499,59 @@ static int amd_probe(struct sdhci_pci_chip *chip)
+> >  	return 0;
+> >  }
+> >  
+> > +static u32 sdhci_read_present_state(struct sdhci_host *host)
+> > +{
+> > +	return sdhci_readl(host, SDHCI_PRESENT_STATE);
+> > +}
+> > +
+> > +void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
+> > +{
+> > +	struct sdhci_pci_slot *slot = sdhci_priv(host);
+> > +	struct pci_dev *pdev = slot->chip->pdev;
+> > +	u32 present_state;
+> > +
+> > +	/*
+> > +	 * SDHC 0x7906 requires a hard reset to clear all internal state.
+> > +	 * Otherwise it can get into a bad state where the DATA lines are always
+> > +	 * read as zeros.
+> > +	 */
+> > +	if (pdev->device == 0x7906 && (mask & SDHCI_RESET_ALL)) {
+> > +		pci_clear_master(pdev);
+> > +
+> > +		pci_save_state(pdev);
+> > +
+> > +		pci_set_power_state(pdev, PCI_D3cold);
+> > +		pr_debug("%s: power_state=%u\n", mmc_hostname(host->mmc),
+> > +			pdev->current_state);
+> > +		pci_set_power_state(pdev, PCI_D0);
+> > +
+> > +		pci_restore_state(pdev);
+> > +
+> > +		/*
+> > +		 * SDHCI_RESET_ALL says the card detect logic should not be
+> > +		 * reset, but since we need to reset the entire controller
+> > +		 * we should wait until the card detect logic has stabilized.
+> > +		 *
+> > +		 * This normally takes about 40ms.
+> > +		 */
+> > +		readx_poll_timeout(
+> > +			sdhci_read_present_state,
+> > +			host,
+> > +			present_state,
+> > +			present_state & SDHCI_CD_STABLE,
+> > +			10000,
+> > +			100000
+> > +		);
+> > +	}
+> > +
+> > +	return sdhci_reset(host, mask);
+> > +}
+> > +
+> >  static const struct sdhci_ops amd_sdhci_pci_ops = {
+> >  	.set_clock			= sdhci_set_clock,
+> >  	.enable_dma			= sdhci_pci_enable_dma,
+> >  	.set_bus_width			= sdhci_set_bus_width,
+> > -	.reset				= sdhci_reset,
+> > +	.reset				= amd_sdhci_reset,
+> >  	.set_uhs_signaling		= sdhci_set_uhs_signaling,
+> >  };
+> >  
+> > 
+> 
