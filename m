@@ -2,141 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAE5B10E4E
-	for <lists+linux-mmc@lfdr.de>; Wed,  1 May 2019 22:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BB78110B8
+	for <lists+linux-mmc@lfdr.de>; Thu,  2 May 2019 02:44:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726128AbfEAU4t (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 1 May 2019 16:56:49 -0400
-Received: from gateway23.websitewelcome.com ([192.185.49.60]:31620 "EHLO
-        gateway23.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726115AbfEAU4t (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 1 May 2019 16:56:49 -0400
-X-Greylist: delayed 1205 seconds by postgrey-1.27 at vger.kernel.org; Wed, 01 May 2019 16:56:49 EDT
-Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
-        by gateway23.websitewelcome.com (Postfix) with ESMTP id B7E2446BE
-        for <linux-mmc@vger.kernel.org>; Wed,  1 May 2019 15:36:43 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id Lvy7hrFdldnCeLvy7hbJyg; Wed, 01 May 2019 15:36:43 -0500
-X-Authority-Reason: nr=8
-Received: from [189.250.119.203] (port=52658 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.91)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1hLvxm-003wyT-QW; Wed, 01 May 2019 15:36:42 -0500
-Date:   Wed, 1 May 2019 15:36:21 -0500
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH v2] mmc: usdhi6rol0: mark expected switch fall-throughs
-Message-ID: <20190501203621.GA11352@embeddedor>
+        id S1726266AbfEBAoZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 1 May 2019 20:44:25 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:43356 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726173AbfEBAoZ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 1 May 2019 20:44:25 -0400
+Received: by mail-ot1-f66.google.com with SMTP id e108so544242ote.10;
+        Wed, 01 May 2019 17:44:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=30i3NYFXZ2MZXCMdrcpDy35fMw++eVjOrCNwvTj72Jk=;
+        b=aw3a6Jy5zZzWF5SFbky7qdEOXhYSl1hH+krebh7x2ps5oT6rdWaQihrec4GmM17ocy
+         uQMbuSMFxUmlrH7JmeHA/SwwG0XvopXmxa6tJFzk11+38PK0rDS/6FebXMgP6zje1xu9
+         kp1ZFaWwS7ioSuL57r7Oyua2m2cu+qfkX3W+qbKYGBbI2CrB9aqbvDkPhVYZt2fTrO+m
+         PWwmnnO2LoZoyTVk41SkdbyQjsInpB/g/utVjGhWcXBpY6wXq1ACoQ44pGA3bg8gzR2t
+         LbsuraHv0AU1c/+SVK9ojmKLfEs5nSljklSUDlin+6X/bjDRYLzXAvi9Q7RAzmVPq4hq
+         OpWQ==
+X-Gm-Message-State: APjAAAUgDPdQE/RRXsbuxf3VJqYMV7hBG+djuGBSIIEsc/gK+/Wi8a4W
+        rW6oyi8IRqf5jz8SDvwmBg==
+X-Google-Smtp-Source: APXvYqx8Ov1Fb55uUfnOb+oD0w26UNXy56gd36CsDtsPofrXsJIpTWqmCCZ9VDjI3X/t5n36L29Sow==
+X-Received: by 2002:a9d:4701:: with SMTP id a1mr578732otf.235.1556757864153;
+        Wed, 01 May 2019 17:44:24 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id 3sm12129109oti.45.2019.05.01.17.44.23
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 01 May 2019 17:44:23 -0700 (PDT)
+Date:   Wed, 1 May 2019 19:44:22 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Takao Orito <orito.takao@socionext.com>
+Cc:     ulf.hansson@linaro.org, mark.rutland@arm.com,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, masami.hiramatsu@linaro.org,
+        jaswinder.singh@linaro.org, sugaya.taichi@socionext.com,
+        kasai.kazuhiro@socionext.com, kanematsu.shinji@socionext.com
+Subject: Re: [PATCH 1/2] dt-bindings: mmc: add DT bindings for Milbeaut SD
+ controller
+Message-ID: <20190502004422.GA2242@bogus>
+References: <1556244392-15822-1-git-send-email-orito.takao@socionext.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 189.250.119.203
-X-Source-L: No
-X-Exim-ID: 1hLvxm-003wyT-QW
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [189.250.119.203]:52658
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 6
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+In-Reply-To: <1556244392-15822-1-git-send-email-orito.takao@socionext.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-In preparation to enabling -Wimplicit-fallthrough, mark switch
-cases where we are expecting to fall through.
+On Fri, Apr 26, 2019 at 11:06:32AM +0900, Takao Orito wrote:
 
-This patch fixes the following warnings:
+Needs a commit msg.
 
-In file included from drivers/mmc/host/usdhi6rol0.c:9:
-drivers/mmc/host/usdhi6rol0.c: In function ‘usdhi6_timeout_work’:
-./include/linux/device.h:1483:2: warning: this statement may fall through [-Wimplicit-fallthrough=]
-  _dev_err(dev, dev_fmt(fmt), ##__VA_ARGS__)
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/mmc/host/usdhi6rol0.c:1689:3: note: in expansion of macro ‘dev_err’
-   dev_err(mmc_dev(host->mmc), "Invalid state %u\n", host->wait);
-   ^~~~~~~
-drivers/mmc/host/usdhi6rol0.c:1691:2: note: here
-  case USDHI6_WAIT_FOR_CMD:
-  ^~~~
-drivers/mmc/host/usdhi6rol0.c:1711:3: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   usdhi6_sg_unmap(host, true);
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/mmc/host/usdhi6rol0.c:1716:2: note: here
-  case USDHI6_WAIT_FOR_DATA_END:
-  ^~~~
-  CC [M]  drivers/isdn/hisax/hisax_isac.o
-drivers/mmc/host/usdhi6rol0.c: In function ‘usdhi6_stop_cmd’:
-drivers/mmc/host/usdhi6rol0.c:1338:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (mrq->stop->opcode == MMC_STOP_TRANSMISSION) {
-      ^
-drivers/mmc/host/usdhi6rol0.c:1343:2: note: here
-  default:
-  ^~~~~~~
+> Signed-off-by: Takao Orito <orito.takao@socionext.com>
+> ---
+>  .../devicetree/bindings/mmc/sdhci-milbeaut.txt     | 35 ++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mmc/sdhci-milbeaut.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-milbeaut.txt b/Documentation/devicetree/bindings/mmc/sdhci-milbeaut.txt
+> new file mode 100644
+> index 0000000..7008462
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-milbeaut.txt
+> @@ -0,0 +1,35 @@
+> +* SOCIONEXT SDHCI controller
+> +
+> +This file documents differences between the core properties in mmc.txt
+> +and the properties used by the sdhci_milbeaut driver.
+> +
+> +Required properties:
+> +- compatible: "socionext,milbeaut-m10v-sdhci-3.0"
+> +- clocks: Must contain an entry for each entry in clock-names. It is a
+> +  list of phandles and clock-specifier pairs.
+> +  See ../clocks/clock-bindings.txt for details.
+> +- clock-names: Should contain the following two entries:
+> +	"iface" - clock used for sdhci interface
+> +	"core"  - core clock for sdhci controller
+> +
+> +Optional properties:
+> +- vqmmc-supply: phandle to the regulator device tree node, mentioned
+> +  as the VCCQ/VDD_IO supply in the eMMC/SD specs.
+> +- fujitsu,cmd-dat-delay-select: boolean property indicating that this host
+> +  requires the CMD_DAT_DELAY control to be enabled.
+> +- sni,mmc-power-gpio: set property indicating that power on or off needs
+> +  control of gpios.
+> +
+> +Example:
+> +	sdhci3: mmc@1b010000 {
+> +		compatible = "socionext,milbeaut-m10v-sdhci-3.0";
+> +		reg = <0x1b010000 0x10000>;
+> +		interrupts = <0 265 0x4>;
+> +		voltage-ranges = <3300 3300>;
+> +		bus-width = <4>;
+> +		clocks = <&clk 7>, <&ahb_clk>;
+> +		clock-names = "core", "iface";
+> +		cap-sdio-irq;
+> +		sni,mmc-power-gpio = <&pinctrl 53 GPIO_ACTIVE_HIGH>;
+> +			fujitsu,cmd-dat-delay-select;
 
-Warning level 3 was used: -Wimplicit-fallthrough=3
+Whitespace problem.
 
-This patch is part of the ongoing efforts to enable
--Wimplicit-fallthrough.
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
-Changes in v2:
- - Turn multiple line comments into single line comments.
- - Fix additional fall-through warning.
-
- drivers/mmc/host/usdhi6rol0.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
-index cd8b1b9d4d8a..f0cc5e0dbf79 100644
---- a/drivers/mmc/host/usdhi6rol0.c
-+++ b/drivers/mmc/host/usdhi6rol0.c
-@@ -1339,7 +1339,7 @@ static int usdhi6_stop_cmd(struct usdhi6_host *host)
- 			host->wait = USDHI6_WAIT_FOR_STOP;
- 			return 0;
- 		}
--		/* Unsupported STOP command */
-+		/* fall through - Unsupported STOP command */
- 	default:
- 		dev_err(mmc_dev(host->mmc),
- 			"unsupported stop CMD%d for CMD%d\n",
-@@ -1687,7 +1687,7 @@ static void usdhi6_timeout_work(struct work_struct *work)
- 	switch (host->wait) {
- 	default:
- 		dev_err(mmc_dev(host->mmc), "Invalid state %u\n", host->wait);
--		/* mrq can be NULL in this actually impossible case */
-+		/* fall through - mrq can be NULL in this actually impossible case */
- 	case USDHI6_WAIT_FOR_CMD:
- 		usdhi6_error_code(host);
- 		if (mrq)
-@@ -1709,10 +1709,7 @@ static void usdhi6_timeout_work(struct work_struct *work)
- 			host->offset, data->blocks, data->blksz, data->sg_len,
- 			sg_dma_len(sg), sg->offset);
- 		usdhi6_sg_unmap(host, true);
--		/*
--		 * If USDHI6_WAIT_FOR_DATA_END times out, we have already unmapped
--		 * the page
--		 */
-+		/* fall through - If USDHI6_WAIT_FOR_DATA_END times out, we have already unmapped the page */
- 	case USDHI6_WAIT_FOR_DATA_END:
- 		usdhi6_error_code(host);
- 		data->error = -ETIMEDOUT;
--- 
-2.21.0
-
+> +	};
+> -- 
+> 1.9.1
+> 
+> 
