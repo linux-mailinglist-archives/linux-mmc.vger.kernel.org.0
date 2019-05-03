@@ -2,140 +2,138 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 160D212F25
-	for <lists+linux-mmc@lfdr.de>; Fri,  3 May 2019 15:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88BF71309F
+	for <lists+linux-mmc@lfdr.de>; Fri,  3 May 2019 16:44:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727952AbfECN3x (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 3 May 2019 09:29:53 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:43876 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727839AbfECN3w (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 May 2019 09:29:52 -0400
-Received: by mail-vs1-f66.google.com with SMTP id y196so3566528vsc.10
-        for <linux-mmc@vger.kernel.org>; Fri, 03 May 2019 06:29:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GEzlUuM/Jwfv3VSJhIT2L6SyOU5GgzPaBEeFYcaGzrM=;
-        b=O7rIyByj0jiAE4VnV24ZNn4Y1ylqkbfa1D8NaLihBPvQ6hc0TJ2Yiy69ux3icHlntZ
-         OCoH1ySYRhckrmy+z0+u6WAjbTpS0gkWASmQrpvYQgV/WpkxcJajl0m0eEXXnR6El4qO
-         zp9xSCHg2saZNiLmfNcuKvOI+3RH2fSU/GIakpBrVvCM90SOEC5Uu3Atgw7fatqZKTz+
-         TbcUVhgAnKl+cp2XqrMVvd24D00wH5XOCIw/MaSWcFvEHbdiaDUmvIzmeVFLqFXhD5jm
-         hNpu+BGi6tZULhQWflurRJiLW6GXpCEhr9PuyqeHVKcpiM0CCsFcKfvBSN1tTnWLtZgo
-         2nFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GEzlUuM/Jwfv3VSJhIT2L6SyOU5GgzPaBEeFYcaGzrM=;
-        b=W1nN8pqfjXMyU2WE1wxV9nuOhG7OOKTUGazgEE0Cj6F8otUlyP9OlWr8ZW+fxS2Ufc
-         LWntk3flmGVtNiAwAve2tJmCG/Xc28e4QKd4XgxCrI3tHZ87vVgDbODPVUj35TsK6lyC
-         AIir38HOlsE3hK63FIrZRXkSaP0BOzBsuts3mkNW5eDH6SFkqEBBfXbxLoY6HDqigiOd
-         pLQ8Rublxy5sIDmgQ1TtMdBWnSZIgewtbySHM7SpGe3wF+oeTzMNHLekaMWCS1XyR/CA
-         M4QC/pQEuwPei5k/eoXdVSlQ9nBketA4KhG2S2YxaTDOQIGhB18U6JEOxHhoelc7cxuj
-         XEdw==
-X-Gm-Message-State: APjAAAWgszkc6SpnxSLNmtVuvrvWdWGFv+3mHNq0+tF6md/oTWVMF8ex
-        GOg+36G/n5znc+51XJcq5ICZBgwk74nhrGxPEUW2RQ==
-X-Google-Smtp-Source: APXvYqy046Z/3iX9LlO9h/cYF4oWBVlij//f74AP7T9sKj+fNTyl+4O4+eLgNyusHCiXL4EPY2iMVAE5FFUMIfSAp/E=
-X-Received: by 2002:a67:b44d:: with SMTP id c13mr5650144vsm.165.1556890191428;
- Fri, 03 May 2019 06:29:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <1556264798-18540-1-git-send-email-ludovic.Barre@st.com>
- <CAPDyKFqbn=UcbwoH_z+yjrjvHQZaMtmsD=n0yrBV7DAK5VRJEQ@mail.gmail.com> <74b91eb4-e5a3-38b2-f732-29cdd058eb6a@st.com>
-In-Reply-To: <74b91eb4-e5a3-38b2-f732-29cdd058eb6a@st.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 3 May 2019 15:29:15 +0200
-Message-ID: <CAPDyKFoURwnai1hbCbO+Uh6+hc7A4dYHjWkqeFAEgMQET-BzwA@mail.gmail.com>
-Subject: Re: [PATCH V2 0/5] mmc: mmci: add busy detect for stm32 sdmmc variant
-To:     Ludovic BARRE <ludovic.barre@st.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        id S1726376AbfECOox (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 3 May 2019 10:44:53 -0400
+Received: from gateway34.websitewelcome.com ([192.185.149.46]:38609 "EHLO
+        gateway34.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725283AbfECOox (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 May 2019 10:44:53 -0400
+X-Greylist: delayed 1498 seconds by postgrey-1.27 at vger.kernel.org; Fri, 03 May 2019 10:44:52 EDT
+Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
+        by gateway34.websitewelcome.com (Postfix) with ESMTP id 73F321B4C32
+        for <linux-mmc@vger.kernel.org>; Fri,  3 May 2019 08:55:26 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id MYeshOx97YTGMMYeshTIYR; Fri, 03 May 2019 08:55:26 -0500
+X-Authority-Reason: nr=8
+Received: from [189.250.111.227] (port=54122 helo=[192.168.1.76])
+        by gator4166.hostgator.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.91)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1hMYeq-000rjE-U8; Fri, 03 May 2019 08:55:26 -0500
+Subject: Re: [PATCH v2] mmc: usdhi6rol0: mark expected switch fall-throughs
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com
-Content-Type: text/plain; charset="UTF-8"
+        Kees Cook <keescook@chromium.org>
+References: <20190501203621.GA11352@embeddedor>
+ <CAPDyKFr0KrUCuBpYyypKiUsin98XaYOVUx8MuDEpxvm6knxrzw@mail.gmail.com>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=gustavo@embeddedor.com; keydata=
+ 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
+ VtSixD1uOgytAP7RWS474w==
+Message-ID: <f95df8d1-07f9-1b89-a572-cf4b98e52c39@embeddedor.com>
+Date:   Fri, 3 May 2019 08:55:23 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <CAPDyKFr0KrUCuBpYyypKiUsin98XaYOVUx8MuDEpxvm6knxrzw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.250.111.227
+X-Source-L: No
+X-Exim-ID: 1hMYeq-000rjE-U8
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.1.76]) [189.250.111.227]:54122
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 2
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 30 Apr 2019 at 14:06, Ludovic BARRE <ludovic.barre@st.com> wrote:
->
->
->
-> On 4/30/19 1:13 PM, Ulf Hansson wrote:
-> > On Fri, 26 Apr 2019 at 09:46, Ludovic Barre <ludovic.Barre@st.com> wrote:
-> >>
-> >> From: Ludovic Barre <ludovic.barre@st.com>
-> >>
-> >> This patch series adds busy detect for stm32 sdmmc variant.
-> >> Some adaptations are required:
-> >> -Avoid to check and poll busy status when is not expected.
-> >> -Clear busy status bit if busy_detect_flag and busy_detect_mask are
-> >>   different.
-> >> -Add hardware busy timeout with MMCIDATATIMER register.
-> >>
-> >> V2:
-> >> -mmci_cmd_irq cleanup in separate patch.
-> >> -simplify the busy_detect_flag exclude
-> >> -replace sdmmc specific comment in
-> >> "mmc: mmci: avoid fake busy polling in mmci_irq"
-> >> to focus on common behavior
-> >>
-> >> Ludovic Barre (5):
-> >>    mmc: mmci: cleanup mmci_cmd_irq for busy detect feature
-> >>    mmc: mmci: avoid fake busy polling in mmci_irq
-> >>    mmc: mmci: fix clear of busy detect status
-> >>    mmc: mmci: add hardware busy timeout feature
-> >>    mmc: mmci: add busy detect for stm32 sdmmc variant
-> >>
-> >>   drivers/mmc/host/mmci.c | 61 ++++++++++++++++++++++++++++++++++++++-----------
-> >>   drivers/mmc/host/mmci.h |  3 +++
-> >>   2 files changed, 51 insertions(+), 13 deletions(-)
-> >>
-> >> --
-> >> 2.7.4
-> >>
-> >
-> > Ludovic, just wanted to let you know that I am reviewing and testing
-> > this series.
-> >
-> > However, while running some tests on Ux500 for validating the busy
-> > detection code, even without your series applied, I encounter some odd
-> > behaviors. I am looking into the problem to understand better and will
-> > let you know as soon as I have some more data to share.
->
-> Oops, don't hesitate to share your status, if I could help.
 
-Thanks! Good and bad news here, then.
 
-I now understand what is going on - and there is certainly room for
-improvements here, but more importantly the actual mmci busy detection
-works as expected.
+On 5/3/19 8:29 AM, Ulf Hansson wrote:
+> On Wed, 1 May 2019 at 22:36, Gustavo A. R. Silva <gustavo@embeddedor.com> wrote:
+>>
+>> In preparation to enabling -Wimplicit-fallthrough, mark switch
+>> cases where we are expecting to fall through.
+>>
 
-When it comes to improvements, the main issue I have found is how we
-treat DATA WRITES. In many cases we simply don't use the HW busy
-detection at all, but instead rely on the mmc core to send CMD13 in a
-loop to poll. Well, then if the polling would have consisted of a
-couple of CMD13s that wouldn't be an issue, but my observations is
-rather that the numbers of CMD13 sent to poll is in the range or
-hundreds/thousands - per each WRITE request!
+[..]
 
-I am going to send a patch (or two) that improves the behavior. It
-might even involve changing parts in core layer, not sure how the end
-result will look like yet.
+>>
+>> Warning level 3 was used: -Wimplicit-fallthrough=3
+>>
+>> This patch is part of the ongoing efforts to enable
+>> -Wimplicit-fallthrough.
+>>
+>> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> 
+> Applied for next, thanks!
+> 
+> I took the liberty to clean up the comments, avoiding to break 80
+> chars per line.
+> 
 
-In any case, I have applied patch 1 and patch2 for next, as the tests
-turned out well at my side. I also took the liberty of updating some
-of the comments/changelogs, please have look and tell if there is
-something you want to change.
+Awesome. :)
 
-I will continue with the rest of series next week.
-
-Kind regards
-Uffe
+Thanks, Uffe.
+--
+Gustavo
