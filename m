@@ -2,39 +2,45 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9E62127CB
-	for <lists+linux-mmc@lfdr.de>; Fri,  3 May 2019 08:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE0912818
+	for <lists+linux-mmc@lfdr.de>; Fri,  3 May 2019 08:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726046AbfECGbP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 3 May 2019 02:31:15 -0400
-Received: from mga04.intel.com ([192.55.52.120]:23973 "EHLO mga04.intel.com"
+        id S1726583AbfECGya (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 3 May 2019 02:54:30 -0400
+Received: from mga17.intel.com ([192.55.52.151]:61164 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725775AbfECGbP (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 3 May 2019 02:31:15 -0400
+        id S1726182AbfECGya (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 3 May 2019 02:54:30 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 May 2019 23:31:14 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 May 2019 23:54:29 -0700
 X-ExtLoop1: 1
 Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by orsmga002.jf.intel.com with ESMTP; 02 May 2019 23:31:10 -0700
-Subject: Re: [PATCH] mmc: Fix tag set memory leak
-To:     Raul E Rangel <rrangel@chromium.org>, linux-mmc@vger.kernel.org
-Cc:     avri.altman@wdc.com, djkurtz@chromium.org, zwisler@chromium.org,
-        Ming Lei <ming.lei@redhat.com>,
-        Hannes Reinecke <hare@suse.com>, linux-kernel@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>, Omar Sandoval <osandov@fb.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-References: <20190502190714.181664-1-rrangel@chromium.org>
+  by orsmga002.jf.intel.com with ESMTP; 02 May 2019 23:54:26 -0700
+Subject: Re: [PATCH v2 2/3] mmc: sdhci-esdhc-imx: add pm_qos to interact with
+ cpuidle
+To:     BOUGH CHEN <haibo.chen@nxp.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+Cc:     "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+References: <20190429090310.25484-1-haibo.chen@nxp.com>
+ <20190429090310.25484-3-haibo.chen@nxp.com>
 From:   Adrian Hunter <adrian.hunter@intel.com>
 Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
  Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <681b2cba-4442-ae9a-5a3c-461c384198bd@intel.com>
-Date:   Fri, 3 May 2019 09:29:47 +0300
+Message-ID: <5ceb72f5-3dca-d2b4-5cd1-0d1c1d5db0ef@intel.com>
+Date:   Fri, 3 May 2019 09:53:02 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190502190714.181664-1-rrangel@chromium.org>
+In-Reply-To: <20190429090310.25484-3-haibo.chen@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -43,76 +49,136 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 2/05/19 10:07 PM, Raul E Rangel wrote:
-> The tag set is allocated in mmc_init_queue but never freed. This results
-> in a memory leak. This change makes sure we free the tag set when the
-> queue is also freed.
+On 29/04/19 11:55 AM, BOUGH CHEN wrote:
+> On some SoCs such as i.MX7ULP, there is no busfreq
+> driver, but cpuidle has some levels which may disable
+> system/bus clocks, so need to add pm_qos to prevent
+> cpuidle from entering low level idles and make sure
+> system/bus clocks are enabled when usdhc is active.
 > 
-> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+> Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-One comment below, otherwise:
-
-Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
 Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
 > ---
-> I found this using kmemleak and plugging and unplugging an SD card in a
-> few times.
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 32 +++++++++++++++++++++++++++++-
+>  1 file changed, 31 insertions(+), 1 deletion(-)
 > 
-> Here is an example of the output of kmemleak:
-> unreferenced object 0xffff888125be4ce8 (size 8):
->   comm "kworker/1:0", pid 17, jiffies 4294901575 (age 204.773s)
->   hex dump (first 8 bytes):
->     00 00 00 00 00 00 00 00                          ........
->   backtrace:
->     [<0000000061cb8887>] blk_mq_alloc_tag_set+0xe9/0x234
->     [<00000000cf532a0f>] mmc_init_queue+0xa9/0x2f0
->     [<000000001e085171>] mmc_blk_alloc_req+0x125/0x2f9
->     [<00000000eae1bd01>] mmc_blk_probe+0x1e2/0x6c1
->     [<00000000a0b4a87d>] really_probe+0x1bd/0x3b0
->     [<00000000e58f3eb9>] driver_probe_device+0xe1/0x115
->     [<00000000358f3b3c>] bus_for_each_drv+0x89/0xac
->     [<00000000ef52ccbe>] __device_attach+0xb0/0x14a
->     [<00000000c9daafa7>] bus_probe_device+0x33/0x9f
->     [<0000000008ac5779>] device_add+0x34b/0x5e2
->     [<00000000b42623cc>] mmc_add_card+0x1f5/0x20d
->     [<00000000f114ebc3>] mmc_attach_sd+0xc5/0x14b
->     [<000000006e915e0d>] mmc_rescan+0x261/0x2b6
->     [<00000000e5b49c26>] process_one_work+0x1d3/0x31f
->     [<0000000068c8cd3c>] worker_thread+0x1cd/0x2bf
->     [<00000000326e2e22>] kthread+0x14f/0x157
-> 
-> Once I applied this patch the leak went away.
-> 
-> p.s., I included a small white space fix. Hope that's ok.
-
-Not really.  For example, the patch does not apply cleanly to stable trees
-only because of that chunk.
-
-> 
->  drivers/mmc/core/queue.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
-> index 7c364a9c4eeb..176a08748cf1 100644
-> --- a/drivers/mmc/core/queue.c
-> +++ b/drivers/mmc/core/queue.c
-> @@ -402,7 +402,7 @@ int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card)
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 8dbbc1f62b70..053e8586d557 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/clk.h>
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+> +#include <linux/pm_qos.h>
+>  #include <linux/mmc/host.h>
+>  #include <linux/mmc/mmc.h>
+>  #include <linux/mmc/sdio.h>
+> @@ -156,6 +157,8 @@
+>  #define ESDHC_FLAG_HS400_ES		BIT(11)
+>  /* The IP has Host Controller Interface for Command Queuing */
+>  #define ESDHC_FLAG_CQHCI		BIT(12)
+> +/* need request pmqos during low power */
+> +#define ESDHC_FLAG_PMQOS		BIT(13)
 >  
->  	mq->card = card;
->  	mq->use_cqe = host->cqe_enabled;
-> -	
+>  struct esdhc_soc_data {
+>  	u32 flags;
+> @@ -204,6 +207,12 @@ static const struct esdhc_soc_data usdhc_imx7d_data = {
+>  			| ESDHC_FLAG_HS400,
+>  };
+>  
+> +static struct esdhc_soc_data usdhc_imx7ulp_data = {
+> +	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+> +			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+> +			| ESDHC_FLAG_PMQOS,
+> +};
 > +
->  	spin_lock_init(&mq->lock);
+>  static struct esdhc_soc_data usdhc_imx8qxp_data = {
+>  	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+>  			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+> @@ -229,6 +238,7 @@ struct pltfm_imx_data {
+>  		WAIT_FOR_INT,        /* sent CMD12, waiting for response INT */
+>  	} multiblock_status;
+>  	u32 is_ddr;
+> +	struct pm_qos_request pm_qos_req;
+>  };
 >  
->  	memset(&mq->tag_set, 0, sizeof(mq->tag_set));
-> @@ -472,6 +472,7 @@ void mmc_cleanup_queue(struct mmc_queue *mq)
->  		blk_mq_unquiesce_queue(q);
+>  static const struct platform_device_id imx_esdhc_devtype[] = {
+> @@ -257,6 +267,7 @@ static const struct of_device_id imx_esdhc_dt_ids[] = {
+>  	{ .compatible = "fsl,imx6q-usdhc", .data = &usdhc_imx6q_data, },
+>  	{ .compatible = "fsl,imx6ull-usdhc", .data = &usdhc_imx6ull_data, },
+>  	{ .compatible = "fsl,imx7d-usdhc", .data = &usdhc_imx7d_data, },
+> +	{ .compatible = "fsl,imx7ulp-usdhc", .data = &usdhc_imx7ulp_data, },
+>  	{ .compatible = "fsl,imx8qxp-usdhc", .data = &usdhc_imx8qxp_data, },
+>  	{ /* sentinel */ }
+>  };
+> @@ -1436,6 +1447,10 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
+>  	imx_data->socdata = of_id ? of_id->data : (struct esdhc_soc_data *)
+>  						  pdev->id_entry->driver_data;
 >  
->  	blk_cleanup_queue(q);
-> +	blk_mq_free_tag_set(&mq->tag_set);
+> +	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+> +		pm_qos_add_request(&imx_data->pm_qos_req,
+> +			PM_QOS_CPU_DMA_LATENCY, 0);
+> +
+>  	imx_data->clk_ipg = devm_clk_get(&pdev->dev, "ipg");
+>  	if (IS_ERR(imx_data->clk_ipg)) {
+>  		err = PTR_ERR(imx_data->clk_ipg);
+> @@ -1557,6 +1572,8 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
+>  disable_per_clk:
+>  	clk_disable_unprepare(imx_data->clk_per);
+>  free_sdhci:
+> +	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+> +		pm_qos_remove_request(&imx_data->pm_qos_req);
+>  	sdhci_pltfm_free(pdev);
+>  	return err;
+>  }
+> @@ -1578,6 +1595,9 @@ static int sdhci_esdhc_imx_remove(struct platform_device *pdev)
+>  	clk_disable_unprepare(imx_data->clk_ipg);
+>  	clk_disable_unprepare(imx_data->clk_ahb);
 >  
->  	/*
->  	 * A request can be completed before the next request, potentially
+> +	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+> +		pm_qos_remove_request(&imx_data->pm_qos_req);
+> +
+>  	sdhci_pltfm_free(pdev);
+>  
+>  	return 0;
+> @@ -1649,6 +1669,9 @@ static int sdhci_esdhc_runtime_suspend(struct device *dev)
+>  	}
+>  	clk_disable_unprepare(imx_data->clk_ahb);
+>  
+> +	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+> +		pm_qos_remove_request(&imx_data->pm_qos_req);
+> +
+>  	return ret;
+>  }
+>  
+> @@ -1659,9 +1682,13 @@ static int sdhci_esdhc_runtime_resume(struct device *dev)
+>  	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+>  	int err;
+>  
+> +	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+> +		pm_qos_add_request(&imx_data->pm_qos_req,
+> +			PM_QOS_CPU_DMA_LATENCY, 0);
+> +
+>  	err = clk_prepare_enable(imx_data->clk_ahb);
+>  	if (err)
+> -		return err;
+> +		goto remove_pm_qos_request;
+>  
+>  	if (!sdhci_sdio_irq_enabled(host)) {
+>  		err = clk_prepare_enable(imx_data->clk_per);
+> @@ -1690,6 +1717,9 @@ static int sdhci_esdhc_runtime_resume(struct device *dev)
+>  		clk_disable_unprepare(imx_data->clk_per);
+>  disable_ahb_clk:
+>  	clk_disable_unprepare(imx_data->clk_ahb);
+> +remove_pm_qos_request:
+> +	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+> +		pm_qos_remove_request(&imx_data->pm_qos_req);
+>  	return err;
+>  }
+>  #endif
 > 
 
