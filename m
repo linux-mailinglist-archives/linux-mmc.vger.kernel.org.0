@@ -2,158 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 578A813103
-	for <lists+linux-mmc@lfdr.de>; Fri,  3 May 2019 17:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F2B313251
+	for <lists+linux-mmc@lfdr.de>; Fri,  3 May 2019 18:37:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728268AbfECPPT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 3 May 2019 11:15:19 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:9842 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728153AbfECPPT (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 May 2019 11:15:19 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x43F62RV017185;
-        Fri, 3 May 2019 17:15:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=8DawQvv/zqFabgNWPmRdhTtTHiA+WeCJUXr6hjLZOlM=;
- b=ypZr4/Ixn6xpsm+n6FkR9Ojs95HhY2gKyCQFM9XvUW1RCzOTZfGvANzDvPIx5rfxc8Kr
- /J000WheVL2zFf8UXmTXEEq8SsxtUKt4sCD9dwwGSyxlACXuaFuklqptWSYdpSSF6asY
- Ta8IMT3DuoQoYEuZ+cUUjbolCImAEEKVRw3Ks7xuxHCjmTfO914H0aRpLYOuTgcAdlPj
- kdTTz3aFbOCAVea3udPeu0rdWTGWAdUASenQzFp1Rt25TYG4KJUaKqE758lOgsFJ7+Hi
- GjW5ufiQRtEDX/0Q9aUoXPCRFdZDIoDVQRCHjlCQqDbXMjbcL/h9xLeUnlZGTN45gzGD oQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2s6xgrxnrc-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 03 May 2019 17:15:05 +0200
-Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7D0323A;
-        Fri,  3 May 2019 15:15:04 +0000 (GMT)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 588042930;
-        Fri,  3 May 2019 15:15:04 +0000 (GMT)
-Received: from [10.48.0.237] (10.75.127.45) by SFHDAG6NODE1.st.com
- (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Fri, 3 May
- 2019 17:15:03 +0200
-Subject: Re: [PATCH V2 0/5] mmc: mmci: add busy detect for stm32 sdmmc variant
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-References: <1556264798-18540-1-git-send-email-ludovic.Barre@st.com>
- <CAPDyKFqbn=UcbwoH_z+yjrjvHQZaMtmsD=n0yrBV7DAK5VRJEQ@mail.gmail.com>
- <74b91eb4-e5a3-38b2-f732-29cdd058eb6a@st.com>
- <CAPDyKFoURwnai1hbCbO+Uh6+hc7A4dYHjWkqeFAEgMQET-BzwA@mail.gmail.com>
-From:   Ludovic BARRE <ludovic.barre@st.com>
-Message-ID: <bccca4e0-849d-2589-c144-296cc273245d@st.com>
-Date:   Fri, 3 May 2019 17:15:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1728020AbfECQhA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 3 May 2019 12:37:00 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:41963 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727413AbfECQg7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 May 2019 12:36:59 -0400
+Received: by mail-ua1-f68.google.com with SMTP id s30so2222582uas.8
+        for <linux-mmc@vger.kernel.org>; Fri, 03 May 2019 09:36:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JOhXxqwrhrqi22CbeLJVIpblT7qOBEHSnL9239pOuZY=;
+        b=hOY8pzUaHTFuXrA+1GcYiD2vIu/TX9Uyerw59T3XF2I09wNu5QJfIvNktWMCZiqkP9
+         eAuOJfcWhkz2MqPKHMkTvbGNTyknpN03CvNwJzFt8HlFn1BDeznvyCUz1vqNjkU6KQUI
+         7szujSOmYYBp7g6jss/M8tE4YH/Z0/ysTfU0VmC9Au/JSYrf4n4NguzvZN7KSxSFi6fb
+         6JENSoDdorpK7uvuGuhXQn00TwlJWx5nvx4uKpmTlm62aZyZDJM3PZJTIb47/i0kdH1r
+         VO+BFTBF4EtL1U5M0ffixvcuwpjXgBXDCBPJs6XHDD+ZxV61JE/jf33kk3rYTbdBVAYS
+         rA+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JOhXxqwrhrqi22CbeLJVIpblT7qOBEHSnL9239pOuZY=;
+        b=aAwFKpPIhvuTScAyQ33pbsZd80OMklrkc0Tj5rQGP9sHI+TKk4f9W0k8OkHIT40C3n
+         wGSvz3II7qHys283sGMhgJcUQ6r4ConsVvV854igDBRvXtgDD267Z36y+GFSLyVvv0vu
+         cjzKYs5tvhbBnO/8r+lDwqW22AT7C80nQcH1aQJzvHFHvh3+AZC244+S+LNV8eYS//mN
+         IB4hBwBRhyuabaZ+g3mezq2Aey/uDxFbW8dlWXXXBkKrNbFnou0JtShMT/4cAlPGKIt8
+         lUKmK82PHRq0Quyle/8nQLbXa2saZmXiZ3OEdQVB0vB9i2hce3ZcuSkwXJmrKxq6DL2U
+         bfxA==
+X-Gm-Message-State: APjAAAUPAg79Q8BvZloCk3GgTBokQPtxXnWvxYZJRPwoqfrbVFb5FCTQ
+        67H16GdWPUEZYvA/jNqdaPBtXcCJQGUE2/8a2MOJtA==
+X-Google-Smtp-Source: APXvYqydNZ2JP4JT7mM9TAHxudYFShSRlDbh3hZ/Q8pAlpJwTXTuZ7DQou+9NHKF/WYJcr9VzSF6aFEylNuHOXZs8rQ=
+X-Received: by 2002:ab0:2399:: with SMTP id b25mr2711177uan.129.1556901418729;
+ Fri, 03 May 2019 09:36:58 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFoURwnai1hbCbO+Uh6+hc7A4dYHjWkqeFAEgMQET-BzwA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG3NODE1.st.com (10.75.127.7) To SFHDAG6NODE1.st.com
- (10.75.127.16)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-03_08:,,
- signatures=0
+References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-9-fparent@baylibre.com>
+ <CAPDyKFrAxmBv+1i3qJpD=M1Wq33U2PMfQv_99xDm9MLhLxSWYg@mail.gmail.com> <CAOwMV_z8RrmoK+bfEqgwOv97uJarnuTCUo7aczZz=gyvg8CDzQ@mail.gmail.com>
+In-Reply-To: <CAOwMV_z8RrmoK+bfEqgwOv97uJarnuTCUo7aczZz=gyvg8CDzQ@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 3 May 2019 18:36:22 +0200
+Message-ID: <CAPDyKFocSqRLC7eGVBY7J-WkBy0i9fxX5GNivMNQEfgqhcrb9w@mail.gmail.com>
+Subject: Re: [PATCH 08/24] dt-bindings: mmc: mtk-sd: add mtk-sd support for MT8516
+To:     Fabien Parent <fparent@baylibre.com>
+Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        DTML <devicetree@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-hi Ulf
+On Fri, 3 May 2019 at 17:12, Fabien Parent <fparent@baylibre.com> wrote:
+>
+> Hi Ulf,
+>
+> On Mon, Mar 25, 2019 at 2:27 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >
+> > - trimmed cc list
+> >
+> > On Sat, 23 Mar 2019 at 22:17, Fabien Parent <fparent@baylibre.com> wrote:
+> > >
+> > > Add binding documentation of mtk-sd for MT8516 SoCs.
+> > >
+> > > Signed-off-by: Fabien Parent <fparent@baylibre.com>
+> >
+> > Applied for next, thanks!
+>
+> I think this patch got lost since I cannot see it in your tree.
 
-On 5/3/19 3:29 PM, Ulf Hansson wrote:
-> On Tue, 30 Apr 2019 at 14:06, Ludovic BARRE <ludovic.barre@st.com> wrote:
->>
->>
->>
->> On 4/30/19 1:13 PM, Ulf Hansson wrote:
->>> On Fri, 26 Apr 2019 at 09:46, Ludovic Barre <ludovic.Barre@st.com> wrote:
->>>>
->>>> From: Ludovic Barre <ludovic.barre@st.com>
->>>>
->>>> This patch series adds busy detect for stm32 sdmmc variant.
->>>> Some adaptations are required:
->>>> -Avoid to check and poll busy status when is not expected.
->>>> -Clear busy status bit if busy_detect_flag and busy_detect_mask are
->>>>    different.
->>>> -Add hardware busy timeout with MMCIDATATIMER register.
->>>>
->>>> V2:
->>>> -mmci_cmd_irq cleanup in separate patch.
->>>> -simplify the busy_detect_flag exclude
->>>> -replace sdmmc specific comment in
->>>> "mmc: mmci: avoid fake busy polling in mmci_irq"
->>>> to focus on common behavior
->>>>
->>>> Ludovic Barre (5):
->>>>     mmc: mmci: cleanup mmci_cmd_irq for busy detect feature
->>>>     mmc: mmci: avoid fake busy polling in mmci_irq
->>>>     mmc: mmci: fix clear of busy detect status
->>>>     mmc: mmci: add hardware busy timeout feature
->>>>     mmc: mmci: add busy detect for stm32 sdmmc variant
->>>>
->>>>    drivers/mmc/host/mmci.c | 61 ++++++++++++++++++++++++++++++++++++++-----------
->>>>    drivers/mmc/host/mmci.h |  3 +++
->>>>    2 files changed, 51 insertions(+), 13 deletions(-)
->>>>
->>>> --
->>>> 2.7.4
->>>>
->>>
->>> Ludovic, just wanted to let you know that I am reviewing and testing
->>> this series.
->>>
->>> However, while running some tests on Ux500 for validating the busy
->>> detection code, even without your series applied, I encounter some odd
->>> behaviors. I am looking into the problem to understand better and will
->>> let you know as soon as I have some more data to share.
->>
->> Oops, don't hesitate to share your status, if I could help.
-> 
-> Thanks! Good and bad news here, then.
-> 
-> I now understand what is going on - and there is certainly room for
-> improvements here, but more importantly the actual mmci busy detection
-> works as expected.
-> 
-> When it comes to improvements, the main issue I have found is how we
-> treat DATA WRITES. In many cases we simply don't use the HW busy
-> detection at all, but instead rely on the mmc core to send CMD13 in a
-> loop to poll. Well, then if the polling would have consisted of a
-> couple of CMD13s that wouldn't be an issue, but my observations is
-> rather that the numbers of CMD13 sent to poll is in the range or
-> hundreds/thousands - per each WRITE request!
-> 
-> I am going to send a patch (or two) that improves the behavior. It
-> might even involve changing parts in core layer, not sure how the end
-> result will look like yet.
+Thanks for telling me. I have picked it up (again?) and applied it for next.
 
-yes, these will improve the drivers without hardware busy completion.
-great
+[...]
 
-> 
-> In any case, I have applied patch 1 and patch2 for next, as the tests
-> turned out well at my side. I also took the liberty of updating some
-> of the comments/changelogs, please have look and tell if there is
-> something you want to change.
-> 
-> I will continue with the rest of series next week.
-
-thanks, and good week-end.
-
-> 
-> Kind regards
-> Uffe
-> 
+Kind regards
+Uffe
