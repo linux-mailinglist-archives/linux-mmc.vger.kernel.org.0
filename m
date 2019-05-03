@@ -2,138 +2,148 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88BF71309F
-	for <lists+linux-mmc@lfdr.de>; Fri,  3 May 2019 16:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA95130F6
+	for <lists+linux-mmc@lfdr.de>; Fri,  3 May 2019 17:12:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726376AbfECOox (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 3 May 2019 10:44:53 -0400
-Received: from gateway34.websitewelcome.com ([192.185.149.46]:38609 "EHLO
-        gateway34.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725283AbfECOox (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 May 2019 10:44:53 -0400
-X-Greylist: delayed 1498 seconds by postgrey-1.27 at vger.kernel.org; Fri, 03 May 2019 10:44:52 EDT
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
-        by gateway34.websitewelcome.com (Postfix) with ESMTP id 73F321B4C32
-        for <linux-mmc@vger.kernel.org>; Fri,  3 May 2019 08:55:26 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id MYeshOx97YTGMMYeshTIYR; Fri, 03 May 2019 08:55:26 -0500
-X-Authority-Reason: nr=8
-Received: from [189.250.111.227] (port=54122 helo=[192.168.1.76])
-        by gator4166.hostgator.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.91)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1hMYeq-000rjE-U8; Fri, 03 May 2019 08:55:26 -0500
-Subject: Re: [PATCH v2] mmc: usdhi6rol0: mark expected switch fall-throughs
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>
-References: <20190501203621.GA11352@embeddedor>
- <CAPDyKFr0KrUCuBpYyypKiUsin98XaYOVUx8MuDEpxvm6knxrzw@mail.gmail.com>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=gustavo@embeddedor.com; keydata=
- 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
- VtSixD1uOgytAP7RWS474w==
-Message-ID: <f95df8d1-07f9-1b89-a572-cf4b98e52c39@embeddedor.com>
-Date:   Fri, 3 May 2019 08:55:23 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726480AbfECPMf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 3 May 2019 11:12:35 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:44399 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726514AbfECPMb (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 May 2019 11:12:31 -0400
+Received: by mail-io1-f65.google.com with SMTP id v9so1579084ion.11
+        for <linux-mmc@vger.kernel.org>; Fri, 03 May 2019 08:12:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=CF8N/5bH9mP8p8WPGotj2YYJsVMv1K8SQ1f707Zbjo4=;
+        b=LiyhojiMfbGrGsIDt6Z7g0x/jtw7tGL0ZlHRu2zsf7sXgKlnhA9WMsr7Pp4PHIooau
+         LgG3Iy3NwQMsrTRpspZT3SHN+6XKbP7CA5wkZ9C0AhPii7oteW9uVsgf7lZ9aD/d+fcO
+         EYAMn7KUO6SnYKD4rbfmQodkBROEiPCCSNeUHb34r02tVt7asoCoZ9J0TWepuzpIFS19
+         CTTxrUEA2dSfdYxbdFdG5urZLKpmz8pycSggv63CHmaMc4ygljYVGIKqTKn9trsrfWqS
+         ur7tGv/XO5ECHtOurH/WoFyGnutN8QS9BvMeCvyDwII29elKy624+3NieDARGP+AJVkG
+         SWuQ==
+X-Gm-Message-State: APjAAAU/WWjdgDCPPZ/n1KVxK/eljmy57rpTo5gmrVW4vKdHJe8rqLi8
+        JqtsuqfMdTtiFMHoRCpXPJVz+gqJMTW8HcB/
+X-Google-Smtp-Source: APXvYqxduEy9iQxHiPvJoUOmAmrO8KP2BfJTkDc6odSaqfbP3/DXE0HDtBDBOHp3TOSQDRv945R1BQ==
+X-Received: by 2002:a6b:da0a:: with SMTP id x10mr1833611iob.90.1556896350152;
+        Fri, 03 May 2019 08:12:30 -0700 (PDT)
+Received: from google.com ([2620:15c:183:0:20b8:dee7:5447:d05])
+        by smtp.gmail.com with ESMTPSA id k22sm873491iog.10.2019.05.03.08.12.28
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 03 May 2019 08:12:29 -0700 (PDT)
+Date:   Fri, 3 May 2019 09:12:24 -0600
+From:   Raul Rangel <rrangel@chromium.org>
+To:     linux-mmc@vger.kernel.org
+Cc:     djkurtz@chromium.org, hongjiefang <hongjiefang@asrmicro.com>,
+        Jennifer Dahm <jennifer.dahm@ni.com>,
+        linux-kernel@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+        Kyle Roeschley <kyle.roeschley@ni.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Raul Rangel <rrangel@chromium.org>
+Subject: Re: [RFC PATCH 1/2] mmc: sdhci: Manually check card status after
+ reset
+Message-ID: <20190503151224.GA3650@google.com>
+References: <20190501175457.195855-1-rrangel@chromium.org>
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFr0KrUCuBpYyypKiUsin98XaYOVUx8MuDEpxvm6knxrzw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 189.250.111.227
-X-Source-L: No
-X-Exim-ID: 1hMYeq-000rjE-U8
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.1.76]) [189.250.111.227]:54122
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 2
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190501175457.195855-1-rrangel@chromium.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-
-
-On 5/3/19 8:29 AM, Ulf Hansson wrote:
-> On Wed, 1 May 2019 at 22:36, Gustavo A. R. Silva <gustavo@embeddedor.com> wrote:
->>
->> In preparation to enabling -Wimplicit-fallthrough, mark switch
->> cases where we are expecting to fall through.
->>
-
-[..]
-
->>
->> Warning level 3 was used: -Wimplicit-fallthrough=3
->>
->> This patch is part of the ongoing efforts to enable
->> -Wimplicit-fallthrough.
->>
->> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+On Wed, May 01, 2019 at 11:54:56AM -0600, Raul E Rangel wrote:
+> I am running into a kernel panic. A task gets stuck for more than 120
+> seconds. I keep seeing blkdev_close in the stack trace, so maybe I'm not
+> calling something correctly?
 > 
-> Applied for next, thanks!
+> Here is the panic: https://privatebin.net/?8ec48c1547d19975#dq/h189w5jmTlbMKKAwZjUr4bhm7Q2AgvGdRqc5BxAc=
 > 
-> I took the liberty to clean up the comments, avoiding to break 80
-> chars per line.
+> I sometimes see the following:
+> [  547.943974] udevd[144]: seq 2350 '/devices/pci0000:00/0000:00:14.7/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0p1' is taking a long time
 > 
+> I was getting the kernel panic on a 4.14 kernel: https://chromium.googlesource.com/chromiumos/third_party/kernel/+/f3dc032faf4d074f20ada437e2d081a28ac699da/drivers/mmc/host
+> So I'm guessing I'm missing an upstream fix.
+> 
+So I tried these patches on the 5.1 with the memory leak patch applied:
+https://patchwork.kernel.org/patch/10927541/
 
-Awesome. :)
+Everything works as expected:
+    mmc0: new high speed SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 7.41 GiB
+     mmcblk0: p1 p2
+    mmc0: card status changed during reset
+    mmc0: card was removed during reset
+    mmc0: tried to HW reset card, got error -123
+    print_req_error: I/O error, dev mmcblk0, sector 2072 flags 80700
+    print_req_error: I/O error, dev mmcblk0, sector 2073 flags 80700
+    mmc0: card 0001 removed
 
-Thanks, Uffe.
---
-Gustavo
+    mmc0: new high speed SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 7.41 GiB
+     mmcblk0: p1 p2
+    mmc0: card status changed during reset
+    mmc0: card was removed during reset
+    mmc0: tried to HW reset card, got error -123
+    print_req_error: I/O error, dev mmcblk0, sector 12584832 flags 80700
+    print_req_error: I/O error, dev mmcblk0, sector 12584833 flags 80700
+    mmc0: card 0001 removed
+    Buffer I/O error on dev mmcblk0p2, logical block 369904, async page read
+
+    mmc0: new high speed SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 7.41 GiB
+     mmcblk0: p1 p2
+    mmc0: card 0001 removed
+
+I also ran another test. Using the DUT with a GPIO to randomly toggle the
+CD pin I was able to get 4k+ iterations without any problems. So I think
+the patches are good.
+
+    --- Iteration 4506 ----
+    Disconnecting card
+    [ 7444.370169] mmc0: card 0001 removed
+    Connecting Card and sleeping for 0.31476s
+    [ 7444.682177] mmc0: new high speed SDHC card at address 0001
+    [ 7444.719038] mmcblk0: mmc0:0001 00000 7.41 GiB
+    [ 7444.727375]  mmcblk0: p1 p2
+    Card Disconnected
+    [ 7444.831896] mmc0: Card removed during transfer!
+    [ 7444.831914] mmc0: Resetting controller.
+    --- Iteration 4507 ----
+    Connecting Card and sleeping for 0.30259s
+    [ 7445.033649] mmc0: card 0001 removed
+    Card Disconnected
+    [ 7445.307008] mmc0: error -123 whilst initialising SD card
+    --- Iteration 4508 ----
+    Connecting Card and sleeping for 0.24827s
+    Card Disconnected
+    [ 7445.716033] mmc0: Card removed during transfer!
+    [ 7445.716052] mmc0: Resetting controller.
+    [ 7445.716489] mmc0: error -123 whilst initialising SD card
+    --- Iteration 4509 ----
+    Connecting Card and sleeping for 0.14132s
+    Card Disconnected
+    --- Iteration 4510 ----
+    Connecting Card and sleeping for 0.26001s
+    Card Disconnected
+    [ 7446.436079] mmc0: error -123 whilst initialising SD card
+    Connecting card to verify if it died
+    [ 7446.906804] mmc0: new high speed SDHC card at address 0001
+    [ 7446.933631] mmcblk0: mmc0:0001 00000 7.41 GiB
+    [ 7446.949224]  mmcblk0: p1 p2
+    SDHC still functional
+
+Should I send the patches out again without the RFC tag?
+
+I'll keep trying to track down the hung task I was seeing on 4.14. But I
+don't think that's related to these patches. I might just end up
+backporting the blk-mq patches to our 4.14 branch since I suspect that
+fixes it.
+
+Thanks,
+Raul
