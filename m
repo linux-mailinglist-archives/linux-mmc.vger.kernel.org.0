@@ -2,72 +2,73 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C01141365C
-	for <lists+linux-mmc@lfdr.de>; Sat,  4 May 2019 01:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 457DC13686
+	for <lists+linux-mmc@lfdr.de>; Sat,  4 May 2019 02:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726913AbfECXwo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 3 May 2019 19:52:44 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:33309 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726444AbfECXwo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 May 2019 19:52:44 -0400
-Received: by mail-pf1-f195.google.com with SMTP id z28so3667812pfk.0
-        for <linux-mmc@vger.kernel.org>; Fri, 03 May 2019 16:52:44 -0700 (PDT)
+        id S1726580AbfEDAUx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 3 May 2019 20:20:53 -0400
+Received: from mail-yw1-f68.google.com ([209.85.161.68]:45029 "EHLO
+        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726150AbfEDAUx (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 May 2019 20:20:53 -0400
+Received: by mail-yw1-f68.google.com with SMTP id j4so5672125ywk.11
+        for <linux-mmc@vger.kernel.org>; Fri, 03 May 2019 17:20:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=zFYO46dMP3SAqBcqLg5CJF+YJTDQUoBvDpuV2RH5L8k=;
-        b=gz6GXQvIhiRKo7gHSNL7icfBycNvIyLAkP/uuPyKgv3b8qvGaYPvg0CZiS/1UiF+K4
-         +CiZIZbL04xpT0Cdcdm7jmAdxkRSx2gmsqSqNN/aenbrHMFrvIQVe3DSj3oay0qgIK9Z
-         XzclcQjv6TE9dRNeLfh33aOEGRNRfIJqObuJQ=
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8u1LS+6EqPde0F+xVFBLFStY6rhD6RydqN/kGWzKQf0=;
+        b=YU9EPwrhmmXadyeroskbASOXBwkuSiVpsxM5r1tpL1zoFYO1+XqiRm2a8HecWWAg3I
+         bEct98nox4aXDJUtojb/NYqyUZ2z2prwd7BJf3DJH33w4na4cFh85CYofQWnvVRx+Iod
+         0rLrYWhcO5VjwnuJCMLlhljGSuT1p4svq95TJ9mHiumO2IlzByTI5loZX+kgdexEsUZ6
+         Dpsmpd0UL9DTn2EBBY3dOd8p4w/8MwdS5mRUtrtfueN/d/lbdfgRE4wgyu+1nwXUFcyu
+         4HSdcjoayXzP2/PvhBYDs9pMFZYAncBgEli0wIDFBEltwRQFZyNSN4a4tbidhjH9MA79
+         YjIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=zFYO46dMP3SAqBcqLg5CJF+YJTDQUoBvDpuV2RH5L8k=;
-        b=age1OFcLJh9Kc9C+sLEVd9TLIn8awpJ7ASrns24+KVp27HrEmmwSiSqVem+/lcRORY
-         5IbbZ/r31yRj6zWFEl3Z0q4Hgd/IDLVxMCyTVGz/vIcdv5l9nltUfYjzXc7snVzV+SFM
-         je4zJt2+v0v0nd+MwLWl5Wn1l/Vk4JOEVYDIiRZqyaezdigUsn7AGewaVcEmsZ0+vMhY
-         1mkewTm9ixCWD/CFncoFVFd6DL6O9OiNR6W5wqtJWxbjmqIhGGMa5YhqzZQWpKN5fKKN
-         wYWSSf7fR7Sluy65k6tGoWCVPYM0R/xZx9ZrVNbjkE2rcrig07ko8obE32X0M2XyzT4B
-         Draw==
-X-Gm-Message-State: APjAAAX1vaiioPAVTr1rG//IypjsgYcG78e9vfz3FW7oRCs/ct0iwKRk
-        3oRrb882xT7P0k1kclIcxJbypA==
-X-Google-Smtp-Source: APXvYqxWLkDJ2g1GBDJh6wJtE/dVgOii3cn8aUKEB3XBCyO9lNe+ybALhKiV+alJ0o+0S+nTV+jW8g==
-X-Received: by 2002:a65:6688:: with SMTP id b8mr14057572pgw.81.1556927563905;
-        Fri, 03 May 2019 16:52:43 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id j12sm8848865pgg.79.2019.05.03.16.52.43
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 03 May 2019 16:52:43 -0700 (PDT)
-Date:   Fri, 3 May 2019 16:52:42 -0700
-From:   Matthias Kaehlcke <mka@chromium.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8u1LS+6EqPde0F+xVFBLFStY6rhD6RydqN/kGWzKQf0=;
+        b=mpIRitk+263We0QHwnXHf1Zvto1uL2loKO4u2Jmz6vn/QkjELCau0q++SpY9MvCXJP
+         g3ysUHt3P8vJgK9F55kbeXzTTQ+K3Xq/EcZY0W1hOJgAqHM5Yxmx7miVroPPSvEUPnRF
+         0+ZtISIJp0c2ppTz4UXSu/fqUDO8ddl7K3e3hNkN6SH8jruFKyvgzvIEyWHiVdq+I8ar
+         lQ25//Jnw6ikj2qqmXonfN8u1CXevCCo5s942uE9Ghm1qSRYdvhoA3bdbMss98C8lZkT
+         cI/IuWiAIwCTvCYWoWP5yKpP8Q6suFvdWeUZPS3dqgJW36TzLyjv338GvYZTWn0DyahO
+         kOCQ==
+X-Gm-Message-State: APjAAAVSpPr/IX2amNxHOUdN6bzA2CpkPyuO9V3sQRapzVdB2RmT0PNH
+        hEzfzeHLJJBMOs83Ly+iOvOD9eM7U5HNOfmxO7vLaw==
+X-Google-Smtp-Source: APXvYqxZ0MJdyv3RZ5UYVNcpudMiD1zPtDVQBqLz9kFWv+/GAVLknMFUquuDlVBi73oSm4fBY/9sovp3rLwLQ8Vtbnc=
+X-Received: by 2002:a81:5a0b:: with SMTP id o11mr9041234ywb.444.1556929251923;
+ Fri, 03 May 2019 17:20:51 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190503233526.226272-1-dianders@chromium.org>
+In-Reply-To: <20190503233526.226272-1-dianders@chromium.org>
+From:   Guenter Roeck <groeck@google.com>
+Date:   Fri, 3 May 2019 17:20:41 -0700
+Message-ID: <CABXOdTdsB82EGn_9ZTQCS2TfcNSR6Mq5J9WjGYbdrKOPsd-jzg@mail.gmail.com>
+Subject: Re: [PATCH] mmc: block: Fix memory leak in blk-mq when cleaning up
 To:     Douglas Anderson <dianders@chromium.org>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-rockchip@lists.infradead.org, groeck@chromium.org,
-        drinkcat@chromium.org, Ming Lei <ming.lei@redhat.com>,
-        linux-mmc@vger.kernel.org, Hannes Reinecke <hare@suse.com>,
-        linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Omar Sandoval <osandov@fb.com>
-Subject: Re: [PATCH] mmc: block: Fix memory leak in blk-mq when cleaning up
-Message-ID: <20190503235242.GC40515@google.com>
-References: <20190503233526.226272-1-dianders@chromium.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190503233526.226272-1-dianders@chromium.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Nicolas Boichat <drinkcat@chromium.org>,
+        Ming Lei <ming.lei@redhat.com>, linux-mmc@vger.kernel.org,
+        Hannes Reinecke <hare@suse.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Jens Axboe <axboe@kernel.dk>, Omar Sandoval <osandov@fb.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, May 03, 2019 at 04:35:26PM -0700, Douglas Anderson wrote:
+On Fri, May 3, 2019 at 4:35 PM Douglas Anderson <dianders@chromium.org> wrote:
+>
 > If I run the following on rk3288-veyron-minnie (a 2GB machine)
-> 
+>
 >   cd /sys/bus/platform/drivers/dwmmc_rockchip
 >   for i in $(seq 1 3000); do
 >     echo "========================" $i
@@ -81,10 +82,10 @@ On Fri, May 03, 2019 at 04:35:26PM -0700, Douglas Anderson wrote:
 >       sleep .1
 >     done
 >   done
-> 
+>
 > Then I start OOMing somewhere between iteration 200 and 250.  Using
 > kmemleak, I see reports like:
-> 
+>
 > unreferenced object 0xe39c5580 (size 64):
 >   comm "kworker/1:0", pid 17, jiffies 4294821091 (age 96.952s)
 >   hex dump (first 32 bytes):
@@ -97,31 +98,35 @@ On Fri, May 03, 2019 at 04:35:26PM -0700, Douglas Anderson wrote:
 >     [<5102b986>] mmc_blk_alloc_req+0xf8/0x2d4
 >     [<f1c2214f>] mmc_blk_probe+0x4a8/0x6c0
 >     [<0dfdd9d5>] mmc_bus_probe+0x24/0x28
-> 
+>
 > It's pretty clear that we're missing a call to blk_mq_free_tag_set().
 > Let's add it.
-> 
+>
 > Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
 > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+
+Nice one.
+
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+
 > ---
-> 
+>
 >  drivers/mmc/core/queue.c | 2 ++
 >  1 file changed, 2 insertions(+)
-> 
+>
 > diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
 > index 7c364a9c4eeb..09071e13282e 100644
 > --- a/drivers/mmc/core/queue.c
 > +++ b/drivers/mmc/core/queue.c
 > @@ -480,6 +480,8 @@ void mmc_cleanup_queue(struct mmc_queue *mq)
->  	 */
->  	flush_work(&mq->complete_work);
->  
-> +	blk_mq_free_tag_set(&mq->tag_set);
+>          */
+>         flush_work(&mq->complete_work);
+>
+> +       blk_mq_free_tag_set(&mq->tag_set);
 > +
->  	mq->card = NULL;
+>         mq->card = NULL;
 >  }
->  
-
-FWIW:
-
-Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
+>
+> --
+> 2.21.0.1020.gf2820cf01a-goog
+>
