@@ -2,97 +2,67 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 726ED13838
-	for <lists+linux-mmc@lfdr.de>; Sat,  4 May 2019 10:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA9DB13927
+	for <lists+linux-mmc@lfdr.de>; Sat,  4 May 2019 12:31:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726217AbfEDISl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 4 May 2019 04:18:41 -0400
-Received: from mx2.suse.de ([195.135.220.15]:35814 "EHLO mx1.suse.de"
+        id S1727423AbfEDKZv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 4 May 2019 06:25:51 -0400
+Received: from mx2.suse.de ([195.135.220.15]:48376 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725819AbfEDISl (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 4 May 2019 04:18:41 -0400
+        id S1727415AbfEDKZu (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 4 May 2019 06:25:50 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id E9109AE41;
-        Sat,  4 May 2019 08:18:39 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 1ADD9ACC4;
+        Sat,  4 May 2019 10:25:49 +0000 (UTC)
 From:   NeilBrown <neil@brown.name>
-To:     Chaotian Jing <chaotian.jing@mediatek.com>
-Date:   Sat, 04 May 2019 18:18:31 +1000
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, thirtythreeforty@gmail.com
-Subject: Re: [PATCH 4/5] mmc: mtk-sd: enable internal card-detect logic.
-In-Reply-To: <1555569583.18628.29.camel@mhfsdcap03>
-References: <155538933003.25108.3338569916935462285.stgit@noble.brown> <155539004931.25108.17076624786044710325.stgit@noble.brown> <1555569583.18628.29.camel@mhfsdcap03>
-Message-ID: <87o94i3a5k.fsf@notabene.neil.brown.name>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>
+Date:   Sat, 04 May 2019 20:24:56 +1000
+Subject: [PATCH 1/4] mmc: mtk-sd: don't hard-code interrupt trigger type
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        thirtythreeforty@gmail.com
+Message-ID: <155696549653.8632.3279283591868841381.stgit@noble.brown>
+In-Reply-To: <155696540998.8632.5242582397805128125.stgit@noble.brown>
+References: <155696540998.8632.5242582397805128125.stgit@noble.brown>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+When using devicetree for configuration, interrupt trigger type
+should be described in the dts file, not hard-coded in the C code.
 
-On Thu, Apr 18 2019, Chaotian Jing wrote:
+The mtk-sd silicon in the mt7621 soc uses an active-high interrupt
+and so cannot be used with the current code.
 
-> On Tue, 2019-04-16 at 14:47 +1000, NeilBrown wrote:
->> The mtk-sd silicon has integrated card-detect logic that is
->> enabled, at least, on the MT7621 as used in the GNUBEE NAS.
->>=20
->> If the sdhci isn't marked non-removable and doesn't have a
->> cd-gpio configured, assume the internal cd logic should be used.
->>=20
->> Signed-off-by: NeilBrown <neil@brown.name>
-...
+So replace IRQF_TRIGGER_LOW with IRQF_TRIGGER_NONE.
 
->> @@ -2206,6 +2247,15 @@ static int msdc_drv_probe(struct platform_device =
-*pdev)
->>  		goto host_free;
->>  	}
->>=20=20
->> +	if (!(mmc->caps & MMC_CAP_NONREMOVABLE) &&
->> +	    !mmc_can_gpio_cd(mmc)) {
->
-> Should not do this assume!
-> better to add "mediatek,internal-cd" in your DTS, then no impact to
-> other Soc.
+Also IRQF_ONESHOT is not needed - it is used for threaded interrupt
+handlers, and this driver does not used a threaded interrupt handler.
+So remove that setting.
 
-(Sorry for the delay).
+Signed-off-by: NeilBrown <neil@brown.name>
+---
+ drivers/mmc/host/mtk-sd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Documentation/devicetree/bindings/mmc/mmc.txt
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index 0798f0ba6d34..469d4a717175 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2240,7 +2240,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 	msdc_init_hw(host);
+ 
+ 	ret = devm_request_irq(&pdev->dev, host->irq, msdc_irq,
+-		IRQF_TRIGGER_LOW | IRQF_ONESHOT, pdev->name, host);
++			       IRQF_TRIGGER_NONE, pdev->name, host);
+ 	if (ret)
+ 		goto release;
+ 
 
-says:
-   If no property below is supplied, host native card detect is used.
 
-So this assumption is *exactly* what the documentation said we should
-do.
-
-How about I limit this assumption to mt7621 using a flag in the
-mtk_mmc_compatible structure?
-
-Thanks,
-NeilBrown
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlzNStcACgkQOeye3VZi
-gbnPBA//eN9sE9P0TV5+KckYl7NgUH1whziK3Ot5PrCfyuwxOQIqSxuIF7ZRDS+X
-6gk6CDYO59Y2DAvCTUJNUWWwEoSrB21EMbKTBmcTLywiaBqTPGn4k8usUQ3xchnh
-oZQzfUrwyOM8b0O1jBRh0CJkk345rFMaew30WO1Qvyq4PGUAIEtFpDap1Xd5KWOP
-ax8hG1FX/G3mmd2gIxMp8HJmIRvEhnXZOPQ2lI4PRktLO8jG1ltBjF8schg/v8Fh
-aIGO+F4bjQRdGrnSPIFbIbu5p5s5oXPW1KDJSzvim7IUFrg9iyBkpgkpnkgT6Id4
-oa1x05CG01yNQ5LKtZZGkyiU1XH602964hbzZ9Qvtw7KYV9QqRniDvCx3XxRIIea
-MW77EhImTh98jwhjj9hP5R1i/hBUJ3nYs7vVF4AMfSik+dyJyhu1+j26tnD7JQdp
-efMeOX1grtDqGrlw1aCWsRBrTA343H/zUMHoRPHnCusOSuSZ7kVDkJ4b/306Gfyi
-hGckqJ6+9XTFFWG2r7WfTS+XDVgvZbtcPj0OZhpsg+kWN+/6CfY9zv0ZdK2erPdi
-ZTOlse/zGjzTh4vqHV2ajkreK/LRDmR4s4m1iXoynx7SCzR7bjTDcso6bP15ihdc
-pHPLL2kBlScb9RZYc3ldl9LFAnQhsMV5uOM0mzrYSR+eb419kkY=
-=Q94r
------END PGP SIGNATURE-----
---=-=-=--
