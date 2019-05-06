@@ -2,100 +2,74 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD11147DF
-	for <lists+linux-mmc@lfdr.de>; Mon,  6 May 2019 11:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74BB215229
+	for <lists+linux-mmc@lfdr.de>; Mon,  6 May 2019 19:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726447AbfEFJwP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 6 May 2019 05:52:15 -0400
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:44514 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726444AbfEFJwP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 May 2019 05:52:15 -0400
-Received: by mail-ua1-f65.google.com with SMTP id p13so4406718uaa.11
-        for <linux-mmc@vger.kernel.org>; Mon, 06 May 2019 02:52:14 -0700 (PDT)
+        id S1726608AbfEFRBc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 6 May 2019 13:01:32 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:34635 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726287AbfEFRBc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 May 2019 13:01:32 -0400
+Received: by mail-pg1-f194.google.com with SMTP id c13so6761473pgt.1
+        for <linux-mmc@vger.kernel.org>; Mon, 06 May 2019 10:01:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sK1AW46uFm51k7mgTa8btpLaGMbzfNDj8ewiwbIYzZk=;
-        b=HeRnYqWwxPUpFC+wvfGu3tZiVy2frYO9St/sbs+uJklMjxVucVdmn6QY7a2+duAoK/
-         CqMSO5pHO/0IBK3D6Tpy6f0G/HE1XfBgnM34QQ0mL/CnT3ZIDWkGKeuHqmeTpEnI1fUj
-         L0UIqDi/D+qQKexFaE5pI/zS76L4gE3ICEmmi6oh0dGwmUiZ7YoG7SbDNHc3hTdqhSB+
-         5jZNYuELm8guM30bxvc0vNWiXNkStWGJG+gZtS9e4UDYrXmeMv3vJ+faoezgMsvXua5V
-         aywxibcehAlF3e56cgi2jV+BUUePYEXnNM8PS1BWfmacr8nBZ637YpdzLsM9pBN6SQ2i
-         cvEA==
+        d=broadcom.com; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=ceVsLMW4pfAgwTpw+rjemHyYbwaBaIjRgX4iRGavJHw=;
+        b=IJoGSDvYrsZ99JwAf7C6iZ2JWVjNHgQibe0U3pb8+t/jqt6kk6G/+6PxzM9g7rboPM
+         QGSnG11S94h9GKIwo7c0Sn1l4/8RnlREfgdA1GIu7Y2tYGNXrhTlJ5oPJlCzsQJXnQnk
+         m5+54t8FOV9jzC0zJdF7MtqG6cLSntjJs40Lo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sK1AW46uFm51k7mgTa8btpLaGMbzfNDj8ewiwbIYzZk=;
-        b=bagKKGjFnp7k2UQ1SEU3QGA48e+5eBKCGFsT5T/pvVJqB7dEToL2kNor+UzPM4NFBb
-         MGKXxmvXfts4URTd7Re2KfeXM9TEEbzaZqu0/8S22C9ejyjTLw8NY7ZwsA1Vg2LlapNF
-         6syG0jNt75ziNXTvOPsc31ETWY0AuYCdS2RdUAKo6tFinyZwAbheOmVVTsklofKADlVI
-         t1dLLgyXqCAR9FwCfmn8na30YTizhqYg/GhCUChy+5oTRxibUilBSGE8CNmld5jIBY65
-         qVyI4peyu1tyLKW3FW58Y143ThTDa1kSjc2jGxBC+8/4bG/xFL6ncz1tMQb74N/3Y5Ve
-         ORKQ==
-X-Gm-Message-State: APjAAAWfgIYqwwySkCahmNifZIQ/h7oaIlNifMwHKhltoR89jZDMu+hh
-        DD7i/DvKg9UJ+kAoE1eKlf4cer38XAlH6jTNDn+2iw==
-X-Google-Smtp-Source: APXvYqwRjSSrQqdAGdNhhsMUNgKYFkiN8aJTLBYaPDU00ethSrpubRCAgZGaRAPkoFFQeWvQTDbGYAQff6V2hFR7nzc=
-X-Received: by 2002:ab0:2b13:: with SMTP id e19mr12246383uar.15.1557136333748;
- Mon, 06 May 2019 02:52:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190505055858.37509-1-yinbo.zhu@nxp.com>
-In-Reply-To: <20190505055858.37509-1-yinbo.zhu@nxp.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 6 May 2019 11:51:37 +0200
-Message-ID: <CAPDyKFrcFo_zCy5q2VkUP+SxOTogmAsys-X_yBrARLE1dTcqqw@mail.gmail.com>
-Subject: Re: [PATCH v2] dt-bindings: mmc: add DT bindings for ls1028a eSDHC
- host controller
-To:     Yinbo Zhu <yinbo.zhu@nxp.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Leo Li <leoyang.li@nxp.com>, Xiaobo Xie <xiaobo.xie@nxp.com>,
-        "Y.b. Lu" <yangbo.lu@nxp.com>, Jiafei Pan <jiafei.pan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ceVsLMW4pfAgwTpw+rjemHyYbwaBaIjRgX4iRGavJHw=;
+        b=tOQ2YyOsU7DOU6uUrbFbMY+8DAEe0LoY1/H4PbbXEbgm6SolrYeckqzARsfVqbkDEI
+         WuZB3Xgj5Kp5UiT8sKS1o6FjXG/FrotnFo/WPYoN6dfz9rM1nixnm4DGra8SPRZFnZY2
+         yYDJH/TgS6Ro6sBojZvIG0X+iRruXzpwrJ+TaU7TQaLkugI9awUzkxlLwHiw3ldXftWh
+         2zg2qhqltJYcz3qe6qFHiMtWh2CGJoPjM66m3yJUNfxTeZJXYCiQ73Qu1l9mHkkGY9LF
+         8APmrFz77s1Hn0L0Vl846Wcjz25WYmGf6utj6TNpe1LcLMZI1VqH6ss3LoKM/3nkcyJg
+         QGEQ==
+X-Gm-Message-State: APjAAAU8nFevlm/gB/1WkBdFQ/y34IgDgQHkvIXYY3LZtN+jz4zuwWNs
+        NPiuhdJkiBvS/MACsQlNwKsk7Q==
+X-Google-Smtp-Source: APXvYqw/1HqR1LsbVe6kB0/Yd+43VTyRK/c5VjhNsOI8oAj0vDaiRaaZ9GTE0t03D4ztVzojI9HfiQ==
+X-Received: by 2002:aa7:9214:: with SMTP id 20mr34245323pfo.202.1557162091742;
+        Mon, 06 May 2019 10:01:31 -0700 (PDT)
+Received: from lbrmn-lnxub113.broadcom.net ([192.19.228.250])
+        by smtp.gmail.com with ESMTPSA id l23sm4555644pgh.68.2019.05.06.10.01.28
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 May 2019 10:01:30 -0700 (PDT)
+From:   Scott Branden <scott.branden@broadcom.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>
+Cc:     BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Scott Branden <scott.branden@broadcom.com>
+Subject: [PATCH 0/2] mmc: sdhci-iproc: fixes for HS50 data hold time
+Date:   Mon,  6 May 2019 10:01:13 -0700
+Message-Id: <20190506170115.10840-1-scott.branden@broadcom.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 5 May 2019 at 07:57, Yinbo Zhu <yinbo.zhu@nxp.com> wrote:
->
-> From: Yinbo Zhu <yinbo.zhu@nxp.com>
->
-> Add "fsl,ls1028a-esdhc" bindings for ls1028a eSDHC host controller
->
-> Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
+This patch series fixes data hold timing issues for various sdhci-iproc
+ip blocks that do not meet the HS50 data hold time.  NO_HISPD bit is set
+in quirks.
 
-Applied for next, thanks!
+Trac Hoang (2):
+  mmc: sdhci-iproc: cygnus: Set NO_HISPD bit to fix HS50 data hold time
+    problem
+  mmc: sdhci-iproc: Set NO_HISPD bit to fix HS50 data hold time problem
 
-Kind regards
-Uffe
+ drivers/mmc/host/sdhci-iproc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
+-- 
+2.17.1
 
-> ---
-> Change in v2:
->                 as alphabetical order to update dt-bindings
->                 update the commit information.
->
->  Documentation/devicetree/bindings/mmc/fsl-esdhc.txt | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt b/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
-> index 99c5cf8507e8..edb8cadb9541 100644
-> --- a/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
-> +++ b/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
-> @@ -17,6 +17,7 @@ Required properties:
->         "fsl,t4240-esdhc"
->      Possible compatibles for ARM:
->         "fsl,ls1012a-esdhc"
-> +       "fsl,ls1028a-esdhc"
->         "fsl,ls1088a-esdhc"
->         "fsl,ls1043a-esdhc"
->         "fsl,ls1046a-esdhc"
-> --
-> 2.17.1
->
