@@ -2,223 +2,158 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D42914682
-	for <lists+linux-mmc@lfdr.de>; Mon,  6 May 2019 10:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0550A147D7
+	for <lists+linux-mmc@lfdr.de>; Mon,  6 May 2019 11:52:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726016AbfEFIjI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 6 May 2019 04:39:08 -0400
-Received: from mga11.intel.com ([192.55.52.93]:40624 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726128AbfEFIjH (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 6 May 2019 04:39:07 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 May 2019 01:39:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,437,1549958400"; 
-   d="scan'208";a="148965440"
-Received: from ahunter-desktop.fi.intel.com ([10.237.72.198])
-  by fmsmga007.fm.intel.com with ESMTP; 06 May 2019 01:38:59 -0700
-From:   Adrian Hunter <adrian.hunter@intel.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>
-Subject: [PATCH V2] mmc: sdhci-pci: Fix BYT OCP setting
-Date:   Mon,  6 May 2019 11:38:53 +0300
-Message-Id: <20190506083853.12741-1-adrian.hunter@intel.com>
-X-Mailer: git-send-email 2.17.1
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+        id S1726095AbfEFJwF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 6 May 2019 05:52:05 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:46173 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726016AbfEFJwE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 May 2019 05:52:04 -0400
+Received: by mail-vs1-f68.google.com with SMTP id e2so7727766vsc.13
+        for <linux-mmc@vger.kernel.org>; Mon, 06 May 2019 02:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7C32BeOHi9LlRGL93zM+s3d37K7QLJgWYcD/cg/m730=;
+        b=WAVnErwg95cnCiNw0y6zznM4fvgLh7l68dLRoZbgubinUlPRWgiC+/XUFsSyNJnTGT
+         Q+RPCsIDipnQPUJ42zP1mpgMiNYV8QAH5uaDDCr1s+Li8fgs6WvAX8547WiFeKgk+wXd
+         OxhFlKeAzGVAvXQ3GF/vQmqDK5FnRHIebU3CRxm5zihi4RowEO+oxFCRoLK7QiA/aErz
+         cUnabnVL5Qdfryy7G12bx+hl3Ff2zqQNyo1sqEMnvjjTZn4ycOAN8GohojGPHOrG0H2+
+         aq0zZB9cbQojqHgdoVyyke44LBUdY9iQ1skFc1ALs++BhyHFh7kQvmVI3/4ziZqzCS7n
+         x2Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7C32BeOHi9LlRGL93zM+s3d37K7QLJgWYcD/cg/m730=;
+        b=nloYSXK628rmoiBPl14GlfGgmeoCKz1iFgpVssii5HbZHoKKTE6JyuZk5srG71CsEl
+         jd2RnS0LawT0BE1up2Sy53HwhSBgeecA7cAr5LhOulcRuLVOkXBKCcE4OzSzTYv4eAKy
+         oAEPX1PoUKJ4ciAhJfAlxs34mIVwJtvJZ0SkVFKMqy4/MsU4Eg7EhfuJNNIoSLjm4uYY
+         yrh3rGxeyRib9eQNUzQGnWHYtXKzVYwBP4WsBTFGoudOQ0+m70ypVNTDxGC5KrCGzfAu
+         0AtGIgcz6L4yMy2/8qb3C/WbxEVS/EwC58LqCcXNQznnVCzqN7nSELh7pjDfqXQXM8wK
+         yvpQ==
+X-Gm-Message-State: APjAAAWeOMCS+/FP+3NKdWVLHSAEG1xkNR2nNskFGSMkb4qtAGdON8pn
+        X2HjHe0/PFgLAUu/LS0G6us2ID+dN7XmbGTTNQreJg==
+X-Google-Smtp-Source: APXvYqxQZg82DMpOHtEW6+isQCwvotsf12luWRxUuyajrE9L/ZsE+FdkaijYnoYJjgC/VCLKuPejcDnXweOSYoTcMUQ=
+X-Received: by 2002:a67:cb12:: with SMTP id b18mr12583624vsl.191.1557136323580;
+ Mon, 06 May 2019 02:52:03 -0700 (PDT)
+MIME-Version: 1.0
+References: <1556776696-19300-1-git-send-email-kamlesh.gurudasani@gmail.com>
+In-Reply-To: <1556776696-19300-1-git-send-email-kamlesh.gurudasani@gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 6 May 2019 11:51:27 +0200
+Message-ID: <CAPDyKFr9kVT-GO75bQxQ4viFtno1fpWes5MWR5XdSHUrFwtUpw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: alcor: Drop pointer to mmc_host from alcor_sdmmc_host
+To:     Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>
+Cc:     Oleksij Rempel <linux@rempel-privat.de>,
+        Lukas Wunner <lukas@wunner.de>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Some time ago, a fix was done for the sdhci-acpi driver, refer
-commit 6e1c7d6103fe ("mmc: sdhci-acpi: Reduce Baytrail eMMC/SD/SDIO
-hangs"). The same issue was not expected to affect the sdhci-pci driver,
-but there have been reports to the contrary, so make the same hardware
-setting change.
+On Thu, 2 May 2019 at 07:59, Kamlesh Gurudasani
+<kamlesh.gurudasani@gmail.com> wrote:
+>
+> The driver for Alcor Micro AU6601 and AU6621 controllers uses a pointer to
+> get from the private alcor_sdmmc_host structure to the generic mmc_host
+> structure. However the latter is always immediately preceding the former in
+> memory, so compute its address with a subtraction (which is cheaper than a
+> dereference) and drop the superfluous pointer.
+>
+> No functional change intended.
+>
+> Signed-off-by: Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>
 
-This patch applies to v5.0+ but before that backports will be required.
+Applied for next, thanks!
 
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
----
-
+Kind regards
+Uffe
 
 
-Changes in V2:
-	Get rid of macros BYT_PM_OPS, BYT_SPM_OPS and BYT_RPM_OPS
-	Add fix pm ops also to sdhci_intel_byt_emmc
-
-
-
- drivers/mmc/host/Kconfig          |  1 +
- drivers/mmc/host/sdhci-pci-core.c | 96 +++++++++++++++++++++++++++++++
- 2 files changed, 97 insertions(+)
-
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 9c01310a0d2e..d084a9d63623 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -92,6 +92,7 @@ config MMC_SDHCI_PCI
- 	tristate "SDHCI support on PCI bus"
- 	depends on MMC_SDHCI && PCI
- 	select MMC_CQHCI
-+	select IOSF_MBI if X86
- 	help
- 	  This selects the PCI Secure Digital Host Controller Interface.
- 	  Most controllers found today are PCI devices.
-diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-index a3d7a9db76c5..ab9e2b901094 100644
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -31,6 +31,10 @@
- #include <linux/mmc/sdhci-pci-data.h>
- #include <linux/acpi.h>
- 
-+#ifdef CONFIG_X86
-+#include <asm/iosf_mbi.h>
-+#endif
-+
- #include "cqhci.h"
- 
- #include "sdhci.h"
-@@ -451,6 +455,50 @@ static const struct sdhci_pci_fixes sdhci_intel_pch_sdio = {
- 	.probe_slot	= pch_hc_probe_slot,
- };
- 
-+#ifdef CONFIG_X86
-+
-+#define BYT_IOSF_SCCEP			0x63
-+#define BYT_IOSF_OCP_NETCTRL0		0x1078
-+#define BYT_IOSF_OCP_TIMEOUT_BASE	GENMASK(10, 8)
-+
-+static void byt_ocp_setting(struct pci_dev *pdev)
-+{
-+	u32 val = 0;
-+
-+	if (pdev->device != PCI_DEVICE_ID_INTEL_BYT_EMMC &&
-+	    pdev->device != PCI_DEVICE_ID_INTEL_BYT_SDIO &&
-+	    pdev->device != PCI_DEVICE_ID_INTEL_BYT_SD &&
-+	    pdev->device != PCI_DEVICE_ID_INTEL_BYT_EMMC2)
-+		return;
-+
-+	if (iosf_mbi_read(BYT_IOSF_SCCEP, MBI_CR_READ, BYT_IOSF_OCP_NETCTRL0,
-+			  &val)) {
-+		dev_err(&pdev->dev, "%s read error\n", __func__);
-+		return;
-+	}
-+
-+	if (!(val & BYT_IOSF_OCP_TIMEOUT_BASE))
-+		return;
-+
-+	val &= ~BYT_IOSF_OCP_TIMEOUT_BASE;
-+
-+	if (iosf_mbi_write(BYT_IOSF_SCCEP, MBI_CR_WRITE, BYT_IOSF_OCP_NETCTRL0,
-+			   val)) {
-+		dev_err(&pdev->dev, "%s write error\n", __func__);
-+		return;
-+	}
-+
-+	dev_dbg(&pdev->dev, "%s completed\n", __func__);
-+}
-+
-+#else
-+
-+static inline void byt_ocp_setting(struct pci_dev *pdev)
-+{
-+}
-+
-+#endif
-+
- enum {
- 	INTEL_DSM_FNS		=  0,
- 	INTEL_DSM_V18_SWITCH	=  3,
-@@ -715,6 +763,8 @@ static void byt_probe_slot(struct sdhci_pci_slot *slot)
- 
- 	byt_read_dsm(slot);
- 
-+	byt_ocp_setting(slot->chip->pdev);
-+
- 	ops->execute_tuning = intel_execute_tuning;
- 	ops->start_signal_voltage_switch = intel_start_signal_voltage_switch;
- 
-@@ -938,7 +988,35 @@ static int byt_sd_probe_slot(struct sdhci_pci_slot *slot)
- 	return 0;
- }
- 
-+#ifdef CONFIG_PM_SLEEP
-+
-+static int byt_resume(struct sdhci_pci_chip *chip)
-+{
-+	byt_ocp_setting(chip->pdev);
-+
-+	return sdhci_pci_resume_host(chip);
-+}
-+
-+#endif
-+
-+#ifdef CONFIG_PM
-+
-+static int byt_runtime_resume(struct sdhci_pci_chip *chip)
-+{
-+	byt_ocp_setting(chip->pdev);
-+
-+	return sdhci_pci_runtime_resume_host(chip);
-+}
-+
-+#endif
-+
- static const struct sdhci_pci_fixes sdhci_intel_byt_emmc = {
-+#ifdef CONFIG_PM_SLEEP
-+	.resume		= byt_resume,
-+#endif
-+#ifdef CONFIG_PM
-+	.runtime_resume	= byt_runtime_resume,
-+#endif
- 	.allow_runtime_pm = true,
- 	.probe_slot	= byt_emmc_probe_slot,
- 	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
-@@ -972,6 +1050,12 @@ static const struct sdhci_pci_fixes sdhci_intel_glk_emmc = {
- };
- 
- static const struct sdhci_pci_fixes sdhci_ni_byt_sdio = {
-+#ifdef CONFIG_PM_SLEEP
-+	.resume		= byt_resume,
-+#endif
-+#ifdef CONFIG_PM
-+	.runtime_resume	= byt_runtime_resume,
-+#endif
- 	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
- 			  SDHCI_QUIRK_NO_LED,
- 	.quirks2	= SDHCI_QUIRK2_HOST_OFF_CARD_ON |
-@@ -983,6 +1067,12 @@ static const struct sdhci_pci_fixes sdhci_ni_byt_sdio = {
- };
- 
- static const struct sdhci_pci_fixes sdhci_intel_byt_sdio = {
-+#ifdef CONFIG_PM_SLEEP
-+	.resume		= byt_resume,
-+#endif
-+#ifdef CONFIG_PM
-+	.runtime_resume	= byt_runtime_resume,
-+#endif
- 	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
- 			  SDHCI_QUIRK_NO_LED,
- 	.quirks2	= SDHCI_QUIRK2_HOST_OFF_CARD_ON |
-@@ -994,6 +1084,12 @@ static const struct sdhci_pci_fixes sdhci_intel_byt_sdio = {
- };
- 
- static const struct sdhci_pci_fixes sdhci_intel_byt_sd = {
-+#ifdef CONFIG_PM_SLEEP
-+	.resume		= byt_resume,
-+#endif
-+#ifdef CONFIG_PM
-+	.runtime_resume	= byt_runtime_resume,
-+#endif
- 	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
- 			  SDHCI_QUIRK_NO_LED,
- 	.quirks2	= SDHCI_QUIRK2_CARD_ON_NEEDS_BUS_ON |
--- 
-2.17.1
-
+> ---
+>  drivers/mmc/host/alcor.c | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/mmc/host/alcor.c b/drivers/mmc/host/alcor.c
+> index 7c8f203..5bba6ee 100644
+> --- a/drivers/mmc/host/alcor.c
+> +++ b/drivers/mmc/host/alcor.c
+> @@ -43,7 +43,6 @@ struct alcor_sdmmc_host {
+>         struct  device *dev;
+>         struct alcor_pci_priv *alcor_pci;
+>
+> -       struct mmc_host *mmc;
+>         struct mmc_request *mrq;
+>         struct mmc_command *cmd;
+>         struct mmc_data *data;
+> @@ -276,7 +275,7 @@ static void alcor_send_cmd(struct alcor_sdmmc_host *host,
+>                 break;
+>         default:
+>                 dev_err(host->dev, "%s: cmd->flag (0x%02x) is not valid\n",
+> -                       mmc_hostname(host->mmc), mmc_resp_type(cmd));
+> +                       mmc_hostname(mmc_from_priv(host)), mmc_resp_type(cmd));
+>                 break;
+>         }
+>
+> @@ -317,7 +316,7 @@ static void alcor_request_complete(struct alcor_sdmmc_host *host,
+>         host->data = NULL;
+>         host->dma_on = 0;
+>
+> -       mmc_request_done(host->mmc, mrq);
+> +       mmc_request_done(mmc_from_priv(host), mrq);
+>  }
+>
+>  static void alcor_finish_data(struct alcor_sdmmc_host *host)
+> @@ -547,7 +546,7 @@ static void alcor_cd_irq(struct alcor_sdmmc_host *host, u32 intmask)
+>                 alcor_request_complete(host, 1);
+>         }
+>
+> -       mmc_detect_change(host->mmc, msecs_to_jiffies(1));
+> +       mmc_detect_change(mmc_from_priv(host), msecs_to_jiffies(1));
+>  }
+>
+>  static irqreturn_t alcor_irq_thread(int irq, void *d)
+> @@ -1025,7 +1024,7 @@ static void alcor_hw_uninit(struct alcor_sdmmc_host *host)
+>
+>  static void alcor_init_mmc(struct alcor_sdmmc_host *host)
+>  {
+> -       struct mmc_host *mmc = host->mmc;
+> +       struct mmc_host *mmc = mmc_from_priv(host);
+>
+>         mmc->f_min = AU6601_MIN_CLOCK;
+>         mmc->f_max = AU6601_MAX_CLOCK;
+> @@ -1073,7 +1072,6 @@ static int alcor_pci_sdmmc_drv_probe(struct platform_device *pdev)
+>         }
+>
+>         host = mmc_priv(mmc);
+> -       host->mmc = mmc;
+>         host->dev = &pdev->dev;
+>         host->cur_power_mode = MMC_POWER_UNDEFINED;
+>         host->alcor_pci = priv;
+> @@ -1105,13 +1103,14 @@ static int alcor_pci_sdmmc_drv_probe(struct platform_device *pdev)
+>  static int alcor_pci_sdmmc_drv_remove(struct platform_device *pdev)
+>  {
+>         struct alcor_sdmmc_host *host = dev_get_drvdata(&pdev->dev);
+> +       struct mmc_host *mmc = mmc_from_priv(host);
+>
+>         if (cancel_delayed_work_sync(&host->timeout_work))
+>                 alcor_request_complete(host, 0);
+>
+>         alcor_hw_uninit(host);
+> -       mmc_remove_host(host->mmc);
+> -       mmc_free_host(host->mmc);
+> +       mmc_remove_host(mmc);
+> +       mmc_free_host(mmc);
+>
+>         return 0;
+>  }
+> --
+> 2.7.4
+>
