@@ -2,312 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FB9B15D91
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 08:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FC4115DF4
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 09:14:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726658AbfEGGgl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 May 2019 02:36:41 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:36555 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726253AbfEGGgk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 May 2019 02:36:40 -0400
-Received: by mail-lj1-f196.google.com with SMTP id z1so1011972ljb.3
-        for <linux-mmc@vger.kernel.org>; Mon, 06 May 2019 23:36:37 -0700 (PDT)
+        id S1726722AbfEGHOD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 May 2019 03:14:03 -0400
+Received: from mail-eopbgr1400111.outbound.protection.outlook.com ([40.107.140.111]:21568
+        "EHLO JPN01-TY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726297AbfEGHOD (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 7 May 2019 03:14:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=nlc3oZR7WiKy7YxKM9XNkiVLgRr7nzZBeBG7jq1nN28=;
-        b=Z7byc17KsWdnVM6Pc/OvcuQTyIf7Ll51Xw1KlKw6c2YMKbfeJvDvMhWBd4ID45mp4a
-         QJ30Q/In4V0dsqQsQnUcWbWq4PhVoq0bxPVOzcgo1STHMPbe1QbHTSueetH5r5R6v8N+
-         /Stl4JCG6djqkneMFZjplkzYWY3pykZcROoIxRT/Q4nRqVfppuKcN2TVnZTTWz7WDr8O
-         iyuFNSOMCqtuiPfN8m8C1vGKRvH0dH1+M0MiVOYYG5Bf9xsZK+sFm057x8zSnEfGX9eA
-         Yt9R9eEKR+wc85yQVL4E4GuzT+uc3lnjDYyCLtV5N9JoemxXGK3hzweIY2EQQq9Dhr69
-         Hk6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=nlc3oZR7WiKy7YxKM9XNkiVLgRr7nzZBeBG7jq1nN28=;
-        b=gmltq3RHuKELdNzmKb0kCoMLBAzWMrgtSsCoqUt1wye+JtAEABK6Pcfe14EO6A7Csr
-         89KpQoYQCXe4FtlfWdUinSY2V4J2J+eDl0lZEQzx3thHB5XsmUyWBlfZgaE/0MvgjB10
-         WMOBgQy7xkWy6sVAq8UuZkx3gs1C9PTjr/tDoMaFnTshxe5f7ckEW+PPxXZKgmWgu1YU
-         HbBEBnUGydVzRC7JTtmyyUJFB71YspVPExF/Y2HCo/7UglUwObFX7K6H/k9Hkmhuabsb
-         AK9yijw2ENXdiicoQTbtvcXBDDm1OgGNDm3TRqYZnxLFOlLxiWLnMeeLaTrJMA42cTMy
-         +Law==
-X-Gm-Message-State: APjAAAXAQJNc0+oX6COuni8Iai0yPDeq74DThirE8ufweDr6Noaf7xMd
-        V8PcRYnEY2m/95OrEIUSKjWKJc9P5oQ=
-X-Google-Smtp-Source: APXvYqxpBu3WdgL8OSw4treG1De9vDfbQEOUPPx21quIyGc4CKQ3OHmg/Jea/oobf9ZdCGUBphfiFg==
-X-Received: by 2002:a2e:9713:: with SMTP id r19mr16556330lji.189.1557210996732;
-        Mon, 06 May 2019 23:36:36 -0700 (PDT)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id v6sm1379197lfg.96.2019.05.06.23.36.35
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 May 2019 23:36:36 -0700 (PDT)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC and MEMSTICK updates for v5.2
-Date:   Tue,  7 May 2019 08:36:34 +0200
-Message-Id: <20190507063634.8389-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+ d=renesasgroup.onmicrosoft.com; s=selector1-renesas-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8y0B6I+EcaWgsjf0X1gTJNDIF3DhSHmm7JF6PMubLSg=;
+ b=VhRASuAfnOdBDRSUl9e067+P+YXGYruE1LiVvbrmKtWqNG46rAafA74Cu6e2nUvIJWQ/kvm9OC5E+EryZgLnJv6p206UtUOwCee32bKt/BozBYHexF2FrhtOgg6NHwHV6SR5jUjD6xJ47o+3WMfGVhrKXhCPFTRi059IYsWWBbY=
+Received: from OSBPR01MB3174.jpnprd01.prod.outlook.com (20.176.240.146) by
+ OSBPR01MB2839.jpnprd01.prod.outlook.com (52.134.254.15) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1856.11; Tue, 7 May 2019 07:13:59 +0000
+Received: from OSBPR01MB3174.jpnprd01.prod.outlook.com
+ ([fe80::4d29:3383:d67d:d562]) by OSBPR01MB3174.jpnprd01.prod.outlook.com
+ ([fe80::4d29:3383:d67d:d562%3]) with mapi id 15.20.1856.012; Tue, 7 May 2019
+ 07:13:59 +0000
+From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To:     Wolfram Sang <wsa@the-dreams.de>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+CC:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "wsa+renesas@sang-engineering.com" <wsa+renesas@sang-engineering.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: RE: [PATCH 2/3] mmc: tmio: No memory size limitation if runs on IOMMU
+Thread-Topic: [PATCH 2/3] mmc: tmio: No memory size limitation if runs on
+ IOMMU
+Thread-Index: AQHU+/Ajsc2lg6egpUGhyifMMTlpw6ZOFvCAgAAS74CAESUYsA==
+Date:   Tue, 7 May 2019 07:13:59 +0000
+Message-ID: <OSBPR01MB3174418E8016F4DC6BDB9C1FD8310@OSBPR01MB3174.jpnprd01.prod.outlook.com>
+References: <1556255930-18188-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <1556255930-18188-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <39b57554-db27-6b8a-261d-b8097c239e38@cogentembedded.com>
+ <20190426091731.GB1031@kunai>
+In-Reply-To: <20190426091731.GB1031@kunai>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
+x-originating-ip: [118.238.235.108]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: fdc77f41-1661-425d-2935-08d6d2bb93c2
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:OSBPR01MB2839;
+x-ms-traffictypediagnostic: OSBPR01MB2839:
+x-microsoft-antispam-prvs: <OSBPR01MB2839346B851722F3C9C3FD5ED8310@OSBPR01MB2839.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 0030839EEE
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(366004)(376002)(39860400002)(136003)(396003)(199004)(189003)(6506007)(14454004)(305945005)(102836004)(6436002)(6116002)(11346002)(446003)(6246003)(8936002)(4326008)(74316002)(8676002)(68736007)(3846002)(81156014)(81166006)(7696005)(99286004)(25786009)(186003)(256004)(26005)(2906002)(86362001)(7736002)(229853002)(52536014)(71200400001)(76176011)(55016002)(71190400001)(476003)(9686003)(53936002)(486006)(316002)(33656002)(73956011)(66446008)(76116006)(66946007)(110136005)(54906003)(64756008)(66476007)(66066001)(5660300002)(66556008)(478600001)(4744005);DIR:OUT;SFP:1102;SCL:1;SRVR:OSBPR01MB2839;H:OSBPR01MB3174.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: renesas.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: xJ0+9LMGqEOmpVWfKRrK5yaVWG3fl2NUInfPJMPF9rHWG3+5Z6inujUfw6Z8vQy9BtXFJ3Myv0/pidy+9Oe6G+EyZKSchRw5kRP+kQ0ITwfI2pH62DdRXYs3B2cr9DRC3fD+Ukrta99rcc2FS4/+zydUUC1SDC129QuCeqBzmpIS36VuefsMOc88SiM37DsS9RYa4Iz4E/SO/LNcNDyc/eD39ljyabmOxQjSCuXmQgcc4W8XY3kAr5bk6oyEq9RoUPEHz3wWhBQM8CdcQOEuW64dkMjH+HfW2nRugMOuWeu5yXNB8h6raQhjgOA6r+oZoRywssOU76usOMpvseR78Bqic91EN/HCKfXrNdMLuUkr6Qqylwh15IimMwrDIhwJaLqyCf9mCm37yYq4xKjCKHL87rWGm4Co6s6gPeftK6Q=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fdc77f41-1661-425d-2935-08d6d2bb93c2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 May 2019 07:13:59.7024
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB2839
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+Hi Sergei-san, Wolfram-san,
 
-Here's the PR with MMC updates for v5.1. This time and onwards I will continue
-to include changes also for the MEMSTICK subsystem in the PR, please tell me if
-you prefer another setup.
+Thank you for your review and sorry for the delayed response...
 
-Details about the highlights are as usual found in the signed tag.
+> From: Wolfram Sang, Sent: Friday, April 26, 2019 6:18 PM
+>=20
+> > > This patch adds a condition to avoid memory size limitaion of
+> >
+> >    Limitation.
+>=20
+> "limitation" :) And maybe "a memory size limitation"?
 
-Please pull this in!
+I think so. I'll fix it on v2 patch.
 
-Kind regards
-Ulf Hansson
+> > > +	 * the max_req_size if needed as a workaround. However, if the driv=
+er
+> > > +	 * runs on IOMMU, this workaround doesn't need.
+> >
+> >    Isn't needed, maybe?
+>=20
+> Ack, "isn't needed".
 
+I'll fix it.
 
-The following changes since commit dc4060a5dc2557e6b5aa813bf5b73677299d62d2:
+> Patch itself looks good to me.
 
-  Linux 5.1-rc5 (2019-04-14 15:17:41 -0700)
+Thank you for your comment!
 
-are available in the Git repository at:
+Best regards,
+Yoshihiro Shimoda
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.2
-
-for you to fetch changes up to 0a49a619e7e1aeb3f5f5511ca59314423c83dae2:
-
-  mmc: sdhci-pci: Fix BYT OCP setting (2019-05-06 12:33:03 +0200)
-
-----------------------------------------------------------------
-MMC core:
- - Fix a few memoryleaks
- - Minor improvements to the card initialization sequence
- - Partially support sleepy GPIO controllers for pwrseq eMMC
-
-MMC host:
- - alcor: Work with multiple-entry sglists
- - alcor: Enable DMA for writes
- - meson-gx: Improve tuning support
- - meson-gx: Avoid clock glitch when switching to DDR modes
- - meson-gx: Disable unreliable HS400 mode
- - mmci: Minor updates for support of HW busy detection
- - mmci: Support data transfers for the stm32_sdmmc variant
- - mmci: Restructure code to better support different variants
- - mtk-sd: Add support for version found on MT7620 family SOCs
- - mtk-sd: Add support for the MT8516 version
- - mtk-sd: Add Chaotian Jing as the maintainer
- - sdhci: Reorganize request-code to convert from tasklet to workqueue
- - sdhci_am654: Stabilize support for lower speed modes
- - sdhci-esdhc-imx: Add HS400 support for iMX7ULP
- - sdhci-esdhc-imx: Add support for iMX7ULP version
- - sdhci-of-arasan: Allow to disable DCMDs via DT for CQE
- - sdhci-of-esdhc: Add support for the ls1028a version
- - sdhci-of-esdhc: Several fixups for errata
- - sdhci-pci: Fix BYT OCP setting
- - sdhci-pci: Add support for Intel CML
- - sdhci-tegra: Add support for system suspend/resume
- - sdhci-tegra: Add CQE support for Tegra186 WAR
- - sdhci-tegra: Add support for Tegra194
- - sdhci-tegra: Update HW tuning process
-
-MEMSTICK:
- - I volunteered to help as a maintainer for the memstick subsystem, which is
-   reflected by an update to the MAINTAINERS file. Changes are funneled through
-   my MMC git and we will use the linux-mmc mailing list.
-
-MEMSTICK host:
- - A few minor cleanups
-
-----------------------------------------------------------------
-Adrian Hunter (7):
-      mmc: sdhci-pci: Add support for Intel CML
-      mmc: sdhci: Reorganize sdhci_finish_mrq() and __sdhci_finish_mrq()
-      mmc: sdhci: Move timer and has_requests functions
-      mmc: sdhci: Move some processing to __sdhci_finish_mrq()
-      mmc: sdhci: Call mmc_request_done() from IRQ handler if possible
-      mmc: sdhci: Remove finish_tasklet
-      mmc: sdhci-pci: Fix BYT OCP setting
-
-Andrea Merello (1):
-      mmc: core: make pwrseq_emmc (partially) support sleepy GPIO controllers
-
-Andy Shevchenko (5):
-      mmc: mmc_spi: Remove redundant dev_set_drvdata()
-      mmc: mmc_spi: Remove useless NULL check at ->remove()
-      mmc: mmc_spi: Join string literals back
-      mmc: mmc_spi: Indentation fixes
-      mmc: mmc_spi: Convert to use SPDX identifier
-
-BOUGH CHEN (3):
-      dt-bindings: mmc: fsl-imx-esdhc: add imx7ulp compatible string
-      mmc: sdhci-esdhc-imx: add pm_qos to interact with cpuidle
-      mmc: sdhci-esdhc-imx: Add HS400 support for iMX7ULP
-
-Christoph Muellner (2):
-      dt-bindings: mmc: Add disable-cqe-dcmd property.
-      mmc: sdhci-of-arasan: Add DTS property to disable DCMDs.
-
-Daniel Drake (4):
-      mmc: alcor: enable DMA for writes
-      mmc: alcor: enable DMA transfer of large buffers
-      Revert "mmc: alcor: enable DMA transfer of large buffers"
-      mmc: alcor: work with multiple-entry sglists
-
-Enrico Weigelt, metux IT consult (1):
-      mmc: host: Pedantic cleanups to Kconfig
-
-Fabien Parent (3):
-      mmc: mtk-sd: add support for MT8516
-      mmc: mtk-sd: check for valid optional memory resource
-      dt-bindings: mmc: Add support for MT8516 to mtk-sd
-
-Faiz Abbas (1):
-      mmc: sdhci_am654: Clear HISPD_ENA in some lower speed modes
-
-Gustavo A. R. Silva (1):
-      mmc: usdhi6rol0: mark expected switch fall-throughs
-
-Jerome Brunet (7):
-      mmc: meson-gx: remove open coded read with timeout
-      mmc: meson-gx: ack only raised irq
-      mmc: meson-gx: correct irq flag
-      mmc: meson-gx: disable HS400
-      mmc: meson-gx: avoid clock glitch when switching to DDR modes
-      mmc: meson-gx: remove Rx phase tuning
-      mmc: meson-gx: add signal resampling tuning
-
-Kamlesh Gurudasani (1):
-      mmc: alcor: Drop pointer to mmc_host from alcor_sdmmc_host
-
-Kangjie Lu (1):
-      mmc_spi: add a status check for spi_sync_locked
-
-Kefeng Wang (1):
-      mmc: omap_hsmmc: Use dev_get_drvdata()
-
-Ludovic Barre (7):
-      mmc: mmci: add get_datactrl_cfg callback and helper functions
-      mmc: mmci: define get_dctrl_cfg for legacy variant
-      mmc: mmci: qcom: define get_dctrl_cfg
-      mmc: mmci: stm32: define get_dctrl_cfg
-      mmc: mmci: replace blksz_datactrlXX by get_datactrl_cfg callback
-      mmc: mmci: Cleanup mmci_cmd_irq() for busy detect
-      mmc: mmci: Prevent polling for busy detection in IRQ context
-
-NeilBrown (4):
-      mmc: mtk-sd: don't hard-code interrupt trigger type
-      mmc: mtk-sd: add support for config found in mt7620 family SOCs.
-      mmc: mtk-sd: enable internal card-detect logic.
-      mmc: mtk-sd: select REGULATOR
-
-Pan Bian (1):
-      mmc: core: fix possible use after free of host
-
-Pavel Machek (1):
-      mmc: core: Fix warning and undefined behavior in mmc voltage handling
-
-Raul E Rangel (2):
-      mmc: core: Verify SD bus width
-      mmc: core: Fix tag set memory leak
-
-Sowjanya Komatineni (9):
-      mmc: tegra: fix ddr signaling for non-ddr modes
-      mmc: sdhci: allow host to specify maximum tuning loops
-      mmc: tegra: update hw tuning process
-      dt-bindings: mmc: tegra: document Tegra194 compatible string
-      mmc: cqhci: allow hosts to update dcmd cmd desc
-      mmc: tegra: add Tegra186 WAR for CQE
-      mmc: cqhci: add CQHCI_SSC1 register CBC field mask
-      mmc: tegra: fix CQE enable and resume sequence
-      mmc: tegra: add sdhci tegra suspend and resume
-
-Stefan Wahren (1):
-      mmc: mxs-mmc: Enable MMC_CAP_ERASE
-
-Ulf Hansson (9):
-      mmc: mmci: Don't share un-implemented DMA functions
-      mmc: mmci: Drop unnecessary clear of variant->qcom_dml flag
-      mmc: mmci: Re-work code starting DMA for the qcom variant
-      mmc: mmci: Drop qcom specific header file
-      mmc: mmci: Share sdmmc_variant_init() via the common header file
-      mmc: mmci: Make mmci_variant_init() static
-      MAINTAINERS: Collect TI FLASH MEDIA drivers into one section
-      MAINTAINERS: Add Ulf Hansson to the MEMORYSTICK section
-      MAINTAINERS: Add section for MediaTek MMC/SD/SDIO driver
-
-Wolfram Sang (4):
-      mmc: renesas_sdhi: update copyright information
-      mmc: tmio: introduce macro for max block size
-      mmc: renesas_sdhi: prevent overflow for max_req_size
-      mmc: renesas_sdhi: set CBSY flag before probing TMIO host
-
-Yangbo Lu (1):
-      mmc: sdhci-of-esdhc: add quirk to ignore command inhibit for data
-
-Yinbo Zhu (6):
-      mmc: sdhci-of-esdhc: add erratum A011334 support in lx2160 2.0 SoC
-      mmc: sdhci-of-esdhc: add erratum eSDHC5 support
-      mmc: sdhci-of-esdhc: add erratum eSDHC-A001 and A-008358 support
-      mmc: sdhci-of-esdhc: add erratum A-009204 support
-      mmc: sdhci-of-esdhc: add erratum eSDHC7 support
-      dt-bindings: mmc: add DT bindings for ls1028a eSDHC host controller
-
-Yoshihiro Shimoda (1):
-      mmc: core: retry CMD1 in mmc_send_op_cond() even if the ocr = 0
-
-YueHaibing (3):
-      mmc: sdhci-omap: Make sdhci_omap_reset static
-      memstick: jmb38x_ms: remove set but not used variable 'data'
-      memstick: tifm: remove set but not used variable 'data'
-
- .../devicetree/bindings/mmc/fsl-esdhc.txt          |   1 +
- .../devicetree/bindings/mmc/fsl-imx-esdhc.txt      |   1 +
- Documentation/devicetree/bindings/mmc/mmc.txt      |   2 +
- Documentation/devicetree/bindings/mmc/mtk-sd.txt   |   2 +
- .../bindings/mmc/nvidia,tegra20-sdhci.txt          |   1 +
- MAINTAINERS                                        |  25 +-
- drivers/memstick/host/jmb38x_ms.c                  |   3 -
- drivers/memstick/host/tifm_ms.c                    |   3 -
- drivers/mmc/core/host.c                            |   4 +-
- drivers/mmc/core/mmc_ops.c                         |  16 +-
- drivers/mmc/core/pwrseq_emmc.c                     |  38 +-
- drivers/mmc/core/queue.c                           |   1 +
- drivers/mmc/core/sd.c                              |   8 +
- drivers/mmc/host/Kconfig                           |  46 +--
- drivers/mmc/host/alcor.c                           |  72 ++--
- drivers/mmc/host/cqhci.c                           |   2 +
- drivers/mmc/host/cqhci.h                           |   4 +
- drivers/mmc/host/meson-gx-mmc.c                    | 419 ++++++---------------
- drivers/mmc/host/mmc_spi.c                         |  98 ++---
- drivers/mmc/host/mmci.c                            |  82 ++--
- drivers/mmc/host/mmci.h                            |  32 +-
- drivers/mmc/host/mmci_qcom_dml.c                   |  17 +-
- drivers/mmc/host/mmci_qcom_dml.h                   |  30 --
- drivers/mmc/host/mmci_stm32_sdmmc.c                |  18 +
- drivers/mmc/host/mtk-sd.c                          |  97 ++++-
- drivers/mmc/host/mxs-mmc.c                         |   3 +-
- drivers/mmc/host/of_mmc_spi.c                      |   6 +-
- drivers/mmc/host/omap_hsmmc.c                      |   4 +-
- drivers/mmc/host/renesas_sdhi.h                    |   2 +-
- drivers/mmc/host/renesas_sdhi_core.c               |  12 +-
- drivers/mmc/host/renesas_sdhi_internal_dmac.c      |  11 +-
- drivers/mmc/host/renesas_sdhi_sys_dmac.c           |   6 +-
- drivers/mmc/host/sdhci-esdhc-imx.c                 |  41 +-
- drivers/mmc/host/sdhci-of-arasan.c                 |   5 +-
- drivers/mmc/host/sdhci-of-esdhc.c                  |  47 +++
- drivers/mmc/host/sdhci-omap.c                      |   2 +-
- drivers/mmc/host/sdhci-pci-core.c                  |  98 +++++
- drivers/mmc/host/sdhci-pci.h                       |   2 +
- drivers/mmc/host/sdhci-tegra.c                     | 362 +++++++++++++++++-
- drivers/mmc/host/sdhci.c                           | 164 +++++---
- drivers/mmc/host/sdhci.h                           |   4 +-
- drivers/mmc/host/sdhci_am654.c                     |  22 ++
- drivers/mmc/host/tmio_mmc.h                        |   6 +-
- drivers/mmc/host/tmio_mmc_core.c                   |   6 +-
- drivers/mmc/host/usdhi6rol0.c                      |   9 +-
- include/linux/alcor_pci.h                          |   2 +-
- 46 files changed, 1170 insertions(+), 666 deletions(-)
- delete mode 100644 drivers/mmc/host/mmci_qcom_dml.h
