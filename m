@@ -2,29 +2,29 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2579415E33
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 09:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2DD215FEC
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 10:58:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726522AbfEGH1o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 May 2019 03:27:44 -0400
-Received: from mail-eopbgr1410135.outbound.protection.outlook.com ([40.107.141.135]:48406
+        id S1726798AbfEGI6s (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 May 2019 04:58:48 -0400
+Received: from mail-eopbgr1410098.outbound.protection.outlook.com ([40.107.141.98]:34231
         "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726085AbfEGH1o (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 7 May 2019 03:27:44 -0400
+        id S1726236AbfEGI6r (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 7 May 2019 04:58:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=renesasgroup.onmicrosoft.com; s=selector1-renesas-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hxt1hu7t/cMjhHC3AFmRgLY8q1X4jVZ5uxheCQw4xpg=;
- b=Judt++N+rsVDYgJukoBbrMN0FXnbJr0JrSeIxKXmGqghPdXrkD+2YwIR4sgYRUyLnLiiqANJGERlDr/Yn3bAhp3oSkqG96SmNdGehXzhOuXfT6mzxTZr7cW2VZSuNjygtiFbkoEjY8OQwUuBf8Xmk8QFTIMUj/EmW5f8999UnB8=
+ bh=DuX1xzOZAbbjL7qnnYMXgAHEZwpA/UI/InQYoOsTpx0=;
+ b=IaST4m/cbQJimvxlBKPnrHOz69AovT578IrzY61cJ2UUJcq6DioBEn/SC25F688xW6XLKjDYaV0DRsc/CM6/ctBWSCZg7Np8ToFvhXmFVIA/zJgsFIYeAvLUrqkaEM8MVu8yBjBy+YzZrJLjJYXZ7N+MeAMsOorjbC4iklSQDMY=
 Received: from OSBPR01MB3174.jpnprd01.prod.outlook.com (20.176.240.146) by
- OSBPR01MB3606.jpnprd01.prod.outlook.com (20.178.97.208) with Microsoft SMTP
+ OSBPR01MB4757.jpnprd01.prod.outlook.com (20.179.184.83) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1856.10; Tue, 7 May 2019 07:27:40 +0000
+ 15.20.1856.10; Tue, 7 May 2019 08:58:44 +0000
 Received: from OSBPR01MB3174.jpnprd01.prod.outlook.com
  ([fe80::4d29:3383:d67d:d562]) by OSBPR01MB3174.jpnprd01.prod.outlook.com
  ([fe80::4d29:3383:d67d:d562%3]) with mapi id 15.20.1856.012; Tue, 7 May 2019
- 07:27:40 +0000
+ 08:58:44 +0000
 From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 To:     Wolfram Sang <wsa@the-dreams.de>
 CC:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
@@ -32,17 +32,16 @@ CC:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         "linux-renesas-soc@vger.kernel.org" 
         <linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH 3/3] mmc: renesas_sdhi_internal_dmac: use multiple
- segments if possible
-Thread-Topic: [PATCH 3/3] mmc: renesas_sdhi_internal_dmac: use multiple
- segments if possible
-Thread-Index: AQHU+/AjXy3xSDmcPE6SxBDkwJ4NFaZOL18AgBEhvGA=
-Date:   Tue, 7 May 2019 07:27:40 +0000
-Message-ID: <OSBPR01MB3174C6DEEFD26C21765B1786D8310@OSBPR01MB3174.jpnprd01.prod.outlook.com>
+Subject: RE: [PATCH 0/3] mmc: renesas_sdhi_internal_dmac: improve performance
+ by using IOMMU
+Thread-Topic: [PATCH 0/3] mmc: renesas_sdhi_internal_dmac: improve performance
+ by using IOMMU
+Thread-Index: AQHU+/AkeRAaf76f8Ei+7P3pmBCRuaZOMeKAgBEqOVA=
+Date:   Tue, 7 May 2019 08:58:43 +0000
+Message-ID: <OSBPR01MB3174BFC6487E29AF4EA5E150D8310@OSBPR01MB3174.jpnprd01.prod.outlook.com>
 References: <1556255930-18188-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1556255930-18188-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <20190426093711.GC1031@kunai>
-In-Reply-To: <20190426093711.GC1031@kunai>
+ <20190426094611.GD1031@kunai>
+In-Reply-To: <20190426094611.GD1031@kunai>
 Accept-Language: ja-JP, en-US
 Content-Language: ja-JP
 X-MS-Has-Attach: 
@@ -51,29 +50,29 @@ authentication-results: spf=none (sender IP is )
  smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
 x-originating-ip: [118.238.235.108]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 61ce00bf-fc96-4023-cd89-08d6d2bd7d23
+x-ms-office365-filtering-correlation-id: c4ee9a9f-5d87-4180-3491-08d6d2ca3565
 x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:OSBPR01MB3606;
-x-ms-traffictypediagnostic: OSBPR01MB3606:
-x-microsoft-antispam-prvs: <OSBPR01MB3606031F35A89FE7BBAA78AED8310@OSBPR01MB3606.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:OSBPR01MB4757;
+x-ms-traffictypediagnostic: OSBPR01MB4757:
+x-microsoft-antispam-prvs: <OSBPR01MB475733D030F18A1F3505CF77D8310@OSBPR01MB4757.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
 x-forefront-prvs: 0030839EEE
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(39860400002)(396003)(346002)(376002)(366004)(199004)(189003)(81166006)(9686003)(2906002)(478600001)(14454004)(476003)(81156014)(74316002)(8936002)(7696005)(33656002)(26005)(186003)(52536014)(71190400001)(71200400001)(25786009)(64756008)(66446008)(66556008)(66476007)(73956011)(66946007)(8676002)(66066001)(76116006)(446003)(11346002)(6116002)(3846002)(102836004)(86362001)(6506007)(76176011)(99286004)(4326008)(6916009)(68736007)(486006)(229853002)(5660300002)(6436002)(7736002)(305945005)(53936002)(316002)(256004)(6246003)(55016002)(54906003);DIR:OUT;SFP:1102;SCL:1;SRVR:OSBPR01MB3606;H:OSBPR01MB3174.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(376002)(39860400002)(346002)(136003)(366004)(189003)(199004)(54906003)(71200400001)(68736007)(74316002)(99286004)(52536014)(81166006)(81156014)(7736002)(8936002)(305945005)(9686003)(66066001)(316002)(5660300002)(25786009)(478600001)(6246003)(53936002)(4326008)(6916009)(14454004)(33656002)(14444005)(256004)(229853002)(76116006)(64756008)(66556008)(66446008)(66946007)(73956011)(66476007)(446003)(8676002)(3846002)(6506007)(26005)(486006)(71190400001)(6436002)(6116002)(186003)(476003)(102836004)(2906002)(55016002)(7696005)(86362001)(4744005)(76176011)(11346002);DIR:OUT;SFP:1102;SCL:1;SRVR:OSBPR01MB4757;H:OSBPR01MB3174.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: renesas.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: Q3H6RypNMvjnL9OsLds5XAhaHfv335VH4P6Q9KDCwN1jl3LYo+QyiC1ES7RaVAO5yL1qS80mNmQhr5Li7VWNiV5/N69fN+tnBaJkrEcUZwC03A3IqOjWcDid8OlSA5BvadWfXwmCYrYWgGgPCaTUghK48EawfY+poHp04CncgUyJehFQ/avJFiYRqvtnFd06SCFgVN4osKzWknoDXIlrixOq/4KjfDCV/Mm0KoWJVK5qMFetyT2ANJTTF0YnUDeJxL3BJFm86+s0GoLr9lNyj/V+MSNHhsPRt8+dVeeg4nvRMEWVDoWkNStgWiDbFjAjDkEsrnGdpiv5PEXb+/RR34QuXbOiFTfCB5yAgkUwPxt2dkhdV8taRsBsJT00CsbJbrxILBlYdZMfsAxdIG5xLBjZSRjEj3ANfZqG8CgBdTM=
+x-microsoft-antispam-message-info: TyqOe9YB8l2R9L94XnNVPAKWoB8UQZO3HJ5h5Og1z2YarP5Yi6ETD2soudeVP1lKDGKhjmsaqsbmnYo7lY8l9jhdEBRCz60FWNByBFNnZU0CMEFvoLTJ2BqD0O/23Mulk9zkN95K2Yo4RCmulkSw6VgwST+ablXIVlQkBpn67sNU7aLWz19B+wf+tzCJf9tpB9EUJM5B6mxmFwV5xiuMh3qjMouOl5QTDKloLDC3M5YQaSoay99h54c5slEkz3gekzLwdsscc4SnJIuCPIOAVKcx8vfFQWt//ucr8/vmdkrF1bxUevvZQMXI3Hu4zM0prlF0tUxFDHgYkvkUujeDyUUEVfsZaseB1UUguiWZ3u/6T9wvndFr/2p4kfNovQ01KmkiFVvwLlDk60JZSBfOTlcUER5gOvwS0KA/lGncWMA=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61ce00bf-fc96-4023-cd89-08d6d2bd7d23
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 May 2019 07:27:40.7912
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4ee9a9f-5d87-4180-3491-08d6d2ca3565
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 May 2019 08:58:43.7703
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB3606
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB4757
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
@@ -81,47 +80,36 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 Hi Wolfram-san,
 
-> From: Wolfram Sang, Sent: Friday, April 26, 2019 6:37 PM
+> From: Wolfram Sang, Sent: Friday, April 26, 2019 6:46 PM
 >=20
+> Hi Shimoda-san,
 >=20
-> > +static void
-> > +renesas_sdhi_internal_dmac_init_card(struct tmio_mmc_host *host,
-> > +				     struct mmc_card *card)
-> > +{
-> > +	if (host->pdev->dev.iommu_group &&
-> > +	    (mmc_card_mmc(card) || mmc_card_sd(card)))
-> > +		host->mmc->max_segs =3D 512;
-> > +	else
-> > +		host->mmc->max_segs =3D host->pdata->max_segs;
-> > +}
-> > +
+> thanks for working on this!
 >=20
-> Will this work with Gen2 as well if we explicitly set max_segs in
-> of_rcar_gen2_compatible (renesas_sdhi_sys_dmac.c)?
+> > Please refer to the end of this email about the performance.
+>=20
+> Yes, nice improvements, great!
 
-Yes, Gen2 (renesas_sdhi_sys_dmac.c) can work with max_segs =3D 512.
-# Enabling IPMMU on Gen2 might cause some troubles anyway regardless the ma=
-x_segs value though.
+Thanks!
 
-> Then we could simply
-> move the above chunk to renesas_sdhi_core.c and use this minimal diff.
+> > (I beleive if the performance is improved, the CPU load is also increas=
+ed.)
 >=20
-> --- a/drivers/mmc/host/renesas_sdhi_core.c
-> +++ b/drivers/mmc/host/renesas_sdhi_core.c
-> @@ -726,6 +726,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
->=20
->  	/* SDR speeds are only available on Gen2+ */
->  	if (mmc_data->flags & TMIO_MMC_MIN_RCAR2) {
-> +		host->ops.init_card =3D renesas_sdhi_init_card;
-> +
->  		/* card_busy caused issues on r8a73a4 (pre-Gen2) CD-less SDHI */
->  		host->ops.card_busy =3D renesas_sdhi_card_busy;
->  		host->ops.start_signal_voltage_switch =3D
->=20
-> What do you think, Shimoda-san?
+> I do wonder about this a bit, though. IPMMU and DMA shouldn't be that
+> much expensive for the CPU, or? Am I overlooking something?
 
-I think it's a nice idea. So, I'll modify this patch on v2.
+I'm guessing that a user land app (in this case bonnie++) consumes CPU load=
+ for some reason.
+I'll experiment whether my guess is correct or not by using usb 3.0 host li=
+ke below tomorrow:
+ - case 1: usb 3.0 host + usb SSD as SuperSpeed (IOMMU is disabled).
+ - case 2: usb 3.0 host + usb SSD via a usb2.0 hub as high-speed (IOMMU is =
+disabled).
 
 Best regards,
 Yoshihiro Shimoda
+
+> Kind regards,
+>=20
+>    Wolfram
 
