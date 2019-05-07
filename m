@@ -2,99 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E719160B7
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 11:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03CCD167DF
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 18:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726831AbfEGJUu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 May 2019 05:20:50 -0400
-Received: from mx.socionext.com ([202.248.49.38]:3523 "EHLO mx.socionext.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726738AbfEGJUt (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 7 May 2019 05:20:49 -0400
-Received: from unknown (HELO iyokan-ex.css.socionext.com) ([172.31.9.54])
-  by mx.socionext.com with ESMTP; 07 May 2019 18:20:47 +0900
-Received: from mail.mfilter.local (m-filter-1 [10.213.24.61])
-        by iyokan-ex.css.socionext.com (Postfix) with ESMTP id 07BFC6117D;
-        Tue,  7 May 2019 18:20:48 +0900 (JST)
-Received: from 10.213.24.1 (10.213.24.1) by m-FILTER with ESMTP; Tue, 7 May 2019 18:20:48 +0900
-Received: from SOC-EX02V.e01.socionext.com (10.213.24.22) by
- SOC-EX03V.e01.socionext.com (10.213.24.23) with Microsoft SMTP Server (TLS)
- id 15.0.995.29; Tue, 7 May 2019 18:20:47 +0900
-Received: from SOC-EX02V.e01.socionext.com ([10.213.25.22]) by
- SOC-EX02V.e01.socionext.com ([10.213.25.22]) with mapi id 15.00.0995.028;
- Tue, 7 May 2019 18:20:47 +0900
-From:   <orito.takao@socionext.com>
-To:     <robh@kernel.org>
-CC:     <ulf.hansson@linaro.org>, <mark.rutland@arm.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <masami.hiramatsu@linaro.org>,
-        <jaswinder.singh@linaro.org>, <sugaya.taichi@socionext.com>,
-        <kasai.kazuhiro@socionext.com>, <kanematsu.shinji@socionext.com>
-Subject: Re: [PATCH 1/2] dt-bindings: mmc: add DT bindings for Milbeaut SD
- controller
-Thread-Topic: [PATCH 1/2] dt-bindings: mmc: add DT bindings for Milbeaut SD
- controller
-Thread-Index: AQHU+9RXOLUG4XsvaU+oK6YWULWxq6ZWcdUAgAhr8AA=
-Date:   Tue, 7 May 2019 09:20:46 +0000
-Message-ID: <20190507182039.9D78.F0D17A80@socionext.com>
-References: <1556244392-15822-1-git-send-email-orito.takao@socionext.com>
- <20190502004422.GA2242@bogus>
-In-Reply-To: <20190502004422.GA2242@bogus>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Becky! ver. 2.74.02 [ja] (Unregistered)
-x-originating-ip: [10.213.24.1]
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-ID: <CB4FF968706BD5458AC0FE498EB10D30@socionext.com>
-Content-Transfer-Encoding: base64
+        id S1727065AbfEGQ1L (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 May 2019 12:27:11 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:59890 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726688AbfEGQ1K (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 May 2019 12:27:10 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x47GR8hw033836;
+        Tue, 7 May 2019 11:27:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1557246428;
+        bh=P9OKlobsMuFk7eV/sCL4oYA9ZbX2O0+AEbA1PMWuJag=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=uaAdpacX8LV5aJrKTlHW/sebP6Gdva1LW0wIc0ec9AccICX1k/qVxqvEzuYuDYWv1
+         kLICOGTT/w1WzFZvJNg7EjI6/fLhAscx3S3j9J7/Vs24YumCxETQXka1LDDeLUPQU8
+         6AKaoP7Z84Mi7tCEvuZjz0k+YBNCAyQxunu4QORU=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x47GR8IN110351
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 7 May 2019 11:27:08 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 7 May
+ 2019 11:27:07 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Tue, 7 May 2019 11:27:07 -0500
+Received: from [10.250.139.87] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x47GR5X6108985;
+        Tue, 7 May 2019 11:27:06 -0500
+Subject: Re: [PATCH 2/2] mmc: sdhci_am654: Fix SLOTTYPE write
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Faiz Abbas <faiz_abbas@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>
+References: <20190425155727.20010-1-faiz_abbas@ti.com>
+ <20190425155727.20010-3-faiz_abbas@ti.com>
+ <c2dcc343-395f-03a2-67a8-d89ab6a6b192@intel.com>
+From:   Faiz Abbas <a0230074@ti.com>
+Message-ID: <db0b0790-4556-8a3b-2ae1-fcb4b1beb4b3@ti.com>
+Date:   Tue, 7 May 2019 21:57:04 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
+In-Reply-To: <c2dcc343-395f-03a2-67a8-d89ab6a6b192@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-VGhhbmsgeW91IGZvciByZXZpZXdpbmcgbXkgcGF0Y2hlcy4NClNvcnJ5IGZvciBteSBsYXRlIHJl
-cGx5LiBKYXBhbiB3YXMgaW4gU3ByaW5nIFZhY2F0aW9uLg0KDQo+IE9uIEZyaSwgQXByIDI2LCAy
-MDE5IGF0IDExOjA2OjMyQU0gKzA5MDAsIFRha2FvIE9yaXRvIHdyb3RlOg0KPiANCj4gTmVlZHMg
-YSBjb21taXQgbXNnLg0KDQpJIHNlZS4gSSB3aWxsIGFkZCBtZXNzYWdlLg0KDQo+IA0KPiA+IFNp
-Z25lZC1vZmYtYnk6IFRha2FvIE9yaXRvIDxvcml0by50YWthb0Bzb2Npb25leHQuY29tPg0KPiA+
-IC0tLQ0KPiA+ICAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9tbWMvc2RoY2ktbWlsYmVhdXQudHh0
-ICAgICB8IDM1ICsrKysrKysrKysrKysrKysrKysrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDM1
-IGluc2VydGlvbnMoKykNCj4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vZGV2
-aWNldHJlZS9iaW5kaW5ncy9tbWMvc2RoY2ktbWlsYmVhdXQudHh0DQo+ID4gDQo+ID4gZGlmZiAt
-LWdpdCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9tbWMvc2RoY2ktbWlsYmVh
-dXQudHh0IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL21tYy9zZGhjaS1taWxi
-ZWF1dC50eHQNCj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+IGluZGV4IDAwMDAwMDAuLjcw
-MDg0NjINCj4gPiAtLS0gL2Rldi9udWxsDQo+ID4gKysrIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0
-cmVlL2JpbmRpbmdzL21tYy9zZGhjaS1taWxiZWF1dC50eHQNCj4gPiBAQCAtMCwwICsxLDM1IEBA
-DQo+ID4gKyogU09DSU9ORVhUIFNESENJIGNvbnRyb2xsZXINCj4gPiArDQo+ID4gK1RoaXMgZmls
-ZSBkb2N1bWVudHMgZGlmZmVyZW5jZXMgYmV0d2VlbiB0aGUgY29yZSBwcm9wZXJ0aWVzIGluIG1t
-Yy50eHQNCj4gPiArYW5kIHRoZSBwcm9wZXJ0aWVzIHVzZWQgYnkgdGhlIHNkaGNpX21pbGJlYXV0
-IGRyaXZlci4NCj4gPiArDQo+ID4gK1JlcXVpcmVkIHByb3BlcnRpZXM6DQo+ID4gKy0gY29tcGF0
-aWJsZTogInNvY2lvbmV4dCxtaWxiZWF1dC1tMTB2LXNkaGNpLTMuMCINCj4gPiArLSBjbG9ja3M6
-IE11c3QgY29udGFpbiBhbiBlbnRyeSBmb3IgZWFjaCBlbnRyeSBpbiBjbG9jay1uYW1lcy4gSXQg
-aXMgYQ0KPiA+ICsgIGxpc3Qgb2YgcGhhbmRsZXMgYW5kIGNsb2NrLXNwZWNpZmllciBwYWlycy4N
-Cj4gPiArICBTZWUgLi4vY2xvY2tzL2Nsb2NrLWJpbmRpbmdzLnR4dCBmb3IgZGV0YWlscy4NCj4g
-PiArLSBjbG9jay1uYW1lczogU2hvdWxkIGNvbnRhaW4gdGhlIGZvbGxvd2luZyB0d28gZW50cmll
-czoNCj4gPiArCSJpZmFjZSIgLSBjbG9jayB1c2VkIGZvciBzZGhjaSBpbnRlcmZhY2UNCj4gPiAr
-CSJjb3JlIiAgLSBjb3JlIGNsb2NrIGZvciBzZGhjaSBjb250cm9sbGVyDQo+ID4gKw0KPiA+ICtP
-cHRpb25hbCBwcm9wZXJ0aWVzOg0KPiA+ICstIHZxbW1jLXN1cHBseTogcGhhbmRsZSB0byB0aGUg
-cmVndWxhdG9yIGRldmljZSB0cmVlIG5vZGUsIG1lbnRpb25lZA0KPiA+ICsgIGFzIHRoZSBWQ0NR
-L1ZERF9JTyBzdXBwbHkgaW4gdGhlIGVNTUMvU0Qgc3BlY3MuDQo+ID4gKy0gZnVqaXRzdSxjbWQt
-ZGF0LWRlbGF5LXNlbGVjdDogYm9vbGVhbiBwcm9wZXJ0eSBpbmRpY2F0aW5nIHRoYXQgdGhpcyBo
-b3N0DQo+ID4gKyAgcmVxdWlyZXMgdGhlIENNRF9EQVRfREVMQVkgY29udHJvbCB0byBiZSBlbmFi
-bGVkLg0KPiA+ICstIHNuaSxtbWMtcG93ZXItZ3Bpbzogc2V0IHByb3BlcnR5IGluZGljYXRpbmcg
-dGhhdCBwb3dlciBvbiBvciBvZmYgbmVlZHMNCj4gPiArICBjb250cm9sIG9mIGdwaW9zLg0KPiA+
-ICsNCj4gPiArRXhhbXBsZToNCj4gPiArCXNkaGNpMzogbW1jQDFiMDEwMDAwIHsNCj4gPiArCQlj
-b21wYXRpYmxlID0gInNvY2lvbmV4dCxtaWxiZWF1dC1tMTB2LXNkaGNpLTMuMCI7DQo+ID4gKwkJ
-cmVnID0gPDB4MWIwMTAwMDAgMHgxMDAwMD47DQo+ID4gKwkJaW50ZXJydXB0cyA9IDwwIDI2NSAw
-eDQ+Ow0KPiA+ICsJCXZvbHRhZ2UtcmFuZ2VzID0gPDMzMDAgMzMwMD47DQo+ID4gKwkJYnVzLXdp
-ZHRoID0gPDQ+Ow0KPiA+ICsJCWNsb2NrcyA9IDwmY2xrIDc+LCA8JmFoYl9jbGs+Ow0KPiA+ICsJ
-CWNsb2NrLW5hbWVzID0gImNvcmUiLCAiaWZhY2UiOw0KPiA+ICsJCWNhcC1zZGlvLWlycTsNCj4g
-PiArCQlzbmksbW1jLXBvd2VyLWdwaW8gPSA8JnBpbmN0cmwgNTMgR1BJT19BQ1RJVkVfSElHSD47
-DQo+ID4gKwkJCWZ1aml0c3UsY21kLWRhdC1kZWxheS1zZWxlY3Q7DQo+IA0KPiBXaGl0ZXNwYWNl
-IHByb2JsZW0uDQoNClNvcnJ5LCBJIHdpbGwgZml4Lg0KDQpUaGFua3MNCk9yaXRvDQoNCj4gDQo+
-ID4gKwl9Ow0KPiA+IC0tIA0KPiA+IDEuOS4xDQo+ID4gDQo+ID4gDQoNCi0tIA0KVGFrYW8gT3Jp
-dG8gPG9yaXRvLnRha2FvQHNvY2lvbmV4dC5jb20+DQo=
+Hi Adrian,
+
+On 26/04/19 11:30 AM, Adrian Hunter wrote:
+> On 25/04/19 6:57 PM, Faiz Abbas wrote:
+>> In the call to regmap_update_bits() for SLOTTYPE, the mask and value
+>> fields are exchanged. Fix this.
+> 
+> Could you also comment on whether this has any known effect on the driver.
+> 
+
+This call was basically a NOP but it was the correct way around in
+u-boot so it was just taking that value instead. No effect that was
+known to me. Found this out just by inspection.
+
+Thanks,
+Faiz
