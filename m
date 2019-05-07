@@ -2,85 +2,312 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3474B15D65
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 08:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FB9B15D91
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 08:36:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726085AbfEGGdJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 May 2019 02:33:09 -0400
-Received: from mga02.intel.com ([134.134.136.20]:2483 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725839AbfEGGdJ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 7 May 2019 02:33:09 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 May 2019 23:33:07 -0700
-X-ExtLoop1: 1
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by fmsmga007.fm.intel.com with ESMTP; 06 May 2019 23:33:05 -0700
-Subject: Re: [PATCH 1/2] mmc: sdhci-iproc: cygnus: Set NO_HISPD bit to fix
- HS50 data hold time problem
-To:     Scott Branden <scott.branden@broadcom.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>
-Cc:     BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Trac Hoang <trac.hoang@broadcom.com>
-References: <20190506170115.10840-1-scott.branden@broadcom.com>
- <20190506170115.10840-2-scott.branden@broadcom.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <195374db-9a9a-2807-d8be-50ec4e8fedcb@intel.com>
-Date:   Tue, 7 May 2019 09:32:58 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190506170115.10840-2-scott.branden@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1726658AbfEGGgl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 May 2019 02:36:41 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:36555 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726253AbfEGGgk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 May 2019 02:36:40 -0400
+Received: by mail-lj1-f196.google.com with SMTP id z1so1011972ljb.3
+        for <linux-mmc@vger.kernel.org>; Mon, 06 May 2019 23:36:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=nlc3oZR7WiKy7YxKM9XNkiVLgRr7nzZBeBG7jq1nN28=;
+        b=Z7byc17KsWdnVM6Pc/OvcuQTyIf7Ll51Xw1KlKw6c2YMKbfeJvDvMhWBd4ID45mp4a
+         QJ30Q/In4V0dsqQsQnUcWbWq4PhVoq0bxPVOzcgo1STHMPbe1QbHTSueetH5r5R6v8N+
+         /Stl4JCG6djqkneMFZjplkzYWY3pykZcROoIxRT/Q4nRqVfppuKcN2TVnZTTWz7WDr8O
+         iyuFNSOMCqtuiPfN8m8C1vGKRvH0dH1+M0MiVOYYG5Bf9xsZK+sFm057x8zSnEfGX9eA
+         Yt9R9eEKR+wc85yQVL4E4GuzT+uc3lnjDYyCLtV5N9JoemxXGK3hzweIY2EQQq9Dhr69
+         Hk6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=nlc3oZR7WiKy7YxKM9XNkiVLgRr7nzZBeBG7jq1nN28=;
+        b=gmltq3RHuKELdNzmKb0kCoMLBAzWMrgtSsCoqUt1wye+JtAEABK6Pcfe14EO6A7Csr
+         89KpQoYQCXe4FtlfWdUinSY2V4J2J+eDl0lZEQzx3thHB5XsmUyWBlfZgaE/0MvgjB10
+         WMOBgQy7xkWy6sVAq8UuZkx3gs1C9PTjr/tDoMaFnTshxe5f7ckEW+PPxXZKgmWgu1YU
+         HbBEBnUGydVzRC7JTtmyyUJFB71YspVPExF/Y2HCo/7UglUwObFX7K6H/k9Hkmhuabsb
+         AK9yijw2ENXdiicoQTbtvcXBDDm1OgGNDm3TRqYZnxLFOlLxiWLnMeeLaTrJMA42cTMy
+         +Law==
+X-Gm-Message-State: APjAAAXAQJNc0+oX6COuni8Iai0yPDeq74DThirE8ufweDr6Noaf7xMd
+        V8PcRYnEY2m/95OrEIUSKjWKJc9P5oQ=
+X-Google-Smtp-Source: APXvYqxpBu3WdgL8OSw4treG1De9vDfbQEOUPPx21quIyGc4CKQ3OHmg/Jea/oobf9ZdCGUBphfiFg==
+X-Received: by 2002:a2e:9713:: with SMTP id r19mr16556330lji.189.1557210996732;
+        Mon, 06 May 2019 23:36:36 -0700 (PDT)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id v6sm1379197lfg.96.2019.05.06.23.36.35
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 May 2019 23:36:36 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC and MEMSTICK updates for v5.2
+Date:   Tue,  7 May 2019 08:36:34 +0200
+Message-Id: <20190507063634.8389-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 6/05/19 8:01 PM, Scott Branden wrote:
-> From: Trac Hoang <trac.hoang@broadcom.com>
-> 
-> The iproc host eMMC/SD controller hold time does not meet the
-> specification in the HS50 mode. This problem can be mitigated
-> by disabling the HISPD bit; thus forcing the controller output
-> data to be driven on the falling clock edges rather than the
-> rising clock edges.
-> 
-> This change applies only to the Cygnus platform.
-> 
-> Fixes: c833e92bbb60 ("mmc: sdhci-iproc: support standard byte register accesses")
-> Signed-off-by: Trac Hoang <trac.hoang@broadcom.com>
-> Signed-off-by: Scott Branden <scott.branden@broadcom.com>
+Hi Linus,
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Here's the PR with MMC updates for v5.1. This time and onwards I will continue
+to include changes also for the MEMSTICK subsystem in the PR, please tell me if
+you prefer another setup.
 
-> ---
->  drivers/mmc/host/sdhci-iproc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
-> index 9d12c06c7fd6..9d4071c41c94 100644
-> --- a/drivers/mmc/host/sdhci-iproc.c
-> +++ b/drivers/mmc/host/sdhci-iproc.c
-> @@ -196,7 +196,8 @@ static const struct sdhci_ops sdhci_iproc_32only_ops = {
->  };
->  
->  static const struct sdhci_pltfm_data sdhci_iproc_cygnus_pltfm_data = {
-> -	.quirks = SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK,
-> +	.quirks = SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
-> +		  SDHCI_QUIRK_NO_HISPD_BIT,
->  	.quirks2 = SDHCI_QUIRK2_ACMD23_BROKEN | SDHCI_QUIRK2_HOST_OFF_CARD_ON,
->  	.ops = &sdhci_iproc_32only_ops,
->  };
-> 
+Details about the highlights are as usual found in the signed tag.
 
+Please pull this in!
+
+Kind regards
+Ulf Hansson
+
+
+The following changes since commit dc4060a5dc2557e6b5aa813bf5b73677299d62d2:
+
+  Linux 5.1-rc5 (2019-04-14 15:17:41 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.2
+
+for you to fetch changes up to 0a49a619e7e1aeb3f5f5511ca59314423c83dae2:
+
+  mmc: sdhci-pci: Fix BYT OCP setting (2019-05-06 12:33:03 +0200)
+
+----------------------------------------------------------------
+MMC core:
+ - Fix a few memoryleaks
+ - Minor improvements to the card initialization sequence
+ - Partially support sleepy GPIO controllers for pwrseq eMMC
+
+MMC host:
+ - alcor: Work with multiple-entry sglists
+ - alcor: Enable DMA for writes
+ - meson-gx: Improve tuning support
+ - meson-gx: Avoid clock glitch when switching to DDR modes
+ - meson-gx: Disable unreliable HS400 mode
+ - mmci: Minor updates for support of HW busy detection
+ - mmci: Support data transfers for the stm32_sdmmc variant
+ - mmci: Restructure code to better support different variants
+ - mtk-sd: Add support for version found on MT7620 family SOCs
+ - mtk-sd: Add support for the MT8516 version
+ - mtk-sd: Add Chaotian Jing as the maintainer
+ - sdhci: Reorganize request-code to convert from tasklet to workqueue
+ - sdhci_am654: Stabilize support for lower speed modes
+ - sdhci-esdhc-imx: Add HS400 support for iMX7ULP
+ - sdhci-esdhc-imx: Add support for iMX7ULP version
+ - sdhci-of-arasan: Allow to disable DCMDs via DT for CQE
+ - sdhci-of-esdhc: Add support for the ls1028a version
+ - sdhci-of-esdhc: Several fixups for errata
+ - sdhci-pci: Fix BYT OCP setting
+ - sdhci-pci: Add support for Intel CML
+ - sdhci-tegra: Add support for system suspend/resume
+ - sdhci-tegra: Add CQE support for Tegra186 WAR
+ - sdhci-tegra: Add support for Tegra194
+ - sdhci-tegra: Update HW tuning process
+
+MEMSTICK:
+ - I volunteered to help as a maintainer for the memstick subsystem, which is
+   reflected by an update to the MAINTAINERS file. Changes are funneled through
+   my MMC git and we will use the linux-mmc mailing list.
+
+MEMSTICK host:
+ - A few minor cleanups
+
+----------------------------------------------------------------
+Adrian Hunter (7):
+      mmc: sdhci-pci: Add support for Intel CML
+      mmc: sdhci: Reorganize sdhci_finish_mrq() and __sdhci_finish_mrq()
+      mmc: sdhci: Move timer and has_requests functions
+      mmc: sdhci: Move some processing to __sdhci_finish_mrq()
+      mmc: sdhci: Call mmc_request_done() from IRQ handler if possible
+      mmc: sdhci: Remove finish_tasklet
+      mmc: sdhci-pci: Fix BYT OCP setting
+
+Andrea Merello (1):
+      mmc: core: make pwrseq_emmc (partially) support sleepy GPIO controllers
+
+Andy Shevchenko (5):
+      mmc: mmc_spi: Remove redundant dev_set_drvdata()
+      mmc: mmc_spi: Remove useless NULL check at ->remove()
+      mmc: mmc_spi: Join string literals back
+      mmc: mmc_spi: Indentation fixes
+      mmc: mmc_spi: Convert to use SPDX identifier
+
+BOUGH CHEN (3):
+      dt-bindings: mmc: fsl-imx-esdhc: add imx7ulp compatible string
+      mmc: sdhci-esdhc-imx: add pm_qos to interact with cpuidle
+      mmc: sdhci-esdhc-imx: Add HS400 support for iMX7ULP
+
+Christoph Muellner (2):
+      dt-bindings: mmc: Add disable-cqe-dcmd property.
+      mmc: sdhci-of-arasan: Add DTS property to disable DCMDs.
+
+Daniel Drake (4):
+      mmc: alcor: enable DMA for writes
+      mmc: alcor: enable DMA transfer of large buffers
+      Revert "mmc: alcor: enable DMA transfer of large buffers"
+      mmc: alcor: work with multiple-entry sglists
+
+Enrico Weigelt, metux IT consult (1):
+      mmc: host: Pedantic cleanups to Kconfig
+
+Fabien Parent (3):
+      mmc: mtk-sd: add support for MT8516
+      mmc: mtk-sd: check for valid optional memory resource
+      dt-bindings: mmc: Add support for MT8516 to mtk-sd
+
+Faiz Abbas (1):
+      mmc: sdhci_am654: Clear HISPD_ENA in some lower speed modes
+
+Gustavo A. R. Silva (1):
+      mmc: usdhi6rol0: mark expected switch fall-throughs
+
+Jerome Brunet (7):
+      mmc: meson-gx: remove open coded read with timeout
+      mmc: meson-gx: ack only raised irq
+      mmc: meson-gx: correct irq flag
+      mmc: meson-gx: disable HS400
+      mmc: meson-gx: avoid clock glitch when switching to DDR modes
+      mmc: meson-gx: remove Rx phase tuning
+      mmc: meson-gx: add signal resampling tuning
+
+Kamlesh Gurudasani (1):
+      mmc: alcor: Drop pointer to mmc_host from alcor_sdmmc_host
+
+Kangjie Lu (1):
+      mmc_spi: add a status check for spi_sync_locked
+
+Kefeng Wang (1):
+      mmc: omap_hsmmc: Use dev_get_drvdata()
+
+Ludovic Barre (7):
+      mmc: mmci: add get_datactrl_cfg callback and helper functions
+      mmc: mmci: define get_dctrl_cfg for legacy variant
+      mmc: mmci: qcom: define get_dctrl_cfg
+      mmc: mmci: stm32: define get_dctrl_cfg
+      mmc: mmci: replace blksz_datactrlXX by get_datactrl_cfg callback
+      mmc: mmci: Cleanup mmci_cmd_irq() for busy detect
+      mmc: mmci: Prevent polling for busy detection in IRQ context
+
+NeilBrown (4):
+      mmc: mtk-sd: don't hard-code interrupt trigger type
+      mmc: mtk-sd: add support for config found in mt7620 family SOCs.
+      mmc: mtk-sd: enable internal card-detect logic.
+      mmc: mtk-sd: select REGULATOR
+
+Pan Bian (1):
+      mmc: core: fix possible use after free of host
+
+Pavel Machek (1):
+      mmc: core: Fix warning and undefined behavior in mmc voltage handling
+
+Raul E Rangel (2):
+      mmc: core: Verify SD bus width
+      mmc: core: Fix tag set memory leak
+
+Sowjanya Komatineni (9):
+      mmc: tegra: fix ddr signaling for non-ddr modes
+      mmc: sdhci: allow host to specify maximum tuning loops
+      mmc: tegra: update hw tuning process
+      dt-bindings: mmc: tegra: document Tegra194 compatible string
+      mmc: cqhci: allow hosts to update dcmd cmd desc
+      mmc: tegra: add Tegra186 WAR for CQE
+      mmc: cqhci: add CQHCI_SSC1 register CBC field mask
+      mmc: tegra: fix CQE enable and resume sequence
+      mmc: tegra: add sdhci tegra suspend and resume
+
+Stefan Wahren (1):
+      mmc: mxs-mmc: Enable MMC_CAP_ERASE
+
+Ulf Hansson (9):
+      mmc: mmci: Don't share un-implemented DMA functions
+      mmc: mmci: Drop unnecessary clear of variant->qcom_dml flag
+      mmc: mmci: Re-work code starting DMA for the qcom variant
+      mmc: mmci: Drop qcom specific header file
+      mmc: mmci: Share sdmmc_variant_init() via the common header file
+      mmc: mmci: Make mmci_variant_init() static
+      MAINTAINERS: Collect TI FLASH MEDIA drivers into one section
+      MAINTAINERS: Add Ulf Hansson to the MEMORYSTICK section
+      MAINTAINERS: Add section for MediaTek MMC/SD/SDIO driver
+
+Wolfram Sang (4):
+      mmc: renesas_sdhi: update copyright information
+      mmc: tmio: introduce macro for max block size
+      mmc: renesas_sdhi: prevent overflow for max_req_size
+      mmc: renesas_sdhi: set CBSY flag before probing TMIO host
+
+Yangbo Lu (1):
+      mmc: sdhci-of-esdhc: add quirk to ignore command inhibit for data
+
+Yinbo Zhu (6):
+      mmc: sdhci-of-esdhc: add erratum A011334 support in lx2160 2.0 SoC
+      mmc: sdhci-of-esdhc: add erratum eSDHC5 support
+      mmc: sdhci-of-esdhc: add erratum eSDHC-A001 and A-008358 support
+      mmc: sdhci-of-esdhc: add erratum A-009204 support
+      mmc: sdhci-of-esdhc: add erratum eSDHC7 support
+      dt-bindings: mmc: add DT bindings for ls1028a eSDHC host controller
+
+Yoshihiro Shimoda (1):
+      mmc: core: retry CMD1 in mmc_send_op_cond() even if the ocr = 0
+
+YueHaibing (3):
+      mmc: sdhci-omap: Make sdhci_omap_reset static
+      memstick: jmb38x_ms: remove set but not used variable 'data'
+      memstick: tifm: remove set but not used variable 'data'
+
+ .../devicetree/bindings/mmc/fsl-esdhc.txt          |   1 +
+ .../devicetree/bindings/mmc/fsl-imx-esdhc.txt      |   1 +
+ Documentation/devicetree/bindings/mmc/mmc.txt      |   2 +
+ Documentation/devicetree/bindings/mmc/mtk-sd.txt   |   2 +
+ .../bindings/mmc/nvidia,tegra20-sdhci.txt          |   1 +
+ MAINTAINERS                                        |  25 +-
+ drivers/memstick/host/jmb38x_ms.c                  |   3 -
+ drivers/memstick/host/tifm_ms.c                    |   3 -
+ drivers/mmc/core/host.c                            |   4 +-
+ drivers/mmc/core/mmc_ops.c                         |  16 +-
+ drivers/mmc/core/pwrseq_emmc.c                     |  38 +-
+ drivers/mmc/core/queue.c                           |   1 +
+ drivers/mmc/core/sd.c                              |   8 +
+ drivers/mmc/host/Kconfig                           |  46 +--
+ drivers/mmc/host/alcor.c                           |  72 ++--
+ drivers/mmc/host/cqhci.c                           |   2 +
+ drivers/mmc/host/cqhci.h                           |   4 +
+ drivers/mmc/host/meson-gx-mmc.c                    | 419 ++++++---------------
+ drivers/mmc/host/mmc_spi.c                         |  98 ++---
+ drivers/mmc/host/mmci.c                            |  82 ++--
+ drivers/mmc/host/mmci.h                            |  32 +-
+ drivers/mmc/host/mmci_qcom_dml.c                   |  17 +-
+ drivers/mmc/host/mmci_qcom_dml.h                   |  30 --
+ drivers/mmc/host/mmci_stm32_sdmmc.c                |  18 +
+ drivers/mmc/host/mtk-sd.c                          |  97 ++++-
+ drivers/mmc/host/mxs-mmc.c                         |   3 +-
+ drivers/mmc/host/of_mmc_spi.c                      |   6 +-
+ drivers/mmc/host/omap_hsmmc.c                      |   4 +-
+ drivers/mmc/host/renesas_sdhi.h                    |   2 +-
+ drivers/mmc/host/renesas_sdhi_core.c               |  12 +-
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c      |  11 +-
+ drivers/mmc/host/renesas_sdhi_sys_dmac.c           |   6 +-
+ drivers/mmc/host/sdhci-esdhc-imx.c                 |  41 +-
+ drivers/mmc/host/sdhci-of-arasan.c                 |   5 +-
+ drivers/mmc/host/sdhci-of-esdhc.c                  |  47 +++
+ drivers/mmc/host/sdhci-omap.c                      |   2 +-
+ drivers/mmc/host/sdhci-pci-core.c                  |  98 +++++
+ drivers/mmc/host/sdhci-pci.h                       |   2 +
+ drivers/mmc/host/sdhci-tegra.c                     | 362 +++++++++++++++++-
+ drivers/mmc/host/sdhci.c                           | 164 +++++---
+ drivers/mmc/host/sdhci.h                           |   4 +-
+ drivers/mmc/host/sdhci_am654.c                     |  22 ++
+ drivers/mmc/host/tmio_mmc.h                        |   6 +-
+ drivers/mmc/host/tmio_mmc_core.c                   |   6 +-
+ drivers/mmc/host/usdhi6rol0.c                      |   9 +-
+ include/linux/alcor_pci.h                          |   2 +-
+ 46 files changed, 1170 insertions(+), 666 deletions(-)
+ delete mode 100644 drivers/mmc/host/mmci_qcom_dml.h
