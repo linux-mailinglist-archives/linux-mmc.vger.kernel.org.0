@@ -2,204 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA4BA16BB7
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 21:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA50716BD5
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 22:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726324AbfEGTx6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 May 2019 15:53:58 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:39057 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726091AbfEGTx6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 May 2019 15:53:58 -0400
-Received: by mail-pg1-f193.google.com with SMTP id w22so7524286pgi.6;
-        Tue, 07 May 2019 12:53:57 -0700 (PDT)
+        id S1726369AbfEGUAu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 May 2019 16:00:50 -0400
+Received: from mail-lj1-f174.google.com ([209.85.208.174]:42409 "EHLO
+        mail-lj1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726600AbfEGUAt (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 May 2019 16:00:49 -0400
+Received: by mail-lj1-f174.google.com with SMTP id y10so8935147lji.9
+        for <linux-mmc@vger.kernel.org>; Tue, 07 May 2019 13:00:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Cj+ea2ryBJNh6qXEQ4f5WItA9NMUT7wCyvk5yPZ6xUA=;
-        b=hxl/JVOfbduSun1MHcThyx5YHh0l4V/VxmVCB0Eb6/e+P5FgJINp7Sd0VHSbt8uEy/
-         1i5vH1wFXUOJ0OFZz25Ztd1ce2FT3fU3wFHhjVACD5TUf+jBebsN32sx71OvF9yF2T14
-         7+xlw4ZDTxTuh1OQAeCGmW1pbeDDdp2GfV854ndaWTcSo2r0+xIiHTJezTYt73etHzhK
-         j35jsrv0DBmwHt0YwOBwzq2rNeQM+ad4RyFRuiu87L9txCJ4EofshXlQkOaBrBqIVJjP
-         VZfyx8AwIrOo8K/jkyF1eX1iW5roWSREG3I91Ph6IT95GpS6Ul1fSAoVoPWDuRl5AA3C
-         mIXA==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AhQwhnya1lWygBDHTyZELUjYoXrZkk+CaLqHSwtab4c=;
+        b=Kzfmjw2pW4usOCMfxQJPbjeEqilKVI0LIcgtA3kJVJ4Tw96sTmBz9uiCgpLPOTX7xD
+         j4I1H3U2sRyVayV2ZslkIpPQyUvnuFn+ALVfkFMVLcmpWfSf9pjRC5O2dyzbfK/ptt5P
+         YNY442A4WUln5tqotbDtt/9LCbsuFtT0ligaI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Cj+ea2ryBJNh6qXEQ4f5WItA9NMUT7wCyvk5yPZ6xUA=;
-        b=GbCg7NaviqtBodwnq2bhQeKFCpQ/+zaQIR9w3QfxsM2bOHUw2PUsxFwMPNPqljjywv
-         pn58Cf98QMatNqk67wyvIJVZRLL6qcOg788yJjvhT2nfGPTiZT5Cs52wN8fPvKkbBMXH
-         z7UF3FV7ihP9RNp3F6eMG4JvFu8S2uzAxOU/JGClanM5Pxn9i9v7xslRtBRXR/a5vB46
-         c8xFCf0zIz9W8Kuu95G7LeLzlQZOjc6Qhv05wXMzVpkQ7MSaJNlIKoRTnDYbz8hNR0CU
-         ydX2TAzMacRDkS0NeiN4gbfYyCI+pQN+ntmxyMkyRaEtTWMJt1OUZ8xTEp9qOgqF0/OD
-         u1tw==
-X-Gm-Message-State: APjAAAVf13YUGkmjI/TmQ21dTVn3i4yc1R51y5wWCJDRMkMpqebDyzSI
-        UE/Yy8x2V1u5IKKzkIR/nWU=
-X-Google-Smtp-Source: APXvYqxP40uxXfgsZAfE0SOl6Epsu7U43qMRlPsIMxBInAI/t4RsjFn8hUwZvCaxtzS4v2iN7P1SoQ==
-X-Received: by 2002:a63:8a4a:: with SMTP id y71mr42195505pgd.270.1557258837219;
-        Tue, 07 May 2019 12:53:57 -0700 (PDT)
-Received: from localhost.localdomain ([203.192.210.149])
-        by smtp.gmail.com with ESMTPSA id i15sm19756130pfr.8.2019.05.07.12.53.50
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 07 May 2019 12:53:56 -0700 (PDT)
-From:   Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Mike Lockwood <lockwood@android.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "Gustavo A . R . Silva" <garsilva@embeddedor.com>,
-        Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>
-Subject: [PATCH] mmc: android-goldfish: Drop pointer to mmc_host from goldfish_mmc_host
-Date:   Wed,  8 May 2019 01:22:29 +0530
-Message-Id: <1557258749-29009-1-git-send-email-kamlesh.gurudasani@gmail.com>
-X-Mailer: git-send-email 2.7.4
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AhQwhnya1lWygBDHTyZELUjYoXrZkk+CaLqHSwtab4c=;
+        b=lRdGwkGcxxj92f8gRUZBQEpDq9jz9hP3j6HqyEMiTmAsYFek9O4WyhPVIuZ36cePcU
+         He0ym82d9CQiQQvS+TaVvTdVeIArvgRIRL4+nUYIKn13lrBTimXNc5IGMyGOCNJuuu/s
+         AKRZjzH7+9Zc/2mb7WdaoA0+IERn1nX5tJdo1GDf/s9qy08SJtjcmO8/jiVL6t2m0Us4
+         1x+bEj7Nzmh0d6zH8tiAbOzgkolbu1nfa49VB/ILNhrIStBU1kCbce/0QyeYVyRtkjwG
+         wjMa9BaUEYV3BuPP7buHtkksRMQ5dvosP8IGtQObK2zvK9vPmyQ2Y+GimeIDVB7rl7Dj
+         o3wg==
+X-Gm-Message-State: APjAAAVWmeFfuPeOVCx4dzSjlO9M80VqzgOnjpqEnmF6xRLZDoRmIqPF
+        Tyn576L+H/r+sY5jaZlsZyUSo6MlYdg=
+X-Google-Smtp-Source: APXvYqxVJnq+p7GjVsf0eJxqAb32woeFhP7xvVpTjRw8eRdzqDOeFa40mplmCN23Koy4+AuI/Z+g3g==
+X-Received: by 2002:a2e:a308:: with SMTP id l8mr13717801lje.130.1557259246524;
+        Tue, 07 May 2019 13:00:46 -0700 (PDT)
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com. [209.85.167.41])
+        by smtp.gmail.com with ESMTPSA id w19sm3551500lfk.56.2019.05.07.13.00.45
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 May 2019 13:00:45 -0700 (PDT)
+Received: by mail-lf1-f41.google.com with SMTP id x132so1840628lfd.0
+        for <linux-mmc@vger.kernel.org>; Tue, 07 May 2019 13:00:45 -0700 (PDT)
+X-Received: by 2002:a19:ec07:: with SMTP id b7mr11898917lfa.62.1557259245003;
+ Tue, 07 May 2019 13:00:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190507063634.8389-1-ulf.hansson@linaro.org>
+In-Reply-To: <20190507063634.8389-1-ulf.hansson@linaro.org>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 7 May 2019 13:00:28 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wh+d+dWT6g6DO5QgZkp_CAFJyXt7RPtXn59=c8bvdKtKA@mail.gmail.com>
+Message-ID: <CAHk-=wh+d+dWT6g6DO5QgZkp_CAFJyXt7RPtXn59=c8bvdKtKA@mail.gmail.com>
+Subject: Re: [GIT PULL] MMC and MEMSTICK updates for v5.2
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The driver for android-goldfish uses a pointer to get from the private
-goldfish_mmc_host structure to the generic mmc_host structure.
-However the latter is always immediately preceding the former in
-memory, so compute its address with a subtraction (which is cheaper than a
-dereference) and drop the superfluous pointer.
+On Mon, May 6, 2019 at 11:36 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> Here's the PR with MMC updates for v5.1. This time and onwards I will continue
+> to include changes also for the MEMSTICK subsystem in the PR, please tell me if
+> you prefer another setup.
 
-No functional change intended.
+I'll just consider it all "MMC", not worrying about the memory stick
+part. I'm assuming it's not going to be all that active or noticeable
+in the big picture anyway... Sending them together sounds fine to me.
 
-Signed-off-by: Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>
----
- drivers/mmc/host/android-goldfish.c | 31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+Thanks,
 
-diff --git a/drivers/mmc/host/android-goldfish.c b/drivers/mmc/host/android-goldfish.c
-index 61e4e2a..f6334c2 100644
---- a/drivers/mmc/host/android-goldfish.c
-+++ b/drivers/mmc/host/android-goldfish.c
-@@ -113,7 +113,6 @@ struct goldfish_mmc_host {
- 	struct mmc_request	*mrq;
- 	struct mmc_command	*cmd;
- 	struct mmc_data		*data;
--	struct mmc_host		*mmc;
- 	struct device		*dev;
- 	unsigned char		id; /* 16xx chips have 2 MMC blocks */
- 	void			*virt_base;
-@@ -175,7 +174,7 @@ goldfish_mmc_start_command(struct goldfish_mmc_host *host, struct mmc_command *c
- 		resptype = 3;
- 		break;
- 	default:
--		dev_err(mmc_dev(host->mmc),
-+		dev_err(mmc_dev(mmc_from_priv(host)),
- 			"Invalid response type: %04x\n", mmc_resp_type(cmd));
- 		break;
- 	}
-@@ -221,8 +220,8 @@ static void goldfish_mmc_xfer_done(struct goldfish_mmc_host *host,
- 					data->sg->length);
- 		}
- 		host->data->bytes_xfered += data->sg->length;
--		dma_unmap_sg(mmc_dev(host->mmc), data->sg, host->sg_len,
--			     dma_data_dir);
-+		dma_unmap_sg(mmc_dev(mmc_from_priv(host)), data->sg,
-+			     host->sg_len, dma_data_dir);
- 	}
- 
- 	host->data = NULL;
-@@ -236,7 +235,7 @@ static void goldfish_mmc_xfer_done(struct goldfish_mmc_host *host,
- 
- 	if (!data->stop) {
- 		host->mrq = NULL;
--		mmc_request_done(host->mmc, data->mrq);
-+		mmc_request_done(mmc_from_priv(host), data->mrq);
- 		return;
- 	}
- 
-@@ -278,7 +277,7 @@ static void goldfish_mmc_cmd_done(struct goldfish_mmc_host *host,
- 
- 	if (host->data == NULL || cmd->error) {
- 		host->mrq = NULL;
--		mmc_request_done(host->mmc, cmd->mrq);
-+		mmc_request_done(mmc_from_priv(host), cmd->mrq);
- 	}
- }
- 
-@@ -313,7 +312,7 @@ static irqreturn_t goldfish_mmc_irq(int irq, void *dev_id)
- 		struct mmc_request *mrq = host->mrq;
- 		mrq->cmd->error = -ETIMEDOUT;
- 		host->mrq = NULL;
--		mmc_request_done(host->mmc, mrq);
-+		mmc_request_done(mmc_from_priv(host), mrq);
- 	}
- 
- 	if (end_command)
-@@ -339,12 +338,13 @@ static irqreturn_t goldfish_mmc_irq(int irq, void *dev_id)
- 		u32 state = GOLDFISH_MMC_READ(host, MMC_STATE);
- 		pr_info("%s: Card detect now %d\n", __func__,
- 			(state & MMC_STATE_INSERTED));
--		mmc_detect_change(host->mmc, 0);
-+		mmc_detect_change(mmc_from_priv(host), 0);
- 	}
- 
- 	if (!end_command && !end_transfer && !state_changed && !cmd_timeout) {
- 		status = GOLDFISH_MMC_READ(host, MMC_INT_STATUS);
--		dev_info(mmc_dev(host->mmc),"spurious irq 0x%04x\n", status);
-+		dev_info(mmc_dev(mmc_from_priv(host)), "spurious irq 0x%04x\n",
-+			 status);
- 		if (status != 0) {
- 			GOLDFISH_MMC_WRITE(host, MMC_INT_STATUS, status);
- 			GOLDFISH_MMC_WRITE(host, MMC_INT_ENABLE, 0);
-@@ -383,7 +383,7 @@ static void goldfish_mmc_prepare_data(struct goldfish_mmc_host *host,
- 
- 	dma_data_dir = mmc_get_dma_dir(data);
- 
--	host->sg_len = dma_map_sg(mmc_dev(host->mmc), data->sg,
-+	host->sg_len = dma_map_sg(mmc_dev(mmc_from_priv(host)), data->sg,
- 				  sg_len, dma_data_dir);
- 	host->dma_done = 0;
- 	host->dma_in_use = 1;
-@@ -461,7 +461,6 @@ static int goldfish_mmc_probe(struct platform_device *pdev)
- 	}
- 
- 	host = mmc_priv(mmc);
--	host->mmc = mmc;
- 
- 	pr_err("mmc: Mapping %lX to %lX\n", (long)res->start, (long)res->end);
- 	host->reg_base = ioremap(res->start, resource_size(res));
-@@ -508,8 +507,7 @@ static int goldfish_mmc_probe(struct platform_device *pdev)
- 
- 	ret = device_create_file(&pdev->dev, &dev_attr_cover_switch);
- 	if (ret)
--		dev_warn(mmc_dev(host->mmc),
--			 "Unable to create sysfs attributes\n");
-+		dev_warn(mmc_dev(mmc), "Unable to create sysfs attributes\n");
- 
- 	GOLDFISH_MMC_WRITE(host, MMC_SET_BUFFER, host->phys_base);
- 	GOLDFISH_MMC_WRITE(host, MMC_INT_ENABLE,
-@@ -525,7 +523,7 @@ static int goldfish_mmc_probe(struct platform_device *pdev)
- dma_alloc_failed:
- 	iounmap(host->reg_base);
- ioremap_failed:
--	mmc_free_host(host->mmc);
-+	mmc_free_host(mmc);
- err_alloc_host_failed:
- 	return ret;
- }
-@@ -533,14 +531,15 @@ static int goldfish_mmc_probe(struct platform_device *pdev)
- static int goldfish_mmc_remove(struct platform_device *pdev)
- {
- 	struct goldfish_mmc_host *host = platform_get_drvdata(pdev);
-+	struct mmc_host *mmc = mmc_from_priv(host);
- 
- 	BUG_ON(host == NULL);
- 
--	mmc_remove_host(host->mmc);
-+	mmc_remove_host(mmc);
- 	free_irq(host->irq, host);
- 	dma_free_coherent(&pdev->dev, BUFFER_SIZE, host->virt_base, host->phys_base);
- 	iounmap(host->reg_base);
--	mmc_free_host(host->mmc);
-+	mmc_free_host(mmc);
- 	return 0;
- }
- 
--- 
-2.7.4
-
+                 Linus
