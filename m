@@ -2,77 +2,52 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA50716BD5
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 22:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 895FC16CA2
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 May 2019 22:51:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726369AbfEGUAu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 May 2019 16:00:50 -0400
-Received: from mail-lj1-f174.google.com ([209.85.208.174]:42409 "EHLO
-        mail-lj1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726600AbfEGUAt (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 May 2019 16:00:49 -0400
-Received: by mail-lj1-f174.google.com with SMTP id y10so8935147lji.9
-        for <linux-mmc@vger.kernel.org>; Tue, 07 May 2019 13:00:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=AhQwhnya1lWygBDHTyZELUjYoXrZkk+CaLqHSwtab4c=;
-        b=Kzfmjw2pW4usOCMfxQJPbjeEqilKVI0LIcgtA3kJVJ4Tw96sTmBz9uiCgpLPOTX7xD
-         j4I1H3U2sRyVayV2ZslkIpPQyUvnuFn+ALVfkFMVLcmpWfSf9pjRC5O2dyzbfK/ptt5P
-         YNY442A4WUln5tqotbDtt/9LCbsuFtT0ligaI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AhQwhnya1lWygBDHTyZELUjYoXrZkk+CaLqHSwtab4c=;
-        b=lRdGwkGcxxj92f8gRUZBQEpDq9jz9hP3j6HqyEMiTmAsYFek9O4WyhPVIuZ36cePcU
-         He0ym82d9CQiQQvS+TaVvTdVeIArvgRIRL4+nUYIKn13lrBTimXNc5IGMyGOCNJuuu/s
-         AKRZjzH7+9Zc/2mb7WdaoA0+IERn1nX5tJdo1GDf/s9qy08SJtjcmO8/jiVL6t2m0Us4
-         1x+bEj7Nzmh0d6zH8tiAbOzgkolbu1nfa49VB/ILNhrIStBU1kCbce/0QyeYVyRtkjwG
-         wjMa9BaUEYV3BuPP7buHtkksRMQ5dvosP8IGtQObK2zvK9vPmyQ2Y+GimeIDVB7rl7Dj
-         o3wg==
-X-Gm-Message-State: APjAAAVWmeFfuPeOVCx4dzSjlO9M80VqzgOnjpqEnmF6xRLZDoRmIqPF
-        Tyn576L+H/r+sY5jaZlsZyUSo6MlYdg=
-X-Google-Smtp-Source: APXvYqxVJnq+p7GjVsf0eJxqAb32woeFhP7xvVpTjRw8eRdzqDOeFa40mplmCN23Koy4+AuI/Z+g3g==
-X-Received: by 2002:a2e:a308:: with SMTP id l8mr13717801lje.130.1557259246524;
-        Tue, 07 May 2019 13:00:46 -0700 (PDT)
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com. [209.85.167.41])
-        by smtp.gmail.com with ESMTPSA id w19sm3551500lfk.56.2019.05.07.13.00.45
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 May 2019 13:00:45 -0700 (PDT)
-Received: by mail-lf1-f41.google.com with SMTP id x132so1840628lfd.0
-        for <linux-mmc@vger.kernel.org>; Tue, 07 May 2019 13:00:45 -0700 (PDT)
-X-Received: by 2002:a19:ec07:: with SMTP id b7mr11898917lfa.62.1557259245003;
- Tue, 07 May 2019 13:00:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190507063634.8389-1-ulf.hansson@linaro.org>
-In-Reply-To: <20190507063634.8389-1-ulf.hansson@linaro.org>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 7 May 2019 13:00:28 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh+d+dWT6g6DO5QgZkp_CAFJyXt7RPtXn59=c8bvdKtKA@mail.gmail.com>
-Message-ID: <CAHk-=wh+d+dWT6g6DO5QgZkp_CAFJyXt7RPtXn59=c8bvdKtKA@mail.gmail.com>
+        id S1727307AbfEGUuM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 May 2019 16:50:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41326 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727282AbfEGUuM (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 7 May 2019 16:50:12 -0400
 Subject: Re: [GIT PULL] MMC and MEMSTICK updates for v5.2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557262211;
+        bh=FZRrrg1TyoUNC5xRkX5JR0KjLAaP0iMlAa87oIVA11c=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=x29KDaY4HjUnRcVv6Eih8ZZmpa7SKAPNnT2vOLV/ki1VvSNDNb0G19wF2DSLVIKvB
+         +WpMSJ2V8dwAXr8NPqnM1YRZUwW85gZV4O/RYqk/pXNslG48BZSbw8yWPoTA+9Nw8S
+         wvENVmmgQ3DX+x1nq0kCR9R7TcnVBBDpDBypCDao=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20190507063634.8389-1-ulf.hansson@linaro.org>
+References: <20190507063634.8389-1-ulf.hansson@linaro.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20190507063634.8389-1-ulf.hansson@linaro.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.2
+X-PR-Tracked-Commit-Id: 0a49a619e7e1aeb3f5f5511ca59314423c83dae2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 01e5d1830cf54ac45768ef9ceb3e79cea2e1198c
+Message-Id: <155726221151.25781.8513027415507932258.pr-tracker-bot@kernel.org>
+Date:   Tue, 07 May 2019 20:50:11 +0000
 To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, May 6, 2019 at 11:36 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> Here's the PR with MMC updates for v5.1. This time and onwards I will continue
-> to include changes also for the MEMSTICK subsystem in the PR, please tell me if
-> you prefer another setup.
+The pull request you sent on Tue,  7 May 2019 08:36:34 +0200:
 
-I'll just consider it all "MMC", not worrying about the memory stick
-part. I'm assuming it's not going to be all that active or noticeable
-in the big picture anyway... Sending them together sounds fine to me.
+> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.2
 
-Thanks,
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/01e5d1830cf54ac45768ef9ceb3e79cea2e1198c
 
-                 Linus
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
