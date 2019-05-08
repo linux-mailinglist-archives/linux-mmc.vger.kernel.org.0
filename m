@@ -2,60 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11BE4170AA
-	for <lists+linux-mmc@lfdr.de>; Wed,  8 May 2019 08:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 694181747A
+	for <lists+linux-mmc@lfdr.de>; Wed,  8 May 2019 11:03:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726869AbfEHGEa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 8 May 2019 02:04:30 -0400
-Received: from mga06.intel.com ([134.134.136.31]:26918 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725884AbfEHGE3 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 8 May 2019 02:04:29 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 May 2019 23:04:29 -0700
-X-ExtLoop1: 1
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by fmsmga001.fm.intel.com with ESMTP; 07 May 2019 23:04:27 -0700
-Subject: Re: [PATCH 2/2] mmc: sdhci_am654: Fix SLOTTYPE write
-To:     Faiz Abbas <a0230074@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
-Cc:     ulf.hansson@linaro.org
-References: <20190425155727.20010-1-faiz_abbas@ti.com>
- <20190425155727.20010-3-faiz_abbas@ti.com>
- <c2dcc343-395f-03a2-67a8-d89ab6a6b192@intel.com>
- <db0b0790-4556-8a3b-2ae1-fcb4b1beb4b3@ti.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <755f5c9f-922b-4f29-982a-cc411897b063@intel.com>
-Date:   Wed, 8 May 2019 09:04:20 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726602AbfEHJDS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 8 May 2019 05:03:18 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:41161 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726464AbfEHJDR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 8 May 2019 05:03:17 -0400
+Received: by mail-vs1-f67.google.com with SMTP id g187so12185432vsc.8;
+        Wed, 08 May 2019 02:03:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=CCVFYNIwO/r5Z4qjXrWitD8NE6BnjMH4QPoXGihWqy4=;
+        b=AHVBOHXC7l/4xxV5devc9rfyUmfb5oPBkkB9wirs+mplmXeOpnjkRcTHk7DtXsTYem
+         5vrM3smLEUvusGyFM6iAriX3KmBMXQEQGl0EQU8U+BIH7SmcbcTx4kMaxT7liuZepRA7
+         oCPONq2YowGyBrJQqORJiEBGVoSm1Na9++J2i1m5D0QRt9/QwoKsoDMZvVkMjQTEFubO
+         edhgGkYlQlm+VlEwQZKBGAujs8dX0WgOoZW1y3LJYifD4FB3HimWRYXsy/QEBJWK6Ypy
+         shlNR9waRrJo9cTdAwVMHicorilIQS/oVHxIVG2Nd474ze/HRog/08TuIc1cLVQy4NdK
+         /47w==
+X-Gm-Message-State: APjAAAVRXT+Cqdid2u4rT17l3R7vJwSQ2bqMiuGJDWZPHnRl305pcWQr
+        mmqnjnBEXgIYz6PpBdQyGE9bUxuMyX/ZhXUBsfM=
+X-Google-Smtp-Source: APXvYqx7SkbBWH0+tNRYQhvm1vM6Zh+W2cJEo4Rs04GU5m/VqYC/EOmWbQ1bw0KUDVKMtcqrCFLSKeTXhKpTa5mVGl4=
+X-Received: by 2002:a67:8e03:: with SMTP id q3mr19525968vsd.152.1557306196739;
+ Wed, 08 May 2019 02:03:16 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <db0b0790-4556-8a3b-2ae1-fcb4b1beb4b3@ti.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190410222240.5800-1-niklas.soderlund+renesas@ragnatech.se> <20190415111003.6rryld6rfounopho@ninjato>
+In-Reply-To: <20190415111003.6rryld6rfounopho@ninjato>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 8 May 2019 11:03:05 +0200
+Message-ID: <CAMuHMdVx_b8M2Gc_vn2_FS8xwf0ux=qYkH1ZfbWnTO0kBoLuPA@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: tmio: move runtime PM enablement to the driver implementations
+To:     =?UTF-8?Q?Niklas_S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 7/05/19 7:27 PM, Faiz Abbas wrote:
-> Hi Adrian,
-> 
-> On 26/04/19 11:30 AM, Adrian Hunter wrote:
->> On 25/04/19 6:57 PM, Faiz Abbas wrote:
->>> In the call to regmap_update_bits() for SLOTTYPE, the mask and value
->>> fields are exchanged. Fix this.
->>
->> Could you also comment on whether this has any known effect on the driver.
->>
-> 
-> This call was basically a NOP but it was the correct way around in
-> u-boot so it was just taking that value instead. No effect that was
-> known to me. Found this out just by inspection.
+Hi Niklas,
 
-Please put that in the commit message.
+On Mon, Apr 15, 2019 at 1:10 PM Wolfram Sang <wsa@the-dreams.de> wrote:
+> On Thu, Apr 11, 2019 at 12:22:40AM +0200, Niklas Söderlund wrote:
+> > Both the Renesas and Uniphier implementations perform actions which
+> > affect runtime PM before calling into the core tmio_mmc_host_probe()
+
+Do you know which pm_runtime_*() calls were done too early?
+I guess they returned an error, which is not checked?
+
+I checked the various pm_runtime_get*() calls, but none of them failed,
+while they typically return -EACCES when called too early.
+
+> > which enabled runtime PM. Move pm_runtime_enable() from the core and
+> > tmio_mmc_host_probe() into each drivers probe() so it can be called
+> > before any clocks or other resources are switched on.
+> >
+> > Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+> > ---
+>
+> Thanks for keeping at this. Setting up the APE6 board for further tests
+> was painful, I understood that.
+>
+> Since you lost the cover-letter from the last series, I think it should
+> be mentioned that this fixes a clock imbalance problem (at least on
+> Gen3).
+>
+> For the APE6 tests, we need to wait until Geert comes back. I surely
+> would like his input. And Yamada-san's, too, to make sure his platform
+> also benefits.
+
+Thanks, but I still see a clock imbalances in /sys/kernel/debug/clk/clk_summary
+when comparing before/after s2ram.
+
+On ape6evm:
+
+-   mmcif0   2   2   0   100000000   0     0  50000
++   mmcif0   1   1   0   100000000   0     0  50000
+
+On r8a77965/salvator-xs:
+
+-   s0d3   1   2   0   266240000   0     0  50000
++   s0d3   2   2   0   266240000   0     0  50000
+
+-   sys-dmac0   0   1   0   266240000   0     0  50000
++   sys-dmac0   1   1   0   266240000   0     0  50000
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
