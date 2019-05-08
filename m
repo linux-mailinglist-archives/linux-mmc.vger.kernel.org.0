@@ -2,94 +2,108 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B38F17E47
-	for <lists+linux-mmc@lfdr.de>; Wed,  8 May 2019 18:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AEFF18021
+	for <lists+linux-mmc@lfdr.de>; Wed,  8 May 2019 21:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728457AbfEHQlC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 8 May 2019 12:41:02 -0400
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:36309 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727560AbfEHQlC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 8 May 2019 12:41:02 -0400
-Received: by mail-yw1-f67.google.com with SMTP id q185so16765866ywe.3
-        for <linux-mmc@vger.kernel.org>; Wed, 08 May 2019 09:41:01 -0700 (PDT)
+        id S1727212AbfEHS6r (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 8 May 2019 14:58:47 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:39882 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727003AbfEHS6r (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 8 May 2019 14:58:47 -0400
+Received: by mail-io1-f66.google.com with SMTP id m7so15707233ioa.6
+        for <linux-mmc@vger.kernel.org>; Wed, 08 May 2019 11:58:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=pK0d0RZmUxDAg2UlpJZk6eqKP4c8MBzekwXBlQJcaEA=;
-        b=YS5aDbbBHo/ZpqucQo4JmlEVicPBsSMyK91OtXe2V8t5TpyOfWVVDZcWLMQ/dv72Jf
-         v62QeBR8G9/vH2qg+fbIYKlXx5sgCxG23YYKxDnUkXd6o3YISBsF+FfsL2MJqAoy1Qzy
-         wBj+YvrFo99bgAxJ4s7iDmnOj9bnYrxt2dH3s=
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xF14R4zf4pQm0I/kkaQ+/wocL24kxY2m0EQexJPCs6o=;
+        b=gGhG1bu38PrUTGMHoUSTMIBEYGgGKHf9Sxwse9RZG6QmbyldWNlvWWEC59XkWHil9C
+         ChPuZAfx/DzTK8dTR3gWZXkrDMLxpMtkfdrcR9xhTs+K12U3lCQz/ITwcLBRGp6Ae4WP
+         x2fwzVgpa2IhCGd+wcmKPzpqcRvWWPZvRH3o8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=pK0d0RZmUxDAg2UlpJZk6eqKP4c8MBzekwXBlQJcaEA=;
-        b=LFSL78TlZX4n+U6AZYNZDUHHxet970A3zpdDncEkVQpYL26meXN3qof0pSNlcCWvr/
-         4hKq5yHLgE5RpEwf7il+whFQXPQaA+4OaGYA6c5j4JTyCqfw00Eq/5DAVtZTpAjHCFUN
-         PI0K0eebDWGjtXs3qdbQPi330fj+sul5WDIOKcCSyy6vlVDGFZBrt+DLq4UIWS38+5Oy
-         5CfoVSu1zMr/IfC6bQRkW+YeZfsp5S66RevDxozvEutSpU/YGcBL93lYLmafOXHrfXav
-         rHIi6B5pVT/NFx9LxzDD6Hk3tWFfvVJLQfVVXDR7KHL5CQU3sMBElKzFdI1qo78XtG87
-         pyVA==
-X-Gm-Message-State: APjAAAUU7wLy5ldj6cDkkpayfa7jP1dsAt+uO+Yz22CHyb4LzyZTiEhb
-        g+bcdRwk913/jK1/fdAiogsX1w==
-X-Google-Smtp-Source: APXvYqz9ir/Gh8NUb1ycpQcDDVHcfdkyx6GifoD6MZrbq72G+zOHknduP6n8ZVhZZ9W94OE4VgRLcg==
-X-Received: by 2002:a25:4941:: with SMTP id w62mr27324493yba.360.1557333661480;
-        Wed, 08 May 2019 09:41:01 -0700 (PDT)
-Received: from lbrmn-lnxub113.broadcom.net ([192.19.228.250])
-        by smtp.gmail.com with ESMTPSA id u6sm4671081ywl.71.2019.05.08.09.40.59
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xF14R4zf4pQm0I/kkaQ+/wocL24kxY2m0EQexJPCs6o=;
+        b=JnHAfn4pA5Wp/uvt3i3FHy+fHyh6NW7ZnfvH3ggVBOKiSb8oMv5STsPldJrqO3+N20
+         B7FkL2qKOV8CPTf4AKhZMb7w+BMIxrkmtoKZNDLl1Z74cPBDMJBTDpJCL1cx+Z5V3AYp
+         9g6cWrMFa4FWhMwNVqA3CJ00CrV7KpgU3lG1FX4XrOFF0OV4WNwoJO1uc6STZhAJyNLG
+         VG/YyEzFtwIx+bKI8SdsDODsdaekLUkiEZJetZ8M7WgGQ5vn+VIgdNl1z6kNNBFaDQS6
+         N15ZM0tzw3asU66/WMgB0D4lZIwGQ78MmgYigezy1GyiZaLwmGFf85aa7s+qR7hF6aV0
+         6h5g==
+X-Gm-Message-State: APjAAAUDAWaJIgFh8BXklg7FlEcWkr7tzJ3mDIxHaSRDpIfnELmOrJbm
+        fjTm+FYuL0WGK1Nxsr7wx+z+/d2lboKxyQ==
+X-Google-Smtp-Source: APXvYqxO2btrTlLVnH069K8Kpa8EUeNIqs+oruyy3jyxQPN+2HckJ3hY2rXoBN0jI2qnhS1dybg0KA==
+X-Received: by 2002:a5d:8b42:: with SMTP id c2mr19614559iot.192.1557341926472;
+        Wed, 08 May 2019 11:58:46 -0700 (PDT)
+Received: from localhost ([2620:15c:183:0:20b8:dee7:5447:d05])
+        by smtp.gmail.com with ESMTPSA id s4sm5192190ioc.76.2019.05.08.11.58.45
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 08 May 2019 09:41:00 -0700 (PDT)
-From:   Scott Branden <scott.branden@broadcom.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>
-Cc:     BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Trac Hoang <trac.hoang@broadcom.com>,
-        stable@vger.kernel.org, Scott Branden <scott.branden@broadcom.com>
-Subject: [PATCH v2 2/2] mmc: sdhci-iproc: Set NO_HISPD bit to fix HS50 data hold time problem
-Date:   Wed,  8 May 2019 09:40:44 -0700
-Message-Id: <20190508164044.22451-3-scott.branden@broadcom.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190508164044.22451-1-scott.branden@broadcom.com>
-References: <20190508164044.22451-1-scott.branden@broadcom.com>
+        Wed, 08 May 2019 11:58:45 -0700 (PDT)
+From:   Raul E Rangel <rrangel@chromium.org>
+To:     linux-mmc@vger.kernel.org
+Cc:     djkurtz@google.com, adrian.hunter@intel.com, zwisler@chromium.org,
+        Raul E Rangel <rrangel@chromium.org>,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 1/2] mmc: v4.14: Fix null pointer dereference in mmc_init_request
+Date:   Wed,  8 May 2019 12:58:32 -0600
+Message-Id: <20190508185833.187068-1-rrangel@chromium.org>
+X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Trac Hoang <trac.hoang@broadcom.com>
+It is possible for queuedata to be cleared in mmc_cleanup_queue before
+the request has been started. This will result in dereferencing a null
+pointer.
 
-The iproc host eMMC/SD controller hold time does not meet the
-specification in the HS50 mode.  This problem can be mitigated
-by disabling the HISPD bit; thus forcing the controller output
-data to be driven on the falling clock edges rather than the
-rising clock edges.
-
-Cc: stable@vger.kernel.org # v4.12+
-Signed-off-by: Trac Hoang <trac.hoang@broadcom.com>
-Signed-off-by: Scott Branden <scott.branden@broadcom.com>
+Signed-off-by: Raul E Rangel <rrangel@chromium.org>
 ---
- drivers/mmc/host/sdhci-iproc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I think we should cherry-pick 41e3efd07d5a02c80f503e29d755aa1bbb4245de
+https://lore.kernel.org/patchwork/patch/856512/ into 4.14. It fixes a
+potential resource leak when shutting down the request queue. Once this
+patch is applied, there is a potential for a null pointer dereference.
+That's what this patch fixes. The next patch is just an optimization to
+stop processing earlier.
 
-diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
-index 9d4071c41c94..2feb4ef32035 100644
---- a/drivers/mmc/host/sdhci-iproc.c
-+++ b/drivers/mmc/host/sdhci-iproc.c
-@@ -220,7 +220,8 @@ static const struct sdhci_iproc_data iproc_cygnus_data = {
+See https://patchwork.kernel.org/patch/10925469/ for the initial
+motivation.
+
+This commit applies to v4.14.116.
+
+This doesn't apply to 5.1 since mmc has been migrated to blk-mq.
+
+Thanks,
+Raul
+
+ drivers/mmc/core/queue.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
+index 0a4e77a5ba33..4bf1a9c6440b 100644
+--- a/drivers/mmc/core/queue.c
++++ b/drivers/mmc/core/queue.c
+@@ -159,8 +159,14 @@ static int mmc_init_request(struct request_queue *q, struct request *req,
+ {
+ 	struct mmc_queue_req *mq_rq = req_to_mmc_queue_req(req);
+ 	struct mmc_queue *mq = q->queuedata;
+-	struct mmc_card *card = mq->card;
+-	struct mmc_host *host = card->host;
++	struct mmc_card *card;
++	struct mmc_host *host;
++
++	if (!mq)
++		return -ENODEV;
++
++	card = mq->card;
++	host = card->host;
  
- static const struct sdhci_pltfm_data sdhci_iproc_pltfm_data = {
- 	.quirks = SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
--		  SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
-+		  SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12 |
-+		  SDHCI_QUIRK_NO_HISPD_BIT,
- 	.quirks2 = SDHCI_QUIRK2_ACMD23_BROKEN,
- 	.ops = &sdhci_iproc_ops,
- };
+ 	mq_rq->sg = mmc_alloc_sg(host->max_segs, gfp);
+ 	if (!mq_rq->sg)
 -- 
-2.17.1
+2.21.0.1020.gf2820cf01a-goog
 
