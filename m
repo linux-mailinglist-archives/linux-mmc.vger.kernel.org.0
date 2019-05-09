@@ -2,101 +2,73 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82CAF18EE7
-	for <lists+linux-mmc@lfdr.de>; Thu,  9 May 2019 19:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D74D19050
+	for <lists+linux-mmc@lfdr.de>; Thu,  9 May 2019 20:42:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726824AbfEIRYo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 9 May 2019 13:24:44 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:43817 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726809AbfEIRYk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 9 May 2019 13:24:40 -0400
-Received: by mail-pg1-f195.google.com with SMTP id t22so1536511pgi.10
-        for <linux-mmc@vger.kernel.org>; Thu, 09 May 2019 10:24:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Wx8gaoHC5MOYV389XtnYNdY7stPe/BwS11WRGJ3X0jU=;
-        b=NLbenTRuAo/KwttyYdSfiYeHTl8s02uccdxHkJwJLM2aY7TwvWQqlzRs0z8yANQP8R
-         khMAKyxuFZJpgqgeNYGcHLqu5JE1xjX9RHiBh3YBz9oyDSgkjkxUuCIXX01cR7/10nQI
-         rodbcT1oFhD5khMY98DrmTSlWUYOKTkyTYnlE=
+        id S1726701AbfEISmk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 9 May 2019 14:42:40 -0400
+Received: from mail-it1-f193.google.com ([209.85.166.193]:35407 "EHLO
+        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726632AbfEISmk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 9 May 2019 14:42:40 -0400
+Received: by mail-it1-f193.google.com with SMTP id u186so5068273ith.0
+        for <linux-mmc@vger.kernel.org>; Thu, 09 May 2019 11:42:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=Wx8gaoHC5MOYV389XtnYNdY7stPe/BwS11WRGJ3X0jU=;
-        b=VQ+UzcyoyFDwM2xCt0POgEwUBOz7bFpNjzMd6wUgaPla/kasAPYcXdjWgN1/yqva5h
-         KsVICRbHY3A6MZoR4kV0GvtLqj+Wqy6+VcVP3s1p05OTa2etPh87Nns3GT75BdGHdJxt
-         3AXmTWzyv5PJNm+92XShG7mOZAlQrIe1YTBXZCZ+rbCU1Yu1ElvwaKyynype2h/BnXe/
-         +tabzGq5EBFYs38cn7LaUrlIP5evKSR84g5bx6PZdtajUqechSClH0ZHkvrkewgqLwjw
-         nQEXaMOnkjNo1aP0kjpsHXP4/kdcSNUJHaxoPvDJ1gR6G9ZF6Ze3h/n6tL4Gi8YNGqHv
-         kqkw==
-X-Gm-Message-State: APjAAAXkOYqgiVZtqnkcP8wabIvbQfEpxJqvDD6aSeIZNnAwzBYF836q
-        wzzcHQGYOj8JLRkMxc97QKleIQ==
-X-Google-Smtp-Source: APXvYqwYqy8L9x/EoYgEU/4wY9WEr7lylwmLPU9640H1GKytWxa+mGBeQ/ZgM4Ryo2yw8qrfa7yERw==
-X-Received: by 2002:aa7:9116:: with SMTP id 22mr6898551pfh.165.1557422679753;
-        Thu, 09 May 2019 10:24:39 -0700 (PDT)
-Received: from lbrmn-lnxub113.broadcom.net ([192.19.228.250])
-        by smtp.gmail.com with ESMTPSA id m8sm3989699pgn.59.2019.05.09.10.24.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 09 May 2019 10:24:39 -0700 (PDT)
-From:   Scott Branden <scott.branden@broadcom.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>
-Cc:     BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Trac Hoang <trac.hoang@broadcom.com>,
-        stable@vger.kernel.org, Scott Branden <scott.branden@broadcom.com>
-Subject: [PATCH v3 2/2] mmc: sdhci-iproc: Set NO_HISPD bit to fix HS50 data hold time problem
-Date:   Thu,  9 May 2019 10:24:27 -0700
-Message-Id: <20190509172427.17835-3-scott.branden@broadcom.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190509172427.17835-1-scott.branden@broadcom.com>
-References: <20190509172427.17835-1-scott.branden@broadcom.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=RAPPdEdzAC7Nt0I8+scXV0pUykQdkkkD3cPHgHiKjU8=;
+        b=EA/ichp6rKwQmA41fESwb4j4uaWeWuD52YwU65vVfIMfrBbr4qm22odgAbc3y+KOs4
+         uYtoXshTC+9v7P5K2ki7wA/nXY6y+10wXkP2bjJcjn7xTcvFF2udokT0RUM3wfsxjAje
+         5+RFMzEtEJfNe7ooxe3LuywCyZ2OPUGCwJhnCKidxxonlz3UP/qDZIjlEQpRNrqJVaCy
+         6CrA6yLQyV1A6SmbHlFMNs3jlVcWRPZ03NZH91sP+9Vnf8jydOqYanUq9ynmqs0WPwBI
+         RWSvlOla6ubGeBj71dCKdwaSkM7exDz2LC3xX8x1eoG+yGfpAOpPoUuFPk+l60eH9cbV
+         UNcQ==
+X-Gm-Message-State: APjAAAXC8ukjSQj+WGn29TZhTtt0hGLYr0w7r6cEMa9afjbv9Afy4Q3h
+        x8zUVHxhZxQMaO6253WsydLs6Q==
+X-Google-Smtp-Source: APXvYqz/8tymkjQmLnwRihvpLkgn17Ri7VMfntsvcRf0uxgb8XJaXi9AYQEnf2j9n/EgX0JRGNMKcA==
+X-Received: by 2002:a24:17ce:: with SMTP id 197mr4164215ith.21.1557427359216;
+        Thu, 09 May 2019 11:42:39 -0700 (PDT)
+Received: from google.com ([2620:15c:183:0:20b8:dee7:5447:d05])
+        by smtp.gmail.com with ESMTPSA id h16sm1021805ioh.35.2019.05.09.11.42.38
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 09 May 2019 11:42:38 -0700 (PDT)
+Date:   Thu, 9 May 2019 12:42:34 -0600
+From:   Raul Rangel <rrangel@chromium.org>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     linux-mmc@vger.kernel.org, djkurtz@google.com,
+        adrian.hunter@intel.com, zwisler@chromium.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH 1/2] mmc: v4.14: Fix null pointer dereference in
+ mmc_init_request
+Message-ID: <20190509184234.GA197434@google.com>
+References: <20190508185833.187068-1-rrangel@chromium.org>
+ <20190509060456.GA17096@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190509060456.GA17096@infradead.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Trac Hoang <trac.hoang@broadcom.com>
+On Wed, May 08, 2019 at 11:04:56PM -0700, Christoph Hellwig wrote:
+> On Wed, May 08, 2019 at 12:58:32PM -0600, Raul E Rangel wrote:
+> > It is possible for queuedata to be cleared in mmc_cleanup_queue before
+> > the request has been started.
+> 
+> Errm.  I think we need to fix that problem instead of working around it.
+So mmc_request_fn already has a null check, it was just missing on
+mmc_init_request.
 
-The iproc host eMMC/SD controller hold time does not meet the
-specification in the HS50 mode.  This problem can be mitigated
-by disabling the HISPD bit; thus forcing the controller output
-data to be driven on the falling clock edges rather than the
-rising clock edges.
+I could move `blk_cleanup_queue(q)` above `q->queuedata = NULL` and the
+lock. So that would mean cherry-picking
+https://lore.kernel.org/patchwork/patch/856512/ and then a patch with
+moving blk_cleanup_queue.
 
-Stable tag (v4.12+) chosen to assist stable kernel maintainers so that
-the change does not produce merge conflicts backporting to older kernel
-versions. In reality, the timing bug existed since the driver was first
-introduced but there is no need for this driver to be supported in kernel
-versions that old.
+Should I do that instead?
 
-Cc: stable@vger.kernel.org # v4.12+
-Signed-off-by: Trac Hoang <trac.hoang@broadcom.com>
-Signed-off-by: Scott Branden <scott.branden@broadcom.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
----
- drivers/mmc/host/sdhci-iproc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
-index 9d4071c41c94..2feb4ef32035 100644
---- a/drivers/mmc/host/sdhci-iproc.c
-+++ b/drivers/mmc/host/sdhci-iproc.c
-@@ -220,7 +220,8 @@ static const struct sdhci_iproc_data iproc_cygnus_data = {
- 
- static const struct sdhci_pltfm_data sdhci_iproc_pltfm_data = {
- 	.quirks = SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
--		  SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
-+		  SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12 |
-+		  SDHCI_QUIRK_NO_HISPD_BIT,
- 	.quirks2 = SDHCI_QUIRK2_ACMD23_BROKEN,
- 	.ops = &sdhci_iproc_ops,
- };
--- 
-2.17.1
-
+Thanks,
+Raul
