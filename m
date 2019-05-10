@@ -2,78 +2,164 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B2A419DA7
-	for <lists+linux-mmc@lfdr.de>; Fri, 10 May 2019 15:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97F8119E05
+	for <lists+linux-mmc@lfdr.de>; Fri, 10 May 2019 15:22:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727464AbfEJNAM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 10 May 2019 09:00:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40490 "EHLO mail.kernel.org"
+        id S1727602AbfEJNWC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 10 May 2019 09:22:02 -0400
+Received: from mx01-fr.bfs.de ([193.174.231.67]:45441 "EHLO mx01-fr.bfs.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727071AbfEJNAL (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 10 May 2019 09:00:11 -0400
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 63AFB217F9;
-        Fri, 10 May 2019 13:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557493210;
-        bh=LsB4wRG7wXandWAwzv751zSzegIOxKf8DCwVeYS+wZo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=o9UoB1IQfAzm/77bKAUyUve7ebdMFEiCfoaRDB5FHwVX7SeHyD7LSFzlA2KwZPWN8
-         iQFgN9YsNWzEFcPkXXzZbK2oJpreht+OsFKhsMvDW7DVQPHSBQQ/v6OQh2pEX0OCRU
-         2HvTRdsJGJhBBncqT4FYXfSlYOHki8wNlUSfmJJA=
-Received: by mail-qk1-f172.google.com with SMTP id c1so2247002qkk.4;
-        Fri, 10 May 2019 06:00:10 -0700 (PDT)
-X-Gm-Message-State: APjAAAVaRZuUK0Bc2HPLPrZZ14wYgQlFRpQeK4cQQFET1kAl4VpEHrFE
-        dg7fObbLVna7ZZ5O2V7rRsR0CrxHth19TRi4Aw==
-X-Google-Smtp-Source: APXvYqyJFUpcXFgSc64L63+Yfqmy5T2ssN8dGlZHA7sVG67a1VSyOBVNxl+4OXjQWFgv+hoyeCHBDol+AkCsOX/sC/w=
-X-Received: by 2002:a05:620a:1107:: with SMTP id o7mr1133260qkk.184.1557493209611;
- Fri, 10 May 2019 06:00:09 -0700 (PDT)
+        id S1727321AbfEJNWC (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 10 May 2019 09:22:02 -0400
+X-Greylist: delayed 608 seconds by postgrey-1.27 at vger.kernel.org; Fri, 10 May 2019 09:22:01 EDT
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id B7B7A20342;
+        Fri, 10 May 2019 15:11:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1557493907; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Y8mkVOrIh7/aBHtVmfeDdU8eJLE9TnXkEAPM4bfj3zA=;
+        b=H/R/A2fGR09r1tlb0a4+pfOga+5b91KX6/LHrhVDlpJCY3eNLBD7ZmXQ8APR5HfWuuvXMl
+        EaraOpMZ/VjNjRELCoEbnkcpiEUvJwk/Vke+4eFw4c7tzTerkycceLBqRuYrBJMj9GYgc0
+        l/kK7EW10P8AwUSCGhYkZ4/QFND+7HJeDPrdZNYA8sIP6HftcWwyzsEUbBgHJiGYjQt23K
+        dLIJLvxvOOh27UV0hrDky3Ckw+i3U0GEF4qv6F2MM1+fdfTN5rc1v8E/BqdFLMNotqG++D
+        IsDeRGUjWZEOz465LGjl2TVSsnR0lwLEi1P4CcpN9HJRAy2aBa8D/vSf4k5Hrg==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id E2527BEEBD;
+        Fri, 10 May 2019 15:11:46 +0200 (CEST)
+Message-ID: <5CD57891.9000505@bfs.de>
+Date:   Fri, 10 May 2019 15:11:45 +0200
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-References: <68d3fb999d16e49696e832e1d1a6bcd7b76a6e8d.1557389988.git-series.maxime.ripard@bootlin.com>
- <CAL_JsqJi0iwM61anziC-cHXp0PL2AEtXiWFCLn943vTxK5eeig@mail.gmail.com> <20190510105759.z2ob5tl4ovn2ctdo@flea>
-In-Reply-To: <20190510105759.z2ob5tl4ovn2ctdo@flea>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 10 May 2019 07:59:56 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqL+R3nWZi8u7_QRuGj=k7M2qB+NkM982OZfw0=n3+uLWA@mail.gmail.com>
-Message-ID: <CAL_JsqL+R3nWZi8u7_QRuGj=k7M2qB+NkM982OZfw0=n3+uLWA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: mmc: Add YAML schemas for the generic
- MMC options
-To:     Maxime Ripard <maxime.ripard@bootlin.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Maxim Levitsky <maximlevitsky@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Alex Dubov <oakad@yahoo.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Martin Wilck <martin.wilck@suse.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-mmc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mspro_block: Fix an error code in mspro_block_issue_req()
+References: <20190510112440.GA22858@mwanda>
+In-Reply-To: <20190510112440.GA22858@mwanda>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.10
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.10 / 7.00];
+         ARC_NA(0.00)[];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         BAYES_HAM(-3.00)[100.00%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         FREEMAIL_ENVRCPT(0.00)[gmail.com,yahoo.com];
+         MIME_GOOD(-0.10)[text/plain];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         DKIM_SIGNED(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[10];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         FREEMAIL_CC(0.00)[gmail.com];
+         MID_RHS_MATCH_FROM(0.00)[];
+         RCVD_TLS_ALL(0.00)[];
+         RCVD_COUNT_TWO(0.00)[2]
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, May 10, 2019 at 5:58 AM Maxime Ripard <maxime.ripard@bootlin.com> wrote:
->
-> Hi Rob,
->
-> On Thu, May 09, 2019 at 11:45:26AM -0500, Rob Herring wrote:
-> > > +dependencies:
-> > > +  cd-inverted: [ cd-gpios ]
-> >
-> > The note (which you dropped) says 'cd-inverted' applies for built-in CD too.
-> >
-> > At least that is what I take "Polarity of dedicated pins can be
-> > specified, using *-inverted properties." to mean.
->
-> Indeed, my bad. i guess we should probably keep that note. How are we
-> supposed to keep a note that would apply to multiple properties? In
-> the global description?
 
-You could do a comment next to both properties or add it to the
-description on one and refer to it from the other property (and group
-the 2 properties together).
 
-Rob
+Am 10.05.2019 13:24, schrieb Dan Carpenter:
+> We accidentally changed the error code from -EAGAIN to 1 when we did the
+> blk-mq conversion.
+> 
+> Maybe a contributing factor to this mistake is that it wasn't obvious
+> that the "while (chunk) {" condition is always true.  I have cleaned
+> that up as well.
+> 
+> Fixes: d0be12274dad ("mspro_block: convert to blk-mq")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/memstick/core/mspro_block.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/memstick/core/mspro_block.c b/drivers/memstick/core/mspro_block.c
+> index aba50ec98b4d..9fc22c755dbf 100644
+> --- a/drivers/memstick/core/mspro_block.c
+> +++ b/drivers/memstick/core/mspro_block.c
+> @@ -694,13 +694,13 @@ static void h_mspro_block_setup_cmd(struct memstick_dev *card, u64 offset,
+>  
+>  /*** Data transfer ***/
+>  
+> -static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
+> +static int mspro_block_issue_req(struct memstick_dev *card)
+>  {
+>  	struct mspro_block_data *msb = memstick_get_drvdata(card);
+>  	u64 t_off;
+>  	unsigned int count;
+>  
+> -	while (chunk) {
+> +	while (true) {
+>  		msb->current_page = 0;
+>  		msb->current_seg = 0;
+>  		msb->seg_count = blk_rq_map_sg(msb->block_req->q,
+> @@ -709,6 +709,7 @@ static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
+>  
+>  		if (!msb->seg_count) {
+>  			unsigned int bytes = blk_rq_cur_bytes(msb->block_req);
+> +			bool chunk;
+>  
+>  			chunk = blk_update_request(msb->block_req,
+>  							BLK_STS_RESOURCE,
+> @@ -718,7 +719,7 @@ static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
+>  			__blk_mq_end_request(msb->block_req,
+>  						BLK_STS_RESOURCE);
+>  			msb->block_req = NULL;
+> -			break;
+> +			return -EAGAIN;
+>  		}
+>  
+>  		t_off = blk_rq_pos(msb->block_req);
+> @@ -735,8 +736,6 @@ static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
+>  		memstick_new_req(card->host);
+>  		return 0;
+>  	}
+> -
+> -	return 1;
+>  }
+>  
+
+If i see this correcly everybody leaving the loop making the function return something.
+I do not know how would do that but IMHO is better to be defensive and end the function
+with a propper return code (perhaps 0).
+
+re,
+ wh
+
+
+>  static int mspro_block_complete_req(struct memstick_dev *card, int error)
+> @@ -779,7 +778,7 @@ static int mspro_block_complete_req(struct memstick_dev *card, int error)
+>  		chunk = blk_update_request(msb->block_req,
+>  				errno_to_blk_status(error), t_len);
+>  		if (chunk) {
+> -			error = mspro_block_issue_req(card, chunk);
+> +			error = mspro_block_issue_req(card);
+>  			if (!error)
+>  				goto out;
+>  		} else {
+> @@ -849,7 +848,7 @@ static blk_status_t mspro_queue_rq(struct blk_mq_hw_ctx *hctx,
+>  	msb->block_req = bd->rq;
+>  	blk_mq_start_request(bd->rq);
+>  
+> -	if (mspro_block_issue_req(card, true))
+> +	if (mspro_block_issue_req(card))
+>  		msb->block_req = NULL;
+>  
+>  	spin_unlock_irq(&msb->q_lock);
