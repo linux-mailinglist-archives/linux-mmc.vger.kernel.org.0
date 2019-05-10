@@ -2,42 +2,48 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97F8119E05
-	for <lists+linux-mmc@lfdr.de>; Fri, 10 May 2019 15:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2649119E11
+	for <lists+linux-mmc@lfdr.de>; Fri, 10 May 2019 15:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727602AbfEJNWC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 10 May 2019 09:22:02 -0400
-Received: from mx01-fr.bfs.de ([193.174.231.67]:45441 "EHLO mx01-fr.bfs.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727321AbfEJNWC (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 10 May 2019 09:22:02 -0400
-X-Greylist: delayed 608 seconds by postgrey-1.27 at vger.kernel.org; Fri, 10 May 2019 09:22:01 EDT
-Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
-        by mx01-fr.bfs.de (Postfix) with ESMTPS id B7B7A20342;
-        Fri, 10 May 2019 15:11:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1557493907; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Y8mkVOrIh7/aBHtVmfeDdU8eJLE9TnXkEAPM4bfj3zA=;
-        b=H/R/A2fGR09r1tlb0a4+pfOga+5b91KX6/LHrhVDlpJCY3eNLBD7ZmXQ8APR5HfWuuvXMl
-        EaraOpMZ/VjNjRELCoEbnkcpiEUvJwk/Vke+4eFw4c7tzTerkycceLBqRuYrBJMj9GYgc0
-        l/kK7EW10P8AwUSCGhYkZ4/QFND+7HJeDPrdZNYA8sIP6HftcWwyzsEUbBgHJiGYjQt23K
-        dLIJLvxvOOh27UV0hrDky3Ckw+i3U0GEF4qv6F2MM1+fdfTN5rc1v8E/BqdFLMNotqG++D
-        IsDeRGUjWZEOz465LGjl2TVSsnR0lwLEi1P4CcpN9HJRAy2aBa8D/vSf4k5Hrg==
-Received: from [134.92.181.33] (unknown [134.92.181.33])
-        by mail-fr.bfs.de (Postfix) with ESMTPS id E2527BEEBD;
-        Fri, 10 May 2019 15:11:46 +0200 (CEST)
-Message-ID: <5CD57891.9000505@bfs.de>
-Date:   Fri, 10 May 2019 15:11:45 +0200
-From:   walter harms <wharms@bfs.de>
-Reply-To: wharms@bfs.de
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
-MIME-Version: 1.0
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Maxim Levitsky <maximlevitsky@gmail.com>,
+        id S1727332AbfEJNYU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 10 May 2019 09:24:20 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:39384 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727249AbfEJNYU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 10 May 2019 09:24:20 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4ADJ05q077231;
+        Fri, 10 May 2019 13:24:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=SGhg8csM+Y98GUzU4SXf1DBvpQaB0NDjiZWAlh6ToH0=;
+ b=qoN6tcTigdcAMm3bf2EqtLKucp3vv2pyVQFQ5n1UoA1IMtCHeSA9IoF7kiXM4s2iQX0a
+ D+pWVQOZTY2bi6cZqU47pDfY1Q6nAHJtd2OCGNXONJbllcpClhSCbdOkRZEik5MHUaVB
+ ILs/F3JMTlfWszV0gJcW+hXquQAoxtYYnM9g0KYoT/cNHcWZdirv0c+aapDukZPRusrC
+ e+F2mh1bVbrflr4UUyHiwKnmyn0iVexEaYHhYuG/WEJIiZBcYGIRRIwuw0UVMDxCc0Z7
+ oSbOCRhmZRyzs4vtUB4bbqgY8FQOviC4Ck0A7Sp7tpREYpm3y5w8/y+NmU92RzG3lcq+ Vw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 2s94b6h3gm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 10 May 2019 13:24:01 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4ADNAGw119776;
+        Fri, 10 May 2019 13:24:01 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2scpy68qpt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 10 May 2019 13:24:00 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4ADNuHE003904;
+        Fri, 10 May 2019 13:23:56 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 10 May 2019 13:23:55 +0000
+Date:   Fri, 10 May 2019 16:23:47 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     walter harms <wharms@bfs.de>
+Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
         Jens Axboe <axboe@kernel.dk>, Alex Dubov <oakad@yahoo.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Hannes Reinecke <hare@suse.de>,
@@ -45,121 +51,42 @@ CC:     Maxim Levitsky <maximlevitsky@gmail.com>,
         Bart Van Assche <bvanassche@acm.org>,
         linux-mmc@vger.kernel.org, kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] mspro_block: Fix an error code in mspro_block_issue_req()
+Message-ID: <20190510132347.GH16030@kadam>
 References: <20190510112440.GA22858@mwanda>
-In-Reply-To: <20190510112440.GA22858@mwanda>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.10
-Authentication-Results: mx01-fr.bfs.de
-X-Spamd-Result: default: False [-3.10 / 7.00];
-         ARC_NA(0.00)[];
-         HAS_REPLYTO(0.00)[wharms@bfs.de];
-         BAYES_HAM(-3.00)[100.00%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         FREEMAIL_ENVRCPT(0.00)[gmail.com,yahoo.com];
-         MIME_GOOD(-0.10)[text/plain];
-         REPLYTO_ADDR_EQ_FROM(0.00)[];
-         DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[10];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         FREEMAIL_CC(0.00)[gmail.com];
-         MID_RHS_MATCH_FROM(0.00)[];
-         RCVD_TLS_ALL(0.00)[];
-         RCVD_COUNT_TWO(0.00)[2]
+ <5CD57891.9000505@bfs.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5CD57891.9000505@bfs.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9252 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=651
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905100094
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9252 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=687 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905100094
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-
-
-Am 10.05.2019 13:24, schrieb Dan Carpenter:
-> We accidentally changed the error code from -EAGAIN to 1 when we did the
-> blk-mq conversion.
+On Fri, May 10, 2019 at 03:11:45PM +0200, walter harms wrote:
+> If i see this correcly everybody leaving the loop making the function return something.
+> I do not know how would do that but IMHO is better to be defensive and end the function
+> with a propper return code (perhaps 0).
 > 
-> Maybe a contributing factor to this mistake is that it wasn't obvious
-> that the "while (chunk) {" condition is always true.  I have cleaned
-> that up as well.
-> 
-> Fixes: d0be12274dad ("mspro_block: convert to blk-mq")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/memstick/core/mspro_block.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/memstick/core/mspro_block.c b/drivers/memstick/core/mspro_block.c
-> index aba50ec98b4d..9fc22c755dbf 100644
-> --- a/drivers/memstick/core/mspro_block.c
-> +++ b/drivers/memstick/core/mspro_block.c
-> @@ -694,13 +694,13 @@ static void h_mspro_block_setup_cmd(struct memstick_dev *card, u64 offset,
->  
->  /*** Data transfer ***/
->  
-> -static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
-> +static int mspro_block_issue_req(struct memstick_dev *card)
->  {
->  	struct mspro_block_data *msb = memstick_get_drvdata(card);
->  	u64 t_off;
->  	unsigned int count;
->  
-> -	while (chunk) {
-> +	while (true) {
->  		msb->current_page = 0;
->  		msb->current_seg = 0;
->  		msb->seg_count = blk_rq_map_sg(msb->block_req->q,
-> @@ -709,6 +709,7 @@ static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
->  
->  		if (!msb->seg_count) {
->  			unsigned int bytes = blk_rq_cur_bytes(msb->block_req);
-> +			bool chunk;
->  
->  			chunk = blk_update_request(msb->block_req,
->  							BLK_STS_RESOURCE,
-> @@ -718,7 +719,7 @@ static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
->  			__blk_mq_end_request(msb->block_req,
->  						BLK_STS_RESOURCE);
->  			msb->block_req = NULL;
-> -			break;
-> +			return -EAGAIN;
->  		}
->  
->  		t_off = blk_rq_pos(msb->block_req);
-> @@ -735,8 +736,6 @@ static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
->  		memstick_new_req(card->host);
->  		return 0;
->  	}
-> -
-> -	return 1;
->  }
->  
 
-If i see this correcly everybody leaving the loop making the function return something.
-I do not know how would do that but IMHO is better to be defensive and end the function
-with a propper return code (perhaps 0).
+It's a forever loop.  If we add another break statement without adding
+at return then GCC will complain.
 
-re,
- wh
+I feel like maybe you're saying that you don't like forever loops?  That
+becomes a pretty complicated position to take...
 
+regards,
+dan carpenter
 
->  static int mspro_block_complete_req(struct memstick_dev *card, int error)
-> @@ -779,7 +778,7 @@ static int mspro_block_complete_req(struct memstick_dev *card, int error)
->  		chunk = blk_update_request(msb->block_req,
->  				errno_to_blk_status(error), t_len);
->  		if (chunk) {
-> -			error = mspro_block_issue_req(card, chunk);
-> +			error = mspro_block_issue_req(card);
->  			if (!error)
->  				goto out;
->  		} else {
-> @@ -849,7 +848,7 @@ static blk_status_t mspro_queue_rq(struct blk_mq_hw_ctx *hctx,
->  	msb->block_req = bd->rq;
->  	blk_mq_start_request(bd->rq);
->  
-> -	if (mspro_block_issue_req(card, true))
-> +	if (mspro_block_issue_req(card))
->  		msb->block_req = NULL;
->  
->  	spin_unlock_irq(&msb->q_lock);
