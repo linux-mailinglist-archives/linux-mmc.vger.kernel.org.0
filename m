@@ -2,73 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D74D19050
-	for <lists+linux-mmc@lfdr.de>; Thu,  9 May 2019 20:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5AD919738
+	for <lists+linux-mmc@lfdr.de>; Fri, 10 May 2019 05:42:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbfEISmk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 9 May 2019 14:42:40 -0400
-Received: from mail-it1-f193.google.com ([209.85.166.193]:35407 "EHLO
-        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726632AbfEISmk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 9 May 2019 14:42:40 -0400
-Received: by mail-it1-f193.google.com with SMTP id u186so5068273ith.0
-        for <linux-mmc@vger.kernel.org>; Thu, 09 May 2019 11:42:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=RAPPdEdzAC7Nt0I8+scXV0pUykQdkkkD3cPHgHiKjU8=;
-        b=EA/ichp6rKwQmA41fESwb4j4uaWeWuD52YwU65vVfIMfrBbr4qm22odgAbc3y+KOs4
-         uYtoXshTC+9v7P5K2ki7wA/nXY6y+10wXkP2bjJcjn7xTcvFF2udokT0RUM3wfsxjAje
-         5+RFMzEtEJfNe7ooxe3LuywCyZ2OPUGCwJhnCKidxxonlz3UP/qDZIjlEQpRNrqJVaCy
-         6CrA6yLQyV1A6SmbHlFMNs3jlVcWRPZ03NZH91sP+9Vnf8jydOqYanUq9ynmqs0WPwBI
-         RWSvlOla6ubGeBj71dCKdwaSkM7exDz2LC3xX8x1eoG+yGfpAOpPoUuFPk+l60eH9cbV
-         UNcQ==
-X-Gm-Message-State: APjAAAXC8ukjSQj+WGn29TZhTtt0hGLYr0w7r6cEMa9afjbv9Afy4Q3h
-        x8zUVHxhZxQMaO6253WsydLs6Q==
-X-Google-Smtp-Source: APXvYqz/8tymkjQmLnwRihvpLkgn17Ri7VMfntsvcRf0uxgb8XJaXi9AYQEnf2j9n/EgX0JRGNMKcA==
-X-Received: by 2002:a24:17ce:: with SMTP id 197mr4164215ith.21.1557427359216;
-        Thu, 09 May 2019 11:42:39 -0700 (PDT)
-Received: from google.com ([2620:15c:183:0:20b8:dee7:5447:d05])
-        by smtp.gmail.com with ESMTPSA id h16sm1021805ioh.35.2019.05.09.11.42.38
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 09 May 2019 11:42:38 -0700 (PDT)
-Date:   Thu, 9 May 2019 12:42:34 -0600
-From:   Raul Rangel <rrangel@chromium.org>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     linux-mmc@vger.kernel.org, djkurtz@google.com,
-        adrian.hunter@intel.com, zwisler@chromium.org,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH 1/2] mmc: v4.14: Fix null pointer dereference in
- mmc_init_request
-Message-ID: <20190509184234.GA197434@google.com>
-References: <20190508185833.187068-1-rrangel@chromium.org>
- <20190509060456.GA17096@infradead.org>
+        id S1727090AbfEJDmX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 9 May 2019 23:42:23 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:34660 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727073AbfEJDmX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 9 May 2019 23:42:23 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4A3gGAh098185;
+        Thu, 9 May 2019 22:42:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1557459736;
+        bh=xGnnEs0VvLOau4salih9c7vlIkVrfDHhDl/ZUbqJ1Ik=;
+        h=From:To:CC:Subject:Date;
+        b=Q+DS1IZurs3128n2ebd/ure8y2h17FJzRdbq9nR7MWaL16bd/CbSm7IqThX5+ifBB
+         tPaqPt5dLtudcfT+XgstohSePRBwruydIH9WjfFhN+S3OI4x4StjSWws5dnWSg74aZ
+         PBiKW2nZ7j132t2GG0mDgmBwmnOdMNz1JwzBYU2w=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4A3gGJx129485
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 9 May 2019 22:42:16 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 9 May
+ 2019 22:42:15 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Thu, 9 May 2019 22:42:16 -0500
+Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4A3gD2o002845;
+        Thu, 9 May 2019 22:42:14 -0500
+From:   Faiz Abbas <faiz_abbas@ti.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <adrian.hunter@intel.com>,
+        <faiz_abbas@ti.com>
+Subject: [PATCH v2 0/3] Fix issues with phy configurations in am65x MMC driver
+Date:   Fri, 10 May 2019 09:12:25 +0530
+Message-ID: <20190510034228.32211-1-faiz_abbas@ti.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190509060456.GA17096@infradead.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, May 08, 2019 at 11:04:56PM -0700, Christoph Hellwig wrote:
-> On Wed, May 08, 2019 at 12:58:32PM -0600, Raul E Rangel wrote:
-> > It is possible for queuedata to be cleared in mmc_cleanup_queue before
-> > the request has been started.
-> 
-> Errm.  I think we need to fix that problem instead of working around it.
-So mmc_request_fn already has a null check, it was just missing on
-mmc_init_request.
+The following patches fix issues with phy configurations for
+sdhci_am654 driver.
 
-I could move `blk_cleanup_queue(q)` above `q->queuedata = NULL` and the
-lock. So that would mean cherry-picking
-https://lore.kernel.org/patchwork/patch/856512/ and then a patch with
-moving blk_cleanup_queue.
+v2:
+1. Split patch 1 into 2 separate patches.
+2. Improved patch descriptions.
 
-Should I do that instead?
+Faiz Abbas (3):
+  mmc: sdhci_am654: Improve line wrapping with regmap_*() calls
+  mmc: sdhci_am654: Print error message if the DLL fails to lock
+  mmc: sdhci_am654: Fix SLOTTYPE write
 
-Thanks,
-Raul
+ drivers/mmc/host/sdhci_am654.c | 37 ++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 20 deletions(-)
+
+-- 
+2.19.2
+
