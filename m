@@ -2,102 +2,66 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 343011B773
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 15:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6C5E1BBA7
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 19:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728622AbfEMNyX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 May 2019 09:54:23 -0400
-Received: from sauhun.de ([88.99.104.3]:40754 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729040AbfEMNyW (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 13 May 2019 09:54:22 -0400
-Received: from localhost (p54B3324F.dip0.t-ipconnect.de [84.179.50.79])
-        by pokefinder.org (Postfix) with ESMTPSA id A950E3E42F7;
-        Mon, 13 May 2019 15:54:20 +0200 (CEST)
-Date:   Mon, 13 May 2019 15:54:20 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "wsa+renesas@sang-engineering.com" <wsa+renesas@sang-engineering.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] mmc: renesas_sdhi: use multiple segments if
- possible
-Message-ID: <20190513135420.GB20443@kunai>
-References: <1557721744-30545-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1557721744-30545-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <20190513090054.GA15744@kunai>
- <OSBPR01MB3174B96296BFFA408F1C901FD80F0@OSBPR01MB3174.jpnprd01.prod.outlook.com>
- <OSBPR01MB3174B39C9BE0A725D4945D78D80F0@OSBPR01MB3174.jpnprd01.prod.outlook.com>
+        id S1730315AbfEMRTP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 May 2019 13:19:15 -0400
+Received: from mail-it1-f180.google.com ([209.85.166.180]:53192 "EHLO
+        mail-it1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728184AbfEMRTP (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 May 2019 13:19:15 -0400
+Received: by mail-it1-f180.google.com with SMTP id q65so297998itg.2
+        for <linux-mmc@vger.kernel.org>; Mon, 13 May 2019 10:19:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=edXm6nV8k9IKw8GN0v7pjwQG3EECmvNTVGBhaoXBOy8=;
+        b=ZiTkdglJI/3iYxtD3CeuFQfL+i+RAj3L58kB2dtL2NSFaYKkSjF/eMqtnnegdI7F2o
+         uyR9fEAV7qawt16XWtBz+qfI1B8fMeP++bWKFGfAxe5ztmQtfCKZkYSExtvAAmsJe7h0
+         QKy3tiY58T59XzjNwLsX8fDjSrIvLw2iB3K9g/E9vxK6UN23hwlWmPEFrguJksd8FjzS
+         bdFOgkDfjVvnugrZpRSv/ZQuccWl9bNgRW/fP8VbFkSyhstW/LxvU+ZSppS/g3JyjU5r
+         axNs/Ym+UJIGZayiEKOAIJURkfhwvkEs3imsTs35tjxlCWdrlNLJWTv6M6wS94URQlOo
+         mLZw==
+X-Gm-Message-State: APjAAAVLmvsv9jTGMpMF+Ofim7s4TuvX1EykkwVhA6ePF5S8dL4YBWAQ
+        i121/aNHslLB4QWSv+/gscMBQ3fvndQ=
+X-Google-Smtp-Source: APXvYqzzkTdZunaul5S9hyndOLjl1eWjL1tIFwSvNm8zSLCNYZNkVziz0TnYEOaYSFGWvDFTOA5LHw==
+X-Received: by 2002:a05:6638:310:: with SMTP id w16mr12108468jap.130.1557767954280;
+        Mon, 13 May 2019 10:19:14 -0700 (PDT)
+Received: from google.com ([2620:15c:183:0:20b8:dee7:5447:d05])
+        by smtp.gmail.com with ESMTPSA id x11sm1190741ion.10.2019.05.13.10.19.12
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 13 May 2019 10:19:12 -0700 (PDT)
+Date:   Mon, 13 May 2019 11:19:08 -0600
+From:   Raul Rangel <rrangel@chromium.org>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     linux-mmc@vger.kernel.org, djkurtz@google.com,
+        adrian.hunter@intel.com, zwisler@chromium.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH 1/2] mmc: v4.14: Fix null pointer dereference in
+ mmc_init_request
+Message-ID: <20190513171908.GA37248@google.com>
+References: <20190508185833.187068-1-rrangel@chromium.org>
+ <20190509060456.GA17096@infradead.org>
+ <20190509184234.GA197434@google.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="TakKZr9L6Hm6aLOc"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <OSBPR01MB3174B39C9BE0A725D4945D78D80F0@OSBPR01MB3174.jpnprd01.prod.outlook.com>
+In-Reply-To: <20190509184234.GA197434@google.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+> > Errm.  I think we need to fix that problem instead of working around it.
+> So mmc_request_fn already has a null check, it was just missing on
+> mmc_init_request.
+>
+So I got 189650 random connect/disconnect iterations over the weekend
+with these patches. I think they are fine. I'm going to send them to
+stable@ unless anyone has any objections.
 
---TakKZr9L6Hm6aLOc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Shimoda-san,
-
-> > > That also means, for the sys-dmac and Gen2, we then use 512 for the
-> > > IOMMU case and 32 (default TMIO value) for the non IOMMU case. My
-> > > understanding is that SYS DMAC can handle 512 in both cases. Maybe it
-> > > makes sense then to make an incremental patch setting the max_segs va=
-lue
-> > > explicitly to 512 in the sys-dmac driver for Gen2?
-> >=20
-> > I also think SYS DMAC can handle 512 segments. However, I'm not sure
-> > it can improve the performance or not though. Anyway, an incremental pa=
-tch
-> > makes sense if needed, I think.
->=20
-> I measured the performance on R-Car H2 Lager. It seems 512 segments impro=
-ve
-> the sequential input to 5%. May I make an incremental patch on the patch =
-series?
-> What do you think?
-
-Cool! I didn't expect that much of a performance improvement. My main
-concern was understandable code because there was no "real reason" that
-we once use 32 and once 512.
-
-But if it causes even a performance improvement, even better :)
-
-Yes, an incremental patch is a good idea.
-
-Thanks for the work,
-
-   Wolfram
-
-
---TakKZr9L6Hm6aLOc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlzZdwwACgkQFA3kzBSg
-KbYZlQ//d8HN99ysATnSIUFh/qOo7UMZw4lDeHTwqPUYMEEvzWBMJ1ZOrCpDMqXc
-lx53Z/Tj8nYR7Fwe5UOTL33EIvDz5wjFg0IsF05dBTf+WN1i8Z9hSAtqkvBuMWYR
-nMbK4TGGAwNDKrWaqlxMq8iZsmz6v8EVU3flcNBXue9cvUc0CZo+2aYgT+lSlHQ4
-bp/Jm73jXIJTCI1fkZZtvkK4xpb5KvwHd6mhvBidpkJoMBDwkLj50LQYBSFy0Uiu
-/n6x+seX3xcdcWhr3JnILvcdna8PpLuNBy3CNWn3McyJ6h5Ovx/vrhtNCfDateR6
-9YMrF1POwCNujbiK7JAw5D3T2b2MVcCMaUK6mD6Z1bRC3V/Q5v9BfvExwucwH8cc
-tGUwIrTXMS6kjpgnynV1LMkMbeLozmOwA+FChv3xGTaB/QL6hZ2UQ5jR8f5TQof8
-DXPSQ3HNdnASyOZWdOyPTTEcpSdk5EL3OwlImk4i4jq9YfLP3E3H+xSwxbp2IOb+
-wMkqHZ5rJhzTHBfLEtuL5BqMMptwx1U56UUfTsBTdTkZNi85anYtYwZmWUHh8Z/W
-BPpKvAYlUJ9aO/eYkfvmzO/FkA2qppRbaPy7OrX12PhHkeeV7acAH7YJa7XYaxBe
-K97oqnHuyRbRj0jYPiDM//XIWYTpXduBD5wMWRGwpcTsmykbyGE=
-=/6WD
------END PGP SIGNATURE-----
-
---TakKZr9L6Hm6aLOc--
+Thanks,
+Raul
