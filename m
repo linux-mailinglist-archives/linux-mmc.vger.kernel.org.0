@@ -2,66 +2,84 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6C5E1BBA7
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 19:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB98A1BC2B
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 19:47:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730315AbfEMRTP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 May 2019 13:19:15 -0400
-Received: from mail-it1-f180.google.com ([209.85.166.180]:53192 "EHLO
-        mail-it1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728184AbfEMRTP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 May 2019 13:19:15 -0400
-Received: by mail-it1-f180.google.com with SMTP id q65so297998itg.2
-        for <linux-mmc@vger.kernel.org>; Mon, 13 May 2019 10:19:14 -0700 (PDT)
+        id S1730538AbfEMRrs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 May 2019 13:47:48 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:37335 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727814AbfEMRrs (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 May 2019 13:47:48 -0400
+Received: by mail-pl1-f195.google.com with SMTP id p15so6829247pll.4
+        for <linux-mmc@vger.kernel.org>; Mon, 13 May 2019 10:47:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=7ftcbU8JnQmvm8sGh32+gWVqyGisGkp05zvI/Os1BUA=;
+        b=aG5v8TAA+1qIp67dGGOJ7ud6fKmC9NYGNER2ymFATsKxSw7VEJIAcZr2RhZ15fOE+B
+         xM9aXfO+Ft7I1MfUm4KhUZu+IaQTsAEf0ZUgfzyXoJqmDOKfJe66+f8zw4AuubJ+or27
+         ufNo6pYKwNT8Q2CQZo2VhJrv8HJ0BChKp1IwSD51GT5N3nyfqhziSRmyrdLi7fiCHqsO
+         j3XOAMVG4Yp4wboAfnQSKvQq9UFhKNB3o2DaThW4zr3zp8xLy/YYiycKAQjGpm/IhWaZ
+         ofn9Dn3m2QyeTutPItizv/1Me+LzhsVv7veUC9Qx4hrZZ1nCfKt/wt9RPLbvy6vlzNwK
+         N55Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=edXm6nV8k9IKw8GN0v7pjwQG3EECmvNTVGBhaoXBOy8=;
-        b=ZiTkdglJI/3iYxtD3CeuFQfL+i+RAj3L58kB2dtL2NSFaYKkSjF/eMqtnnegdI7F2o
-         uyR9fEAV7qawt16XWtBz+qfI1B8fMeP++bWKFGfAxe5ztmQtfCKZkYSExtvAAmsJe7h0
-         QKy3tiY58T59XzjNwLsX8fDjSrIvLw2iB3K9g/E9vxK6UN23hwlWmPEFrguJksd8FjzS
-         bdFOgkDfjVvnugrZpRSv/ZQuccWl9bNgRW/fP8VbFkSyhstW/LxvU+ZSppS/g3JyjU5r
-         axNs/Ym+UJIGZayiEKOAIJURkfhwvkEs3imsTs35tjxlCWdrlNLJWTv6M6wS94URQlOo
-         mLZw==
-X-Gm-Message-State: APjAAAVLmvsv9jTGMpMF+Ofim7s4TuvX1EykkwVhA6ePF5S8dL4YBWAQ
-        i121/aNHslLB4QWSv+/gscMBQ3fvndQ=
-X-Google-Smtp-Source: APXvYqzzkTdZunaul5S9hyndOLjl1eWjL1tIFwSvNm8zSLCNYZNkVziz0TnYEOaYSFGWvDFTOA5LHw==
-X-Received: by 2002:a05:6638:310:: with SMTP id w16mr12108468jap.130.1557767954280;
-        Mon, 13 May 2019 10:19:14 -0700 (PDT)
-Received: from google.com ([2620:15c:183:0:20b8:dee7:5447:d05])
-        by smtp.gmail.com with ESMTPSA id x11sm1190741ion.10.2019.05.13.10.19.12
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 13 May 2019 10:19:12 -0700 (PDT)
-Date:   Mon, 13 May 2019 11:19:08 -0600
-From:   Raul Rangel <rrangel@chromium.org>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     linux-mmc@vger.kernel.org, djkurtz@google.com,
-        adrian.hunter@intel.com, zwisler@chromium.org,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH 1/2] mmc: v4.14: Fix null pointer dereference in
- mmc_init_request
-Message-ID: <20190513171908.GA37248@google.com>
-References: <20190508185833.187068-1-rrangel@chromium.org>
- <20190509060456.GA17096@infradead.org>
- <20190509184234.GA197434@google.com>
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=7ftcbU8JnQmvm8sGh32+gWVqyGisGkp05zvI/Os1BUA=;
+        b=k7solQ7YI1szL38URJlfpwhqYd9evWmc2kZ629Kk39a2jo/Th8lz1QF2tA/mIrEEm/
+         ejFKXJdd5NAqfHLr/F/Tq28ChjWdFHw6fTpqVT2WFzZivjD0kBSTskZOtezR/QgNbv5u
+         emTI/4w3dGCK++MJuegJGjuCR5Z2/SxveHFyiT82K9qMyX4pHBt9r/WwhfXbLbHPT/z+
+         tsnAD/lLxb0FzNoSszlRBapJURZBdvgurACV7IFmC70AEI0AeqyRVqRJ82zOaW3qF2na
+         2IGsWmXXbE00uLyMeyuseak2R6Gya3KAAd9TQI3Mb09qX9wBOGHDulsp42vKfa5n+5JS
+         muVA==
+X-Gm-Message-State: APjAAAWCMut3EKgUVwTVoOuWrj0PH8R5wTY+FqWGisix0AWSi9TrKn2v
+        tb1z9mjO92384UfZaJVTFLC+IwEM+rMyAA==
+X-Google-Smtp-Source: APXvYqykzOc6H2gQfaH2tmKL5VMylfiYXvxqcBKK0+ieVzRpKiH1CsSkvAVqvM2zkJDtRZ1QN5T4tw==
+X-Received: by 2002:a17:902:e708:: with SMTP id co8mr32206427plb.141.1557769667349;
+        Mon, 13 May 2019 10:47:47 -0700 (PDT)
+Received: from localhost ([2601:602:9200:a1a5:fd66:a9bc:7c2c:636a])
+        by smtp.googlemail.com with ESMTPSA id w12sm14856903pgp.51.2019.05.13.10.47.46
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 13 May 2019 10:47:46 -0700 (PDT)
+From:   Kevin Hilman <khilman@baylibre.com>
+To:     Neil Armstrong <narmstrong@baylibre.com>, ulf.hansson@linaro.org
+Cc:     baylibre-upstreaming@groups.io,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        linux-mmc@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mmc: meson-gx: add ddr-access-quirk
+In-Reply-To: <20190513091548.16674-3-narmstrong@baylibre.com>
+References: <20190513091548.16674-1-narmstrong@baylibre.com> <20190513091548.16674-3-narmstrong@baylibre.com>
+Date:   Mon, 13 May 2019 10:47:45 -0700
+Message-ID: <7hd0kmckla.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190509184234.GA197434@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-> > Errm.  I think we need to fix that problem instead of working around it.
-> So mmc_request_fn already has a null check, it was just missing on
-> mmc_init_request.
->
-So I got 189650 random connect/disconnect iterations over the weekend
-with these patches. I think they are fine. I'm going to send them to
-stable@ unless anyone has any objections.
+Neil Armstrong <narmstrong@baylibre.com> writes:
 
-Thanks,
-Raul
+> On the Amlogic G12A SoC family, (only) the SDIO controller fails to access
+> the data from DDR, leading to a broken controller.
+>
+> But each MMC controller has 1,5KiB of SRAM after the registers, that can
+> be used as bounce buffer to avoid direct DDR access from the integrated
+> DMAs (this SRAM may be used by the boot ROM when DDR is not yet initialized).
+>
+> The quirk is to disable the chained descriptor for this controller, and
+> use this SRAM memory zone as buffer for the bounce buffer fallback mode.
+>
+> The performance hit hasn't been evaluated, but the fix has been tested
+> using a WiFi AP6398S SDIO module, and the iperf3 Bandwidth measurement gave
+> 55.2 Mbits/sec over a 63 Hours long test, with the SDIO ios set as High-Speed
+> at 50MHz clock. It gave 170 Mbits/sec as SDR104 and 200MHz clock.
+>
+> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+
