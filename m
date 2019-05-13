@@ -2,59 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 561431BC64
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 19:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 531B81BC5B
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 19:56:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729867AbfEMR4G (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 May 2019 13:56:06 -0400
-Received: from mail-it1-f195.google.com ([209.85.166.195]:39663 "EHLO
-        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727903AbfEMR4F (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 May 2019 13:56:05 -0400
-Received: by mail-it1-f195.google.com with SMTP id 9so430818itf.4
-        for <linux-mmc@vger.kernel.org>; Mon, 13 May 2019 10:56:05 -0700 (PDT)
+        id S1731960AbfEMR4I (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 May 2019 13:56:08 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:38396 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731903AbfEMR4H (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 May 2019 13:56:07 -0400
+Received: by mail-io1-f68.google.com with SMTP id x24so3338800ion.5
+        for <linux-mmc@vger.kernel.org>; Mon, 13 May 2019 10:56:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=svhcT8pZvlSPciWupxVEM8LrwN7z1JxmCsWJw2h9m9Q=;
-        b=L6Sp30Ee6iOEZ20HswmHjqW+pc5tYPr/+pxzmXrK35gVCoHlkEW3X4csBatj/wttGg
-         7rKLgXzkt3AlIz9ePO/+0Xr4N9AAYo+HeWcqr+tT1mdmEHkquxg3di5jwPtyaXd7o+n8
-         /DZIWp+oXyM0EXcZOS9nhDL+5SGW+CM96vjVY=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=MOJlVvk72P8k3dgBOfAuZ6psp1YU3jhKdn1gghNxATc=;
+        b=lPXRNxMEfmEkBJ2JUsjOiFAB5IEvtszF9GsXLLMymQMTdTHjTPbfYklCtmKqqzsBsd
+         lri1kvgtlPeYqK0uEdFt59OYdYa92ka9CGgkut/59X+m+eEkSgzRWRakGDjBllvStYuu
+         JsxjEMd48GtJP9UCCx2xlye3dZGp2QpPbz1Ws=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=svhcT8pZvlSPciWupxVEM8LrwN7z1JxmCsWJw2h9m9Q=;
-        b=brl3+N/y5dyOZrJqnplr5yePxBzz0RHxoTjTJ1rb/VJVCvREdZTzSVSbyZY9n2h+TF
-         Kz/bmYVVxu6amPEnZna35lXknEP2ilUE6Bv3evid6PdkBeEqrUxHWcT4JT+BvzdQOMc2
-         ysNI2FZRQCSPvT+mupG/jSlOKXGPe9N+5G06daWMVKxwiVI5KTYhK7tpJC+SqS9D/QKs
-         TDrKCoF8XtvTfUOn9LGyfzJRN89k7ed5qXrsFtoP6TCQza26gqypeFRQFcDbkShbZx7z
-         Z5kdkDSo1/uwe2OH/OEBTfVdokpY3korsZgpwLoYrYikiunwB0ao25DY5ouXHs/E4yUW
-         oHQg==
-X-Gm-Message-State: APjAAAVAqGnA4Btkm2gfQ1JJbBpsgeXqrRtZyU+LbU4nn50cd3ReVY4S
-        R3m7tj4GelEUKMf50YWKAdIj5g==
-X-Google-Smtp-Source: APXvYqwlPT1j1z5u8J5ER885Ue1WqrIsSXOdmMWeu4Di3/W6jE76/mBB2+HjoV7zKSwUDk0NPgKpwg==
-X-Received: by 2002:a24:5448:: with SMTP id t69mr335958ita.128.1557770165169;
-        Mon, 13 May 2019 10:56:05 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=MOJlVvk72P8k3dgBOfAuZ6psp1YU3jhKdn1gghNxATc=;
+        b=sT20x0Oj3NUzDrdsicOlGWJ2hmgJU+KMtzvc8hCUcJbZ7jDeGLCKJtHWXsD+c8udFI
+         CLplXNL/qnB7Ily0jqadNOsJqslIWQIFkYIRj36LZXnWsakVic+dnudsig1KKcCdi2mX
+         NQ4wT/yTpBftkq+dS4JyAmMmQAw8nJSwwVw9LGLeU9CxHr8B5uj2J4ZOrF31wBglUvQ4
+         XN29IKepYFhf5KraJ5C+KsCPQ+YSVvjUTTo7RcLmbl7a4cxqHRL1ekJcvSY8GSSf3Bx+
+         mEYPYGnZEuPWhq2mRvB0kXp06oqRZvhtmvluqq1gAWEvmGNnzOHSBfC8weReGD8Isa34
+         a/JQ==
+X-Gm-Message-State: APjAAAXp4emJ8MUSuUycnUM7WaePRSnVY/B1M3KnFPvD4yPJCezv+YNr
+        4T3gM6CpeBT/VNH1BOMfLbd7VA==
+X-Google-Smtp-Source: APXvYqyjGAWAfDCCM4xTLO+p8nZzYQLlCZMDQSDHg94cFNw98HntOIFCUWAFBUlFJKi0x2U/1Ny1yw==
+X-Received: by 2002:a6b:e618:: with SMTP id g24mr14509690ioh.138.1557770166634;
+        Mon, 13 May 2019 10:56:06 -0700 (PDT)
 Received: from localhost ([2620:15c:183:0:20b8:dee7:5447:d05])
-        by smtp.gmail.com with ESMTPSA id 129sm5318785iow.32.2019.05.13.10.56.04
+        by smtp.gmail.com with ESMTPSA id l80sm78323ita.15.2019.05.13.10.56.05
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 13 May 2019 10:56:04 -0700 (PDT)
+        Mon, 13 May 2019 10:56:06 -0700 (PDT)
 From:   Raul E Rangel <rrangel@chromium.org>
 To:     stable@vger.kernel.org
 Cc:     linux-mmc@vger.kernel.org, djkurtz@google.com,
         adrian.hunter@intel.com, zwisler@chromium.org,
-        Raul E Rangel <rrangel@chromium.org>,
         Linus Walleij <linus.walleij@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Raul E Rangel <rrangel@chromium.org>,
         linux-kernel@vger.kernel.org, Chris Boot <bootc@bootc.net>,
         =?UTF-8?q?Cl=C3=A9ment=20P=C3=A9ron?= <peron.clem@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [stable/4.14.y PATCH 0/3] mmc: Fix a potential resource leak when shutting down request queue.
-Date:   Mon, 13 May 2019 11:55:18 -0600
-Message-Id: <20190513175521.84955-1-rrangel@chromium.org>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [stable/4.14.y PATCH 1/3] mmc: block: Simplify cleaning up the queue
+Date:   Mon, 13 May 2019 11:55:19 -0600
+Message-Id: <20190513175521.84955-2-rrangel@chromium.org>
 X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
+In-Reply-To: <20190513175521.84955-1-rrangel@chromium.org>
+References: <20190513175521.84955-1-rrangel@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
@@ -62,39 +64,80 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-I think we should cherry-pick 41e3efd07d5a02c80f503e29d755aa1bbb4245de
-https://lore.kernel.org/patchwork/patch/856512/ into 4.14. It fixes a
-potential resource leak when shutting down the request queue.
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-Once this patch is applied, there is a potential for a null pointer dereference.
-That's what the second patch fixes.
+Use blk_cleanup_queue() to shutdown the queue when the driver is removed,
+and instead get an extra reference to the queue to prevent the queue being
+freed before the final mmc_blk_put().
 
-The third patch is just an optimization to stop processing earlier.
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
 
-See https://patchwork.kernel.org/patch/10925469/ for the initial motivation.
-
-This commit applies to v4.14.116. It is already included in 4.19. 4.19 doesn't
-suffer from the null pointer dereference because later commits migrate the mmc
-stack to blk-mq.
-
-I tested this patch set by randomly connecting/disconnecting the SD
-card. I got over 189650 itarations without a problem.
-
-Thanks,
-Raul
-
-
-Adrian Hunter (1):
-  mmc: block: Simplify cleaning up the queue
-
-Raul E Rangel (2):
-  mmc: Fix null pointer dereference in mmc_init_request
-  mmc: Kill the request if the queuedata has been removed
+Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+---
+commit 41e3efd07d5a02c80f503e29d755aa1bbb4245de upstream.
 
  drivers/mmc/core/block.c | 17 ++++++++++++-----
- drivers/mmc/core/queue.c | 14 +++++++++++---
- 2 files changed, 23 insertions(+), 8 deletions(-)
+ drivers/mmc/core/queue.c |  2 ++
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index ce6dd49fbb98d..203038fb85111 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -161,7 +161,7 @@ static void mmc_blk_put(struct mmc_blk_data *md)
+ 	md->usage--;
+ 	if (md->usage == 0) {
+ 		int devidx = mmc_get_devidx(md->disk);
+-		blk_cleanup_queue(md->queue.queue);
++		blk_put_queue(md->queue.queue);
+ 		ida_simple_remove(&mmc_blk_ida, devidx);
+ 		put_disk(md->disk);
+ 		kfree(md);
+@@ -2122,6 +2122,17 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
+ 
+ 	md->queue.blkdata = md;
+ 
++	/*
++	 * Keep an extra reference to the queue so that we can shutdown the
++	 * queue (i.e. call blk_cleanup_queue()) while there are still
++	 * references to the 'md'. The corresponding blk_put_queue() is in
++	 * mmc_blk_put().
++	 */
++	if (!blk_get_queue(md->queue.queue)) {
++		mmc_cleanup_queue(&md->queue);
++		goto err_putdisk;
++	}
++
+ 	md->disk->major	= MMC_BLOCK_MAJOR;
+ 	md->disk->first_minor = devidx * perdev_minors;
+ 	md->disk->fops = &mmc_bdops;
+@@ -2272,10 +2283,6 @@ static void mmc_blk_remove_req(struct mmc_blk_data *md)
+ 		 * from being accepted.
+ 		 */
+ 		card = md->queue.card;
+-		spin_lock_irq(md->queue.queue->queue_lock);
+-		queue_flag_set(QUEUE_FLAG_BYPASS, md->queue.queue);
+-		spin_unlock_irq(md->queue.queue->queue_lock);
+-		blk_set_queue_dying(md->queue.queue);
+ 		mmc_cleanup_queue(&md->queue);
+ 		if (md->disk->flags & GENHD_FL_UP) {
+ 			device_remove_file(disk_to_dev(md->disk), &md->force_ro);
+diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
+index 0a4e77a5ba33f..d99fa4e63033c 100644
+--- a/drivers/mmc/core/queue.c
++++ b/drivers/mmc/core/queue.c
+@@ -259,6 +259,8 @@ void mmc_cleanup_queue(struct mmc_queue *mq)
+ 	blk_start_queue(q);
+ 	spin_unlock_irqrestore(q->queue_lock, flags);
+ 
++	blk_cleanup_queue(q);
++
+ 	mq->card = NULL;
+ }
+ EXPORT_SYMBOL(mmc_cleanup_queue);
 -- 
 2.21.0.1020.gf2820cf01a-goog
 
