@@ -2,95 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A072B1B234
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 11:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EC541B29E
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 11:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728431AbfEMJA5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 May 2019 05:00:57 -0400
-Received: from sauhun.de ([88.99.104.3]:37648 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727401AbfEMJA5 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 13 May 2019 05:00:57 -0400
-Received: from localhost (p54B3324F.dip0.t-ipconnect.de [84.179.50.79])
-        by pokefinder.org (Postfix) with ESMTPSA id DB76F2CF610;
-        Mon, 13 May 2019 11:00:54 +0200 (CEST)
-Date:   Mon, 13 May 2019 11:00:54 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
-        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mmc: renesas_sdhi: use multiple segments if
- possible
-Message-ID: <20190513090054.GA15744@kunai>
-References: <1557721744-30545-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1557721744-30545-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S1727371AbfEMJQA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 May 2019 05:16:00 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:34847 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726218AbfEMJQA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 May 2019 05:16:00 -0400
+Received: by mail-wr1-f68.google.com with SMTP id w12so14362973wrp.2
+        for <linux-mmc@vger.kernel.org>; Mon, 13 May 2019 02:15:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UzIz/OqhDW/aA2hwotioqmyYDuvBlglmy6CuzpgH6sA=;
+        b=sbkFKWThl7SS5AJ0CygWfFeJN0O3kIB0+t9Vbb1WtqGtQop4D5UImzY3w/2zHaMszb
+         i2J54jvYjY1fOlF5bA35RWmnT98jFKLSLvIVLSoO8PP7D/ve/VhZTo9Fimdobt4oUfxj
+         m3qq17QF4zEeIsIs6qRq8mwYn0tpc2oCkLBj67jRJQr0z3IsE0KK+xb/bLvr4OTQ25Yd
+         TQJIUmCvXxM0oUoDJa0Q6k8FlYO168/Gr9T74jKF2s0r9JAXBQ2YZGvd90GfTBMB+NwJ
+         5R9/9u5Rl+S6WAEuxnfUAfG+bb0Vhht4Z7X7nKNIvwjnhJSabOZHL5GqZ43vGh9ohjih
+         NK5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UzIz/OqhDW/aA2hwotioqmyYDuvBlglmy6CuzpgH6sA=;
+        b=mNDs6431wp6y/ObeU6BiVLVPBkZ3iwkNj52fKGwRBzr9iyxr7Z3aamDoRv6s+OAE+S
+         kNc0iy0XA/9/xVtkNLPk9phMgjmZkmgqmIAsxixWzulC7ATgRtA7033CTA4fs9GUeOqs
+         wDBOkfhvWxKJfM1FgcWKxjx0X58cZz3jSykwKJBhNENUaIdqNCooy1gSBkBXTINziZ5R
+         TXf2slKhwzCdLBgcdE9jFD2iqmEGeR9lNWdIFZJ99HAxi1eUYoxADs4ldO8+oYUTN325
+         En4QQmjuyCFEsAHuxRDBoWvzWuBayumfVQtopj7Pr5MuNVIjFIRa3e+1eQna6mfJt2w4
+         vC6Q==
+X-Gm-Message-State: APjAAAVOwr8MRVocA7g0wY0yNilU/a5GpBUe08XurZ7vEv7bGv7hviZp
+        AeKUYAY7EjUubMAo9aDToW7mHQ==
+X-Google-Smtp-Source: APXvYqwNxZZ6JRa6sE/oBLQu/a8gQ1CyT8Fbo4TsPCi5L/1sJXP8vvCMf7wXzFjAVlU30do7KcyBFg==
+X-Received: by 2002:adf:f44b:: with SMTP id f11mr93972wrp.128.1557738958141;
+        Mon, 13 May 2019 02:15:58 -0700 (PDT)
+Received: from bender.baylibre.local (lmontsouris-657-1-212-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id g10sm10795091wrq.2.2019.05.13.02.15.57
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 13 May 2019 02:15:57 -0700 (PDT)
+From:   Neil Armstrong <narmstrong@baylibre.com>
+To:     ulf.hansson@linaro.org, khilman@baylibre.com
+Cc:     baylibre-upstreaming@groups.io,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        linux-mmc@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] mmc: meson-gx: add ddr-access-quirk support
+Date:   Mon, 13 May 2019 11:15:45 +0200
+Message-Id: <20190513091548.16674-1-narmstrong@baylibre.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="UugvWAfsgieZRqgk"
-Content-Disposition: inline
-In-Reply-To: <1557721744-30545-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On the Amlogic G12A SoC family, (only) the SDIO controller fails to access
+the data from DDR, leading to a broken controller.
 
---UugvWAfsgieZRqgk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Add the amlogic,ddr-access-quirk property so signal this particular
+controller has this bug and needs a quirk to work properly.
 
-Hi Shimoda-san,
+But each MMC controller has 1,5KiB of SRAM after the registers, that can
+be used as bounce buffer to avoid direct DDR access from the integrated
+DMAs (this SRAM may be used by the boot ROM when DDR is not yet initialized).
 
-thank you for this update!
+The quirk is to disable the chained descriptor for this controller, and
+use this SRAM memory zone as buffer for the bounce buffer fallback mode.
 
-> +static void renesas_sdhi_init_card(struct mmc_host *mmc, struct mmc_card *card)
-> +{
-> +	struct tmio_mmc_host *host = mmc_priv(mmc);
-> +
-> +	if (host->pdev->dev.iommu_group &&
+The performance hit hasn't been evaluated, but the fix has been tested
+using a WiFi AP6398S SDIO module, and the iperf3 Bandwidth measurement gave
+55.2 Mbits/sec over a 63 Hours long test, with the SDIO ios set as High-Speed
+at 50MHz clock. It gave around 170 Mbits/sec as SDR104 and 200MHz clock.
 
-I wonder if I am too cautious, but maybe we should have another
-condition here to be checked first, namely "host->mmc->max_segs < 512"?
+Neil Armstrong (3):
+  dt-bindings: mmc: meson-gx: add ddr-access-quirk property
+  mmc: meson-gx: add ddr-access-quirk
+  arm64: dts: meson-g12a: add ddr-access-quirk property to SDIO
+    controller
 
-> +	    (mmc_card_mmc(card) || mmc_card_sd(card)))
-> +		host->mmc->max_segs = 512;
-> +	else
-> +		host->mmc->max_segs = host->pdata->max_segs;
+ .../bindings/mmc/amlogic,meson-gx.txt         |  4 ++
+ arch/arm64/boot/dts/amlogic/meson-g12a.dtsi   |  1 +
+ drivers/mmc/host/meson-gx-mmc.c               | 65 +++++++++++++++----
+ 3 files changed, 57 insertions(+), 13 deletions(-)
 
-max_segs can be 0, so we should probably have:
+-- 
+2.21.0
 
- +		host->mmc->max_segs = host->pdata->max_segs ?: 32;
-
-That also means, for the sys-dmac and Gen2, we then use 512 for the
-IOMMU case and 32 (default TMIO value) for the non IOMMU case. My
-understanding is that SYS DMAC can handle 512 in both cases. Maybe it
-makes sense then to make an incremental patch setting the max_segs value
-explicitly to 512 in the sys-dmac driver for Gen2?
-
-Kind regards,
-
-   Wolfram
-
-
---UugvWAfsgieZRqgk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlzZMj0ACgkQFA3kzBSg
-KbZwTA//ZGgR4/1JbeNPKQ++DerCafySilftu/RpG5KKFZAIY+0ecC0BiC+MSrN3
-Pr7CfCLf4AwgR9RwBRRAVQTEPpNhVpbVwpGIarv7k61dSU2fFz9Mr93qSrD8S4s+
-kPMBNAW49O5M4ausIO1gzrCsSaApR/DR4BEjJgejREuGTvJtazDWDI3rAROwGBr5
-g3hRSBVAEBYvECfk2Q01xLZZqZQuHa1qa/4DrwNN7qLEIfmR0kpPmmEWiexmBp0z
-EBvkQ5mawK74ehjWSS7y4gNhWp/E344TN5UoiEOkfcYqIvAmAK0DiG0LbrE+Jn4y
-jNt7SuqAWsc/rk5y4y7qTxQQuHktUj5C+AyHJ08xXrR6PSJuMOdS9lAB8QgYwrAK
-YZ8Hc8GHlrfylQQO/5EWX01SEBBrcDhVcbwq7sILiwt3HBbP5LQSFKZ13uNJjUke
-A+5PP5AoiHU6JqnrxOBAkXu2IIvOLBvOJj57YbwrnOYi6RT2CtrfNAv+skMvHggT
-Uv2UArHZjvoi6/EW9qgMkha/oXipGNHAFaZhC2tvpGCFQwR/xk3Faolcs4rdMCHh
-8MmRigEyKBN4oJIq8y106MSQ5OBXlUMVW5DjBqs2LnVLSNiSUcpTDXnrXMMhMI/y
-dtA+BWLogsXmhZTxFHdfHqpWU0N3UO+WzQpWQBSF5o3euXzaJ9I=
-=JmKS
------END PGP SIGNATURE-----
-
---UugvWAfsgieZRqgk--
