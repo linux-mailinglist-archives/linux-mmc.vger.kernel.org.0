@@ -2,84 +2,99 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB98A1BC2B
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 19:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 561431BC64
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 19:56:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730538AbfEMRrs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 May 2019 13:47:48 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:37335 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727814AbfEMRrs (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 May 2019 13:47:48 -0400
-Received: by mail-pl1-f195.google.com with SMTP id p15so6829247pll.4
-        for <linux-mmc@vger.kernel.org>; Mon, 13 May 2019 10:47:48 -0700 (PDT)
+        id S1729867AbfEMR4G (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 May 2019 13:56:06 -0400
+Received: from mail-it1-f195.google.com ([209.85.166.195]:39663 "EHLO
+        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727903AbfEMR4F (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 May 2019 13:56:05 -0400
+Received: by mail-it1-f195.google.com with SMTP id 9so430818itf.4
+        for <linux-mmc@vger.kernel.org>; Mon, 13 May 2019 10:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=7ftcbU8JnQmvm8sGh32+gWVqyGisGkp05zvI/Os1BUA=;
-        b=aG5v8TAA+1qIp67dGGOJ7ud6fKmC9NYGNER2ymFATsKxSw7VEJIAcZr2RhZ15fOE+B
-         xM9aXfO+Ft7I1MfUm4KhUZu+IaQTsAEf0ZUgfzyXoJqmDOKfJe66+f8zw4AuubJ+or27
-         ufNo6pYKwNT8Q2CQZo2VhJrv8HJ0BChKp1IwSD51GT5N3nyfqhziSRmyrdLi7fiCHqsO
-         j3XOAMVG4Yp4wboAfnQSKvQq9UFhKNB3o2DaThW4zr3zp8xLy/YYiycKAQjGpm/IhWaZ
-         ofn9Dn3m2QyeTutPItizv/1Me+LzhsVv7veUC9Qx4hrZZ1nCfKt/wt9RPLbvy6vlzNwK
-         N55Q==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=svhcT8pZvlSPciWupxVEM8LrwN7z1JxmCsWJw2h9m9Q=;
+        b=L6Sp30Ee6iOEZ20HswmHjqW+pc5tYPr/+pxzmXrK35gVCoHlkEW3X4csBatj/wttGg
+         7rKLgXzkt3AlIz9ePO/+0Xr4N9AAYo+HeWcqr+tT1mdmEHkquxg3di5jwPtyaXd7o+n8
+         /DZIWp+oXyM0EXcZOS9nhDL+5SGW+CM96vjVY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=7ftcbU8JnQmvm8sGh32+gWVqyGisGkp05zvI/Os1BUA=;
-        b=k7solQ7YI1szL38URJlfpwhqYd9evWmc2kZ629Kk39a2jo/Th8lz1QF2tA/mIrEEm/
-         ejFKXJdd5NAqfHLr/F/Tq28ChjWdFHw6fTpqVT2WFzZivjD0kBSTskZOtezR/QgNbv5u
-         emTI/4w3dGCK++MJuegJGjuCR5Z2/SxveHFyiT82K9qMyX4pHBt9r/WwhfXbLbHPT/z+
-         tsnAD/lLxb0FzNoSszlRBapJURZBdvgurACV7IFmC70AEI0AeqyRVqRJ82zOaW3qF2na
-         2IGsWmXXbE00uLyMeyuseak2R6Gya3KAAd9TQI3Mb09qX9wBOGHDulsp42vKfa5n+5JS
-         muVA==
-X-Gm-Message-State: APjAAAWCMut3EKgUVwTVoOuWrj0PH8R5wTY+FqWGisix0AWSi9TrKn2v
-        tb1z9mjO92384UfZaJVTFLC+IwEM+rMyAA==
-X-Google-Smtp-Source: APXvYqykzOc6H2gQfaH2tmKL5VMylfiYXvxqcBKK0+ieVzRpKiH1CsSkvAVqvM2zkJDtRZ1QN5T4tw==
-X-Received: by 2002:a17:902:e708:: with SMTP id co8mr32206427plb.141.1557769667349;
-        Mon, 13 May 2019 10:47:47 -0700 (PDT)
-Received: from localhost ([2601:602:9200:a1a5:fd66:a9bc:7c2c:636a])
-        by smtp.googlemail.com with ESMTPSA id w12sm14856903pgp.51.2019.05.13.10.47.46
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 13 May 2019 10:47:46 -0700 (PDT)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Neil Armstrong <narmstrong@baylibre.com>, ulf.hansson@linaro.org
-Cc:     baylibre-upstreaming@groups.io,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        linux-mmc@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mmc: meson-gx: add ddr-access-quirk
-In-Reply-To: <20190513091548.16674-3-narmstrong@baylibre.com>
-References: <20190513091548.16674-1-narmstrong@baylibre.com> <20190513091548.16674-3-narmstrong@baylibre.com>
-Date:   Mon, 13 May 2019 10:47:45 -0700
-Message-ID: <7hd0kmckla.fsf@baylibre.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=svhcT8pZvlSPciWupxVEM8LrwN7z1JxmCsWJw2h9m9Q=;
+        b=brl3+N/y5dyOZrJqnplr5yePxBzz0RHxoTjTJ1rb/VJVCvREdZTzSVSbyZY9n2h+TF
+         Kz/bmYVVxu6amPEnZna35lXknEP2ilUE6Bv3evid6PdkBeEqrUxHWcT4JT+BvzdQOMc2
+         ysNI2FZRQCSPvT+mupG/jSlOKXGPe9N+5G06daWMVKxwiVI5KTYhK7tpJC+SqS9D/QKs
+         TDrKCoF8XtvTfUOn9LGyfzJRN89k7ed5qXrsFtoP6TCQza26gqypeFRQFcDbkShbZx7z
+         Z5kdkDSo1/uwe2OH/OEBTfVdokpY3korsZgpwLoYrYikiunwB0ao25DY5ouXHs/E4yUW
+         oHQg==
+X-Gm-Message-State: APjAAAVAqGnA4Btkm2gfQ1JJbBpsgeXqrRtZyU+LbU4nn50cd3ReVY4S
+        R3m7tj4GelEUKMf50YWKAdIj5g==
+X-Google-Smtp-Source: APXvYqwlPT1j1z5u8J5ER885Ue1WqrIsSXOdmMWeu4Di3/W6jE76/mBB2+HjoV7zKSwUDk0NPgKpwg==
+X-Received: by 2002:a24:5448:: with SMTP id t69mr335958ita.128.1557770165169;
+        Mon, 13 May 2019 10:56:05 -0700 (PDT)
+Received: from localhost ([2620:15c:183:0:20b8:dee7:5447:d05])
+        by smtp.gmail.com with ESMTPSA id 129sm5318785iow.32.2019.05.13.10.56.04
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 13 May 2019 10:56:04 -0700 (PDT)
+From:   Raul E Rangel <rrangel@chromium.org>
+To:     stable@vger.kernel.org
+Cc:     linux-mmc@vger.kernel.org, djkurtz@google.com,
+        adrian.hunter@intel.com, zwisler@chromium.org,
+        Raul E Rangel <rrangel@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-kernel@vger.kernel.org, Chris Boot <bootc@bootc.net>,
+        =?UTF-8?q?Cl=C3=A9ment=20P=C3=A9ron?= <peron.clem@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [stable/4.14.y PATCH 0/3] mmc: Fix a potential resource leak when shutting down request queue.
+Date:   Mon, 13 May 2019 11:55:18 -0600
+Message-Id: <20190513175521.84955-1-rrangel@chromium.org>
+X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Neil Armstrong <narmstrong@baylibre.com> writes:
+I think we should cherry-pick 41e3efd07d5a02c80f503e29d755aa1bbb4245de
+https://lore.kernel.org/patchwork/patch/856512/ into 4.14. It fixes a
+potential resource leak when shutting down the request queue.
 
-> On the Amlogic G12A SoC family, (only) the SDIO controller fails to access
-> the data from DDR, leading to a broken controller.
->
-> But each MMC controller has 1,5KiB of SRAM after the registers, that can
-> be used as bounce buffer to avoid direct DDR access from the integrated
-> DMAs (this SRAM may be used by the boot ROM when DDR is not yet initialized).
->
-> The quirk is to disable the chained descriptor for this controller, and
-> use this SRAM memory zone as buffer for the bounce buffer fallback mode.
->
-> The performance hit hasn't been evaluated, but the fix has been tested
-> using a WiFi AP6398S SDIO module, and the iperf3 Bandwidth measurement gave
-> 55.2 Mbits/sec over a 63 Hours long test, with the SDIO ios set as High-Speed
-> at 50MHz clock. It gave 170 Mbits/sec as SDR104 and 200MHz clock.
->
-> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+Once this patch is applied, there is a potential for a null pointer dereference.
+That's what the second patch fixes.
 
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+The third patch is just an optimization to stop processing earlier.
+
+See https://patchwork.kernel.org/patch/10925469/ for the initial motivation.
+
+This commit applies to v4.14.116. It is already included in 4.19. 4.19 doesn't
+suffer from the null pointer dereference because later commits migrate the mmc
+stack to blk-mq.
+
+I tested this patch set by randomly connecting/disconnecting the SD
+card. I got over 189650 itarations without a problem.
+
+Thanks,
+Raul
+
+
+Adrian Hunter (1):
+  mmc: block: Simplify cleaning up the queue
+
+Raul E Rangel (2):
+  mmc: Fix null pointer dereference in mmc_init_request
+  mmc: Kill the request if the queuedata has been removed
+
+ drivers/mmc/core/block.c | 17 ++++++++++++-----
+ drivers/mmc/core/queue.c | 14 +++++++++++---
+ 2 files changed, 23 insertions(+), 8 deletions(-)
+
+-- 
+2.21.0.1020.gf2820cf01a-goog
 
