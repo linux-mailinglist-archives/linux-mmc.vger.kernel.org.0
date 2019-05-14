@@ -2,52 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0CD11CE50
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 May 2019 19:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E510C1CE6C
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 May 2019 19:58:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727322AbfENRvW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 May 2019 13:51:22 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:35641 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727327AbfENRvW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 May 2019 13:51:22 -0400
-Received: by mail-ot1-f67.google.com with SMTP id n14so9151270otk.2;
-        Tue, 14 May 2019 10:51:21 -0700 (PDT)
+        id S1727395AbfENR6M (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 May 2019 13:58:12 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:38437 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727270AbfENR6M (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 May 2019 13:58:12 -0400
+Received: by mail-oi1-f194.google.com with SMTP id u199so12818762oie.5;
+        Tue, 14 May 2019 10:58:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=oeIjbYQKQe1rgNNMG4zx8eoPc0eGIBAjjn8fpznrZGo=;
-        b=bgZgUlNo3WNdcwpSQgNVohMeqfQGBnkBXDE5vnfOEbUakRgnqM/6uyp9+25kbl0yd4
-         cRP51o344MRMmBi+HfIuQjUM/UI8lnEw0g4AJXeb0ZGDkuFqqwUvu5FhXRNja+UbJ4P+
-         85eHR4PGQGnof9AIMN8mW4qGZJfELFoYXVY8qpxEQUDy8uSJo5c6AXqqHd0EerDNiCYf
-         VHkr0qcQ1A/NbBy3GU8Up2hs9RmYTvVD2chrNX44FPDNBWp19yvofELh+c4FN1XFrXd2
-         PsNSHJOJ5ezS/NKeRlluLRbBLNEHnnfAm+MV+TeOm5FDNyUpkKNvUJaahy1ETDHhUJI5
-         MRlQ==
+        bh=dbgR9sIIi020lB4uMc6drG+hzB7QuAOCTK+0TBCg8Cc=;
+        b=kz2jzjhPKbEnQayS8dgCy5rubRTQIqMh2n4HuPMUyO1VSNt3vJVG3lRGzuhbsI7p3E
+         n5/wGiKy0e9r4F73sN9EtnuBGim238QQ5IXF5Kg2gjaXohTQqng7UWygNuC1ygsw4VxO
+         M+8UD/VB0e1f5gHNJ5O+jT/vi6m/8R5TT1B1SR0/EbOy5+baCCimbQfw+Ouljrb9YPGu
+         625otuoxIyGC/IELiz1fY+/4lN6Eb0wqhrrG9xleiIuzj7FxDFLVYYI8nlUC3sT+Hwjz
+         KX51hfprCqpxSkRn/DY8eE8dlw9qG4vCtS4Wli4x7zRqP6P0Rw2srvdyHRSt6iYncg3/
+         uT6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=oeIjbYQKQe1rgNNMG4zx8eoPc0eGIBAjjn8fpznrZGo=;
-        b=MkDcK7XIgBJaeKYP/p6Y+srYOE3gqRV7XP6X5VpfQg2VpevVP4HXSc3hsR1RzZ1TgD
-         nIkD20XQthTnqqEavSD7zcP4hXgZpmgBmQV2Yu4dODYeFYHbAJCH77hzpHDAym5BEOT4
-         /whJGrhQiL2Y+PzctTViXBm/f2t0JtgeujZRTqf8eJ54WJmoLNS2kxMGoyChsZzjo0JY
-         ayR5vgq5Cg2hnjY3BOfGIyj57wXj/7SxbFdCFo86P9dOno15Io1VBY0n/cEpP7T+r1kk
-         gpkn1NrpY/Jq3As4E633yKtsIYSoCMgZkA2gB5dXs6HKwAkfppMgw/bX15bStnCcObiK
-         jNYA==
-X-Gm-Message-State: APjAAAWtmAxTS3xrnneuzmDQUclbm7VUmjlSJUvovCIBTFWjBKC62u5h
-        GJAAZAsOfbSP1qpIBJcQl7tBWH4Y2HyG1w5kTtA=
-X-Google-Smtp-Source: APXvYqy+LHfc5aRuY5FakA4b+0V7yv1+nWIt3h3VKxRRI2OrJlfvSL5wBlgz3UhXafyHTlSVj4LTjzRgEbrJdxMFVpo=
-X-Received: by 2002:a9d:4586:: with SMTP id x6mr17937986ote.38.1557856281480;
- Tue, 14 May 2019 10:51:21 -0700 (PDT)
+        bh=dbgR9sIIi020lB4uMc6drG+hzB7QuAOCTK+0TBCg8Cc=;
+        b=e3zicUTg5uVndCPA1bBDnfYR4jrL+JKaK6f1f0Oha0Y3fL68wt9F9RYTxUeiuIDyKP
+         Os5mTcMPP1zgLE9hcNVf9tOl+X0ympQECP5dG/Hukg4YN723uH2Zb4xHo9K+ejKN/DNK
+         aTIDFWKSu9OMk4g/EEeCs/5MohERUCyXYI/msSMuJ4b6VTt5DlJjsujw+0B1j4F5lMln
+         NonkyVBfy8yA/cHvGJn23GK7ISixHI4X/hB9W/Io1YA6Meom0JBubO7FohSKgfqQyUOS
+         FZHyg+kB7j4PqnwPEuIFmereSOLvoT+7L6kOHo07x14k4uHqiSBIudzSLQY0nlirWIEY
+         GvJg==
+X-Gm-Message-State: APjAAAWMB3y25PZdfFQj9n8t3ueclr2WdfwTMKrIknVF79xvvb1rTljT
+        TjWwRYkT6zMTUNAZAV30Wrg7y8YphEuxrEp66x+GRocwbLs=
+X-Google-Smtp-Source: APXvYqysSJO7wFng5taFNsIZOMTqAUX0pN7PyrW8jgVBQnbRhhf71UhUYZKIQp8b0gAYrWujo+I5sI1OdRoLfcqfyqo=
+X-Received: by 2002:aca:5b06:: with SMTP id p6mr3946699oib.129.1557856691277;
+ Tue, 14 May 2019 10:58:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190513091548.16674-1-narmstrong@baylibre.com> <20190513091548.16674-4-narmstrong@baylibre.com>
-In-Reply-To: <20190513091548.16674-4-narmstrong@baylibre.com>
+References: <20190513091548.16674-1-narmstrong@baylibre.com> <20190513091548.16674-3-narmstrong@baylibre.com>
+In-Reply-To: <20190513091548.16674-3-narmstrong@baylibre.com>
 From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Tue, 14 May 2019 19:51:10 +0200
-Message-ID: <CAFBinCC5NADRuZkBiD8Zs9efNKp2fhZVqQ8aRnQ1gs+GbQCKdg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] arm64: dts: meson-g12a: add ddr-access-quirk property
- to SDIO controller
+Date:   Tue, 14 May 2019 19:58:00 +0200
+Message-ID: <CAFBinCAMoNDnxoQA9XHKy0Xo9MduxD1CvQXOeLZQ3zZ4ViWm7A@mail.gmail.com>
+Subject: Re: [PATCH 2/3] mmc: meson-gx: add ddr-access-quirk
 To:     Neil Armstrong <narmstrong@baylibre.com>
 Cc:     ulf.hansson@linaro.org, khilman@baylibre.com,
         baylibre-upstreaming@groups.io, linux-mmc@vger.kernel.org,
@@ -59,10 +58,52 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, May 13, 2019 at 11:17 AM Neil Armstrong <narmstrong@baylibre.com> wrote:
+Hi Neil,
+
+On Mon, May 13, 2019 at 11:16 AM Neil Armstrong <narmstrong@baylibre.com> wrote:
+[...]
+> @@ -1158,15 +1183,27 @@ static int meson_mmc_probe(struct platform_device *pdev)
+>          */
+>         mmc->caps2 &= ~MMC_CAP2_HS400;
 >
-> The Amlogic G12A SDIO Controller has a bug preventing direct DDR access,
-> mark this specific controller with the amlogic,ddr-access-quirk property.
+> -       /* data bounce buffer */
+> -       host->bounce_buf_size = mmc->max_req_size;
+> -       host->bounce_buf =
+> -               dma_alloc_coherent(host->dev, host->bounce_buf_size,
+> -                                  &host->bounce_dma_addr, GFP_KERNEL);
+> -       if (host->bounce_buf == NULL) {
+> -               dev_err(host->dev, "Unable to map allocate DMA bounce buffer.\n");
+> -               ret = -ENOMEM;
+> -               goto err_free_irq;
+> +       if (host->ddr_access_quirk) {
+> +               /*
+> +                * The MMC Controller embeds 1,5KiB of internal SRAM
+> +                * that can be used to be used as bounce buffer.
+> +                * In the case of the G12A SDIO controller, use these
+> +                * instead of the DDR memory
+> +                */
+> +               host->bounce_buf_size = SD_EMMC_SRAM_DATA_BUF_LEN;
+> +               host->bounce_buf = host->regs + SD_EMMC_SRAM_DATA_BUF_OFF;
+> +               host->bounce_dma_addr = res->start + SD_EMMC_SRAM_DATA_BUF_OFF;
+I'm curious: why do you need to set bounce_dma_addr in this case?
+
+> +       } else {
+> +               /* data bounce buffer */
+> +               host->bounce_buf_size = mmc->max_req_size;
+> +               host->bounce_buf =
+> +                       dma_alloc_coherent(host->dev, host->bounce_buf_size,
+> +                                          &host->bounce_dma_addr, GFP_KERNEL);
+> +               if (host->bounce_buf == NULL) {
+> +                       dev_err(host->dev, "Unable to map allocate DMA bounce buffer.\n");
+> +                       ret = -ENOMEM;
+> +                       goto err_free_irq;
+> +               }
+>         }
 >
-> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+>         host->descs = dma_alloc_coherent(host->dev, SD_EMMC_DESC_BUF_LEN,
+if host->descs cannot be allocated then you need to conditionally skip
+dma_free_coherent for the bounce buffer in the goto err_bounce_buf
+case a few lines below (just like you did in meson_mmc_remove)
+
+
+Martin
