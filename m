@@ -2,64 +2,63 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63E001BE6A
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2019 22:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24F3A1C030
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 May 2019 02:43:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726290AbfEMUMx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 May 2019 16:12:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38118 "EHLO mail.kernel.org"
+        id S1726750AbfENAnJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 May 2019 20:43:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48586 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726221AbfEMUMx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 13 May 2019 16:12:53 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        id S1726638AbfENAnJ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 13 May 2019 20:43:09 -0400
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 085EA2085A;
-        Mon, 13 May 2019 20:12:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 073A22168B;
+        Tue, 14 May 2019 00:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557778372;
-        bh=hfkOxiyFGI7k7znQCUsj782Lg8QsyaKplKP4qu05XEk=;
+        s=default; t=1557794588;
+        bh=iTBRPMV3fAdsJ2g2ky+PwiIjaGRBbzz7zXr+NYbRI08=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=sdrrUmYefGMHM5gD5o/9eruq+0zP7B8LB4OxYAmDlsDTHrg3C73R/1ImcFEjQsTWV
-         8laAsb9MUnegIhhUxd0cWhitvo3nQZrEJPVvrego0KtacMFcaXuRkPKH+Rx+D4J69k
-         boLmOkujothfR8kBlRHdfqcWPrw8KqkE44E08Fuw=
-Date:   Mon, 13 May 2019 22:12:48 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
+        b=2mxV2gWNBMW/hX0Or69dkaJkUCGuNOw7deDUilycDjszboYQjUq5mgXBslZc0bhJm
+         6TX0k1/LhRpw1hUG9+LJIwrj1C1fRdPBHSgVHLVHQKj/O9ULAKpcMhzzw54BSUgG7Z
+         h2DKo3VM+ro4HebT2us3vkGzl+sM//HLCF5UyZpU=
+Date:   Mon, 13 May 2019 20:43:06 -0400
+From:   Sasha Levin <sashal@kernel.org>
 To:     Raul E Rangel <rrangel@chromium.org>
 Cc:     stable@vger.kernel.org, linux-mmc@vger.kernel.org,
         djkurtz@google.com, adrian.hunter@intel.com, zwisler@chromium.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [stable/4.14.y PATCH 3/3] mmc: Kill the request if the queuedata
- has been removed
-Message-ID: <20190513201248.GC17404@kroah.com>
+        linux-kernel@vger.kernel.org, Chris Boot <bootc@bootc.net>,
+        =?iso-8859-1?Q?Cl=E9ment_P=E9ron?= <peron.clem@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [stable/4.14.y PATCH 0/3] mmc: Fix a potential resource leak
+ when shutting down request queue.
+Message-ID: <20190514004306.GF11972@sasha-vm>
 References: <20190513175521.84955-1-rrangel@chromium.org>
- <20190513175521.84955-4-rrangel@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20190513175521.84955-4-rrangel@chromium.org>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20190513175521.84955-1-rrangel@chromium.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, May 13, 2019 at 11:55:21AM -0600, Raul E Rangel wrote:
-> No reason to even try processing the request if the queue is shutting
-> down.
-> 
-> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-> ---
-> 
->  drivers/mmc/core/queue.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, May 13, 2019 at 11:55:18AM -0600, Raul E Rangel wrote:
+>I think we should cherry-pick 41e3efd07d5a02c80f503e29d755aa1bbb4245de
+>https://lore.kernel.org/patchwork/patch/856512/ into 4.14. It fixes a
+>potential resource leak when shutting down the request queue.
+>
+>Once this patch is applied, there is a potential for a null pointer dereference.
+>That's what the second patch fixes.
+>
+>The third patch is just an optimization to stop processing earlier.
 
-<formletter>
+Is this actually part of a fix? Why do we want this optimization?
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
+--
+Thanks,
+Sasha
