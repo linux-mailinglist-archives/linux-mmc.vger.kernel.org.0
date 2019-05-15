@@ -2,97 +2,93 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 429171F0C8
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 13:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ECC61F16E
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 13:54:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729683AbfEOLrR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 May 2019 07:47:17 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:41880 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731421AbfEOLrQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 May 2019 07:47:16 -0400
-Received: by mail-vs1-f65.google.com with SMTP id g187so1471048vsc.8
-        for <linux-mmc@vger.kernel.org>; Wed, 15 May 2019 04:47:16 -0700 (PDT)
+        id S1731120AbfEOLyC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 May 2019 07:54:02 -0400
+Received: from mail-vk1-f194.google.com ([209.85.221.194]:40147 "EHLO
+        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730518AbfEOLxx (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 May 2019 07:53:53 -0400
+Received: by mail-vk1-f194.google.com with SMTP id v140so666609vkd.7
+        for <linux-mmc@vger.kernel.org>; Wed, 15 May 2019 04:53:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=8CaNTciGEsHBR+UTd+uCW4xRoPEY0Ah8mRVVm+sOGOk=;
-        b=GW5qLT99fTjNxKbhvCZACauQJBvVRAlAQnNaIkPUUN1ClwMaXyk9V097k7+3sNUuF4
-         vpRCYbi+Drt9IdY1MS/kyaVQg9t1z7QRLFqlM7IrPYGXQpbM+XFKEzTg3n+iuzgL6m3K
-         Rp7n56F8iafdDVh6oftWvNNQyColmbSKHggU+T7ylrtdaSJR8nXLI3FkujJ78KlQozUH
-         M+CTtfjUJdzm0c1JXx5+SHtrxSvufnxFRt/mQ4v9zTv+40VJfvEwFb7NJHsioVxZM8IZ
-         b+Cm3xSSvCbUrIM6MRaPYq6reo5b9q7kSFUaHenagtAsF68BV5pYFEntMYDwXSX+irPs
-         mMtQ==
+        bh=XqTiQWMIUKTMvV3HGe2FXr2QXLkNPTKOj2lPv0DODS0=;
+        b=L44WaYKFencKFL0aLRS4NaNaiepcTeSneyqE/eagATEjv28G/XY8rdrsINJYIQTZ92
+         +PAtHPEVh8jR6qiTWKFFfSP1YkX7lU1GpVic60govDCk0GD9r4cJ91O5J6R1ASoGkJiU
+         pwD0pXq8TRFRlQS5+wFTsIeGJMUFygr0Z/efTjq8sjfpv/HlMMDxuYSkqsFMm5CRpwm1
+         HLqUJbTGo7MXb67aLZ0NYqUVwWM/iGnfiWnM954ZKFJk9wjWdFEtfhfXNzRPB2YT4cX3
+         77AwPyaxeHAs+IgiexzVRguxuEPOP+ojlb2p4XdTHLUFutHRjAJsb04tpSMsrNmvvuQP
+         EpxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8CaNTciGEsHBR+UTd+uCW4xRoPEY0Ah8mRVVm+sOGOk=;
-        b=Fb5kzXZ7xb6lir/u1XdyGrREq2mN26XkaB3aZqVSFg/Sb40t0KF3TKqLJC0lGwh6te
-         ZjMgTKTtNHzfetAwy+7BwsuZI6zt0kipJ7P14MwYY/jCcmPmEEJsPXBLZB84CtvOO8Un
-         p4yk2/vSKl2dq71bt9FtRc99wjKC0oDvFvAvZZoFht3Qy3CPAz2Dr68huIh1vQw/pIK5
-         2N/euTEvtm5imNDRThdY0ypG5j+kp556EAA/sEqFnVfTuPAZfhxlTs1DxO8Q2Wlm5TY1
-         mzp2+Fe+D84X1G/XCZNnz54XfmgooWr96NtDzwMF36KnTInjmRMFRTTvFVLX7+wueIl9
-         ZZTg==
-X-Gm-Message-State: APjAAAVKY2MATc1YKmiK7x+I/I1hLEH3es56nEkR2prEf0B3tayh5573
-        FNDLEeOcO0EHJ3Eih9cpTPKuvTt+RHgoXCFjBMA0xw==
-X-Google-Smtp-Source: APXvYqxv3EjsB/HLoWV0JoOdPbs8OtLIh/Pa3Lms7B8RBJhHyMns7p3zd86ZrsKz4XVdkXUFCKsYY3ajS2OzVB9UAZk=
-X-Received: by 2002:a67:7c58:: with SMTP id x85mr657717vsc.191.1557920836166;
- Wed, 15 May 2019 04:47:16 -0700 (PDT)
+        bh=XqTiQWMIUKTMvV3HGe2FXr2QXLkNPTKOj2lPv0DODS0=;
+        b=qsKEWzQryI+P90mGQektTFbCtMgvJsFGej2z4UZLsFWSCOxkMO1dwBVoYrDnk3Jsi+
+         5lLCI+wUgQ2BFP/FwVmBiVI1kIJKcxBZwjqsrrg3eZI1M1+wnowowyrdL8DZeKELKFHi
+         SC1l0IRh5R0xvKkdpi11ufQPawcX6jZu8RfR2f6iPxbLEmPC4cO/TVsaFR7G4CZCbXo0
+         c86f/TtSb/vxYs+eAGWQlksq/HeYr/oLknYKK0fGxePRSHiqtQTm6VCs5N8jGbZh+C7K
+         5UQgddr5NIvjxndtDoNxdNRrMOS3VPqgAkkCHimiyV9+TBFPgPYzAcilgKktFJlKn6Nx
+         bcMQ==
+X-Gm-Message-State: APjAAAUs/cJxevJ8KmVgULoiISxYbAwCriaY6A/qp+LMmHTdvE/9Dfd1
+        vc0xTBCo1h6fNjR2IObIyLh2EcQxcVsKxWcQiIQrnQ==
+X-Google-Smtp-Source: APXvYqxLLXp4CbKZ5K2cHxrvSLCedDsciD24l4vc3t7NCOi6h5PckPFbTpLuj6YsLGx3RyREW/4BoB33n9It563S1oQ=
+X-Received: by 2002:a1f:6e4d:: with SMTP id j74mr888394vkc.36.1557921232169;
+ Wed, 15 May 2019 04:53:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190515093512.GD3409@mwanda>
-In-Reply-To: <20190515093512.GD3409@mwanda>
+References: <20190509172427.17835-1-scott.branden@broadcom.com>
+In-Reply-To: <20190509172427.17835-1-scott.branden@broadcom.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 15 May 2019 13:46:40 +0200
-Message-ID: <CAPDyKFpm9dB55aCUQkDHgyfcJdniNG9jCbdQ4ezYgQ=L8Rxfhw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: tegra: Fix a warning message
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Sowjanya Komatineni <skomatineni@nvidia.com>
+Date:   Wed, 15 May 2019 13:53:16 +0200
+Message-ID: <CAPDyKFrmTEkknnmU22xuKaoG1=SbU2MfQANPmtV0wcF1xKaguA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] mmc: sdhci-iproc: fixes for HS50 data hold time
+To:     Scott Branden <scott.branden@broadcom.com>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 15 May 2019 at 11:35, Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Thu, 9 May 2019 at 19:24, Scott Branden <scott.branden@broadcom.com> wrote:
 >
-> The WARN_ON() macro takes a condition, not a warning message.  I've
-> changed this to use WARN(1, "msg...
+> This patch series fixes data hold timing issues for various sdhci-iproc
+> ip blocks that do not meet the HS50 data hold time.  NO_HISPD bit is set
+> in quirks.
 >
-> Fixes: ea8fc5953e8b ("mmc: tegra: update hw tuning process")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/mmc/host/sdhci-tegra.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Changes from v2:
+>  - Added info to commit message as to stable tag selection decision
+>    as per Adrian Hunter
 >
-> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-> index f608417ae967..10d7aaf68bab 100644
-> --- a/drivers/mmc/host/sdhci-tegra.c
-> +++ b/drivers/mmc/host/sdhci-tegra.c
-> @@ -865,7 +865,7 @@ static void tegra_sdhci_tap_correction(struct sdhci_host *host, u8 thd_up,
->         }
+> Changes from v1:
+>  - Change fixes tag to Cc: stable@vger.kernel.org to specify version
+>    to backport to
 >
->         if (!first_fail) {
-> -               WARN_ON("no edge detected, continue with hw tuned delay.\n");
-> +               WARN(1, "no edge detected, continue with hw tuned delay.\n");
-
-Not sure why this is a WARN*() in the first place.
-
-Seems like a dev_warn() or possibly a dev_warn_once() should be used instead.
-
->         } else if (first_pass) {
->                 /* set tap location at fixed tap relative to the first edge */
->                 edge1 = first_fail_tap + (first_pass_tap - first_fail_tap) / 2;
+> Trac Hoang (2):
+>   mmc: sdhci-iproc: cygnus: Set NO_HISPD bit to fix HS50 data hold time
+>     problem
+>   mmc: sdhci-iproc: Set NO_HISPD bit to fix HS50 data hold time problem
+>
+>  drivers/mmc/host/sdhci-iproc.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
 > --
-> 2.20.1
+> 2.17.1
 >
+
+Applied for fixes, thanks!
 
 Kind regards
 Uffe
