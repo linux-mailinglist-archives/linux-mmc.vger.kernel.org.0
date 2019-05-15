@@ -2,63 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEDD61F4A9
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 14:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF2B91F4B4
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 14:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727106AbfEOMoB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 May 2019 08:44:01 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:53778 "EHLO
+        id S1726667AbfEOMpm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 May 2019 08:45:42 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:33034 "EHLO
         mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726392AbfEOMoB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 May 2019 08:44:01 -0400
-Received: by mail-wm1-f66.google.com with SMTP id 198so2512695wme.3
-        for <linux-mmc@vger.kernel.org>; Wed, 15 May 2019 05:43:59 -0700 (PDT)
+        with ESMTP id S1726594AbfEOMpm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 May 2019 08:45:42 -0400
+Received: by mail-wm1-f66.google.com with SMTP id c66so4627153wme.0
+        for <linux-mmc@vger.kernel.org>; Wed, 15 May 2019 05:45:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20150623.gappssmtp.com; s=20150623;
         h=subject:to:cc:references:from:openpgp:autocrypt:organization
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=OfM7ijotsCqaMVBFakfOlB9DZSSL0wb+cjLTAAbAZ5w=;
-        b=g8W9uJoJH56yLVkzqL123jcq8h4ias/Ft3h68FPaN+g6J2+JChGlyD7GgC6XN6gnMO
-         6IGX0AR8UsKEpITv9nf58KFxwBdPwq5vmFZrSHMg4aLpw+j1g8zvEdqdaa/s/cK8C45S
-         PGJjWmlSO8BBjcBu0bbgtFWkqv7sIa7WI/ikiCaNlu0+q3jfCwpDhxbufbnx63OyJaqH
-         0uH9HGk7JVRK/LNUeWP0xC3B2d0cABSGbwS9cFoHbK8ZG/w/Voyxst8vSclyrdmCjUZI
-         Pb7/jXpHVqhz+Cz93Cu3Xj10Hl/LNLH6NWyOIX3CQ3EEDoR3vFOeoVKGI7rwvNvNvuP5
-         JRDA==
+        bh=ReSQaVih+Q9te16ORE5lE2qmgrC17kx402jUecsg9QI=;
+        b=Qu+v9GI3JomCUkUat/f+tbwsZfSCBImRIVeETnIlVsIDO+593U3BB8zCqsr1lsOLBZ
+         pIbFzADe/l6EEja1nJWn9U+pzajDtEPXtW+HvOtind6uYk/AT240jWnredyzEJKBV/iq
+         hT9BsDDUKbZ5kmXav1f1FtSmvjXeyIAn2aXOyuvWrc1yq3vknvgbJg+0OzftWeoWpPNz
+         eKWxvoEVwc4IQsw8+Y7mOZJqXGRHnGb5Og0KbasuvXoGQQbC3VNcAbhs25zZeexdEbnO
+         KBrGiyPqK7n/W3m5VgMYDmKGit9oCssfDdPn8gIxmPweDgW+23yyj+S2Gegy7UQdC8Z6
+         NcKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
          :organization:message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=OfM7ijotsCqaMVBFakfOlB9DZSSL0wb+cjLTAAbAZ5w=;
-        b=hSkt9QCVMv2yDKw0ywK/d5VRheN2IWN1CouoTYqAC6hfVuoPhuiAmqYceF6qDjoPcL
-         WxGNd4C5EHUkfJLhClw9lyuvmjhZKel8ZrY15j1bWlZ0n3Qny7c5/IQbVOTInISlRu/w
-         83Fu4TdGIvU/E4sjjO/pEY48lhNTKIn3/I+5f8Bv/n67NhxCcYf1LE07XfgcljD+VOsV
-         xC8xQv2J7XxyosG6Cs4UKZPVb86gkLmbcOmPav9TUNjcDBWk3N/KEcxOcmcDy1xHEB2G
-         paFIY33dxNGePFiWYawYj13Blzzmm1C5fzD6nlE1sYifIpNcDYnIqiQC1eAGQOobyonm
-         TPEw==
-X-Gm-Message-State: APjAAAV034KDEE2FAnV1vVmF88DrJUbb+1Ad4jva8N3FFuMlSI6U+ynV
-        X5VKF9brU3KtVselV0JFmsR0Qw==
-X-Google-Smtp-Source: APXvYqxD9DLNNA/khUrSelD+Cne01trgO+5EaVkXO7n4DkDrB4sqxzDzEQdFqZEBxcy2gXn+O0rAJA==
-X-Received: by 2002:a05:600c:217:: with SMTP id 23mr9075359wmi.115.1557924238264;
-        Wed, 15 May 2019 05:43:58 -0700 (PDT)
+        bh=ReSQaVih+Q9te16ORE5lE2qmgrC17kx402jUecsg9QI=;
+        b=KB6ercQiSi/HtLF5F+fE3GhJemW3DGgUEF73y1OAd2otBd+xDclOveUWGfJ5lg7OPl
+         Frrz83hcUYeJCEZvGVwTPX1TRRWSbu+jMOPYGBS1FT6jKyYGnAf51VGm90V+/DBqP9r7
+         14O9d3wQcwvKV6Sm3OU4GinYqmLwZap0zlYZtpNcScBjWOtk6YZzcoNbEQ5LXdmY/KWi
+         J/e8OdYElcgZXcK0clRvFlW8EAy8ii8X1F1sgfgQb67CDJ7q7LHGNapCVJhw3HYcjkse
+         Nid0jE+49hDU2neeO7opZHC5Z0PfW39Eefvna/6wD/DWc2Ww6DFYJILyn9H1w9GXXazJ
+         Gb4w==
+X-Gm-Message-State: APjAAAX2bEWkiRbgge8STyGmieXWC9kTKcolMeF0OUUULvjlkWRppx59
+        VoosNHMkErzcTnojL8swyG28zg==
+X-Google-Smtp-Source: APXvYqySTzxGi5v5lFBjybibNA6ulVdJ65NAOlu9pPb5TtagsyoN0sW6BOGkU/4I4B2mGi6UyK8NCA==
+X-Received: by 2002:a1c:eb18:: with SMTP id j24mr24313664wmh.32.1557924339535;
+        Wed, 15 May 2019 05:45:39 -0700 (PDT)
 Received: from [10.1.2.12] (lmontsouris-657-1-212-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id r14sm2075025wrm.21.2019.05.15.05.43.57
+        by smtp.gmail.com with ESMTPSA id 24sm2285234wmo.3.2019.05.15.05.45.38
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 15 May 2019 05:43:57 -0700 (PDT)
-Subject: Re: [PATCH 1/3] dt-bindings: mmc: meson-gx: add ddr-access-quirk
- property
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Kevin Hilman <khilman@baylibre.com>,
-        DTML <devicetree@vger.kernel.org>,
-        baylibre-upstreaming@groups.io,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Wed, 15 May 2019 05:45:38 -0700 (PDT)
+Subject: Re: [PATCH 2/3] mmc: meson-gx: add ddr-access-quirk
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     ulf.hansson@linaro.org, khilman@baylibre.com,
+        baylibre-upstreaming@groups.io, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org
 References: <20190513091548.16674-1-narmstrong@baylibre.com>
- <20190513091548.16674-2-narmstrong@baylibre.com>
- <CAPDyKFr9HVLNpqncs6YhGvqPdXCk6mtVSPVcWDvmnrKiNB+ACQ@mail.gmail.com>
+ <20190513091548.16674-3-narmstrong@baylibre.com>
+ <CAFBinCAMoNDnxoQA9XHKy0Xo9MduxD1CvQXOeLZQ3zZ4ViWm7A@mail.gmail.com>
 From:   Neil Armstrong <narmstrong@baylibre.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
@@ -111,12 +107,12 @@ Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
  VsbXrP9BZ6snXyHfebPnno/te5XRqZTL9aJOytB/1iUna+1MAwBxGFPvqeEUUyT+gx1l3Acl
  ZaTUOEkgIor5losDrePdPgE=
 Organization: Baylibre
-Message-ID: <9a5d0be0-00de-2ced-de20-000c0b12b3c8@baylibre.com>
-Date:   Wed, 15 May 2019 14:43:56 +0200
+Message-ID: <a54f7a4a-c280-6181-969f-4979dadb36b2@baylibre.com>
+Date:   Wed, 15 May 2019 14:45:38 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFr9HVLNpqncs6YhGvqPdXCk6mtVSPVcWDvmnrKiNB+ACQ@mail.gmail.com>
+In-Reply-To: <CAFBinCAMoNDnxoQA9XHKy0Xo9MduxD1CvQXOeLZQ3zZ4ViWm7A@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -125,52 +121,63 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 15/05/2019 13:37, Ulf Hansson wrote:
-> On Mon, 13 May 2019 at 11:16, Neil Armstrong <narmstrong@baylibre.com> wrote:
->>
->> On the Amlogic G12A SoC family, (only) the SDIO controller has a bug which
->> makes any DDR access from the MMC controller fail.
->>
->> Add the amlogic,ddr-access-quirk property so signal this particular
->> controller has this bug and needs a quirk to work properly.
->>
->> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
->> ---
->>  Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt | 4 ++++
->>  1 file changed, 4 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt b/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt
->> index 13e70409e8ac..f8914dab06c6 100644
->> --- a/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt
->> +++ b/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt
->> @@ -22,6 +22,10 @@ Required properties:
->>    clock rate requested by the MMC core.
->>  - resets     : phandle of the internal reset line
->>
->> +Optional properties:
->> +- amlogic,ddr-access-quirk: set when HW cannot access the DDR memory, like on
->> +  the G12A SDIO controller.
+On 14/05/2019 19:58, Martin Blumenstingl wrote:
+> Hi Neil,
 > 
-> As stated on the other patch, may I suggest to use DRAM instead of DDR.
+> On Mon, May 13, 2019 at 11:16 AM Neil Armstrong <narmstrong@baylibre.com> wrote:
+> [...]
+>> @@ -1158,15 +1183,27 @@ static int meson_mmc_probe(struct platform_device *pdev)
+>>          */
+>>         mmc->caps2 &= ~MMC_CAP2_HS400;
+>>
+>> -       /* data bounce buffer */
+>> -       host->bounce_buf_size = mmc->max_req_size;
+>> -       host->bounce_buf =
+>> -               dma_alloc_coherent(host->dev, host->bounce_buf_size,
+>> -                                  &host->bounce_dma_addr, GFP_KERNEL);
+>> -       if (host->bounce_buf == NULL) {
+>> -               dev_err(host->dev, "Unable to map allocate DMA bounce buffer.\n");
+>> -               ret = -ENOMEM;
+>> -               goto err_free_irq;
+>> +       if (host->ddr_access_quirk) {
+>> +               /*
+>> +                * The MMC Controller embeds 1,5KiB of internal SRAM
+>> +                * that can be used to be used as bounce buffer.
+>> +                * In the case of the G12A SDIO controller, use these
+>> +                * instead of the DDR memory
+>> +                */
+>> +               host->bounce_buf_size = SD_EMMC_SRAM_DATA_BUF_LEN;
+>> +               host->bounce_buf = host->regs + SD_EMMC_SRAM_DATA_BUF_OFF;
+>> +               host->bounce_dma_addr = res->start + SD_EMMC_SRAM_DATA_BUF_OFF;
+> I'm curious: why do you need to set bounce_dma_addr in this case?
 
-Indeed, may be more accurate.
-
-> 
-> Moreover, please mention that this is about the internal DMA support
-> of the controller.
-
-Ok
+We still need the physical bounce buffer address since we write in the registers,
+and we need the logical address to memcpy() in the buffer.
 
 > 
->> +
->>  Example:
+>> +       } else {
+>> +               /* data bounce buffer */
+>> +               host->bounce_buf_size = mmc->max_req_size;
+>> +               host->bounce_buf =
+>> +                       dma_alloc_coherent(host->dev, host->bounce_buf_size,
+>> +                                          &host->bounce_dma_addr, GFP_KERNEL);
+>> +               if (host->bounce_buf == NULL) {
+>> +                       dev_err(host->dev, "Unable to map allocate DMA bounce buffer.\n");
+>> +                       ret = -ENOMEM;
+>> +                       goto err_free_irq;
+>> +               }
+>>         }
 >>
->>         sd_emmc_a: mmc@70000 {
->> --
->> 2.21.0
->>
+>>         host->descs = dma_alloc_coherent(host->dev, SD_EMMC_DESC_BUF_LEN,
+> if host->descs cannot be allocated then you need to conditionally skip
+> dma_free_coherent for the bounce buffer in the goto err_bounce_buf
+> case a few lines below (just like you did in meson_mmc_remove)
+
+It can be allocated, it's only useless. I can skip it but I don't want
+to break any logic in the driver.
+
 > 
-> Kind regards
-> Uffe
+> 
+> Martin
 > 
 
