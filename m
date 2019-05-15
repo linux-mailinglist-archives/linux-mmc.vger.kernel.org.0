@@ -2,103 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F5291F6B9
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 16:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 205341F9DB
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 20:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727387AbfEOOjz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 May 2019 10:39:55 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:47382 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726452AbfEOOjy (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 15 May 2019 10:39:54 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id AF3D9B02FB4AF1FEF342;
-        Wed, 15 May 2019 22:39:45 +0800 (CST)
-Received: from huawei.com (10.184.227.228) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Wed, 15 May 2019
- 22:39:37 +0800
-From:   Wang Hai <wanghai26@huawei.com>
-To:     <maximlevitsky@gmail.com>, <oakad@yahoo.com>,
-        <ulf.hansson@linaro.org>, <kai.heng.feng@canonical.com>
-CC:     <wanghai26@huawei.com>, <linux-mmc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] memstick: Fix error cleanup path of memstick_init
-Date:   Wed, 15 May 2019 22:37:25 +0800
-Message-ID: <20190515143725.18872-1-wanghai26@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.184.227.228]
-X-CFilter-Loop: Reflected
+        id S1726422AbfEOSYA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 May 2019 14:24:00 -0400
+Received: from sauhun.de ([88.99.104.3]:57916 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726084AbfEOSYA (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 15 May 2019 14:24:00 -0400
+Received: from localhost (p54B332CD.dip0.t-ipconnect.de [84.179.50.205])
+        by pokefinder.org (Postfix) with ESMTPSA id E7D862C009E;
+        Wed, 15 May 2019 20:23:57 +0200 (CEST)
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Takeshi Saito <takeshi.saito.xv@renesas.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH] mmc: tmio: fix SCC error handling to avoid false positive CRC error
+Date:   Wed, 15 May 2019 20:23:46 +0200
+Message-Id: <20190515182346.5292-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.11.0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-If bus_register fails. On its error handling path, it has cleaned up
-what it has done. There is no need to call bus_unregister again.
-Otherwise, if bus_unregister is called, issues such as null-ptr-deref
-will arise.
+From: Takeshi Saito <takeshi.saito.xv@renesas.com>
 
-Syzkaller report this:
+If an SCC error occurs during a read/write command execution, a false
+positive CRC error message is output.
 
-kobject_add_internal failed for memstick (error: -12 parent: bus)
-BUG: KASAN: null-ptr-deref in sysfs_remove_file_ns+0x1b/0x40 fs/sysfs/file.c:467
-Read of size 8 at addr 0000000000000078 by task syz-executor.0/4460
+mmcblk0: response CRC error sending r/w cmd command, card status 0x900
 
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0xa9/0x10e lib/dump_stack.c:113
- __kasan_report+0x171/0x18d mm/kasan/report.c:321
- kasan_report+0xe/0x20 mm/kasan/common.c:614
- sysfs_remove_file_ns+0x1b/0x40 fs/sysfs/file.c:467
- sysfs_remove_file include/linux/sysfs.h:519 [inline]
- bus_remove_file+0x6c/0x90 drivers/base/bus.c:145
- remove_probe_files drivers/base/bus.c:599 [inline]
- bus_unregister+0x6e/0x100 drivers/base/bus.c:916 ? 0xffffffffc1590000
- memstick_init+0x7a/0x1000 [memstick]
- do_one_initcall+0xb9/0x3b5 init/main.c:914
- do_init_module+0xe0/0x330 kernel/module.c:3468
- load_module+0x38eb/0x4270 kernel/module.c:3819
- __do_sys_finit_module+0x162/0x190 kernel/module.c:3909
- do_syscall_64+0x72/0x2a0 arch/x86/entry/common.c:298
- entry_SYSCALL_64_after_hwframe+0x49/0xbe
+check_scc_error() checks SCC_RVSREQ.RVSERR bit. RVSERR detects a
+correction error in the next (up or down) delay tap position. However,
+since the command is successful, only retuning needs to be executed.
+This has been confirmed by HW engineers.
 
-Fixes: baf8532a147d ("memstick: initial commit for Sony MemoryStick support")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wang Hai <wanghai26@huawei.com>
+Thus, on SCC error, set retuning flag instead of setting an error code.
+
+Fixes: b85fb0a1c8ae ("mmc: tmio: Fix SCC error detection")
+Signed-off-by: Takeshi Saito <takeshi.saito.xv@renesas.com>
+[wsa: updated comment and commit message, removed some braces]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/memstick/core/memstick.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
-index 1246d69ba187..b1564cacd19e 100644
---- a/drivers/memstick/core/memstick.c
-+++ b/drivers/memstick/core/memstick.c
-@@ -629,13 +629,18 @@ static int __init memstick_init(void)
- 		return -ENOMEM;
+This patch was suggested by the BSP team because they were seeing CRC errors
+with a hardware I don't have access to. I tested this with my R-Car H3-ES2.0
+and M3-N (both Salvator-XS), and things were still running fine. But I suggest
+to wait for a final ack from Shimoda-san or someone from the BSP team.
+
+
+ drivers/mmc/host/tmio_mmc_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index 595949f1f001..78cc2a928efe 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -842,8 +842,9 @@ static void tmio_mmc_finish_request(struct tmio_mmc_host *host)
+ 	if (mrq->cmd->error || (mrq->data && mrq->data->error))
+ 		tmio_mmc_abort_dma(host);
  
- 	rc = bus_register(&memstick_bus_type);
--	if (!rc)
--		rc = class_register(&memstick_host_class);
-+	if (rc)
-+		goto error_destroy_workqueue;
++	/* SCC error means retune, but executed command was still successful */
+ 	if (host->check_scc_error && host->check_scc_error(host))
+-		mrq->cmd->error = -EILSEQ;
++		mmc_retune_needed(host->mmc);
  
--	if (!rc)
--		return 0;
-+	rc = class_register(&memstick_host_class);
-+	if (rc)
-+		goto error_bus_unregister;
-+
-+	return 0;
- 
-+error_bus_unregister:
- 	bus_unregister(&memstick_bus_type);
-+error_destroy_workqueue:
- 	destroy_workqueue(workqueue);
- 
- 	return rc;
+ 	/* If SET_BLOCK_COUNT, continue with main command */
+ 	if (host->mrq && !mrq->cmd->error) {
 -- 
-2.17.1
-
+2.11.0
 
