@@ -2,93 +2,169 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ECC61F16E
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 13:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC391F4A5
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 14:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731120AbfEOLyC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 May 2019 07:54:02 -0400
-Received: from mail-vk1-f194.google.com ([209.85.221.194]:40147 "EHLO
-        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730518AbfEOLxx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 May 2019 07:53:53 -0400
-Received: by mail-vk1-f194.google.com with SMTP id v140so666609vkd.7
-        for <linux-mmc@vger.kernel.org>; Wed, 15 May 2019 04:53:52 -0700 (PDT)
+        id S1726916AbfEOMng (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 May 2019 08:43:36 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:51720 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726392AbfEOMng (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 May 2019 08:43:36 -0400
+Received: by mail-wm1-f66.google.com with SMTP id o189so2526653wmb.1
+        for <linux-mmc@vger.kernel.org>; Wed, 15 May 2019 05:43:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XqTiQWMIUKTMvV3HGe2FXr2QXLkNPTKOj2lPv0DODS0=;
-        b=L44WaYKFencKFL0aLRS4NaNaiepcTeSneyqE/eagATEjv28G/XY8rdrsINJYIQTZ92
-         +PAtHPEVh8jR6qiTWKFFfSP1YkX7lU1GpVic60govDCk0GD9r4cJ91O5J6R1ASoGkJiU
-         pwD0pXq8TRFRlQS5+wFTsIeGJMUFygr0Z/efTjq8sjfpv/HlMMDxuYSkqsFMm5CRpwm1
-         HLqUJbTGo7MXb67aLZ0NYqUVwWM/iGnfiWnM954ZKFJk9wjWdFEtfhfXNzRPB2YT4cX3
-         77AwPyaxeHAs+IgiexzVRguxuEPOP+ojlb2p4XdTHLUFutHRjAJsb04tpSMsrNmvvuQP
-         EpxA==
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:openpgp:autocrypt:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=4+IPfXtr/zyvyJnFlkcNs+aGHAhvx9CNBUaI7wPMn/Y=;
+        b=miSv11/VhHwHpj5KtpDC83uSn/eO4WLTb3ghRqc6ARq0NoClLBdszZkbjukN7SYfNe
+         d0fWys1vXT92ASwZ531lhb3BulFKdM5tV88PJ+D+IXbQBMIpEie2NGD35W+6llDxj9hh
+         sCSrepOh0ApoS0u/KeJtQu8vHwcMQ2/qRjKLJuSrjZcXnAnRUrT2qfbZoDZG+Xp9LxU+
+         Wip+iFbXsmtNnZMaZ42uIBmdwlJmHbDlHRLknkBhAS85J4FbukuzykK+Qxiloqgqj3oC
+         N3ySEkI55v7W+7B6yLIPXNtrSFGJ3kBpTN1HNcA9WGdczgwqpTDp1ykx0z7oa2YHNmrU
+         DDKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XqTiQWMIUKTMvV3HGe2FXr2QXLkNPTKOj2lPv0DODS0=;
-        b=qsKEWzQryI+P90mGQektTFbCtMgvJsFGej2z4UZLsFWSCOxkMO1dwBVoYrDnk3Jsi+
-         5lLCI+wUgQ2BFP/FwVmBiVI1kIJKcxBZwjqsrrg3eZI1M1+wnowowyrdL8DZeKELKFHi
-         SC1l0IRh5R0xvKkdpi11ufQPawcX6jZu8RfR2f6iPxbLEmPC4cO/TVsaFR7G4CZCbXo0
-         c86f/TtSb/vxYs+eAGWQlksq/HeYr/oLknYKK0fGxePRSHiqtQTm6VCs5N8jGbZh+C7K
-         5UQgddr5NIvjxndtDoNxdNRrMOS3VPqgAkkCHimiyV9+TBFPgPYzAcilgKktFJlKn6Nx
-         bcMQ==
-X-Gm-Message-State: APjAAAUs/cJxevJ8KmVgULoiISxYbAwCriaY6A/qp+LMmHTdvE/9Dfd1
-        vc0xTBCo1h6fNjR2IObIyLh2EcQxcVsKxWcQiIQrnQ==
-X-Google-Smtp-Source: APXvYqxLLXp4CbKZ5K2cHxrvSLCedDsciD24l4vc3t7NCOi6h5PckPFbTpLuj6YsLGx3RyREW/4BoB33n9It563S1oQ=
-X-Received: by 2002:a1f:6e4d:: with SMTP id j74mr888394vkc.36.1557921232169;
- Wed, 15 May 2019 04:53:52 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :organization:message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=4+IPfXtr/zyvyJnFlkcNs+aGHAhvx9CNBUaI7wPMn/Y=;
+        b=bClrwA7DhZnVH/NlY7w+qp7ber2//yb86NvJwBoCT5QMIuuRi2jHTEVLRMg/zN3iiH
+         A5WrLzEikU+k9g3R6J4GI+kaLbxFpjNOgvFh5DhbrhXZ+nztG4nig4PPv9vc4SIqwAdN
+         vw4q43fvdIbvxEdKlvtnFZeHcEubntMiWbDMwYFIYgBYy+tWmb/Las3QXLY5XXC1JGtn
+         362WkzzxXBPi730DMf7zBA0CsvGhBFsCDZUItYfU+xydCghdngMpZVEXZpt+AyY/MsiI
+         U8MIn/ES+d2PO9F4I8g8nLhKD8keIXc90f4A/a5P9+w5m3pkrW1vlDdJqb0TYVY70TIp
+         IlzA==
+X-Gm-Message-State: APjAAAXInp13rZrK2UqY79UOYY7ZSFs5v8kfj0HghLcxR4++1CQev3WO
+        Hzyjer5OWe6dcyfIeU99vMXDtA==
+X-Google-Smtp-Source: APXvYqwcAtFQNnpA4Km7/VhuhxKrqL/yR65nCDu9j8fTBkz9a1rKkCHIGFGTjSxCXjAHuNJI2zEcgQ==
+X-Received: by 2002:a1c:a9d4:: with SMTP id s203mr22532861wme.27.1557924213042;
+        Wed, 15 May 2019 05:43:33 -0700 (PDT)
+Received: from [10.1.2.12] (lmontsouris-657-1-212-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id k67sm2459834wmb.34.2019.05.15.05.43.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 15 May 2019 05:43:32 -0700 (PDT)
+Subject: Re: [PATCH 1/3] dt-bindings: mmc: meson-gx: add ddr-access-quirk
+ property
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     ulf.hansson@linaro.org, khilman@baylibre.com,
+        devicetree@vger.kernel.org, baylibre-upstreaming@groups.io,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org
+References: <20190513091548.16674-1-narmstrong@baylibre.com>
+ <20190513091548.16674-2-narmstrong@baylibre.com>
+ <CAFBinCAhTeywLZRBhcX_myktU9k4_YcjsjgCeTHEkP7SX8JCMQ@mail.gmail.com>
+From:   Neil Armstrong <narmstrong@baylibre.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
+ 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
+ ZaTUOEkgIor5losDrePdPgE=
+Organization: Baylibre
+Message-ID: <9615cdb8-0a7e-fd39-45f0-79fdc7c0441c@baylibre.com>
+Date:   Wed, 15 May 2019 14:43:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <20190509172427.17835-1-scott.branden@broadcom.com>
-In-Reply-To: <20190509172427.17835-1-scott.branden@broadcom.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 15 May 2019 13:53:16 +0200
-Message-ID: <CAPDyKFrmTEkknnmU22xuKaoG1=SbU2MfQANPmtV0wcF1xKaguA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] mmc: sdhci-iproc: fixes for HS50 data hold time
-To:     Scott Branden <scott.branden@broadcom.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAFBinCAhTeywLZRBhcX_myktU9k4_YcjsjgCeTHEkP7SX8JCMQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 9 May 2019 at 19:24, Scott Branden <scott.branden@broadcom.com> wrote:
->
-> This patch series fixes data hold timing issues for various sdhci-iproc
-> ip blocks that do not meet the HS50 data hold time.  NO_HISPD bit is set
-> in quirks.
->
-> Changes from v2:
->  - Added info to commit message as to stable tag selection decision
->    as per Adrian Hunter
->
-> Changes from v1:
->  - Change fixes tag to Cc: stable@vger.kernel.org to specify version
->    to backport to
->
-> Trac Hoang (2):
->   mmc: sdhci-iproc: cygnus: Set NO_HISPD bit to fix HS50 data hold time
->     problem
->   mmc: sdhci-iproc: Set NO_HISPD bit to fix HS50 data hold time problem
->
->  drivers/mmc/host/sdhci-iproc.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> --
-> 2.17.1
->
+On 14/05/2019 19:50, Martin Blumenstingl wrote:
+> Hi Neil,
+> 
+> On Mon, May 13, 2019 at 11:16 AM Neil Armstrong <narmstrong@baylibre.com> wrote:
+>>
+>> On the Amlogic G12A SoC family, (only) the SDIO controller has a bug which
+>> makes any DDR access from the MMC controller fail.
+>>
+>> Add the amlogic,ddr-access-quirk property so signal this particular
+>> controller has this bug and needs a quirk to work properly.
+>>
+>> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+> Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> 
+>> ---
+>>  Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt | 4 ++++
+>>  1 file changed, 4 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt b/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt
+>> index 13e70409e8ac..f8914dab06c6 100644
+>> --- a/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt
+>> +++ b/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt
+>> @@ -22,6 +22,10 @@ Required properties:
+>>    clock rate requested by the MMC core.
+>>  - resets     : phandle of the internal reset line
+>>
+>> +Optional properties:
+>> +- amlogic,ddr-access-quirk: set when HW cannot access the DDR memory, like on
+>> +  the G12A SDIO controller.
+> (I believe we cannot use a standard property like "dma-ranges" to
+> disable DMA access)
+> personally I prefer "amlogic,no-direct-memory-access" or
+> "amlogic,no-ddr-access", but if Rob is happy with the current naming
+> then I'm happy as well
 
-Applied for fixes, thanks!
+I have no preference, I can change it easily,
 
-Kind regards
-Uffe
+Neil
+
+> 
+> 
+> Regards
+> Martin
+> 
+
