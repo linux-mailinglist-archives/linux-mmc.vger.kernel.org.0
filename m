@@ -2,24 +2,24 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44DF51E73D
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 05:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 553BF1EA69
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2019 10:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726260AbfEOD7F (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 May 2019 23:59:05 -0400
-Received: from inva020.nxp.com ([92.121.34.13]:52712 "EHLO inva020.nxp.com"
+        id S1725902AbfEOIrp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 May 2019 04:47:45 -0400
+Received: from inva020.nxp.com ([92.121.34.13]:39150 "EHLO inva020.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726201AbfEOD7F (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 14 May 2019 23:59:05 -0400
+        id S1725912AbfEOIrp (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 15 May 2019 04:47:45 -0400
 Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A068A1A0170;
-        Wed, 15 May 2019 05:59:03 +0200 (CEST)
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4C0961A0171;
+        Wed, 15 May 2019 10:47:43 +0200 (CEST)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id EE9DC1A00B9;
-        Wed, 15 May 2019 05:58:57 +0200 (CEST)
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 9A30A1A006B;
+        Wed, 15 May 2019 10:47:37 +0200 (CEST)
 Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id B762540302;
-        Wed, 15 May 2019 11:58:50 +0800 (SGT)
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id C17CA4029A;
+        Wed, 15 May 2019 16:47:30 +0800 (SGT)
 From:   Yinbo Zhu <yinbo.zhu@nxp.com>
 To:     Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
         Rob Herring <robh+dt@kernel.org>
@@ -29,9 +29,9 @@ Cc:     yinbo.zhu@nxp.com, xiaobo.xie@nxp.com,
         linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         yangbo.lu@nxp.com, jiafei.pan@nxp.com,
         Ashish Kumar <Ashish.Kumar@nxp.com>
-Subject: [PATCH v2] arm64: dts: ls1028a: Add esdhc node in dts
-Date:   Wed, 15 May 2019 12:00:46 +0800
-Message-Id: <20190515040046.9230-1-yinbo.zhu@nxp.com>
+Subject: [PATCH v3] arm64: dts: ls1028a: Add esdhc node in dts
+Date:   Wed, 15 May 2019 16:49:25 +0800
+Message-Id: <20190515084925.30155-1-yinbo.zhu@nxp.com>
 X-Mailer: git-send-email 2.17.1
 X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-mmc-owner@vger.kernel.org
@@ -48,9 +48,8 @@ Signed-off-by: Ashish Kumar <Ashish.Kumar@nxp.com>
 Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
 ---
-Change in v2:
-		Update the patch title
-		Add a commont in dts code
+Change in v3:
+		replace "esdhc@" with "mmc@"
 
  arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts |    8 ++++++
  arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts |   13 ++++++++++
@@ -101,14 +100,14 @@ index f86b054..1bfaf42 100644
  	status = "okay";
  
 diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-index 2896bbc..5c7546f 100644
+index 2896bbc..462833c 100644
 --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
 +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
 @@ -274,6 +274,33 @@
  			status = "disabled";
  		};
  
-+		esdhc: esdhc@2140000 {
++		esdhc: mmc@2140000 {
 +			compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
 +			reg = <0x0 0x2140000 0x0 0x10000>;
 +			interrupts = <0 28 0x4>; /* Level high type */
@@ -121,7 +120,7 @@ index 2896bbc..5c7546f 100644
 +			status = "disabled";
 +		};
 +
-+		esdhc1: esdhc@2150000 {
++		esdhc1: mmc@2150000 {
 +			compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
 +			reg = <0x0 0x2150000 0x0 0x10000>;
 +			interrupts = <0 63 0x4>; /* Level high type */
