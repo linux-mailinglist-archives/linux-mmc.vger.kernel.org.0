@@ -2,135 +2,162 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFF442103C
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 May 2019 23:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46C67210E5
+	for <lists+linux-mmc@lfdr.de>; Fri, 17 May 2019 01:03:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726460AbfEPVnQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 May 2019 17:43:16 -0400
-Received: from mail-eopbgr770109.outbound.protection.outlook.com ([40.107.77.109]:35910
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728818AbfEPVnQ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 16 May 2019 17:43:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=impinj.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1zpbfwSZOjfieyDGJIecyaUXs0Yz5vv8bXEc6DBOLVk=;
- b=AoZW2L+uUDf2koFO1M7Dw1zTfdyRvhmcoObiCbHE+G6Yoy9ve5LKm+Np+IQH7VdMTD7GnUQgpUmhZ4eM8dSurRBb+Ciht/R6FWYKGb9EVfKeKHRdIvEXAXMzkEQ0HMrZUCyweRT6gr83p3azQQLnOzwK+6wwAU9RvL87LBRd/jk=
-Received: from MWHPR0601MB3708.namprd06.prod.outlook.com (10.167.236.38) by
- MWHPR0601MB3691.namprd06.prod.outlook.com (10.167.236.33) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1900.16; Thu, 16 May 2019 21:42:31 +0000
-Received: from MWHPR0601MB3708.namprd06.prod.outlook.com
- ([fe80::88d1:40e0:d1be:1daf]) by MWHPR0601MB3708.namprd06.prod.outlook.com
- ([fe80::88d1:40e0:d1be:1daf%7]) with mapi id 15.20.1900.010; Thu, 16 May 2019
- 21:42:31 +0000
-From:   Trent Piepho <tpiepho@impinj.com>
-To:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "yinbo.zhu@nxp.com" <yinbo.zhu@nxp.com>,
-        "adrian.hunter@intel.com" <adrian.hunter@intel.com>
-CC:     "yangbo.lu@nxp.com" <yangbo.lu@nxp.com>,
-        "xiaobo.xie@nxp.com" <xiaobo.xie@nxp.com>,
-        "leoyang.li@nxp.com" <leoyang.li@nxp.com>,
-        "jimmy.zhao@nxp.com" <jimmy.zhao@nxp.com>
-Subject: Re: [PATCH v5 4/5] mmc: sdhci-of-esdhc: add erratum eSDHC7 support
-Thread-Topic: [PATCH v5 4/5] mmc: sdhci-of-esdhc: add erratum eSDHC7 support
-Thread-Index: AQHVDDBDBTbJP70190OUgT7UO1nGmg==
-Date:   Thu, 16 May 2019 21:42:31 +0000
-Message-ID: <1558042950.4229.153.camel@impinj.com>
-References: <20190311021814.42326-1-yinbo.zhu@nxp.com>
-         <20190311021814.42326-4-yinbo.zhu@nxp.com>
-In-Reply-To: <20190311021814.42326-4-yinbo.zhu@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=tpiepho@impinj.com; 
-x-originating-ip: [216.207.205.253]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d72c05f6-d28f-4dda-ece0-08d6da47664a
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR0601MB3691;
-x-ms-traffictypediagnostic: MWHPR0601MB3691:
-x-microsoft-antispam-prvs: <MWHPR0601MB36910454ED4ABED2443855E6D30A0@MWHPR0601MB3691.namprd06.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 0039C6E5C5
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(979002)(366004)(376002)(396003)(136003)(39850400004)(346002)(189003)(199004)(229853002)(6486002)(68736007)(99286004)(6512007)(4326008)(25786009)(86362001)(2201001)(110136005)(54906003)(6246003)(316002)(14454004)(53936002)(478600001)(6436002)(103116003)(76176011)(8936002)(8676002)(81166006)(81156014)(66066001)(7736002)(476003)(446003)(36756003)(2906002)(14444005)(11346002)(26005)(102836004)(186003)(305945005)(256004)(2616005)(66476007)(66556008)(5660300002)(64756008)(66446008)(71190400001)(71200400001)(6116002)(3846002)(66946007)(73956011)(2501003)(6506007)(486006)(91956017)(76116006)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR0601MB3691;H:MWHPR0601MB3708.namprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: impinj.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 7/PFk/5oD75JOO3BiJKwa4u6V5/cznwQgVeo8PcDIpg0rJtS4H6WIm9Gi/Viih05IjWWVjtyRv47BO6yltikpOdrc6CrskNuOISgZUeo4UCjhJ3E2c3luDJsCco+VEgNgh5du9cwG540VWeK+DLhPlaz4dZt/veYXF9M9EjzlmvJWrmIleTNAUpy6JY3JUG+l7RejU7PxDbNu+nuQZqdBrXNfVS3rQw7b1W+lFeeGSehfRILzEDOA0WPQBE6uUJ5Uw+7m9fdnpl3jM53NZG31rX7K7i4ZyXvr9P8zRCf+Pwj74lvRYiVMvDz8PKYOyRFcbDhTg45S2AXaFy0mudiaPJBBKn5mNEH06PHsP6XvthM645PD4mMzqJoLlpRuaYEaO7aGdPCwmc9RwMFxddHXOg9pZWq3SqQ79282SXrgjc=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <CF97FBC1B5E18047BBCBFBE35C638730@namprd06.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1726575AbfEPXDD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 May 2019 19:03:03 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:36769 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726546AbfEPXDD (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 May 2019 19:03:03 -0400
+Received: by mail-lj1-f194.google.com with SMTP id z1so4596997ljb.3
+        for <linux-mmc@vger.kernel.org>; Thu, 16 May 2019 16:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ragnatech-se.20150623.gappssmtp.com; s=20150623;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=XFSIa+E7OYrNPKaA6up2MDnwHZn+V1T0FYHp1giQMVQ=;
+        b=LzMq7KtbgCYXh+SYH+KPCbuzKcdThlqrvO5aFkcMnfZMQMFujKw23mcDzzjME/glzQ
+         KIl8VuAJbKO6ISqTIkcCinXglCzU0zVuaBkAY5XNnNAjz553ws9QEcHfxLeKlor4F8/+
+         qc8fAidDY67wkydTp75LveW23KnHpn9OX28Rmd2oKAM2GikrZ7XypFPp7Z3D8tfjtZdV
+         xIru/AP+ZrGlzNJ1PvqIbX9tSbHgs7N7vMet1zUAsA9A0w6fcOZ8tSWz3yUkVki7SY5v
+         7DDSj7o9EbLu4ZO2zFaZAwNOllLhQVR7FmCQlR7cv6kiYK1lagHKsMwShEkhD30JlS5S
+         0FKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=XFSIa+E7OYrNPKaA6up2MDnwHZn+V1T0FYHp1giQMVQ=;
+        b=M/MqnF06x4zK7LT3zq194NqlGI4L/9PSC7mAuQ/XzYpGHOR4GBh3VKbNDZGSsR/HX3
+         Yl8XKe7hSVH/VRdnvJ4PPW4yIFEtEU9vEjBPvMYKFodDqZ00QD3fx4ILLeHldF/s3onu
+         Bc6EEeRjHztKK8wsLtPiBSTZ3Zbbh7cBlaN9mKfDhzhtPJgc9lFPqlcKAWwmY24jMXyS
+         ubS3uH3/Sr8WrgZhsllfodzM0uiFd8bw8jzVGYJ1GdzJHadZa4UCwfYYEVI8W8tCFBWp
+         awYpjyXU4bl1TjCStp41Sta8sdyg/CXpktDZhRTZubBn2LV4Cj5BoL7IRO0bu2OWztHi
+         brww==
+X-Gm-Message-State: APjAAAXvMpIJkelO+J4B0P8rRAs6KvDS4Z3v1yMBQLFvrkGrHQ9zuN/6
+        MGLbSQ8EhxzyW5o9ULuyKuDUpGifpcs=
+X-Google-Smtp-Source: APXvYqx8u+1aCInvIxqXE2hbGjq6gH88g2NfCC8iRYHl8tGEwu7T1lhJKU5oHxCrsC6b1N7QBSPEyQ==
+X-Received: by 2002:a2e:86c5:: with SMTP id n5mr26090232ljj.184.1558047780689;
+        Thu, 16 May 2019 16:03:00 -0700 (PDT)
+Received: from localhost (89-233-230-99.cust.bredband2.com. [89.233.230.99])
+        by smtp.gmail.com with ESMTPSA id y19sm1204622lfl.40.2019.05.16.16.02.59
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 16 May 2019 16:02:59 -0700 (PDT)
+From:   "Niklas =?iso-8859-1?Q?S=F6derlund?=" <niklas.soderlund@ragnatech.se>
+X-Google-Original-From: Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Date:   Fri, 17 May 2019 01:02:58 +0200
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: [PATCH v2] mmc: tmio: move runtime PM enablement to the driver
+ implementations
+Message-ID: <20190516230258.GG31788@bigcity.dyn.berto.se>
+References: <20190410222240.5800-1-niklas.soderlund+renesas@ragnatech.se>
+ <20190415111003.6rryld6rfounopho@ninjato>
+ <CAMuHMdVx_b8M2Gc_vn2_FS8xwf0ux=qYkH1ZfbWnTO0kBoLuPA@mail.gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: impinj.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d72c05f6-d28f-4dda-ece0-08d6da47664a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 May 2019 21:42:31.1804
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 6de70f0f-7357-4529-a415-d8cbb7e93e5e
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR0601MB3691
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMuHMdVx_b8M2Gc_vn2_FS8xwf0ux=qYkH1ZfbWnTO0kBoLuPA@mail.gmail.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-T24gTW9uLCAyMDE5LTAzLTExIGF0IDAyOjE2ICswMDAwLCBZaW5ibyBaaHUgd3JvdGU6DQo+IEZy
-b206IFlpbmJvIFpodSA8eWluYm8uemh1QG54cC5jb20+DQo+IA0KPiBJbnZhbGlkIFRyYW5zZmVy
-IENvbXBsZXRlIChJUlFTVEFUW1RDXSkgYml0IGNvdWxkIGJlIHNldCBkdXJpbmcNCj4gbXVsdGkt
-d3JpdGUgb3BlcmF0aW9uIGV2ZW4gd2hlbiB0aGUgQkxLX0NOVCBpbiBCTEtBVFRSIHJlZ2lzdGVy
-DQo+IGhhcyBub3QgcmVhY2hlZCB6ZXJvLiBUaGVyZWZvcmUsIFRyYW5zZmVyIENvbXBsZXRlIG1p
-Z2h0IGJlDQo+IHJlcG9ydGVkIHR3aWNlIGR1ZSB0byB0aGlzIGVycmF0dW0gc2luY2UgYSB2YWxp
-ZCBUcmFuc2ZlciBDb21wbGV0ZQ0KPiBvY2N1cnMgd2hlbiBCTEtfQ05UIHJlYWNoZXMgemVyby4g
-VGhpcyBlcnJhdHVtIGlzIHRvIGZpeCB0aGlzIGlzc3VlDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBZ
-aW5ibyBaaHUgPHlpbmJvLnpodUBueHAuY29tPg0KPiBBY2tlZC1ieTogQWRyaWFuIEh1bnRlciA8
-YWRyaWFuLmh1bnRlckBpbnRlbC5jb20+DQo+IC0tLQ0KPiBDaGFuZ2UgaW4gdjU6DQo+IAkJd3Jp
-dGUgU0RIQ0lfSU5UX0RBVEFfRU5EIHRvIFNESENJX0lOVF9TVEFUVVMgdG8gY2xlYXIgaXQNCj4g
-DQo+ICANCj4gK3N0YXRpYyB1MzIgZXNkaGNfaXJxKHN0cnVjdCBzZGhjaV9ob3N0ICpob3N0LCB1
-MzIgaW50bWFzaykNCj4gK3sNCj4gKwl1MzIgY29tbWFuZDsNCj4gKw0KPiArCWlmIChvZl9maW5k
-X2NvbXBhdGlibGVfbm9kZShOVUxMLCBOVUxMLA0KPiArCQkJCSJmc2wscDIwMjAtZXNkaGMiKSkg
-ew0KDQpUaGlzIHNjYW5zIHRoZSBlbnRpcmUgZGV2aWNlIHRyZWUgZm9yIGFueSBub2RlcyBtYXRj
-aGluZyB0aGlzLiAgT24NCmV2ZXJ5IGlycS4gIEluIHRoZSBpbnRlcnJ1cHQgaGFuZGxlci4NCg0K
-VGhhdCdzIG51dHMhDQoNCkZpcnN0bHksIHdoeSBzY2FuIHRoZSBlbnRpcmUgZGV2aWNlIHRyZWUh
-ICBJdCBzZWVtcyBsaWtlIGFsbCB0aGVzZQ0Kb2ZfZmluZF9jb21wYXRpYmxlX25vZGUoTlVMTCwg
-TlVMTCwgLi4uKSBjYWxscyBhcmUgd3JvbmcuICBEb24ndCB5b3UNCndhbnQgdG8ga25vdyBpZiAq
-dGhpcyogaG9zdCBpcyBhbiBmc2wscDIwMjAtZXNkaGM/ICBOb3QgaWYgYW55IG9mDQpmc2wscDIw
-MjAtZXNkaGMgaG9zdHMgZXhpc3QsIGV2ZW4gaWYgdGhpcyBpc24ndCBvbmU/DQoNClRoaXMgd291
-bGQgYmUgZmFyIGJldHRlciBkb25lIHdpdGg6DQpvZl9kZXZpY2VfaXNfY29tcGF0aWJsZShkZXYt
-Pm9mX25vZGUsICJmc2wsZnNsLHAyMDIwLWVzZGhjIikNCg0KVGhlcmUgaXMgYSBtYXRjaCB0YWJs
-ZSBpbiB0aGUgZHJpdmVyOg0Kc3RhdGljIGNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgc2RoY2lf
-ZXNkaGNfb2ZfbWF0Y2hbXSA9IHsNCiAgICAgICAgeyAuY29tcGF0aWJsZSA9ICJmc2wsbHMxMDIx
-YS1lc2RoYyIsIC5kYXRhID0gJmxzMTAyMWFfZXNkaGNfY2xrfSwNCiAgICAgICAgeyAuY29tcGF0
-aWJsZSA9ICJmc2wsbHMxMDQ2YS1lc2RoYyIsIC5kYXRhID0gJmxzMTA0NmFfZXNkaGNfY2xrfSwN
-Cg0KYW5kIHNvIG9uLiAgV2hhdCB5b3Ugc2hvdWxkIGRvIGlzIGFkZCBhbiBlbnRyeSBmb3IgcDIw
-MjAgYW5kIGdpdmUgaXQNCnNvbWUgcGxhdGZvcm0gZGF0YSB0aGF0IGluZGljYXRlcyBpdCBoYXMg
-dGhlc2UgcXVpcmtzLg0KDQpUaGUgaXJxIGhhbmRsZXIgc2hvdWxkIG5vdCBiZSBsb29raW5nIGF0
-IHRoZSBkZXZpY2UgdHJlZSBvbiBlYWNoIElSUS4gDQpDaGVjayBhIGJpdCBmbGFnIGluIHRoZSBk
-cml2ZXIncyBzdGF0ZSBkYXRhLg0KDQpTaW5jZSB5b3Uga25vdyBpZiB0aGlzIGlycSBjYWxsYmFj
-ayBpcyBuZWVkZWQgb3Igbm90IGJlZm9yZSB0aGUgZGV2aWNlDQppcyByZWdpc3RlcmVkLCBpdCB3
-b3VsZCBiZSBldmVuIG1vcmUgZWZmaWNpZW50IHRvIHNpbXBsZSBub3QgdXNlIGl0IG9uDQphIG5v
-bi1wMjAyMC4gIEkuZS4sIHNldCBvcHMtPmlycSB0byB0aGlzIGhhbmRsZXIgZnVuY3Rpb24gb24g
-cDIwMjAgYW5kDQpzZXQgaXQgdG8gTlVMTCBvbiBvdGhlciBkZXZpY2VzLiAgVGhhdCB3YXkgaXQg
-bmV2ZXIgZXZlbiBnZXRzIGNhbGxlZC4NCg0KDQo+ICsJCWNvbW1hbmQgPSBTREhDSV9HRVRfQ01E
-KHNkaGNpX3JlYWR3KGhvc3QsDQo+ICsJCQkJCVNESENJX0NPTU1BTkQpKTsNCj4gKwkJaWYgKGNv
-bW1hbmQgPT0gTU1DX1dSSVRFX01VTFRJUExFX0JMT0NLICYmDQo+ICsJCQkJc2RoY2lfcmVhZHco
-aG9zdCwgU0RIQ0lfQkxPQ0tfQ09VTlQpICYmDQo+ICsJCQkJaW50bWFzayAmIFNESENJX0lOVF9E
-QVRBX0VORCkgew0KPiArCQkJaW50bWFzayAmPSB+U0RIQ0lfSU5UX0RBVEFfRU5EOw0KPiArCQkJ
-c2RoY2lfd3JpdGVsKGhvc3QsIFNESENJX0lOVF9EQVRBX0VORCwNCj4gKwkJCQkJU0RIQ0lfSU5U
-X1NUQVRVUyk7DQo+ICsJCX0NCj4gKwl9DQo+ICsJcmV0dXJuIGludG1hc2s7DQo+ICt9DQo+ICsN
-Cj4gICNpZmRlZiBDT05GSUdfUE1fU0xFRVANCj4gIHN0YXRpYyB1MzIgZXNkaGNfcHJvY3RsOw0K
-PiAgc3RhdGljIGludCBlc2RoY19vZl9zdXNwZW5kKHN0cnVjdCBkZXZpY2UgKmRldikNCj4gQEAg
-LTkxNCw2ICs5MzQsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IHNkaGNpX29wcyBzZGhjaV9lc2Ro
-Y19iZV9vcHMgPSB7DQo+ICAJLnNldF9idXNfd2lkdGggPSBlc2RoY19wbHRmbV9zZXRfYnVzX3dp
-ZHRoLA0KPiAgCS5yZXNldCA9IGVzZGhjX3Jlc2V0LA0KPiAgCS5zZXRfdWhzX3NpZ25hbGluZyA9
-IGVzZGhjX3NldF91aHNfc2lnbmFsaW5nLA0KPiArCS5pcnEgPSBlc2RoY19pcnEsDQo+ICB9Ow0K
-PiAgDQo+ICBzdGF0aWMgY29uc3Qgc3RydWN0IHNkaGNpX29wcyBzZGhjaV9lc2RoY19sZV9vcHMg
-PSB7DQo+IEBAIC05MzEsNiArOTUyLDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBzZGhjaV9vcHMg
-c2RoY2lfZXNkaGNfbGVfb3BzID0gew0KPiAgCS5zZXRfYnVzX3dpZHRoID0gZXNkaGNfcGx0Zm1f
-c2V0X2J1c193aWR0aCwNCj4gIAkucmVzZXQgPSBlc2RoY19yZXNldCwNCj4gIAkuc2V0X3Voc19z
-aWduYWxpbmcgPSBlc2RoY19zZXRfdWhzX3NpZ25hbGluZywNCj4gKwkuaXJxID0gZXNkaGNfaXJx
-LA0KPiAgfTsNCj4gIA0KPiAgc3RhdGljIGNvbnN0IHN0cnVjdCBzZGhjaV9wbHRmbV9kYXRhIHNk
-aGNpX2VzZGhjX2JlX3BkYXRhID0gew==
+Hi Geert,
+
+Thanks for your feedback.
+
+On 2019-05-08 11:03:05 +0200, Geert Uytterhoeven wrote:
+> Hi Niklas,
+> 
+> On Mon, Apr 15, 2019 at 1:10 PM Wolfram Sang <wsa@the-dreams.de> wrote:
+> > On Thu, Apr 11, 2019 at 12:22:40AM +0200, Niklas Söderlund wrote:
+> > > Both the Renesas and Uniphier implementations perform actions which
+> > > affect runtime PM before calling into the core tmio_mmc_host_probe()
+> 
+> Do you know which pm_runtime_*() calls were done too early?
+> I guess they returned an error, which is not checked?
+
+The ones in tmio_mmc_host_probe() which is removed in this patch where 
+called before PM was enabled.
+
+> 
+> I checked the various pm_runtime_get*() calls, but none of them failed,
+> while they typically return -EACCES when called too early.
+> 
+> > > which enabled runtime PM. Move pm_runtime_enable() from the core and
+> > > tmio_mmc_host_probe() into each drivers probe() so it can be called
+> > > before any clocks or other resources are switched on.
+> > >
+> > > Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > > Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+> > > ---
+> >
+> > Thanks for keeping at this. Setting up the APE6 board for further tests
+> > was painful, I understood that.
+> >
+> > Since you lost the cover-letter from the last series, I think it should
+> > be mentioned that this fixes a clock imbalance problem (at least on
+> > Gen3).
+> >
+> > For the APE6 tests, we need to wait until Geert comes back. I surely
+> > would like his input. And Yamada-san's, too, to make sure his platform
+> > also benefits.
+> 
+> Thanks, but I still see a clock imbalances in /sys/kernel/debug/clk/clk_summary
+> when comparing before/after s2ram.
+> 
+> On ape6evm:
+> 
+> -   mmcif0   2   2   0   100000000   0     0  50000
+> +   mmcif0   1   1   0   100000000   0     0  50000
+
+This is unrelated to this patch, this clock is handled by the sh_mmcif 
+driver. I get the same diff of the mmcif0 clock with a suspend cycle 
+even if i do not include the renesas_sdhi_* drivers in the system.
+
+I had a quick look at the issue and it's related to that the MCC core do 
+not call MMC_POWER_UP after suspend while it do call it during boot. Why 
+it does so I'm not sure. Also if I mock convert sh_mmcif to require PM 
+the imbalance is gone which perplexes me a bit and wonder if I converted 
+it wrong somehow.
+
+> 
+> On r8a77965/salvator-xs:
+> 
+> -   s0d3   1   2   0   266240000   0     0  50000
+> +   s0d3   2   2   0   266240000   0     0  50000
+> 
+> -   sys-dmac0   0   1   0   266240000   0     0  50000
+> +   sys-dmac0   1   1   0   266240000   0     0  50000
+
+Even these are unrelated to this patch. If I test without renesas_sdhi_* 
+driver in the system I get the same clock differences, in fact I get one 
+more for sys-dmac1 (both with and without the shdi drivers).
+
+-    s0d3                  2        6        0   266240000          0     0  50000
++    s0d3                  4        6        0   266240000          0     0  50000
+
+-       sys-dmac0          0        1        0   266240000          0     0  50000
++       sys-dmac0          1        1        0   266240000          0     0  50000
+
+-       sys-dmac1          0        1        0   266240000          0     0  50000
++       sys-dmac1          1        1        0   266240000          0     0  50000
+
+I have not investigate this further as I wish to make sens of this patch 
+first ;-) Would you agree that with this information we should move 
+forward with this patch as it solves the issue for the sdhi clocks on 
+all effected SoCs ?
+
+-- 
+Regards,
+Niklas Söderlund
