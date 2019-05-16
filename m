@@ -2,210 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86FF520241
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 May 2019 11:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D63920497
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 May 2019 13:26:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726448AbfEPJJ7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 May 2019 05:09:59 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:42038 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726336AbfEPJJ7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 May 2019 05:09:59 -0400
-Received: by mail-wr1-f67.google.com with SMTP id l2so2459237wrb.9
-        for <linux-mmc@vger.kernel.org>; Thu, 16 May 2019 02:09:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:openpgp:autocrypt:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=p6kdFIcAXlwCJee+4dm4i376dtq0zqZbqWN1rlHnda0=;
-        b=ljSbd2C8ZQkeKBrPgLgB9WgLt7qN0EAcURtwu7kBsGcXA+JUOJbIjtLY9IZcGKt1iA
-         XFh78n5k0UR/Oehw6ktimwGaI3S3gGABJYtNLr6zDj4KD8Up92kvCcz2kd4QMsKc5keI
-         S4KA+OKXxSoZ/xaSNG9getVUtSacYk3meAdsrCTm3edpu1uazCT6us0a5ApPmPovn+71
-         1LUs2pifAAdeHOU8Px2dDrI/GGNg7l+ZOCImglqZ+BjGR4FjK33M82H8nEFZHfqoU2JQ
-         hvQwdWgXq6OBGOaqYb1QKVNW9l8WNtCGcYX7sahOWVbWLv8uvmlEA8XzhKn1fady6yg8
-         hlSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :organization:message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=p6kdFIcAXlwCJee+4dm4i376dtq0zqZbqWN1rlHnda0=;
-        b=OJ3p8uJdNui7OLFFEiPbQsWaoMVf4Q079Ma+pyfapiWnXzwkXZCqV6SKHVNfuNi7H3
-         +1IH3xWv+vs0s/jZVl5yvtWYo9zhX3/gSZ5Wk1OGPIqA7bvs0Xy43feAqcZsoNRDqAuq
-         dvtrP6rAc9ZEnPK7GlZU5/BzOBySSOREHXxtM51GY153FfcGq80WZZyr/Zr14SFu53Qm
-         UyobZhmrSKKhq7dahO/lafQU+G0bTXwwsKhvEb2BZtKtTXWbtVx9QNEj6ADztKiHl8gt
-         Fl6V60gEWtNoyphUUDdbMkmvrWSRYYzaD6H+GLdBH89lvJoX+g0G0I78Cg2iOmsq81L6
-         J2QQ==
-X-Gm-Message-State: APjAAAWjocNI2nQjQoDGC4Mby6BornVFjozb52G5zkvesAlPwr5BTQDb
-        Ex79mI7/IBP/xIN5oPCjsIObdg==
-X-Google-Smtp-Source: APXvYqwqeRDg99An8xL0Uv2hAVMilwlW0MwE2mOPifQCB8/qDGI5gMhvHKbB1Cx8BFdyawk1EX/iJQ==
-X-Received: by 2002:a5d:4f0e:: with SMTP id c14mr13387498wru.91.1557997796550;
-        Thu, 16 May 2019 02:09:56 -0700 (PDT)
-Received: from [10.1.2.12] (lmontsouris-657-1-212-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id j17sm3266617wrs.77.2019.05.16.02.09.55
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 May 2019 02:09:55 -0700 (PDT)
-Subject: Re: [PATCH 2/3] mmc: meson-gx: add ddr-access-quirk
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     ulf.hansson@linaro.org, khilman@baylibre.com,
-        baylibre-upstreaming@groups.io, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20190513091548.16674-1-narmstrong@baylibre.com>
- <20190513091548.16674-3-narmstrong@baylibre.com>
- <CAFBinCAMoNDnxoQA9XHKy0Xo9MduxD1CvQXOeLZQ3zZ4ViWm7A@mail.gmail.com>
- <a54f7a4a-c280-6181-969f-4979dadb36b2@baylibre.com>
- <CAFBinCCtNQmKKL8yw07DKOfPK=eusgCuYeBmwgiHm0SSVmuFPQ@mail.gmail.com>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
- 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
- ZaTUOEkgIor5losDrePdPgE=
-Organization: Baylibre
-Message-ID: <65c704a4-c4b7-ebdd-a869-353b1536410f@baylibre.com>
-Date:   Thu, 16 May 2019 11:09:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726363AbfEPLWr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 May 2019 07:22:47 -0400
+Received: from kirsty.vergenet.net ([202.4.237.240]:56546 "EHLO
+        kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727168AbfEPLWr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 May 2019 07:22:47 -0400
+Received: from penelope.horms.nl (ip4dab7138.direct-adsl.nl [77.171.113.56])
+        by kirsty.vergenet.net (Postfix) with ESMTPA id 7E44025AD69;
+        Thu, 16 May 2019 21:22:45 +1000 (AEST)
+Received: by penelope.horms.nl (Postfix, from userid 7100)
+        id 69517E21EEB; Thu, 16 May 2019 13:22:43 +0200 (CEST)
+Date:   Thu, 16 May 2019 13:22:43 +0200
+From:   Simon Horman <horms@verge.net.au>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Takeshi Saito <takeshi.saito.xv@renesas.com>
+Subject: Re: [PATCH] mmc: tmio: fix SCC error handling to avoid false
+ positive CRC error
+Message-ID: <20190516112243.7uxw7ykh73dva3u2@verge.net.au>
+References: <20190515182346.5292-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-In-Reply-To: <CAFBinCCtNQmKKL8yw07DKOfPK=eusgCuYeBmwgiHm0SSVmuFPQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190515182346.5292-1-wsa+renesas@sang-engineering.com>
+Organisation: Horms Solutions BV
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 15/05/2019 23:18, Martin Blumenstingl wrote:
-> Hi Neil,
+On Wed, May 15, 2019 at 08:23:46PM +0200, Wolfram Sang wrote:
+> From: Takeshi Saito <takeshi.saito.xv@renesas.com>
 > 
-> On Wed, May 15, 2019 at 2:45 PM Neil Armstrong <narmstrong@baylibre.com> wrote:
->>
->> On 14/05/2019 19:58, Martin Blumenstingl wrote:
->>> Hi Neil,
->>>
->>> On Mon, May 13, 2019 at 11:16 AM Neil Armstrong <narmstrong@baylibre.com> wrote:
->>> [...]
->>>> @@ -1158,15 +1183,27 @@ static int meson_mmc_probe(struct platform_device *pdev)
->>>>          */
->>>>         mmc->caps2 &= ~MMC_CAP2_HS400;
->>>>
->>>> -       /* data bounce buffer */
->>>> -       host->bounce_buf_size = mmc->max_req_size;
->>>> -       host->bounce_buf =
->>>> -               dma_alloc_coherent(host->dev, host->bounce_buf_size,
->>>> -                                  &host->bounce_dma_addr, GFP_KERNEL);
->>>> -       if (host->bounce_buf == NULL) {
->>>> -               dev_err(host->dev, "Unable to map allocate DMA bounce buffer.\n");
->>>> -               ret = -ENOMEM;
->>>> -               goto err_free_irq;
->>>> +       if (host->ddr_access_quirk) {
->>>> +               /*
->>>> +                * The MMC Controller embeds 1,5KiB of internal SRAM
->>>> +                * that can be used to be used as bounce buffer.
->>>> +                * In the case of the G12A SDIO controller, use these
->>>> +                * instead of the DDR memory
->>>> +                */
->>>> +               host->bounce_buf_size = SD_EMMC_SRAM_DATA_BUF_LEN;
->>>> +               host->bounce_buf = host->regs + SD_EMMC_SRAM_DATA_BUF_OFF;
->>>> +               host->bounce_dma_addr = res->start + SD_EMMC_SRAM_DATA_BUF_OFF;
->>> I'm curious: why do you need to set bounce_dma_addr in this case?
->>
->> We still need the physical bounce buffer address since we write in the registers,
-> so writing bounce_dma_addr to SD_EMMC_CMD_DAT is needed to make it work?
+> If an SCC error occurs during a read/write command execution, a false
+> positive CRC error message is output.
 > 
->> and we need the logical address to memcpy() in the buffer.
-> as far as I understand that is what we use the "bounce_buf" member
-> for, but I don't see why we need "bounce_dma_addr"
-
-Sorry I don't understand these questions, I haven't changed the
-bounce buffer behavior here, I only make it use a local SRAM buffer
-instead of an dma_alloc_coherent() allocated buffer.
-
-Having bounce_buf_size/bounce_buf/bounce_dma_addr is still necessary like
-an allocated buffer.
-
+> mmcblk0: response CRC error sending r/w cmd command, card status 0x900
 > 
->>>
->>>> +       } else {
->>>> +               /* data bounce buffer */
->>>> +               host->bounce_buf_size = mmc->max_req_size;
->>>> +               host->bounce_buf =
->>>> +                       dma_alloc_coherent(host->dev, host->bounce_buf_size,
->>>> +                                          &host->bounce_dma_addr, GFP_KERNEL);
->>>> +               if (host->bounce_buf == NULL) {
->>>> +                       dev_err(host->dev, "Unable to map allocate DMA bounce buffer.\n");
->>>> +                       ret = -ENOMEM;
->>>> +                       goto err_free_irq;
->>>> +               }
->>>>         }
->>>>
->>>>         host->descs = dma_alloc_coherent(host->dev, SD_EMMC_DESC_BUF_LEN,
->>> if host->descs cannot be allocated then you need to conditionally skip
->>> dma_free_coherent for the bounce buffer in the goto err_bounce_buf
->>> case a few lines below (just like you did in meson_mmc_remove)
->>
->> It can be allocated, it's only useless. I can skip it but I don't want
->> to break any logic in the driver.
-> I wasn't clear in my last email, I meant this error case:
->   err_bounce_buf:
->     dma_free_coherent(host->dev, host->bounce_buf_size, ...
-> when host->ddr_access_quirk is true then you skip the
-> dma_alloc_coherent call for bounce_buf
-
-Oh, ok, yes, I'll add it.
-
-Neil
-
+> check_scc_error() checks SCC_RVSREQ.RVSERR bit. RVSERR detects a
+> correction error in the next (up or down) delay tap position. However,
+> since the command is successful, only retuning needs to be executed.
+> This has been confirmed by HW engineers.
 > 
+> Thus, on SCC error, set retuning flag instead of setting an error code.
 > 
-> Martin
-> 
+> Fixes: b85fb0a1c8ae ("mmc: tmio: Fix SCC error detection")
+> Signed-off-by: Takeshi Saito <takeshi.saito.xv@renesas.com>
+> [wsa: updated comment and commit message, removed some braces]
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+
+Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
 
