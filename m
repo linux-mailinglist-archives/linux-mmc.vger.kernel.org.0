@@ -2,43 +2,43 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50AE121A1F
-	for <lists+linux-mmc@lfdr.de>; Fri, 17 May 2019 16:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F2C421A3B
+	for <lists+linux-mmc@lfdr.de>; Fri, 17 May 2019 17:02:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728968AbfEQO5E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 17 May 2019 10:57:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51180 "EHLO mail.kernel.org"
+        id S1729174AbfEQPCH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 17 May 2019 11:02:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54188 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728396AbfEQO5E (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 17 May 2019 10:57:04 -0400
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+        id S1728935AbfEQPCH (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 17 May 2019 11:02:07 -0400
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CB03421743;
-        Fri, 17 May 2019 14:57:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2161221773;
+        Fri, 17 May 2019 15:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558105023;
-        bh=8NWJcx3ooQ/0x2P9XpShMBRYpatRIjFujdiQFRhPQ7U=;
+        s=default; t=1558105326;
+        bh=F2xzjbmPebq5VH3JMx7EEVAsi4CNpDivddgn/1jbBAs=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=sHH7dNPs+Ij7ABTDtmkNtRCnGfl0BepHRTE9Sn5RIxZJFk/tv8ReWxQDrvk2a+GVb
-         FRjwzlmLUj7wL4bDDBAg5P6I5HxcJlzbG3MXlXrUCDa/4tk6Cgq/lX8tfujobgmGnU
-         Ev1WX61YA+OHt85jrhg7kFVF7327X5DdrR2lUU2w=
-Received: by mail-qt1-f178.google.com with SMTP id m32so8366393qtf.0;
-        Fri, 17 May 2019 07:57:03 -0700 (PDT)
-X-Gm-Message-State: APjAAAUdR5jINKx9SB6h8gKG3b2VT11FmdnqtqwbaDdxg010y98c8hd0
-        CnT7HfMPceJzTjZ1K1ZFbpJiguO5HA7KEDxL8g==
-X-Google-Smtp-Source: APXvYqwtNHRN41jK8D/vYX5vNqxH+cJahtZpPoZtyIj/f0gwgz5EytXbWp2ggnbV5aRbcJF2mVQdCua+GJxN8TOxzHA=
-X-Received: by 2002:ac8:3884:: with SMTP id f4mr49917057qtc.300.1558105023022;
- Fri, 17 May 2019 07:57:03 -0700 (PDT)
+        b=XdxBsIykMyAOabldCz0HuF+LJmO2C5zsJ2+NoTQzHgPcLnVcN9LT7h2Vs4qtynT9k
+         e4urQBoDCEMASdSI0DbYvveILygSgBFQbSb6ehyGgbCD8bltJ923MStVW5SfQ285F6
+         73YYvqSHjccVh/gm/xsZugZbMVy2kPhNAR+z+3pE=
+Received: by mail-qk1-f173.google.com with SMTP id j20so4649577qke.1;
+        Fri, 17 May 2019 08:02:06 -0700 (PDT)
+X-Gm-Message-State: APjAAAWszdF/J/fGFw96rbeAgTqrr9eY7TuyI1g2iadCFhk1aJhlb9cO
+        hzTshMn/x0IMm22ZHuogGoWNhKAxs2fd3gGWiA==
+X-Google-Smtp-Source: APXvYqxJ4ypnBJ3cGt4vROxwCij49/tt947ZHeY9PErfDKK8wU2HrMDkPhuoMSAUYqKiKLM0ASN0u5gpEYnHgxklVDA=
+X-Received: by 2002:a37:a8d7:: with SMTP id r206mr32659301qke.264.1558105325399;
+ Fri, 17 May 2019 08:02:05 -0700 (PDT)
 MIME-Version: 1.0
 References: <225e90a94e9558db9f72f64aca05b0951b88c7c5.1558017853.git-series.maxime.ripard@bootlin.com>
-In-Reply-To: <225e90a94e9558db9f72f64aca05b0951b88c7c5.1558017853.git-series.maxime.ripard@bootlin.com>
+ <5e126d3a9be35a288863189854ea3828f7e5ad14.1558017853.git-series.maxime.ripard@bootlin.com>
+In-Reply-To: <5e126d3a9be35a288863189854ea3828f7e5ad14.1558017853.git-series.maxime.ripard@bootlin.com>
 From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 17 May 2019 09:56:51 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+X8uyA6rJFXJWSno8eHz1LAE=Ywvo9DZ4FZTdEEjU=9w@mail.gmail.com>
-Message-ID: <CAL_Jsq+X8uyA6rJFXJWSno8eHz1LAE=Ywvo9DZ4FZTdEEjU=9w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: mmc: Add YAML schemas for the generic
- MMC options
+Date:   Fri, 17 May 2019 10:01:54 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLOKBhfu3D=pN4ZOzouAGVL_T=W0hE+LudEOGxJXTBhUQ@mail.gmail.com>
+Message-ID: <CAL_JsqLOKBhfu3D=pN4ZOzouAGVL_T=W0hE+LudEOGxJXTBhUQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] dt-bindings: mmc: sun4i: Add YAML schemas
 To:     Maxime Ripard <maxime.ripard@bootlin.com>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -56,35 +56,23 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 On Thu, May 16, 2019 at 9:44 AM Maxime Ripard <maxime.ripard@bootlin.com> wrote:
 >
-> The MMC controllers have a bunch of generic options that are needed in a
-> device tree. Add a YAML schemas for those.
+> Switch the DT binding to a YAML schema to enable the DT validation.
 >
 > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
->
 > ---
->
-> Changes from v1:
->
->   - Added back the cd-inverted and wp-inverted note
->   - Removed the dependency of cd-inverted and wp-inverted on cd-gpios and
->     wp-gpios
->   - Fixed typo in the title
->   - Fixed default in the bus-width property
->   - Fixed typo in the wp-inverted property
->   - Removed redundant type on cd-debounce-delay-ms
->   - Switched the dsr maximum to hex instead of decimal notation
-> ---
->  Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 358 +++++++-
->  Documentation/devicetree/bindings/mmc/mmc.txt             | 177 +---
->  2 files changed, 358 insertions(+), 177 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mmc/mmc-controller.yaml
->  delete mode 100644 Documentation/devicetree/bindings/mmc/mmc.txt
-
-BTW, in order to avoid updating every reference to mmc.txt, I think it
-is better to leave it with a note 'This file has moved to
-mmc-controller.yaml'. Then we just update the references when we
-convert those bindings.
-
-With that,
+>  Documentation/devicetree/bindings/mmc/allwinner,sun4i-a10-mmc.yaml | 98 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+>  Documentation/devicetree/bindings/mmc/sunxi-mmc.txt                | 52 +--------------------------------------
+>  2 files changed, 98 insertions(+), 52 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mmc/allwinner,sun4i-a10-mmc.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/mmc/sunxi-mmc.txt
 
 Reviewed-by: Rob Herring <robh@kernel.org>
+
+> +# FIXME: We should set it, but it would report all the generic
+> +# properties as additional properties.
+> +# additionalProperties: false
+
+BTW, I expect this issue will be fixed with the new
+unevaluatedProperties in draft8.
+
+Rob
