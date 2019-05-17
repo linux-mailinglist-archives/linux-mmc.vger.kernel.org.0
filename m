@@ -2,77 +2,117 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F2C421A3B
-	for <lists+linux-mmc@lfdr.de>; Fri, 17 May 2019 17:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 023002208A
+	for <lists+linux-mmc@lfdr.de>; Sat, 18 May 2019 00:55:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729174AbfEQPCH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 17 May 2019 11:02:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54188 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728935AbfEQPCH (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 17 May 2019 11:02:07 -0400
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2161221773;
-        Fri, 17 May 2019 15:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558105326;
-        bh=F2xzjbmPebq5VH3JMx7EEVAsi4CNpDivddgn/1jbBAs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=XdxBsIykMyAOabldCz0HuF+LJmO2C5zsJ2+NoTQzHgPcLnVcN9LT7h2Vs4qtynT9k
-         e4urQBoDCEMASdSI0DbYvveILygSgBFQbSb6ehyGgbCD8bltJ923MStVW5SfQ285F6
-         73YYvqSHjccVh/gm/xsZugZbMVy2kPhNAR+z+3pE=
-Received: by mail-qk1-f173.google.com with SMTP id j20so4649577qke.1;
-        Fri, 17 May 2019 08:02:06 -0700 (PDT)
-X-Gm-Message-State: APjAAAWszdF/J/fGFw96rbeAgTqrr9eY7TuyI1g2iadCFhk1aJhlb9cO
-        hzTshMn/x0IMm22ZHuogGoWNhKAxs2fd3gGWiA==
-X-Google-Smtp-Source: APXvYqxJ4ypnBJ3cGt4vROxwCij49/tt947ZHeY9PErfDKK8wU2HrMDkPhuoMSAUYqKiKLM0ASN0u5gpEYnHgxklVDA=
-X-Received: by 2002:a37:a8d7:: with SMTP id r206mr32659301qke.264.1558105325399;
- Fri, 17 May 2019 08:02:05 -0700 (PDT)
+        id S1729385AbfEQWyo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 17 May 2019 18:54:44 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:39196 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729308AbfEQWyo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 17 May 2019 18:54:44 -0400
+Received: by mail-pl1-f196.google.com with SMTP id g9so3980519plm.6
+        for <linux-mmc@vger.kernel.org>; Fri, 17 May 2019 15:54:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ul1gLClLY2RLZ2itEzzFB2yOFIqulLy55JPQTAySFDo=;
+        b=IF+6pl0A6m1fIH81uzmdTDMrurVWOxHBgZdzg9ueW18kyGxlj6N5aPcTRqNNCU+vTS
+         LKiCjnkbIC7ajqH/YtTymknHPW/NY4yPjYIJzDwwYqMMyIAHIYA46a6IB8NY149qfCHK
+         CVTekqT/FiWMIwMhhNjynCJ139h41IPM+Swp8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ul1gLClLY2RLZ2itEzzFB2yOFIqulLy55JPQTAySFDo=;
+        b=sJwZYtxYboxgIOl+bIUPf9p2vjprKTEJ8gmQ3zNP7wYY+7ZimSodTtx548rR+bvjLS
+         Yv1N7HloXMyKLKUwq8SYqlcoXscY+PaWjPmHmLbY4NzyXJHsuyU+WxdSDvYrwBZXTTSF
+         VCMQ5+VySLD+/fmmHPgbF82Etl5Sqpc3shvQ6OLUi8YXLOqbEfjQBukiHBhbiWEy9jGO
+         KYKCX386mtu0f9w5mZpLZzMhgR8iq65eDAhXkT8ndjAe6NcAaSJpjLQUW27dZ0CKgrvM
+         X49UpKTO713z+sORo9md5hwUKSrDv1CK+ZG8DJhItCDTgqp5ZEHObcQrVkCVpwZUXLlc
+         neKw==
+X-Gm-Message-State: APjAAAXCRL9ams+YNczU28QqPPgvEi88f3p8OWyKdiJBCtKkkKFCZ62v
+        QjK3qtZYWBTPMEXzuswKWaerog==
+X-Google-Smtp-Source: APXvYqz/J4eNQzJXQjOFtQWVtg1bZz7U+KE/9+kUa8iLb3eFelZBp/fzq1UlgJul23Nw2JUqc2sKmA==
+X-Received: by 2002:a17:902:7797:: with SMTP id o23mr58590219pll.147.1558133683494;
+        Fri, 17 May 2019 15:54:43 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
+        by smtp.gmail.com with ESMTPSA id u11sm11174450pfh.130.2019.05.17.15.54.42
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 17 May 2019 15:54:42 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-mmc@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+        brcm80211-dev-list@cypress.com, YueHaibing <yuehaibing@huawei.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Martin Hicks <mort@bork.org>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        Michael Trimarchi <michael@amarulasolutions.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <MadhanMohan.R@cypress.com>,
+        Avri Altman <avri.altman@wdc.com>
+Subject: [PATCH 0/3] brcmfmac: sdio: Deal better w/ transmission errors waking from sleep
+Date:   Fri, 17 May 2019 15:54:17 -0700
+Message-Id: <20190517225420.176893-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
 MIME-Version: 1.0
-References: <225e90a94e9558db9f72f64aca05b0951b88c7c5.1558017853.git-series.maxime.ripard@bootlin.com>
- <5e126d3a9be35a288863189854ea3828f7e5ad14.1558017853.git-series.maxime.ripard@bootlin.com>
-In-Reply-To: <5e126d3a9be35a288863189854ea3828f7e5ad14.1558017853.git-series.maxime.ripard@bootlin.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 17 May 2019 10:01:54 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLOKBhfu3D=pN4ZOzouAGVL_T=W0hE+LudEOGxJXTBhUQ@mail.gmail.com>
-Message-ID: <CAL_JsqLOKBhfu3D=pN4ZOzouAGVL_T=W0hE+LudEOGxJXTBhUQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] dt-bindings: mmc: sun4i: Add YAML schemas
-To:     Maxime Ripard <maxime.ripard@bootlin.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, May 16, 2019 at 9:44 AM Maxime Ripard <maxime.ripard@bootlin.com> wrote:
->
-> Switch the DT binding to a YAML schema to enable the DT validation.
->
-> Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-> ---
->  Documentation/devicetree/bindings/mmc/allwinner,sun4i-a10-mmc.yaml | 98 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
->  Documentation/devicetree/bindings/mmc/sunxi-mmc.txt                | 52 +--------------------------------------
->  2 files changed, 98 insertions(+), 52 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mmc/allwinner,sun4i-a10-mmc.yaml
->  delete mode 100644 Documentation/devicetree/bindings/mmc/sunxi-mmc.txt
+This series attempts to deal better with the expected transmission
+errors that we get when waking up the SDIO-based WiFi on
+rk3288-veyron-minnie, rk3288-veyron-speedy, and rk3288-veyron-mickey.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Some details about those errors can be found in
+<https://crbug.com/960222>, but to summarize it here: if we try to
+send the wakeup command to the WiFi card at the same time it has
+decided to wake up itself then it will behave badly on the SDIO bus.
+This can cause timeouts or CRC errors.
 
-> +# FIXME: We should set it, but it would report all the generic
-> +# properties as additional properties.
-> +# additionalProperties: false
+When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
+re-tuning.  Since I am currently developing on 4.19 this was the
+original problem I attempted to solve.
 
-BTW, I expect this issue will be fixed with the new
-unevaluatedProperties in draft8.
+On mainline it turns out that you don't see the retuning errors but
+you see tons of spam about timeouts trying to wakeup from sleep.  I
+tracked down the commit that was causing that and have partially
+reverted it here.  I have no real knowledge about Broadcom WiFi, but
+the commit that was causing problems sounds (from the descriptioin) to
+be a hack commit penalizing all Broadcom WiFi users because of a bug
+in a Cypress SD controller.  I will let others comment if this is
+truly the case and, if so, what the right solution should be.
 
-Rob
+
+Douglas Anderson (3):
+  brcmfmac: re-enable command decode in sdio_aos for BRCM 4354
+  mmc: core: API for temporarily disabling auto-retuning due to errors
+  brcmfmac: sdio: Disable auto-tuning around commands expected to fail
+
+ drivers/mmc/core/core.c                       | 27 +++++++++++++++++--
+ .../broadcom/brcm80211/brcmfmac/sdio.c        |  6 +++--
+ include/linux/mmc/core.h                      |  2 ++
+ include/linux/mmc/host.h                      |  1 +
+ 4 files changed, 32 insertions(+), 4 deletions(-)
+
+-- 
+2.21.0.1020.gf2820cf01a-goog
+
