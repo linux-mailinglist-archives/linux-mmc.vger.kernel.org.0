@@ -2,48 +2,48 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD44523112
-	for <lists+linux-mmc@lfdr.de>; Mon, 20 May 2019 12:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21E6C23115
+	for <lists+linux-mmc@lfdr.de>; Mon, 20 May 2019 12:13:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732525AbfETKM7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 20 May 2019 06:12:59 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:46104 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732520AbfETKM7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 May 2019 06:12:59 -0400
-Received: by mail-pl1-f196.google.com with SMTP id r18so6489911pls.13
-        for <linux-mmc@vger.kernel.org>; Mon, 20 May 2019 03:12:58 -0700 (PDT)
+        id S1731107AbfETKNE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 20 May 2019 06:13:04 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:35269 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732536AbfETKNC (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 May 2019 06:13:02 -0400
+Received: by mail-pl1-f194.google.com with SMTP id p1so1124800plo.2
+        for <linux-mmc@vger.kernel.org>; Mon, 20 May 2019 03:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :in-reply-to:references;
-        bh=xveO13FKhXzoL1lkYTFX11xifuYVV7+mJh5hbeM4mGk=;
-        b=NKlJUoOflJbwmEE4EZCwFYMT/ND4NmEVAhtO+YHos+oeGhc++olfTd8GSNmCw1X2u2
-         Y56AU27jDf0om7R+rK1/dPYEMO3cKEFC39QaTfkSuhz/kfimV4LgjQatrj+p4JDeq3lO
-         Z5CVPpDBkRd4tye4QFnooifpUpXVPwMotVR+q6LNKCfzhDU9lj8aALZIwwvG3xuEEBXr
-         ZbVwR3Tlv+3ykzIAFM273uPcq3V1Ma4kjga/p0LmeREn4wX+Lxw8hZJ0M33IEstvThKZ
-         J3lN+eq6HRcbGULZmhdJJklGpONAeiFp4eOiYNCz58FpSFT4pJkFqyjbi89UxIYPMx88
-         iJGg==
+        bh=ap6Go4OzNxJ532m09L3XvGYt1ETDxtVIslcDJHxqhh8=;
+        b=dg9voSlkL9Tcl87q88SNV55S8GA0JmQ0duHA+37dyzDY6OcpNFosrqe5mS3YzRmQOK
+         KPzF/tT9V0EzWBhy2zsLMNsoshKCx2xZyxd4iwz9E9Z+2nn92gIHu5ZHF9a2rvSKpInj
+         ca0v4q6NwLwD/s3f1bL/W4RAqzlQCYCkHWlRExJXrGi1L4hv02Om0lUPuSKo3CmzH1mz
+         d34F0kjxLbephXWC09QvmFZSnEu6Ekd6KSVve5DHXWh8KKISDCiIzD1Vjtqw0xlrah4s
+         Fmbp7jB3XlkVoe7T9o5bHTcpAiwbDpZHyq8FlWAt8RUnDgGdDJmKqnmM8+kdwtqJT8jL
+         8bLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=xveO13FKhXzoL1lkYTFX11xifuYVV7+mJh5hbeM4mGk=;
-        b=rq2kSV5xOpq39CM9Uh/JhT0fRZgG2jFKlRP+5zy+XteI1edaDAs44SBixEUgm/mL1O
-         ks3JEJWvbjv5NerbqD+xAmJ58nwyBb3zOjPOEYmrndJERR6RJXbTn7dIlXOEz7aBMsWm
-         lwCt6s7avgPqandHVWo082V+QU8YQ6EZgRe6slZsE4YmElo5FsaPu4lbxL73/5WBM9d4
-         j3tCSUD6r6BBWr8//7kZWXTF7YmosnT8HbJ/VHBJzP9B/UQ1t6aEJTTJzortK9HL+RuM
-         jDWfpVrcwvOiwUx/E4b/fbH9Eqnbd4bGXldGYAp+8ZZLXQRIZjf4kiW32nBj5oWT9Swj
-         j1JA==
-X-Gm-Message-State: APjAAAVLk37DyuLMxt5BSTW/PrJTFpJhrFN+npUchxaXy9i0Ga8LI+G1
-        ffyi3pdT3hzMQqFW4IVia+exng==
-X-Google-Smtp-Source: APXvYqymPJjB3rgrBffPOLp31IZLzKhzf+X3K6Ck/tLy6Yocxz5SJiq9u8LGcuExdnbuA0T7lxZR/g==
-X-Received: by 2002:a17:902:3103:: with SMTP id w3mr470954plb.187.1558347178237;
-        Mon, 20 May 2019 03:12:58 -0700 (PDT)
+        bh=ap6Go4OzNxJ532m09L3XvGYt1ETDxtVIslcDJHxqhh8=;
+        b=cfFmtLi4L6tsnWaYQPXUS8AvUdRpP/4Fgxi1nNJap8vFD/Ct2qEOPoKXV417zWPTIi
+         pmL89tPsxq3fdQDFH5zl4VbWMSwVE8zVAuAKl4qVPcAJDC7Umr7LGtIL2bY4oL13GfSw
+         F9hTBvdrcoD3a2dWHFf1Y7He5akSq9Wegorfe5LSn/w0GshFrEQzaSEizivO15/3OUhp
+         PavoUGBA9jlwq0DzAk9F79oyGGtOl8i1C2vP4TgioI4BBXNWKF4zpBSceJrNebqYuyAo
+         trEObfO5F2DeCjS9V1M9dLxyrePhi4pitaDg7nOxNn9WfLIu4LQOPbLJsKMXHynSY3uw
+         h8kA==
+X-Gm-Message-State: APjAAAUhWDqVbqxkcLghQvrV3jLsO4qvwwByw7BThmfQJ7sTWd8x8O6V
+        K2qOt2QW5eWe0cCcsXdB6rdfoI7I1R6Z2A==
+X-Google-Smtp-Source: APXvYqz/VZ5IYWao7ZtNYoD6jisYi4sIXfq0npMXqR3qxjBzeqk+s2PVbN80bOiH+xksI9cdfVZ8gQ==
+X-Received: by 2002:a17:902:bb06:: with SMTP id l6mr16803820pls.78.1558347182324;
+        Mon, 20 May 2019 03:13:02 -0700 (PDT)
 Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.102])
-        by smtp.gmail.com with ESMTPSA id b3sm30098127pfr.146.2019.05.20.03.12.54
+        by smtp.gmail.com with ESMTPSA id b3sm30098127pfr.146.2019.05.20.03.12.58
         (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 20 May 2019 03:12:57 -0700 (PDT)
+        Mon, 20 May 2019 03:13:01 -0700 (PDT)
 From:   Baolin Wang <baolin.wang@linaro.org>
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
         zhang.lyra@gmail.com, orsonzhai@gmail.com, robh+dt@kernel.org,
@@ -51,9 +51,9 @@ To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
 Cc:     baolin.wang@linaro.org, vincent.guittot@linaro.org, arm@kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH 8/9] mmc: sdhci-sprd: Add PHY DLL delay configuration
-Date:   Mon, 20 May 2019 18:12:01 +0800
-Message-Id: <aafceaeb2fc7e9d103d1d7a19cdae97759dd1500.1558346019.git.baolin.wang@linaro.org>
+Subject: [PATCH 9/9] arm64: dts: sprd: Add Spreadtrum SD host controller support
+Date:   Mon, 20 May 2019 18:12:02 +0800
+Message-Id: <7fc6cd63966bda900b07ac9b2156e313a6f2ac17.1558346019.git.baolin.wang@linaro.org>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1558346019.git.baolin.wang@linaro.org>
 References: <cover.1558346019.git.baolin.wang@linaro.org>
@@ -64,118 +64,65 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Set the PHY DLL delay for each timing mode, which is used to sample the clock
-accurately and make the clock more stable.
+Add one Spreadtrum SD host controller to support eMMC card for Spreadtrum
+SC9860 platform.
 
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 ---
- drivers/mmc/host/sdhci-sprd.c |   51 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ arch/arm64/boot/dts/sprd/whale2.dtsi |   35 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index e6eda13..911a09b 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -29,6 +29,8 @@
- #define  SDHCI_SPRD_DLL_INIT_COUNT	0xc00
- #define  SDHCI_SPRD_DLL_PHASE_INTERNAL	0x3
+diff --git a/arch/arm64/boot/dts/sprd/whale2.dtsi b/arch/arm64/boot/dts/sprd/whale2.dtsi
+index b5c5dce..86ec2b0 100644
+--- a/arch/arm64/boot/dts/sprd/whale2.dtsi
++++ b/arch/arm64/boot/dts/sprd/whale2.dtsi
+@@ -168,6 +168,34 @@
+ 				vdd-supply = <&vddusb33>;
+ 				sprd,vdd-voltage = <3300000>;
+ 			};
++
++			sdio3: sdio@50430000 {
++				compatible  = "sprd,sdhci-r11";
++				reg = <0 0x50430000 0 0x1000>;
++				interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
++
++				clock-names = "sdio", "enable", "2x_enable";
++				clocks = <&aon_prediv CLK_EMMC_2X>,
++				       <&apahb_gate CLK_EMMC_EB>,
++				       <&aon_gate CLK_EMMC_2X_EN>;
++				assigned-clocks = <&aon_prediv CLK_EMMC_2X>;
++				assigned-clock-parents = <&clk_l0_409m6>;
++
++				sprd,phy-delay-mmc-hs400 = <0x44 0x7f 0x2e 0x2e>;
++				sprd,phy-delay-mmc-hs200 = <0x0 0x8c 0x8c 0x8c>;
++				sprd,phy-delay-mmc-ddr52 = <0x3f 0x75 0x14 0x14>;
++				sprd,phy-delay-mmc-hs400es = <0x3f 0x3f 0x2e 0x2e>;
++				vmmc-supply = <&vddemmccore>;
++				bus-width = <8>;
++				non-removable;
++				no-sdio;
++				no-sd;
++				cap-mmc-hw-reset;
++				mmc-hs400-enhanced-strobe;
++				mmc-hs400-1_8v;
++				mmc-hs200-1_8v;
++				mmc-ddr-1_8v;
++			};
+ 		};
  
-+#define SDHCI_SPRD_REG_32_DLL_DLY	0x204
+ 		aon {
+@@ -310,4 +338,11 @@
+ 		clock-frequency = <100000000>;
+ 		clock-output-names = "ext-rco-100m";
+ 	};
 +
- #define SDHCI_SPRD_REG_32_DLL_DLY_OFFSET	0x208
- #define  SDHCIBSPRD_IT_WR_DLY_INV		BIT(5)
- #define  SDHCI_SPRD_BIT_CMD_DLY_INV		BIT(13)
-@@ -72,6 +74,24 @@ struct sdhci_sprd_host {
- 	struct clk *clk_2x_enable;
- 	u32 base_rate;
- 	int flags; /* backup of host attribute */
-+	u32 phy_delay[MMC_TIMING_MMC_HS400 + 2];
-+};
-+
-+struct sdhci_sprd_phy_cfg {
-+	const char *property;
-+	u8 timing;
-+};
-+
-+static const struct sdhci_sprd_phy_cfg sdhci_sprd_phy_cfgs[] = {
-+	{ "sprd,phy-delay-legacy", MMC_TIMING_LEGACY, },
-+	{ "sprd,phy-delay-sd-highspeed", MMC_TIMING_MMC_HS, },
-+	{ "sprd,phy-delay-sd-uhs-sdr50", MMC_TIMING_UHS_SDR50, },
-+	{ "sprd,phy-delay-sd-uhs-sdr104", MMC_TIMING_UHS_SDR104, },
-+	{ "sprd,phy-delay-mmc-highspeed", MMC_TIMING_MMC_HS, },
-+	{ "sprd,phy-delay-mmc-ddr52", MMC_TIMING_MMC_DDR52, },
-+	{ "sprd,phy-delay-mmc-hs200", MMC_TIMING_MMC_HS200, },
-+	{ "sprd,phy-delay-mmc-hs400", MMC_TIMING_MMC_HS400, },
-+	{ "sprd,phy-delay-mmc-hs400es", MMC_TIMING_MMC_HS400 + 1, },
++	clk_l0_409m6: clk_l0_409m6 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <409600000>;
++		clock-output-names = "ext-409m6";
++	};
  };
- 
- #define TO_SPRD_HOST(host) sdhci_pltfm_priv(sdhci_priv(host))
-@@ -276,6 +296,9 @@ static unsigned int sdhci_sprd_get_min_clock(struct sdhci_host *host)
- static void sdhci_sprd_set_uhs_signaling(struct sdhci_host *host,
- 					 unsigned int timing)
- {
-+	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
-+	struct mmc_host *mmc = host->mmc;
-+	u32 *p = sprd_host->phy_delay;
- 	u16 ctrl_2;
- 
- 	if (timing == host->timing)
-@@ -314,6 +337,9 @@ static void sdhci_sprd_set_uhs_signaling(struct sdhci_host *host,
- 	}
- 
- 	sdhci_writew(host, ctrl_2, SDHCI_HOST_CONTROL2);
-+
-+	if (!mmc->ios.enhanced_strobe)
-+		sdhci_writel(host, p[timing], SDHCI_SPRD_REG_32_DLL_DLY);
- }
- 
- static void sdhci_sprd_hw_reset(struct sdhci_host *host)
-@@ -381,6 +407,8 @@ static void sdhci_sprd_hs400_enhanced_strobe(struct mmc_host *mmc,
- 					     struct mmc_ios *ios)
- {
- 	struct sdhci_host *host = mmc_priv(mmc);
-+	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
-+	u32 *p = sprd_host->phy_delay;
- 	u16 ctrl_2;
- 
- 	if (!ios->enhanced_strobe)
-@@ -395,6 +423,28 @@ static void sdhci_sprd_hs400_enhanced_strobe(struct mmc_host *mmc,
- 	sdhci_writew(host, ctrl_2, SDHCI_HOST_CONTROL2);
- 
- 	sdhci_sprd_sd_clk_on(host);
-+
-+	/* Set the PHY DLL delay value for HS400 enhanced strobe mode */
-+	sdhci_writel(host, p[MMC_TIMING_MMC_HS400 + 1],
-+		     SDHCI_SPRD_REG_32_DLL_DLY);
-+}
-+
-+static void sdhci_sprd_phy_param_parse(struct sdhci_sprd_host *sprd_host,
-+				       struct device_node *np)
-+{
-+	u32 *p = sprd_host->phy_delay;
-+	int ret, i, index;
-+	u32 val[4];
-+
-+	for (i = 0; i < ARRAY_SIZE(sdhci_sprd_phy_cfgs); i++) {
-+		ret = of_property_read_u32_array(np,
-+				sdhci_sprd_phy_cfgs[i].property, val, 4);
-+		if (ret)
-+			continue;
-+
-+		index = sdhci_sprd_phy_cfgs[i].timing;
-+		p[index] = val[0] | (val[1] << 8) | (val[2] << 16) | (val[3] << 24);
-+	}
- }
- 
- static const struct sdhci_pltfm_data sdhci_sprd_pdata = {
-@@ -428,6 +478,7 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 		goto pltfm_free;
- 
- 	sprd_host = TO_SPRD_HOST(host);
-+	sdhci_sprd_phy_param_parse(sprd_host, pdev->dev.of_node);
- 
- 	clk = devm_clk_get(&pdev->dev, "sdio");
- 	if (IS_ERR(clk)) {
 -- 
 1.7.9.5
 
