@@ -2,96 +2,121 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52BB422F56
-	for <lists+linux-mmc@lfdr.de>; Mon, 20 May 2019 10:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1773722F72
+	for <lists+linux-mmc@lfdr.de>; Mon, 20 May 2019 10:55:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729943AbfETIwF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 20 May 2019 04:52:05 -0400
-Received: from sauhun.de ([88.99.104.3]:49178 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728958AbfETIwF (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 20 May 2019 04:52:05 -0400
-Received: from localhost (p54B333DA.dip0.t-ipconnect.de [84.179.51.218])
-        by pokefinder.org (Postfix) with ESMTPSA id 43F282C2761;
-        Mon, 20 May 2019 10:52:02 +0200 (CEST)
-Date:   Mon, 20 May 2019 10:52:01 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Douglas Anderson <dianders@chromium.org>,
+        id S1731643AbfETIzS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 20 May 2019 04:55:18 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:36765 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725372AbfETIzR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 May 2019 04:55:17 -0400
+Received: by mail-ed1-f66.google.com with SMTP id a8so22701308edx.3
+        for <linux-mmc@vger.kernel.org>; Mon, 20 May 2019 01:55:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=vFTt0M6+AyIysvwKwIils2X+lM/meF2sxJjj46Wd1sg=;
+        b=B8xJgG9Mfe/9MxL0HtY4ca/tirLNmh0C9lj/ex3fDZnQ/Z3N+iZcFmu5S4eMsAkmPs
+         9RAJQWBHGH5GhRDnKoHem++eVfSdl+KDJPtcw1herR9fhhgxrP2D3m+xKdRfMPEMMJ84
+         JjtKJ6FHMv3vFq5XsnkSq3Esh6InwnFnUWBaI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=vFTt0M6+AyIysvwKwIils2X+lM/meF2sxJjj46Wd1sg=;
+        b=hyPJo1O2om2RMXfjJvj3H8hgjhqSzQn3B04K5gY2a7+eSDewcXNyHlCQsq+PtFjxpg
+         AUnDvbDEjI4rG6rCXaZ7e30/jRdz9JyTw6MzGWk5YVek2jcE7q9c165JR2b+V1/3Wuo1
+         cBszjdTwL6M81GQXJDujWquLHVoIyCu9YpgH/8W7Y9YF/DMLFrwiakB6JQBci22DssMn
+         p+oh0P38VfDdSRF7xM9e+yVLmgMKeXUYTmqetqBYxted6ilxZSXNyKUUaa5NqlRUgZfQ
+         4c8DX0OMx07FhCL8lbASvw61MhcK0iauFQYrI6B8SJF6b99w3sYxgik8fXsSSPgczarL
+         njZA==
+X-Gm-Message-State: APjAAAUTeIr1xjE1bmkn+9177WZndBFZRV2lJXUwQgohUtZ4YrFIfkg4
+        In39w395fiEJ9tXUt3JOLvjJIg==
+X-Google-Smtp-Source: APXvYqx4flRS6cM748otmtPJ0wEKEab4DlGo6iNP+Fai8ttXEGXbq+CZSmv1FMlVMKWOwJno0wfUnA==
+X-Received: by 2002:a50:aef6:: with SMTP id f51mr73838766edd.225.1558342516174;
+        Mon, 20 May 2019 01:55:16 -0700 (PDT)
+Received: from [10.176.68.125] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id g30sm5412048edg.57.2019.05.20.01.55.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 20 May 2019 01:55:15 -0700 (PDT)
+Subject: Re: [PATCH 0/3] brcmfmac: sdio: Deal better w/ transmission errors
+ waking from sleep
+To:     Douglas Anderson <dianders@chromium.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        linux-rockchip@lists.infradead.org,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     linux-rockchip@lists.infradead.org,
         Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
         Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
         Wright Feng <wright.feng@cypress.com>,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Jiong Wu <lohengrin1024@gmail.com>,
+        linux-mmc@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+        brcm80211-dev-list@cypress.com, YueHaibing <yuehaibing@huawei.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Martin Hicks <mort@bork.org>,
         Ritesh Harjani <riteshh@codeaurora.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Shawn Lin <shawn.lin@rock-chips.com>,
+        Michael Trimarchi <michael@amarulasolutions.com>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Avri Altman <avri.altman@wdc.com>, Martin Hicks <mort@bork.org>
-Subject: Re: [PATCH 2/3] mmc: core: API for temporarily disabling
- auto-retuning due to errors
-Message-ID: <20190520085201.GA1021@kunai>
+        Franky Lin <franky.lin@broadcom.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Avri Altman <avri.altman@wdc.com>
 References: <20190517225420.176893-1-dianders@chromium.org>
- <20190517225420.176893-3-dianders@chromium.org>
- <20190519090642.GA2279@kunai>
- <36cae1d3-f11c-3c71-3f04-23fdc74f8866@broadcom.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <8c3fa57a-3843-947c-ec6b-a6144ccde1e9@broadcom.com>
+Date:   Mon, 20 May 2019 10:55:12 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="sdtB3X0nJg68CQEu"
-Content-Disposition: inline
-In-Reply-To: <36cae1d3-f11c-3c71-3f04-23fdc74f8866@broadcom.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190517225420.176893-1-dianders@chromium.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On 5/18/2019 12:54 AM, Douglas Anderson wrote:
+> This series attempts to deal better with the expected transmission
+> errors that we get when waking up the SDIO-based WiFi on
+> rk3288-veyron-minnie, rk3288-veyron-speedy, and rk3288-veyron-mickey.
+> 
+> Some details about those errors can be found in
+> <https://crbug.com/960222>, but to summarize it here: if we try to
+> send the wakeup command to the WiFi card at the same time it has
+> decided to wake up itself then it will behave badly on the SDIO bus.
+> This can cause timeouts or CRC errors.
+> 
+> When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
+> re-tuning.  Since I am currently developing on 4.19 this was the
+> original problem I attempted to solve.
+> 
+> On mainline it turns out that you don't see the retuning errors but
+> you see tons of spam about timeouts trying to wakeup from sleep.  I
+> tracked down the commit that was causing that and have partially
+> reverted it here.  I have no real knowledge about Broadcom WiFi, but
+> the commit that was causing problems sounds (from the descriptioin) to
+> be a hack commit penalizing all Broadcom WiFi users because of a bug
+> in a Cypress SD controller.  I will let others comment if this is
+> truly the case and, if so, what the right solution should be.
 
---sdtB3X0nJg68CQEu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Let me give a bit of background. The brcmfmac driver implements its own 
+runtime-pm like functionality, ie. if the driver is idle for some time 
+it will put the device in a low-power state. When it does that it powers 
+down several cores in the chip among which the SDIO core. However, the 
+SDIO bus used be very bad at handling devices that do that so instead it 
+has the Always-On-Station (AOS) block take over the SDIO core in 
+handling the bus. Default is will send a R1 response, but only for CMD52 
+(and CMD14 but no host is using that cruft). In noCmdDecode it does not 
+respond and simply wakes up the SDIO core, which takes over again. 
+Because it does not respond timeouts (-110) are kinda expected in this mode.
 
-On Mon, May 20, 2019 at 10:46:19AM +0200, Arend Van Spriel wrote:
-> On 5/19/2019 11:06 AM, Wolfram Sang wrote:
-> >=20
-> > > Let's add an API that the SDIO card drivers can call that will
-> > > temporarily disable the auto-tuning functionality.  Then we can add a
-> > > call to this in the Broadcom WiFi driver and any other driver that
-> > > might have similar needs.
-> >=20
-> > Can't you fix the WiFi driver to return something else than -EILSEQ
-> > before calling mmc_request_done() to skip the retuning?
->=20
-> Not really. mmc_request_done() is for the host controller driver so the w=
-ifi
-> driver is not involved.
-
-Uh, right. Brown paper bag, please...
-
-
---sdtB3X0nJg68CQEu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlziaq0ACgkQFA3kzBSg
-KbaQVA//WXYFC+BIrlY0Pul+9dGBD8PAFC8f7fZUdwUGDjSC/CI1SfSMkOojpbLX
-MQvDlzKvpYj/rS3+xcrNQjgRELPn9DdKWXUEU6CZkgo+xs/cbms1H9fg65UwkVk3
-VARN5T2AgnFidWfXrxnD+LxRudQnj6LQqifhfUq6I0X+CfQ7AcDH80gC7FdPCwO5
-RM2gC+NNczRd3zxKKWQNXLvuY+yHzx71kHc5+gd5GVRqzsLYwgYQWj1wd6hpUuqY
-Ur+m6uUUoQo66teAA+FF+injciq6DJhwqZwa1pvkw7/hXorBArzBbHo3EAqch/hA
-349urJNcPBhbN+FCBzjhN+3XpoJATd4DM69v157zYHd2I1QFOiDqBukksD3OBuSk
-BRRfrSO2fcTVraEVTtTSgsl8e9eHvGP5hkpwl3GGq+1YvoC5/jOJAXwh17g4vQGD
-/wIPqA7a2Edd3Ei3uVjdquqBmmGGDQXADgE+fS9U/gbq/632tXdJ8c25eFUBlN8N
-KekuqSINDVvdEHnuy1yKTf7LU0q2hZjifSTU9in3ynzFZSe7ZghCrro/HBCeKBF3
-lPCZ2Qf3GlexViNy5/FhvNXPoWQY1sYh0fWMYzOuKm2VEdznrpt5oTtasTapIzy6
-9vf04EbfsMnAmHTPi8Hteo+jvczd+rYgFGg6hY/t8FiPtKgWwfs=
-=zF+7
------END PGP SIGNATURE-----
-
---sdtB3X0nJg68CQEu--
+Regards,
+Arend
