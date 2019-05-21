@@ -2,117 +2,157 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B85E8248CA
-	for <lists+linux-mmc@lfdr.de>; Tue, 21 May 2019 09:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81E2224917
+	for <lists+linux-mmc@lfdr.de>; Tue, 21 May 2019 09:38:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726318AbfEUHLk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 21 May 2019 03:11:40 -0400
-Received: from mail-eopbgr1400102.outbound.protection.outlook.com ([40.107.140.102]:26208
-        "EHLO JPN01-TY1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725790AbfEUHLk (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 21 May 2019 03:11:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uaq7Ub6yaEuiWxmAsOJkhvX5uVHPQZRtQ3is7ZxU5ks=;
- b=A+oXlxro9cqCVEY5nZwOma6XSsS3t4W15HcRRsZS9HO3euB+RMgIP4q4vk1rlDUNkw7B2foqCNqaNjT5d4fL1J6EYGWVAlvS7E5b1r4q9s/tmm7PtQw8POAYXtmU9T+kYLZG2EhzRCplPqLLEE79ibGej/WzBnQ+YsiKG2UxIvQ=
-Received: from OSAPR01MB3089.jpnprd01.prod.outlook.com (52.134.247.150) by
- OSAPR01MB3907.jpnprd01.prod.outlook.com (20.178.103.142) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1922.15; Tue, 21 May 2019 07:11:37 +0000
-Received: from OSAPR01MB3089.jpnprd01.prod.outlook.com
- ([fe80::4597:5353:28fb:cfd8]) by OSAPR01MB3089.jpnprd01.prod.outlook.com
- ([fe80::4597:5353:28fb:cfd8%7]) with mapi id 15.20.1900.020; Tue, 21 May 2019
- 07:11:37 +0000
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-CC:     "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        =?iso-8859-1?Q?Niklas_S=F6derlund?= <niklas.soderlund@ragnatech.se>,
-        Takeshi Saito <takeshi.saito.xv@renesas.com>
-Subject: RE: [PATCH] mmc: tmio: fix SCC error handling to avoid false positive
- CRC error
-Thread-Topic: [PATCH] mmc: tmio: fix SCC error handling to avoid false
- positive CRC error
-Thread-Index: AQHVC0tfiBVcIese/kC+61tkuBk8R6Z1MQLA
-Date:   Tue, 21 May 2019 07:11:37 +0000
-Message-ID: <OSAPR01MB30890F24D0F713F1B6498940D8070@OSAPR01MB3089.jpnprd01.prod.outlook.com>
-References: <20190515182346.5292-1-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20190515182346.5292-1-wsa+renesas@sang-engineering.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
-x-originating-ip: [124.210.22.195]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: edd78e85-513d-4ed1-6eb9-08d6ddbb9086
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(7168020)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:OSAPR01MB3907;
-x-ms-traffictypediagnostic: OSAPR01MB3907:
-x-microsoft-antispam-prvs: <OSAPR01MB3907A93D714647BCF11B7F49D8070@OSAPR01MB3907.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:758;
-x-forefront-prvs: 0044C17179
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(396003)(366004)(136003)(376002)(39860400002)(189003)(199004)(2501003)(6436002)(5660300002)(229853002)(33656002)(25786009)(446003)(11346002)(476003)(74316002)(305945005)(186003)(55016002)(26005)(486006)(9686003)(53936002)(102836004)(76176011)(6506007)(86362001)(55236004)(478600001)(99286004)(81156014)(8676002)(7696005)(66556008)(73956011)(7736002)(52536014)(66946007)(66476007)(66446008)(64756008)(2906002)(66066001)(68736007)(76116006)(6116002)(256004)(107886003)(14454004)(71200400001)(71190400001)(8936002)(6246003)(14444005)(316002)(4326008)(54906003)(110136005)(3846002)(81166006);DIR:OUT;SFP:1102;SCL:1;SRVR:OSAPR01MB3907;H:OSAPR01MB3089.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: renesas.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: SCQBEVt3zaopJNXwDLX0lUbaOqKDm+BrpqvakQOpy5cbHAUHsl7VY5t+dckgtUUZHYNPpTiYA4cb3Fj5iTpeJdpdnbIK6G2HTnaWbe5Gu48A7eZ4XwgrLTiXxOENS0aPopB4UUjYE8JppB1/DeYlULo+1tIwxZYr32+31cZjhbDXEzGEESV+6ZrIUcTJGiIKMRZjjeEF5Q+CwLaPCempdXX1CGc9TJqZUd+PcVoHDECZ98XBMYJbAdy1C8ljmAA4IjWFXSyHZAeU1SeUADXkrd8v2+bm1sEFlnlAp4WFC+m/QIcs+41B0WEn2p8KRw8oBxk8MInWV8s4HfNex2AmkusbiqnbP9YCtN7H2c8o7LPw1k73qoVSwdKH7Xzd4B5+vEMnvdI3Oc58gv4o/ZT6jQVptd8lQU1Tifo5nOzOarc=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1726296AbfEUHiY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 21 May 2019 03:38:24 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:44452 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726006AbfEUHiY (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 May 2019 03:38:24 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4L7VAiP003069;
+        Tue, 21 May 2019 09:38:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=VO62M0H+Pp6PuHe4pwdgIh9u2uQFEKGsAdpei4nIXQM=;
+ b=WOZMqST6Q+Cbk+rRQt5qd7OyxYoG4vgoyOT1cv3TjQMD1V+RmQfS8fNp/cdCGduWP3sK
+ sSeLo1axEdDF1nsjR5NWrW4G6n/IGIHqc8y+mt5ZkjFbLX67KyZhr8PY8x5XDabJQTF2
+ QVKbosocLnIOUkA2SCuLix9piKZjk4HAeItiOoFTpC+ZFOuNxtDHY/8SE0ECmdAR2hhq
+ D7sE/lsmp+sMU39CsyxG/O0KiF3oFYWEbg+pKA6VHqd39t3r1MaZX0cT4jjlVqoX5wmS
+ X102+33jF34intAYJLv5itfafcPGRT/TjdDI/aSy2z8KFIdgGsJq1Mql7SeSkMXZG/n9 1g== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2sj8xg7tsr-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 21 May 2019 09:38:10 +0200
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 79C1731;
+        Tue, 21 May 2019 07:38:09 +0000 (GMT)
+Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 16F6515E9;
+        Tue, 21 May 2019 07:38:09 +0000 (GMT)
+Received: from [10.48.0.237] (10.75.127.46) by SFHDAG6NODE1.st.com
+ (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Tue, 21 May
+ 2019 09:38:08 +0200
+Subject: Re: [PATCH V2 0/5] mmc: mmci: add busy detect for stm32 sdmmc variant
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Rob Herring <robh+dt@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+References: <1556264798-18540-1-git-send-email-ludovic.Barre@st.com>
+ <CAPDyKFqbn=UcbwoH_z+yjrjvHQZaMtmsD=n0yrBV7DAK5VRJEQ@mail.gmail.com>
+ <74b91eb4-e5a3-38b2-f732-29cdd058eb6a@st.com>
+ <CAPDyKFoURwnai1hbCbO+Uh6+hc7A4dYHjWkqeFAEgMQET-BzwA@mail.gmail.com>
+From:   Ludovic BARRE <ludovic.barre@st.com>
+Message-ID: <e884b614-14d4-1cae-5b77-c6aacabb764a@st.com>
+Date:   Tue, 21 May 2019 09:38:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: edd78e85-513d-4ed1-6eb9-08d6ddbb9086
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2019 07:11:37.1528
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSAPR01MB3907
+In-Reply-To: <CAPDyKFoURwnai1hbCbO+Uh6+hc7A4dYHjWkqeFAEgMQET-BzwA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.46]
+X-ClientProxiedBy: SFHDAG5NODE1.st.com (10.75.127.13) To SFHDAG6NODE1.st.com
+ (10.75.127.16)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-21_01:,,
+ signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Wolfram-san,
+hi Ulf
 
-> From: Wolfram Sang, Sent: Thursday, May 16, 2019 3:24 AM
->=20
-> From: Takeshi Saito <takeshi.saito.xv@renesas.com>
->=20
-> If an SCC error occurs during a read/write command execution, a false
-> positive CRC error message is output.
->=20
-> mmcblk0: response CRC error sending r/w cmd command, card status 0x900
->=20
-> check_scc_error() checks SCC_RVSREQ.RVSERR bit. RVSERR detects a
-> correction error in the next (up or down) delay tap position. However,
-> since the command is successful, only retuning needs to be executed.
-> This has been confirmed by HW engineers.
->=20
-> Thus, on SCC error, set retuning flag instead of setting an error code.
->=20
-> Fixes: b85fb0a1c8ae ("mmc: tmio: Fix SCC error detection")
-> Signed-off-by: Takeshi Saito <takeshi.saito.xv@renesas.com>
-> [wsa: updated comment and commit message, removed some braces]
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
->=20
-> This patch was suggested by the BSP team because they were seeing CRC err=
-ors
-> with a hardware I don't have access to. I tested this with my R-Car H3-ES=
-2.0
-> and M3-N (both Salvator-XS), and things were still running fine. But I su=
-ggest
-> to wait for a final ack from Shimoda-san or someone from the BSP team.
+Just a "gentleman ping" about the rest of series.
+"mmc: mmci: add busy detect for stm32 sdmmc variant"
 
-Thank you for the patch!
+Regards
+Ludo
 
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-
-Best regards,
-Yoshihiro Shimoda
-
+On 5/3/19 3:29 PM, Ulf Hansson wrote:
+> On Tue, 30 Apr 2019 at 14:06, Ludovic BARRE <ludovic.barre@st.com> wrote:
+>>
+>>
+>>
+>> On 4/30/19 1:13 PM, Ulf Hansson wrote:
+>>> On Fri, 26 Apr 2019 at 09:46, Ludovic Barre <ludovic.Barre@st.com> wrote:
+>>>>
+>>>> From: Ludovic Barre <ludovic.barre@st.com>
+>>>>
+>>>> This patch series adds busy detect for stm32 sdmmc variant.
+>>>> Some adaptations are required:
+>>>> -Avoid to check and poll busy status when is not expected.
+>>>> -Clear busy status bit if busy_detect_flag and busy_detect_mask are
+>>>>    different.
+>>>> -Add hardware busy timeout with MMCIDATATIMER register.
+>>>>
+>>>> V2:
+>>>> -mmci_cmd_irq cleanup in separate patch.
+>>>> -simplify the busy_detect_flag exclude
+>>>> -replace sdmmc specific comment in
+>>>> "mmc: mmci: avoid fake busy polling in mmci_irq"
+>>>> to focus on common behavior
+>>>>
+>>>> Ludovic Barre (5):
+>>>>     mmc: mmci: cleanup mmci_cmd_irq for busy detect feature
+>>>>     mmc: mmci: avoid fake busy polling in mmci_irq
+>>>>     mmc: mmci: fix clear of busy detect status
+>>>>     mmc: mmci: add hardware busy timeout feature
+>>>>     mmc: mmci: add busy detect for stm32 sdmmc variant
+>>>>
+>>>>    drivers/mmc/host/mmci.c | 61 ++++++++++++++++++++++++++++++++++++++-----------
+>>>>    drivers/mmc/host/mmci.h |  3 +++
+>>>>    2 files changed, 51 insertions(+), 13 deletions(-)
+>>>>
+>>>> --
+>>>> 2.7.4
+>>>>
+>>>
+>>> Ludovic, just wanted to let you know that I am reviewing and testing
+>>> this series.
+>>>
+>>> However, while running some tests on Ux500 for validating the busy
+>>> detection code, even without your series applied, I encounter some odd
+>>> behaviors. I am looking into the problem to understand better and will
+>>> let you know as soon as I have some more data to share.
+>>
+>> Oops, don't hesitate to share your status, if I could help.
+> 
+> Thanks! Good and bad news here, then.
+> 
+> I now understand what is going on - and there is certainly room for
+> improvements here, but more importantly the actual mmci busy detection
+> works as expected.
+> 
+> When it comes to improvements, the main issue I have found is how we
+> treat DATA WRITES. In many cases we simply don't use the HW busy
+> detection at all, but instead rely on the mmc core to send CMD13 in a
+> loop to poll. Well, then if the polling would have consisted of a
+> couple of CMD13s that wouldn't be an issue, but my observations is
+> rather that the numbers of CMD13 sent to poll is in the range or
+> hundreds/thousands - per each WRITE request!
+> 
+> I am going to send a patch (or two) that improves the behavior. It
+> might even involve changing parts in core layer, not sure how the end
+> result will look like yet.
+> 
+> In any case, I have applied patch 1 and patch2 for next, as the tests
+> turned out well at my side. I also took the liberty of updating some
+> of the comments/changelogs, please have look and tell if there is
+> something you want to change.
+> 
+> I will continue with the rest of series next week.
+> 
+> Kind regards
+> Uffe
+> 
