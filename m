@@ -2,138 +2,99 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABAAF25D63
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 May 2019 07:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 657D2261A7
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 May 2019 12:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726214AbfEVFLd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 22 May 2019 01:11:33 -0400
-Received: from mail-eopbgr1400139.outbound.protection.outlook.com ([40.107.140.139]:8404
-        "EHLO JPN01-TY1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725801AbfEVFLc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 22 May 2019 01:11:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kOzAMU2plBAcjdFbmkTZD4LrVm9YJDaK8ddxjmZKNBw=;
- b=iJlpsYP1MMQvyScQ9+B+9H0y0jvd2Lp9oLr2TjyMgr5wTmpVBUSa1VYpGFpsegvREtiT/S6S/UmVliuyHY+y0mTIQKZcFsPP/jQtkpWhD/9meuPXkcofNA8Cu8m76rHS1+pAnZcldXHqQx/0ZytGSESqTWMVEDhqIUwnErX9+ro=
-Received: from OSAPR01MB3089.jpnprd01.prod.outlook.com (52.134.247.150) by
- OSAPR01MB4690.jpnprd01.prod.outlook.com (20.179.176.142) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1922.16; Wed, 22 May 2019 05:11:28 +0000
-Received: from OSAPR01MB3089.jpnprd01.prod.outlook.com
- ([fe80::4597:5353:28fb:cfd8]) by OSAPR01MB3089.jpnprd01.prod.outlook.com
- ([fe80::4597:5353:28fb:cfd8%7]) with mapi id 15.20.1900.020; Wed, 22 May 2019
- 05:11:28 +0000
+        id S1728693AbfEVKXZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 May 2019 06:23:25 -0400
+Received: from relmlor1.renesas.com ([210.160.252.171]:42569 "EHLO
+        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728527AbfEVKXZ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 May 2019 06:23:25 -0400
+X-IronPort-AV: E=Sophos;i="5.60,498,1549897200"; 
+   d="scan'208";a="16665267"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 22 May 2019 19:23:23 +0900
+Received: from localhost.localdomain (unknown [10.166.17.210])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 0BE7C40065A0;
+        Wed, 22 May 2019 19:23:23 +0900 (JST)
 From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     Wolfram Sang <wsa@the-dreams.de>
-CC:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "wsa+renesas@sang-engineering.com" <wsa+renesas@sang-engineering.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH v2 2/2] mmc: renesas_sdhi: use multiple segments if
- possible
-Thread-Topic: [PATCH v2 2/2] mmc: renesas_sdhi: use multiple segments if
- possible
-Thread-Index: AQHVCUUKmVh+8cTBr0GLk/9Xe/IGjKZowjMAgAAKVjCAAVMEkIAMDiYAgAB4gOA=
-Date:   Wed, 22 May 2019 05:11:28 +0000
-Message-ID: <OSAPR01MB30898CAE4DDD98EDBF479BCCD8000@OSAPR01MB3089.jpnprd01.prod.outlook.com>
-References: <1557721744-30545-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1557721744-30545-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <20190513090054.GA15744@kunai>
- <OSBPR01MB3174B96296BFFA408F1C901FD80F0@OSBPR01MB3174.jpnprd01.prod.outlook.com>
- <OSBPR01MB3174B26541C20C2951509DC8D8080@OSBPR01MB3174.jpnprd01.prod.outlook.com>
- <20190521215702.GA15483@kunai>
-In-Reply-To: <20190521215702.GA15483@kunai>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
-x-originating-ip: [118.238.235.108]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f6bfd7e8-6660-4b41-57c6-08d6de73f270
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:OSAPR01MB4690;
-x-ms-traffictypediagnostic: OSAPR01MB4690:
-x-microsoft-antispam-prvs: <OSAPR01MB4690D0FE85B6804B6CE0C8DFD8000@OSAPR01MB4690.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 0045236D47
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(396003)(366004)(136003)(376002)(39860400002)(54094003)(199004)(189003)(4326008)(73956011)(8676002)(76116006)(64756008)(66946007)(81156014)(66476007)(9686003)(6246003)(14454004)(33656002)(53936002)(8936002)(52536014)(81166006)(66446008)(66556008)(478600001)(186003)(305945005)(229853002)(6436002)(6916009)(55016002)(7736002)(68736007)(74316002)(7696005)(476003)(76176011)(446003)(3846002)(316002)(11346002)(6116002)(99286004)(2906002)(54906003)(5660300002)(102836004)(25786009)(66066001)(6506007)(26005)(486006)(256004)(86362001)(71200400001)(71190400001);DIR:OUT;SFP:1102;SCL:1;SRVR:OSAPR01MB4690;H:OSAPR01MB3089.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: renesas.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: Ance/SkYlfaSpU2zOh6eTy1bBvr5xGiQePlDWBn7q2RXEmkBC9xJoCDSDHk78gNH/YJdRZtXTPx37O3WfT2BdhObrQaAZF/odl63HRbkHvkD3uxZqpXMtfsYDvkaiCB4KN6aDl6W6gG4PWpVqKuLqqkrfDb9MJ8TnuyCWKPhjRyjLQuVg7zga3Gw4rUfqoFkLWV1J8ctsZ101enTaqT5Wh8x7vW1KuA21OlxauKLFvMpIfeOt1IoUjucMGYGyLc85q0UN484g4rcOZFZWJGTQFuyLDKz1NB4fDePrHwiZz4W39t3DCveNw07w7T2DgfACGBAiNqW1hAyKtr7LNIemW4vVKuuSqcjS1pXpjEXxwqSGsroCxHHuV5LtxPPZEiLwyzcGyk2e665Fu0HdHh8kSWC5QJ01yDggMa30+eEjSU=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6bfd7e8-6660-4b41-57c6-08d6de73f270
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2019 05:11:28.7945
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSAPR01MB4690
+To:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com
+Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: [PATCH v3 0/3] mmc: renesas_sdhi: improve performance by changing max_segs
+Date:   Wed, 22 May 2019 19:18:36 +0900
+Message-Id: <1558520319-16452-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Wolfram-san,
+This patch set is based on renesas-drivers.git /
+renesas-drivers-2019-05-21-v5.2-rc1 tag.
 
-> From: Wolfram Sang, Sent: Wednesday, May 22, 2019 6:57 AM
->=20
-> Hi Shimoda-san,
->=20
-> > > > > +	if (host->pdev->dev.iommu_group &&
-> > > >
-> > > > I wonder if I am too cautious, but maybe we should have another
-> > > > condition here to be checked first, namely "host->mmc->max_segs < 5=
-12"?
-> > >
-> > > I got it. I'll fix it on v3 patch.
-> >
-> > I'm afraid but I misunderstood this condition is
-> > "host->pdata->max_segs", not "host->mmc->max_segs", to avoid small
-> > max_segs value than pdata->max_segs?
->=20
-> You are right. I was in deed thinking mmc->max_segs because it will be
-> set at probe time, so it would work with values > 512. But I missed the
-> case you described, I am sorry. But using pdata->max_segs should work.
+Since SDHI host internal DMAC of the R-Car Gen3 cannot handle two or more
+segments, the performance rate (especially, eMMC HS400 reading) is not good.
+However, if IOMMU is enabled on the DMAC, since IOMMU will map multiple
+scatter gather buffers as one contignous iova, the DMAC can handle the iova
+as well and then the performance rate is possible to improve. In fact,
+I have measured the performance by using bonnie++, "Sequential Input - block"
+rate was improved on r8a7795. Please refer to the end of this email about
+the performance. (I beleive if the performance is improved, the CPU load
+is also increased.)
 
-Thank you for the reply. I got it!
+However, in case of a sdio card (especiialy some WiFi cards/drivers),
+scatter gather buffers are possible to be not contiguous iova because
+each scatter gather buffer has only about 1500 bytes, the DMAC cannot
+handle it. So, this patch set adds init_card() ops to detect the card
+type, and then the driver changes the max_segs if the DMAC is under
+IOMMU environment and an sd card/mmc is detected.
 
-> > (No one has such max_segs value at the moment though.)
->=20
-> Yes. I want to be future-proof here. Just to avoid that the value might
-> be "magically" decreased if the value might be bigger than 512. It would
-> be hard to find then because it is kinda deep in the driver.
+Remarks: I mentioned that Gen2 with the SYS-DMAC basis environment can
+also improve the perfomance on the public ML [1], but there was
+a measurement error so that I didn't make a patch for SYS-DMAC.
 
-I got it.
+Changes from v2 [2]:
+ - Add some conditions in the init_card().
+ - Add a comment in the init_card().
+ - Add definitions for some "MAX_SEGS".
 
-> Two more remarks:
->=20
-> * We should probably use a define for the magic value 512.
+Changes from v1 [3]:
+ - Remove adding init_card ops into struct tmio_mmc_dma_ops and
+   tmio_mmc_host and just set init_card on renesas_sdhi_core.c.
+ - Revise typos on "mmc: tmio: No memory size limitation if runs on IOMMU".
+ - Add Simon-san's Reviewed-by on a tmio patch.
 
-I think so. I also would like to use a define for a magic value 32.
+[1]
+https://patchwork.kernel.org/patch/10940225/#22635487
 
-> * Maybe you could add a comment to the init_card function describing why
->   we can increase max_segs in that case. Basically, a short summary of
->   your patch description.
+[2]
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=116729
 
-It's a good idea! I'll add such a short summary.
+[3]
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=110485
 
-> Does this make sense to you?
+---
+kernel v5.2-rc1 + local patches + HS400,,,,,,,,,,,,,,,,,,,,,,,,,,
+Buildroot 2019.02.1,,,,,,,,,,,,,,,,,,,,,,,,,,
+Bonnie++ 1.03e : bonnie\+\+ -d ./ -s 8192 -r 4096 -b -u root,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,
+environment,Size,Sequential Output - per char (K/sec),<- (CPU %),Sequential Output - block (K/sec),<- (CPU %),Sequential Output - rewrite (K/sec),<- (CPU %),Sequential Input - per char (K/sec),<- (CPU %),Sequential Input ? block (K/sec),<- (CPU %),Random seeks,<- (CPU %),files,Sequential Create,<- (CPU %),Sequential Read,<- (CPU %),Sequential Delete,<- (CPU %),Random Create,<- (CPU %),Random Read,<- (CPU %),Random Delete,<- (CPU %)
+H3_max_segs_1_on_IOMMU,8G,80858,96,121466,28,60602,16,71712,95,121427,15,4128.5,11,16,678,3,+++++,+++,593,2,616,3,+++++,+++,603,3
+H3_max_segs_512_on_IOMMU,8G,76637,91,132994,31,81478,20,74522,98,197325,26,4526.5,12,16,864,4,+++++,+++,821,4,814,4,+++++,+++,786,4
+---
 
-Yes. Thank you for your comments. I'll make v3 patch later.
+Yoshihiro Shimoda (3):
+  mmc: tmio: No memory size limitation if runs on IOMMU
+  mmc: tmio: Add a definition for default max_segs
+  mmc: renesas_sdhi: use multiple segments if possible
 
-Best regards,
-Yoshihiro Shimoda
+ drivers/mmc/host/renesas_sdhi_core.c | 25 +++++++++++++++++++++++++
+ drivers/mmc/host/tmio_mmc.h          |  1 +
+ drivers/mmc/host/tmio_mmc_core.c     |  7 ++++---
+ 3 files changed, 30 insertions(+), 3 deletions(-)
 
-> Kind regards,
->=20
->    Wolfram
+-- 
+2.7.4
 
