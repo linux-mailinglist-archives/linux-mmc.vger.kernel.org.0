@@ -2,39 +2,39 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97E6A26FA4
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 May 2019 21:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EB4426E82
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 May 2019 21:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731013AbfEVTXv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 22 May 2019 15:23:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44758 "EHLO mail.kernel.org"
+        id S1731376AbfEVT0j (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 May 2019 15:26:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48230 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731007AbfEVTXu (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 22 May 2019 15:23:50 -0400
+        id S1731008AbfEVT0j (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 22 May 2019 15:26:39 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9FA9D217D4;
-        Wed, 22 May 2019 19:23:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E6E5921873;
+        Wed, 22 May 2019 19:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558553029;
+        s=default; t=1558553198;
         bh=G2TNhij8F3WSS536EU40npcJSOOTOsGZ8xKZjteFZBM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Am918lUy60hy2C4kmY9e2ojBMAASRJZJ5CUowRY/qWU7WmDZ16AAO/g5UVKJ5ybqx
-         /IIQmViLSHZxTY4PAz6XmAyKkGoCuqF4CFT7FahEiu/STVyW2viNlqBTvyyIIPhOA3
-         JtybltVnNwx5DNiNkqgEp4VTR4zAgUgUSzB6odcI=
+        b=Zt05Tws1tWtYtNeVIbLKpZrmJafp+5LmgHSa2qTpkDDu9wFh9yzslinKqWEWxqo9S
+         lKX8ACMEvRR7Zpm5W9G+fp5BGOk1KNf52vUk8bw6zfQDP+RS5zv6dT77NfVPhF9gh9
+         /hN53jyi+New1VGF4NAwiaP0LDGv/+nSKMkB1T8k=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Raul E Rangel <rrangel@chromium.org>,
         Avri Altman <avri.altman@wdc.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.0 008/317] mmc: core: Verify SD bus width
-Date:   Wed, 22 May 2019 15:18:29 -0400
-Message-Id: <20190522192338.23715-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 006/244] mmc: core: Verify SD bus width
+Date:   Wed, 22 May 2019 15:22:32 -0400
+Message-Id: <20190522192630.24917-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190522192338.23715-1-sashal@kernel.org>
-References: <20190522192338.23715-1-sashal@kernel.org>
+In-Reply-To: <20190522192630.24917-1-sashal@kernel.org>
+References: <20190522192630.24917-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
