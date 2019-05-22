@@ -2,84 +2,67 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2545426309
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 May 2019 13:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4D03263D4
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 May 2019 14:29:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728638AbfEVLfY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 22 May 2019 07:35:24 -0400
-Received: from sauhun.de ([88.99.104.3]:43508 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728450AbfEVLfY (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 22 May 2019 07:35:24 -0400
-Received: from localhost (p54B33377.dip0.t-ipconnect.de [84.179.51.119])
-        by pokefinder.org (Postfix) with ESMTPSA id BB24B2C3720;
-        Wed, 22 May 2019 13:35:21 +0200 (CEST)
-Date:   Wed, 22 May 2019 13:35:21 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
+        id S1728881AbfEVM3F (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 May 2019 08:29:05 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:60146 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728468AbfEVM3F (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 May 2019 08:29:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=nxaaWX0j8rFdFCm/Kf6KfpdTfcr9NsWGTpWvZ3FHBhY=; b=hv+PrGcylD/RhViTAbwni3aq1
+        xe+7U3VaHnwsgGlkvd6kOaP3tj0cLVstCL+jvUkotoawj7TvJkprlo8xC8sdmbgZZz/5CGp9TayKo
+        +38KKYlYkz7v0fEugB/tLaHxcEA5tOnG/Jo9XASNI3pUW4nlcqjHm5tfRib9ZKMX0bHss9nMvyfyZ
+        xETV4B2pzSyFYFzRc3IY7//hjt/rI0yWMhUnlFB3F4rH1rlPBgE9yai1f1GavQKEaz2jeQmOpDARB
+        wr0tmLu1YVa50sjtikBE4l9nW0qFp0d6fdWq2KLZmKuSU2IGdpPtVDpygUOvJQxPlaDLHvK1iD0WC
+        U1I0r1KYg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hTQMg-0002qe-3G; Wed, 22 May 2019 12:29:02 +0000
+Date:   Wed, 22 May 2019 05:29:01 -0700
+From:   Christoph Hellwig <hch@infradead.org>
 To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 Cc:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
-        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-block@vger.kernel.org
 Subject: Re: [PATCH v3 3/3] mmc: renesas_sdhi: use multiple segments if
  possible
-Message-ID: <20190522113521.GC895@kunai>
+Message-ID: <20190522122901.GA4583@infradead.org>
 References: <1558520319-16452-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
  <1558520319-16452-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="LwW0XdcUbUexiWVK"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <1558520319-16452-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
-
-
---LwW0XdcUbUexiWVK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
 On Wed, May 22, 2019 at 07:18:39PM +0900, Yoshihiro Shimoda wrote:
 > In IOMMU environment, since it's possible to merge scatter gather
 > buffers of memory requests to one iova, this patch changes the max_segs
 > value when init_card of mmc_host timing to improve the transfer
 > performance on renesas_sdhi_internal_dmac.
->=20
-> Notes that an sdio card may be possible to use scatter gather buffers
-> with non page aligned size, so that this driver will not use multiple
-> segments to avoid any trouble. Also, on renesas_sdhi_sys_dmac,
-> the max_segs value will change from 32 to 512, but the sys_dmac
-> can handle 512 segments, so that this init_card ops is added on
-> "TMIO_MMC_MIN_RCAR2" environment.
->=20
-> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-Awesome, Shimoda-san. I think you nailed it, this is nicely readable
-code!
+Well, you can't merge everything with an IOMMU.  For one not every
+IOMMU can merge multiple scatterlist segments, second even it can merge
+segements the segments need to be aligned to the IOMMU page size.  And
+then of course we might have an upper limit on the total mapping.
 
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> +	if (host->pdata->max_segs < SDHI_MAX_SEGS_IN_IOMMU &&
+> +	    host->pdev->dev.iommu_group &&
+> +	    (mmc_card_mmc(card) || mmc_card_sd(card)))
+> +		host->mmc->max_segs = SDHI_MAX_SEGS_IN_IOMMU;
 
-
---LwW0XdcUbUexiWVK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlzlM/kACgkQFA3kzBSg
-KbYtBA/9FF8cB1rnFKGmQr8g0zM53etl4UeJaSa65W/ZqHKJEHIpxOgT7/pSFdya
-Mt3+EDuNlgAndb88dDN38X3QKjc0sPH4UH+VXDbtqm4KvBQx8C0kt8QAf8xTSbuZ
-m/Ax7qYwHlEahv3ZpCFTDsHfxuZWX9CYm7fBOZ9oQFrb3VNPKt2SR6QFDLDqknM8
-+v1y2iPCAlx+6yYIyRZXLmOib7/eyDXf40Yz2QAFD8/6g1JAvxbvgjzV1rBvnaJ2
-9Nt6S7rEuLseIJTrg0tTJPk0sH5DYcpy9syeQTjPTGUTNQTgvcwzB/T/CHp8+rdr
-9JaLgRpPBBsUINQb+VSEk/1l8qvV/v+uLcy8+hCYv+n5G5jlI+kQ2k+BldKv9Rhi
-idBPrhMLJla7pB/AAYnRRk4PkLKOZXAses5DmQ5N3yUPpFcSPbI4eMXkKOypu6bV
-BD/fhwCUMl3xhbNxBY0BpzBw3mwuQ437bsG0AUer9EN8bQ1KiQtSmom33Bc2W+Ti
-fMEaS1Gqz/yjWI9j/gp7LLi7OEc4gFp4JgRBLzz6SJ7GBHyLr9bx4h/AxgLAVUJb
-vNzxyIpZxVRfK63eFynhCz0UJA+rBvpcvjA0LiWDmEBgFuTEsekmcu6TmoUxhB9q
-Nq101Z4ELhcDoaA174D69xoRYkBZYOdPI6MGPyEHLaI49jn6u9A=
-=U8+1
------END PGP SIGNATURE-----
-
---LwW0XdcUbUexiWVK--
+This is way to magic.  We'll need a proper DMA layer API to expose
+this information, and preferably a block layer helper to increase
+max_segs instead of hacking that up in the driver.
