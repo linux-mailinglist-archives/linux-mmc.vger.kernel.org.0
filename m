@@ -2,104 +2,74 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B80261AC
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 May 2019 12:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 817DB262F6
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 May 2019 13:31:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729049AbfEVKX1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 22 May 2019 06:23:27 -0400
-Received: from relmlor2.renesas.com ([210.160.252.172]:10899 "EHLO
-        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728944AbfEVKX0 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 May 2019 06:23:26 -0400
-X-IronPort-AV: E=Sophos;i="5.60,498,1549897200"; 
-   d="scan'208";a="16463271"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 22 May 2019 19:23:23 +0900
-Received: from localhost.localdomain (unknown [10.166.17.210])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 6494540065A0;
-        Wed, 22 May 2019 19:23:23 +0900 (JST)
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com
-Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH v3 3/3] mmc: renesas_sdhi: use multiple segments if possible
-Date:   Wed, 22 May 2019 19:18:39 +0900
-Message-Id: <1558520319-16452-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1558520319-16452-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S1728584AbfEVLbK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 May 2019 07:31:10 -0400
+Received: from sauhun.de ([88.99.104.3]:43422 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728111AbfEVLbK (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 22 May 2019 07:31:10 -0400
+Received: from localhost (p54B33377.dip0.t-ipconnect.de [84.179.51.119])
+        by pokefinder.org (Postfix) with ESMTPSA id 637F32C3720;
+        Wed, 22 May 2019 13:31:08 +0200 (CEST)
+Date:   Wed, 22 May 2019 13:31:08 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
+        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] mmc: tmio: No memory size limitation if runs on
+ IOMMU
+Message-ID: <20190522113107.GA895@kunai>
 References: <1558520319-16452-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <1558520319-16452-2-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+QahgC5+KEYLbs62"
+Content-Disposition: inline
+In-Reply-To: <1558520319-16452-2-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-In IOMMU environment, since it's possible to merge scatter gather
-buffers of memory requests to one iova, this patch changes the max_segs
-value when init_card of mmc_host timing to improve the transfer
-performance on renesas_sdhi_internal_dmac.
 
-Notes that an sdio card may be possible to use scatter gather buffers
-with non page aligned size, so that this driver will not use multiple
-segments to avoid any trouble. Also, on renesas_sdhi_sys_dmac,
-the max_segs value will change from 32 to 512, but the sys_dmac
-can handle 512 segments, so that this init_card ops is added on
-"TMIO_MMC_MIN_RCAR2" environment.
+--+QahgC5+KEYLbs62
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
----
- drivers/mmc/host/renesas_sdhi_core.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+On Wed, May 22, 2019 at 07:18:37PM +0900, Yoshihiro Shimoda wrote:
+> This patch adds a condition to avoid a memory size limitation of
+> swiotlb if the driver runs on IOMMU.
+>=20
+> Tested-by: Takeshi Saito <takeshi.saito.xv@renesas.com>
+> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+> Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index 5e9e36e..2f86975 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -46,6 +46,8 @@
- #define SDHI_VER_GEN3_SD	0xcc10
- #define SDHI_VER_GEN3_SDMMC	0xcd10
- 
-+#define SDHI_MAX_SEGS_IN_IOMMU	512
-+
- struct renesas_sdhi_quirks {
- 	bool hs400_disabled;
- 	bool hs400_4taps;
-@@ -203,6 +205,27 @@ static void renesas_sdhi_clk_disable(struct tmio_mmc_host *host)
- 	clk_disable_unprepare(priv->clk_cd);
- }
- 
-+static void renesas_sdhi_init_card(struct mmc_host *mmc, struct mmc_card *card)
-+{
-+	struct tmio_mmc_host *host = mmc_priv(mmc);
-+
-+	/*
-+	 * In IOMMU environment, it's possible to merge scatter gather buffers
-+	 * of memory requests to one iova so that this code changes
-+	 * the max_segs when init_card of mmc_host timing. Notes that an sdio
-+	 * card may be possible to use scatter gather buffers with non page
-+	 * aligned size, so that this driver will not use multiple segments
-+	 * to avoid any trouble even if IOMMU environment.
-+	 */
-+	if (host->pdata->max_segs < SDHI_MAX_SEGS_IN_IOMMU &&
-+	    host->pdev->dev.iommu_group &&
-+	    (mmc_card_mmc(card) || mmc_card_sd(card)))
-+		host->mmc->max_segs = SDHI_MAX_SEGS_IN_IOMMU;
-+	else
-+		host->mmc->max_segs = host->pdata->max_segs ? :
-+				      TMIO_DEFAULT_MAX_SEGS;
-+}
-+
- static int renesas_sdhi_card_busy(struct mmc_host *mmc)
- {
- 	struct tmio_mmc_host *host = mmc_priv(mmc);
-@@ -726,6 +749,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 
- 	/* SDR speeds are only available on Gen2+ */
- 	if (mmc_data->flags & TMIO_MMC_MIN_RCAR2) {
-+		host->ops.init_card = renesas_sdhi_init_card;
-+
- 		/* card_busy caused issues on r8a73a4 (pre-Gen2) CD-less SDHI */
- 		host->ops.card_busy = renesas_sdhi_card_busy;
- 		host->ops.start_signal_voltage_switch =
--- 
-2.7.4
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
+
+--+QahgC5+KEYLbs62
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlzlMvcACgkQFA3kzBSg
+KbZVEw/7BSIvUv6S7G44FI1YO6pzmz15RYxutBvFilUDEp3oRUVbkKRdbAceeOsY
+QUxG9xDd864NOkIh00Vf4ZCGTsM0bx6NpknfcxMUnOMhHEIwq11dJaZYEDgqO0ho
+CnTNO98gcGKqEUo+yGhqrQMfd4xawxyZToFHShasPZ28+kEC1AC/NDtPSfd2I55c
+5DtnK1FLRxLqBVo10U8RM3l3AmBJ5ArR+atfoom3vub0Wt3jjI7cejc6nca4hK6v
+0TDpHsYKex5I7GldTOcH53C86Nc7jHUhBW1S+Ix46EXqSO+FMRgUgh+BdWdgBxzE
+lUkT51wKkQaamg8XjLXUc/xuF/sJGIcf/ZZj2ryOyUPOlWBoJmsWw0IOM+Aw71NL
+eheFpcWnQFT85YdGTQf1gwPsiuxkadXSH1yha/A23ZzdxMnXPlaog89kn4MenpNv
+mdcCC2JfZ6VJRRTz2h/D8KeIHIbq0B9Yf5L4uBTmlMnIc5WZNsLohNwg6y8SUG66
+eEX9umVlDRepg0et9VpA5/8CPlxZBV6QZz08MP45P1W3Oq3HrkK4kmr26YpaVCSi
+c9nLh6uVQmTYYUbsZ/ajkOZzsEqiW24gC4UMId2q8hwWr/j+89X5kMh4iD6KCcoJ
+keoUSENRd9enWah/tdy0MWRi1FSHZDcD9pegJL6uOhTRk7xROWc=
+=vHdP
+-----END PGP SIGNATURE-----
+
+--+QahgC5+KEYLbs62--
