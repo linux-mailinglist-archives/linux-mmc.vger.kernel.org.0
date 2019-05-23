@@ -2,166 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECB4427745
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 May 2019 09:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340702805E
+	for <lists+linux-mmc@lfdr.de>; Thu, 23 May 2019 17:00:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730618AbfEWHiu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 May 2019 03:38:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39228 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726310AbfEWHit (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 23 May 2019 03:38:49 -0400
-Received: from dragon (98.142.130.235.16clouds.com [98.142.130.235])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A8E482075E;
-        Thu, 23 May 2019 07:38:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558597128;
-        bh=PDeQ/R6EFXXI6bmG+2plkabUTkZx6Xpn/gVapHNA3DQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=A7DoqJN2tSJu1utHXlZ/Uk9R23K9mhPPKEIMvUAwL23Qfy5vM6Xr98X0r923XXkRE
-         wy7k9kJcj2h3C5v20tYNfAQ34HDISe6d248XLL5gQ+D32V1phD/sXMaBTIvhRxu0hf
-         8SRKuiWIwfdzus11Ls+EacvJN1RcPhaRs1MbU2Ko=
-Date:   Thu, 23 May 2019 15:37:45 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Yinbo Zhu <yinbo.zhu@nxp.com>
-Cc:     Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
-        xiaobo.xie@nxp.com, Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        yangbo.lu@nxp.com, jiafei.pan@nxp.com,
-        Ashish Kumar <Ashish.Kumar@nxp.com>
-Subject: Re: [PATCH v2] arm64: dts: ls1028a: Add esdhc node in dts
-Message-ID: <20190523073744.GG9261@dragon>
-References: <20190515040046.9230-1-yinbo.zhu@nxp.com>
+        id S1730853AbfEWO77 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 23 May 2019 10:59:59 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:34242 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730719AbfEWO76 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 May 2019 10:59:58 -0400
+Received: by mail-wr1-f68.google.com with SMTP id f8so6674137wrt.1
+        for <linux-mmc@vger.kernel.org>; Thu, 23 May 2019 07:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CssnNRfqQDe95aEHLIDwNrxoMm4Qr1zdDx/8yvm4qr8=;
+        b=REOaV5SsGZnknVjXNHI1+w/KigvMYFqry/bQQI5clubnG+/RkWUFG/ltDAyrO4zkDH
+         c77lz+ZH9APatZ8RBKfqZIrQu6VUfGLvuNAfXebV7VcJq0pdvlNCsyc1vYPkRZn5Z45u
+         2RLB+M9VXCmNsKrfoShvy6RVSnqq5FoHPvGXyFNWVwSPoutqYs4IInrK2K5u60CYCeyx
+         /OOz32VPGeF+hV8c9HwrzIXhievnXkU76cLyiI5nnx49ZFl3HkF9Qdx/uqVIY6MKNnFa
+         p6yzQku7tHyyS/MUqo1UMfav8fcHGO1INv8DrGX9vjXdZRQkAqTzCcRFRfOP+0Q7ScDv
+         1CiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CssnNRfqQDe95aEHLIDwNrxoMm4Qr1zdDx/8yvm4qr8=;
+        b=rvEWx7gYCmywTyxRdB6NhBikWL2heRw4bOpaBkwJ62y8BdxTrBl2W8ckHpTS3Z5UAc
+         fGIxXp/mhVeDrPAp3R+ON6iaGzLumh0tpR6q4X+ObwGQmjB407HQy2ffeBfWES01/59i
+         sK+S8yCwn0gLO15EO3mVKGmaxY7Nv71Qi77tYdm1Qlwn77GaIZioPdUGYBooQzQlp963
+         PFsUBYUl3PpQQqVkI6oNdW86qnTq1H+ThZKaWeKRL1PQjEl2fLIMOEiKj8Gn8HLRnDfp
+         Id0Hs2qKAwka4Zd3mPWZpz4ZwnELvVrqpL4PPOmoNwYX9HknKaKqFl5y8raYVpJfuKpU
+         12vA==
+X-Gm-Message-State: APjAAAUQHbvswtlfHY8owknOrLJ/XcEDD69TmSAYU6Wc+Fucmvm6G/+R
+        LOzb7Fa7ZUbUt0dJSEGmslJlnWNlmP4=
+X-Google-Smtp-Source: APXvYqx/uuRO0IHEqvTfUgTvkFrAj21iMWd3FOVHEIJ7N9kr8gaNKLRjtE6H+YJHuIRDbZsfcx4ktQ==
+X-Received: by 2002:a5d:65d1:: with SMTP id e17mr1327464wrw.65.1558623597101;
+        Thu, 23 May 2019 07:59:57 -0700 (PDT)
+Received: from boomer.local (lmontsouris-657-1-212-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.googlemail.com with ESMTPSA id o11sm14429930wrp.23.2019.05.23.07.59.56
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 23 May 2019 07:59:56 -0700 (PDT)
+From:   Jerome Brunet <jbrunet@baylibre.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>
+Cc:     Jerome Brunet <jbrunet@baylibre.com>,
+        linux-amlogic@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Subject: [PATCH] mmc: meson-gx: fix irq ack
+Date:   Thu, 23 May 2019 16:59:50 +0200
+Message-Id: <20190523145950.7030-1-jbrunet@baylibre.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190515040046.9230-1-yinbo.zhu@nxp.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Patchwork-Bot: notify
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, May 15, 2019 at 12:00:46PM +0800, Yinbo Zhu wrote:
-> From: Ashish Kumar <Ashish.Kumar@nxp.com>
-> 
-> This patch is to add esdhc node and enable SD UHS-I,
-> eMMC HS200 for ls1028ardb/ls1028aqds board.
-> 
-> Signed-off-by: Ashish Kumar <Ashish.Kumar@nxp.com>
-> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
-> Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
-> ---
-> Change in v2:
-> 		Update the patch title
-> 		Add a commont in dts code
-> 
->  arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts |    8 ++++++
->  arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts |   13 ++++++++++
->  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi    |   27 +++++++++++++++++++++
->  3 files changed, 48 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
-> index 14c79f4..180e5d2 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
-> @@ -42,6 +42,14 @@
->  	status = "okay";
->  };
->  
-> +&esdhc {
-> +	status = "okay";
-> +};
-> +
-> +&esdhc1 {
-> +	status = "okay";
-> +};
-> +
->  &i2c0 {
->  	status = "okay";
->  
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-> index f86b054..1bfaf42 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-> @@ -30,6 +30,19 @@
->  	};
->  };
->  
-> +&esdhc {
-> +	status = "okay";
+While cleaning the ISR of the meson-gx and acking only raised irqs,
+the ack of the irq was moved at the very last stage of the function.
 
-We usually put 'status' at the end of property list.
+This was stable during the initial tests but it triggered issues with
+hs200, under specific loads (like booting android). Acking the irqs
+after calling the mmc_request_done() causes the problem.
 
-> +	sd-uhs-sdr104;
-> +	sd-uhs-sdr50;
-> +	sd-uhs-sdr25;
-> +	sd-uhs-sdr12;
-> +	};
+Moving the ack back to the original place solves the issue. Since the
+irq is edge triggered, it does not hurt to ack irq even earlier, so
+let's do it early in the ISR.
 
-Bad indentation.
+Fixes: 9c5fdb07a28d ("mmc: meson-gx: ack only raised irq")
+Tested-by: Neil Armstrong <narmstrong@baylibre.com>
+Tested-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+---
+ drivers/mmc/host/meson-gx-mmc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> +
-> +&esdhc1 {
-> +	status = "okay";
-> +	mmc-hs200-1_8v;
-> +	};
-> +
->  &i2c0 {
->  	status = "okay";
->  
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> index 2896bbc..5c7546f 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> @@ -274,6 +274,33 @@
->  			status = "disabled";
->  		};
->  
-> +		esdhc: esdhc@2140000 {
+diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+index 6ef465304052..cb3f6811d69a 100644
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -873,6 +873,9 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
+ 	if (WARN_ON(!host) || WARN_ON(!host->cmd))
+ 		return IRQ_NONE;
+ 
++	/* ack all raised interrupts */
++	writel(status, host->regs + SD_EMMC_STATUS);
++
+ 	cmd = host->cmd;
+ 	data = cmd->data;
+ 	cmd->error = 0;
+@@ -919,9 +922,6 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
+ 	if (ret == IRQ_HANDLED)
+ 		meson_mmc_request_done(host->mmc, cmd->mrq);
+ 
+-	/* ack all raised interrupts */
+-	writel(status, host->regs + SD_EMMC_STATUS);
+-
+ 	return ret;
+ }
+ 
+-- 
+2.20.1
 
-'mmc' for node name, and the node should be sorted in unit-address.
-
-> +			compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
-> +			reg = <0x0 0x2140000 0x0 0x10000>;
-> +			interrupts = <0 28 0x4>; /* Level high type */
-
-interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
-
-> +			clock-frequency = <0>; /* fixed up by bootloader */
-> +			clocks = <&clockgen 2 1>;
-> +			voltage-ranges = <1800 1800 3300 3300>;
-> +			sdhci,auto-cmd12;
-> +			little-endian;
-> +			bus-width = <4>;
-> +			status = "disabled";
-> +		};
-> +
-> +		esdhc1: esdhc@2150000 {
-> +			compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
-> +			reg = <0x0 0x2150000 0x0 0x10000>;
-> +			interrupts = <0 63 0x4>; /* Level high type */
-> +			clock-frequency = <0>; /* fixed up by bootloader */
-> +			clocks = <&clockgen 2 1>;
-> +			voltage-ranges = <1800 1800 3300 3300>;
-> +			sdhci,auto-cmd12;
-> +			broken-cd;
-
-Shouldn't this one be a board level property?
-
-Shawn
-
-> +			little-endian;
-> +			bus-width = <4>;
-> +			status = "disabled";
-> +		};
-> +
->  		sata: sata@3200000 {
->  			compatible = "fsl,ls1028a-ahci";
->  			reg = <0x0 0x3200000 0x0 0x10000>,
-> -- 
-> 1.7.1
-> 
