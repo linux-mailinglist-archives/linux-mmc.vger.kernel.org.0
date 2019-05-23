@@ -2,80 +2,166 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FA4727619
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 May 2019 08:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB4427745
+	for <lists+linux-mmc@lfdr.de>; Thu, 23 May 2019 09:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726081AbfEWGh4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 May 2019 02:37:56 -0400
-Received: from mail-wr1-f48.google.com ([209.85.221.48]:38361 "EHLO
-        mail-wr1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725806AbfEWGh4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 May 2019 02:37:56 -0400
-Received: by mail-wr1-f48.google.com with SMTP id d18so4853333wrs.5
-        for <linux-mmc@vger.kernel.org>; Wed, 22 May 2019 23:37:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=n4//uQUu2E1QbNvWcW0MRfDsO1tyvhesEZ9tZvWdn2I=;
-        b=Q2TwN7iTEZ9ISI2Qc6K8mjXLhRnyoSXzWvG8CV+8twlk8Y86cGPRKU/ds6SYgiNmJS
-         bg07hw13OXw4u5yEU4NW8taNacKgrV3KOm1dtMZhns36KxF08eQxTGkW/paFqWWrm0UK
-         h6kbMFSCUhY/sxjYdpOow7Ga4TbolG8427q2UelrCSX9oZmcslOZGHU8hW9vnaRXv22N
-         /eta40N1rwjhNUn4A1Ku/p5Gij7qKpEkgVU955c3i9EvxcnkNZObXAA60Mvn+62aH/YR
-         Cj1oQmvH1He5qXfv4KjU+ZyAds0LBgnAFjvxm4UkpkVK5uXyzyVm4GA4363jBXaPDpFD
-         KwZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=n4//uQUu2E1QbNvWcW0MRfDsO1tyvhesEZ9tZvWdn2I=;
-        b=mgFEYpNbrHkSvBx981Drj8eOJgOuyyq5QlWoQfOgba1TJQLVubilaVZDGFJ7XN5Ib9
-         RQ+RA/z2nO7H4DSEeT63L+55sTh70/6/xJPBrsA3qkkyz6epwKctB30kC4aKlUjS/mAq
-         fDxZCBDdSQ4MAqqSG3la9vOh7jDVbNrC0MXjqxUyUlUr1dszWq3YhFEQNe2KTDvRkNFB
-         FJwLCEKf06Izea4ASCIGmZHdEZlM8lbuqxlHiXADalNGpd4AMXevalqFl+umX39p1vog
-         0zwV1qheaIAlEB8twIu4TZncRaC12uwCiOK6PmKBuixTO4H4A/7lO5Hh0A4DtpYtkxof
-         z7Kg==
-X-Gm-Message-State: APjAAAVpZedblAHCxSigJC0lT29T0bfvqqxmy5Oy2ABonU/yfzLd4hmG
-        i4Kclhx/vKbYwu5sqzeTd2WAzU/KDj6dwLaUs//Mlwsh
-X-Google-Smtp-Source: APXvYqwPNBmmoZzfDsJaZJvIXBrL5T6QGRQ07Feaj4nkeTfLnyM5FBiaxp9tXrnyV4nVIazMeWY3WlYvusbG2aBlWpc=
-X-Received: by 2002:adf:f6c4:: with SMTP id y4mr31521462wrp.37.1558593474808;
- Wed, 22 May 2019 23:37:54 -0700 (PDT)
+        id S1730618AbfEWHiu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 23 May 2019 03:38:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39228 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726310AbfEWHit (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 23 May 2019 03:38:49 -0400
+Received: from dragon (98.142.130.235.16clouds.com [98.142.130.235])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A8E482075E;
+        Thu, 23 May 2019 07:38:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558597128;
+        bh=PDeQ/R6EFXXI6bmG+2plkabUTkZx6Xpn/gVapHNA3DQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=A7DoqJN2tSJu1utHXlZ/Uk9R23K9mhPPKEIMvUAwL23Qfy5vM6Xr98X0r923XXkRE
+         wy7k9kJcj2h3C5v20tYNfAQ34HDISe6d248XLL5gQ+D32V1phD/sXMaBTIvhRxu0hf
+         8SRKuiWIwfdzus11Ls+EacvJN1RcPhaRs1MbU2Ko=
+Date:   Thu, 23 May 2019 15:37:45 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Yinbo Zhu <yinbo.zhu@nxp.com>
+Cc:     Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+        xiaobo.xie@nxp.com, Mark Rutland <mark.rutland@arm.com>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        yangbo.lu@nxp.com, jiafei.pan@nxp.com,
+        Ashish Kumar <Ashish.Kumar@nxp.com>
+Subject: Re: [PATCH v2] arm64: dts: ls1028a: Add esdhc node in dts
+Message-ID: <20190523073744.GG9261@dragon>
+References: <20190515040046.9230-1-yinbo.zhu@nxp.com>
 MIME-Version: 1.0
-References: <CAAfyv35uPKE9pwmktVMg4wqyX7C7WYfdKV89uQkTfGMnEqpQXA@mail.gmail.com>
-In-Reply-To: <CAAfyv35uPKE9pwmktVMg4wqyX7C7WYfdKV89uQkTfGMnEqpQXA@mail.gmail.com>
-From:   Belisko Marek <marek.belisko@gmail.com>
-Date:   Thu, 23 May 2019 08:37:44 +0200
-Message-ID: <CAAfyv37Fy0iWY2G=8yZXg2DU4oZ_8h0JEOgm1g2+McM8t-EfFA@mail.gmail.com>
-Subject: Fwd: switch to bus width 8 failed
-To:     linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190515040046.9230-1-yinbo.zhu@nxp.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+On Wed, May 15, 2019 at 12:00:46PM +0800, Yinbo Zhu wrote:
+> From: Ashish Kumar <Ashish.Kumar@nxp.com>
+> 
+> This patch is to add esdhc node and enable SD UHS-I,
+> eMMC HS200 for ls1028ardb/ls1028aqds board.
+> 
+> Signed-off-by: Ashish Kumar <Ashish.Kumar@nxp.com>
+> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
+> Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
+> ---
+> Change in v2:
+> 		Update the patch title
+> 		Add a commont in dts code
+> 
+>  arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts |    8 ++++++
+>  arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts |   13 ++++++++++
+>  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi    |   27 +++++++++++++++++++++
+>  3 files changed, 48 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
+> index 14c79f4..180e5d2 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
+> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
+> @@ -42,6 +42,14 @@
+>  	status = "okay";
+>  };
+>  
+> +&esdhc {
+> +	status = "okay";
+> +};
+> +
+> +&esdhc1 {
+> +	status = "okay";
+> +};
+> +
+>  &i2c0 {
+>  	status = "okay";
+>  
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+> index f86b054..1bfaf42 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+> @@ -30,6 +30,19 @@
+>  	};
+>  };
+>  
+> +&esdhc {
+> +	status = "okay";
 
-I'm facing on my custom board issue with slow eMC write speed. When
-checked debug information I see that bus width is only 4 bit (while HW
-connection using 8 bit and in dts I've setup also 8):
+We usually put 'status' at the end of property list.
 
-cat /sys/kernel/debug/mmc0/ios
-clock:          52000000 Hz
-vdd:            21 (3.3 ~ 3.4 V)
-bus mode:       2 (push-pull)
-chip select:    0 (don't care)
-power mode:     2 (on)
-bus width:      2 (4 bits)
-timing spec:    1 (mmc high-speed)
-signal voltage: 0 (3.30 V)
-driver type:    0 (driver type B)
+> +	sd-uhs-sdr104;
+> +	sd-uhs-sdr50;
+> +	sd-uhs-sdr25;
+> +	sd-uhs-sdr12;
+> +	};
 
-and in bootlog I see:
-[    4.001992] mmc0: switch to bus width 8 failed
+Bad indentation.
 
-eMMC is sandisk (8G). Using mainline 4.12 kernel. IS there any way how
-to debug this issue or someone experiencing similar? Thanks.
+> +
+> +&esdhc1 {
+> +	status = "okay";
+> +	mmc-hs200-1_8v;
+> +	};
+> +
+>  &i2c0 {
+>  	status = "okay";
+>  
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+> index 2896bbc..5c7546f 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+> @@ -274,6 +274,33 @@
+>  			status = "disabled";
+>  		};
+>  
+> +		esdhc: esdhc@2140000 {
 
-BR,
+'mmc' for node name, and the node should be sorted in unit-address.
 
-marek
+> +			compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
+> +			reg = <0x0 0x2140000 0x0 0x10000>;
+> +			interrupts = <0 28 0x4>; /* Level high type */
+
+interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
+
+> +			clock-frequency = <0>; /* fixed up by bootloader */
+> +			clocks = <&clockgen 2 1>;
+> +			voltage-ranges = <1800 1800 3300 3300>;
+> +			sdhci,auto-cmd12;
+> +			little-endian;
+> +			bus-width = <4>;
+> +			status = "disabled";
+> +		};
+> +
+> +		esdhc1: esdhc@2150000 {
+> +			compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
+> +			reg = <0x0 0x2150000 0x0 0x10000>;
+> +			interrupts = <0 63 0x4>; /* Level high type */
+> +			clock-frequency = <0>; /* fixed up by bootloader */
+> +			clocks = <&clockgen 2 1>;
+> +			voltage-ranges = <1800 1800 3300 3300>;
+> +			sdhci,auto-cmd12;
+> +			broken-cd;
+
+Shouldn't this one be a board level property?
+
+Shawn
+
+> +			little-endian;
+> +			bus-width = <4>;
+> +			status = "disabled";
+> +		};
+> +
+>  		sata: sata@3200000 {
+>  			compatible = "fsl,ls1028a-ahci";
+>  			reg = <0x0 0x3200000 0x0 0x10000>,
+> -- 
+> 1.7.1
+> 
