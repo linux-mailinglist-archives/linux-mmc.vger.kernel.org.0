@@ -2,91 +2,90 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB32E28196
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 May 2019 17:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AEA22957E
+	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2019 12:10:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730951AbfEWPrb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 May 2019 11:47:31 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:42462 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730913AbfEWPrb (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 May 2019 11:47:31 -0400
-Received: by mail-pg1-f193.google.com with SMTP id 33so379651pgv.9
-        for <linux-mmc@vger.kernel.org>; Thu, 23 May 2019 08:47:31 -0700 (PDT)
+        id S2390156AbfEXKKc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 24 May 2019 06:10:32 -0400
+Received: from mail-lf1-f45.google.com ([209.85.167.45]:39867 "EHLO
+        mail-lf1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389806AbfEXKKc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 24 May 2019 06:10:32 -0400
+Received: by mail-lf1-f45.google.com with SMTP id f1so6691264lfl.6
+        for <linux-mmc@vger.kernel.org>; Fri, 24 May 2019 03:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=jv+ZMbc1I98Kfuw0Mvc1m1vrwyGUlcd3bpE/jqp7bS0=;
-        b=KXEg/r5cqRllmZVEG6qwVqCZ9yxdY79ciDsmC/wq73qmEkq0HJzU0pbMFvT8pyOOMC
-         M1UTsQ+2P8noymytOkYDBQQKI0XdRCSx2LeIifJkiOu6m8N21sILr6+Ps4pbjTJvL1VL
-         HssSLUOOnz4YrbEenbqPmEsu6qZ4d/ZUReNHcY7wNTI9OVGWBPOirHS74rSSwsXE5W0m
-         9pM6F9+0iwNHMZEVpKMAAYuVcbsh3JiTHLDVoZ4iwRW5ZlJaIkDyf1TwujS67RlCWQ7E
-         k2qqzXQHZGoTX2qUbg+yNFo/egvQnf4HxtcKgOUbVPMO7u2BWjGzPzkhcTGTF7Yta08K
-         OFiA==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=U7NqsxduTML6ThIFJ1X4Tao09DbCTx/kKKXM/580o5s=;
+        b=g4/yUE4WonYVCbkWisUPSccD4AJiku3DsU0RiKPahQsT6OMSzbBpEj5OVfAT6vBFkn
+         th6D2L8a965TkJ029h18S1Q47fEiVyKDuNSvAWldiw5q05urr60w4O5ELID8hVuqxWqI
+         yJlLTMitbQPkOmv/gOkz6rN4f3jDvKdjU+GCBlyDNVPwdNm12F5NOoSr0fpeC2ybdJ2p
+         m7/oO/5DYILVA7G0z3YcMDHHfzYHy3hC4/fgOONIvmgZfhLFfZXAaQgxUBd/gpTT6mNW
+         GcDl+HNOloU1L+0U27+Fv1s0QD2Jr2ABykxVwMD2GHUhsGABkuXKeXvhqAKzZwnxTrZe
+         7EPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=jv+ZMbc1I98Kfuw0Mvc1m1vrwyGUlcd3bpE/jqp7bS0=;
-        b=Ehntu88OB/6byLXiyq7ZBCJJa8mckorsHjOEOrHV7DpnwdE5MbxVzZU13jiMIO8HEk
-         JxiFacbNp7tsVWUcKZo1Z8fgjobQISuCj5z/PQILuTImdQ/Gf6sVIFBI+SgOTTQaWZKh
-         q1s40ibVO3XvLQZwS+6ptau9L0zDHBoMP8QYg4EHWl0fbZQnV9IZl39x6ahkTzIU6Esq
-         RdTYc046aVUGf9eabRYpSA73XTlts3NLLGoJ0NBXsC1O6cKgykzahFTE5GD6qq2wL4yj
-         qNLNAnPeoxhXWDTZt2c6YaCvgxxzX36+M4Hpg2HzG0QacZGF1bBpXje2vVlXiIOup7R2
-         NKpg==
-X-Gm-Message-State: APjAAAV3gbNIxGxHA5q2PIC6nWpO9lDIWa/x0SQvM9fEnlAKZ3ibZc6r
-        lpz4ve8oZ/A+Fm3sNcju+ldrLA==
-X-Google-Smtp-Source: APXvYqzydErEWSZnvbFfkefvdicgMunWwZk7nzF43XkELRH/ke8RkJbMW+oZH025cjCAYMNFEwVIbw==
-X-Received: by 2002:a17:90a:e0f:: with SMTP id v15mr2093710pje.140.1558626450657;
-        Thu, 23 May 2019 08:47:30 -0700 (PDT)
-Received: from localhost ([2601:602:9200:a1a5:ed4f:2717:3604:bb3f])
-        by smtp.googlemail.com with ESMTPSA id u6sm40276897pfa.1.2019.05.23.08.47.29
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 May 2019 08:47:30 -0700 (PDT)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Jerome Brunet <jbrunet@baylibre.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Jerome Brunet <jbrunet@baylibre.com>,
-        linux-amlogic@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>
-Subject: Re: [PATCH] mmc: meson-gx: fix irq ack
-In-Reply-To: <20190523145950.7030-1-jbrunet@baylibre.com>
-References: <20190523145950.7030-1-jbrunet@baylibre.com>
-Date:   Thu, 23 May 2019 08:47:29 -0700
-Message-ID: <7ho93t41gu.fsf@baylibre.com>
-MIME-Version: 1.0
-Content-Type: text/plain
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=U7NqsxduTML6ThIFJ1X4Tao09DbCTx/kKKXM/580o5s=;
+        b=GztnaDfxegjFg6wDCByF1hj2bGEJGChlEhUNnCrWUS0zSBLRQhQJAQXDhmo6VgzI4j
+         ErM8cYMyRARrnnkExFbiYWemkyXtkBYGIQ59sRZIDiQlPm/FBDarj1FqG6xbH3dIN8IL
+         nPTwipSKg3vjNd9jbaoWURxtIUTZ63q/VdkrqKdmtwSxekS+xz7Dp0DCja4C1XVf534+
+         QXPtC1LMK7rw15ty9AcFDjtiIRVZJ3d4/AcrcShDCRmQIeqXS3Gw1fZrEDomj9G2rVNe
+         Nmd1CkxRCpROe4l/Yno5i6VDtBVPytB2gl7yabq+U1sUb9d2SDEiazACaueWJrtq88cG
+         p+RQ==
+X-Gm-Message-State: APjAAAW06rhUT0r7cx8TNgKdXDPjawsqq7Y0suKTGhs48BP4IAXtmkVs
+        0J865cPl1vHwVvHCS7A8aY4Hdw==
+X-Google-Smtp-Source: APXvYqxvf6E0mCnGnszFgr+tBQ1HPjaojk79rtWJhiZQ13Faw3GR3gBLcdPftYjpFym3Vk0p27RqOA==
+X-Received: by 2002:ac2:510e:: with SMTP id q14mr9879286lfb.135.1558692630306;
+        Fri, 24 May 2019 03:10:30 -0700 (PDT)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id a10sm302945lfi.9.2019.05.24.03.10.28
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 24 May 2019 03:10:29 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC fixes for v5.2-rc2
+Date:   Fri, 24 May 2019 12:10:28 +0200
+Message-Id: <20190524101028.8158-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Jerome Brunet <jbrunet@baylibre.com> writes:
+Hi Linus,
 
-> While cleaning the ISR of the meson-gx and acking only raised irqs,
-> the ack of the irq was moved at the very last stage of the function.
->
-> This was stable during the initial tests but it triggered issues with
-> hs200, under specific loads (like booting android). Acking the irqs
-> after calling the mmc_request_done() causes the problem.
->
-> Moving the ack back to the original place solves the issue. Since the
-> irq is edge triggered, it does not hurt to ack irq even earlier, so
-> let's do it early in the ISR.
->
-> Fixes: 9c5fdb07a28d ("mmc: meson-gx: ack only raised irq")
-> Tested-by: Neil Armstrong <narmstrong@baylibre.com>
-> Tested-by: Kevin Hilman <khilman@baylibre.com>
-> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Here's a PR with a few MMC fixes intended for v5.2-rc2. Details about the
+highlights are as usual found in the signed tag.
 
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Please pull this in!
 
-And to be clear, this fix should go into v5.2-rc.
+Kind regards
+Ulf Hansson
 
-My Tested-by is already above, but just for the benefit of the
-archives... tested this on mainline, and also on a v4.19 backport with
-Android and it fixes issues see there.
 
-Kevin
+The following changes since commit 5ac94332248ee017964ba368cdda4ce647e3aba7:
+
+  Merge tag 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma (2019-05-14 20:56:31 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.2-2
+
+for you to fetch changes up to ec0970e0a1b2c807c908d459641a9f9a1be3e130:
+
+  mmc: sdhci-iproc: Set NO_HISPD bit to fix HS50 data hold time problem (2019-05-15 13:52:05 +0200)
+
+----------------------------------------------------------------
+MMC host:
+ - sdhci-iproc: Fix HS50 data hold time problem for a few variants
+
+----------------------------------------------------------------
+Trac Hoang (2):
+      mmc: sdhci-iproc: cygnus: Set NO_HISPD bit to fix HS50 data hold time problem
+      mmc: sdhci-iproc: Set NO_HISPD bit to fix HS50 data hold time problem
+
+ drivers/mmc/host/sdhci-iproc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
