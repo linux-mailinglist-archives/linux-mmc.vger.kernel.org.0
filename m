@@ -2,85 +2,111 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FC7A2964B
-	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2019 12:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F0D3296B2
+	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2019 13:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390512AbfEXKsS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 24 May 2019 06:48:18 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:40309 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390391AbfEXKsS (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 24 May 2019 06:48:18 -0400
-Received: by mail-ot1-f65.google.com with SMTP id u11so8267030otq.7
-        for <linux-mmc@vger.kernel.org>; Fri, 24 May 2019 03:48:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=GpNdYRES46RfzpVIgTMPzZ6u6WQI6KIHaSlhSlcg/+c=;
-        b=qLtlFN3BFJRtXPvSXJzHHD80XTlXHZr0Fl3kSLzdZpMvyMHYCkk9+20P1dDhwEBrVU
-         hdnDshmJbNP39z07Nko/IJYRBjSF/9YwDZVd4pi1L/qfkzE/yKzaskNoGXH1R9IfNNqy
-         Q47D0FTbqoE8hZgBIlMXCSFqkQnguQ+gW4DcpDaagDpQnQsvfT74sGE5MjF2Z5TUBmxB
-         eaGFhA0xZptjddM0wCjPssvHvRooQuFnRLnkIlx7whcFQ+gVCO4XmmNRwyJwciTKZU2c
-         RKWstwZKUYTBRMVZGJ0Mr6kCKCuEJqBPQFetpox7OFnyd+MX7IOjNeJL91IestVpneIn
-         cv6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=GpNdYRES46RfzpVIgTMPzZ6u6WQI6KIHaSlhSlcg/+c=;
-        b=KGOcjyhmJ1jMhpPJ4q62ik/ziaol2q7sEue8GOiU/EQCBFPP3KyExbAUmcsXrhqPIv
-         WdsLH5Bs0AOKssfqbttHmng0AmSlDfwAQNZmlt3XCLNhQk8l7cFKWAVNBYMOqLBmAA9W
-         +0Cie6xS9KPewlFJOOHxncYi6BE8CSBLWyWwqMDJNJfQc395zT0k6ujQIw/amfJNxqTm
-         FF0GAmplS5F5q2aM8wdDqx/asvHsFbKqz/914Eh1dpsoJ9klEvaSliFYUpPCgZ+49fy0
-         NXeinhiuSlFgpFfzmDe+x7MKsfnMH3DMGHPM4hWoePJMa8IQnFzvw1ieOjWLaIUkApHa
-         z9fA==
-X-Gm-Message-State: APjAAAX/+EDlQX/9HFnWj0/x28fh0X0LJP0EA1xibmnKnNfaRWAU+Kzx
-        7nIDREap7kfkUfwX/z4oTicwrOrOifCHOo6zeGc=
-X-Google-Smtp-Source: APXvYqyrgQWT06blgw/nIz/ueL6KiR8/QegbxXVWV/0vwUNfsJnrfmi7bDqnaOH73jBMezHcZFDP4FJVXEAXl8WBiAs=
-X-Received: by 2002:a9d:361:: with SMTP id 88mr25217463otv.361.1558694897836;
- Fri, 24 May 2019 03:48:17 -0700 (PDT)
+        id S2390882AbfEXLLJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 24 May 2019 07:11:09 -0400
+Received: from onstation.org ([52.200.56.107]:53838 "EHLO onstation.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390760AbfEXLLJ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 24 May 2019 07:11:09 -0400
+Received: from localhost.localdomain (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: masneyb)
+        by onstation.org (Postfix) with ESMTPSA id CF2B53E88C;
+        Fri, 24 May 2019 11:11:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
+        s=default; t=1558696268;
+        bh=b3xoIo6bZa98+lW1QIsMbZizb+JmTWWn33+Kc5ksiJo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=QVGyy0kSeWGNcheHJjAJEw93eVpXHSDN7EfhbQ3t6WSHe8wz1PFkW/W8BBgxUDFPR
+         ACR17+MnBRZFyTpSI5imbsA9FwwkC3aL6TGS57ONUVRWsDsLswMENFW7lR27s1F2Yu
+         puO0OE48XEzT648f92DGoBpb7JQg7DgS5saFy0AM=
+From:   Brian Masney <masneyb@onstation.org>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
+Cc:     faiz_abbas@ti.com, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: [PATCH] mmc: sdhci: queue work after sdhci_defer_done()
+Date:   Fri, 24 May 2019 07:10:53 -0400
+Message-Id: <20190524111053.12228-1-masneyb@onstation.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Received: by 2002:a9d:5b5:0:0:0:0:0 with HTTP; Fri, 24 May 2019 03:48:17 -0700 (PDT)
-Reply-To: kylieelizabethwatson2019@gmail.com
-From:   "Sgt. Kylie Elizabeth Watson" <alasanahmad100@gmail.com>
-Date:   Fri, 24 May 2019 15:18:17 +0430
-Message-ID: <CAHFS=NnTgOH+X1fTXE+eB3ULh_LAeWL=p0EtqTvdsH_4Wp0-NA@mail.gmail.com>
-Subject: Assist Request From You
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+WiFi stopped working on the LG Nexus 5 phone and the issue was bisected
+to the commit c07a48c26519 ("mmc: sdhci: Remove finish_tasklet") that
+moved from using a tasklet to a work queue. That patch also changed
+sdhci_irq() to return IRQ_WAKE_THREAD instead of finishing the work when
+sdhci_defer_done() is true. Change it to queue work to the complete work
+queue if sdhci_defer_done() is true so that the functionality is
+equilivent to what was there when the finish_tasklet was present. This
+corrects the WiFi breakage on the Nexus 5 phone.
+
+Signed-off-by: Brian Masney <masneyb@onstation.org>
+Fixes: c07a48c26519 ("mmc: sdhci: Remove finish_tasklet")
+---
+See 'sdhci@f98a4900' in qcom-msm8974-lge-nexus5-hammerhead.dts for
+details about how the WiFi is wired into sdhci on this platform.
+
+bisect log:
+
+ git bisect start
+ # bad: [4dde821e4296e156d133b98ddc4c45861935a4fb] Merge tag 'xfs-5.2-fixes-1' of git://git.kernel.org/pub/scm/fs/xfs/xfs-linux
+ git bisect bad 4dde821e4296e156d133b98ddc4c45861935a4fb
+ # good: [e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd] Linux 5.1
+ git bisect good e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd
+ # bad: [8c79f4cd441b27df6cadd11b70a50e06b3b3a2bf] Merge tag 'docs-5.2' of git://git.lwn.net/linux
+ git bisect bad 8c79f4cd441b27df6cadd11b70a50e06b3b3a2bf
+ # bad: [67a242223958d628f0ba33283668e3ddd192d057] Merge tag 'for-5.2/block-20190507' of git://git.kernel.dk/linux-block
+ git bisect bad 67a242223958d628f0ba33283668e3ddd192d057
+ # good: [8ff468c29e9a9c3afe9152c10c7b141343270bf3] Merge branch 'x86-fpu-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+ git bisect good 8ff468c29e9a9c3afe9152c10c7b141343270bf3
+ # good: [e2a5be107f52cefb9010ccae6f569c3ddaa954cc] staging: kpc2000: kpc_spi: Fix build error for {read,write}q
+ git bisect good e2a5be107f52cefb9010ccae6f569c3ddaa954cc
+ # bad: [cf482a49af564a3044de3178ea28f10ad5921b38] Merge tag 'driver-core-5.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core
+ git bisect bad cf482a49af564a3044de3178ea28f10ad5921b38
+ # good: [9f2e3a53f7ec9ef55e9d01bc29a6285d291c151e] Merge tag 'for-5.2-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+ git bisect good 9f2e3a53f7ec9ef55e9d01bc29a6285d291c151e
+ # good: [b4b52b881cf08e13d110eac811d4becc0775abbf] Merge tag 'Wimplicit-fallthrough-5.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux
+ git bisect good b4b52b881cf08e13d110eac811d4becc0775abbf
+ # bad: [d5f758f2df8015b8dcf47b6403cc192e4cef734d] mmc: meson-gx: disable HS400
+ git bisect bad d5f758f2df8015b8dcf47b6403cc192e4cef734d
+ # good: [b3fb9d64b497b890f7b779a9f0b40b5cc269ea18] mmc: mmci: define get_dctrl_cfg for legacy variant
+ git bisect good b3fb9d64b497b890f7b779a9f0b40b5cc269ea18
+ # good: [ade024f130f742725da9219624b01666f04bc4a6] memstick: jmb38x_ms: remove set but not used variable 'data'
+ git bisect good ade024f130f742725da9219624b01666f04bc4a6
+ # bad: [42c38d4a1bc41e78dedbf73b0fb35e44007789bb] mmc: core: Fix warning and undefined behavior in mmc voltage handling
+ git bisect bad 42c38d4a1bc41e78dedbf73b0fb35e44007789bb
+ # good: [19d2f695f4e82794df7465b029c02b104d1b9903] mmc: sdhci: Call mmc_request_done() from IRQ handler if possible
+ git bisect good 19d2f695f4e82794df7465b029c02b104d1b9903
+ # bad: [71c733c4e1aeb83e8221e89caeec893d51f88b7b] mmc: tegra: add sdhci tegra suspend and resume
+ git bisect bad 71c733c4e1aeb83e8221e89caeec893d51f88b7b
+ # bad: [c07a48c2651965e84d35cf193dfc0e5f7892d612] mmc: sdhci: Remove finish_tasklet
+ git bisect bad c07a48c2651965e84d35cf193dfc0e5f7892d612
+ # first bad commit: [c07a48c2651965e84d35cf193dfc0e5f7892d612] mmc: sdhci: Remove finish_tasklet
+
+ drivers/mmc/host/sdhci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 97158344b862..3563c3bc57c9 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -3115,7 +3115,7 @@ static irqreturn_t sdhci_irq(int irq, void *dev_id)
+ 			continue;
+ 
+ 		if (sdhci_defer_done(host, mrq)) {
+-			result = IRQ_WAKE_THREAD;
++			queue_work(host->complete_wq, &host->complete_work);
+ 		} else {
+ 			mrqs_done[i] = mrq;
+ 			host->mrqs_done[i] = NULL;
 -- 
-Accept my greetings to you
+2.20.1
 
-Assist Request From You
-
-I am 28 years old single an orphan my parents died when I am five
-years old nobody to help me,I send you my business proposal with tears
-and sorrow,Please let this not be a surprised message to you because I
-decided to contact you on this magnitude and lucrative transaction for
-our present and future survival in life. Moreover, I have laid all the
-solemn trust in you before i decided to disclose this successful and
-confidential transaction to you.
-
-I am  Kylie Elizabeth Watson ,I hope all is well with you? I am female
-soldier working as United Nations peace keeping troop in Afghanistan
-on war against terrorism. I have in my possession the sum of
-$3.5million USD Which I made here in Afghanistan 2014,I deposited this
-money with a Red Cross agent. I want you to stand as my beneficiary
-and receive the fund And keep it safe so that as soon as am through
-with my mission here in Afghanistan.
-
-You will assist me to invest it in a good profitable Venture or you
-keep it for me until I arrive your country, I will give You 40% of the
-total money for your assistance after you have receive The money.
-Please reply back to me if you are willing to work with me so that I
-can send you the information where the money is been deposited, your
-urgent reply is needed in my email address below
-(kylieelizabethwatson2019@gmail.com) so i can send you more details.
-
-Thank Yours
-Sgt,Kylie Elizabeth Watson
