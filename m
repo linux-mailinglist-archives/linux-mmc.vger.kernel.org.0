@@ -2,36 +2,36 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A16062986D
-	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2019 15:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CDA29B7E
+	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2019 17:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391120AbfEXNCK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 24 May 2019 09:02:10 -0400
-Received: from onstation.org ([52.200.56.107]:54248 "EHLO onstation.org"
+        id S2389888AbfEXPuA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 24 May 2019 11:50:00 -0400
+Received: from onstation.org ([52.200.56.107]:54660 "EHLO onstation.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391045AbfEXNCK (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 24 May 2019 09:02:10 -0400
+        id S2389870AbfEXPt7 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 24 May 2019 11:49:59 -0400
 Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: masneyb)
-        by onstation.org (Postfix) with ESMTPSA id B68C73E88C;
-        Fri, 24 May 2019 13:02:08 +0000 (UTC)
+        by onstation.org (Postfix) with ESMTPSA id B81873E88C;
+        Fri, 24 May 2019 15:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
-        s=default; t=1558702928;
-        bh=z0jLt5GmPMP9SlehCoH5XOtq6l1p49diMIagJEvp4Qk=;
+        s=default; t=1558712998;
+        bh=wE008nmdMIJ1X3Gb62XmLrTtKKI/KWwzvPpHDDz1U4k=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=smAVCUCykCHg++Dm5V8KlqfT5bsIWumj7ZrBGCUTy1m2iBlT5OcjhX8UojJtSkArp
-         oO1iKMD08rTaMxV65tpG71BGKZI74eEZXsPUcu8XJmKDy+Un1OI9m7V5vCceJ9SDAz
-         +SeCUTfxNxkazFQxBs6dIPwU4/AU/YhAZhx6naOQ=
-Date:   Fri, 24 May 2019 09:02:08 -0400
+        b=I9od8GE6a5uUN5eHfSjy5Y39lMjTk6Ryd8gsBJlrW3cz1+75/RY2WRaytdTdC8v1E
+         osdrxr4Wb8DN3aakOG6M1NWM27D3bd0C7vVnvA+1oDdfcKfjgdYxN4KgwYb8Aep1fE
+         HFkWtwy/TzcvoTapcnOKBmAyowHqRHqVw9VrLn3c=
+Date:   Fri, 24 May 2019 11:49:58 -0400
 From:   Brian Masney <masneyb@onstation.org>
 To:     Adrian Hunter <adrian.hunter@intel.com>
 Cc:     ulf.hansson@linaro.org, faiz_abbas@ti.com,
         linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org
 Subject: Re: [PATCH] mmc: sdhci: queue work after sdhci_defer_done()
-Message-ID: <20190524130208.GA16322@basecamp>
+Message-ID: <20190524154958.GB16322@basecamp>
 References: <20190524111053.12228-1-masneyb@onstation.org>
  <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
 MIME-Version: 1.0
@@ -119,16 +119,10 @@ On Fri, May 24, 2019 at 03:17:13PM +0300, Adrian Hunter wrote:
 > 
 > Can you explain some more?
 
-What I meant by the equivalent change was that tasklet_schedule() used
-to be called in this situation rather than returning IRQ_WAKE_THREAD.
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c calls
+sdio_claim_host() and it appears to never return.
 
-I'm honestly not sure exactly what's going on yet. Without the patch I
-sent out, wlan0 is not detected on the phone. Perhaps there is a subtle
-race condition somewhere that is exposed with the reduction in latency
-since I assume tasklet_schedule() is more expensive than doing the
-processing in the bottom half?
-
-I'll do some more digging and see if I can find more information. I sent
-this out to get a discussion started.
+I'm not going to be able to look into this more today but I should have
+time this weekend to dig in more with ftrace.
 
 Brian
