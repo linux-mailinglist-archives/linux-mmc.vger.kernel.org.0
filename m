@@ -2,52 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4ABD29D2E
-	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2019 19:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B28252A93A
+	for <lists+linux-mmc@lfdr.de>; Sun, 26 May 2019 12:06:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403868AbfEXRg1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 24 May 2019 13:36:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56846 "EHLO mail.kernel.org"
+        id S1727687AbfEZKGp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 26 May 2019 06:06:45 -0400
+Received: from rere.qmqm.pl ([91.227.64.183]:59920 "EHLO rere.qmqm.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391625AbfEXRfT (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 24 May 2019 13:35:19 -0400
-Subject: Re: [GIT PULL] MMC fixes for v5.2-rc2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558719318;
-        bh=3//W+R2g2vtbQtrQlh2PcION/YmJvJ4R3j5ioeXprnY=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=iurwumsIfrQST3FAYazTkarb1OTMEL6xWkw8iNTGSG5uGRZ6whhBns1YfmO0+8zLS
-         ZKy7Xa0AkifFmaAiolWREMIB+QXkYZDo8HhLduuNqUPNQKAJu6XI93J2Sd8Eee3taP
-         EWVgx+cnIE/v5cN/DcqfHr39ExrR+T08lsoklsDo=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20190524101028.8158-1-ulf.hansson@linaro.org>
-References: <20190524101028.8158-1-ulf.hansson@linaro.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20190524101028.8158-1-ulf.hansson@linaro.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.2-2
-X-PR-Tracked-Commit-Id: ec0970e0a1b2c807c908d459641a9f9a1be3e130
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: e50e6798f1e29e57bc83ba546a9bbbdabe1104a4
-Message-Id: <155871931801.20356.14786012085460229236.pr-tracker-bot@kernel.org>
-Date:   Fri, 24 May 2019 17:35:18 +0000
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+        id S1727681AbfEZKGp (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 26 May 2019 06:06:45 -0400
+X-Greylist: delayed 402 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 May 2019 06:06:44 EDT
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 45BbCV0Tr1z7y;
+        Sun, 26 May 2019 11:58:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1558864710; bh=xFhD3PrYcISDNA5a1ZSfg5VvH6tzP5FPsK/gd/AMyBE=;
+        h=Date:From:Subject:To:Cc:From;
+        b=P2grKcZOi8I5w2cXyjbePYF7zG0iNIxC450cYBMNQh6sl3seSyjtpXqIVD/x7Yz1k
+         T1Ea7/hRAaq7blTCd9tISoXhXQerNbLFkYsKjRYyAHE36Hnqvv5RTgWIfAKJ2ZU3ii
+         6CK3uSf24XAOUS09wIXZ22G0ADLpyq5Az5C9BWKfeqF9lX/mpoGqElW/YfXquGTMtq
+         letYja5U9Z7jPSIits+hODMRea14jFjCwtruLY8fAS2p5IWNm5Bjw50aPaf7NnhHix
+         hq8OyrqM93VyU7/ttDHCz1qZ4ovuF3hDggzrjhoXgD3sGLFfXYAZT48iohDbn97hEL
+         vpiQwTcDnbQ3A==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.100.3 at mail
+Date:   Sun, 26 May 2019 11:59:59 +0200
+Message-Id: <dac73f0ed3a3ed5416dcecd3ac5fdcff3d4232fd.1558864586.git.mirq-linux@rere.qmqm.pl>
+From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
+Subject: [PATCH] mmc: Allow setting slot index via devicetree alias
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To:     linux-mmc@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The pull request you sent on Fri, 24 May 2019 12:10:28 +0200:
+As with gpio, uart and others, allow specifying the name_idx via the
+aliases-node in the devicetree.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.2-2
+Since commit 9aaf3437aa72 mmcblkX nodes are fixed against mmcX host.
+This extension allows embedded devices to keep the same rootfs device
+index between board versions using different MMC controllers.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/e50e6798f1e29e57bc83ba546a9bbbdabe1104a4
+Rewritten for current kernel version from original patch by Sascha Hauer.
+> https://www.mail-archive.com/linux-mmc@vger.kernel.org/msg26472.html
 
-Thank you!
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+---
+against v5.1.5
+---
+ drivers/mmc/core/host.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
+index 3a4402a79904..0ffab498b66f 100644
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -411,7 +411,17 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
+ 	/* scanning will be enabled when we're ready */
+ 	host->rescan_disable = 1;
+ 
+-	err = ida_simple_get(&mmc_host_ida, 0, 0, GFP_KERNEL);
++	err = of_alias_get_id(dev->of_node, "mmc");
++	if (err >= 0)
++		err = ida_alloc_range(&mmc_host_ida, err, err, GFP_KERNEL);
++	if (err < 0) {
++		err = of_alias_get_highest_id("mmc");
++		if (err < 0)
++			err = 0;
++		else
++			++err;
++		err = ida_alloc_min(&mmc_host_ida, err, GFP_KERNEL);
++	}
+ 	if (err < 0) {
+ 		kfree(host);
+ 		return NULL;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+2.20.1
+
