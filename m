@@ -2,121 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 803C32A995
-	for <lists+linux-mmc@lfdr.de>; Sun, 26 May 2019 14:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 156A92ABA6
+	for <lists+linux-mmc@lfdr.de>; Sun, 26 May 2019 20:42:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727708AbfEZMVi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 26 May 2019 08:21:38 -0400
-Received: from onstation.org ([52.200.56.107]:34294 "EHLO onstation.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727577AbfEZMVi (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 26 May 2019 08:21:38 -0400
-Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: masneyb)
-        by onstation.org (Postfix) with ESMTPSA id 3D8283E8DE;
-        Sun, 26 May 2019 12:21:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
-        s=default; t=1558873297;
-        bh=+pZchRi39jPHP0qQqNkASaPmePyovKRsrhb/epkA3O8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=H3WM8l28X85rNtXbObGWCc0HVfSkpKpZ4nzWbVIS8dppFuFhg/AlCGbCqvRRNgC8a
-         e8Cj3LHOIuzlbWyJrije+DpG8X8yUbh2/xsmoKgL+auQ0VxtR7cWL3ZJjUe3uPZXTe
-         TgOkNqLbnLUq7YQEo1PjCt7ljwsFbS4hgb/UxgmI=
-Date:   Sun, 26 May 2019 08:21:36 -0400
-From:   Brian Masney <masneyb@onstation.org>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
+        id S1728020AbfEZSmO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 26 May 2019 14:42:14 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:45783 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728018AbfEZSmN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 26 May 2019 14:42:13 -0400
+Received: by mail-pf1-f196.google.com with SMTP id s11so8215450pfm.12
+        for <linux-mmc@vger.kernel.org>; Sun, 26 May 2019 11:42:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=S88EltoJvW0HnJQIXBVSy2Mn8e0LGr9vTiSSOx2clK8=;
+        b=Q2NVhLX/V/C/lVZq0EZZ4yDM27WjHpoQiWYfJ5JbHajiOfE0tjIUFcTpddLzwy2chM
+         Rfld9gOWwFVBI6u3/F7rgJlW00osHhQcX76bIsTm2iazaZ5ef4rB5Fs5QMMto/OTXldz
+         X/BPoE6iqeg9FA1EzlduSMN/AfpYfDQ2iFe3E=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=S88EltoJvW0HnJQIXBVSy2Mn8e0LGr9vTiSSOx2clK8=;
+        b=erJrc1BUHf7hVqATZrThyZX1x+bElQR29TS9XD94qNcWYJDcbF2Ct7ez56ltkohI3M
+         bXIvxmusz8rRE7V55jVFVfTrctNXazjzfeIxOzKzhMIqKGE8qvXIiJA8zEVRtTlKHbjn
+         n4RDIMU1VtAo4fp1slUBLeLBhaenNrEr7ZlKyxdrSdvDQih6w85UrMubZXx18UQ5wGkc
+         OqwF0cyZoiXsk26mJ0GF0jqHSRFFDA4D6icgZaxs1AaP9Bll+SSguST/dBEGwFjbG2E3
+         2l2PIIdVcLBPY2hyG7GNml8285khTFeLJ4qaXWxPOwQeBha5F1M7VKYQb/5XKqEIBAFS
+         lZbQ==
+X-Gm-Message-State: APjAAAWfsCY/Y/IVf2yYLMhF37IJhItKKGNTNSHG7KN4/tyNFEIJKFz8
+        l4YiqMWvYyUy4t6P6cpV4x4nUw==
+X-Google-Smtp-Source: APXvYqyaZoSVsYgO0quEjzoc5Ouq76hUjTrOkBjooE0FUyoX8LzowTKQ77/Ey+sNsIzlC0QcF5eeEg==
+X-Received: by 2002:a62:e201:: with SMTP id a1mr129348135pfi.67.1558896132915;
+        Sun, 26 May 2019 11:42:12 -0700 (PDT)
+Received: from [10.230.40.234] ([192.19.215.250])
+        by smtp.gmail.com with ESMTPSA id 124sm9857463pfe.124.2019.05.26.11.42.06
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 26 May 2019 11:42:12 -0700 (PDT)
+Subject: Re: [PATCH 2/3] mmc: core: API for temporarily disabling
+ auto-retuning due to errors
+To:     Douglas Anderson <dianders@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>
-Cc:     ulf.hansson@linaro.org, faiz_abbas@ti.com,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
         linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
-Subject: Issue with Broadcom wireless in 5.2rc1 (was Re: [PATCH] mmc: sdhci:
- queue work after sdhci_defer_done())
-Message-ID: <20190526122136.GA26456@basecamp>
-References: <20190524111053.12228-1-masneyb@onstation.org>
- <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
- <20190524154958.GB16322@basecamp>
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Avri Altman <avri.altman@wdc.com>, Martin Hicks <mort@bork.org>
+References: <20190517225420.176893-1-dianders@chromium.org>
+ <20190517225420.176893-3-dianders@chromium.org>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <05af228c-139b-2b7f-f626-36fb34634be5@broadcom.com>
+Date:   Sun, 26 May 2019 20:42:04 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190524154958.GB16322@basecamp>
+In-Reply-To: <20190517225420.176893-3-dianders@chromium.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-+ Broadcom wireless maintainers
+On 5/18/2019 12:54 AM, Douglas Anderson wrote:
+> Normally when the MMC core sees an "-EILSEQ" error returned by a host
+> controller then it will trigger a retuning of the card.  This is
+> generally a good idea.
 
-On Fri, May 24, 2019 at 11:49:58AM -0400, Brian Masney wrote:
-> On Fri, May 24, 2019 at 03:17:13PM +0300, Adrian Hunter wrote:
-> > On 24/05/19 2:10 PM, Brian Masney wrote:
-> > > WiFi stopped working on the LG Nexus 5 phone and the issue was bisected
-> > > to the commit c07a48c26519 ("mmc: sdhci: Remove finish_tasklet") that
-> > > moved from using a tasklet to a work queue. That patch also changed
-> > > sdhci_irq() to return IRQ_WAKE_THREAD instead of finishing the work when
-> > > sdhci_defer_done() is true. Change it to queue work to the complete work
-> > > queue if sdhci_defer_done() is true so that the functionality is
-> > > equilivent to what was there when the finish_tasklet was present. This
-> > > corrects the WiFi breakage on the Nexus 5 phone.
-> > > 
-> > > Signed-off-by: Brian Masney <masneyb@onstation.org>
-> > > Fixes: c07a48c26519 ("mmc: sdhci: Remove finish_tasklet")
-> > > ---
-> > > [ ... ]
-> > > 
-> > >  drivers/mmc/host/sdhci.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> > > index 97158344b862..3563c3bc57c9 100644
-> > > --- a/drivers/mmc/host/sdhci.c
-> > > +++ b/drivers/mmc/host/sdhci.c
-> > > @@ -3115,7 +3115,7 @@ static irqreturn_t sdhci_irq(int irq, void *dev_id)
-> > >  			continue;
-> > >  
-> > >  		if (sdhci_defer_done(host, mrq)) {
-> > > -			result = IRQ_WAKE_THREAD;
-> > > +			queue_work(host->complete_wq, &host->complete_work);
-> > 
-> > The IRQ thread has a lot less latency than the work queue, which is why it
-> > is done that way.
-> > 
-> > I am not sure why you say this change is equivalent to what was there
-> > before, nor why it fixes your problem.
-> > 
-> > Can you explain some more?
->
-> [ ... ]
-> 
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c calls
-> sdio_claim_host() and it appears to never return.
+Probably a question for Adrian, but how is this retuning scheduled. I 
+recall seeing something in mmc_request_done. How about deferring the 
+retuning upon a release host or is that too sdio specific.
 
-When the brcmfmac driver is loaded, the firmware is requested from disk,
-and that's when the deadlock occurs in 5.2rc1. Specifically:
-
-1) brcmf_sdio_download_firmware() in
-   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c calls
-   sdio_claim_host()
-
-2) brcmf_sdio_firmware_callback() is called and brcmf_sdiod_ramrw()
-   tries to claim the host, but has to wait since its already claimed
-   in #1 and the deadlock occurs.
-
-I tried to release the host before the firmware is requested, however
-parts of brcmf_chip_set_active() needs the host to be claimed, and a
-similar deadlock occurs in brcmf_sdiod_ramrw() if I claim the host
-before calling brcmf_chip_set_active().
-
-I started to look at moving the sdio_{claim,release}_host() calls out of
-brcmf_sdiod_ramrw() but there's a fair number of callers, so I'd like to
-get feedback about the best course of action here.
-
-Brian
+Regards,
+Arend
