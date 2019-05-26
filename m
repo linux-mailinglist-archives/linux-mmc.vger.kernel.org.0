@@ -2,85 +2,121 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B28252A93A
-	for <lists+linux-mmc@lfdr.de>; Sun, 26 May 2019 12:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 803C32A995
+	for <lists+linux-mmc@lfdr.de>; Sun, 26 May 2019 14:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727687AbfEZKGp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 26 May 2019 06:06:45 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:59920 "EHLO rere.qmqm.pl"
+        id S1727708AbfEZMVi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 26 May 2019 08:21:38 -0400
+Received: from onstation.org ([52.200.56.107]:34294 "EHLO onstation.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727681AbfEZKGp (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 26 May 2019 06:06:45 -0400
-X-Greylist: delayed 402 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 May 2019 06:06:44 EDT
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 45BbCV0Tr1z7y;
-        Sun, 26 May 2019 11:58:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1558864710; bh=xFhD3PrYcISDNA5a1ZSfg5VvH6tzP5FPsK/gd/AMyBE=;
-        h=Date:From:Subject:To:Cc:From;
-        b=P2grKcZOi8I5w2cXyjbePYF7zG0iNIxC450cYBMNQh6sl3seSyjtpXqIVD/x7Yz1k
-         T1Ea7/hRAaq7blTCd9tISoXhXQerNbLFkYsKjRYyAHE36Hnqvv5RTgWIfAKJ2ZU3ii
-         6CK3uSf24XAOUS09wIXZ22G0ADLpyq5Az5C9BWKfeqF9lX/mpoGqElW/YfXquGTMtq
-         letYja5U9Z7jPSIits+hODMRea14jFjCwtruLY8fAS2p5IWNm5Bjw50aPaf7NnhHix
-         hq8OyrqM93VyU7/ttDHCz1qZ4ovuF3hDggzrjhoXgD3sGLFfXYAZT48iohDbn97hEL
-         vpiQwTcDnbQ3A==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.100.3 at mail
-Date:   Sun, 26 May 2019 11:59:59 +0200
-Message-Id: <dac73f0ed3a3ed5416dcecd3ac5fdcff3d4232fd.1558864586.git.mirq-linux@rere.qmqm.pl>
-From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Subject: [PATCH] mmc: Allow setting slot index via devicetree alias
+        id S1727577AbfEZMVi (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 26 May 2019 08:21:38 -0400
+Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: masneyb)
+        by onstation.org (Postfix) with ESMTPSA id 3D8283E8DE;
+        Sun, 26 May 2019 12:21:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
+        s=default; t=1558873297;
+        bh=+pZchRi39jPHP0qQqNkASaPmePyovKRsrhb/epkA3O8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=H3WM8l28X85rNtXbObGWCc0HVfSkpKpZ4nzWbVIS8dppFuFhg/AlCGbCqvRRNgC8a
+         e8Cj3LHOIuzlbWyJrije+DpG8X8yUbh2/xsmoKgL+auQ0VxtR7cWL3ZJjUe3uPZXTe
+         TgOkNqLbnLUq7YQEo1PjCt7ljwsFbS4hgb/UxgmI=
+Date:   Sun, 26 May 2019 08:21:36 -0400
+From:   Brian Masney <masneyb@onstation.org>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>
+Cc:     ulf.hansson@linaro.org, faiz_abbas@ti.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+Subject: Issue with Broadcom wireless in 5.2rc1 (was Re: [PATCH] mmc: sdhci:
+ queue work after sdhci_defer_done())
+Message-ID: <20190526122136.GA26456@basecamp>
+References: <20190524111053.12228-1-masneyb@onstation.org>
+ <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
+ <20190524154958.GB16322@basecamp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To:     linux-mmc@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190524154958.GB16322@basecamp>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-As with gpio, uart and others, allow specifying the name_idx via the
-aliases-node in the devicetree.
++ Broadcom wireless maintainers
 
-Since commit 9aaf3437aa72 mmcblkX nodes are fixed against mmcX host.
-This extension allows embedded devices to keep the same rootfs device
-index between board versions using different MMC controllers.
+On Fri, May 24, 2019 at 11:49:58AM -0400, Brian Masney wrote:
+> On Fri, May 24, 2019 at 03:17:13PM +0300, Adrian Hunter wrote:
+> > On 24/05/19 2:10 PM, Brian Masney wrote:
+> > > WiFi stopped working on the LG Nexus 5 phone and the issue was bisected
+> > > to the commit c07a48c26519 ("mmc: sdhci: Remove finish_tasklet") that
+> > > moved from using a tasklet to a work queue. That patch also changed
+> > > sdhci_irq() to return IRQ_WAKE_THREAD instead of finishing the work when
+> > > sdhci_defer_done() is true. Change it to queue work to the complete work
+> > > queue if sdhci_defer_done() is true so that the functionality is
+> > > equilivent to what was there when the finish_tasklet was present. This
+> > > corrects the WiFi breakage on the Nexus 5 phone.
+> > > 
+> > > Signed-off-by: Brian Masney <masneyb@onstation.org>
+> > > Fixes: c07a48c26519 ("mmc: sdhci: Remove finish_tasklet")
+> > > ---
+> > > [ ... ]
+> > > 
+> > >  drivers/mmc/host/sdhci.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> > > index 97158344b862..3563c3bc57c9 100644
+> > > --- a/drivers/mmc/host/sdhci.c
+> > > +++ b/drivers/mmc/host/sdhci.c
+> > > @@ -3115,7 +3115,7 @@ static irqreturn_t sdhci_irq(int irq, void *dev_id)
+> > >  			continue;
+> > >  
+> > >  		if (sdhci_defer_done(host, mrq)) {
+> > > -			result = IRQ_WAKE_THREAD;
+> > > +			queue_work(host->complete_wq, &host->complete_work);
+> > 
+> > The IRQ thread has a lot less latency than the work queue, which is why it
+> > is done that way.
+> > 
+> > I am not sure why you say this change is equivalent to what was there
+> > before, nor why it fixes your problem.
+> > 
+> > Can you explain some more?
+>
+> [ ... ]
+> 
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c calls
+> sdio_claim_host() and it appears to never return.
 
-Rewritten for current kernel version from original patch by Sascha Hauer.
-> https://www.mail-archive.com/linux-mmc@vger.kernel.org/msg26472.html
+When the brcmfmac driver is loaded, the firmware is requested from disk,
+and that's when the deadlock occurs in 5.2rc1. Specifically:
 
-Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
----
-against v5.1.5
----
- drivers/mmc/core/host.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+1) brcmf_sdio_download_firmware() in
+   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c calls
+   sdio_claim_host()
 
-diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
-index 3a4402a79904..0ffab498b66f 100644
---- a/drivers/mmc/core/host.c
-+++ b/drivers/mmc/core/host.c
-@@ -411,7 +411,17 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
- 	/* scanning will be enabled when we're ready */
- 	host->rescan_disable = 1;
- 
--	err = ida_simple_get(&mmc_host_ida, 0, 0, GFP_KERNEL);
-+	err = of_alias_get_id(dev->of_node, "mmc");
-+	if (err >= 0)
-+		err = ida_alloc_range(&mmc_host_ida, err, err, GFP_KERNEL);
-+	if (err < 0) {
-+		err = of_alias_get_highest_id("mmc");
-+		if (err < 0)
-+			err = 0;
-+		else
-+			++err;
-+		err = ida_alloc_min(&mmc_host_ida, err, GFP_KERNEL);
-+	}
- 	if (err < 0) {
- 		kfree(host);
- 		return NULL;
--- 
-2.20.1
+2) brcmf_sdio_firmware_callback() is called and brcmf_sdiod_ramrw()
+   tries to claim the host, but has to wait since its already claimed
+   in #1 and the deadlock occurs.
 
+I tried to release the host before the firmware is requested, however
+parts of brcmf_chip_set_active() needs the host to be claimed, and a
+similar deadlock occurs in brcmf_sdiod_ramrw() if I claim the host
+before calling brcmf_chip_set_active().
+
+I started to look at moving the sdio_{claim,release}_host() calls out of
+brcmf_sdiod_ramrw() but there's a fair number of callers, so I'd like to
+get feedback about the best course of action here.
+
+Brian
