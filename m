@@ -2,93 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D7392B631
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 May 2019 15:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 446652B9F9
+	for <lists+linux-mmc@lfdr.de>; Mon, 27 May 2019 20:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726279AbfE0NVs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 May 2019 09:21:48 -0400
-Received: from sauhun.de ([88.99.104.3]:33888 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726274AbfE0NVs (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 27 May 2019 09:21:48 -0400
-Received: from localhost (p5486CF59.dip0.t-ipconnect.de [84.134.207.89])
-        by pokefinder.org (Postfix) with ESMTPSA id 7972E2C04C2;
-        Mon, 27 May 2019 15:21:45 +0200 (CEST)
-Date:   Mon, 27 May 2019 15:21:45 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Niklas =?utf-8?Q?S=C3=B6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: Re: [PATCH v2] mmc: tmio: move runtime PM enablement to the driver
- implementations
-Message-ID: <20190527132145.GA5023@kunai>
-References: <20190410222240.5800-1-niklas.soderlund+renesas@ragnatech.se>
- <CAPDyKFrhrmxKvH-LOO1u+aYGs5-HnqtO9kFibKsAKthOUdjStg@mail.gmail.com>
+        id S1726839AbfE0SRn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 May 2019 14:17:43 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:44083 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726657AbfE0SRn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 May 2019 14:17:43 -0400
+Received: by mail-vs1-f67.google.com with SMTP id w124so11086024vsb.11
+        for <linux-mmc@vger.kernel.org>; Mon, 27 May 2019 11:17:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Wk2hdUXANFYl1/k0tGnBJuWme842kQgEugYRrAdMJgU=;
+        b=dS4IbOdhgZVSQqWE7W9HLkrZGQvhZ5abk5sQyiNlaHVjv85/1nWeAywC/QDyez/NL5
+         z5AsU7MavE++ZEHOw8BPtuFl6Sl4UofmOw2JMe8ShMocnqtby87XNUKx/Ynr/IiV5k4S
+         orzYRSZzC7PdIRMNlk5aBCIXPnUpTfvSyJn5JPRMiFhwEko33ECMK7cuh70/+y6un1gJ
+         rrPyBdC2KSR4FFZ/fXnMog2IOWRqmbwXXzgLgWBhbyphDpZn+xro+tYx+/W4yNXgHXah
+         3/mzTz1Ffet/YgR4K1+Noi+2C8Qr5Gf16oP/oHeUde/Cw3BPJYfSTbmqpKYSPiHHrZ9H
+         ELeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Wk2hdUXANFYl1/k0tGnBJuWme842kQgEugYRrAdMJgU=;
+        b=brcDGd/x1bicH2lhB3EgdlQQEZB//gXYPH0m/WfGAM21QaoUYeavP6y8HqVR46YNoS
+         yFE75sLL8J0783WoGsnBXI1jXVqXiCb1DKXbygSQO97UPjXCCDVpweYCpVTZS2SMbT2h
+         VBVbk3k8/qf2sL6WU8J7lIF2ew5uc8c4WIj2xq6eH7HKY0uK8ybcKaFqino/GElgyWEr
+         hkcDHYXibaX00bkYCHxvB1q1HG6HYDZBADafNAIX+7xw6QCOvZE40WkU6Lk4z8PdmIl7
+         2zFTCZDRP/CgHSsJQgc0PrjXsUOH++bli8UuPVwmoZDbqNVnRZFFe/9iH2lXBPwGkTBt
+         Lg9g==
+X-Gm-Message-State: APjAAAVHXrrFkxYdixPzQGE5zfVmrGdJLgpvNsmUxwrCqohyJSKnYZ1x
+        O2WpOXlLFXRVDXbuApRD0LGQ0c3KQcFthdRy5QyD7A==
+X-Google-Smtp-Source: APXvYqzuKcW/79QkdRTF5rt129CfhCTBkDjwdQNIeah8lsnBs26cDYoRW6a2C+MEJfPi6wzVzRHznUMCZcNZHRlI5d8=
+X-Received: by 2002:a67:3046:: with SMTP id w67mr51182171vsw.165.1558981062356;
+ Mon, 27 May 2019 11:17:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ibTvN161/egqYuK8"
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFrhrmxKvH-LOO1u+aYGs5-HnqtO9kFibKsAKthOUdjStg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <1556264798-18540-1-git-send-email-ludovic.Barre@st.com> <1556264798-18540-4-git-send-email-ludovic.Barre@st.com>
+In-Reply-To: <1556264798-18540-4-git-send-email-ludovic.Barre@st.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 27 May 2019 20:17:05 +0200
+Message-ID: <CAPDyKFrxp3Y3AudNvkkSRaph2Fe-A-F6Cs0jfy9RUja76GYeiA@mail.gmail.com>
+Subject: Re: [PATCH V2 3/5] mmc: mmci: fix clear of busy detect status
+To:     Ludovic Barre <ludovic.Barre@st.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Fri, 26 Apr 2019 at 09:46, Ludovic Barre <ludovic.Barre@st.com> wrote:
+>
+> From: Ludovic Barre <ludovic.barre@st.com>
+>
+> The "busy_detect_flag" is used to read/clear busy value of
+> mmci status. The "busy_detect_mask" is used to manage busy irq of
+> mmci mask.
+> For sdmmc variant, the 2 properties have not the same offset.
+> To clear the busyd0 status bit, we must add busy detect flag,
+> the mmci mask is not enough.
+>
+> Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
 
---ibTvN161/egqYuK8
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ludovic, again, apologies for the delay.
 
-On Mon, May 27, 2019 at 03:14:36PM +0200, Ulf Hansson wrote:
-> On Thu, 11 Apr 2019 at 00:29, Niklas S=C3=B6derlund
-> <niklas.soderlund+renesas@ragnatech.se> wrote:
-> >
-> > Both the Renesas and Uniphier implementations perform actions which
-> > affect runtime PM before calling into the core tmio_mmc_host_probe()
-> > which enabled runtime PM. Move pm_runtime_enable() from the core and
-> > tmio_mmc_host_probe() into each drivers probe() so it can be called
-> > before any clocks or other resources are switched on.
-> >
-> > Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > Signed-off-by: Niklas S=C3=B6derlund <niklas.soderlund+renesas@ragnatec=
-h.se>
->=20
-> Niklas, Wolfram,
->=20
-> Can I apply this for next?
+> ---
+>  drivers/mmc/host/mmci.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+> index a040f54..3cd52e8 100644
+> --- a/drivers/mmc/host/mmci.c
+> +++ b/drivers/mmc/host/mmci.c
+> @@ -1517,7 +1517,8 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
+>                  * to make sure that both start and end interrupts are always
+>                  * cleared one after the other.
+>                  */
+> -               status &= readl(host->base + MMCIMASK0);
+> +               status &= readl(host->base + MMCIMASK0) |
+> +                       host->variant->busy_detect_flag;
 
-Yes, Geert and Niklas sorted out that the regression with APE6 was
-something else.
+I think this is not entirely correct, because it would mean we check
+for busy even if we haven't unmasked the busy IRQ via the
+variant->busy_detect_mask.
 
-Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+I suggest to store a new bool in the host (call it
+"busy_detect_unmasked" or whatever makes sense to you), to track
+whether we have unmasked the busy IRQ or not. Then take this flag into
+account, before ORing the value of host->variant->busy_detect_flag,
+according to above.
 
+>                 if (host->variant->busy_detect)
+>                         writel(status & ~host->variant->busy_detect_mask,
+>                                host->base + MMCICLEAR);
+> --
+> 2.7.4
+>
 
---ibTvN161/egqYuK8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlzr5GQACgkQFA3kzBSg
-KbZeYhAAnxuKoLmjrPaMVPvyEUWW2NVPGeXER+8KWTVZZoRnFXYF+EhDbDxqKnAg
-PY7CjzCTBt4yxtA5Vjl09hhKrYa8m44z6njDihPJpQKgAXFqEH62iFt7xc7Kp6Cc
-5lXeGJf3N5yzGLoDXWNu2VUvd4S+af0LD9DLLwD90lixcZkE0rEYP4tQ4wGLfA+T
-Zpjr8LcCkKP26NbDB+vG+VXH/LB7maOiGyVyqevEG7+eEZ10Ytxcp99yFFhsCkLr
-jd8zE6ooSBo7RylYrEJjXqL3aj625BYy0DvGwlQHn3XCOASXMUBIhY/U23L/qByH
-GOj7Zm0suSVyRgz0AmlPalQsyhoxnQHJ9AcAQXbszPws/buIJ8tm7TpThWeI5XnK
-DrR/hqq3FWelzzqJp5mBe9k10UhYpL+dOIu3s7fnMKOXVLsEMdxj68hVCXPLPgI1
-NbXno/ACMW0ZjAGojL+X677JwJIrxYgeeHWh97uBW62/I/lO8yjs9vBtdXNYOfDJ
-RF3MnEvVZjqkCipH1TLQV/dWegLT8vlzSbWLI+St/ezja0WwSM8Q1U90o8PT81bq
-bkh9j5iISx1/YcP/Uu34Xo97yJX4Trhhjv+3PAZOgJOwHQ9eUiIzEx6jTPkFTzdG
-j1D4vxITm+r4GRdyz/COv65opA3oJQMbxd28MfY0wsieM6ggnug=
-=8ri5
------END PGP SIGNATURE-----
-
---ibTvN161/egqYuK8--
+Kind regards
+Uffe
