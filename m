@@ -2,102 +2,230 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B4FC2B5BB
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 May 2019 14:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB0B42B61B
+	for <lists+linux-mmc@lfdr.de>; Mon, 27 May 2019 15:15:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726094AbfE0Mu1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 May 2019 08:50:27 -0400
-Received: from onstation.org ([52.200.56.107]:36804 "EHLO onstation.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725991AbfE0Mu1 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 27 May 2019 08:50:27 -0400
-Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: masneyb)
-        by onstation.org (Postfix) with ESMTPSA id 6DA123E8DE;
-        Mon, 27 May 2019 12:50:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
-        s=default; t=1558961426;
-        bh=jTtzWSOIGKn0fkQo40d1XpoMwyOF6Fujvlz+J+wVGrs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=H+c4wVstJrtVTNZHM5dBbtBD9KNkr7WRbF2I7N7juKzi4/JKRyvNseklTpSauSpWB
-         cRmbY632ruZkf7ziPB+HEQ267L0rg5bMYnijg0fKSF0WebnFvC8mk7OuS+SYxZMD2y
-         /h/c1EAvSxZDDNC1lYbtjjVxAYJU7g5YBkxzSINQ=
-Date:   Mon, 27 May 2019 08:50:26 -0400
-From:   Brian Masney <masneyb@onstation.org>
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>, ulf.hansson@linaro.org,
-        faiz_abbas@ti.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
-Subject: Re: Issue with Broadcom wireless in 5.2rc1 (was Re: [PATCH] mmc:
- sdhci: queue work after sdhci_defer_done())
-Message-ID: <20190527125026.GA4272@basecamp>
-References: <20190524111053.12228-1-masneyb@onstation.org>
- <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
- <20190524154958.GB16322@basecamp>
- <20190526122136.GA26456@basecamp>
- <e8c049ce-07e1-8b34-678d-41b3d6d41983@broadcom.com>
- <20190526195819.GA29665@basecamp>
- <20190527093711.GA853@basecamp>
- <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
+        id S1726268AbfE0NPO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 May 2019 09:15:14 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:39377 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726264AbfE0NPO (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 May 2019 09:15:14 -0400
+Received: by mail-vs1-f68.google.com with SMTP id m1so10489765vsr.6
+        for <linux-mmc@vger.kernel.org>; Mon, 27 May 2019 06:15:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=NhDgIjQecm43Aeqru46wCfw5KqrKfyQymUggZm4C5PI=;
+        b=ZfvpuoyEZ3zplcdh3ostkQNCxyvtGAAg7YRS/NZi8ogMiDbGlZEHaN0/hmzYnDEosA
+         +6Fw/HuJjDFOjqxgTdavDuuTvlNHjuhfOgiAxxL5keD82zvw1cxL0LmU4+D2UVvw8dHE
+         U9MuK8yHsgFJGM7MpKj6n2EyrYkHJL9YVTRnGjtzhk0qo2Bbct3ACUMkCM4sKeboveFO
+         sI9GadwaVPHauWDoKxsdOoekJpPp1n1Ge8ETyZiWm/GRai0+tDvjc9wtp4L6zH6lFCYA
+         c5/Q9/5354zzsZL+pVcrPahaoSdorAT6XsCyUNfzPn/QsWSDPO3Q0yBtEl83BfJbXrGg
+         W1Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=NhDgIjQecm43Aeqru46wCfw5KqrKfyQymUggZm4C5PI=;
+        b=HenTDRwpEDxC+cGQQ8WzvAx/EolxYnZjneA2YWqkUJ4nmZF3kLuc5vAb1AhAeRqLs/
+         Kng4nyTD+Lx60of47veGM8e6EVMIPE7fIUWLOVB7BA2gwC4+RGn5uGaUuwF4ruJgtsY1
+         FtjKLznS9CvqcuHSY9wBm/3P7VhAU2+83sGqkqXBVUGQYYxN/OYsXjMXYeRJWVeJkyEu
+         ii+UNsBKXFqiJD1fNTqyYDiqzn/LVQSeiABdXtTh/d9qaj9Xj0oIeoKrSGd6/i2XhV34
+         67+iTDMIOLDj+PxgB7BD807mPFWxpcAXCdzozdTsRChYoaOYHK3m2lZw3YJHLwNwiJJY
+         MwhA==
+X-Gm-Message-State: APjAAAXmf8z/dXRsUAN8EH5m4tN5/T+48s9z14UIHOi11XDosGQNXlQl
+        KAxGXF1LVODC7PaLdRwnW26SfhemCxqEDYNj7VqKdg==
+X-Google-Smtp-Source: APXvYqyU8rMycDog6VRIrcxVcadV+Xiz0eJScBU/Sa0PVmUK3netOUaDwEYmIvsqAYoRgPBIlzXh7FQQUz7iuCnmPKg=
+X-Received: by 2002:a67:ebc5:: with SMTP id y5mr65483974vso.34.1558962912889;
+ Mon, 27 May 2019 06:15:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
+References: <20190410222240.5800-1-niklas.soderlund+renesas@ragnatech.se>
+In-Reply-To: <20190410222240.5800-1-niklas.soderlund+renesas@ragnatech.se>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 27 May 2019 15:14:36 +0200
+Message-ID: <CAPDyKFrhrmxKvH-LOO1u+aYGs5-HnqtO9kFibKsAKthOUdjStg@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: tmio: move runtime PM enablement to the driver implementations
+To:     =?UTF-8?Q?Niklas_S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, May 27, 2019 at 03:08:07PM +0300, Adrian Hunter wrote:
-> On 27/05/19 12:37 PM, Brian Masney wrote:
-> > On Sun, May 26, 2019 at 03:58:19PM -0400, Brian Masney wrote:
-> >> I attached a patch that shows how I was able to determine what had
-> >> already claimed the host.
-> > On Mon, May 27, 2019 at 10:48:24AM +0300, Adrian Hunter wrote:
-> >> This is because SDHCI is using the IRQ thread to process the SDIO card
-> >> interrupt (sdio_run_irqs()).  When the card driver tries to use the card, it
-> >> causes interrupts which deadlocks since c07a48c26519 ("mmc: sdhci: Remove
-> >> finish_tasklet") has moved the tasklet processing to the IRQ thread.
-> >>
-> >> I would expect to be able to use the IRQ thread to complete requests, and it
-> >> is desirable to do so because it is lower latency.
-> >>
-> >> Probably, SDHCI should use sdio_signal_irq() which queues a work item, and
-> >> is what other drivers are doing.
-> >>
-> >> I will investigate some more and send a patch.
-> 
-> Please try the patch below:
-> 
-> From: Adrian Hunter <adrian.hunter@intel.com>
-> Date: Mon, 27 May 2019 14:45:55 +0300
-> Subject: [PATCH] mmc: sdhci: Fix SDIO IRQ thread deadlock
-> 
-> Since commit c07a48c26519 ("mmc: sdhci: Remove finish_tasklet"), the IRQ
-> thread might be used to complete requests, but the IRQ thread is also used
-> to process SDIO card interrupts. This can cause a deadlock when the SDIO
-> processing tries to access the card since that would also require the IRQ
-> thread. Change SDHCI to use sdio_signal_irq() to schedule a work item
-> instead. That also requires implementing the ->ack_sdio_irq() mmc host op.
-> 
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-> Fixes: c07a48c26519 ("mmc: sdhci: Remove finish_tasklet")
+On Thu, 11 Apr 2019 at 00:29, Niklas S=C3=B6derlund
+<niklas.soderlund+renesas@ragnatech.se> wrote:
+>
+> Both the Renesas and Uniphier implementations perform actions which
+> affect runtime PM before calling into the core tmio_mmc_host_probe()
+> which enabled runtime PM. Move pm_runtime_enable() from the core and
+> tmio_mmc_host_probe() into each drivers probe() so it can be called
+> before any clocks or other resources are switched on.
+>
+> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Niklas S=C3=B6derlund <niklas.soderlund+renesas@ragnatech.=
+se>
 
-Yes, this fixes the issue for me. You can add my:
+Niklas, Wolfram,
 
-Reported-by: Brian Masney <masneyb@onstation.org>
-Tested-by: Brian Masney <masneyb@onstation.org>
+Can I apply this for next?
 
-Thanks,
+Kind regards
+Uffe
 
-Brian
+> ---
+>  drivers/mmc/host/renesas_sdhi_core.c |  6 ++++++
+>  drivers/mmc/host/tmio_mmc.c          |  5 +++++
+>  drivers/mmc/host/tmio_mmc_core.c     | 11 +++++++++--
+>  drivers/mmc/host/uniphier-sd.c       |  3 +++
+>  4 files changed, 23 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/rene=
+sas_sdhi_core.c
+> index 5e9e36ed2107a01c..db73f9f1b186f0ff 100644
+> --- a/drivers/mmc/host/renesas_sdhi_core.c
+> +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> @@ -770,6 +770,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+>         /* All SDHI have SDIO status bits which must be 1 */
+>         mmc_data->flags |=3D TMIO_MMC_SDIO_STATUS_SETBITS;
+>
+> +       pm_runtime_enable(&pdev->dev);
+> +
+>         ret =3D renesas_sdhi_clk_enable(host);
+>         if (ret)
+>                 goto efree;
+> @@ -850,6 +852,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+>  efree:
+>         tmio_mmc_host_free(host);
+>
+> +       pm_runtime_disable(&pdev->dev);
+> +
+>         return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(renesas_sdhi_probe);
+> @@ -861,6 +865,8 @@ int renesas_sdhi_remove(struct platform_device *pdev)
+>         tmio_mmc_host_remove(host);
+>         renesas_sdhi_clk_disable(host);
+>
+> +       pm_runtime_disable(&pdev->dev);
+> +
+>         return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(renesas_sdhi_remove);
+> diff --git a/drivers/mmc/host/tmio_mmc.c b/drivers/mmc/host/tmio_mmc.c
+> index 93e83ad25976e756..8539e10784b40961 100644
+> --- a/drivers/mmc/host/tmio_mmc.c
+> +++ b/drivers/mmc/host/tmio_mmc.c
+> @@ -172,6 +172,8 @@ static int tmio_mmc_probe(struct platform_device *pde=
+v)
+>         host->mmc->f_max =3D pdata->hclk;
+>         host->mmc->f_min =3D pdata->hclk / 512;
+>
+> +       pm_runtime_enable(&pdev->dev);
+> +
+>         ret =3D tmio_mmc_host_probe(host);
+>         if (ret)
+>                 goto host_free;
+> @@ -191,6 +193,7 @@ static int tmio_mmc_probe(struct platform_device *pde=
+v)
+>         tmio_mmc_host_remove(host);
+>  host_free:
+>         tmio_mmc_host_free(host);
+> +       pm_runtime_disable(&pdev->dev);
+>  cell_disable:
+>         if (cell->disable)
+>                 cell->disable(pdev);
+> @@ -207,6 +210,8 @@ static int tmio_mmc_remove(struct platform_device *pd=
+ev)
+>         if (cell->disable)
+>                 cell->disable(pdev);
+>
+> +       pm_runtime_disable(&pdev->dev);
+> +
+>         return 0;
+>  }
+>
+> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc=
+_core.c
+> index 130b91cb0f8a3fd1..26c148d3c8a2e655 100644
+> --- a/drivers/mmc/host/tmio_mmc_core.c
+> +++ b/drivers/mmc/host/tmio_mmc_core.c
+> @@ -1152,6 +1152,15 @@ void tmio_mmc_host_free(struct tmio_mmc_host *host=
+)
+>  }
+>  EXPORT_SYMBOL_GPL(tmio_mmc_host_free);
+>
+> +/**
+> + * tmio_mmc_host_probe() - Common probe for all implementations
+> + * @_host: Host to probe
+> + *
+> + * Perform tasks common to all implementations probe functions.
+> + *
+> + * The caller should have called pm_runtime_enable() prior to calling
+> + * the common probe function.
+> + */
+>  int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
+>  {
+>         struct platform_device *pdev =3D _host->pdev;
+> @@ -1260,7 +1269,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host=
+)
+>         pm_runtime_set_active(&pdev->dev);
+>         pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
+>         pm_runtime_use_autosuspend(&pdev->dev);
+> -       pm_runtime_enable(&pdev->dev);
+>
+>         ret =3D mmc_add_host(mmc);
+>         if (ret)
+> @@ -1296,7 +1304,6 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *hos=
+t)
+>
+>         pm_runtime_dont_use_autosuspend(&pdev->dev);
+>         pm_runtime_put_sync(&pdev->dev);
+> -       pm_runtime_disable(&pdev->dev);
+>  }
+>  EXPORT_SYMBOL_GPL(tmio_mmc_host_remove);
+>
+> diff --git a/drivers/mmc/host/uniphier-sd.c b/drivers/mmc/host/uniphier-s=
+d.c
+> index 91a2be41edf6196b..49aad9a79c18d24a 100644
+> --- a/drivers/mmc/host/uniphier-sd.c
+> +++ b/drivers/mmc/host/uniphier-sd.c
+> @@ -631,6 +631,7 @@ static int uniphier_sd_probe(struct platform_device *=
+pdev)
+>         host->clk_disable =3D uniphier_sd_clk_disable;
+>         host->set_clock =3D uniphier_sd_set_clock;
+>
+> +       pm_runtime_enable(&pdev->dev);
+>         ret =3D uniphier_sd_clk_enable(host);
+>         if (ret)
+>                 goto free_host;
+> @@ -652,6 +653,7 @@ static int uniphier_sd_probe(struct platform_device *=
+pdev)
+>
+>  free_host:
+>         tmio_mmc_host_free(host);
+> +       pm_runtime_disable(&pdev->dev);
+>
+>         return ret;
+>  }
+> @@ -662,6 +664,7 @@ static int uniphier_sd_remove(struct platform_device =
+*pdev)
+>
+>         tmio_mmc_host_remove(host);
+>         uniphier_sd_clk_disable(host);
+> +       pm_runtime_disable(&pdev->dev);
+>
+>         return 0;
+>  }
+> --
+> 2.21.0
+>
