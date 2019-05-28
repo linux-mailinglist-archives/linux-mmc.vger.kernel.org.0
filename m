@@ -2,82 +2,180 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71AD22C5A4
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 13:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 636952C783
+	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 15:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726631AbfE1Lpg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 28 May 2019 07:45:36 -0400
-Received: from mga12.intel.com ([192.55.52.136]:10312 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726580AbfE1Lpg (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 28 May 2019 07:45:36 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 May 2019 04:45:36 -0700
-X-ExtLoop1: 1
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by fmsmga006.fm.intel.com with ESMTP; 28 May 2019 04:45:31 -0700
-Subject: Re: [PATCH 2/3] mmc: core: API for temporarily disabling
- auto-retuning due to errors
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-rockchip@lists.infradead.org,
-        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
-        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Jiong Wu <lohengrin1024@gmail.com>,
-        Ritesh Harjani <riteshh@codeaurora.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Avri Altman <avri.altman@wdc.com>, Martin Hicks <mort@bork.org>
-References: <20190517225420.176893-1-dianders@chromium.org>
- <20190517225420.176893-3-dianders@chromium.org>
- <05af228c-139b-2b7f-f626-36fb34634be5@broadcom.com>
- <4f39e152-04ba-a64e-985a-df93e6d15ff8@intel.com>
- <aa8e526f-b382-f3b7-74a5-e0fee09ae096@broadcom.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <2d6fa51d-27af-4f90-2bd6-144112ce75ad@intel.com>
-Date:   Tue, 28 May 2019 14:45:16 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727320AbfE1NMN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 28 May 2019 09:12:13 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:38799 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727010AbfE1NMN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 09:12:13 -0400
+Received: by mail-vs1-f68.google.com with SMTP id b10so326504vsp.5
+        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 06:12:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bC7uw0Q16zbyERQODkexpXA2Wd01jXJNxJW/+MlJ9xU=;
+        b=Un77SM1w1goDa3c6DvxwIsX0kDLmOvL2Y1zimTrA14lpFXxjlDic5GclMqdJjEhLCS
+         ASXMlXba2HEP51VIS0sa2KUQKpcBFRwe28efbz7agSSudIwQYmDg5LNUzt68rGp6GoWX
+         r4/SdY8Gy9sMO5J94QuO3Aj6VPs8XGeLPQKcexOROzBsy9iBKT1c9FNYzKE6FqbbkiKj
+         /DCEykKW1JwbkCq3eivfpJLqV/9mU1qRmkipruY61Xrl4BK4N9+DnTxYP/yq8BkSHOEs
+         OVyQRhm66+p9unCSMvHzjonrl50Tsz/cSwPTVXfx15CPIJz52AOW3SGZ9dLRzKniXOjQ
+         AzrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bC7uw0Q16zbyERQODkexpXA2Wd01jXJNxJW/+MlJ9xU=;
+        b=CWsFkd+OlOZ5BIoB9VmAZW5typaW4H6uA8QVAeXPrngeY4WShvm53IbpndIzyxMq87
+         Ycq7jzSyGGTUOL/M8UiYLJOYrAZNAjlNkxcZR6tWmHuHxlGhS0VZJ190fuIASbqYNyIM
+         Vg/IbUsSDfkMLzGRp8W/V1VibHFcEjLpM8PqsqrD7M8mWmbAGMhWrgvylXACR021SsMh
+         E2mRd6n+HcWCHIE1zADyHVHR+XAebH8rn8KfhDrGCvmEmCSlEzVZENtW9smsy5fHRpN+
+         WEARo2dxBeip4XFQMTM3Gvy/ejJ4bTle7taBCgsYJQzxFtmn8QQI4tRUh03FwHQ7xhgp
+         IvHg==
+X-Gm-Message-State: APjAAAW6NfH4Hdo+yqxnRI2ShA3sR5S4/2HTAsoQIlm7SrvRBR2BCBxN
+        60mnQ8vgAXaLhv4wR2dRPvNhPc93fPvzlOkNS/E8eQ==
+X-Google-Smtp-Source: APXvYqwTe3cBfi7yoieBrPEOzAHDsyDItiIt5TIFzafoyt6gFPbn2plZTRIfhuSVs5s07ZrfzfqOfiGH6UOFacw77v8=
+X-Received: by 2002:a67:ebc5:: with SMTP id y5mr72159764vso.34.1559049131411;
+ Tue, 28 May 2019 06:12:11 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <aa8e526f-b382-f3b7-74a5-e0fee09ae096@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20190429204040.18725-1-dianders@chromium.org> <CAD=FV=WEDkufoEUYv9U+c+Y_bm8MYEWS25n63vUeNG0LLCFnuw@mail.gmail.com>
+In-Reply-To: <CAD=FV=WEDkufoEUYv9U+c+Y_bm8MYEWS25n63vUeNG0LLCFnuw@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 28 May 2019 15:11:34 +0200
+Message-ID: <CAPDyKFoKN2zUNvDkgciO6r_ohdh2Vaj5qQaAPwMq21y02XAK8A@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: dw_mmc: Disable SDIO interrupts while suspended
+ to fix suspend/resume
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Sonny Rao <sonnyrao@chromium.org>,
+        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Ryan Case <ryandcase@chromium.org>,
+        "# 4.0+" <stable@vger.kernel.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 28/05/19 2:21 PM, Arend Van Spriel wrote:
-> 
-> 
-> On 5/28/2019 12:04 PM, Adrian Hunter wrote:
->> On 26/05/19 9:42 PM, Arend Van Spriel wrote:
->>> On 5/18/2019 12:54 AM, Douglas Anderson wrote:
->>>> Normally when the MMC core sees an "-EILSEQ" error returned by a host
->>>> controller then it will trigger a retuning of the card.  This is
->>>> generally a good idea.
->>>
->>> Probably a question for Adrian, but how is this retuning scheduled. I recall
->>> seeing something in mmc_request_done. How about deferring the retuning upon
->>> a release host or is that too sdio specific.
->>
->> Below is what I have been carrying the last 4 years.  But according to
->> Douglas'
->> patch, the release would need to be further down.  See 2nd diff below.
->> Would that work?
-> 
-> That makes sense. The loop is needed because the device can be a bit bone
-> headed. So indeed after the loop the device should be awake and able to
-> handle CMD19.
+On Mon, 20 May 2019 at 20:41, Doug Anderson <dianders@chromium.org> wrote:
+>
+> Hi,
+>
+> On Mon, Apr 29, 2019 at 1:41 PM Douglas Anderson <dianders@chromium.org> wrote:
+> >
+> > Processing SDIO interrupts while dw_mmc is suspended (or partly
+> > suspended) seems like a bad idea.  We really don't want to be
+> > processing them until we've gotten ourselves fully powered up.
+> >
+> > You might be wondering how it's even possible to become suspended when
+> > an SDIO interrupt is active.  As can be seen in
+> > dw_mci_enable_sdio_irq(), we explicitly keep dw_mmc out of runtime
+> > suspend when the SDIO interrupt is enabled.  ...but even though we
+> > stop normal runtime suspend transitions when SDIO interrupts are
+> > enabled, the dw_mci_runtime_suspend() can still get called for a full
+> > system suspend.
+> >
+> > Let's handle all this by explicitly masking SDIO interrupts in the
+> > suspend call and unmasking them later in the resume call.  To do this
+> > cleanly I'll keep track of whether the client requested that SDIO
+> > interrupts be enabled so that we can reliably restore them regardless
+> > of whether we're masking them for one reason or another.
+> >
+> > It should be noted that if dw_mci_enable_sdio_irq() is never called
+> > (for instance, if we don't have an SDIO card plugged in) that
+> > "client_sdio_enb" will always be false.  In those cases this patch
+> > adds a tiny bit of overhead to suspend/resume (a spinlock and a
+> > read/write of INTMASK) but other than that is a no-op.  The
+> > SDMMC_INT_SDIO bit should always be clear and clearing it again won't
+> > hurt.
+> >
+> > Without this fix it can be seen that rk3288-veyron Chromebooks with
+> > Marvell WiFi would sometimes fail to resume WiFi even after picking my
+> > recent mwifiex patch [1].  Specifically you'd see messages like this:
+> >   mwifiex_sdio mmc1:0001:1: Firmware wakeup failed
+> >   mwifiex_sdio mmc1:0001:1: PREP_CMD: FW in reset state
+> >
+> > ...and tracing through the resume code in the failing cases showed
+> > that we were processing a SDIO interrupt really early in the resume
+> > call.
+> >
+> > NOTE: downstream in Chrome OS 3.14 and 3.18 kernels (both of which
+> > support the Marvell SDIO WiFi card) we had a patch ("CHROMIUM: sdio:
+> > Defer SDIO interrupt handling until after resume") [2].  Presumably
+> > this is the same problem that was solved by that patch.
+> >
+> > [1] https://lkml.kernel.org/r/20190404040106.40519-1-dianders@chromium.org
+> > [2] https://crrev.com/c/230765
+> >
+> > Cc: <stable@vger.kernel.org> # 4.14.x
+> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> > ---
+> > I didn't put any "Fixes" tag here, but presumably this could be
+> > backported to whichever kernels folks found it useful for.  I have at
+> > least confirmed that kernels v4.14 and v4.19 (as well as v5.1-rc2)
+> > show the problem.  It is very easy to pick this to v4.19 and it
+> > definitely fixes the problem there.
+> >
+> > I haven't spent the time to pick this to 4.14 myself, but presumably
+> > it wouldn't be too hard to backport this as far as v4.13 since that
+> > contains commit 32dba73772f8 ("mmc: dw_mmc: Convert to use
+> > MMC_CAP2_SDIO_IRQ_NOTHREAD for SDIO IRQs").  Prior to that it might
+> > make sense for anyone experiencing this problem to just pick the old
+> > CHROMIUM patch to fix them.
+> >
+> > Changes in v2:
+> > - Suggested 4.14+ in the stable tag (Sasha-bot)
+> > - Extra note that this is a noop on non-SDIO (Shawn / Emil)
+> > - Make boolean logic cleaner as per https://crrev.com/c/1586207/1
+> > - Hopefully clear comments as per https://crrev.com/c/1586207/1
+> >
+> >  drivers/mmc/host/dw_mmc.c | 27 +++++++++++++++++++++++----
+> >  drivers/mmc/host/dw_mmc.h |  3 +++
+> >  2 files changed, 26 insertions(+), 4 deletions(-)
+>
+> Ulf: are you the right person to land this?  With 5.2-rc1 out it might
+> be a good time for it?  To refresh your memory about this patch:
+>
+> * Patch v1 was posted back on April 10th [1] so we're at about 1.5
+> months of time for people to comment about it now.  Should be more
+> than enough.
 
-What if tuning is needed to read SBSDIO_FUNC1_SLEEPCSR successfully?
+Apologize for the delay, not sure why this has slipped through my
+filters. Anyway, let me have a look at it now.
+
+>
+> * Shawn Lin saw it and didn't hate it.  He had some confusion about
+> how it worked and I've hopefully alleviated via extra comments / text.
+>
+> * Emil Renner Berthing thought it caused a regression for him but then
+> tested further and was convinced that it didn't.  This is extra
+> confirmation that someone other than me did try the patch and found it
+> to not break things.  ;-)
+>
+> * It has been reviewed by Guenter Roeck (in v2)
+
+One question, I am guessing you are considering
+https://lkml.org/lkml/2019/5/17/761 as the long term solution, and
+thus $subject patch should go as fix+stable? No?
+
+>
+> [1] https://lkml.kernel.org/r/20190410221237.160856-1-dianders@chromium.org
+>
+>
+> -Doug
+
+Kind regards
+Uffe
