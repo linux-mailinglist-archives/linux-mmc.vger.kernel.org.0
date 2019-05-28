@@ -2,215 +2,151 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B2E2C1AC
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 10:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CA752C1B0
+	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 10:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726394AbfE1IxQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 28 May 2019 04:53:16 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:42580 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726490AbfE1IxQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 04:53:16 -0400
-Received: by mail-vs1-f65.google.com with SMTP id z11so12284141vsq.9
-        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 01:53:15 -0700 (PDT)
+        id S1726653AbfE1IxV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 28 May 2019 04:53:21 -0400
+Received: from mail-ua1-f67.google.com ([209.85.222.67]:38964 "EHLO
+        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726619AbfE1IxV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 04:53:21 -0400
+Received: by mail-ua1-f67.google.com with SMTP id 79so7537222uav.6
+        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 01:53:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=6DOKZZBuQ4FIK7BFhI7zXJDJCYNb+EAsV49etM5Qw9E=;
-        b=dTx5iUnHM/CY9J8aWugKpVrabCL/wQnfT4iMvXtQvLqdukV5bMttr04yeu8LBwLeWt
-         WezYDrZAWZKOkwhj05aQ7cZdjzEkItKVpPpW09nsvEgl7gVfv3Oa/zDrGAMUqloDAtuL
-         aISBEVB2/kZjuUrikfpL7wjqqvROQ45cXGcJEAJLH8oXMO/brzwkk9lJO0SUNDPi/yPp
-         OK6Y25R3e3t4KlQEXl15ODbujKaLkxSQUQeGt6UIluKXCOKz/rKberoFA7swcNT0fkFf
-         c2f8q1nktBqGEYHP3UVoJGm8Yc8mMcSZIXXlB06UE0chLRK0DC3NYWG/RSZr4QjtW+xo
-         1TYw==
+        bh=ZB21roceA2zBtxGGuWfdc7oMMf+SBHpS283kkrPrf5k=;
+        b=vuuJ8Pdrjmw9rhc/dcx5GD5/WyeukxvdjKIFasveCHnD1gjfiexhPqmUdhgTeO6oVg
+         sPP1+S66ChFfhy9fjm6kLr0Kpv5e/spIMdUZg6H2B7eA0e+YQ4Z5MuMdxvV78EAqA1ix
+         1xrB42Z7L5yZZit6nWNJCqdvLbF3WJEpGqpRl+Si4wiqpmZX8682CXpG4tNlyEakE0lV
+         VY4hIqqK9e9hEhJSSHhLBfNWQra478T6+11xnyonNQKVXGsbEZr/YDb5u/obUAvmychc
+         yz9kZm6Qjc7UfoKLrCdqBz2h6IcXsgbN0zKINQ+H7lzOLO1PAT/t/Rwz92DFV1z3P0YY
+         AgHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=6DOKZZBuQ4FIK7BFhI7zXJDJCYNb+EAsV49etM5Qw9E=;
-        b=gocyIfrvvG+2OG3fo69D4POsrUd/x21i1TGzqrvJ73wwvAvZB13ECAtn+wEvFxubzc
-         qPcSJAC1EISnJuj/y0nT5E/dnuZRF9isH7Q5F0XzRHTj60mAF/BtOkDERsGg+XOM7rAw
-         lR+l6BgIjyDABHvjk3nX11fQxKbQKG195GnG5LfXUkAtZf9AmCuNHzzyBt72D69+Q60H
-         cPSULKWhyi7YQBSutlEBVqjG9vW8Ifm8+KQriftcVFDe+ChT4PmYt9DUX+rKHHfUEOCE
-         TLq+fn0ViSuWxa7D41pCRa7R0rCylcdNBgLpz8BJ0h7Eglt5cJ9LhVssZ6wgA1mO5PXu
-         BYmQ==
-X-Gm-Message-State: APjAAAU2nXR6rpMO1v1++bEDep7sKgsZOdPBfRA60QMXnTZuSlgshbEv
-        OO3nXfg+U7xR4mqyIh3CXAu6vY5QIq4JTBSKn/gn5Q==
-X-Google-Smtp-Source: APXvYqyt1Oz/elOHJJHAbCdWazjC8Ws+luiU4VvF3+goqXkou1XWl5bSM5jGjiPpsuYuWWGfyOR4xd5YGC++/cob+z0=
-X-Received: by 2002:a67:7c58:: with SMTP id x85mr37939407vsc.191.1559033595375;
- Tue, 28 May 2019 01:53:15 -0700 (PDT)
+        bh=ZB21roceA2zBtxGGuWfdc7oMMf+SBHpS283kkrPrf5k=;
+        b=FlGjcexuTLtIohp6yyOpW3sYQ/wxA/vBayAF6080BcuLUmmR3CulaRjv9F9lh4kMWw
+         Y4lK0ehATSyfagqq41iLI3M72WHc4aVC2ppcE9+hJop5e3AZdPUTwZ9l2VzmSbhP5xgy
+         /9lKvuJQz9q+o4W0yhGPer7n8phvqwP4P6z21bNvdqVMrjYn5b1iC0cqgSFHx9UcWdac
+         HlM1FTbPgBb97NxGxwa3PeoOGGzdhqxHNEBFTzK/214dUwh5R/xF7/K3DpKBTqHriJgg
+         JLaLLwdID31gHLJ7KcFopXPIBwtxL8RDuhc88mY5sy1s2meQHz7XvjjyPklW1+gwr5/P
+         wjCw==
+X-Gm-Message-State: APjAAAWs/rYVT88jfQMMvJ8WEV6H+Bm3GGnEKIYuLqbehL8GIX5IF9CS
+        OVO2s5YR3EP9WAbaGlpcCR9an+2ILAVHjCYBKPmdVA==
+X-Google-Smtp-Source: APXvYqxL/AbbYn4vMq0qF/T+EATO+MHj3ZK4a8PRqtDLseDl8u0YgCAyRaU2KE4eKgW1AZhe32Dn5iutQ3YDB6OnSiw=
+X-Received: by 2002:ab0:5608:: with SMTP id y8mr52224176uaa.129.1559033600354;
+ Tue, 28 May 2019 01:53:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <1557258749-29009-1-git-send-email-kamlesh.gurudasani@gmail.com>
-In-Reply-To: <1557258749-29009-1-git-send-email-kamlesh.gurudasani@gmail.com>
+References: <20190510112440.GA22858@mwanda>
+In-Reply-To: <20190510112440.GA22858@mwanda>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 28 May 2019 10:52:39 +0200
-Message-ID: <CAPDyKFpbYWdLfecru4+Y9zRrdpnzgwwMmCbqDZUwaXoei5o28Q@mail.gmail.com>
-Subject: Re: [PATCH] mmc: android-goldfish: Drop pointer to mmc_host from goldfish_mmc_host
-To:     Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mike Lockwood <lockwood@android.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "Gustavo A . R . Silva" <garsilva@embeddedor.com>
+Date:   Tue, 28 May 2019 10:52:44 +0200
+Message-ID: <CAPDyKFoGshb2AsHdeYmF4o1Kj+gPRbxSkrs=cBy-zkfepq8Exw@mail.gmail.com>
+Subject: Re: [PATCH] mspro_block: Fix an error code in mspro_block_issue_req()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Alex Dubov <oakad@yahoo.com>,
+        Hannes Reinecke <hare@suse.de>,
+        Martin Wilck <martin.wilck@suse.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 7 May 2019 at 21:53, Kamlesh Gurudasani
-<kamlesh.gurudasani@gmail.com> wrote:
+On Fri, 10 May 2019 at 13:25, Dan Carpenter <dan.carpenter@oracle.com> wrote:
 >
-> The driver for android-goldfish uses a pointer to get from the private
-> goldfish_mmc_host structure to the generic mmc_host structure.
-> However the latter is always immediately preceding the former in
-> memory, so compute its address with a subtraction (which is cheaper than a
-> dereference) and drop the superfluous pointer.
+> We accidentally changed the error code from -EAGAIN to 1 when we did the
+> blk-mq conversion.
 >
-> No functional change intended.
+> Maybe a contributing factor to this mistake is that it wasn't obvious
+> that the "while (chunk) {" condition is always true.  I have cleaned
+> that up as well.
 >
-> Signed-off-by: Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>
+> Fixes: d0be12274dad ("mspro_block: convert to blk-mq")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied for next, thanks!
+Applied for fixes and by adding a stable tag, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/android-goldfish.c | 31 +++++++++++++++----------------
->  1 file changed, 15 insertions(+), 16 deletions(-)
+>  drivers/memstick/core/mspro_block.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
 >
-> diff --git a/drivers/mmc/host/android-goldfish.c b/drivers/mmc/host/android-goldfish.c
-> index 61e4e2a..f6334c2 100644
-> --- a/drivers/mmc/host/android-goldfish.c
-> +++ b/drivers/mmc/host/android-goldfish.c
-> @@ -113,7 +113,6 @@ struct goldfish_mmc_host {
->         struct mmc_request      *mrq;
->         struct mmc_command      *cmd;
->         struct mmc_data         *data;
-> -       struct mmc_host         *mmc;
->         struct device           *dev;
->         unsigned char           id; /* 16xx chips have 2 MMC blocks */
->         void                    *virt_base;
-> @@ -175,7 +174,7 @@ goldfish_mmc_start_command(struct goldfish_mmc_host *host, struct mmc_command *c
->                 resptype = 3;
->                 break;
->         default:
-> -               dev_err(mmc_dev(host->mmc),
-> +               dev_err(mmc_dev(mmc_from_priv(host)),
->                         "Invalid response type: %04x\n", mmc_resp_type(cmd));
->                 break;
->         }
-> @@ -221,8 +220,8 @@ static void goldfish_mmc_xfer_done(struct goldfish_mmc_host *host,
->                                         data->sg->length);
->                 }
->                 host->data->bytes_xfered += data->sg->length;
-> -               dma_unmap_sg(mmc_dev(host->mmc), data->sg, host->sg_len,
-> -                            dma_data_dir);
-> +               dma_unmap_sg(mmc_dev(mmc_from_priv(host)), data->sg,
-> +                            host->sg_len, dma_data_dir);
->         }
+> diff --git a/drivers/memstick/core/mspro_block.c b/drivers/memstick/core/mspro_block.c
+> index aba50ec98b4d..9fc22c755dbf 100644
+> --- a/drivers/memstick/core/mspro_block.c
+> +++ b/drivers/memstick/core/mspro_block.c
+> @@ -694,13 +694,13 @@ static void h_mspro_block_setup_cmd(struct memstick_dev *card, u64 offset,
 >
->         host->data = NULL;
-> @@ -236,7 +235,7 @@ static void goldfish_mmc_xfer_done(struct goldfish_mmc_host *host,
+>  /*** Data transfer ***/
 >
->         if (!data->stop) {
->                 host->mrq = NULL;
-> -               mmc_request_done(host->mmc, data->mrq);
-> +               mmc_request_done(mmc_from_priv(host), data->mrq);
->                 return;
->         }
->
-> @@ -278,7 +277,7 @@ static void goldfish_mmc_cmd_done(struct goldfish_mmc_host *host,
->
->         if (host->data == NULL || cmd->error) {
->                 host->mrq = NULL;
-> -               mmc_request_done(host->mmc, cmd->mrq);
-> +               mmc_request_done(mmc_from_priv(host), cmd->mrq);
->         }
->  }
->
-> @@ -313,7 +312,7 @@ static irqreturn_t goldfish_mmc_irq(int irq, void *dev_id)
->                 struct mmc_request *mrq = host->mrq;
->                 mrq->cmd->error = -ETIMEDOUT;
->                 host->mrq = NULL;
-> -               mmc_request_done(host->mmc, mrq);
-> +               mmc_request_done(mmc_from_priv(host), mrq);
->         }
->
->         if (end_command)
-> @@ -339,12 +338,13 @@ static irqreturn_t goldfish_mmc_irq(int irq, void *dev_id)
->                 u32 state = GOLDFISH_MMC_READ(host, MMC_STATE);
->                 pr_info("%s: Card detect now %d\n", __func__,
->                         (state & MMC_STATE_INSERTED));
-> -               mmc_detect_change(host->mmc, 0);
-> +               mmc_detect_change(mmc_from_priv(host), 0);
->         }
->
->         if (!end_command && !end_transfer && !state_changed && !cmd_timeout) {
->                 status = GOLDFISH_MMC_READ(host, MMC_INT_STATUS);
-> -               dev_info(mmc_dev(host->mmc),"spurious irq 0x%04x\n", status);
-> +               dev_info(mmc_dev(mmc_from_priv(host)), "spurious irq 0x%04x\n",
-> +                        status);
->                 if (status != 0) {
->                         GOLDFISH_MMC_WRITE(host, MMC_INT_STATUS, status);
->                         GOLDFISH_MMC_WRITE(host, MMC_INT_ENABLE, 0);
-> @@ -383,7 +383,7 @@ static void goldfish_mmc_prepare_data(struct goldfish_mmc_host *host,
->
->         dma_data_dir = mmc_get_dma_dir(data);
->
-> -       host->sg_len = dma_map_sg(mmc_dev(host->mmc), data->sg,
-> +       host->sg_len = dma_map_sg(mmc_dev(mmc_from_priv(host)), data->sg,
->                                   sg_len, dma_data_dir);
->         host->dma_done = 0;
->         host->dma_in_use = 1;
-> @@ -461,7 +461,6 @@ static int goldfish_mmc_probe(struct platform_device *pdev)
->         }
->
->         host = mmc_priv(mmc);
-> -       host->mmc = mmc;
->
->         pr_err("mmc: Mapping %lX to %lX\n", (long)res->start, (long)res->end);
->         host->reg_base = ioremap(res->start, resource_size(res));
-> @@ -508,8 +507,7 @@ static int goldfish_mmc_probe(struct platform_device *pdev)
->
->         ret = device_create_file(&pdev->dev, &dev_attr_cover_switch);
->         if (ret)
-> -               dev_warn(mmc_dev(host->mmc),
-> -                        "Unable to create sysfs attributes\n");
-> +               dev_warn(mmc_dev(mmc), "Unable to create sysfs attributes\n");
->
->         GOLDFISH_MMC_WRITE(host, MMC_SET_BUFFER, host->phys_base);
->         GOLDFISH_MMC_WRITE(host, MMC_INT_ENABLE,
-> @@ -525,7 +523,7 @@ static int goldfish_mmc_probe(struct platform_device *pdev)
->  dma_alloc_failed:
->         iounmap(host->reg_base);
->  ioremap_failed:
-> -       mmc_free_host(host->mmc);
-> +       mmc_free_host(mmc);
->  err_alloc_host_failed:
->         return ret;
->  }
-> @@ -533,14 +531,15 @@ static int goldfish_mmc_probe(struct platform_device *pdev)
->  static int goldfish_mmc_remove(struct platform_device *pdev)
+> -static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
+> +static int mspro_block_issue_req(struct memstick_dev *card)
 >  {
->         struct goldfish_mmc_host *host = platform_get_drvdata(pdev);
-> +       struct mmc_host *mmc = mmc_from_priv(host);
+>         struct mspro_block_data *msb = memstick_get_drvdata(card);
+>         u64 t_off;
+>         unsigned int count;
 >
->         BUG_ON(host == NULL);
+> -       while (chunk) {
+> +       while (true) {
+>                 msb->current_page = 0;
+>                 msb->current_seg = 0;
+>                 msb->seg_count = blk_rq_map_sg(msb->block_req->q,
+> @@ -709,6 +709,7 @@ static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
 >
-> -       mmc_remove_host(host->mmc);
-> +       mmc_remove_host(mmc);
->         free_irq(host->irq, host);
->         dma_free_coherent(&pdev->dev, BUFFER_SIZE, host->virt_base, host->phys_base);
->         iounmap(host->reg_base);
-> -       mmc_free_host(host->mmc);
-> +       mmc_free_host(mmc);
->         return 0;
+>                 if (!msb->seg_count) {
+>                         unsigned int bytes = blk_rq_cur_bytes(msb->block_req);
+> +                       bool chunk;
+>
+>                         chunk = blk_update_request(msb->block_req,
+>                                                         BLK_STS_RESOURCE,
+> @@ -718,7 +719,7 @@ static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
+>                         __blk_mq_end_request(msb->block_req,
+>                                                 BLK_STS_RESOURCE);
+>                         msb->block_req = NULL;
+> -                       break;
+> +                       return -EAGAIN;
+>                 }
+>
+>                 t_off = blk_rq_pos(msb->block_req);
+> @@ -735,8 +736,6 @@ static int mspro_block_issue_req(struct memstick_dev *card, bool chunk)
+>                 memstick_new_req(card->host);
+>                 return 0;
+>         }
+> -
+> -       return 1;
 >  }
 >
+>  static int mspro_block_complete_req(struct memstick_dev *card, int error)
+> @@ -779,7 +778,7 @@ static int mspro_block_complete_req(struct memstick_dev *card, int error)
+>                 chunk = blk_update_request(msb->block_req,
+>                                 errno_to_blk_status(error), t_len);
+>                 if (chunk) {
+> -                       error = mspro_block_issue_req(card, chunk);
+> +                       error = mspro_block_issue_req(card);
+>                         if (!error)
+>                                 goto out;
+>                 } else {
+> @@ -849,7 +848,7 @@ static blk_status_t mspro_queue_rq(struct blk_mq_hw_ctx *hctx,
+>         msb->block_req = bd->rq;
+>         blk_mq_start_request(bd->rq);
+>
+> -       if (mspro_block_issue_req(card, true))
+> +       if (mspro_block_issue_req(card))
+>                 msb->block_req = NULL;
+>
+>         spin_unlock_irq(&msb->q_lock);
 > --
-> 2.7.4
+> 2.18.0
 >
