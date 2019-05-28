@@ -2,298 +2,134 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 989992CF58
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 21:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA8312CF88
+	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 21:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726795AbfE1TWG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 28 May 2019 15:22:06 -0400
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:38767 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726878AbfE1TWF (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 15:22:05 -0400
-Received: by mail-ua1-f65.google.com with SMTP id r19so8457473uap.5
-        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 12:22:03 -0700 (PDT)
+        id S1726576AbfE1TdJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 28 May 2019 15:33:09 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:38503 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727250AbfE1TdJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 15:33:09 -0400
+Received: by mail-vs1-f66.google.com with SMTP id b10so27437vsp.5
+        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 12:33:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=o51SeYBfVRyasaL8DkaZePzzAuT4juHYF4hX6xOnKiM=;
-        b=Gx+5MLP2FDWOPXWy6czETvegxYXSZwbIucUqOc1Qf8P2FO3umVCVFVhoqkZSx7MT3o
-         3ZTGMaIsnzBfkyIVjkiDXwAvuS0DGzp/lIz/e0mfQjdtXUCwCjnRRerWoOPdNC2F9lru
-         VeAMhWhHympLCCUHsNWHw8z5EB/X9l93i9mElATUKTrib+XZvaGvGGSW3GqN7GjVUJpa
-         SgX5Uwsc8SCY4dBErVxgV6V2v0lg0LFZ8R88NBC61ilOYoaEL/ZccrAoYt/yGjHgjTO3
-         8CBZAu3GE3m1Yt93tZWfOTH+kXNTnaXu/nJdgzih09h9ovzcBfr9XPRXLIhwW/SwGVl8
-         eGFQ==
+        bh=a/4WAdDHD7o2J6jLaTa03Ods2jMwUYJoiUyhNBxjWQI=;
+        b=dMMWYbArcJceM9L9LmUxOvLkkrX2JOFBhsd3cXHlbV62EkEx3ql6/xwnm6N5ua68wq
+         lfkom4j6oFv/YNmvQUm8B1OQGZ2zulvaZOZ4Vb/2f9dLCgPmMB9Ugey3bU87fOc/WHEw
+         p7Sw2zAKvnev37PmWp+aAzuUJUkQppWVldppFq2B2zoUI2yWw6WtGdGKVjULC+Dn/H6e
+         d3sLokS7BkvYEDy3Hes7bzROVLsETM8bkQAKS2rty6owPH9VPSYb57J7qWuBL1cc+AVg
+         V9jyGJ9CiMd+OVDQN8n0mjfPQP1ssYNAAjmKXpcP/+z1XJBMKFdd+vvMGuzqNeTQcjMe
+         XoSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=o51SeYBfVRyasaL8DkaZePzzAuT4juHYF4hX6xOnKiM=;
-        b=U9GTkf0fpOYtUB4RmCww1KP8iRZwSyMmGiYbGX8maHb+cNVvvxhaJHivRBJvL83Y5v
-         AsDUpd9Shk+xFKXsjz3Hbr+rfQ9su1N5o9bA+jSNQLAsYdu1zwPusyHa1YeL8lGTTvEE
-         I1MhBh4j2kYKb5+hYsoRRiMgPmfx2Jr+ED0lJGycHjrC+dqPKPx0+zleTIoNGIbFjfLI
-         IYjTS+VHv+HcXnPPwevqHQ8kCFhkQxbDPtkM1Hh7+Lcd+Kd8y57bdl/OVx7axqHqASEn
-         t4/0hSFQrl+yvEpHB6yqbz4vdKGeELimZzW5fILqoukyaW9SIU4YiVskuGfXLt1BXSC1
-         XioA==
-X-Gm-Message-State: APjAAAV40a/cb/zrmgloV8Fqq2MGE35Cm6vpB5jHlsa2t7/DJ+Yxc4kq
-        n176PdsNOTCIAo1u6XELES4PTZLGIqS3wJDr1qxP5g==
-X-Google-Smtp-Source: APXvYqxq83kXFEOLbADw2n/1zs0kcaN0zXUr1gStJ+CzcAafZwaxBuMfO06ZSd63b61fxvj11okHHU6DG92954qEiBw=
-X-Received: by 2002:a9f:2103:: with SMTP id 3mr57230678uab.100.1559071323390;
- Tue, 28 May 2019 12:22:03 -0700 (PDT)
+        bh=a/4WAdDHD7o2J6jLaTa03Ods2jMwUYJoiUyhNBxjWQI=;
+        b=CRTl/zKvzrNbHWw78ouL4HUe2lWJxHLrKdYV8UC5TNuem7JpZSmXDED2l7yFu5ty+0
+         PnXRAI/Xkz6px595NRc+Yl2ZsmfzIuvAoFmeKVzPrd4bANyArq4YUC0ZEHA8r7T0uX81
+         jYpXdbRyZhxuulbhBXeYEg5klqEKBoCO1OEkCmb4tiOASliRy+vU8ynvoW729dcJs0Gz
+         Do6Z8Af60cQCRyQHum78EGl+XMNuwRRTUUdaXx+8qwM/6kBbxIUX23BuLUaFzqIHNXmh
+         SHA8boyP0eXlNGunYzbcjKp/cuhPxd5wBNj/BipgB/iuQsgspzHqb+S+s6XEj6jlU+xr
+         wFGA==
+X-Gm-Message-State: APjAAAVN6gkrOSNkRj9eq7nB8bV3AtW2uR3ThBOLQC4fYBPHuq+eo6nA
+        mT5A4akOeiVGcBoDvkAqNmgqdV5lDZqP5a/ors7VPA==
+X-Google-Smtp-Source: APXvYqwd813q3SqUy11sYCOolIowQZSdilqwamuHYez09q5jBp5bAunxVlKM4u8MuI3TDxKOUo/xgfSsPHni9ARExfo=
+X-Received: by 2002:a67:f485:: with SMTP id o5mr2970694vsn.165.1559071987467;
+ Tue, 28 May 2019 12:33:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190429204040.18725-1-dianders@chromium.org>
-In-Reply-To: <20190429204040.18725-1-dianders@chromium.org>
+References: <c6b8789d71ce1970be77387c066a262dca0a0dec.1558340089.git-series.maxime.ripard@bootlin.com>
+ <CAPDyKFrs6f4_Xr=ATay_wDYNPa+-jdZvP4XSB55B-EFMAETN1Q@mail.gmail.com> <20190528172649.6mkdkscnu5d2rybi@flea>
+In-Reply-To: <20190528172649.6mkdkscnu5d2rybi@flea>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 28 May 2019 21:21:25 +0200
-Message-ID: <CAPDyKFp0fQ+3CS-DadE9rO-9Npzve-nztY9hRaMdX7Pw9sUZMw@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: dw_mmc: Disable SDIO interrupts while suspended
- to fix suspend/resume
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Sonny Rao <sonnyrao@chromium.org>,
-        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Ryan Case <ryandcase@chromium.org>,
-        "# 4.0+" <stable@vger.kernel.org>,
+Date:   Tue, 28 May 2019 21:32:31 +0200
+Message-ID: <CAPDyKFrTroAOjEyT9GxQALC4UsiDg8739F9Qc216bDC=wgk2mg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: mmc: Add YAML schemas for the generic
+ MMC options
+To:     Maxime Ripard <maxime.ripard@bootlin.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Chen-Yu Tsai <wens@csie.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        DTML <devicetree@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Rob Herring <robh@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 29 Apr 2019 at 22:41, Douglas Anderson <dianders@chromium.org> wrote:
+On Tue, 28 May 2019 at 19:26, Maxime Ripard <maxime.ripard@bootlin.com> wrote:
 >
-> Processing SDIO interrupts while dw_mmc is suspended (or partly
-> suspended) seems like a bad idea.  We really don't want to be
-> processing them until we've gotten ourselves fully powered up.
+> Hi Ulf,
+>
+> On Tue, May 28, 2019 at 10:40:16AM +0200, Ulf Hansson wrote:
+> > > +patternProperties:
+> > > +  "^.*@[0-9]+$":
+> > > +    properties:
+> > > +      reg:
+> > > +        items:
+> > > +          - minimum: 0
+> > > +            maximum: 7
+> > > +            description:
+> > > +              Must contain the SDIO function number of the function this
+> > > +              subnode describes. A value of 0 denotes the memory SD
+> > > +              function, values from 1 to 7 denote the SDIO functions.
+> > > +
+> > > +      broken-hpi:
+> > > +        $ref: /schemas/types.yaml#/definitions/flag
+> > > +        description:
+> > > +          Use this to indicate that the mmc-card has a broken hpi
+> > > +          implementation, and that hpi should not be used.
+> > > +
+> > > +    required:
+> > > +      - reg
+> > > +
+> >
+> > [...]
+> >
+> > > -Use of Function subnodes
+> > > -------------------------
+> > > -
+> > > -On embedded systems the cards connected to a host may need additional
+> > > -properties. These can be specified in subnodes to the host controller node.
+> > > -The subnodes are identified by the standard 'reg' property.
+> > > -Which information exactly can be specified depends on the bindings for the
+> > > -SDIO function driver for the subnode, as specified by the compatible string.
+> > > -
+> > > -Required host node properties when using function subnodes:
+> > > -- #address-cells: should be one. The cell is the slot id.
+> > > -- #size-cells: should be zero.
+> > > -
+> > > -Required function subnode properties:
+> > > -- reg: Must contain the SDIO function number of the function this subnode
+> > > -       describes. A value of 0 denotes the memory SD function, values from
+> > > -       1 to 7 denote the SDIO functions.
+> > > -
+> > > -Optional function subnode properties:
+> > > -- compatible: name of SDIO function following generic names recommended practice
+> > > -
+> >
+> > I think most of the information of how we use sub(child) nodes
+> > disappeared in this conversion - or at least gets harder to
+> > understand. Could we perhaps keep some of this?
+>
+> Sure, what would you like to keep in particular?
 
-I fully agree.
+Most of it, so we can understand what can be described in sub-nodes.
 
-Although, this is important not only from the host driver/controller
-perspective, but also from the SDIO card (managed by mmc core) point
-of view.
+Additionally, we should also include what is stated in
+Documentation/devicetree/bindings/mmc/mmc-card.txt, as that also
+refers to how subnodes should be used, when it has the "mmc-card"
+compatible.
 
-In $subject patch you mange the driver/controller issue, but only for
-one specific host driver (dw_mmc). I am thinking that this problem may
-be a rather common problem, so perhaps we should try to address this
-from the core in a way that it affects all host drivers. Did you
-consider that?
-
-The other problem I refer to, is in principle a way to prevent
-sdio_run_irqs() from being executed before the SDIO card has been
-resumed, via mmc_sdio_resume(). It's a separate problem, but certainly
-related. This may need some more thinking to address properly, let's
-just keep this in mind and discuss this in a separate thread.
-
->
-> You might be wondering how it's even possible to become suspended when
-> an SDIO interrupt is active.  As can be seen in
-> dw_mci_enable_sdio_irq(), we explicitly keep dw_mmc out of runtime
-> suspend when the SDIO interrupt is enabled.  ...but even though we
-> stop normal runtime suspend transitions when SDIO interrupts are
-> enabled, the dw_mci_runtime_suspend() can still get called for a full
-> system suspend.
->
-> Let's handle all this by explicitly masking SDIO interrupts in the
-> suspend call and unmasking them later in the resume call.  To do this
-> cleanly I'll keep track of whether the client requested that SDIO
-> interrupts be enabled so that we can reliably restore them regardless
-> of whether we're masking them for one reason or another.
->
-> It should be noted that if dw_mci_enable_sdio_irq() is never called
-> (for instance, if we don't have an SDIO card plugged in) that
-> "client_sdio_enb" will always be false.  In those cases this patch
-> adds a tiny bit of overhead to suspend/resume (a spinlock and a
-> read/write of INTMASK) but other than that is a no-op.  The
-> SDMMC_INT_SDIO bit should always be clear and clearing it again won't
-> hurt.
-
-Thanks for the detailed problem description. In general your approach
-sounds okay to me, but I have a few questions.
-
-1) As kind of stated above, did you consider a solution where the core
-simply disables the SDIO IRQ in case it isn't enabled for system
-wakeup? In this way all host drivers would benefit.
-
-2) dw_mmc isn't calling device_init_wakeup() during ->probe(), hence I
-assume it doesn't support the SDIO IRQ being configured as system
-wakeup. Correct? I understand this is platform specific, but still it
-would be good to know your view.
-
-3) Because of 2) The below code in dw_mci_runtime_suspend(), puzzles me:
-"if (host->slot->mmc->pm_flags & MMC_PM_KEEP_POWER)"
-       dw_mci_set_ios(host->slot->mmc, &host->slot->mmc->ios);
-
-Why is 3) needed at all in case system wakeup isn't supported?
-
-A note; the current support in the mmc core for the SDIO IRQ being
-used as system wakeup, really needs some re-work. For example, we
-should convert to use common wakeup interfaces, as to allow the PM
-core to behave correctly during system suspend/resume. These are
-changes that have been scheduled on my TODO list since long time ago,
-I hope I can get some time to look into them soon.
-
->
-> Without this fix it can be seen that rk3288-veyron Chromebooks with
-> Marvell WiFi would sometimes fail to resume WiFi even after picking my
-> recent mwifiex patch [1].  Specifically you'd see messages like this:
->   mwifiex_sdio mmc1:0001:1: Firmware wakeup failed
->   mwifiex_sdio mmc1:0001:1: PREP_CMD: FW in reset state
->
-> ...and tracing through the resume code in the failing cases showed
-> that we were processing a SDIO interrupt really early in the resume
-> call.
->
-> NOTE: downstream in Chrome OS 3.14 and 3.18 kernels (both of which
-> support the Marvell SDIO WiFi card) we had a patch ("CHROMIUM: sdio:
-> Defer SDIO interrupt handling until after resume") [2].  Presumably
-> this is the same problem that was solved by that patch.
-
-Seems reasonable.
-
->
-> [1] https://lkml.kernel.org/r/20190404040106.40519-1-dianders@chromium.org
-> [2] https://crrev.com/c/230765
->
-> Cc: <stable@vger.kernel.org> # 4.14.x
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> I didn't put any "Fixes" tag here, but presumably this could be
-> backported to whichever kernels folks found it useful for.  I have at
-> least confirmed that kernels v4.14 and v4.19 (as well as v5.1-rc2)
-> show the problem.  It is very easy to pick this to v4.19 and it
-> definitely fixes the problem there.
->
-> I haven't spent the time to pick this to 4.14 myself, but presumably
-> it wouldn't be too hard to backport this as far as v4.13 since that
-> contains commit 32dba73772f8 ("mmc: dw_mmc: Convert to use
-> MMC_CAP2_SDIO_IRQ_NOTHREAD for SDIO IRQs").  Prior to that it might
-> make sense for anyone experiencing this problem to just pick the old
-> CHROMIUM patch to fix them.
->
-> Changes in v2:
-> - Suggested 4.14+ in the stable tag (Sasha-bot)
-> - Extra note that this is a noop on non-SDIO (Shawn / Emil)
-> - Make boolean logic cleaner as per https://crrev.com/c/1586207/1
-> - Hopefully clear comments as per https://crrev.com/c/1586207/1
->
->  drivers/mmc/host/dw_mmc.c | 27 +++++++++++++++++++++++----
->  drivers/mmc/host/dw_mmc.h |  3 +++
->  2 files changed, 26 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-> index 80dc2fd6576c..480067b87a94 100644
-> --- a/drivers/mmc/host/dw_mmc.c
-> +++ b/drivers/mmc/host/dw_mmc.c
-> @@ -1664,7 +1664,8 @@ static void dw_mci_init_card(struct mmc_host *mmc, struct mmc_card *card)
->         }
->  }
->
-> -static void __dw_mci_enable_sdio_irq(struct dw_mci_slot *slot, int enb)
-> +static void __dw_mci_enable_sdio_irq(struct dw_mci_slot *slot, bool enb,
-> +                                    bool client_requested)
->  {
->         struct dw_mci *host = slot->host;
->         unsigned long irqflags;
-> @@ -1672,6 +1673,20 @@ static void __dw_mci_enable_sdio_irq(struct dw_mci_slot *slot, int enb)
->
->         spin_lock_irqsave(&host->irq_lock, irqflags);
->
-> +       /*
-> +        * If we're being called directly from dw_mci_enable_sdio_irq()
-> +        * (which means that the client driver actually wants to enable or
-> +        * disable interrupts) then save the request.  Otherwise this
-> +        * wasn't directly requested by the client and we should logically
-> +        * AND it with the client request since we want to disable if
-> +        * _either_ the client disabled OR we have some other reason to
-> +        * disable temporarily.
-> +        */
-> +       if (client_requested)
-> +               host->client_sdio_enb = enb;
-> +       else
-> +               enb &= host->client_sdio_enb;
-> +
->         /* Enable/disable Slot Specific SDIO interrupt */
->         int_mask = mci_readl(host, INTMASK);
->         if (enb)
-> @@ -1688,7 +1703,7 @@ static void dw_mci_enable_sdio_irq(struct mmc_host *mmc, int enb)
->         struct dw_mci_slot *slot = mmc_priv(mmc);
->         struct dw_mci *host = slot->host;
->
-> -       __dw_mci_enable_sdio_irq(slot, enb);
-> +       __dw_mci_enable_sdio_irq(slot, enb, true);
->
->         /* Avoid runtime suspending the device when SDIO IRQ is enabled */
->         if (enb)
-> @@ -1701,7 +1716,7 @@ static void dw_mci_ack_sdio_irq(struct mmc_host *mmc)
->  {
->         struct dw_mci_slot *slot = mmc_priv(mmc);
->
-> -       __dw_mci_enable_sdio_irq(slot, 1);
-> +       __dw_mci_enable_sdio_irq(slot, true, false);
->  }
->
->  static int dw_mci_execute_tuning(struct mmc_host *mmc, u32 opcode)
-> @@ -2734,7 +2749,7 @@ static irqreturn_t dw_mci_interrupt(int irq, void *dev_id)
->                 if (pending & SDMMC_INT_SDIO(slot->sdio_id)) {
->                         mci_writel(host, RINTSTS,
->                                    SDMMC_INT_SDIO(slot->sdio_id));
-> -                       __dw_mci_enable_sdio_irq(slot, 0);
-> +                       __dw_mci_enable_sdio_irq(slot, false, false);
->                         sdio_signal_irq(slot->mmc);
->                 }
->
-> @@ -3424,6 +3439,8 @@ int dw_mci_runtime_suspend(struct device *dev)
->  {
->         struct dw_mci *host = dev_get_drvdata(dev);
->
-> +       __dw_mci_enable_sdio_irq(host->slot, false, false);
-> +
->         if (host->use_dma && host->dma_ops->exit)
->                 host->dma_ops->exit(host);
->
-> @@ -3490,6 +3507,8 @@ int dw_mci_runtime_resume(struct device *dev)
->         /* Now that slots are all setup, we can enable card detect */
->         dw_mci_enable_cd(host);
->
-> +       __dw_mci_enable_sdio_irq(host->slot, true, false);
-> +
->         return 0;
->
->  err:
-> diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
-> index 46e9f8ec5398..dfbace0f5043 100644
-> --- a/drivers/mmc/host/dw_mmc.h
-> +++ b/drivers/mmc/host/dw_mmc.h
-> @@ -127,6 +127,7 @@ struct dw_mci_dma_slave {
->   * @cmd11_timer: Timer for SD3.0 voltage switch over scheme.
->   * @cto_timer: Timer for broken command transfer over scheme.
->   * @dto_timer: Timer for broken data transfer over scheme.
-> + * @client_sdio_enb: The value last passed to enable_sdio_irq.
->   *
->   * Locking
->   * =======
-> @@ -234,6 +235,8 @@ struct dw_mci {
->         struct timer_list       cmd11_timer;
->         struct timer_list       cto_timer;
->         struct timer_list       dto_timer;
-> +
-> +       bool                    client_sdio_enb;
->  };
->
->  /* DMA ops for Internal/External DMAC interface */
-> --
-> 2.21.0.593.g511ec345e18-goog
->
+Or maybe we should simply move all things related to subnodes into a
+separate .yaml?
 
 Kind regards
 Uffe
