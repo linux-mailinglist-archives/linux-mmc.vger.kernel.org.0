@@ -2,79 +2,116 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D01492C15B
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 10:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B97402C183
+	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 10:40:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726538AbfE1Ib6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 28 May 2019 04:31:58 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:54614 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726532AbfE1Ib6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 04:31:58 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4S8Vumh056178;
-        Tue, 28 May 2019 03:31:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1559032316;
-        bh=gy0+MpIjsHBi+VjtC+KdgiXRcp0cL4FeX5nZ37esCuY=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=BvlVraSUdGqPuKpKrzWv3wORwC80YMWEJC7yTYyNlcY5UlRHPWrb62NZxbyxMCMS5
-         krf62cec1PNbzv78ssEV0dV81ZJ6UgS6bZ9QzGzVkf17dPCAbYUXp48apcwdWCQ/98
-         MNnBcVhyiIvIpbgH2JUkLHusZ5HPFWU//r4rifm4=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4S8VuXb120052
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 28 May 2019 03:31:56 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 28
- May 2019 03:31:55 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 28 May 2019 03:31:55 -0500
-Received: from [172.24.190.215] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4S8Vp6d072132;
-        Tue, 28 May 2019 03:31:52 -0500
-Subject: Re: [PATCH v2 3/3] mmc: sdhci_am654: Fix SLOTTYPE write
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
-CC:     <ulf.hansson@linaro.org>
-References: <20190510034228.32211-1-faiz_abbas@ti.com>
- <20190510034228.32211-4-faiz_abbas@ti.com>
- <0662a705-1991-e854-21a4-4ff6b5533f13@intel.com>
-From:   Faiz Abbas <faiz_abbas@ti.com>
-Message-ID: <68fd3e6e-666e-2ebf-04c9-8cb310f1404a@ti.com>
-Date:   Tue, 28 May 2019 14:02:12 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1725943AbfE1Ikx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 28 May 2019 04:40:53 -0400
+Received: from mail-vk1-f195.google.com ([209.85.221.195]:43451 "EHLO
+        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726371AbfE1Ikx (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 04:40:53 -0400
+Received: by mail-vk1-f195.google.com with SMTP id h72so4449897vkh.10
+        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 01:40:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=L1gEe0Qo8uUw419whddZefVmtI1Y7WOAQp/Jh1nRbBY=;
+        b=GgRPe8E23Cer8Df2SQau1m/3AEgbXMJIUf9Mzz4H1Om4WYidE64+qFE0cnf2/qjdNf
+         nKzLE1aUuA7hdhVAZe14ZNmicWNfhS1TTTf5mBvhC7KDo66j5v/uS1D8RXfibCDbLeV7
+         tXRUgxh9BcrEvkxi36Qg9Wbw9z+Yw8Px/cW0AQ5a1Dk3rPxG64mXomNtsK7uTlKcWNYt
+         gaBEsdD968TJcWOLIRFic9Kp+v7xkMoS/oHh/8MkM79TkCssqljli4Hl71gkjer7ydLp
+         dLGjYQlGrdurQYJsGv4mLcyblN9hl5NEF0wVIgI9ES+8Gm84uPI6v72NFa4dNnEqocjE
+         t9/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=L1gEe0Qo8uUw419whddZefVmtI1Y7WOAQp/Jh1nRbBY=;
+        b=fzlU/8Q2NfKgesu5BzD9+/DQJs/VYC1hqU2+0KSxQPrTAy4LD4YyklVX+6oKU1axQA
+         V2DC0UZnzemB05rcyEw+bjiEEEExYxeqFTgVW7jYJ3grRSTARu30Hz3NP1USvzLdC+vZ
+         pWY2/bXdRrju60BtmHaGsMAXlCXo0A6FtqXalTXje4fx3Kvgz8s0Tm9rDkLQMNRUY59y
+         4+QUXlKoev45SoawQ/91KdalFgZnQPdF8RckMjpRPgrG5JAKgstar4e/otIWZpTFUuto
+         ir1NVJeo3s+Y8dJifNvPHrKHX0Vt4dvracp94jBwW+gpuWfgxoMR06zF6pSuFq/zfwF4
+         FqvA==
+X-Gm-Message-State: APjAAAWipEF+L9rDV7CkjqFa52eN5ZmC7ejaMm//6LGZO8eyU5CNTZN2
+        YOPG7Kvbq2uiNU+AgS1D5Mgh9vesrhVRdyt4HcPWqw==
+X-Google-Smtp-Source: APXvYqx7LhK72f0luzwT93lolmN9FxjSTp2ZQy1E52COyZc/gaMuKcVA6k4ogJNFhunQ6qfXUyFIxCroR3vUPGJZ9Zw=
+X-Received: by 2002:a1f:bc4b:: with SMTP id m72mr2400696vkf.36.1559032852442;
+ Tue, 28 May 2019 01:40:52 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <0662a705-1991-e854-21a4-4ff6b5533f13@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <c6b8789d71ce1970be77387c066a262dca0a0dec.1558340089.git-series.maxime.ripard@bootlin.com>
+In-Reply-To: <c6b8789d71ce1970be77387c066a262dca0a0dec.1558340089.git-series.maxime.ripard@bootlin.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 28 May 2019 10:40:16 +0200
+Message-ID: <CAPDyKFrs6f4_Xr=ATay_wDYNPa+-jdZvP4XSB55B-EFMAETN1Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: mmc: Add YAML schemas for the generic
+ MMC options
+To:     Maxime Ripard <maxime.ripard@bootlin.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Adrian,
+> +patternProperties:
+> +  "^.*@[0-9]+$":
+> +    properties:
+> +      reg:
+> +        items:
+> +          - minimum: 0
+> +            maximum: 7
+> +            description:
+> +              Must contain the SDIO function number of the function this
+> +              subnode describes. A value of 0 denotes the memory SD
+> +              function, values from 1 to 7 denote the SDIO functions.
+> +
+> +      broken-hpi:
+> +        $ref: /schemas/types.yaml#/definitions/flag
+> +        description:
+> +          Use this to indicate that the mmc-card has a broken hpi
+> +          implementation, and that hpi should not be used.
+> +
+> +    required:
+> +      - reg
+> +
 
-On 10/05/19 11:28 AM, Adrian Hunter wrote:
-> On 10/05/19 6:42 AM, Faiz Abbas wrote:
->> In the call to regmap_update_bits() for SLOTTYPE, the mask and value
->> fields are exchanged. Fix this. This didn't have any affect on the
->> driver because this was a NOP and it was taking the correct value from
->> the bootloader.
->>
->> Cc: stable <stable@vger.kernel.org>
-> 
-> Except that it doesn't apply to stable because of patch 1.  Maybe make this
-> the first patch.
-> 
+[...]
 
-Ok. Sending v3 with this as first patch.
+> -Use of Function subnodes
+> -------------------------
+> -
+> -On embedded systems the cards connected to a host may need additional
+> -properties. These can be specified in subnodes to the host controller node.
+> -The subnodes are identified by the standard 'reg' property.
+> -Which information exactly can be specified depends on the bindings for the
+> -SDIO function driver for the subnode, as specified by the compatible string.
+> -
+> -Required host node properties when using function subnodes:
+> -- #address-cells: should be one. The cell is the slot id.
+> -- #size-cells: should be zero.
+> -
+> -Required function subnode properties:
+> -- reg: Must contain the SDIO function number of the function this subnode
+> -       describes. A value of 0 denotes the memory SD function, values from
+> -       1 to 7 denote the SDIO functions.
+> -
+> -Optional function subnode properties:
+> -- compatible: name of SDIO function following generic names recommended practice
+> -
 
-Thanks,
-Faiz
+I think most of the information of how we use sub(child) nodes
+disappeared in this conversion - or at least gets harder to
+understand. Could we perhaps keep some of this?
+
+Kind regards
+Uffe
