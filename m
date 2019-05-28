@@ -2,121 +2,262 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 707EC2D020
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 22:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F315C2D1B3
+	for <lists+linux-mmc@lfdr.de>; Wed, 29 May 2019 00:49:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727345AbfE1UMd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 28 May 2019 16:12:33 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:33975 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726988AbfE1UMc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 16:12:32 -0400
-Received: by mail-vs1-f66.google.com with SMTP id q64so154039vsd.1
-        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 13:12:32 -0700 (PDT)
+        id S1727470AbfE1Wtu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 28 May 2019 18:49:50 -0400
+Received: from mail-yw1-f67.google.com ([209.85.161.67]:37155 "EHLO
+        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726463AbfE1Wtu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 18:49:50 -0400
+Received: by mail-yw1-f67.google.com with SMTP id 186so204192ywo.4
+        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 15:49:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=gi/kDB0T8blaZ4N3Go9mHKUpJE7iS399aaXlXpsJB/M=;
-        b=JLxYOnmDJcrvrx0TjCujM/n0knfusm2CntjGzV4VPzAD+EFhlo8bMTG9t7aal/sQvQ
-         KPH6TmOjB26vlVux4qFF2O7y0N3OLKr3gAJH/DJGCfmBrsadoIeWKCNpm3fBOPswf3Ba
-         6by4zMVQHchTKPYZV4Sc0dM7vt5MIxMKhWGK8F+toGpf0xixHkbFMljAUDpVxZ/LNjen
-         fxCbCXU8wIgSXM+/Nytt81ZkmCUgDWHkB1l6JSa87KEV9ETuHHhjodSJ1RBbqtHpA8SJ
-         fE8OC9iG1QauEooEVyrRXOLAFESuw9fIG7TkKzagGOcjZoImxM5Z7R51VbDlxDGe0BcB
-         fH2w==
+        bh=sHhWRG5GPF0tvidqRSCNkdcMvjw5zPCw4zzwfMQUnUU=;
+        b=WoM+oqlxfd+/VhoBHQmtOJC1XA63Zq9dmvl9RPpg4ebmrvwPWRdjy26/FxfV8nC/7g
+         fhsk0tLyYpKEc6YdYTMWKLurwe4UU1lZ/Fo+HFx8l14uD/UM/ThOMkRZWphu6EBBZy9+
+         XR3Wyup9ZfZw1cq9rhcV7HPH/MPFtYKRLg7VA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=gi/kDB0T8blaZ4N3Go9mHKUpJE7iS399aaXlXpsJB/M=;
-        b=H1+0DwFkeTG55RwgYzN+WYu8fyJ9nIqiNslxLKBdlLBHLtETXyx6DB75HL6t44L0vJ
-         8OIEWbbm/z4lvyfmPcOZDQ0ebfUCwX7R8qJfOdOL6WoOLshRAqvF9YtDWk0RVyt70714
-         Rgq8v5wZIzEi2cwTW6qBo8HHQyopNIqxdtB4WJKkb658/UJTWikq4V0sPXwcqM6jI5/f
-         75D79iQvKasOJ7iHE/lgBPMnHdlNiCCUBFyYEZTnavEZffxXCJRRCc1vEsjIKqWNa5I+
-         404QONu+7BJCjLS/L8v3j8FN1v9pNjaW0Z+7l6GLk+To0WH++G3oNLpIA10ASyW7zK1z
-         2m4g==
-X-Gm-Message-State: APjAAAXcxh2zHib5pWUE8pOXy1iS74/U1kylCHakUj+XMQkE5eBhUqLK
-        Rf/+vutSA5JhDQYLd3L1tLvu1QEAE5Uu65vAxQ/xjd8X
-X-Google-Smtp-Source: APXvYqyhr2ApjSz9LQBsYYyEvA4OOcCsPCc4JI8zHRQcvXybJdPh+Anw9su0Trv01Aesw4jSdtAj6GclPuv7+IfWTV0=
-X-Received: by 2002:a67:ebc5:: with SMTP id y5mr75082391vso.34.1559074351753;
- Tue, 28 May 2019 13:12:31 -0700 (PDT)
+        bh=sHhWRG5GPF0tvidqRSCNkdcMvjw5zPCw4zzwfMQUnUU=;
+        b=CzCMoUmbEuGWZ8wyhPYEpjyovxBfNp9HPeUc9a4LeNx6gDjo1awTNaa6uCdscjyizQ
+         k78P/oj0JnkL+MK0EFUC1BbEL9W5IPQY3I8TgDt0kE1pc1rGxLJIXiz74M8HTr51jswW
+         eQTWT7dAUuoCjKZluJHM+NL2cOEF1aCR9i5NG+j7FFeww9X5Rtj2nZmxMFMGw7q8gipQ
+         rAduDkZTVzivB32dGppIdpcjkvgKME8TTvuMkXQyAeG3CkiRKovLeByIOffLJHnzdJjp
+         DlKzqxTHu0JZjsUOMhBc3HDw1a7tlkX6tFu8Mr6UqjavplT4A8SIq/wpetaqQkm/N+zV
+         DHag==
+X-Gm-Message-State: APjAAAWoHLJaWIXhNWYpicwANCByqRYlW2nJhxbfnPBbU6ht8So4SQ2q
+        bBWpkkf4TuPBOU7o3PVyMKBdYfPXq7s=
+X-Google-Smtp-Source: APXvYqwnI1gK9BIyM3m0ifnyGd8C05FS4dI0ZxuuqM0PSQLvjzbHiEEm94HNl4DaBgo/UmWWAp5cPA==
+X-Received: by 2002:a0d:f904:: with SMTP id j4mr14391072ywf.458.1559083788920;
+        Tue, 28 May 2019 15:49:48 -0700 (PDT)
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com. [209.85.219.179])
+        by smtp.gmail.com with ESMTPSA id f81sm4270553ywb.26.2019.05.28.15.49.45
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 May 2019 15:49:46 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id n145so44328ybg.10
+        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 15:49:45 -0700 (PDT)
+X-Received: by 2002:a25:25c4:: with SMTP id l187mr19641708ybl.345.1559083785254;
+ Tue, 28 May 2019 15:49:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190524111053.12228-1-masneyb@onstation.org> <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
- <20190524154958.GB16322@basecamp> <20190526122136.GA26456@basecamp>
- <e8c049ce-07e1-8b34-678d-41b3d6d41983@broadcom.com> <20190526195819.GA29665@basecamp>
- <20190527093711.GA853@basecamp> <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
- <20190527125026.GA4272@basecamp>
-In-Reply-To: <20190527125026.GA4272@basecamp>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 28 May 2019 22:11:55 +0200
-Message-ID: <CAPDyKFrm=NTKjsEPiwzUVbDDzjW5PwZteXbKtPUi9GTUB4kbMQ@mail.gmail.com>
-Subject: Re: Issue with Broadcom wireless in 5.2rc1 (was Re: [PATCH] mmc:
- sdhci: queue work after sdhci_defer_done())
-To:     Brian Masney <masneyb@onstation.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+References: <20190429204040.18725-1-dianders@chromium.org> <CAPDyKFp0fQ+3CS-DadE9rO-9Npzve-nztY9hRaMdX7Pw9sUZMw@mail.gmail.com>
+In-Reply-To: <CAPDyKFp0fQ+3CS-DadE9rO-9Npzve-nztY9hRaMdX7Pw9sUZMw@mail.gmail.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Tue, 28 May 2019 15:49:28 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=XMph_CE3pFZGP+5d0K2FgbPbheF1oX72TfZn_dpf8SQA@mail.gmail.com>
+Message-ID: <CAD=FV=XMph_CE3pFZGP+5d0K2FgbPbheF1oX72TfZn_dpf8SQA@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: dw_mmc: Disable SDIO interrupts while suspended
+ to fix suspend/resume
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
         Kalle Valo <kvalo@codeaurora.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+        Sonny Rao <sonnyrao@chromium.org>,
+        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Ryan Case <ryandcase@chromium.org>,
+        "# 4.0+" <stable@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 27 May 2019 at 14:50, Brian Masney <masneyb@onstation.org> wrote:
->
-> On Mon, May 27, 2019 at 03:08:07PM +0300, Adrian Hunter wrote:
-> > On 27/05/19 12:37 PM, Brian Masney wrote:
-> > > On Sun, May 26, 2019 at 03:58:19PM -0400, Brian Masney wrote:
-> > >> I attached a patch that shows how I was able to determine what had
-> > >> already claimed the host.
-> > > On Mon, May 27, 2019 at 10:48:24AM +0300, Adrian Hunter wrote:
-> > >> This is because SDHCI is using the IRQ thread to process the SDIO card
-> > >> interrupt (sdio_run_irqs()).  When the card driver tries to use the card, it
-> > >> causes interrupts which deadlocks since c07a48c26519 ("mmc: sdhci: Remove
-> > >> finish_tasklet") has moved the tasklet processing to the IRQ thread.
-> > >>
-> > >> I would expect to be able to use the IRQ thread to complete requests, and it
-> > >> is desirable to do so because it is lower latency.
-> > >>
-> > >> Probably, SDHCI should use sdio_signal_irq() which queues a work item, and
-> > >> is what other drivers are doing.
-> > >>
-> > >> I will investigate some more and send a patch.
-> >
-> > Please try the patch below:
-> >
-> > From: Adrian Hunter <adrian.hunter@intel.com>
-> > Date: Mon, 27 May 2019 14:45:55 +0300
-> > Subject: [PATCH] mmc: sdhci: Fix SDIO IRQ thread deadlock
-> >
-> > Since commit c07a48c26519 ("mmc: sdhci: Remove finish_tasklet"), the IRQ
-> > thread might be used to complete requests, but the IRQ thread is also used
-> > to process SDIO card interrupts. This can cause a deadlock when the SDIO
-> > processing tries to access the card since that would also require the IRQ
-> > thread. Change SDHCI to use sdio_signal_irq() to schedule a work item
-> > instead. That also requires implementing the ->ack_sdio_irq() mmc host op.
-> >
-> > Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-> > Fixes: c07a48c26519 ("mmc: sdhci: Remove finish_tasklet")
->
-> Yes, this fixes the issue for me. You can add my:
->
-> Reported-by: Brian Masney <masneyb@onstation.org>
-> Tested-by: Brian Masney <masneyb@onstation.org>
->
+Hi,
 
-Applied for fixes, thanks!
+On Tue, May 28, 2019 at 12:22 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> On Mon, 29 Apr 2019 at 22:41, Douglas Anderson <dianders@chromium.org> wrote:
+> >
+> > Processing SDIO interrupts while dw_mmc is suspended (or partly
+> > suspended) seems like a bad idea.  We really don't want to be
+> > processing them until we've gotten ourselves fully powered up.
+>
+> I fully agree.
+>
+> Although, this is important not only from the host driver/controller
+> perspective, but also from the SDIO card (managed by mmc core) point
+> of view.
+>
+> In $subject patch you mange the driver/controller issue, but only for
+> one specific host driver (dw_mmc). I am thinking that this problem may
+> be a rather common problem, so perhaps we should try to address this
+> from the core in a way that it affects all host drivers. Did you
+> consider that?
 
-Kind regards
-Uffe
+I did wonder that.  See below, but in general I don't have massive
+experience with all the host controllers out there.  Looking at sdhci
+code, though, it might not have the same problems?  At least in some
+cases it fully turns off the interrupts.  In other cases it seems like
+the controller itself keeps power and so maybe getting the SDIO
+interrupts early is OK?
+
+
+> The other problem I refer to, is in principle a way to prevent
+> sdio_run_irqs() from being executed before the SDIO card has been
+> resumed, via mmc_sdio_resume(). It's a separate problem, but certainly
+> related. This may need some more thinking to address properly, let's
+> just keep this in mind and discuss this in a separate thread.
+
+Actually, I think if we could figure out how to do this well it might
+solve my particular problem.  Specifically I don't believe that
+running dw_mmc's interrupt handler itself is causing the problem
+(though it does seem pretty odd to run it while we're in the middle of
+initting the host), I think it's the SDIO driver calling back into us
+that's causing the problems.
+
+
+> > You might be wondering how it's even possible to become suspended when
+> > an SDIO interrupt is active.  As can be seen in
+> > dw_mci_enable_sdio_irq(), we explicitly keep dw_mmc out of runtime
+> > suspend when the SDIO interrupt is enabled.  ...but even though we
+> > stop normal runtime suspend transitions when SDIO interrupts are
+> > enabled, the dw_mci_runtime_suspend() can still get called for a full
+> > system suspend.
+> >
+> > Let's handle all this by explicitly masking SDIO interrupts in the
+> > suspend call and unmasking them later in the resume call.  To do this
+> > cleanly I'll keep track of whether the client requested that SDIO
+> > interrupts be enabled so that we can reliably restore them regardless
+> > of whether we're masking them for one reason or another.
+> >
+> > It should be noted that if dw_mci_enable_sdio_irq() is never called
+> > (for instance, if we don't have an SDIO card plugged in) that
+> > "client_sdio_enb" will always be false.  In those cases this patch
+> > adds a tiny bit of overhead to suspend/resume (a spinlock and a
+> > read/write of INTMASK) but other than that is a no-op.  The
+> > SDMMC_INT_SDIO bit should always be clear and clearing it again won't
+> > hurt.
+>
+> Thanks for the detailed problem description. In general your approach
+> sounds okay to me, but I have a few questions.
+>
+> 1) As kind of stated above, did you consider a solution where the core
+> simply disables the SDIO IRQ in case it isn't enabled for system
+> wakeup? In this way all host drivers would benefit.
+
+I can give it a shot if you can give me a bunch of specific advice,
+but I only have access to a few devices doing anything with SDIO and
+they are all using Marvell or Broadcom on dw_mmc.
+
+In general I have no idea how SDIO wakeup (plumbed through the SD
+controller) would work.  As per below the only way I've seen it done
+is totally out-of-band.  ...and actually, I'm not sure I've actually
+ever seen even the out of band stuff truly work on a system myself.
+It's always been one of those "we should support wake on WiFi" but
+never made it all the way to implementation.  In any case, if there
+are examples of people plumbing wakeup through the SD controller I'd
+need to figure out how to not break them.  Just doing a solution for
+dw_mmc means I don't have to worry about this since dw_mmc definitely
+doesn't support SDIO wakeup.
+
+Maybe one way to get a more generic solution is if you had an idea for
+a patch that would work for many host controllers then you could post
+it and I could test to confirm that it's happy on dw_mmc?  ...similar
+to when you switched dw_mmc away from the old kthread-based SDIO
+stuff?
+
+
+> 2) dw_mmc isn't calling device_init_wakeup() during ->probe(), hence I
+> assume it doesn't support the SDIO IRQ being configured as system
+> wakeup. Correct? I understand this is platform specific, but still it
+> would be good to know your view.
+
+Right, currently dw_mmc doesn't support the SDIO IRQ being configured
+as a system wakeup.  I'm kinda curious how this works in general.
+Don't you need a clock running to get an SDIO interrupt?  How does
+that work for suspend?  ...I do know that I've seen some dw_mmc host
+controllers have an "SDIO IRQ" line that could be pinned out and that
+line would also assert the same SDIO interrupt, but the mainline
+driver has never supported it.  Whenever I asked Marvell about it in
+the past they were always confused about what to do with that line and
+(if I remember correctly) we never hooked it up.  I always though it
+would be super interesting because it seemed like it would let us
+disable the card clock when the slot was idle.  ...as far as I was
+ever able to discern the pin was officially "non-standard".
+
+As far as I know SDIO cards that want to be able to wakeup the device
+end up using some sort of out of band mechanism.  For instance
+"marvell,wakeup-pin" or Broadcom's "host-wake" interrupt.  As per
+above, I don't have tons of experience here.  I see that
+"rk3399-gru-kevin" has "marvell,wakeup-pin" defined, but that's PCIe
+not SDIO.  Downstream in our Chrome OS kernel it seems like
+"mt8173-oak.dtsi" and "mt8176-rowan.dtsi" have this for SDIO but they
+are are devices I didn't work on and don't have much familiarity with.
+
+
+> 3) Because of 2) The below code in dw_mci_runtime_suspend(), puzzles me:
+> "if (host->slot->mmc->pm_flags & MMC_PM_KEEP_POWER)"
+>        dw_mci_set_ios(host->slot->mmc, &host->slot->mmc->ios);
+>
+> Why is 3) needed at all in case system wakeup isn't supported?
+
+That code has been in there for a really long time, dating back to
+commit ab269128a2cf ("mmc: dw_mmc: Add sdio power bindings").  ...but,
+in general, I know that we always keep power to the SDIO card in
+suspend time.  This doesn't take a whole lot of power and speeds up
+WiFi acquisition after resume by a whole lot (because otherwise we'd
+have to fully re-load the WiFi firmware).  In fact, I believe that the
+Marvell WiFi driver requires it.  Ah yes, search for
+"MMC_PM_KEEP_POWER" in "marvell/mwifiex/sdio.c" and you'll see that it
+gets yells if power isn't kept.
+
+If we are keeping power during suspend/resume then presumably the card
+will expect that communication resumes as normal upon resume.  AKA:
+the clock should come up at the expected rate / voltage level and we
+should resume as normal.
+
+
+> A note; the current support in the mmc core for the SDIO IRQ being
+> used as system wakeup, really needs some re-work. For example, we
+> should convert to use common wakeup interfaces, as to allow the PM
+> core to behave correctly during system suspend/resume. These are
+> changes that have been scheduled on my TODO list since long time ago,
+> I hope I can get some time to look into them soon.
+
+Personally my knowledge of SD / SDIO is mostly acquired by trying to
+make the dw_mmc driver do what we've needed it to over the years, so I
+don't actually have a ton of broad understanding of the SDIO spec and
+what is generally done for host controllers / SDIO cards.  If you're
+aware of standard ways to get an SDIO IRQ to work in suspend time then
+that'd be interesting.
+
+
+> > Without this fix it can be seen that rk3288-veyron Chromebooks with
+> > Marvell WiFi would sometimes fail to resume WiFi even after picking my
+> > recent mwifiex patch [1].  Specifically you'd see messages like this:
+> >   mwifiex_sdio mmc1:0001:1: Firmware wakeup failed
+> >   mwifiex_sdio mmc1:0001:1: PREP_CMD: FW in reset state
+> >
+> > ...and tracing through the resume code in the failing cases showed
+> > that we were processing a SDIO interrupt really early in the resume
+> > call.
+> >
+> > NOTE: downstream in Chrome OS 3.14 and 3.18 kernels (both of which
+> > support the Marvell SDIO WiFi card) we had a patch ("CHROMIUM: sdio:
+> > Defer SDIO interrupt handling until after resume") [2].  Presumably
+> > this is the same problem that was solved by that patch.
+>
+> Seems reasonable.
+
+Anyway, let me know what you think the next set of steps ought to be.
+It would be sorta nice to get suspend/resume working reliably and land
+this patch, but if you think that will impede our ability to come up
+with a more generic solution then I guess we don't need to land it...
+
+
+-Doug
