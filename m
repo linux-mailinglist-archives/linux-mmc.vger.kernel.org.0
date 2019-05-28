@@ -2,112 +2,229 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45EB12C1B9
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 10:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 745F72C1BD
+	for <lists+linux-mmc@lfdr.de>; Tue, 28 May 2019 10:53:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726720AbfE1Ix2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 28 May 2019 04:53:28 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:38874 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726697AbfE1Ix1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 04:53:27 -0400
-Received: by mail-vs1-f65.google.com with SMTP id x184so12298977vsb.5
-        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 01:53:26 -0700 (PDT)
+        id S1726685AbfE1Ixc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 28 May 2019 04:53:32 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:45427 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726732AbfE1Ixb (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 May 2019 04:53:31 -0400
+Received: by mail-ua1-f65.google.com with SMTP id n7so7527046uap.12
+        for <linux-mmc@vger.kernel.org>; Tue, 28 May 2019 01:53:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=63rNflCdSI9s1lypjb9kjGuIPUPYyEDW7V3KDJZf4ho=;
-        b=hhZ7Ugx8NIA5gGvOhA440AmvtVLs8x74arAvCWzkmIisOX+1tFrNHlQvZrZ4qaspo8
-         fMpDnmSprEB9MwIMSTZPRMpZ4dKAeW+HQX6ryQVRBt6+Xvovoq0jldnv0Jksc5Raad/Y
-         3Jcp85rjCvKkXHQn2oluvtELFTeTijuBgiLBFvwo7c+S6TjskQQnIUgA4082jjngEI1C
-         OVPdhrgfVyYrw1peAtk5DnfFulx7ieluR4jL3Mi7WvUCZ6r48XEHbkLjc8lbl9DAdzJc
-         sCsOPh2VGVPYrwj3ICxFPJTrk3fxcCi87nfHPCpgHYObCW1vXRINgVNW+KNQIhvYKuVb
-         0Smw==
+         :cc:content-transfer-encoding;
+        bh=Xchp1Fh0EF7XuLzS0G/bR655Y1y9gCu7TStLp1bR9ZY=;
+        b=n0buMJ40YR10Yjp/ZspVoheRtegFp4v0i+wRs+E8mIxuMw9nUUg/BxXMadwapa+DuI
+         NwLbkQ39AWeETt3ig+0B60SNN40KdEo3ETsBhoclhV0t10DBpL3iObAjmNQ9JNigRiAp
+         uRNLvqtbm4adMbgsfuHi3TzaKOsIZUh8EYvZE9JTvvKwIuIBMdKDiNtnNqcdXIGKtwuO
+         KL4lGraCieDjCA1/4gHtbERypY3oB3E502V71365Q2LuMasyH34E2/wRQnusFI+LwoWi
+         7zXY4ImUljWsiU53rNpI3mxKgU/zylP149EZKJl0zs6DqxZEZLhtEgB2zAOyTFsrPit1
+         WkpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=63rNflCdSI9s1lypjb9kjGuIPUPYyEDW7V3KDJZf4ho=;
-        b=qEZh2bqm3qVGd0aBSwCypGtb10gu3WJ5wYPUIrmuTVkSkrYs06W+IPg7SKDWGQR6Tz
-         ZKgpqshah5Z2d5fqZgYpWbheBSxcyb/kvcnHtRFhr1vSHZ3e9Rvzs87QReOo09+jQTwB
-         jX/NA+FiL7fEV9QQ4Fh2p2uPjinYQDt+ZezWTdhgllnJjUm0XfQWzFFD3RwLjc9aCKza
-         MKm1xzr+cCVPBjC0j3CtFuiZJY0NFx705E2r8z55CG+MHRPiUAc3/M/Nbf6hrHAriElV
-         J1hA69+rdF1/DKnxEP0Wsa8C1NBGGezFzVROylQh7Iu3WcFll61IIvsu7j/pIWnFJRdl
-         QIrQ==
-X-Gm-Message-State: APjAAAWKZXt8YPX+P3KOYNR2Db3NQlG9L/GDq1NgXhhLK7YSKu69BGKP
-        lzIJyy5xD7XeUBQvCj4LIQrbwdx7I2dLckdBn0EsKw==
-X-Google-Smtp-Source: APXvYqy8Gwi8FdbaqibNI40miRadKGRT4k+l+pInetAz3+qmOqETE/H2IYF4/nOcOLypwZKbIuTILXTiP+gRsOJZaCs=
-X-Received: by 2002:a67:3046:: with SMTP id w67mr54793522vsw.165.1559033606406;
- Tue, 28 May 2019 01:53:26 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Xchp1Fh0EF7XuLzS0G/bR655Y1y9gCu7TStLp1bR9ZY=;
+        b=RIwKbZmgg4DxHA0xK2TbxT1zoqp8foWzoCqu5IaxbxqbDzCbhJ00c/jI9z/z5eBwP0
+         t/JVG9MWawlUNRCRXUQCGQHV5uxNpG4QY/E1h/5kXQtWUrOfH7KORelxXVLPMkWLfRm4
+         xtmPorrmXox1YzwxnCFZ9xZTVDJjgnnbsFLX9h1bUBim4KmSDxc8hb3xfLrTvK0gKWpU
+         llQJG8CXLLZwoyWkRmPmF6eNO5WuNV54fo/3ODEq705CWSo5S+aFMXgyWcsj2ebEp40d
+         V02ospUjj8lThUDi8xqV0nhyjN6NJFpwHEasbiGoU+KUtv9XL2t6B0mFE9uF4/gI6NLs
+         WH1g==
+X-Gm-Message-State: APjAAAUVzvHuJPHoyCjOVnOz4YfvdbACvxp0cRFPP7A33cXbRk8KQDre
+        LOv8uXK9GYMkqNG12TthQxYslkky2GBLGbIiaqPW7Q==
+X-Google-Smtp-Source: APXvYqwLMyZj9OM4jkhOUFNJZiiMsWMgM69CKybhUQBlfDVqkkXDEWLMlDOpkA+I0mZRhkFp/BeHDjRvwEDTVU4S7o4=
+X-Received: by 2002:ab0:7453:: with SMTP id p19mr23974458uaq.15.1559033610738;
+ Tue, 28 May 2019 01:53:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190515093512.GD3409@mwanda> <CAPDyKFpm9dB55aCUQkDHgyfcJdniNG9jCbdQ4ezYgQ=L8Rxfhw@mail.gmail.com>
- <20190522133709.GP30938@ulmo> <f8b4cc7c-6f12-21df-e76c-59699ff647b0@nvidia.com>
-In-Reply-To: <f8b4cc7c-6f12-21df-e76c-59699ff647b0@nvidia.com>
+References: <20190410222240.5800-1-niklas.soderlund+renesas@ragnatech.se>
+In-Reply-To: <20190410222240.5800-1-niklas.soderlund+renesas@ragnatech.se>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 28 May 2019 10:52:50 +0200
-Message-ID: <CAPDyKFpB+gEaS0J_Ro3-ovvLwYpCXG6OPK4dspsp4r_bfow8uA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: tegra: Fix a warning message
-To:     Sowjanya Komatineni <skomatineni@nvidia.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
+Date:   Tue, 28 May 2019 10:52:54 +0200
+Message-ID: <CAPDyKFq9eynLBSK0QhW01rjndNWLeq7ZMaj8nJwv66oBQtRy1Q@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: tmio: move runtime PM enablement to the driver implementations
+To:     =?UTF-8?Q?Niklas_S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 22 May 2019 at 18:22, Sowjanya Komatineni
-<skomatineni@nvidia.com> wrote:
+On Thu, 11 Apr 2019 at 00:29, Niklas S=C3=B6derlund
+<niklas.soderlund+renesas@ragnatech.se> wrote:
 >
-> On 5/22/19 6:37 AM, Thierry Reding wrote:
-> > On Wed, May 15, 2019 at 01:46:40PM +0200, Ulf Hansson wrote:
-> >> On Wed, 15 May 2019 at 11:35, Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> >>> The WARN_ON() macro takes a condition, not a warning message.  I've
-> >>> changed this to use WARN(1, "msg...
-> >>>
-> >>> Fixes: ea8fc5953e8b ("mmc: tegra: update hw tuning process")
-> >>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> >>> ---
-> >>>   drivers/mmc/host/sdhci-tegra.c | 2 +-
-> >>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-> >>> index f608417ae967..10d7aaf68bab 100644
-> >>> --- a/drivers/mmc/host/sdhci-tegra.c
-> >>> +++ b/drivers/mmc/host/sdhci-tegra.c
-> >>> @@ -865,7 +865,7 @@ static void tegra_sdhci_tap_correction(struct sdhci_host *host, u8 thd_up,
-> >>>          }
-> >>>
-> >>>          if (!first_fail) {
-> >>> -               WARN_ON("no edge detected, continue with hw tuned delay.\n");
-> >>> +               WARN(1, "no edge detected, continue with hw tuned delay.\n");
-> >> Not sure why this is a WARN*() in the first place.
-> >>
-> >> Seems like a dev_warn() or possibly a dev_warn_once() should be used instead.
-> > I think this was on purpose in order to increase the likelihood of this
-> > getting reported. Sowjanya knows the details much better, but I think
-> > this is supposed to be very rare and really a problem with the tap
-> > settings in device tree, which is something that we want to know and
-> > fix.
-> >
-> > Let's see if Sowjanya can shed some light on this.
-> >
-> > Thierry
-> >
-> This warn can happen when no edge is detected and hw tuning results include
+> Both the Renesas and Uniphier implementations perform actions which
+> affect runtime PM before calling into the core tmio_mmc_host_probe()
+> which enabled runtime PM. Move pm_runtime_enable() from the core and
+> tmio_mmc_host_probe() into each drivers probe() so it can be called
+> before any clocks or other resources are switched on.
 >
-> all passing taps which is very unlikely. So, I believe WARN(1, msg)
-> should be good to use.
->
-> Sowjanya
+> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Niklas S=C3=B6derlund <niklas.soderlund+renesas@ragnatech.=
+se>
 
-Okay, so I have picked v1 instead, for fixes, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/host/renesas_sdhi_core.c |  6 ++++++
+>  drivers/mmc/host/tmio_mmc.c          |  5 +++++
+>  drivers/mmc/host/tmio_mmc_core.c     | 11 +++++++++--
+>  drivers/mmc/host/uniphier-sd.c       |  3 +++
+>  4 files changed, 23 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/rene=
+sas_sdhi_core.c
+> index 5e9e36ed2107a01c..db73f9f1b186f0ff 100644
+> --- a/drivers/mmc/host/renesas_sdhi_core.c
+> +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> @@ -770,6 +770,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+>         /* All SDHI have SDIO status bits which must be 1 */
+>         mmc_data->flags |=3D TMIO_MMC_SDIO_STATUS_SETBITS;
+>
+> +       pm_runtime_enable(&pdev->dev);
+> +
+>         ret =3D renesas_sdhi_clk_enable(host);
+>         if (ret)
+>                 goto efree;
+> @@ -850,6 +852,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+>  efree:
+>         tmio_mmc_host_free(host);
+>
+> +       pm_runtime_disable(&pdev->dev);
+> +
+>         return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(renesas_sdhi_probe);
+> @@ -861,6 +865,8 @@ int renesas_sdhi_remove(struct platform_device *pdev)
+>         tmio_mmc_host_remove(host);
+>         renesas_sdhi_clk_disable(host);
+>
+> +       pm_runtime_disable(&pdev->dev);
+> +
+>         return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(renesas_sdhi_remove);
+> diff --git a/drivers/mmc/host/tmio_mmc.c b/drivers/mmc/host/tmio_mmc.c
+> index 93e83ad25976e756..8539e10784b40961 100644
+> --- a/drivers/mmc/host/tmio_mmc.c
+> +++ b/drivers/mmc/host/tmio_mmc.c
+> @@ -172,6 +172,8 @@ static int tmio_mmc_probe(struct platform_device *pde=
+v)
+>         host->mmc->f_max =3D pdata->hclk;
+>         host->mmc->f_min =3D pdata->hclk / 512;
+>
+> +       pm_runtime_enable(&pdev->dev);
+> +
+>         ret =3D tmio_mmc_host_probe(host);
+>         if (ret)
+>                 goto host_free;
+> @@ -191,6 +193,7 @@ static int tmio_mmc_probe(struct platform_device *pde=
+v)
+>         tmio_mmc_host_remove(host);
+>  host_free:
+>         tmio_mmc_host_free(host);
+> +       pm_runtime_disable(&pdev->dev);
+>  cell_disable:
+>         if (cell->disable)
+>                 cell->disable(pdev);
+> @@ -207,6 +210,8 @@ static int tmio_mmc_remove(struct platform_device *pd=
+ev)
+>         if (cell->disable)
+>                 cell->disable(pdev);
+>
+> +       pm_runtime_disable(&pdev->dev);
+> +
+>         return 0;
+>  }
+>
+> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc=
+_core.c
+> index 130b91cb0f8a3fd1..26c148d3c8a2e655 100644
+> --- a/drivers/mmc/host/tmio_mmc_core.c
+> +++ b/drivers/mmc/host/tmio_mmc_core.c
+> @@ -1152,6 +1152,15 @@ void tmio_mmc_host_free(struct tmio_mmc_host *host=
+)
+>  }
+>  EXPORT_SYMBOL_GPL(tmio_mmc_host_free);
+>
+> +/**
+> + * tmio_mmc_host_probe() - Common probe for all implementations
+> + * @_host: Host to probe
+> + *
+> + * Perform tasks common to all implementations probe functions.
+> + *
+> + * The caller should have called pm_runtime_enable() prior to calling
+> + * the common probe function.
+> + */
+>  int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
+>  {
+>         struct platform_device *pdev =3D _host->pdev;
+> @@ -1260,7 +1269,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host=
+)
+>         pm_runtime_set_active(&pdev->dev);
+>         pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
+>         pm_runtime_use_autosuspend(&pdev->dev);
+> -       pm_runtime_enable(&pdev->dev);
+>
+>         ret =3D mmc_add_host(mmc);
+>         if (ret)
+> @@ -1296,7 +1304,6 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *hos=
+t)
+>
+>         pm_runtime_dont_use_autosuspend(&pdev->dev);
+>         pm_runtime_put_sync(&pdev->dev);
+> -       pm_runtime_disable(&pdev->dev);
+>  }
+>  EXPORT_SYMBOL_GPL(tmio_mmc_host_remove);
+>
+> diff --git a/drivers/mmc/host/uniphier-sd.c b/drivers/mmc/host/uniphier-s=
+d.c
+> index 91a2be41edf6196b..49aad9a79c18d24a 100644
+> --- a/drivers/mmc/host/uniphier-sd.c
+> +++ b/drivers/mmc/host/uniphier-sd.c
+> @@ -631,6 +631,7 @@ static int uniphier_sd_probe(struct platform_device *=
+pdev)
+>         host->clk_disable =3D uniphier_sd_clk_disable;
+>         host->set_clock =3D uniphier_sd_set_clock;
+>
+> +       pm_runtime_enable(&pdev->dev);
+>         ret =3D uniphier_sd_clk_enable(host);
+>         if (ret)
+>                 goto free_host;
+> @@ -652,6 +653,7 @@ static int uniphier_sd_probe(struct platform_device *=
+pdev)
+>
+>  free_host:
+>         tmio_mmc_host_free(host);
+> +       pm_runtime_disable(&pdev->dev);
+>
+>         return ret;
+>  }
+> @@ -662,6 +664,7 @@ static int uniphier_sd_remove(struct platform_device =
+*pdev)
+>
+>         tmio_mmc_host_remove(host);
+>         uniphier_sd_clk_disable(host);
+> +       pm_runtime_disable(&pdev->dev);
+>
+>         return 0;
+>  }
+> --
+> 2.21.0
+>
