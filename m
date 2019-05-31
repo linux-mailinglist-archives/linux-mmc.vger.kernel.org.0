@@ -2,195 +2,62 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3962C30D44
-	for <lists+linux-mmc@lfdr.de>; Fri, 31 May 2019 13:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B93130D5A
+	for <lists+linux-mmc@lfdr.de>; Fri, 31 May 2019 13:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727140AbfEaLVI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 31 May 2019 07:21:08 -0400
-Received: from relmlor1.renesas.com ([210.160.252.171]:16076 "EHLO
-        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727114AbfEaLVI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 31 May 2019 07:21:08 -0400
-X-IronPort-AV: E=Sophos;i="5.60,534,1549897200"; 
-   d="scan'208";a="17484183"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie5.idc.renesas.com with ESMTP; 31 May 2019 20:21:04 +0900
-Received: from localhost.localdomain (unknown [10.166.17.210])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 39F704249D39;
-        Fri, 31 May 2019 20:21:04 +0900 (JST)
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com
-Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH v4 3/3] mmc: renesas_sdhi: use multiple segments if possible
-Date:   Fri, 31 May 2019 20:16:11 +0900
-Message-Id: <1559301371-21200-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1559301371-21200-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-References: <1559301371-21200-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S1726724AbfEaLc1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 31 May 2019 07:32:27 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45213 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726002AbfEaLc0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 31 May 2019 07:32:26 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hWfln-0006pU-Dz; Fri, 31 May 2019 11:32:23 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] mmc: sdhci-pci: remove redundant check of slots == 0
+Date:   Fri, 31 May 2019 12:32:23 +0100
+Message-Id: <20190531113223.27474-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-In IOMMU environment, since it's possible to merge scatter gather
-buffers of memory requests to one iova, this patch changes the max_segs
-value when init_card of mmc_host timing to improve the transfer
-performance on renesas_sdhi_internal_dmac.
+From: Colin Ian King <colin.king@canonical.com>
 
-Notes that an sdio card may be possible to use scatter gather buffers
-with non page aligned size, so that this driver will not use multiple
-segments to avoid any trouble. Also, on renesas_sdhi_sys_dmac,
-the max_segs value will change from 32 to 512, but the sys_dmac
-can handle 512 segments, so that this init_card ops is added on
-"TMIO_MMC_MIN_RCAR2" environment.
+The calculation of slots results in a value in the range 1..8
+and so slots can never be zero.  The check for slots == 0 is
+always going to be false, hence it is redundant and can be
+removed.
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Addresses-Coverity: ("Logically dead code")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/mmc/host/renesas_sdhi.h               |  1 +
- drivers/mmc/host/renesas_sdhi_core.c          | 60 +++++++++++++++++++++++++++
- drivers/mmc/host/renesas_sdhi_internal_dmac.c | 19 +++++++++
- 3 files changed, 80 insertions(+)
+ drivers/mmc/host/sdhci-pci-core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/mmc/host/renesas_sdhi.h b/drivers/mmc/host/renesas_sdhi.h
-index c0504aa..d53dda5 100644
---- a/drivers/mmc/host/renesas_sdhi.h
-+++ b/drivers/mmc/host/renesas_sdhi.h
-@@ -51,6 +51,7 @@ struct renesas_sdhi {
- 	void __iomem *scc_ctl;
- 	u32 scc_tappos;
- 	u32 scc_tappos_hs400;
-+	bool ipmmu_mapped;
- };
+diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+index ab9e2b901094..f70436261746 100644
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -2044,8 +2044,6 @@ static int sdhci_pci_probe(struct pci_dev *pdev,
  
- #define host_to_priv(host) \
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index 5e9e36e..e9d9541 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -46,6 +46,8 @@
- #define SDHI_VER_GEN3_SD	0xcc10
- #define SDHI_VER_GEN3_SDMMC	0xcd10
+ 	slots = PCI_SLOT_INFO_SLOTS(slots) + 1;
+ 	dev_dbg(&pdev->dev, "found %d slot(s)\n", slots);
+-	if (slots == 0)
+-		return -ENODEV;
  
-+#define SDHI_MAX_SEGS_IN_IOMMU	512
-+
- struct renesas_sdhi_quirks {
- 	bool hs400_disabled;
- 	bool hs400_4taps;
-@@ -203,6 +205,32 @@ static void renesas_sdhi_clk_disable(struct tmio_mmc_host *host)
- 	clk_disable_unprepare(priv->clk_cd);
- }
+ 	BUG_ON(slots > MAX_SLOTS);
  
-+static void renesas_sdhi_init_card(struct mmc_host *mmc, struct mmc_card *card)
-+{
-+	struct tmio_mmc_host *host = mmc_priv(mmc);
-+	struct renesas_sdhi *priv = host_to_priv(host);
-+
-+	/*
-+	 * In IPMMU environment that some R-Car SoCs have, it's possible to
-+	 * merge scatter gather buffers of memory requests to one iova so that
-+	 * this code changes the max_segs when init_card of mmc_host timing.
-+	 * Notes that an sdio card may be possible to use scatter gather
-+	 * buffers with non page aligned size, so that this driver will not use
-+	 * multiple segments to avoid any trouble even if IPMMU environment.
-+	 *
-+	 * This can expose the host->mmc->max_segs to a block layer by using
-+	 * blk_queue_max_segments() that mmc_setup_queue() calls. In other
-+	 * words, this init_card() ops is called before a block device is
-+	 * created.
-+	 */
-+	if (host->pdata->max_segs < SDHI_MAX_SEGS_IN_IOMMU &&
-+	    priv->ipmmu_mapped && (mmc_card_mmc(card) || mmc_card_sd(card)))
-+		host->mmc->max_segs = SDHI_MAX_SEGS_IN_IOMMU;
-+	else
-+		host->mmc->max_segs = host->pdata->max_segs ? :
-+				      TMIO_DEFAULT_MAX_SEGS;
-+}
-+
- static int renesas_sdhi_card_busy(struct mmc_host *mmc)
- {
- 	struct tmio_mmc_host *host = mmc_priv(mmc);
-@@ -610,6 +638,35 @@ static void renesas_sdhi_enable_dma(struct tmio_mmc_host *host, bool enable)
- 	renesas_sdhi_sdbuf_width(host, enable ? width : 16);
- }
- 
-+static bool renesas_sdhi_ipmmu_mapped(struct device *dev)
-+{
-+	struct device_node *iommu_np;
-+	static const char * const compatibles[] = {
-+		"renesas,ipmmu-r8a7795",
-+		"renesas,ipmmu-r8a7796",
-+		"renesas,ipmmu-r8a77965",
-+		"renesas,ipmmu-r8a77970",
-+		"renesas,ipmmu-r8a77980",
-+		"renesas,ipmmu-r8a77990",
-+		"renesas,ipmmu-r8a77995",
-+	};
-+	int i;
-+
-+	if (!device_iommu_mapped(dev))
-+		return false;
-+
-+	iommu_np = of_parse_phandle(dev->of_node, "iommus", 0);
-+	if (!iommu_np)
-+		return false;
-+
-+	for (i = 0; i < ARRAY_SIZE(compatibles); i++) {
-+		if (of_device_is_compatible(iommu_np, compatibles[i]))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static const struct renesas_sdhi_quirks sdhi_quirks_h3_m3w_es1 = {
- 	.hs400_disabled = true,
- 	.hs400_4taps = true,
-@@ -726,6 +783,9 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 
- 	/* SDR speeds are only available on Gen2+ */
- 	if (mmc_data->flags & TMIO_MMC_MIN_RCAR2) {
-+		host->ops.init_card = renesas_sdhi_init_card;
-+		priv->ipmmu_mapped = renesas_sdhi_ipmmu_mapped(&pdev->dev);
-+
- 		/* card_busy caused issues on r8a73a4 (pre-Gen2) CD-less SDHI */
- 		host->ops.card_busy = renesas_sdhi_card_busy;
- 		host->ops.start_signal_voltage_switch =
-diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-index 751fe91..2b83b43 100644
---- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-+++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-@@ -177,11 +177,30 @@ renesas_sdhi_internal_dmac_start_dma(struct tmio_mmc_host *host,
- 				     struct mmc_data *data)
- {
- 	struct scatterlist *sg = host->sg_ptr;
-+	struct renesas_sdhi *priv = host_to_priv(host);
- 	u32 dtran_mode = DTRAN_MODE_BUS_WIDTH;
- 
- 	if (!test_bit(SDHI_INTERNAL_DMAC_ADDR_MODE_FIXED_ONLY, &global_flags))
- 		dtran_mode |= DTRAN_MODE_ADDR_MODE;
- 
-+	/*
-+	 * If this driver uses multiple segments on IPMMU, all segment buffers
-+	 * boundary except the end of buffer should be aligned to IPMMU page
-+	 * size. Note that the IPMMU page size will be the same as (or less
-+	 * than) CPU page size.
-+	 */
-+	if (priv->ipmmu_mapped && host->sg_len > 1) {
-+		int i;
-+		struct scatterlist *s;
-+
-+		for_each_sg(sg, s, host->sg_len, i) {
-+			if (!PAGE_ALIGNED(sg_virt(s)) ||
-+			    ((i < host->sg_len - 1) &&
-+			     !PAGE_ALIGNED(s->length)))
-+				goto force_pio;
-+		}
-+	}
-+
- 	if (!dma_map_sg(&host->pdev->dev, sg, host->sg_len,
- 			mmc_get_dma_dir(data)))
- 		goto force_pio;
 -- 
-2.7.4
+2.20.1
 
