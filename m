@@ -2,38 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA28831E27
-	for <lists+linux-mmc@lfdr.de>; Sat,  1 Jun 2019 15:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B75A431DE4
+	for <lists+linux-mmc@lfdr.de>; Sat,  1 Jun 2019 15:33:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728714AbfFANXg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 1 Jun 2019 09:23:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53538 "EHLO mail.kernel.org"
+        id S1727536AbfFANcV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 1 Jun 2019 09:32:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55090 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727979AbfFANXf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 1 Jun 2019 09:23:35 -0400
+        id S1729352AbfFANYz (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:24:55 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 687B524C2E;
-        Sat,  1 Jun 2019 13:23:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C2BDD27368;
+        Sat,  1 Jun 2019 13:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559395415;
-        bh=9r1puFqb8kXnbp2vr3hFIXYft/uYYN/xujmq0taN2EU=;
+        s=default; t=1559395494;
+        bh=PTVGXK4NKED6PSxZQ5ihwGx+M6YevY8nWj6ZOOpaAAk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mTKXP9qsGr5/a1LyFfQRK0qCwttUoP6QzeYE6g8pqFrWwBHz2UZU6r8P2Iu4eCE+g
-         2TKWzyKujCp3fAbF6krkFxkIgC52WK33SOC9GgvDuUzJs1jDWZl6GmWlOtFHv7vZwC
-         OyfokcC6sRpYAxCSiDynXgpgFGAUfAhmAZxNgDP8=
+        b=P9OaNmo/kUwByh0pWCdOJz1NsEw9yhUY7r0HiQOidhdMfUx8j+DPVL90QZEa1xVTK
+         j00io/olHKgGeIzRH1O983yeE3UJUNmqCpJOjof+3tATu/sekhsG7QXNeDIXk490B+
+         V0ZEfAAwK0w3ahPY+Bk7V3LL8DSH8csQ1ICf7BYU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ludovic Barre <ludovic.barre@st.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 050/141] mmc: mmci: Prevent polling for busy detection in IRQ context
-Date:   Sat,  1 Jun 2019 09:20:26 -0400
-Message-Id: <20190601132158.25821-50-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 35/99] mmc: mmci: Prevent polling for busy detection in IRQ context
+Date:   Sat,  1 Jun 2019 09:22:42 -0400
+Message-Id: <20190601132346.26558-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601132158.25821-1-sashal@kernel.org>
-References: <20190601132158.25821-1-sashal@kernel.org>
+In-Reply-To: <20190601132346.26558-1-sashal@kernel.org>
+References: <20190601132346.26558-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,10 +65,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 1841d250e9e2c..eb1a65cb878f0 100644
+index f1f54a8184895..77f18729ee96f 100644
 --- a/drivers/mmc/host/mmci.c
 +++ b/drivers/mmc/host/mmci.c
-@@ -1295,9 +1295,10 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
+@@ -1320,9 +1320,10 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
  		}
  
  		/*
