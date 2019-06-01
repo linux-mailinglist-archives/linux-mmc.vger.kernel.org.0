@@ -2,75 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4096430D62
-	for <lists+linux-mmc@lfdr.de>; Fri, 31 May 2019 13:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7CDE31C1F
+	for <lists+linux-mmc@lfdr.de>; Sat,  1 Jun 2019 15:19:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726415AbfEaLgq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 31 May 2019 07:36:46 -0400
-Received: from mga06.intel.com ([134.134.136.31]:10520 "EHLO mga06.intel.com"
+        id S1728147AbfFANTO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 1 Jun 2019 09:19:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46438 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726307AbfEaLgq (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 31 May 2019 07:36:46 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 May 2019 04:36:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,535,1549958400"; 
-   d="scan'208";a="180297619"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by fmsmga002.fm.intel.com with ESMTP; 31 May 2019 04:36:43 -0700
-Subject: Re: [PATCH] mmc: sdhci-pci: remove redundant check of slots == 0
-To:     Colin King <colin.king@canonical.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190531113223.27474-1-colin.king@canonical.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <4336bf57-5fcf-5758-8d0d-9fd4aec3df4a@intel.com>
-Date:   Fri, 31 May 2019 14:35:33 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1728141AbfFANTO (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:19:14 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D3C7127280;
+        Sat,  1 Jun 2019 13:19:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559395153;
+        bh=82S1Qqa4eAW0+cSX+eHPI4DSwXmWn7CYa0kAFadQiNg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=0YN4p4UCq7pHmLso+uGE0m3J3XUwOgAgYFtgJs2KbkHxbUJnmFkI9+PLUiAjXvgRP
+         gppA/7RtRzBpMLPX1NuLd9M4HY2dSefNZFwuV3UEHiYXJWp0UMTUgvyuEyjDlNx13a
+         B9qFpWbfDOXdItc1FPvCZ/oC7aeyM0JWwEJ+reH4=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ludovic Barre <ludovic.barre@st.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.1 068/186] mmc: mmci: Prevent polling for busy detection in IRQ context
+Date:   Sat,  1 Jun 2019 09:14:44 -0400
+Message-Id: <20190601131653.24205-68-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190601131653.24205-1-sashal@kernel.org>
+References: <20190601131653.24205-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20190531113223.27474-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 31/05/19 2:32 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The calculation of slots results in a value in the range 1..8
-> and so slots can never be zero.  The check for slots == 0 is
-> always going to be false, hence it is redundant and can be
-> removed.
-> 
-> Addresses-Coverity: ("Logically dead code")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Ludovic Barre <ludovic.barre@st.com>
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+[ Upstream commit 8520ce1e17799b220ff421d4f39438c9c572ade3 ]
 
-> ---
->  drivers/mmc/host/sdhci-pci-core.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-> index ab9e2b901094..f70436261746 100644
-> --- a/drivers/mmc/host/sdhci-pci-core.c
-> +++ b/drivers/mmc/host/sdhci-pci-core.c
-> @@ -2044,8 +2044,6 @@ static int sdhci_pci_probe(struct pci_dev *pdev,
->  
->  	slots = PCI_SLOT_INFO_SLOTS(slots) + 1;
->  	dev_dbg(&pdev->dev, "found %d slot(s)\n", slots);
-> -	if (slots == 0)
-> -		return -ENODEV;
->  
->  	BUG_ON(slots > MAX_SLOTS);
->  
-> 
+The IRQ handler, mmci_irq(), loops until all status bits have been cleared.
+However, the status bit signaling busy in variant->busy_detect_flag, may be
+set even if busy detection isn't monitored for the current request.
+
+This may be the case for the CMD11 when switching the I/O voltage, which
+leads to that mmci_irq() busy loops in IRQ context. Fix this problem, by
+clearing the status bit for busy, before continuing to validate the
+condition for the loop. This is safe, because the busy status detection has
+already been taken care of by mmci_cmd_irq().
+
+Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mmc/host/mmci.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+index 387ff14587b87..e27978c47db7d 100644
+--- a/drivers/mmc/host/mmci.c
++++ b/drivers/mmc/host/mmci.c
+@@ -1550,9 +1550,10 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
+ 		}
+ 
+ 		/*
+-		 * Don't poll for busy completion in irq context.
++		 * Busy detection has been handled by mmci_cmd_irq() above.
++		 * Clear the status bit to prevent polling in IRQ context.
+ 		 */
+-		if (host->variant->busy_detect && host->busy_status)
++		if (host->variant->busy_detect_flag)
+ 			status &= ~host->variant->busy_detect_flag;
+ 
+ 		ret = 1;
+-- 
+2.20.1
 
