@@ -2,56 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23F9A330B7
-	for <lists+linux-mmc@lfdr.de>; Mon,  3 Jun 2019 15:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BE0A3312B
+	for <lists+linux-mmc@lfdr.de>; Mon,  3 Jun 2019 15:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728453AbfFCNL5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 3 Jun 2019 09:11:57 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:58396 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726516AbfFCNL5 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 3 Jun 2019 09:11:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=tt6BJAYaxrNmu3et796NxiC2q8/CjHMVVu6JBQ4VKOM=; b=KaWmZacyzCx3dkZCrIuDZ1tDZ
-        BHUXC3c+RjO0tz6dSrFkJCGokaf/Zsygkdpm3QoqOkH68wPemKn78+Iy5vpT5SfULBjXbh7hkeOPG
-        SKvvbc14+1KcY0ZBOudUKCjGztMVubdp9Dtww6OYZV0A2wwh1OcDo6vlkgieOvEWEDUKLDrb3H4Nq
-        3HEkRrDFjkS+6n4UMvIOPRc2QikBfQN5PddBY6k6/HJSE9Y1NOhEVlBstuPt2VigPz0TMspuql3q+
-        9DmWiuatDB8rHfOp+ZGG4vDbRwEw9aSa9jVWPAy+TFsbd+tryLxF/gsoWz2d04vzW54p5Ad5m3InS
-        a38Cgsj2w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hXmkh-0001e1-TJ; Mon, 03 Jun 2019 13:11:51 +0000
-Date:   Mon, 3 Jun 2019 06:11:51 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Christoph Hellwig <hch@infradead.org>, ulf.hansson@linaro.org,
-        wsa+renesas@sang-engineering.com, linux-mmc@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] mmc: renesas_sdhi: improve performance by
- changing max_segs
-Message-ID: <20190603131151.GA6147@infradead.org>
-References: <1559301371-21200-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <20190603125701.jkmpkvctrtlj2io7@ninjato>
+        id S1728757AbfFCNes (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 3 Jun 2019 09:34:48 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:39526 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728752AbfFCNes (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 3 Jun 2019 09:34:48 -0400
+Received: by mail-ua1-f68.google.com with SMTP id w44so6461842uad.6
+        for <linux-mmc@vger.kernel.org>; Mon, 03 Jun 2019 06:34:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=iTOR4s19inw6YQwhxy0CXAQucgvVed2kOMDp3ETSJq0=;
+        b=Q+TCX9NGStBhrVViNBATbIVxpQv07Yf7esHbsRxw3NSascNQjVpfBlu2e0bCTx0nGM
+         5tHxgVnccsILnUVnlCwpx+c1VUPfbPCLxaOICv7rBmWkVVJLWDMEYiNQyVPsrcgN9V5m
+         JcT2mYYjie7daqe76DS8wtZA6sD1NEx9ExP/H/VrFeD5NdB6kSiF/F2K8Vl35BuOjrNs
+         O2fPxlZU36VMsrYbd3aK3IxSeErRwGSv+x15ANfj17VPlmQ9ymL4w3aG+flUSBIbxqjo
+         AvsP/WSWMdZUZ58OorFH6PFRpTW77VxU4OZXSTeF1GrXowttjGcx3aIZB9K0+PHBxHw8
+         U8iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iTOR4s19inw6YQwhxy0CXAQucgvVed2kOMDp3ETSJq0=;
+        b=VRRODWzaPNo+MkiltaEIVG3uGQAtKDsUTNXPlxYQUAEnliGUfgfS+bEcXpQdp7BBNz
+         60tNm3vG89RWKcP6lgteKrXHOaN+5dyOexoYct1u+kauQXtM1aKHr9zn9dheIfxLTSkK
+         IeS8lpymlWZDYrB45kYuqksRE54DqDlDUBrtPtjIyFz+IOEHs45xVS+NF4mLgFVTm0Cn
+         0jNZk8qyvdfaa8KgkyiGs6QYe0v+fDUp4+yn6tnkz8IieY75FKzH+Cy9cNeEwxtkntoW
+         p2pMvXSEjSRfV9jtpbToUxZ+9AJmmoAp7ej/gwtqK7lY4/yjjHGf/8XDc56ZzSY70soD
+         /Ydw==
+X-Gm-Message-State: APjAAAWjLyBTsc5qj2Ccgi//EfknpOhdlA/sBWjiILqKSRyIodxKbDrY
+        uAODSqoudbUV1+gjLbh/xgQ2HMhq1vZTTm0z9xWVoA==
+X-Google-Smtp-Source: APXvYqxp3yy8DxN4JfsvUu4iGuu38aEcdR6YIg+B2abb33POOSHXMVT6lknZdscjBCk3bsp7Vw5g5SKYGlgbDyo2QVo=
+X-Received: by 2002:ab0:5608:: with SMTP id y8mr12658948uaa.129.1559568886891;
+ Mon, 03 Jun 2019 06:34:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190603125701.jkmpkvctrtlj2io7@ninjato>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <cover.1558346019.git.baolin.wang@linaro.org> <ee4ad0e7e131e4d639dbf6bd25ad93726648ce1c.1558346019.git.baolin.wang@linaro.org>
+In-Reply-To: <ee4ad0e7e131e4d639dbf6bd25ad93726648ce1c.1558346019.git.baolin.wang@linaro.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 3 Jun 2019 15:34:10 +0200
+Message-ID: <CAPDyKFrWiG3KJad+L3NOQ-dC2XnBM-8mQGVEsVB_Qg0ACTfVag@mail.gmail.com>
+Subject: Re: [PATCH 2/9] dt-bindings: mmc: sprd: Add another optional clock documentation
+To:     Baolin Wang <baolin.wang@linaro.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Vincent Guittot <vincent.guittot@linaro.org>, arm@kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Jun 03, 2019 at 02:57:01PM +0200, Wolfram Sang wrote:
-> Yes, dropping my rev on patch 3 is a good thing to do. I added Christoph
-> to the CC list because he gave valuable input last time.
+On Mon, 20 May 2019 at 12:12, Baolin Wang <baolin.wang@linaro.org> wrote:
+>
+> For some Spreadtrum platforms like SC9860 platform, we should enable another
+> gate clock '2x_enable' to make the SD host controller work well. Thus add
+> documentation for this optional clock.
+>
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+> ---
+>  .../devicetree/bindings/mmc/sdhci-sprd.txt         |    1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-sprd.txt b/Documentation/devicetree/bindings/mmc/sdhci-sprd.txt
+> index 45c9978..a285c77 100644
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-sprd.txt
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-sprd.txt
+> @@ -14,6 +14,7 @@ Required properties:
+>  - clock-names: Should contain the following:
+>         "sdio" - SDIO source clock (required)
+>         "enable" - gate clock which used for enabling/disabling the device (required)
+> +       "2x_enable" - gate clock controlling the device for some special platforms (optional)
 
-Assuming iommu merging in a driver using the DMA API is always bogus
-as mentioned last time.  As this cover letter don't seem to include
-any higher level DMA subsystem or block changes I'll stick to my NAK.
+This is a bit vague, could you please elaborate (and fold in that
+information to the doc) on what kind of clock this is?
+
+[...]
+
+Kind regards
+Uffe
