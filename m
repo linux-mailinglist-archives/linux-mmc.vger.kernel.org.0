@@ -2,142 +2,144 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DA6232FE4
-	for <lists+linux-mmc@lfdr.de>; Mon,  3 Jun 2019 14:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E28C133059
+	for <lists+linux-mmc@lfdr.de>; Mon,  3 Jun 2019 14:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727190AbfFCMmO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 3 Jun 2019 08:42:14 -0400
-Received: from mga11.intel.com ([192.55.52.93]:61293 "EHLO mga11.intel.com"
+        id S1727159AbfFCM5G (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 3 Jun 2019 08:57:06 -0400
+Received: from sauhun.de ([88.99.104.3]:37750 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726360AbfFCMmO (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 3 Jun 2019 08:42:14 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jun 2019 05:42:13 -0700
-X-ExtLoop1: 1
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by orsmga005.jf.intel.com with ESMTP; 03 Jun 2019 05:42:09 -0700
-Subject: Re: [PATCH 6/9] mmc: sdhci-sprd: Enable PHY DLL to make clock stable
-To:     Baolin Wang <baolin.wang@linaro.org>, ulf.hansson@linaro.org,
-        zhang.lyra@gmail.com, orsonzhai@gmail.com, robh+dt@kernel.org,
-        mark.rutland@arm.com, arnd@arndb.de, olof@lixom.net
-Cc:     vincent.guittot@linaro.org, arm@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <cover.1558346019.git.baolin.wang@linaro.org>
- <270e86bf6b1ce138e40830fb63c9bcf150440426.1558346019.git.baolin.wang@linaro.org>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <8a792a0c-ed53-56ca-ede8-4a2657158b81@intel.com>
-Date:   Mon, 3 Jun 2019 15:40:58 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726336AbfFCM5G (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 3 Jun 2019 08:57:06 -0400
+Received: from localhost (p5486CC42.dip0.t-ipconnect.de [84.134.204.66])
+        by pokefinder.org (Postfix) with ESMTPSA id C04B82CF690;
+        Mon,  3 Jun 2019 14:57:03 +0200 (CEST)
+Date:   Mon, 3 Jun 2019 14:57:01 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Christoph Hellwig <hch@infradead.org>
+Cc:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
+        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] mmc: renesas_sdhi: improve performance by
+ changing max_segs
+Message-ID: <20190603125701.jkmpkvctrtlj2io7@ninjato>
+References: <1559301371-21200-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
 MIME-Version: 1.0
-In-Reply-To: <270e86bf6b1ce138e40830fb63c9bcf150440426.1558346019.git.baolin.wang@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="r46gxcxznvtf2qr6"
+Content-Disposition: inline
+In-Reply-To: <1559301371-21200-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 20/05/19 1:11 PM, Baolin Wang wrote:
-> For the Spreadtrum SD host controller, when we changed the clock to be
-> more than 52M, we should enable the PHY DLL which is used to track the
-> clock frequency to make the clock work more stable. Otherwise deviation
-> may occur of the higher clock.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+--r46gxcxznvtf2qr6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> ---
->  drivers/mmc/host/sdhci-sprd.c |   44 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 43 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-> index edec197..e6eda13 100644
-> --- a/drivers/mmc/host/sdhci-sprd.c
-> +++ b/drivers/mmc/host/sdhci-sprd.c
-> @@ -22,6 +22,13 @@
->  /* SDHCI_ARGUMENT2 register high 16bit */
->  #define SDHCI_SPRD_ARG2_STUFF		GENMASK(31, 16)
->  
-> +#define SDHCI_SPRD_REG_32_DLL_CFG	0x200
-> +#define  SDHCI_SPRD_DLL_ALL_CPST_EN	(BIT(18) | BIT(24) | BIT(25) | BIT(26) | BIT(27))
-> +#define  SDHCI_SPRD_DLL_EN		BIT(21)
-> +#define  SDHCI_SPRD_DLL_SEARCH_MODE	BIT(16)
-> +#define  SDHCI_SPRD_DLL_INIT_COUNT	0xc00
-> +#define  SDHCI_SPRD_DLL_PHASE_INTERNAL	0x3
-> +
->  #define SDHCI_SPRD_REG_32_DLL_DLY_OFFSET	0x208
->  #define  SDHCIBSPRD_IT_WR_DLY_INV		BIT(5)
->  #define  SDHCI_SPRD_BIT_CMD_DLY_INV		BIT(13)
-> @@ -56,6 +63,7 @@
->  #define SDHCI_SPRD_CLK_MAX_DIV		1023
->  
->  #define SDHCI_SPRD_CLK_DEF_RATE		26000000
-> +#define SDHCI_SPRD_PHY_DLL_CLK		52000000
->  
->  struct sdhci_sprd_host {
->  	u32 version;
-> @@ -200,9 +208,33 @@ static inline void _sdhci_sprd_set_clock(struct sdhci_host *host,
->  	}
->  }
->  
-> +static void sdhci_sprd_enable_phy_dll(struct sdhci_host *host)
-> +{
-> +	u32 tmp;
-> +
-> +	tmp = sdhci_readl(host, SDHCI_SPRD_REG_32_DLL_CFG);
-> +	tmp &= ~(SDHCI_SPRD_DLL_EN | SDHCI_SPRD_DLL_ALL_CPST_EN);
-> +	sdhci_writel(host, tmp, SDHCI_SPRD_REG_32_DLL_CFG);
-> +	/* wait 1ms */
-> +	usleep_range(1000, 1250);
-> +
-> +	tmp = sdhci_readl(host, SDHCI_SPRD_REG_32_DLL_CFG);
-> +	tmp |= SDHCI_SPRD_DLL_ALL_CPST_EN | SDHCI_SPRD_DLL_SEARCH_MODE |
-> +		SDHCI_SPRD_DLL_INIT_COUNT | SDHCI_SPRD_DLL_PHASE_INTERNAL;
-> +	sdhci_writel(host, tmp, SDHCI_SPRD_REG_32_DLL_CFG);
-> +	/* wait 1ms */
-> +	usleep_range(1000, 1250);
-> +
-> +	tmp = sdhci_readl(host, SDHCI_SPRD_REG_32_DLL_CFG);
-> +	tmp |= SDHCI_SPRD_DLL_EN;
-> +	sdhci_writel(host, tmp, SDHCI_SPRD_REG_32_DLL_CFG);
-> +	/* wait 1ms */
-> +	usleep_range(1000, 1250);
-> +}
-> +
->  static void sdhci_sprd_set_clock(struct sdhci_host *host, unsigned int clock)
->  {
-> -	bool en = false;
-> +	bool en = false, clk_changed = false;
->  
->  	if (clock == 0) {
->  		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-> @@ -214,9 +246,19 @@ static void sdhci_sprd_set_clock(struct sdhci_host *host, unsigned int clock)
->  			en = true;
->  		sdhci_sprd_set_dll_invert(host, SDHCI_SPRD_BIT_CMD_DLY_INV |
->  					  SDHCI_SPRD_BIT_POSRD_DLY_INV, en);
-> +		clk_changed = true;
->  	} else {
->  		_sdhci_sprd_set_clock(host, clock);
->  	}
-> +
-> +	/*
-> +	 * According to the Spreadtrum SD host specification, when we changed
-> +	 * the clock to be more than 52M, we should enable the PHY DLL which
-> +	 * is used to track the clock frequency to make the clock work more
-> +	 * stable. Otherwise deviation may occur of the higher clock.
-> +	 */
-> +	if (clk_changed && clock > SDHCI_SPRD_PHY_DLL_CLK)
-> +		sdhci_sprd_enable_phy_dll(host);
->  }
->  
->  static unsigned int sdhci_sprd_get_max_clock(struct sdhci_host *host)
-> 
+On Fri, May 31, 2019 at 08:16:08PM +0900, Yoshihiro Shimoda wrote:
+> This patch series is based on iommu.git / next branch.
+>=20
+> Since SDHI host internal DMAC of the R-Car Gen3 cannot handle two or more
+> segments, the performance rate (especially, eMMC HS400 reading) is not go=
+od.
+> However, if IOMMU is enabled on the DMAC, since IOMMU will map multiple
+> scatter gather buffers as one contignous iova, the DMAC can handle the io=
+va
+> as well and then the performance rate is possible to improve. In fact,
+> I have measured the performance by using bonnie++, "Sequential Input - bl=
+ock"
+> rate was improved on r8a7795.
+>=20
+> However, in case of a sdio card (especiialy some WiFi cards/drivers),
+> scatter gather buffers are possible to be not contiguous iova because
+> each scatter gather buffer has only about 1500 bytes, the DMAC cannot
+> handle it. So, this patch set adds init_card() ops to detect the card
+> type, and then the driver changes the max_segs if the DMAC is under
+> IOMMU environment and an sd card/mmc is detected.
+>=20
+> Changes from v3 [1]:
+>  - Use a helper function device_iommu_mapped on patch 1 and 3.
+>  - Check if R-Car Gen3 IPMMU is used or not on patch 3.
+>  - Check if all multiple segment buffers are aligned to PAGE_SIZE on patc=
+h 3.
+>  - Add Reviewed-by Wolfram-san on patch 1 and 2. Note that I also got his
+>    Reviewed-by on patch 3, but I changed it from v2. So, I didn't add
+>    his Reviewed-by at this time.
 
+Yes, dropping my rev on patch 3 is a good thing to do. I added Christoph
+to the CC list because he gave valuable input last time.
+
+@hch: If you didn't get the original mails from some list, I can bounce
+them to you or you can find them here:
+
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=3D125593
+
+>=20
+> Changes from v2 [2]:
+>  - Add some conditions in the init_card().
+>  - Add a comment in the init_card().
+>  - Add definitions for some "MAX_SEGS".
+>=20
+> Changes from v1 [3]:
+>  - Remove adding init_card ops into struct tmio_mmc_dma_ops and
+>    tmio_mmc_host and just set init_card on renesas_sdhi_core.c.
+>  - Revise typos on "mmc: tmio: No memory size limitation if runs on IOMMU=
+".
+>  - Add Simon-san's Reviewed-by on a tmio patch.
+>=20
+> [1]
+> https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=3D120=
+985
+>=20
+> [2]
+> https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=3D116=
+729
+>=20
+> [3]
+> https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=3D110=
+485
+>=20
+>=20
+> Yoshihiro Shimoda (3):
+>   mmc: tmio: No memory size limitation if runs on IOMMU
+>   mmc: tmio: Add a definition for default max_segs
+>   mmc: renesas_sdhi: use multiple segments if possible
+>=20
+>  drivers/mmc/host/renesas_sdhi.h               |  1 +
+>  drivers/mmc/host/renesas_sdhi_core.c          | 60 +++++++++++++++++++++=
+++++++
+>  drivers/mmc/host/renesas_sdhi_internal_dmac.c | 19 +++++++++
+>  drivers/mmc/host/tmio_mmc.h                   |  1 +
+>  drivers/mmc/host/tmio_mmc_core.c              |  7 ++--
+>  5 files changed, 85 insertions(+), 3 deletions(-)
+>=20
+> --=20
+> 2.7.4
+>=20
+
+--r46gxcxznvtf2qr6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlz1GRgACgkQFA3kzBSg
+KbYWYw//UpgGMNzkGLIXeMqpmQvikAJ87iHNVtDMm6PJn4dAtK72ieXGaqwQx3pN
+MUWwN8goObbBcU0rYGeRbUGwAaOiO1umyTeSrtwKSnAgJxrLe/KysKbMA85cCqz2
+/h6QrDZINZTo8Gb+Uh0vQqHwTY8NO4suiDa27eRXDXzAjdXzJ9ABWYdrnW8kwANq
+EvVQd/tsi1jB1SuuS7im7VHTfFBCjgdmGgWDk3XZie9ttDR3ZpkbouUdSfs0xSzq
+JcQ9OMKOZUfVfYOOwmI/J8rYcjb7pZP+zPWBCSzxr64ZeyIu3wPs0y6zkYm/7PyP
+oHxML+bSF5JdmPn4V+/CwPGLqB8L93mgn8RdUYP9gVkcmUpcU431bcc6Tu99smER
+aRRQ2f0auI38g9iY241tEiJjeQjiQU1XGHK8ziBf1Ua3gQxR456oSSJiUdWaX4sm
+NEU9qv2MrJAbbq6YVBnbqabp41rusek0mRP3N4LD7HV5qGJIg0Sl3WapttjVvwxH
+zL80kp9yuao48+xBdycmMtk7+uwqUfFQ2hxXpokMShs7E7Y6cMb2TwvUL4ytPRSQ
+QASKr9AqgMX1uCVW671aconSZbGzCrX6+I9X0JKIcadkDY0cfOzW2O54g3rdDAXe
+/wsNCXgAy+jWRK20+yzkl2kzGoNT/74E89bdvXtL9zCwwB4RPyU=
+=3NFR
+-----END PGP SIGNATURE-----
+
+--r46gxcxznvtf2qr6--
