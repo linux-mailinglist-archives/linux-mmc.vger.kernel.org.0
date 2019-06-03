@@ -2,144 +2,168 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E28C133059
-	for <lists+linux-mmc@lfdr.de>; Mon,  3 Jun 2019 14:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08CF433074
+	for <lists+linux-mmc@lfdr.de>; Mon,  3 Jun 2019 15:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727159AbfFCM5G (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 3 Jun 2019 08:57:06 -0400
-Received: from sauhun.de ([88.99.104.3]:37750 "EHLO pokefinder.org"
+        id S1726754AbfFCNDP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 3 Jun 2019 09:03:15 -0400
+Received: from mga01.intel.com ([192.55.52.88]:50872 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726336AbfFCM5G (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 3 Jun 2019 08:57:06 -0400
-Received: from localhost (p5486CC42.dip0.t-ipconnect.de [84.134.204.66])
-        by pokefinder.org (Postfix) with ESMTPSA id C04B82CF690;
-        Mon,  3 Jun 2019 14:57:03 +0200 (CEST)
-Date:   Mon, 3 Jun 2019 14:57:01 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Christoph Hellwig <hch@infradead.org>
-Cc:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
-        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] mmc: renesas_sdhi: improve performance by
- changing max_segs
-Message-ID: <20190603125701.jkmpkvctrtlj2io7@ninjato>
-References: <1559301371-21200-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S1726360AbfFCNDO (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 3 Jun 2019 09:03:14 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jun 2019 06:03:14 -0700
+X-ExtLoop1: 1
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
+  by orsmga005.jf.intel.com with ESMTP; 03 Jun 2019 06:03:09 -0700
+Subject: Re: [PATCH 8/9] mmc: sdhci-sprd: Add PHY DLL delay configuration
+To:     Baolin Wang <baolin.wang@linaro.org>, ulf.hansson@linaro.org,
+        zhang.lyra@gmail.com, orsonzhai@gmail.com, robh+dt@kernel.org,
+        mark.rutland@arm.com, arnd@arndb.de, olof@lixom.net
+Cc:     vincent.guittot@linaro.org, arm@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <cover.1558346019.git.baolin.wang@linaro.org>
+ <aafceaeb2fc7e9d103d1d7a19cdae97759dd1500.1558346019.git.baolin.wang@linaro.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <6b539c8b-c2fd-6c37-d645-ef714c0e29c9@intel.com>
+Date:   Mon, 3 Jun 2019 16:01:58 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="r46gxcxznvtf2qr6"
-Content-Disposition: inline
-In-Reply-To: <1559301371-21200-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <aafceaeb2fc7e9d103d1d7a19cdae97759dd1500.1558346019.git.baolin.wang@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On 20/05/19 1:12 PM, Baolin Wang wrote:
+> Set the PHY DLL delay for each timing mode, which is used to sample the clock
+> accurately and make the clock more stable.
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 
---r46gxcxznvtf2qr6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+One comment, nevertheless:
 
-On Fri, May 31, 2019 at 08:16:08PM +0900, Yoshihiro Shimoda wrote:
-> This patch series is based on iommu.git / next branch.
->=20
-> Since SDHI host internal DMAC of the R-Car Gen3 cannot handle two or more
-> segments, the performance rate (especially, eMMC HS400 reading) is not go=
-od.
-> However, if IOMMU is enabled on the DMAC, since IOMMU will map multiple
-> scatter gather buffers as one contignous iova, the DMAC can handle the io=
-va
-> as well and then the performance rate is possible to improve. In fact,
-> I have measured the performance by using bonnie++, "Sequential Input - bl=
-ock"
-> rate was improved on r8a7795.
->=20
-> However, in case of a sdio card (especiialy some WiFi cards/drivers),
-> scatter gather buffers are possible to be not contiguous iova because
-> each scatter gather buffer has only about 1500 bytes, the DMAC cannot
-> handle it. So, this patch set adds init_card() ops to detect the card
-> type, and then the driver changes the max_segs if the DMAC is under
-> IOMMU environment and an sd card/mmc is detected.
->=20
-> Changes from v3 [1]:
->  - Use a helper function device_iommu_mapped on patch 1 and 3.
->  - Check if R-Car Gen3 IPMMU is used or not on patch 3.
->  - Check if all multiple segment buffers are aligned to PAGE_SIZE on patc=
-h 3.
->  - Add Reviewed-by Wolfram-san on patch 1 and 2. Note that I also got his
->    Reviewed-by on patch 3, but I changed it from v2. So, I didn't add
->    his Reviewed-by at this time.
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Yes, dropping my rev on patch 3 is a good thing to do. I added Christoph
-to the CC list because he gave valuable input last time.
+> ---
+>  drivers/mmc/host/sdhci-sprd.c |   51 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+> 
+> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+> index e6eda13..911a09b 100644
+> --- a/drivers/mmc/host/sdhci-sprd.c
+> +++ b/drivers/mmc/host/sdhci-sprd.c
+> @@ -29,6 +29,8 @@
+>  #define  SDHCI_SPRD_DLL_INIT_COUNT	0xc00
+>  #define  SDHCI_SPRD_DLL_PHASE_INTERNAL	0x3
+>  
+> +#define SDHCI_SPRD_REG_32_DLL_DLY	0x204
+> +
+>  #define SDHCI_SPRD_REG_32_DLL_DLY_OFFSET	0x208
+>  #define  SDHCIBSPRD_IT_WR_DLY_INV		BIT(5)
+>  #define  SDHCI_SPRD_BIT_CMD_DLY_INV		BIT(13)
+> @@ -72,6 +74,24 @@ struct sdhci_sprd_host {
+>  	struct clk *clk_2x_enable;
+>  	u32 base_rate;
+>  	int flags; /* backup of host attribute */
+> +	u32 phy_delay[MMC_TIMING_MMC_HS400 + 2];
+> +};
+> +
+> +struct sdhci_sprd_phy_cfg {
+> +	const char *property;
+> +	u8 timing;
+> +};
+> +
+> +static const struct sdhci_sprd_phy_cfg sdhci_sprd_phy_cfgs[] = {
+> +	{ "sprd,phy-delay-legacy", MMC_TIMING_LEGACY, },
+> +	{ "sprd,phy-delay-sd-highspeed", MMC_TIMING_MMC_HS, },
 
-@hch: If you didn't get the original mails from some list, I can bounce
-them to you or you can find them here:
+Did you mean MMC_TIMING_SD_HS
 
-https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=3D125593
+> +	{ "sprd,phy-delay-sd-uhs-sdr50", MMC_TIMING_UHS_SDR50, },
+> +	{ "sprd,phy-delay-sd-uhs-sdr104", MMC_TIMING_UHS_SDR104, },
+> +	{ "sprd,phy-delay-mmc-highspeed", MMC_TIMING_MMC_HS, },
+> +	{ "sprd,phy-delay-mmc-ddr52", MMC_TIMING_MMC_DDR52, },
+> +	{ "sprd,phy-delay-mmc-hs200", MMC_TIMING_MMC_HS200, },
+> +	{ "sprd,phy-delay-mmc-hs400", MMC_TIMING_MMC_HS400, },
+> +	{ "sprd,phy-delay-mmc-hs400es", MMC_TIMING_MMC_HS400 + 1, },
+>  };
+>  
+>  #define TO_SPRD_HOST(host) sdhci_pltfm_priv(sdhci_priv(host))
+> @@ -276,6 +296,9 @@ static unsigned int sdhci_sprd_get_min_clock(struct sdhci_host *host)
+>  static void sdhci_sprd_set_uhs_signaling(struct sdhci_host *host,
+>  					 unsigned int timing)
+>  {
+> +	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
+> +	struct mmc_host *mmc = host->mmc;
+> +	u32 *p = sprd_host->phy_delay;
+>  	u16 ctrl_2;
+>  
+>  	if (timing == host->timing)
+> @@ -314,6 +337,9 @@ static void sdhci_sprd_set_uhs_signaling(struct sdhci_host *host,
+>  	}
+>  
+>  	sdhci_writew(host, ctrl_2, SDHCI_HOST_CONTROL2);
+> +
+> +	if (!mmc->ios.enhanced_strobe)
+> +		sdhci_writel(host, p[timing], SDHCI_SPRD_REG_32_DLL_DLY);
+>  }
+>  
+>  static void sdhci_sprd_hw_reset(struct sdhci_host *host)
+> @@ -381,6 +407,8 @@ static void sdhci_sprd_hs400_enhanced_strobe(struct mmc_host *mmc,
+>  					     struct mmc_ios *ios)
+>  {
+>  	struct sdhci_host *host = mmc_priv(mmc);
+> +	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
+> +	u32 *p = sprd_host->phy_delay;
+>  	u16 ctrl_2;
+>  
+>  	if (!ios->enhanced_strobe)
+> @@ -395,6 +423,28 @@ static void sdhci_sprd_hs400_enhanced_strobe(struct mmc_host *mmc,
+>  	sdhci_writew(host, ctrl_2, SDHCI_HOST_CONTROL2);
+>  
+>  	sdhci_sprd_sd_clk_on(host);
+> +
+> +	/* Set the PHY DLL delay value for HS400 enhanced strobe mode */
+> +	sdhci_writel(host, p[MMC_TIMING_MMC_HS400 + 1],
+> +		     SDHCI_SPRD_REG_32_DLL_DLY);
+> +}
+> +
+> +static void sdhci_sprd_phy_param_parse(struct sdhci_sprd_host *sprd_host,
+> +				       struct device_node *np)
+> +{
+> +	u32 *p = sprd_host->phy_delay;
+> +	int ret, i, index;
+> +	u32 val[4];
+> +
+> +	for (i = 0; i < ARRAY_SIZE(sdhci_sprd_phy_cfgs); i++) {
+> +		ret = of_property_read_u32_array(np,
+> +				sdhci_sprd_phy_cfgs[i].property, val, 4);
+> +		if (ret)
+> +			continue;
+> +
+> +		index = sdhci_sprd_phy_cfgs[i].timing;
+> +		p[index] = val[0] | (val[1] << 8) | (val[2] << 16) | (val[3] << 24);
+> +	}
+>  }
+>  
+>  static const struct sdhci_pltfm_data sdhci_sprd_pdata = {
+> @@ -428,6 +478,7 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
+>  		goto pltfm_free;
+>  
+>  	sprd_host = TO_SPRD_HOST(host);
+> +	sdhci_sprd_phy_param_parse(sprd_host, pdev->dev.of_node);
+>  
+>  	clk = devm_clk_get(&pdev->dev, "sdio");
+>  	if (IS_ERR(clk)) {
+> 
 
->=20
-> Changes from v2 [2]:
->  - Add some conditions in the init_card().
->  - Add a comment in the init_card().
->  - Add definitions for some "MAX_SEGS".
->=20
-> Changes from v1 [3]:
->  - Remove adding init_card ops into struct tmio_mmc_dma_ops and
->    tmio_mmc_host and just set init_card on renesas_sdhi_core.c.
->  - Revise typos on "mmc: tmio: No memory size limitation if runs on IOMMU=
-".
->  - Add Simon-san's Reviewed-by on a tmio patch.
->=20
-> [1]
-> https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=3D120=
-985
->=20
-> [2]
-> https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=3D116=
-729
->=20
-> [3]
-> https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=3D110=
-485
->=20
->=20
-> Yoshihiro Shimoda (3):
->   mmc: tmio: No memory size limitation if runs on IOMMU
->   mmc: tmio: Add a definition for default max_segs
->   mmc: renesas_sdhi: use multiple segments if possible
->=20
->  drivers/mmc/host/renesas_sdhi.h               |  1 +
->  drivers/mmc/host/renesas_sdhi_core.c          | 60 +++++++++++++++++++++=
-++++++
->  drivers/mmc/host/renesas_sdhi_internal_dmac.c | 19 +++++++++
->  drivers/mmc/host/tmio_mmc.h                   |  1 +
->  drivers/mmc/host/tmio_mmc_core.c              |  7 ++--
->  5 files changed, 85 insertions(+), 3 deletions(-)
->=20
-> --=20
-> 2.7.4
->=20
-
---r46gxcxznvtf2qr6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlz1GRgACgkQFA3kzBSg
-KbYWYw//UpgGMNzkGLIXeMqpmQvikAJ87iHNVtDMm6PJn4dAtK72ieXGaqwQx3pN
-MUWwN8goObbBcU0rYGeRbUGwAaOiO1umyTeSrtwKSnAgJxrLe/KysKbMA85cCqz2
-/h6QrDZINZTo8Gb+Uh0vQqHwTY8NO4suiDa27eRXDXzAjdXzJ9ABWYdrnW8kwANq
-EvVQd/tsi1jB1SuuS7im7VHTfFBCjgdmGgWDk3XZie9ttDR3ZpkbouUdSfs0xSzq
-JcQ9OMKOZUfVfYOOwmI/J8rYcjb7pZP+zPWBCSzxr64ZeyIu3wPs0y6zkYm/7PyP
-oHxML+bSF5JdmPn4V+/CwPGLqB8L93mgn8RdUYP9gVkcmUpcU431bcc6Tu99smER
-aRRQ2f0auI38g9iY241tEiJjeQjiQU1XGHK8ziBf1Ua3gQxR456oSSJiUdWaX4sm
-NEU9qv2MrJAbbq6YVBnbqabp41rusek0mRP3N4LD7HV5qGJIg0Sl3WapttjVvwxH
-zL80kp9yuao48+xBdycmMtk7+uwqUfFQ2hxXpokMShs7E7Y6cMb2TwvUL4ytPRSQ
-QASKr9AqgMX1uCVW671aconSZbGzCrX6+I9X0JKIcadkDY0cfOzW2O54g3rdDAXe
-/wsNCXgAy+jWRK20+yzkl2kzGoNT/74E89bdvXtL9zCwwB4RPyU=
-=3NFR
------END PGP SIGNATURE-----
-
---r46gxcxznvtf2qr6--
