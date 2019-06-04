@@ -2,92 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 094CB34C3B
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 17:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED0434C58
+	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 17:34:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727843AbfFDP3O (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Jun 2019 11:29:14 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:36344 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727951AbfFDP3O (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 11:29:14 -0400
-Received: by mail-lj1-f196.google.com with SMTP id i21so5559307ljj.3;
-        Tue, 04 Jun 2019 08:29:12 -0700 (PDT)
+        id S1728100AbfFDPet (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 4 Jun 2019 11:34:49 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:37517 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727972AbfFDPet (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 11:34:49 -0400
+Received: by mail-wr1-f65.google.com with SMTP id h1so16328853wro.4;
+        Tue, 04 Jun 2019 08:34:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Drpmks9Nadt8eEMrC4hxDy5or3+S1vc4/WSq1uRgeVA=;
+        b=EeKpfr2NEBbLg79euWAguBeDxYejmlTQPs2nwZ4ROCsjtEvuxBKaysPov51PGtXb9m
+         VKPwaU2qoWdmvD/nvcgpQzfBGLXpO0/mMOlqV3d88XtAclAkMiWbUAgThInufefmz5IR
+         /p2807h4pzJPKs0yuC3bbIjOeOhLrdD1rRw1p88yeoMCwmbPUEJjqG63FWMfngwRS/Oc
+         oXugNwa2k2M8XuLrFAsXiLSlVWoNqEqOBOQai4c1QVUlrWmbvyLHNeyNxz3dR74QVJyh
+         92B8iZwJPyY4ZOe/gTeT6+Xb4DheOj0Y1XC+HMdaQVCEBgaxXpcLjSUXSvB1IzuXfWNo
+         FoYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eRn6ZUH48TOGqsFJXDxIEsklGvs2yDgvovf/2ozhDpk=;
-        b=I0AuA4cmyZWXpgFAgpzIXJc9qBosLowOV1b3AY7qWSAKKlB4NElNZm0zs9QZV3foJa
-         HwDSiFNIPJ1UUUxGa2pY05Hr4EFtR0MFQfnjTQnrEqj0g/f89eGqxUj4lUw+srza10Fd
-         VBVKcV4wJ6SjdYDh3fXhr65WA4kEdhGuLg2+0E6wP6b/KLYehv6LAb5rlqrqrRNWvi5e
-         oQGTG5epHa9xV1wljMc4hf/sNN5GHBJdac5PcbsFBzhiFj9FRdDWV8WdeTkXfUfkwSHG
-         FiSgwxsFEcTea2HJWGqdm1LGMqg8F46Pz6R21co34fnHy+yh29VpmfjANcRTns/TQwbF
-         /Qqw==
-X-Gm-Message-State: APjAAAU9Vs7n3Uj1g+hPg1Sg1ffMqpIXV2t4Nl6zPKBwZJts43ynVgfj
-        Z4H18/spQcHlDwXXMaTv6HnVWazo/JokhZADj1iSMITnWXc=
-X-Google-Smtp-Source: APXvYqwYz2/CFeMckochz6IGluLcvKKajaDDzKliM6VK1pN36+liDhvSkL2ptC2siaTHwUfblUyTrfqX+/50uTm2wKo=
-X-Received: by 2002:a2e:8555:: with SMTP id u21mr16876658ljj.133.1559662151853;
- Tue, 04 Jun 2019 08:29:11 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Drpmks9Nadt8eEMrC4hxDy5or3+S1vc4/WSq1uRgeVA=;
+        b=T0gipifpa8S0PlL+2JQf2YsqsV8PHAtrfcEU3+9Irw+8UpAR6UIPr5x4ImtvP39CMG
+         FH9/RMOReKbbRqJiyMsXiSVGmWbNPdJXIA1rDonYPFAeL013bzBJjSyauk58c6bqdwlh
+         tEfnkbkVwZqsAp7Vgwvz6kob5XRMbGR/KI9QwUMk/89H0djwIeNHwpPo3e1NrdNa3KYM
+         oFQxMrguLdYfb+8Ths0kP8bevZdYGDxvO1O2dEOrXeqX4Ok7xh2jg5yJgqguFMHKxxPW
+         EqtumE4CBPmje/i0gm26OCjwUQ749/bpzCr4j71BXm6EaOZtrV2fxifCBh1w/DWqTLyA
+         4bXg==
+X-Gm-Message-State: APjAAAWBhFuZgVeWWA8hoduL6lF11I+dB3rcWXsBh97kqQYW+HfnBScN
+        jMKNumv5+H1tDOoIKKaQLY4=
+X-Google-Smtp-Source: APXvYqxLC0ekWFwzusI53pYkvWLKTovC7av1usZ+yyEKDtMROHOdA57mqcwfNvrILFJxFnGzkCnyQA==
+X-Received: by 2002:a5d:498a:: with SMTP id r10mr21054490wrq.28.1559662487881;
+        Tue, 04 Jun 2019 08:34:47 -0700 (PDT)
+Received: from localhost (p2E5BEF36.dip0.t-ipconnect.de. [46.91.239.54])
+        by smtp.gmail.com with ESMTPSA id a125sm15526336wmf.42.2019.06.04.08.34.47
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 04 Jun 2019 08:34:47 -0700 (PDT)
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jon Hunter <jonathanh@nvidia.com>, linux-mmc@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Subject: [PATCH] sdhci: tegra: Do not log error message on deferred probe
+Date:   Tue,  4 Jun 2019 17:34:46 +0200
+Message-Id: <20190604153446.22857-1-thierry.reding@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190604151530.7023-1-wsa+renesas@sang-engineering.com> <20190604151530.7023-2-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20190604151530.7023-2-wsa+renesas@sang-engineering.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 4 Jun 2019 17:28:59 +0200
-Message-ID: <CAMuHMdVhv2GAv6ha-Z6OQZC-yFmYDSMexsrNxHXf2w-6B+tj=A@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mmc: sdhi: disallow HS400 for M3-W ES1.2 and V3H
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Wolfram,
+From: Thierry Reding <treding@nvidia.com>
 
-On Tue, Jun 4, 2019 at 5:17 PM Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
-> Our HW engineers informed us that HS400 is not working on these SoC
-> revisions.
->
-> Fixes: 0f4e2054c971 ("mmc: renesas_sdhi: disable HS400 on H3 ES1.x and M3-W ES1.[012]")
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Recent changes have made it much more probably that clocks are not
+available yet when the SDHCI driver is first probed. However, that
+is a situation that the driver can cope with just fine.
 
-> --- a/drivers/mmc/host/renesas_sdhi_core.c
-> +++ b/drivers/mmc/host/renesas_sdhi_core.c
-> @@ -620,11 +620,17 @@ static const struct renesas_sdhi_quirks sdhi_quirks_h3_es2 = {
->         .hs400_4taps = true,
->  };
->
-> +static const struct renesas_sdhi_quirks sdhi_quirks_nohs400 = {
-> +       .hs400_disabled = true,
-> +};
-> +
->  static const struct soc_device_attribute sdhi_quirks_match[]  = {
->         { .soc_id = "r8a7795", .revision = "ES1.*", .data = &sdhi_quirks_h3_m3w_es1 },
->         { .soc_id = "r8a7795", .revision = "ES2.0", .data = &sdhi_quirks_h3_es2 },
->         { .soc_id = "r8a7796", .revision = "ES1.0", .data = &sdhi_quirks_h3_m3w_es1 },
->         { .soc_id = "r8a7796", .revision = "ES1.1", .data = &sdhi_quirks_h3_m3w_es1 },
-> +       { .soc_id = "r8a7796", .revision = "ES1.2", .data = &sdhi_quirks_h3_m3w_es1 },
+To avoid confusion, don't output an error when this happens.
 
-I think the above 3 lines can be combined in:
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+---
+ drivers/mmc/host/sdhci-tegra.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-     { .soc_id = "r8a7796", .revision = "ES1.[012]", .data =
-&sdhi_quirks_h3_m3w_es1 },
-
-Or do you prefer separate lines for easier grepping?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+index 10d7aaf68bab..8a6a51bc038b 100644
+--- a/drivers/mmc/host/sdhci-tegra.c
++++ b/drivers/mmc/host/sdhci-tegra.c
+@@ -1550,8 +1550,11 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
+ 
+ 	clk = devm_clk_get(mmc_dev(host->mmc), NULL);
+ 	if (IS_ERR(clk)) {
+-		dev_err(mmc_dev(host->mmc), "clk err\n");
+ 		rc = PTR_ERR(clk);
++
++		if (rc != -EPROBE_DEFER)
++			dev_err(&pdev->dev, "failed to get clock: %d\n", rc);
++
+ 		goto err_clk_get;
+ 	}
+ 	clk_prepare_enable(clk);
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.21.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
