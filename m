@@ -2,76 +2,125 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46753345F6
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 13:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6936D34772
+	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 15:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727380AbfFDLyp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Jun 2019 07:54:45 -0400
-Received: from mail-oi1-f175.google.com ([209.85.167.175]:45068 "EHLO
-        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727250AbfFDLyo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 07:54:44 -0400
-Received: by mail-oi1-f175.google.com with SMTP id m206so26981oib.12
-        for <linux-mmc@vger.kernel.org>; Tue, 04 Jun 2019 04:54:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=bEg5l0Asof3KfC/l9MfzO2g5bJAygMhd1s7uurvXf6s=;
-        b=ZSnvlA4TXhy+Bmo2CmbwUR2Sb2lEBaOZNkcovWfBx3mU6VBY9AcfnYAZ2HKjTOBIfG
-         qoqsqrOo5exTj+iKdO/z6OCvzsNnmE6IK2/KtOSRyIY2rDq1UDOSFiLhf+TtvELgRfrT
-         DEd3V8CbVp8zvkMK1GJcI7iNX9EC2arENrg4oe98Q6JVCbkPAhSJxS5EIWvww482ebvC
-         3oioybdckzm0MTyV0VP1fMqCEIsyl098rpm4Fa7D5F1xbtjt2tgG969CU2E1+xij+enW
-         hTbbdl2LpYpXwSzjXBCnhpZqlxGS/6UX3Jmnt8FYNO6uyS417lKZwGnHWTJvopNEFtKd
-         6/9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=bEg5l0Asof3KfC/l9MfzO2g5bJAygMhd1s7uurvXf6s=;
-        b=CGuPLQCXVwMgBJI7ngjXnW+aQZwvWksUDXLrfp00RVChcBypHj7Sed2VDSfE9O9lUQ
-         SAIR+cRU4Bw74DHzCrOoM3ekBOrtufRPDUFRkqp29K+3/wpulMhWiUmMtrEnyW8VKcxD
-         ktdZO4T9E+Kgv2gdANFCf41hlLD6REHfQ3ZlRvnl3OJzrpYTpgiOmDpj6vZHVxKruhvm
-         FhJAj3kRO6WD6U2eLRGzoB715b7yKEK6K5H1PFljm4t0L9gE6VO9TnmsmEtTRA8MZL9d
-         auDz5hIh/ywSfBZkMZk3PQGmiWzsj5cRy8J1wAzgEe2nq8mlUat8kZT3su7PpM2lq6hA
-         U/dQ==
-X-Gm-Message-State: APjAAAUDyUSuJwTicxhna3lshUmU/Wgw7R1oyZ/lvEFtxmgfacGiSqYA
-        Sk4iIEk0knhqjN7kzMSKAsdd5RINwG1ndOcyLlsV0p1s
-X-Google-Smtp-Source: APXvYqxknX7TcEZcJ5IBgfhm51lHPFEHXjlJ6X/IPqJSvIlyUfPNohOr3dy2VGgRU8BGBs6YiyaGuogSkVnLKluXIfg=
-X-Received: by 2002:aca:5c06:: with SMTP id q6mr1896617oib.63.1559649283715;
- Tue, 04 Jun 2019 04:54:43 -0700 (PDT)
+        id S1727169AbfFDNBC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 4 Jun 2019 09:01:02 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:36708 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727068AbfFDNBB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 09:01:01 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x54D0vxP115420;
+        Tue, 4 Jun 2019 08:00:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1559653257;
+        bh=8aM95DBivlDTvSjYE3/afKa3UFfgzZRoy3lHgX+J4cc=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=QzUBJ8YUrDxwnv0k10gakfDGBJVzGKeh635RlLd85nbcKSCdADMI/r5VUBS3aETuv
+         szPYkN5bQZyM+JUSDLSasG8TfAM7qWpbgHroVblgzPR0VnEoDbexlO5FR8HOsdZzBX
+         yN2f4w6wC6KjP8X+z7qZ8iekRP5iMrZeel5V9IdE=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x54D0vsa117977
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 4 Jun 2019 08:00:57 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 4 Jun
+ 2019 08:00:56 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Tue, 4 Jun 2019 08:00:56 -0500
+Received: from [172.24.190.215] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x54D0rL1090333;
+        Tue, 4 Jun 2019 08:00:54 -0500
+Subject: Re: [PATCH v3 1/3] mmc: sdhci_am654: Fix SLOTTYPE write
+To:     Sasha Levin <sashal@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <adrian.hunter@intel.com>,
+        stable <stable@vger.kernel.org>
+References: <20190528095928.26452-2-faiz_abbas@ti.com>
+ <20190604125043.C8D40249A2@mail.kernel.org>
+From:   Faiz Abbas <faiz_abbas@ti.com>
+Message-ID: <00366591-23db-34a3-2299-90ae97c72a9c@ti.com>
+Date:   Tue, 4 Jun 2019 18:31:15 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-From:   Vignesh Raman <vignesh.raman.in@gmail.com>
-Date:   Tue, 4 Jun 2019 17:24:32 +0530
-Message-ID: <CAH3OF52mbwYpJTTux2djY0wyvEwhCAEpBoTwetw8KysyJ9X-iQ@mail.gmail.com>
-Subject: sd card with write-protect switch
-To:     linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190604125043.C8D40249A2@mail.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+Hi Sasha,
 
-Following is the behavior of sd card with write-protect switch on/off.
-Tested in 4.14.103-rt55 debian.
+On 04/06/19 6:20 PM, Sasha Levin wrote:
+> Hi,
+> 
+> [This is an automated email]
+> 
+> This commit has been processed because it contains a -stable tag.
+> The stable tag indicates that it's relevant for the following trees: all
+> 
+> The bot has tested the following trees: v5.1.6, v5.0.20, v4.19.47, v4.14.123, v4.9.180, v4.4.180.
+> 
+> v5.1.6: Build OK!
+> v5.0.20: Build OK!
 
-When a sd card is inserted with unlocked mode (write protect switch off)
-/sys/block/sda/ro is 0
+Please apply it only to the above two releases. I guess this script
+could detect that the file was not even present before this and not try
+to apply to those.
 
-When the sd card is removed and inserted with locked mode (write
-protect switch on)
-/sys/block/sda/ro is 1
+> v4.19.47: Failed to apply! Possible dependencies:
+>     06b23ca021c4 ("mmc: sdhci-of-arasan: Add a single data structure to incorporate pdata and soc_ctl_map")
+>     41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
+>     f0061fed1f8a ("mmc: sdhci-of-arasan: Add Support for AM654 MMC and PHY")
+> 
+> v4.14.123: Failed to apply! Possible dependencies:
+>     06b23ca021c4 ("mmc: sdhci-of-arasan: Add a single data structure to incorporate pdata and soc_ctl_map")
+>     41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
+>     7d326930d352 ("mmc: sdhci-omap: Add OMAP SDHCI driver")
+>     84362d79f436 ("mmc: sdhci-of-arasan: Add CQHCI support for arasan,sdhci-5.1")
+>     f0061fed1f8a ("mmc: sdhci-of-arasan: Add Support for AM654 MMC and PHY")
+> 
+> v4.9.180: Failed to apply! Possible dependencies:
+>     06b23ca021c4 ("mmc: sdhci-of-arasan: Add a single data structure to incorporate pdata and soc_ctl_map")
+>     3a3748dba881 ("mmc: sdhci-xenon: Add Marvell Xenon SDHC core functionality")
+>     41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
+>     7d326930d352 ("mmc: sdhci-omap: Add OMAP SDHCI driver")
+>     84362d79f436 ("mmc: sdhci-of-arasan: Add CQHCI support for arasan,sdhci-5.1")
+>     d38dcad4e7b4 ("mmc: sdhci: Let drivers decide whether to use mmc_retune_needed() with pm")
+>     f0061fed1f8a ("mmc: sdhci-of-arasan: Add Support for AM654 MMC and PHY")
+> 
+> v4.4.180: Failed to apply! Possible dependencies:
+>     06b23ca021c4 ("mmc: sdhci-of-arasan: Add a single data structure to incorporate pdata and soc_ctl_map")
+>     0c7fe32e847f ("mmc: sdhci-of-arasan: fix clk issue in sdhci_arasan_remove()")
+>     278d09624eda ("mmc: sdhci-of-arasan: fix missing sdhci_pltfm_free for err handling")
+>     3a3748dba881 ("mmc: sdhci-xenon: Add Marvell Xenon SDHC core functionality")
+>     3ea4666e8d42 ("mmc: sdhci-of-arasan: Properly set corecfg_baseclkfreq on rk3399")
+>     41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
+>     476bf3d62d5c ("mmc: sdhci-brcmstb: Add driver for Broadcom BRCMSTB SoCs")
+>     5d9460d74ce5 ("mmc: sdhci-pic32: Add PIC32 SDHCI host controller driver")
+>     7d326930d352 ("mmc: sdhci-omap: Add OMAP SDHCI driver")
+>     802ac39a5566 ("mmc: sdhci-of-arasan: fix set_clock when a phy is supported")
+>     84362d79f436 ("mmc: sdhci-of-arasan: Add CQHCI support for arasan,sdhci-5.1")
+>     89211418cb71 ("mmc: sdhci-of-arasan: use sdhci_pltfm_init for private allocation")
+>     91aa366109e8 ("mmc: sdhci-of-arasan: add phy support for sdhci-of-arasan")
+>     a05c84651145 ("mmc: sdhci-of-arasan: implement enhanced strobe callback")
+>     c390f2110adf ("mmc: sdhci-of-arasan: Add ability to export card clock")
+>     ca572f4636aa ("mmc: sdhci-of-arasan: Always power the PHY off/on when clock changes")
+>     f0061fed1f8a ("mmc: sdhci-of-arasan: Add Support for AM654 MMC and PHY")
+> 
+> 
+> How should we proceed with this patch?
+> 
 
-Now again when the sd card is removed and inserted in unlocked mode,
-/sys/block/sda/ro is still 1
-
-In mmc_sd_setup_card(), after mmc_sd_get_ro() is retrived
-mmc_card_set_readonly() is called if the write protect switch is
-active(1).
-Do we need to reset the read-only status if write protect switch is
-not active(0). Any pointers will be helpful. Thanks.
-
-Thanks.
-
-Regards,
-Vignesh
+Thanks,
+Faiz
