@@ -2,104 +2,76 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8526D34576
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 13:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46753345F6
+	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 13:54:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727383AbfFDLdY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Jun 2019 07:33:24 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:40259 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727250AbfFDLdY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 07:33:24 -0400
-Received: by mail-pf1-f193.google.com with SMTP id u17so12513854pfn.7
-        for <linux-mmc@vger.kernel.org>; Tue, 04 Jun 2019 04:33:23 -0700 (PDT)
+        id S1727380AbfFDLyp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 4 Jun 2019 07:54:45 -0400
+Received: from mail-oi1-f175.google.com ([209.85.167.175]:45068 "EHLO
+        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727250AbfFDLyo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 07:54:44 -0400
+Received: by mail-oi1-f175.google.com with SMTP id m206so26981oib.12
+        for <linux-mmc@vger.kernel.org>; Tue, 04 Jun 2019 04:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=EUprF+8/pHWVdRSsm+gYg6Nl/I7GuQYxpR2PKTuS704=;
-        b=cX5NyM5ycgQOuk4IAmaDphsDa6H1d8CV7lcsQ4WAlb3RMe7FRqEdFwUIy/zUw8PT8H
-         Haqw45ol2rk0FawObSUduoqdJamkzKEihgKpPg8h/L/kNvLP5+HNu60rp64HSLBJfQpF
-         3HigbEfhYLItfyDMYlI5C8j8tpV6TYxxSik3E=
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=bEg5l0Asof3KfC/l9MfzO2g5bJAygMhd1s7uurvXf6s=;
+        b=ZSnvlA4TXhy+Bmo2CmbwUR2Sb2lEBaOZNkcovWfBx3mU6VBY9AcfnYAZ2HKjTOBIfG
+         qoqsqrOo5exTj+iKdO/z6OCvzsNnmE6IK2/KtOSRyIY2rDq1UDOSFiLhf+TtvELgRfrT
+         DEd3V8CbVp8zvkMK1GJcI7iNX9EC2arENrg4oe98Q6JVCbkPAhSJxS5EIWvww482ebvC
+         3oioybdckzm0MTyV0VP1fMqCEIsyl098rpm4Fa7D5F1xbtjt2tgG969CU2E1+xij+enW
+         hTbbdl2LpYpXwSzjXBCnhpZqlxGS/6UX3Jmnt8FYNO6uyS417lKZwGnHWTJvopNEFtKd
+         6/9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=EUprF+8/pHWVdRSsm+gYg6Nl/I7GuQYxpR2PKTuS704=;
-        b=iOzRezygjDEBbb9KN3rdBc3Guyqc8zqoVB75Fa10VYr0ziV+9haUyLiUyxSQ2/kQzW
-         O6vXkmATPq7Uej5/pLJsLXnEAr+RsGZCJEsyGFusr1w2Yf/YeGK44NnqzumsSbdhniRk
-         h07rIM6B9o5yTqyzdVlZ51lwAZg2+9z6XFKzx/utvHMITa5mKWsKHAtTTDHtA2l8ub9+
-         SdhddrBPYhvOGWjynL8EJ9ZA6bK6rfmFquyGY7odSYrChVwKvqPZu9LJf5Z4IErEe8ZA
-         HtmSxmWa+Ey61pcXBtBSMFpddH2y+J6CE4WC2z5oFJS7WnEdt7osrgLKNx1QY124FHC0
-         XyEQ==
-X-Gm-Message-State: APjAAAVks5sgYN63qSLDyo4lYBFh0ecebXiCxw3q0n2OazEo45W9PImc
-        RT/sTGZq4QGgy2qfOPLhxAyg1w==
-X-Google-Smtp-Source: APXvYqxvTH3i5lfqNDE1vh1a5Z/iOkSgOFTEfkO87DUgwW2C+aCSxKKDsoC0hUv5/Gdl7rHPksKKEw==
-X-Received: by 2002:a62:ea04:: with SMTP id t4mr36483301pfh.47.1559648003307;
-        Tue, 04 Jun 2019 04:33:23 -0700 (PDT)
-Received: from [10.176.68.125] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id u4sm17314721pfu.26.2019.06.04.04.33.19
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 04 Jun 2019 04:33:22 -0700 (PDT)
-Subject: Re: Issue with Broadcom wireless in 5.2rc1 (was Re: [PATCH] mmc:
- sdhci: queue work after sdhci_defer_done())
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Brian Masney <masneyb@onstation.org>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>, ulf.hansson@linaro.org,
-        faiz_abbas@ti.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
-References: <20190524111053.12228-1-masneyb@onstation.org>
- <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
- <20190524154958.GB16322@basecamp> <20190526122136.GA26456@basecamp>
- <e8c049ce-07e1-8b34-678d-41b3d6d41983@broadcom.com>
- <20190526195819.GA29665@basecamp> <20190527093711.GA853@basecamp>
- <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <af4d6703-8506-dad7-c2ed-13fa8b2e390d@broadcom.com>
-Date:   Tue, 4 Jun 2019 13:33:18 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=bEg5l0Asof3KfC/l9MfzO2g5bJAygMhd1s7uurvXf6s=;
+        b=CGuPLQCXVwMgBJI7ngjXnW+aQZwvWksUDXLrfp00RVChcBypHj7Sed2VDSfE9O9lUQ
+         SAIR+cRU4Bw74DHzCrOoM3ekBOrtufRPDUFRkqp29K+3/wpulMhWiUmMtrEnyW8VKcxD
+         ktdZO4T9E+Kgv2gdANFCf41hlLD6REHfQ3ZlRvnl3OJzrpYTpgiOmDpj6vZHVxKruhvm
+         FhJAj3kRO6WD6U2eLRGzoB715b7yKEK6K5H1PFljm4t0L9gE6VO9TnmsmEtTRA8MZL9d
+         auDz5hIh/ywSfBZkMZk3PQGmiWzsj5cRy8J1wAzgEe2nq8mlUat8kZT3su7PpM2lq6hA
+         U/dQ==
+X-Gm-Message-State: APjAAAUDyUSuJwTicxhna3lshUmU/Wgw7R1oyZ/lvEFtxmgfacGiSqYA
+        Sk4iIEk0knhqjN7kzMSKAsdd5RINwG1ndOcyLlsV0p1s
+X-Google-Smtp-Source: APXvYqxknX7TcEZcJ5IBgfhm51lHPFEHXjlJ6X/IPqJSvIlyUfPNohOr3dy2VGgRU8BGBs6YiyaGuogSkVnLKluXIfg=
+X-Received: by 2002:aca:5c06:: with SMTP id q6mr1896617oib.63.1559649283715;
+ Tue, 04 Jun 2019 04:54:43 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From:   Vignesh Raman <vignesh.raman.in@gmail.com>
+Date:   Tue, 4 Jun 2019 17:24:32 +0530
+Message-ID: <CAH3OF52mbwYpJTTux2djY0wyvEwhCAEpBoTwetw8KysyJ9X-iQ@mail.gmail.com>
+Subject: sd card with write-protect switch
+To:     linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 5/27/2019 2:08 PM, Adrian Hunter wrote:
-> On 27/05/19 12:37 PM, Brian Masney wrote:
->> On Sun, May 26, 2019 at 03:58:19PM -0400, Brian Masney wrote:
->>> I attached a patch that shows how I was able to determine what had
->>> already claimed the host.
->> On Mon, May 27, 2019 at 10:48:24AM +0300, Adrian Hunter wrote:
->>> This is because SDHCI is using the IRQ thread to process the SDIO card
->>> interrupt (sdio_run_irqs()).  When the card driver tries to use the card, it
->>> causes interrupts which deadlocks since c07a48c26519 ("mmc: sdhci: Remove
->>> finish_tasklet") has moved the tasklet processing to the IRQ thread.
->>>
->>> I would expect to be able to use the IRQ thread to complete requests, and it
->>> is desirable to do so because it is lower latency.
->>>
->>> Probably, SDHCI should use sdio_signal_irq() which queues a work item, and
->>> is what other drivers are doing.
->>>
->>> I will investigate some more and send a patch.
-> 
-> Please try the patch below:
+Hi,
 
-Finally got time to update my kernel to 5.2-rc2. This patch indeed 
-resolves the issue.
+Following is the behavior of sd card with write-protect switch on/off.
+Tested in 4.14.103-rt55 debian.
 
-Thanks,
-Arend
+When a sd card is inserted with unlocked mode (write protect switch off)
+/sys/block/sda/ro is 0
+
+When the sd card is removed and inserted with locked mode (write
+protect switch on)
+/sys/block/sda/ro is 1
+
+Now again when the sd card is removed and inserted in unlocked mode,
+/sys/block/sda/ro is still 1
+
+In mmc_sd_setup_card(), after mmc_sd_get_ro() is retrived
+mmc_card_set_readonly() is called if the write protect switch is
+active(1).
+Do we need to reset the read-only status if write protect switch is
+not active(0). Any pointers will be helpful. Thanks.
+
+Thanks.
+
+Regards,
+Vignesh
