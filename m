@@ -2,52 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C59233F3B
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 08:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E110E33F94
+	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 09:14:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726697AbfFDGxf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Jun 2019 02:53:35 -0400
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:39389 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726578AbfFDGxf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 02:53:35 -0400
-Received: by mail-ua1-f65.google.com with SMTP id w44so7406319uad.6
-        for <linux-mmc@vger.kernel.org>; Mon, 03 Jun 2019 23:53:34 -0700 (PDT)
+        id S1726707AbfFDHO0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 4 Jun 2019 03:14:26 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:46889 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726595AbfFDHO0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 03:14:26 -0400
+Received: by mail-vs1-f67.google.com with SMTP id l125so12825470vsl.13
+        for <linux-mmc@vger.kernel.org>; Tue, 04 Jun 2019 00:14:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LaDWiHPR9JRMc5dM2JBiUlOrVRUD/jYSdR+XH2uU4Co=;
-        b=vJV/Z6ZXeWZX0q82NAqhljJbpDA+WvULjbfDIx58hTaojW2K0l7Kk0sm9KjHyb17DT
-         kuQoWD7xepb9d29mYUK6sx3XuMTFm1+GXWLg6nVQ2oWiCNk/5C3QPsfK04iXuJez/HU8
-         Lg6ijXWEgAa/nOQk5u/YKkwG31S3B1VcGxD1vkh2lRVwcpjKlOUoDc/bfI4xvVQfpk88
-         4Wzhi5FxG5ihgAv3geCktS3P8DUmC3G3OeXsYVY+VtRDR9zodAhlb51H8IDnvZhbbfPf
-         bnroEVDnDKPMsceW+ac5lih3IBV7ksqtWW7kaDIFQurKU1ZVgIB7Hip3Rq+CaoUpErFh
-         nMlA==
+        bh=TnMW2xOiYTMGq6n1rvseC+0+GnmccYvlmBV45K6GnFE=;
+        b=guyP1Ic33rzxwrhngOpfHAFw46fSxkXZTsOpnQcnQi8rL7kDEYs13LTpQAny7DL/GR
+         DHtVUMI3kSzio17wFCwrwbi6b/NkkNnZzyMQ/E2RwDTK1yklEVRjfK10bIpFH5urkV3b
+         ZO6TrmRkaqcq3tt9OTh7DgC86Y7d1obVoHr+EqmRjWv1FKRK1t67AmoJDKYLagENgb/r
+         Ph0NrraeOE0tj/4iB0hs3LkArePb9xcYrpR0ricbgWgjA6gAQRy+qh++zo45pXxZAkCR
+         mcTG3BoHmwK2QzQoOVhPFCCpOadqTzopWCKMDisUQvi51u/7+XMyZhwwvjCC0ZEbEl+9
+         LIyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LaDWiHPR9JRMc5dM2JBiUlOrVRUD/jYSdR+XH2uU4Co=;
-        b=tOizAvpxxeR+1PfL+6LOl4h8yQWECYHJ5jt0SnxNQyKuKSIwsR/QpImr0Z1ADmzi4S
-         0Kj6Gq7Lz9QH0Tng4hfX8+DapWRBYMAijwJ/PFbGjt+gn7Q5BYwIT6Bk+EZmuXGsvBYv
-         p8t82ndNM/+AoYuqhDzuwQTJ8kEW+SRpXKiakTOF6NK1Rb2I2wdoqxOx/NvFt8Z5TQ0c
-         /opGB7aQmeJjRRqjPhuinblj27XF2ncUhSrzDHMq1y8kfPngOm129vBp0vquVC/mR4PL
-         KXWnE8eCvm3rWsgJ898n31OuICFdp29KZHMEqI3qZ0TVTYHkXpEWHoYo5U98i5FfLaOh
-         MRAg==
-X-Gm-Message-State: APjAAAWrtueQLE10VCHH2xece16Q6Sdfbu0NcShpTZXODjtwW/d/Dx7Z
-        95Ds1hxrQ0A1j0eSjc76uPsW2Jrx6ORii8fOBJ//SA==
-X-Google-Smtp-Source: APXvYqwOrrnYuan4kp6oT+cECdrmvG/OzTSJGNeXrjAnq+W5vLQh750wxVsaDLCIudNnKnWn328F87yP/49E98Xs9EA=
-X-Received: by 2002:ab0:4a97:: with SMTP id s23mr871475uae.19.1559631214438;
- Mon, 03 Jun 2019 23:53:34 -0700 (PDT)
+        bh=TnMW2xOiYTMGq6n1rvseC+0+GnmccYvlmBV45K6GnFE=;
+        b=pxucowfWzcOsrzMqzkSuqEU6MbKB2rZGy3PExmv8fx9Fl4LZX1xTeNuZv7o0v8hdUM
+         tKi2cNxL9C2ceHPArrgRBoiffoydBBUVip9IOxObUzSfvjzwQxjy6V8E/J87AeSKlkyZ
+         QP5OfPkf00iVGSju/NdQbOJFqxea32PW1jAjbzy8z5sayh+I7ySHplUf1f8IA+7O9DA6
+         TTBbi3huBjTNcxZbfLWbtvmRqpSoIhIXuqEvkFhnVpRRuAdf+0tdMdpjUKrJkE927U+D
+         pnblC9GEFsJDsb16AvfyqVOI9DvVFQ4I6wJiej74NUoNpuDhIuI+szJrg9azIvCGhJX/
+         79EA==
+X-Gm-Message-State: APjAAAX+B3j0WqNZEqq5HDSfG7WkssZvFTJAj4xr++dknyQkLOD0vVzD
+        JzCZKtBJPLAQJdl7YH50Ypen6KAu+c4XME5chCeSpQ==
+X-Google-Smtp-Source: APXvYqzEmHz0ELqyBrB8KiqIDFXLaBDsyB3HX8ZlxIChRrzbOz09ochCdoanorD9Bt/q0a4QnR+rkxHL0yo/JxSfNe8=
+X-Received: by 2002:a67:f485:: with SMTP id o5mr15183717vsn.165.1559632465380;
+ Tue, 04 Jun 2019 00:14:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1558346019.git.baolin.wang@linaro.org> <ee4ad0e7e131e4d639dbf6bd25ad93726648ce1c.1558346019.git.baolin.wang@linaro.org>
- <CAPDyKFrWiG3KJad+L3NOQ-dC2XnBM-8mQGVEsVB_Qg0ACTfVag@mail.gmail.com> <CAMz4kuK+yX=V2zp-C4Xb-6ZjgLOY+ON2iHZU=HwONeXcJCkk4w@mail.gmail.com>
-In-Reply-To: <CAMz4kuK+yX=V2zp-C4Xb-6ZjgLOY+ON2iHZU=HwONeXcJCkk4w@mail.gmail.com>
+References: <cover.1558346019.git.baolin.wang@linaro.org> <CAMz4ku+E=kFgWrvm_wzM2XQQUyYZhc5uokcGEAEbEKpNAYZQ7g@mail.gmail.com>
+In-Reply-To: <CAMz4ku+E=kFgWrvm_wzM2XQQUyYZhc5uokcGEAEbEKpNAYZQ7g@mail.gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 4 Jun 2019 08:52:57 +0200
-Message-ID: <CAPDyKFrfMWomOe1QgizbfG+4=vHOix8UH3+MbZicMKWusE8Tsw@mail.gmail.com>
-Subject: Re: [PATCH 2/9] dt-bindings: mmc: sprd: Add another optional clock documentation
+Date:   Tue, 4 Jun 2019 09:13:48 +0200
+Message-ID: <CAPDyKFoZmxmRYwL_m60=DK9J5+beshEsLw5D=FySzRfYFdsb3Q@mail.gmail.com>
+Subject: Re: [PATCH 0/9] Add SD host controller support for SC9860 platform
 To:     Baolin Wang <baolin.wang@linaro.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Chunyan Zhang <zhang.lyra@gmail.com>,
@@ -58,8 +57,8 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Vincent Guittot <vincent.guittot@linaro.org>,
         arm-soc <arm@kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         DTML <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
@@ -67,45 +66,48 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 4 Jun 2019 at 04:33, Baolin Wang <baolin.wang@linaro.org> wrote:
+On Mon, 3 Jun 2019 at 10:42, Baolin Wang <baolin.wang@linaro.org> wrote:
 >
-> Hi Ulf,
+> Hi Adrian & Ulf,
 >
-> On Mon, 3 Jun 2019 at 21:34, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> On Mon, 20 May 2019 at 18:12, Baolin Wang <baolin.wang@linaro.org> wrote:
 > >
-> > On Mon, 20 May 2019 at 12:12, Baolin Wang <baolin.wang@linaro.org> wrote:
-> > >
-> > > For some Spreadtrum platforms like SC9860 platform, we should enable another
-> > > gate clock '2x_enable' to make the SD host controller work well. Thus add
-> > > documentation for this optional clock.
-> > >
-> > > Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-> > > ---
-> > >  .../devicetree/bindings/mmc/sdhci-sprd.txt         |    1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/mmc/sdhci-sprd.txt b/Documentation/devicetree/bindings/mmc/sdhci-sprd.txt
-> > > index 45c9978..a285c77 100644
-> > > --- a/Documentation/devicetree/bindings/mmc/sdhci-sprd.txt
-> > > +++ b/Documentation/devicetree/bindings/mmc/sdhci-sprd.txt
-> > > @@ -14,6 +14,7 @@ Required properties:
-> > >  - clock-names: Should contain the following:
-> > >         "sdio" - SDIO source clock (required)
-> > >         "enable" - gate clock which used for enabling/disabling the device (required)
-> > > +       "2x_enable" - gate clock controlling the device for some special platforms (optional)
-> >
-> > This is a bit vague, could you please elaborate (and fold in that
-> > information to the doc) on what kind of clock this is?
+> > This patch set adds optional clock support, HS400 enhanced strobe mode support,
+> > PHY DLL configuration and other optimization to make the SD host controller
+> > can work well on the Spreadtrum SC9860 platform.
 >
-> Sorry for confusing. For some Spreadtrum platfroms like SC9860
-> platform, we should enable 2 gate clocks to enable SD host controller,
-> that means we have 2 serialized clock gates. I know that's a little
-> weird, but that's our clock's design.
+> Do you have any comments for this patch set? Thanks.
+>
 
-Okay, just wanted to make sure this new clock isn't something that
-should be modeled through the clock tree.
-
-Thanks for explaining, then I am happy with the patch as is.
+Seems like the series is almost ready to go. However, due to a few the
+minor comments/questions from Adrian, I am expecting a new version
+from you before applying.
 
 Kind regards
 Uffe
+
+> >
+> > Baolin Wang (9):
+> >   mmc: sdhci-sprd: Check the enable clock's return value correctly
+> >   dt-bindings: mmc: sprd: Add another optional clock documentation
+> >   mmc: sdhci-sprd: Add optional gate clock support
+> >   mmc: sdhci-sprd: Implement the get_max_timeout_count() interface
+> >   mmc: sdhci-sprd: Add HS400 enhanced strobe mode
+> >   mmc: sdhci-sprd: Enable PHY DLL to make clock stable
+> >   dt-bindings: mmc: sprd: Add PHY DLL delay documentation
+> >   mmc: sdhci-sprd: Add PHY DLL delay configuration
+> >   arm64: dts: sprd: Add Spreadtrum SD host controller support
+> >
+> >  .../devicetree/bindings/mmc/sdhci-sprd.txt         |   19 +++
+> >  arch/arm64/boot/dts/sprd/whale2.dtsi               |   35 ++++
+> >  drivers/mmc/host/sdhci-sprd.c                      |  171 +++++++++++++++++++-
+> >  3 files changed, 217 insertions(+), 8 deletions(-)
+> >
+> > --
+> > 1.7.9.5
+> >
+>
+>
+> --
+> Baolin Wang
+> Best Regards
