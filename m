@@ -2,104 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36AC7343C0
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 12:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8526D34576
+	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 13:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727196AbfFDKL1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Jun 2019 06:11:27 -0400
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:41316 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727158AbfFDKL1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 06:11:27 -0400
-Received: by mail-ua1-f68.google.com with SMTP id n2so7587672uad.8
-        for <linux-mmc@vger.kernel.org>; Tue, 04 Jun 2019 03:11:26 -0700 (PDT)
+        id S1727383AbfFDLdY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 4 Jun 2019 07:33:24 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:40259 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727250AbfFDLdY (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 07:33:24 -0400
+Received: by mail-pf1-f193.google.com with SMTP id u17so12513854pfn.7
+        for <linux-mmc@vger.kernel.org>; Tue, 04 Jun 2019 04:33:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vIAhQXsHJOyXhrVT0CHYLbhy05/J5RqxTMr2w2w4Y2I=;
-        b=hQHXiLPx88stEsF25lRD9d1mmW3eRvX2gS3t/o9d8ANOAc2IwjY09NFrzx6Hq1JR3C
-         uLW6K/95h+EHigfTJw4GCy+EEffjN5dnO5niUMWSyEwanSjMbSjOBOB+F2FRK8Hij7jS
-         1TeJTMtqy+T1Hj9hbSsjWYWejx+wo/a7+PXHa1iVbw2Pni4jBXVki5eKzgwPXhIQetC3
-         nvDcY84Z8Uc7b2YNs2AnLpIbgsz9GeUU3LmUF11IscqtaNC/6062Jz8HmnEklR1lBWRR
-         zzFq/Aiho5kgbxIUDQFj+lzAJWMeUQha1g0f8bu7mtZCmCVxp7CTTA280jI9aOBiMm1O
-         IRgw==
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=EUprF+8/pHWVdRSsm+gYg6Nl/I7GuQYxpR2PKTuS704=;
+        b=cX5NyM5ycgQOuk4IAmaDphsDa6H1d8CV7lcsQ4WAlb3RMe7FRqEdFwUIy/zUw8PT8H
+         Haqw45ol2rk0FawObSUduoqdJamkzKEihgKpPg8h/L/kNvLP5+HNu60rp64HSLBJfQpF
+         3HigbEfhYLItfyDMYlI5C8j8tpV6TYxxSik3E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vIAhQXsHJOyXhrVT0CHYLbhy05/J5RqxTMr2w2w4Y2I=;
-        b=kZVuKHWWk8IpQb9Iy4FnwtRkbGNf0M1HYXpinQSojin6nYVSn8cIJwSsGhirnkFx0C
-         pOMds4q5FnB8aNo8A6PKUpmUxrK5n1/Ss+OnyvjjXmYNQ/jMfJLo6JS0SLFiFQxeX3DW
-         migeGDggQneilnLQz5Hyn6rQ7A6UCy4B0vfEATZabTwZDwS5xKYm2l+QLLNX6cT8ywBA
-         YDg0ZLkbq4CKOz6nDo34I7mZPXYgTSLhqOApaiAimfS6VSXnwZID4DrpRCE2HaRs6bl5
-         9Cvm+k1JOKZoco88BGZUyJCiFUbAeWLdE2jd4ZeS0yR0fTX9xAPn6Wp5tiR09QrshKW0
-         4Oiw==
-X-Gm-Message-State: APjAAAVJ4t7caX0WUqseFhdJzHfWR2AfOHP0lztecQBzPN/jhNraTGvg
-        A7H0NnCA6wXreSAR+nOPU0U2tl/SeRvZEMQy+2SEcw==
-X-Google-Smtp-Source: APXvYqx2OahnUZixNsj1G0zgpQmMhnztq1ywvKQDB+AKOAvTww/7rf5gLsRm9dBCyMhNeCDtQYchFVgLSfXBphrWUE4=
-X-Received: by 2002:ab0:16da:: with SMTP id g26mr8574345uaf.15.1559643085791;
- Tue, 04 Jun 2019 03:11:25 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=EUprF+8/pHWVdRSsm+gYg6Nl/I7GuQYxpR2PKTuS704=;
+        b=iOzRezygjDEBbb9KN3rdBc3Guyqc8zqoVB75Fa10VYr0ziV+9haUyLiUyxSQ2/kQzW
+         O6vXkmATPq7Uej5/pLJsLXnEAr+RsGZCJEsyGFusr1w2Yf/YeGK44NnqzumsSbdhniRk
+         h07rIM6B9o5yTqyzdVlZ51lwAZg2+9z6XFKzx/utvHMITa5mKWsKHAtTTDHtA2l8ub9+
+         SdhddrBPYhvOGWjynL8EJ9ZA6bK6rfmFquyGY7odSYrChVwKvqPZu9LJf5Z4IErEe8ZA
+         HtmSxmWa+Ey61pcXBtBSMFpddH2y+J6CE4WC2z5oFJS7WnEdt7osrgLKNx1QY124FHC0
+         XyEQ==
+X-Gm-Message-State: APjAAAVks5sgYN63qSLDyo4lYBFh0ecebXiCxw3q0n2OazEo45W9PImc
+        RT/sTGZq4QGgy2qfOPLhxAyg1w==
+X-Google-Smtp-Source: APXvYqxvTH3i5lfqNDE1vh1a5Z/iOkSgOFTEfkO87DUgwW2C+aCSxKKDsoC0hUv5/Gdl7rHPksKKEw==
+X-Received: by 2002:a62:ea04:: with SMTP id t4mr36483301pfh.47.1559648003307;
+        Tue, 04 Jun 2019 04:33:23 -0700 (PDT)
+Received: from [10.176.68.125] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id u4sm17314721pfu.26.2019.06.04.04.33.19
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Jun 2019 04:33:22 -0700 (PDT)
+Subject: Re: Issue with Broadcom wireless in 5.2rc1 (was Re: [PATCH] mmc:
+ sdhci: queue work after sdhci_defer_done())
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Brian Masney <masneyb@onstation.org>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>, ulf.hansson@linaro.org,
+        faiz_abbas@ti.com, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+References: <20190524111053.12228-1-masneyb@onstation.org>
+ <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
+ <20190524154958.GB16322@basecamp> <20190526122136.GA26456@basecamp>
+ <e8c049ce-07e1-8b34-678d-41b3d6d41983@broadcom.com>
+ <20190526195819.GA29665@basecamp> <20190527093711.GA853@basecamp>
+ <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <af4d6703-8506-dad7-c2ed-13fa8b2e390d@broadcom.com>
+Date:   Tue, 4 Jun 2019 13:33:18 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <20190520143647.2503-1-narmstrong@baylibre.com>
- <CAPDyKFoOHnYiYogjogRr=7PBjqHOseDDS6L0eirTo7Y+F449ow@mail.gmail.com>
- <CAMuHMdWHnyTWMToXU_DSezwYs_Lkxj+v0BC8PKXHZgX=e1N3ww@mail.gmail.com>
- <b6e67d32-6092-4bdf-312d-7241094a9248@baylibre.com> <20190604090041.GB2855@kroah.com>
-In-Reply-To: <20190604090041.GB2855@kroah.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 4 Jun 2019 12:10:49 +0200
-Message-ID: <CAPDyKFoAzf-K+ZoK0Kn7W8dH+1RHmRNjd91qZiO2am0whqexow@mail.gmail.com>
-Subject: Re: [PATCH 0/2] mmc: meson: update with SPDX Licence identifier
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 4 Jun 2019 at 11:00, Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Jun 04, 2019 at 10:52:51AM +0200, Neil Armstrong wrote:
-> > Hi,
-> >
-> >
-> > On 04/06/2019 10:36, Geert Uytterhoeven wrote:
-> > > Hi Ulf, Neil,
-> > >
-> > > On Tue, May 28, 2019 at 10:53 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > >> On Mon, 20 May 2019 at 16:36, Neil Armstrong <narmstrong@baylibre.com> wrote:
-> > >>> Update the SPDX Licence identifier for the Amlogic MMC drivers.
-> > >>>
-> > >>> Neil Armstrong (2):
-> > >>>   mmc: meson-gx-mmc: update with SPDX Licence identifier
-> > >>>   mmc: meson-mx-sdio: update with SPDX Licence identifier
-> > >>>
-> > >>>  drivers/mmc/host/meson-gx-mmc.c  | 15 +--------------
-> > >>>  drivers/mmc/host/meson-mx-sdio.c |  6 +-----
-> > >>>  2 files changed, 2 insertions(+), 19 deletions(-)
-> > >>
-> > >> Applied for next, thanks!
-> > >
-> > > Please note this conflicts with commit 2874c5fd28426836 ("treewide:
-> > > Replace GPLv2 boilerplate/reference with SPDX - rule 152") upstream,
-> > > which added (different) tags.
-> >
-> > This happens when we are not CCed with such changes.
->
-> No one was cc:ed on such huge changes.  The merge conflicts are trivial
-> to work out, this should not be an issue.
+On 5/27/2019 2:08 PM, Adrian Hunter wrote:
+> On 27/05/19 12:37 PM, Brian Masney wrote:
+>> On Sun, May 26, 2019 at 03:58:19PM -0400, Brian Masney wrote:
+>>> I attached a patch that shows how I was able to determine what had
+>>> already claimed the host.
+>> On Mon, May 27, 2019 at 10:48:24AM +0300, Adrian Hunter wrote:
+>>> This is because SDHCI is using the IRQ thread to process the SDIO card
+>>> interrupt (sdio_run_irqs()).  When the card driver tries to use the card, it
+>>> causes interrupts which deadlocks since c07a48c26519 ("mmc: sdhci: Remove
+>>> finish_tasklet") has moved the tasklet processing to the IRQ thread.
+>>>
+>>> I would expect to be able to use the IRQ thread to complete requests, and it
+>>> is desirable to do so because it is lower latency.
+>>>
+>>> Probably, SDHCI should use sdio_signal_irq() which queues a work item, and
+>>> is what other drivers are doing.
+>>>
+>>> I will investigate some more and send a patch.
+> 
+> Please try the patch below:
 
-No worries, I deal with it as I am going to rebase my tree on rc4 on
-Monday anyway.
+Finally got time to update my kernel to 5.2-rc2. This patch indeed 
+resolves the issue.
 
-Thanks for the heads up!
-
-Kind regards
-Uffe
+Thanks,
+Arend
