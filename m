@@ -2,92 +2,119 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AE2B33FF7
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 09:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC6434023
+	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 09:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726795AbfFDHVS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Jun 2019 03:21:18 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:40440 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726731AbfFDHVR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 03:21:17 -0400
-Received: by mail-ot1-f68.google.com with SMTP id u11so18577649otq.7
-        for <linux-mmc@vger.kernel.org>; Tue, 04 Jun 2019 00:21:17 -0700 (PDT)
+        id S1726761AbfFDHbP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 4 Jun 2019 03:31:15 -0400
+Received: from mail-ua1-f67.google.com ([209.85.222.67]:33100 "EHLO
+        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726642AbfFDHbP (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jun 2019 03:31:15 -0400
+Received: by mail-ua1-f67.google.com with SMTP id f20so5788993ual.0
+        for <linux-mmc@vger.kernel.org>; Tue, 04 Jun 2019 00:31:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ij+iH+M/8ZGiIrnkdLwppmtGhbFWZZmZrQ33Tj+/Mrc=;
-        b=yDQg+Hbw5mvBGb4xUoz1ag1VKA420B8yfXatcUYRBXoujf5xxVROodAkEMzm8vGAC8
-         +5K8jcn4Ao8NvD4JFJ30tPa4FxPLtsvjTiDEc4A6xr1qls6+yHGTl34nS3GGXTRNMG1a
-         QuLGgwjRM6Qz0d5ZSf4t9cRe5xrRzXB3PNGSy2KeYeNMwJp63r9fUy+g10j49J6JSvXU
-         c9Zq14VEyHF4ckszQM1axPb9e/84ZtxZo00GDS7DPGq1MNkOklXhVUMs6jXt630id1xi
-         tdmTAjKLSKqQCkw9nT+f/agp+b09xGNzMKcY1pXM7JoxiZDTXAbAf3QLH18CdX6IBmNm
-         mWuw==
+        bh=liKHPncWOckMU0VpUC12b4lHB8RDKVamTsMkqWq9QS8=;
+        b=pBWhAx1YgC0xfBUniJ64GQxUiO+aAT1hfrtvJ3NHp7giCrOXogoNhXvDhHaneh0wvt
+         3LNcd2E9BBt5jRT4Hh8q2/pxIP4n/6QfNng62w1L9Na2TniGZKWcRbo45voYqcLguccz
+         qTv55JDhWIHfY4Jjl/P53uPtQVNQvtfOIfjbbEuWh3fQngdSz5k1sa4NaQ9+DC8012Ot
+         DDHkh4Lew+iPe8KLIZymjj1fOf3tinN0ERo6InehQK22Mppo7htd85X5kdeew7KW6n3W
+         jRvG/NNzn4+76SVcU9CeRQDGRV4PFWOKQwiyV4dMGkr4o0CY1yjM9KtiObPKEYD9IBt9
+         9jcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ij+iH+M/8ZGiIrnkdLwppmtGhbFWZZmZrQ33Tj+/Mrc=;
-        b=o3tZug/KIKfMLzLsZ9UwH8Qof4g8I3e5NH+FpKsSx/8Y5flicQENZpFQiaz+zz7YUg
-         7F+OAYv03JCEzTvqtBHfX9BFN/Yiukiyft6KE23QYik0UlrG+XAC7o6kp4sHHtxHn19A
-         2Edgd97LLvGmHUuvXhHmxu8zFzxc3QRGIN85OuGCkiOzR7CkPWnS7CUB+UGCqV2C3lsV
-         u7P8ftPTVAbtAgwhLUetiVptIn4HOYLDWTPRZmQB+TPLLp+zsOiBsncuAphlXU7XLYZh
-         bnj1IxP97K4DBcOPCHT2R9BUwvuDbFuxUPLECwc6qbPvN4Q02n1BiwnJDT2d+Jlzi8Ra
-         +PPA==
-X-Gm-Message-State: APjAAAVykBCYQNxcWd/JyaGYYlhJ22O785XXQMnkw9wokYXRFkkyl94B
-        Lep+DKZJDKTbEOpvunjyvaXjtrv95WizPNSPHNlajA==
-X-Google-Smtp-Source: APXvYqzBUAiuGQ5CCX7L+dnJzxsTgp2SrfkxqeAprdFIag5gSPpDu3rBRcC1fZzqHqLByA5H7ue4e092aXkMKuv1KJo=
-X-Received: by 2002:a9d:10c:: with SMTP id 12mr4258825otu.123.1559632877063;
- Tue, 04 Jun 2019 00:21:17 -0700 (PDT)
+        bh=liKHPncWOckMU0VpUC12b4lHB8RDKVamTsMkqWq9QS8=;
+        b=flRwe40lUWMrL58cxdA2U8v1BdlRehHBiGgPArLB4rygNWKBDsBqEcGx6OMicR/zY3
+         hKz3hW1gg0Sq8J3s4DTpIu/0mGhzAzaOzDzFkrQc0+u0N7xLUBkb21CEywRN1nbeN68E
+         sonla9zuiG9gJ+E7/R4agukU7ksuZEn+3Aigg/smMCdEL9JEBSXxQAemDpmJhZB3v/V6
+         hnXQZOGmHW/xG3HFXGIrghiSjLCOXLxaPRo4MmIIok1XEhyrVam7oSueeAwi0hqJS8yQ
+         vSMkndzHn3ENXeKWM2I3nVfGvOGDz+k9/Klu6HiSPhWaOegkSr66Ijnhp6bKiHDnUm5/
+         byGg==
+X-Gm-Message-State: APjAAAV966UsT5bfdgU6mjImYK+Hp2GWUGsqybZ+BpUyrQc+6dh4FqE+
+        OkjT+eg0hZgCCRQaZh/aZo86QT15Mtr8g1mXq80ocw==
+X-Google-Smtp-Source: APXvYqwRSbtZYdCjB8whq7+U5NeLJqf4f+zeXI8CzJ2cgm83LN/kdT2cdEZ7iFkIM1drZeG9nKJsq5islj1NytCSefw=
+X-Received: by 2002:ab0:5608:: with SMTP id y8mr15100647uaa.129.1559633474312;
+ Tue, 04 Jun 2019 00:31:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1558346019.git.baolin.wang@linaro.org> <CAMz4ku+E=kFgWrvm_wzM2XQQUyYZhc5uokcGEAEbEKpNAYZQ7g@mail.gmail.com>
- <CAPDyKFoZmxmRYwL_m60=DK9J5+beshEsLw5D=FySzRfYFdsb3Q@mail.gmail.com>
-In-Reply-To: <CAPDyKFoZmxmRYwL_m60=DK9J5+beshEsLw5D=FySzRfYFdsb3Q@mail.gmail.com>
-From:   Baolin Wang <baolin.wang@linaro.org>
-Date:   Tue, 4 Jun 2019 15:21:04 +0800
-Message-ID: <CAMz4ku+7W7LOxr_+utuN5-B8z=xGkrgdVWnmeNJrnFb_VWfF6w@mail.gmail.com>
-Subject: Re: [PATCH 0/9] Add SD host controller support for SC9860 platform
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        arm-soc <arm@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>
+References: <20190429204040.18725-1-dianders@chromium.org> <CAPDyKFp0fQ+3CS-DadE9rO-9Npzve-nztY9hRaMdX7Pw9sUZMw@mail.gmail.com>
+ <CAD=FV=XMph_CE3pFZGP+5d0K2FgbPbheF1oX72TfZn_dpf8SQA@mail.gmail.com> <CAD=FV=U7_ek_z7UfaDn9My8UfZfpNom04OJHowoH-sNsGZQnxA@mail.gmail.com>
+In-Reply-To: <CAD=FV=U7_ek_z7UfaDn9My8UfZfpNom04OJHowoH-sNsGZQnxA@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 4 Jun 2019 09:30:37 +0200
+Message-ID: <CAPDyKFoo7yyhZq8G3PzHSNnF5nWPL7Dy5a-abL-kQTP2jEt9KQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: dw_mmc: Disable SDIO interrupts while suspended
+ to fix suspend/resume
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Sonny Rao <sonnyrao@chromium.org>,
+        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Ryan Case <ryandcase@chromium.org>,
+        "# 4.0+" <stable@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 4 Jun 2019 at 15:14, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+On Mon, 3 Jun 2019 at 20:41, Doug Anderson <dianders@chromium.org> wrote:
 >
-> On Mon, 3 Jun 2019 at 10:42, Baolin Wang <baolin.wang@linaro.org> wrote:
-> >
-> > Hi Adrian & Ulf,
-> >
-> > On Mon, 20 May 2019 at 18:12, Baolin Wang <baolin.wang@linaro.org> wrote:
-> > >
-> > > This patch set adds optional clock support, HS400 enhanced strobe mode support,
-> > > PHY DLL configuration and other optimization to make the SD host controller
-> > > can work well on the Spreadtrum SC9860 platform.
-> >
-> > Do you have any comments for this patch set? Thanks.
-> >
+> Ulf,
 >
-> Seems like the series is almost ready to go. However, due to a few the
-> minor comments/questions from Adrian, I am expecting a new version
-> from you before applying.
+> On Tue, May 28, 2019 at 3:49 PM Doug Anderson <dianders@chromium.org> wrote:
+> >
+> > > 1) As kind of stated above, did you consider a solution where the core
+> > > simply disables the SDIO IRQ in case it isn't enabled for system
+> > > wakeup? In this way all host drivers would benefit.
+> >
+> > I can give it a shot if you can give me a bunch of specific advice,
+> > but I only have access to a few devices doing anything with SDIO and
+> > they are all using Marvell or Broadcom on dw_mmc.
+> >
+> > In general I have no idea how SDIO wakeup (plumbed through the SD
+> > controller) would work.  As per below the only way I've seen it done
+> > is totally out-of-band.  ...and actually, I'm not sure I've actually
+> > ever seen even the out of band stuff truly work on a system myself.
+> > It's always been one of those "we should support wake on WiFi" but
+> > never made it all the way to implementation.  In any case, if there
+> > are examples of people plumbing wakeup through the SD controller I'd
+> > need to figure out how to not break them.  Just doing a solution for
+> > dw_mmc means I don't have to worry about this since dw_mmc definitely
+> > doesn't support SDIO wakeup.
+> >
+> > Maybe one way to get a more generic solution is if you had an idea for
+> > a patch that would work for many host controllers then you could post
+> > it and I could test to confirm that it's happy on dw_mmc?  ...similar
+> > to when you switched dw_mmc away from the old kthread-based SDIO
+> > stuff?
 
-Okay, I am preparing the V2 with addressing the minor comment. Thanks.
+Let me have a look and see if I can post something for you to test.
 
--- 
-Baolin Wang
-Best Regards
+>
+> Unless you have time to help dig into all the possibilities here to
+> help understand how this should behave across all the different host
+> controllers / wakeup setups, maybe we could just land ${SUBJECT} patch
+> for now and when there is more clarity we can revisit?
+
+That's an option. I only fear that the revisit part never happens
+(because of me personally being occupied with other things).
+
+If I not able to come up with something within a week, then I will
+queue up this as fix.
+
+Kind regards
+Uffe
