@@ -2,123 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F8CE360FF
-	for <lists+linux-mmc@lfdr.de>; Wed,  5 Jun 2019 18:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79F1436449
+	for <lists+linux-mmc@lfdr.de>; Wed,  5 Jun 2019 21:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728613AbfFEQRq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 5 Jun 2019 12:17:46 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:45383 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728421AbfFEQRq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 5 Jun 2019 12:17:46 -0400
-Received: by mail-lf1-f65.google.com with SMTP id u10so12512181lfm.12
-        for <linux-mmc@vger.kernel.org>; Wed, 05 Jun 2019 09:17:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=INpfTRXsx/ERh1DGBQzxYmwH3X7MJEUMkIUVZyxdfjI=;
-        b=AUPZGFVJuGGoWX4JkXEWzQ4Ca5JpLMAYEQlnWcEOrLpLWVi8BCDdjz4H+V9svJ3zM8
-         d7p8N9WzKRzG6tgEl8OFj2OEKsneuHpCcgk3lBv9eL1IE+fhLYBo5f98rv/bJ1mB9noh
-         mZ3zywdBQgeARjzYDviYLHZ0EURs4p6H5gsnEGx2gPEtlg6HxYz9HmRjxPI8a8+5zcej
-         9sYJrfG+ay8XIcUJ73tInI5Nkz9CIP10gaOhIwXP1gTQvozIjS62KJuBGlg6poc4w7rh
-         qvy1j84u3uMQb9QrEehh7EovRZVGqXJF0ZgYk1CXrNZuTPd+euKUlze/zkKiIuUFyUJl
-         oNnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=INpfTRXsx/ERh1DGBQzxYmwH3X7MJEUMkIUVZyxdfjI=;
-        b=PZal3sVwOMIxzaIkaXifLlvbXBqllMSP2W6Jcp5XkSKJkUb1D0zxFzeBRDWTwaUrCh
-         VodwmaA34vrZC0GNe0fTrDcoVGtviCSU98cnKdFyIwdgYtudz5EplBSe0NeMVQcxoVNv
-         FJ+1rafPGAAioIyPbzb22Zf3rwd71AcYhpi2BFMLBKkqOmq41MIhHF/Z7rBY6ixWFKik
-         O6H1xRcFtTk1Lj+x4E8mGEhuWl6d8OreygakLPRJRDVY/qygaoCAlIg/e5jW9kkaB9yU
-         Zdpuc2WzRvuMPNbSOoINWlZaqm7em1nmU+ThcijxUgLDLJzrcj1lczzA8V15ovIPJAfe
-         o94Q==
-X-Gm-Message-State: APjAAAXPu/+ji9z4lHllQtkg4Gc1OSnj5xMw/aFA4xLvZcD3Yx8HMTej
-        zeQOqiuTlUOrHtQeogNRtm7+1NPHe1E=
-X-Google-Smtp-Source: APXvYqw5hdVCwy5gFQZPJeHntxyHuMeSYJHFFKduDzX2eKKxfZUS7DZaah4XpCwx9LGzEtiN4fKfQw==
-X-Received: by 2002:ac2:4202:: with SMTP id y2mr3595252lfh.178.1559751464942;
-        Wed, 05 Jun 2019 09:17:44 -0700 (PDT)
-Received: from wasted.cogentembedded.com ([31.173.84.82])
-        by smtp.gmail.com with ESMTPSA id k17sm352187ljk.5.2019.06.05.09.17.43
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 05 Jun 2019 09:17:44 -0700 (PDT)
-Subject: Re: [RFC PATCH v5 3/8] iommu: add a new capable IOMMU_CAP_MERGING
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
-        hch@lst.de, m.szyprowski@samsung.com, robin.murphy@arm.com,
-        joro@8bytes.org
-Cc:     linux-mmc@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-renesas-soc@vger.kernel.org
-References: <1559733114-4221-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1559733114-4221-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <35f63f36-ea4d-850f-8a59-805e67c06b68@cogentembedded.com>
-Date:   Wed, 5 Jun 2019 19:17:42 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+        id S1726683AbfFETIy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 5 Jun 2019 15:08:54 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:44422 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726421AbfFETIy (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 5 Jun 2019 15:08:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=aXk533Y40BLOyImNad0BaK/HkvfBpi+VFKiLovkq2FY=; b=MqJkkcnxuMst8SfYFH0p/H0sS
+        Lyndhu8pTjyjfQyCjGGLFai29f329X1ePrgtN/YiqkHPIN0jszBGe0NaFysyaLUT8iQXMi77kr3Ek
+        VK9dgOqwdzPw6Acy6G9wKOUedXKcUzEoKGZWxrXhzwj0M/MSx7rRNoFuVUIWqQsLzx2BOQ9Z5aGKa
+        E1OsE0J46lx96G9b7y4w7pjA57wrq6KmUpVXPoT6CN1Zwy/HvcQQB4OQD57GDHUtGETcm1tOVobgA
+        82otTB9t6FSATrXnlqA+euiivNTTfNlrFuP4C+PcevHuUSUXXHc8/huT8lQNz6KUokynQWTV5UM5L
+        ++qe37rJw==;
+Received: from 089144193064.atnat0002.highway.a1.net ([89.144.193.64] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hYbH4-0005Cx-Qz; Wed, 05 Jun 2019 19:08:39 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Sebastian Ott <sebott@linux.ibm.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Max Gurtovoy <maxg@mellanox.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Oliver Neukum <oneukum@suse.com>, linux-block@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+        megaraidlinux.pdl@broadcom.com, MPT-FusionLinux.pdl@broadcom.com,
+        linux-hyperv@vger.kernel.org, linux-usb@vger.kernel.org,
+        usb-storage@lists.one-eyed-alien.net, linux-kernel@vger.kernel.org
+Subject: properly communicate queue limits to the DMA layer
+Date:   Wed,  5 Jun 2019 21:08:23 +0200
+Message-Id: <20190605190836.32354-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <1559733114-4221-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 06/05/2019 02:11 PM, Yoshihiro Shimoda wrote:
+Hi Jens,
 
-> This patch adds a new capable IOMMU_CAP_MERGING to check whether
-> the IOVA would be contiguous strictly if a device requires and
-> the IOMMU driver has the capable.
+we've always had a bit of a problem communicating the block layer
+queue limits to the DMA layer, which needs to respect them when
+an IOMMU that could merge segments is used.  Unfortunately most
+drivers don't get this right.  Oddly enough we've been mostly
+getting away with it, although lately dma-debug has been catching
+a few of those issues.
 
-   s/has/is/? Or capable what?
+The segment merging fix for devices with PRP-like structures seems
+to have escalated this a bit.  The first patch fixes the actual
+report from Sebastian, while the rest fix every drivers that appears
+to have the problem based on a code audit looking for drivers using
+blk_queue_max_segment_size, blk_queue_segment_boundary or
+blk_queue_virt_boundary and calling dma_map_sg eventually.  Note
+that for SCSI drivers I've taken the blk_queue_virt_boundary setting
+to the SCSI core, similar to how we did it for the other two settings
+a while ago.  This also deals with the fact that the DMA layer
+settings are on a per-device granularity, so the per-device settings
+in a few SCSI drivers can't actually work in an IOMMU environment.
 
-> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> ---
->  drivers/iommu/dma-iommu.c | 26 ++++++++++++++++++++++++--
->  include/linux/iommu.h     |  1 +
->  2 files changed, 25 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-> index 034caae..ecf1a04 100644
-> --- a/drivers/iommu/dma-iommu.c
-> +++ b/drivers/iommu/dma-iommu.c
-[...]
-> @@ -867,6 +872,13 @@ static int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
->  		sg_dma_len(s) = s_length;
->  		s->offset -= s_iova_off;
->  		s_length = iova_align(iovad, s_length + s_iova_off);
-> +		/*
-> +		 * Check whether the IOVA would be contiguous strictly if
-> +		 * a device requires and the IOMMU driver has the capable.
-
-   Same question here...
-
-> +		 */
-> +		if (iova_contiguous && i > 0 &&
-> +		    (s_iova_off || s->length != s_length))
-> +			return 0;
->  		s->length = s_length;
->  
->  		/*
-> @@ -902,8 +914,18 @@ static int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
->  	if (iommu_map_sg(domain, iova, sg, nents, prot) < iova_len)
->  		goto out_free_iova;
->  
-> -	return __finalise_sg(dev, sg, nents, iova);
-> +	ret = __finalise_sg(dev, sg, nents, iova);
-> +	/*
-> +	 * Check whether the sg entry is single if a device requires and
-> +	 * the IOMMU driver has the capable.
-
-   You  meant capability perhaps?
-
-[...]
-
-MBR, Sergei
+It would be nice to eventually pass these limits as arguments to
+dma_map_sg, but that is a far too big series for the 5.2 merge
+window.
