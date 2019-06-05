@@ -2,78 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCA0A34C72
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jun 2019 17:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3233566E
+	for <lists+linux-mmc@lfdr.de>; Wed,  5 Jun 2019 07:51:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728119AbfFDPl6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Jun 2019 11:41:58 -0400
-Received: from sauhun.de ([88.99.104.3]:47468 "EHLO pokefinder.org"
+        id S1726341AbfFEFvg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 5 Jun 2019 01:51:36 -0400
+Received: from mga02.intel.com ([134.134.136.20]:49038 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728115AbfFDPl6 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 4 Jun 2019 11:41:58 -0400
-Received: from localhost (p5486CF7A.dip0.t-ipconnect.de [84.134.207.122])
-        by pokefinder.org (Postfix) with ESMTPSA id 9C0173E43C2;
-        Tue,  4 Jun 2019 17:41:56 +0200 (CEST)
-Date:   Tue, 4 Jun 2019 17:41:56 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-Subject: Re: [PATCH 1/3] mmc: sdhi: disallow HS400 for M3-W ES1.2 and V3H
-Message-ID: <20190604154156.GA6731@kunai>
-References: <20190604151530.7023-1-wsa+renesas@sang-engineering.com>
- <20190604151530.7023-2-wsa+renesas@sang-engineering.com>
- <CAMuHMdVhv2GAv6ha-Z6OQZC-yFmYDSMexsrNxHXf2w-6B+tj=A@mail.gmail.com>
+        id S1726050AbfFEFvf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 5 Jun 2019 01:51:35 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Jun 2019 22:51:35 -0700
+X-ExtLoop1: 1
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
+  by orsmga001.jf.intel.com with ESMTP; 04 Jun 2019 22:51:33 -0700
+Subject: Re: [PATCH] sdhci: tegra: Do not log error message on deferred probe
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Jon Hunter <jonathanh@nvidia.com>, linux-mmc@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+References: <20190604153446.22857-1-thierry.reding@gmail.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <f856f9c3-e989-df46-739b-72f3030bdeb8@intel.com>
+Date:   Wed, 5 Jun 2019 08:50:22 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Nq2Wo0NMKNjxTN9z"
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVhv2GAv6ha-Z6OQZC-yFmYDSMexsrNxHXf2w-6B+tj=A@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190604153446.22857-1-thierry.reding@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On 4/06/19 6:34 PM, Thierry Reding wrote:
+> From: Thierry Reding <treding@nvidia.com>
+> 
+> Recent changes have made it much more probably that clocks are not
+> available yet when the SDHCI driver is first probed. However, that
+> is a situation that the driver can cope with just fine.
+> 
+> To avoid confusion, don't output an error when this happens.
+> 
+> Signed-off-by: Thierry Reding <treding@nvidia.com>
 
---Nq2Wo0NMKNjxTN9z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
+> ---
+>  drivers/mmc/host/sdhci-tegra.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+> index 10d7aaf68bab..8a6a51bc038b 100644
+> --- a/drivers/mmc/host/sdhci-tegra.c
+> +++ b/drivers/mmc/host/sdhci-tegra.c
+> @@ -1550,8 +1550,11 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
+>  
+>  	clk = devm_clk_get(mmc_dev(host->mmc), NULL);
+>  	if (IS_ERR(clk)) {
+> -		dev_err(mmc_dev(host->mmc), "clk err\n");
+>  		rc = PTR_ERR(clk);
+> +
+> +		if (rc != -EPROBE_DEFER)
+> +			dev_err(&pdev->dev, "failed to get clock: %d\n", rc);
+> +
+>  		goto err_clk_get;
+>  	}
+>  	clk_prepare_enable(clk);
+> 
 
-> I think the above 3 lines can be combined in:
->=20
->      { .soc_id =3D "r8a7796", .revision =3D "ES1.[012]", .data =3D
-> &sdhi_quirks_h3_m3w_es1 },
->=20
-> Or do you prefer separate lines for easier grepping?
-
-No, I just forgot one can do this :) Will wait a little for further
-comments and then fix. Thanks!
-
-
---Nq2Wo0NMKNjxTN9z
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlz2kUAACgkQFA3kzBSg
-Kba1rg//XO2Z3JcKBn2CCEC0HteJMQEIJF/Dl8mz5TrWndTJTpHiyURdlEiVfKkf
-OdmICNSEVI+desVJDS9AnerG28EKT03T6xOoaynNw4cI/x9Ys3UWnWTgM5DFuCSy
-FRY/Ym7yzKv1cgQtrd0zQKCxWTn0fR0cI0xVatme0kirxCl4tARJUkz7LV3SH7Wu
-vkxqkcV4clhQbVeDlgd4psRojDOHtW1bwC+5S3x6DNvEshW5CuqNzlmP1Cqvxf0x
-fnMuh0/Pp/vYIaY3nr2Avg0MorERTVItT2ONNk4R/OtuDPer5wS2NHzaN6TPt7K3
-PKx/ZZRQn6utqTn5UaAAZGvo7BPg1M77r8q0NSEX+ogBpTL8QrbykvxCqwo3xBhe
-du7lz9gvJ+pOYx00wnYmNwpKkG/6r9WICnAZqpmNscIl86lG/08iD4LaIb2o5G9f
-cF0jW/v7Q9M/f6xY93ecyUyN8dus0GMdf5TA+9mVYKIHxBGEhgyXgHjJ1CJX33bh
-L0M1DHz6iPypOZ2XgnFKJTf7ykxENZkSw/btjoAnGPhpzkS6CtDnMxSs18B2/NxQ
-Y8r/atWGlNOY3XY4LZRy2rrlOwEta/EdVE1gvyy8tRXJ+zvfspxuS863xsTdDDVG
-4z6+qmkwVK65tga3p2/Tm3znke1OXIeCH/4Bqwh6PsF47w56sF0=
-=TrtT
------END PGP SIGNATURE-----
-
---Nq2Wo0NMKNjxTN9z--
