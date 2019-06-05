@@ -2,38 +2,75 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B3233566E
-	for <lists+linux-mmc@lfdr.de>; Wed,  5 Jun 2019 07:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4699935813
+	for <lists+linux-mmc@lfdr.de>; Wed,  5 Jun 2019 09:54:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726341AbfFEFvg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 5 Jun 2019 01:51:36 -0400
-Received: from mga02.intel.com ([134.134.136.20]:49038 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726050AbfFEFvf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 5 Jun 2019 01:51:35 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Jun 2019 22:51:35 -0700
-X-ExtLoop1: 1
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by orsmga001.jf.intel.com with ESMTP; 04 Jun 2019 22:51:33 -0700
-Subject: Re: [PATCH] sdhci: tegra: Do not log error message on deferred probe
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Jon Hunter <jonathanh@nvidia.com>, linux-mmc@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-References: <20190604153446.22857-1-thierry.reding@gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <f856f9c3-e989-df46-739b-72f3030bdeb8@intel.com>
-Date:   Wed, 5 Jun 2019 08:50:22 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        id S1726501AbfFEHy4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 5 Jun 2019 03:54:56 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:45107 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726477AbfFEHy4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 5 Jun 2019 03:54:56 -0400
+Received: by mail-pl1-f194.google.com with SMTP id x7so8406771plr.12
+        for <linux-mmc@vger.kernel.org>; Wed, 05 Jun 2019 00:54:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=aiue8tHWiumr4g0nytcyTjYaJHwPhuqRgFXgCDSDwM0=;
+        b=KGG4kw7mp5EISlgpPMNpn5iOHG3+VLhZMDhZ+778rosnxJtQ2DdjdZ5tkcWiWRFGGX
+         13t7oW58cPGQVxfvPViY7GfglNUiaobpnuA5U9Lhk/zaJJvJa8iiwJxVGhf39no86EP+
+         tHTVDIzoVY5+6E11qiOyJvAD7RzmosldNH4nY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=aiue8tHWiumr4g0nytcyTjYaJHwPhuqRgFXgCDSDwM0=;
+        b=BihrtNgmdS1CW61niDHjuOj2Jcv63GZvcauMLbChVirE8hbC/QjhjxujoP8NctzWpI
+         W8oEUaIt9YcQjJ62wVbqNRzBx4B7c0UlgNh3HY0u/ZtAcRMLoyukk7NMxAOT9EM0sT79
+         xojzWrdw52h9tSySj+hOSReWdvBaSW9avD/mbEQz5Tl6dmX0r9p+fGMwtW1aTT1q+cu5
+         1oY8B7Q2mg1FOwJ/qrTGnDikK/Q6jawPAEbxJoD3PjCMUgPpE5i1Z6WQrl8yECNz4+au
+         EGSwD7FljQ+75QIPGxVz5DyLnKlcpfUuJJg6FSM65UBOmIWlEZjUC0RN+6XqlQdxWuoM
+         eXww==
+X-Gm-Message-State: APjAAAX+q6z36uYHiHmtOBrt6zSm3iFtbi7Iojjnle8cyAHc08XNQk8W
+        IbUSLFmHM7Lfa/JnEN9NIoAavg==
+X-Google-Smtp-Source: APXvYqx1Gbz9qsU2PuuHu8YloVvKfIX0ptj4e8Hzpp+GXSquNY3RQsHEhI2ABswO9YBHJkaCFOSHnA==
+X-Received: by 2002:a17:902:8a87:: with SMTP id p7mr25322779plo.124.1559721294846;
+        Wed, 05 Jun 2019 00:54:54 -0700 (PDT)
+Received: from [10.230.40.234] ([192.19.215.250])
+        by smtp.gmail.com with ESMTPSA id 11sm28366590pfu.155.2019.06.05.00.54.49
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 05 Jun 2019 00:54:54 -0700 (PDT)
+Subject: Re: [PATCH v2 2/3] mmc: core: API for temporarily disabling
+ auto-retuning due to errors
+To:     Douglas Anderson <dianders@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        linux-wireless@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Avri Altman <avri.altman@wdc.com>
+References: <20190603183740.239031-1-dianders@chromium.org>
+ <20190603183740.239031-3-dianders@chromium.org>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <25fe1725-76fa-2739-1427-b0e8823ea4ae@broadcom.com>
+Date:   Wed, 5 Jun 2019 09:54:48 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190604153446.22857-1-thierry.reding@gmail.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20190603183740.239031-3-dianders@chromium.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
@@ -41,39 +78,78 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 4/06/19 6:34 PM, Thierry Reding wrote:
-> From: Thierry Reding <treding@nvidia.com>
+On 6/3/2019 8:37 PM, Douglas Anderson wrote:
+> Normally when the MMC core sees an "-EILSEQ" error returned by a host
+> controller then it will trigger a retuning of the card.  This is
+> generally a good idea.
 > 
-> Recent changes have made it much more probably that clocks are not
-> available yet when the SDHCI driver is first probed. However, that
-> is a situation that the driver can cope with just fine.
+> However, if a command is expected to sometimes cause transfer errors
+> then these transfer errors shouldn't cause a re-tuning.  This
+> re-tuning will be a needless waste of time.  One example case where a
+> transfer is expected to cause errors is when transitioning between
+> idle (sometimes referred to as "sleep" in Broadcom code) and active
+> state on certain Broadcom WiFi cards.  Specifically if the card was
+> already transitioning between states when the command was sent it
+> could cause an error on the SDIO bus.
 > 
-> To avoid confusion, don't output an error when this happens.
+> Let's add an API that the SDIO card drivers can call that will
+> temporarily disable the auto-tuning functionality.  Then we can add a
+> call to this in the Broadcom WiFi driver and any other driver that
+> might have similar needs.
 > 
-> Signed-off-by: Thierry Reding <treding@nvidia.com>
-
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-
+> NOTE: this makes the assumption that the card is already tuned well
+> enough that it's OK to disable the auto-retuning during one of these
+> error-prone situations.  Presumably the driver code performing the
+> error-prone transfer knows how to recover / retry from errors.  ...and
+> after we can get back to a state where transfers are no longer
+> error-prone then we can enable the auto-retuning again.  If we truly
+> find ourselves in a case where the card needs to be retuned sometimes
+> to handle one of these error-prone transfers then we can always try a
+> few transfers first without auto-retuning and then re-try with
+> auto-retuning if the first few fail.
+> 
+> Without this change on rk3288-veyron-minnie I periodically see this in
+> the logs of a machine just sitting there idle:
+>    dwmmc_rockchip ff0d0000.dwmmc: Successfully tuned phase to XYZ
+> 
+> Fixes: bd11e8bd03ca ("mmc: core: Flag re-tuning is needed on CRC errors")
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 > ---
->  drivers/mmc/host/sdhci-tegra.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-> index 10d7aaf68bab..8a6a51bc038b 100644
-> --- a/drivers/mmc/host/sdhci-tegra.c
-> +++ b/drivers/mmc/host/sdhci-tegra.c
-> @@ -1550,8 +1550,11 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
->  
->  	clk = devm_clk_get(mmc_dev(host->mmc), NULL);
->  	if (IS_ERR(clk)) {
-> -		dev_err(mmc_dev(host->mmc), "clk err\n");
->  		rc = PTR_ERR(clk);
-> +
-> +		if (rc != -EPROBE_DEFER)
-> +			dev_err(&pdev->dev, "failed to get clock: %d\n", rc);
-> +
->  		goto err_clk_get;
->  	}
->  	clk_prepare_enable(clk);
-> 
+> Note that are are a whole boatload of different ways that we could
+> provide an API for the Broadcom WiFi SDIO driver.  This patch
+> illustrates one way but if maintainers feel strongly that this is too
+> ugly and have a better idea then I can give it a shot too.  From a
+> purist point of view I kinda felt that the "expect errors" really
+> belonged as part of the mmc_request structure, but getting it into
+> there meant changing a whole pile of core SD/MMC APIs.  Simply adding
+> it to the host seemed to match the current style better and was a less
+> intrusive change.
+
+Hi Doug,
+
+Sorry for bringing this up, but there used to be an issue with retuning 
+in general, ie. the device handled tuning command 19 only once after 
+startup. I guess that is no longer an issue given your results. I guess 
+the problem goes away when you disable device sleep functionality. No 
+what you want in terms of power consumption, but would be good to know. 
+You can disable it with below patch.
+
+Regards,
+Arend
+---
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c 
+b/drivers
+index 15a40fd..18e90bd 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -307,7 +307,7 @@ struct rte_console {
+  #define BRCMF_IDLE_ACTIVE      0       /* Do not request any SD clock 
+change
+                                          * when idle
+                                          */
+-#define BRCMF_IDLE_INTERVAL    1
++#define BRCMF_IDLE_INTERVAL    0
+
+  #define KSO_WAIT_US 50
+  #define MAX_KSO_ATTEMPTS (PMU_MAX_TRANSITION_DLY/KSO_WAIT_US)
 
