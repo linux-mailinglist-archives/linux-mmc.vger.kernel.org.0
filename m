@@ -2,139 +2,167 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C67035B04
-	for <lists+linux-mmc@lfdr.de>; Wed,  5 Jun 2019 13:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6153C35C8A
+	for <lists+linux-mmc@lfdr.de>; Wed,  5 Jun 2019 14:22:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727198AbfFELQ5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 5 Jun 2019 07:16:57 -0400
-Received: from relmlor2.renesas.com ([210.160.252.172]:62646 "EHLO
-        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727434AbfFELQ4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 5 Jun 2019 07:16:56 -0400
-X-IronPort-AV: E=Sophos;i="5.60,550,1549897200"; 
-   d="scan'208";a="17680362"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 05 Jun 2019 20:16:53 +0900
-Received: from localhost.localdomain (unknown [10.166.17.210])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id B64F141BD76A;
-        Wed,  5 Jun 2019 20:16:53 +0900 (JST)
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
-        hch@lst.de, m.szyprowski@samsung.com, robin.murphy@arm.com,
-        joro@8bytes.org
+        id S1727422AbfFEMWH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 5 Jun 2019 08:22:07 -0400
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:58976 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727337AbfFEMWG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 5 Jun 2019 08:22:06 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7AD2815A2;
+        Wed,  5 Jun 2019 05:22:06 -0700 (PDT)
+Received: from [10.1.196.75] (e110467-lin.cambridge.arm.com [10.1.196.75])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DC6753F246;
+        Wed,  5 Jun 2019 05:22:04 -0700 (PDT)
+Subject: Re: [RFC PATCH v5 3/8] iommu: add a new capable IOMMU_CAP_MERGING
+To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
+        hch@lst.de, m.szyprowski@samsung.com, joro@8bytes.org
 Cc:     linux-mmc@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [RFC PATCH v5 8/8] mmc: renesas_sdhi: use multiple segments if possible
-Date:   Wed,  5 Jun 2019 20:11:54 +0900
-Message-Id: <1559733114-4221-9-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1559733114-4221-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        linux-renesas-soc@vger.kernel.org
 References: <1559733114-4221-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <1559733114-4221-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <7dfeb7d8-b777-b4af-d892-2829cd05241b@arm.com>
+Date:   Wed, 5 Jun 2019 13:21:59 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <1559733114-4221-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-If the IOMMU driver has a capable for merging segments to
-a segment strictly, this can expose the host->mmc->max_segs with
-multiple segments to a block layer by using blk_queue_max_segments()
-that mmc_setup_queue() calls. Notes that an sdio card may be
-possible to use multiple segments with non page aligned size, so
-that this will not expose multiple segments to avoid failing
-dma_map_sg() every time.
+On 05/06/2019 12:11, Yoshihiro Shimoda wrote:
+> This patch adds a new capable IOMMU_CAP_MERGING to check whether
+> the IOVA would be contiguous strictly if a device requires and
+> the IOMMU driver has the capable.
+> 
+> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+> ---
+>   drivers/iommu/dma-iommu.c | 26 ++++++++++++++++++++++++--
+>   include/linux/iommu.h     |  1 +
+>   2 files changed, 25 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 034caae..ecf1a04 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -847,11 +847,16 @@ static int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
+>   	dma_addr_t iova;
+>   	size_t iova_len = 0;
+>   	unsigned long mask = dma_get_seg_boundary(dev);
+> -	int i;
+> +	int i, ret;
+> +	bool iova_contiguous = false;
+>   
+>   	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+>   		iommu_dma_sync_sg_for_device(dev, sg, nents, dir);
+>   
+> +	if (dma_get_iova_contiguous(dev) &&
+> +	    iommu_capable(dev->bus, IOMMU_CAP_MERGING))
+> +		iova_contiguous = true;
+> +
+>   	/*
+>   	 * Work out how much IOVA space we need, and align the segments to
+>   	 * IOVA granules for the IOMMU driver to handle. With some clever
+> @@ -867,6 +872,13 @@ static int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
+>   		sg_dma_len(s) = s_length;
+>   		s->offset -= s_iova_off;
+>   		s_length = iova_align(iovad, s_length + s_iova_off);
+> +		/*
+> +		 * Check whether the IOVA would be contiguous strictly if
+> +		 * a device requires and the IOMMU driver has the capable.
+> +		 */
+> +		if (iova_contiguous && i > 0 &&
+> +		    (s_iova_off || s->length != s_length))
+> +			return 0;
+>   		s->length = s_length;
+>   
+>   		/*
+> @@ -902,8 +914,18 @@ static int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg,
+>   	if (iommu_map_sg(domain, iova, sg, nents, prot) < iova_len)
+>   		goto out_free_iova;
+>   
+> -	return __finalise_sg(dev, sg, nents, iova);
+> +	ret = __finalise_sg(dev, sg, nents, iova);
+> +	/*
+> +	 * Check whether the sg entry is single if a device requires and
+> +	 * the IOMMU driver has the capable.
+> +	 */
+> +	if (iova_contiguous && ret != 1)
+> +		goto out_unmap_sg;
 
-Notes that on renesas_sdhi_sys_dmac, the max_segs value will change
-from 32 to 512, but the sys_dmac can handle 512 segments, so that
-this init_card ops is added on "TMIO_MMC_MIN_RCAR2" environment.
+I don't see that just failing really gives this option any value. 
+Clearly the MMC driver has to do *something* to handle the failure (plus 
+presumably the case of not having IOMMU DMA ops at all), which begs the 
+question of why it couldn't just do whatever that is anyway, without all 
+this infrastructure. For starters, it would be a far simpler and less 
+invasive patch:
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
----
- drivers/mmc/host/renesas_sdhi_core.c          | 27 +++++++++++++++++++++++++++
- drivers/mmc/host/renesas_sdhi_internal_dmac.c |  4 ++++
- 2 files changed, 31 insertions(+)
+	if (dma_map_sg(...) > 1) {
+		dma_unmap_sg(...);
+		/* split into multiple requests and try again */
+	}
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index c5ee4a6..379cefa 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -20,6 +20,7 @@
- 
- #include <linux/clk.h>
- #include <linux/delay.h>
-+#include <linux/iommu.h>
- #include <linux/kernel.h>
- #include <linux/mfd/tmio.h>
- #include <linux/mmc/host.h>
-@@ -46,6 +47,8 @@
- #define SDHI_VER_GEN3_SD	0xcc10
- #define SDHI_VER_GEN3_SDMMC	0xcd10
- 
-+#define SDHI_MAX_SEGS_IN_IOMMU	512
-+
- struct renesas_sdhi_quirks {
- 	bool hs400_disabled;
- 	bool hs400_4taps;
-@@ -203,6 +206,28 @@ static void renesas_sdhi_clk_disable(struct tmio_mmc_host *host)
- 	clk_disable_unprepare(priv->clk_cd);
- }
- 
-+static void renesas_sdhi_init_card(struct mmc_host *mmc, struct mmc_card *card)
-+{
-+	struct tmio_mmc_host *host = mmc_priv(mmc);
-+
-+	/*
-+	 * If the IOMMU driver has a capable for merging segments to
-+	 * a segment strictly, this can expose the host->mmc->max_segs with
-+	 * multiple segments to a block layer by using blk_queue_max_segments()
-+	 * that mmc_setup_queue() calls. Notes that an sdio card may be
-+	 * possible to use multiple segments with non page aligned size, so
-+	 * that this will not expose multiple segments to avoid failing
-+	 * dma_map_sg() every time.
-+	 */
-+	if (host->pdata->max_segs < SDHI_MAX_SEGS_IN_IOMMU &&
-+	    iommu_capable(host->pdev->dev.bus, IOMMU_CAP_MERGING) &&
-+	    (mmc_card_mmc(card) || mmc_card_sd(card)))
-+		host->mmc->max_segs = SDHI_MAX_SEGS_IN_IOMMU;
-+	else
-+		host->mmc->max_segs = host->pdata->max_segs ? :
-+				      TMIO_DEFAULT_MAX_SEGS;
-+}
-+
- static int renesas_sdhi_card_busy(struct mmc_host *mmc)
- {
- 	struct tmio_mmc_host *host = mmc_priv(mmc);
-@@ -726,6 +751,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 
- 	/* SDR speeds are only available on Gen2+ */
- 	if (mmc_data->flags & TMIO_MMC_MIN_RCAR2) {
-+		host->ops.init_card = renesas_sdhi_init_card;
-+
- 		/* card_busy caused issues on r8a73a4 (pre-Gen2) CD-less SDHI */
- 		host->ops.card_busy = renesas_sdhi_card_busy;
- 		host->ops.start_signal_voltage_switch =
-diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-index 751fe91..a442f86 100644
---- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-+++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-@@ -11,6 +11,7 @@
- #include <linux/device.h>
- #include <linux/dma-mapping.h>
- #include <linux/io-64-nonatomic-hi-lo.h>
-+#include <linux/iommu.h>
- #include <linux/mfd/tmio.h>
- #include <linux/mmc/host.h>
- #include <linux/mod_devicetable.h>
-@@ -337,6 +338,9 @@ static int renesas_sdhi_internal_dmac_probe(struct platform_device *pdev)
- 	/* value is max of SD_SECCNT. Confirmed by HW engineers */
- 	dma_set_max_seg_size(dev, 0xffffffff);
- 
-+	if (iommu_capable(dev->bus, IOMMU_CAP_MERGING))
-+		dma_set_iova_contiguous(dev, true);
-+
- 	return renesas_sdhi_probe(pdev, &renesas_sdhi_internal_dmac_dma_ops);
- }
- 
--- 
-2.7.4
+But then it would make even more sense to just have the driver be 
+proactive about its special requirement in the first place, and simply 
+validate the list before it even tries to map it:
 
+	for_each_sg(sgl, sg, n, i)
+		if ((i > 0 && sg->offset % PAGE_SIZE) ||
+		    (i < n - 1 && sg->length % PAGE_SIZE))
+			/* segment will not be mergeable */
+
+For reference, I think v4l2 and possibly some areas of DRM already do 
+something vaguely similar to judge whether they get contiguous buffers 
+or not.
+
+> +
+> +	return ret;
+>   
+> +out_unmap_sg:
+> +	iommu_dma_unmap_sg(dev, sg, nents, dir, attrs);
+>   out_free_iova:
+>   	iommu_dma_free_iova(cookie, iova, iova_len);
+>   out_restore_sg:
+> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+> index 91af22a..f971dd3 100644
+> --- a/include/linux/iommu.h
+> +++ b/include/linux/iommu.h
+> @@ -104,6 +104,7 @@ enum iommu_cap {
+>   					   transactions */
+>   	IOMMU_CAP_INTR_REMAP,		/* IOMMU supports interrupt isolation */
+>   	IOMMU_CAP_NOEXEC,		/* IOMMU_NOEXEC flag */
+> +	IOMMU_CAP_MERGING,		/* IOMMU supports segments merging */
+
+This isn't a 'capability' of the IOMMU - "segment merging" equates to 
+just remapping pages, and there's already a fundamental assumption that 
+IOMMUs are capable of that. Plus it's very much a DMA API concept, so 
+hardly belongs in the IOMMU API anyway.
+
+All in all, I'm struggling to see the point of this. Although it's not a 
+DMA API guarantee, iommu-dma already merges scatterlists as aggressively 
+as it is allowed to, and will continue to do so for the foreseeable 
+future (since it avoids considerable complication in the IOVA 
+allocation), so if you want to make sure iommu_dma_map_sg() merges an 
+entire list, just don't give it a non-mergeable list. And if you still 
+really really want dma_map_sg() to have a behaviour of "merge to a 
+single segment or fail", then that should at least be a DMA API 
+attribute, which could in principle be honoured by bounce-buffering 
+implementations as well.
+
+And if the problem is really that you're not getting merging because of 
+exposing the wrong parameters to the DMA API and/or the block layer, or 
+that you just can't quite express your requirement to the block layer in 
+the first place, then that should really be tackled at the source rather 
+than worked around further down in the stack.
+
+Robin.
