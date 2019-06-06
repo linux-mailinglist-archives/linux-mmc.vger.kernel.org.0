@@ -2,115 +2,136 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 477AF374AB
-	for <lists+linux-mmc@lfdr.de>; Thu,  6 Jun 2019 14:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48F51374E2
+	for <lists+linux-mmc@lfdr.de>; Thu,  6 Jun 2019 15:10:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728263AbfFFM7h (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 6 Jun 2019 08:59:37 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:34811 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728154AbfFFM7h (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 6 Jun 2019 08:59:37 -0400
-Received: by mail-qt1-f193.google.com with SMTP id m29so2502956qtu.1
-        for <linux-mmc@vger.kernel.org>; Thu, 06 Jun 2019 05:59:37 -0700 (PDT)
+        id S1726798AbfFFNKp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 6 Jun 2019 09:10:45 -0400
+Received: from mail-eopbgr1400124.outbound.protection.outlook.com ([40.107.140.124]:60382
+        "EHLO JPN01-TY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725782AbfFFNKp (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 6 Jun 2019 09:10:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Pcms2hpiozX31D6cP+b+pcEmPCGLaGYLU1hDb/Ksv08=;
-        b=MkdX75Ny9LXeEDd7M2ULnDHXydpfH/hamtC61IJll/djUvPjzu3CL4xNMlr5cz6Q5w
-         guXxPdUF+9pLJqSbeFYaU0ImdK+8nAij30U0KPUu6/8BURnKFaQs0UmduUvDZSZvS3t9
-         KBmMub0KUG4Vu/RcFYW7BchKnUQlRyD5eB/hRcBQ502FwMXpWw81+Pu+hLi173/AjDI5
-         NP7He53xnoEtj8xoDotmmQb52tCLcvzr3zPzMDREz/bS8CoABsqvoL1RwTYigpnE7jWm
-         Us4tLj2+XhGrNSs+5OFv+xlEHIunotlG5e2WVBNFLJZ98kl/iklZykxEmFHo7iATuPWe
-         rK7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Pcms2hpiozX31D6cP+b+pcEmPCGLaGYLU1hDb/Ksv08=;
-        b=f1ulsJzx4aO5D+XlWcbtTnWaUr6IYiruRkZJ0KPgt2pFwRJRSKmPzUXZQwocbBNyIn
-         7/eH26M/f238zW6uqnUz2xUN81vJzKg6FBJxCqd8rSrs+SbP3ivghseNDCFQbcHgmXB9
-         9ZaoQ92y/fRthRxFc6gZt0jQ9368e1dxaNF/dWTImzcgqDQ+6M1ySHDE0hKdruuE9R5n
-         aWSTrel8XSRU9/vWnqXx5OslhVzw8RpUrcXhizaYiOHCICGLpjDosuZBBoC4Bi9QeTF4
-         8NIPM3GsERy8FcIuTXZ9L7cKzHQJQPnJW0B/3h1MQqT/yN0bZ/Vj/YyJ4FeLnUSs5+K3
-         wHRA==
-X-Gm-Message-State: APjAAAVtz7uskP5jLNwHiI4WZ9MHgZW0A32p4BLzN7APlT4nHld+p3YU
-        F+4cU6IUmKrcH/7XRg/cfg+5KQ==
-X-Google-Smtp-Source: APXvYqyDJboU1GnyolHbPy9u8JPHRKlv/ujxxO2lQHi1JZVZmAE4fxPsnUgZOrHcZM/zPgtxL88Vqg==
-X-Received: by 2002:ac8:7a87:: with SMTP id x7mr32060230qtr.215.1559825976661;
-        Thu, 06 Jun 2019 05:59:36 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
-        by smtp.gmail.com with ESMTPSA id f67sm934787qtb.68.2019.06.06.05.59.35
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 06 Jun 2019 05:59:35 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1hYrzT-00057B-B5; Thu, 06 Jun 2019 09:59:35 -0300
-Date:   Thu, 6 Jun 2019 09:59:35 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Jens Axboe <axboe@kernel.dk>, Sebastian Ott <sebott@linux.ibm.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Max Gurtovoy <maxg@mellanox.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Oliver Neukum <oneukum@suse.com>, linux-block@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
-        megaraidlinux.pdl@broadcom.com, MPT-FusionLinux.pdl@broadcom.com,
-        linux-hyperv@vger.kernel.org, linux-usb@vger.kernel.org,
-        usb-storage@lists.one-eyed-alien.net, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/13] IB/iser: set virt_boundary_mask in the scsi host
-Message-ID: <20190606125935.GA17373@ziepe.ca>
-References: <20190605190836.32354-1-hch@lst.de>
- <20190605190836.32354-9-hch@lst.de>
- <20190605202235.GC3273@ziepe.ca>
- <20190606062441.GB26745@lst.de>
+ d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M3VKj6yLgGnlf33BcaiIa9ZsrfEfozyFE8uw0i1nUhU=;
+ b=DFGonNNXu58oDbWbSLuo9uAqU2zgxUu8+KmKgltanuCwdOqehuWUUhK0jAYH12MQYzqc1DpWLB7BGmPhQ4eQ3LsTLfRiz7Sa3W+vqwsnicci0p6VIFI/0yw/QVHMRxldzqbgFcVhceSjlhCLWZ410hVLJ7NW6mYE32QcRFu5aHE=
+Received: from TY1PR01MB1770.jpnprd01.prod.outlook.com (52.133.163.13) by
+ TY1PR01MB1835.jpnprd01.prod.outlook.com (52.133.163.20) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1965.14; Thu, 6 Jun 2019 13:10:42 +0000
+Received: from TY1PR01MB1770.jpnprd01.prod.outlook.com
+ ([fe80::8a0:4174:3c3f:f05b]) by TY1PR01MB1770.jpnprd01.prod.outlook.com
+ ([fe80::8a0:4174:3c3f:f05b%7]) with mapi id 15.20.1965.011; Thu, 6 Jun 2019
+ 13:10:42 +0000
+From:   Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+CC:     "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        =?iso-8859-1?Q?Niklas_S=F6derlund?= <niklas.soderlund@ragnatech.se>
+Subject: RE: [PATCH v2 1/3] mmc: sdhi: disallow HS400 for M3-W ES1.2, RZ/G2M,
+ and V3H
+Thread-Topic: [PATCH v2 1/3] mmc: sdhi: disallow HS400 for M3-W ES1.2, RZ/G2M,
+ and V3H
+Thread-Index: AQHVHFv/teVuTaRz5U2lPOAfUP0mqKaOmV4Q
+Date:   Thu, 6 Jun 2019 13:10:41 +0000
+Message-ID: <TY1PR01MB1770774B57DB7853176B560EC0170@TY1PR01MB1770.jpnprd01.prod.outlook.com>
+References: <20190606113537.8869-1-wsa+renesas@sang-engineering.com>
+ <20190606113537.8869-2-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20190606113537.8869-2-wsa+renesas@sang-engineering.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=fabrizio.castro@bp.renesas.com; 
+x-originating-ip: [193.141.220.21]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 69393b74-9133-4e12-6a08-08d6ea8060f3
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:TY1PR01MB1835;
+x-ms-traffictypediagnostic: TY1PR01MB1835:
+x-microsoft-antispam-prvs: <TY1PR01MB1835296205D4A261C7C2F9EAC0170@TY1PR01MB1835.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-forefront-prvs: 00603B7EEF
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(346002)(136003)(39860400002)(366004)(376002)(199004)(189003)(5660300002)(66946007)(86362001)(66476007)(73956011)(478600001)(76116006)(66066001)(53936002)(81156014)(81166006)(7736002)(11346002)(66446008)(64756008)(66556008)(2906002)(3846002)(6246003)(110136005)(54906003)(6116002)(52536014)(2501003)(305945005)(8676002)(8936002)(71190400001)(71200400001)(6436002)(9686003)(14444005)(55016002)(186003)(256004)(26005)(14454004)(316002)(4326008)(74316002)(53546011)(102836004)(6506007)(486006)(76176011)(25786009)(229853002)(44832011)(446003)(68736007)(476003)(33656002)(7696005)(99286004);DIR:OUT;SFP:1102;SCL:1;SRVR:TY1PR01MB1835;H:TY1PR01MB1770.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:0;MX:1;
+received-spf: None (protection.outlook.com: bp.renesas.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: dtkjnnVO9zODw31beh2MMCS9ZLuGzKPaCBN/dLWj4ellnm9zTM6R2BVa6zlga70CYLvInvlG7agmPLFGfO7RVGufMLY64jH2rBIJ/P73UQqVzQLxmz07gXzIe774QWZ/qd7LvNogh9UAkSS4OxrxY+ZGhSOS4JhhEplCBVS5uhuFSZy1C8K54WQc/PcGMYByWBb9Fl7sKoB0VXXIs2lEyz5BGpzaXOiLbOVv4dHE6OjnzbN/tSsHYNGIn82US5ttmw9PRr708J9VBtIJ1DBeq4lVde+ClERJaMVxOo0qLRkvYy7YDQ52330DUDxx0MHHoubGbTUtC20P+Imq231B/ooACf/WUdnXrezH+Xj4LVqgXKv303nUaLa6LiiHvJhG0gYxz/eiG299DKidonZ199Dmw4yBQAz017CKrXK++Vg=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190606062441.GB26745@lst.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69393b74-9133-4e12-6a08-08d6ea8060f3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jun 2019 13:10:42.0683
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fabrizio.castro@bp.renesas.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY1PR01MB1835
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Jun 06, 2019 at 08:24:41AM +0200, Christoph Hellwig wrote:
-> On Wed, Jun 05, 2019 at 05:22:35PM -0300, Jason Gunthorpe wrote:
-> > On Wed, Jun 05, 2019 at 09:08:31PM +0200, Christoph Hellwig wrote:
-> > > This ensures all proper DMA layer handling is taken care of by the
-> > > SCSI midlayer.
-> > 
-> > Maybe not entirely related to this series, but it looks like the SCSI
-> > layer is changing the device global dma_set_max_seg_size() - at least
-> > in RDMA the dma device is being shared between many users, so we
-> > really don't want SCSI to make this value smaller.
-> > 
-> > Can we do something about this?
-> 
-> We could do something about it as outlined in my mail - pass the
-> dma_params explicitly to the dma_map_sg call.  But that isn't really
-> suitable for a short term fix and will take a little more time.
+Hello Wolfram!
 
-Sounds good to me, having every dma mapping specify its restrictions
-makes a lot more sense than a device global setting, IMHO.
+Thank you for adding the r8a774a1 to the list!
 
-In RDMA the restrictions to build a SGL, create a device queue or
-build a MR are all a little different.
+> From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Sent: 06 June 2019 12:36
+> Subject: [PATCH v2 1/3] mmc: sdhi: disallow HS400 for M3-W ES1.2, RZ/G2M,=
+ and V3H
+>=20
+> Our HW engineers informed us that HS400 is not working on these SoC
+> revisions.
+>=20
+> Fixes: 0f4e2054c971 ("mmc: renesas_sdhi: disable HS400 on H3 ES1.x and M3=
+-W ES1.[012]")
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-ie for MRs alignment of the post-IOMMU DMA address is very important
-for performance as the MR logic can only build device huge pages out
-of properly aligned DMA addresses. While for SGLs we don't care about
-this, instead SGLs usually have the 32 bit per-element length limit in
-the HW that MRs do not.
+Reviewed-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 
-> Until we've sorted that out the device paramter needs to be set to
-> the smallest value supported.
+> ---
+>  drivers/mmc/host/renesas_sdhi_core.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/rene=
+sas_sdhi_core.c
+> index db73f9f1b186..683c449a2f94 100644
+> --- a/drivers/mmc/host/renesas_sdhi_core.c
+> +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> @@ -620,11 +620,16 @@ static const struct renesas_sdhi_quirks sdhi_quirks=
+_h3_es2 =3D {
+>  	.hs400_4taps =3D true,
+>  };
+>=20
+> +static const struct renesas_sdhi_quirks sdhi_quirks_nohs400 =3D {
+> +	.hs400_disabled =3D true,
+> +};
+> +
+>  static const struct soc_device_attribute sdhi_quirks_match[]  =3D {
+>  	{ .soc_id =3D "r8a7795", .revision =3D "ES1.*", .data =3D &sdhi_quirks_=
+h3_m3w_es1 },
+>  	{ .soc_id =3D "r8a7795", .revision =3D "ES2.0", .data =3D &sdhi_quirks_=
+h3_es2 },
+> -	{ .soc_id =3D "r8a7796", .revision =3D "ES1.0", .data =3D &sdhi_quirks_=
+h3_m3w_es1 },
+> -	{ .soc_id =3D "r8a7796", .revision =3D "ES1.1", .data =3D &sdhi_quirks_=
+h3_m3w_es1 },
+> +	{ .soc_id =3D "r8a7796", .revision =3D "ES1.[012]", .data =3D &sdhi_qui=
+rks_h3_m3w_es1 },
+> +	{ .soc_id =3D "r8a774a1", .revision =3D "ES1.[012]", .data =3D &sdhi_qu=
+irks_h3_m3w_es1 },
+> +	{ .soc_id =3D "r8a77980", .data =3D &sdhi_quirks_nohs400 },
+>  	{ /* Sentinel. */ },
+>  };
+>=20
+> --
+> 2.11.0
 
-smallest? largest? We've been setting it to the largest value the
-device can handle (ie 2G)
-
-Jason
