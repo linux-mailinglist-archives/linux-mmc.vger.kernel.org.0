@@ -2,92 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 931A13852C
-	for <lists+linux-mmc@lfdr.de>; Fri,  7 Jun 2019 09:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC1AB3880E
+	for <lists+linux-mmc@lfdr.de>; Fri,  7 Jun 2019 12:39:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727055AbfFGHkZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 7 Jun 2019 03:40:25 -0400
-Received: from smtp4.iitb.ac.in ([103.21.127.18]:46420 "EHLO smtp1.iitb.ac.in"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725497AbfFGHkZ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 7 Jun 2019 03:40:25 -0400
-X-Greylist: delayed 3745 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Jun 2019 03:40:24 EDT
-Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
-        by smtp1.iitb.ac.in (Postfix) with SMTP id 63C97105945C
-        for <linux-mmc@vger.kernel.org>; Fri,  7 Jun 2019 12:02:11 +0530 (IST)
-Received: (qmail 32253 invoked by uid 510); 7 Jun 2019 12:02:06 +0530
-X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
- spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
- Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 3.223095 secs; 07 Jun 2019 12:02:06 +0530
-X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns2.iitb.ac.in
-X-Spam-Level: *
-X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
-        MISSING_HEADERS,PROPER_IITB_MSGID autolearn=disabled version=3.4.1
-X-Spam-Pyzor: Reported 1 times.
-X-Envelope-From: rws@aero.iitb.ac.in
-X-Qmail-Scanner-Mime-Attachments: |
-X-Qmail-Scanner-Zip-Files: |
-Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
-  by ldns2.iitb.ac.in with SMTP; 7 Jun 2019 12:02:03 +0530
-Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
-        by ldns2.iitb.ac.in (Postfix) with ESMTP id E507834194A;
-        Fri,  7 Jun 2019 12:01:54 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id C66148902E548;
-        Fri,  7 Jun 2019 12:01:54 +0530 (IST)
-Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
-        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Dsp2o8aWBuLF; Fri,  7 Jun 2019 12:01:54 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id CBA298902E540;
-        Fri,  7 Jun 2019 12:01:53 +0530 (IST)
-X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
-Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
-        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id XJzHEtFw4Nf5; Fri,  7 Jun 2019 12:01:53 +0530 (IST)
-Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 752AD8902E537;
-        Fri,  7 Jun 2019 12:01:49 +0530 (IST)
-Date:   Fri, 7 Jun 2019 12:01:49 +0530 (IST)
-From:   Martins Henry <rws@aero.iitb.ac.in>
-Message-ID: <630023291.60470.1559889109394.JavaMail.zimbra@aero.iitb.ac.in>
-Subject: Thanks and I wait for your answer
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.101.1.5]
-X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
-Thread-Index: Z4di5DXkV78PrTTCqXhStc9XBmMYjg==
-Thread-Topic: Thanks and I wait for your answer
-To:     unlisted-recipients:; (no To-header on input)
+        id S1728032AbfFGKjQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 7 Jun 2019 06:39:16 -0400
+Received: from mail-lj1-f182.google.com ([209.85.208.182]:44118 "EHLO
+        mail-lj1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727450AbfFGKjQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Jun 2019 06:39:16 -0400
+Received: by mail-lj1-f182.google.com with SMTP id k18so1271670ljc.11
+        for <linux-mmc@vger.kernel.org>; Fri, 07 Jun 2019 03:39:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=ufgg86kQKWKmK+WFixqatapUs0G96Q5E9DutnoyVCl0=;
+        b=a+liCGMou39XsFuyMFoXxs0fhI2TulhehewrXPgrym1Z9ww7d9X8rSp2vWmuiyhexX
+         FvrRPlop0SI5R0rnKZ5HUsyh/mQZzPEkF8gaKI+9C1HXFvV2XipJ1b5nAz+IX9pbcwjX
+         6dNZKupmCz+enYiIx2UjRACnxgsKyzxQVapcapLDWlClKWossntTgsipBA10UAPQqRyb
+         fI5aOEfD+69PdT0dMyaZLWeuhuiilVPIrbPSndHPRnaRC80CDAGGGplZF2L6KjgEnhfz
+         2x2YiPGWSHxYvxeHR28rsuA7L1X9OjdQZxvxkHhw8SUDeiYrDw/1L2sJm48Fpdk8VSMy
+         0Krw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ufgg86kQKWKmK+WFixqatapUs0G96Q5E9DutnoyVCl0=;
+        b=YR3a5U2y6RyO0Vq+Rw3DuopD0RAzhHzg87FckiLmfImL78mRdQkqVyNX0BQh4TUL8m
+         61jveEL/LWm6uYse2lKT4KSkRTVwG09IfxNPMnNAmQV7Nm5iUPTlppwxNJM3FqU8r4yS
+         wZ7zOKwI3EP5De2PAP4McE4tKr1INRw8YFkU0ftwJfFHxKPwWFz8qv1fc1zXrkOnyi7H
+         E4BKlQSny1cpxe7cUbOaCTEo7QcpWqmRZawfCC1z3atTTVSutUSP6iV+F7diIAAMWlRU
+         DulSG76/Vcf+upTJuErPjQo0TxYLTWUUMp+chwl6yplUK6PcyF3pzSF7quUXP08eCxyH
+         1/ag==
+X-Gm-Message-State: APjAAAWMVq0cEUK66gmGdtuiwE5aCTn9M6Ykr5FFajTISQ75w5FGiBeN
+        62XOe/IItMAvrrwbqmOD+P0IiA==
+X-Google-Smtp-Source: APXvYqxyYC6K60y/Nisr80rQsX2lNaVdM5Wfw2ZH50jKBIkUKybN8Iyi7OR05ngCGGROqMVaGOIiOw==
+X-Received: by 2002:a2e:3314:: with SMTP id d20mr14336735ljc.122.1559903953918;
+        Fri, 07 Jun 2019 03:39:13 -0700 (PDT)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id n10sm345448lfe.24.2019.06.07.03.39.12
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 07 Jun 2019 03:39:13 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC and MEMSTICK fixes for v5.2-rc4
+Date:   Fri,  7 Jun 2019 12:39:11 +0200
+Message-Id: <20190607103911.4623-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+Hi Linus,
 
-I am Martin Henry, An American Citizen; I am the personal secretary to
-Mr. Donald Railton, the controller of a Lottery Company. Please I am
-having big problem now, I have a 6yrs old daughter who has leukemia, a
-disease of the blood, and she needs a bone marrow transplant or she
-will die.
+Here's a PR with a couple of MMC and MEMSTICK fixes intended for v5.2-rc4.
+Details about the highlights are as usual found in the signed tag.
 
-Please I am only asking for your help and you will benefit from it
-also. As an insider with Lottery Firm, working as the personal
-secretary to the controller, I want you to send me your name to play,
-I have some numbers that are going to win, stored in his secret data
-system in the office. The Lottery is an online entry with credit card
-anywhere with a name and address. All I want you to do is to send your
-name to play it and I will send confirmation to you.
+Please pull this in!
 
-I will play with my card on your name and the Prize will be shared
-equally between us. Immediately the results are released they will
-contact you for payment as the oversea winner. The lotto can be played
-with 9.00 dollars, or 50 dollars but the prize will be Millions.
-Remember that I am playing on your name with my card; I just want to
-front you for this, because I need this money to save the life of my
-little daughter.
+Kind regards
+Ulf Hansson
 
-Thanks and I wait for your answer
-Martin Henry.
+
+The following changes since commit cd6c84d8f0cdc911df435bb075ba22ce3c605b07:
+
+  Linux 5.2-rc2 (2019-05-26 16:49:19 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.2-rc2
+
+for you to fetch changes up to 7397993145872c74871ab2aa7fa26a427144088a:
+
+  mmc: sdhci_am654: Fix SLOTTYPE write (2019-06-03 15:18:25 +0200)
+
+----------------------------------------------------------------
+MMC host:
+ - sdhci: Fix SDIO IRQ thread deadlock
+ - sdhci-tegra: Fix a warning message
+ - sdhci_am654: Fix SLOTTYPE write
+ - meson-gx: Fix IRQ ack
+ - tmio: Fix SCC error handling to avoid false positive CRC error
+
+MEMSTICK core:
+ - mspro_block: Fix returning a correct error code
+
+----------------------------------------------------------------
+Adrian Hunter (1):
+      mmc: sdhci: Fix SDIO IRQ thread deadlock
+
+Dan Carpenter (2):
+      memstick: mspro_block: Fix an error code in mspro_block_issue_req()
+      mmc: tegra: Fix a warning message
+
+Faiz Abbas (1):
+      mmc: sdhci_am654: Fix SLOTTYPE write
+
+Jerome Brunet (1):
+      mmc: meson-gx: fix irq ack
+
+Takeshi Saito (1):
+      mmc: tmio: fix SCC error handling to avoid false positive CRC error
+
+ drivers/memstick/core/mspro_block.c | 13 ++++++-------
+ drivers/mmc/host/meson-gx-mmc.c     |  6 +++---
+ drivers/mmc/host/sdhci-tegra.c      |  2 +-
+ drivers/mmc/host/sdhci.c            | 24 +++++++++++++-----------
+ drivers/mmc/host/sdhci_am654.c      |  2 +-
+ drivers/mmc/host/tmio_mmc_core.c    |  3 ++-
+ 6 files changed, 26 insertions(+), 24 deletions(-)
