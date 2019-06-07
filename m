@@ -2,103 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 129D938866
-	for <lists+linux-mmc@lfdr.de>; Fri,  7 Jun 2019 13:03:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1594F38869
+	for <lists+linux-mmc@lfdr.de>; Fri,  7 Jun 2019 13:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728259AbfFGLDA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 7 Jun 2019 07:03:00 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:40910 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728188AbfFGLC7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Jun 2019 07:02:59 -0400
-Received: by mail-vs1-f65.google.com with SMTP id c24so886548vsp.7
-        for <linux-mmc@vger.kernel.org>; Fri, 07 Jun 2019 04:02:59 -0700 (PDT)
+        id S1728236AbfFGLDD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 7 Jun 2019 07:03:03 -0400
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:37142 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728226AbfFGLDD (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Jun 2019 07:03:03 -0400
+Received: by mail-ua1-f66.google.com with SMTP id z13so218493uaa.4
+        for <linux-mmc@vger.kernel.org>; Fri, 07 Jun 2019 04:03:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=WUmbq4ZzrfgjJ6I/bdvOaFhtKBJjK9tscZns2i4i8ls=;
-        b=rbswCChLasSiMv/BxkP+oqC6iQQ5YnOz2jHk8PMbC0zI9S1v/bznWuilMUyjrXLufI
-         tBofULNs3jx0Ow9VaFVaYGxRQvzU82XBOlfJq5ISmCxvw20vVp1FfCTxng7lgcVr/fDO
-         9wrhKxb2wX1Yw4awvXoH22X4YIcDGC6/cJSCWFxWFhrLqcAiXL7rOZA4rvSseDG3GeJK
-         31m3sVPpE6DB+jvHavpdf3g+3NF6N3xKjgE5q+umHY3ZNSGHOuODtFu5/PLVhF8yEkSj
-         HarLC+t7Wt+PP1PnEAgWPPTvHxQkqLFcoM4i2QNtsCkOcRNrm5xargwrFL5jAii+1OSc
-         4kmA==
+        bh=iJJw6aC2zrJqZeFVWgJP7Dr4v9Y0eA3RoR5pHTOrcqI=;
+        b=H8eAe0vTztkXtwjhsPaMpNGSkMiaddBzCx/Vq1WfpBiNSRGFSwlpsSaTjiquKYmzMz
+         Jxfi38jkECxmHgCJKrQ+qtSfKcs7yK8Lp+dHTeMRXpJr3YoFeRTUiCkf1KKd1mYB+Zyw
+         81W5PTQtMw8TY+Eemc2yq3lK1ee9Uas9X3mmoSdzmAjJcJ9/6Ob5iAfaGSh/Mb81VMe/
+         KNnZYj1uVy/UhdawY2yesrxBSXgl4YCceGt/+a8hog53gogHFkbxkmXCspz0lXJpuL+k
+         K+TfWmNshj6P+dGivLRSJgzO+lynp5hDexPzC1mqkpAPJXoFivDaSOy+1glMujlsQs8S
+         9oJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WUmbq4ZzrfgjJ6I/bdvOaFhtKBJjK9tscZns2i4i8ls=;
-        b=WgGoLUtAfYC4OooxTU/dFACO5qtm0+SiVxyFN0Abf044F63JMm97GDIMSBDPc3Pabj
-         g7IcvaVZ9iDwLzDZFt4rKD1JHjtvQd7X/fvLsEqnmaUuE3YJ/Ju0WR6obxcDor0veZtC
-         Z+xicheBQByx4kiPSQG0yP1Kxr3n8HCHFv5uZsdaVdcKsaAG+vPb/4oyTmpXZWkbkqu2
-         /gYqTzfUd50go2fDKvVYcELHcfJQR8PjUj87afQQS1VJ+vf/zgk1FdbniPt/iu4FN5BK
-         FJOxDGMWIBW1Q2u3S4pWnN3qb40otb9E6F1FeCn7cfb8eM3G/W8uhw3w0hbsw3/hF4OD
-         KM7w==
-X-Gm-Message-State: APjAAAWlStkJqd97S64+XDYWSuSadUYKPsaGoBBfwzSvmamRqvDwtKho
-        L2qvHBWMX2QmlleVGjIDZJF9Vj2bMe2gYwV/sUGlUw==
-X-Google-Smtp-Source: APXvYqzDuz5mV6Jsi2xrh1eBdn+z7KJtHM7z3KIMpeuQwSP0He+fkG995ke/oRmFwgQo/qgul6kuZ3xCxNzlcCOd13U=
-X-Received: by 2002:a67:706:: with SMTP id 6mr11457746vsh.200.1559905378848;
- Fri, 07 Jun 2019 04:02:58 -0700 (PDT)
+        bh=iJJw6aC2zrJqZeFVWgJP7Dr4v9Y0eA3RoR5pHTOrcqI=;
+        b=jNakLzEI61JQY9Zc7WusU2V7FDtb8kbDUvxnvl+c+Xnhj1hFsTGhySgSXwKXEXnkhV
+         ro+wElTkQoKusLACctfgWos7ALCu3KkUXQbEFNCp9peMd9WrDaOjhP9epzwQ3rb8JP5Q
+         WmVUf8dnJYS8UsV1VuSMjt3hJ+dMZSbKkzaaCFeVsJ5Ly7lHZu/IDE7xa1oARC4STZgr
+         FSfwkWj6MDrdOJ57QEwXuT5wEVn//RlmaTV6daW0BI+Ert7EQUGsZNayvAW6nXZFDv97
+         P3t41p506vXBPkOyAyv+1Kkdjt3YPM2Oomija/gS+VEMG0kWra8OBHYZjaJ6Hzz1LV9o
+         /buw==
+X-Gm-Message-State: APjAAAWcdgLM1tgLHFfD3WcsSvWHE6lGQ4+7xb6hXBoTlAKkPN/3/BxN
+        7TH7RybXvtrKrokI3yf1SvUmN5DklLuAwc+Qm6220A==
+X-Google-Smtp-Source: APXvYqxK4vX+YhsfVfiEfzvya7UpMW8vcQyQqrPY3OflJIwIaRrwyirvvkzTJN1qbWq8qFZJSUmyPgfsgx3hjeJHh2Q=
+X-Received: by 2002:ab0:2488:: with SMTP id i8mr13481086uan.104.1559905382439;
+ Fri, 07 Jun 2019 04:03:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1559635435.git.baolin.wang@linaro.org>
-In-Reply-To: <cover.1559635435.git.baolin.wang@linaro.org>
+References: <20190604153446.22857-1-thierry.reding@gmail.com> <20190604153809.GA23360@ulmo>
+In-Reply-To: <20190604153809.GA23360@ulmo>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 7 Jun 2019 13:02:22 +0200
-Message-ID: <CAPDyKFp+UXDrrferK0zP7nPFtvkq6UU29vhJu3HCEUiKcAOsJQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/9] Add SD host controller support for SC9860 platform
-To:     Baolin Wang <baolin.wang@linaro.org>
+Date:   Fri, 7 Jun 2019 13:02:26 +0200
+Message-ID: <CAPDyKFotaOnCYzWGh35rGsH3EDCXFPn0iaK7cb3xKjccsTfKzA@mail.gmail.com>
+Subject: Re: [PATCH] sdhci: tegra: Do not log error message on deferred probe
+To:     Thierry Reding <thierry.reding@gmail.com>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        arm-soc <arm@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Jon Hunter <jonathanh@nvidia.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>
+        linux-tegra <linux-tegra@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 4 Jun 2019 at 10:14, Baolin Wang <baolin.wang@linaro.org> wrote:
+On Tue, 4 Jun 2019 at 17:38, Thierry Reding <thierry.reding@gmail.com> wrote:
 >
-> This patch set adds optional clock support, HS400 enhanced strobe mode support,
-> PHY DLL configuration and other optimization to make the SD host controller
-> can work well on the Spreadtrum SC9860 platform.
+> On Tue, Jun 04, 2019 at 05:34:46PM +0200, Thierry Reding wrote:
+> > From: Thierry Reding <treding@nvidia.com>
+> >
+> > Recent changes have made it much more probably that clocks are not
 >
-> Changes from v1:
->  - Add acked-tags from Adrian.
->  - Fix one mistake by changing MMC_TIMING_MMC_HS to MMC_TIMING_SD_HS in patch 8.
->
-> Baolin Wang (9):
->   mmc: sdhci-sprd: Check the enable clock's return value correctly
->   dt-bindings: mmc: sprd: Add another optional clock documentation
->   mmc: sdhci-sprd: Add optional gate clock support
->   mmc: sdhci-sprd: Implement the get_max_timeout_count() interface
->   mmc: sdhci-sprd: Add HS400 enhanced strobe mode
->   mmc: sdhci-sprd: Enable PHY DLL to make clock stable
->   dt-bindings: mmc: sprd: Add PHY DLL delay documentation
->   mmc: sdhci-sprd: Add PHY DLL delay configuration
->   arm64: dts: sprd: Add Spreadtrum SD host controller support
->
->  .../devicetree/bindings/mmc/sdhci-sprd.txt         |   19 +++
->  arch/arm64/boot/dts/sprd/whale2.dtsi               |   35 ++++
->  drivers/mmc/host/sdhci-sprd.c                      |  171 +++++++++++++++++++-
->  3 files changed, 217 insertions(+), 8 deletions(-)
->
-> --
-> 1.7.9.5
->
+> Ugh... s/probably/probable/. Adrian, Ulf, do you want me to resend just
+> for that if there are no further comments, or could you ammend that when
+> applying?
 
-Patch 1 -> patch 8, applied for next, thanks!
+No worries, I amended the changelog.
 
-Patch 9 is for arm-soc.
+>
+> Thierry
+>
+> > available yet when the SDHCI driver is first probed. However, that
+> > is a situation that the driver can cope with just fine.
+> >
+> > To avoid confusion, don't output an error when this happens.
+> >
+> > Signed-off-by: Thierry Reding <treding@nvidia.com>
+
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> > ---
+> >  drivers/mmc/host/sdhci-tegra.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+> > index 10d7aaf68bab..8a6a51bc038b 100644
+> > --- a/drivers/mmc/host/sdhci-tegra.c
+> > +++ b/drivers/mmc/host/sdhci-tegra.c
+> > @@ -1550,8 +1550,11 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
+> >
+> >       clk = devm_clk_get(mmc_dev(host->mmc), NULL);
+> >       if (IS_ERR(clk)) {
+> > -             dev_err(mmc_dev(host->mmc), "clk err\n");
+> >               rc = PTR_ERR(clk);
+> > +
+> > +             if (rc != -EPROBE_DEFER)
+> > +                     dev_err(&pdev->dev, "failed to get clock: %d\n", rc);
+> > +
+> >               goto err_clk_get;
+> >       }
+> >       clk_prepare_enable(clk);
+> > --
+> > 2.21.0
+> >
