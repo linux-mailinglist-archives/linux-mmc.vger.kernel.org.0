@@ -2,86 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC843A1C2
-	for <lists+linux-mmc@lfdr.de>; Sat,  8 Jun 2019 21:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 209223B528
+	for <lists+linux-mmc@lfdr.de>; Mon, 10 Jun 2019 14:41:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727793AbfFHTyi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 8 Jun 2019 15:54:38 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:41183 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727782AbfFHTyi (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 8 Jun 2019 15:54:38 -0400
-Received: by mail-pg1-f193.google.com with SMTP id 83so2898132pgg.8
-        for <linux-mmc@vger.kernel.org>; Sat, 08 Jun 2019 12:54:38 -0700 (PDT)
+        id S2388394AbfFJMlp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 10 Jun 2019 08:41:45 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:44603 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388848AbfFJMlp (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 10 Jun 2019 08:41:45 -0400
+Received: by mail-lj1-f194.google.com with SMTP id k18so7772588ljc.11
+        for <linux-mmc@vger.kernel.org>; Mon, 10 Jun 2019 05:41:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=7z7G2uIs0k+svTX+jtZAzZRGJWQLvmM8i7xrZdjKEXo=;
-        b=CcJVLs2BWQiGNei2MbtI6uiXWAb/JLA3+6p0R5uSVtGdgJCJSv6yBAMuVVe2LKu7DH
-         l8XD5lo+nX6Zp9FSjvnoirPJj3PqQ/uQLGiLqOQDi+pkGFDKwHLf+gmhd/LdE0G3uhrZ
-         wD7nPtsQWQn9SrOei/XUq/JRIZcZ9IQ9L7BVNycYvo5T1H4bWY/UCuF6GAqag1LkXIwA
-         u7op+FLgpMulPzwHOKMdwW0xiGNuxLft8zAh4E235mgYFprMl4try5pTiEvU2XOMdT62
-         XkvugA+tPg7D9SOJP8gqUJF+dr3kDnguAYW3MT2FNgYhzav+X/7lv4015xN+nLneo+4t
-         LMZA==
+        d=ragnatech-se.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=m3mx8nSSTHaU+T/0g0tWzbByEX3Al/na/Ho74F2I+24=;
+        b=ZEbPO1WpO4GPT6urNEVcQB4po3YwLHpf3Xdz1haVMtxhooK+fb2KsThnNSttEy3K94
+         Pp/Qi/RMUcxQIjJOVlKfkA01YEba1IzQgs19Ui6fR6wUWCwJFyKU9lvl/vm/U2Bagqfy
+         TMJawaaE51IFYaFmeKrFoB9cURr/NXG9mURubbuRxAZhiIE1NGuoUyWQ8HB51ajGaynO
+         DBc5tIy2NStTIFtF4m2uPCO0mK03t7AGx3d6bw1Ombn+JCEJ6wp5hkNhn0u8q8GufxTy
+         S4LdVoCLW4z6r3FbQmOUDtP6m2xu3PWhMmLLAitr0XDt+A81KYrE1qTrG5M0IA7Mj9oM
+         NLrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=7z7G2uIs0k+svTX+jtZAzZRGJWQLvmM8i7xrZdjKEXo=;
-        b=ZFywhGTYsau3ssqbpXFu79bNrHn0PtsJdGOtk4fSWTyhtwx0L68NSzzyFGTxVEUuWO
-         Sv0QOuGMFOZWGQYyxKhkeigtlKGehG/eX+6vuvEfLsfXHkQ7WYijHtyKxD090XbROtC0
-         /wI+LW0kO1N6izRjx+n3H8RJP8kc35ekpcs8X3ImSiDBsREgQXMNKbtHmRcz5eAWth2r
-         XHPGGcaAgtBUdgtapi/5REbYK4EaJfsYOnSe4cny8zvvNLy1GT+dW4miBNKC2BBnwm7J
-         ofuPpp+HU9HzpNlnCul+0Jc2yViR1Zf71Nyf6bj3iDXW7VN18PTln4pPLRZoFyX1xqer
-         zSNA==
-X-Gm-Message-State: APjAAAXhpZX0aN8XjK7Kkr0uDAmc+8OuB445i6zrDdKPXA7WWqGyBeXl
-        PIwtrr06eJX5oeDqAW1hVZHJ
-X-Google-Smtp-Source: APXvYqzGq9Wlppe/fkGUI+bPzYy4jai5cTMOZ+AdImb8blZYRY64w3WjFSlIocF4HQh4o4FeAhE03Q==
-X-Received: by 2002:a63:cc4e:: with SMTP id q14mr8601057pgi.84.1560023677661;
-        Sat, 08 Jun 2019 12:54:37 -0700 (PDT)
-Received: from localhost.localdomain ([2405:204:7185:fba9:ec1e:ad07:23ac:d3ee])
-        by smtp.gmail.com with ESMTPSA id b35sm6034377pjc.15.2019.06.08.12.54.28
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 08 Jun 2019 12:54:37 -0700 (PDT)
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     ulf.hansson@linaro.org, afaerber@suse.de, robh+dt@kernel.org,
-        sboyd@kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        thomas.liau@actions-semi.com, linux-actions@lists.infradead.org,
-        linus.walleij@linaro.org, linux-clk@vger.kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 7/7] arm64: configs: Enable Actions Semi platform in defconfig
-Date:   Sun,  9 Jun 2019 01:23:17 +0530
-Message-Id: <20190608195317.6336-8-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190608195317.6336-1-manivannan.sadhasivam@linaro.org>
-References: <20190608195317.6336-1-manivannan.sadhasivam@linaro.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=m3mx8nSSTHaU+T/0g0tWzbByEX3Al/na/Ho74F2I+24=;
+        b=ei4cBVqGvksWMtOnYKVdKAg56i9A+ujKFbep5KTAWLOjGR7U10YAm/pLy4vNYno1d/
+         5ln90xHGLaXQQNe1dbnAdIxxJzLcc/r3daUqB8fx5pSbUEwBE/X9a7oxRdxTHud64DP3
+         mV8v8QLwt5/+SSZFF8iz7g8RWk+clC4Z5IpZQkWinhfMGt3SxnK0B/TB98lcoqJEFCYU
+         lELsbnvK7D8RyGR/QCKJdd71IRfUX9+iDqS6VIySpt9Vw2BGh7MGMEqAYKjH9WgqmCQv
+         TdNFy87Spl0+RMoY3vDL1TkGkldE8HBpPEzRQpnNXZny8Obblsii47RRsVdHPXvgmq29
+         T+RQ==
+X-Gm-Message-State: APjAAAUt5S6frSHTSweQrFO8HK2tmxlTAdeWIHaBk5wIXTsqjrDg/vth
+        nfUKKoPAjO8jvqjJfLyY5XysJqo9mHc=
+X-Google-Smtp-Source: APXvYqzHy5XMjNhRxEh+WT0U5PkyFCNWd9safovASUZtsFoTB90r3sExD1MhxZ+Ls9m/8B+LipWoag==
+X-Received: by 2002:a2e:124b:: with SMTP id t72mr27478549lje.143.1560170503715;
+        Mon, 10 Jun 2019 05:41:43 -0700 (PDT)
+Received: from localhost (89-233-230-99.cust.bredband2.com. [89.233.230.99])
+        by smtp.gmail.com with ESMTPSA id x20sm1939069ljc.15.2019.06.10.05.41.42
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 10 Jun 2019 05:41:42 -0700 (PDT)
+Date:   Mon, 10 Jun 2019 14:41:42 +0200
+From:   Niklas =?iso-8859-1?Q?S=F6derlund?= 
+        <niklas.soderlund@ragnatech.se>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: Re: [PATCH 0/3] mmc: sdhi: improve HS400 quirk handling
+Message-ID: <20190610124142.GC1362@bigcity.dyn.berto.se>
+References: <20190604151530.7023-1-wsa+renesas@sang-engineering.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190604151530.7023-1-wsa+renesas@sang-engineering.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Since the Actions Semi platform can now boot a distro, enable it in
-ARM64 defconfig.
+Hi Wolfram,
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+Thanks for your work.
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 4d583514258c..e0b5f4f8c9ff 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -29,6 +29,7 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_KALLSYMS_ALL=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
-+CONFIG_ARCH_ACTIONS=y
- CONFIG_ARCH_AGILEX=y
- CONFIG_ARCH_SUNXI=y
- CONFIG_ARCH_ALPINE=y
+On 2019-06-04 17:15:27 +0200, Wolfram Sang wrote:
+> There are some more SoCs which cannot handle HS400. Add them and clean up the
+> quirk handling a bit. So, patch 1 is suitable for stable, the rest isn't.
+> 
+> Note that I don't have that HW, so I am relying on the provided information.
+> 
+> Wolfram Sang (3):
+>   mmc: sdhi: disallow HS400 for M3-W ES1.2 and V3H
+>   mmc: sdhi: improve quirk descriptions
+>   mmc: sdhi: remove unneeded initialization
+
+For the whole series, with or without merging the r8a7796 entries per 
+Geert's comments,
+
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+
+> 
+>  drivers/mmc/host/renesas_sdhi_core.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> -- 
+> 2.11.0
+> 
+
 -- 
-2.17.1
-
+Regards,
+Niklas Söderlund
