@@ -2,101 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B93FF3B534
-	for <lists+linux-mmc@lfdr.de>; Mon, 10 Jun 2019 14:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E6E3B61D
+	for <lists+linux-mmc@lfdr.de>; Mon, 10 Jun 2019 15:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389696AbfFJMsR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 10 Jun 2019 08:48:17 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:35300 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389641AbfFJMsR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 10 Jun 2019 08:48:17 -0400
-Received: by mail-lf1-f65.google.com with SMTP id a25so6546594lfg.2
-        for <linux-mmc@vger.kernel.org>; Mon, 10 Jun 2019 05:48:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ragnatech-se.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=GxX02qlv74k+jrbhmwl7ljpLPp5wSdmPlkd92jQyevA=;
-        b=MapJEGaRzRHysf0KjzFXNQq64lkVQUP1tKl5FP1psUnaoA2/shwmZlbtgLGX6on6KN
-         LH36fsZnVFEjZsjIP3B11KBSz824FQrZu2PoY+ZwHK9y75aObp1lYBtI0wRobv3HjNGV
-         BTeIVTx1RYasj7tl8y4yEPT9Txfzsd0v1OFdKEqubzkyy0DkiWWF2f0lLxQ1TQ2Tcbig
-         BNvrl2ncQDL95cZ6S+98UlcKvAM5pYFFLfn47GaW3DxQsaRUfRP5jOOGvkCAHYABss3Q
-         Nu14wuB8U7p5MEghX/7oqDJjWM0YlbJO9y9y8awh92PTpV9Cw11gk2GOJooZyqE1GOFB
-         rwmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=GxX02qlv74k+jrbhmwl7ljpLPp5wSdmPlkd92jQyevA=;
-        b=FfWsm1fqKU/Xy9gMNbr5iVI0n0nO9QwVQW/MsRdjtdtmV9Re8pdauxgYyozlQM5+LO
-         hw2GV3e4f9EZTVP+ngx3U81fBFQnkCI6qUpkvyFWSWRkUoey1185ldtWTzrOqxPer+1a
-         mfaYsVmtV+dJ0GC9IdqyFv6kS13kWDLmdN5Ig8QSCoK+iHcyzIknT1X6k/koHB/aT1E6
-         5Y+/mLOq4cVbMqTp23LpFWGAfe1SkQIIZ0TMAxmSMts877LRitvEGPYbjkGG40ISzOaQ
-         cVwZJ5DujcF6Z1ot0HImznMyHdUoG3JaAms/IMEhIuOjNV35IhLMoPPeVVArby2gzlry
-         9S7g==
-X-Gm-Message-State: APjAAAWF+xeWSPg8qmzjzGLHAXZ4aBnxOseRD2A0gwnVGY6yvjK6zh4W
-        zIJPegxASJqs12kQgl51aJBwgw==
-X-Google-Smtp-Source: APXvYqzDYAdwsxK/xAATQrjOYW0BOeiNC2JlWpAVl5qJKSA18+AKyoZHzlekj92x6ePbq5aGZPuN0A==
-X-Received: by 2002:a19:48c3:: with SMTP id v186mr34456400lfa.42.1560170895294;
-        Mon, 10 Jun 2019 05:48:15 -0700 (PDT)
-Received: from localhost (89-233-230-99.cust.bredband2.com. [89.233.230.99])
-        by smtp.gmail.com with ESMTPSA id b25sm1969382lff.42.2019.06.10.05.48.14
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 10 Jun 2019 05:48:14 -0700 (PDT)
-Date:   Mon, 10 Jun 2019 14:48:13 +0200
-From:   Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: Re: [PATCH v2 0/3] mmc: sdhi: improve HS400 quirk handling
-Message-ID: <20190610124813.GD1362@bigcity.dyn.berto.se>
-References: <20190606113537.8869-1-wsa+renesas@sang-engineering.com>
+        id S2390132AbfFJNgo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 10 Jun 2019 09:36:44 -0400
+Received: from mx2.suse.de ([195.135.220.15]:57150 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2390071AbfFJNgo (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 10 Jun 2019 09:36:44 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 38F21ADC1;
+        Mon, 10 Jun 2019 13:36:43 +0000 (UTC)
+Subject: Re: [PATCH 1/7] clk: actions: Fix factor clk struct member access
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        sboyd@kernel.org
+Cc:     ulf.hansson@linaro.org, robh+dt@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        thomas.liau@actions-semi.com, linux-actions@lists.infradead.org,
+        linus.walleij@linaro.org, linux-clk@vger.kernel.org
+References: <20190608195317.6336-1-manivannan.sadhasivam@linaro.org>
+ <20190608195317.6336-2-manivannan.sadhasivam@linaro.org>
+From:   =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
+Openpgp: preference=signencrypt
+Organization: SUSE Linux GmbH
+Message-ID: <29ef33a9-f1f1-fe10-9288-8103714d40fa@suse.de>
+Date:   Mon, 10 Jun 2019 15:36:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <20190608195317.6336-2-manivannan.sadhasivam@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190606113537.8869-1-wsa+renesas@sang-engineering.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi (again) Wolfram,
+Hi Mani,
 
-I now see there was a v2 of this series which addressed Geert's 
-comments. Sorry for missing this and replying to v1. For the whole 
-series,
+Am 08.06.19 um 21:53 schrieb Manivannan Sadhasivam:
+> Since the helper "owl_factor_helper_round_rate" is shared between factor
+> and composite clocks, using the factor clk specific helper function
+> like "hw_to_owl_factor" to access its members will create issues when
+> called from composite clk specific code. Hence, pass the "factor_hw"
+> struct pointer directly instead of fetching it using factor clk specific
+> helpers.
+> 
+> This issue has been observed when a composite clock like "sd0_clk" tried
+> to call "owl_factor_helper_round_rate" resulting in pointer dereferencing
+> error.
+> 
+> Fixes: 4bb78fc9744a ("clk: actions: Add factor clock support")
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>  drivers/clk/actions/owl-factor.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/clk/actions/owl-factor.c b/drivers/clk/actions/owl-factor.c
+> index 317d4a9e112e..f419dfdd334f 100644
+> --- a/drivers/clk/actions/owl-factor.c
+> +++ b/drivers/clk/actions/owl-factor.c
+> @@ -64,11 +64,10 @@ static unsigned int _get_table_val(const struct clk_factor_table *table,
+>  	return val;
+>  }
+>  
+> -static int clk_val_best(struct clk_hw *hw, unsigned long rate,
+> +static int clk_val_best(const struct owl_factor_hw *factor_hw,
+> +			struct clk_hw *hw, unsigned long rate,
+>  			unsigned long *best_parent_rate)
+>  {
+> -	struct owl_factor *factor = hw_to_owl_factor(hw);
+> -	struct owl_factor_hw *factor_hw = &factor->factor_hw;
+>  	const struct clk_factor_table *clkt = factor_hw->table;
+>  	unsigned long parent_rate, try_parent_rate, best = 0, cur_rate;
+>  	unsigned long parent_rate_saved = *best_parent_rate;
+> @@ -126,7 +125,7 @@ long owl_factor_helper_round_rate(struct owl_clk_common *common,
+>  	const struct clk_factor_table *clkt = factor_hw->table;
+>  	unsigned int val, mul = 0, div = 1;
+>  
+> -	val = clk_val_best(&common->hw, rate, parent_rate);
+> +	val = clk_val_best(factor_hw, &common->hw, rate, parent_rate);
+>  	_get_table_div_mul(clkt, val, &mul, &div);
+>  
+>  	return *parent_rate * mul / div;
 
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+While at it, I think it would be a good idea to rename it to
+owl_clk_val_best. Pretty confusing that you're touching only owl files
+for a clk_ refactoring, which sounds like common clk code.
 
-On 2019-06-06 13:35:34 +0200, Wolfram Sang wrote:
-> There are some more SoCs which cannot handle HS400. Add them and clean up the
-> quirk handling a bit. So, patch 1 is suitable for stable, the rest isn't.
-> 
-> Note that I don't have that HW, so I am relying on the provided information.
-> 
-> Changes since v1 (thanks Geert and Fabrizio!):
-> 	* use '[012]' to specify the range instead of single entries
-> 	* add RZ/G2M to the list
-> 
-> Wolfram Sang (3):
->   mmc: sdhi: disallow HS400 for M3-W ES1.2, RZ/G2M, and V3H
->   mmc: sdhi: improve quirk descriptions
->   mmc: sdhi: remove unneeded initialization
-> 
->  drivers/mmc/host/renesas_sdhi_core.c | 18 +++++++++++-------
->  1 file changed, 11 insertions(+), 7 deletions(-)
-> 
-> -- 
-> 2.11.0
-> 
+Regards,
+Andreas
 
 -- 
-Regards,
-Niklas Söderlund
+SUSE Linux GmbH, Maxfeldstr. 5, 90409 NÃ¼rnberg, Germany
+GF: Felix ImendÃ¶rffer, Mary Higgins, Sri Rasiah
+HRB 21284 (AG NÃ¼rnberg)
