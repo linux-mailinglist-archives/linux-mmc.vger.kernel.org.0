@@ -2,361 +2,212 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A9153C7C7
-	for <lists+linux-mmc@lfdr.de>; Tue, 11 Jun 2019 11:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0A193C901
+	for <lists+linux-mmc@lfdr.de>; Tue, 11 Jun 2019 12:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404334AbfFKJ5X (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 11 Jun 2019 05:57:23 -0400
-Received: from mail-eopbgr750057.outbound.protection.outlook.com ([40.107.75.57]:50769
-        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728975AbfFKJ5U (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 11 Jun 2019 05:57:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector1-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HN7suMNXQ5BPxJt5bOqZDCQpoA4tMdZyDFGnBer3wZY=;
- b=yJAoZbbkNweMClqdlbXYPXUp5mJlN+8A+4EmJ84yB/GLhJ2SXQdrzmADXbwZFSLk+JHfQIxcO6vM4HZoCbexAGe0f7lzO01d0VTKxht95erLuvj4Cg7gMbTMILwVw/v3FxDJwHxgLNrycW9AdHXPCnLp8Lwz5yjwJjyRBxOvxmc=
-Received: from MWHPR0201CA0072.namprd02.prod.outlook.com
- (2603:10b6:301:73::49) by BL0PR02MB4931.namprd02.prod.outlook.com
- (2603:10b6:208:53::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1965.17; Tue, 11 Jun
- 2019 09:57:16 +0000
-Received: from CY1NAM02FT039.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e45::206) by MWHPR0201CA0072.outlook.office365.com
- (2603:10b6:301:73::49) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1965.15 via Frontend
- Transport; Tue, 11 Jun 2019 09:57:15 +0000
-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- CY1NAM02FT039.mail.protection.outlook.com (10.152.75.140) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1965.12
- via Frontend Transport; Tue, 11 Jun 2019 09:57:14 +0000
-Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
-        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
-        (envelope-from <manish.narani@xilinx.com>)
-        id 1hadWk-0005Gr-AR; Tue, 11 Jun 2019 02:57:14 -0700
-Received: from [127.0.0.1] (helo=localhost)
-        by xsj-pvapsmtp01 with smtp (Exim 4.63)
-        (envelope-from <manish.narani@xilinx.com>)
-        id 1hadWf-0002WX-6c; Tue, 11 Jun 2019 02:57:09 -0700
-Received: from xsj-pvapsmtp01 (mailman.xilinx.com [149.199.38.66])
-        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id x5B9v2Ko016724;
-        Tue, 11 Jun 2019 02:57:02 -0700
-Received: from [172.23.64.106] (helo=xhdvnc125.xilinx.com)
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <mnarani@xilinx.com>)
-        id 1hadWY-0002TF-1c; Tue, 11 Jun 2019 02:57:02 -0700
-Received: by xhdvnc125.xilinx.com (Postfix, from userid 16987)
-        id 3FE5212174A; Tue, 11 Jun 2019 15:27:01 +0530 (IST)
-From:   Manish Narani <manish.narani@xilinx.com>
-To:     ulf.hansson@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        michal.simek@xilinx.com, adrian.hunter@intel.com,
-        rajan.vaja@xilinx.com, jolly.shah@xilinx.com,
-        nava.manne@xilinx.com, manish.narani@xilinx.com, olof@lixom.net
-Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 3/3] mmc: sdhci-of-arasan: Add support for ZynqMP Platform Tap Delays Setup
-Date:   Tue, 11 Jun 2019 15:26:51 +0530
-Message-Id: <1560247011-26369-4-git-send-email-manish.narani@xilinx.com>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <1560247011-26369-1-git-send-email-manish.narani@xilinx.com>
-References: <1560247011-26369-1-git-send-email-manish.narani@xilinx.com>
-X-RCIS-Action: ALLOW
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.83;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(396003)(346002)(39860400002)(136003)(376002)(2980300002)(189003)(199004)(26005)(16586007)(476003)(36756003)(76176011)(51416003)(305945005)(5660300002)(316002)(186003)(103686004)(81166006)(8676002)(2616005)(81156014)(356004)(6666004)(11346002)(4326008)(36386004)(336012)(47776003)(42186006)(446003)(72206003)(426003)(14444005)(478600001)(70586007)(486006)(106002)(70206006)(8936002)(2906002)(48376002)(50226002)(63266004)(126002)(6266002)(44832011)(52956003)(50466002)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:BL0PR02MB4931;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-83.xilinx.com;MX:1;A:1;
+        id S2387459AbfFKKcO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 11 Jun 2019 06:32:14 -0400
+Received: from mga14.intel.com ([192.55.52.115]:31410 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387423AbfFKKcN (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 11 Jun 2019 06:32:13 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Jun 2019 03:32:12 -0700
+X-ExtLoop1: 1
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
+  by orsmga002.jf.intel.com with ESMTP; 11 Jun 2019 03:32:09 -0700
+Subject: Re: [RFC PATCH 1/2] mmc: sdhci: Manually check card status after
+ reset
+To:     Raul Rangel <rrangel@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Daniel Kurtz <djkurtz@chromium.org>,
+        hongjiefang <hongjiefang@asrmicro.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Kyle Roeschley <kyle.roeschley@ni.com>,
+        Avri Altman <avri.altman@wdc.com>
+References: <20190501175457.195855-1-rrangel@chromium.org>
+ <CAPDyKFpL1nHt1E1zgS-iDZf_KDWk2CN32Lvr+5Nmo8CtB2VCWg@mail.gmail.com>
+ <20190607160553.GA185100@google.com>
+ <CAPDyKFout6AY2Q92pYQ-KPH0NENq1-SkYivkDxjjb=uB=tKXuQ@mail.gmail.com>
+ <20190610163252.GA227032@google.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <fcdf6cc4-2729-abe2-85c8-b0d04901c5ae@intel.com>
+Date:   Tue, 11 Jun 2019 13:30:55 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fcc0657c-4252-426a-5482-08d6ee532ec6
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328);SRVR:BL0PR02MB4931;
-X-MS-TrafficTypeDiagnostic: BL0PR02MB4931:
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-Microsoft-Antispam-PRVS: <BL0PR02MB49310251D62A338D88EC3696C1ED0@BL0PR02MB4931.namprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
-X-Forefront-PRVS: 006546F32A
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: TciCagJheeLfL8idlhtlJa9aoWcPSqJIhREVYRjGvdEq661GANxATGLIyzvPtt+Z5LsNpjgdHKr6cgZ58kLdxHQxOvNc6vhEW6OODK3WwX51P53YOxwpS/IX/UhTXhGeNfnd65suZFJ+3ppysNSZ6trOVEU9s0BG+0+rq/mjzUu9KMofXWhp+bPvigXry2Kyt1u8ufC5UnQz9YSDekPrGf86dFpaMGPBYG8JJX41JHnRgtK9PT0QbhLueHZdRp0CkxG9wTJb8U4qimLd2zBw+epc3dAAXO25mnp2rThRpuUwbrVst1WF937XQ+ICUW49f+1s/Zk/ocTD8oX+Pc6gJSFTCp5m45+ISHrOYXmbU0JlyA198VyLCLPtztJk+53kpQzz8gcWpMuhMdDhvCSvB6R8fee6EvwADUY+zhBbK9w=
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2019 09:57:14.7774
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fcc0657c-4252-426a-5482-08d6ee532ec6
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR02MB4931
+In-Reply-To: <20190610163252.GA227032@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Apart from taps set by auto tuning, ZynqMP platform has feature to set
-the tap values manually. Add support to read tap delay values from
-DT and set the same in HW via ZynqMP SoC framework. Reading Tap
-Delays from DT is optional, if the property is not available in DT the
-driver will use the pre-defined Tap Delay Values.
+On 10/06/19 7:32 PM, Raul Rangel wrote:
+> On Mon, Jun 10, 2019 at 06:17:31PM +0200, Ulf Hansson wrote:
+>> + Adrian
+>>
+>> On Fri, 7 Jun 2019 at 18:05, Raul Rangel <rrangel@chromium.org> wrote:
+>>>
+>>> On Tue, May 28, 2019 at 09:38:20AM +0200, Ulf Hansson wrote:
+>>>> On Wed, 1 May 2019 at 19:55, Raul E Rangel <rrangel@chromium.org> wrote:
+>>>
+>>> First off, thanks for the review.
+>>>
+>>>>>
+>>>>> There is a race condition between resetting the SDHCI controller and
+>>>>> disconnecting the card.
+>>>>>
+>>>>> For example:
+>>>>> 0) Card is connected and transferring data
+>>>>> 1) mmc_sd_reset is called to reset the controller due to a data error
+>>>>
+>>>> I assume you refer to mmc_sd_hw_reset()? In that case, I think you
+>>>> have interpreted the purpose of mmc_sd_hw_reset() slightly wrong. It's
+>>>> responsibility is to reset the SD-card and not the host/controller.
+>>> You are correct. I was looking at a 4.14 kernel where it's called
+>>> mmc_sd_reset. 4.19 and above call it mmc_sd_hw_reset.
+>>>
+>>> All I was trying to convey here was that a block error will eventually
+>>> call sdhci_set_ios with SOFT_RESET_ALL via:
+>>> mmc_blk_reset
+>>> mmc_hw_reset
+>>> mmc_sd_hw_reset
+>>> mmc_power_cycle
+>>> mmc_power_off
+>>> mmc_set_initial_state
+>>> sdhci_set_ios
+>>> sdhci_reinit
+>>> sdhci_init
+>>> sdhci_do_reset(host, SDHCI_RESET_ALL);
+>>>
+>>>>
+>>>> Whether there some additional "reset" of the controller needed, that
+>>>> is assumed by the core, to be managed via the ->set_ios() callback for
+>>>> the host.
+>>>>
+>>>>> 2) sdhci_set_ios calls sdhci_do_reset
+>>>>> 3) SOFT_RESET_ALL is toggled which clears the IRQs the controller has
+>>>>> configured.
+>>>>> 4) Wait for SOFT_RESET_ALL to clear
+>>>>> 5) CD logic notices card is gone and CARD_PRESENT goes low, but since the
+>>>>>    IRQs are not configured a CARD_REMOVED interrupt is never raised.
+>>>>> 6) IRQs are enabled again
+>>>>> 7) mmc layer never notices the device is disconnected. The SDHCI layer
+>>>>>    will keep returning -ENOMEDIUM. This results in a card that is always
+>>>>>    present and not functional.
+>>>>
+>>>> This sounds like host specific problems, which most likely should be
+>>>> fixed in host driver, solely. Unless I am missing something, of
+>>>> course.
+>>>
+>>> So in sdhci_do_reset we call the reset callback which is typically
+>>> sdhci_reset. sdhci_reset can wait for up to 100ms waiting for the
+>>> controller to reset. If SDHCI_RESET_ALL was passed as the flag, the
+>>> controller will clear the IRQ mask. If during that 100ms the card is
+>>> removed there is no notification to the MMC system that the card was
+>>> removed. So it seems like the card is always present.
+>>
+>> So you are saying that the problem occurs when the card is removed
+>> during this 100ms period?
+> Exactly. Thought I think most controllers reset fast enough to where
+> that window is very small. But for this AMD controller we need to do a
+> full reset which takes a while, so we can see the problem.
+> 
+>>
+>> I assume there a way for sdhci to re-validate whether the card has
+>> been removed during this period, right?
+> I'll let Adrian chime in here.
+> 
+>>>
+>>>>>  drivers/mmc/core/sd.c | 20 ++++++++++++++++++++
+>>>>>  1 file changed, 20 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+>>>>> index 265e1aeeb9d8..9206c4297d66 100644
+>>>>> --- a/drivers/mmc/core/sd.c
+>>>>> +++ b/drivers/mmc/core/sd.c
+>>>>> @@ -1242,7 +1242,27 @@ static int mmc_sd_runtime_resume(struct mmc_host *host)
+>>>>>
+>>>>>  static int mmc_sd_hw_reset(struct mmc_host *host)
+>>>>>  {
+>>>>> +       int present;
+>>>>>         mmc_power_cycle(host, host->card->ocr);
+>>>>> +
+>>>>> +       present = host->ops->get_cd(host);
+>>>>> +
+>>>>> +       /* The card status could have changed while resetting. */
+>>>>> +       if ((mmc_card_removed(host->card) && present) ||
+>>>>> +           (!mmc_card_removed(host->card) && !present)) {
+>>>>> +               pr_info("%s: card status changed during reset\n",
+>>>>> +                      mmc_hostname(host));
+>>>>> +               host->ops->card_event(host);
+>>>>> +               mmc_detect_change(host, 0);
+>>>>> +       }
+>>>>> +
+>>>>> +       /* Don't perform unnecessary transactions if the card is missing. */
+>>>>> +       if (!present) {
+>>>>> +               pr_info("%s: card was removed during reset\n",
+>>>>> +                       mmc_hostname(host));
+>>>>> +               return -ENOMEDIUM;
+>>>>> +       }
+>>>>> +
+>>>>
+>>>> When doing a  mmc_hw_reset() (which ends up calling mmc_sd_hw_reset()
+>>>> in case of SD cards), we are making a final attempt to make the card
+>>>> functional again, via a power cycle and a re-init of it.
+>>>>
+>>>> In this path, we don't care whether the card is removed, as that
+>>>> should have been detected already when the block layer calls
+>>>> mmc_detect_card_removed().
+>>>
+>>> mmc_detect_card_removed has the guard `host->detect_change` to
+>>> prevent it from checking the card status again. So maybe the fix to the
+>>> missing interrupt/race condition is to set `host->detect_change = 1`
+>>> from sdhci_do_reset after calling the reset handler. This way there will
+>>> always be a single poll after a full reset so the correct card status can
+>>> be detected?
+>>
+>> It sounds like you should call mmc_detect_change(), after the reset to
+>> let the core check for cards that may have been removed/inserted.
+>>
+>> Would that work?
+> Yeah, I could add `mmc_detect_change()` to the AMD SDHCI patch. I just
+> thought it would be better to fix the potential race condition at a
+> higher level. Though I'm happy to move it to the AMD patch. Let me know.
 
-Signed-off-by: Manish Narani <manish.narani@xilinx.com>
----
- drivers/mmc/host/sdhci-of-arasan.c | 173 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 172 insertions(+), 1 deletion(-)
+Does the following work?
 
-diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-index b12abf9..7af6cec 100644
---- a/drivers/mmc/host/sdhci-of-arasan.c
-+++ b/drivers/mmc/host/sdhci-of-arasan.c
-@@ -22,6 +22,7 @@
- #include <linux/phy/phy.h>
- #include <linux/regmap.h>
- #include <linux/of.h>
-+#include <linux/firmware/xlnx-zynqmp.h>
+
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 0cd5f2ce98df..f672171246b0 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -341,8 +341,19 @@ static void sdhci_init(struct sdhci_host *host, int soft)
  
- #include "cqhci.h"
- #include "sdhci-pltfm.h"
-@@ -32,6 +33,10 @@
- 
- #define PHY_CLK_TOO_SLOW_HZ		400000
- 
-+/* Default settings for ZynqMP Tap Delays */
-+#define ZYNQMP_ITAP_DELAYS {0, 0x15, 0x15, 0, 0x15, 0, 0, 0x3D, 0x12, 0, 0}
-+#define ZYNQMP_OTAP_DELAYS {0, 0x5, 0x6, 0, 0x5, 0x3, 0x3, 0x4, 0x6, 0x3, 0}
+ static void sdhci_reinit(struct sdhci_host *host)
+ {
++	u32 cd = host->ier & (SDHCI_INT_CARD_REMOVE | SDHCI_INT_CARD_INSERT);
 +
- /*
-  * On some SoCs the syscon area has a feature where the upper 16-bits of
-  * each 32-bit register act as a write mask for the lower 16-bits.  This allows
-@@ -81,6 +86,7 @@ struct sdhci_arasan_soc_ctl_map {
-  * @sdcardclk:		Pointer to normal 'struct clock' for sdcardclk_hw.
-  * @soc_ctl_base:	Pointer to regmap for syscon for soc_ctl registers.
-  * @soc_ctl_map:	Map to get offsets into soc_ctl registers.
-+ * @of_data:		Platform specific runtime data storage pointer
-  */
- struct sdhci_arasan_data {
- 	struct sdhci_host *host;
-@@ -101,6 +107,15 @@ struct sdhci_arasan_data {
- /* Controller immediately reports SDHCI_CLOCK_INT_STABLE after enabling the
-  * internal clock even when the clock isn't stable */
- #define SDHCI_ARASAN_QUIRK_CLOCK_UNSTABLE BIT(1)
-+
-+	void *of_data;
-+};
-+
-+struct sdhci_arasan_zynqmp_data {
-+	void (*set_tap_delay)(struct sdhci_host *host);
-+	const struct zynqmp_eemi_ops *eemi_ops;
-+	u8 tapdly[MMC_TIMING_MMC_HS400 + 1][2]; /* [0] for input delay, */
-+						/* [1] for output delay */
- };
- 
- struct sdhci_arasan_of_data {
-@@ -209,6 +224,16 @@ static void sdhci_arasan_set_clock(struct sdhci_host *host, unsigned int clock)
- 		sdhci_arasan->is_phy_on = false;
- 	}
- 
-+	/* Set the Input and Output Tap Delays */
-+	if (host->version >= SDHCI_SPEC_300 &&
-+	    host->timing != MMC_TIMING_LEGACY &&
-+	    host->timing != MMC_TIMING_UHS_SDR12) {
-+		struct sdhci_arasan_zynqmp_data *zynqmp_data =
-+			sdhci_arasan->of_data;
-+		if (zynqmp_data && zynqmp_data->set_tap_delay)
-+			zynqmp_data->set_tap_delay(host);
-+	}
-+
- 	sdhci_set_clock(host, clock);
- 
- 	if (sdhci_arasan->quirks & SDHCI_ARASAN_QUIRK_CLOCK_UNSTABLE)
-@@ -487,6 +512,10 @@ static const struct of_device_id sdhci_arasan_of_match[] = {
- 		.compatible = "arasan,sdhci-4.9a",
- 		.data = &sdhci_arasan_data,
- 	},
-+	{
-+		.compatible = "xlnx,zynqmp-8.9a",
-+		.data = &sdhci_arasan_data,
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sdhci_arasan_of_match);
-@@ -517,6 +546,37 @@ static const struct clk_ops arasan_sdcardclk_ops = {
- };
- 
- /**
-+ * sdhci_zynqmp_sdcardclk_set_phase - Set the SD Clock Tap Delays
-+ *
-+ * Set the SD Clock Tap Delays for Input and Output paths
-+ *
-+ * @hw:			Pointer to the hardware clock structure.
-+ * @degrees		The clock phase shift between 0 - 359.
-+ * Return: 0 on success and error value on error
-+ */
-+static int sdhci_zynqmp_sdcardclk_set_phase(struct clk_hw *hw, int degrees)
-+
-+{
-+	struct sdhci_arasan_data *sdhci_arasan =
-+		container_of(hw, struct sdhci_arasan_data, sdcardclk_hw);
-+	struct sdhci_arasan_zynqmp_data *zynqmp_data = sdhci_arasan->of_data;
-+	const struct zynqmp_eemi_ops *eemi_ops = zynqmp_data->eemi_ops;
-+	const char *clk_name = clk_hw_get_name(hw);
-+	u32 device_id = !strcmp(clk_name, "clk_sd0") ? 0 : 1;
-+
-+	if (!eemi_ops->sdio_setphase)
-+		return -ENODEV;
-+
-+	/* Set the Clock Phase */
-+	return eemi_ops->sdio_setphase(device_id, degrees);
-+}
-+
-+static const struct clk_ops zynqmp_sdcardclk_ops = {
-+	.recalc_rate = sdhci_arasan_sdcardclk_recalc_rate,
-+	.set_phase = sdhci_zynqmp_sdcardclk_set_phase,
-+};
-+
-+/**
-  * sdhci_arasan_update_clockmultiplier - Set corecfg_clockmultiplier
-  *
-  * The corecfg_clockmultiplier is supposed to contain clock multiplier
-@@ -638,7 +698,10 @@ static int sdhci_arasan_register_sdclk(struct sdhci_arasan_data *sdhci_arasan,
- 	sdcardclk_init.parent_names = &parent_clk_name;
- 	sdcardclk_init.num_parents = 1;
- 	sdcardclk_init.flags = CLK_GET_RATE_NOCACHE;
--	sdcardclk_init.ops = &arasan_sdcardclk_ops;
-+	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a"))
-+		sdcardclk_init.ops = &zynqmp_sdcardclk_ops;
-+	else
-+		sdcardclk_init.ops = &arasan_sdcardclk_ops;
- 
- 	sdhci_arasan->sdcardclk_hw.init = &sdcardclk_init;
- 	sdhci_arasan->sdcardclk =
-@@ -714,6 +777,108 @@ static int sdhci_arasan_add_host(struct sdhci_arasan_data *sdhci_arasan)
- 	return ret;
- }
- 
-+static void sdhci_arasan_zynqmp_set_tap_delay(struct sdhci_host *host)
-+{
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_arasan_data *sdhci_arasan = sdhci_pltfm_priv(pltfm_host);
-+	struct sdhci_arasan_zynqmp_data *zynqmp_data = sdhci_arasan->of_data;
-+
-+	clk_set_phase(sdhci_arasan->sdcardclk,
-+		      (int)zynqmp_data->tapdly[host->timing][0]);
-+	clk_set_phase(sdhci_arasan->sdcardclk,
-+		      (int)zynqmp_data->tapdly[host->timing][1] +
-+		      INPUT_TAP_BOUNDARY);
-+}
-+
-+static void arasan_dt_read_tap_delay(struct device *dev, u8 *tapdly,
-+				     const char *prop, u8 itap_def, u8 otap_def)
-+{
-+	struct device_node *np = dev->of_node;
-+
-+	tapdly[0] = itap_def;
-+	tapdly[1] = otap_def;
+ 	sdhci_init(host, 0);
+ 	sdhci_enable_card_detection(host);
 +
 +	/*
-+	 * Read Tap Delay values from DT, if the DT does not contain the
-+	 * Tap Values then use the pre-defined values.
++	 * A change to the card detect bits indicates a change in present state,
++	 * refer sdhci_set_card_detection(). A card detect interrupt might have
++	 * been missed while the host controller was being reset, so trigger a
++	 * rescan to check.
 +	 */
-+	if (of_property_read_variable_u8_array(np, prop, &tapdly[0], 2, 0)) {
-+		dev_dbg(dev, "Using predefined tapdly for %s = %d %d\n",
-+			prop, tapdly[0], tapdly[1]);
-+	}
-+}
-+
-+/**
-+ * arasan_dt_parse_tap_delays - Read Tap Delay values from DT
-+ *
-+ * Called at initialization to parse the values of Tap Delays.
-+ *
-+ * @dev:		Pointer to our struct device.
-+ */
-+static int arasan_dt_parse_tap_delays(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct sdhci_host *host = platform_get_drvdata(pdev);
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_arasan_data *sdhci_arasan = sdhci_pltfm_priv(pltfm_host);
-+	struct sdhci_arasan_zynqmp_data zynqmp_data;
-+	const struct zynqmp_eemi_ops *eemi_ops;
-+	u8 *itapdly, *otapdly;
-+	u32 mio_bank = 0;
-+
-+	eemi_ops = zynqmp_pm_get_eemi_ops();
-+	if (IS_ERR(eemi_ops))
-+		return PTR_ERR(eemi_ops);
-+
-+	itapdly = (u8 [MMC_TIMING_MMC_HS400 + 1]) ZYNQMP_ITAP_DELAYS;
-+	otapdly = (u8 [MMC_TIMING_MMC_HS400 + 1]) ZYNQMP_OTAP_DELAYS;
-+
-+	of_property_read_u32(pdev->dev.of_node, "xlnx,mio-bank", &mio_bank);
-+	if (mio_bank == 2) {
-+		otapdly[MMC_TIMING_UHS_SDR104] = 0x2;
-+		otapdly[MMC_TIMING_MMC_HS200] = 0x2;
-+	}
-+
-+	arasan_dt_read_tap_delay(dev, zynqmp_data.tapdly[MMC_TIMING_MMC_HS],
-+				 "xlnx,tap-delay-mmc-hsd",
-+				 itapdly[MMC_TIMING_MMC_HS],
-+				 otapdly[MMC_TIMING_MMC_HS]);
-+	arasan_dt_read_tap_delay(dev, zynqmp_data.tapdly[MMC_TIMING_SD_HS],
-+				 "xlnx,tap-delay-sd-hsd",
-+				 itapdly[MMC_TIMING_SD_HS],
-+				 otapdly[MMC_TIMING_SD_HS]);
-+	arasan_dt_read_tap_delay(dev, zynqmp_data.tapdly[MMC_TIMING_UHS_SDR25],
-+				 "xlnx,tap-delay-sdr25",
-+				 itapdly[MMC_TIMING_UHS_SDR25],
-+				 otapdly[MMC_TIMING_UHS_SDR25]);
-+	arasan_dt_read_tap_delay(dev, zynqmp_data.tapdly[MMC_TIMING_UHS_SDR50],
-+				 "xlnx,tap-delay-sdr50",
-+				 itapdly[MMC_TIMING_UHS_SDR50],
-+				 otapdly[MMC_TIMING_UHS_SDR50]);
-+	arasan_dt_read_tap_delay(dev, zynqmp_data.tapdly[MMC_TIMING_UHS_SDR104],
-+				 "xlnx,tap-delay-sdr104",
-+				 itapdly[MMC_TIMING_UHS_SDR104],
-+				 otapdly[MMC_TIMING_UHS_SDR104]);
-+	arasan_dt_read_tap_delay(dev, zynqmp_data.tapdly[MMC_TIMING_UHS_DDR50],
-+				 "xlnx,tap-delay-sd-ddr50",
-+				 itapdly[MMC_TIMING_UHS_DDR50],
-+				 otapdly[MMC_TIMING_UHS_DDR50]);
-+	arasan_dt_read_tap_delay(dev, zynqmp_data.tapdly[MMC_TIMING_MMC_DDR52],
-+				 "xlnx,tap-delay-mmc-ddr52",
-+				 itapdly[MMC_TIMING_MMC_DDR52],
-+				 otapdly[MMC_TIMING_MMC_DDR52]);
-+	arasan_dt_read_tap_delay(dev, zynqmp_data.tapdly[MMC_TIMING_MMC_HS200],
-+				 "xlnx,tap-delay-mmc-hs200",
-+				 itapdly[MMC_TIMING_MMC_HS200],
-+				 otapdly[MMC_TIMING_MMC_HS200]);
-+
-+	zynqmp_data.set_tap_delay = sdhci_arasan_zynqmp_set_tap_delay;
-+	zynqmp_data.eemi_ops = eemi_ops;
-+	sdhci_arasan->of_data = &zynqmp_data;
-+
-+	return 0;
-+}
-+
- static int sdhci_arasan_probe(struct platform_device *pdev)
- {
- 	int ret;
-@@ -806,6 +971,12 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
- 		goto unreg_clk;
- 	}
++	if (cd != (host->ier & (SDHCI_INT_CARD_REMOVE | SDHCI_INT_CARD_INSERT)))
++		mmc_detect_change(host->mmc, msecs_to_jiffies(200));
+ }
  
-+	if (of_device_is_compatible(pdev->dev.of_node, "xlnx,zynqmp-8.9a")) {
-+		ret = arasan_dt_parse_tap_delays(&pdev->dev);
-+		if (ret)
-+			goto unreg_clk;
-+	}
-+
- 	sdhci_arasan->phy = ERR_PTR(-ENODEV);
- 	if (of_device_is_compatible(pdev->dev.of_node,
- 				    "arasan,sdhci-5.1")) {
--- 
-2.1.1
-
+ static void __sdhci_led_activate(struct sdhci_host *host)
