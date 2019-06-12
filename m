@@ -2,233 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B328A4276B
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 15:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5B4F427BD
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 15:37:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439322AbfFLN0J (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 12 Jun 2019 09:26:09 -0400
-Received: from mail-vk1-f196.google.com ([209.85.221.196]:38943 "EHLO
-        mail-vk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727102AbfFLN0J (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 12 Jun 2019 09:26:09 -0400
-Received: by mail-vk1-f196.google.com with SMTP id o19so2442198vkb.6
-        for <linux-mmc@vger.kernel.org>; Wed, 12 Jun 2019 06:26:08 -0700 (PDT)
+        id S1726964AbfFLNhC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 12 Jun 2019 09:37:02 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:46263 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726586AbfFLNhC (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 12 Jun 2019 09:37:02 -0400
+Received: by mail-vs1-f67.google.com with SMTP id l125so10206946vsl.13
+        for <linux-mmc@vger.kernel.org>; Wed, 12 Jun 2019 06:37:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=E7fySMumjNmRNmMY5t+/ORC71GvUDcf7jQJsz2Lmu8Y=;
-        b=QYWBrnNjzTR4SGTlmO+2dMnBv0gF7OVThMta1UF3J+3SU6BeS6RM+NzORZ66PxnWMr
-         TN4VaBhSU8xmyY+EpiRD7RUp/3nb+aJxMFRBITrHO7pf7VOLwfr75hgtcrdjNdhikPqg
-         CQ0xBkMxoL13nkJCidmvZ5LkHGd1qFz+h1IAO85qJdsWiPFmVRRH9ubM6QwTjpUo0lRH
-         l8+unLl6yS22kj5G2/kesq8q0bzn8XxOe56vJ7Nwgq1hxtYfcbCqgmfsl9UPsih6Eq4f
-         44D0bXKixT4b/tmZKKQrVAKKLo9+5lz4OVfKHUOuvLssmnlfk4kDGpVhZNeT0V3qZoSs
-         Ezrg==
+        bh=BABX3wm/uPiARrYOfymklE5+rTe/+m67h9A9bynznZ4=;
+        b=H5bN1m2Rb/0vMGayybrruflAJpUjiSXjFE5PMmPknSuP/U3a8mDUG2Zg8VPSHqZDXB
+         wb89ojyDVROM4TpGtkmoyLW1tzr6ulYZZ5cLhvUBt4WVSt1qL1yAQZg/j8iguw0sIJt2
+         +xaAht0S3qLeOSCZxIc+E27U96xZBjPww6yBK25KPgYYfH3ZpndZ1J8K4M1VvkEs6f67
+         N17TYLOwqI42UumjlHT+xX9Gr7XXlZ4tyITasWGKer17d6rEoJGPiQGiuzpQU1pfCpsn
+         tc+7cTSwYMpEfnl7NhiY6H56z7VccXoO8I5RGkcP1cDo4kVXs6bruXCtmVzg4Zw1Rrs1
+         Chqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=E7fySMumjNmRNmMY5t+/ORC71GvUDcf7jQJsz2Lmu8Y=;
-        b=hie7jOaLPzCEDB/4gvtwD5hEjhmy6b/JbqNPeodrP+/ozka4OgIGWQAuOEC5abaONW
-         wwx/+XyQrhwqRH3kkxVf7LZ8g/lwNcIMGSOjEtkEx4w71keOK78SerZt5UXddPwd+Aqv
-         XaKU5PDzo6XpHKEKxPDXDTVPWyP4qry3gX1zK3uaddGdk5/Drhc9DdSiWyxtqy6xWW4e
-         KoIxv6jLiJf9E6cL7t46lcyQSaW+8bn/G6W3G81JMGYcOW3shFY8YEBmBBA+zN7jFUkf
-         FRZd8KMRUJhsVjxvKLaLBzjkaANyGB1afKfszLg6UTWUCRDUvcXEITn8zuRnLoO1XqBX
-         VAKw==
-X-Gm-Message-State: APjAAAUjQDiiGu2lOzIaxgYcgglAWJSBVvfgnTh2boxqGu/Yydqy/EzU
-        JwDJKGLC1ahhoSvTncp2Wc5a08DppE7GGyhZ6raK9w==
-X-Google-Smtp-Source: APXvYqzHLztZ6A07mA3L0RxrvDr4TaNWEVgx7eQUPB1lNxzINC6SuMv7jHQOr/DXwamjqJh6KLqVETMYT0iIgnB+Yjs=
-X-Received: by 2002:ac5:c2d2:: with SMTP id i18mr23129212vkk.36.1560345967778;
- Wed, 12 Jun 2019 06:26:07 -0700 (PDT)
+        bh=BABX3wm/uPiARrYOfymklE5+rTe/+m67h9A9bynznZ4=;
+        b=qvQTFOqX0vpTrOaCjOZrsNl0x4qXneibOzw7Mi/Ljg/hnfvjz85fPZ+6LN8beUmwsa
+         JEAHHhzQqoPImwaZUDeysN4WrvJa8byCKgncxAvQBlXQHu/q5LeHhTY8IsisWUG8gQqe
+         hNUTm1l16g5cYnUf4MJgAWRvRj01+RhQQITUzm3hLIa4VHW60KoVZV4r4nkJAm+0pdf0
+         KehsJ4dANm8C4BxKHFPJaU4sEQ4+LuhRH9yhRSPuHdMt4mcQkE+2E8iRrOfvJ5420Exk
+         410ZJ9UPeMj/U85GdWOyHEvWK6FkH44c5et1QjNcYO+XHoWZdxC+FJRAVlXsKysMpT4I
+         y7iw==
+X-Gm-Message-State: APjAAAWnR7To3Jsw+Cuc1Txq0M04CmBYpiXM6LPDPq+EcI34GekzXi0r
+        tbGxufcD+t3jA7SM9zf6N+2IEdHftlNOd9hpR71Ejw==
+X-Google-Smtp-Source: APXvYqwipTQ2cy0/IremT2vBBV9KiYlUsGqRj77DQjXEwmIHkmMN8TbkFbYRstALSE7Y2iflpWorEFNWthgd/9f2EfY=
+X-Received: by 2002:a67:ee5b:: with SMTP id g27mr10792054vsp.165.1560346621530;
+ Wed, 12 Jun 2019 06:37:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190607223716.119277-1-dianders@chromium.org> <20190607223716.119277-3-dianders@chromium.org>
-In-Reply-To: <20190607223716.119277-3-dianders@chromium.org>
+References: <20190610185354.35310-1-rrangel@chromium.org>
+In-Reply-To: <20190610185354.35310-1-rrangel@chromium.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 12 Jun 2019 15:25:31 +0200
-Message-ID: <CAPDyKFpdkkzkbSy-uWL8TwdNFjJi10au7ZDOYjoWuDzftpoNsQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/5] mmc: core: API for temporarily disabling
- auto-retuning due to errors
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Double Lo <double.lo@cypress.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
-        Jiong Wu <lohengrin1024@gmail.com>,
-        Ritesh Harjani <riteshh@codeaurora.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+Date:   Wed, 12 Jun 2019 15:36:25 +0200
+Message-ID: <CAPDyKFppNgL_kZPV-QS6ZiJErde5ea8Nj-sQTy_vXhW9jfXhpg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] mmc: sdhci: sdhci-pci-o2micro: Correctly set bus
+ width when tuning
+To:     Raul E Rangel <rrangel@chromium.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "ernest.zhang" <ernest.zhang@bayhubtech.com>,
+        Daniel Kurtz <djkurtz@chromium.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Avri Altman <avri.altman@wdc.com>
+        Adrian Hunter <adrian.hunter@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 8 Jun 2019 at 00:37, Douglas Anderson <dianders@chromium.org> wrote:
+On Mon, 10 Jun 2019 at 20:54, Raul E Rangel <rrangel@chromium.org> wrote:
 >
-> Normally when the MMC core sees an "-EILSEQ" error returned by a host
-> controller then it will trigger a retuning of the card.  This is
-> generally a good idea.
+> sdhci_send_tuning uses mmc->ios.bus_width to determine the block size.
+> Without this patch the block size would be set incorrectly when the
+> bus_width == 8 which results in tuning failing.
 >
-> However, if a command is expected to sometimes cause transfer errors
-> then these transfer errors shouldn't cause a re-tuning.  This
-> re-tuning will be a needless waste of time.  One example case where a
-> transfer is expected to cause errors is when transitioning between
-> idle (sometimes referred to as "sleep" in Broadcom code) and active
-> state on certain Broadcom WiFi cards.  Specifically if the card was
-> already transitioning between states when the command was sent it
-> could cause an error on the SDIO bus.
->
-> Let's add an API that the SDIO card drivers can call that will
-> temporarily disable the auto-tuning functionality.  Then we can add a
-> call to this in the Broadcom WiFi driver and any other driver that
-> might have similar needs.
->
-> NOTE: this makes the assumption that the card is already tuned well
-> enough that it's OK to disable the auto-retuning during one of these
-> error-prone situations.  Presumably the driver code performing the
-> error-prone transfer knows how to recover / retry from errors.  ...and
-> after we can get back to a state where transfers are no longer
-> error-prone then we can enable the auto-retuning again.  If we truly
-> find ourselves in a case where the card needs to be retuned sometimes
-> to handle one of these error-prone transfers then we can always try a
-> few transfers first without auto-retuning and then re-try with
-> auto-retuning if the first few fail.
->
-> Without this change on rk3288-veyron-minnie I periodically see this in
-> the logs of a machine just sitting there idle:
->   dwmmc_rockchip ff0d0000.dwmmc: Successfully tuned phase to XYZ
->
-> Fixes: bd11e8bd03ca ("mmc: core: Flag re-tuning is needed on CRC errors")
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
 > ---
-> Note that are are a whole boatload of different ways that we could
-> provide an API for the Broadcom WiFi SDIO driver.  This patch
-> illustrates one way but if maintainers feel strongly that this is too
-> ugly and have a better idea then I can give it a shot too.  From a
-> purist point of view I kinda felt that the "expect errors" really
-> belonged as part of the mmc_request structure, but getting it into
-> there meant changing a whole pile of core SD/MMC APIs.  Simply adding
-> it to the host seemed to match the current style better and was a less
-> intrusive change.
 >
-> Changes in v3:
-> - Took out the spinlock since I believe this is all in one context.
+>  drivers/mmc/host/sdhci-pci-o2micro.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
+> index b29bf4e7dcb48..dd21315922c87 100644
+> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
+> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+> @@ -115,6 +115,7 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
+>          */
+>         if (mmc->ios.bus_width == MMC_BUS_WIDTH_8) {
+>                 current_bus_width = mmc->ios.bus_width;
+> +               mmc->ios.bus_width = MMC_BUS_WIDTH_4;
 
-This needs to be clarified, preferable also in a function header.
+This looks wrong.
 
-If I understand correctly, the SDIO func driver needs the host to be
-claimed when it calls mmc_expect_errors_begin(). More importantly, it
-also needs to be keep it claimed until after it had called
-mmc_expect_errors_end(). Correct?
+mmc->ios.bus_width is not supposed to be updated by a host driver, but
+rather the value should only be read.
 
+>                 sdhci_set_bus_width(host, MMC_BUS_WIDTH_4);
+>         }
 >
-> Changes in v2:
-> - Updated commit message to clarify based on discussion of v1.
+> @@ -126,8 +127,10 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
 >
->  drivers/mmc/core/core.c  | 19 +++++++++++++++++--
->  include/linux/mmc/core.h |  2 ++
->  include/linux/mmc/host.h |  1 +
->  3 files changed, 20 insertions(+), 2 deletions(-)
+>         sdhci_end_tuning(host);
 >
-> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-> index 6db36dc870b5..bc109ec49406 100644
-> --- a/drivers/mmc/core/core.c
-> +++ b/drivers/mmc/core/core.c
-> @@ -144,8 +144,9 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
->         int err = cmd->error;
->
->         /* Flag re-tuning needed on CRC errors */
-> -       if ((cmd->opcode != MMC_SEND_TUNING_BLOCK &&
-> -           cmd->opcode != MMC_SEND_TUNING_BLOCK_HS200) &&
-> +       if (cmd->opcode != MMC_SEND_TUNING_BLOCK &&
-> +           cmd->opcode != MMC_SEND_TUNING_BLOCK_HS200 &&
-> +           !host->expect_errors &&
->             (err == -EILSEQ || (mrq->sbc && mrq->sbc->error == -EILSEQ) ||
->             (mrq->data && mrq->data->error == -EILSEQ) ||
->             (mrq->stop && mrq->stop->error == -EILSEQ)))
-> @@ -2163,6 +2164,20 @@ int mmc_sw_reset(struct mmc_host *host)
->  }
->  EXPORT_SYMBOL(mmc_sw_reset);
->
-> +void mmc_expect_errors_begin(struct mmc_host *host)
-> +{
-> +       WARN_ON(host->expect_errors);
-
-Please remove the WARN_ON. If you believe there is a need for
-reference counting, then please add that instead (but likely not in
-the phase?).
-
-> +       host->expect_errors = true;
-> +}
-> +EXPORT_SYMBOL_GPL(mmc_expect_errors_begin);
-> +
-> +void mmc_expect_errors_end(struct mmc_host *host)
-> +{
-> +       WARN_ON(!host->expect_errors);
+> -       if (current_bus_width == MMC_BUS_WIDTH_8)
+> +       if (current_bus_width == MMC_BUS_WIDTH_8) {
+> +               mmc->ios.bus_width = MMC_BUS_WIDTH_8;
 
 Ditto.
 
-> +       host->expect_errors = false;
-> +}
-> +EXPORT_SYMBOL_GPL(mmc_expect_errors_end);
-
-These new APIs seems to be useful solely for SDIO. Even if it turns
-out later that they can be made generic, I suggest to start with a
-SDIO func API instead.
-
-However, using a new host variable (->expect_errors) is fine by me.
-
-> +
->  static int mmc_rescan_try_freq(struct mmc_host *host, unsigned freq)
->  {
->         host->f_init = freq;
-> diff --git a/include/linux/mmc/core.h b/include/linux/mmc/core.h
-> index 134a6483347a..02a13abf0cda 100644
-> --- a/include/linux/mmc/core.h
-> +++ b/include/linux/mmc/core.h
-> @@ -178,6 +178,8 @@ int mmc_wait_for_cmd(struct mmc_host *host, struct mmc_command *cmd,
+>                 sdhci_set_bus_width(host, current_bus_width);
+> +       }
 >
->  int mmc_hw_reset(struct mmc_host *host);
->  int mmc_sw_reset(struct mmc_host *host);
-> +void mmc_expect_errors_begin(struct mmc_host *host);
-> +void mmc_expect_errors_end(struct mmc_host *host);
-
-The API prevents a new re-tune to be "scheduled" in case requests are
-failing with -EILSEQ.
-
-To better reflect that, may I suggest to rename this to
-sdio_retune_crc_disable() and sdio_retune_crc_enable(). Or something
-along those lines.
-
-
->  void mmc_set_data_timeout(struct mmc_data *data, const struct mmc_card *card);
->
->  #endif /* LINUX_MMC_CORE_H */
-> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-> index 43d0f0c496f6..8d553fb8c834 100644
-> --- a/include/linux/mmc/host.h
-> +++ b/include/linux/mmc/host.h
-> @@ -398,6 +398,7 @@ struct mmc_host {
->         unsigned int            retune_now:1;   /* do re-tuning at next req */
->         unsigned int            retune_paused:1; /* re-tuning is temporarily disabled */
->         unsigned int            use_blk_mq:1;   /* use blk-mq */
-> +       unsigned int            expect_errors:1; /* don't trigger retune upon errors */
->
->         int                     rescan_disable; /* disable card detection */
->         int                     rescan_entered; /* used with nonremovable devices */
+>         host->flags &= ~SDHCI_HS400_TUNING;
+>         return 0;
 > --
 > 2.22.0.rc2.383.gf4fbbf30c2-goog
 >
