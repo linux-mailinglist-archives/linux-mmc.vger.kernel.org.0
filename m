@@ -2,203 +2,97 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F7A9426C0
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 14:55:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15D3F42717
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 15:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726061AbfFLMzi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 12 Jun 2019 08:55:38 -0400
-Received: from mail-eopbgr60067.outbound.protection.outlook.com ([40.107.6.67]:47399
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2436623AbfFLMzi (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 12 Jun 2019 08:55:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jxBwdkV9x+yo0BpH0Avf/xZFEzdNDYfkwj7N8UN52Os=;
- b=UT60VwAd/vdMG7aKN2q+1BqE2cEegauMgJ3QXHMgCF7KMKK8+VLPR2s1jBenl0Hfs8iX6CQyb6XpT7zgu1KHUfq3OP5c5byRoKaUVIC7QT1kcd4Ilp2qd5EWRqFfprCyRJg9K3xfVbdoJFwYFCF5HX00c84AyX8qTo3UdOVSBxc=
-Received: from VI1PR04MB4640.eurprd04.prod.outlook.com (20.177.56.27) by
- VI1PR04MB5744.eurprd04.prod.outlook.com (20.178.127.86) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.10; Wed, 12 Jun 2019 12:55:33 +0000
-Received: from VI1PR04MB4640.eurprd04.prod.outlook.com
- ([fe80::9dfe:752d:9e88:fe86]) by VI1PR04MB4640.eurprd04.prod.outlook.com
- ([fe80::9dfe:752d:9e88:fe86%7]) with mapi id 15.20.1987.010; Wed, 12 Jun 2019
- 12:55:33 +0000
-From:   Udit Kumar <udit.kumar@nxp.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
-CC:     Varun Sethi <V.Sethi@nxp.com>, Leo Li <leoyang.li@nxp.com>,
-        Jimmy Zhao <jimmy.zhao@nxp.com>, "Y.b. Lu" <yangbo.lu@nxp.com>,
-        Yinbo Zhu <yinbo.zhu@nxp.com>
-Subject: RE: [EXT] Re: [PATCH] enable acpi support in esdhc driver
-Thread-Topic: [EXT] Re: [PATCH] enable acpi support in esdhc driver
-Thread-Index: AQHVGcoEUMaj4kwyFkKXeXa3VdN5BaaX8lMAgAAS6YA=
-Date:   Wed, 12 Jun 2019 12:55:33 +0000
-Message-ID: <VI1PR04MB4640CC09CBBD43A09711AF1291EC0@VI1PR04MB4640.eurprd04.prod.outlook.com>
-References: <1559538333-362-1-git-send-email-udit.kumar@nxp.com>
- <95e552d9-2fe7-e153-60dc-cc77aac3452e@intel.com>
-In-Reply-To: <95e552d9-2fe7-e153-60dc-cc77aac3452e@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=udit.kumar@nxp.com; 
-x-originating-ip: [106.215.111.109]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: edf962af-c304-4771-3f3c-08d6ef3541d1
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:VI1PR04MB5744;
-x-ms-traffictypediagnostic: VI1PR04MB5744:
-x-microsoft-antispam-prvs: <VI1PR04MB57445FB6C0C3A3BAE126306E91EC0@VI1PR04MB5744.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 0066D63CE6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(136003)(366004)(376002)(396003)(39860400002)(189003)(199004)(13464003)(256004)(44832011)(6436002)(8936002)(33656002)(66066001)(486006)(2906002)(476003)(68736007)(316002)(71200400001)(478600001)(55016002)(6246003)(14454004)(9686003)(54906003)(110136005)(2501003)(78486014)(8676002)(81166006)(81156014)(86362001)(99286004)(305945005)(7736002)(76176011)(7696005)(4326008)(2201001)(229853002)(53936002)(25786009)(71190400001)(74316002)(5660300002)(73956011)(11346002)(53546011)(6116002)(6506007)(66446008)(26005)(66946007)(186003)(66476007)(76116006)(3846002)(446003)(102836004)(52536014)(64756008)(66556008);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR04MB5744;H:VI1PR04MB4640.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: vzFKcuoLnMwNWh2mLbpTlMH4mB0l0wa4ApJqYuQsH99Q0c+d2PRop3qkRCLAfoM9NtrQ8EI1kFMXJznLICMgDhyvNx9gqm7WuYQBSYZ9A9JgHUYXDWMeSk/XDE4UVYReqbBdXPp8PvfiS3sQIt24kgcChhr1RwEaQhmBOEjvxd1khIXhQDb7ng8rJlALPbXyzBGVIi6Nt5DnO7RE9+Vvvuipt7KB5iMbV+5NDRgHhao6FwIXMVOJ7Y7y4AM/Jo05NYIvnA83wpVvL2SekdYmtSZ3AncSQt4c4otc2ftuL4tG/CzA0pznCTu9zZcL+9Bb+5b6cJQvGoNf1b/+nyTOZHSNRu0slaHqae9S9vo8jbUxUG4qASvWRMi4VG3LgoDMJ1P0EpsbH5fh8ycKNhPAzMm9udDMy5bJ2AzOpc189vE=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S2439361AbfFLNLG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 12 Jun 2019 09:11:06 -0400
+Received: from mga14.intel.com ([192.55.52.115]:60310 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2439360AbfFLNLG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 12 Jun 2019 09:11:06 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 06:11:05 -0700
+X-ExtLoop1: 1
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
+  by orsmga001.jf.intel.com with ESMTP; 12 Jun 2019 06:11:01 -0700
+Subject: Re: [PATCH 2/3] mmc: sdhci: sdhci-pci-o2micro: Check if controller
+ supports 8-bit width
+To:     Raul E Rangel <rrangel@chromium.org>, linux-mmc@vger.kernel.org
+Cc:     ernest.zhang@bayhubtech.com, djkurtz@chromium.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+References: <20190610185354.35310-1-rrangel@chromium.org>
+ <20190610185354.35310-2-rrangel@chromium.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <d4939761-317c-ee78-b1e5-c2cdd86a12b4@intel.com>
+Date:   Wed, 12 Jun 2019 16:09:47 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: edf962af-c304-4771-3f3c-08d6ef3541d1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jun 2019 12:55:33.4702
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: udit.kumar@nxp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5744
+In-Reply-To: <20190610185354.35310-2-rrangel@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-VGhhbmsgQWRyaWFuLiANClBsZWFzZSBzZWUgaW5saW5lLCAgb25lIG9mIGhlbHAgbmVlZGVkIGl0
-ZW0gb24gY2xvY2tpbmcuDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTog
-QWRyaWFuIEh1bnRlciA8YWRyaWFuLmh1bnRlckBpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2Rh
-eSwgSnVuZSAxMiwgMjAxOSA1OjA2IFBNDQo+IFRvOiBVZGl0IEt1bWFyIDx1ZGl0Lmt1bWFyQG54
-cC5jb20+OyBsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnOw0KPiB1bGYuaGFuc3NvbkBsaW5hcm8u
-b3JnDQo+IENjOiBWYXJ1biBTZXRoaSA8Vi5TZXRoaUBueHAuY29tPjsgTGVvIExpIDxsZW95YW5n
-LmxpQG54cC5jb20+OyBKaW1teSBaaGFvDQo+IDxqaW1teS56aGFvQG54cC5jb20+OyBZLmIuIEx1
-IDx5YW5nYm8ubHVAbnhwLmNvbT47IFlpbmJvIFpodQ0KPiA8eWluYm8uemh1QG54cC5jb20+DQo+
-IFN1YmplY3Q6IFtFWFRdIFJlOiBbUEFUQ0hdIGVuYWJsZSBhY3BpIHN1cHBvcnQgaW4gZXNkaGMg
-ZHJpdmVyDQo+IA0KPiBDYXV0aW9uOiBFWFQgRW1haWwNCj4gDQo+IE9uIDMvMDYvMTkgODowNSBB
-TSwgVWRpdCBLdW1hciB3cm90ZToNCj4gPiBUaGlzIHBhY3RoIGVuYWJsZXMgYWNwaSBzdXBwb3J0
-IGluIGVzZGhjIGRyaXZlcg0KPiANCj4gcGFjdGggLT4gcGF0Y2gNCj4gDQoNCg0KQWgsIHR5cG8g
-VGhhbmtzIA0KDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBVZGl0IEt1bWFyIDx1ZGl0Lmt1bWFy
-QG54cC5jb20+DQo+IA0KPiBMb29rcyBvaywgYnV0IHNvbWUgbWlub3IgY29tbWVudHMuDQo+IA0K
-PiA+IC0tLQ0KPiA+ICBkcml2ZXJzL21tYy9ob3N0L3NkaGNpLW9mLWVzZGhjLmMgfCA1NQ0KPiA+
-ICsrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLQ0KPiA+ICAxIGZpbGUgY2hh
-bmdlZCwgMzYgaW5zZXJ0aW9ucygrKSwgMTkgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9tbWMvaG9zdC9zZGhjaS1vZi1lc2RoYy5jDQo+ID4gYi9kcml2ZXJzL21t
-Yy9ob3N0L3NkaGNpLW9mLWVzZGhjLmMNCj4gPiBpbmRleCBlMjBjMDBmLi4xMWQ5ZjQ4IDEwMDY0
-NA0KPiA+IC0tLSBhL2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2ktb2YtZXNkaGMuYw0KPiA+ICsrKyBi
-L2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2ktb2YtZXNkaGMuYw0KPiA+IEBAIC0zLDYgKzMsNyBAQA0K
-PiA+ICAgKg0KPiA+ICAgKiBDb3B5cmlnaHQgKGMpIDIwMDcsIDIwMTAsIDIwMTIgRnJlZXNjYWxl
-IFNlbWljb25kdWN0b3IsIEluYy4NCj4gPiAgICogQ29weXJpZ2h0IChjKSAyMDA5IE1vbnRhVmlz
-dGEgU29mdHdhcmUsIEluYy4NCj4gPiArICogQ29weXJpZ2h0IDIwMTkgTlhQDQo+ID4gICAqDQo+
-ID4gICAqIEF1dGhvcnM6IFhpYW9ibyBYaWUgPFguWGllQGZyZWVzY2FsZS5jb20+DQo+ID4gICAq
-ICAgICAgIEFudG9uIFZvcm9udHNvdiA8YXZvcm9udHNvdkBydS5tdmlzdGEuY29tPg0KPiA+IEBA
-IC0xMyw2ICsxNCw3IEBADQo+ID4gICAqIHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4N
-Cj4gPiAgICovDQo+ID4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L2FjcGkuaD4NCj4gPiAgI2luY2x1
-ZGUgPGxpbnV4L2Vyci5oPg0KPiA+ICAjaW5jbHVkZSA8bGludXgvaW8uaD4NCj4gPiAgI2luY2x1
-ZGUgPGxpbnV4L29mLmg+DQo+ID4gQEAgLTc1LDYgKzc3LDEyIEBAIHN0cnVjdCBlc2RoY19jbGtf
-Zml4dXAgeyAgfTsNCj4gPiBNT0RVTEVfREVWSUNFX1RBQkxFKG9mLCBzZGhjaV9lc2RoY19vZl9t
-YXRjaCk7DQo+ID4NCj4gPiArc3RhdGljIGNvbnN0IHN0cnVjdCBhY3BpX2RldmljZV9pZCBzZGhj
-aV9lc2RoY19pZHNbXSA9IHsNCj4gPiArICAgICB7Ik5YUDAwMDMiIH0sDQo+ID4gKyAgICAgeyAv
-KiBzZW50aW5lbCAqLyB9LA0KPiA+ICt9Ow0KPiA+ICtNT0RVTEVfREVWSUNFX1RBQkxFKGFjcGks
-IHNkaGNpX2VzZGhjX2lkcyk7DQo+ID4gKw0KPiA+ICBzdHJ1Y3Qgc2RoY2lfZXNkaGMgew0KPiA+
-ICAgICAgIHU4IHZlbmRvcl92ZXI7DQo+ID4gICAgICAgdTggc3BlY192ZXI7DQo+ID4gQEAgLTEw
-MzgsMjIgKzEwNDYsMjggQEAgc3RhdGljIHZvaWQgZXNkaGNfaW5pdChzdHJ1Y3QgcGxhdGZvcm1f
-ZGV2aWNlDQo+ICpwZGV2LCBzdHJ1Y3Qgc2RoY2lfaG9zdCAqaG9zdCkNCj4gPiAgICAgICBtYXRj
-aCA9IG9mX21hdGNoX25vZGUoc2RoY2lfZXNkaGNfb2ZfbWF0Y2gsIHBkZXYtPmRldi5vZl9ub2Rl
-KTsNCj4gPiAgICAgICBpZiAobWF0Y2gpDQo+ID4gICAgICAgICAgICAgICBlc2RoYy0+Y2xrX2Zp
-eHVwID0gbWF0Y2gtPmRhdGE7DQo+ID4gLSAgICAgbnAgPSBwZGV2LT5kZXYub2Zfbm9kZTsNCj4g
-PiAtICAgICBjbGsgPSBvZl9jbGtfZ2V0KG5wLCAwKTsNCj4gPiAtICAgICBpZiAoIUlTX0VSUihj
-bGspKSB7DQo+ID4gLSAgICAgICAgICAgICAvKg0KPiA+IC0gICAgICAgICAgICAgICogZXNkaGMt
-PnBlcmlwaGVyYWxfY2xvY2sgd291bGQgYmUgYXNzaWduZWQgd2l0aCBhIHZhbHVlDQo+ID4gLSAg
-ICAgICAgICAgICAgKiB3aGljaCBpcyBlU0RIQyBiYXNlIGNsb2NrIHdoZW4gdXNlIHBlcmlwZXJh
-bCBjbG9jay4NCj4gPiAtICAgICAgICAgICAgICAqIEZvciBsczEwNDZhLCB0aGUgY2xvY2sgdmFs
-dWUgZ290IGJ5IGNvbW1vbiBjbGsgQVBJIGlzDQo+ID4gLSAgICAgICAgICAgICAgKiBwZXJpcGhl
-cmFsIGNsb2NrIHdoaWxlIHRoZSBlU0RIQyBiYXNlIGNsb2NrIGlzIDEvMg0KPiA+IC0gICAgICAg
-ICAgICAgICogcGVyaXBoZXJhbCBjbG9jay4NCj4gPiAtICAgICAgICAgICAgICAqLw0KPiA+IC0g
-ICAgICAgICAgICAgaWYgKG9mX2RldmljZV9pc19jb21wYXRpYmxlKG5wLCAiZnNsLGxzMTA0NmEt
-ZXNkaGMiKSkNCj4gPiAtICAgICAgICAgICAgICAgICAgICAgZXNkaGMtPnBlcmlwaGVyYWxfY2xv
-Y2sgPSBjbGtfZ2V0X3JhdGUoY2xrKSAvIDI7DQo+ID4gLSAgICAgICAgICAgICBlbHNlDQo+ID4g
-LSAgICAgICAgICAgICAgICAgICAgIGVzZGhjLT5wZXJpcGhlcmFsX2Nsb2NrID0gY2xrX2dldF9y
-YXRlKGNsayk7DQo+ID4NCj4gPiAtICAgICAgICAgICAgIGNsa19wdXQoY2xrKTsNCj4gPiArICAg
-ICBucCA9IHBkZXYtPmRldi5vZl9ub2RlOw0KPiA+ICsgICAgIC8vIGluIGNhc2Ugb2YgZGV2aWNl
-IHRyZWUsIGdldCBjbG9jayBmcmFtZSB3b3JrDQo+IA0KPiBJIHByZWZlciB0byByZW1haW4gY29u
-c2lzdGVudCB3aXRoIHRoZSBsZWdhY3kgY29tbWVudCBzdHlsZSBpLmUuDQoNCk9rIA0KDQo+IA0K
-PiAgICAgICAgIC8qIEluIGNhc2Ugb2YgZGV2aWNlIHRyZWUsIGdldCBjbG9jayBmcmFtZSB3b3Jr
-ICovDQo+IA0KPiA+ICsgICAgIGlmIChucCkgew0KPiA+ICsgICAgICAgICAgICAgY2xrID0gb2Zf
-Y2xrX2dldChucCwgMCk7DQo+ID4gKyAgICAgICAgICAgICBpZiAoIUlTX0VSUihjbGspKSB7DQo+
-ID4gKyAgICAgICAgICAgICAgICAgICAgIC8qDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAq
-IGVzZGhjLT5wZXJpcGhlcmFsX2Nsb2NrIHdvdWxkIGJlIGFzc2lnbmVkIGEgdmFsdWUNCj4gPiAr
-ICAgICAgICAgICAgICAgICAgICAgICogd2hpY2ggaXMgZVNESEMgYmFzZSBjbG9jayB3aGVuIHVz
-ZSBwZXJpcGVyYWwgY2xvY2suDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAqIEZvciBsczEw
-NDZhLCB0aGUgY2xvY2sgdmFsdWUgZ290IGJ5IGNvbW1vbiBjbGsgQVBJIGlzDQo+ID4gKyAgICAg
-ICAgICAgICAgICAgICAgICAqIHBlcmlwaGVyYWwgY2xvY2sgd2hpbGUgdGhlIGVTREhDIGJhc2Ug
-Y2xvY2sgaXMgMS8yDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAqIHBlcmlwaGVyYWwgY2xv
-Y2suDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAqLw0KPiA+ICsgICAgICAgICAgICAgICAg
-ICAgICBpZiAob2ZfZGV2aWNlX2lzX2NvbXBhdGlibGUobnAsICJmc2wsbHMxMDQ2YS1lc2RoYyIp
-KQ0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVzZGhjLT5wZXJpcGhlcmFsX2Ns
-b2NrID0gY2xrX2dldF9yYXRlKGNsaykgLyAyOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICBl
-bHNlDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZXNkaGMtPnBlcmlwaGVyYWxf
-Y2xvY2sgPSBjbGtfZ2V0X3JhdGUoY2xrKTsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgY2xr
-X3B1dChjbGspOw0KPiA+ICsgICAgICAgICAgICAgfQ0KPiA+ICsgICAgIH0gZWxzZSB7DQo+ID4g
-KyAgICAgICAgICAgICBkZXZpY2VfcHJvcGVydHlfcmVhZF91MzIoJnBkZXYtPmRldiwgImNsb2Nr
-LWZyZXF1ZW5jeSIsDQo+ID4gKw0KPiA+ICsgJmVzZGhjLT5wZXJpcGhlcmFsX2Nsb2NrKTsNCj4g
-PiAgICAgICB9DQo+IA0KPiBOb3Qgc3VyZSB0aGUgImlmIChucCkge30iIHJlYWxseSBzZXJ2ZXMg
-YSBwdXJwb3NlIHNpbmNlIG9mX2Nsa19nZXQoKCkgd2lsbCByZXR1cm4gYW4NCj4gZXJyb3IgaW4g
-dGhhdCBjYXNlIGFueXdheS4NCg0KTG9va3MgdGhpcyBpcyBzb21ldGhpbmcsIEkgbmVlZCB0byBy
-ZXdvcmssIGluIGludGVybmFsIHJldmlldyBJIGdvdCB0aGUgZmVlZGJhY2sgDQpUaGVyZSBhcmUg
-dHdvIGNsb2NrcyBvbmUgZXNkaGMtPnBlcmlwaGVyYWxfY2xvY2sgYW5kIGFub3RoZXIgaXMgcGx0
-Zm1faG9zdC0+Y2xvY2suIA0KQXMgQUNQSSBkb2VzIG5vdCBoYXZlIGNsb2NrIGZyYW1lIHdvcmsg
-bGlrZSBvZiBEVC4gDQpUaGVyZWZvcmUgSSBoYXZlIGhlcmUgMiBvcHRpb24gDQoxKSBleHBvc2Ug
-YSBzb3J0IG9mIG5ldyBkcml2ZXIgd2l0aCBDTEsgaW4gYWNwaSB0YWJsZXMgYW5kIGhhdmUgcmVm
-ZXJlbmNlIGhlcmUgbGlrZSBeU0IwLkNMSyANCjIpIHVzZSBmaXhlZCBjbG9jayANClBsZWFzZSBz
-dWdnZXN0IGlmIHlvdSBoYXZlIHNvbWUgcHJlZmVyZW5jZSBpbiBlaXRoZXIgb2YgDQogDQogDQo+
-ID4NCj4gPiAgICAgICBpZiAoZXNkaGMtPnBlcmlwaGVyYWxfY2xvY2spIHsNCj4gPiBAQCAtMTA2
-Miw3ICsxMDc2LDggQEAgc3RhdGljIHZvaWQgZXNkaGNfaW5pdChzdHJ1Y3QgcGxhdGZvcm1fZGV2
-aWNlICpwZGV2LA0KPiBzdHJ1Y3Qgc2RoY2lfaG9zdCAqaG9zdCkNCj4gPiAgICAgICAgICAgICAg
-IHZhbCB8PSBFU0RIQ19QRVJJUEhFUkFMX0NMS19TRUw7DQo+ID4gICAgICAgICAgICAgICBzZGhj
-aV93cml0ZWwoaG9zdCwgdmFsLCBFU0RIQ19ETUFfU1lTQ1RMKTsNCj4gPiAgICAgICAgICAgICAg
-IGVzZGhjX2Nsb2NrX2VuYWJsZShob3N0LCB0cnVlKTsNCj4gPiAtICAgICB9DQo+ID4gKyAgICAg
-fSBlbHNlDQo+ID4gKyAgICAgICAgICAgICBXQVJOX09OKDEpOw0KPiANCj4gUGxlYXNlIGJhbGFu
-Y2UgYnJhY2VzOg0KDQpUaGFua3MNCkluIHYyICwgSSBwbGFuIHRvIHJlbW92ZSBXQVJOX09OKDEp
-IGFuZCBtYXkgcHJvYmUgdG8gZmFpbCBpZiBjbG9ja3MgYXJlIG5vdCBtZW50aW9uZWQgDQoNCj4g
-ICAgICAgICB9IGVsc2Ugew0KPiAgICAgICAgICAgICAgICAgV0FSTl9PTigxKTsNCj4gICAgICAg
-ICB9DQo+IA0KPiA+ICB9DQo+ID4NCj4gPiAgc3RhdGljIGludCBlc2RoY19oczQwMF9wcmVwYXJl
-X2RkcihzdHJ1Y3QgbW1jX2hvc3QgKm1tYykgQEAgLTEwODEsOQ0KPiA+ICsxMDk2LDEwIEBAIHN0
-YXRpYyBpbnQgc2RoY2lfZXNkaGNfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikN
-Cj4gPg0KPiA+ICAgICAgIG5wID0gcGRldi0+ZGV2Lm9mX25vZGU7DQo+ID4NCj4gPiAtICAgICBp
-ZiAob2ZfcHJvcGVydHlfcmVhZF9ib29sKG5wLCAibGl0dGxlLWVuZGlhbiIpKQ0KPiA+ICsgICAg
-IGlmIChkZXZpY2VfcHJvcGVydHlfcmVhZF9ib29sKCZwZGV2LT5kZXYsICJsaXR0bGUtZW5kaWFu
-IikpIHsNCj4gPiAgICAgICAgICAgICAgIGhvc3QgPSBzZGhjaV9wbHRmbV9pbml0KHBkZXYsICZz
-ZGhjaV9lc2RoY19sZV9wZGF0YSwNCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHNpemVvZihzdHJ1Y3Qgc2RoY2lfZXNkaGMpKTsNCj4gPiArICAgICB9DQo+ID4gICAg
-ICAgZWxzZQ0KPiANCj4gQWxzbyBoZXJlOg0KDQpOb3RlZCANCiANCj4gICAgICAgICB9IGVsc2Ug
-ew0KPiANCj4gPiAgICAgICAgICAgICAgIGhvc3QgPSBzZGhjaV9wbHRmbV9pbml0KHBkZXYsICZz
-ZGhjaV9lc2RoY19iZV9wZGF0YSwNCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHNpemVvZihzdHJ1Y3Qgc2RoY2lfZXNkaGMpKTsNCj4gDQo+ICAgICAgICAgfQ0KPiAN
-Cj4gPiBAQCAtMTE0Myw4ICsxMTU5LDggQEAgc3RhdGljIGludCBzZGhjaV9lc2RoY19wcm9iZShz
-dHJ1Y3QgcGxhdGZvcm1fZGV2aWNlDQo+ICpwZGV2KQ0KPiA+ICAgICAgIHJldCA9IG1tY19vZl9w
-YXJzZShob3N0LT5tbWMpOw0KPiA+ICAgICAgIGlmIChyZXQpDQo+ID4gICAgICAgICAgICAgICBn
-b3RvIGVycjsNCj4gPiAtDQo+ID4gLSAgICAgbW1jX29mX3BhcnNlX3ZvbHRhZ2UobnAsICZob3N0
-LT5vY3JfbWFzayk7DQo+ID4gKyAgICAgaWYgKG5wKQ0KPiANCj4gQWdhaW4gbm90IHN1cmUgdGhl
-ICJpZiAobnApIiBpcyByZWFsbHkgbmVlZGVkLg0KDQpPbiBvbmUgcGxhdGZvcm0gdGhpcyBpcyBu
-b3QgbmVlZGVkLCBidXQgSSBnZW5lcmFsIEkgbmVlZCB0byBhZGQgdGhpcyANClYyIHdpbGwgY292
-ZXIgdGhpcw0KIA0KPiA+ICsgICAgICAgICAgICAgbW1jX29mX3BhcnNlX3ZvbHRhZ2UobnAsICZo
-b3N0LT5vY3JfbWFzayk7DQo+ID4NCj4gPiAgICAgICByZXQgPSBzZGhjaV9hZGRfaG9zdChob3N0
-KTsNCj4gPiAgICAgICBpZiAocmV0KQ0KPiA+IEBAIC0xMTYwLDYgKzExNzYsNyBAQCBzdGF0aWMg
-aW50IHNkaGNpX2VzZGhjX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UNCj4gKnBkZXYpDQo+
-ID4gICAgICAgLmRyaXZlciA9IHsNCj4gPiAgICAgICAgICAgICAgIC5uYW1lID0gInNkaGNpLWVz
-ZGhjIiwNCj4gPiAgICAgICAgICAgICAgIC5vZl9tYXRjaF90YWJsZSA9IHNkaGNpX2VzZGhjX29m
-X21hdGNoLA0KPiA+ICsgICAgICAgICAgICAgLmFjcGlfbWF0Y2hfdGFibGUgICAgICAgPSBzZGhj
-aV9lc2RoY19pZHMsDQo+ID4gICAgICAgICAgICAgICAucG0gPSAmZXNkaGNfb2ZfZGV2X3BtX29w
-cywNCj4gPiAgICAgICB9LA0KPiA+ICAgICAgIC5wcm9iZSA9IHNkaGNpX2VzZGhjX3Byb2JlLA0K
-PiA+DQoNCg==
+On 10/06/19 9:53 PM, Raul E Rangel wrote:
+> The O2 controller supports 8-bit EMMC access. mmc_select_bus_width()
+> will be used to determine if the MMC supports 8-bit or 4-bit access.
+
+The problem is that the bit indicates a host controller capability, not how
+many data lines there actually are on the board.  Will this break something
+that does not have 8 lines?
+
+> 
+> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+> ---
+> I tested this on an AMD chromebook.
+> 
+> $ cat /sys/kernel/debug/mmc1/ios
+> clock:          200000000 Hz
+> actual clock:   200000000 Hz
+> vdd:            21 (3.3 ~ 3.4 V)
+> bus mode:       2 (push-pull)
+> chip select:    0 (don't care)
+> power mode:     2 (on)
+> bus width:      3 (8 bits)
+> timing spec:    9 (mmc HS200)
+> signal voltage: 1 (1.80 V)
+> driver type:    0 (driver type B)
+> 
+> Before this patch only 4 bit was negotiated.
+> 
+>  drivers/mmc/host/sdhci-pci-o2micro.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
+> index dd21315922c87..07bb91cbdf1f8 100644
+> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
+> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+> @@ -395,11 +395,16 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
+>  {
+>  	struct sdhci_pci_chip *chip;
+>  	struct sdhci_host *host;
+> -	u32 reg;
+> +	u32 reg, caps;
+>  	int ret;
+>  
+>  	chip = slot->chip;
+>  	host = slot->host;
+> +
+> +	caps = sdhci_readl(host, SDHCI_CAPABILITIES);
+> +	if (caps & SDHCI_CAN_DO_8BIT)
+> +		host->mmc->caps |= MMC_CAP_8_BIT_DATA;
+> +
+>  	switch (chip->pdev->device) {
+>  	case PCI_DEVICE_ID_O2_SDS0:
+>  	case PCI_DEVICE_ID_O2_SEABIRD0:
+> 
+
