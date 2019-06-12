@@ -2,38 +2,37 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15D3F42717
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 15:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D568D4273E
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 15:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439361AbfFLNLG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 12 Jun 2019 09:11:06 -0400
-Received: from mga14.intel.com ([192.55.52.115]:60310 "EHLO mga14.intel.com"
+        id S1727574AbfFLNNW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 12 Jun 2019 09:13:22 -0400
+Received: from mga18.intel.com ([134.134.136.126]:64167 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2439360AbfFLNLG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 12 Jun 2019 09:11:06 -0400
+        id S1727102AbfFLNNV (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 12 Jun 2019 09:13:21 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 06:11:05 -0700
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 06:13:21 -0700
 X-ExtLoop1: 1
 Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by orsmga001.jf.intel.com with ESMTP; 12 Jun 2019 06:11:01 -0700
-Subject: Re: [PATCH 2/3] mmc: sdhci: sdhci-pci-o2micro: Check if controller
- supports 8-bit width
+  by orsmga001.jf.intel.com with ESMTP; 12 Jun 2019 06:13:18 -0700
+Subject: Re: [PATCH 3/3] mmc: sdhci: Fix indenting on SDHCI_CTRL_8BITBUS
 To:     Raul E Rangel <rrangel@chromium.org>, linux-mmc@vger.kernel.org
 Cc:     ernest.zhang@bayhubtech.com, djkurtz@chromium.org,
         linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 References: <20190610185354.35310-1-rrangel@chromium.org>
- <20190610185354.35310-2-rrangel@chromium.org>
+ <20190610185354.35310-3-rrangel@chromium.org>
 From:   Adrian Hunter <adrian.hunter@intel.com>
 Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
  Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <d4939761-317c-ee78-b1e5-c2cdd86a12b4@intel.com>
-Date:   Wed, 12 Jun 2019 16:09:47 +0300
+Message-ID: <e466edec-eaa6-c958-f3ae-7e4b5016335b@intel.com>
+Date:   Wed, 12 Jun 2019 16:12:04 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190610185354.35310-2-rrangel@chromium.org>
+In-Reply-To: <20190610185354.35310-3-rrangel@chromium.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -43,56 +42,29 @@ List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
 On 10/06/19 9:53 PM, Raul E Rangel wrote:
-> The O2 controller supports 8-bit EMMC access. mmc_select_bus_width()
-> will be used to determine if the MMC supports 8-bit or 4-bit access.
-
-The problem is that the bit indicates a host controller capability, not how
-many data lines there actually are on the board.  Will this break something
-that does not have 8 lines?
-
+> The value is referring to SDHCI_HOST_CONTROL, not SDHCI_CTRL_DMA_MASK.
 > 
 > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
 > ---
-> I tested this on an AMD chromebook.
 > 
-> $ cat /sys/kernel/debug/mmc1/ios
-> clock:          200000000 Hz
-> actual clock:   200000000 Hz
-> vdd:            21 (3.3 ~ 3.4 V)
-> bus mode:       2 (push-pull)
-> chip select:    0 (don't care)
-> power mode:     2 (on)
-> bus width:      3 (8 bits)
-> timing spec:    9 (mmc HS200)
-> signal voltage: 1 (1.80 V)
-> driver type:    0 (driver type B)
+>  drivers/mmc/host/sdhci.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Before this patch only 4 bit was negotiated.
-> 
->  drivers/mmc/host/sdhci-pci-o2micro.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
-> index dd21315922c87..07bb91cbdf1f8 100644
-> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
-> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-> @@ -395,11 +395,16 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
->  {
->  	struct sdhci_pci_chip *chip;
->  	struct sdhci_host *host;
-> -	u32 reg;
-> +	u32 reg, caps;
->  	int ret;
+> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+> index 199712e7adbb3..89fd96596a1f7 100644
+> --- a/drivers/mmc/host/sdhci.h
+> +++ b/drivers/mmc/host/sdhci.h
+> @@ -89,7 +89,7 @@
+>  #define   SDHCI_CTRL_ADMA32	0x10
+>  #define   SDHCI_CTRL_ADMA64	0x18
+>  #define   SDHCI_CTRL_ADMA3	0x18
+> -#define   SDHCI_CTRL_8BITBUS	0x20
+> +#define  SDHCI_CTRL_8BITBUS	0x20
+>  #define  SDHCI_CTRL_CDTEST_INS	0x40
+>  #define  SDHCI_CTRL_CDTEST_EN	0x80
 >  
->  	chip = slot->chip;
->  	host = slot->host;
-> +
-> +	caps = sdhci_readl(host, SDHCI_CAPABILITIES);
-> +	if (caps & SDHCI_CAN_DO_8BIT)
-> +		host->mmc->caps |= MMC_CAP_8_BIT_DATA;
-> +
->  	switch (chip->pdev->device) {
->  	case PCI_DEVICE_ID_O2_SDS0:
->  	case PCI_DEVICE_ID_O2_SEABIRD0:
 > 
 
