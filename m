@@ -2,35 +2,40 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4FA741EFF
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 10:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 770B341F00
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 10:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731121AbfFLI0I (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 12 Jun 2019 04:26:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41576 "EHLO mail.kernel.org"
+        id S1731122AbfFLI0P (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 12 Jun 2019 04:26:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41650 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730187AbfFLI0I (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 12 Jun 2019 04:26:08 -0400
+        id S1730187AbfFLI0O (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 12 Jun 2019 04:26:14 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CF7802063F;
-        Wed, 12 Jun 2019 08:26:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id ACB652063F;
+        Wed, 12 Jun 2019 08:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560327967;
-        bh=uPVtC1LZDDJLu0sBMe/2IAnDDrVsrULOv8bXR4Vf6Ic=;
-        h=From:To:Cc:Subject:Date:From;
-        b=hnHayDh2qWSdmOhUZqcWfCeRhoDLQWN7swylkn8EdPf3PhB3KG6Iy7iJiTL6s/6VQ
-         fSye3h8P66eP/bRQC5hOX+/hcTRe6T2YkBg2qyAIIcua4ohPou1aq83dMdL1CucJ9o
-         jECrnmLuxqr6673u3okWZXcnVMEL/7AwbeD5ZxLI=
+        s=default; t=1560327974;
+        bh=pDnZFBrM5WkaAmxPS8ViAMooGYdIvAxuTw/J7okGn6Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=0AyXQpQWKH3mqProSJix12FLYaraW4hDGdBWhvcuTH+GqJEtHW1RB6MRHlUo4w0B3
+         Q1mbenZ01rv7hT1SxM2pjoABaV6Zy8pVMmyQ4QCU3T1514nDPWs7zxpRrQtOBgpLjs
+         3mlSUw0Mh0EY9bISxMHWyZTuOSGA539xHPn/XaLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         linux-mmc@vger.kernel.org
-Subject: [PATCH 1/4] mmc: core: no need to check return value of debugfs_create functions
-Date:   Wed, 12 Jun 2019 10:25:28 +0200
-Message-Id: <20190612082531.2652-1-gregkh@linuxfoundation.org>
+Subject: [PATCH 2/4] mmc: host: atmel-mci: no need to check return value of debugfs_create functions
+Date:   Wed, 12 Jun 2019 10:25:29 +0200
+Message-Id: <20190612082531.2652-2-gregkh@linuxfoundation.org>
 X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190612082531.2652-1-gregkh@linuxfoundation.org>
+References: <20190612082531.2652-1-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
@@ -42,119 +47,70 @@ When calling debugfs functions, there is no need to ever check the
 return value.  The function can work or not, but the code logic should
 never do something different based on this.
 
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Cc: <linux-mmc@vger.kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/debugfs.c  | 56 ++++++-------------------------------
- drivers/mmc/core/mmc_test.c | 10 +------
- 2 files changed, 9 insertions(+), 57 deletions(-)
+ drivers/mmc/host/atmel-mci.c | 38 +++++++-----------------------------
+ 1 file changed, 7 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/mmc/core/debugfs.c b/drivers/mmc/core/debugfs.c
-index d2275c5a2311..cc3be259bc42 100644
---- a/drivers/mmc/core/debugfs.c
-+++ b/drivers/mmc/core/debugfs.c
-@@ -230,45 +230,21 @@ void mmc_add_host_debugfs(struct mmc_host *host)
- 	struct dentry *root;
+diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
+index 735aa5871358..e1f10c3fa144 100644
+--- a/drivers/mmc/host/atmel-mci.c
++++ b/drivers/mmc/host/atmel-mci.c
+@@ -579,42 +579,18 @@ static void atmci_init_debugfs(struct atmel_mci_slot *slot)
+ 	struct mmc_host		*mmc = slot->mmc;
+ 	struct atmel_mci	*host = slot->host;
+ 	struct dentry		*root;
+-	struct dentry		*node;
  
- 	root = debugfs_create_dir(mmc_hostname(host), NULL);
--	if (IS_ERR(root))
--		/* Don't complain -- debugfs just isn't enabled */
--		return;
--	if (!root)
--		/* Complain -- debugfs is enabled, but it failed to
--		 * create the directory. */
--		goto err_root;
--
- 	host->debugfs_root = root;
- 
--	if (!debugfs_create_file("ios", S_IRUSR, root, host, &mmc_ios_fops))
--		goto err_node;
--
--	if (!debugfs_create_x32("caps", S_IRUSR, root, &host->caps))
--		goto err_node;
--
--	if (!debugfs_create_x32("caps2", S_IRUSR, root, &host->caps2))
--		goto err_node;
--
--	if (!debugfs_create_file("clock", S_IRUSR | S_IWUSR, root, host,
--			&mmc_clock_fops))
--		goto err_node;
-+	debugfs_create_file("ios", S_IRUSR, root, host, &mmc_ios_fops);
-+	debugfs_create_x32("caps", S_IRUSR, root, &host->caps);
-+	debugfs_create_x32("caps2", S_IRUSR, root, &host->caps2);
-+	debugfs_create_file("clock", S_IRUSR | S_IWUSR, root, host,
-+			    &mmc_clock_fops);
- 
- #ifdef CONFIG_FAIL_MMC_REQUEST
- 	if (fail_request)
- 		setup_fault_attr(&fail_default_attr, fail_request);
- 	host->fail_mmc_request = fail_default_attr;
--	if (IS_ERR(fault_create_debugfs_attr("fail_mmc_request",
--					     root,
--					     &host->fail_mmc_request)))
--		goto err_node;
-+	fault_create_debugfs_attr("fail_mmc_request", root,
-+				  &host->fail_mmc_request);
- #endif
--	return;
--
--err_node:
--	debugfs_remove_recursive(root);
--	host->debugfs_root = NULL;
--err_root:
--	dev_err(&host->class_dev, "failed to initialize debugfs\n");
- }
- 
- void mmc_remove_host_debugfs(struct mmc_host *host)
-@@ -285,25 +261,9 @@ void mmc_add_card_debugfs(struct mmc_card *card)
+ 	root = mmc->debugfs_root;
+ 	if (!root)
  		return;
  
- 	root = debugfs_create_dir(mmc_card_id(card), host->debugfs_root);
--	if (IS_ERR(root))
--		/* Don't complain -- debugfs just isn't enabled */
+-	node = debugfs_create_file("regs", S_IRUSR, root, host,
+-				   &atmci_regs_fops);
+-	if (IS_ERR(node))
 -		return;
--	if (!root)
--		/* Complain -- debugfs is enabled, but it failed to
--		 * create the directory. */
+-	if (!node)
 -		goto err;
 -
- 	card->debugfs_root = root;
- 
--	if (!debugfs_create_x32("state", S_IRUSR, root, &card->state))
+-	node = debugfs_create_file("req", S_IRUSR, root, slot,
+-				   &atmci_req_fops);
+-	if (!node)
+-		goto err;
+-
+-	node = debugfs_create_u32("state", S_IRUSR, root, (u32 *)&host->state);
+-	if (!node)
+-		goto err;
+-
+-	node = debugfs_create_x32("pending_events", S_IRUSR, root,
+-				     (u32 *)&host->pending_events);
+-	if (!node)
+-		goto err;
+-
+-	node = debugfs_create_x32("completed_events", S_IRUSR, root,
+-				     (u32 *)&host->completed_events);
+-	if (!node)
 -		goto err;
 -
 -	return;
 -
 -err:
--	debugfs_remove_recursive(root);
--	card->debugfs_root = NULL;
--	dev_err(&card->dev, "failed to initialize debugfs\n");
-+	debugfs_create_x32("state", S_IRUSR, root, &card->state);
+-	dev_err(&mmc->class_dev, "failed to initialize debugfs for slot\n");
++	debugfs_create_file("regs", S_IRUSR, root, host, &atmci_regs_fops);
++	debugfs_create_file("req", S_IRUSR, root, slot, &atmci_req_fops);
++	debugfs_create_u32("state", S_IRUSR, root, (u32 *)&host->state);
++	debugfs_create_x32("pending_events", S_IRUSR, root,
++			   (u32 *)&host->pending_events);
++	debugfs_create_x32("completed_events", S_IRUSR, root,
++			   (u32 *)&host->completed_events);
  }
  
- void mmc_remove_card_debugfs(struct mmc_card *card)
-diff --git a/drivers/mmc/core/mmc_test.c b/drivers/mmc/core/mmc_test.c
-index b27df2d2b5ae..492dd4596314 100644
---- a/drivers/mmc/core/mmc_test.c
-+++ b/drivers/mmc/core/mmc_test.c
-@@ -3167,15 +3167,7 @@ static int __mmc_test_register_dbgfs_file(struct mmc_card *card,
- 	struct mmc_test_dbgfs_file *df;
- 
- 	if (card->debugfs_root)
--		file = debugfs_create_file(name, mode, card->debugfs_root,
--			card, fops);
--
--	if (IS_ERR_OR_NULL(file)) {
--		dev_err(&card->dev,
--			"Can't create %s. Perhaps debugfs is disabled.\n",
--			name);
--		return -ENODEV;
--	}
-+		debugfs_create_file(name, mode, card->debugfs_root, card, fops);
- 
- 	df = kmalloc(sizeof(*df), GFP_KERNEL);
- 	if (!df) {
+ #if defined(CONFIG_OF)
 -- 
 2.22.0
 
