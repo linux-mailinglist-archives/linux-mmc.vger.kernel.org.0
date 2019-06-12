@@ -2,158 +2,118 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7439C42887
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 16:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CB142A26
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Jun 2019 17:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731241AbfFLONT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 12 Jun 2019 10:13:19 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:58876 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731369AbfFLONR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 12 Jun 2019 10:13:17 -0400
-Received-SPF: Pass (esa3.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa3.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa3.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-X-IronPort-AV: E=Sophos;i="5.63,366,1557212400"; 
-   d="scan'208";a="37224401"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 12 Jun 2019 07:13:15 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 12 Jun 2019 07:13:08 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Wed, 12 Jun 2019 07:13:09 -0700
-Date:   Wed, 12 Jun 2019 16:12:09 +0200
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        <linux-mmc@vger.kernel.org>
-Subject: Re: [PATCH 2/4] mmc: host: atmel-mci: no need to check return value
- of debugfs_create functions
-Message-ID: <20190612141209.hd6wnmzkiumxqfmb@M43218.corp.atmel.com>
-Mail-Followup-To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        linux-mmc@vger.kernel.org
-References: <20190612082531.2652-1-gregkh@linuxfoundation.org>
- <20190612082531.2652-2-gregkh@linuxfoundation.org>
- <20190612083008.GN25472@piout.net>
+        id S1728311AbfFLPBV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 12 Jun 2019 11:01:21 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:36182 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727121AbfFLPBV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 12 Jun 2019 11:01:21 -0400
+Received: by mail-io1-f66.google.com with SMTP id h6so13224721ioh.3
+        for <linux-mmc@vger.kernel.org>; Wed, 12 Jun 2019 08:01:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=shuAyQ1I56gj94KbjmRqaQ587FUaZO/1wGxqCAR2L5g=;
+        b=PlV+nMutToRv04OH2F+XLtbhnslyOfEcI8J0bRHS8WmQi/VtgDhkhBr9A2CgPB6mMB
+         NNZCT32sR0S3b5+qbq3xi7nRghZbOUskv6vIYDE5pxWaIKxziX13ESMGId+QSm2iQ/Qm
+         JV3tciBYTvvujnJqBE431AfQJwUCf22B3lKqvz0Uor4e9Mpe30Joq8Tf1AbRyk6qOQFa
+         V5iH9PooJ92pUju+6fiIDSDJ9jJIiSSQG89NeK/zqjxav0CXOwniNTPZIBeHofpsrmll
+         H134GDEU7+4Vk5J8BxkIPbr0CUPD0DQ1n6ZiLlK3ehg6VaV/YLQ3MsGwbzIbCH5trDgx
+         ztNA==
+X-Gm-Message-State: APjAAAWVj2sAn56Ax1bBiKuMgtpoyD4e9DTg51vda41M++7GfT65KEMq
+        IdtjChONfUnP/j75fvIDUdkP4A==
+X-Google-Smtp-Source: APXvYqxvIw+gJmjqKDyUCtIwpfzNKI1enkSa94j5cWvjhBtpZNh9a80WqyvkTu1WUeUpW3gtHtseKQ==
+X-Received: by 2002:a5e:820a:: with SMTP id l10mr33701840iom.283.1560351680686;
+        Wed, 12 Jun 2019 08:01:20 -0700 (PDT)
+Received: from google.com ([2620:15c:183:0:20b8:dee7:5447:d05])
+        by smtp.gmail.com with ESMTPSA id n7sm5939759ioo.79.2019.06.12.08.01.19
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 12 Jun 2019 08:01:19 -0700 (PDT)
+Date:   Wed, 12 Jun 2019 09:01:15 -0600
+From:   Raul Rangel <rrangel@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "ernest.zhang" <ernest.zhang@bayhubtech.com>,
+        Daniel Kurtz <djkurtz@chromium.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Subject: Re: [PATCH 1/3] mmc: sdhci: sdhci-pci-o2micro: Correctly set bus
+ width when tuning
+Message-ID: <20190612150115.GA27989@google.com>
+References: <20190610185354.35310-1-rrangel@chromium.org>
+ <CAPDyKFppNgL_kZPV-QS6ZiJErde5ea8Nj-sQTy_vXhW9jfXhpg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190612083008.GN25472@piout.net>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <CAPDyKFppNgL_kZPV-QS6ZiJErde5ea8Nj-sQTy_vXhW9jfXhpg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 10:30:08AM +0200, Alexandre Belloni wrote:
-> External E-Mail
-> 
-> 
-> On 12/06/2019 10:25:29+0200, Greg Kroah-Hartman wrote:
-> > When calling debugfs functions, there is no need to ever check the
-> > return value.  The function can work or not, but the code logic should
-> > never do something different based on this.
-> > 
-> > Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
-> > Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> > Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-> > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> > Cc: <linux-mmc@vger.kernel.org>
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com> 
-
-Thanks
-
-> 
+On Wed, Jun 12, 2019 at 03:36:25PM +0200, Ulf Hansson wrote:
+> On Mon, 10 Jun 2019 at 20:54, Raul E Rangel <rrangel@chromium.org> wrote:
+> >
+> > sdhci_send_tuning uses mmc->ios.bus_width to determine the block size.
+> > Without this patch the block size would be set incorrectly when the
+> > bus_width == 8 which results in tuning failing.
+> >
+> > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
 > > ---
-> >  drivers/mmc/host/atmel-mci.c | 38 +++++++-----------------------------
-> >  1 file changed, 7 insertions(+), 31 deletions(-)
-> > 
-> > diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
-> > index 735aa5871358..e1f10c3fa144 100644
-> > --- a/drivers/mmc/host/atmel-mci.c
-> > +++ b/drivers/mmc/host/atmel-mci.c
-> > @@ -579,42 +579,18 @@ static void atmci_init_debugfs(struct atmel_mci_slot *slot)
-> >  	struct mmc_host		*mmc = slot->mmc;
-> >  	struct atmel_mci	*host = slot->host;
-> >  	struct dentry		*root;
-> > -	struct dentry		*node;
-> >  
-> >  	root = mmc->debugfs_root;
-> >  	if (!root)
-> >  		return;
-> >  
-> > -	node = debugfs_create_file("regs", S_IRUSR, root, host,
-> > -				   &atmci_regs_fops);
-> > -	if (IS_ERR(node))
-> > -		return;
-> > -	if (!node)
-> > -		goto err;
-> > -
-> > -	node = debugfs_create_file("req", S_IRUSR, root, slot,
-> > -				   &atmci_req_fops);
-> > -	if (!node)
-> > -		goto err;
-> > -
-> > -	node = debugfs_create_u32("state", S_IRUSR, root, (u32 *)&host->state);
-> > -	if (!node)
-> > -		goto err;
-> > -
-> > -	node = debugfs_create_x32("pending_events", S_IRUSR, root,
-> > -				     (u32 *)&host->pending_events);
-> > -	if (!node)
-> > -		goto err;
-> > -
-> > -	node = debugfs_create_x32("completed_events", S_IRUSR, root,
-> > -				     (u32 *)&host->completed_events);
-> > -	if (!node)
-> > -		goto err;
-> > -
-> > -	return;
-> > -
-> > -err:
-> > -	dev_err(&mmc->class_dev, "failed to initialize debugfs for slot\n");
-> > +	debugfs_create_file("regs", S_IRUSR, root, host, &atmci_regs_fops);
-> > +	debugfs_create_file("req", S_IRUSR, root, slot, &atmci_req_fops);
-> > +	debugfs_create_u32("state", S_IRUSR, root, (u32 *)&host->state);
-> > +	debugfs_create_x32("pending_events", S_IRUSR, root,
-> > +			   (u32 *)&host->pending_events);
-> > +	debugfs_create_x32("completed_events", S_IRUSR, root,
-> > +			   (u32 *)&host->completed_events);
-> >  }
-> >  
-> >  #if defined(CONFIG_OF)
-> > -- 
-> > 2.22.0
-> > 
+> >
+> >  drivers/mmc/host/sdhci-pci-o2micro.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
+> > index b29bf4e7dcb48..dd21315922c87 100644
+> > --- a/drivers/mmc/host/sdhci-pci-o2micro.c
+> > +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+> > @@ -115,6 +115,7 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
+> >          */
+> >         if (mmc->ios.bus_width == MMC_BUS_WIDTH_8) {
+> >                 current_bus_width = mmc->ios.bus_width;
+> > +               mmc->ios.bus_width = MMC_BUS_WIDTH_4;
 > 
-> -- 
-> Alexandre Belloni, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
+> This looks wrong.
 > 
+> mmc->ios.bus_width is not supposed to be updated by a host driver, but
+I guess I left this part out: The O2Micro controller only supports
+tuning at 4-bits. So the host driver needs to change the bus width while
+tuning and then set it back when done. Ideally I would have used
+`mmc_set_bus_width()`, but that is a core only function.
+
+If `sdhci_send_tuning()` didn't rely on mmc->ios.bus_width to determine
+the bus width, but instead read the HOST_CONTROL register then this
+patch wouldn't be needed.
+> rather the value should only be read.
+> 
+> >                 sdhci_set_bus_width(host, MMC_BUS_WIDTH_4);
+> >         }
+> >
+> > @@ -126,8 +127,10 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
+> >
+> >         sdhci_end_tuning(host);
+> >
+> > -       if (current_bus_width == MMC_BUS_WIDTH_8)
+> > +       if (current_bus_width == MMC_BUS_WIDTH_8) {
+> > +               mmc->ios.bus_width = MMC_BUS_WIDTH_8;
+> 
+> Ditto.
+> 
+> >                 sdhci_set_bus_width(host, current_bus_width);
+> > +       }
+> >
+> >         host->flags &= ~SDHCI_HS400_TUNING;
+> >         return 0;
+> > --
+> > 2.22.0.rc2.383.gf4fbbf30c2-goog
+> >
+> 
+> Kind regards
+> Uffe
+Thanks for the review!
