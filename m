@@ -2,112 +2,151 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE40C44D91
-	for <lists+linux-mmc@lfdr.de>; Thu, 13 Jun 2019 22:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 794E145024
+	for <lists+linux-mmc@lfdr.de>; Fri, 14 Jun 2019 01:42:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727205AbfFMUgF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 13 Jun 2019 16:36:05 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:33682 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726703AbfFMUgE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 13 Jun 2019 16:36:04 -0400
-Received: by mail-lf1-f67.google.com with SMTP id y17so152729lfe.0;
-        Thu, 13 Jun 2019 13:36:03 -0700 (PDT)
+        id S1727060AbfFMXmJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 13 Jun 2019 19:42:09 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:35614 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726992AbfFMXmJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 13 Jun 2019 19:42:09 -0400
+Received: by mail-pl1-f194.google.com with SMTP id p1so186811plo.2
+        for <linux-mmc@vger.kernel.org>; Thu, 13 Jun 2019 16:42:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qJQX+GLD4fwd+GCBrIWjKsA+IAvGAyQwTSeSX2BSMJY=;
+        b=LxynRClHhe6x/JL/spDHqC1iBz5ugcvqw4xyZsmxiWuMKvrTOMnUdqDKFM09vDQEXk
+         g8D28Mk39C+APeBjMzbC1os4SM6ZMn7qrCbrNb3T3fGmWaX7RMSCe+s43sy4YLrsZYAK
+         USjKgfZYVdMtiNjE5ywU7CUZvHRcPUBbocn+o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=z9pT9j7kn/J7EUGyq2uQP5wwtUmztL0xFNDiGg1L3+E=;
-        b=CNThz6qJyzZAseMrCUpQ8JH6LiOLSf1DC1lOoGkVmMO5CIWri3OHBuYo70YLIKgMfN
-         fLOdU+5kfKaoOkoBR0jbRd47LN0sndM0Mn00hpgAmd6XPQpbAmp7xA/lHsbQiblWmgYv
-         Ls2OcWX7KONQkOntahzvzOzQ6Pf8HxclDO14576PNY5ap1nrjX3bHXSfMiKdf70m66Lf
-         GacUElLyZF8yL3+VJ7B8C9dSlonsEEwIUJsRXfHpYWbWEzIRPlrOfp23dErYRsFmiTmE
-         r28GVXuPuVNMvwYVnUnKDPQg5iKBT9d9zPkoVLSLdCLZ9t6CpJKE+pwI635LR/xHQlQd
-         cPIA==
-X-Gm-Message-State: APjAAAXytMawGRjOIbZWN1mpHwWH+/Ze22nMjmH+d7stS103sKnuBUDM
-        nGkyHDYt4uUBbqtk3gksg51Wbg8N1e9MlCAN7wc=
-X-Google-Smtp-Source: APXvYqyOWgizpjNJBHEjXaulJf3xyZqsd/zF8eSxKDl95LQ2jEFxxsiGEU0nnfy+4XAHYrmPxUskeM/VT/LQIlrurTA=
-X-Received: by 2002:ac2:597c:: with SMTP id h28mr7062073lfp.90.1560458162259;
- Thu, 13 Jun 2019 13:36:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <1560421215-10750-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1560421215-10750-5-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-In-Reply-To: <1560421215-10750-5-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 13 Jun 2019 22:35:44 +0200
-Message-ID: <CAMuHMdXYqgPRX1WfUTRsKHhnSok5vfnr4AY36=vXoUvAxcNyWQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v6 4/5] mmc: tmio: Use dma_max_mapping_size() instead
- of a workaround
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc:     Joerg Roedel <joro@8bytes.org>, Jens Axboe <axboe@kernel.dk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qJQX+GLD4fwd+GCBrIWjKsA+IAvGAyQwTSeSX2BSMJY=;
+        b=OV7QXUOzfuOkfXgZ8R/phyGmNpv2oqzTiWr0wY3Ox/K9PWsi57rf23KeiYshjOylvv
+         csGg3f2sxIybaWMwUWdVeeDBLYyOlu4zUDWKDKA2Tkers5WsmDWzhlSULFOXYCGSoEW3
+         c8quj+4/kgrUHhQ5gRaXznaQgUujf1cOR3a9LhlSOmXrx6J6RAYcODDDnP0SFpD6GbhI
+         /gV7SbmZhaOlZZIeNDG+pj8q6m7efSykUUoLIhsPGz8h8nVh2kAvra2uz06GEHG5VS1r
+         CaCEqFv8SJn9WF1R6ueayJgFQzEbVYU7eblzjm5ac52QEH4YRkMohjfxSc7oaowwWk60
+         6E8A==
+X-Gm-Message-State: APjAAAU65sRSPbDcrPZVCsOSBv+fABMU7SJrp4Kp1nvOy/YVJJ2xhRkL
+        WzH0BMlic7/Iq8jEOaBJoyENHJ+h6+w=
+X-Google-Smtp-Source: APXvYqyHvmG/55d6riqeb8uT5XjZFjeg3M6IzV8m9M1TGxU2K10/XPwKK4EKmj4io0cDJZmrlM1FDg==
+X-Received: by 2002:a17:902:2a26:: with SMTP id i35mr51358780plb.315.1560469328377;
+        Thu, 13 Jun 2019 16:42:08 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
+        by smtp.gmail.com with ESMTPSA id p7sm781088pfp.131.2019.06.13.16.42.07
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 13 Jun 2019 16:42:07 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        linux-wireless@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
+        Douglas Anderson <dianders@chromium.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Allison Randal <allison@lohutok.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        linux-block@vger.kernel.org,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Franky Lin <franky.lin@broadcom.com>,
+        Ondrej Jirman <megous@megous.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Madhan Mohan R <MadhanMohan.R@cypress.com>,
+        Avri Altman <avri.altman@wdc.com>
+Subject: [PATCH v4 0/5] brcmfmac: sdio: Deal better w/ transmission errors related to idle
+Date:   Thu, 13 Jun 2019 16:41:48 -0700
+Message-Id: <20190613234153.59309-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.22.0.rc2.383.gf4fbbf30c2-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Shimoda-san,
+This series attempts to deal better with the expected transmission
+errors related to the idle states (handled by the Always-On-Subsystem
+or AOS) on the SDIO-based WiFi on rk3288-veyron-minnie,
+rk3288-veyron-speedy, and rk3288-veyron-mickey.
 
-On Thu, Jun 13, 2019 at 5:37 PM Yoshihiro Shimoda
-<yoshihiro.shimoda.uh@renesas.com> wrote:
-> Since the commit 133d624b1cee ("dma: Introduce dma_max_mapping_size()")
-> provides a helper function to get the max mapping size, we can use
-> the function instead of the workaround code for swiotlb.
->
-> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Some details about those errors can be found in
+<https://crbug.com/960222>, but to summarize it here: if we try to
+send the wakeup command to the WiFi card at the same time it has
+decided to wake up itself then it will behave badly on the SDIO bus.
+This can cause timeouts or CRC errors.
 
-Thanks for your patch!
+When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
+re-tuning.  Since I am currently developing on 4.19 this was the
+original problem I attempted to solve.
 
-> --- a/drivers/mmc/host/tmio_mmc_core.c
-> +++ b/drivers/mmc/host/tmio_mmc_core.c
+On mainline it turns out that you don't see the retuning errors but
+you see tons of spam about timeouts trying to wakeup from sleep.  I
+tracked down the commit that was causing that and have partially
+reverted it here.  I have no real knowledge about Broadcom WiFi, but
+the commit that was causing problems sounds (from the descriptioin) to
+be a hack commit penalizing all Broadcom WiFi users because of a bug
+in a Cypress SD controller.  I will let others comment if this is
+truly the case and, if so, what the right solution should be.
 
-> @@ -1189,19 +1190,9 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
->         mmc->max_blk_size = TMIO_MAX_BLK_SIZE;
->         mmc->max_blk_count = pdata->max_blk_count ? :
->                 (PAGE_SIZE / mmc->max_blk_size) * mmc->max_segs;
-> -       mmc->max_req_size = mmc->max_blk_size * mmc->max_blk_count;
-> -       /*
-> -        * Since swiotlb has memory size limitation, this will calculate
-> -        * the maximum size locally (because we don't have any APIs for it now)
-> -        * and check the current max_req_size. And then, this will update
-> -        * the max_req_size if needed as a workaround.
-> -        */
-> -       if (swiotlb_max_segment()) {
-> -               unsigned int max_size = (1 << IO_TLB_SHIFT) * IO_TLB_SEGSIZE;
-> -
-> -               if (mmc->max_req_size > max_size)
-> -                       mmc->max_req_size = max_size;
-> -       }
-> +       mmc->max_req_size = min_t(unsigned int,
-> +                                 mmc->max_blk_size * mmc->max_blk_count,
-> +                                 dma_max_mapping_size(&pdev->dev));
->         mmc->max_seg_size = mmc->max_req_size;
+For v3 of this series I have added 2 patches to the end of the series
+to address errors that would show up on systems with these same SDIO
+WiFi cards when used on controllers that do periodic retuning.  These
+systems need an extra fix to prevent the retuning from happening when
+the card is asleep.
 
-I'm always triggered by the use of min_t() and other casts:
-mmc->max_blk_size and mmc->max_blk_count are both unsigned int.
-dma_max_mapping_size() returns size_t, which can be 64-bit.
+Changes in v4:
+- Moved to SDIO API only (Adrian, Ulf).
+- Renamed to make it less generic, now retune_crc_disable (Ulf).
+- Function header makes it clear host must be claimed (Ulf).
+- No more WARN_ON (Ulf).
+- Adjust to API rename (Adrian, Ulf).
+- Moved retune hold/release to SDIO API (Adrian).
+- Adjust to API rename (Adrian).
 
- 1) Can the multiplication overflow?
-    Probably not, as per commit 2a55c1eac7882232 ("mmc: renesas_sdhi:
-    prevent overflow for max_req_size"), but I thought I'd better ask.
- 2) In theory, dma_max_mapping_size() can return a number that doesn't
-    fit in 32-bit, and will be truncated (to e.g. 0), leading to max_req_size
-    is zero?
+Changes in v3:
+- Took out the spinlock since I believe this is all in one context.
+- Expect errors for all of brcmf_sdio_kso_control() (Adrian).
+- ("mmc: core: Export mmc_retune_hold_now() mmc_retune_release()") new for v3.
+- ("brcmfmac: sdio: Don't tune while the card is off") new for v3.
 
-Gr{oetje,eeting}s,
+Changes in v2:
+- A full revert, not just a partial one (Arend).  ...with explicit Cc.
+- Updated commit message to clarify based on discussion of v1.
 
-                        Geert
+Douglas Anderson (5):
+  Revert "brcmfmac: disable command decode in sdio_aos"
+  mmc: core: API to temporarily disable retuning for SDIO CRC errors
+  brcmfmac: sdio: Disable auto-tuning around commands expected to fail
+  mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
+  brcmfmac: sdio: Don't tune while the card is off
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+ drivers/mmc/core/core.c                       |  5 +-
+ drivers/mmc/core/sdio_io.c                    | 76 +++++++++++++++++++
+ .../broadcom/brcm80211/brcmfmac/sdio.c        | 17 +++--
+ include/linux/mmc/core.h                      |  2 +
+ include/linux/mmc/host.h                      |  1 +
+ include/linux/mmc/sdio_func.h                 |  6 ++
+ 6 files changed, 100 insertions(+), 7 deletions(-)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+2.22.0.rc2.383.gf4fbbf30c2-goog
+
