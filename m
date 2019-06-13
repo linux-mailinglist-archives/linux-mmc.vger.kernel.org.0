@@ -2,73 +2,48 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54893441AD
-	for <lists+linux-mmc@lfdr.de>; Thu, 13 Jun 2019 18:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D22524409A
+	for <lists+linux-mmc@lfdr.de>; Thu, 13 Jun 2019 18:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391900AbfFMQQF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 13 Jun 2019 12:16:05 -0400
-Received: from mga14.intel.com ([192.55.52.115]:34431 "EHLO mga14.intel.com"
+        id S1730454AbfFMQHJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 13 Jun 2019 12:07:09 -0400
+Received: from verein.lst.de ([213.95.11.211]:36671 "EHLO newverein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731158AbfFMIlb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 13 Jun 2019 04:41:31 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Jun 2019 01:41:31 -0700
-X-ExtLoop1: 1
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by fmsmga006.fm.intel.com with ESMTP; 13 Jun 2019 01:41:28 -0700
-Subject: Re: [PATCH 2/3] mmc: sdhci: sdhci-pci-o2micro: Check if controller
- supports 8-bit width
-To:     Raul Rangel <rrangel@chromium.org>
-Cc:     linux-mmc@vger.kernel.org, ernest.zhang@bayhubtech.com,
-        djkurtz@chromium.org, linux-kernel@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>
-References: <20190610185354.35310-1-rrangel@chromium.org>
- <20190610185354.35310-2-rrangel@chromium.org>
- <d4939761-317c-ee78-b1e5-c2cdd86a12b4@intel.com>
- <20190612150832.GB27989@google.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <94fa2a5e-e96d-acb3-46c2-5f6b1dea6711@intel.com>
-Date:   Thu, 13 Jun 2019 11:40:14 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1731302AbfFMIp3 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 13 Jun 2019 04:45:29 -0400
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id DEC0668B05; Thu, 13 Jun 2019 10:44:58 +0200 (CEST)
+Date:   Thu, 13 Jun 2019 10:44:58 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Kashyap Desai <kashyap.desai@broadcom.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        Sebastian Ott <sebott@linux.ibm.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Max Gurtovoy <maxg@mellanox.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Oliver Neukum <oneukum@suse.com>, linux-block@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+        "PDL,MEGARAIDLINUX" <megaraidlinux.pdl@broadcom.com>,
+        PDL-MPT-FUSIONLINUX <mpt-fusionlinux.pdl@broadcom.com>,
+        linux-hyperv@vger.kernel.org, linux-usb@vger.kernel.org,
+        usb-storage@lists.one-eyed-alien.net, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 10/13] megaraid_sas: set virt_boundary_mask in the scsi
+ host
+Message-ID: <20190613084458.GB13221@lst.de>
+References: <20190605190836.32354-1-hch@lst.de> <20190605190836.32354-11-hch@lst.de> <cd713506efb9579d1f69a719d831c28d@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190612150832.GB27989@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cd713506efb9579d1f69a719d831c28d@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 12/06/19 6:08 PM, Raul Rangel wrote:
-> On Wed, Jun 12, 2019 at 04:09:47PM +0300, Adrian Hunter wrote:
->> On 10/06/19 9:53 PM, Raul E Rangel wrote:
->>> The O2 controller supports 8-bit EMMC access. mmc_select_bus_width()
->>> will be used to determine if the MMC supports 8-bit or 4-bit access.
->>
->> The problem is that the bit indicates a host controller capability, not how
->> many data lines there actually are on the board.  Will this break something
->> that does not have 8 lines?
-> 
-> So I asked the controller vendor about that:
->> The capability shows the host controller can support 1,4,and 8 bit bus
->> data transfer but it also depends on if HW can support it. Driver or FW
->> should implement the bus testing procedure that is defined in A.6.3.a
->> in JESD84-B51 spec to decide the real bus width that is supported in HW.
-> 
-> This seems to be what `mmc_select_bus_width()` is doing.
-
-Good point.  Can you add this information to the commit message and add a
-comment in the code.
-
-> 
-> I don't actually have any 4-bit hardware to test with though.
-> 
-> Thanks for the review!
-> 
-
+So before I respin this series, can you help with a way to figure out
+for mpt3sas and megaraid if a given controller supports NVMe devices
+at all, so that we don't have to set the virt boundary if not?
