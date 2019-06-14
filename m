@@ -2,71 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF9FC4631D
-	for <lists+linux-mmc@lfdr.de>; Fri, 14 Jun 2019 17:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51A7D46472
+	for <lists+linux-mmc@lfdr.de>; Fri, 14 Jun 2019 18:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726551AbfFNPmL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 14 Jun 2019 11:42:11 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:35176 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726177AbfFNPmL (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 14 Jun 2019 11:42:11 -0400
-Received: by mail-io1-f67.google.com with SMTP id m24so6799173ioo.2
-        for <linux-mmc@vger.kernel.org>; Fri, 14 Jun 2019 08:42:11 -0700 (PDT)
+        id S1725868AbfFNQiv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 14 Jun 2019 12:38:51 -0400
+Received: from mail-vk1-f195.google.com ([209.85.221.195]:34294 "EHLO
+        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725808AbfFNQiv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 14 Jun 2019 12:38:51 -0400
+Received: by mail-vk1-f195.google.com with SMTP id g124so661337vkd.1
+        for <linux-mmc@vger.kernel.org>; Fri, 14 Jun 2019 09:38:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=rhlu0KMAQ48ehIhdtg955Nb+uyGa0rTx6PsvOc4/bWs=;
-        b=eVt6qzm9nXevPTFXbZgxmAtEkvXaLkUjLCMRS4NRFw5E8bHPugqIBKw2Zy8f76G3gc
-         XgjLXpt7x5FC/qIUqfcQRTLtWsacsFnyMv13TjVo6utfbQdrb6D1XNxWphsmrSZXIYoI
-         7Sd75nVsRAhaKiAuHkiKmZDt4T+nRWyKal/ZA=
+        bh=TdEh8Hj2Clq+kDMcSVX4CedsJJo6mgn0qth+pnhpxfk=;
+        b=MPl9AGMjmoNFxoC+q/LqmrAuv03V+OnvpDb1T2jOEFfQr1ybdUYboQYZPsQk7BPBH5
+         wpwjgQmzEr+uSKzyd5eykA2lnqJFEWo4AqFqsNv+kwS/HoGFi3WWX5tU1iHIzcRPsiF5
+         ERXHdmkt3SQzDx2AtHIxbcJeIEQ0DyJvFUU/U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=rhlu0KMAQ48ehIhdtg955Nb+uyGa0rTx6PsvOc4/bWs=;
-        b=GAr/qT+BnfCave9OQMI+Mo9a+gaJZOT1aYFXRdtixosgGc2bFFtna5iOsPYUza1ZmW
-         QOt3Z0hOdUa+30cM6JA9kr5o2Ax0oVKa0FiD3nVlPbHL2gYaBU4tDQfDQl3HBzLO/cCZ
-         PaoZwnvXgZDE+xBEcYAxnTPd+2gxbkbCk/rPfaqBQ19LCEObGAn/TGqa2to6S29ouPj9
-         LM/nHB+UUxNm0e4nlMMploGVDtvoKPl/trOyH/l4/rDNukANaL2y6I3VOD+H5yhUf4NQ
-         pyIxbnqWsHKJKmyiCOtmaJug1OYkxPpu6NCw1PpJ0P/rAzRlqpUjkbxA4k6Au0GX54yF
-         0G0g==
-X-Gm-Message-State: APjAAAWAP98fRkbwF5k95CebMp/J8TOL81XTTwneyuqZ6s5p2el6mNpC
-        Y4vP5K34DU4yykYfa0rDukgPW5jqUbU=
-X-Google-Smtp-Source: APXvYqxUVoSzYpYte+hvwJXwHfBPnmvIX4RDtenDEYnaQMCnpurGpCqo/PN9SysqCpfejcJxN8jFEw==
-X-Received: by 2002:a6b:c80a:: with SMTP id y10mr11350857iof.170.1560526930351;
-        Fri, 14 Jun 2019 08:42:10 -0700 (PDT)
-Received: from mail-io1-f45.google.com (mail-io1-f45.google.com. [209.85.166.45])
-        by smtp.gmail.com with ESMTPSA id t4sm2721911iop.0.2019.06.14.08.42.09
+        bh=TdEh8Hj2Clq+kDMcSVX4CedsJJo6mgn0qth+pnhpxfk=;
+        b=XHqMKMWmTTwSXekhGGcHTznVvvGsHQaWYe3vwJTndxxdNP7bqexVlUCQr0zspIM6Et
+         /BZyOf0NnMernKDEvEDtiLfpVrRqsVC/Np91Cidy3ZL8s0F0DJd4pXZ4/Hn314G5/lyv
+         tdKZ2/qA5nBuyiNaD7nZUiZ3NUzUEyPmGULizHY3wjhSqWvlVNJr7N5caREWHWUiQWwr
+         YnlDxKz0pSaI6m/GAWGJoWHG+fLgt908ly9s3Yq1emwVRk4tmfFsKoaYA8M45FVmcU7l
+         lCLuNU31PhKxJwkocgm5SzqP3vcp5YO/WVwCR+esq8sS/RvS87gBFUE8XBJ/Uw0Xkj6j
+         LV9A==
+X-Gm-Message-State: APjAAAVMEuldfPadyJEe1Pri0JT+O2VX/fcKgGrTPPbs5aZcIoDovMns
+        82ro1b7hj+ZnhXRgZIraYuQsmDJG8Pc=
+X-Google-Smtp-Source: APXvYqyAgwSBJnZvtS3IvzTDC7cP2vZNynIIdiKMsm7seYeY+T3GGb1oKi57N3I2oz1JYGrUfj0yhg==
+X-Received: by 2002:a1f:8ad0:: with SMTP id m199mr38772005vkd.80.1560530329786;
+        Fri, 14 Jun 2019 09:38:49 -0700 (PDT)
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
+        by smtp.gmail.com with ESMTPSA id s65sm1328569vkd.36.2019.06.14.09.38.48
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Fri, 14 Jun 2019 08:42:09 -0700 (PDT)
-Received: by mail-io1-f45.google.com with SMTP id n5so6684493ioc.7
-        for <linux-mmc@vger.kernel.org>; Fri, 14 Jun 2019 08:42:09 -0700 (PDT)
-X-Received: by 2002:a5d:885a:: with SMTP id t26mr3842557ios.218.1560526928935;
- Fri, 14 Jun 2019 08:42:08 -0700 (PDT)
+        Fri, 14 Jun 2019 09:38:48 -0700 (PDT)
+Received: by mail-ua1-f54.google.com with SMTP id s4so1166209uad.7
+        for <linux-mmc@vger.kernel.org>; Fri, 14 Jun 2019 09:38:48 -0700 (PDT)
+X-Received: by 2002:ab0:2a49:: with SMTP id p9mr2181727uar.0.1560530327904;
+ Fri, 14 Jun 2019 09:38:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190611123221.11580-1-ulf.hansson@linaro.org>
- <CAD=FV=XBVRsdiOD0vhgTvMXmqm=fzy9Bzd_x=E1TNPBsT_D-tQ@mail.gmail.com>
- <CAPDyKFqR-xSKdYZYBTK5kKOt1dk7dx_BjedHiDOKs7-X4od=dg@mail.gmail.com>
- <CAD=FV=WODbZa1fBrLbJBsd77xn5ekHWjks-ydxOSzjdBK83Rmg@mail.gmail.com> <CAPDyKFpqk4ZcVTqifnbnW1WgNfx9ZNebCttUPcK_e9KWqpDMjQ@mail.gmail.com>
-In-Reply-To: <CAPDyKFpqk4ZcVTqifnbnW1WgNfx9ZNebCttUPcK_e9KWqpDMjQ@mail.gmail.com>
+References: <20190613234153.59309-1-dianders@chromium.org> <20190613234153.59309-5-dianders@chromium.org>
+ <CAPDyKFrJ4+zn7Ak0tYHkBfXUtH3N7erb5R7Q+hgugchZmCRGrw@mail.gmail.com>
+In-Reply-To: <CAPDyKFrJ4+zn7Ak0tYHkBfXUtH3N7erb5R7Q+hgugchZmCRGrw@mail.gmail.com>
 From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 14 Jun 2019 08:41:58 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=Ujb=_jEFMdxLPW6tYwb9DZo5-RZ8BVuyq5DdFQ5jJbQw@mail.gmail.com>
-Message-ID: <CAD=FV=Ujb=_jEFMdxLPW6tYwb9DZo5-RZ8BVuyq5DdFQ5jJbQw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: core: Prevent processing SDIO IRQs when the card is suspended
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Date:   Fri, 14 Jun 2019 09:38:26 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=Wuj=gANR2im_o4ZnoLEB+U6FqzKe4noLdQyi1vw+K2xw@mail.gmail.com>
+Message-ID: <CAD=FV=Wuj=gANR2im_o4ZnoLEB+U6FqzKe4noLdQyi1vw+K2xw@mail.gmail.com>
+Subject: Re: [PATCH v4 4/5] mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
         Brian Norris <briannorris@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        "# 4.0+" <stable@vger.kernel.org>
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Avri Altman <avri.altman@wdc.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
@@ -75,36 +84,34 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 Hi,
 
-On Fri, Jun 14, 2019 at 4:56 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+On Fri, Jun 14, 2019 at 5:10 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> > I was more worried about the safety of mmc_card_set_suspended()
-> > itself.  That is:
+> On Fri, 14 Jun 2019 at 01:42, Douglas Anderson <dianders@chromium.org> wrote:
 > >
-> > #define mmc_card_set_suspended(c) ((c)->state |= MMC_STATE_SUSPENDED)
+> > We want SDIO drivers to be able to temporarily stop retuning when the
+> > driver knows that the SDIO card is not in a state where retuning will
+> > work (maybe because the card is asleep).  We'll move the relevant
+> > functions to a place where drivers can call them.
 > >
-> > ...so it's doing a read-modify-write of "state".  Is that safe to do
-> > without any type of locking?
+> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
 >
-> In this case, yes I think so.
+> This looks good to me.
 >
-> The point is, it really doesn't matter if the reader (work or thread),
-> reads a non-updated value, because the synchronization is managed by
-> the later mmc_claim_host() and the cancel_delayed_work_sync().
+> BTW, seems like this series is best funneled via my mmc tree, no? In
+> such case, I need acks for the brcmfmac driver patches.
 
-If this were just an "int" then perhaps, but this is a bitfield.  So
-if someone else updates the bitfield at the same time then we can
-fully clobber their modification or they can clobber ours, right?
+For patch #1 I think it could just go in directly to the wireless
+tree.  It should be fine to land the rest of the patches separately.
 
-task 1: load "state" from memory into CPU register on cpu0
-task 2: load "state" from memory into CPU register on cpu1
-task 1: OR in MMC_CARD_REMOVED
-task 1: write "state" from CPU register on cpu0
-task 2: OR in MMC_STATE_SUSPENDED
-task 2: write "state" from CPU register on cpu1
+For patch #2 - #5 then what you say makes sense to me.  I suppose
+you'd want at least a Reviewed-by from Arend and an Ack from Kalle on
+the Broadcom patches?
 
-...so now we've clobbered MMC_CARD_REMOVED.  ...or am I just being
-paranoid here and everything else in "state" is somehow guaranteed to
-not be touched at the same time this function is running?
+I'd also suggest that we Cc stable explicitly when applying.  That's
+easy for #2 and #3 since they have a Fixes tag.  For #4 and #5 I guess
+the question is how far back to go.  Maybe Adrian has an opinion here
+since I think he's the one who experienced these problems.
 
 
+Thanks!
 -Doug
