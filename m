@@ -2,125 +2,128 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15E954657C
-	for <lists+linux-mmc@lfdr.de>; Fri, 14 Jun 2019 19:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB03A4701F
+	for <lists+linux-mmc@lfdr.de>; Sat, 15 Jun 2019 15:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725981AbfFNRRQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 14 Jun 2019 13:17:16 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:34097 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725868AbfFNRRP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 14 Jun 2019 13:17:15 -0400
-Received: by mail-ed1-f65.google.com with SMTP id s49so4550370edb.1
-        for <linux-mmc@vger.kernel.org>; Fri, 14 Jun 2019 10:17:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
-         :subject:mime-version:content-transfer-encoding;
-        bh=7TRyUZx1zoQSYNZ+ER0doTkq7zshmk9cidJxpZCUNN4=;
-        b=LjN3BmyEOgpqPA02mygscd7VyN5kV9cjfsGWeoPqOr1iRbUnCUiGBfBlduft28awjQ
-         3hOd0leEfRmAgFtf7bNKcIe0ghSeeAQFaYXwhsqNKIIS2BnS89LBPnw3azQX+cdslalu
-         89o15ro4zPbbHmZG253IHizn846QyWeXGcwWk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:subject:mime-version
-         :content-transfer-encoding;
-        bh=7TRyUZx1zoQSYNZ+ER0doTkq7zshmk9cidJxpZCUNN4=;
-        b=cVZ/lKT4AJcKOjyYAgm9EuZt5qXSK0VpNkyP8sq6Uu67cPvkVH1GvH/17xpx+8w0uZ
-         F//5om6Li7QuXlFsemgcD1lkm+soiiDggxlfCCu7THIETnArlAGpH/eTOYoSjsqoH6p7
-         +9mim3DfcNPUMCF6hfUEYScNo8HYU5PTLCrT/HGrGpK9XYu5zsumqSrwBY/CTMmzKJUt
-         Qn1qLUxMetKGavDk8cyEZOqrsVs3902k6bkmR7VsKkw4sFaIw/dk7GrS24hrfGOd3s9J
-         /c5jANNC04s2nUJ7RJWPlel4ZkDIERVx8DND9rQy2uhlkr+DpAOkvnFWHJgVBO8nO1c8
-         wwfQ==
-X-Gm-Message-State: APjAAAXugHzCuhQIwVo3CUYvdFhb+81M/YXkoL89EYv1GGntwRC4fbXb
-        9nKjW6UY2INRF60gmxFE2yC/2A==
-X-Google-Smtp-Source: APXvYqxoDgfecrMxkY8vCct7UUGvuYQVCrnt17PA6/AGoy/4n4fyf0ayVe4kCK+cV82wiR4wYero6A==
-X-Received: by 2002:a50:d791:: with SMTP id w17mr8370604edi.223.1560532634311;
-        Fri, 14 Jun 2019 10:17:14 -0700 (PDT)
-Received: from [192.168.178.17] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id h10sm764146ede.93.2019.06.14.10.17.13
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 14 Jun 2019 10:17:13 -0700 (PDT)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Doug Anderson <dianders@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Double Lo <double.lo@cypress.com>,
-        Brian Norris <briannorris@chromium.org>,
-        "linux-wireless" <linux-wireless@vger.kernel.org>,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Wright Feng <wright.feng@cypress.com>,
-        "Chi-Hsien Lin" <chi-hsien.lin@cypress.com>,
-        netdev <netdev@vger.kernel.org>,
-        "brcm80211-dev-list" <brcm80211-dev-list@cypress.com>,
-        <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Avri Altman <avri.altman@wdc.com>
-Date:   Fri, 14 Jun 2019 19:17:10 +0200
-Message-ID: <16b56fe39f0.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <CAD=FV=Wuj=gANR2im_o4ZnoLEB+U6FqzKe4noLdQyi1vw+K2xw@mail.gmail.com>
-References: <20190613234153.59309-1-dianders@chromium.org>
- <20190613234153.59309-5-dianders@chromium.org>
- <CAPDyKFrJ4+zn7Ak0tYHkBfXUtH3N7erb5R7Q+hgugchZmCRGrw@mail.gmail.com>
- <CAD=FV=Wuj=gANR2im_o4ZnoLEB+U6FqzKe4noLdQyi1vw+K2xw@mail.gmail.com>
-User-Agent: AquaMail/1.20.0-1458 (build: 102100001)
-Subject: Re: [PATCH v4 4/5] mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
+        id S1726327AbfFONF5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 15 Jun 2019 09:05:57 -0400
+Received: from static.187.34.201.195.clients.your-server.de ([195.201.34.187]:42934
+        "EHLO sysam.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725944AbfFONF5 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 15 Jun 2019 09:05:57 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by sysam.it (Postfix) with ESMTP id 778A53FE8E;
+        Sat, 15 Jun 2019 15:05:55 +0200 (CEST)
+Received: from sysam.it ([127.0.0.1])
+        by localhost (mail.sysam.it [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id X3gbcPYhl66G; Sat, 15 Jun 2019 15:05:55 +0200 (CEST)
+Received: from jerusalem (unknown [95.233.239.237])
+        by sysam.it (Postfix) with ESMTPSA id 204633FE88;
+        Sat, 15 Jun 2019 15:05:55 +0200 (CEST)
+Date:   Sat, 15 Jun 2019 15:05:53 +0200
+From:   Angelo Dureghello <angelo@sysam.it>
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     linux-mmc@vger.kernel.org, linux-m68k@vger.kernel.org
+Subject: Re: [PATCH 2/3] mmc: sdhci: add quirks for be to le byte swapping
+Message-ID: <20190615130553.GA7273@jerusalem>
+References: <20190512194125.7091-1-angelo@sysam.it>
+ <20190512194125.7091-2-angelo@sysam.it>
+ <b2adda22-613e-67bf-cc3a-6bdd603ae02c@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2adda22-613e-67bf-cc3a-6bdd603ae02c@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On June 14, 2019 6:38:51 PM Doug Anderson <dianders@chromium.org> wrote:
+Hi Adrian,
 
-> Hi,
->
-> On Fri, Jun 14, 2019 at 5:10 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->>
->> On Fri, 14 Jun 2019 at 01:42, Douglas Anderson <dianders@chromium.org> wrote:
->> >
->> > We want SDIO drivers to be able to temporarily stop retuning when the
->> > driver knows that the SDIO card is not in a state where retuning will
->> > work (maybe because the card is asleep).  We'll move the relevant
->> > functions to a place where drivers can call them.
->> >
->> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
->>
->> This looks good to me.
->>
->> BTW, seems like this series is best funneled via my mmc tree, no? In
->> such case, I need acks for the brcmfmac driver patches.
->
-> For patch #1 I think it could just go in directly to the wireless
-> tree.  It should be fine to land the rest of the patches separately.
+On Wed, Jun 12, 2019 at 09:42:27AM +0300, Adrian Hunter wrote:
+> On 12/05/19 10:41 PM, Angelo Dureghello wrote:
+> > Some controller as the ColdFire eshdc may require an endianness
+> > byte swap, becouse DMA read endianness is not configurable.
+> 
+> becouse -> because
+> 
+ok
 
-Agree.
+> Do any other drivers have this issue?
+> 
+host/mxcmmc.c for PPC devices is doing a similar swap (buffer_swap32).
 
-> For patch #2 - #5 then what you say makes sense to me.  I suppose
-> you'd want at least a Reviewed-by from Arend and an Ack from Kalle on
-> the Broadcom patches?
+> > 
+> > Signed-off-by: Angelo Dureghello <angelo@sysam.it>
+> > ---
+> >  drivers/mmc/host/sdhci.c | 19 +++++++++++++++++++
+> >  drivers/mmc/host/sdhci.h |  7 +++++++
+> >  2 files changed, 26 insertions(+)
+> > 
+> > diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> > index 97158344b862..317dcfb4bb4c 100644
+> > --- a/drivers/mmc/host/sdhci.c
+> > +++ b/drivers/mmc/host/sdhci.c
+> > @@ -2592,6 +2592,18 @@ static const struct mmc_host_ops sdhci_ops = {
+> >  	.card_busy	= sdhci_card_busy,
+> >  };
+> >  
+> > +static void sdhci_be_to_le(char *buff, u32 length)
+> > +{
+> > +	int i, size = length >> 2;
+> > +	u32 *buffer = (u32 *)buff;
+> > +	u32 temp;
+> > +
+> > +	for (i = 0; i < size; i++) {
+> > +		temp = *buffer;
+> > +		*buffer++ = __le32_to_cpu(temp);
+> > +	}
+> > +}
+> > +
+> >  /*****************************************************************************\
+> >   *                                                                           *
+> >   * Request done                                                              *
+> > @@ -2647,6 +2659,13 @@ static bool sdhci_request_done(struct sdhci_host *host)
+> >  						host->bounce_addr,
+> >  						host->bounce_buffer_size,
+> >  						DMA_FROM_DEVICE);
+> > +
+> > +					if (host->quirks2 &
+> > +					    SDHCI_QUIRK2_USE_32BIT_BE_DMA_SWAP)
+> > +						sdhci_be_to_le(
+> > +							host->bounce_buffer,
+> > +							length);
+> 
+> How come it only affects the bounce buffer?  What about if there is no
+> bounce buffer?
+> 
+Right, Will check where how to apply the swap also without bounce buffer.
 
-Will do.
-
-> I'd also suggest that we Cc stable explicitly when applying.  That's
-> easy for #2 and #3 since they have a Fixes tag.  For #4 and #5 I guess
-> the question is how far back to go.  Maybe Adrian has an opinion here
-> since I think he's the one who experienced these problems.
-
-I see if I can come up wit a fixes tag for #5.
+> > +
+> >  					sg_copy_from_buffer(data->sg,
+> >  						data->sg_len,
+> >  						host->bounce_buffer,
+> > diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+> > index d6bcc584c92b..38fa69678cec 100644
+> > --- a/drivers/mmc/host/sdhci.h
+> > +++ b/drivers/mmc/host/sdhci.h
+> > @@ -486,6 +486,13 @@ struct sdhci_host {
+> >   */
+> >  #define SDHCI_QUIRK2_USE_32BIT_BLK_CNT			(1<<18)
+> >  
+> > +/*
+> > + * On some architectures, as ColdFire/m68k, native endianness is big endian,
+> > + * and the dma buffer is filled in big endian order only (no other options).
+> > + * So, a swap is needed for these specific cases.
+> > + */
+> > +#define SDHCI_QUIRK2_USE_32BIT_BE_DMA_SWAP		(1<<19)
+> > +
+> >  	int irq;		/* Device IRQ */
+> >  	void __iomem *ioaddr;	/* Mapped address */
+> >  	char *bounce_buffer;	/* For packing SDMA reads/writes */
+> > 
+> 
 
 Regards,
-Arend
-
-
-
+Angelo
