@@ -2,187 +2,117 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1575479C8
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 07:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2B99479F9
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 08:23:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725468AbfFQF5M (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Jun 2019 01:57:12 -0400
-Received: from Mailgw01.mediatek.com ([1.203.163.78]:41166 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725280AbfFQF5M (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 01:57:12 -0400
-X-UUID: c5763d6611ef4ddeb505b357bc61c525-20190617
-X-UUID: c5763d6611ef4ddeb505b357bc61c525-20190617
-Received: from mtkcas32.mediatek.inc [(172.27.4.253)] by mailgw01.mediatek.com
-        (envelope-from <jjian.zhou@mediatek.com>)
-        (mailgw01.mediatek.com ESMTP with TLS)
-        with ESMTP id 1289336308; Mon, 17 Jun 2019 13:57:05 +0800
-Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS31DR.mediatek.inc
- (172.27.6.102) with Microsoft SMTP Server (TLS) id 15.0.1395.4; Mon, 17 Jun
- 2019 13:57:03 +0800
-Received: from [10.17.3.153] (172.27.4.253) by MTKCAS36.mediatek.inc
- (172.27.4.170) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Mon, 17 Jun 2019 13:57:01 +0800
-Message-ID: <1560751020.3103.25.camel@mhfsdcap03>
-Subject: Re: [PATCH 1/2] mmc: mediatek: fix SDIO IRQ interrupt handle flow
-From:   jjian zhou <jjian.zhou@mediatek.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Chaotian Jing =?UTF-8?Q?=28=E4=BA=95=E6=9C=9D=E5=A4=A9=29?= 
-        <Chaotian.Jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Yong Mao =?UTF-8?Q?=28=E6=AF=9B=E5=8B=87=29?= 
-        <yong.mao@mediatek.com>,
-        srv_heupstream <srv_heupstream@mediatek.com>
-Date:   Mon, 17 Jun 2019 13:57:00 +0800
-In-Reply-To: <CAPDyKFrXU4bpKeB7Aa15j2nHqUCn-bk+YKn9_vkznmi+PS8H7A@mail.gmail.com>
-References: <1560489970-30467-1-git-send-email-jjian.zhou@mediatek.com>
-         <CAPDyKFrXU4bpKeB7Aa15j2nHqUCn-bk+YKn9_vkznmi+PS8H7A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
+        id S1725468AbfFQGXk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Jun 2019 02:23:40 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:33258 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725372AbfFQGXk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 02:23:40 -0400
+Received: by mail-lf1-f67.google.com with SMTP id y17so5621568lfe.0;
+        Sun, 16 Jun 2019 23:23:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F7XRJjX0kBku2ATYK3GUg5Lrv9SchTe3YLEUK9ub8O0=;
+        b=aFAOIXLjO1Yshdrv5E0gCunEbmNRlNYVFfkGD7K0VEgA1zCOH7VyUvga1Qztek26er
+         vf3lhTFDXGWlg9kiL2Kkr75PTQ6FrRwoYMzbJQfHV2RxcJR9BCM7fEuNAvQt8Tk0PTAy
+         wAqaFcrhJLhUZY4f0bDHx4PGUTQG5Uh4i4+7Nfax6bXj8sE0Eo5f+5xyOFLXisiRZ4R/
+         vJbp6FbuRS0XvpXuAydXbezwLqjAMQccrJp6KmqOB8luskqMCHy3s0AT6/nAqkPH18yx
+         8gzMXc+EF9TFLBJPG0bII9QOISCIdE4/0qqZOhZGKVeAmxSmNqx5hTvuRz/7vRArTPiF
+         ix5A==
+X-Gm-Message-State: APjAAAXnbetDif0hRZPef/IaBWNMm/Yo+FLY4JviNbwf0+v6dG4s1QkC
+        U4iD5DV8WFDopuwcLUR2vlbovVGCZSSy7/xALyo=
+X-Google-Smtp-Source: APXvYqy3bhMxkDPqSpihWCfeWIwNFdNEjnMbVm8tSrWIEMfR4v+33Zv0KgrWbN5daZ3WDGCGRcCppWVYxjCWl/bFHac=
+X-Received: by 2002:a19:6e41:: with SMTP id q1mr46867465lfk.20.1560752617786;
+ Sun, 16 Jun 2019 23:23:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
+References: <1560421215-10750-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <1560421215-10750-5-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <CAMuHMdXYqgPRX1WfUTRsKHhnSok5vfnr4AY36=vXoUvAxcNyWQ@mail.gmail.com>
+ <20190614071800.GB8420@lst.de> <CAMuHMdXm5RtDUL5Wkyd6aJihu9nykYOhRf7vN6hOtB-OO8CTQQ@mail.gmail.com>
+ <OSBPR01MB3590D4EF069F4554DA5D7ABBD8EB0@OSBPR01MB3590.jpnprd01.prod.outlook.com>
+In-Reply-To: <OSBPR01MB3590D4EF069F4554DA5D7ABBD8EB0@OSBPR01MB3590.jpnprd01.prod.outlook.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 17 Jun 2019 08:23:24 +0200
+Message-ID: <CAMuHMdWPUZGFWeKzPK=zkwc5h2SD+aW6ULb8C2rDJSmTWNXjeA@mail.gmail.com>
+Subject: Re: [RFC PATCH v6 4/5] mmc: tmio: Use dma_max_mapping_size() instead
+ of a workaround
+To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Joerg Roedel <joro@8bytes.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 2019-06-14 at 17:46 +0800, Ulf Hansson wrote:
-> On Fri, 14 Jun 2019 at 07:26, Jjian Zhou <jjian.zhou@mediatek.com> wrote:
+Hi Shimoda-san,
+
+On Mon, Jun 17, 2019 at 6:54 AM Yoshihiro Shimoda
+<yoshihiro.shimoda.uh@renesas.com> wrote:
+> > From: Geert Uytterhoeven, Sent: Friday, June 14, 2019 4:27 PM
+> > On Fri, Jun 14, 2019 at 9:18 AM Christoph Hellwig wrote:
+> > > On Thu, Jun 13, 2019 at 10:35:44PM +0200, Geert Uytterhoeven wrote:
+> > > > I'm always triggered by the use of min_t() and other casts:
+> > > > mmc->max_blk_size and mmc->max_blk_count are both unsigned int.
+> > > > dma_max_mapping_size() returns size_t, which can be 64-bit.
+> > > >
+> > > >  1) Can the multiplication overflow?
+> > > >     Probably not, as per commit 2a55c1eac7882232 ("mmc: renesas_sdhi:
+> > > >     prevent overflow for max_req_size"), but I thought I'd better ask.
+>
+> Geert-san:
+>
+> I agree.
+>
+> > > >  2) In theory, dma_max_mapping_size() can return a number that doesn't
+> > > >     fit in 32-bit, and will be truncated (to e.g. 0), leading to max_req_size
+> > > >     is zero?
+>
+> Geert-san:
+>
+> I agree. If dma_max_mapping_size() return 0x1_0000_0000, it will be truncated to 0
+> and then max_req_size is set to zero. It is a problem. Also, the second argument
+> "mmc->max_blk_size * mmc->max_blk_count" will not be overflow and then the value is
+> 0xffff_ffff or less. So, I also think this should use size_t instead of unsigned int.
+>
+> > > This really should use a min_t on size_t.  Otherwise the patch looks
+> > > fine:
 > >
-> > From: jjian zhou <jjian.zhou@mediatek.com>
-> >
-> > SDIO IRQ is triggered by low level. It need disable SDIO IRQ
-> > detected function. Otherwise the interrupt register can't be cleared.
-> > It will process the interrupt more.
-> >
-> > Signed-off-by: Jjian Zhou <jjian.zhou@mediatek.com>
-> > Signed-off-by: Chaotian Jing <chaotian.jing@mediatek.com>
-> > Signed-off-by: Yong Mao <yong.mao@mediatek.com>
-> > ---
-> >  drivers/mmc/host/mtk-sd.c | 13 +++++++------
-> >  1 file changed, 7 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-> > index c518cc2..29992ae 100644
-> > --- a/drivers/mmc/host/mtk-sd.c
-> > +++ b/drivers/mmc/host/mtk-sd.c
-> > @@ -1389,10 +1389,12 @@ static void __msdc_enable_sdio_irq(struct mmc_host *mmc, int enb)
-> >         struct msdc_host *host = mmc_priv(mmc);
-> >
-> >         spin_lock_irqsave(&host->lock, flags);
-> > -       if (enb)
-> > +       if (enb) {
-> >                 sdr_set_bits(host->base + MSDC_INTEN, MSDC_INTEN_SDIOIRQ);
-> > -       else
-> > +               sdr_set_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
-> > +       } else {
-> >                 sdr_clr_bits(host->base + MSDC_INTEN, MSDC_INTEN_SDIOIRQ);
-> 
-> Rather than clearing SDC_CFG_SDIOIDE in the irq handler, you need to
-> do it here. As otherwise when the mmc core calls
-> host->ops->enable_sdio_irq() to disable the SDIO IRQ, it may stay
-> enabled.
-> 
+> > Followed by another min() to make it fit in mmc->max_req_size, which is
+> > unsigned int.
+>
+> Geert-san:
+>
+> I'm afraid, but I cannot understand this means.
+> Is this patch is possible to be upstream? Or, do you have any concern?
 
-Thank you for your review.
-
-I remove the spin lock in "__msdc_enable_sdio_irq" and add 
-spin lock in "msdc_enable_sdio_irq". The modification of
-"__msdc_enable_sdio_irq" and "msdc_enable_sdio_irq" is as following.
-
-static void __msdc_enable_sdio_irq(struct msdc_host *host, int enb)
-{
-	if (enb) {
-		sdr_set_bits(host->base + MSDC_INTEN, MSDC_INTEN_SDIOIRQ);
-		sdr_set_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
-	} else {
-		sdr_clr_bits(host->base + MSDC_INTEN, MSDC_INTEN_SDIOIRQ);
-		sdr_clr_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
-	}
-}
-
-static void msdc_enable_sdio_irq(struct mmc_host *mmc, int enb)
-{
-	unsigned long flags;
-	struct msdc_host *host = mmc_priv(mmc);
-	spin_lock_irqsave(&host->lock, flags);;
-	__msdc_enable_sdio_irq(host, enb);
-	spin_unlock_irqrestore(&host->lock, flags);
-
-	if (enb)
-		pm_runtime_get_noresume(host->dev);
-	else
-		pm_runtime_get_noidle(host->dev);
-}
-
-> > +       }
-> >         spin_unlock_irqrestore(&host->lock, flags);
-> >  }
-> >
-> > @@ -1422,6 +1424,8 @@ static irqreturn_t msdc_irq(int irq, void *dev_id)
-> >                 spin_lock_irqsave(&host->lock, flags);
-> >                 events = readl(host->base + MSDC_INT);
-> >                 event_mask = readl(host->base + MSDC_INTEN);
-> > +               if ((events & event_mask) & MSDC_INT_SDIOIRQ)
-> > +                       sdr_clr_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
-> 
-> As stated above, I suggest you move this into __msdc_enable_sdio_irq()
-> and thus call that function from here instead. Well, that doesn't work
-> as is, because of the spin lock, so you rather need to make a
-> sub-function of __msdc_enable_sdio_irq, that don't take/releases the
-> lock.
-> 
-> I hope that was clear. If not, I can post a patch to show you what I mean.
-> 
-
-I also modify this part handler in msdc_irq.
-
-	spin_lock_irqsave(&host->lock, flags);
-	events = readl(host->base + MSDC_INT);
-	event_mask = readl(host->base + MSDC_INTEN);
-	if ((events & event_mask) & MSDC_INT_SDIOIRQ)
-		__msdc_enable_sdio_irq(host, 0);
-	/* clear interrupts */
-	writel(events & event_mask, host->base + MSDC_INT);
-
-	mrq = host->mrq;
-	cmd = host->cmd;
-	data = host->data;
-	spin_unlock_irqrestore(&host->lock, flags);
-
-	if ((events & event_mask) & MSDC_INT_SDIOIRQ)
-		sdio_signal_irq(host->mmc);
-
-I also will add spin lock in the "msdc_ack_sdio_irq".
-
-Looking forward to your suggestions.
-> 
-> >                 /* clear interrupts */
-> >                 writel(events & event_mask, host->base + MSDC_INT);
-> >
-> > @@ -1572,10 +1576,7 @@ static void msdc_init_hw(struct msdc_host *host)
-> >         sdr_set_bits(host->base + SDC_CFG, SDC_CFG_SDIO);
-> >
-> >         /* Config SDIO device detect interrupt function */
-> > -       if (host->mmc->caps & MMC_CAP_SDIO_IRQ)
-> > -               sdr_set_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
-> > -       else
-> > -               sdr_clr_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
-> > +       sdr_clr_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
-> >
-> >         /* Configure to default data timeout */
-> >         sdr_set_field(host->base + SDC_CFG, SDC_CFG_DTOC, 3);
-> > --
-> > 1.9.1
-> >
-> 
-> Kind regards
-> Uffe
+Please disregard my last comment: as the value of "mmc->max_blk_size *
+mmc->max_blk_count" is always 0xffff_ffff or less, "min_t(size_t,
+mmc->max_blk_size * mmc->max_blk_count, dma_max_mapping_size(&pdev->dev))"
+will always be 0xffff_ffff or less, too, so there is no extra step needed
+to make it fit in mmc->max_req_size.
 
 
+Sorry for the confusion.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
