@@ -2,45 +2,45 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4400448B17
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 19:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64F4448B15
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 19:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728687AbfFQR7D (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Jun 2019 13:59:03 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:34249 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728676AbfFQR7D (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 13:59:03 -0400
-Received: by mail-pl1-f193.google.com with SMTP id i2so4396545plt.1
-        for <linux-mmc@vger.kernel.org>; Mon, 17 Jun 2019 10:59:02 -0700 (PDT)
+        id S1728735AbfFQR7S (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Jun 2019 13:59:18 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:44100 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727738AbfFQR7P (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 13:59:15 -0400
+Received: by mail-pg1-f193.google.com with SMTP id n2so6221465pgp.11
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Jun 2019 10:59:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=98n6ZHrDJ8hHttCLc1inB11JuSkBEgDS0TKJr/PR7Zk=;
-        b=UHl6hfVqQlRSbLQZJ9rvEg3kuQ8N4tef3GpJjNmJtM6p3an8g41J0dxWGb8xG2DPrz
-         sAjdwqZXvIdhtYJGTlOLwQuE4d+Rvu44G68oMRlSPqWf992mN+rdyePuTRXrON9+waW6
-         AuJ82YWMK1XLGqcjLpUujx4vQnw2RvoqNjbO4=
+        bh=gukKhFSULA/cUvkTjo5/+HGI1qG1vr2u7fmWrwDOvpo=;
+        b=jiiND4P5qU8Y/H5AW6gpozQxINq32kXq8a21pgnFiksPAlWxBnSNxyM41KYPgXEEHj
+         nLrxpTPdz2JzWt2ss/bpp6VnqYbvLLIJVhRGH93B1cSXrKDQcKXeZGQNwTimVYjHGMBz
+         YXVD6+ew99DZjtBQIpRsSM23r2Y/O1G7MoO+c=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=98n6ZHrDJ8hHttCLc1inB11JuSkBEgDS0TKJr/PR7Zk=;
-        b=FpkGDEgzcKTWLNSFRixCBgLeUit4tHj2ZUiJoYzv6fWwoSB1Cu0grSg0NLXeE7uDnL
-         a3r8Abxj2RBPwqc83TbLg1qmxXTedUlsMPqMtRX948dYcCvOIvZWVk+MYcAOUHT1qwiY
-         JR/GUL+0ZUVRADZ8G1Z47OTVFg5Hfuagc5sHM5GbyqzSL91Ih9PqJVGDTWkl2pOVLoZh
-         yAX9OJVECIgWSfRiYwds1v8Y1etU8biqGjIIxCYt9DsU3PbMcOEN3MNRWFbfPsnZQTg6
-         NHyprdF70aUjrOIwJ5Hp/JTFAQT3Cv51bSsdXOKS9u6WlR6vaam9IQmBwPDppVr8zt/1
-         CIwQ==
-X-Gm-Message-State: APjAAAVMqHv+LWSBWaDEX8wE3Qfnqf68G7IJFvhQkLljTtgnspqlQe16
-        b6/uG41iA4K3/ZhnQzIC/wokjw==
-X-Google-Smtp-Source: APXvYqxhK3GXMrgbsgnHN+m3eV/JC6yuo7bBQmIJ3YfzRrEjP9lcqXWS3vYT5HeqNxLLgFp/OooEMw==
-X-Received: by 2002:a17:902:8f81:: with SMTP id z1mr42314084plo.290.1560794342357;
-        Mon, 17 Jun 2019 10:59:02 -0700 (PDT)
+        bh=gukKhFSULA/cUvkTjo5/+HGI1qG1vr2u7fmWrwDOvpo=;
+        b=DqHa3I9JMqYOLk3cenhSvfsp4GWh6tOK3gpZTjnckaR18PljEP2dCbtTlgij8R3e9L
+         XORnX6HRHY73j+XdNaL/rKIhusrfYl/iR6e50PhJ2wNExu6f9rBMymAg4wkYWjFjaINq
+         +x6MGGYrnvXuwPLCzAdN608gSZtNfdFG2gw/Ep4b0uTfy6LCnDRq9iCoZNcR4LrLGfWw
+         AVr8FipltYQe2CujLXt2aIjKICWR0sC3iKr1k/5HJBvKtjb+2vxmWSkyMDrJkVnzAoGJ
+         YCUHLukQcjrQ9LafRsW9PkSKBAHIX3LwIs//2f49dRHWaevKiJyZY3iS95BqsI1D7Lo5
+         /C0A==
+X-Gm-Message-State: APjAAAUI1gwPmXI4rw8cHfjCEBdhMMUVeYwzaH1itVcn81W2cXoW+J8s
+        SnPqTmAPm27g6wYTJd6jE0mTNw==
+X-Google-Smtp-Source: APXvYqzdCSj0uI6G5zQQeqkog1Napf/2heNE90tChRbx7D/xUVbfnn1JUIW8D1+k8m93FMtgdBP5aw==
+X-Received: by 2002:a62:1b85:: with SMTP id b127mr115821200pfb.165.1560794353481;
+        Mon, 17 Jun 2019 10:59:13 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id q1sm15145809pfn.178.2019.06.17.10.58.16
+        by smtp.gmail.com with ESMTPSA id q1sm15145809pfn.178.2019.06.17.10.59.09
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 17 Jun 2019 10:58:59 -0700 (PDT)
+        Mon, 17 Jun 2019 10:59:11 -0700 (PDT)
 From:   Douglas Anderson <dianders@chromium.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -56,19 +56,13 @@ Cc:     brcm80211-dev-list.pdl@broadcom.com,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
         netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
         Douglas Anderson <dianders@chromium.org>,
-        stable@vger.kernel.org, Jiong Wu <lohengrin1024@gmail.com>,
-        Ritesh Harjani <riteshh@codeaurora.org>,
-        Allison Randal <allison@lohutok.net>,
+        stable@vger.kernel.org, Allison Randal <allison@lohutok.net>,
         linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>
-Subject: [PATCH v5 2/5] mmc: core: API to temporarily disable retuning for SDIO CRC errors
-Date:   Mon, 17 Jun 2019 10:56:50 -0700
-Message-Id: <20190617175653.21756-3-dianders@chromium.org>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v5 4/5] mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
+Date:   Mon, 17 Jun 2019 10:56:52 -0700
+Message-Id: <20190617175653.21756-5-dianders@chromium.org>
 X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
 In-Reply-To: <20190617175653.21756-1-dianders@chromium.org>
 References: <20190617175653.21756-1-dianders@chromium.org>
@@ -79,155 +73,103 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Normally when the MMC core sees an "-EILSEQ" error returned by a host
-controller then it will trigger a retuning of the card.  This is
-generally a good idea.
+We want SDIO drivers to be able to temporarily stop retuning when the
+driver knows that the SDIO card is not in a state where retuning will
+work (maybe because the card is asleep).  We'll move the relevant
+functions to a place where drivers can call them.
 
-However, if a command is expected to sometimes cause transfer errors
-then these transfer errors shouldn't cause a re-tuning.  This
-re-tuning will be a needless waste of time.  One example case where a
-transfer is expected to cause errors is when transitioning between
-idle (sometimes referred to as "sleep" in Broadcom code) and active
-state on certain Broadcom WiFi SDIO cards.  Specifically if the card
-was already transitioning between states when the command was sent it
-could cause an error on the SDIO bus.
-
-Let's add an API that the SDIO function drivers can call that will
-temporarily disable the auto-tuning functionality.  Then we can add a
-call to this in the Broadcom WiFi driver and any other driver that
-might have similar needs.
-
-NOTE: this makes the assumption that the card is already tuned well
-enough that it's OK to disable the auto-retuning during one of these
-error-prone situations.  Presumably the driver code performing the
-error-prone transfer knows how to recover / retry from errors.  ...and
-after we can get back to a state where transfers are no longer
-error-prone then we can enable the auto-retuning again.  If we truly
-find ourselves in a case where the card needs to be retuned sometimes
-to handle one of these error-prone transfers then we can always try a
-few transfers first without auto-retuning and then re-try with
-auto-retuning if the first few fail.
-
-Without this change on rk3288-veyron-minnie I periodically see this in
-the logs of a machine just sitting there idle:
-  dwmmc_rockchip ff0d0000.dwmmc: Successfully tuned phase to XYZ
-
-Commit notes:
-Patches #2 - #5 will go through Ulf's tree.
-END
-
-Fixes: bd11e8bd03ca ("mmc: core: Flag re-tuning is needed on CRC errors")
 Cc: stable@vger.kernel.org
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
+Patches #2 - #5 will go through Ulf's tree.
 
-Changes in v5:
-- Add missing sdio_retune_crc_enable() in comments (Ulf).
-- /s/reneable/re-enable (Ulf).
-- Remove leftover prototypes: mmc_expect_errors_begin() / end() (Ulf).
+I've CCed stable@ here without a version tag.  As per Adrian Hunter
+this patch applies cleanly to 4.18+ so that would be an easy first
+target.  However, if someone were so inclined they could provide
+further backports.  As per Adrian [1] the root problem has existed for
+~4 years.
 
+[1] https://lkml.kernel.org/r/4f39e152-04ba-a64e-985a-df93e6d15ff8@intel.com
+
+Changes in v5: None
 Changes in v4:
-- Moved to SDIO API only (Adrian, Ulf).
-- Renamed to make it less generic, now retune_crc_disable (Ulf).
-- Function header makes it clear host must be claimed (Ulf).
-- No more WARN_ON (Ulf).
+- Moved retune hold/release to SDIO API (Adrian).
 
 Changes in v3:
-- Took out the spinlock since I believe this is all in one context.
+- ("mmc: core: Export mmc_retune_hold_now() mmc_retune_release()") new for v3.
 
-Changes in v2:
-- Updated commit message to clarify based on discussion of v1.
+Changes in v2: None
 
- drivers/mmc/core/core.c       |  5 +++--
- drivers/mmc/core/sdio_io.c    | 37 +++++++++++++++++++++++++++++++++++
- include/linux/mmc/host.h      |  1 +
+ drivers/mmc/core/sdio_io.c    | 40 +++++++++++++++++++++++++++++++++++
  include/linux/mmc/sdio_func.h |  3 +++
- 4 files changed, 44 insertions(+), 2 deletions(-)
+ 2 files changed, 43 insertions(+)
 
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index 6db36dc870b5..9020cb2490f7 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -144,8 +144,9 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
- 	int err = cmd->error;
- 
- 	/* Flag re-tuning needed on CRC errors */
--	if ((cmd->opcode != MMC_SEND_TUNING_BLOCK &&
--	    cmd->opcode != MMC_SEND_TUNING_BLOCK_HS200) &&
-+	if (cmd->opcode != MMC_SEND_TUNING_BLOCK &&
-+	    cmd->opcode != MMC_SEND_TUNING_BLOCK_HS200 &&
-+	    !host->retune_crc_disable &&
- 	    (err == -EILSEQ || (mrq->sbc && mrq->sbc->error == -EILSEQ) ||
- 	    (mrq->data && mrq->data->error == -EILSEQ) ||
- 	    (mrq->stop && mrq->stop->error == -EILSEQ)))
 diff --git a/drivers/mmc/core/sdio_io.c b/drivers/mmc/core/sdio_io.c
-index f79f0b0caab8..0acb1a29c968 100644
+index 0acb1a29c968..2ba00acf64e6 100644
 --- a/drivers/mmc/core/sdio_io.c
 +++ b/drivers/mmc/core/sdio_io.c
-@@ -734,3 +734,40 @@ int sdio_set_host_pm_flags(struct sdio_func *func, mmc_pm_flag_t flags)
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(sdio_set_host_pm_flags);
-+
-+/**
-+ *	sdio_retune_crc_disable - temporarily disable retuning on CRC errors
-+ *	@func: SDIO function attached to host
-+ *
-+ *	If the SDIO card is known to be in a state where it might produce
-+ *	CRC errors on the bus in response to commands (like if we know it is
-+ *	transitioning between power states), an SDIO function driver can
-+ *	call this function to temporarily disable the SD/MMC core behavior of
-+ *	triggering an automatic retuning.
-+ *
-+ *	This function should be called while the host is claimed and the host
-+ *	should remain claimed until sdio_retune_crc_enable() is called.
-+ *	Specifically, the expected sequence of calls is:
-+ *	- sdio_claim_host()
-+ *	- sdio_retune_crc_disable()
-+ *	- some number of calls like sdio_writeb() and sdio_readb()
-+ *	- sdio_retune_crc_enable()
-+ *	- sdio_release_host()
-+ */
-+void sdio_retune_crc_disable(struct sdio_func *func)
-+{
-+	func->card->host->retune_crc_disable = true;
-+}
-+EXPORT_SYMBOL_GPL(sdio_retune_crc_disable);
-+
-+/**
-+ *	sdio_retune_crc_enable - re-enable retuning on CRC errors
-+ *	@func: SDIO function attached to host
-+ *
-+ *	This is the compement to sdio_retune_crc_disable().
-+ */
-+void sdio_retune_crc_enable(struct sdio_func *func)
-+{
-+	func->card->host->retune_crc_disable = false;
-+}
-+EXPORT_SYMBOL_GPL(sdio_retune_crc_enable);
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index 43d0f0c496f6..ecb7972e2423 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -398,6 +398,7 @@ struct mmc_host {
- 	unsigned int		retune_now:1;	/* do re-tuning at next req */
- 	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
- 	unsigned int		use_blk_mq:1;	/* use blk-mq */
-+	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
+@@ -15,6 +15,7 @@
+ #include "sdio_ops.h"
+ #include "core.h"
+ #include "card.h"
++#include "host.h"
  
- 	int			rescan_disable;	/* disable card detection */
- 	int			rescan_entered;	/* used with nonremovable devices */
+ /**
+  *	sdio_claim_host - exclusively claim a bus for a certain SDIO function
+@@ -771,3 +772,42 @@ void sdio_retune_crc_enable(struct sdio_func *func)
+ 	func->card->host->retune_crc_disable = false;
+ }
+ EXPORT_SYMBOL_GPL(sdio_retune_crc_enable);
++
++/**
++ *	sdio_retune_hold_now - start deferring retuning requests till release
++ *	@func: SDIO function attached to host
++ *
++ *	This function can be called if it's currently a bad time to do
++ *	a retune of the SDIO card.  Retune requests made during this time
++ *	will be held and we'll actually do the retune sometime after the
++ *	release.
++ *
++ *	This function could be useful if an SDIO card is in a power state
++ *	where it can respond to a small subset of commands that doesn't
++ *	include the retuning command.  Care should be taken when using
++ *	this function since (presumably) the retuning request we might be
++ *	deferring was made for a good reason.
++ *
++ *	This function should be called while the host is claimed.
++ */
++void sdio_retune_hold_now(struct sdio_func *func)
++{
++	mmc_retune_hold_now(func->card->host);
++}
++EXPORT_SYMBOL_GPL(sdio_retune_hold_now);
++
++/**
++ *	sdio_retune_release - signal that it's OK to retune now
++ *	@func: SDIO function attached to host
++ *
++ *	This is the complement to sdio_retune_hold_now().  Calling this
++ *	function won't make a retune happen right away but will allow
++ *	them to be scheduled normally.
++ *
++ *	This function should be called while the host is claimed.
++ */
++void sdio_retune_release(struct sdio_func *func)
++{
++	mmc_retune_release(func->card->host);
++}
++EXPORT_SYMBOL_GPL(sdio_retune_release);
 diff --git a/include/linux/mmc/sdio_func.h b/include/linux/mmc/sdio_func.h
-index e9dfdd501cd1..4820e6d09dac 100644
+index 4820e6d09dac..5a177f7a83c3 100644
 --- a/include/linux/mmc/sdio_func.h
 +++ b/include/linux/mmc/sdio_func.h
-@@ -167,4 +167,7 @@ extern void sdio_f0_writeb(struct sdio_func *func, unsigned char b,
- extern mmc_pm_flag_t sdio_get_host_pm_caps(struct sdio_func *func);
- extern int sdio_set_host_pm_flags(struct sdio_func *func, mmc_pm_flag_t flags);
+@@ -170,4 +170,7 @@ extern int sdio_set_host_pm_flags(struct sdio_func *func, mmc_pm_flag_t flags);
+ extern void sdio_retune_crc_disable(struct sdio_func *func);
+ extern void sdio_retune_crc_enable(struct sdio_func *func);
  
-+extern void sdio_retune_crc_disable(struct sdio_func *func);
-+extern void sdio_retune_crc_enable(struct sdio_func *func);
++extern void sdio_retune_hold_now(struct sdio_func *func);
++extern void sdio_retune_release(struct sdio_func *func);
 +
  #endif /* LINUX_MMC_SDIO_FUNC_H */
 -- 
