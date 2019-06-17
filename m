@@ -2,111 +2,52 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBB0C47A41
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 08:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53D5A47A52
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 08:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725793AbfFQGye (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Jun 2019 02:54:34 -0400
-Received: from mail-eopbgr1410100.outbound.protection.outlook.com ([40.107.141.100]:9248
-        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725778AbfFQGye (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 17 Jun 2019 02:54:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=enhWT74/cCvJF0nC6N6Nkz9H+M7tE6bXm/KQF0zE/7I=;
- b=n/Xt2/PtgIDInZNQITAgCkcX26JHzjc0hkzuq+Fx9hSm2SSA0k8IWt6njnrt8WBV7rNRCgCP+kg1dQpKfcJg46igRqDmxnmeX2ugNwtv1buFu8RuJhqnywVhKn8HWWKlJYIkwMrHPPVts+OnETQBkgWdcl2jGjo9lmXqfDnnJoQ=
-Received: from OSBPR01MB3590.jpnprd01.prod.outlook.com (20.178.97.80) by
- OSBPR01MB2134.jpnprd01.prod.outlook.com (52.134.243.11) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.13; Mon, 17 Jun 2019 06:54:31 +0000
-Received: from OSBPR01MB3590.jpnprd01.prod.outlook.com
- ([fe80::b1c2:125c:440d:e240]) by OSBPR01MB3590.jpnprd01.prod.outlook.com
- ([fe80::b1c2:125c:440d:e240%4]) with mapi id 15.20.1987.014; Mon, 17 Jun 2019
- 06:54:31 +0000
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-CC:     Christoph Hellwig <hch@lst.de>, Joerg Roedel <joro@8bytes.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Subject: RE: [RFC PATCH v6 4/5] mmc: tmio: Use dma_max_mapping_size() instead
- of a workaround
-Thread-Topic: [RFC PATCH v6 4/5] mmc: tmio: Use dma_max_mapping_size() instead
- of a workaround
-Thread-Index: AQHVIdGm2I9J5403AkGhlbCnRkkrDqaaC4IAgACzcgCAAAKLAIAEhNUQgAAgXgCAAAgYEA==
-Date:   Mon, 17 Jun 2019 06:54:31 +0000
-Message-ID: <OSBPR01MB3590218F1CA8CEE5DCB53065D8EB0@OSBPR01MB3590.jpnprd01.prod.outlook.com>
-References: <1560421215-10750-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1560421215-10750-5-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <CAMuHMdXYqgPRX1WfUTRsKHhnSok5vfnr4AY36=vXoUvAxcNyWQ@mail.gmail.com>
- <20190614071800.GB8420@lst.de>
- <CAMuHMdXm5RtDUL5Wkyd6aJihu9nykYOhRf7vN6hOtB-OO8CTQQ@mail.gmail.com>
- <OSBPR01MB3590D4EF069F4554DA5D7ABBD8EB0@OSBPR01MB3590.jpnprd01.prod.outlook.com>
- <CAMuHMdWPUZGFWeKzPK=zkwc5h2SD+aW6ULb8C2rDJSmTWNXjeA@mail.gmail.com>
-In-Reply-To: <CAMuHMdWPUZGFWeKzPK=zkwc5h2SD+aW6ULb8C2rDJSmTWNXjeA@mail.gmail.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
-x-originating-ip: [118.238.235.108]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6c698aa4-6fec-4fcb-e07b-08d6f2f0a61f
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:OSBPR01MB2134;
-x-ms-traffictypediagnostic: OSBPR01MB2134:
-x-microsoft-antispam-prvs: <OSBPR01MB213416C684FD4E44E21ECFDED8EB0@OSBPR01MB2134.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 0071BFA85B
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(979002)(396003)(376002)(346002)(366004)(39860400002)(136003)(189003)(199004)(2906002)(66066001)(305945005)(7736002)(5660300002)(74316002)(4326008)(6436002)(229853002)(52536014)(6916009)(54906003)(71200400001)(71190400001)(476003)(316002)(486006)(68736007)(76176011)(66446008)(64756008)(7416002)(11346002)(81166006)(81156014)(8936002)(446003)(256004)(6506007)(53546011)(478600001)(26005)(7696005)(6116002)(99286004)(76116006)(66946007)(186003)(14454004)(66476007)(66556008)(8676002)(6246003)(102836004)(86362001)(33656002)(3846002)(55016002)(53936002)(73956011)(9686003)(25786009)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:OSBPR01MB2134;H:OSBPR01MB3590.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: renesas.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 5ducfu4Ew1x2Y+uk6LN7poEQhg0GmkXwPQBepJCt4croP5CVp9bsbOLBH+5HlTYzo7WJ334hoXu1e/MicmB/p6XZad0PEmttKxNnwtYMAPWQvy/l94GzsTCAcwc9chQfK5TpDWZhS3uRetWCHRa86Vj2t5a8IppxsQvaHkjqADM3EK6Kzu08iXHw/UABsT+PCnODJe9ycoYyt6OW7bgVvkiSexd+fmmjR6QGWsKaiwCsfbD+p6uL1xlCF2d74zVM6pqcJSvhCgRYr0uqUdJHCx1sxZ/k9sLW5sKEPo/60rYbWjxT9t0iF3yv3KpFXlxaaV3RdH2DoR0mjODIXcw9/smaD5/FIo9ZEr3kU6L4UgHyV47Zfxkwb+qY8skGbaCpFf+a1dpavUu2ZrFa/BNML+7vjtCFJSusRNfR3H+oSkk=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1725815AbfFQG6P (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Jun 2019 02:58:15 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:60196 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725778AbfFQG6P (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 02:58:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=/+2jnSophwa25P5mcJFi9TyF+a6lLsffKgVq1/9LKi8=; b=WQtRVz+s2tQWbdFjUvtv4FEip
+        U9vNcMEiZd71e4KemxAC+0ZsDq5DdNFQ2jxTwiOoiTiULZgVaiQK2vskNZNKlir1+P3d370izIKz4
+        DCROzyFd4iJkxzKT6dDteTe8GlYXfD0DxCIUAaYluKsoDsb2ESFr+ssKBJMTdNYW8QXoUKUgZysYg
+        IHLdgC4BvwNegSOznAKeT9U96h9cWXp1OKMTF6fPVtmwxu4t0FLUxjthY19JVohhqJccxGA67YKJf
+        aTGhNOjQiQw3acN18n4kt5WLhErm2mpjW4J/cfprljUIDlHdOhqTr6rS11f6yQnoHklGxjiYAvS4B
+        IAlINB4hQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hclah-0004uM-HY; Mon, 17 Jun 2019 06:58:07 +0000
+Date:   Sun, 16 Jun 2019 23:58:07 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Angelo Dureghello <angelo@sysam.it>
+Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org, linux-m68k@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] mmc: add Coldfire esdhc support
+Message-ID: <20190617065807.GA17948@infradead.org>
+References: <20190616204823.32758-1-angelo@sysam.it>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c698aa4-6fec-4fcb-e07b-08d6f2f0a61f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jun 2019 06:54:31.1514
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yoshihiro.shimoda.uh@renesas.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB2134
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190616204823.32758-1-angelo@sysam.it>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-SGkgR2VlcnQtc2FuLA0KDQo+IEZyb206IEdlZXJ0IFV5dHRlcmhvZXZlbiwgU2VudDogTW9uZGF5
-LCBKdW5lIDE3LCAyMDE5IDM6MjMgUE0NCj4gDQo+IEhpIFNoaW1vZGEtc2FuLA0KPiANCj4gT24g
-TW9uLCBKdW4gMTcsIDIwMTkgYXQgNjo1NCBBTSBZb3NoaWhpcm8gU2hpbW9kYQ0KPiA8eW9zaGlo
-aXJvLnNoaW1vZGEudWhAcmVuZXNhcy5jb20+IHdyb3RlOg0KPiA+ID4gRnJvbTogR2VlcnQgVXl0
-dGVyaG9ldmVuLCBTZW50OiBGcmlkYXksIEp1bmUgMTQsIDIwMTkgNDoyNyBQTQ0KPiA+ID4gT24g
-RnJpLCBKdW4gMTQsIDIwMTkgYXQgOToxOCBBTSBDaHJpc3RvcGggSGVsbHdpZyB3cm90ZToNCj4g
-PiA+ID4gT24gVGh1LCBKdW4gMTMsIDIwMTkgYXQgMTA6MzU6NDRQTSArMDIwMCwgR2VlcnQgVXl0
-dGVyaG9ldmVuIHdyb3RlOg0KPHNuaXA+DQo+ID4gPiA+IFRoaXMgcmVhbGx5IHNob3VsZCB1c2Ug
-YSBtaW5fdCBvbiBzaXplX3QuICBPdGhlcndpc2UgdGhlIHBhdGNoIGxvb2tzDQo+ID4gPiA+IGZp
-bmU6DQo+ID4gPg0KPiA+ID4gRm9sbG93ZWQgYnkgYW5vdGhlciBtaW4oKSB0byBtYWtlIGl0IGZp
-dCBpbiBtbWMtPm1heF9yZXFfc2l6ZSwgd2hpY2ggaXMNCj4gPiA+IHVuc2lnbmVkIGludC4NCj4g
-Pg0KPiA+IEdlZXJ0LXNhbjoNCj4gPg0KPiA+IEknbSBhZnJhaWQsIGJ1dCBJIGNhbm5vdCB1bmRl
-cnN0YW5kIHRoaXMgbWVhbnMuDQo+ID4gSXMgdGhpcyBwYXRjaCBpcyBwb3NzaWJsZSB0byBiZSB1
-cHN0cmVhbT8gT3IsIGRvIHlvdSBoYXZlIGFueSBjb25jZXJuPw0KPiANCj4gUGxlYXNlIGRpc3Jl
-Z2FyZCBteSBsYXN0IGNvbW1lbnQ6IGFzIHRoZSB2YWx1ZSBvZiAibW1jLT5tYXhfYmxrX3NpemUg
-Kg0KPiBtbWMtPm1heF9ibGtfY291bnQiIGlzIGFsd2F5cyAweGZmZmZfZmZmZiBvciBsZXNzLCAi
-bWluX3Qoc2l6ZV90LA0KPiBtbWMtPm1heF9ibGtfc2l6ZSAqIG1tYy0+bWF4X2Jsa19jb3VudCwg
-ZG1hX21heF9tYXBwaW5nX3NpemUoJnBkZXYtPmRldikpIg0KPiB3aWxsIGFsd2F5cyBiZSAweGZm
-ZmZfZmZmZiBvciBsZXNzLCB0b28sIHNvIHRoZXJlIGlzIG5vIGV4dHJhIHN0ZXAgbmVlZGVkDQo+
-IHRvIG1ha2UgaXQgZml0IGluIG1tYy0+bWF4X3JlcV9zaXplLg0KDQpUaGFuayB5b3UgZm9yIHlv
-dXIgcHJvbXB0IHJlcGx5ISBJIHVuZGVyc3Rvb2QgaXQuDQoNCj4gU29ycnkgZm9yIHRoZSBjb25m
-dXNpb24uDQoNCk5vIHdvcnJpZXMuDQoNCkJlc3QgcmVnYXJkcywNCllvc2hpaGlybyBTaGltb2Rh
-DQoNCg==
+On Sun, Jun 16, 2019 at 10:48:21PM +0200, Angelo Dureghello wrote:
+> This driver has been developed as a separate module starting
+> from the similar sdhci-esdhc-fls.c.
+> Separation has been mainly driven from change in endianness.
+
+Can't we have a way to define the endianess at build or even runtime?
+We have plenty of that elsewhere in the kernel.
