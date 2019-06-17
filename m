@@ -2,95 +2,105 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1312347D82
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 10:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D856E47DF6
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 11:10:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727588AbfFQIrh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Jun 2019 04:47:37 -0400
-Received: from mga09.intel.com ([134.134.136.24]:10238 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726121AbfFQIrh (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 17 Jun 2019 04:47:37 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jun 2019 01:47:37 -0700
-X-ExtLoop1: 1
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by fmsmga008.fm.intel.com with ESMTP; 17 Jun 2019 01:47:32 -0700
-Subject: Re: [PATCH v4 4/5] mmc: core: Add sdio_retune_hold_now() and
- sdio_retune_release()
-To:     Doug Anderson <dianders@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Double Lo <double.lo@cypress.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        netdev <netdev@vger.kernel.org>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Avri Altman <avri.altman@wdc.com>
-References: <20190613234153.59309-1-dianders@chromium.org>
- <20190613234153.59309-5-dianders@chromium.org>
- <CAPDyKFrJ4+zn7Ak0tYHkBfXUtH3N7erb5R7Q+hgugchZmCRGrw@mail.gmail.com>
- <CAD=FV=Wuj=gANR2im_o4ZnoLEB+U6FqzKe4noLdQyi1vw+K2xw@mail.gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <d5ce23c7-d6b2-87ea-c659-29ffc977bfad@intel.com>
-Date:   Mon, 17 Jun 2019 11:46:15 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1727717AbfFQJK2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Jun 2019 05:10:28 -0400
+Received: from mail-io1-f47.google.com ([209.85.166.47]:41633 "EHLO
+        mail-io1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727565AbfFQJK2 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 05:10:28 -0400
+Received: by mail-io1-f47.google.com with SMTP id w25so19500196ioc.8
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Jun 2019 02:10:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=from:references:in-reply-to:mime-version:thread-index:date
+         :message-id:subject:to:cc;
+        bh=Mj+s4plNnZbEVe10BIzmZ1IijmMEuCHawFgLwkcZqoI=;
+        b=ZVXe7pF/DKKbAtg0BLq1kHz+Yf8AmgubdjAQekKwZeBkWQQeo+lrwMdIAePBmlOgcE
+         WJ3paACJ9GsoxC9mAywQ6EfBHW7Qhb1RZpLg6OjDRo0//12nX9SRpN+HRZNsKHbLnYNY
+         mXR2sr52mBeN/pkOHc0Q5eeZBCOpWx8hMerKU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:references:in-reply-to:mime-version
+         :thread-index:date:message-id:subject:to:cc;
+        bh=Mj+s4plNnZbEVe10BIzmZ1IijmMEuCHawFgLwkcZqoI=;
+        b=bYwG+zgwaGO9ZBpdfFZuZespmCY6x8LgA69mEUm4IRal9OCdQeBRFY2pa+xptWkOmA
+         fZBO9FMD8JMSdl5y/jJfNlh691lDMSOJYSguBmS0hYGTQCCllNjgL9uwuHpOonhR+POP
+         DEkOy5bIrIvrS+keU3oFeELJsARyEWOMuzY1ETK3bBpodcqo9CQ+wgO5SXxN8TIeBY4A
+         7hWlN+tbjltOWuRVBhaFOliKjOfPXSmW96vAyWDTe8xOAFgrTs3J1Wb37MfSl3yistOy
+         /i/fx5MK7Q8OAPEkpX+WnbVOd3Rl5I6HxdPENr+Exmamsau6b63TO4iPw3OGMG7s96qk
+         Fw2A==
+X-Gm-Message-State: APjAAAWZqrZBJAojIMCE0J31oRCmBi+HD/BK4Rr/wM0xqRNkHmIpikEp
+        p5BZWym+8UwXjELi9DBjvvgIxAEeHrQxKKyghBHhZQ==
+X-Google-Smtp-Source: APXvYqwKR2USXudxvvKfOK55glU2D5y5FMiBAo7oI/W/qo2pfnh4b2Kx5on0RhBtIfzYHBRJ2BHKN9CUkaC5PBmqWrM=
+X-Received: by 2002:a02:298b:: with SMTP id p133mr87239176jap.37.1560762627424;
+ Mon, 17 Jun 2019 02:10:27 -0700 (PDT)
+From:   Kashyap Desai <kashyap.desai@broadcom.com>
+References: <20190605190836.32354-1-hch@lst.de> <20190605190836.32354-11-hch@lst.de>
+ <cd713506efb9579d1f69a719d831c28d@mail.gmail.com> <20190608081400.GA19573@lst.de>
+ <98f6557ae91a7cdfe8069fcf7d788c88@mail.gmail.com> <20190617084433.GA7969@lst.de>
+In-Reply-To: <20190617084433.GA7969@lst.de>
 MIME-Version: 1.0
-In-Reply-To: <CAD=FV=Wuj=gANR2im_o4ZnoLEB+U6FqzKe4noLdQyi1vw+K2xw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 15.0
+Thread-Index: AQNLjZIO2zMn7N+9xPobnDbFSu4o5gI2RJdJAgF+bYgBfxw4kQGu5dmvAzKBgtajXfsrgA==
+Date:   Mon, 17 Jun 2019 14:40:25 +0530
+Message-ID: <e7443be50725bbdcdb6f1f4cc73955aa@mail.gmail.com>
+Subject: RE: [PATCH 10/13] megaraid_sas: set virt_boundary_mask in the scsi host
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Jens Axboe <axboe@kernel.dk>, Sebastian Ott <sebott@linux.ibm.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Max Gurtovoy <maxg@mellanox.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Oliver Neukum <oneukum@suse.com>, linux-block@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+        "PDL,MEGARAIDLINUX" <megaraidlinux.pdl@broadcom.com>,
+        PDL-MPT-FUSIONLINUX <mpt-fusionlinux.pdl@broadcom.com>,
+        linux-hyperv@vger.kernel.org, linux-usb@vger.kernel.org,
+        usb-storage@lists.one-eyed-alien.net, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 14/06/19 7:38 PM, Doug Anderson wrote:
-> Hi,
-> 
-> On Fri, Jun 14, 2019 at 5:10 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->>
->> On Fri, 14 Jun 2019 at 01:42, Douglas Anderson <dianders@chromium.org> wrote:
->>>
->>> We want SDIO drivers to be able to temporarily stop retuning when the
->>> driver knows that the SDIO card is not in a state where retuning will
->>> work (maybe because the card is asleep).  We'll move the relevant
->>> functions to a place where drivers can call them.
->>>
->>> Signed-off-by: Douglas Anderson <dianders@chromium.org>
->>
->> This looks good to me.
->>
->> BTW, seems like this series is best funneled via my mmc tree, no? In
->> such case, I need acks for the brcmfmac driver patches.
-> 
-> For patch #1 I think it could just go in directly to the wireless
-> tree.  It should be fine to land the rest of the patches separately.
-> 
-> For patch #2 - #5 then what you say makes sense to me.  I suppose
-> you'd want at least a Reviewed-by from Arend and an Ack from Kalle on
-> the Broadcom patches?
-> 
-> I'd also suggest that we Cc stable explicitly when applying.  That's
-> easy for #2 and #3 since they have a Fixes tag.  For #4 and #5 I guess
-> the question is how far back to go.  Maybe Adrian has an opinion here
-> since I think he's the one who experienced these problems.
-
-V4 seemed to apply cleanly back to v4.18
+>
+> On Fri, Jun 14, 2019 at 01:28:47AM +0530, Kashyap Desai wrote:
+> > Is there any changes in API  blk_queue_virt_boundary? I could not find
+> > relevant code which account for this. Can you help ?
+> > Which git repo shall I use for testing ? That way I can confirm, I
+> > didn't miss relevant changes.
+>
+> Latest mainline plus the series (which is about to get resent).
+> blk_queue_virt_boundary now forced an unlimited max_hw_sectors as that
+is
+> how PRP-like schemes work, to work around a block driver merging bug.
+But
+> we also need to communicate that limit to the DMA layer so that we don't
+set
+> a smaller iommu segment size limitation.
+>
+> > >From your above explanation, it means (after this patch) max segment
+> > >size
+> > of the MR controller will be set to 4K.
+> > Earlier it is possible to receive single SGE of 64K datalength (Since
+> > max seg size was 64K), but now the same buffer will reach the driver
+> > having 16 SGEs (Each SGE will contain 4K length).
+>
+> No, there is no more limit for the size of the segment at all, as for
+PRPs each
+> PRP is sort of a segment from the hardware perspective.
+> We just require the segments to not have gaps, as PRPs don't allow for
+that.
+Thanks for clarification. I have also observed that max_segment_size Is
+unchanged and it is 64K.
+>
+> That being said I think these patches are wrong for the case of megaraid
+or
+> mpt having both NVMe and SAS/ATA devices behind a single controller.
+> Is that a valid configuration?
+Yes. This is a valid configuration.
