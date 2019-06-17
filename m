@@ -2,176 +2,183 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F4448B15
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 19:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E1DE48C32
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 20:39:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728735AbfFQR7S (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Jun 2019 13:59:18 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:44100 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727738AbfFQR7P (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 13:59:15 -0400
-Received: by mail-pg1-f193.google.com with SMTP id n2so6221465pgp.11
-        for <linux-mmc@vger.kernel.org>; Mon, 17 Jun 2019 10:59:14 -0700 (PDT)
+        id S1726196AbfFQSj1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Jun 2019 14:39:27 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:44309 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725878AbfFQSj1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 14:39:27 -0400
+Received: by mail-vs1-f68.google.com with SMTP id v129so6797397vsb.11
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Jun 2019 11:39:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=gukKhFSULA/cUvkTjo5/+HGI1qG1vr2u7fmWrwDOvpo=;
-        b=jiiND4P5qU8Y/H5AW6gpozQxINq32kXq8a21pgnFiksPAlWxBnSNxyM41KYPgXEEHj
-         nLrxpTPdz2JzWt2ss/bpp6VnqYbvLLIJVhRGH93B1cSXrKDQcKXeZGQNwTimVYjHGMBz
-         YXVD6+ew99DZjtBQIpRsSM23r2Y/O1G7MoO+c=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HrHPxKrferT1JAd/MlzxZwSuGBA6gb0ENjpbrrRdk7w=;
+        b=SV7VogTP85EMqFS3Mzv6FQo/JuabZthZ0z2+w+f7x6cgdpjYwsindOdSBj6DYL7muZ
+         Ga32lSPxZzQMNTqIEKijrS3U0njBt8U1FGuYY4Bn4rgrKgquOm2fNDP7UUQXEBYolnJI
+         tn7JP7FeZbZ7RVkn3KRu0VDYevg8MpiDclJsfbC/y/ZrEIOggA73s9uvPuFHFS8yA2CC
+         heFrSIiAspsjbKU9EDZhdgXpre73gO+mIjJxiUOamg5k40ct/femc0WlL7O6TSLb3A4G
+         NRNKGp3iBcehgOVQvRCRA+xB8ZQD3fwNi1wkLzgmuBNRk4xNZhqIfi/sgaDYqDvi0YmT
+         6ceA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=gukKhFSULA/cUvkTjo5/+HGI1qG1vr2u7fmWrwDOvpo=;
-        b=DqHa3I9JMqYOLk3cenhSvfsp4GWh6tOK3gpZTjnckaR18PljEP2dCbtTlgij8R3e9L
-         XORnX6HRHY73j+XdNaL/rKIhusrfYl/iR6e50PhJ2wNExu6f9rBMymAg4wkYWjFjaINq
-         +x6MGGYrnvXuwPLCzAdN608gSZtNfdFG2gw/Ep4b0uTfy6LCnDRq9iCoZNcR4LrLGfWw
-         AVr8FipltYQe2CujLXt2aIjKICWR0sC3iKr1k/5HJBvKtjb+2vxmWSkyMDrJkVnzAoGJ
-         YCUHLukQcjrQ9LafRsW9PkSKBAHIX3LwIs//2f49dRHWaevKiJyZY3iS95BqsI1D7Lo5
-         /C0A==
-X-Gm-Message-State: APjAAAUI1gwPmXI4rw8cHfjCEBdhMMUVeYwzaH1itVcn81W2cXoW+J8s
-        SnPqTmAPm27g6wYTJd6jE0mTNw==
-X-Google-Smtp-Source: APXvYqzdCSj0uI6G5zQQeqkog1Napf/2heNE90tChRbx7D/xUVbfnn1JUIW8D1+k8m93FMtgdBP5aw==
-X-Received: by 2002:a62:1b85:: with SMTP id b127mr115821200pfb.165.1560794353481;
-        Mon, 17 Jun 2019 10:59:13 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id q1sm15145809pfn.178.2019.06.17.10.59.09
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 17 Jun 2019 10:59:11 -0700 (PDT)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     brcm80211-dev-list.pdl@broadcom.com,
-        linux-rockchip@lists.infradead.org,
-        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
-        linux-wireless@vger.kernel.org,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HrHPxKrferT1JAd/MlzxZwSuGBA6gb0ENjpbrrRdk7w=;
+        b=GEKOlUKDZyoT6kw9Q7iVVFqRk36F3vLqwNUyYNS5n8mtbBTcwcM7AZ8wJhcC3w17d3
+         JJE1CBeHF5apdr/eN68bT3ILVgfO6VKZkxufPDehbMsn60cGS2kGImYk86jDoBMnxgMG
+         VYCYRanlPDJSYvYVz5MIR0RwyN/IOW5r6+1CUFQslzBZtVFSyyn0Fbtte4Gukfs1RMPP
+         o7MLr0nzWXflrQwEoO2STVyB08Jf9XCNXKj95lADD30dDrV5nhnt1YnQNVoCOmVZIObY
+         v7ZtpPPrPKUh4RKaOelchiHHGX59bO64x/r6FSV75eENB093oaGxgId7YFKj2GoB3EJp
+         lLtg==
+X-Gm-Message-State: APjAAAXq9Tq8+NiBkNThHkBX3GOtkuVkl0OOo7rt0arPYBaMzEATOY+R
+        1g7+k4GOkdDpOyWKEzlrfzUC2Vc268whqcZJz1DHQA==
+X-Google-Smtp-Source: APXvYqy0hy2tVDS6IPNJlT9E1K+7AzXLT3TMlyyG420beOQJMtebGkOnRtHj86zAn/Yfs7K2PHcRzwGpAQjwvWrfiXQ=
+X-Received: by 2002:a67:ee5b:: with SMTP id g27mr1171014vsp.165.1560796765659;
+ Mon, 17 Jun 2019 11:39:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190617175653.21756-1-dianders@chromium.org>
+In-Reply-To: <20190617175653.21756-1-dianders@chromium.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 17 Jun 2019 20:38:49 +0200
+Message-ID: <CAPDyKFpaX6DSM_BjtghAHUf7qYCyEG+wMagXPUdgz3Eutovqfw@mail.gmail.com>
+Subject: Re: [PATCH v5 0/5] brcmfmac: sdio: Deal better w/ transmission errors
+ related to idle
+To:     Douglas Anderson <dianders@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
         Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
         Wright Feng <wright.feng@cypress.com>,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
-        Douglas Anderson <dianders@chromium.org>,
-        stable@vger.kernel.org, Allison Randal <allison@lohutok.net>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev <netdev@vger.kernel.org>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Allison Randal <allison@lohutok.net>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v5 4/5] mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
-Date:   Mon, 17 Jun 2019 10:56:52 -0700
-Message-Id: <20190617175653.21756-5-dianders@chromium.org>
-X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
-In-Reply-To: <20190617175653.21756-1-dianders@chromium.org>
-References: <20190617175653.21756-1-dianders@chromium.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        Michael Trimarchi <michael@amarulasolutions.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Ondrej Jirman <megous@megous.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Avri Altman <avri.altman@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-We want SDIO drivers to be able to temporarily stop retuning when the
-driver knows that the SDIO card is not in a state where retuning will
-work (maybe because the card is asleep).  We'll move the relevant
-functions to a place where drivers can call them.
+On Mon, 17 Jun 2019 at 19:57, Douglas Anderson <dianders@chromium.org> wrote:
+>
+> This series attempts to deal better with the expected transmission
+> errors related to the idle states (handled by the Always-On-Subsystem
+> or AOS) on the SDIO-based WiFi on rk3288-veyron-minnie,
+> rk3288-veyron-speedy, and rk3288-veyron-mickey.
+>
+> Some details about those errors can be found in
+> <https://crbug.com/960222>, but to summarize it here: if we try to
+> send the wakeup command to the WiFi card at the same time it has
+> decided to wake up itself then it will behave badly on the SDIO bus.
+> This can cause timeouts or CRC errors.
+>
+> When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
+> re-tuning.  Since I am currently developing on 4.19 this was the
+> original problem I attempted to solve.
+>
+> On mainline it turns out that you don't see the retuning errors but
+> you see tons of spam about timeouts trying to wakeup from sleep.  I
+> tracked down the commit that was causing that and have partially
+> reverted it here.  I have no real knowledge about Broadcom WiFi, but
+> the commit that was causing problems sounds (from the descriptioin) to
+> be a hack commit penalizing all Broadcom WiFi users because of a bug
+> in a Cypress SD controller.  I will let others comment if this is
+> truly the case and, if so, what the right solution should be.
+>
+> For v3 of this series I have added 2 patches to the end of the series
+> to address errors that would show up on systems with these same SDIO
+> WiFi cards when used on controllers that do periodic retuning.  These
+> systems need an extra fix to prevent the retuning from happening when
+> the card is asleep.
+>
+> I believe v5 of this series is all ready to go assuming Kalle Valo is
+> good with it.  I've added after-the-cut notes to patches awaiting his
+> Ack and have added other tags collected so far.
+>
+> Changes in v5:
+> - Add missing sdio_retune_crc_enable() in comments (Ulf).
+> - /s/reneable/re-enable (Ulf).
+> - Remove leftover prototypes: mmc_expect_errors_begin() / end() (Ulf).
+> - Rewording of "sleep command" in commit message (Arend).
+>
+> Changes in v4:
+> - Moved to SDIO API only (Adrian, Ulf).
+> - Renamed to make it less generic, now retune_crc_disable (Ulf).
+> - Function header makes it clear host must be claimed (Ulf).
+> - No more WARN_ON (Ulf).
+> - Adjust to API rename (Adrian, Ulf).
+> - Moved retune hold/release to SDIO API (Adrian).
+> - Adjust to API rename (Adrian).
+>
+> Changes in v3:
+> - Took out the spinlock since I believe this is all in one context.
+> - Expect errors for all of brcmf_sdio_kso_control() (Adrian).
+> - ("mmc: core: Export mmc_retune_hold_now() mmc_retune_release()") new for v3.
+> - ("brcmfmac: sdio: Don't tune while the card is off") new for v3.
+>
+> Changes in v2:
+> - A full revert, not just a partial one (Arend).  ...with explicit Cc.
+> - Updated commit message to clarify based on discussion of v1.
+>
+> Douglas Anderson (5):
+>   Revert "brcmfmac: disable command decode in sdio_aos"
+>   mmc: core: API to temporarily disable retuning for SDIO CRC errors
+>   brcmfmac: sdio: Disable auto-tuning around commands expected to fail
+>   mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
+>   brcmfmac: sdio: Don't tune while the card is off
+>
+>  drivers/mmc/core/core.c                       |  5 +-
+>  drivers/mmc/core/sdio_io.c                    | 77 +++++++++++++++++++
+>  .../broadcom/brcm80211/brcmfmac/sdio.c        | 17 ++--
+>  include/linux/mmc/host.h                      |  1 +
+>  include/linux/mmc/sdio_func.h                 |  6 ++
+>  5 files changed, 99 insertions(+), 7 deletions(-)
+>
+> --
+> 2.22.0.410.gd8fdbe21b5-goog
+>
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
----
-Patches #2 - #5 will go through Ulf's tree.
+Applied for fixes, thanks!
 
-I've CCed stable@ here without a version tag.  As per Adrian Hunter
-this patch applies cleanly to 4.18+ so that would be an easy first
-target.  However, if someone were so inclined they could provide
-further backports.  As per Adrian [1] the root problem has existed for
-~4 years.
+Some minor changes:
+1) Dropped the a few "commit notes", that was more related to version
+and practical information about the series.
+2) Dropped fixes tags for patch 2->5, but instead put a stable tag
+targeted for v4.18+.
 
-[1] https://lkml.kernel.org/r/4f39e152-04ba-a64e-985a-df93e6d15ff8@intel.com
+Awaiting an ack from Kalle before sending the PR to Linus.
 
-Changes in v5: None
-Changes in v4:
-- Moved retune hold/release to SDIO API (Adrian).
+Kalle, perhaps you prefer to pick patch 1, as it could go separate.
+Then please tell - and/or if there is anything else you want me to
+change.
 
-Changes in v3:
-- ("mmc: core: Export mmc_retune_hold_now() mmc_retune_release()") new for v3.
-
-Changes in v2: None
-
- drivers/mmc/core/sdio_io.c    | 40 +++++++++++++++++++++++++++++++++++
- include/linux/mmc/sdio_func.h |  3 +++
- 2 files changed, 43 insertions(+)
-
-diff --git a/drivers/mmc/core/sdio_io.c b/drivers/mmc/core/sdio_io.c
-index 0acb1a29c968..2ba00acf64e6 100644
---- a/drivers/mmc/core/sdio_io.c
-+++ b/drivers/mmc/core/sdio_io.c
-@@ -15,6 +15,7 @@
- #include "sdio_ops.h"
- #include "core.h"
- #include "card.h"
-+#include "host.h"
- 
- /**
-  *	sdio_claim_host - exclusively claim a bus for a certain SDIO function
-@@ -771,3 +772,42 @@ void sdio_retune_crc_enable(struct sdio_func *func)
- 	func->card->host->retune_crc_disable = false;
- }
- EXPORT_SYMBOL_GPL(sdio_retune_crc_enable);
-+
-+/**
-+ *	sdio_retune_hold_now - start deferring retuning requests till release
-+ *	@func: SDIO function attached to host
-+ *
-+ *	This function can be called if it's currently a bad time to do
-+ *	a retune of the SDIO card.  Retune requests made during this time
-+ *	will be held and we'll actually do the retune sometime after the
-+ *	release.
-+ *
-+ *	This function could be useful if an SDIO card is in a power state
-+ *	where it can respond to a small subset of commands that doesn't
-+ *	include the retuning command.  Care should be taken when using
-+ *	this function since (presumably) the retuning request we might be
-+ *	deferring was made for a good reason.
-+ *
-+ *	This function should be called while the host is claimed.
-+ */
-+void sdio_retune_hold_now(struct sdio_func *func)
-+{
-+	mmc_retune_hold_now(func->card->host);
-+}
-+EXPORT_SYMBOL_GPL(sdio_retune_hold_now);
-+
-+/**
-+ *	sdio_retune_release - signal that it's OK to retune now
-+ *	@func: SDIO function attached to host
-+ *
-+ *	This is the complement to sdio_retune_hold_now().  Calling this
-+ *	function won't make a retune happen right away but will allow
-+ *	them to be scheduled normally.
-+ *
-+ *	This function should be called while the host is claimed.
-+ */
-+void sdio_retune_release(struct sdio_func *func)
-+{
-+	mmc_retune_release(func->card->host);
-+}
-+EXPORT_SYMBOL_GPL(sdio_retune_release);
-diff --git a/include/linux/mmc/sdio_func.h b/include/linux/mmc/sdio_func.h
-index 4820e6d09dac..5a177f7a83c3 100644
---- a/include/linux/mmc/sdio_func.h
-+++ b/include/linux/mmc/sdio_func.h
-@@ -170,4 +170,7 @@ extern int sdio_set_host_pm_flags(struct sdio_func *func, mmc_pm_flag_t flags);
- extern void sdio_retune_crc_disable(struct sdio_func *func);
- extern void sdio_retune_crc_enable(struct sdio_func *func);
- 
-+extern void sdio_retune_hold_now(struct sdio_func *func);
-+extern void sdio_retune_release(struct sdio_func *func);
-+
- #endif /* LINUX_MMC_SDIO_FUNC_H */
--- 
-2.22.0.410.gd8fdbe21b5-goog
-
+Kind regards
+Uffe
