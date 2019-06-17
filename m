@@ -2,110 +2,159 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38C3448651
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 16:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B74948ADE
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2019 19:57:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728224AbfFQO7Z (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Jun 2019 10:59:25 -0400
-Received: from mail-vk1-f194.google.com ([209.85.221.194]:34176 "EHLO
-        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727903AbfFQO7Z (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 10:59:25 -0400
-Received: by mail-vk1-f194.google.com with SMTP id g124so2123520vkd.1
-        for <linux-mmc@vger.kernel.org>; Mon, 17 Jun 2019 07:59:24 -0700 (PDT)
+        id S1726424AbfFQR5o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Jun 2019 13:57:44 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:43524 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726427AbfFQR5o (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jun 2019 13:57:44 -0400
+Received: by mail-pg1-f196.google.com with SMTP id f25so6218236pgv.10
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Jun 2019 10:57:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VeDj455KpUjyGeFAvU/iNT8gTzAGIt+VE2V1K3FogGo=;
-        b=x2rtsNq8v/D8WowlfZi68S9op6AgNbvw20AEk01oXwgbgkkIqGoh7yUHC2b/x+Fpks
-         hklTr4vyJFfnu46NYXoNF6cujUaH2nJQMgSndZx6YhVWpyXQREM/XIlZFWsCPzzqbYiZ
-         d9i05TZWygp+RIske9k1qLrWcaQAd/Qz+aN1n8KuXzvzWd2HFoqGQgZsdgg5slwtqKvh
-         pPhE+uUNLhxtsRLRSEVjSrQiG5JEQ60sNKYn0vQTydYe4bzRPTx6iuUywg9Zsu/SsUjU
-         fWFjgza4amZzX20SY1DLOo9T5LBGUNCZv8ErViIL7AVqDk5W7UW8sqW9LT4snHzVQcPl
-         Y31w==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=f9pIBJIx5KyoFRd/bdMWO0ltZcMM5qXRNGUXR67YrGQ=;
+        b=iN8UJ+1H+LLjCAE7ZOe8TFSmKlR/Zt9Ir81Ky0rIilfvkaD2u5NXfvBjxAkJmMe+g8
+         Kdi+mp01jN3oWhOTozGO/8mCtAQv2LGKB+cD4rluMbIwL3l99CPkR9mZpg9u5Z9n3Ytn
+         RdVpKZYKwzqy/qahwneUnjr6yugbbjlt4KRjM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VeDj455KpUjyGeFAvU/iNT8gTzAGIt+VE2V1K3FogGo=;
-        b=gUoDPp8p3j3e+pII95nrUvcbAwTESRIwiDJsf6kMQnEiVarqeFEi5gBIDYR3yC6SHA
-         r0U9exWu4YMGw6ewE6YaOMLKbglKKD464igj07Zfoh2IozYjWZbH2hanw4V/NY7Cuu/3
-         KbG+6xgEoKIbI1W76eYY57QFllL8MrggE/oz2i6xNTNc5D75HKrzKs1hVJwUr4fsmxcx
-         8pQReTS0/+77Zai1kehRt5L1vQQXAp+vYFYtXhV9xMsW1rO3ZPZFWqvGsN0woSafVmIP
-         3ilEQDhTxgGNBHPhTaeq++6L60/GjlzDeo4cJD4K8lt1rpJKLyIbaXvDPM3sR1vedH28
-         NlVw==
-X-Gm-Message-State: APjAAAXJQXGP4ALZhfkiWm3dRW+CA8kz3eC9nCRvb9EICFKrP0CeSgAt
-        L3DBnCr0PndNW4a1RzzMoJ8BgPEZvM/fOxGGlSfmKsIc3tk=
-X-Google-Smtp-Source: APXvYqx84xD50NIMODd6WRKKp6Two4nx8BrixlFjO5oD+vW8e0fmtGE84cRELHAfY18BaMIh0MTDpgLtd01jmw7jVCA=
-X-Received: by 2002:a1f:8744:: with SMTP id j65mr43978757vkd.17.1560783563932;
- Mon, 17 Jun 2019 07:59:23 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=f9pIBJIx5KyoFRd/bdMWO0ltZcMM5qXRNGUXR67YrGQ=;
+        b=AcepOEB40JZ4g2CdKtGWh+XASBcn68o5XG/CefZ6Z+parLIKhyCJdyMfQBiC6SHrdF
+         hzt72rUq/4RSvL2q6az6ECH/JaPv3IwIRtbuCrW3OiRBXhWi4l6vSMBXKp4OH3ZIeYHl
+         fc9trLwlxaBORgs0PlADJKOcI7j1fh3abeTP2Chh7VGOUB4sFUnmSIP6C6f36GPeRXNT
+         gjRV5LcRWBnTauXB6HFgPxqSMfr237OPKvZKH+zLM9Fi4aLpuX+/X8JoStRG/+aOPrw3
+         j3C6RbFQwhCzC7h/ZN9zgbp4Rdsq1qdD3EoDzBSYb4fLQDWLjoGWlTjQ+0YGqhFix6Lu
+         yL2g==
+X-Gm-Message-State: APjAAAWYsXBfwcCVbslk5X77GP24DVN1nJD81rBVkWPK6uKBEbN9GTLM
+        L5cZjJvuhz0kYodWMjJYGjtpBw==
+X-Google-Smtp-Source: APXvYqwxiy2sTP4aHQThn6yUsnnxea9KMuOdDQS+o1XQ29m7RKGm2fcTiPiFUq9yNh50U8PSmx4rMQ==
+X-Received: by 2002:aa7:8202:: with SMTP id k2mr10940559pfi.31.1560794260643;
+        Mon, 17 Jun 2019 10:57:40 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
+        by smtp.gmail.com with ESMTPSA id q1sm15145809pfn.178.2019.06.17.10.57.23
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 17 Jun 2019 10:57:27 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        linux-wireless@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
+        Douglas Anderson <dianders@chromium.org>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Allison Randal <allison@lohutok.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        Michael Trimarchi <michael@amarulasolutions.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Ondrej Jirman <megous@megous.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Avri Altman <avri.altman@wdc.com>
+Subject: [PATCH v5 0/5] brcmfmac: sdio: Deal better w/ transmission errors related to idle
+Date:   Mon, 17 Jun 2019 10:56:48 -0700
+Message-Id: <20190617175653.21756-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
 MIME-Version: 1.0
-References: <1560247011-26369-1-git-send-email-manish.narani@xilinx.com>
- <1560247011-26369-4-git-send-email-manish.narani@xilinx.com>
- <CAPDyKFrJwpwUUX_q2kcR9QY_fv9Lgos+ixPmU6JMeJVqJAiFpg@mail.gmail.com>
- <5feac3fb-bef3-b7d1-57d6-81e115e1f555@xilinx.com> <CAPDyKFp_ZvSjFp2FGonzGsnc9xPyZ7qOCaRnX1SimBxLpfz9-Q@mail.gmail.com>
- <948514a0-e310-75fd-e8a8-6ef8bb14e41f@xilinx.com>
-In-Reply-To: <948514a0-e310-75fd-e8a8-6ef8bb14e41f@xilinx.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 17 Jun 2019 16:58:47 +0200
-Message-ID: <CAPDyKFp6O8rPZDZS4iKJam2+tXeen_ZMOXKw=WVzJNpBXcSc9g@mail.gmail.com>
-Subject: Re: [PATCH 3/3] mmc: sdhci-of-arasan: Add support for ZynqMP Platform
- Tap Delays Setup
-To:     Michal Simek <michal.simek@xilinx.com>
-Cc:     Manish Narani <manish.narani@xilinx.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Adrian Hunter <adrian.hunter@intel.com>, rajan.vaja@xilinx.com,
-        jolly.shah@xilinx.com, nava.manne@xilinx.com,
-        Olof Johansson <olof@lixom.net>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-[...]
+This series attempts to deal better with the expected transmission
+errors related to the idle states (handled by the Always-On-Subsystem
+or AOS) on the SDIO-based WiFi on rk3288-veyron-minnie,
+rk3288-veyron-speedy, and rk3288-veyron-mickey.
 
-> >>
-> >>
-> >>> In regards to the mmc data part, I suggest to drop the
-> >>> ->set_tap_delay() callback, but rather use a boolean flag to indicate
-> >>> whether clock phases needs to be changed for the variant. Potentially
-> >>> that could even be skipped and instead call clk_set_phase()
-> >>> unconditionally, as the clock core deals fine with clock providers
-> >>> that doesn't support the ->set_phase() callback.
-> >>
-> >> In connection to another version of this driver for latest Xilinx chip
-> >> it would be better to keep set_tap_delay callback in the driver. The
-> >> reason is that new chip/ip is capable to setup tap delays directly
-> >> without asking firmware to do it. That's why for versal IP there is a
-> >> need to call different setup_tap_delay function.
-> >
-> > The ->set_tap_delay() callback is for ZyncMp pointing to
-> > sdhci_arasan_zynqmp_set_tap_delay(). This function calls the
-> > clk_set_phase() API.
-> >
-> > What does ->set_tap_delay() do for the latest version?
->
-> There is different set of default tap delays which should be programmed
-> and it is done just via writing to registers which are the part of
-> controller address space.
+Some details about those errors can be found in
+<https://crbug.com/960222>, but to summarize it here: if we try to
+send the wakeup command to the WiFi card at the same time it has
+decided to wake up itself then it will behave badly on the SDIO bus.
+This can cause timeouts or CRC errors.
 
-Okay, I see.
+When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
+re-tuning.  Since I am currently developing on 4.19 this was the
+original problem I attempted to solve.
 
-Not sure what makes most sense to do here, but it sounds to me like
-another ->set_phase() callback should be implemented for the clock
-provider. In other words, calling clk_set_phase() should continue to
-works just fine for this case as well. If it turns out to be
-inconvenient, we can always add the ->set_tap_delay() at a later point
-when it makes more sense.
+On mainline it turns out that you don't see the retuning errors but
+you see tons of spam about timeouts trying to wakeup from sleep.  I
+tracked down the commit that was causing that and have partially
+reverted it here.  I have no real knowledge about Broadcom WiFi, but
+the commit that was causing problems sounds (from the descriptioin) to
+be a hack commit penalizing all Broadcom WiFi users because of a bug
+in a Cypress SD controller.  I will let others comment if this is
+truly the case and, if so, what the right solution should be.
 
-[...]
+For v3 of this series I have added 2 patches to the end of the series
+to address errors that would show up on systems with these same SDIO
+WiFi cards when used on controllers that do periodic retuning.  These
+systems need an extra fix to prevent the retuning from happening when
+the card is asleep.
 
-Kind regards
-Uffe
+I believe v5 of this series is all ready to go assuming Kalle Valo is
+good with it.  I've added after-the-cut notes to patches awaiting his
+Ack and have added other tags collected so far.
+
+Changes in v5:
+- Add missing sdio_retune_crc_enable() in comments (Ulf).
+- /s/reneable/re-enable (Ulf).
+- Remove leftover prototypes: mmc_expect_errors_begin() / end() (Ulf).
+- Rewording of "sleep command" in commit message (Arend).
+
+Changes in v4:
+- Moved to SDIO API only (Adrian, Ulf).
+- Renamed to make it less generic, now retune_crc_disable (Ulf).
+- Function header makes it clear host must be claimed (Ulf).
+- No more WARN_ON (Ulf).
+- Adjust to API rename (Adrian, Ulf).
+- Moved retune hold/release to SDIO API (Adrian).
+- Adjust to API rename (Adrian).
+
+Changes in v3:
+- Took out the spinlock since I believe this is all in one context.
+- Expect errors for all of brcmf_sdio_kso_control() (Adrian).
+- ("mmc: core: Export mmc_retune_hold_now() mmc_retune_release()") new for v3.
+- ("brcmfmac: sdio: Don't tune while the card is off") new for v3.
+
+Changes in v2:
+- A full revert, not just a partial one (Arend).  ...with explicit Cc.
+- Updated commit message to clarify based on discussion of v1.
+
+Douglas Anderson (5):
+  Revert "brcmfmac: disable command decode in sdio_aos"
+  mmc: core: API to temporarily disable retuning for SDIO CRC errors
+  brcmfmac: sdio: Disable auto-tuning around commands expected to fail
+  mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
+  brcmfmac: sdio: Don't tune while the card is off
+
+ drivers/mmc/core/core.c                       |  5 +-
+ drivers/mmc/core/sdio_io.c                    | 77 +++++++++++++++++++
+ .../broadcom/brcm80211/brcmfmac/sdio.c        | 17 ++--
+ include/linux/mmc/host.h                      |  1 +
+ include/linux/mmc/sdio_func.h                 |  6 ++
+ 5 files changed, 99 insertions(+), 7 deletions(-)
+
+-- 
+2.22.0.410.gd8fdbe21b5-goog
+
