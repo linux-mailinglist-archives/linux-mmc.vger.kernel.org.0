@@ -2,128 +2,242 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8BFA49F6B
-	for <lists+linux-mmc@lfdr.de>; Tue, 18 Jun 2019 13:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28F1849F93
+	for <lists+linux-mmc@lfdr.de>; Tue, 18 Jun 2019 13:47:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729798AbfFRLlb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 18 Jun 2019 07:41:31 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:46159 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729797AbfFRLla (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 18 Jun 2019 07:41:30 -0400
-Received: by mail-ua1-f66.google.com with SMTP id o19so5531445uap.13
-        for <linux-mmc@vger.kernel.org>; Tue, 18 Jun 2019 04:41:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OquRai3EL/XExl349Wm14w8fFke8wkLsWLanUHJ1x0Y=;
-        b=ACGp0e0bbjN9+Q4/kCoX0brWtGvbzlyFg+9i2UVIrIq4DiMq2Lp/nKjKa27+XYaXi2
-         WsMMZuxv2V1TVtw+543zlPN3fbNHt2VLwBdSD3FDvm9+etccnrOuqe6uwEL2AJCF2idj
-         wnmJdkPPiJ7/ftYpONKRzTLc+K6Qv1QfrwjVRpdfV95wh3iL1nWwkg4IWaONxYKHiRSU
-         vzWxcoczCmgF04mmB9w8F8tM7yrMc6r6IbwUu5GMaUToGRJYnGCaGnYxbENWlTtLgskO
-         9KSoLzT2y77PlqysOmGv+XKSrEkfUpUIQcbdd1kATH8x6cxG4aUk8oS0C2F0kZ6+bQhb
-         UlbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OquRai3EL/XExl349Wm14w8fFke8wkLsWLanUHJ1x0Y=;
-        b=DNw6Z5VrJ1wd1Mfagslnjtle5w+mbfOWsKCPYYjyDAlSoiRveBtbP0VnWdoukHk+Zt
-         CyHGegz6MbKJxs+n7hTVhI4VmZr6b5vwNVvQ9+BJBf8LvY/PZ7tetGKxdxjcH4vP7XNr
-         ajsp7zk5aWVrsxr0eVb4rR5oK7DaE0s58CJB4hee5TTmC1XzxGgq9jU7NKdCiNaHcctP
-         tuL2igKtw5puWjdq1D80Fxrui89adMi8xHKHgeKivZsPcLQdPiaaEqmGkROX5aLo6JCU
-         H1U2aG1/gsWEXB1jgMB04TvRSC8LwV0lstJZ0KX8wr3Ssx2i6whEKngIuBRkcyWVHzJD
-         fpMQ==
-X-Gm-Message-State: APjAAAVNLdDY7zX22GB84i5moDhv1l+nWi8XOVqcQ8ruRD1BxO8l3SvX
-        jivubEdQaXisKeLXzHT8FeZr4iCDFh6HFIsTPooOgQ==
-X-Google-Smtp-Source: APXvYqyDx2iNOhICHPrjB4I0UdRvZse1KFSF6Oe9p6mWYhECI/wqjO25kBLfTIcatteCxBl8HLM3AQe0C18zFiyAX+8=
-X-Received: by 2002:a67:ee16:: with SMTP id f22mr13773698vsp.191.1560858089104;
- Tue, 18 Jun 2019 04:41:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190617201014.84503-1-rrangel@chromium.org> <20190617201014.84503-2-rrangel@chromium.org>
-In-Reply-To: <20190617201014.84503-2-rrangel@chromium.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 18 Jun 2019 13:40:53 +0200
-Message-ID: <CAPDyKFpdWRyb+0Cz=FZgVsOnaCRqik539F3QgJ676yVr-YCF0g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mmc: sdhci: sdhci-pci-o2micro: Check if controller
- supports 8-bit width
-To:     Raul E Rangel <rrangel@chromium.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "ernest.zhang" <ernest.zhang@bayhubtech.com>,
-        Daniel Kurtz <djkurtz@chromium.org>,
+        id S1729732AbfFRLrl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 18 Jun 2019 07:47:41 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36108 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729110AbfFRLrk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 18 Jun 2019 07:47:40 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id AE02E6090E; Tue, 18 Jun 2019 11:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1560858458;
+        bh=zsiyismHkNaIwa20jYT3ygpjBUSpDFV20h1wHyoiRi4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=H5tfAqm20VO08QFGVdOVOtMkcVVGFL246Sf3UyVYR2o3TEG6v5OeIXMB8aHE8WN33
+         pDspwYOueoJUPxXUit0AQPkd4sK0qCot1aRU7IsQraLuq+vH5r7fO6vlyFCDXr8Nol
+         z4SSAolCahXWQV4OslSkw2Crm+rq16NTPpqxpa7c=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 99F376028D;
+        Tue, 18 Jun 2019 11:47:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1560858456;
+        bh=zsiyismHkNaIwa20jYT3ygpjBUSpDFV20h1wHyoiRi4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=lWS5vBN2n7mllaKBfP/xGUE/WXX3mG7tlT+2NMunARaEo6J1Emg3O4Bd61KfgDnIm
+         tS+SssTn8qjpetiuUWVaLkZGKYxngG+qLqIj7cxilaIwLuiNDycKy6gHTRjyNTfOof
+         5NF9IZc9lCRLoudqobxCMnGqIAVsAeTxfbXyP68Q=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 99F376028D
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Douglas Anderson <dianders@chromium.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "open list\:ARM\/Rockchip SoC..." 
+        <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Allison Randal <allison@lohutok.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Niklas =?utf-8?Q?S=C3=B6derl?= =?utf-8?Q?und?= 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        Michael Trimarchi <michael@amarulasolutions.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Ondrej Jirman <megous@megous.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "linux-mmc\@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        Avri Altman <avri.altman@wdc.com>
+Subject: Re: [PATCH v5 0/5] brcmfmac: sdio: Deal better w/ transmission errors related to idle
+References: <20190617175653.21756-1-dianders@chromium.org>
+        <CAPDyKFpaX6DSM_BjtghAHUf7qYCyEG+wMagXPUdgz3Eutovqfw@mail.gmail.com>
+        <87v9x39mxf.fsf@kamboji.qca.qualcomm.com>
+        <CAPDyKFoE0+KNBT5j3_VpJKcztghVa-eFJhy8887bZcUk8bfN2Q@mail.gmail.com>
+Date:   Tue, 18 Jun 2019 14:47:27 +0300
+In-Reply-To: <CAPDyKFoE0+KNBT5j3_VpJKcztghVa-eFJhy8887bZcUk8bfN2Q@mail.gmail.com>
+        (Ulf Hansson's message of "Tue, 18 Jun 2019 13:28:10 +0200")
+Message-ID: <87ef3r9kts.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 17 Jun 2019 at 22:10, Raul E Rangel <rrangel@chromium.org> wrote:
->
-> The O2 controller supports 8-bit EMMC access.
->
-> JESD84-B51 section A.6.3.a defines the bus testing procedure that
-> `mmc_select_bus_width()` implements. This is used to determine the actual
-> bus width of the eMMC.
->
-> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+Ulf Hansson <ulf.hansson@linaro.org> writes:
 
-Applied for next, thanks!
+> On Tue, 18 Jun 2019 at 13:02, Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+>     Ulf Hansson <ulf.hansson@linaro.org> writes:
+>     
+>     > On Mon, 17 Jun 2019 at 19:57, Douglas Anderson
+>     <dianders@chromium.org> wrote:
+>     >>
+>     >> This series attempts to deal better with the expected
+>     transmission
+>     >> errors related to the idle states (handled by the
+>     Always-On-Subsystem
+>     >> or AOS) on the SDIO-based WiFi on rk3288-veyron-minnie,
+>     >> rk3288-veyron-speedy, and rk3288-veyron-mickey.
+>     >>
+>     >> Some details about those errors can be found in
+>     >> <https://crbug.com/960222>, but to summarize it here: if we try
+>     to
+>     >> send the wakeup command to the WiFi card at the same time it
+>     has
+>     >> decided to wake up itself then it will behave badly on the SDIO
+>     bus.
+>     >> This can cause timeouts or CRC errors.
+>     >>
+>     >> When I tested on 4.19 and 4.20 these CRC errors can be seen to
+>     cause
+>     >> re-tuning. Since I am currently developing on 4.19 this was the
+>     >> original problem I attempted to solve.
+>     >>
+>     >> On mainline it turns out that you don't see the retuning errors
+>     but
+>     >> you see tons of spam about timeouts trying to wakeup from
+>     sleep. I
+>     >> tracked down the commit that was causing that and have
+>     partially
+>     >> reverted it here. I have no real knowledge about Broadcom WiFi,
+>     but
+>     >> the commit that was causing problems sounds (from the
+>     descriptioin) to
+>     >> be a hack commit penalizing all Broadcom WiFi users because of
+>     a bug
+>     >> in a Cypress SD controller. I will let others comment if this
+>     is
+>     >> truly the case and, if so, what the right solution should be.
+>     >>
+>     >> For v3 of this series I have added 2 patches to the end of the
+>     series
+>     >> to address errors that would show up on systems with these same
+>     SDIO
+>     >> WiFi cards when used on controllers that do periodic retuning.
+>     These
+>     >> systems need an extra fix to prevent the retuning from
+>     happening when
+>     >> the card is asleep.
+>     >>
+>     >> I believe v5 of this series is all ready to go assuming Kalle
+>     Valo is
+>     >> good with it. I've added after-the-cut notes to patches
+>     awaiting his
+>     >> Ack and have added other tags collected so far.
+>     >>
+>     >> Changes in v5:
+>     >> - Add missing sdio_retune_crc_enable() in comments (Ulf).
+>     >> - /s/reneable/re-enable (Ulf).
+>     >> - Remove leftover prototypes: mmc_expect_errors_begin() / end()
+>     (Ulf).
+>     >> - Rewording of "sleep command" in commit message (Arend).
+>     >>
+>     >> Changes in v4:
+>     >> - Moved to SDIO API only (Adrian, Ulf).
+>     >> - Renamed to make it less generic, now retune_crc_disable
+>     (Ulf).
+>     >> - Function header makes it clear host must be claimed (Ulf).
+>     >> - No more WARN_ON (Ulf).
+>     >> - Adjust to API rename (Adrian, Ulf).
+>     >> - Moved retune hold/release to SDIO API (Adrian).
+>     >> - Adjust to API rename (Adrian).
+>     >>
+>     >> Changes in v3:
+>     >> - Took out the spinlock since I believe this is all in one
+>     context.
+>     >> - Expect errors for all of brcmf_sdio_kso_control() (Adrian).
+>     >> - ("mmc: core: Export mmc_retune_hold_now() mmc_retune_release
+>     ()") new for v3.
+>     >> - ("brcmfmac: sdio: Don't tune while the card is off") new for
+>     v3.
+>     >>
+>     >> Changes in v2:
+>     >> - A full revert, not just a partial one (Arend). ...with
+>     explicit Cc.
+>     >> - Updated commit message to clarify based on discussion of v1.
+>     >>
+>     >> Douglas Anderson (5):
+>     >> Revert "brcmfmac: disable command decode in sdio_aos"
+>     >> mmc: core: API to temporarily disable retuning for SDIO CRC
+>     errors
+>     >> brcmfmac: sdio: Disable auto-tuning around commands expected to
+>     fail
+>     >> mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
+>     >> brcmfmac: sdio: Don't tune while the card is off
+>     >>
+>     >> drivers/mmc/core/core.c | 5 +-
+>     >> drivers/mmc/core/sdio_io.c | 77 +++++++++++++++++++
+>     >> .../broadcom/brcm80211/brcmfmac/sdio.c | 17 ++--
+>     >> include/linux/mmc/host.h | 1 +
+>     >> include/linux/mmc/sdio_func.h | 6 ++
+>     >> 5 files changed, 99 insertions(+), 7 deletions(-)
+>     >>
+>     >> --
+>     >> 2.22.0.410.gd8fdbe21b5-goog
+>     >>
+>     >
+>     > Applied for fixes, thanks!
+>     >
+>     > Some minor changes:
+>     > 1) Dropped the a few "commit notes", that was more related to
+>     version
+>     > and practical information about the series.
+>     > 2) Dropped fixes tags for patch 2->5, but instead put a stable
+>     tag
+>     > targeted for v4.18+.
+>     >
+>     > Awaiting an ack from Kalle before sending the PR to Linus.
+>     >
+>     > Kalle, perhaps you prefer to pick patch 1, as it could go
+>     separate.
+>     > Then please tell - and/or if there is anything else you want me
+>     to
+>     > change.
+>     
+>     TBH I haven't followed the thread (or patches) that closely :) So
+>     feel
+>     free to take them and push them to Linus.
+>     
+>
+> I take that as an ack and will add your tag for it, thanks!
 
-Kind regards
-Uffe
+Yes, it was an ack :) I forgot to add:
 
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
+BTW, your previous mail was in HTML so most likely it didn't reach the
+list.
 
-> ---
-> I tested this on an AMD chromebook.
->
-> $ cat /sys/kernel/debug/mmc1/ios
-> clock:          200000000 Hz
-> actual clock:   200000000 Hz
-> vdd:            21 (3.3 ~ 3.4 V)
-> bus mode:       2 (push-pull)
-> chip select:    0 (don't care)
-> power mode:     2 (on)
-> bus width:      3 (8 bits)
-> timing spec:    9 (mmc HS200)
-> signal voltage: 1 (1.80 V)
-> driver type:    0 (driver type B)
->
-> Before this patch only 4 bit was negotiated.
->
->  drivers/mmc/host/sdhci-pci-o2micro.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
-> index dd21315922c87..9dc4548271b4b 100644
-> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
-> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-> @@ -395,11 +395,21 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
->  {
->         struct sdhci_pci_chip *chip;
->         struct sdhci_host *host;
-> -       u32 reg;
-> +       u32 reg, caps;
->         int ret;
->
->         chip = slot->chip;
->         host = slot->host;
-> +
-> +       caps = sdhci_readl(host, SDHCI_CAPABILITIES);
-> +
-> +       /*
-> +        * mmc_select_bus_width() will test the bus to determine the actual bus
-> +        * width.
-> +        */
-> +       if (caps & SDHCI_CAN_DO_8BIT)
-> +               host->mmc->caps |= MMC_CAP_8_BIT_DATA;
-> +
->         switch (chip->pdev->device) {
->         case PCI_DEVICE_ID_O2_SDS0:
->         case PCI_DEVICE_ID_O2_SEABIRD0:
-> --
-> 2.22.0.410.gd8fdbe21b5-goog
->
+-- 
+Kalle Valo
