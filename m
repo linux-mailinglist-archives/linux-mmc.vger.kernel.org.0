@@ -2,40 +2,30 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B7C64BE91
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jun 2019 18:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86CEA4BF56
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jun 2019 19:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725843AbfFSQqc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 19 Jun 2019 12:46:32 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:36367 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726865AbfFSQqc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 19 Jun 2019 12:46:32 -0400
-Received: by mail-io1-f66.google.com with SMTP id h6so90871ioh.3
-        for <linux-mmc@vger.kernel.org>; Wed, 19 Jun 2019 09:46:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=18Kg5MWKnGyDk/Hk0hs3jQay0Br3d6t8dYYP1QSodXI=;
-        b=S3wUdxLHpIUARaWQtVB2bROCuLFiF+TmuUWCczBjvKvP3vj4yTqZb9uUhk9sJmjU+w
-         qs2sA9cmT1h5IcsnKqOCAkU+m66cpYk/l2WEw6BW3ft+TZxtUlLAxBRgadvmgkhvY8Lp
-         HOycQDzeAFqVF++PV59AsY3dqZrWqQqt1cofVAJ1I2tjWrrRN7JAYJ52rAEascJbRPR3
-         ybzrzt49YoFj8NUzatbt3xdDd85WNysXIp/7d30RzCYO09MWWEFhw27ECEhi8j4Rm7H6
-         orJLX1t0lmOtg2e3UG3uifdPSpVFh10mcWq/jwARJAkuj0ek1pqWaGBEm57s2e1x6mIY
-         myyA==
-X-Gm-Message-State: APjAAAWP6W7Gb7oGBp67P8Q3y0+d2PBZYfSVswPSdM2Zf5MRbUQ26PRl
-        mf0EpDW2+/D7ayhjpMd+cy7OcA==
-X-Google-Smtp-Source: APXvYqwlrenhz7SGY4ppdH5b4KqvGgeKH2qtdHOslNv0XodC4c1mNe523GdL5Na20VfbkbwdPmjrRA==
-X-Received: by 2002:a5d:8195:: with SMTP id u21mr15862298ion.260.1560962791001;
-        Wed, 19 Jun 2019 09:46:31 -0700 (PDT)
-Received: from google.com ([2620:15c:183:0:20b8:dee7:5447:d05])
-        by smtp.gmail.com with ESMTPSA id t19sm13739147iog.41.2019.06.19.09.46.28
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 19 Jun 2019 09:46:29 -0700 (PDT)
-Date:   Wed, 19 Jun 2019 10:46:25 -0600
-From:   Raul Rangel <rrangel@chromium.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        id S1726175AbfFSRJU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 19 Jun 2019 13:09:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54582 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726091AbfFSRJU (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 19 Jun 2019 13:09:20 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 12D092084E;
+        Wed, 19 Jun 2019 17:09:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560964159;
+        bh=80tp+Pfbm6Ns4CbM/jJ69e0di//UD8WVvRSO8hblqyM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GUiKRDkeQDyT9YRzrvLwbzlNtdl981GFiz6MxIYp7SLnFO93q5foZULw8qzDq9gj4
+         VLRRnZfrc4sFSYfxNGEHaR97+JqJJXlhaANP6dLMrRVEXQ3ehDEmJEaclS6cSjd5ie
+         10Fsf2QDfDHktMYRRDYmjHTcefukDpsNNbZ5gW2Q=
+Date:   Wed, 19 Jun 2019 19:09:17 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Raul Rangel <rrangel@chromium.org>
 Cc:     stable@vger.kernel.org, linux-mmc@vger.kernel.org,
         djkurtz@google.com, adrian.hunter@intel.com, zwisler@chromium.org,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -44,98 +34,35 @@ Cc:     stable@vger.kernel.org, linux-mmc@vger.kernel.org,
         Ulf Hansson <ulf.hansson@linaro.org>
 Subject: Re: [stable/4.14.y PATCH 0/3] mmc: Fix a potential resource leak
  when shutting down request queue.
-Message-ID: <20190619164625.GA85539@google.com>
+Message-ID: <20190619170917.GC10107@kroah.com>
 References: <20190513175521.84955-1-rrangel@chromium.org>
  <20190514091933.GA27269@kroah.com>
+ <20190619164625.GA85539@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190514091933.GA27269@kroah.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190619164625.GA85539@google.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, May 14, 2019 at 11:19:34AM +0200, Greg Kroah-Hartman wrote:
-> On Mon, May 13, 2019 at 11:55:18AM -0600, Raul E Rangel wrote:
-> > I think we should cherry-pick 41e3efd07d5a02c80f503e29d755aa1bbb4245de
-> > https://lore.kernel.org/patchwork/patch/856512/ into 4.14. It fixes a
-> > potential resource leak when shutting down the request queue.
-> 
-> Potential meaning "it does happen", or "it can happen if we do this", or
-> just "maybe it might happen, we really do not know?"
-It does happen if the AMD SDHCI patches are cherry-picked into 4.14.
-https://lkml.org/lkml/2019/5/1/398
-It can be mitigated by changing the line in the patch with
-`mmc_detect_change(host, 0)` to mmc_detect_change(host, 200)`, but
-that's just a workaround to play with the timing so the race condition
-doesn't happen.
-> 
-> > Once this patch is applied, there is a potential for a null pointer dereference.
-> > That's what the second patch fixes.
-> 
-> What is the git id of that upstream fix?
-So there is no specific upstream fix. There was a large patch set that
-migrated mmc to using blk-mq, so the bug just kind of went away.
-https://lwn.net/Articles/739774/ or 0fbfd12518303e9b32ac9fd231439459eac848f9
+On Wed, Jun 19, 2019 at 10:46:25AM -0600, Raul Rangel wrote:
+> On Tue, May 14, 2019 at 11:19:34AM +0200, Greg Kroah-Hartman wrote:
+> > On Mon, May 13, 2019 at 11:55:18AM -0600, Raul E Rangel wrote:
+> > > I think we should cherry-pick 41e3efd07d5a02c80f503e29d755aa1bbb4245de
+> > > https://lore.kernel.org/patchwork/patch/856512/ into 4.14. It fixes a
+> > > potential resource leak when shutting down the request queue.
+> > 
+> > Potential meaning "it does happen", or "it can happen if we do this", or
+> > just "maybe it might happen, we really do not know?"
+> It does happen if the AMD SDHCI patches are cherry-picked into 4.14.
+> https://lkml.org/lkml/2019/5/1/398
 
-> 
-> > The third patch is just an optimization to stop processing earlier.
-> 
-> That's not how stable kernels work :(
-Oops, I guess we can ignore that patch. It just prevents mmc_init_request
-from being called, but it doesn't matter since the 2nd patch actually
-checks for NULL now.
-> 
-> > See https://patchwork.kernel.org/patch/10925469/ for the initial motivation.
-> 
-> I don't understand the motivation from that link at all :(
-> 
-> > This commit applies to v4.14.116. It is already included in 4.19. 4.19 doesn't
-> > suffer from the null pointer dereference because later commits migrate the mmc
-> > stack to blk-mq.
-> 
-> What are those later commits?
-Commit 0fbfd12518303e9b32ac9fd231439459eac848f9 specifically deletes the
-code for the 2nd patch. As I said above, the NULL pointer dereference
-just kind of went away as part of the blk-mq migration, so there is no
-upstream fix :(
+Why are those patches somehow being required to be added to 4.14.y?  If
+they are not added, is all fine?
 
-> 
-> > I tested this patch set by randomly connecting/disconnecting the SD
-> > card. I got over 189650 itarations without a problem.
-> 
-> And if you do not have these patches, on 4.14.y, how many iterations
-> cause a problem?  If you just apply the first patch, does that work?
-If I apply the AMD SDHCI patches and nothing else, then I can cause a
-resource leak within 10 iterations. If I apply just the first patch then
-I can cause a NULL pointer error within 10 iterations. If I apply both 1
-and 2, then everything works as expected and I can't cause a problem.
-> 
-> _EVERY_ time we take a patch that is not upstream, something usually is
-> broken and needs to be fixed.  We have a long long long history of this,
-> so if you want to have a patch that is not upstream applied to a stable
-> kernel release, you need a whole lot of justification and explanation
-> and begging.  And you need to be around to fix the fallout for when it
-> breaks :)
+thanks,
 
-It also looks like 2361bfb055f948eac6583fa3c75a014da84fe554 includes a
-fix for 41e3efd07d5a02c80f503e29d755aa1bbb4245de, so that would need to
-be cherry picked in.
-
-I guess I should have included a fixes: line in my second patch.
-
-So to summarize:
-- cherry-pick 41e3efd07d5a02c80f503e29d755aa1bbb4245de
-- cherry-pick 2361bfb055f948eac6583fa3c75a014da84fe554
-- apply 2nd patch but add to commit message:
-  Fixes: 41e3efd07d5a ("mmc: block: Simplify cleaning up the queue")
-- Ignore patch 3 since it's an optimization.
-> 
-> thanks,
-> 
-> greg k-h
-Thanks again for your time, and sorry for the really late response!
-
-Raul
+greg k-h
