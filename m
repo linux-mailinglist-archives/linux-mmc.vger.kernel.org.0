@@ -2,109 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 061C64CF3B
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jun 2019 15:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6EE94CF3C
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jun 2019 15:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726551AbfFTNoX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 20 Jun 2019 09:44:23 -0400
-Received: from mail-vk1-f193.google.com ([209.85.221.193]:39359 "EHLO
-        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726562AbfFTNoX (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Jun 2019 09:44:23 -0400
-Received: by mail-vk1-f193.google.com with SMTP id o19so573343vkb.6
-        for <linux-mmc@vger.kernel.org>; Thu, 20 Jun 2019 06:44:23 -0700 (PDT)
+        id S1731175AbfFTNo2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 20 Jun 2019 09:44:28 -0400
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:33752 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726654AbfFTNo1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Jun 2019 09:44:27 -0400
+Received: by mail-ua1-f66.google.com with SMTP id f20so1692752ual.0
+        for <linux-mmc@vger.kernel.org>; Thu, 20 Jun 2019 06:44:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=p96jy0Q37G25+vp9fBBi4D52+67/LDOfa3YA/vvK0nQ=;
-        b=Fvpo3fPVn86Oj4E+YvaQl8cPyYuhY74EG2gRxBzGmwQxo9dhUFfK46Wqbe1s5F1S7M
-         RIlP2GrtASd4qeqv1PFUPUs+l/pAlAE3I1CLEi/CjvgjMA7U9vgMsNYv8ssajGLHZ68o
-         KydVSn6PhK8V3C2MopVEsZ/2B7TF3V0taFOL6Z1mnCyzT56fLKwJD9s46GJ/HalkbgMP
-         jwawGHaYAJ6UQphwTrTu4ulc8pMlKHOtg/Abl1egApahf41i41Jc0cl/AsePPhWHUavJ
-         z1/FozbChnurp8WdOi/0pjZS/yDVLLky+I4f3s3PaXImG90fA70/swzetjAgmiQgP3ne
-         qxuw==
+        bh=i+YnV+oMLjW0P6RTstiqshtqFt17bIjNkv5P4D2/OJQ=;
+        b=kw2ibHZqbYYW6AOPgpeVK1PXjnI96q4un0/OwJcq5Hc4oeQSDx08U22rkLVEcwO7ZX
+         CaZGEA5xQ5mfUL+umGw5LMfqwJcFrSePc2txOy9lv8Rkt8ldgvHRhGNDhU5RaOmQ85iC
+         rKaI0H47I2XBhdmuPiHUW5Y9bHOQw8f94SJCC4kFnM83QckUUTh3/Mqz79FpB/gDs32M
+         iDpj8Gus6WlDYWAfSygtr0Vl8WyLbplJa62MiS4ajYO3CizRKwrPCaRAmlafxbAzQUEc
+         KWUq/fcmhA4c4FfR1XdJwrJo0dbwoxsYDaRtzNIRMt/THmrnCRwpAtf1fHBvlNyn+O6t
+         NKRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=p96jy0Q37G25+vp9fBBi4D52+67/LDOfa3YA/vvK0nQ=;
-        b=k/Wtfu0auedsdxZ21ZQGr/P7rnwflQpAuLx4mIfxut6R/IdQJSWo6SScLRPWn8lxBi
-         +V1j3NQ3TXfbAB55Js37vDZOo3Xazl/2m4JEsNyFzMvCs958BxEnQrAmHDuczd7JqETt
-         N5Ve+cDTJBE3qWhlFfEJ1VPOLXaPEzECkEXk57AwZ/0lxNqc/ObSbVMrJ9pRcqqrCuYX
-         Q3YkLbtJ3WneQRzatqqlIRumo+wUcNbxHzaLm16jMwvMnn42ELYt4x4Uy31pE2iZwUpZ
-         WuMTz+BkW23VIEL4K4p5QwdDlzqPqu5QsUVhi+r4f8/0aqt4hyro0CrNGT1627RpROjp
-         QwRg==
-X-Gm-Message-State: APjAAAXbVtpssQ1CRL/UDPoegyPCMqAiq+cuiWKqy+ogBViotYrHOmiW
-        3qaXRZGmdfomaG7JLDl7JIm2KYnV9e2gSPSOenbeZ1aiWGU=
-X-Google-Smtp-Source: APXvYqwSIhL9E76zJPhl/UAA1VO3H+r4eQibZ++IcDzst0vz2QD1+4n8+MVLYbn1HivyVsoTSu2qRNGefVdpg21EzyQ=
-X-Received: by 2002:a1f:8744:: with SMTP id j65mr4380333vkd.17.1561038262381;
- Thu, 20 Jun 2019 06:44:22 -0700 (PDT)
+        bh=i+YnV+oMLjW0P6RTstiqshtqFt17bIjNkv5P4D2/OJQ=;
+        b=eWrlX1F8FaYfDgPqCnP1TzHkka1sD8thAPEB8M/wUnr3umkT6UWquZ+mMYsGfSWkhN
+         rHL+SefReoo1eIsPWFy3No8ryj5COLbeRLR2B7uN9VgcrZcuUg9GVKuW8YqhhPrDd87j
+         dWAmYWyVXwU1E7lsRY92Amt213hvEfCOFQRp8LPiCV1sQuTuRlv/kOeB+QWNRzmZt4qh
+         OlMN2ijnU1JHm711hq8MbfeHroTJP77ZS2G9nL45AErwMZBrl5XoCl0wlwgxcmKNfUaP
+         tZ+h6Ix3NQBacrei98srk58uL4s+QV3qgHf7n1BsW0KEu2MpxHbec6KJHACxxymBnxQt
+         79wA==
+X-Gm-Message-State: APjAAAW4GUCcmZaKQBIf97RLOwieqRC2sJOlP05ty69P6rhCoA5BMZeB
+        wCTygnVlTmJb0IqjxS/0RSDuaS1OHzaUjixTYJu4mw==
+X-Google-Smtp-Source: APXvYqydm7KQW859SeL1dcMFLOlN61GULbDzhio3/AV2espp0iXHdT0wbIQQaVOvKtBJD2Q4pe2SEMDCFEKY4A19u4g=
+X-Received: by 2002:a9f:242e:: with SMTP id 43mr8130620uaq.100.1561038266852;
+ Thu, 20 Jun 2019 06:44:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190618153448.27145-1-ulf.hansson@linaro.org>
-In-Reply-To: <20190618153448.27145-1-ulf.hansson@linaro.org>
+References: <20190620094901.8539-1-adrian.hunter@intel.com>
+In-Reply-To: <20190620094901.8539-1-adrian.hunter@intel.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 20 Jun 2019 15:43:45 +0200
-Message-ID: <CAPDyKFqCyh7pZ3SFkxHZU+edBSHYx6V1LD-BdHBugmoSe+g2PQ@mail.gmail.com>
-Subject: Re: [PATCH 0/7] mmc: sdio: Various fixes/improvements for SDIO PM
-To:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Douglas Anderson <dianders@chromium.org>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Thu, 20 Jun 2019 15:43:50 +0200
+Message-ID: <CAPDyKFpH_dbQGOPXuHj6ZPOciWL_pA--AJ9kQCaPEojxUViQSA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-pci: Add support for Intel EHL
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 18 Jun 2019 at 17:34, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+On Thu, 20 Jun 2019 at 11:50, Adrian Hunter <adrian.hunter@intel.com> wrote:
 >
-> The power management support implemented via system suspend/resume and runtime
-> suspend/resume for SDIO cards is rather messy, but also fragile.
+> Add PCI Ids for Intel EHL.
 >
-> This series makes some improvement to this code. In particular the so called
-> powered-on re-initialization of SDIO card is quite questionable, I suspect
-> it may never really worked well. Therefore this series removes this code, which
-> helps to prepare for additional improvements on top in a later series.
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+
+Applied for next, thanks!
+
+Kind regards
+Uffe
+
+
+> ---
+>  drivers/mmc/host/sdhci-pci-core.c | 2 ++
+>  drivers/mmc/host/sdhci-pci.h      | 2 ++
+>  2 files changed, 4 insertions(+)
 >
-> So far the series has only been compile tested, so any help in testing on HW for
-> regressions is greatly appreciated.
->
-> Kind regards
-> Uffe
->
-> Ulf Hansson (7):
->   mmc: sdio: Turn sdio_run_irqs() into static
->   mmc: sdio: Drop mmc_claim|release_host() in mmc_sdio_power_restore()
->   mmc: sdio: Move comment about re-initialization to
->     mmc_sdio_reinit_card()
->   mmc: sdio: Drop powered-on re-init at runtime resume and HW reset
->   mmc: sdio: Don't re-initialize powered-on removable SDIO cards at
->     resume
->   mmc: sdio: Drop unused in-parameter to mmc_sdio_reinit_card()
->   mmc: sdio: Drop unused in-parameter from mmc_sdio_init_card()
->
->  drivers/mmc/core/sdio.c     | 92 +++++++++++++++----------------------
->  drivers/mmc/core/sdio_irq.c |  3 +-
->  include/linux/mmc/host.h    |  1 -
->  3 files changed, 38 insertions(+), 58 deletions(-)
+> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+> index fa6a8fa560c3..4041878eb0f3 100644
+> --- a/drivers/mmc/host/sdhci-pci-core.c
+> +++ b/drivers/mmc/host/sdhci-pci-core.c
+> @@ -1668,6 +1668,8 @@ static const struct pci_device_id pci_ids[] = {
+>         SDHCI_PCI_DEVICE(INTEL, CNPH_SD,   intel_byt_sd),
+>         SDHCI_PCI_DEVICE(INTEL, ICP_EMMC,  intel_glk_emmc),
+>         SDHCI_PCI_DEVICE(INTEL, ICP_SD,    intel_byt_sd),
+> +       SDHCI_PCI_DEVICE(INTEL, EHL_EMMC,  intel_glk_emmc),
+> +       SDHCI_PCI_DEVICE(INTEL, EHL_SD,    intel_byt_sd),
+>         SDHCI_PCI_DEVICE(INTEL, CML_EMMC,  intel_glk_emmc),
+>         SDHCI_PCI_DEVICE(INTEL, CML_SD,    intel_byt_sd),
+>         SDHCI_PCI_DEVICE(O2, 8120,     o2),
+> diff --git a/drivers/mmc/host/sdhci-pci.h b/drivers/mmc/host/sdhci-pci.h
+> index e5dc6e44c7a4..cdd15f357d01 100644
+> --- a/drivers/mmc/host/sdhci-pci.h
+> +++ b/drivers/mmc/host/sdhci-pci.h
+> @@ -50,6 +50,8 @@
+>  #define PCI_DEVICE_ID_INTEL_CNPH_SD    0xa375
+>  #define PCI_DEVICE_ID_INTEL_ICP_EMMC   0x34c4
+>  #define PCI_DEVICE_ID_INTEL_ICP_SD     0x34f8
+> +#define PCI_DEVICE_ID_INTEL_EHL_EMMC   0x4b47
+> +#define PCI_DEVICE_ID_INTEL_EHL_SD     0x4b48
+>  #define PCI_DEVICE_ID_INTEL_CML_EMMC   0x02c4
+>  #define PCI_DEVICE_ID_INTEL_CML_SD     0x02f5
 >
 > --
 > 2.17.1
 >
-
-I decided to queue this up, to see what tests from linux-next and
-kernelCI reports.
-
-Still, that doesn't mean I am appreciating test done on HW. I can also
-apply tested-by tags by amending patches after this point.
-
-Kind regards
-Uffe
