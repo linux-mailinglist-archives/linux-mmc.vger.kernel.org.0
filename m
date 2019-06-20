@@ -2,127 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 416B34CF96
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jun 2019 15:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DD8E5930C
+	for <lists+linux-mmc@lfdr.de>; Fri, 28 Jun 2019 06:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731823AbfFTNvE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 20 Jun 2019 09:51:04 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:42846 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726654AbfFTNvE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Jun 2019 09:51:04 -0400
-Received: by mail-ua1-f66.google.com with SMTP id a97so1639865uaa.9
-        for <linux-mmc@vger.kernel.org>; Thu, 20 Jun 2019 06:51:03 -0700 (PDT)
+        id S1726505AbfF1Ex7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 28 Jun 2019 00:53:59 -0400
+Received: from mail-pg1-f230.google.com ([209.85.215.230]:44224 "EHLO
+        mail-pg1-f230.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726719AbfF1Ex6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 28 Jun 2019 00:53:58 -0400
+Received: by mail-pg1-f230.google.com with SMTP id n2so2014636pgp.11
+        for <linux-mmc@vger.kernel.org>; Thu, 27 Jun 2019 21:53:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2IFwlqbKib7dWbeVbv8X2YweFdeF4XDbaSTOpsTFt9E=;
-        b=cnBfFGGl3pJdpKp1MmBsF47mWvkNWCygNpH36R5cENrnDyoojF55rqerYfDLfwbbTj
-         RFNj58C5CUCULzDhnJhuuGUawX8GzXHIVIZhOz7jX/xVeIdC14e76z4ee9EhQzScRn3r
-         yZyPrtDQwDjqyu6vqRuq4CLTKqp19vhLDP1kzyZlJral0qqZUmCvS5srHMy+sgfXo7OX
-         8J3/HDJJtVqUJPoO9R3c2uQaBqDPo5Hb8yFlY4a3lZNrdJXrZ2uvs7wDiEP1uZSr6Jfu
-         RATefM9/IOvINHrRt3pDF9AMIZimpQikwZUjdX3vOvvUC0JBvtUIxqFbJK3SbyUB77sX
-         swNA==
+        d=ctcd-edu.20150623.gappssmtp.com; s=20150623;
+        h=from:subject:thread-topic:thread-index:date:message-id
+         :accept-language:content-language:content-transfer-encoding
+         :mime-version;
+        bh=uja0RKLj8/ZClYB7/xee4WJU8BS3tEVS8HkeIEY1v6o=;
+        b=yoeySuHZ2sejtG818TC1O/sRk49+/vQ3CbN+Cdo+UHW9L5funzQd2Q0pE2uLs0b0US
+         3ooTACMRlY79vI4FLzqFZKHKKrxPTrXgXaWMcqe8jgbG9TaDTNtilkTZRtg6VlUGiKdp
+         KbTF2mzomGYMgE4bQnu5VDh7bapfFBiT2qYBZJe7YG5LbyDWz/Eh/rPZUG+Ac0xjJxZH
+         W3mbIfopUIqlT0EL+QWT7o/xSZm5JFZCL+eCmMMNv60Jnl/aFltkCdOXb5SlSsjXYCQB
+         Nb4cLYVjYvOUfUwx9XO2NitclNXqBV9hkxd1YcPbhSzExvM/+lHPAma8+4zL50ilre/p
+         2Ulg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2IFwlqbKib7dWbeVbv8X2YweFdeF4XDbaSTOpsTFt9E=;
-        b=j3dXFjuZ1t6fFzxUijFISLWYV1gOhZMK1qsgHU/N9B/6LNwjiS0O1A3Uwp+BlxBCfP
-         KJZJsAKXw8NBNx+xIDj4g/fPTkyFH4+oq9U1rKSSb+YWmbJesjG4V7D/gooo92BbC6dd
-         Hbt/LzatgP38JFG8CHvBmZN+szyfoGLDpsnn24JU6YAehk8tf3tordr4wwBqqOz3QpkU
-         n0LxIQ16Hv0iHJcdyzA4C81cFaJ75vWqrM1k/Cm1X/8qmbnK59PV8q44PxPDns+bdyU4
-         qs9k/67duzE3CgdYXFP6tbihtGX943dWNrtXH50Ofk6F6Q9OTHydjZzDXKNy+z8uH1Ut
-         Ml0Q==
-X-Gm-Message-State: APjAAAUUFR3rq9ycvjkrhSD6fPqv3Tc4xkkPWMpubFe8ZkqqXhTsU276
-        eKYux4dI5mQoJg/ufuYPhvEptRewCLRU7Y5igs28lfSx
-X-Google-Smtp-Source: APXvYqyZXCFrwLLbuKH87ntBoB1uPTcKE017Mrw8Z9+j3VOUxMLwq/g1pwfocngRvtK/nHu4TYQODtwzbAxVOv/4r8s=
-X-Received: by 2002:a9f:242e:: with SMTP id 43mr8151929uaq.100.1561038663128;
- Thu, 20 Jun 2019 06:51:03 -0700 (PDT)
+        h=x-gm-message-state:from:subject:thread-topic:thread-index:date
+         :message-id:accept-language:content-language
+         :content-transfer-encoding:mime-version;
+        bh=uja0RKLj8/ZClYB7/xee4WJU8BS3tEVS8HkeIEY1v6o=;
+        b=OmC1DCrVOFMD9aG4PpNhPk96Tb+9LblUH0eFFgSabDr7ycX9Cr7sYa2O8yH6HLhK7h
+         vyHt48GPO6j2pfwNBwe5DeudEArM8bQ3aP8Qk9zXsihK7SRIqmJ8jFYXaBWtCg3J5uyP
+         EFr3yqFemDIhqEaX9x0SEXoqqLx73Di8li4OgY/F18d9VKpFC1166F0FaMrWhapPV/Xj
+         5s1KNTBeTF1y4dSJQOwO0IDas72KV5vQARXYlpiID6PssbimuqYVP70RZAN2llELa92Y
+         V+qWzpJ1MBRNBjxu4fkLog/FhbQ8G4DC9rQKLFI5oLxDNr62xZZ1BJixfCR28H5j1n2S
+         +rTw==
+X-Gm-Message-State: APjAAAVXycRD8HC6piVnyra4SGxxcekIMybGkeajq7tJJqZjA9EypnAx
+        NYr7vPxBrm9Yo6TwbYPZuMAo0DK3Fsp0HBgg/WD51X1wCoTsZg==
+X-Google-Smtp-Source: APXvYqxJkYMp/D0/TOWa0cF+M2QrMgL6Fs/241l24lc+p+ZxC69PNEQYyCft/PgXL83TNevq6R0mSpDU13C7
+X-Received: by 2002:a17:90a:20c6:: with SMTP id f64mr10700090pjg.57.1561697638054;
+        Thu, 27 Jun 2019 21:53:58 -0700 (PDT)
+Received: from mail.ctcd.edu (rrcs-67-79-90-89.sw.biz.rr.com. [67.79.90.89])
+        by smtp-relay.gmail.com with ESMTPS id n69sm110753pjb.9.2019.06.27.21.53.57
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 27 Jun 2019 21:53:58 -0700 (PDT)
+X-Relaying-Domain: ctcd.edu
+Received: from CTCEmail02.campus.ctcd.org (172.17.139.89) by
+ CTCEmail01.campus.ctcd.org (172.17.139.87) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.845.34; Thu, 20 Jun 2019 09:20:21 -0500
+Received: from CTCEmail02.campus.ctcd.org ([fe80::a0bb:ad1f:8c21:8800]) by
+ CTCEmail02.campus.ctcd.org ([fe80::a0bb:ad1f:8c21:8800%2]) with mapi id
+ 15.01.0845.034; Thu, 20 Jun 2019 09:20:21 -0500
+From:   "Chambers, Marcine" <MChambers@ctcd.edu>
+Subject: GOOD DAY
+Thread-Topic: GOOD DAY
+Thread-Index: AQHVJ3NH8MyJd8SpTkSfWerfM/UxGQ==
+Date:   Thu, 20 Jun 2019 14:20:21 +0000
+Message-ID: <1bcebb25cbc54329a424613008b7d525@ctcd.edu>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.17.139.254]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <1559577325-19266-1-git-send-email-ludovic.Barre@st.com>
- <5b7e1ae5-c97e-5a21-fc3e-7cc328087f04@st.com> <CAPDyKFrULRk=cHzVodU9aa6LDX9ip-VPHNwG7QXhmNZrMpPjGw@mail.gmail.com>
-In-Reply-To: <CAPDyKFrULRk=cHzVodU9aa6LDX9ip-VPHNwG7QXhmNZrMpPjGw@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 20 Jun 2019 15:50:26 +0200
-Message-ID: <CAPDyKFr_KNpNY-xgGdKXdAnmmD5OD1=wxgs2LmBAUJOn0mZwqg@mail.gmail.com>
-Subject: Re: [PATCH V3 0/3] mmc: mmci: add busy detect for stm32 sdmmc variant
-To:     Ludovic BARRE <ludovic.barre@st.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com
-Content-Type: text/plain; charset="UTF-8"
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Ludovic,
+I am Vice Chairman of Hang Seng Bank, I have Important Matter to Discuss wi=
+th you concerning my late client, Died without a NEXT OF KIN. Send me your =
+private email for full details information. email me at (chienkraymond@outl=
+ook.com)
 
-On Thu, 13 Jun 2019 at 15:13, Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> On Thu, 13 Jun 2019 at 15:02, Ludovic BARRE <ludovic.barre@st.com> wrote:
-> >
-> > hi Ulf
-> >
-> > Just a "gentleman ping" about this series.
-> > I know you are busy, it's just to be sure you do not forget me :-)
->
-> Thanks! I started briefly to review, but got distracted again. I will
-> come to it, but it just seems to take more time than it should, my
-> apologies.
+Mail:infocarfer@aim.com
 
-Alright, so I planned to review this this week - but failed. I have
-been overwhelmed with work lately (as usual when vacation is getting
-closer).
+Regards
+Dr.Raymond Chien Kuo Fung
 
-I need to gently request to come back to this as of week 28, when I
-will give this the highest prio. Again apologize for the delays!
-
-Kind regards
-Uffe
-
->
-> Br
-> Uffe
->
-> >
-> > Regards
-> > Ludo
-> >
-> > On 6/3/19 5:55 PM, Ludovic Barre wrote:
-> > > From: Ludovic Barre <ludovic.barre@st.com>
-> > >
-> > > This patch series adds busy detect for stm32 sdmmc variant.
-> > > Some adaptations are required:
-> > > -Clear busy status bit if busy_detect_flag and busy_detect_mask are
-> > >   different.
-> > > -Add hardware busy timeout with MMCIDATATIMER register.
-> > >
-> > > V3:
-> > > -rebase on latest mmc next
-> > > -replace re-read by status parameter.
-> > >
-> > > V2:
-> > > -mmci_cmd_irq cleanup in separate patch.
-> > > -simplify the busy_detect_flag exclude
-> > > -replace sdmmc specific comment in
-> > > "mmc: mmci: avoid fake busy polling in mmci_irq"
-> > > to focus on common behavior
-> > >
-> > > Ludovic Barre (3):
-> > >    mmc: mmci: fix read status for busy detect
-> > >    mmc: mmci: add hardware busy timeout feature
-> > >    mmc: mmci: add busy detect for stm32 sdmmc variant
-> > >
-> > >   drivers/mmc/host/mmci.c | 49 +++++++++++++++++++++++++++++++++++++++++--------
-> > >   drivers/mmc/host/mmci.h |  3 +++
-> > >   2 files changed, 44 insertions(+), 8 deletions(-)
-> > >
