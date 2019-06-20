@@ -2,207 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA2A4CECC
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jun 2019 15:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 061C64CF3B
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jun 2019 15:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726893AbfFTNeN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 20 Jun 2019 09:34:13 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:41655 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726686AbfFTNeN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Jun 2019 09:34:13 -0400
-Received: by mail-vs1-f65.google.com with SMTP id 2so1539238vso.8
-        for <linux-mmc@vger.kernel.org>; Thu, 20 Jun 2019 06:34:12 -0700 (PDT)
+        id S1726551AbfFTNoX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 20 Jun 2019 09:44:23 -0400
+Received: from mail-vk1-f193.google.com ([209.85.221.193]:39359 "EHLO
+        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726562AbfFTNoX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Jun 2019 09:44:23 -0400
+Received: by mail-vk1-f193.google.com with SMTP id o19so573343vkb.6
+        for <linux-mmc@vger.kernel.org>; Thu, 20 Jun 2019 06:44:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=lc/q2X+pawBjOcnjA6oAKxvqiYph1jdqY4goob1kTPs=;
-        b=tdvbkHw9yUtnvDH/DJ4qWmkXoSxhraltCRvY1X1IFBEL7iCTQy4CP1dWXT+/akyp6q
-         JVcDjnV1Zb2+jCu7Z8+abWILa4iswW67/+nL0CtxhU62ToEpO6cshXSsn5K2lqTqKXLe
-         yysxyF4XMeEWHl51FGMFhtRL5QaJzYFtKNX2N2aX4eXe79A5KNyH7+CttCOsIC2I5EoJ
-         iBe301EIgQtd/7pUFr9efWvPmIqELB2tSqtUyaHsdojov0JtFBfBCUv5RFCWK8AtGL9K
-         n2owLAiOq75ICmeuyg+YvAqD57IyxLsFZAQg7BeIGNYjiZn4pRme4hDDuobgtTT8ky0T
-         OH4A==
+        bh=p96jy0Q37G25+vp9fBBi4D52+67/LDOfa3YA/vvK0nQ=;
+        b=Fvpo3fPVn86Oj4E+YvaQl8cPyYuhY74EG2gRxBzGmwQxo9dhUFfK46Wqbe1s5F1S7M
+         RIlP2GrtASd4qeqv1PFUPUs+l/pAlAE3I1CLEi/CjvgjMA7U9vgMsNYv8ssajGLHZ68o
+         KydVSn6PhK8V3C2MopVEsZ/2B7TF3V0taFOL6Z1mnCyzT56fLKwJD9s46GJ/HalkbgMP
+         jwawGHaYAJ6UQphwTrTu4ulc8pMlKHOtg/Abl1egApahf41i41Jc0cl/AsePPhWHUavJ
+         z1/FozbChnurp8WdOi/0pjZS/yDVLLky+I4f3s3PaXImG90fA70/swzetjAgmiQgP3ne
+         qxuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=lc/q2X+pawBjOcnjA6oAKxvqiYph1jdqY4goob1kTPs=;
-        b=Wisp6SGNxRlvNIRQHItTr8RdGa9vboXuBO2mCRB1/di2WUDJLnkeNF5+nEKPoi3pvl
-         /pzdprdYb+nsQ4AF1eyUpxQZRXBd2K4VMmh3bZAMJLCdgU4pKnj0WFvx80eks9vIMn/b
-         mNsS6BKGFhZjm6B9jgyuvCFt9JZQwc2d7P0xm7jlvTS6++QTAO6O1BZlUZoj77MCSwuL
-         bbEEslwxNWKnZuXl1JGwIljK7UfNp8Sk0wWdrcurHEDVBKputurYJqYkZ8Vq0Wo/Eaoa
-         wkpzQnACen8XgxPl0Y7Stbd3I2rxEt4uDcjhos9xmOKUTFlMql776UFbYmOvxa3ahzYH
-         Ax2A==
-X-Gm-Message-State: APjAAAXkh9EDieLsZJ659O+ybT1OhiCOetmHQ+/4Uy35QYSx3rK/fIdf
-        A5GV6PypQoUpqBKw/Qw6981caLmnYAx+/tC85zDFtA==
-X-Google-Smtp-Source: APXvYqyVxyq7u8zNpM4Beo3pE18Ytv/hNPQHDG2Iz7I2nebi3e7qnCAQv4cYrfQ+b9EBhFO/oJjbJ1VfrfyqTZOoADI=
-X-Received: by 2002:a67:ee16:: with SMTP id f22mr21368556vsp.191.1561037651820;
- Thu, 20 Jun 2019 06:34:11 -0700 (PDT)
+        bh=p96jy0Q37G25+vp9fBBi4D52+67/LDOfa3YA/vvK0nQ=;
+        b=k/Wtfu0auedsdxZ21ZQGr/P7rnwflQpAuLx4mIfxut6R/IdQJSWo6SScLRPWn8lxBi
+         +V1j3NQ3TXfbAB55Js37vDZOo3Xazl/2m4JEsNyFzMvCs958BxEnQrAmHDuczd7JqETt
+         N5Ve+cDTJBE3qWhlFfEJ1VPOLXaPEzECkEXk57AwZ/0lxNqc/ObSbVMrJ9pRcqqrCuYX
+         Q3YkLbtJ3WneQRzatqqlIRumo+wUcNbxHzaLm16jMwvMnn42ELYt4x4Uy31pE2iZwUpZ
+         WuMTz+BkW23VIEL4K4p5QwdDlzqPqu5QsUVhi+r4f8/0aqt4hyro0CrNGT1627RpROjp
+         QwRg==
+X-Gm-Message-State: APjAAAXbVtpssQ1CRL/UDPoegyPCMqAiq+cuiWKqy+ogBViotYrHOmiW
+        3qaXRZGmdfomaG7JLDl7JIm2KYnV9e2gSPSOenbeZ1aiWGU=
+X-Google-Smtp-Source: APXvYqwSIhL9E76zJPhl/UAA1VO3H+r4eQibZ++IcDzst0vz2QD1+4n8+MVLYbn1HivyVsoTSu2qRNGefVdpg21EzyQ=
+X-Received: by 2002:a1f:8744:: with SMTP id j65mr4380333vkd.17.1561038262381;
+ Thu, 20 Jun 2019 06:44:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <1560247011-26369-1-git-send-email-manish.narani@xilinx.com>
- <1560247011-26369-4-git-send-email-manish.narani@xilinx.com>
- <CAPDyKFrJwpwUUX_q2kcR9QY_fv9Lgos+ixPmU6JMeJVqJAiFpg@mail.gmail.com>
- <5feac3fb-bef3-b7d1-57d6-81e115e1f555@xilinx.com> <CAPDyKFp_ZvSjFp2FGonzGsnc9xPyZ7qOCaRnX1SimBxLpfz9-Q@mail.gmail.com>
- <MN2PR02MB6029DB87CEE32655B0F1E794C1E50@MN2PR02MB6029.namprd02.prod.outlook.com>
- <CAPDyKFqb3uRU1XbrioSw6UZ5atZ8WwZNhQ_yq2+3JfxXZCxr7g@mail.gmail.com> <MN2PR02MB602935234A2A779B5A05CD63C1E40@MN2PR02MB6029.namprd02.prod.outlook.com>
-In-Reply-To: <MN2PR02MB602935234A2A779B5A05CD63C1E40@MN2PR02MB6029.namprd02.prod.outlook.com>
+References: <20190618153448.27145-1-ulf.hansson@linaro.org>
+In-Reply-To: <20190618153448.27145-1-ulf.hansson@linaro.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 20 Jun 2019 15:33:34 +0200
-Message-ID: <CAPDyKFqwe7ss6r99Dxg_OFjKUmCYK_k3pyfYAe62BM7H=a4A7w@mail.gmail.com>
-Subject: Re: [PATCH 3/3] mmc: sdhci-of-arasan: Add support for ZynqMP Platform
- Tap Delays Setup
-To:     Manish Narani <MNARANI@xilinx.com>
-Cc:     Michal Simek <michals@xilinx.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+Date:   Thu, 20 Jun 2019 15:43:45 +0200
+Message-ID: <CAPDyKFqCyh7pZ3SFkxHZU+edBSHYx6V1LD-BdHBugmoSe+g2PQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] mmc: sdio: Various fixes/improvements for SDIO PM
+To:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Rajan Vaja <RAJANV@xilinx.com>, Jolly Shah <JOLLYS@xilinx.com>,
-        Nava kishore Manne <navam@xilinx.com>,
-        Olof Johansson <olof@lixom.net>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+        Douglas Anderson <dianders@chromium.org>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 20 Jun 2019 at 10:14, Manish Narani <MNARANI@xilinx.com> wrote:
+On Tue, 18 Jun 2019 at 17:34, Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> Hi Uffe,
+> The power management support implemented via system suspend/resume and runtime
+> suspend/resume for SDIO cards is rather messy, but also fragile.
 >
+> This series makes some improvement to this code. In particular the so called
+> powered-on re-initialization of SDIO card is quite questionable, I suspect
+> it may never really worked well. Therefore this series removes this code, which
+> helps to prepare for additional improvements on top in a later series.
 >
-> > -----Original Message-----
-> > From: Ulf Hansson <ulf.hansson@linaro.org>
-> > Sent: Wednesday, June 19, 2019 7:09 PM
-> > To: Manish Narani <MNARANI@xilinx.com>
-> > Cc: Michal Simek <michals@xilinx.com>; Rob Herring <robh+dt@kernel.org>;
-> > Mark Rutland <mark.rutland@arm.com>; Adrian Hunter
-> > <adrian.hunter@intel.com>; Rajan Vaja <RAJANV@xilinx.com>; Jolly Shah
-> > <JOLLYS@xilinx.com>; Nava kishore Manne <navam@xilinx.com>; Olof
-> > Johansson <olof@lixom.net>; linux-mmc@vger.kernel.org; DTML
-> > <devicetree@vger.kernel.org>; Linux Kernel Mailing List <linux-
-> > kernel@vger.kernel.org>; Linux ARM <linux-arm-kernel@lists.infradead.org>
-> > Subject: Re: [PATCH 3/3] mmc: sdhci-of-arasan: Add support for ZynqMP
-> > Platform Tap Delays Setup
-> >
-> > On Wed, 19 Jun 2019 at 10:40, Manish Narani <MNARANI@xilinx.com> wrote:
-> > >
-> > > Hi Uffe,
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Ulf Hansson <ulf.hansson@linaro.org>
-> > > > Sent: Monday, June 17, 2019 5:51 PM
-> > > [...]
-> > > >
-> > > > The "const struct zynqmp_eemi_ops *eemi_ops; should then be moved into
-> > > > a clock provider specific struct, which is assigned when calling
-> > > > sdhci_arasan_register_sdclk. I understand that all the clock data is
-> > > > folded into struct sdhci_arasan_data today, but I think that should be
-> > > > moved into a "sub-struct" for the clock specifics.
-> > > >
-> > > > Moreover, when registering the clock, we should convert from using
-> > > > devm_clk_register() into devm_clk_hw_register() as the first one is
-> > > > now deprecated.
-> > >
-> > > Just a query here:
-> > > When we switch to using devm_clk_hw_register() here, it will register the
-> > clk_hw and return int.
-> > > Is there a way we can get the clk (related to the clk_hw registered) from the
-> > > clock framework?
-> > > I am asking this because we will need that clk pointer while calling
-> > clk_set_phase() function.
-> >
-> > I assume devm_clk_get() should work fine?
+> So far the series has only been compile tested, so any help in testing on HW for
+> regressions is greatly appreciated.
 >
-> This clock does not come through ZynqMP Clock framework. We are initializing it in this 'sdhci-of-arasan' driver and getting only the clock name from "clock_output_names" property. So I think devm_clk_get() will not work here for our case.
+> Kind regards
+> Uffe
+>
+> Ulf Hansson (7):
+>   mmc: sdio: Turn sdio_run_irqs() into static
+>   mmc: sdio: Drop mmc_claim|release_host() in mmc_sdio_power_restore()
+>   mmc: sdio: Move comment about re-initialization to
+>     mmc_sdio_reinit_card()
+>   mmc: sdio: Drop powered-on re-init at runtime resume and HW reset
+>   mmc: sdio: Don't re-initialize powered-on removable SDIO cards at
+>     resume
+>   mmc: sdio: Drop unused in-parameter to mmc_sdio_reinit_card()
+>   mmc: sdio: Drop unused in-parameter from mmc_sdio_init_card()
+>
+>  drivers/mmc/core/sdio.c     | 92 +++++++++++++++----------------------
+>  drivers/mmc/core/sdio_irq.c |  3 +-
+>  include/linux/mmc/host.h    |  1 -
+>  3 files changed, 38 insertions(+), 58 deletions(-)
+>
+> --
+> 2.17.1
+>
 
-Well, I guess you need to register an OF clock provider to allow the
-clock lookup to work. Apologize, but I don't have the time, currently
-to point you in the exact direction.
+I decided to queue this up, to see what tests from linux-next and
+kernelCI reports.
 
-However, in principle, my point is, there should be no difference
-whether the clock is registered via the "ZynqMP Clock framework" or
-via the mmc driver. The *clk_get() thing need to work, otherwise I
-consider the clock registration in the mmc driver to be a hack. If you
-see what I mean.
-
-> I have gone through the clock framework and I found one function which may be used to create clock from clock hw, that is ' clk_hw_create_clk()' which can be used from our driver, however this needs change in the clock framework as below :
->
-> ---
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index aa51756..4dc69ff 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -3420,6 +3420,7 @@ struct clk *clk_hw_create_clk(struct device *dev, struct clk_hw *hw,
->
->         return clk;
->  }
-> +EXPORT_SYMBOL_GPL(clk_hw_create_clk);
->
->  static int clk_cpy_name(const char **dst_p, const char *src, bool must_exist)
->  {
-> diff --git a/drivers/clk/clk.h b/drivers/clk/clk.h
-> index d8400d6..2319899 100644
-> --- a/drivers/clk/clk.h
-> +++ b/drivers/clk/clk.h
-> @@ -22,17 +22,9 @@ static inline struct clk_hw *of_clk_get_hw(struct device_node *np,
->  struct clk_hw *clk_find_hw(const char *dev_id, const char *con_id);
->
->  #ifdef CONFIG_COMMON_CLK
-> -struct clk *clk_hw_create_clk(struct device *dev, struct clk_hw *hw,
-> -                             const char *dev_id, const char *con_id);
->  void __clk_put(struct clk *clk);
->  #else
->  /* All these casts to avoid ifdefs in clkdev... */
-> -static inline struct clk *
-> -clk_hw_create_clk(struct device *dev, struct clk_hw *hw, const char *dev_id,
-> -                 const char *con_id)
-> -{
-> -       return (struct clk *)hw;
-> -}
->  static struct clk_hw *__clk_get_hw(struct clk *clk)
->  {
->         return (struct clk_hw *)clk;
-> diff --git a/include/linux/clk.h b/include/linux/clk.h
-> index f689fc5..d3f60fe 100644
-> --- a/include/linux/clk.h
-> +++ b/include/linux/clk.h
-> @@ -18,6 +18,7 @@
->
->  struct device;
->  struct clk;
-> +struct clk_hw;
->  struct device_node;
->  struct of_phandle_args;
->
-> @@ -934,4 +935,15 @@ static inline struct clk *of_clk_get_from_provider(struct of_phandle_args *clksp
->  }
->  #endif
->
-> +#ifdef CONFIG_COMMON_CLK
-> +struct clk *clk_hw_create_clk(struct device *dev, struct clk_hw *hw,
-> +                             const char *dev_id, const char *con_id);
-> +#else
-> +static inline struct clk *
-> +clk_hw_create_clk(struct device *dev, struct clk_hw *hw, const char *dev_id,
-> +                 const char *con_id)
-> +{
-> +       return (struct clk *)hw;
-> +}
-> +#endif
->  #endif
-> ---
->
-> This change should help other drivers (outside 'drivers/clk/') as well for getting the clock created from clk_hw.
-> Is this fine to do?
-
-I think this is the wrong approach, see why further above.
+Still, that doesn't mean I am appreciating test done on HW. I can also
+apply tested-by tags by amending patches after this point.
 
 Kind regards
 Uffe
