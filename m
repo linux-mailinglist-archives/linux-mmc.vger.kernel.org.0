@@ -2,71 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A5204E076
-	for <lists+linux-mmc@lfdr.de>; Fri, 21 Jun 2019 08:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F28F34E0E9
+	for <lists+linux-mmc@lfdr.de>; Fri, 21 Jun 2019 09:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726074AbfFUGQw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 21 Jun 2019 02:16:52 -0400
-Received: from conssluserg-05.nifty.com ([210.131.2.90]:64994 "EHLO
-        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726027AbfFUGQw (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 21 Jun 2019 02:16:52 -0400
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id x5L6GlEk022160;
-        Fri, 21 Jun 2019 15:16:48 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com x5L6GlEk022160
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1561097808;
-        bh=a1r/AXdPUfjndw8LmQLErWaw7Q5y8shtAXjWlzQTg3c=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=S6BOnd4yTHvHwyp562WmDpcw6/IC4++QneQdjjlMP/28zko30KZpGq1c/wQ4rjKzF
-         DlMfkNnXteCuOK32TW7OTIqjD3t6384lscW3hhn1OHd440kpT7AQKUpwyEePs5iqpi
-         hEIljDYCq426yhPZL7C4SgkiYvOY4+U2dJ7a1GG0WoIHA32Oc5fkxq9VWAJKWfBRx/
-         6cKX9drWwZZlTmKFgYI4i6ts2f/EAVWZCDBBs0tQibZjA56A1o9T5fl8BOfI4ggZ0J
-         wg4hTo2PabQOYNkvH+Zxh6OX/lCBZCpin9gqsQnRAeM2psWO9J73taAFdEVF6u3xb4
-         KVhpuUjtLw5oQ==
-X-Nifty-SrcIP: [209.85.217.48]
-Received: by mail-vs1-f48.google.com with SMTP id k9so3129763vso.5;
-        Thu, 20 Jun 2019 23:16:48 -0700 (PDT)
-X-Gm-Message-State: APjAAAVRNTHUosTbPQs3caKa1ctEz1bKKi/zUAbE1w+fOouiLUBS15gO
-        BPA5br6mp+2cmr0vO4zMJuAV6y9UleH9s0qDyrQ=
-X-Google-Smtp-Source: APXvYqwHdZIoIyJd+Mcw4P98HkdWmF2Q+PRm9NDtqftuDYgMf/FC7vKJHlCsVLajZw6+wNIrhdv2yhD9KlimPQ5/H0A=
-X-Received: by 2002:a67:8e0a:: with SMTP id q10mr3990201vsd.215.1561097807250;
- Thu, 20 Jun 2019 23:16:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190621060511.29609-1-yamada.masahiro@socionext.com>
-In-Reply-To: <20190621060511.29609-1-yamada.masahiro@socionext.com>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Fri, 21 Jun 2019 15:16:11 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASGVbkGgu7psy4DfCxmr-AxSQ3fmGJ=aDAiuSkJ5hrDwA@mail.gmail.com>
-Message-ID: <CAK7LNASGVbkGgu7psy4DfCxmr-AxSQ3fmGJ=aDAiuSkJ5hrDwA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: remove another TMIO MMC variant usdhi6rol0.c
-To:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rabin Vincent <rabin.vincent@axis.com>,
-        Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        id S1726030AbfFUHIz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 21 Jun 2019 03:08:55 -0400
+Received: from kirsty.vergenet.net ([202.4.237.240]:55706 "EHLO
+        kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726008AbfFUHIy (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 21 Jun 2019 03:08:54 -0400
+Received: from reginn.horms.nl (watermunt.horms.nl [80.127.179.77])
+        by kirsty.vergenet.net (Postfix) with ESMTPA id 0FC9025AE8A;
+        Fri, 21 Jun 2019 17:08:52 +1000 (AEST)
+Received: by reginn.horms.nl (Postfix, from userid 7100)
+        id 121309408C4; Fri, 21 Jun 2019 09:08:50 +0200 (CEST)
+Date:   Fri, 21 Jun 2019 09:08:50 +0200
+From:   Simon Horman <horms@verge.net.au>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH] dt-binding: mmc: rename tmio_mmc.txt to renesas_sdhi.txt
+Message-ID: <20190621070849.7efe5qihb3zxgjse@verge.net.au>
+References: <20190621035010.13884-1-yamada.masahiro@socionext.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190621035010.13884-1-yamada.masahiro@socionext.com>
+Organisation: Horms Solutions BV
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-(Added Lars Persson, Guennadi Liakhovetski)
+On Fri, Jun 21, 2019 at 12:50:10PM +0900, Masahiro Yamada wrote:
+> As commit b6147490e6aa ("mmc: tmio: split core functionality, DMA and
+> MFD glue") said, these MMC controllers use the IP from Panasonic.
+> 
+> TMIO (Toshiba Mobile IO) MMC was the first upstreamed user of this IP.
+> The common driver code was split and expanded as 'tmio-mmc-core', then
+> it become historical misnomer since 'tmio' is not the name of this IP
+> in the first place.
+> 
+> In the discussion [1], we decide to keep calling these MMC variants
+> 'TMIO MMC' at least in Linux driver level because renaming all of them
+> is a big churn.
+> 
+> However, DT should not be oriented to a particular project even though
+> it is developed in Linux communities.
+> 
+> Let's stop exporting this unfortunate things to other projects, where
+> there is no good reason to call this "TMIO". Rename the file to
+> renesas_sdhi.txt. In fact, all the information in this file is specific
+> to the Renesas platform.
+> 
+> This commit also removes the first paragraph entirely. The DT-binding
+> should describe the hardware. It is really strange to talk about Linux
+> driver internals such as how the drivers are probed, how platform data
+> are handed off, etc.
+> 
+> [1] https://www.spinics.net/lists/linux-mmc/msg46952.html
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+> 
+> I sent this before, but it was dismissed somehow.
+> I am resending this.
 
-On Fri, Jun 21, 2019 at 3:06 PM Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
+Hi Yamada-san,
 
-This needs Ack from Renesas.
-But, I do not know if TMIO folks are sure about this driver, though.
-(If they had been sure about it, they should not have duplicated the driver
-in the first place.)
+I for one am fine with this change.
 
--- 
-Best Regards
-Masahiro Yamada
+My minor nit is that I think that renesas,sdhi.txt would be a slightly
+better filename in terms of consistency with other renesas bindings
+documentation filenames.
+
+> 
+> 
+>  .../bindings/mmc/{tmio_mmc.txt => renesas_sdhi.txt}   | 11 +----------
+>  1 file changed, 1 insertion(+), 10 deletions(-)
+>  rename Documentation/devicetree/bindings/mmc/{tmio_mmc.txt => renesas_sdhi.txt} (87%)
+> 
+> diff --git a/Documentation/devicetree/bindings/mmc/tmio_mmc.txt b/Documentation/devicetree/bindings/mmc/renesas_sdhi.txt
+> similarity index 87%
+> rename from Documentation/devicetree/bindings/mmc/tmio_mmc.txt
+> rename to Documentation/devicetree/bindings/mmc/renesas_sdhi.txt
+> index 2b4f17ca9087..dd08d038a65c 100644
+> --- a/Documentation/devicetree/bindings/mmc/tmio_mmc.txt
+> +++ b/Documentation/devicetree/bindings/mmc/renesas_sdhi.txt
+> @@ -1,13 +1,4 @@
+> -* Toshiba Mobile IO SD/MMC controller
+> -
+> -The tmio-mmc driver doesn't probe its devices actively, instead its binding to
+> -devices is managed by either MFD drivers or by the sh_mobile_sdhi platform
+> -driver. Those drivers supply the tmio-mmc driver with platform data, that either
+> -describe hardware capabilities, known to them, or are obtained by them from
+> -their own platform data or from their DT information. In the latter case all
+> -compulsory and any optional properties, common to all SD/MMC drivers, as
+> -described in mmc.txt, can be used. Additionally the following tmio_mmc-specific
+> -optional bindings can be used.
+> +* Renesas SDHI SD/MMC controller
+>  
+>  Required properties:
+>  - compatible: should contain one or more of the following:
+> -- 
+> 2.17.1
+> 
