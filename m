@@ -2,115 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18DF74E670
-	for <lists+linux-mmc@lfdr.de>; Fri, 21 Jun 2019 12:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EF634F702
+	for <lists+linux-mmc@lfdr.de>; Sat, 22 Jun 2019 18:29:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726285AbfFUKu2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 21 Jun 2019 06:50:28 -0400
-Received: from sauhun.de ([88.99.104.3]:51884 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726229AbfFUKu2 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 21 Jun 2019 06:50:28 -0400
-Received: from localhost (p5486CF54.dip0.t-ipconnect.de [84.134.207.84])
-        by pokefinder.org (Postfix) with ESMTPSA id 368C72C077A;
-        Fri, 21 Jun 2019 12:50:26 +0200 (CEST)
-Date:   Fri, 21 Jun 2019 12:50:25 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rabin Vincent <rabin.vincent@axis.com>,
-        Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH] mmc: remove another TMIO MMC variant usdhi6rol0.c
-Message-ID: <20190621105025.GA2987@kunai>
-References: <20190621060511.29609-1-yamada.masahiro@socionext.com>
- <CAK7LNASGVbkGgu7psy4DfCxmr-AxSQ3fmGJ=aDAiuSkJ5hrDwA@mail.gmail.com>
+        id S1726487AbfFVQ3M (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 22 Jun 2019 12:29:12 -0400
+Received: from sonic316-11.consmr.mail.bf2.yahoo.com ([74.6.130.121]:39535
+        "EHLO sonic316-11.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726455AbfFVQ3J (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 22 Jun 2019 12:29:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220948; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=Sqmma7rQCC9csXbuiUU3W2/3JNoNH7S8264Vtax3p6vjP/GOy3xpD3wbU2PRR9kt9Hpkf+FIWW9PMCnOCaw1O79buHof/+e4XCSgtAjG8InDhCml6NU6QqPjKJ3zDc6ntgnpVqWtJnbhtjoUqIbv1W6GU8NTi8qVdCcmhrTc1IZ6aiOxpvBar7FQmN3jAwZcqruMWVYBgbk1LAoNqGvQ8jjOiTjNhCDJjpcLi94EE60gk+qIfYgu1AQDdd9wVo7X6i3XlVR9KCYw0l7ikZmlDSVkcSrrmJBlognD3+QlW4wko0RiyOGAXy+sEMAa8UXhFfxEEhf+A0WfqKBKwkVQbg==
+X-YMail-OSG: 3TA6aNEVM1mHk4tfSNROwYxIcekGBuzt5YSl8uAf.0_HHQ2LGDBhX2FGT2.Do_z
+ _0DV280q.YGRxDLoRDSJM82e2d5hsgoPZVcKxWsle6Z3oHX8Omo6hY9bu5QjJLY68zQNKFXygJQb
+ l1z62dHRy69xOFvl6tq.81EbMsOh1_cirrcCk2fMX_Jmwx0sebG__1rhE6wzzo_NDP9VbvIqZ9bR
+ 2icQk1E4jS_eT.9i5S8Sf0xsdShl9dMibpAXRU93yOYuHTQIa_P77tZTcStgCsIVxKiDvC3a0NxY
+ 8gZtRhwFdS641nFzLb368UTov.mB4xMHIDhTJv9NazaTg1j8sw18ET29s.TqlBmXHg8vLU94qBpd
+ 5PlUttniCcoNFEJpnLF3UUydECDiL8Z11cc18YJXwsIeDfFkYqHGX5XdA4jNj054mfKUIhoNEakn
+ WUKps59xvPMOhDCVBujS9v_vJClG4fXrBtjl.W_LQqwsSCutxIcdvaqHEtURhc6MkAEPdp4bTGI.
+ srA9smb.rYGHYAQmfGBYSrMpzCORaFwD3sLBOdwCdBjEVVdu.sBEOGddWsx2T8AZRYYy5nvR9Foz
+ bPsz41tE4__SqGjxrktEJ2_s2wIQAUza2deZFDGXc6T62eXwgZpA4Pp2nGTmGbFQ6h4nAMd51HJh
+ T3GzQn8s4GOn.0BKRwZDpwf7w10rv6JPk5nAgLZOaX7LfFs2yeq7fnFrg4OCOiG9MCMxrUNq6gf7
+ VomHdE0MTMCDmL3Ebk4K0YUhXaCTht27MRDaoJusaRVRGavzgn0vj3Z4n7xxu27l7AAqrNZTRmUI
+ n_b8fWLMzkIFoI7ZcmL_O5d2bYctv7x0WqIS4U6onMjRr4HtPSPFTejqwRtmzChG01EgeDt1Xu9J
+ 3fp8ciCxthupmhAtFqCrukMze7VttucN.DpeM8bKmVw1EDgn.s_L.L9fVdDwg2umGkLNazDxoP0_
+ dzbgtjASRdO1.JaxkowN5gRT6rna4oVoAmbHsjQ4rLTjBWSWz8ZqQDlV43apY.buigbJvn4Qmvf1
+ GxhsPAlHlnnGfjZ9pr3BSAVXKd_Qs83vYaBOYxWdXDlwxBl9.1.bnCTqFBLXCTND1BZASE2pli5W
+ fu842ttK3BMCdw5COU_fvmE4HTFnTUQ5tN2a6KHryWZiInkZpWdo8I9xFucw8IlPI3qY2rDSegZk
+ LLEiGCawsrUj04Yg3uv6LVIzJaVvTytAzboyOeQVTgoj.0EfkvEtgpXm3
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:29:08 +0000
+Date:   Sat, 22 Jun 2019 16:29:03 +0000 (UTC)
+From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
+Reply-To: miss.fmayusuf11@gmail.com
+Message-ID: <1743094696.311303.1561220943310@mail.yahoo.com>
+Subject: From:Miss: Fatima Yusuf.
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Q68bSM7Ycu6FN28Q"
-Content-Disposition: inline
-In-Reply-To: <CAK7LNASGVbkGgu7psy4DfCxmr-AxSQ3fmGJ=aDAiuSkJ5hrDwA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
 
---Q68bSM7Ycu6FN28Q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+From:Miss: Fatima Yusuf.
 
-On Fri, Jun 21, 2019 at 03:16:11PM +0900, Masahiro Yamada wrote:
-> (Added Lars Persson, Guennadi Liakhovetski)
->=20
-> On Fri, Jun 21, 2019 at 3:06 PM Masahiro Yamada
-> <yamada.masahiro@socionext.com> wrote:
->=20
-> This needs Ack from Renesas.
-> But, I do not know if TMIO folks are sure about this driver, though.
-> (If they had been sure about it, they should not have duplicated the driv=
-er
-> in the first place.)
+For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
 
-=2E.. and from the original mail:
+I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
 
-> Delete this driver now. Please re-implement it based on tmio_mmc_core.c
-> if needed.
+Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
 
-I was never happy with this driver existing, yet I never knew which HW
-platform needed this, so I didn't touch it. But I'd like to see it go in
-favor of merging with the TMIO code base.
+I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
 
->=20
-> Perhaps, some code snippets in this driver might be useful for cleaning
-> tmio_mmc. It will stay in git history forever, and you can dig for it
-> whenever you need it.
->=20
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
 
-I double checked there is no user in the current tree. I also searched
-the web and did not find any out-of-tree user or even a reference of it.
+My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
 
-So, for now:
-
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-But this seriously needs an Ack from Shimoda-san or Morimoto-san. And
-maybe Guennadi has remarks, too?
-
-Thanks,
-
-   Wolfram
-
-
---Q68bSM7Ycu6FN28Q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl0Mtm0ACgkQFA3kzBSg
-KbbYNw//U2nOKt1qTxm7Lxvm3Ii9b1Qhqs/pvoKWphHfPaQw+dgf5vXSZlMkE6QR
-hG3it64ADcyRC+zdjUf+XUgF9GLHHTSZgGtECW4CYQSGjCEQ2Qfc+8WXr5AHCY8h
-NIK7wRhy6MVn0pkLUL0iFQqAYR1a8aFIPim3omAyEjDN2fj0abHuImzoTHtxTgQ3
-kklk1LlsCDS0yDOjkljhxHySzIOY2YkzRCTaOvYYVuyn30G0/uUXL9uuafF1jYPY
-lCPj+88A6px1qXROIJmYTzYpFxdHDmTWBfMtenRHGTM79vXf3nswy8Mxt5PDom04
-C872tCkhTo859e9IwcI24SYr576YZsSU0sw3GY23AJotsg58ifXVrzDjzEZewfNU
-s9MPvBXPhmjlMCEbwOkfEOGtwsDgcXOJdxjKPVF+bMYDbE4XGLxV375axcmf13Vw
-cj0OYvNBpHf9fcejEbYRnYHzAfc1Y4QMLF5NHccF2V1AAAVpl5hADEs+ypcjPBfe
-HChlxkw0rwz8e+ZdEr4FjcpXoIaVHIXYPAcyMn2u/XiADa8XUHmRJxvf0Rz6A30r
-h4ox4TRJrKQy69gPJMxNx4FGyZJjlPlMfa6khtYAhPoiEzruUttVdryTMIRwOD8l
-j/MmsFwAsK06IpUOqosDwNXoUpU/DHXtmk/i/xOo4+9euVaLMrk=
-=gcmd
------END PGP SIGNATURE-----
-
---Q68bSM7Ycu6FN28Q--
+I am waiting to hear from you.
+Yours Sincerely,
+Miss.Fatima Yusuf.
