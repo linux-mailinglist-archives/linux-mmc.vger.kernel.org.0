@@ -2,95 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04B18527D3
-	for <lists+linux-mmc@lfdr.de>; Tue, 25 Jun 2019 11:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FB4557602
+	for <lists+linux-mmc@lfdr.de>; Thu, 27 Jun 2019 02:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726443AbfFYJVC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 25 Jun 2019 05:21:02 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:37412 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726053AbfFYJVB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 25 Jun 2019 05:21:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=kWFGsgP2Pm3DM5uQIO0spWLoR+OdFQRgQgn4QPKEhkE=; b=ae2ixDhngouE2PWTP0Nptq1H7N
-        V7n0/drK3xAbC49373SoCXt3of3zPB3/DdTa1CiLFowJKzMX3M1ONi+zHx89Tlz1btzBjjKycjc6i
-        mPoo5E1wfKgZnlrxCsbK7eb+pmtBRXyZ8oGThFPWADET3nhxWKLhP85sc0N9sclASPN5SaMCllPFC
-        zSUzzd250+H5TdJ+iXOmhNTZ8vPXpJGnAVMReS64TtETY6+TvDYaKZBQ22RlPD2p6RCfZO79C+BRH
-        2UNwa6EYFZpWmg4QtQcYIIwYexwu78Z7Ns7ABpEVA7hkUiMWGnUtKi3uCq0MJaYkgH6DkZ4nJxGZ2
-        g14ypjEw==;
-Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hfhdH-0005lS-Iu; Tue, 25 Jun 2019 09:20:56 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Russell King <linux@armlinux.org.uk>, linux-mmc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] dma-mapping: remove dma_max_pfn
-Date:   Tue, 25 Jun 2019 11:20:42 +0200
-Message-Id: <20190625092042.19320-3-hch@lst.de>
+        id S1727232AbfF0Aek (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 26 Jun 2019 20:34:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38900 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727377AbfF0Aej (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 26 Jun 2019 20:34:39 -0400
+Received: from sasha-vm.mshome.net (unknown [107.242.116.147])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8ADA820659;
+        Thu, 27 Jun 2019 00:34:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561595678;
+        bh=79Xn3PW+I8deRgiV9VQMSZ4xnqeZqmJBnCnIfu2/UxA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=WpggHoyECWUKOYw2owiA8Jz0rP9TxLQHv1bvors6grnzRcOyW7RQSJo4+8pC+QpXJ
+         u6cl/agkpIxhXYNZqwvLqoe2G3yEBjwZFW/Nf/PmEf3LJ5cINN8kqJwxIu+v02r4Ck
+         HI4/YwLvxFuxWIMl2YULtkgpe84rWfHfJkMBM1Ek=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.1 76/95] mmc: core: complete HS400 before checking status
+Date:   Wed, 26 Jun 2019 20:30:01 -0400
+Message-Id: <20190627003021.19867-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190625092042.19320-1-hch@lst.de>
-References: <20190625092042.19320-1-hch@lst.de>
+In-Reply-To: <20190627003021.19867-1-sashal@kernel.org>
+References: <20190627003021.19867-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-These days the DMA mapping code must bounce buffer for any not supported
-address, and if they driver needs to optimize for natively supported
-ranged it should use dma_get_required_mask.
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+[ Upstream commit b0e370b95a3b231d0fb5d1958cce85ef57196fe6 ]
+
+We don't have a reproducible error case, yet our BSP team suggested that
+the mmc_switch_status() command in mmc_select_hs400() should come after
+the callback into the driver completing HS400 setup. It makes sense to
+me because we want the status of a fully setup HS400, so it will
+increase the reliability of the mmc_switch_status() command.
+
+Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: ba6c7ac3a2f4 ("mmc: core: more fine-grained hooks for HS400 tuning")
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/dma-mapping.h | 7 -------
- include/linux/dma-mapping.h        | 7 -------
- 2 files changed, 14 deletions(-)
+ drivers/mmc/core/mmc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/include/asm/dma-mapping.h b/arch/arm/include/asm/dma-mapping.h
-index 03ba90ffc0f8..7e0486ad1318 100644
---- a/arch/arm/include/asm/dma-mapping.h
-+++ b/arch/arm/include/asm/dma-mapping.h
-@@ -89,13 +89,6 @@ static inline dma_addr_t virt_to_dma(struct device *dev, void *addr)
- }
- #endif
+diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+index 3e786ba204c3..671bfcceea6a 100644
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -1212,13 +1212,13 @@ static int mmc_select_hs400(struct mmc_card *card)
+ 	mmc_set_timing(host, MMC_TIMING_MMC_HS400);
+ 	mmc_set_bus_speed(card);
  
--/* The ARM override for dma_max_pfn() */
--static inline unsigned long dma_max_pfn(struct device *dev)
--{
--	return dma_to_pfn(dev, *dev->dma_mask);
--}
--#define dma_max_pfn(dev) dma_max_pfn(dev)
--
- /* do not use this function in a driver */
- static inline bool is_device_dma_coherent(struct device *dev)
- {
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 6309a721394b..8d13e28a8e07 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -729,13 +729,6 @@ static inline int dma_set_seg_boundary(struct device *dev, unsigned long mask)
- 	return -EIO;
- }
++	if (host->ops->hs400_complete)
++		host->ops->hs400_complete(host);
++
+ 	err = mmc_switch_status(card);
+ 	if (err)
+ 		goto out_err;
  
--#ifndef dma_max_pfn
--static inline unsigned long dma_max_pfn(struct device *dev)
--{
--	return (*dev->dma_mask >> PAGE_SHIFT) + dev->dma_pfn_offset;
--}
--#endif
+-	if (host->ops->hs400_complete)
+-		host->ops->hs400_complete(host);
 -
- static inline int dma_get_cache_alignment(void)
- {
- #ifdef ARCH_DMA_MINALIGN
+ 	return 0;
+ 
+ out_err:
 -- 
 2.20.1
 
