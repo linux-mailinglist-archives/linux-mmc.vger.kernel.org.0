@@ -2,286 +2,74 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 156FA5AD41
-	for <lists+linux-mmc@lfdr.de>; Sat, 29 Jun 2019 21:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED1B5AFA8
+	for <lists+linux-mmc@lfdr.de>; Sun, 30 Jun 2019 12:40:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726891AbfF2T42 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 29 Jun 2019 15:56:28 -0400
-Received: from sauhun.de ([88.99.104.3]:36204 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726952AbfF2T41 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 29 Jun 2019 15:56:27 -0400
-Received: from localhost (p5486CA23.dip0.t-ipconnect.de [84.134.202.35])
-        by pokefinder.org (Postfix) with ESMTPSA id EB9E63E43D1;
-        Sat, 29 Jun 2019 21:56:24 +0200 (CEST)
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Takeshi Saito <takeshi.saito.xv@renesas.com>
-Subject: [PATCH v2 RFT 4/4] mmc: renesas_sdhi: support manual calibration
-Date:   Sat, 29 Jun 2019 21:54:43 +0200
-Message-Id: <20190629195443.366-5-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190629195443.366-1-wsa+renesas@sang-engineering.com>
-References: <20190629195443.366-1-wsa+renesas@sang-engineering.com>
+        id S1726605AbfF3KkB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 30 Jun 2019 06:40:01 -0400
+Received: from mail-io1-f69.google.com ([209.85.166.69]:55370 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726482AbfF3KkB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 30 Jun 2019 06:40:01 -0400
+Received: by mail-io1-f69.google.com with SMTP id f22so11990388ioh.22
+        for <linux-mmc@vger.kernel.org>; Sun, 30 Jun 2019 03:40:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=eziCMEFtU+C3qoNYfJHsPKHY2FKR9JngSHlmZZHqzFo=;
+        b=awnNJNi+CjpeyNLwLaepWDdAGcMCh+VPCDKSqeOA0b98YMR3TinQBtQ39OFtYtf8Zo
+         8Uh2ea/eWD68YOSbxBv3qw9UotniUgEqD3ZkBqMML2UFim3PXF8SxrO6mEymj53kJNW0
+         NNpg0R2HwaB5BlYweBKBZLt04u8y7qr1rCCwmkwP3R2wCIz5DvMxDQdUJSu2Gg5AD07q
+         Rgm4N7JISfwLITFKhN5qU+QFHxqfGb5xVoCqrR7R3lrrmOGzv0kifjqSszO+81QCePVA
+         kRAk9ylJARQju91no7LA9aB1kNxF5RQ39+dJlOQPCScmnIza3PQT658VmYIu0tKPQBuk
+         rXFQ==
+X-Gm-Message-State: APjAAAWpNaB/QCkz1yME441t9IDn5NTK08r/oHMwK1i4L6xwK1dWy7FO
+        mMG4Ysd2gVT2HmCBj/XkPdopjK9mVVMo5IE7vL0MjNPmLObz
+X-Google-Smtp-Source: APXvYqwc7jNxeDwuXuaVmtRV4iFyubee59JJU/yaTue7FDuw9a59U5XBHdkSI5CIzX3MUpYnDTjMD5X25A8OGVnPI50yMEKLHG28
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a02:c6a9:: with SMTP id o9mr10128962jan.90.1561891200769;
+ Sun, 30 Jun 2019 03:40:00 -0700 (PDT)
+Date:   Sun, 30 Jun 2019 03:40:00 -0700
+In-Reply-To: <0000000000003ec128058c7624ec@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000003326c1058c8822c7@google.com>
+Subject: Re: WARNING in kernfs_create_dir_ns
+From:   syzbot <syzbot+38f5d5cf7ae88c46b11a@syzkaller.appspotmail.com>
+To:     a@unstable.cc, b.a.t.m.a.n@lists.open-mesh.org,
+        davem@davemloft.net, gregkh@linuxfoundation.org,
+        hongjiefang@asrmicro.com, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, mareklindner@neomailbox.ch,
+        netdev@vger.kernel.org, sw@simonwunderlich.de,
+        syzkaller-bugs@googlegroups.com, tj@kernel.org,
+        ulf.hansson@linaro.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Some R-Car Gen3 SoCs need some manual correction of timing parameters
-after the automatic tuning has finished but before next CMD13 is
-completed. This patch implements that by this state machine:
+syzbot has bisected this bug to:
 
-- introducing a configuration flag ('manual_calibration') to mark
-  affected SoCs
-- iff the configuration flag is set the 'fixup_request' callback is
-  populated during probe
-- iff the configuration flag is set, a runtime flag ('needs_adjust_hs400')
-  is set when HS400 tuning gets prepared
-- if tuning HS400 fails, the runtime flag is cleared again
-- the callback will check the runtime flag and enable the corrected
-  manual mode if the flag is set and CMD13 is encountered
-- at the end of the enablement the runtime flag is cleared
-- iff the configuration flag is set, the manual mode will be disabled
-  when HS400 gets downgraded
+commit 7f38abf220e2c800a2c451372e9f07ed5fd0ea49
+Author: Hongjie Fang <hongjiefang@asrmicro.com>
+Date:   Tue Jul 31 02:55:09 2018 +0000
 
-There also some helper functions added to access the TMPPORT registers.
-The actual fixup value is SoC specific and also added to the quirks
-struct.
+     mmc: core: improve reasonableness of bus width setting for HS400es
 
-Signed-off-by: Takeshi Saito <takeshi.saito.xv@renesas.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/mmc/host/renesas_sdhi.h      |   3 +
- drivers/mmc/host/renesas_sdhi_core.c | 121 ++++++++++++++++++++++++++-
- 2 files changed, 123 insertions(+), 1 deletion(-)
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=129d6755a00000
+start commit:   72825454 Merge branch 'x86-urgent-for-linus' of git://git...
+git tree:       upstream
+final crash:    https://syzkaller.appspot.com/x/report.txt?x=119d6755a00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=169d6755a00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9a31528e58cc12e2
+dashboard link: https://syzkaller.appspot.com/bug?extid=38f5d5cf7ae88c46b11a
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12a6c439a00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1353c323a00000
 
-diff --git a/drivers/mmc/host/renesas_sdhi.h b/drivers/mmc/host/renesas_sdhi.h
-index 88d05a617d43..f45180d16985 100644
---- a/drivers/mmc/host/renesas_sdhi.h
-+++ b/drivers/mmc/host/renesas_sdhi.h
-@@ -36,6 +36,8 @@ struct renesas_sdhi_of_data {
- struct renesas_sdhi_quirks {
- 	bool hs400_disabled;
- 	bool hs400_4taps;
-+	bool manual_calibration;
-+	u8 manual_calibration_fixup;
- };
- 
- struct tmio_mmc_dma {
-@@ -57,6 +59,7 @@ struct renesas_sdhi {
- 	void __iomem *scc_ctl;
- 	u32 scc_tappos;
- 	u32 scc_tappos_hs400;
-+	bool needs_adjust_hs400;
- };
- 
- #define host_to_priv(host) \
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index bce1779229a8..6aaaa788de81 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -25,6 +25,7 @@
- #include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/mmc/host.h>
-+#include <linux/mmc/mmc.h>
- #include <linux/mmc/slot-gpio.h>
- #include <linux/mfd/tmio.h>
- #include <linux/sh_dma.h>
-@@ -248,6 +249,11 @@ static int renesas_sdhi_start_signal_voltage_switch(struct mmc_host *mmc,
- #define SH_MOBILE_SDHI_SCC_RVSCNTL	0x008
- #define SH_MOBILE_SDHI_SCC_RVSREQ	0x00A
- #define SH_MOBILE_SDHI_SCC_TMPPORT2	0x00E
-+#define SH_MOBILE_SDHI_SCC_TMPPORT3	0x014
-+#define SH_MOBILE_SDHI_SCC_TMPPORT4	0x016
-+#define SH_MOBILE_SDHI_SCC_TMPPORT5	0x018
-+#define SH_MOBILE_SDHI_SCC_TMPPORT6	0x01A
-+#define SH_MOBILE_SDHI_SCC_TMPPORT7	0x01C
- 
- /* Definitions for values the SH_MOBILE_SDHI_SCC_DTCNTL register */
- #define SH_MOBILE_SDHI_SCC_DTCNTL_TAPEN		BIT(0)
-@@ -264,6 +270,19 @@ static int renesas_sdhi_start_signal_voltage_switch(struct mmc_host *mmc,
- #define SH_MOBILE_SDHI_SCC_TMPPORT2_HS400OSEL	BIT(4)
- #define SH_MOBILE_SDHI_SCC_TMPPORT2_HS400EN	BIT(31)
- 
-+/* Definitions for values the SH_MOBILE_SDHI_SCC_TMPPORT4 register */
-+#define SH_MOBILE_SDHI_SCC_TMPPORT4_DLL_ACC_START	BIT(0)
-+
-+/* Definitions for values the SH_MOBILE_SDHI_SCC_TMPPORT5 register */
-+#define SH_MOBILE_SDHI_SCC_TMPPORT5_DLL_RW_SEL_R	BIT(8)
-+#define SH_MOBILE_SDHI_SCC_TMPPORT5_DLL_RW_SEL_W	(0 << 8)
-+#define SH_MOBILE_SDHI_SCC_TMPPORT5_DLL_ADR_MASK	0x3F
-+
-+/* Definitions for values the SH_MOBILE_SDHI_SCC register */
-+#define SH_MOBILE_SDHI_SCC_TMPPORT_DISABLE_WP_CODE	0xa5000000
-+#define SH_MOBILE_SDHI_SCC_TMPPORT_CALIB_CODE_MASK	0x1f
-+#define SH_MOBILE_SDHI_SCC_TMPPORT_MANUAL_MODE		BIT(7)
-+
- static inline u32 sd_scc_read32(struct tmio_mmc_host *host,
- 				struct renesas_sdhi *priv, int addr)
- {
-@@ -386,6 +405,76 @@ static void renesas_sdhi_disable_scc(struct tmio_mmc_host *host)
- 			sd_ctrl_read16(host, CTL_SD_CARD_CLK_CTL));
- }
- 
-+static u32 sd_scc_tmpport_read32(struct tmio_mmc_host *host,
-+				 struct renesas_sdhi *priv, u32 addr)
-+{
-+	/* read mode */
-+	sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT5,
-+		       SH_MOBILE_SDHI_SCC_TMPPORT5_DLL_RW_SEL_R |
-+		       (SH_MOBILE_SDHI_SCC_TMPPORT5_DLL_ADR_MASK & addr));
-+
-+	/* access start and stop */
-+	sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT4,
-+		       SH_MOBILE_SDHI_SCC_TMPPORT4_DLL_ACC_START);
-+	sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT4, 0);
-+
-+	return sd_scc_read32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT7);
-+}
-+
-+static void sd_scc_tmpport_write32(struct tmio_mmc_host *host,
-+				   struct renesas_sdhi *priv, u32 addr, u32 val)
-+{
-+	/* write mode */
-+	sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT5,
-+		       SH_MOBILE_SDHI_SCC_TMPPORT5_DLL_RW_SEL_W |
-+		       (SH_MOBILE_SDHI_SCC_TMPPORT5_DLL_ADR_MASK & addr));
-+
-+	sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT6, val);
-+
-+	/* access start and stop */
-+	sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT4,
-+		       SH_MOBILE_SDHI_SCC_TMPPORT4_DLL_ACC_START);
-+	sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT4, 0);
-+}
-+
-+static void renesas_sdhi_adjust_hs400_mode_enable(struct tmio_mmc_host *host)
-+{
-+	struct renesas_sdhi *priv = host_to_priv(host);
-+	u32 calib_code;
-+
-+	/* disable write protect */
-+	sd_scc_tmpport_write32(host, priv, 0x00,
-+			       SH_MOBILE_SDHI_SCC_TMPPORT_DISABLE_WP_CODE);
-+	/* read calibration code and adjust */
-+	calib_code = sd_scc_tmpport_read32(host, priv, 0x26);
-+	calib_code &= SH_MOBILE_SDHI_SCC_TMPPORT_CALIB_CODE_MASK;
-+	if (calib_code > priv->quirks->manual_calibration_fixup)
-+		calib_code -= priv->quirks->manual_calibration_fixup;
-+	else
-+		calib_code = 0;
-+	/* enable manual calibration */
-+	sd_scc_tmpport_write32(host, priv, 0x22,
-+			       SH_MOBILE_SDHI_SCC_TMPPORT_MANUAL_MODE | calib_code);
-+	/* set offset value to TMPPORT3, hardcoded to OFFSET0 (= 0x3) for now */
-+	sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT3, 0x3);
-+
-+	/* adjustment done, clear flag */
-+	priv->needs_adjust_hs400 = false;
-+}
-+
-+static void renesas_sdhi_adjust_hs400_mode_disable(struct tmio_mmc_host *host)
-+{
-+	struct renesas_sdhi *priv = host_to_priv(host);
-+
-+	/* disable write protect */
-+	sd_scc_tmpport_write32(host, priv, 0x00,
-+			       SH_MOBILE_SDHI_SCC_TMPPORT_DISABLE_WP_CODE);
-+	/* disable manual calibration */
-+	sd_scc_tmpport_write32(host, priv, 0x22, 0);
-+	/* clear offset value of TMPPORT3 */
-+	sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT3, 0);
-+}
-+
- static void renesas_sdhi_reset_hs400_mode(struct tmio_mmc_host *host,
- 					  struct renesas_sdhi *priv)
- {
-@@ -403,13 +492,20 @@ static void renesas_sdhi_reset_hs400_mode(struct tmio_mmc_host *host,
- 			 SH_MOBILE_SDHI_SCC_TMPPORT2_HS400OSEL) &
- 			sd_scc_read32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT2));
- 
-+	if (priv->quirks && priv->quirks->manual_calibration)
-+		renesas_sdhi_adjust_hs400_mode_disable(host);
-+
- 	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, CLK_CTL_SCLKEN |
- 			sd_ctrl_read16(host, CTL_SD_CARD_CLK_CTL));
- }
- 
- static void renesas_sdhi_prepare_hs400_tuning(struct tmio_mmc_host *host)
- {
--	renesas_sdhi_reset_hs400_mode(host, host_to_priv(host));
-+	struct renesas_sdhi *priv = host_to_priv(host);
-+
-+	renesas_sdhi_reset_hs400_mode(host, priv);
-+	if (priv->quirks && priv->quirks->manual_calibration)
-+		priv->needs_adjust_hs400 = true;
- }
- 
- #define SH_MOBILE_SDHI_MAX_TAP 3
-@@ -520,6 +616,7 @@ static void renesas_sdhi_hw_reset(struct tmio_mmc_host *host)
- 
- 	renesas_sdhi_reset_scc(host, priv);
- 	renesas_sdhi_reset_hs400_mode(host, priv);
-+	priv->needs_adjust_hs400 = false;
- 
- 	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, CLK_CTL_SCLKEN |
- 			sd_ctrl_read16(host, CTL_SD_CARD_CLK_CTL));
-@@ -596,6 +693,13 @@ static int renesas_sdhi_multi_io_quirk(struct mmc_card *card,
- 	return blk_size;
- }
- 
-+static void renesas_sdhi_fixup_request(struct tmio_mmc_host *host, struct mmc_request *mrq)
-+{
-+	struct renesas_sdhi *priv = host_to_priv(host);
-+
-+	if (priv->needs_adjust_hs400 && mrq->cmd->opcode == MMC_SEND_STATUS)
-+		renesas_sdhi_adjust_hs400_mode_enable(host);
-+}
- static void renesas_sdhi_enable_dma(struct tmio_mmc_host *host, bool enable)
- {
- 	/* Iff regs are 8 byte apart, sdbuf is 64 bit. Otherwise always 32. */
-@@ -618,12 +722,24 @@ static const struct renesas_sdhi_quirks sdhi_quirks_nohs400 = {
- 	.hs400_disabled = true,
- };
- 
-+static const struct renesas_sdhi_quirks sdhi_quirks_manual_calib0 = {
-+	.manual_calibration = true,
-+	.manual_calibration_fixup = 0,
-+};
-+
-+static const struct renesas_sdhi_quirks sdhi_quirks_manual_calib4 = {
-+	.manual_calibration = true,
-+	.manual_calibration_fixup = 4,
-+};
-+
- static const struct soc_device_attribute sdhi_quirks_match[]  = {
- 	{ .soc_id = "r8a774a1", .revision = "ES1.[012]", .data = &sdhi_quirks_4tap_nohs400 },
- 	{ .soc_id = "r8a7795", .revision = "ES1.*", .data = &sdhi_quirks_4tap_nohs400 },
- 	{ .soc_id = "r8a7795", .revision = "ES2.0", .data = &sdhi_quirks_4tap },
- 	{ .soc_id = "r8a7796", .revision = "ES1.[012]", .data = &sdhi_quirks_4tap_nohs400 },
-+	{ .soc_id = "r8a77965", .data = &sdhi_quirks_manual_calib0 },
- 	{ .soc_id = "r8a77980", .data = &sdhi_quirks_nohs400 },
-+	{ .soc_id = "r8a77990", .data = &sdhi_quirks_manual_calib4 },
- 	{ /* Sentinel. */ },
- };
- 
-@@ -720,6 +836,9 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 	if (quirks && quirks->hs400_4taps)
- 		mmc_data->flags |= TMIO_MMC_HAVE_4TAP_HS400;
- 
-+	if (quirks && quirks->manual_calibration)
-+		host->fixup_request = renesas_sdhi_fixup_request;
-+
- 	/* For some SoC, we disable internal WP. GPIO may override this */
- 	if (mmc_can_gpio_ro(host->mmc))
- 		mmc_data->capabilities2 &= ~MMC_CAP2_NO_WRITE_PROTECT;
--- 
-2.20.1
+Reported-by: syzbot+38f5d5cf7ae88c46b11a@syzkaller.appspotmail.com
+Fixes: 7f38abf220e2 ("mmc: core: improve reasonableness of bus width  
+setting for HS400es")
 
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
