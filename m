@@ -2,398 +2,328 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CE3C5B405
-	for <lists+linux-mmc@lfdr.de>; Mon,  1 Jul 2019 07:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5327E5B6C8
+	for <lists+linux-mmc@lfdr.de>; Mon,  1 Jul 2019 10:26:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727656AbfGAFar (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 1 Jul 2019 01:30:47 -0400
-Received: from mail-eopbgr760052.outbound.protection.outlook.com ([40.107.76.52]:59529
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+        id S1727704AbfGAI0x (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 1 Jul 2019 04:26:53 -0400
+Received: from mail-eopbgr1400134.outbound.protection.outlook.com ([40.107.140.134]:33664
+        "EHLO JPN01-TY1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727529AbfGAFaL (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 1 Jul 2019 01:30:11 -0400
+        id S1727702AbfGAI0x (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 1 Jul 2019 04:26:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector1-xilinx-onmicrosoft-com;
+ d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dUA72EvoKP7jjMM7blwJWBJAdFDGoEeg8uvtkSuLNgI=;
- b=BRZoW+paXVC+RBh3Z5h8+1DQODcrAeRs+J9eND3eCLLZ55chm1I9nox8WEhSFZI+0iCViO0PX0tQ0EltjJ4MfbNhU3xVqtzO4enjqt01S38qgk8OZiX405+XDVvPdJLRkYjGqeubAkEGyNxg47YhXWPyG4zdrArYnaKIOjSYUA8=
-Received: from SN4PR0201CA0012.namprd02.prod.outlook.com
- (2603:10b6:803:2b::22) by DM6PR02MB5244.namprd02.prod.outlook.com
- (2603:10b6:5:48::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2032.20; Mon, 1 Jul
- 2019 05:30:07 +0000
-Received: from BL2NAM02FT008.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e46::209) by SN4PR0201CA0012.outlook.office365.com
- (2603:10b6:803:2b::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2032.20 via Frontend
- Transport; Mon, 1 Jul 2019 05:30:07 +0000
-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- BL2NAM02FT008.mail.protection.outlook.com (10.152.76.162) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2032.15
- via Frontend Transport; Mon, 1 Jul 2019 05:30:07 +0000
-Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
-        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
-        (envelope-from <manish.narani@xilinx.com>)
-        id 1hhotC-0002rn-Dt; Sun, 30 Jun 2019 22:30:06 -0700
-Received: from [127.0.0.1] (helo=localhost)
-        by xsj-pvapsmtp01 with smtp (Exim 4.63)
-        (envelope-from <manish.narani@xilinx.com>)
-        id 1hhot7-0003EO-8P; Sun, 30 Jun 2019 22:30:01 -0700
-Received: from xsj-pvapsmtp01 (xsj-smtp.xilinx.com [149.199.38.66])
-        by xsj-smtp-dlp2.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id x615TuGY008189;
-        Sun, 30 Jun 2019 22:29:56 -0700
-Received: from [172.23.64.106] (helo=xhdvnc125.xilinx.com)
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <mnarani@xilinx.com>)
-        id 1hhot2-0003Cg-4i; Sun, 30 Jun 2019 22:29:56 -0700
-Received: by xhdvnc125.xilinx.com (Postfix, from userid 16987)
-        id 667AD12175A; Mon,  1 Jul 2019 10:59:54 +0530 (IST)
-From:   Manish Narani <manish.narani@xilinx.com>
-To:     ulf.hansson@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        heiko@sntech.de, michal.simek@xilinx.com, adrian.hunter@intel.com,
-        christoph.muellner@theobroma-systems.com,
-        philipp.tomsich@theobroma-systems.com, viresh.kumar@linaro.org,
-        scott.branden@broadcom.com, ayaka@soulik.info, kernel@esmil.dk,
-        tony.xie@rock-chips.com, rajan.vaja@xilinx.com,
-        jolly.shah@xilinx.com, nava.manne@xilinx.com, mdf@kernel.org,
-        manish.narani@xilinx.com, olof@lixom.net
-Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org
-Subject: [PATCH v2 11/11] mmc: sdhci-of-arasan: Add support for ZynqMP Platform Tap Delays Setup
-Date:   Mon,  1 Jul 2019 10:59:51 +0530
-Message-Id: <1561958991-21935-12-git-send-email-manish.narani@xilinx.com>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
-References: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
-X-RCIS-Action: ALLOW
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.83;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(346002)(136003)(376002)(396003)(39860400002)(2980300002)(189003)(199004)(336012)(4326008)(6266002)(5660300002)(426003)(52956003)(106002)(103686004)(42186006)(478600001)(72206003)(50226002)(2906002)(63266004)(7416002)(51416003)(36756003)(476003)(70206006)(81166006)(126002)(8936002)(50466002)(26005)(356004)(76176011)(186003)(6666004)(48376002)(47776003)(81156014)(446003)(2616005)(8676002)(36386004)(11346002)(305945005)(14444005)(316002)(486006)(44832011)(16586007)(70586007)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR02MB5244;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-83.xilinx.com;MX:1;A:1;
+ bh=RdI6gRF46MizvnRgpHb930XIvchVQamoUzKYP+2oNIE=;
+ b=jGL2TNnVE0R6t1rVAT24xV8asP1S4aVt47mViRFi5TA/CxAMi+xzHZCG8oEQZ44Rs4HivADeVKegPXJs/uktF/0Vare6kXwqyrBN7glRur+4Rh416Q41iaSX7gerLfVzFjbjzB5eX8rplO3T17BZV5dFq60PtAq0llD94/XY3lE=
+Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com (20.179.174.85) by
+ TYAPR01MB3582.jpnprd01.prod.outlook.com (20.178.137.141) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2032.20; Mon, 1 Jul 2019 08:26:47 +0000
+Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com
+ ([fe80::602d:62cc:de62:eaba]) by TYAPR01MB4544.jpnprd01.prod.outlook.com
+ ([fe80::602d:62cc:de62:eaba%6]) with mapi id 15.20.2032.019; Mon, 1 Jul 2019
+ 08:26:47 +0000
+From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+CC:     "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: RE: [PATCH v2 RFT 0/4] mmc: renesas_sdhi: support manual calibration
+Thread-Topic: [PATCH v2 RFT 0/4] mmc: renesas_sdhi: support manual calibration
+Thread-Index: AQHVLrS912vGv7yj8U+Tcz5/XzdQSKa1brKw
+Date:   Mon, 1 Jul 2019 08:26:47 +0000
+Message-ID: <TYAPR01MB4544C8EBF12CF1C230BDA191D8F90@TYAPR01MB4544.jpnprd01.prod.outlook.com>
+References: <20190629195443.366-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20190629195443.366-1-wsa+renesas@sang-engineering.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
+x-originating-ip: [211.11.155.135]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 9a61703f-b9bb-4d4b-7be4-08d6fdfddbc5
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:TYAPR01MB3582;
+x-ms-traffictypediagnostic: TYAPR01MB3582:
+x-microsoft-antispam-prvs: <TYAPR01MB3582476772FD899166033C73D8F90@TYAPR01MB3582.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 00851CA28B
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(366004)(346002)(376002)(136003)(396003)(39860400002)(189003)(199004)(14454004)(4326008)(6246003)(53936002)(5660300002)(7736002)(25786009)(66476007)(486006)(68736007)(6116002)(3846002)(478600001)(9686003)(2906002)(55016002)(316002)(6436002)(229853002)(7696005)(81166006)(476003)(8936002)(26005)(86362001)(186003)(76176011)(6506007)(71190400001)(71200400001)(102836004)(30864003)(81156014)(446003)(52536014)(8676002)(110136005)(33656002)(2501003)(99286004)(305945005)(14444005)(256004)(74316002)(11346002)(73956011)(66556008)(64756008)(66446008)(66066001)(76116006)(66946007);DIR:OUT;SFP:1102;SCL:1;SRVR:TYAPR01MB3582;H:TYAPR01MB4544.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: renesas.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: K6Mzdq/7NggNl1WxWBQIVLkfM9QWchUXSuMH15tTzm0PVW/unwDuzmdnACs597J7C+y/seJRBIZ3o0NQ3vI5K6K8En1dvUoCOJc8xc85a87qoSoxUQsOVgb6mnrq4nHJCsCqCy1nzB3HXcWJlFRqw1dZW3z9Iy1x8m5sbF/z4F8tCNvxgewHAAuN4xWls7tz1HRA/SjOMQYKNasA+Ix07rkd6MhtCGMOGjGoBBNCapRBtXpmA9a7bT/FVSynctuyWteS+uJdm5LprdDrR6yY1Z/dsbs0hbE+LEa5TjVZZfIplV0dCyoq+zicu0uij3syA90b2d/Azf338oZDgZeFqlJT+mK+vZCUNWEDuzf8QyF5wTLmtkcWuvZonxB8+Nqmc28NcoMQUI0b5YhWfOZYjKZg3ncQh9goT6fpN6Y/hvU=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5df68a71-4728-4b1e-a9a7-08d6fde52d8f
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328);SRVR:DM6PR02MB5244;
-X-MS-TrafficTypeDiagnostic: DM6PR02MB5244:
-X-Microsoft-Antispam-PRVS: <DM6PR02MB52447D04F942CAE9FC95AABDC1F90@DM6PR02MB5244.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:3513;
-X-Forefront-PRVS: 00851CA28B
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: wi9ef65SqQ7ogaew/4nrVOKx4WSEBFtIWgNVujDO+GDF/0VWYa7Pds8zABf43HcXtXJDXTvJjPZcref0pZYG0o9KV6DMWzJUEn2A73Jt7lEecxwZYECb/BjNOZqSroHHmKSrY2VjrBjtkTu0zOq6YLeLl1y6q9WOmXeCOGL3yQA0sQGzsmPppCaNMt00StqMbjTQV22DwQpF+MFnXh9LwrHBAs2Xq0BcOZCP602M8ZbKaeq5TUQI1UgC6T9/X+BhbsWWhOPqKC7Av/qHvL1GoCgYNnPG+zyRZ4jI8k4wknU49wtspwZb6i/G3TGIYDxcpXeZthZjZCI0Yx0AElYuqW9Ty81eH50eH4q9BxHwfD1LVJl+N6LmZLSZPkE+KkEHD4jf/vV07FJVTHH0ObKCRYQv06MhiBy++SlxZfe0SJU=
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2019 05:30:07.0219
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a61703f-b9bb-4d4b-7be4-08d6fdfddbc5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2019 08:26:47.4600
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5df68a71-4728-4b1e-a9a7-08d6fde52d8f
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB5244
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: yoshihiro.shimoda.uh@renesas.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAPR01MB3582
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Apart from taps set by auto tuning, ZynqMP platform has feature to set
-the tap values manually. Add support to set tap delay values in HW via
-ZynqMP SoC framework.
+Hi Wolfram-san,
 
-Signed-off-by: Manish Narani <manish.narani@xilinx.com>
----
- drivers/mmc/host/sdhci-of-arasan.c | 200 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 198 insertions(+), 2 deletions(-)
+Thank you for the patches!
 
-diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-index a545221..508d942 100644
---- a/drivers/mmc/host/sdhci-of-arasan.c
-+++ b/drivers/mmc/host/sdhci-of-arasan.c
-@@ -22,6 +22,7 @@
- #include <linux/phy/phy.h>
- #include <linux/regmap.h>
- #include <linux/of.h>
-+#include <linux/firmware/xlnx-zynqmp.h>
- 
- #include "cqhci.h"
- #include "sdhci-pltfm.h"
-@@ -32,6 +33,10 @@
- 
- #define PHY_CLK_TOO_SLOW_HZ		400000
- 
-+/* Default settings for ZynqMP Clock Phases */
-+#define ZYNQMP_ICLK_PHASE {0, 63, 63, 0, 63,  0,   0, 183, 54,  0, 0}
-+#define ZYNQMP_OCLK_PHASE {0, 60, 72, 0, 60, 72, 135, 180, 72, 36, 0}
-+
- /*
-  * On some SoCs the syscon area has a feature where the upper 16-bits of
-  * each 32-bit register act as a write mask for the lower 16-bits.  This allows
-@@ -80,6 +85,7 @@ struct sdhci_arasan_soc_ctl_map {
-  * @clk_phase_in:	Array of Input Clock Phase Delays for all speed modes
-  * @clk_phase_out:	Array of Output Clock Phase Delays for all speed modes
-  * @set_clk_delays:	Function pointer for setting Clock Delays
-+ * @clk_of_data:	Platform specific runtime clock data storage pointer
-  */
- struct sdhci_arasan_clk_data {
- 	struct clk_hw	sdcardclk_hw;
-@@ -89,6 +95,11 @@ struct sdhci_arasan_clk_data {
- 	int		clk_phase_in[MMC_TIMING_MMC_HS400 + 1];
- 	int		clk_phase_out[MMC_TIMING_MMC_HS400 + 1];
- 	void 		(*set_clk_delays)(struct sdhci_host *host);
-+	void		*clk_of_data;
-+};
-+
-+struct sdhci_arasan_zynqmp_clk_data {
-+	const struct zynqmp_eemi_ops *eemi_ops;
- };
- 
- /**
-@@ -510,6 +521,10 @@ static const struct of_device_id sdhci_arasan_of_match[] = {
- 		.compatible = "arasan,sdhci-4.9a",
- 		.data = &sdhci_arasan_data,
- 	},
-+	{
-+		.compatible = "xlnx,zynqmp-8.9a",
-+		.data = &sdhci_arasan_data,
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sdhci_arasan_of_match);
-@@ -569,6 +584,144 @@ static const struct clk_ops arasan_sampleclk_ops = {
- };
- 
- /**
-+ * sdhci_zynqmp_sdcardclk_set_phase - Set the SD Output Clock Tap Delays
-+ *
-+ * Set the SD Output Clock Tap Delays for Output path
-+ *
-+ * @hw:			Pointer to the hardware clock structure.
-+ * @degrees		The clock phase shift between 0 - 359.
-+ * Return: 0 on success and error value on error
-+ */
-+static int sdhci_zynqmp_sdcardclk_set_phase(struct clk_hw *hw, int degrees)
-+
-+{
-+	struct sdhci_arasan_clk_data *clk_data =
-+		container_of(hw, struct sdhci_arasan_clk_data, sdcardclk_hw);
-+	struct sdhci_arasan_data *sdhci_arasan =
-+		container_of(clk_data, struct sdhci_arasan_data, clk_data);
-+	struct sdhci_host *host = sdhci_arasan->host;
-+	struct sdhci_arasan_zynqmp_clk_data *zynqmp_clk_data =
-+		clk_data->clk_of_data;
-+	const struct zynqmp_eemi_ops *eemi_ops = zynqmp_clk_data->eemi_ops;
-+	const char *clk_name = clk_hw_get_name(hw);
-+	u32 device_id = !strcmp(clk_name, "clk_out_sd0") ? 0 : 1;
-+	u8 tap_delay, tap_max = 0;
-+
-+	if (!eemi_ops->sdio_out_setphase)
-+		return -ENODEV;
-+
-+	/*
-+	 * This is applicable for SDHCI_SPEC_300 and above
-+	 * ZynqMP does not set phase for <=25MHz clock.
-+	 * If degrees is zero, no need to do anything.
-+	 */
-+	if (host->version < SDHCI_SPEC_300 ||
-+	    host->timing == MMC_TIMING_LEGACY ||
-+	    host->timing == MMC_TIMING_UHS_SDR12 || !degrees)
-+		return 0;
-+
-+	switch (host->timing) {
-+	case MMC_TIMING_MMC_HS:
-+	case MMC_TIMING_SD_HS:
-+	case MMC_TIMING_UHS_SDR25:
-+	case MMC_TIMING_UHS_DDR50:
-+	case MMC_TIMING_MMC_DDR52:
-+		/* For 50MHz clock, 30 Taps are available */
-+		tap_max = 30;
-+		break;
-+	case MMC_TIMING_UHS_SDR50:
-+		/* For 100MHz clock, 15 Taps are available */
-+		tap_max = 15;
-+		break;
-+	case MMC_TIMING_UHS_SDR104:
-+	case MMC_TIMING_MMC_HS200:
-+		/* For 200MHz clock, 8 Taps are available */
-+		tap_max = 8;
-+	default:
-+		break;
-+	}
-+
-+	tap_delay = (degrees * tap_max) / 360;
-+
-+	/* Set the Clock Phase */
-+	return eemi_ops->sdio_out_setphase(device_id, tap_delay);
-+}
-+
-+static const struct clk_ops zynqmp_sdcardclk_ops = {
-+	.recalc_rate = sdhci_arasan_sdcardclk_recalc_rate,
-+	.set_phase = sdhci_zynqmp_sdcardclk_set_phase,
-+};
-+
-+/**
-+ * sdhci_zynqmp_sampleclk_set_phase - Set the SD Input Clock Tap Delays
-+ *
-+ * Set the SD Input Clock Tap Delays for Input path
-+ *
-+ * @hw:			Pointer to the hardware clock structure.
-+ * @degrees		The clock phase shift between 0 - 359.
-+ * Return: 0 on success and error value on error
-+ */
-+static int sdhci_zynqmp_sampleclk_set_phase(struct clk_hw *hw, int degrees)
-+
-+{
-+	struct sdhci_arasan_clk_data *clk_data =
-+		container_of(hw, struct sdhci_arasan_clk_data, sampleclk_hw);
-+	struct sdhci_arasan_data *sdhci_arasan =
-+		container_of(clk_data, struct sdhci_arasan_data, clk_data);
-+	struct sdhci_host *host = sdhci_arasan->host;
-+	struct sdhci_arasan_zynqmp_clk_data *zynqmp_clk_data =
-+		clk_data->clk_of_data;
-+	const struct zynqmp_eemi_ops *eemi_ops = zynqmp_clk_data->eemi_ops;
-+	const char *clk_name = clk_hw_get_name(hw);
-+	u32 device_id = !strcmp(clk_name, "clk_in_sd0") ? 0 : 1;
-+	u8 tap_delay, tap_max = 0;
-+
-+	if (!eemi_ops->sdio_in_setphase)
-+		return -ENODEV;
-+
-+	/*
-+	 * This is applicable for SDHCI_SPEC_300 and above
-+	 * ZynqMP does not set phase for <=25MHz clock.
-+	 * If degrees is zero, no need to do anything.
-+	 */
-+	if (host->version < SDHCI_SPEC_300 ||
-+	    host->timing == MMC_TIMING_LEGACY ||
-+	    host->timing == MMC_TIMING_UHS_SDR12 || !degrees)
-+		return 0;
-+
-+	switch (host->timing) {
-+	case MMC_TIMING_MMC_HS:
-+	case MMC_TIMING_SD_HS:
-+	case MMC_TIMING_UHS_SDR25:
-+	case MMC_TIMING_UHS_DDR50:
-+	case MMC_TIMING_MMC_DDR52:
-+		/* For 50MHz clock, 120 Taps are available */
-+		tap_max = 120;
-+		break;
-+	case MMC_TIMING_UHS_SDR50:
-+		/* For 100MHz clock, 60 Taps are available */
-+		tap_max = 60;
-+		break;
-+	case MMC_TIMING_UHS_SDR104:
-+	case MMC_TIMING_MMC_HS200:
-+		/* For 200MHz clock, 30 Taps are available */
-+		tap_max = 30;
-+	default:
-+		break;
-+	}
-+
-+	tap_delay = (degrees * tap_max) / 360;
-+
-+	/* Set the Clock Phase */
-+	return eemi_ops->sdio_in_setphase(device_id, tap_delay);
-+}
-+
-+static const struct clk_ops zynqmp_sampleclk_ops = {
-+	.recalc_rate = sdhci_arasan_sampleclk_recalc_rate,
-+	.set_phase = sdhci_zynqmp_sampleclk_set_phase,
-+};
-+
-+/**
-  * sdhci_arasan_update_clockmultiplier - Set corecfg_clockmultiplier
-  *
-  * The corecfg_clockmultiplier is supposed to contain clock multiplier
-@@ -693,6 +846,10 @@ static void arasan_dt_read_clk_phase(struct device *dev,
- static void arasan_dt_parse_clk_phases(struct device *dev,
- 				      struct sdhci_arasan_clk_data *clk_data)
- {
-+	int *iclk_phase, *oclk_phase;
-+	u32 mio_bank = 0;
-+	int i;
-+
- 	/*
- 	 * This has been kept as a pointer and is assigned a function here.
- 	 * So that different controller variants can assign their own handling
-@@ -700,6 +857,22 @@ static void arasan_dt_parse_clk_phases(struct device *dev,
- 	 */
- 	clk_data->set_clk_delays = sdhci_arasan_set_clk_delays;
- 
-+	if (of_device_is_compatible(dev->of_node, "xlnx,zynqmp-8.9a")) {
-+		iclk_phase = (int [MMC_TIMING_MMC_HS400 + 1]) ZYNQMP_ICLK_PHASE;
-+		oclk_phase = (int [MMC_TIMING_MMC_HS400 + 1]) ZYNQMP_OCLK_PHASE;
-+
-+		of_property_read_u32(dev->of_node, "xlnx,mio-bank", &mio_bank);
-+		if (mio_bank == 2) {
-+			oclk_phase[MMC_TIMING_UHS_SDR104] = 90;
-+			oclk_phase[MMC_TIMING_MMC_HS200] = 90;
-+		}
-+
-+		for (i = 0; i <= MMC_TIMING_MMC_HS400; i++) {
-+			clk_data->clk_phase_in[i] = iclk_phase[i];
-+			clk_data->clk_phase_out[i] = oclk_phase[i];
-+		}
-+	}
-+
- 	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_LEGACY,
- 				 "clk-phase-legacy");
- 	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS,
-@@ -770,7 +943,10 @@ sdhci_arasan_register_sdcardclk(struct sdhci_arasan_data *sdhci_arasan,
- 	sdcardclk_init.parent_names = &parent_clk_name;
- 	sdcardclk_init.num_parents = 1;
- 	sdcardclk_init.flags = CLK_GET_RATE_NOCACHE;
--	sdcardclk_init.ops = &arasan_sdcardclk_ops;
-+	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a"))
-+		sdcardclk_init.ops = &zynqmp_sdcardclk_ops;
-+	else
-+		sdcardclk_init.ops = &arasan_sdcardclk_ops;
- 
- 	clk_data->sdcardclk_hw.init = &sdcardclk_init;
- 	ret = devm_clk_hw_register(dev, &clk_data->sdcardclk_hw);
-@@ -834,7 +1010,10 @@ sdhci_arasan_register_sampleclk(struct sdhci_arasan_data *sdhci_arasan,
- 	sampleclk_init.parent_names = &parent_clk_name;
- 	sampleclk_init.num_parents = 1;
- 	sampleclk_init.flags = CLK_GET_RATE_NOCACHE;
--	sampleclk_init.ops = &arasan_sampleclk_ops;
-+	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a"))
-+		sampleclk_init.ops = &zynqmp_sampleclk_ops;
-+	else
-+		sampleclk_init.ops = &arasan_sampleclk_ops;
- 
- 	clk_data->sampleclk_hw.init = &sampleclk_init;
- 	ret = devm_clk_hw_register(dev, &clk_data->sampleclk_hw);
-@@ -1012,6 +1191,23 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto unreg_clk;
- 
-+	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a")) {
-+		struct sdhci_arasan_zynqmp_clk_data *zynqmp_clk_data;
-+		const struct zynqmp_eemi_ops *eemi_ops;
-+
-+		zynqmp_clk_data = devm_kzalloc(&pdev->dev,
-+					       sizeof(*zynqmp_clk_data),
-+					       GFP_KERNEL);
-+		eemi_ops = zynqmp_pm_get_eemi_ops();
-+		if (IS_ERR(eemi_ops)) {
-+			ret = PTR_ERR(eemi_ops);
-+			goto unreg_clk;
-+		}
-+
-+		zynqmp_clk_data->eemi_ops = eemi_ops;
-+		sdhci_arasan->clk_data.clk_of_data = zynqmp_clk_data;
-+	}
-+
- 	arasan_dt_parse_clk_phases(&pdev->dev, &sdhci_arasan->clk_data);
- 
- 	ret = mmc_of_parse(host->mmc);
--- 
-2.1.1
+> From: Wolfram Sang, Sent: Sunday, June 30, 2019 4:55 AM
+>=20
+> For those who read the text already, I'll put the changes since v1 here:
+>=20
+> * check 'quirk' pointer before using it in patch 3
+> * fixed a bug in the verification debug patch (not visible in this series=
+)
+> * tested on more boards
+>=20
+> Old cover-letter follows:
+>=20
+>=20
+> Some R-Car Gen3 SoCs need corrections after they tuned to HS400. This
+> series implements that. Please have a look at the patch descriptions for
+> details.
+
+Since other HS400 issue is investigated now, I'd like to wait these patches
+to upstreaming a little more.
+
+Best regards,
+Yoshihiro Shimoda
+
+> The origins were patches in the BSP from Takeshi Saito. However, this
+> series is heavily refactored:
+>=20
+> * DT configuration was dropped, there is no user for it
+> * the fixup offset is currently hardcoded because all affected SoCs use
+>   the same offset. We can add it later to the struct quirks if needed
+> * disabling HS400 for some SoCs was already upstreamed
+> * the callback in the TMIO was made more generic to allow other use
+>   cases in the future
+> * less impact on the TMIO driver by stricter seperation of the SDHI parts
+> * clearing the runtime flag in the error case was moved from
+>   select_tuning to hw_reset to catch all error cases
+> * cosmetic fixups
+>=20
+> There is a branch for testing here:
+>=20
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/topic=
+/sdhi-manual-calib
+>=20
+> Tested with a Renesas R-Car M3-N (needs this new quirk), H3 ES2.0
+> (doesn't need this new but older quirks), and H2 (needs no quirk).
+>=20
+> The patches were developed against mmc/next. However, the above branch
+> is based on v5.2-rc6 with some cherry-picked patches from mmc/next, so
+> Geert can consume it easier for his renesas-drivers branch. There are
+> two more patches in that branch worth mentioning. A clk driver WIP patch
+> which I needed to get HS400 on my M3-N working at all. We are discussing
+> this patch internally right now and its upstreaming is a seperate issue.
+>=20
+> Also, there is a debug patch on top. I can't test that the manual fixup
+> values improve HS400 because the actual issue only shows with
+> temperatures I can't (and don't want to) provide here in my office.
+> So, the debug patches add some trace_printk to demonstrate the functions
+> are called and the outputs match the intended state machine.
+>=20
+> Here are examples (with comments) from my M3-N. If you review this,
+> please don't trust anything I write here.
+>=20
+> An unaffected SDHI instance (no eMMC):
+>=20
+> Adjustment and runtime flag get disabled during the reset in the
+> beginning of the initialization. The same reset routine will be called
+> when tuning fails.
+>=20
+> kworker/0:2-965   [000] ....     1.413767: renesas_sdhi_reset_hs400_mode:=
+ ee100000.sd: adjustment disabled
+> kworker/0:2-965   [000] ....     1.413768: renesas_sdhi_hw_reset: ee10000=
+0.sd: reset! flag disabled
+>=20
+>=20
+> An SDHI instance with a HS400 capable eMMC connected:
+>=20
+> When preparing HS400 tuning, (potential) old HS400 tuning gets reset and
+> the manual adjustment gets disabled, the runtime flag (signalling new
+> manual adjustment will be needed) is set:
+>=20
+> kworker/0:1H-1009  [000] ....     1.864628: renesas_sdhi_reset_hs400_mode=
+: ee140000.sd: adjustment disabled
+> kworker/0:1H-1009  [000] ....     1.864629: renesas_sdhi_prepare_hs400_tu=
+ning: ee140000.sd: flag enabled
+>=20
+> Lots of tuning CMDs:
+>=20
+> kworker/0:2-965   [000] ....     1.864673: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864706: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864735: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864765: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864797: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864825: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864855: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864882: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864909: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864935: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864966: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.864998: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.865025: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.865052: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.865079: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.865106: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.865130: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 6, flag 1
+> kworker/0:2-965   [000] ....     1.865603: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 13, flag 1
+>=20
+> First CMD13 after tuning discovered, enable adjustment, clear runtime
+> flag:
+>=20
+> kworker/0:2-965   [000] ....     1.865609: renesas_sdhi_fixup_request: ee=
+140000.sd: adjustment enabled, flag disabled
+> kworker/0:2-965   [000] ....     1.865635: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 6, flag 0
+> kworker/0:2-965   [000] ....     1.865654: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 13, flag 0
+> kworker/0:2-965   [000] ....     1.865676: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 6, flag 0
+> kworker/0:2-965   [000] ....     1.866143: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 13, flag 0
+> kworker/0:2-965   [000] ....     1.866601: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 18, flag 0
+>=20
+> Reading multiple blocks (CMD18) above failed
+>=20
+> kworker/0:2-965   [000] ....     1.866867: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 6, flag 0
+> kworker/0:2-965   [000] ....     1.867113: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 13, flag 0
+> kworker/0:2-965   [000] ....     1.867137: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 6, flag 0
+> kworker/0:2-965   [000] ....     1.867384: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 13, flag 0
+> kworker/0:2-965   [000] ....     1.867409: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 6, flag 0
+> kworker/0:2-965   [000] ....     1.867651: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 13, flag 0
+>=20
+> Seems like another retune is need, start cycle again:
+>=20
+> kworker/0:1H-1009  [000] ....     1.867880: renesas_sdhi_reset_hs400_mode=
+: ee140000.sd: adjustment disabled
+> kworker/0:1H-1009  [000] ....     1.867882: renesas_sdhi_prepare_hs400_tu=
+ning: ee140000.sd: flag enabled
+> kworker/0:2-965   [000] ....     1.867926: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.867958: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.867986: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868019: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868048: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868076: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868103: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868129: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868156: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868181: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868208: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868237: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868267: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868294: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868321: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868347: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 21, flag 1
+> kworker/0:2-965   [000] ....     1.868370: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 6, flag 1
+> kworker/0:2-965   [000] ....     1.868837: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 13, flag 1
+> kworker/0:2-965   [000] ....     1.868842: renesas_sdhi_fixup_request: ee=
+140000.sd: adjustment enabled, flag disabled
+> kworker/0:2-965   [000] ....     1.868869: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 6, flag 0
+> kworker/0:2-965   [000] ....     1.868888: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 13, flag 0
+> kworker/0:2-965   [000] ....     1.868913: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 6, flag 0
+> kworker/0:2-965   [000] ....     1.869381: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 13, flag 0
+>=20
+> Finally, we can read lots of blocks without problems. The manual
+> adjustment is still enabled as desired:
+>=20
+> kworker/0:2-965   [000] ....     1.870027: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 18, flag 0
+> kworker/0:2-965   [000] ....     1.871300: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 18, flag 0
+> kworker/0:2-965   [000] ....     1.871454: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 18, flag 0
+> kworker/0:2-965   [000] ....     1.871579: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 18, flag 0
+> kworker/0:2-965   [000] ....     1.871712: renesas_sdhi_fixup_request: ee=
+140000.sd: opcode 18, flag 0
+> ...
+>=20
+>=20
+> Okay, I know this is a lot of text, but it is a subtle issue, so I
+> wanted to provide the details which enable other people to actually
+> review what I have done.
+>=20
+> Shimoda-san, if the BSP team could have a look and share their opinion
+> or could test, I'd be most grateful.
+>=20
+> Thanks and happy hacking,
+>=20
+>    Wolfram
+>=20
+>=20
+> Wolfram Sang (4):
+>   mmc: renesas_sdhi: keep sorting
+>   mmc: tmio: add generic hook to fixup after a completed request
+>   mmc: renesas_sdhi: make quirks info accessible outside probe()
+>   mmc: renesas_sdhi: support manual calibration
+>=20
+>  drivers/mmc/host/renesas_sdhi.h      |   9 ++
+>  drivers/mmc/host/renesas_sdhi_core.c | 129 +++++++++++++++++++++++++--
+>  drivers/mmc/host/tmio_mmc.h          |   1 +
+>  drivers/mmc/host/tmio_mmc_core.c     |   3 +
+>  4 files changed, 135 insertions(+), 7 deletions(-)
+>=20
+> --
+> 2.20.1
 
