@@ -2,156 +2,133 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EC695BCF8
-	for <lists+linux-mmc@lfdr.de>; Mon,  1 Jul 2019 15:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58BC65BEA7
+	for <lists+linux-mmc@lfdr.de>; Mon,  1 Jul 2019 16:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729096AbfGANcg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 1 Jul 2019 09:32:36 -0400
-Received: from mga09.intel.com ([134.134.136.24]:38071 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727415AbfGANcg (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 1 Jul 2019 09:32:36 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Jul 2019 06:32:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,439,1557212400"; 
-   d="scan'208";a="361834699"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by fmsmga005.fm.intel.com with ESMTP; 01 Jul 2019 06:32:33 -0700
-Subject: Re: [PATCH 3/3] mmc: sdhci-sprd: Add pin control support for voltage
- switch
-To:     Baolin Wang <baolin.wang@linaro.org>, ulf.hansson@linaro.org,
-        zhang.lyra@gmail.com, orsonzhai@gmail.com, robh+dt@kernel.org,
-        mark.rutland@arm.com
-Cc:     vincent.guittot@linaro.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <cover.1561094029.git.baolin.wang@linaro.org>
- <db6d2b2d6170fd2409916c5c41b857f4bc587a15.1561094029.git.baolin.wang@linaro.org>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <bc6ae189-ca6b-5447-907e-41ec05b2926c@intel.com>
-Date:   Mon, 1 Jul 2019 16:31:25 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        id S1728477AbfGAOuU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 1 Jul 2019 10:50:20 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:36250 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728472AbfGAOuU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 1 Jul 2019 10:50:20 -0400
+Received: by mail-pl1-f196.google.com with SMTP id k8so7489194plt.3
+        for <linux-mmc@vger.kernel.org>; Mon, 01 Jul 2019 07:50:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=8DhsHhHpoG4ayeBdiyvK+pQwK61SKZGiv/7oJsmdxfQ=;
+        b=L5VhDhOasgqtS3rmT4OyVLkqJ1TYyfKg2P8XQbp5QQO7hjCxtOcaKKIAKddBHecQV0
+         cFWTLzZobWI7tQV6sV3j+osS2+QI33oWJadpmazRGkTUUNDbmlIy6iDXDPnpDh+tMB+C
+         fdRGo3qyXR9gZEFEVq0dcTQDqYfvjWOjOv9YvvzHO63DFjCTONk8jLCNpdvTt5p+Q+c8
+         oDGdpOCBUxWcNvKFUJ4LgOMFk8avMky1Ld0uZ8wl6tiDWp0OUewoixMdmlw1OEnaNirl
+         0p3mliGk86rDGiTzJhq4IrBQEkc7nHEZfjzmmEGt0cMdFipbsMbfj+AB4OXTeXyiwPy8
+         MYaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=8DhsHhHpoG4ayeBdiyvK+pQwK61SKZGiv/7oJsmdxfQ=;
+        b=ugup7qUulkrxHaI+GuEegsxUZx2l3gx9TCLgvHP+aJLwR8Hslzx8FREIzNkj3TajT8
+         3AHspFetEBQn0cMC196ums+9LEPzE1WSX0XEcEfytbSvnD+CJH8zgjZsxu9w5Rb1N/bH
+         tGKgqchzmtlo2SR3C5f44HE1V8E6kCXkPoUYiw7xRzdyiRxzqr6N/SaaRFir9ICysS/f
+         oH1rqn8T45Lh+kK9nyLUGiFzYmoYPMvwBw8MYXZh4Tvd/69YZrNd/A/GjitFXqRL5JLC
+         3tbUWfzEaHwz0dytw2ZWjwgBtimWJfzeYfDyFyd8Z4Qp54AjOWez8ilJ/wMupLKOo5C0
+         xwDg==
+X-Gm-Message-State: APjAAAVSUPNhB0tHfczjRVpSQqujMlBZr0hVjXB1lALVtX6PZtapzLJT
+        W6F9sJTr9jcmy3KkA+W/P8Cb6A==
+X-Google-Smtp-Source: APXvYqwrleYyr6IvOOFIQ4S8xa7usHyTCZaoYl3JWrGqM5qod9TTX390XudbbJ+PaKE4W4aZmlckxw==
+X-Received: by 2002:a17:902:1102:: with SMTP id d2mr29415786pla.149.1561992619449;
+        Mon, 01 Jul 2019 07:50:19 -0700 (PDT)
+Received: from tuxbook-pro (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
+        by smtp.gmail.com with ESMTPSA id i6sm814419pgi.40.2019.07.01.07.50.17
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 01 Jul 2019 07:50:18 -0700 (PDT)
+Date:   Mon, 1 Jul 2019 07:51:06 -0700
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>
+Cc:     adrian.hunter@intel.com, agross@kernel.org, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, khasim.mohammed@linaro.org,
+        vinod.koul@linaro.org
+Subject: Re: [PATCH] mmc: sdhci-msm: fix mutex while in spinlock
+Message-ID: <20190701145106.GE12249@tuxbook-pro>
+References: <20190701105316.19419-1-jorge.ramirez-ortiz@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <db6d2b2d6170fd2409916c5c41b857f4bc587a15.1561094029.git.baolin.wang@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190701105316.19419-1-jorge.ramirez-ortiz@linaro.org>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 21/06/19 9:12 AM, Baolin Wang wrote:
-> For Spreadtrum SD card voltage switching, besides regulator setting,
-> it also need switch related pin's state to output corresponding voltage.
-> 
-> This patch adds pin control operation to support voltage switch.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+On Mon 01 Jul 03:53 PDT 2019, Jorge Ramirez-Ortiz wrote:
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> mutexes can sleep and therefore should not be taken while holding a
+> spinlock. move clk_get_rate (can sleep) outside the spinlock protected
+> region.
+> 
+> This regression was introduced with commit
+>      Date:   Mon Nov 21 12:07:16 2016 +0530
+>      mmc: sdhci-msm: Update DLL reset sequence
+> 
+>      SDCC core with minor version >= 0x42 introduced new 14lpp
+>      DLL. This has additional requirements in the reset sequence
+>      for DLL tuning. Make necessary changes as needed.
+
+Your Fixes: below already states this.
+
+> 
+> Fixes: 83736352e0ca ("mmc: sdhci-msm: Update DLL reset sequence")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>
+
+Apart from that, your patch is good
+
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+
+Regards,
+Bjorn
 
 > ---
->  drivers/mmc/host/sdhci-sprd.c |   54 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 54 insertions(+)
+>  drivers/mmc/host/sdhci-msm.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-> index 8b23c88..6ee340a 100644
-> --- a/drivers/mmc/host/sdhci-sprd.c
-> +++ b/drivers/mmc/host/sdhci-sprd.c
-> @@ -12,6 +12,7 @@
->  #include <linux/of.h>
->  #include <linux/of_device.h>
->  #include <linux/of_gpio.h>
-> +#include <linux/pinctrl/consumer.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/regulator/consumer.h>
-> @@ -72,6 +73,9 @@ struct sdhci_sprd_host {
->  	struct clk *clk_sdio;
->  	struct clk *clk_enable;
->  	struct clk *clk_2x_enable;
-> +	struct pinctrl *pinctrl;
-> +	struct pinctrl_state *pins_uhs;
-> +	struct pinctrl_state *pins_default;
->  	u32 base_rate;
->  	int flags; /* backup of host attribute */
->  	u32 phy_delay[MMC_TIMING_MMC_HS400 + 2];
-> @@ -405,6 +409,8 @@ static void sdhci_sprd_request(struct mmc_host *mmc, struct mmc_request *mrq)
+> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+> index 5fc76a1993d0..9cf14b359c14 100644
+> --- a/drivers/mmc/host/sdhci-msm.c
+> +++ b/drivers/mmc/host/sdhci-msm.c
+> @@ -575,11 +575,14 @@ static int msm_init_cm_dll(struct sdhci_host *host)
+>  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+>  	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
+>  	int wait_cnt = 50;
+> -	unsigned long flags;
+> +	unsigned long flags, xo_clk = 0;
+>  	u32 config;
+>  	const struct sdhci_msm_offset *msm_offset =
+>  					msm_host->offset;
 >  
->  static int sdhci_sprd_voltage_switch(struct mmc_host *mmc, struct mmc_ios *ios)
->  {
-> +	struct sdhci_host *host = mmc_priv(mmc);
-> +	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
->  	int ret;
+> +	if (msm_host->use_14lpp_dll_reset && !IS_ERR_OR_NULL(msm_host->xo_clk))
+> +		xo_clk = clk_get_rate(msm_host->xo_clk);
+> +
+>  	spin_lock_irqsave(&host->lock, flags);
 >  
->  	if (!IS_ERR(mmc->supply.vqmmc)) {
-> @@ -416,6 +422,37 @@ static int sdhci_sprd_voltage_switch(struct mmc_host *mmc, struct mmc_ios *ios)
->  		}
->  	}
+>  	/*
+> @@ -627,10 +630,10 @@ static int msm_init_cm_dll(struct sdhci_host *host)
+>  		config &= CORE_FLL_CYCLE_CNT;
+>  		if (config)
+>  			mclk_freq = DIV_ROUND_CLOSEST_ULL((host->clock * 8),
+> -					clk_get_rate(msm_host->xo_clk));
+> +					xo_clk);
+>  		else
+>  			mclk_freq = DIV_ROUND_CLOSEST_ULL((host->clock * 4),
+> -					clk_get_rate(msm_host->xo_clk));
+> +					xo_clk);
 >  
-> +	if (IS_ERR(sprd_host->pinctrl))
-> +		return 0;
-> +
-> +	switch (ios->signal_voltage) {
-> +	case MMC_SIGNAL_VOLTAGE_180:
-> +		ret = pinctrl_select_state(sprd_host->pinctrl,
-> +					   sprd_host->pins_uhs);
-> +		if (ret) {
-> +			pr_err("%s: failed to select uhs pin state\n",
-> +			       mmc_hostname(mmc));
-> +			return ret;
-> +		}
-> +		break;
-> +
-> +	default:
-> +		/* fall-through */
-> +	case MMC_SIGNAL_VOLTAGE_330:
-> +		ret = pinctrl_select_state(sprd_host->pinctrl,
-> +					   sprd_host->pins_default);
-> +		if (ret) {
-> +			pr_err("%s: failed to select default pin state\n",
-> +			       mmc_hostname(mmc));
-> +			return ret;
-> +		}
-> +		break;
-> +	}
-> +
-> +	/* Wait for 300 ~ 500 us for pin state stable */
-> +	usleep_range(300, 500);
-> +	sdhci_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
-> +
->  	return 0;
->  }
->  
-> @@ -504,6 +541,23 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
->  	sprd_host = TO_SPRD_HOST(host);
->  	sdhci_sprd_phy_param_parse(sprd_host, pdev->dev.of_node);
->  
-> +	sprd_host->pinctrl = devm_pinctrl_get(&pdev->dev);
-> +	if (!IS_ERR(sprd_host->pinctrl)) {
-> +		sprd_host->pins_uhs =
-> +			pinctrl_lookup_state(sprd_host->pinctrl, "state_uhs");
-> +		if (IS_ERR(sprd_host->pins_uhs)) {
-> +			ret = PTR_ERR(sprd_host->pins_uhs);
-> +			goto pltfm_free;
-> +		}
-> +
-> +		sprd_host->pins_default =
-> +			pinctrl_lookup_state(sprd_host->pinctrl, "default");
-> +		if (IS_ERR(sprd_host->pins_default)) {
-> +			ret = PTR_ERR(sprd_host->pins_default);
-> +			goto pltfm_free;
-> +		}
-> +	}
-> +
->  	clk = devm_clk_get(&pdev->dev, "sdio");
->  	if (IS_ERR(clk)) {
->  		ret = PTR_ERR(clk);
+>  		config = readl_relaxed(host->ioaddr +
+>  				msm_offset->core_dll_config_2);
+> -- 
+> 2.21.0
 > 
-
