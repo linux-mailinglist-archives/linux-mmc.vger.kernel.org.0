@@ -2,40 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A53925CC72
-	for <lists+linux-mmc@lfdr.de>; Tue,  2 Jul 2019 11:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B60E85CD0B
+	for <lists+linux-mmc@lfdr.de>; Tue,  2 Jul 2019 11:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727043AbfGBJME (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Jul 2019 05:12:04 -0400
-Received: from mga12.intel.com ([192.55.52.136]:2146 "EHLO mga12.intel.com"
+        id S1726457AbfGBJ4j (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Jul 2019 05:56:39 -0400
+Received: from mga18.intel.com ([134.134.136.126]:33219 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725851AbfGBJME (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 2 Jul 2019 05:12:04 -0400
+        id S1726213AbfGBJ4j (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 2 Jul 2019 05:56:39 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Jul 2019 02:12:03 -0700
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Jul 2019 02:12:12 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.63,442,1557212400"; 
-   d="scan'208";a="171725909"
+   d="scan'208";a="171725992"
 Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by FMSMGA003.fm.intel.com with ESMTP; 02 Jul 2019 02:12:02 -0700
-Subject: Re: [PATCH v2 1/3] mmc: add Coldfire esdhc support
-To:     Angelo Dureghello <angelo@sysam.it>,
-        Christoph Hellwig <hch@infradead.org>
-Cc:     ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
-        linux-m68k@vger.kernel.org
+  by FMSMGA003.fm.intel.com with ESMTP; 02 Jul 2019 02:12:10 -0700
+Subject: Re: [PATCH v2 3/3] mmc: enabling ColdFire esdhc controller support
+To:     Angelo Dureghello <angelo@sysam.it>, ulf.hansson@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-m68k@vger.kernel.org
 References: <20190616204823.32758-1-angelo@sysam.it>
- <20190617065807.GA17948@infradead.org> <20190619222236.GA18383@jerusalem>
+ <20190616204823.32758-3-angelo@sysam.it>
 From:   Adrian Hunter <adrian.hunter@intel.com>
 Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
  Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <a5427af4-079e-7e0a-487e-389969809cb5@intel.com>
-Date:   Tue, 2 Jul 2019 12:10:54 +0300
+Message-ID: <fe023694-84f3-e751-8cc9-0e1353140969@intel.com>
+Date:   Tue, 2 Jul 2019 12:11:02 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.1
 MIME-Version: 1.0
-In-Reply-To: <20190619222236.GA18383@jerusalem>
+In-Reply-To: <20190616204823.32758-3-angelo@sysam.it>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -44,27 +42,54 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 20/06/19 1:22 AM, Angelo Dureghello wrote:
-> Hi Christoph,
+On 16/06/19 11:48 PM, Angelo Dureghello wrote:
+> Signed-off-by: Angelo Dureghello <angelo@sysam.it>
+> ---
+>  drivers/mmc/host/Kconfig  | 13 +++++++++++++
+>  drivers/mmc/host/Makefile |  3 ++-
+>  2 files changed, 15 insertions(+), 1 deletion(-)
 > 
-> On Sun, Jun 16, 2019 at 11:58:07PM -0700, Christoph Hellwig wrote:
->> On Sun, Jun 16, 2019 at 10:48:21PM +0200, Angelo Dureghello wrote:
->>> This driver has been developed as a separate module starting
->>> from the similar sdhci-esdhc-fls.c.
->>> Separation has been mainly driven from change in endianness.
->>
->> Can't we have a way to define the endianess at build or even runtime?
->> We have plenty of that elsewhere in the kernel.
-> 
-> well, the base sdhci layer wants to access byte-size fields of the
-> esdhc controller registers.
-> But this same Freescale esdhc controller may be found in 2
-> flavors, big-endian or little-endian organized.
-> So in this driver i am actually correcting byte-addresses to
-> access the wanted byte-field in the big-endian hw controller.
-> 
-> So this is a bit different from a be-le endian swap of a
-> long or a short that the kernel is organized to do..
+> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> index 931770f17087..9b426094d10a 100644
+> --- a/drivers/mmc/host/Kconfig
+> +++ b/drivers/mmc/host/Kconfig
+> @@ -221,6 +221,19 @@ config MMC_SDHCI_CNS3XXX
+>  
+>  	  If unsure, say N.
+>  
+> +config MMC_SDHCI_ESDHC_MCF
+> +	tristate "SDHCI support for the Freescale eSDHC ColdFire controller"
+> +	depends on M5441x
+> +	depends on MMC_SDHCI_PLTFM
+> +	select MMC_SDHCI_IO_ACCESSORS
+> +	help
+> +	  This selects the Freescale eSDHC controller support for
+> +	  ColdFire mcf5441x devices.
+> +
+> +	  If you have a controller with this interface, say Y or M here.
+> +
+> +	  If unsure, say N.
+> +
+>  config MMC_SDHCI_ESDHC_IMX
+>  	tristate "SDHCI support for the Freescale eSDHC/uSDHC i.MX controller"
+>  	depends on ARCH_MXC
+> diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
+> index 73578718f119..b2127ee5e71e 100644
+> --- a/drivers/mmc/host/Makefile
+> +++ b/drivers/mmc/host/Makefile
+> @@ -80,6 +80,7 @@ obj-$(CONFIG_MMC_REALTEK_USB)	+= rtsx_usb_sdmmc.o
+>  obj-$(CONFIG_MMC_SDHCI_PLTFM)		+= sdhci-pltfm.o
+>  obj-$(CONFIG_MMC_SDHCI_CADENCE)		+= sdhci-cadence.o
+>  obj-$(CONFIG_MMC_SDHCI_CNS3XXX)		+= sdhci-cns3xxx.o
+> +obj-$(CONFIG_MMC_SDHCI_ESDHC_MCF)       += sdhci-esdhc-mcf.o
+>  obj-$(CONFIG_MMC_SDHCI_ESDHC_IMX)	+= sdhci-esdhc-imx.o
+>  obj-$(CONFIG_MMC_SDHCI_DOVE)		+= sdhci-dove.o
+>  obj-$(CONFIG_MMC_SDHCI_TEGRA)		+= sdhci-tegra.o
+> @@ -103,4 +104,4 @@ ifeq ($(CONFIG_CB710_DEBUG),y)
+>  endif
+>  
+>  obj-$(CONFIG_MMC_SDHCI_XENON)	+= sdhci-xenon-driver.o
+> -sdhci-xenon-driver-y		+= sdhci-xenon.o sdhci-xenon-phy.o
+> +sdhci-xenon-driver-y		+= sdhci-xenon.o sdhci-xenon-phy.
 
-Did you consider just using different sdhci_ops so that you could support
-different sdhci I/O accessors?
+Inadvertent change there
