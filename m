@@ -2,94 +2,105 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B60E85CD0B
-	for <lists+linux-mmc@lfdr.de>; Tue,  2 Jul 2019 11:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9C6F5CE55
+	for <lists+linux-mmc@lfdr.de>; Tue,  2 Jul 2019 13:24:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726457AbfGBJ4j (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Jul 2019 05:56:39 -0400
-Received: from mga18.intel.com ([134.134.136.126]:33219 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726213AbfGBJ4j (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 2 Jul 2019 05:56:39 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Jul 2019 02:12:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,442,1557212400"; 
-   d="scan'208";a="171725992"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by FMSMGA003.fm.intel.com with ESMTP; 02 Jul 2019 02:12:10 -0700
-Subject: Re: [PATCH v2 3/3] mmc: enabling ColdFire esdhc controller support
-To:     Angelo Dureghello <angelo@sysam.it>, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-m68k@vger.kernel.org
-References: <20190616204823.32758-1-angelo@sysam.it>
- <20190616204823.32758-3-angelo@sysam.it>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <fe023694-84f3-e751-8cc9-0e1353140969@intel.com>
-Date:   Tue, 2 Jul 2019 12:11:02 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        id S1726362AbfGBLYj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Jul 2019 07:24:39 -0400
+Received: from kirsty.vergenet.net ([202.4.237.240]:33860 "EHLO
+        kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726150AbfGBLYj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Jul 2019 07:24:39 -0400
+Received: from reginn.horms.nl (watermunt.horms.nl [80.127.179.77])
+        by kirsty.vergenet.net (Postfix) with ESMTPA id D2EC625AEC8;
+        Tue,  2 Jul 2019 21:24:36 +1000 (AEST)
+Received: by reginn.horms.nl (Postfix, from userid 7100)
+        id CE40F940476; Tue,  2 Jul 2019 13:24:34 +0200 (CEST)
+Date:   Tue, 2 Jul 2019 13:24:34 +0200
+From:   Simon Horman <horms@verge.net.au>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Simon Horman <simon.horman@netronome.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v2] dt-binding: mmc: rename tmio_mmc.txt to
+ renesas,sdhi.txt
+Message-ID: <20190702112434.ll3btya7fepkb5tn@verge.net.au>
+References: <20190624070345.20373-1-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
-In-Reply-To: <20190616204823.32758-3-angelo@sysam.it>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190624070345.20373-1-yamada.masahiro@socionext.com>
+Organisation: Horms Solutions BV
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 16/06/19 11:48 PM, Angelo Dureghello wrote:
-> Signed-off-by: Angelo Dureghello <angelo@sysam.it>
-> ---
->  drivers/mmc/host/Kconfig  | 13 +++++++++++++
->  drivers/mmc/host/Makefile |  3 ++-
->  2 files changed, 15 insertions(+), 1 deletion(-)
+On Mon, Jun 24, 2019 at 04:03:45PM +0900, Masahiro Yamada wrote:
+> As commit b6147490e6aa ("mmc: tmio: split core functionality, DMA and
+> MFD glue") said, these MMC controllers use the IP from Panasonic.
 > 
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 931770f17087..9b426094d10a 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -221,6 +221,19 @@ config MMC_SDHCI_CNS3XXX
->  
->  	  If unsure, say N.
->  
-> +config MMC_SDHCI_ESDHC_MCF
-> +	tristate "SDHCI support for the Freescale eSDHC ColdFire controller"
-> +	depends on M5441x
-> +	depends on MMC_SDHCI_PLTFM
-> +	select MMC_SDHCI_IO_ACCESSORS
-> +	help
-> +	  This selects the Freescale eSDHC controller support for
-> +	  ColdFire mcf5441x devices.
-> +
-> +	  If you have a controller with this interface, say Y or M here.
-> +
-> +	  If unsure, say N.
-> +
->  config MMC_SDHCI_ESDHC_IMX
->  	tristate "SDHCI support for the Freescale eSDHC/uSDHC i.MX controller"
->  	depends on ARCH_MXC
-> diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
-> index 73578718f119..b2127ee5e71e 100644
-> --- a/drivers/mmc/host/Makefile
-> +++ b/drivers/mmc/host/Makefile
-> @@ -80,6 +80,7 @@ obj-$(CONFIG_MMC_REALTEK_USB)	+= rtsx_usb_sdmmc.o
->  obj-$(CONFIG_MMC_SDHCI_PLTFM)		+= sdhci-pltfm.o
->  obj-$(CONFIG_MMC_SDHCI_CADENCE)		+= sdhci-cadence.o
->  obj-$(CONFIG_MMC_SDHCI_CNS3XXX)		+= sdhci-cns3xxx.o
-> +obj-$(CONFIG_MMC_SDHCI_ESDHC_MCF)       += sdhci-esdhc-mcf.o
->  obj-$(CONFIG_MMC_SDHCI_ESDHC_IMX)	+= sdhci-esdhc-imx.o
->  obj-$(CONFIG_MMC_SDHCI_DOVE)		+= sdhci-dove.o
->  obj-$(CONFIG_MMC_SDHCI_TEGRA)		+= sdhci-tegra.o
-> @@ -103,4 +104,4 @@ ifeq ($(CONFIG_CB710_DEBUG),y)
->  endif
->  
->  obj-$(CONFIG_MMC_SDHCI_XENON)	+= sdhci-xenon-driver.o
-> -sdhci-xenon-driver-y		+= sdhci-xenon.o sdhci-xenon-phy.o
-> +sdhci-xenon-driver-y		+= sdhci-xenon.o sdhci-xenon-phy.
+> TMIO (Toshiba Mobile IO) MMC was the first upstreamed user of this IP.
+> The common driver code was split and expanded as 'tmio-mmc-core', then
+> it became historical misnomer since 'tmio' is not the name of this IP.
+> 
+> In the discussion [1], we decide to keep this name as-is at least in
+> Linux driver level because renaming everything is a big churn.
+> 
+> However, DT should not be oriented to a particular project even though
+> it is mainly developed in Linux communities.
+> 
+> This is the misfortune only in Linux. Let's stop exporting it to other
+> projects, where there is no good reason to call this hardware "TMIO".
+> Rename the file to renesas,sdhi.txt. In fact, all the information in
+> this file is specific to the Renesas platform.
+> 
+> This commit also removes the first paragraph entirely. The DT-binding
+> should describe the hardware. It is strange to talk about Linux driver
+> internals such as how the drivers are probed, how platform data are
+> handed off, etc.
+> 
+> [1] https://www.spinics.net/lists/linux-mmc/msg46952.html
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-Inadvertent change there
+Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
+
+> ---
+> 
+> Changes in v2:
+>  - Rename to renesas,sdhi.txt instead of renesas_sdhi.txt
+> 
+>  .../bindings/mmc/{tmio_mmc.txt => renesas,sdhi.txt}   | 11 +----------
+>  1 file changed, 1 insertion(+), 10 deletions(-)
+>  rename Documentation/devicetree/bindings/mmc/{tmio_mmc.txt => renesas,sdhi.txt} (87%)
+> 
+> diff --git a/Documentation/devicetree/bindings/mmc/tmio_mmc.txt b/Documentation/devicetree/bindings/mmc/renesas,sdhi.txt
+> similarity index 87%
+> rename from Documentation/devicetree/bindings/mmc/tmio_mmc.txt
+> rename to Documentation/devicetree/bindings/mmc/renesas,sdhi.txt
+> index 2b4f17ca9087..dd08d038a65c 100644
+> --- a/Documentation/devicetree/bindings/mmc/tmio_mmc.txt
+> +++ b/Documentation/devicetree/bindings/mmc/renesas,sdhi.txt
+> @@ -1,13 +1,4 @@
+> -* Toshiba Mobile IO SD/MMC controller
+> -
+> -The tmio-mmc driver doesn't probe its devices actively, instead its binding to
+> -devices is managed by either MFD drivers or by the sh_mobile_sdhi platform
+> -driver. Those drivers supply the tmio-mmc driver with platform data, that either
+> -describe hardware capabilities, known to them, or are obtained by them from
+> -their own platform data or from their DT information. In the latter case all
+> -compulsory and any optional properties, common to all SD/MMC drivers, as
+> -described in mmc.txt, can be used. Additionally the following tmio_mmc-specific
+> -optional bindings can be used.
+> +* Renesas SDHI SD/MMC controller
+>  
+>  Required properties:
+>  - compatible: should contain one or more of the following:
+> -- 
+> 2.17.1
+> 
