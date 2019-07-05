@@ -2,62 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9385360DAA
-	for <lists+linux-mmc@lfdr.de>; Sat,  6 Jul 2019 00:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0274360DCF
+	for <lists+linux-mmc@lfdr.de>; Sat,  6 Jul 2019 00:29:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725882AbfGEWQr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 5 Jul 2019 18:16:47 -0400
-Received: from out176.e-adjacentdigital.co.uk ([178.156.202.12]:42844 "EHLO
-        slot0.mathewsons.ga" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1725878AbfGEWQr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 5 Jul 2019 18:16:47 -0400
-X-Greylist: delayed 601 seconds by postgrey-1.27 at vger.kernel.org; Fri, 05 Jul 2019 18:16:47 EDT
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=mathewsons.ga;
- h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID; i=purchase@mathewsons.ga;
- bh=onxYcir3NvpNjk2I/gjm/O+ljxo=;
- b=IiGbP+47uEF7FmEkLif9Hf5b4knss2f9KEli7cBUWb7HINodN5dd0j+6jLxxqAeQTT6/eAGdexip
-   mv5pi+8y7wS6H8Sm/nhRqDcOI1KDpAlH0t26TVo/a5F3HRkr7Ln0ucMwChrqv0IXEQi1bkDGFjE0
-   6EqAUKCq+u1VAt0XHNgZzrUJ7jr9m65aVC/GG8mWjr6pScInmW9/BleXVPaKbb2UJ3HULYW/7So3
-   W4fReG3fSB9LymT80eT1VNkmKTKuveH4p88JxzMxT9Ilwu4BqLUXvJsiXt3Krrsf5yR5GLcIwLAW
-   ooPxRgqAykC5KALRt6hrjhtYesVgqQr/E9sCdA==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=mathewsons.ga;
- b=fbqO+aGNsrucnuLbsKal6WWGO61smRMID6kT85e92VZXNQHtg7zG5E/MrHmLY8UhqKfn45sMTF0M
-   GtGWkSvs8dmgF92KvkzJkIQ/5Hw3QXjHe8G0OgbWpXos3utnup/5glu43qpWbjXnpx8CwJCAPeXR
-   hNU+3xj10ePqZdKtgxZVq/98zOLatCe4mvsCr61mFpuK7LtG6lHOxvqPJNs4jVIW4QgyjN/F33qG
-   rfzwSWB0b9UKeG+Kl9+3yHs7H4uVRnsIHq1g0ittiNxmil6B8HqN1x8Kj/uSW61E5X00cb+qOdyJ
-   OpTEkjS9tAPi4RlUgoW/oSlEARbROm0v7p9A4w==;
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1725962AbfGEW3U (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 5 Jul 2019 18:29:20 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:46678 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725917AbfGEW3U (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 5 Jul 2019 18:29:20 -0400
+Received: by mail-io1-f66.google.com with SMTP id i10so22043710iol.13
+        for <linux-mmc@vger.kernel.org>; Fri, 05 Jul 2019 15:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lixom-net.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=A2xFeB/vxfBJWIi2SCTq+vsVIJL+pCcb0P3THlDfvNk=;
+        b=hycMa+7f59LmBeoZx7y+T6iB+NqeRfKUCiEwPvr1G17qNMYTgFWeGgJnfHmpt58y3R
+         pE2x4OswYZw80bCfWurEXT3RSUYQLZGIm/hAun3Zsi1gdbn1j5dxcQTLo8sHPU+Ciz7o
+         iDfQh6cgbrxML1qV0b61RieVtvOF/c3yjVMQI4kcnTJHkz3r+Xp2keXGFHneyVDSqFe6
+         g4Yik34C0kIqHBkyqItwiZt00TrFmr8pZUvduDej+ANXqBVq2TKmE0PkuRWaAIypt0tb
+         5n+qAkievhL51pi8/Pk3ZX+Zpn0q4OOrs0azQb3ZvUf+vI+YpFAf4M4GatHRVj+GVVUc
+         2Mog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=A2xFeB/vxfBJWIi2SCTq+vsVIJL+pCcb0P3THlDfvNk=;
+        b=UPO7C3RK7ORNiFnz7X27q+GAwfnca9Hd7L4dYaMpDkWC69sbdWHS1Zqigt1Nxe4gD1
+         DEVQWzvBwlzZ/lw6PaEqcJHRcZ5lbMxrynP3NaBleDC+P3QPcepoHN9h9EWOUCAv639W
+         KkLCiP3jtfYszqxL25DL5RUBu4Jae9csKiY5S3En6hXUwNdApdTjkxYn/09VCFNzWnDP
+         N3KIowR9QISJxAdER9EJ04jNX3rV1GDEpMVnkIVYXEcnZ9bDQS0xttPxIKciqe/VIldx
+         X0nZpxBe4Z5+SVwziaQmgoxZ/i6ZSrf3npfwMnqZXX71ptAbDr5frOp03J/YSaijB4eS
+         /PxQ==
+X-Gm-Message-State: APjAAAXhQcaTpaNkFjaY2/9rumWUNHY+BEvbn+jZHjMvA5mHo9ZVews/
+        G+MPERu+4d9fztZiSjNlimOvzerLCdJKybAy72xGuA==
+X-Google-Smtp-Source: APXvYqwtqdru004WFVZFoC69PGQmOPnOHdWCXRH4144sBC3NkbqjrE+G/DO1ByoQUCVa7iOf555pJHgtt5vr645kXJM=
+X-Received: by 2002:a5d:9642:: with SMTP id d2mr2393845ios.278.1562365759537;
+ Fri, 05 Jul 2019 15:29:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Quotes needed For July Shipments
-To:     Recipients <purchase@mathewsons.ga>
-From:   "Sales -Jpexcc." <purchase@mathewsons.ga>
-Date:   Sat, 06 Jul 2019 01:06:38 +0300
-Reply-To: jpexcc@aol.com
-Message-ID: <0.0.4E.44F.1D5337DB90866A0.0@slot0.mathewsons.ga>
+References: <cover.1559635435.git.baolin.wang@linaro.org> <15AEA3314E88B01E.21242@linux.kernel.org>
+In-Reply-To: <15AEA3314E88B01E.21242@linux.kernel.org>
+From:   Olof Johansson <olof@lixom.net>
+Date:   Fri, 5 Jul 2019 15:29:08 -0700
+Message-ID: <CAOesGMjdnQuLdvphBDM3xmH6o+Nca8+65mw8-EajV0Eb_8MS5w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/9] mmc: sdhci-sprd: Check the enable clock's return
+ value correctly
+To:     patchwork-soc+owner@linux.kernel.org
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Lyra Zhang <zhang.lyra@gmail.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        ARM-SoC Maintainers <arm@kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        linux-mmc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello dear,
- =
+On Fri, Jul 5, 2019 at 3:25 PM Olof Johansson via Linux.Kernel.Org
+<olof=lixom.net@linux.kernel.org> wrote:
 
-We are in the market for your products after meeting at your stand during l=
-ast expo.
- =
+Hmm, well, that didn't work like I expected to. Sorry for the noise.
 
-Please kindly send us your latest catalog and price list so as to start a n=
-ew project/order as promised during the exhibition. =
 
- =
-
-I would appreciate your response about the above details required so we can=
- revert back to you asap.
- =
-
-Kind regards
- =
-
-Rhema Zoeh
+-Olof
