@@ -2,77 +2,144 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0274360DCF
-	for <lists+linux-mmc@lfdr.de>; Sat,  6 Jul 2019 00:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04DD260FB8
+	for <lists+linux-mmc@lfdr.de>; Sat,  6 Jul 2019 12:00:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725962AbfGEW3U (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 5 Jul 2019 18:29:20 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:46678 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725917AbfGEW3U (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 5 Jul 2019 18:29:20 -0400
-Received: by mail-io1-f66.google.com with SMTP id i10so22043710iol.13
-        for <linux-mmc@vger.kernel.org>; Fri, 05 Jul 2019 15:29:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lixom-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=A2xFeB/vxfBJWIi2SCTq+vsVIJL+pCcb0P3THlDfvNk=;
-        b=hycMa+7f59LmBeoZx7y+T6iB+NqeRfKUCiEwPvr1G17qNMYTgFWeGgJnfHmpt58y3R
-         pE2x4OswYZw80bCfWurEXT3RSUYQLZGIm/hAun3Zsi1gdbn1j5dxcQTLo8sHPU+Ciz7o
-         iDfQh6cgbrxML1qV0b61RieVtvOF/c3yjVMQI4kcnTJHkz3r+Xp2keXGFHneyVDSqFe6
-         g4Yik34C0kIqHBkyqItwiZt00TrFmr8pZUvduDej+ANXqBVq2TKmE0PkuRWaAIypt0tb
-         5n+qAkievhL51pi8/Pk3ZX+Zpn0q4OOrs0azQb3ZvUf+vI+YpFAf4M4GatHRVj+GVVUc
-         2Mog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=A2xFeB/vxfBJWIi2SCTq+vsVIJL+pCcb0P3THlDfvNk=;
-        b=UPO7C3RK7ORNiFnz7X27q+GAwfnca9Hd7L4dYaMpDkWC69sbdWHS1Zqigt1Nxe4gD1
-         DEVQWzvBwlzZ/lw6PaEqcJHRcZ5lbMxrynP3NaBleDC+P3QPcepoHN9h9EWOUCAv639W
-         KkLCiP3jtfYszqxL25DL5RUBu4Jae9csKiY5S3En6hXUwNdApdTjkxYn/09VCFNzWnDP
-         N3KIowR9QISJxAdER9EJ04jNX3rV1GDEpMVnkIVYXEcnZ9bDQS0xttPxIKciqe/VIldx
-         X0nZpxBe4Z5+SVwziaQmgoxZ/i6ZSrf3npfwMnqZXX71ptAbDr5frOp03J/YSaijB4eS
-         /PxQ==
-X-Gm-Message-State: APjAAAXhQcaTpaNkFjaY2/9rumWUNHY+BEvbn+jZHjMvA5mHo9ZVews/
-        G+MPERu+4d9fztZiSjNlimOvzerLCdJKybAy72xGuA==
-X-Google-Smtp-Source: APXvYqwtqdru004WFVZFoC69PGQmOPnOHdWCXRH4144sBC3NkbqjrE+G/DO1ByoQUCVa7iOf555pJHgtt5vr645kXJM=
-X-Received: by 2002:a5d:9642:: with SMTP id d2mr2393845ios.278.1562365759537;
- Fri, 05 Jul 2019 15:29:19 -0700 (PDT)
+        id S1725990AbfGFKAt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 6 Jul 2019 06:00:49 -0400
+Received: from static.187.34.201.195.clients.your-server.de ([195.201.34.187]:54972
+        "EHLO sysam.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725934AbfGFKAs (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 6 Jul 2019 06:00:48 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by sysam.it (Postfix) with ESMTP id 79AF53FE9A;
+        Sat,  6 Jul 2019 12:00:45 +0200 (CEST)
+Received: from sysam.it ([127.0.0.1])
+        by localhost (mail.sysam.it [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id M8FWJz3YYSGv; Sat,  6 Jul 2019 12:00:45 +0200 (CEST)
+Received: from jerusalem (host105-54-dynamic.182-80-r.retail.telecomitalia.it [80.182.54.105])
+        by sysam.it (Postfix) with ESMTPSA id 1296B3F114;
+        Sat,  6 Jul 2019 12:00:45 +0200 (CEST)
+Date:   Sat, 6 Jul 2019 12:00:44 +0200
+From:   Angelo Dureghello <angelo@sysam.it>
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
+        linux-m68k@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] mmc: sdhci: add quirks for be to le byte swapping
+Message-ID: <20190706100044.GA6763@jerusalem>
+References: <20190616204823.32758-1-angelo@sysam.it>
+ <20190616204823.32758-2-angelo@sysam.it>
+ <93921f9e-08a2-c53e-58a2-aa28e66a191d@intel.com>
 MIME-Version: 1.0
-References: <cover.1559635435.git.baolin.wang@linaro.org> <15AEA3314E88B01E.21242@linux.kernel.org>
-In-Reply-To: <15AEA3314E88B01E.21242@linux.kernel.org>
-From:   Olof Johansson <olof@lixom.net>
-Date:   Fri, 5 Jul 2019 15:29:08 -0700
-Message-ID: <CAOesGMjdnQuLdvphBDM3xmH6o+Nca8+65mw8-EajV0Eb_8MS5w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/9] mmc: sdhci-sprd: Check the enable clock's return
- value correctly
-To:     patchwork-soc+owner@linux.kernel.org
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Lyra Zhang <zhang.lyra@gmail.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Baolin Wang <baolin.wang@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        ARM-SoC Maintainers <arm@kernel.org>,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        linux-mmc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <93921f9e-08a2-c53e-58a2-aa28e66a191d@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Jul 5, 2019 at 3:25 PM Olof Johansson via Linux.Kernel.Org
-<olof=lixom.net@linux.kernel.org> wrote:
+Hi Adrian,
 
-Hmm, well, that didn't work like I expected to. Sorry for the noise.
+thanks for the feedbacks.
 
+On Tue, Jul 02, 2019 at 12:10:44PM +0300, Adrian Hunter wrote:
+> On 16/06/19 11:48 PM, Angelo Dureghello wrote:
+> > Some controller as the ColdFire eshdc may require an endianness
+> > byte swap, because DMA read endianness is not configurable.
+> 
+> I would prefer something more generic, like adding another callback
+> for ->request_done() e.g.
+> 
+> 
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index f56ae6f153d4..a63e528cb885 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -2729,7 +2729,10 @@ static bool sdhci_request_done(struct sdhci_host *host)
+>  
+>  	spin_unlock_irqrestore(&host->lock, flags);
+>  
+> -	mmc_request_done(host->mmc, mrq);
+> +	if (host->ops->request_done)
+> +		host->ops->request_done(host, mrq);
+> +	else
+> +		mmc_request_done(host->mmc, mrq);
+>  
+>  	return false;
+>  }
+> 
+> 
+> Then you can use the ->request_done() callback to iterate over the data->sg
+> and make byte-swaps as needed.
+> 
+Ok, good to know, will try.
 
--Olof
+> > 
+> > Signed-off-by: Angelo Dureghello <angelo@sysam.it>
+> > ---
+> >  drivers/mmc/host/sdhci.c | 19 +++++++++++++++++++
+> >  drivers/mmc/host/sdhci.h |  7 +++++++
+> >  2 files changed, 26 insertions(+)
+> > 
+> > diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> > index 59acf8e3331e..f56ae6f153d4 100644
+> > --- a/drivers/mmc/host/sdhci.c
+> > +++ b/drivers/mmc/host/sdhci.c
+> > @@ -2600,6 +2600,18 @@ static const struct mmc_host_ops sdhci_ops = {
+> >  	.card_busy	= sdhci_card_busy,
+> >  };
+> >  
+> > +static void sdhci_be_to_le(char *buff, u32 length)
+> > +{
+> > +	int i, size = length >> 2;
+> > +	u32 *buffer = (u32 *)buff;
+> > +	u32 temp;
+> > +
+> > +	for (i = 0; i < size; i++) {
+> > +		temp = *buffer;
+> > +		*buffer++ = __le32_to_cpu(temp);
+> > +	}
+> > +}
+> > +
+> >  /*****************************************************************************\
+> >   *                                                                           *
+> >   * Request done                                                              *
+> > @@ -2655,6 +2667,13 @@ static bool sdhci_request_done(struct sdhci_host *host)
+> >  						host->bounce_addr,
+> >  						host->bounce_buffer_size,
+> >  						DMA_FROM_DEVICE);
+> > +
+> > +					if (host->quirks2 &
+> > +					    SDHCI_QUIRK2_USE_32BIT_BE_DMA_SWAP)
+> > +						sdhci_be_to_le(
+> > +							host->bounce_buffer,
+> > +							length);
+> > +
+> >  					sg_copy_from_buffer(data->sg,
+> >  						data->sg_len,
+> >  						host->bounce_buffer,
+> > diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+> > index 199712e7adbb..be08ff1a8c6f 100644
+> > --- a/drivers/mmc/host/sdhci.h
+> > +++ b/drivers/mmc/host/sdhci.h
+> > @@ -482,6 +482,13 @@ struct sdhci_host {
+> >   */
+> >  #define SDHCI_QUIRK2_USE_32BIT_BLK_CNT			(1<<18)
+> >  
+> > +/*
+> > + * On some architectures, as ColdFire/m68k, native endianness is big endian,
+> > + * and the dma buffer is filled in big endian order only (no other options).
+> > + * So, a swap is needed for these specific cases.
+> > + */
+> > +#define SDHCI_QUIRK2_USE_32BIT_BE_DMA_SWAP		(1<<19)
+> > +
+> >  	int irq;		/* Device IRQ */
+> >  	void __iomem *ioaddr;	/* Mapped address */
+> >  	char *bounce_buffer;	/* For packing SDMA reads/writes */
+> > 
+> 
+
+Reagrds,
+Angelo
