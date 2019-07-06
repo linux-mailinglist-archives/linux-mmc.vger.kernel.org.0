@@ -2,38 +2,39 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2956060FBA
-	for <lists+linux-mmc@lfdr.de>; Sat,  6 Jul 2019 12:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CD7161067
+	for <lists+linux-mmc@lfdr.de>; Sat,  6 Jul 2019 13:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726001AbfGFKCD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 6 Jul 2019 06:02:03 -0400
-Received: from static.187.34.201.195.clients.your-server.de ([195.201.34.187]:54986
+        id S1726483AbfGFLUc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 6 Jul 2019 07:20:32 -0400
+Received: from static.187.34.201.195.clients.your-server.de ([195.201.34.187]:55336
         "EHLO sysam.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725962AbfGFKCD (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 6 Jul 2019 06:02:03 -0400
+        id S1726181AbfGFLUc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 6 Jul 2019 07:20:32 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by sysam.it (Postfix) with ESMTP id B2D953FE9A;
-        Sat,  6 Jul 2019 12:02:01 +0200 (CEST)
+        by sysam.it (Postfix) with ESMTP id BA9F73FE9A;
+        Sat,  6 Jul 2019 13:20:30 +0200 (CEST)
 Received: from sysam.it ([127.0.0.1])
         by localhost (mail.sysam.it [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id UhgNcvVFUWmt; Sat,  6 Jul 2019 12:02:01 +0200 (CEST)
+        with ESMTP id dT9pNHnNbr_d; Sat,  6 Jul 2019 13:20:30 +0200 (CEST)
 Received: from jerusalem (host105-54-dynamic.182-80-r.retail.telecomitalia.it [80.182.54.105])
-        by sysam.it (Postfix) with ESMTPSA id 5572B3F114;
-        Sat,  6 Jul 2019 12:02:01 +0200 (CEST)
-Date:   Sat, 6 Jul 2019 12:02:00 +0200
+        by sysam.it (Postfix) with ESMTPSA id 2CEEE3F114;
+        Sat,  6 Jul 2019 13:20:30 +0200 (CEST)
+Date:   Sat, 6 Jul 2019 13:20:29 +0200
 From:   Angelo Dureghello <angelo@sysam.it>
 To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
-        linux-m68k@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] mmc: enabling ColdFire esdhc controller support
-Message-ID: <20190706100200.GB6763@jerusalem>
+Cc:     Christoph Hellwig <hch@infradead.org>, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org, linux-m68k@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] mmc: add Coldfire esdhc support
+Message-ID: <20190706112028.GC6763@jerusalem>
 References: <20190616204823.32758-1-angelo@sysam.it>
- <20190616204823.32758-3-angelo@sysam.it>
- <fe023694-84f3-e751-8cc9-0e1353140969@intel.com>
+ <20190617065807.GA17948@infradead.org>
+ <20190619222236.GA18383@jerusalem>
+ <a5427af4-079e-7e0a-487e-389969809cb5@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fe023694-84f3-e751-8cc9-0e1353140969@intel.com>
+In-Reply-To: <a5427af4-079e-7e0a-487e-389969809cb5@intel.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
@@ -42,60 +43,58 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 Hi Adrian,
 
-On Tue, Jul 02, 2019 at 12:11:02PM +0300, Adrian Hunter wrote:
-> On 16/06/19 11:48 PM, Angelo Dureghello wrote:
-> > Signed-off-by: Angelo Dureghello <angelo@sysam.it>
-> > ---
-> >  drivers/mmc/host/Kconfig  | 13 +++++++++++++
-> >  drivers/mmc/host/Makefile |  3 ++-
-> >  2 files changed, 15 insertions(+), 1 deletion(-)
+On Tue, Jul 02, 2019 at 12:10:54PM +0300, Adrian Hunter wrote:
+> On 20/06/19 1:22 AM, Angelo Dureghello wrote:
+> > Hi Christoph,
 > > 
-> > diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> > index 931770f17087..9b426094d10a 100644
-> > --- a/drivers/mmc/host/Kconfig
-> > +++ b/drivers/mmc/host/Kconfig
-> > @@ -221,6 +221,19 @@ config MMC_SDHCI_CNS3XXX
-> >  
-> >  	  If unsure, say N.
-> >  
-> > +config MMC_SDHCI_ESDHC_MCF
-> > +	tristate "SDHCI support for the Freescale eSDHC ColdFire controller"
-> > +	depends on M5441x
-> > +	depends on MMC_SDHCI_PLTFM
-> > +	select MMC_SDHCI_IO_ACCESSORS
-> > +	help
-> > +	  This selects the Freescale eSDHC controller support for
-> > +	  ColdFire mcf5441x devices.
-> > +
-> > +	  If you have a controller with this interface, say Y or M here.
-> > +
-> > +	  If unsure, say N.
-> > +
-> >  config MMC_SDHCI_ESDHC_IMX
-> >  	tristate "SDHCI support for the Freescale eSDHC/uSDHC i.MX controller"
-> >  	depends on ARCH_MXC
-> > diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
-> > index 73578718f119..b2127ee5e71e 100644
-> > --- a/drivers/mmc/host/Makefile
-> > +++ b/drivers/mmc/host/Makefile
-> > @@ -80,6 +80,7 @@ obj-$(CONFIG_MMC_REALTEK_USB)	+= rtsx_usb_sdmmc.o
-> >  obj-$(CONFIG_MMC_SDHCI_PLTFM)		+= sdhci-pltfm.o
-> >  obj-$(CONFIG_MMC_SDHCI_CADENCE)		+= sdhci-cadence.o
-> >  obj-$(CONFIG_MMC_SDHCI_CNS3XXX)		+= sdhci-cns3xxx.o
-> > +obj-$(CONFIG_MMC_SDHCI_ESDHC_MCF)       += sdhci-esdhc-mcf.o
-> >  obj-$(CONFIG_MMC_SDHCI_ESDHC_IMX)	+= sdhci-esdhc-imx.o
-> >  obj-$(CONFIG_MMC_SDHCI_DOVE)		+= sdhci-dove.o
-> >  obj-$(CONFIG_MMC_SDHCI_TEGRA)		+= sdhci-tegra.o
-> > @@ -103,4 +104,4 @@ ifeq ($(CONFIG_CB710_DEBUG),y)
-> >  endif
-> >  
-> >  obj-$(CONFIG_MMC_SDHCI_XENON)	+= sdhci-xenon-driver.o
-> > -sdhci-xenon-driver-y		+= sdhci-xenon.o sdhci-xenon-phy.o
-> > +sdhci-xenon-driver-y		+= sdhci-xenon.o sdhci-xenon-phy.
+> > On Sun, Jun 16, 2019 at 11:58:07PM -0700, Christoph Hellwig wrote:
+> >> On Sun, Jun 16, 2019 at 10:48:21PM +0200, Angelo Dureghello wrote:
+> >>> This driver has been developed as a separate module starting
+> >>> from the similar sdhci-esdhc-fls.c.
+> >>> Separation has been mainly driven from change in endianness.
+> >>
+> >> Can't we have a way to define the endianess at build or even runtime?
+> >> We have plenty of that elsewhere in the kernel.
+> > 
+> > well, the base sdhci layer wants to access byte-size fields of the
+> > esdhc controller registers.
+> > But this same Freescale esdhc controller may be found in 2
+> > flavors, big-endian or little-endian organized.
+> > So in this driver i am actually correcting byte-addresses to
+> > access the wanted byte-field in the big-endian hw controller.
+> > 
+> > So this is a bit different from a be-le endian swap of a
+> > long or a short that the kernel is organized to do..
 > 
-> Inadvertent change there
+> Did you consider just using different sdhci_ops so that you could support
+> different sdhci I/O accessors?
 
-Aaargh, sorry, good cactch :) Will fix it.
+Initially i tried to modify the IMX/Vybrid (arm) driver. But was stopped from
+several points, trying to remember now, 
 
-Reagrds,
+- the I/O accessors was a const struct, but this of course is not a big 
+  issue,
+- here and there bitfields and positions of the ColdFire controller
+  registers, compared to the arm versions, are different, so controller hw
+  is not exactly the same,
+- on ColdFire controller and some behaviors and errata are different,
+- dma endiannes not hw-configurable,
+- ColdFire has max clock limitations, a bit different clock init.
+
+Finally, since there is already a common library (shdci.c) i decided to go
+as a separate driver, instead of filling the driver of "if (coldfire)" also 
+mainly for the following reasons:
+
+1) separated ColdFire driver has a quite small amount of code, simple to
+understand.
+2) having drivers used by multiple architectures, it add risks, each time
+i perform a change, i can test it only on ColdFire, and can break
+the driver for the other architectures (i see this not rarely happening for
+multiple-arch used drivers).
+
+So let me know if the way chosen can be ok. Otherwise i will roll back 
+trying to modify the iMX/Vybrid driver, likely adding a lot of "if (coldfire)"
+complicating it quite a lot.
+
+Regards,
 Angelo
