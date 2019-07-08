@@ -2,59 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E41E362623
-	for <lists+linux-mmc@lfdr.de>; Mon,  8 Jul 2019 18:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 178636273E
+	for <lists+linux-mmc@lfdr.de>; Mon,  8 Jul 2019 19:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729395AbfGHQWc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Jul 2019 12:22:32 -0400
-Received: from verein.lst.de ([213.95.11.211]:34854 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726512AbfGHQWc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 8 Jul 2019 12:22:32 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 292AE227A81; Mon,  8 Jul 2019 18:22:30 +0200 (CEST)
-Date:   Mon, 8 Jul 2019 18:22:30 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
-        Roedel <joro@8bytes.org>," <joro@8bytes.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
-        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>
-Subject: Re: [RFC PATCH v7 0/5] treewide: improve R-Car SDHI performance
-Message-ID: <20190708162229.GA10311@lst.de>
-References: <1561020610-953-1-git-send-email-yoshihiro.shimoda.uh@renesas.com> <20190701083253.GA22719@lst.de> <CAPDyKFpg6zMRtnD89juuXR8Epas7qJOo8GgdTR=Q1kbZ0=69LA@mail.gmail.com>
+        id S2388751AbfGHRds (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Jul 2019 13:33:48 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:42262 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388422AbfGHRdr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Jul 2019 13:33:47 -0400
+Received: by mail-wr1-f68.google.com with SMTP id a10so16970388wrp.9;
+        Mon, 08 Jul 2019 10:33:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Q4VeygN0Abg7eEmu02zPFKG/LiENvzvS9nqQqihkBL4=;
+        b=Ms9u75JBvQ3ZWj+BbPa8CjoX1faSTZB5rIGp8XdgdD+Ph+4ylCuVHXHEpV83vhU0Nl
+         0g1hzGyVSMzgFBNeszzX20XxoFoIr6vaBzjTKkesBzJXV6zZUxeEAH7kMoRL39cV2U8p
+         hcqgM2xqn1LqHZly3XYgYNyxgoyvGu0dUp04G5jpcB3Icoqf7YT1nghZXcI2H0G+48/S
+         N8U2riQAIlEyNF790SnBjFDHoQ2BQ6ZLL3bjbpefR1jXwbCc9fOnh/UbFiSZFe0IB6OD
+         awZv2tPTY599CabMhLP82xSrw97aV6CgqeJex86/nMA50+nWzu3LLiSYJjxaUXOSrSOG
+         YO6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Q4VeygN0Abg7eEmu02zPFKG/LiENvzvS9nqQqihkBL4=;
+        b=NqH7TOKwlQtuNsADT2K7+HBzb6MR7vJ0pBSs9DjH1R5rkm49ERTuq06ijDwioCdarz
+         l0GegfSEK3kSVi6ZXQtJRQokklx3H9hP1VlHitFDDfs6appQOLjh3YEDfGY2MH3wykxx
+         wXZ2aiP01aWdPD1emC1Yea4iq44qnwsz8gWg3OMd+zgDjar9SSoZUfnG5Np2tmQxf3wg
+         txuHd8875yMsZtyQprlfabrHtrky335UZZ5x0Q1vZW3H09w4jaC7VsA1dTiXFml4N6xE
+         cNhajKQHMeJ4Sj9cnSAmub7OTDnLwYeq9WOy8Na6e7Bx9MaNfI2+NvTZaOVVD2i5m3Sc
+         xBRg==
+X-Gm-Message-State: APjAAAX/P6DmaS0qxrRwVi0PeBgxFJFa08NdrCYT79eUZr8W3eNGq2Rh
+        W7Au0X3CUPGukqD0nL3ZE4g=
+X-Google-Smtp-Source: APXvYqzfDOsaXbuIlIodiPzCSM9B4fMT2fL+R7nHm6g6q58Rvjk/xi/cA3+25XYz89sPIVOalja1uw==
+X-Received: by 2002:a5d:46cf:: with SMTP id g15mr1029573wrs.93.1562607225190;
+        Mon, 08 Jul 2019 10:33:45 -0700 (PDT)
+Received: from blackbox.darklights.net (p200300F133D62000D8A33B20A298F2F2.dip0.t-ipconnect.de. [2003:f1:33d6:2000:d8a3:3b20:a298:f2f2])
+        by smtp.googlemail.com with ESMTPSA id s3sm222975wmh.27.2019.07.08.10.33.43
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 08 Jul 2019 10:33:44 -0700 (PDT)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-mmc@vger.kernel.org, robh+dt@kernel.org,
+        ulf.hansson@linaro.org, jianxin.pan@amlogic.com
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        mark.rutland@arm.com,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH RFC v1 0/2] Amlogic 32-bit Meson SDHC MMC controller driver
+Date:   Mon,  8 Jul 2019 19:33:28 +0200
+Message-Id: <20190708173330.13217-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFpg6zMRtnD89juuXR8Epas7qJOo8GgdTR=Q1kbZ0=69LA@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Jul 08, 2019 at 01:45:55PM +0200, Ulf Hansson wrote:
-> On Mon, 1 Jul 2019 at 10:32, Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > Any comments from the block, iommu and mmc maintainers?  I'd be happy
-> > to queue this up in the dma-mapping tree, but I'll need some ACKs
-> > for that fast.  Alternatively I can just queue up the DMA API bits,
-> > leaving the rest for the next merge window, but would drag things
-> > out far too long IMHO.
-> 
-> Apologize for the delay, the mmc parts looks good to me. If not too
-> late, feel free to pick it up.
-> 
-> Otherwise, let's do it for the next cycle.
+Hello,
 
-I was out the last couple days, so it has to be next cycle.  But it
-would still make sense to get everything into a single tree.
+this is RFC v1 of the attempt to upstream the driver for the "SDHC" MMC
+controller found on Meson6, Meson8, Meson8b and Meson8m2 SoCs.
+
+The public S805 (Meson8b) datasheet has some documentation starting on
+page 74: [0]
+
+The goal of this RFC v1 is to:
+- find out how to set up the MMC clock correctly with Jianxin's help (see
+  the description of patch #2 with questions)
+- get feedback from the MMC maintainers to see which bits need changing
+
+
+[0] https://dn.odroid.com/S805/Datasheet/S805_Datasheet%20V0.8%2020150126.pdf
+
+
+Martin Blumenstingl (2):
+  dt-bindings: mmc: Document the Amlogic Meson SDHC MMC host controller
+  mmc: host: meson-mx-sdhc: new driver for the Amlogic Meson SDHC host
+
+ .../bindings/mmc/amlogic,meson-mx-sdhc.txt    |   34 +
+ drivers/mmc/host/Kconfig                      |   14 +
+ drivers/mmc/host/Makefile                     |    1 +
+ drivers/mmc/host/meson-mx-sdhc.c              | 1161 +++++++++++++++++
+ 4 files changed, 1210 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/amlogic,meson-mx-sdhc.txt
+ create mode 100644 drivers/mmc/host/meson-mx-sdhc.c
+
+-- 
+2.22.0
+
