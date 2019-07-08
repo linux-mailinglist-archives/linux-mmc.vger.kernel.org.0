@@ -2,127 +2,218 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27677629F3
-	for <lists+linux-mmc@lfdr.de>; Mon,  8 Jul 2019 21:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ACBD62AB2
+	for <lists+linux-mmc@lfdr.de>; Mon,  8 Jul 2019 23:12:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729926AbfGHT4V (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Jul 2019 15:56:21 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:37312 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729352AbfGHT4U (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Jul 2019 15:56:20 -0400
-Received: by mail-pf1-f196.google.com with SMTP id 19so8112816pfa.4
-        for <linux-mmc@vger.kernel.org>; Mon, 08 Jul 2019 12:56:20 -0700 (PDT)
+        id S1732262AbfGHVMz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Jul 2019 17:12:55 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:46864 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727011AbfGHVMz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Jul 2019 17:12:55 -0400
+Received: by mail-io1-f66.google.com with SMTP id i10so38456850iol.13
+        for <linux-mmc@vger.kernel.org>; Mon, 08 Jul 2019 14:12:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=WObWYhhWlfWVBGeUnBqR5A/L2O8ETbPGrJcR8O8Db+c=;
-        b=gNmioWhmY2wZycPdn5yPVxFNf4/YAXjwTI9s4RDYwu2xnnlj/3goSphgltDej0PS17
-         DC+0ihNLMIIzIMopYL+xn0JNO/PA4Fw9/bp2vL0D8nElqL5DNQ4TfWHa5xnu700NLV10
-         gKr3iSyypDw7cCTFJSCs7W4lZhzX8ls4q4IUE=
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3hIeaajyw500fJnJGNNNHDu3MsgjWCQ+XfK0sXNM8fg=;
+        b=FK3VWVeeOVvAYGYu29dfojz/KKzgOlwrjURUJT1j9gsNcsQXEmfDbafvX003L8ECHf
+         vxECi5X3tOppTeebFug5HQhlVZiPSbLQatlzVB/8rCixKclaNNupmBFX+rUlQaQV3G62
+         V2J35yykeWOg5La0TrdT5EixD+6AAJZ6N9z6E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=WObWYhhWlfWVBGeUnBqR5A/L2O8ETbPGrJcR8O8Db+c=;
-        b=DTOJNSjhD/rvyYZhEMrns0hewl2sH5IKy5C1Nem+8p3jawWmN3GmftUUbcT03X+3d1
-         csuHIHNIbxkZqYCem27Az91c1NUvHudqRA/risarmOJMBkaghDdC/ayq7m/ttfznsK2y
-         CsBo1+cj4xBScbS1egUh1Nfk5cAUruQcptzyyVMQC3+mH5PFAK4lTP51K/Mj7xk20mBy
-         Cmv5lNyX09D3oAHi2PpjCumIsQ6gYYdg6OulWYDhJBVuDDhVFDNImx8x6K29g4ZBWkNB
-         7fzCsRvaQw4KX+i5tggPxxodH4CtlNEpyBiwoSsRSUxD3s505Nt6UBIqtcQjPgbW8tvF
-         eAmw==
-X-Gm-Message-State: APjAAAVldh89ldXTslnl6YF65PPTa2NWQXWKSlwVn96LcWw4TbaL3mJ4
-        sxFwst32VH6/H1eEXLAkzh68vw==
-X-Google-Smtp-Source: APXvYqx0vPrcrmzmPc2DLYJb81E8l+aNgHwjY9pCxax4+LIpY8c/9QsUPLKt9oRE2ZQV2Jvf9k9JCA==
-X-Received: by 2002:a17:90a:bd8c:: with SMTP id z12mr28068802pjr.60.1562615780074;
-        Mon, 08 Jul 2019 12:56:20 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id v185sm23322644pfb.14.2019.07.08.12.56.19
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 08 Jul 2019 12:56:19 -0700 (PDT)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     Jaehoon Chung <jh80.chung@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-samsung-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org, briannorris@chromium.org,
-        mka@chromium.org, groeck@chromium.org, sonnyrao@chromium.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Alim Akhtar <alim.akhtar@gmail.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mmc: dw_mmc: Fix occasional hang after tuning on eMMC
-Date:   Mon,  8 Jul 2019 12:56:13 -0700
-Message-Id: <20190708195613.205729-1-dianders@chromium.org>
-X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3hIeaajyw500fJnJGNNNHDu3MsgjWCQ+XfK0sXNM8fg=;
+        b=AgxVEPK2jIBxU6oiROBvjm0YPYZFZB3TEaK0fZYCQj6L7xT7ZIDHMWvhtzy4V/eQ/W
+         imNe4eOvT4UtNTzwNfmPnf7/w6nSZLyW557J/HOBJ5SQllcHqtybQWkBcih67PcKwHPb
+         toIX98wap5qFFg865NixdpB20RG3JcL7RhXXSQN7qGW6lRYS3gCA6m0kTXQOQZM+Fdyd
+         /FX9eJGWuQ5ylRytuAxwk1Qv8UQ8PjWb4A92kH3dI1z9thhTyi/OKVhS2lrDvaOSldWw
+         rAbgtKEFisJAjyFACod+4bK9tTnDYHkU9ZKVMwyMnFuPBChTrQPfsmJhrIAIBq0IFBs0
+         4pag==
+X-Gm-Message-State: APjAAAWgcF+Q6hfQyXqchQ01jLIl44HbW5cMmyH9RMg/IWoxAFXQDcNS
+        hYyZXcnmYcNY8x0WpPnAZpV1W2DamOI=
+X-Google-Smtp-Source: APXvYqw84/l5ULboOkUhSumhwOMyd7sQkN9IH0onUHiCzmvH7IKwpIUrG5Iay2EgXktWwXbaJoKGhw==
+X-Received: by 2002:a6b:b556:: with SMTP id e83mr20565906iof.94.1562620374020;
+        Mon, 08 Jul 2019 14:12:54 -0700 (PDT)
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com. [209.85.166.42])
+        by smtp.gmail.com with ESMTPSA id b20sm14794209ios.44.2019.07.08.14.12.53
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Mon, 08 Jul 2019 14:12:53 -0700 (PDT)
+Received: by mail-io1-f42.google.com with SMTP id z3so23574942iog.0
+        for <linux-mmc@vger.kernel.org>; Mon, 08 Jul 2019 14:12:53 -0700 (PDT)
+X-Received: by 2002:a5d:8ccc:: with SMTP id k12mr21179336iot.141.1562620372772;
+ Mon, 08 Jul 2019 14:12:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190618153448.27145-1-ulf.hansson@linaro.org>
+ <20190618153448.27145-5-ulf.hansson@linaro.org> <CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com>
+ <CAPDyKFoHzCmobCtyy-j+-4xjW0Bt1_vA5-s4vHLVN78jXJ4X-w@mail.gmail.com>
+In-Reply-To: <CAPDyKFoHzCmobCtyy-j+-4xjW0Bt1_vA5-s4vHLVN78jXJ4X-w@mail.gmail.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Mon, 8 Jul 2019 14:12:39 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UfHd=_gqEMajABV19Mb=G-tz6VptDQa48g4kUPxo-A6g@mail.gmail.com>
+Message-ID: <CAD=FV=UfHd=_gqEMajABV19Mb=G-tz6VptDQa48g4kUPxo-A6g@mail.gmail.com>
+Subject: Re: [PATCH 4/7] mmc: sdio: Drop powered-on re-init at runtime resume
+ and HW reset
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-In commit 46d179525a1f ("mmc: dw_mmc: Wait for data transfer after
-response errors.") we fixed a tuning-induced hang that I saw when
-stress testing tuning on certain SD cards.  I won't re-hash that whole
-commit, but the summary is that as a normal part of tuning you need to
-deal with transfer errors and there were cases where these transfer
-errors was putting my system into a bad state causing all future
-transfers to fail.  That commit fixed handling of the transfer errors
-for me.
+Hi,
 
-In downstream Chrome OS my fix landed and had the same behavior for
-all SD/MMC commands.  However, it looks like when the commit landed
-upstream we limited it to only SD tuning commands.  Presumably this
-was to try to get around problems that Alim Akhtar reported on exynos
-[1].
+On Mon, Jul 8, 2019 at 3:54 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> On Thu, 4 Jul 2019 at 02:02, Doug Anderson <dianders@chromium.org> wrote:
+> >
+> > Hi,
+> >
+> > On Tue, Jun 18, 2019 at 8:35 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > >
+> > > To use the so called powered-on re-initialization of an SDIO card, the
+> > > power to the card must obviously have stayed on. If not, the initialization
+> > > will simply fail.
+> > >
+> > > In the runtime suspend case, the card is always powered off. Hence, let's
+> > > drop the support for powered-on re-initialization during runtime resume, as
+> > > it doesn't make sense.
+> > >
+> > > Moreover, during a HW reset, the point is to cut the power to the card and
+> > > then do fresh re-initialization. Therefore drop the support for powered-on
+> > > re-initialization during HW reset.
+> > >
+> > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > > ---
+> > >  drivers/mmc/core/sdio.c | 8 +-------
+> > >  1 file changed, 1 insertion(+), 7 deletions(-)
+> >
+> > This has been on my list of things to test for a while but I never
+> > quite got to it...
+> >
+> > ...and then, today, I spent time bisecting why the "reset"
+> > functionality of miwfiex is broken on my 4.19 kernel [1].  AKA, this
+> > is broken:
+> >
+> > cd /sys/kernel/debug/mwifiex/mlan0
+> > echo 1 > reset
+> >
+> > I finally bisected the problem and tracked it down to commit
+> > ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when SDIO IRQs
+> > are enabled"), which embarrassingly has my Tested-by on it.  I guess I
+> > never tested the Marvell reset call.  :-/
+> >
+> > I dug a little and found that when the Marvell code did its reset we
+> > ended up getting a call to dw_mci_enable_sdio_irq(enb=0) and never saw
+> > a dw_mci_enable_sdio_irq(enb=1) after.  I tracked it down further and
+> > found that specifically it was the call to mmc_signal_sdio_irq() in
+> > mmc_sdio_power_restore() that was making the call.  The call stack
+> > shown for the "enb=0" call:
+> >
+> > [<c071a290>] (dw_mci_enable_sdio_irq) from [<c070a960>]
+> > (mmc_sdio_power_restore+0x98/0xc0)
+> > [<c070a960>] (mmc_sdio_power_restore) from [<c070a9b4>]
+> > (mmc_sdio_reset+0x2c/0x30)
+> > [<c070a9b4>] (mmc_signal_sdio_irq) from [<c06ff160>] (mmc_hw_reset+0xbc/0x138)
+> > [<c06ff160>] (mmc_hw_reset) from [<bf1bbad8>]
+> > (mwifiex_sdio_work+0x5d4/0x678 [mwifiex_sdio])
+> > [<bf1bbad8>] (mwifiex_sdio_work [mwifiex_sdio]) from [<c0247cd0>]
+> > (process_one_work+0x290/0x4b4)
+> >
+> > I picked your patch here (which gets rid of the call to
+> > mmc_signal_sdio_irq()) and magically the problem went away because
+> > there is no more call to mmc_signal_sdio_irq().
+> >
+> > I personally don't have lots of history about the whole
+> > "powered_resume" code path.  I checked and mmc_card_keep_power() was 0
+> > in my test case of getting called from hw_reset, so the rest of this
+> > patch doesn't affect me at all.  This surprised me a little since I
+> > saw "MMC_PM_KEEP_POWER" being set in mwifiex but then I realized that
+> > it was only set for the duration of suspend and then cleared by the
+> > core.  ;-)
+> >
+> > I will also say that I don't have any test case or knowledge of how
+> > SDIO runtime suspend/resume is supposed to work since on dw_mmc SDIO
+> > cards are currently not allowed to runtime suspend anyway.  ;-)
+> >
+> >
+> > So I guess the result of all that long-winded reply is that for on
+> > rk3288-veyron-jerry:
+> >
+> > Fixes: ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when
+> > SDIO IRQs are enabled")
+> > Tested-by: Douglas Anderson <dianders@chromium.org>
+>
+> Thanks a lot for testing and for your detailed feedback. I have
+> amended the patch by adding your tags above.
 
-Unfortunately while stress testing reboots (and suspend/resume) on
-some rk3288-based Chromebooks I found the same problem on the eMMC on
-some of my Chromebooks (the ones with Hynix eMMC).  Since the eMMC
-tuning command is different (MMC_SEND_TUNING_BLOCK_HS200
-vs. MMC_SEND_TUNING_BLOCK) we were basically getting back into the
-same situation.
+Sure!  I'm going to try to do some detailed testing on the next patch
+too to confirm it's OK, but I have a few other tasks to get to first.
+;-)
 
-I'm hoping that whatever problems exynos was having in the past are
-somehow magically fixed now and we can make the behavior the same for
-all commands.
 
-[1] https://lkml.kernel.org/r/CAGOxZ53WfNbaMe0_AM0qBqU47kAfgmPBVZC8K8Y-_J3mDMqW4A@mail.gmail.com
+> Moreover, we seems to need this for stable as well, but I am leaving
+> that to be managed as a separate task. We may even consider the hole
+> series for stable, but that requires more testing first.
 
-Fixes: 46d179525a1f ("mmc: dw_mmc: Wait for data transfer after response errors.")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Alim Akhtar <alim.akhtar@gmail.com>
-Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
----
-Marek (or anyone else using exynos): is it easy for you to test this
-and check if things are still broken when we land this patch?  If so,
-I guess we could have a quirk to have different behavior for just
-Rockchip SoCs but I'd rather avoid that if possible.
+Sure, makes sense.  We'll pick it to the Chrome OS 4.19 kernel
+directly but it's usually nice to get fixes like this into stable so
+everyone can benefit.
 
-NOTE: I'm not hoping totally in vain here.  It is possible that some
-of the CTO/DTO timers that landed could be the magic that would get
-exynos unstuck.
 
- drivers/mmc/host/dw_mmc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> > One last note is that, though Marvell WiFi works after a reset after
+> > this commit, Marvell Bluetooth (on the same SDIO module) doesn't.  I
+> > guess next week it'll be another bisect...
+>
+> Is the Bluetooth connected to the same SDIO interface, thus the
+> Bluetooth driver is an SDIO func driver?
 
-diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-index b53b6b7d4dd4..60c3a06e3469 100644
---- a/drivers/mmc/host/dw_mmc.c
-+++ b/drivers/mmc/host/dw_mmc.c
-@@ -2034,8 +2034,7 @@ static void dw_mci_tasklet_func(unsigned long priv)
- 				 * delayed. Allowing the transfer to take place
- 				 * avoids races and keeps things simple.
- 				 */
--				if ((err != -ETIMEDOUT) &&
--				    (cmd->opcode == MMC_SEND_TUNING_BLOCK)) {
-+				if (err != -ETIMEDOUT) {
- 					state = STATE_SENDING_DATA;
- 					continue;
- 				}
--- 
-2.22.0.410.gd8fdbe21b5-goog
+Yes, it's a SDIO func driver connected to the same interface.  So far
+I've managed to confirm the problem on:
 
+v4.4 (plus 76ae3e26ea43 mwifiex: add debugfs file for testing reset of card)
+v4.9
+next-20190708
+
+...so it seems like it's not a "regression", it's just never worked.
+:-P  I guess I'll have to see if I can figure out what's different in
+our chromeos-3.14 kernel.  Ah, I see.  In 3.14 we had this solution:
+
+pr_err("Resetting card...\n");
+mmc_remove_host(reset_host);
+/* 200ms delay is based on experiment with sdhci controller */
+mdelay(200);
+reset_host->rescan_entered = 0;
+mmc_add_host(reset_host);
+
+...I think that didn't fly upstream.  ...but I can confirm that this works fine:
+
+cd /sys/bus/platform/drivers/dwmmc_rockchip
+echo ff0d0000.dwmmc > unbind
+sleep .5
+echo ff0d0000.dwmmc > bind
+
+...so I guess this boils down to: how does the mwifiex reset code not
+behave like a full removal and re-insertion of the card?  Oh, but
+maybe that's obvious.  We're doing all the reset / re-init from the
+WiFi side of things (mwifiex_sdio_card_reset_work) but I don't think
+anything is communicated to the Bluetooth side of things.  Presumably
+this is just totally broken for everyone?  ...or am I confused?
+
+
+-Doug
+
+
+-Doug
