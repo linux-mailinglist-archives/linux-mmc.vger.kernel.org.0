@@ -2,170 +2,126 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 307FA61D47
-	for <lists+linux-mmc@lfdr.de>; Mon,  8 Jul 2019 12:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E04E61DE0
+	for <lists+linux-mmc@lfdr.de>; Mon,  8 Jul 2019 13:46:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730220AbfGHKyc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Jul 2019 06:54:32 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:36877 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725939AbfGHKyc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Jul 2019 06:54:32 -0400
-Received: by mail-vs1-f67.google.com with SMTP id v6so7883360vsq.4
-        for <linux-mmc@vger.kernel.org>; Mon, 08 Jul 2019 03:54:31 -0700 (PDT)
+        id S1730549AbfGHLq1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Jul 2019 07:46:27 -0400
+Received: from mail-ua1-f67.google.com ([209.85.222.67]:34615 "EHLO
+        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727862AbfGHLq1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Jul 2019 07:46:27 -0400
+Received: by mail-ua1-f67.google.com with SMTP id c4so4815606uad.1
+        for <linux-mmc@vger.kernel.org>; Mon, 08 Jul 2019 04:46:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=KyazCFmiETcHPerWNWUTvx/r+dCVSWwZ0Vi19gfw7Sc=;
-        b=qZvpD2zHVwn6PaqQ10JpxZWZuQTM/93vh7IhhOoJRYwzU0qRFgx9zbKzYZnYN1dWFV
-         s5UeS7Wmr/Q3MhsDEuN8bHhzpHKKDnFoXPaW0FZIaQfUyM54BzJRamfxU4xmOCKh0iUu
-         jL4ep9iGPtxpx4V8Bv51txa/kCM/TTcKg+KjU7YdtvmKUB4uc44BfKZ7cLt+rJ01vfSk
-         eW1+APOloO4bbWMTeIoNRdZtofnDOdthx06aZ25vOueZnE4yLKalJQsyoOdE/KaGKzGw
-         Jn988/m8UjLu1lujciutB8r/+w76IaNn0n9qRsA6SjiGJtf23NZpBM9EB0gQgMAms9oQ
-         0wbQ==
+        bh=flSipI0xpnq86C8I/rrm9xZYmUfxRgobFckLUfbaRC8=;
+        b=XXb+Q80fYNPiOi+n2vBpTR7ILscbEfWMSgFLUGGBp0WIXyrchBmIU+NDlQakm7jnM8
+         tMOGGlXLa6lhxN8Ra5giF5vusg5FAGcyYjayn4957m4SVC5MJ6sWMYf/OxIiDdEXGjyl
+         t0iUctAF15Luy9UaHIMu7DeLX/vVTxmDkPCj5Sd3ctiKIAbE6unYRJZiySlXBWUfp3Qt
+         wSm5DjC32317VN9BrP1dS0bGuEjxebRetq6Ln0vcwZpEzFLSO9tqdk3raraxZko69lN0
+         02Xs/0veoLx/lL8aN++HqWTdEhSnkt6acjQytnwnnYv3k8Q3yxAL+Dnno9K+Jo/jxapZ
+         ShmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=KyazCFmiETcHPerWNWUTvx/r+dCVSWwZ0Vi19gfw7Sc=;
-        b=cHi7afXzCj5U106rIARb3yU71zCMnkK2wxuhhgu4V8CysaG/1hUx4KjV6Iq3YadhKF
-         l4iBNdGgXKe+HCVrmdB+c3k8X9F0huTSWPESgOAOKAsLmQ4JMvHwr6N+DkRZiP4YjN/n
-         LWjkHeND0igEmKGDYdo6JWUFFLA8pFNnsnKrzp8tPQL/liPNecVzznASHbvrNZHCiY1q
-         gRsnP6Hj9mVSwSwP0Hi09gvV6SWB0rZcdTu+YU+ocSJq1KLrMFVmlUC/y5cdisEzA/hk
-         PWlw6Xqty7CSJ+bh4XUjHMDRY6PF3wJpzm9bdSCKcI3aZSjdD2lzbEqqX9qIwEuSN9dQ
-         8ShA==
-X-Gm-Message-State: APjAAAXB20dQdTDXqszEoJ5AITJr+YilZq+RGL68uockKtB/iYQK3RoD
-        dbQVxB6erYCp9uR3OeNyTACqb6awvW4sQJkNyeUavQ==
-X-Google-Smtp-Source: APXvYqxXke3jonSsgDa/t8fMIraRgV8rH40j0h0c3P/E9HD9A4kO1rFrKZ6A6C+Na9T39v/pP5C1bcAk5pmymu0fz1o=
-X-Received: by 2002:a67:7a90:: with SMTP id v138mr9578415vsc.200.1562583270843;
- Mon, 08 Jul 2019 03:54:30 -0700 (PDT)
+        bh=flSipI0xpnq86C8I/rrm9xZYmUfxRgobFckLUfbaRC8=;
+        b=VENoYnKw1d3w83KHk9JUI49kBwdCNaXu+KmeJcMH4rK4yVszDFY2deqeRqQYBo44XI
+         unJBp5ltkW9OHhW93d7KDg6fTGQ++xBUZwQFC+sLPJlqdt4G/xkmFoyVRIJZEjVYsUUY
+         qrmFXodR3rgz/6J8h+GboyESvfDNHcXzJ51qTUpUESp4qyNCr3LZtxS3LzSf0wU2trjT
+         jZ9WPnrOhfv8CAwS9duaWSl4GYxwM5ZY0CFh/O1WWQ7jhKqxrmTKvCatNzgDterrJQg3
+         YkqW5emF1XF8dKABNfn35OYJcjeshbcm7bEufz2DatJVRMJu3w99477nQe2Z2HO8wmR8
+         Tdkw==
+X-Gm-Message-State: APjAAAXpxt317AJmZATLTpNMTNPjtBlv/RqauS7ZkKYUnWlOPVQbQFR3
+        ifhGd9kyan5oQBu70LsWBj00I6WSexJQ5bORdsU1TpbZ
+X-Google-Smtp-Source: APXvYqyFEUscJD5GsIV+BS++o/YX8MWQdCWyg9O7X6Nb/wsuAeld8qTTFnYvdC785Otd3OEmiYJn0ixqzjixmeBiM0Q=
+X-Received: by 2002:ab0:60ad:: with SMTP id f13mr9491120uam.129.1562586386291;
+ Mon, 08 Jul 2019 04:46:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190618153448.27145-1-ulf.hansson@linaro.org>
- <20190618153448.27145-5-ulf.hansson@linaro.org> <CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com>
-In-Reply-To: <CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com>
+References: <1561020610-953-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <1561020610-953-6-git-send-email-yoshihiro.shimoda.uh@renesas.com> <20190624062414.GD2989@lst.de>
+In-Reply-To: <20190624062414.GD2989@lst.de>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 8 Jul 2019 12:53:54 +0200
-Message-ID: <CAPDyKFoHzCmobCtyy-j+-4xjW0Bt1_vA5-s4vHLVN78jXJ4X-w@mail.gmail.com>
-Subject: Re: [PATCH 4/7] mmc: sdio: Drop powered-on re-init at runtime resume
- and HW reset
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Mon, 8 Jul 2019 13:45:50 +0200
+Message-ID: <CAPDyKFpuRzmZUK730FMnh0hf3WRFb9aA=o9ciNt2ei8n803vsQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v7 5/5] mmc: queue: Use bigger segments if DMA MAP
+ layer can merge the segments
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <joro@8bytes.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>,
+        linux-block <linux-block@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 4 Jul 2019 at 02:02, Doug Anderson <dianders@chromium.org> wrote:
+On Mon, 24 Jun 2019 at 08:24, Christoph Hellwig <hch@lst.de> wrote:
 >
-> Hi,
->
-> On Tue, Jun 18, 2019 at 8:35 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> On Thu, Jun 20, 2019 at 05:50:10PM +0900, Yoshihiro Shimoda wrote:
+> > When the max_segs of a mmc host is smaller than 512, the mmc
+> > subsystem tries to use 512 segments if DMA MAP layer can merge
+> > the segments, and then the mmc subsystem exposes such information
+> > to the block layer by using blk_queue_can_use_dma_map_merging().
 > >
-> > To use the so called powered-on re-initialization of an SDIO card, the
-> > power to the card must obviously have stayed on. If not, the initialization
-> > will simply fail.
-> >
-> > In the runtime suspend case, the card is always powered off. Hence, let's
-> > drop the support for powered-on re-initialization during runtime resume, as
-> > it doesn't make sense.
-> >
-> > Moreover, during a HW reset, the point is to cut the power to the card and
-> > then do fresh re-initialization. Therefore drop the support for powered-on
-> > re-initialization during HW reset.
-> >
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 > > ---
-> >  drivers/mmc/core/sdio.c | 8 +-------
-> >  1 file changed, 1 insertion(+), 7 deletions(-)
+> >  drivers/mmc/core/queue.c | 35 ++++++++++++++++++++++++++++++++---
+> >  include/linux/mmc/host.h |  1 +
+> >  2 files changed, 33 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
+> > index 92900a0..ab0ecc6 100644
+> > --- a/drivers/mmc/core/queue.c
+> > +++ b/drivers/mmc/core/queue.c
+> > @@ -24,6 +24,8 @@
+> >  #include "card.h"
+> >  #include "host.h"
+> >
+> > +#define MMC_DMA_MAP_MERGE_SEGMENTS   512
+> > +
+> >  static inline bool mmc_cqe_dcmd_busy(struct mmc_queue *mq)
+> >  {
+> >       /* Allow only 1 DCMD at a time */
+> > @@ -196,6 +198,12 @@ static void mmc_queue_setup_discard(struct request_queue *q,
+> >               blk_queue_flag_set(QUEUE_FLAG_SECERASE, q);
+> >  }
+> >
+> > +static unsigned int mmc_get_max_segments(struct mmc_host *host)
+> > +{
+> > +     return host->can_dma_map_merge ? MMC_DMA_MAP_MERGE_SEGMENTS :
+> > +                                      host->max_segs;
 >
-> This has been on my list of things to test for a while but I never
-> quite got to it...
+> I personally don't like superflous use of ? : if an if would be more
+> obvious:
 >
-> ...and then, today, I spent time bisecting why the "reset"
-> functionality of miwfiex is broken on my 4.19 kernel [1].  AKA, this
-> is broken:
+>         if (host->can_dma_map_merge)
+>                 return MMC_DMA_MAP_MERGE_SEGMENTS;
+>         return host->max_segs;
 >
-> cd /sys/kernel/debug/mwifiex/mlan0
-> echo 1 > reset
->
-> I finally bisected the problem and tracked it down to commit
-> ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when SDIO IRQs
-> are enabled"), which embarrassingly has my Tested-by on it.  I guess I
-> never tested the Marvell reset call.  :-/
->
-> I dug a little and found that when the Marvell code did its reset we
-> ended up getting a call to dw_mci_enable_sdio_irq(enb=0) and never saw
-> a dw_mci_enable_sdio_irq(enb=1) after.  I tracked it down further and
-> found that specifically it was the call to mmc_signal_sdio_irq() in
-> mmc_sdio_power_restore() that was making the call.  The call stack
-> shown for the "enb=0" call:
->
-> [<c071a290>] (dw_mci_enable_sdio_irq) from [<c070a960>]
-> (mmc_sdio_power_restore+0x98/0xc0)
-> [<c070a960>] (mmc_sdio_power_restore) from [<c070a9b4>]
-> (mmc_sdio_reset+0x2c/0x30)
-> [<c070a9b4>] (mmc_signal_sdio_irq) from [<c06ff160>] (mmc_hw_reset+0xbc/0x138)
-> [<c06ff160>] (mmc_hw_reset) from [<bf1bbad8>]
-> (mwifiex_sdio_work+0x5d4/0x678 [mwifiex_sdio])
-> [<bf1bbad8>] (mwifiex_sdio_work [mwifiex_sdio]) from [<c0247cd0>]
-> (process_one_work+0x290/0x4b4)
->
-> I picked your patch here (which gets rid of the call to
-> mmc_signal_sdio_irq()) and magically the problem went away because
-> there is no more call to mmc_signal_sdio_irq().
->
-> I personally don't have lots of history about the whole
-> "powered_resume" code path.  I checked and mmc_card_keep_power() was 0
-> in my test case of getting called from hw_reset, so the rest of this
-> patch doesn't affect me at all.  This surprised me a little since I
-> saw "MMC_PM_KEEP_POWER" being set in mwifiex but then I realized that
-> it was only set for the duration of suspend and then cleared by the
-> core.  ;-)
->
-> I will also say that I don't have any test case or knowledge of how
-> SDIO runtime suspend/resume is supposed to work since on dw_mmc SDIO
-> cards are currently not allowed to runtime suspend anyway.  ;-)
->
->
-> So I guess the result of all that long-winded reply is that for on
-> rk3288-veyron-jerry:
->
-> Fixes: ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when
-> SDIO IRQs are enabled")
-> Tested-by: Douglas Anderson <dianders@chromium.org>
+> but that is really just a nitpick and for the mmc maintainer to decide.
 
-Thanks a lot for testing and for your detailed feedback. I have
-amended the patch by adding your tags above.
-
-Moreover, we seems to need this for stable as well, but I am leaving
-that to be managed as a separate task. We may even consider the hole
-series for stable, but that requires more testing first.
+I have no strong opinions, both formats are used in mmc code, so I am
+fine as is.
 
 >
+> Otherwise looks good:
 >
-> One last note is that, though Marvell WiFi works after a reset after
-> this commit, Marvell Bluetooth (on the same SDIO module) doesn't.  I
-> guess next week it'll be another bisect...
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-Is the Bluetooth connected to the same SDIO interface, thus the
-Bluetooth driver is an SDIO func driver?
-
->
-> [1] https://crbug.com/981113
->
->
->
-> -Doug
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
 Kind regards
 Uffe
