@@ -2,120 +2,111 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 721D362E00
-	for <lists+linux-mmc@lfdr.de>; Tue,  9 Jul 2019 04:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF91863345
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Jul 2019 11:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726823AbfGICQo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Jul 2019 22:16:44 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:39883 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725905AbfGICQo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Jul 2019 22:16:44 -0400
-Received: by mail-io1-f65.google.com with SMTP id f4so24306060ioh.6;
-        Mon, 08 Jul 2019 19:16:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=YB0ihnOm59Ua/y7c0WmEoM3xopDstN/prTb9Z8UqdvE=;
-        b=eJeRfatW5PTCYutRVe9L4uMSdw/I0lVJTvCOsRqWIskY7V+XAL+bkn3eq+iWh/pbQx
-         ng6IPpLqXonFSGHqSLlNvC1mNlGyBBh7dCqPKij0eHaK21uIgW7Kp0Cdj7ZGMWGdu1rD
-         +sn+21vPpbWHl8aUllHL5LjqDeF/GD14M1IEJP4hcQO+efuHf34FrMQgalDeI2VKssxz
-         H2DW8Az0liBCmO5UvezTzMQcSV/ZzoxaL4M90wwPtFA/l8vnxS2twsckzra5BhGL/mkD
-         FCbBBczG176lL01/XTLBpCoWkLM/SFcOH0wXyTYptAOEar8igd+jNC4SuyFQiULqFO75
-         3MzA==
-X-Gm-Message-State: APjAAAW8/W5ElVzP3LJDfLWEDvFIocNayy2YsoJaba9iM2uguQQqybbT
-        OAdpEl9hUkwHXpwBDm/h0w==
-X-Google-Smtp-Source: APXvYqyGmoebgc+iVTlZYu5TrVkwa3yYJYbNaeC3MeCzrmiEnG6yJ78bPDh0A3WHvjO4ADy2Ivp3Pw==
-X-Received: by 2002:a02:600c:: with SMTP id i12mr23983205jac.108.1562638603364;
-        Mon, 08 Jul 2019 19:16:43 -0700 (PDT)
-Received: from localhost ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id t4sm15342760iop.0.2019.07.08.19.16.42
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 08 Jul 2019 19:16:42 -0700 (PDT)
-Date:   Mon, 8 Jul 2019 20:16:41 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>
-Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        ulf.hansson@linaro.org, sboyd@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        thomas.liau@actions-semi.com, linux-actions@lists.infradead.org,
-        linus.walleij@linaro.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH 2/7] dt-bindings: mmc: Add Actions Semi SD/MMC/SDIO
- controller binding
-Message-ID: <20190709021641.GA28185@bogus>
-References: <20190608195317.6336-1-manivannan.sadhasivam@linaro.org>
- <20190608195317.6336-3-manivannan.sadhasivam@linaro.org>
- <5d164528-c797-5f94-f905-719d4f69542c@suse.de>
+        id S1726074AbfGIJHC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 9 Jul 2019 05:07:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43216 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725975AbfGIJHC (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 9 Jul 2019 05:07:02 -0400
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 32D5A216FD;
+        Tue,  9 Jul 2019 09:07:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562663221;
+        bh=gBRbV35m5F7XIm4mY3P77vIRA1ulbfrdqYeY5XmCOgk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=gxorLcYJevSSmtpzy/o0ew1VV/QK4r2pm5NRoEH/VSxNz9qvy3wP64EGkH6vdnfn5
+         xcaPE11FnphyP26cvOIJEE/cJwEmiqRLj8nwvBsJmE3hSHAANeOMpVVviPHzMIDUX0
+         czxnOGsSYcDxeLI7YO03LwH2/5T7yhyHcyv3B938=
+Received: by mail-lj1-f180.google.com with SMTP id m23so18770353lje.12;
+        Tue, 09 Jul 2019 02:07:01 -0700 (PDT)
+X-Gm-Message-State: APjAAAXhKMdbDUiK3kwPmOvPtrP+oKZm6JWFhR/oJKCrFz0/kpdhOT8c
+        i89fyGLBWFzdkgM9fAN6DNY9UHyf8aIhGsINChI=
+X-Google-Smtp-Source: APXvYqwRGEMAT7YRdSOSn3gQFgEwbb92VncYwQYDe1Ihzvsow5YWnFGx7ye2yBLB8agC6UeZtzmBb1KtmubvXQ6NpxE=
+X-Received: by 2002:a2e:980a:: with SMTP id a10mr10458109ljj.40.1562663219477;
+ Tue, 09 Jul 2019 02:06:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5d164528-c797-5f94-f905-719d4f69542c@suse.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190708195613.205729-1-dianders@chromium.org>
+In-Reply-To: <20190708195613.205729-1-dianders@chromium.org>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Tue, 9 Jul 2019 11:06:48 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPf9OTPaheUdiZtaDGU0sE2vsdRiLx5nptMt_EVKU7GObA@mail.gmail.com>
+Message-ID: <CAJKOXPf9OTPaheUdiZtaDGU0sE2vsdRiLx5nptMt_EVKU7GObA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: dw_mmc: Fix occasional hang after tuning on eMMC
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>,
+        linux-rockchip@lists.infradead.org, briannorris@chromium.org,
+        mka@chromium.org, groeck@chromium.org, sonnyrao@chromium.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Alim Akhtar <alim.akhtar@gmail.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Jun 10, 2019 at 03:45:37PM +0200, Andreas Färber wrote:
-> Am 08.06.19 um 21:53 schrieb Manivannan Sadhasivam:
-> > Add devicetree binding for Actions Semi Owl SoC's SD/MMC/SDIO controller.
-> > 
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > ---
-> >  .../devicetree/bindings/mmc/owl-mmc.txt       | 37 +++++++++++++++++++
-> >  1 file changed, 37 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/mmc/owl-mmc.txt
-> 
-> Rob, should this be YAML now?
+On Tue, 9 Jul 2019 at 00:48, Douglas Anderson <dianders@chromium.org> wrote:
+>
+> In commit 46d179525a1f ("mmc: dw_mmc: Wait for data transfer after
+> response errors.") we fixed a tuning-induced hang that I saw when
+> stress testing tuning on certain SD cards.  I won't re-hash that whole
+> commit, but the summary is that as a normal part of tuning you need to
+> deal with transfer errors and there were cases where these transfer
+> errors was putting my system into a bad state causing all future
+> transfers to fail.  That commit fixed handling of the transfer errors
+> for me.
+>
+> In downstream Chrome OS my fix landed and had the same behavior for
+> all SD/MMC commands.  However, it looks like when the commit landed
+> upstream we limited it to only SD tuning commands.  Presumably this
+> was to try to get around problems that Alim Akhtar reported on exynos
+> [1].
+>
+> Unfortunately while stress testing reboots (and suspend/resume) on
+> some rk3288-based Chromebooks I found the same problem on the eMMC on
+> some of my Chromebooks (the ones with Hynix eMMC).  Since the eMMC
+> tuning command is different (MMC_SEND_TUNING_BLOCK_HS200
+> vs. MMC_SEND_TUNING_BLOCK) we were basically getting back into the
+> same situation.
+>
+> I'm hoping that whatever problems exynos was having in the past are
+> somehow magically fixed now and we can make the behavior the same for
+> all commands.
+>
+> [1] https://lkml.kernel.org/r/CAGOxZ53WfNbaMe0_AM0qBqU47kAfgmPBVZC8K8Y-_J3mDMqW4A@mail.gmail.com
+>
+> Fixes: 46d179525a1f ("mmc: dw_mmc: Wait for data transfer after response errors.")
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+> Cc: Alim Akhtar <alim.akhtar@gmail.com>
+> Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> ---
+> Marek (or anyone else using exynos): is it easy for you to test this
+> and check if things are still broken when we land this patch?  If so,
+> I guess we could have a quirk to have different behavior for just
+> Rockchip SoCs but I'd rather avoid that if possible.
+>
+> NOTE: I'm not hoping totally in vain here.  It is possible that some
+> of the CTO/DTO timers that landed could be the magic that would get
+> exynos unstuck.
 
-Would be nice and might get reviewed faster, but I'll leave that to Ulf 
-to start requiring.
+I have eMMC module attached to Odroid U3 (Exynos4412,
+samsung,exynos4412-dw-mshc). What is the testing procedure? With your
+patch it boots fine:
+[    3.698637] mmc_host mmc1: Bus speed (slot 0) = 50000000Hz (slot
+req 52000000Hz, actual 50000000HZ div = 0)
+[    3.703900] mmc1: new DDR MMC card at address 0001
+[    3.728458] mmcblk1: mmc1:0001 008G92 7.28 GiB
 
-> 
-> > 
-> > diff --git a/Documentation/devicetree/bindings/mmc/owl-mmc.txt b/Documentation/devicetree/bindings/mmc/owl-mmc.txt
-> > new file mode 100644
-> > index 000000000000..a702f8d66cec
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/mmc/owl-mmc.txt
-> > @@ -0,0 +1,37 @@
-> > +Actions Semi Owl SoCs SD/MMC/SDIO controller
-> > +
-> > +Required properties:
-> > +- compatible: should be "actions,owl-mmc"
-> > +- reg: offset and length of the register set for the device.
-> > +- interrupts: single interrupt specifier.
-> > +- clocks: single clock specifier of the controller clock.
-> > +- resets: phandle to the reset line.
-> > +- dma-names: should be "mmc".
-> > +- dmas: single DMA channel specifier
-> 
-> I recall the main blocker for MMC being regulators, i.e. the I²C
-> attached multi-function PMIC. Yet I don't see any such required property
-> here, nor any patch series implementing it. Seems like this relies on
-> U-Boot having initialized SD/eMMC? Do you intend to make them optional
-> or did you want to hold off merging this one until the rest is done?
-> 
-> > +
-> > +Optional properties:
-> > +- pinctrl-names: pinctrl state names "default" must be defined.
-> > +- pinctrl-0: phandle referencing pin configuration of the controller.
-> > +- bus-width: see mmc.txt
-> > +- cap-sd-highspeed: see mmc.txt
-> > +- cap-mmc-highspeed: see mmc.txt
-> > +- sd-uhs-sdr12: see mmc.txt
-> > +- sd-uhs-sdr25: see mmc.txt
-> > +- sd-uhs-sdr50: see mmc.txt
-> > +- non-removable: see mmc.txt
-> 
-> I'm not convinced duplicating common properties is a good idea here, in
-> particular pinctrl.
-
-The main value is to define which common properties are valid for this 
-binding (and by omission which ones aren't valid).
-
-Rob
+Best regards,
+Krzysztof
