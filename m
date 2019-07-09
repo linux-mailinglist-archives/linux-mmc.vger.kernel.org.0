@@ -2,59 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D8363D43
-	for <lists+linux-mmc@lfdr.de>; Tue,  9 Jul 2019 23:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 645AA63D50
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Jul 2019 23:28:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727572AbfGIV0U (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 9 Jul 2019 17:26:20 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:36585 "EHLO
+        id S1729105AbfGIV2L (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 9 Jul 2019 17:28:11 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:33516 "EHLO
         mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727030AbfGIV0T (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 9 Jul 2019 17:26:19 -0400
-Received: by mail-io1-f68.google.com with SMTP id o9so172519iom.3
-        for <linux-mmc@vger.kernel.org>; Tue, 09 Jul 2019 14:26:19 -0700 (PDT)
+        with ESMTP id S1729011AbfGIV2L (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 9 Jul 2019 17:28:11 -0400
+Received: by mail-io1-f68.google.com with SMTP id z3so215791iog.0
+        for <linux-mmc@vger.kernel.org>; Tue, 09 Jul 2019 14:28:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=qZp2EA1uWuI2cCMBWCElkOzxAGzZZIpu6+eVMhVKNTo=;
-        b=Wb0mr0smeI2S+YK0huBgJ4nHSzTmixun8WgmZZQeqIBbAmwdyQSNJL0D6EhbTD3TXi
-         VNWEPT3tRWEpJPoT3V7ELnYpFadkamKkd7ZdfIvyXaw0M4T3RehL7yHyx4CTRX9UGKqh
-         3CRWQJTOzH93oGmzTySTboEDszbvS874tRDuk=
+        bh=6xuVNtto2i+j8dGWYiMsCcIcli6lEjhIoEXTrMKI510=;
+        b=mgn5jqhDsssTjORHlWne5iOQcte/3D+9lSVnvL+aVRe0U9NlV7bIUQUU6Pqu2JLA8w
+         kxKV1S1UCRJJEHb0svwxcZ99UTqlU+ZZSfPZcKECQjHPjPF8AeA/u5XY/s2p17w3uGQ7
+         /YMSMTKaUrSK+Oeb68cun7y5z4QBBxqHrwSck=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=qZp2EA1uWuI2cCMBWCElkOzxAGzZZIpu6+eVMhVKNTo=;
-        b=euq5h7bucKmuwAQKf+qI6Cstd+PIDPPPZQI3bACNep59G+ipDvoHK0fb7hCeMqgKag
-         TdYmfr7caq3ebIBXgECShSYNkye5MA/KihJIsLvU49glxmsUB/TPoEySpT/ru4Fm0rdl
-         Vb8L1uAbb+41Cde6fp6tmjVlaya/LsSDNEo1Uy/DzSibjhaZv6mrg3V2N3rvTR8Ejcjp
-         6qNUEfGN9ePjnFGu4JNTlPo4IDqz3KfRoPleolVmDcnp00N2YXtsGRjoOi0SFXdJ4sf2
-         lR+LlkqXvh01atgyhtUeAw0DXcYPd3inM/GV1WXC3+AEQr6g1skee7vtOuNaJtBzPtt/
-         RZeQ==
-X-Gm-Message-State: APjAAAVVUUmtDBYNLJSxNGSv5JvWdZbVRO6FNuJA84Me+ahQY9ZR09UW
-        GLyq0mPVkyBQrDfVd5h16/6smPwb0Kk=
-X-Google-Smtp-Source: APXvYqyouJrSa5ItXqON1sANtst7/CBIcB40rzWjlMS2NUxTOBI0UupWfVQJ52bDz27M0IOw2MYf3A==
-X-Received: by 2002:a02:c9d8:: with SMTP id c24mr31525332jap.38.1562707579013;
-        Tue, 09 Jul 2019 14:26:19 -0700 (PDT)
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com. [209.85.166.41])
-        by smtp.gmail.com with ESMTPSA id i4sm28770260iog.31.2019.07.09.14.26.18
+        bh=6xuVNtto2i+j8dGWYiMsCcIcli6lEjhIoEXTrMKI510=;
+        b=Wmd5GarVH3mt9SLIVsgcXI7Yx0LPM6CUJBnttOiFZLJQtzRQwicI+ccJAvJKbxAsxH
+         BO0tqvA/Z2peRxHivFkTK7rgaDAp2r8ct3ckrsFJQN19Vt0a9LXVQt16sbPmZIpbbzSX
+         0QmkRwFD3rJTzReV9Kb6XGkLYHZM0P6AAj/CdEF6JAPn8C57xAX/EcuQtaO+KkZ8D/tz
+         KrXn4DrcxjFlETAFvEGMiqoV1y4HYiOpUCuMtr4wiPYttyZp4ukj1oxB5Gim8KM2F8I2
+         h7+F58GWFJaPpVmsMAjydodD5mG8n6qyfvVa5FGV+uQ+YsP8Pj/vtxOLxO55JWWP7tzg
+         5Kjg==
+X-Gm-Message-State: APjAAAX8ou0pg2jqH0+qKzqU38CQfbDOMLjVcWhbJczoXlAGm/D2tSqb
+        /7sLw86dpvYmUNDVdJDm4m+hgdoTQ/o=
+X-Google-Smtp-Source: APXvYqwi93eQjHnq4Xm9pzxLvHXhf4Z87JECpsnpW4A/P5jBCQGymm2+yXqSZgXfgiI7wiFuXtwfrQ==
+X-Received: by 2002:a5d:940b:: with SMTP id v11mr11895493ion.69.1562707690408;
+        Tue, 09 Jul 2019 14:28:10 -0700 (PDT)
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com. [209.85.166.49])
+        by smtp.gmail.com with ESMTPSA id z26sm23923299ioi.85.2019.07.09.14.28.09
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Jul 2019 14:26:18 -0700 (PDT)
-Received: by mail-io1-f41.google.com with SMTP id f4so134542ioh.6
-        for <linux-mmc@vger.kernel.org>; Tue, 09 Jul 2019 14:26:18 -0700 (PDT)
-X-Received: by 2002:a5e:8f08:: with SMTP id c8mr2520003iok.52.1562707577690;
- Tue, 09 Jul 2019 14:26:17 -0700 (PDT)
+        Tue, 09 Jul 2019 14:28:09 -0700 (PDT)
+Received: by mail-io1-f49.google.com with SMTP id k20so99935ios.10
+        for <linux-mmc@vger.kernel.org>; Tue, 09 Jul 2019 14:28:09 -0700 (PDT)
+X-Received: by 2002:a5d:96d8:: with SMTP id r24mr26902780iol.269.1562707689155;
+ Tue, 09 Jul 2019 14:28:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190618153448.27145-1-ulf.hansson@linaro.org> <20190618153448.27145-6-ulf.hansson@linaro.org>
-In-Reply-To: <20190618153448.27145-6-ulf.hansson@linaro.org>
+References: <20190618153448.27145-1-ulf.hansson@linaro.org> <20190618153448.27145-4-ulf.hansson@linaro.org>
+In-Reply-To: <20190618153448.27145-4-ulf.hansson@linaro.org>
 From:   Doug Anderson <dianders@chromium.org>
-Date:   Tue, 9 Jul 2019 14:26:06 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=Uss6B2nHPz_pQJFCXm2G=f_rpfqK6xVG1SCDHYb12jmw@mail.gmail.com>
-Message-ID: <CAD=FV=Uss6B2nHPz_pQJFCXm2G=f_rpfqK6xVG1SCDHYb12jmw@mail.gmail.com>
-Subject: Re: [PATCH 5/7] mmc: sdio: Don't re-initialize powered-on removable
- SDIO cards at resume
+Date:   Tue, 9 Jul 2019 14:27:58 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=V-guTEPqi42q8rhiw+v5PB-87MTdAFb+22nGZ4sEGdYg@mail.gmail.com>
+Message-ID: <CAD=FV=V-guTEPqi42q8rhiw+v5PB-87MTdAFb+22nGZ4sEGdYg@mail.gmail.com>
+Subject: Re: [PATCH 3/7] mmc: sdio: Move comment about re-initialization to mmc_sdio_reinit_card()
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -75,33 +74,13 @@ Hi,
 
 On Tue, Jun 18, 2019 at 8:35 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> It looks like the original idea behind always doing a re-initialization of
-> a removable SDIO card during system resume in mmc_sdio_resume(), is to try
-> to play safe to detect whether the card has been removed.
->
-> However, this seems like a really a bad idea as it will most likely screw
-> things up, especially when the card is expected to remain powered on during
-> system suspend by the SDIO func driver.
->
-> Let's fix this, simply by trusting that the detect work checks if the card
-> is alive and inserted, which is being scheduled at the PM_POST_SUSPEND
-> notification anyway.
+> The comment in mmc_sdio_power_restore() belongs in mmc_sdio_reinit_card(),
+> which was created during a previous commit that re-factored some code. Fix
+> this by moving the comment into mmc_sdio_reinit_card().
 >
 > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > ---
->  drivers/mmc/core/sdio.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-
-I'm not sure if it's even worth mentioning since the device I tested
-was rk3288-veyron (both WiFi variants) and we have a non-removable,
-powered-in-suspend, wakeup-disabled card.  That means it isn't
-affected at all by your change.  ...but I suppose I can at least
-confirm that your change didn't break me if that's worth anything.
-:-P
-
-Tested-by: Douglas Anderson <dianders@chromium.org>
-
-I would also say that, though I don't have any history here, your
-patch seems reasonable to me.  So you can add a:
+>  drivers/mmc/core/sdio.c | 34 +++++++++++++++++-----------------
+>  1 file changed, 17 insertions(+), 17 deletions(-)
 
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
