@@ -2,68 +2,68 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E71B63D5E
-	for <lists+linux-mmc@lfdr.de>; Tue,  9 Jul 2019 23:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA82A63D85
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Jul 2019 23:48:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728951AbfGIVbr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 9 Jul 2019 17:31:47 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:43537 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726318AbfGIVbr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 9 Jul 2019 17:31:47 -0400
-Received: by mail-io1-f67.google.com with SMTP id k20so118892ios.10
-        for <linux-mmc@vger.kernel.org>; Tue, 09 Jul 2019 14:31:46 -0700 (PDT)
+        id S1729616AbfGIVsc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 9 Jul 2019 17:48:32 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:43533 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729019AbfGIVsc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 9 Jul 2019 17:48:32 -0400
+Received: by mail-qt1-f194.google.com with SMTP id w17so208101qto.10;
+        Tue, 09 Jul 2019 14:48:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=m+Q6OKHB4bjuA+HKRJoJXplccc4Q4BX/DPB0CSkNBfg=;
-        b=jXXNF60XQ/xWIVsNNbZL3eDl1iyRkV2wUimvy/t5P4f2Y9AdAj79hrbkiF4p2XToXh
-         PjlMOcdLlv3NklnZFKzraxechJEVrnBSZKUw8/khqATqOYB/uk7uPs4JLCvALCZH+iyO
-         tL2y3uBGNmr5ik3mE9cxdMzErpUncIvQQBR0g=
+        bh=pObonpCVhBSmmiSRgLF61Ki0eXVsuxi+cPBVrWAPOgE=;
+        b=WuGNttqWLWY2ZilDDq/cmXWwieqNlqYaoKgGTV0hs6MhLCzsar9IieghREaCh12pYO
+         mcSt3MXg/FQYOVdTIgRq0nWk69auT0nVFM8ENzugPJBpWwUvOlEc4qdUXsFnytl52WPD
+         fnyQQ34giXP4UTEt3hul2/BNMfkG9JnY9IOuYkleXLWm2gzUkV+4fti5PAkbjdTpmLHg
+         LSfhIRit46IAjUz16kYPCPSxwvr6J3u3V3sskmTndoVu+bktVyIuaQjEuURE5ivelgmw
+         wQsqDZ+0b+cILcmlUzAdcrWl+Chr4ij+F9O7xc33ez5NfLN4VxHvSftK6Pxlrk4JyX+z
+         GjtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=m+Q6OKHB4bjuA+HKRJoJXplccc4Q4BX/DPB0CSkNBfg=;
-        b=HvRxqOM+PfKYxqkvjoWlx9knFQljClLlZQHF8VgZtveG3K1EYKsHXW5Ifm3ExDDve6
-         P7b2nAt+mFLVhJxrzbxRq+AXZYXlBZ13KSrCrLRLSY8wlrt+KdIhbhzI5PEeoyEd5KIk
-         TdI3QD0hCClZX60WVMNhnLSS8l5e7ctLoPkmZXh3BX86FuI9gRo/WQGZSyfBIktt6344
-         Hp83+joWR9opERDnaAVTRIZmabXyG93sFRigdhFGVVTFyaJvwFh1TVyF+n+SMNCzPFw9
-         IRDpyojndxeUcBuKX81cdn56ksNQJMbznddjXCBApaPU5+y3jrD6cn6uiTMRc4TFWDFA
-         J3ng==
-X-Gm-Message-State: APjAAAVuEv8LMXrbviNwezlpwV0GcHMvTdZ0YEtWat/JQdil01EqtnPI
-        bZvSHjmRPeFiUtrsCQxUZYeB9silGTY=
-X-Google-Smtp-Source: APXvYqzaIKp/8IcelcHcMD5XwpcxVp8gTChCD3aQurgkgYodBFe7m6go3M+caSaR0sWZhRY+3mmebA==
-X-Received: by 2002:a05:6638:40c:: with SMTP id q12mr31706226jap.17.1562707906096;
-        Tue, 09 Jul 2019 14:31:46 -0700 (PDT)
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com. [209.85.166.44])
-        by smtp.gmail.com with ESMTPSA id j5sm17480835iom.69.2019.07.09.14.31.45
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Jul 2019 14:31:45 -0700 (PDT)
-Received: by mail-io1-f44.google.com with SMTP id q22so185760iog.4
-        for <linux-mmc@vger.kernel.org>; Tue, 09 Jul 2019 14:31:45 -0700 (PDT)
-X-Received: by 2002:a5e:db0a:: with SMTP id q10mr7438751iop.168.1562707904855;
- Tue, 09 Jul 2019 14:31:44 -0700 (PDT)
+        bh=pObonpCVhBSmmiSRgLF61Ki0eXVsuxi+cPBVrWAPOgE=;
+        b=Nu91DPkhqEsZBDKkzejFC4Xq8AY0oahXriuSMBrjmO4FdUccD6hKTiueM1hgXTMAlD
+         3gtXAB1rhLD1FYv7V3dlkLIWohDF55BZZVwZQ8DcnwdcXh19ghMQrHH7jReHRjwI+MAq
+         wxyE/oqtLWqBoQwSpDorLBPK/rBuC1gei3xm6+X0TsgX63mtVAjdA98ahvwuSVRE1ExJ
+         Mt1oXjkCFayQ7YyKGaVf19l8F48HIMYyw+vEei3f+pBK/Bx+bYAMIU52TWIM3IzpfgF7
+         wNafY4TkZKKrUmDMirJRd9QRzTen+FmTxKR3UAkh3le3dTnVuxY/nTi4dUzVcUPNg2VF
+         bg1A==
+X-Gm-Message-State: APjAAAV9sJaG+hvBncMzONFQkHc5ovGomrDUdyikt6MdnEWFGi4PnHlC
+        Atqbd8vHqArr+yELMiZ7Z7rKM9GAW1MfP/4I2XNSM+jQOXI=
+X-Google-Smtp-Source: APXvYqyywjCWmRSpegmDraZaGC6H19pvew0Xiws8Ie8gSnqctiNwYxTuBCPdVFk8g5+yZmE855EOfG09T0cwXg0mVKw=
+X-Received: by 2002:ac8:1c2d:: with SMTP id a42mr20603885qtk.311.1562708910876;
+ Tue, 09 Jul 2019 14:48:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190618153448.27145-1-ulf.hansson@linaro.org> <20190618153448.27145-8-ulf.hansson@linaro.org>
-In-Reply-To: <20190618153448.27145-8-ulf.hansson@linaro.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Tue, 9 Jul 2019 14:31:33 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=VdECYQCLAFd+J6xYBXSJVLMb5_iGs+DYCmeDbW0N-SOQ@mail.gmail.com>
-Message-ID: <CAD=FV=VdECYQCLAFd+J6xYBXSJVLMb5_iGs+DYCmeDbW0N-SOQ@mail.gmail.com>
-Subject: Re: [PATCH 7/7] mmc: sdio: Drop unused in-parameter from mmc_sdio_init_card()
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+References: <20190708195613.205729-1-dianders@chromium.org>
+ <CAJKOXPf9OTPaheUdiZtaDGU0sE2vsdRiLx5nptMt_EVKU7GObA@mail.gmail.com> <CAD=FV=WquwqKjUKh5=M6tbTrD3svVTGWLU3iSTzD-uXBX73YWA@mail.gmail.com>
+In-Reply-To: <CAD=FV=WquwqKjUKh5=M6tbTrD3svVTGWLU3iSTzD-uXBX73YWA@mail.gmail.com>
+From:   Enric Balletbo Serra <eballetbo@gmail.com>
+Date:   Tue, 9 Jul 2019 23:48:19 +0200
+Message-ID: <CAFqH_52Vhonb0ui5eXVHtyt+3td=_9pLZBWTBsHBgt34bX=H+Q@mail.gmail.com>
+Subject: Re: [PATCH] mmc: dw_mmc: Fix occasional hang after tuning on eMMC
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>,
         Brian Norris <briannorris@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
         Guenter Roeck <groeck@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
+        Alim Akhtar <alim.akhtar@gmail.com>,
+        Sonny Rao <sonnyrao@chromium.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
@@ -72,15 +72,91 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 Hi,
 
-On Tue, Jun 18, 2019 at 8:35 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+Missatge de Doug Anderson <dianders@chromium.org> del dia dt., 9 de
+jul. 2019 a les 18:38:
 >
-> The "powered_resume" in-parameter to mmc_sdio_init_card() has now become
-> redundant as all callers set it to 0. Therefore let's just drop it.
+> Hi,
 >
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> ---
->  drivers/mmc/core/sdio.c | 20 +++++++++-----------
->  1 file changed, 9 insertions(+), 11 deletions(-)
+> On Tue, Jul 9, 2019 at 2:07 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >
+> > On Tue, 9 Jul 2019 at 00:48, Douglas Anderson <dianders@chromium.org> wrote:
+> > >
+> > > In commit 46d179525a1f ("mmc: dw_mmc: Wait for data transfer after
+> > > response errors.") we fixed a tuning-induced hang that I saw when
+> > > stress testing tuning on certain SD cards.  I won't re-hash that whole
+> > > commit, but the summary is that as a normal part of tuning you need to
+> > > deal with transfer errors and there were cases where these transfer
+> > > errors was putting my system into a bad state causing all future
+> > > transfers to fail.  That commit fixed handling of the transfer errors
+> > > for me.
+> > >
+> > > In downstream Chrome OS my fix landed and had the same behavior for
+> > > all SD/MMC commands.  However, it looks like when the commit landed
+> > > upstream we limited it to only SD tuning commands.  Presumably this
+> > > was to try to get around problems that Alim Akhtar reported on exynos
+> > > [1].
+> > >
+> > > Unfortunately while stress testing reboots (and suspend/resume) on
+> > > some rk3288-based Chromebooks I found the same problem on the eMMC on
+> > > some of my Chromebooks (the ones with Hynix eMMC).  Since the eMMC
+> > > tuning command is different (MMC_SEND_TUNING_BLOCK_HS200
+> > > vs. MMC_SEND_TUNING_BLOCK) we were basically getting back into the
+> > > same situation.
+> > >
+> > > I'm hoping that whatever problems exynos was having in the past are
+> > > somehow magically fixed now and we can make the behavior the same for
+> > > all commands.
+> > >
+> > > [1] https://lkml.kernel.org/r/CAGOxZ53WfNbaMe0_AM0qBqU47kAfgmPBVZC8K8Y-_J3mDMqW4A@mail.gmail.com
+> > >
+> > > Fixes: 46d179525a1f ("mmc: dw_mmc: Wait for data transfer after response errors.")
+> > > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> > > Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+> > > Cc: Alim Akhtar <alim.akhtar@gmail.com>
+> > > Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> > > ---
+> > > Marek (or anyone else using exynos): is it easy for you to test this
+> > > and check if things are still broken when we land this patch?  If so,
+> > > I guess we could have a quirk to have different behavior for just
+> > > Rockchip SoCs but I'd rather avoid that if possible.
+> > >
+> > > NOTE: I'm not hoping totally in vain here.  It is possible that some
+> > > of the CTO/DTO timers that landed could be the magic that would get
+> > > exynos unstuck.
+> >
+> > I have eMMC module attached to Odroid U3 (Exynos4412,
+> > samsung,exynos4412-dw-mshc). What is the testing procedure? With your
+> > patch it boots fine:
+> > [    3.698637] mmc_host mmc1: Bus speed (slot 0) = 50000000Hz (slot
+> > req 52000000Hz, actual 50000000HZ div = 0)
+> > [    3.703900] mmc1: new DDR MMC card at address 0001
+> > [    3.728458] mmcblk1: mmc1:0001 008G92 7.28 GiB
+>
+> To really test it, it'd be nice to see some HS200 eMMC cards enumerate
+> OK.  Specifically the patch adjusts the error handling and the place
+> where that happens mostly is during tuning.
+>
+> I'll also try to find some time today to check a peach_pit or a
+> peach_pi.  I think I saw one in the pile near my desk so if it isn't
+> in too bad of a shape I can give mainline a shot on it.
+>
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
+I did a normal boot on peach_pi [1] and odroidxu3 [2] with that patch
+applied, and the eMMC attached on both was detected as
+
+ [    2.294798] mmc0: new HS400 MMC card at address 0001
+
+I can do some stress tests tomorrow on those boards if that helps.
+
+Cheers,
+~ Enric
+
+[1] https://storage.kernelci.org/chrome-platform/for-kernelci/ib-mfd-cros-v5.3-87-g0fe7e9d7d5a3/arm/multi_v7_defconfig/gcc-8/lab-collabora/boot-exynos5800-peach-pi.html
+[2] https://storage.kernelci.org/chrome-platform/for-kernelci/ib-mfd-cros-v5.3-87-g0fe7e9d7d5a3/arm/multi_v7_defconfig/gcc-8/lab-collabora/boot-exynos5422-odroidxu3.html
+
+> -Doug
+>
+> _______________________________________________
+> Linux-rockchip mailing list
+> Linux-rockchip@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-rockchip
