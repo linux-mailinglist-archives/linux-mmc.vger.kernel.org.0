@@ -2,238 +2,89 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D567B63E62
-	for <lists+linux-mmc@lfdr.de>; Wed, 10 Jul 2019 01:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BFC76406E
+	for <lists+linux-mmc@lfdr.de>; Wed, 10 Jul 2019 07:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726324AbfGIXfr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 9 Jul 2019 19:35:47 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:36302 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726133AbfGIXfq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 9 Jul 2019 19:35:46 -0400
-Received: by mail-io1-f68.google.com with SMTP id o9so753170iom.3
-        for <linux-mmc@vger.kernel.org>; Tue, 09 Jul 2019 16:35:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FLYclg4ubvXYAp8d++jPvg8MTD6u2FcKpktsiaOH49o=;
-        b=fyaigPphLxAKyI8WYGuChKDTXa2pzW7ffY0rNX5IrGmhu1goqf6pBwdk7/WXxSNAtw
-         uJETYxaY0YWsA+sM+vG34OoJrsfeDuRSGRsEmcIzfZBjG3w9MEGhxRAzFvYJldWsi6Wl
-         2yftjdGdeTkX4mQvSj0yr5fujm2gyH/F8gqkw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FLYclg4ubvXYAp8d++jPvg8MTD6u2FcKpktsiaOH49o=;
-        b=qEeROUv9jyUwOb2rLvztDQNwlGdUQPDxqRinRKG6GhOkWnwqCDGL/K9MT6Q5Tyvyzd
-         t9dc9Hrr3UefkGjh3YnnIsHkLpkoxL62yHmJQnmfW+80ZVbmPlMOVtTykb742JvgptaT
-         SHJDy95Zh/NkKxkAFmLlVBTWV5expA05CTu+y6XcckNhr8mQX5PGGOge4G0acN9WMiNL
-         wVECFlfp7gGbhCGVp+Pjl+abWm/SANq1mxKvhd4NiajyySjssvxELvYFUY55h3inhl9u
-         ugmr0vBysChAJWuueZ5lleQXRDtHUoL6lskMMaQXtUuJ6Z8F4NdNvS4yTpvr7dvlbkzu
-         EQ3g==
-X-Gm-Message-State: APjAAAUIUnHJSKpdketpv2ZUMQ+wjJ5Fwp0+KBEEBv3gdqQuEgeSfh1U
-        bA757KNR2LnPRpzHpm3ILHQ1dHgwWJ8=
-X-Google-Smtp-Source: APXvYqwLvpXwk18iZE5ydBCvOKl3YWhcICCLNDYsvRVBVtGzuvLzYJBLZ4aWBRSmkmtydKRXgV2mYA==
-X-Received: by 2002:a5d:924e:: with SMTP id e14mr12798354iol.215.1562715345560;
-        Tue, 09 Jul 2019 16:35:45 -0700 (PDT)
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com. [209.85.166.53])
-        by smtp.gmail.com with ESMTPSA id y17sm197563ioa.40.2019.07.09.16.35.44
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Jul 2019 16:35:44 -0700 (PDT)
-Received: by mail-io1-f53.google.com with SMTP id j5so696446ioj.8
-        for <linux-mmc@vger.kernel.org>; Tue, 09 Jul 2019 16:35:44 -0700 (PDT)
-X-Received: by 2002:a6b:5103:: with SMTP id f3mr3561297iob.142.1562715344450;
- Tue, 09 Jul 2019 16:35:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190618153448.27145-1-ulf.hansson@linaro.org>
- <20190618153448.27145-5-ulf.hansson@linaro.org> <CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com>
- <CAPDyKFoHzCmobCtyy-j+-4xjW0Bt1_vA5-s4vHLVN78jXJ4X-w@mail.gmail.com>
- <CAD=FV=UfHd=_gqEMajABV19Mb=G-tz6VptDQa48g4kUPxo-A6g@mail.gmail.com> <CAPDyKFpN38G-Oj-+cKcxQ8z8K7M_0sA6_CTSKuxvez2s3Td+xw@mail.gmail.com>
-In-Reply-To: <CAPDyKFpN38G-Oj-+cKcxQ8z8K7M_0sA6_CTSKuxvez2s3Td+xw@mail.gmail.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Tue, 9 Jul 2019 16:35:29 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=W_L7fV+Tra2oMBMVJUMOgvS9ZaOSy80fx+3cNrqW976g@mail.gmail.com>
-Message-ID: <CAD=FV=W_L7fV+Tra2oMBMVJUMOgvS9ZaOSy80fx+3cNrqW976g@mail.gmail.com>
-Subject: Re: [PATCH 4/7] mmc: sdio: Drop powered-on re-init at runtime resume
- and HW reset
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726043AbfGJFKK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 10 Jul 2019 01:10:10 -0400
+Received: from smtprelay0115.hostedemail.com ([216.40.44.115]:34743 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726159AbfGJFKJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 10 Jul 2019 01:10:09 -0400
+X-Greylist: delayed 333 seconds by postgrey-1.27 at vger.kernel.org; Wed, 10 Jul 2019 01:10:08 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave06.hostedemail.com (Postfix) with ESMTP id 7ABC3801B6E3;
+        Wed, 10 Jul 2019 05:04:35 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 2D69B181D3403;
+        Wed, 10 Jul 2019 05:04:33 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::::::::::::::::::,RULES_HIT:41:355:379:541:973:982:988:989:1260:1345:1437:1534:1541:1711:1730:1747:1777:1792:1801:2198:2199:2393:2559:2562:2731:3138:3139:3140:3141:3142:3352:3865:3866:3867:3868:4250:4605:5007:6261:6737:10004:10848:11026:11658:11914:12043:12048:12297:12679:12895:13069:13161:13229:13311:13357:14096:14181:14384:14394:14581:14721:21080:21220:21451:21627:30054,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:26,LUA_SUMMARY:none
+X-HE-Tag: help91_a3a1c1ec484c
+X-Filterd-Recvd-Size: 2833
+Received: from joe-laptop.perches.com (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
+        (Authenticated sender: joe@perches.com)
+        by omf06.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 10 Jul 2019 05:04:30 +0000 (UTC)
+From:   Joe Perches <joe@perches.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Andrew Jeffery <andrew@aj.id.au>, openbmc@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-wireless@vger.kernel.org, linux-media@vger.kernel.org
+Cc:     dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
+        linux-mmc@vger.kernel.org, devel@driverdev.osuosl.org,
+        alsa-devel@alsa-project.org
+Subject: [PATCH 00/12] treewide: Fix GENMASK misuses
+Date:   Tue,  9 Jul 2019 22:04:13 -0700
+Message-Id: <cover.1562734889.git.joe@perches.com>
+X-Mailer: git-send-email 2.15.0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+These GENMASK uses are inverted argument order and the
+actual masks produced are incorrect.  Fix them.
 
-On Tue, Jul 9, 2019 at 5:02 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> On Mon, 8 Jul 2019 at 23:12, Doug Anderson <dianders@chromium.org> wrote:
-> >
-> > Hi,
-> >
-> > On Mon, Jul 8, 2019 at 3:54 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > >
-> > > On Thu, 4 Jul 2019 at 02:02, Doug Anderson <dianders@chromium.org> wrote:
-> > > >
-> > > > Hi,
-> > > >
-> > > > On Tue, Jun 18, 2019 at 8:35 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > > > >
-> > > > > To use the so called powered-on re-initialization of an SDIO card, the
-> > > > > power to the card must obviously have stayed on. If not, the initialization
-> > > > > will simply fail.
-> > > > >
-> > > > > In the runtime suspend case, the card is always powered off. Hence, let's
-> > > > > drop the support for powered-on re-initialization during runtime resume, as
-> > > > > it doesn't make sense.
-> > > > >
-> > > > > Moreover, during a HW reset, the point is to cut the power to the card and
-> > > > > then do fresh re-initialization. Therefore drop the support for powered-on
-> > > > > re-initialization during HW reset.
-> > > > >
-> > > > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > > > > ---
-> > > > >  drivers/mmc/core/sdio.c | 8 +-------
-> > > > >  1 file changed, 1 insertion(+), 7 deletions(-)
-> > > >
-> > > > This has been on my list of things to test for a while but I never
-> > > > quite got to it...
-> > > >
-> > > > ...and then, today, I spent time bisecting why the "reset"
-> > > > functionality of miwfiex is broken on my 4.19 kernel [1].  AKA, this
-> > > > is broken:
-> > > >
-> > > > cd /sys/kernel/debug/mwifiex/mlan0
-> > > > echo 1 > reset
-> > > >
-> > > > I finally bisected the problem and tracked it down to commit
-> > > > ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when SDIO IRQs
-> > > > are enabled"), which embarrassingly has my Tested-by on it.  I guess I
-> > > > never tested the Marvell reset call.  :-/
-> > > >
-> > > > I dug a little and found that when the Marvell code did its reset we
-> > > > ended up getting a call to dw_mci_enable_sdio_irq(enb=0) and never saw
-> > > > a dw_mci_enable_sdio_irq(enb=1) after.  I tracked it down further and
-> > > > found that specifically it was the call to mmc_signal_sdio_irq() in
-> > > > mmc_sdio_power_restore() that was making the call.  The call stack
-> > > > shown for the "enb=0" call:
-> > > >
-> > > > [<c071a290>] (dw_mci_enable_sdio_irq) from [<c070a960>]
-> > > > (mmc_sdio_power_restore+0x98/0xc0)
-> > > > [<c070a960>] (mmc_sdio_power_restore) from [<c070a9b4>]
-> > > > (mmc_sdio_reset+0x2c/0x30)
-> > > > [<c070a9b4>] (mmc_signal_sdio_irq) from [<c06ff160>] (mmc_hw_reset+0xbc/0x138)
-> > > > [<c06ff160>] (mmc_hw_reset) from [<bf1bbad8>]
-> > > > (mwifiex_sdio_work+0x5d4/0x678 [mwifiex_sdio])
-> > > > [<bf1bbad8>] (mwifiex_sdio_work [mwifiex_sdio]) from [<c0247cd0>]
-> > > > (process_one_work+0x290/0x4b4)
-> > > >
-> > > > I picked your patch here (which gets rid of the call to
-> > > > mmc_signal_sdio_irq()) and magically the problem went away because
-> > > > there is no more call to mmc_signal_sdio_irq().
-> > > >
-> > > > I personally don't have lots of history about the whole
-> > > > "powered_resume" code path.  I checked and mmc_card_keep_power() was 0
-> > > > in my test case of getting called from hw_reset, so the rest of this
-> > > > patch doesn't affect me at all.  This surprised me a little since I
-> > > > saw "MMC_PM_KEEP_POWER" being set in mwifiex but then I realized that
-> > > > it was only set for the duration of suspend and then cleared by the
-> > > > core.  ;-)
-> > > >
-> > > > I will also say that I don't have any test case or knowledge of how
-> > > > SDIO runtime suspend/resume is supposed to work since on dw_mmc SDIO
-> > > > cards are currently not allowed to runtime suspend anyway.  ;-)
-> > > >
-> > > >
-> > > > So I guess the result of all that long-winded reply is that for on
-> > > > rk3288-veyron-jerry:
-> > > >
-> > > > Fixes: ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when
-> > > > SDIO IRQs are enabled")
-> > > > Tested-by: Douglas Anderson <dianders@chromium.org>
-> > >
-> > > Thanks a lot for testing and for your detailed feedback. I have
-> > > amended the patch by adding your tags above.
-> >
-> > Sure!  I'm going to try to do some detailed testing on the next patch
-> > too to confirm it's OK, but I have a few other tasks to get to first.
-> > ;-)
-> >
-> >
-> > > Moreover, we seems to need this for stable as well, but I am leaving
-> > > that to be managed as a separate task. We may even consider the hole
-> > > series for stable, but that requires more testing first.
-> >
-> > Sure, makes sense.  We'll pick it to the Chrome OS 4.19 kernel
-> > directly but it's usually nice to get fixes like this into stable so
-> > everyone can benefit.
-> >
-> >
-> > > > One last note is that, though Marvell WiFi works after a reset after
-> > > > this commit, Marvell Bluetooth (on the same SDIO module) doesn't.  I
-> > > > guess next week it'll be another bisect...
-> > >
-> > > Is the Bluetooth connected to the same SDIO interface, thus the
-> > > Bluetooth driver is an SDIO func driver?
-> >
-> > Yes, it's a SDIO func driver connected to the same interface.  So far
-> > I've managed to confirm the problem on:
-> >
-> > v4.4 (plus 76ae3e26ea43 mwifiex: add debugfs file for testing reset of card)
-> > v4.9
-> > next-20190708
-> >
-> > ...so it seems like it's not a "regression", it's just never worked.
-> > :-P  I guess I'll have to see if I can figure out what's different in
-> > our chromeos-3.14 kernel.  Ah, I see.  In 3.14 we had this solution:
-> >
-> > pr_err("Resetting card...\n");
-> > mmc_remove_host(reset_host);
-> > /* 200ms delay is based on experiment with sdhci controller */
-> > mdelay(200);
-> > reset_host->rescan_entered = 0;
-> > mmc_add_host(reset_host);
-> >
-> > ...I think that didn't fly upstream.  ...but I can confirm that this works fine:
-> >
-> > cd /sys/bus/platform/drivers/dwmmc_rockchip
-> > echo ff0d0000.dwmmc > unbind
-> > sleep .5
-> > echo ff0d0000.dwmmc > bind
-> >
-> > ...so I guess this boils down to: how does the mwifiex reset code not
-> > behave like a full removal and re-insertion of the card?  Oh, but
-> > maybe that's obvious.  We're doing all the reset / re-init from the
-> > WiFi side of things (mwifiex_sdio_card_reset_work) but I don't think
-> > anything is communicated to the Bluetooth side of things.  Presumably
-> > this is just totally broken for everyone?  ...or am I confused?
->
-> Nope, that is most likely what is happening.
->
-> I am not sure what is the best method to deal with this. Perhaps we
-> should invent some callback the SDIO core code can call, for each
-> active SDIO func on the particular SDIO card that becomes reset.
->
-> Or is there a better way you think?
+Add checkpatch tests to help avoid more misuses too.
 
-I didn't get a chance to fully dig today, but I keep thinking that the
-cleanest way would be if I could somehow tell the MMC core to pretend
-to unplug the card and then re-plug it in.  Then we could go through
-all the standard code paths.  I remember the last time I looked for a
-nice way to do that I couldn't find one.
+Joe Perches (12):
+  checkpatch: Add GENMASK tests
+  clocksource/drivers/npcm: Fix misuse of GENMASK macro
+  drm: aspeed_gfx: Fix misuse of GENMASK macro
+  iio: adc: max9611: Fix misuse of GENMASK macro
+  irqchip/gic-v3-its: Fix misuse of GENMASK macro
+  mmc: meson-mx-sdio: Fix misuse of GENMASK macro
+  net: ethernet: mediatek: Fix misuses of GENMASK macro
+  net: stmmac: Fix misuses of GENMASK macro
+  rtw88: Fix misuse of GENMASK macro
+  phy: amlogic: G12A: Fix misuse of GENMASK macro
+  staging: media: cedrus: Fix misuse of GENMASK macro
+  ASoC: wcd9335: Fix misuse of GENMASK macro
 
-...barring that I wonder if it's enough to just remove and re-add all
-the active SDIO funcs?
+ drivers/clocksource/timer-npcm7xx.c               |  2 +-
+ drivers/gpu/drm/aspeed/aspeed_gfx.h               |  2 +-
+ drivers/iio/adc/max9611.c                         |  2 +-
+ drivers/irqchip/irq-gic-v3-its.c                  |  2 +-
+ drivers/mmc/host/meson-mx-sdio.c                  |  2 +-
+ drivers/net/ethernet/mediatek/mtk_eth_soc.h       |  2 +-
+ drivers/net/ethernet/mediatek/mtk_sgmii.c         |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/descs.h       |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c |  4 ++--
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c     |  2 +-
+ drivers/phy/amlogic/phy-meson-g12a-usb2.c         |  2 +-
+ drivers/staging/media/sunxi/cedrus/cedrus_regs.h  |  2 +-
+ scripts/checkpatch.pl                             | 15 +++++++++++++++
+ sound/soc/codecs/wcd-clsh-v2.c                    |  2 +-
+ 14 files changed, 29 insertions(+), 14 deletions(-)
 
--Doug
+-- 
+2.15.0
+
