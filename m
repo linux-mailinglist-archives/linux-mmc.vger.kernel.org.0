@@ -2,52 +2,96 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E45D666383
-	for <lists+linux-mmc@lfdr.de>; Fri, 12 Jul 2019 03:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5F9A664FE
+	for <lists+linux-mmc@lfdr.de>; Fri, 12 Jul 2019 05:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729043AbfGLBzL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 11 Jul 2019 21:55:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56470 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729005AbfGLBzL (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 11 Jul 2019 21:55:11 -0400
-Subject: Re: [GIT PULL] MMC and MEMSTICK updates for v5.3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562896510;
-        bh=wqNztD3bLulHYz5kS19NfmBZeMIxm6hVQbILLa2cvDE=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=Es6m/3EARbjcXiDmLw8sFRebAsds7XjnyiSs3dQUpFAWcjCltMATdizwSxHa9dPXm
-         t/iKPOE2OqMhpOIt22qQXDXv5q4G78xwo3/ial9W0crsNNVekIxvv8PVD2KTIYfDAT
-         X7K+SfMaxtO2o0xQkdN5Yfw6aRTw284yXBALwhZY=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20190710140116.457-1-ulf.hansson@linaro.org>
-References: <20190710140116.457-1-ulf.hansson@linaro.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20190710140116.457-1-ulf.hansson@linaro.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3
-X-PR-Tracked-Commit-Id: 59592cc1f5937ced72e11e681c3e358a0375f7ae
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 8931084c0d017314ad025f19353f7c5c1d3782d8
-Message-Id: <156289651021.2089.4252920419885286447.pr-tracker-bot@kernel.org>
-Date:   Fri, 12 Jul 2019 01:55:10 +0000
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+        id S1729396AbfGLDcW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 11 Jul 2019 23:32:22 -0400
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:42123 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728955AbfGLDcV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 11 Jul 2019 23:32:21 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 458DB6A;
+        Thu, 11 Jul 2019 23:32:20 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Thu, 11 Jul 2019 23:32:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=from
+        :to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=fm3; bh=0/ELW1INd9ZqSD2iZt9/xN6YTT
+        BSlrGKdOYRNFKIJUg=; b=Fvlec1JqxpZpVwTKbLfwLKFE04wzCcdk8i1EZaFGr2
+        ZzpcXbiFhQNj1yx/AEXqDHQ9Sm3gLkC0CYXzTZsSVUbkOYFBsofkPcr3wuwV/FNz
+        6w28BN4CKQEwTznF+gw2rrmCUHKSrtPhsPoL9KMm0C8iuqMDEypGZIZ2AfrNTi/Z
+        8NHm4HBtBiDHvyybIOgMgG+l9uMb4FdHyX63nGBdm1bStV9R0mvwiqxjxsp/Z5qE
+        /1NMdPdd7L69Psx3T6T5zajbxJZL86Kem8/gHO1Hl4PmeR14pD1JdZs75qyGAVPV
+        4DU4T+p1LCPojanvrjq4i1Ufw8nL2x/ZTnpqeecMYiOA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=0/ELW1INd9ZqSD2iZ
+        t9/xN6YTTBSlrGKdOYRNFKIJUg=; b=Q9mRD1QjsjyrkWoHz3RBxWy8mnvRMPD0i
+        55YXDJWdg6+gf170T/VczeiyTaGBYuRg0ZVh9U4zj7qQ6MG5co+2UMP+2q8LGjst
+        Xn1RtmERh9h0NtC79ra59js5DJy717Toj6Lw736k5NT7Tly2sRZvE2zxmIdSMC8N
+        BC+py1aRqwOsN/Xq8E4bl9n/bKnh+MFaoQb2fuBE4WVBLVXCVoGLxj+yHdVYZJK0
+        ieKyvyM2K6qz55lZaWcYUuBg/TqP1Xnafs5sxUjFlsME/MrxnNfmXW0ts4QO/IJu
+        fdbDytVQMT+9dA5+bmFgxkqAwwLgGuiCYFsLE2P5zN6CJFNl1Sbxw==
+X-ME-Sender: <xms:Q_8nXQSdE5Erss_8QGL61LhbuZjUCt5Mwy_FM3ZOU3CnuyI4AYtndA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrgeelgdejfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecunecujfgurhephffvufffkffoggfgsedtkeertdertd
+    dtnecuhfhrohhmpeetnhgurhgvficulfgvfhhfvghrhicuoegrnhgurhgvfiesrghjrdhi
+    ugdrrghuqeenucffohhmrghinhepohiilhgrsghsrdhorhhgnecukfhppedvtddvrdekud
+    drudekrdeftdenucfrrghrrghmpehmrghilhhfrhhomheprghnughrvgifsegrjhdrihgu
+    rdgruhenucevlhhushhtvghrufhiiigvpedt
+X-ME-Proxy: <xmx:Q_8nXbQi68ssdcsMFb_0pb_VRRKJyffOPTyfAmIgDfdA-nYAwqZoFg>
+    <xmx:Q_8nXZ6UsDQk92KtFurGIkDvBCvvpwSGEVI4kuothvpFXHB2VLheug>
+    <xmx:Q_8nXRQjzrie9wXFy0adIKGp-9xxNxNFv40V2CTQFN_XoP7KQujpsg>
+    <xmx:RP8nXTwqR9PV6Po46uzcDzzT7U6ki-Rkf2a2xnKl2UeggYyY2im12Q>
+Received: from mistburn.au.ibm.com (bh02i525f01.au.ibm.com [202.81.18.30])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 5AA238005A;
+        Thu, 11 Jul 2019 23:32:15 -0400 (EDT)
+From:   Andrew Jeffery <andrew@aj.id.au>
+To:     linux-mmc@vger.kernel.org
+Cc:     Andrew Jeffery <andrew@aj.id.au>, ulf.hansson@linaro.org,
+        robh+dt@kernel.org, mark.rutland@arm.com, joel@jms.id.au,
+        adrian.hunter@intel.com, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        ryanchen.aspeed@gmail.com
+Subject: [PATCH v2 0/2] mmc: Add support for the ASPEED SD controller
+Date:   Fri, 12 Jul 2019 13:02:12 +0930
+Message-Id: <20190712033214.24713-1-andrew@aj.id.au>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The pull request you sent on Wed, 10 Jul 2019 16:01:16 +0200:
+Hello,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3
+This is v2 of the ASPEED SD controller driver. v2 primarily addresses Rob's
+comments on the bindings in v1. The v1 series can be found here:
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/8931084c0d017314ad025f19353f7c5c1d3782d8
+https://lists.ozlabs.org/pipermail/linux-aspeed/2019-July/001988.html
 
-Thank you!
+Please review!
+
+Andrew
+
+Andrew Jeffery (2):
+  dt-bindings: mmc: Document Aspeed SD controller
+  mmc: Add support for the ASPEED SD controller
+
+ .../devicetree/bindings/mmc/aspeed,sdhci.yaml |  90 +++++
+ drivers/mmc/host/Kconfig                      |  12 +
+ drivers/mmc/host/Makefile                     |   1 +
+ drivers/mmc/host/sdhci-of-aspeed.c            | 326 ++++++++++++++++++
+ 4 files changed, 429 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+ create mode 100644 drivers/mmc/host/sdhci-of-aspeed.c
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+2.20.1
+
