@@ -2,208 +2,171 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E9B6823F
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Jul 2019 04:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F17D9683F9
+	for <lists+linux-mmc@lfdr.de>; Mon, 15 Jul 2019 09:15:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726916AbfGOCaq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 14 Jul 2019 22:30:46 -0400
-Received: from new2-smtp.messagingengine.com ([66.111.4.224]:41513 "EHLO
-        new2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726025AbfGOCap (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 14 Jul 2019 22:30:45 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 4827F2438;
-        Sun, 14 Jul 2019 22:30:44 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute4.internal (MEProxy); Sun, 14 Jul 2019 22:30:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm3; bh=8PAqwlgjdusJcJsV/ER++KrpN/QjUb2
-        C+McWIpc95aI=; b=Zn7MMKTG/N0hIAqpr6U2P3rR8uuih0dpktX5UP23GxBiqKb
-        IGq6Mu5YcLnJIAxNsYZg9fpMdKVLX+4jPgNpSdRiy3o4M8EQAtl5MaIWyDuF9QAm
-        kntRmYY9LydzG3kOyRDebZN1ZSzwoCDcCtAtfHb/ersKcB5W3g/maymJRiWgqrB9
-        X3IpJtQ8Z35klRtN+fJvZbpRgyoq7Q9IFt97ATA733OvBC9xM2Gi7k32JUKfTW9q
-        3YjnMoizzpTHg8FCvruuV4rTF9AQrmuqAbZVCKLZfHkZfbNWDvJJUjO+/Xi6ExX0
-        uid+AiW5y/M933n5uasEL/a6Il8L2svkaKomZtA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=8PAqwl
-        gjdusJcJsV/ER++KrpN/QjUb2C+McWIpc95aI=; b=HKUWpvyhh5HjlEXQ6PnAt9
-        LpFcYzeykPSA7yiyLihVw0GUoc1aQ/2A49XiPxOwMs3Bc0x2H6NFz0ThyafkXPMf
-        caJazejBSLzCMzPqNduLp31hniMgl5zeuqozHCoRNWUfSe8KbejWB/cFbhsezkI4
-        iNJXN7gHsZD2vo4xNuItJtf56p9+nAbtqrvDuCG5b0Sk92ZAmrBJzXvKVnwqsJVk
-        URBX/iCM7gjyeb1t21TcKLzLInPCXisGHtRJzpa967X4ZxLj53iErveQkzsOj4ij
-        sVQe8Zm2yIQRihKjDSqjqLUS70IPCOInjC5R+JU5+fy/Ui1uGCCFpkNTpjxGp/yg
-        ==
-X-ME-Sender: <xms:UuUrXZQIHtCvu8L0EFuL5VK5wZkueralwqJ-7qRNZyaCQlnCkqkQWA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrheejgdeffecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvufgtsehttdertderredtnecuhfhrohhmpedftehnughr
-    vgifucflvghffhgvrhihfdcuoegrnhgurhgvfiesrghjrdhiugdrrghuqeenucffohhmrg
-    hinhepsghoohhtlhhinhdrtghomhdpuggvvhhitggvthhrvggvrdhorhhgnecurfgrrhgr
-    mhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghjrdhiugdrrghunecuvehluhhsthgvrh
-    fuihiivgeptd
-X-ME-Proxy: <xmx:UuUrXc2p2HFO4fIvPUthNItjF-iEv3Uw-kOVSQPdOo5PVgHJp7BzOQ>
-    <xmx:UuUrXTzGdH5Ae_5p9EwuNR1Hs46Ks1guoCO3vHcyUJhJLxxYkkMGmw>
-    <xmx:UuUrXYwyEAMIvev_3xEU_XwF0jr81pklcAWuDkexuZeAdG54yw9VAQ>
-    <xmx:VOUrXcfV9pE5yGkvpr2ppxUq4JYI9NYjE2gYtsssTyY_CiEak84BLg>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 495A7E00CC; Sun, 14 Jul 2019 22:30:42 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.1.6-731-g19d3b16-fmstable-20190627v1
-Mime-Version: 1.0
-Message-Id: <5c831fd3-d0e2-474b-8a6e-8f51f92fbdf8@www.fastmail.com>
-In-Reply-To: <20190712131028.ba4d4jetg4btsx4u@flea>
-References: <20190712033214.24713-1-andrew@aj.id.au>
- <20190712033214.24713-2-andrew@aj.id.au>
- <20190712131028.ba4d4jetg4btsx4u@flea>
-Date:   Mon, 15 Jul 2019 12:00:51 +0930
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Maxime Ripard" <maxime.ripard@bootlin.com>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>,
-        "Rob Herring" <robh+dt@kernel.org>, mark.rutland@arm.com,
-        "Joel Stanley" <joel@jms.id.au>,
-        "Adrian Hunter" <adrian.hunter@intel.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        "Ryan Chen" <ryanchen.aspeed@gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: mmc: Document Aspeed SD controller
-Content-Type: text/plain
+        id S1729080AbfGOHPp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 15 Jul 2019 03:15:45 -0400
+Received: from mail-eopbgr690040.outbound.protection.outlook.com ([40.107.69.40]:43015
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728933AbfGOHPp (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 15 Jul 2019 03:15:45 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mBwdYZRvUHjxJpdruqdAPS5Wbbh2R9C2OoVfopWerpOa21U1JnJcVJX6kQQ3gb5CahiXr79KroWqmUSII4QVOovuaWmC0PpCTzEibLTh/P/0zBMHlKtRWqfOkYIn3e4Zeoegv7rtDZU/9p5DVqnc8MpDc/oIfYXLk5sV9/fRmWTN2G/Yosjd7KhC5DRp81udqGhfDcNqjTVgu7LDD8StUxUrxvb2YEjdjXbJv8M6GgcGlJbQgBs0mP8RdKf+Xs8L0Tp7XlyB5iVx6xVeS5KQs/3pgMAjMOHa7lxcpIkTu/zgTq0v4GVC3frnhZa0SfnlOE6cQMw1gGghqZqi+iqtzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pt1v+D/mAg5s/jufp9Hzjv2LUo2ZEXnPHpSXW05B5JI=;
+ b=mJFIlRC2wRdBwboamED7WLGh6MuwPC6DiFN5G1qIASgJsFowgKR8a7XrIJzBVpEo99AKZM6TsVM9me74eKTKL2LVgWN0KxUNQxhG29cDnPOTqTniJvc+aph/Yagvb/r4CdEq3ikRz3WY8sIrwS5Iv2h7zuLWUQtDI370TzveKLg9eYoPMgGuwny86oFpgG64rjra2gY4KXnBssIT7H/+Gai6XH75uTkDLLp60w/w5Yxri1hQUJVITvhtZpjd1IeH2TYQ7w0QwWTsoJWOwWYvQzJzquZS1UraL21rjpEqWeu4X3LUN8UTFuc7Lub7HmN47AIifrCIdRAZ5uktx02WBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=xilinx.com;dmarc=pass action=none
+ header.from=xilinx.com;dkim=pass header.d=xilinx.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector1-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pt1v+D/mAg5s/jufp9Hzjv2LUo2ZEXnPHpSXW05B5JI=;
+ b=YuQ/nBK+b52JdgELKXmRJczAp1qog5SiE2RHPXHQ1NulSICtCmedwM/28J+OKSija3Y7ltr1E14oQmspng7Z30SnvDeyWIYStZlv3+kcRF0Vm+oR81n8PfKGYuxVgLi83dDQsv5QoX8c6b5IqyHJOKl+HecZCF5I5ySTt/yO6Gc=
+Received: from MN2PR02MB6029.namprd02.prod.outlook.com (10.255.7.10) by
+ MN2PR02MB6174.namprd02.prod.outlook.com (52.132.173.203) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2073.14; Mon, 15 Jul 2019 07:15:40 +0000
+Received: from MN2PR02MB6029.namprd02.prod.outlook.com
+ ([fe80::e880:6205:6aac:21a3]) by MN2PR02MB6029.namprd02.prod.outlook.com
+ ([fe80::e880:6205:6aac:21a3%7]) with mapi id 15.20.2073.012; Mon, 15 Jul 2019
+ 07:15:40 +0000
+From:   Manish Narani <MNARANI@xilinx.com>
+To:     Manish Narani <MNARANI@xilinx.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "heiko@sntech.de" <heiko@sntech.de>,
+        Michal Simek <michals@xilinx.com>,
+        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+        "christoph.muellner@theobroma-systems.com" 
+        <christoph.muellner@theobroma-systems.com>,
+        "philipp.tomsich@theobroma-systems.com" 
+        <philipp.tomsich@theobroma-systems.com>,
+        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+        "scott.branden@broadcom.com" <scott.branden@broadcom.com>,
+        "ayaka@soulik.info" <ayaka@soulik.info>,
+        "kernel@esmil.dk" <kernel@esmil.dk>,
+        "tony.xie@rock-chips.com" <tony.xie@rock-chips.com>,
+        "mdf@kernel.org" <mdf@kernel.org>,
+        "olof@lixom.net" <olof@lixom.net>
+CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>
+Subject: RE: [PATCH v2 00/11] Arasan SDHCI enhancements and ZynqMP Tap Delays
+ Handling
+Thread-Topic: [PATCH v2 00/11] Arasan SDHCI enhancements and ZynqMP Tap Delays
+ Handling
+Thread-Index: AQHVL84SOR9L6OedtU+uS2U+bXPHK6bLWgfg
+Date:   Mon, 15 Jul 2019 07:15:39 +0000
+Message-ID: <MN2PR02MB602959626A4F6E462A321F35C1CF0@MN2PR02MB6029.namprd02.prod.outlook.com>
+References: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
+In-Reply-To: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=MNARANI@xilinx.com; 
+x-originating-ip: [149.199.50.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 7fa7630a-e385-4190-04a3-08d708f43e2d
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:MN2PR02MB6174;
+x-ms-traffictypediagnostic: MN2PR02MB6174:
+x-microsoft-antispam-prvs: <MN2PR02MB6174B1D5149C444667584FBCC1CF0@MN2PR02MB6174.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4502;
+x-forefront-prvs: 00997889E7
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(136003)(346002)(376002)(366004)(396003)(189003)(13464003)(199004)(478600001)(7696005)(68736007)(55016002)(66946007)(76116006)(64756008)(66446008)(5660300002)(66476007)(53546011)(6436002)(66556008)(6506007)(6246003)(4326008)(2201001)(7416002)(99286004)(8936002)(9686003)(316002)(2906002)(81156014)(81166006)(53936002)(229853002)(6116002)(52536014)(3846002)(25786009)(446003)(11346002)(7736002)(305945005)(476003)(2501003)(102836004)(8676002)(486006)(186003)(256004)(86362001)(33656002)(74316002)(76176011)(54906003)(14444005)(66066001)(14454004)(71200400001)(110136005)(71190400001)(26005)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR02MB6174;H:MN2PR02MB6029.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: xilinx.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: D1LD/QGoFGvFUhf0krEX85WRz7p9MOY30b/rX29HgAxisVoeBtfE7GUMRp6+7mluMEESWFYyydqN2MdOEPDsh79CtOhRoQoyZEpD8VK7XPUSfoMUL7KpYJZsd/LpPZMeSaduXbbURmblHYE4q1wtBT/SIQe3GiGyUwWNFa1jPKXtfVP44RYky4MAsZwb2dGKSDoNVDTnobvVYW8/6rl0/AST9b8txZekgcZUwMe9ogGHUphQXIQvM7X07dADosXOnHpluKOnlJlpE7Iuw4dvsUhR17KPPcpqRl8xWQKZtGuZueQsYF6cJn91Sic95sY/057jMnKjIx9i3HxzEYjOSs25a+ne85+CRaLydFK0s0pMPOpV7PbBFNi2V5eulnA8W8eyRSeM61C3/hSlMIuc05MJfGnX1akencDQLi0VHa0=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7fa7630a-e385-4190-04a3-08d708f43e2d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jul 2019 07:15:40.1096
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mnarani@xilinx.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB6174
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Ping!
 
-
-On Fri, 12 Jul 2019, at 22:41, Maxime Ripard wrote:
-> Hi,
-> 
-> On Fri, Jul 12, 2019 at 01:02:13PM +0930, Andrew Jeffery wrote:
-> > The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the
-> > SDIO Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit
-> > data bus if only a single slot is enabled.
-> >
-> > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> > ---
-> > In v2:
-> >
-> > * Rename to aspeed,sdhci.yaml
-> > * Rename sd-controller compatible
-> > * Add `maxItems: 1` for reg properties
-> > * Move sdhci subnode description to patternProperties
-> > * Drop sdhci compatible requirement
-> > * #address-cells and #size-cells are required
-> > * Prevent additional properties
-> > * Implement explicit ranges in example
-> > * Remove slot property
-> >
-> >  .../devicetree/bindings/mmc/aspeed,sdhci.yaml | 90 +++++++++++++++++++
-> >  1 file changed, 90 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-> > new file mode 100644
-> > index 000000000000..67a691c3348c
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-> > @@ -0,0 +1,90 @@
-> > +# SPDX-License-Identifier: GPL-2.0-or-later
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/mmc/aspeed,sdhci.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: ASPEED SD/SDIO/eMMC Controller
-> > +
-> > +maintainers:
-> > +  - Andrew Jeffery <andrew@aj.id.au>
-> > +  - Ryan Chen <ryanchen.aspeed@gmail.com>
-> > +
-> > +description: |+
-> > +  The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the SDIO
-> > +  Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit data bus if
-> > +  only a single slot is enabled.
-> > +
-> > +  The two slots are supported by a common configuration area. As the SDHCIs for
-> > +  the slots are dependent on the common configuration area, they are described
-> > +  as child nodes.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum: [ aspeed,ast2400-sd-controller, aspeed,ast2500-sd-controller ]
-> > +  reg:
-> > +    maxItems: 1
-> > +    description: Common configuration registers
-> > +  ranges: true
-> > +  clocks:
-> > +    maxItems: 1
-> > +    description: The SD/SDIO controller clock gate
-> 
-> #address-cells and #size-cells have not been described here.
-> 
-> > +patternProperties:
-> > +  "^sdhci@[0-9a-f]+$":
-> > +    type: object
-> > +    properties:
-> > +      compatible:
-> > +        enum: [ aspeed,ast2400-sdhci, aspeed,ast2500-sdhci ]
-> > +      reg:
-> > +        maxItems: 1
-> > +        description: The SDHCI registers
-> > +      clocks:
-> > +        maxItems: 1
-> > +        description: The SD bus clock
-> > +      interrupts:
-> > +        maxItems: 1
-> > +        description: The SD interrupt shared between both slots
-> > +    required:
-> > +      - compatible
-> > +      - reg
-> > +      - clocks
-> > +      - interrupts
-> > +
-> > +additionalProperties: false
-> 
-> But that means that it will generate a warning in your DT if you ever
-> use them.
-> 
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - "#address-cells"
-> > +  - "#size-cells"
-> > +  - ranges
-> > +  - clocks
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/clock/aspeed-clock.h>
-> > +    sdc@1e740000 {
-> > +            compatible = "aspeed,ast2500-sd-controller";
-> > +            reg = <0x1e740000 0x100>;
-> > +            #address-cells = <1>;
-> > +            #size-cells = <1>;
-> 
-> Starting with your example.
-
-Heh, right. Thanks. I was inspecting the output of the `dt_binding_check` and
-`dtbs_check` make targets, though maybe I overlooked this. The aspeed dtsis
-do generate a quite a number of warnings which make it hard to parse, so I'm
-going to send a series to clean that up too.
-
-Andrew
-
-> 
-> Maxime
-> 
+> -----Original Message-----
+> From: Manish Narani <manish.narani@xilinx.com>
+> Sent: Monday, July 1, 2019 11:00 AM
+> To: ulf.hansson@linaro.org; robh+dt@kernel.org; mark.rutland@arm.com;
+> heiko@sntech.de; Michal Simek <michals@xilinx.com>;
+> adrian.hunter@intel.com; christoph.muellner@theobroma-systems.com;
+> philipp.tomsich@theobroma-systems.com; viresh.kumar@linaro.org;
+> scott.branden@broadcom.com; ayaka@soulik.info; kernel@esmil.dk;
+> tony.xie@rock-chips.com; Rajan Vaja <RAJANV@xilinx.com>; Jolly Shah
+> <JOLLYS@xilinx.com>; Nava kishore Manne <navam@xilinx.com>;
+> mdf@kernel.org; Manish Narani <MNARANI@xilinx.com>; olof@lixom.net
+> Cc: linux-mmc@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-
+> rockchip@lists.infradead.org
+> Subject: [PATCH v2 00/11] Arasan SDHCI enhancements and ZynqMP Tap
+> Delays Handling
+>=20
+> This patch series does the following:
+>  - Reorganize the Clock Handling in Arasan SD driver
+>  - Adds new sampling clock in Arasan SD driver
+>  - Adds support to set Clock Delays in SD Arasan Driver
+>  - Add SDIO Tap Delay handling in ZynqMP firmware driver
+>  - Add support for ZynqMP Tap Delays setting in Arasan SD driver
+>=20
+> Changes in v2:
+> 	- Replaced the deprecated calls to clock framework APIs
+> 	- Added support for dev_clk_get() call to work for SD card clock
+> 	- Separated the clock data struct
+> 	- Fragmented the patch series in smaller patches to make it more
+> 	  readable
+>=20
+> This patch series contains a DT patch, which I think should be there to
+> maintain the order of commits.
+>=20
+> Manish Narani (11):
+>   dt-bindings: mmc: arasan: Update documentation for SD Card Clock
+>   arm64: dts: rockchip: Add optional clock property indicating sdcard
+>     clock
+>   mmc: sdhci-of-arasan: Replace deprecated clk API calls
+>   mmc: sdhci-of-arasan: Separate out clk related data to another
+>     structure
+>   dt-bindings: mmc: arasan: Update Documentation for the input clock
+>   mmc: sdhci-of-arasan: Add sampling clock for a phy to use
+>   dt-bindings: mmc: arasan: Add optional properties for Arasan SDHCI
+>   mmc: sdhci-of-arasan: Add support to set clock phase delays for SD
+>   firmware: xilinx: Add SDIO Tap Delay APIs
+>   dt-bindings: mmc: arasan: Document 'xlnx,zynqmp-8.9a' controller
+>   mmc: sdhci-of-arasan: Add support for ZynqMP Platform Tap Delays Setup
+>=20
+>  .../devicetree/bindings/mmc/arasan,sdhci.txt       |  49 ++-
+>  arch/arm64/boot/dts/rockchip/rk3399.dtsi           |   4 +-
+>  drivers/firmware/xilinx/zynqmp.c                   |  48 +++
+>  drivers/mmc/host/sdhci-of-arasan.c                 | 453 +++++++++++++++=
++++++-
+>  include/linux/firmware/xlnx-zynqmp.h               |  15 +-
+>  5 files changed, 540 insertions(+), 29 deletions(-)
+>=20
 > --
-> Maxime Ripard, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
-> 
-> Attachments:
-> * signature.asc
+> 2.1.1
+
