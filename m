@@ -2,90 +2,66 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E7846878D
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Jul 2019 12:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09567687BE
+	for <lists+linux-mmc@lfdr.de>; Mon, 15 Jul 2019 13:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729893AbfGOK7E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 15 Jul 2019 06:59:04 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:36082 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729855AbfGOK7E (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 15 Jul 2019 06:59:04 -0400
-Received: by mail-pg1-f194.google.com with SMTP id l21so7540269pgm.3
-        for <linux-mmc@vger.kernel.org>; Mon, 15 Jul 2019 03:59:03 -0700 (PDT)
+        id S1729956AbfGOLET (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 15 Jul 2019 07:04:19 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:33835 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729947AbfGOLES (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 15 Jul 2019 07:04:18 -0400
+Received: by mail-pg1-f196.google.com with SMTP id n9so1321755pgc.1
+        for <linux-mmc@vger.kernel.org>; Mon, 15 Jul 2019 04:04:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=B1YAbpSS5mgxR2rSK8yIOSMTpfmddjyfeqWk7cKwfek=;
-        b=shRscEPbU2pHhePVbFOZEFog2yEyNMGyBHGeQnBt86VaqRxeF7byOE29CKSlwBXLXp
-         vO8VNbh0L/W0tCb1Rv1lAFIV8PLd7FxtXLie+OPDEeA0DexVfOxSL0lAh50+oOKBH/Rh
-         DsGqShJebdVxaPSboulAzgHFy0T4LgkuX+B+FvfuoSHSmNM1vgSIST3QxmQqIU1osL8B
-         dmnFDPvcby2/tnJFZUAExLcFyvag6qbIMh93z23GTxNGTJvLlwC+PvPTZcNyFcz+JbOa
-         Gai4s3/HMXwfMrXop49y8xcHo2Jy+fvHTpXZ6WyJyR2oLY+ug3Ut1SQmXDIWPcn78VwQ
-         Ue8Q==
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
+        b=Iux65787KeJtZlk/UWQ8a71sdq3L+JuOBHwZwxVHUOu0Hal0brUmaUtWDT+1EakAhq
+         MtJF/vbEQagCDLqdjzXV0tE8x5YNwPsclB57z/jA+URpkAaidKGibNAiJ897B2Q2rv9p
+         uYOBtZylJRmtRio8wDP4GwRiBknU84/FmWsMFw620mFEJwR9vSM1QlmEIUdghWeLiQPg
+         3/o6A/ASY/U2XQTJeOVMsZoeyZcCfYvLw2Rbw2pE/fk67uX5NyEzWB6tv7TG5MeHZvc/
+         X3yp2nduS0Os162TiWKhkMGOmC5wMIt1cVEoe4V7hwUEXyYLehvgYaVidvFk20QbqjFn
+         kL9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=B1YAbpSS5mgxR2rSK8yIOSMTpfmddjyfeqWk7cKwfek=;
-        b=irASBoK1bigNXJVuMspo8lYLiBa+wBjKdKvaJQY2ol6JnbrQCTiZF5RY4+Jk/NwQze
-         8FNjZf/PR1K55KrXRJtdNQn3RcmCuNfa0DA6h58Hvw6uxtGLJUytsf240VgkqIl5wOJi
-         j4/G4N4JHoIgRzmZ1bCXSeD3FSrKUMmacSwDUXL0EbbfIJ+inRw86vz2gY67X9ehXat/
-         S3+VcLE1JGh7NrHl+d1AnENgodM+acckhcpnbvBZfEEUKeyYeaI08LjfXN5iHCBTtHJ5
-         FWz3z8PQAnfg3ud6ywEQhLi78aT/HkYQrqkDXq6oSpEmjyuAllptbdabaPaaaqUuvnwf
-         VMvw==
-X-Gm-Message-State: APjAAAXZ0XKYUACF9v3EfKX46MiQqr3nsl96mqAdkZwoOsZiKGF4ChZZ
-        T6F08NnYDxaIlzT9WX+65rgunA==
-X-Google-Smtp-Source: APXvYqxBkROzVd6Yks26rlFbTrB/gXodvtXJxAdJXMu6yuRES0sWN0HtWIvDFBJVPl7vJtYXFW8BnA==
-X-Received: by 2002:a17:90a:9dca:: with SMTP id x10mr28831738pjv.100.1563188343464;
-        Mon, 15 Jul 2019 03:59:03 -0700 (PDT)
-Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id h1sm22600791pfo.152.2019.07.15.03.59.00
-        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 15 Jul 2019 03:59:02 -0700 (PDT)
-From:   Baolin Wang <baolin.wang@linaro.org>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
-Cc:     zhang.lyra@gmail.com, orsonzhai@gmail.com,
-        linus.walleij@linaro.org, baolin.wang@linaro.org,
-        vincent.guittot@linaro.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mmc: host: sdhci: Fix the incorrect soft reset operation when runtime resuming
-Date:   Mon, 15 Jul 2019 18:58:49 +0800
-Message-Id: <4c5812f54e5094fa54a85bdc86687a523df254b3.1563184923.git.baolin.wang@linaro.org>
-X-Mailer: git-send-email 1.7.9.5
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
+        b=X3AZiif6WI05yZWKdzhaNBTwaHM8gkiwJdPkHeuBDlgnQfoqcxOnGcRdRdPgljNDXF
+         FlNUMDfGe64Yf0BgFyLb+F5oA7jYAgHGve01gv1s0k4K5qHbf6Ionw5/rgh28wnb2br6
+         IqC5QQ0r7CI8OWxGHPGO+UjG4yalErxc878Jychd6QdJAnMUnYiwWWLijOXuc0nryQx/
+         ySPwpzK48Fv7jM60QYnqSazYFU4sYcZf9BKGXexjX9HwgXNYAt1tngtQ7DY0R27l4V4L
+         6K252maEpyQTM329FtoqFcQRbYW/kV72eCH/98V7E0ahEsDFccqVQkqwchCSj6qJccpp
+         I9JQ==
+X-Gm-Message-State: APjAAAVBlzq/aEXEXdxhK8lqbRiWCyYe7P951f2GtrNtfzZHgtb23rso
+        uGns8t0O5FRpz6w5c0N4AfNHZfl5HKJTEZs3V4Y=
+X-Google-Smtp-Source: APXvYqwI9SCHvCHLnvHckfwL+oW1shcNAvZVS/wk3iQ3LTmyEMELfYQBoBiEv/cUvggIHp2fQao9ul2L5mSBnKj2EDA=
+X-Received: by 2002:a63:ad07:: with SMTP id g7mr24480194pgf.405.1563188657092;
+ Mon, 15 Jul 2019 04:04:17 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a17:90a:b78d:0:0:0:0 with HTTP; Mon, 15 Jul 2019 04:04:16
+ -0700 (PDT)
+From:   Donald Douglas <ddouglasng@gmail.com>
+Date:   Mon, 15 Jul 2019 04:04:16 -0700
+Message-ID: <CALVR28EP4VMYZDqzau6uFTJmxHs6we+nYre3JstaZ5qSsvppFQ@mail.gmail.com>
+Subject: Kindly Respond
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-In sdhci_runtime_resume_host() function, we will always do software reset
-for all, but according to the specification, we should issue reset command
-and reinitialize the SD/eMMC card. However, we only do reinitialize the
-SD/eMMC card when the SD/eMMC card are power down during runtime suspend.
+Hello,
+I am Barr Fredrick Mbogo a business consultant i have a lucrative
+business to discuss with you from the Eastern part of Africa Uganda to
+be precise aimed at agreed percentage upon your acceptance of my hand
+in business and friendship. Kindly respond to me if you are interested
+to partner with me for an update. Very important.
 
-Thus for those platforms that do not power down the SD/eMMC card during
-runtime suspend, we should not do software reset for all. To fix this
-issue, we can add one condition to validate the MMC_CAP_AGGRESSIVE_PM
-to decide if we can do software reset for all or just reset command
-and data lines.
-
-Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
----
- drivers/mmc/host/sdhci.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index 9715834..470c5e0 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -3333,7 +3333,7 @@ int sdhci_runtime_resume_host(struct sdhci_host *host)
- 			host->ops->enable_dma(host);
- 	}
- 
--	sdhci_init(host, 0);
-+	sdhci_init(host, !(mmc->caps & MMC_CAP_AGGRESSIVE_PM));
- 
- 	if (mmc->ios.power_mode != MMC_POWER_UNDEFINED &&
- 	    mmc->ios.power_mode != MMC_POWER_OFF) {
--- 
-1.7.9.5
-
+Yours Sincerely,
+Donald Douglas,
+For,
+Barr Frederick Mbogo
+Legal Consultant.
+Reply to: barrfredmbogo@consultant.com
