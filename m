@@ -2,139 +2,184 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8813688FF
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Jul 2019 14:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F2A768A81
+	for <lists+linux-mmc@lfdr.de>; Mon, 15 Jul 2019 15:27:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730012AbfGOMjH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 15 Jul 2019 08:39:07 -0400
-Received: from mga14.intel.com ([192.55.52.115]:6407 "EHLO mga14.intel.com"
+        id S1730205AbfGON1K (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 15 Jul 2019 09:27:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40894 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729962AbfGOMjG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 15 Jul 2019 08:39:06 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Jul 2019 05:39:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,493,1557212400"; 
-   d="scan'208";a="190548014"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by fmsmga004.fm.intel.com with ESMTP; 15 Jul 2019 05:39:03 -0700
-Subject: Re: [PATCH] mmc: host: sdhci: Fix the incorrect soft reset operation
- when runtime resuming
-To:     Baolin Wang <baolin.wang@linaro.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <4c5812f54e5094fa54a85bdc86687a523df254b3.1563184923.git.baolin.wang@linaro.org>
- <c54077a4-3aae-c95c-8491-db5f05b0305c@intel.com>
- <CAMz4kuJVhNFUrDiwiRd-UJ_JnsbxQaV-dE_97m32B+5_53kteg@mail.gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <6006e00f-4591-6fd1-425f-5bfcc8790e36@intel.com>
-Date:   Mon, 15 Jul 2019 15:37:50 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1730180AbfGON1K (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 15 Jul 2019 09:27:10 -0400
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 363CF2083D;
+        Mon, 15 Jul 2019 13:27:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563197229;
+        bh=GxnhC/Ih/eTne4sAYFx1uwwKG/I5gMIwXQArnlAPCUg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=NLvzd1fskhQwU1pIotSqBV89rbfMbVYWIngSGmpeuEsPxyKyJnFQ8pXKBNWzMEjxg
+         D3ZoCNenBJ/ixDifgar+e716Ela2R+/V7T8rYIsf7M9DlVgKO3dZHd/aFNgOg05S+q
+         IBso2tRwQXwTgPA9bnI/MYh0VNhzV0kjKVeP+6Yk=
+Received: by mail-qt1-f169.google.com with SMTP id r6so11358151qtt.0;
+        Mon, 15 Jul 2019 06:27:09 -0700 (PDT)
+X-Gm-Message-State: APjAAAUXac+UE18PFVdZzA1AfHWHXVbNlsEiueNbh4FSk/ZYHGgJgJU2
+        4dbdvLlHphvA8ZPmQlXUKuRW4U0GxNvboQLYNQ==
+X-Google-Smtp-Source: APXvYqwvshJ20th9zSr6jf5QHFCKYj9JX7MhdNWF2Jwas5AFsAL8CZaYemA4OyF7S4hIa5OiVvjidb5D3A9mE6urluU=
+X-Received: by 2002:ac8:368a:: with SMTP id a10mr18044197qtc.143.1563197228400;
+ Mon, 15 Jul 2019 06:27:08 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAMz4kuJVhNFUrDiwiRd-UJ_JnsbxQaV-dE_97m32B+5_53kteg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190712033214.24713-1-andrew@aj.id.au> <20190712033214.24713-2-andrew@aj.id.au>
+ <20190712131028.ba4d4jetg4btsx4u@flea> <5c831fd3-d0e2-474b-8a6e-8f51f92fbdf8@www.fastmail.com>
+In-Reply-To: <5c831fd3-d0e2-474b-8a6e-8f51f92fbdf8@www.fastmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 15 Jul 2019 07:26:57 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqK+oLFZof1zpvUs_Siek=+Rc+CPYL-_oE0KuiXwunr0vA@mail.gmail.com>
+Message-ID: <CAL_JsqK+oLFZof1zpvUs_Siek=+Rc+CPYL-_oE0KuiXwunr0vA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: mmc: Document Aspeed SD controller
+To:     Andrew Jeffery <andrew@aj.id.au>
+Cc:     Maxime Ripard <maxime.ripard@bootlin.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        devicetree@vger.kernel.org,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-aspeed@lists.ozlabs.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ryan Chen <ryanchen.aspeed@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 15/07/19 2:37 PM, Baolin Wang wrote:
-> Hi Adrian,
-> 
-> On Mon, 15 Jul 2019 at 19:20, Adrian Hunter <adrian.hunter@intel.com> wrote:
->>
->> On 15/07/19 1:58 PM, Baolin Wang wrote:
->>> In sdhci_runtime_resume_host() function, we will always do software reset
->>> for all, but according to the specification, we should issue reset command
->>> and reinitialize the SD/eMMC card.
->>
->> Where does it say that?
-> 
-> I checked the SD host controller simplified specification Ver4.20, and
-> in Page 75, Software Reset For All bit, it says "if this bit is set
-> to1, the host driver should issue reset command and  reinitialize the
-> SD card". (I did not check other versions).
+On Sun, Jul 14, 2019 at 8:30 PM Andrew Jeffery <andrew@aj.id.au> wrote:
+>
+>
+>
+> On Fri, 12 Jul 2019, at 22:41, Maxime Ripard wrote:
+> > Hi,
+> >
+> > On Fri, Jul 12, 2019 at 01:02:13PM +0930, Andrew Jeffery wrote:
+> > > The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the
+> > > SDIO Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit
+> > > data bus if only a single slot is enabled.
+> > >
+> > > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+> > > ---
+> > > In v2:
+> > >
+> > > * Rename to aspeed,sdhci.yaml
+> > > * Rename sd-controller compatible
+> > > * Add `maxItems: 1` for reg properties
+> > > * Move sdhci subnode description to patternProperties
+> > > * Drop sdhci compatible requirement
+> > > * #address-cells and #size-cells are required
+> > > * Prevent additional properties
+> > > * Implement explicit ranges in example
+> > > * Remove slot property
+> > >
+> > >  .../devicetree/bindings/mmc/aspeed,sdhci.yaml | 90 +++++++++++++++++++
+> > >  1 file changed, 90 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> > > new file mode 100644
+> > > index 000000000000..67a691c3348c
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> > > @@ -0,0 +1,90 @@
+> > > +# SPDX-License-Identifier: GPL-2.0-or-later
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/mmc/aspeed,sdhci.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: ASPEED SD/SDIO/eMMC Controller
+> > > +
+> > > +maintainers:
+> > > +  - Andrew Jeffery <andrew@aj.id.au>
+> > > +  - Ryan Chen <ryanchen.aspeed@gmail.com>
+> > > +
+> > > +description: |+
+> > > +  The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the SDIO
+> > > +  Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit data bus if
+> > > +  only a single slot is enabled.
+> > > +
+> > > +  The two slots are supported by a common configuration area. As the SDHCIs for
+> > > +  the slots are dependent on the common configuration area, they are described
+> > > +  as child nodes.
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum: [ aspeed,ast2400-sd-controller, aspeed,ast2500-sd-controller ]
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +    description: Common configuration registers
+> > > +  ranges: true
+> > > +  clocks:
+> > > +    maxItems: 1
+> > > +    description: The SD/SDIO controller clock gate
+> >
+> > #address-cells and #size-cells have not been described here.
+> >
+> > > +patternProperties:
+> > > +  "^sdhci@[0-9a-f]+$":
+> > > +    type: object
+> > > +    properties:
+> > > +      compatible:
+> > > +        enum: [ aspeed,ast2400-sdhci, aspeed,ast2500-sdhci ]
+> > > +      reg:
+> > > +        maxItems: 1
+> > > +        description: The SDHCI registers
+> > > +      clocks:
+> > > +        maxItems: 1
+> > > +        description: The SD bus clock
+> > > +      interrupts:
+> > > +        maxItems: 1
+> > > +        description: The SD interrupt shared between both slots
+> > > +    required:
+> > > +      - compatible
+> > > +      - reg
+> > > +      - clocks
+> > > +      - interrupts
+> > > +
+> > > +additionalProperties: false
+> >
+> > But that means that it will generate a warning in your DT if you ever
+> > use them.
+> >
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - "#address-cells"
+> > > +  - "#size-cells"
+> > > +  - ranges
+> > > +  - clocks
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/clock/aspeed-clock.h>
+> > > +    sdc@1e740000 {
+> > > +            compatible = "aspeed,ast2500-sd-controller";
+> > > +            reg = <0x1e740000 0x100>;
+> > > +            #address-cells = <1>;
+> > > +            #size-cells = <1>;
+> >
+> > Starting with your example.
+>
+> Heh, right. Thanks. I was inspecting the output of the `dt_binding_check` and
+> `dtbs_check` make targets, though maybe I overlooked this. The aspeed dtsis
+> do generate a quite a number of warnings which make it hard to parse, so I'm
+> going to send a series to clean that up too.
 
-That might simply be assuming that the bus power also controls the card power.
+FYI, This will run checks with only the schema file you specify:
 
-> 
->>
->>>                                    However, we only do reinitialize the
->>> SD/eMMC card when the SD/eMMC card are power down during runtime suspend.
->>>
->>> Thus for those platforms that do not power down the SD/eMMC card during
->>> runtime suspend, we should not do software reset for all.
->>>                                                           To fix this
->>> issue, we can add one condition to validate the MMC_CAP_AGGRESSIVE_PM
->>> to decide if we can do software reset for all or just reset command
->>> and data lines.
->>>
->>> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
->>> ---
->>>  drivers/mmc/host/sdhci.c |    2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
->>> index 9715834..470c5e0 100644
->>> --- a/drivers/mmc/host/sdhci.c
->>> +++ b/drivers/mmc/host/sdhci.c
->>> @@ -3333,7 +3333,7 @@ int sdhci_runtime_resume_host(struct sdhci_host *host)
->>>                       host->ops->enable_dma(host);
->>>       }
->>>
->>> -     sdhci_init(host, 0);
->>> +     sdhci_init(host, !(mmc->caps & MMC_CAP_AGGRESSIVE_PM));
->>
->> We have done a full reset for a long time, so it would be surprising to need
->> to change it.
->>
->> What problem is it causing?
-> 
-> If we did not power down the SD card during runtime suspend, and we
-> reset for all when runtime resume, our SD host controller can not work
-> well, will meet some strange behavior, like:
-> 
-> [    6.525397] mmc0: Got data interrupt 0x00000002 even though no data
-> operation was in progress.
-> [    6.534189] mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
-> [    6.540797] mmc0: sdhci: Sys addr:  0x00000008 | Version:  0x00000004
-> [    6.547413] mmc0: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000000
-> [    6.554029] mmc0: sdhci: Argument:  0x03200101 | Trn mode: 0x00000033
-> [    6.560645] mmc0: sdhci: Present:   0x01f000f0 | Host ctl: 0x00000030
-> [    6.567262] mmc0: sdhci: Power:     0x00000000 | Blk gap:  0x00000000
-> [    6.573877] mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x00000007
-> [    6.580493] mmc0: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
-> [    6.587109] mmc0: sdhci: Int enab:  0x037f000b | Sig enab: 0x037f000b
-> [    6.593726] mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
-> [    6.600342] mmc0: sdhci: Caps:      0x1c6d0080 | Caps_1:   0x08000007
-> [    6.606959] mmc0: sdhci: Cmd:       0x0000061b | Max curr: 0x00ffffff
-> [    6.613574] mmc0: sdhci: Resp[0]:   0x00001201 | Resp[1]:  0x00000000
-> [    6.620190] mmc0: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
-> [    6.626806] mmc0: sdhci: Host ctl2: 0x00003807
-> [    6.631364] mmc0: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0x00000000df062000
-> [    6.638697] mmc0: sdhci: ============================================
-> [    6.645379] mmc0: cache flush error -84
-> 
-> Got data interrupt but no data commands are processing now. With this
-> patch, then our SD host controller can work well. Did I miss anything
-> else? Thanks.
+make dtbs_check DT_SCHEMA_FILES=path/to/schema/file
 
-The response seems to show the card in state 9 bus-testing, which would
-suggest the use of CMD19 for eMMC.  Perhaps the wrong command is used for
-eMMC re-tuning?
-
-The difficulty with changing long standing flow is that it might reveal
-problems for other existing hardware.  Did you consider making a
-driver-specific change?  The ->reset() callback could be used.
+Rob
