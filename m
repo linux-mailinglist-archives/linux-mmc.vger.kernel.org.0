@@ -2,66 +2,87 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09567687BE
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Jul 2019 13:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BAF168811
+	for <lists+linux-mmc@lfdr.de>; Mon, 15 Jul 2019 13:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729956AbfGOLET (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 15 Jul 2019 07:04:19 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:33835 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729947AbfGOLES (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 15 Jul 2019 07:04:18 -0400
-Received: by mail-pg1-f196.google.com with SMTP id n9so1321755pgc.1
-        for <linux-mmc@vger.kernel.org>; Mon, 15 Jul 2019 04:04:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
-        b=Iux65787KeJtZlk/UWQ8a71sdq3L+JuOBHwZwxVHUOu0Hal0brUmaUtWDT+1EakAhq
-         MtJF/vbEQagCDLqdjzXV0tE8x5YNwPsclB57z/jA+URpkAaidKGibNAiJ897B2Q2rv9p
-         uYOBtZylJRmtRio8wDP4GwRiBknU84/FmWsMFw620mFEJwR9vSM1QlmEIUdghWeLiQPg
-         3/o6A/ASY/U2XQTJeOVMsZoeyZcCfYvLw2Rbw2pE/fk67uX5NyEzWB6tv7TG5MeHZvc/
-         X3yp2nduS0Os162TiWKhkMGOmC5wMIt1cVEoe4V7hwUEXyYLehvgYaVidvFk20QbqjFn
-         kL9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
-        b=X3AZiif6WI05yZWKdzhaNBTwaHM8gkiwJdPkHeuBDlgnQfoqcxOnGcRdRdPgljNDXF
-         FlNUMDfGe64Yf0BgFyLb+F5oA7jYAgHGve01gv1s0k4K5qHbf6Ionw5/rgh28wnb2br6
-         IqC5QQ0r7CI8OWxGHPGO+UjG4yalErxc878Jychd6QdJAnMUnYiwWWLijOXuc0nryQx/
-         ySPwpzK48Fv7jM60QYnqSazYFU4sYcZf9BKGXexjX9HwgXNYAt1tngtQ7DY0R27l4V4L
-         6K252maEpyQTM329FtoqFcQRbYW/kV72eCH/98V7E0ahEsDFccqVQkqwchCSj6qJccpp
-         I9JQ==
-X-Gm-Message-State: APjAAAVBlzq/aEXEXdxhK8lqbRiWCyYe7P951f2GtrNtfzZHgtb23rso
-        uGns8t0O5FRpz6w5c0N4AfNHZfl5HKJTEZs3V4Y=
-X-Google-Smtp-Source: APXvYqwI9SCHvCHLnvHckfwL+oW1shcNAvZVS/wk3iQ3LTmyEMELfYQBoBiEv/cUvggIHp2fQao9ul2L5mSBnKj2EDA=
-X-Received: by 2002:a63:ad07:: with SMTP id g7mr24480194pgf.405.1563188657092;
- Mon, 15 Jul 2019 04:04:17 -0700 (PDT)
+        id S1729756AbfGOLUx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 15 Jul 2019 07:20:53 -0400
+Received: from mga14.intel.com ([192.55.52.115]:65163 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729725AbfGOLUw (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 15 Jul 2019 07:20:52 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Jul 2019 04:20:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,493,1557212400"; 
+   d="scan'208";a="169584028"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
+  by orsmga003.jf.intel.com with ESMTP; 15 Jul 2019 04:20:49 -0700
+Subject: Re: [PATCH] mmc: host: sdhci: Fix the incorrect soft reset operation
+ when runtime resuming
+To:     Baolin Wang <baolin.wang@linaro.org>, ulf.hansson@linaro.org
+Cc:     zhang.lyra@gmail.com, orsonzhai@gmail.com,
+        linus.walleij@linaro.org, vincent.guittot@linaro.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <4c5812f54e5094fa54a85bdc86687a523df254b3.1563184923.git.baolin.wang@linaro.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <c54077a4-3aae-c95c-8491-db5f05b0305c@intel.com>
+Date:   Mon, 15 Jul 2019 14:19:35 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Received: by 2002:a17:90a:b78d:0:0:0:0 with HTTP; Mon, 15 Jul 2019 04:04:16
- -0700 (PDT)
-From:   Donald Douglas <ddouglasng@gmail.com>
-Date:   Mon, 15 Jul 2019 04:04:16 -0700
-Message-ID: <CALVR28EP4VMYZDqzau6uFTJmxHs6we+nYre3JstaZ5qSsvppFQ@mail.gmail.com>
-Subject: Kindly Respond
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <4c5812f54e5094fa54a85bdc86687a523df254b3.1563184923.git.baolin.wang@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
-I am Barr Fredrick Mbogo a business consultant i have a lucrative
-business to discuss with you from the Eastern part of Africa Uganda to
-be precise aimed at agreed percentage upon your acceptance of my hand
-in business and friendship. Kindly respond to me if you are interested
-to partner with me for an update. Very important.
+On 15/07/19 1:58 PM, Baolin Wang wrote:
+> In sdhci_runtime_resume_host() function, we will always do software reset
+> for all, but according to the specification, we should issue reset command
+> and reinitialize the SD/eMMC card.
 
-Yours Sincerely,
-Donald Douglas,
-For,
-Barr Frederick Mbogo
-Legal Consultant.
-Reply to: barrfredmbogo@consultant.com
+Where does it say that?
+
+>                                    However, we only do reinitialize the
+> SD/eMMC card when the SD/eMMC card are power down during runtime suspend.
+> 
+> Thus for those platforms that do not power down the SD/eMMC card during
+> runtime suspend, we should not do software reset for all.
+>                                                           To fix this
+> issue, we can add one condition to validate the MMC_CAP_AGGRESSIVE_PM
+> to decide if we can do software reset for all or just reset command
+> and data lines.
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+> ---
+>  drivers/mmc/host/sdhci.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 9715834..470c5e0 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -3333,7 +3333,7 @@ int sdhci_runtime_resume_host(struct sdhci_host *host)
+>  			host->ops->enable_dma(host);
+>  	}
+>  
+> -	sdhci_init(host, 0);
+> +	sdhci_init(host, !(mmc->caps & MMC_CAP_AGGRESSIVE_PM));
+
+We have done a full reset for a long time, so it would be surprising to need
+to change it.
+
+What problem is it causing?
+
+>  
+>  	if (mmc->ios.power_mode != MMC_POWER_UNDEFINED &&
+>  	    mmc->ios.power_mode != MMC_POWER_OFF) {
+> 
