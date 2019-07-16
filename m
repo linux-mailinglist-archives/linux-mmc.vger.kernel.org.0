@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 655B46B116
-	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jul 2019 23:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16A056B117
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jul 2019 23:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728405AbfGPV0u (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jul 2019 17:26:50 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:46554 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728118AbfGPV0u (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 17:26:50 -0400
-Received: by mail-lj1-f195.google.com with SMTP id v24so21458089ljg.13
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jul 2019 14:26:49 -0700 (PDT)
+        id S1728405AbfGPV2w (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 16 Jul 2019 17:28:52 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:34160 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728118AbfGPV2w (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 17:28:52 -0400
+Received: by mail-lj1-f196.google.com with SMTP id p17so21463691ljg.1
+        for <linux-mmc@vger.kernel.org>; Tue, 16 Jul 2019 14:28:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=yel/dvjRFYE+g5Wj0x82G14SgP0GK1TVQpwlRIRRolk=;
-        b=exuI1+P2iMAZqFKUjckHCNYdFuJYZClC+M2O8ZJz0C1/jy3kL570oJkP+D46peaQgM
-         ZfmriwnTI5qj4RaNASaiugdSeOQCZLiaOlDgSCPwOq9H/6YAQwPIMmIXqXAWxvpIDPDz
-         iyciyPD83aQpjBCkTBlbw/CG1QhGLGywD9qry05lswnyvGSAu9fWYtTFNjCcPnbhAFOb
-         A0qpgIfI0cKvuPtncf8VHm9uMaMiMGCpEIJ/PEzBUNXb4tWAhSL03F0TaxQ1CQgwqogg
-         E7N711/gjb8589hwGp5zePChr5XJz3cclceHR6p4Ad4bH+8/u+2kL3nMOK8vxZ5mOBTx
-         DmqQ==
+        bh=nKEiPzsQ1IwIHBVeprAXWKSCp1nw89gJee9IM3qitFI=;
+        b=fEB4BCJeTk7jJycD+ms6MiLosDpFsHdD9tsdL+ISijJmwow6mU9R7Njkz6T99Zmsnq
+         4tRYSzKlXENnwJ3Jcw5q8DYRkvAUlvBS0qH6Qg+li5/Da5ztxW9dfv8vNOIzcaOU6eUF
+         3TxNrMaeIf22zhrYHNocPO+A/NyBC9IuQ+GDWtbTg03bCQ/DkmcecYmfVDja/yCKjs5E
+         61M5owjCt/6gs9wtGMFLKguZqCrMoLseG/skL7H0936nHqdNvft6pUkfQ0oufJTwP8oh
+         MHTGYuVPpejFbWohFJarw+4qL0RsD70CCXQB6Qfx5RMEybueYanNXibRp8XdTg8vR2Ag
+         ACtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=yel/dvjRFYE+g5Wj0x82G14SgP0GK1TVQpwlRIRRolk=;
-        b=FaUIP1WbLToOvuqQD+Py+7ZVNPLXecJvmsFt/C8/yw6EJarQ1MPi5sdAsQOACD26H9
-         zR9MY5B+Aaioy+nceDOkDatQ4OzAY1+saY3OLDGrILOYcgT6bc5qtNEyFPrcbEjK6+vt
-         R3Z8i+Yq/IrBLBMgF0oSW2UKgcX+PngLabEqLa7cSXlMErRp0TWcJ1a/zGyPGSmhqUhq
-         /S6DUYaXYDQoD/pnokzUQNMGfyJhljg0hOpoNx+j0ALNmVJZ6SALf4/CUrnnysad6OJZ
-         xC5fXAFFKnEkpCzdWhRIAYnSa+juTqbD2A5F6HBPS/Twin0/ARw118FlrKPxbRzQVQH5
-         X7sw==
-X-Gm-Message-State: APjAAAWhxngXTnYZygYapaN1khH7kaUfWpa2pw2NOzuMgC4UH8+COlj4
-        fko80CURsax6kLmBnmvpk/7SJvAhRDzKLXJsWXMI5A==
-X-Google-Smtp-Source: APXvYqwrY65kEaepRm67/+DyYHWnkpbLbjrxod5G2wwXMxWU0wtGY3vlbBRCyeOIlcJRlzLiQro2gtcZJ2EG52hqJrs=
-X-Received: by 2002:a2e:a0cf:: with SMTP id f15mr18771614ljm.180.1563312408371;
- Tue, 16 Jul 2019 14:26:48 -0700 (PDT)
+        bh=nKEiPzsQ1IwIHBVeprAXWKSCp1nw89gJee9IM3qitFI=;
+        b=q/zxWJ+Brsf9hrSD9Opu5Qr6nO3MxSuBOBdMKBdqiLhU0VbNkQrYfn4cYSHGSQBd+q
+         et8b27fw0WxGyzSAljJ8Ol28N6ycIvcQQnaX9cBRpc8LDEfjagFGYw8yn3/o1uui1xgQ
+         Ywg00zqOIqEevp0bpWBQrHbp/hcvPE0bkzFKGkYOtknWqJEsIr22vofM4SDkna58oStX
+         gcsQIYAK40zcySvlfjwo0szavuZGN3IOmqc64djinRhA8t7Yb/r7dHilmJMXbbM5Bd3x
+         hKd/xN7t7q8IsUOghk14aCvnhXlvOKzyIk16lC4iiVcwhouedkgYby7SlymtWwR6kQcs
+         WUkQ==
+X-Gm-Message-State: APjAAAWCzJrFiOFy1ciRNtA9xhLTPg7QufiWUIdu2v1mCx7PZraRIGDw
+        +g7f5KpET2b1e1Ual7Hl4ye80aPXcEiFg+qeCocTO5jr
+X-Google-Smtp-Source: APXvYqzgTIOnJCkvCC3P9i2+8vNK2UHYNlfh3JvsbqaLMTIa8mO2sMaVDABM/viRyeoq6+cRWiMYsteg33gEBYhcLvI=
+X-Received: by 2002:a2e:8195:: with SMTP id e21mr17983980ljg.62.1563312529977;
+ Tue, 16 Jul 2019 14:28:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190715164217.27297-1-ulf.hansson@linaro.org>
-In-Reply-To: <20190715164217.27297-1-ulf.hansson@linaro.org>
+References: <20190715164230.27348-1-ulf.hansson@linaro.org>
+In-Reply-To: <20190715164230.27348-1-ulf.hansson@linaro.org>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 16 Jul 2019 23:26:35 +0200
-Message-ID: <CACRpkdZkvy8STLbC_Z_JaTRQY_vEnFsFa2W5Xp-FzX2azjzjSQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: mmci: Drop re-read of MMCISTATUS for busy status
+Date:   Tue, 16 Jul 2019 23:28:38 +0200
+Message-ID: <CACRpkdY29h9yMTOXALLkajOSLQzDw1kU5LUDE1xE+auhO239DA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: mmci: Clarify comments in the code about busy detection
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
         Ludovic Barre <ludovic.barre@st.com>,
@@ -60,17 +60,14 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 On Mon, Jul 15, 2019 at 6:42 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 
-> The MMCISTATUS register is read from the IRQ handler, mmci_irq(). For
-> processing, its value is then passed as an in-parameter to mmci_cmd_irq().
->
-> When dealing with busy detection, the MMCISTATUS register is being re-read,
-> as to retrieve an updated value. However, this operation is likely costing
-> more than it benefits, as the value was read only a few cycles ago. For
-> this reason, let's simply drop the re-read and use the value from the
-> in-parameter instead.
+> The code dealing with busy detection is somewhat complicated. In a way to
+> make it a bit clearer, let's try to clarify the comments in the code about
+> it.
 >
 > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
+Uh oh there seems to have been some refactoring of the code that
+it was trying to document. Stale docs.
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
