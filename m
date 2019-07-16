@@ -2,82 +2,76 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACD066AF8B
-	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jul 2019 21:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 655B46B116
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jul 2019 23:26:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728438AbfGPTF1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jul 2019 15:05:27 -0400
-Received: from sauhun.de ([88.99.104.3]:40512 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726213AbfGPTF1 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 16 Jul 2019 15:05:27 -0400
-Received: from localhost (p54B330C4.dip0.t-ipconnect.de [84.179.48.196])
-        by pokefinder.org (Postfix) with ESMTPSA id 099D02C0398;
-        Tue, 16 Jul 2019 21:05:25 +0200 (CEST)
-Date:   Tue, 16 Jul 2019 21:05:24 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Ulrich Hecht <uli+renesas@fpond.eu>
-Cc:     linux-renesas-soc@vger.kernel.org, linux-mmc@vger.kernel.org,
-        niklas.soderlund@ragnatech.se, yamada.masahiro@socionext.com,
-        geert@linux-m68k.org, ulf.hansson@linaro.org, magnus.damm@gmail.com
-Subject: Re: [PATCH 1/2] mmc: tmio: leave clock handling to PM if enabled
-Message-ID: <20190716190524.no5d25iyllgjdluh@katana>
-References: <1563289264-26432-1-git-send-email-uli+renesas@fpond.eu>
- <1563289264-26432-2-git-send-email-uli+renesas@fpond.eu>
+        id S1728405AbfGPV0u (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 16 Jul 2019 17:26:50 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:46554 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728118AbfGPV0u (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 17:26:50 -0400
+Received: by mail-lj1-f195.google.com with SMTP id v24so21458089ljg.13
+        for <linux-mmc@vger.kernel.org>; Tue, 16 Jul 2019 14:26:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yel/dvjRFYE+g5Wj0x82G14SgP0GK1TVQpwlRIRRolk=;
+        b=exuI1+P2iMAZqFKUjckHCNYdFuJYZClC+M2O8ZJz0C1/jy3kL570oJkP+D46peaQgM
+         ZfmriwnTI5qj4RaNASaiugdSeOQCZLiaOlDgSCPwOq9H/6YAQwPIMmIXqXAWxvpIDPDz
+         iyciyPD83aQpjBCkTBlbw/CG1QhGLGywD9qry05lswnyvGSAu9fWYtTFNjCcPnbhAFOb
+         A0qpgIfI0cKvuPtncf8VHm9uMaMiMGCpEIJ/PEzBUNXb4tWAhSL03F0TaxQ1CQgwqogg
+         E7N711/gjb8589hwGp5zePChr5XJz3cclceHR6p4Ad4bH+8/u+2kL3nMOK8vxZ5mOBTx
+         DmqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yel/dvjRFYE+g5Wj0x82G14SgP0GK1TVQpwlRIRRolk=;
+        b=FaUIP1WbLToOvuqQD+Py+7ZVNPLXecJvmsFt/C8/yw6EJarQ1MPi5sdAsQOACD26H9
+         zR9MY5B+Aaioy+nceDOkDatQ4OzAY1+saY3OLDGrILOYcgT6bc5qtNEyFPrcbEjK6+vt
+         R3Z8i+Yq/IrBLBMgF0oSW2UKgcX+PngLabEqLa7cSXlMErRp0TWcJ1a/zGyPGSmhqUhq
+         /S6DUYaXYDQoD/pnokzUQNMGfyJhljg0hOpoNx+j0ALNmVJZ6SALf4/CUrnnysad6OJZ
+         xC5fXAFFKnEkpCzdWhRIAYnSa+juTqbD2A5F6HBPS/Twin0/ARw118FlrKPxbRzQVQH5
+         X7sw==
+X-Gm-Message-State: APjAAAWhxngXTnYZygYapaN1khH7kaUfWpa2pw2NOzuMgC4UH8+COlj4
+        fko80CURsax6kLmBnmvpk/7SJvAhRDzKLXJsWXMI5A==
+X-Google-Smtp-Source: APXvYqwrY65kEaepRm67/+DyYHWnkpbLbjrxod5G2wwXMxWU0wtGY3vlbBRCyeOIlcJRlzLiQro2gtcZJ2EG52hqJrs=
+X-Received: by 2002:a2e:a0cf:: with SMTP id f15mr18771614ljm.180.1563312408371;
+ Tue, 16 Jul 2019 14:26:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yoyke3isdctbjz5m"
-Content-Disposition: inline
-In-Reply-To: <1563289264-26432-2-git-send-email-uli+renesas@fpond.eu>
-User-Agent: NeoMutt/20170113 (1.7.2)
+References: <20190715164217.27297-1-ulf.hansson@linaro.org>
+In-Reply-To: <20190715164217.27297-1-ulf.hansson@linaro.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 16 Jul 2019 23:26:35 +0200
+Message-ID: <CACRpkdZkvy8STLbC_Z_JaTRQY_vEnFsFa2W5Xp-FzX2azjzjSQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: mmci: Drop re-read of MMCISTATUS for busy status
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        Ludovic Barre <ludovic.barre@st.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Nicolas Graux <jean-nicolas.graux@st.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Mon, Jul 15, 2019 at 6:42 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 
---yoyke3isdctbjz5m
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> The MMCISTATUS register is read from the IRQ handler, mmci_irq(). For
+> processing, its value is then passed as an in-parameter to mmci_cmd_irq().
+>
+> When dealing with busy detection, the MMCISTATUS register is being re-read,
+> as to retrieve an updated value. However, this operation is likely costing
+> more than it benefits, as the value was read only a few cycles ago. For
+> this reason, let's simply drop the re-read and use the value from the
+> in-parameter instead.
+>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-On Tue, Jul 16, 2019 at 05:01:03PM +0200, Ulrich Hecht wrote:
-> This fixes a clock imbalance that occurs because the SD clock is handled
-> by both PM and the hardware driver.
-> See https://www.spinics.net/lists/linux-mmc/msg44431.html for details.
->=20
-> This patch removes the clock handling from the driver's PM callbacks and
-> turns the clock off after probing.
->=20
-> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Signed-off-by: Ulrich Hecht <uli+renesas@fpond.eu>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Thanks, Uli!
-
-Niklas, I'd really like your feedback on this one because you did the PM
-refactorization lately.
-
-I will have a look later, too.
-
-
---yoyke3isdctbjz5m
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl0uH/QACgkQFA3kzBSg
-KbYF/A/8DGMPpcoaD9JN6I0wJrYUOGHaVX9/to3u1IkrxcH/zhvILNhPedJpbcwV
-ZpBSdVJHK2fMt9NK3Ubbl/qnT0BUh7sWBxAeSLVbB42yVwEDN4In7xFa15FQqyqm
-a/4Niirx7iOZHh9un50lhaYXQP4oQOaPiqNaHjBDxTAsthpLUcaKNYGpYqBbHsa1
-n5ekJImuq6s5MSBO6vFnuZOSluCa9FZVM8j9wmZLZS49gZk74a6MqIGd0RmPxYIl
-74lkSlCfco9KGRO0tmou/OEjZ0tPRrtF0RSCkwh73oPcn7dAsAoz2e8hwAcnGAoX
-PJOJh/Fq1WpwZb+8Y5Ago92q7Fn3WwelEdCc0jupGStqlUSciUdE6tyeMHwgKwvU
-EgOfCDz3EXqrFLDEYNisrTnswxetsNSJX5jaOuPyYlAPl7zSs8OcpvrkTBWD3R4C
-86Mk6bs3k48T5yE2QktIgkpnSDPQPxt2N41P6tEXjVe04i0d6xL01dtEdkFWScrL
-b0Th4x/plgFHrgiJ+0ezqQRbf/fC1yjnVCBw0+PpOEiD3mwCq/Ki2ODOZDfkz6nD
-L9BinJw8S6lwf6ECyR8+HNjdF4bIXA6rXA2QXdLJgqvA/5cU/ME5mHFZZblhJ6zu
-Ndp2RpaiakDb096OMwkdKTog2XVrWeUIGZLtMXAKCboJdpya1XE=
-=kftr
------END PGP SIGNATURE-----
-
---yoyke3isdctbjz5m--
+Yours,
+Linus Walleij
