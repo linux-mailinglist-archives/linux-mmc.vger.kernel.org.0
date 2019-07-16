@@ -2,125 +2,82 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F5C6AD02
-	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jul 2019 18:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD066AF8B
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jul 2019 21:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388125AbfGPQmr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jul 2019 12:42:47 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:40409 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388101AbfGPQmr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 12:42:47 -0400
-Received: by mail-pg1-f195.google.com with SMTP id w10so9714984pgj.7
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jul 2019 09:42:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=G0ynwreDQx55Cdn2k1+KVcd1p88/D0r6svcv1QlBO3o=;
-        b=irjFbOPzoCsmoIZq13YOds5hccWx9OiE071z79slMWaKwUnr0Gw8NqkCvXGuxofvkE
-         b2DbVQ8khrwbZ1fgtJzGUdLN3xC5o1VqML1rE0tFczdIs5fX+WoRn0m64ZSj09uLaKp8
-         W4JTJ5GuZwoocTLDXiTmbxT27wq8MYbdfM4/8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=G0ynwreDQx55Cdn2k1+KVcd1p88/D0r6svcv1QlBO3o=;
-        b=q+9oCw9VDxlgizU7FNAWGPfRxf1FMTwbm0O15cWoq/7EwRGlsR2fnQK3Y0N7t1d10K
-         2MazYPtOcDUHLRJkyJ60GgLGJMiwTILQhgrEB2hxNX4z3gBHh+Q9TNP2Vrsvoig3raD/
-         lx2R/UJzlnZOCsRiQEPG2TR/Jt+XoKioDZZfVjuHUUTxO/sDkkzYbKA6SqgTQ4xe0YZZ
-         pzv3hWmu+SBhMT5QGUOQz8g4ZUdWWfYOVWYKJsaribqOFJrDioqv9EQpALKIM8CvIHPJ
-         7D4qYYaHjmorsG1OAtXRQOsosaG0XYC4oOtvhq4UH3c0eCJDmvhRD0UKAiIhqc20OR+Z
-         iUWA==
-X-Gm-Message-State: APjAAAXx46NB9qnKMS8+3pJGq3dQszRFHmX6euirW1XKij+L6vVMxATp
-        MSnZ+r7Ei/HCOK905dVyMUMTeg==
-X-Google-Smtp-Source: APXvYqxTvrAricfH4zSCJjfNseyILhC1mVPFZVt33bDXH1vSrEY0L19EpCl6w3rTFJO8Jdf66uAxVQ==
-X-Received: by 2002:a17:90a:cf8f:: with SMTP id i15mr36366127pju.110.1563295366371;
-        Tue, 16 Jul 2019 09:42:46 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id r1sm25456468pfq.100.2019.07.16.09.42.45
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 16 Jul 2019 09:42:45 -0700 (PDT)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Ganapathi Bhat <gbhat@marvell.com>, linux-wireless@vger.kernel.org,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        linux-rockchip@lists.infradead.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        netdev@vger.kernel.org, Avri Altman <avri.altman@wdc.com>,
-        linux-mmc@vger.kernel.org, davem@davemloft.net,
-        Xinming Hu <huxinming820@gmail.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] mwifiex: Make use of the new sdio_trigger_replug() API to reset
-Date:   Tue, 16 Jul 2019 09:42:09 -0700
-Message-Id: <20190716164209.62320-3-dianders@chromium.org>
-X-Mailer: git-send-email 2.22.0.510.g264f2c817a-goog
-In-Reply-To: <20190716164209.62320-1-dianders@chromium.org>
-References: <20190716164209.62320-1-dianders@chromium.org>
+        id S1728438AbfGPTF1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 16 Jul 2019 15:05:27 -0400
+Received: from sauhun.de ([88.99.104.3]:40512 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726213AbfGPTF1 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 16 Jul 2019 15:05:27 -0400
+Received: from localhost (p54B330C4.dip0.t-ipconnect.de [84.179.48.196])
+        by pokefinder.org (Postfix) with ESMTPSA id 099D02C0398;
+        Tue, 16 Jul 2019 21:05:25 +0200 (CEST)
+Date:   Tue, 16 Jul 2019 21:05:24 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Ulrich Hecht <uli+renesas@fpond.eu>
+Cc:     linux-renesas-soc@vger.kernel.org, linux-mmc@vger.kernel.org,
+        niklas.soderlund@ragnatech.se, yamada.masahiro@socionext.com,
+        geert@linux-m68k.org, ulf.hansson@linaro.org, magnus.damm@gmail.com
+Subject: Re: [PATCH 1/2] mmc: tmio: leave clock handling to PM if enabled
+Message-ID: <20190716190524.no5d25iyllgjdluh@katana>
+References: <1563289264-26432-1-git-send-email-uli+renesas@fpond.eu>
+ <1563289264-26432-2-git-send-email-uli+renesas@fpond.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="yoyke3isdctbjz5m"
+Content-Disposition: inline
+In-Reply-To: <1563289264-26432-2-git-send-email-uli+renesas@fpond.eu>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-As described in the patch ("mmc: core: Add sdio_trigger_replug()
-API"), the current mwifiex_sdio_card_reset() is broken in the cases
-where we're running Bluetooth on a second SDIO func on the same card
-as WiFi.  The problem goes away if we just use the
-sdio_trigger_replug() API call.
 
-NOTE: Even though with this new solution there is less of a reason to
-do our work from a workqueue (the unplug / plug mechanism we're using
-is possible for a human to perform at any time so the stack is
-supposed to handle it without it needing to be called from a special
-context), we still need a workqueue because the Marvell reset function
-could called from a context where sleeping is invalid and thus we
-can't claim the host.  One example is Marvell's wakeup_timer_fn().
+--yoyke3isdctbjz5m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
+On Tue, Jul 16, 2019 at 05:01:03PM +0200, Ulrich Hecht wrote:
+> This fixes a clock imbalance that occurs because the SD clock is handled
+> by both PM and the hardware driver.
+> See https://www.spinics.net/lists/linux-mmc/msg44431.html for details.
+>=20
+> This patch removes the clock handling from the driver's PM callbacks and
+> turns the clock off after probing.
+>=20
+> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Ulrich Hecht <uli+renesas@fpond.eu>
 
- drivers/net/wireless/marvell/mwifiex/sdio.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+Thanks, Uli!
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-index 24c041dad9f6..f77ad2615f08 100644
---- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-@@ -2218,14 +2218,6 @@ static void mwifiex_sdio_card_reset_work(struct mwifiex_adapter *adapter)
- {
- 	struct sdio_mmc_card *card = adapter->card;
- 	struct sdio_func *func = card->func;
--	int ret;
--
--	mwifiex_shutdown_sw(adapter);
--
--	/* power cycle the adapter */
--	sdio_claim_host(func);
--	mmc_hw_reset(func->card->host);
--	sdio_release_host(func);
- 
- 	/* Previous save_adapter won't be valid after this. We will cancel
- 	 * pending work requests.
-@@ -2233,9 +2225,9 @@ static void mwifiex_sdio_card_reset_work(struct mwifiex_adapter *adapter)
- 	clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
- 	clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
- 
--	ret = mwifiex_reinit_sw(adapter);
--	if (ret)
--		dev_err(&func->dev, "reinit failed: %d\n", ret);
-+	sdio_claim_host(func);
-+	sdio_trigger_replug(func);
-+	sdio_release_host(func);
- }
- 
- /* This function read/write firmware */
--- 
-2.22.0.510.g264f2c817a-goog
+Niklas, I'd really like your feedback on this one because you did the PM
+refactorization lately.
 
+I will have a look later, too.
+
+
+--yoyke3isdctbjz5m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl0uH/QACgkQFA3kzBSg
+KbYF/A/8DGMPpcoaD9JN6I0wJrYUOGHaVX9/to3u1IkrxcH/zhvILNhPedJpbcwV
+ZpBSdVJHK2fMt9NK3Ubbl/qnT0BUh7sWBxAeSLVbB42yVwEDN4In7xFa15FQqyqm
+a/4Niirx7iOZHh9un50lhaYXQP4oQOaPiqNaHjBDxTAsthpLUcaKNYGpYqBbHsa1
+n5ekJImuq6s5MSBO6vFnuZOSluCa9FZVM8j9wmZLZS49gZk74a6MqIGd0RmPxYIl
+74lkSlCfco9KGRO0tmou/OEjZ0tPRrtF0RSCkwh73oPcn7dAsAoz2e8hwAcnGAoX
+PJOJh/Fq1WpwZb+8Y5Ago92q7Fn3WwelEdCc0jupGStqlUSciUdE6tyeMHwgKwvU
+EgOfCDz3EXqrFLDEYNisrTnswxetsNSJX5jaOuPyYlAPl7zSs8OcpvrkTBWD3R4C
+86Mk6bs3k48T5yE2QktIgkpnSDPQPxt2N41P6tEXjVe04i0d6xL01dtEdkFWScrL
+b0Th4x/plgFHrgiJ+0ezqQRbf/fC1yjnVCBw0+PpOEiD3mwCq/Ki2ODOZDfkz6nD
+L9BinJw8S6lwf6ECyR8+HNjdF4bIXA6rXA2QXdLJgqvA/5cU/ME5mHFZZblhJ6zu
+Ndp2RpaiakDb096OMwkdKTog2XVrWeUIGZLtMXAKCboJdpya1XE=
+=kftr
+-----END PGP SIGNATURE-----
+
+--yoyke3isdctbjz5m--
