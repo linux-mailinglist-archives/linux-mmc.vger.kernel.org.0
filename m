@@ -2,144 +2,140 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAC8A6A6CA
-	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jul 2019 12:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B84926AB2A
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jul 2019 16:58:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733187AbfGPKwu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jul 2019 06:52:50 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:46095 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728235AbfGPKwu (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 06:52:50 -0400
-Received: by mail-ot1-f66.google.com with SMTP id z23so20515834ote.13
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jul 2019 03:52:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yV7fHha/1uJLdSPSLwZnz/qgIkyl6ozZw75QGiLZaR8=;
-        b=HywDJG1MdyScI+QJh7uYxU0Y/TqPUTLcWM3yrU9WLg2RGudW3/NGg6pnZaO+TVtzo9
-         crMGl5dF8alxyA7rakyiWn5L3uaVLis/vspDk5q4aLpPXdtzrGKZ8OE0nN6dPE+I1adb
-         l7Lbl2YNi5PE66lm7ahBd7dK1Sqr02DkHPfE1G/SJgX37ey1bwcPdwi4zW9uKtGUu8M/
-         jsnatodL16JvUDo8Y9FPPg+xHf6CI/9cD6lHZWZvmHmvZe9CCzo16icPeNDSJypFT0o/
-         oUFUoFEXfBjitw3pO8Ji1ZXgFUNy3C0oweqiG6KYpaC5/SIgroINeXpQsFzLeYPCxlUr
-         eHiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yV7fHha/1uJLdSPSLwZnz/qgIkyl6ozZw75QGiLZaR8=;
-        b=hbQ8E7z8n6uJegJ896U5CpQvdqGSomU/K8TKKi4xHUbTDu275ycQHltfaQSCBGlvC4
-         DlzJzp7bJ5iMwn5RsXPtVaG0pYjkQlAtUstq5kQpwuCjuf50XHAlvtSt/DxDb4SkfCFl
-         KUD5exJICviLrAmBKRm40tj97rdBMUPuAoWz6e+wT6fDS38jqEfKr9OOxV5qVsMvmxpy
-         iA0X5afGmo4BF+Y5ZpFrOITApa5wjnlboj+DmHrMeT3xyhZix4AaAt9BOoKQSHeXy6ky
-         CA2u0VuDVxHS55RXP/oHskBwEo4o97pitQKCzentuejk38HUkpR/PId+ff/9MOVJyfkr
-         0Bzw==
-X-Gm-Message-State: APjAAAUX/19urCkFUFumk6mlj+1qUKkzayJtT8ko47fkPIs0TVadt3sM
-        7ptgA52mnIioFmrSxawT/HkpwXgG4n+f1+fc+xKr+w==
-X-Google-Smtp-Source: APXvYqx2L0oIM/lm53Z/5BgzDRcJnvBfWs+2h9acWP6hfKANHzNXntHk/u+Il8SmOu8YrvJdGzB64XBcBjyYJTOExn0=
-X-Received: by 2002:a05:6830:13c2:: with SMTP id e2mr24139721otq.123.1563274369381;
- Tue, 16 Jul 2019 03:52:49 -0700 (PDT)
+        id S1728470AbfGPO5e (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 16 Jul 2019 10:57:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47572 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727849AbfGPO5e (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 16 Jul 2019 10:57:34 -0400
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B8F5C217F4;
+        Tue, 16 Jul 2019 14:57:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563289053;
+        bh=U42z2e4tCTHxP6Wr6zzHqfiVLXBTEYPAOO2p1lSrZNs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=iV98308aMsPTi2CN5VG60zRBK3FK0hKYQIfxuEKr6pRSABb4hhBER0nxiB4/wv/ji
+         dFzv62BnXedW7Ul8okOD+YZ5ldMqOMeNL6egrQ1jdnnZE0t0zmbmdGtvYSH3wje4+o
+         pI0xt0K10YfTC8rD42wOq+BCOGeW/slQFZYNf4PU=
+Received: by mail-qk1-f169.google.com with SMTP id t8so14830385qkt.1;
+        Tue, 16 Jul 2019 07:57:33 -0700 (PDT)
+X-Gm-Message-State: APjAAAUyBPvIf3393+TM108nZFCD+HXiKTvEXEKDb8Q8b8anTauXAvYl
+        yE9MVd7BL0dMK5+SZS8xnShblbymJsm/EUKQkw==
+X-Google-Smtp-Source: APXvYqyE4Fk9jDy25Hb1UFb/TR0uJK2FJa0lq9CraTzQ97i00y46wdPQlFv5huCO4g3lu9C2h82sx7IiaEkwujJxStU=
+X-Received: by 2002:a05:620a:1447:: with SMTP id i7mr22288549qkl.254.1563289052931;
+ Tue, 16 Jul 2019 07:57:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <7ab490e5b311f6cb057c4663d69ef7cbe3318dae.1563266066.git.baolin.wang@linaro.org>
- <07e348a0-6a80-e176-d18d-6a1e54313fa6@intel.com>
-In-Reply-To: <07e348a0-6a80-e176-d18d-6a1e54313fa6@intel.com>
-From:   Baolin Wang <baolin.wang@linaro.org>
-Date:   Tue, 16 Jul 2019 18:52:37 +0800
-Message-ID: <CAMz4ku+eiwNtEg7mPvGKDZrqANXiSokzj6HJkse-xwSvNGqb3A@mail.gmail.com>
-Subject: Re: [PATCH v3] mmc: host: sdhci-sprd: Fix the incorrect soft reset
- operation when runtime resuming
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+References: <20190712033214.24713-1-andrew@aj.id.au> <20190712033214.24713-2-andrew@aj.id.au>
+ <CAL_JsqLkOtsAxj9NvNB=EEkH00k-dtNedNY042uuntSmcjhDhA@mail.gmail.com> <3fe55ea9-b949-48a0-9eab-90ad3bc1ee2a@www.fastmail.com>
+In-Reply-To: <3fe55ea9-b949-48a0-9eab-90ad3bc1ee2a@www.fastmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 16 Jul 2019 08:57:21 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKMo_uv4Ur-D4NaUXk94hGJeRt5fg+0998dDjJCTgumGg@mail.gmail.com>
+Message-ID: <CAL_JsqKMo_uv4Ur-D4NaUXk94hGJeRt5fg+0998dDjJCTgumGg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: mmc: Document Aspeed SD controller
+To:     Andrew Jeffery <andrew@aj.id.au>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        devicetree@vger.kernel.org,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-aspeed@lists.ozlabs.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ryan Chen <ryanchen.aspeed@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 16 Jul 2019 at 18:40, Adrian Hunter <adrian.hunter@intel.com> wrote:
+On Mon, Jul 15, 2019 at 6:36 PM Andrew Jeffery <andrew@aj.id.au> wrote:
 >
-> On 16/07/19 11:39 AM, Baolin Wang wrote:
-> > In sdhci_runtime_resume_host() function, we will always do software reset
-> > for all, which will cause Spreadtrum host controller work abnormally after
-> > resuming.
-> >
-> > Thus for Spreadtrum platform that do not power down the SD/eMMC card during
-> > runtime suspend, we should not do software reset for all. To fix this
-> > issue, adding a specific reset operation that add one condition to validate
-> > the MMC_CAP_AGGRESSIVE_PM to decide if we can do software reset for all or
-> > just reset command and data lines.
-> >
-> > Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-> > ---
-> > Changes from v2:
-> >  - Simplify the sdhci_sprd_reset() by issuing sdhci_reset().
-> >
-> > Changes from v1:
-> >  - Add a specific reset operation instead of changing the core to avoid
-> >  affecting other hardware.
-> > ---
-> >  drivers/mmc/host/sdhci-sprd.c |   19 ++++++++++++++++++-
-> >  1 file changed, 18 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-> > index 603a5d9..bc9393c 100644
-> > --- a/drivers/mmc/host/sdhci-sprd.c
-> > +++ b/drivers/mmc/host/sdhci-sprd.c
-> > @@ -373,6 +373,23 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
-> >       return 1 << 31;
-> >  }
-> >
-> > +static void sdhci_sprd_reset(struct sdhci_host *host, u8 mask)
-> > +{
-> > +     struct mmc_host *mmc = host->mmc;
-> > +
-> > +     /*
-> > +      * When try to reset controller after runtime suspend, we should not
-> > +      * reset for all if the SD/eMMC card is not power down, just reset
-> > +      * command and data lines instead. Otherwise will meet some strange
-> > +      * behaviors for Spreadtrum host controller.
-> > +      */
-> > +     if (host->runtime_suspended && (mask & SDHCI_RESET_ALL) &&
-> > +         !(mmc->caps & MMC_CAP_AGGRESSIVE_PM))
 >
-> MMC_CAP_AGGRESSIVE_PM does not necessarily mean that the card will have been
-> runtime suspended.
 >
-> What about checking if the card power is on? i.e.
+> On Tue, 16 Jul 2019, at 07:47, Rob Herring wrote:
+> > On Thu, Jul 11, 2019 at 9:32 PM Andrew Jeffery <andrew@aj.id.au> wrote:
+> > >
+> > > The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the
+> > > SDIO Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit
+> > > data bus if only a single slot is enabled.
+> > >
+> > > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+> > > ---
+> > > In v2:
+> > >
+> > > * Rename to aspeed,sdhci.yaml
+> > > * Rename sd-controller compatible
+> > > * Add `maxItems: 1` for reg properties
+> > > * Move sdhci subnode description to patternProperties
+> > > * Drop sdhci compatible requirement
+> > > * #address-cells and #size-cells are required
+> > > * Prevent additional properties
+> > > * Implement explicit ranges in example
+> > > * Remove slot property
+> > >
+> > >  .../devicetree/bindings/mmc/aspeed,sdhci.yaml | 90 +++++++++++++++++++
+> > >  1 file changed, 90 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> > > new file mode 100644
+> > > index 000000000000..67a691c3348c
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> > > @@ -0,0 +1,90 @@
+> > > +# SPDX-License-Identifier: GPL-2.0-or-later
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/mmc/aspeed,sdhci.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: ASPEED SD/SDIO/eMMC Controller
+> > > +
+> > > +maintainers:
+> > > +  - Andrew Jeffery <andrew@aj.id.au>
+> > > +  - Ryan Chen <ryanchen.aspeed@gmail.com>
+> > > +
+> > > +description: |+
+> > > +  The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the SDIO
+> > > +  Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit data bus if
+> > > +  only a single slot is enabled.
+> > > +
+> > > +  The two slots are supported by a common configuration area. As the SDHCIs for
+> > > +  the slots are dependent on the common configuration area, they are described
+> > > +  as child nodes.
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum: [ aspeed,ast2400-sd-controller, aspeed,ast2500-sd-controller ]
+> >
+> > This is actually a list of 4 strings. Please reformat to 1 per line.
+>
+> On reflection that's obvious, but also a somewhat subtle interaction with the
+> preference for no quotes (the obvious caveat being "except where required").
 
-Yes, you are totally correct. I'll fix this in next version. Thanks
-for your comments.
+It wasn't something I'd run into before. I'm working on a check, but
+unfortunately we can only check for quotes not needed and can't check
+for missing quotes.
 
->         if (host->runtime_suspended && (mask & SDHCI_RESET_ALL) &&
->             mmc->ios.power_mode == MMC_POWER_ON)
+> Thanks for pointing it out.
 >
-> > +             mask = SDHCI_RESET_CMD | SDHCI_RESET_DATA;
-> > +
-> > +     sdhci_reset(host, mask);
-> > +}
-> > +
-> >  static struct sdhci_ops sdhci_sprd_ops = {
-> >       .read_l = sdhci_sprd_readl,
-> >       .write_l = sdhci_sprd_writel,
-> > @@ -381,7 +398,7 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
-> >       .get_max_clock = sdhci_sprd_get_max_clock,
-> >       .get_min_clock = sdhci_sprd_get_min_clock,
-> >       .set_bus_width = sdhci_set_bus_width,
-> > -     .reset = sdhci_reset,
-> > +     .reset = sdhci_sprd_reset,
-> >       .set_uhs_signaling = sdhci_sprd_set_uhs_signaling,
-> >       .hw_reset = sdhci_sprd_hw_reset,
-> >       .get_max_timeout_count = sdhci_sprd_get_max_timeout_count,
-> >
->
+> I have been running `make dt_binding_check` and `make dtbs_check` over
+> these, looks like I need to up my game a bit though. Do you do additional things
+> in your workflow?
 
+That should have thrown the warnings. If you aren't seeing those, do
+you have dtschema package installed (see
+Documentation/devicetree/writing-schema.md)? Or it could be erroring
+out on something else first. There's a few breakages that I'm trying
+to fix.
 
--- 
-Baolin Wang
-Best Regards
+Rob
