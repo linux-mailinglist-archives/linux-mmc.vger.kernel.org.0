@@ -2,113 +2,75 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C110E6B649
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Jul 2019 08:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 767586B8C3
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Jul 2019 11:02:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725856AbfGQGIX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 17 Jul 2019 02:08:23 -0400
-Received: from mga17.intel.com ([192.55.52.151]:1203 "EHLO mga17.intel.com"
+        id S1725906AbfGQJCY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 17 Jul 2019 05:02:24 -0400
+Received: from inva020.nxp.com ([92.121.34.13]:49520 "EHLO inva020.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725799AbfGQGIX (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 17 Jul 2019 02:08:23 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Jul 2019 23:08:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,273,1559545200"; 
-   d="scan'208";a="170154892"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by orsmga003.jf.intel.com with ESMTP; 16 Jul 2019 23:08:20 -0700
-Subject: Re: [PATCH v4] mmc: host: sdhci-sprd: Fix the incorrect soft reset
- operation when runtime resuming
-To:     Baolin Wang <baolin.wang@linaro.org>, ulf.hansson@linaro.org,
-        zhang.lyra@gmail.com, orsonzhai@gmail.com
-Cc:     vincent.guittot@linaro.org, linux-mmc@vger.kernel.org,
+        id S1725873AbfGQJCY (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 17 Jul 2019 05:02:24 -0400
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4D3741A0174;
+        Wed, 17 Jul 2019 11:02:22 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 79D371A00FF;
+        Wed, 17 Jul 2019 11:02:15 +0200 (CEST)
+Received: from titan.ap.freescale.net (TITAN.ap.freescale.net [10.192.208.233])
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id F0931402D5;
+        Wed, 17 Jul 2019 17:02:06 +0800 (SGT)
+From:   Anson.Huang@nxp.com
+To:     ulf.hansson@linaro.org, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linus.walleij@linaro.org, stefan.wahren@i2se.com,
+        kstewart@linuxfoundation.org, tglx@linutronix.de,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-References: <89c3ef495c367d58ca3abe99a1f82c48f8c08705.1563274904.git.baolin.wang@linaro.org>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <66eb3053-ca2d-e2f0-edf0-9227f75a5693@intel.com>
-Date:   Wed, 17 Jul 2019 09:07:05 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <89c3ef495c367d58ca3abe99a1f82c48f8c08705.1563274904.git.baolin.wang@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Cc:     Linux-imx@nxp.com
+Subject: [PATCH] mmc: mxs: use devm_platform_ioremap_resource() to simplify code
+Date:   Wed, 17 Jul 2019 16:52:59 +0800
+Message-Id: <20190717085259.31235-1-Anson.Huang@nxp.com>
+X-Mailer: git-send-email 2.9.5
+X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 17/07/19 5:28 AM, Baolin Wang wrote:
-> In sdhci_runtime_resume_host() function, we will always do software reset
-> for all, which will cause Spreadtrum host controller work abnormally after
-> resuming.
-> 
-> Thus for Spreadtrum platform that will not power down the SD/eMMC card during
-> runtime suspend, we should not do software reset for all. To fix this
-> issue, adding a specific reset operation that adds one condition to validate
-> the power mode to decide if we can do software reset for all or just reset
-> command and data lines.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+From: Anson Huang <Anson.Huang@nxp.com>
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Use the new helper devm_platform_ioremap_resource() which wraps the
+platform_get_resource() and devm_ioremap_resource() together, to
+simplify the code.
 
-> ---
-> Changess from v3:
->  - Use ios.power_mode to validate if the card is power down or not.
-> 
-> Changes from v2:
->  - Simplify the sdhci_sprd_reset() by issuing sdhci_reset().
-> 
-> Changes from v1:
->  - Add a specific reset operation instead of changing the core to avoid
->  affecting other hardware.
-> ---
->  drivers/mmc/host/sdhci-sprd.c |   19 ++++++++++++++++++-
->  1 file changed, 18 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-> index 603a5d9..94f9726 100644
-> --- a/drivers/mmc/host/sdhci-sprd.c
-> +++ b/drivers/mmc/host/sdhci-sprd.c
-> @@ -373,6 +373,23 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
->  	return 1 << 31;
->  }
->  
-> +static void sdhci_sprd_reset(struct sdhci_host *host, u8 mask)
-> +{
-> +	struct mmc_host *mmc = host->mmc;
-> +
-> +	/*
-> +	 * When try to reset controller after runtime suspend, we should not
-> +	 * reset for all if the SD/eMMC card is not power down, just reset
-> +	 * command and data lines instead. Otherwise will meet some strange
-> +	 * behaviors for Spreadtrum host controller.
-> +	 */
-> +	if (host->runtime_suspended && (mask & SDHCI_RESET_ALL) &&
-> +	    mmc->ios.power_mode == MMC_POWER_ON)
-> +		mask = SDHCI_RESET_CMD | SDHCI_RESET_DATA;
-> +
-> +	sdhci_reset(host, mask);
-> +}
-> +
->  static struct sdhci_ops sdhci_sprd_ops = {
->  	.read_l = sdhci_sprd_readl,
->  	.write_l = sdhci_sprd_writel,
-> @@ -381,7 +398,7 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
->  	.get_max_clock = sdhci_sprd_get_max_clock,
->  	.get_min_clock = sdhci_sprd_get_min_clock,
->  	.set_bus_width = sdhci_set_bus_width,
-> -	.reset = sdhci_reset,
-> +	.reset = sdhci_sprd_reset,
->  	.set_uhs_signaling = sdhci_sprd_set_uhs_signaling,
->  	.hw_reset = sdhci_sprd_hw_reset,
->  	.get_max_timeout_count = sdhci_sprd_get_max_timeout_count,
-> 
+Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
+---
+ drivers/mmc/host/mxs-mmc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
+index b334e81..78e7e35 100644
+--- a/drivers/mmc/host/mxs-mmc.c
++++ b/drivers/mmc/host/mxs-mmc.c
+@@ -571,7 +571,6 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+ 	struct device_node *np = pdev->dev.of_node;
+ 	struct mxs_mmc_host *host;
+ 	struct mmc_host *mmc;
+-	struct resource *iores;
+ 	int ret = 0, irq_err;
+ 	struct regulator *reg_vmmc;
+ 	struct mxs_ssp *ssp;
+@@ -587,8 +586,7 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+ 	host = mmc_priv(mmc);
+ 	ssp = &host->ssp;
+ 	ssp->dev = &pdev->dev;
+-	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	ssp->base = devm_ioremap_resource(&pdev->dev, iores);
++	ssp->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(ssp->base)) {
+ 		ret = PTR_ERR(ssp->base);
+ 		goto out_mmc_free;
+-- 
+2.7.4
 
