@@ -2,101 +2,122 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E4F16B309
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Jul 2019 03:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AEA26B483
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Jul 2019 04:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725769AbfGQBNH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jul 2019 21:13:07 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:37382 "EHLO
+        id S1727691AbfGQC3G (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 16 Jul 2019 22:29:06 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:44034 "EHLO
         mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725294AbfGQBNH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 21:13:07 -0400
-Received: by mail-pf1-f195.google.com with SMTP id 19so9958325pfa.4
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jul 2019 18:13:06 -0700 (PDT)
+        with ESMTP id S1725899AbfGQC3G (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 22:29:06 -0400
+Received: by mail-pf1-f195.google.com with SMTP id t16so10022883pfe.11
+        for <linux-mmc@vger.kernel.org>; Tue, 16 Jul 2019 19:29:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ragnatech-se.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=DKSAC3RBFj87Z4DA1X5Y/Vpx+6+m2Zkrc246nbB+7aI=;
-        b=JoLirFbfMmaohKWvyvur/2xz2kl1DEhYDF03OFkXDrF33zT83ZoU8qaleGSKaP3fcl
-         4FrfHCQlUwmbMoO+6KqY+rJU4EV27QrFqL/QiuPvJ1KXVlzDS1sUxZ1xAV3xLuQ86ver
-         J8CioVdY/f2zLPeRN9brRwq6ygdez3UPMbsd64geGO4uJDaybiKyAdFAydK4Pk/9zR4k
-         f/a+xpRfG/u2NTrftUpWR7R21rLKcYZ4iypaQ3l0aVWtKYyMymR4TIQJvGUu9QjTHVO8
-         tqvHUA+WrXusysPEnDpq/i9rI81PyNAbtk7ipxgLlKtCsjgd89ywEfnaQRPWq/0dhbKB
-         GbNw==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=6tx+Qq2PicIrG+dzO2uxG2U4IUaoivU08tFcHg3bC90=;
+        b=ry0p9a7B2piOJHxaJ0socATSfRMNBTtIqUgTg5L4WuZvJ3jd4fJPIPE3p5X3X7RZpA
+         C+iQ1I/xyZUE5fdUDDBJIqL0jGSEnIOBYR5HsNLijGTvF0DlyD54RZS4bmG2LDEV/gM5
+         7/3iA54FuRXD1C7egezt9LJR+k70q1DPHU3AT6Poh32nFg1Rz/lEi2gy5imzUkjrCOZG
+         DeBl5gdMy2PeWJPP1bCYqnrsd+Nw3RaTEFkdkatxut4xTE9FR2rQPQm1nXl2uQ43ZfAO
+         /CSwXHJt1AzSkk0j11Vx/q2mAapucXAJ8aOVspukpDstG95Ta/4wHpn7fNLDKTdjuFER
+         65lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=DKSAC3RBFj87Z4DA1X5Y/Vpx+6+m2Zkrc246nbB+7aI=;
-        b=Q/CAElOhkmQJB/6M7+P1wvJBRdk8GUto+YK+SdCMGCTmt/Zl9Vh0XPdsNui0rQxffO
-         ijTmquwOMSA1fStZtachDjTI/Jmw7Uh67wvbvSEBbp4lslZHx2XZ5PIAZum41esvQ78l
-         xH8rVkF76y657AroEA1eA1ZYJVnbeN01mYt59Nt9Xx2A7s6wafe+snqQnhQcG1kmdGH9
-         vOM5MOQR1zfVyIz5/YGACVfwEOxAbPAue0Qe7qy9C8wfnR6irv7ry/ed7Tv8BkWsi23k
-         l0XJ7k9CrDzPEo0VXofkRzO3HVDz064h9OoGy1gyZhg9a9Rju1QmDeoZXwnEr4acf879
-         N67Q==
-X-Gm-Message-State: APjAAAVJPFqOZKw6S8heGXKK0ZyTh63HwjwybEZBiavP/khf8Gc7uMhU
-        32ZzyfCWSuSagSk67v9iGmM=
-X-Google-Smtp-Source: APXvYqyLDHDQmRz8I2LVJ/zkW9FvFC/OmLcogJhcrjQswuIkVzAwMyMppCgHQxf8hVcf/ipzJG11oA==
-X-Received: by 2002:a63:f857:: with SMTP id v23mr12665476pgj.228.1563325985936;
-        Tue, 16 Jul 2019 18:13:05 -0700 (PDT)
-Received: from localhost (softbank126159215226.bbtec.net. [126.159.215.226])
-        by smtp.gmail.com with ESMTPSA id l6sm22170067pga.72.2019.07.16.18.13.03
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 16 Jul 2019 18:13:04 -0700 (PDT)
-Date:   Wed, 17 Jul 2019 10:13:01 +0900
-From:   Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Ulrich Hecht <uli+renesas@fpond.eu>,
-        linux-renesas-soc@vger.kernel.org, linux-mmc@vger.kernel.org,
-        yamada.masahiro@socionext.com, geert@linux-m68k.org,
-        ulf.hansson@linaro.org, magnus.damm@gmail.com
-Subject: Re: [PATCH 1/2] mmc: tmio: leave clock handling to PM if enabled
-Message-ID: <20190717011301.GG4384@wyvern>
-References: <1563289264-26432-1-git-send-email-uli+renesas@fpond.eu>
- <1563289264-26432-2-git-send-email-uli+renesas@fpond.eu>
- <20190716190524.no5d25iyllgjdluh@katana>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190716190524.no5d25iyllgjdluh@katana>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=6tx+Qq2PicIrG+dzO2uxG2U4IUaoivU08tFcHg3bC90=;
+        b=qtMnVQ9GMZM8pZx8geiLu5SrisLzywEkPTLm5BcyzGQxjiusB1TOQqOP9saUOidW2P
+         UN1bmwvYWSxp/4asXqMXjvVkRXONvuNF36bQW9FUqlfibYxyW9aHSRBdVGu7vVACWoB0
+         xm/RPfXGiO0eLotg5BRBfQa5r1zoUbH+1AzOicCG8cmdpfEhAEzfm6aPLaPxedEcqeAF
+         2v+T0oCfCOuQg2qQoLYrJImh1xn7NoFW3/PQCkolaIT2JmB3XPb2Ue7u9hcZ4wWoC/Nd
+         zvR98JEW42WJnPKj1dtj+8cAq6kv3jcxznhCOZlKykPLGuuaHoDrDhQzIEDhRNKQdSh9
+         NWPw==
+X-Gm-Message-State: APjAAAWyuvVImmqoDVQ0CPfE18NOaZSPa9LZtjzVduX9Mq3GqdOn3B1f
+        60+uEauucagX12aaMPXasGKII9jeTTUl1Q==
+X-Google-Smtp-Source: APXvYqzJUSsTFD+M6lu8qyQuwXWk/dbBc0xWO16evdYBd8ztZlEEBzYZbVK/a0ncpzVDnkTlo0phfA==
+X-Received: by 2002:a63:5402:: with SMTP id i2mr10860876pgb.414.1563330545351;
+        Tue, 16 Jul 2019 19:29:05 -0700 (PDT)
+Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
+        by smtp.gmail.com with ESMTPSA id p19sm26906104pfn.99.2019.07.16.19.29.02
+        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 16 Jul 2019 19:29:04 -0700 (PDT)
+From:   Baolin Wang <baolin.wang@linaro.org>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        zhang.lyra@gmail.com, orsonzhai@gmail.com
+Cc:     baolin.wang@linaro.org, vincent.guittot@linaro.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4] mmc: host: sdhci-sprd: Fix the incorrect soft reset operation when runtime resuming
+Date:   Wed, 17 Jul 2019 10:28:52 +0800
+Message-Id: <89c3ef495c367d58ca3abe99a1f82c48f8c08705.1563274904.git.baolin.wang@linaro.org>
+X-Mailer: git-send-email 1.7.9.5
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 2019-07-16 21:05:24 +0200, Wolfram Sang wrote:
-> On Tue, Jul 16, 2019 at 05:01:03PM +0200, Ulrich Hecht wrote:
-> > This fixes a clock imbalance that occurs because the SD clock is handled
-> > by both PM and the hardware driver.
-> > See https://www.spinics.net/lists/linux-mmc/msg44431.html for details.
-> > 
-> > This patch removes the clock handling from the driver's PM callbacks and
-> > turns the clock off after probing.
-> > 
-> > Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > Signed-off-by: Ulrich Hecht <uli+renesas@fpond.eu>
-> 
-> Thanks, Uli!
-> 
-> Niklas, I'd really like your feedback on this one because you did the PM
-> refactorization lately.
+In sdhci_runtime_resume_host() function, we will always do software reset
+for all, which will cause Spreadtrum host controller work abnormally after
+resuming.
 
-I would like to test this too. Unfortunately I'm on the road and will be 
-back in the office the 23rd so I will have to postpone doing so until 
-then. My initial comment is that this looks good, thanks Ulrich.
+Thus for Spreadtrum platform that will not power down the SD/eMMC card during
+runtime suspend, we should not do software reset for all. To fix this
+issue, adding a specific reset operation that adds one condition to validate
+the power mode to decide if we can do software reset for all or just reset
+command and data lines.
 
-> 
-> I will have a look later, too.
-> 
+Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+---
+Changess from v3:
+ - Use ios.power_mode to validate if the card is power down or not.
 
+Changes from v2:
+ - Simplify the sdhci_sprd_reset() by issuing sdhci_reset().
 
+Changes from v1:
+ - Add a specific reset operation instead of changing the core to avoid
+ affecting other hardware.
+---
+ drivers/mmc/host/sdhci-sprd.c |   19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+index 603a5d9..94f9726 100644
+--- a/drivers/mmc/host/sdhci-sprd.c
++++ b/drivers/mmc/host/sdhci-sprd.c
+@@ -373,6 +373,23 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
+ 	return 1 << 31;
+ }
+ 
++static void sdhci_sprd_reset(struct sdhci_host *host, u8 mask)
++{
++	struct mmc_host *mmc = host->mmc;
++
++	/*
++	 * When try to reset controller after runtime suspend, we should not
++	 * reset for all if the SD/eMMC card is not power down, just reset
++	 * command and data lines instead. Otherwise will meet some strange
++	 * behaviors for Spreadtrum host controller.
++	 */
++	if (host->runtime_suspended && (mask & SDHCI_RESET_ALL) &&
++	    mmc->ios.power_mode == MMC_POWER_ON)
++		mask = SDHCI_RESET_CMD | SDHCI_RESET_DATA;
++
++	sdhci_reset(host, mask);
++}
++
+ static struct sdhci_ops sdhci_sprd_ops = {
+ 	.read_l = sdhci_sprd_readl,
+ 	.write_l = sdhci_sprd_writel,
+@@ -381,7 +398,7 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
+ 	.get_max_clock = sdhci_sprd_get_max_clock,
+ 	.get_min_clock = sdhci_sprd_get_min_clock,
+ 	.set_bus_width = sdhci_set_bus_width,
+-	.reset = sdhci_reset,
++	.reset = sdhci_sprd_reset,
+ 	.set_uhs_signaling = sdhci_sprd_set_uhs_signaling,
+ 	.hw_reset = sdhci_sprd_hw_reset,
+ 	.get_max_timeout_count = sdhci_sprd_get_max_timeout_count,
 -- 
-Regards,
-Niklas Söderlund
+1.7.9.5
+
