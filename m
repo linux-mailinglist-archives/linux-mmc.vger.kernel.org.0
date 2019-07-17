@@ -2,122 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AEA26B483
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Jul 2019 04:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CCAB6B4AA
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Jul 2019 04:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727691AbfGQC3G (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jul 2019 22:29:06 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:44034 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725899AbfGQC3G (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 22:29:06 -0400
-Received: by mail-pf1-f195.google.com with SMTP id t16so10022883pfe.11
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jul 2019 19:29:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=6tx+Qq2PicIrG+dzO2uxG2U4IUaoivU08tFcHg3bC90=;
-        b=ry0p9a7B2piOJHxaJ0socATSfRMNBTtIqUgTg5L4WuZvJ3jd4fJPIPE3p5X3X7RZpA
-         C+iQ1I/xyZUE5fdUDDBJIqL0jGSEnIOBYR5HsNLijGTvF0DlyD54RZS4bmG2LDEV/gM5
-         7/3iA54FuRXD1C7egezt9LJR+k70q1DPHU3AT6Poh32nFg1Rz/lEi2gy5imzUkjrCOZG
-         DeBl5gdMy2PeWJPP1bCYqnrsd+Nw3RaTEFkdkatxut4xTE9FR2rQPQm1nXl2uQ43ZfAO
-         /CSwXHJt1AzSkk0j11Vx/q2mAapucXAJ8aOVspukpDstG95Ta/4wHpn7fNLDKTdjuFER
-         65lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6tx+Qq2PicIrG+dzO2uxG2U4IUaoivU08tFcHg3bC90=;
-        b=qtMnVQ9GMZM8pZx8geiLu5SrisLzywEkPTLm5BcyzGQxjiusB1TOQqOP9saUOidW2P
-         UN1bmwvYWSxp/4asXqMXjvVkRXONvuNF36bQW9FUqlfibYxyW9aHSRBdVGu7vVACWoB0
-         xm/RPfXGiO0eLotg5BRBfQa5r1zoUbH+1AzOicCG8cmdpfEhAEzfm6aPLaPxedEcqeAF
-         2v+T0oCfCOuQg2qQoLYrJImh1xn7NoFW3/PQCkolaIT2JmB3XPb2Ue7u9hcZ4wWoC/Nd
-         zvR98JEW42WJnPKj1dtj+8cAq6kv3jcxznhCOZlKykPLGuuaHoDrDhQzIEDhRNKQdSh9
-         NWPw==
-X-Gm-Message-State: APjAAAWyuvVImmqoDVQ0CPfE18NOaZSPa9LZtjzVduX9Mq3GqdOn3B1f
-        60+uEauucagX12aaMPXasGKII9jeTTUl1Q==
-X-Google-Smtp-Source: APXvYqzJUSsTFD+M6lu8qyQuwXWk/dbBc0xWO16evdYBd8ztZlEEBzYZbVK/a0ncpzVDnkTlo0phfA==
-X-Received: by 2002:a63:5402:: with SMTP id i2mr10860876pgb.414.1563330545351;
-        Tue, 16 Jul 2019 19:29:05 -0700 (PDT)
-Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id p19sm26906104pfn.99.2019.07.16.19.29.02
-        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 16 Jul 2019 19:29:04 -0700 (PDT)
-From:   Baolin Wang <baolin.wang@linaro.org>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        zhang.lyra@gmail.com, orsonzhai@gmail.com
-Cc:     baolin.wang@linaro.org, vincent.guittot@linaro.org,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4] mmc: host: sdhci-sprd: Fix the incorrect soft reset operation when runtime resuming
-Date:   Wed, 17 Jul 2019 10:28:52 +0800
-Message-Id: <89c3ef495c367d58ca3abe99a1f82c48f8c08705.1563274904.git.baolin.wang@linaro.org>
-X-Mailer: git-send-email 1.7.9.5
+        id S1727663AbfGQCpS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Tue, 16 Jul 2019 22:45:18 -0400
+Received: from gli-ex.genesyslogic.com.tw ([60.251.58.171]:42091 "EHLO
+        gli-ex.genesyslogic.com.tw" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725892AbfGQCpS (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 22:45:18 -0400
+X-Greylist: delayed 329 seconds by postgrey-1.27 at vger.kernel.org; Tue, 16 Jul 2019 22:45:17 EDT
+Received: from localhost (172.17.104.60) by Gli-CASHT02.genesyslogic.com.tw
+ (172.17.50.60) with Microsoft SMTP Server id 14.2.347.0; Wed, 17 Jul 2019
+ 10:39:46 +0800
+From:   Ben Chuang <ben.chuang@genesyslogic.com.tw>
+To:     <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <johnsonm@danlj.org>, Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Subject: [PATCH 1/2] mmc: sdhci: Add PLL Enable support to internal clock setup
+Date:   Wed, 17 Jul 2019 10:39:51 +0800
+Message-ID: <20190717023951.5064-1-ben.chuang@genesyslogic.com.tw>
+X-Mailer: git-send-email 2.22.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain
+X-Originating-IP: [172.17.104.60]
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-In sdhci_runtime_resume_host() function, we will always do software reset
-for all, which will cause Spreadtrum host controller work abnormally after
-resuming.
+The GL9750 and GL9755 chipsets, and possibly others, require PLL Enable
+setup as part of the internal clock setup as described in 3.2.1 Internal
+Clock Setup Sequence of SD Host Controller Simplified Specification
+Version 4.20.  This changes the timeouts to the new specification of
+150ms for each step and is documented as safe for "prior versions which
+do not support PLL Enable."
 
-Thus for Spreadtrum platform that will not power down the SD/eMMC card during
-runtime suspend, we should not do software reset for all. To fix this
-issue, adding a specific reset operation that adds one condition to validate
-the power mode to decide if we can do software reset for all or just reset
-command and data lines.
-
-Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Co-developed-by: Michael K Johnson <johnsonm@danlj.org>
+Signed-off-by: Michael K Johnson <johnsonm@danlj.org>
 ---
-Changess from v3:
- - Use ios.power_mode to validate if the card is power down or not.
+ drivers/mmc/host/sdhci.c | 33 ++++++++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 9 deletions(-)
 
-Changes from v2:
- - Simplify the sdhci_sprd_reset() by issuing sdhci_reset().
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 59acf8e3331e..fd684d7a5f15 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -1636,15 +1636,11 @@ void sdhci_enable_clk(struct sdhci_host *host, u16 clk)
+        clk |= SDHCI_CLOCK_INT_EN;
+        sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
 
-Changes from v1:
- - Add a specific reset operation instead of changing the core to avoid
- affecting other hardware.
----
- drivers/mmc/host/sdhci-sprd.c |   19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+-       /* Wait max 20 ms */
+-       timeout = ktime_add_ms(ktime_get(), 20);
+-       while (1) {
+-               bool timedout = ktime_after(ktime_get(), timeout);
+-
+-               clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
+-               if (clk & SDHCI_CLOCK_INT_STABLE)
+-                       break;
+-               if (timedout) {
++       /* Wait max 150 ms */
++       timeout = ktime_add_ms(ktime_get(), 150);
++       while (!((clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL))
++               & SDHCI_CLOCK_INT_STABLE)) {
++               if (ktime_after(ktime_get(), timeout)) {
+                        pr_err("%s: Internal clock never stabilised.\n",
+                               mmc_hostname(host->mmc));
+                        sdhci_dumpregs(host);
+@@ -1653,8 +1649,27 @@ void sdhci_enable_clk(struct sdhci_host *host, u16 clk)
+                udelay(10);
+        }
 
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index 603a5d9..94f9726 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -373,6 +373,23 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
- 	return 1 << 31;
++       clk |= SDHCI_CLOCK_PLL_EN;
++       clk &= ~SDHCI_CLOCK_INT_STABLE;
++       sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
++
++       /* Wait max 150 ms */
++       timeout = ktime_add_ms(ktime_get(), 150);
++       while (!((clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL))
++               & SDHCI_CLOCK_INT_STABLE)) {
++               if (ktime_after(ktime_get(), timeout)) {
++                       pr_err("%s: PLL clock never stabilised.\n",
++                              mmc_hostname(host->mmc));
++                       sdhci_dumpregs(host);
++                       return;
++               }
++               udelay(10);
++       }
++
+        clk |= SDHCI_CLOCK_CARD_EN;
+        sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
++
++       mdelay(1);
  }
- 
-+static void sdhci_sprd_reset(struct sdhci_host *host, u8 mask)
-+{
-+	struct mmc_host *mmc = host->mmc;
-+
-+	/*
-+	 * When try to reset controller after runtime suspend, we should not
-+	 * reset for all if the SD/eMMC card is not power down, just reset
-+	 * command and data lines instead. Otherwise will meet some strange
-+	 * behaviors for Spreadtrum host controller.
-+	 */
-+	if (host->runtime_suspended && (mask & SDHCI_RESET_ALL) &&
-+	    mmc->ios.power_mode == MMC_POWER_ON)
-+		mask = SDHCI_RESET_CMD | SDHCI_RESET_DATA;
-+
-+	sdhci_reset(host, mask);
-+}
-+
- static struct sdhci_ops sdhci_sprd_ops = {
- 	.read_l = sdhci_sprd_readl,
- 	.write_l = sdhci_sprd_writel,
-@@ -381,7 +398,7 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
- 	.get_max_clock = sdhci_sprd_get_max_clock,
- 	.get_min_clock = sdhci_sprd_get_min_clock,
- 	.set_bus_width = sdhci_set_bus_width,
--	.reset = sdhci_reset,
-+	.reset = sdhci_sprd_reset,
- 	.set_uhs_signaling = sdhci_sprd_set_uhs_signaling,
- 	.hw_reset = sdhci_sprd_hw_reset,
- 	.get_max_timeout_count = sdhci_sprd_get_max_timeout_count,
--- 
-1.7.9.5
+ EXPORT_SYMBOL_GPL(sdhci_enable_clk);
 
+--
+2.22.0
+
+________________________________
+
+Genesys Logic Email Confidentiality Notice:
+This mail and any attachments may contain information that is confidential, proprietary, privileged or otherwise protected by law. The mail is intended solely for the named addressee (or a person responsible for delivering it to the addressee). If you are not the intended recipient of this mail, you are not authorized to read, print, copy or disseminate this mail.
+
+If you have received this email in error, please notify us immediately by reply email and immediately delete this message and any attachments from your system. Please be noted that any unauthorized use, dissemination, distribution or copying of this email is strictly prohibited.
+________________________________
