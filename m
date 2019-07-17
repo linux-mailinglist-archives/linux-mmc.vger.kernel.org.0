@@ -2,184 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7D066B537
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Jul 2019 05:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C110E6B649
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Jul 2019 08:08:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728491AbfGQD6S (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jul 2019 23:58:18 -0400
-Received: from new3-smtp.messagingengine.com ([66.111.4.229]:55753 "EHLO
-        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726069AbfGQD6S (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jul 2019 23:58:18 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id CFD5721F1;
-        Tue, 16 Jul 2019 23:58:16 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute4.internal (MEProxy); Tue, 16 Jul 2019 23:58:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm3; bh=7Kdhi4X59fRaX9BlrrSVCJVURd/WfMF
-        FykQ50ZgZyNs=; b=DhsuuKExeeTQFKi0vfZAjumQFLgV8B2f7odFp/bnfPE03M/
-        6ZtJRE4TYCdrPEztEzQtcrBwfWixCOJO/20E3kEhYzg/xIeMFnwI93X98zqH6DRm
-        pbWVkUK85zkzLAR2lL0inZ0Q1WcODlhrfvPEPJzsa4UUNLwfBqHSu40se5KFD5qv
-        vkB0DYhuprc8RwKmTTUFz7eyM4FKBwcrZS2uBo2L6jFAAmEtNIyj26Yz0hmHuM2S
-        qfCdKPVLAB7hu2s9B1guhDP8ZCBlQeCDy0KXPw5L9zQFBEOPf+//F6qmWws69AEF
-        eo17oubYBHvjuX+H71vhhx/xF9iUYvnVnAS8Xrw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=7Kdhi4
-        X59fRaX9BlrrSVCJVURd/WfMFFykQ50ZgZyNs=; b=HTsZBQ5Q15RDtChXdnGRqb
-        cndQnVjFvbB6k4zmY0r6J/Y/EKh2FkdZ30MEkNTd/rNdnd1HsTYPBj8U+Ux+Kyl2
-        Dt2rLSwbVBMntmHyi3iKknjIN0wM9LPC+2M04qEdBihkS/v1QjP5/JKFz+5Ah3uf
-        YqQLFu/EvyCIWKmYzhCGttLEDBiI/UtxecX6axrKdcPybuXf+XDA80YfxBLAkS/v
-        9tT7xX/q3N1Upmil2XLO9ahkbbO+PIg4SPA4zQ5RzEzlnjdB9Ob9i7CUCrzstCYv
-        165p0YgmCNzVPZg4wNedNnnWZrwYEKHWZiRAe2J5hJDhnSOFFoPST0eUn5DL9r6A
-        ==
-X-ME-Sender: <xms:1ZwuXdaosgMfe3B7l1BaktbXWTBMtpPl-ra3tud9soZqbx5xJPySDA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddriedugdejkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvufgtsehttdertderredtnecuhfhrohhmpedftehnughr
-    vgifucflvghffhgvrhihfdcuoegrnhgurhgvfiesrghjrdhiugdrrghuqeenucffohhmrg
-    hinhepuggvvhhitggvthhrvggvrdhorhhgpdifrhhithhinhhgqdhstghhvghmrgdrmhgu
-    necurfgrrhgrmhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghjrdhiugdrrghunecuve
-    hluhhsthgvrhfuihiivgeptd
-X-ME-Proxy: <xmx:1ZwuXYocL_GqGv4FsoyjivAOobFVhK3V4Nq1xrys8zftqMlS8744IA>
-    <xmx:1ZwuXa8PlsEroWBqpGp2zqbpWQxC618TdllQoYPKltAu4PB02qcfPA>
-    <xmx:1ZwuXf_wToUY0t73T0YeuGwKfGKsik7sYkW8ojuCnVuA6xA4E_y91Q>
-    <xmx:2JwuXfl34humbqJzGQtb2LlJj8wND-q3vC7QOD0iCyO3Y4nUcPGWgw>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 5AAA3E00CC; Tue, 16 Jul 2019 23:58:13 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.1.6-731-g19d3b16-fmstable-20190627v1
-Mime-Version: 1.0
-Message-Id: <e7b472a8-73ae-4f39-a3e4-9e2d9dbcd01e@www.fastmail.com>
-In-Reply-To: <CAL_JsqKMo_uv4Ur-D4NaUXk94hGJeRt5fg+0998dDjJCTgumGg@mail.gmail.com>
-References: <20190712033214.24713-1-andrew@aj.id.au>
- <20190712033214.24713-2-andrew@aj.id.au>
- <CAL_JsqLkOtsAxj9NvNB=EEkH00k-dtNedNY042uuntSmcjhDhA@mail.gmail.com>
- <3fe55ea9-b949-48a0-9eab-90ad3bc1ee2a@www.fastmail.com>
- <CAL_JsqKMo_uv4Ur-D4NaUXk94hGJeRt5fg+0998dDjJCTgumGg@mail.gmail.com>
-Date:   Wed, 17 Jul 2019 13:27:59 +0930
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Rob Herring" <robh+dt@kernel.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        "Joel Stanley" <joel@jms.id.au>,
-        "Adrian Hunter" <adrian.hunter@intel.com>,
-        devicetree@vger.kernel.org,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-aspeed@lists.ozlabs.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Ryan Chen" <ryanchen.aspeed@gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: mmc: Document Aspeed SD controller
-Content-Type: text/plain
+        id S1725856AbfGQGIX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 17 Jul 2019 02:08:23 -0400
+Received: from mga17.intel.com ([192.55.52.151]:1203 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725799AbfGQGIX (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 17 Jul 2019 02:08:23 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Jul 2019 23:08:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,273,1559545200"; 
+   d="scan'208";a="170154892"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
+  by orsmga003.jf.intel.com with ESMTP; 16 Jul 2019 23:08:20 -0700
+Subject: Re: [PATCH v4] mmc: host: sdhci-sprd: Fix the incorrect soft reset
+ operation when runtime resuming
+To:     Baolin Wang <baolin.wang@linaro.org>, ulf.hansson@linaro.org,
+        zhang.lyra@gmail.com, orsonzhai@gmail.com
+Cc:     vincent.guittot@linaro.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <89c3ef495c367d58ca3abe99a1f82c48f8c08705.1563274904.git.baolin.wang@linaro.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <66eb3053-ca2d-e2f0-edf0-9227f75a5693@intel.com>
+Date:   Wed, 17 Jul 2019 09:07:05 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <89c3ef495c367d58ca3abe99a1f82c48f8c08705.1563274904.git.baolin.wang@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-
-
-On Wed, 17 Jul 2019, at 00:27, Rob Herring wrote:
-> On Mon, Jul 15, 2019 at 6:36 PM Andrew Jeffery <andrew@aj.id.au> wrote:
-> >
-> >
-> >
-> > On Tue, 16 Jul 2019, at 07:47, Rob Herring wrote:
-> > > On Thu, Jul 11, 2019 at 9:32 PM Andrew Jeffery <andrew@aj.id.au> wrote:
-> > > >
-> > > > The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the
-> > > > SDIO Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit
-> > > > data bus if only a single slot is enabled.
-> > > >
-> > > > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> > > > ---
-> > > > In v2:
-> > > >
-> > > > * Rename to aspeed,sdhci.yaml
-> > > > * Rename sd-controller compatible
-> > > > * Add `maxItems: 1` for reg properties
-> > > > * Move sdhci subnode description to patternProperties
-> > > > * Drop sdhci compatible requirement
-> > > > * #address-cells and #size-cells are required
-> > > > * Prevent additional properties
-> > > > * Implement explicit ranges in example
-> > > > * Remove slot property
-> > > >
-> > > >  .../devicetree/bindings/mmc/aspeed,sdhci.yaml | 90 +++++++++++++++++++
-> > > >  1 file changed, 90 insertions(+)
-> > > >  create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..67a691c3348c
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-> > > > @@ -0,0 +1,90 @@
-> > > > +# SPDX-License-Identifier: GPL-2.0-or-later
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/mmc/aspeed,sdhci.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: ASPEED SD/SDIO/eMMC Controller
-> > > > +
-> > > > +maintainers:
-> > > > +  - Andrew Jeffery <andrew@aj.id.au>
-> > > > +  - Ryan Chen <ryanchen.aspeed@gmail.com>
-> > > > +
-> > > > +description: |+
-> > > > +  The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the SDIO
-> > > > +  Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit data bus if
-> > > > +  only a single slot is enabled.
-> > > > +
-> > > > +  The two slots are supported by a common configuration area. As the SDHCIs for
-> > > > +  the slots are dependent on the common configuration area, they are described
-> > > > +  as child nodes.
-> > > > +
-> > > > +properties:
-> > > > +  compatible:
-> > > > +    enum: [ aspeed,ast2400-sd-controller, aspeed,ast2500-sd-controller ]
-> > >
-> > > This is actually a list of 4 strings. Please reformat to 1 per line.
-> >
-> > On reflection that's obvious, but also a somewhat subtle interaction with the
-> > preference for no quotes (the obvious caveat being "except where required").
+On 17/07/19 5:28 AM, Baolin Wang wrote:
+> In sdhci_runtime_resume_host() function, we will always do software reset
+> for all, which will cause Spreadtrum host controller work abnormally after
+> resuming.
 > 
-> It wasn't something I'd run into before. I'm working on a check, but
-> unfortunately we can only check for quotes not needed and can't check
-> for missing quotes.
+> Thus for Spreadtrum platform that will not power down the SD/eMMC card during
+> runtime suspend, we should not do software reset for all. To fix this
+> issue, adding a specific reset operation that adds one condition to validate
+> the power mode to decide if we can do software reset for all or just reset
+> command and data lines.
 > 
-> > Thanks for pointing it out.
-> >
-> > I have been running `make dt_binding_check` and `make dtbs_check` over
-> > these, looks like I need to up my game a bit though. Do you do additional things
-> > in your workflow?
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
+> ---
+> Changess from v3:
+>  - Use ios.power_mode to validate if the card is power down or not.
 > 
-> That should have thrown the warnings. If you aren't seeing those, do
-> you have dtschema package installed (see
-> Documentation/devicetree/writing-schema.md)?
+> Changes from v2:
+>  - Simplify the sdhci_sprd_reset() by issuing sdhci_reset().
+> 
+> Changes from v1:
+>  - Add a specific reset operation instead of changing the core to avoid
+>  affecting other hardware.
+> ---
+>  drivers/mmc/host/sdhci-sprd.c |   19 ++++++++++++++++++-
+>  1 file changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+> index 603a5d9..94f9726 100644
+> --- a/drivers/mmc/host/sdhci-sprd.c
+> +++ b/drivers/mmc/host/sdhci-sprd.c
+> @@ -373,6 +373,23 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
+>  	return 1 << 31;
+>  }
+>  
+> +static void sdhci_sprd_reset(struct sdhci_host *host, u8 mask)
+> +{
+> +	struct mmc_host *mmc = host->mmc;
+> +
+> +	/*
+> +	 * When try to reset controller after runtime suspend, we should not
+> +	 * reset for all if the SD/eMMC card is not power down, just reset
+> +	 * command and data lines instead. Otherwise will meet some strange
+> +	 * behaviors for Spreadtrum host controller.
+> +	 */
+> +	if (host->runtime_suspended && (mask & SDHCI_RESET_ALL) &&
+> +	    mmc->ios.power_mode == MMC_POWER_ON)
+> +		mask = SDHCI_RESET_CMD | SDHCI_RESET_DATA;
+> +
+> +	sdhci_reset(host, mask);
+> +}
+> +
+>  static struct sdhci_ops sdhci_sprd_ops = {
+>  	.read_l = sdhci_sprd_readl,
+>  	.write_l = sdhci_sprd_writel,
+> @@ -381,7 +398,7 @@ static unsigned int sdhci_sprd_get_max_timeout_count(struct sdhci_host *host)
+>  	.get_max_clock = sdhci_sprd_get_max_clock,
+>  	.get_min_clock = sdhci_sprd_get_min_clock,
+>  	.set_bus_width = sdhci_set_bus_width,
+> -	.reset = sdhci_reset,
+> +	.reset = sdhci_sprd_reset,
+>  	.set_uhs_signaling = sdhci_sprd_set_uhs_signaling,
+>  	.hw_reset = sdhci_sprd_hw_reset,
+>  	.get_max_timeout_count = sdhci_sprd_get_max_timeout_count,
+> 
 
-I do have it installed, but as mentioned previously there's a fair few
-warnings emitted currently by the Aspeed devicetrees, so it might have
-got lost in the noise. I've started to clean that up, though probably need
-some direction there too.
-
-Separately I'm currently trying to track down an issue where I get errors
-on the Aspeed dts cpu nodes about failing to match the riscv CPU
-compatibles, it seems dt-validate isn't finding the ARM CPU compatible
-strings. It feels more annoying to track down that I'd like.
-
-> Or it could be erroring
-> out on something else first. There's a few breakages that I'm trying
-> to fix.
-
-Okay. I'll keep an eye on the dt-schema repo.
-
-Cheers,
-
-Andrew
