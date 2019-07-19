@@ -2,38 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0358E6DC46
-	for <lists+linux-mmc@lfdr.de>; Fri, 19 Jul 2019 06:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D5276DE1C
+	for <lists+linux-mmc@lfdr.de>; Fri, 19 Jul 2019 06:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389807AbfGSEOi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 19 Jul 2019 00:14:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50854 "EHLO mail.kernel.org"
+        id S1733026AbfGSEIU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 19 Jul 2019 00:08:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42608 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389786AbfGSEOh (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 19 Jul 2019 00:14:37 -0400
+        id S1731407AbfGSEIU (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 19 Jul 2019 00:08:20 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F2DAB2082F;
-        Fri, 19 Jul 2019 04:14:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6715721872;
+        Fri, 19 Jul 2019 04:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563509676;
-        bh=OG3BhARyERKdgIkunOz9Kvv8QPSf6id5watSfgNc7QU=;
+        s=default; t=1563509299;
+        bh=N/baHv5FccMsejpscTTRCDSezMRcSj1IH53OyTadKEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ydqxrfnqOFTkmah6lLSVeHvTRM+GZLQwpWa4N84CJmuTDhBurMnGjKPw1U+JyM52U
-         MOQt+aJpxLHAFke6OOdbK9l6/OvkxFGWfqngfq15IJsBLqEiVqA7XBiTn7FzA8fEsb
-         QfrzxU5u4y4ts1o6tDuUa5fhPKAJI6iwzpcJrDNs=
+        b=nhEyt9DMh0NEb+/Q2G2uZrRFYTARF5DfnvPzlVtbrhTHdJ9zD1H6mbFeKkN7uEtpX
+         oTPJh0epU3pI9aF0J629yyN7o204qWr2XLUTdlUzwpFXcotCR8av+QHAvj+OKVEchi
+         2VWln988T6BuM1PoUlzdOGNbS19jw1Cfdj/cW9Fc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Wang Hai <wanghai26@huawei.com>, Hulk Robot <hulkci@huawei.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 07/35] memstick: Fix error cleanup path of memstick_init
-Date:   Fri, 19 Jul 2019 00:13:55 -0400
-Message-Id: <20190719041423.19322-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 022/101] memstick: Fix error cleanup path of memstick_init
+Date:   Fri, 19 Jul 2019 00:06:13 -0400
+Message-Id: <20190719040732.17285-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190719041423.19322-1-sashal@kernel.org>
-References: <20190719041423.19322-1-sashal@kernel.org>
+In-Reply-To: <20190719040732.17285-1-sashal@kernel.org>
+References: <20190719040732.17285-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -86,7 +86,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
-index 4d673a626db4..1041eb7a6167 100644
+index 1246d69ba187..b1564cacd19e 100644
 --- a/drivers/memstick/core/memstick.c
 +++ b/drivers/memstick/core/memstick.c
 @@ -629,13 +629,18 @@ static int __init memstick_init(void)
