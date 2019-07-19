@@ -2,39 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88CA96DB79
-	for <lists+linux-mmc@lfdr.de>; Fri, 19 Jul 2019 06:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FAB36DC06
+	for <lists+linux-mmc@lfdr.de>; Fri, 19 Jul 2019 06:13:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733254AbfGSEIv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 19 Jul 2019 00:08:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43248 "EHLO mail.kernel.org"
+        id S2387918AbfGSENU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 19 Jul 2019 00:13:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49202 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731912AbfGSEIv (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 19 Jul 2019 00:08:51 -0400
+        id S2387909AbfGSENT (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 19 Jul 2019 00:13:19 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B6463218BB;
-        Fri, 19 Jul 2019 04:08:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A2CAE2082F;
+        Fri, 19 Jul 2019 04:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563509330;
-        bh=GCknv2iR1X3DAJdVXiOIgIt2QQqLeu1ocCWVTs0WptI=;
+        s=default; t=1563509599;
+        bh=OG3BhARyERKdgIkunOz9Kvv8QPSf6id5watSfgNc7QU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rk0Bdamqhh9kOkxY0ujwG9C4PkweiNnSersDdrLpRh1OjYIu40xXQMBnIrJN9tcia
-         hCwUzpaHepyWJXqLIbuuQ7R4pDO+FPsFNwRm06u9iSpn5ubU69BIsFWgRXA/Sa6ZNP
-         L1eCXk5k+SSec33WLk7R51A1lQzGojrsWujQ/is0=
+        b=ZMB5lFzDLEMB2VwTKoyxeSsFW0DIAJMRxuvtKOlg4cg57QesaHwioupq/DLU+tnB1
+         Zi4K5RVqWyM7zyadyZloVoAMYHe70EiOfoqOsjMA6LCjHCEWXFVc7QwOVjkDVvZsbW
+         AnjtJ5D3LyPUDTcjFzGnDI7cWqVPWREHAevu8fvM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Raul E Rangel <rrangel@chromium.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Cc:     Wang Hai <wanghai26@huawei.com>, Hulk Robot <hulkci@huawei.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 037/101] mmc: sdhci: sdhci-pci-o2micro: Check if controller supports 8-bit width
-Date:   Fri, 19 Jul 2019 00:06:28 -0400
-Message-Id: <20190719040732.17285-37-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 09/45] memstick: Fix error cleanup path of memstick_init
+Date:   Fri, 19 Jul 2019 00:12:28 -0400
+Message-Id: <20190719041304.18849-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190719040732.17285-1-sashal@kernel.org>
-References: <20190719040732.17285-1-sashal@kernel.org>
+In-Reply-To: <20190719041304.18849-1-sashal@kernel.org>
+References: <20190719041304.18849-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,51 +43,75 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Raul E Rangel <rrangel@chromium.org>
+From: Wang Hai <wanghai26@huawei.com>
 
-[ Upstream commit de23f0b757766d9fae59df97da6e8bdc5b231351 ]
+[ Upstream commit 65f1a0d39c289bb6fc85635528cd36c4b07f560e ]
 
-The O2 controller supports 8-bit EMMC access.
+If bus_register fails. On its error handling path, it has cleaned up
+what it has done. There is no need to call bus_unregister again.
+Otherwise, if bus_unregister is called, issues such as null-ptr-deref
+will arise.
 
-JESD84-B51 section A.6.3.a defines the bus testing procedure that
-`mmc_select_bus_width()` implements. This is used to determine the actual
-bus width of the eMMC.
+Syzkaller report this:
 
-Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+kobject_add_internal failed for memstick (error: -12 parent: bus)
+BUG: KASAN: null-ptr-deref in sysfs_remove_file_ns+0x1b/0x40 fs/sysfs/file.c:467
+Read of size 8 at addr 0000000000000078 by task syz-executor.0/4460
+
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0xa9/0x10e lib/dump_stack.c:113
+ __kasan_report+0x171/0x18d mm/kasan/report.c:321
+ kasan_report+0xe/0x20 mm/kasan/common.c:614
+ sysfs_remove_file_ns+0x1b/0x40 fs/sysfs/file.c:467
+ sysfs_remove_file include/linux/sysfs.h:519 [inline]
+ bus_remove_file+0x6c/0x90 drivers/base/bus.c:145
+ remove_probe_files drivers/base/bus.c:599 [inline]
+ bus_unregister+0x6e/0x100 drivers/base/bus.c:916 ? 0xffffffffc1590000
+ memstick_init+0x7a/0x1000 [memstick]
+ do_one_initcall+0xb9/0x3b5 init/main.c:914
+ do_init_module+0xe0/0x330 kernel/module.c:3468
+ load_module+0x38eb/0x4270 kernel/module.c:3819
+ __do_sys_finit_module+0x162/0x190 kernel/module.c:3909
+ do_syscall_64+0x72/0x2a0 arch/x86/entry/common.c:298
+ entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+Fixes: baf8532a147d ("memstick: initial commit for Sony MemoryStick support")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wang Hai <wanghai26@huawei.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-o2micro.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/memstick/core/memstick.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
-index fa8d9da2ab7f..e248d7945c06 100644
---- a/drivers/mmc/host/sdhci-pci-o2micro.c
-+++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-@@ -290,11 +290,21 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
- {
- 	struct sdhci_pci_chip *chip;
- 	struct sdhci_host *host;
--	u32 reg;
-+	u32 reg, caps;
- 	int ret;
+diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
+index 4d673a626db4..1041eb7a6167 100644
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -629,13 +629,18 @@ static int __init memstick_init(void)
+ 		return -ENOMEM;
  
- 	chip = slot->chip;
- 	host = slot->host;
+ 	rc = bus_register(&memstick_bus_type);
+-	if (!rc)
+-		rc = class_register(&memstick_host_class);
++	if (rc)
++		goto error_destroy_workqueue;
+ 
+-	if (!rc)
+-		return 0;
++	rc = class_register(&memstick_host_class);
++	if (rc)
++		goto error_bus_unregister;
 +
-+	caps = sdhci_readl(host, SDHCI_CAPABILITIES);
-+
-+	/*
-+	 * mmc_select_bus_width() will test the bus to determine the actual bus
-+	 * width.
-+	 */
-+	if (caps & SDHCI_CAN_DO_8BIT)
-+		host->mmc->caps |= MMC_CAP_8_BIT_DATA;
-+
- 	switch (chip->pdev->device) {
- 	case PCI_DEVICE_ID_O2_SDS0:
- 	case PCI_DEVICE_ID_O2_SEABIRD0:
++	return 0;
+ 
++error_bus_unregister:
+ 	bus_unregister(&memstick_bus_type);
++error_destroy_workqueue:
+ 	destroy_workqueue(workqueue);
+ 
+ 	return rc;
 -- 
 2.20.1
 
