@@ -2,135 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F2CD709E2
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 21:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E09A70B36
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 23:22:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732270AbfGVTlg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 22 Jul 2019 15:41:36 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:45319 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732260AbfGVTlc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Jul 2019 15:41:32 -0400
-Received: by mail-pg1-f196.google.com with SMTP id o13so18135324pgp.12
-        for <linux-mmc@vger.kernel.org>; Mon, 22 Jul 2019 12:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ATbFy1aIdbWHFM03S3oai17NaO/neBJFfQYViTxrNMs=;
-        b=fLXr6gDQl11kx/gfLPu/pKAYQ3oWpeGmz6q8QFeSzDdvzyBV3Jixq5ya13oHO5dqfo
-         Nt5xcerqY4a9O3JWvuPb94Tyrayne1SI5T6+UGeut3CsFAKBfhZw9yU7Q5/RHukXvoYY
-         cqcqRPZNeTl+YDf2PzrHdCfdrC3TgIUq6fJSI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ATbFy1aIdbWHFM03S3oai17NaO/neBJFfQYViTxrNMs=;
-        b=rGwaLPPZnwH9dkzqS+BBImKDJtKMLAxO/+xktjYyZ49P/4iRqygtUv5NPIZkd5/8tJ
-         FWfiPcl3AVFpo+yrZXj63fcAF5C/R08Uj5cpHYpaFQQnnEd739m5sw2XUU6Dsf1Q8P6M
-         BFvVPQDpzFsAF5XLLPEgIuk5tokzJwz3xb0CxsITgj8Qm2FiycMcJbxUwbM6wrAAuXdv
-         5LgHTBQLiobi0fxT3g3AW37xObn+HX+m1pPj6xaOWoPrRf8iCPG+Fs1LEnFP22CHxswk
-         QH0Fs57yXOlLFMshG34tSrU1Fad8qvwjY8YYQslWOYzrwwbeJVt5uQvtTcvTK1UfZg42
-         4JSQ==
-X-Gm-Message-State: APjAAAVJfE6kOrozgR83RmqPnD/Mc+hXmrPCw2bQ92/JnU+Vktyos/hs
-        Kp50aKMc6gUNQvFUGEyGEmBNjA==
-X-Google-Smtp-Source: APXvYqxe3jk2Td0NZ3MiOAVs4zOozU2NCyEe4BhAwMABU222PrrTzeC4C4T+vjjW5dwEp508Pc+S0A==
-X-Received: by 2002:a17:90a:ba93:: with SMTP id t19mr77532204pjr.139.1563824491627;
-        Mon, 22 Jul 2019 12:41:31 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id z4sm29838803pgp.80.2019.07.22.12.41.30
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 22 Jul 2019 12:41:31 -0700 (PDT)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Ganapathi Bhat <gbhat@marvell.com>, linux-wireless@vger.kernel.org,
-        Andreas Fenkart <afenkart@gmail.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        linux-rockchip@lists.infradead.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        netdev@vger.kernel.org, Avri Altman <avri.altman@wdc.com>,
-        linux-mmc@vger.kernel.org, davem@davemloft.net,
-        Xinming Hu <huxinming820@gmail.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] mwifiex: Make use of the new sdio_trigger_replug() API to reset
-Date:   Mon, 22 Jul 2019 12:39:39 -0700
-Message-Id: <20190722193939.125578-3-dianders@chromium.org>
-X-Mailer: git-send-email 2.22.0.657.g960e92d24f-goog
-In-Reply-To: <20190722193939.125578-1-dianders@chromium.org>
-References: <20190722193939.125578-1-dianders@chromium.org>
+        id S1732587AbfGVVWH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 22 Jul 2019 17:22:07 -0400
+Received: from mail-eopbgr730127.outbound.protection.outlook.com ([40.107.73.127]:38141
+        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1732574AbfGVVWG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 22 Jul 2019 17:22:06 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bo+t8QY4lAFO57tHqU2jUQxgzqORDrffqM6iTEU/yF012wS90c9WjRjbO/ME2rbJJMF2xtLtTgPAjizZE9WX9WMsAfKN/zmhoGFxCwg8lT4h9NLfKfkRwgIAYu1YX9l0p2uvdHV4VI4B/lGU4SPVUXxK6GQ3cdNXajVxQkQVEI8A2uToqevFL2K7cXF3iPT/Er4O0ELkTnumHlloJ6eEsno24wWrLu4MkMFo1fgAw9gYfDRSgCKyLLq+Z8+5+shHyAWJiiQZtobfG6bFGCdSjTOUoEjPdir/eR4d7okwGdAugQzJWDBzJeh8vU1j7pd+8FKBcF/55jPwiHikc9GTXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eP1F47k7v6w0gs5cw3weXd8Pf8jOX+jjksUNgU5Z/U4=;
+ b=NwLQ1UvIFt06wTW5E6oYEuYg0QIrvWPdqZrsQlL6Xt5xhFDDHCItoZvSQIGVLpaiOoxfFZyy+GpbOUpcE3kxKFpP7ERITF4u9NdS/lxeXILrjL5asJwk1pcqu9Ea9045VMHolbqwJIe16npq5dB6vVa9RCHC5z3KE/wB2lYfDcwk547ZEZzBr5gWJOsjDFyjkQcF4RHd9N174Qh0uMe4WWlYTZpMoi29pSWBwkwLCMnBOBr5moYDSdEVVg38mwLr1JBGEIcl5K/ZeYWXDhlXy5M+AAHfnriFTw8we3yTYwsAAFE1RDWhaND5yEuzIIuKGd9Idf9coJDOCblvk9K0og==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=wavecomp.com;dmarc=pass action=none
+ header.from=mips.com;dkim=pass header.d=mips.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eP1F47k7v6w0gs5cw3weXd8Pf8jOX+jjksUNgU5Z/U4=;
+ b=jPo3yttNDtKXogcz3x8OGb+8JDOGSucsnN5Uj7I1yJG0sJLDyigqQdRMqd0bXwgbnzV3XiYbewrOhokJJh+BmUJ4+9RJ1y9uDfbfqmcc5kxV6G0gzuer7aR4p9ZOcLDRXSTt+klFNqfd4PaE5FKZFvVgv1WwJmTheGgFAKsl2Js=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
+ MWHPR2201MB1757.namprd22.prod.outlook.com (10.164.133.167) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2094.11; Mon, 22 Jul 2019 21:22:04 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::49d3:37f8:217:c83]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::49d3:37f8:217:c83%6]) with mapi id 15.20.2094.017; Mon, 22 Jul 2019
+ 21:22:04 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+CC:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <pburton@wavecomp.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH 2/3] MIPS: DTS: jz4740: Add node for the MMC driver
+Thread-Topic: [PATCH 2/3] MIPS: DTS: jz4740: Add node for the MMC driver
+Thread-Index: AQHUtOntLO/EgPGbyEyjPeWfCtJvS6bYPS6A
+Date:   Mon, 22 Jul 2019 21:22:04 +0000
+Message-ID: <MWHPR2201MB127739803859CA9A3917CFD8C1C40@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20190125200927.21045-2-paul@crapouillou.net>
+In-Reply-To: <20190125200927.21045-2-paul@crapouillou.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR07CA0057.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::34) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:18::12)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [12.94.197.246]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 66a96d5d-fba6-49a2-f5e0-08d70eeaa48d
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MWHPR2201MB1757;
+x-ms-traffictypediagnostic: MWHPR2201MB1757:
+x-microsoft-antispam-prvs: <MWHPR2201MB17574E3380C3EB51B44CD1E9C1C40@MWHPR2201MB1757.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-forefront-prvs: 01068D0A20
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(376002)(39850400004)(346002)(136003)(366004)(199004)(189003)(66446008)(66476007)(3846002)(6116002)(66556008)(66066001)(6436002)(64756008)(66946007)(52536014)(25786009)(14454004)(558084003)(476003)(7416002)(8676002)(6916009)(9686003)(305945005)(74316002)(7736002)(99286004)(71190400001)(52116002)(256004)(71200400001)(4326008)(6246003)(26005)(81156014)(68736007)(186003)(8936002)(81166006)(2906002)(478600001)(486006)(11346002)(446003)(5660300002)(55016002)(53936002)(316002)(54906003)(42882007)(33656002)(386003)(7696005)(6506007)(102836004)(76176011)(229853002)(44832011);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1757;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: btNdvlVYU5FXLy4+jBlOPIZsrb+AHblqkssVtOH26S49aiTvQDBIb1rZIBMcmHT4CLUiNbFUEQ8Z6tiyUR3+FMFVnZBxvpOxV+4EtqUZJMJ17fT0X8xXF8rDyIJxip+ZzR6sLkGDxwnXD3nAZySjjldIYFlar4iXTmyOarHwx1SF8nOBMna54T4N13dtOMogKjPsDnOCwfdwm3GzMg/3YOn2mgokdVNa2Y04j1Rr1yfVIe0gtVTs0ausDyFomYMOygNu4xRs5npGI7oocYDlYnOcnvQQuoyf+QYlO3oH9TbaIp8LbIDN1tp5oWAxVqjaWq18HsFZmikYU0PA5qyGNOJwvQKSbCkS0FfifV66TSqCuwMPywOSE0jRn5qlyaDDMcOptD8xAh2opZWogXGjZB5y+po/C1wHuFc8OilbWMA=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66a96d5d-fba6-49a2-f5e0-08d70eeaa48d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jul 2019 21:22:04.6391
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: pburton@wavecomp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1757
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-As described in the patch ("mmc: core: Add sdio_trigger_replug()
-API"), the current mwifiex_sdio_card_reset() is broken in the cases
-where we're running Bluetooth on a second SDIO func on the same card
-as WiFi.  The problem goes away if we just use the
-sdio_trigger_replug() API call.
+Hello,
 
-NOTE: Even though with this new solution there is less of a reason to
-do our work from a workqueue (the unplug / plug mechanism we're using
-is possible for a human to perform at any time so the stack is
-supposed to handle it without it needing to be called from a special
-context), we still need a workqueue because the Marvell reset function
-could called from a context where sleeping is invalid and thus we
-can't claim the host.  One example is Marvell's wakeup_timer_fn().
+Paul Cercueil wrote:
+> Add a devicetree node for the jz4740-mmc driver.
+>=20
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 
-Cc: Andreas Fenkart <afenkart@gmail.com>
-Cc: Brian Norris <briannorris@chromium.org>
-Fixes: b4336a282db8 ("mwifiex: sdio: reset adapter using mmc_hw_reset")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
----
+Applied to mips-next.
 
-Changes in v2:
-- Removed clear_bit() calls and old comment (Brian Norris).
-- Explicit CC of Andreas Fenkart.
-- Explicit CC of Brian Norris.
-- Add "Fixes" pointing at the commit Brian talked about.
-- Add Brian's Reviewed-by tag.
+Thanks,
+    Paul
 
- drivers/net/wireless/marvell/mwifiex/sdio.c | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-index 24c041dad9f6..7ec5068f6ffd 100644
---- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-@@ -2218,24 +2218,10 @@ static void mwifiex_sdio_card_reset_work(struct mwifiex_adapter *adapter)
- {
- 	struct sdio_mmc_card *card = adapter->card;
- 	struct sdio_func *func = card->func;
--	int ret;
--
--	mwifiex_shutdown_sw(adapter);
- 
--	/* power cycle the adapter */
- 	sdio_claim_host(func);
--	mmc_hw_reset(func->card->host);
-+	sdio_trigger_replug(func);
- 	sdio_release_host(func);
--
--	/* Previous save_adapter won't be valid after this. We will cancel
--	 * pending work requests.
--	 */
--	clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
--	clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
--
--	ret = mwifiex_reinit_sw(adapter);
--	if (ret)
--		dev_err(&func->dev, "reinit failed: %d\n", ret);
- }
- 
- /* This function read/write firmware */
--- 
-2.22.0.657.g960e92d24f-goog
-
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paul.burton@mips.com to report it. ]
