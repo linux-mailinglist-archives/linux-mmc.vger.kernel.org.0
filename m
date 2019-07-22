@@ -2,262 +2,147 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65E4F6F983
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 08:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 380C86FA38
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 09:23:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726762AbfGVGYB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 22 Jul 2019 02:24:01 -0400
-Received: from mout.gmx.net ([212.227.17.21]:44721 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725879AbfGVGYB (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 22 Jul 2019 02:24:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1563776617;
-        bh=z18lzCFKYvrFVHVAu6EYGbfVShdzolb5W7gum8yzyTw=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=PMdr0Xs/BDri+k3ruvU8E9f/PTmshqM6ZbByqU7iwcn/Dy/nXqizy9VAvnSXbE4Ld
-         c6S6qO0zAsM7gJtOwYOMZCW7Dh+aFAwq1bwafDg0YjXgeO5SL0JwHJzx2vLHyPFzbU
-         5jn8oAn2ygsdSWwzmq8YDJGK5e8hvYoUtBOn4OfM=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([37.4.249.98]) by mail.gmx.com (mrgmx102
- [212.227.17.168]) with ESMTPSA (Nemesis) id 0M7UUd-1ib4501cDX-00xMvP; Mon, 22
- Jul 2019 08:23:37 +0200
-From:   Stefan Wahren <wahrenst@gmx.net>
-To:     Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        id S1727628AbfGVHXU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 22 Jul 2019 03:23:20 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:36446 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726130AbfGVHXU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Jul 2019 03:23:20 -0400
+Received: by mail-wm1-f68.google.com with SMTP id g67so30075987wme.1
+        for <linux-mmc@vger.kernel.org>; Mon, 22 Jul 2019 00:23:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:openpgp:autocrypt:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=LD9GCw1eG9QEzwE6oFNEQIzVZACLaoYqLB+k/zbJCdM=;
+        b=F74SsFtcbnsipPjtAFo3nZeUH6oXlGCJDRP0xnmIpynir4g/z65Znh/Rxdd2tc3lki
+         wx0RAIVfTJIsG7ZTIfRtu2bdYa+BCBHz3OVhl8COPy1j3OnmhfseibhuazJJnFwc4sMn
+         PLrUS0kTR6HsNoSyBW3EEOG4Pfl0FhLObowRIh1kbW+zfjWnouJe1brgMeHF/LWG+Ncr
+         NHoZ233iLFrxLCi//oLTNEjrGvo+2+wva77zg9rRZjTwCqO2VULUGR53ys5IKvj31ey9
+         mdRsjJpQ8bQsS7Sc80nE9tMeweKFjVNI19QKv9GeLPDowm9rs3BZRoBwRngv6pEh3p4t
+         2g5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :organization:message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=LD9GCw1eG9QEzwE6oFNEQIzVZACLaoYqLB+k/zbJCdM=;
+        b=R5wkdjKe1opkLHN9snUzvhHf+vJq/CDX8vCbJ5jn5NvOJqlst6XP6zKodnMTv30XNd
+         oHJtX0l+w97IkIQbsotPoRi0pgpxRt8mXMVLVa96BaZCJzZr9bHytbpmRw3j3y14PV+j
+         QSP2J8TCc+irQCVKNO8qpQpmmd9e/ID0aWERXkXc1Iy+3PT/otH8odrLDcFNG1Kv2muL
+         4Au3gdXMaXkxT/OwFuWF7f8E5gWLVouByYSPDKYXYsJnVcHCCYlc1x8tkBpbtMg6SK8v
+         273AYrkGXPr1oFv55sw9CP9++N582JREU6D1XrCzPwpshhWAkxY8t/09vbUWelGl6SeA
+         YW9w==
+X-Gm-Message-State: APjAAAWFXkcTtwsmPONTjHkym5T3qIkdpYrcwkdJuP+yGrXOYof6TrGM
+        pmNGgQaiFKnO3C+G21IT8GXSZA==
+X-Google-Smtp-Source: APXvYqzfS7FtcRA+07esTVYwytBlm7aKVdZY4D+n+4hAm1mqPLE6MFCdAZwiJjT7e6DFVVuG48UgJg==
+X-Received: by 2002:a1c:7f57:: with SMTP id a84mr60819167wmd.3.1563780197608;
+        Mon, 22 Jul 2019 00:23:17 -0700 (PDT)
+Received: from [192.168.1.62] (176-150-251-154.abo.bbox.fr. [176.150.251.154])
+        by smtp.gmail.com with ESMTPSA id s10sm50309877wmf.8.2019.07.22.00.23.16
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 22 Jul 2019 00:23:17 -0700 (PDT)
+Subject: Re: [PATCH 06/12] mmc: meson-mx-sdio: Fix misuse of GENMASK macro
+To:     Joe Perches <joe@perches.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kevin Hilman <khilman@baylibre.com>
+Cc:     linux-amlogic@lists.infradead.org,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     bcm-kernel-feedback-list@broadcom.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 12/18] pinctrl: bcm2835: Add support for BCM2711 pull-up functionality
-Date:   Mon, 22 Jul 2019 08:23:25 +0200
-Message-Id: <1563776607-8368-3-git-send-email-wahrenst@gmx.net>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1563776607-8368-1-git-send-email-wahrenst@gmx.net>
-References: <1563776607-8368-1-git-send-email-wahrenst@gmx.net>
-X-Provags-ID: V03:K1:u2uoodlY+pN+Yt0/KqiyLNu3m1qW+77cDAglaFHSsNtyIg4arci
- xpcOOoDUd4oUqtApolU0S4riyjvuP7IazUsOruOL4gmvzzQAreVjN9S6bt8Y46SwuQoK0Jd
- EBDWaBdxfUT1ChZRjSanjF2HfBTYO/cdkiLVN4RGvAav0FNdVPzP+MJ4aOHm1O5jjhNXkeI
- r5HE7wDU/vL5e8wDpPH+g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:AveKtSrtcwk=:/pzazmDMPlHZNGUm/hg4oZ
- RfPB3NsoyQuPW1rNfOrOraTHLYBGEGpo2ie8+mlZUIeCqcfXVZ58OF8sKwMyvp/dNYUAfnUJQ
- yzLs+tR/REyMsUJZtHvd+HAJMOQ0920zlJkxUPTxBk+mAWaCQfGJRtRcjTWDCjE5KrrrN9icO
- M5ghuBmnGrVpga9pF7ViO5HDzLq0DeA/UVU5dTAxX5ia+s9GnC71ycKrVsDh2MP0h8d7pmM8f
- DyYL8n0/ioWgoUyolIQ7S6KT+sDGxzrPBB70rXZtiSQH4Le7WPA+XS6l5RfGCwWLo/VfXhogh
- xGuH5uH5I1bwWQZS/lDIugk7BZndIxbGUUX440kRawtl/D3eyq9fqVUH6+vBkE8iaCBwm9jfm
- orj92IXKnVadIVdZ5rkIXsaEo31dJtmsAAwxKauT0gGo/wGWr3qTzXtmZJ+JSP86qG86Xaalg
- IIsTgYbW+rDueI0JZRob1PivQJMwZBZZFeuyTNtmu9pNtDuSHqmcDH+RB70EBa5MsxeuvaEiJ
- Vu0Kct6C8uh5O/rg9865chVRaJ3jvvCx9w6WhGhjUjW5Utn4Mkv6v6h2oNM+kQoER1pX/upY9
- BtLe9LbVauRG5chUP1v8xQ3DEHUrr4Y7FnytzINlVcJozUT/Of4LW+OomvOICYm5OQZopmHEG
- LobIZaV5B1KW6KqX7ZBZ/GFLDbpHVL5ym7nKlHRDJm07oMXVSvG/SKc+H7uxoRwQyuHwUNov0
- 1Kao4EwrejKk0tHRbzWtXqX/2mjRajuzN8SCSHbxGVi5e6J8F+Uiv7eCeYJSaFftVcpOmyzA3
- peIniS1wwXbIwqqTh/P+bQ+4y5PI6uVqx15Ybui2mxcpmAAKjqm18a0PDSpSnCgGZzG/NTD00
- CK1FUG534G4vdRQqDWMUH/ig0wFPpigA+4/bhccyAzCXgNGx5iW8eQe79OICo9aHbevl6cd4Y
- egwG3kZmUSJANPU/XJ+1J5Wyk/MMczykf86G7QJwBS2ayvQsCn9WkyNLxvHQJyyvDxJZ+jJnr
- hH4tQ/kOqMDkjgOnjFE1ooBF8PoYt/Ig+NNcjH70tcZ0W/N0Y+PPqd0DqXZb73nUV1LtQnq5X
- ODTtmZY0TNorNQ=
-Content-Transfer-Encoding: quoted-printable
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+References: <cover.1562734889.git.joe@perches.com>
+ <94dcbeb13b08a67ae9f404aa590c1c1459bc5287.1562734889.git.joe@perches.com>
+From:   Neil Armstrong <narmstrong@baylibre.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
+ 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
+ ZaTUOEkgIor5losDrePdPgE=
+Organization: Baylibre
+Message-ID: <abf1a3b1-d221-6ad5-bdd1-98d7d1eefe83@baylibre.com>
+Date:   Mon, 22 Jul 2019 09:23:16 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <94dcbeb13b08a67ae9f404aa590c1c1459bc5287.1562734889.git.joe@perches.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The BCM2711 has a new way of selecting the pull-up/pull-down setting
-for a GPIO pin. The registers used for the BCM2835, GP_PUD and
-GP_PUDCLKn0, are no longer connected. A new set of registers,
-GP_GPIO_PUP_PDN_CNTRL_REGx must be used. This commit will add
-a new compatible string "brcm,bcm2711-gpio" and the kernel
-driver will use it to select which method is used to select
-pull-up/pull-down.
+On 10/07/2019 07:04, Joe Perches wrote:
+> Arguments are supposed to be ordered high then low.
+> 
+> Signed-off-by: Joe Perches <joe@perches.com>
+> ---
+>  drivers/mmc/host/meson-mx-sdio.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/meson-mx-sdio.c b/drivers/mmc/host/meson-mx-sdio.c
+> index 2d736e416775..ba9a63db73da 100644
+> --- a/drivers/mmc/host/meson-mx-sdio.c
+> +++ b/drivers/mmc/host/meson-mx-sdio.c
+> @@ -73,7 +73,7 @@
+>  	#define MESON_MX_SDIO_IRQC_IF_CONFIG_MASK		GENMASK(7, 6)
+>  	#define MESON_MX_SDIO_IRQC_FORCE_DATA_CLK		BIT(8)
+>  	#define MESON_MX_SDIO_IRQC_FORCE_DATA_CMD		BIT(9)
+> -	#define MESON_MX_SDIO_IRQC_FORCE_DATA_DAT_MASK		GENMASK(10, 13)
+> +	#define MESON_MX_SDIO_IRQC_FORCE_DATA_DAT_MASK		GENMASK(13, 10)
+>  	#define MESON_MX_SDIO_IRQC_SOFT_RESET			BIT(15)
+>  	#define MESON_MX_SDIO_IRQC_FORCE_HALT			BIT(30)
+>  	#define MESON_MX_SDIO_IRQC_HALT_HOLE			BIT(31)
+> 
 
-This patch based on a patch by Al Cooper which was intended for the
-BCM7211. This is a bugfixed and improved version.
-
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-=2D--
- drivers/pinctrl/bcm/pinctrl-bcm2835.c | 105 +++++++++++++++++++++++++++++=
-+++--
- 1 file changed, 100 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/pinctrl/bcm/pinctrl-bcm2835.c b/drivers/pinctrl/bcm/p=
-inctrl-bcm2835.c
-index 183d1ff..a493205 100644
-=2D-- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
-+++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
-@@ -57,15 +57,24 @@
- #define GPAFEN0		0x88	/* Pin Async Falling Edge Detect */
- #define GPPUD		0x94	/* Pin Pull-up/down Enable */
- #define GPPUDCLK0	0x98	/* Pin Pull-up/down Enable Clock */
-+#define GP_GPIO_PUP_PDN_CNTRL_REG0 0xe4 /* 2711 Pin Pull-up/down select *=
-/
-
- #define FSEL_REG(p)		(GPFSEL0 + (((p) / 10) * 4))
- #define FSEL_SHIFT(p)		(((p) % 10) * 3)
- #define GPIO_REG_OFFSET(p)	((p) / 32)
- #define GPIO_REG_SHIFT(p)	((p) % 32)
-
-+#define PUD_2711_MASK		0x3
-+#define PUD_2711_REG_OFFSET(p)	((p) / 16)
-+#define PUD_2711_REG_SHIFT(p)	(((p) % 16) * 2)
-+
- /* argument: bcm2835_pinconf_pull */
- #define BCM2835_PINCONF_PARAM_PULL	(PIN_CONFIG_END + 1)
-
-+#define BCM2711_PULL_NONE	0x0
-+#define BCM2711_PULL_UP		0x1
-+#define BCM2711_PULL_DOWN	0x2
-+
- struct bcm2835_pinctrl {
- 	struct device *dev;
- 	void __iomem *base;
-@@ -975,6 +984,77 @@ static const struct pinconf_ops bcm2835_pinconf_ops =
-=3D {
- 	.pin_config_set =3D bcm2835_pinconf_set,
- };
-
-+static void bcm2711_pull_config_set(struct bcm2835_pinctrl *pc,
-+				    unsigned int pin, unsigned int arg)
-+{
-+	u32 shifter;
-+	u32 value;
-+	u32 off;
-+
-+	off =3D PUD_2711_REG_OFFSET(pin);
-+	shifter =3D PUD_2711_REG_SHIFT(pin);
-+
-+	value =3D bcm2835_gpio_rd(pc, GP_GPIO_PUP_PDN_CNTRL_REG0 + (off * 4));
-+	value &=3D ~(PUD_2711_MASK << shifter);
-+	value |=3D (arg << shifter);
-+	bcm2835_gpio_wr(pc, GP_GPIO_PUP_PDN_CNTRL_REG0 + (off * 4), value);
-+}
-+
-+static int bcm2711_pinconf_set(struct pinctrl_dev *pctldev,
-+			       unsigned int pin, unsigned long *configs,
-+			       unsigned int num_configs)
-+{
-+	struct bcm2835_pinctrl *pc =3D pinctrl_dev_get_drvdata(pctldev);
-+	u32 param, arg;
-+	int i;
-+
-+	for (i =3D 0; i < num_configs; i++) {
-+		param =3D pinconf_to_config_param(configs[i]);
-+		arg =3D pinconf_to_config_argument(configs[i]);
-+
-+		switch (param) {
-+		/* convert legacy brcm,pull */
-+		case BCM2835_PINCONF_PARAM_PULL:
-+			if (arg =3D=3D BCM2835_PUD_UP)
-+				arg =3D BCM2711_PULL_UP;
-+			else if (arg =3D=3D BCM2835_PUD_DOWN)
-+				arg =3D BCM2711_PULL_DOWN;
-+			else
-+				arg =3D BCM2711_PULL_NONE;
-+
-+			bcm2711_pull_config_set(pc, pin, arg);
-+			break;
-+
-+		/* Set pull generic bindings */
-+		case PIN_CONFIG_BIAS_DISABLE:
-+			bcm2711_pull_config_set(pc, pin, BCM2711_PULL_NONE);
-+			break;
-+		case PIN_CONFIG_BIAS_PULL_DOWN:
-+			bcm2711_pull_config_set(pc, pin, BCM2711_PULL_DOWN);
-+			break;
-+		case PIN_CONFIG_BIAS_PULL_UP:
-+			bcm2711_pull_config_set(pc, pin, BCM2711_PULL_UP);
-+			break;
-+
-+		/* Set output-high or output-low */
-+		case PIN_CONFIG_OUTPUT:
-+			bcm2835_gpio_set_bit(pc, arg ? GPSET0 : GPCLR0, pin);
-+			break;
-+
-+		default:
-+			return -ENOTSUPP;
-+		}
-+	} /* for each config */
-+
-+	return 0;
-+}
-+
-+static const struct pinconf_ops bcm2711_pinconf_ops =3D {
-+	.is_generic =3D true,
-+	.pin_config_get =3D bcm2835_pinconf_get,
-+	.pin_config_set =3D bcm2711_pinconf_set,
-+};
-+
- static struct pinctrl_desc bcm2835_pinctrl_desc =3D {
- 	.name =3D MODULE_NAME,
- 	.pins =3D bcm2835_gpio_pins,
-@@ -990,6 +1070,18 @@ static struct pinctrl_gpio_range bcm2835_pinctrl_gpi=
-o_range =3D {
- 	.npins =3D BCM2835_NUM_GPIOS,
- };
-
-+static const struct of_device_id bcm2835_pinctrl_match[] =3D {
-+	{
-+		.compatible =3D "brcm,bcm2835-gpio",
-+		.data =3D &bcm2835_pinconf_ops,
-+	},
-+	{
-+		.compatible =3D "brcm,bcm2711-gpio",
-+		.data =3D &bcm2711_pinconf_ops,
-+	},
-+	{}
-+};
-+
- static int bcm2835_pinctrl_probe(struct platform_device *pdev)
- {
- 	struct device *dev =3D &pdev->dev;
-@@ -997,6 +1089,8 @@ static int bcm2835_pinctrl_probe(struct platform_devi=
-ce *pdev)
- 	struct bcm2835_pinctrl *pc;
- 	struct resource iomem;
- 	int err, i;
-+	const struct of_device_id *match;
-+
- 	BUILD_BUG_ON(ARRAY_SIZE(bcm2835_gpio_pins) !=3D BCM2835_NUM_GPIOS);
- 	BUILD_BUG_ON(ARRAY_SIZE(bcm2835_gpio_groups) !=3D BCM2835_NUM_GPIOS);
-
-@@ -1073,6 +1167,12 @@ static int bcm2835_pinctrl_probe(struct platform_de=
-vice *pdev)
- 					     bcm2835_gpio_irq_handler);
- 	}
-
-+	match =3D of_match_node(bcm2835_pinctrl_match, pdev->dev.of_node);
-+	if (match) {
-+		bcm2835_pinctrl_desc.confops =3D
-+			(const struct pinconf_ops *)match->data;
-+	}
-+
- 	pc->pctl_dev =3D devm_pinctrl_register(dev, &bcm2835_pinctrl_desc, pc);
- 	if (IS_ERR(pc->pctl_dev)) {
- 		gpiochip_remove(&pc->gpio_chip);
-@@ -1087,11 +1187,6 @@ static int bcm2835_pinctrl_probe(struct platform_de=
-vice *pdev)
- 	return 0;
- }
-
--static const struct of_device_id bcm2835_pinctrl_match[] =3D {
--	{ .compatible =3D "brcm,bcm2835-gpio" },
--	{}
--};
--
- static struct platform_driver bcm2835_pinctrl_driver =3D {
- 	.probe =3D bcm2835_pinctrl_probe,
- 	.driver =3D {
-=2D-
-2.7.4
-
+Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
