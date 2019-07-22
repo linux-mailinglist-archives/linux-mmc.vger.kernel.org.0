@@ -2,169 +2,133 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E996ECC7
-	for <lists+linux-mmc@lfdr.de>; Sat, 20 Jul 2019 01:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63EF86F815
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 05:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732980AbfGSXgM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 19 Jul 2019 19:36:12 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:43136 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728530AbfGSXgM (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Jul 2019 19:36:12 -0400
-Received: by mail-pg1-f194.google.com with SMTP id f25so15084050pgv.10
-        for <linux-mmc@vger.kernel.org>; Fri, 19 Jul 2019 16:36:11 -0700 (PDT)
+        id S1726663AbfGVDps (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 21 Jul 2019 23:45:48 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:33464 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726106AbfGVDps (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 21 Jul 2019 23:45:48 -0400
+Received: by mail-pl1-f195.google.com with SMTP id c14so18471271plo.0
+        for <linux-mmc@vger.kernel.org>; Sun, 21 Jul 2019 20:45:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=adPQzI1v5diG916E3ftdRP7KVUpoq7ni2PbSErONVno=;
-        b=G3cOINU5IIalyfSzoeJGzYHjbbTayjz7uKTmRzNWMjmloTNLmboShFlXotMdaNFDe8
-         LAdBksnVHUYSUdjAjmD3cROKn41n3SKUCER9oghvqyO+rKroqQj7uNodSK+RT3bUNB1S
-         DXoVHjQtNrBXRF4FRkraXhiN3WesLyTqJ7RQQ=
+        d=sifive.com; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to;
+        bh=Q+CprcBWNGzzOj+Sw0vKnMQfxVeanS+db7YYJpzou7g=;
+        b=WDL9xskU+6mR1xv+y4xPQgtjDgEl42buTCy0YnscHHfEoCURUcnRXD9wWYekVSf1o5
+         CEaC5Z63V1T4J1HPn2loWFdyHQ188qOC8HTE1tCkgsxm0DgBIbM+wwiRATS/gxf19VBD
+         f3xZ1eTzKoRZllbakeQkmMhdN97odGA/p3E9FEUNig48FfkGfyGNshrP9T7RfuxOtTPb
+         JzQe8I+ETuzmXaP+wLSAgfQz8ClgKnFulThfncZZgdUXZFIs9ks4d2zoJ7c82c9nT1/1
+         +1zVc8Z3jT0sKEoHnkcbnvl5QDyOwNbpsjlFcIVOLuO7oaJH1miFwmWdWerZVIjSMh+o
+         Vp1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=adPQzI1v5diG916E3ftdRP7KVUpoq7ni2PbSErONVno=;
-        b=AAS+Ir7JaSJyo1LQMpZ12Zayul1hPkdZnbIf8v7aR+P59gHyLnYkBxNnbYHomFfb/T
-         kwzLGIavbPP1MN2JU/6u9UVli6Gui0VGylLh/T/8ssZuN/wXH/kVYAnrfBjV9zP3oqYS
-         8DnGdF5cfFhfgXhsbKnv2tYnqKvN1R4bhhx3Tdjq1Y4tBSBb5CH21gxAKfSTklW+gW+W
-         tMqV3xM22GNfGPdW0auFtSJJrA8vWAH5Br5BvmV/XonIRiUecVRD9Utwuu/5PIrvOC9J
-         O0ZPt/WCgVJJqpvBNDiODyr6Vh2tOKUyl6oxOQkc+rDZpd+m2Llp4Bm0x5npN1dh3+pP
-         Vntw==
-X-Gm-Message-State: APjAAAVzhIBEGcHiV+CTsDZyZmZtTUMKVtK7CBYFEGiCZDdzxQd6RDKy
-        9+bEfKDoABj0BHFKJWaoyR1CCw==
-X-Google-Smtp-Source: APXvYqxbqPCgcMawQkjn4LpCVpIZIiiIhPeZYJ2X7r56FNvFvPhSCu3KoIIFPtYjLuP6gyd08GrXzQ==
-X-Received: by 2002:a63:e54f:: with SMTP id z15mr56615815pgj.4.1563579371281;
-        Fri, 19 Jul 2019 16:36:11 -0700 (PDT)
-Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id a21sm38313759pfi.27.2019.07.19.16.36.08
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 19 Jul 2019 16:36:09 -0700 (PDT)
-Date:   Fri, 19 Jul 2019 16:36:06 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        linux-wireless@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        linux-rockchip@lists.infradead.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        netdev@vger.kernel.org, Avri Altman <avri.altman@wdc.com>,
-        linux-mmc@vger.kernel.org, davem@davemloft.net,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-kernel@vger.kernel.org, Andreas Fenkart <afenkart@gmail.com>
-Subject: Re: [PATCH 2/2] mwifiex: Make use of the new sdio_trigger_replug()
- API to reset
-Message-ID: <20190719233605.GA66171@google.com>
-References: <20190716164209.62320-1-dianders@chromium.org>
- <20190716164209.62320-3-dianders@chromium.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190716164209.62320-3-dianders@chromium.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to;
+        bh=Q+CprcBWNGzzOj+Sw0vKnMQfxVeanS+db7YYJpzou7g=;
+        b=CKqkKRmawD81ZzBFdqEZmUACRCerWeYynEWAbb3AHJlkzvq2Nb/28RG9S6+evnINMs
+         eUf282/8vTVunig1ae2U3DsFWK+9ZUsgy/wjsA6+9dFImMxpQGrMvCpxGnsXM+WbArut
+         8dWArUlpmsjYTvVtD8rPVySGJBT+BqR1OXH8Js1aM1b8C+lLnEqcZosEySM2TJdxtSvU
+         x6AzfrXg6JfYNgEvDlOOzRwENXSM0OFze4+vecs4P+JIhJW/rNqNUJAK2nsIgQDMKZXX
+         DjfEIaceP9UeDj3O8CQ+Aik6T5HcvEscMFyOnllIh/LQYZOeqRqHhy1vTcgbkB/Rrrva
+         pHbA==
+X-Gm-Message-State: APjAAAXuXzFlQxIVQKghox98lpFTNAlQ3qIM1doV31cdPQvQAcjotfDS
+        Ork8gQf9Uwm28Plmi6+sTMAtzw==
+X-Google-Smtp-Source: APXvYqzmRe20/h+24P6SPjfzMTRITn4vZ1GwTUD39dSQj7SEx26SlX9FLHuarhjDu/PCHYr6S9fLgw==
+X-Received: by 2002:a17:902:8489:: with SMTP id c9mr73747177plo.327.1563767147759;
+        Sun, 21 Jul 2019 20:45:47 -0700 (PDT)
+Received: from localhost.localdomain (220-132-236-182.HINET-IP.hinet.net. [220.132.236.182])
+        by smtp.gmail.com with ESMTPSA id i9sm31089595pjj.2.2019.07.21.20.45.46
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 21 Jul 2019 20:45:47 -0700 (PDT)
+From:   shihpo.hung@sifive.com
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Andreas Koop <andreas.koop@zf.com>, linux-mmc@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>
+Subject: Re: [PATCH 1/1] mmc: mmc_spi: Enable stable writes
+Date:   Mon, 22 Jul 2019 11:45:14 +0800
+Message-Id: <1563767114-22036-1-git-send-email-shihpo.hung@sifive.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <4D4D24CE952D2A4684FC7FAAEF13D7164BE076@DLNV00136.emea.zf-world.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Doug,
-
-On Tue, Jul 16, 2019 at 09:42:09AM -0700, Doug Anderson wrote:
-> As described in the patch ("mmc: core: Add sdio_trigger_replug()
-> API"), the current mwifiex_sdio_card_reset() is broken in the cases
-> where we're running Bluetooth on a second SDIO func on the same card
-> as WiFi.  The problem goes away if we just use the
-> sdio_trigger_replug() API call.
-
-I'm unfortunately not a good evaluator of SDIO/MMC stuff, so I'll mostly
-leave that to others and assume that the "replug" description is pretty
-much all I need to know.
-
-> NOTE: Even though with this new solution there is less of a reason to
-> do our work from a workqueue (the unplug / plug mechanism we're using
-> is possible for a human to perform at any time so the stack is
-> supposed to handle it without it needing to be called from a special
-> context), we still need a workqueue because the Marvell reset function
-> could called from a context where sleeping is invalid and thus we
-> can't claim the host.  One example is Marvell's wakeup_timer_fn().
+On Wed, 23 Oct 2013, Andreas wrote:
+> Hello,
 > 
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> While using the mmc_spi driver occasionally errors like this popped up:
+> 
+> mmcblk0: error -84 transferring data
+> end_request: I/O error, dev mmcblk0, sector 581756
+> 
+> I looked on the Internet for occurences of the same problem and came across a helpful post [1]. It includes source code to reproduce the bug. There is also an analysis about the cause. During transmission data in the supplied buffer is beeing modified. Thus the previously calculated check sum is not correct anymore.
+> 
+> After some digging I found out that device drivers are supposed to report they need stable writes.  To fix this I set the appropriate flag at queue initialization if CRC checksumming is enabled for that SPI host.
+> 
+> [1]
+> https://groups.google.com/forum/#!msg/sim1/gLlzWeXGFr8/KevXinUXfc8J
+> 
+> Signed-off-by: Andreas Koop <andreas.koop <at> zf.com>
 > ---
+> --
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-mmc" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 > 
->  drivers/net/wireless/marvell/mwifiex/sdio.c | 14 +++-----------
->  1 file changed, 3 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> index 24c041dad9f6..f77ad2615f08 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> @@ -2218,14 +2218,6 @@ static void mwifiex_sdio_card_reset_work(struct mwifiex_adapter *adapter)
->  {
->  	struct sdio_mmc_card *card = adapter->card;
->  	struct sdio_func *func = card->func;
-> -	int ret;
-> -
-> -	mwifiex_shutdown_sw(adapter);
-
-I'm very mildly unhappy to see this driver diverge from the PCIe one
-again, but the only way it makes sense to do things the same is if there
-is such thing as a "function level reset" for SDIO (i.e., doesn't also
-kill the Bluetooth function). But it appears we don't really have such a
-thing.
-
-> -
-> -	/* power cycle the adapter */
-> -	sdio_claim_host(func);
-> -	mmc_hw_reset(func->card->host);
-> -	sdio_release_host(func);
+> diff --git a/drivers/mmc/card/queue.c b/drivers/mmc/card/queue.c
+> index fa9632e..3fdef37 100644
+> --- a/drivers/mmc/card/queue.c
+> +++ b/drivers/mmc/card/queue.c
+> @@ -207,6 +207,9 @@ int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card,
+>  	mq->mqrq_prev = mqrq_prev;
+>  	mq->queue->queuedata = mq;
 >  
->  	/* Previous save_adapter won't be valid after this. We will cancel
+> +	if (mmc_host_is_spi(host) && host->use_spi_crc)
+> +		mq->queue->backing_dev_info.capabilities |= BDI_CAP_STABLE_WRITES;
+> +
+>  	blk_queue_prep_rq(mq->queue, mmc_prep_request);
+>  	queue_flag_set_unlocked(QUEUE_FLAG_NONROT, mq->queue);
+>  	if (mmc_can_erase(card))
 
-^^^ FTR, the "save_adapter" note was already obsolete as of
+Tested-by: ShihPo Hung <shihpo.hung@sifive.com>
 
-  cc75c577806a mwifiex: get rid of global save_adapter and sdio_work
+Although this is an old patch, I encountered the same problem which could be fixed by it.
 
-but the clear_bit() calls were (before this patch) still useful for
-other reasons.
+On Hifive Unleashed board (a multicore environment), running LTP fcntl36
+with /tmp located on /dev/mmcblk could trigger ILSEQ in mmc_spi_writeblock()
+and then cause mmc device removed.
 
->  	 * pending work requests.
-> @@ -2233,9 +2225,9 @@ static void mwifiex_sdio_card_reset_work(struct mwifiex_adapter *adapter)
->  	clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
->  	clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
+Error log:
+  tst_test.c:1096: INFO: Timeout per run is 0h 05m 00s
+  fcntl36.c:304: INFO: OFD read lock vs OFD write lock
+  fcntl36.c:382: PASS: Access between threads synchronized
+  fcntl36.c:304: INFO: OFD write lock vs POSIX write lock
+  fcntl36.c:382: PASS: Access between threads synchronized
+  fcntl36.c:304: INFO: OFD read lock vs POSIX write lock
+  mmc0: SPI card removed
+  EXT4-fs warning (device mmcblk0p2): ext4_end_bio:323: I/O error 10
+  Buffer I/O error on device mmcblk0p2, logical block 1084426
+  EXT4-fs warning (device mmcblk0p2): ext4_end_bio:323: I/O error 10
+  Buffer I/O error on device mmcblk0p2, logical block 1084427
+  EXT4-fs warning (device mmcblk0p2): ext4_end_bio:323: I/O error 10
+  Buffer I/O error on device mmcblk0p2, logical block 2129920
+  EXT4-fs warning (device mmcblk0p2): ext4_end_bio:323: I/O error 10
+  Buffer I/O error on device mmcblk0p2, logical block 1082369
+  EXT4-fs warning (device mmcblk0p2): ext4_end_bio:323: I/O error 10
+  Buffer I/O error on device mmcblk0p2, logical block 1084941
+  Buffer I/O error on device mmcblk0p2, logical block 1084942
+  Buffer I/O error on device mmcblk0p2, logical block 1084943
+  Buffer I/O error on device mmcblk0p2, logical block 1084944
+  Buffer I/O error on device mmcblk0p2, logical block 1084945
+  Buffer I/O error on device mmcblk0p2, logical block 1084946
 
-But now, I don't think you need these clear_bit() calls any more --
-you're totally destroying the card and its workqueue on remove(). (And
-anyway, MWIFIEX_IFACE_WORK_CARD_RESET was just cleared by your caller.)
+The problem is that the data page is dirty again while it is in the
+process of writeback, then the CRC calculated by mmc_spi_writeblock()
+is not valid.
 
->  
-> -	ret = mwifiex_reinit_sw(adapter);
-> -	if (ret)
-> -		dev_err(&func->dev, "reinit failed: %d\n", ret);
-> +	sdio_claim_host(func);
-> +	sdio_trigger_replug(func);
-> +	sdio_release_host(func);
-
-And...we're approximately back to where we were 4 years ago :)
-
-commit b4336a282db86b298b70563f8ed51782b36b772c
-Author: Andreas Fenkart <afenkart@gmail.com>
-Date:   Thu Jul 16 18:50:01 2015 +0200
-
-    mwifiex: sdio: reset adapter using mmc_hw_reset
-
-Anyway, assuming the "function reset" thing isn't workable, and you drop
-the clear_bit() stuff, I think this is fine:
-
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-
->  }
->  
->  /* This function read/write firmware */
-> -- 
-> 2.22.0.510.g264f2c817a-goog
-> 
+I would like to send a v2 which rebases this patch on v5.3-rc1 to help
+it upstream.
