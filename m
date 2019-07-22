@@ -2,57 +2,57 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDDB2700A0
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 15:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4AD5700A4
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 15:11:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730342AbfGVNKX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 22 Jul 2019 09:10:23 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:46010 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730335AbfGVNKW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Jul 2019 09:10:22 -0400
-Received: by mail-pg1-f196.google.com with SMTP id o13so17628721pgp.12
-        for <linux-mmc@vger.kernel.org>; Mon, 22 Jul 2019 06:10:22 -0700 (PDT)
+        id S1730417AbfGVNK1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 22 Jul 2019 09:10:27 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:33143 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728253AbfGVNK0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Jul 2019 09:10:26 -0400
+Received: by mail-pf1-f194.google.com with SMTP id g2so17364467pfq.0
+        for <linux-mmc@vger.kernel.org>; Mon, 22 Jul 2019 06:10:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :in-reply-to:references;
-        bh=mpV9sMLf9/xjtpErFC1dOCeG+Wr6jt6mRJVLIFsCwso=;
-        b=Jcb8f4kbGdWtCM+71SbE8WVDGhwE0iqJkaDP/FPTfohqgORzLGvFzTWAB2KVkr0gH8
-         fVaStVpD6w4OWcHQvsXI6ju4Nr1SaF7thQHaacKDdkmLI9jOILeOci4K+vhY57cToh+R
-         nfh/dUfh1k9NUxsLvYwpG+KlyoEJmCvVIUuBAchnpzxisLw+xtHkFseMkiaCRVEsNNN4
-         IkUkO1kAh6k/d2qsCAAWI9v3pkFO+wVCj2Mo1Uql3alLP9vvuVmtPy9OSmPo+AFGN0w6
-         ZDqg6lepl5oWl+wdGZwk16EPGA7Or2aVMuh9OfQn23tYjYJ+Bty14K5PaEhMCGdHurgz
-         T/YQ==
+        bh=nK15mMz9psJ4xYNbb/viJ2eSjpHSRghs1AoPCx3Qibw=;
+        b=KY1bnd4Up1tXXPW2ZmnY4asvQ3zqGzy3u3b1KUBtemsy/00kmw7MuqyaQeqIKTwo9Y
+         71DSBIUgWn9dRmVialFx4Joe3zX5wJ3d6HasrDvAlfxWeltqtCqgo3qWTHcd38Tqgwec
+         0O3V3bS09p9DpBrbf1r6vLUM0Gj1uSr/P01k9rClYJIwmhLZrD9HqLIBnDN3VsIsVVr9
+         rMw0i9EVoiUHIQbpGJfm02M1gMj+Sa24Heh0UYaRRoV3q2ZuI5BuqfR0YE1q5mGxJlWX
+         Z714pEfRJyiEtR6dq9EnC2Wl/g6fjwzXljrMMCca0NnDyp+iyt9CbMTkpw3XQn44z/1+
+         p+sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=mpV9sMLf9/xjtpErFC1dOCeG+Wr6jt6mRJVLIFsCwso=;
-        b=nKi5OXAaOsgQ4LWHYa5lq4Ho2bus8Kk00Paw7V5EXoilBIqv9D7SZa44AzF/PGsN+8
-         +QLRejxzD2ZXU/nOHFssUO2Xcng7Xi3NGyGbtXoR6cP/l/JzwemXeCMJwP4SY3F2g007
-         GFZ8qPepGHBu5ITl6JI9kLeC3SwFk8vlJyqfJlJM5n0X2rRr5vSx/v9sAdmDMRsmxrh+
-         Q3+9/InpfZvAHUWIWVv30o1/7g1IV6nvcMQP+6AiNTOcN6WsvyXm2r7DbiXjpM16GQBW
-         6NU+VxyhDWz12KizzzkDIVjauoNKZ4bq9Q0p9ocCR+3EMkwIcx6dJsf11/GIvRemL6Hp
-         kTlA==
-X-Gm-Message-State: APjAAAUb4tjxQ+umRWQ95slHCjJjRDhHi6yxrqQHyg5prvTUHjeu6x5Z
-        5hADnWoej4M7Yjd6B3Bbq7JUYg==
-X-Google-Smtp-Source: APXvYqzTrjk/lkHexHJCp1CEZbs0dzPdQ3rwVQKoH4tMSuMsFtbRikyrgk3QdukUYKjQ9F7Qzt9dcw==
-X-Received: by 2002:a63:5402:: with SMTP id i2mr44468946pgb.414.1563801021977;
-        Mon, 22 Jul 2019 06:10:21 -0700 (PDT)
+        bh=nK15mMz9psJ4xYNbb/viJ2eSjpHSRghs1AoPCx3Qibw=;
+        b=VCA5mPcCGTbfilp677cF2IdoPcHe5Mmg/L2YKZ/k3tcOxAx8XsctIXdP0InvNhAPqv
+         zHFIt8HNUhg6nATVnhQzSckcMGsUZcLAL8wLLbkSpgoAJYh9XcXuitxDYx/6EzXpLB0M
+         iypXuX2peu/mxRbU26UdPtq4eIM+HnnEGO2W5CQafxhDqrsajgPefI8mZN3yKsjeUWnR
+         YAE5ortSjbkF8bm7qvQWPfHLlwCnShGqElQ98gvJ0nAPwkKMLR2fLwAAROlMYj0WmJss
+         zJ2Ni6Q9ikvntTxLO/wB7t0c+sDl+NYChGKuX4IFvp1zJbYb/ydY6ahtv4kLVFcwwglK
+         pC3A==
+X-Gm-Message-State: APjAAAUHn08OQQLbecUEC5GebT6/503zDPIW156m3bxKv+wafrI7v8D0
+        +Im96TWoTBZh9BRYFN7s+nf9+Q==
+X-Google-Smtp-Source: APXvYqyK7nJNIaBSuDpr8SygQ/E7h7qbGmJ907l2NWDJp3Vg9aPJ6YfwpwHeGwhvuNZd/+Fuz7R8ag==
+X-Received: by 2002:a17:90a:37e9:: with SMTP id v96mr75508203pjb.10.1563801025887;
+        Mon, 22 Jul 2019 06:10:25 -0700 (PDT)
 Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id p19sm47013192pfn.99.2019.07.22.06.10.17
+        by smtp.gmail.com with ESMTPSA id p19sm47013192pfn.99.2019.07.22.06.10.22
         (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 22 Jul 2019 06:10:21 -0700 (PDT)
+        Mon, 22 Jul 2019 06:10:25 -0700 (PDT)
 From:   Baolin Wang <baolin.wang@linaro.org>
 To:     axboe@kernel.dk, adrian.hunter@intel.com, ulf.hansson@linaro.org
 Cc:     zhang.lyra@gmail.com, orsonzhai@gmail.com, arnd@arndb.de,
         linus.walleij@linaro.org, baolin.wang@linaro.org,
         vincent.guittot@linaro.org, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
-Subject: [RFC PATCH 4/7] mmc: host: sdhci: Factor out the command configuration
-Date:   Mon, 22 Jul 2019 21:09:39 +0800
-Message-Id: <63fb32f58cb11aafdd12c84126b191090af3a31a.1563782844.git.baolin.wang@linaro.org>
+Subject: [RFC PATCH 5/7] mmc: host: sdhci: Remove redundant sg_count member of struct sdhci_host
+Date:   Mon, 22 Jul 2019 21:09:40 +0800
+Message-Id: <b34528f0248ce537ec020373f96aa6d486dc6f6d.1563782844.git.baolin.wang@linaro.org>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1563782844.git.baolin.wang@linaro.org>
 References: <cover.1563782844.git.baolin.wang@linaro.org>
@@ -63,108 +63,85 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Move the SD command configuration into one separate function to simplify
-the sdhci_send_command(). Moreover this function can be used to support
-ADMA3 transfer mode in following patches.
+The mmc_data structure has a member to save the mapped sg count, so
+no need introduce a redundant sg_count of struct sdhci_host, remove it.
+This is also a preparation patch to support ADMA3 transfer mode.
 
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 ---
- drivers/mmc/host/sdhci.c |   65 +++++++++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 27 deletions(-)
+ drivers/mmc/host/sdhci.c |   12 +++++-------
+ drivers/mmc/host/sdhci.h |    2 --
+ 2 files changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index e57a5b7..5760b7c 100644
+index 5760b7c..9fec82f 100644
 --- a/drivers/mmc/host/sdhci.c
 +++ b/drivers/mmc/host/sdhci.c
-@@ -1339,9 +1339,43 @@ static void sdhci_finish_data(struct sdhci_host *host)
- 	}
+@@ -696,7 +696,7 @@ static void sdhci_adma_mark_end(void *desc)
  }
  
--void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
-+static int sdhci_get_command(struct sdhci_host *host, struct mmc_command *cmd)
+ static void sdhci_adma_table_pre(struct sdhci_host *host,
+-	struct mmc_data *data, int sg_count)
++	struct mmc_data *data)
  {
- 	int flags;
-+
-+	if ((cmd->flags & MMC_RSP_136) && (cmd->flags & MMC_RSP_BUSY)) {
-+		pr_err("%s: Unsupported response type!\n",
-+			mmc_hostname(host->mmc));
-+		cmd->error = -EINVAL;
-+		sdhci_finish_mrq(host, cmd->mrq);
-+		return -EINVAL;
-+	}
-+
-+	if (!(cmd->flags & MMC_RSP_PRESENT))
-+		flags = SDHCI_CMD_RESP_NONE;
-+	else if (cmd->flags & MMC_RSP_136)
-+		flags = SDHCI_CMD_RESP_LONG;
-+	else if (cmd->flags & MMC_RSP_BUSY)
-+		flags = SDHCI_CMD_RESP_SHORT_BUSY;
-+	else
-+		flags = SDHCI_CMD_RESP_SHORT;
-+
-+	if (cmd->flags & MMC_RSP_CRC)
-+		flags |= SDHCI_CMD_CRC;
-+	if (cmd->flags & MMC_RSP_OPCODE)
-+		flags |= SDHCI_CMD_INDEX;
-+
-+	/* CMD19 is special in that the Data Present Select should be set */
-+	if (cmd->data || cmd->opcode == MMC_SEND_TUNING_BLOCK ||
-+	    cmd->opcode == MMC_SEND_TUNING_BLOCK_HS200)
-+		flags |= SDHCI_CMD_DATA;
-+
-+	return SDHCI_MAKE_CMD(cmd->opcode, flags);
-+}
-+
-+void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
-+{
-+	int command;
- 	u32 mask;
- 	unsigned long timeout;
+ 	struct scatterlist *sg;
+ 	unsigned long flags;
+@@ -710,14 +710,12 @@ static void sdhci_adma_table_pre(struct sdhci_host *host,
+ 	 * We currently guess that it is LE.
+ 	 */
  
-@@ -1391,32 +1425,9 @@ void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
- 
- 	sdhci_set_transfer_mode(host, cmd);
- 
--	if ((cmd->flags & MMC_RSP_136) && (cmd->flags & MMC_RSP_BUSY)) {
--		pr_err("%s: Unsupported response type!\n",
--			mmc_hostname(host->mmc));
--		cmd->error = -EINVAL;
--		sdhci_finish_mrq(host, cmd->mrq);
-+	command = sdhci_get_command(host, cmd);
-+	if (command < 0)
- 		return;
--	}
+-	host->sg_count = sg_count;
 -
--	if (!(cmd->flags & MMC_RSP_PRESENT))
--		flags = SDHCI_CMD_RESP_NONE;
--	else if (cmd->flags & MMC_RSP_136)
--		flags = SDHCI_CMD_RESP_LONG;
--	else if (cmd->flags & MMC_RSP_BUSY)
--		flags = SDHCI_CMD_RESP_SHORT_BUSY;
--	else
--		flags = SDHCI_CMD_RESP_SHORT;
+ 	desc = host->adma_table;
+ 	align = host->align_buffer;
+ 
+ 	align_addr = host->align_addr;
+ 
+-	for_each_sg(data->sg, sg, host->sg_count, i) {
++	for_each_sg(data->sg, sg, data->sg_count, i) {
+ 		addr = sg_dma_address(sg);
+ 		len = sg_dma_len(sg);
+ 
+@@ -788,7 +786,7 @@ static void sdhci_adma_table_post(struct sdhci_host *host,
+ 		bool has_unaligned = false;
+ 
+ 		/* Do a quick scan of the SG list for any unaligned mappings */
+-		for_each_sg(data->sg, sg, host->sg_count, i)
++		for_each_sg(data->sg, sg, data->sg_count, i)
+ 			if (sg_dma_address(sg) & SDHCI_ADMA2_MASK) {
+ 				has_unaligned = true;
+ 				break;
+@@ -800,7 +798,7 @@ static void sdhci_adma_table_post(struct sdhci_host *host,
+ 
+ 			align = host->align_buffer;
+ 
+-			for_each_sg(data->sg, sg, host->sg_count, i) {
++			for_each_sg(data->sg, sg, data->sg_count, i) {
+ 				if (sg_dma_address(sg) & SDHCI_ADMA2_MASK) {
+ 					size = SDHCI_ADMA2_ALIGN -
+ 					       (sg_dma_address(sg) & SDHCI_ADMA2_MASK);
+@@ -1094,7 +1092,7 @@ static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
+ 			WARN_ON(1);
+ 			host->flags &= ~SDHCI_REQ_USE_DMA;
+ 		} else if (host->flags & SDHCI_USE_ADMA) {
+-			sdhci_adma_table_pre(host, data, sg_cnt);
++			sdhci_adma_table_pre(host, data);
+ 
+ 			sdhci_writel(host, host->adma_addr, SDHCI_ADMA_ADDRESS);
+ 			if (host->flags & SDHCI_USE_64_BIT_DMA)
+diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+index 010cc29..4548d9c 100644
+--- a/drivers/mmc/host/sdhci.h
++++ b/drivers/mmc/host/sdhci.h
+@@ -584,8 +584,6 @@ struct sdhci_host {
+ 	struct sg_mapping_iter sg_miter;	/* SG state for PIO */
+ 	unsigned int blocks;	/* remaining PIO blocks */
+ 
+-	int sg_count;		/* Mapped sg entries */
 -
--	if (cmd->flags & MMC_RSP_CRC)
--		flags |= SDHCI_CMD_CRC;
--	if (cmd->flags & MMC_RSP_OPCODE)
--		flags |= SDHCI_CMD_INDEX;
--
--	/* CMD19 is special in that the Data Present Select should be set */
--	if (cmd->data || cmd->opcode == MMC_SEND_TUNING_BLOCK ||
--	    cmd->opcode == MMC_SEND_TUNING_BLOCK_HS200)
--		flags |= SDHCI_CMD_DATA;
- 
- 	timeout = jiffies;
- 	if (host->data_timeout)
-@@ -1427,7 +1438,7 @@ void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
- 		timeout += 10 * HZ;
- 	sdhci_mod_timer(host, cmd->mrq, timeout);
- 
--	sdhci_writew(host, SDHCI_MAKE_CMD(cmd->opcode, flags), SDHCI_COMMAND);
-+	sdhci_writew(host, command, SDHCI_COMMAND);
- }
- EXPORT_SYMBOL_GPL(sdhci_send_command);
- 
+ 	void *adma_table;	/* ADMA descriptor table */
+ 	void *align_buffer;	/* Bounce buffer */
+ 	void *integr_table;	/* ADMA3 intergrate descriptor table */
 -- 
 1.7.9.5
 
