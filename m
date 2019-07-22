@@ -2,147 +2,141 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 380C86FA38
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 09:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E83BB6FDE1
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 12:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727628AbfGVHXU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 22 Jul 2019 03:23:20 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:36446 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbfGVHXU (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Jul 2019 03:23:20 -0400
-Received: by mail-wm1-f68.google.com with SMTP id g67so30075987wme.1
-        for <linux-mmc@vger.kernel.org>; Mon, 22 Jul 2019 00:23:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:openpgp:autocrypt:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=LD9GCw1eG9QEzwE6oFNEQIzVZACLaoYqLB+k/zbJCdM=;
-        b=F74SsFtcbnsipPjtAFo3nZeUH6oXlGCJDRP0xnmIpynir4g/z65Znh/Rxdd2tc3lki
-         wx0RAIVfTJIsG7ZTIfRtu2bdYa+BCBHz3OVhl8COPy1j3OnmhfseibhuazJJnFwc4sMn
-         PLrUS0kTR6HsNoSyBW3EEOG4Pfl0FhLObowRIh1kbW+zfjWnouJe1brgMeHF/LWG+Ncr
-         NHoZ233iLFrxLCi//oLTNEjrGvo+2+wva77zg9rRZjTwCqO2VULUGR53ys5IKvj31ey9
-         mdRsjJpQ8bQsS7Sc80nE9tMeweKFjVNI19QKv9GeLPDowm9rs3BZRoBwRngv6pEh3p4t
-         2g5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :organization:message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=LD9GCw1eG9QEzwE6oFNEQIzVZACLaoYqLB+k/zbJCdM=;
-        b=R5wkdjKe1opkLHN9snUzvhHf+vJq/CDX8vCbJ5jn5NvOJqlst6XP6zKodnMTv30XNd
-         oHJtX0l+w97IkIQbsotPoRi0pgpxRt8mXMVLVa96BaZCJzZr9bHytbpmRw3j3y14PV+j
-         QSP2J8TCc+irQCVKNO8qpQpmmd9e/ID0aWERXkXc1Iy+3PT/otH8odrLDcFNG1Kv2muL
-         4Au3gdXMaXkxT/OwFuWF7f8E5gWLVouByYSPDKYXYsJnVcHCCYlc1x8tkBpbtMg6SK8v
-         273AYrkGXPr1oFv55sw9CP9++N582JREU6D1XrCzPwpshhWAkxY8t/09vbUWelGl6SeA
-         YW9w==
-X-Gm-Message-State: APjAAAWFXkcTtwsmPONTjHkym5T3qIkdpYrcwkdJuP+yGrXOYof6TrGM
-        pmNGgQaiFKnO3C+G21IT8GXSZA==
-X-Google-Smtp-Source: APXvYqzfS7FtcRA+07esTVYwytBlm7aKVdZY4D+n+4hAm1mqPLE6MFCdAZwiJjT7e6DFVVuG48UgJg==
-X-Received: by 2002:a1c:7f57:: with SMTP id a84mr60819167wmd.3.1563780197608;
-        Mon, 22 Jul 2019 00:23:17 -0700 (PDT)
-Received: from [192.168.1.62] (176-150-251-154.abo.bbox.fr. [176.150.251.154])
-        by smtp.gmail.com with ESMTPSA id s10sm50309877wmf.8.2019.07.22.00.23.16
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 22 Jul 2019 00:23:17 -0700 (PDT)
-Subject: Re: [PATCH 06/12] mmc: meson-mx-sdio: Fix misuse of GENMASK macro
-To:     Joe Perches <joe@perches.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kevin Hilman <khilman@baylibre.com>
-Cc:     linux-amlogic@lists.infradead.org,
+        id S1729699AbfGVKd7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 22 Jul 2019 06:33:59 -0400
+Received: from m4a0040g.houston.softwaregrp.com ([15.124.2.86]:55049 "EHLO
+        m4a0040g.houston.softwaregrp.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729697AbfGVKd6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Jul 2019 06:33:58 -0400
+Received: FROM m4a0040g.houston.softwaregrp.com (15.120.17.146) BY m4a0040g.houston.softwaregrp.com WITH ESMTP;
+ Mon, 22 Jul 2019 10:30:01 +0000
+Received: from M4W0334.microfocus.com (2002:f78:1192::f78:1192) by
+ M4W0334.microfocus.com (2002:f78:1192::f78:1192) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.1591.10; Mon, 22 Jul 2019 10:15:32 +0000
+Received: from NAM03-DM3-obe.outbound.protection.outlook.com (15.124.8.10) by
+ M4W0334.microfocus.com (15.120.17.146) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.1591.10 via Frontend Transport; Mon, 22 Jul 2019 10:15:32 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I/eKITG4iE26eRSTDCJjYx0detTEUh0te6GvyJ/kDeDZK0NkjnUK4Ew+4yyslQnxNkc9mEK8wjCa1D6L/B5K8xioUb8Ae4XxPgCTCamoEddoLjPblQJMmy0Nxnw/AgocrgZbLBjyMYGBP6OrXM8W6EFufy1FY3O2tXAdGKIE19+4DaVx7Qh2imdvi5aoblFMUu2Qwro0h8LtxbNVqKc+Qhgip4Jm+Pt0d0n1z13h3crm4NNUpBIYexnG0r/jYNtpYgmJIx8FzceEm1ysVQSuXJRwwDxCpqlLdb4ftCYA3kC7WScUCjXxg+Y0xkZnG2gfzHvUy9PsT0Q3GQSaQK4B0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i56TEZAUVPAHnm5dqqYwTDD3ljESbyZmG/XYe7NPUuw=;
+ b=BGXXlqzfCDQf76FdMRgrCB8CPcohZUzdvSn1O9FVO9h4hD8R52y7Z7C9qkKg2gTumHXnfcTDvCNUcosG+X8Byt+Bsler+7Qtq30wjllVJHZnEmKIJLJBXjCW6lDeBuIV3DOKcT899akjf6ETTpJVCa0dJKGiEeO7ojDexRWXf34WxqCRn7rH3U7dm3Ga5TzaJioUNWorbGH2pxVNTeNCOwohvQl/e1quaOSYsyShQu9W71VV64cfbcWoGB8GQam6Cwwouz3ZlHjV89mYMKYL3iW/Wy/YlTkOUy3yAMusmq6TEx2a6PuNzA921sqRlaWV7T36yuQAHfR0w+thbtf6Zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=suse.com;dmarc=pass action=none header.from=suse.com;dkim=pass
+ header.d=suse.com;arc=none
+Received: from CY4PR1801MB1909.namprd18.prod.outlook.com (10.171.255.24) by
+ CY4PR1801MB1943.namprd18.prod.outlook.com (10.171.255.34) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2094.17; Mon, 22 Jul 2019 10:15:31 +0000
+Received: from CY4PR1801MB1909.namprd18.prod.outlook.com
+ ([fe80::1d84:4a66:a3f4:97f8]) by CY4PR1801MB1909.namprd18.prod.outlook.com
+ ([fe80::1d84:4a66:a3f4:97f8%3]) with mapi id 15.20.2094.013; Mon, 22 Jul 2019
+ 10:15:31 +0000
+From:   Matthias Brugger <mbrugger@suse.com>
+To:     Stefan Wahren <wahrenst@gmx.net>, Eric Anholt <eric@anholt.net>,
+        "Florian Fainelli" <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <cover.1562734889.git.joe@perches.com>
- <94dcbeb13b08a67ae9f404aa590c1c1459bc5287.1562734889.git.joe@perches.com>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
- mQENBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAG0KE5laWwgQXJtc3Ryb25nIDxuYXJtc3Ryb25nQGJheWxpYnJlLmNvbT6JATsEEwEKACUC
- GyMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheABQJXDO2CAhkBAAoJEBaat7Gkz/iubGIH/iyk
- RqvgB62oKOFlgOTYCMkYpm2aAOZZLf6VKHKc7DoVwuUkjHfIRXdslbrxi4pk5VKU6ZP9AKsN
- NtMZntB8WrBTtkAZfZbTF7850uwd3eU5cN/7N1Q6g0JQihE7w4GlIkEpQ8vwSg5W7hkx3yQ6
- 2YzrUZh/b7QThXbNZ7xOeSEms014QXazx8+txR7jrGF3dYxBsCkotO/8DNtZ1R+aUvRfpKg5
- ZgABTC0LmAQnuUUf2PHcKFAHZo5KrdO+tyfL+LgTUXIXkK+tenkLsAJ0cagz1EZ5gntuheLD
- YJuzS4zN+1Asmb9kVKxhjSQOcIh6g2tw7vaYJgL/OzJtZi6JlIW5AQ0ETVkGzwEIALyKDN/O
- GURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYpQTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXM
- coJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hi
- SvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY4yG6xI99NIPEVE9lNBXBKIlewIyVlkOa
- YvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoMMtsyw18YoX9BqMFInxqYQQ3j/HpVgTSv
- mo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUXoUk33HEAEQEAAYkBHwQYAQIACQUCTVkG
- zwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfnM7IbRuiSZS1unlySUVYu3SD6YBYnNi3G
- 5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa33eDIHu/zr1HMKErm+2SD6PO9umRef8V8
- 2o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCSKmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+
- RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJ
- C3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTTQbM0WUIBIcGmq38+OgUsMYu4NzLu7uZF
- Acmp6h8guQINBFYnf6QBEADQ+wBYa+X2n/xIQz/RUoGHf84Jm+yTqRT43t7sO48/cBW9vAn9
- GNwnJ3HRJWKATW0ZXrCr40ES/JqM1fUTfiFDB3VMdWpEfwOAT1zXS+0rX8yljgsWR1UvqyEP
- 3xN0M/40Zk+rdmZKaZS8VQaXbveaiWMEmY7sBV3QvgOzB7UF2It1HwoCon5Y+PvyE3CguhBd
- 9iq5iEampkMIkbA3FFCpQFI5Ai3BywkLzbA3ZtnMXR8Qt9gFZtyXvFQrB+/6hDzEPnBGZOOx
- zkd/iIX59SxBuS38LMlhPPycbFNmtauOC0DNpXCv9ACgC9tFw3exER/xQgSpDVc4vrL2Cacr
- wmQp1k9E0W+9pk/l8S1jcHx03hgCxPtQLOIyEu9iIJb27TjcXNjiInd7Uea195NldIrndD+x
- 58/yU3X70qVY+eWbqzpdlwF1KRm6uV0ZOQhEhbi0FfKKgsYFgBIBchGqSOBsCbL35f9hK/JC
- 6LnGDtSHeJs+jd9/qJj4WqF3x8i0sncQ/gszSajdhnWrxraG3b7/9ldMLpKo/OoihfLaCxtv
- xYmtw8TGhlMaiOxjDrohmY1z7f3rf6njskoIXUO0nabun1nPAiV1dpjleg60s3OmVQeEpr3a
- K7gR1ljkemJzM9NUoRROPaT7nMlNYQL+IwuthJd6XQqwzp1jRTGG26J97wARAQABiQM+BBgB
- AgAJBQJWJ3+kAhsCAikJEBaat7Gkz/iuwV0gBBkBAgAGBQJWJ3+kAAoJEHfc29rIyEnRk6MQ
- AJDo0nxsadLpYB26FALZsWlN74rnFXth5dQVQ7SkipmyFWZhFL8fQ9OiIoxWhM6rSg9+C1w+
- n45eByMg2b8H3mmQmyWztdI95OxSREKwbaXVapCcZnv52JRjlc3DoiiHqTZML5x1Z7lQ1T3F
- 8o9sKrbFO1WQw1+Nc91+MU0MGN0jtfZ0Tvn/ouEZrSXCE4K3oDGtj3AdC764yZVq6CPigCgs
- 6Ex80k6QlzCdVP3RKsnPO2xQXXPgyJPJlpD8bHHHW7OLfoR9DaBNympfcbQJeekQrTvyoASw
- EOTPKE6CVWrcQIztUp0WFTdRGgMK0cZB3Xfe6sOp24PQTHAKGtjTHNP/THomkH24Fum9K3iM
- /4Wh4V2eqGEgpdeSp5K+LdaNyNgaqzMOtt4HYk86LYLSHfFXywdlbGrY9+TqiJ+ZVW4trmui
- NIJCOku8SYansq34QzYM0x3UFRwff+45zNBEVzctSnremg1mVgrzOfXU8rt+4N1b2MxorPF8
- 619aCwVP7U16qNSBaqiAJr4e5SNEnoAq18+1Gp8QsFG0ARY8xp+qaKBByWES7lRi3QbqAKZf
- yOHS6gmYo9gBmuAhc65/VtHMJtxwjpUeN4Bcs9HUpDMDVHdfeRa73wM+wY5potfQ5zkSp0Jp
- bxnv/cRBH6+c43stTffprd//4Hgz+nJcCgZKtCYIAPkUxABC85ID2CidzbraErVACmRoizhT
- KR2OiqSLW2x4xdmSiFNcIWkWJB6Qdri0Fzs2dHe8etD1HYaht1ZhZ810s7QOL7JwypO8dscN
- KTEkyoTGn6cWj0CX+PeP4xp8AR8ot4d0BhtUY34UPzjE1/xyrQFAdnLd0PP4wXxdIUuRs0+n
- WLY9Aou/vC1LAdlaGsoTVzJ2gX4fkKQIWhX0WVk41BSFeDKQ3RQ2pnuzwedLO94Bf6X0G48O
- VsbXrP9BZ6snXyHfebPnno/te5XRqZTL9aJOytB/1iUna+1MAwBxGFPvqeEUUyT+gx1l3Acl
- ZaTUOEkgIor5losDrePdPgE=
-Organization: Baylibre
-Message-ID: <abf1a3b1-d221-6ad5-bdd1-98d7d1eefe83@baylibre.com>
-Date:   Mon, 22 Jul 2019 09:23:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <94dcbeb13b08a67ae9f404aa590c1c1459bc5287.1562734889.git.joe@perches.com>
-Content-Type: text/plain; charset=utf-8
+        Adrian Hunter <adrian.hunter@intel.com>
+CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "bcm-kernel-feedback-list@broadcom.com" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "linux-rpi-kernel@lists.infradead.org" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 10/18] mmc: sdhci-iproc: Add support for emmc2 of the
+ BCM2711
+Thread-Topic: [PATCH 10/18] mmc: sdhci-iproc: Add support for emmc2 of the
+ BCM2711
+Thread-Index: AQHVQFYQd91gaSX3ekC/BwEhDMmMbqbWbBEA
+Date:   Mon, 22 Jul 2019 10:15:31 +0000
+Message-ID: <55b337d1-8e6c-2b80-9859-c35a82ea5df3@suse.com>
+References: <1563776607-8368-1-git-send-email-wahrenst@gmx.net>
+In-Reply-To: <1563776607-8368-1-git-send-email-wahrenst@gmx.net>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: LO2P265CA0213.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:9e::33) To CY4PR1801MB1909.namprd18.prod.outlook.com
+ (2603:10b6:910:7a::24)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=mbrugger@suse.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [37.223.144.190]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 1da348d9-cbee-4801-fc37-08d70e8d86aa
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:CY4PR1801MB1943;
+x-ms-traffictypediagnostic: CY4PR1801MB1943:
+x-ms-exchange-purlcount: 1
+x-microsoft-antispam-prvs: <CY4PR1801MB19433F9229BB6F80E9E61E4DBAC40@CY4PR1801MB1943.namprd18.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2089;
+x-forefront-prvs: 01068D0A20
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(979002)(4636009)(376002)(136003)(39860400002)(366004)(346002)(396003)(199004)(189003)(478600001)(6436002)(31696002)(6486002)(14454004)(6512007)(6306002)(53936002)(229853002)(31686004)(66556008)(66476007)(66066001)(86362001)(25786009)(66946007)(6246003)(5660300002)(66446008)(64756008)(2906002)(316002)(7736002)(110136005)(54906003)(966005)(81156014)(81166006)(7416002)(8936002)(4326008)(8676002)(36756003)(71200400001)(71190400001)(6506007)(386003)(6116002)(14444005)(256004)(3846002)(68736007)(52116002)(305945005)(99286004)(486006)(446003)(11346002)(476003)(76176011)(26005)(186003)(53546011)(2616005)(102836004)(921003)(1121003)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR1801MB1943;H:CY4PR1801MB1909.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: suse.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: GdAujMcfaX13uljKV1TWYyb3XzqK2TkDq5+bpXD4Jcy1NrxYzrGQfMLHbf/GYpVpAwggPYOU3+4qzwnjVkLgkvMYjYCDaol3ons0iKgCGwTakaSpOk2M5D9i12rfiOfdY27AY8dCl4cAC2jxy8ywjfjg8FQltC5r3tAYWkKcypRSwlaa8jNXWYwGim+gmAC36c5MLoZhjecWhFwkeej3RlxrHpPQe5iZgatr3/5l0M5G5CalVrFT8gcHGpArAg8BCJL68WR261IhA7HKNI36UO88afsrjvKgYmhxy0ZKre84MIMy1R4MsfMu8rN7fn05kEN6mUbwPOTQMAsqlCuD8g88Bv/BKWfmtVGz8JoMPYKfxsQtu6x9e3OgOEEaCiwE+277+hjmcAZbE+BSoyKhhK+aS4VhrvIu/TzUP3vkbGQ=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <09C4B038350A3B47A7C493B68609A1CF@namprd18.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1da348d9-cbee-4801-fc37-08d70e8d86aa
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jul 2019 10:15:31.0443
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 856b813c-16e5-49a5-85ec-6f081e13b527
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mbrugger@suse.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1801MB1943
+X-OriginatorOrg: suse.com
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 10/07/2019 07:04, Joe Perches wrote:
-> Arguments are supposed to be ordered high then low.
-> 
-> Signed-off-by: Joe Perches <joe@perches.com>
-> ---
->  drivers/mmc/host/meson-mx-sdio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/meson-mx-sdio.c b/drivers/mmc/host/meson-mx-sdio.c
-> index 2d736e416775..ba9a63db73da 100644
-> --- a/drivers/mmc/host/meson-mx-sdio.c
-> +++ b/drivers/mmc/host/meson-mx-sdio.c
-> @@ -73,7 +73,7 @@
->  	#define MESON_MX_SDIO_IRQC_IF_CONFIG_MASK		GENMASK(7, 6)
->  	#define MESON_MX_SDIO_IRQC_FORCE_DATA_CLK		BIT(8)
->  	#define MESON_MX_SDIO_IRQC_FORCE_DATA_CMD		BIT(9)
-> -	#define MESON_MX_SDIO_IRQC_FORCE_DATA_DAT_MASK		GENMASK(10, 13)
-> +	#define MESON_MX_SDIO_IRQC_FORCE_DATA_DAT_MASK		GENMASK(13, 10)
->  	#define MESON_MX_SDIO_IRQC_SOFT_RESET			BIT(15)
->  	#define MESON_MX_SDIO_IRQC_FORCE_HALT			BIT(30)
->  	#define MESON_MX_SDIO_IRQC_HALT_HOLE			BIT(31)
-> 
-
-Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
+DQoNCk9uIDIyLzA3LzIwMTkgMDg6MjMsIFN0ZWZhbiBXYWhyZW4gd3JvdGU6DQo+IFRoZSBhZGRp
+dGlvbmFsIGVtbWMyIGludGVyZmFjZSBvZiB0aGUgQkNNMjcxMSBpcyBhbiBpbXByb3ZlZCB2ZXJz
+aW9uDQo+IG9mIHRoZSBvbGQgZW1tYyBjb250cm9sbGVyLCB3aGljaCBpcyBhYmxlIHRvIHByb3Zp
+ZGUgRERSNTAgbW9kZSBvbiB0aGUNCj4gUmFzcGJlcnJ5IFBpIDQuIEV4Y2VwdCAzMiBiaXQgb25s
+eSByZWdpc3RlciBhY2Nlc3Mgbm8gb3RoZXIgcXVpcmtzIGFyZQ0KPiBrbm93biB5ZXQuDQo+IA0K
+PiBTaWduZWQtb2ZmLWJ5OiBTdGVmYW4gV2FocmVuIDx3YWhyZW5zdEBnbXgubmV0Pg0KDQpSZXZp
+ZXdlZC1ieTogTWF0dGhpYXMgQnJ1Z2dlciA8bWJydWdnZXJAc3VzZS5jb20+DQoNCj4gLS0tDQo+
+ICBkcml2ZXJzL21tYy9ob3N0L3NkaGNpLWlwcm9jLmMgfCA5ICsrKysrKysrKw0KPiAgMSBmaWxl
+IGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbW1j
+L2hvc3Qvc2RoY2ktaXByb2MuYyBiL2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2ktaXByb2MuYw0KPiBp
+bmRleCAyZmViNGVmLi4yYjljZGNkIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL21tYy9ob3N0L3Nk
+aGNpLWlwcm9jLmMNCj4gKysrIGIvZHJpdmVycy9tbWMvaG9zdC9zZGhjaS1pcHJvYy5jDQo+IEBA
+IC0yNjEsOCArMjYxLDE3IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgc2RoY2lfaXByb2NfZGF0YSBi
+Y20yODM1X2RhdGEgPSB7DQo+ICAJLm1tY19jYXBzID0gMHgwMDAwMDAwMCwNCj4gIH07DQo+IA0K
+PiArc3RhdGljIGNvbnN0IHN0cnVjdCBzZGhjaV9wbHRmbV9kYXRhIHNkaGNpX2JjbTI3MTFfcGx0
+Zm1fZGF0YSA9IHsNCj4gKwkub3BzID0gJnNkaGNpX2lwcm9jXzMyb25seV9vcHMsDQo+ICt9Ow0K
+PiArDQo+ICtzdGF0aWMgY29uc3Qgc3RydWN0IHNkaGNpX2lwcm9jX2RhdGEgYmNtMjcxMV9kYXRh
+ID0gew0KPiArCS5wZGF0YSA9ICZzZGhjaV9iY20yNzExX3BsdGZtX2RhdGEsDQo+ICt9Ow0KPiAr
+DQo+ICBzdGF0aWMgY29uc3Qgc3RydWN0IG9mX2RldmljZV9pZCBzZGhjaV9pcHJvY19vZl9tYXRj
+aFtdID0gew0KPiAgCXsgLmNvbXBhdGlibGUgPSAiYnJjbSxiY20yODM1LXNkaGNpIiwgLmRhdGEg
+PSAmYmNtMjgzNV9kYXRhIH0sDQo+ICsJeyAuY29tcGF0aWJsZSA9ICJicmNtLGJjbTI3MTEtZW1t
+YzIiLCAuZGF0YSA9ICZiY20yNzExX2RhdGEgfSwNCj4gIAl7IC5jb21wYXRpYmxlID0gImJyY20s
+c2RoY2ktaXByb2MtY3lnbnVzIiwgLmRhdGEgPSAmaXByb2NfY3lnbnVzX2RhdGF9LA0KPiAgCXsg
+LmNvbXBhdGlibGUgPSAiYnJjbSxzZGhjaS1pcHJvYyIsIC5kYXRhID0gJmlwcm9jX2RhdGEgfSwN
+Cj4gIAl7IH0NCj4gLS0NCj4gMi43LjQNCj4gDQo+IA0KPiBfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXw0KPiBsaW51eC1hcm0ta2VybmVsIG1haWxpbmcgbGlz
+dA0KPiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsDQo+IA0K
