@@ -2,112 +2,127 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E09A70B36
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 23:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F46170C1F
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 23:54:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732587AbfGVVWH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 22 Jul 2019 17:22:07 -0400
-Received: from mail-eopbgr730127.outbound.protection.outlook.com ([40.107.73.127]:38141
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732574AbfGVVWG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 22 Jul 2019 17:22:06 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bo+t8QY4lAFO57tHqU2jUQxgzqORDrffqM6iTEU/yF012wS90c9WjRjbO/ME2rbJJMF2xtLtTgPAjizZE9WX9WMsAfKN/zmhoGFxCwg8lT4h9NLfKfkRwgIAYu1YX9l0p2uvdHV4VI4B/lGU4SPVUXxK6GQ3cdNXajVxQkQVEI8A2uToqevFL2K7cXF3iPT/Er4O0ELkTnumHlloJ6eEsno24wWrLu4MkMFo1fgAw9gYfDRSgCKyLLq+Z8+5+shHyAWJiiQZtobfG6bFGCdSjTOUoEjPdir/eR4d7okwGdAugQzJWDBzJeh8vU1j7pd+8FKBcF/55jPwiHikc9GTXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eP1F47k7v6w0gs5cw3weXd8Pf8jOX+jjksUNgU5Z/U4=;
- b=NwLQ1UvIFt06wTW5E6oYEuYg0QIrvWPdqZrsQlL6Xt5xhFDDHCItoZvSQIGVLpaiOoxfFZyy+GpbOUpcE3kxKFpP7ERITF4u9NdS/lxeXILrjL5asJwk1pcqu9Ea9045VMHolbqwJIe16npq5dB6vVa9RCHC5z3KE/wB2lYfDcwk547ZEZzBr5gWJOsjDFyjkQcF4RHd9N174Qh0uMe4WWlYTZpMoi29pSWBwkwLCMnBOBr5moYDSdEVVg38mwLr1JBGEIcl5K/ZeYWXDhlXy5M+AAHfnriFTw8we3yTYwsAAFE1RDWhaND5yEuzIIuKGd9Idf9coJDOCblvk9K0og==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=wavecomp.com;dmarc=pass action=none
- header.from=mips.com;dkim=pass header.d=mips.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eP1F47k7v6w0gs5cw3weXd8Pf8jOX+jjksUNgU5Z/U4=;
- b=jPo3yttNDtKXogcz3x8OGb+8JDOGSucsnN5Uj7I1yJG0sJLDyigqQdRMqd0bXwgbnzV3XiYbewrOhokJJh+BmUJ4+9RJ1y9uDfbfqmcc5kxV6G0gzuer7aR4p9ZOcLDRXSTt+klFNqfd4PaE5FKZFvVgv1WwJmTheGgFAKsl2Js=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
- MWHPR2201MB1757.namprd22.prod.outlook.com (10.164.133.167) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2094.11; Mon, 22 Jul 2019 21:22:04 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::49d3:37f8:217:c83]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::49d3:37f8:217:c83%6]) with mapi id 15.20.2094.017; Mon, 22 Jul 2019
- 21:22:04 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH 2/3] MIPS: DTS: jz4740: Add node for the MMC driver
-Thread-Topic: [PATCH 2/3] MIPS: DTS: jz4740: Add node for the MMC driver
-Thread-Index: AQHUtOntLO/EgPGbyEyjPeWfCtJvS6bYPS6A
-Date:   Mon, 22 Jul 2019 21:22:04 +0000
-Message-ID: <MWHPR2201MB127739803859CA9A3917CFD8C1C40@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190125200927.21045-2-paul@crapouillou.net>
-In-Reply-To: <20190125200927.21045-2-paul@crapouillou.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR07CA0057.namprd07.prod.outlook.com
- (2603:10b6:a03:60::34) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:18::12)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [12.94.197.246]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 66a96d5d-fba6-49a2-f5e0-08d70eeaa48d
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MWHPR2201MB1757;
-x-ms-traffictypediagnostic: MWHPR2201MB1757:
-x-microsoft-antispam-prvs: <MWHPR2201MB17574E3380C3EB51B44CD1E9C1C40@MWHPR2201MB1757.namprd22.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
-x-forefront-prvs: 01068D0A20
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(376002)(39850400004)(346002)(136003)(366004)(199004)(189003)(66446008)(66476007)(3846002)(6116002)(66556008)(66066001)(6436002)(64756008)(66946007)(52536014)(25786009)(14454004)(558084003)(476003)(7416002)(8676002)(6916009)(9686003)(305945005)(74316002)(7736002)(99286004)(71190400001)(52116002)(256004)(71200400001)(4326008)(6246003)(26005)(81156014)(68736007)(186003)(8936002)(81166006)(2906002)(478600001)(486006)(11346002)(446003)(5660300002)(55016002)(53936002)(316002)(54906003)(42882007)(33656002)(386003)(7696005)(6506007)(102836004)(76176011)(229853002)(44832011);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1757;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: btNdvlVYU5FXLy4+jBlOPIZsrb+AHblqkssVtOH26S49aiTvQDBIb1rZIBMcmHT4CLUiNbFUEQ8Z6tiyUR3+FMFVnZBxvpOxV+4EtqUZJMJ17fT0X8xXF8rDyIJxip+ZzR6sLkGDxwnXD3nAZySjjldIYFlar4iXTmyOarHwx1SF8nOBMna54T4N13dtOMogKjPsDnOCwfdwm3GzMg/3YOn2mgokdVNa2Y04j1Rr1yfVIe0gtVTs0ausDyFomYMOygNu4xRs5npGI7oocYDlYnOcnvQQuoyf+QYlO3oH9TbaIp8LbIDN1tp5oWAxVqjaWq18HsFZmikYU0PA5qyGNOJwvQKSbCkS0FfifV66TSqCuwMPywOSE0jRn5qlyaDDMcOptD8xAh2opZWogXGjZB5y+po/C1wHuFc8OilbWMA=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1731655AbfGVVyJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 22 Jul 2019 17:54:09 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:46200 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732997AbfGVVyG (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Jul 2019 17:54:06 -0400
+Received: by mail-io1-f65.google.com with SMTP id i10so77336061iol.13;
+        Mon, 22 Jul 2019 14:54:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=+/tFZBmBqzo/zPORNqy/FURXPMyOxXiM7Nwwcf4TGGM=;
+        b=AzNkjmVaMFiMzdY0wulQWK0sc9DN+zQy8pyPfcVYB651ytv58A7zuosdPRz+zQr8GC
+         P2MMqn/JbMcO16ghUSJ/hhpX7w5afBYiKYF3lCJBkslof6GfsGTKpdgm0lbiy7gyoi8p
+         aujpOdiF3HzNmfyTTfhxFXIokA2Eo+AFm78iCfiFKIauMM9GuNfIfEXSXORPIoLfh7/K
+         XSIHlpQy0PJwdysENMk5TvVAhdmjgYZ6zBFkYigbF3uAlJ9VcwmFinUw5VjZR+wLUT2z
+         4Cp3O631wiJbjm4RASfNlRqDFIhQKEiQrFPR/goB/cdtjUeIp5m7EI62HhpJYVoh5zQW
+         S0CA==
+X-Gm-Message-State: APjAAAXFnCZ+gDd4I8xxiFPP5LHkjPKwNs6sO+7e8nEBaXNywIfYbRZ4
+        XOf9myHhUEm5Ui5fdu7TEw==
+X-Google-Smtp-Source: APXvYqyUL19XUYrZJxeGwxCR1U5Xwb7mxgpPlG0YNI4SIrs8fiL5rMGhTWsuUHHsuUiVX5EpIhEE/Q==
+X-Received: by 2002:a5e:8f08:: with SMTP id c8mr67180363iok.52.1563832445617;
+        Mon, 22 Jul 2019 14:54:05 -0700 (PDT)
+Received: from localhost ([64.188.179.254])
+        by smtp.gmail.com with ESMTPSA id s4sm52874406iop.25.2019.07.22.14.54.04
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 22 Jul 2019 14:54:05 -0700 (PDT)
+Date:   Mon, 22 Jul 2019 15:54:04 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Manish Narani <manish.narani@xilinx.com>
+Cc:     ulf.hansson@linaro.org, mark.rutland@arm.com, heiko@sntech.de,
+        michal.simek@xilinx.com, adrian.hunter@intel.com,
+        christoph.muellner@theobroma-systems.com,
+        philipp.tomsich@theobroma-systems.com, viresh.kumar@linaro.org,
+        scott.branden@broadcom.com, ayaka@soulik.info, kernel@esmil.dk,
+        tony.xie@rock-chips.com, rajan.vaja@xilinx.com,
+        jolly.shah@xilinx.com, nava.manne@xilinx.com, mdf@kernel.org,
+        olof@lixom.net, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update documentation
+ for SD Card Clock
+Message-ID: <20190722215404.GA28292@bogus>
+References: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
+ <1561958991-21935-2-git-send-email-manish.narani@xilinx.com>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66a96d5d-fba6-49a2-f5e0-08d70eeaa48d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jul 2019 21:22:04.6391
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pburton@wavecomp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1757
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1561958991-21935-2-git-send-email-manish.narani@xilinx.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+On Mon, Jul 01, 2019 at 10:59:41AM +0530, Manish Narani wrote:
+> The clock handling is to be updated in the Arasan SDHCI. As the
+> 'devm_clk_register' is deprecated in the clock framework, this needs to
+> specify one more clock named 'clk_sdcard' to get the clock in the driver
+> via 'devm_clk_get()'. This clock represents the clock from controller to
+> the card.
 
-Paul Cercueil wrote:
-> Add a devicetree node for the jz4740-mmc driver.
->=20
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Please explain why in terms of the binding, not some driver calls.
 
-Applied to mips-next.
+ 
+> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+> ---
+>  Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 15 ++++++++++-----
+>  1 file changed, 10 insertions(+), 5 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> index 1edbb04..15c6397 100644
+> --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> @@ -23,6 +23,10 @@ Required Properties:
+>    - reg: From mmc bindings: Register location and length.
+>    - clocks: From clock bindings: Handles to clock inputs.
+>    - clock-names: From clock bindings: Tuple including "clk_xin" and "clk_ahb"
+> +		 Apart from these two there is one more optional clock which
+> +		 is "clk_sdcard". This clock represents output clock from
+> +		 controller and card. This must be specified when #clock-cells
+> +		 is specified.
+>    - interrupts: Interrupt specifier
+>  
+>  Required Properties for "arasan,sdhci-5.1":
+> @@ -36,9 +40,10 @@ Optional Properties:
+>    - clock-output-names: If specified, this will be the name of the card clock
+>      which will be exposed by this device.  Required if #clock-cells is
+>      specified.
+> -  - #clock-cells: If specified this should be the value <0>.  With this property
+> -    in place we will export a clock representing the Card Clock.  This clock
+> -    is expected to be consumed by our PHY.  You must also specify
+> +  - #clock-cells: If specified this should be the value <0>. With this
+> +    property in place we will export one clock representing the Card
+> +    Clock. This clock is expected to be consumed by our PHY. You must also
+> +    specify
 
-Thanks,
-    Paul
+specify what?
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]
+The 3rd clock input I assume? This statement means any existing users 
+with 2 clock inputs and #clock-cells are in error now. Is that correct? 
+
+>    - xlnx,fails-without-test-cd: when present, the controller doesn't work when
+>      the CD line is not connected properly, and the line is not connected
+>      properly. Test mode can be used to force the controller to function.
+> @@ -70,8 +75,8 @@ Example:
+>  		compatible = "rockchip,rk3399-sdhci-5.1", "arasan,sdhci-5.1";
+>  		reg = <0x0 0xfe330000 0x0 0x10000>;
+>  		interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
+> -		clocks = <&cru SCLK_EMMC>, <&cru ACLK_EMMC>;
+> -		clock-names = "clk_xin", "clk_ahb";
+> +		clocks = <&cru SCLK_EMMC>, <&cru ACLK_EMMC>, <&sdhci 0>;
+> +		clock-names = "clk_xin", "clk_ahb", "clk_sdcard";
+>  		arasan,soc-ctl-syscon = <&grf>;
+>  		assigned-clocks = <&cru SCLK_EMMC>;
+>  		assigned-clock-rates = <200000000>;
+> -- 
+> 2.1.1
+> 
