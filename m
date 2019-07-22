@@ -2,190 +2,178 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 265EF6F8A2
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 06:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4AC6F926
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 07:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727951AbfGVE4o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 22 Jul 2019 00:56:44 -0400
-Received: from mail-eopbgr790041.outbound.protection.outlook.com ([40.107.79.41]:12513
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727935AbfGVE4o (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 22 Jul 2019 00:56:44 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VC0Miixz3gErrA2YjzQ7nxO0hXwGMhrEdAU/FuH4TUx3InHRrjy0lljxhpBDR7HFEaEiP0Ok5sjkLvibf+nFBXi6HPBF9pk1fOw/JUS+MCCS1uFk6T9sti3XXZLufIWQxWi+Ryz27vqQgO1B+eW6QYLLrS+q7dtYkbT2rVDMvvvWbN3qrpCrQ4OQneb16CJh5gOd1dcVnLx8GOH7f3PNbl/92GXUUI7HKwmoFTTZg2XxSkzUD0qg/eM5YUWWA+6iUlzhDztZhfzj3OsLV4FM//wqmRaYsMgeeVSvNKqohV9gD7dPo7b49g5lvGAPgp7sjZONaOkGayPyUxiaZMViSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WiCfUx+MKBeJr8hRM8GXbxr64uAYl/NAyGXyHnYiOCQ=;
- b=kQiKr1QxQgwO83D5PU1XqSlk+CxEYOCwYryxgKxDcTLRJ2yAyVLL9alHMhI8+EWpyv8lhfwwIqT4p1+l8jN3PvoWrIakaDtcbl8A9HEyX0kevUsvmOxZWs5/rOzbK1RHYuEom7omZ1tM/vAWrYQuYEOI+KdKCeuS2j3MVSLmMIT3w2h8x7Ig7loLpndC15BbY8oiS4bd4BNMSQrubORbwpCq5nevn+20q0HH9mwRHIqRtiytoztpOdpfb1DTc6gHYPQ5jeLjPq42OugFWRlaKQ/Dhs1osMUDswyNLTfZUxACt31gAOm1Bv/V1u4cXgPYd+2cP92j/2kG2AHne/kfXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=xilinx.com;dmarc=pass action=none
- header.from=xilinx.com;dkim=pass header.d=xilinx.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector1-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WiCfUx+MKBeJr8hRM8GXbxr64uAYl/NAyGXyHnYiOCQ=;
- b=H+T5M/VyzrvGeWbaG4DhAm2e2gZhUtSvGgb/cLrCXj5O6/7EFpvFtPX9LQYnhbYBIzpQpgdFztEFM0m1Ofjk+t26sAWk7unUVBkSeHHXPC+HjejSeD7UQLHAQQ6ofP8l50eTLwkZ4qiMO5BMZaQqn+kMWz2knCWKj+LIOC12aT0=
-Received: from MN2PR02MB6029.namprd02.prod.outlook.com (10.255.7.10) by
- MN2PR02MB6687.namprd02.prod.outlook.com (52.135.50.203) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2094.16; Mon, 22 Jul 2019 04:56:38 +0000
-Received: from MN2PR02MB6029.namprd02.prod.outlook.com
- ([fe80::e880:6205:6aac:21a3]) by MN2PR02MB6029.namprd02.prod.outlook.com
- ([fe80::e880:6205:6aac:21a3%7]) with mapi id 15.20.2094.013; Mon, 22 Jul 2019
- 04:56:38 +0000
-From:   Manish Narani <MNARANI@xilinx.com>
-To:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "heiko@sntech.de" <heiko@sntech.de>,
-        Michal Simek <michals@xilinx.com>,
-        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
-        "christoph.muellner@theobroma-systems.com" 
-        <christoph.muellner@theobroma-systems.com>,
-        "philipp.tomsich@theobroma-systems.com" 
-        <philipp.tomsich@theobroma-systems.com>,
-        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-        "scott.branden@broadcom.com" <scott.branden@broadcom.com>,
-        "ayaka@soulik.info" <ayaka@soulik.info>,
-        "kernel@esmil.dk" <kernel@esmil.dk>,
-        "tony.xie@rock-chips.com" <tony.xie@rock-chips.com>,
-        "mdf@kernel.org" <mdf@kernel.org>,
-        "olof@lixom.net" <olof@lixom.net>
-CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>
-Subject: RE: [PATCH v2 00/11] Arasan SDHCI enhancements and ZynqMP Tap Delays
- Handling
-Thread-Topic: [PATCH v2 00/11] Arasan SDHCI enhancements and ZynqMP Tap Delays
- Handling
-Thread-Index: AQHVL84SOR9L6OedtU+uS2U+bXPHK6bLWgfggArYtoA=
-Date:   Mon, 22 Jul 2019 04:56:38 +0000
-Message-ID: <MN2PR02MB60291FE74900566F4C5D359DC1C40@MN2PR02MB6029.namprd02.prod.outlook.com>
-References: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
- <MN2PR02MB602959626A4F6E462A321F35C1CF0@MN2PR02MB6029.namprd02.prod.outlook.com>
-In-Reply-To: <MN2PR02MB602959626A4F6E462A321F35C1CF0@MN2PR02MB6029.namprd02.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=MNARANI@xilinx.com; 
-x-originating-ip: [149.199.50.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 927db028-ef40-4914-f591-08d70e60fb1e
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:MN2PR02MB6687;
-x-ms-traffictypediagnostic: MN2PR02MB6687:
-x-microsoft-antispam-prvs: <MN2PR02MB6687D9A9797BA6B4F5E23E4FC1C40@MN2PR02MB6687.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4502;
-x-forefront-prvs: 01068D0A20
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(346002)(366004)(376002)(39860400002)(396003)(136003)(189003)(199004)(13464003)(486006)(66066001)(33656002)(7696005)(66556008)(64756008)(66446008)(76116006)(66476007)(76176011)(66946007)(478600001)(53546011)(6506007)(6436002)(7416002)(229853002)(68736007)(55016002)(102836004)(9686003)(71200400001)(86362001)(71190400001)(26005)(99286004)(2201001)(74316002)(4326008)(305945005)(53936002)(6246003)(81156014)(81166006)(6116002)(14444005)(2906002)(110136005)(54906003)(25786009)(316002)(256004)(3846002)(446003)(52536014)(476003)(186003)(8676002)(14454004)(2501003)(8936002)(7736002)(11346002)(5660300002)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR02MB6687;H:MN2PR02MB6029.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: xilinx.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 1btVxJNO8h83GVhgOqntpBbfgldWQXuBbDqLD0/RUD1VHPiQYtCeNupcPd333jDUyPZGOueKDGzoBrl518gCXrwZTdd21E/jWxU17Y8ntlaP5WRQ3DKLcUwEfBAVrFMwkZFelQD0ruXd66zbJJkZY4sf/639XYK7oCLz/mOKOe6z/abhpySaB4i5/i+Grg2msbEeUsq1aH7GLkL5+rIBjVIb+hvEjiuuozdsn3/NuQj1dp/SdItfOlO3J88T3DiujIeL3pCrVxZwetOIkJQn+m6fz8ReDXs9HcQGf+BfBRnS/uIPZ+cknzFy1i7O4agPWMes9xm2caSx6a0uBKfhTt2xL/yxfgA8XJdWsBu+dqwRxPcMAqq1JKp5iD/nofOPAxMK7uidqhtbvlB/3CPpgd12eN7SgZy1iYzZLTGgXRw=
-Content-Type: text/plain; charset="us-ascii"
+        id S1727422AbfGVF4V (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 22 Jul 2019 01:56:21 -0400
+Received: from mout.gmx.net ([212.227.17.22]:34927 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727407AbfGVF4U (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 22 Jul 2019 01:56:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1563774934;
+        bh=nTl109vyOUBR2zyRol9VTmFHR6gjS2AXS/Pgcx0bQTY=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=jfvqjgCISbf+Pa+4ERn3aG+TLMc5aEPOQ3Ya5vwgAUfV7o7TGBrneL2PgT5gWeXWD
+         AbfRMW8zQMEfxM7un7lZWl84atKOgysssowkyeqkxsL7PSHciqe1hMZ31lhVQvXhDb
+         pa0BQJLf0Vfhm/GWwfwPPoLknl0SY2ZHIi7W6K3E=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost.localdomain ([37.4.249.98]) by mail.gmx.com (mrgmx102
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 0Lurin-1iXGMB16Fl-01063s; Mon, 22
+ Jul 2019 07:55:34 +0200
+From:   Stefan Wahren <wahrenst@gmx.net>
+To:     Eric Anholt <eric@anholt.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     bcm-kernel-feedback-list@broadcom.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH 00/18] ARM: Add minimal Raspberry Pi 4 support
+Date:   Mon, 22 Jul 2019 07:54:31 +0200
+Message-Id: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.7.4
+X-Provags-ID: V03:K1:nFbHXC3fhyDvHOK156rPlI/cNhYflJ/Mq9kOF5ukfMQHr/MP8Xg
+ /WzrjIdPAsrrY1Krk7yAn2KGUOz+yI+aZNDXc72ZqDctEvoZInuoZLO1+9a6kam6ycWKLBy
+ a16E4sUXp+tq1kW9tlRHjN4oCeX+BJqhNuCOfHRYFDIgTeg1pZbx9OLN0LsHARTIRA8k3sb
+ i0Ns448tqkluxVdwyDcDA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Uldo6zz6IjY=:ga4Bk0EAggcaniosdxi3TY
+ BgQyrQ/Wkn2YpDgu7u7b8ifl7wnfTANjECLKncwQDvzaSAWMk7izDeEH72fc75g6LPW0WODLI
+ YLQvm79Bt7xPXTF0xpfsMPMkPUxW6i3VW6U5EIkCiCW5KXEBrq0qhW9/QcBraTqYvtditq/sq
+ ZgbqDmDf4pSHfL4zGPYH5CiamfU7uGDvi/zAWp7hYSSgolLaUXP2ryaTrHeVlIYI1SpS4sRZP
+ XuQFTA1xVV/R9P4VrtQjzVnHEQvg+BFkzTCqUMuTRIbw4VGuMvbZwrC9HjS5H2cRlbOWdA3fl
+ xGXEIWen1XTvSXoXubZqvenCp2NrixbbLO9A5LH0Ob/xH+lP16ZxDLNvsskQPYunGo1dN7gfN
+ MyGdPoQepoivceGY8b12ZOv0ygiJnZBIQDDxZunWvzZiRfWNsVQWs2EgZV2Wco3q/bhowjtAr
+ y5oeXMjFiAVJBthnny3IOzEaLBpVeKPSkePSsglBIcD1qr3Cd1AdxdvpTLYdvwmekv93Uil+A
+ F3JwYjPF0DZp8ZkVkoekXsrLt2gyBDGiOfL4gu5TA6phJ9p9uk6Yq16WFmrC7fqZ77glL9puN
+ XKkQQZfjP8Qf0AM4B0FfZs1kKyHtfQX/gkFN4fD2gts9/YBxPkLeycqD7uuosqzjVGcCmoXQx
+ 8nuvWU51P89VsYXBzfJux5457i2tL7qan84KBSxhpoDDk2TQrtBbHsppDoryF8AmN1Hj4mLe6
+ AcO17zpKaLND0FEChvMS0+4KxuTkF3iuX5yZFNaNSjFRUkcSwQzTtEcS/rWsLYxLLyiAn0gDX
+ 8Ns/aldail14qEJBSyyVye31qAusvon7Wjv5iE/+fXzzzUK4RfohAs+a5Oz5RsdYSjPnedM+g
+ NfUi6Broc0jG8Hwya3g01GKrfoRRJeQhbxiQZl+ihHQjV6L7YnqH8Nrf4WqCL3swLO7oJvcrd
+ bSy82RJvZOPr9tY8NQOdPTTUgMi6wmYZEt5QHTELstfSqTjD5cEX0hf+28p9b1oJmmS9DBaKQ
+ UJBRHKf65g3qrzsQ+Arz/YMxZkKHiH0WkV+HhTcPvTWykl0YYKnQbXgsApS4PJGWF3ytrk4Tx
+ VUNxcUIbZYGdso=
 Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 927db028-ef40-4914-f591-08d70e60fb1e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jul 2019 04:56:38.8364
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mnarani@xilinx.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB6687
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Gentle Ping!
+This series adds minimal support for the new Raspberry Pi 4, so we are abl=
+e
+to login via debug UART.
 
-> -----Original Message-----
-> From: Manish Narani
-> Sent: Monday, July 15, 2019 12:46 PM
-> To: Manish Narani <MNARANI@xilinx.com>; ulf.hansson@linaro.org;
-> robh+dt@kernel.org; mark.rutland@arm.com; heiko@sntech.de; Michal Simek
-> <michals@xilinx.com>; adrian.hunter@intel.com;
-> christoph.muellner@theobroma-systems.com; philipp.tomsich@theobroma-
-> systems.com; viresh.kumar@linaro.org; scott.branden@broadcom.com;
-> ayaka@soulik.info; kernel@esmil.dk; tony.xie@rock-chips.com;
-> mdf@kernel.org; olof@lixom.net
-> Cc: linux-mmc@vger.kernel.org; devicetree@vger.kernel.org; linux-
-> kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-
-> rockchip@lists.infradead.org
-> Subject: RE: [PATCH v2 00/11] Arasan SDHCI enhancements and ZynqMP Tap
-> Delays Handling
->=20
-> Ping!
->=20
-> > -----Original Message-----
-> > From: Manish Narani <manish.narani@xilinx.com>
-> > Sent: Monday, July 1, 2019 11:00 AM
-> > To: ulf.hansson@linaro.org; robh+dt@kernel.org; mark.rutland@arm.com;
-> > heiko@sntech.de; Michal Simek <michals@xilinx.com>;
-> > adrian.hunter@intel.com; christoph.muellner@theobroma-systems.com;
-> > philipp.tomsich@theobroma-systems.com; viresh.kumar@linaro.org;
-> > scott.branden@broadcom.com; ayaka@soulik.info; kernel@esmil.dk;
-> > tony.xie@rock-chips.com; Rajan Vaja <RAJANV@xilinx.com>; Jolly Shah
-> > <JOLLYS@xilinx.com>; Nava kishore Manne <navam@xilinx.com>;
-> > mdf@kernel.org; Manish Narani <MNARANI@xilinx.com>; olof@lixom.net
-> > Cc: linux-mmc@vger.kernel.org; devicetree@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-
-> > rockchip@lists.infradead.org
-> > Subject: [PATCH v2 00/11] Arasan SDHCI enhancements and ZynqMP Tap
-> > Delays Handling
-> >
-> > This patch series does the following:
-> >  - Reorganize the Clock Handling in Arasan SD driver
-> >  - Adds new sampling clock in Arasan SD driver
-> >  - Adds support to set Clock Delays in SD Arasan Driver
-> >  - Add SDIO Tap Delay handling in ZynqMP firmware driver
-> >  - Add support for ZynqMP Tap Delays setting in Arasan SD driver
-> >
-> > Changes in v2:
-> > 	- Replaced the deprecated calls to clock framework APIs
-> > 	- Added support for dev_clk_get() call to work for SD card clock
-> > 	- Separated the clock data struct
-> > 	- Fragmented the patch series in smaller patches to make it more
-> > 	  readable
-> >
-> > This patch series contains a DT patch, which I think should be there to
-> > maintain the order of commits.
-> >
-> > Manish Narani (11):
-> >   dt-bindings: mmc: arasan: Update documentation for SD Card Clock
-> >   arm64: dts: rockchip: Add optional clock property indicating sdcard
-> >     clock
-> >   mmc: sdhci-of-arasan: Replace deprecated clk API calls
-> >   mmc: sdhci-of-arasan: Separate out clk related data to another
-> >     structure
-> >   dt-bindings: mmc: arasan: Update Documentation for the input clock
-> >   mmc: sdhci-of-arasan: Add sampling clock for a phy to use
-> >   dt-bindings: mmc: arasan: Add optional properties for Arasan SDHCI
-> >   mmc: sdhci-of-arasan: Add support to set clock phase delays for SD
-> >   firmware: xilinx: Add SDIO Tap Delay APIs
-> >   dt-bindings: mmc: arasan: Document 'xlnx,zynqmp-8.9a' controller
-> >   mmc: sdhci-of-arasan: Add support for ZynqMP Platform Tap Delays Setu=
-p
-> >
-> >  .../devicetree/bindings/mmc/arasan,sdhci.txt       |  49 ++-
-> >  arch/arm64/boot/dts/rockchip/rk3399.dtsi           |   4 +-
-> >  drivers/firmware/xilinx/zynqmp.c                   |  48 +++
-> >  drivers/mmc/host/sdhci-of-arasan.c                 | 453
-> ++++++++++++++++++++-
-> >  include/linux/firmware/xlnx-zynqmp.h               |  15 +-
-> >  5 files changed, 540 insertions(+), 29 deletions(-)
-> >
-> > --
-> > 2.1.1
+Patch 1-5:   Prepare platform and DTS for the new SoC BMC2711
+Patch 6-10:  Enable support for emmc2 on BCM2711
+Patch 11-12: Enable pinctrl for BCM2711
+Patch 13-17: Add Raspberry Pi 4 DTS support
+Patch 18:    Update MAINTAINERS
+
+Unfortunately the Raspberry Pi Foundation didn't released a
+peripheral documentation for the new SoC yet. So we only have a preliminar=
+y
+datasheet [1] and reduced schematics [2].
+
+Changes since RFC:
+- change BCM2838 -> BCM2711 as discussed in RFC
+- update MAINTAINERS accordingly
+- drop "spi: bcm2835: enable shared interrupt support" from series
+- squash all pinctrl-bcm2835 changes into one patch
+- introduce SoC specific clock registration as suggested by Florian
+- fix watchdog probing for Raspberry Pi 4
+- convert brcm,bcm2835.txt to json-schema
+- move VC4 node to bcm2835-common.dtsi
+- fallback to legacy pull config for Raspberry Pi 4
+- revert unintended change of mailbox in bcm283x.dtsi
+- add reference for arm64
+
+[1] - https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm27=
+11/rpi_DATA_2711_1p0_preliminary.pdf
+[2] - https://www.raspberrypi.org/documentation/hardware/raspberrypi/schem=
+atics/rpi_SCH_4b_4p0_reduced.pdf
+
+Phil Elwell (1):
+  ARM: bcm2835: DMA can only address 1GB
+
+Stefan Wahren (17):
+  ARM: bcm283x: Reduce register ranges for UART, SPI and I2C
+  ARM: dts: bcm283x: Move BCM2835/6/7 specific to bcm2835-common.dtsi
+  ARM: dts: bcm283x: Define MMC interfaces at board level
+  ARM: dts: bcm283x: Define memory at board level
+  dt-bindings: bcm2835-cprman: Add bcm2711 support
+  clk: bcm2835: Introduce SoC specific clock registration
+  clk: bcm2835: Add BCM2711_CLOCK_EMMC2 support
+  dt-bindings: sdhci-iproc: Add brcm,bcm2711-emmc2
+  mmc: sdhci-iproc: Add support for emmc2 of the BCM2711
+  dt-bindings: pinctrl: bcm2835: Add brcm,bcm2711 compatible
+  pinctrl: bcm2835: Add support for BCM2711 pull-up functionality
+  dt-bindings: arm: Convert BCM2835 board/soc bindings to json-schema
+  dt-bindings: arm: bcm2835: Add Raspberry Pi 4 to DT schema
+  ARM: bcm2835: Add bcm2711 compatible string
+  ARM: dts: Add minimal Raspberry Pi 4 support
+  arm64: dts: broadcom: Add reference to RPi 4 B
+  MAINTAINERS: Add BCM2711 to BCM2835 ARCH
+
+ .../devicetree/bindings/arm/bcm/bcm2835.yaml       |  51 ++
+ .../devicetree/bindings/arm/bcm/brcm,bcm2835.txt   |  67 ---
+ .../bindings/clock/brcm,bcm2835-cprman.txt         |   4 +-
+ .../devicetree/bindings/mmc/brcm,sdhci-iproc.txt   |   4 +-
+ .../bindings/pinctrl/brcm,bcm2835-gpio.txt         |   1 +
+ MAINTAINERS                                        |   3 +-
+ arch/arm/boot/dts/Makefile                         |   1 +
+ arch/arm/boot/dts/bcm2711-rpi-4-b.dts              | 120 ++++
+ arch/arm/boot/dts/bcm2711.dtsi                     | 667 ++++++++++++++++=
++++++
+ arch/arm/boot/dts/bcm2835-common.dtsi              | 177 ++++++
+ arch/arm/boot/dts/bcm2835-rpi-a-plus.dts           |  12 +
+ arch/arm/boot/dts/bcm2835-rpi-a.dts                |  12 +
+ arch/arm/boot/dts/bcm2835-rpi-b-plus.dts           |  12 +
+ arch/arm/boot/dts/bcm2835-rpi-b-rev2.dts           |  12 +
+ arch/arm/boot/dts/bcm2835-rpi-b.dts                |  12 +
+ arch/arm/boot/dts/bcm2835-rpi-cm1-io1.dts          |   7 +
+ arch/arm/boot/dts/bcm2835-rpi-cm1.dtsi             |   5 +
+ arch/arm/boot/dts/bcm2835-rpi-zero-w.dts           |  12 +
+ arch/arm/boot/dts/bcm2835-rpi-zero.dts             |  12 +
+ arch/arm/boot/dts/bcm2835-rpi.dtsi                 |  18 -
+ arch/arm/boot/dts/bcm2835.dtsi                     |   1 +
+ arch/arm/boot/dts/bcm2836-rpi-2-b.dts              |   8 +
+ arch/arm/boot/dts/bcm2836.dtsi                     |   1 +
+ arch/arm/boot/dts/bcm2837-rpi-3-a-plus.dts         |   1 +
+ arch/arm/boot/dts/bcm2837-rpi-3-b-plus.dts         |   1 +
+ arch/arm/boot/dts/bcm2837-rpi-3-b.dts              |   1 +
+ arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts          |   7 +
+ arch/arm/boot/dts/bcm2837-rpi-cm3.dtsi             |   1 +
+ arch/arm/boot/dts/bcm2837.dtsi                     |   1 +
+ arch/arm/boot/dts/bcm283x.dtsi                     | 160 +----
+ arch/arm/mach-bcm/board_bcm2835.c                  |   2 +
+ arch/arm64/boot/dts/broadcom/Makefile              |   3 +-
+ arch/arm64/boot/dts/broadcom/bcm2711-rpi-4-b.dts   |   2 +
+ drivers/clk/bcm/clk-bcm2835.c                      | 117 +++-
+ drivers/mmc/host/sdhci-iproc.c                     |   9 +
+ drivers/pinctrl/bcm/pinctrl-bcm2835.c              | 105 +++-
+ include/dt-bindings/clock/bcm2835.h                |   2 +
+ 37 files changed, 1365 insertions(+), 266 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml
+ delete mode 100644 Documentation/devicetree/bindings/arm/bcm/brcm,bcm2835=
+.txt
+ create mode 100644 arch/arm/boot/dts/bcm2711-rpi-4-b.dts
+ create mode 100644 arch/arm/boot/dts/bcm2711.dtsi
+ create mode 100644 arch/arm/boot/dts/bcm2835-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/broadcom/bcm2711-rpi-4-b.dts
+
+=2D-
+2.7.4
 
