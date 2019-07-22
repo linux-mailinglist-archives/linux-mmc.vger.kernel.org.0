@@ -2,38 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F46170C1F
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 23:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D83D470C2D
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jul 2019 23:56:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731655AbfGVVyJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 22 Jul 2019 17:54:09 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:46200 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732997AbfGVVyG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Jul 2019 17:54:06 -0400
-Received: by mail-io1-f65.google.com with SMTP id i10so77336061iol.13;
-        Mon, 22 Jul 2019 14:54:06 -0700 (PDT)
+        id S1726282AbfGVV4O (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 22 Jul 2019 17:56:14 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:35016 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726252AbfGVV4O (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Jul 2019 17:56:14 -0400
+Received: by mail-io1-f67.google.com with SMTP id m24so77461311ioo.2;
+        Mon, 22 Jul 2019 14:56:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=+/tFZBmBqzo/zPORNqy/FURXPMyOxXiM7Nwwcf4TGGM=;
-        b=AzNkjmVaMFiMzdY0wulQWK0sc9DN+zQy8pyPfcVYB651ytv58A7zuosdPRz+zQr8GC
-         P2MMqn/JbMcO16ghUSJ/hhpX7w5afBYiKYF3lCJBkslof6GfsGTKpdgm0lbiy7gyoi8p
-         aujpOdiF3HzNmfyTTfhxFXIokA2Eo+AFm78iCfiFKIauMM9GuNfIfEXSXORPIoLfh7/K
-         XSIHlpQy0PJwdysENMk5TvVAhdmjgYZ6zBFkYigbF3uAlJ9VcwmFinUw5VjZR+wLUT2z
-         4Cp3O631wiJbjm4RASfNlRqDFIhQKEiQrFPR/goB/cdtjUeIp5m7EI62HhpJYVoh5zQW
-         S0CA==
-X-Gm-Message-State: APjAAAXFnCZ+gDd4I8xxiFPP5LHkjPKwNs6sO+7e8nEBaXNywIfYbRZ4
-        XOf9myHhUEm5Ui5fdu7TEw==
-X-Google-Smtp-Source: APXvYqyUL19XUYrZJxeGwxCR1U5Xwb7mxgpPlG0YNI4SIrs8fiL5rMGhTWsuUHHsuUiVX5EpIhEE/Q==
-X-Received: by 2002:a5e:8f08:: with SMTP id c8mr67180363iok.52.1563832445617;
-        Mon, 22 Jul 2019 14:54:05 -0700 (PDT)
+        bh=oUAUcHROFVykrQfoIqNUbHZZ4/oOTJrle0TfSFnaOy4=;
+        b=VNRcFhT+ON8gfY/lTSkivnWTk5xAQOvIX+dz8m1SnD48c+9FlDq/v9h3k88uGMHpQX
+         hXRg0xCVMtQH0rUAAj7gkuWrJpBsohhFXklE1S/UsGArlJVxgaiVnZYLJOdKTYRL3X2P
+         gQmVxRfaz88aKKMf6TyZCtJr6vYz5MQ+gZtxEgOOqgSY3kKn8SVYRrdZODESYOsQe3NN
+         ixL70ZnwVFGge8PGCeggSLuqQ5AtnoAWtRl2q9xIvQlcxvG2SzP7fUCPbM96H6q2f3Ss
+         YI3a7q5xG8ps8kBoBdkQD0CbGRwHgfxV3XD4rnwVyDx7Yqsgd8vVSzjY0lmbo83LHPrw
+         AB8A==
+X-Gm-Message-State: APjAAAWPraBzu3qHUq1b+9AQ0/323aKlsE0fHo54F/DLHC7RaJtctSb9
+        S+WHqUOlmKPJKun+3C5FEA==
+X-Google-Smtp-Source: APXvYqwEG3LbLYKC9307yBEM7CSfFu+SMect//sr3rtgOi3zgZ3iXYwZmp1iA6jx8W+hWbvB1UR7qw==
+X-Received: by 2002:a6b:b7d5:: with SMTP id h204mr65978346iof.188.1563832573342;
+        Mon, 22 Jul 2019 14:56:13 -0700 (PDT)
 Received: from localhost ([64.188.179.254])
-        by smtp.gmail.com with ESMTPSA id s4sm52874406iop.25.2019.07.22.14.54.04
+        by smtp.gmail.com with ESMTPSA id j5sm31150050iom.69.2019.07.22.14.56.12
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 22 Jul 2019 14:54:05 -0700 (PDT)
-Date:   Mon, 22 Jul 2019 15:54:04 -0600
+        Mon, 22 Jul 2019 14:56:12 -0700 (PDT)
+Date:   Mon, 22 Jul 2019 15:56:12 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Manish Narani <manish.narani@xilinx.com>
 Cc:     ulf.hansson@linaro.org, mark.rutland@arm.com, heiko@sntech.de,
@@ -47,82 +47,65 @@ Cc:     ulf.hansson@linaro.org, mark.rutland@arm.com, heiko@sntech.de,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update documentation
- for SD Card Clock
-Message-ID: <20190722215404.GA28292@bogus>
+Subject: Re: [PATCH v2 05/11] dt-bindings: mmc: arasan: Update Documentation
+ for the input clock
+Message-ID: <20190722215612.GA5437@bogus>
 References: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
- <1561958991-21935-2-git-send-email-manish.narani@xilinx.com>
+ <1561958991-21935-6-git-send-email-manish.narani@xilinx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1561958991-21935-2-git-send-email-manish.narani@xilinx.com>
+In-Reply-To: <1561958991-21935-6-git-send-email-manish.narani@xilinx.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Jul 01, 2019 at 10:59:41AM +0530, Manish Narani wrote:
-> The clock handling is to be updated in the Arasan SDHCI. As the
-> 'devm_clk_register' is deprecated in the clock framework, this needs to
-> specify one more clock named 'clk_sdcard' to get the clock in the driver
-> via 'devm_clk_get()'. This clock represents the clock from controller to
-> the card.
-
-Please explain why in terms of the binding, not some driver calls.
-
- 
+On Mon, Jul 01, 2019 at 10:59:45AM +0530, Manish Narani wrote:
+> Add documentation for an optional input clock which is essentially used
+> in sampling the input data coming from the card.
+> 
 > Signed-off-by: Manish Narani <manish.narani@xilinx.com>
 > ---
->  Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
+>  Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 > 
 > diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> index 1edbb04..15c6397 100644
+> index 15c6397..7c79496 100644
 > --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
 > +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> @@ -23,6 +23,10 @@ Required Properties:
+> @@ -23,10 +23,10 @@ Required Properties:
 >    - reg: From mmc bindings: Register location and length.
 >    - clocks: From clock bindings: Handles to clock inputs.
 >    - clock-names: From clock bindings: Tuple including "clk_xin" and "clk_ahb"
-> +		 Apart from these two there is one more optional clock which
-> +		 is "clk_sdcard". This clock represents output clock from
-> +		 controller and card. This must be specified when #clock-cells
-> +		 is specified.
+> -		 Apart from these two there is one more optional clock which
+> -		 is "clk_sdcard". This clock represents output clock from
+> -		 controller and card. This must be specified when #clock-cells
+> -		 is specified.
+> +		 Apart from these two there are two more optional clocks which
+> +		 are "clk_sdcard" and "clk_sample". These two clocks represent
+> +		 output and input clocks between controller and card. These
+> +		 must be specified when #clock-cells is specified.
 >    - interrupts: Interrupt specifier
 >  
 >  Required Properties for "arasan,sdhci-5.1":
-> @@ -36,9 +40,10 @@ Optional Properties:
+> @@ -40,9 +40,9 @@ Optional Properties:
 >    - clock-output-names: If specified, this will be the name of the card clock
 >      which will be exposed by this device.  Required if #clock-cells is
 >      specified.
-> -  - #clock-cells: If specified this should be the value <0>.  With this property
-> -    in place we will export a clock representing the Card Clock.  This clock
-> -    is expected to be consumed by our PHY.  You must also specify
-> +  - #clock-cells: If specified this should be the value <0>. With this
-> +    property in place we will export one clock representing the Card
-> +    Clock. This clock is expected to be consumed by our PHY. You must also
-> +    specify
+> -  - #clock-cells: If specified this should be the value <0>. With this
+> -    property in place we will export one clock representing the Card
+> -    Clock. This clock is expected to be consumed by our PHY. You must also
+> +  - #clock-cells: If specified this should be the value <0> or <1>. With this
+> +    property in place we will export one or two clocks representing the Card
+> +    Clock. These clocks are expected to be consumed by our PHY. You must also
 
-specify what?
+What are the 2 clocks?
 
-The 3rd clock input I assume? This statement means any existing users 
-with 2 clock inputs and #clock-cells are in error now. Is that correct? 
-
+>      specify
 >    - xlnx,fails-without-test-cd: when present, the controller doesn't work when
 >      the CD line is not connected properly, and the line is not connected
->      properly. Test mode can be used to force the controller to function.
-> @@ -70,8 +75,8 @@ Example:
->  		compatible = "rockchip,rk3399-sdhci-5.1", "arasan,sdhci-5.1";
->  		reg = <0x0 0xfe330000 0x0 0x10000>;
->  		interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
-> -		clocks = <&cru SCLK_EMMC>, <&cru ACLK_EMMC>;
-> -		clock-names = "clk_xin", "clk_ahb";
-> +		clocks = <&cru SCLK_EMMC>, <&cru ACLK_EMMC>, <&sdhci 0>;
-> +		clock-names = "clk_xin", "clk_ahb", "clk_sdcard";
->  		arasan,soc-ctl-syscon = <&grf>;
->  		assigned-clocks = <&cru SCLK_EMMC>;
->  		assigned-clock-rates = <200000000>;
 > -- 
 > 2.1.1
 > 
