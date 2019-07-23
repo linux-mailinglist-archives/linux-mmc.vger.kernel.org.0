@@ -2,228 +2,221 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4F1B7140D
-	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jul 2019 10:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FEC171483
+	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jul 2019 11:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727820AbfGWIew (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 23 Jul 2019 04:34:52 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:40710 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727777AbfGWIev (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 23 Jul 2019 04:34:51 -0400
-Received: by mail-vs1-f68.google.com with SMTP id a186so26643411vsd.7
-        for <linux-mmc@vger.kernel.org>; Tue, 23 Jul 2019 01:34:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/aWJ/JAdMglOxtJEbcmhJOQynHm+bRWSKko1HR0L8QM=;
-        b=RrXXi056DxpL0EJxsBWmPfr33KRPSH3qyJA5n+ARe+hn5ioEMNzySTXq8eNG7HeTlM
-         OjYTKevZ30ZFcDe45F+x/kdYhN7jS8B9yu5TZR7W6a+IajWi075JzrJw97JXDfV1ICDV
-         Y5UxKqLDnTpDxsLvXQCKMTcPz9FdpcLorBogr0F8OfG9ZiazZ7GdjDsVbmZf24V6v3Ha
-         TBG0O0QXj2CWl1dHgCsVnB7x/tGde9A1i4BtPKOowhxxAISJeMG8wtu3sB+rR8akajk3
-         H2nv+Vuxtyt/xPAccAPdOdB6ylTRed907F7Mxvev+A+37BbEjkAsXOf5zNL6TSj0VpBQ
-         dGzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/aWJ/JAdMglOxtJEbcmhJOQynHm+bRWSKko1HR0L8QM=;
-        b=aJTccfTsh58/jQIKdX3RBlga4V4oKHn6ZaklQxDaXoMJhaVc+VqXh/x85YqRXmOH0H
-         4zErpDAp/4ZXpyXBOYzuWrUhVkjUe3bLREcb7BRe/hsoDEkthcEarl9GcjYGsEmkNIWM
-         0O/l7KGcUNFka1UVXfG08z4UmD9zh/6Sf4wN4AZy0eH9zUV7UOhkukUNLyArNLEld+f+
-         9WUjXwE9ftB3K+hcdKlbDfD9SyYZsnHM3db9WAg+0iAlvTPZ6RN9BlmYWTKLi9e6cwy9
-         h/hLboMRW830hXw8cYm5f+rHF4feN4licz9itgf9oPr9nhbqnWJ0qn4njeqjSqSDFzPE
-         f1aw==
-X-Gm-Message-State: APjAAAXTr5RKYTK2M+Ntlei94FLW9mcJnGxfrlMWM/suEcZxbXyxrI40
-        V07fdeKEJNX6vMZqCizLB7i328qjMQw0aRef7xWtxA==
-X-Google-Smtp-Source: APXvYqzNs3gxI1Wh5NQNG8ZCg48rxs53uVG8u/pDP7mfsiX/Lxwsc5EvbVlfeuss2hmM0cibxkMOiwY/IT400RakZ5k=
-X-Received: by 2002:a67:61c7:: with SMTP id v190mr45641136vsb.165.1563870890278;
- Tue, 23 Jul 2019 01:34:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190722111317.20177-1-ulf.hansson@linaro.org> <793757e2-5722-3597-4f1f-e5e021d1bd77@st.com>
-In-Reply-To: <793757e2-5722-3597-4f1f-e5e021d1bd77@st.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 23 Jul 2019 10:34:14 +0200
-Message-ID: <CAPDyKFpzg5vmkmN2uNBRUm-GgEYp662ND-8C2csNABLo8jecAw@mail.gmail.com>
-Subject: Re: [PATCH V2] mmc: mmci: Clarify comments and some code for busy detection
-To:     Jean Nicolas GRAUX <jean-nicolas.graux@st.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        id S2387766AbfGWJBa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 23 Jul 2019 05:01:30 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:51411 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727748AbfGWJBa (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 23 Jul 2019 05:01:30 -0400
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6N91MkY016529;
+        Tue, 23 Jul 2019 11:01:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=8PX8o43iW0QxklkJxgBHppG0SxWZeDLwZn9lPpRt790=;
+ b=FIFRDdX1dCwN3d74pJ3jVxC3Ujkm/1/myjTHan9pLCXOiKHTv0j+0tuxuFrI1IMcMicR
+ fX3IzZROyaoInNa4fZjWVeDUq0TMN5qpeFhOOFd170kLWZuKwuAXTs2gwVu4aNETMBM7
+ +R0SJO9lWN5eDzYQoVwCTrcYm6NkRCb7klA0OjA/kXaD9Pa6hnqmrsydaMWMGQiY5hFj
+ CKAY1WH+BYX2oh57BIt+pXn1lELH+ljMjEaFd8z/RoR3bNYgnWKa6/Pk8Z4i+mKO0BCS
+ U9YqtquqUJYuXYdW+Ael6D4Eb8rWKO1NMgqdigQvF/fa5E5qFdyX53ymHaIE3FnXjzBu gA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2tuw7w76er-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 23 Jul 2019 11:01:22 +0200
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0C9B83A;
+        Tue, 23 Jul 2019 09:01:21 +0000 (GMT)
+Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E1FA82717;
+        Tue, 23 Jul 2019 09:01:20 +0000 (GMT)
+Received: from SFHDAG6NODE1.st.com (10.75.127.16) by SFHDAG6NODE1.st.com
+ (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 23 Jul
+ 2019 11:01:20 +0200
+Received: from SFHDAG6NODE1.st.com ([fe80::8d96:4406:44e3:eb27]) by
+ SFHDAG6NODE1.st.com ([fe80::8d96:4406:44e3:eb27%20]) with mapi id
+ 15.00.1473.003; Tue, 23 Jul 2019 11:01:20 +0200
+From:   Jean Nicolas GRAUX <jean-nicolas.graux@st.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Ludovic BARRE <ludovic.barre@st.com>,
         Russell King <linux@armlinux.org.uk>,
         Linus Walleij <linus.walleij@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH V2] mmc: mmci: Clarify comments and some code for busy
+ detection
+Thread-Topic: [PATCH V2] mmc: mmci: Clarify comments and some code for busy
+ detection
+Thread-Index: AQHVQH5854V+cStNKE66Ugn9j/c7nabXuiuAgAAGIQCAAAeNgA==
+Date:   Tue, 23 Jul 2019 09:01:20 +0000
+Message-ID: <1840c0ea-7aed-8a6b-3413-a0b5a8f87381@st.com>
+References: <20190722111317.20177-1-ulf.hansson@linaro.org>
+ <793757e2-5722-3597-4f1f-e5e021d1bd77@st.com>
+ <CAPDyKFpzg5vmkmN2uNBRUm-GgEYp662ND-8C2csNABLo8jecAw@mail.gmail.com>
+In-Reply-To: <CAPDyKFpzg5vmkmN2uNBRUm-GgEYp662ND-8C2csNABLo8jecAw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.75.127.48]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <009BF3AA89BB824DB103704E10194FDD@st.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-23_04:,,
+ signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 23 Jul 2019 at 10:12, Jean Nicolas GRAUX
-<jean-nicolas.graux@st.com> wrote:
->
-> Hello Ulf, all,
->
-> I tried this new patch and did not face issues so far.
-
-Great, thanks!
-
-> That is said, some comments below.
->
-> Regards, Jean-Nicolas.
->
-> On 7/22/19 1:13 PM, Ulf Hansson wrote:
-> > The code dealing with busy detection is somewhat complicated. In a way to
-> > make it a bit clearer, let's try to clarify the comments in the code about
-> > it.
-> >
-> > Additionally, move the part for clearing the so called busy start IRQ, to
-> > the place where the IRQ is actually delivered. Ideally, this should make
-> > the code a bit more robust, but also a bit easier to understand.
-> >
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > ---
-> >
-> > Changes in v2:
-> >       - Squashed patch 1 and patch 2.
-> >       - Keep the re-read on the status register, but explain why it's needed.
-> >       - Move the clearing of the busy start IRQ at the point it's delivered.
-> >
-> > ---
-> >   drivers/mmc/host/mmci.c | 63 ++++++++++++++++++++++-------------------
-> >   1 file changed, 34 insertions(+), 29 deletions(-)
-> >
-> > diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-> > index 356833a606d5..d3f876c8c292 100644
-> > --- a/drivers/mmc/host/mmci.c
-> > +++ b/drivers/mmc/host/mmci.c
-> > @@ -1222,47 +1222,58 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
-> >             (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT|MCI_CMDSENT|MCI_CMDRESPEND)))
-> >               return;
-> >
-> > -     /*
-> > -      * ST Micro variant: handle busy detection.
-> > -      */
-> > +     /* Handle busy detection on DAT0 if the variant supports it. */
-> >       if (busy_resp && host->variant->busy_detect) {
-> >
-> > -             /* We are busy with a command, return */
-> > +             /*
-> > +              * If there is a command in-progress that has been successfully
-> > +              * sent, then bail out if busy status is set and wait for the
-> > +              * busy end IRQ.
-> > +              *
-> > +              * Note that, the HW triggers an IRQ on both edges while
-> > +              * monitoring DAT0 for busy completion, but there is only one
-> > +              * status bit in MMCISTATUS for the busy state. Therefore
-> > +              * both the start and the end interrupts needs to be cleared,
-> > +              * one after the other. So, clear the busy start IRQ here.
-> > +              */
-> >               if (host->busy_status &&
-> > -                 (status & host->variant->busy_detect_flag))
->
-> To my mind, purpose of that if condition is to wait for busy end event
-> while the one just below is to clear start event and unmask busy end irq.
-> So I think maybe it's a bit late to clear busy start event ? What do you
-> think ?
-
-Before my change, we are always reaching this if clause, only once and
-without having any other status bit set but the busy bit. It sounds to
-me that this is actually the busy start IRQ that we receives, see more
-why I think so below.
-
-That said, by clearing the busy start IRQ here, we still only reach
-this if clause, only once.
-
->
-> > +                 (status & host->variant->busy_detect_flag)) {
-> > +                     writel(host->variant->busy_detect_mask,
-> > +                            host->base + MMCICLEAR);
-> >                       return;
-> > +             }
-> >
-> >               /*
-> > -              * We were not busy, but we now got a busy response on
-> > -              * something that was not an error, and we double-check
-> > -              * that the special busy status bit is still set before
-> > -              * proceeding.
-> > +              * Before unmasking for the busy end IRQ, confirm that the
-> > +              * command was sent successfully. To keep track of having a
-> > +              * command in-progress, waiting for busy signaling to end,
-> > +              * store the status in host->busy_status.
-> > +              *
-> > +              * Note that, the card may need a couple of clock cycles before
-> > +              * it starts signaling busy on DAT0, hence re-read the
-> > +              * MMCISTATUS register here, to allow the busy bit to be set.
-> > +              * Potentially we may even need to poll the register for a
-> > +              * while, to allow it to be set, but tests indicates that it
-> > +              * isn't needed.
-> >                */
-> >               if (!host->busy_status &&
-> >                   !(status & (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT)) &&
-> >                   (readl(base + MMCISTATUS) & host->variant->busy_detect_flag)) {
-> >
-> > -                     /* Clear the busy start IRQ */
-> > -                     writel(host->variant->busy_detect_mask,
-> > -                            host->base + MMCICLEAR);
->
-> Why not clearing busy start event as soon as possible ? Maybe I am wrong
-> but as far as I understand,
-> we shall (always) enter that if condition before the one just above ?
-
-Two things feel wrong about by clearing the IRQ here.
-
-1) We have not yet unmasked the busy end IRQ and we don't have a bit
-in the IRQ mask for the busy *start* IRQ (they are the same). Then we
-are clearing an IRQ that we have not yet unmasked to receive, which
-seems odd/wrong to me.
-2) Even if we clear it here, we are still receiving the busy start
-IRQ, as described in my comment above.
-
->
-> > -
-> > -                     /* Unmask the busy end IRQ */
-> >                       writel(readl(base + MMCIMASK0) |
-> >                              host->variant->busy_detect_mask,
-> >                              base + MMCIMASK0);
-> > -                     /*
-> > -                      * Now cache the last response status code (until
-> > -                      * the busy bit goes low), and return.
-> > -                      */
-> > +
-> >                       host->busy_status =
-> >                               status & (MCI_CMDSENT|MCI_CMDRESPEND);
-> >                       return;
-> >               }
-> >
-> >               /*
-> > -              * At this point we are not busy with a command, we have
-> > -              * not received a new busy request, clear and mask the busy
-> > -              * end IRQ and fall through to process the IRQ.
-> > +              * If there is a command in-progress that has been successfully
-> > +              * sent and the busy bit isn't set, it means we have received
-> > +              * the busy end IRQ. Clear and mask the IRQ, then continue to
-> > +              * process the command.
-> >                */
-> >               if (host->busy_status) {
-> >
-> > @@ -1508,14 +1519,8 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
-> >               }
-> >
-> >               /*
-> > -              * We intentionally clear the MCI_ST_CARDBUSY IRQ (if it's
-> > -              * enabled) in mmci_cmd_irq() function where ST Micro busy
-> > -              * detection variant is handled. Considering the HW seems to be
-> > -              * triggering the IRQ on both edges while monitoring DAT0 for
-> > -              * busy completion and that same status bit is used to monitor
-> > -              * start and end of busy detection, special care must be taken
-> > -              * to make sure that both start and end interrupts are always
-> > -              * cleared one after the other.
-> > +              * Busy detection is managed by mmci_cmd_irq(), including to
-> > +              * clear the corresponding IRQ.
-> >                */
-> >               status &= readl(host->base + MMCIMASK0);
-> >               if (host->variant->busy_detect)
->
-
-Kind regards
-Uffe
+T24gNy8yMy8xOSAxMDozNCBBTSwgVWxmIEhhbnNzb24gd3JvdGU6DQo+IE9uIFR1ZSwgMjMgSnVs
+IDIwMTkgYXQgMTA6MTIsIEplYW4gTmljb2xhcyBHUkFVWA0KPiA8amVhbi1uaWNvbGFzLmdyYXV4
+QHN0LmNvbT4gd3JvdGU6DQo+PiBIZWxsbyBVbGYsIGFsbCwNCj4+DQo+PiBJIHRyaWVkIHRoaXMg
+bmV3IHBhdGNoIGFuZCBkaWQgbm90IGZhY2UgaXNzdWVzIHNvIGZhci4NCj4gR3JlYXQsIHRoYW5r
+cyENCj4NCj4+IFRoYXQgaXMgc2FpZCwgc29tZSBjb21tZW50cyBiZWxvdy4NCj4+DQo+PiBSZWdh
+cmRzLCBKZWFuLU5pY29sYXMuDQo+Pg0KPj4gT24gNy8yMi8xOSAxOjEzIFBNLCBVbGYgSGFuc3Nv
+biB3cm90ZToNCj4+PiBUaGUgY29kZSBkZWFsaW5nIHdpdGggYnVzeSBkZXRlY3Rpb24gaXMgc29t
+ZXdoYXQgY29tcGxpY2F0ZWQuIEluIGEgd2F5IHRvDQo+Pj4gbWFrZSBpdCBhIGJpdCBjbGVhcmVy
+LCBsZXQncyB0cnkgdG8gY2xhcmlmeSB0aGUgY29tbWVudHMgaW4gdGhlIGNvZGUgYWJvdXQNCj4+
+PiBpdC4NCj4+Pg0KPj4+IEFkZGl0aW9uYWxseSwgbW92ZSB0aGUgcGFydCBmb3IgY2xlYXJpbmcg
+dGhlIHNvIGNhbGxlZCBidXN5IHN0YXJ0IElSUSwgdG8NCj4+PiB0aGUgcGxhY2Ugd2hlcmUgdGhl
+IElSUSBpcyBhY3R1YWxseSBkZWxpdmVyZWQuIElkZWFsbHksIHRoaXMgc2hvdWxkIG1ha2UNCj4+
+PiB0aGUgY29kZSBhIGJpdCBtb3JlIHJvYnVzdCwgYnV0IGFsc28gYSBiaXQgZWFzaWVyIHRvIHVu
+ZGVyc3RhbmQuDQo+Pj4NCj4+PiBTaWduZWQtb2ZmLWJ5OiBVbGYgSGFuc3NvbiA8dWxmLmhhbnNz
+b25AbGluYXJvLm9yZz4NCj4+PiAtLS0NCj4+Pg0KPj4+IENoYW5nZXMgaW4gdjI6DQo+Pj4gICAg
+ICAgIC0gU3F1YXNoZWQgcGF0Y2ggMSBhbmQgcGF0Y2ggMi4NCj4+PiAgICAgICAgLSBLZWVwIHRo
+ZSByZS1yZWFkIG9uIHRoZSBzdGF0dXMgcmVnaXN0ZXIsIGJ1dCBleHBsYWluIHdoeSBpdCdzIG5l
+ZWRlZC4NCj4+PiAgICAgICAgLSBNb3ZlIHRoZSBjbGVhcmluZyBvZiB0aGUgYnVzeSBzdGFydCBJ
+UlEgYXQgdGhlIHBvaW50IGl0J3MgZGVsaXZlcmVkLg0KPj4+DQo+Pj4gLS0tDQo+Pj4gICAgZHJp
+dmVycy9tbWMvaG9zdC9tbWNpLmMgfCA2MyArKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0t
+LS0tLS0tLS0tLQ0KPj4+ICAgIDEgZmlsZSBjaGFuZ2VkLCAzNCBpbnNlcnRpb25zKCspLCAyOSBk
+ZWxldGlvbnMoLSkNCj4+Pg0KPj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21tYy9ob3N0L21tY2ku
+YyBiL2RyaXZlcnMvbW1jL2hvc3QvbW1jaS5jDQo+Pj4gaW5kZXggMzU2ODMzYTYwNmQ1Li5kM2Y4
+NzZjOGMyOTIgMTAwNjQ0DQo+Pj4gLS0tIGEvZHJpdmVycy9tbWMvaG9zdC9tbWNpLmMNCj4+PiAr
+KysgYi9kcml2ZXJzL21tYy9ob3N0L21tY2kuYw0KPj4+IEBAIC0xMjIyLDQ3ICsxMjIyLDU4IEBA
+IG1tY2lfY21kX2lycShzdHJ1Y3QgbW1jaV9ob3N0ICpob3N0LCBzdHJ1Y3QgbW1jX2NvbW1hbmQg
+KmNtZCwNCj4+PiAgICAgICAgICAgICAgKE1DSV9DTURDUkNGQUlMfE1DSV9DTURUSU1FT1VUfE1D
+SV9DTURTRU5UfE1DSV9DTURSRVNQRU5EKSkpDQo+Pj4gICAgICAgICAgICAgICAgcmV0dXJuOw0K
+Pj4+DQo+Pj4gLSAgICAgLyoNCj4+PiAtICAgICAgKiBTVCBNaWNybyB2YXJpYW50OiBoYW5kbGUg
+YnVzeSBkZXRlY3Rpb24uDQo+Pj4gLSAgICAgICovDQo+Pj4gKyAgICAgLyogSGFuZGxlIGJ1c3kg
+ZGV0ZWN0aW9uIG9uIERBVDAgaWYgdGhlIHZhcmlhbnQgc3VwcG9ydHMgaXQuICovDQo+Pj4gICAg
+ICAgIGlmIChidXN5X3Jlc3AgJiYgaG9zdC0+dmFyaWFudC0+YnVzeV9kZXRlY3QpIHsNCj4+Pg0K
+Pj4+IC0gICAgICAgICAgICAgLyogV2UgYXJlIGJ1c3kgd2l0aCBhIGNvbW1hbmQsIHJldHVybiAq
+Lw0KPj4+ICsgICAgICAgICAgICAgLyoNCj4+PiArICAgICAgICAgICAgICAqIElmIHRoZXJlIGlz
+IGEgY29tbWFuZCBpbi1wcm9ncmVzcyB0aGF0IGhhcyBiZWVuIHN1Y2Nlc3NmdWxseQ0KPj4+ICsg
+ICAgICAgICAgICAgICogc2VudCwgdGhlbiBiYWlsIG91dCBpZiBidXN5IHN0YXR1cyBpcyBzZXQg
+YW5kIHdhaXQgZm9yIHRoZQ0KPj4+ICsgICAgICAgICAgICAgICogYnVzeSBlbmQgSVJRLg0KPj4+
+ICsgICAgICAgICAgICAgICoNCj4+PiArICAgICAgICAgICAgICAqIE5vdGUgdGhhdCwgdGhlIEhX
+IHRyaWdnZXJzIGFuIElSUSBvbiBib3RoIGVkZ2VzIHdoaWxlDQo+Pj4gKyAgICAgICAgICAgICAg
+KiBtb25pdG9yaW5nIERBVDAgZm9yIGJ1c3kgY29tcGxldGlvbiwgYnV0IHRoZXJlIGlzIG9ubHkg
+b25lDQo+Pj4gKyAgICAgICAgICAgICAgKiBzdGF0dXMgYml0IGluIE1NQ0lTVEFUVVMgZm9yIHRo
+ZSBidXN5IHN0YXRlLiBUaGVyZWZvcmUNCj4+PiArICAgICAgICAgICAgICAqIGJvdGggdGhlIHN0
+YXJ0IGFuZCB0aGUgZW5kIGludGVycnVwdHMgbmVlZHMgdG8gYmUgY2xlYXJlZCwNCj4+PiArICAg
+ICAgICAgICAgICAqIG9uZSBhZnRlciB0aGUgb3RoZXIuIFNvLCBjbGVhciB0aGUgYnVzeSBzdGFy
+dCBJUlEgaGVyZS4NCj4+PiArICAgICAgICAgICAgICAqLw0KPj4+ICAgICAgICAgICAgICAgIGlm
+IChob3N0LT5idXN5X3N0YXR1cyAmJg0KPj4+IC0gICAgICAgICAgICAgICAgIChzdGF0dXMgJiBo
+b3N0LT52YXJpYW50LT5idXN5X2RldGVjdF9mbGFnKSkNCj4+IFRvIG15IG1pbmQsIHB1cnBvc2Ug
+b2YgdGhhdCBpZiBjb25kaXRpb24gaXMgdG8gd2FpdCBmb3IgYnVzeSBlbmQgZXZlbnQNCj4+IHdo
+aWxlIHRoZSBvbmUganVzdCBiZWxvdyBpcyB0byBjbGVhciBzdGFydCBldmVudCBhbmQgdW5tYXNr
+IGJ1c3kgZW5kIGlycS4NCj4+IFNvIEkgdGhpbmsgbWF5YmUgaXQncyBhIGJpdCBsYXRlIHRvIGNs
+ZWFyIGJ1c3kgc3RhcnQgZXZlbnQgPyBXaGF0IGRvIHlvdQ0KPj4gdGhpbmsgPw0KPiBCZWZvcmUg
+bXkgY2hhbmdlLCB3ZSBhcmUgYWx3YXlzIHJlYWNoaW5nIHRoaXMgaWYgY2xhdXNlLCBvbmx5IG9u
+Y2UgYW5kDQo+IHdpdGhvdXQgaGF2aW5nIGFueSBvdGhlciBzdGF0dXMgYml0IHNldCBidXQgdGhl
+IGJ1c3kgYml0LiBJdCBzb3VuZHMgdG8NCj4gbWUgdGhhdCB0aGlzIGlzIGFjdHVhbGx5IHRoZSBi
+dXN5IHN0YXJ0IElSUSB0aGF0IHdlIHJlY2VpdmVzLCBzZWUgbW9yZQ0KPiB3aHkgSSB0aGluayBz
+byBiZWxvdy4NCj4NCj4gVGhhdCBzYWlkLCBieSBjbGVhcmluZyB0aGUgYnVzeSBzdGFydCBJUlEg
+aGVyZSwgd2Ugc3RpbGwgb25seSByZWFjaA0KPiB0aGlzIGlmIGNsYXVzZSwgb25seSBvbmNlLg0K
+Pg0KPj4+ICsgICAgICAgICAgICAgICAgIChzdGF0dXMgJiBob3N0LT52YXJpYW50LT5idXN5X2Rl
+dGVjdF9mbGFnKSkgew0KPj4+ICsgICAgICAgICAgICAgICAgICAgICB3cml0ZWwoaG9zdC0+dmFy
+aWFudC0+YnVzeV9kZXRlY3RfbWFzaywNCj4+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IGhvc3QtPmJhc2UgKyBNTUNJQ0xFQVIpOw0KPj4+ICAgICAgICAgICAgICAgICAgICAgICAgcmV0
+dXJuOw0KPj4+ICsgICAgICAgICAgICAgfQ0KPj4+DQo+Pj4gICAgICAgICAgICAgICAgLyoNCj4+
+PiAtICAgICAgICAgICAgICAqIFdlIHdlcmUgbm90IGJ1c3ksIGJ1dCB3ZSBub3cgZ290IGEgYnVz
+eSByZXNwb25zZSBvbg0KPj4+IC0gICAgICAgICAgICAgICogc29tZXRoaW5nIHRoYXQgd2FzIG5v
+dCBhbiBlcnJvciwgYW5kIHdlIGRvdWJsZS1jaGVjaw0KPj4+IC0gICAgICAgICAgICAgICogdGhh
+dCB0aGUgc3BlY2lhbCBidXN5IHN0YXR1cyBiaXQgaXMgc3RpbGwgc2V0IGJlZm9yZQ0KPj4+IC0g
+ICAgICAgICAgICAgICogcHJvY2VlZGluZy4NCj4+PiArICAgICAgICAgICAgICAqIEJlZm9yZSB1
+bm1hc2tpbmcgZm9yIHRoZSBidXN5IGVuZCBJUlEsIGNvbmZpcm0gdGhhdCB0aGUNCj4+PiArICAg
+ICAgICAgICAgICAqIGNvbW1hbmQgd2FzIHNlbnQgc3VjY2Vzc2Z1bGx5LiBUbyBrZWVwIHRyYWNr
+IG9mIGhhdmluZyBhDQo+Pj4gKyAgICAgICAgICAgICAgKiBjb21tYW5kIGluLXByb2dyZXNzLCB3
+YWl0aW5nIGZvciBidXN5IHNpZ25hbGluZyB0byBlbmQsDQo+Pj4gKyAgICAgICAgICAgICAgKiBz
+dG9yZSB0aGUgc3RhdHVzIGluIGhvc3QtPmJ1c3lfc3RhdHVzLg0KPj4+ICsgICAgICAgICAgICAg
+ICoNCj4+PiArICAgICAgICAgICAgICAqIE5vdGUgdGhhdCwgdGhlIGNhcmQgbWF5IG5lZWQgYSBj
+b3VwbGUgb2YgY2xvY2sgY3ljbGVzIGJlZm9yZQ0KPj4+ICsgICAgICAgICAgICAgICogaXQgc3Rh
+cnRzIHNpZ25hbGluZyBidXN5IG9uIERBVDAsIGhlbmNlIHJlLXJlYWQgdGhlDQo+Pj4gKyAgICAg
+ICAgICAgICAgKiBNTUNJU1RBVFVTIHJlZ2lzdGVyIGhlcmUsIHRvIGFsbG93IHRoZSBidXN5IGJp
+dCB0byBiZSBzZXQuDQo+Pj4gKyAgICAgICAgICAgICAgKiBQb3RlbnRpYWxseSB3ZSBtYXkgZXZl
+biBuZWVkIHRvIHBvbGwgdGhlIHJlZ2lzdGVyIGZvciBhDQo+Pj4gKyAgICAgICAgICAgICAgKiB3
+aGlsZSwgdG8gYWxsb3cgaXQgdG8gYmUgc2V0LCBidXQgdGVzdHMgaW5kaWNhdGVzIHRoYXQgaXQN
+Cj4+PiArICAgICAgICAgICAgICAqIGlzbid0IG5lZWRlZC4NCj4+PiAgICAgICAgICAgICAgICAg
+Ki8NCj4+PiAgICAgICAgICAgICAgICBpZiAoIWhvc3QtPmJ1c3lfc3RhdHVzICYmDQo+Pj4gICAg
+ICAgICAgICAgICAgICAgICEoc3RhdHVzICYgKE1DSV9DTURDUkNGQUlMfE1DSV9DTURUSU1FT1VU
+KSkgJiYNCj4+PiAgICAgICAgICAgICAgICAgICAgKHJlYWRsKGJhc2UgKyBNTUNJU1RBVFVTKSAm
+IGhvc3QtPnZhcmlhbnQtPmJ1c3lfZGV0ZWN0X2ZsYWcpKSB7DQo+Pj4NCj4+PiAtICAgICAgICAg
+ICAgICAgICAgICAgLyogQ2xlYXIgdGhlIGJ1c3kgc3RhcnQgSVJRICovDQo+Pj4gLSAgICAgICAg
+ICAgICAgICAgICAgIHdyaXRlbChob3N0LT52YXJpYW50LT5idXN5X2RldGVjdF9tYXNrLA0KPj4+
+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgaG9zdC0+YmFzZSArIE1NQ0lDTEVBUik7DQo+
+PiBXaHkgbm90IGNsZWFyaW5nIGJ1c3kgc3RhcnQgZXZlbnQgYXMgc29vbiBhcyBwb3NzaWJsZSA/
+IE1heWJlIEkgYW0gd3JvbmcNCj4+IGJ1dCBhcyBmYXIgYXMgSSB1bmRlcnN0YW5kLA0KPj4gd2Ug
+c2hhbGwgKGFsd2F5cykgZW50ZXIgdGhhdCBpZiBjb25kaXRpb24gYmVmb3JlIHRoZSBvbmUganVz
+dCBhYm92ZSA/DQo+IFR3byB0aGluZ3MgZmVlbCB3cm9uZyBhYm91dCBieSBjbGVhcmluZyB0aGUg
+SVJRIGhlcmUuDQo+DQo+IDEpIFdlIGhhdmUgbm90IHlldCB1bm1hc2tlZCB0aGUgYnVzeSBlbmQg
+SVJRIGFuZCB3ZSBkb24ndCBoYXZlIGEgYml0DQo+IGluIHRoZSBJUlEgbWFzayBmb3IgdGhlIGJ1
+c3kgKnN0YXJ0KiBJUlEgKHRoZXkgYXJlIHRoZSBzYW1lKS4gVGhlbiB3ZQ0KPiBhcmUgY2xlYXJp
+bmcgYW4gSVJRIHRoYXQgd2UgaGF2ZSBub3QgeWV0IHVubWFza2VkIHRvIHJlY2VpdmUsIHdoaWNo
+DQo+IHNlZW1zIG9kZC93cm9uZyB0byBtZS4NCj4gMikgRXZlbiBpZiB3ZSBjbGVhciBpdCBoZXJl
+LCB3ZSBhcmUgc3RpbGwgcmVjZWl2aW5nIHRoZSBidXN5IHN0YXJ0DQo+IElSUSwgYXMgZGVzY3Jp
+YmVkIGluIG15IGNvbW1lbnQgYWJvdmUuDQoNCk9rLCB0aGF0IG1ha2VzIHNlbnNlIDspDQoNCkkg
+Z3Vlc3Mgd2hhdCBjYW4gYmUgYSBiaXQgY29uZnVzaW5nIGlzIHRoYXQgd2UgaGF2ZSB0byB1bm1h
+c2sgYnVzeSBlbmQgDQppcnEgYmVmb3JlIGNsZWFyaW5nIGJ1c3kgc3RhcnQgZXZlbnQuDQpUbyBi
+ZXR0ZXIgdW5kZXJzdGFuZCB0aGUgc2VxdWVuY2UsIHB1cmVseSBmb3IgY29zbWV0aWMsIEkgd29u
+ZGVyIHdoZXRoZXIgDQp3ZSBzaGFsbCBub3QgbW92ZSB0aGF0IGlmIGNvbmRpdGlvbiBiZWZvcmUg
+dGhlIGZpcnN0IG9uZSB3aGVyZSB3ZSBjbGVhciANCnRoZSBidXN5IHN0YXJ0IGV2ZW50Lg0KDQo+
+DQo+Pj4gLQ0KPj4+IC0gICAgICAgICAgICAgICAgICAgICAvKiBVbm1hc2sgdGhlIGJ1c3kgZW5k
+IElSUSAqLw0KPj4+ICAgICAgICAgICAgICAgICAgICAgICAgd3JpdGVsKHJlYWRsKGJhc2UgKyBN
+TUNJTUFTSzApIHwNCj4+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBob3N0LT52YXJp
+YW50LT5idXN5X2RldGVjdF9tYXNrLA0KPj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IGJhc2UgKyBNTUNJTUFTSzApOw0KPj4+IC0gICAgICAgICAgICAgICAgICAgICAvKg0KPj4+IC0g
+ICAgICAgICAgICAgICAgICAgICAgKiBOb3cgY2FjaGUgdGhlIGxhc3QgcmVzcG9uc2Ugc3RhdHVz
+IGNvZGUgKHVudGlsDQo+Pj4gLSAgICAgICAgICAgICAgICAgICAgICAqIHRoZSBidXN5IGJpdCBn
+b2VzIGxvdyksIGFuZCByZXR1cm4uDQo+Pj4gLSAgICAgICAgICAgICAgICAgICAgICAqLw0KPj4+
+ICsNCj4+PiAgICAgICAgICAgICAgICAgICAgICAgIGhvc3QtPmJ1c3lfc3RhdHVzID0NCj4+PiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RhdHVzICYgKE1DSV9DTURTRU5UfE1DSV9D
+TURSRVNQRU5EKTsNCj4+PiAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybjsNCj4+PiAgICAg
+ICAgICAgICAgICB9DQo+Pj4NCj4+PiAgICAgICAgICAgICAgICAvKg0KPj4+IC0gICAgICAgICAg
+ICAgICogQXQgdGhpcyBwb2ludCB3ZSBhcmUgbm90IGJ1c3kgd2l0aCBhIGNvbW1hbmQsIHdlIGhh
+dmUNCj4+PiAtICAgICAgICAgICAgICAqIG5vdCByZWNlaXZlZCBhIG5ldyBidXN5IHJlcXVlc3Qs
+IGNsZWFyIGFuZCBtYXNrIHRoZSBidXN5DQo+Pj4gLSAgICAgICAgICAgICAgKiBlbmQgSVJRIGFu
+ZCBmYWxsIHRocm91Z2ggdG8gcHJvY2VzcyB0aGUgSVJRLg0KPj4+ICsgICAgICAgICAgICAgICog
+SWYgdGhlcmUgaXMgYSBjb21tYW5kIGluLXByb2dyZXNzIHRoYXQgaGFzIGJlZW4gc3VjY2Vzc2Z1
+bGx5DQo+Pj4gKyAgICAgICAgICAgICAgKiBzZW50IGFuZCB0aGUgYnVzeSBiaXQgaXNuJ3Qgc2V0
+LCBpdCBtZWFucyB3ZSBoYXZlIHJlY2VpdmVkDQo+Pj4gKyAgICAgICAgICAgICAgKiB0aGUgYnVz
+eSBlbmQgSVJRLiBDbGVhciBhbmQgbWFzayB0aGUgSVJRLCB0aGVuIGNvbnRpbnVlIHRvDQo+Pj4g
+KyAgICAgICAgICAgICAgKiBwcm9jZXNzIHRoZSBjb21tYW5kLg0KPj4+ICAgICAgICAgICAgICAg
+ICAqLw0KPj4+ICAgICAgICAgICAgICAgIGlmIChob3N0LT5idXN5X3N0YXR1cykgew0KPj4+DQo+
+Pj4gQEAgLTE1MDgsMTQgKzE1MTksOCBAQCBzdGF0aWMgaXJxcmV0dXJuX3QgbW1jaV9pcnEoaW50
+IGlycSwgdm9pZCAqZGV2X2lkKQ0KPj4+ICAgICAgICAgICAgICAgIH0NCj4+Pg0KPj4+ICAgICAg
+ICAgICAgICAgIC8qDQo+Pj4gLSAgICAgICAgICAgICAgKiBXZSBpbnRlbnRpb25hbGx5IGNsZWFy
+IHRoZSBNQ0lfU1RfQ0FSREJVU1kgSVJRIChpZiBpdCdzDQo+Pj4gLSAgICAgICAgICAgICAgKiBl
+bmFibGVkKSBpbiBtbWNpX2NtZF9pcnEoKSBmdW5jdGlvbiB3aGVyZSBTVCBNaWNybyBidXN5DQo+
+Pj4gLSAgICAgICAgICAgICAgKiBkZXRlY3Rpb24gdmFyaWFudCBpcyBoYW5kbGVkLiBDb25zaWRl
+cmluZyB0aGUgSFcgc2VlbXMgdG8gYmUNCj4+PiAtICAgICAgICAgICAgICAqIHRyaWdnZXJpbmcg
+dGhlIElSUSBvbiBib3RoIGVkZ2VzIHdoaWxlIG1vbml0b3JpbmcgREFUMCBmb3INCj4+PiAtICAg
+ICAgICAgICAgICAqIGJ1c3kgY29tcGxldGlvbiBhbmQgdGhhdCBzYW1lIHN0YXR1cyBiaXQgaXMg
+dXNlZCB0byBtb25pdG9yDQo+Pj4gLSAgICAgICAgICAgICAgKiBzdGFydCBhbmQgZW5kIG9mIGJ1
+c3kgZGV0ZWN0aW9uLCBzcGVjaWFsIGNhcmUgbXVzdCBiZSB0YWtlbg0KPj4+IC0gICAgICAgICAg
+ICAgICogdG8gbWFrZSBzdXJlIHRoYXQgYm90aCBzdGFydCBhbmQgZW5kIGludGVycnVwdHMgYXJl
+IGFsd2F5cw0KPj4+IC0gICAgICAgICAgICAgICogY2xlYXJlZCBvbmUgYWZ0ZXIgdGhlIG90aGVy
+Lg0KPj4+ICsgICAgICAgICAgICAgICogQnVzeSBkZXRlY3Rpb24gaXMgbWFuYWdlZCBieSBtbWNp
+X2NtZF9pcnEoKSwgaW5jbHVkaW5nIHRvDQo+Pj4gKyAgICAgICAgICAgICAgKiBjbGVhciB0aGUg
+Y29ycmVzcG9uZGluZyBJUlEuDQo+Pj4gICAgICAgICAgICAgICAgICovDQo+Pj4gICAgICAgICAg
+ICAgICAgc3RhdHVzICY9IHJlYWRsKGhvc3QtPmJhc2UgKyBNTUNJTUFTSzApOw0KPj4+ICAgICAg
+ICAgICAgICAgIGlmIChob3N0LT52YXJpYW50LT5idXN5X2RldGVjdCkNCj4gS2luZCByZWdhcmRz
+DQo+IFVmZmUNCg0K
