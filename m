@@ -2,77 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F94071117
-	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jul 2019 07:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 029CF71121
+	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jul 2019 07:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726953AbfGWFVe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 23 Jul 2019 01:21:34 -0400
-Received: from mga11.intel.com ([192.55.52.93]:49136 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726466AbfGWFVe (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 23 Jul 2019 01:21:34 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Jul 2019 22:21:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,297,1559545200"; 
-   d="scan'208";a="163388576"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by orsmga008.jf.intel.com with ESMTP; 22 Jul 2019 22:21:32 -0700
-Subject: Re: Issue with sequence to switch to HS400
-To:     Alan Cooper <alcooperx@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        ": Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
-References: <CAOGqxeVeEq803rrtGrnubRA8cP3dRCXsU15ss3pS1q6ik+k8Bw@mail.gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <7610bbc9-83d8-ee98-1425-07bb65448541@intel.com>
-Date:   Tue, 23 Jul 2019 08:20:15 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <CAOGqxeVeEq803rrtGrnubRA8cP3dRCXsU15ss3pS1q6ik+k8Bw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S1728799AbfGWF1z (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 23 Jul 2019 01:27:55 -0400
+Received: from relmlor1.renesas.com ([210.160.252.171]:19018 "EHLO
+        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727467AbfGWF1z (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 23 Jul 2019 01:27:55 -0400
+X-IronPort-AV: E=Sophos;i="5.64,297,1559487600"; 
+   d="scan'208";a="22145533"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 23 Jul 2019 14:27:52 +0900
+Received: from localhost.localdomain (unknown [10.166.17.210])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 03EDD41E3CDE;
+        Tue, 23 Jul 2019 14:27:52 +0900 (JST)
+From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To:     ulf.hansson@linaro.org, hch@lst.de, m.szyprowski@samsung.com,
+        robin.murphy@arm.com, joro@8bytes.org, axboe@kernel.dk
+Cc:     wsa+renesas@sang-engineering.com, linux-mmc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-block@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: [PATCH v8 0/5] treewide: improve R-Car SDHI performance
+Date:   Tue, 23 Jul 2019 14:26:43 +0900
+Message-Id: <1563859608-19456-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 23/07/19 1:31 AM, Alan Cooper wrote:
-> I'm having a problem with a new SD/MMC controller and PHY in our
-> latest SoC's. The issue I'm seeing is that I can't switch into HS400
-> mode. This looks like something the driver is doing that doesn't meet
-> the JEDEC spec. In the "HS400 timing mode selection" section of the
-> JEDEC spec , in step 7 it states:
-> 
-> 7) Set the “Timing Interface” parameter in the HS_TIMING [185] field
-> of the Extended CSD register to 0x1 to switch to High Speed mode and
-> then set the clock frequency to a value not greater than 52 MHz.
-> 
-> In the function mmc_select_hs400() in mmc.c, I see that a switch
-> command is done to set the eMMC device to HS mode and then
-> mmc_set_timing(card->host, MMC_TIMING_MMC_HS) is used to change the
-> controller to HS mode. The problem is that the "SD Host Controller
-> Standard Specification" states that "UHS Mode Select" field of the
-> "Host Control 2 Register" controls the mode when the "1.8V Signaling
-> Enable" bit in the same register is set, so mmc_set_timing() is
-> actually leaving the controller in SDR12 mode and mmc_select_hs400()
-> will then set the clock to 52MHz. This causes our PHY to detect an
-> illegal combination and return an error.
-> 
-> I think the easiest fix would be to change mmc_set_timing(card->host,
-> MMC_TIMING_MMC_HS) to mmc_set_timing(card->host,
-> MMC_TIMING_UHS_SDR25). The other possibility would be to change
-> mmc_set_timing to handle the "1.8V Signaling Enable" bit properly.
-> I'll submit a patch based on the feedback I get.
+This patch series is based on linux-next.git / next-20190722 tag.
 
-eMMC is governed by JEDEC specs not SD specs.
+Since SDHI host internal DMAC of the R-Car Gen3 cannot handle two or
+more segments, the performance rate (especially, eMMC HS400 reading)
+is not good. However, if IOMMU is enabled on the DMAC, since IOMMU will
+map multiple scatter gather buffers as one contignous iova, the DMAC can
+handle the iova as well and then the performance rate is possible to
+improve. In fact, I have measured the performance by using bonnie++,
+"Sequential Input - block" rate was improved on r8a7795.
 
-Please consider making a change in your driver instead.  For example, hook
-->set_ios() and if 1.8V is enabled and timing is set to MMC_TIMING_MMC_HS
-then change it to MMC_TIMING_UHS_SDR25.
+To achieve this, this patch series modifies IOMMU and Block subsystem
+at first. This patch series is strictly depended on each subsystem
+modification, so that I submit it as treewide.
+
+Changes from v7:
+ - Rebase on next-20190722 (v5.3-rc1 + next branches of subsystems)
+ - Add some Reviewed-by.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=135391
+
+Changes from v6:
+ - [1/5 for DMA MAP] A new patch.
+ - [2/5 for IOMMU] A new patch.
+ - [3/5 for BLOCK] Add Reviewed-by.
+ - [4/5 for BLOCK] Use a new DMA MAP API instead of device_iommu_mapped().
+ - [5/5 for MMC] Likewise, and some minor fix.
+ - Remove patch 4/5 of v6 from this v7 patch series.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=131769
+
+Changes from v5:
+ - Almost all patches are new code.
+ - [4/5 for MMC] This is a refactor patch so that I don't add any
+   {Tested,Reviewed}-by tags.
+ - [5/5 for MMC] Modify MMC subsystem to use bigger segments instead of
+   the renesas_sdhi driver.
+ - [5/5 for MMC] Use BLK_MAX_SEGMENTS (128) instead of local value
+   SDHI_MAX_SEGS_IN_IOMMU (512). Even if we use BLK_MAX_SEGMENTS,
+   the performance is still good.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=127511
+
+Changes from v4:
+ - [DMA MAPPING] Add a new device_dma_parameters for iova contiguous.
+ - [IOMMU] Add a new capable for "merging" segments.
+ - [IOMMU] Add a capable ops into the ipmmu-vmsa driver.
+ - [MMC] Sort headers in renesas_sdhi_core.c.
+ - [MMC] Remove the following codes that made on v3 that can be achieved by
+	 DMA MAPPING and IOMMU subsystem:
+ -- Check if R-Car Gen3 IPMMU is used or not on patch 3.
+ -- Check if all multiple segment buffers are aligned to PAGE_SIZE on patch 3.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=125593
+
+Changes from v3:
+ - Use a helper function device_iommu_mapped on patch 1 and 3.
+ - Check if R-Car Gen3 IPMMU is used or not on patch 3.
+
+Yoshihiro Shimoda (5):
+  dma: Introduce dma_get_merge_boundary()
+  iommu/dma: Add a new dma_map_ops of get_merge_boundary()
+  block: sort headers on blk-setting.c
+  block: add a helper function to merge the segments
+  mmc: queue: Use bigger segments if DMA MAP layer can merge the
+    segments
+
+ Documentation/DMA-API.txt   |  8 ++++++++
+ block/blk-settings.c        | 34 ++++++++++++++++++++++++++++------
+ drivers/iommu/dma-iommu.c   | 11 +++++++++++
+ drivers/mmc/core/queue.c    | 35 ++++++++++++++++++++++++++++++++---
+ include/linux/blkdev.h      |  2 ++
+ include/linux/dma-mapping.h |  6 ++++++
+ include/linux/mmc/host.h    |  1 +
+ kernel/dma/mapping.c        | 11 +++++++++++
+ 8 files changed, 99 insertions(+), 9 deletions(-)
+
+-- 
+2.7.4
+
