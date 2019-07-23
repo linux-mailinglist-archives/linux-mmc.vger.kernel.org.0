@@ -2,98 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28B6771777
-	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jul 2019 13:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD34E71790
+	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jul 2019 13:56:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730776AbfGWLuu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 23 Jul 2019 07:50:50 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:41995 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730670AbfGWLuu (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 23 Jul 2019 07:50:50 -0400
-Received: by mail-pg1-f196.google.com with SMTP id t132so19306066pgb.9;
-        Tue, 23 Jul 2019 04:50:50 -0700 (PDT)
+        id S1729463AbfGWL4t (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 23 Jul 2019 07:56:49 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:35403 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728418AbfGWL4t (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 23 Jul 2019 07:56:49 -0400
+Received: by mail-vs1-f68.google.com with SMTP id u124so28609546vsu.2
+        for <linux-mmc@vger.kernel.org>; Tue, 23 Jul 2019 04:56:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DBge7YjElO6QELDaAyXNwqPgMlSt8RrUe6yJAAvRsBQ=;
-        b=Fnk4GPD9ipYpd5G/f19UTtdckAVmhl7eF3OHln9LtlUnXrUu2/jxGWUjLAzQmExSpG
-         bcaurTnk/OtFq6bRq6UZ0ucc0zkcabTy0TyiWsNYf/FcmFFVmtUbtqp6ouigLf6PgoDF
-         JjpBRJ2d+DfY3vZK1lR5qtbDF/O6PKEFzdWwHBfD56I35umqUTJzxcK42rMI1xyM2JFd
-         m1WnXSDikxe2CIf+XxAslD+CI4JuD4sjpWKP0B31Vh0Qfm03/542BbVjEZeDzJiWGs5v
-         sZLA+XUet1HAFuaipHqKnXpgRUuMoVT+oJz1spVvVs48ItLX7r+JqM4zEcaBG6sb25PQ
-         cYdA==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0SgTopY5qvDgcsmFCs1vxrGU+e5UFPTqCsHHUAGdNy8=;
+        b=Qk5G5YADGVFkvr8Tf/Rtb9f8yeku3Jglwe6AdDzfqQtScsFavyaJbCaGLexYhYfqBZ
+         FCMd+Sl0KKGH9YLuevLSRUliGeVa7zOdaI6FQqeCLGsr1Abr3wHVjKZLft0K28ACB7ym
+         yjRP2bDE8MGENsHrEQnK0LbVSARBkmIV3SfKxWGn6T+M2yExdl9I2814xY1B6lxGNmOz
+         zH04V2y38G4KPMht4MFqL+cl7tC5dZyAt+xaX2sqZRisF8YsTV14vzY3j1/uMF/vfim0
+         NaK2URRQh0a6aRQVv9dXTVfQ4tLhEpPIued5kJDc6ekwNpzZuLAUXQfi/oHUPIyR5tTL
+         z12w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DBge7YjElO6QELDaAyXNwqPgMlSt8RrUe6yJAAvRsBQ=;
-        b=mnCexmY9QOxI1QOAse1BPLh4rmsjTiRohpkgGJhXJlBS6Ts3LpoHeEA28YJ5FITE33
-         wwIk/iovlfnjnG+/XjjiNWFeJ2PSydrtBg8V1vEr/Uso3au4s3g6fBhE9/BylkuhwA7l
-         BgD6OuDhtVetX1eEyS4P0z+EIqLt74qIqJ70fgL3aokBMaVmHY/2gkLCEykYs3rNoYHY
-         K2Ss63ZEY3jJqnGotYVEdhxbvvLsBE8ZZJwuvCuxtg2pvf4BTHIYRtwuZFRaI+1AemTx
-         oeOIBCOmr6m2j5FUavbv1Ed8E6vdipYJiPsf6Mdg+XyTeZJZIeRpKhEnzHJAf5ijBCHq
-         Nymw==
-X-Gm-Message-State: APjAAAW96t0yU5NMoleNIVX1w4eJvh4ZYZE4XqXi7cVooY2ISYndZjdE
-        1I1hWjwJy6IEz3ghiZ7fS6E=
-X-Google-Smtp-Source: APXvYqxYPpC+o8AAs6hL4yB8tUpEShKyZC5ohzxed8z8J49wrfr9XdIv7D0FoxCDD/sjmYDFuZMMfQ==
-X-Received: by 2002:a62:14c4:: with SMTP id 187mr5260749pfu.241.1563882649787;
-        Tue, 23 Jul 2019 04:50:49 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
-        by smtp.gmail.com with ESMTPSA id k6sm51991430pfi.12.2019.07.23.04.50.47
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 23 Jul 2019 04:50:49 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
-        Alex Dubov <oakad@yahoo.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] memstick: r592: Use dev_get_drvdata
-Date:   Tue, 23 Jul 2019 19:50:44 +0800
-Message-Id: <20190723115044.18591-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0SgTopY5qvDgcsmFCs1vxrGU+e5UFPTqCsHHUAGdNy8=;
+        b=SNSPFCjDxVp1Ld2JNY160mYnAjIPBzyvY9D43DjfFNrxVbRVsOZSn2kG7ksZAnohfx
+         QhQIvXD6dTrYtoVhOuwiogyFXspa17vzKRZwhNAe6NsV96kwp8taw5oNjDEP2VLWCZ1t
+         28Vb9KYCwx+xb8rKL2fcmSc7t4GvEzGym84pqF6GiXuAPb9haYi6+MpxCfocOPVPy/Wj
+         CBBp5V/pb3MWsNhdWSAhiBmW49QPISPNM6NwfHhK0oUnJbfrKJ3Yipw5UzeBPmYL4xHN
+         nUch//GtgTGz/KpnINuBiLJ+v3b5yhLKJXdXP8w7gM0bjkz/WrvhBEbluoM4SH4cbqw0
+         srjg==
+X-Gm-Message-State: APjAAAXc3UqcfWnDQ+Y9hiWh/Qf0T3L5WpX7fuWDB1pePfSYE94dRPXz
+        jFSrrTFHQlZCqXkFllCqb8f4zbkblvvG7sYHgUaUjQ==
+X-Google-Smtp-Source: APXvYqy0E6lD5Cjsj1u+Ge7z+mFuVYSRgKZqVeiH8/gjlyHk8CfQLeNF1/WaYVn/fvfudXpCJCJBVpWfwZX+rMhBOlI=
+X-Received: by 2002:a67:7a90:: with SMTP id v138mr46648139vsc.200.1563883008287;
+ Tue, 23 Jul 2019 04:56:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+References: <20190722111317.20177-1-ulf.hansson@linaro.org>
+ <793757e2-5722-3597-4f1f-e5e021d1bd77@st.com> <CAPDyKFpzg5vmkmN2uNBRUm-GgEYp662ND-8C2csNABLo8jecAw@mail.gmail.com>
+ <1840c0ea-7aed-8a6b-3413-a0b5a8f87381@st.com>
+In-Reply-To: <1840c0ea-7aed-8a6b-3413-a0b5a8f87381@st.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 23 Jul 2019 13:56:12 +0200
+Message-ID: <CAPDyKFp-dCJ_vB-svjabO-DRs4hhAtaxsxoNC9VQn-2PsA=V4A@mail.gmail.com>
+Subject: Re: [PATCH V2] mmc: mmci: Clarify comments and some code for busy detection
+To:     Jean Nicolas GRAUX <jean-nicolas.graux@st.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Ludovic BARRE <ludovic.barre@st.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Instead of using to_pci_dev + pci_get_drvdata,
-use dev_get_drvdata to make code simpler.
+[...]
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
- drivers/memstick/host/r592.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+> >>>                /*
+> >>> -              * We were not busy, but we now got a busy response on
+> >>> -              * something that was not an error, and we double-check
+> >>> -              * that the special busy status bit is still set before
+> >>> -              * proceeding.
+> >>> +              * Before unmasking for the busy end IRQ, confirm that the
+> >>> +              * command was sent successfully. To keep track of having a
+> >>> +              * command in-progress, waiting for busy signaling to end,
+> >>> +              * store the status in host->busy_status.
+> >>> +              *
+> >>> +              * Note that, the card may need a couple of clock cycles before
+> >>> +              * it starts signaling busy on DAT0, hence re-read the
+> >>> +              * MMCISTATUS register here, to allow the busy bit to be set.
+> >>> +              * Potentially we may even need to poll the register for a
+> >>> +              * while, to allow it to be set, but tests indicates that it
+> >>> +              * isn't needed.
+> >>>                 */
+> >>>                if (!host->busy_status &&
+> >>>                    !(status & (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT)) &&
+> >>>                    (readl(base + MMCISTATUS) & host->variant->busy_detect_flag)) {
+> >>>
+> >>> -                     /* Clear the busy start IRQ */
+> >>> -                     writel(host->variant->busy_detect_mask,
+> >>> -                            host->base + MMCICLEAR);
+> >> Why not clearing busy start event as soon as possible ? Maybe I am wrong
+> >> but as far as I understand,
+> >> we shall (always) enter that if condition before the one just above ?
+> > Two things feel wrong about by clearing the IRQ here.
+> >
+> > 1) We have not yet unmasked the busy end IRQ and we don't have a bit
+> > in the IRQ mask for the busy *start* IRQ (they are the same). Then we
+> > are clearing an IRQ that we have not yet unmasked to receive, which
+> > seems odd/wrong to me.
+> > 2) Even if we clear it here, we are still receiving the busy start
+> > IRQ, as described in my comment above.
+>
+> Ok, that makes sense ;)
+>
+> I guess what can be a bit confusing is that we have to unmask busy end
+> irq before clearing busy start event.
+> To better understand the sequence, purely for cosmetic, I wonder whether
+> we shall not move that if condition before the first one where we clear
+> the busy start event.
 
-diff --git a/drivers/memstick/host/r592.c b/drivers/memstick/host/r592.c
-index 2932f421b3ea..dd3a1f3dcc19 100644
---- a/drivers/memstick/host/r592.c
-+++ b/drivers/memstick/host/r592.c
-@@ -847,8 +847,7 @@ static void r592_remove(struct pci_dev *pdev)
- #ifdef CONFIG_PM_SLEEP
- static int r592_suspend(struct device *core_dev)
- {
--	struct pci_dev *pdev = to_pci_dev(core_dev);
--	struct r592_device *dev = pci_get_drvdata(pdev);
-+	struct r592_device *dev = dev_get_drvdata(core_dev);
- 
- 	r592_clear_interrupts(dev);
- 	memstick_suspend_host(dev->host);
-@@ -858,8 +857,7 @@ static int r592_suspend(struct device *core_dev)
- 
- static int r592_resume(struct device *core_dev)
- {
--	struct pci_dev *pdev = to_pci_dev(core_dev);
--	struct r592_device *dev = pci_get_drvdata(pdev);
-+	struct r592_device *dev = dev_get_drvdata(core_dev);
- 
- 	r592_clear_interrupts(dev);
- 	r592_enable_device(dev, false);
--- 
-2.20.1
+That is definitely a good idea, it should improve the understand of
+the code/sequence. Let me re-spin a v3.
 
+[...]
+
+Kind regards
+Uffe
