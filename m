@@ -2,203 +2,228 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AB91713E3
-	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jul 2019 10:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4F1B7140D
+	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jul 2019 10:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730607AbfGWIXb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 23 Jul 2019 04:23:31 -0400
-Received: from mail-eopbgr760044.outbound.protection.outlook.com ([40.107.76.44]:6089
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727021AbfGWIXa (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 23 Jul 2019 04:23:30 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FKxMxGK3ziLTEZsCjNtYxzEUmEzzed/s7ETcI/9mCaG+U8NvMbB78/4tWxf1F+goHkzXjSEZUwFt65Yq9+05VtKSnY6a1N+x2xY2fCDQaPVzSZ5g8nu/tDblmMDycE6JvQYvfmg3sq7/xyoLJEJm5TXwgbWRrJBRRBm+2xyuWddj8Q33S5cWWjjq9p2qSNrd+IodaoVVZaCDHgV8qJIogp122Cmp+Ao+RFnpzm7WX48t5skdh+XEVri7Vw0YibF9wideInM1YMJNcoWtiie3zosfcCooga5vfh/tDJiIvpQR+8kAXJt7CKAUnMumX6IHVLrlh6QyPxFy//GifkdZdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YPX6JcgOBidVMQHV2VmehgH5dRVwd521AxNmx5EhSus=;
- b=L9ZEe+bdAOQogNW7aRkmBJAhVN6ZzzpO4nZdpEW5jx1zHkGx3NSEzcPoOz7Itebrom/bFBaWY3aYn+8f5x57HvV8tDTA07bQb8COf9Qxxkn0KXX8FPuFZ/AMgtmb3kR5v4fXljWWWx7AmxiP5DK5ThZJshnw4GBHXbLlpongNh2ZBB9Hzd0cuWZcLrakf3jtCkLs2GukwZAibM5cNCivl6PkHd2FaGhYPRIvF+SwDmxCQIt6fI/OLwuW/jgXqCV/OTu0bq3YHdiQULHCJfWZGpSDBEWqq0vtOZ3ZmOGgUH7vQShXufJ8dbph6y094Tgdq89iSsRTyX4GQ+KY1ZQaMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=xilinx.com;dmarc=pass action=none
- header.from=xilinx.com;dkim=pass header.d=xilinx.com;arc=none
+        id S1727820AbfGWIew (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 23 Jul 2019 04:34:52 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:40710 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727777AbfGWIev (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 23 Jul 2019 04:34:51 -0400
+Received: by mail-vs1-f68.google.com with SMTP id a186so26643411vsd.7
+        for <linux-mmc@vger.kernel.org>; Tue, 23 Jul 2019 01:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector1-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YPX6JcgOBidVMQHV2VmehgH5dRVwd521AxNmx5EhSus=;
- b=T5VeRDGa+2KYg+0SlgfvPtITiBpDddgtaQ98PacxW35+kPIM3zJrGbv/gxmnYseFWfw0dSXdh1lyjGS6twa/c3mcgT2MC+V3ww6K8up32xp5fH1qdOc+MZNG3F4SLHUE7OWCsj+2oyTZYTK1SzaW9XalEt76Z0r2UP2NGjJMu7c=
-Received: from MN2PR02MB6029.namprd02.prod.outlook.com (10.255.7.10) by
- MN2PR02MB6399.namprd02.prod.outlook.com (52.132.175.208) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2094.15; Tue, 23 Jul 2019 08:23:26 +0000
-Received: from MN2PR02MB6029.namprd02.prod.outlook.com
- ([fe80::e880:6205:6aac:21a3]) by MN2PR02MB6029.namprd02.prod.outlook.com
- ([fe80::e880:6205:6aac:21a3%7]) with mapi id 15.20.2094.017; Tue, 23 Jul 2019
- 08:23:26 +0000
-From:   Manish Narani <MNARANI@xilinx.com>
-To:     Rob Herring <robh@kernel.org>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
-CC:     "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "heiko@sntech.de" <heiko@sntech.de>,
-        Michal Simek <michals@xilinx.com>,
-        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
-        "christoph.muellner@theobroma-systems.com" 
-        <christoph.muellner@theobroma-systems.com>,
-        "philipp.tomsich@theobroma-systems.com" 
-        <philipp.tomsich@theobroma-systems.com>,
-        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-        "scott.branden@broadcom.com" <scott.branden@broadcom.com>,
-        "ayaka@soulik.info" <ayaka@soulik.info>,
-        "kernel@esmil.dk" <kernel@esmil.dk>,
-        "tony.xie@rock-chips.com" <tony.xie@rock-chips.com>,
-        Rajan Vaja <RAJANV@xilinx.com>, Jolly Shah <JOLLYS@xilinx.com>,
-        Nava kishore Manne <navam@xilinx.com>,
-        "mdf@kernel.org" <mdf@kernel.org>,
-        "olof@lixom.net" <olof@lixom.net>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>
-Subject: RE: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update documentation
- for SD Card Clock
-Thread-Topic: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update documentation
- for SD Card Clock
-Thread-Index: AQHVL84QKtDrcydqmkObCTy1mFTFVabXUFgAgAB7vdA=
-Date:   Tue, 23 Jul 2019 08:23:25 +0000
-Message-ID: <MN2PR02MB602907616249FF19C1A737D8C1C70@MN2PR02MB6029.namprd02.prod.outlook.com>
-References: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
- <1561958991-21935-2-git-send-email-manish.narani@xilinx.com>
- <20190722215404.GA28292@bogus>
-In-Reply-To: <20190722215404.GA28292@bogus>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=MNARANI@xilinx.com; 
-x-originating-ip: [149.199.50.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9b81b681-6c0e-4204-0aac-08d70f4708c3
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:MN2PR02MB6399;
-x-ms-traffictypediagnostic: MN2PR02MB6399:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <MN2PR02MB63990D20E3F604676B97052EC1C70@MN2PR02MB6399.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 0107098B6C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(396003)(376002)(39860400002)(136003)(346002)(13464003)(199004)(189003)(9686003)(110136005)(99286004)(54906003)(316002)(33656002)(55016002)(478600001)(6306002)(2501003)(4326008)(5660300002)(6116002)(6246003)(3846002)(52536014)(15650500001)(66066001)(7416002)(53936002)(486006)(2906002)(305945005)(68736007)(71190400001)(66556008)(14444005)(25786009)(256004)(71200400001)(102836004)(53546011)(76176011)(86362001)(14454004)(6506007)(229853002)(26005)(7696005)(11346002)(81166006)(81156014)(186003)(8676002)(446003)(7736002)(74316002)(66946007)(66476007)(64756008)(66446008)(6436002)(8936002)(476003)(76116006);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR02MB6399;H:MN2PR02MB6029.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: xilinx.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 5hNUdacevXvJyNj59HWRjwZmfixe5W4Nl1FQQhafMnfnHE7YMP54ghIqi7neXYPjXrIqY41xKwVamSZslWCQSOjRGj3eEarQwHUWZbLfvZXQIqevUB8qbgq92z4HtCHhxC7M9a6RT/3LUN2j7etfPjI8BuRjOHvC7Qz3nFN5xL2h5rmHay/bkCBsVS7aNs59lsRFO7qyrilIuv/1PN9hYQNAdeZZJwd9p8/NlbeTtj3iuKb9ns9LUUiMEbMLvBIeZ7lfDL7cZqHESpuME3DMgdKyz89N2dV25S+jmFCu7YMDSUEuhPH12ojbFyz7lfpi3VNcjqmvaf2iJRW+ItFog9fttv8ONQt5bcONoWwh52bqiuKUhEz6ZZyWyvbaQOW6NkJhKMVKodUF9CUMjnPP2bcHzmxrWADgbkn8f7GIc6o=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/aWJ/JAdMglOxtJEbcmhJOQynHm+bRWSKko1HR0L8QM=;
+        b=RrXXi056DxpL0EJxsBWmPfr33KRPSH3qyJA5n+ARe+hn5ioEMNzySTXq8eNG7HeTlM
+         OjYTKevZ30ZFcDe45F+x/kdYhN7jS8B9yu5TZR7W6a+IajWi075JzrJw97JXDfV1ICDV
+         Y5UxKqLDnTpDxsLvXQCKMTcPz9FdpcLorBogr0F8OfG9ZiazZ7GdjDsVbmZf24V6v3Ha
+         TBG0O0QXj2CWl1dHgCsVnB7x/tGde9A1i4BtPKOowhxxAISJeMG8wtu3sB+rR8akajk3
+         H2nv+Vuxtyt/xPAccAPdOdB6ylTRed907F7Mxvev+A+37BbEjkAsXOf5zNL6TSj0VpBQ
+         dGzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/aWJ/JAdMglOxtJEbcmhJOQynHm+bRWSKko1HR0L8QM=;
+        b=aJTccfTsh58/jQIKdX3RBlga4V4oKHn6ZaklQxDaXoMJhaVc+VqXh/x85YqRXmOH0H
+         4zErpDAp/4ZXpyXBOYzuWrUhVkjUe3bLREcb7BRe/hsoDEkthcEarl9GcjYGsEmkNIWM
+         0O/l7KGcUNFka1UVXfG08z4UmD9zh/6Sf4wN4AZy0eH9zUV7UOhkukUNLyArNLEld+f+
+         9WUjXwE9ftB3K+hcdKlbDfD9SyYZsnHM3db9WAg+0iAlvTPZ6RN9BlmYWTKLi9e6cwy9
+         h/hLboMRW830hXw8cYm5f+rHF4feN4licz9itgf9oPr9nhbqnWJ0qn4njeqjSqSDFzPE
+         f1aw==
+X-Gm-Message-State: APjAAAXTr5RKYTK2M+Ntlei94FLW9mcJnGxfrlMWM/suEcZxbXyxrI40
+        V07fdeKEJNX6vMZqCizLB7i328qjMQw0aRef7xWtxA==
+X-Google-Smtp-Source: APXvYqzNs3gxI1Wh5NQNG8ZCg48rxs53uVG8u/pDP7mfsiX/Lxwsc5EvbVlfeuss2hmM0cibxkMOiwY/IT400RakZ5k=
+X-Received: by 2002:a67:61c7:: with SMTP id v190mr45641136vsb.165.1563870890278;
+ Tue, 23 Jul 2019 01:34:50 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b81b681-6c0e-4204-0aac-08d70f4708c3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2019 08:23:25.7260
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mnarani@xilinx.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB6399
+References: <20190722111317.20177-1-ulf.hansson@linaro.org> <793757e2-5722-3597-4f1f-e5e021d1bd77@st.com>
+In-Reply-To: <793757e2-5722-3597-4f1f-e5e021d1bd77@st.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 23 Jul 2019 10:34:14 +0200
+Message-ID: <CAPDyKFpzg5vmkmN2uNBRUm-GgEYp662ND-8C2csNABLo8jecAw@mail.gmail.com>
+Subject: Re: [PATCH V2] mmc: mmci: Clarify comments and some code for busy detection
+To:     Jean Nicolas GRAUX <jean-nicolas.graux@st.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Ludovic BARRE <ludovic.barre@st.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Rob,
+On Tue, 23 Jul 2019 at 10:12, Jean Nicolas GRAUX
+<jean-nicolas.graux@st.com> wrote:
+>
+> Hello Ulf, all,
+>
+> I tried this new patch and did not face issues so far.
 
-Thanks a lot for the review!
+Great, thanks!
 
-
-> -----Original Message-----
-> From: Rob Herring <robh@kernel.org>
-> Sent: Tuesday, July 23, 2019 3:24 AM
-> To: Manish Narani <MNARANI@xilinx.com>
-> Cc: ulf.hansson@linaro.org; mark.rutland@arm.com; heiko@sntech.de; Michal
-> Simek <michals@xilinx.com>; adrian.hunter@intel.com;
-> christoph.muellner@theobroma-systems.com; philipp.tomsich@theobroma-
-> systems.com; viresh.kumar@linaro.org; scott.branden@broadcom.com;
-> ayaka@soulik.info; kernel@esmil.dk; tony.xie@rock-chips.com; Rajan Vaja
-> <RAJANV@xilinx.com>; Jolly Shah <JOLLYS@xilinx.com>; Nava kishore Manne
-> <navam@xilinx.com>; mdf@kernel.org; olof@lixom.net; linux-
-> mmc@vger.kernel.org; devicetree@vger.kernel.org; linux-
-> kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-
-> rockchip@lists.infradead.org
-> Subject: Re: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update
-> documentation for SD Card Clock
->=20
-> On Mon, Jul 01, 2019 at 10:59:41AM +0530, Manish Narani wrote:
-> > The clock handling is to be updated in the Arasan SDHCI. As the
-> > 'devm_clk_register' is deprecated in the clock framework, this needs to
-> > specify one more clock named 'clk_sdcard' to get the clock in the drive=
-r
-> > via 'devm_clk_get()'. This clock represents the clock from controller t=
-o
-> > the card.
->=20
-> Please explain why in terms of the binding, not some driver calls.
-Okay.
-
->=20
->=20
-> > Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+> That is said, some comments below.
+>
+> Regards, Jean-Nicolas.
+>
+> On 7/22/19 1:13 PM, Ulf Hansson wrote:
+> > The code dealing with busy detection is somewhat complicated. In a way to
+> > make it a bit clearer, let's try to clarify the comments in the code about
+> > it.
+> >
+> > Additionally, move the part for clearing the so called busy start IRQ, to
+> > the place where the IRQ is actually delivered. Ideally, this should make
+> > the code a bit more robust, but also a bit easier to understand.
+> >
+> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > > ---
-> >  Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 15 ++++++++++=
--
-> ----
-> >  1 file changed, 10 insertions(+), 5 deletions(-)
 > >
-> > diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > index 1edbb04..15c6397 100644
-> > --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > @@ -23,6 +23,10 @@ Required Properties:
-> >    - reg: From mmc bindings: Register location and length.
-> >    - clocks: From clock bindings: Handles to clock inputs.
-> >    - clock-names: From clock bindings: Tuple including "clk_xin" and "c=
-lk_ahb"
-> > +		 Apart from these two there is one more optional clock which
-> > +		 is "clk_sdcard". This clock represents output clock from
-> > +		 controller and card. This must be specified when #clock-cells
-> > +		 is specified.
-> >    - interrupts: Interrupt specifier
+> > Changes in v2:
+> >       - Squashed patch 1 and patch 2.
+> >       - Keep the re-read on the status register, but explain why it's needed.
+> >       - Move the clearing of the busy start IRQ at the point it's delivered.
 > >
-> >  Required Properties for "arasan,sdhci-5.1":
-> > @@ -36,9 +40,10 @@ Optional Properties:
-> >    - clock-output-names: If specified, this will be the name of the car=
-d clock
-> >      which will be exposed by this device.  Required if #clock-cells is
-> >      specified.
-> > -  - #clock-cells: If specified this should be the value <0>.  With thi=
-s property
-> > -    in place we will export a clock representing the Card Clock.  This=
- clock
-> > -    is expected to be consumed by our PHY.  You must also specify
-> > +  - #clock-cells: If specified this should be the value <0>. With this
-> > +    property in place we will export one clock representing the Card
-> > +    Clock. This clock is expected to be consumed by our PHY. You must =
-also
-> > +    specify
->=20
-> specify what?
-I think this line was already there, I missed to correct it, Will update in=
- v3.
+> > ---
+> >   drivers/mmc/host/mmci.c | 63 ++++++++++++++++++++++-------------------
+> >   1 file changed, 34 insertions(+), 29 deletions(-)
+> >
+> > diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+> > index 356833a606d5..d3f876c8c292 100644
+> > --- a/drivers/mmc/host/mmci.c
+> > +++ b/drivers/mmc/host/mmci.c
+> > @@ -1222,47 +1222,58 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+> >             (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT|MCI_CMDSENT|MCI_CMDRESPEND)))
+> >               return;
+> >
+> > -     /*
+> > -      * ST Micro variant: handle busy detection.
+> > -      */
+> > +     /* Handle busy detection on DAT0 if the variant supports it. */
+> >       if (busy_resp && host->variant->busy_detect) {
+> >
+> > -             /* We are busy with a command, return */
+> > +             /*
+> > +              * If there is a command in-progress that has been successfully
+> > +              * sent, then bail out if busy status is set and wait for the
+> > +              * busy end IRQ.
+> > +              *
+> > +              * Note that, the HW triggers an IRQ on both edges while
+> > +              * monitoring DAT0 for busy completion, but there is only one
+> > +              * status bit in MMCISTATUS for the busy state. Therefore
+> > +              * both the start and the end interrupts needs to be cleared,
+> > +              * one after the other. So, clear the busy start IRQ here.
+> > +              */
+> >               if (host->busy_status &&
+> > -                 (status & host->variant->busy_detect_flag))
+>
+> To my mind, purpose of that if condition is to wait for busy end event
+> while the one just below is to clear start event and unmask busy end irq.
+> So I think maybe it's a bit late to clear busy start event ? What do you
+> think ?
 
->=20
-> The 3rd clock input I assume? This statement means any existing users
-> with 2 clock inputs and #clock-cells are in error now. Is that correct?
-Yes, this is correct. So far there was only one vendor using '#clock-cells'=
-  which is Rockchip. I have sent DT patch (02/11) for that also.
-Here this is needed as earlier implementation isn't correct as suggested by=
- Uffe. (https://lkml.org/lkml/2019/6/20/486) .
+Before my change, we are always reaching this if clause, only once and
+without having any other status bit set but the busy bit. It sounds to
+me that this is actually the busy start IRQ that we receives, see more
+why I think so below.
 
-Thanks,
-Manish
+That said, by clearing the busy start IRQ here, we still only reach
+this if clause, only once.
+
+>
+> > +                 (status & host->variant->busy_detect_flag)) {
+> > +                     writel(host->variant->busy_detect_mask,
+> > +                            host->base + MMCICLEAR);
+> >                       return;
+> > +             }
+> >
+> >               /*
+> > -              * We were not busy, but we now got a busy response on
+> > -              * something that was not an error, and we double-check
+> > -              * that the special busy status bit is still set before
+> > -              * proceeding.
+> > +              * Before unmasking for the busy end IRQ, confirm that the
+> > +              * command was sent successfully. To keep track of having a
+> > +              * command in-progress, waiting for busy signaling to end,
+> > +              * store the status in host->busy_status.
+> > +              *
+> > +              * Note that, the card may need a couple of clock cycles before
+> > +              * it starts signaling busy on DAT0, hence re-read the
+> > +              * MMCISTATUS register here, to allow the busy bit to be set.
+> > +              * Potentially we may even need to poll the register for a
+> > +              * while, to allow it to be set, but tests indicates that it
+> > +              * isn't needed.
+> >                */
+> >               if (!host->busy_status &&
+> >                   !(status & (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT)) &&
+> >                   (readl(base + MMCISTATUS) & host->variant->busy_detect_flag)) {
+> >
+> > -                     /* Clear the busy start IRQ */
+> > -                     writel(host->variant->busy_detect_mask,
+> > -                            host->base + MMCICLEAR);
+>
+> Why not clearing busy start event as soon as possible ? Maybe I am wrong
+> but as far as I understand,
+> we shall (always) enter that if condition before the one just above ?
+
+Two things feel wrong about by clearing the IRQ here.
+
+1) We have not yet unmasked the busy end IRQ and we don't have a bit
+in the IRQ mask for the busy *start* IRQ (they are the same). Then we
+are clearing an IRQ that we have not yet unmasked to receive, which
+seems odd/wrong to me.
+2) Even if we clear it here, we are still receiving the busy start
+IRQ, as described in my comment above.
+
+>
+> > -
+> > -                     /* Unmask the busy end IRQ */
+> >                       writel(readl(base + MMCIMASK0) |
+> >                              host->variant->busy_detect_mask,
+> >                              base + MMCIMASK0);
+> > -                     /*
+> > -                      * Now cache the last response status code (until
+> > -                      * the busy bit goes low), and return.
+> > -                      */
+> > +
+> >                       host->busy_status =
+> >                               status & (MCI_CMDSENT|MCI_CMDRESPEND);
+> >                       return;
+> >               }
+> >
+> >               /*
+> > -              * At this point we are not busy with a command, we have
+> > -              * not received a new busy request, clear and mask the busy
+> > -              * end IRQ and fall through to process the IRQ.
+> > +              * If there is a command in-progress that has been successfully
+> > +              * sent and the busy bit isn't set, it means we have received
+> > +              * the busy end IRQ. Clear and mask the IRQ, then continue to
+> > +              * process the command.
+> >                */
+> >               if (host->busy_status) {
+> >
+> > @@ -1508,14 +1519,8 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
+> >               }
+> >
+> >               /*
+> > -              * We intentionally clear the MCI_ST_CARDBUSY IRQ (if it's
+> > -              * enabled) in mmci_cmd_irq() function where ST Micro busy
+> > -              * detection variant is handled. Considering the HW seems to be
+> > -              * triggering the IRQ on both edges while monitoring DAT0 for
+> > -              * busy completion and that same status bit is used to monitor
+> > -              * start and end of busy detection, special care must be taken
+> > -              * to make sure that both start and end interrupts are always
+> > -              * cleared one after the other.
+> > +              * Busy detection is managed by mmci_cmd_irq(), including to
+> > +              * clear the corresponding IRQ.
+> >                */
+> >               status &= readl(host->base + MMCIMASK0);
+> >               if (host->variant->busy_detect)
+>
+
+Kind regards
+Uffe
