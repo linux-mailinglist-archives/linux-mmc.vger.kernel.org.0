@@ -2,111 +2,108 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8AA672A3F
-	for <lists+linux-mmc@lfdr.de>; Wed, 24 Jul 2019 10:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC0672DB8
+	for <lists+linux-mmc@lfdr.de>; Wed, 24 Jul 2019 13:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725883AbfGXIht (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 24 Jul 2019 04:37:49 -0400
-Received: from mx2.suse.de ([195.135.220.15]:45484 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726031AbfGXIht (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 24 Jul 2019 04:37:49 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 00FA9AF03;
-        Wed, 24 Jul 2019 08:37:47 +0000 (UTC)
-Message-ID: <ab7af8537ebcbc7a7bdf04d2c06152ba6821b333.camel@suse.de>
-Subject: Re: [PATCH 00/18] ARM: Add minimal Raspberry Pi 4 support
-From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To:     Chen-Yu Tsai <wens@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Ray Jui <rjui@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Eric Anholt <eric@anholt.net>,
-        Matthias Brugger <mbrugger@suse.com>,
-        "open list:BROADCOM BCM281XX..." 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Stefan Wahren <wahrenst@gmx.net>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Christoph Hellwig <hch@lst.de>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:BROADCOM BCM2835..." 
-        <linux-rpi-kernel@lists.infradead.org>
-Date:   Wed, 24 Jul 2019 10:37:45 +0200
-In-Reply-To: <CAGb2v66-o23CW5iH9Bn1aELymPSiKrA43eJd2q6EZ7iubcogaw@mail.gmail.com>
-References: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
-         <96113adb5fcab9c2f4bb5fa82b84ff5f9c07fd07.camel@suse.de>
-         <bc650090-db86-ccac-01dc-23f08ad7b19b@gmx.net>
-         <20190723093442.GA27239@lst.de>
-         <04c5eaa03f3a124dbbce6186e11e19acc4539cc8.camel@suse.de>
-         <b15509d6-bc2e-3d06-0eea-943e6e456d62@gmx.net>
-         <5f9b11f54c66fd0487837f7e58af3adf7f86635f.camel@suse.de>
-         <CAGb2v66-o23CW5iH9Bn1aELymPSiKrA43eJd2q6EZ7iubcogaw@mail.gmail.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-Rf1Vi16408MDtIxce0fT"
-User-Agent: Evolution 3.32.3 
+        id S1727482AbfGXLfK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 24 Jul 2019 07:35:10 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40870 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727128AbfGXLfK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 24 Jul 2019 07:35:10 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id CD35360388; Wed, 24 Jul 2019 11:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563968108;
+        bh=PKsdsPRKMo4ZtbQ7Rcm2MFURdgVd1dXIYdcVeyVHotc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=bC3UndZkqc+u4v2XFJ7YL3IwOYqPiMYHKgQuOP7R4kPBEdcHeBfN52OYvnz7Bm2fs
+         0QEMG/P0HnIYso6zY8V/DQf0kxxBE3YO4j2IIlK4Id0+HRXsdpHHgTCDBaXDtiti9r
+         WXGP0+znOw5nW9r73fqoDL2yQmaxADDcyO0aKvTU=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2C2D060388;
+        Wed, 24 Jul 2019 11:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563968107;
+        bh=PKsdsPRKMo4ZtbQ7Rcm2MFURdgVd1dXIYdcVeyVHotc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=VW56ttPu5ecy3DbKzYVN2m9H6Ds5rU81iJ5LRsA0SbMIR3Zu4oiMBXzoieih/B3HA
+         b8jFymaNIe9Rb76bymHkxaEjfDiK0rVqzshUWmn07Rh+V6+BzSeYQrDXU2AZm4bjJU
+         XETW08GgbpfVwI8pJ9rjTsAMQisVs1zWmkqA7epg=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2C2D060388
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 2/2] mwifiex: Make use of the new sdio_trigger_replug()
+ API to reset
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190722193939.125578-3-dianders@chromium.org>
+References: <20190722193939.125578-3-dianders@chromium.org>
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        linux-wireless@vger.kernel.org,
+        Andreas Fenkart <afenkart@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        linux-rockchip@lists.infradead.org,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        netdev@vger.kernel.org, Avri Altman <avri.altman@wdc.com>,
+        linux-mmc@vger.kernel.org, davem@davemloft.net,
+        Xinming Hu <huxinming820@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190724113508.CD35360388@smtp.codeaurora.org>
+Date:   Wed, 24 Jul 2019 11:35:08 +0000 (UTC)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Douglas Anderson <dianders@chromium.org> wrote:
 
---=-Rf1Vi16408MDtIxce0fT
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> As described in the patch ("mmc: core: Add sdio_trigger_replug()
+> API"), the current mwifiex_sdio_card_reset() is broken in the cases
+> where we're running Bluetooth on a second SDIO func on the same card
+> as WiFi.  The problem goes away if we just use the
+> sdio_trigger_replug() API call.
+> 
+> NOTE: Even though with this new solution there is less of a reason to
+> do our work from a workqueue (the unplug / plug mechanism we're using
+> is possible for a human to perform at any time so the stack is
+> supposed to handle it without it needing to be called from a special
+> context), we still need a workqueue because the Marvell reset function
+> could called from a context where sleeping is invalid and thus we
+> can't claim the host.  One example is Marvell's wakeup_timer_fn().
+> 
+> Cc: Andreas Fenkart <afenkart@gmail.com>
+> Cc: Brian Norris <briannorris@chromium.org>
+> Fixes: b4336a282db8 ("mwifiex: sdio: reset adapter using mmc_hw_reset")
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> Reviewed-by: Brian Norris <briannorris@chromium.org>
 
-> > > Does it fix the wifi issue too?
-> >=20
-> > Well it works as long as I revert this: 901bb98918 ("nl80211: require a=
-nd
-> > validate vendor command policy"). Which has nothing to do with DMA anyw=
-ays.
-> >=20
-> > Was this the issue you where seeing?
-> >=20
-> > [    4.969679] WARNING: CPU: 2 PID: 21 at net/wireless/core.c:868
-> > wiphy_register+0x8e8/0xbdc [cfg80211]
-> > [...]
-> > [    4.969974] ieee80211 phy0: brcmf_cfg80211_attach: Could not registe=
-r
-> > wiphy device (-22)
->=20
-> We're seeing this on different platforms (allwinner / rockchip / amlogic)
-> with Broadcom WiFi chips. So it's unlikely to be related with anything in
-> this series.
->=20
-> I believe a fix for this has already been queued up:
->=20
->=20
-https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?=
-id=3D91046d6364afde646734c7ead1f649d253c386e9
+I assume this is going via some other tree so I'm dropping this from my
+queue. If I should apply this please resend once the dependency is in
+wireless-drivers-next.
 
-Thanks for pointing it out, it fixes the issue alright.
+Patch set to Not Applicable.
 
+-- 
+https://patchwork.kernel.org/patch/11053351/
 
---=-Rf1Vi16408MDtIxce0fT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl04GNkACgkQlfZmHno8
-x/4D2wgAqq3ax066fAw16mhXFvRvsvt5N2yK9ur2hwqz0YVcIYT9FlKTnuFyrUOY
-w1MvuMiaeLz+2xFpt+LVsmP/ygSqwzfzikUGJh/vHIu+mRqYPdbHrIKvLqutyQnF
-oXe6qqy8bXRfT50JQRnyH7ysKXks44suhiyTrYpidvmqkFZnasP86QgelISZiuKo
-umHPmmEck4luauMqSuQxzaNtbiJhLWzdKAWH3u+iufEHZT5Mbhi0v82jwviF2x+k
-lHI6OQpyuuOyVlsbIcAKAuu3qafq8KWaIf13JUmRGdo+dAjpBQ/lsuxeQGH4mHHk
-JvMKjYzUiMp4hvcgcoVTNcJ/Zz7zpw==
-=vcHF
------END PGP SIGNATURE-----
-
---=-Rf1Vi16408MDtIxce0fT--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
