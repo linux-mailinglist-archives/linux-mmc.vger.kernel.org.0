@@ -2,88 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A1E73C68
-	for <lists+linux-mmc@lfdr.de>; Wed, 24 Jul 2019 22:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DB8B73C3F
+	for <lists+linux-mmc@lfdr.de>; Wed, 24 Jul 2019 22:07:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405478AbfGXUCT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 24 Jul 2019 16:02:19 -0400
-Received: from mout.gmx.net ([212.227.15.19]:52617 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405457AbfGXUCR (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 24 Jul 2019 16:02:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1563998512;
-        bh=T4e1UQqbbH+oLV6dGah83Ww22Wm0bVK786RxGVpsfXw=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Dg1Hk0cm41ei3P6pSvfw3oxZDzRYlpXNWXaD5BBcvXAv4NSBR9N5axC6u14HzCZTi
-         agfCrvDGvU4ykWndU/aBwXbobQJSkab+g/krIvbZjjOvYGbwmx1PCp0CpO9SdPmer3
-         XlKIAAU9UdLaeiYbNtw3p63OWQlbD0eciHpHJix8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.1.162] ([37.4.249.139]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N9dsV-1iVEWb1kof-015biz; Wed, 24
- Jul 2019 22:01:52 +0200
-Subject: Re: [PATCH 01/18] ARM: bcm283x: Reduce register ranges for UART, SPI
- and I2C
-To:     Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     bcm-kernel-feedback-list@broadcom.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-References: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
- <1563774880-8061-2-git-send-email-wahrenst@gmx.net>
-From:   Stefan Wahren <wahrenst@gmx.net>
-Message-ID: <983aa783-03e0-e6a5-5771-810d4753036e@gmx.net>
-Date:   Wed, 24 Jul 2019 22:01:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2392797AbfGXUHU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 24 Jul 2019 16:07:20 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:44744 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392355AbfGXUEE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 24 Jul 2019 16:04:04 -0400
+Received: by mail-io1-f67.google.com with SMTP id s7so92129297iob.11;
+        Wed, 24 Jul 2019 13:04:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=2uycp2gga3gM+KOCP4bhhbNNGiztJcFj+cixg7Ny5a8=;
+        b=qj4nntN6sJBEUn0BhG1MicvenH481pV7apL3l2lyj1vmlaPhu+UUjdN9/cb7U9/SDV
+         StX75HN36FTjbWwlviH64ZBEllhxV6ZvaonlcojlzArvynsvg/M4t36DaDbX//neeltI
+         7gqQdlsRxet4Nq0Opv21D6ZAbE2/5X40cD4zxaSxx7hocPvIxJonjI40eo+IgK/33HR6
+         RPF/zBfmC57no2F3ot2gqPQgEW+dOpkrNlH8I3whYN5KeMwoMjA5gIJ3KiBJsMUrNuSz
+         VT4km3Dpkcf0shMdJWQRzb9Dvc43jllG8eROrpNr5CBMGuHzWvRf0idqJhNdOL2rcDry
+         5nXg==
+X-Gm-Message-State: APjAAAXxTImJGn37f5R78+Y7HviQOJldgbElvZYaDKDY5buSakk8C5aZ
+        HnzmI/o6cLQCvkxp8WqckA==
+X-Google-Smtp-Source: APXvYqxVgzs7Z4nbFzTiE8Dg1WGnxjhQTgBQ3UGeU4dqV15F3jI/eEMSMkTn8E1P1ohSUYz0jjYwFg==
+X-Received: by 2002:a5e:c00e:: with SMTP id u14mr46190740iol.196.1563998643068;
+        Wed, 24 Jul 2019 13:04:03 -0700 (PDT)
+Received: from localhost ([64.188.179.254])
+        by smtp.gmail.com with ESMTPSA id p25sm37965705iol.48.2019.07.24.13.04.02
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 24 Jul 2019 13:04:02 -0700 (PDT)
+Date:   Wed, 24 Jul 2019 14:04:01 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-mmc@vger.kernel.org, robh+dt@kernel.org,
+        ulf.hansson@linaro.org, jianxin.pan@amlogic.com,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        mark.rutland@arm.com,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: Re: [PATCH RFC v1 1/2] dt-bindings: mmc: Document the Amlogic Meson
+ SDHC MMC host controller
+Message-ID: <20190724200401.GA28867@bogus>
+References: <20190708173330.13217-1-martin.blumenstingl@googlemail.com>
+ <20190708173330.13217-2-martin.blumenstingl@googlemail.com>
 MIME-Version: 1.0
-In-Reply-To: <1563774880-8061-2-git-send-email-wahrenst@gmx.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:M55CLQbFJEJ0iH0ZaHgnggnyElHCISHtPbBQesSsTn+oCnunpQg
- ffT1724/dsdrFgXB3EHrpsCW5Ufqj25i+zgSoFhCfW7nJrihX4tvURjizcU4hZTqo6KsWWG
- M9NvWXlUgsgwBP66Y9bgde9aD+cxpR7LWPVvp81VSq4cnJ0H1blAYoZAnqHR1Jy1DgzVm0X
- z1qdAiWxxUC8WfJOtJH4Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6eXC6oFQKRo=:bhwdn/zpwjzsfK5rQgPHfB
- u5rO3lBjRr4oLDU7FnPDFWz8SZM/l3BB7YeZAtR3dFfON52Rm087/Fbq2P7wEaLbzbpVAhzWj
- kuTwXRKhGCj9U0GJmKdsHAHkXkn1mkTkKEDGKF9UMlaQNxkMNJrM0UOTRyZ3qShliM35Zn9k3
- /gLUV+L9DM7d/ZO6l4JaCKT0q5toDef43CDeDZZlalC9YYmiOcqYnyq5dsToBiC+pgr/vwhkD
- 3+RaydJV9WYmUXsmJi8Ag7iu1QjWk+MK/YuAJOSRvWQ0mezqBfZoMpqmOVUmcatrDU074LPQ5
- Ja/TFITpwtByIlmQWWlx/p2KeeruZknMBFlw5k2QhkL5NlMuBRD9BLCbM4isJ9mL6PyPgI8lC
- sngk1bvUvfXd96gxK1v3IwE9W5m98B36nX5LyXXxU4hw46h4mMeg1zz+0JXDmOj8eQmdIvYvY
- 3Xaml8lP4kPs1D3+26HSWYoh8G6U/Pbopz4zY8zwYrZawFwBl0ixRnFQWrDapqJGaxACIwvbg
- Pxilahwx6538Aswt6C0f/oVQEJ/+QVGH2SZBvwzyuxUBz5cE5rXS/Cm2DgvCwoa2/iKsTwPIT
- HI3VsT+k3l40FLw2M5o9mYNDLvDt79aG39bATtjhceD1T6p+ab6JIQ2y0FfpxkxlqL7OFXmQB
- YpW93Fo4q0nExE0YXnST+SahWvtBvl6wLcr5xtDqInXR7jtqilfqrelRKbw5k/5cgZo66gGEc
- Gen/LJ/ZzHDOm1EAu7AxEHuoPorgZrWyn1azw3buwLyRSsf7fH7MsYt9ctBfNehLkK2Oecy9a
- MV8U6cjUtERyB5MnWoJ02br1rsZBD/A4ppu9aH1dj2T5O1MEwyaI0hKILZneRcmlgRFrjMheB
- qWnSs7az8Yi93K4etS1I0hH9dYWIokz6BkTIjPsnSUyw8Yk7jI4MKdqey559hPTRwxJZLlIdS
- Gno9aUyc+GmObIAdubccYwvnsiQYZmEEBfdoiLz+s6+uYQ06za00GO29f0vsQkH0lIw2UXeqt
- VicXKFwZlZAK2Wm7/85X/JpOz/peCQHxjf8KgiZK7Xp6dBkW5xdykkdlgrc3K5isNOOSx3rjv
- 1v28Ty4PJS1c2Y=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190708173330.13217-2-martin.blumenstingl@googlemail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Am 22.07.19 um 07:54 schrieb Stefan Wahren:
-> The assigned register ranges for UART, SPI and I2C were too wasteful.
-> In order to avoid overlapping with the new functions on BCM2711
-> reduce the ranges.
->
-> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Applied to bcm2835-dt-next including Eric's Ack
+On Mon,  8 Jul 2019 19:33:29 +0200, Martin Blumenstingl wrote:
+> This documents the devicetree bindings for the SDHC MMC host controller
+> found in Meson6, Meson8, Meson8b and Meson8m2 SoCs. It can use a
+> bus-width of 1/4/8-bit and it supports eMMC spec 4.4x/4.5x including
+> HS200 mode (up to 100MHz clock).
+> 
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> ---
+>  .../bindings/mmc/amlogic,meson-mx-sdhc.txt    | 34 +++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mmc/amlogic,meson-mx-sdhc.txt
+> 
+
+Reviewed-by: Rob Herring <robh@kernel.org>
