@@ -2,164 +2,111 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AB13728EF
-	for <lists+linux-mmc@lfdr.de>; Wed, 24 Jul 2019 09:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8AA672A3F
+	for <lists+linux-mmc@lfdr.de>; Wed, 24 Jul 2019 10:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725887AbfGXHUI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 24 Jul 2019 03:20:08 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:35340 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725878AbfGXHUI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 24 Jul 2019 03:20:08 -0400
-Received: by mail-ua1-f66.google.com with SMTP id j21so18088622uap.2
-        for <linux-mmc@vger.kernel.org>; Wed, 24 Jul 2019 00:20:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ZzXFeEn87A5vyKYJCjfJnKarDAqU0LIG7gGJcY5sqsg=;
-        b=Jw04qDJbUduHDaQul0E7od3NeIWVX284jfuzm47kaW8A6J/Nnm5Ru1i0Xq/+mK6Det
-         u2uKGf2FZ+RZEBpz4g/IQdHIB6bYME+9m/PynBS4EO0FOXuOVJtFS8oY8w0+lRzqjubv
-         0yZUoNouuzpBinqBD4/A+/Y4EZsff3UUko4zsIPtTlNqtVUnu/HXqkPzsdg+A1Y5TP7q
-         K914bSyggrk1akIAGqOLQiBpXToAxaaxL8Ci70+cjFHb7CDZnEZOwAFmoOil6Wjg6xZ2
-         keD9WElSm/+VEaRG5C4Hmr/GXBzuuw83tn0hxXN2a4upjV+ayGEycRNSTcQkCe6Y34le
-         4j3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ZzXFeEn87A5vyKYJCjfJnKarDAqU0LIG7gGJcY5sqsg=;
-        b=pVpfFzjF8RLqorA5rs3CkwR+uEBlNyI/qW9ocjpznuhQ2O+IfvxBD9KBtyz8hK+3je
-         Hq4p5GXX+b1c7NKHg2R+lcRww7tPhidX7d/eJduD2LciI/r86oVsAEmmXG4jznrKpKWf
-         Y4iJv6gf+Gwg1NGsbnPY5jE4iTUHyaUoyjqkYEZwKjQiYvkdpYdx6PCT1vPnU2Wr2T8b
-         KjaHCTcmAbdEdsc4MeqnG6O32PpvkDS0bxOi8MwM3KmKrXtKl6x+Q3I5Re7KwdYmHxnC
-         vYQd+G0+45MXLXdDdM+xPTvWrhixhZbP6m9pIqzA35eOvgIkWzilSAV2Bwm9VFMMRIpS
-         nPFA==
-X-Gm-Message-State: APjAAAVZ5pWhmSpK1oLHV/krDqy+Qoa6k5XLGCAHz85UgOQQCGoUp35C
-        EpGpxgqa829Z9tqCqFxucXnXPxt7+eE040bjoWeFiQ==
-X-Google-Smtp-Source: APXvYqwAZ+IHQRsFDAdYH1zuStC/NjCSHs84NulAyquPAW0fpjlQaG3LiIyzngHaaBb05uDzByEEcn48fMR+6udD5Dg=
-X-Received: by 2002:ab0:5973:: with SMTP id o48mr40276484uad.19.1563952807229;
- Wed, 24 Jul 2019 00:20:07 -0700 (PDT)
+        id S1725883AbfGXIht (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 24 Jul 2019 04:37:49 -0400
+Received: from mx2.suse.de ([195.135.220.15]:45484 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726031AbfGXIht (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 24 Jul 2019 04:37:49 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 00FA9AF03;
+        Wed, 24 Jul 2019 08:37:47 +0000 (UTC)
+Message-ID: <ab7af8537ebcbc7a7bdf04d2c06152ba6821b333.camel@suse.de>
+Subject: Re: [PATCH 00/18] ARM: Add minimal Raspberry Pi 4 support
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     Chen-Yu Tsai <wens@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, Ray Jui <rjui@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Eric Anholt <eric@anholt.net>,
+        Matthias Brugger <mbrugger@suse.com>,
+        "open list:BROADCOM BCM281XX..." 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Stefan Wahren <wahrenst@gmx.net>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Christoph Hellwig <hch@lst.de>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:BROADCOM BCM2835..." 
+        <linux-rpi-kernel@lists.infradead.org>
+Date:   Wed, 24 Jul 2019 10:37:45 +0200
+In-Reply-To: <CAGb2v66-o23CW5iH9Bn1aELymPSiKrA43eJd2q6EZ7iubcogaw@mail.gmail.com>
+References: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
+         <96113adb5fcab9c2f4bb5fa82b84ff5f9c07fd07.camel@suse.de>
+         <bc650090-db86-ccac-01dc-23f08ad7b19b@gmx.net>
+         <20190723093442.GA27239@lst.de>
+         <04c5eaa03f3a124dbbce6186e11e19acc4539cc8.camel@suse.de>
+         <b15509d6-bc2e-3d06-0eea-943e6e456d62@gmx.net>
+         <5f9b11f54c66fd0487837f7e58af3adf7f86635f.camel@suse.de>
+         <CAGb2v66-o23CW5iH9Bn1aELymPSiKrA43eJd2q6EZ7iubcogaw@mail.gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-Rf1Vi16408MDtIxce0fT"
+User-Agent: Evolution 3.32.3 
 MIME-Version: 1.0
-References: <20190717023951.5064-1-ben.chuang@genesyslogic.com.tw>
-In-Reply-To: <20190717023951.5064-1-ben.chuang@genesyslogic.com.tw>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 24 Jul 2019 09:19:30 +0200
-Message-ID: <CAPDyKFqgTnudMumvrCJqi8FDfNNUU5AedP3hV=hwO1roG336Hw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: sdhci: Add PLL Enable support to internal clock setup
-To:     Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        johnsonm@danlj.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 17 Jul 2019 at 04:39, Ben Chuang <ben.chuang@genesyslogic.com.tw> w=
-rote:
->
-> The GL9750 and GL9755 chipsets, and possibly others, require PLL Enable
-> setup as part of the internal clock setup as described in 3.2.1 Internal
-> Clock Setup Sequence of SD Host Controller Simplified Specification
-> Version 4.20.  This changes the timeouts to the new specification of
-> 150ms for each step and is documented as safe for "prior versions which
-> do not support PLL Enable."
->
-> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> Co-developed-by: Michael K Johnson <johnsonm@danlj.org>
-> Signed-off-by: Michael K Johnson <johnsonm@danlj.org>
-> ---
->  drivers/mmc/host/sdhci.c | 33 ++++++++++++++++++++++++---------
->  1 file changed, 24 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index 59acf8e3331e..fd684d7a5f15 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -1636,15 +1636,11 @@ void sdhci_enable_clk(struct sdhci_host *host, u1=
-6 clk)
->         clk |=3D SDHCI_CLOCK_INT_EN;
->         sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
->
-> -       /* Wait max 20 ms */
-> -       timeout =3D ktime_add_ms(ktime_get(), 20);
-> -       while (1) {
-> -               bool timedout =3D ktime_after(ktime_get(), timeout);
-> -
-> -               clk =3D sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-> -               if (clk & SDHCI_CLOCK_INT_STABLE)
-> -                       break;
-> -               if (timedout) {
-> +       /* Wait max 150 ms */
-> +       timeout =3D ktime_add_ms(ktime_get(), 150);
-> +       while (!((clk =3D sdhci_readw(host, SDHCI_CLOCK_CONTROL))
-> +               & SDHCI_CLOCK_INT_STABLE)) {
-> +               if (ktime_after(ktime_get(), timeout)) {
->                         pr_err("%s: Internal clock never stabilised.\n",
->                                mmc_hostname(host->mmc));
->                         sdhci_dumpregs(host);
-> @@ -1653,8 +1649,27 @@ void sdhci_enable_clk(struct sdhci_host *host, u16=
- clk)
->                 udelay(10);
 
-This looks like it could be changed to an usleep_range(), perhaps an
-additional change on top?
+--=-Rf1Vi16408MDtIxce0fT
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->         }
->
-> +       clk |=3D SDHCI_CLOCK_PLL_EN;
-> +       clk &=3D ~SDHCI_CLOCK_INT_STABLE;
-> +       sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
-> +
-> +       /* Wait max 150 ms */
-> +       timeout =3D ktime_add_ms(ktime_get(), 150);
-> +       while (!((clk =3D sdhci_readw(host, SDHCI_CLOCK_CONTROL))
-> +               & SDHCI_CLOCK_INT_STABLE)) {
-> +               if (ktime_after(ktime_get(), timeout)) {
-> +                       pr_err("%s: PLL clock never stabilised.\n",
-> +                              mmc_hostname(host->mmc));
-> +                       sdhci_dumpregs(host);
-> +                       return;
-> +               }
-> +               udelay(10);
+> > > Does it fix the wifi issue too?
+> >=20
+> > Well it works as long as I revert this: 901bb98918 ("nl80211: require a=
+nd
+> > validate vendor command policy"). Which has nothing to do with DMA anyw=
+ays.
+> >=20
+> > Was this the issue you where seeing?
+> >=20
+> > [    4.969679] WARNING: CPU: 2 PID: 21 at net/wireless/core.c:868
+> > wiphy_register+0x8e8/0xbdc [cfg80211]
+> > [...]
+> > [    4.969974] ieee80211 phy0: brcmf_cfg80211_attach: Could not registe=
+r
+> > wiphy device (-22)
+>=20
+> We're seeing this on different platforms (allwinner / rockchip / amlogic)
+> with Broadcom WiFi chips. So it's unlikely to be related with anything in
+> this series.
+>=20
+> I believe a fix for this has already been queued up:
+>=20
+>=20
+https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?=
+id=3D91046d6364afde646734c7ead1f649d253c386e9
 
-Ditto.
+Thanks for pointing it out, it fixes the issue alright.
 
-> +       }
-> +
->         clk |=3D SDHCI_CLOCK_CARD_EN;
->         sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
-> +
-> +       mdelay(1);
 
-This is new, maybe add a comment and change to usleep_range().
+--=-Rf1Vi16408MDtIxce0fT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
->  }
->  EXPORT_SYMBOL_GPL(sdhci_enable_clk);
->
-> --
-> 2.22.0
->
-> ________________________________
->
-> Genesys Logic Email Confidentiality Notice:
-> This mail and any attachments may contain information that is confidentia=
-l, proprietary, privileged or otherwise protected by law. The mail is inten=
-ded solely for the named addressee (or a person responsible for delivering =
-it to the addressee). If you are not the intended recipient of this mail, y=
-ou are not authorized to read, print, copy or disseminate this mail.
->
-> If you have received this email in error, please notify us immediately by=
- reply email and immediately delete this message and any attachments from y=
-our system. Please be noted that any unauthorized use, dissemination, distr=
-ibution or copying of this email is strictly prohibited.
-> ________________________________
+-----BEGIN PGP SIGNATURE-----
 
-If you want me to apply the patch, you have to drop the above notice.
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl04GNkACgkQlfZmHno8
+x/4D2wgAqq3ax066fAw16mhXFvRvsvt5N2yK9ur2hwqz0YVcIYT9FlKTnuFyrUOY
+w1MvuMiaeLz+2xFpt+LVsmP/ygSqwzfzikUGJh/vHIu+mRqYPdbHrIKvLqutyQnF
+oXe6qqy8bXRfT50JQRnyH7ysKXks44suhiyTrYpidvmqkFZnasP86QgelISZiuKo
+umHPmmEck4luauMqSuQxzaNtbiJhLWzdKAWH3u+iufEHZT5Mbhi0v82jwviF2x+k
+lHI6OQpyuuOyVlsbIcAKAuu3qafq8KWaIf13JUmRGdo+dAjpBQ/lsuxeQGH4mHHk
+JvMKjYzUiMp4hvcgcoVTNcJ/Zz7zpw==
+=vcHF
+-----END PGP SIGNATURE-----
 
-Kind regards
-Uffe
+--=-Rf1Vi16408MDtIxce0fT--
+
