@@ -2,98 +2,274 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FE0674F33
-	for <lists+linux-mmc@lfdr.de>; Thu, 25 Jul 2019 15:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FC6174F37
+	for <lists+linux-mmc@lfdr.de>; Thu, 25 Jul 2019 15:23:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727239AbfGYNXT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 25 Jul 2019 09:23:19 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:46031 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725852AbfGYNXT (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Jul 2019 09:23:19 -0400
-Received: by mail-oi1-f193.google.com with SMTP id m206so37643226oib.12
-        for <linux-mmc@vger.kernel.org>; Thu, 25 Jul 2019 06:23:19 -0700 (PDT)
+        id S1725852AbfGYNXw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 25 Jul 2019 09:23:52 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:41913 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727830AbfGYNXv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Jul 2019 09:23:51 -0400
+Received: by mail-ua1-f68.google.com with SMTP id 34so19843102uar.8
+        for <linux-mmc@vger.kernel.org>; Thu, 25 Jul 2019 06:23:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=KwM2+qYHt0UEBA6UJDkeQDcGwUyIPjkorh2VTV9IDzw=;
-        b=UpD8rDzoKa7CF0RszwEp2yu+B1fDuQVKouFsCxQnA5dTxpou+Ba3K9lVpz2jMPqq/1
-         sxeFNJK6Sf38cQGqrVLHeAQfBsqpgOTYVX12hsupalkh+KnDYymBDvqA/45etUsKBwvZ
-         0Ab4Z822WfZQm+okMa5x6zu0rnY+sVZpRjGRLe4ekSilG1jJLTHwNCG57S00SQJ5TMeq
-         FkIBGCDmkRRu2QfHuvfH0DHb8rHjKJn2RvtTKU2M76OnXw1kYCVoK5OQljlokqn7EnmN
-         6P5kJri4WNNlZJ+Uj/pSGWD+8m6are5chNBp4JvdEWWOhAaKh9LZB24sZiuH7WT7DHK/
-         kCJA==
+        bh=FO+uLJoSuAxi+43r+XChAV6bGShjC1QQJr5a1Z10WA4=;
+        b=SAUoMUsSsOPwFEbODyYvbm0qMvAsZOalIvn8b5uw+acudLMMu9vygqpFvYjIJ7v7I9
+         DEfkoFimLuT9tH2qezkGjWP6KTnG6GK5CZNqoSP/6zUJMPIABBvtn9MlIPSI+5ccr3aZ
+         qEWB67oXNmMAOoPhko2gALVxZmmVMN0tygy080v6i5iHSMtnIJqCtp2YJPdrTY7uMGvQ
+         N53GfmIT+PdqasYZGMRI9R/s3QzGqObJm1QjeVCHced1Ly4fbVz8rheZdQzRNvkfxCXK
+         vrenlO6gbMi9+RLGXQSoM57X3UZsFZYpUEMYlTcichzx5w/aRtwqTcCPoTfHPz6iK/6w
+         znzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=KwM2+qYHt0UEBA6UJDkeQDcGwUyIPjkorh2VTV9IDzw=;
-        b=nGSKC378JG+IUws+i0C4YtYSzfMJ1d0XYllrT/NnS18vKQuTwsQ2idn4zUBm9VzAca
-         aNLiP2btqWYvFCHxb+dfWTz3zICgxJz83lh5a9gZf7BzpT6w/HBsvb0mfhEHOQgF2HZz
-         3GbpJbVeGuaqLdzGYGVEREkr1r9dSl3Qhi3fQiNEHOwNKQZeLoYWpvWN0mtCzG98p9d+
-         5PlA0jOkHjAq43Utg+AXkhI7PbsvIYPmCBAt7kqoUTppUnmorVQFByt9a124wL+m6fWl
-         FaJq7YmGPUFRUUZvZBYA7nNSG0Of0wAoLl4JAPUXvLKwE6gI1j4o2HGsdpFB8yed6E4S
-         /gKQ==
-X-Gm-Message-State: APjAAAVCgw4ZdvrijQQrAQpxa3AAjGjS3+Vzbvh6RCYQytjz1wt29Nrx
-        Z47KApD1PsqB/mi44bW9PqoIU/gVu+/+74Xup/NRst1Q
-X-Google-Smtp-Source: APXvYqypjRf2awMQdztO7PYDu9Rw91aR4GcRmWVCqGbM344Dbhlb0mEkUpz8ySSDsEuabMZWkpRRW0tnWgt9tzqllw0=
-X-Received: by 2002:ac5:c2d2:: with SMTP id i18mr33137975vkk.36.1564060526687;
- Thu, 25 Jul 2019 06:15:26 -0700 (PDT)
+        bh=FO+uLJoSuAxi+43r+XChAV6bGShjC1QQJr5a1Z10WA4=;
+        b=i6DTbmDQSivie1Po/5Ms/0bBBlUryaStFMiGM1d7iJ+KpGvkeLK5EEZlU7TFodHqYu
+         C3dF+iFIQ7wBoOdonZRciJmGDrGnCriZVzYRnfUHBmfmYy66WYAH05dFHKmD3R0QxeLA
+         KPVDCXcyxdToZy8lzbBfihCL2CSqZbomUqd38eCRSLwr9L78fErAdOo/yU+m7pK9SQDy
+         6iEqrRvJcqxOsrzyE82ekyZ5veJUMgyq7P4jHVNBwSP5vwdeTLk6iB/o8VpXrX6P1wQM
+         UNWrsT5c0kDe3rU7KYEqQlJBLPrrDtgP/ypXf/EcEuvDBhWiXcKmLxIZzjlU9/D9PWWK
+         pA0w==
+X-Gm-Message-State: APjAAAWXKaIVfBSSNsB5D/pOf2q0YGUyyJ29hhxeKV1bZYtO5/HgRyrA
+        e2t93JOny2ZlUCvT25DKX1g9thjNXycBToR+kNJUmg==
+X-Google-Smtp-Source: APXvYqzaDFTzSxZuWbXn/auySeCIUcUcxXajq3YH1eaAMunNEBK04WM5xvy21BN7eG0KHX0O/0i+oo6dN036NrOJmUE=
+X-Received: by 2002:ab0:5973:: with SMTP id o48mr45127023uad.19.1564060529602;
+ Thu, 25 Jul 2019 06:15:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190725151748.1a59b1ba@xhacker.debian>
-In-Reply-To: <20190725151748.1a59b1ba@xhacker.debian>
+References: <74a6462743e3d73a630d2634880d8866daee333e.1564022625.git.baolin.wang@linaro.org>
+In-Reply-To: <74a6462743e3d73a630d2634880d8866daee333e.1564022625.git.baolin.wang@linaro.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 25 Jul 2019 15:14:50 +0200
-Message-ID: <CAPDyKFpwOaa-8GxkWnXoyoC8nLyGMGE8moyEJr4a7TVBSiw6mw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-pltfm: Use devm_platform_ioremap_resource() to
- simplify code
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+Date:   Thu, 25 Jul 2019 15:14:53 +0200
+Message-ID: <CAPDyKFoNGZRdY3VVf6G9eNBfCyJbN5SUU2+fK24U-mHDX13oFQ@mail.gmail.com>
+Subject: Re: [PATCH v5] mmc: host: sdhci: Fix the incorrect soft reset
+ operation when runtime resuming
+To:     Baolin Wang <baolin.wang@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Chunyan Zhang <zhang.lyra@gmail.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 25 Jul 2019 at 09:28, Jisheng Zhang <Jisheng.Zhang@synaptics.com> wrote:
->
-> devm_platform_ioremap_resource() wraps platform_get_resource() and
-> devm_ioremap_resource() in a single helper, let's use that helper to
-> simplify the code.
->
-> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+- Trimmed cc list
 
-Applied for next, thanks!
+On Thu, 25 Jul 2019 at 05:14, Baolin Wang <baolin.wang@linaro.org> wrote:
+>
+> The SD host controller specification defines 3 types software reset:
+> software reset for data line, software reset for command line and
+> software reset for all. Software reset for all means this reset affects
+> the entire Host controller except for the card detection circuit.
+>
+> In sdhci_runtime_resume_host() function, now we will always do software
+> reset for all, which will cause Spreadtrum host controller work abnormally
+> after resuming. For Spreadtrum platform that will not power down the SD/eMMC
+> card during runtime suspend, we should just do software reset for data
+> and command instead doing reset for all.
+>
+> To fix this issue, this patch introduces a new parameter of
+> sdhci_runtime_resume_host() to let it decide if a 'reset for all' shall
+> be done or not. Meanwhile changes other host drivers to issue a software
+> reset for all to keep the original logic.
+>
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+
+Applied for next, with a little change (renaming the "soft"
+in-parameter to soft_reset), thanks!
+
+Adrian, if there is anything you want to change, please tell.
+
+BTW, perhaps this should be applied for fixes and tagged for stable?
+Baolin, if so, can point me the commit (or stable tag) the patch
+fixes?
 
 Kind regards
 Uffe
 
 
+
 > ---
->  drivers/mmc/host/sdhci-pltfm.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> Changes from v4:
+>  - Update the commit message.
+>  - Add a new parameter to decide if a 'reset for all' shall be done or not.
 >
-> diff --git a/drivers/mmc/host/sdhci-pltfm.c b/drivers/mmc/host/sdhci-pltfm.c
-> index d268b3b8850a..11ecff9e998d 100644
-> --- a/drivers/mmc/host/sdhci-pltfm.c
-> +++ b/drivers/mmc/host/sdhci-pltfm.c
-> @@ -118,12 +118,10 @@ struct sdhci_host *sdhci_pltfm_init(struct platform_device *pdev,
->                                     size_t priv_size)
+> Changes from v3:
+>  - Use ios.power_mode to validate if the card is power down or not.
+>
+> Changes from v2:
+>  - Simplify the sdhci_sprd_reset() by issuing sdhci_reset().
+>
+> Changes from v1:
+>  - Add a specific reset operation instead of changing the core to avoid
+>  affecting other hardware.
+> ---
+>  drivers/mmc/host/sdhci-acpi.c      |    2 +-
+>  drivers/mmc/host/sdhci-esdhc-imx.c |    2 +-
+>  drivers/mmc/host/sdhci-of-at91.c   |    2 +-
+>  drivers/mmc/host/sdhci-pci-core.c  |    4 ++--
+>  drivers/mmc/host/sdhci-pxav3.c     |    2 +-
+>  drivers/mmc/host/sdhci-s3c.c       |    2 +-
+>  drivers/mmc/host/sdhci-sprd.c      |    2 +-
+>  drivers/mmc/host/sdhci-xenon.c     |    2 +-
+>  drivers/mmc/host/sdhci.c           |    4 ++--
+>  drivers/mmc/host/sdhci.h           |    2 +-
+>  10 files changed, 12 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
+> index b3a130a..1604f51 100644
+> --- a/drivers/mmc/host/sdhci-acpi.c
+> +++ b/drivers/mmc/host/sdhci-acpi.c
+> @@ -883,7 +883,7 @@ static int sdhci_acpi_runtime_resume(struct device *dev)
+>
+>         sdhci_acpi_byt_setting(&c->pdev->dev);
+>
+> -       return sdhci_runtime_resume_host(c->host);
+> +       return sdhci_runtime_resume_host(c->host, 0);
+>  }
+>
+>  #endif
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index c391510..776a942 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1705,7 +1705,7 @@ static int sdhci_esdhc_runtime_resume(struct device *dev)
+>                 esdhc_pltfm_set_clock(host, imx_data->actual_clock);
+>         }
+>
+> -       err = sdhci_runtime_resume_host(host);
+> +       err = sdhci_runtime_resume_host(host, 0);
+>         if (err)
+>                 goto disable_ipg_clk;
+>
+> diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-of-at91.c
+> index e377b9b..d4e7e8b 100644
+> --- a/drivers/mmc/host/sdhci-of-at91.c
+> +++ b/drivers/mmc/host/sdhci-of-at91.c
+> @@ -289,7 +289,7 @@ static int sdhci_at91_runtime_resume(struct device *dev)
+>         }
+>
+>  out:
+> -       return sdhci_runtime_resume_host(host);
+> +       return sdhci_runtime_resume_host(host, 0);
+>  }
+>  #endif /* CONFIG_PM */
+>
+> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+> index 4041878..7d06e28 100644
+> --- a/drivers/mmc/host/sdhci-pci-core.c
+> +++ b/drivers/mmc/host/sdhci-pci-core.c
+> @@ -167,7 +167,7 @@ static int sdhci_pci_runtime_suspend_host(struct sdhci_pci_chip *chip)
+>
+>  err_pci_runtime_suspend:
+>         while (--i >= 0)
+> -               sdhci_runtime_resume_host(chip->slots[i]->host);
+> +               sdhci_runtime_resume_host(chip->slots[i]->host, 0);
+>         return ret;
+>  }
+>
+> @@ -181,7 +181,7 @@ static int sdhci_pci_runtime_resume_host(struct sdhci_pci_chip *chip)
+>                 if (!slot)
+>                         continue;
+>
+> -               ret = sdhci_runtime_resume_host(slot->host);
+> +               ret = sdhci_runtime_resume_host(slot->host, 0);
+>                 if (ret)
+>                         return ret;
+>         }
+> diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav3.c
+> index 3ddecf4..e55037c 100644
+> --- a/drivers/mmc/host/sdhci-pxav3.c
+> +++ b/drivers/mmc/host/sdhci-pxav3.c
+> @@ -554,7 +554,7 @@ static int sdhci_pxav3_runtime_resume(struct device *dev)
+>         if (!IS_ERR(pxa->clk_core))
+>                 clk_prepare_enable(pxa->clk_core);
+>
+> -       return sdhci_runtime_resume_host(host);
+> +       return sdhci_runtime_resume_host(host, 0);
+>  }
+>  #endif
+>
+> diff --git a/drivers/mmc/host/sdhci-s3c.c b/drivers/mmc/host/sdhci-s3c.c
+> index 8e4a8ba..f5753ae 100644
+> --- a/drivers/mmc/host/sdhci-s3c.c
+> +++ b/drivers/mmc/host/sdhci-s3c.c
+> @@ -745,7 +745,7 @@ static int sdhci_s3c_runtime_resume(struct device *dev)
+>         clk_prepare_enable(busclk);
+>         if (ourhost->cur_clk >= 0)
+>                 clk_prepare_enable(ourhost->clk_bus[ourhost->cur_clk]);
+> -       ret = sdhci_runtime_resume_host(host);
+> +       ret = sdhci_runtime_resume_host(host, 0);
+>         return ret;
+>  }
+>  #endif
+> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+> index 603a5d9..83a4767 100644
+> --- a/drivers/mmc/host/sdhci-sprd.c
+> +++ b/drivers/mmc/host/sdhci-sprd.c
+> @@ -696,7 +696,7 @@ static int sdhci_sprd_runtime_resume(struct device *dev)
+>         if (ret)
+>                 goto clk_disable;
+>
+> -       sdhci_runtime_resume_host(host);
+> +       sdhci_runtime_resume_host(host, 1);
+>         return 0;
+>
+>  clk_disable:
+> diff --git a/drivers/mmc/host/sdhci-xenon.c b/drivers/mmc/host/sdhci-xenon.c
+> index 8a18f14..1dea1ba 100644
+> --- a/drivers/mmc/host/sdhci-xenon.c
+> +++ b/drivers/mmc/host/sdhci-xenon.c
+> @@ -638,7 +638,7 @@ static int xenon_runtime_resume(struct device *dev)
+>                 priv->restore_needed = false;
+>         }
+>
+> -       ret = sdhci_runtime_resume_host(host);
+> +       ret = sdhci_runtime_resume_host(host, 0);
+>         if (ret)
+>                 goto out;
+>         return 0;
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 59acf8e..4e9ebc8 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -3320,7 +3320,7 @@ int sdhci_runtime_suspend_host(struct sdhci_host *host)
+>  }
+>  EXPORT_SYMBOL_GPL(sdhci_runtime_suspend_host);
+>
+> -int sdhci_runtime_resume_host(struct sdhci_host *host)
+> +int sdhci_runtime_resume_host(struct sdhci_host *host, int soft)
 >  {
->         struct sdhci_host *host;
-> -       struct resource *iomem;
->         void __iomem *ioaddr;
->         int irq, ret;
+>         struct mmc_host *mmc = host->mmc;
+>         unsigned long flags;
+> @@ -3331,7 +3331,7 @@ int sdhci_runtime_resume_host(struct sdhci_host *host)
+>                         host->ops->enable_dma(host);
+>         }
 >
-> -       iomem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       ioaddr = devm_ioremap_resource(&pdev->dev, iomem);
-> +       ioaddr = devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(ioaddr)) {
->                 ret = PTR_ERR(ioaddr);
->                 goto err;
+> -       sdhci_init(host, 0);
+> +       sdhci_init(host, soft);
+>
+>         if (mmc->ios.power_mode != MMC_POWER_UNDEFINED &&
+>             mmc->ios.power_mode != MMC_POWER_OFF) {
+> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+> index 89fd965..f3cd516 100644
+> --- a/drivers/mmc/host/sdhci.h
+> +++ b/drivers/mmc/host/sdhci.h
+> @@ -781,7 +781,7 @@ void sdhci_adma_write_desc(struct sdhci_host *host, void **desc,
+>  int sdhci_suspend_host(struct sdhci_host *host);
+>  int sdhci_resume_host(struct sdhci_host *host);
+>  int sdhci_runtime_suspend_host(struct sdhci_host *host);
+> -int sdhci_runtime_resume_host(struct sdhci_host *host);
+> +int sdhci_runtime_resume_host(struct sdhci_host *host, int soft);
+>  #endif
+>
+>  void sdhci_cqe_enable(struct mmc_host *mmc);
 > --
-> 2.22.0
+> 1.7.9.5
 >
