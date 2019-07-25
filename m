@@ -2,174 +2,162 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C01DC74F6F
-	for <lists+linux-mmc@lfdr.de>; Thu, 25 Jul 2019 15:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D09F74FE9
+	for <lists+linux-mmc@lfdr.de>; Thu, 25 Jul 2019 15:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727592AbfGYN2t (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 25 Jul 2019 09:28:49 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:38531 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725851AbfGYN2t (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Jul 2019 09:28:49 -0400
-Received: by mail-vs1-f67.google.com with SMTP id k9so33671287vso.5
-        for <linux-mmc@vger.kernel.org>; Thu, 25 Jul 2019 06:28:48 -0700 (PDT)
+        id S2390287AbfGYNoS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 25 Jul 2019 09:44:18 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:45122 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389989AbfGYNoR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Jul 2019 09:44:17 -0400
+Received: by mail-vs1-f65.google.com with SMTP id h28so33713835vsl.12
+        for <linux-mmc@vger.kernel.org>; Thu, 25 Jul 2019 06:44:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vXKNB/T35UEJpgjy5bQMa/g2p0OKD2QzsqlMlAa6XPw=;
-        b=f/uQQYPHA8g4EJYLPYLuJ1y5iqC+JXr+y3ZExBNQFRTKMBE0ptdYkfXtsOwg8bWulp
-         zZ8vUXVHZTtT4veYqE6FY3J9yFjAWOKah4KLs0giuYjbw9oX80NdYOLQLeEpMoPXSM6F
-         LNu9DnmAgcDf2vlgWEuiZiTg9pVoHA9Kkn6k5l9MtGEZO/630B/DkxncJQpZvT08FtmE
-         ifzxx8MnhDevDnFLTEhcuytmqcQSWHjXXKaWyxOrUa4+IMAdtbxkxnY+4AzTBJuCCibf
-         ZN5FXJyrsuZFnYPkovS2Im/Jo42DNXFxP9f+RaIyJMosOPS+ykDNufilHeZ0jIjlcLVL
-         uwmA==
+        bh=h4bEfkUUJYfGvI6TKW6ozHty+vZn220gLxXD+QbuwkE=;
+        b=iKz+5sz3lDIsAPShxvIuZPW5WFrpsRecZP4JHvtCJ5xFKGT5WCQW0SUWPxEHTF9dwa
+         HQkhuc9EhuQ/uo/FaGW8AzVVGS1R0BrAmDH4/ysvbAquL+FfIKmmk5mg7hCOY8ZR3sA3
+         r2ioLVQpTtYzFsvAclhX+ukvMNeL37NFVB9x4Wpg7dZPUOo1tuca49ACji8I34xiKBC3
+         daE24Y1Wm9rcmpYJa1unIlTECQKMWTp5HuSyZpXKkhZjAl9bjorN41of1HBNIqfserEW
+         DT8dVEUJYcmug1cfwy2fcUlq7tKEpO2Fv/gccMeIFRDhTdlOj2E6Sr5ffE4wjOQJapEv
+         LJPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vXKNB/T35UEJpgjy5bQMa/g2p0OKD2QzsqlMlAa6XPw=;
-        b=PiIT836EHY1fxP28Qcwq6grf2ZiMZ9+kOTCqBF1n5BSN7EIJP/txg5DanHfYVFhv3e
-         37H0cj3Zee7Ag9Y5NKkn89ncTCO8p+jQ9Zwf3Hl2rimsj3C1SVGzjv8Zg7qQ49fgLjXA
-         icDaYS/GTrL+YlInv/BQ6hGkB2J7/PCUWhf1cmSXlBKq4DK28BeMkn4GmF58qKCIyW5t
-         ipZGghec5LI7DikgcC+kx89rHPYM6FIrLGymehLwzTyQyg8CWiOH7pDs4lfzPujfB8aL
-         5AA730CjFOAtK+gzh8GScKtfAv5IieBroBQeWjgmeXbbYSJhlrlo0kHJLoJ4Q89y6XeN
-         Hclw==
-X-Gm-Message-State: APjAAAWiCz07CDqQ51XqkAqYQdx+JtvZPUMIY2QTTd+cbf71j7/6UhGw
-        cYHerPUAWnnRUKe+2Co/Q2IL0Rlxh1PO7dqVfMu5Kg==
-X-Google-Smtp-Source: APXvYqxQVUGQaO08z8JvqC/8hjWZk0eU15RGOsp4tEzLJQFfOVWtNAiPhhBmEDA9IIpQqprtF6qepXrstTHdGFfN0SU=
-X-Received: by 2002:a67:61c7:: with SMTP id v190mr4507235vsb.165.1564061327635;
- Thu, 25 Jul 2019 06:28:47 -0700 (PDT)
+        bh=h4bEfkUUJYfGvI6TKW6ozHty+vZn220gLxXD+QbuwkE=;
+        b=oBSvoUHSKbp+lqnOn5sJXMd21w8RlURnjyRmbMXFIKX7SyIo0v/9EEIpFhoij7aYS3
+         +JI6nhc1y8JKDbnDqGW7PbR9ytTzG+ERdICwEDMcnfVhE3+ZK1wH1A0OBX6e20fL4d5b
+         EiXDOqGK7XDPrAZ3yOF5YXfysLNSgKpYyV8nNJf17YKTF0am1ywNy+h8esLSIoK37snR
+         nBXNvyGhqg+Ca40bK2701Rt6Kvh8cgpJN46jXRyHTdht4FCakiENUrtdz5YVpfJ3ahe+
+         AS7aWln61VcDbHP/5/kIfLaiO+VM3EjkL6AXN+BXiDGHjJ0FHkJjJo0Tn7HHdx0Waz0E
+         KaLQ==
+X-Gm-Message-State: APjAAAWOTKCqUSzxBf9BP7M+8SontRWmRcTRW99Bi1/VmToy+9lqjjnn
+        Ew9govX9dxFRrXmS4OP7YQ8heSlu0Ylqx5TeN2u7ZA==
+X-Google-Smtp-Source: APXvYqwsN3NYipZ2L8tQzc9xLMlMYic80Y3TsG8VamwC6SFVel/aQctyGDJPPeLXxRUhndnucYPhTHxT68Biqy/IzKU=
+X-Received: by 2002:a67:e454:: with SMTP id n20mr57354696vsm.34.1564062256550;
+ Thu, 25 Jul 2019 06:44:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190722193939.125578-1-dianders@chromium.org>
-In-Reply-To: <20190722193939.125578-1-dianders@chromium.org>
+References: <1563289264-26432-1-git-send-email-uli+renesas@fpond.eu> <1563289264-26432-2-git-send-email-uli+renesas@fpond.eu>
+In-Reply-To: <1563289264-26432-2-git-send-email-uli+renesas@fpond.eu>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 25 Jul 2019 15:28:11 +0200
-Message-ID: <CAPDyKFoND5Kaam72zxO4wChO0z_1XL2KWX6oNjVcMUGA7G8RFg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] mmc: core: Fix Marvell WiFi reset by adding SDIO
- API to replug card
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Andreas Fenkart <afenkart@gmail.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        netdev <netdev@vger.kernel.org>,
-        Avri Altman <avri.altman@wdc.com>,
+Date:   Thu, 25 Jul 2019 15:43:40 +0200
+Message-ID: <CAPDyKFq2i0pRKGtMA6YESpKOAAzK-enhW7fkT6=63Ad2mQGmJQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: tmio: leave clock handling to PM if enabled
+To:     Ulrich Hecht <uli+renesas@fpond.eu>
+Cc:     Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Magnus Damm <magnus.damm@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 22 Jul 2019 at 21:41, Douglas Anderson <dianders@chromium.org> wrote:
+On Tue, 16 Jul 2019 at 17:01, Ulrich Hecht <uli+renesas@fpond.eu> wrote:
 >
-> As talked about in the thread at:
->
-> http://lkml.kernel.org/r/CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com
->
-> ...when the Marvell WiFi card tries to reset itself it kills
-> Bluetooth.  It was observed that we could re-init the card properly by
-> unbinding / rebinding the host controller.  It was also observed that
-> in the downstream Chrome OS codebase the solution used was
-> mmc_remove_host() / mmc_add_host(), which is similar to the solution
-> in this series.
->
-> So far I've only done testing of this series using the reset test
-> source that can be simulated via sysfs.  Specifically I ran this test:
->
-> for i in $(seq 1000); do
->   echo "LOOP $i --------"
->   echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
->
->   while true; do
->     if ! ping -w15 -c1 "${GW}" >/dev/null 2>&1; then
->       fail=$(( fail + 1 ))
->       echo "Fail WiFi ${fail}"
->       if [[ ${fail} == 3 ]]; then
->         exit 1
->       fi
->     else
->       fail=0
->       break
->     fi
->   done
->
->   hciconfig hci0 down
->   sleep 1
->   if ! hciconfig hci0 up; then
->     echo "Fail BT"
->     exit 1
->   fi
-> done
->
-> I ran this several times and got several hundred iterations each
-> before a failure.  When I saw failures:
->
-> * Once I saw a "Fail BT"; manually resetting the card again fixed it.
->   I didn't give it time to see if it would have detected this
->   automatically.
-> * Once I saw the ping fail because (for some reason) my device only
->   got an IPv6 address from my router and the IPv4 ping failed.  I
->   changed my script to use 'ping6' to see if that would help.
-> * Once I saw the ping fail because the higher level network stack
->   ("shill" in my case) seemed to crash.  A few minutes later the
->   system recovered itself automatically.  https://crbug.com/984593 if
->   you want more details.
-> * Sometimes while I was testing I saw "Fail WiFi 1" indicating a
->   transitory failure.  Usually this was an association failure, but in
->   one case I saw the device do "Firmware wakeup failed" after I
->   triggered the reset.  This caused the driver to trigger a re-reset
->   of itself which eventually recovered things.  This was good because
->   it was an actual test of the normal reset flow (not the one
->   triggered via sysfs).
->
-> Changes in v2:
-> - s/routnine/routine (Brian Norris, Matthias Kaehlcke).
-> - s/contining/containing (Matthias Kaehlcke).
-> - Add Matthias Reviewed-by tag.
-> - Removed clear_bit() calls and old comment (Brian Norris).
-> - Explicit CC of Andreas Fenkart.
-> - Explicit CC of Brian Norris.
-> - Add "Fixes" pointing at the commit Brian talked about.
-> - Add Brian's Reviewed-by tag.
->
-> Douglas Anderson (2):
->   mmc: core: Add sdio_trigger_replug() API
->   mwifiex: Make use of the new sdio_trigger_replug() API to reset
->
->  drivers/mmc/core/core.c                     | 28 +++++++++++++++++++--
->  drivers/mmc/core/sdio_io.c                  | 20 +++++++++++++++
->  drivers/net/wireless/marvell/mwifiex/sdio.c | 16 +-----------
->  include/linux/mmc/host.h                    | 15 ++++++++++-
->  include/linux/mmc/sdio_func.h               |  2 ++
->  5 files changed, 63 insertions(+), 18 deletions(-)
->
+> This fixes a clock imbalance that occurs because the SD clock is handled
+> by both PM and the hardware driver.
+> See https://www.spinics.net/lists/linux-mmc/msg44431.html for details.
 
-Doug, thanks for sending this!
+This is a generic problem, when a device are being attached to a genpd
+and when the genpd has got the ->stop|start() callbacks assigned, as
+to manage device clocks.
 
-As you know, I have been working on additional changes for SDIO
-suspend/resume (still WIP and not ready for sharing) and this series
-is related.
+Can you try to describe this problem a little bit more in detail, as I
+think that's important to carry in the change log.
 
-The thing is, that even during system suspend/resume, synchronizations
-are needed between the different layers (mmc host, mmc core and
-sdio-funcs), which is common to the problem you want to solve.
+>
+> This patch removes the clock handling from the driver's PM callbacks and
 
-That said, I need to scratch my head a bit more before I can provide
-you some feedback on $subject series. Moreover, it's vacation period
-at my side so things are moving a bit slower. Please be patient.
+runtime PM callbacks and/or system PM callbacks?
+
+> turns the clock off after probing.
+>
+> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Ulrich Hecht <uli+renesas@fpond.eu>
+> ---
+>  drivers/mmc/host/tmio_mmc_core.c | 24 ++++++------------------
+>  1 file changed, 6 insertions(+), 18 deletions(-)
+>
+> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+> index 31ffcc3..26dcbba 100644
+> --- a/drivers/mmc/host/tmio_mmc_core.c
+> +++ b/drivers/mmc/host/tmio_mmc_core.c
+> @@ -1260,9 +1260,14 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
+>         /* See if we also get DMA */
+>         tmio_mmc_request_dma(_host, pdata);
+>
+> -       pm_runtime_set_active(&pdev->dev);
+> +#ifdef CONFIG_PM
+> +       /* PM handles the clock; disable it so it won't be enabled twice. */
+> +       if (_host->clk_disable)
+> +               _host->clk_disable(_host);
+
+The clock managed here, is that the same clock as being managed by
+genpd's ->stop|start() callbacks?
+
+> +       pm_runtime_get_sync(&pdev->dev);
+>         pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
+>         pm_runtime_use_autosuspend(&pdev->dev);
+> +#endif
+
+So what happens if you have CONFIG_PM set, but the device doesn't have
+a genpd attached?
+
+I am guessing the driver should handle the clock in such scenario, right?
+
+>
+>         ret = mmc_add_host(mmc);
+>         if (ret)
+> @@ -1302,20 +1307,6 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
+>  EXPORT_SYMBOL_GPL(tmio_mmc_host_remove);
+>
+>  #ifdef CONFIG_PM
+> -static int tmio_mmc_clk_enable(struct tmio_mmc_host *host)
+> -{
+> -       if (!host->clk_enable)
+> -               return -ENOTSUPP;
+> -
+> -       return host->clk_enable(host);
+> -}
+> -
+> -static void tmio_mmc_clk_disable(struct tmio_mmc_host *host)
+> -{
+> -       if (host->clk_disable)
+> -               host->clk_disable(host);
+> -}
+> -
+>  int tmio_mmc_host_runtime_suspend(struct device *dev)
+>  {
+>         struct tmio_mmc_host *host = dev_get_drvdata(dev);
+> @@ -1325,8 +1316,6 @@ int tmio_mmc_host_runtime_suspend(struct device *dev)
+>         if (host->clk_cache)
+>                 host->set_clock(host, 0);
+>
+> -       tmio_mmc_clk_disable(host);
+> -
+>         return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(tmio_mmc_host_runtime_suspend);
+> @@ -1340,7 +1329,6 @@ int tmio_mmc_host_runtime_resume(struct device *dev)
+>  {
+>         struct tmio_mmc_host *host = dev_get_drvdata(dev);
+>
+> -       tmio_mmc_clk_enable(host);
+>         tmio_mmc_hw_reset(host->mmc);
+>
+>         if (host->clk_cache)
+> --
+> 2.7.4
+>
 
 Kind regards
 Uffe
