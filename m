@@ -2,53 +2,122 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8B537473F
-	for <lists+linux-mmc@lfdr.de>; Thu, 25 Jul 2019 08:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B80C74814
+	for <lists+linux-mmc@lfdr.de>; Thu, 25 Jul 2019 09:28:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729072AbfGYGeN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 25 Jul 2019 02:34:13 -0400
-Received: from kirsty.vergenet.net ([202.4.237.240]:54742 "EHLO
-        kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725808AbfGYGeN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Jul 2019 02:34:13 -0400
-Received: from penelope.horms.nl (ip4dab7138.direct-adsl.nl [77.171.113.56])
-        by kirsty.vergenet.net (Postfix) with ESMTPA id 51C7725BE5E;
-        Thu, 25 Jul 2019 16:34:10 +1000 (AEST)
-Received: by penelope.horms.nl (Postfix, from userid 7100)
-        id 4ED96E2209B; Thu, 25 Jul 2019 08:34:08 +0200 (CEST)
-Date:   Thu, 25 Jul 2019 08:34:08 +0200
-From:   Simon Horman <horms@verge.net.au>
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc:     ulf.hansson@linaro.org, hch@lst.de, m.szyprowski@samsung.com,
-        robin.murphy@arm.com, joro@8bytes.org, axboe@kernel.dk,
-        wsa+renesas@sang-engineering.com, linux-mmc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-block@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v8 5/5] mmc: queue: Use bigger segments if DMA MAP layer
- can merge the segments
-Message-ID: <20190725063407.xklhsc24et56sdtl@verge.net.au>
-References: <1563859608-19456-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1563859608-19456-6-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S2388077AbfGYH20 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 25 Jul 2019 03:28:26 -0400
+Received: from mail-eopbgr690070.outbound.protection.outlook.com ([40.107.69.70]:22400
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2387738AbfGYH2Z (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 25 Jul 2019 03:28:25 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MyFoXYwAQiC6Vp7jKEngYEYd/it7DcAasEXR6nY/IAg7wEgaB0nCARuR+UD2zLwgMqovOcQ1C+RYHg8Oqoj08GxD+21/GPeqLeYtjAolJTAsd23VbXQKb43XGMOrSOqG6lTXLYqMD9f0jArKBAkY+AlKpn0JQhK9CXu7joKUjB5cVyxZP04CSthWo6qCarMoFqJHupgK8sVSdFdaibG+Bc62lSOiwTfDGMyJeoxudSIPPbad8BqQiu3FCuO65mq2RbLeY6+TsNNF+lUcwPwBl0aySQ6sOIoGZZ/OASRh4woOE20WA7uxwCrN6WqxQ5/aoru1ZVr8OucsUcwxa/BExg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RaP8L6Iy+9MthBaY576XhaDGWOZVVpNLa0HLtbZI6Gc=;
+ b=eNbi7izmUt5xFBqH1tFfPunQqQdlJDcox1ZzL4mRIfO4xn1/UoCFKZEprdSTHiYYawDEP5x9FXgn0rfA57Wkpfs2Kt1r6X5Ek1YaY3ipfa3Ck9AEUmtWP9QyDXpLbuK20wjMkGFrpwWy/g7MmwRCXRVBljP5UbqKWvTJ8iuyzcza3KkvshfdwNPrVxp/thisgNXSDPH5/tNpDGRgIMX5Eumln2nsuXt1wCbx4S3ulJU6iuEQX0Sr6PAovNfX/NDN8hmTNR3v5or2u9Q6V6F5ou4KCSC6hkDWraxByUHjrMGupYTwtn7/ixz+3xCpTYS3+YbgjStWgMn1S5QdqxBgSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=synaptics.com;dmarc=pass action=none
+ header.from=synaptics.com;dkim=pass header.d=synaptics.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=Synaptics.onmicrosoft.com; s=selector1-Synaptics-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RaP8L6Iy+9MthBaY576XhaDGWOZVVpNLa0HLtbZI6Gc=;
+ b=Hsler9G6Al4Feuzd0gEMT86Fmp2HyoRh9toZ5BsdDM0WWVtBxWSTGuhZcXIaasgGbmhBKxp7C9MpMBQmcKj1Vm7ab7BIAqCRuGYBkWM+98Fx/A+yku4ADd9ETbqijrKu1vv7zzq7RPGiT6PN+mD4HD0UuwlREL7pDaxNLHLGRQ8=
+Received: from BYAPR03MB4773.namprd03.prod.outlook.com (20.179.92.152) by
+ BYAPR03MB3447.namprd03.prod.outlook.com (52.135.212.148) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2115.10; Thu, 25 Jul 2019 07:28:23 +0000
+Received: from BYAPR03MB4773.namprd03.prod.outlook.com
+ ([fe80::b1e6:c114:bea7:6763]) by BYAPR03MB4773.namprd03.prod.outlook.com
+ ([fe80::b1e6:c114:bea7:6763%7]) with mapi id 15.20.2115.005; Thu, 25 Jul 2019
+ 07:28:23 +0000
+From:   Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH] mmc: sdhci-pltfm: Use devm_platform_ioremap_resource() to
+ simplify code
+Thread-Topic: [PATCH] mmc: sdhci-pltfm: Use devm_platform_ioremap_resource()
+ to simplify code
+Thread-Index: AQHVQrqKas5DyjqBokmNQ+F9bjYpsw==
+Date:   Thu, 25 Jul 2019 07:28:22 +0000
+Message-ID: <20190725151748.1a59b1ba@xhacker.debian>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [124.74.246.114]
+x-clientproxiedby: TYAPR01CA0033.jpnprd01.prod.outlook.com
+ (2603:1096:404:28::21) To BYAPR03MB4773.namprd03.prod.outlook.com
+ (2603:10b6:a03:134::24)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Jisheng.Zhang@synaptics.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c2e11b44-8344-4ac0-3727-08d710d1ac9e
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BYAPR03MB3447;
+x-ms-traffictypediagnostic: BYAPR03MB3447:
+x-microsoft-antispam-prvs: <BYAPR03MB3447CD5DB692C9ECE4E3C731EDC10@BYAPR03MB3447.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2449;
+x-forefront-prvs: 0109D382B0
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(376002)(366004)(396003)(39860400002)(346002)(199004)(189003)(316002)(476003)(110136005)(99286004)(54906003)(2906002)(478600001)(52116002)(186003)(486006)(6486002)(8936002)(102836004)(386003)(6506007)(1076003)(66446008)(26005)(256004)(5660300002)(71200400001)(71190400001)(4744005)(66556008)(66946007)(64756008)(53936002)(9686003)(3846002)(6512007)(86362001)(7736002)(81166006)(66476007)(4326008)(6436002)(8676002)(68736007)(66066001)(14454004)(50226002)(6116002)(81156014)(305945005)(25786009)(39210200001);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR03MB3447;H:BYAPR03MB4773.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:0;MX:1;
+received-spf: None (protection.outlook.com: synaptics.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: cslel0aKcjBgZcn0fsxJOZC5Yi7758F5/eaLLQgGx3b4vAbl+/4/2PSpQOjZdv9oGw7aGfYCqMnZgie/W7TQlGEVimLad/NQa00Nopk2iB207ACAUkM0wppP5v/b791cCkVhZSdKC/zvYpXR0kWxi4dxrSPUCkKJ2lwIT04CmmgwY8HvuA3Rm98dqdPrVnUEGbF2/D3XoVYFQ+K38sFTQ8ojp1M5aUBHapIRi0/0cmC8nvojSTPo1suSgHF2+wQ80wqas3l2LHFE1KoA3N8t2o7me7NWqZQbf4Ls+zvjStcjQ7N2deVLfhB/6wiS00UA0Otqu0ssdT8jJmlwkkcgUujlxiwhV5MNkXoQ0yDE531Lo1EqveXO1DDMUXUq/U8uRuOGPAsVkA3DuVggrhFb+VAc/4iktIkEkhsgSKtuEtI=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <DFBD51F7FD4080428927BA250222F162@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1563859608-19456-6-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-Organisation: Horms Solutions BV
-User-Agent: NeoMutt/20170113 (1.7.2)
+X-OriginatorOrg: synaptics.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2e11b44-8344-4ac0-3727-08d710d1ac9e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jul 2019 07:28:22.8502
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 335d1fbc-2124-4173-9863-17e7051a2a0e
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jiszha@synaptics.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR03MB3447
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Jul 23, 2019 at 02:26:48PM +0900, Yoshihiro Shimoda wrote:
-> When the max_segs of a mmc host is smaller than 512, the mmc
-> subsystem tries to use 512 segments if DMA MAP layer can merge
-> the segments, and then the mmc subsystem exposes such information
-> to the block layer by using blk_queue_can_use_dma_map_merging().
-> 
-> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+devm_platform_ioremap_resource() wraps platform_get_resource() and
+devm_ioremap_resource() in a single helper, let's use that helper to
+simplify the code.
 
-Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
+Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+---
+ drivers/mmc/host/sdhci-pltfm.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/mmc/host/sdhci-pltfm.c b/drivers/mmc/host/sdhci-pltfm.=
+c
+index d268b3b8850a..11ecff9e998d 100644
+--- a/drivers/mmc/host/sdhci-pltfm.c
++++ b/drivers/mmc/host/sdhci-pltfm.c
+@@ -118,12 +118,10 @@ struct sdhci_host *sdhci_pltfm_init(struct platform_d=
+evice *pdev,
+ 				    size_t priv_size)
+ {
+ 	struct sdhci_host *host;
+-	struct resource *iomem;
+ 	void __iomem *ioaddr;
+ 	int irq, ret;
+=20
+-	iomem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	ioaddr =3D devm_ioremap_resource(&pdev->dev, iomem);
++	ioaddr =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(ioaddr)) {
+ 		ret =3D PTR_ERR(ioaddr);
+ 		goto err;
+--=20
+2.22.0
 
