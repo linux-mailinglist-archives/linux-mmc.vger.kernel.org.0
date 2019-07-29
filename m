@@ -2,98 +2,73 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCF3877F32
-	for <lists+linux-mmc@lfdr.de>; Sun, 28 Jul 2019 13:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40E00782A4
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Jul 2019 02:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725978AbfG1LWt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 28 Jul 2019 07:22:49 -0400
-Received: from mout.gmx.net ([212.227.15.19]:33051 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725977AbfG1LWt (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 28 Jul 2019 07:22:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1564312929;
-        bh=MAKwYZfynDL+Hd7f+QsuXWozUnUZdJtS1wF4LCKU6/w=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=NF57iRnW6S3Y8qkeboGZMJfHkND4o2E3LhB2rZL19OmQN0un0NdVdt6XFZAfE5gQJ
-         yiaNGg6Hm0LFsxvSh4BVX+QsPdmIbbf0jJTX7keOggRZfwGJpPMH4lf74oXPTsufaB
-         UcGpC0HerB/nCQCk4d0u4wY1ti4pGo78IAl3xhns=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.1.162] ([37.4.249.143]) by mail.gmx.com (mrgmx001
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0M3RVA-1iiQOf0KYq-00qzXj; Sun, 28
- Jul 2019 13:22:09 +0200
-Subject: Re: [PATCH 00/18] ARM: Add minimal Raspberry Pi 4 support
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-References: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
-From:   Stefan Wahren <wahrenst@gmx.net>
-Message-ID: <319549e0-23b5-4a49-49ae-723da754f984@gmx.net>
-Date:   Sun, 28 Jul 2019 13:22:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726417AbfG2AIQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 28 Jul 2019 20:08:16 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:39467 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726349AbfG2AIP (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 28 Jul 2019 20:08:15 -0400
+Received: by mail-vs1-f65.google.com with SMTP id u3so39606946vsh.6
+        for <linux-mmc@vger.kernel.org>; Sun, 28 Jul 2019 17:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=BrTkYGT/CoRQ7U7g4N9efxmX5N2ln4oVBYUSCIHtobA=;
+        b=Hrbix6Ncwndj0/ZhLdg0qekQEb+2Kgjc0SeRBr4FoeMFiX6XHGMMMukOQcIKSRIyn6
+         1FLJR6mLR/vulQ1VtBLTJl0Lda2nbHDXGla8f4MZapoFNxChdOqG0oC2RV/IR5Di4VyD
+         grjfPw7UAkWugiyvS9Gl1hDt40Nvloz7Q8hFS7wLEsjTOSX4W7lFPW9PhND4JzOEZ+VX
+         SBGYCM0giRSd8L6L/uLWJrYqn2I37qhpbbuqonQi3s5AF+bCkD88dzpmwDbsGmVCx0VK
+         YxQyZe0oSBHMaPJJxMQFY+Lj0j7LLb7a1Ztlp5dpJ58wOiotopzo5wS6I3+UonrsS7ek
+         PqTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=BrTkYGT/CoRQ7U7g4N9efxmX5N2ln4oVBYUSCIHtobA=;
+        b=DJ/hx9NGOSxrr9UegH+di7ebtPs/7ZpajX3T0kllVyUcbigbkFFyR7lOV6kkcSxDig
+         /cA+2dHGKwwlTnrAKucMgK1wcFUan4HkMGUpjV5OrjprYFtkBsZwEcQpkSQm/b2N149c
+         6MxhFlbDh3jFak3iAPKeIcYVvtOmx9IGTqc7AzbaMAAK7tDsdmNpjSr+oJ63VfV1RXST
+         HpFPrHNLNhr52CKexBpm5NSdLgOH6dx4tC5eTQ2O2B9WweHuQoTH/xOVFgowQABg6r07
+         pglbiftQFWQ48QBfCs/KNjnkiqf6QYGPL2ZlWkdaShbYL7waZG5F/qCelFfy78mLSRHH
+         7zrg==
+X-Gm-Message-State: APjAAAWg9XNGrO1eaNx8w70klmE9U77ksr1oGkDycOjiNzJIAv0xGuu1
+        +Wto2khxThY7UbwMDBC4InCmeqMqoTwc1QBqCMM=
+X-Google-Smtp-Source: APXvYqz5Tv/G3ojzOIebxdxZc+D3VZ7ztK4AVBhaXkUwSAzoovp0N7wtTAf+Vftj4yT+nLwP2EIhs0O9djQd9MpIws8=
+X-Received: by 2002:a67:eb19:: with SMTP id a25mr65238884vso.109.1564358894898;
+ Sun, 28 Jul 2019 17:08:14 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:L6n7pJWpKJUX7rL/HEi1TSsdsIqn0DrG88SOjiUdOZ1luS7fB15
- EoyYD2aklGvLPglgIqf3Z6jPBuiYrtnHSui96ADfDxT/LU7NdG/rvDN0WY2ADPTxCWTZfZY
- NBTH/a+ulgmKzjX+3xyc5xb+M0uwVItVplnb2+M9d7NQkbB9N8RrifVZwxSoG4BpFaQVXxk
- sl4wuAoMe+MdhnhudyebQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9G1f+9ZXTAI=:+yOWt4En/1dyMWszJNZ+On
- S/CoTJeQWv+vA8W6u3vcji++A7yFjk74I8j49RwLM3I8CuHz7jf9DUi77SBwNzzV6RWyhRTNK
- SmGs0mtZidYaGA5ntfEqxe4GeGBnt/qY05YV9Mdvzd1FFrwFImSJppNpJRruJLY9iwHCMYhyv
- CHZXqrhiqw50L/gHq1UYRolXI70JIK4s1LRKSCuS5SJCFDfTtr7zo6/bQ3XCCQ2sc2VLIICMk
- BwETezD6yt4b8b41oiI65P5TeI5aJsEmK7OyHdYxeDsZ3ujp/gOx59WjRYcPiAn1UXeCnfjKC
- 1wDruBCdKIjl5qQ3dn6M8vhdk8fwG8hP57enJWvKIkoC5p+fIcYKtV4Lsbs49NQAi4QLudJY5
- c7nRit8vuiZ6Dt7esiroqaUxrwIaKpMTmCoQvsrybfdZbOsj6gzfj0lPQw74IJqX9jmyJkG37
- TACcg8T0rGlzvkw2s6SAWmTkvBm/yKNraAhno4mAaXkaNbUGg68v3jifa1yj3BDReQM7x9P9v
- S2N/+WHBEh6NvmihgfaaHWWV1uPD5OHewPmkVMlLE1WXk9LDlAfuFbiBFPoFnT5zRe7lpfCGj
- CfdWGkwLn9l6qcSYkwTlpNCnQHwxtQ1ytZNvzpsgcKH1qvsJnTPL0XD84OIOQ8x49ItXSC9bv
- Zl7HpIR1Le2vNWrX7EBfXeqQk50pOZszcSxLWguZUDmJ2jhPRCmHybfOKPQX8jF9LML6r/GSw
- 6O4toYqsMRbLXYjYP5F44jmUXFs6OLyw/gUmX1ZlYdjszV+hmgJbeF4j5bZtT9BISXqsy6g4O
- nL+zuC6Bebx8IzpoIJ3LfWAckjsRu0r64UvUUVtxNQE/mNajWsBSuJJx6IOAe0TM6BesS/Z/w
- AnCTD9iONKH6Jx9rtecuzOrRu5nGTRGrJI3ZwLmSD3a5AkTROOqppnfId5YQswCnnJRilFCGd
- o9T3tvSnUCD1cVsEYefQlSrFlzYI9rcM6LCMlqBE5h5xOdAcP8HafYs6N+IEtM+aALir4YBj9
- OT02iCnmc/eRZ/rcz81KQYhP8uH3GjfXUTmdDCa4bRLUO/ATZJF7x2ciXv/hfLKKuHJUTvLEa
- Y2WCb5EcC14TEQ=
+Received: by 2002:a67:80c8:0:0:0:0:0 with HTTP; Sun, 28 Jul 2019 17:08:14
+ -0700 (PDT)
+Reply-To: williamrobert416@gmail.com
+From:   "Mr. Robert William" <officialuse87@gmail.com>
+Date:   Mon, 29 Jul 2019 01:08:14 +0100
+Message-ID: <CAD00q0_sEF2SnzFkOGUBd7uFGZugFRAOygkgQE-c=-i01FWC-w@mail.gmail.com>
+Subject: Please listen
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
-hi Michael,
-hi Stephen,
+-- 
+Hello,
 
-Am 22.07.19 um 07:54 schrieb Stefan Wahren:
-> This series adds minimal support for the new Raspberry Pi 4, so we are abl=
-> e
-> to login via debug UART.
->
-> Patch 1-5:   Prepare platform and DTS for the new SoC BMC2711
-> Patch 6-10:  Enable support for emmc2 on BCM2711
-> Patch 11-12: Enable pinctrl for BCM2711
-> Patch 13-17: Add Raspberry Pi 4 DTS support
-> Patch 18:    Update MAINTAINERS
->
-any comments on the clk / pinctrl parts or do you just wait for Rob's Ack?
+I am Eng. Robert William, a retired Marine Engineer residing in
+Trinidad & Tobago.
+Unfortunately i am admitted to the hospital for a cancer (Sickness)
+over a year now,my doctor reported that i have only few months to pass
+away. Please i need your consent to invest my money (USD$1.8 Million)
+in any business of your
 
-Sorry to bother you, but i want to send a new version before my holidays.
+choice in your country before i die, i have no other relatives not
+even children because i lost my family in a fire disaster in 2005.
+Please i need your urgent and
 
+kind response to enable me send you more information on how to contact
+my bank as my next of kin to process the fund into your bank account.
+
+Mr Robert William
