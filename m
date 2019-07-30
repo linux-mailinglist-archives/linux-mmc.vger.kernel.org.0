@@ -2,114 +2,116 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 375E17A943
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jul 2019 15:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C1A57AED2
+	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jul 2019 19:00:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730617AbfG3NRO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 30 Jul 2019 09:17:14 -0400
-Received: from mx08-00252a01.pphosted.com ([91.207.212.211]:53536 "EHLO
-        mx08-00252a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730513AbfG3NRN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Jul 2019 09:17:13 -0400
-X-Greylist: delayed 1236 seconds by postgrey-1.27 at vger.kernel.org; Tue, 30 Jul 2019 09:17:12 EDT
-Received: from pps.filterd (m0102629.ppops.net [127.0.0.1])
-        by mx08-00252a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x6UCrT1q016824
-        for <linux-mmc@vger.kernel.org>; Tue, 30 Jul 2019 13:56:35 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=raspberrypi.org; h=to : from :
- subject : message-id : date : mime-version : content-type :
- content-transfer-encoding; s=pp;
- bh=no/t2/x989dqDh7eVpkR1pAbO6gqVrgnD6Ho2bhSZ1M=;
- b=ZL+Av4CNMdiH/YHudogCICNRkgX2W2dDSoMlxuYQnoRABk/OVHWHNtDUgBrFR1e6ckt4
- 4jFEGeAMVIAvxE11MhIsp+t4/Roqesa7H1XxVIxD4JOHLQmNgEbBZzPnRh7LVpoELSxX
- ZBM5m7tF93cs3M71+UveliSjZ6d3dwdxWaoNi370VqPgagTyRnVD/jOoJK0E2+GWnOM8
- JEmsRaNiaeRmKkhlG5CyCq+JOlFs/npquambcAqRwshy1CIPBohjo9rymRal6VNvYgnM
- ey3OgnZuHHiPg1c7K9hGiHHkq59mXQJ2mbanos2O2qfUzu4/s1U4cKF2l9FEFKIcJJv2 zQ== 
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
-        by mx08-00252a01.pphosted.com with ESMTP id 2u0b3g9tt5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK)
-        for <linux-mmc@vger.kernel.org>; Tue, 30 Jul 2019 13:56:35 +0100
-Received: by mail-wr1-f72.google.com with SMTP id w11so31759539wrl.7
-        for <linux-mmc@vger.kernel.org>; Tue, 30 Jul 2019 05:56:35 -0700 (PDT)
+        id S1727233AbfG3Q76 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 30 Jul 2019 12:59:58 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:41726 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725929AbfG3Q76 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Jul 2019 12:59:58 -0400
+Received: by mail-io1-f66.google.com with SMTP id j5so125623730ioj.8
+        for <linux-mmc@vger.kernel.org>; Tue, 30 Jul 2019 09:59:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.org; s=google;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=no/t2/x989dqDh7eVpkR1pAbO6gqVrgnD6Ho2bhSZ1M=;
-        b=VENYHMlt+0ZxLutduQsUFsqfBxn/mAsHva/VP7blhpRRnPwGbNe2lPJL8+9ir3Mv8P
-         79xCB4W+nr3j/uNiGQIZS4k9gIKlKjyYH68qPtNiZ6vaXFpk53Mgz4hS2oQ0Fa9jSRAk
-         44IreYrIqCDqYzmEfVIcADZHLWmRWPMO5GFNi/wcn+xTmL4OUaLGyz+Ii+o6WgC8rFdD
-         1FrzQDAXpHZzeHik8EMbyUF5SL7Tf/lHVV7kc16XQvgqrU22Mhuij+9Gkr2AX52EFFNi
-         mRvN+k4+OHgMwQ0Wheig2XOp/bq+SVWzHMh16fR7FYA8HIlAoKetY4PC/mUlfSU4sa4w
-         3yBQ==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=thfSVMX6+HwxM/ty44YHwCabreMvWV/+Gb4a/AYAosM=;
+        b=QDZk/EFUsh6U0OHs8YqCvTgja17nbMT2Y0sFIVcZgyTwIhEIGARc0EvYjU0bNaUDDw
+         DhykaLBu959pAPwvEWt43vHt5h7OAeSRBBZov+gZsctSFuksXsHKukwZRmShoDWKA+8I
+         wItHBj4PVtGEm32bkk7ccUJxqF53Ib3OaAdy0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=no/t2/x989dqDh7eVpkR1pAbO6gqVrgnD6Ho2bhSZ1M=;
-        b=VOmiaF+S3umuTtOtbmSJBCwf//zgtDJyOTOzAL3hHAj3yTh/h4/Et97pO9JVouRc5b
-         xpcgLhMfhPQCgkkqy3ycT69a+g86EkILBhi9n24rstk3VEnSBfsEpAQ7CeLkAFQaQyEx
-         Vl3oqUm1KyK4mSEUhIjz6OfQ54RcIpZU5FAxA1fcMFNkgyKPL9hAmqcYl2nW0RRAdjc8
-         femVTwxes1SzKjM50eDNcm4f62slM+rqv600/EocdQkZjAg8lcFHw57RWaLa+HRvto/8
-         jYcisqDR1Ovypr90yC2Tb52FZtPKvuK3+UR0PFyAKmbWmZv0nJbZ9QZdoXmWGW1E9Xj3
-         gzoQ==
-X-Gm-Message-State: APjAAAXpdvHY2hVagI1owqQxhEJemUOnFyHrf/2SRzDf8NmsGixnqEIR
-        ByQohSyLxb6sKWtGXiRgJXZ+vHHiOxJSasdBn+IeJOxvaVGCxhzwieEJvyi+b9TWwKFAypM2pzY
-        j28PR0lsndnupnrOD4nf2
-X-Received: by 2002:a5d:50c2:: with SMTP id f2mr33446695wrt.106.1564491394783;
-        Tue, 30 Jul 2019 05:56:34 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwq0KNOyRuNsGhIJWVxoxnbRTiD05+9u7uKjeugoN18xk7zXqGaB0xCaDlOL7t4Yni/VFzBcw==
-X-Received: by 2002:a5d:50c2:: with SMTP id f2mr33446685wrt.106.1564491394539;
-        Tue, 30 Jul 2019 05:56:34 -0700 (PDT)
-Received: from ?IPv6:2a00:1098:3142:14:40ff:d16c:6d72:46fd? ([2a00:1098:3142:14:40ff:d16c:6d72:46fd])
-        by smtp.gmail.com with ESMTPSA id r5sm70067154wmh.35.2019.07.30.05.56.33
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=thfSVMX6+HwxM/ty44YHwCabreMvWV/+Gb4a/AYAosM=;
+        b=AxgPMpXVuRVwBIgsvEBFHDrnpA4XHCJy/yR1u/P1uWO9dJr78dvkXwJB3NZvJkZUn/
+         0+9NhACJYZv6PJtrn6hMEkt5kjRaUnIi7h8PK8qBi4IJtJb1+1fHmTjI/QFf0wJ4Nxhv
+         W7SQKTMsWHgBJVzeFJRcpGc0TRHTlokzbPOBF9J1F9JWlrACZ1mNW0sXTQmDKcCgCiFq
+         oFROF4h743mtRkE92lsS5yZLs3rIDEDp178nwyk2Lii2OcVPae02p/mVXQjlZ1jcuDfy
+         OXt6Cbx7cIZxJ20EWpe3FiOQTTqVVnYlUfB5/wdu52IEg45mcLfHp/s7I0Tzj9RJpH1R
+         WPWw==
+X-Gm-Message-State: APjAAAWq6/VFnwBV3GcAvqxW0ZTreOKGBH8lyU7CFhv7CKRTie7pqr9l
+        Ne9mdTAv1CuvEsD0QwTKvcXdJtIOQYg=
+X-Google-Smtp-Source: APXvYqxOSlYDA4n/OQPn9koY7pPuZycFnZTb0XtHJYSeh4hcUoD1N4CYRgWuiAXaFCVkkriRFdiG4Q==
+X-Received: by 2002:a6b:f910:: with SMTP id j16mr36897695iog.256.1564505997352;
+        Tue, 30 Jul 2019 09:59:57 -0700 (PDT)
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com. [209.85.166.43])
+        by smtp.gmail.com with ESMTPSA id m4sm56076871iok.68.2019.07.30.09.59.55
         for <linux-mmc@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 30 Jul 2019 05:56:33 -0700 (PDT)
-To:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-From:   Phil Elwell <phil@raspberrypi.org>
-Subject: Possible bug in sdhci_set_power_reg
-Message-ID: <75156391-9ca7-2140-9db6-6c3e65d1f278@raspberrypi.org>
-Date:   Tue, 30 Jul 2019 13:56:33 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 30 Jul 2019 09:59:55 -0700 (PDT)
+Received: by mail-io1-f43.google.com with SMTP id o9so26155603iom.3
+        for <linux-mmc@vger.kernel.org>; Tue, 30 Jul 2019 09:59:55 -0700 (PDT)
+X-Received: by 2002:a02:5b05:: with SMTP id g5mr116310299jab.114.1564505994931;
+ Tue, 30 Jul 2019 09:59:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:5.22.84,1.0.8
- definitions=2019-07-30_06:2019-07-29,2019-07-30 signatures=0
+References: <20190722193939.125578-1-dianders@chromium.org> <CALtMJEB871Redpzx1u6G5GVEXz-kAP=vT6Wt98=X=xm4SEMeAQ@mail.gmail.com>
+In-Reply-To: <CALtMJEB871Redpzx1u6G5GVEXz-kAP=vT6Wt98=X=xm4SEMeAQ@mail.gmail.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Tue, 30 Jul 2019 09:59:42 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=VfabHB=ALxvAZ_grg_V6Nkv1UkhHjHjp-_Fs=Bx94WAA@mail.gmail.com>
+Message-ID: <CAD=FV=VfabHB=ALxvAZ_grg_V6Nkv1UkhHjHjp-_Fs=Bx94WAA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mmc: core: Fix Marvell WiFi reset by adding SDIO
+ API to replug card
+To:     Andreas Fenkart <afenkart@gmail.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        netdev <netdev@vger.kernel.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Xinming Hu <huxinming820@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi MMC team,
+Hi,
 
-I've spent some time trying to add a regulator to control power to an SD card
-(vmmc-supply) on an SDHCI-equipped system. After a few false starts and red herrings
-I found that powering up the regulator during the boot process was effectively disabling
-the SDHCI controller. Note that this was despite having regulator-boot-on set in the
-device tree.
+On Tue, Jul 30, 2019 at 1:47 AM Andreas Fenkart <afenkart@gmail.com> wrote:
+>
+> > * Sometimes while I was testing I saw "Fail WiFi 1" indicating a
+> >   transitory failure.  Usually this was an association failure, but in
+> >   one case I saw the device do "Firmware wakeup failed" after I
+> >   triggered the reset.  This caused the driver to trigger a re-reset
+> >   of itself which eventually recovered things.  This was good because
+> >   it was an actual test of the normal reset flow (not the one
+> >   triggered via sysfs).
+>
+> This error triggers something. I remember that when I was working on
+> suspend-to-ram feature, we had problems to wake up the firmware
+> reliable. I found this patch in one of my old 3.13 tree
+>
+>     the missing bit -- ugly hack to force cmd52 before cmd53.
 
-The problem seems to be in sdhci_set_power_reg:
+Thanks for the reference!  At the moment I'm not terribly worried
+about this particular failure case (compared to other failure modes)
+because it's rare and it self-heals.
 
-	mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, vdd);
+...my best guess, though, is that the problem isn't exactly the same.
+The "Firmware wakeup failed" is a pretty generic error message, kind
+of like "something went wrong" and not all instances of this message
+will have the same root cause.
 
-	if (mode != MMC_POWER_OFF)
-		sdhci_writeb(host, SDHCI_POWER_ON, SDHCI_POWER_CONTROL);
-	else
-		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
+I actually dealt with a few suspend/resume issues around mwifiex
+recently though.  If you ever uprev, you might be interested in:
 
-This looks plausible for the MMC_POWER_OFF case, but setting the SDHCI_POWER_CONTROL
-register to SDHCI_POWER_ON (0x01) has the side effect of settings the SD Bus Voltage
-Select bits to 0b000 (a reserved value).
+b82d6c1f8f82 mwifiex: Make resume actually do something useful again
+on SDIO cards
+83293386bc95 mmc: core: Prevent processing SDIO IRQs when the card is suspended
 
-sdhci_set_power_noreg() includes logic to calculate the correct values for the voltage
-select bits, so I found that (in my limited test cases) replacing the if/else above
-with a chain call to sdhci_set_power_noreg() was sufficient to get everything working.
-
-Can anyone tell me what I've been doing wrong, or suggest a better "fix"?
-
-Thanks for your time,
-
-Phil Elwell
+-Doug
