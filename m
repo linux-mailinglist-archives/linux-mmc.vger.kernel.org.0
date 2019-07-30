@@ -2,69 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D1147A119
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jul 2019 08:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7107A130
+	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jul 2019 08:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726133AbfG3GIq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 30 Jul 2019 02:08:46 -0400
-Received: from mga09.intel.com ([134.134.136.24]:5850 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726071AbfG3GIp (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 30 Jul 2019 02:08:45 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Jul 2019 23:08:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,325,1559545200"; 
-   d="scan'208";a="195688995"
-Received: from ahunter-desktop.fi.intel.com ([10.237.72.122])
-  by fmsmga004.fm.intel.com with ESMTP; 29 Jul 2019 23:08:43 -0700
-From:   Adrian Hunter <adrian.hunter@intel.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>
-Subject: [PATCH] mmc: sdhci-pci: Add another Id for Intel CML
-Date:   Tue, 30 Jul 2019 09:07:23 +0300
-Message-Id: <20190730060723.21715-1-adrian.hunter@intel.com>
-X-Mailer: git-send-email 2.17.1
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+        id S1728360AbfG3GXL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 30 Jul 2019 02:23:11 -0400
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:34979 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725793AbfG3GXL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Jul 2019 02:23:11 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.nyi.internal (Postfix) with ESMTP id EF934AA7;
+        Tue, 30 Jul 2019 02:23:09 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Tue, 30 Jul 2019 02:23:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=from
+        :to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=fm3; bh=xUyh/uFx5Pvf1Uq1MZFdHPn+B1
+        1pIejp1FpFbo/nfyo=; b=UdN6jB6igo0Ty+DeyvZbWVNSAQaky7Dhy//EXdEPJj
+        E3VwBUdaPoGSzU/o4BPLHloGuAkUn1/uTHkiKr3Z2Zug0YNBK9yFPehow5momf0+
+        VEaWPHNe2ee0/hy7GYm/yzcjsV9KR13A3tOpiEGXirChmVzj+tCddxXOU42NNXRM
+        Mefv7piyNaugsSzVZMUZRVXJMYM5MbfkaGRkuoG+8G5oozljCvgcreRNsz7v7R6x
+        maXVSYXJtW4lISQ3cfhTTVP/f/81TShO9PfMm3n87blCXWCV4P8pL5DROHnmF5KN
+        QKhV3PL0AB4ZHTuTm8TYHfKX0qBRk7xLYppERpmn9L3g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=xUyh/uFx5Pvf1Uq1M
+        ZFdHPn+B11pIejp1FpFbo/nfyo=; b=pKthU7jUwLnIpxgW/pDXAhTnjyuXJJCrB
+        EkpB7bOpdZyR2faU3ib1KCN9gxtnxVHtei3Apb1v94NkennpmFfXnYHlR96Dwyjc
+        1puma2kqqmVej+v/mbBX/cIxfCuPePFEiWAznUXPzlh60ZOTnuAwNST4oQk8q9MI
+        gANZEImUB7gZtYI6mH+qnhuB3DvvE02HjZHpTIssQUf2V3ZsIUdnadxD5eKGxQP5
+        ZcDWmeT67Bv3rSKtb4W9uvmymXUFKAghBhF48XZ3avfWFFlzRcU+NHtnsg63U3gE
+        /LHSGloyIolNFHBkR3Xfiiomxc0jcka1B7kNmkxFTxqdk1hgb7BNQ==
+X-ME-Sender: <xms:TOI_XYrE5sZqkDUxk0kc4FPaANSiAFGzEmZV0dDyVvajl7mWFBURGg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrledvgddutdejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtre
+    dttdenucfhrhhomheptehnughrvgifucflvghffhgvrhihuceorghnughrvgifsegrjhdr
+    ihgurdgruheqnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkphepvddtvddrke
+    durddukedrfedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghjrdhi
+    ugdrrghunecuvehluhhsthgvrhfuihiivgeptd
+X-ME-Proxy: <xmx:TOI_XS6gMoGcyY4h7_EqJMkEStNAV6W1Dfwx_ej5hA50ggBnju-7zg>
+    <xmx:TOI_XYN0is4b6LbHFvcjmzEjeD8XEWrn8A-jdM4nRUg93Z88G-0Wtg>
+    <xmx:TOI_XUNXZGeGHXVnckNMX9Oy3YdgOcBmN5amS8wzyWFZNx357wU90A>
+    <xmx:TeI_Xd4ayhocA9duTCI7EotOBL6jJ3BDN1iQ80mUnF4il8E8MnIfVQ>
+Received: from mistburn.bha-au.ibmmobiledemo.com (bh02i525f01.au.ibm.com [202.81.18.30])
+        by mail.messagingengine.com (Postfix) with ESMTPA id CAE3880066;
+        Tue, 30 Jul 2019 02:23:04 -0400 (EDT)
+From:   Andrew Jeffery <andrew@aj.id.au>
+To:     linux-mmc@vger.kernel.org
+Cc:     Andrew Jeffery <andrew@aj.id.au>, ulf.hansson@linaro.org,
+        robh+dt@kernel.org, mark.rutland@arm.com, joel@jms.id.au,
+        adrian.hunter@intel.com, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        ryanchen.aspeed@gmail.com
+Subject: [PATCH v3 0/2] mmc: Add support for the ASPEED SD controller
+Date:   Tue, 30 Jul 2019 15:53:14 +0930
+Message-Id: <20190730062316.32037-1-andrew@aj.id.au>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add another PCI Id for Intel CML.
+Hello,
 
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
----
- drivers/mmc/host/sdhci-pci-core.c | 1 +
- drivers/mmc/host/sdhci-pci.h      | 1 +
- 2 files changed, 2 insertions(+)
+v3 of the ASPEED SDHCI driver makes a bunch of fixes to the driver and the
+devicetree binding, including the addition of the AST2600 compatible string.
 
-diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-index 30d6051cd1d5..e1ca185d7328 100644
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -1672,6 +1672,7 @@ static const struct pci_device_id pci_ids[] = {
- 	SDHCI_PCI_DEVICE(INTEL, EHL_SD,    intel_byt_sd),
- 	SDHCI_PCI_DEVICE(INTEL, CML_EMMC,  intel_glk_emmc),
- 	SDHCI_PCI_DEVICE(INTEL, CML_SD,    intel_byt_sd),
-+	SDHCI_PCI_DEVICE(INTEL, CMLH_SD,   intel_byt_sd),
- 	SDHCI_PCI_DEVICE(O2, 8120,     o2),
- 	SDHCI_PCI_DEVICE(O2, 8220,     o2),
- 	SDHCI_PCI_DEVICE(O2, 8221,     o2),
-diff --git a/drivers/mmc/host/sdhci-pci.h b/drivers/mmc/host/sdhci-pci.h
-index cdd15f357d01..1abc9d47a4c0 100644
---- a/drivers/mmc/host/sdhci-pci.h
-+++ b/drivers/mmc/host/sdhci-pci.h
-@@ -54,6 +54,7 @@
- #define PCI_DEVICE_ID_INTEL_EHL_SD	0x4b48
- #define PCI_DEVICE_ID_INTEL_CML_EMMC	0x02c4
- #define PCI_DEVICE_ID_INTEL_CML_SD	0x02f5
-+#define PCI_DEVICE_ID_INTEL_CMLH_SD	0x06f5
- 
- #define PCI_DEVICE_ID_SYSKONNECT_8000	0x8000
- #define PCI_DEVICE_ID_VIA_95D0		0x95d0
+v2 can be found here:
+
+https://lists.ozlabs.org/pipermail/linux-aspeed/2019-July/002013.html
+
+Please review!
+
+Andrew
+
+Andrew Jeffery (2):
+  dt-bindings: mmc: Document Aspeed SD controller
+  mmc: Add support for the ASPEED SD controller
+
+ .../devicetree/bindings/mmc/aspeed,sdhci.yaml | 100 ++++++
+ drivers/mmc/host/Kconfig                      |  12 +
+ drivers/mmc/host/Makefile                     |   1 +
+ drivers/mmc/host/sdhci-of-aspeed.c            | 328 ++++++++++++++++++
+ 4 files changed, 441 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+ create mode 100644 drivers/mmc/host/sdhci-of-aspeed.c
+
 -- 
-2.17.1
+2.20.1
 
