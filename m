@@ -2,116 +2,254 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C1A57AED2
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jul 2019 19:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72D3C7B1AF
+	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jul 2019 20:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727233AbfG3Q76 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 30 Jul 2019 12:59:58 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:41726 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725929AbfG3Q76 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Jul 2019 12:59:58 -0400
-Received: by mail-io1-f66.google.com with SMTP id j5so125623730ioj.8
-        for <linux-mmc@vger.kernel.org>; Tue, 30 Jul 2019 09:59:57 -0700 (PDT)
+        id S1729365AbfG3STg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 30 Jul 2019 14:19:36 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:33877 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387952AbfG3SQX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Jul 2019 14:16:23 -0400
+Received: by mail-pf1-f194.google.com with SMTP id b13so30263653pfo.1
+        for <linux-mmc@vger.kernel.org>; Tue, 30 Jul 2019 11:16:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=thfSVMX6+HwxM/ty44YHwCabreMvWV/+Gb4a/AYAosM=;
-        b=QDZk/EFUsh6U0OHs8YqCvTgja17nbMT2Y0sFIVcZgyTwIhEIGARc0EvYjU0bNaUDDw
-         DhykaLBu959pAPwvEWt43vHt5h7OAeSRBBZov+gZsctSFuksXsHKukwZRmShoDWKA+8I
-         wItHBj4PVtGEm32bkk7ccUJxqF53Ib3OaAdy0=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Fbpk2s7H2NhsXYcDbyxtUWPUnqNFaLAZ6hWGV/UMfYo=;
+        b=Z/WAxnflzzx/cj17xtwKv/0N6sqdLbhFwDQCPDwTbjlaOpB2Fita1uV2lCe0VjjV4e
+         irCWA0HUy+xNn7sc6WGsWi0Hnv04vRo7Tt8VxoiIiCIJVy43NjTr6M8sUa85NXvuKR3K
+         cgYanSLKnCzel9owRco26ayIdUl8QfZjsrWzs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=thfSVMX6+HwxM/ty44YHwCabreMvWV/+Gb4a/AYAosM=;
-        b=AxgPMpXVuRVwBIgsvEBFHDrnpA4XHCJy/yR1u/P1uWO9dJr78dvkXwJB3NZvJkZUn/
-         0+9NhACJYZv6PJtrn6hMEkt5kjRaUnIi7h8PK8qBi4IJtJb1+1fHmTjI/QFf0wJ4Nxhv
-         W7SQKTMsWHgBJVzeFJRcpGc0TRHTlokzbPOBF9J1F9JWlrACZ1mNW0sXTQmDKcCgCiFq
-         oFROF4h743mtRkE92lsS5yZLs3rIDEDp178nwyk2Lii2OcVPae02p/mVXQjlZ1jcuDfy
-         OXt6Cbx7cIZxJ20EWpe3FiOQTTqVVnYlUfB5/wdu52IEg45mcLfHp/s7I0Tzj9RJpH1R
-         WPWw==
-X-Gm-Message-State: APjAAAWq6/VFnwBV3GcAvqxW0ZTreOKGBH8lyU7CFhv7CKRTie7pqr9l
-        Ne9mdTAv1CuvEsD0QwTKvcXdJtIOQYg=
-X-Google-Smtp-Source: APXvYqxOSlYDA4n/OQPn9koY7pPuZycFnZTb0XtHJYSeh4hcUoD1N4CYRgWuiAXaFCVkkriRFdiG4Q==
-X-Received: by 2002:a6b:f910:: with SMTP id j16mr36897695iog.256.1564505997352;
-        Tue, 30 Jul 2019 09:59:57 -0700 (PDT)
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com. [209.85.166.43])
-        by smtp.gmail.com with ESMTPSA id m4sm56076871iok.68.2019.07.30.09.59.55
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 30 Jul 2019 09:59:55 -0700 (PDT)
-Received: by mail-io1-f43.google.com with SMTP id o9so26155603iom.3
-        for <linux-mmc@vger.kernel.org>; Tue, 30 Jul 2019 09:59:55 -0700 (PDT)
-X-Received: by 2002:a02:5b05:: with SMTP id g5mr116310299jab.114.1564505994931;
- Tue, 30 Jul 2019 09:59:54 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Fbpk2s7H2NhsXYcDbyxtUWPUnqNFaLAZ6hWGV/UMfYo=;
+        b=NfWtLiFlp9KwprVnTWObOFix655xXJd4glctNOUD4+nKmg2mKaySnIpwUh/BAgXwin
+         fFpMRMSZAC0WpkY189+5EEkweW7uvhF6p/Nh0Jng9gyIk5uA5/xd7p/ANS15Qb3n5qRo
+         +Sk0jfZslA81ZRe7FPLlksUI75z9LTCOvuXvFpD5gXHN5T6LAQZH3Gq+BL1flsE4jsmR
+         eMGzdhWN89Ra/n4dwluYEB7MG3vix2rN69qmSLf88jvfeoYFCn7Vr4rllCKJAlb3yq60
+         0xFoJHJ8dSTAxAu5j6sEDCg1LSDRwbgwdRBBKQfEn22L9ia9zoy/LJg3JwuJihf0FWcJ
+         eIzw==
+X-Gm-Message-State: APjAAAWgFnywG7DqIYd9T8RqnyQkGuVUHqWJX0RMFnKmRfqgmy9AU6aZ
+        wUpHb2q8GzundTl13unXyFR2wQ==
+X-Google-Smtp-Source: APXvYqx6URRmwTwPGv5S9Q07u+CrsRPqtvcQEQqoMedFI1c1+86mILA8ffO5+zoZ4r/lUtj0wHTVAQ==
+X-Received: by 2002:a63:f048:: with SMTP id s8mr81275036pgj.26.1564510582907;
+        Tue, 30 Jul 2019 11:16:22 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:fa53:7765:582b:82b9])
+        by smtp.gmail.com with ESMTPSA id g1sm106744083pgg.27.2019.07.30.11.16.22
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 30 Jul 2019 11:16:22 -0700 (PDT)
+From:   Stephen Boyd <swboyd@chromium.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v6 29/57] mmc: Remove dev_err() usage after platform_get_irq()
+Date:   Tue, 30 Jul 2019 11:15:29 -0700
+Message-Id: <20190730181557.90391-30-swboyd@chromium.org>
+X-Mailer: git-send-email 2.22.0.709.g102302147b-goog
+In-Reply-To: <20190730181557.90391-1-swboyd@chromium.org>
+References: <20190730181557.90391-1-swboyd@chromium.org>
 MIME-Version: 1.0
-References: <20190722193939.125578-1-dianders@chromium.org> <CALtMJEB871Redpzx1u6G5GVEXz-kAP=vT6Wt98=X=xm4SEMeAQ@mail.gmail.com>
-In-Reply-To: <CALtMJEB871Redpzx1u6G5GVEXz-kAP=vT6Wt98=X=xm4SEMeAQ@mail.gmail.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Tue, 30 Jul 2019 09:59:42 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=VfabHB=ALxvAZ_grg_V6Nkv1UkhHjHjp-_Fs=Bx94WAA@mail.gmail.com>
-Message-ID: <CAD=FV=VfabHB=ALxvAZ_grg_V6Nkv1UkhHjHjp-_Fs=Bx94WAA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] mmc: core: Fix Marvell WiFi reset by adding SDIO
- API to replug card
-To:     Andreas Fenkart <afenkart@gmail.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        netdev <netdev@vger.kernel.org>,
-        Avri Altman <avri.altman@wdc.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Xinming Hu <huxinming820@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+We don't need dev_err() messages when platform_get_irq() fails now that
+platform_get_irq() prints an error message itself when something goes
+wrong. Let's remove these prints with a simple semantic patch.
 
-On Tue, Jul 30, 2019 at 1:47 AM Andreas Fenkart <afenkart@gmail.com> wrote:
->
-> > * Sometimes while I was testing I saw "Fail WiFi 1" indicating a
-> >   transitory failure.  Usually this was an association failure, but in
-> >   one case I saw the device do "Firmware wakeup failed" after I
-> >   triggered the reset.  This caused the driver to trigger a re-reset
-> >   of itself which eventually recovered things.  This was good because
-> >   it was an actual test of the normal reset flow (not the one
-> >   triggered via sysfs).
->
-> This error triggers something. I remember that when I was working on
-> suspend-to-ram feature, we had problems to wake up the firmware
-> reliable. I found this patch in one of my old 3.13 tree
->
->     the missing bit -- ugly hack to force cmd52 before cmd53.
+// <smpl>
+@@
+expression ret;
+struct platform_device *E;
+@@
 
-Thanks for the reference!  At the moment I'm not terribly worried
-about this particular failure case (compared to other failure modes)
-because it's rare and it self-heals.
+ret =
+(
+platform_get_irq(E, ...)
+|
+platform_get_irq_byname(E, ...)
+);
 
-...my best guess, though, is that the problem isn't exactly the same.
-The "Firmware wakeup failed" is a pretty generic error message, kind
-of like "something went wrong" and not all instances of this message
-will have the same root cause.
+if ( \( ret < 0 \| ret <= 0 \) )
+{
+(
+-if (ret != -EPROBE_DEFER)
+-{ ...
+-dev_err(...);
+-... }
+|
+...
+-dev_err(...);
+)
+...
+}
+// </smpl>
 
-I actually dealt with a few suspend/resume issues around mwifiex
-recently though.  If you ever uprev, you might be interested in:
+While we're here, remove braces on if statements that only have one
+statement (manually).
 
-b82d6c1f8f82 mwifiex: Make resume actually do something useful again
-on SDIO cards
-83293386bc95 mmc: core: Prevent processing SDIO IRQs when the card is suspended
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-mmc@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+---
 
--Doug
+Please apply directly to subsystem trees
+
+ drivers/mmc/host/bcm2835.c       | 1 -
+ drivers/mmc/host/jz4740_mmc.c    | 1 -
+ drivers/mmc/host/meson-gx-mmc.c  | 1 -
+ drivers/mmc/host/mxcmmc.c        | 4 +---
+ drivers/mmc/host/s3cmci.c        | 1 -
+ drivers/mmc/host/sdhci-msm.c     | 2 --
+ drivers/mmc/host/sdhci-pltfm.c   | 1 -
+ drivers/mmc/host/sdhci-s3c.c     | 4 +---
+ drivers/mmc/host/sdhci_f_sdh30.c | 4 +---
+ drivers/mmc/host/uniphier-sd.c   | 4 +---
+ 10 files changed, 4 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
+index 7e0d3a49c06d..e1b7757c48fe 100644
+--- a/drivers/mmc/host/bcm2835.c
++++ b/drivers/mmc/host/bcm2835.c
+@@ -1409,7 +1409,6 @@ static int bcm2835_probe(struct platform_device *pdev)
+ 
+ 	host->irq = platform_get_irq(pdev, 0);
+ 	if (host->irq <= 0) {
+-		dev_err(dev, "get IRQ failed\n");
+ 		ret = -EINVAL;
+ 		goto err;
+ 	}
+diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
+index ffdbfaadd3f2..672708543a11 100644
+--- a/drivers/mmc/host/jz4740_mmc.c
++++ b/drivers/mmc/host/jz4740_mmc.c
+@@ -969,7 +969,6 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+ 	host->irq = platform_get_irq(pdev, 0);
+ 	if (host->irq < 0) {
+ 		ret = host->irq;
+-		dev_err(&pdev->dev, "Failed to get platform irq: %d\n", ret);
+ 		goto err_free_host;
+ 	}
+ 
+diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+index 037311db3551..e712315c7e8d 100644
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -1091,7 +1091,6 @@ static int meson_mmc_probe(struct platform_device *pdev)
+ 
+ 	host->irq = platform_get_irq(pdev, 0);
+ 	if (host->irq <= 0) {
+-		dev_err(&pdev->dev, "failed to get interrupt resource.\n");
+ 		ret = -EINVAL;
+ 		goto free_host;
+ 	}
+diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
+index 750604f7fac9..011b59a3602e 100644
+--- a/drivers/mmc/host/mxcmmc.c
++++ b/drivers/mmc/host/mxcmmc.c
+@@ -1010,10 +1010,8 @@ static int mxcmci_probe(struct platform_device *pdev)
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(&pdev->dev, "failed to get IRQ: %d\n", irq);
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	mmc = mmc_alloc_host(sizeof(*host), &pdev->dev);
+ 	if (!mmc)
+diff --git a/drivers/mmc/host/s3cmci.c b/drivers/mmc/host/s3cmci.c
+index ccc5f095775f..bce9c33bc4b5 100644
+--- a/drivers/mmc/host/s3cmci.c
++++ b/drivers/mmc/host/s3cmci.c
+@@ -1614,7 +1614,6 @@ static int s3cmci_probe(struct platform_device *pdev)
+ 
+ 	host->irq = platform_get_irq(pdev, 0);
+ 	if (host->irq <= 0) {
+-		dev_err(&pdev->dev, "failed to get interrupt resource.\n");
+ 		ret = -EINVAL;
+ 		goto probe_iounmap;
+ 	}
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 9cf14b359c14..b75c82d8d6c1 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -1917,8 +1917,6 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+ 	/* Setup IRQ for handling power/voltage tasks with PMIC */
+ 	msm_host->pwr_irq = platform_get_irq_byname(pdev, "pwr_irq");
+ 	if (msm_host->pwr_irq < 0) {
+-		dev_err(&pdev->dev, "Get pwr_irq failed (%d)\n",
+-			msm_host->pwr_irq);
+ 		ret = msm_host->pwr_irq;
+ 		goto clk_disable;
+ 	}
+diff --git a/drivers/mmc/host/sdhci-pltfm.c b/drivers/mmc/host/sdhci-pltfm.c
+index d268b3b8850a..caf0ad5de604 100644
+--- a/drivers/mmc/host/sdhci-pltfm.c
++++ b/drivers/mmc/host/sdhci-pltfm.c
+@@ -131,7 +131,6 @@ struct sdhci_host *sdhci_pltfm_init(struct platform_device *pdev,
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+-		dev_err(&pdev->dev, "failed to get IRQ number\n");
+ 		ret = irq;
+ 		goto err;
+ 	}
+diff --git a/drivers/mmc/host/sdhci-s3c.c b/drivers/mmc/host/sdhci-s3c.c
+index 8e4a8ba33f05..3d7fa948b4c3 100644
+--- a/drivers/mmc/host/sdhci-s3c.c
++++ b/drivers/mmc/host/sdhci-s3c.c
+@@ -490,10 +490,8 @@ static int sdhci_s3c_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(dev, "no irq specified\n");
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	host = sdhci_alloc_host(dev, sizeof(struct sdhci_s3c));
+ 	if (IS_ERR(host)) {
+diff --git a/drivers/mmc/host/sdhci_f_sdh30.c b/drivers/mmc/host/sdhci_f_sdh30.c
+index e369cbf1ff02..f8b939e63e02 100644
+--- a/drivers/mmc/host/sdhci_f_sdh30.c
++++ b/drivers/mmc/host/sdhci_f_sdh30.c
+@@ -119,10 +119,8 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+ 	u32 reg = 0;
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(dev, "%s: no irq specified\n", __func__);
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	host = sdhci_alloc_host(dev, sizeof(struct f_sdhost_priv));
+ 	if (IS_ERR(host))
+diff --git a/drivers/mmc/host/uniphier-sd.c b/drivers/mmc/host/uniphier-sd.c
+index 49aad9a79c18..e09336f9166d 100644
+--- a/drivers/mmc/host/uniphier-sd.c
++++ b/drivers/mmc/host/uniphier-sd.c
+@@ -557,10 +557,8 @@ static int uniphier_sd_probe(struct platform_device *pdev)
+ 	int irq, ret;
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(dev, "failed to get IRQ number");
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+-- 
+Sent by a computer through tubes
+
