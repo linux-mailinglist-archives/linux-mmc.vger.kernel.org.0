@@ -2,153 +2,87 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD46D7C015
-	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jul 2019 13:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A1567C824
+	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jul 2019 18:06:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725921AbfGaLfX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 31 Jul 2019 07:35:23 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:62290 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387574AbfGaLdY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 31 Jul 2019 07:33:24 -0400
-Received-SPF: Pass (esa3.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa3.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa3.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: R7AozpEsiUeC+4/7Dc7j4pVNUsX9pjR2XB3pzZMFDh6QAPI5tFCjtoBTPiH537hIRDBOjlpeS+
- fGQlqjOs6wKIM7hBji0uinb5XRla0cEiMJmS/d5ttVP6Q5oFkjWk4yecUbJjVaeCqrYSVxnK4u
- KTwfH+m1/OH9WDxZYSuXA7XFlAJatLiXphOEGTjhCCrEhVAf1YbKSJQq8geuFZ041aOkUDXHyd
- AMYU/8P/E+Vu33yYo1XKVHkutu560EEG+jBBn+YHq8oPA9dduSLqR5F5X2zgiI8f/KuGp3cpyA
- UUo=
-X-IronPort-AV: E=Sophos;i="5.64,330,1559545200"; 
-   d="scan'208";a="43442093"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 31 Jul 2019 04:33:23 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 31 Jul 2019 04:33:11 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Wed, 31 Jul 2019 04:33:11 -0700
-Date:   Wed, 31 Jul 2019 13:32:16 +0200
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-CC:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] mmc: atmel-mci: Mark expected switch fall-throughs
-Message-ID: <20190731113216.ztxckd54a74g2lw5@M43218.corp.atmel.com>
-Mail-Followup-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        id S1729917AbfGaQGJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 31 Jul 2019 12:06:09 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:40362 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727230AbfGaQGJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 31 Jul 2019 12:06:09 -0400
+Received: by mail-pg1-f193.google.com with SMTP id w10so32263592pgj.7
+        for <linux-mmc@vger.kernel.org>; Wed, 31 Jul 2019 09:06:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=dw5dQKwX8ASG6Ts6LgBuSFToiWxM+evOZX45eitYT60=;
+        b=nXhNdnpzQ5klubCtfPKL3rrjBDdkcECAJhbzNalPGdQFtuHxtHL5KFS8kYJxX01zI+
+         3GqX/EXvBnWwabWBFeHJWv8ENvMiwnd744dcdIMl23dIdrN9eqdKH3FEaOzYWG/FLHW+
+         snA2P3tt9xmBEcE0wzL9JO6YiPQXK/ecFHfTM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=dw5dQKwX8ASG6Ts6LgBuSFToiWxM+evOZX45eitYT60=;
+        b=hu3SQFmYQXoJdnvrMpBme3SAOsVBTWDuB8pUSzMO/Rpp8s712pvPs9mIt22HKvvAJw
+         UMlt8DJ6iK3R3oNy4ZfXYgfMowNoodI96Un+6OlIa9esQKPPOINlrlIIjTSExPAYzMy+
+         AWPVm8Izt3Moby2AxXveOWJ7gzEu64slKO59yTY/A+A8mSDAwXsJ6VdG1FfbuGei3fze
+         9tL5O+bQhbvt5zTwLQZdpiM4XWzKAhNKCvLzNrrqK7wNk7oqCV4aFD6NZSmLr9qs0P0x
+         mQZJ1larCYAWp8ICTZFFiGKtKVNQtpRpeDy0vJh85tZpzNTryrLeI8vAg0+piR22cpQk
+         v8+Q==
+X-Gm-Message-State: APjAAAXGzP1bmXmsfitjw7y+gZg6MWrinqWIYmTZwbVNc2JQqbl+WWAi
+        C7P3TdXX+7S67469//erENJw4nBHIq4=
+X-Google-Smtp-Source: APXvYqyp+rY/4Em+/ZUkiOjo98nR6upEwWWg4wXYmcr0OQ9k/QFwbGOVWkGPKkn54UdzEr838uzIjQ==
+X-Received: by 2002:a63:ff03:: with SMTP id k3mr19399349pgi.40.1564589168950;
+        Wed, 31 Jul 2019 09:06:08 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id j15sm98920836pfn.150.2019.07.31.09.06.07
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 31 Jul 2019 09:06:08 -0700 (PDT)
+Date:   Wed, 31 Jul 2019 09:06:07 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Kees Cook <keescook@chromium.org>
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH] mmc: atmel-mci: Mark expected switch fall-throughs
+Message-ID: <201907310905.B90C6E25@keescook>
 References: <20190729000123.GA23902@embeddedor>
+ <20190731113216.ztxckd54a74g2lw5@M43218.corp.atmel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190729000123.GA23902@embeddedor>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190731113216.ztxckd54a74g2lw5@M43218.corp.atmel.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+On Wed, Jul 31, 2019 at 01:32:16PM +0200, Ludovic Desroches wrote:
+> > drivers/mmc/host/atmel-mci.c:2426:40: warning: this statement may fall through [-Wimplicit-fallthrough=]
+> >    host->caps.need_notbusy_for_read_ops = 1;
+> >    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+> > drivers/mmc/host/atmel-mci.c:2427:2: note: here
+> >   case 0x100:
+> >   ^~~~
+> > 
+> > Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> > Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> 
+> I don't know if there is a policy in the kernel about the expression to
+> use. As this one does the job
 
-On Sun, Jul 28, 2019 at 07:01:23PM -0500, Gustavo A. R. Silva wrote:
-> 
-> Mark switch cases where we are expecting to fall through.
-> 
-> This patch fixes the following warnings:
-> 
-> drivers/mmc/host/atmel-mci.c: In function 'atmci_get_cap':
-> drivers/mmc/host/atmel-mci.c:2415:30: warning: this statement may fall through [-Wimplicit-fallthrough=]
->    host->caps.has_odd_clk_div = 1;
->    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-> drivers/mmc/host/atmel-mci.c:2416:2: note: here
->   case 0x400:
->   ^~~~
-> drivers/mmc/host/atmel-mci.c:2422:28: warning: this statement may fall through [-Wimplicit-fallthrough=]
->    host->caps.has_highspeed = 1;
->    ~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-> drivers/mmc/host/atmel-mci.c:2423:2: note: here
->   case 0x200:
->   ^~~~
-> drivers/mmc/host/atmel-mci.c:2426:40: warning: this statement may fall through [-Wimplicit-fallthrough=]
->    host->caps.need_notbusy_for_read_ops = 1;
->    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-> drivers/mmc/host/atmel-mci.c:2427:2: note: here
->   case 0x100:
->   ^~~~
-> 
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Yup, documented here:
+https://www.kernel.org/doc/html/latest/process/deprecated.html#implicit-switch-case-fall-through
 
-I don't know if there is a policy in the kernel about the expression to
-use. As this one does the job
-Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+> Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com>
 
-Thanks
+Thanks!
 
-> ---
->  drivers/mmc/host/atmel-mci.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
-> index 9ee0bc0ce6d0..c26fbe5f2222 100644
-> --- a/drivers/mmc/host/atmel-mci.c
-> +++ b/drivers/mmc/host/atmel-mci.c
-> @@ -2413,6 +2413,7 @@ static void atmci_get_cap(struct atmel_mci *host)
->  	case 0x600:
->  	case 0x500:
->  		host->caps.has_odd_clk_div = 1;
-> +		/* Fall through */
->  	case 0x400:
->  	case 0x300:
->  		host->caps.has_dma_conf_reg = 1;
-> @@ -2420,13 +2421,16 @@ static void atmci_get_cap(struct atmel_mci *host)
->  		host->caps.has_cfg_reg = 1;
->  		host->caps.has_cstor_reg = 1;
->  		host->caps.has_highspeed = 1;
-> +		/* Fall through */
->  	case 0x200:
->  		host->caps.has_rwproof = 1;
->  		host->caps.need_blksz_mul_4 = 0;
->  		host->caps.need_notbusy_for_read_ops = 1;
-> +		/* Fall through */
->  	case 0x100:
->  		host->caps.has_bad_data_ordering = 0;
->  		host->caps.need_reset_after_xfer = 0;
-> +		/* Fall through */
->  	case 0x0:
->  		break;
->  	default:
-> -- 
-> 2.22.0
-> 
-> 
+-- 
+Kees Cook
