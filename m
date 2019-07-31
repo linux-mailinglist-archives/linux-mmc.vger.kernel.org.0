@@ -2,87 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A1567C824
-	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jul 2019 18:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 254677C864
+	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jul 2019 18:17:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729917AbfGaQGJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 31 Jul 2019 12:06:09 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:40362 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727230AbfGaQGJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 31 Jul 2019 12:06:09 -0400
-Received: by mail-pg1-f193.google.com with SMTP id w10so32263592pgj.7
-        for <linux-mmc@vger.kernel.org>; Wed, 31 Jul 2019 09:06:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=dw5dQKwX8ASG6Ts6LgBuSFToiWxM+evOZX45eitYT60=;
-        b=nXhNdnpzQ5klubCtfPKL3rrjBDdkcECAJhbzNalPGdQFtuHxtHL5KFS8kYJxX01zI+
-         3GqX/EXvBnWwabWBFeHJWv8ENvMiwnd744dcdIMl23dIdrN9eqdKH3FEaOzYWG/FLHW+
-         snA2P3tt9xmBEcE0wzL9JO6YiPQXK/ecFHfTM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=dw5dQKwX8ASG6Ts6LgBuSFToiWxM+evOZX45eitYT60=;
-        b=hu3SQFmYQXoJdnvrMpBme3SAOsVBTWDuB8pUSzMO/Rpp8s712pvPs9mIt22HKvvAJw
-         UMlt8DJ6iK3R3oNy4ZfXYgfMowNoodI96Un+6OlIa9esQKPPOINlrlIIjTSExPAYzMy+
-         AWPVm8Izt3Moby2AxXveOWJ7gzEu64slKO59yTY/A+A8mSDAwXsJ6VdG1FfbuGei3fze
-         9tL5O+bQhbvt5zTwLQZdpiM4XWzKAhNKCvLzNrrqK7wNk7oqCV4aFD6NZSmLr9qs0P0x
-         mQZJ1larCYAWp8ICTZFFiGKtKVNQtpRpeDy0vJh85tZpzNTryrLeI8vAg0+piR22cpQk
-         v8+Q==
-X-Gm-Message-State: APjAAAXGzP1bmXmsfitjw7y+gZg6MWrinqWIYmTZwbVNc2JQqbl+WWAi
-        C7P3TdXX+7S67469//erENJw4nBHIq4=
-X-Google-Smtp-Source: APXvYqyp+rY/4Em+/ZUkiOjo98nR6upEwWWg4wXYmcr0OQ9k/QFwbGOVWkGPKkn54UdzEr838uzIjQ==
-X-Received: by 2002:a63:ff03:: with SMTP id k3mr19399349pgi.40.1564589168950;
-        Wed, 31 Jul 2019 09:06:08 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id j15sm98920836pfn.150.2019.07.31.09.06.07
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 31 Jul 2019 09:06:08 -0700 (PDT)
-Date:   Wed, 31 Jul 2019 09:06:07 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCH] mmc: atmel-mci: Mark expected switch fall-throughs
-Message-ID: <201907310905.B90C6E25@keescook>
-References: <20190729000123.GA23902@embeddedor>
- <20190731113216.ztxckd54a74g2lw5@M43218.corp.atmel.com>
+        id S1728306AbfGaQRv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 31 Jul 2019 12:17:51 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:35474 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729410AbfGaQRv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 31 Jul 2019 12:17:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1564589868;
+        s=strato-dkim-0002; d=fpond.eu;
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=qdZeuJ27tx/q1ZNYIpUzd3o2lsXbdumtaxt43HjC2yI=;
+        b=PzsSltF0IxI8t+DdZqwZ7RAu7bEfkXmXoiVhP/xVDOVlhZ6zneNbDAtD5PLyhZaMi2
+        0NAx6wlaQt4KUuuRf9XIffx3FQ7gGNwleq+Yfcsnc+D4S+Xerh3KWkS95BqtxPJWu8fW
+        KXeUti3aYaGQPoJ6JbNCDVkEEG383tI8kWw8wLXHuCWOE9NUYxlDZGV1g03C2pArp4vF
+        nOWSze2B+WuJcHLp7pjhPB1EtmJc4pxK2MSwBqxhxNO7Mnhk7c6txYPI/SGVs9evkjGN
+        a9r/SyvLvDNr39HEpdZuzsqGKL5eyKPAm64+CR+iLIq+hqbd4Uu4ZTXx31tzBHmGpgeN
+        vuRw==
+X-RZG-AUTH: ":OWANVUa4dPFUgKR/3dpvnYP0Np73dmm4I5W0/AvA67Ot4fvR82dZd6zDDg=="
+X-RZG-CLASS-ID: mo00
+Received: from groucho.site
+        by smtp.strato.de (RZmta 44.24 DYNA|AUTH)
+        with ESMTPSA id h0a328v6VGHfaNY
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Wed, 31 Jul 2019 18:17:41 +0200 (CEST)
+From:   Ulrich Hecht <uli+renesas@fpond.eu>
+To:     linux-renesas-soc@vger.kernel.org, linux-mmc@vger.kernel.org
+Cc:     niklas.soderlund@ragnatech.se, wsa@the-dreams.de,
+        yamada.masahiro@socionext.com, geert@linux-m68k.org,
+        ulf.hansson@linaro.org, magnus.damm@gmail.com,
+        Ulrich Hecht <uli+renesas@fpond.eu>
+Subject: [PATCH v2 0/2] mmc: tmio: remove Gen2+ workaround and fix up
+Date:   Wed, 31 Jul 2019 18:17:35 +0200
+Message-Id: <1564589857-17720-1-git-send-email-uli+renesas@fpond.eu>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190731113216.ztxckd54a74g2lw5@M43218.corp.atmel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Jul 31, 2019 at 01:32:16PM +0200, Ludovic Desroches wrote:
-> > drivers/mmc/host/atmel-mci.c:2426:40: warning: this statement may fall through [-Wimplicit-fallthrough=]
-> >    host->caps.need_notbusy_for_read_ops = 1;
-> >    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-> > drivers/mmc/host/atmel-mci.c:2427:2: note: here
-> >   case 0x100:
-> >   ^~~~
-> > 
-> > Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> > Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
-> 
-> I don't know if there is a policy in the kernel about the expression to
-> use. As this one does the job
+Hi!
 
-Yup, documented here:
-https://www.kernel.org/doc/html/latest/process/deprecated.html#implicit-switch-case-fall-through
+Second revision of the series that eliminates the forced-on eMMC workaround
+for Renesas Gen2 SoCs and fixes up the clock imbalance exposed by that,
+which is caused by interactions between runtime PM and the tmio hardware
+driver.
 
-> Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+Thanks to Ulf, Niklas and Geert for reviews and testing, see below for changes.
 
-Thanks!
+CU
+Uli
+
+Changes since v1:
+- Keep clock handling in driver if no power domain is attached.
+- Describe clock imbalance issue in commit message.
+- Add commit hash for "mmc: tmio: move runtime PM enablement to the
+driver implementations".
+
+
+Ulrich Hecht (2):
+  mmc: tmio: leave clock handling to runtime PM if enabled
+  mmc: tmio: remove obsolete PM workaround
+
+ drivers/mmc/host/tmio_mmc_core.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
 -- 
-Kees Cook
+2.7.4
+
