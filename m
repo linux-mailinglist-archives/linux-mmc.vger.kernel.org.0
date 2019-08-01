@@ -2,83 +2,195 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CCDC7DE9C
-	for <lists+linux-mmc@lfdr.de>; Thu,  1 Aug 2019 17:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3569F7E61A
+	for <lists+linux-mmc@lfdr.de>; Fri,  2 Aug 2019 00:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732442AbfHAPQb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 1 Aug 2019 11:16:31 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:39658 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729812AbfHAPQa (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 1 Aug 2019 11:16:30 -0400
-Received: by mail-io1-f68.google.com with SMTP id f4so145175709ioh.6
-        for <linux-mmc@vger.kernel.org>; Thu, 01 Aug 2019 08:16:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=A28GjhCVZJSUYeBqZVPzs9S8KLlBjDL+7h1oJI1m5Zc=;
-        b=YDStaIin+x1zsmLPi04vXHLS9mgMXc8MW3LYOfygTTyDtWFGFHi+knILp81NZ3NI8q
-         HM66RxDEFReHz53rHNa9tFPsp53m4bPLhhma0jVeN2BgYuTI09cqkAPcbpzzEB/nJR7Z
-         y0c/T23/l02DSptM4yQHlCCt7ymD5BqMlm0zXJTk8ucBYIWkHpXrcLj2tL95k2NkKpXU
-         ozAK4NagBF9Vv/P3TaXwdaunES9vQI6Ys3Wh9KR4XtZA8f5TRnSLIyRvkE3mBgzvxqCV
-         j682Eqy4MDeQVhhElRgVe96a2k/EL6WvJ1b1x9vzjsFD8tJXhATJ4v+uUZvt41qZY+Pm
-         AauQ==
-X-Gm-Message-State: APjAAAU5BY+S6+//Wet88GyYWPAYjJe7Nd+1tuqezFEX2jFcDQ637CbN
-        TSXT3zkF1H/1A2sgD14G/KPhWA==
-X-Google-Smtp-Source: APXvYqwTmTw8q3S7+wmnzW7nURycARh98zNdnxgSBMexZJS7aGzgjb/DA1XsBfQf+Ksr20eqb+nL8w==
-X-Received: by 2002:a5e:9314:: with SMTP id k20mr3543162iom.235.1564672589576;
-        Thu, 01 Aug 2019 08:16:29 -0700 (PDT)
-Received: from google.com ([2620:15c:183:0:5118:89b3:1f18:4090])
-        by smtp.gmail.com with ESMTPSA id j1sm64548891iop.14.2019.08.01.08.16.28
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 01 Aug 2019 08:16:28 -0700 (PDT)
-Date:   Thu, 1 Aug 2019 09:16:24 -0600
-From:   Raul Rangel <rrangel@chromium.org>
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Daniel Kurtz <djkurtz@chromium.org>,
-        hongjiefang <hongjiefang@asrmicro.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Kyle Roeschley <kyle.roeschley@ni.com>,
-        Avri Altman <avri.altman@wdc.com>
-Subject: Re: [RFC PATCH 1/2] mmc: sdhci: Manually check card status after
- reset
-Message-ID: <20190801151624.GA155392@google.com>
-References: <20190501175457.195855-1-rrangel@chromium.org>
- <CAPDyKFpL1nHt1E1zgS-iDZf_KDWk2CN32Lvr+5Nmo8CtB2VCWg@mail.gmail.com>
- <20190607160553.GA185100@google.com>
- <CAPDyKFout6AY2Q92pYQ-KPH0NENq1-SkYivkDxjjb=uB=tKXuQ@mail.gmail.com>
- <20190610163252.GA227032@google.com>
- <fcdf6cc4-2729-abe2-85c8-b0d04901c5ae@intel.com>
- <20190619145625.GA50985@google.com>
+        id S1732775AbfHAW7R (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 1 Aug 2019 18:59:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51106 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730003AbfHAW7R (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 1 Aug 2019 18:59:17 -0400
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 97FB32080C;
+        Thu,  1 Aug 2019 22:59:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564700356;
+        bh=kASyP8PGtZ0rL4jNIcUKrCyx7pYnuPev55DZJBaSklM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ROPgtKq1KfpdkUQ/WwkuPZRlwKqXTl1UN7SM2HkqlXAf4hBAf34AxZLKGFbw4ZZ2J
+         Uc27k6aqlqJJcItuknCk0YjdoQ5+l3aRVFpB/S+S3eE1o1tMYWccEuM7PbSu/SAS3d
+         ld0XgBlBhhkxkSUs+J+EeCsS0vdcL9RptovKV4Ts=
+Received: by mail-qt1-f182.google.com with SMTP id l9so72000765qtu.6;
+        Thu, 01 Aug 2019 15:59:16 -0700 (PDT)
+X-Gm-Message-State: APjAAAXTpWd0mBBPtic+ylHNhFlyAqJAnz0BnOFmwqvjFPvilyK2bLGt
+        1oWNsGF2DFHzb6TAIPoSXj2J/9VodaytCmH5JQ==
+X-Google-Smtp-Source: APXvYqx7WFIk+rochGPuukRrKofUEOPYVHhKW5sYMVeD23Voa28zVM0mZV9ERrGM3Tnt9e7Ssjzs/qZQDedTHVoiqog=
+X-Received: by 2002:a0c:b627:: with SMTP id f39mr96371146qve.72.1564700355781;
+ Thu, 01 Aug 2019 15:59:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190619145625.GA50985@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190730062316.32037-1-andrew@aj.id.au> <20190730062316.32037-2-andrew@aj.id.au>
+In-Reply-To: <20190730062316.32037-2-andrew@aj.id.au>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 1 Aug 2019 16:59:04 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+oZRREV=VjYUxT3WphOa5tBaF1pvS_JKSphBY=3XB5MA@mail.gmail.com>
+Message-ID: <CAL_Jsq+oZRREV=VjYUxT3WphOa5tBaF1pvS_JKSphBY=3XB5MA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: mmc: Document Aspeed SD controller
+To:     Andrew Jeffery <andrew@aj.id.au>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        devicetree@vger.kernel.org,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-aspeed@lists.ozlabs.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ryan Chen <ryanchen.aspeed@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Jun 19, 2019 at 08:56:25AM -0600, Raul Rangel wrote:
-> Your patch looks good. I tried it out and got over 57k insertion/removal
-> iterations. Do you want me to send out your patch, or do you want to do
-> it?
-> 
-> Just to recap, the patch you proposed + the AMD SDHCI specific patch fix
-> the problem.
-> 
+On Tue, Jul 30, 2019 at 12:23 AM Andrew Jeffery <andrew@aj.id.au> wrote:
+>
+> The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the
+> SDIO Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit
+> data bus if only a single slot is enabled.
+>
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>
+> ---
+> v3:
+> * Fix compatible enums
+> * Add AST2600 compatibles
+> * Describe #address-cells / #size-cells
+> ---
+>  .../devicetree/bindings/mmc/aspeed,sdhci.yaml | 100 ++++++++++++++++++
+>  1 file changed, 100 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> new file mode 100644
+> index 000000000000..dd2a00c59641
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> @@ -0,0 +1,100 @@
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mmc/aspeed,sdhci.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ASPEED SD/SDIO/eMMC Controller
+> +
+> +maintainers:
+> +  - Andrew Jeffery <andrew@aj.id.au>
+> +  - Ryan Chen <ryanchen.aspeed@gmail.com>
+> +
+> +description: |+
+> +  The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the SDIO
+> +  Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit data bus if
+> +  only a single slot is enabled.
+> +
+> +  The two slots are supported by a common configuration area. As the SDHCIs for
+> +  the slots are dependent on the common configuration area, they are described
+> +  as child nodes.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - aspeed,ast2400-sd-controller
+> +      - aspeed,ast2500-sd-controller
+> +      - aspeed,ast2600-sd-controller
+> +  reg:
+> +    maxItems: 1
+> +    description: Common configuration registers
+> +  "#address-cells":
+> +    const: 1
+> +  "#size-cells":
+> +    const: 1
+> +  ranges: true
+> +  clocks:
+> +    maxItems: 1
+> +    description: The SD/SDIO controller clock gate
+> +
+> +patternProperties:
+> +  "^sdhci@[0-9a-f]+$":
 
-Just pinging the thread again to see what you would prefer. I can send
-the patch with you in the Signed-off. Or if you would prefer to not
-update the sdhci driver at all, I can add the logic into the AMD
-specific patch.
+This should probably have:
 
-I would like to get this in so it lands by 5.4.
+allOf:
+  - $ref: mmc-controller.yaml
 
-Thanks,
-Raul
+Another new thing in 5.3. :)
+
+> +    type: object
+> +    properties:
+> +      compatible:
+> +        enum:
+> +          - aspeed,ast2400-sdhci
+> +          - aspeed,ast2500-sdhci
+> +          - aspeed,ast2600-sdhci
+> +      reg:
+> +        maxItems: 1
+> +        description: The SDHCI registers
+> +      clocks:
+> +        maxItems: 1
+> +        description: The SD bus clock
+> +      interrupts:
+> +        maxItems: 1
+> +        description: The SD interrupt shared between both slots
+> +    required:
+> +      - compatible
+> +      - reg
+> +      - clocks
+> +      - interrupts
+> +
+> +additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#address-cells"
+> +  - "#size-cells"
+> +  - ranges
+> +  - clocks
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/aspeed-clock.h>
+> +    sdc@1e740000 {
+> +            compatible = "aspeed,ast2500-sd-controller";
+> +            reg = <0x1e740000 0x100>;
+> +            #address-cells = <1>;
+> +            #size-cells = <1>;
+> +            ranges = <0 0x1e740000 0x10000>;
+> +            clocks = <&syscon ASPEED_CLK_GATE_SDCLK>;
+> +
+> +            sdhci0: sdhci@100 {
+> +                    compatible = "aspeed,ast2500-sdhci";
+> +                    reg = <0x100 0x100>;
+> +                    interrupts = <26>;
+> +                    sdhci,auto-cmd12;
+
+Not documented. Maybe should be common, but there's only a few users.
+
+> +                    clocks = <&syscon ASPEED_CLK_SDIO>;
+> +            };
+> +
+> +            sdhci1: sdhci@200 {
+> +                    compatible = "aspeed,ast2500-sdhci";
+> +                    reg = <0x200 0x100>;
+> +                    interrupts = <26>;
+> +                    sdhci,auto-cmd12;
+> +                    clocks = <&syscon ASPEED_CLK_SDIO>;
+> +            };
+> +    };
+> --
+> 2.20.1
+>
