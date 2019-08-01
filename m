@@ -2,112 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFAEC7D61A
-	for <lists+linux-mmc@lfdr.de>; Thu,  1 Aug 2019 09:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C48F67D990
+	for <lists+linux-mmc@lfdr.de>; Thu,  1 Aug 2019 12:43:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729196AbfHAHMi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 1 Aug 2019 03:12:38 -0400
-Received: from esa4.microchip.iphmx.com ([68.232.154.123]:54705 "EHLO
-        esa4.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725790AbfHAHMh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 1 Aug 2019 03:12:37 -0400
-Received-SPF: Pass (esa4.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa4.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa4.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: KOIO5aPBnyj78kcD+HN+oud5Hl32sOC01iATWdQpiINf+aunYA+T17ybBj6R6SPmU8+RWsXEDu
- CTHM8/wdD9a6tdnC2nox7Exyes0RUqxzW1IlcFaZLcK9pWvHOnrAE6HUXty+yNVE2EJGnQms4V
- vVXFrt7qiWoO3SbmWKY0PKRI2Jy08xwDCiCZs+C+h/VFTXd/e8sR7/6F/7po6fjE8AuOqF1vr7
- WXT8LCzLeNeq750Uk4QtJcPkSQ89LMcBhpuBFZDnVo/ZEPt2n8Xu4UNozSThA54kKoY/rbbbiU
- rSU=
-X-IronPort-AV: E=Sophos;i="5.64,333,1559545200"; 
-   d="scan'208";a="42778277"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 01 Aug 2019 00:12:36 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Thu, 1 Aug 2019 00:12:33 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Thu, 1 Aug 2019 00:12:32 -0700
-Date:   Thu, 1 Aug 2019 09:11:36 +0200
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Kees Cook <keescook@chromium.org>
-CC:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCH] mmc: atmel-mci: Mark expected switch fall-throughs
-Message-ID: <20190801071136.37yjjr3kmdhfyxna@M43218.corp.atmel.com>
-Mail-Followup-To: Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-References: <20190729000123.GA23902@embeddedor>
- <20190731113216.ztxckd54a74g2lw5@M43218.corp.atmel.com>
- <201907310905.B90C6E25@keescook>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <201907310905.B90C6E25@keescook>
-User-Agent: NeoMutt/20180716
+        id S1730878AbfHAKn1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 1 Aug 2019 06:43:27 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:35730 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730279AbfHAKn1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 1 Aug 2019 06:43:27 -0400
+Received: by mail-lj1-f193.google.com with SMTP id x25so68948305ljh.2
+        for <linux-mmc@vger.kernel.org>; Thu, 01 Aug 2019 03:43:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=xJ+XW7erGOKB1qLPzmBxeO8g/P30n/FrQ5rJ6pbczJM=;
+        b=Aom89KfQg4zR8rFKZ7WwksWEApb+WF09Q42ttz2qRwj/xSkGBGezOX+UtiYKI/hUml
+         Do5bTuWh0t94mXcdLlZXXflSRP+PEOuuypvp9qDJOB3khN6LTQcSlKhVgksalzc5gqCr
+         u8z9/fKrkR5wjGzeI6QvFIhVFK920BSw6fUS/vl4oQlni0DwQnCrtgqqiajBWorsj3vB
+         Wmw0NdA5mrbzo6hCIkcYI+y27N7FSap7EEb+jIeLPoUNJAfs7Sl4K21CQ7zAORLIEzXa
+         8Z+PkfpLf3kNT6j2Yx4U2lpuRgVxesgZXbqznFUFPp7oqm+5i6qSsCLqVJXZaT1w7wmG
+         HKVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=xJ+XW7erGOKB1qLPzmBxeO8g/P30n/FrQ5rJ6pbczJM=;
+        b=tYUzc+tqQtAgWWHKluAuz/YL/4M6e0T8k9GQ4m0ZRRONO7K0+JOJw9HgAGacr3+4Or
+         YXRvzdBcSuA7XFFBjlxhU/lioBlW0pAQWzHDO0RUTMRX4fpJbP3ttTaoIT+RLozTkvAm
+         U7TXWXlwgHMbYRquX+Ow0rJ9cUKsnHXNQdYE0Bj7qQ7GbqyeFLk30ZkcTXuFi36c8kNx
+         rFWdkx/83sfrShrdBRGLhAo7IT6vx7IiaWtgUJntiM1gEHq36yq5lizAW9glmu89AOfF
+         SaYfz+TzYJE8QKeIOG2APAjaVk3hEvHOieKrCArnFB+L6m7BpnFYgTmAC8TCfQKzt8zG
+         xTOw==
+X-Gm-Message-State: APjAAAX43xqJIFvrUU26GoUIzF1/yp9yvdK6plwAlPKbSLPGLCsrY5oj
+        /maf6inrrD6/eGs6MQXzqlj7Ug==
+X-Google-Smtp-Source: APXvYqwr7N8nUcsTaa9qhK5CVPXKHkU82/bKtDqYW2xoBvPPjubmYiblEAF8FQu67NzuuouKXRNRGw==
+X-Received: by 2002:a2e:8ecb:: with SMTP id e11mr9432739ljl.218.1564656205540;
+        Thu, 01 Aug 2019 03:43:25 -0700 (PDT)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id u15sm14569573lje.89.2019.08.01.03.43.23
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 01 Aug 2019 03:43:24 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC fixes for v5.3-rc3
+Date:   Thu,  1 Aug 2019 12:43:19 +0200
+Message-Id: <20190801104319.25247-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Jul 31, 2019 at 09:06:07AM -0700, Kees Cook wrote:
-> On Wed, Jul 31, 2019 at 01:32:16PM +0200, Ludovic Desroches wrote:
-> > > drivers/mmc/host/atmel-mci.c:2426:40: warning: this statement may fall through [-Wimplicit-fallthrough=]
-> > >    host->caps.need_notbusy_for_read_ops = 1;
-> > >    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-> > > drivers/mmc/host/atmel-mci.c:2427:2: note: here
-> > >   case 0x100:
-> > >   ^~~~
-> > > 
-> > > Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> > > Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
-> > 
-> > I don't know if there is a policy in the kernel about the expression to
-> > use. As this one does the job
-> 
-> Yup, documented here:
-> https://www.kernel.org/doc/html/latest/process/deprecated.html#implicit-switch-case-fall-through
+Hi Linus,
 
-Thanks for the pointer.
+Here's a PR with a couple of MMC fixes intended for v5.3-rc3. Details about the
+highlights are as usual found in the signed tag.
 
-Regards
+Please pull this in!
 
-Ludovic
+Kind regards
+Ulf Hansson
 
-> 
-> > Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com>
-> 
-> Thanks!
-> 
-> -- 
-> Kees Cook
+
+The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
+
+  Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3-rc1
+
+for you to fetch changes up to 3a6ffb3c8c3274a39dc8f2514526e645c5d21753:
+
+  mmc: mmc_spi: Enable stable writes (2019-07-22 15:31:00 +0200)
+
+----------------------------------------------------------------
+MMC host:
+ - sdhci-sprd: Add a missing pm_runtime_put_noidle() to fix deferred probe
+ - dw_mmc: Fix occasional hang after tuning on eMMC
+ - meson-mx-sdio: Fix misuse of GENMASK macro
+ - mmc_spi: Fix CRC problems for writes by using BDI_CAP_STABLE_WRITES
+
+----------------------------------------------------------------
+Andreas Koop (1):
+      mmc: mmc_spi: Enable stable writes
+
+Baolin Wang (1):
+      mmc: host: sdhci-sprd: Fix the missing pm_runtime_put_noidle()
+
+Douglas Anderson (1):
+      mmc: dw_mmc: Fix occasional hang after tuning on eMMC
+
+Joe Perches (1):
+      mmc: meson-mx-sdio: Fix misuse of GENMASK macro
+
+ drivers/mmc/core/queue.c         | 5 +++++
+ drivers/mmc/host/dw_mmc.c        | 3 +--
+ drivers/mmc/host/meson-mx-sdio.c | 2 +-
+ drivers/mmc/host/sdhci-sprd.c    | 1 +
+ 4 files changed, 8 insertions(+), 3 deletions(-)
