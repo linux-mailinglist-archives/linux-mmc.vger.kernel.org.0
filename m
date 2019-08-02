@@ -2,131 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 917067FD5B
-	for <lists+linux-mmc@lfdr.de>; Fri,  2 Aug 2019 17:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5559E7FD5D
+	for <lists+linux-mmc@lfdr.de>; Fri,  2 Aug 2019 17:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390206AbfHBPRI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 2 Aug 2019 11:17:08 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:36442 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731569AbfHBPRI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Aug 2019 11:17:08 -0400
-Received: by mail-vs1-f68.google.com with SMTP id y16so51495636vsc.3
-        for <linux-mmc@vger.kernel.org>; Fri, 02 Aug 2019 08:17:07 -0700 (PDT)
+        id S1730515AbfHBPRO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 2 Aug 2019 11:17:14 -0400
+Received: from mail-vk1-f195.google.com ([209.85.221.195]:34131 "EHLO
+        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729449AbfHBPRO (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Aug 2019 11:17:14 -0400
+Received: by mail-vk1-f195.google.com with SMTP id v68so11699851vkd.1
+        for <linux-mmc@vger.kernel.org>; Fri, 02 Aug 2019 08:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=UuKMc11aWlktrZ8JPjVIWHFW0kEI8OzLwNyEg414joM=;
-        b=o/xWXyttxwnPZpGymJWMS3zDGLO7EwAzJgRTM+KqPtjJUnnKd01izY+MaTd/lp1dcp
-         bYCbiOGY++yFYhqvEebeYSIQea08lgFytSJTxKrySFCUMIHpuqPSBwWsfWh5W+Ur7QnM
-         IItqtYXXR0fF2n/1s8X6BFXzkm472oDd42VSJ+Rm0ovVAZsAgp/RyXVXnFYd8P22iXue
-         pK+YMrI074FTb0czvfi5+VIYJzFCpYKNQUupdeKVc1r858KCFzWpficrf7K+c0thc12Q
-         eTmSvZOhfdn7fthl05gNuSBTK2BpHRWxN0NIg6gAaZRB7ddUJq+0s4XqMBpgooW05M3d
-         syCA==
+        bh=am7VE97nq7ZCmyomVd2COANpZQyhG+APNd3r/OoUU8U=;
+        b=BF0SB7AG4ut6fyvBHWEJHFmQpNcjCG/QXxAAJS/MFj9ASooOeUQ5thcsW0/uqjQ/gc
+         HZTpZ8ckknuiN4hM3GcMD/JD3lUY1R0hbkxbYW9lzigzMgkm4KDtebOf79sVXLTcEPRu
+         lVgOz27jxYFnbmqlUuv3p7iI3ITblLXTCvWUteXAGGjbTjxT9IOQewW3v04Qal0Vd0Kd
+         CDyyltnc8QUHjcWtW9/kzMfjW08/g/lYPj7PLUGmQj4iQqmXlQ8TnJOrzYp7fqLtbCzt
+         397e25T9NR4itzF05i+5wsImZyD5IF/PJYNiRtNU+rv3DBxT9ICNSmaca3Y7A2b22Rle
+         9GVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=UuKMc11aWlktrZ8JPjVIWHFW0kEI8OzLwNyEg414joM=;
-        b=blptJW5OX80608mSVBdl3+LGtvLekj6ZY/4sntgbOPD0ixsTOQxNORiOLedm2yxZv0
-         8IqP2ehZi2SzGsCldb/MKa0UKFbP0IxWbN7uIYZiha2n2ojfh+P3/6w6NwXdBDiYT5ML
-         q/RWwrpCtewlgezwt7qo9ya8Zwmq0fW8e2J4JQJdigCmfpHSmq08k+d/Cn6ZIvppWR8N
-         psrd0fsOZNWTLDYimjX+fhPspOKMjAm41/5sKFQz4c54KEaK3uC69qSrlwknOftMuHLv
-         fc5WmZBQ/CkeSadW1tv1ltcMFT1xCatJaV75Swm1NtkH9MNwlebXZxgCfI9S5kRk6Bvh
-         FW3g==
-X-Gm-Message-State: APjAAAVugb7Fl/dX04P9/hgOEmgJgjHUOrNzmo0FDxFvznPtWjRrO/vr
-        7EyjZLqN0Z2bLVA6yhXIWgHm/DWJXDsw5JFdkVxWJg==
-X-Google-Smtp-Source: APXvYqxuUZhyZ/2jBLSyhZvTnT+wvu+urb28okrpgWr1w0OmPEyWiupD06g3qkKPD8Ih4kcC2uLGp1RbOOoij59X8to=
-X-Received: by 2002:a67:61c7:: with SMTP id v190mr35444838vsb.165.1564759027394;
- Fri, 02 Aug 2019 08:17:07 -0700 (PDT)
+        bh=am7VE97nq7ZCmyomVd2COANpZQyhG+APNd3r/OoUU8U=;
+        b=uPHUzw153irwAwralywuL6fMz3aOadE6K19RTnBLbuJ8dRE7RI33yLDt3OHlqCS1eV
+         HkvzcbHAHPt6qZMMbwZJiHrBCLQwsBif6EgHc6OEvnZbPpn5A1DIBRMFqFdkQTSYtl/c
+         eMw+DUfjPSphwJKfOAThd8uwFlH/d/g9+eNzuOjmznNLUB2Rm4aWqw2g3/vST0aa1S24
+         L+/oTHx14LmW5MngGXEjETnHUnV1SR6ukFCPNSL/N19LyiarwwA/p4lStwONvoDqQtfB
+         4ciR1xlxD2jCD1U3XXzUmNS8cN6SzFxrldfAwItlo2rggmmFjH3LHTvxAwNLP6ylND/c
+         FVvw==
+X-Gm-Message-State: APjAAAUZqUunOFLVbXQ/UKhO4cd4w4qqLQ3XGFgUkwWo/vDFg9GU5BSS
+        EZo8ZHwoig/lfRkEizRe3dI10Ig1LmvZ4Gaqkd0Kig==
+X-Google-Smtp-Source: APXvYqzVQw8kB+1j21L33BZtSuag8+GbzvjmhwXIEvKgNDa3JbbTqxZRiSDmv4Xhj7zIIO2fTODFwifqyIfQ5/sgWQ8=
+X-Received: by 2002:a1f:f282:: with SMTP id q124mr53607626vkh.4.1564759033184;
+ Fri, 02 Aug 2019 08:17:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190726023049.27055-1-haokexin@gmail.com> <20190726023049.27055-3-haokexin@gmail.com>
-In-Reply-To: <20190726023049.27055-3-haokexin@gmail.com>
+References: <74a6462743e3d73a630d2634880d8866daee333e.1564022625.git.baolin.wang@linaro.org>
+ <CAPDyKFoNGZRdY3VVf6G9eNBfCyJbN5SUU2+fK24U-mHDX13oFQ@mail.gmail.com> <CAMz4kuKOGmGHoYNELG38qYOw71=AaSk33=johskUtOs0KZ0z-g@mail.gmail.com>
+In-Reply-To: <CAMz4kuKOGmGHoYNELG38qYOw71=AaSk33=johskUtOs0KZ0z-g@mail.gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 2 Aug 2019 17:16:30 +0200
-Message-ID: <CAPDyKFpwNao5_18XyYr=UH=WN4Y8MCjZ61NNwhqNKfAx0D7C+w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mmc: cavium: Add the missing dma unmap when the dma
- has finished.
-To:     Kevin Hao <haokexin@gmail.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Jan Glauber <jglauber@cavium.com>,
-        David Daney <david.daney@cavium.com>,
-        "Steven J. Hill" <Steven.Hill@cavium.com>
+Date:   Fri, 2 Aug 2019 17:16:36 +0200
+Message-ID: <CAPDyKFrUxTzMr+aJ=mXcVJeiP8f4-8+wAxkbA9n8mJaAn=ftVA@mail.gmail.com>
+Subject: Re: [PATCH v5] mmc: host: sdhci: Fix the incorrect soft reset
+ operation when runtime resuming
+To:     Baolin Wang <baolin.wang@linaro.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 26 Jul 2019 at 04:32, Kevin Hao <haokexin@gmail.com> wrote:
+On Fri, 26 Jul 2019 at 03:41, Baolin Wang <baolin.wang@linaro.org> wrote:
 >
-> This fixes the below calltrace when the CONFIG_DMA_API_DEBUG is enabled.
->   DMA-API: thunderx_mmc 0000:01:01.4: cpu touching an active dma mapped cacheline [cln=0x000000002fdf9800]
->   WARNING: CPU: 21 PID: 1 at kernel/dma/debug.c:596 debug_dma_assert_idle+0x1f8/0x270
->   Modules linked in:
->   CPU: 21 PID: 1 Comm: init Not tainted 5.3.0-rc1-next-20190725-yocto-standard+ #64
->   Hardware name: Marvell OcteonTX CN96XX board (DT)
->   pstate: 80400009 (Nzcv daif +PAN -UAO)
->   pc : debug_dma_assert_idle+0x1f8/0x270
->   lr : debug_dma_assert_idle+0x1f8/0x270
->   sp : ffff0000113cfc10
->   x29: ffff0000113cfc10 x28: 0000ffff8c880000
->   x27: ffff800bc72a0000 x26: ffff000010ff8000
->   x25: ffff000010ff8940 x24: ffff000010ff8968
->   x23: 0000000000000000 x22: ffff000010e83700
->   x21: ffff000010ea2000 x20: ffff000010e835c8
->   x19: ffff800bc2c73300 x18: ffffffffffffffff
->   x17: 0000000000000000 x16: 0000000000000000
->   x15: ffff000010e835c8 x14: 6d20616d64206576
->   x13: 69746361206e6120 x12: 676e696863756f74
->   x11: 20757063203a342e x10: 31303a31303a3030
->   x9 : 303020636d6d5f78 x8 : 3230303030303030
->   x7 : 00000000000002fd x6 : ffff000010fd57d0
->   x5 : 0000000000000000 x4 : ffff0000106c5210
->   x3 : 00000000ffffffff x2 : 0000800bee9c0000
->   x1 : 57d5843f4aa62800 x0 : 0000000000000000
->   Call trace:
->    debug_dma_assert_idle+0x1f8/0x270
->    wp_page_copy+0xb0/0x688
->    do_wp_page+0xa8/0x5b8
->    __handle_mm_fault+0x600/0xd00
->    handle_mm_fault+0x118/0x1e8
->    do_page_fault+0x200/0x500
->    do_mem_abort+0x50/0xb0
->    el0_da+0x20/0x24
->   ---[ end trace a005534bd23e109f ]---
->   DMA-API: Mapped at:
->    debug_dma_map_sg+0x94/0x350
->    cvm_mmc_request+0x3c4/0x988
->    __mmc_start_request+0x9c/0x1f8
->    mmc_start_request+0x7c/0xb0
->    mmc_blk_mq_issue_rq+0x5c4/0x7b8
+> On Thu, 25 Jul 2019 at 21:15, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >
+> > - Trimmed cc list
+> >
+> > On Thu, 25 Jul 2019 at 05:14, Baolin Wang <baolin.wang@linaro.org> wrote:
+> > >
+> > > The SD host controller specification defines 3 types software reset:
+> > > software reset for data line, software reset for command line and
+> > > software reset for all. Software reset for all means this reset affects
+> > > the entire Host controller except for the card detection circuit.
+> > >
+> > > In sdhci_runtime_resume_host() function, now we will always do software
+> > > reset for all, which will cause Spreadtrum host controller work abnormally
+> > > after resuming. For Spreadtrum platform that will not power down the SD/eMMC
+> > > card during runtime suspend, we should just do software reset for data
+> > > and command instead doing reset for all.
+> > >
+> > > To fix this issue, this patch introduces a new parameter of
+> > > sdhci_runtime_resume_host() to let it decide if a 'reset for all' shall
+> > > be done or not. Meanwhile changes other host drivers to issue a software
+> > > reset for all to keep the original logic.
+> > >
+> > > Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+> >
+> > Applied for next, with a little change (renaming the "soft"
+> > in-parameter to soft_reset), thanks!
 >
-> Signed-off-by: Kevin Hao <haokexin@gmail.com>
+> Thanks Ulf :)
+>
+> >
+> > Adrian, if there is anything you want to change, please tell.
+> >
+> > BTW, perhaps this should be applied for fixes and tagged for stable?
+> > Baolin, if so, can point me the commit (or stable tag) the patch
+> > fixes?
+>
+> Yes, since we fixed the PM runtime issue, which will reveal this
+> issue. And I think it still fixes:
+> Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host
+> controller")
 
-Applied for fixes and by adding a stable/fixes tag, thanks!
+Make sense. I moved this to the fixes branch and also to took the
+opportunity to clarify the changelog a bit.
 
-Kind regards
+Thanks and kind regards
 Uffe
-
-
-> ---
->  drivers/mmc/host/cavium.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/mmc/host/cavium.c b/drivers/mmc/host/cavium.c
-> index c956813bc6bd..89deb451e0ac 100644
-> --- a/drivers/mmc/host/cavium.c
-> +++ b/drivers/mmc/host/cavium.c
-> @@ -374,6 +374,7 @@ static int finish_dma_single(struct cvm_mmc_host *host, struct mmc_data *data)
->  {
->         data->bytes_xfered = data->blocks * data->blksz;
->         data->error = 0;
-> +       dma_unmap_sg(host->dev, data->sg, data->sg_len, get_dma_dir(data));
->         return 1;
->  }
->
-> --
-> 2.14.4
->
