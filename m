@@ -2,148 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F25877F92E
-	for <lists+linux-mmc@lfdr.de>; Fri,  2 Aug 2019 15:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F3C7F9B9
+	for <lists+linux-mmc@lfdr.de>; Fri,  2 Aug 2019 15:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394393AbfHBNZY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 2 Aug 2019 09:25:24 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:38859 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394383AbfHBNZY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Aug 2019 09:25:24 -0400
-Received: by mail-ua1-f66.google.com with SMTP id j2so2851771uaq.5
-        for <linux-mmc@vger.kernel.org>; Fri, 02 Aug 2019 06:25:23 -0700 (PDT)
+        id S2394640AbfHBN2x (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 2 Aug 2019 09:28:53 -0400
+Received: from mail-vs1-f48.google.com ([209.85.217.48]:40146 "EHLO
+        mail-vs1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391729AbfHBN2x (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Aug 2019 09:28:53 -0400
+Received: by mail-vs1-f48.google.com with SMTP id a186so49697109vsd.7
+        for <linux-mmc@vger.kernel.org>; Fri, 02 Aug 2019 06:28:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=DpmRsZ8XRLjkBgn2eysbWMYPveZeqSIdsBj5/7g7Hm8=;
-        b=u5rXuwP6gZv6gTacH+dWvofWdRIX1Apo6hRnLvdQN7VyWXM1ez1NIJ0CSO98O7y7Oa
-         CK+UPkguthJ8HppDkaOk/8ncEe2VNcQzqXdqBjsmmJr6jrCRMDKjvFZyF25nQBrooJi3
-         UhGlSJKbpLDBBUi2uGg2zfpJhF0xacqr0Ro5gv/JEd53Dwn+ZD1r1IyquX4X9GdcZpD9
-         k4lYgsZBCLjkhxdDNLnwmnT1Qr435zJQse4OrzhYiDifTzHdsW6NN2jJ2H40KXWQhlD1
-         UEUBD6FkB/V+Ui1SZhOm/406beISscArdccdHMX+ycYByaMYyj6FODhZjdKdDTkTWiha
-         VcuQ==
+         :cc;
+        bh=T9L3tWNq55/6N+fb0w+92cMarsOIhZv92fgEA9Wl0NU=;
+        b=OtoZAEPkbpbQu61sKlc/mWfmbvRVJRfjRvEW+0Ih6wA9+5VCgnO3VcwPjolH0SRj3S
+         2/DyrM5Ho43TPXvIJ81glZojeATkmuG+b0oOl99p+KADJX2J/9Pi61Hh6ZlrZROhNQNK
+         KcF+mWyvDAixY3Vgn5aMQmG3Rqm4sajiisKROqLiYD3oxknqvFeLSat/DSMofrIymWqz
+         caBmJK6ZcbbIqTYdEZD3M3GgbtI4d/PD6cdsRQU0y3RA3t0VMbVqlDcvkPpwsd80H/xe
+         hgQpG6FM/rLBX/3K4mHsgVa/CiTRL92YxF9hdvlm2Dlp54L9en3SG67dhktrIql0J8s4
+         I+bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=DpmRsZ8XRLjkBgn2eysbWMYPveZeqSIdsBj5/7g7Hm8=;
-        b=QEK9gewA99fy6vbjc3ATMQVO+6eDYn65sYZwu8h8CLDP5YMt3SxiKUdjNVY45Nk/5A
-         6vWtpt+DTDjwIcBGr+FK0aTvXb97m9cB0v1Abtv4IIXRsv5aDTGna4nT+EOcsrGwsipg
-         pjl5ae0gXC4pz/38ZXEOqcd61rwbVfg08lKHbB9pxAmk9YoVjqdTipaBnaWib4P4/uYy
-         XeoMuxGGr6i+CiKoe9PsKbLgy36IK7yY4vT9tgnbvRkYh+Rh0du8ZgOUL4gsEFJRORiG
-         PyD10nz/XN8r/ZGLIJq/iRFMR/qAN+WNm4Xq5ujLZo1FsPIqDZbtLO7D8gYzsTc3HAZ5
-         dpYA==
-X-Gm-Message-State: APjAAAUaIz9bRwogU/a185a4zIbbf8fHEhT+wmC02XeMj3bMBHAITSzc
-        ppOjRhOpZ09Ok8YozjNA+i+Q2oWQfaXRGxGO6g/ckZK7
-X-Google-Smtp-Source: APXvYqwPKY9lyrjODfvoE3nMCjdP6RU7XHZGY3jnctVCYxbcaeQLEbkx1HjksQ4/tN0jH1NX6N9oDR8xpFujtbjwlQI=
-X-Received: by 2002:ab0:4108:: with SMTP id j8mr80695504uad.104.1564752322958;
- Fri, 02 Aug 2019 06:25:22 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=T9L3tWNq55/6N+fb0w+92cMarsOIhZv92fgEA9Wl0NU=;
+        b=LjA8lB03YIfh+I2diD7h18coNeWI2edgwC69sjnoKLwe0GgXE0xK2T7kMH0pHFMXCE
+         /zHiBfHQbSGPz2VcX/I9jj0oOAdZprLRiJfraj5ML5kHo9HVd+2XEXgngS9Pwo6i77LJ
+         hYZkCqKTUe+jQlNNX85sYHYRY/cav3uY6gAbfZfhPS1IHtJgeKkl7PGki+3IF5b24c3Y
+         yBYLj+0IIOdchCVE7a9Ixj6rCQBAGbTOkpP1Un9iKNrzAQVghE8Jrt0vB+Ibt2hx3DSk
+         POoSmh9UCmH1SfkAm7Y3mDK3MlJ13YjggTHgfqqhKYy6mLjZFyUNXkhKEDvEsJPDRqWX
+         t1+g==
+X-Gm-Message-State: APjAAAXFBWOHt78HZq+C+icVBLbhSlF21dcaGtZQ3X6AIPBY9SR5ru6w
+        n9fuekeWD+AJsE7yeRDd5gKE+SOOnM0H4MlftMASKQLQ
+X-Google-Smtp-Source: APXvYqwwmxRCSFj9sJbzQPABF0bNL3n2eVxig7vkghJneMgMA+8nb9Mvfs5ZMMG0vmZkAfGzQaeCqqDKecK3AD6VXmo=
+X-Received: by 2002:a67:8709:: with SMTP id j9mr86576230vsd.35.1564752532191;
+ Fri, 02 Aug 2019 06:28:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <1564589857-17720-1-git-send-email-uli+renesas@fpond.eu> <1564589857-17720-2-git-send-email-uli+renesas@fpond.eu>
-In-Reply-To: <1564589857-17720-2-git-send-email-uli+renesas@fpond.eu>
+References: <75156391-9ca7-2140-9db6-6c3e65d1f278@raspberrypi.org>
+ <CAPDyKFqbZYR1apZQY9NbHb1d9LdeHMchHjmMKnPzzRZqosh-Xg@mail.gmail.com> <54d45628-14f4-514b-f5cb-18bf4f7baf63@raspberrypi.org>
+In-Reply-To: <54d45628-14f4-514b-f5cb-18bf4f7baf63@raspberrypi.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 2 Aug 2019 15:24:46 +0200
-Message-ID: <CAPDyKFotQvTAC8OVVRiEqLc0ij3XNVdL3eyNHioK0YEWxvER0A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] mmc: tmio: leave clock handling to runtime PM if enabled
-To:     Ulrich Hecht <uli+renesas@fpond.eu>
-Cc:     Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Magnus Damm <magnus.damm@gmail.com>
+Date:   Fri, 2 Aug 2019 15:28:16 +0200
+Message-ID: <CAPDyKFpKAaeLtppQAv5O1CW2FcF5Pa=-k+PEr4ppO-Mc6RN3-w@mail.gmail.com>
+Subject: Re: Possible bug in sdhci_set_power_reg
+To:     Phil Elwell <phil@raspberrypi.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 31 Jul 2019 at 18:17, Ulrich Hecht <uli+renesas@fpond.eu> wrote:
->
-> This fixes a clock imbalance that occurs on Renesas systems because the S=
-D
-> clock is handled by both runtime PM and the hardware driver. After a
-> suspend/resume cycle both enable the same clock, resulting in an enable
-> count of 2 even if the clock is only used by one device.
->
-> See https://www.spinics.net/lists/linux-mmc/msg44431.html for details.
->
-> This patch removes the clock handling from the driver's runtime PM
-> callbacks and turns the clock off after probing if the device has a power
-> domain attached.
->
-> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Signed-off-by: Ulrich Hecht <uli+renesas@fpond.eu>
-> Tested-by: Niklas S=C3=B6derlund <niklas.soderlund@ragnatech.se>
-> ---
->  drivers/mmc/host/tmio_mmc_core.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc=
-_core.c
-> index 31ffcc3..733ff96 100644
-> --- a/drivers/mmc/host/tmio_mmc_core.c
-> +++ b/drivers/mmc/host/tmio_mmc_core.c
-> @@ -1260,9 +1260,14 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_hos=
-t)
->         /* See if we also get DMA */
->         tmio_mmc_request_dma(_host, pdata);
->
-> -       pm_runtime_set_active(&pdev->dev);
-> +#ifdef CONFIG_PM
-> +       /* PM handles the clock; disable it so it won't be enabled twice.=
- */
-> +       if (_host->clk_disable && pdev->dev.pm_domain)
++ Adrian
 
-Hmm.
+On Fri, 2 Aug 2019 at 15:23, Phil Elwell <phil@raspberrypi.org> wrote:
+>
+> Hi Uffe,
+>
+> On 02/08/2019 14:15, Ulf Hansson wrote:
+> > On Tue, 30 Jul 2019 at 15:17, Phil Elwell <phil@raspberrypi.org> wrote:
+> >>
+> >> Hi MMC team,
+> >>
+> >> I've spent some time trying to add a regulator to control power to an SD card
+> >> (vmmc-supply) on an SDHCI-equipped system. After a few false starts and red herrings
+> >> I found that powering up the regulator during the boot process was effectively disabling
+> >> the SDHCI controller. Note that this was despite having regulator-boot-on set in the
+> >> device tree.
+> >>
+> >> The problem seems to be in sdhci_set_power_reg:
+> >>
+> >>         mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, vdd);
+> >>
+> >>         if (mode != MMC_POWER_OFF)
+> >>                 sdhci_writeb(host, SDHCI_POWER_ON, SDHCI_POWER_CONTROL);
+> >>         else
+> >>                 sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
+> >>
+> >> This looks plausible for the MMC_POWER_OFF case, but setting the SDHCI_POWER_CONTROL
+> >> register to SDHCI_POWER_ON (0x01) has the side effect of settings the SD Bus Voltage
+> >> Select bits to 0b000 (a reserved value).
+> >>
+> >> sdhci_set_power_noreg() includes logic to calculate the correct values for the voltage
+> >> select bits, so I found that (in my limited test cases) replacing the if/else above
+> >> with a chain call to sdhci_set_power_noreg() was sufficient to get everything working.
+> >>
+> >> Can anyone tell me what I've been doing wrong, or suggest a better "fix"?
+> >
+> > There are other sdhci variants having the similar needs, hence we have
+> > the flexibility available via using the optional ->set_power()
+> > callback.
+> >
+> > Have a look at sdhci_arasan_set_power(), for example.
+>
+> I don't understand. Can you explain what writing 0x0001 to the SDHCI_POWER_CONTROL register
+> is supposed to do according to the specification? And why is the Arasan SDHCI implementation
+> not the default?
 
-This seems to work for most cases of yours, but it's fragile, because
-how do you know that the pm_domain above is managing the clock? You
-don't.
+Good question, but unfortunate I don't know the SDHCI spec in that
+great detail. And in the end, it has turned out that variants seems to
+differs in regards to this register.
 
-> +               _host->clk_disable(_host);
-> +       pm_runtime_get_sync(&pdev->dev);
->         pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
->         pm_runtime_use_autosuspend(&pdev->dev);
-> +#endif
->
->         ret =3D mmc_add_host(mmc);
->         if (ret)
-> @@ -1325,7 +1330,8 @@ int tmio_mmc_host_runtime_suspend(struct device *de=
-v)
->         if (host->clk_cache)
->                 host->set_clock(host, 0);
->
-> -       tmio_mmc_clk_disable(host);
-> +       if (!dev->pm_domain)
-> +               tmio_mmc_clk_disable(host);
->
->         return 0;
->  }
-> @@ -1340,7 +1346,9 @@ int tmio_mmc_host_runtime_resume(struct device *dev=
-)
->  {
->         struct tmio_mmc_host *host =3D dev_get_drvdata(dev);
->
-> -       tmio_mmc_clk_enable(host);
-> +       if (!dev->pm_domain)
-> +               tmio_mmc_clk_enable(host);
-> +
->         tmio_mmc_hw_reset(host->mmc);
->
->         if (host->clk_cache)
-> --
-> 2.7.4
->
-
-I am going to think a bit more about this, but at this point, my
-gut-feeling is that may need to add some helper functions to let genpd
-and/or the pm_clk framework, to share some internal information with
-drivers.
+I looped in Adrian, to see if he has some comments.
 
 Kind regards
 Uffe
