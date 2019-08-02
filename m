@@ -2,64 +2,81 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD6F57FD53
-	for <lists+linux-mmc@lfdr.de>; Fri,  2 Aug 2019 17:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F238A7FD55
+	for <lists+linux-mmc@lfdr.de>; Fri,  2 Aug 2019 17:16:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730173AbfHBPQw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 2 Aug 2019 11:16:52 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:44019 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729945AbfHBPQv (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Aug 2019 11:16:51 -0400
-Received: by mail-ua1-f66.google.com with SMTP id o2so29825885uae.10
-        for <linux-mmc@vger.kernel.org>; Fri, 02 Aug 2019 08:16:51 -0700 (PDT)
+        id S2390091AbfHBPQ4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 2 Aug 2019 11:16:56 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:45431 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729945AbfHBPQz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Aug 2019 11:16:55 -0400
+Received: by mail-vs1-f67.google.com with SMTP id h28so51516149vsl.12
+        for <linux-mmc@vger.kernel.org>; Fri, 02 Aug 2019 08:16:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=yzCmRSUD3Yw1j95NclpJTRSw/F1wkFgd+JZBAOUBf9w=;
-        b=F8qhnZDFaGwCeX2/KlWpfLC+Fz+xFcyQK1mofcCzrZqwa+KjQiRZIIjSKObVIaXxSG
-         lBW9x70Idy5Be6ivrRAwDjO6YIjJKb39hbjwMXx0YtXnPeID4WuVd6JnMg9f3Pu80hda
-         yleZOkcZoUbA8JQZgMEFHvMymU3NDPknsC2FADMgYFn4ScxWU1K1b3ZYGNFkYXKcI+Bj
-         IXFjAjdDv99kVCp2qWyHrcd8FTQtDl+Qrjjejo52WeSf3HgzGMY1cqLibvRiJ97vPhRq
-         hsm0Z5fbsEUn4Tiq9RaPfM5d++sMUMVyI/wlO0XJNAlbkbCVwxAZx65Z99QXbxvsXL2Z
-         llaQ==
+        bh=02PgarY9hGDl326q3KdZGpdoyG2z5/gmo/+lY6dtD7w=;
+        b=oYUAnuQWpvva0ER9slPuzWKzdTne6KE9auRNZju1J7VZo8/tHk+wk0xJM+50nei02Y
+         38hMOnGMQSIFHpkFKcPCJxox7C6uYkv00OtYM7S4GqK7EHFzOWIKvrV16H8v60WHEp61
+         Dh4owbAJLrdIjAKcpCeZboNCniSCCpn4N5zlfljQsWHfLl1TYdTkFPdcXpeOUxzvrPXD
+         dKdbSQf4dhgmQyqpZ2DYDkxDvJzxXQJtyeXqILY5UzeQiCzYcc1ddpCYwTWYlOPJX+35
+         4ETaSN3mcWdXxxd3kJApgEb/0rPdyFdo+wB5En1GfY22RwfImLkeFCzQ3V18PRVSofDI
+         VYmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=yzCmRSUD3Yw1j95NclpJTRSw/F1wkFgd+JZBAOUBf9w=;
-        b=O1x68g1n34NjsSqcTEbrGj4snRs5eUOPAsF/xOdRrC08ar07KV7XRorInOhIUfOJS9
-         PmIXxZlSVLpLaw8TAq1i+RXViPGEL/dJH1MxOL2rNv7hGCGay0jqQqD+rgzjqEVJPhZd
-         hPL9uQlwoY28pgZcrjdJ/4kPhmQVl3mtbs+FwsD/P9vQMVAGCtH/LW49IBr8Qt/tg1mh
-         aXpKhaa/LDLqJVM8C4l6hxgA7GBLesfQDW4Nx0DvcRKv76ivNj2DCA4rr7Mh4be2MdKg
-         QAjK/MuhpvQnAK7PhOxzKc/RYmHjgVfJETgT/1Ew6wmTLfH6h+/9IuNPUiQKtZvEhVPO
-         DazQ==
-X-Gm-Message-State: APjAAAX7z616GHDre/cvnviSoP/S4esCfhMprtMqNoCbJzZmtROix+U8
-        nLoUhMScAtfc7Wb3SWTDWmOgv/ePiXmsmCLqvvjjyQ==
-X-Google-Smtp-Source: APXvYqydOkSz0W91aws3vkgzA8b65rxBdM8mAAgkpODpZ9gacEoI0vSG2lwH3xqYupJGRINzmn9jZ3fSLz5mNT6NaQc=
-X-Received: by 2002:ab0:5973:: with SMTP id o48mr7366761uad.19.1564759010814;
- Fri, 02 Aug 2019 08:16:50 -0700 (PDT)
+        bh=02PgarY9hGDl326q3KdZGpdoyG2z5/gmo/+lY6dtD7w=;
+        b=eNwQMKHqlIzlMApXE9CwNvj4mjAWNFKnlZyYnq7c1CLWYfOEUkgGsIwvoKTGD3z76m
+         rW7iAKHxUH8qJNCGyT3lKqUc5P+PQkzsjNKUvljN5wSdn7mHf5+ijUhHGCsGyDkzTo2S
+         Zw8xvxIssXUJNSmq4j81c1++t9AofmAIqrcH5ZsDrRuCzb3offh7oMniSN6U0o/88ujk
+         QndniSScQtzPTkpW8hi/Nhd1XWKlYK7newaosCbY2UrCmO1HxoJixkK74w0QyJZybjxj
+         5XHr8HXUOmU5d5LpBBWVsjxzaLOY8glp1SwC7EpQsYUAs6RiGW4ItQwHzL7aasVJya1/
+         FpXQ==
+X-Gm-Message-State: APjAAAWmkftwt4R/aKbI2YJjPvCliPJqtwjDCjNbNCcnKEpu7xVUNTLm
+        nH2UvtD05Vicbv3Wh9UZtkj7UKM/M4IYXeabHH7plA==
+X-Google-Smtp-Source: APXvYqwoy4HVJG+PFUlM8UABxT8+fEnJlhCe2cFSBeGIXL/cFE3IS8ytrhzDhqLehfiGAH1qqaGRCFWDqNb60AZHaeo=
+X-Received: by 2002:a67:6203:: with SMTP id w3mr19595138vsb.200.1564759014867;
+ Fri, 02 Aug 2019 08:16:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190730060723.21715-1-adrian.hunter@intel.com>
-In-Reply-To: <20190730060723.21715-1-adrian.hunter@intel.com>
+References: <20190729000259.GA24022@embeddedor>
+In-Reply-To: <20190729000259.GA24022@embeddedor>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 2 Aug 2019 17:16:14 +0200
-Message-ID: <CAPDyKFqKQw95aP+dDEz_EWW6AGa1NPQcMpm8xJb0LSFsRiXr6g@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-pci: Add another Id for Intel CML
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>
+Date:   Fri, 2 Aug 2019 17:16:18 +0200
+Message-ID: <CAPDyKFpv0CW2G9ServNX9UKEtGrHRK=u9KoQWfZ8LyQ6Gy3-KQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-s3c: Mark expected switch fall-through
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ben Dooks <ben-linux@fluff.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Kees Cook <keescook@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 30 Jul 2019 at 08:08, Adrian Hunter <adrian.hunter@intel.com> wrote:
+On Mon, 29 Jul 2019 at 02:03, Gustavo A. R. Silva
+<gustavo@embeddedor.com> wrote:
 >
-> Add another PCI Id for Intel CML.
+> Mark switch cases where we are expecting to fall through.
 >
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> This patch fixes the following warnings:
+>
+> drivers/mmc/host/sdhci-s3c.c: In function 'sdhci_s3c_probe':
+> drivers/mmc/host/sdhci-s3c.c:613:19: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    host->mmc->caps |= MMC_CAP_8_BIT_DATA;
+> drivers/mmc/host/sdhci-s3c.c:614:2: note: here
+>   case 4:
+>   ^~~~
+>
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 
 Applied for next, thanks!
 
@@ -68,34 +85,21 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-pci-core.c | 1 +
->  drivers/mmc/host/sdhci-pci.h      | 1 +
->  2 files changed, 2 insertions(+)
+>  drivers/mmc/host/sdhci-s3c.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-> index 30d6051cd1d5..e1ca185d7328 100644
-> --- a/drivers/mmc/host/sdhci-pci-core.c
-> +++ b/drivers/mmc/host/sdhci-pci-core.c
-> @@ -1672,6 +1672,7 @@ static const struct pci_device_id pci_ids[] = {
->         SDHCI_PCI_DEVICE(INTEL, EHL_SD,    intel_byt_sd),
->         SDHCI_PCI_DEVICE(INTEL, CML_EMMC,  intel_glk_emmc),
->         SDHCI_PCI_DEVICE(INTEL, CML_SD,    intel_byt_sd),
-> +       SDHCI_PCI_DEVICE(INTEL, CMLH_SD,   intel_byt_sd),
->         SDHCI_PCI_DEVICE(O2, 8120,     o2),
->         SDHCI_PCI_DEVICE(O2, 8220,     o2),
->         SDHCI_PCI_DEVICE(O2, 8221,     o2),
-> diff --git a/drivers/mmc/host/sdhci-pci.h b/drivers/mmc/host/sdhci-pci.h
-> index cdd15f357d01..1abc9d47a4c0 100644
-> --- a/drivers/mmc/host/sdhci-pci.h
-> +++ b/drivers/mmc/host/sdhci-pci.h
-> @@ -54,6 +54,7 @@
->  #define PCI_DEVICE_ID_INTEL_EHL_SD     0x4b48
->  #define PCI_DEVICE_ID_INTEL_CML_EMMC   0x02c4
->  #define PCI_DEVICE_ID_INTEL_CML_SD     0x02f5
-> +#define PCI_DEVICE_ID_INTEL_CMLH_SD    0x06f5
->
->  #define PCI_DEVICE_ID_SYSKONNECT_8000  0x8000
->  #define PCI_DEVICE_ID_VIA_95D0         0x95d0
+> diff --git a/drivers/mmc/host/sdhci-s3c.c b/drivers/mmc/host/sdhci-s3c.c
+> index 8e4a8ba33f05..cefa0fb8cfde 100644
+> --- a/drivers/mmc/host/sdhci-s3c.c
+> +++ b/drivers/mmc/host/sdhci-s3c.c
+> @@ -611,6 +611,7 @@ static int sdhci_s3c_probe(struct platform_device *pdev)
+>         switch (pdata->max_width) {
+>         case 8:
+>                 host->mmc->caps |= MMC_CAP_8_BIT_DATA;
+> +               /* Fall through */
+>         case 4:
+>                 host->mmc->caps |= MMC_CAP_4_BIT_DATA;
+>                 break;
 > --
-> 2.17.1
+> 2.22.0
 >
