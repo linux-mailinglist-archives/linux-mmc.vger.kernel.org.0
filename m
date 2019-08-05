@@ -2,78 +2,161 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A96B58230E
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2019 18:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1143825B1
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2019 21:43:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728818AbfHEQtX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 5 Aug 2019 12:49:23 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:32975 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728800AbfHEQtX (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 5 Aug 2019 12:49:23 -0400
-Received: by mail-io1-f68.google.com with SMTP id z3so27570117iog.0
-        for <linux-mmc@vger.kernel.org>; Mon, 05 Aug 2019 09:49:22 -0700 (PDT)
+        id S1727802AbfHETn3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 5 Aug 2019 15:43:29 -0400
+Received: from mail-ua1-f43.google.com ([209.85.222.43]:42333 "EHLO
+        mail-ua1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727460AbfHETn2 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 5 Aug 2019 15:43:28 -0400
+Received: by mail-ua1-f43.google.com with SMTP id a97so32686327uaa.9;
+        Mon, 05 Aug 2019 12:43:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=hnBfgMUhbuoMvEHBnoJ2TOJt3vuQ5+Y92NYXZMdDU5A=;
+        b=nEufWhQjmeZu52XJi7Yp2c4mTZl91OVsFqy/+romTM7A5GQOscm2A3ZNNUsF1gtJB8
+         lzT4QTZa7kPOZQrxsJBzyW+LnR1+tEI1HcV0ldsmEotULguKk4CptC/gmRBMVxjbning
+         pUmwLVG0WqqlYA/SqR1DpRRSKd7Z97MeIDtD+d7+Q519QR5Llxi9u97aBgLsSb2XegU0
+         tJX5EX9k9lOxMnpXMaiEUHdDIcu9SdEJaX3bY53Y0WmrrYERL/IV11q5/7ZxIdEB56ny
+         XkE5ZBJLfxdThmE71tkf5dnkUnVdEfcCF1TXR5ZzwVHqiwcGPAi09tfOiltqX/ewniv7
+         RKUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Iy0zgi7c5Mt6BCyigJ+sau0NZkAGLjojiGbTtlpXmX4=;
-        b=SGoFnGh6OBqQV9eEa9uXILOEqJE8mSEdnIsSry/DRGUI5DiDOqODkIS0c9K82Nes92
-         Rtlqix7tIKkmb/ZXdfE2gKNY9m3Q8uDPpFoutP+m09X+ydszUz2tZ6m/DHTw4NnQ1rR9
-         QlJYZsLQOI2v5hK3QhMKZnDFp+zWjaJm10MzXc+F2XW2GpF1ER105Qr+PB3A74rQQ2o7
-         pO/KEGNboKckjrsIlxYm+bwEeO0pvrjWUMqLAMEhEA83acnhOvwWWKrW1QEeIXMNnxQN
-         m4bsx0ySZT/Cbrd0AeAQ7X50UocoyITmB1uIPX+cfhfBKEdaBQzcDMaDdqb+jx5wik7O
-         lYkg==
-X-Gm-Message-State: APjAAAXjv/HRtbMVsQF8KfC2P5OPULRve6x2/Wo69mdZagEjEeH1FZ2Z
-        StCmtN949vNcZFjrqywaqyQh2Q==
-X-Google-Smtp-Source: APXvYqylsgW6+SJQlfTE/tTlTjRGeYSraVjmnVSRxvw6S4E37w75djUCGF7oXf/2sEbet6SG4H43dw==
-X-Received: by 2002:a02:c6a9:: with SMTP id o9mr101484652jan.90.1565023762315;
-        Mon, 05 Aug 2019 09:49:22 -0700 (PDT)
-Received: from google.com ([2620:15c:183:0:5118:89b3:1f18:4090])
-        by smtp.gmail.com with ESMTPSA id e188sm75590176ioa.3.2019.08.05.09.49.20
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 05 Aug 2019 09:49:21 -0700 (PDT)
-Date:   Mon, 5 Aug 2019 10:49:17 -0600
-From:   Raul Rangel <rrangel@chromium.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=hnBfgMUhbuoMvEHBnoJ2TOJt3vuQ5+Y92NYXZMdDU5A=;
+        b=KtzjbA3yF+If+tlN8XIHk0RFOGGz5T/jQAsJAUYX705c/MchJfP2GNiI8Af/a/RHES
+         Fi0KgSOVUkWSDnglb6XrYPkP1bmYgpKe4yE+IqiaePSmGqq9r+EZz065I9ug6JeT1ini
+         LVrWIVTZIlgZvY1rpsM8ykuUE4EYy3DN8a2B5sOTu/wSuk21noQvydxbqgY93OVjWSoH
+         fu49X7qV0GcJq93rd7mgkB/NR+4dsVdS2CzK8qD1QVI7Hytm1LS/wNdC/i88qJQlqgT7
+         xjZXFjIOovYs9I2gb4iQXW0s3jGPvQ4iPVFbWriQGPf31Y32s1GIpN82zZGCDyoAEwHL
+         uyAQ==
+X-Gm-Message-State: APjAAAUnfErF03hklGnF4Lceoj4dLrkXR2j5TFVarfgdthyJCO+OBNq+
+        29kPeI7dHEySox+XgZ5XYmLuK25L3nZp8agOPMQ=
+X-Google-Smtp-Source: APXvYqzxvGwZeh93FeELaUBChg0YC4mPQ/BKXCHfwDZZyQqVlaTwCX4n1E7Fl+rpmHrNi+eP4ueB0pCr+IDmhcjU3co=
+X-Received: by 2002:ab0:5922:: with SMTP id n31mr19694603uad.103.1565034207178;
+ Mon, 05 Aug 2019 12:43:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAOGqxeVeEq803rrtGrnubRA8cP3dRCXsU15ss3pS1q6ik+k8Bw@mail.gmail.com>
+ <7610bbc9-83d8-ee98-1425-07bb65448541@intel.com> <CAOGqxeVR3XzAQ-yTH35hyT3KpL11nTwMY1Ca96ZW=K=PiWMnHA@mail.gmail.com>
+ <23ce5519-cb4b-4d85-4bfc-3e438212ec7f@intel.com> <CAOGqxeVjj9Leok-Oph-kNA92fKhdBHzwJZ643uND8GV_8VaHCw@mail.gmail.com>
+ <bacb9b93-e7fa-453e-2b4f-8056c9ab34b8@intel.com>
+In-Reply-To: <bacb9b93-e7fa-453e-2b4f-8056c9ab34b8@intel.com>
+From:   Alan Cooper <alcooperx@gmail.com>
+Date:   Mon, 5 Aug 2019 15:43:52 -0400
+Message-ID: <CAOGqxeUwXEYr493N-=jNBxHwDgWyAiKfER=mJbnEMMAL2EQF7g@mail.gmail.com>
+Subject: Re: Issue with sequence to switch to HS400
 To:     Adrian Hunter <adrian.hunter@intel.com>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Daniel Kurtz <djkurtz@chromium.org>,
-        hongjiefang <hongjiefang@asrmicro.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Kyle Roeschley <kyle.roeschley@ni.com>,
-        Avri Altman <avri.altman@wdc.com>
-Subject: Re: [RFC PATCH 1/2] mmc: sdhci: Manually check card status after
- reset
-Message-ID: <20190805164917.GA93879@google.com>
-References: <20190501175457.195855-1-rrangel@chromium.org>
- <CAPDyKFpL1nHt1E1zgS-iDZf_KDWk2CN32Lvr+5Nmo8CtB2VCWg@mail.gmail.com>
- <20190607160553.GA185100@google.com>
- <CAPDyKFout6AY2Q92pYQ-KPH0NENq1-SkYivkDxjjb=uB=tKXuQ@mail.gmail.com>
- <20190610163252.GA227032@google.com>
- <fcdf6cc4-2729-abe2-85c8-b0d04901c5ae@intel.com>
- <20190619145625.GA50985@google.com>
- <20190801151624.GA155392@google.com>
- <a9a8d3f5-d600-7c8d-8734-cf6a017849c5@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a9a8d3f5-d600-7c8d-8734-cf6a017849c5@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Aug 02, 2019 at 07:58:20AM +0300, Adrian Hunter wrote:
-> 
-> You seem not to have answered to my suggestion for a change to sdhci_reinit() here:
-> 
-> 	https://lore.kernel.org/lkml/fcdf6cc4-2729-abe2-85c8-b0d04901c5ae@intel.com/
-> 
-I thought I answered it here: https://lore.kernel.org/lkml/20190619145625.GA50985@google.com/#t
-
-Did I miss something?
+No problem.
 
 Thanks
+Al
+
+On Tue, Jul 30, 2019 at 4:00 AM Adrian Hunter <adrian.hunter@intel.com> wro=
+te:
+>
+> On 26/07/19 12:37 AM, Alan Cooper wrote:
+> > That's an even better solution and it gets my HS400 mode working.
+> > Will you add this change or should I?
+>
+> You, if you wouldn't mind.
+>
+> >
+> > Thanks
+> > Al
+> >
+> > On Thu, Jul 25, 2019 at 3:33 AM Adrian Hunter <adrian.hunter@intel.com>=
+ wrote:
+> >>
+> >> On 23/07/19 3:34 PM, Alan Cooper wrote:
+> >>> On Tue, Jul 23, 2019 at 1:21 AM Adrian Hunter <adrian.hunter@intel.co=
+m> wrote:
+> >>>>
+> >>>> On 23/07/19 1:31 AM, Alan Cooper wrote:
+> >>>>> I'm having a problem with a new SD/MMC controller and PHY in our
+> >>>>> latest SoC's. The issue I'm seeing is that I can't switch into HS40=
+0
+> >>>>> mode. This looks like something the driver is doing that doesn't me=
+et
+> >>>>> the JEDEC spec. In the "HS400 timing mode selection" section of the
+> >>>>> JEDEC spec , in step 7 it states:
+> >>>>>
+> >>>>> 7) Set the =E2=80=9CTiming Interface=E2=80=9D parameter in the HS_T=
+IMING [185] field
+> >>>>> of the Extended CSD register to 0x1 to switch to High Speed mode an=
+d
+> >>>>> then set the clock frequency to a value not greater than 52 MHz.
+> >>>>>
+> >>>>> In the function mmc_select_hs400() in mmc.c, I see that a switch
+> >>>>> command is done to set the eMMC device to HS mode and then
+> >>>>> mmc_set_timing(card->host, MMC_TIMING_MMC_HS) is used to change the
+> >>>>> controller to HS mode. The problem is that the "SD Host Controller
+> >>>>> Standard Specification" states that "UHS Mode Select" field of the
+> >>>>> "Host Control 2 Register" controls the mode when the "1.8V Signalin=
+g
+> >>>>> Enable" bit in the same register is set, so mmc_set_timing() is
+> >>>>> actually leaving the controller in SDR12 mode and mmc_select_hs400(=
+)
+> >>>>> will then set the clock to 52MHz. This causes our PHY to detect an
+> >>>>> illegal combination and return an error.
+> >>>>>
+> >>>>> I think the easiest fix would be to change mmc_set_timing(card->hos=
+t,
+> >>>>> MMC_TIMING_MMC_HS) to mmc_set_timing(card->host,
+> >>>>> MMC_TIMING_UHS_SDR25). The other possibility would be to change
+> >>>>> mmc_set_timing to handle the "1.8V Signaling Enable" bit properly.
+> >>>>> I'll submit a patch based on the feedback I get.
+> >>>>
+> >>>> eMMC is governed by JEDEC specs not SD specs.
+> >>>
+> >>> My understanding is that JEDEC does not have a host controller spec s=
+o
+> >>> this driver uses the "SD Host Controller Standard Specification".
+> >>
+> >> There is no spec for using eMMC with SDHCI.
+> >>
+> >>>
+> >>>>
+> >>>> Please consider making a change in your driver instead.  For example=
+, hook
+> >>>> ->set_ios() and if 1.8V is enabled and timing is set to MMC_TIMING_M=
+MC_HS
+> >>>> then change it to MMC_TIMING_UHS_SDR25.
+> >>>
+> >>> That's an easy fix, but it still leaves all other drivers/systems
+> >>> temporarily using SDR12 at 52MHz during the switch to HS400.
+> >>
+> >> Yes, I changed my mind.  Does this work:
+> >>
+> >> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> >> index 59acf8e3331e..f9d241458dcd 100644
+> >> --- a/drivers/mmc/host/sdhci.c
+> >> +++ b/drivers/mmc/host/sdhci.c
+> >> @@ -1849,7 +1849,9 @@ void sdhci_set_uhs_signaling(struct sdhci_host *=
+host, unsigned timing)
+> >>                 ctrl_2 |=3D SDHCI_CTRL_UHS_SDR104;
+> >>         else if (timing =3D=3D MMC_TIMING_UHS_SDR12)
+> >>                 ctrl_2 |=3D SDHCI_CTRL_UHS_SDR12;
+> >> -       else if (timing =3D=3D MMC_TIMING_UHS_SDR25)
+> >> +       else if (timing =3D=3D MMC_TIMING_SD_HS ||
+> >> +                timing =3D=3D MMC_TIMING_MMC_HS ||
+> >> +                timing =3D=3D MMC_TIMING_UHS_SDR25)
+> >>                 ctrl_2 |=3D SDHCI_CTRL_UHS_SDR25;
+> >>         else if (timing =3D=3D MMC_TIMING_UHS_SDR50)
+> >>                 ctrl_2 |=3D SDHCI_CTRL_UHS_SDR50;
+> >
+>
