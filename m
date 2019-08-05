@@ -2,177 +2,142 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C54A81617
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2019 11:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 702E5816F3
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2019 12:24:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728231AbfHEJ5O (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 5 Aug 2019 05:57:14 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:32868 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728232AbfHEJ5K (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 5 Aug 2019 05:57:10 -0400
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x758asW8025758;
-        Mon, 5 Aug 2019 11:57:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type; s=STMicroelectronics;
- bh=FIN1+WtDIWXZ7utxK2//s0wwSgswbkM3U9ncM0xs0qw=;
- b=YPP9bYTuL6rDIP5MrIbvl/sp/wjHoVvcQnT78jxzrbRrjEjqnFG2G2pPBS/gHUE6UKMr
- v26o/hzkPlSr46QjhMd7uOnnqYTcGqcIqa5VZXalTnmhrLOqyqs8Xl9u+qvbAkBPyCjU
- OCwBYagL1SpMi69hw1Cl4Ajpqjgft57GLuIaKmIlgdy9V7pCkXYcZFACPCrqy9kcCoL+
- Q2QqJZyjoqVsQs1W0iUuGP6CmafzDy/NS+RAU/r/EW/yh1WIBQyt34Uf2eG9gvlPrwr9
- GHzPmL1ExSayKiTHaU2almPfXzmSkbeQArxdSLfGMGW39E712i+KjOEeECouXOJrKWgw nQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx08-00178001.pphosted.com with ESMTP id 2u515mamuf-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 05 Aug 2019 11:57:02 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id BDA2C34;
-        Mon,  5 Aug 2019 09:57:01 +0000 (GMT)
-Received: from Webmail-eu.st.com (Safex1hubcas24.st.com [10.75.90.94])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id AF6A13023C1;
-        Mon,  5 Aug 2019 11:57:01 +0200 (CEST)
-Received: from SAFEX1HUBCAS23.st.com (10.75.90.47) by Safex1hubcas24.st.com
- (10.75.90.94) with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 5 Aug 2019
- 11:57:01 +0200
-Received: from lmecxl0923.lme.st.com (10.48.0.237) by webmail-ga.st.com
- (10.75.90.48) with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 5 Aug 2019
- 11:57:01 +0200
-From:   Ludovic Barre <ludovic.Barre@st.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        id S1727830AbfHEKYC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 5 Aug 2019 06:24:02 -0400
+Received: from inva020.nxp.com ([92.121.34.13]:54060 "EHLO inva020.nxp.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727158AbfHEKYC (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 5 Aug 2019 06:24:02 -0400
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 2D2D11A00F6;
+        Mon,  5 Aug 2019 12:23:59 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7250E1A00F5;
+        Mon,  5 Aug 2019 12:23:52 +0200 (CEST)
+Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 1B366402B5;
+        Mon,  5 Aug 2019 18:23:44 +0800 (SGT)
+From:   Yinbo Zhu <yinbo.zhu@nxp.com>
+To:     Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
         Rob Herring <robh+dt@kernel.org>
-CC:     <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Ludovic Barre <ludovic.barre@st.com>
-Subject: [PATCH V4 3/3] mmc: mmci: sdmmc: add busy_complete callback
-Date:   Mon, 5 Aug 2019 11:56:26 +0200
-Message-ID: <20190805095626.25998-4-ludovic.Barre@st.com>
+Cc:     yinbo.zhu@nxp.com, xiaobo.xie@nxp.com, jiafei.pan@nxp.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        yangbo.lu@nxp.com, Ashish Kumar <Ashish.Kumar@nxp.com>
+Subject: [PATCH v4] arm64: dts: ls1028a: Add esdhc node in dts
+Date:   Mon,  5 Aug 2019 18:26:41 +0800
+Message-Id: <20190805102641.3732-1-yinbo.zhu@nxp.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190805095626.25998-1-ludovic.Barre@st.com>
-References: <20190805095626.25998-1-ludovic.Barre@st.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.48.0.237]
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-05_04:,,
- signatures=0
+X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Ludovic Barre <ludovic.barre@st.com>
+From: Ashish Kumar <Ashish.Kumar@nxp.com>
 
-This patch adds a specific busy_complete callback for sdmmc variant.
+This patch is to add esdhc node and enable SD UHS-I,
+eMMC HS200 for ls1028ardb/ls1028aqds board.
 
-sdmmc has 2 status flags:
--busyd0: This is a hardware status flag (inverted value of d0 line).
-it does not generate an interrupt.
--busyd0end: This indicates only end of busy following a CMD response.
-On busy to Not busy changes, an interrupt is generated (if unmask)
-and BUSYD0END status flag is set. Status flag is cleared by writing
-corresponding interrupt clear bit in MMCICLEAR.
-
-The legacy busy completion monitors step by step the busy progression
-start/in-progress/end. On sdmmc variant, the monitoring of busy steps
-is difficult and not adapted (the software can miss a step and locks
-the monitoring), the sdmmc has just need to wait the busyd0end bit
-without monitoring all the changes.
-
-Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
+Signed-off-by: Ashish Kumar <Ashish.Kumar@nxp.com>
+Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
+Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
 ---
- drivers/mmc/host/mmci.c             |  3 +++
- drivers/mmc/host/mmci.h             |  1 +
- drivers/mmc/host/mmci_stm32_sdmmc.c | 38 +++++++++++++++++++++++++++++
- 3 files changed, 42 insertions(+)
+Change in v4:
+		put esdhc 'status' at end of property list.
+		sort the nodes in unit-address
+		Use IRQ_TYPE_LEVEL_HIGH represent 0x4 in "interrupts = <0 28 0x4>"
 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 17948615d4a5..2751415d0fd1 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -263,6 +263,9 @@ static struct variant_data variant_stm32_sdmmc = {
- 	.datalength_bits	= 25,
- 	.datactrl_blocksz	= 14,
- 	.stm32_idmabsize_mask	= GENMASK(12, 5),
-+	.busy_timeout		= true,
-+	.busy_detect_flag	= MCI_STM32_BUSYD0,
-+	.busy_detect_mask	= MCI_STM32_BUSYD0ENDMASK,
- 	.init			= sdmmc_variant_init,
+ arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts |  8 +++++++
+ arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts | 13 +++++++++++
+ arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi    | 27 +++++++++++++++++++++++
+ 3 files changed, 48 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
+index de6ef39..5e14e5a 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dts
+@@ -95,6 +95,14 @@
+ 	status = "okay";
  };
  
-diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
-index 03eb21f1c258..64ae7720477c 100644
---- a/drivers/mmc/host/mmci.h
-+++ b/drivers/mmc/host/mmci.h
-@@ -167,6 +167,7 @@
- #define MCI_ST_CARDBUSY		(1 << 24)
- /* Extended status bits for the STM32 variants */
- #define MCI_STM32_BUSYD0	BIT(20)
-+#define MCI_STM32_BUSYD0END	BIT(21)
++&esdhc {
++	status = "okay";
++};
++
++&esdhc1 {
++	status = "okay";
++};
++
+ &i2c0 {
+ 	status = "okay";
  
- #define MMCICLEAR		0x038
- #define MCI_CMDCRCFAILCLR	(1 << 0)
-diff --git a/drivers/mmc/host/mmci_stm32_sdmmc.c b/drivers/mmc/host/mmci_stm32_sdmmc.c
-index 8e83ae6920ae..bb5499cc9e81 100644
---- a/drivers/mmc/host/mmci_stm32_sdmmc.c
-+++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
-@@ -282,6 +282,43 @@ static u32 sdmmc_get_dctrl_cfg(struct mmci_host *host)
- 	return datactrl;
- }
- 
-+bool sdmmc_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
-+{
-+	void __iomem *base = host->base;
-+	u32 busy_d0, busy_d0end, mask;
-+
-+	mask = readl_relaxed(base + MMCIMASK0);
-+	busy_d0end = readl_relaxed(base + MMCISTATUS) & MCI_STM32_BUSYD0END;
-+	busy_d0 = readl_relaxed(base + MMCISTATUS) & MCI_STM32_BUSYD0;
-+
-+	/* complete if there is an error or busy_d0end */
-+	if ((status & err_msk) || busy_d0end)
-+		goto complete;
-+
-+	/*
-+	 * On response the busy signaling is reflected in the BUSYD0 flag.
-+	 * if busy_d0 is in-progress we must activate busyd0end interrupt
-+	 * to wait this completion. Else this request has no busy step.
-+	 */
-+	if (busy_d0) {
-+		if (!host->busy_status) {
-+			writel_relaxed(mask | host->variant->busy_detect_mask,
-+				       base + MMCIMASK0);
-+			host->busy_status = status &
-+				(MCI_CMDSENT | MCI_CMDRESPEND);
-+		}
-+		return false;
-+	}
-+
-+complete:
-+	writel_relaxed(mask & ~host->variant->busy_detect_mask,
-+		       base + MMCIMASK0);
-+	writel_relaxed(host->variant->busy_detect_mask, base + MMCICLEAR);
-+	host->busy_status = 0;
-+
-+	return true;
-+}
-+
- static struct mmci_host_ops sdmmc_variant_ops = {
- 	.validate_data = sdmmc_idma_validate_data,
- 	.prep_data = sdmmc_idma_prep_data,
-@@ -292,6 +329,7 @@ static struct mmci_host_ops sdmmc_variant_ops = {
- 	.dma_finalize = sdmmc_idma_finalize,
- 	.set_clkreg = mmci_sdmmc_set_clkreg,
- 	.set_pwrreg = mmci_sdmmc_set_pwrreg,
-+	.busy_complete = sdmmc_busy_complete,
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+index 9fb9113..12c9cd3 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+@@ -83,6 +83,19 @@
+ 	};
  };
  
- void sdmmc_variant_init(struct mmci_host *host)
++&esdhc {
++	sd-uhs-sdr104;
++	sd-uhs-sdr50;
++	sd-uhs-sdr25;
++	sd-uhs-sdr12;
++	status = "okay";
++	};
++
++&esdhc1 {
++	mmc-hs200-1_8v;
++	status = "okay";
++	};
++
+ &i2c0 {
+ 	status = "okay";
+ 
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+index 7975519..f299075 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+@@ -245,6 +245,33 @@
+ 			status = "disabled";
+ 		};
+ 
++		esdhc: mmc@2140000 {
++			compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
++			reg = <0x0 0x2140000 0x0 0x10000>;
++			interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
++			clock-frequency = <0>; /* fixed up by bootloader */
++			clocks = <&clockgen 2 1>;
++			voltage-ranges = <1800 1800 3300 3300>;
++			sdhci,auto-cmd12;
++			little-endian;
++			bus-width = <4>;
++			status = "disabled";
++		};
++
++		esdhc1: mmc@2150000 {
++			compatible = "fsl,ls1028a-esdhc", "fsl,esdhc";
++			reg = <0x0 0x2150000 0x0 0x10000>;
++			interrupts = <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>;
++			clock-frequency = <0>; /* fixed up by bootloader */
++			clocks = <&clockgen 2 1>;
++			voltage-ranges = <1800 1800 3300 3300>;
++			sdhci,auto-cmd12;
++			broken-cd;
++			little-endian;
++			bus-width = <4>;
++			status = "disabled";
++		};
++
+ 		duart0: serial@21c0500 {
+ 			compatible = "fsl,ns16550", "ns16550a";
+ 			reg = <0x00 0x21c0500 0x0 0x100>;
 -- 
-2.17.1
+2.9.5
 
