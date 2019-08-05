@@ -2,215 +2,99 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BF881034
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2019 04:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3741881059
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2019 04:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbfHECJ4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 4 Aug 2019 22:09:56 -0400
-Received: from new4-smtp.messagingengine.com ([66.111.4.230]:54179 "EHLO
-        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726561AbfHECJ4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 4 Aug 2019 22:09:56 -0400
+        id S1726666AbfHECvs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 4 Aug 2019 22:51:48 -0400
+Received: from new1-smtp.messagingengine.com ([66.111.4.221]:46853 "EHLO
+        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726757AbfHECvs (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 4 Aug 2019 22:51:48 -0400
 Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 252C41A49;
-        Sun,  4 Aug 2019 22:09:55 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute4.internal (MEProxy); Sun, 04 Aug 2019 22:09:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm3; bh=XBfRrOQ28Bn+dCVbtL/ZXEglGYrMofD
-        3T7NHTUbCGus=; b=mcNcSbS3jqoT+fARV0rhU/KYGsg1XoJzD6O0EzyD0fEeohG
-        Qn0ybiF/rgmUvgYm7rx9hLHJutnSr/dlBpTAo1mkdEIgE9oPY17ZOXiCanAwHx8V
-        FdHtCRu++VLAqm+TXZJC/GsddLiWKHMByiMMnXzDUNHrO6AKLGlXJV+UNWq+cQ75
-        FjTgsYe65CM+tZ+RytZpaudBtKVxNc1XSmuZwRSfTHdxuA7qhvwC+1M03HwwfukU
-        FDGYvN0w9u/VO5JtBFc7/p0P7WbmDm3Muz1XC77HM+lHVtRJ0tW1IfkGq0znccik
-        +ZowCe3p948n9SNIeURdEik60jg+syqn5x5Rh6Q==
+        by mailnew.nyi.internal (Postfix) with ESMTP id 0083CA41;
+        Sun,  4 Aug 2019 22:51:46 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Sun, 04 Aug 2019 22:51:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=from
+        :to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=fm3; bh=i0qal0AGEr2Bges+vL14pUAf+z
+        DcRqtDacbfO105sJc=; b=Y9oOz+cTp1dT+y9k89c0uF6jS0yIndtfJNF1u4HoLQ
+        KyubJDrvyoRf68NY+GsS6W7kgAUl6O9VmVHuRcXU4ah5Sl8//gs1nlI12eGbCRZv
+        BVeK6/xOvqNz6qB0N12dE0RWrCcYY163qCA6iIIM4K7r2CRKqx6t9CXhMMwheBQy
+        chtRDWXY+yyT7Q79f9UMOf50J1nIdlsCd95f589YfsUh9x0a9yHK3nsPfTxh07Sl
+        p44fD3I40yEut/wU4v3qiI4pHd3liTwupUyXoCqW4Ur1Ek9grqwpSpB9DxCKDyP2
+        nC4SG4OHqEooCSlNIre/04iNdo+uIposhTSCRJ+prRbg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=XBfRrO
-        Q28Bn+dCVbtL/ZXEglGYrMofD3T7NHTUbCGus=; b=XAhkIWjraQDNfj8Ln4XOn0
-        krfY0KMrL/WoxaX9h4DdGNeOTMkx9/nOV8LpP9AvcJmwGmPbsxevW+b+5pFhM8ND
-        +P00XNZvUiFNiGqffV2UcEUAje9ZoSkX8Ibp2pC63SWA1w4gycTGGAQPjegidwHL
-        3FH5dctwQldUwCpHc0aEdgh+auckc/yjDv083un0IODk8uq9+HvlPRknPVRmGwl6
-        34BzJl5B1nC5vQMSS7ooU8goSyhbYztyrGgfXKzTx5W5Cfhxcwfy/oRuO+XiGwh0
-        +oSc3rrGYSS2ybFnPgjCX4AgoxvoY/PvGXWW1rVvkoFO1gJFJiRjd6c3f3qY/stg
-        ==
-X-ME-Sender: <xms:8Y9HXYb7l6c3PoV6udmqdX-5qwVreBaDUpLuz8ujd_gORaw7hx1LXQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddruddtiedgheefucetufdoteggodetrfdotf
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=i0qal0AGEr2Bges+v
+        L14pUAf+zDcRqtDacbfO105sJc=; b=IAYIFF98qPYkFbby2SbF3OR5KLzHzOewm
+        gOwkeahS2KdwI2dFHuqStcqzrR9qux+C+8wXustFgY9PaUmDiZY5G2TxmEsgMgS1
+        j97E14jv24n4cV+ppLVlGswNf3XjXpyROCgnvXZdQWyrdbzSM6VhWarWyhvhTLqg
+        lDX8JBcssJ/IybNKuNB+53Z92fPzNivtTCeqverl3FS+adHiE9PvfcmqkfsKv9PF
+        Vg8twHoTEAlj4zjm7AfFV6DLVGqrLU8+uIYzyV4Rol7UIXGgXlKnJxs0DIl5b/6V
+        jHL/gpU8fs3bsLL7Xi6C21MF99mPcATvoFMBgvzXQQNyg2ChDozIg==
+X-ME-Sender: <xms:wZlHXXD0suC-nz7sWbzArC6Mypbq4If5EatWrrD9Kgm_ePEvZrBD8g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddruddtiedgiedvucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdetnhgu
-    rhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecuffhomh
-    grihhnpeguvghvihgtvghtrhgvvgdrohhrghenucfrrghrrghmpehmrghilhhfrhhomhep
-    rghnughrvgifsegrjhdrihgurdgruhenucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:8Y9HXcdxp1TCjdVnT84ZgR3Q6xoxj1Oosqj2ja9cMoSFnIpQrGwJQw>
-    <xmx:8Y9HXcCYZPX61iQHG4psCd9kqFlGT53FhzDxWp3NjlnlkNo5WnCzdQ>
-    <xmx:8Y9HXeYI9E4bCPmueGXR8dy2XGmodPJW_NoTAm6qS5pjqTdN8SnsZw>
-    <xmx:849HXdgizRiGKNWOzJOr02dYh8SsEubJJJ5mgGfYO-9us33ezf2t7A>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 9D405E00A2; Sun,  4 Aug 2019 22:09:53 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.1.6-799-g925e343-fmstable-20190729v1
-Mime-Version: 1.0
-Message-Id: <35aaa5a4-1e0d-4f64-8985-36e2c01ccc05@www.fastmail.com>
-In-Reply-To: <CAL_Jsq+oZRREV=VjYUxT3WphOa5tBaF1pvS_JKSphBY=3XB5MA@mail.gmail.com>
-References: <20190730062316.32037-1-andrew@aj.id.au>
- <20190730062316.32037-2-andrew@aj.id.au>
- <CAL_Jsq+oZRREV=VjYUxT3WphOa5tBaF1pvS_JKSphBY=3XB5MA@mail.gmail.com>
-Date:   Mon, 05 Aug 2019 11:40:17 +0930
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Rob Herring" <robh+dt@kernel.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        "Joel Stanley" <joel@jms.id.au>,
-        "Adrian Hunter" <adrian.hunter@intel.com>,
-        devicetree@vger.kernel.org,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-aspeed@lists.ozlabs.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Ryan Chen" <ryanchen.aspeed@gmail.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: mmc: Document Aspeed SD controller
-Content-Type: text/plain
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtre
+    dttdenucfhrhhomheptehnughrvgifucflvghffhgvrhihuceorghnughrvgifsegrjhdr
+    ihgurdgruheqnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkphepuddukedrvd
+    dutddrudegfedruddvheenucfrrghrrghmpehmrghilhhfrhhomheprghnughrvgifsegr
+    jhdrihgurdgruhenucevlhhushhtvghrufhiiigvpedt
+X-ME-Proxy: <xmx:wZlHXQ345z92tZP1ACqP10TCE9ZpcEwwp-7h4R9lNu4cwEpdY5sIkg>
+    <xmx:wZlHXeY5LoeDNbXS05AywJ3Z0HnfcMwSB-xO4Z32R0MrKipPVjYBtg>
+    <xmx:wZlHXc_08vgXDATORorRjBu-vlNoNjMn488L9EhWF9TC7baXsMB05Q>
+    <xmx:wplHXftMESaP-1jQepQHnAik1vm9r-oKrmGZgGO9HtuKWPmb1PlLKw>
+Received: from localhost.localdomain (ppp118-210-143-125.adl-adc-lon-bras33.tpg.internode.on.net [118.210.143.125])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 2EE18380084;
+        Sun,  4 Aug 2019 22:51:40 -0400 (EDT)
+From:   Andrew Jeffery <andrew@aj.id.au>
+To:     linux-mmc@vger.kernel.org
+Cc:     Andrew Jeffery <andrew@aj.id.au>, ulf.hansson@linaro.org,
+        robh+dt@kernel.org, mark.rutland@arm.com, joel@jms.id.au,
+        adrian.hunter@intel.com, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        ryanchen.aspeed@gmail.com
+Subject: [PATCH v4 0/2] mmc: Add support for the ASPEED SD controller
+Date:   Mon,  5 Aug 2019 12:21:53 +0930
+Message-Id: <20190805025155.9020-1-andrew@aj.id.au>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Hello,
 
+v4 of the ASPEED SDHCI driver addresses Rob's comments on the binding, making
+it utilise the new mmc-controller schema and describing the sdhci,auto-cmd12
+property.
 
-On Fri, 2 Aug 2019, at 08:29, Rob Herring wrote:
-> On Tue, Jul 30, 2019 at 12:23 AM Andrew Jeffery <andrew@aj.id.au> wrote:
-> >
-> > The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the
-> > SDIO Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit
-> > data bus if only a single slot is enabled.
-> >
-> > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> >
-> > ---
-> > v3:
-> > * Fix compatible enums
-> > * Add AST2600 compatibles
-> > * Describe #address-cells / #size-cells
-> > ---
-> >  .../devicetree/bindings/mmc/aspeed,sdhci.yaml | 100 ++++++++++++++++++
-> >  1 file changed, 100 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-> > new file mode 100644
-> > index 000000000000..dd2a00c59641
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-> > @@ -0,0 +1,100 @@
-> > +# SPDX-License-Identifier: GPL-2.0-or-later
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/mmc/aspeed,sdhci.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: ASPEED SD/SDIO/eMMC Controller
-> > +
-> > +maintainers:
-> > +  - Andrew Jeffery <andrew@aj.id.au>
-> > +  - Ryan Chen <ryanchen.aspeed@gmail.com>
-> > +
-> > +description: |+
-> > +  The ASPEED SD/SDIO/eMMC controller exposes two slots implementing the SDIO
-> > +  Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit data bus if
-> > +  only a single slot is enabled.
-> > +
-> > +  The two slots are supported by a common configuration area. As the SDHCIs for
-> > +  the slots are dependent on the common configuration area, they are described
-> > +  as child nodes.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - aspeed,ast2400-sd-controller
-> > +      - aspeed,ast2500-sd-controller
-> > +      - aspeed,ast2600-sd-controller
-> > +  reg:
-> > +    maxItems: 1
-> > +    description: Common configuration registers
-> > +  "#address-cells":
-> > +    const: 1
-> > +  "#size-cells":
-> > +    const: 1
-> > +  ranges: true
-> > +  clocks:
-> > +    maxItems: 1
-> > +    description: The SD/SDIO controller clock gate
-> > +
-> > +patternProperties:
-> > +  "^sdhci@[0-9a-f]+$":
-> 
-> This should probably have:
-> 
-> allOf:
->   - $ref: mmc-controller.yaml
-> 
-> Another new thing in 5.3. :)
+v3 can be found here:
 
-Ack.
+http://patchwork.ozlabs.org/cover/1138793/
 
-> 
-> > +    type: object
-> > +    properties:
-> > +      compatible:
-> > +        enum:
-> > +          - aspeed,ast2400-sdhci
-> > +          - aspeed,ast2500-sdhci
-> > +          - aspeed,ast2600-sdhci
-> > +      reg:
-> > +        maxItems: 1
-> > +        description: The SDHCI registers
-> > +      clocks:
-> > +        maxItems: 1
-> > +        description: The SD bus clock
-> > +      interrupts:
-> > +        maxItems: 1
-> > +        description: The SD interrupt shared between both slots
-> > +    required:
-> > +      - compatible
-> > +      - reg
-> > +      - clocks
-> > +      - interrupts
-> > +
-> > +additionalProperties: false
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - "#address-cells"
-> > +  - "#size-cells"
-> > +  - ranges
-> > +  - clocks
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/clock/aspeed-clock.h>
-> > +    sdc@1e740000 {
-> > +            compatible = "aspeed,ast2500-sd-controller";
-> > +            reg = <0x1e740000 0x100>;
-> > +            #address-cells = <1>;
-> > +            #size-cells = <1>;
-> > +            ranges = <0 0x1e740000 0x10000>;
-> > +            clocks = <&syscon ASPEED_CLK_GATE_SDCLK>;
-> > +
-> > +            sdhci0: sdhci@100 {
-> > +                    compatible = "aspeed,ast2500-sdhci";
-> > +                    reg = <0x100 0x100>;
-> > +                    interrupts = <26>;
-> > +                    sdhci,auto-cmd12;
-> 
-> Not documented. Maybe should be common, but there's only a few users.
-
-I'll document it locally for the moment.
-
-Cheers,
+Please review!
 
 Andrew
+
+Andrew Jeffery (2):
+  dt-bindings: mmc: Document Aspeed SD controller
+  mmc: Add support for the ASPEED SD controller
+
+ .../devicetree/bindings/mmc/aspeed,sdhci.yaml | 105 ++++++
+ drivers/mmc/host/Kconfig                      |  12 +
+ drivers/mmc/host/Makefile                     |   1 +
+ drivers/mmc/host/sdhci-of-aspeed.c            | 328 ++++++++++++++++++
+ 4 files changed, 446 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+ create mode 100644 drivers/mmc/host/sdhci-of-aspeed.c
+
+-- 
+2.20.1
+
