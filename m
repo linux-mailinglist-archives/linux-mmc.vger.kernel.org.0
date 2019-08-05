@@ -2,115 +2,283 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E1D811BD
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2019 07:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A26781336
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2019 09:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726423AbfHEFpj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 5 Aug 2019 01:45:39 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:45577 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725951AbfHEFpj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 5 Aug 2019 01:45:39 -0400
-Received: by mail-ot1-f66.google.com with SMTP id x21so18583042otq.12
-        for <linux-mmc@vger.kernel.org>; Sun, 04 Aug 2019 22:45:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qsfKjYjCsf5pGaKB27gLmom1CRQ53Y2eR9DqAuao1go=;
-        b=WVWleQQGj7idNGkcLWguKl+6s7c9GSJR9Peu1JHRQU1SG0mgaqIgyTthtSMf4Jk4MB
-         4zJ0c4qDcqlSmq6yf6Hjlg9nnBa+zohiHYt/DUTpOALEWr5NPVhUD7QpVxAvPPk3CByb
-         hjiy+HEn2al9OonxuFaAYvFr+eSprCNZ93R6L8a7UGkNjzNvgO+yMBul6cITiV19EMu/
-         P9M8YX+4EFmtC5R0gj5vesO/GH6l0ry/OsadBwEXF82z5zwN589en16FyxjfbKZTi2sJ
-         on6n8ozaoK9aPh2pv5AksJyypa2+35YV5XPIkRh8AfDDYtfkYg6cz2eyezjbMOtox8md
-         57QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qsfKjYjCsf5pGaKB27gLmom1CRQ53Y2eR9DqAuao1go=;
-        b=El/Ewbrbta5MfanezCW3MFoNDeaUymO6upcqyIgKxyyPFEmFLbXyzpUOZHT+i7Wjb0
-         nhAxynImZ4BDDn4Jrxh6PyQmIMPbttD0BlOlvmutS2PwvEUFoT9y85MbtK2YwFxv4mmB
-         dOnmAgBxAO6xk/xb2g66h1UE9KHxaPyw+Ax/5X7F8kmS2ATQVqcsR9jCViBF8KccKi75
-         OvfZpgaeffoUZ9MeTd48n718S/2qNetFsDdJDXJEvlSvy4DRtKLFu7WQ2eeX18CNg3IT
-         yskI7yrvhp/NIaXzdKHMRBfuIHdp8pEEfYbder76yQiu/YnnGnhPS8LickLCWSREXSyY
-         8SOw==
-X-Gm-Message-State: APjAAAWTSNLzKS5OmvCYP7remtI8nBsgx9akkQ10DC3bE7z/o6cAqOfJ
-        hyzpubTNT0NHz9aRL9Ea0C6ATO5vOzePA4nnTGH/Og==
-X-Google-Smtp-Source: APXvYqynsimY/6Dqk84ghAu9wj0Oshr0r+P73GlacIpKT0W1PHkBUMRBx5KYGo8JN1hrV2qFA92p1qT0zF29I/6VC7Q=
-X-Received: by 2002:a9d:7a8b:: with SMTP id l11mr76937428otn.247.1564983938417;
- Sun, 04 Aug 2019 22:45:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <74a6462743e3d73a630d2634880d8866daee333e.1564022625.git.baolin.wang@linaro.org>
- <CAPDyKFoNGZRdY3VVf6G9eNBfCyJbN5SUU2+fK24U-mHDX13oFQ@mail.gmail.com>
- <CAMz4kuKOGmGHoYNELG38qYOw71=AaSk33=johskUtOs0KZ0z-g@mail.gmail.com> <CAPDyKFrUxTzMr+aJ=mXcVJeiP8f4-8+wAxkbA9n8mJaAn=ftVA@mail.gmail.com>
-In-Reply-To: <CAPDyKFrUxTzMr+aJ=mXcVJeiP8f4-8+wAxkbA9n8mJaAn=ftVA@mail.gmail.com>
-From:   Baolin Wang <baolin.wang@linaro.org>
-Date:   Mon, 5 Aug 2019 13:45:27 +0800
-Message-ID: <CAMz4ku+appDGrAe9yLwzLunUy4K90O1ej2bvA5A=fMbVu_u7Xg@mail.gmail.com>
-Subject: Re: [PATCH v5] mmc: host: sdhci: Fix the incorrect soft reset
- operation when runtime resuming
+        id S1727559AbfHEHdm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 5 Aug 2019 03:33:42 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:29358 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726394AbfHEHdm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 5 Aug 2019 03:33:42 -0400
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x757WDuS007598;
+        Mon, 5 Aug 2019 09:33:27 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : from : to : cc
+ : references : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=ELEd8ZxDb7OfiConavdH3VksFxUv47PrkLTaOF/CEmU=;
+ b=cJK9+0cPWxphMfTR2X7N0k4Qd/pJTWpyQP7xmPodbFYsZY4TukHFk29x34sHuBTfMBri
+ EYIGFX/AjpB0Z0ta1UUx+m0ftLoLbppExROO6Lszg1eHPuZ3o29EAXleZgw/cyJCTRHX
+ mvOO7PsQl5kiYqcuZVIP9Tqp31q6Q7KcgC8+gxTYiACHMkuH7Q6HEDxtGaaSHQMjOiFA
+ SMIygIB/l/Q1JXzdouWm7IfpDnXOv898XHAo1O/KJ6NHtDtXX8ucXaQ2CJxgpBihBuOb
+ ROpea/o9zOxBzMaanx9ZJVd7Ls7bPsKsnMJ3UIvxn4ESe2oDwMf99KWipwPvQlFtOCj5 zg== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2u5sd1d4jg-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Mon, 05 Aug 2019 09:33:27 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DF36249;
+        Mon,  5 Aug 2019 07:33:24 +0000 (GMT)
+Received: from Webmail-eu.st.com (Safex1hubcas24.st.com [10.75.90.94])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id CC0DB2C35BB;
+        Mon,  5 Aug 2019 09:33:24 +0200 (CEST)
+Received: from SAFEX1HUBCAS23.st.com (10.75.90.47) by Safex1hubcas24.st.com
+ (10.75.90.94) with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 5 Aug 2019
+ 09:33:24 +0200
+Received: from lmecxl0923.lme.st.com (10.48.0.237) by webmail-ga.st.com
+ (10.75.90.48) with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 5 Aug 2019
+ 09:33:24 +0200
+Subject: Re: [Linux-stm32] [PATCH V3 1/3] mmc: mmci: fix read status for busy
+ detect
+From:   Ludovic BARRE <ludovic.barre@st.com>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
+CC:     DTML <devicetree@vger.kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Srinivas Kandagatla" <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <1559577325-19266-1-git-send-email-ludovic.Barre@st.com>
+ <1559577325-19266-2-git-send-email-ludovic.Barre@st.com>
+ <CAPDyKFpJPbpTnfA2cynFURyxFY_YCm7MRXw3m2nQyU+z=ZWsFA@mail.gmail.com>
+ <dd5c1e86-f0b1-cdfa-1b91-486f99d4e50c@st.com>
+Message-ID: <7eed2ec4-30db-ae26-f07d-6a8ace7fce12@st.com>
+Date:   Mon, 5 Aug 2019 09:33:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <dd5c1e86-f0b1-cdfa-1b91-486f99d4e50c@st.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.48.0.237]
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-05_03:,,
+ signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 2 Aug 2019 at 23:17, Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> On Fri, 26 Jul 2019 at 03:41, Baolin Wang <baolin.wang@linaro.org> wrote:
-> >
-> > On Thu, 25 Jul 2019 at 21:15, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > >
-> > > - Trimmed cc list
-> > >
-> > > On Thu, 25 Jul 2019 at 05:14, Baolin Wang <baolin.wang@linaro.org> wrote:
-> > > >
-> > > > The SD host controller specification defines 3 types software reset:
-> > > > software reset for data line, software reset for command line and
-> > > > software reset for all. Software reset for all means this reset affects
-> > > > the entire Host controller except for the card detection circuit.
-> > > >
-> > > > In sdhci_runtime_resume_host() function, now we will always do software
-> > > > reset for all, which will cause Spreadtrum host controller work abnormally
-> > > > after resuming. For Spreadtrum platform that will not power down the SD/eMMC
-> > > > card during runtime suspend, we should just do software reset for data
-> > > > and command instead doing reset for all.
-> > > >
-> > > > To fix this issue, this patch introduces a new parameter of
-> > > > sdhci_runtime_resume_host() to let it decide if a 'reset for all' shall
-> > > > be done or not. Meanwhile changes other host drivers to issue a software
-> > > > reset for all to keep the original logic.
-> > > >
-> > > > Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-> > >
-> > > Applied for next, with a little change (renaming the "soft"
-> > > in-parameter to soft_reset), thanks!
-> >
-> > Thanks Ulf :)
-> >
-> > >
-> > > Adrian, if there is anything you want to change, please tell.
-> > >
-> > > BTW, perhaps this should be applied for fixes and tagged for stable?
-> > > Baolin, if so, can point me the commit (or stable tag) the patch
-> > > fixes?
-> >
-> > Yes, since we fixed the PM runtime issue, which will reveal this
-> > issue. And I think it still fixes:
-> > Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host
-> > controller")
->
-> Make sense. I moved this to the fixes branch and also to took the
-> opportunity to clarify the changelog a bit.
+hi Ulf
 
-Thanks Ulf.
+On 7/26/19 11:41 AM, Ludovic BARRE wrote:
+> hi Ulf
+> 
+> Thanks to your "Clarify comments ..." commit, like is closes
+> I resumed upstream of this series.
+> 
+> On 7/15/19 6:31 PM, Ulf Hansson wrote:
+>> On Mon, 3 Jun 2019 at 17:55, Ludovic Barre <ludovic.Barre@st.com> wrote:
+>>>
+>>> From: Ludovic Barre <ludovic.barre@st.com>
+>>>
+>>> "busy_detect_flag" is used to read & clear busy value of mmci status.
+>>> "busy_detect_mask" is used to manage busy irq of mmci mask.
+>>> So to read mmci status the busy_detect_flag must be take account.
+>>> if the variant does not support busy detect feature the flag is null
+>>> and there is no impact.
+>>
+>> By reading the changelog, it doesn't tell me the purpose of this
+>> change. When going forward, please work harder on your changelogs.
+>>
+>> Make sure to answer the questions, *why* is this change needed,
+>> *what/how* does the change do.
+> 
+> Ok, I will explain the differences with the legacy and the needs of 
+> sdmmc variant about busy detection.
+> 
+>>
+>>>
+>>> Not need to re-read the status register in mmci_cmd_irq, the
+>>> status parameter can be used.
+>>>
+>>> Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
+>>> ---
+>>>   drivers/mmc/host/mmci.c | 5 +++--
+>>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+>>> index 356833a..5b5cc45 100644
+>>> --- a/drivers/mmc/host/mmci.c
+>>> +++ b/drivers/mmc/host/mmci.c
+>>> @@ -1240,7 +1240,7 @@ mmci_cmd_irq(struct mmci_host *host, struct 
+>>> mmc_command *cmd,
+>>>                   */
+>>>                  if (!host->busy_status &&
+>>>                      !(status & (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT)) &&
+>>> -                   (readl(base + MMCISTATUS) & 
+>>> host->variant->busy_detect_flag)) {
+>>> +                   (status & host->variant->busy_detect_flag)) {
+>>
+>> I suggested you to do this change through some of my earlier comments,
+>> however I think it should be made as a stand alone change.
+>>
+>> Anyway, when looking at the details in your series, I decided to try
+>> to help out a bit, so I have prepared a couple of related patches for
+>> cleaning up and clarifying the busy detection code/comments in mmci. I
+>> have incorporated the above change, so let me post them asap.
+>>
+>>>
+>>>                          /* Clear the busy start IRQ */
+>>>                          writel(host->variant->busy_detect_mask,
+>>> @@ -1517,7 +1517,8 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
+>>>                   * to make sure that both start and end interrupts 
+>>> are always
+>>>                   * cleared one after the other.
+>>>                   */
+>>> -               status &= readl(host->base + MMCIMASK0);
+>>> +               status &= readl(host->base + MMCIMASK0) |
+>>> +                       host->variant->busy_detect_flag;
+>>
+>> As I told earlier in the review, this looks wrong to me.
+>>
+>> It means that you will add the bit for the ->busy_detect_flag to the
+>> status field we have just read from the MMCISTATUS register. That
+>> means the busy status may be set when it shouldn't.
+>>
+>>>                  if (host->variant->busy_detect)
+>>>                          writel(status & 
+>>> ~host->variant->busy_detect_mask,
+>>>                                 host->base + MMCICLEAR);
+>>> -- 
+>>> 2.7.4
+>>>
+>>
+>> By looking at the other changes in the series, I assume @subject patch
+>> is intended to prepare for the other changes on top. But it's not
+>> really clear.
+>>
+>> Anyway, in that regards, the below is my observations of what seems to
+>> be important part, when supporting busy detection for the stm32 sdmmc
+>> variant (except the timeout things in patch2, which I intend to
+>> comment separately on).
+>>
+>> I figured, these are the involved register bits/masks:
+>>
+>> MMCISTATUS:
+>> MCI_STM32_BUSYD0 BIT(20)
+>> MCI_STM32_BUSYD0END BIT(21)
+>>
+>> MMCIMASK0:
+>> MCI_STM32_BUSYD0ENDMASK BIT(21)
+> 
+> it's exact:
+> MCI_STM32_BUSYD0 BIT(20): This is a hardware status flag only (inverted 
+> value of d0 line), it does not generate an interrupt, and so no mask
+> bit.
+> 
+> MCI_STM32_BUSYD0ENDMASK BIT(21): This indicates only end of busy
+> following a CMD response. On busy to Not busy changes, an interrupt
+> is generated (if unmask) and BUSYD0END status flag is set.
+> status flag is cleared by writing corresponding interrupt clear bit in 
+> MMCICLEAR.
+> 
+>>
+>> For the legacy ST variant, there is only one register bit in
+>> MMCISTATUS that is used for indicating busy (MCI_ST_CARDBUSY BIT(24)).
+>> There is no dedicated busy-end bit for the busy-end IRQ, which I
+>> believe is the reason to why the current code also is bit messy.
+> 
+> yes
+> 
+>>
+>> It seems like the stm32 sdmmc variant have a separate status bit for
+>> the busy-end IRQ, correct?
+> 
+> yes
+> 
+>>
+>> If I understand correctly by looking at patch3, you don't use the
+>> dedicated busy-end status bit (MCI_STM32_BUSYD0END), right? Then why
+>> not?
+> 
+> like your are clarify in previous series, the busy detection is done
+> in 3 steps.
+> 
+> if I use:
+> .busy_detect_flag    = MCI_STM32_BUSYD0ENDMASK,
+> .busy_detect_mask    = MCI_STM32_BUSYD0ENDMASK,
+> 
+> the sdmmc request will be not correctly completed, because the third 
+> step can't be happen.
+> 
+> chronologies:
+> step1: when busyd0end change to 1
+>   => busyd0end interrupt is unmasked
+>   => busy_status = cmd_sent | respend
+>   => return to mmci_irq
+> step2: busyd0end is yet to 1
+>   => clear the busyd0end interrupt
+>      => the hardware clear busyd0end status flag on interrupt clear
+>   => return to mmci_irq
+> 
+> like MCI_STM32_BUSYD0END interrupt is generated only on change
+> busy to not busy, when the interrupt is cleared (status is 0)
+> the step 3 can't happen (no irq pending to re-enter in mmci_cmd_irq).
+> sdmmc can't complete the request.
+> 
+> If I use:
+> .busy_detect_flag    = MCI_STM32_BUSYD0,
+> .busy_detect_mask    = MCI_STM32_BUSYD0ENDMASK,
+> 
+> Like there is no MCI_STM32_BUSYD0 irq mask, the status read in mmci_irq
+> "status &= readl(host->base + MMCIMASK0)" can't take account the 
+> busy_detect_flag (for sdmmc). So the  step 2 can't be passed.
+> However we could share re-read between step 1 and step 2.
+> 
+> proposal:
+> 
+> +
+> +        u32 busy_val = readl(base + MMCISTATUS) &
+> +            host->variant->busy_detect_flag;
+> +
+>           if (!host->busy_status &&
+> -            !(status & (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT)) &&
+> -            (readl(base + MMCISTATUS) & 
+> host->variant->busy_detect_flag)) {
+> +            !(status & (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT)) && busy_val) {
+> 
+>               writel(readl(base + MMCIMASK0) |
+>                      host->variant->busy_detect_mask,
+> @@ -1262,8 +1265,7 @@ mmci_cmd_irq(struct mmci_host *host, struct 
+> mmc_command *cmd,
+>            * both the start and the end interrupts needs to be cleared,
+>            * one after the other. So, clear the busy start IRQ here.
+>            */
+> -        if (host->busy_status &&
+> -            (status & host->variant->busy_detect_flag)) {
+> +        if (host->busy_status && busy_val) {
+> 
+> 
+> what do you think about it ?
+> 
 
--- 
-Baolin Wang
-Best Regards
+I give up this proposal for a new version based on mmci_host_ops
+callback to done the busy completion.
+
+>>
+>> Thoughts?
+>>
+>> Kind regards
+>> Uffe
+>>
+> 
+> Regards
+> Ludo
+> _______________________________________________
+> Linux-stm32 mailing list
+> Linux-stm32@st-md-mailman.stormreply.com
+> https://st-md-mailman.stormreply.com/mailman/listinfo/linux-stm32
