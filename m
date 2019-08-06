@@ -2,160 +2,472 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C3883076
-	for <lists+linux-mmc@lfdr.de>; Tue,  6 Aug 2019 13:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B44CB830AA
+	for <lists+linux-mmc@lfdr.de>; Tue,  6 Aug 2019 13:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730381AbfHFLRR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 6 Aug 2019 07:17:17 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:33006 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728845AbfHFLRQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 6 Aug 2019 07:17:16 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x76BGnrA082997;
-        Tue, 6 Aug 2019 06:16:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1565090209;
-        bh=1Qpae6tF/7leTao4sxzBGaO6r1r8dpoNg/I6HCnEums=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=IMf8eS7zc6KNAbTqU4+AKeRs/r0LZ/lyzyrN879qbBTJ5OUSMo8D/ihOKcfgRsD+L
-         F+NRSRQjAkE+VjWFyLbfsHyfbIy9uRkLRjww5I8wbt7aKa+qA5692uSiChS4NVaSxE
-         kZ3qKGwGC7x3Hlv6c4ifqzhu3q1kFfu3XmoS5Erw=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x76BGnHL002634
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 6 Aug 2019 06:16:49 -0500
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 6 Aug
- 2019 06:16:49 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 6 Aug 2019 06:16:48 -0500
-Received: from [172.24.190.215] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x76BGkGK027908;
-        Tue, 6 Aug 2019 06:16:46 -0500
-Subject: Re: [PATCH] mmc: sdhci-of-arasan: Add CQHCI support for arasan,
- sdhci-5.1
-To:     Shawn Lin <shawn.lin@rock-chips.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-CC:     <linux-mmc@vger.kernel.org>, Heiko Stuebner <heiko@sntech.de>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>
-References: <1515739370-102434-1-git-send-email-shawn.lin@rock-chips.com>
-From:   Faiz Abbas <faiz_abbas@ti.com>
-Message-ID: <91476bc6-aa63-ee5d-8f82-6874b9b13e79@ti.com>
-Date:   Tue, 6 Aug 2019 16:47:00 +0530
+        id S1730399AbfHFLaZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 6 Aug 2019 07:30:25 -0400
+Received: from mga06.intel.com ([134.134.136.31]:2336 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726783AbfHFLaZ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 6 Aug 2019 07:30:25 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Aug 2019 04:30:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,353,1559545200"; 
+   d="scan'208";a="349399400"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
+  by orsmga005.jf.intel.com with ESMTP; 06 Aug 2019 04:30:21 -0700
+Subject: Re: [PATCH V4 2/2] mmc: sdhci: Fix O2 Host data read/write DLL Lock
+ Phase shift issue
+To:     "Shirley Her (SC)" <shirley.her@bayhubtech.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc:     "Louis Lu (TP)" <louis.lu@bayhubtech.com>,
+        "Chevron Li (WH)" <chevron.li@bayhubtech.com>,
+        "Max Huang (SC)" <max.huang@bayhubtech.com>
+References: <1564767615-4566-1-git-send-email-shirley.her@bayhubtech.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <882064c3-3228-464e-d517-eee7c18c02c4@intel.com>
+Date:   Tue, 6 Aug 2019 14:28:58 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <1515739370-102434-1-git-send-email-shawn.lin@rock-chips.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <1564767615-4566-1-git-send-email-shirley.her@bayhubtech.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Shawn,
-
-On 12/01/18 12:12 PM, Shawn Lin wrote:
-> Add CQHCI initialization and implement CQHCI operations for Arasan
-> SDHCI variant host, namely arasan,sdhci-5.1, which is used by Rockchip
-> RK3399 platform.
+On 2/08/19 8:40 PM, Shirley Her (SC) wrote:
+> Fix data read/write error in HS200 mode due to chip DLL lock phase shift
 > 
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by:Shirley Her<shirley.her@bayhubtech.com>
 > ---
+> change in V4:
+>  1. add a bug fix for V3
 > 
->  drivers/mmc/host/Kconfig           |   1 +
->  drivers/mmc/host/sdhci-of-arasan.c | 137 +++++++++++++++++++++++++++++++++++--
->  2 files changed, 131 insertions(+), 7 deletions(-)
+> change in V3:
+>  1. add more explanation in dll_recovery and execute_tuning function
+>  2. move dll_adjust_count to O2_host struct
+>  3. fix some coding style error
+>  4. renaming O2_PLL_WDT_CONTROL1 TO O2_PLL_DLL_WDT_CONTROL1
 > 
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 2fda095..45aed90 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -133,6 +133,7 @@ config MMC_SDHCI_OF_ARASAN
->  	depends on MMC_SDHCI_PLTFM
->  	depends on OF
->  	depends on COMMON_CLK
-> +	select MMC_CQHCI
->  	help
->  	  This selects the Arasan Secure Digital Host Controller Interface
->  	  (SDHCI). This hardware is found e.g. in Xilinx' Zynq SoC.
-> diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-> index fb57206..e30c84f 100644
-> --- a/drivers/mmc/host/sdhci-of-arasan.c
-> +++ b/drivers/mmc/host/sdhci-of-arasan.c
-> @@ -25,11 +25,13 @@
->  #include <linux/of_device.h>
->  #include <linux/phy/phy.h>
->  #include <linux/regmap.h>
-> -#include "sdhci-pltfm.h"
->  #include <linux/of.h>
+> change in V2:
+>  1. use usleep_range instead of udelay
+>  2. move dll_adjust_count to sdhci-pci-o2micro.c
+> 
+> chagne in V1:
+>  1. add error recovery function to relock DLL with correct phase
+>  2. retuning HS200 after DLL locked
+> ---
+>  drivers/mmc/host/sdhci-pci-o2micro.c | 305 ++++++++++++++++++++++++-----------
+>  1 file changed, 208 insertions(+), 97 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
+> index 186a33d..aee0d15 100644
+> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
+> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+> @@ -55,9 +55,138 @@
+>  #define  O2_PLL_FORCE_ACTIVE	BIT(18)
+>  #define  O2_PLL_LOCK_STATUS	BIT(14)
+>  #define  O2_PLL_SOFT_RESET	BIT(12)
+> +#define  O2_DLL_LOCK_STATUS	BIT(11)
 >  
-> -#define SDHCI_ARASAN_VENDOR_REGISTER	0x78
-> +#include "cqhci.h"
-> +#include "sdhci-pltfm.h"
+>  #define O2_SD_DETECT_SETTING 0x324
 >  
-> +#define SDHCI_ARASAN_VENDOR_REGISTER	0x78
-> +#define SDHCI_ARASAN_CQE_BASE_ADDR	0x200
->  #define VENDOR_ENHANCED_STROBE		BIT(0)
->  
->  #define PHY_CLK_TOO_SLOW_HZ		400000
-> @@ -90,6 +92,7 @@ struct sdhci_arasan_data {
->  	struct phy	*phy;
->  	bool		is_phy_on;
->  
-> +	bool		has_cqe;
->  	struct clk_hw	sdcardclk_hw;
->  	struct clk      *sdcardclk;
->  
-> @@ -290,6 +293,61 @@ static void sdhci_arasan_set_power(struct sdhci_host *host, unsigned char mode,
->  			SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
->  };
->  
-> +static u32 sdhci_arasan_cqhci_irq(struct sdhci_host *host, u32 intmask)
+> +static const u32 dmdn_table[5] = {0x25100000, 0x2B1C0000,
+> +	0x2C1A0000, 0x371B0000, 0x35100000};
+> +
+> +struct o2_host {
+> +	u8 dll_adjust_count;
+> +};
+> +
+> +static void sdhci_o2_wait_card_detect_stable(struct sdhci_host *host)
 > +{
-> +	int cmd_error = 0;
-> +	int data_error = 0;
+> +	ktime_t timeout;
+> +	u32 scratch32;
 > +
-> +	if (!sdhci_cqe_irq(host, intmask, &cmd_error, &data_error))
-> +		return intmask;
+> +	/* Wait max 50 ms */
+> +	timeout = ktime_add_ms(ktime_get(), 50);
+> +	while (1) {
+> +		bool timedout = ktime_after(ktime_get(), timeout);
 > +
-> +	cqhci_irq(host->mmc, intmask, cmd_error, data_error);
+> +		scratch32 = sdhci_readl(host, SDHCI_PRESENT_STATE);
+> +		if ((scratch32 & SDHCI_CARD_PRESENT) >> SDHCI_CARD_PRES_SHIFT
+> +		    == (scratch32 & SDHCI_CD_LVL) >> SDHCI_CD_LVL_SHIFT)
+> +			break;
 > +
-> +	return 0;
+> +		if (timedout) {
+> +			pr_err("%s: Card Detect debounce never finished.\n",
+> +			       mmc_hostname(host->mmc));
+> +			sdhci_dumpregs(host);
+> +			return;
+> +		}
+> +		udelay(10);
+> +	}
 > +}
 > +
-> +static void sdhci_arasan_dumpregs(struct mmc_host *mmc)
+> +static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
 > +{
-> +	sdhci_dumpregs(mmc_priv(mmc));
+> +	ktime_t timeout;
+> +	u16 scratch;
+> +	u32 scratch32;
+> +
+> +	/* PLL software reset */
+> +	scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
+> +	scratch32 |= O2_PLL_SOFT_RESET;
+> +	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+> +	udelay(1);
+> +	scratch32 &= ~(O2_PLL_SOFT_RESET);
+> +	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+> +
+> +	/* PLL force active */
+> +	scratch32 |= O2_PLL_FORCE_ACTIVE;
+> +	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+> +
+> +	/* Wait max 20 ms */
+> +	timeout = ktime_add_ms(ktime_get(), 20);
+> +	while (1) {
+> +		bool timedout = ktime_after(ktime_get(), timeout);
+> +
+> +		scratch = sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1);
+> +		if (scratch & O2_PLL_LOCK_STATUS)
+> +			break;
+> +		if (timedout) {
+> +			pr_err("%s: Internal clock never stabilised.\n",
+> +			       mmc_hostname(host->mmc));
+> +			sdhci_dumpregs(host);
+> +			goto out;
+> +		}
+> +		udelay(10);
+> +	}
+> +
+> +	/* Wait for card detect finish */
+> +	udelay(1);
+> +	sdhci_o2_wait_card_detect_stable(host);
+> +
+> +out:
+> +	/* Cancel PLL force active */
+> +	scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
+> +	scratch32 &= ~O2_PLL_FORCE_ACTIVE;
+> +	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
 > +}
 > +
-> +static void sdhci_arasan_cqe_enable(struct mmc_host *mmc)
+> +static int sdhci_o2_get_cd(struct mmc_host *mmc)
 > +{
 > +	struct sdhci_host *host = mmc_priv(mmc);
-> +	u32 reg;
 > +
-> +	reg = sdhci_readl(host, SDHCI_PRESENT_STATE);
-> +	while (reg & SDHCI_DATA_AVAILABLE) {
-> +		sdhci_readl(host, SDHCI_BUFFER);
-> +		reg = sdhci_readl(host, SDHCI_PRESENT_STATE);
+> +	if (!(sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1) & O2_PLL_LOCK_STATUS))
+> +		sdhci_o2_enable_internal_clock(host);
+> +
+> +	return !!(sdhci_readl(host, SDHCI_PRESENT_STATE) & SDHCI_CARD_PRESENT);
+> +}
+> +
+> +static void o2_pci_set_baseclk(struct sdhci_pci_chip *chip, u32 value)
+
+Please make a separate patch (i.e. 3 patches total) for moving the existing
+functions: sdhci_o2_wait_card_detect_stable, sdhci_o2_enable_internal_clock,
+sdhci_o2_get_cd, o2_pci_set_baseclk
+
+> +{
+> +	u32 scratch_32;
+> +
+> +	pci_read_config_dword(chip->pdev,
+> +			      O2_SD_PLL_SETTING, &scratch_32);
+> +
+> +	scratch_32 &= 0x0000FFFF;
+> +	scratch_32 |= value;
+> +
+> +	pci_write_config_dword(chip->pdev,
+> +			       O2_SD_PLL_SETTING, scratch_32);
+> +}
+> +
+> +static int sdhci_o2_wait_dll_detect_lock(struct sdhci_host *host)
+> +{
+> +	ktime_t timeout;
+> +	u32 scratch32;
+> +
+> +	usleep_range(5000, 6000);
+> +	scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
+> +	if (!(scratch32 & O2_DLL_LOCK_STATUS)) {
+> +		pr_warn("%s: DLL is still unlocked after wait 5ms\n",
+> +			mmc_hostname(host->mmc));
 > +	}
+> +
+> +	/* Detect 1 s */
+> +	timeout = ktime_add_ms(ktime_get(), 1000);
+> +	while (1) {
+> +		bool timedout = ktime_after(ktime_get(), timeout);
+> +
+> +		scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
+> +		if (!(scratch32 & O2_DLL_LOCK_STATUS))
+> +			return 0;
+> +
+> +		if (timedout)
+> +			return 1;
+> +	}
+> +}
+> +
+>  static void sdhci_o2_set_tuning_mode(struct sdhci_host *host)
+>  {
+>  	u16 reg;
+> @@ -73,7 +202,6 @@ static void __sdhci_o2_execute_tuning(struct sdhci_host *host, u32 opcode)
+>  	int i;
+>  
+>  	sdhci_send_tuning(host, MMC_SEND_TUNING_BLOCK_HS200);
+> -
+>  	for (i = 0; i < 150; i++) {
+>  		u16 ctrl = sdhci_readw(host, SDHCI_HOST_CONTROL2);
+>  
+> @@ -95,12 +223,87 @@ static void __sdhci_o2_execute_tuning(struct sdhci_host *host, u32 opcode)
+>  	sdhci_reset_tuning(host);
+>  }
+>  
+> +/* this function is used to fix o2 dll shift issue */
+> +static int sdhci_o2_dll_recovery(struct sdhci_host *host)
+> +{
+> +	int ret = 0;
+> +	u8 scratch_8 = 0;
+> +	u32 scratch_32 = 0;
+> +	struct sdhci_pci_slot *slot = sdhci_priv(host);
+> +	struct sdhci_pci_chip *chip = slot->chip;
+> +	struct o2_host *o2_host = sdhci_pci_priv(slot);
+> +
+> +	/* Disable clock */
+> +	sdhci_writeb(host, 0, SDHCI_CLOCK_CONTROL);
+> +	while (o2_host->dll_adjust_count < 5) {
+> +		o2_host->dll_adjust_count++;
 
-Sorry for replying to old thread.
+So dll_adjust_count will always be at least 1, which means dmdn_table[0] is
+never used?
 
-I am also trying to implement command queuing for my driver and was
-wondering why you needed to do this. Did you see some issues without
-clearing the buffer? Wouldn't an SRD reset have got rid of any residual
-data in the buffer? Why is there residual data in the buffer in the
-first place?
+> +		/* UnLock WP */
+> +		ret = pci_read_config_byte(chip->pdev,
+> +				O2_SD_LOCK_WP, &scratch_8);
+> +		if (ret)
+> +			return ret;
+> +
+> +		scratch_8 &= 0x7f;
+> +		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
+> +
+> +		/* PLL software reset */
+> +		scratch_32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
+> +		scratch_32 |= O2_PLL_SOFT_RESET;
+> +		sdhci_writel(host, scratch_32, O2_PLL_DLL_WDT_CONTROL1);
+> +
+> +		ret = pci_read_config_dword(chip->pdev,
+> +					    O2_SD_FUNC_REG4,
+> +					    &scratch_32);
+> +		/* Enable Base Clk setting change */
+> +		scratch_32 |= O2_SD_FREG4_ENABLE_CLK_SET;
+> +		pci_write_config_dword(chip->pdev, O2_SD_FUNC_REG4, scratch_32);
+> +		o2_pci_set_baseclk(chip, dmdn_table[o2_host->dll_adjust_count]);
+> +
+> +		/* Enable internal clock */
+> +		scratch_8 = SDHCI_CLOCK_INT_EN;
+> +		sdhci_writeb(host, scratch_8, SDHCI_CLOCK_CONTROL);
+> +
+> +		if (sdhci_o2_get_cd(host->mmc)) {
+> +			if (sdhci_o2_wait_dll_detect_lock(host)) {
+> +				scratch_8 |= SDHCI_CLOCK_CARD_EN;
+> +				sdhci_writeb(host, scratch_8,
+> +					SDHCI_CLOCK_CONTROL);
+> +				ret = 1;
 
-Thanks,
-Faiz
+'ret' always gets overwritten
+
+> +				goto out;
+
+Please use 'break' instead of 'goto'
+
+> +			} else {
+> +				pr_warn("%s: DLL unlocked when dll_adjust_count is %d.\n",
+> +					mmc_hostname(host->mmc),
+> +					o2_host->dll_adjust_count);
+> +			}
+> +		}
+
+Does it make sense to continue if there is no card at this point?
+
+> +	}
+> +out:
+> +	if (o2_host->dll_adjust_count == 5)
+> +		pr_err("%s: DLL adjust over max times\n",
+> +		mmc_hostname(host->mmc));
+> +	/* Lock WP */
+> +	ret = pci_read_config_byte(chip->pdev,
+> +				   O2_SD_LOCK_WP, &scratch_8);
+> +	if (ret)
+> +		return ret;
+> +	scratch_8 |= 0x80;
+> +	pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
+> +	return ret;
+> +}
+> +
+>  static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
+>  {
+>  	struct sdhci_host *host = mmc_priv(mmc);
+>  	int current_bus_width = 0;
+>  
+>  	/*
+> +	 * Judge the tuning reason, whether caused by dll shift
+> +	 * If cause by dll shift, should call sdhci_o2_dll_recovery
+> +	 */
+> +	if (!sdhci_o2_wait_dll_detect_lock(host))
+> +		sdhci_o2_dll_recovery(host);
+> +
+> +	/*
+>  	 * This handler only implements the eMMC tuning that is specific to
+>  	 * this controller.  Fall back to the standard method for other TIMING.
+>  	 */
+> @@ -131,24 +334,10 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
+>  		mmc->ios.bus_width = MMC_BUS_WIDTH_8;
+>  		sdhci_set_bus_width(host, current_bus_width);
+>  	}
+> -
+>  	host->flags &= ~SDHCI_HS400_TUNING;
+>  	return 0;
+>  }
+>  
+> -static void o2_pci_set_baseclk(struct sdhci_pci_chip *chip, u32 value)
+> -{
+> -	u32 scratch_32;
+> -	pci_read_config_dword(chip->pdev,
+> -			      O2_SD_PLL_SETTING, &scratch_32);
+> -
+> -	scratch_32 &= 0x0000FFFF;
+> -	scratch_32 |= value;
+> -
+> -	pci_write_config_dword(chip->pdev,
+> -			       O2_SD_PLL_SETTING, scratch_32);
+> -}
+> -
+>  static void o2_pci_led_enable(struct sdhci_pci_chip *chip)
+>  {
+>  	int ret;
+> @@ -284,92 +473,12 @@ static void sdhci_pci_o2_enable_msi(struct sdhci_pci_chip *chip,
+>  	host->irq = pci_irq_vector(chip->pdev, 0);
+>  }
+>  
+> -static void sdhci_o2_wait_card_detect_stable(struct sdhci_host *host)
+> -{
+> -	ktime_t timeout;
+> -	u32 scratch32;
+> -
+> -	/* Wait max 50 ms */
+> -	timeout = ktime_add_ms(ktime_get(), 50);
+> -	while (1) {
+> -		bool timedout = ktime_after(ktime_get(), timeout);
+> -
+> -		scratch32 = sdhci_readl(host, SDHCI_PRESENT_STATE);
+> -		if ((scratch32 & SDHCI_CARD_PRESENT) >> SDHCI_CARD_PRES_SHIFT
+> -		    == (scratch32 & SDHCI_CD_LVL) >> SDHCI_CD_LVL_SHIFT)
+> -			break;
+> -
+> -		if (timedout) {
+> -			pr_err("%s: Card Detect debounce never finished.\n",
+> -			       mmc_hostname(host->mmc));
+> -			sdhci_dumpregs(host);
+> -			return;
+> -		}
+> -		udelay(10);
+> -	}
+> -}
+> -
+> -static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
+> -{
+> -	ktime_t timeout;
+> -	u16 scratch;
+> -	u32 scratch32;
+> -
+> -	/* PLL software reset */
+> -	scratch32 = sdhci_readl(host, O2_PLL_WDT_CONTROL1);
+> -	scratch32 |= O2_PLL_SOFT_RESET;
+> -	sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> -	udelay(1);
+> -	scratch32 &= ~(O2_PLL_SOFT_RESET);
+> -	sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> -
+> -	/* PLL force active */
+> -	scratch32 |= O2_PLL_FORCE_ACTIVE;
+> -	sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> -
+> -	/* Wait max 20 ms */
+> -	timeout = ktime_add_ms(ktime_get(), 20);
+> -	while (1) {
+> -		bool timedout = ktime_after(ktime_get(), timeout);
+> -
+> -		scratch = sdhci_readw(host, O2_PLL_WDT_CONTROL1);
+> -		if (scratch & O2_PLL_LOCK_STATUS)
+> -			break;
+> -		if (timedout) {
+> -			pr_err("%s: Internal clock never stabilised.\n",
+> -			       mmc_hostname(host->mmc));
+> -			sdhci_dumpregs(host);
+> -			goto out;
+> -		}
+> -		udelay(10);
+> -	}
+> -
+> -	/* Wait for card detect finish */
+> -	udelay(1);
+> -	sdhci_o2_wait_card_detect_stable(host);
+> -
+> -out:
+> -	/* Cancel PLL force active */
+> -	scratch32 = sdhci_readl(host, O2_PLL_WDT_CONTROL1);
+> -	scratch32 &= ~O2_PLL_FORCE_ACTIVE;
+> -	sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> -}
+> -
+> -static int sdhci_o2_get_cd(struct mmc_host *mmc)
+> -{
+> -	struct sdhci_host *host = mmc_priv(mmc);
+> -
+> -	sdhci_o2_enable_internal_clock(host);
+> -
+> -	return !!(sdhci_readl(host, SDHCI_PRESENT_STATE) & SDHCI_CARD_PRESENT);
+> -}
+> -
+>  static void sdhci_o2_enable_clk(struct sdhci_host *host, u16 clk)
+>  {
+>  	/* Enable internal clock */
+>  	clk |= SDHCI_CLOCK_INT_EN;
+>  	sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
+> -
+> +	sdhci_o2_enable_internal_clock(host);
+>  	if (sdhci_o2_get_cd(host->mmc)) {
+>  		clk |= SDHCI_CLOCK_CARD_EN;
+>  		sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
+> @@ -395,12 +504,13 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
+>  {
+>  	struct sdhci_pci_chip *chip;
+>  	struct sdhci_host *host;
+> +	struct o2_host *o2_host = sdhci_pci_priv(slot);
+>  	u32 reg, caps;
+>  	int ret;
+>  
+>  	chip = slot->chip;
+>  	host = slot->host;
+> -
+> +	o2_host->dll_adjust_count = 0;
+>  	caps = sdhci_readl(host, SDHCI_CAPABILITIES);
+>  
+>  	/*
+> @@ -687,4 +797,5 @@ const struct sdhci_pci_fixes sdhci_o2 = {
+>  	.resume = sdhci_pci_o2_resume,
+>  #endif
+>  	.ops = &sdhci_pci_o2_ops,
+> +	.priv_size = sizeof(struct o2_host),
+>  };
+> 
+
