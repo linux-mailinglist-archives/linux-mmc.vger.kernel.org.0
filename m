@@ -2,126 +2,133 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A30B867BE
-	for <lists+linux-mmc@lfdr.de>; Thu,  8 Aug 2019 19:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFDC286D2E
+	for <lists+linux-mmc@lfdr.de>; Fri,  9 Aug 2019 00:25:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404098AbfHHROG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 8 Aug 2019 13:14:06 -0400
-Received: from gateway20.websitewelcome.com ([192.185.64.36]:45254 "EHLO
-        gateway20.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728020AbfHHROG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Aug 2019 13:14:06 -0400
-X-Greylist: delayed 1259 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Aug 2019 13:14:05 EDT
-Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
-        by gateway20.websitewelcome.com (Postfix) with ESMTP id 18D69400D0A68
-        for <linux-mmc@vger.kernel.org>; Thu,  8 Aug 2019 10:49:07 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id vlf0hFBpZiQervlf0hcOj0; Thu, 08 Aug 2019 11:53:06 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=y3YgOHS6bY8+iBEodkrq3S2tL1ugedHa5kZcaV5LOVE=; b=pm2/lEJh9Ul5SL9snCGYSz6+T/
-        vNV/CQJj4NXeMcXcf7QOz3xPz0vj/RvFtkGrjDadQq0E37YT+ydD1QBx/9odbiJn+KkGEeeCWD2fO
-        dqqqkZoGgt5A/fbDSA2o8gGiztYvFjtOXMBU8O+AhXD0DGEE/4vpXfFiMAOGhZ+aRvT31VVvRCOUX
-        IZuS7L4cmD+o75kIHpo4jjzXynYDrlywhoz+/zlGu0YnGWKcOZYPtzApBFurDIQqSMYQeGpEMP4V8
-        BXe6DVClkYXxCplZwcSNGWwgGirjL4zMBLBkhCPa9IA4KKs7HYxx4VIJAFCELEKfyYMR44jI9UNuN
-        iowGchKQ==;
-Received: from [187.192.11.120] (port=49892 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1hvley-000Ebr-O5; Thu, 08 Aug 2019 11:53:04 -0500
-Date:   Thu, 8 Aug 2019 11:53:01 -0500
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
+        id S2404695AbfHHWZr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 8 Aug 2019 18:25:47 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:39456 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732708AbfHHWZq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Aug 2019 18:25:46 -0400
+Received: by mail-lj1-f196.google.com with SMTP id v18so90278587ljh.6;
+        Thu, 08 Aug 2019 15:25:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Q9p8dp4Vwd7zb49ZfmkHjOde2lTf1kQmZ0LZmoXXg+Y=;
+        b=X/HCeJp6SdIpegsENNIX5jnBFbtDSt0UzsTUaN0a3V8l4KnCb/S47gsOo5w4dI/NuL
+         V5etWewZyguGVw5FG6KZWbW1LS15klZZSFCTiM7xpoSJFKT0PQDSyqOStwc5XptUNDIb
+         qgY409tTcnSLMME5LL0QF9qUqJEJ5eul/A29A05dpYuiAE/VlwyFHs9wqNchY3n6E3tm
+         PvQ0AGqmCEPC4oalZvcTWwYpZWM+7HKgb3eXOP5yluvevmLCNFylOeAYk+oId8vPdONf
+         JOWaRweXeFZl1b7jrY0HUlayIuG7iqV2+q/o6hzKZx9BLRodDP11LPPM9cHiWEb3wN3X
+         4CBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Q9p8dp4Vwd7zb49ZfmkHjOde2lTf1kQmZ0LZmoXXg+Y=;
+        b=JGAzGWjuAZo8BCyJ+jFiDtGtbpEogcNiooDB8Q1/3nLH0goLK+zBDHd1O9vjLhGwy2
+         AMGb5hZq8/csTSRCwTLpO0XWbLb+GETMzbiW7kBz5wrUIXdMfnxkVrAemaUbPFFPp8jh
+         17jh5PvWtDEfBiixw6hba23owcAHs9TZ6s+6adekP+0J4Rw+hLjVuJQ1J/eIcS8Ea5T5
+         9pj9rHF7cZ+CvccJTgTk45Q6YVjZIVbOTZmvvRTVwNULu29Op2EPzwI9oTVQj75V+RpE
+         QFGIAEgayyd0hCaz93b9eC/4UjtpyX3SLjqWLNoa7OgLy2F+D3tQzZ+dzq1ljGT2bwWt
+         UnPA==
+X-Gm-Message-State: APjAAAUx1JJ0CXUgSqw4EMqq5ZYk57Si1XVKMzl5tKnOckrzsVCbL18C
+        y0L1c2r4HgvumbNZx1lPlCY=
+X-Google-Smtp-Source: APXvYqyRb0wvQlmXB+gXw3/gwm+pd7UaBZTu3orpe9dFWQXE6Yy8xkJqi7BlFLmgkM9E0td9w8j+IQ==
+X-Received: by 2002:a2e:9b48:: with SMTP id o8mr9572286ljj.122.1565303144838;
+        Thu, 08 Aug 2019 15:25:44 -0700 (PDT)
+Received: from localhost.localdomain ([94.29.34.218])
+        by smtp.gmail.com with ESMTPSA id g5sm19318415ljj.69.2019.08.08.15.25.43
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 08 Aug 2019 15:25:43 -0700 (PDT)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
         Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH] mmc: sdhci-cadence: use struct_size() helper
-Message-ID: <20190808165301.GA30877@embeddedor>
+Cc:     linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1] Revert "mmc: sdhci-tegra: drop ->get_ro() implementation"
+Date:   Fri,  9 Aug 2019 01:24:30 +0300
+Message-Id: <20190808222430.28477-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.192.11.120
-X-Source-L: No
-X-Exim-ID: 1hvley-000Ebr-O5
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [187.192.11.120]:49892
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-One of the more common cases of allocation size calculations is finding
-the size of a structure that has a zero-sized array at the end, along
-with memory for some number of elements for that array. For example:
+The WRITE_PROTECT bit is always in a "protected mode" on Tegra and
+WP-GPIO state need to be used instead. In a case of the GPIO absence,
+write-enable should be assumed. External SD is writable once again as
+a result of this patch because the offending commit changed behaviour for
+the case of a missing WP-GPIO to fall back to WRITE_PROTECT bit-checking,
+which is incorrect for Tegra.
 
-struct sdhci_cdns_priv {
-	...
-        struct sdhci_cdns_phy_param phy_params[0];
-};
-
-Make use of the struct_size() helper instead of an open-coded version
-in order to avoid any potential type mistakes.
-
-So, replace the following form:
-
-sizeof(*priv) + sizeof(priv->phy_params[0]) * nr_phy_params
-
-with:
-
-struct_size(priv, phy_params, nr_phy_params)
-
-Also, notice that, in this case, variable priv_size is not necessary,
-hence it is removed.
-
-This code was detected with the help of Coccinelle.
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Cc: stable@vger.kernel.org # v5.1+
+Fixes: e8391453e27f ("mmc: sdhci-tegra: drop ->get_ro() implementation")
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mmc/host/sdhci-cadence.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-tegra.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-cadence.c b/drivers/mmc/host/sdhci-cadence.c
-index 163d1cf4367e..1768a13f89be 100644
---- a/drivers/mmc/host/sdhci-cadence.c
-+++ b/drivers/mmc/host/sdhci-cadence.c
-@@ -337,7 +337,6 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
- 	struct sdhci_pltfm_host *pltfm_host;
- 	struct sdhci_cdns_priv *priv;
- 	struct clk *clk;
--	size_t priv_size;
- 	unsigned int nr_phy_params;
- 	int ret;
- 	struct device *dev = &pdev->dev;
-@@ -351,8 +350,8 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
- 		return ret;
+diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+index f4d4761cf20a..02d8f524bb9e 100644
+--- a/drivers/mmc/host/sdhci-tegra.c
++++ b/drivers/mmc/host/sdhci-tegra.c
+@@ -258,6 +258,16 @@ static void tegra210_sdhci_writew(struct sdhci_host *host, u16 val, int reg)
+ 	}
+ }
  
- 	nr_phy_params = sdhci_cdns_phy_param_count(dev->of_node);
--	priv_size = sizeof(*priv) + sizeof(priv->phy_params[0]) * nr_phy_params;
--	host = sdhci_pltfm_init(pdev, &sdhci_cdns_pltfm_data, priv_size);
-+	host = sdhci_pltfm_init(pdev, &sdhci_cdns_pltfm_data,
-+				struct_size(priv, phy_params, nr_phy_params));
- 	if (IS_ERR(host)) {
- 		ret = PTR_ERR(host);
- 		goto disable_clk;
++static unsigned int tegra_sdhci_get_ro(struct sdhci_host *host)
++{
++	/*
++	 * Write-enable shall be assumed if GPIO is missing in a board's
++	 * device-tree because SDHCI's WRITE_PROTECT bit doesn't work on
++	 * Tegra.
++	 */
++	return mmc_gpio_get_ro(host->mmc);
++}
++
+ static bool tegra_sdhci_is_pad_and_regulator_valid(struct sdhci_host *host)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+@@ -1224,6 +1234,7 @@ static const struct cqhci_host_ops sdhci_tegra_cqhci_ops = {
+ };
+ 
+ static const struct sdhci_ops tegra_sdhci_ops = {
++	.get_ro     = tegra_sdhci_get_ro,
+ 	.read_w     = tegra_sdhci_readw,
+ 	.write_l    = tegra_sdhci_writel,
+ 	.set_clock  = tegra_sdhci_set_clock,
+@@ -1279,6 +1290,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra30 = {
+ };
+ 
+ static const struct sdhci_ops tegra114_sdhci_ops = {
++	.get_ro     = tegra_sdhci_get_ro,
+ 	.read_w     = tegra_sdhci_readw,
+ 	.write_w    = tegra_sdhci_writew,
+ 	.write_l    = tegra_sdhci_writel,
+@@ -1332,6 +1344,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra124 = {
+ };
+ 
+ static const struct sdhci_ops tegra210_sdhci_ops = {
++	.get_ro     = tegra_sdhci_get_ro,
+ 	.read_w     = tegra_sdhci_readw,
+ 	.write_w    = tegra210_sdhci_writew,
+ 	.write_l    = tegra_sdhci_writel,
+@@ -1366,6 +1379,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra210 = {
+ };
+ 
+ static const struct sdhci_ops tegra186_sdhci_ops = {
++	.get_ro     = tegra_sdhci_get_ro,
+ 	.read_w     = tegra_sdhci_readw,
+ 	.write_l    = tegra_sdhci_writel,
+ 	.set_clock  = tegra_sdhci_set_clock,
 -- 
 2.22.0
 
