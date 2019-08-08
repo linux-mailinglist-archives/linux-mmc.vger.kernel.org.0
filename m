@@ -2,180 +2,118 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8053185E2C
-	for <lists+linux-mmc@lfdr.de>; Thu,  8 Aug 2019 11:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA69085F5A
+	for <lists+linux-mmc@lfdr.de>; Thu,  8 Aug 2019 12:15:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732098AbfHHJYF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 8 Aug 2019 05:24:05 -0400
-Received: from mailout4.samsung.com ([203.254.224.34]:31379 "EHLO
-        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730678AbfHHJYF (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Aug 2019 05:24:05 -0400
-Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20190808092402epoutp04786c0de94dae114fbaf3ad8037e9c154~46EJq2h920542605426epoutp04U
-        for <linux-mmc@vger.kernel.org>; Thu,  8 Aug 2019 09:24:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20190808092402epoutp04786c0de94dae114fbaf3ad8037e9c154~46EJq2h920542605426epoutp04U
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1565256242;
-        bh=WI23ltb4jb+ygu8YEM6L7YgwDfxCQ5Em3kwg2Un7oUI=;
-        h=From:To:Cc:Subject:Date:References:From;
-        b=akybAPW8mG5gxoHJSk2wNfLzoXTU3FHo2/2r9M2jKSkf0Muh6Ikc51AkYuXMet68v
-         ZzEGb2ImEJAYTxsGKtLrBP8DkaXGpjVjIogLVX53FdCYO8oe3hRV4Vug9+xRdVrtm1
-         oEvM/+kZLvhEVN/iO6ts8XDHp/fYba0KKWCxYoEk=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-        epcas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20190808092401epcas1p1e0cb678fbb9b1e8409bd6f1dcbf7b9b1~46EJJnaEl2678626786epcas1p12;
-        Thu,  8 Aug 2019 09:24:01 +0000 (GMT)
-Received: from epsmges1p4.samsung.com (unknown [182.195.40.163]) by
-        epsnrtp1.localdomain (Postfix) with ESMTP id 4642xV6sMvzMqYll; Thu,  8 Aug
-        2019 09:23:58 +0000 (GMT)
-Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
-        epsmges1p4.samsung.com (Symantec Messaging Gateway) with SMTP id
-        4C.3D.04160.E2AEB4D5; Thu,  8 Aug 2019 18:23:58 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
-        20190808092358epcas1p4076172a9e140332c0ddaa13fac18987b~46EGC0LX71669916699epcas1p4o;
-        Thu,  8 Aug 2019 09:23:58 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20190808092358epsmtrp2cee92d1d187110e9aec3311355e7d605~46EGCHoo-0745907459epsmtrp2V;
-        Thu,  8 Aug 2019 09:23:58 +0000 (GMT)
-X-AuditID: b6c32a38-b4bff70000001040-45-5d4bea2eb9f3
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        F9.D0.03706.E2AEB4D5; Thu,  8 Aug 2019 18:23:58 +0900 (KST)
-Received: from localhost.localdomain (unknown [10.88.100.192]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190808092358epsmtip18f330ea675e5a0b1066680ce8492b9d0~46EF55FTh2794327943epsmtip1c;
-        Thu,  8 Aug 2019 09:23:58 +0000 (GMT)
-From:   Jungseung Lee <js07.lee@samsung.com>
-To:     Avri Altman <Avri.Altman@wdc.com>, Chris Ball <chris@printf.net>,
-        linux-mmc@vger.kernel.org, js07.lee@gmail.com
-Cc:     Jungseung Lee <js07.lee@samsung.com>
-Subject: [PATCH v2] mmc-utils: feature spec 5.0+, add secure removal type
+        id S2389834AbfHHKPw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 8 Aug 2019 06:15:52 -0400
+Received: from esa2.hgst.iphmx.com ([68.232.143.124]:10904 "EHLO
+        esa2.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389756AbfHHKPw (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Aug 2019 06:15:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1565259415; x=1596795415;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=2oL/Mu/BvLomkqYAR78zTAd9zRov6nUDAw5dIfTzSYs=;
+  b=bgwbmfPyVPeRs3vLNHQtFXgaYKXc0rCmDTi+Ymj7e74+/ysoUo/fnIlg
+   ucyzvNOq44VYz2KfEClfYHi7o3or6VErCEP/YAv9DLK1TmZBETX0LH3Vv
+   aTCnz/7Ua2u6HhDhgtpEsc8O+x2uj94OUIpyZstFAP8YrLElJtyB+y/GU
+   iAXP4yJdn7v2pNNorujDr+NeqzIXCSemPOGGp019RCQPdT6rPXXm2PODY
+   YjAwZQOc1Hk73QW7fxOZq7Esy44DsDwvsMjRvBfQYD/wSLxlYVDoNr7Q/
+   DF/0dPTc7YDuYjAeUqQzRhjTM6WXSaicVtlE9w9uwJ3Rb8KahIL1pz8sO
+   g==;
+IronPort-SDR: 2TePKCcINyOT8BdH/Yyx6d1RbbpLolOrwE2syWatMvaBU/8wJJAERNNcoA2KPLvdrREakpILww
+ l2ZV9/uDdwMMGz2dlat4GLjlAkS/HyvCxV5pZC6PCjB00EdygnP+a0x3mnGv7A9tpaHk7Lww0V
+ 4gD5T+6dbAChlKYx5vEi+h0k3VOk+bAtHQTtbqYtpbb0QiMHYFacod3CbcDfL0w92pUmlLaDRu
+ UJAYa8M3xoBgx9iU+NfaKhGroR+NWMO++yea/pTHJICzOhaTh1zGIaROeiv36jr/qLqhHXVrBL
+ pjc=
+X-IronPort-AV: E=Sophos;i="5.64,360,1559491200"; 
+   d="scan'208";a="215660778"
+Received: from mail-by2nam01lp2053.outbound.protection.outlook.com (HELO NAM01-BY2-obe.outbound.protection.outlook.com) ([104.47.34.53])
+  by ob1.hgst.iphmx.com with ESMTP; 08 Aug 2019 18:16:54 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YMDCjsPFHgsu0W75HgFnH8yu0mBqDyEOngYSa5BUceHUjBweqOC8n9h/ftvEkXkwXr1oOqvfpZ95mHUk9VdK41fTKiLa+DxvemvOdbxuxMZsC1TOc2Y2cjFsrHdSCy6c1lIdQqyBNjRnDWB46yX6hGbp8K3LTJW7yGn3tUp2WVgwbqWTJ2I4LZiaQDraIq0KgvGyZJC7trIZ7aQ2rIp334bU5/XuONcGkCg6qNByS/Lkh3IwByuNwB0GOmwj120T0GCeq1I/w5rN29C4F6TKEGv4yspknNOP0QsxQPwv7k2irjA+IjSyoT7ACsq8L29xBgDGznJPWISGABvAWfoKjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2oL/Mu/BvLomkqYAR78zTAd9zRov6nUDAw5dIfTzSYs=;
+ b=i4p4xJBYjHJRbcM6w9WiElirNgtm1huKSo52NNnbUb7tbn9Uw45Fbuud9XV494EXsY4i/PlgQpuf+TsDAhMZOtVB9ozLhZuu9xWp5yy+hsybA3Zh+H4k+tKkgp47+vBTZbNkHi9zNKbjSitBQTruHeglLlYFoPUVhhDYRenmP95VsD1DA/D4msgOBSfcuGBuHfkWsY6T0zawPdR1jm5/OCaePL0nycTeFVgmwYEKw3gInSX0dpmCclA1qZozwVRQKNfFGStHGysoRUDZj9EeWN27ELl38gZ81AhrVpCMEdoof85q3lnHpgICVDGgXdL+ACzWXf/bb16NA0i0z00Gtg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=wdc.com;dmarc=pass action=none header.from=wdc.com;dkim=pass
+ header.d=wdc.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2oL/Mu/BvLomkqYAR78zTAd9zRov6nUDAw5dIfTzSYs=;
+ b=bBYDYWCUpw9vBfPAxIahaVPddBaJZ3BhgOqXpeIs7ABx0+hrSCi3RXC1w6mFpJy36UdCPuTMs3q939sbMd3h1K8dUCwbkcx2h/jd7uPIigC0HjsZryKa1//s6jqDglN8aC/7zyE9fwTfFiuXAqsowGx/ST5SmDLhGOE7UBSYGe4=
+Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
+ MN2PR04MB5904.namprd04.prod.outlook.com (20.179.23.139) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2136.16; Thu, 8 Aug 2019 10:15:50 +0000
+Received: from MN2PR04MB6991.namprd04.prod.outlook.com
+ ([fe80::5d3b:c35e:a95a:51e2]) by MN2PR04MB6991.namprd04.prod.outlook.com
+ ([fe80::5d3b:c35e:a95a:51e2%3]) with mapi id 15.20.2157.015; Thu, 8 Aug 2019
+ 10:15:50 +0000
+From:   Avri Altman <Avri.Altman@wdc.com>
+To:     Jungseung Lee <js07.lee@samsung.com>,
+        Chris Ball <chris@printf.net>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "js07.lee@gmail.com" <js07.lee@gmail.com>
+Subject: RE: [PATCH v2] mmc-utils: feature spec 5.0+, add secure removal type
  fileds to Extended CSD
-Date:   Thu,  8 Aug 2019 18:23:41 +0900
-Message-Id: <20190808092341.3610-1-js07.lee@samsung.com>
-X-Mailer: git-send-email 2.17.1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrCKsWRmVeSWpSXmKPExsWy7bCmvq7eK+9Yg6Zec4uXP6+yWUy4vJ3R
-        4u+cd0wWj27+ZrU48r+f0YHVY+esu+weN14tZPLo27KK0ePzJjmP9gPdTAGsUTk2GamJKalF
-        Cql5yfkpmXnptkrewfHO8aZmBoa6hpYW5koKeYm5qbZKLj4Bum6ZOUDLlRTKEnNKgUIBicXF
-        Svp2NkX5pSWpChn5xSW2SqkFKTkFhgYFesWJucWleel6yfm5VoYGBkamQJUJORkLZzWzFVwV
-        q3jzuYm9gfGcYBcjB4eEgInEpQfcXYxcHEICOxgl9tw7wQThfGKUWHpuIRuE841Rov35fdYu
-        Rk6wjmWLVzFCJPYySmycNw2q6jOjxJIPjewgVWwCWhI3fm8C6xARKJX4/qKFCcRmFtCQ+H3g
-        JguILSyQJHF95VuwOIuAqsTd931gNq+AhcTe/1cZIbbJS6zecIAZZIGEwE9WiZ7Hy1ggEi4S
-        F/9dYoKwhSVeHd/CDmFLSXx+t5cNwi6W2LlyIjtEcwujxKPlS6CKjCXevV3LDAoBZgFNifW7
-        9CHCihI7f89lhDiUT+Ld1x5WSCDxSnS0CUGUKEm8edACdYKExIXHvdBQ8ZBY33wTrFVIIFbi
-        z4IVTBMYZWchLFjAyLiKUSy1oDg3PbXYsMAEOZY2MYJTlJbFDsY953wOMQpwMCrx8DJc8IoV
-        Yk0sK67MPcQowcGsJMJ7r8wzVog3JbGyKrUoP76oNCe1+BCjKTD0JjJLiSbnA9NnXkm8oamR
-        sbGxhYmZuZmpsZI478IfFrFCAumJJanZqakFqUUwfUwcnFINjI4drF+ip05ia33cqHngdrv/
-        lTi1eaUztnGIFJznVBHw+h6i4+EfXLFiwi6Dl7yzL4l634nvUnj/3W/rjeT/q3c1V4UveL0j
-        b/GnU0E3tA9scsuwNnbXOffgj2PvT4kvocaegkEbUirOt8fOnnHB3Jmpab7uQm/RxOXd02Z/
-        ZP1Tyvr1Xt7xciWW4oxEQy3mouJEACd/VslnAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpgluLIzCtJLcpLzFFi42LZdlhJTlfvlXeswbof8hYvf15ls5hweTuj
-        xd8575gsHt38zWpx5H8/owOrx85Zd9k9brxayOTRt2UVo8fnTXIe7Qe6mQJYo7hsUlJzMstS
-        i/TtErgyFs5qZiu4Klbx5nMTewPjOcEuRk4OCQETiWWLVzGC2EICuxklnv2VgohLSDza+YWl
-        i5EDyBaWOHy4uIuRC6jkI6PEn2fzWUBq2AS0JG783sQKYosIVErM7f/DBGIzC2hI/D5wE6xG
-        WCBB4vy6jWA1LAKqEnff94HV8ApYSOz9f5URYpe8xOoNB5gnMPIsYGRYxSiZWlCcm55bbFhg
-        mJdarlecmFtcmpeul5yfu4kRHC5amjsYLy+JP8QowMGoxMPLcMErVog1say4MvcQowQHs5II
-        770yz1gh3pTEyqrUovz4otKc1OJDjNIcLErivE/zjkUKCaQnlqRmp6YWpBbBZJk4OKUaGA0m
-        v9Rzv//Vjun1zcSq/uuuN17ou1wrUj+8/8LXt1G/Jop+Oqa3ZNbkWRad86UvH5MN793Hd9Nr
-        SR378SX/dgtNWtex7ugfgfIvQX3F2x4UM8uH3biUFvRunUPhiXVK25/s7r172i/OZUWRUo0c
-        w4nAyOkVS0ozluXaRogo/A0W/qF6d0Zx9EclluKMREMt5qLiRADt45bVEwIAAA==
-X-CMS-MailID: 20190808092358epcas1p4076172a9e140332c0ddaa13fac18987b
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20190808092358epcas1p4076172a9e140332c0ddaa13fac18987b
+Thread-Topic: [PATCH v2] mmc-utils: feature spec 5.0+, add secure removal type
+ fileds to Extended CSD
+Thread-Index: AQHVTcsK4Wn/xpA4VkOjMhWPFaGbv6bxCKRw
+Date:   Thu, 8 Aug 2019 10:15:50 +0000
+Message-ID: <MN2PR04MB6991C477ED6F7C35357B3558FCD70@MN2PR04MB6991.namprd04.prod.outlook.com>
 References: <CGME20190808092358epcas1p4076172a9e140332c0ddaa13fac18987b@epcas1p4.samsung.com>
+ <20190808092341.3610-1-js07.lee@samsung.com>
+In-Reply-To: <20190808092341.3610-1-js07.lee@samsung.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Avri.Altman@wdc.com; 
+x-originating-ip: [212.25.79.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 77b2bc17-fc53-4288-68fb-08d71be96371
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:MN2PR04MB5904;
+x-ms-traffictypediagnostic: MN2PR04MB5904:
+x-microsoft-antispam-prvs: <MN2PR04MB5904DC26D35C787E7CB9AE0EFCD70@MN2PR04MB5904.namprd04.prod.outlook.com>
+wdcipoutbound: EOP-TRUE
+x-ms-oob-tlc-oobclassifiers: OLM:1148;
+x-forefront-prvs: 012349AD1C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(376002)(136003)(39860400002)(346002)(396003)(366004)(199004)(189003)(476003)(6246003)(55016002)(26005)(2501003)(11346002)(2201001)(102836004)(229853002)(478600001)(5660300002)(6116002)(3846002)(86362001)(76176011)(486006)(2906002)(53936002)(9686003)(186003)(446003)(52536014)(74316002)(66446008)(66556008)(66476007)(64756008)(7736002)(6436002)(256004)(25786009)(305945005)(33656002)(99286004)(76116006)(6506007)(14454004)(110136005)(81166006)(81156014)(71200400001)(8936002)(8676002)(4744005)(71190400001)(66066001)(66946007)(7696005)(316002);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB5904;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: fBwA9Wz/WlTkoZ8PrCtTe0Lhc1rvJ0Kj51u6MtRalf7gywoTOi+GzTgtBmQuc1DigM9+lNH5dtPIQhfPjZgHd9JOvfkT3mTni4M+90Bc9roZIh1Dd6R9LjoQNBAiIa4Belm9hF/ElWx+BL7A3vyZk3lnK1zAXDpjl/Ezk6qEADAV+FhZOLb8WpNemgjNFVTmVtRyjqQmoFzRAEI/PcBqWjD4b3iA6UmnlPdWrF41238eYfjjeo+5mInMVKRth3IOhi5+m7zJ4e7/8WUFhjmOxt4f5KYDQwbA37zWN4GaH+xpzyx4pP7aDKwjbU6r8vvTgWqdtfi8GwYm4RYO9dHm6tGD3zbZgBMUsd0cSIVScRb0s1E12OTpfxIprbmjUeKL1PPMp3+1GXSlTg8PstGeK6f7zIWfT5RMRFLae87SoJc=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77b2bc17-fc53-4288-68fb-08d71be96371
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Aug 2019 10:15:50.4990
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 9IU0/4CuGl2netLBYD5hiswLTEtldaIAsPO2hc9aKt5c6a7jzOIhGf6IwpJxezH+Xo6Pur1F9UUSLrBJZUFxyw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB5904
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Display secure removal type when printing Extended CSD
-Example:
-	# mmc extcsd read /dev/mmcblk0
-	...
-        Secure Removal Type [SECURE_REMOVAL_TYPE]: 0x39
-         information is configured to be removed using a vendor defined
-         Supported Secure Removal Type:
-          information removed by an erase of the physical memory
-          information removed using a vendor defined
-
-Signed-off-by: Jungseung Lee <js07.lee@samsung.com>
----
- mmc.h      |  3 +++
- mmc_cmds.c | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
-
-diff --git a/mmc.h b/mmc.h
-index 285c1f1..648fb26 100644
---- a/mmc.h
-+++ b/mmc.h
-@@ -116,6 +116,7 @@
- #define EXT_CSD_MODE_CONFIG		30
- #define EXT_CSD_MODE_OPERATION_CODES	29	/* W */
- #define EXT_CSD_FFU_STATUS		26	/* R */
-+#define EXT_CSD_SECURE_REMOVAL_TYPE	16	/* R/W */
- #define EXT_CSD_CMDQ_MODE_EN		15	/* R/W */
- 
- /*
-@@ -132,6 +133,8 @@
- /*
-  * EXT_CSD field definitions
-  */
-+#define EXT_CSD_CONFIG_SECRM_TYPE	(0x30)
-+#define EXT_CSD_SUPPORTED_SECRM_TYPE	(0x0f)
- #define EXT_CSD_FFU_INSTALL		(0x01)
- #define EXT_CSD_FFU_MODE		(0x01)
- #define EXT_CSD_NORMAL_MODE		(0x00)
-diff --git a/mmc_cmds.c b/mmc_cmds.c
-index 19a9da1..fb37189 100644
---- a/mmc_cmds.c
-+++ b/mmc_cmds.c
-@@ -1766,6 +1766,38 @@ int do_read_extcsd(int nargs, char **argv)
- 			ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_B]);
- 		printf("eMMC Pre EOL information [EXT_CSD_PRE_EOL_INFO]: 0x%02x\n",
- 			ext_csd[EXT_CSD_PRE_EOL_INFO]);
-+		reg = ext_csd[EXT_CSD_SECURE_REMOVAL_TYPE];
-+		printf("Secure Removal Type [SECURE_REMOVAL_TYPE]: 0x%02x\n", reg);
-+		printf(" information is configured to be removed ");
-+		/* Bit [5:4]: Configure Secure Removal Type */
-+		switch ((reg & EXT_CSD_CONFIG_SECRM_TYPE) >> 4) {
-+			case 0x0:
-+				printf("by an erase of the physical memory\n");
-+				break;
-+			case 0x1:
-+				printf("by an overwriting the addressed locations"
-+				       " with a character followed by an erase\n");
-+				break;
-+			case 0x2:
-+				printf("by an overwriting the addressed locations"
-+				       " with a character, its complement, then a random character\n");
-+				break;
-+			case 0x3:
-+				printf("using a vendor defined\n");
-+				break;
-+		}
-+		/* Bit [3:0]: Supported Secure Removal Type */
-+		printf(" Supported Secure Removal Type:\n");
-+		if (reg & 0x01)
-+			printf("  information removed by an erase of the physical memory\n");
-+		if (reg & 0x02)
-+			printf("  information removed by an overwriting the addressed locations"
-+			       " with a character followed by an erase\n");
-+		if (reg & 0x04)
-+			printf("  information removed by an overwriting the addressed locations"
-+			       " with a character, its complement, then a random character\n");
-+		if (reg & 0x08)
-+			printf("  information removed using a vendor defined\n");
- 	}
- 
- 	if (ext_csd_rev >= 8) {
--- 
-2.17.1
-
+PiANCj4gRGlzcGxheSBzZWN1cmUgcmVtb3ZhbCB0eXBlIHdoZW4gcHJpbnRpbmcgRXh0ZW5kZWQg
+Q1NEDQo+IEV4YW1wbGU6DQo+IAkjIG1tYyBleHRjc2QgcmVhZCAvZGV2L21tY2JsazANCj4gCS4u
+Lg0KPiAgICAgICAgIFNlY3VyZSBSZW1vdmFsIFR5cGUgW1NFQ1VSRV9SRU1PVkFMX1RZUEVdOiAw
+eDM5DQo+ICAgICAgICAgIGluZm9ybWF0aW9uIGlzIGNvbmZpZ3VyZWQgdG8gYmUgcmVtb3ZlZCB1
+c2luZyBhIHZlbmRvciBkZWZpbmVkDQo+ICAgICAgICAgIFN1cHBvcnRlZCBTZWN1cmUgUmVtb3Zh
+bCBUeXBlOg0KPiAgICAgICAgICAgaW5mb3JtYXRpb24gcmVtb3ZlZCBieSBhbiBlcmFzZSBvZiB0
+aGUgcGh5c2ljYWwgbWVtb3J5DQo+ICAgICAgICAgICBpbmZvcm1hdGlvbiByZW1vdmVkIHVzaW5n
+IGEgdmVuZG9yIGRlZmluZWQNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEp1bmdzZXVuZyBMZWUgPGpz
+MDcubGVlQHNhbXN1bmcuY29tPg0KUmV2aWV3ZWQtYnk6IEF2cmkgQWx0bWFuIDxhdnJpLmFsdG1h
+bkB3ZGMuY29tPg0K
