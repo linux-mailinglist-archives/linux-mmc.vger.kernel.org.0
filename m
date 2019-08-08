@@ -2,282 +2,150 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5376585BAB
-	for <lists+linux-mmc@lfdr.de>; Thu,  8 Aug 2019 09:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5C0885C2C
+	for <lists+linux-mmc@lfdr.de>; Thu,  8 Aug 2019 09:56:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730994AbfHHHhU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 8 Aug 2019 03:37:20 -0400
-Received: from mga02.intel.com ([134.134.136.20]:27079 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725796AbfHHHhU (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 8 Aug 2019 03:37:20 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Aug 2019 00:36:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,360,1559545200"; 
-   d="scan'208";a="182517814"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by FMSMGA003.fm.intel.com with ESMTP; 08 Aug 2019 00:36:14 -0700
-Subject: Re: [PATCH V5 3/3] mmc: sdhci: Fix O2 Host data read/write DLL Lock
- Phase shift issue
-To:     "Shirley Her (SC)" <shirley.her@bayhubtech.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        id S1731588AbfHHH4T (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 8 Aug 2019 03:56:19 -0400
+Received: from esa4.hgst.iphmx.com ([216.71.154.42]:17860 "EHLO
+        esa4.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731281AbfHHH4S (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Aug 2019 03:56:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1565250978; x=1596786978;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=O1Z5d4UwZu0vqmyUwI8Lat0UFnV0YoOLO/dhLZ14yvI=;
+  b=MurJ1xUQlhBalRxzKnEGEVu40dFXP1fzAf57fLusmoI9FOp3rVxS4rR4
+   tgAzvXI6qj7JROtne/6EM9daF2Jw9RCJ6oTAqQ6qKEXvrV8A/zvJ+krSU
+   1HxiW23C59Uhp7CiZc67AqHvnubwpJD0IVtPoQzvh2Zh/YeHhEXJQkUT+
+   RkQQL/Q6Io8sqEVp4xf2r6QIty9ppJuHU+rUL/nBWFEkrToZDfYTQHyg3
+   /CQkzgsaeUZ3FZp8qeachHxgOficbJmB7dbXskzZLvnoE8TOMjZBLuhpL
+   aBKqNstRgnNWDnnfYACd456VcDX5UaRDOC4AlhCyouxCT+jpHu1wNCzeV
+   A==;
+IronPort-SDR: E3LO2q6ILabAefEfxLmGdinTAkT4gkhXgKeBLY1LV7KgbZe0Az1JGwK63ZXm0MJl+d8BanYiIm
+ cnWgzov213CWqUDi+dHluFzcqtQYXv8SJgm0non4IGWZSwp1N2lR+ZziR9NZwLgPotMfPGsoPj
+ iOcy0t/Zzs13VFqsfRFn3LYxPF2A5oOb5xPCIqDaR8gQqRRF4+jGRyqEqVUp1WyoizUvEBks8U
+ fD07pDzEYPIuy4Dd72LjhkE9fRf2c5dKEz+RYreVwzXaW88rMY182/JOrnVLMVhqC5m4as9Ah4
+ WCI=
+X-IronPort-AV: E=Sophos;i="5.64,360,1559491200"; 
+   d="scan'208";a="115356319"
+Received: from mail-sn1nam02lp2058.outbound.protection.outlook.com (HELO NAM02-SN1-obe.outbound.protection.outlook.com) ([104.47.36.58])
+  by ob1.hgst.iphmx.com with ESMTP; 08 Aug 2019 15:56:18 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=a3WMEEuNRf+E9baeFQkdmJj9/EMJn8n+iM/3Z8kazA11sZV27upGNkMod/0HvxoTUOaOKfR2nOp9wAoR1MsTAx9nFhE8qHuy43sd0e7fTBgL+68kqRUSq2oCnrWeUDMek8oumGBlK+x0tog73fXmZ6WXhseIefTadLpRFyNonpor+7Fn57ZUQbQwk99lCh0yfeA30xVunzTOvWNRK+SbQt5E1C8B5mO6HOmXIaoRG7cZh98v6zQ8hi32bcM2OhRj/irkRq9CorGqDs8vzGVxTu9vTWB5W0t7rSd/ej0QFYZWz2XIGTk/ohGyZCbus8GDm6iumpa9ifQMajsT+o+sig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O1Z5d4UwZu0vqmyUwI8Lat0UFnV0YoOLO/dhLZ14yvI=;
+ b=esYB6crs1Tp9K41hNpwGzMEPvV6Ze/gKcGFX1R4w6cJuMjHIgCtl+e5D0+BrCCr00yy7m8oHWM8RxFbcnb+kRgCEhI8AwaRwFBpvhzbOjc27pp4dngt1zKSJnWiMocOobRL/41baMoK3qv4wzvifKU1vMgAcdnPxqfEMjowc8TDnwt+WszdZR/IwHqn9dt/TyOYK6euogDS9TS0Kipm/OkCnhfvEQcc5+tH5eT0PICiit3MwmjztmRc1yBddu99TqsFz7HlXRynDuaECCj7PHz9dM+58ZLpKbKoqWtv9TSdXuIm1hI7e1EIaLpg34HxeYhc7k3OMpW9EK3YisbP5vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=wdc.com;dmarc=pass action=none header.from=wdc.com;dkim=pass
+ header.d=wdc.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O1Z5d4UwZu0vqmyUwI8Lat0UFnV0YoOLO/dhLZ14yvI=;
+ b=MWE52kVPcgK+7vTqiO5+dp8OeljJgT/xYB18f6EezyYCRvRmYuFq58gqy9R3oB06bJpOAWbJFdXxeT+yi0CcGfUL/oyRuCqxz1vTCaVGLAmFMUrFfe+ohFIAhCzwr1hHZmOIpRZWs1rwlTZIVY/ElgnPGodQVPCySm/C0NxYmzA=
+Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
+ MN2PR04MB5824.namprd04.prod.outlook.com (20.179.21.87) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2136.17; Thu, 8 Aug 2019 07:56:16 +0000
+Received: from MN2PR04MB6991.namprd04.prod.outlook.com
+ ([fe80::5d3b:c35e:a95a:51e2]) by MN2PR04MB6991.namprd04.prod.outlook.com
+ ([fe80::5d3b:c35e:a95a:51e2%3]) with mapi id 15.20.2157.015; Thu, 8 Aug 2019
+ 07:56:16 +0000
+From:   Avri Altman <Avri.Altman@wdc.com>
+To:     Jungseung Lee <js07.lee@samsung.com>,
+        Chris Ball <chris@printf.net>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc:     "Chevron Li (WH)" <chevron.li@bayhubtech.com>,
-        "Louis Lu (TP)" <louis.lu@bayhubtech.com>,
-        "Max Huang (SC)" <max.huang@bayhubtech.com>,
-        "Shaper Liu (WH)" <shaper.liu@bayhubtech.com>
-References: <1565212208-32259-1-git-send-email-shirley.her@bayhubtech.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <2f5477ef-e30b-fabc-50d9-5ecbd0fcd0f3@intel.com>
-Date:   Thu, 8 Aug 2019 10:35:08 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <1565212208-32259-1-git-send-email-shirley.her@bayhubtech.com>
-Content-Type: text/plain; charset=utf-8
+        "js07.lee@gmail.com" <js07.lee@gmail.com>
+Subject: RE: [PATCH] mmc-utils: feature spec 5.0+, add secure removal type
+ fileds to Extended CSD
+Thread-Topic: [PATCH] mmc-utils: feature spec 5.0+, add secure removal type
+ fileds to Extended CSD
+Thread-Index: AQHVTP/xoJTw0jxH0kan3URloBRdRKbw4VRw
+Date:   Thu, 8 Aug 2019 07:56:16 +0000
+Message-ID: <MN2PR04MB6991A3254717667019E649C6FCD70@MN2PR04MB6991.namprd04.prod.outlook.com>
+References: <CGME20190807091012epcas1p2d949c05b6dafb0a22f6babe13c5ae9c8@epcas1p2.samsung.com>
+ <20190807091001.2957-1-js07.lee@samsung.com>
+In-Reply-To: <20190807091001.2957-1-js07.lee@samsung.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Avri.Altman@wdc.com; 
+x-originating-ip: [212.25.79.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 4d89d6b1-6a87-4028-95cf-08d71bd5e456
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:MN2PR04MB5824;
+x-ms-traffictypediagnostic: MN2PR04MB5824:
+x-microsoft-antispam-prvs: <MN2PR04MB5824C645A6BF3E375DD26B08FCD70@MN2PR04MB5824.namprd04.prod.outlook.com>
+wdcipoutbound: EOP-TRUE
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 012349AD1C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(366004)(346002)(396003)(136003)(39860400002)(376002)(189003)(199004)(55016002)(7736002)(110136005)(9686003)(99286004)(316002)(81166006)(8676002)(25786009)(81156014)(6436002)(8936002)(229853002)(478600001)(7696005)(53936002)(66556008)(102836004)(76176011)(2201001)(2501003)(6506007)(71190400001)(71200400001)(26005)(5660300002)(186003)(256004)(66066001)(33656002)(3846002)(66476007)(305945005)(74316002)(2906002)(64756008)(52536014)(76116006)(476003)(486006)(66946007)(446003)(14454004)(66446008)(11346002)(86362001)(6116002)(6246003);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB5824;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: wAxGCzZFev3INftbkwLjsCjPYZvHg7Gu44VX1J+KBCQMd1SBNbtSl/SdiwHbif7xworv8yYJwQnyH8rYWU1jpr04qZCl4YJhXKqdwK/T6FmjwV8MphuuvyWoFnhvzwqJZtnIGRV6oCtN3sFlzKkpom7LIPPx0Z5hguFZY3wwnxdMT6af2BDWN+OlLcqQu0HFRt5lg/UK8Ees44XIEJ4nMa72dLFZ8+wWHe9LimXMM6xJKyan9GGf8GVeNttTqYay+1Y0DCA9OZY7+PDFHYju0JsJs+2XaW9RXgsEZ1ykq3Xz9gM8Ora1dimfGlgoi8giWoCoe4lrFafS0pW7W154tqTBlvZzfJ+EpYYNbSK45iVYrX7oBi/Igwg8dx0UeXR2xij7URDqJUrvgkZ1DjinMJirZexOOGWhMLtLeImDW4g=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d89d6b1-6a87-4028-95cf-08d71bd5e456
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Aug 2019 07:56:16.7477
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YLm8U96srt0azsYHcbCUwJMl40HKj/N+qid95Mkx6A9+6egdIabM+4tLgeRj3P3qiCntWkTTHNexBqxHMf1gtg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB5824
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 8/08/19 12:10 AM, Shirley Her (SC) wrote:
-> Fix data read/write error in HS200 mode due to chip DLL lock phase shift
-> 
-> Signed-off-by:Shirley Her <shirley.her@bayhubtech.com>
-> ---
-> change in V5:
->  1. split 2 patches into 3 patches
->  2. make dll_adjust_count start from 0
->  3. fix ret overwritten issue
->  4. use break instead of goto
-> 
-> change in V4:
->  1. add a bug fix for V3
-> 
-> change in V3:
->  1. add more explanation in dll_recovery and execute_tuning function
->  2. move dll_adjust_count to O2_host struct
->  3. fix some coding style error
->  4. renaming O2_PLL_WDT_CONTROL1 TO O2_PLL_DLL_WDT_CONTROL1
-> 
-> change in V2:
->  1. use usleep_range instead of udelay
->  2. move dll_adjust_count to sdhci-pci-o2micro.c
-> 
-> chagne in V1:
->  1. add error recovery function to relock DLL with correct phase
->  2. retuning HS200 after DLL locked
-> ---
->  drivers/mmc/host/sdhci-pci-o2micro.c | 111 ++++++++++++++++++++++++++++++++++-
->  1 file changed, 108 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
-> index c780888..443d2a3 100644
-> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
-> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-> @@ -55,9 +55,17 @@
->  #define  O2_PLL_FORCE_ACTIVE	BIT(18)
->  #define  O2_PLL_LOCK_STATUS	BIT(14)
->  #define  O2_PLL_SOFT_RESET	BIT(12)
-> +#define  O2_DLL_LOCK_STATUS	BIT(11)
->  
->  #define O2_SD_DETECT_SETTING 0x324
->  
-> +static const u32 dmdn_table[4] = {0x2B1C0000,
-
-The size is not needed here i.e.
-
-static const u32 dmdn_table[] = {0x2B1C0000,
-
-> +	0x2C1A0000, 0x371B0000, 0x35100000};
-
-But please define the constant:
-
-#define DMDN_SZ ARRAY_SIZE(dmdn_table)
-
-> +
-> +struct o2_host {
-> +	u8 dll_adjust_count;
-> +};
-> +
->  static void sdhci_o2_wait_card_detect_stable(struct sdhci_host *host)
->  {
->  	ktime_t timeout;
-> @@ -153,6 +161,32 @@ static void o2_pci_set_baseclk(struct sdhci_pci_chip *chip, u32 value)
->  			       O2_SD_PLL_SETTING, scratch_32);
->  }
->  
-> +static int sdhci_o2_wait_dll_detect_lock(struct sdhci_host *host)
-> +{
-> +	ktime_t timeout;
-> +	u32 scratch32;
-> +
-> +	usleep_range(5000, 6000);
-> +	scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
-> +	if (!(scratch32 & O2_DLL_LOCK_STATUS)) {
-> +		pr_warn("%s: DLL is still unlocked after wait 5ms\n",
-> +			mmc_hostname(host->mmc));
-> +	}
-> +
-> +	/* Detect 1 s */
-> +	timeout = ktime_add_ms(ktime_get(), 1000);
-> +	while (1) {
-> +		bool timedout = ktime_after(ktime_get(), timeout);
-> +
-> +		scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
-> +		if (!(scratch32 & O2_DLL_LOCK_STATUS))
-> +			return 0;
-> +
-> +		if (timedout)
-> +			return 1;
-
-There should be a usleep_range here.
-
-> +	}
-> +}
-> +
->  static void sdhci_o2_set_tuning_mode(struct sdhci_host *host)
->  {
->  	u16 reg;
-> @@ -190,6 +224,66 @@ static void __sdhci_o2_execute_tuning(struct sdhci_host *host, u32 opcode)
->  	sdhci_reset_tuning(host);
->  }
->  
-> +/* this function is used to fix o2 dll shift issue */
-> +static int sdhci_o2_dll_recovery(struct sdhci_host *host)
-> +{
-> +	int ret = 0;
-> +	u8 scratch_8 = 0;
-> +	u32 scratch_32 = 0;
-> +	struct sdhci_pci_slot *slot = sdhci_priv(host);
-> +	struct sdhci_pci_chip *chip = slot->chip;
-> +	struct o2_host *o2_host = sdhci_pci_priv(slot);
-> +
-> +	/* Disable clock */
-> +	sdhci_writeb(host, 0, SDHCI_CLOCK_CONTROL);
-> +	while (o2_host->dll_adjust_count < 4 && 0 == ret) {
-
-Please use DMDN_SZ here instead of 4
-
-> +		/* UnLock WP */
-> +		pci_read_config_byte(chip->pdev,
-> +				O2_SD_LOCK_WP, &scratch_8);
-> +		scratch_8 &= 0x7f;
-> +		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
-> +
-> +		/* PLL software reset */
-> +		scratch_32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
-> +		scratch_32 |= O2_PLL_SOFT_RESET;
-> +		sdhci_writel(host, scratch_32, O2_PLL_DLL_WDT_CONTROL1);
-> +
-> +		pci_read_config_dword(chip->pdev,
-> +					    O2_SD_FUNC_REG4,
-> +					    &scratch_32);
-> +		/* Enable Base Clk setting change */
-> +		scratch_32 |= O2_SD_FREG4_ENABLE_CLK_SET;
-> +		pci_write_config_dword(chip->pdev, O2_SD_FUNC_REG4, scratch_32);
-> +		o2_pci_set_baseclk(chip, dmdn_table[o2_host->dll_adjust_count]);
-> +		o2_host->dll_adjust_count++;
-> +		/* Enable internal clock */
-> +		scratch_8 = SDHCI_CLOCK_INT_EN;
-> +		sdhci_writeb(host, scratch_8, SDHCI_CLOCK_CONTROL);
-> +
-> +		if (sdhci_o2_get_cd(host->mmc)) {
-> +			if (sdhci_o2_wait_dll_detect_lock(host)) {
-> +				scratch_8 |= SDHCI_CLOCK_CARD_EN;
-> +				sdhci_writeb(host, scratch_8,
-> +					SDHCI_CLOCK_CONTROL);
-> +				ret = 1;
-> +			} else {
-> +				pr_warn("%s: DLL unlocked when dll_adjust_count is %d.\n",
-> +					mmc_hostname(host->mmc),
-> +					o2_host->dll_adjust_count);
-> +			}
-> +		}
-
-if !sdhci_o2_get_cd(host->mmc) this will loop forever
-
-> +	}
-> +	if (o2_host->dll_adjust_count == 5)
-
-Shouldn't that be:
-
-	if (!ret && o2_host->dll_adjust_count == DMDN_SZ)
-
-> +		pr_err("%s: DLL adjust over max times\n",
-> +		mmc_hostname(host->mmc));
-> +	/* Lock WP */
-> +	pci_read_config_byte(chip->pdev,
-> +				   O2_SD_LOCK_WP, &scratch_8);
-> +	scratch_8 |= 0x80;
-> +	pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
-> +	return ret;
-> +}
-> +
->  static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
->  {
->  	struct sdhci_host *host = mmc_priv(mmc);
-> @@ -204,7 +298,16 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
->  
->  	if (WARN_ON(opcode != MMC_SEND_TUNING_BLOCK_HS200))
->  		return -EINVAL;
-> -
-> +	/*
-> +	 * Judge the tuning reason, whether caused by dll shift
-> +	 * If cause by dll shift, should call sdhci_o2_dll_recovery
-> +	 */
-> +	if (!sdhci_o2_wait_dll_detect_lock(host))
-> +		if (!sdhci_o2_dll_recovery(host)) {
-> +			pr_err("%s: o2 dll recovery failed\n",
-> +				mmc_hostname(host->mmc));
-> +			return -EINVAL;
-> +		}
->  	/*
->  	 * o2 sdhci host didn't support 8bit emmc tuning
->  	 */
-> @@ -371,7 +474,7 @@ static void sdhci_o2_enable_clk(struct sdhci_host *host, u16 clk)
->  	/* Enable internal clock */
->  	clk |= SDHCI_CLOCK_INT_EN;
->  	sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
-> -
-
-Please leave the blank line. It improves readability.
-
-> +	sdhci_o2_enable_internal_clock(host);
->  	if (sdhci_o2_get_cd(host->mmc)) {
->  		clk |= SDHCI_CLOCK_CARD_EN;
->  		sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
-> @@ -397,12 +500,13 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
->  {
->  	struct sdhci_pci_chip *chip;
->  	struct sdhci_host *host;
-> +	struct o2_host *o2_host = sdhci_pci_priv(slot);
->  	u32 reg, caps;
->  	int ret;
->  
->  	chip = slot->chip;
->  	host = slot->host;
-> -
-
-Please leave the blank line. It improves readability.
-
-> +	o2_host->dll_adjust_count = 0;
->  	caps = sdhci_readl(host, SDHCI_CAPABILITIES);
->  
->  	/*
-> @@ -689,4 +793,5 @@ const struct sdhci_pci_fixes sdhci_o2 = {
->  	.resume = sdhci_pci_o2_resume,
->  #endif
->  	.ops = &sdhci_pci_o2_ops,
-> +	.priv_size = sizeof(struct o2_host),
->  };
-> 
-
+SGksDQoNCj4gDQo+IERpc3BsYXkgc2VjdXJlIHJlbW92YWwgdHlwZSB3aGVuIHByaW50aW5nIEV4
+dGVuZGVkIENTRA0KPiBFeGFtcGxlOg0KPiAJIyBtbWMgZXh0Y3NkIHJlYWQgL2Rldi9tbWNibGsw
+DQo+IAkuLi4NCj4gCVNlY3VyZSBSZW1vdmFsIFR5cGUgW1NFQ1VSRV9SRU1PVkFMX1RZUEVdOiAw
+eDM5DQo+IAkgaW5mb3JtYXRpb24gcmVtb3ZlZCB1c2luZyBhIHZlbmRvciBkZWZpbmVkDQo+IA0K
+PiBTaWduZWQtb2ZmLWJ5OiBKdW5nc2V1bmcgTGVlIDxqczA3LmxlZUBzYW1zdW5nLmNvbT4NCj4g
+LS0tDQo+ICBtbWMuaCAgICAgIHwgIDMgKysrDQo+ICBtbWNfY21kcy5jIHwgMTkgKysrKysrKysr
+KysrKysrKysrKw0KPiAgMiBmaWxlcyBjaGFuZ2VkLCAyMiBpbnNlcnRpb25zKCspDQo+IA0KPiBk
+aWZmIC0tZ2l0IGEvbW1jLmggYi9tbWMuaA0KPiBpbmRleCAyODVjMWYxLi42NDhmYjI2IDEwMDY0
+NA0KPiAtLS0gYS9tbWMuaA0KPiArKysgYi9tbWMuaA0KPiBAQCAtMTE2LDYgKzExNiw3IEBADQo+
+ICAjZGVmaW5lIEVYVF9DU0RfTU9ERV9DT05GSUcJCTMwDQo+ICAjZGVmaW5lIEVYVF9DU0RfTU9E
+RV9PUEVSQVRJT05fQ09ERVMJMjkJLyogVyAqLw0KPiAgI2RlZmluZSBFWFRfQ1NEX0ZGVV9TVEFU
+VVMJCTI2CS8qIFIgKi8NCj4gKyNkZWZpbmUgRVhUX0NTRF9TRUNVUkVfUkVNT1ZBTF9UWVBFCTE2
+CS8qIFIvVyAqLw0KPiAgI2RlZmluZSBFWFRfQ1NEX0NNRFFfTU9ERV9FTgkJMTUJLyogUi9XICov
+DQo+IA0KPiAgLyoNCj4gQEAgLTEzMiw2ICsxMzMsOCBAQA0KPiAgLyoNCj4gICAqIEVYVF9DU0Qg
+ZmllbGQgZGVmaW5pdGlvbnMNCj4gICAqLw0KPiArI2RlZmluZSBFWFRfQ1NEX0NPTkZJR19TRUNS
+TV9UWVBFCSgweDMwKQ0KPiArI2RlZmluZSBFWFRfQ1NEX1NVUFBPUlRFRF9TRUNSTV9UWVBFCSgw
+eDBmKQ0KPiAgI2RlZmluZSBFWFRfQ1NEX0ZGVV9JTlNUQUxMCQkoMHgwMSkNCj4gICNkZWZpbmUg
+RVhUX0NTRF9GRlVfTU9ERQkJKDB4MDEpDQo+ICAjZGVmaW5lIEVYVF9DU0RfTk9STUFMX01PREUJ
+CSgweDAwKQ0KPiBkaWZmIC0tZ2l0IGEvbW1jX2NtZHMuYyBiL21tY19jbWRzLmMNCj4gaW5kZXgg
+MTlhOWRhMS4uOGQ2NDU1ZSAxMDA2NDQNCj4gLS0tIGEvbW1jX2NtZHMuYw0KPiArKysgYi9tbWNf
+Y21kcy5jDQo+IEBAIC0xNzY2LDYgKzE3NjYsMjUgQEAgaW50IGRvX3JlYWRfZXh0Y3NkKGludCBu
+YXJncywgY2hhciAqKmFyZ3YpDQo+IA0KPiAJZXh0X2NzZFtFWFRfQ1NEX0RFVklDRV9MSUZFX1RJ
+TUVfRVNUX1RZUF9CXSk7DQo+ICAJCXByaW50ZigiZU1NQyBQcmUgRU9MIGluZm9ybWF0aW9uDQo+
+IFtFWFRfQ1NEX1BSRV9FT0xfSU5GT106IDB4JTAyeFxuIiwNCj4gIAkJCWV4dF9jc2RbRVhUX0NT
+RF9QUkVfRU9MX0lORk9dKTsNCj4gKwkJcmVnID0gZXh0X2NzZFtFWFRfQ1NEX1NFQ1VSRV9SRU1P
+VkFMX1RZUEVdOw0KPiArCQlwcmludGYoIlNlY3VyZSBSZW1vdmFsIFR5cGUgW1NFQ1VSRV9SRU1P
+VkFMX1RZUEVdOg0KPiAweCUwMnhcbiIsIHJlZyk7DQo+ICsJCXByaW50ZigiIGluZm9ybWF0aW9u
+IHJlbW92ZWQgIik7DQpwcmludGYoIiBpbmZvcm1hdGlvbiBpcyBjb25maWd1cmVkIHRvIGJlIHJl
+bW92ZWQgIik7DQoNCj4gKwkJc3dpdGNoICgocmVnICYgRVhUX0NTRF9DT05GSUdfU0VDUk1fVFlQ
+RSkgPj4gNCkgew0KTWF5YmUgYWRkIGFuIGFwcHJvcHJpYXRlIGNvbW1lbnQsIGUuZy4NCi8qIEJp
+dCBbNTo0XTogQ29uZmlndXJlIFNlY3VyZSBSZW1vdmFsIFR5cGUgKi8NCg0KPiArCQkJY2FzZSAw
+eDA6DQo+ICsJCQkJcHJpbnRmKCJieSBhbiBlcmFzZSBvZiB0aGUgcGh5c2ljYWwNCj4gbWVtb3J5
+XG4iKTsNCj4gKwkJCQlicmVhazsNCj4gKwkJCWNhc2UgMHgxOg0KPiArCQkJCXByaW50ZigiYnkg
+YW4gb3ZlcndyaXRpbmcgdGhlIGFkZHJlc3NlZA0KPiBsb2NhdGlvbnMiDQo+ICsJCQkJICAgICAg
+ICIgd2l0aCBhIGNoYXJhY3RlciBmb2xsb3dlZCBieSBhbg0KPiBlcmFzZVxuIik7DQo+ICsJCQkJ
+YnJlYWs7DQo+ICsJCQljYXNlIDB4MjoNCj4gKwkJCQlwcmludGYoImJ5IGFuIG92ZXJ3cml0aW5n
+IHRoZSBhZGRyZXNzZWQNCj4gbG9jYXRpb25zIg0KPiArCQkJCSAgICAgICAiIHdpdGggYSBjaGFy
+YWN0ZXIsIGl0cyBjb21wbGVtZW50LA0KPiB0aGVuIGEgcmFuZG9tIGNoYXJhY3RlclxuIik7DQo+
+ICsJCQkJYnJlYWs7DQo+ICsJCQljYXNlIDB4MzoNCj4gKwkJCQlwcmludGYoInVzaW5nIGEgdmVu
+ZG9yIGRlZmluZWRcbiIpOw0KPiArCQkJCWJyZWFrOw0KPiArCQl9DQo+ICAJfQ0KWW91IGZvcmdv
+dCB0byBwYXJzZSB0aGUgc3VwcG9ydGVkIHBhcnQgLSBFWFRfQ1NEX1NVUFBPUlRFRF9TRUNSTV9U
+WVBFDQoNCg0KVGhhbmtzLA0KQXZyaQ0K
