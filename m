@@ -2,133 +2,50 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFDC286D2E
-	for <lists+linux-mmc@lfdr.de>; Fri,  9 Aug 2019 00:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F087186DDD
+	for <lists+linux-mmc@lfdr.de>; Fri,  9 Aug 2019 01:26:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404695AbfHHWZr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 8 Aug 2019 18:25:47 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:39456 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732708AbfHHWZq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Aug 2019 18:25:46 -0400
-Received: by mail-lj1-f196.google.com with SMTP id v18so90278587ljh.6;
-        Thu, 08 Aug 2019 15:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Q9p8dp4Vwd7zb49ZfmkHjOde2lTf1kQmZ0LZmoXXg+Y=;
-        b=X/HCeJp6SdIpegsENNIX5jnBFbtDSt0UzsTUaN0a3V8l4KnCb/S47gsOo5w4dI/NuL
-         V5etWewZyguGVw5FG6KZWbW1LS15klZZSFCTiM7xpoSJFKT0PQDSyqOStwc5XptUNDIb
-         qgY409tTcnSLMME5LL0QF9qUqJEJ5eul/A29A05dpYuiAE/VlwyFHs9wqNchY3n6E3tm
-         PvQ0AGqmCEPC4oalZvcTWwYpZWM+7HKgb3eXOP5yluvevmLCNFylOeAYk+oId8vPdONf
-         JOWaRweXeFZl1b7jrY0HUlayIuG7iqV2+q/o6hzKZx9BLRodDP11LPPM9cHiWEb3wN3X
-         4CBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Q9p8dp4Vwd7zb49ZfmkHjOde2lTf1kQmZ0LZmoXXg+Y=;
-        b=JGAzGWjuAZo8BCyJ+jFiDtGtbpEogcNiooDB8Q1/3nLH0goLK+zBDHd1O9vjLhGwy2
-         AMGb5hZq8/csTSRCwTLpO0XWbLb+GETMzbiW7kBz5wrUIXdMfnxkVrAemaUbPFFPp8jh
-         17jh5PvWtDEfBiixw6hba23owcAHs9TZ6s+6adekP+0J4Rw+hLjVuJQ1J/eIcS8Ea5T5
-         9pj9rHF7cZ+CvccJTgTk45Q6YVjZIVbOTZmvvRTVwNULu29Op2EPzwI9oTVQj75V+RpE
-         QFGIAEgayyd0hCaz93b9eC/4UjtpyX3SLjqWLNoa7OgLy2F+D3tQzZ+dzq1ljGT2bwWt
-         UnPA==
-X-Gm-Message-State: APjAAAUx1JJ0CXUgSqw4EMqq5ZYk57Si1XVKMzl5tKnOckrzsVCbL18C
-        y0L1c2r4HgvumbNZx1lPlCY=
-X-Google-Smtp-Source: APXvYqyRb0wvQlmXB+gXw3/gwm+pd7UaBZTu3orpe9dFWQXE6Yy8xkJqi7BlFLmgkM9E0td9w8j+IQ==
-X-Received: by 2002:a2e:9b48:: with SMTP id o8mr9572286ljj.122.1565303144838;
-        Thu, 08 Aug 2019 15:25:44 -0700 (PDT)
-Received: from localhost.localdomain ([94.29.34.218])
-        by smtp.gmail.com with ESMTPSA id g5sm19318415ljj.69.2019.08.08.15.25.43
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 08 Aug 2019 15:25:43 -0700 (PDT)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v1] Revert "mmc: sdhci-tegra: drop ->get_ro() implementation"
-Date:   Fri,  9 Aug 2019 01:24:30 +0300
-Message-Id: <20190808222430.28477-1-digetx@gmail.com>
-X-Mailer: git-send-email 2.22.0
+        id S1733258AbfHHX0F (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 8 Aug 2019 19:26:05 -0400
+Received: from void.printf.net ([40.143.112.133]:47574 "EHLO void.printf.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733140AbfHHX0E (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 8 Aug 2019 19:26:04 -0400
+X-Greylist: delayed 2271 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Aug 2019 19:26:04 EDT
+Received: from chris by void.printf.net with local (Exim 4.69)
+        (envelope-from <chris@void.printf.net>)
+        id 1hvrCb-000Aix-OY; Thu, 08 Aug 2019 23:48:09 +0100
+Date:   Thu, 8 Aug 2019 23:48:09 +0100
+From:   Chris Ball <chris@printf.net>
+To:     Jungseung Lee <js07.lee@samsung.com>
+Cc:     linux-mmc@vger.kernel.org, js07.lee@gmail.com
+Subject: Re: [PATCH] mmc-utils: feature spec 5.0+, add secure removal type
+        fileds to Extended CSD
+Message-ID: <20190808224809.GA41025@void.printf.net>
+References: <CGME20190807091012epcas1p2d949c05b6dafb0a22f6babe13c5ae9c8@epcas1p2.samsung.com> <20190807091001.2957-1-js07.lee@samsung.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190807091001.2957-1-js07.lee@samsung.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The WRITE_PROTECT bit is always in a "protected mode" on Tegra and
-WP-GPIO state need to be used instead. In a case of the GPIO absence,
-write-enable should be assumed. External SD is writable once again as
-a result of this patch because the offending commit changed behaviour for
-the case of a missing WP-GPIO to fall back to WRITE_PROTECT bit-checking,
-which is incorrect for Tegra.
+Hi, thanks for the patch,
 
-Cc: stable@vger.kernel.org # v5.1+
-Fixes: e8391453e27f ("mmc: sdhci-tegra: drop ->get_ro() implementation")
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- drivers/mmc/host/sdhci-tegra.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+On Wed, Aug 07, 2019 at 06:10:01PM +0900, Jungseung Lee wrote:
+> +				printf("by an overwriting the addressed locations"
 
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index f4d4761cf20a..02d8f524bb9e 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -258,6 +258,16 @@ static void tegra210_sdhci_writew(struct sdhci_host *host, u16 val, int reg)
- 	}
- }
- 
-+static unsigned int tegra_sdhci_get_ro(struct sdhci_host *host)
-+{
-+	/*
-+	 * Write-enable shall be assumed if GPIO is missing in a board's
-+	 * device-tree because SDHCI's WRITE_PROTECT bit doesn't work on
-+	 * Tegra.
-+	 */
-+	return mmc_gpio_get_ro(host->mmc);
-+}
-+
- static bool tegra_sdhci_is_pad_and_regulator_valid(struct sdhci_host *host)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-@@ -1224,6 +1234,7 @@ static const struct cqhci_host_ops sdhci_tegra_cqhci_ops = {
- };
- 
- static const struct sdhci_ops tegra_sdhci_ops = {
-+	.get_ro     = tegra_sdhci_get_ro,
- 	.read_w     = tegra_sdhci_readw,
- 	.write_l    = tegra_sdhci_writel,
- 	.set_clock  = tegra_sdhci_set_clock,
-@@ -1279,6 +1290,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra30 = {
- };
- 
- static const struct sdhci_ops tegra114_sdhci_ops = {
-+	.get_ro     = tegra_sdhci_get_ro,
- 	.read_w     = tegra_sdhci_readw,
- 	.write_w    = tegra_sdhci_writew,
- 	.write_l    = tegra_sdhci_writel,
-@@ -1332,6 +1344,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra124 = {
- };
- 
- static const struct sdhci_ops tegra210_sdhci_ops = {
-+	.get_ro     = tegra_sdhci_get_ro,
- 	.read_w     = tegra_sdhci_readw,
- 	.write_w    = tegra210_sdhci_writew,
- 	.write_l    = tegra_sdhci_writel,
-@@ -1366,6 +1379,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra210 = {
- };
- 
- static const struct sdhci_ops tegra186_sdhci_ops = {
-+	.get_ro     = tegra_sdhci_get_ro,
- 	.read_w     = tegra_sdhci_readw,
- 	.write_l    = tegra_sdhci_writel,
- 	.set_clock  = tegra_sdhci_set_clock,
+No need for "an", just "by overwriting the addressed locations".
+
+> +				printf("using a vendor defined\n");
+
+Maybe "using a vendor defined function"?
+
+Thanks,
+
+- Chris.
 -- 
-2.22.0
-
+Chris Ball   <http://printf.net/>
