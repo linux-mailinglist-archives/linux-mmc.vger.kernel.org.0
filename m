@@ -2,78 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 750818627F
-	for <lists+linux-mmc@lfdr.de>; Thu,  8 Aug 2019 15:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3EBD8659D
+	for <lists+linux-mmc@lfdr.de>; Thu,  8 Aug 2019 17:23:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732844AbfHHNBe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 8 Aug 2019 09:01:34 -0400
-Received: from mga18.intel.com ([134.134.136.126]:21475 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732808AbfHHNBe (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 8 Aug 2019 09:01:34 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Aug 2019 06:01:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,361,1559545200"; 
-   d="scan'208";a="182586432"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by FMSMGA003.fm.intel.com with ESMTP; 08 Aug 2019 06:01:30 -0700
-Subject: Re: [PATCH 1/2] mmc: sdhci-of-at91: add quirk for broken HS200
-To:     Eugen.Hristev@microchip.com, Nicolas.Ferre@microchip.com,
-        Ludovic.Desroches@microchip.com, alexandre.belloni@bootlin.com,
-        ulf.hansson@linaro.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-References: <1565252928-28994-1-git-send-email-eugen.hristev@microchip.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <6f08715f-b0e5-715c-006a-d80c0ecf2cd7@intel.com>
-Date:   Thu, 8 Aug 2019 16:00:24 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1732698AbfHHPXh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 8 Aug 2019 11:23:37 -0400
+Received: from mail-vk1-f195.google.com ([209.85.221.195]:41865 "EHLO
+        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732577AbfHHPXh (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Aug 2019 11:23:37 -0400
+Received: by mail-vk1-f195.google.com with SMTP id u64so18807204vku.8
+        for <linux-mmc@vger.kernel.org>; Thu, 08 Aug 2019 08:23:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QNB3Zm9MMvwDRnXaJ2FS/3pgiFUqCEAjWklwwyvURzI=;
+        b=QW+HXSNaJIeMSgjFtPBC8shR+iNt9+afsMRJmza60ge+Uo5qwyV5gFbqtGRm1umBx/
+         OS2BYWlgkFU1xeCsJn+PyYOqe6JQKr3WdGoL/qGN1mXfmapaYVh+6T5MOBlg1ISWAkSx
+         cHZgDJM37VcRbC+RBdKUFsjAtywZh4EA+OSAy1mLa6+fg4luQnJR8jUCGj7gY2sdEOXZ
+         2qTK2rkaNWXhAd8gK6sItZ+AZ8oCKSdzfhIkgxsZMzSnMk6r/fkT6T/uRmIujgVbrLAo
+         NRsj1iJiOiwLaAxgR1PGDzGNdTQSIofv43CI6Swq2iZJsoV5g/3Il2jpP/j03FmsExZu
+         sY+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QNB3Zm9MMvwDRnXaJ2FS/3pgiFUqCEAjWklwwyvURzI=;
+        b=fs4CNMrwfTC0gwIYDazRU10uIn3IQXNSp/WP9ipoloMpFtV0zp/KHJDVdPnu2HIeeB
+         r/Dkd1G1iyjv1h5RgobjDW6YRfN8LQLZIUpN6nsL9boO3Sdf9eV1lOWZGcC/2TXtghvL
+         lpue6xejOqZOFKPCdXsGBIMwBVzvwTUnG3DX5PXFQciOp58NnUFIPAROfuAJqW5OIfXl
+         UhhgVdpNOkxefxzPcF6EdyroEzL245Sy/NHrJZBhzf8s3EibYMLA3L0hpCr8ArUrXKIo
+         dOR3eI0NombpOPZakrQmgYvZi3T8i9noCES+/xA6ALP53CvgSL9HqsaSklHV1bQmcQel
+         +2yw==
+X-Gm-Message-State: APjAAAXRYkGFDNH1z0PoEaaZHbUf70J+nyEWj41UxBIlm5uR683oONr0
+        BOafAW9EZOt2CJNp2vk13Au2raTS7AZ6gzNKRj3Xiw==
+X-Google-Smtp-Source: APXvYqy4vBIhIEDkHZGbjPTFMN0MG3rSPoqUvYTRP/e/2YG84U7QfZw+MjtJ98ys313+siGvTnSpq6E/mbY+mp2X4wk=
+X-Received: by 2002:a1f:3f45:: with SMTP id m66mr6091559vka.17.1565277816177;
+ Thu, 08 Aug 2019 08:23:36 -0700 (PDT)
 MIME-Version: 1.0
+References: <1565252928-28994-1-git-send-email-eugen.hristev@microchip.com>
 In-Reply-To: <1565252928-28994-1-git-send-email-eugen.hristev@microchip.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 8 Aug 2019 17:23:00 +0200
+Message-ID: <CAPDyKFrUr8_VP1JLRk48zR8_p1Y62wKLBnS0iTgdhUSArwD49Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: sdhci-of-at91: add quirk for broken HS200
+To:     Eugen.Hristev@microchip.com
+Cc:     Nicolas Ferre <Nicolas.Ferre@microchip.com>,
+        Ludovic Desroches <Ludovic.Desroches@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 8/08/19 11:35 AM, Eugen.Hristev@microchip.com wrote:
+On Thu, 8 Aug 2019 at 10:35, <Eugen.Hristev@microchip.com> wrote:
+>
 > From: Eugen Hristev <eugen.hristev@microchip.com>
-> 
+>
 > HS200 is not implemented in the driver, but the controller claims it
 > through caps.
 > Remove it via quirk.
 > Without this quirk, the mmc core will try to enable hs200, which will fail,
 > and the eMMC initialization will fail.
-> 
+>
 > Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Should this be applied as a fix and possibly tagged for stable?
+
+In such case, do you have a specific commit that it fixes?
+
+Kind regards
+Uffe
 
 > ---
 >  drivers/mmc/host/sdhci-of-at91.c | 3 +++
 >  1 file changed, 3 insertions(+)
-> 
+>
 > diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-of-at91.c
 > index 57fe3b2..3a8c6d8 100644
 > --- a/drivers/mmc/host/sdhci-of-at91.c
 > +++ b/drivers/mmc/host/sdhci-of-at91.c
 > @@ -370,6 +370,9 @@ static int sdhci_at91_probe(struct platform_device *pdev)
->  	pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
->  	pm_runtime_use_autosuspend(&pdev->dev);
->  
-> +	/* HS200 is broken at this moment */
-> +	host->quirks2 = SDHCI_QUIRK2_BROKEN_HS200;
+>         pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
+>         pm_runtime_use_autosuspend(&pdev->dev);
+>
+> +       /* HS200 is broken at this moment */
+> +       host->quirks2 = SDHCI_QUIRK2_BROKEN_HS200;
 > +
->  	ret = sdhci_add_host(host);
->  	if (ret)
->  		goto pm_runtime_disable;
-> 
-
+>         ret = sdhci_add_host(host);
+>         if (ret)
+>                 goto pm_runtime_disable;
+> --
+> 2.7.4
+>
