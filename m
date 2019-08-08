@@ -2,154 +2,180 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3606585CF6
-	for <lists+linux-mmc@lfdr.de>; Thu,  8 Aug 2019 10:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8053185E2C
+	for <lists+linux-mmc@lfdr.de>; Thu,  8 Aug 2019 11:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730777AbfHHIfr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 8 Aug 2019 04:35:47 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:43644 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730903AbfHHIfq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Aug 2019 04:35:46 -0400
-Received-SPF: Pass (esa3.microchip.iphmx.com: domain of
-  Eugen.Hristev@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Eugen.Hristev@microchip.com";
-  x-sender="Eugen.Hristev@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa3.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Eugen.Hristev@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa3.microchip.iphmx.com; spf=Pass smtp.mailfrom=Eugen.Hristev@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: RY3q2Q80RNwYERE2vCW4rQcaEFq380jsKHF2eOkpCKwXhnFdIs7CMGcn3MkKJdJdCfvGTX4GNa
- 84KvgoQ5tPKig0rbP4fi7valZ9srh+wwb+CVAwadGtSM8+n/wJvLoKTC0QeE8Nx3b6QOtNMkai
- Byb27KxFJ6ryXq9uloQJAPd1pIQaIwqoQDWcl7eVkNlmTB2z6Q88XG/anCByAqi5Q82rooMhwT
- SrTANv65yZcHNO1+UTkxC7hAoeJoqAlK5c6hbnKkbSvgniJQJXoQno5RjqgWWNjGzgQaKKJsvi
- 0lA=
-X-IronPort-AV: E=Sophos;i="5.64,360,1559545200"; 
-   d="scan'208";a="44412904"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 08 Aug 2019 01:35:44 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Thu, 8 Aug 2019 01:35:43 -0700
-Received: from NAM04-CO1-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
- via Frontend Transport; Thu, 8 Aug 2019 01:35:43 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KS+dpHSD4lLXkWuvTeFdKLAgCwNQq7uXLUjbS1gyJcGxnbCX22ySGcoERSQKe7XApZgNos8gbIZN8RLIIwtFjLfdWirxRFXw5bwW1KzNJd+ALcwRzX7iGQFiqtwjGCYfaZW4zZKWbfvwxUwUivBzPi7ksTyDOL30LpWagxBeV7z4XLDtGyzDnrS0vSFVWKAHB6JWZ5izFY1T3mt/d9ud8G12ZNbJsOmGSJ3lZt9Tez/Jw/UBEVMbhzrS9/yLJ+oh4e7jzGU8BgqEQA2JfY5SMiyUc5riMMZ8K89G4KjLdemxrJY46bPJDDvrNDPnZOeOVc16FrSQTGeXB9WGSK1Ekg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pseR9+6/5NTqfa/7+d7WpjGM1Wn3kcpn9G4zGNTt9r0=;
- b=BhZyUberdFyeQzeXwzb6YN1c1VWpIa7iP2GJdiAKF12uTFhXVvohBiGDQqjU65SKqhQTnYPtRYKcCw5f+n99guTdx3d1+HvxmCmiUVJuIjyhych+VDUUT34OdTfGXu0Dzf1Pog5zr5V7JxzkPDoH/7z6er7zWLma8T0MgJL9EhDBInp/4Zh3X7vzwpwsoBLu2IPuB8cpZwh7KPUilejsvx2Kpjmbjxmpsg5FQu6GzlFHt3Mr10V0gBxyO2wOSpdp1QMh1cH2QLLZFPc7cjQfn1iNg3Sv9fgPjpxPr3GniAYjqe/hl4QIkPgPe9pcoMlz8Ummjruf+TXrRGup0DflKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=microchip.com;dmarc=pass action=none
- header.from=microchip.com;dkim=pass header.d=microchip.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector1-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pseR9+6/5NTqfa/7+d7WpjGM1Wn3kcpn9G4zGNTt9r0=;
- b=iW/dK8i06zyXXoNRuGddCczG30iU0Xab3AELHBDqzCp3pUJ16DoxTlJY5mM6aIsNGitOnaq2vfS/2nwm8pL28XzDY9dibzjIBdkvXKAogLwSj3hs8jaNhPbAre19GE9u9mrUu0FHuO18AGEGtTPLTC+CJ5F0Di7Sn57Yx9hCsRA=
-Received: from DM5PR11MB1242.namprd11.prod.outlook.com (10.168.108.8) by
- DM5PR11MB1545.namprd11.prod.outlook.com (10.172.36.138) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2136.17; Thu, 8 Aug 2019 08:35:43 +0000
-Received: from DM5PR11MB1242.namprd11.prod.outlook.com
- ([fe80::c457:dc57:6e6f:f4f3]) by DM5PR11MB1242.namprd11.prod.outlook.com
- ([fe80::c457:dc57:6e6f:f4f3%10]) with mapi id 15.20.2157.015; Thu, 8 Aug 2019
- 08:35:43 +0000
-From:   <Eugen.Hristev@microchip.com>
-To:     <Nicolas.Ferre@microchip.com>, <Ludovic.Desroches@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <adrian.hunter@intel.com>,
-        <ulf.hansson@linaro.org>, <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>
-CC:     <Eugen.Hristev@microchip.com>
-Subject: [PATCH 2/2] ARM: dts: at91: sama5d27_som1_ek: add mmc capabilities
- for SDMMC0
-Thread-Topic: [PATCH 2/2] ARM: dts: at91: sama5d27_som1_ek: add mmc
- capabilities for SDMMC0
-Thread-Index: AQHVTcREWHJkbws9ckOkZIu1sPO5NQ==
-Date:   Thu, 8 Aug 2019 08:35:43 +0000
-Message-ID: <1565252928-28994-2-git-send-email-eugen.hristev@microchip.com>
-References: <1565252928-28994-1-git-send-email-eugen.hristev@microchip.com>
-In-Reply-To: <1565252928-28994-1-git-send-email-eugen.hristev@microchip.com>
-Accept-Language: en-US, ro-RO
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: VE1PR08CA0020.eurprd08.prod.outlook.com
- (2603:10a6:803:104::33) To DM5PR11MB1242.namprd11.prod.outlook.com
- (2603:10b6:3:14::8)
-x-mailer: git-send-email 2.7.4
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [94.177.32.154]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 16521185-323f-4cc1-2632-08d71bdb666d
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:DM5PR11MB1545;
-x-ms-traffictypediagnostic: DM5PR11MB1545:
-x-microsoft-antispam-prvs: <DM5PR11MB1545F838BF905C8AE809F660E8D70@DM5PR11MB1545.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2803;
-x-forefront-prvs: 012349AD1C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(346002)(396003)(366004)(39860400002)(136003)(189003)(199004)(26005)(66066001)(64756008)(66556008)(66476007)(66446008)(6116002)(3846002)(2501003)(2906002)(446003)(66946007)(11346002)(14454004)(256004)(36756003)(6486002)(2201001)(6436002)(86362001)(305945005)(7736002)(53936002)(81156014)(99286004)(81166006)(4326008)(478600001)(6512007)(76176011)(8676002)(316002)(52116002)(25786009)(486006)(2616005)(476003)(71200400001)(71190400001)(102836004)(107886003)(386003)(4744005)(50226002)(6506007)(186003)(5660300002)(8936002)(110136005);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR11MB1545;H:DM5PR11MB1242.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: microchip.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: u01LVk5+UmXthyMYPJGkwqT0hjHfsGrzrkcnZx6TQHi7yIGZZpxlkq4qzsLKCzfmYaNPvQ6vJxObFfCcmfsBXPAYbQRLV6wpn+MijFPfe1qtZcXCSXtyM/ywU20E5K99MiVjI9OgdPrss10z/DkdEn4IbBOXdPUy+lbXhZSINp/jG7O1XDQiqeq3dDnuSZTx/WclHbBpMtveG/wz88ONNxYQmE/mrGDcqQVAIWjkpjNdMPbQiBDeBVDJNB0eH36tCbiRaZq7G3n9EXR+g6hI5RfdLSj/j6sSvq1vJAJifCSEycTYSu6jSQGeZrodb7YjSssObBXul0D9HLBwQWQz0VP6FqwGr2x/UWyg8irG1U/JNmGjcuY6twps7ZqfblxRsEQBWK85TsNaYYQJ6/zEtCsxLFm7NY0y0z9jmj/bIFM=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16521185-323f-4cc1-2632-08d71bdb666d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Aug 2019 08:35:43.1299
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AVfxCLiNiLFvo5r1vj2ojcupQWVSrJbfoHBkTvK/fbl3WbNR09p716FxBoOzIHZGQ+ElkLT97E5t4rZsiCBHJfQ1CIJnbWrCov7Q4yCXtic=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR11MB1545
+        id S1732098AbfHHJYF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 8 Aug 2019 05:24:05 -0400
+Received: from mailout4.samsung.com ([203.254.224.34]:31379 "EHLO
+        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730678AbfHHJYF (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Aug 2019 05:24:05 -0400
+Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
+        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20190808092402epoutp04786c0de94dae114fbaf3ad8037e9c154~46EJq2h920542605426epoutp04U
+        for <linux-mmc@vger.kernel.org>; Thu,  8 Aug 2019 09:24:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20190808092402epoutp04786c0de94dae114fbaf3ad8037e9c154~46EJq2h920542605426epoutp04U
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1565256242;
+        bh=WI23ltb4jb+ygu8YEM6L7YgwDfxCQ5Em3kwg2Un7oUI=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=akybAPW8mG5gxoHJSk2wNfLzoXTU3FHo2/2r9M2jKSkf0Muh6Ikc51AkYuXMet68v
+         ZzEGb2ImEJAYTxsGKtLrBP8DkaXGpjVjIogLVX53FdCYO8oe3hRV4Vug9+xRdVrtm1
+         oEvM/+kZLvhEVN/iO6ts8XDHp/fYba0KKWCxYoEk=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190808092401epcas1p1e0cb678fbb9b1e8409bd6f1dcbf7b9b1~46EJJnaEl2678626786epcas1p12;
+        Thu,  8 Aug 2019 09:24:01 +0000 (GMT)
+Received: from epsmges1p4.samsung.com (unknown [182.195.40.163]) by
+        epsnrtp1.localdomain (Postfix) with ESMTP id 4642xV6sMvzMqYll; Thu,  8 Aug
+        2019 09:23:58 +0000 (GMT)
+Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
+        epsmges1p4.samsung.com (Symantec Messaging Gateway) with SMTP id
+        4C.3D.04160.E2AEB4D5; Thu,  8 Aug 2019 18:23:58 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
+        20190808092358epcas1p4076172a9e140332c0ddaa13fac18987b~46EGC0LX71669916699epcas1p4o;
+        Thu,  8 Aug 2019 09:23:58 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190808092358epsmtrp2cee92d1d187110e9aec3311355e7d605~46EGCHoo-0745907459epsmtrp2V;
+        Thu,  8 Aug 2019 09:23:58 +0000 (GMT)
+X-AuditID: b6c32a38-b4bff70000001040-45-5d4bea2eb9f3
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        F9.D0.03706.E2AEB4D5; Thu,  8 Aug 2019 18:23:58 +0900 (KST)
+Received: from localhost.localdomain (unknown [10.88.100.192]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190808092358epsmtip18f330ea675e5a0b1066680ce8492b9d0~46EF55FTh2794327943epsmtip1c;
+        Thu,  8 Aug 2019 09:23:58 +0000 (GMT)
+From:   Jungseung Lee <js07.lee@samsung.com>
+To:     Avri Altman <Avri.Altman@wdc.com>, Chris Ball <chris@printf.net>,
+        linux-mmc@vger.kernel.org, js07.lee@gmail.com
+Cc:     Jungseung Lee <js07.lee@samsung.com>
+Subject: [PATCH v2] mmc-utils: feature spec 5.0+, add secure removal type
+ fileds to Extended CSD
+Date:   Thu,  8 Aug 2019 18:23:41 +0900
+Message-Id: <20190808092341.3610-1-js07.lee@samsung.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrCKsWRmVeSWpSXmKPExsWy7bCmvq7eK+9Yg6Zec4uXP6+yWUy4vJ3R
+        4u+cd0wWj27+ZrU48r+f0YHVY+esu+weN14tZPLo27KK0ePzJjmP9gPdTAGsUTk2GamJKalF
+        Cql5yfkpmXnptkrewfHO8aZmBoa6hpYW5koKeYm5qbZKLj4Bum6ZOUDLlRTKEnNKgUIBicXF
+        Svp2NkX5pSWpChn5xSW2SqkFKTkFhgYFesWJucWleel6yfm5VoYGBkamQJUJORkLZzWzFVwV
+        q3jzuYm9gfGcYBcjB4eEgInEpQfcXYxcHEICOxgl9tw7wQThfGKUWHpuIRuE841Rov35fdYu
+        Rk6wjmWLVzFCJPYySmycNw2q6jOjxJIPjewgVWwCWhI3fm8C6xARKJX4/qKFCcRmFtCQ+H3g
+        JguILSyQJHF95VuwOIuAqsTd931gNq+AhcTe/1cZIbbJS6zecIAZZIGEwE9WiZ7Hy1ggEi4S
+        F/9dYoKwhSVeHd/CDmFLSXx+t5cNwi6W2LlyIjtEcwujxKPlS6CKjCXevV3LDAoBZgFNifW7
+        9CHCihI7f89lhDiUT+Ld1x5WSCDxSnS0CUGUKEm8edACdYKExIXHvdBQ8ZBY33wTrFVIIFbi
+        z4IVTBMYZWchLFjAyLiKUSy1oDg3PbXYsMAEOZY2MYJTlJbFDsY953wOMQpwMCrx8DJc8IoV
+        Yk0sK67MPcQowcGsJMJ7r8wzVog3JbGyKrUoP76oNCe1+BCjKTD0JjJLiSbnA9NnXkm8oamR
+        sbGxhYmZuZmpsZI478IfFrFCAumJJanZqakFqUUwfUwcnFINjI4drF+ip05ia33cqHngdrv/
+        lTi1eaUztnGIFJznVBHw+h6i4+EfXLFiwi6Dl7yzL4l634nvUnj/3W/rjeT/q3c1V4UveL0j
+        b/GnU0E3tA9scsuwNnbXOffgj2PvT4kvocaegkEbUirOt8fOnnHB3Jmpab7uQm/RxOXd02Z/
+        ZP1Tyvr1Xt7xciWW4oxEQy3mouJEACd/VslnAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpgluLIzCtJLcpLzFFi42LZdlhJTlfvlXeswbof8hYvf15ls5hweTuj
+        xd8575gsHt38zWpx5H8/owOrx85Zd9k9brxayOTRt2UVo8fnTXIe7Qe6mQJYo7hsUlJzMstS
+        i/TtErgyFs5qZiu4Klbx5nMTewPjOcEuRk4OCQETiWWLVzGC2EICuxklnv2VgohLSDza+YWl
+        i5EDyBaWOHy4uIuRC6jkI6PEn2fzWUBq2AS0JG783sQKYosIVErM7f/DBGIzC2hI/D5wE6xG
+        WCBB4vy6jWA1LAKqEnff94HV8ApYSOz9f5URYpe8xOoNB5gnMPIsYGRYxSiZWlCcm55bbFhg
+        mJdarlecmFtcmpeul5yfu4kRHC5amjsYLy+JP8QowMGoxMPLcMErVog1say4MvcQowQHs5II
+        770yz1gh3pTEyqrUovz4otKc1OJDjNIcLErivE/zjkUKCaQnlqRmp6YWpBbBZJk4OKUaGA0m
+        v9Rzv//Vjun1zcSq/uuuN17ou1wrUj+8/8LXt1G/Jop+Oqa3ZNbkWRad86UvH5MN793Hd9Nr
+        SR378SX/dgtNWtex7ugfgfIvQX3F2x4UM8uH3biUFvRunUPhiXVK25/s7r172i/OZUWRUo0c
+        w4nAyOkVS0ozluXaRogo/A0W/qF6d0Zx9EclluKMREMt5qLiRADt45bVEwIAAA==
+X-CMS-MailID: 20190808092358epcas1p4076172a9e140332c0ddaa13fac18987b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20190808092358epcas1p4076172a9e140332c0ddaa13fac18987b
+References: <CGME20190808092358epcas1p4076172a9e140332c0ddaa13fac18987b@epcas1p4.samsung.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Eugen Hristev <eugen.hristev@microchip.com>
+Display secure removal type when printing Extended CSD
+Example:
+	# mmc extcsd read /dev/mmcblk0
+	...
+        Secure Removal Type [SECURE_REMOVAL_TYPE]: 0x39
+         information is configured to be removed using a vendor defined
+         Supported Secure Removal Type:
+          information removed by an erase of the physical memory
+          information removed using a vendor defined
 
-Add mmc capabilities for SDMMC0 for this board.
-With this enabled, eMMC connected card is detected as:
-
-mmc0: new DDR MMC card at address 0001
-
-Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
+Signed-off-by: Jungseung Lee <js07.lee@samsung.com>
 ---
- arch/arm/boot/dts/at91-sama5d27_som1_ek.dts | 1 +
- 1 file changed, 1 insertion(+)
+ mmc.h      |  3 +++
+ mmc_cmds.c | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
 
-diff --git a/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts b/arch/arm/boot/dt=
-s/at91-sama5d27_som1_ek.dts
-index 149e539..194b3a3 100644
---- a/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
-+++ b/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
-@@ -54,6 +54,7 @@
-=20
- 		sdmmc0: sdio-host@a0000000 {
- 			bus-width =3D <8>;
-+			mmc-ddr-3_3v;
- 			pinctrl-names =3D "default";
- 			pinctrl-0 =3D <&pinctrl_sdmmc0_default>;
- 			status =3D "okay";
---=20
-2.7.4
+diff --git a/mmc.h b/mmc.h
+index 285c1f1..648fb26 100644
+--- a/mmc.h
++++ b/mmc.h
+@@ -116,6 +116,7 @@
+ #define EXT_CSD_MODE_CONFIG		30
+ #define EXT_CSD_MODE_OPERATION_CODES	29	/* W */
+ #define EXT_CSD_FFU_STATUS		26	/* R */
++#define EXT_CSD_SECURE_REMOVAL_TYPE	16	/* R/W */
+ #define EXT_CSD_CMDQ_MODE_EN		15	/* R/W */
+ 
+ /*
+@@ -132,6 +133,8 @@
+ /*
+  * EXT_CSD field definitions
+  */
++#define EXT_CSD_CONFIG_SECRM_TYPE	(0x30)
++#define EXT_CSD_SUPPORTED_SECRM_TYPE	(0x0f)
+ #define EXT_CSD_FFU_INSTALL		(0x01)
+ #define EXT_CSD_FFU_MODE		(0x01)
+ #define EXT_CSD_NORMAL_MODE		(0x00)
+diff --git a/mmc_cmds.c b/mmc_cmds.c
+index 19a9da1..fb37189 100644
+--- a/mmc_cmds.c
++++ b/mmc_cmds.c
+@@ -1766,6 +1766,38 @@ int do_read_extcsd(int nargs, char **argv)
+ 			ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_B]);
+ 		printf("eMMC Pre EOL information [EXT_CSD_PRE_EOL_INFO]: 0x%02x\n",
+ 			ext_csd[EXT_CSD_PRE_EOL_INFO]);
++		reg = ext_csd[EXT_CSD_SECURE_REMOVAL_TYPE];
++		printf("Secure Removal Type [SECURE_REMOVAL_TYPE]: 0x%02x\n", reg);
++		printf(" information is configured to be removed ");
++		/* Bit [5:4]: Configure Secure Removal Type */
++		switch ((reg & EXT_CSD_CONFIG_SECRM_TYPE) >> 4) {
++			case 0x0:
++				printf("by an erase of the physical memory\n");
++				break;
++			case 0x1:
++				printf("by an overwriting the addressed locations"
++				       " with a character followed by an erase\n");
++				break;
++			case 0x2:
++				printf("by an overwriting the addressed locations"
++				       " with a character, its complement, then a random character\n");
++				break;
++			case 0x3:
++				printf("using a vendor defined\n");
++				break;
++		}
++		/* Bit [3:0]: Supported Secure Removal Type */
++		printf(" Supported Secure Removal Type:\n");
++		if (reg & 0x01)
++			printf("  information removed by an erase of the physical memory\n");
++		if (reg & 0x02)
++			printf("  information removed by an overwriting the addressed locations"
++			       " with a character followed by an erase\n");
++		if (reg & 0x04)
++			printf("  information removed by an overwriting the addressed locations"
++			       " with a character, its complement, then a random character\n");
++		if (reg & 0x08)
++			printf("  information removed using a vendor defined\n");
+ 	}
+ 
+ 	if (ext_csd_rev >= 8) {
+-- 
+2.17.1
 
