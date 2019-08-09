@@ -2,19 +2,19 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57B2187234
-	for <lists+linux-mmc@lfdr.de>; Fri,  9 Aug 2019 08:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33A52873C9
+	for <lists+linux-mmc@lfdr.de>; Fri,  9 Aug 2019 10:09:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405550AbfHIGYc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 9 Aug 2019 02:24:32 -0400
-Received: from esa5.microchip.iphmx.com ([216.71.150.166]:27684 "EHLO
-        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405510AbfHIGYc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 9 Aug 2019 02:24:32 -0400
-Received-SPF: Pass (esa5.microchip.iphmx.com: domain of
+        id S2405713AbfHIIJt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 9 Aug 2019 04:09:49 -0400
+Received: from esa1.microchip.iphmx.com ([68.232.147.91]:10925 "EHLO
+        esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727063AbfHIIJs (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 9 Aug 2019 04:09:48 -0400
+Received-SPF: Pass (esa1.microchip.iphmx.com: domain of
   Ludovic.Desroches@microchip.com designates 198.175.253.82 as
   permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
+  client-ip=198.175.253.82; receiver=esa1.microchip.iphmx.com;
   envelope-from="Ludovic.Desroches@microchip.com";
   x-sender="Ludovic.Desroches@microchip.com";
   x-conformance=spf_only; x-record-type="v=spf1";
@@ -22,133 +22,113 @@ Received-SPF: Pass (esa5.microchip.iphmx.com: domain of
   a:smtpout.microchip.com a:mx1.microchip.iphmx.com
   a:mx2.microchip.iphmx.com include:servers.mcsv.net
   include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa5.microchip.iphmx.com: no sender
+Received-SPF: None (esa1.microchip.iphmx.com: no sender
   authenticity information available from domain of
   postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
+  client-ip=198.175.253.82; receiver=esa1.microchip.iphmx.com;
   envelope-from="Ludovic.Desroches@microchip.com";
   x-sender="postmaster@email.microchip.com";
   x-conformance=spf_only
-Authentication-Results: esa5.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: 4WJWT/wn23UaX1GruXfR9JWONyV8gpdACAqNbsaU56BfyDoKB9oqw0TBvKTRWDSJtM45HNXvmR
- PCny3sTrieA/QzIbhiw9MNXvBxe+Q3d6fZ9F9ztirfIQNviUe2I8d+9+zwFdZqiWwqzUZTvgVO
- SOunDtl8u4x9hkFsVFCpplWx/2NHJqeigh8IaT0yHgODbEkhJ7dQHglbndmI9BcsoLP/equ0+t
- ZCbCvESXz5Pb6xcRGdrbuxWk8mqpkmBvWCOVGS0MjunxqdHRfA4q/himzCT8vJtHhl/2XoKovZ
- HMw=
+Authentication-Results: esa1.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
+IronPort-SDR: Ez9pOIoZtFKff6baimLMQ7mQcJ9pgBWUaVIIB2RVIgaHjXa3kQxxtK7N9FMXfXQjTI7XnES4Ad
+ 7Cv1xrEwpteMPfkUvfJlWPJ4672GAzNv5MeyWfjdaqo+MX1BUji0dJQcdwlHFq21NEalhVz+Rl
+ 4I+U9k/K+gXUu6BmJh5mVaMBQeW8xq47tfR7OjRyaPODZhRsRTdjRMPg/FgE9XoTP043uQP66c
+ fe+70ju+qxz08yIO00997hczI11wr/Q/P94+tQLpg3rxetFRQeuSyqYCdrkUE1qUaOmm8RK93u
+ qto=
 X-IronPort-AV: E=Sophos;i="5.64,364,1559545200"; 
-   d="scan'208";a="43015337"
+   d="scan'208";a="45983219"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 08 Aug 2019 23:24:27 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Aug 2019 01:09:47 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Thu, 8 Aug 2019 23:24:27 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Thu, 8 Aug 2019 23:24:27 -0700
-Date:   Fri, 9 Aug 2019 08:23:22 +0200
+ 15.1.1713.5; Fri, 9 Aug 2019 01:09:47 -0700
+Received: from localhost (10.10.85.251) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
+ Transport; Fri, 9 Aug 2019 01:09:47 -0700
+Date:   Fri, 9 Aug 2019 10:08:43 +0200
 From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>
-CC:     Eugen Hristev - M18282 <Eugen.Hristev@microchip.com>,
-        "Nicolas Ferre - M43238" <Nicolas.Ferre@microchip.com>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     <Eugen.Hristev@microchip.com>,
+        Nicolas Ferre <Nicolas.Ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Subject: Re: [PATCH 2/2] ARM: dts: at91: sama5d27_som1_ek: add mmc
- capabilities for SDMMC0
-Message-ID: <20190809062322.syuieymdqjs4e7lh@M43218.corp.atmel.com>
-Mail-Followup-To: Adrian Hunter <adrian.hunter@intel.com>,
-        Eugen Hristev - M18282 <Eugen.Hristev@microchip.com>,
-        Nicolas Ferre - M43238 <Nicolas.Ferre@microchip.com>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+Subject: Re: [PATCH 1/2] mmc: sdhci-of-at91: add quirk for broken HS200
+Message-ID: <20190809080842.zl4ytbjyt54bj6ta@M43218.corp.atmel.com>
+Mail-Followup-To: Ulf Hansson <ulf.hansson@linaro.org>,
+        Eugen.Hristev@microchip.com,
+        Nicolas Ferre <Nicolas.Ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 References: <1565252928-28994-1-git-send-email-eugen.hristev@microchip.com>
- <1565252928-28994-2-git-send-email-eugen.hristev@microchip.com>
- <20190808124217.wrmcxohw5i6ju2qe@M43218.corp.atmel.com>
- <04fd74c3-a828-1064-b77b-f3de07a26190@intel.com>
+ <CAPDyKFrUr8_VP1JLRk48zR8_p1Y62wKLBnS0iTgdhUSArwD49Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <04fd74c3-a828-1064-b77b-f3de07a26190@intel.com>
+In-Reply-To: <CAPDyKFrUr8_VP1JLRk48zR8_p1Y62wKLBnS0iTgdhUSArwD49Q@mail.gmail.com>
 User-Agent: NeoMutt/20180716
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Aug 08, 2019 at 03:57:30PM +0300, Adrian Hunter wrote:
-> On 8/08/19 3:42 PM, Ludovic Desroches wrote:
-> > On Thu, Aug 08, 2019 at 10:35:43AM +0200, Eugen Hristev - M18282 wrote:
-> >> From: Eugen Hristev <eugen.hristev@microchip.com>
-> >>
-> >> Add mmc capabilities for SDMMC0 for this board.
-> >> With this enabled, eMMC connected card is detected as:
-> >>
-> >> mmc0: new DDR MMC card at address 0001
-> >>
-> >> Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
-> > Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com>
-> > 
-> > I am interested to have the some insights about the use of sd-uhs-*
-> > properties.
-> > 
-> > Our IP can't deal with 1V8 by itself. It has a 1V8SEL signal which can
-> > be used as the logic control input of a mux. So even if the IP claims
-> > to support UHS modes, it depends on the board.
-> > 
-> > Are the sd-uhs-* properties a way to deal with this? I tend to think no
-> > as sdhci_setup_host() will set the caps depending on the content of the
-> > capabilities register. Do we have to use the SDHCI_QUIRK_MISSING_CAPS
-> > quirk or sdhci-caps/sdhci-caps-mask?
+On Thu, Aug 08, 2019 at 05:23:00PM +0200, Ulf Hansson wrote:
+> On Thu, 8 Aug 2019 at 10:35, <Eugen.Hristev@microchip.com> wrote:
+> >
+> > From: Eugen Hristev <eugen.hristev@microchip.com>
+> >
+> > HS200 is not implemented in the driver, but the controller claims it
+> > through caps.
+> > Remove it via quirk.
+> > Without this quirk, the mmc core will try to enable hs200, which will fail,
+> > and the eMMC initialization will fail.
+> >
+> > Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
 > 
-> There is "no-1-8-v" which it looks like sdhci-of-at91.c already supports:
+> Should this be applied as a fix and possibly tagged for stable?
 > 
->   sdhci_at91_probe() -> sdhci_get_of_property() -> sdhci_get_property()
-> 
->     	if (device_property_present(dev, "no-1-8-v"))
-> 		host->quirks2 |= SDHCI_QUIRK2_NO_1_8_V;
-> 
+> In such case, do you have a specific commit that it fixes?
 
-Right, I forgot this property. Thanks.
+I think so, I would say:
+Fixes: bb5f8ea4d514 ("mmc: sdhci-of-at91: introduce driver for the Atmel SDMMC")
+Cc: stable@vger.kernel.org #v4.4 and later
 
-Eugen, do you see cases we can't cover with this property?
+It doesn't apply on 4.4 but resolution is trivial.
 
 Regards
 
 Ludovic
 
 > 
-> > 
-> > Regards
-> > 
-> > Ludovic
-> > 
-> >> ---
-> >>  arch/arm/boot/dts/at91-sama5d27_som1_ek.dts | 1 +
-> >>  1 file changed, 1 insertion(+)
-> >>
-> >> diff --git a/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts b/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
-> >> index 149e539..194b3a3 100644
-> >> --- a/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
-> >> +++ b/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
-> >> @@ -54,6 +54,7 @@
-> >>  
-> >>  		sdmmc0: sdio-host@a0000000 {
-> >>  			bus-width = <8>;
-> >> +			mmc-ddr-3_3v;
-> >>  			pinctrl-names = "default";
-> >>  			pinctrl-0 = <&pinctrl_sdmmc0_default>;
-> >>  			status = "okay";
-> >> -- 
-> >> 2.7.4
-> >>
-> > 
+> Kind regards
+> Uffe
 > 
+> > ---
+> >  drivers/mmc/host/sdhci-of-at91.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-of-at91.c
+> > index 57fe3b2..3a8c6d8 100644
+> > --- a/drivers/mmc/host/sdhci-of-at91.c
+> > +++ b/drivers/mmc/host/sdhci-of-at91.c
+> > @@ -370,6 +370,9 @@ static int sdhci_at91_probe(struct platform_device *pdev)
+> >         pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
+> >         pm_runtime_use_autosuspend(&pdev->dev);
+> >
+> > +       /* HS200 is broken at this moment */
+> > +       host->quirks2 = SDHCI_QUIRK2_BROKEN_HS200;
+> > +
+> >         ret = sdhci_add_host(host);
+> >         if (ret)
+> >                 goto pm_runtime_disable;
+> > --
+> > 2.7.4
+> >
