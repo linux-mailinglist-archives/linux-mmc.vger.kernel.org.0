@@ -2,133 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33A52873C9
-	for <lists+linux-mmc@lfdr.de>; Fri,  9 Aug 2019 10:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65660876DA
+	for <lists+linux-mmc@lfdr.de>; Fri,  9 Aug 2019 12:01:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405713AbfHIIJt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 9 Aug 2019 04:09:49 -0400
-Received: from esa1.microchip.iphmx.com ([68.232.147.91]:10925 "EHLO
-        esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727063AbfHIIJs (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 9 Aug 2019 04:09:48 -0400
-Received-SPF: Pass (esa1.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa1.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa1.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa1.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa1.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: Ez9pOIoZtFKff6baimLMQ7mQcJ9pgBWUaVIIB2RVIgaHjXa3kQxxtK7N9FMXfXQjTI7XnES4Ad
- 7Cv1xrEwpteMPfkUvfJlWPJ4672GAzNv5MeyWfjdaqo+MX1BUji0dJQcdwlHFq21NEalhVz+Rl
- 4I+U9k/K+gXUu6BmJh5mVaMBQeW8xq47tfR7OjRyaPODZhRsRTdjRMPg/FgE9XoTP043uQP66c
- fe+70ju+qxz08yIO00997hczI11wr/Q/P94+tQLpg3rxetFRQeuSyqYCdrkUE1qUaOmm8RK93u
- qto=
-X-IronPort-AV: E=Sophos;i="5.64,364,1559545200"; 
-   d="scan'208";a="45983219"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Aug 2019 01:09:47 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 9 Aug 2019 01:09:47 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Fri, 9 Aug 2019 01:09:47 -0700
-Date:   Fri, 9 Aug 2019 10:08:43 +0200
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     <Eugen.Hristev@microchip.com>,
-        Nicolas Ferre <Nicolas.Ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Subject: Re: [PATCH 1/2] mmc: sdhci-of-at91: add quirk for broken HS200
-Message-ID: <20190809080842.zl4ytbjyt54bj6ta@M43218.corp.atmel.com>
-Mail-Followup-To: Ulf Hansson <ulf.hansson@linaro.org>,
-        Eugen.Hristev@microchip.com,
-        Nicolas Ferre <Nicolas.Ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-References: <1565252928-28994-1-git-send-email-eugen.hristev@microchip.com>
- <CAPDyKFrUr8_VP1JLRk48zR8_p1Y62wKLBnS0iTgdhUSArwD49Q@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFrUr8_VP1JLRk48zR8_p1Y62wKLBnS0iTgdhUSArwD49Q@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+        id S2406209AbfHIKBz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 9 Aug 2019 06:01:55 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:37391 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405785AbfHIKBz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 9 Aug 2019 06:01:55 -0400
+Received: by mail-lj1-f196.google.com with SMTP id z28so37335953ljn.4
+        for <linux-mmc@vger.kernel.org>; Fri, 09 Aug 2019 03:01:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=pg4XtA+SLXLzi6cetxivjFuoLtXdpkbDdVYr7VT2SpY=;
+        b=OV0ixlMxJ78+G+mzjCxfvoi/QFApRzxYxo73BN4Iw2aGxmZi9pEm9P9Z0Iqy/Ylc0K
+         QicaYcnvM3WdyQeczJ1la+M5adWB6HcOG3TBjwvKCBlO1waiz0NvmDQp+3dkNaXH6CQ4
+         tPApB0dE81dc5dJzui/jEjmbbrmAKH7BFY4164pN/y6CqvOWGgNID1AUUp3LInxs4I2u
+         +4V21lAxOih31dPzG0gxHHak55IsasO8gM16Nq11AN5JaVVHgibpTV/xcMzw2DErL8Ls
+         FNG+/mgTYViQgQjH4fUr2slfMl/XZ4R5WdaSbKmvC/6Hml0HqfPa5rzfdCVQu5n3L0zK
+         h2mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=pg4XtA+SLXLzi6cetxivjFuoLtXdpkbDdVYr7VT2SpY=;
+        b=tl9tUegFn2evY3ECVdp0hqmlUhBc8ddXT7fmWZLMvBchTv3BYAD9aM6RO6pEfQTOt4
+         DVwRfEpTDZGFTfg+nu9h6VBTC4wtitFw6wccc7T/h69OC5N3BM3n2W25YlTLR8ILlLU8
+         4AFqVfb5V60V8/w4Q7l6J1ayEoS5RZtz4dkIgtECGYKBJ6msnH5oZTHrYkqpGJp7fzej
+         0uGBkT+mqf97AbRebAn67QBOYx38j76PqcGYiybMW9S4J24AnG9vNdxhzcPMpXL95Brr
+         NPgimC2OZdz12cbB9qzzyvEPjHL1PIkgGBot2d32c8LEk/1JCkoZZ9+32nhO/8AK738x
+         Z/wQ==
+X-Gm-Message-State: APjAAAXt/pv/qQk9hewRvflANuy5ni/lhA+vpdzxFdy0WKCDUpPpzLM/
+        OxuHT611dzytF/U3pDb1bwyERA==
+X-Google-Smtp-Source: APXvYqwo9Be0wGp47XSaXElvSTAeHX/Cqr/OrCwxyl6LPCE3+XV76iOxjrsetOV6TOEC5eQTioYcdA==
+X-Received: by 2002:a2e:3e01:: with SMTP id l1mr10780346lja.208.1565344913095;
+        Fri, 09 Aug 2019 03:01:53 -0700 (PDT)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id i123sm2654114lfi.72.2019.08.09.03.01.51
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 09 Aug 2019 03:01:52 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC fixes for v5.3-rc4
+Date:   Fri,  9 Aug 2019 12:01:49 +0200
+Message-Id: <20190809100149.7027-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Aug 08, 2019 at 05:23:00PM +0200, Ulf Hansson wrote:
-> On Thu, 8 Aug 2019 at 10:35, <Eugen.Hristev@microchip.com> wrote:
-> >
-> > From: Eugen Hristev <eugen.hristev@microchip.com>
-> >
-> > HS200 is not implemented in the driver, but the controller claims it
-> > through caps.
-> > Remove it via quirk.
-> > Without this quirk, the mmc core will try to enable hs200, which will fail,
-> > and the eMMC initialization will fail.
-> >
-> > Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
-> 
-> Should this be applied as a fix and possibly tagged for stable?
-> 
-> In such case, do you have a specific commit that it fixes?
+Hi Linus,
 
-I think so, I would say:
-Fixes: bb5f8ea4d514 ("mmc: sdhci-of-at91: introduce driver for the Atmel SDMMC")
-Cc: stable@vger.kernel.org #v4.4 and later
+Here's a PR with a couple of MMC fixes intended for v5.3-rc4. Details about the
+highlights are as usual found in the signed tag.
 
-It doesn't apply on 4.4 but resolution is trivial.
+Please pull this in!
 
-Regards
+Kind regards
+Ulf Hansson
 
-Ludovic
 
-> 
-> Kind regards
-> Uffe
-> 
-> > ---
-> >  drivers/mmc/host/sdhci-of-at91.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-of-at91.c
-> > index 57fe3b2..3a8c6d8 100644
-> > --- a/drivers/mmc/host/sdhci-of-at91.c
-> > +++ b/drivers/mmc/host/sdhci-of-at91.c
-> > @@ -370,6 +370,9 @@ static int sdhci_at91_probe(struct platform_device *pdev)
-> >         pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
-> >         pm_runtime_use_autosuspend(&pdev->dev);
-> >
-> > +       /* HS200 is broken at this moment */
-> > +       host->quirks2 = SDHCI_QUIRK2_BROKEN_HS200;
-> > +
-> >         ret = sdhci_add_host(host);
-> >         if (ret)
-> >                 goto pm_runtime_disable;
-> > --
-> > 2.7.4
-> >
+The following changes since commit e21a712a9685488f5ce80495b37b9fdbe96c230d:
+
+  Linux 5.3-rc3 (2019-08-04 18:40:12 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3-rc3
+
+for you to fetch changes up to b803974a86039913d5280add083d730b2b9ed8ec:
+
+  mmc: cavium: Add the missing dma unmap when the dma has finished. (2019-08-06 18:59:14 +0200)
+
+----------------------------------------------------------------
+MMC host:
+ - cavium: Fix DMA support
+ - sdhci-sprd: Fix soft reset when runtime resuming
+
+----------------------------------------------------------------
+Baolin Wang (1):
+      mmc: sdhci-sprd: Fix the incorrect soft reset operation when runtime resuming
+
+Kevin Hao (2):
+      mmc: cavium: Set the correct dma max segment size for mmc_host
+      mmc: cavium: Add the missing dma unmap when the dma has finished.
+
+ drivers/mmc/host/cavium.c          | 4 +++-
+ drivers/mmc/host/sdhci-acpi.c      | 2 +-
+ drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
+ drivers/mmc/host/sdhci-of-at91.c   | 2 +-
+ drivers/mmc/host/sdhci-pci-core.c  | 4 ++--
+ drivers/mmc/host/sdhci-pxav3.c     | 2 +-
+ drivers/mmc/host/sdhci-s3c.c       | 2 +-
+ drivers/mmc/host/sdhci-sprd.c      | 2 +-
+ drivers/mmc/host/sdhci-xenon.c     | 2 +-
+ drivers/mmc/host/sdhci.c           | 4 ++--
+ drivers/mmc/host/sdhci.h           | 2 +-
+ 11 files changed, 15 insertions(+), 13 deletions(-)
