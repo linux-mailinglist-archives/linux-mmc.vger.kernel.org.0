@@ -2,90 +2,153 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BCD28A8EA
-	for <lists+linux-mmc@lfdr.de>; Mon, 12 Aug 2019 23:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AD7F8AAA4
+	for <lists+linux-mmc@lfdr.de>; Tue, 13 Aug 2019 00:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727087AbfHLVEB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 12 Aug 2019 17:04:01 -0400
-Received: from mout.gmx.net ([212.227.15.18]:40659 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726707AbfHLVEA (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 12 Aug 2019 17:04:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1565643821;
-        bh=Z4dob6QFbBn2pjPUd/UPBrkeB6mcJHKlMV0DqcboR08=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=B4NG0dM8FysyLubkeDJwulk//hiefE+vWC0zHl0jeJUr4J/wKse1+Ie3RPn+YYT7t
-         4ZBAfJyOqSwGvQlPB7Ker8RPVXP8aphQmmVEhdHMSBLmT1i6DPszA4zi5JBr91K21y
-         K0GzfZoThtVjl9dCddbRLIlTosEFax2tc9KW6S2M=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.1.162] ([37.4.249.106]) by mail.gmx.com (mrgmx002
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0MUZG7-1hoj2U0bBb-00RFGz; Mon, 12
- Aug 2019 23:03:41 +0200
-Subject: Re: [PATCH 04/18] ARM: dts: bcm283x: Define MMC interfaces at board
- level
-To:     Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-References: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
- <1563774880-8061-5-git-send-email-wahrenst@gmx.net>
-From:   Stefan Wahren <wahrenst@gmx.net>
-Message-ID: <b9ed2030-25de-4e21-7fc0-9382f6250630@gmx.net>
-Date:   Mon, 12 Aug 2019 23:03:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <1563774880-8061-5-git-send-email-wahrenst@gmx.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:uXhaVTZBIdtkgpQUvDbG0jujSsYTCHrV4MMU4Fp2mY1BMnzmFcu
- dj2zho2p1mWt4W8P9ca6cb4FZqTkfvwYrgsdpjsbunb2+OCQ26HuB5DQvg48g0xDpcdlvKS
- PKWvKVNaDW0nB3RUbs8GYcGeMbePtCkVYxcbQ/bcw7SN/CGkwcrSxiZq7HYkHxdcU9wlpbU
- 5oKyiopkh2L982OwP3whA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:m77DRGs/jQw=:SUOdNsS/ZqhCJsJlR6MruL
- UMB+vVPWVjHskJr9GgrZboRMpxMbTP5+ajj+wh17Rb8Xrpm5qOdmm/sgaalaJQmiYcuOJA8B0
- ZFQ7m/CYO7oj78rnADsnr6FsDNvMRFEPJIDYDzq/mrIdtoFYBptRWmfVZY3KcAoOcljhOlpMj
- f9cisBARzc7TjkABHr7cgOjOQ1UvAFSDSetanMqSorRtK970Mzv1LyEMvP+0oDi81ACfXJTyj
- tgRgb8WO/d2Qei9frV1O3ILKY0zP3u9UoBON+WRlsn4RWh/MX/xvtr/ctgIfa2F0TKN+yHuxz
- VvGar7T1VwWLaGdDZSlV5bOrEVJIpDQMKJ92LMYNyF4q5xS5P6bdsFV/czPqcxlV8d7jQP93K
- U2MPwt6vWCqTUW4mONbuErQ2USTKHq7kfn2OnlIdyGqjALEnt6aQ5G5fA9znnqU44ZEI2UdTx
- CxrTPuIha5Y4b0vkb2XnXWyPv6oHgm4fE6ufHW8HT2I5HUM4ATpNE+BC8EP7t11NiqrDd4C5p
- WmiXgHlU198hAIxp+XeUd9qCRk7msfUWEDqCun4JcCklGHpYBEWjfpbHgZEQFAlZW5dMu1dt3
- ZZBM4KuWfKktyXqephuS9NeWQGDzkFaTYIKLlYqq3uBZt52lpo364MWDT05PVM3FOpRq7N0jZ
- tRUEOWhyHvGOYnTD0X+4JkZ6nzfUQTIJn05ln8AZTFI3SuywiJbwOXKQHgZyCpk4cmVHtC++s
- TO7IW2E/scQ7zwVraGsChU6QKlR6z5Vl53zGL78cHNah8fJTxWNcd3sOTxpncrLErZy5EqIP6
- om551ZL2ZtLz5VrfiTooZHHFrm0i4W8r3K7GBJFIm8g7zxSCE0evcnEtbAe2KI8l4JQAdjZ7I
- BnT3ais0cuF/FUCmJD8tg9Tdrk2CRfPMd7IsF+zYM1lalHCWGKjRigq8WwcFmRt8BVJM2pl9f
- +GQf0QRXDNQUGS6ImJGNFEJd9SE9sfgDwMeND3ZKI75uvqSA/5Em4VY4Q2dgTEMJyRR1d7C5E
- legBB0PgKurO3SDe3zf4uwZ+5l8Zo0meuYjB4bm/zG27xbuEfk0A+ecfa3/T/zy7VeHNhg8I2
- 1YkyUA7vsdAygpN9A4xIIyd9SISAvtTBASpIbRxdZ6QUA+jsqDdhpkcUI1H+cPCo2JNllosGt
- Lx3Hc=
+        id S1726710AbfHLWl0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 12 Aug 2019 18:41:26 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:36316 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726568AbfHLWl0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Aug 2019 18:41:26 -0400
+Received: by mail-pf1-f195.google.com with SMTP id r7so50430124pfl.3;
+        Mon, 12 Aug 2019 15:41:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=CMz7i9qw+sOH5k0dxWaG58ILkYNVc1L40HPXdZwUwoY=;
+        b=JT6Sj7wj9J0P2CanFSptW2tpxN5c3aNuFz/bFRJLsCNHmLBzMnOOxQ3GkBD4Fg4v+z
+         7TcWjaZyQJ1D/adzvGa/s1MMKgL4Bv7O+FKDnhVrcPXxd5if9NyyXG9bL783ozjA/8mm
+         IocUptMXLMRoto3PE6yiIOkXM02tI+ocGOypfqgRT6JSe4kFQJtiSzRXrZIjP4tRCl+V
+         +nOvEgM5u5OjdEL9GxKhVKUDAGQNHysc9NMJddkttfzkwGn9ICs4MbNoZpax+I7DO1xp
+         7Dx8HmJ6JxRZZMOskxW8hXC7BkpXYFAd4X4D+zIxB7wkvJasKByrORCuEwl3aDAAU6B3
+         oUNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=CMz7i9qw+sOH5k0dxWaG58ILkYNVc1L40HPXdZwUwoY=;
+        b=bE2wKTHoFNJ75veHtnp4Ap2Wgu3p2/RxHWu/ubHu9dgGMORLv5gmAirkGrSurwTzXP
+         VtYcChu2Wa6E4sj4W4S+JRAAo/a1wSJpzIO2bPqiVteBr5IU9aL3ojyDpkqI26WAtN1i
+         oY9tFT4MHurxVK+ohK3G8hTszBYADLw3JWkLoLp9OuIzRkubkTqXsVgOSbtgL1aj1tWb
+         n/PuxIrubDea8IEkTmctl5iW3MS8ScKpuI9cKpPWVdTU4qYhFgHjK4B4NF7UcPUqM2xe
+         AviablnpZyV6RbURDRIyJ/i2krqhVQezFwO2evhUHguDchIlL5xBi15RU8mycayUojOV
+         cuRg==
+X-Gm-Message-State: APjAAAWQSClc4Ql4AiJ1jvYd1hcR4RxCBXrBxOLZSDZSW3Vmpmljz4aR
+        YFVeJqC36a5I7j6o4+DHWlU=
+X-Google-Smtp-Source: APXvYqzPGgD8yq7ImIrKtk8x8BMHHumX1bpuHOOoNv6ukNJWAzfAaf/wxd88FUW1vPOkDz2Vcn4bKA==
+X-Received: by 2002:a63:3ec7:: with SMTP id l190mr32754296pga.334.1565649685155;
+        Mon, 12 Aug 2019 15:41:25 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com. [216.228.112.22])
+        by smtp.gmail.com with ESMTPSA id w1sm584147pjt.30.2019.08.12.15.41.24
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 12 Aug 2019 15:41:24 -0700 (PDT)
+From:   Nicolin Chen <nicoleotsuka@gmail.com>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com
+Cc:     linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, vdumpa@nvidia.com
+Subject: [PATCH] mmc: tegra: Implement enable_dma() to set dma_mask
+Date:   Mon, 12 Aug 2019 15:42:17 -0700
+Message-Id: <20190812224217.12423-1-nicoleotsuka@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Am 22.07.19 um 07:54 schrieb Stefan Wahren:
-> Starting with RPi 4 this is the first board, which doesn't use sdhost
-> as default SD interface. So the MMC interfaces should be defined finally at
-> board level. Since all boards using sdhci already does this, we can drop the
-> pinctrl part from bcm2835-rpi.dtsi.
->
-> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Applied to bcm2835-dt-next
+Commit 68481a7e1c84 ("mmc: tegra: Mark 64 bit dma broken on Tegra186")
+added a SDHCI_QUIRK2_BROKEN_64_BIT_DMA flag to let sdhci core fallback
+to 32-bit DMA so as to fit the 40-bit addressing on Tegra186. However,
+there's a common way, being mentioned in sdhci.c file, to set dma_mask
+via enable_dma() callback in the device driver directly.
+
+So this patch implements an enable_dma() callback in the sdhci-tegra,
+in order to set an accurate DMA_BIT_MASK, other than 32-bit or 64-bit.
+
+Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
+---
+ drivers/mmc/host/sdhci-tegra.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+index f4d4761cf20a..23289adb78d6 100644
+--- a/drivers/mmc/host/sdhci-tegra.c
++++ b/drivers/mmc/host/sdhci-tegra.c
+@@ -16,6 +16,7 @@
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/reset.h>
++#include <linux/dma-mapping.h>
+ #include <linux/mmc/card.h>
+ #include <linux/mmc/host.h>
+ #include <linux/mmc/mmc.h>
+@@ -104,6 +105,7 @@
+ 
+ struct sdhci_tegra_soc_data {
+ 	const struct sdhci_pltfm_data *pdata;
++	u64 dma_bit_mask;
+ 	u32 nvquirks;
+ 	u8 min_tap_delay;
+ 	u8 max_tap_delay;
+@@ -749,6 +751,19 @@ static void tegra_sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
+ 	}
+ }
+ 
++static int tegra_sdhci_enable_dma(struct sdhci_host *host)
++{
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct sdhci_tegra *tegra_host = sdhci_pltfm_priv(pltfm_host);
++	const struct sdhci_tegra_soc_data *soc_data = tegra_host->soc_data;
++	struct device *dev = mmc_dev(host->mmc);
++
++	if (soc_data->dma_bit_mask)
++		return dma_set_mask_and_coherent(dev, soc_data->dma_bit_mask);
++
++	return 0;
++}
++
+ static unsigned int tegra_sdhci_get_max_clock(struct sdhci_host *host)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+@@ -1370,6 +1385,7 @@ static const struct sdhci_ops tegra186_sdhci_ops = {
+ 	.write_l    = tegra_sdhci_writel,
+ 	.set_clock  = tegra_sdhci_set_clock,
+ 	.set_bus_width = sdhci_set_bus_width,
++	.enable_dma = tegra_sdhci_enable_dma,
+ 	.reset      = tegra_sdhci_reset,
+ 	.set_uhs_signaling = tegra_sdhci_set_uhs_signaling,
+ 	.voltage_switch = tegra_sdhci_voltage_switch,
+@@ -1384,20 +1400,13 @@ static const struct sdhci_pltfm_data sdhci_tegra186_pdata = {
+ 		  SDHCI_QUIRK_NO_HISPD_BIT |
+ 		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
+ 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
+-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
+-		   /* SDHCI controllers on Tegra186 support 40-bit addressing.
+-		    * IOVA addresses are 48-bit wide on Tegra186.
+-		    * With 64-bit dma mask used for SDHCI, accesses can
+-		    * be broken. Disable 64-bit dma, which would fall back
+-		    * to 32-bit dma mask. Ideally 40-bit dma mask would work,
+-		    * But it is not supported as of now.
+-		    */
+-		   SDHCI_QUIRK2_BROKEN_64_BIT_DMA,
++	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+ 	.ops  = &tegra186_sdhci_ops,
+ };
+ 
+ static const struct sdhci_tegra_soc_data soc_data_tegra186 = {
+ 	.pdata = &sdhci_tegra186_pdata,
++	.dma_bit_mask = DMA_BIT_MASK(40),
+ 	.nvquirks = NVQUIRK_NEEDS_PAD_CONTROL |
+ 		    NVQUIRK_HAS_PADCALIB |
+ 		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
+@@ -1410,6 +1419,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra186 = {
+ 
+ static const struct sdhci_tegra_soc_data soc_data_tegra194 = {
+ 	.pdata = &sdhci_tegra186_pdata,
++	.dma_bit_mask = DMA_BIT_MASK(39),
+ 	.nvquirks = NVQUIRK_NEEDS_PAD_CONTROL |
+ 		    NVQUIRK_HAS_PADCALIB |
+ 		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
+-- 
+2.17.1
+
