@@ -2,128 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BB738A667
-	for <lists+linux-mmc@lfdr.de>; Mon, 12 Aug 2019 20:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1974F8A8E5
+	for <lists+linux-mmc@lfdr.de>; Mon, 12 Aug 2019 23:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726710AbfHLSkB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 12 Aug 2019 14:40:01 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:40046 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726694AbfHLSj7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Aug 2019 14:39:59 -0400
-Received: by mail-pl1-f195.google.com with SMTP id a93so48155015pla.7
-        for <linux-mmc@vger.kernel.org>; Mon, 12 Aug 2019 11:39:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=YgFa1SL69T309RLFZYkM7FIsdyI0JJIyDE2GolmJBeY=;
-        b=LyhV/oL3l2uuMOciq09Tn2meUd+ZcTuclSu3buDD5ZowCvErYrJGdj43sCmm1GCXvj
-         +N7fwsQjs74gjLArjIhRIQ+4IYt1ht5qZOLrnsFqk66jn3MVmIprh9L5w5nkqBjqEBMy
-         P3LG9OutafGM2oxAkim2AxmOHMOUIX1dqkxNo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=YgFa1SL69T309RLFZYkM7FIsdyI0JJIyDE2GolmJBeY=;
-        b=FoAxeLd6IckenlqQwr64Pg45pStugdvn+K7ReEoXaGVieICUVAyMppTiYAXPQ8Y0dT
-         4af6wnPdRyxMovWhoR3ASrwRb1rKngCN1GP/s0/fNh2CsKIsUxgCbXa9k4JTwz0qdRCi
-         aYZQi8Qpmvke0yPqrz2ksz4gh9/3upz5z5sG0nXfE6k/ufFQtepeBgbiWv7sTmEKPYN+
-         1s7aH4SRToWloP5xciWRqbodPvw5/zeWPmnS8Vn6I9WQpYrZmAxUfzFcg8sdC4+6grpv
-         caC/SqEm1N9P1+brgPeOvTAzLtX1IbWob0ZDhK8PXbvKbfpHrL7Hu2xrFdnjtur5nlgu
-         P1pw==
-X-Gm-Message-State: APjAAAXUmLROTEK8zTeCbNJ/vHDAtx5MFZyvu7xRwoGurvCQCs6oIAcH
-        DJOngq9r7HpJ7+PDYxI1OVXq6w==
-X-Google-Smtp-Source: APXvYqz4AUzgfMYIcdFSviOngvjAqviG5G7y34vFbWsYW6D7O0Z0mw1NGX95+F5BcVZoZ4nwae/Z/g==
-X-Received: by 2002:a17:902:900a:: with SMTP id a10mr34891028plp.281.1565635198230;
-        Mon, 12 Aug 2019 11:39:58 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id i9sm119408681pgg.38.2019.08.12.11.39.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 Aug 2019 11:39:57 -0700 (PDT)
-Date:   Mon, 12 Aug 2019 11:39:54 -0700
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Doug Anderson <dianders@chromium.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "# 4.0+" <stable@vger.kernel.org>
-Subject: Re: [PATCH] mmc: core: Prevent processing SDIO IRQs when the card is
- suspended
-Message-ID: <20190812183954.GQ250418@google.com>
-References: <20190611123221.11580-1-ulf.hansson@linaro.org>
- <CAD=FV=XBVRsdiOD0vhgTvMXmqm=fzy9Bzd_x=E1TNPBsT_D-tQ@mail.gmail.com>
- <CAPDyKFqR-xSKdYZYBTK5kKOt1dk7dx_BjedHiDOKs7-X4od=dg@mail.gmail.com>
- <CAD=FV=WODbZa1fBrLbJBsd77xn5ekHWjks-ydxOSzjdBK83Rmg@mail.gmail.com>
- <CAPDyKFpqk4ZcVTqifnbnW1WgNfx9ZNebCttUPcK_e9KWqpDMjQ@mail.gmail.com>
+        id S1727264AbfHLVDV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 12 Aug 2019 17:03:21 -0400
+Received: from mout.gmx.net ([212.227.15.18]:57179 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726980AbfHLVDV (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 12 Aug 2019 17:03:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1565643767;
+        bh=WvBCUiocoyigiLp0Fi/IoYgHQyq8r4DYjzlDtLDbMUA=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=b6MO8jthbtqz838yEij/t1eD6ilGnGqgZxdFCdnbWYIQcAK6zNwDy/5pGeuYf/I4L
+         8KEFZYWNzFeMiK65JwQ2LlKVHmtdLcbLzFbkvfaXGCMnDCGVpxC11GQiiovkxu/yy5
+         dqHkckKUEA1Fut9jzyJ8X6V1CUtCdI7thVjHbk90=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.1.162] ([37.4.249.106]) by mail.gmx.com (mrgmx003
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0MbxJ8-1hhGTp1uxa-00JLT4; Mon, 12
+ Aug 2019 23:02:47 +0200
+Subject: Re: [PATCH 05/18] ARM: dts: bcm283x: Define memory at board level
+To:     Eric Anholt <eric@anholt.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org
+References: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
+ <1563774880-8061-6-git-send-email-wahrenst@gmx.net>
+From:   Stefan Wahren <wahrenst@gmx.net>
+Message-ID: <22482ae9-0239-560e-ad4a-4ab13d864e15@gmx.net>
+Date:   Mon, 12 Aug 2019 23:02:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <1563774880-8061-6-git-send-email-wahrenst@gmx.net>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFpqk4ZcVTqifnbnW1WgNfx9ZNebCttUPcK_e9KWqpDMjQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Provags-ID: V03:K1:ARo3+Icmnx/PndUhQU2k0e2sY26OWqJ3C06fIrGFTm+kAkDNG3G
+ /yJoK2PKsy0heqEo+0iLJsZDm8SHprriMFTVYNr4S4GohYtz7Bt5Ic3UALXus+A2dUASB9r
+ /HIbAgxcttGcBjfeQs2pvctMptxBI6X3eqrUOtrqTj8nDEUpCalYS0mG3tZ7Su3bloL9iFC
+ f4VrxLoKxlDpwFianZf+w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:U1G1cJg8HDI=:Gr24C988FzpO7UmnSYRIHP
+ fZAXIbOnrujKZUos5erQKmFbz2JLuhxjdQsW0Eq3tRZlpQiB4wgFHPx4qH39e41KCK3uldRTj
+ Lq3ZPMvtsE1gW2XtEYtccKMQzVBuLAc0KfQFfVp+J1QHNDzr5aq75HjYedGm9K2ER1KWDDcyg
+ ovsKRLAN/9CHkBSto1TqtpMwqd18M3DaLo0gCXqX2tFfL8XfSlCGBpfYZWM6ciTa8WUbml9+l
+ 5bGLDN0UBSahZf1Gg2Px19DUDlWtwRKZ6/fmQQtosIEdX2uAgnIKpu55t/VvseuxkAGeHqpzg
+ M2QEFC4gMFjNsmQC4S4kWAJ9u9ygE6IyrkuQK8ZVoFN2sJVQPmLI1H4K5aeaN6CKmlc0DdCGn
+ 2gMK+JsTmEGWDAXrUBkc2GqKhkVdHUS6qiltNJvOQeAuLvUh5XzYqVOtcLxoyUMKOw5ovmfNi
+ E8LfggB7C0qCu7u/geoBpNHvc7+goG75jXN9KNd/EuRk8JexEQLwX+fxwXFYENr9v1z2GBPcI
+ PZkPM1xIJi7hYNjznE+QiXWDKFQvj+Upw/0cqq6QVCtj4t1pmlOSx2K57WzG2wnUTRjqXmtWD
+ esMHGYzZAD9vz82CsFfRrzDkS7F7M8NqzMParFjaaDCq+1mhWe8l4sfTPwGET6kqzESBFmjti
+ q3g8hYxP4yZYPPXDBxSzrUJBB+yF0txpQICSDHR9Uz7yO+kPAkiHRQk0VK3rWVAKPldAnaPQD
+ 2SQTMgh11n+mX/NE6wWa03E+vGUMWRulx2FIeI9AKO9wdxTiP5QTpDdOXnTSUSZH8rGOSILFj
+ 8bUm4RBiweNE8uTni/gUhdbXzGRYRvcXF4vvoAMja2n6guzt5R+o/X1aPLyVr+FrjVarDrWYj
+ 51R9R+E10zQsemR5ImCGmy0HSv295FbjTOHNcteWcS6RYvn0113PSbVwjfmPn17ZnnPnV/ld1
+ hpNq9fZWyC4wohHrUk/kcb0xnU0ZEgRFeTE60pG4zU3VGwFiDxA4HSsE+mqPg+VZin5xycyho
+ u23g8jNw6FVRNMMnQ4ECGVDs3yyzDJZ4k6MtoN4ETusqezDo7X/OXikML4UKeTgg1s+xPpftY
+ gaPAjiLOA0eOGkGiBU3PITEE0fWPZtmpVLzl9idsV9LI5p3eZndsrAtqywSIZucX2BJ/bUuBV
+ 8Btl8=
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Ulf,
-
-On Fri, Jun 14, 2019 at 01:55:54PM +0200, Ulf Hansson wrote:
-> On Thu, 13 Jun 2019 at 20:05, Doug Anderson <dianders@chromium.org> wrote:
-> >
-> > Hi,
-> >
-> > On Thu, Jun 13, 2019 at 2:30 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > >
-> > > > A) Do we need to do anything extra to make sure we actually call the
-> > > > interrupt handler after we've resumed?  I guess we can't actually
-> > > > "lose" the interrupt since it will be sitting asserted in CCCR_INTx
-> > > > until we deal with it (right?), but maybe we need to do something to
-> > > > ensure the handler gets called once we're done resuming?
-> > >
-> > > Good point!
-> > >
-> > > Although, it also depends on if we are going to power off the SDIO
-> > > card or not. In other words, if the SDIO IRQ are configured as a
-> > > system wakeup.
-> >
-> > Even if it's not a system wakeup, we still don't want to drop the
-> > interrupt on the ground though, do we?  For instance, think about a
-> > level-triggered GPIO interrupt that's _not_ a wakeup interrupt.  If
-> > that gets asserted in suspend then we won't wakeup the system, but as
-> > soon as the system gets to a certain point in the resume sequence then
-> > we should pass the interrupt on to the handler.  If an edge triggered
-> > (but non-wakeup) interrupt fires when the system is resuming then we
-> > should similarly not drop it, should we?
-> 
-> GPIOs is clearly different.
-> 
-> When it comes to SDIO cards, re-playing/re-kicking an SDIO IRQ doesn't
-> make sense in case the SDIO card was powered off during system
-> suspend. The reason is simply because the internal state inside the
-> SDIO card gets lost at a power off. For example, the used SDIO func
-> number, needs to re-enabled before any SDIO IRQs can be delivered for
-> it.
-> 
-> So yes, I really think we should drop the SDIO IRQ, unless it's
-> configured as a wakeup. Simply because it's not valid after the system
-> has resumed.
-
-With the dropped interrupts SDIO is broken on veyron jerry when
-the Marvell 8997 Bluetooth controller sends events while
-suspending. On the system MMC remains powered during suspend, but SDIO
-isn't configured as wakeup. On this system the problem can be fixed by
-processing the interrupt after resuming, however from the discussion
-it seems this isn't universally a good solution.
-
-Not sure if this is just a special case that is best worked around in
-the downstream kernel of the device, or if this could affect other
-systems and it would be worth to address it upstream (e.g. by
-processing the dropped interrupt on resume if MMC_PM_KEEP_POWER is
-set and the SDIO interrupt is not configured as wakeup).
+Am 22.07.19 um 07:54 schrieb Stefan Wahren:
+> Now with the varity of several RPi boards, the memory should be defined
+> at board level. This step gives us the chance to fix the memory size
+> of the RPi 1 B+, Zero (incl. W) and Compute Module 1.
+>
+> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Applied to bcm2835-dt-next
