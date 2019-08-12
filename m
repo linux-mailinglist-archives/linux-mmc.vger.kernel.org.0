@@ -2,178 +2,128 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F6E8A269
-	for <lists+linux-mmc@lfdr.de>; Mon, 12 Aug 2019 17:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BB738A667
+	for <lists+linux-mmc@lfdr.de>; Mon, 12 Aug 2019 20:40:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbfHLPii (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 12 Aug 2019 11:38:38 -0400
-Received: from esa4.microchip.iphmx.com ([68.232.154.123]:17779 "EHLO
-        esa4.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726185AbfHLPih (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Aug 2019 11:38:37 -0400
-Received-SPF: Pass (esa4.microchip.iphmx.com: domain of
-  Eugen.Hristev@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
-  envelope-from="Eugen.Hristev@microchip.com";
-  x-sender="Eugen.Hristev@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa4.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
-  envelope-from="Eugen.Hristev@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa4.microchip.iphmx.com; spf=Pass smtp.mailfrom=Eugen.Hristev@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: HVM3Ypcbb0kWK83dM3HZJNGEUcROICj9HAvliyFvddmtdhq0O4P3epGeCOqYCmTQL4tLunYNvh
- lgjXYKqoC0fIRRBVbfa2EwYhrgbU/NTfUTUZicjDVzpQmexqzc0ZmsEaVnatwOjjsKOltjkw4v
- y/s4UTjXyJjr3jgSl432MMDUSASbFQFg0As968HbRCPQ0REZYsoVGMkDeVHEIQIpzRNgcByH+h
- nVnAl3ooZufeigdPplWdRIlx2MQrfPaobZUQWFh6V6ehcigTyv4u0DmS5D3O0Yru2it/7owuy9
- Yo0=
-X-IronPort-AV: E=Sophos;i="5.64,377,1559545200"; 
-   d="scan'208";a="44000997"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 12 Aug 2019 08:38:35 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 12 Aug 2019 08:38:34 -0700
-Received: from NAM05-BY2-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5 via Frontend
- Transport; Mon, 12 Aug 2019 08:38:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QDovpHfHa/eV+0caKiPB3G2/wfhYc0GKsshUxZ7rCbIqcuCKHN43mwvVB/lfa6DL1wIwXEHlegrcpdoOTQxGqDZ0cmgiIs0ENJiLSPx77YqwZahesE1j+QEjZUVEk/b7S62+cN2fhAoA4r+gFR4K8Fo9GoAIgpdzFjAMuRraO83zVgZ/C2PmX6OGC5YR8XIuJwD2dxVVEuXv1rDK2I3agjgg3C9ye6gdWoAKwdBZmQX2XewhcDtc7/yazkwzEJNo/xH7OSy8l5BsQ0Blt0xQuZSPp535hDWHDnxRoZDVz1bbkxfrYGds2bTRGH/ttYo7wEbyWcbGtOcx5EMAy+XccQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r76JbPtMf2px6tRkAqyMgwErJRKaGzYabwivHe7HpoE=;
- b=g3V+fPD2huko2N0/dQCrzMyjNuHAACj1zePN5ENQwT7RmBNdfruHzupJzEksMBlGTDlvczH4yunAHvIuwhoaFu+pyi5My/0erSw1dH+jOZS0GJsJlEiok+8Cnxt5ypDIDvmlCPf5SAA6RSPnjyFfrBeD8aSXhQmvm99VswVmx39ODl/9O7NwaLGPI92kcAhTadRzTcFSVWDiWi5hLTXVl/apNW1YkZOSjGkoEMRdsCm/miWU07u1XgAhNrgG6ya3ewp5bFVUCiA6Z/KXLahL3F2XrxPVEHh9GhtKQCUSUB7Iwcb6hEXfHASFdh2NIPU9Wfca036FeeGM3Da6C7yPyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        id S1726710AbfHLSkB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 12 Aug 2019 14:40:01 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:40046 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726694AbfHLSj7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Aug 2019 14:39:59 -0400
+Received: by mail-pl1-f195.google.com with SMTP id a93so48155015pla.7
+        for <linux-mmc@vger.kernel.org>; Mon, 12 Aug 2019 11:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r76JbPtMf2px6tRkAqyMgwErJRKaGzYabwivHe7HpoE=;
- b=NbkFVVmON7Q00Z+et9+xsFu2QzC+sHn3ADM+94mjKESVEmpjx5LD/xG2n20wOXSEz4wphMrna/w7hBP64gLQDmlNstIgW3VWXl25h4PEZ+7LhqVqMHw1CMkgBlMPwEqPZ913sarNfJpA7zIaUdnx7BHYUYp4FnaMUraUwvn01ss=
-Received: from DM5PR11MB1242.namprd11.prod.outlook.com (10.168.108.8) by
- DM5PR11MB2009.namprd11.prod.outlook.com (10.168.108.145) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2157.16; Mon, 12 Aug 2019 15:38:34 +0000
-Received: from DM5PR11MB1242.namprd11.prod.outlook.com
- ([fe80::c457:dc57:6e6f:f4f3]) by DM5PR11MB1242.namprd11.prod.outlook.com
- ([fe80::c457:dc57:6e6f:f4f3%10]) with mapi id 15.20.2157.022; Mon, 12 Aug
- 2019 15:38:34 +0000
-From:   <Eugen.Hristev@microchip.com>
-To:     <adrian.hunter@intel.com>, <Nicolas.Ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <ulf.hansson@linaro.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>
-Subject: Re: [PATCH 2/2] ARM: dts: at91: sama5d27_som1_ek: add mmc
- capabilities for SDMMC0
-Thread-Topic: [PATCH 2/2] ARM: dts: at91: sama5d27_som1_ek: add mmc
- capabilities for SDMMC0
-Thread-Index: AQHVTcREWHJkbws9ckOkZIu1sPO5NabxMeQAgAAEQACAASQ2AIAFUKOA
-Date:   Mon, 12 Aug 2019 15:38:34 +0000
-Message-ID: <fa0debbb-b84c-1f74-f8b8-8fdd7812aaee@microchip.com>
-References: <1565252928-28994-1-git-send-email-eugen.hristev@microchip.com>
- <1565252928-28994-2-git-send-email-eugen.hristev@microchip.com>
- <20190808124217.wrmcxohw5i6ju2qe@M43218.corp.atmel.com>
- <04fd74c3-a828-1064-b77b-f3de07a26190@intel.com>
- <20190809062322.syuieymdqjs4e7lh@M43218.corp.atmel.com>
-In-Reply-To: <20190809062322.syuieymdqjs4e7lh@M43218.corp.atmel.com>
-Accept-Language: en-US, ro-RO
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: VI1PR08CA0266.eurprd08.prod.outlook.com
- (2603:10a6:803:dc::39) To DM5PR11MB1242.namprd11.prod.outlook.com
- (2603:10b6:3:14::8)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tagtoolbar-keys: D20190812183317755
-x-originating-ip: [94.177.32.154]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c052edc5-a8a9-4649-7123-08d71f3b2274
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:DM5PR11MB2009;
-x-ms-traffictypediagnostic: DM5PR11MB2009:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM5PR11MB20099FA6D5D8E2608EAD259EE8D30@DM5PR11MB2009.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 012792EC17
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(136003)(366004)(39860400002)(376002)(346002)(199004)(189003)(31686004)(7736002)(5660300002)(6116002)(186003)(305945005)(229853002)(26005)(25786009)(3846002)(36756003)(71190400001)(71200400001)(66066001)(6246003)(99286004)(316002)(8676002)(6512007)(52116002)(53936002)(76176011)(2906002)(81156014)(110136005)(6486002)(102836004)(2201001)(386003)(31696002)(8936002)(86362001)(6506007)(53546011)(81166006)(6436002)(14454004)(486006)(446003)(11346002)(66446008)(476003)(2616005)(64756008)(66556008)(66476007)(66946007)(2501003)(478600001)(256004);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR11MB2009;H:DM5PR11MB1242.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: microchip.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: XcgwdcFYRRMfeS3qmmj7blzXGADX5HaWZ2LbCGCyhqbZfcs9U9q3742QZNaleCdFRs7SYLrKeqHx65hqkij0oJaeEwow9cabszLYoq1mC8PetACaEvMmsId3If9zUpde8LpZCt/rVHDCE/mwVy4R8NLXRkjG5TYIOOjiy53/fxySEIUtf6rXm6QMuBUumnbIXzRm+6Z4ayWvGjbszXH4ETW/NS+1dgfC2OpmYPIShwc3tnwDqdB9yVnvkJQViyrtP91M/pj9dS6KCe25w7j0Nvf5z/l/sE+d8GT4GAiz7GUMLMOWSvjUZ6JWy1b+v/DcteJp+Or/SL487XU6skjPGok84DZod3SilX2dijjxdv0A1Ye6UqAe7vjdJri5qtPsJanlrQqDnlLq6P4V3r4JJLcnKs3SiY1UoKNsIy/YBBM=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1A3BA531877C9C438F08D84BC3EDC250@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=YgFa1SL69T309RLFZYkM7FIsdyI0JJIyDE2GolmJBeY=;
+        b=LyhV/oL3l2uuMOciq09Tn2meUd+ZcTuclSu3buDD5ZowCvErYrJGdj43sCmm1GCXvj
+         +N7fwsQjs74gjLArjIhRIQ+4IYt1ht5qZOLrnsFqk66jn3MVmIprh9L5w5nkqBjqEBMy
+         P3LG9OutafGM2oxAkim2AxmOHMOUIX1dqkxNo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=YgFa1SL69T309RLFZYkM7FIsdyI0JJIyDE2GolmJBeY=;
+        b=FoAxeLd6IckenlqQwr64Pg45pStugdvn+K7ReEoXaGVieICUVAyMppTiYAXPQ8Y0dT
+         4af6wnPdRyxMovWhoR3ASrwRb1rKngCN1GP/s0/fNh2CsKIsUxgCbXa9k4JTwz0qdRCi
+         aYZQi8Qpmvke0yPqrz2ksz4gh9/3upz5z5sG0nXfE6k/ufFQtepeBgbiWv7sTmEKPYN+
+         1s7aH4SRToWloP5xciWRqbodPvw5/zeWPmnS8Vn6I9WQpYrZmAxUfzFcg8sdC4+6grpv
+         caC/SqEm1N9P1+brgPeOvTAzLtX1IbWob0ZDhK8PXbvKbfpHrL7Hu2xrFdnjtur5nlgu
+         P1pw==
+X-Gm-Message-State: APjAAAXUmLROTEK8zTeCbNJ/vHDAtx5MFZyvu7xRwoGurvCQCs6oIAcH
+        DJOngq9r7HpJ7+PDYxI1OVXq6w==
+X-Google-Smtp-Source: APXvYqz4AUzgfMYIcdFSviOngvjAqviG5G7y34vFbWsYW6D7O0Z0mw1NGX95+F5BcVZoZ4nwae/Z/g==
+X-Received: by 2002:a17:902:900a:: with SMTP id a10mr34891028plp.281.1565635198230;
+        Mon, 12 Aug 2019 11:39:58 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
+        by smtp.gmail.com with ESMTPSA id i9sm119408681pgg.38.2019.08.12.11.39.57
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Aug 2019 11:39:57 -0700 (PDT)
+Date:   Mon, 12 Aug 2019 11:39:54 -0700
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Doug Anderson <dianders@chromium.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "# 4.0+" <stable@vger.kernel.org>
+Subject: Re: [PATCH] mmc: core: Prevent processing SDIO IRQs when the card is
+ suspended
+Message-ID: <20190812183954.GQ250418@google.com>
+References: <20190611123221.11580-1-ulf.hansson@linaro.org>
+ <CAD=FV=XBVRsdiOD0vhgTvMXmqm=fzy9Bzd_x=E1TNPBsT_D-tQ@mail.gmail.com>
+ <CAPDyKFqR-xSKdYZYBTK5kKOt1dk7dx_BjedHiDOKs7-X4od=dg@mail.gmail.com>
+ <CAD=FV=WODbZa1fBrLbJBsd77xn5ekHWjks-ydxOSzjdBK83Rmg@mail.gmail.com>
+ <CAPDyKFpqk4ZcVTqifnbnW1WgNfx9ZNebCttUPcK_e9KWqpDMjQ@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: c052edc5-a8a9-4649-7123-08d71f3b2274
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2019 15:38:34.2910
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: KS5q9lG9iMvyEHChJiElEv8kRDVo1F5A8THFjqCQVnPIYm+6l+33c6Sh0320rxeG+YEF51EpPyaLB6QtgLN+g9qdKBwpzzbNb8NrHqJ7CUY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR11MB2009
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpqk4ZcVTqifnbnW1WgNfx9ZNebCttUPcK_e9KWqpDMjQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-DQoNCk9uIDA5LjA4LjIwMTkgMDk6MjMsIEx1ZG92aWMgRGVzcm9jaGVzIHdyb3RlOg0KPiBPbiBU
-aHUsIEF1ZyAwOCwgMjAxOSBhdCAwMzo1NzozMFBNICswMzAwLCBBZHJpYW4gSHVudGVyIHdyb3Rl
-Og0KPj4gT24gOC8wOC8xOSAzOjQyIFBNLCBMdWRvdmljIERlc3JvY2hlcyB3cm90ZToNCj4+PiBP
-biBUaHUsIEF1ZyAwOCwgMjAxOSBhdCAxMDozNTo0M0FNICswMjAwLCBFdWdlbiBIcmlzdGV2IC0g
-TTE4MjgyIHdyb3RlOg0KPj4+PiBGcm9tOiBFdWdlbiBIcmlzdGV2IDxldWdlbi5ocmlzdGV2QG1p
-Y3JvY2hpcC5jb20+DQo+Pj4+DQo+Pj4+IEFkZCBtbWMgY2FwYWJpbGl0aWVzIGZvciBTRE1NQzAg
-Zm9yIHRoaXMgYm9hcmQuDQo+Pj4+IFdpdGggdGhpcyBlbmFibGVkLCBlTU1DIGNvbm5lY3RlZCBj
-YXJkIGlzIGRldGVjdGVkIGFzOg0KPj4+Pg0KPj4+PiBtbWMwOiBuZXcgRERSIE1NQyBjYXJkIGF0
-IGFkZHJlc3MgMDAwMQ0KPj4+Pg0KPj4+PiBTaWduZWQtb2ZmLWJ5OiBFdWdlbiBIcmlzdGV2IDxl
-dWdlbi5ocmlzdGV2QG1pY3JvY2hpcC5jb20+DQo+Pj4gQWNrZWQtYnk6IEx1ZG92aWMgRGVzcm9j
-aGVzIDxsdWRvdmljLmRlc3JvY2hlc0BtaWNyb2NoaXAuY29tPg0KPj4+DQo+Pj4gSSBhbSBpbnRl
-cmVzdGVkIHRvIGhhdmUgdGhlIHNvbWUgaW5zaWdodHMgYWJvdXQgdGhlIHVzZSBvZiBzZC11aHMt
-Kg0KPj4+IHByb3BlcnRpZXMuDQo+Pj4NCj4+PiBPdXIgSVAgY2FuJ3QgZGVhbCB3aXRoIDFWOCBi
-eSBpdHNlbGYuIEl0IGhhcyBhIDFWOFNFTCBzaWduYWwgd2hpY2ggY2FuDQo+Pj4gYmUgdXNlZCBh
-cyB0aGUgbG9naWMgY29udHJvbCBpbnB1dCBvZiBhIG11eC4gU28gZXZlbiBpZiB0aGUgSVAgY2xh
-aW1zDQo+Pj4gdG8gc3VwcG9ydCBVSFMgbW9kZXMsIGl0IGRlcGVuZHMgb24gdGhlIGJvYXJkLg0K
-Pj4+DQo+Pj4gQXJlIHRoZSBzZC11aHMtKiBwcm9wZXJ0aWVzIGEgd2F5IHRvIGRlYWwgd2l0aCB0
-aGlzPyBJIHRlbmQgdG8gdGhpbmsgbm8NCj4+PiBhcyBzZGhjaV9zZXR1cF9ob3N0KCkgd2lsbCBz
-ZXQgdGhlIGNhcHMgZGVwZW5kaW5nIG9uIHRoZSBjb250ZW50IG9mIHRoZQ0KPj4+IGNhcGFiaWxp
-dGllcyByZWdpc3Rlci4gRG8gd2UgaGF2ZSB0byB1c2UgdGhlIFNESENJX1FVSVJLX01JU1NJTkdf
-Q0FQUw0KPj4+IHF1aXJrIG9yIHNkaGNpLWNhcHMvc2RoY2ktY2Fwcy1tYXNrPw0KPj4NCj4+IFRo
-ZXJlIGlzICJuby0xLTgtdiIgd2hpY2ggaXQgbG9va3MgbGlrZSBzZGhjaS1vZi1hdDkxLmMgYWxy
-ZWFkeSBzdXBwb3J0czoNCj4+DQo+PiAgICBzZGhjaV9hdDkxX3Byb2JlKCkgLT4gc2RoY2lfZ2V0
-X29mX3Byb3BlcnR5KCkgLT4gc2RoY2lfZ2V0X3Byb3BlcnR5KCkNCj4+DQo+PiAgICAgIAlpZiAo
-ZGV2aWNlX3Byb3BlcnR5X3ByZXNlbnQoZGV2LCAibm8tMS04LXYiKSkNCj4+IAkJaG9zdC0+cXVp
-cmtzMiB8PSBTREhDSV9RVUlSSzJfTk9fMV84X1Y7DQo+Pg0KPiANCj4gUmlnaHQsIEkgZm9yZ290
-IHRoaXMgcHJvcGVydHkuIFRoYW5rcy4NCj4gDQo+IEV1Z2VuLCBkbyB5b3Ugc2VlIGNhc2VzIHdl
-IGNhbid0IGNvdmVyIHdpdGggdGhpcyBwcm9wZXJ0eT8NCg0KSGksDQoNCkZvciBjdXJyZW50IHJl
-cXVpcmVtZW50cyBhbmQgZHJpdmVyIHN1cHBvcnQsIHRoaXMgc2hvdWxkIGJlIGVub3VnaC4NCg0K
-SSBub3RpY2VkIG9uZSB0aGluZyByZWdhcmRpbmcgU0QtQ2FyZHMsIGlmIEkgYWRkIHByb3BlcnR5
-IHNkLXVocy1zZHIxMDQgDQp0aGUgY2xhc3MgMTAgdWhzMSBjYXJkcyBhcmUgZGV0ZWN0ZWQgYXMg
-U0RSMTA0IC4gV2l0aG91dCB0aGlzIHByb3BlcnR5IA0KdGhleSBhcmUgZGV0ZWN0ZWQgYXMgRERS
-NTAuIEFueSBpZGVhIHdoeSB0aGUgZGlmZmVyZW5jZSA/IFRoZSBjb250cm9sbGVyIA0KZG9lcyBu
-b3QgY2xhaW0gdG8gaGF2ZSBTRFIxMDQgc3VwcG9ydCA/ICBXZSBzaG91bGQgYWRkIGl0ID8NCg0K
-RXVnZW4NCg0KPiANCj4gUmVnYXJkcw0KPiANCj4gTHVkb3ZpYw0KPiANCj4+DQo+Pj4NCj4+PiBS
-ZWdhcmRzDQo+Pj4NCj4+PiBMdWRvdmljDQo+Pj4NCj4+Pj4gLS0tDQo+Pj4+ICAgYXJjaC9hcm0v
-Ym9vdC9kdHMvYXQ5MS1zYW1hNWQyN19zb20xX2VrLmR0cyB8IDEgKw0KPj4+PiAgIDEgZmlsZSBj
-aGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPj4+Pg0KPj4+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-Ym9vdC9kdHMvYXQ5MS1zYW1hNWQyN19zb20xX2VrLmR0cyBiL2FyY2gvYXJtL2Jvb3QvZHRzL2F0
-OTEtc2FtYTVkMjdfc29tMV9lay5kdHMNCj4+Pj4gaW5kZXggMTQ5ZTUzOS4uMTk0YjNhMyAxMDA2
-NDQNCj4+Pj4gLS0tIGEvYXJjaC9hcm0vYm9vdC9kdHMvYXQ5MS1zYW1hNWQyN19zb20xX2VrLmR0
-cw0KPj4+PiArKysgYi9hcmNoL2FybS9ib290L2R0cy9hdDkxLXNhbWE1ZDI3X3NvbTFfZWsuZHRz
-DQo+Pj4+IEBAIC01NCw2ICs1NCw3IEBADQo+Pj4+ICAgDQo+Pj4+ICAgCQlzZG1tYzA6IHNkaW8t
-aG9zdEBhMDAwMDAwMCB7DQo+Pj4+ICAgCQkJYnVzLXdpZHRoID0gPDg+Ow0KPj4+PiArCQkJbW1j
-LWRkci0zXzN2Ow0KPj4+PiAgIAkJCXBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7DQo+Pj4+ICAg
-CQkJcGluY3RybC0wID0gPCZwaW5jdHJsX3NkbW1jMF9kZWZhdWx0PjsNCj4+Pj4gICAJCQlzdGF0
-dXMgPSAib2theSI7DQo+Pj4+IC0tIA0KPj4+PiAyLjcuNA0KPj4+Pg0KPj4+DQo+Pg0KPiANCg==
+Hi Ulf,
+
+On Fri, Jun 14, 2019 at 01:55:54PM +0200, Ulf Hansson wrote:
+> On Thu, 13 Jun 2019 at 20:05, Doug Anderson <dianders@chromium.org> wrote:
+> >
+> > Hi,
+> >
+> > On Thu, Jun 13, 2019 at 2:30 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > >
+> > > > A) Do we need to do anything extra to make sure we actually call the
+> > > > interrupt handler after we've resumed?  I guess we can't actually
+> > > > "lose" the interrupt since it will be sitting asserted in CCCR_INTx
+> > > > until we deal with it (right?), but maybe we need to do something to
+> > > > ensure the handler gets called once we're done resuming?
+> > >
+> > > Good point!
+> > >
+> > > Although, it also depends on if we are going to power off the SDIO
+> > > card or not. In other words, if the SDIO IRQ are configured as a
+> > > system wakeup.
+> >
+> > Even if it's not a system wakeup, we still don't want to drop the
+> > interrupt on the ground though, do we?  For instance, think about a
+> > level-triggered GPIO interrupt that's _not_ a wakeup interrupt.  If
+> > that gets asserted in suspend then we won't wakeup the system, but as
+> > soon as the system gets to a certain point in the resume sequence then
+> > we should pass the interrupt on to the handler.  If an edge triggered
+> > (but non-wakeup) interrupt fires when the system is resuming then we
+> > should similarly not drop it, should we?
+> 
+> GPIOs is clearly different.
+> 
+> When it comes to SDIO cards, re-playing/re-kicking an SDIO IRQ doesn't
+> make sense in case the SDIO card was powered off during system
+> suspend. The reason is simply because the internal state inside the
+> SDIO card gets lost at a power off. For example, the used SDIO func
+> number, needs to re-enabled before any SDIO IRQs can be delivered for
+> it.
+> 
+> So yes, I really think we should drop the SDIO IRQ, unless it's
+> configured as a wakeup. Simply because it's not valid after the system
+> has resumed.
+
+With the dropped interrupts SDIO is broken on veyron jerry when
+the Marvell 8997 Bluetooth controller sends events while
+suspending. On the system MMC remains powered during suspend, but SDIO
+isn't configured as wakeup. On this system the problem can be fixed by
+processing the interrupt after resuming, however from the discussion
+it seems this isn't universally a good solution.
+
+Not sure if this is just a special case that is best worked around in
+the downstream kernel of the device, or if this could affect other
+systems and it would be worth to address it upstream (e.g. by
+processing the dropped interrupt on resume if MMC_PM_KEEP_POWER is
+set and the SDIO interrupt is not configured as wakeup).
