@@ -2,89 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 193EA8C35D
-	for <lists+linux-mmc@lfdr.de>; Tue, 13 Aug 2019 23:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 713878C428
+	for <lists+linux-mmc@lfdr.de>; Wed, 14 Aug 2019 00:14:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726143AbfHMVMl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 13 Aug 2019 17:12:41 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:38595 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725923AbfHMVMk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 13 Aug 2019 17:12:40 -0400
-Received: by mail-pl1-f195.google.com with SMTP id m12so11161411plt.5;
-        Tue, 13 Aug 2019 14:12:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=FMTZJ1aiZ/0neMZIJIfdCL03wiBYtnF9l3HUQlAYkfM=;
-        b=UBdZbbpfTWiMG45dD99/jnk1Qg4/EW7lShmDgqEaUP1kZ4OeSPf9AHWgGwL7xstCQq
-         eGk1slz4uVR9cMtThrKOCf8QuPhW/LpC+qhg6lMaeSGSOadO4SwaMgTE2yWCEIi5lyMJ
-         F6q0XD6F2D+GK2Q2mRLosHyw2o+DYepPim63nkZZAWdep21CeGrvHCa1qk5h+MsSiz57
-         TrO7XlnLDXcw+syTN4g+MKsAIBN0qYs5zUhmc5hTxUvO2OrDs/boK+51QbG5GhteBxGK
-         l1bJtmEXB58q4obqrbwD59kZDfsxPbfSwap7tlQQeXPje1UTvh7vhYxj7Omq2juQOU9P
-         CKgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=FMTZJ1aiZ/0neMZIJIfdCL03wiBYtnF9l3HUQlAYkfM=;
-        b=W/WG7mDuzTKNxx2wadX1N/zS2JgVQOBKlipyIXh6T7V5QCymXyGg/tehklbX0fNLB4
-         sPUxtIeoFIBtjiuJcaLRUPlZpZBHjhfhKA6SSTIoVUf//TsmF32WGfAXQSqIToWueXx9
-         h3xRCTK+EnJhS/WPZ36aLulsYex+iuhMXsoVo9B4/m4x6AI3Ehr5tSoczsFi1PzGRxoJ
-         CGWAlERbywSGPUjiHR5RqP02WrKH3DwiQKD7Xa31hZLISh6MME41G8YvDv41K8pkjYrH
-         b3ykjAm47X6oDMWX542AJ17WyIkrIbZFq5bw9+EkjQD1/W6wQ+cqItgk6N0Y0G1j6Abu
-         xpKQ==
-X-Gm-Message-State: APjAAAXKuqfAF9AHf6/WLxCboLocIiWvCce6ESrW6FRcrP2XgnfiHY54
-        yceZfFyw/S4KdRQP0zzImrU=
-X-Google-Smtp-Source: APXvYqwPLiE5R2WBPKC4YOkIWhqTWmJSM/5GBkicwcSuUUURz6mfiMeLgdoUjUyceQK8l7WuIaYEIw==
-X-Received: by 2002:a17:902:ba81:: with SMTP id k1mr19879412pls.213.1565730759731;
-        Tue, 13 Aug 2019 14:12:39 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com. [216.228.112.22])
-        by smtp.gmail.com with ESMTPSA id e2sm8584707pff.49.2019.08.13.14.12.38
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 13 Aug 2019 14:12:39 -0700 (PDT)
-Date:   Tue, 13 Aug 2019 14:13:38 -0700
-From:   Nicolin Chen <nicoleotsuka@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        jonathanh@nvidia.com, linux-mmc@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vdumpa@nvidia.com
-Subject: Re: [PATCH] mmc: tegra: Implement enable_dma() to set dma_mask
-Message-ID: <20190813211337.GA18501@Asurada-Nvidia.nvidia.com>
-References: <20190812224217.12423-1-nicoleotsuka@gmail.com>
- <20190813093651.GE1137@ulmo>
+        id S1726838AbfHMWOf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 13 Aug 2019 18:14:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40616 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726155AbfHMWOf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 13 Aug 2019 18:14:35 -0400
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 368582070D;
+        Tue, 13 Aug 2019 22:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565734474;
+        bh=6wCizBaaZT2k/09mFrNXRExfBAwJv2YLSMnChPGtw4g=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=0uaRXv8D5HRtmKK3R9sZVd0gtdGEAJy9OAYrUbynXlMjib/y//8/8b1GMIl0koAge
+         zvdeq5RXKS0RUpLgqM+wsU8tmSLaxzBvsjGnlrjpFHlq8frKD/7T7Y1NciVDfSwTpC
+         34kSkZyb8+4NWRxQuPpvthHnzOYQkdnd6haJ4Kwc=
+Received: by mail-qk1-f178.google.com with SMTP id r4so80901244qkm.13;
+        Tue, 13 Aug 2019 15:14:34 -0700 (PDT)
+X-Gm-Message-State: APjAAAUmVma8FonAfubrxl1pv6qK7mtjv2TnRGvqIaf5bBr5R15kfheQ
+        ObUnbYYi5KqWJY4GJBP6fGEGgMVef9/axznA9g==
+X-Google-Smtp-Source: APXvYqwk126OivmGjH6r+ni/zAgOht3m3QXJodkzCFH+TUHs2iVPGSLnoqVVTdkeSVJkGVzE/d/O+3TNCBaPTI7BGz4=
+X-Received: by 2002:a37:a48e:: with SMTP id n136mr36131378qke.223.1565734473435;
+ Tue, 13 Aug 2019 15:14:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190813093651.GE1137@ulmo>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20190807003629.2974-1-andrew@aj.id.au> <20190807003629.2974-2-andrew@aj.id.au>
+In-Reply-To: <20190807003629.2974-2-andrew@aj.id.au>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 13 Aug 2019 16:14:22 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKXda7f43=ZdtTsyrdhdqn+H4L=7zQXtB_EEfHdi=rHLg@mail.gmail.com>
+Message-ID: <CAL_JsqKXda7f43=ZdtTsyrdhdqn+H4L=7zQXtB_EEfHdi=rHLg@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] dt-bindings: mmc: Document Aspeed SD controller
+To:     Andrew Jeffery <andrew@aj.id.au>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        devicetree@vger.kernel.org,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-aspeed@lists.ozlabs.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ryan Chen <ryanchen.aspeed@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Aug 13, 2019 at 11:36:51AM +0200, Thierry Reding wrote:
-> On Mon, Aug 12, 2019 at 03:42:17PM -0700, Nicolin Chen wrote:
-> > Commit 68481a7e1c84 ("mmc: tegra: Mark 64 bit dma broken on Tegra186")
-> > added a SDHCI_QUIRK2_BROKEN_64_BIT_DMA flag to let sdhci core fallback
-> > to 32-bit DMA so as to fit the 40-bit addressing on Tegra186. However,
-> > there's a common way, being mentioned in sdhci.c file, to set dma_mask
-> > via enable_dma() callback in the device driver directly.
-> > 
-> > So this patch implements an enable_dma() callback in the sdhci-tegra,
-> > in order to set an accurate DMA_BIT_MASK, other than 32-bit or 64-bit.
-> > 
-> > Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
-> > ---
-> >  drivers/mmc/host/sdhci-tegra.c | 28 +++++++++++++++++++---------
-> >  1 file changed, 19 insertions(+), 9 deletions(-)
-> 
-> I like this. However, I'd prefer if we set the DMA mask explicitly for
-> each generation. A while ago, I had done a similar patch which relied on
-> some core changes that no longer seem necessary with this enable_dma()
-> hook. You can find the DMA masks for each generation in that patch:
-> 	http://patchwork.ozlabs.org/patch/1020678/
+On Tue, Aug 6, 2019 at 6:38 PM Andrew Jeffery <andrew@aj.id.au> wrote:
+>
+> The ASPEED SD/SDIO/MMC controller exposes two slots implementing the
+> SDIO Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit
+> data bus if only a single slot is enabled.
+>
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>
+> ---
+> v4:
+> * Make use of mmc-controller.yaml
+> * Document sdhci,auto-cmd12
+>
+> v2:
+> * Fix compatible enums
+> * Add AST2600 compatibles
+> * Describe #address-cells / #size-cells
+> ---
+>  .../devicetree/bindings/mmc/aspeed,sdhci.yaml | 105 ++++++++++++++++++
+>  1 file changed, 105 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
 
-Thank you for the reference patch. I will add those masks in v2.
+Reviewed-by: Rob Herring <robh@kernel.org>
