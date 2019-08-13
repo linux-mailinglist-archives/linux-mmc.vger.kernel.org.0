@@ -2,205 +2,108 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 772F28B44B
-	for <lists+linux-mmc@lfdr.de>; Tue, 13 Aug 2019 11:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 212C58B4C9
+	for <lists+linux-mmc@lfdr.de>; Tue, 13 Aug 2019 12:00:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726963AbfHMJg5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 13 Aug 2019 05:36:57 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:33946 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726890AbfHMJg5 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 13 Aug 2019 05:36:57 -0400
-Received: by mail-wm1-f66.google.com with SMTP id e8so660269wme.1;
-        Tue, 13 Aug 2019 02:36:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=e+o+UEStc1FfHvCjQT7tg45kN0oAGqsbTD4gX1wHm8A=;
-        b=dUtQ/vOpWGwbDJYey/d2+7LZLNkEEddAt+RMKcAOOYx4MrkMwkbtZ8ybLG6DvFrBvM
-         Q5XRCpDfSIvoY8J/5tO0D98fs0xSJWoX7pszoOn0vqhSPUPfZk1rCZGRe3olKU6gcQBo
-         +jQmwcj8fvWr0C8jmBtBWZz6N4DgSZZiPtEpFTbNOlX56WCBtBAXDsvLf56mCN0aGJio
-         CORUl1Ov1MKqWVwj7MYJhtYF2ja10P412fXMIlS/tAvnmBqGn/9FHMWoPeZjOg3ds7pY
-         AErj1XG4D/yaWLW8r8JaJ7zJWO2qo2OEnkHPkonL8wF233S4MVwqAKh4WgSMiVgZjai+
-         9hpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=e+o+UEStc1FfHvCjQT7tg45kN0oAGqsbTD4gX1wHm8A=;
-        b=jLjJqmvOA5P3Hr7uhPuy0FRjXbW4N4usV2Cx0mVFBMtTxG21z4sTmMii2K1eqlU/Xo
-         j8WHsWGS8qwl6AQvSP3Z8jH0M18Jn9fL7eGOPnzFgrpJtp/7uZYAAWD8FoLfs+YCIpmp
-         q+4imstw2269QZ34dt1DvthDs27pRpO9dOgzR1pRflbMIxJiovalYnFifeHo420+HWyQ
-         o+AAV88mmpGjstPA6OJ6Kcaa7Z9rHa9W7AUN+RIn9O0ejmAOmS2e/An2nf4HV1+ZxU62
-         6B2h4azT9FTkPPFASVM8Kt0+fOmLaDk88xuVCBe7DxHSbtnoF5RqZcRgyQ43qUYaB5TM
-         BOJw==
-X-Gm-Message-State: APjAAAWv43jLjoVzgizxB75Y94MRsRN0sLldkrfd9SIWCD74swzPmWJl
-        gl0dBzhN4fHUVM6expwsDr8=
-X-Google-Smtp-Source: APXvYqwl/IHWvo5pJe37yn6dQ+uKgLdcVHycJPzkus6wOJOSUfw+a5oqiQallX4WG1bQeV1NZYC7NQ==
-X-Received: by 2002:a7b:c091:: with SMTP id r17mr1959122wmh.74.1565689013402;
-        Tue, 13 Aug 2019 02:36:53 -0700 (PDT)
-Received: from localhost (pD9E51890.dip0.t-ipconnect.de. [217.229.24.144])
-        by smtp.gmail.com with ESMTPSA id h97sm36676032wrh.74.2019.08.13.02.36.51
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 13 Aug 2019 02:36:52 -0700 (PDT)
-Date:   Tue, 13 Aug 2019 11:36:51 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Nicolin Chen <nicoleotsuka@gmail.com>
-Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        jonathanh@nvidia.com, linux-mmc@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        vdumpa@nvidia.com
-Subject: Re: [PATCH] mmc: tegra: Implement enable_dma() to set dma_mask
-Message-ID: <20190813093651.GE1137@ulmo>
-References: <20190812224217.12423-1-nicoleotsuka@gmail.com>
+        id S1728714AbfHMKAd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 13 Aug 2019 06:00:33 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:7120 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728472AbfHMKAc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 13 Aug 2019 06:00:32 -0400
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7D9vEqw021952;
+        Tue, 13 Aug 2019 12:00:12 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=aoyRokR5kzUkomjm7Ywbps3L0Afaxia9MCls/Ada1gA=;
+ b=Cs9uCuurKtt/S7y9CqRY/NdQTCF7vinymf4wbVL/pujdLkggXqyEmfaCYq7NlKa7vieG
+ 3m6H9UQdeNE2MjSEf6fM1OTqS3pNFAi20VJfo6vaCO0lH6CySonZqnccBEfz2cSmRgLq
+ v9wFE4fod6B5bJUJBlieoZWe+9paVL+Xgu2jj2ktY5HpVK32l9NGMA0ko4ACjC0LMMMn
+ mz04VOllLb2iq5m/0V7iVvkPLLO3557lDgQl7PnX95nYzbrz6O3VxWnmp89+FtxRyIul
+ MDDnmiUQqQc8+/a6h+B2KveWZQlN5kIg9awAseoBtv1RflULRJ1GmaPqzxHsP52K9kME GA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2u9kpuqdd0-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 13 Aug 2019 12:00:12 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 2B79C42;
+        Tue, 13 Aug 2019 10:00:11 +0000 (GMT)
+Received: from Webmail-eu.st.com (Safex1hubcas24.st.com [10.75.90.94])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 163D52CC9D1;
+        Tue, 13 Aug 2019 12:00:11 +0200 (CEST)
+Received: from SAFEX1HUBCAS23.st.com (10.75.90.47) by Safex1hubcas24.st.com
+ (10.75.90.94) with Microsoft SMTP Server (TLS) id 14.3.439.0; Tue, 13 Aug
+ 2019 12:00:10 +0200
+Received: from lmecxl0923.lme.st.com (10.48.0.237) by webmail-ga.st.com
+ (10.75.90.48) with Microsoft SMTP Server (TLS) id 14.3.439.0; Tue, 13 Aug
+ 2019 12:00:07 +0200
+From:   Ludovic Barre <ludovic.Barre@st.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Ludovic Barre <ludovic.barre@st.com>
+Subject: [PATCH V5 0/3] mmc: mmci: add busy detect for stm32 sdmmc variant
+Date:   Tue, 13 Aug 2019 11:59:48 +0200
+Message-ID: <20190813095951.26275-1-ludovic.Barre@st.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="sfyO1m2EN8ZOtJL6"
-Content-Disposition: inline
-In-Reply-To: <20190812224217.12423-1-nicoleotsuka@gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain
+X-Originating-IP: [10.48.0.237]
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-13_04:,,
+ signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+From: Ludovic Barre <ludovic.barre@st.com>
 
---sfyO1m2EN8ZOtJL6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch series adds busy detect for stm32 sdmmc variant.
+Some adaptations are required:
+-On sdmmc the data timer is started on data transfert
+and busy state, so we must add hardware busy timeout support.
+-Add busy_complete callback at mmci_host_ops to allow to define
+a specific busy completion by variant.
+-Add sdmmc busy_complete calback.
 
-On Mon, Aug 12, 2019 at 03:42:17PM -0700, Nicolin Chen wrote:
-> Commit 68481a7e1c84 ("mmc: tegra: Mark 64 bit dma broken on Tegra186")
-> added a SDHCI_QUIRK2_BROKEN_64_BIT_DMA flag to let sdhci core fallback
-> to 32-bit DMA so as to fit the 40-bit addressing on Tegra186. However,
-> there's a common way, being mentioned in sdhci.c file, to set dma_mask
-> via enable_dma() callback in the device driver directly.
->=20
-> So this patch implements an enable_dma() callback in the sdhci-tegra,
-> in order to set an accurate DMA_BIT_MASK, other than 32-bit or 64-bit.
->=20
-> Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
-> ---
->  drivers/mmc/host/sdhci-tegra.c | 28 +++++++++++++++++++---------
->  1 file changed, 19 insertions(+), 9 deletions(-)
+V5:
+-Replaces !cmd->data to !host->mrq->data to avoid overwrite
+ of datatimer register by the first command (cmd23, without data) of
+ SBC request.
 
-I like this. However, I'd prefer if we set the DMA mask explicitly for
-each generation. A while ago, I had done a similar patch which relied on
-some core changes that no longer seem necessary with this enable_dma()
-hook. You can find the DMA masks for each generation in that patch:
+V4:
+-Re-work with busy_complete callback
+-In series, move "mmc: mmci: add hardware busy timeout feature" in
+first to simplify busy_complete prototype with err_msk parameter.
 
-	http://patchwork.ozlabs.org/patch/1020678/
+V3:
+-rebase on latest mmc next
+-replace re-read by status parameter. 
 
-Thierry
+V2:
+-mmci_cmd_irq cleanup in separate patch.
+-simplify the busy_detect_flag exclude
+-replace sdmmc specific comment in
+"mmc: mmci: avoid fake busy polling in mmci_irq"
+to focus on common behavior
 
-> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegr=
-a.c
-> index f4d4761cf20a..23289adb78d6 100644
-> --- a/drivers/mmc/host/sdhci-tegra.c
-> +++ b/drivers/mmc/host/sdhci-tegra.c
-> @@ -16,6 +16,7 @@
->  #include <linux/pinctrl/consumer.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/reset.h>
-> +#include <linux/dma-mapping.h>
->  #include <linux/mmc/card.h>
->  #include <linux/mmc/host.h>
->  #include <linux/mmc/mmc.h>
-> @@ -104,6 +105,7 @@
-> =20
->  struct sdhci_tegra_soc_data {
->  	const struct sdhci_pltfm_data *pdata;
-> +	u64 dma_bit_mask;
->  	u32 nvquirks;
->  	u8 min_tap_delay;
->  	u8 max_tap_delay;
-> @@ -749,6 +751,19 @@ static void tegra_sdhci_set_clock(struct sdhci_host =
-*host, unsigned int clock)
->  	}
->  }
-> =20
-> +static int tegra_sdhci_enable_dma(struct sdhci_host *host)
-> +{
-> +	struct sdhci_pltfm_host *pltfm_host =3D sdhci_priv(host);
-> +	struct sdhci_tegra *tegra_host =3D sdhci_pltfm_priv(pltfm_host);
-> +	const struct sdhci_tegra_soc_data *soc_data =3D tegra_host->soc_data;
-> +	struct device *dev =3D mmc_dev(host->mmc);
-> +
-> +	if (soc_data->dma_bit_mask)
-> +		return dma_set_mask_and_coherent(dev, soc_data->dma_bit_mask);
-> +
-> +	return 0;
-> +}
-> +
->  static unsigned int tegra_sdhci_get_max_clock(struct sdhci_host *host)
->  {
->  	struct sdhci_pltfm_host *pltfm_host =3D sdhci_priv(host);
-> @@ -1370,6 +1385,7 @@ static const struct sdhci_ops tegra186_sdhci_ops =
-=3D {
->  	.write_l    =3D tegra_sdhci_writel,
->  	.set_clock  =3D tegra_sdhci_set_clock,
->  	.set_bus_width =3D sdhci_set_bus_width,
-> +	.enable_dma =3D tegra_sdhci_enable_dma,
->  	.reset      =3D tegra_sdhci_reset,
->  	.set_uhs_signaling =3D tegra_sdhci_set_uhs_signaling,
->  	.voltage_switch =3D tegra_sdhci_voltage_switch,
-> @@ -1384,20 +1400,13 @@ static const struct sdhci_pltfm_data sdhci_tegra1=
-86_pdata =3D {
->  		  SDHCI_QUIRK_NO_HISPD_BIT |
->  		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
->  		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
-> -	.quirks2 =3D SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-> -		   /* SDHCI controllers on Tegra186 support 40-bit addressing.
-> -		    * IOVA addresses are 48-bit wide on Tegra186.
-> -		    * With 64-bit dma mask used for SDHCI, accesses can
-> -		    * be broken. Disable 64-bit dma, which would fall back
-> -		    * to 32-bit dma mask. Ideally 40-bit dma mask would work,
-> -		    * But it is not supported as of now.
-> -		    */
-> -		   SDHCI_QUIRK2_BROKEN_64_BIT_DMA,
-> +	.quirks2 =3D SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
->  	.ops  =3D &tegra186_sdhci_ops,
->  };
-> =20
->  static const struct sdhci_tegra_soc_data soc_data_tegra186 =3D {
->  	.pdata =3D &sdhci_tegra186_pdata,
-> +	.dma_bit_mask =3D DMA_BIT_MASK(40),
->  	.nvquirks =3D NVQUIRK_NEEDS_PAD_CONTROL |
->  		    NVQUIRK_HAS_PADCALIB |
->  		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
-> @@ -1410,6 +1419,7 @@ static const struct sdhci_tegra_soc_data soc_data_t=
-egra186 =3D {
-> =20
->  static const struct sdhci_tegra_soc_data soc_data_tegra194 =3D {
->  	.pdata =3D &sdhci_tegra186_pdata,
-> +	.dma_bit_mask =3D DMA_BIT_MASK(39),
->  	.nvquirks =3D NVQUIRK_NEEDS_PAD_CONTROL |
->  		    NVQUIRK_HAS_PADCALIB |
->  		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
-> --=20
-> 2.17.1
->=20
+Ludovic Barre (3):
+  mmc: mmci: add hardware busy timeout feature
+  mmc: mmci: add busy_complete callback
+  mmc: mmci: sdmmc: add busy_complete callback
 
---sfyO1m2EN8ZOtJL6
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/mmc/host/mmci.c             | 178 +++++++++++++++++-----------
+ drivers/mmc/host/mmci.h             |   7 +-
+ drivers/mmc/host/mmci_stm32_sdmmc.c |  38 ++++++
+ 3 files changed, 151 insertions(+), 72 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.17.1
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl1ShLIACgkQ3SOs138+
-s6Hucw//S7RpqDYyK6kxObaiY3jb9h8P8Goo/iuBWANHCIBSUh/Odd5x+pGkx8Qt
-zPMCccHu7Kwj0pAro3N6rX+e5WmG+gzEL/81+sPps9Kuuw2cGz2vFzYrElQmmj51
-9sZDS/KfcpkZ7CBFj0i8YMNNJ4suwpQyVbsTHHsaCe/rCEr4ACGdbHMCarQkX6O0
-q9a0kgLj/8wdOXEzpPJQCzFsm/pUF6LGguq7eriKrJNIsObgCVQUBBLMkUXmkp+5
-yGv2Ko7djq/lWf9tZ1TZcXMfeVUan/+NMeZ23GFR+vvDpX6UqP6L0AWjPgugamS2
-qVfOlK+8U9/ubQdOGByIi9qYZpV/gs/6KFeQnztJNhIH76GyMvil7zPa098POnj8
-a3lnNApUlfEsszL2fz9cxHEeJGzdGfGQBCQhhnIx0V9b/ypOMUus1OhbJvtf0Zbp
-iFjg69C5zpWSq7UoW35X1D0xwPObfEb8IK/+dyNFS+Me9F0DXDrumczECYvvsK8P
-sUee/K7ZGqGT51ZB8RcNweeKnLmYF78xRIjkKUqfC8J0XflRp+zK8X04D1Md8TA1
-c3puztYz3S9L/9N/WEXXa7YFah+3s7GTJr50z71OSK8qFpHGO3YgzbCuQXKAimJQ
-jkiznX6EU53RHgye/T2wwC+AlQGOJywTzUPLLUmUyBy3KNrZ9Fs=
-=iYEF
------END PGP SIGNATURE-----
-
---sfyO1m2EN8ZOtJL6--
