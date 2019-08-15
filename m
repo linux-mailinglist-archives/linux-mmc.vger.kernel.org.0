@@ -2,116 +2,105 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F5618F71A
-	for <lists+linux-mmc@lfdr.de>; Fri, 16 Aug 2019 00:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EACE88F780
+	for <lists+linux-mmc@lfdr.de>; Fri, 16 Aug 2019 01:15:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730004AbfHOWkY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 15 Aug 2019 18:40:24 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:46534 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726357AbfHOWkY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 15 Aug 2019 18:40:24 -0400
-Received: by mail-oi1-f193.google.com with SMTP id t24so3404677oij.13;
-        Thu, 15 Aug 2019 15:40:23 -0700 (PDT)
+        id S2387473AbfHOXPr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 15 Aug 2019 19:15:47 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:46223 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731810AbfHOXPr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 15 Aug 2019 19:15:47 -0400
+Received: by mail-pg1-f194.google.com with SMTP id m3so1369065pgv.13;
+        Thu, 15 Aug 2019 16:15:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=/v9tU0xIroUvQiZHpPeVNbxV4bXo+Z66N2xiweMuj/s=;
+        b=VcM21+ndRnd7xqqraDhvB2sUdKKltZlEjINKqEkAQcOsXcdRlHbAkzF51Pq/xUdJKK
+         b8Me9cBOz0egqX90akXWczasU1W6RKKB6zojJDlFba4E4PpsiSxLWwe0Ogf7Ufpgc6Hy
+         wXk+WLqnbTM57rPHgNgtQg71IJLoEx8s9duD5UHqdNZlMQJ0DdM3XOE85pC8eorWYxgP
+         siQhhFTpEKj6StQ698eF9ZzOKu4w1K3iSOMQyyNnrKEH8gfJsZYF561ay0as6ARoUWiO
+         llky3FpYFpJs0iSG/2COrfIlaH2B03OCMnmHQKuT27gH09GwMK8/GXFfiNsPtDrqe2wD
+         pjkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5N0BrmR1Tjy4UAxxe/8xM6uCYUxnCI+4Zt+Yt4/wBa0=;
-        b=d0AlVKdcuc8e7USj1p+njHyS5CIXk+ViENs9nRRjJqjKRbGNze1Wlk6uyf0hrSpfEY
-         PfePUGshj2edu0rm5Q35HKCsgMoUpYBpyAzg2q9bUqDHJYPj78N8DmXE0yGUDNk41XxA
-         X02BMykh80mMpWr0aWqRlL/0G2KHo/UFHLJ6sm1rTpy/hTnt0D00upf7idRGrPdpbj4p
-         +3HlzQo9fgIyc2IyKqXU/OlF6oeYRODNq2OoKQdYgnEQZ96d4asYtHimFEHNtpx09UtV
-         OYP+9temn5sv696CCFMs/qKfaS/V/aw4gy1wQpaZWesPaoA3p8kcAPsue3aYpiqobVGp
-         YFrw==
-X-Gm-Message-State: APjAAAV7u7PtzF7xLDoIAKrSrKrgJq8S/LnBv9UMa1wx8s8MFjVkSg5D
-        w/Iph15ghbucuOQnOlxSXgz93c90LZM=
-X-Google-Smtp-Source: APXvYqwYW4D/hTHIhZmRg6kF45XejlNLGsR7+EHYaCi+BY2j30kZLJbhDCf93qyLpBI2Gl4BqjLJvw==
-X-Received: by 2002:aca:f593:: with SMTP id t141mr3194805oih.76.1565908822733;
-        Thu, 15 Aug 2019 15:40:22 -0700 (PDT)
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com. [209.85.167.170])
-        by smtp.gmail.com with ESMTPSA id a22sm1486121otr.3.2019.08.15.15.40.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Aug 2019 15:40:21 -0700 (PDT)
-Received: by mail-oi1-f170.google.com with SMTP id p124so3440362oig.5;
-        Thu, 15 Aug 2019 15:40:21 -0700 (PDT)
-X-Received: by 2002:a54:4191:: with SMTP id 17mr2851640oiy.175.1565908820908;
- Thu, 15 Aug 2019 15:40:20 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/v9tU0xIroUvQiZHpPeVNbxV4bXo+Z66N2xiweMuj/s=;
+        b=fWTKm4SZkumSwzLFEx2WwDdlPj/RQit7E6q20nRjoqL1ghGL+XJ+qR5JJyDk+DJHen
+         +K+Wc7/25ZDwI8qmGBkKRYorZHeVHhad7uvrPrIwXbr0+VwsDDGbjXNLSCTNj2+YagNi
+         K0ON9j8Z3gnStqQ0yBnDJJ+x0uQCe5Ix00mG5a9kTpYjlluBn0Hiqi8+Gwzc7K+jXeHy
+         nWqQlu36wNm2B8ORKkg6BslrVTDkzR4pX2UlfdojYbAipHxHWsE3fPeN0XtxIkgw/qr7
+         zaHpr9aHg9Sl+QS6/+u3I/fv0J0Z2QvnQb2Vq+iyIDeKDzFdi+Liy8cNEid853i7kLhv
+         mRXA==
+X-Gm-Message-State: APjAAAUPAZB/UHV9xKT/ApdYgqYt/G/Vce5xgG65VFgPlqE08PIc5wZa
+        jXYCkaOjxabUH89/ZchjSfk=
+X-Google-Smtp-Source: APXvYqw1CMLHSWPhw3uHn0rGZ1z9tJxtVCD6aWzr7lg0zLhlZ0iQ6M67a9GlhiqTPqnx6jojQT3SsQ==
+X-Received: by 2002:a63:9245:: with SMTP id s5mr5420191pgn.123.1565910945942;
+        Thu, 15 Aug 2019 16:15:45 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com. [216.228.112.22])
+        by smtp.gmail.com with ESMTPSA id c35sm2912426pgl.72.2019.08.15.16.15.45
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 15 Aug 2019 16:15:45 -0700 (PDT)
+Date:   Thu, 15 Aug 2019 16:16:46 -0700
+From:   Nicolin Chen <nicoleotsuka@gmail.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     ulf.hansson@linaro.org, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, linux-mmc@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+        vdumpa@nvidia.com
+Subject: Re: [PATCH v2] mmc: tegra: Implement enable_dma() to set dma_mask
+Message-ID: <20190815231646.GA15635@Asurada-Nvidia.nvidia.com>
+References: <20190814005741.13331-1-nicoleotsuka@gmail.com>
+ <09d9ba41-f4cd-e515-cd2d-0b4134648059@intel.com>
 MIME-Version: 1.0
-References: <20190814072649.8237-1-yinbo.zhu@nxp.com> <20190814072649.8237-2-yinbo.zhu@nxp.com>
-In-Reply-To: <20190814072649.8237-2-yinbo.zhu@nxp.com>
-From:   Li Yang <leoyang.li@nxp.com>
-Date:   Thu, 15 Aug 2019 17:40:09 -0500
-X-Gmail-Original-Message-ID: <CADRPPNSW4A0gkbzcPD=y-J_YHSnbAgP7p=RQnS6i0U-Ze=L6qA@mail.gmail.com>
-Message-ID: <CADRPPNSW4A0gkbzcPD=y-J_YHSnbAgP7p=RQnS6i0U-Ze=L6qA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/4] soc: fsl: guts: Add definition for LS1028A
-To:     Yinbo Zhu <yinbo.zhu@nxp.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Amit Jain <amit.jain_1@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>,
-        Vabhav Sharma <vabhav.sharma@nxp.com>,
-        Rajesh Bhagat <rajesh.bhagat@nxp.com>,
-        Ashish Kumar <Ashish.Kumar@nxp.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        lkml <linux-kernel@vger.kernel.org>, linux-mmc@vger.kernel.org,
-        Xiaobo Xie <xiaobo.xie@nxp.com>,
-        Jiafei Pan <jiafei.pan@nxp.com>,
-        Alison Wang <alison.wang@nxp.com>,
-        Alex Marginean <alexandru.marginean@nxp.com>,
-        Catalin Horghidan <catalin.horghidan@nxp.com>,
-        Rajat Srivastava <rajat.srivastava@nxp.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09d9ba41-f4cd-e515-cd2d-0b4134648059@intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Aug 14, 2019 at 2:26 AM Yinbo Zhu <yinbo.zhu@nxp.com> wrote:
->
-> Adding compatible string "ls1028a-dcfg" to initialize guts driver
-> for ls1028 and SoC die attribute definition for LS1028A
->
-> Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
+On Thu, Aug 15, 2019 at 02:48:20PM +0300, Adrian Hunter wrote:
+> On 14/08/19 3:57 AM, Nicolin Chen wrote:
+> > [ Integrated the change and commit message made by Thierry Reding ]
+> > 
+> > The SDHCI controller found in early Tegra SoCs (from Tegra20 through
+> > Tegra114) used an AHB interface to the memory controller, which allowed
+> > only 32 bits of memory to be addressed.
+> > 
+> > Starting with Tegra124, this limitation was removed by making the SDHCI
+> > controllers native MCCIF clients, which means that they got increased
+> > bandwidth and better arbitration to the memory controller as well as an
+> > address range extended to 40 bits, out of which only 34 were actually
+> > used (bits 34-39 are tied to 0 in the controller).
+> > 
+> > For Tegra186, all of the 40 bits can be used; For Tegra194, 39-bit can
+> > be used.
+> > 
+> > So far, sdhci-tegra driver has been relying on sdhci core to configure
+> > the DMA_BIT_MASK between 32-bit or 64-bit, using one of quirks2 flags:
+> > SDHCI_QUIRK2_BROKEN_64_BIT_DMA. However, there is a common way, being
+> > mentioned in sdhci.c file, to set dma_mask via enable_dma() callback in
+> > the device driver directly.
+> > 
+> > So this patch implements an enable_dma() callback in the sdhci-tegra,
+> > in order to set an accurate DMA_BIT_MASK, other than just 32/64 bits.
+> 
+> Is there a reason this cannot be done at probe time?
 
-Applied for next.
+It's supposed to be done at probe() time. But sdhci_setup_host()
+does both 32-bit/64-bit dma_mask setting and dma_alloc(), so if
+the dma_mask isn't correctly set inside sdhci_setup_host(), the
+allocation would fall to a 64-bit IOVA range that hardware does
+not support -- smmu error would happen and crash the system. On
+the other hand, ->enable_dma() is called in that function right
+after 32-bit/64-bit dma_mask setting. Or is there any other way
+of adding to probe() that I am missing here?
 
-> ---
->  drivers/soc/fsl/guts.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
-> index 1ef8068c8dd3..34810f9bb2ee 100644
-> --- a/drivers/soc/fsl/guts.c
-> +++ b/drivers/soc/fsl/guts.c
-> @@ -102,6 +102,11 @@ static const struct fsl_soc_die_attr fsl_soc_die[] = {
->           .svr          = 0x87360000,
->           .mask         = 0xff3f0000,
->         },
-> +       /* Die: LS1028A, SoC: LS1028A */
-> +       { .die          = "LS1028A",
-> +         .svr          = 0x870b0000,
-> +         .mask         = 0xff3f0000,
-> +       },
->         { },
->  };
->
-> @@ -224,6 +229,7 @@ static const struct of_device_id fsl_guts_of_match[] = {
->         { .compatible = "fsl,ls1012a-dcfg", },
->         { .compatible = "fsl,ls1046a-dcfg", },
->         { .compatible = "fsl,lx2160a-dcfg", },
-> +       { .compatible = "fsl,ls1028a-dcfg", },
->         {}
->  };
->  MODULE_DEVICE_TABLE(of, fsl_guts_of_match);
-> --
-> 2.17.1
->
+Thanks
+Nicolin
