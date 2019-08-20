@@ -2,127 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84FF3953C0
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2019 03:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E42F953F9
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2019 04:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728819AbfHTBur (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 19 Aug 2019 21:50:47 -0400
-Received: from mail-eopbgr1410131.outbound.protection.outlook.com ([40.107.141.131]:33890
-        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728615AbfHTBuq (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 19 Aug 2019 21:50:46 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DMN2fOe8L0LToDCs8HGFWIqeMyGWL4OffW5P44dLiFpPpgqhZ93dQc9NshNEa+NsvDcHobEsvusJWzcF+4TpyT4mr/sNAT8m2QTnB6AUwaiocrh0P3O0LaHbdt1f/BZ5FIpjQx3TLTVbgECPnWmS+6Q2mVGtQcfHcZ5cdtYY9ZoQ//01ZV3JPFmW4ealokAZTTugpgBUOR+HatyKBeaGqDRzazCWskKEpyoXRCbehwrQtg9yIx981yCQEtieyb1+AwecIulOLltIOxHbv9FCzDN8ttRT/MY4ScSmT1EKAQI3Pe6FCF9kn8Jp4lEztiUqcn05A0NlBCQivVMkmIiuzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aVxckdJMTPqdoC7iY2p6aIZ6vWGLg7FI+fcHx/E4U8M=;
- b=ZAbRQTey654TqavXAlLj7IN/A52EH4PHCT+g1CAbz/wCrOlrY0aVKHk0QdznfNzao2RjWN2kRkTA3tQSqeK1CLhkjwAu17G+WFpb06Zt/wY2zYkuRi86CXajKGmygHnlKDez24idKUICdeFvYLgL4Ds3HRzebzXaI77WQU2DO07VikN6pbF2ekOq+S2I/s/925i3qXgSLxXU3TZGAeVAtvcrWZNnDB6Sw7DfMRayS4lHMYNZ1n7q4nr6N3vNPt1PmKIfB6YKA8AD/orbJWPRwc/ITCYdxP5XsRPp/i8VSWXN9atQhhI1ugggiWiWLwqZ1qRXnzvlHU+CgOkAcIIABw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
+        id S1728627AbfHTCF6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 19 Aug 2019 22:05:58 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:38791 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728615AbfHTCF6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 19 Aug 2019 22:05:58 -0400
+Received: by mail-pf1-f194.google.com with SMTP id o70so2337431pfg.5;
+        Mon, 19 Aug 2019 19:05:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aVxckdJMTPqdoC7iY2p6aIZ6vWGLg7FI+fcHx/E4U8M=;
- b=n3qvq91zCjjC2bc3jVeo8u2FTqA04g6wOZlnipu0WJRPcrDp6Rt48hmuU80Wp0ubUH6nxnghYQOMKMX+eUNLFAbK7f87mcrzeObfKET6hfEu4atydvKVfdFyG8vPd+O733WIfzodggmsG4hBWkLHYJBXI5pUsdZJwF6YB6Y0INY=
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com (20.179.175.203) by
- TYAPR01MB5231.jpnprd01.prod.outlook.com (20.179.173.145) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2178.16; Tue, 20 Aug 2019 01:50:43 +0000
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::6564:f61f:f179:facf]) by TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::6564:f61f:f179:facf%5]) with mapi id 15.20.2178.018; Tue, 20 Aug 2019
- 01:50:43 +0000
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     Jens Axboe <axboe@kernel.dk>, Wolfram Sang <wsa@the-dreams.de>
-CC:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "hch@lst.de" <hch@lst.de>,
-        "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
-        "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        "joro@8bytes.org" <joro@8bytes.org>,
-        "wsa+renesas@sang-engineering.com" <wsa+renesas@sang-engineering.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH v9 3/5] block: sort headers on blk-setting.c
-Thread-Topic: [PATCH v9 3/5] block: sort headers on blk-setting.c
-Thread-Index: AQHVQ4yofFMPRBcpeUW9xg5SuKaKh6b+UJkAgARkGACAALaGAA==
-Date:   Tue, 20 Aug 2019 01:50:43 +0000
-Message-ID: <TYAPR01MB454435B8DB5ECFC1291C8037D8AB0@TYAPR01MB4544.jpnprd01.prod.outlook.com>
-References: <1564129876-28261-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1564129876-28261-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <20190816195026.GC6886@kunai>
- <6ed6c62d-d773-71ec-382b-acd850e3dff1@kernel.dk>
-In-Reply-To: <6ed6c62d-d773-71ec-382b-acd850e3dff1@kernel.dk>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
-x-originating-ip: [118.238.235.108]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5e1f438e-5a83-4486-e54c-08d72510d010
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:TYAPR01MB5231;
-x-ms-traffictypediagnostic: TYAPR01MB5231:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <TYAPR01MB52310F263CA877C35A5FA37AD8AB0@TYAPR01MB5231.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 013568035E
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(376002)(366004)(346002)(136003)(39860400002)(396003)(199004)(189003)(8936002)(5660300002)(54906003)(99286004)(66066001)(186003)(7416002)(52536014)(110136005)(26005)(316002)(7736002)(11346002)(305945005)(476003)(74316002)(6506007)(102836004)(7696005)(446003)(81166006)(81156014)(8676002)(4744005)(486006)(76176011)(53546011)(9686003)(966005)(478600001)(3846002)(71200400001)(71190400001)(66946007)(76116006)(6306002)(14454004)(6116002)(55016002)(4326008)(86362001)(66476007)(66446008)(66556008)(53936002)(33656002)(6436002)(64756008)(6246003)(229853002)(14444005)(2906002)(25786009)(256004)(6606295002);DIR:OUT;SFP:1102;SCL:1;SRVR:TYAPR01MB5231;H:TYAPR01MB4544.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: renesas.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: ae8D1Z5scuDAlcMrYznVoorm+wWGA8KU0f2QmEmqR7elcQIi+0IH/ZhJP+Rot+FTfn0EhLVycma9dS5JHRBWYiRCfpB6PCSBj9Vey8uMFxkPDqEaSLifr9nhbAg/YKrOiFnY0B/S1Bw7dja4v/I7Fuj4q9/ICizK/zqDd76Nc0+X7w7EDzz2uiKZj9RXZKrDypg4nl5DqDHVSPU6lPEWlZqWGHDue2PGFMQleDatXRVdRK1mAHt6loK/zuavc9aZNG5kz1A353fz8NfTeL5lbk017MssWTj5DRqUwBW0hu8rwom3OubxTcFN+Jf5rkBKRxJXcLCGeEQ5LcOkcYUiTFpUOEF2wUO02DOxksfWYGSofdW57k+A/UJJmTjUyEVvWyFM6AIqgQx+IWFKCPbuzQgrTIGGXjmiVLbgc5+o7lE=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ieUpGElE7X0EHL/AsKR0HOPyzEa7QNRNTAYrXPio4rM=;
+        b=JKIc5WUZGSdxQ72vPG13+a1sKtJlMNBRamNiM+x+OdJn6RZZff3TFywwRWv2zlSOol
+         YNTTfAo8Upd0gBFMbvSJx/eMAydW6SXTpTcnJgJwi1KFOl6XFxFrHyNZcwp6Xdq6CQYx
+         GqcIRT+xVsmI85TPj/zuYo9qgU//mhfDc0njrKqPrZmhzyQT1MlKjAlOaMe4gP5rivw/
+         PXsqzqirHq17Q8WLmhY1Y7XqjvY4qsWKhOq+UwpHlftLAo9FzJYxl0LDApUSIQke63T7
+         Pjk20XR+5KGzA8zTcSh5WD6RSYLDHxtJImz9h2uZLKkyTtWEoA1W/1KuxWLTtSzViRpI
+         SrvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ieUpGElE7X0EHL/AsKR0HOPyzEa7QNRNTAYrXPio4rM=;
+        b=ivnYQ6paeHjKC6wup2PB8cGTYKk6nYy0YF4pvdBz8cOCUqsuFtalMs6MEpCZrDxqLE
+         pdgY6c7dGqc3/dnxvcqP+22atJng31UwUH/HOTOLPHhSzvTIgpozGqeW2QKi+7hSRZ5X
+         Kcrp/MNFypcCey8iFt5zTMfGTURdhXCeIj2TYBTZqr/w7cakkbO2yYonNBc2Zwk9DfAZ
+         lnyyAr0lPcRSQ7oOhDLn7tPkCkPLJXlqOmVLJimjikwofRoR0GiKR4xYj9fhgnFzpI24
+         24MuCduNAyOhk6FnePwKvWAgKL9WBvJSOTjMMUgrh20UhYQuqkvXagQy1Y1WIBXsuKNp
+         PAwA==
+X-Gm-Message-State: APjAAAUwkYzznyTIEJLwjeVP7wYAinQbe3t5oZIj4ynzCMT3oplTvAD4
+        gFTLfpcxKPz62ZuiFkOVp1w=
+X-Google-Smtp-Source: APXvYqyhY12pn8C5nG+pZUGsw//GF7vZdEFgwS9twoy0uKk0HK4WsE3SLdm8D34AovMASU8q5jolwg==
+X-Received: by 2002:a63:b60b:: with SMTP id j11mr11061916pgf.283.1566266757357;
+        Mon, 19 Aug 2019 19:05:57 -0700 (PDT)
+Received: from gli-arch.genesyslogic.com.tw ([122.146.30.3])
+        by smtp.gmail.com with ESMTPSA id l4sm13532741pjq.9.2019.08.19.19.05.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2019 19:05:56 -0700 (PDT)
+From:   Ben Chuang <benchuanggli@gmail.com>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        johnsonm@danlj.org, ben.chuang@genesyslogic.com.tw,
+        Ben Chuang <benchuanggli@gmail.com>
+Subject: [PATCH V5 0/4] Add Genesys Logic GL975x support
+Date:   Tue, 20 Aug 2019 10:05:48 +0800
+Message-Id: <20190820020548.8164-1-benchuanggli@gmail.com>
+X-Mailer: git-send-email 2.22.1
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e1f438e-5a83-4486-e54c-08d72510d010
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Aug 2019 01:50:43.4958
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: J/NbfKvsS5K+drkLeU+mk2vASrT5ywosMOBJVPncM0UB2pb9FbMlDN5+iMUpFsfd9qs0jWoy5GOOzCTKNj1kcxv21nkoIzN2br/v7UBbcBsXJ4A4p91XroZxdGv3fcEY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAPR01MB5231
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Jens,
+From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 
-> From: Jens Axboe, Sent: Monday, August 19, 2019 11:54 PM
->=20
-> On 8/16/19 1:50 PM, Wolfram Sang wrote:
-> > On Fri, Jul 26, 2019 at 05:31:14PM +0900, Yoshihiro Shimoda wrote:
-> >> This patch sorts the headers in alphabetic order to ease
-> >> the maintenance for this part.
-> >>
-> >> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> >> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> >> Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
-> >> ---
-> >
-> > Jens, can we have your ack for this patch so Christoph can take this
-> > series via his tree (also for patch 4/5)?
->=20
-> Please just drop this patch.
+The patches modify internal clock setup to match SD Host Controller
+Simplified Specifications 4.20 and support Genesys Logic GL9750/
+GL9755 support.
 
-I'm afraid, but would you also review the following patch?
-https://marc.info/?l=3Dlinux-block&m=3D156412995120069&w=3D2
-This patch 4/5 is a main patch of the block subsystem on this patch series.
+V5:
+ - add "change timeout of loop .." to a patch
+ - fix typo "verndor" to "vendor"
 
-Best regards,
-Yoshihiro Shimoda
+V4:
+ - change name from sdhci_gli_reset to sdhci_gl9750_reset
+ - fix sdhci_reset to sdhci_gl9750_reset in sdhci_gl9750_ops
+ - fix sdhci_gli_reset to sdhci_reset in sdhci_gl9755_ops
+ 
+V3:
+ - change usleep_range to udelay
+ - add Genesys Logic PCI Vendor ID to a patch
+ - separate the Genesys Logic specific part to a patch
 
-> --
-> Jens Axboe
+V2:
+ - change udelay to usleep_range
+
+Ben Chuang (4):
+  mmc: sdhci: Change timeout of loop for checking internal clock stable
+  mmc: sdhci: Add PLL Enable support to internal clock setup
+  PCI: Add Genesys Logic, Inc. Vendor ID
+  mmc: host: sdhci-pci: Add Genesys Logic GL975x support
+
+ drivers/mmc/host/Makefile         |   2 +-
+ drivers/mmc/host/sdhci-pci-core.c |   2 +
+ drivers/mmc/host/sdhci-pci-gli.c  | 381 ++++++++++++++++++++++++++++++
+ drivers/mmc/host/sdhci-pci.h      |   5 +
+ drivers/mmc/host/sdhci.c          |  27 ++-
+ drivers/mmc/host/sdhci.h          |   1 +
+ include/linux/pci_ids.h           |   2 +
+ 7 files changed, 417 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/mmc/host/sdhci-pci-gli.c
+
+-- 
+2.22.1
 
