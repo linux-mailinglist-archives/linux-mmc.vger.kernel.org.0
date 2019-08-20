@@ -2,518 +2,111 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6634195406
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2019 04:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 949E295A15
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2019 10:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728903AbfHTCH3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 19 Aug 2019 22:07:29 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:33831 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728615AbfHTCH3 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 19 Aug 2019 22:07:29 -0400
-Received: by mail-pf1-f195.google.com with SMTP id b24so2345832pfp.1;
-        Mon, 19 Aug 2019 19:07:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fQ0Y8QfdpzR5cvekAZdNcWpYyFhTcekiyfzOH1gHAEE=;
-        b=P2vMBsQQhUvF1lN0huWofoGH7vsm7F1s8+W63iJ8ASYNT/6Tguzi/E8JXoj5SEKJEz
-         zxIrSFmHAFrNpJy1LpL7eWey+xqsRch8ikretP6RkSfCRMbqLhCE5oleiLBpHCpJHxP+
-         NMA0i2LhZOUHOkMMUTaB2Jtmwd/Cmd3cFvXP+vCBjD9ROQWTugEHxmmX9Q/IKssblh+3
-         5byDsjMl+bOX8eEx/q9YVJudlckEInuUl+ujdVc8zS6HywAc2eL79BDWeONwq2IuQS8q
-         VaG/Z+wnbNVgXo4ns+gUhgjzxMuasQFmKpjTmrtOrciEsBLQ/4ZSjtUPBaD2QNsVXyo1
-         /n9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fQ0Y8QfdpzR5cvekAZdNcWpYyFhTcekiyfzOH1gHAEE=;
-        b=D47J7L2k124yviCLjdqhpGGji4it6VxMQm6pd2oRnPCDfpjvfHRbvaoLNOfHBN8u+m
-         JJboqm9n2+pCmnyIAagcqQJR3/9ta/FmM3qiTzaSUDBx5OAhufQ4jsp8ttxZUlSz6E8i
-         tXIEv8Mp8WINhQlqrzjEikra4P3SP4CdGr8Zk+IFdgNVkFLMgSSLZdITClJTCDCpW5UM
-         upKrHcQZH7gKUA0qjh3LXG42EHCK2cjzOY963aDZBOL5h/MzTdFqqVKP0ExH/PVIn67N
-         3AhHk+Z+79kEyAjNskvWM5GhrI92pHSpz1SYsIO18sjvR7ffmqD+0MneIpKqnBm7njkH
-         LUFw==
-X-Gm-Message-State: APjAAAWaRQ1azzR4cs6M1KPXh8M3GMibDUC4OspiO/u2R1qDYYqrd23e
-        CeaySCXbZavAffwJ1osnUsk=
-X-Google-Smtp-Source: APXvYqxRy2eHHs6ZRT4UXCS+33t14JlEqkSF9IfcRNIYGE77mz178SCkpaszlZdT5ZVTOInGeIqfhA==
-X-Received: by 2002:a65:6547:: with SMTP id a7mr22291454pgw.65.1566266847911;
-        Mon, 19 Aug 2019 19:07:27 -0700 (PDT)
-Received: from gli-arch.genesyslogic.com.tw (60-251-58-169.HINET-IP.hinet.net. [60.251.58.169])
-        by smtp.gmail.com with ESMTPSA id s16sm12785699pjp.10.2019.08.19.19.07.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2019 19:07:27 -0700 (PDT)
-From:   Ben Chuang <benchuanggli@gmail.com>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        johnsonm@danlj.org, ben.chuang@genesyslogic.com.tw,
-        Ben Chuang <benchuanggli@gmail.com>
-Subject: [PATCH V5 4/4] mmc: host: sdhci-pci: Add Genesys Logic GL975x support
-Date:   Tue, 20 Aug 2019 10:07:39 +0800
-Message-Id: <20190820020739.8396-1-benchuanggli@gmail.com>
-X-Mailer: git-send-email 2.22.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1729340AbfHTIor (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 20 Aug 2019 04:44:47 -0400
+Received: from relmlor2.renesas.com ([210.160.252.172]:48636 "EHLO
+        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729333AbfHTIor (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 20 Aug 2019 04:44:47 -0400
+X-IronPort-AV: E=Sophos;i="5.64,408,1559487600"; 
+   d="scan'208";a="24232614"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie6.idc.renesas.com with ESMTP; 20 Aug 2019 17:44:44 +0900
+Received: from localhost.localdomain (unknown [10.166.17.210])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 10123400753C;
+        Tue, 20 Aug 2019 17:44:44 +0900 (JST)
+From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com
+Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: [PATCH] mmc: host: renesas_sdhi_sys_dmac: Remove all R-Car Gen3 SoCs
+Date:   Tue, 20 Aug 2019 17:43:10 +0900
+Message-Id: <1566290590-2841-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+All R-Car Gen3 SoCs with any ES version cannot use this DMAC actually.
+So, this patch removes the compatibles of R-Car Gen3 SoCs from
+renesas_sdhi_sys_dmac_of_match. Since the previous code has
+an empty whitelist to prevent probing of R-Car Gen3 SoCs,
+no behavior changes.
 
-Add support for the GL9750 and GL9755 chipsets.
-
-The patches enable v4 mode and wait 5ms after set 1.8V signal enable for
-GL9750/GL9755. It fixed the value of SDHCI_MAX_CURRENT register and uses
-the vendor tuning flow for GL9750.
-
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Co-developed-by: Michael K Johnson <johnsonm@danlj.org>
-Signed-off-by: Michael K Johnson <johnsonm@danlj.org>
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 ---
- drivers/mmc/host/Makefile         |   2 +-
- drivers/mmc/host/sdhci-pci-core.c |   2 +
- drivers/mmc/host/sdhci-pci-gli.c  | 381 ++++++++++++++++++++++++++++++
- drivers/mmc/host/sdhci-pci.h      |   5 +
- 4 files changed, 389 insertions(+), 1 deletion(-)
- create mode 100644 drivers/mmc/host/sdhci-pci-gli.c
+ drivers/mmc/host/renesas_sdhi_sys_dmac.c | 36 --------------------------------
+ 1 file changed, 36 deletions(-)
 
-diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
-index 73578718f119..661445415090 100644
---- a/drivers/mmc/host/Makefile
-+++ b/drivers/mmc/host/Makefile
-@@ -13,7 +13,7 @@ obj-$(CONFIG_MMC_MXS)		+= mxs-mmc.o
- obj-$(CONFIG_MMC_SDHCI)		+= sdhci.o
- obj-$(CONFIG_MMC_SDHCI_PCI)	+= sdhci-pci.o
- sdhci-pci-y			+= sdhci-pci-core.o sdhci-pci-o2micro.o sdhci-pci-arasan.o \
--				   sdhci-pci-dwc-mshc.o
-+				   sdhci-pci-dwc-mshc.o sdhci-pci-gli.o
- obj-$(subst m,y,$(CONFIG_MMC_SDHCI_PCI))	+= sdhci-pci-data.o
- obj-$(CONFIG_MMC_SDHCI_ACPI)	+= sdhci-acpi.o
- obj-$(CONFIG_MMC_SDHCI_PXAV3)	+= sdhci-pxav3.o
-diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-index 4154ee11b47d..e5835fbf73bc 100644
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -1682,6 +1682,8 @@ static const struct pci_device_id pci_ids[] = {
- 	SDHCI_PCI_DEVICE(O2, SEABIRD1, o2),
- 	SDHCI_PCI_DEVICE(ARASAN, PHY_EMMC, arasan),
- 	SDHCI_PCI_DEVICE(SYNOPSYS, DWC_MSHC, snps),
-+	SDHCI_PCI_DEVICE(GLI, 9750, gl9750),
-+	SDHCI_PCI_DEVICE(GLI, 9755, gl9755),
- 	SDHCI_PCI_DEVICE_CLASS(AMD, SYSTEM_SDHCI, PCI_CLASS_MASK, amd),
- 	/* Generic SD host controller */
- 	{PCI_DEVICE_CLASS(SYSTEM_SDHCI, PCI_CLASS_MASK)},
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-new file mode 100644
-index 000000000000..99abb7830e62
---- /dev/null
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -0,0 +1,381 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2019 Genesys Logic, Inc.
-+ *
-+ * Authors: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-+ *
-+ * Version: v0.9.0 (2019-08-08)
-+ */
-+
-+#include <linux/pci.h>
-+#include <linux/mmc/mmc.h>
-+#include <linux/delay.h>
-+#include "sdhci.h"
-+#include "sdhci-pci.h"
-+
-+/*  Genesys Logic extra registers */
-+#define SDHCI_GLI_9750_WT         0x800
-+#define SDHCI_GLI_9750_DRIVING    0x860
-+#define SDHCI_GLI_9750_PLL        0x864
-+#define SDHCI_GLI_9750_SW_CTRL    0x874
-+#define SDHCI_GLI_9750_MISC       0x878
-+
-+#define SDHCI_GLI_9750_TUNING_CONTROL		0x540
-+#define SDHCI_GLI_9750_TUNING_PARAMETERS	0x544
-+
-+#define GLI_MAX_TUNING_LOOP 40
-+
-+/* Genesys Logic chipset */
-+static void gli_set_9750(struct sdhci_host *host)
-+{
-+	u32 wt_value = 0;
-+	u32 driving_value = 0;
-+	u32 pll_value = 0;
-+	u32 sw_ctrl_value = 0;
-+	u32 misc_value = 0;
-+	u32 parameter_value = 0;
-+	u32 control_value = 0;
-+
-+	u16 ctrl2 = 0;
-+
-+	wt_value = sdhci_readl(host, SDHCI_GLI_9750_WT);
-+	if ((wt_value & 0x1) == 0) {
-+		wt_value |= 0x1;
-+		sdhci_writel(host, wt_value, SDHCI_GLI_9750_WT);
-+	}
-+
-+	driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
-+	pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
-+	sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
-+	misc_value = sdhci_readl(host, SDHCI_GLI_9750_MISC);
-+	parameter_value = sdhci_readl(host, SDHCI_GLI_9750_TUNING_PARAMETERS);
-+	control_value = sdhci_readl(host, SDHCI_GLI_9750_TUNING_CONTROL);
-+
-+	driving_value &= ~(0x0C000FFF);
-+	driving_value |= 0x0C000FFF;
-+	sdhci_writel(host, driving_value, SDHCI_GLI_9750_DRIVING);
-+
-+	sw_ctrl_value |= 0xc0;
-+	sdhci_writel(host, sw_ctrl_value, SDHCI_GLI_9750_SW_CTRL);
-+
-+	// reset the tuning flow after reinit and before starting tuning
-+	pll_value |= 0x800000; // bit23-1
-+	pll_value &= ~(0x00700000); // bit22:20-0
-+
-+	misc_value &= ~(0x8); // bit3-0
-+	misc_value &= ~(0x4); // bit2-0
-+
-+	misc_value &= ~(0x70); // bit6:4-0
-+	misc_value |= 0x50; // bit6:4-5
-+
-+	parameter_value &= ~(0x7); // bit2:0-0
-+	parameter_value |= 0x1; // bit2:0-1
-+
-+	control_value &= ~(0x190000); // bit20:19-0, bit16-0
-+	control_value |=   0x110000; // bit20:19-b10, bit16-1
-+
-+	sdhci_writel(host, pll_value, SDHCI_GLI_9750_PLL);
-+	sdhci_writel(host, misc_value, SDHCI_GLI_9750_MISC);
-+
-+	// disable tuned clk
-+	ctrl2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+	ctrl2 &= ~SDHCI_CTRL_TUNED_CLK;
-+	sdhci_writew(host, ctrl2, SDHCI_HOST_CONTROL2);
-+
-+	// 540 enable tuning parameters control
-+	control_value |= 0x10;
-+	sdhci_writel(host, control_value, SDHCI_GLI_9750_TUNING_CONTROL);
-+
-+	// write 544 tuning parameters
-+	sdhci_writel(host, parameter_value, SDHCI_GLI_9750_TUNING_PARAMETERS);
-+
-+	// 540 disable tuning parameters control
-+	control_value &= ~0x10;
-+	sdhci_writel(host, control_value, SDHCI_GLI_9750_TUNING_CONTROL);
-+
-+	// clear tuned clk
-+	ctrl2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+	ctrl2 &= ~SDHCI_CTRL_TUNED_CLK;
-+	sdhci_writew(host, ctrl2, SDHCI_HOST_CONTROL2);
-+
-+	udelay(1);
-+	wt_value = sdhci_readl(host, SDHCI_GLI_9750_WT);
-+	wt_value &= ~0x1;
-+	sdhci_writel(host, wt_value, SDHCI_GLI_9750_WT);
-+}
-+
-+static void sdhci_gli_do_reset(struct sdhci_host *host, u8 mask)
-+{
-+	host->ops->reset(host, mask);
-+
-+	if (mask & SDHCI_RESET_ALL) {
-+		if (host->flags & (SDHCI_USE_SDMA | SDHCI_USE_ADMA)) {
-+			if (host->ops->enable_dma)
-+				host->ops->enable_dma(host);
-+		}
-+
-+		/* Resetting the controller clears many */
-+		host->preset_enabled = false;
-+	}
-+}
-+
-+static void sdhci_gli_abort_tuning(struct sdhci_host *host, u32 opcode)
-+{
-+	sdhci_reset_tuning(host);
-+
-+	sdhci_gli_do_reset(host, SDHCI_RESET_CMD);
-+	sdhci_gli_do_reset(host, SDHCI_RESET_DATA);
-+
-+	sdhci_end_tuning(host);
-+
-+	mmc_abort_tuning(host->mmc, opcode);
-+}
-+
-+static void gli_set_9750_rx_inv(struct sdhci_host *host, bool b)
-+{
-+	u32 wt_value = sdhci_readl(host, SDHCI_GLI_9750_WT);
-+	u32 misc_value = sdhci_readl(host, SDHCI_GLI_9750_MISC);
-+
-+	if ((wt_value & 0x1) == 0) {
-+		wt_value |= 0x1;
-+		sdhci_writel(host, wt_value, SDHCI_GLI_9750_WT);
-+	}
-+
-+	misc_value = sdhci_readl(host, SDHCI_GLI_9750_MISC);
-+	if (b) {
-+		misc_value |= 0x8;
-+		sdhci_writel(host, misc_value, SDHCI_GLI_9750_MISC);
-+	} else {
-+		misc_value &= ~0x8;
-+		sdhci_writel(host, misc_value, SDHCI_GLI_9750_MISC);
-+	}
-+
-+	wt_value = sdhci_readl(host, SDHCI_GLI_9750_WT);
-+	wt_value &= ~0x1;
-+	sdhci_writel(host, wt_value, SDHCI_GLI_9750_WT);
-+}
-+
-+static int __sdhci_execute_tuning_9750(struct sdhci_host *host, u32 opcode)
-+{
-+	int i;
-+	int rx_inv = 0;
-+
-+	for (rx_inv = 0; rx_inv < 2; rx_inv++) {
-+		if (rx_inv & 0x1)
-+			gli_set_9750_rx_inv(host, true);
-+		else
-+			gli_set_9750_rx_inv(host, false);
-+
-+		sdhci_start_tuning(host);
-+
-+		for (i = 0; i < GLI_MAX_TUNING_LOOP; i++) {
-+			u16 ctrl;
-+
-+			sdhci_send_tuning(host, opcode);
-+
-+			if (!host->tuning_done) {
-+				if (rx_inv == 1) {
-+					pr_info("%s: Tuning timeout, falling back to fixed sampling clock\n",
-+						mmc_hostname(host->mmc));
-+					sdhci_gli_abort_tuning(host, opcode);
-+					return -ETIMEDOUT;
-+				}
-+				pr_info("%s: Tuning timeout, try next tuning\n",
-+					mmc_hostname(host->mmc));
-+				sdhci_gli_abort_tuning(host, opcode);
-+				break;
-+			}
-+
-+			ctrl = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+			if (!(ctrl & SDHCI_CTRL_EXEC_TUNING)) {
-+				if (ctrl & SDHCI_CTRL_TUNED_CLK)
-+					return 0; /* Success! */
-+				break;
-+			}
-+		}
-+	}
-+
-+	pr_info("%s: Tuning failed, falling back to fixed sampling clock\n",
-+		mmc_hostname(host->mmc));
-+	sdhci_reset_tuning(host);
-+	return -EAGAIN;
-+}
-+
-+static int gl9750_execute_tuning(struct mmc_host *mmc, u32 opcode)
-+{
-+	struct sdhci_host *host = mmc_priv(mmc);
-+	int err = 0;
-+	unsigned int tuning_count = 0;
-+	bool hs400_tuning;
-+
-+	hs400_tuning = host->flags & SDHCI_HS400_TUNING;
-+
-+	if (host->tuning_mode == SDHCI_TUNING_MODE_1)
-+		tuning_count = host->tuning_count;
-+
-+	/*
-+	 * The Host Controller needs tuning in case of SDR104 and DDR50
-+	 * mode, and for SDR50 mode when Use Tuning for SDR50 is set in
-+	 * the Capabilities register.
-+	 * If the Host Controller supports the HS200 mode then the
-+	 * tuning function has to be executed.
-+	 */
-+	switch (host->timing) {
-+	/* HS400 tuning is done in HS200 mode */
-+	case MMC_TIMING_MMC_HS400:
-+		err = -EINVAL;
-+		goto out;
-+
-+	case MMC_TIMING_MMC_HS200:
-+		/*
-+		 * Periodic re-tuning for HS400 is not expected to be needed, so
-+		 * disable it here.
-+		 */
-+		if (hs400_tuning)
-+			tuning_count = 0;
-+		break;
-+
-+	case MMC_TIMING_UHS_SDR104:
-+	case MMC_TIMING_UHS_DDR50:
-+		break;
-+	case MMC_TIMING_UHS_SDR50:
-+		if (host->flags & SDHCI_SDR50_NEEDS_TUNING)
-+			break;
-+		/* FALLTHROUGH */
-+
-+	default:
-+		goto out;
-+	}
-+
-+	if (host->ops->platform_execute_tuning) {
-+		err = host->ops->platform_execute_tuning(host, opcode);
-+		goto out;
-+	}
-+
-+	host->mmc->retune_period = tuning_count;
-+
-+	if (host->tuning_delay < 0)
-+		host->tuning_delay = opcode == MMC_SEND_TUNING_BLOCK;
-+
-+	gli_set_9750(host);
-+	host->tuning_err = __sdhci_execute_tuning_9750(host, opcode);
-+
-+	sdhci_end_tuning(host);
-+out:
-+	host->flags &= ~SDHCI_HS400_TUNING;
-+
-+	return err;
-+}
-+
-+static int gli_probe_slot_gl9750(struct sdhci_pci_slot *slot)
-+{
-+	struct sdhci_host *host = slot->host;
-+	struct mmc_host_ops *ops = &host->mmc_host_ops;
-+
-+	slot->host->mmc->caps2 |= MMC_CAP2_NO_SDIO;
-+	sdhci_enable_v4_mode(host);
-+
-+	ops->execute_tuning = gl9750_execute_tuning;
-+
-+	return 0;
-+}
-+
-+static int gli_probe_slot_gl9755(struct sdhci_pci_slot *slot)
-+{
-+	struct sdhci_host *host = slot->host;
-+
-+	slot->host->mmc->caps2 |= MMC_CAP2_NO_SDIO;
-+	sdhci_enable_v4_mode(host);
-+
-+	return 0;
-+}
-+
-+static void sdhci_gli_voltage_switch(struct sdhci_host *host)
-+{
-+	usleep_range(5000, 5500);
-+}
-+
-+static void sdhci_gli_pci_hw_reset(struct sdhci_host *host)
-+{
-+	struct sdhci_pci_slot *slot = sdhci_priv(host);
-+
-+	if (slot->hw_reset)
-+		slot->hw_reset(host);
-+}
-+
-+static void sdhci_gl9750_reset(struct sdhci_host *host, u8 mask)
-+{
-+	ktime_t timeout;
-+
-+	sdhci_writeb(host, mask, SDHCI_SOFTWARE_RESET);
-+
-+	if (mask & SDHCI_RESET_ALL)
-+		host->clock = 0;
-+
-+	/* Wait max 100 ms */
-+	timeout = ktime_add_ms(ktime_get(), 100);
-+
-+	/* hw clears the bit when it's done */
-+	while (1) {
-+		bool timedout = ktime_after(ktime_get(), timeout);
-+
-+		if (!(sdhci_readb(host, SDHCI_SOFTWARE_RESET) & mask))
-+			break;
-+		if (timedout) {
-+			pr_err("%s: Reset 0x%x never completed.\n",
-+				mmc_hostname(host->mmc), (int)mask);
-+			sdhci_dumpregs(host);
-+			return;
-+		}
-+		udelay(10);
-+	}
-+	gli_set_9750(host);
-+}
-+
-+static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
-+{
-+	u32 value;
-+
-+	value = readl(host->ioaddr + reg);
-+	if (unlikely(reg == SDHCI_MAX_CURRENT)) {
-+		if (!(value & 0xff))
-+			value |= 0xc8;
-+	}
-+	return value;
-+}
-+
-+static const struct sdhci_ops sdhci_gl9755_ops = {
-+	.set_clock		= sdhci_set_clock,
-+	.enable_dma		= sdhci_pci_enable_dma,
-+	.set_bus_width		= sdhci_set_bus_width,
-+	.reset			= sdhci_reset,
-+	.set_uhs_signaling	= sdhci_set_uhs_signaling,
-+	.hw_reset		= sdhci_gli_pci_hw_reset,
-+	.voltage_switch		= sdhci_gli_voltage_switch,
-+};
-+
-+const struct sdhci_pci_fixes sdhci_gl9755 = {
-+	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC,
-+	.quirks2	= SDHCI_QUIRK2_BROKEN_DDR50,
-+	.probe_slot	= gli_probe_slot_gl9755,
-+	.ops            = &sdhci_gl9755_ops,
-+};
-+
-+static const struct sdhci_ops sdhci_gl9750_ops = {
-+	.read_l                 = sdhci_gl9750_readl,
-+	.set_clock		= sdhci_set_clock,
-+	.enable_dma		= sdhci_pci_enable_dma,
-+	.set_bus_width		= sdhci_set_bus_width,
-+	.reset			= sdhci_gl9750_reset,
-+	.set_uhs_signaling	= sdhci_set_uhs_signaling,
-+	.hw_reset		= sdhci_gli_pci_hw_reset,
-+	.voltage_switch		= sdhci_gli_voltage_switch,
-+};
-+
-+const struct sdhci_pci_fixes sdhci_gl9750 = {
-+	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC,
-+	.quirks2	= SDHCI_QUIRK2_BROKEN_DDR50,
-+	.probe_slot	= gli_probe_slot_gl9750,
-+	.ops            = &sdhci_gl9750_ops,
-+};
-+
-diff --git a/drivers/mmc/host/sdhci-pci.h b/drivers/mmc/host/sdhci-pci.h
-index e5dc6e44c7a4..738ba5afcc20 100644
---- a/drivers/mmc/host/sdhci-pci.h
-+++ b/drivers/mmc/host/sdhci-pci.h
-@@ -65,6 +65,9 @@
+diff --git a/drivers/mmc/host/renesas_sdhi_sys_dmac.c b/drivers/mmc/host/renesas_sdhi_sys_dmac.c
+index 1d29b82..13ff023 100644
+--- a/drivers/mmc/host/renesas_sdhi_sys_dmac.c
++++ b/drivers/mmc/host/renesas_sdhi_sys_dmac.c
+@@ -68,26 +68,6 @@ static const struct renesas_sdhi_of_data of_rcar_gen2_compatible = {
+ 	.max_blk_count	= UINT_MAX / TMIO_MAX_BLK_SIZE,
+ };
  
- #define PCI_DEVICE_ID_SYNOPSYS_DWC_MSHC 0xc202
+-/* Definitions for sampling clocks */
+-static struct renesas_sdhi_scc rcar_gen3_scc_taps[] = {
+-	{
+-		.clk_rate = 0,
+-		.tap = 0x00000300,
+-	},
+-};
+-
+-static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
+-	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
+-			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2,
+-	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
+-			  MMC_CAP_CMD23,
+-	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
+-	.bus_shift	= 2,
+-	.scc_offset	= 0x1000,
+-	.taps		= rcar_gen3_scc_taps,
+-	.taps_num	= ARRAY_SIZE(rcar_gen3_scc_taps),
+-};
+-
+ static const struct of_device_id renesas_sdhi_sys_dmac_of_match[] = {
+ 	{ .compatible = "renesas,sdhi-sh73a0", .data = &of_default_cfg, },
+ 	{ .compatible = "renesas,sdhi-r8a73a4", .data = &of_default_cfg, },
+@@ -102,11 +82,8 @@ static const struct of_device_id renesas_sdhi_sys_dmac_of_match[] = {
+ 	{ .compatible = "renesas,sdhi-r8a7792", .data = &of_rcar_gen2_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a7793", .data = &of_rcar_gen2_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a7794", .data = &of_rcar_gen2_compatible, },
+-	{ .compatible = "renesas,sdhi-r8a7795", .data = &of_rcar_gen3_compatible, },
+-	{ .compatible = "renesas,sdhi-r8a7796", .data = &of_rcar_gen3_compatible, },
+ 	{ .compatible = "renesas,rcar-gen1-sdhi", .data = &of_rcar_gen1_compatible, },
+ 	{ .compatible = "renesas,rcar-gen2-sdhi", .data = &of_rcar_gen2_compatible, },
+-	{ .compatible = "renesas,rcar-gen3-sdhi", .data = &of_rcar_gen3_compatible, },
+ 	{ .compatible = "renesas,sdhi-shmobile" },
+ 	{},
+ };
+@@ -470,21 +447,8 @@ static const struct tmio_mmc_dma_ops renesas_sdhi_sys_dmac_dma_ops = {
+ 	.dataend = renesas_sdhi_sys_dmac_dataend_dma,
+ };
  
-+#define PCI_DEVICE_ID_GLI_9755		0x9755
-+#define PCI_DEVICE_ID_GLI_9750		0x9750
-+
- /*
-  * PCI device class and mask
-  */
-@@ -185,5 +188,7 @@ int sdhci_pci_enable_dma(struct sdhci_host *host);
- extern const struct sdhci_pci_fixes sdhci_arasan;
- extern const struct sdhci_pci_fixes sdhci_snps;
- extern const struct sdhci_pci_fixes sdhci_o2;
-+extern const struct sdhci_pci_fixes sdhci_gl9750;
-+extern const struct sdhci_pci_fixes sdhci_gl9755;
+-/*
+- * Whitelist of specific R-Car Gen3 SoC ES versions to use this DMAC
+- * implementation. Currently empty as all supported ES versions use
+- * the internal DMAC.
+- */
+-static const struct soc_device_attribute gen3_soc_whitelist[] = {
+-        { /* sentinel */ }
+-};
+-
+ static int renesas_sdhi_sys_dmac_probe(struct platform_device *pdev)
+ {
+-	if (of_device_get_match_data(&pdev->dev) == &of_rcar_gen3_compatible &&
+-	    !soc_device_match(gen3_soc_whitelist))
+-		return -ENODEV;
+-
+ 	return renesas_sdhi_probe(pdev, &renesas_sdhi_sys_dmac_dma_ops);
+ }
  
- #endif /* __SDHCI_PCI_H */
 -- 
-2.22.1
+2.7.4
 
