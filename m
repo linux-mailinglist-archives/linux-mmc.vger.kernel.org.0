@@ -2,353 +2,143 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E6D95086
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2019 00:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D38295391
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2019 03:42:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728409AbfHSWLo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 19 Aug 2019 18:11:44 -0400
-Received: from mail-eopbgr800118.outbound.protection.outlook.com ([40.107.80.118]:28672
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
+        id S1728734AbfHTBmX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 19 Aug 2019 21:42:23 -0400
+Received: from mail-eopbgr1410123.outbound.protection.outlook.com ([40.107.141.123]:65120
+        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728136AbfHSWLo (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 19 Aug 2019 18:11:44 -0400
+        id S1728719AbfHTBmW (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 19 Aug 2019 21:42:22 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Xpb7fTK3RJdy2Vnb9fpuknVZNefKmK6F844/M9Yn04QRmo0Lr4EgehoEsRqsx/H+xKpBHr+DDYIUrctfdrQU4vbXfk6o+fqMzaAaWOFMeE4rXjyyexb9I8OZuY/IIv1GmpLbF7H5tvYzE0ZUUmr3lk4ZBmPJy3xNrPiRgcJ7CGj70l97iDmTn1Qt/pm7uMMqWDSbX+dibtnSQKUfkg9jbN7QyLSxW0LxCdsjaPh1p3w2p3LN1+b3wYHSvV601oBwdT0SX5vPY1buxR53cRCBJbGmGGpGvXNdhECxRRkdVlddS0wJbQEL0iyhu7CldiKRWw8hpC6IrBLBmNMvR/BusQ==
+ b=LHrXkRfOyof8zw4GLeNlzQIHOQW2Q5mV+TefLSg5GiU7feJwuDQ6NE8C9g7QR2iDUj/dxSNE/4TiLnhiYtUOizRC+0FWHsYtyIEIuWqemRWzmcOBzC3Zq9E+lN/pxe5xht7bre5M1brUKd43e/JCg2Rbr04zqIU5TIkYlOQsBq3is8mn40GMInOa43Tx5DDStkec4vz28tVJM6LycB5YU/fKnS9za/niRgqAwljJSA3Sl5KNGHtks2ygGU+M17ev37A88R6wgsVST8ZylQaK7PCvz5+a2AwkNW2J4D2Buj/qbcma1G+nni+4aA/EfYA3M3LDy7icKAwrrOsiTVpfNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7yJVnVk7ssY/XCh/dEZFa9MlqdKvPOo7J9oz+V/iS6U=;
- b=QDexTq119C/M4K6c2W65f6gnwUf0Ef/pR3359LgIjxx+2Mjbwzaq7kkmBVYqRfu7+1nkpL5t8y4Iiu5iUjmZl2TW2cER5dUgEohZLOhXci8dateAr8ZAPmytYe8j+AdvwUWEtNCFkKXUvcLCxkrwKuRz9bK1JgRBnEqa0GZlhVMaCvLEyklTFLhUTs7ydw7zUF2X//WwcYRi/C7MIjvHHcbBicC8nhzlUFJ6iO9KFiv68ctyeaCG9dWJsi5C+Zff/dKJyyoCLdXfyrBFAk8ezR0inIpD1A9xakCXD9shlRRoGYSFVAURqYgnp5DHnW8FieqDfZzJn9n8dW26q8WaqQ==
+ bh=VuFsc4QCpeN5MWdsfnCavBMARojnbQftklZ+JYr+nGY=;
+ b=QHkqGe2da4CbgBs5F03hqY8DYCCiT7MxqqKT0+/+crpE09pWbHnJtyteEz6a2yLRTxKpF/0Pv5CHT3w3ghyiss+c9dQY+4r5wFWg3RCzTI3J67cOtg0OXSlkDuA2fNeRKMr+YH6osoW+0ZW3tDe+KqzFiValGIDfmhd22NfFC9N3glBUhiLMpOyPs2+n5WsCW4sQENAKAI/+wOwFjM7Ra/1cqYHZJMlKIdIxOGURc1NmkVMVvsNYNPMzOL7g2TvQxGh4xOVAALALCEfAxphxnNI0JXLGC8doSYDqHixCy8HHBQWcyO1te/vDSCDFb7qVhvZKVIom5i44zAN8hxknbA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bayhubtech.com; dmarc=pass action=none
- header.from=bayhubtech.com; dkim=pass header.d=bayhubtech.com; arc=none
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=towerbridgetechnology.onmicrosoft.com;
- s=selector2-towerbridgetechnology-onmicrosoft-com;
+ d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7yJVnVk7ssY/XCh/dEZFa9MlqdKvPOo7J9oz+V/iS6U=;
- b=iFvKlaxldvDrfJL0A2L1e2CwBXkizjZRV/gEzSOkkxjNOsEz7ftuKWK/1eVWwqs1N07ANaoQgka9uRyhFDusYKLIN0dY40FdKNlz1zhGAXdGC4w+4tte52s5EDHUxCFvCfmu0OuSF2VXv9zBh52IKndqa8IWEPwEmIRW4kXy+bo=
-Received: from MWHPR16MB1455.namprd16.prod.outlook.com (10.175.5.21) by
- MWHPR16MB0029.namprd16.prod.outlook.com (10.172.101.20) with Microsoft SMTP
+ bh=VuFsc4QCpeN5MWdsfnCavBMARojnbQftklZ+JYr+nGY=;
+ b=Nhvc6WHY6PdrZrftwtLxgmLOXISktkD1xCPHrS2IKqyY7I6V45E6JsKoB4mZGw3VS+U8AccpyMMUcOJ89YM4lL2ojk4ZFkjUG6rX5h8O27OD0HnyTKAc+ETKB9bQLKkp6zuPZvDul3WMf2BsVIYfwq3tZXQ+9jVW/iz/PFGiMUQ=
+Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com (20.179.175.203) by
+ TYAPR01MB2477.jpnprd01.prod.outlook.com (20.177.101.205) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2178.16; Mon, 19 Aug 2019 22:11:39 +0000
-Received: from MWHPR16MB1455.namprd16.prod.outlook.com
- ([fe80::48f4:c6d9:3a8:e7dd]) by MWHPR16MB1455.namprd16.prod.outlook.com
- ([fe80::48f4:c6d9:3a8:e7dd%4]) with mapi id 15.20.2178.018; Mon, 19 Aug 2019
- 22:11:39 +0000
-From:   "Shirley Her (SC)" <shirley.her@bayhubtech.com>
-To:     "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+ 15.20.2178.18; Tue, 20 Aug 2019 01:42:18 +0000
+Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com
+ ([fe80::6564:f61f:f179:facf]) by TYAPR01MB4544.jpnprd01.prod.outlook.com
+ ([fe80::6564:f61f:f179:facf%5]) with mapi id 15.20.2178.018; Tue, 20 Aug 2019
+ 01:42:18 +0000
+From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To:     Robin Murphy <robin.murphy@arm.com>
+CC:     "wsa+renesas@sang-engineering.com" <wsa+renesas@sang-engineering.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     "Chevron Li (WH)" <chevron.li@bayhubtech.com>,
-        "Shaper Liu (WH)" <shaper.liu@bayhubtech.com>,
-        "Louis Lu (TP)" <louis.lu@bayhubtech.com>,
-        "Xiaoguang Yu (WH)" <xiaoguang.yu@bayhubtech.com>,
-        "Max Huang (SC)" <max.huang@bayhubtech.com>,
-        "Shirley Her (SC)" <shirley.her@bayhubtech.com>
-Subject: Subject: [PATCH V7 3/3] mmc: sdhci-pci-o2micro: Fix O2 Host data
- read/write DLL Lock Phase shift issue
-Thread-Topic: Subject: [PATCH V7 3/3] mmc: sdhci-pci-o2micro: Fix O2 Host data
- read/write DLL Lock Phase shift issue
-Thread-Index: AQHVVtsSwnakzAws5k2c+wsSqh485w==
-Date:   Mon, 19 Aug 2019 22:11:39 +0000
-Message-ID: <1566252696-5206-1-git-send-email-shirley.her@bayhubtech.com>
-Accept-Language: en-US
-Content-Language: en-US
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "hch@lst.de" <hch@lst.de>,
+        "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        "axboe@kernel.dk" <axboe@kernel.dk>
+Subject: RE: [PATCH v9 2/5] iommu/dma: Add a new dma_map_ops of
+ get_merge_boundary()
+Thread-Topic: [PATCH v9 2/5] iommu/dma: Add a new dma_map_ops of
+ get_merge_boundary()
+Thread-Index: AQHVQ4ypPSzm8K7UpEaJjj39WHup9acCk4MAgADUWRA=
+Date:   Tue, 20 Aug 2019 01:42:18 +0000
+Message-ID: <TYAPR01MB4544A7A255738624E2A405C9D8AB0@TYAPR01MB4544.jpnprd01.prod.outlook.com>
+References: <1564129876-28261-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <1564129876-28261-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <312d6e38-5143-fb07-1efb-01e60cafa2c9@arm.com>
+In-Reply-To: <312d6e38-5143-fb07-1efb-01e60cafa2c9@arm.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR04CA0011.namprd04.prod.outlook.com
- (2603:10b6:a03:40::24) To MWHPR16MB1455.namprd16.prod.outlook.com
- (2603:10b6:320:28::21)
 authentication-results: spf=none (sender IP is )
- smtp.mailfrom=shirley.her@bayhubtech.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.7.4
-x-originating-ip: [209.36.105.184]
+ smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
+x-originating-ip: [118.238.235.108]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 156fb58b-38dd-459a-99e5-08d724f2353d
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MWHPR16MB0029;
-x-ms-traffictypediagnostic: MWHPR16MB0029:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MWHPR16MB00297B734138A47B25BC4A8D8BA80@MWHPR16MB0029.namprd16.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2512;
-x-forefront-prvs: 0134AD334F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(376002)(346002)(39840400004)(366004)(136003)(189003)(199004)(5660300002)(2616005)(476003)(6436002)(107886003)(86362001)(486006)(26005)(71190400001)(71200400001)(66446008)(64756008)(66556008)(66476007)(66946007)(66066001)(2201001)(7736002)(102836004)(36756003)(256004)(53936002)(8676002)(6486002)(6512007)(14454004)(81156014)(8936002)(186003)(6506007)(386003)(2501003)(4326008)(25786009)(14444005)(50226002)(316002)(3846002)(305945005)(2906002)(6116002)(110136005)(54906003)(81166006)(52116002)(508600001)(99286004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR16MB0029;H:MWHPR16MB1455.namprd16.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: bayhubtech.com does not designate
+x-ms-office365-filtering-correlation-id: 1b87e956-c552-4312-d6be-08d7250fa2f6
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:TYAPR01MB2477;
+x-ms-traffictypediagnostic: TYAPR01MB2477:
+x-ms-exchange-purlcount: 1
+x-microsoft-antispam-prvs: <TYAPR01MB247747EE531DE19F6EFA8AD7D8AB0@TYAPR01MB2477.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-forefront-prvs: 013568035E
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(39860400002)(136003)(346002)(376002)(366004)(396003)(189003)(199004)(55016002)(7736002)(6306002)(9686003)(33656002)(229853002)(478600001)(74316002)(6116002)(6916009)(3846002)(966005)(305945005)(316002)(6436002)(99286004)(256004)(25786009)(66446008)(64756008)(66946007)(66556008)(66476007)(76116006)(86362001)(26005)(8936002)(446003)(11346002)(81166006)(81156014)(476003)(8676002)(186003)(76176011)(53546011)(6506007)(7696005)(486006)(52536014)(102836004)(71200400001)(71190400001)(14454004)(54906003)(66066001)(7416002)(5660300002)(2906002)(4326008)(53936002)(6246003);DIR:OUT;SFP:1102;SCL:1;SRVR:TYAPR01MB2477;H:TYAPR01MB4544.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: renesas.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: qBJo47wvaZowH+wOzIIx4tbSeI+X1CkXN1KUrA5omGJR4vibaXfALMfGBDo1qLaRJphVt8SGBV+M5abTuE1bTKDNIFCh2DZbIZt6YYZ6nGE/68RZXr7UBaDslQRkZ84Yg3Q/Izg72i1vSGS/tI/vyojLkIilPMawRSEd6ba6eX5MMLyUnvJAj78xRuD+nohKZXDRHzqYZ7otf6Cf76M66t8sIr7PTrfs0W5chy56/iR+VSoXVRIdzRSjzhAcTpNJgzRyPzr7olGXqScgOP/YSdmjS6n9AWJzhiinE95ecykO4T+U+opDKm1cM9tcENjNZ+INunelWeyF195ESJxDwksZ46aswiQylMiXiI14xgxxflY9tejb4G0Ga098LRGbFQASEzGOR6ZNnwCVYOtR0s8uysbgaMUReWVvrc3yCTY=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+x-microsoft-antispam-message-info: kl8OpN7lYzC4vbOThP5DN99YVOHxr2MpBWv1ST0JWuzAqNa3hZMvPIUzegR0dZh/7THk2FnTmY7nfDk7j+3SpvO2YaqfKzz0Gg7Ur8j64k+knXkRCSNmmirESz5KuAjeVQNMnCYO8g0waCDD72uzd2WNLTcmBtDDN1WSolwb6fVPiNJJJ2L4Diy26z8/OWkxqg1HBUjvDg+JmJTTEFofnuPPVoAeXJ9+EFJcGlq0+iVENHTs1cXyBL0HGoOm+CcBdBpOhd6J9W7GpLnuLzAvZyepuNw+rgGEKSB79elOOYYH9bmD3noZLY20FTVQEtmFye3OJd9JPhnMfa3ub9rZSEemXs6o000E6pvTzC0tj/OCr6fOzhWoQzgV1Ubf+Xl0GbKulGgei0WhPOw46R8nPjCa8Hcbds+t1U8kvu1Vlfk=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-OriginatorOrg: bayhubtech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 156fb58b-38dd-459a-99e5-08d724f2353d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2019 22:11:39.2348
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b87e956-c552-4312-d6be-08d7250fa2f6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Aug 2019 01:42:18.3318
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0a7aae2b-8f2e-44df-ba2f-42de7f93c642
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5bKWu58XnaOBajaJvMZUqzHhjWsLRfWya4F+hK+fUb1Fu1vp4wSE3G1vXZidStKF8ONxyrxJO8TmiGb9LUgw61e+3A2JCK9kaQktit8/RBk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR16MB0029
+X-MS-Exchange-CrossTenant-userprincipalname: F63FI09Ne1LiuvNJ/MAdzxBa4naQ1Nt0yEMnKijpDCX1friPSVRV3fSlnNQ2dZrkY05J1DWj0QOgo/ibqOl+/jQbNOlgoV6gSK+7nNXuScExIsZ9Z/vCEtjW+BWNRaHo
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAPR01MB2477
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Fix data read/write error in HS200 mode due to chip DLL lock phase shift
-
-Signed-off-by:Shirley Her <shirley.her@bayhubtech.com>
----
-change in V7:
- 1. change subject
- 2. change the sdhci_o2_wait_dll_detect_lock function
- 3. add suitable usleep_range() to detect dll lock status
-
-chagne in V6:
- 1. define constant by using array size
- 2. add more explanation for the code
- 3. fix loop forever code error
-
-change in V5:
- 1. split 2 patches into 3 patches
- 2. make dll_adjust_count start from 0
- 3. fix ret overwritten issue
- 4. use break instead of goto
-
-change in V4:
- 1. add a bug fix for V3
-
-change in V3:
- 1. add more explanation in dll_recovery and execute_tuning function
- 2. move dll_adjust_count to O2_host struct
- 3. fix some coding style error
- 4. renaming O2_PLL_WDT_CONTROL1 TO O2_PLL_DLL_WDT_CONTROL1
-
-change in V2:
- 1. use usleep_range instead of udelay
- 2. move dll_adjust_count to sdhci-pci-o2micro.c
-
-chagne in V1:
- 1. add error recovery function to relock DLL with correct phase
- 2. retuning HS200 after DLL locked
----
- drivers/mmc/host/sdhci-pci-o2micro.c | 125 +++++++++++++++++++++++++++++++=
-+++-
- 1 file changed, 123 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-=
-pci-o2micro.c
-index 021e481..f0b3d93 100644
---- a/drivers/mmc/host/sdhci-pci-o2micro.c
-+++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-@@ -11,6 +11,7 @@
- #include <linux/mmc/host.h>
- #include <linux/mmc/mmc.h>
- #include <linux/delay.h>
-+#include <linux/iopoll.h>
-=20
- #include "sdhci.h"
- #include "sdhci-pci.h"
-@@ -55,9 +56,18 @@
- #define  O2_PLL_FORCE_ACTIVE	BIT(18)
- #define  O2_PLL_LOCK_STATUS	BIT(14)
- #define  O2_PLL_SOFT_RESET	BIT(12)
-+#define  O2_DLL_LOCK_STATUS	BIT(11)
-=20
- #define O2_SD_DETECT_SETTING 0x324
-=20
-+static const u32 dmdn_table[] =3D {0x2B1C0000,
-+	0x2C1A0000, 0x371B0000, 0x35100000};
-+#define DMDN_SZ ARRAY_SIZE(dmdn_table)
-+
-+struct o2_host {
-+	u8 dll_adjust_count;
-+};
-+
- static void sdhci_o2_wait_card_detect_stable(struct sdhci_host *host)
- {
- 	ktime_t timeout;
-@@ -133,7 +143,8 @@ static int sdhci_o2_get_cd(struct mmc_host *mmc)
- {
- 	struct sdhci_host *host =3D mmc_priv(mmc);
-=20
--	sdhci_o2_enable_internal_clock(host);
-+	if (!(sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1) & O2_PLL_LOCK_STATUS))
-+		sdhci_o2_enable_internal_clock(host);
-=20
- 	return !!(sdhci_readl(host, SDHCI_PRESENT_STATE) & SDHCI_CARD_PRESENT);
- }
-@@ -141,6 +152,7 @@ static int sdhci_o2_get_cd(struct mmc_host *mmc)
- static void o2_pci_set_baseclk(struct sdhci_pci_chip *chip, u32 value)
- {
- 	u32 scratch_32;
-+
- 	pci_read_config_dword(chip->pdev,
- 			      O2_SD_PLL_SETTING, &scratch_32);
-=20
-@@ -151,6 +163,25 @@ static void o2_pci_set_baseclk(struct sdhci_pci_chip *=
-chip, u32 value)
- 			       O2_SD_PLL_SETTING, scratch_32);
- }
-=20
-+static u32 sdhci_o2_pll_dll_wdt_control(struct sdhci_host *host)
-+{
-+	return sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
-+}
-+
-+/*
-+ * This function is used to detect dll lock status.
-+ * Since the dll lock status bit will toggle randomly
-+ * with very short interval which needs to be polled
-+ * as fast as possible. Set sleep_us as 1 microsecond.
-+ */
-+static int sdhci_o2_wait_dll_detect_lock(struct sdhci_host *host)
-+{
-+	u32	scratch32 =3D 0;
-+
-+	return readx_poll_timeout(sdhci_o2_pll_dll_wdt_control, host,
-+		scratch32, !(scratch32 & O2_DLL_LOCK_STATUS), 1, 1000000);
-+}
-+
- static void sdhci_o2_set_tuning_mode(struct sdhci_host *host)
- {
- 	u16 reg;
-@@ -188,6 +219,83 @@ static void __sdhci_o2_execute_tuning(struct sdhci_hos=
-t *host, u32 opcode)
- 	sdhci_reset_tuning(host);
- }
-=20
-+/*
-+ * This function is used to fix o2 dll shift issue.
-+ * It isn't necessary to detect card present before recovery.
-+ * Firstly, it is used by bht emmc card, which is embedded.
-+ * Second, before call recovery card present will be detected
-+ * outside of the execute tuning function.
-+ */
-+static int sdhci_o2_dll_recovery(struct sdhci_host *host)
-+{
-+	int ret =3D 0;
-+	u8 scratch_8 =3D 0;
-+	u32 scratch_32 =3D 0;
-+	struct sdhci_pci_slot *slot =3D sdhci_priv(host);
-+	struct sdhci_pci_chip *chip =3D slot->chip;
-+	struct o2_host *o2_host =3D sdhci_pci_priv(slot);
-+
-+	/* UnLock WP */
-+	pci_read_config_byte(chip->pdev,
-+			O2_SD_LOCK_WP, &scratch_8);
-+	scratch_8 &=3D 0x7f;
-+	pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
-+	while (o2_host->dll_adjust_count < DMDN_SZ && !ret) {
-+		/* Disable clock */
-+		sdhci_writeb(host, 0, SDHCI_CLOCK_CONTROL);
-+
-+		/* PLL software reset */
-+		scratch_32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
-+		scratch_32 |=3D O2_PLL_SOFT_RESET;
-+		sdhci_writel(host, scratch_32, O2_PLL_DLL_WDT_CONTROL1);
-+
-+		pci_read_config_dword(chip->pdev,
-+					    O2_SD_FUNC_REG4,
-+					    &scratch_32);
-+		/* Enable Base Clk setting change */
-+		scratch_32 |=3D O2_SD_FREG4_ENABLE_CLK_SET;
-+		pci_write_config_dword(chip->pdev, O2_SD_FUNC_REG4, scratch_32);
-+		o2_pci_set_baseclk(chip, dmdn_table[o2_host->dll_adjust_count]);
-+
-+		/* Enable internal clock */
-+		scratch_8 =3D SDHCI_CLOCK_INT_EN;
-+		sdhci_writeb(host, scratch_8, SDHCI_CLOCK_CONTROL);
-+
-+		if (sdhci_o2_get_cd(host->mmc)) {
-+			/*
-+			 * need wait at least 5ms for dll status stable,
-+			 * after enable internal clock
-+			 */
-+			usleep_range(5000, 6000);
-+			if (sdhci_o2_wait_dll_detect_lock(host)) {
-+				scratch_8 |=3D SDHCI_CLOCK_CARD_EN;
-+				sdhci_writeb(host, scratch_8,
-+					SDHCI_CLOCK_CONTROL);
-+				ret =3D 1;
-+			} else {
-+				pr_warn("%s: DLL unlocked when dll_adjust_count is %d.\n",
-+					mmc_hostname(host->mmc),
-+					o2_host->dll_adjust_count);
-+			}
-+		} else {
-+			pr_err("%s: card present detect failed.\n",
-+				mmc_hostname(host->mmc));
-+			break;
-+		}
-+
-+		o2_host->dll_adjust_count++;
-+	}
-+	if (!ret && o2_host->dll_adjust_count =3D=3D DMDN_SZ)
-+		pr_err("%s: DLL adjust over max times\n",
-+		mmc_hostname(host->mmc));
-+	/* Lock WP */
-+	pci_read_config_byte(chip->pdev,
-+				   O2_SD_LOCK_WP, &scratch_8);
-+	scratch_8 |=3D 0x80;
-+	pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
-+	return ret;
-+}
-+
- static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
- {
- 	struct sdhci_host *host =3D mmc_priv(mmc);
-@@ -202,7 +310,16 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mm=
-c, u32 opcode)
-=20
- 	if (WARN_ON(opcode !=3D MMC_SEND_TUNING_BLOCK_HS200))
- 		return -EINVAL;
--
-+	/*
-+	 * Judge the tuning reason, whether caused by dll shift
-+	 * If cause by dll shift, should call sdhci_o2_dll_recovery
-+	 */
-+	if (!sdhci_o2_wait_dll_detect_lock(host))
-+		if (!sdhci_o2_dll_recovery(host)) {
-+			pr_err("%s: o2 dll recovery failed\n",
-+				mmc_hostname(host->mmc));
-+			return -EINVAL;
-+		}
- 	/*
- 	 * o2 sdhci host didn't support 8bit emmc tuning
- 	 */
-@@ -370,6 +487,7 @@ static void sdhci_o2_enable_clk(struct sdhci_host *host=
-, u16 clk)
- 	clk |=3D SDHCI_CLOCK_INT_EN;
- 	sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
-=20
-+	sdhci_o2_enable_internal_clock(host);
- 	if (sdhci_o2_get_cd(host->mmc)) {
- 		clk |=3D SDHCI_CLOCK_CARD_EN;
- 		sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
-@@ -395,12 +513,14 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *sl=
-ot)
- {
- 	struct sdhci_pci_chip *chip;
- 	struct sdhci_host *host;
-+	struct o2_host *o2_host =3D sdhci_pci_priv(slot);
- 	u32 reg, caps;
- 	int ret;
-=20
- 	chip =3D slot->chip;
- 	host =3D slot->host;
-=20
-+	o2_host->dll_adjust_count =3D 0;=09
- 	caps =3D sdhci_readl(host, SDHCI_CAPABILITIES);
-=20
- 	/*
-@@ -687,4 +807,5 @@ const struct sdhci_pci_fixes sdhci_o2 =3D {
- 	.resume =3D sdhci_pci_o2_resume,
- #endif
- 	.ops =3D &sdhci_pci_o2_ops,
-+	.priv_size =3D sizeof(struct o2_host),
- };
---=20
-2.7.4
-
+SGkgUm9iaW4sDQoNCj4gRnJvbTogUm9iaW4gTXVycGh5LCBTZW50OiBNb25kYXksIEF1Z3VzdCAx
+OSwgMjAxOSA5OjU1IFBNDQo+IA0KPiBPbiAyNi8wNy8yMDE5IDA5OjMxLCBZb3NoaWhpcm8gU2hp
+bW9kYSB3cm90ZToNCj4gPiBUaGlzIHBhdGNoIGFkZHMgYSBuZXcgZG1hX21hcF9vcHMgb2YgZ2V0
+X21lcmdlX2JvdW5kYXJ5KCkgdG8NCj4gPiBleHBvc2UgdGhlIERNQSBtZXJnZSBib3VuZGFyeSBp
+ZiB0aGUgZG9tYWluIHR5cGUgaXMgSU9NTVVfRE9NQUlOX0RNQS4NCj4gPg0KPiA+IFNpZ25lZC1v
+ZmYtYnk6IFlvc2hpaGlybyBTaGltb2RhIDx5b3NoaWhpcm8uc2hpbW9kYS51aEByZW5lc2FzLmNv
+bT4NCj4gPiBSZXZpZXdlZC1ieTogU2ltb24gSG9ybWFuIDxob3JtcytyZW5lc2FzQHZlcmdlLm5l
+dC5hdT4NCj4gPiAtLS0NCj4gPiAgIGRyaXZlcnMvaW9tbXUvZG1hLWlvbW11LmMgfCAxMSArKysr
+KysrKysrKw0KPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDExIGluc2VydGlvbnMoKykNCj4gPg0KPiA+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lvbW11L2RtYS1pb21tdS5jIGIvZHJpdmVycy9pb21tdS9k
+bWEtaW9tbXUuYw0KPiA+IGluZGV4IGE3ZjljM2UuLjI5OTJjZTQgMTAwNjQ0DQo+ID4gLS0tIGEv
+ZHJpdmVycy9pb21tdS9kbWEtaW9tbXUuYw0KPiA+ICsrKyBiL2RyaXZlcnMvaW9tbXUvZG1hLWlv
+bW11LmMNCj4gPiBAQCAtMTA4NSw2ICsxMDg1LDE2IEBAIHN0YXRpYyBpbnQgaW9tbXVfZG1hX2dl
+dF9zZ3RhYmxlKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IHNnX3RhYmxlICpzZ3QsDQo+ID4g
+ICAJcmV0dXJuIHJldDsNCj4gPiAgIH0NCj4gPg0KPiA+ICtzdGF0aWMgdW5zaWduZWQgbG9uZyBp
+b21tdV9kbWFfZ2V0X21lcmdlX2JvdW5kYXJ5KHN0cnVjdCBkZXZpY2UgKmRldikNCj4gPiArew0K
+PiA+ICsJc3RydWN0IGlvbW11X2RvbWFpbiAqZG9tYWluID0gaW9tbXVfZ2V0X2RtYV9kb21haW4o
+ZGV2KTsNCj4gPiArDQo+ID4gKwlpZiAoZG9tYWluLT50eXBlICE9IElPTU1VX0RPTUFJTl9ETUEp
+DQo+IA0KPiBEaWQgeW91IGFjdHVhbGx5IG5lZWQgdGhpcyBjaGVjaz8gSW4gcHJpbmNpcGxlLCBp
+ZiB0aGUgZGVmYXVsdCBkb21haW4gaXMNCj4gbm90IG9mIHR5cGUgSU9NTVVfRE9NQUlOX0RNQSB0
+aGVuIHRoZSBkZXZpY2Ugc2hvdWxkIGJlIGFzc2lnbmVkDQo+IGRtYV9kaXJlY3Rfb3BzIHJhdGhl
+ciB0aGFuIGlvbW11X2RtYV9vcHMsIHRodXMgaXQgc2hvdWxkbid0IGJlIHBvc3NpYmxlDQo+IHRv
+IGdldCBoZXJlLiBJZiB5b3UgZGlkIG1hbmFnZSB0byBoaXQgYSBjYXNlIHdoZXJlIHRoZSBkb21h
+aW4gdHlwZQ0KPiBkaWRuJ3QgbWF0Y2ggdGhlIG9wcyBpdCB3b3VsZCBiZSBpbnRlcmVzdGluZyB0
+byBmaWd1cmUgb3V0IGhvdy4NCg0KVGhhbmsgeW91IGZvciB5b3VyIHJldmlldyEgWW91J3JlIGNv
+cnJlY3QuIFRoZSBjdXJyZW50IGRtYS1pb21tdS5jIHNldHMNCnRoZSBpb21tdV9kbWFfb3BzIHRv
+IHRoZSBkZXZpY2UgZG1hX29wcyBvbmx5IHdoZW4gdGhlIHR5cGUgaXMgSU9NTVVfRE9NQUlOX0RN
+QQ0KbGlrZSBiZWxvdzoNCi0tLQ0KCWlmIChkb21haW4tPnR5cGUgPT0gSU9NTVVfRE9NQUlOX0RN
+QSkgew0KCQlpZiAoaW9tbXVfZG1hX2luaXRfZG9tYWluKGRvbWFpbiwgZG1hX2Jhc2UsIHNpemUs
+IGRldikpDQoJCQlnb3RvIG91dF9lcnI7DQoJCWRldi0+ZG1hX29wcyA9ICZpb21tdV9kbWFfb3Bz
+Ow0KCX0NCmh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3Rv
+cnZhbGRzL2xpbnV4LmdpdC90cmVlL2RyaXZlcnMvaW9tbXUvZG1hLWlvbW11LmMjbjExMTgNCi0t
+LQ0KDQpTbywgSSdsbCByZW1vdmUgdGhpcyBjaGVjay4NCg0KQmVzdCByZWdhcmRzLA0KWW9zaGlo
+aXJvIFNoaW1vZGENCg0KPiBSb2Jpbi4NCj4gDQo+ID4gKwkJcmV0dXJuIDA7CS8qIGNhbid0IG1l
+cmdlICovDQo+ID4gKw0KPiA+ICsJcmV0dXJuICgxVUwgPDwgX19mZnMoZG9tYWluLT5wZ3NpemVf
+Yml0bWFwKSkgLSAxOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICAgc3RhdGljIGNvbnN0IHN0cnVjdCBk
+bWFfbWFwX29wcyBpb21tdV9kbWFfb3BzID0gew0KPiA+ICAgCS5hbGxvYwkJCT0gaW9tbXVfZG1h
+X2FsbG9jLA0KPiA+ICAgCS5mcmVlCQkJPSBpb21tdV9kbWFfZnJlZSwNCj4gPiBAQCAtMTEwMCw2
+ICsxMTEwLDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBkbWFfbWFwX29wcyBpb21tdV9kbWFfb3Bz
+ID0gew0KPiA+ICAgCS5zeW5jX3NnX2Zvcl9kZXZpY2UJPSBpb21tdV9kbWFfc3luY19zZ19mb3Jf
+ZGV2aWNlLA0KPiA+ICAgCS5tYXBfcmVzb3VyY2UJCT0gaW9tbXVfZG1hX21hcF9yZXNvdXJjZSwN
+Cj4gPiAgIAkudW5tYXBfcmVzb3VyY2UJCT0gaW9tbXVfZG1hX3VubWFwX3Jlc291cmNlLA0KPiA+
+ICsJLmdldF9tZXJnZV9ib3VuZGFyeQk9IGlvbW11X2RtYV9nZXRfbWVyZ2VfYm91bmRhcnksDQo+
+ID4gICB9Ow0KPiA+DQo+ID4gICAvKg0KPiA+DQo=
