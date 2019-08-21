@@ -2,537 +2,183 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C704E9795C
-	for <lists+linux-mmc@lfdr.de>; Wed, 21 Aug 2019 14:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4176797DC1
+	for <lists+linux-mmc@lfdr.de>; Wed, 21 Aug 2019 16:56:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728241AbfHUMas (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 21 Aug 2019 08:30:48 -0400
-Received: from mga07.intel.com ([134.134.136.100]:29665 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726371AbfHUMas (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 21 Aug 2019 08:30:48 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Aug 2019 05:30:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,412,1559545200"; 
-   d="scan'208";a="181015723"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by orsmga003.jf.intel.com with ESMTP; 21 Aug 2019 05:30:41 -0700
-Subject: Re: [PATCH V5 4/4] mmc: host: sdhci-pci: Add Genesys Logic GL975x
- support
-To:     Ben Chuang <benchuanggli@gmail.com>, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        johnsonm@danlj.org, ben.chuang@genesyslogic.com.tw
-References: <20190820020739.8396-1-benchuanggli@gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <825b02a1-143b-c078-2dbf-26746f1bf160@intel.com>
-Date:   Wed, 21 Aug 2019 15:29:29 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1728166AbfHUO40 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 21 Aug 2019 10:56:26 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:37928 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726530AbfHUO40 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 21 Aug 2019 10:56:26 -0400
+Received: by mail-vs1-f66.google.com with SMTP id 62so1564091vsl.5
+        for <linux-mmc@vger.kernel.org>; Wed, 21 Aug 2019 07:56:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TCMAZdMf+8+yInNA3Z0vIOOX/l/WvB2RS8h3Yib247A=;
+        b=luCNmZvp4Ue4syKCQ9/cwLu/+Wx6g/u2eXpj2Sp8lm7dckdZ/5S7B0Y9iFgw1kEVIo
+         iUJH7MxhMgPxvOuOGm6FoqyQX41FU3PzYYO+U6qNI495gL4rMVRdJ4IdNLN5WRpFCSNM
+         qWMwMfn6EZzrykezLwsdnhsTk/LF4Y7cDT/ghNg0dqGJRqse3kGJTXdVA2onoL11cMCu
+         XvEx9x587AmyJdS72slb6G9mQS7fUlI5HCJCHfV5SJjmUgTEpDHiA7JHOa9RtCN2Pfxx
+         9qab7BLBYK8pzHJWMuInlcBpVW6a5KWJ1S0Bp49sKu/icqiDFH9BE1cViVJHT8X/fVaq
+         6YLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TCMAZdMf+8+yInNA3Z0vIOOX/l/WvB2RS8h3Yib247A=;
+        b=jOs4stVRXm+vS1coGUZCRkcQ9n9c0D1+eaax3AnfgNKrPuK1V70uZPlUpkx26sFp4y
+         sFTH/87ioAqPegQ9uET9ZEI73v+sThJu/FoWpaMf+hmu8alTWd6h0lKH+EVZr+ObWz+y
+         G+iF+0S4VGRnDJIOEL7ungNntm8htjSFCWCuO2SLDqGHQvZZX1VsgDAt+u2fOYW6lZKl
+         ByF51mC9YWopyO/Nyw3onGfuv8WPnSE0SYCJQljX+02rznAO7dnAWDOo4F7F00/zGExu
+         HlJEm7aax5/jfiKtOZU92sLM0eLrxpoNyInH7niurbWQUCtQOViHRgt/rO0kaOQdpZfI
+         hNKA==
+X-Gm-Message-State: APjAAAXCP+PrPvKXRLUM9AGOiPun1tqS6srBFGIhM9F1ktnKiioY/Uqu
+        s2TiDn8a62sZFpgxydQ4In0OnrL9YHvcLxH1lhPoQpUbzzA=
+X-Google-Smtp-Source: APXvYqyjDQcbeEyMFIC0exbWSfSiewJqYVMV6vOnbHuYQxi3II5kuXDri+0jB54YZQUFIe0H1yr8XPZyiNkMKlMQEkQ=
+X-Received: by 2002:a67:347:: with SMTP id 68mr15690306vsd.35.1566399384540;
+ Wed, 21 Aug 2019 07:56:24 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190820020739.8396-1-benchuanggli@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190811021917.29736-1-philipl@overt.org>
+In-Reply-To: <20190811021917.29736-1-philipl@overt.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 21 Aug 2019 16:55:48 +0200
+Message-ID: <CAPDyKFr5z4YknbS4_9NmzQ0TMHf+SqGxd5HyMGi4oeXAWFeSHw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: rtsx_pci: Do not set MMC_CAP2_FULL_PWR_CYCLE
+To:     Philip Langdale <philipl@overt.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 20/08/19 5:07 AM, Ben Chuang wrote:
-> From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> 
-> Add support for the GL9750 and GL9755 chipsets.
-> 
-> The patches enable v4 mode and wait 5ms after set 1.8V signal enable for
-> GL9750/GL9755. It fixed the value of SDHCI_MAX_CURRENT register and uses
-> the vendor tuning flow for GL9750.
-> 
-> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> Co-developed-by: Michael K Johnson <johnsonm@danlj.org>
-> Signed-off-by: Michael K Johnson <johnsonm@danlj.org>
+On Sun, 11 Aug 2019 at 04:25, Philip Langdale <philipl@overt.org> wrote:
+>
+> There have been multiple reports of failures for newer SD cards
+> with Realtek readers using the rtsx_pci_sdmmc driver in recent
+> months, including myself.
+>
+> One common theme was that A2 cards all failed while older cards
+> worked fine. The first reports in bugzilla showed up in late
+> 2018 corresponding with the availabilty of these cards.
+>
+> I did some experiments and saw that removing the
+> MMC_CAP2_FULL_PWR_CYCLE cap from the driver made the problem
+> go away. That then causes us to ask why it helps. This cap was
+> introduced to provide a way for a host controller to indicate it
+> can fully power cycle a card. Then in ce69d37, we introduced
+> power cycling a card as part of changing the operation voltage
+> of the card.
+
+First, let's align on the terminology.
+
+"vmmc" is the power to the card. Normal range for SD cards is 2.7V to 3.6V.
+
+"vqmmc" is the I/O voltage level. Legacy SD cards supports only 3.3V,
+while UHS-I cards supports both 3.3V and 1.8V.
+
+>
+> Now, this is the part where I'm under-informed, but reading the
+> SD spec, it says that the card will reset to 3.3V operations on
+> a power cycle, which seems to make sense, as it always has to
+> be negotiated.
+
+To clarify, the vqmmc (I/O voltage level) internally expected by an SD
+card after a reset (even after a soft reset with CMD0) is always 3.3V.
+
+For vmmc, it's okay to stick to a pre-negotiated voltage level after a
+reset. That's actually already what the mmc core does, during a system
+resume.
+
+>
+> Then, we observe that A2 cards are _required_ to support low
+> voltage signalling (1.8V) and this is, I think, the only host
+> visible difference in A2 vs older cards. And in my testing
+> (with a deficient set of cards, I admit - I'm away from my
+> main collection), I see that the A2 card does indeed get
+> switched to 1.8V while older (pre-UHS) cards always run at
+> 3.3V. I unfortunately lack any UHS pre-A2 cards to test
+> whether 1.8V capable pre-A2 cards fail or succeed, but I
+> would expect them to fail (and maybe no one was making 1.8V
+> cards routinely until A2).
+>
+> This leaves me slightly undercertain as to the root of the
+> problem. Perhaps the issue is that the driver should not have
+> ever set this flag, because the hardware doesn't actually support
+> the functionality that the flag corresponds to. Or, perhaps the
+> problem is that power cycling on setting the voltage is never
+> correct for an SD card, or only correct for eMMC, etc.
+>
+> There are a handful of embedded controllers that the cap is set
+> for in device tree and the rtsx controllers (pci & usb) are the
+> only 'traditional' drivers that set the cap. As such, I think
+> the most likely explaination is that the cap was incorrectly
+> set in the first place, based on a misunderstanding of what
+> it actually means.
+
+I admit, it's a bit unclear of what MMC_CAP2_FULL_PWR_CYCLE means for SD cards.
+
+For eMMC it's rather straight forward; it means the host supports to
+power cycle *both* vmmc and vqmmc. This is needed to reset the
+internal state of the eMMC (useful when another HW-reset option isn't
+supported).
+
+For SD cards, being able to power cycle vmmc is sufficient, as the
+internal logic of the SD card should be reset by cutting vmmc.
+
+In other words, if your host can power cycle vmmc, it seems correct to
+use MMC_CAP2_FULL_PWR_CYCLE.
+
+>
+> So, let's stop setting the cap, and observe that A2 cards
+> now work correctly.
+>
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=201447
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=202473
+> Signed-off-by: Philip Langdale <philipl@overt.org>
 > ---
->  drivers/mmc/host/Makefile         |   2 +-
->  drivers/mmc/host/sdhci-pci-core.c |   2 +
->  drivers/mmc/host/sdhci-pci-gli.c  | 381 ++++++++++++++++++++++++++++++
->  drivers/mmc/host/sdhci-pci.h      |   5 +
->  4 files changed, 389 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/mmc/host/sdhci-pci-gli.c
-> 
-> diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
-> index 73578718f119..661445415090 100644
-> --- a/drivers/mmc/host/Makefile
-> +++ b/drivers/mmc/host/Makefile
-> @@ -13,7 +13,7 @@ obj-$(CONFIG_MMC_MXS)		+= mxs-mmc.o
->  obj-$(CONFIG_MMC_SDHCI)		+= sdhci.o
->  obj-$(CONFIG_MMC_SDHCI_PCI)	+= sdhci-pci.o
->  sdhci-pci-y			+= sdhci-pci-core.o sdhci-pci-o2micro.o sdhci-pci-arasan.o \
-> -				   sdhci-pci-dwc-mshc.o
-> +				   sdhci-pci-dwc-mshc.o sdhci-pci-gli.o
->  obj-$(subst m,y,$(CONFIG_MMC_SDHCI_PCI))	+= sdhci-pci-data.o
->  obj-$(CONFIG_MMC_SDHCI_ACPI)	+= sdhci-acpi.o
->  obj-$(CONFIG_MMC_SDHCI_PXAV3)	+= sdhci-pxav3.o
-> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-> index 4154ee11b47d..e5835fbf73bc 100644
-> --- a/drivers/mmc/host/sdhci-pci-core.c
-> +++ b/drivers/mmc/host/sdhci-pci-core.c
-> @@ -1682,6 +1682,8 @@ static const struct pci_device_id pci_ids[] = {
->  	SDHCI_PCI_DEVICE(O2, SEABIRD1, o2),
->  	SDHCI_PCI_DEVICE(ARASAN, PHY_EMMC, arasan),
->  	SDHCI_PCI_DEVICE(SYNOPSYS, DWC_MSHC, snps),
-> +	SDHCI_PCI_DEVICE(GLI, 9750, gl9750),
-> +	SDHCI_PCI_DEVICE(GLI, 9755, gl9755),
->  	SDHCI_PCI_DEVICE_CLASS(AMD, SYSTEM_SDHCI, PCI_CLASS_MASK, amd),
->  	/* Generic SD host controller */
->  	{PCI_DEVICE_CLASS(SYSTEM_SDHCI, PCI_CLASS_MASK)},
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-> new file mode 100644
-> index 000000000000..99abb7830e62
-> --- /dev/null
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -0,0 +1,381 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2019 Genesys Logic, Inc.
-> + *
-> + * Authors: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> + *
-> + * Version: v0.9.0 (2019-08-08)
-> + */
-> +
-> +#include <linux/pci.h>
-> +#include <linux/mmc/mmc.h>
-> +#include <linux/delay.h>
-> +#include "sdhci.h"
-> +#include "sdhci-pci.h"
-> +
-> +/*  Genesys Logic extra registers */
-> +#define SDHCI_GLI_9750_WT         0x800
-> +#define SDHCI_GLI_9750_DRIVING    0x860
-> +#define SDHCI_GLI_9750_PLL        0x864
-> +#define SDHCI_GLI_9750_SW_CTRL    0x874
-> +#define SDHCI_GLI_9750_MISC       0x878
-> +
-> +#define SDHCI_GLI_9750_TUNING_CONTROL		0x540
-> +#define SDHCI_GLI_9750_TUNING_PARAMETERS	0x544
-> +
-> +#define GLI_MAX_TUNING_LOOP 40
-> +
-> +/* Genesys Logic chipset */
-> +static void gli_set_9750(struct sdhci_host *host)
-> +{
-> +	u32 wt_value = 0;
-> +	u32 driving_value = 0;
-> +	u32 pll_value = 0;
-> +	u32 sw_ctrl_value = 0;
-> +	u32 misc_value = 0;
-> +	u32 parameter_value = 0;
-> +	u32 control_value = 0;
-> +
-> +	u16 ctrl2 = 0;
-> +
-> +	wt_value = sdhci_readl(host, SDHCI_GLI_9750_WT);
-> +	if ((wt_value & 0x1) == 0) {
-> +		wt_value |= 0x1;
-> +		sdhci_writel(host, wt_value, SDHCI_GLI_9750_WT);
-> +	}
-> +
-> +	driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
-> +	pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
-> +	sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
-> +	misc_value = sdhci_readl(host, SDHCI_GLI_9750_MISC);
-> +	parameter_value = sdhci_readl(host, SDHCI_GLI_9750_TUNING_PARAMETERS);
-> +	control_value = sdhci_readl(host, SDHCI_GLI_9750_TUNING_CONTROL);
-> +
-> +	driving_value &= ~(0x0C000FFF);
-> +	driving_value |= 0x0C000FFF;
-> +	sdhci_writel(host, driving_value, SDHCI_GLI_9750_DRIVING);
-> +
-> +	sw_ctrl_value |= 0xc0;
-> +	sdhci_writel(host, sw_ctrl_value, SDHCI_GLI_9750_SW_CTRL);
-> +
-> +	// reset the tuning flow after reinit and before starting tuning
+>  drivers/mmc/host/rtsx_pci_sdmmc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
+> index bd50935dc37d..1d7c942fc7f3 100644
+> --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
+> +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+> @@ -1345,7 +1345,7 @@ static void realtek_init_host(struct realtek_pci_sdmmc *host)
+>         mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SD_HIGHSPEED |
+>                 MMC_CAP_MMC_HIGHSPEED | MMC_CAP_BUS_WIDTH_TEST |
+>                 MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 | MMC_CAP_ERASE;
+> -       mmc->caps2 = MMC_CAP2_NO_PRESCAN_POWERUP | MMC_CAP2_FULL_PWR_CYCLE;
+> +       mmc->caps2 = MMC_CAP2_NO_PRESCAN_POWERUP;
+>         mmc->max_current_330 = 400;
+>         mmc->max_current_180 = 800;
+>         mmc->ops = &realtek_pci_sdmmc_ops;
+> --
+> 2.20.1
+>
 
-For consistent style, please use C-style comments /* */ rather than //
+I am not convinced that the patch is correct, but I may be wrong. A
+few things that I wonder about.
 
-> +	pll_value |= 0x800000; // bit23-1
+1.
+To support switch UHS-I SD cards into 1.8V I/O, the host should
+implement the ->card_busy() host ops. This isn't the case for
+rtsx_pci_sdmmc.c  (you should see a  warning printed to the log
+"cannot verify signal voltage switch" during the card initialization),
+but instead it internally tries to deal with the 1.8V I/O voltage
+switch inside its ->start_signal_voltage_switch() ops.
 
-Please define bit fields and look at using GENMASK(), BIT(), FIELD_GET(),
-FIELD_PREP()
+It looks fragile to me. No matter what, I think it's a good idea to
+convert into using the ->card_busy() ops.
 
-> +	pll_value &= ~(0x00700000); // bit22:20-0
-> +
-> +	misc_value &= ~(0x8); // bit3-0
-> +	misc_value &= ~(0x4); // bit2-0
-> +
-> +	misc_value &= ~(0x70); // bit6:4-0
-> +	misc_value |= 0x50; // bit6:4-5
-> +
-> +	parameter_value &= ~(0x7); // bit2:0-0
-> +	parameter_value |= 0x1; // bit2:0-1
-> +
-> +	control_value &= ~(0x190000); // bit20:19-0, bit16-0
-> +	control_value |=   0x110000; // bit20:19-b10, bit16-1
-> +
-> +	sdhci_writel(host, pll_value, SDHCI_GLI_9750_PLL);
-> +	sdhci_writel(host, misc_value, SDHCI_GLI_9750_MISC);
-> +
-> +	// disable tuned clk
-> +	ctrl2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-> +	ctrl2 &= ~SDHCI_CTRL_TUNED_CLK;
-> +	sdhci_writew(host, ctrl2, SDHCI_HOST_CONTROL2);
-> +
-> +	// 540 enable tuning parameters control
-> +	control_value |= 0x10;
-> +	sdhci_writel(host, control_value, SDHCI_GLI_9750_TUNING_CONTROL);
-> +
-> +	// write 544 tuning parameters
-> +	sdhci_writel(host, parameter_value, SDHCI_GLI_9750_TUNING_PARAMETERS);
-> +
-> +	// 540 disable tuning parameters control
-> +	control_value &= ~0x10;
-> +	sdhci_writel(host, control_value, SDHCI_GLI_9750_TUNING_CONTROL);
-> +
-> +	// clear tuned clk
-> +	ctrl2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-> +	ctrl2 &= ~SDHCI_CTRL_TUNED_CLK;
-> +	sdhci_writew(host, ctrl2, SDHCI_HOST_CONTROL2);
-> +
-> +	udelay(1);
-> +	wt_value = sdhci_readl(host, SDHCI_GLI_9750_WT);
-> +	wt_value &= ~0x1;
-> +	sdhci_writel(host, wt_value, SDHCI_GLI_9750_WT);
-> +}
-> +
-> +static void sdhci_gli_do_reset(struct sdhci_host *host, u8 mask)
-> +{
-> +	host->ops->reset(host, mask);
-> +
-> +	if (mask & SDHCI_RESET_ALL) {
-> +		if (host->flags & (SDHCI_USE_SDMA | SDHCI_USE_ADMA)) {
-> +			if (host->ops->enable_dma)
-> +				host->ops->enable_dma(host);
-> +		}
-> +
-> +		/* Resetting the controller clears many */
-> +		host->preset_enabled = false;
-> +	}
-> +}
-> +
-> +static void sdhci_gli_abort_tuning(struct sdhci_host *host, u32 opcode)
+2.
+The mmc core expects hosts that supports 3.3V and 1.8V I/O, to be able
+to move from 1.8V back to 3.3V. Perhaps that path isn't so well tested
+for rtsx_pci_sdmmc.c and maybe it's a good idea to make sure this
+works as expected.
 
-Pleased export sdhci_abort_tuning() instead.
-
-> +{
-> +	sdhci_reset_tuning(host);
-> +
-> +	sdhci_gli_do_reset(host, SDHCI_RESET_CMD);
-> +	sdhci_gli_do_reset(host, SDHCI_RESET_DATA);
-> +
-> +	sdhci_end_tuning(host);
-> +
-> +	mmc_abort_tuning(host->mmc, opcode);
-> +}
-> +
-> +static void gli_set_9750_rx_inv(struct sdhci_host *host, bool b)
-> +{
-> +	u32 wt_value = sdhci_readl(host, SDHCI_GLI_9750_WT);
-> +	u32 misc_value = sdhci_readl(host, SDHCI_GLI_9750_MISC);
-> +
-> +	if ((wt_value & 0x1) == 0) {
-> +		wt_value |= 0x1;
-> +		sdhci_writel(host, wt_value, SDHCI_GLI_9750_WT);
-> +	}
-> +
-> +	misc_value = sdhci_readl(host, SDHCI_GLI_9750_MISC);
-> +	if (b) {
-> +		misc_value |= 0x8;
-> +		sdhci_writel(host, misc_value, SDHCI_GLI_9750_MISC);
-> +	} else {
-> +		misc_value &= ~0x8;
-> +		sdhci_writel(host, misc_value, SDHCI_GLI_9750_MISC);
-> +	}
-> +
-> +	wt_value = sdhci_readl(host, SDHCI_GLI_9750_WT);
-> +	wt_value &= ~0x1;
-> +	sdhci_writel(host, wt_value, SDHCI_GLI_9750_WT);
-> +}
-> +
-> +static int __sdhci_execute_tuning_9750(struct sdhci_host *host, u32 opcode)
-> +{
-> +	int i;
-> +	int rx_inv = 0;
-> +
-> +	for (rx_inv = 0; rx_inv < 2; rx_inv++) {
-> +		if (rx_inv & 0x1)
-> +			gli_set_9750_rx_inv(host, true);
-> +		else
-> +			gli_set_9750_rx_inv(host, false);
-> +
-> +		sdhci_start_tuning(host);
-> +
-> +		for (i = 0; i < GLI_MAX_TUNING_LOOP; i++) {
-> +			u16 ctrl;
-> +
-> +			sdhci_send_tuning(host, opcode);
-> +
-> +			if (!host->tuning_done) {
-> +				if (rx_inv == 1) {
-> +					pr_info("%s: Tuning timeout, falling back to fixed sampling clock\n",
-> +						mmc_hostname(host->mmc));
-> +					sdhci_gli_abort_tuning(host, opcode);
-> +					return -ETIMEDOUT;
-> +				}
-> +				pr_info("%s: Tuning timeout, try next tuning\n",
-> +					mmc_hostname(host->mmc));
-> +				sdhci_gli_abort_tuning(host, opcode);
-> +				break;
-> +			}
-> +
-> +			ctrl = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-> +			if (!(ctrl & SDHCI_CTRL_EXEC_TUNING)) {
-> +				if (ctrl & SDHCI_CTRL_TUNED_CLK)
-> +					return 0; /* Success! */
-> +				break;
-> +			}
-> +		}
-> +	}
-> +
-> +	pr_info("%s: Tuning failed, falling back to fixed sampling clock\n",
-> +		mmc_hostname(host->mmc));
-> +	sdhci_reset_tuning(host);
-> +	return -EAGAIN;
-> +}
-> +
-> +static int gl9750_execute_tuning(struct mmc_host *mmc, u32 opcode)
-> +{
-> +	struct sdhci_host *host = mmc_priv(mmc);
-> +	int err = 0;
-> +	unsigned int tuning_count = 0;
-> +	bool hs400_tuning;
-> +
-> +	hs400_tuning = host->flags & SDHCI_HS400_TUNING;
-> +
-> +	if (host->tuning_mode == SDHCI_TUNING_MODE_1)
-> +		tuning_count = host->tuning_count;
-> +
-> +	/*
-> +	 * The Host Controller needs tuning in case of SDR104 and DDR50
-> +	 * mode, and for SDR50 mode when Use Tuning for SDR50 is set in
-> +	 * the Capabilities register.
-> +	 * If the Host Controller supports the HS200 mode then the
-> +	 * tuning function has to be executed.
-> +	 */
-> +	switch (host->timing) {
-> +	/* HS400 tuning is done in HS200 mode */
-> +	case MMC_TIMING_MMC_HS400:
-> +		err = -EINVAL;
-> +		goto out;
-> +
-> +	case MMC_TIMING_MMC_HS200:
-> +		/*
-> +		 * Periodic re-tuning for HS400 is not expected to be needed, so
-> +		 * disable it here.
-> +		 */
-> +		if (hs400_tuning)
-> +			tuning_count = 0;
-> +		break;
-> +
-> +	case MMC_TIMING_UHS_SDR104:
-> +	case MMC_TIMING_UHS_DDR50:
-> +		break;
-> +	case MMC_TIMING_UHS_SDR50:
-> +		if (host->flags & SDHCI_SDR50_NEEDS_TUNING)
-> +			break;
-> +		/* FALLTHROUGH */
-> +
-> +	default:
-> +		goto out;
-> +	}
-> +
-> +	if (host->ops->platform_execute_tuning) {
-> +		err = host->ops->platform_execute_tuning(host, opcode);
-> +		goto out;
-> +	}
-> +
-> +	host->mmc->retune_period = tuning_count;
-> +
-> +	if (host->tuning_delay < 0)
-> +		host->tuning_delay = opcode == MMC_SEND_TUNING_BLOCK;
-> +
-> +	gli_set_9750(host);
-> +	host->tuning_err = __sdhci_execute_tuning_9750(host, opcode);
-> +
-> +	sdhci_end_tuning(host);
-> +out:
-> +	host->flags &= ~SDHCI_HS400_TUNING;
-> +
-> +	return err;
-> +}
-> +
-> +static int gli_probe_slot_gl9750(struct sdhci_pci_slot *slot)
-> +{
-> +	struct sdhci_host *host = slot->host;
-> +	struct mmc_host_ops *ops = &host->mmc_host_ops;
-> +
-> +	slot->host->mmc->caps2 |= MMC_CAP2_NO_SDIO;
-> +	sdhci_enable_v4_mode(host);
-> +
-> +	ops->execute_tuning = gl9750_execute_tuning;
-
-It looks like there would be less duplicated code if you implemented
-host->ops->platform_execute_tuning instead of mmc->ops->execute_tuning
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int gli_probe_slot_gl9755(struct sdhci_pci_slot *slot)
-> +{
-> +	struct sdhci_host *host = slot->host;
-> +
-> +	slot->host->mmc->caps2 |= MMC_CAP2_NO_SDIO;
-> +	sdhci_enable_v4_mode(host);
-> +
-> +	return 0;
-> +}
-> +
-> +static void sdhci_gli_voltage_switch(struct sdhci_host *host)
-> +{
-> +	usleep_range(5000, 5500);
-> +}
-> +
-> +static void sdhci_gli_pci_hw_reset(struct sdhci_host *host)
-> +{
-> +	struct sdhci_pci_slot *slot = sdhci_priv(host);
-> +
-> +	if (slot->hw_reset)
-> +		slot->hw_reset(host);
-> +}
-> +
-> +static void sdhci_gl9750_reset(struct sdhci_host *host, u8 mask)
-> +{
-> +	ktime_t timeout;
-> +
-> +	sdhci_writeb(host, mask, SDHCI_SOFTWARE_RESET);
-> +
-> +	if (mask & SDHCI_RESET_ALL)
-> +		host->clock = 0;
-> +
-> +	/* Wait max 100 ms */
-> +	timeout = ktime_add_ms(ktime_get(), 100);
-> +
-> +	/* hw clears the bit when it's done */
-> +	while (1) {
-> +		bool timedout = ktime_after(ktime_get(), timeout);
-> +
-> +		if (!(sdhci_readb(host, SDHCI_SOFTWARE_RESET) & mask))
-> +			break;
-> +		if (timedout) {
-> +			pr_err("%s: Reset 0x%x never completed.\n",
-> +				mmc_hostname(host->mmc), (int)mask);
-> +			sdhci_dumpregs(host);
-> +			return;
-> +		}
-> +		udelay(10);
-> +	}
-
-Please call sdhci_reset() instead of duplicating the code above.
-
-> +	gli_set_9750(host);
-> +}
-> +
-> +static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
-> +{
-> +	u32 value;
-> +
-> +	value = readl(host->ioaddr + reg);
-> +	if (unlikely(reg == SDHCI_MAX_CURRENT)) {
-> +		if (!(value & 0xff))
-> +			value |= 0xc8;
-> +	}
-> +	return value;
-> +}
-> +
-> +static const struct sdhci_ops sdhci_gl9755_ops = {
-> +	.set_clock		= sdhci_set_clock,
-> +	.enable_dma		= sdhci_pci_enable_dma,
-> +	.set_bus_width		= sdhci_set_bus_width,
-> +	.reset			= sdhci_reset,
-> +	.set_uhs_signaling	= sdhci_set_uhs_signaling,
-> +	.hw_reset		= sdhci_gli_pci_hw_reset,
-
-You never set slot->hw_reset so it doesn't look like .hw_reset is needed
-
-> +	.voltage_switch		= sdhci_gli_voltage_switch,
-> +};
-> +
-> +const struct sdhci_pci_fixes sdhci_gl9755 = {
-> +	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC,
-> +	.quirks2	= SDHCI_QUIRK2_BROKEN_DDR50,
-> +	.probe_slot	= gli_probe_slot_gl9755,
-> +	.ops            = &sdhci_gl9755_ops,
-> +};
-> +
-> +static const struct sdhci_ops sdhci_gl9750_ops = {
-> +	.read_l                 = sdhci_gl9750_readl,
-
-You need CONFIG_MMC_SDHCI_IO_ACCESSORS for read_l i.e.
-
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 14d89a108edd..c3bd967d8a1a 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -94,6 +94,7 @@ config MMC_SDHCI_PCI
- 	depends on MMC_SDHCI && PCI
- 	select MMC_CQHCI
- 	select IOSF_MBI if X86
-+	select MMC_SDHCI_IO_ACCESSORS
- 	help
- 	  This selects the PCI Secure Digital Host Controller Interface.
- 	  Most controllers found today are PCI devices.
-
-> +	.set_clock		= sdhci_set_clock,
-> +	.enable_dma		= sdhci_pci_enable_dma,
-> +	.set_bus_width		= sdhci_set_bus_width,
-> +	.reset			= sdhci_gl9750_reset,
-> +	.set_uhs_signaling	= sdhci_set_uhs_signaling,
-> +	.hw_reset		= sdhci_gli_pci_hw_reset,
-> +	.voltage_switch		= sdhci_gli_voltage_switch,
-> +};
-> +
-> +const struct sdhci_pci_fixes sdhci_gl9750 = {
-> +	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC,
-> +	.quirks2	= SDHCI_QUIRK2_BROKEN_DDR50,
-> +	.probe_slot	= gli_probe_slot_gl9750,
-> +	.ops            = &sdhci_gl9750_ops,
-> +};
-> +
-> diff --git a/drivers/mmc/host/sdhci-pci.h b/drivers/mmc/host/sdhci-pci.h
-> index e5dc6e44c7a4..738ba5afcc20 100644
-> --- a/drivers/mmc/host/sdhci-pci.h
-> +++ b/drivers/mmc/host/sdhci-pci.h
-> @@ -65,6 +65,9 @@
->  
->  #define PCI_DEVICE_ID_SYNOPSYS_DWC_MSHC 0xc202
->  
-> +#define PCI_DEVICE_ID_GLI_9755		0x9755
-> +#define PCI_DEVICE_ID_GLI_9750		0x9750
-> +
->  /*
->   * PCI device class and mask
->   */
-> @@ -185,5 +188,7 @@ int sdhci_pci_enable_dma(struct sdhci_host *host);
->  extern const struct sdhci_pci_fixes sdhci_arasan;
->  extern const struct sdhci_pci_fixes sdhci_snps;
->  extern const struct sdhci_pci_fixes sdhci_o2;
-> +extern const struct sdhci_pci_fixes sdhci_gl9750;
-> +extern const struct sdhci_pci_fixes sdhci_gl9755;
->  
->  #endif /* __SDHCI_PCI_H */
-> 
-
+Kind regards
+Uffe
