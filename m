@@ -2,23 +2,23 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D37F982F7
-	for <lists+linux-mmc@lfdr.de>; Wed, 21 Aug 2019 20:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 496E7982EB
+	for <lists+linux-mmc@lfdr.de>; Wed, 21 Aug 2019 20:32:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729365AbfHUScM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 21 Aug 2019 14:32:12 -0400
-Received: from mail-eopbgr700113.outbound.protection.outlook.com ([40.107.70.113]:58720
+        id S1729659AbfHUScZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 21 Aug 2019 14:32:25 -0400
+Received: from mail-eopbgr700127.outbound.protection.outlook.com ([40.107.70.127]:61153
         "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729315AbfHUScM (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 21 Aug 2019 14:32:12 -0400
+        id S1729587AbfHUScY (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 21 Aug 2019 14:32:24 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IHjZCP8EwF6vh/k+eOFr/+jVGOE4ts/2q8A8wi7d43IFM3ebeE0CxUB9RrMwH7D63DyNeRJHxgedCJ6Rfiy3/NmujTqvu1JZMYbGBkzv0HvUYYaGrPXZ+kPdDn4gcXKk/iU6owQ1VN4iQAQZokwWJ7ZM+PNtlh/7MxlhTKtTWdUDLtzS+QFKcQnbbDmPbHcPUrN313tW4jnNxVZn6WwM1AxGf23zJSIz4pug056hZvd3PZId51ljtO9Ia7Ay3CD/vNm/BdBrJFFtk9fTPUDyhCAnRgMofrIMXzSi/e7WcORJ2VCyUUehTbyGTCXvaQh1d28DlsR2zgp+/U74XUtNRQ==
+ b=fGecoKsk/JUFbT457wBaCJBkS0f9sXXT3HOFqB3WROQoJsDhhK+Lgcne+yGMA/AK5GpiQ2gnkO0dr1LvohsxpDlYVLUJ1NHxVbez0M8Gu4xQtNSpUzo4w3buk6RTp5/kU0I/8PKWfGh3NlAnyrXm1TaUQeltB01AuZEz0DYsH0qxlbj11dhtFISojsFz27T4HKWitirk0QLQv7EXV+/8iL+9gvaFbhJCHat8YuwiLlCI6XvWfAQYuzRq4uNggvuarr/QYEF3AGUmrb37yMJseaYG22c3FNZAt+uqnmS1E9rFL/+gnO0bxEFoKGRB5F823DyRTRhXvdV0CfNyXjY57A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jN3J9XQsCKODmoKEnJnFtJzBwsNukXdglfYpBoWEg2c=;
- b=J0nRY/A9p3FWHhG+eYpbW7Dqm5fL6Zy7uotSDnLETA8r8zDaJfu3lLBN9/PPsaxiQKi4Uz82Vk4wziTDboKlvh4/CE/V4EQjijUrJCH/4jbL7h82HucgRYK1ITGUeOfNmVcULIVkIXG7kavk/LS/JZaVjWbd4/GAnNmR2lQ5Q/bUky/Oj8GKYB5/ZtH3IT3reaj3hFouIFcSNux49Z/cneU3dM05P/CAmpNJPN0Khq+zDEINYlFrhkN4l61QxY9OZao4wBH5niwEDn6cXMBlt/qXGSNZaQnHFKp4CiX/1sSGdhbUOTVY8xyN7D5XGj4SZ1dJNWZROND+KM2ZBD3piw==
+ bh=bJV81Rwv/YCrMsncIYG2d4g5RlXM6j+e0ukJxM8dh/Q=;
+ b=WFvdKkNPNoym4SXEZ4IvbhEISmF7efScSnIEsw8svsGzy1HkGmi8AVpUhslruxnDS+9jMAdC5fwtwYbuSN4z3rsT02r5CYEy0BPj9Pww2aIRZPAkKxw2UfMTzBzrLOHMv2vrf7+FSCFQzEI36ccMDTjeyw3L53i5cfzdRwHZK4uHj0soFiS3D4YkuPHna4cvf4Fsa5HL0/wk2LUl3oECxcYfNG30g3JIThDPiXK/iUq95tb85rHTVf2cXfiT+fqyQDbcQLIQ3d4V6nBYyF8FxGxBuLi5ILucsuCfvPNlgqarUhydTdBoORwr0k7FZeMQe9w+DQWfCVjKt/8UjolkFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=bayhubtech.com; dmarc=pass action=none
  header.from=bayhubtech.com; dkim=pass header.d=bayhubtech.com; arc=none
@@ -26,16 +26,16 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=towerbridgetechnology.onmicrosoft.com;
  s=selector2-towerbridgetechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jN3J9XQsCKODmoKEnJnFtJzBwsNukXdglfYpBoWEg2c=;
- b=gO7zkr3OcfzWpPt4kZxfPX1NsOuru0GCcUoWxxNttJB2JFknbw+FVkQGNKu0odbukOlWX1KpvxZgO39WTv47RTVigiCf9+dz9AR4ghAWkRh9IcX32rSRsMZD+FBOrFxi3uku13S2/MbAhlAA00avJXgEcXcsy5txMD/WwpbDxO8=
+ bh=bJV81Rwv/YCrMsncIYG2d4g5RlXM6j+e0ukJxM8dh/Q=;
+ b=opX89gj2ThSqpP2PDyy4gAXRBsbhpF9k8mNVpZfCuaV1mrffWzr0GinrCpW0enjrj3MIGRmGfzF5ZuQ74bZ70c97pssgD1pbtEB+OP1kORf6kKq6pHaFNgNV2o1j/6xOp/n+TfBIyUBpFmZZpIZQsLISUkFCIcKJ4AAj5n56AH8=
 Received: from MWHPR16MB1455.namprd16.prod.outlook.com (10.175.5.21) by
  MWHPR16MB1407.namprd16.prod.outlook.com (10.175.3.138) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2178.16; Wed, 21 Aug 2019 18:32:10 +0000
+ 15.20.2178.16; Wed, 21 Aug 2019 18:32:19 +0000
 Received: from MWHPR16MB1455.namprd16.prod.outlook.com
  ([fe80::48f4:c6d9:3a8:e7dd]) by MWHPR16MB1455.namprd16.prod.outlook.com
  ([fe80::48f4:c6d9:3a8:e7dd%4]) with mapi id 15.20.2178.020; Wed, 21 Aug 2019
- 18:32:09 +0000
+ 18:32:19 +0000
 From:   "Shirley Her (SC)" <shirley.her@bayhubtech.com>
 To:     "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
         "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
@@ -46,18 +46,19 @@ CC:     "Chevron Li (WH)" <chevron.li@bayhubtech.com>,
         "Louis Lu (TP)" <louis.lu@bayhubtech.com>,
         "Max Huang (SC)" <max.huang@bayhubtech.com>,
         "Shirley Her (SC)" <shirley.her@bayhubtech.com>
-Subject: [PATCH V8 2/3] mmc: sdhci-pci-o2micro: Modify get CD status function
-Thread-Topic: [PATCH V8 2/3] mmc: sdhci-pci-o2micro: Modify get CD status
- function
-Thread-Index: AQHVWE6+AhZXyrKGWUqlHWdkvW200w==
-Date:   Wed, 21 Aug 2019 18:32:09 +0000
-Message-ID: <1566412327-6018-1-git-send-email-shirley.her@bayhubtech.com>
+Subject: [PATCH V8 3/3] mmc: sdhci-pci-o2micro: Fix O2 Host data read/write
+ DLL Lock phase shift issue
+Thread-Topic: [PATCH V8 3/3] mmc: sdhci-pci-o2micro: Fix O2 Host data
+ read/write DLL Lock phase shift issue
+Thread-Index: AQHVWE7DYDER8rThaU6b7VSTXDdcDQ==
+Date:   Wed, 21 Aug 2019 18:32:19 +0000
+Message-ID: <1566412337-6068-1-git-send-email-shirley.her@bayhubtech.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR11CA0048.namprd11.prod.outlook.com
- (2603:10b6:a03:80::25) To MWHPR16MB1455.namprd16.prod.outlook.com
+x-clientproxiedby: BYAPR05CA0023.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::36) To MWHPR16MB1455.namprd16.prod.outlook.com
  (2603:10b6:320:28::21)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=shirley.her@bayhubtech.com; 
@@ -65,36 +66,36 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-mailer: git-send-email 2.7.4
 x-originating-ip: [209.36.105.184]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b08a3bb6-ded4-4c72-645c-08d72665e077
+x-ms-office365-filtering-correlation-id: 6be5f273-9a89-4767-6d36-08d72665e642
 x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(5600148)(711020)(4605104)(1401327)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7193020);SRVR:MWHPR16MB1407;
 x-ms-traffictypediagnostic: MWHPR16MB1407:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MWHPR16MB14075640AC4998EAECE0D2E38BAA0@MWHPR16MB1407.namprd16.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:126;
+x-microsoft-antispam-prvs: <MWHPR16MB140763C421CFF8F0D55A405E8BAA0@MWHPR16MB1407.namprd16.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2512;
 x-forefront-prvs: 0136C1DDA4
 x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(346002)(136003)(396003)(39830400003)(366004)(199004)(189003)(476003)(14454004)(508600001)(5660300002)(8676002)(53936002)(7736002)(52116002)(110136005)(25786009)(486006)(2501003)(256004)(6116002)(14444005)(107886003)(81156014)(81166006)(8936002)(71190400001)(71200400001)(2906002)(36756003)(6486002)(386003)(66946007)(2201001)(6512007)(66446008)(66476007)(66556008)(64756008)(3846002)(4326008)(102836004)(6436002)(316002)(54906003)(66066001)(305945005)(99286004)(186003)(2616005)(26005)(6506007)(50226002)(86362001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR16MB1407;H:MWHPR16MB1455.namprd16.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: bayhubtech.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 9oACzZMBn7L/xZRH2SRaZ7t4U7UU2UfjyKWwNUAxkqwQDzOOy8qT2F/MES+86J3hSaIPOVwyn8KY4CLTWpm8J+brKoQOrCCeVC/OI/IzbBGdw54du7+NKl+KRHucQm6hrsrQcapKU3pIJLuiUE780wC+koaOo/AqSkOKB+KGwVtAzjkCJcbUh5RwwN4mGTnoYQXNQx+a8vtijRNb6cDFsgmoBjjz/qKzreLw3MgH/GJnp3VbJM7U8VImc3YOxeX3JVdVYv7yuX0vZLSg66snTWULMKms+tpsIvlO9yWJoIp9L8mcA5BbR3e2gkS1nmi4CtQfZiS/hyAPwYhWPw6BffyTJbGsUy+dcZeTUhMBYFv7Hp/o2zrOzxG/b2aSTEDdhS8Xzz3i95x2FQqbIRo11EzUW8QyYZ4bgid4mevzFy8=
+x-microsoft-antispam-message-info: VxTrZ0j1ZHgj+1CedDxUWR66VWrh2ePklxE/pyRFWDdaueJlP360BKPGj6yGOetbgApV+DjnbjixoK1YQeKEVp5jVAKFTZfGdTsSXVVnr3escBhIBog5ysQ+5rfqAB4Hu0CSg5C+3gTJS20gHqq8q/s7GPd/Sy2EL7DqhuGxmtEp39tZG3WxbrjtOnrRr3nLR0Bmm2m6To9Xr2MHQmcFO9+Kn1GUuNStr3iN+XkQ+QAXsHH9SkabjSYep/4gLD8FEty567V56DIJSXwL1Qocwe8PA9T1Vr7Wacnf7/6ECP6Tu4FESiHSIM6wyi1Edzj3DlowN6SQIVXHDUl7XNG0ciTWsCuc7QN1FKqIvYrywKbJW8LOS1xqVU5GxT/eIRZ+nAiSymrY/xrt+NdO3aDLMnjP7FhNXyrUgYzKIEaBjN8=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: bayhubtech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b08a3bb6-ded4-4c72-645c-08d72665e077
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2019 18:32:09.7946
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6be5f273-9a89-4767-6d36-08d72665e642
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2019 18:32:19.5678
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 0a7aae2b-8f2e-44df-ba2f-42de7f93c642
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ad+mUVmdVnTa7IhBnTphFEJv3M8EKl6REJPGZ9rZmc9/PU/mmprD2ANJ0W0rOwmAnxEfUdT6Cb+cvz7zxldBOHcbXo8PN7AJcsNt8RKyaNA=
+X-MS-Exchange-CrossTenant-userprincipalname: ELwbGJ/orM3AG5PgSZZM1SfdRdoTnh0t5KuojN9gApNHE35+AoevARWeZS7dzp1KXeH9WoMaBRzCcT/cP3Uc4ohStHX8/lHU75udj4N5EYM=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR16MB1407
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Modify get CD status function
+Fix data read/write error in HS200 mode due to chip DLL lock phase shift
 
 Signed-off-by: Shirley Her <shirley.her@bayhubtech.com>
 ---
@@ -102,13 +103,14 @@ change in V8:
  1. fix patch format error
 
 change in V7:
- 1. change subject to match the patch
- 2. move functions in preparation to fix DLL lock phase shift issue
+ 1. change subject
+ 2. change the sdhci_o2_wait_dll_detect_lock_function
+ 3. add suitable usleep_range() to detect dll lock status
 
 change in V6:
- 1. change subjec and commit message to match the patch
- 2. modify the get CD status function
- 3. re-arrange the order of some functions
+ 1. define constant by using array size
+ 2. add more explanation for the code
+ 3. fix loop forever code error
 
 change in V5:
  1. split 2 patches into 3 patches
@@ -133,225 +135,214 @@ chagne in V1:
  1. add error recovery function to relock DLL with correct phase
  2. retuning HS200 after DLL locked
 ---
- drivers/mmc/host/sdhci-pci-o2micro.c | 187 ++++++++++++++++++-------------=
-----
- 1 file changed, 94 insertions(+), 93 deletions(-)
+ drivers/mmc/host/sdhci-pci-o2micro.c | 124 +++++++++++++++++++++++++++++++=
++++-
+ 1 file changed, 122 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-=
 pci-o2micro.c
-index b3a33d9..57c8b83 100644
+index 57c8b83..d879d91 100644
 --- a/drivers/mmc/host/sdhci-pci-o2micro.c
 +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-@@ -58,6 +58,100 @@
+@@ -11,6 +11,7 @@
+ #include <linux/mmc/host.h>
+ #include <linux/mmc/mmc.h>
+ #include <linux/delay.h>
++#include <linux/iopoll.h>
+=20
+ #include "sdhci.h"
+ #include "sdhci-pci.h"
+@@ -55,9 +56,18 @@
+ #define  O2_PLL_FORCE_ACTIVE	BIT(18)
+ #define  O2_PLL_LOCK_STATUS	BIT(14)
+ #define  O2_PLL_SOFT_RESET	BIT(12)
++#define  O2_DLL_LOCK_STATUS	BIT(11)
 =20
  #define O2_SD_DETECT_SETTING 0x324
 =20
-+static void sdhci_o2_wait_card_detect_stable(struct sdhci_host *host)
++static const u32 dmdn_table[] =3D {0x2B1C0000,
++	0x2C1A0000, 0x371B0000, 0x35100000};
++#define DMDN_SZ ARRAY_SIZE(dmdn_table)
++
++struct o2_host {
++	u8 dll_adjust_count;
++};
++
+ static void sdhci_o2_wait_card_detect_stable(struct sdhci_host *host)
+ {
+ 	ktime_t timeout;
+@@ -133,7 +143,8 @@ static int sdhci_o2_get_cd(struct mmc_host *mmc)
+ {
+ 	struct sdhci_host *host =3D mmc_priv(mmc);
+=20
+-	sdhci_o2_enable_internal_clock(host);
++	if (!(sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1) & O2_PLL_LOCK_STATUS))
++		sdhci_o2_enable_internal_clock(host);
+=20
+ 	return !!(sdhci_readl(host, SDHCI_PRESENT_STATE) & SDHCI_CARD_PRESENT);
+ }
+@@ -152,6 +163,25 @@ static void o2_pci_set_baseclk(struct sdhci_pci_chip *=
+chip, u32 value)
+ 			       O2_SD_PLL_SETTING, scratch_32);
+ }
+=20
++static u32 sdhci_o2_pll_dll_wdt_control(struct sdhci_host *host)
 +{
-+	ktime_t timeout;
-+	u32 scratch32;
-+
-+	/* Wait max 50 ms */
-+	timeout =3D ktime_add_ms(ktime_get(), 50);
-+	while (1) {
-+		bool timedout =3D ktime_after(ktime_get(), timeout);
-+
-+		scratch32 =3D sdhci_readl(host, SDHCI_PRESENT_STATE);
-+		if ((scratch32 & SDHCI_CARD_PRESENT) >> SDHCI_CARD_PRES_SHIFT
-+		    =3D=3D (scratch32 & SDHCI_CD_LVL) >> SDHCI_CD_LVL_SHIFT)
-+			break;
-+
-+		if (timedout) {
-+			pr_err("%s: Card Detect debounce never finished.\n",
-+			       mmc_hostname(host->mmc));
-+			sdhci_dumpregs(host);
-+			return;
-+		}
-+		udelay(10);
-+	}
++	return sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
 +}
 +
-+static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
++/*
++ * This function is used to detect dll lock status.
++ * Since the dll lock status bit will toggle randomly
++ * with very short interval which needs to be polled
++ * as fast as possible. Set sleep_us as 1 microsecond.
++ */
++static int sdhci_o2_wait_dll_detect_lock(struct sdhci_host *host)
 +{
-+	ktime_t timeout;
-+	u16 scratch;
-+	u32 scratch32;
++	u32	scratch32 =3D 0;
 +
-+	/* PLL software reset */
-+	scratch32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
-+	scratch32 |=3D O2_PLL_SOFT_RESET;
-+	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
-+	udelay(1);
-+	scratch32 &=3D ~(O2_PLL_SOFT_RESET);
-+	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
-+
-+	/* PLL force active */
-+	scratch32 |=3D O2_PLL_FORCE_ACTIVE;
-+	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
-+
-+	/* Wait max 20 ms */
-+	timeout =3D ktime_add_ms(ktime_get(), 20);
-+	while (1) {
-+		bool timedout =3D ktime_after(ktime_get(), timeout);
-+
-+		scratch =3D sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1);
-+		if (scratch & O2_PLL_LOCK_STATUS)
-+			break;
-+		if (timedout) {
-+			pr_err("%s: Internal clock never stabilised.\n",
-+			       mmc_hostname(host->mmc));
-+			sdhci_dumpregs(host);
-+			goto out;
-+		}
-+		udelay(10);
-+	}
-+
-+	/* Wait for card detect finish */
-+	udelay(1);
-+	sdhci_o2_wait_card_detect_stable(host);
-+
-+out:
-+	/* Cancel PLL force active */
-+	scratch32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
-+	scratch32 &=3D ~O2_PLL_FORCE_ACTIVE;
-+	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
-+}
-+
-+static int sdhci_o2_get_cd(struct mmc_host *mmc)
-+{
-+	struct sdhci_host *host =3D mmc_priv(mmc);
-+
-+	sdhci_o2_enable_internal_clock(host);
-+
-+	return !!(sdhci_readl(host, SDHCI_PRESENT_STATE) & SDHCI_CARD_PRESENT);
-+}
-+
-+static void o2_pci_set_baseclk(struct sdhci_pci_chip *chip, u32 value)
-+{
-+	u32 scratch_32;
-+
-+	pci_read_config_dword(chip->pdev,
-+			      O2_SD_PLL_SETTING, &scratch_32);
-+
-+	scratch_32 &=3D 0x0000FFFF;
-+	scratch_32 |=3D value;
-+
-+	pci_write_config_dword(chip->pdev,
-+			       O2_SD_PLL_SETTING, scratch_32);
++	return readx_poll_timeout(sdhci_o2_pll_dll_wdt_control, host,
++		scratch32, !(scratch32 & O2_DLL_LOCK_STATUS), 1, 1000000);
 +}
 +
  static void sdhci_o2_set_tuning_mode(struct sdhci_host *host)
  {
  	u16 reg;
-@@ -136,19 +230,6 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mm=
+@@ -189,6 +219,83 @@ static void __sdhci_o2_execute_tuning(struct sdhci_hos=
+t *host, u32 opcode)
+ 	sdhci_reset_tuning(host);
+ }
+=20
++/*
++ * This function is used to fix o2 dll shift issue.
++ * It isn't necessary to detect card present before recovery.
++ * Firstly, it is used by bht emmc card, which is embedded.
++ * Second, before call recovery card present will be detected
++ * outside of the execute tuning function.
++ */
++static int sdhci_o2_dll_recovery(struct sdhci_host *host)
++{
++	int ret =3D 0;
++	u8 scratch_8 =3D 0;
++	u32 scratch_32 =3D 0;
++	struct sdhci_pci_slot *slot =3D sdhci_priv(host);
++	struct sdhci_pci_chip *chip =3D slot->chip;
++	struct o2_host *o2_host =3D sdhci_pci_priv(slot);
++
++	/* UnLock WP */
++	pci_read_config_byte(chip->pdev,
++			O2_SD_LOCK_WP, &scratch_8);
++	scratch_8 &=3D 0x7f;
++	pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
++	while (o2_host->dll_adjust_count < DMDN_SZ && !ret) {
++		/* Disable clock */
++		sdhci_writeb(host, 0, SDHCI_CLOCK_CONTROL);
++
++		/* PLL software reset */
++		scratch_32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
++		scratch_32 |=3D O2_PLL_SOFT_RESET;
++		sdhci_writel(host, scratch_32, O2_PLL_DLL_WDT_CONTROL1);
++
++		pci_read_config_dword(chip->pdev,
++					    O2_SD_FUNC_REG4,
++					    &scratch_32);
++		/* Enable Base Clk setting change */
++		scratch_32 |=3D O2_SD_FREG4_ENABLE_CLK_SET;
++		pci_write_config_dword(chip->pdev, O2_SD_FUNC_REG4, scratch_32);
++		o2_pci_set_baseclk(chip, dmdn_table[o2_host->dll_adjust_count]);
++
++		/* Enable internal clock */
++		scratch_8 =3D SDHCI_CLOCK_INT_EN;
++		sdhci_writeb(host, scratch_8, SDHCI_CLOCK_CONTROL);
++
++		if (sdhci_o2_get_cd(host->mmc)) {
++			/*
++			 * need wait at least 5ms for dll status stable,
++			 * after enable internal clock
++			 */
++			usleep_range(5000, 6000);
++			if (sdhci_o2_wait_dll_detect_lock(host)) {
++				scratch_8 |=3D SDHCI_CLOCK_CARD_EN;
++				sdhci_writeb(host, scratch_8,
++					SDHCI_CLOCK_CONTROL);
++				ret =3D 1;
++			} else {
++				pr_warn("%s: DLL unlocked when dll_adjust_count is %d.\n",
++					mmc_hostname(host->mmc),
++					o2_host->dll_adjust_count);
++			}
++		} else {
++			pr_err("%s: card present detect failed.\n",
++				mmc_hostname(host->mmc));
++			break;
++		}
++
++		o2_host->dll_adjust_count++;
++	}
++	if (!ret && o2_host->dll_adjust_count =3D=3D DMDN_SZ)
++		pr_err("%s: DLL adjust over max times\n",
++		mmc_hostname(host->mmc));
++	/* Lock WP */
++	pci_read_config_byte(chip->pdev,
++				   O2_SD_LOCK_WP, &scratch_8);
++	scratch_8 |=3D 0x80;
++	pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
++	return ret;
++}
++
+ static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ {
+ 	struct sdhci_host *host =3D mmc_priv(mmc);
+@@ -203,7 +310,16 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mm=
 c, u32 opcode)
- 	return 0;
- }
 =20
--static void o2_pci_set_baseclk(struct sdhci_pci_chip *chip, u32 value)
--{
--	u32 scratch_32;
--	pci_read_config_dword(chip->pdev,
--			      O2_SD_PLL_SETTING, &scratch_32);
+ 	if (WARN_ON(opcode !=3D MMC_SEND_TUNING_BLOCK_HS200))
+ 		return -EINVAL;
 -
--	scratch_32 &=3D 0x0000FFFF;
--	scratch_32 |=3D value;
--
--	pci_write_config_dword(chip->pdev,
--			       O2_SD_PLL_SETTING, scratch_32);
--}
--
- static void o2_pci_led_enable(struct sdhci_pci_chip *chip)
++	/*
++	 * Judge the tuning reason, whether caused by dll shift
++	 * If cause by dll shift, should call sdhci_o2_dll_recovery
++	 */
++	if (!sdhci_o2_wait_dll_detect_lock(host))
++		if (!sdhci_o2_dll_recovery(host)) {
++			pr_err("%s: o2 dll recovery failed\n",
++				mmc_hostname(host->mmc));
++			return -EINVAL;
++		}
+ 	/*
+ 	 * o2 sdhci host didn't support 8bit emmc tuning
+ 	 */
+@@ -371,6 +487,7 @@ static void sdhci_o2_enable_clk(struct sdhci_host *host=
+, u16 clk)
+ 	clk |=3D SDHCI_CLOCK_INT_EN;
+ 	sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
+=20
++	sdhci_o2_enable_internal_clock(host);
+ 	if (sdhci_o2_get_cd(host->mmc)) {
+ 		clk |=3D SDHCI_CLOCK_CARD_EN;
+ 		sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
+@@ -396,12 +513,14 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *sl=
+ot)
  {
+ 	struct sdhci_pci_chip *chip;
+ 	struct sdhci_host *host;
++	struct o2_host *o2_host =3D sdhci_pci_priv(slot);
+ 	u32 reg, caps;
  	int ret;
-@@ -284,86 +365,6 @@ static void sdhci_pci_o2_enable_msi(struct sdhci_pci_c=
-hip *chip,
- 	host->irq =3D pci_irq_vector(chip->pdev, 0);
- }
 =20
--static void sdhci_o2_wait_card_detect_stable(struct sdhci_host *host)
--{
--	ktime_t timeout;
--	u32 scratch32;
--
--	/* Wait max 50 ms */
--	timeout =3D ktime_add_ms(ktime_get(), 50);
--	while (1) {
--		bool timedout =3D ktime_after(ktime_get(), timeout);
--
--		scratch32 =3D sdhci_readl(host, SDHCI_PRESENT_STATE);
--		if ((scratch32 & SDHCI_CARD_PRESENT) >> SDHCI_CARD_PRES_SHIFT
--		    =3D=3D (scratch32 & SDHCI_CD_LVL) >> SDHCI_CD_LVL_SHIFT)
--			break;
--
--		if (timedout) {
--			pr_err("%s: Card Detect debounce never finished.\n",
--			       mmc_hostname(host->mmc));
--			sdhci_dumpregs(host);
--			return;
--		}
--		udelay(10);
--	}
--}
--
--static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
--{
--	ktime_t timeout;
--	u16 scratch;
--	u32 scratch32;
--
--	/* PLL software reset */
--	scratch32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
--	scratch32 |=3D O2_PLL_SOFT_RESET;
--	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
--	udelay(1);
--	scratch32 &=3D ~(O2_PLL_SOFT_RESET);
--	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
--
--	/* PLL force active */
--	scratch32 |=3D O2_PLL_FORCE_ACTIVE;
--	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
--
--	/* Wait max 20 ms */
--	timeout =3D ktime_add_ms(ktime_get(), 20);
--	while (1) {
--		bool timedout =3D ktime_after(ktime_get(), timeout);
--
--		scratch =3D sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1);
--		if (scratch & O2_PLL_LOCK_STATUS)
--			break;
--		if (timedout) {
--			pr_err("%s: Internal clock never stabilised.\n",
--			       mmc_hostname(host->mmc));
--			sdhci_dumpregs(host);
--			goto out;
--		}
--		udelay(10);
--	}
--
--	/* Wait for card detect finish */
--	udelay(1);
--	sdhci_o2_wait_card_detect_stable(host);
--
--out:
--	/* Cancel PLL force active */
--	scratch32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
--	scratch32 &=3D ~O2_PLL_FORCE_ACTIVE;
--	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
--}
--
--static int sdhci_o2_get_cd(struct mmc_host *mmc)
--{
--	struct sdhci_host *host =3D mmc_priv(mmc);
--
--	sdhci_o2_enable_internal_clock(host);
--
--	return !!(sdhci_readl(host, SDHCI_PRESENT_STATE) & SDHCI_CARD_PRESENT);
--}
--
- static void sdhci_o2_enable_clk(struct sdhci_host *host, u16 clk)
- {
- 	/* Enable internal clock */
+ 	chip =3D slot->chip;
+ 	host =3D slot->host;
+=20
++	o2_host->dll_adjust_count =3D 0;
+ 	caps =3D sdhci_readl(host, SDHCI_CAPABILITIES);
+=20
+ 	/*
+@@ -688,4 +807,5 @@ const struct sdhci_pci_fixes sdhci_o2 =3D {
+ 	.resume =3D sdhci_pci_o2_resume,
+ #endif
+ 	.ops =3D &sdhci_pci_o2_ops,
++	.priv_size =3D sizeof(struct o2_host),
+ };
 --=20
 2.7.4
 
