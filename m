@@ -2,38 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFCBB978CF
-	for <lists+linux-mmc@lfdr.de>; Wed, 21 Aug 2019 14:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0A1A978E3
+	for <lists+linux-mmc@lfdr.de>; Wed, 21 Aug 2019 14:11:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726857AbfHUMGQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 21 Aug 2019 08:06:16 -0400
-Received: from mga01.intel.com ([192.55.52.88]:37621 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726353AbfHUMGP (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 21 Aug 2019 08:06:15 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Aug 2019 05:06:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,412,1559545200"; 
-   d="scan'208";a="181010206"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122]) ([10.237.72.122])
-  by orsmga003.jf.intel.com with ESMTP; 21 Aug 2019 05:06:12 -0700
-Subject: Re: [PATCH V5 3/4] PCI: Add Genesys Logic, Inc. Vendor ID
-To:     Ben Chuang <benchuanggli@gmail.com>, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        johnsonm@danlj.org, ben.chuang@genesyslogic.com.tw
-References: <20190820020650.8334-1-benchuanggli@gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <f1975e6e-b7fe-3fb0-bbd9-256462d686c8@intel.com>
-Date:   Wed, 21 Aug 2019 15:05:00 +0300
+        id S1727959AbfHUMJz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 21 Aug 2019 08:09:55 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:34729 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727352AbfHUMJz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 21 Aug 2019 08:09:55 -0400
+Received: by mail-pl1-f194.google.com with SMTP id d3so1251616plr.1
+        for <linux-mmc@vger.kernel.org>; Wed, 21 Aug 2019 05:09:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=UT6yE/roxwyyBSRfLOwrFlilraLjBXjoNWJQAsldDVo=;
+        b=1mTbly5hNN6suDS+BwBXn5tZNQRoJv3U+6eGIZWkxOpX8gp4MfK0srbyshCamPl8cE
+         oynbwAZaUVd3iYuDw/fFqllqnUyyMdhGmWDFTWD0+uRBHO1RABomqwNTPTloesNaBCP/
+         OF0wNlT1X2HUApuEYt9hqsB3ukfCOmKOxQ9VlFGyTVla9DArrhzV46cf0e1hqSL0Em1S
+         kMKT+OUOB39Lc9u+MllIcA6W2VixaWAmIOOCqIPym//+KF+bJLzrXd5uXWfD6RF+tn8O
+         fEItbmLNgpz+3xyfCw5xuoCb8BCqv/jPsevOVEPakCBbt5mOdjvlnK19JQHJXISJTFII
+         +AuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=UT6yE/roxwyyBSRfLOwrFlilraLjBXjoNWJQAsldDVo=;
+        b=NZf1/b8fgwMhR+mUOdqzo8Uiq/x6fdzyEP0UHdEQXwVc4GO9dlRl4ZiewL+jIh9+Zu
+         I8pl1935WKKTvU3LhrtKL3B2NLq/vqGO4MqWQX05ZNPD7WIJI648eE2eGfLEve0eRewm
+         2g4+cM6n+vCadHB4FYy1Cmpy4TZyJ096vBkAoBOfMLXpPdRbNV5RSx/KFgBNHaoVWFWj
+         EqLTwDAqA6QM4fkYlwGHfJDL+clauD9pPIs24godEYc4c8XnvTMPOyj6RwNJlHtrJ7IK
+         f5GAxh7ewOj+0usnJ12fhs3Rl5QweXG+kTeJ9haK0aYQ1ruqDG599uECh/1UrM/dL05t
+         bCxQ==
+X-Gm-Message-State: APjAAAWKYTtOhd4vHS64uFWqUG67/Md6IvfjHtDdpA9eJ8xu3GYf7zfo
+        ATWnCwT+sGWL/zOXzvyRlkF3EkXI4UE6Rw==
+X-Google-Smtp-Source: APXvYqxsoe31YiWALXWqRLHXasZTZR3nM8GXNUHwTUUu4EkoxYDPJeCxhjU4HkYSZ/HpLNbIJ9AOOg==
+X-Received: by 2002:a17:902:a410:: with SMTP id p16mr17723995plq.150.1566389394293;
+        Wed, 21 Aug 2019 05:09:54 -0700 (PDT)
+Received: from [192.168.1.188] (66.29.164.166.static.utbb.net. [66.29.164.166])
+        by smtp.gmail.com with ESMTPSA id z4sm22521476pfg.166.2019.08.21.05.09.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 21 Aug 2019 05:09:53 -0700 (PDT)
+Subject: Re: [PATCH 5/9] block: support diskcipher
+To:     "boojin.kim" <boojin.kim@samsung.com>, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     'Herbert Xu' <herbert@gondor.apana.org.au>,
+        "'David S. Miller'" <davem@davemloft.net>,
+        'Eric Biggers' <ebiggers@kernel.org>,
+        "'Theodore Y. Ts'o'" <tytso@mit.edu>, 'Chao Yu' <chao@kernel.org>,
+        'Jaegeuk Kim' <jaegeuk@kernel.org>,
+        'Andreas Dilger' <adilger.kernel@dilger.ca>,
+        dm-devel@redhat.com, 'Mike Snitzer' <snitzer@redhat.com>,
+        'Alasdair Kergon' <agk@redhat.com>,
+        'Krzysztof Kozlowski' <krzk@kernel.org>,
+        'Kukjin Kim' <kgene@kernel.org>,
+        'Jaehoon Chung' <jh80.chung@samsung.com>,
+        'Ulf Hansson' <ulf.hansson@linaro.org>,
+        linux-crypto@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+References: <CGME20190821064226epcas2p2835b8a9084988b79107e54abfc5e7dab@epcas2p2.samsung.com>
+ <004101d557eb$98b00060$ca100120$@samsung.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <6ea5e5db-4dd4-719f-3b3e-b89099636ea6@kernel.dk>
+Date:   Wed, 21 Aug 2019 06:09:50 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190820020650.8334-1-benchuanggli@gmail.com>
+In-Reply-To: <004101d557eb$98b00060$ca100120$@samsung.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -42,33 +81,31 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 20/08/19 5:06 AM, Ben Chuang wrote:
-> From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+On 8/21/19 12:42 AM, boojin.kim wrote:
+> This patch supports crypto information to be maintained via BIO
+> and passed to the storage driver.
 > 
-> Add the Genesys Logic, Inc. vendor ID to pci_ids.h.
+> To do this, 'bi_aux_private', 'REQ_CYPTE' and 'bi_dun' are added
+> to the block layer.
 > 
-> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> Co-developed-by: Michael K Johnson <johnsonm@danlj.org>
-> Signed-off-by: Michael K Johnson <johnsonm@danlj.org>
+> 'bi_aux_private' is added for loading additional private information into
+> BIO.
+> 'REQ_CRYPT' is added to distinguish that bi_aux_private is being used
+> for diskcipher.
+> F2FS among encryption users uses DUN(device unit number) as
+> the IV(initial vector) for cryptographic operations.
+> DUN is stored in 'bi_dun' of bi_iter as a specific value for each BIO.
+> 
+> Before attempting to merge the two BIOs, the operation is also added to
+> verify that the crypto information contained in two BIOs is consistent.
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+This isn't going to happen. With this, and the inline encryption
+proposed by Google, we'll bloat the bio even more. At least the Google
+approach didn't include bio iter changes as well.
 
-> ---
->  include/linux/pci_ids.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-> index 70e86148cb1e..4f7e12772a14 100644
-> --- a/include/linux/pci_ids.h
-> +++ b/include/linux/pci_ids.h
-> @@ -2403,6 +2403,8 @@
->  #define PCI_DEVICE_ID_RDC_R6061		0x6061
->  #define PCI_DEVICE_ID_RDC_D1010		0x1010
->  
-> +#define PCI_VENDOR_ID_GLI		0x17a0
-> +
->  #define PCI_VENDOR_ID_LENOVO		0x17aa
->  
->  #define PCI_VENDOR_ID_QCOM		0x17cb
-> 
+Please work it out between yourselves so we can have a single, clean
+abstraction that works for both.
+
+-- 
+Jens Axboe
 
