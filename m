@@ -2,117 +2,170 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 272A498DAB
-	for <lists+linux-mmc@lfdr.de>; Thu, 22 Aug 2019 10:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 391B898DD4
+	for <lists+linux-mmc@lfdr.de>; Thu, 22 Aug 2019 10:36:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730333AbfHVI16 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 22 Aug 2019 04:27:58 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:38336 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730317AbfHVI16 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 22 Aug 2019 04:27:58 -0400
-Received: by mail-ed1-f67.google.com with SMTP id r12so6751974edo.5
-        for <linux-mmc@vger.kernel.org>; Thu, 22 Aug 2019 01:27:57 -0700 (PDT)
+        id S1732436AbfHVIfx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 22 Aug 2019 04:35:53 -0400
+Received: from mail-ua1-f67.google.com ([209.85.222.67]:38936 "EHLO
+        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732422AbfHVIfx (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 22 Aug 2019 04:35:53 -0400
+Received: by mail-ua1-f67.google.com with SMTP id k7so1728066uao.6
+        for <linux-mmc@vger.kernel.org>; Thu, 22 Aug 2019 01:35:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Dq0F7n0wyJQT8jTu6m+/MooNZlXjFoe/RCOUDpPheqI=;
-        b=V5zOU4wfK/4ZG548Cdk/WLnUw1oDTD7X0od/o0ozo81oUNSlkxCDIswq1Z+RRJUDWz
-         HNf7QU3dafASISFUQjCHPBiWXR6dLtqR3iL/qrJA2YmpjKkREtpyaMQjjtYt0ATICef6
-         6Mdye3ZpmM8ZnrSQlgWsDqF6uIjwAude1WRYMz6OnC5rGHPZUWbJU5xZcixyA4DJWjUc
-         ncKFwvl87kshb8SR7wfsGLEi6t7oQF8VL/fdqmyXZ8o2sh+gWQuiaLHYVQiOrf/R5ETD
-         EyJMypD6AryMzam7QuxCmu6IYa4pezdSujoHosYC0nQ//ypxh/hYZttryyxezNIUAnfd
-         taqQ==
+         :cc;
+        bh=zOEkRYPATcgB1yCjMacSqNwJ3U82U8mp5KIsLfcMY28=;
+        b=iTQO3e13zf/MUzDd9p+wT0xyZnSZJKmpc0MO+3AmwLOcd5XqVRyj/uHashtUC1tU8S
+         VfcMWwzjjYjze7X81DYBknIVOrTBAR85/xT5lIMn/JESsw4un2OefwsnSL4eCdfHmncN
+         SMG0X1PnqlDVCqSeyVlFe9kmMbqXfXMZQfLtgvoxXVjaWVbwwyK2U0OqkIddQFjXCR3D
+         wQp6DY3BNBvKrkDEcla2qFca3TWKlMWgE5TKYB8PHtcG1MBFKKU1mo22p+VeCmjmWOJM
+         5U6+dVUVe737TR9yRHCrPGN8aJ8rTReO768saNGE5IclkVhs0ZKBCyZWi4I4GNXX5Tvy
+         7xIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Dq0F7n0wyJQT8jTu6m+/MooNZlXjFoe/RCOUDpPheqI=;
-        b=mH9AqQpi3cLaggq6JrzmjbY4EyxKHC+oTAqFINrduHvGOoevkOHa2mtJevpq7/60+4
-         AUstKUOh73y9OqRoN2yg1hwJuCbzz4XHvrQdr695r06dhE9Rp+fk0F6orCpcbaeIw55D
-         Ba4PZrZupGTpSju/+GUQPHJF+NS6JBBQLfP23M5wr52Vyeu/6O4cBVpOvc3a8Fuohum1
-         OrU5XCJN6SGBkDCkc/gRZnClY+nHiyh8f16pG2WV7vvFX+xTyro3ySvXTBAIYS6GsKAN
-         IMtIlcJGF7tUAmGTT8XwFwA2IXrAe9QQQSirtxh95DYa8H4Rf8w6qfU4YbCGUckhbsTE
-         qY9g==
-X-Gm-Message-State: APjAAAXugVCHdCHfDTv2MfczY7rjmnBi35/huVdfgaroe4eXlR1sYlAX
-        4RsKzVb94DvD1gKvAK/JMSxzAy2fK3rEAwtA8GYFjZ31
-X-Google-Smtp-Source: APXvYqxAwPQKKAUGUVtbknT/1OgT0wio9hG2R1waE2F9HwT8bZuv6zRjsqbZw0m8QvvOGh7Aibl+v1Ohsh20Pi2E9w4=
-X-Received: by 2002:a17:906:c9c2:: with SMTP id hk2mr19119815ejb.164.1566462476797;
- Thu, 22 Aug 2019 01:27:56 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=zOEkRYPATcgB1yCjMacSqNwJ3U82U8mp5KIsLfcMY28=;
+        b=cFpWQdyvwZnWeAwAfZZuOhd26X7Zda/bqSLlbNWMw/febWl2dTlqmHTqCZca7wCz77
+         zFwbDRyP9jQHagxz3PZ0nPBWWVnkM/6Mv8+JpdcjLYEFQ9E50yNUS3bO8chNaj4K0brH
+         EmOhGKQJKHQ64P9CQyVd8vziNea+Ete0RZdExmiZlqq1U/zTTcJ+H3XFlQmLkset3QOu
+         md00KC2Xs1xZvt6nT1NfLhJOY1MVQSbPbaBGFuAaDbiZ4uHPdD38ofIU7wX/eXMcgCgj
+         yp1Sr9JtKSJKO60hlNE/tcFElS6pHuIoxdVxcLZQw/dUHOjBJFvRiMbty85EbRZazYPC
+         ghIA==
+X-Gm-Message-State: APjAAAWlCjLMKAQ295BQUMWiQOVRSdGNIflh0D1o31KowXmPi/Q26OPL
+        84g8VnONrJq/UlY7hhL69hHIgYojZ7kTZo6Yy3IzYA==
+X-Google-Smtp-Source: APXvYqxApB1a+cb8c50HcqZa7xYJZKxOx4T84a6uO6f8g8cBZtHgycmeb1sd+ZFicLbC8UvxjQxcm+7ppRBztINV5/M=
+X-Received: by 2002:ab0:210f:: with SMTP id d15mr4931543ual.129.1566462951621;
+ Thu, 22 Aug 2019 01:35:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190820114229.11948-1-ja.kaisrlik@gmail.com> <CAPDyKFrJvHGCEyAtih6wZNqFj+68icVBtWhDTrNf1Fr9kQQCig@mail.gmail.com>
-In-Reply-To: <CAPDyKFrJvHGCEyAtih6wZNqFj+68icVBtWhDTrNf1Fr9kQQCig@mail.gmail.com>
-From:   Jan Kaisrlik <ja.kaisrlik@gmail.com>
-Date:   Thu, 22 Aug 2019 10:27:45 +0200
-Message-ID: <CAPnxhu77vwKEx-_vzvPs_o5HsrZcSZ5eha7JPqJPjmv0Gzpkuw@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mmc: core: do not retry CMD6 in __mmc_switch()"
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+References: <1566412708-6130-1-git-send-email-shirley.her@bayhubtech.com>
+In-Reply-To: <1566412708-6130-1-git-send-email-shirley.her@bayhubtech.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 22 Aug 2019 10:35:15 +0200
+Message-ID: <CAPDyKFoyvT-nvU+rng7y=MitzuPfd3HdJ+SZNm4tPhkb-ER=nA@mail.gmail.com>
+Subject: Re: [PATCH V8 1/3] mmc: sdhci-pci-o2micro: Change O2 Host PLL and DLL
+ register name
+To:     "Shirley Her (SC)" <shirley.her@bayhubtech.com>
+Cc:     "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Chevron Li (WH)" <chevron.li@bayhubtech.com>,
+        "Shaper Liu (WH)" <shaper.liu@bayhubtech.com>,
+        "Louis Lu (TP)" <louis.lu@bayhubtech.com>,
+        "Max Huang (SC)" <max.huang@bayhubtech.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-st 21. 8. 2019 v 17:12 odes=C3=ADlatel Ulf Hansson <ulf.hansson@linaro.org>=
- napsal:
+On Wed, 21 Aug 2019 at 20:38, Shirley Her (SC)
+<shirley.her@bayhubtech.com> wrote:
 >
-> + Chaotian Jing
+> Change O2 Host PLL and DLL register name
 >
-> On Tue, 20 Aug 2019 at 13:42, <ja.kaisrlik@gmail.com> wrote:
-> >
-> > From: Jan Kaisrlik <ja.kaisrlik@gmail.com>
-> >
-> > This reverts commit 3a0681c7448b174e5dcfd19e9079cdd281c35f1a.
-> >
-> > Turns out the patch breaks initialization of Toshiba THGBMNG5.
-> > [    1.648951] mmc0: mmc_select_hs200 failed, error -84
-> > [    1.648988] mmc0: error -84 whilst initialising MMC card
->
-> For exactly this reason, when getting CRC errors on the first attempt,
-> doing a retry makes little sense.
->
-> I have looped in Chaotian who has some more details about the problem.
->
-> In any case, Jan, what HW and mmc controller are you using?
+> Signed-off-by: Shirley Her <shirley.her@bayhubtech.com>
 
-It's a custom board based on Amlogic A113D. The compatibility in dts
-is set to "alogic,meson-axg-mmc".
+It seems like you managed to post the version 8, two times. Is there
+any difference? Which one should we review?
 
-In the different revision of HW we are using Kingston EMMC04G. The
-card has no such problem and is working fine without this patch.
-We observed it only on mention Toshiba card.
+Kind regards
+Uffe
 
-Best regards,
-Jan
-
+> ---
+> change in V8:
+>  1. fix patch format error
 >
-> >
-> > Signed-off-by: Jan Kaisrlik <ja.kaisrlik@gmail.com>
-> > ---
-> >  drivers/mmc/core/mmc_ops.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-> > index 74e4364bc9fb..09113b9ad679 100644
-> > --- a/drivers/mmc/core/mmc_ops.c
-> > +++ b/drivers/mmc/core/mmc_ops.c
-> > @@ -564,7 +564,7 @@ int __mmc_switch(struct mmc_card *card, u8 set, u8 =
-index, u8 value,
-> >         if (index =3D=3D EXT_CSD_SANITIZE_START)
-> >                 cmd.sanitize_busy =3D true;
-> >
-> > -       err =3D mmc_wait_for_cmd(host, &cmd, 0);
-> > +       err =3D mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
-> >         if (err)
-> >                 goto out;
-> >
-> > --
-> > 2.20.1
-> >
+> change in V7:
+>  1. change subject
 >
-> Kind regards
-> Uffe
+> change in V6:
+>  1. change subject and commit message to match the patch
+>  2. change register name O2_PLL_WDT_CONTROL1 to O2_PLL_DLL_WDT_CONTROL1
+>
+> change in V5:
+>  1. split 2 patches into 3 patches
+>  2. make dll_adjust_count start from 0
+>  3. fix ret overwritten issue
+>  4. use break instead of goto
+>
+> change in V4:
+>  1. add a bug fix for V3
+>
+> change in V3:
+>  1. add more explanation in dll_recovery and execute_tuning function
+>  2. move dll_adjust_count to O2_host struct
+>  3. fix some coding style error
+>  4. renaming O2_PLL_WDT_CONTROL1 TO O2_PLL_DLL_WDT_CONTROL1
+>
+> change in V2:
+>  1. use usleep_range instead of udelay
+>  2. move dll_adjust_count to sdhci-pci-o2micro.c
+>
+> chagne in V1:
+>  1. add error recovery function to relock DLL with correct phase
+>  2. retuning HS200 after DLL locked
+> ---
+>  drivers/mmc/host/sdhci-pci-o2micro.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
+> index 9dc4548..b3a33d9 100644
+> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
+> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+> @@ -51,7 +51,7 @@
+>  #define O2_SD_VENDOR_SETTING2  0x1C8
+>  #define O2_SD_HW_TUNING_DISABLE        BIT(4)
+>
+> -#define O2_PLL_WDT_CONTROL1    0x1CC
+> +#define O2_PLL_DLL_WDT_CONTROL1        0x1CC
+>  #define  O2_PLL_FORCE_ACTIVE   BIT(18)
+>  #define  O2_PLL_LOCK_STATUS    BIT(14)
+>  #define  O2_PLL_SOFT_RESET     BIT(12)
+> @@ -316,23 +316,23 @@ static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
+>         u32 scratch32;
+>
+>         /* PLL software reset */
+> -       scratch32 = sdhci_readl(host, O2_PLL_WDT_CONTROL1);
+> +       scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
+>         scratch32 |= O2_PLL_SOFT_RESET;
+> -       sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> +       sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+>         udelay(1);
+>         scratch32 &= ~(O2_PLL_SOFT_RESET);
+> -       sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> +       sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+>
+>         /* PLL force active */
+>         scratch32 |= O2_PLL_FORCE_ACTIVE;
+> -       sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> +       sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+>
+>         /* Wait max 20 ms */
+>         timeout = ktime_add_ms(ktime_get(), 20);
+>         while (1) {
+>                 bool timedout = ktime_after(ktime_get(), timeout);
+>
+> -               scratch = sdhci_readw(host, O2_PLL_WDT_CONTROL1);
+> +               scratch = sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1);
+>                 if (scratch & O2_PLL_LOCK_STATUS)
+>                         break;
+>                 if (timedout) {
+> @@ -350,9 +350,9 @@ static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
+>
+>  out:
+>         /* Cancel PLL force active */
+> -       scratch32 = sdhci_readl(host, O2_PLL_WDT_CONTROL1);
+> +       scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
+>         scratch32 &= ~O2_PLL_FORCE_ACTIVE;
+> -       sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> +       sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+>  }
+>
+>  static int sdhci_o2_get_cd(struct mmc_host *mmc)
+> --
+> 2.7.4
+>
