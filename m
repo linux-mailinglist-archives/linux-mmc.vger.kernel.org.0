@@ -2,127 +2,139 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACB4A99EAF
-	for <lists+linux-mmc@lfdr.de>; Thu, 22 Aug 2019 20:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C48F19A37D
+	for <lists+linux-mmc@lfdr.de>; Fri, 23 Aug 2019 01:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732742AbfHVSXa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 22 Aug 2019 14:23:30 -0400
-Received: from gloria.sntech.de ([185.11.138.130]:38588 "EHLO gloria.sntech.de"
+        id S2387933AbfHVXFY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 22 Aug 2019 19:05:24 -0400
+Received: from mail.overt.org ([157.230.92.47]:44301 "EHLO mail.overt.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727685AbfHVSXa (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 22 Aug 2019 14:23:30 -0400
-Received: from wsip-184-188-36-2.sd.sd.cox.net ([184.188.36.2] helo=phil.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <heiko@sntech.de>)
-        id 1i0rjo-0001eW-0S; Thu, 22 Aug 2019 20:23:08 +0200
-From:   Heiko Stuebner <heiko@sntech.de>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Cc:     Manish Narani <MNARANI@xilinx.com>, Rob Herring <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        Michal Simek <michals@xilinx.com>,
-        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
-        "christoph.muellner@theobroma-systems.com" 
-        <christoph.muellner@theobroma-systems.com>,
-        "philipp.tomsich@theobroma-systems.com" 
-        <philipp.tomsich@theobroma-systems.com>,
-        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-        "scott.branden@broadcom.com" <scott.branden@broadcom.com>,
-        "ayaka@soulik.info" <ayaka@soulik.info>,
-        "kernel@esmil.dk" <kernel@esmil.dk>,
-        "tony.xie@rock-chips.com" <tony.xie@rock-chips.com>,
-        Rajan Vaja <RAJANV@xilinx.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>
-Subject: Re: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update documentation for SD Card Clock
-Date:   Thu, 22 Aug 2019 20:23:01 +0200
-Message-ID: <4911073.ucheZMAtV3@phil>
-In-Reply-To: <CAPDyKFqdLE7d9uz_KcpO0CihM+QsFyKbNsoDMoNLT2Qy_TmNdw@mail.gmail.com>
-References: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com> <MN2PR02MB60299EB8B83C4EA68A0F2B33C1A80@MN2PR02MB6029.namprd02.prod.outlook.com> <CAPDyKFqdLE7d9uz_KcpO0CihM+QsFyKbNsoDMoNLT2Qy_TmNdw@mail.gmail.com>
+        id S1731575AbfHVXFY (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 22 Aug 2019 19:05:24 -0400
+Received: from authenticated-user (mail.overt.org [157.230.92.47])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.overt.org (Postfix) with ESMTPSA id 995AC3F741;
+        Thu, 22 Aug 2019 18:05:22 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=overt.org; s=mail;
+        t=1566515122; bh=pM/+NbEcNC5gCPtvCkQZF0ZAThoAd9ldvZAY1L18sfQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Z/yrlBer5kHz2Y4zk9xXrbZmibDaAmREcqSIqt6OA6+nXmKAk/HwmfQP2vj71xBq2
+         S1i8GFcF5OBSeLPm9AcbwfkAF7y1YV/5NWXf/gvQNxeRzScL2zopghpE+wzAqnc8ku
+         mND5PGn3xVSQkCgj6xCOHyGQ350ZeB7qP7nROdWhZKGwrX+/1v24hWLCI8/FgyC9WX
+         BlEacuOaNZay2ZGJz4pEWvSpCVQJcrqj6Np8cQIefdqWuxOheDE3wiwUl76iiwphdO
+         36XAge/x6GYQ+zvjvHp/SNQYMngkL9DnAt0hlE63PEJJI2qLr/0k4wM4DtK/GDtxqg
+         rZoEIw+h/NAPg==
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 22 Aug 2019 16:05:22 -0700
+From:   Philip Langdale <philipl@overt.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org
+Subject: Re: [PATCH] mmc: rtsx_pci: Do not set MMC_CAP2_FULL_PWR_CYCLE
+In-Reply-To: <CAPDyKFr5z4YknbS4_9NmzQ0TMHf+SqGxd5HyMGi4oeXAWFeSHw@mail.gmail.com>
+References: <20190811021917.29736-1-philipl@overt.org>
+ <CAPDyKFr5z4YknbS4_9NmzQ0TMHf+SqGxd5HyMGi4oeXAWFeSHw@mail.gmail.com>
+Message-ID: <41d073f646b1f94adcf41b2cf0f798d8@overt.org>
+X-Sender: philipl@overt.org
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Am Donnerstag, 22. August 2019, 15:38:26 CEST schrieb Ulf Hansson:
-> [...]
+On 2019-08-21 07:55, Ulf Hansson wrote:
+>> 
+>> diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c 
+>> b/drivers/mmc/host/rtsx_pci_sdmmc.c
+>> index bd50935dc37d..1d7c942fc7f3 100644
+>> --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
+>> +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+>> @@ -1345,7 +1345,7 @@ static void realtek_init_host(struct 
+>> realtek_pci_sdmmc *host)
+>>         mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SD_HIGHSPEED |
+>>                 MMC_CAP_MMC_HIGHSPEED | MMC_CAP_BUS_WIDTH_TEST |
+>>                 MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 | MMC_CAP_ERASE;
+>> -       mmc->caps2 = MMC_CAP2_NO_PRESCAN_POWERUP | 
+>> MMC_CAP2_FULL_PWR_CYCLE;
+>> +       mmc->caps2 = MMC_CAP2_NO_PRESCAN_POWERUP;
+>>         mmc->max_current_330 = 400;
+>>         mmc->max_current_180 = 800;
+>>         mmc->ops = &realtek_pci_sdmmc_ops;
+>> --
+>> 2.20.1
+>> 
 > 
-> > > > > > ---
-> > > > > >  Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 15
-> > > ++++++++++-
-> > > > > ----
-> > > > > >  1 file changed, 10 insertions(+), 5 deletions(-)
-> > > > > >
-> > > > > > diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > > > > b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > > > > > index 1edbb04..15c6397 100644
-> > > > > > --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > > > > > +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > > > > > @@ -23,6 +23,10 @@ Required Properties:
-> > > > > >    - reg: From mmc bindings: Register location and length.
-> > > > > >    - clocks: From clock bindings: Handles to clock inputs.
-> > > > > >    - clock-names: From clock bindings: Tuple including "clk_xin" and
-> > > "clk_ahb"
-> > > > > > +            Apart from these two there is one more optional clock which
-> > > > > > +            is "clk_sdcard". This clock represents output clock from
-> > > > > > +            controller and card. This must be specified when #clock-cells
-> > > > > > +            is specified.
-> > > > > >    - interrupts: Interrupt specifier
-> > > > > >
-> > > > > >  Required Properties for "arasan,sdhci-5.1":
-> > > > > > @@ -36,9 +40,10 @@ Optional Properties:
-> > > > > >    - clock-output-names: If specified, this will be the name of the card
-> > > clock
-> > > > > >      which will be exposed by this device.  Required if #clock-cells is
-> > > > > >      specified.
-> > > > > > -  - #clock-cells: If specified this should be the value <0>.  With this
-> > > property
-> > > > > > -    in place we will export a clock representing the Card Clock.  This clock
-> > > > > > -    is expected to be consumed by our PHY.  You must also specify
-> > > > > > +  - #clock-cells: If specified this should be the value <0>. With this
-> > > > > > +    property in place we will export one clock representing the Card
-> > > > > > +    Clock. This clock is expected to be consumed by our PHY. You must
-> > > also
-> > > > > > +    specify
-> > > > >
-> > > > > specify what?
-> > > > I think this line was already there, I missed to correct it, Will update in v3.
-> > > >
-> > > > >
-> > > > > The 3rd clock input I assume? This statement means any existing users
-> > > > > with 2 clock inputs and #clock-cells are in error now. Is that correct?
-> > > > Yes, this is correct. So far there was only one vendor using '#clock-cells'
-> > > which is Rockchip. I have sent DT patch (02/11) for that also.
-> > > > Here this is needed as earlier implementation isn't correct as suggested by
-> > > Uffe. (https://lkml.org/lkml/2019/6/20/486) .
-> > >
-> > > I am not sure how big of a problem the backwards compatible thingy
-> > > with DT is, in general we must not break it. What do you say Manish?
-> >
-> > Though I agree with Uffe on this, there is no other way from my understanding. Please suggest.
-> >
-> > >
-> > > As a workaround, would it be possible to use
-> > > of_clk_get_from_provider() somehow to address the compatibility issue?
-> >
-> > For this to be used we have to parse 'clkspec' from the DT node and pass the same as an argument to this function. In this case also the DT node needs to be updated, which is same as we have done in this series.
+> I am not convinced that the patch is correct, but I may be wrong. A
+> few things that I wonder about.
 > 
-> Alright. I guess breaking DTBs for Rockchip platforms isn't
-> acceptable, especially if those are already widely deployed, which I
-> have no idea of....
+> 1.
+> To support switch UHS-I SD cards into 1.8V I/O, the host should
+> implement the ->card_busy() host ops. This isn't the case for
+> rtsx_pci_sdmmc.c  (you should see a  warning printed to the log
+> "cannot verify signal voltage switch" during the card initialization),
+> but instead it internally tries to deal with the 1.8V I/O voltage
+> switch inside its ->start_signal_voltage_switch() ops.
+> 
+> It looks fragile to me. No matter what, I think it's a good idea to
+> convert into using the ->card_busy() ops.
 
-The arasan sdhci is part of the rk3399, so every SBC using that SoC, but
-also the whole Gru series of ChromeOS devices (Samsung Chromebook Plus
-among them) would be affected.
+Interestingly, the rtsx_usb_sdmmc driver implements card_busy, so this
+was a conscious effort from the original author(s). However, it's not
+relevant to the bug here, as things fall apart before we get to UHS-I
+switching.
 
-Heiko
+> 2.
+> The mmc core expects hosts that supports 3.3V and 1.8V I/O, to be able
+> to move from 1.8V back to 3.3V. Perhaps that path isn't so well tested
+> for rtsx_pci_sdmmc.c and maybe it's a good idea to make sure this
+> works as expected.
 
+So, I did more debugging and I've narrowed down the problem. You are 
+correct,
+that this is not directly caused by FULL_PWR_CYCLE. What is actually 
+happening
+is that these Sandisk A2 cards (Is anyone else selling an A2 card? I 
+haven't
+seen one) claim to support the low voltage range in OCR (bit 7) for 
+vmmc.
 
+At least for me, that's unusual. I've never seen an SD card support the 
+low
+voltage range - It was introduced for MMC(plus) and I'd only ever seen 
+it on
+those cards.
+
+This seems to be the key difference from the older UHS-1 cards (which 
+I've now
+been able to test and they work fine with the driver - so it really is 
+specific
+to these new A2 cards).
+
+Anyway. So what is happening is that the mmc_select_voltage logic tries 
+to switch
+to the lowest supported voltage and then issues the pwr_cycle sequence 
+if the
+controller supports it. Then, the card comes up in some kind of broken 
+state,
+and everything fails past that point.
+
+With that in mind, I removed the host flag that indicates support for 
+the low
+voltage range, and now the card works fine with FULL_PWR_CYCLE retained. 
+Fun times.
+
+So, what's actually wrong? Well, either the controller doesn't really 
+support the
+low voltage range, or the card doesn't. As my machine here only has a 
+microsd slot,
+I can't test with an MMCplus card to see if low voltage MMC would work. 
+Without that
+I can't say whether we should remove the host flag or somehow blacklist 
+low voltage
+range on these cards (or any SD card?)
+
+Would love to get your thoughts.
+
+--phil
