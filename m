@@ -2,87 +2,120 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0D5A99006
-	for <lists+linux-mmc@lfdr.de>; Thu, 22 Aug 2019 11:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96CB299274
+	for <lists+linux-mmc@lfdr.de>; Thu, 22 Aug 2019 13:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730825AbfHVJwj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 22 Aug 2019 05:52:39 -0400
-Received: from sauhun.de ([88.99.104.3]:58244 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729797AbfHVJwj (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 22 Aug 2019 05:52:39 -0400
-Received: from localhost (p54B3343F.dip0.t-ipconnect.de [84.179.52.63])
-        by pokefinder.org (Postfix) with ESMTPSA id E4F302C2686;
-        Thu, 22 Aug 2019 11:52:37 +0200 (CEST)
-Date:   Thu, 22 Aug 2019 11:52:37 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Ulrich Hecht <uli+renesas@fpond.eu>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Magnus Damm <magnus.damm@gmail.com>
-Subject: Re: [PATCH v2 1/2] mmc: tmio: leave clock handling to runtime PM if
- enabled
-Message-ID: <20190822095237.t7lx5qzwsj4unlcs@katana>
-References: <1564589857-17720-1-git-send-email-uli+renesas@fpond.eu>
- <1564589857-17720-2-git-send-email-uli+renesas@fpond.eu>
- <CAPDyKFotQvTAC8OVVRiEqLc0ij3XNVdL3eyNHioK0YEWxvER0A@mail.gmail.com>
- <20190822063530.wzee6gy4d2lisj2x@katana>
- <CAPDyKFojrZB819DvViyP_cAf=s1y4jpHjYKis37XO2ZOSkH1Eg@mail.gmail.com>
+        id S1732871AbfHVLp5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 22 Aug 2019 07:45:57 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:38380 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732864AbfHVLp5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 22 Aug 2019 07:45:57 -0400
+Received: by mail-vs1-f68.google.com with SMTP id 62so3613782vsl.5
+        for <linux-mmc@vger.kernel.org>; Thu, 22 Aug 2019 04:45:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ias0hnNTQ1W0WLMJ9Tw+pF62AvhAzndWUOgIreZptR4=;
+        b=rDszp6GWldYKXV1jR5X0tVPwOQUmi6CxIEOrbjVQUz3WhkU6oYTxYzX8HxeY8leOeh
+         zvTSuAERxKEcn8Yv9UsDjeKMrhx6DkoMarSTEZkDd68+2mj+BgZXGGtNWJI9+EFQuVQ+
+         CyB4j3oAVf1Sm05kBVhXT8wjbkRr6SC4LyvEcPVuhYxovbmtuhHVcIXOTHLmpwk200KN
+         3vWaa4ABGDhxySRoMd9bnoJjE/MwJ0QN6JNQuGkCtgyDw1T5WZeR3j0ywN5yzX6IjAZ4
+         bp1uABpaYaWvwa4Z1bgZ93PENPx4XxOkKWdZY7cjBXyOAlrgPcwG5by4QPTERiNSTm/f
+         90+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ias0hnNTQ1W0WLMJ9Tw+pF62AvhAzndWUOgIreZptR4=;
+        b=gOtSVnzqPcr8IZvf7Nkgy/KeqcPDC8vXXCnEbiwkiR61P964Mv+OXMkDLKp5834Fs4
+         Z7Go2T+MCAwB0O1b82U8WDjPmkhq8sLJBJMdvgWhBBc2wKr4CoiOq9WqR/myKYOeq0Gt
+         ahhL6zw4ohqEB1W+5pwvS1Wgigertce+dcfNeiQwrYylPEB8i8NL1VP49khWgNwqJwo5
+         NzGYj9qLHLn0bJkPGu8eoqlT7Mc0LiY7pZTFgpkfuNZrgtulQzdn+0aXspX83EjfxNhF
+         fiGiW8Ud7UuSNDgsMmsukmNxLztaQUZWISE0WDGcmBCG6wYz/lBUukJOJmD3nj4SqCen
+         +TQg==
+X-Gm-Message-State: APjAAAVg5ha9zYWNeGUMbMn9cjoJqfwL565RnfX6vVMc+2/ffi+Gb/Gm
+        uNo0lg431c6TdFVIuxtPTDXEQz7hlyBQrwjXedrRRA==
+X-Google-Smtp-Source: APXvYqwpurVmREw1NCNrWD/HWUqNVjMRJbQbiiRPPhDel5CxOBrosK7SYbiXJVV66QIkSwppRQHrHqUJ1UD4Wg1NEeE=
+X-Received: by 2002:a67:e287:: with SMTP id g7mr23784378vsf.200.1566474355983;
+ Thu, 22 Aug 2019 04:45:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hqlwflu46tjfljz5"
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFojrZB819DvViyP_cAf=s1y4jpHjYKis37XO2ZOSkH1Eg@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+References: <20190807003629.2974-1-andrew@aj.id.au> <20190807003629.2974-2-andrew@aj.id.au>
+ <CACPK8Xe6Zp1uOqEffEc0b6oGa7portEAifGPRqb876HmA+oZeg@mail.gmail.com> <6c94aada-9c4a-4f55-9a43-349282ad12af@www.fastmail.com>
+In-Reply-To: <6c94aada-9c4a-4f55-9a43-349282ad12af@www.fastmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 22 Aug 2019 13:45:19 +0200
+Message-ID: <CAPDyKFrDPxFMm710Z25i-euOT2rrgCNXVa4na-fye0xamMXq_A@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] dt-bindings: mmc: Document Aspeed SD controller
+To:     Andrew Jeffery <andrew@aj.id.au>
+Cc:     Joel Stanley <joel@jms.id.au>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ryan Chen <ryanchen.aspeed@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Thu, 15 Aug 2019 at 07:37, Andrew Jeffery <andrew@aj.id.au> wrote:
+>
+>
+>
+> On Thu, 15 Aug 2019, at 15:06, Joel Stanley wrote:
+> > On Wed, 7 Aug 2019 at 00:38, Andrew Jeffery <andrew@aj.id.au> wrote:
+> > >
+> > > The ASPEED SD/SDIO/MMC controller exposes two slots implementing the
+> > > SDIO Host Specification v2.00, with 1 or 4 bit data buses, or an 8 bit
+> > > data bus if only a single slot is enabled.
+> > >
+> > > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+> >
+> > Reviewed-by: Joel Stanley <joel@jms.id.au>
+> >
+> > Two minor comments below.
+> >
+> > > +++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> > > @@ -0,0 +1,105 @@
+> > > +# SPDX-License-Identifier: GPL-2.0-or-later
+> >
+> > No "Copyright IBM" ?
+>
+> I'm going rogue.
+>
+> That reminds me I should chase up where we got to with the binding
+> licensing.
+>
+> >
+> > > +%YAML 1.2
+> > > +---
+> >
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/clock/aspeed-clock.h>
+> > > +    sdc@1e740000 {
+> > > +            compatible = "aspeed,ast2500-sd-controller";
+> > > +            reg = <0x1e740000 0x100>;
+> > > +            #address-cells = <1>;
+> > > +            #size-cells = <1>;
+> > > +            ranges = <0 0x1e740000 0x10000>;
+> >
+> > According to the datasheet this could be 0x20000. It does not matter
+> > though, as there's nothing in it past 0x300.
+>
+> Good catch.
+>
 
---hqlwflu46tjfljz5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Are you planning on sending a v6 or you want me to apply this and you
+can post a patch on top?
 
-Hi Ulf,
-
-> I need to catch up a little bit more on mmc reviews, so unless this is
-> urgent, I can offer my help and post something soonish.
->=20
-> Is this fine by you?
-
-Yep, totally. Hope you had a great vacation! Just wanted ask if you are
-happy hacking on this or if we could help here somehow. Not urgent, we
-will wait.
-
-Thanks,
-
-   Wolfram
-
-
---hqlwflu46tjfljz5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl1eZeUACgkQFA3kzBSg
-Kbb/ew//YkbRDM/uctqNfV71vexBYts6hlq9LQzO7Jg5uSsRdEEb4934F3Egvca8
-vXYqm9lrXk4ZOoozkpSncM/QHe61orNAaUF+PBeM6EPcEJHEJ0QE7ksl7KGlwGsI
-R2Nmzm+2sYGwUVqreSQuMqLqnn8jcLq2508wKhIfsYWiSLV10pWhuOX3JReTXgV4
-rJCKIq+MUWDmmlQgItoFkl6T9bQmcE+45GDgyy4dkbkqq+LqDhpjCpE//feZRNEY
-LxMkf13jE4tyFT90mDtBgO0qMzXrH7hWKlQQxHrulVJ6eZnEvraqVkfTiqCI9Er0
-jBkYw61iopuIzkKAn3eAtUw52xfAyB/4Mh27tnXiOir+2O+qxKEu7QozgBhRgQzI
-VC+skBKKLBkqp+tTT4FWw/bCs6Pok5TB5fFvE0qDSThEUFkwwpYslRPF0jqBIxBT
-sf8tGyiS3TdN2P2jvBFD4vS1Z1gBKpCOuok+rGHZgZ8vXom0qc7aUee2rYEjacsa
-17pHexOLbTcV2d7oAWgj7+e5fmlFPRiOkMhm85pg9g+3xRG9cjiuycEAa0Yoe9v3
-J9R3r+0z6EXyMmgzJku2AZWty8KpVrcmPZ3zH8kQPjQwdMm8WaOW14zjzQrInNAN
-ByJNw4P8inB1qD8XrhLKMdXpwHuEsplIepA8dgi1pvKyE4Donso=
-=1YJT
------END PGP SIGNATURE-----
-
---hqlwflu46tjfljz5--
+Kind regards
+Uffe
