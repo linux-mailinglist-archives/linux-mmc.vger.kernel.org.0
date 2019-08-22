@@ -2,89 +2,67 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C9F299303
-	for <lists+linux-mmc@lfdr.de>; Thu, 22 Aug 2019 14:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2980C99305
+	for <lists+linux-mmc@lfdr.de>; Thu, 22 Aug 2019 14:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388395AbfHVMNt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 22 Aug 2019 08:13:49 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:44739 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726206AbfHVMNp (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 22 Aug 2019 08:13:45 -0400
-Received: by mail-ua1-f67.google.com with SMTP id m23so1889319uaq.11
-        for <linux-mmc@vger.kernel.org>; Thu, 22 Aug 2019 05:13:44 -0700 (PDT)
+        id S2388400AbfHVMNw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 22 Aug 2019 08:13:52 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:39118 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388392AbfHVMNs (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 22 Aug 2019 08:13:48 -0400
+Received: by mail-vs1-f66.google.com with SMTP id y62so3675376vsb.6
+        for <linux-mmc@vger.kernel.org>; Thu, 22 Aug 2019 05:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=z8Whq5t8q9GwheJahJvFQp/NfuL/9ssSVrrEeSWFZQU=;
-        b=cAnyMpYGBwM8IXEcyZhXp6XNeJ4oqG8RVl6vX5Xv/J9d/FHqRPyEMmdNKw9wf1KDCE
-         tLTajI7r01JOL69r+MoFBwfA1kjTucGY+G1R14bZq8SmlCM6PO3BGBBN9yuq69YNiacP
-         mYmpS/C4rlbiZnBN3MJkIjzZi5QjJIBgqTDkqsktrLNUQCVUDKxJoAxYiNOrTY+ddK7Q
-         6hojXA83VxhzBp+wgoJjn3HcUYPgqfT3ruM7jraS3qKSkrTGl/9vDXPvOZTN+kPk59su
-         yaT/o07Qu6Cu/gc8sHAXfdaN6Zaf43AQzGWM4IaU3HTRALrleGzaFrp9e7J8oqudmz8J
-         twXw==
+        bh=SnNdhyeFpKuZ+guKHLB3wj1svopkcsXHTZItdvkozEM=;
+        b=fWA7YmlE1GNyLXzanu8PKo85MLK8JezTftcsbvVG0IMq+EG7H6yZL9ecYiAosOKAFL
+         QaxMps8z06IDVrk4pw6eVTdU22hFWAGXScOfVYjSHFlbB5vuYRjfU7fZ8j2HwfHX3jLE
+         Ax4OsYu2MkeJrooj07WDp4wKv/18/0a59AkfDfGuCJsloWnw6IykNnp5cfyvpWEGoRDw
+         oNpHOHa+9PeVtB3A5++0kn+N5HCOtHMLmzVMRFG4/AtqUTvctTbm6tmmDFSVG67xuqOd
+         ux3oZWpaPwoHaUtjjClJiEGEr2UFD6VGictB948+p9yf4urBNdv6ETiKXhW7beGVBVNs
+         EIfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=z8Whq5t8q9GwheJahJvFQp/NfuL/9ssSVrrEeSWFZQU=;
-        b=ndqpOfJhxtgU7a//ibBPkmXowRIq34rVoo6lNQtfyGX72pxYX6+zP7KGTqZQSWIp3n
-         Z54CnCnllBnh5Z2PqjYI0pHaFxzK3bs77RpEJJDHI8sIH/Uut2pSmgL99H4oUUYbdfZt
-         L6cUfn8tNlSApwWhRcGySx9E0GlJqUyQikM/xa973ppZqC2fLxm2TPli0I2aEkQ3aJ07
-         0RbgY/FHsQjPuUwleJ0az11SJAW0+kUJ5BcD6eyzWuQ8NCU43h64WKzdh68QiwlqfCdb
-         54V55hzNse8UOeq2sowhogwxfrmFa6p1IVi/M7aSmhaJQkoQsMYJMqQQDoWpsBs6jCKG
-         zPtg==
-X-Gm-Message-State: APjAAAWdb/DyBGGV6SV5Ce+Jb1khHVcXWw5gyE24SgbAUCmlkWcvvnxw
-        an6IJr8nQNrNWjwPK4SFgZgbbssNSovJTN5Y0ChnZA==
-X-Google-Smtp-Source: APXvYqwyfK3+XunOkjrMGsFKUo/ps28tqmznFkFmVvl2sGgjI2r67E341S3VzcLrmVKcgXCaRvFrYS6XYbcLEdIXitk=
-X-Received: by 2002:ab0:6883:: with SMTP id t3mr5681666uar.104.1566476024313;
- Thu, 22 Aug 2019 05:13:44 -0700 (PDT)
+        bh=SnNdhyeFpKuZ+guKHLB3wj1svopkcsXHTZItdvkozEM=;
+        b=Y5NPvzJhcPosmBoo2yK7UynXUxzGXpDKcn54uTHYXQRe10jjDngStLuAiday2fFPaL
+         CW9EG6/lAiqs9LSGDbkF9JrPYWv0/Wve34l2cq5HPcX7rdUAcv+rf8+nT52/N61+xr0k
+         qeapm7BGHwcdqBhVgI/ePjgIasa6e3NZZe4DGZLhbd8Nf1U6ZI2gk7BtrsOMN1XynGk8
+         BOdEQtEaAXldSAOjMofKPzxuYcjwPsIE/H52yzpyBY0aV7cXgosRm7lpRvaVKr0xjnUT
+         mrRMeS8w3rDBqWBVvRp3UtaBOtJM8Fat2Ip0Tj6E5UEA5ZHGed2fxLAyj4R5dHd0HGr6
+         U+MA==
+X-Gm-Message-State: APjAAAU8lsF0gG1zziI3000R9E1r1E6CnBzdNlq1gS2GtE0T0xklmwAn
+        ejm4JGy0r5RfctfenOVUx/35X0q8WUD7BW2FeRWRsA==
+X-Google-Smtp-Source: APXvYqxKSKCkurBSFZFRPOCl+UKsXCIJtILz+mNhnPTGpuI8fBm7g8xQ+t0Wda0p9fcGtKyCF1TWCTuCzEPSdY+riIw=
+X-Received: by 2002:a67:e287:: with SMTP id g7mr23854220vsf.200.1566476027453;
+ Thu, 22 Aug 2019 05:13:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190808165301.GA30877@embeddedor>
-In-Reply-To: <20190808165301.GA30877@embeddedor>
+References: <20190810121608.24145-1-paul@crapouillou.net>
+In-Reply-To: <20190810121608.24145-1-paul@crapouillou.net>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 22 Aug 2019 14:13:07 +0200
-Message-ID: <CAPDyKFoS3_RJvOxjQXpYT6YUgqJM7WXfvdHe1f6cTkab0rgsEQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-cadence: use struct_size() helper
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Thu, 22 Aug 2019 14:13:11 +0200
+Message-ID: <CAPDyKFowvV=O_3Xg8j9nH7szb91Dd1heUt7nK0acRanZL68zsQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: jz4740: Code cleanup
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        od@zcrc.me
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 8 Aug 2019 at 18:53, Gustavo A. R. Silva <gustavo@embeddedor.com> wrote:
+On Sat, 10 Aug 2019 at 14:16, Paul Cercueil <paul@crapouillou.net> wrote:
 >
-> One of the more common cases of allocation size calculations is finding
-> the size of a structure that has a zero-sized array at the end, along
-> with memory for some number of elements for that array. For example:
+> Fix wrong code indentation which made the code hard to read, and fix
+> return with value in void function.
 >
-> struct sdhci_cdns_priv {
->         ...
->         struct sdhci_cdns_phy_param phy_params[0];
-> };
->
-> Make use of the struct_size() helper instead of an open-coded version
-> in order to avoid any potential type mistakes.
->
-> So, replace the following form:
->
-> sizeof(*priv) + sizeof(priv->phy_params[0]) * nr_phy_params
->
-> with:
->
-> struct_size(priv, phy_params, nr_phy_params)
->
-> Also, notice that, in this case, variable priv_size is not necessary,
-> hence it is removed.
->
-> This code was detected with the help of Coccinelle.
->
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 
 Applied for next, thanks!
 
@@ -93,32 +71,45 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-cadence.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  drivers/mmc/host/jz4740_mmc.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-cadence.c b/drivers/mmc/host/sdhci-cadence.c
-> index 163d1cf4367e..1768a13f89be 100644
-> --- a/drivers/mmc/host/sdhci-cadence.c
-> +++ b/drivers/mmc/host/sdhci-cadence.c
-> @@ -337,7 +337,6 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
->         struct sdhci_pltfm_host *pltfm_host;
->         struct sdhci_cdns_priv *priv;
->         struct clk *clk;
-> -       size_t priv_size;
->         unsigned int nr_phy_params;
->         int ret;
->         struct device *dev = &pdev->dev;
-> @@ -351,8 +350,8 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
->                 return ret;
+> diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
+> index ffdbfaadd3f2..59f81e8afcce 100644
+> --- a/drivers/mmc/host/jz4740_mmc.c
+> +++ b/drivers/mmc/host/jz4740_mmc.c
+> @@ -186,9 +186,9 @@ static void jz4740_mmc_write_irq_reg(struct jz4740_mmc_host *host,
+>                                      uint32_t val)
+>  {
+>         if (host->version >= JZ_MMC_JZ4780)
+> -               return writel(val, host->base + JZ_REG_MMC_IREG);
+> +               writel(val, host->base + JZ_REG_MMC_IREG);
+>         else
+> -               return writew(val, host->base + JZ_REG_MMC_IREG);
+> +               writew(val, host->base + JZ_REG_MMC_IREG);
+>  }
 >
->         nr_phy_params = sdhci_cdns_phy_param_count(dev->of_node);
-> -       priv_size = sizeof(*priv) + sizeof(priv->phy_params[0]) * nr_phy_params;
-> -       host = sdhci_pltfm_init(pdev, &sdhci_cdns_pltfm_data, priv_size);
-> +       host = sdhci_pltfm_init(pdev, &sdhci_cdns_pltfm_data,
-> +                               struct_size(priv, phy_params, nr_phy_params));
->         if (IS_ERR(host)) {
->                 ret = PTR_ERR(host);
->                 goto disable_clk;
+>  static uint32_t jz4740_mmc_read_irq_reg(struct jz4740_mmc_host *host)
+> @@ -820,14 +820,14 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
+>                         del_timer(&host->timeout_timer);
+>
+>                         if (status & JZ_MMC_STATUS_TIMEOUT_RES) {
+> -                                       cmd->error = -ETIMEDOUT;
+> +                               cmd->error = -ETIMEDOUT;
+>                         } else if (status & JZ_MMC_STATUS_CRC_RES_ERR) {
+> -                                       cmd->error = -EIO;
+> +                               cmd->error = -EIO;
+>                         } else if (status & (JZ_MMC_STATUS_CRC_READ_ERROR |
+>                                     JZ_MMC_STATUS_CRC_WRITE_ERROR)) {
+> -                                       if (cmd->data)
+> -                                                       cmd->data->error = -EIO;
+> -                                       cmd->error = -EIO;
+> +                               if (cmd->data)
+> +                                       cmd->data->error = -EIO;
+> +                               cmd->error = -EIO;
+>                         }
+>
+>                         jz4740_mmc_set_irq_enabled(host, irq_reg, false);
 > --
-> 2.22.0
+> 2.21.0.593.g511ec345e18
 >
