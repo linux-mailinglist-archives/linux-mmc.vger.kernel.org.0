@@ -2,160 +2,238 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44FDA9AB76
-	for <lists+linux-mmc@lfdr.de>; Fri, 23 Aug 2019 11:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B94E69AC56
+	for <lists+linux-mmc@lfdr.de>; Fri, 23 Aug 2019 12:02:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732062AbfHWJgl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 23 Aug 2019 05:36:41 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:32841 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725857AbfHWJgl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 23 Aug 2019 05:36:41 -0400
-Received: by mail-ed1-f67.google.com with SMTP id s15so12563072edx.0
-        for <linux-mmc@vger.kernel.org>; Fri, 23 Aug 2019 02:36:39 -0700 (PDT)
+        id S2391107AbfHWKBh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 23 Aug 2019 06:01:37 -0400
+Received: from mail-eopbgr700061.outbound.protection.outlook.com ([40.107.70.61]:12289
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730580AbfHWKBh (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 23 Aug 2019 06:01:37 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eXSqTlZinUVtpAKsmj0oVAUE9/E8hRWrmtiKxBPJilSCCNBktJWd6TFPVgKBnO8S1HAkxFfjAfymGSqQs9nRp1BAgtsNLKCbHzBwSfSqFRcecWxe8aUO9K6ARQqkA9hMqWjfV3ahxd8okv1W/jGsaBZh20f39sQ0h6SRMQhCDEEySrI23SceThcw6uWOvWuH5Ftsbc9y3su68QLBNn0S5y/6b1WZQ70VypDxf/1oTbY4tVUKvjiUDiV8tPlAlK23OdtqD6gq1X3cBdpA/VVM5PNmEG8h3mFDDCn4nlJD39keV9Itt8cYWr5wLnd9OzxceIOxl0ZRUBXrQdIF+4eo1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QS//HXcLChW8QZm3OqWZMQdi+9moM/Dh5nm+izKg3nQ=;
+ b=O7OF09itaqfeRDYsGROTmlhZNNBrsbKFt2ZJS1hNmXIJzQ7Ofn35wgCwUagSSLjC+tZ8vN/OHxmMMLCbmCfE++B/QlNgeGgjdBpB32aWN3T1oqYKIRXnQsPYC/a0AFcM5Z6uFfyAG7Ljlp4A89a0TbkUS5YNeNSCIawLrLk0SUaAKKdPnzCO3nRaoe1EPK3hJ6taqgtFoFd1ZKfFK4tqXQTlNtDZPx9UCtpQbazIfT6szP9xLA5I9tv2qeW2/8DvHnzhAlsF0H1oc9kvRQM2NXv6y6j/lzff2wRcvPBTbKD5hczBj0eikUJYEW//McylbIwNGh2G2/XLXPgbCoGLeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=lJohKxt7HKeqbj8j8u5AtSNA+WhFifixJ3L1Mshg4do=;
-        b=kQ6PdbD87959nuxSftScU9BIh8wAk+282ap4hVCwPHymX9NinvpMcf/w+Zhlorm49w
-         6sheT1MT4L3bhgxu8DKGz//v8rJDwXNlQHZijTYvE/hWy4Z/srrdTibF8zLMqGe4mGer
-         IP4aFgGrp6Mr3YqgLi/7zF9SO6f69uX6NDFKugZpl1MiEWvWHOP9x7tbL1JJTLa32SYY
-         NaHf1SGUNkZkeGQcpefTzP5Fp/EhSvpydYpIIpcjapJYFEsfgyZNxKhkpOeIdrFqsUHf
-         A0Le2NVIoAZRSRjUnhPTbqGuFtU6hCs9gAEQ5j8o0Xbpbl5WkyIE+vHxuQOl5W1aiF4q
-         4yWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=lJohKxt7HKeqbj8j8u5AtSNA+WhFifixJ3L1Mshg4do=;
-        b=Ye2jDEgDJKvEoDEaJ+ZUQ/arJNEU9QyfGuJ3DhxSkCfcwrKMDV1ebvsxw3aiOTcduI
-         Pyc4iefWc98F697htMCeB717beTtdS5B3BJpjOmMsu4NQFZT1PfPI6hmUqpCiNdmQUhn
-         RYlkKYNutgbWd3Zc+dg8cS3ZtPCrcGXQ2y5LLb+LqrCy8URCgW7E82X+9yecuHRM6VUf
-         4T98TqjSeQy8EZiWZZcuLFMXiru2PE9GbkAM4ivpCheoIIOvL0kXZ3uw27L6oo7cjvo/
-         cPShAPmlmayFnjT/r5tx5nDzIW6gaj46U6w0uaNM1Pw4TNMGfibEmRG+TCgVRMAH1IdL
-         Ds8Q==
-X-Gm-Message-State: APjAAAVup69bF75xTrc32IBxzj4O86xyMASNL2m07fkmkcyAbvJrH6ig
-        iRQK7jIY0rkN5w1qvNtWz2TZ9qn9KFJiJqiBJYo=
-X-Google-Smtp-Source: APXvYqyC0aXA7w6V/6OXAWEQQrqqx7KhCgf1auZ9SmWWRa8poI84B7suWHZwelABoO+26uyn98R2NMfjf5dFsxUCGDg=
-X-Received: by 2002:a17:906:358e:: with SMTP id o14mr3236184ejb.73.1566552999041;
- Fri, 23 Aug 2019 02:36:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190820114229.11948-1-ja.kaisrlik@gmail.com> <CAPDyKFrJvHGCEyAtih6wZNqFj+68icVBtWhDTrNf1Fr9kQQCig@mail.gmail.com>
- <CAPnxhu77vwKEx-_vzvPs_o5HsrZcSZ5eha7JPqJPjmv0Gzpkuw@mail.gmail.com> <CAPDyKFqMcsht8Ag6aGfoNeuUX+_zR-b0hUhVDyNpV5s6mmGYVA@mail.gmail.com>
-In-Reply-To: <CAPDyKFqMcsht8Ag6aGfoNeuUX+_zR-b0hUhVDyNpV5s6mmGYVA@mail.gmail.com>
-From:   Jan Kaisrlik <ja.kaisrlik@gmail.com>
-Date:   Fri, 23 Aug 2019 11:36:27 +0200
-Message-ID: <CAPnxhu4DwaxL-eXbwHnes7AJFA2G+zNUHsOvrfsPPVqdW0MV_g@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mmc: core: do not retry CMD6 in __mmc_switch()"
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Kevin Hilman <khilman@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QS//HXcLChW8QZm3OqWZMQdi+9moM/Dh5nm+izKg3nQ=;
+ b=tXzM/EUqrPSHHVrk9bgisKcC7WhojJ5Fkw1HG+LKNPZdUWowiS67L8intYJzOumWiNifimuS5GEV9tOeBhPEZJvaQEVFatd5CzlpngkoajGTCNEAHppVWb7v5liF4YQERM3FPYBHeixDTdBCQXv5ilijOgXaY6LmYA41qPLT14k=
+Received: from MN2PR02MB6029.namprd02.prod.outlook.com (10.255.7.10) by
+ MN2PR02MB6349.namprd02.prod.outlook.com (52.132.175.142) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2178.16; Fri, 23 Aug 2019 10:01:32 +0000
+Received: from MN2PR02MB6029.namprd02.prod.outlook.com
+ ([fe80::6930:d45:6895:4255]) by MN2PR02MB6029.namprd02.prod.outlook.com
+ ([fe80::6930:d45:6895:4255%4]) with mapi id 15.20.2178.020; Fri, 23 Aug 2019
+ 10:01:32 +0000
+From:   Manish Narani <MNARANI@xilinx.com>
+To:     Heiko Stuebner <heiko@sntech.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+CC:     Rob Herring <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        Michal Simek <michals@xilinx.com>,
+        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+        "christoph.muellner@theobroma-systems.com" 
+        <christoph.muellner@theobroma-systems.com>,
+        "philipp.tomsich@theobroma-systems.com" 
+        <philipp.tomsich@theobroma-systems.com>,
+        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+        "scott.branden@broadcom.com" <scott.branden@broadcom.com>,
+        "ayaka@soulik.info" <ayaka@soulik.info>,
+        "kernel@esmil.dk" <kernel@esmil.dk>,
+        "tony.xie@rock-chips.com" <tony.xie@rock-chips.com>,
+        Rajan Vaja <RAJANV@xilinx.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>
+Subject: RE: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update documentation
+ for SD Card Clock
+Thread-Topic: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update documentation
+ for SD Card Clock
+Thread-Index: AQHVL84QKtDrcydqmkObCTy1mFTFVabXUFgAgAB7vdCAA6ZJgIAnAKOwgAULIgCAAE+DgIABBZpg
+Date:   Fri, 23 Aug 2019 10:01:31 +0000
+Message-ID: <MN2PR02MB6029DEFCD8E9B54AA9610023C1A40@MN2PR02MB6029.namprd02.prod.outlook.com>
+References: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
+ <MN2PR02MB60299EB8B83C4EA68A0F2B33C1A80@MN2PR02MB6029.namprd02.prod.outlook.com>
+ <CAPDyKFqdLE7d9uz_KcpO0CihM+QsFyKbNsoDMoNLT2Qy_TmNdw@mail.gmail.com>
+ <4911073.ucheZMAtV3@phil>
+In-Reply-To: <4911073.ucheZMAtV3@phil>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=MNARANI@xilinx.com; 
+x-originating-ip: [149.199.50.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 1966d976-6296-4270-83d8-08d727b0e02a
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600166)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MN2PR02MB6349;
+x-ms-traffictypediagnostic: MN2PR02MB6349:
+x-ms-exchange-purlcount: 1
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MN2PR02MB6349E05FF752BE6DD7144EACC1A40@MN2PR02MB6349.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0138CD935C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(979002)(4636009)(136003)(39860400002)(396003)(366004)(376002)(346002)(199004)(189003)(13464003)(3846002)(66476007)(33656002)(15650500001)(55016002)(316002)(7416002)(2906002)(9686003)(6506007)(2501003)(53936002)(110136005)(54906003)(76176011)(6306002)(7696005)(476003)(66946007)(4326008)(14444005)(6436002)(26005)(256004)(7736002)(66066001)(305945005)(446003)(11346002)(74316002)(102836004)(99286004)(25786009)(478600001)(86362001)(186003)(53546011)(81156014)(8676002)(81166006)(52536014)(71200400001)(6116002)(76116006)(71190400001)(66446008)(66556008)(8936002)(6246003)(64756008)(5660300002)(229853002)(14454004)(486006)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR02MB6349;H:MN2PR02MB6029.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: xilinx.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 9Vl+qXx2dOdegOLwu62qQ8+4+nRh27YzrIIoOilYNVsQC1lnDRA9R/IRld5qwvpSI/gOxNasY2x1Ez/k7fpHiI/W1b9Vm1vrThhX9v5yKpTAxI4n7XAYuToSlQegcjo86V+esHv0BblmBruBabqxERp6s9/C4gwez7UFJYmEIgMm8jqnwhkrVm0mL4OyTajk9ZtQX4155Ug7Mb2n3V6qS/d/QvWy70sJBKvuQQqhmRz5/BqADWYhXgK7aPYhvOsjFXUImT+xlvDxQ4Ygx+kqqgRk9l6QRRbW4elhufkS5td0mv8fPp/d8SwYpyB+WYacPTxN0Yu23+nzVB64dT4LP8eEhxefBdtyyl5lEFjnGoLsiYDqQFH7RXoIyZfp5JMmdyKSonGcamxEGtwvSYMenkZLx2TeqmpFkp05W07EkMg=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1966d976-6296-4270-83d8-08d727b0e02a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Aug 2019 10:01:32.2905
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jBmd3S0wOLAUfaLh6VksDZrRmaun/lQvOoy3AKrJnbvehcphtLPjqprCw5+QIDdcry8DRLPpbzAnwPcCDGHRPg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB6349
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-=C4=8Dt 22. 8. 2019 v 15:59 odes=C3=ADlatel Ulf Hansson <ulf.hansson@linaro=
-.org> napsal:
->
-> + some meson driver folkz
->
-> On Thu, 22 Aug 2019 at 10:27, Jan Kaisrlik <ja.kaisrlik@gmail.com> wrote:
+Hi Heiko/Uffe,
+
+
+
+> -----Original Message-----
+> From: Heiko Stuebner <heiko@sntech.de>
+> Sent: Thursday, August 22, 2019 11:53 PM
+> To: Ulf Hansson <ulf.hansson@linaro.org>; linux-mmc@vger.kernel.org
+> Cc: Manish Narani <MNARANI@xilinx.com>; Rob Herring <robh@kernel.org>;
+> mark.rutland@arm.com; Michal Simek <michals@xilinx.com>;
+> adrian.hunter@intel.com; christoph.muellner@theobroma-systems.com;
+> philipp.tomsich@theobroma-systems.com; viresh.kumar@linaro.org;
+> scott.branden@broadcom.com; ayaka@soulik.info; kernel@esmil.dk;
+> tony.xie@rock-chips.com; Rajan Vaja <RAJANV@xilinx.com>;
+> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; linux-arm-
+> kernel@lists.infradead.org; linux-rockchip@lists.infradead.org
+> Subject: Re: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update
+> documentation for SD Card Clock
+>=20
+> Am Donnerstag, 22. August 2019, 15:38:26 CEST schrieb Ulf Hansson:
+> > [...]
 > >
-> > st 21. 8. 2019 v 17:12 odes=C3=ADlatel Ulf Hansson <ulf.hansson@linaro.=
-org> napsal:
-> > >
-> > > + Chaotian Jing
-> > >
-> > > On Tue, 20 Aug 2019 at 13:42, <ja.kaisrlik@gmail.com> wrote:
+> > > > > > > ---
+> > > > > > >  Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 15
+> > > > ++++++++++-
+> > > > > > ----
+> > > > > > >  1 file changed, 10 insertions(+), 5 deletions(-)
+> > > > > > >
+> > > > > > > diff --git
+> a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> > > > > > b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> > > > > > > index 1edbb04..15c6397 100644
+> > > > > > > --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> > > > > > > +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> > > > > > > @@ -23,6 +23,10 @@ Required Properties:
+> > > > > > >    - reg: From mmc bindings: Register location and length.
+> > > > > > >    - clocks: From clock bindings: Handles to clock inputs.
+> > > > > > >    - clock-names: From clock bindings: Tuple including "clk_x=
+in" and
+> > > > "clk_ahb"
+> > > > > > > +            Apart from these two there is one more optional =
+clock
+> which
+> > > > > > > +            is "clk_sdcard". This clock represents output cl=
+ock from
+> > > > > > > +            controller and card. This must be specified when=
+ #clock-
+> cells
+> > > > > > > +            is specified.
+> > > > > > >    - interrupts: Interrupt specifier
+> > > > > > >
+> > > > > > >  Required Properties for "arasan,sdhci-5.1":
+> > > > > > > @@ -36,9 +40,10 @@ Optional Properties:
+> > > > > > >    - clock-output-names: If specified, this will be the name =
+of the card
+> > > > clock
+> > > > > > >      which will be exposed by this device.  Required if #cloc=
+k-cells is
+> > > > > > >      specified.
+> > > > > > > -  - #clock-cells: If specified this should be the value <0>.=
+  With this
+> > > > property
+> > > > > > > -    in place we will export a clock representing the Card Cl=
+ock.  This
+> clock
+> > > > > > > -    is expected to be consumed by our PHY.  You must also sp=
+ecify
+> > > > > > > +  - #clock-cells: If specified this should be the value <0>.=
+ With this
+> > > > > > > +    property in place we will export one clock representing =
+the Card
+> > > > > > > +    Clock. This clock is expected to be consumed by our PHY.=
+ You
+> must
+> > > > also
+> > > > > > > +    specify
+> > > > > >
+> > > > > > specify what?
+> > > > > I think this line was already there, I missed to correct it, Will=
+ update in
+> v3.
+> > > > >
+> > > > > >
+> > > > > > The 3rd clock input I assume? This statement means any existing=
+ users
+> > > > > > with 2 clock inputs and #clock-cells are in error now. Is that =
+correct?
+> > > > > Yes, this is correct. So far there was only one vendor using '#cl=
+ock-cells'
+> > > > which is Rockchip. I have sent DT patch (02/11) for that also.
+> > > > > Here this is needed as earlier implementation isn't correct as su=
+ggested
+> by
+> > > > Uffe. (https://lkml.org/lkml/2019/6/20/486) .
 > > > >
-> > > > From: Jan Kaisrlik <ja.kaisrlik@gmail.com>
+> > > > I am not sure how big of a problem the backwards compatible thingy
+> > > > with DT is, in general we must not break it. What do you say Manish=
+?
+> > >
+> > > Though I agree with Uffe on this, there is no other way from my
+> understanding. Please suggest.
+> > >
 > > > >
-> > > > This reverts commit 3a0681c7448b174e5dcfd19e9079cdd281c35f1a.
-> > > >
-> > > > Turns out the patch breaks initialization of Toshiba THGBMNG5.
-> > > > [    1.648951] mmc0: mmc_select_hs200 failed, error -84
-> > > > [    1.648988] mmc0: error -84 whilst initialising MMC card
+> > > > As a workaround, would it be possible to use
+> > > > of_clk_get_from_provider() somehow to address the compatibility iss=
+ue?
 > > >
-> > > For exactly this reason, when getting CRC errors on the first attempt=
-,
-> > > doing a retry makes little sense.
-> > >
-> > > I have looped in Chaotian who has some more details about the problem=
-.
-> > >
-> > > In any case, Jan, what HW and mmc controller are you using?
+> > > For this to be used we have to parse 'clkspec' from the DT node and p=
+ass
+> the same as an argument to this function. In this case also the DT node n=
+eeds to
+> be updated, which is same as we have done in this series.
 > >
-> > It's a custom board based on Amlogic A113D. The compatibility in dts
-> > is set to "alogic,meson-axg-mmc".
->
-> Good. I have looped in some of the relevant developers/maintainers.
->
-> >
-> > In the different revision of HW we are using Kingston EMMC04G. The
-> > card has no such problem and is working fine without this patch.
-> > We observed it only on mention Toshiba card.
->
-> I see. Of course it would also be interesting to see what CMD6 command
-> that is that fails. Would you mind adding some debug/trace to find out
-> what command it is that fails?
+> > Alright. I guess breaking DTBs for Rockchip platforms isn't
+> > acceptable, especially if those are already widely deployed, which I
+> > have no idea of....
+>=20
+> The arasan sdhci is part of the rk3399, so every SBC using that SoC, but
+> also the whole Gru series of ChromeOS devices (Samsung Chromebook Plus
+> among them) would be affected.
 
-Providing a log with following debug option  `dyndbg=3D"func mmc_mrq_pr_deb=
-ug +p`
+Thanks for confirming. This will be taken care of. I will go back to v1 cha=
+nges and will send v3.
 
-# dmesg | grep mmc0
-[    1.557984] mmc0: starting CMD52 arg 00000c00 flags 00000195
-[    1.563989] mmc0: starting CMD52 arg 80000c08 flags 00000195
-[    1.575219] mmc0: starting CMD0 arg 00000000 flags 000000c0
-[    1.593142] mmc0: starting CMD8 arg 000001aa flags 000002f5
-[    1.604439] mmc0: starting CMD5 arg 00000000 flags 000002e1
-[    1.623875] mmc0: starting CMD55 arg 00000000 flags 000000f5
-[    1.631024] mmc0: starting CMD55 arg 00000000 flags 000000f5
-[    1.640221] mmc0: starting CMD55 arg 00000000 flags 000000f5
-[    1.646802] mmc0: starting CMD55 arg 00000000 flags 000000f5
-[    1.652397] mmc0: starting CMD1 arg 00000000 flags 000000e1
-[    1.669894] mmc0: starting CMD1 arg 40ff8080 flags 000000e1
-[    1.682925] mmc0: starting CMD1 arg 40ff8080 flags 000000e1
-[    1.697073] mmc0: starting CMD1 arg 40ff8080 flags 000000e1
-[    1.704327] mmc0: starting CMD0 arg 00000000 flags 000000c0
-[    1.722251] mmc0: starting CMD1 arg 40200000 flags 000000e1
-[    1.745317] mmc0: starting CMD1 arg 40200000 flags 000000e1
-[    1.752813] mmc0: starting CMD2 arg 00000000 flags 00000007
-[    1.771731] mmc0: starting CMD3 arg 00010000 flags 00000015
-[    1.784771] mmc0: starting CMD9 arg 00010000 flags 00000007
-[    1.790433] mmc0: starting CMD7 arg 00010000 flags 00000015
-[    1.795691] mmc0: starting CMD8 arg 00000000 flags 000000b5
-[    1.800800] mmc0:     blksz 512 blocks 1 flags 00000200 tsac 50 ms nsac =
-0
-[    1.818402] mmc0: starting CMD6 arg 03af0101 flags 0000049d
-[    1.818845] mmc0: starting CMD13 arg 00010000 flags 00000195
-[    1.824349] mmc0: starting CMD6 arg 03220101 flags 0000049d
-[    1.829992] mmc0: starting CMD13 arg 00010000 flags 00000195
-[    1.835493] mmc0: starting CMD6 arg 03b70201 flags 0000049d
-[    1.841119] mmc0: starting CMD13 arg 00010000 flags 00000195
-[    1.846628] mmc0: starting CMD8 arg 00000000 flags 000000b5
-[    1.851719] mmc0:     blksz 512 blocks 1 flags 00000200 tsac 50 ms nsac =
-0
-[    1.860347] mmc0: starting CMD6 arg 03b90201 flags 0000049d
-[    1.864421] mmc0: mmc_select_hs200 failed, error -84
-[    1.868892] mmc0: error -84 whilst initialising MMC card
-
-I cannot provide more verbose logs. When I enable more it (f.e. file
-core.c) the initialization of card was successful.
-If you want to see any another logs fell free to ask.
-
-Best regards,
-Jan
-
->
-> [...]
->
-> Kind regards
-> Uffe
+Thanks,
+Manish
