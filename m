@@ -2,238 +2,227 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B94E69AC56
-	for <lists+linux-mmc@lfdr.de>; Fri, 23 Aug 2019 12:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C91F9B059
+	for <lists+linux-mmc@lfdr.de>; Fri, 23 Aug 2019 15:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391107AbfHWKBh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 23 Aug 2019 06:01:37 -0400
-Received: from mail-eopbgr700061.outbound.protection.outlook.com ([40.107.70.61]:12289
-        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730580AbfHWKBh (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 23 Aug 2019 06:01:37 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eXSqTlZinUVtpAKsmj0oVAUE9/E8hRWrmtiKxBPJilSCCNBktJWd6TFPVgKBnO8S1HAkxFfjAfymGSqQs9nRp1BAgtsNLKCbHzBwSfSqFRcecWxe8aUO9K6ARQqkA9hMqWjfV3ahxd8okv1W/jGsaBZh20f39sQ0h6SRMQhCDEEySrI23SceThcw6uWOvWuH5Ftsbc9y3su68QLBNn0S5y/6b1WZQ70VypDxf/1oTbY4tVUKvjiUDiV8tPlAlK23OdtqD6gq1X3cBdpA/VVM5PNmEG8h3mFDDCn4nlJD39keV9Itt8cYWr5wLnd9OzxceIOxl0ZRUBXrQdIF+4eo1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QS//HXcLChW8QZm3OqWZMQdi+9moM/Dh5nm+izKg3nQ=;
- b=O7OF09itaqfeRDYsGROTmlhZNNBrsbKFt2ZJS1hNmXIJzQ7Ofn35wgCwUagSSLjC+tZ8vN/OHxmMMLCbmCfE++B/QlNgeGgjdBpB32aWN3T1oqYKIRXnQsPYC/a0AFcM5Z6uFfyAG7Ljlp4A89a0TbkUS5YNeNSCIawLrLk0SUaAKKdPnzCO3nRaoe1EPK3hJ6taqgtFoFd1ZKfFK4tqXQTlNtDZPx9UCtpQbazIfT6szP9xLA5I9tv2qeW2/8DvHnzhAlsF0H1oc9kvRQM2NXv6y6j/lzff2wRcvPBTbKD5hczBj0eikUJYEW//McylbIwNGh2G2/XLXPgbCoGLeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QS//HXcLChW8QZm3OqWZMQdi+9moM/Dh5nm+izKg3nQ=;
- b=tXzM/EUqrPSHHVrk9bgisKcC7WhojJ5Fkw1HG+LKNPZdUWowiS67L8intYJzOumWiNifimuS5GEV9tOeBhPEZJvaQEVFatd5CzlpngkoajGTCNEAHppVWb7v5liF4YQERM3FPYBHeixDTdBCQXv5ilijOgXaY6LmYA41qPLT14k=
-Received: from MN2PR02MB6029.namprd02.prod.outlook.com (10.255.7.10) by
- MN2PR02MB6349.namprd02.prod.outlook.com (52.132.175.142) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2178.16; Fri, 23 Aug 2019 10:01:32 +0000
-Received: from MN2PR02MB6029.namprd02.prod.outlook.com
- ([fe80::6930:d45:6895:4255]) by MN2PR02MB6029.namprd02.prod.outlook.com
- ([fe80::6930:d45:6895:4255%4]) with mapi id 15.20.2178.020; Fri, 23 Aug 2019
- 10:01:32 +0000
-From:   Manish Narani <MNARANI@xilinx.com>
-To:     Heiko Stuebner <heiko@sntech.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-CC:     Rob Herring <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        Michal Simek <michals@xilinx.com>,
-        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
-        "christoph.muellner@theobroma-systems.com" 
-        <christoph.muellner@theobroma-systems.com>,
-        "philipp.tomsich@theobroma-systems.com" 
-        <philipp.tomsich@theobroma-systems.com>,
-        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-        "scott.branden@broadcom.com" <scott.branden@broadcom.com>,
-        "ayaka@soulik.info" <ayaka@soulik.info>,
-        "kernel@esmil.dk" <kernel@esmil.dk>,
-        "tony.xie@rock-chips.com" <tony.xie@rock-chips.com>,
-        Rajan Vaja <RAJANV@xilinx.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>
-Subject: RE: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update documentation
- for SD Card Clock
-Thread-Topic: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update documentation
- for SD Card Clock
-Thread-Index: AQHVL84QKtDrcydqmkObCTy1mFTFVabXUFgAgAB7vdCAA6ZJgIAnAKOwgAULIgCAAE+DgIABBZpg
-Date:   Fri, 23 Aug 2019 10:01:31 +0000
-Message-ID: <MN2PR02MB6029DEFCD8E9B54AA9610023C1A40@MN2PR02MB6029.namprd02.prod.outlook.com>
-References: <1561958991-21935-1-git-send-email-manish.narani@xilinx.com>
- <MN2PR02MB60299EB8B83C4EA68A0F2B33C1A80@MN2PR02MB6029.namprd02.prod.outlook.com>
- <CAPDyKFqdLE7d9uz_KcpO0CihM+QsFyKbNsoDMoNLT2Qy_TmNdw@mail.gmail.com>
- <4911073.ucheZMAtV3@phil>
-In-Reply-To: <4911073.ucheZMAtV3@phil>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=MNARANI@xilinx.com; 
-x-originating-ip: [149.199.50.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 1966d976-6296-4270-83d8-08d727b0e02a
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600166)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MN2PR02MB6349;
-x-ms-traffictypediagnostic: MN2PR02MB6349:
-x-ms-exchange-purlcount: 1
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR02MB6349E05FF752BE6DD7144EACC1A40@MN2PR02MB6349.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 0138CD935C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(979002)(4636009)(136003)(39860400002)(396003)(366004)(376002)(346002)(199004)(189003)(13464003)(3846002)(66476007)(33656002)(15650500001)(55016002)(316002)(7416002)(2906002)(9686003)(6506007)(2501003)(53936002)(110136005)(54906003)(76176011)(6306002)(7696005)(476003)(66946007)(4326008)(14444005)(6436002)(26005)(256004)(7736002)(66066001)(305945005)(446003)(11346002)(74316002)(102836004)(99286004)(25786009)(478600001)(86362001)(186003)(53546011)(81156014)(8676002)(81166006)(52536014)(71200400001)(6116002)(76116006)(71190400001)(66446008)(66556008)(8936002)(6246003)(64756008)(5660300002)(229853002)(14454004)(486006)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR02MB6349;H:MN2PR02MB6029.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: xilinx.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 9Vl+qXx2dOdegOLwu62qQ8+4+nRh27YzrIIoOilYNVsQC1lnDRA9R/IRld5qwvpSI/gOxNasY2x1Ez/k7fpHiI/W1b9Vm1vrThhX9v5yKpTAxI4n7XAYuToSlQegcjo86V+esHv0BblmBruBabqxERp6s9/C4gwez7UFJYmEIgMm8jqnwhkrVm0mL4OyTajk9ZtQX4155Ug7Mb2n3V6qS/d/QvWy70sJBKvuQQqhmRz5/BqADWYhXgK7aPYhvOsjFXUImT+xlvDxQ4Ygx+kqqgRk9l6QRRbW4elhufkS5td0mv8fPp/d8SwYpyB+WYacPTxN0Yu23+nzVB64dT4LP8eEhxefBdtyyl5lEFjnGoLsiYDqQFH7RXoIyZfp5JMmdyKSonGcamxEGtwvSYMenkZLx2TeqmpFkp05W07EkMg=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S2388413AbfHWNH4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 23 Aug 2019 09:07:56 -0400
+Received: from condef-04.nifty.com ([202.248.20.69]:59652 "EHLO
+        condef-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727894AbfHWNH4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 23 Aug 2019 09:07:56 -0400
+X-Greylist: delayed 354 seconds by postgrey-1.27 at vger.kernel.org; Fri, 23 Aug 2019 09:07:55 EDT
+Received: from conssluserg-06.nifty.com ([10.126.8.85])by condef-04.nifty.com with ESMTP id x7NCva5M024664
+        for <linux-mmc@vger.kernel.org>; Fri, 23 Aug 2019 21:57:36 +0900
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id x7NCvTgE012916;
+        Fri, 23 Aug 2019 21:57:29 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x7NCvTgE012916
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1566565050;
+        bh=Ub/aJVgL0Rn8PS4l6h9MNegKzCHvoAER+77sx19M0UY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=x3UMbC/bnXW7WwUIPfky1srdR+lkOf6ENu7W4g32BgP9neaRCruuC32JcjlhjxN50
+         JCL5rpdimcwEhwnUW6elfxYfS2nlO2SCXR6k01yAU1wN83eOMb5beFGx/3cx7HTwq6
+         n+rpv8LepgsA0BDfGZ0UHdpzQ5RSS7mI5TAxFCuzoboOT0g3d/M0HxQu4SVst8XDYo
+         Ud5zaiI4DPM58r7+q3a6n5/a8MgSRX31R8Xn3IsduQFic7/qGwzMYkn6xELF578JDr
+         aZxbRSKfBjDcn4O0xsYJjWy3uimPl8qTSQPR0ww3RhRIGaDq66wYW2dit4Q6M7c7ja
+         N/LW4Lt0Fgyng==
+X-Nifty-SrcIP: [209.85.217.53]
+Received: by mail-vs1-f53.google.com with SMTP id m62so6096817vsc.8;
+        Fri, 23 Aug 2019 05:57:29 -0700 (PDT)
+X-Gm-Message-State: APjAAAWQ5p7JxhDoE/4k1h5UWec/fC8BVOzR/xXu3nUmmLQ/awL81myW
+        uGRJIXF0bH7jajq0rS19G2fSU8Nt8WD8+HROKHs=
+X-Google-Smtp-Source: APXvYqxkUJRBa4Gu9eJJ/5yY3HcOprjiA+d7CfrbMqgNuwpDTZWvyQ2suLPAbzt4RY2ouQTzsdu17SpfNRdBFLKueKM=
+X-Received: by 2002:a67:8a83:: with SMTP id m125mr2655031vsd.181.1566565048153;
+ Fri, 23 Aug 2019 05:57:28 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1966d976-6296-4270-83d8-08d727b0e02a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Aug 2019 10:01:32.2905
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jBmd3S0wOLAUfaLh6VksDZrRmaun/lQvOoy3AKrJnbvehcphtLPjqprCw5+QIDdcry8DRLPpbzAnwPcCDGHRPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB6349
+References: <20190506223334.1834-1-nicoleotsuka@gmail.com> <20190506223334.1834-3-nicoleotsuka@gmail.com>
+ <CAK7LNARacEorb38mVBw_V-Zvz-znWgBma1AP1-z_5B_xZU4ogg@mail.gmail.com>
+In-Reply-To: <CAK7LNARacEorb38mVBw_V-Zvz-znWgBma1AP1-z_5B_xZU4ogg@mail.gmail.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Fri, 23 Aug 2019 21:56:52 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQfYBCoChMV=MOwcUyVoqRkrPWs7DaWdzDqjBe18gGiAQ@mail.gmail.com>
+Message-ID: <CAK7LNAQfYBCoChMV=MOwcUyVoqRkrPWs7DaWdzDqjBe18gGiAQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] dma-contiguous: Use fallback alloc_pages for
+ single pages
+To:     Nicolin Chen <nicoleotsuka@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Robin Murphy <robin.murphy@arm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>, vdumpa@nvidia.com,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Thierry Reding <treding@nvidia.com>,
+        Kees Cook <keescook@chromium.org>, iamjoonsoo.kim@lge.com,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Heiko/Uffe,
++ linux-mmc, Ulf Hansson, Adrian Hunter,
+
+
+ADMA of SDHCI is not working
+since bd2e75633c8012fc8a7431c82fda66237133bf7e
+
+
+Did anybody see the same problem?
+
+
+Masahiro
 
 
 
-> -----Original Message-----
-> From: Heiko Stuebner <heiko@sntech.de>
-> Sent: Thursday, August 22, 2019 11:53 PM
-> To: Ulf Hansson <ulf.hansson@linaro.org>; linux-mmc@vger.kernel.org
-> Cc: Manish Narani <MNARANI@xilinx.com>; Rob Herring <robh@kernel.org>;
-> mark.rutland@arm.com; Michal Simek <michals@xilinx.com>;
-> adrian.hunter@intel.com; christoph.muellner@theobroma-systems.com;
-> philipp.tomsich@theobroma-systems.com; viresh.kumar@linaro.org;
-> scott.branden@broadcom.com; ayaka@soulik.info; kernel@esmil.dk;
-> tony.xie@rock-chips.com; Rajan Vaja <RAJANV@xilinx.com>;
-> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; linux-arm-
-> kernel@lists.infradead.org; linux-rockchip@lists.infradead.org
-> Subject: Re: [PATCH v2 01/11] dt-bindings: mmc: arasan: Update
-> documentation for SD Card Clock
->=20
-> Am Donnerstag, 22. August 2019, 15:38:26 CEST schrieb Ulf Hansson:
-> > [...]
+
+On Fri, Aug 23, 2019 at 9:49 PM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+>
+> On Tue, May 7, 2019 at 7:36 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
 > >
-> > > > > > > ---
-> > > > > > >  Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 15
-> > > > ++++++++++-
-> > > > > > ----
-> > > > > > >  1 file changed, 10 insertions(+), 5 deletions(-)
-> > > > > > >
-> > > > > > > diff --git
-> a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > > > > > b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > > > > > > index 1edbb04..15c6397 100644
-> > > > > > > --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > > > > > > +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> > > > > > > @@ -23,6 +23,10 @@ Required Properties:
-> > > > > > >    - reg: From mmc bindings: Register location and length.
-> > > > > > >    - clocks: From clock bindings: Handles to clock inputs.
-> > > > > > >    - clock-names: From clock bindings: Tuple including "clk_x=
-in" and
-> > > > "clk_ahb"
-> > > > > > > +            Apart from these two there is one more optional =
-clock
-> which
-> > > > > > > +            is "clk_sdcard". This clock represents output cl=
-ock from
-> > > > > > > +            controller and card. This must be specified when=
- #clock-
-> cells
-> > > > > > > +            is specified.
-> > > > > > >    - interrupts: Interrupt specifier
-> > > > > > >
-> > > > > > >  Required Properties for "arasan,sdhci-5.1":
-> > > > > > > @@ -36,9 +40,10 @@ Optional Properties:
-> > > > > > >    - clock-output-names: If specified, this will be the name =
-of the card
-> > > > clock
-> > > > > > >      which will be exposed by this device.  Required if #cloc=
-k-cells is
-> > > > > > >      specified.
-> > > > > > > -  - #clock-cells: If specified this should be the value <0>.=
-  With this
-> > > > property
-> > > > > > > -    in place we will export a clock representing the Card Cl=
-ock.  This
-> clock
-> > > > > > > -    is expected to be consumed by our PHY.  You must also sp=
-ecify
-> > > > > > > +  - #clock-cells: If specified this should be the value <0>.=
- With this
-> > > > > > > +    property in place we will export one clock representing =
-the Card
-> > > > > > > +    Clock. This clock is expected to be consumed by our PHY.=
- You
-> must
-> > > > also
-> > > > > > > +    specify
-> > > > > >
-> > > > > > specify what?
-> > > > > I think this line was already there, I missed to correct it, Will=
- update in
-> v3.
-> > > > >
-> > > > > >
-> > > > > > The 3rd clock input I assume? This statement means any existing=
- users
-> > > > > > with 2 clock inputs and #clock-cells are in error now. Is that =
-correct?
-> > > > > Yes, this is correct. So far there was only one vendor using '#cl=
-ock-cells'
-> > > > which is Rockchip. I have sent DT patch (02/11) for that also.
-> > > > > Here this is needed as earlier implementation isn't correct as su=
-ggested
-> by
-> > > > Uffe. (https://lkml.org/lkml/2019/6/20/486) .
-> > > >
-> > > > I am not sure how big of a problem the backwards compatible thingy
-> > > > with DT is, in general we must not break it. What do you say Manish=
-?
-> > >
-> > > Though I agree with Uffe on this, there is no other way from my
-> understanding. Please suggest.
-> > >
-> > > >
-> > > > As a workaround, would it be possible to use
-> > > > of_clk_get_from_provider() somehow to address the compatibility iss=
-ue?
-> > >
-> > > For this to be used we have to parse 'clkspec' from the DT node and p=
-ass
-> the same as an argument to this function. In this case also the DT node n=
-eeds to
-> be updated, which is same as we have done in this series.
+> > The addresses within a single page are always contiguous, so it's
+> > not so necessary to always allocate one single page from CMA area.
+> > Since the CMA area has a limited predefined size of space, it may
+> > run out of space in heavy use cases, where there might be quite a
+> > lot CMA pages being allocated for single pages.
 > >
-> > Alright. I guess breaking DTBs for Rockchip platforms isn't
-> > acceptable, especially if those are already widely deployed, which I
-> > have no idea of....
->=20
-> The arasan sdhci is part of the rk3399, so every SBC using that SoC, but
-> also the whole Gru series of ChromeOS devices (Samsung Chromebook Plus
-> among them) would be affected.
+> > However, there is also a concern that a device might care where a
+> > page comes from -- it might expect the page from CMA area and act
+> > differently if the page doesn't.
+> >
+> > This patch tries to use the fallback alloc_pages path, instead of
+> > one-page size allocations from the global CMA area in case that a
+> > device does not have its own CMA area. This'd save resources from
+> > the CMA global area for more CMA allocations, and also reduce CMA
+> > fragmentations resulted from trivial allocations.
+> >
+> > Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
+>
+>
+> This commit (bd2e75633c8012fc8a7431c82fda66237133bf7e)
+> broke the DMA for my MMC driver in the following way:
+>
+>
+>
+>
+> [    1.876755] mmc0: ADMA error
+> [    1.883385] mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+> [    1.889834] mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00000002
+> [    1.896284] mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000001
+> [    1.902733] mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+> [    1.909182] mmc0: sdhci: Present:   0x01ff02f6 | Host ctl: 0x00000019
+> [    1.915631] mmc0: sdhci: Power:     0x0000000b | Blk gap:  0x00000000
+> [    1.922081] mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x0000fa07
+> [    1.928530] mmc0: sdhci: Timeout:   0x0000000b | Int stat: 0x00000001
+> [    1.934981] mmc0: sdhci: Int enab:  0x03ff008b | Sig enab: 0x03ff008b
+> [    1.941429] mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000001
+> [    1.947880] mmc0: sdhci: Caps:      0x546ec800 | Caps_1:   0x00000000
+> [    1.954329] mmc0: sdhci: Cmd:       0x0000083a | Max curr: 0x00000000
+> [    1.960778] mmc0: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0xffffffff
+> [    1.967229] mmc0: sdhci: Resp[2]:   0x320f5903 | Resp[3]:  0x3fd05e00
+> [    1.973678] mmc0: sdhci: Host ctl2: 0x00000000
+> [    1.978125] mmc0: sdhci: ADMA Err:  0x00000001 | ADMA Ptr: 0x000000013965b200
+> [    1.985271] mmc0: sdhci: ============================================
+> [    1.991758] mmc0: error -5 whilst initialising MMC card
+> [    1.991913] 43fb0000.uart: ttyS1 at MMIO 0x43fb0000 (irq = 0,
+> base_baud = 768000) is a 16550A
+> [    2.011011] hctosys: unable to open rtc device (rtc0)
+> [    2.017694] Freeing unused kernel memory: 2368K
+> [    2.027131] Run /init as init process
+> Starting syslogd: OK
+> Starting klogd: OK
+> Initializing random number generator... [    2.074399] random: dd:
+> uninitialized urandom read (512 bytes read)
+> done.
+> Starting network: OK
+> [    2.109593] mmc0: ADMA error
+> [    2.112488] mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+> [    2.118941] mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00000002
+> [    2.125389] mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000001
+> [    2.131840] mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+> [    2.138289] mmc0: sdhci: Present:   0x01ff02f6 | Host ctl: 0x00000019
+> [    2.144738] mmc0: sdhci: Power:     0x0000000b | Blk gap:  0x00000000
+> [    2.151188] mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x00004e47
+> [    2.157637] mmc0: sdhci: Timeout:   0x0000000b | Int stat: 0x00000001
+> [    2.164087] mmc0: sdhci: Int enab:  0x03ff008b | Sig enab: 0x03ff008b
+> [    2.170536] mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000001
+> [    2.176987] mmc0: sdhci: Caps:      0x546ec800 | Caps_1:   0x00000000
+> [    2.183435] mmc0: sdhci: Cmd:       0x0000083a | Max curr: 0x00000000
+> [    2.189886] mmc0: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0xffffffff
+> [    2.196335] mmc0: sdhci: Resp[2]:   0x320f5903 | Resp[3]:  0x3fd05e00
+> [    2.202784] mmc0: sdhci: Host ctl2: 0x00000000
+> [    2.207232] mmc0: sdhci: ADMA Err:  0x00000001 | ADMA Ptr: 0x000000013965b200
+> [    2.214379] mmc0: sdhci: ============================================
+>
+> [    2.220881] mmc0: error -5 whilst initialising MMC card
+> Welcome to Buildroot
+> buildroot login: [    2.332786] mmc0: ADMA error
+> [    2.335668] mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+> [    2.342119] mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00000002
+> [    2.348568] mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000001
+> [    2.355018] mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+> [    2.361468] mmc0: sdhci: Present:   0x01ff02f6 | Host ctl: 0x00000019
+> [    2.367917] mmc0: sdhci: Power:     0x0000000b | Blk gap:  0x00000000
+> [    2.374367] mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x0000f447
+> [    2.380816] mmc0: sdhci: Timeout:   0x0000000b | Int stat: 0x00000001
+> [    2.387267] mmc0: sdhci: Int enab:  0x03ff008b | Sig enab: 0x03ff008b
+> [    2.393716] mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000001
+> [    2.400166] mmc0: sdhci: Caps:      0x546ec800 | Caps_1:   0x00000000
+> [    2.406615] mmc0: sdhci: Cmd:       0x0000083a | Max curr: 0x00000000
+> [    2.413065] mmc0: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0xffffffff
+> [    2.419515] mmc0: sdhci: Resp[2]:   0x320f5903 | Resp[3]:  0x3fd05e00
+> [    2.425963] mmc0: sdhci: Host ctl2: 0x00000000
+> [    2.430412] mmc0: sdhci: ADMA Err:  0x00000001 | ADMA Ptr: 0x000000013965b200
+> [    2.437557] mmc0: sdhci: ============================================
+> [    2.444031] mmc0: error -5 whilst initialising MMC card
+> [    2.572203] mmc0: ADMA error
+> [    2.575089] mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+> [    2.581540] mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00000002
+> [    2.587989] mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000001
+> [    2.594439] mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+> [    2.600889] mmc0: sdhci: Present:   0x01ef02f6 | Host ctl: 0x00000019
+> [    2.607339] mmc0: sdhci: Power:     0x0000000b | Blk gap:  0x00000000
+> [    2.613788] mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x0000e8c7
+> [    2.620237] mmc0: sdhci: Timeout:   0x0000000b | Int stat: 0x00000001
+> [    2.626686] mmc0: sdhci: Int enab:  0x03ff008b | Sig enab: 0x03ff008b
+> [    2.633137] mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000001
+> [    2.639586] mmc0: sdhci: Caps:      0x546ec800 | Caps_1:   0x00000000
+> [    2.646036] mmc0: sdhci: Cmd:       0x0000083a | Max curr: 0x00000000
+> [    2.652485] mmc0: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0xffffffff
+> [    2.658936] mmc0: sdhci: Resp[2]:   0x320f5903 | Resp[3]:  0x3fd05e00
+> [    2.665384] mmc0: sdhci: Host ctl2: 0x00000000
+> [    2.669832] mmc0: sdhci: ADMA Err:  0x00000001 | ADMA Ptr: 0x000000013965b200
+> [    2.676979] mmc0: sdhci: ============================================
+> [    2.683450] mmc0: error -5 whilst initialising MMC card
+>
+> CTRL-A Z for help | 115200 8N1 | NOR | Minicom 2.7.1 | VT102 | Offline
+> | ttyUSB0
+>
+> Reverting this commit fixed the problem.
+>
+>
+>
+> --
+> Best Regards
+> Masahiro Yamada
 
-Thanks for confirming. This will be taken care of. I will go back to v1 cha=
-nges and will send v3.
 
-Thanks,
-Manish
+
+-- 
+Best Regards
+Masahiro Yamada
