@@ -2,64 +2,120 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 349A29C133
-	for <lists+linux-mmc@lfdr.de>; Sun, 25 Aug 2019 03:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D8E49C493
+	for <lists+linux-mmc@lfdr.de>; Sun, 25 Aug 2019 17:06:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728243AbfHYBKb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 24 Aug 2019 21:10:31 -0400
-Received: from verein.lst.de ([213.95.11.211]:38250 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728214AbfHYBKb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 24 Aug 2019 21:10:31 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id BCB0D68AEF; Sun, 25 Aug 2019 03:10:25 +0200 (CEST)
-Date:   Sun, 25 Aug 2019 03:10:25 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     Nicolin Chen <nicoleotsuka@gmail.com>,
-        Christoph Hellwig <hch@lst.de>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>, vdumpa@nvidia.com,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Thierry Reding <treding@nvidia.com>,
-        Kees Cook <keescook@chromium.org>, iamjoonsoo.kim@lge.com,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org
-Subject: Re: [PATCH v2 2/2] dma-contiguous: Use fallback alloc_pages for
- single pages
-Message-ID: <20190825011025.GA23410@lst.de>
-References: <20190506223334.1834-1-nicoleotsuka@gmail.com> <20190506223334.1834-3-nicoleotsuka@gmail.com> <CAK7LNARacEorb38mVBw_V-Zvz-znWgBma1AP1-z_5B_xZU4ogg@mail.gmail.com> <CAK7LNAQfYBCoChMV=MOwcUyVoqRkrPWs7DaWdzDqjBe18gGiAQ@mail.gmail.com>
+        id S1727050AbfHYPGc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 25 Aug 2019 11:06:32 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:37687 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725922AbfHYPGc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 25 Aug 2019 11:06:32 -0400
+Received: by mail-wr1-f68.google.com with SMTP id z11so12930143wrt.4;
+        Sun, 25 Aug 2019 08:06:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EzGMcTh8cYrJ0fJe6kpJtuwR7ufzId3YdTEGcvV46I4=;
+        b=T5bfT551DOss2tIjS7I2D9v9HeNSyM5WLjI8qnaGhZ9u4N1hbrB3ulttCaa2blX5jI
+         1gV+3u+MmKX5SPS4cX4sW6NDrBGJje62dhV0GEpJiuillbYjPDOtGMS4x6eyXDsugnsw
+         5f+MCJy8iM6OUqmY7kHZmJhkXtNFEnZrv/LeNDl+9LiAyo0ewRnx1WJf3eBTIp3t/T4l
+         KmMc/mLNHp2+yiQJWPtktOd6PSSpkNzlmV7u+0jOMUoaibDXqc9IGylOCZq4nCpkVpA3
+         E0NpW+MY2wH69YVMO2ELq0V9nVvvVIs1MZNkAFRbKXrauKk8S12s+if2/wjKu5dUeTta
+         AUMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EzGMcTh8cYrJ0fJe6kpJtuwR7ufzId3YdTEGcvV46I4=;
+        b=dNGIS7aFuXx9z0yb4wxqkPSByqT7Q3i/ZxghtIsLGOr7Sm/a7ocE+Qx6RoZYPqlOmN
+         J3jrVRgChm8AbF4at8MDN8VfNkou4AJsm6zYJgnWfu6D9Z7dZGbUIqr0ZDRvCVWBvjj4
+         q+ApfM9VTmdwHHTtqBR2YmZZvLoxDA1QkpWqwqS1tCR7nZL8Oi3dOVh9OumsbKB2L+CP
+         7GJXviH1IVAyasuJ35nPTASi9+seMqAHcynvrjSRMfheIWFC/nGyYb1OSR2cwBYbywdW
+         eGofAoLECPaLuC/amsOJlFXBW+5nDNHxBMO/SIkuP4uIJJ3VJp0nIugNieF1V2ZyJLx1
+         euWw==
+X-Gm-Message-State: APjAAAUB1w8EYVte76DTgd2t7+AM+LRz8p1jhjnk1KKPBpjgSu2oM5Yg
+        naqOrep9Yh9pG3++79MzgUw=
+X-Google-Smtp-Source: APXvYqw/WXTJJuzkVX90/eatj/z3u7hsIamk6YChmEn5woj5sKeT2mTbgpIkmQXqmhDcW2TWZ1Cesw==
+X-Received: by 2002:adf:f6d2:: with SMTP id y18mr16829269wrp.102.1566745589786;
+        Sun, 25 Aug 2019 08:06:29 -0700 (PDT)
+Received: from alejandro-pc.mundo-R.com (57.166.117.91.dynamic.reverse-mundo-r.com. [91.117.166.57])
+        by smtp.gmail.com with ESMTPSA id 24sm8571017wmf.10.2019.08.25.08.06.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Aug 2019 08:06:29 -0700 (PDT)
+From:   =?UTF-8?q?Alejandro=20Gonz=C3=A1lez?= 
+        <alejandro.gonzalez.correo@gmail.com>
+To:     ulf.hansson@linaro.org, maxime.ripard@bootlin.com, wens@csie.org,
+        linus.walleij@linaro.org, gregkh@linuxfoundation.org,
+        tglx@linutronix.de, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     =?UTF-8?q?Alejandro=20Gonz=C3=A1lez?= 
+        <alejandro.gonzalez.correo@gmail.com>, linux-sunxi@googlegroups.com
+Subject: [PATCH] mmc: sunxi: fix unusuable eMMC on some H6 boards by disabling DDR
+Date:   Sun, 25 Aug 2019 17:05:58 +0200
+Message-Id: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAQfYBCoChMV=MOwcUyVoqRkrPWs7DaWdzDqjBe18gGiAQ@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Aug 23, 2019 at 09:56:52PM +0900, Masahiro Yamada wrote:
-> + linux-mmc, Ulf Hansson, Adrian Hunter,
-> 
-> 
-> ADMA of SDHCI is not working
-> since bd2e75633c8012fc8a7431c82fda66237133bf7e
+Some Allwinner H6 boards have timing problems when dealing with
+DDR-capable eMMC cards. These boards include the Pine H64 and Tanix TX6.
 
-Does it work for you with this commit:
+These timing problems result in out of sync communication between the
+driver and the eMMC, which renders the memory unsuable for every
+operation but some basic commmands, like reading the status register.
 
-http://git.infradead.org/users/hch/dma-mapping.git/commitdiff/90ae409f9eb3bcaf38688f9ec22375816053a08e
+The cause of these timing problems is not yet well known, but they go
+away by disabling DDR mode operation in the driver. Like on some H5
+boards, it might be that the traces are not precise enough to support
+these speeds. However, Jernej Skrabec compared the BSP driver with this
+driver, and found that the BSP driver configures pinctrl to operate at
+1.8 V when entering DDR mode (although 3.3 V operation is supported), while
+the mainline kernel lacks any mechanism to switch voltages dynamically.
+Finally, other possible cause might be some timing parameter that is
+different on the H6 with respect to other SoCs.
+
+Therefore, as this fix works reliably, the kernel lacks the required
+dynamic pinctrl control for now and a slow eMMC is better than a not
+working eMMC, just disable DDR operation for now on H6-compatible
+devices.
+
+Signed-off-by: Alejandro González <alejandro.gonzalez.correo@gmail.com>
+---
+ drivers/mmc/host/sunxi-mmc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+index d577a6b0ceae..dac57d76d009 100644
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -1395,14 +1395,17 @@ static int sunxi_mmc_probe(struct platform_device *pdev)
+ 
+ 	/*
+ 	 * Some H5 devices do not have signal traces precise enough to
+-	 * use HS DDR mode for their eMMC chips.
++	 * use HS DDR mode for their eMMC chips. Other H6 devices operate
++	 * unreliably on HS DDR mode, too.
+ 	 *
+ 	 * We still enable HS DDR modes for all the other controller
+-	 * variants that support them.
++	 * variants that support them properly.
+ 	 */
+ 	if ((host->cfg->clk_delays || host->use_new_timings) &&
+ 	    !of_device_is_compatible(pdev->dev.of_node,
+-				     "allwinner,sun50i-h5-emmc"))
++				     "allwinner,sun50i-h5-emmc") &&
++	    !of_device_is_compatible(pdev->dev.of_node,
++				     "allwinner,sun50i-h6-emmc"))
+ 		mmc->caps      |= MMC_CAP_1_8V_DDR | MMC_CAP_3_3V_DDR;
+ 
+ 	ret = mmc_of_parse(mmc);
+-- 
+2.20.1
+
