@@ -2,128 +2,126 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5BC09D320
-	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2019 17:40:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 368349D54B
+	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2019 20:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729648AbfHZPkK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 26 Aug 2019 11:40:10 -0400
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:46287 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732636AbfHZPkI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 26 Aug 2019 11:40:08 -0400
-Received: by mail-ua1-f68.google.com with SMTP id y19so5847615ual.13
-        for <linux-mmc@vger.kernel.org>; Mon, 26 Aug 2019 08:40:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=plT/n27037I8QlKS8S1GKgyu4KFjFp7fxizTWChkqOg=;
-        b=nxE/VrZFtW+kte1eTm/tlxwpCyyo145xQF26q+bGLWE/pMIH9HRSBpU8SgXv27Lqow
-         BgEKF7dLjd5zR5YFiAZE07wJyvLz6kQf/RXsv+Qexy8TRuK0+VypKR5QoFruvgdhiEKs
-         NKZW+n+43llRPGbSPLEdE+ASUPmWt5NqTSdh5EqLqHOYsT96OBkc+zbhSFQV5MRJgS9m
-         cICf9MWRpliytqmGj7OKu7kyELWrd/rljzH/CNyYxKWkw3wfqvMWE/idqjsuntNfjwPa
-         3ngxaqfOV4Z3caLAcg2PBVRqXA2SgrQbSEjsaR9dGiKJv7Pz3VLsmIhEJxtswtz+erSt
-         xxEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=plT/n27037I8QlKS8S1GKgyu4KFjFp7fxizTWChkqOg=;
-        b=uhgRITPN3DiqdXA5ds8f2FQVZz/UeJ1fXFqU/qsNUvb+HtwnwQ5Q5jQ8BwhGJnANsn
-         8gVzk3BWoqOzJz02Cn+8LX7ctCmydjDcACQGIwJ3E1atX4dL0DS99MT06M+r+cIk/ssv
-         PTCCeuwWtyIk3sjInWphZH7kXnlopAXwXKGPdIUWri/RSFIZ1nNr+1JdVE4lNTgYfALe
-         bwUEIzDOva377M1W34Ges+q39Ru6SjeUaqQBsM567tx78nV9tCS3iNTE+V4JNoHC7H91
-         3uZm80iyE5re80DkIxAUN8pYpF+Mdx9U1FMx/u1925PBi4wn4rfnsTH/45WrFvgdZMkM
-         Lv8Q==
-X-Gm-Message-State: APjAAAXEahIP8snGcZLNRxyEUAeqTFj9ZnI6AzqMBKdZUEd/on1D9sL4
-        4l2BZmLk2Rl8PBPzz19vZwY6V+A67YBV87CHnPSyIdcO
-X-Google-Smtp-Source: APXvYqwh4K9A04GmItQmmMhxPNdRSGLyHEYXZeyAj7saIpouT0dw/+6lDx8uEfTFz/fS+2cds9uiBzbR6fAybjyYno8=
-X-Received: by 2002:ab0:70b1:: with SMTP id q17mr8885348ual.100.1566834007914;
- Mon, 26 Aug 2019 08:40:07 -0700 (PDT)
+        id S2387586AbfHZSCe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 26 Aug 2019 14:02:34 -0400
+Received: from mail.overt.org ([157.230.92.47]:46155 "EHLO mail.overt.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729144AbfHZSCe (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 26 Aug 2019 14:02:34 -0400
+Received: from authenticated-user (mail.overt.org [157.230.92.47])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.overt.org (Postfix) with ESMTPSA id 232283F246;
+        Mon, 26 Aug 2019 13:02:32 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=overt.org; s=mail;
+        t=1566842552; bh=XPUCkVPr2Rlf7Rklio9IAxD5TQTAnPmAr0qzAzAwYtU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OSA3LOKls/8ralTJB4ctpws14KNMrSt6B2QIv/K5lakeb5U46V34H50JBhQY63ZuI
+         yR0Rn3k+u1PLfr802sZ2r4A5EWPpn9Fa3iCbs4t3pEgoIJOJSN5AtjPaOYP+IF4FE3
+         KA8sstjE8pU7VgQbUhDeYACyRxq8Bnu808CzBsabkCduUeNpTeEvh38NbXseIp3wfH
+         5cSz++KVh3MiLssLj4WWkq9ZXUQr755axK3DvwFuBjPj8X02nmqOIsC//Zj/PgIVuH
+         ROEw1SJ+5+ATMoRh3TD3Cr9KHVZbyannd17C1ZtFTcdayiCOCK2YUHqJFB3k8NOJBn
+         IFypRZrag2egg==
+From:   Philip Langdale <philipl@overt.org>
+To:     linux-mmc@vger.kernel.org
+Cc:     Philip Langdale <philipl@overt.org>
+Subject: [PATCH] mmc: rtsx: Don't attempt to use 'Low-Voltage' VDD for SD cards
+Date:   Mon, 26 Aug 2019 11:02:22 -0700
+Message-Id: <20190826180222.15960-1-philipl@overt.org>
 MIME-Version: 1.0
-References: <20190811021917.29736-1-philipl@overt.org> <CAPDyKFr5z4YknbS4_9NmzQ0TMHf+SqGxd5HyMGi4oeXAWFeSHw@mail.gmail.com>
- <41d073f646b1f94adcf41b2cf0f798d8@overt.org> <20190824152530.432fe9a2@fido6>
-In-Reply-To: <20190824152530.432fe9a2@fido6>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 26 Aug 2019 17:39:30 +0200
-Message-ID: <CAPDyKFq3o-StNCuNA3vy8uW5pO=eu1BheQXyT4ftmfhuPSUnBg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: rtsx_pci: Do not set MMC_CAP2_FULL_PWR_CYCLE
-To:     Philip Langdale <philipl@overt.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 25 Aug 2019 at 00:25, Philip Langdale <philipl@overt.org> wrote:
->
-> On Thu, 22 Aug 2019 16:05:22 -0700
-> Philip Langdale <philipl@overt.org> wrote:
->
-> > So, what's actually wrong? Well, either the controller doesn't really
-> > support the
-> > low voltage range, or the card doesn't. As my machine here only has a
-> > microsd slot,
-> > I can't test with an MMCplus card to see if low voltage MMC would
-> > work. Without that
-> > I can't say whether we should remove the host flag or somehow
-> > blacklist low voltage
-> > range on these cards (or any SD card?)
-> >
-> > Would love to get your thoughts.
->
-> I did more reading and thinking. In the MMC spec, a low-voltage (1.8V)
-> supporting card can run at 1.8V directly from start up (and this is
-> what the existing core logic does). But for SD cards, i think this is
-> not true. I read the Low-Voltage-Signaling announcement which says
-> there is a new negotiation mechanism but I can't find it documented in
-> the SD 6.0 spec (despite the announcement saying it's part of the SD
-> 6.0 spec). That implies that direct bring up at low voltage doesn't
-> work like it does for an MMC card.
+There have been multiple reports of failures for newer SD cards
+with Realtek readers using the rtsx_pci_sdmmc driver in recent
+months, including myself.
 
-Thanks a lot for analyzing the problem more deeply!
+One common theme was that Sandisk A2 cards all failed while older
+cards worked fine. The first reports in bugzilla showed up in late
+2018 corresponding with the availabilty of these cards.
 
-As far as I can understand, the the OCR register for SD card
-represents the voltage range for VDD (and VDD1 for UHS-II cards),
-which is represented by the vmmc regulator in the mmc core.
+After some false starts, what I realised was that these new cards
+have bit 7 set in OCR which means they claim to support the 'Low
+Voltage Range' for VDD. This is an incompletely defined concept
+in the SD spec - in fact, there is no precise voltage associated
+with the 'Low Voltage Range'. We have to go to the MMC spec to
+see that it is 1.65-1.95V.
 
-The OCR is isn't about the I/O signaling voltage, at least to my
-understanding. When in comes to "dual voltage" SD cards, I think we
-can simply forget about those, at least until someone come and says we
-need to support then. Moreover, reading the spec doesn't really
-mention much about "dual voltage" SD cards.
+So, I believe there is currently no legitimate way for an SD
+card to operate in the low voltage range, and a card that claims
+support by setting bit 7 is simply wrong, although technically
+not out of spec. Because the spec doesn't cover how to handle a
+card that sets this bit, we really need to act as if the bit is
+not set and do normal VDD initialisation.
 
->
-> Also, again without seeing an actual spec, I'd guess this means that
-> having bit 7 set in OCR cannot be interpreted the same way for an SD
-> card as for an MMC card. Perhaps it should be read to mean that the LVS
-> negotiation process should be executed, but even that might be silly,
-> because the whole point of LVS is to support scenarios where only 1.8V
-> is usable - that means negotiation must be done with no prior
-> knowledge. So you can't read OCR until you already know that 1.8V is
-> supported.
+And, in fact, this is exactly what happens in the sdhci driver.
+By default, it elides MMC_VDD_165_195 for SD cards, and there is
+core logic that allows different values of ocr_avail for SD and
+MMC (and SDIO, even).
 
-Again, OCR is probably not about LVS. Becuase LVS is about supporting
-to initialize the SD card in 1.8V signal voltage.
+As such, an equivalent change should be made in the two rtsx
+drivers (pci and usb) to explicitly set ocr_avail_sd, leaving
+out the low voltage range.
 
->
-> So maybe the punchline here is that shared logic that will try and
-> bring up a card at 1.8V should be MMC only and for SD cards, the LVS
-> negotiation should be implemented instead.
->
-> Finally, this Sandisk A2 card doesn't have the LV logo on it, so I
-> don't know whether it would support 1.8V operation if the LVS
-> negotiation was done directly or not - and I don't know whether setting
-> bit 7 in OCR is correct for an LV compliant card.
+There's a valid question about whether this elidation should be
+moved into the core logic, so that we never try and bring up an
+SD card in the low voltage range, for all host controllers.
 
-Yeah.
+For now, at least, I'm going to punt on that question and use
+the existing infrastructure to fix the driver I can test.
 
-I think we can agree on that having bit7 set in OCR is not really
-useful for SD card. In principle I think we should just just ignore it
-for all SD cards.
+I considered setting ocr_avail_sdio as well, but I noted that
+the sdhci driver does not do this implicit elidation in that
+case, and so didn't want to make the change blindly; I am not
+in a position to test it.
 
-Do you want to send a patch, or if you prefer, I can do it!?
+Needless to say, after this change, the Sandisk A2 card works
+correctly.
 
-Kind regards
-Uffe
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=201447
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=202473
+Signed-off-by: Philip Langdale <philipl@overt.org>
+---
+ drivers/mmc/host/rtsx_pci_sdmmc.c | 4 ++++
+ drivers/mmc/host/rtsx_usb_sdmmc.c | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
+index bd50935dc37d..ff78b2abfe8b 100644
+--- a/drivers/mmc/host/rtsx_pci_sdmmc.c
++++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+@@ -1342,6 +1342,10 @@ static void realtek_init_host(struct realtek_pci_sdmmc *host)
+ 	mmc->f_min = 250000;
+ 	mmc->f_max = 208000000;
+ 	mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34 | MMC_VDD_165_195;
++	/* MMC_VDD_165_195 is not really defined for SD cards. Ensure we
++	 * never attempt to initialise a card with the bit set in OCR.
++	 */
++	mmc->ocr_avail_sd = MMC_VDD_32_33 | MMC_VDD_33_34;
+ 	mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SD_HIGHSPEED |
+ 		MMC_CAP_MMC_HIGHSPEED | MMC_CAP_BUS_WIDTH_TEST |
+ 		MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 | MMC_CAP_ERASE;
+diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
+index 81d0dfe553a8..590c7c4c189b 100644
+--- a/drivers/mmc/host/rtsx_usb_sdmmc.c
++++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
+@@ -1311,6 +1311,10 @@ static void rtsx_usb_init_host(struct rtsx_usb_sdmmc *host)
+ 	mmc->f_min = 250000;
+ 	mmc->f_max = 208000000;
+ 	mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34 | MMC_VDD_165_195;
++	/* MMC_VDD_165_195 is not really defined for SD cards. Ensure we
++	 * never attempt to initialise a card with the bit set in OCR.
++	 */
++	mmc->ocr_avail_sd = MMC_VDD_32_33 | MMC_VDD_33_34;
+ 	mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SD_HIGHSPEED |
+ 		MMC_CAP_MMC_HIGHSPEED | MMC_CAP_BUS_WIDTH_TEST |
+ 		MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 | MMC_CAP_UHS_SDR50 |
+-- 
+2.20.1
+
