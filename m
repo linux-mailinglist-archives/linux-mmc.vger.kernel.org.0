@@ -2,95 +2,117 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D939EA09
-	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 15:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CA539EA0C
+	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 15:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730084AbfH0NuM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 27 Aug 2019 09:50:12 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:41543 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728519AbfH0NuM (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 09:50:12 -0400
-Received: by mail-vs1-f66.google.com with SMTP id m62so13425416vsc.8
-        for <linux-mmc@vger.kernel.org>; Tue, 27 Aug 2019 06:50:11 -0700 (PDT)
+        id S1729749AbfH0NuQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 27 Aug 2019 09:50:16 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:46564 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728519AbfH0NuQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 09:50:16 -0400
+Received: by mail-vs1-f67.google.com with SMTP id x20so13243380vsx.13
+        for <linux-mmc@vger.kernel.org>; Tue, 27 Aug 2019 06:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=kTZR6LdKwcSbwfdwn93BfaDLAmGJGXIkCRnUZoJwcDs=;
-        b=GTwmQzoFH+Tg9fKVZzfHe1WUyzKv1Pp5M6yGaUKuQYsscw4ybLHFf6AYfABE+HhDW2
-         lvRV+wDzGtNmqV+SW8P/Ydpuj6VzRJ3V/NUGTiLSdkDTdO19tI08aecQo6a0ak8Uxz5p
-         ZdCRCkWPYZepPS5r45I4qde4kPqs5XU2tDMK2PpVHbF+YCL6OsL+S4w9/ghPjKAiA1vE
-         rLI2zhF//RHBqNm5xd82kQ5ZzTL1ZkXm0gEVszqeB5lp8C7BlKWOroqGH3p7py8vhHcU
-         15UAVgSh1rt/XjgCBlHcok6zHQXNsxkDChbwxs6ItwvW+e2mjpFi2knd/ZvHqEpJPm8/
-         6m7w==
+        bh=nPR2CQfWmgZTkvcpGyqAZkf0myEhVejsZD6gsIT8RYg=;
+        b=bhjl/ew8Pdmkn2py/fJ8FKDq4d1wSwcKFwpAqCni+esZ62NP1wDMuTrPNmksJfOg+Y
+         My7X+wD93QUDR0E3hIw3E1A8iE7iMuv3TRRMCS3eIOphYFDZF6fKOzuCq2zdoUxjVHh6
+         3+WsdoF0ZGK3YXkZHXokWSPcVEecQW0K0NSoyk88GKCLv84yCim1xpARfVciR67DTXNJ
+         KbB7KkvbrM16nS6EQSKVHuZdTISASCfdZ4mJetpH93xPtPxg9o2VfQdTvVIiIslYhgQa
+         G0PTMTp7ZX6VsTVAGrRDF/zQd9Z+fdlvN31tSNuTNgvkcvZSwUdXdRF7/PPw9J8ppeB9
+         VJWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=kTZR6LdKwcSbwfdwn93BfaDLAmGJGXIkCRnUZoJwcDs=;
-        b=gTrSnAX40Bcp3ZMD8oBkZqI1qUXOr3Y622uq0bQuHtlYidRNa280vozRktJTLTUBtq
-         PVjsX13HFyJjU2w8Y7W+0ycTXDnxqMRLW8nDTfl0Lzz7trkE4+BeHwczCKuF0ewZlWir
-         Pe0LxYUkUeF88/mFfJk5zIuq2LEoK0A6+rsS42vr24wESSWh8CXxdFAu3zjNQpkSsBBm
-         37Jjof6GA7TZlZY0A6NIpvhRvs9Omfvlmmw3fLwn2YUwKAH3j67W7w1s24fT8DWuLE6Z
-         piI5t7Kutu9sc2ZkxGXdJQwaJ1ZbhBGIo8j6vQX3Zo0csnGg/ZLSQ+c2bCKW5cavzom/
-         FvEw==
-X-Gm-Message-State: APjAAAXB1GtnTun/QuUY3n1LbN5wxR6EgLnIIL+3CJtAeiXnBvyymE3x
-        3bKynAGqc6zNsI9wRCq3LUU6Va854ILJMEgzmqxnrg==
-X-Google-Smtp-Source: APXvYqxVAesgRp6go5fs5U5yCFtV9GAgU3Q6uXxLRPmT/g0zU/qhN39QHXlMiw6eTwbtXMYJIlbDKJyZBtiSgueVLDE=
-X-Received: by 2002:a67:347:: with SMTP id 68mr13732654vsd.35.1566913811087;
- Tue, 27 Aug 2019 06:50:11 -0700 (PDT)
+        bh=nPR2CQfWmgZTkvcpGyqAZkf0myEhVejsZD6gsIT8RYg=;
+        b=QWtItazSirBNhdpTMrx6GB9ewGW8WGZBNa47PBMirTVT7KcXY6SlBdhWEEPw7sjdmv
+         OifYlkF5dhHsovgFRnUnRolZ16NzA6bYhC+xxp7q39Wt/cYF6exeZePwjeDLNdx679oQ
+         yngJRQCBZhQp+30p5igZjkpTeARWK11bsV7IVW6kVyk+QDNg4qU8EmfdHrOL875+7p6x
+         G27lnmYYpmqj5rJFU5IcKADlovE0UUuvTZboDC1fpDDNv2d4e3rYtIg6uHDiyzFpiWhy
+         eKy7/n3YC7cn67XhdKzf5tVT5ix+Y1eTj7TkmIs8cSWfuA622akNtEIDclCbBnCvbWg/
+         ZyhQ==
+X-Gm-Message-State: APjAAAUXZSyg0CeiTVDluaaRbLNKGZCRh8a62xcQ6vfjZsvDdiWiXEs4
+        heL9oUP7hx42wo5C7j6Lws3lEV99BFM/yAoLFkNKmGxg
+X-Google-Smtp-Source: APXvYqzQ8I7Ep8k3tduFMMa8uUTlPd+Xy5TxZlq8ti8zHd5KPR80iTc/2sx/Oh/nNRZf59jUJo5lhvjPC3uSaxWvRL4=
+X-Received: by 2002:a67:fe4e:: with SMTP id m14mr14252340vsr.34.1566913815413;
+ Tue, 27 Aug 2019 06:50:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <1566628264-3289-1-git-send-email-wahrenst@gmx.net>
-In-Reply-To: <1566628264-3289-1-git-send-email-wahrenst@gmx.net>
+References: <20190826021620.11915-1-andrew@aj.id.au>
+In-Reply-To: <20190826021620.11915-1-andrew@aj.id.au>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 27 Aug 2019 15:49:35 +0200
-Message-ID: <CAPDyKFo6cWqRkJg=aoVzjHiR_Q6CWHe4et7QimWeWVZyLntQ9Q@mail.gmail.com>
-Subject: Re: [PATCH] mmc: bcm2835: Take SWIOTLB memory size limitation into account
-To:     Stefan Wahren <wahrenst@gmx.net>
-Cc:     Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Date:   Tue, 27 Aug 2019 15:49:39 +0200
+Message-ID: <CAPDyKFroS-Z+4QYitmYrCugPV_f4u1MDJiRkDxGWvVjsU=9RgA@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: mmc: aspeed: Update example ranges property
+To:     Andrew Jeffery <andrew@aj.id.au>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Joel Stanley <joel@jms.id.au>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 24 Aug 2019 at 08:31, Stefan Wahren <wahrenst@gmx.net> wrote:
+On Mon, 26 Aug 2019 at 04:15, Andrew Jeffery <andrew@aj.id.au> wrote:
 >
-> Make sure the sdhost driver doesn't use requests bigger than SWIOTLB
-> can handle.
+> The example node in the binding uses the AST2500 compatible string for
+> the SD controller with a 64kiB ranges property, but the SD controller is
+> allocated 128kiB of MMIO space according to the AST2500 datasheet. Fix
+> the example to correctly reflect the hardware in the AST2500, however it
+> should be noted that the MMIO region is reduced to 64kiB in the AST2600
+> where a second SD controller block has been introduced into the address
+> space.
 >
-> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+> Also add the IBM copyright header that I left out of the initial patch.
+>
+> Suggested-by: Joel Stanley <joel@jms.id.au>
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
 
-Applies for next, thanks!
+Applied for next, thanks!
+
+FYI, I took the liberty to amend all aspeed patches, by putting
+"sdhci-of-aspeed" as the prefix of the commit message header.
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/bcm2835.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Hi Ulf, this is the follow-up fix as discussed here:
 >
-> diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
-> index 7e0d3a4..7ec0d95 100644
-> --- a/drivers/mmc/host/bcm2835.c
-> +++ b/drivers/mmc/host/bcm2835.c
-> @@ -1314,7 +1314,7 @@ static int bcm2835_add_host(struct bcm2835_host *host)
->         }
+> http://patchwork.ozlabs.org/patch/1143090/
 >
->         mmc->max_segs = 128;
-> -       mmc->max_req_size = 524288;
-> +       mmc->max_req_size = min_t(size_t, 524288, dma_max_mapping_size(dev));
->         mmc->max_seg_size = mmc->max_req_size;
->         mmc->max_blk_size = 1024;
->         mmc->max_blk_count =  65535;
+>  Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> index 570f8c72662b..200de9396036 100644
+> --- a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> @@ -1,4 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0-or-later
+> +# Copyright 2019 IBM Corp.
+>  %YAML 1.2
+>  ---
+>  $id: http://devicetree.org/schemas/mmc/aspeed,sdhci.yaml#
+> @@ -84,7 +85,7 @@ examples:
+>              reg = <0x1e740000 0x100>;
+>              #address-cells = <1>;
+>              #size-cells = <1>;
+> -            ranges = <0 0x1e740000 0x10000>;
+> +            ranges = <0 0x1e740000 0x20000>;
+>              clocks = <&syscon ASPEED_CLK_GATE_SDCLK>;
+>
+>              sdhci0: sdhci@100 {
 > --
-> 2.7.4
+> 2.20.1
 >
