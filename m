@@ -2,174 +2,160 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B3459E2BA
-	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 10:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D0399E359
+	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 10:56:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729471AbfH0Idl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 27 Aug 2019 04:33:41 -0400
-Received: from mailout1.samsung.com ([203.254.224.24]:30940 "EHLO
-        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729414AbfH0Idl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 04:33:41 -0400
-Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20190827083339epoutp01ac7bca0f9670ab2c2c8276d182b0d09b~_uolUDGZ10188401884epoutp01X
-        for <linux-mmc@vger.kernel.org>; Tue, 27 Aug 2019 08:33:39 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20190827083339epoutp01ac7bca0f9670ab2c2c8276d182b0d09b~_uolUDGZ10188401884epoutp01X
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1566894819;
-        bh=GR9SjpQC1GTjk5IEkgnMXdybEfO+M4pHWDvq1CPw910=;
-        h=From:To:Cc:Subject:Date:References:From;
-        b=XieTwwnC97cxvDUoQbpnT0JSA6n+Fk+S7VdNGOrPiXy28E/jsUBLsPbTLacpBVmq4
-         bf6CJ3I4sO0pBCk0d7teQmVffD1IwjV4K5W0fRZ5VVEidrxI4HknvQW4rKJFd+yMLG
-         kHKbAIJD4wTWpVa9zk1tfYfSw5p+LvA6qAUlqSxI=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas2p1.samsung.com (KnoxPortal) with ESMTP id
-        20190827083338epcas2p1bd702579931911d8ebfa6ae3218ca896~_uokazBY00556005560epcas2p1x;
-        Tue, 27 Aug 2019 08:33:38 +0000 (GMT)
-Received: from epsmges2p3.samsung.com (unknown [182.195.40.190]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 46Hhwc2X60zMqYkg; Tue, 27 Aug
-        2019 08:33:36 +0000 (GMT)
-Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
-        epsmges2p3.samsung.com (Symantec Messaging Gateway) with SMTP id
-        F2.4A.04068.FDAE46D5; Tue, 27 Aug 2019 17:33:35 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas2p1.samsung.com (KnoxPortal) with ESMTPA id
-        20190827083334epcas2p115d479190b9a72c886f66569add78203~_uog_kpL90324603246epcas2p1z;
-        Tue, 27 Aug 2019 08:33:34 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190827083334epsmtrp1f673cf2781a7bd9de3d4862d267c9cf9~_uog9Ynxl2654126541epsmtrp1O;
-        Tue, 27 Aug 2019 08:33:34 +0000 (GMT)
-X-AuditID: b6c32a47-5a1ff70000000fe4-07-5d64eadfc43f
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        07.26.03638.EDAE46D5; Tue, 27 Aug 2019 17:33:34 +0900 (KST)
-Received: from KORDO035251 (unknown [12.36.165.204]) by epsmtip1.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20190827083334epsmtip186318bd933a57fdbaadd80afd23bc675~_uogrxHdu2027020270epsmtip14;
-        Tue, 27 Aug 2019 08:33:34 +0000 (GMT)
-From:   "boojin.kim" <boojin.kim@samsung.com>
-To:     "'Satya Tangirala'" <satyat@google.com>
-Cc:     "'Herbert Xu'" <herbert@gondor.apana.org.au>,
-        "'David S. Miller'" <davem@davemloft.net>,
-        "'Eric Biggers'" <ebiggers@kernel.org>,
-        "'Theodore Y. Ts'o'" <tytso@mit.edu>,
-        "'Chao Yu'" <chao@kernel.org>,
-        "'Jaegeuk Kim'" <jaegeuk@kernel.org>,
-        "'Andreas Dilger'" <adilger.kernel@dilger.ca>,
-        "'Theodore Ts'o'" <tytso@mit.edu>, <dm-devel@redhat.com>,
-        "'Mike Snitzer'" <snitzer@redhat.com>,
-        "'Alasdair Kergon'" <agk@redhat.com>,
-        "'Jens Axboe'" <axboe@kernel.dk>,
-        "'Krzysztof Kozlowski'" <krzk@kernel.org>,
-        "'Kukjin Kim'" <kgene@kernel.org>,
-        "'Jaehoon Chung'" <jh80.chung@samsung.com>,
-        "'Ulf Hansson'" <ulf.hansson@linaro.org>,
-        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-fscrypt@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <linux-samsung-soc@vger.kernel.org>, <linux-block@vger.kernel.org>,
-        <linux-ext4@vger.kernel.org>,
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-fsdevel@vger.kernel.org>
-Subject: Re: [PATCH 5/9] block: support diskcipher
-Date:   Tue, 27 Aug 2019 17:33:33 +0900
-Message-ID: <03b201d55cb2$1d4d31b0$57e79510$@samsung.com>
+        id S1726257AbfH0Izu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 27 Aug 2019 04:55:50 -0400
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:43650 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726091AbfH0Izu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 04:55:50 -0400
+Received: by mail-ua1-f66.google.com with SMTP id y7so6723367uae.10
+        for <linux-mmc@vger.kernel.org>; Tue, 27 Aug 2019 01:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CE1vxwmb0wJk7euHS77/2aYZOd8W3NYywy3hnx9W6dE=;
+        b=vyci9hSyKJvHScoP8jzEioy8EeO6Zsl62MqHWvtS1/xyhkd2E06dpyMXzlEbFHaiAt
+         5VnYE0lFlNbfdxnBk7hd2Oo870zBLoHxA8FkXluEAiGFdLZo7XoOp+TTVwn0K2U/Z/V6
+         Od734OhPsRklbQPtjRYsZmOuWxVJBiRHE635dLn5S0xfEA0DLQkIH91IwkYEVn2zUlyn
+         1LOz1xlrS4GmiY3ydm2rqoVwExj/fiejYOX0/ppe8QSN0Com75r9k/DHsbYUrn9CQKA4
+         juwp+gpf+wgHL2s5wjYH5DOxHWeXCc9Du+f6u50WMdOgD5zyTzuyowFOd/NMOP6jqm3I
+         IwjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CE1vxwmb0wJk7euHS77/2aYZOd8W3NYywy3hnx9W6dE=;
+        b=Hs+4fJ5ON+kX5ClSwPDm7DorBxlgUMYt47XDE2hxwGRl3Q9u38jjkkjWGZOfEc+o54
+         GQ//L3Yc/bRGE5BU8tjTLUCsiu5+TIQAFNQSYd8u+1Xe/uG1Ae+MoKKiqMalaSv5jxia
+         +wEts/gnyXu8KFIHdi5RY2zZ+XRAqK/VewJSM0xAXwNsZInS+wTgPK4FvkXuJcxjT4Aw
+         84HVSmYeDHNjnfHzMs15vJaO2n5FzlKJxW5XALeHXDXOfnLxOnugagH2FqHCLq0tpn6+
+         io6igcDDicZoVi/jprt8CuRsPEDVq41SZGTmY6uEwmdir3wX7PrzKFZVl2YfewmnNgXZ
+         /VyA==
+X-Gm-Message-State: APjAAAVApzksXiUbYymC4yXbNwWX6IJDiuOlqNLI/0Ow9Du6xiub7TEc
+        pDczXK1Abq+32HYovxnSRg1bKuWakoCJyYrmF2kl/VKf7UQ=
+X-Google-Smtp-Source: APXvYqz81egUFeE3McVoqKtuZSLjW8kASmF/ftKS1j6j53DP0AYFhBaMIqNdAaQ4+E1t0JSViZ6o7Ve7oXEr7fJC1Kc=
+X-Received: by 2002:ab0:6883:: with SMTP id t3mr10606720uar.104.1566896149137;
+ Tue, 27 Aug 2019 01:55:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 14.0
-Thread-Index: AdVcd9wJ7O+zjwFDS522TgVlMugkdw==
-Content-Language: ko
-X-Brightmail-Tracker: H4sIAAAAAAAAA01TfUwTdxjOr3e9nrguR0H2S/dhd9Nk1VDaasuPTUyjZl4y48jIdDGScmkv
-        hawfl16LuizDIdRa2TqzGWZhDnSTWUNwhQFDSqQyGIyPRSIBo9PMzii6LxASiI71OMz473mf
-        93nyfuUlMVWDQk2Wun2c1806aSINb7uizc2+NWUv0ne3pKHZR0EcNQ/2YejCzTCBfj45LEN1
-        o5U4iv9ZK0dNXY8xdHzqBZRsjmBoYiEgR+E7DzA0OnpRgWJ3xuUofn0juvXrvAydOn2DQFfP
-        7ERTp+dw1BUfwNFYZx2BehfDAH0x2i1D4Qs3CRT4bhagqup5Bepv2mtRM63nJ2VMZcsBpu3y
-        eqY+5mfGhv1MLHqMYG6MdxFMy9flzKX6GRlTMfQjxvzVfY1gPmmNAmYm9lKBcp9zSwnH2jmv
-        hnPbPPZStyOffrPQut1qMusN2YY8lEtr3KyLy6d37CrIfqPUmVoCrSljnf4UVcAKAp2zdYvX
-        4/dxmhKP4MunOd7u5A0GXiewLsHvduhsHtdrBr3eaEopi50lE008P688ONb3EDsMaleHAElC
-        ajP8aOSDEEgjVVQHgPfOHsGlYBrAip/qZCGwKhXMARjvyxCxaKhcuKeQRHEAByd+B1JwH8C5
-        2k6FqCKojbClPwpEnJnCv109LxdFGPWvAianE7iYyKCMsCp0fKkETq2HwcV/CBErqTzYM9AA
-        JJwOB04ll/QYtRa2/1GHSW1oYMfwg+UCOjgTGpZLmkxYeyyAicUgVUXCiiO9QDLsgPUnLi+b
-        M+BUf6tCwmp4PxxYxuXw2rmzCslcDeDQwtPEJhi5exSIG8MoLWzuzJGW9wrsvb7c27MweOWJ
-        QqKVMBhQScZ18MvpMZlEq+Hf1R9KNAOrex+CT8HLkRVDRlYMGVkxTOT/svUAj4IsjhdcDk4w
-        8ptWnjoGlt5jw84O0DayKwEoEtDPKOGQrUglZ8uEQ64EgCRGZyqdOWyRSmlnD73PeT1Wr9/J
-        CQlgSt3gBKZeY/Okns3tsxpMRrNZn2dCJrMR0c8pY6sn96soB+vj3uM4nvM+9cnIVerDIN02
-        fu57SyxrbXLP0OdvJb552/bxtjaQ9Qt99N2yrdp9dw2O8FfrZm9nYo4n6WHLyeIcoX22/VEj
-        z4Efgo7bI9pOy+sN5c9/++rg9sLduYXbbKhmT7Jmc4PHduazdw7WWCcDOosR2ot79Iv7df12
-        VmjcbT4QfzzQ+OKilulJdERpXChhDRswr8D+B8P/EWw0BAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMIsWRmVeSWpSXmKPExsWy7bCSnO69VymxBrcXqlh8/dLBYrH+1DFm
-        i9V3+9ksTk89y2Qx53wLi8Xed7NZLdbu+cNs0f1KxuLJ+lnMFjd+tbFa9D9+zWxx/vwGdotN
-        j6+xWuy9pW1x/95PJouZ8+6wWVxa5G7xat43Fos9e0+yWFzeNYfN4sj/fkaLGef3MVn0r77L
-        ZtG28SujRWvPT3aL42vDHaQ8tqy8yeTRsrncY9sBVY8Fm0o9Lp8t9di0qpPN4861PWwem5fU
-        e+xe8JnJo+nMUWaP9/uusnn0bVnF6PF5k1wAbxSXTUpqTmZZapG+XQJXxo21BQU/eSsuH3vD
-        3MA4m7uLkZNDQsBEouXXC/YuRi4OIYHdjBKXOpcxQySkJLa274GyhSXutxxhhSh6ziix7Mtx
-        FpAEm4C2xObjqxhBbBEg+9GllawgNrPANA6JXR/EQWxhASOJ1q5uJhCbRUBVouP/RzYQm1fA
-        UuLgyYWMELagxMmZT4BmcgD16km0bWSEGCMvsf3tHKgbFCR2nH0NtUpP4nPXWahVIhKzO9uY
-        JzAKzkIyaRbCpFlIJs1C0rGAkWUVo2RqQXFuem6xYYFRXmq5XnFibnFpXrpecn7uJkZwUtDS
-        2sF44kT8IUYBDkYlHl6JM8mxQqyJZcWVuYcYJTiYlUR4c/QTY4V4UxIrq1KL8uOLSnNSiw8x
-        SnOwKInzyucfixQSSE8sSc1OTS1ILYLJMnFwSjUwzu+6tX/72stKzWKemrbqW3KZJgeK77oX
-        vnmD0Nlwy8yz3/uF2aTDk6Q9mT01RQOT/X7MEFBaXeui9Fboo4K3zMMdi7im3nry/vQ537ua
-        eclstddPhB5dfjO89nnTGwtpTb6aTJ2Dh/PtuYV0nv6MZ5ELzkkLcbJeUyojuOHt6spPUS78
-        wjxKLMUZiYZazEXFiQDWZLGyBgMAAA==
-X-CMS-MailID: 20190827083334epcas2p115d479190b9a72c886f66569add78203
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20190827083334epcas2p115d479190b9a72c886f66569add78203
-References: <CGME20190827083334epcas2p115d479190b9a72c886f66569add78203@epcas2p1.samsung.com>
+References: <20190826180222.15960-1-philipl@overt.org>
+In-Reply-To: <20190826180222.15960-1-philipl@overt.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 27 Aug 2019 10:55:12 +0200
+Message-ID: <CAPDyKFoPcEMmXzoetdNe=8YLixSswtnkf5AreXJDjNJfaWOZpw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: rtsx: Don't attempt to use 'Low-Voltage' VDD for SD cards
+To:     Philip Langdale <philipl@overt.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Aug 21, 2019 at 5:10 AM Satya Tangirala <satyat@kernel.dk> wrote:
-> 
-> Hi Boojin,
+On Mon, 26 Aug 2019 at 20:02, Philip Langdale <philipl@overt.org> wrote:
 >
-> We're very keen to make sure that our approach to inline encryption can
-> work with diverse hardware, including Samsung's FMP hardware; if you
-> can see any issues with using our approach with your hardware please
-> let us know.
+> There have been multiple reports of failures for newer SD cards
+> with Realtek readers using the rtsx_pci_sdmmc driver in recent
+> months, including myself.
 >
-> We understand that a possible concern for getting FMP working with our
-> patch series for Inline Encryption Support at
+> One common theme was that Sandisk A2 cards all failed while older
+> cards worked fine. The first reports in bugzilla showed up in late
+> 2018 corresponding with the availabilty of these cards.
 >
+> After some false starts, what I realised was that these new cards
+> have bit 7 set in OCR which means they claim to support the 'Low
+> Voltage Range' for VDD. This is an incompletely defined concept
+> in the SD spec - in fact, there is no precise voltage associated
+> with the 'Low Voltage Range'. We have to go to the MMC spec to
+> see that it is 1.65-1.95V.
 >
-https://lore.kernel.org/linux-block/20190821075714.65140-1-satyat@google.com
-/
+> So, I believe there is currently no legitimate way for an SD
+> card to operate in the low voltage range, and a card that claims
+> support by setting bit 7 is simply wrong, although technically
+> not out of spec. Because the spec doesn't cover how to handle a
+> card that sets this bit, we really need to act as if the bit is
+> not set and do normal VDD initialisation.
 >
-> is that unlike some inline encryption hardware (and also unlike the JEDEC
-> UFS v2.1 spec), FMP doesn't have the concept of a limited number of
-> keyslots - to address that difference we have a "passthrough keyslot
-> manager", which we put up on top of our patch series for inline encryption
-> support at
+> And, in fact, this is exactly what happens in the sdhci driver.
+> By default, it elides MMC_VDD_165_195 for SD cards, and there is
+> core logic that allows different values of ocr_avail for SD and
+> MMC (and SDIO, even).
 >
-> https://android-review.googlesource.com/c/kernel/common/+/980137/2
+> As such, an equivalent change should be made in the two rtsx
+> drivers (pci and usb) to explicitly set ocr_avail_sd, leaving
+> out the low voltage range.
 >
-> Setting up a passthrough keyslot manager in the request queue of a
-> device allows the device to receive a bio's encryption context as-is with
-> the bio, which is what FMP would prefer. Are there any issues with
-> using the passthrough keyslot manager for FMP?
+> There's a valid question about whether this elidation should be
+> moved into the core logic, so that we never try and bring up an
+> SD card in the low voltage range, for all host controllers.
 >
-> Thanks!
-> Satya
+> For now, at least, I'm going to punt on that question and use
+> the existing infrastructure to fix the driver I can test.
+>
+> I considered setting ocr_avail_sdio as well, but I noted that
+> the sdhci driver does not do this implicit elidation in that
+> case, and so didn't want to make the change blindly; I am not
+> in a position to test it.
+>
+> Needless to say, after this change, the Sandisk A2 card works
+> correctly.
 
-Dear Satya.
-Keyslot manager is a good solution for ICE. And probably no issue for FMP.
-But, I think it's complicated for FMP because FMP doesn't need
-any keyslot control.
-Crypto API that FMP's using is simply, stable, and supports test. 
-FMP has been mass producing and certificating using crypto APIs
-for several years. 
-So I wants to keep  our current crypto API solution.
-But, I'm looking at your patch.  And I will keep examining at your patch
-because our goal is to run the FMP on the mainline kernel.
+Thanks for all the details in the changelog, much appreciated!
 
-Thanks for your reply.
-Boojin Kim.
+To put it simple. mmc->ocr_avail_sd|sdio|mmc should never have been
+introduced in the first place. It's a workaround to something that
+should have been taken care of better by the core layer, which you
+also suggests.
 
+>
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=201447
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=202473
+
+Ah, I forgot to add these links in my just posted patch. Will do when
+I apply, if the tests works as expected, of course.
+
+Kind regards
+Uffe
+
+> Signed-off-by: Philip Langdale <philipl@overt.org>
+> ---
+>  drivers/mmc/host/rtsx_pci_sdmmc.c | 4 ++++
+>  drivers/mmc/host/rtsx_usb_sdmmc.c | 4 ++++
+>  2 files changed, 8 insertions(+)
+>
+> diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
+> index bd50935dc37d..ff78b2abfe8b 100644
+> --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
+> +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+> @@ -1342,6 +1342,10 @@ static void realtek_init_host(struct realtek_pci_sdmmc *host)
+>         mmc->f_min = 250000;
+>         mmc->f_max = 208000000;
+>         mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34 | MMC_VDD_165_195;
+> +       /* MMC_VDD_165_195 is not really defined for SD cards. Ensure we
+> +        * never attempt to initialise a card with the bit set in OCR.
+> +        */
+> +       mmc->ocr_avail_sd = MMC_VDD_32_33 | MMC_VDD_33_34;
+>         mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SD_HIGHSPEED |
+>                 MMC_CAP_MMC_HIGHSPEED | MMC_CAP_BUS_WIDTH_TEST |
+>                 MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 | MMC_CAP_ERASE;
+> diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
+> index 81d0dfe553a8..590c7c4c189b 100644
+> --- a/drivers/mmc/host/rtsx_usb_sdmmc.c
+> +++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
+> @@ -1311,6 +1311,10 @@ static void rtsx_usb_init_host(struct rtsx_usb_sdmmc *host)
+>         mmc->f_min = 250000;
+>         mmc->f_max = 208000000;
+>         mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34 | MMC_VDD_165_195;
+> +       /* MMC_VDD_165_195 is not really defined for SD cards. Ensure we
+> +        * never attempt to initialise a card with the bit set in OCR.
+> +        */
+> +       mmc->ocr_avail_sd = MMC_VDD_32_33 | MMC_VDD_33_34;
+>         mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SD_HIGHSPEED |
+>                 MMC_CAP_MMC_HIGHSPEED | MMC_CAP_BUS_WIDTH_TEST |
+>                 MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 | MMC_CAP_UHS_SDR50 |
+> --
+> 2.20.1
+>
