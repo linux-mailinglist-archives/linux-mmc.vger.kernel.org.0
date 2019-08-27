@@ -2,110 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42FB39DA0F
-	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 01:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3C0A9DAA1
+	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 02:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726250AbfHZXlO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 26 Aug 2019 19:41:14 -0400
-Received: from out1-smtp.messagingengine.com ([66.111.4.25]:42583 "EHLO
-        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726020AbfHZXlO (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 26 Aug 2019 19:41:14 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id BC21320F5C;
-        Mon, 26 Aug 2019 19:41:10 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute4.internal (MEProxy); Mon, 26 Aug 2019 19:41:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm3; bh=b6gK9Z0HBCIrzjuVL3PtgdZDNROaOQs
-        GEZzEggIRfVE=; b=cQqchq0ozGW0puceRe7q9wyVlMbfVN2H+TSD66CiOi7utLk
-        7NitNr1kiS6uuRkPfEwPrUgj2Y3B4SNBeKaQUwUBRx//DehErGWC2CS1KRUa8rpG
-        lV5UuR4ZObgeYC20Ijbn7C1uxAxv31dD/pIl2+w7/ogpa3N1O07r3JGrWNpOKX0l
-        wkU6ILc5I3mCilwsn+9C23OEIbEG/ZxdE+ptNR+F2qgN7Oi5cjXsE+g8HeiPJiD8
-        OMNoZByDAKiZF5cANroqhiQSCJYVqsqMQA5SoOU2DJRx08qTDw3FPh2t65xgh1e9
-        fSnE5O2Dq3pBW/3HFux71yadgAmhivOUgYge1Rg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=b6gK9Z
-        0HBCIrzjuVL3PtgdZDNROaOQsGEZzEggIRfVE=; b=IdCtWamyrlUuRijPg3dExw
-        WnKjrXYjEt1zYLN4MyAIdDcJrZW7z0MZZddYwJjT+AtQ7w4ysurVaX5fwKpwdlRx
-        LyrydUkHxRZWsurCJuKwyt9xZx+rv6wENQ7r5wOV8ih5buRpPJPxAlYRmFmmz+wu
-        HoZJtYUSA9sl2kWecaOjcLqDvqV8LCTWC3Rb2HeBEi4DDx7A1SlQ1ephRqj7lPDA
-        EsSkce2LiHYErWkOnWlfxCXsFV4WCVEFqyDYSuPBieyO3RlqzV7nONp/ETj58ZbS
-        8LZCUH0iLfa7zWiQoXqq9+NtAFhUAfyKMxjmO8T+yYixmQL2ibkGquQ8+KOAFguQ
-        ==
-X-ME-Sender: <xms:FW5kXWqZeLZ3N9nOExpzv1HyQalR89DNl0zMPCF5mdCpldGueVTLTQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudehhedgvdejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreerjeenucfhrhhomhepfdetnhgu
-    rhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghjrdhiugdrrghunecuvehluhhsthgv
-    rhfuihiivgeptd
-X-ME-Proxy: <xmx:FW5kXUVjbpswDRQyx4ktX97fB8NTndYQnvhSJhH5lc09OsfXmD5utg>
-    <xmx:FW5kXWCIpgdbS1DYVzJJ2m0UypAAXXyecHKEtAzT1XVHjx1DIExWfQ>
-    <xmx:FW5kXYUMP_dLuKeXT6Ld14yCOrsbFeYKspCwqkR0wnU5UD28cKXJKg>
-    <xmx:Fm5kXWIkRy4USgX5OrGvI47HsHeE14uSKVtv-C2VMMMU7qsE1yxxdg>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 3F0F8E00A3; Mon, 26 Aug 2019 19:41:09 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.1.6-916-g49fca03-fmstable-20190821v7
-Mime-Version: 1.0
-Message-Id: <e23e0193-51c8-41a2-95f7-d48f0ef00eb5@www.fastmail.com>
-In-Reply-To: <20190826120013.183435-1-weiyongjun1@huawei.com>
-References: <20190826120013.183435-1-weiyongjun1@huawei.com>
-Date:   Tue, 27 Aug 2019 09:10:37 +0930
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Wei Yongjun" <weiyongjun1@huawei.com>,
-        "Adrian Hunter" <adrian.hunter@intel.com>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>,
-        "Joel Stanley" <joel@jms.id.au>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: =?UTF-8?Q?Re:_[PATCH_-next]_mmc:_aspeed:_Fix_return_value_check_in_aspee?=
- =?UTF-8?Q?d=5Fsdc=5Fprobe()?=
-Content-Type: text/plain
+        id S1727064AbfH0AcY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 26 Aug 2019 20:32:24 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:41225 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726944AbfH0AcX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 26 Aug 2019 20:32:23 -0400
+Received: by mail-pl1-f195.google.com with SMTP id m9so10845064pls.8;
+        Mon, 26 Aug 2019 17:32:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FmTDIjwDZHURui17fbI3myXwISZRJiWLOpeT3PDq78E=;
+        b=Q6qysXwnEsq0MbkI5H+rhc+AmTTkSvZvcv31cIDjG+ioedc3t5tsklkg7YdbQG46+6
+         NQvQYlKTCPRox6rZUSVijO9S5mshnzMIyQDZVvHvod5CEzWKdqM753K8FjLougCjlRSw
+         ZG3whp/D/KYU41hZXU+JXZBn/9TLAqYS2BlHs0+sDHWl9rb7vpLoxwBkMQj9xUzDeAWY
+         9Hla7mdleRxAzaxZtY+PeEKU/2qY031WXxxvDlaq2XIBqlNcvqM/CdqlE1jGCT0N8dJs
+         jTzUACCZzC487qsfg+f62p2vXVYTQK+7xouzWI8uYPhKmYA3u12Xp3OpX7JjSlZSzAWp
+         HH+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FmTDIjwDZHURui17fbI3myXwISZRJiWLOpeT3PDq78E=;
+        b=ffQZRGbcrNoVq11BLqfL1yky5TfUzolGLNZC9hG/6AIL0gMwQsN2gj4Edn74FH6O4w
+         fCpclQ9CQ4QigfXrHzfqnYRCeojgXo5C31ChVjKh++xlFAtKn2lhATvujftdHVyzX7uI
+         mIDQ7wRyzD0ByVJh+Zuv9VGCwqYoj8LR0cHub/Rm47UZss004obpp23w1HayRygXj9iS
+         Kx9GMl6bXuGOowaoyNEPpy1OT2XbNnAUqtjDyimgPIzhkYYiBVERlJe+FObQpt3V6UD0
+         jd9PchH17ccHPD2H7WeuyGr0PfVNA52BiBJUuXGHzzxPqu6WNy+nvs0XBNJ5EecOtGWQ
+         IesQ==
+X-Gm-Message-State: APjAAAX1Oix+DYQLdmdExpqh0hognCHgZug2vZzIDUR0ItxlYLO73qX4
+        fRO0CrWzHGUQZ1wlGjEw2Ek=
+X-Google-Smtp-Source: APXvYqy6tMie3j70EM7AFKQC1q1kYd5llzYaAOx293SFYDiDDQiHBPi3k9C1OIm3nPHi17PdCZokJA==
+X-Received: by 2002:a17:902:ac87:: with SMTP id h7mr6415689plr.36.1566865943117;
+        Mon, 26 Aug 2019 17:32:23 -0700 (PDT)
+Received: from gli-arch.genesyslogic.com.tw (60-251-58-169.HINET-IP.hinet.net. [60.251.58.169])
+        by smtp.gmail.com with ESMTPSA id n128sm11554471pfn.46.2019.08.26.17.32.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Aug 2019 17:32:22 -0700 (PDT)
+From:   Ben Chuang <benchuanggli@gmail.com>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        johnsonm@danlj.org, ben.chuang@genesyslogic.com.tw,
+        Ben Chuang <benchuanggli@gmail.com>
+Subject: [PATCH V6 0/5] Add Genesys Logic GL975x support
+Date:   Tue, 27 Aug 2019 08:31:45 +0800
+Message-Id: <20190827003145.2249-1-benchuanggli@gmail.com>
+X-Mailer: git-send-email 2.22.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 
+The patches modify internal clock setup to match SD Host Controller
+Simplified Specifications 4.20 and support Genesys Logic GL9750/GL9755 chipsets.
 
-On Mon, 26 Aug 2019, at 21:27, Wei Yongjun wrote:
-> In case of error, the function of_platform_device_create() returns
-> NULL pointer not ERR_PTR(). The IS_ERR() test in the return value
-> check should be replaced with NULL test.
-> 
-> Fixes: 09eed7fffd33 ("mmc: Add support for the ASPEED SD controller")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/mmc/host/sdhci-of-aspeed.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-of-aspeed.c 
-> b/drivers/mmc/host/sdhci-of-aspeed.c
-> index 8bb095ca2fa9..d5acb5afc50f 100644
-> --- a/drivers/mmc/host/sdhci-of-aspeed.c
-> +++ b/drivers/mmc/host/sdhci-of-aspeed.c
-> @@ -261,9 +261,9 @@ static int aspeed_sdc_probe(struct platform_device 
-> *pdev)
->  		struct platform_device *cpdev;
->  
->  		cpdev = of_platform_device_create(child, NULL, &pdev->dev);
-> -		if (IS_ERR(cpdev)) {
-> +		if (!cpdev) {
->  			of_node_put(child);
-> -			ret = PTR_ERR(cpdev);
-> +			ret = -ENODEV;
->  			goto err_clk;
->  		}
->  	}
+V6:
+ - export sdhci_abot_tuning() function symbol
+ - use C-style comments
+ - use BIT, FIELD_{GET,PREP} and GENMASK to define bit fields of register
+ - use host->ops->platform_execute_tuning instead of mmc->ops->execute_tuning
+ - call sdhci_reset() instead of duplicating the code in sdhci_gl9750_reset
+ - remove .hw_reset 
+ - use condition define CONFIG_MMC_SDHCI_IO_ACCESSORS for read_l
 
-I ... have no idea why I wrote it that way. I must have just assumed it returned
-an ERR_PTR(). Thanks for finding/fixing that.
+V5:
+ - add "change timeout of loop .." to a patch
+ - fix typo "verndor" to "vendor"
 
-Reviewed-by: Andrew Jeffery <andrew@aj.id.au>
+V4:
+ - change name from sdhci_gli_reset to sdhci_gl9750_reset
+ - fix sdhci_reset to sdhci_gl9750_reset in sdhci_gl9750_ops
+ - fix sdhci_gli_reset to sdhci_reset in sdhci_gl9755_ops
+ 
+V3:
+ - change usleep_range to udelay
+ - add Genesys Logic PCI Vendor ID to a patch
+ - separate the Genesys Logic specific part to a patch
+
+V2:
+ - change udelay to usleep_range
+
+Ben Chuang (5):
+  mmc: sdhci: Change timeout of loop for checking internal clock stable
+  mmc: sdhci: Add PLL Enable support to internal clock setup
+  PCI: Add Genesys Logic, Inc. Vendor ID
+  mmc: sdhci: Export sdhci_abort_tuning function symbol
+  mmc: host: sdhci-pci: Add Genesys Logic GL975x support
+
+ drivers/mmc/host/Makefile         |   2 +-
+ drivers/mmc/host/sdhci-pci-core.c |   2 +
+ drivers/mmc/host/sdhci-pci-gli.c  | 354 ++++++++++++++++++++++++++++++
+ drivers/mmc/host/sdhci-pci.h      |   5 +
+ drivers/mmc/host/sdhci.c          |  30 ++-
+ drivers/mmc/host/sdhci.h          |   2 +
+ include/linux/pci_ids.h           |   2 +
+ 7 files changed, 393 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/mmc/host/sdhci-pci-gli.c
+
+-- 
+2.22.1
+
