@@ -2,86 +2,134 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EF679E96B
-	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 15:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 201279E9BD
+	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 15:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726522AbfH0NcO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 27 Aug 2019 09:32:14 -0400
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:57219 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726441AbfH0NcO (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 09:32:14 -0400
-X-Originating-IP: 86.250.200.211
-Received: from localhost (lfbn-1-17395-211.w86-250.abo.wanadoo.fr [86.250.200.211])
-        (Authenticated sender: maxime.ripard@bootlin.com)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id B3E201C0010;
-        Tue, 27 Aug 2019 13:32:11 +0000 (UTC)
-Date:   Tue, 27 Aug 2019 15:32:11 +0200
-From:   Maxime Ripard <maxime.ripard@bootlin.com>
-To:     Alejandro =?utf-8?B?R29uesOhbGV6?= 
-        <alejandro.gonzalez.correo@gmail.com>
-Cc:     ulf.hansson@linaro.org, wens@csie.org, linus.walleij@linaro.org,
-        gregkh@linuxfoundation.org, tglx@linutronix.de,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-sunxi@googlegroups.com
-Subject: Re: [PATCH] mmc: sunxi: fix unusuable eMMC on some H6 boards by
- disabling DDR
-Message-ID: <20190827133211.g5n4uasyz2yvjpjr@flea>
-References: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
+        id S1726125AbfH0Nnm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 27 Aug 2019 09:43:42 -0400
+Received: from pandora.armlinux.org.uk ([78.32.30.218]:39588 "EHLO
+        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725825AbfH0Nnm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 09:43:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+        Message-ID:Subject:To:From:Date:Reply-To:Cc:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=IR73i9W0EgWINjS9LPHNsm8ROGSdMjBWUOLcAHrBo3w=; b=j+np2dDDpbw0CoBR0jB5sUlni
+        j9ktn94XD/d4xb2OmpNf+hF25/OV57icLJ0Orwx5/kPjLZu8Bi78psmXzgPb7AjD6gBUVK6wMICOs
+        R4bjnE13q6k8dNtsSp878vxHDHvDZPCTa0AMhlpK1bEWr33iK6wVVy3ZuDSMYtrnm0ihM6b448OYy
+        zAar44mmsQyiYgoFVUiWz09bswrfk22p0RkQtCsKkUEM1eB3lN9m3gzgwjJ0rPB1S0TdXCg3ZVJWc
+        xYvzljn2z2dN+Gfg4KRPmkCs14Q/lZrST1WZr7GnBpk7vZdwNUCQt0m2kIghJgxEqLF0wRxLuWds4
+        c/hHzmi6g==;
+Received: from shell.armlinux.org.uk ([2001:4d48:ad52:3201:5054:ff:fe00:4ec]:55220)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1i2bl4-0004jw-9A; Tue, 27 Aug 2019 14:43:38 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1i2bl3-0005nO-KV; Tue, 27 Aug 2019 14:43:37 +0100
+Date:   Tue, 27 Aug 2019 14:43:37 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org
+Subject: Continuous SD IO causes hung task messages
+Message-ID: <20190827134337.GK13294@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="lkjtz2d6pscj5wie"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
-User-Agent: NeoMutt/20180716
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Hi,
 
---lkjtz2d6pscj5wie
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+While dd'ing the contents of a SD card, I get hung task timeout
+messages as per below.  However, the dd is making progress.  Any
+ideas?
 
-On Sun, Aug 25, 2019 at 05:05:58PM +0200, Alejandro Gonz=E1lez wrote:
-> Some Allwinner H6 boards have timing problems when dealing with
-> DDR-capable eMMC cards. These boards include the Pine H64 and Tanix TX6.
->
-> These timing problems result in out of sync communication between the
-> driver and the eMMC, which renders the memory unsuable for every
-> operation but some basic commmands, like reading the status register.
->
-> The cause of these timing problems is not yet well known, but they go
-> away by disabling DDR mode operation in the driver. Like on some H5
-> boards, it might be that the traces are not precise enough to support
-> these speeds. However, Jernej Skrabec compared the BSP driver with this
-> driver, and found that the BSP driver configures pinctrl to operate at
-> 1.8 V when entering DDR mode (although 3.3 V operation is supported), whi=
-le
-> the mainline kernel lacks any mechanism to switch voltages dynamically.
-> Finally, other possible cause might be some timing parameter that is
-> different on the H6 with respect to other SoCs.
+Presumably, mmc_rescan doesn't get a look-in while IO is progressing
+for the card?
 
-This should be a comment in the driver where this is disabled.
+ARM64 host, Macchiatobin, uSD card.
 
-Maxime
+Thanks.
 
---
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+root@arm-d06300000000:~# dd if=/dev/mmcblk1 | md5sum
+INFO: task kworker/2:1:52 blocked for more than 120 seconds.
+      Not tainted 5.2.0+ #309
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+kworker/2:1     D    0    52      2 0x00000028
+Workqueue: events_freezable mmc_rescan
+Call trace:
+ __switch_to+0xb0/0x198
+ __schedule+0x22c/0x604
+ schedule+0x38/0xc8
+ __mmc_claim_host+0xcc/0x1ec
+ mmc_get_card+0x30/0x3c
+ mmc_sd_detect+0x1c/0x78
+ mmc_rescan+0x1c4/0x35c
+ process_one_work+0x14c/0x408
+ worker_thread+0x140/0x3f4
+ kthread+0xfc/0x128
+ ret_from_fork+0x10/0x18
+INFO: task kworker/2:1:52 blocked for more than 120 seconds.
+      Not tainted 5.2.0+ #309
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+kworker/2:1     D    0    52      2 0x00000028
+Workqueue: events_freezable mmc_rescan
+Call trace:
+ __switch_to+0xb0/0x198
+ __schedule+0x22c/0x604
+ schedule+0x38/0xc8
+ __mmc_claim_host+0xcc/0x1ec
+ mmc_get_card+0x30/0x3c
+ mmc_sd_detect+0x1c/0x78
+ mmc_rescan+0x1c4/0x35c
+ process_one_work+0x14c/0x408
+ worker_thread+0x140/0x3f4
+ kthread+0xfc/0x128
+ ret_from_fork+0x10/0x18
+INFO: task kworker/2:1:52 blocked for more than 241 seconds.
+      Not tainted 5.2.0+ #309
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+kworker/2:1     D    0    52      2 0x00000028
+Workqueue: events_freezable mmc_rescan
+Call trace:
+ __switch_to+0xb0/0x198
+ __schedule+0x22c/0x604
+ schedule+0x38/0xc8
+ __mmc_claim_host+0xcc/0x1ec
+ mmc_get_card+0x30/0x3c
+ mmc_sd_detect+0x1c/0x78
+ mmc_rescan+0x1c4/0x35c
+ process_one_work+0x14c/0x408
+ worker_thread+0x140/0x3f4
+ kthread+0xfc/0x128
+ ret_from_fork+0x10/0x18
+INFO: task kworker/2:1:52 blocked for more than 362 seconds.
+      Not tainted 5.2.0+ #309
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+kworker/2:1     D    0    52      2 0x00000028
+Workqueue: events_freezable mmc_rescan
+Call trace:
+ __switch_to+0xb0/0x198
+ __schedule+0x22c/0x604
+ schedule+0x38/0xc8
+ __mmc_claim_host+0xcc/0x1ec
+ mmc_get_card+0x30/0x3c
+ mmc_sd_detect+0x1c/0x78
+ mmc_rescan+0x1c4/0x35c
+ process_one_work+0x14c/0x408
+ worker_thread+0x140/0x3f4
+ kthread+0xfc/0x128
+ ret_from_fork+0x10/0x18
 
---lkjtz2d6pscj5wie
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXWUw2wAKCRDj7w1vZxhR
-xYt3AP4+3qKwy0ckh4dZ7jCoxIsKTjo6Lg7T9mmsX0KTdpD3uAD/UnDk8+qHwDox
-MZfS8s6gYu/gIOndKMAIAGQBPJh+bgU=
-=Cii8
------END PGP SIGNATURE-----
-
---lkjtz2d6pscj5wie--
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
+According to speedtest.net: 11.9Mbps down 500kbps up
