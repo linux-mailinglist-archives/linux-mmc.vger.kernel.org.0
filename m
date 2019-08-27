@@ -2,171 +2,174 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE2E19E188
-	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 10:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B3459E2BA
+	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 10:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731360AbfH0IMz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 27 Aug 2019 04:12:55 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:44952 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729800AbfH0IMy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 04:12:54 -0400
-Received: by mail-vs1-f66.google.com with SMTP id c7so12841501vse.11
-        for <linux-mmc@vger.kernel.org>; Tue, 27 Aug 2019 01:12:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sXr7hOEZ00P48wv2crSNIZ7D4PZktGsC5UA/Kuk48kE=;
-        b=fkunok9cyNdAeJnRuGL8c+W5FHp1kN8kUrKNHIQfUBjED7chQj/AuMlEnisvwNZFQB
-         dayL3zMXAB1ZaAM4putkeDxa1seof99AYrfoXjVmfpzWpnUsyG2mH7enEkgDY97qI5kw
-         FCWwozHGxXi2sGubAajWW1vAZYESn+RMkRUyYjT8dYErgbHXnXVcBLVQvfwCY0pAt/ls
-         p6JmZnRzzJIIxmaTsGKaH21fllNK8RwgPsDzxi6kJJ8mC1FKGJ9OI0SqjvKqrofi+2AB
-         SUsjYEVT4nscGrQMK0DPkDbkuZ+4DfK9MpZ0OVQc2IVW8AWIWpsBudJyF6C9hS1b1xkK
-         8Muw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sXr7hOEZ00P48wv2crSNIZ7D4PZktGsC5UA/Kuk48kE=;
-        b=FCaDG0zY55cago/W6bA85IYmiZxDxxbELQu30+dj17y6Qu82mj0n99gpDWEKvPazPi
-         i4oCBlzpHHByu3Pf2ql/h5JaV8GiFVwS8hlR8tEzWVUP3cNKL1lYAuwMmXT18QjWbKvQ
-         cAj4rK0DRHds19Z2uGpLMdDs0FdpqtJPX6JpVH4bAChkSe+CPNaRu3C7pS0l63WLIzVU
-         +Dsvli2aCEKgxl2fM0jnHMoNgU0sBxFhV85T5laUb/KvSSXP54e8+GkPtlo0bI6i1euA
-         3gQA59GhtYBBv9/FxbPD/qkloLgIZmNOK3j539LIUHaGSZbPSx+DalJRod6ty09h7RTp
-         eVGA==
-X-Gm-Message-State: APjAAAUajezh4udW1ClOhF47ZRV+TVEo3LhhhoMj3qAqRouxu9aqmtgA
-        D2qEQSAGaL/Q1nPclPrr3NxvfwIILVMrpuvbIdlhxes6
-X-Google-Smtp-Source: APXvYqxVXdnUjF0pjO9dOo60Rp4g9QqY3qaJckKAIH7hf2YlaZLmqQWzr34yAbY+zxuqxtH1q8lIWSODXwWNqsIuCLE=
-X-Received: by 2002:a67:32c5:: with SMTP id y188mr12842475vsy.191.1566893572584;
- Tue, 27 Aug 2019 01:12:52 -0700 (PDT)
+        id S1729471AbfH0Idl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 27 Aug 2019 04:33:41 -0400
+Received: from mailout1.samsung.com ([203.254.224.24]:30940 "EHLO
+        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729414AbfH0Idl (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 04:33:41 -0400
+Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
+        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20190827083339epoutp01ac7bca0f9670ab2c2c8276d182b0d09b~_uolUDGZ10188401884epoutp01X
+        for <linux-mmc@vger.kernel.org>; Tue, 27 Aug 2019 08:33:39 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20190827083339epoutp01ac7bca0f9670ab2c2c8276d182b0d09b~_uolUDGZ10188401884epoutp01X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1566894819;
+        bh=GR9SjpQC1GTjk5IEkgnMXdybEfO+M4pHWDvq1CPw910=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=XieTwwnC97cxvDUoQbpnT0JSA6n+Fk+S7VdNGOrPiXy28E/jsUBLsPbTLacpBVmq4
+         bf6CJ3I4sO0pBCk0d7teQmVffD1IwjV4K5W0fRZ5VVEidrxI4HknvQW4rKJFd+yMLG
+         kHKbAIJD4wTWpVa9zk1tfYfSw5p+LvA6qAUlqSxI=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas2p1.samsung.com (KnoxPortal) with ESMTP id
+        20190827083338epcas2p1bd702579931911d8ebfa6ae3218ca896~_uokazBY00556005560epcas2p1x;
+        Tue, 27 Aug 2019 08:33:38 +0000 (GMT)
+Received: from epsmges2p3.samsung.com (unknown [182.195.40.190]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 46Hhwc2X60zMqYkg; Tue, 27 Aug
+        2019 08:33:36 +0000 (GMT)
+Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
+        epsmges2p3.samsung.com (Symantec Messaging Gateway) with SMTP id
+        F2.4A.04068.FDAE46D5; Tue, 27 Aug 2019 17:33:35 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas2p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190827083334epcas2p115d479190b9a72c886f66569add78203~_uog_kpL90324603246epcas2p1z;
+        Tue, 27 Aug 2019 08:33:34 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190827083334epsmtrp1f673cf2781a7bd9de3d4862d267c9cf9~_uog9Ynxl2654126541epsmtrp1O;
+        Tue, 27 Aug 2019 08:33:34 +0000 (GMT)
+X-AuditID: b6c32a47-5a1ff70000000fe4-07-5d64eadfc43f
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        07.26.03638.EDAE46D5; Tue, 27 Aug 2019 17:33:34 +0900 (KST)
+Received: from KORDO035251 (unknown [12.36.165.204]) by epsmtip1.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20190827083334epsmtip186318bd933a57fdbaadd80afd23bc675~_uogrxHdu2027020270epsmtip14;
+        Tue, 27 Aug 2019 08:33:34 +0000 (GMT)
+From:   "boojin.kim" <boojin.kim@samsung.com>
+To:     "'Satya Tangirala'" <satyat@google.com>
+Cc:     "'Herbert Xu'" <herbert@gondor.apana.org.au>,
+        "'David S. Miller'" <davem@davemloft.net>,
+        "'Eric Biggers'" <ebiggers@kernel.org>,
+        "'Theodore Y. Ts'o'" <tytso@mit.edu>,
+        "'Chao Yu'" <chao@kernel.org>,
+        "'Jaegeuk Kim'" <jaegeuk@kernel.org>,
+        "'Andreas Dilger'" <adilger.kernel@dilger.ca>,
+        "'Theodore Ts'o'" <tytso@mit.edu>, <dm-devel@redhat.com>,
+        "'Mike Snitzer'" <snitzer@redhat.com>,
+        "'Alasdair Kergon'" <agk@redhat.com>,
+        "'Jens Axboe'" <axboe@kernel.dk>,
+        "'Krzysztof Kozlowski'" <krzk@kernel.org>,
+        "'Kukjin Kim'" <kgene@kernel.org>,
+        "'Jaehoon Chung'" <jh80.chung@samsung.com>,
+        "'Ulf Hansson'" <ulf.hansson@linaro.org>,
+        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-fscrypt@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <linux-samsung-soc@vger.kernel.org>, <linux-block@vger.kernel.org>,
+        <linux-ext4@vger.kernel.org>,
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-fsdevel@vger.kernel.org>
+Subject: Re: [PATCH 5/9] block: support diskcipher
+Date:   Tue, 27 Aug 2019 17:33:33 +0900
+Message-ID: <03b201d55cb2$1d4d31b0$57e79510$@samsung.com>
 MIME-Version: 1.0
-References: <20190811021917.29736-1-philipl@overt.org> <CAPDyKFr5z4YknbS4_9NmzQ0TMHf+SqGxd5HyMGi4oeXAWFeSHw@mail.gmail.com>
- <41d073f646b1f94adcf41b2cf0f798d8@overt.org> <20190824152530.432fe9a2@fido6>
- <CAPDyKFq3o-StNCuNA3vy8uW5pO=eu1BheQXyT4ftmfhuPSUnBg@mail.gmail.com>
- <03f692ac16a1854ee18f5526f8a53530@overt.org> <20190826203149.1354d8c8@fido6>
-In-Reply-To: <20190826203149.1354d8c8@fido6>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 27 Aug 2019 10:12:15 +0200
-Message-ID: <CAPDyKFp9oT=ouyTkTUizm0Lx-akehG5sapPV5CXzYp90HWiAgA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: rtsx_pci: Do not set MMC_CAP2_FULL_PWR_CYCLE
-To:     Philip Langdale <philipl@overt.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 14.0
+Thread-Index: AdVcd9wJ7O+zjwFDS522TgVlMugkdw==
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA01TfUwTdxjOr3e9nrguR0H2S/dhd9Nk1VDaasuPTUyjZl4y48jIdDGScmkv
+        hawfl16LuizDIdRa2TqzGWZhDnSTWUNwhQFDSqQyGIyPRSIBo9PMzii6LxASiI71OMz473mf
+        93nyfuUlMVWDQk2Wun2c1806aSINb7uizc2+NWUv0ne3pKHZR0EcNQ/2YejCzTCBfj45LEN1
+        o5U4iv9ZK0dNXY8xdHzqBZRsjmBoYiEgR+E7DzA0OnpRgWJ3xuUofn0juvXrvAydOn2DQFfP
+        7ERTp+dw1BUfwNFYZx2BehfDAH0x2i1D4Qs3CRT4bhagqup5Bepv2mtRM63nJ2VMZcsBpu3y
+        eqY+5mfGhv1MLHqMYG6MdxFMy9flzKX6GRlTMfQjxvzVfY1gPmmNAmYm9lKBcp9zSwnH2jmv
+        hnPbPPZStyOffrPQut1qMusN2YY8lEtr3KyLy6d37CrIfqPUmVoCrSljnf4UVcAKAp2zdYvX
+        4/dxmhKP4MunOd7u5A0GXiewLsHvduhsHtdrBr3eaEopi50lE008P688ONb3EDsMaleHAElC
+        ajP8aOSDEEgjVVQHgPfOHsGlYBrAip/qZCGwKhXMARjvyxCxaKhcuKeQRHEAByd+B1JwH8C5
+        2k6FqCKojbClPwpEnJnCv109LxdFGPWvAianE7iYyKCMsCp0fKkETq2HwcV/CBErqTzYM9AA
+        JJwOB04ll/QYtRa2/1GHSW1oYMfwg+UCOjgTGpZLmkxYeyyAicUgVUXCiiO9QDLsgPUnLi+b
+        M+BUf6tCwmp4PxxYxuXw2rmzCslcDeDQwtPEJhi5exSIG8MoLWzuzJGW9wrsvb7c27MweOWJ
+        QqKVMBhQScZ18MvpMZlEq+Hf1R9KNAOrex+CT8HLkRVDRlYMGVkxTOT/svUAj4IsjhdcDk4w
+        8ptWnjoGlt5jw84O0DayKwEoEtDPKOGQrUglZ8uEQ64EgCRGZyqdOWyRSmlnD73PeT1Wr9/J
+        CQlgSt3gBKZeY/Okns3tsxpMRrNZn2dCJrMR0c8pY6sn96soB+vj3uM4nvM+9cnIVerDIN02
+        fu57SyxrbXLP0OdvJb552/bxtjaQ9Qt99N2yrdp9dw2O8FfrZm9nYo4n6WHLyeIcoX22/VEj
+        z4Efgo7bI9pOy+sN5c9/++rg9sLduYXbbKhmT7Jmc4PHduazdw7WWCcDOosR2ot79Iv7df12
+        VmjcbT4QfzzQ+OKilulJdERpXChhDRswr8D+B8P/EWw0BAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMIsWRmVeSWpSXmKPExsWy7bCSnO69VymxBrcXqlh8/dLBYrH+1DFm
+        i9V3+9ksTk89y2Qx53wLi8Xed7NZLdbu+cNs0f1KxuLJ+lnMFjd+tbFa9D9+zWxx/vwGdotN
+        j6+xWuy9pW1x/95PJouZ8+6wWVxa5G7xat43Fos9e0+yWFzeNYfN4sj/fkaLGef3MVn0r77L
+        ZtG28SujRWvPT3aL42vDHaQ8tqy8yeTRsrncY9sBVY8Fm0o9Lp8t9di0qpPN4861PWwem5fU
+        e+xe8JnJo+nMUWaP9/uusnn0bVnF6PF5k1wAbxSXTUpqTmZZapG+XQJXxo21BQU/eSsuH3vD
+        3MA4m7uLkZNDQsBEouXXC/YuRi4OIYHdjBKXOpcxQySkJLa274GyhSXutxxhhSh6ziix7Mtx
+        FpAEm4C2xObjqxhBbBEg+9GllawgNrPANA6JXR/EQWxhASOJ1q5uJhCbRUBVouP/RzYQm1fA
+        UuLgyYWMELagxMmZT4BmcgD16km0bWSEGCMvsf3tHKgbFCR2nH0NtUpP4nPXWahVIhKzO9uY
+        JzAKzkIyaRbCpFlIJs1C0rGAkWUVo2RqQXFuem6xYYFRXmq5XnFibnFpXrpecn7uJkZwUtDS
+        2sF44kT8IUYBDkYlHl6JM8mxQqyJZcWVuYcYJTiYlUR4c/QTY4V4UxIrq1KL8uOLSnNSiw8x
+        SnOwKInzyucfixQSSE8sSc1OTS1ILYLJMnFwSjUwzu+6tX/72stKzWKemrbqW3KZJgeK77oX
+        vnmD0Nlwy8yz3/uF2aTDk6Q9mT01RQOT/X7MEFBaXeui9Fboo4K3zMMdi7im3nry/vQ537ua
+        eclstddPhB5dfjO89nnTGwtpTb6aTJ2Dh/PtuYV0nv6MZ5ELzkkLcbJeUyojuOHt6spPUS78
+        wjxKLMUZiYZazEXFiQDWZLGyBgMAAA==
+X-CMS-MailID: 20190827083334epcas2p115d479190b9a72c886f66569add78203
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20190827083334epcas2p115d479190b9a72c886f66569add78203
+References: <CGME20190827083334epcas2p115d479190b9a72c886f66569add78203@epcas2p1.samsung.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 27 Aug 2019 at 05:31, Philip Langdale <philipl@overt.org> wrote:
+On Wed, Aug 21, 2019 at 5:10 AM Satya Tangirala <satyat@kernel.dk> wrote:
+> 
+> Hi Boojin,
 >
-> On Mon, 26 Aug 2019 11:06:26 -0700
-> Philip Langdale <philipl@overt.org> wrote:
+> We're very keen to make sure that our approach to inline encryption can
+> work with diverse hardware, including Samsung's FMP hardware; if you
+> can see any issues with using our approach with your hardware please
+> let us know.
 >
-> >
-> > I started looking at how we might make a general change to ignore for
-> > all
-> > cards, and in the process, I saw that we already have a way to
-> > differentiate
-> > ocr_avail for different card types, and the sdhci driver uses this to
-> > elide the low voltage range when dealing with SD cards. So I've made
-> > the small change to have the rtsx drivers set ocr_avail_sd and skip
-> > the low voltage
-> > range support. This makes the cards work, as you'd expect.
-> >
-> > There's still a fair claim that the elidation logic should move into
-> > the core,
-> > so that all host controllers automatically benefit, but I think I
-> > should leave
-> > that to you. It's a core change and I don't pretend to understand all
-> > the
-> > considerations for all the various supported controllers.
-> >
-> > I've sent a new diff with the rtsx-specific fix.
-> >
+> We understand that a possible concern for getting FMP working with our
+> patch series for Inline Encryption Support at
 >
-> More reading == more thoughts.
 >
-> So, I went through the simplified 6.0 spec more carefully and this is
-> what I've extracted:
+https://lore.kernel.org/linux-block/20190821075714.65140-1-satyat@google.com
+/
 >
-> * Low Voltage Signalling: The 1.8V I/O voltage we already support
-> * Low Voltage Interface: A new 6.0 feature for setting VDD to 1.8V
-
-I have the full specs available, as Linaro is a member of the SD Association.
-
-I can't find anything that confirms that "Low Voltage Interface" has
-anything to do with the supply voltage (VDD). It's all about signaling
-voltage, unless I am mistaken somehow.
-
-All I can find for VDD (or VDD1) is that it always needs to stay
-between 2.7V - 3.6V.
-
+> is that unlike some inline encryption hardware (and also unlike the JEDEC
+> UFS v2.1 spec), FMP doesn't have the concept of a limited number of
+> keyslots - to address that difference we have a "passthrough keyslot
+> manager", which we put up on top of our patch series for inline encryption
+> support at
 >
-> The LVI is documented in the "Low Voltage Interface Addendum" that is
-> not included in the simplified spec. Why? Who knows. Do you have access
-> to this by any chance?
-
-I have the spec.
-
-The below is stated in the initial part from the LVI addendum.
-
-"There has been a demand of low voltage signaling interface memory
-card for especially mobile host
-devices. To meet the demand, this addendum defines low voltage
-signaling interface in SD mode
-(called "LVS interface") that starts in 1.8V signaling UHS-I mode
-without going through 3.3V signaling,
-that is host can start card communication in SDR12 mode from the start
-of initialization and skips
-Voltage Switch Sequence (CMD11). "LVS" denotes Low Voltage Signaling
-for communication lines but
-3.3V power supply is still used."
-
+> https://android-review.googlesource.com/c/kernel/common/+/980137/2
 >
-> There are specific references in the simplified spec when discussing
-> the OCR that make it pretty clear that bit 7 in the OCR indicates the
-> card supports LVI and can be initialised in 1.8V mode if the LVI
-> negotiation is followed.
-
-Actually no, I don't think so. Bit7 in OCR is a very old thing and
-it's about "dual voltage cards" and not LVI.
-
-I did some more research to really understand. By searching for "dual
-voltage" in the spec(s) and bit7 in OCR. I found it being introduced
-already in version 2.00.
-
-Then I realized that the current text in 7.1, is a leftover that
-should have been removed altogether and not only parts as was done in
-version 3.01. My guess, is that it was probably introduced while the
-"eSD" spec was being developed, as an alternative to eMMC.
-
-Additionally, reading the LVI addendum and especially the LVI
-initialization sequence for a LV compatible host+card, I found nothing
-that mentions bit7 in the OCR register.
-
+> Setting up a passthrough keyslot manager in the request queue of a
+> device allows the device to receive a bio's encryption context as-is with
+> the bio, which is what FMP would prefer. Are there any issues with
+> using the passthrough keyslot manager for FMP?
 >
-> There is also a clear statement that an A2 card must support LVI.
->
-> That means that the Sandisk card I'm looking at is 'correctly' setting
-> bit 7 in OCR to indicate LVI support. And there's no "LV" logo because
-> A2 implies LVI.
->
-> It's deeply annoying that Low Voltage initialisation is done
-> differently for SD vs MMC despite using the same mechanism to indicate
-> support.
->
-> Overall, this implies that until we can implement LVI negotiation, it
-> would be semantically correct to ignore bit 7 explicitly for SD cards,
-> and hopefully we'd eventually be able to implement the negotiation and
-> support low voltage VDD when the controller and card support it.
+> Thanks!
+> Satya
 
-According to the above, I don't think we ever need to care about bit 7
-in the OCR. But yes, supporting LVI may be complicated, but that's
-another story. :-)
+Dear Satya.
+Keyslot manager is a good solution for ICE. And probably no issue for FMP.
+But, I think it's complicated for FMP because FMP doesn't need
+any keyslot control.
+Crypto API that FMP's using is simply, stable, and supports test. 
+FMP has been mass producing and certificating using crypto APIs
+for several years. 
+So I wants to keep  our current crypto API solution.
+But, I'm looking at your patch.  And I will keep examining at your patch
+because our goal is to run the FMP on the mainline kernel.
 
-Anyway, I decided to post a patch, please test it at your side and see
-if it fixes the problem for you.
+Thanks for your reply.
+Boojin Kim.
 
-Kind regards
-Uffe
