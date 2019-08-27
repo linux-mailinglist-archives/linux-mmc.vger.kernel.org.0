@@ -2,169 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 915B29E589
-	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 12:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ED099E72C
+	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 13:56:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726054AbfH0KRG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 27 Aug 2019 06:17:06 -0400
-Received: from mail-eopbgr770110.outbound.protection.outlook.com ([40.107.77.110]:44014
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726039AbfH0KRG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 27 Aug 2019 06:17:06 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E92G7pfvd0sSJ/nWxokC8xVSDwPNMgv1l4VtHNx/3gqlHvKcvRHvl+9svY33xvg6q2kxtUbTHFMEWNIJTSDpe877K6pJyPknMfl9noNk5TLO67kBzfhBTaT4GqU2pOaedtVkq44L3xAS+BDYRlLlREqXqaJpAeJZpvYej0B9mjFBDsbxrgUt8gpwJbGDtBcAfmBiTdZBTb/07QQTLMYUk//ICfMHe+GwlZOKC2iHZomPI3LhOownZwGEqU9qnOTPjbDI2sWeEAPXYNFbYvQNJaQQWxyu9pEtj34xUl3pRe0YSsKk6zg003E+CJy8b52H+K2EHGhjlturDgjkqv+gFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wKdbT2Sb75hBJ+IHRQ1vfyNjxIVwpt2s6llJyRT60V4=;
- b=ZJ/lui5VtZskeiSjr89AzJWUxm7YhiAYpUIEe8KolN+6ZtOXcidCkG/4YJeGR/8G/N+HnOdSRt0OiMiZy0r8disMues15DBcbzyZT6kj5tddeefRSa8uDYLwUvs823WOBMFlTQxcJOHtNhThbyQ9mO8+trt5Jjqznv6ECTxa6jX18gZxMNJR4Nb5qotoybekMlolTyPzTBu8a9uRhq1+f6M3cF0S8MFvqewzwBxhZlf/UkEGMIyYRYzzE+rgVk+WJOYnmkiWiJppiyosRhtDm18mgxUwppdhT2tXTLuN84O+LCfDaEEg9QfyiQ+P54jlxLci23l0kpghZlq+C+Ljtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bayhubtech.com; dmarc=pass action=none
- header.from=bayhubtech.com; dkim=pass header.d=bayhubtech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=towerbridgetechnology.onmicrosoft.com;
- s=selector2-towerbridgetechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wKdbT2Sb75hBJ+IHRQ1vfyNjxIVwpt2s6llJyRT60V4=;
- b=pSDcRgUdnIm9weH1uSxVSCnEglYRhYWtyXVdFbZN+dowMdOdTQJULak5q01qGEHDGGOi8fSCHx0ujfW7A7+vYNkmFtAMLUUuNp6GlgqGPGysxC5i179SMbpqCM8KBLgubM046iS4rcqiDt+rzP+oHaC7VF97wJjeSXqag1MwqMc=
-Received: from CH2PR16MB3479.namprd16.prod.outlook.com (10.255.155.220) by
- CH2PR16MB3573.namprd16.prod.outlook.com (52.132.247.212) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2199.19; Tue, 27 Aug 2019 10:17:01 +0000
-Received: from CH2PR16MB3479.namprd16.prod.outlook.com
- ([fe80::b591:898f:8814:b422]) by CH2PR16MB3479.namprd16.prod.outlook.com
- ([fe80::b591:898f:8814:b422%5]) with mapi id 15.20.2199.021; Tue, 27 Aug 2019
- 10:17:01 +0000
-From:   "Ernest Zhang(WH)" <ernest.zhang@bayhubtech.com>
-To:     Daniel Drake <drake@endlessm.com>
-CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Endless Linux Upstreaming Team <linux@endlessm.com>
-Subject: RE: sdhci-pci-o2micro no longer detects eMMC device
-Thread-Topic: sdhci-pci-o2micro no longer detects eMMC device
-Thread-Index: AdVcvsxNODEIE4RmT4q0Rd7biYtXQw==
-Date:   Tue, 27 Aug 2019 10:17:00 +0000
-Message-ID: <CH2PR16MB34791BACDB5A036DBF14E8C3E5A00@CH2PR16MB3479.namprd16.prod.outlook.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ernest.zhang@bayhubtech.com; 
-x-originating-ip: [58.48.115.170]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 290c65c3-f62d-44d4-690f-08d72ad7b361
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(5600166)(711020)(4605104)(1401327)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7193020);SRVR:CH2PR16MB3573;
-x-ms-traffictypediagnostic: CH2PR16MB3573:
-x-microsoft-antispam-prvs: <CH2PR16MB3573393423C89A3380B7264FE5A00@CH2PR16MB3573.namprd16.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4714;
-x-forefront-prvs: 0142F22657
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(346002)(136003)(376002)(39830400003)(396003)(189003)(199004)(6436002)(66066001)(81156014)(99286004)(5660300002)(486006)(64756008)(86362001)(81166006)(54906003)(66556008)(7736002)(66446008)(76116006)(316002)(66476007)(66946007)(71190400001)(71200400001)(476003)(52536014)(33656002)(14444005)(256004)(8676002)(3846002)(6116002)(26005)(8936002)(25786009)(6506007)(7696005)(53936002)(4326008)(2906002)(186003)(14454004)(6246003)(9686003)(6916009)(102836004)(508600001)(229853002)(74316002)(55016002)(305945005);DIR:OUT;SFP:1102;SCL:1;SRVR:CH2PR16MB3573;H:CH2PR16MB3479.namprd16.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: bayhubtech.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: cJdI4+REs2R7D/cWsxEjlVCAXTXcuHNkgUVxBsyI4i6Po0XsjhXyuZnQf3J5SLj4daSMg3MGI1EIMia4q6eJ5PKKRStHsPOKNCUxTCVO1X8O/l8InM2cvePk2VTllPt06lR5wxzpskdMBN236FWZO8OSTS8SHfzJo4m3k4MjhfY2ng+tTovoI3cs5bhu4FAMpUQCbAVhKPNx+i2QHBm8UeW+IErn06IqBr8IL61suB+sX0jMEKtSn1XTZsbhdjXLEoRS9BlmE41kwVhkeeJ/xMBjSqpqPtVqoKvQEjX5vwLyIYSrabt/tI14hCu8oETJvrdXdOJebkmH4kHMuYK79rJDZ2HAZ3RtaXXq2fg+vP1sOM125XHKrf8LgSE8dWlBcGzLlbIwZWKK2pTtF1880sCrwTcCrGICkDpEmqr/J+o=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1728965AbfH0Lzq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 27 Aug 2019 07:55:46 -0400
+Received: from verein.lst.de ([213.95.11.211]:56387 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726596AbfH0Lzq (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 27 Aug 2019 07:55:46 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id A5EFF68AFE; Tue, 27 Aug 2019 13:55:41 +0200 (CEST)
+Date:   Tue, 27 Aug 2019 13:55:41 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Nicolin Chen <nicoleotsuka@gmail.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>, vdumpa@nvidia.com,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Thierry Reding <treding@nvidia.com>,
+        Kees Cook <keescook@chromium.org>, iamjoonsoo.kim@lge.com,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org
+Subject: Re: [PATCH v2 2/2] dma-contiguous: Use fallback alloc_pages for
+ single pages
+Message-ID: <20190827115541.GB5921@lst.de>
+References: <20190506223334.1834-1-nicoleotsuka@gmail.com> <20190506223334.1834-3-nicoleotsuka@gmail.com> <CAK7LNARacEorb38mVBw_V-Zvz-znWgBma1AP1-z_5B_xZU4ogg@mail.gmail.com> <CAK7LNAQfYBCoChMV=MOwcUyVoqRkrPWs7DaWdzDqjBe18gGiAQ@mail.gmail.com> <20190825011025.GA23410@lst.de> <CAK7LNAQb1ZHr=DiHLNeNRaQExMuXdDOV4sFghoGbco_Q=Qzb8g@mail.gmail.com> <20190826073320.GA11712@lst.de> <CAK7LNATYOLEboUTO4qPx2z7cqwDrHBO1HFHG8VzZEJ15STv+nw@mail.gmail.com> <20190827075021.GA953@lst.de> <CAK7LNAQZ+bueZZzSoMADmgLjWNvijHRV=wLQzN_kvLG3b5Uu+w@mail.gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: bayhubtech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 290c65c3-f62d-44d4-690f-08d72ad7b361
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Aug 2019 10:17:01.0096
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0a7aae2b-8f2e-44df-ba2f-42de7f93c642
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yn4DFzagGSENBj5C53nIdKL0AXfsBOrg6QElfFg8ffWZFS/TbOEtYsQrxLlug/IJSP0iJdqm7Yy1KGWLam6o0OyybEWEkNO1dvrI+DvoR4M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR16MB3573
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNAQZ+bueZZzSoMADmgLjWNvijHRV=wLQzN_kvLG3b5Uu+w@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-SGkgRHJha2UsDQoJQ2FuIHlvdSB0ZWxsIG1lIHRoZSB2YWx1ZSBvZiBQQ0kgY29uZmlndXJhdGlv
-biByZWdpc3RlciAweDMwOCBiaXQ0IGlzIDAgb3IgMT8gIA0KCUFuZCBjYW4geW91IGVuYWJsZSBt
-b2R1bGUgc2RoY2ksIHNkaGNpX3BjaSBhbmQgbW1jX2NvcmUgZHluYW1pYyBwcmludGsgb3V0cHV0
-IGFuZCBzZW5kIHRoZSBmdWxsIGVNTUMgaW5pdGlhbGl6YXRpb24gbG9nIHRvIG1lPw0KDQpCUg0K
-RXJuZXN0DQoNCi0tLS0t6YKu5Lu25Y6f5Lu2LS0tLS0NCuWPkeS7tuS6ujogRGFuaWVsIERyYWtl
-IDxkcmFrZUBlbmRsZXNzbS5jb20+IA0K5Y+R6YCB5pe26Ze0OiAyMDE55bm0OOaciDI35pelIDE3
-OjM0DQrmlLbku7bkuro6IEVybmVzdCBaaGFuZyhXSCkgPGVybmVzdC56aGFuZ0BiYXlodWJ0ZWNo
-LmNvbT4NCuaKhOmAgTogbGludXgtbW1jQHZnZXIua2VybmVsLm9yZzsgRW5kbGVzcyBMaW51eCBV
-cHN0cmVhbWluZyBUZWFtIDxsaW51eEBlbmRsZXNzbS5jb20+DQrkuLvpopg6IHNkaGNpLXBjaS1v
-Mm1pY3JvIG5vIGxvbmdlciBkZXRlY3RzIGVNTUMgZGV2aWNlDQoNCkhpLA0KDQpBcyBvZiByZWNl
-bnQga2VybmVscywgdGhlIGVNTUMgc3RvcmFnZSBpcyBubyBsb25nZXIgZGV0ZWN0ZWQgb24gdGhp
-cyBNaW5pUEMgd2hpY2ggaGFzIGVNTUMgY29ubmVjdGVkIHRvOg0KDQowMjowMC4wIFNEIEhvc3Qg
-Y29udHJvbGxlciBbMDgwNV06IE8yIE1pY3JvLCBJbmMuIERldmljZSBbMTIxNzo4NjIwXSAocmV2
-IDAxKSAocHJvZy1pZiAwMSkNCiAgICBTdWJzeXN0ZW06IE8yIE1pY3JvLCBJbmMuIERldmljZSBb
-MTIxNzowMDAyXQ0KDQpnaXQgYmlzZWN0IGZvdW5kIHRoZSBjb21taXQgdGhhdCBpbnRyb2R1Y2Vz
-IHRoZSBwcm9ibGVtOg0KDQpjb21taXQgNDE0MTI2ZjllNWFiZjE5NzNjNjYxZDI0MjI5NTQzYTk0
-NThmYThjZSAoSEVBRCwgcmVmcy9iaXNlY3QvYmFkKQ0KQXV0aG9yOiBFcm5lc3QgWmhhbmcoV0gp
-IDxlcm5lc3QuemhhbmdAYmF5aHVidGVjaC5jb20+DQpEYXRlOiAgIEZyaSBKYW4gMTggMDY6MDQ6
-NTMgMjAxOSArMDAwMA0KDQogICAgbW1jOiBzZGhjaTogUmVtb3ZlIHVubmVlZGVkIHF1aXJrMiBm
-bGFnIG9mIE8yIFNEIGhvc3QgY29udHJvbGxlcg0KDQpXaXRoIHRoaXMgY29tbWl0IGFwcGxpZWQs
-IHRoZXNlIGFyZSB0aGUgbG9ncyBmcm9tIGxvYWRpbmcgdGhlIGRyaXZlciwgc2hvd2luZyB0aGUg
-ZmFpbHVyZSB0byBkZXRlY3QgdGhlIHN0b3JhZ2UgZGV2aWNlOg0KDQpzZGhjaS1wY2kgMDAwMDow
-MDoxNC43OiBTREhDSSBjb250cm9sbGVyIGZvdW5kIFsxMDIyOjc4MTNdIChyZXYgMSkNCm1tYzA6
-IFNESENJIGNvbnRyb2xsZXIgb24gUENJIFswMDAwOjAwOjE0LjddIHVzaW5nIEFETUEgc2RoY2kt
-cGNpIDAwMDA6MDI6MDAuMDogU0RIQ0kgY29udHJvbGxlciBmb3VuZCBbMTIxNzo4NjIwXSAocmV2
-IDEpIHBjaWVwb3J0IDAwMDA6MDA6MDIuNDogY2FuJ3QgZGVyaXZlIHJvdXRpbmcgZm9yIFBDSSBJ
-TlQgQSBzZGhjaS1wY2kgMDAwMDowMjowMC4wOiBQQ0kgSU5UIEE6IG5vdCBjb25uZWN0ZWQNCm1t
-YzE6IFNESENJIGNvbnRyb2xsZXIgb24gUENJIFswMDAwOjAyOjAwLjBdIHVzaW5nIEFETUENCm1t
-YzE6IEdvdCBkYXRhIGludGVycnVwdCAweDAyMDAwMDAwIGV2ZW4gdGhvdWdoIG5vIGRhdGEgb3Bl
-cmF0aW9uIHdhcyBpbiBwcm9ncmVzcy4NCm1tYzE6IHNkaGNpOiA9PT09PT09PT09PT0gU0RIQ0kg
-UkVHSVNURVIgRFVNUCA9PT09PT09PT09PQ0KbW1jMTogc2RoY2k6IFN5cyBhZGRyOiAgMHgwMDAw
-MDAwMCB8IFZlcnNpb246ICAweDAwMDAwNjAzDQptbWMxOiBzZGhjaTogQmxrIHNpemU6ICAweDAw
-MDA3MjAwIHwgQmxrIGNudDogIDB4MDAwMDAwMDENCm1tYzE6IHNkaGNpOiBBcmd1bWVudDogIDB4
-MDNhZjAxMDEgfCBUcm4gbW9kZTogMHgwMDAwMDAxMw0KbW1jMTogc2RoY2k6IFByZXNlbnQ6ICAg
-MHgwMWZmMDAwMSB8IEhvc3QgY3RsOiAweDAwMDAwMDExDQptbWMxOiBzZGhjaTogUG93ZXI6ICAg
-ICAweDAwMDAwMDBmIHwgQmxrIGdhcDogIDB4MDAwMDAwMDANCm1tYzE6IHNkaGNpOiBXYWtlLXVw
-OiAgIDB4MDAwMDAwMDAgfCBDbG9jazogICAgMHgwMDAwZmEwNw0KbW1jMTogc2RoY2k6IFRpbWVv
-dXQ6ICAgMHgwMDAwMDAwYSB8IEludCBzdGF0OiAweDAwMDAwMDAwDQptbWMxOiBzZGhjaTogSW50
-IGVuYWI6ICAweDAzZmYwMDhiIHwgU2lnIGVuYWI6IDB4MDNmZjAwOGINCm1tYzE6IHNkaGNpOiBB
-Q21kIHN0YXQ6IDB4MDAwMDAwMDAgfCBTbG90IGludDogMHgwMDAwMDAwMA0KbW1jMTogc2RoY2k6
-IENhcHM6ICAgICAgMHgyNWZjYzhiZiB8IENhcHNfMTogICAweDAwMDAyMDc3DQptbWMxOiBzZGhj
-aTogQ21kOiAgICAgICAweDAwMDAwNjFiIHwgTWF4IGN1cnI6IDB4MDA1ODAwYzgNCm1tYzE6IHNk
-aGNpOiBSZXNwWzBdOiAgIDB4MDAwMDA5MDAgfCBSZXNwWzFdOiAgMHhmZmZmZmZmZg0KbW1jMTog
-c2RoY2k6IFJlc3BbMl06ICAgMHgzMjlmNTkwMyB8IFJlc3BbM106ICAweDAwZDBmZmZmDQptbWMx
-OiBzZGhjaTogSG9zdCBjdGwyOiAweDAwMDAwMDAwDQptbWMxOiBzZGhjaTogQURNQSBFcnI6ICAw
-eDAwMDAwMDAxIHwgQURNQSBQdHI6IDB4M2QwMDUyMDgNCm1tYzE6IHNkaGNpOiA9PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQ0KbW1jMTogVGltZW91dCB3YWl0aW5n
-IGZvciBoYXJkd2FyZSBpbnRlcnJ1cHQuDQptbWMxOiBzZGhjaTogPT09PT09PT09PT09IFNESENJ
-IFJFR0lTVEVSIERVTVAgPT09PT09PT09PT0NCm1tYzE6IHNkaGNpOiBTeXMgYWRkcjogIDB4MDAw
-MDAwMDAgfCBWZXJzaW9uOiAgMHgwMDAwMDYwMw0KbW1jMTogc2RoY2k6IEJsayBzaXplOiAgMHgw
-MDAwNzIwMCB8IEJsayBjbnQ6ICAweDAwMDAwMDAxDQptbWMxOiBzZGhjaTogQXJndW1lbnQ6ICAw
-eDAzYWYwMTAxIHwgVHJuIG1vZGU6IDB4MDAwMDAwMTMNCm1tYzE6IHNkaGNpOiBQcmVzZW50OiAg
-IDB4MDFmZjAwMDYgfCBIb3N0IGN0bDogMHgwMDAwMDAxMQ0KbW1jMTogc2RoY2k6IFBvd2VyOiAg
-ICAgMHgwMDAwMDAwZiB8IEJsayBnYXA6ICAweDAwMDAwMDAwDQptbWMxOiBzZGhjaTogV2FrZS11
-cDogICAweDAwMDAwMDAwIHwgQ2xvY2s6ICAgIDB4MDAwMGZhMDcNCm1tYzE6IHNkaGNpOiBUaW1l
-b3V0OiAgIDB4MDAwMDAwMGEgfCBJbnQgc3RhdDogMHgwMDAwMDAwMA0KbW1jMTogc2RoY2k6IElu
-dCBlbmFiOiAgMHgwM2ZmMDA4YiB8IFNpZyBlbmFiOiAweDAzZmYwMDhiDQptbWMxOiBzZGhjaTog
-QUNtZCBzdGF0OiAweDAwMDAwMDAwIHwgU2xvdCBpbnQ6IDB4MDAwMDAwMDANCm1tYzE6IHNkaGNp
-OiBDYXBzOiAgICAgIDB4MjVmY2M4YmYgfCBDYXBzXzE6ICAgMHgwMDAwMjA3Nw0KbW1jMTogc2Ro
-Y2k6IENtZDogICAgICAgMHgwMDAwMDYxYiB8IE1heCBjdXJyOiAweDAwNTgwMGM4DQptbWMxOiBz
-ZGhjaTogUmVzcFswXTogICAweDAwMDAwOTAwIHwgUmVzcFsxXTogIDB4ZmZmZmZmZmYNCm1tYzE6
-IHNkaGNpOiBSZXNwWzJdOiAgIDB4MzI5ZjU5MDMgfCBSZXNwWzNdOiAgMHgwMGQwZmZmZg0KbW1j
-MTogc2RoY2k6IEhvc3QgY3RsMjogMHgwMDAwMDAwMA0KbW1jMTogc2RoY2k6IEFETUEgRXJyOiAg
-MHgwMDAwMDAwMSB8IEFETUEgUHRyOiAweDNkMDA1MjA4DQptbWMxOiBzZGhjaTogPT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0NCm1tYzE6IGVycm9yIC0xMTAgd2hp
-bHN0IGluaXRpYWxpc2luZyBNTUMgY2FyZA0KbW1jMTogR290IGRhdGEgaW50ZXJydXB0IDB4MDIw
-MDAwMDAgZXZlbiB0aG91Z2ggbm8gZGF0YSBvcGVyYXRpb24gd2FzIGluIHByb2dyZXNzLg0KbW1j
-MTogc2RoY2k6ID09PT09PT09PT09PSBTREhDSSBSRUdJU1RFUiBEVU1QID09PT09PT09PT09DQpt
-bWMxOiBzZGhjaTogU3lzIGFkZHI6ICAweDAwMDAwMDAwIHwgVmVyc2lvbjogIDB4MDAwMDA2MDMN
-Cm1tYzE6IHNkaGNpOiBCbGsgc2l6ZTogIDB4MDAwMDcyMDAgfCBCbGsgY250OiAgMHgwMDAwMDAw
-MQ0KbW1jMTogc2RoY2k6IEFyZ3VtZW50OiAgMHgwM2FmMDEwMSB8IFRybiBtb2RlOiAweDAwMDAw
-MDEzDQptbWMxOiBzZGhjaTogUHJlc2VudDogICAweDAxZmYwMDAxIHwgSG9zdCBjdGw6IDB4MDAw
-MDAwMTENCm1tYzE6IHNkaGNpOiBQb3dlcjogICAgIDB4MDAwMDAwMGYgfCBCbGsgZ2FwOiAgMHgw
-MDAwMDAwMA0KbW1jMTogc2RoY2k6IFdha2UtdXA6ICAgMHgwMDAwMDAwMCB8IENsb2NrOiAgICAw
-eDAwMDA0ZTQ3DQptbWMxOiBzZGhjaTogVGltZW91dDogICAweDAwMDAwMDBhIHwgSW50IHN0YXQ6
-IDB4MDAwMDAwMDANCm1tYzE6IHNkaGNpOiBJbnQgZW5hYjogIDB4MDNmZjAwOGIgfCBTaWcgZW5h
-YjogMHgwM2ZmMDA4Yg0KbW1jMTogc2RoY2k6IEFDbWQgc3RhdDogMHgwMDAwMDAwMCB8IFNsb3Qg
-aW50OiAweDAwMDAwMDAwDQptbWMxOiBzZGhjaTogQ2FwczogICAgICAweDI1ZmNjOGJmIHwgQ2Fw
-c18xOiAgIDB4MDAwMDIwNzcNCm1tYzE6IHNkaGNpOiBDbWQ6ICAgICAgIDB4MDAwMDA2MWIgfCBN
-YXggY3VycjogMHgwMDU4MDBjOA0KbW1jMTogc2RoY2k6IFJlc3BbMF06ICAgMHgwMDAwMDkwMCB8
-IFJlc3BbMV06ICAweGZmZmZmZmZmDQptbWMxOiBzZGhjaTogUmVzcFsyXTogICAweDMyOWY1OTAz
-IHwgUmVzcFszXTogIDB4MDBkMGZmZmYNCm1tYzE6IHNkaGNpOiBIb3N0IGN0bDI6IDB4MDAwMDAw
-MDANCm1tYzE6IHNkaGNpOiBBRE1BIEVycjogIDB4MDAwMDAwMDEgfCBBRE1BIFB0cjogMHgzZDAw
-NTIwOA0KbW1jMTogc2RoY2k6ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09DQoNCg0KUGxlYXNlIGxldCBtZSBrbm93IGlmIEkgY2FuIHByb3ZpZGUgZnVydGhlciBp
-bmZvIHRvIGhlbHAgdW5kZXJzdGFuZCB0aGlzIHByb2JsZW0uDQoNClRoYW5rcw0KRGFuaWVsDQo=
+On Tue, Aug 27, 2019 at 06:03:14PM +0900, Masahiro Yamada wrote:
+> Yes, this makes my driver working again
+> when CONFIG_DMA_CMA=y.
+> 
+> 
+> If I apply the following, my driver gets back working
+> irrespective of CONFIG_DMA_CMA.
+
+That sounds a lot like the device simply isn't 64-bit DMA capable, and
+previously always got CMA allocations under the limit it actually
+supported.  I suggest that you submit this quirk to the mmc maintainers.
