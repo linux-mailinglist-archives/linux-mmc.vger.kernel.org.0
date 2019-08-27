@@ -2,105 +2,108 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A88EF9DC01
-	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 05:31:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F0C99DEF7
+	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 09:46:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728188AbfH0Dbx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 26 Aug 2019 23:31:53 -0400
-Received: from mail.overt.org ([157.230.92.47]:40343 "EHLO mail.overt.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728025AbfH0Dbx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 26 Aug 2019 23:31:53 -0400
-Received: from authenticated-user (mail.overt.org [157.230.92.47])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.overt.org (Postfix) with ESMTPSA id 5ED9C3F210;
-        Mon, 26 Aug 2019 22:31:52 -0500 (CDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=overt.org; s=mail;
-        t=1566876712; bh=JhBrhO8aVl12j42l+Db4gqsZ0fnb6wWi+UVmhJ0vjDw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=f3OGZnAtXBDfN2SKGrBVMTUNlAvIg7U5iqYq/tPj8dKEELFE67ENib2x8OEsCY55N
-         9o/gvVDBd3CEp4B/6UZXxgN7YBVyESzHRqBCH+fw2rF85eGgILS4KFS8T+FNi+BJ9G
-         dRGfJXFKQEQXCM0fnBbHGTHCJz1NeLfQGiBsivBrytkZl55G0dTaSn4VffuNn7CNMo
-         GDck2xGX0/8b3lMgmaufSVkxzP9jw5d3pI5PnJbl8ZKDyCh6fANInG1rKDvnRoWMMu
-         0yTQrpdm1orKDvUrFUhp+8hVdeujvBlgxV5q0QpbxSfiOGIH+7Ju91rx4yLq51rIbS
-         KMH3unKNnIQdw==
-Date:   Mon, 26 Aug 2019 20:31:49 -0700
-From:   Philip Langdale <philipl@overt.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org
-Subject: Re: [PATCH] mmc: rtsx_pci: Do not set MMC_CAP2_FULL_PWR_CYCLE
-Message-ID: <20190826203149.1354d8c8@fido6>
-In-Reply-To: <03f692ac16a1854ee18f5526f8a53530@overt.org>
-References: <20190811021917.29736-1-philipl@overt.org>
-        <CAPDyKFr5z4YknbS4_9NmzQ0TMHf+SqGxd5HyMGi4oeXAWFeSHw@mail.gmail.com>
-        <41d073f646b1f94adcf41b2cf0f798d8@overt.org>
-        <20190824152530.432fe9a2@fido6>
-        <CAPDyKFq3o-StNCuNA3vy8uW5pO=eu1BheQXyT4ftmfhuPSUnBg@mail.gmail.com>
-        <03f692ac16a1854ee18f5526f8a53530@overt.org>
+        id S1725920AbfH0HqA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 27 Aug 2019 03:46:00 -0400
+Received: from conssluserg-02.nifty.com ([210.131.2.81]:60303 "EHLO
+        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725850AbfH0HqA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 03:46:00 -0400
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id x7R7jut7021960;
+        Tue, 27 Aug 2019 16:45:57 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com x7R7jut7021960
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1566891957;
+        bh=CCtCL19DmuvrV2VqAgkqWIfPFYfgDfnJCKU/CL8uRio=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=B4CHip1JP3uIn3+++ULwsuJ2uOqnGULQVL3hM/BRafp9nqobnzzIyBKunrsvygn8D
+         a247ywbY3uF03eT4OwDgrLwC7BTZXyGhLOlM/qGvJBsnMTxKI3/Qc8MuUB56hs+WtR
+         rzCU1oTxcbXijyWHC5/v/QL4C0a0IuM/gpxNhJmbc9NjtpaK4z9VHYw3bKuG7kLtru
+         /AYcsWLuxD34/uMMZYPulTlnNTvhWX3n6KPwBfFjjjotXcSIGng0eZWWYO4SV3Zz00
+         nqs1HM7Gcsysky1nipVLwEzdMxDrfT6bV+D5qtslbXSy1HPK2t+LindprwHN2kJSuV
+         0qhGuaKokTqug==
+X-Nifty-SrcIP: [209.85.217.43]
+Received: by mail-vs1-f43.google.com with SMTP id y62so12815581vsb.6;
+        Tue, 27 Aug 2019 00:45:57 -0700 (PDT)
+X-Gm-Message-State: APjAAAWzmKUYBVdL+tFu0J0FcZJTuDpOxxNVg2TP5M4BBMfBfWfXRmic
+        7rgkeatPn4O7oQYio7oaxx9sKaXcgJyE6Bzk3P4=
+X-Google-Smtp-Source: APXvYqw3kFkP7AW1Myq4vwC0HTeWHl7qNE1Xu8mQsAgOMCEnoA+VGlGvJAQBc5iBngpOl9rP3s1Rs35DhGciNkmYfkU=
+X-Received: by 2002:a67:fe12:: with SMTP id l18mr12861854vsr.54.1566891956209;
+ Tue, 27 Aug 2019 00:45:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20190506223334.1834-1-nicoleotsuka@gmail.com> <20190506223334.1834-3-nicoleotsuka@gmail.com>
+ <CAK7LNARacEorb38mVBw_V-Zvz-znWgBma1AP1-z_5B_xZU4ogg@mail.gmail.com>
+ <CAK7LNAQfYBCoChMV=MOwcUyVoqRkrPWs7DaWdzDqjBe18gGiAQ@mail.gmail.com>
+ <20190825011025.GA23410@lst.de> <CAK7LNAQb1ZHr=DiHLNeNRaQExMuXdDOV4sFghoGbco_Q=Qzb8g@mail.gmail.com>
+ <20190826073320.GA11712@lst.de>
+In-Reply-To: <20190826073320.GA11712@lst.de>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Tue, 27 Aug 2019 16:45:20 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATYOLEboUTO4qPx2z7cqwDrHBO1HFHG8VzZEJ15STv+nw@mail.gmail.com>
+Message-ID: <CAK7LNATYOLEboUTO4qPx2z7cqwDrHBO1HFHG8VzZEJ15STv+nw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] dma-contiguous: Use fallback alloc_pages for
+ single pages
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Nicolin Chen <nicoleotsuka@gmail.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>, vdumpa@nvidia.com,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Thierry Reding <treding@nvidia.com>,
+        Kees Cook <keescook@chromium.org>, iamjoonsoo.kim@lge.com,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 26 Aug 2019 11:06:26 -0700
-Philip Langdale <philipl@overt.org> wrote:
+On Mon, Aug 26, 2019 at 4:33 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Mon, Aug 26, 2019 at 11:05:00AM +0900, Masahiro Yamada wrote:
+> > This is included in v5.3-rc6
+> > so I tested it.
+>
+> So there is no allocation failure, but you get I/O errors later?
 
-> 
-> I started looking at how we might make a general change to ignore for 
-> all
-> cards, and in the process, I saw that we already have a way to 
-> differentiate
-> ocr_avail for different card types, and the sdhci driver uses this to
-> elide the low voltage range when dealing with SD cards. So I've made
-> the small change to have the rtsx drivers set ocr_avail_sd and skip
-> the low voltage
-> range support. This makes the cards work, as you'd expect.
-> 
-> There's still a fair claim that the elidation logic should move into
-> the core,
-> so that all host controllers automatically benefit, but I think I
-> should leave
-> that to you. It's a core change and I don't pretend to understand all 
-> the
-> considerations for all the various supported controllers.
-> 
-> I've sent a new diff with the rtsx-specific fix.
-> 
+Right.
 
-More reading == more thoughts.
+>
+> Does the device use a device-private CMA area?
 
-So, I went through the simplified 6.0 spec more carefully and this is
-what I've extracted:
+Not sure.
+My driver is drivers/mmc/host/sdhci-cadence.c
+It reuses routines in drivers/mmc/host/sdhci.c
 
-* Low Voltage Signalling: The 1.8V I/O voltage we already support
-* Low Voltage Interface: A new 6.0 feature for setting VDD to 1.8V
 
-The LVI is documented in the "Low Voltage Interface Addendum" that is
-not included in the simplified spec. Why? Who knows. Do you have access
-to this by any chance?
 
-There are specific references in the simplified spec when discussing
-the OCR that make it pretty clear that bit 7 in the OCR indicates the
-card supports LVI and can be initialised in 1.8V mode if the LVI
-negotiation is followed.
+>  Does it work with Linux
+> 5.2 if CONFIG_DMA_CMA is disabled?
 
-There is also a clear statement that an A2 card must support LVI.
+No.
+5.2 + disable CONFIG_DMA_CMA
+failed in the same way.
 
-That means that the Sandisk card I'm looking at is 'correctly' setting
-bit 7 in OCR to indicate LVI support. And there's no "LV" logo because
-A2 implies LVI.
 
-It's deeply annoying that Low Voltage initialisation is done
-differently for SD vs MMC despite using the same mechanism to indicate
-support.
 
-Overall, this implies that until we can implement LVI negotiation, it
-would be semantically correct to ignore bit 7 explicitly for SD cards,
-and hopefully we'd eventually be able to implement the negotiation and
-support low voltage VDD when the controller and card support it.
 
---phil
+-- 
+Best Regards
+Masahiro Yamada
