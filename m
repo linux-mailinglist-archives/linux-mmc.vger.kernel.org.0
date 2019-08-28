@@ -2,92 +2,115 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1DE4A023D
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 14:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB49A026E
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 15:02:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726341AbfH1Mwo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 28 Aug 2019 08:52:44 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:39059 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726270AbfH1Mwn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 08:52:43 -0400
-Received: by mail-lf1-f68.google.com with SMTP id l11so2070905lfk.6
-        for <linux-mmc@vger.kernel.org>; Wed, 28 Aug 2019 05:52:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=XVqiZEbVUqIzK5hY9HIE+w9Yw4YCnwVUWn8KQwWEJ/o=;
-        b=j/ZkTZmHKtb+C6yykay6Lk89TOZ2nUMHdfIDdtlO3/glkjnfikIYS28NL2SG8TTJgs
-         zaFgS4RwSSejdCGrhsS4ul+I8b6oSeCtpK4UBcERRoeQn1cs6AYlz+EbRcAN+fD38Vwi
-         uNGYpuHx5n5iVdfhs38LAFPqeS9CaugquJL9Up1fPrU1vDd5RVAH2Sz0oKDHDqMQ3UU4
-         r5KZS01C8wSJUawPbF/GeSys7s02FLBfU70H6f0Rz0LziJuBQNUyKBIppFqFqCPi4/XB
-         xv2nnTa6+37DxCcKyOOhHTeKyCepv77Atwv/mavdOHSUq9IIS6QjbQwDuqf5bIbFCIl6
-         is4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=XVqiZEbVUqIzK5hY9HIE+w9Yw4YCnwVUWn8KQwWEJ/o=;
-        b=byzY0FOS+SaweVmIe6s+nhua3IEVEgVA3QQdSpiXCrI8VMlJ235KUfZ4FZ2h9mt1Gn
-         WQCmDgcorixTOf4qSG1B8qHW8wLNonhD/PRr4W9eOkQ712IrNWf4OCL9xW8wIX6AYrBU
-         WmVrsDWcIDm9yB3XzOJExdF9O+/xEc+J5Ex5dslMicrTY5JaQxv3ZiSUgAJtsoIPqTeM
-         DMCQxG8Vm4LJEt4aDFq6j0YeWIkcyVAHqQrjlCPSPT+xxzg8Z1BGEigKtIuTDNw1ixBc
-         AvtTVPEDdJMbS2vqtmRUpDqb9E2NeNn0ksGHle5Uop3GUrDcIXPUQqb9RxMvVLsZM5Vb
-         iFzA==
-X-Gm-Message-State: APjAAAWYJKrndslvmzf+UL6AXBFQfVOxRHfLMNPG14o8JpDlTC+Lng0O
-        uI9w7eUmMXE5cKu88jv+iKemruvF6FOg2AAjvsHq0A==
-X-Google-Smtp-Source: APXvYqxhh7npR4DKD02urqAfnNma90KEuSilcS60X5kI+BR0cS5y3dkj2v9FsecupCFIorgjCH8a/URG0YasbPxugp4=
-X-Received: by 2002:ac2:5c11:: with SMTP id r17mr1699777lfp.61.1566996761734;
- Wed, 28 Aug 2019 05:52:41 -0700 (PDT)
+        id S1726315AbfH1NCo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 28 Aug 2019 09:02:44 -0400
+Received: from mga06.intel.com ([134.134.136.31]:60481 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726253AbfH1NCo (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 28 Aug 2019 09:02:44 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Aug 2019 06:02:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,441,1559545200"; 
+   d="scan'208";a="182022481"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.66]) ([10.237.72.66])
+  by fmsmga007.fm.intel.com with ESMTP; 28 Aug 2019 06:02:41 -0700
+Subject: Re: [PATCH] mmc: sdhci: use lower/upper_32_bits() macros for DMA
+ addresses
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-kernel@vger.kernel.org
+References: <20190828111453.4023-1-yamada.masahiro@socionext.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <0d5da294-61f8-4b9f-1a6e-7212da40f572@intel.com>
+Date:   Wed, 28 Aug 2019 16:01:37 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
-In-Reply-To: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 28 Aug 2019 14:52:30 +0200
-Message-ID: <CACRpkdazfe3gJr6Q+X05GzxPuKtUg0M780SPA_oR5bd+-xBPvA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sunxi: fix unusuable eMMC on some H6 boards by
- disabling DDR
-To:     =?UTF-8?Q?Alejandro_Gonz=C3=A1lez?= 
-        <alejandro.gonzalez.correo@gmail.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-sunxi <linux-sunxi@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190828111453.4023-1-yamada.masahiro@socionext.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, Aug 25, 2019 at 5:06 PM Alejandro Gonz=C3=A1lez
-<alejandro.gonzalez.correo@gmail.com> wrote:
+On 28/08/19 2:14 PM, Masahiro Yamada wrote:
+> Currently, the DMA addresses are casted to (u64) for the upper 32bits
+> to avoid "right shift count >= width of type" warning.
+> 
+> <linux/kernel.h> provides macros to address this, and the macro names
+> are self-documenting.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+> 
+>  drivers/mmc/host/sdhci.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index a5dc5aae973e..07144a195a9f 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -668,10 +668,10 @@ void sdhci_adma_write_desc(struct sdhci_host *host, void **desc,
+>  	/* 32-bit and 64-bit descriptors have these members in same position */
+>  	dma_desc->cmd = cpu_to_le16(cmd);
+>  	dma_desc->len = cpu_to_le16(len);
+> -	dma_desc->addr_lo = cpu_to_le32((u32)addr);
+> +	dma_desc->addr_lo = cpu_to_le32(lower_32_bits(addr));
+>  
+>  	if (host->flags & SDHCI_USE_64_BIT_DMA)
+> -		dma_desc->addr_hi = cpu_to_le32((u64)addr >> 32);
+> +		dma_desc->addr_hi = cpu_to_le32(upper_32_bits(addr));
+>  
+>  	*desc += host->desc_sz;
+>  }
+> @@ -827,9 +827,10 @@ static dma_addr_t sdhci_sdma_address(struct sdhci_host *host)
+>  static void sdhci_set_sdma_addr(struct sdhci_host *host, dma_addr_t addr)
+>  {
+>  	if (host->v4_mode) {
 
-> Jernej Skrabec compared the BSP driver with this
-> driver, and found that the BSP driver configures pinctrl to operate at
-> 1.8 V when entering DDR mode (although 3.3 V operation is supported), whi=
-le
-> the mainline kernel lacks any mechanism to switch voltages dynamically.
-(...)
-> the kernel lacks the required
-> dynamic pinctrl control for now
+To reduce line wrapping, how about using:
 
-This is not a pin control thing, the I/O voltage level is usually
-controlled by a regulator called VCCQ, if the selection of the
-voltage rails is inside the pin control registers, see the solution
-in drivers/pinctrl/sh-pfc/pfc-sh73a0.c where we simply provide
-a regulator from inside the pinctrl driver to make things easy
-for the MMC core. Do this thing!
+		u32 lo = lower_32_bits(addr);
+		u32 hi = upper_32_bits(addr);
 
-If you don't have time to fix it up properly right now I would slap
-in a big FIXME in the code so people know this needs
-to be fixed properly.
+> -		sdhci_writel(host, addr, SDHCI_ADMA_ADDRESS);
+> +		sdhci_writel(host, lower_32_bits(addr), SDHCI_ADMA_ADDRESS);
+>  		if (host->flags & SDHCI_USE_64_BIT_DMA)
+> -			sdhci_writel(host, (u64)addr >> 32, SDHCI_ADMA_ADDRESS_HI);
+> +			sdhci_writel(host, upper_32_bits(addr),
+> +				     SDHCI_ADMA_ADDRESS_HI);
+>  	} else {
+>  		sdhci_writel(host, addr, SDHCI_DMA_ADDRESS);
+>  	}
+> @@ -1096,10 +1097,11 @@ static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
+>  		} else if (host->flags & SDHCI_USE_ADMA) {
 
-Yours,
-Linus Walleij
+To reduce line wrapping, how about using:
+
+			u32 lo = lower_32_bits(host->adma_addr);
+			u32 hi = upper_32_bits(host->adma_addr);
+
+>  			sdhci_adma_table_pre(host, data, sg_cnt);
+>  
+> -			sdhci_writel(host, host->adma_addr, SDHCI_ADMA_ADDRESS);
+> +			sdhci_writel(host, lower_32_bits(host->adma_addr),
+> +				     SDHCI_ADMA_ADDRESS);
+>  			if (host->flags & SDHCI_USE_64_BIT_DMA)
+>  				sdhci_writel(host,
+> -					     (u64)host->adma_addr >> 32,
+> +					     upper_32_bits(host->adma_addr),
+>  					     SDHCI_ADMA_ADDRESS_HI);
+>  		} else {
+>  			WARN_ON(sg_cnt != 1);
+> 
+
