@@ -2,109 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F33BFA0046
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 12:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30CC6A009B
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 13:19:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726272AbfH1Kyf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 28 Aug 2019 06:54:35 -0400
-Received: from conssluserg-04.nifty.com ([210.131.2.83]:54855 "EHLO
-        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726270AbfH1Kyf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 06:54:35 -0400
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id x7SAsGhE023826;
-        Wed, 28 Aug 2019 19:54:17 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com x7SAsGhE023826
+        id S1726270AbfH1LTv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 28 Aug 2019 07:19:51 -0400
+Received: from condef-07.nifty.com ([202.248.20.72]:35705 "EHLO
+        condef-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726253AbfH1LTv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 07:19:51 -0400
+Received: from conuserg-12.nifty.com ([10.126.8.75])by condef-07.nifty.com with ESMTP id x7SBFmG1003203
+        for <linux-mmc@vger.kernel.org>; Wed, 28 Aug 2019 20:15:48 +0900
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-12.nifty.com with ESMTP id x7SBF8HP005401;
+        Wed, 28 Aug 2019 20:15:08 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com x7SBF8HP005401
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1566989657;
-        bh=0aEfdaeY7mGkEAyGyJedaS36AmSkDHSHLjJWK6eJ8jU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bK8fRPnWch65cU6pgIoRy9PQBFZXFjZyaECj8O/kkx24MPqoedK98ZKATllbYFpCx
-         nEN73VKu9eY89bVTdzDU6v4j6xAD+ZPhYcHLtZI6J986KSm9T4v1ZXa30nNgd9iOa/
-         iVw5CoXOPXoV094mtj5rUSD9l+L2GUG738uJ6VpcqCkpDHUAcP3LkIVQIws/5MjHln
-         27ZJtFOqGh9EQlFwGFso/6v6/xwkQB1BIZU4X8d6Pn6jEASzJyVsxrQ2Y6pr9vLyvd
-         uLiEGSm67Nu/LHo2aqPZixxJR3pcME8nfDSwsPSDZMUPb5R6wnwVYSj8cjFpsa3ikc
-         GNot1GcyfydYA==
-X-Nifty-SrcIP: [209.85.217.52]
-Received: by mail-vs1-f52.google.com with SMTP id 62so1542350vsl.5;
-        Wed, 28 Aug 2019 03:54:17 -0700 (PDT)
-X-Gm-Message-State: APjAAAW/LPwpkfIYhZafs1steV7l8eGJz4VnFtLJuatM7SBP+1HcpcvA
-        5sFn7inf54Dgw8vg1BS4eNpY70BJ6SleeGMat+0=
-X-Google-Smtp-Source: APXvYqyTOMfJYEouCiB1bEN4976TgQu4HqralgHD2818HsBCGBXAYnYZsbiCyyA54/vVKIRU/ogvfy3faarlq+XW0VM=
-X-Received: by 2002:a67:8a83:: with SMTP id m125mr1914365vsd.181.1566989656023;
- Wed, 28 Aug 2019 03:54:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190506223334.1834-1-nicoleotsuka@gmail.com> <20190506223334.1834-3-nicoleotsuka@gmail.com>
- <CAK7LNARacEorb38mVBw_V-Zvz-znWgBma1AP1-z_5B_xZU4ogg@mail.gmail.com>
- <CAK7LNAQfYBCoChMV=MOwcUyVoqRkrPWs7DaWdzDqjBe18gGiAQ@mail.gmail.com>
- <20190825011025.GA23410@lst.de> <CAK7LNAQb1ZHr=DiHLNeNRaQExMuXdDOV4sFghoGbco_Q=Qzb8g@mail.gmail.com>
- <20190826073320.GA11712@lst.de> <CAK7LNATYOLEboUTO4qPx2z7cqwDrHBO1HFHG8VzZEJ15STv+nw@mail.gmail.com>
- <20190827075021.GA953@lst.de> <CAK7LNAQZ+bueZZzSoMADmgLjWNvijHRV=wLQzN_kvLG3b5Uu+w@mail.gmail.com>
- <20190827115541.GB5921@lst.de>
-In-Reply-To: <20190827115541.GB5921@lst.de>
+        s=dec2015msa; t=1566990909;
+        bh=MdtqdcsaYYtubyrph0eVlOgNKdl1skgOg+CqHwrAlBI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GflElf6h+dvtfciFao7F+P2gIOJLedbsXJT5Vd65bQqphG5BPKBHhf8ogZgp9pqxw
+         8OapcO/+xmabw9r0t4r/t0XKm7NoFkO2aOS8YiaeQ+5PlJF+e83przEhH+igEiZuYx
+         5kTi/VX+M45Cw3UchMm/OZZar2yzAqmIS9BgH2LKZNC0VSGYfvqxE72/VGbHF66pBB
+         1YHIlYJPJQoVsTwJFeazWf37unbLhz2I6ZcG0ERQ52YlJn3nZwQDlW+TkI8VIUvSRT
+         cowsq9jIyhkWU5ej5FAcBOGS+aRakF4xJHl1JW6b5erMUcqHgegyvWaJ0WSY4CNTmC
+         LHxajcsg1rYuA==
+X-Nifty-SrcIP: [153.142.97.92]
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Wed, 28 Aug 2019 19:53:40 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQ_nQcBt=xH1-h+=co85mTxFgbe+_46Gu4LaNsDSm+kYA@mail.gmail.com>
-Message-ID: <CAK7LNAQ_nQcBt=xH1-h+=co85mTxFgbe+_46Gu4LaNsDSm+kYA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] dma-contiguous: Use fallback alloc_pages for
- single pages
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Nicolin Chen <nicoleotsuka@gmail.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>, vdumpa@nvidia.com,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Thierry Reding <treding@nvidia.com>,
-        Kees Cook <keescook@chromium.org>, iamjoonsoo.kim@lge.com,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] mmc: sdhci: use lower/upper_32_bits() macros for DMA addresses
+Date:   Wed, 28 Aug 2019 20:14:53 +0900
+Message-Id: <20190828111453.4023-1-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Christoph,
+Currently, the DMA addresses are casted to (u64) for the upper 32bits
+to avoid "right shift count >= width of type" warning.
 
-On Tue, Aug 27, 2019 at 8:55 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Tue, Aug 27, 2019 at 06:03:14PM +0900, Masahiro Yamada wrote:
-> > Yes, this makes my driver working again
-> > when CONFIG_DMA_CMA=y.
-> >
-> >
-> > If I apply the following, my driver gets back working
-> > irrespective of CONFIG_DMA_CMA.
->
-> That sounds a lot like the device simply isn't 64-bit DMA capable, and
-> previously always got CMA allocations under the limit it actually
-> supported.  I suggest that you submit this quirk to the mmc maintainers.
+<linux/kernel.h> provides macros to address this, and the macro names
+are self-documenting.
 
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
 
-I tested v5.2 and my MMC host controller works with
-dma_address that exceeds 32-bit physical address.
+ drivers/mmc/host/sdhci.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-So, I believe my MMC device is 64-bit DMA capable.
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index a5dc5aae973e..07144a195a9f 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -668,10 +668,10 @@ void sdhci_adma_write_desc(struct sdhci_host *host, void **desc,
+ 	/* 32-bit and 64-bit descriptors have these members in same position */
+ 	dma_desc->cmd = cpu_to_le16(cmd);
+ 	dma_desc->len = cpu_to_le16(len);
+-	dma_desc->addr_lo = cpu_to_le32((u32)addr);
++	dma_desc->addr_lo = cpu_to_le32(lower_32_bits(addr));
+ 
+ 	if (host->flags & SDHCI_USE_64_BIT_DMA)
+-		dma_desc->addr_hi = cpu_to_le32((u64)addr >> 32);
++		dma_desc->addr_hi = cpu_to_le32(upper_32_bits(addr));
+ 
+ 	*desc += host->desc_sz;
+ }
+@@ -827,9 +827,10 @@ static dma_addr_t sdhci_sdma_address(struct sdhci_host *host)
+ static void sdhci_set_sdma_addr(struct sdhci_host *host, dma_addr_t addr)
+ {
+ 	if (host->v4_mode) {
+-		sdhci_writel(host, addr, SDHCI_ADMA_ADDRESS);
++		sdhci_writel(host, lower_32_bits(addr), SDHCI_ADMA_ADDRESS);
+ 		if (host->flags & SDHCI_USE_64_BIT_DMA)
+-			sdhci_writel(host, (u64)addr >> 32, SDHCI_ADMA_ADDRESS_HI);
++			sdhci_writel(host, upper_32_bits(addr),
++				     SDHCI_ADMA_ADDRESS_HI);
+ 	} else {
+ 		sdhci_writel(host, addr, SDHCI_DMA_ADDRESS);
+ 	}
+@@ -1096,10 +1097,11 @@ static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
+ 		} else if (host->flags & SDHCI_USE_ADMA) {
+ 			sdhci_adma_table_pre(host, data, sg_cnt);
+ 
+-			sdhci_writel(host, host->adma_addr, SDHCI_ADMA_ADDRESS);
++			sdhci_writel(host, lower_32_bits(host->adma_addr),
++				     SDHCI_ADMA_ADDRESS);
+ 			if (host->flags & SDHCI_USE_64_BIT_DMA)
+ 				sdhci_writel(host,
+-					     (u64)host->adma_addr >> 32,
++					     upper_32_bits(host->adma_addr),
+ 					     SDHCI_ADMA_ADDRESS_HI);
+ 		} else {
+ 			WARN_ON(sg_cnt != 1);
+-- 
+2.17.1
 
-I am still looking into the code
-to find out what was changed.
-
-
-
-
---
-Best Regards
-Masahiro Yamada
