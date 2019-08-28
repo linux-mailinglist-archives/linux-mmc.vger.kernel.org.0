@@ -2,127 +2,91 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B34A39F7DA
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 03:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C289F81C
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 04:01:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726127AbfH1BeV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 27 Aug 2019 21:34:21 -0400
-Received: from mga02.intel.com ([134.134.136.20]:7077 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726096AbfH1BeV (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 27 Aug 2019 21:34:21 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Aug 2019 18:34:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,439,1559545200"; 
-   d="scan'208";a="209956217"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga002.fm.intel.com with ESMTP; 27 Aug 2019 18:34:19 -0700
-Received: from [10.226.38.21] (vramuthx-mobl1.gar.corp.intel.com [10.226.38.21])
-        by linux.intel.com (Postfix) with ESMTP id 90C1E580375;
-        Tue, 27 Aug 2019 18:34:16 -0700 (PDT)
-Subject: Re: [PATCH v1 2/2] mmc: sdhci-of-arasan: Add Support for Intel LGM
- eMMC
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        andriy.shevchenko@intel.com, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com
-References: <20190826072800.38413-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20190826072800.38413-2-vadivel.muruganx.ramuthevar@linux.intel.com>
- <CAPDyKFrPoPqnh3_23P=wGO+QrUE9ogJzC6xgzy+0QeyuyeO=HQ@mail.gmail.com>
-From:   "Ramuthevar, Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Message-ID: <373e55ab-c76b-7657-bd47-1a5efc75a062@linux.intel.com>
-Date:   Wed, 28 Aug 2019 09:34:15 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726206AbfH1CBw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 27 Aug 2019 22:01:52 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:40820 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726181AbfH1CBw (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 22:01:52 -0400
+Received: by mail-wr1-f66.google.com with SMTP id c3so735667wrd.7;
+        Tue, 27 Aug 2019 19:01:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+2IzGJMnVQs5Qv7zLsgC3sxUxxrgX8laKLcrZIr1izM=;
+        b=mmBYSj7lod3CKerFV4vxbNtOkgfWGARH6A/UeiefUS8sJB2kB2wapXaaAX37Xmk4ps
+         KuqmNLKxtk/TYkRZLSg1YSJ5nCfXwCypneONzSVLQ7vUaYOxAzgT9Wo0rA74yiWUGN79
+         +MMQZ68VX5lhpnPnsinrmXBSz3O9LiQVxguCe6bcSn/FzKH5h5de8a6s1zabky1axGL5
+         gHTFe6mmLYNvqi0StMFNjZHVHLQM7lfr9WLbPEbX/d5pdOGf61/HV0eDUrY794ORVEvA
+         z/3PiHifOC6F9ZbFi8ckUmJ+zSeXhD7SAfFUIrniUxh+hlPuT7zxyW3Pqr+SwYFnv/Z+
+         qoeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+2IzGJMnVQs5Qv7zLsgC3sxUxxrgX8laKLcrZIr1izM=;
+        b=OyITUNYVWuzfnnnTqMJlTdsqu4kyv8k2YN0NCk6rDnZIlq38e4KpiDpNNWdl76DreV
+         3iPIB4FnFCbMsYhbluWH7BlxkQUumtCPATVvwqUsTW2JVMtPWltf2c4ufksAND43L5Mb
+         fP8F/pMvX/rn/4OpSOiPUu7M9DsPuYvGZPoS0C8o7FgGKXyZ+gBiqyNQX8bZhKMTOJhJ
+         7xDbG8Lilg15Eq6XP59zIJO0dXYVbQHOXfo9Hf4yHMxIajOaAsAWmjX1V3LROh5fbcuy
+         /NxS2SgHNRWuJMKz7NoTMCRp1tZLSbUSDkrXc/DVoPbWVqFUOrvZP5XsGBNMRYGaXREr
+         KDrg==
+X-Gm-Message-State: APjAAAXPzBsSxU6MCd1SwNgCNM792o1xLXIiqYpZ+2w1ulEEwev7THtk
+        Z8VIgeF+TqQMdbem6ClQVHkj718feJ9qJtBW1kuqnQ==
+X-Google-Smtp-Source: APXvYqx49JoFKyK0pkGtf3HWx2PBZwNLAnsw6lY61TOZ57xqgQF5cyfmdwL/o1tk5wLRe1TsFfoQ37aVOEhaVTICNbw=
+X-Received: by 2002:a5d:610d:: with SMTP id v13mr1153885wrt.249.1566957710209;
+ Tue, 27 Aug 2019 19:01:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFrPoPqnh3_23P=wGO+QrUE9ogJzC6xgzy+0QeyuyeO=HQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <20190826031830.30931-1-zhang.lyra@gmail.com> <CAPDyKFrpvtS9mHO7xN=cbrMHWN+ydPw08mF9oXtNW-TOMsP7Ew@mail.gmail.com>
+In-Reply-To: <CAPDyKFrpvtS9mHO7xN=cbrMHWN+ydPw08mF9oXtNW-TOMsP7Ew@mail.gmail.com>
+From:   Chunyan Zhang <zhang.lyra@gmail.com>
+Date:   Wed, 28 Aug 2019 10:01:14 +0800
+Message-ID: <CAAfSe-txS9MObU+ygxk5NA-FneDL7ftrDruvuou9PYhvXY0E=w@mail.gmail.com>
+Subject: Re: [PATCH 0/5] a few fixes for sprd's sd host controller
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Ulf,
-
-On 27/8/2019 9:49 PM, Ulf Hansson wrote:
-> On Mon, 26 Aug 2019 at 09:28, Ramuthevar,Vadivel MuruganX
-> <vadivel.muruganx.ramuthevar@linux.intel.com> wrote:
->> From: Ramuthevar Vadivel Muruganx <vadivel.muruganx.ramuthevar@linux.intel.com>
->>
->> The current arasan sdhci PHY configuration isn't compatible
->> with the PHY on Intel's LGM(Lightning Mountain) SoC devices.
->>
->> Therefore, add a new compatible, to adapt the Intel's LGM
->> eMMC PHY with arasan-sdhc controller to configure the PHY.
->>
->> Signed-off-by: Ramuthevar Vadivel Muruganx <vadivel.muruganx.ramuthevar@linux.intel.com>
+On Tue, 27 Aug 2019 at 21:47, Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> Applied for next, thanks!
+> On Mon, 26 Aug 2019 at 05:18, Chunyan Zhang <zhang.lyra@gmail.com> wrote:
+> >
+> > From: Chunyan Zhang <chunyan.zhang@unisoc.com>
+> >
+> > With this patch-set, both sd card and mmc can be setup.  This patch-set was
+> > verified on Unisoc's Whale2 and another mobile phone platform SC9863A.
+> >
+> > Chunyan Zhang (5):
+> >   mmc: sdhci-sprd: fixed incorrect clock divider
+> >   mmc: sdhci: sprd: add get_ro hook function
+> >   mmc: sdhci: sprd: add SDHCI_QUIRK2_PRESET_VALUE_BROKEN
+> >   mms: sdhci: sprd: add SDHCI_QUIRK_BROKEN_CARD_DETECTION
+> >   mmc: sdhci: sprd: clear the UHS-I modes read from registers
+> >
+> >  drivers/mmc/host/sdhci-sprd.c | 30 +++++++++++++++++++++++++-----
+> >  1 file changed, 25 insertions(+), 5 deletions(-)
+> >
+> > --
+> > 2.20.1
+> >
+>
+> Looks like the entire series should be tagged for stable and having
+> the same fixes tag as patch1. No?
+
+Ok.
+
 >
 > Kind regards
 > Uffe
->
-Thank you so much for review and applied for next.
-
-Best Regards
-Vadivel
->> ---
->>   drivers/mmc/host/sdhci-of-arasan.c | 15 +++++++++++++++
->>   1 file changed, 15 insertions(+)
->>
->> diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
->> index b12abf9b15f2..7023cbec4017 100644
->> --- a/drivers/mmc/host/sdhci-of-arasan.c
->> +++ b/drivers/mmc/host/sdhci-of-arasan.c
->> @@ -114,6 +114,12 @@ static const struct sdhci_arasan_soc_ctl_map rk3399_soc_ctl_map = {
->>          .hiword_update = true,
->>   };
->>
->> +static const struct sdhci_arasan_soc_ctl_map intel_lgm_emmc_soc_ctl_map = {
->> +       .baseclkfreq = { .reg = 0xa0, .width = 8, .shift = 2 },
->> +       .clockmultiplier = { .reg = 0, .width = -1, .shift = -1 },
->> +       .hiword_update = false,
->> +};
->> +
->>   /**
->>    * sdhci_arasan_syscon_write - Write to a field in soc_ctl registers
->>    *
->> @@ -373,6 +379,11 @@ static struct sdhci_arasan_of_data sdhci_arasan_rk3399_data = {
->>          .pdata = &sdhci_arasan_cqe_pdata,
->>   };
->>
->> +static struct sdhci_arasan_of_data intel_lgm_emmc_data = {
->> +       .soc_ctl_map = &intel_lgm_emmc_soc_ctl_map,
->> +       .pdata = &sdhci_arasan_cqe_pdata,
->> +};
->> +
->>   #ifdef CONFIG_PM_SLEEP
->>   /**
->>    * sdhci_arasan_suspend - Suspend method for the driver
->> @@ -474,6 +485,10 @@ static const struct of_device_id sdhci_arasan_of_match[] = {
->>                  .compatible = "rockchip,rk3399-sdhci-5.1",
->>                  .data = &sdhci_arasan_rk3399_data,
->>          },
->> +       {
->> +               .compatible = "intel,lgm-sdhci-5.1-emmc",
->> +               .data = &intel_lgm_emmc_data,
->> +       },
->>          /* Generic compatible below here */
->>          {
->>                  .compatible = "arasan,sdhci-8.9a",
->> --
->> 2.11.0
->>
