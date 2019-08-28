@@ -2,227 +2,217 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A901E9FFF7
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 12:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEAE6A0020
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 12:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726475AbfH1Kcf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 28 Aug 2019 06:32:35 -0400
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:40979 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726743AbfH1Kcf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 06:32:35 -0400
-Received: by mail-ua1-f65.google.com with SMTP id x2so649156uar.8
-        for <linux-mmc@vger.kernel.org>; Wed, 28 Aug 2019 03:32:33 -0700 (PDT)
+        id S1726315AbfH1KpV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 28 Aug 2019 06:45:21 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:40707 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726272AbfH1KpV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 06:45:21 -0400
+Received: by mail-vs1-f68.google.com with SMTP id i128so1517824vsc.7
+        for <linux-mmc@vger.kernel.org>; Wed, 28 Aug 2019 03:45:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=oF7a1jbNbbfi/DhdEHpIDQz29C1JdgCAJx5IOgrXi30=;
-        b=cp/+56qdxFuDpbtqG8L1bmfC561P9jMlzO5urm8esQqmM2W3gBfNZdp+scUb/KB4iB
-         qcXCcj0I8yeqS2BGaoF9CiIPWreZXVneX4W1Luzt07p5wChbYfShdsHS3Osr888EAF4O
-         RScUdSCEqK46D6wtZMBAHaY4yiVC8aYfB6mGWVtzG3imiZbLNGysfDNsRb7tFf/GBT6V
-         CwlWUrgju0whJHM+pQVqIXg8HYwHqJ6hv87myiJUck4Ad6jQ3fVS8ujj1t1NLvmLwkIt
-         KelRcR3YS364Ab3ZM6Cn/7sCdOvHfmtXLeXE5SuqM4gDlsWlwoySuoE7niD/nBoacqZp
-         nOcw==
+         :cc:content-transfer-encoding;
+        bh=o+xrSlt5Kh0C3lpbOcjkSvTMU466Hl/PMz9rxck7blI=;
+        b=tRpQI197XB+4tMvBnbenKIhncyuaVhy7mvK/rbhaxj5NxBKRLiE9JQcXblIFjK7vT1
+         uRghSGNKv5LoqfRT6Ql3emIoffrK4M2JYKCiD9QHGBwXrMWcdrsWEmYTE3jVsmisA/G2
+         GYLX8FMc7uOtT6ATuOQIDEkHxRzMfXv3KannjCEm7oskZGQsO9zXwbDbjCcjxHlys1vl
+         OoB6BWU60QtCwkPPeyilqdEMIN+FP9ZuJfgdxUUhjLi60Ine/tMXhz+0RRJufwE7Ncib
+         FrphWGU8PZF82l8DTLaD0ZPyeJ0z1ia/otIZcUIClOgh6dCX22wq8ktXXap+xt8z7Rfp
+         M/7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oF7a1jbNbbfi/DhdEHpIDQz29C1JdgCAJx5IOgrXi30=;
-        b=lMEnIOksg1ZU5Y8N0AhqZmZvaqSaplDxvND/cWJTmrSFH0JCRcT6L5fc9mAoXVhpZI
-         SVTXgztp4eLsojYTU3AJz2aSy4jhxScx6L6aMFk2ZklLdkjshHHmQyrj0iO6iwnI3TAq
-         PBm7R6vaBu75Ak8cU9tEurxcgJmmJZ9IHwXIw6uzqYva53shIGnvmEiayY+KgSBnOKRm
-         d214UNZkZsBF18DmQhguIimrhAMz/UTpZZ3uvedTL+ZzpmrCh4Bh0RMkQzNr4xyHs1VP
-         OqDI6UIufgDzIvOj7etxaQMVOdvlEauAbGeDvZ6bBZ5fRfLLQaVaV1zp6cSbuMG/FvbX
-         2S3g==
-X-Gm-Message-State: APjAAAVBFvz2OaApTnbj8w2s86nFsLBfL6WEO/T0UABDQ/khGAx3sjb5
-        7q1yihyG2GfY7fvzJdNnokcpidyLE5BVo8N0QKQHt558
-X-Google-Smtp-Source: APXvYqxu8e7ouZlP59+4Xx/1uo07ZtNJgW3EppKd0LP9dwxPGjEFMRvCUHleqLWo7lXKmtIi0s8NylMLuJFV+YuvBNo=
-X-Received: by 2002:ab0:6883:: with SMTP id t3mr1585466uar.104.1566988353183;
- Wed, 28 Aug 2019 03:32:33 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=o+xrSlt5Kh0C3lpbOcjkSvTMU466Hl/PMz9rxck7blI=;
+        b=NPdLyuDFkr9ABsE5cnwtkqxvmyJ3472PRpjCkRXzOtsFQ0vg6r478WFeS7QgBT7kTq
+         99CgN+Z8jkv3YVgh5Oa6uXxjhlgOSwq5hhe59pZdR5J0uxlMA0futEV4f6A01E/I52Zz
+         lbNDXTlYz4VcJkd4Pe7ynFyteZN/LolTTPBdMXomteRJvtSNe9CMJ5ZZSGGWCXQc6Dx3
+         ugcE1Le7SwSDvggRjAZzqGeo3fTCmcRebrvygtwfhFguqdkAtJDQsNVHlmh2E6tQbryQ
+         yp91EuSRAwgw946VtQtkhE3zDOTjbpMOENu4c+yYbQMAgHKLE7GmzOORKQ/BGA+Y3b7r
+         Oj0A==
+X-Gm-Message-State: APjAAAX3D51bS2P+icuUjtm7TLF8qlqcpViOg+7LHBvLFiIOYNBHQAQE
+        GTzUmklvGxS/u345GWqcgk83xSgaGprZ+ItHbnRrscpu
+X-Google-Smtp-Source: APXvYqyu77jdbOmIUfwGAlidVRH14Wk9RGAQea5SkMpiT1mS6rTeqNiVdbW4aODZk9/D3j13752tysZPcoFtD2mrWwY=
+X-Received: by 2002:a67:32c5:: with SMTP id y188mr1846173vsy.191.1566989119758;
+ Wed, 28 Aug 2019 03:45:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190827134337.GK13294@shell.armlinux.org.uk> <CAPDyKFp7e2OD_idam3-2sEd0wJU5OcP=H04G1OvHmAUo2Y-bYw@mail.gmail.com>
- <20190827143634.GL13294@shell.armlinux.org.uk> <20190827145216.GM13294@shell.armlinux.org.uk>
- <20190827150614.GN13294@shell.armlinux.org.uk>
-In-Reply-To: <20190827150614.GN13294@shell.armlinux.org.uk>
+References: <20190820114229.11948-1-ja.kaisrlik@gmail.com> <CAPDyKFrJvHGCEyAtih6wZNqFj+68icVBtWhDTrNf1Fr9kQQCig@mail.gmail.com>
+ <CAPnxhu77vwKEx-_vzvPs_o5HsrZcSZ5eha7JPqJPjmv0Gzpkuw@mail.gmail.com>
+ <CAPDyKFqMcsht8Ag6aGfoNeuUX+_zR-b0hUhVDyNpV5s6mmGYVA@mail.gmail.com>
+ <CAPnxhu4DwaxL-eXbwHnes7AJFA2G+zNUHsOvrfsPPVqdW0MV_g@mail.gmail.com>
+ <CAPDyKFoZkU5VKCc2uCawizTM_iB=rU=OFpSWRBnzPQKN813-Kw@mail.gmail.com> <CAPnxhu7+fhiNz8URk3+EnQPDs0hO+oKHyMnXC5RT+CwQymd=Pg@mail.gmail.com>
+In-Reply-To: <CAPnxhu7+fhiNz8URk3+EnQPDs0hO+oKHyMnXC5RT+CwQymd=Pg@mail.gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 28 Aug 2019 12:31:56 +0200
-Message-ID: <CAPDyKFoJgT9kRnARcP+snZkqC7rrp3UCd=mA=n3GL_brr2SHBw@mail.gmail.com>
-Subject: Re: Continuous SD IO causes hung task messages
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Date:   Wed, 28 Aug 2019 12:44:43 +0200
+Message-ID: <CAPDyKFpatR0q+uO4Q-xcfAWVRTnc3Wp+_oDqECepk_FiLM1kBQ@mail.gmail.com>
+Subject: Re: [PATCH] Revert "mmc: core: do not retry CMD6 in __mmc_switch()"
+To:     Jan Kaisrlik <ja.kaisrlik@gmail.com>
+Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Kevin Hilman <khilman@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 27 Aug 2019 at 17:06, Russell King - ARM Linux admin
-<linux@armlinux.org.uk> wrote:
+On Tue, 27 Aug 2019 at 17:55, Jan Kaisrlik <ja.kaisrlik@gmail.com> wrote:
 >
-> On Tue, Aug 27, 2019 at 03:52:17PM +0100, Russell King - ARM Linux admin wrote:
-> > On Tue, Aug 27, 2019 at 03:36:34PM +0100, Russell King - ARM Linux admin wrote:
-> > > On Tue, Aug 27, 2019 at 03:55:23PM +0200, Ulf Hansson wrote:
-> > > > On Tue, 27 Aug 2019 at 15:43, Russell King - ARM Linux admin
-> > > > <linux@armlinux.org.uk> wrote:
-> > > > >
-> > > > > Hi,
-> > > > >
-> > > > > While dd'ing the contents of a SD card, I get hung task timeout
-> > > > > messages as per below.  However, the dd is making progress.  Any
-> > > > > ideas?
-> > > > >
-> > > > > Presumably, mmc_rescan doesn't get a look-in while IO is progressing
-> > > > > for the card?
+> On Tue, Aug 27, 2019 at 3:14 PM Ulf Hansson <ulf.hansson@linaro.org> wrot=
+e:
+> >
+> > On Fri, 23 Aug 2019 at 11:36, Jan Kaisrlik <ja.kaisrlik@gmail.com> wrot=
+e:
+> > >
+> > > =C4=8Dt 22. 8. 2019 v 15:59 odes=C3=ADlatel Ulf Hansson <ulf.hansson@=
+linaro.org> napsal:
 > > > >
-> > > > Is it a regression?
+> > > > + some meson driver folkz
 > > > >
-> > > > There not much of recent mmc core and mmc block changes, that I can
-> > > > think of at this point.
-> > >
-> > > No idea - I just repaired the SD socket after the D2 line became
-> > > disconnected, and decided to run that command as a test.
-> > >
-> > > > > ARM64 host, Macchiatobin, uSD card.
+> > > > On Thu, 22 Aug 2019 at 10:27, Jan Kaisrlik <ja.kaisrlik@gmail.com> =
+wrote:
+> > > > >
+> > > > > st 21. 8. 2019 v 17:12 odes=C3=ADlatel Ulf Hansson <ulf.hansson@l=
+inaro.org> napsal:
+> > > > > >
+> > > > > > + Chaotian Jing
+> > > > > >
+> > > > > > On Tue, 20 Aug 2019 at 13:42, <ja.kaisrlik@gmail.com> wrote:
+> > > > > > >
+> > > > > > > From: Jan Kaisrlik <ja.kaisrlik@gmail.com>
+> > > > > > >
+> > > > > > > This reverts commit 3a0681c7448b174e5dcfd19e9079cdd281c35f1a.
+> > > > > > >
+> > > > > > > Turns out the patch breaks initialization of Toshiba THGBMNG5=
+.
+> > > > > > > [    1.648951] mmc0: mmc_select_hs200 failed, error -84
+> > > > > > > [    1.648988] mmc0: error -84 whilst initialising MMC card
+> > > > > >
+> > > > > > For exactly this reason, when getting CRC errors on the first a=
+ttempt,
+> > > > > > doing a retry makes little sense.
+> > > > > >
+> > > > > > I have looped in Chaotian who has some more details about the p=
+roblem.
+> > > > > >
+> > > > > > In any case, Jan, what HW and mmc controller are you using?
+> > > > >
+> > > > > It's a custom board based on Amlogic A113D. The compatibility in =
+dts
+> > > > > is set to "alogic,meson-axg-mmc".
 > > > >
-> > > > What mmc host driver is it? mmci?
+> > > > Good. I have looped in some of the relevant developers/maintainers.
+> > > >
+> > > > >
+> > > > > In the different revision of HW we are using Kingston EMMC04G. Th=
+e
+> > > > > card has no such problem and is working fine without this patch.
+> > > > > We observed it only on mention Toshiba card.
+> > > >
+> > > > I see. Of course it would also be interesting to see what CMD6 comm=
+and
+> > > > that is that fails. Would you mind adding some debug/trace to find =
+out
+> > > > what command it is that fails?
 > > >
-> > > sdhci-xenon.
+> > > Providing a log with following debug option  `dyndbg=3D"func mmc_mrq_=
+pr_debug +p`
+> >
+> > Thanks!
+> >
 > > >
-> > > I'm just trying with one CPU online, then I'll try with two.  My
-> > > suspicion is that there's a problem in the ARM64 arch code where
-> > > unlocking a mutex doesn't get noticed on other CPUs.
+> > > # dmesg | grep mmc0
+> > > [    1.557984] mmc0: starting CMD52 arg 00000c00 flags 00000195
+> > > [    1.563989] mmc0: starting CMD52 arg 80000c08 flags 00000195
+> > > [    1.575219] mmc0: starting CMD0 arg 00000000 flags 000000c0
+> > > [    1.593142] mmc0: starting CMD8 arg 000001aa flags 000002f5
+> > > [    1.604439] mmc0: starting CMD5 arg 00000000 flags 000002e1
+> > > [    1.623875] mmc0: starting CMD55 arg 00000000 flags 000000f5
+> > > [    1.631024] mmc0: starting CMD55 arg 00000000 flags 000000f5
+> > > [    1.640221] mmc0: starting CMD55 arg 00000000 flags 000000f5
+> > > [    1.646802] mmc0: starting CMD55 arg 00000000 flags 000000f5
+> > > [    1.652397] mmc0: starting CMD1 arg 00000000 flags 000000e1
+> > > [    1.669894] mmc0: starting CMD1 arg 40ff8080 flags 000000e1
+> > > [    1.682925] mmc0: starting CMD1 arg 40ff8080 flags 000000e1
+> > > [    1.697073] mmc0: starting CMD1 arg 40ff8080 flags 000000e1
+> > > [    1.704327] mmc0: starting CMD0 arg 00000000 flags 000000c0
+> > > [    1.722251] mmc0: starting CMD1 arg 40200000 flags 000000e1
+> > > [    1.745317] mmc0: starting CMD1 arg 40200000 flags 000000e1
+> > > [    1.752813] mmc0: starting CMD2 arg 00000000 flags 00000007
+> > > [    1.771731] mmc0: starting CMD3 arg 00010000 flags 00000015
+> > > [    1.784771] mmc0: starting CMD9 arg 00010000 flags 00000007
+> > > [    1.790433] mmc0: starting CMD7 arg 00010000 flags 00000015
+> > > [    1.795691] mmc0: starting CMD8 arg 00000000 flags 000000b5
+> > > [    1.800800] mmc0:     blksz 512 blocks 1 flags 00000200 tsac 50 ms=
+ nsac 0
+> > > [    1.818402] mmc0: starting CMD6 arg 03af0101 flags 0000049d
+> > > [    1.818845] mmc0: starting CMD13 arg 00010000 flags 00000195
+> > > [    1.824349] mmc0: starting CMD6 arg 03220101 flags 0000049d
+> > > [    1.829992] mmc0: starting CMD13 arg 00010000 flags 00000195
+> > > [    1.835493] mmc0: starting CMD6 arg 03b70201 flags 0000049d
+> > > [    1.841119] mmc0: starting CMD13 arg 00010000 flags 00000195
+> > > [    1.846628] mmc0: starting CMD8 arg 00000000 flags 000000b5
+> > > [    1.851719] mmc0:     blksz 512 blocks 1 flags 00000200 tsac 50 ms=
+ nsac 0
+> > > [    1.860347] mmc0: starting CMD6 arg 03b90201 flags 0000049d
+> > > [    1.864421] mmc0: mmc_select_hs200 failed, error -84
+> > > [    1.868892] mmc0: error -84 whilst initialising MMC card
+> >
+> > Alright, so the CMD6 command that tries to switch the card into HS200
+> > mode is the one that fails.
+> >
 > > >
-> > > Hmm, I thought I'd try bringing another CPU online, but it seems
-> > > like the ARM64 CPU hotplug code is broken:
-> > >
-> > > [ 3552.029689] CPU1: shutdown
-> > > [ 3552.031099] psci: CPU1 killed.
-> > > [ 3949.835212] CPU1: failed to come online
-> > > [ 3949.837753] CPU1: failed in unknown state : 0x0
-> > >
-> > > which means I can only take CPUs down, I can't bring them back
-> > > online without rebooting.
+> > > I cannot provide more verbose logs. When I enable more it (f.e. file
+> > > core.c) the initialization of card was successful.
 > >
-> > Okay, running on a single CPU shows no problems.
+> > That's an interesting observation!
 > >
-> > Running on four CPUs (as originally) shows that the kworker thread
-> > _never_ gets scheduled, so the warning is not false.
-> >
-> > With three CPUs, same problem.
-> >
-> > root@arm-d06300000000:~# ps aux | grep ' D '
-> > root        34  0.0  0.0      0     0 ?        D    15:38   0:00 [kworker/1:1+events_freezable]
-> > root@arm-d06300000000:~# cat /proc/34/sched
-> > kworker/1:1 (34, #threads: 1)
-> > -------------------------------------------------------------------
-> > se.exec_start                                :        318689.992440
-> > se.vruntime                                  :         37750.882357
-> > se.sum_exec_runtime                          :             9.421240
-> > se.nr_migrations                             :                    0
-> > nr_switches                                  :                 1174
-> > nr_voluntary_switches                        :                 1171
-> > nr_involuntary_switches                      :                    3
-> > se.load.weight                               :              1048576
-> > se.runnable_weight                           :              1048576
-> > se.avg.load_sum                              :                    6
-> > se.avg.runnable_load_sum                     :                    6
-> > se.avg.util_sum                              :                 5170
-> > se.avg.load_avg                              :                    0
-> > se.avg.runnable_load_avg                     :                    0
-> > se.avg.util_avg                              :                    0
-> > se.avg.last_update_time                      :         318689991680
-> > se.avg.util_est.ewma                         :                   10
-> > se.avg.util_est.enqueued                     :                    0
-> > policy                                       :                    0
-> > prio                                         :                  120
-> > clock-delta                                  :                    0
-> >
-> > The only thing that changes there is "clock-delta".  When I kill the
-> > dd, I get:
-> >
-> > root@arm-d06300000000:~# cat /proc/34/sched
-> > kworker/1:1 (34, #threads: 1)
-> > -------------------------------------------------------------------
-> > se.exec_start                                :        574025.791680
-> > se.vruntime                                  :         79996.657300
-> > se.sum_exec_runtime                          :            10.916400
-> > se.nr_migrations                             :                    0
-> > nr_switches                                  :                 1403
-> > nr_voluntary_switches                        :                 1400
-> > nr_involuntary_switches                      :                    3
-> > se.load.weight                               :              1048576
-> > se.runnable_weight                           :              1048576
-> > se.avg.load_sum                              :                   15
-> > se.avg.runnable_load_sum                     :                   15
-> > se.avg.util_sum                              :                15007
-> > se.avg.load_avg                              :                    0
-> > se.avg.runnable_load_avg                     :                    0
-> > se.avg.util_avg                              :                    0
-> > se.avg.last_update_time                      :         574025791488
-> > se.avg.util_est.ewma                         :                   10
-> > se.avg.util_est.enqueued                     :                    0
-> > policy                                       :                    0
-> > prio                                         :                  120
-> > clock-delta                                  :                   40
-> >
-> > so the thread makes forward progress.
-> >
-> > Down to two CPUs:
-> >
-> > root@arm-d06300000000:~# ps aux | grep ' D '
-> > root        34  0.0  0.0      0     0 ?        D    15:38   0:00 [kworker/1:1+events_freezable]
-> >
-> > Same symptoms.  dd and md5sum switch between CPU 0 and CPU1.
+> > Perhaps the card is still in some kind of busy state, after the CMD8
+> > has been sent to read the EXT_CSD, when verifying the earlier bus
+> > width switch (mmc_compare_ext_csds()).
 >
-> Hmm.
->
-> static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
->                                     const struct blk_mq_queue_data *bd)
->
->         mq->in_flight[issue_type] += 1;
->         get_card = (mmc_tot_in_flight(mq) == 1);
->
->         if (get_card)
->                 mmc_get_card(card, &mq->ctx);
->
-> mmc_get_card() gets the host lock according to the card.
->
-> So, if we always have requests in flight (which is probably the case
-> here) we never drop the host lock, and mmc_rescan() never gets a look
-> in - hence blocking the kworker.
+> I'm curious, do you know if there is a command that says if the card
+> is busy/ready?
 
-Ahh, you are right. However, this isn't a new problem I believe.
+Yes, the CMD13.
 
-Even if we did some re-work of the locking mechanism while converting
-to blk-mq, I still think the worker could starve the mmc_rescan work
-before.
+However, CMD13 is not allowed to be sent for some command sequences.
+For example sending CMD6 to switch to HS200 mode, is one case where we
+must avoid it.
 
-In practice this shouldn't be a problem though, unless I am
-overlooking something. This is because it's not until there is an I/O
-error, that causes the block worker to release the host, to it makes
-sense to let mmc_rescan to claim the host to check for card removal.
+For these scenarios, either we rely on the host HW to detect when the
+card stop signals busy or we simply insert a delay (according to spec)
+after sending the CMD6 command.
 
 >
-> So this is a real issue with MMC, and not down to something in the
-> arch.
-
-Yep, thanks for running the test and providing more details!
-
+> >
+> > > If you want to see any another logs fell free to ask.
+> >
+> > Would you mind trying one thing, in a way to narrow down the problem?
+> >
+> > Add a delay (msleep() or usleep_range() with some different values up
+> > to 50 ms) somewhere after mmc_compare_ext_csds() has been executed,
+> > but also before having mmc_select_bus_width() to return the error
+> > code?
 >
-> I suspect the reason that single-CPU doesn't show it is because it is
-> unable to keep multiple requests in flight.
+> I've added msleep just before exit point of mmc_select_bus_width() and
+> observation is following
+> * 1ms or 2 ms - failing (time to time it was successfully initialized)
+> * 5 ms - success in all attempts
 
-Yes, most likely.
+Very good!
 
-Now, how to solve this problem I need to think more about....
-
-FYI: The long term goal has been to try to remove the big fat host
-lock altogether and slowly we have moved more an more things to be
-executed as a part of the block worker, which is one of the needed
-steps. Like the mmc ioctls for example...
+Let me post a debug patch in short while, that can try to verify if
+the card is busy during this period.
 
 Kind regards
 Uffe
