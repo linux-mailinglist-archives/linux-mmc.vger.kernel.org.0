@@ -2,144 +2,91 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06F6A9F15D
-	for <lists+linux-mmc@lfdr.de>; Tue, 27 Aug 2019 19:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34FFC9F7B6
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 03:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727306AbfH0RUB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 27 Aug 2019 13:20:01 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:37329 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726871AbfH0RUB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 13:20:01 -0400
-Received: by mail-ot1-f65.google.com with SMTP id f17so19453548otq.4;
-        Tue, 27 Aug 2019 10:20:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jbgN4f1dE+DdTRtHITnsL1zb/tk6IDr9KI+sNDzzCw0=;
-        b=AqHFtYqOvTSxAEoERCzrNTLKtR9f1kP4dEQMKm6Gs2uQVUwL8ZzLHYrcBm175+Z7VN
-         ZtIcfbotF5GWFhZ6y30/m3Cwpf85eLgacxM50mAeRfIvUeKwZ3SVYgEvE6qHOmUCcHWZ
-         s2nCUQAkHtkvo/K+RE6igglPsKW/kl9bypzeSMc8fAaV950Whrw8w+M3xHlnLJuBnd4M
-         gSssGaVbf8ZEGyu3vPycoWgN3uSTkPYEVZFZ5xomAneptr6Pm+5cskiy74XGBaVHYlsK
-         MTLUBO5Op7RSmfkRGNjtSvf+ut9vAKywCP9pdkjNqRedjLEnW+XLUDYO+yKbmJKoyiJk
-         LFbg==
-X-Gm-Message-State: APjAAAVP53nwBw2FcLG+gM4wLLcYq5v+00O4hjJN0QdSDcpZHJqZC4em
-        13alQ5xIRoseEePHLYkPWg==
-X-Google-Smtp-Source: APXvYqxV4NrnE2hDRfgzjsQvqIgGi0wFYE3LbnuAqf0XCI2QpBD/PpEV+RaKegu0aBl9in8p09Rwrg==
-X-Received: by 2002:a9d:7dc6:: with SMTP id k6mr4430649otn.99.1566926400232;
-        Tue, 27 Aug 2019 10:20:00 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id a66sm5040827oii.15.2019.08.27.10.19.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Aug 2019 10:19:59 -0700 (PDT)
-Date:   Tue, 27 Aug 2019 12:19:59 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     ulf.hansson@linaro.org, afaerber@suse.de, sboyd@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        thomas.liau@actions-semi.com, linux-actions@lists.infradead.org,
-        linus.walleij@linaro.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v3 2/7] dt-bindings: mmc: Add Actions Semi SD/MMC/SDIO
- controller binding
-Message-ID: <20190827171959.GA30843@bogus>
-References: <20190821025629.15470-1-manivannan.sadhasivam@linaro.org>
- <20190821025629.15470-3-manivannan.sadhasivam@linaro.org>
+        id S1726127AbfH1BPX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 27 Aug 2019 21:15:23 -0400
+Received: from mail.overt.org ([157.230.92.47]:48779 "EHLO mail.overt.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726091AbfH1BPX (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 27 Aug 2019 21:15:23 -0400
+Received: from authenticated-user (mail.overt.org [157.230.92.47])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.overt.org (Postfix) with ESMTPSA id B598B3F246;
+        Tue, 27 Aug 2019 20:15:21 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=overt.org; s=mail;
+        t=1566954922; bh=tkxFE05zBdRKg+WXfglpzaSon0igXNH51O5eLRCpQCg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=JUmXJMUeMy4jNCMAMn+4+Zl51pomK27+aLGcJFz0W4YwcbFPt5M/ZdpGj5jyQUPTM
+         lXDCQvFoicdvj7G+TzI/i4is0C0WEz9AzJVinNMHeTsMD5C9Y6Y2LcLZJPAXmOp6C1
+         Pn0Z3HHCG78wWOTjcFFUr3PPSRrL6CWp3gP91cp9wPKT6+Vs9IU/G2oBhT2kLoPMts
+         4HIV5pMEfw1kYGAIZqYsbDolMccwB1Y5gas+OuT/KJ1wAuqXVEVXVzI5em+hBh0X2I
+         Gw4oK9nEboW872SxdEMdfrZxyecDARvQdiSx51xAuxwNqY/7gQ6q+doYuFg368hdiB
+         Iy+V32jZmpVUw==
+Date:   Tue, 27 Aug 2019 18:15:18 -0700
+From:   Philip Langdale <philipl@overt.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mmc: core: Fix init of SD cards reporting an invalid
+ VDD range
+Message-ID: <20190827181518.2e7aaa44@fido6>
+In-Reply-To: <20190827081043.15443-1-ulf.hansson@linaro.org>
+References: <20190827081043.15443-1-ulf.hansson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190821025629.15470-3-manivannan.sadhasivam@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Aug 21, 2019 at 08:26:24AM +0530, Manivannan Sadhasivam wrote:
-> Add devicetree YAML binding for Actions Semi Owl SoC's SD/MMC/SDIO
-> controller.
+On Tue, 27 Aug 2019 10:10:43 +0200
+Ulf Hansson <ulf.hansson@linaro.org> wrote:
+
+> The OCR register defines the supported range of VDD voltages for SD
+> cards. However, it has turned out that some SD cards reports an
+> invalid voltage range, for example having bit7 set.
 > 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> When a host supports MMC_CAP2_FULL_PWR_CYCLE and some of the voltages
+> from the invalid VDD range, this triggers the core to run a power
+> cycle of the card to try to initialize it at the lowest common
+> supported voltage. Obviously this fails, since the card can't support
+> it.
+> 
+> Let's fix this problem, by clearing invalid bits from the read OCR
+> register for SD cards, before proceeding with the VDD voltage
+> negotiation.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Philip Langdale <philipl@overt.org>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > ---
->  .../devicetree/bindings/mmc/owl-mmc.yaml      | 62 +++++++++++++++++++
->  1 file changed, 62 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mmc/owl-mmc.yaml
+>  drivers/mmc/core/sd.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/mmc/owl-mmc.yaml b/Documentation/devicetree/bindings/mmc/owl-mmc.yaml
-> new file mode 100644
-> index 000000000000..f7eff4c43017
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mmc/owl-mmc.yaml
-> @@ -0,0 +1,62 @@
-> +# SPDX-License-Identifier: GPL-2.0
+> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+> index d681e8aaca83..fe914ff5f5d6 100644
+> --- a/drivers/mmc/core/sd.c
+> +++ b/drivers/mmc/core/sd.c
+> @@ -1292,6 +1292,12 @@ int mmc_attach_sd(struct mmc_host *host)
+>  			goto err;
+>  	}
+>  
+> +	/*
+> +	 * Some SD cards claims an out of spec VDD voltage range.
+> Let's treat
+> +	 * these bits as being in-valid and especially also bit7.
+> +	 */
+> +	ocr &= ~0x7FFF;
+> +
+>  	rocr = mmc_select_voltage(host, ocr);
+>  
+>  	/*
 
-(GPL-2.0-only OR BSD-2-Clause) for new bindings please.
+Looks right. Tried it out and worked as expected.
 
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mmc/owl-mmc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Actions Semi Owl SoCs SD/MMC/SDIO controller
-> +
-> +allOf:
-> +  - $ref: "mmc-controller.yaml"
-> +
-> +maintainers:
-> +  - Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> +
-> +properties:
-> +  "#address-cells": true
-> +  "#size-cells": true
+Reviewed-by: Philip Langdale <philipl@overt.org>
 
-You can drop these.
-
-> +
-> +  compatible:
-> +    const: actions,owl-mmc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    minItems: 1
-> +
-> +  resets:
-> +    maxItems: 1
-> +
-> +  dmas:
-> +    maxItems: 1
-> +
-> +  dma-names:
-> +    const: mmc
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - resets
-> +  - dmas
-> +  - dma-names
-> +
-> +examples:
-> +  - |
-> +    mmc0: mmc@e0330000 {
-> +        compatible = "actions,owl-mmc";
-> +        reg = <0x0 0xe0330000 0x0 0x4000>;
-> +        interrupts = <0 42 4>;
-> +        clocks = <&cmu 56>;
-> +        resets = <&cmu 23>;
-> +        dmas = <&dma 2>;
-> +        dma-names = "mmc";
-> +        bus-width = <4>;
-> +    };
-> +
-> +...
-> -- 
-> 2.17.1
-> 
+--phil
