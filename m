@@ -2,145 +2,92 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1496BA01E9
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 14:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1DE4A023D
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 14:52:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbfH1Mha (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 28 Aug 2019 08:37:30 -0400
-Received: from relmlor1.renesas.com ([210.160.252.171]:63354 "EHLO
-        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726300AbfH1Mha (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 08:37:30 -0400
-X-IronPort-AV: E=Sophos;i="5.64,441,1559487600"; 
-   d="scan'208";a="25152958"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 28 Aug 2019 21:37:26 +0900
-Received: from localhost.localdomain (unknown [10.166.17.210])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 1C34940062B8;
-        Wed, 28 Aug 2019 21:37:26 +0900 (JST)
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     ulf.hansson@linaro.org, hch@lst.de, m.szyprowski@samsung.com,
-        robin.murphy@arm.com, joro@8bytes.org, axboe@kernel.dk
-Cc:     wsa+renesas@sang-engineering.com, linux-mmc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-block@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH v10 4/4] mmc: queue: Use bigger segments if DMA MAP layer can merge the segments
-Date:   Wed, 28 Aug 2019 21:35:43 +0900
-Message-Id: <1566995743-5614-5-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1566995743-5614-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-References: <1566995743-5614-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S1726341AbfH1Mwo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 28 Aug 2019 08:52:44 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:39059 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726270AbfH1Mwn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 08:52:43 -0400
+Received: by mail-lf1-f68.google.com with SMTP id l11so2070905lfk.6
+        for <linux-mmc@vger.kernel.org>; Wed, 28 Aug 2019 05:52:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=XVqiZEbVUqIzK5hY9HIE+w9Yw4YCnwVUWn8KQwWEJ/o=;
+        b=j/ZkTZmHKtb+C6yykay6Lk89TOZ2nUMHdfIDdtlO3/glkjnfikIYS28NL2SG8TTJgs
+         zaFgS4RwSSejdCGrhsS4ul+I8b6oSeCtpK4UBcERRoeQn1cs6AYlz+EbRcAN+fD38Vwi
+         uNGYpuHx5n5iVdfhs38LAFPqeS9CaugquJL9Up1fPrU1vDd5RVAH2Sz0oKDHDqMQ3UU4
+         r5KZS01C8wSJUawPbF/GeSys7s02FLBfU70H6f0Rz0LziJuBQNUyKBIppFqFqCPi4/XB
+         xv2nnTa6+37DxCcKyOOhHTeKyCepv77Atwv/mavdOHSUq9IIS6QjbQwDuqf5bIbFCIl6
+         is4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=XVqiZEbVUqIzK5hY9HIE+w9Yw4YCnwVUWn8KQwWEJ/o=;
+        b=byzY0FOS+SaweVmIe6s+nhua3IEVEgVA3QQdSpiXCrI8VMlJ235KUfZ4FZ2h9mt1Gn
+         WQCmDgcorixTOf4qSG1B8qHW8wLNonhD/PRr4W9eOkQ712IrNWf4OCL9xW8wIX6AYrBU
+         WmVrsDWcIDm9yB3XzOJExdF9O+/xEc+J5Ex5dslMicrTY5JaQxv3ZiSUgAJtsoIPqTeM
+         DMCQxG8Vm4LJEt4aDFq6j0YeWIkcyVAHqQrjlCPSPT+xxzg8Z1BGEigKtIuTDNw1ixBc
+         AvtTVPEDdJMbS2vqtmRUpDqb9E2NeNn0ksGHle5Uop3GUrDcIXPUQqb9RxMvVLsZM5Vb
+         iFzA==
+X-Gm-Message-State: APjAAAWYJKrndslvmzf+UL6AXBFQfVOxRHfLMNPG14o8JpDlTC+Lng0O
+        uI9w7eUmMXE5cKu88jv+iKemruvF6FOg2AAjvsHq0A==
+X-Google-Smtp-Source: APXvYqxhh7npR4DKD02urqAfnNma90KEuSilcS60X5kI+BR0cS5y3dkj2v9FsecupCFIorgjCH8a/URG0YasbPxugp4=
+X-Received: by 2002:ac2:5c11:: with SMTP id r17mr1699777lfp.61.1566996761734;
+ Wed, 28 Aug 2019 05:52:41 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
+In-Reply-To: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 28 Aug 2019 14:52:30 +0200
+Message-ID: <CACRpkdazfe3gJr6Q+X05GzxPuKtUg0M780SPA_oR5bd+-xBPvA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sunxi: fix unusuable eMMC on some H6 boards by
+ disabling DDR
+To:     =?UTF-8?Q?Alejandro_Gonz=C3=A1lez?= 
+        <alejandro.gonzalez.correo@gmail.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-sunxi <linux-sunxi@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-When the max_segs of a mmc host is smaller than 512, the mmc
-subsystem tries to use 512 segments if DMA MAP layer can merge
-the segments, and then the mmc subsystem exposes such information
-to the block layer by using blk_queue_can_use_dma_map_merging().
+On Sun, Aug 25, 2019 at 5:06 PM Alejandro Gonz=C3=A1lez
+<alejandro.gonzalez.correo@gmail.com> wrote:
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
----
- drivers/mmc/core/queue.c | 35 ++++++++++++++++++++++++++++++++---
- include/linux/mmc/host.h |  1 +
- 2 files changed, 33 insertions(+), 3 deletions(-)
+> Jernej Skrabec compared the BSP driver with this
+> driver, and found that the BSP driver configures pinctrl to operate at
+> 1.8 V when entering DDR mode (although 3.3 V operation is supported), whi=
+le
+> the mainline kernel lacks any mechanism to switch voltages dynamically.
+(...)
+> the kernel lacks the required
+> dynamic pinctrl control for now
 
-diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
-index 7102e2e..1e29b30 100644
---- a/drivers/mmc/core/queue.c
-+++ b/drivers/mmc/core/queue.c
-@@ -21,6 +21,8 @@
- #include "card.h"
- #include "host.h"
- 
-+#define MMC_DMA_MAP_MERGE_SEGMENTS	512
-+
- static inline bool mmc_cqe_dcmd_busy(struct mmc_queue *mq)
- {
- 	/* Allow only 1 DCMD at a time */
-@@ -193,6 +195,12 @@ static void mmc_queue_setup_discard(struct request_queue *q,
- 		blk_queue_flag_set(QUEUE_FLAG_SECERASE, q);
- }
- 
-+static unsigned int mmc_get_max_segments(struct mmc_host *host)
-+{
-+	return host->can_dma_map_merge ? MMC_DMA_MAP_MERGE_SEGMENTS :
-+					 host->max_segs;
-+}
-+
- /**
-  * mmc_init_request() - initialize the MMC-specific per-request data
-  * @q: the request queue
-@@ -206,7 +214,7 @@ static int __mmc_init_request(struct mmc_queue *mq, struct request *req,
- 	struct mmc_card *card = mq->card;
- 	struct mmc_host *host = card->host;
- 
--	mq_rq->sg = mmc_alloc_sg(host->max_segs, gfp);
-+	mq_rq->sg = mmc_alloc_sg(mmc_get_max_segments(host), gfp);
- 	if (!mq_rq->sg)
- 		return -ENOMEM;
- 
-@@ -362,13 +370,23 @@ static void mmc_setup_queue(struct mmc_queue *mq, struct mmc_card *card)
- 		blk_queue_bounce_limit(mq->queue, BLK_BOUNCE_HIGH);
- 	blk_queue_max_hw_sectors(mq->queue,
- 		min(host->max_blk_count, host->max_req_size / 512));
--	blk_queue_max_segments(mq->queue, host->max_segs);
-+	if (host->can_dma_map_merge)
-+		WARN(!blk_queue_can_use_dma_map_merging(mq->queue,
-+							mmc_dev(host)),
-+		     "merging was advertised but not possible");
-+	blk_queue_max_segments(mq->queue, mmc_get_max_segments(host));
- 
- 	if (mmc_card_mmc(card))
- 		block_size = card->ext_csd.data_sector_size;
- 
- 	blk_queue_logical_block_size(mq->queue, block_size);
--	blk_queue_max_segment_size(mq->queue,
-+	/*
-+	 * After blk_queue_can_use_dma_map_merging() was called with succeed,
-+	 * since it calls blk_queue_virt_boundary(), the mmc should not call
-+	 * both blk_queue_max_segment_size().
-+	 */
-+	if (!host->can_dma_map_merge)
-+		blk_queue_max_segment_size(mq->queue,
- 			round_down(host->max_seg_size, block_size));
- 
- 	dma_set_max_seg_size(mmc_dev(host), queue_max_segment_size(mq->queue));
-@@ -418,6 +436,17 @@ int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card)
- 	mq->tag_set.cmd_size = sizeof(struct mmc_queue_req);
- 	mq->tag_set.driver_data = mq;
- 
-+	/*
-+	 * Since blk_mq_alloc_tag_set() calls .init_request() of mmc_mq_ops,
-+	 * the host->can_dma_map_merge should be set before to get max_segs
-+	 * from mmc_get_max_segments().
-+	 */
-+	if (host->max_segs < MMC_DMA_MAP_MERGE_SEGMENTS &&
-+	    dma_get_merge_boundary(mmc_dev(host)))
-+		host->can_dma_map_merge = 1;
-+	else
-+		host->can_dma_map_merge = 0;
-+
- 	ret = blk_mq_alloc_tag_set(&mq->tag_set);
- 	if (ret)
- 		return ret;
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index 4a351cb..c5662b3 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -396,6 +396,7 @@ struct mmc_host {
- 	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
- 	unsigned int		use_blk_mq:1;	/* use blk-mq */
- 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
-+	unsigned int		can_dma_map_merge:1; /* merging can be used */
- 
- 	int			rescan_disable;	/* disable card detection */
- 	int			rescan_entered;	/* used with nonremovable devices */
--- 
-2.7.4
+This is not a pin control thing, the I/O voltage level is usually
+controlled by a regulator called VCCQ, if the selection of the
+voltage rails is inside the pin control registers, see the solution
+in drivers/pinctrl/sh-pfc/pfc-sh73a0.c where we simply provide
+a regulator from inside the pinctrl driver to make things easy
+for the MMC core. Do this thing!
 
+If you don't have time to fix it up properly right now I would slap
+in a big FIXME in the code so people know this needs
+to be fixed properly.
+
+Yours,
+Linus Walleij
