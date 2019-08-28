@@ -2,123 +2,124 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AEB1A0191
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 14:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E92CA01E2
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 14:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726259AbfH1MYr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 28 Aug 2019 08:24:47 -0400
-Received: from conssluserg-03.nifty.com ([210.131.2.82]:61706 "EHLO
-        conssluserg-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726413AbfH1MYr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 08:24:47 -0400
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42]) (authenticated)
-        by conssluserg-03.nifty.com with ESMTP id x7SCOKYn007536;
-        Wed, 28 Aug 2019 21:24:21 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com x7SCOKYn007536
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1566995061;
-        bh=QGwpmYKpkBfkJkR52bVEAkpX4zw0mwzUiEGIdCDkwxA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=uqNGtZWnszkj+EI17b6cYBIkgLT1pNqqjZ5vvXHhv3nOtkGhMLE3vL239iHJx8xOz
-         TSdYOHpkebqzZFAStQTcerRGirstT0XYJoVthR/5RvSg8EwIXbfT0K4YHHjnM2D9df
-         JXXCqO9Sr2ZFEdHKD7gxA7eX9ABdy7xMFqUuoAjc4LZbh1oHbeSw+NQJ4Ce2UY37OL
-         1txXvkAUycDvn0IT3BeWg+7kqZstKdDcVVmHGUVKjLtz+pcmN6rubDhCpA5S2OJHzV
-         Tbrl68C67rXttDBFRWfYe+B8o+XbJ2QlQQ11l4eNvd1Y5ZXbdFZLM/YI9cfIW6ibm1
-         bz9Dqz+XAfrPw==
-X-Nifty-SrcIP: [209.85.222.42]
-Received: by mail-ua1-f42.google.com with SMTP id k7so752114uao.6;
-        Wed, 28 Aug 2019 05:24:21 -0700 (PDT)
-X-Gm-Message-State: APjAAAW009682rJRH8tQEgv1Esk44krWyPnCSSItIdEAEpNfL4gr+Dv4
-        stBJkAS+9IfqSqP8HOJvw3ng6jijQ1SL4k4NYfA=
-X-Google-Smtp-Source: APXvYqzOQYU2Q+Xq/DN7mTcKzBb0P1kiiE+ggL4N1BaGeuzN90KCZ6nzT8nGJkbkDhur/ilmD52mrtpqBPxR1Kulykg=
-X-Received: by 2002:ab0:442:: with SMTP id 60mr1554937uav.109.1566995060173;
- Wed, 28 Aug 2019 05:24:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190506223334.1834-1-nicoleotsuka@gmail.com> <20190506223334.1834-3-nicoleotsuka@gmail.com>
- <CAK7LNARacEorb38mVBw_V-Zvz-znWgBma1AP1-z_5B_xZU4ogg@mail.gmail.com>
- <CAK7LNAQfYBCoChMV=MOwcUyVoqRkrPWs7DaWdzDqjBe18gGiAQ@mail.gmail.com>
- <20190825011025.GA23410@lst.de> <CAK7LNAQb1ZHr=DiHLNeNRaQExMuXdDOV4sFghoGbco_Q=Qzb8g@mail.gmail.com>
- <20190826073320.GA11712@lst.de> <CAK7LNATYOLEboUTO4qPx2z7cqwDrHBO1HFHG8VzZEJ15STv+nw@mail.gmail.com>
- <20190827075021.GA953@lst.de> <CAK7LNAQZ+bueZZzSoMADmgLjWNvijHRV=wLQzN_kvLG3b5Uu+w@mail.gmail.com>
- <20190827115541.GB5921@lst.de> <CAK7LNAQ_nQcBt=xH1-h+=co85mTxFgbe+_46Gu4LaNsDSm+kYA@mail.gmail.com>
-In-Reply-To: <CAK7LNAQ_nQcBt=xH1-h+=co85mTxFgbe+_46Gu4LaNsDSm+kYA@mail.gmail.com>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Wed, 28 Aug 2019 21:23:43 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATvz=TTe+3OyLrtUqDuTUTn1dg9Sk-t3BD_OFZfViCPMw@mail.gmail.com>
-Message-ID: <CAK7LNATvz=TTe+3OyLrtUqDuTUTn1dg9Sk-t3BD_OFZfViCPMw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] dma-contiguous: Use fallback alloc_pages for
- single pages
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Nicolin Chen <nicoleotsuka@gmail.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>, vdumpa@nvidia.com,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Thierry Reding <treding@nvidia.com>,
-        Kees Cook <keescook@chromium.org>, iamjoonsoo.kim@lge.com,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+        id S1726428AbfH1Mh2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 28 Aug 2019 08:37:28 -0400
+Received: from relmlor1.renesas.com ([210.160.252.171]:61999 "EHLO
+        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726300AbfH1Mh1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 08:37:27 -0400
+X-IronPort-AV: E=Sophos;i="5.64,441,1559487600"; 
+   d="scan'208";a="25152952"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 28 Aug 2019 21:37:25 +0900
+Received: from localhost.localdomain (unknown [10.166.17.210])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 9AC484000916;
+        Wed, 28 Aug 2019 21:37:25 +0900 (JST)
+From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To:     ulf.hansson@linaro.org, hch@lst.de, m.szyprowski@samsung.com,
+        robin.murphy@arm.com, joro@8bytes.org, axboe@kernel.dk
+Cc:     wsa+renesas@sang-engineering.com, linux-mmc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-block@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: [PATCH v10 0/4] treewide: improve R-Car SDHI performance
+Date:   Wed, 28 Aug 2019 21:35:39 +0900
+Message-Id: <1566995743-5614-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Aug 28, 2019 at 7:53 PM Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
->
-> Hi Christoph,
->
-> On Tue, Aug 27, 2019 at 8:55 PM Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > On Tue, Aug 27, 2019 at 06:03:14PM +0900, Masahiro Yamada wrote:
-> > > Yes, this makes my driver working again
-> > > when CONFIG_DMA_CMA=y.
-> > >
-> > >
-> > > If I apply the following, my driver gets back working
-> > > irrespective of CONFIG_DMA_CMA.
-> >
-> > That sounds a lot like the device simply isn't 64-bit DMA capable, and
-> > previously always got CMA allocations under the limit it actually
-> > supported.  I suggest that you submit this quirk to the mmc maintainers.
->
->
-> I tested v5.2 and my MMC host controller works with
-> dma_address that exceeds 32-bit physical address.
->
-> So, I believe my MMC device is 64-bit DMA capable.
->
-> I am still looking into the code
-> to find out what was changed.
+This patch series is based on linux-next.git / next-20190828 tag.
 
+Since SDHI host internal DMAC of the R-Car Gen3 cannot handle two or
+more segments, the performance rate (especially, eMMC HS400 reading)
+is not good. However, if IOMMU is enabled on the DMAC, since IOMMU will
+map multiple scatter gather buffers as one contignous iova, the DMAC can
+handle the iova as well and then the performance rate is possible to
+improve. In fact, I have measured the performance by using bonnie++,
+"Sequential Input - block" rate was improved on r8a7795.
 
-I retract this comment.
+To achieve this, this patch series modifies IOMMU and Block subsystem
+at first. This patch series is strictly depended on each subsystem
+modification, so that I submit it as treewide.
 
-Prior to bd2e75633c8012fc8a7431c82fda66237133bf7e,
-the descriptor table for ADMA is placed within the
-32-bit phys address range, not exceeds the 32-bit limit.
+Changes from v9:
+ - Rebase on next-20190828.
+ - Drop a blk-setting.c patch to sort headers.
+ - Remove an unnecessary condition on patch 2/4.
+ - Add Joerg-san's Reviewed-by into patch 2/4.
+ - Fix a condition on patch 4/4 not to call blk_queue_max_segment_size()
+   as the comment.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=151067
 
-Probably, my device is not 64-bit capable.
+Changes from v8:
+ - Rebase on next-20190726.
+ - Use "1UL" instead of just "1" for iommu_dma_get_merge_boundary().
+ - Add Simon-san's Reviewed-by into all patches.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=149023
 
-I will talk to the hardware engineer,
-and check the hardware spec just in case.
+Changes from v7:
+ - Rebase on next-20190722 (v5.3-rc1 + next branches of subsystems)
+ - Add some Reviewed-by.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=135391
 
-Thanks.
+Changes from v6:
+ - [1/5 for DMA MAP] A new patch.
+ - [2/5 for IOMMU] A new patch.
+ - [3/5 for BLOCK] Add Reviewed-by.
+ - [4/5 for BLOCK] Use a new DMA MAP API instead of device_iommu_mapped().
+ - [5/5 for MMC] Likewise, and some minor fix.
+ - Remove patch 4/5 of v6 from this v7 patch series.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=131769
+
+Changes from v5:
+ - Almost all patches are new code.
+ - [4/5 for MMC] This is a refactor patch so that I don't add any
+   {Tested,Reviewed}-by tags.
+ - [5/5 for MMC] Modify MMC subsystem to use bigger segments instead of
+   the renesas_sdhi driver.
+ - [5/5 for MMC] Use BLK_MAX_SEGMENTS (128) instead of local value
+   SDHI_MAX_SEGS_IN_IOMMU (512). Even if we use BLK_MAX_SEGMENTS,
+   the performance is still good.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=127511
+
+Changes from v4:
+ - [DMA MAPPING] Add a new device_dma_parameters for iova contiguous.
+ - [IOMMU] Add a new capable for "merging" segments.
+ - [IOMMU] Add a capable ops into the ipmmu-vmsa driver.
+ - [MMC] Sort headers in renesas_sdhi_core.c.
+ - [MMC] Remove the following codes that made on v3 that can be achieved by
+	 DMA MAPPING and IOMMU subsystem:
+ -- Check if R-Car Gen3 IPMMU is used or not on patch 3.
+ -- Check if all multiple segment buffers are aligned to PAGE_SIZE on patch 3.
+https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=125593
+
+Changes from v3:
+ - Use a helper function device_iommu_mapped on patch 1 and 3.
+ - Check if R-Car Gen3 IPMMU is used or not on patch 3.
+
+Yoshihiro Shimoda (4):
+  dma: Introduce dma_get_merge_boundary()
+  iommu/dma: Add a new dma_map_ops of get_merge_boundary()
+  block: add a helper function to merge the segments
+  mmc: queue: Use bigger segments if DMA MAP layer can merge the
+    segments
+
+ Documentation/DMA-API.txt   |  8 ++++++++
+ block/blk-settings.c        | 23 +++++++++++++++++++++++
+ drivers/iommu/dma-iommu.c   |  8 ++++++++
+ drivers/mmc/core/queue.c    | 35 ++++++++++++++++++++++++++++++++---
+ include/linux/blkdev.h      |  2 ++
+ include/linux/dma-mapping.h |  6 ++++++
+ include/linux/mmc/host.h    |  1 +
+ kernel/dma/mapping.c        | 11 +++++++++++
+ 8 files changed, 91 insertions(+), 3 deletions(-)
 
 -- 
-Best Regards
-Masahiro Yamada
+2.7.4
+
