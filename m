@@ -2,31 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1084A0386
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 15:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40677A039D
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 15:47:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726368AbfH1Nni (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 28 Aug 2019 09:43:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47132 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726341AbfH1Nnh (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 28 Aug 2019 09:43:37 -0400
-Received: from localhost (lfbn-1-17395-211.w86-250.abo.wanadoo.fr [86.250.200.211])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4C5B022CF5;
-        Wed, 28 Aug 2019 13:43:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566999816;
-        bh=PfdDBsRCBBChXNzCDotQ1Pc7yIyNBpQQ3ATlOtaDOC0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vrdJ3HfPobb2OsDW8pbRC6kIQu+M8yr50ucNLFVYTeNTKvLnO6nyKvDDpbmHFOJae
-         BH6dkijIWCasP0rO2X7LUyBR1E1ZIsj6yaAd2rKfKTLspoDx1SyGcEY5p9+FHRy4q1
-         m8OXKEa1iDTbzsnltW5dZ5sSPKxK/nsX6gP28+Ik=
-Date:   Wed, 28 Aug 2019 15:43:34 +0200
-From:   Maxime Ripard <mripard@kernel.org>
-To:     Chen-Yu Tsai <wens@csie.org>
-Cc:     Alejandro =?utf-8?B?R29uesOhbGV6?= 
+        id S1726844AbfH1Nq6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 28 Aug 2019 09:46:58 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:45724 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726440AbfH1Nq5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 09:46:57 -0400
+Received: by mail-ed1-f66.google.com with SMTP id x19so45308eda.12;
+        Wed, 28 Aug 2019 06:46:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=zyNoxyVItTkE7KkpzOzDQs+Ze+MdA8PTrGpUeQ6qzjg=;
+        b=a+LRiAunB7YSQbIrYOSvaFDmH2xgyHMf1bOdE3qB30z6nZA7gxcr9YLo4AnMyWcTbO
+         o1cemcVmAuoXO3kdxLQU74/fhbYAA5vB555JkMNBxtjpidDq6J9OkmZ6or5/thMFTVdH
+         7Bzon90JFiytHIBarS2xJO1MFdbjK53XnhVN5OuYr0gcog8yLsCa2lFvDWpbfVot9RPW
+         SGK/wrX+j2V3+f7X1Sder6MArpxDepF+Bb6GLqekuCgDedpjS+EAQEfrJLQEpMaGSfJw
+         uZMvpl+lSoE+SxNrnY24n8lDMiv+YccNThH72A6W+Tu5xNRgM6pH1K66RV0wlFb0o6sK
+         lF1A==
+X-Gm-Message-State: APjAAAW47dfYpp3Xzm6zMfrlLfTFbU4YquXKiK8cPcEDqO67Ufe+IYmf
+        1wVCuITit1s8SKs7mFImu2pZM/oOBU4=
+X-Google-Smtp-Source: APXvYqzGGR54H/3chozR6MXep8XidX9GVefLA56aH5jB+4Zx5Lu5GiU+AbMknH0QlsY7p5vBGLOvUg==
+X-Received: by 2002:aa7:dac9:: with SMTP id x9mr4110101eds.271.1567000014749;
+        Wed, 28 Aug 2019 06:46:54 -0700 (PDT)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com. [209.85.221.47])
+        by smtp.gmail.com with ESMTPSA id h2sm473102edr.16.2019.08.28.06.46.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Aug 2019 06:46:54 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id u16so2617563wrr.0;
+        Wed, 28 Aug 2019 06:46:53 -0700 (PDT)
+X-Received: by 2002:a5d:568e:: with SMTP id f14mr4694015wrv.167.1567000013782;
+ Wed, 28 Aug 2019 06:46:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
+ <CACRpkdazfe3gJr6Q+X05GzxPuKtUg0M780SPA_oR5bd+-xBPvA@mail.gmail.com>
+ <CAGb2v67e8EiS-LUuhAyPc57nWd4iOBEWC_SZbH801Lzi4QWGyg@mail.gmail.com> <20190828134334.qzuwodoxmw7ov5yg@flea>
+In-Reply-To: <20190828134334.qzuwodoxmw7ov5yg@flea>
+From:   Chen-Yu Tsai <wens@csie.org>
+Date:   Wed, 28 Aug 2019 21:46:43 +0800
+X-Gmail-Original-Message-ID: <CAGb2v67hS1a2iNJYgc97vwpg6hZwxjoxRhdMb5PjHmMrOC1jNA@mail.gmail.com>
+Message-ID: <CAGb2v67hS1a2iNJYgc97vwpg6hZwxjoxRhdMb5PjHmMrOC1jNA@mail.gmail.com>
+Subject: Re: [linux-sunxi] Re: [PATCH] mmc: sunxi: fix unusuable eMMC on some
+ H6 boards by disabling DDR
+To:     Maxime Ripard <mripard@kernel.org>
+Cc:     =?UTF-8?Q?Alejandro_Gonz=C3=A1lez?= 
         <alejandro.gonzalez.correo@gmail.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
@@ -36,64 +59,33 @@ Cc:     Alejandro =?utf-8?B?R29uesOhbGV6?=
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         linux-sunxi <linux-sunxi@googlegroups.com>
-Subject: Re: [linux-sunxi] Re: [PATCH] mmc: sunxi: fix unusuable eMMC on some
- H6 boards by disabling DDR
-Message-ID: <20190828134334.qzuwodoxmw7ov5yg@flea>
-References: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
- <CACRpkdazfe3gJr6Q+X05GzxPuKtUg0M780SPA_oR5bd+-xBPvA@mail.gmail.com>
- <CAGb2v67e8EiS-LUuhAyPc57nWd4iOBEWC_SZbH801Lzi4QWGyg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="v6flhv747vrdixqb"
-Content-Disposition: inline
-In-Reply-To: <CAGb2v67e8EiS-LUuhAyPc57nWd4iOBEWC_SZbH801Lzi4QWGyg@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-
---v6flhv747vrdixqb
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Aug 28, 2019 at 09:29:32PM +0800, Chen-Yu Tsai wrote:
-> On Wed, Aug 28, 2019 at 8:52 PM Linus Walleij <linus.walleij@linaro.org> =
-wrote:
-> >
-> > On Sun, Aug 25, 2019 at 5:06 PM Alejandro Gonz=E1lez
-> > <alejandro.gonzalez.correo@gmail.com> wrote:
-> >
-> > > Jernej Skrabec compared the BSP driver with this
-> > > driver, and found that the BSP driver configures pinctrl to operate at
-> > > 1.8 V when entering DDR mode (although 3.3 V operation is supported),=
- while
-> > > the mainline kernel lacks any mechanism to switch voltages dynamicall=
-y.
+On Wed, Aug 28, 2019 at 9:43 PM Maxime Ripard <mripard@kernel.org> wrote:
 >
-> AFAIK The Pine H64 does not have the ability to switch I/O voltages. It is
-> fixed to either 1.8V (the default based on the schematics) or 3.3V.
+> On Wed, Aug 28, 2019 at 09:29:32PM +0800, Chen-Yu Tsai wrote:
+> > On Wed, Aug 28, 2019 at 8:52 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+> > >
+> > > On Sun, Aug 25, 2019 at 5:06 PM Alejandro González
+> > > <alejandro.gonzalez.correo@gmail.com> wrote:
+> > >
+> > > > Jernej Skrabec compared the BSP driver with this
+> > > > driver, and found that the BSP driver configures pinctrl to operate at
+> > > > 1.8 V when entering DDR mode (although 3.3 V operation is supported), while
+> > > > the mainline kernel lacks any mechanism to switch voltages dynamically.
+> >
+> > AFAIK The Pine H64 does not have the ability to switch I/O voltages. It is
+> > fixed to either 1.8V (the default based on the schematics) or 3.3V.
+>
+> Should that be handled at the board level then maybe?
 
-Should that be handled at the board level then maybe?
+Yeah. You'd specify which one using vqmmc-supply in the mmc node and
+vcc-pc-supply
+in the pinctrl node.
 
-Maxime
-
---
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---v6flhv747vrdixqb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXWaFBgAKCRDj7w1vZxhR
-xUbcAQDTgCwVjSWuZKxoSkt/fp1VLfWi1UjCpSZ0cCr11a5BwAD8DLgodYfexZWL
-iW8NfsUfcOV7SktdFUgfMP1x74uruwE=
-=sxYW
------END PGP SIGNATURE-----
-
---v6flhv747vrdixqb--
+ChenYu
