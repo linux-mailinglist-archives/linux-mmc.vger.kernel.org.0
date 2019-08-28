@@ -2,114 +2,164 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C17D9F835
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 04:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 372929F83B
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 04:21:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbfH1CT1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 27 Aug 2019 22:19:27 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:36343 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726096AbfH1CTZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 22:19:25 -0400
-Received: by mail-pf1-f195.google.com with SMTP id w2so634434pfi.3;
-        Tue, 27 Aug 2019 19:19:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=0+dMjTeRnTWUOUtY5Y5qEbJRKkaqMUR9i5xBsX8C6EU=;
-        b=vG3b+7nEBa/2elBzxkm+2aN/qwQlm39sFkNYCsGRiQHJvviHVDTfq2gKtzJe2mFGh4
-         wRjwkrFQTjSNDu77sQC0VSqY7QmOccDZG4qjjoA+j5lH7nWFG2SvEgdIPurVzB1OlB5H
-         A3TcDWabVdo7KnTh2Yz0lm7iqvmmEp5qoJ1qhCJHjsS9mM+bato28oVcWqQLxPK1krR3
-         bcKdrbCTEUZSgRdRzyNb2zv0NT2tcIW5CngtiK39733QK3ULteT2cXjyNBUVPqFWv9/J
-         LH8JwPnrQ0IfQidOPSi364OVLZoGNkUjEUsj6hLmp1XEbgwaPuWw4xO0YIrsnWklJ2L/
-         mGNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=0+dMjTeRnTWUOUtY5Y5qEbJRKkaqMUR9i5xBsX8C6EU=;
-        b=B8gu74jLzzqCZud+zWUyjVN4VmXElb3bBluvinUi/7gs+1bSDbJPHYowU8DvQdOG9z
-         nYY+ahbZjiHkxNk1j+JD2EsXcYGoOP4bI/SB9KlyWohQCG4qwvbjGah08WWhciBmqa+z
-         4fDLwMbu6lT7drWDdJNV1hLCOIV+ZOr2oKq+EXFOVUUxsvHLpNCTCcwG83/edNpnppkA
-         fQE5yqpYOxV5AFZlxUZsOmy/sKsySd4peR+AI9k7U+H5yAG/gk7lfk17Zm5PX1rnD2Rj
-         5vXq+hpAgT236fLpQl4P/DoAHIBcOgY3WD+isVjFMaeDqAwKQDqLcz8pYIyCe8uyYIZg
-         AHUQ==
-X-Gm-Message-State: APjAAAWAJDX4WHIwlbYdZ9822Rnc0yHiBwFHypDzjuU4z4tteGgD08be
-        KvlzqtwbWWZM4nemhWpUVzs=
-X-Google-Smtp-Source: APXvYqxx5leB7vClgWR/8ru1VCeaX0Wmy4s2jrbuWY49h6OsVbglhOUv7y3mZGpE4SSJzc7dhr9IDg==
-X-Received: by 2002:aa7:9e04:: with SMTP id y4mr1950076pfq.18.1566958764704;
-        Tue, 27 Aug 2019 19:19:24 -0700 (PDT)
-Received: from ubt.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id b18sm673249pfi.160.2019.08.27.19.19.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Aug 2019 19:19:24 -0700 (PDT)
-From:   Chunyan Zhang <zhang.lyra@gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: [PATCH v2 5/5] mmc: sdhci-sprd: clear the UHS-I modes read from registers
-Date:   Wed, 28 Aug 2019 10:17:36 +0800
-Message-Id: <20190828021736.22049-6-zhang.lyra@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190828021736.22049-1-zhang.lyra@gmail.com>
-References: <20190828021736.22049-1-zhang.lyra@gmail.com>
+        id S1726232AbfH1CVA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 27 Aug 2019 22:21:00 -0400
+Received: from mailout3.samsung.com ([203.254.224.33]:19384 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726340AbfH1CVA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 27 Aug 2019 22:21:00 -0400
+Received: from epcas2p3.samsung.com (unknown [182.195.41.55])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20190828022057epoutp03b94be3b0e267a8e9fa7a154473c77020~_9MdYHya-3071530715epoutp03Y
+        for <linux-mmc@vger.kernel.org>; Wed, 28 Aug 2019 02:20:57 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20190828022057epoutp03b94be3b0e267a8e9fa7a154473c77020~_9MdYHya-3071530715epoutp03Y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1566958857;
+        bh=2Id8G/Xn6V06sAdZYXMptUi6MUxaX2z3h414AQSi5/I=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=k98yVcHoY5eRWy55whZ8rcavcrMGw1LpHMDptIqy9vdMw+WVazwzt15mo01XkRRd9
+         7l4/CVj1LA+KD2X9zJQ7pDyqu9or8QDc9Y8Ar0ut0xku1LRrop+z5Ki0aMLe43HoyD
+         3N5pbfTIZQ6BYehWU3Hx+E4IXA0zFrHfzsrXO79E=
+Received: from epsnrtp5.localdomain (unknown [182.195.42.166]) by
+        epcas2p4.samsung.com (KnoxPortal) with ESMTP id
+        20190828022056epcas2p488315cc4e34969caaecc606d9bbd2c6e~_9Mc2Raic1168911689epcas2p4l;
+        Wed, 28 Aug 2019 02:20:56 +0000 (GMT)
+Received: from epsmges2p1.samsung.com (unknown [182.195.40.181]) by
+        epsnrtp5.localdomain (Postfix) with ESMTP id 46J8c74t4rzMqYkf; Wed, 28 Aug
+        2019 02:20:55 +0000 (GMT)
+Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
+        epsmges2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+        36.C7.04156.705E56D5; Wed, 28 Aug 2019 11:20:55 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190828022055epcas2p25525077d0a5a3fa5a2027bac06a10bc1~_9MbUtf8v2048620486epcas2p2Q;
+        Wed, 28 Aug 2019 02:20:55 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190828022055epsmtrp247236feb1b81a6eaa608658d164e62a4~_9MbTgesT1110211102epsmtrp2U;
+        Wed, 28 Aug 2019 02:20:55 +0000 (GMT)
+X-AuditID: b6c32a45-ddfff7000000103c-c4-5d65e5073e36
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        F0.33.03706.605E56D5; Wed, 28 Aug 2019 11:20:55 +0900 (KST)
+Received: from KORDO035251 (unknown [12.36.165.204]) by epsmtip1.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20190828022054epsmtip1cb959d74740696d9b606a29b76e0110e~_9MbAmhuG2545625456epsmtip1A;
+        Wed, 28 Aug 2019 02:20:54 +0000 (GMT)
+From:   "boojin.kim" <boojin.kim@samsung.com>
+To:     "'Theodore Y. Ts'o'" <tytso@mit.edu>
+Cc:     "'Herbert Xu'" <herbert@gondor.apana.org.au>,
+        "'David S. Miller'" <davem@davemloft.net>,
+        "'Eric Biggers'" <ebiggers@kernel.org>,
+        "'Theodore Y. Ts'o'" <tytso@mit.edu>,
+        "'Chao Yu'" <chao@kernel.org>,
+        "'Jaegeuk Kim'" <jaegeuk@kernel.org>,
+        "'Andreas Dilger'" <adilger.kernel@dilger.ca>,
+        "'Theodore Ts'o'" <tytso@mit.edu>, <dm-devel@redhat.com>,
+        "'Mike Snitzer'" <snitzer@redhat.com>,
+        "'Alasdair Kergon'" <agk@redhat.com>,
+        "'Jens Axboe'" <axboe@kernel.dk>,
+        "'Krzysztof Kozlowski'" <krzk@kernel.org>,
+        "'Kukjin Kim'" <kgene@kernel.org>,
+        "'Jaehoon Chung'" <jh80.chung@samsung.com>,
+        "'Ulf Hansson'" <ulf.hansson@linaro.org>,
+        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-fscrypt@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <linux-samsung-soc@vger.kernel.org>, <linux-block@vger.kernel.org>,
+        <linux-ext4@vger.kernel.org>,
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-fsdevel@vger.kernel.org>
+Subject: Re: [PATCH 5/9] block: support diskcipher
+Date:   Wed, 28 Aug 2019 11:20:53 +0900
+Message-ID: <009301d55d47$38606400$a9212c00$@samsung.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 14.0
+Thread-Index: AdVdRkQ7u+BKrKHPSQuBNN28o4N3VA==
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Tf0wbZRjOd3e9OybFs6vus6LrThYdE9arFj50qNG5XbL9gb+iMc56KZcW
+        7a/0WjbUbATXUhiRQXRuhbG5GeNgla3UjQzKXGGSOqBOZGEEt8QxDKBsApuBiNr2WOS/53m+
+        5/ne9/3efDSu+pzS0CV2t+iyC1aWXEGc7l6Xn0PdELfrWnqy0O05P4Faf/geRy2/1JLo4mf9
+        GGqM7yFQZLpBgYKdf+No72QmGmsN4Gh4wadAtdencBSPn6RQ6PplBYqMrEfXrs5j6GDTKIl+
+        OroFTTbdIVBnJEagwbONJOr5txagA/EuDPlO3QbIWzNPod7gG88/yIePX8H4PW07+NPfreUH
+        +z18qLmK5Ecvd5J825e7+Y4jsxhf0XcB5292DZH8J+FmwM+GHilKf8u60SIKxaJLK9pNjuIS
+        u7mQ3fqq8UWjIU/H5XAFKJ/V2gWbWMhu2laUs7nEmpid1ZYKVk9CKhIkid3w7EaXw+MWtRaH
+        5C5kRWex1clxzlxJsEkeuznX5LA9zel0ekPC+a7VUn/1EOWsTN/Zd7hWUQ4uplUDmobMUzBY
+        KVaDFbSKaQfw5/EmhUxmALw5vI+UyZ0E8VaAuwlveIusRwD8bfhPXCYTAJ7/ay4RT6NJZj1s
+        620GSaxmHodDi/Opa3HmHwqOzUSJ5MFKRg+91XuxJCaYtXCi6hKWrKBkCuCl/auTspK5D8YO
+        jqXsOLManvmjEU9iyGhhe/9UqiE1kwuPjr8iW9SwocqX6gcyixQcb/ATsn8T/NgbWcquhJO9
+        YUrGGjg7HSFlvBsOfXWMksM1APYt+JZMT8LAeGWqGM6sg61nN8gP8SjsGVlqLQP6uxcpWVZC
+        v08lB7PgoZlBTJY18FbNLlnmYThcD/aBNYFlMwaWzRhYNkzg/7JHANEMHhCdks0sSnont3zT
+        IZD6FNkvtYMDA9uigKEBm6703ytuVymEUqnMFgWQxlm18teshKQsFso+EF0Oo8tjFaUoMCQ2
+        UIdr7jc5El/M7jZyBn1enq7AgAx5esSuUrbdc+VtFWMW3OL7ougUXXdzGJ2mKQdm9e/PFMRj
+        773zBV9v6lKSE4+Fdg3MVVyYek5SKp6IvRms40syMn5sObHq/EM7TOdOZkd21tVrz2WWWSYa
+        Tk1jU4dBJy2xr58IfXvmNZtpf0UpZ87vuHGreyBmffiFeJeR+Kaj91prJhoJlleXfXpsob0n
+        mv91KTg++mHN1o/EzJdZQrIIXDbukoT/AJPWV5kqBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrGIsWRmVeSWpSXmKPExsWy7bCSnC7709RYg94Ki69fOlgs1p86xmyx
+        +m4/m8XpqWeZLOacb2Gx2PtuNqvF2j1/mC26X8lYPFk/i9nixq82Vov+x6+ZLc6f38Busenx
+        NVaLvbe0Le7f+8lkMXPeHTaLS4vcLV7N+8ZisWfvSRaLy7vmsFkc+d/PaDHj/D4mi7aNXxkt
+        Wnt+slscXxvuIOmxZeVNJo+WzeUe2w6oelw+W+qxaVUnm8eda3vYPDYvqffYveAzk0fTmaPM
+        Hu/3XWXz6NuyitHj8ya5AJ4oLpuU1JzMstQifbsEroxJ9+ayF7TzVJyZ38/awHias4uRg0NC
+        wESidYt7FyMXh5DAbkaJkzPfsHYxcgLFpSS2tu9hhrCFJe63HAGLCwk8Z5T43FQAYrMJaEts
+        Pr6KEcQWEdCQuPr3J1gNs8A0DoldH8RBbGEBI4nWrm4mEJtFQFXiZedFJpC9vAKWEhenyYOE
+        eQUEgdY+YQEJMwvoSbRtZISYIi+x/e0cqAsUJHacfc0IUiICVLLoWRBEiYjE7M425gmMgrOQ
+        DJqFMGgWkkGzkHQsYGRZxSiZWlCcm55bbFhgmJdarlecmFtcmpeul5yfu4kRHPtamjsYLy+J
+        P8QowMGoxMPbwZ8aK8SaWFZcmXuIUYKDWUmE95EKUIg3JbGyKrUoP76oNCe1+BCjNAeLkjjv
+        07xjkUIC6YklqdmpqQWpRTBZJg5OqQbGCe6KPu0piqufKnP1tu34wfCOpXqGoZpO67oI2VcH
+        eqz4CosPzjLUeH51hWb/iW3c2p8WGrj7dMxw+SJmk/ti5rSjDMePZCbVPPVd3qPhWBbPHjtv
+        ZbFB6qVNv9OePpv046uo851LB0VeyiS+PenWVX+k+d80Jp7Pto/8NjFKWcr4L715Z/M0JZbi
+        jERDLeai4kQAn059LPkCAAA=
+X-CMS-MailID: 20190828022055epcas2p25525077d0a5a3fa5a2027bac06a10bc1
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20190828022055epcas2p25525077d0a5a3fa5a2027bac06a10bc1
+References: <CGME20190828022055epcas2p25525077d0a5a3fa5a2027bac06a10bc1@epcas2p2.samsung.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Chunyan Zhang <chunyan.zhang@unisoc.com>
+On Tue, Aug 27, 2019 at 05:33:33PM +0900, boojin.kim wrote:
+>
+> Hi Boojin,
+>
+> I think the important thing to realize here is that there are a large
+> number of hardware devices for which the keyslot manager *is* needed.
+> And from the upstream kernel's perspective, supporting two different
+> schemes for supporting the inline encryption feature is more
+> complexity than just supporting one which is general enough to support
+> a wider variety of hardware devices.
+>
+> If you want somethig which is only good for the hardware platform you
+> are charged to support, that's fine if it's only going to be in a
+> Samsung-specific kernel.  But if your goal is to get something that
+> works upstream, especially if it requires changes in core layers of
+> the kernel, it's important that it's general enough to support most,
+> if not all, if the hardware devices in the industry.
+>
+> Regards,
 
-sprd's sd host controller supports SDR50/SDR104/DDR50 though, the UHS-I
-mode used by the specific card can be selected via devicetree only.
+I understood your reply.
+But, Please consider the diskcipher isn't just for FMP. 
+The UFS in Samsung SoC also has UFS ICE. This UFS ICE can be registered 
+as an algorithm of diskcipher like FMP.
 
-Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host
-controller")
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
-Signed-off-by: Chunyan Zhang <zhang.lyra@gmail.com>
-Reviewed-by: Baolin Wang <baolin.wang@linaro.org>
-Tested-by: Baolin Wang <baolin.wang@linaro.org>
----
- drivers/mmc/host/sdhci-sprd.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+Following is my opinion to introduce diskcipher.
+I think the common feature of ICE like FMP and UFS ICE, 
+is 'exposing cipher text to storage".
+And, Crypto test is also important for ICE.  Diskcipher supports
+the common feature of ICE. 
+I think specific functions for each ICE such as the key control of UFS ICE
+and the writing crypto table of FMP can be processed at algorithm level.
 
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index 1fecf055682c..d3c3e95676f0 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -509,7 +509,8 @@ static void sdhci_sprd_phy_param_parse(struct sdhci_sprd_host *sprd_host,
- 
- static const struct sdhci_pltfm_data sdhci_sprd_pdata = {
- 	.quirks = SDHCI_QUIRK_BROKEN_CARD_DETECTION |
--		  SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK,
-+		  SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
-+		  SDHCI_QUIRK_MISSING_CAPS,
- 	.quirks2 = SDHCI_QUIRK2_BROKEN_HS200 |
- 		   SDHCI_QUIRK2_USE_32BIT_BLK_CNT |
- 		   SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-@@ -614,6 +615,16 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 
- 	sdhci_enable_v4_mode(host);
- 
-+	/*
-+	 * Supply the existing CAPS, but clear the UHS-I modes. This
-+	 * will allow these modes to be specified only by device
-+	 * tree properties through mmc_of_parse().
-+	 */
-+	host->caps = sdhci_readl(host, SDHCI_CAPABILITIES);
-+	host->caps1 = sdhci_readl(host, SDHCI_CAPABILITIES_1);
-+	host->caps1 &= ~(SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_SDR104 |
-+			 SDHCI_SUPPORT_DDR50);
-+
- 	ret = sdhci_setup_host(host);
- 	if (ret)
- 		goto pm_runtime_disable;
--- 
-2.20.1
+Thanks for your reply.
+Boojin Kim.
 
