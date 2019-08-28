@@ -2,72 +2,149 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1CE79FA03
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 07:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 831049FD2B
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 Aug 2019 10:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726147AbfH1FxT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 28 Aug 2019 01:53:19 -0400
-Received: from mail-qk1-f170.google.com ([209.85.222.170]:41235 "EHLO
-        mail-qk1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726146AbfH1FxT (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Aug 2019 01:53:19 -0400
-Received: by mail-qk1-f170.google.com with SMTP id g17so1390944qkk.8
-        for <linux-mmc@vger.kernel.org>; Tue, 27 Aug 2019 22:53:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BDFgnUsxEEnHyK6dQZKkqF9vItp7e+wnBAvYrxj2bWg=;
-        b=b6iycyTS4IEo0H0yNH6Pmgv3HaVCwz/NNSv9JHH5dVkDhnHp6mxY3sGj4KQD/Thz1l
-         w7sL8IbboAEBVsQjHHSOsVbizk4/BIUYy6qZ44JiAyR8KPe7fJ1WEpvDO6L/i40hbxjo
-         IM3+yism3Py4uH2ETwSFN5JetSrf/I+wj7ieFaSFUuOCECLZrPWRn5iNlUS8BIWEXtDR
-         p5sdaXD1BnDyDAiSk0KPnpv2Ih3ORsGHxQ7O/Rv6g8N9jhNjp1aNxUOlGwvo9W1ooIH6
-         May+uQvDO5GQI9UfUoVUpNxcYNDREn3HknEGudQnLDQ0iPBgBWw5XCOMmODxJ1j/aRQE
-         QTEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BDFgnUsxEEnHyK6dQZKkqF9vItp7e+wnBAvYrxj2bWg=;
-        b=ft+Gz/jN2dMEvZEjgzxk34HIS4d7vt6pqHJiwSBSAJ3lk+cE32XvRgYSlJSQy5bI65
-         JG9I2dn3AH71AYsU9r+wLgmvgmPqjv5Vk7r3oq770PxgfmDJYzSep+Z9CMDv9eMriFWC
-         fkvmy+PWDMqQCW9neGPUgN2ADMQmqETHe6G8coxMGrZjqok1xpqMxp9BVNXiHF7y+/m4
-         kRe+xWGwfMf5AKx94Cq/O17LMuSfD34H1/XtwnT+bltqRjyacCtXH9+PVe+2GlSUprFR
-         4CE22+OILcE2Iw8j3TUzLHi4wFL9VgNl2/zcJfFQzOk55fzmOM7j9pHLw2A0WNoIfj3x
-         /zKw==
-X-Gm-Message-State: APjAAAWRRpEVLUHnTF5vDnhjxejPQ4YUfQuPiaO9VLgV+HakDzcOCL3R
-        esuXMF5rkmO2KghFUIwh1ZAxDUpH5v30mvcfE0+wEzN8hirNMg==
-X-Google-Smtp-Source: APXvYqzTdegixtTszylepIKF6MvYoVpDvhrax0GwKJTpinSIReVRmDwR5NFdGoU8VkfnUuqrfx3AfXko1TJ2u7sADf0=
-X-Received: by 2002:a37:7347:: with SMTP id o68mr1171635qkc.145.1566971598627;
- Tue, 27 Aug 2019 22:53:18 -0700 (PDT)
+        id S1726321AbfH1Id6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 28 Aug 2019 04:33:58 -0400
+Received: from mga18.intel.com ([134.134.136.126]:64948 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726292AbfH1Id6 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 28 Aug 2019 04:33:58 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Aug 2019 01:33:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,440,1559545200"; 
+   d="scan'208";a="181963014"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.66]) ([10.237.72.66])
+  by fmsmga007.fm.intel.com with ESMTP; 28 Aug 2019 01:33:55 -0700
+Subject: Re: [PATCH V8 1/3] mmc: sdhci-pci-o2micro: Change O2 Host PLL and DLL
+ register name
+To:     "Shirley Her (SC)" <shirley.her@bayhubtech.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc:     "Chevron Li (WH)" <chevron.li@bayhubtech.com>,
+        "Shaper Liu (WH)" <shaper.liu@bayhubtech.com>,
+        "Louis Lu (TP)" <louis.lu@bayhubtech.com>,
+        "Max Huang (SC)" <max.huang@bayhubtech.com>
+References: <1566412708-6130-1-git-send-email-shirley.her@bayhubtech.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <f06c00b8-8c0f-f738-4b33-92129792a494@intel.com>
+Date:   Wed, 28 Aug 2019 11:32:50 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <CH2PR16MB34791BACDB5A036DBF14E8C3E5A00@CH2PR16MB3479.namprd16.prod.outlook.com>
-In-Reply-To: <CH2PR16MB34791BACDB5A036DBF14E8C3E5A00@CH2PR16MB3479.namprd16.prod.outlook.com>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Wed, 28 Aug 2019 13:53:07 +0800
-Message-ID: <CAD8Lp45FriB3ReFpcm1ynQRZwL+snZzPx5ZgyPGvDJ-wQx9j-A@mail.gmail.com>
-Subject: Re: sdhci-pci-o2micro no longer detects eMMC device
-To:     "Ernest Zhang(WH)" <ernest.zhang@bayhubtech.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Endless Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1566412708-6130-1-git-send-email-shirley.her@bayhubtech.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Aug 27, 2019 at 6:17 PM Ernest Zhang(WH)
-<ernest.zhang@bayhubtech.com> wrote:
->         Can you tell me the value of PCI configuration register 0x308 bit4 is 0 or 1?
+On 21/08/19 9:38 PM, Shirley Her (SC) wrote:
+> Change O2 Host PLL and DLL register name
+> 
+> Signed-off-by: Shirley Her <shirley.her@bayhubtech.com>
 
-That bit is 0.
-Full dump: https://gist.github.com/dsd/e1f48fc5a6526030770b77f3e72196e9
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
->         And can you enable module sdhci, sdhci_pci and mmc_core dynamic printk output and send the full eMMC initialization log to me?
+> ---
+> change in V8:
+>  1. fix patch format error
+> 
+> change in V7:
+>  1. change subject
+> 
+> change in V6:
+>  1. change subject and commit message to match the patch
+>  2. change register name O2_PLL_WDT_CONTROL1 to O2_PLL_DLL_WDT_CONTROL1
+> 
+> change in V5:
+>  1. split 2 patches into 3 patches
+>  2. make dll_adjust_count start from 0
+>  3. fix ret overwritten issue
+>  4. use break instead of goto
+> 
+> change in V4:
+>  1. add a bug fix for V3
+> 
+> change in V3:
+>  1. add more explanation in dll_recovery and execute_tuning function
+>  2. move dll_adjust_count to O2_host struct
+>  3. fix some coding style error
+>  4. renaming O2_PLL_WDT_CONTROL1 TO O2_PLL_DLL_WDT_CONTROL1
+> 
+> change in V2:
+>  1. use usleep_range instead of udelay
+>  2. move dll_adjust_count to sdhci-pci-o2micro.c
+> 
+> chagne in V1:
+>  1. add error recovery function to relock DLL with correct phase
+>  2. retuning HS200 after DLL locked
+> ---
+>  drivers/mmc/host/sdhci-pci-o2micro.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
+> index 9dc4548..b3a33d9 100644
+> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
+> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+> @@ -51,7 +51,7 @@
+>  #define O2_SD_VENDOR_SETTING2	0x1C8
+>  #define O2_SD_HW_TUNING_DISABLE	BIT(4)
+>  
+> -#define O2_PLL_WDT_CONTROL1	0x1CC
+> +#define O2_PLL_DLL_WDT_CONTROL1	0x1CC
+>  #define  O2_PLL_FORCE_ACTIVE	BIT(18)
+>  #define  O2_PLL_LOCK_STATUS	BIT(14)
+>  #define  O2_PLL_SOFT_RESET	BIT(12)
+> @@ -316,23 +316,23 @@ static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
+>  	u32 scratch32;
+>  
+>  	/* PLL software reset */
+> -	scratch32 = sdhci_readl(host, O2_PLL_WDT_CONTROL1);
+> +	scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
+>  	scratch32 |= O2_PLL_SOFT_RESET;
+> -	sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> +	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+>  	udelay(1);
+>  	scratch32 &= ~(O2_PLL_SOFT_RESET);
+> -	sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> +	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+>  
+>  	/* PLL force active */
+>  	scratch32 |= O2_PLL_FORCE_ACTIVE;
+> -	sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> +	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+>  
+>  	/* Wait max 20 ms */
+>  	timeout = ktime_add_ms(ktime_get(), 20);
+>  	while (1) {
+>  		bool timedout = ktime_after(ktime_get(), timeout);
+>  
+> -		scratch = sdhci_readw(host, O2_PLL_WDT_CONTROL1);
+> +		scratch = sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1);
+>  		if (scratch & O2_PLL_LOCK_STATUS)
+>  			break;
+>  		if (timedout) {
+> @@ -350,9 +350,9 @@ static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
+>  
+>  out:
+>  	/* Cancel PLL force active */
+> -	scratch32 = sdhci_readl(host, O2_PLL_WDT_CONTROL1);
+> +	scratch32 = sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
+>  	scratch32 &= ~O2_PLL_FORCE_ACTIVE;
+> -	sdhci_writel(host, scratch32, O2_PLL_WDT_CONTROL1);
+> +	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
+>  }
+>  
+>  static int sdhci_o2_get_cd(struct mmc_host *mmc)
+> 
 
-Full boot log with the added debug messages:
-https://gist.github.com/dsd/0aec7674b12e2ae8d0be7b399068ae52
-
-Thanks for the fast respose.
-
-Daniel
