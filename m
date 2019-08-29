@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8AC4A1B84
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 15:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F3B1A1B87
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 15:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727021AbfH2Nem (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 09:34:42 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:35336 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727590AbfH2Nel (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 09:34:41 -0400
-Received: by mail-vs1-f65.google.com with SMTP id q16so2419472vsm.2
-        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 06:34:40 -0700 (PDT)
+        id S1727709AbfH2Neq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 09:34:46 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:44690 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727025AbfH2Nep (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 09:34:45 -0400
+Received: by mail-vs1-f68.google.com with SMTP id c7so2382654vse.11
+        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 06:34:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=SZQRw3RVA3EaoAr0WIMQeD6W5AQqkz7QcXOAzySMDsY=;
-        b=mjlYQJZXOCLmvYeLiazuIx+UY3wq5N7PVqOoMMGdiGRuWszrbjeeG5BdKIii+kFHf/
-         zhlLgNOZDNfFJXEdvpQSldMZMsfy3EAJU813E8s8mZ+LwtLBw1/xuvT9iVLTWp5kBDr0
-         XwgPt6sJe9MH17Gypg7IM3bSIV0w3vqZrnGDTNkHo9HKv9QPubEQ64tjw3T4vW/y1qWd
-         P+3wZ/TYKCfoLGt9fjKNW32dtfxb28uZucnpAUmnSnWu6OoBM32fBZAXuRoGoxr1yJS4
-         7QdSZ0ebZfNHcA+OWcb9389vfghhRPbVUuIXr5DfUxHNQFkXnLPg4+DzWZRh5ppANMTA
-         C4HA==
+        bh=0LwGddfzeX4mOzZ5JoPgRwznEXqsWR+GA5wz76u8ncg=;
+        b=R7Y/+uHZ9h7ZpNJZej4KVWDiSM2Jsx86a+2rjv3viGQT70JryZyZZt4cNvtB0oX2/w
+         DvmTYK1CIdpNQooHQdGj+3W1x7TabAOJNngFN2DFwYGMoo360fE+iEzbn+HyTS9wPfp4
+         sKItf31dCS+KDtU9DnekStb2wihbWiJs680hvwuko6xU2ss+NvsOSzwDaOaIADiKvbx8
+         ihe9RzO8uf4gfY62Gym89Uv0jHKVdUp91Opy5WWQv3hWUqstfoKVgRgqvOlPkkDorwkB
+         7PvnkYTHuk1GDba4J/RB0LmaA7sRNLMUmrA0dso5gqvCJFchEc+fhv8yKi0eaCzxLEZq
+         HP/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=SZQRw3RVA3EaoAr0WIMQeD6W5AQqkz7QcXOAzySMDsY=;
-        b=KeIDRhLaE9CprtXy2Aq1OoPoUCmiASVDpWeDEH1mk2dtSDsqe/xPiezwa/iaqr9O4/
-         h7eC6qxxO4jVyRRB9Md4TGxHOeufBnx/mIvCWqf/HJY1+ieETMByNq4ig8/PpESkFMG0
-         l2GMlZHWnZ6nOihNW4wBNshc242s9JudxoRelKwpAsXNBQ/dozr/iv8Rs6wsoasINB4L
-         klLU1jZK2Vdu+Xrtb1GbZEyMplgMf1Phf9shwXKKgV0P2zIyrVfTSm/+rHNA7uVlMHYb
-         DyY0XCrS3zhlNmZRsk28g8nDjacKwViBKehCzrEMLRR1HTNqOtWuzx7bUjKrwASw5EtU
-         dygg==
-X-Gm-Message-State: APjAAAXVwxKA3IlJJDofIYF9JuQkCprtd+V4oLVzqGlha3yw4+TrVx39
-        fOALqWAoFodakKxA58CYgDm8B22AbHJv3xlU4JlT8A==
-X-Google-Smtp-Source: APXvYqxSPI3MRvojNzwX5Kyfz8EeaTkMx9wZb2I0g1wcY8R05FbnpvYzEDKCeOjDJ8VD8Z/lKEJxNPHt2Bumu0b0w/s=
-X-Received: by 2002:a67:32c5:: with SMTP id y188mr5483153vsy.191.1567085680040;
- Thu, 29 Aug 2019 06:34:40 -0700 (PDT)
+        bh=0LwGddfzeX4mOzZ5JoPgRwznEXqsWR+GA5wz76u8ncg=;
+        b=erVdWQndlVWl0DhMwkfIOylVMG19+saG9v2VO9opJ8Jo43P9ntvZRYuy1iGz+C9ZqR
+         fgVthulTb4XhbBsGvwcILu6gpMLIB/gmlnoFTvwQVq5ZAHmDTmlXHbP86tGSGDqDOlZV
+         kXhpawF6GqvDM7t3pM/ORsgdixYDvXTjD6bxRkB4yTpGU+k/tH/lM3I9IUu3JVTZIXVT
+         RJv3Ia5VgS1bQA6S6qvscZAiNZVqD1WSMYV2ui+N1EFbyDuJFwWSLtyt0HuqFr/4mQpx
+         Lz4uup7L+3IOZvcCgVtZ4j3Zl5uTIO1omlNzFJunMs9Kd2YmPjepqyW4hnu+2s6ou6r9
+         s8Ag==
+X-Gm-Message-State: APjAAAWTKC0pgq4MbqVigJ5peQ5FHQfQD6CtJdYVkgMMx65TqH+J+YJS
+        /WFcSXRBesRlAvryzhWwp/oDDys6J6A8a/p4oiyL1w==
+X-Google-Smtp-Source: APXvYqxirmJH4cL7eOUn3SpAsT/GI4gJKeANjViJ2y2P3ZBRhl2NHvAa8yLs3iWPeSiRlqzxQFoA7JJgfGfBFLCetWo=
+X-Received: by 2002:a67:61c7:: with SMTP id v190mr5467601vsb.165.1567085684495;
+ Thu, 29 Aug 2019 06:34:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190829104928.27404-1-yamada.masahiro@socionext.com> <20190829104928.27404-3-yamada.masahiro@socionext.com>
-In-Reply-To: <20190829104928.27404-3-yamada.masahiro@socionext.com>
+References: <20190829112206.22213-1-yamada.masahiro@socionext.com>
+In-Reply-To: <20190829112206.22213-1-yamada.masahiro@socionext.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 29 Aug 2019 15:34:04 +0200
-Message-ID: <CAPDyKFrcvVKXmLpMdjtkX+OZ=VfyYa0hS_dStEiawUN3zMtbvA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] mmc: sdhci-cadence: override spec version
+Date:   Thu, 29 Aug 2019 15:34:08 +0200
+Message-ID: <CAPDyKFqrQF8nBfLOHNyqM_LfPx7XjRCHT_PVzDKb98qxVjdSGQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhci: use lower/upper_32_bits() macros for DMA addresses
 To:     Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -58,19 +58,17 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 29 Aug 2019 at 12:49, Masahiro Yamada
+On Thu, 29 Aug 2019 at 13:22, Masahiro Yamada
 <yamada.masahiro@socionext.com> wrote:
 >
-> The datasheet of the IP (sd4hc) says it is compiatible with SDHCI v4,
-> but the spec version field in the version register is read as 2
-> (i.e. SDHCI_SPEC_300) based on the RTL provided by Cadence.
+> Currently, the DMA addresses are casted to (u64) for the upper 32bits
+> to avoid "right shift count >= width of type" warning.
 >
-> Socionext did not fix it up when it integrated the IP into the SoCs.
-> So, it is working as SDHCI v3.
+> <linux/kernel.h> provides macros to address this, and I like the macro
+> names are self-documenting.
 >
-> It is not a real problem because there is no difference in the program
-> flow in sdhci.c between SDHCI_SPEC_300/400, but set the real version
-> just in case.
+> I introduced a new helper, sdhci_set_adma_addr() to avoid the code
+> duplication.
 >
 > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
@@ -82,29 +80,74 @@ Uffe
 
 > ---
 >
->  drivers/mmc/host/sdhci-cadence.c | 2 ++
->  1 file changed, 2 insertions(+)
+> Changes in v2:
+>   - Another way to reduce linu wrapping
 >
-> diff --git a/drivers/mmc/host/sdhci-cadence.c b/drivers/mmc/host/sdhci-cadence.c
-> index 44139fceac24..9837214685b6 100644
-> --- a/drivers/mmc/host/sdhci-cadence.c
-> +++ b/drivers/mmc/host/sdhci-cadence.c
-> @@ -341,6 +341,7 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
->         unsigned int nr_phy_params;
->         int ret;
->         struct device *dev = &pdev->dev;
-> +       static const u16 version = SDHCI_SPEC_400 << SDHCI_SPEC_VER_SHIFT;
+>  drivers/mmc/host/sdhci.c | 27 +++++++++++++--------------
+>  1 file changed, 13 insertions(+), 14 deletions(-)
 >
->         clk = devm_clk_get(dev, NULL);
->         if (IS_ERR(clk))
-> @@ -370,6 +371,7 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
->         host->mmc_host_ops.hs400_enhanced_strobe =
->                                 sdhci_cdns_hs400_enhanced_strobe;
->         sdhci_enable_v4_mode(host);
-> +       __sdhci_read_caps(host, &version, NULL, NULL);
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 08cc0792c174..66c2cf89ee22 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -668,10 +668,10 @@ void sdhci_adma_write_desc(struct sdhci_host *host, void **desc,
+>         /* 32-bit and 64-bit descriptors have these members in same position */
+>         dma_desc->cmd = cpu_to_le16(cmd);
+>         dma_desc->len = cpu_to_le16(len);
+> -       dma_desc->addr_lo = cpu_to_le32((u32)addr);
+> +       dma_desc->addr_lo = cpu_to_le32(lower_32_bits(addr));
 >
->         sdhci_get_of_property(pdev);
+>         if (host->flags & SDHCI_USE_64_BIT_DMA)
+> -               dma_desc->addr_hi = cpu_to_le32((u64)addr >> 32);
+> +               dma_desc->addr_hi = cpu_to_le32(upper_32_bits(addr));
 >
+>         *desc += host->desc_sz;
+>  }
+> @@ -816,6 +816,13 @@ static void sdhci_adma_table_post(struct sdhci_host *host,
+>         }
+>  }
+>
+> +static void sdhci_set_adma_addr(struct sdhci_host *host, dma_addr_t addr)
+> +{
+> +       sdhci_writel(host, lower_32_bits(addr), SDHCI_ADMA_ADDRESS);
+> +       if (host->flags & SDHCI_USE_64_BIT_DMA)
+> +               sdhci_writel(host, upper_32_bits(addr), SDHCI_ADMA_ADDRESS_HI);
+> +}
+> +
+>  static dma_addr_t sdhci_sdma_address(struct sdhci_host *host)
+>  {
+>         if (host->bounce_buffer)
+> @@ -826,13 +833,10 @@ static dma_addr_t sdhci_sdma_address(struct sdhci_host *host)
+>
+>  static void sdhci_set_sdma_addr(struct sdhci_host *host, dma_addr_t addr)
+>  {
+> -       if (host->v4_mode) {
+> -               sdhci_writel(host, addr, SDHCI_ADMA_ADDRESS);
+> -               if (host->flags & SDHCI_USE_64_BIT_DMA)
+> -                       sdhci_writel(host, (u64)addr >> 32, SDHCI_ADMA_ADDRESS_HI);
+> -       } else {
+> +       if (host->v4_mode)
+> +               sdhci_set_adma_addr(host, addr);
+> +       else
+>                 sdhci_writel(host, addr, SDHCI_DMA_ADDRESS);
+> -       }
+>  }
+>
+>  static unsigned int sdhci_target_timeout(struct sdhci_host *host,
+> @@ -1095,12 +1099,7 @@ static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
+>                         host->flags &= ~SDHCI_REQ_USE_DMA;
+>                 } else if (host->flags & SDHCI_USE_ADMA) {
+>                         sdhci_adma_table_pre(host, data, sg_cnt);
+> -
+> -                       sdhci_writel(host, host->adma_addr, SDHCI_ADMA_ADDRESS);
+> -                       if (host->flags & SDHCI_USE_64_BIT_DMA)
+> -                               sdhci_writel(host,
+> -                                            (u64)host->adma_addr >> 32,
+> -                                            SDHCI_ADMA_ADDRESS_HI);
+> +                       sdhci_set_adma_addr(host, host->adma_addr);
+>                 } else {
+>                         WARN_ON(sg_cnt != 1);
+>                         sdhci_set_sdma_addr(host, sdhci_sdma_address(host));
 > --
 > 2.17.1
 >
