@@ -2,89 +2,89 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48C67A1506
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 11:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD194A169F
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 12:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726642AbfH2JdJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 05:33:09 -0400
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:43143 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbfH2JdJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 05:33:09 -0400
-Received: by mail-ua1-f65.google.com with SMTP id y7so931512uae.10
-        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 02:33:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jwMS525ywtt6sOg3VAxDrxJAxwOW0CWRYuAHzYt0J9c=;
-        b=oS3dg9bS3cPrcgG3vOeds6Of/Z1OhxHH73UTSEEvjU7LQ1QpYpJ0chV+hWPiPMuxth
-         h7Awf8JulKMThePAbEgZUhZRbWVWQzNylBVGm90uwKXHvOIx5ZNbRzsohHMdpJg6gqJA
-         3QKuzxTcr+kvW+arPvTtiX5ufTTwT4Lly1rMnYwTDxk37yXuHjs1OUZebbBGXp9+0B6S
-         M/u5dKDxHju7704K8VWl5kP/MGnbJhnpXTZD/T4xXCmn2vgWEGTfmIP9+OOndzaVpDQz
-         uHTfQ9XH65cFSil6BEoX816DV/tqY9tQ3sigPeehTuGujw3ArKxmssehbbVEpXpUIthD
-         oITw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jwMS525ywtt6sOg3VAxDrxJAxwOW0CWRYuAHzYt0J9c=;
-        b=lx9Ju+pXaaPKU7fD00275pYnPeAjI25UJx8QFgfxyKUVnCljuzCoO6wuIragRiuBON
-         0rGoZX4gmoeD35kFhkQdAVI3hVRNZTbPlg31PmBFOnSNZtoS9Vu04gDvMOTorFQTIyx3
-         eAhglOZqBlqr6pSVu5NJzfbSeIK9f0k0dhTOtNTDXG5xvwP22eMI0/GSRFfn4JQRpmNl
-         opaB++653jUF7gDUNM7h04Z5Q98vQVxA7EMQerAUhGnakYQdTqHrCQjUzM+YwojWszN9
-         UzWeqGRCb9tw37agAT12UmIu0GzKdMZKwj+zSoVg9mXgHVkXhQomzOMX5XSUEk+IyLU9
-         JlNg==
-X-Gm-Message-State: APjAAAWRdRa7We/unng2nA5NUyF02xSqn32ByZolfoyOegpjxSU7zXhQ
-        cT5I9wSBEtTNw6+zC17LdkykUpDuiUt72yj9jfBDnA==
-X-Google-Smtp-Source: APXvYqw4cMfDzwrNTgPt2rfd0EXbGJVRlkTiKDXTWWUi6fN0jj1iS+RcuKcfAvqHKkgKC3y15uSqQbomLBZcx4qiVk4=
-X-Received: by 2002:ab0:1562:: with SMTP id p31mr4257943uae.15.1567071188564;
- Thu, 29 Aug 2019 02:33:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190829014645.4479-1-zhang.lyra@gmail.com>
-In-Reply-To: <20190829014645.4479-1-zhang.lyra@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 29 Aug 2019 11:32:32 +0200
-Message-ID: <CAPDyKFp_+YuPOjURiE0YhT0uotZi=P2sRVYNr3ejgZmrMaN=tA@mail.gmail.com>
-Subject: Re: [RESEND PATCH v2 0/5] a few fixes for sprd's sd host controller
-To:     Chunyan Zhang <zhang.lyra@gmail.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726990AbfH2KuJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 06:50:09 -0400
+Received: from conuserg-12.nifty.com ([210.131.2.79]:17271 "EHLO
+        conuserg-12.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726950AbfH2KuJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 06:50:09 -0400
+X-Greylist: delayed 84862 seconds by postgrey-1.27 at vger.kernel.org; Thu, 29 Aug 2019 06:50:08 EDT
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-12.nifty.com with ESMTP id x7TAnTog013730;
+        Thu, 29 Aug 2019 19:49:32 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com x7TAnTog013730
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1567075772;
+        bh=mN61Fbu00XTQIXCA2V1aTp6gNwYlWshj6x9afbCTh5c=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=TidcLSDRKzOZkpVzOluSTBv43i57lTHVfDqOFA489hXt/kuWoCqcLidLjb/E9E81e
+         sUGEb9yFmWosleb2DfiSz+xxg1S3Ui33G3YcqDa7YgH2/Dp3FdxfCd4cn5704BPOMK
+         qixixQSItz0KKtDyPKWUzgQ70Cu9q/V7zOHMBd+FLllBc8plMnL3N8Qiq9UnpB8OgB
+         uWL5V2iGrODcG06Mh5+y/FC2zBSngvKGinmlFrmMkKJDWLfoZiSMQrmNbcDY4H4V6j
+         57Evyga/0JSItxsH6E3JTriBJ+Oz1TbnVh8xZK4B+HmRnwhMUt0xSrFTSnPWOZ8c0o
+         /ru1uFXAqb/ag==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Piotr Sroka <piotrs@cadence.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 2/3] mmc: sdhci: constify references of parameters to __sdhci_read_caps()
+Date:   Thu, 29 Aug 2019 19:49:27 +0900
+Message-Id: <20190829104928.27404-2-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190829104928.27404-1-yamada.masahiro@socionext.com>
+References: <20190829104928.27404-1-yamada.masahiro@socionext.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 29 Aug 2019 at 03:47, Chunyan Zhang <zhang.lyra@gmail.com> wrote:
->
-> With this patch-set, both sd card and mmc can be setup.  This patch-set was
-> verified on Unisoc's Whale2 and another mobile phone platform SC9863A.
->
-> Changes from v1:
-> - Added Reviewed-by and Tested-by of Baolin;
-> - Added fixes tag for all patches in this series.
->
-> Chunyan Zhang (5):
->   mmc: sdhci-sprd: fixed incorrect clock divider
->   mmc: sdhci-sprd: add get_ro hook function
->   mmc: sdhci-sprd: add SDHCI_QUIRK2_PRESET_VALUE_BROKEN
->   mms: sdhci-sprd: add SDHCI_QUIRK_BROKEN_CARD_DETECTION
->   mmc: sdhci-sprd: clear the UHS-I modes read from registers
->
->  drivers/mmc/host/sdhci-sprd.c | 30 +++++++++++++++++++++++++-----
->  1 file changed, 25 insertions(+), 5 deletions(-)
->
-> --
-> 2.20.1
->
+__sdhci_read_caps() does not modify *ver, *caps, or *caps1.
 
-Thanks, but I amended the current applied patches, assuming the only
-change change you did was to put the fixes tag on one single line (for
-each patch).
+Probably, the caller of this function will want to constifythe
+parameters passed in.
 
-Kind regards
-Uffe
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+ drivers/mmc/host/sdhci.c | 3 ++-
+ drivers/mmc/host/sdhci.h | 4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index a5dc5aae973e..08cc0792c174 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -3565,7 +3565,8 @@ static int sdhci_set_dma_mask(struct sdhci_host *host)
+ 	return ret;
+ }
+ 
+-void __sdhci_read_caps(struct sdhci_host *host, u16 *ver, u32 *caps, u32 *caps1)
++void __sdhci_read_caps(struct sdhci_host *host, const u16 *ver,
++		       const u32 *caps, const u32 *caps1)
+ {
+ 	u16 v;
+ 	u64 dt_caps_mask = 0;
+diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+index 902f855efe8f..81e23784475a 100644
+--- a/drivers/mmc/host/sdhci.h
++++ b/drivers/mmc/host/sdhci.h
+@@ -738,8 +738,8 @@ static inline void *sdhci_priv(struct sdhci_host *host)
+ }
+ 
+ void sdhci_card_detect(struct sdhci_host *host);
+-void __sdhci_read_caps(struct sdhci_host *host, u16 *ver, u32 *caps,
+-		       u32 *caps1);
++void __sdhci_read_caps(struct sdhci_host *host, const u16 *ver,
++		       const u32 *caps, const u32 *caps1);
+ int sdhci_setup_host(struct sdhci_host *host);
+ void sdhci_cleanup_host(struct sdhci_host *host);
+ int __sdhci_add_host(struct sdhci_host *host);
+-- 
+2.17.1
+
