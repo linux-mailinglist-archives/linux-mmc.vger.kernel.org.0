@@ -2,129 +2,96 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A231A22A5
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 19:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BD0AA2628
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 20:37:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727682AbfH2Roc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 13:44:32 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:34270 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726661AbfH2Roc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 13:44:32 -0400
-Received: by mail-io1-f67.google.com with SMTP id s21so8683179ioa.1
-        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 10:44:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=q0/wEQOY41ZAwBlbnwMnPIcIDqJGJYBAEzaUfyt/UCA=;
-        b=RxAdYwWHCc51YWNiPsz3mKegfEe4w4o1SQpJRubLe15x3wQxumvC0x0pbMl/hxXzBg
-         uHPnACDF2ylQF8pcwTKJg5lsvtbbUfb4KdEsa4YqLefKOwV+d4EyllVFGVI/VjycXU+0
-         I9QNa9yh9ywYEqtZ7aMVzLFlvoM+Fa8jLOPkg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=q0/wEQOY41ZAwBlbnwMnPIcIDqJGJYBAEzaUfyt/UCA=;
-        b=aS5Uy9TdShMFIiANYITiOAuDeP094sfDNYJgio0ucSyX+djnfnmh3wS7Fw1bICnelw
-         K5gslVrr1RVe34xcqtBeNA6KRvLd4MpywoCfiyq6wsGAcfa3SlBaeY648z09dlzm5JHG
-         TVPv7/KpxWk6X4eyZ4XuSPiTzrUSPab61XWTDhKiZcSRNse/1DnsQzyf5hGn/G/fdlnm
-         v7B/DaXQh9+pPsENJVUPWF0CdstisbwKT1Wmac+zF0XcVYuIYXFu7/sBoJ4vHWOWbhA8
-         MurVrQdzmQi70g2ZfmAqadDEnUTIyJJkTc4IVvpkhcQIlMLKLofAulsqYzG2zUJenmOC
-         zAoA==
-X-Gm-Message-State: APjAAAWG2f8dqiXzoevc8+YyNc6VUNv4ueAVCUJLvAi6A1K7ps2bF4ZY
-        i5JwoRenZnQhH+0P45BE01LEMOQzxtk=
-X-Google-Smtp-Source: APXvYqwOhpZAJLQYhKN9SzPrV1jauH/B4sujJpYXz1QOdJMQsqTpzMwuDzKpWCGstLthDLlpO1G40A==
-X-Received: by 2002:a02:9a0b:: with SMTP id b11mr549653jal.106.1567100670977;
-        Thu, 29 Aug 2019 10:44:30 -0700 (PDT)
-Received: from mail-io1-f48.google.com (mail-io1-f48.google.com. [209.85.166.48])
-        by smtp.gmail.com with ESMTPSA id p1sm2476911iol.11.2019.08.29.10.44.30
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Aug 2019 10:44:30 -0700 (PDT)
-Received: by mail-io1-f48.google.com with SMTP id b10so8671414ioj.2
-        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 10:44:30 -0700 (PDT)
-X-Received: by 2002:a6b:d006:: with SMTP id x6mr12265612ioa.218.1567100669783;
- Thu, 29 Aug 2019 10:44:29 -0700 (PDT)
+        id S1728061AbfH2Sg6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 14:36:58 -0400
+Received: from hera.iit.uni-miskolc.hu ([193.6.5.4]:38412 "EHLO
+        hera.iit.uni-miskolc.hu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726518AbfH2Sg6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 14:36:58 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by hera.iit.uni-miskolc.hu (Postfix) with ESMTP id 5505A12E;
+        Thu, 29 Aug 2019 20:36:55 +0200 (CEST)
+X-Virus-Scanned: Kamavis at iit.uni-miskolc.hu
+Received: from hera.iit.uni-miskolc.hu ([127.0.0.1])
+        by localhost (hera.iit.uni-miskolc.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id RI4GZN5MKayl; Thu, 29 Aug 2019 20:36:48 +0200 (CEST)
+Received: from titan.hitronhub.home (unknown [IPv6:2a02:8109:a180:54c:226:9eff:fe30:2af8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: szucst@iit.uni-miskolc.hu)
+        by hera.iit.uni-miskolc.hu (Postfix) with ESMTPSA id E4599132;
+        Thu, 29 Aug 2019 20:36:43 +0200 (CEST)
+From:   =?UTF-8?q?Tam=C3=A1s=20Sz=C5=B1cs?= <tszucs@protonmail.ch>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        =?UTF-8?q?Tam=C3=A1s=20Sz=C5=B1cs?= <tszucs@protonmail.ch>
+Subject: [PATCH v2] mmc: sdhi: fill in actual_clock
+Date:   Thu, 29 Aug 2019 20:36:34 +0200
+Message-Id: <20190829183634.3376-1-tszucs@protonmail.ch>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-References: <20190828214620.66003-1-mka@chromium.org> <20190828214620.66003-2-mka@chromium.org>
-In-Reply-To: <20190828214620.66003-2-mka@chromium.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Thu, 29 Aug 2019 10:44:17 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UhKCKzj7W+LGAGuzukCsOag1meHk4dW7=XQF21KeS_pg@mail.gmail.com>
-Message-ID: <CAD=FV=UhKCKzj7W+LGAGuzukCsOag1meHk4dW7=XQF21KeS_pg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mmc: core: Run handlers for pending SDIO interrupts
- on resume
-To:     Matthias Kaehlcke <mka@chromium.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+Save set clock in mmc_host actual_clock enabling exporting it via debugfs.
+This will indicate the precise SD clock in I/O settings rather than only the
+sometimes misleading requested clock.
 
-On Wed, Aug 28, 2019 at 2:46 PM Matthias Kaehlcke <mka@chromium.org> wrote:
->
-> With commit 83293386bc95 ("mmc: core: Prevent processing SDIO IRQs
-> when the card is suspended") SDIO interrupts are dropped if they
-> occur while the card is suspended. Dropping the interrupts can cause
-> problems after resume with cards that remain powered during suspend
-> and preserve their state. These cards may end up in an inconsistent
-> state since the event that triggered the interrupt is never processed
-> and remains pending. One example is the Bluetooth function of the
-> Marvell 8997, SDIO is broken on resume (for both Bluetooth and WiFi)
-> when processing of a pending HCI event is skipped.
->
-> For cards that remained powered during suspend check on resume if
-> SDIO interrupts are pending, and trigger interrupt processing if
-> needed.
->
-> Fixes: 83293386bc95 ("mmc: core: Prevent processing SDIO IRQs when the card is suspended")
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> ---
->  drivers/mmc/core/sdio.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-> index 8dd8fc32ecca..a6b4742a91c6 100644
-> --- a/drivers/mmc/core/sdio.c
-> +++ b/drivers/mmc/core/sdio.c
-> @@ -975,6 +975,7 @@ static int mmc_sdio_suspend(struct mmc_host *host)
->  static int mmc_sdio_resume(struct mmc_host *host)
->  {
->         int err = 0;
-> +       u8 pending = 0;
->
->         /* Basic card reinitialization. */
->         mmc_claim_host(host);
-> @@ -1009,6 +1010,14 @@ static int mmc_sdio_resume(struct mmc_host *host)
->         /* Allow SDIO IRQs to be processed again. */
->         mmc_card_clr_suspended(host->card);
->
-> +       if (!mmc_card_keep_power(host))
-> +               goto skip_pending_irqs;
-> +
-> +       if (!sdio_get_pending_irqs(host, &pending) &&
-> +           pending != 0)
-> +               sdio_signal_irq(host);
-> +
-> +skip_pending_irqs:
->         if (host->sdio_irqs) {
+Signed-off-by: Tamás Szűcs <tszucs@protonmail.ch>
+---
+ drivers/mmc/host/renesas_sdhi_core.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-nit: I'd prefer to avoid the "goto" if possible.  Using "goto" to
-handle unwinding during error handling always makes good sent to me,
-but here you're not doing unwinding--you're just using the "goto" as
-an unstructured "if".  I'd rather just see:
+diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+index 64d3b5fb7fe5..4c9774dbcfc1 100644
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -124,7 +124,7 @@ static unsigned int renesas_sdhi_clk_update(struct tmio_mmc_host *host,
+ {
+ 	struct renesas_sdhi *priv = host_to_priv(host);
+ 	unsigned int freq, diff, best_freq = 0, diff_min = ~0;
+-	int i, ret;
++	int i;
+ 
+ 	/* tested only on R-Car Gen2+ currently; may work for others */
+ 	if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
+@@ -153,9 +153,9 @@ static unsigned int renesas_sdhi_clk_update(struct tmio_mmc_host *host,
+ 		}
+ 	}
+ 
+-	ret = clk_set_rate(priv->clk, best_freq);
++	clk_set_rate(priv->clk, best_freq);
+ 
+-	return ret == 0 ? best_freq : clk_get_rate(priv->clk);
++	return clk_get_rate(priv->clk);
+ }
+ 
+ static void renesas_sdhi_set_clock(struct tmio_mmc_host *host,
+@@ -166,10 +166,13 @@ static void renesas_sdhi_set_clock(struct tmio_mmc_host *host,
+ 	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, ~CLK_CTL_SCLKEN &
+ 		sd_ctrl_read16(host, CTL_SD_CARD_CLK_CTL));
+ 
+-	if (new_clock == 0)
++	if (new_clock == 0) {
++		host->mmc->actual_clock = 0;
+ 		goto out;
++	}
+ 
+-	clock = renesas_sdhi_clk_update(host, new_clock) / 512;
++	host->mmc->actual_clock = renesas_sdhi_clk_update(host, new_clock);
++	clock = host->mmc->actual_clock / 512;
+ 
+ 	for (clk = 0x80000080; new_clock >= (clock << 1); clk >>= 1)
+ 		clock <<= 1;
+-- 
+2.11.0
 
-  if (mmc_card_keep_power(host) &&
-      !sdio_get_pending_irqs(host, &pending) && pending != 0)
-          sdio_signal_irq(host);
-
-Other than that this patch seems sane to me though (obviously) the
-person you'd need to convince is Ulf.  ;-)
-
--Doug
