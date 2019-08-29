@@ -2,111 +2,133 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A4CA18F4
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 13:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E02FA1929
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 13:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727736AbfH2Lhw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 07:37:52 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:41135 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727104AbfH2Lhw (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 07:37:52 -0400
-Received: by mail-vs1-f65.google.com with SMTP id m62so2163225vsc.8
-        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 04:37:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=steHU9JTMpLHW7sybl9YQfRLR82mnhptlWwdqUe7Zcg=;
-        b=fYlC8+bWZqR6XAfZhhKThI98qPivkoDILLJEWVCGUmMcEVDNau268nO678oYz2Haq6
-         bmMtC4uuUu3KJg6bIbm5+boLwf+l8EkdFDEQDvPVjopj0wqLRln09CPb2ryMq76qUEjk
-         JZkDX9bIbdu1BwxXgbD/qS8oHYFHEAEgRhmzN8sr/2fnePykHkgDXvor4Gj3bzeixJGZ
-         /J5QdyYN1k9gZ83TBf1D2dDUqsjB0C7nWqGs/1GulojlUH4Z/N9Zg1T2OW4XVRrM+kRs
-         BBBRW0dxsRpNuV+fNa6bWBpNGxJaiZOH8Yr29ngIVQQugS2pmpPIaUUsxUDI5stbThRr
-         SUYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=steHU9JTMpLHW7sybl9YQfRLR82mnhptlWwdqUe7Zcg=;
-        b=MUWkTSGPdt5Ax224/uVsrrwom8lpRSmpAsIgvfV5wP4+/ydKib3CXX0GhXcMYPYv0x
-         67XdJ2ZQ1tv3njJP+fBSxCHgExonJOmHF2KGx96RKY+yuF/QrbkyWu8Ly0p4qa7LWlsE
-         pWyxG0Bvmq1V408XHQZ4kU3oGRIA2ItMvJ+iaWasZUA2bW5Fk5XCLlDc11EZFMYU/9Le
-         I7ZqPH7Uer+ROq9r3x+GaO36Emrpf9jFIh7KQAcdAb5irBuJBz0Viw8MN3thyCQQ25iL
-         suosX423OymDhJ38MeEkuQm1CWci/Qs+p01WFi+5oMU36B1hvprWC0ffGppnlEfFk1l2
-         1UOg==
-X-Gm-Message-State: APjAAAUpKpeSmez8LS7+8XQl4JkAdJq18Gu6tUnGMUyB4IdbOBa1XWVO
-        INCfmO5DDJUDyoxRpbTRjZvY27magUaTsHku0gvsAg==
-X-Google-Smtp-Source: APXvYqwNRXIaneirGcWLGuYXd/YuixR4X36HnLqF4jth7rfkzeHfTgzi9mMgWpVzP8+sp931Sn93UV23G6KlVGudVsg=
-X-Received: by 2002:a67:fe4e:: with SMTP id m14mr5337390vsr.34.1567078671028;
- Thu, 29 Aug 2019 04:37:51 -0700 (PDT)
+        id S1727182AbfH2LqJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 07:46:09 -0400
+Received: from conssluserg-06.nifty.com ([210.131.2.91]:43802 "EHLO
+        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727099AbfH2LqJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 07:46:09 -0400
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id x7TBk4T6015443;
+        Thu, 29 Aug 2019 20:46:05 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x7TBk4T6015443
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1567079165;
+        bh=jJHAKRHFRUzF/5jWYYKHoeNpyJFG8X4zd/Hk645vV1s=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=FR2lZSyoTN0KEKnwc4pXOJULo6oFfgZ4oMDCJPqQws/UAF4tOiv/G9gNRRlylUM70
+         /HDF76gpmnV29LClsim6CYan+gHWKmIA8zouhAArtdeWnHkYTEMTO3z57gkZ3RE3Op
+         H7XCYN867bK/c/Y5yxEzevUmbQQZl/KsaJVUX5btY2kuTwUsSnkq8pe8glDLnzmBUX
+         wGy7fvvpxBxmpu+H8gSnB/sVHwtepY0c/dM7R9TYoiuVHjMI+oPn1gmhIYcNEolY/O
+         2SgUdaZ+jrxcE/PuE8ualfGbOt9kOfSxoKrDoWDRaPTeFu7b+bN7zstzTpQLPM8W5w
+         5j6MuK6hAKafQ==
+X-Nifty-SrcIP: [209.85.217.47]
+Received: by mail-vs1-f47.google.com with SMTP id 62so2182884vsl.5;
+        Thu, 29 Aug 2019 04:46:05 -0700 (PDT)
+X-Gm-Message-State: APjAAAW+TJpJ1K3UPd88XF79Q2VXCxvffeoCRouuduckjz1pAxihV84K
+        JDixXzYmbY3Zkm9AdenxlZaTEWaIO/r0DXUM4gI=
+X-Google-Smtp-Source: APXvYqySzvmeE9kiWjvNGM1iaAxnZ+QgH8m0ESiSIlhk3/0sUZoqbPgAj7pYaewNuKSsBX5H2zvSqil85IeqcrkN9II=
+X-Received: by 2002:a67:fe12:: with SMTP id l18mr5139562vsr.54.1567079164044;
+ Thu, 29 Aug 2019 04:46:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190825150558.15173-1-alejandro.gonzalez.correo@gmail.com>
- <CAPDyKFr5opD2yBXmFRBY-9oA_3ShVv0GPFRO8Q_8TEiT+z2pQA@mail.gmail.com> <f84d62b7-da00-f2bd-36e9-972435080bfe@gmail.com>
-In-Reply-To: <f84d62b7-da00-f2bd-36e9-972435080bfe@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 29 Aug 2019 13:37:14 +0200
-Message-ID: <CAPDyKFp420OaeoedkR=KuX1EMNwOvCkCfJHZPRDXhVz-w8J0mg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sunxi: fix unusuable eMMC on some H6 boards by
- disabling DDR
-To:     =?UTF-8?Q?Alejandro_Gonz=C3=A1lez?= 
-        <alejandro.gonzalez.correo@gmail.com>
-Cc:     Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+References: <20190506223334.1834-1-nicoleotsuka@gmail.com> <20190506223334.1834-3-nicoleotsuka@gmail.com>
+ <CAK7LNARacEorb38mVBw_V-Zvz-znWgBma1AP1-z_5B_xZU4ogg@mail.gmail.com>
+ <CAK7LNAQfYBCoChMV=MOwcUyVoqRkrPWs7DaWdzDqjBe18gGiAQ@mail.gmail.com>
+ <20190825011025.GA23410@lst.de> <CAK7LNAQb1ZHr=DiHLNeNRaQExMuXdDOV4sFghoGbco_Q=Qzb8g@mail.gmail.com>
+ <20190826073320.GA11712@lst.de> <CAK7LNATYOLEboUTO4qPx2z7cqwDrHBO1HFHG8VzZEJ15STv+nw@mail.gmail.com>
+ <20190827075021.GA953@lst.de> <CAK7LNAQZ+bueZZzSoMADmgLjWNvijHRV=wLQzN_kvLG3b5Uu+w@mail.gmail.com>
+ <20190827115541.GB5921@lst.de> <CAK7LNAQ_nQcBt=xH1-h+=co85mTxFgbe+_46Gu4LaNsDSm+kYA@mail.gmail.com>
+ <CAK7LNATvz=TTe+3OyLrtUqDuTUTn1dg9Sk-t3BD_OFZfViCPMw@mail.gmail.com>
+In-Reply-To: <CAK7LNATvz=TTe+3OyLrtUqDuTUTn1dg9Sk-t3BD_OFZfViCPMw@mail.gmail.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Thu, 29 Aug 2019 20:45:27 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASs2qkpGY_BkL--hvmKm3FJ9sEK4+v5VVYc1_CrowAB4w@mail.gmail.com>
+Message-ID: <CAK7LNASs2qkpGY_BkL--hvmKm3FJ9sEK4+v5VVYc1_CrowAB4w@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] dma-contiguous: Use fallback alloc_pages for
+ single pages
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Nicolin Chen <nicoleotsuka@gmail.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>, vdumpa@nvidia.com,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Thierry Reding <treding@nvidia.com>,
+        Kees Cook <keescook@chromium.org>, iamjoonsoo.kim@lge.com,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-sunxi <linux-sunxi@googlegroups.com>
+        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 28 Aug 2019 at 12:52, Alejandro Gonz=C3=A1lez
-<alejandro.gonzalez.correo@gmail.com> wrote:
+On Wed, Aug 28, 2019 at 9:23 PM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
 >
-> El 27/8/19 a las 15:24, Ulf Hansson escribi=C3=B3:> Assuming this should =
-go stable as well? Perhaps you can find a
-> > relevant commit that we can put as a fixes tag as well?
+> On Wed, Aug 28, 2019 at 7:53 PM Masahiro Yamada
+> <yamada.masahiro@socionext.com> wrote:
 > >
-> > Kind regards
-> > Uffe
+> > Hi Christoph,
+> >
+> > On Tue, Aug 27, 2019 at 8:55 PM Christoph Hellwig <hch@lst.de> wrote:
+> > >
+> > > On Tue, Aug 27, 2019 at 06:03:14PM +0900, Masahiro Yamada wrote:
+> > > > Yes, this makes my driver working again
+> > > > when CONFIG_DMA_CMA=y.
+> > > >
+> > > >
+> > > > If I apply the following, my driver gets back working
+> > > > irrespective of CONFIG_DMA_CMA.
+> > >
+> > > That sounds a lot like the device simply isn't 64-bit DMA capable, and
+> > > previously always got CMA allocations under the limit it actually
+> > > supported.  I suggest that you submit this quirk to the mmc maintainers.
+> >
+> >
+> > I tested v5.2 and my MMC host controller works with
+> > dma_address that exceeds 32-bit physical address.
+> >
+> > So, I believe my MMC device is 64-bit DMA capable.
+> >
+> > I am still looking into the code
+> > to find out what was changed.
 >
-> The most relevant commit I've found that is related to enabling DDR speed=
-s
-> on H6 boards is this one: https://github.com/torvalds/linux/commit/07bafc=
-1e3536a4e3c422dbd13341688b54f159bb .
-> But it doesn't address the H6 SoC specifically, so I doubted whether it w=
-ould
-> be appropiate to mark this patch as fixing it, and opted to not do it. I =
-don't
-> mind adding that tag if it's appropiate, though :-)
-
-Hard to say what makes sense here, but how about picking this below instead=
-?
-
-Fixes: 0a23f1ad88fc ("dt-binding: mmc: sunxi: add H6 compatible (with
-A64 fallback)")
-
 >
-> On the other hand, I'm not sure that I understood correctly what do you m=
-ean by
-> this patch going stable, but I might say the changes themselves are stabl=
-e and work.
-> The only downside I can think of to them is that they are a kind of worka=
-round that
-> reduces performance on H6 boards and/or eMMC not affected by this problem=
- (are there
-> any?), unless device trees are changed.
+> I retract this comment.
+>
+> Prior to bd2e75633c8012fc8a7431c82fda66237133bf7e,
+> the descriptor table for ADMA is placed within the
+> 32-bit phys address range, not exceeds the 32-bit limit.
+>
+> Probably, my device is not 64-bit capable.
+>
+> I will talk to the hardware engineer,
+> and check the hardware spec just in case.
+>
 
-Adding a stable tag and a fixes tag for the commit, makes maintainers
-of stable kernels to try to backport this commit and fix the problem
-for "older" kernels.
 
-Kind regards
-Uffe
+After looking more into my hardware,
+I found out how to fix my driver:
+https://lore.kernel.org/patchwork/patch/1121600/
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
