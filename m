@@ -2,312 +2,164 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F353A12FE
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 09:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25FB8A13AB
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 10:30:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726384AbfH2Hus (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 03:50:48 -0400
-Received: from mail-vk1-f193.google.com ([209.85.221.193]:39317 "EHLO
-        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725881AbfH2Hus (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 03:50:48 -0400
-Received: by mail-vk1-f193.google.com with SMTP id x20so594568vkd.6
-        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 00:50:47 -0700 (PDT)
+        id S1725990AbfH2IaE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 04:30:04 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:34326 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725853AbfH2IaE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 04:30:04 -0400
+Received: by mail-vs1-f65.google.com with SMTP id b20so1888573vso.1
+        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 01:30:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=2RLZPXLwrdJWEAC+GcTe7HFRbK9PBi1ApW8Cm4YggzQ=;
-        b=XQd8wTEI/njeeqDSLFZK+bVL3ngyHr8csITqyxxm2Y6m+QBZ9wl+ZjjxpQukbdkZwQ
-         sZWraRGLhIr//I+NT/CSYhi3sH+jKsgEzdJAgNpTMl4ezgOoi33OXX62iyqfgSoDXPgT
-         ofPvsgiGiaDBCuTdf8/IHaQkZXgxznLeQez4w6KztESuG/OeEgAX9FZMgYd4RGnE1QH2
-         SGGrd2XeFnsKQy85DGnhOhvz+4jZL+0k0uArkvxhVvR9hl0XY2xu96vcPhXCLXP6viQR
-         b06keuVxJBPP1IqpPWVmHqvH9od7fLrAMc/V/VnrNbWyygd891C/iOaRXgUZ1SpMfW1E
-         fBrQ==
+         :cc;
+        bh=t8KVS3WjjGsX+VLjU/LkBwPrBnJsz/ospkY1CDEGnbc=;
+        b=qoLCCti7tDQj75bRIJmpecZtyATOYvx/Ue50cSdRaYMgs4v23EfqkSYjxxd6BBT135
+         NM/10JteU5kbTWj3VQ6ElY1xoXdKJg2Q6B0bxj96atbSLEnzBU7v21GNVJpZMFaXIOia
+         oMzmWF4nAKv6tPlksPzyHKAfSdbnchYTsDaAjgaAplk7ysl6g14EFkQp0kmZakBimUiL
+         H0lhFTX4mYt5owaq+lwQ8p1iclk3jrzVrbG44Uh2dmoENr5q8s3y4rasAnhtKHN17EK4
+         YXTMPmK037cQ5B/dlEkxs5JonZerfCp6OPGk+qBvVN+seD0MB2VkMrSjauOiTGUfukx6
+         XSWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=2RLZPXLwrdJWEAC+GcTe7HFRbK9PBi1ApW8Cm4YggzQ=;
-        b=LDIZbDRAuvvSo9rUgY8BoF13Dhj3MHs0PpPyJqOGGfC1WMCnE0GKJWmmgL9W3/ezXA
-         2YSca+qzUWZ4heX5nm1Q+Ie8/px3+wc7IebVG5wL74lB8qseapfpHUtVDQywIXqiyb/X
-         awvHNFdUCSE8ojf9CWG4X0XUd9cQq5Ey/STfYWHmkiAcNX17FjFCsHfxhGisXg83RTig
-         KCsN3zE9lcJ5ui/tiKXuwsp8d17gxv+G4LZpGfObkzZXBaiVW/GZ/k0k+Ggbl+muOQ32
-         54oVo9OVY3Eq+H49z4M/HfPDUoRHVtSC6p3+tB52bEUI1WK1UOnCRQHz0hcq0Lsb8UJN
-         Mpow==
-X-Gm-Message-State: APjAAAX0BTCtZiPw4sZZUpdwefwyAiciC5YKEIzNCguGX6Dn1XGbdEII
-        S9IiLrrwCAF/qSmiwhpSVBEPeRjTTRobTFlh7l53fw==
-X-Google-Smtp-Source: APXvYqy3KdWpgfHjKsE+pzP6K/yotOgIpslKWAH8mOgfdYznesDeZGOMbEYwWOqAKLe/GiSXWKDdW4ErMyry1b2XCV4=
-X-Received: by 2002:a1f:5602:: with SMTP id k2mr4083074vkb.36.1567065046591;
- Thu, 29 Aug 2019 00:50:46 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=t8KVS3WjjGsX+VLjU/LkBwPrBnJsz/ospkY1CDEGnbc=;
+        b=FskX3wt1qYuC9tEohkXxySWSUollUuMrPhRtj2C9sJ+m12+KghIzmEZ3TOwmGTmuk6
+         ydLqPpZqxD8GIK3A2yI+8bj4Emxil/WQKzbvAQ/iJieRbXkZRjsGRo3Z30kU9wcLYdQo
+         5KQssMzye82x1NHhwM0iAvgqjumd+6zKuAZlluoiEYdYVWr0A+IAXUI8EM6EquDU9Ead
+         /wTulq19ewafRVERvfUzPNisc3bJEZoLkJQOmkVvBq13ZOvPgwmnI5OFFKvsOh1lEmqp
+         BFHedUyGsr+R+y68y6NkpRoJxvrOtRzChg70CZWeMRGxEIF5ypTKCc+KZb+6x6cijqOx
+         yIGA==
+X-Gm-Message-State: APjAAAWo5ylP6dM6KZiSgphwqXn8fHTBXddupUZIzLuKMpkB8e9L81ue
+        YOtnKq8MWOfhrq6ulV719xk4Tdc8hqDFTh5cXsPu/g==
+X-Google-Smtp-Source: APXvYqzd/d2jBHerpv45go4Rm2INhV3tAXjXFfOsLO6AiCuwGOpfkHaXG2cWN8z7oscoX8mrSVdQAS2jjjtEDqZ7B0w=
+X-Received: by 2002:a67:e287:: with SMTP id g7mr4720453vsf.200.1567067402816;
+ Thu, 29 Aug 2019 01:30:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190820114229.11948-1-ja.kaisrlik@gmail.com> <CAPDyKFrJvHGCEyAtih6wZNqFj+68icVBtWhDTrNf1Fr9kQQCig@mail.gmail.com>
- <CAPnxhu77vwKEx-_vzvPs_o5HsrZcSZ5eha7JPqJPjmv0Gzpkuw@mail.gmail.com>
- <CAPDyKFqMcsht8Ag6aGfoNeuUX+_zR-b0hUhVDyNpV5s6mmGYVA@mail.gmail.com>
- <CAPnxhu4DwaxL-eXbwHnes7AJFA2G+zNUHsOvrfsPPVqdW0MV_g@mail.gmail.com>
- <CAPDyKFoZkU5VKCc2uCawizTM_iB=rU=OFpSWRBnzPQKN813-Kw@mail.gmail.com>
- <CAPnxhu7+fhiNz8URk3+EnQPDs0hO+oKHyMnXC5RT+CwQymd=Pg@mail.gmail.com> <CAPDyKFpatR0q+uO4Q-xcfAWVRTnc3Wp+_oDqECepk_FiLM1kBQ@mail.gmail.com>
-In-Reply-To: <CAPDyKFpatR0q+uO4Q-xcfAWVRTnc3Wp+_oDqECepk_FiLM1kBQ@mail.gmail.com>
+References: <20190828214620.66003-1-mka@chromium.org>
+In-Reply-To: <20190828214620.66003-1-mka@chromium.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 29 Aug 2019 09:50:10 +0200
-Message-ID: <CAPDyKFrHvgcXy5PnsiOD=Oo09JNTM2uQ6BCTzhMNsFu=f7V7RA@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mmc: core: do not retry CMD6 in __mmc_switch()"
-To:     Jan Kaisrlik <ja.kaisrlik@gmail.com>
-Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
+Date:   Thu, 29 Aug 2019 10:29:26 +0200
+Message-ID: <CAPDyKFrJOXC5DaYzPrEr-ttv5Mz6NLAvVW+L4xUUaiZpqyj+Dw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: sdio: Move code to get pending SDIO IRQs to a function
+To:     Matthias Kaehlcke <mka@chromium.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Kevin Hilman <khilman@baylibre.com>
+        Douglas Anderson <dianders@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 28 Aug 2019 at 12:44, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+On Wed, 28 Aug 2019 at 23:46, Matthias Kaehlcke <mka@chromium.org> wrote:
 >
-> On Tue, 27 Aug 2019 at 17:55, Jan Kaisrlik <ja.kaisrlik@gmail.com> wrote:
-> >
-> > On Tue, Aug 27, 2019 at 3:14 PM Ulf Hansson <ulf.hansson@linaro.org> wr=
-ote:
-> > >
-> > > On Fri, 23 Aug 2019 at 11:36, Jan Kaisrlik <ja.kaisrlik@gmail.com> wr=
-ote:
-> > > >
-> > > > =C4=8Dt 22. 8. 2019 v 15:59 odes=C3=ADlatel Ulf Hansson <ulf.hansso=
-n@linaro.org> napsal:
-> > > > >
-> > > > > + some meson driver folkz
-> > > > >
-> > > > > On Thu, 22 Aug 2019 at 10:27, Jan Kaisrlik <ja.kaisrlik@gmail.com=
-> wrote:
-> > > > > >
-> > > > > > st 21. 8. 2019 v 17:12 odes=C3=ADlatel Ulf Hansson <ulf.hansson=
-@linaro.org> napsal:
-> > > > > > >
-> > > > > > > + Chaotian Jing
-> > > > > > >
-> > > > > > > On Tue, 20 Aug 2019 at 13:42, <ja.kaisrlik@gmail.com> wrote:
-> > > > > > > >
-> > > > > > > > From: Jan Kaisrlik <ja.kaisrlik@gmail.com>
-> > > > > > > >
-> > > > > > > > This reverts commit 3a0681c7448b174e5dcfd19e9079cdd281c35f1=
-a.
-> > > > > > > >
-> > > > > > > > Turns out the patch breaks initialization of Toshiba THGBMN=
-G5.
-> > > > > > > > [    1.648951] mmc0: mmc_select_hs200 failed, error -84
-> > > > > > > > [    1.648988] mmc0: error -84 whilst initialising MMC card
-> > > > > > >
-> > > > > > > For exactly this reason, when getting CRC errors on the first=
- attempt,
-> > > > > > > doing a retry makes little sense.
-> > > > > > >
-> > > > > > > I have looped in Chaotian who has some more details about the=
- problem.
-> > > > > > >
-> > > > > > > In any case, Jan, what HW and mmc controller are you using?
-> > > > > >
-> > > > > > It's a custom board based on Amlogic A113D. The compatibility i=
-n dts
-> > > > > > is set to "alogic,meson-axg-mmc".
-> > > > >
-> > > > > Good. I have looped in some of the relevant developers/maintainer=
-s.
-> > > > >
-> > > > > >
-> > > > > > In the different revision of HW we are using Kingston EMMC04G. =
-The
-> > > > > > card has no such problem and is working fine without this patch=
-.
-> > > > > > We observed it only on mention Toshiba card.
-> > > > >
-> > > > > I see. Of course it would also be interesting to see what CMD6 co=
-mmand
-> > > > > that is that fails. Would you mind adding some debug/trace to fin=
-d out
-> > > > > what command it is that fails?
-> > > >
-> > > > Providing a log with following debug option  `dyndbg=3D"func mmc_mr=
-q_pr_debug +p`
-> > >
-> > > Thanks!
-> > >
-> > > >
-> > > > # dmesg | grep mmc0
-> > > > [    1.557984] mmc0: starting CMD52 arg 00000c00 flags 00000195
-> > > > [    1.563989] mmc0: starting CMD52 arg 80000c08 flags 00000195
-> > > > [    1.575219] mmc0: starting CMD0 arg 00000000 flags 000000c0
-> > > > [    1.593142] mmc0: starting CMD8 arg 000001aa flags 000002f5
-> > > > [    1.604439] mmc0: starting CMD5 arg 00000000 flags 000002e1
-> > > > [    1.623875] mmc0: starting CMD55 arg 00000000 flags 000000f5
-> > > > [    1.631024] mmc0: starting CMD55 arg 00000000 flags 000000f5
-> > > > [    1.640221] mmc0: starting CMD55 arg 00000000 flags 000000f5
-> > > > [    1.646802] mmc0: starting CMD55 arg 00000000 flags 000000f5
-> > > > [    1.652397] mmc0: starting CMD1 arg 00000000 flags 000000e1
-> > > > [    1.669894] mmc0: starting CMD1 arg 40ff8080 flags 000000e1
-> > > > [    1.682925] mmc0: starting CMD1 arg 40ff8080 flags 000000e1
-> > > > [    1.697073] mmc0: starting CMD1 arg 40ff8080 flags 000000e1
-> > > > [    1.704327] mmc0: starting CMD0 arg 00000000 flags 000000c0
-> > > > [    1.722251] mmc0: starting CMD1 arg 40200000 flags 000000e1
-> > > > [    1.745317] mmc0: starting CMD1 arg 40200000 flags 000000e1
-> > > > [    1.752813] mmc0: starting CMD2 arg 00000000 flags 00000007
-> > > > [    1.771731] mmc0: starting CMD3 arg 00010000 flags 00000015
-> > > > [    1.784771] mmc0: starting CMD9 arg 00010000 flags 00000007
-> > > > [    1.790433] mmc0: starting CMD7 arg 00010000 flags 00000015
-> > > > [    1.795691] mmc0: starting CMD8 arg 00000000 flags 000000b5
-> > > > [    1.800800] mmc0:     blksz 512 blocks 1 flags 00000200 tsac 50 =
-ms nsac 0
-> > > > [    1.818402] mmc0: starting CMD6 arg 03af0101 flags 0000049d
-> > > > [    1.818845] mmc0: starting CMD13 arg 00010000 flags 00000195
-> > > > [    1.824349] mmc0: starting CMD6 arg 03220101 flags 0000049d
-> > > > [    1.829992] mmc0: starting CMD13 arg 00010000 flags 00000195
-> > > > [    1.835493] mmc0: starting CMD6 arg 03b70201 flags 0000049d
-> > > > [    1.841119] mmc0: starting CMD13 arg 00010000 flags 00000195
-> > > > [    1.846628] mmc0: starting CMD8 arg 00000000 flags 000000b5
-> > > > [    1.851719] mmc0:     blksz 512 blocks 1 flags 00000200 tsac 50 =
-ms nsac 0
-> > > > [    1.860347] mmc0: starting CMD6 arg 03b90201 flags 0000049d
-> > > > [    1.864421] mmc0: mmc_select_hs200 failed, error -84
-> > > > [    1.868892] mmc0: error -84 whilst initialising MMC card
-> > >
-> > > Alright, so the CMD6 command that tries to switch the card into HS200
-> > > mode is the one that fails.
-> > >
-> > > >
-> > > > I cannot provide more verbose logs. When I enable more it (f.e. fil=
-e
-> > > > core.c) the initialization of card was successful.
-> > >
-> > > That's an interesting observation!
-> > >
-> > > Perhaps the card is still in some kind of busy state, after the CMD8
-> > > has been sent to read the EXT_CSD, when verifying the earlier bus
-> > > width switch (mmc_compare_ext_csds()).
-> >
-> > I'm curious, do you know if there is a command that says if the card
-> > is busy/ready?
+> Move the code to get pending SDIO interrupts from
+> process_sdio_pending_irqs() to a dedicated function.
 >
-> Yes, the CMD13.
+> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+> ---
+>  drivers/mmc/core/sdio_irq.c | 47 ++++++++++++++++++++++++-------------
+>  include/linux/mmc/host.h    |  1 +
+>  2 files changed, 32 insertions(+), 16 deletions(-)
 >
-> However, CMD13 is not allowed to be sent for some command sequences.
-> For example sending CMD6 to switch to HS200 mode, is one case where we
-> must avoid it.
+> diff --git a/drivers/mmc/core/sdio_irq.c b/drivers/mmc/core/sdio_irq.c
+> index 0bcc5e83bd1a..fedc49901efd 100644
+> --- a/drivers/mmc/core/sdio_irq.c
+> +++ b/drivers/mmc/core/sdio_irq.c
+> @@ -27,6 +27,35 @@
+>  #include "core.h"
+>  #include "card.h"
 >
-> For these scenarios, either we rely on the host HW to detect when the
-> card stop signals busy or we simply insert a delay (according to spec)
-> after sending the CMD6 command.
->
-> >
-> > >
-> > > > If you want to see any another logs fell free to ask.
-> > >
-> > > Would you mind trying one thing, in a way to narrow down the problem?
-> > >
-> > > Add a delay (msleep() or usleep_range() with some different values up
-> > > to 50 ms) somewhere after mmc_compare_ext_csds() has been executed,
-> > > but also before having mmc_select_bus_width() to return the error
-> > > code?
-> >
-> > I've added msleep just before exit point of mmc_select_bus_width() and
-> > observation is following
-> > * 1ms or 2 ms - failing (time to time it was successfully initialized)
-> > * 5 ms - success in all attempts
->
-> Very good!
->
-> Let me post a debug patch in short while, that can try to verify if
-> the card is busy during this period.
+> +int sdio_get_pending_irqs(struct mmc_host *host, u8 *pending)
+> +{
+> +       struct mmc_card *card = host->card;
+> +       int ret;
+> +
+> +       WARN_ON(!host->claimed);
+> +
+> +       ret = mmc_io_rw_direct(card, 0, 0, SDIO_CCCR_INTx, 0, pending);
+> +       if (ret) {
+> +               pr_debug("%s: error %d reading SDIO_CCCR_INTx\n",
+> +                      mmc_card_id(card), ret);
+> +               return ret;
+> +       }
+> +
+> +       if (*pending && mmc_card_broken_irq_polling(card) &&
+> +           !(host->caps & MMC_CAP_SDIO_IRQ)) {
+> +               unsigned char dummy;
+> +
+> +               /* A fake interrupt could be created when we poll SDIO_CCCR_INTx
+> +                * register with a Marvell SD8797 card. A dummy CMD52 read to
+> +                * function 0 register 0xff can avoid this.
+> +                */
+> +               mmc_io_rw_direct(card, 0, 0, 0xff, 0, &dummy);
+> +       }
+> +
+> +       return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(sdio_get_pending_irqs);
 
-Here it is, please give it a try and see what happens.
+I don't think you need export the sympol as this should be an internal
+function for the core module.
 
-You may also want to run a second test, changing the second parameter
-to false when calling poll_for_busy(), as that switches from CMD13 to
-use of the host driver's ->card_busy() callback, when checking for
-busy.
+> +
+>  static int process_sdio_pending_irqs(struct mmc_host *host)
+>  {
+>         struct mmc_card *card = host->card;
+> @@ -49,23 +78,9 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
+>                 return 1;
+>         }
+>
+> -       ret = mmc_io_rw_direct(card, 0, 0, SDIO_CCCR_INTx, 0, &pending);
+> -       if (ret) {
+> -               pr_debug("%s: error %d reading SDIO_CCCR_INTx\n",
+> -                      mmc_card_id(card), ret);
+> +       ret = sdio_get_pending_irqs(host, &pending);
+> +       if (ret)
+>                 return ret;
+> -       }
+> -
+> -       if (pending && mmc_card_broken_irq_polling(card) &&
+> -           !(host->caps & MMC_CAP_SDIO_IRQ)) {
+> -               unsigned char dummy;
+> -
+> -               /* A fake interrupt could be created when we poll SDIO_CCCR_INTx
+> -                * register with a Marvell SD8797 card. A dummy CMD52 read to
+> -                * function 0 register 0xff can avoid this.
+> -                */
+> -               mmc_io_rw_direct(card, 0, 0, 0xff, 0, &dummy);
+> -       }
+>
+>         count = 0;
+>         for (i = 1; i <= 7; i++) {
+> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> index 4a351cb7f20f..7ce0e98e3dbd 100644
+> --- a/include/linux/mmc/host.h
+> +++ b/include/linux/mmc/host.h
+> @@ -502,6 +502,7 @@ static inline void mmc_signal_sdio_irq(struct mmc_host *host)
+>  }
+>
+>  void sdio_signal_irq(struct mmc_host *host);
+> +int sdio_get_pending_irqs(struct mmc_host *host, u8 *pending);
+
+I want to avoid to sprinkle the public mmc headers, avoiding
+interfaces to be abused outside mmc core.
+
+That said, I think this should be internal to the mmc core, thus
+please move this to drivers/mmc/core/sdio_ops.h.
+
+>
+>  #ifdef CONFIG_REGULATOR
+>  int mmc_regulator_set_ocr(struct mmc_host *mmc,
+> --
+> 2.23.0.187.g17f5b7556c-goog
+>
 
 Kind regards
 Uffe
-
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 29 Aug 2019 09:42:11 +0200
-Subject: [PATCH] mmc: core: DEBUG for mmc_select_bus_width()
-
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
----
- drivers/mmc/core/mmc.c | 47 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
-
-diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-index c8804895595f..ff3a4c166f20 100644
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -975,6 +975,52 @@ static void mmc_set_bus_speed(struct mmc_card *card)
-        mmc_set_clock(card->host, max_dtr);
- }
-
-+static void poll_for_busy(struct mmc_card *card, bool send_status)
-+{
-+       struct mmc_host *host =3D card->host;
-+       int err;
-+       unsigned long timeout;
-+       unsigned int timeout_ms =3D 5000;
-+       u32 status =3D 0;
-+       bool expired =3D false;
-+       bool busy =3D false;
-+
-+       if (!send_status && !host->ops->card_busy) {
-+               mmc_delay(timeout_ms);
-+               return;
-+       }
-+
-+       timeout =3D jiffies + msecs_to_jiffies(timeout_ms) + 1;
-+       do {
-+               expired =3D time_after(jiffies, timeout);
-+               if (send_status) {
-+                       err =3D __mmc_send_status(card, &status, 0);
-+                       if (err) {
-+                               busy =3D true;
-+                               pr_err("%s: failed to get card status
-err=3D%d! %s\n",
-+                                       mmc_hostname(host), err, __func__);
-+                               continue;
-+                       }
-+                       busy =3D R1_CURRENT_STATE(status) =3D=3D R1_STATE_P=
-RG;
-+               } else {
-+                       busy =3D host->ops->card_busy(host);
-+               }
-+
-+               if (expired && busy) {
-+                       pr_err("%s: Card stuck being busy! %s\n",
-+                               mmc_hostname(host), __func__);
-+                       return;
-+               }
-+
-+               if (busy)
-+                       pr_err("%s: card temporary busy! %s\n",
-+                               mmc_hostname(host), __func__);
-+
-+       } while (busy);
-+
-+       return;
-+}
-+
- /*
-  * Select the bus width amoung 4-bit and 8-bit(SDR).
-  * If the bus width is changed successfully, return the selected width val=
-ue.
-@@ -1036,6 +1082,7 @@ static int mmc_select_bus_width(struct mmc_card *card=
-)
-
-                if (!err) {
-                        err =3D bus_width;
-+                       poll_for_busy(card, true);
-                        break;
-                } else {
-                        pr_warn("%s: switch to bus width %d failed\n",
---=20
-2.17.1
