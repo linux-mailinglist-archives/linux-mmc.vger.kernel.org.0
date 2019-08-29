@@ -2,150 +2,157 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA02FA203D
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 17:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2803A21F7
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 19:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727255AbfH2P75 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 11:59:57 -0400
-Received: from mail-40135.protonmail.ch ([185.70.40.135]:11399 "EHLO
-        mail-40135.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727118AbfH2P75 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 11:59:57 -0400
-Date:   Thu, 29 Aug 2019 15:59:46 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.ch;
-        s=default; t=1567094393;
-        bh=s0PahgYZsuit8sSrf7wTLbyTQ2qVGl52SRNMyg333Ks=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:
-         Feedback-ID:From;
-        b=mp6rq7K16xOW7a7JH2Dr8zmKgqrqZJS+W/BULOYMGrphHtPcy5daClMOl6Q4hiJRD
-         e9R3+q0XHsb8umldAcfRlZ07UoAdwKPQRFt3vq47DeDJL9vpTcPWluVtpADfdVMIPW
-         UnvtbcKwpfiGxn5S7TxrzGhAF/r48M5evKTJpMVY=
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-From:   =?UTF-8?Q?Tam=C3=A1s_Sz=C5=B1cs?= <tszucs@protonmail.ch>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Reply-To: =?UTF-8?Q?Tam=C3=A1s_Sz=C5=B1cs?= <tszucs@protonmail.ch>
-Subject: Re: [PATCH] mmc: sdhi: fill in actual_clock
-Message-ID: <FaBiPuw0MFfdsj60MQTULROSN-8cSV7sNRlgO5SSVPo5jfQopmm9zTq4JT71VxaO32qdcAhisOrhFYG_QLByLNHcBrMgshsI_WwP9rlH2ms=@protonmail.ch>
-In-Reply-To: <CAMuHMdWcp-3B7ZZjbyo02ECyzDX_rQxXF645OCutCkjUu_jWaA@mail.gmail.com>
-References: <20190828185518.4340-1-tszucs@protonmail.ch>
- <CAMuHMdWcp-3B7ZZjbyo02ECyzDX_rQxXF645OCutCkjUu_jWaA@mail.gmail.com>
-Feedback-ID: nIMxuco3ul2LtVHhzi8PphYHQLjwNa0SMoiI49kuTHKENnPWKUsinAdWedFtAsi63naFGY15tCjh3_itnNk3og==:Ext:ProtonMail
+        id S1727794AbfH2RQA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 13:16:00 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:41567 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727626AbfH2RQA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 13:16:00 -0400
+Received: by mail-pf1-f196.google.com with SMTP id 196so2491022pfz.8
+        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 10:15:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=v9QIC9uqWuh335lvbA5rrf8b+cViWD5hzPNIv1CMU/w=;
+        b=e1+GxIGE2miaSf8ZW4+1g6xP5pAOGsKxYDXgwRImxxPExwzEjMUAgrYi/cqAbwasI1
+         eKSIvq1Ch0ihNhgbm8lprYEZCdZQVAsCuy2/2byfzSHEuSU5dkLL9CFycxP7m3ofNddh
+         0nX5TMYJS679JL2tNOdAO74fkerjaKmM1Sze8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=v9QIC9uqWuh335lvbA5rrf8b+cViWD5hzPNIv1CMU/w=;
+        b=edx5CNtGrzjDxCksQViMO4FJ+TQxPj8YkYRYMWXCgiRwjwyZAg3M8oADGupZs7Tdl9
+         dWXcElmMulS1WCuDFq8nSBfic/QXaSF9Qdd1lHbPZ9jjTCaCep0WjSNxdhC4l9ujd2th
+         8JRoQvtfYByl8QB/a41nKxjZypSKAeKM9/eKEePs1tGtBJqjQKwWBL2hrKVRZm86zL3B
+         BI22u9mUe1342mW6Zss6EbA3kkiHhOQM17aWK+w74cbT6MKmqt6orrATpYqD1TO009r3
+         uydpmP2/oPWRyoBmaDddvfyriUfUUzyVbN4ZfAQ3neGujSw73mfe/uBc835w85D03FU2
+         rEPA==
+X-Gm-Message-State: APjAAAXnLdpELquLowyUtjrdB4Ujoy1S/00sVXNhJuEDUINClmGi5tbu
+        4ES8RZjcSWY6wX3K+awkYo+mcw==
+X-Google-Smtp-Source: APXvYqyffBBor/+6EeLCqrmL1gEoek3Q0TR8w35ZfJMYLUYqpXAFRGScFK2JXzJeUQrD8UOcC7Cp5g==
+X-Received: by 2002:a65:5183:: with SMTP id h3mr9380839pgq.250.1567098959224;
+        Thu, 29 Aug 2019 10:15:59 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
+        by smtp.gmail.com with ESMTPSA id y6sm2413295pjp.15.2019.08.29.10.15.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Aug 2019 10:15:58 -0700 (PDT)
+Date:   Thu, 29 Aug 2019 10:15:55 -0700
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Douglas Anderson <dianders@chromium.org>
+Subject: Re: [PATCH 2/2] mmc: core: Run handlers for pending SDIO interrupts
+ on resume
+Message-ID: <20190829171555.GD70797@google.com>
+References: <20190828214620.66003-1-mka@chromium.org>
+ <20190828214620.66003-2-mka@chromium.org>
+ <CAPDyKFr2R-ta5Xob12-6k=+mXXt0NowJ=dpLGJu10qhn7cB1HQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=7.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM autolearn=ham
-        autolearn_force=no version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.protonmail.ch
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFr2R-ta5Xob12-6k=+mXXt0NowJ=dpLGJu10qhn7cB1HQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Geert,
+Hi Ulf,
 
-It would be possible to call clk_get_rate() unconditionally but there's usu=
-ally no need, thus the ternary. Are you in favor of that though?
+On Thu, Aug 29, 2019 at 10:48:58AM +0200, Ulf Hansson wrote:
+> On Wed, 28 Aug 2019 at 23:46, Matthias Kaehlcke <mka@chromium.org> wrote:
+> >
+> > With commit 83293386bc95 ("mmc: core: Prevent processing SDIO IRQs
+> > when the card is suspended") SDIO interrupts are dropped if they
+> > occur while the card is suspended. Dropping the interrupts can cause
+> > problems after resume with cards that remain powered during suspend
+> > and preserve their state. These cards may end up in an inconsistent
+> > state since the event that triggered the interrupt is never processed
+> > and remains pending. One example is the Bluetooth function of the
+> > Marvell 8997, SDIO is broken on resume (for both Bluetooth and WiFi)
+> > when processing of a pending HCI event is skipped.
+> >
+> > For cards that remained powered during suspend check on resume if
+> > SDIO interrupts are pending, and trigger interrupt processing if
+> > needed.
+> 
+> Thanks for the detailed changelog, much appreciated!
+> 
+> >
+> > Fixes: 83293386bc95 ("mmc: core: Prevent processing SDIO IRQs when the card is suspended")
+> > Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+> > ---
+> >  drivers/mmc/core/sdio.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+> > index 8dd8fc32ecca..a6b4742a91c6 100644
+> > --- a/drivers/mmc/core/sdio.c
+> > +++ b/drivers/mmc/core/sdio.c
+> > @@ -975,6 +975,7 @@ static int mmc_sdio_suspend(struct mmc_host *host)
+> >  static int mmc_sdio_resume(struct mmc_host *host)
+> >  {
+> >         int err = 0;
+> > +       u8 pending = 0;
+> >
+> >         /* Basic card reinitialization. */
+> >         mmc_claim_host(host);
+> > @@ -1009,6 +1010,14 @@ static int mmc_sdio_resume(struct mmc_host *host)
+> >         /* Allow SDIO IRQs to be processed again. */
+> >         mmc_card_clr_suspended(host->card);
+> >
+> > +       if (!mmc_card_keep_power(host))
+> > +               goto skip_pending_irqs;
+> > +
+> > +       if (!sdio_get_pending_irqs(host, &pending) &&
+> > +           pending != 0)
+> > +               sdio_signal_irq(host);
+> 
+> In one way, this change makes sense as it adopts the legacy behavior,
+> signaling "cached" SDIO IRQs also for the new SDIO irq work interface.
+> 
+> However, there is at least one major concern I see with this approach.
+> That is, in the execution path for sdio_signal_irq() (or calling
+> wake_up_process() for the legacy path), we may end up invoking the
+> SDIO func's ->irq_handler() callback, as to let the SDIO func driver
+> to consume the SDIO IRQ.
+> 
+> The problem with this is, that the corresponding SDIO func driver may
+> not have been system resumed, when the ->irq_handler() callback is
+> invoked.
 
-It turns out I need to send a followup to fix some glitches. Please stay tu=
-ned.
+While debugging the the problem with btmrvl I found that this is
+already the case without the patch, just not during resume, but when
+suspending. The func driver suspends before the SDIO bus and
+interrupts can keep coming in. These are processed while the func
+driver is suspended, until the SDIO core starts dropping the
+interrupts.
 
-Kind regards,
-Tamas
+And I think it is also already true at resume time: mmc_sdio_resume()
+re-enables SDIO IRQs and disables dropping them.
 
+> If the SDIO func driver would have configured the IRQ as a
+> wakeup, then I would expect this to work, but not just by having a
+> maintained power to the card.
 
-Tam=C3=A1s Sz=C5=B1cs
-tszucs@protonmail.ch
+Is the assumption that no IRQs are generated after SDIO func suspend
+unless wakeup is enabled?
 
-=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original Me=
-ssage =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
-On Thursday, August 29, 2019 9:47 AM, Geert Uytterhoeven <geert@linux-m68k.=
-org> wrote:
+On the system I'm currently debugging OOB wakeup is not working,
+which might be part of the problem.
 
-> Hi Tam=C3=A1s,
->
-> On Wed, Aug 28, 2019 at 9:02 PM Tam=C3=A1s Sz=C5=B1cs tszucs@protonmail.c=
-h wrote:
->
-> > Save set clock in mmc_host actual_clock enabling exporting it via debug=
-fs.
-> > This will indicate the precise SD clock in I/O settings rather than onl=
-y the
-> > sometimes misleading requested clock.
-> > Signed-off-by: Tam=C3=A1s Sz=C5=B1cs tszucs@protonmail.ch
->
-> Thanks for your patch!
->
-> > --- a/drivers/mmc/host/renesas_sdhi_core.c
-> > +++ b/drivers/mmc/host/renesas_sdhi_core.c
-> > @@ -124,7 +124,7 @@ static unsigned int renesas_sdhi_clk_update(struct =
-tmio_mmc_host *host,
-> > {
-> > struct renesas_sdhi *priv =3D host_to_priv(host);
-> > unsigned int freq, diff, best_freq =3D 0, diff_min =3D ~0;
-> >
-> > -         int i, ret;
-> >
-> >
-> >
-> > -         int i;
-> >
-> >           /* tested only on R-Car Gen2+ currently; may work for others =
-*/
-> >           if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
-> >
-> >
-> >
-> > @@ -153,9 +153,11 @@ static unsigned int renesas_sdhi_clk_update(struct=
- tmio_mmc_host *host,
-> > }
-> > }
-> >
-> > -         ret =3D clk_set_rate(priv->clk, best_freq);
-> >
-> >
-> >
-> > -         host->mmc->actual_clock =3D
-> >
-> >
-> > -                 clk_set_rate(priv->clk, best_freq) =3D=3D 0 ?
-> >
-> >
-> > -                         best_freq : clk_get_rate(priv->clk);
-> >
-> >
->
-> When clk_set_rate() returns 0 to indicate success, it may still have
-> rounded the requested clock rate, no?
-> So wouldn't it be better to always call clk_get_rate()?
->
-> > -         return ret =3D=3D 0 ? best_freq : clk_get_rate(priv->clk);
-> >
-> >
-> >
-> > -         return host->mmc->actual_clock;
-> >
-> >
-> >
-> > }
->
-> Gr{oetje,eeting}s,
->
-> Geert
->
-> ----------------------------
->
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m6=
-8k.org
->
-> In personal conversations with technical people, I call myself a hacker. =
-But
-> when I'm talking to journalists I just say "programmer" or something like=
- that.
-> -- Linus Torvalds
-
-
+> In the end, I think we need to deal with synchronizations for this,
+> through the mmc/sdio core, in one way or the other - before we kick
+> SDIO IRQs during system resume.
+> 
+> > +
+> > +skip_pending_irqs:
+> >         if (host->sdio_irqs) {
+> >                 if (!(host->caps2 & MMC_CAP2_SDIO_IRQ_NOTHREAD))
+> >                         wake_up_process(host->sdio_irq_thread);
