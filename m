@@ -2,76 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B027DA1B4E
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 15:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0879FA1B63
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 15:27:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbfH2NWS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 09:22:18 -0400
-Received: from mga07.intel.com ([134.134.136.100]:35724 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727012AbfH2NWS (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 29 Aug 2019 09:22:18 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 06:22:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,443,1559545200"; 
-   d="scan'208";a="197804689"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.66]) ([10.237.72.66])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Aug 2019 06:22:16 -0700
-Subject: Re: [PATCH V6 5/5] mmc: host: sdhci-pci: Add Genesys Logic GL975x
- support
-To:     "Michael K. Johnson" <johnsonm@danlj.org>
-Cc:     Ben Chuang <benchuanggli@gmail.com>, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ben.chuang@genesyslogic.com.tw
-References: <20190827003335.2494-1-benchuanggli@gmail.com>
- <99735a03-c698-624d-f5cf-4feed7e6a9ca@intel.com>
- <20190828134714.GA30547@people.danlj.org>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <7fcd0fd5-97cb-1dab-7477-666838478541@intel.com>
-Date:   Thu, 29 Aug 2019 16:21:11 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727144AbfH2N1l (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 09:27:41 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:35819 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727125AbfH2N1k (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 09:27:40 -0400
+Received: by mail-vs1-f67.google.com with SMTP id q16so2403104vsm.2
+        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 06:27:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZHPJ2CX8ytGZ59Fh54fNpJL5kK4m1cHIPf+TD22z6+o=;
+        b=NeaPl8ztoK8Qgdcm1+9gPoJDy8U3vejd9FkPsydEcY67n3MnWOq+NaObq3ozxUJ5Rk
+         DwuiKOIEv1nIHZsB/vk+DkE2/fghIqX3BE2c3KQzYmprvcAaDqLw3Nh+8cwLxYuBrewg
+         ylebGR/9Rc/fZ5+HwC9njjO3tJ4KcfsEjQoagoqlXBHQMoD+N2o7klC3HPzUcNiWlpX1
+         fm7KsQ/qoQsxBoNSjtRp5kI8h28S4gwjEIZFP5THgEgyanEG0EDd02a9Fx8l7b+ty0I5
+         ZtvPoOLmPPKTI3+szjIA8ewjhbuGKx8ae5OyYEAVu3xoguAAqQhIIugSUjLkZuxcFxWy
+         NGtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZHPJ2CX8ytGZ59Fh54fNpJL5kK4m1cHIPf+TD22z6+o=;
+        b=VUXInKTOrVPikBbyeRN7+EMZhGZvLufVNCiPH8UQM6IL9KnIVUttIqYUI+ue4T+uWR
+         8/3EqnPwHqEYuj4Djdmhp9rxH2CfGnVJjTRvCZ2dR/XsrArtcBvhaaKEuMpWVZ0YxRGi
+         sSwi/sr2SovruSWOyilrTGS4/vxxGmWwCTRJ3NyJFTn2ONLo06Zcu5AtOObieD4CWrjf
+         SqiOTSTGgdn7lZXFwYaQ8XgaFCUV6Lb8Sc9VdORdHd/jIOOFaZQuqdZZrQDClRZvvd75
+         C/IGGX0aDaY+KFJHm+wKJxgrrzybG8T+DY6rkMgF/gZxARhXs7Ea2SGIdRGRyxt1SWnX
+         UoCg==
+X-Gm-Message-State: APjAAAWeZ86S9JwJSJOR39LkvSa2HrSR866auX7JFzjk3gPhK2Dc4InU
+        eGg+zCD+ktzrcDnczp71KcFl+qD+J/0xtFQt31JoEA==
+X-Google-Smtp-Source: APXvYqxmdPqLidkuXh1dij1W2bRIM9XWVMRet2NViucbtCc8v+TuYKNJF1B7rF32WXPVTp8r+I+BJd7U8e9e1K/UlRw=
+X-Received: by 2002:a67:e287:: with SMTP id g7mr5409930vsf.200.1567085259869;
+ Thu, 29 Aug 2019 06:27:39 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190828134714.GA30547@people.danlj.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190829104928.27404-1-yamada.masahiro@socionext.com>
+ <CAPDyKFooFQgBgK3N1Ob9rsT_7-5kqC9i7PeMxkkeAbnDP+Fwnw@mail.gmail.com> <CAK7LNASDfJQrMq4jjwDjrQF-4E9A_BZtgh+K-duTAo8zRVZA0g@mail.gmail.com>
+In-Reply-To: <CAK7LNASDfJQrMq4jjwDjrQF-4E9A_BZtgh+K-duTAo8zRVZA0g@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 29 Aug 2019 15:27:03 +0200
+Message-ID: <CAPDyKFpnRbtVpYkpM7CDYfxvdBjqybB4SVWyuSrS1jpYduTbCw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] mmc: sdhci-cadence: enable v4_mode to fix ADMA 64-bit addressing
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Piotr Sroka <piotrs@cadence.com>,
+        "# 4.0+" <stable@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 28/08/19 4:47 PM, Michael K. Johnson wrote:
-> On Wed, Aug 28, 2019 at 04:13:03PM +0300, Adrian Hunter wrote:
->> On 27/08/19 3:33 AM, Ben Chuang wrote:
->> Looks good, one minor comment
-> ...
->>> +#ifdef CONFIG_MMC_SDHCI_IO_ACCESSORS
->>
->> Arguably CONFIG_MMC_SDHCI_IO_ACCESSORS needs to be removed altogether. i.e.
->> making the accessors always available.  So for now, I'd prefer to select
->> MMC_SDHCI_IO_ACCESSORS:
->>
->> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
->> index 14d89a108edd..c3bd967d8a1a 100644
->> --- a/drivers/mmc/host/Kconfig
->> +++ b/drivers/mmc/host/Kconfig
->> @@ -94,6 +94,7 @@ config MMC_SDHCI_PCI
->>  	depends on MMC_SDHCI && PCI
->>  	select MMC_CQHCI
->>  	select IOSF_MBI if X86
->> +	select MMC_SDHCI_IO_ACCESSORS
->>  	help
->>  	  This selects the PCI Secure Digital Host Controller Interface.
->>  	  Most controllers found today are PCI devices.
-> 
-> Unless I'm missing something, this seems like a separate patch;
-> are you asking for it first, as a predecessor to the GLI patch?
-> 
+On Thu, 29 Aug 2019 at 14:05, Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+>
+> On Thu, Aug 29, 2019 at 8:48 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >
+> > On Thu, 29 Aug 2019 at 12:49, Masahiro Yamada
+> > <yamada.masahiro@socionext.com> wrote:
+> > >
+> > > The IP datasheet says this controller is compatible with SD Host
+> > > Specification Version v4.00.
+> > >
+> > > As it turned out, the ADMA of this IP does not work with 64-bit mode
+> > > when it is in the Version 3.00 compatible mode; it understands the
+> > > old 64-bit descriptor table (as defined in SDHCI v2), but the ADMA
+> > > System Address Register (SDHCI_ADMA_ADDRESS) cannot point to the
+> > > 64-bit address.
+> > >
+> > > I noticed this issue only after commit bd2e75633c80 ("dma-contiguous:
+> > > use fallback alloc_pages for single pages"). Prior to that commit,
+> > > dma_set_mask_and_coherent() returned the dma address that fits in
+> > > 32-bit range, at least for the default arm64 configuration
+> > > (arch/arm64/configs/defconfig). Now the host->adma_addr exceeds the
+> > > 32-bit limit, causing the real problem for the Socionext SoCs.
+> > > (As a side-note, I was also able to reproduce the issue for older
+> > > kernels by turning off CONFIG_DMA_CMA.)
+> > >
+> > > Call sdhci_enable_v4_mode() to fix this.
+> > >
+> > > I think it is better to back-port this, but only possible for v4.20+.
+> > >
+> > > When this driver was merged (v4.10), the v4 mode support did not exist.
+> > > It was added by commit b3f80b434f72 ("mmc: sdhci: Add sd host v4 mode")
+> > > i.e. v4.20.
+> > >
+> > > Cc: <stable@vger.kernel.org> # v4.20+
+> > > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> >
+> > Applied for fixes, by adding below tag, thanks!
+> >
+> > Fixes: b3f80b434f72 ("mmc: sdhci: Add sd host v4 mode")
+>
+> This is not a bug commit.
 
-No, it is fine with this patch.
+Right, but it can't be applied before this commit, hence why I added
+it. Not sure that it matters, but I can remove the tag if you
+insists!?
+
+Kind regards
+Uffe
