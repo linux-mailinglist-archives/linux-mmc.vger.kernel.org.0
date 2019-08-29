@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D80A9A1B89
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 15:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8AC4A1B84
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 15:34:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727207AbfH2Nei (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 09:34:38 -0400
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:46941 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727189AbfH2Nei (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 09:34:38 -0400
-Received: by mail-ua1-f65.google.com with SMTP id y19so1133481ual.13
-        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 06:34:37 -0700 (PDT)
+        id S1727021AbfH2Nem (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 09:34:42 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:35336 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727590AbfH2Nel (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 09:34:41 -0400
+Received: by mail-vs1-f65.google.com with SMTP id q16so2419472vsm.2
+        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 06:34:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=myzI27sykV+zo5/dyKkwt+i0fBKy0tEQwbx8qgbiivk=;
-        b=N7M4UQV8t0QuilwfFtdruFEzIG5shKxRkBaHaMgXjqwqA4fu/fILvPFr4feiK0lX1k
-         9ultv4ASPWMuzxE5OtXqSTXeVfSIUrpvvhKeQAurtn8rLZi8jQYqRO5rgTPqjkPpp5o4
-         ky1MBd6owGPYLDpDWvHnuDm1aSv6ArVxTHJyW/3znmEqusHW4zS1tlmZ8ZxlZXUty1Rf
-         RfN+9eyc9I8qB26y84LtImsalRxNi3jEUy0JTY0ZY8sqiWRxcSs/921OaA7/F8jZIeEE
-         C7ra4idz39kX1gREZqxWqE8iNQOxmcPiSFf3slsN3K4yE7BrLTbmGYDwtzItVpxtv+MZ
-         SB9Q==
+        bh=SZQRw3RVA3EaoAr0WIMQeD6W5AQqkz7QcXOAzySMDsY=;
+        b=mjlYQJZXOCLmvYeLiazuIx+UY3wq5N7PVqOoMMGdiGRuWszrbjeeG5BdKIii+kFHf/
+         zhlLgNOZDNfFJXEdvpQSldMZMsfy3EAJU813E8s8mZ+LwtLBw1/xuvT9iVLTWp5kBDr0
+         XwgPt6sJe9MH17Gypg7IM3bSIV0w3vqZrnGDTNkHo9HKv9QPubEQ64tjw3T4vW/y1qWd
+         P+3wZ/TYKCfoLGt9fjKNW32dtfxb28uZucnpAUmnSnWu6OoBM32fBZAXuRoGoxr1yJS4
+         7QdSZ0ebZfNHcA+OWcb9389vfghhRPbVUuIXr5DfUxHNQFkXnLPg4+DzWZRh5ppANMTA
+         C4HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=myzI27sykV+zo5/dyKkwt+i0fBKy0tEQwbx8qgbiivk=;
-        b=HBfcxTzuwIiuZwsD1YLcWGxaQtJ8amiurevDbe/MEFnsJ1A6iqK7gAklEoWBEPg2DN
-         Jl5xIMOTB++fki9iWZ3+wR65MgEs/4cwLEDNUDQ6MGGLDnvKNLoP2iV7zMRcUdsei8jd
-         qxD//Va8xvE6HQdGY7vAqos6hco7ZYnswxC52juVrDxTm5XMkA+oTLY3Zs+elINJG4Eo
-         kwhLjn50XnnRXTLmid7GQecaNiLsxqrYRyBYfTNMUddV82BTBM0R8zUApp8KqpUwUZlY
-         4UxtKxeru1M4g/mseL4+3zy15GcqMIW6Db26YSMFwggplkgUD22lIjihsT7ZFo6uz5/B
-         JZ7A==
-X-Gm-Message-State: APjAAAVcxCFSD3UgGNxAQwxI1Pp/LSnCCirlt+NKytCBcVVtPgC0hfbP
-        sJDOE5gNhq2MU2lHL2z37BRFv9ZyU6F+XDIjrC6fYw==
-X-Google-Smtp-Source: APXvYqzSozKBOdyF5FSAQOenVWGBNZ/ynRjEmx/hVZHhTe53zn4LHdPDSnVRlhjp+YZ0oclxFR0tqhuQs/rgNRdoPoE=
-X-Received: by 2002:ab0:1562:: with SMTP id p31mr4819436uae.15.1567085677038;
- Thu, 29 Aug 2019 06:34:37 -0700 (PDT)
+        bh=SZQRw3RVA3EaoAr0WIMQeD6W5AQqkz7QcXOAzySMDsY=;
+        b=KeIDRhLaE9CprtXy2Aq1OoPoUCmiASVDpWeDEH1mk2dtSDsqe/xPiezwa/iaqr9O4/
+         h7eC6qxxO4jVyRRB9Md4TGxHOeufBnx/mIvCWqf/HJY1+ieETMByNq4ig8/PpESkFMG0
+         l2GMlZHWnZ6nOihNW4wBNshc242s9JudxoRelKwpAsXNBQ/dozr/iv8Rs6wsoasINB4L
+         klLU1jZK2Vdu+Xrtb1GbZEyMplgMf1Phf9shwXKKgV0P2zIyrVfTSm/+rHNA7uVlMHYb
+         DyY0XCrS3zhlNmZRsk28g8nDjacKwViBKehCzrEMLRR1HTNqOtWuzx7bUjKrwASw5EtU
+         dygg==
+X-Gm-Message-State: APjAAAXVwxKA3IlJJDofIYF9JuQkCprtd+V4oLVzqGlha3yw4+TrVx39
+        fOALqWAoFodakKxA58CYgDm8B22AbHJv3xlU4JlT8A==
+X-Google-Smtp-Source: APXvYqxSPI3MRvojNzwX5Kyfz8EeaTkMx9wZb2I0g1wcY8R05FbnpvYzEDKCeOjDJ8VD8Z/lKEJxNPHt2Bumu0b0w/s=
+X-Received: by 2002:a67:32c5:: with SMTP id y188mr5483153vsy.191.1567085680040;
+ Thu, 29 Aug 2019 06:34:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190829104928.27404-1-yamada.masahiro@socionext.com> <20190829104928.27404-2-yamada.masahiro@socionext.com>
-In-Reply-To: <20190829104928.27404-2-yamada.masahiro@socionext.com>
+References: <20190829104928.27404-1-yamada.masahiro@socionext.com> <20190829104928.27404-3-yamada.masahiro@socionext.com>
+In-Reply-To: <20190829104928.27404-3-yamada.masahiro@socionext.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 29 Aug 2019 15:34:00 +0200
-Message-ID: <CAPDyKFo9B6pDTcyoK-APicu+WcroCrjA7niHzd3DZH-7qkoZ_w@mail.gmail.com>
-Subject: Re: [PATCH 2/3] mmc: sdhci: constify references of parameters to __sdhci_read_caps()
+Date:   Thu, 29 Aug 2019 15:34:04 +0200
+Message-ID: <CAPDyKFrcvVKXmLpMdjtkX+OZ=VfyYa0hS_dStEiawUN3zMtbvA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] mmc: sdhci-cadence: override spec version
 To:     Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -61,10 +61,16 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 On Thu, 29 Aug 2019 at 12:49, Masahiro Yamada
 <yamada.masahiro@socionext.com> wrote:
 >
-> __sdhci_read_caps() does not modify *ver, *caps, or *caps1.
+> The datasheet of the IP (sd4hc) says it is compiatible with SDHCI v4,
+> but the spec version field in the version register is read as 2
+> (i.e. SDHCI_SPEC_300) based on the RTL provided by Cadence.
 >
-> Probably, the caller of this function will want to constifythe
-> parameters passed in.
+> Socionext did not fix it up when it integrated the IP into the SoCs.
+> So, it is working as SDHCI v3.
+>
+> It is not a real problem because there is no difference in the program
+> flow in sdhci.c between SDHCI_SPEC_300/400, but set the real version
+> just in case.
 >
 > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
@@ -76,39 +82,29 @@ Uffe
 
 > ---
 >
->  drivers/mmc/host/sdhci.c | 3 ++-
->  drivers/mmc/host/sdhci.h | 4 ++--
->  2 files changed, 4 insertions(+), 3 deletions(-)
+>  drivers/mmc/host/sdhci-cadence.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index a5dc5aae973e..08cc0792c174 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -3565,7 +3565,8 @@ static int sdhci_set_dma_mask(struct sdhci_host *host)
->         return ret;
->  }
+> diff --git a/drivers/mmc/host/sdhci-cadence.c b/drivers/mmc/host/sdhci-cadence.c
+> index 44139fceac24..9837214685b6 100644
+> --- a/drivers/mmc/host/sdhci-cadence.c
+> +++ b/drivers/mmc/host/sdhci-cadence.c
+> @@ -341,6 +341,7 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
+>         unsigned int nr_phy_params;
+>         int ret;
+>         struct device *dev = &pdev->dev;
+> +       static const u16 version = SDHCI_SPEC_400 << SDHCI_SPEC_VER_SHIFT;
 >
-> -void __sdhci_read_caps(struct sdhci_host *host, u16 *ver, u32 *caps, u32 *caps1)
-> +void __sdhci_read_caps(struct sdhci_host *host, const u16 *ver,
-> +                      const u32 *caps, const u32 *caps1)
->  {
->         u16 v;
->         u64 dt_caps_mask = 0;
-> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
-> index 902f855efe8f..81e23784475a 100644
-> --- a/drivers/mmc/host/sdhci.h
-> +++ b/drivers/mmc/host/sdhci.h
-> @@ -738,8 +738,8 @@ static inline void *sdhci_priv(struct sdhci_host *host)
->  }
+>         clk = devm_clk_get(dev, NULL);
+>         if (IS_ERR(clk))
+> @@ -370,6 +371,7 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
+>         host->mmc_host_ops.hs400_enhanced_strobe =
+>                                 sdhci_cdns_hs400_enhanced_strobe;
+>         sdhci_enable_v4_mode(host);
+> +       __sdhci_read_caps(host, &version, NULL, NULL);
 >
->  void sdhci_card_detect(struct sdhci_host *host);
-> -void __sdhci_read_caps(struct sdhci_host *host, u16 *ver, u32 *caps,
-> -                      u32 *caps1);
-> +void __sdhci_read_caps(struct sdhci_host *host, const u16 *ver,
-> +                      const u32 *caps, const u32 *caps1);
->  int sdhci_setup_host(struct sdhci_host *host);
->  void sdhci_cleanup_host(struct sdhci_host *host);
->  int __sdhci_add_host(struct sdhci_host *host);
+>         sdhci_get_of_property(pdev);
+>
 > --
 > 2.17.1
 >
