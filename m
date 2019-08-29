@@ -2,152 +2,106 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3B1A1B87
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 15:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2ABBA1B94
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 15:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727709AbfH2Neq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 09:34:46 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:44690 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727025AbfH2Nep (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 09:34:45 -0400
-Received: by mail-vs1-f68.google.com with SMTP id c7so2382654vse.11
-        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 06:34:44 -0700 (PDT)
+        id S1727352AbfH2NhF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 09:37:05 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:39910 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726950AbfH2NhF (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 09:37:05 -0400
+Received: by mail-ua1-f65.google.com with SMTP id k7so1159063uao.6
+        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 06:37:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=0LwGddfzeX4mOzZ5JoPgRwznEXqsWR+GA5wz76u8ncg=;
-        b=R7Y/+uHZ9h7ZpNJZej4KVWDiSM2Jsx86a+2rjv3viGQT70JryZyZZt4cNvtB0oX2/w
-         DvmTYK1CIdpNQooHQdGj+3W1x7TabAOJNngFN2DFwYGMoo360fE+iEzbn+HyTS9wPfp4
-         sKItf31dCS+KDtU9DnekStb2wihbWiJs680hvwuko6xU2ss+NvsOSzwDaOaIADiKvbx8
-         ihe9RzO8uf4gfY62Gym89Uv0jHKVdUp91Opy5WWQv3hWUqstfoKVgRgqvOlPkkDorwkB
-         7PvnkYTHuk1GDba4J/RB0LmaA7sRNLMUmrA0dso5gqvCJFchEc+fhv8yKi0eaCzxLEZq
-         HP/w==
+        bh=VoycuwM03PAMoYB7LC8b4YSa3oTRgt158KShkM1cXKQ=;
+        b=zKgu0Jl4DlvWeQzglf9VPPVkVjkJuw4LSkmT+pELc19VL8JHSvF1cXxTazR+CrZKKr
+         kCKva4b0mB1m11diTo57wSNo45Olb6PZAJ9MJQFkQ9yVFAuSd2k0u3LBqbauDprRPNQ/
+         aJIlTmkMU61yn3ZDe4r1wBrDPkK9guE6hwr+NIl8Z8P1Ql0aZaijF0sATF21E99eR39v
+         WrYTJUr3d3ot/wHi7f49JTlZhShwYMK1yvSVT9G3kmmwWgzaIUFbdbuq98bWRlS4/55u
+         6C4AqN2+/uw0MAuG40eXp0w6XNwSJ1YHaW+xBYhE0f0VcARxF6IRgR4b2ubMxBBfGaOc
+         sRUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=0LwGddfzeX4mOzZ5JoPgRwznEXqsWR+GA5wz76u8ncg=;
-        b=erVdWQndlVWl0DhMwkfIOylVMG19+saG9v2VO9opJ8Jo43P9ntvZRYuy1iGz+C9ZqR
-         fgVthulTb4XhbBsGvwcILu6gpMLIB/gmlnoFTvwQVq5ZAHmDTmlXHbP86tGSGDqDOlZV
-         kXhpawF6GqvDM7t3pM/ORsgdixYDvXTjD6bxRkB4yTpGU+k/tH/lM3I9IUu3JVTZIXVT
-         RJv3Ia5VgS1bQA6S6qvscZAiNZVqD1WSMYV2ui+N1EFbyDuJFwWSLtyt0HuqFr/4mQpx
-         Lz4uup7L+3IOZvcCgVtZ4j3Zl5uTIO1omlNzFJunMs9Kd2YmPjepqyW4hnu+2s6ou6r9
-         s8Ag==
-X-Gm-Message-State: APjAAAWTKC0pgq4MbqVigJ5peQ5FHQfQD6CtJdYVkgMMx65TqH+J+YJS
-        /WFcSXRBesRlAvryzhWwp/oDDys6J6A8a/p4oiyL1w==
-X-Google-Smtp-Source: APXvYqxirmJH4cL7eOUn3SpAsT/GI4gJKeANjViJ2y2P3ZBRhl2NHvAa8yLs3iWPeSiRlqzxQFoA7JJgfGfBFLCetWo=
-X-Received: by 2002:a67:61c7:: with SMTP id v190mr5467601vsb.165.1567085684495;
- Thu, 29 Aug 2019 06:34:44 -0700 (PDT)
+        bh=VoycuwM03PAMoYB7LC8b4YSa3oTRgt158KShkM1cXKQ=;
+        b=p2uY0rep67MbQ3S8ABhz2CMI1KKGb+kp7tcqhHFfy+7z0DNUkUZpViE2MRu6I9ZFlP
+         z/feFpom3MgxIrOnObJ+ksgxnZe6tc8JgLDbnMYqqjFyrGOVlXjYYCqVPyRlt4VSU4JN
+         N7ekvzYr1XUFnonFhdjpEkR6kzysqgM3Y54o+WXCAUKWw5Bho6iBYp4zGexk34k2FsiA
+         mshVIt1HTR+joSyFAZsRUc9S8d3TMJJf9OFHofsszXf2uV01OBQX/oC/X7jg+7V/9SIT
+         rJfb9ehsCZjKFQ0vSBaOPsc0z19+9xdXUpPwv7VjX3UBtV5AKWJzq3UgFa6C7SoD5dBM
+         IOZw==
+X-Gm-Message-State: APjAAAVeYDyrGe6Iw54UOSiHNAqHF+k51yF2epWQOC5yT9fu+BSZhVk9
+        lK9tZa3rj7oll9BNwaZrcHFJzVk6VEtnqdG93BJLAQ==
+X-Google-Smtp-Source: APXvYqw5PMEM/AaXKseVFjiJDB4qE632N2Eh8ohpX17hqRNF3TeDatpY+W6xb/csgdhA+MJBYjRRNsuLKGcO5K48bSs=
+X-Received: by 2002:ab0:6883:: with SMTP id t3mr4939055uar.104.1567085824135;
+ Thu, 29 Aug 2019 06:37:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190829112206.22213-1-yamada.masahiro@socionext.com>
-In-Reply-To: <20190829112206.22213-1-yamada.masahiro@socionext.com>
+References: <1566985524-22749-1-git-send-email-yong.mao@mediatek.com> <1566985524-22749-2-git-send-email-yong.mao@mediatek.com>
+In-Reply-To: <1566985524-22749-2-git-send-email-yong.mao@mediatek.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 29 Aug 2019 15:34:08 +0200
-Message-ID: <CAPDyKFqrQF8nBfLOHNyqM_LfPx7XjRCHT_PVzDKb98qxVjdSGQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: sdhci: use lower/upper_32_bits() macros for DMA addresses
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Piotr Sroka <piotrs@cadence.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Thu, 29 Aug 2019 15:36:28 +0200
+Message-ID: <CAPDyKFqgO7fwybn1nYcf14jiHswM+T7fqY1BuSvx5AubYA6F=A@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: mediatek: enable SDIO IRQ low level trigger function
+To:     Yong Mao <yong.mao@mediatek.com>
+Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-mediatek@lists.infradead.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        srv_heupstream <srv_heupstream@mediatek.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 29 Aug 2019 at 13:22, Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
+On Wed, 28 Aug 2019 at 11:45, Yong Mao <yong.mao@mediatek.com> wrote:
 >
-> Currently, the DMA addresses are casted to (u64) for the upper 32bits
-> to avoid "right shift count >= width of type" warning.
+> From: yong mao <yong.mao@mediatek.com>
 >
-> <linux/kernel.h> provides macros to address this, and I like the macro
-> names are self-documenting.
+> SDIO IRQ is not defaultly triggered by low level,
+> but by falling edge. It needs to set related register
+> to enable SDIO IRQ low level trigger function.
+> Otherwise the SDIO IRQ may be lost in some specail condition.
 >
-> I introduced a new helper, sdhci_set_adma_addr() to avoid the code
-> duplication.
->
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Signed-off-by: Yong Mao <yong.mao@mediatek.com>
+> Signed-off-by: Chaotian Jing <chaotian.jing@mediatek.com>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
 
-
 > ---
+>  drivers/mmc/host/mtk-sd.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> Changes in v2:
->   - Another way to reduce linu wrapping
+> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+> index 33f4b63..585f0c7 100644
+> --- a/drivers/mmc/host/mtk-sd.c
+> +++ b/drivers/mmc/host/mtk-sd.c
+> @@ -192,6 +192,7 @@
+>  #define SDC_STS_CMDBUSY         (0x1 << 1)     /* RW */
+>  #define SDC_STS_SWR_COMPL       (0x1 << 31)    /* RW */
 >
->  drivers/mmc/host/sdhci.c | 27 +++++++++++++--------------
->  1 file changed, 13 insertions(+), 14 deletions(-)
+> +#define SDC_DAT1_IRQ_TRIGGER   (0x1 << 19)     /* RW */
+>  /* SDC_ADV_CFG0 mask */
+>  #define SDC_RX_ENHANCE_EN      (0x1 << 20)     /* RW */
 >
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index 08cc0792c174..66c2cf89ee22 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -668,10 +668,10 @@ void sdhci_adma_write_desc(struct sdhci_host *host, void **desc,
->         /* 32-bit and 64-bit descriptors have these members in same position */
->         dma_desc->cmd = cpu_to_le16(cmd);
->         dma_desc->len = cpu_to_le16(len);
-> -       dma_desc->addr_lo = cpu_to_le32((u32)addr);
-> +       dma_desc->addr_lo = cpu_to_le32(lower_32_bits(addr));
+> @@ -1568,6 +1569,7 @@ static void msdc_init_hw(struct msdc_host *host)
 >
->         if (host->flags & SDHCI_USE_64_BIT_DMA)
-> -               dma_desc->addr_hi = cpu_to_le32((u64)addr >> 32);
-> +               dma_desc->addr_hi = cpu_to_le32(upper_32_bits(addr));
+>         /* Config SDIO device detect interrupt function */
+>         sdr_clr_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
+> +       sdr_set_bits(host->base + SDC_ADV_CFG0, SDC_DAT1_IRQ_TRIGGER);
 >
->         *desc += host->desc_sz;
->  }
-> @@ -816,6 +816,13 @@ static void sdhci_adma_table_post(struct sdhci_host *host,
->         }
->  }
->
-> +static void sdhci_set_adma_addr(struct sdhci_host *host, dma_addr_t addr)
-> +{
-> +       sdhci_writel(host, lower_32_bits(addr), SDHCI_ADMA_ADDRESS);
-> +       if (host->flags & SDHCI_USE_64_BIT_DMA)
-> +               sdhci_writel(host, upper_32_bits(addr), SDHCI_ADMA_ADDRESS_HI);
-> +}
-> +
->  static dma_addr_t sdhci_sdma_address(struct sdhci_host *host)
->  {
->         if (host->bounce_buffer)
-> @@ -826,13 +833,10 @@ static dma_addr_t sdhci_sdma_address(struct sdhci_host *host)
->
->  static void sdhci_set_sdma_addr(struct sdhci_host *host, dma_addr_t addr)
->  {
-> -       if (host->v4_mode) {
-> -               sdhci_writel(host, addr, SDHCI_ADMA_ADDRESS);
-> -               if (host->flags & SDHCI_USE_64_BIT_DMA)
-> -                       sdhci_writel(host, (u64)addr >> 32, SDHCI_ADMA_ADDRESS_HI);
-> -       } else {
-> +       if (host->v4_mode)
-> +               sdhci_set_adma_addr(host, addr);
-> +       else
->                 sdhci_writel(host, addr, SDHCI_DMA_ADDRESS);
-> -       }
->  }
->
->  static unsigned int sdhci_target_timeout(struct sdhci_host *host,
-> @@ -1095,12 +1099,7 @@ static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
->                         host->flags &= ~SDHCI_REQ_USE_DMA;
->                 } else if (host->flags & SDHCI_USE_ADMA) {
->                         sdhci_adma_table_pre(host, data, sg_cnt);
-> -
-> -                       sdhci_writel(host, host->adma_addr, SDHCI_ADMA_ADDRESS);
-> -                       if (host->flags & SDHCI_USE_64_BIT_DMA)
-> -                               sdhci_writel(host,
-> -                                            (u64)host->adma_addr >> 32,
-> -                                            SDHCI_ADMA_ADDRESS_HI);
-> +                       sdhci_set_adma_addr(host, host->adma_addr);
->                 } else {
->                         WARN_ON(sg_cnt != 1);
->                         sdhci_set_sdma_addr(host, sdhci_sdma_address(host));
+>         /* Configure to default data timeout */
+>         sdr_set_field(host->base + SDC_CFG, SDC_CFG_DTOC, 3);
 > --
-> 2.17.1
+> 1.9.1
 >
