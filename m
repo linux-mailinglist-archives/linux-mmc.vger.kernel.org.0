@@ -2,361 +2,129 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24560A2293
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 19:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A231A22A5
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Aug 2019 19:44:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727857AbfH2RlC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 13:41:02 -0400
-Received: from mail-eopbgr720126.outbound.protection.outlook.com ([40.107.72.126]:29888
-        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727481AbfH2RlC (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 29 Aug 2019 13:41:02 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SXwztxWvpuhMYpePGZUiOyFKXCFxWBAaKrlmOI0YG42hb0PlzP7Mbm1HpAiKe5sPfabKV9fPupHqP1vK7fd8Vs+UblF/P8ts9pKdbKsGqEEG5lbSIRgupWd2L8O1gS3jBG0X95EVQFPytlhZCUAAOW+TdLU6F76uqilLxttWK1aTbABV3cyCJctSvUToilOKT2rnoM6A3D+F1rxDRHNvvp24TNEDqppMrO+IRi0q9vn1Mc2scFBPq0t3UcdBIQ4pbCzW8kQ8sQaxDMk0PJ8oCpuaYn/ZokQaE/So4gfRJo2r5zMWn6iypMVR8jlxVyEIjaoysTcuXUWcLWCH+0ZNgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iF62lCNsz3cITZ/X0d65xdQ9Pmh8WLe6sxBkgWVn6bk=;
- b=kqQ2egnDzaPOI/pEGr6FzhSOYGyXnHSecuYxFjGNxxckEaHM8ceFHk0SRxvYFBLtOZfp3qgko87b2yBOLC50lGJMJ4XReWz8yu+JyS3ZX0Q8/nh7l2BxpINjF50ZaJ/+qP739KnhDZ2l4EUiwfkMJPK65BNfHQJZfS1QY3f1q/NKpMZztB3zwUiad/vgBS8yHks2VVKiut0bU9KMU9rXXeevq2jdyw5EfGmdVd6IujE6HhO0M+W929AlAuAluIGOcdT/GMejSB+ZWbakB/zyElgt5iIXPr25V7IDhFkvuvK8i24nqYqwMJWMRkIxhfpkPS7w4WdZql3kmQ1kXYiaxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bayhubtech.com; dmarc=pass action=none
- header.from=bayhubtech.com; dkim=pass header.d=bayhubtech.com; arc=none
+        id S1727682AbfH2Roc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 13:44:32 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:34270 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726661AbfH2Roc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 13:44:32 -0400
+Received: by mail-io1-f67.google.com with SMTP id s21so8683179ioa.1
+        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 10:44:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=towerbridgetechnology.onmicrosoft.com;
- s=selector2-towerbridgetechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iF62lCNsz3cITZ/X0d65xdQ9Pmh8WLe6sxBkgWVn6bk=;
- b=C6syHjZZEy+VpsYpSA81njfXCAEX30fW2OjytUMwWZzzqYx5QLYOdaCz/9ngawkuqbEe2BTSPuWjiOytU1ktGu2SuQ+zTTDWe0Tic/c6zI9FjCQxZDwQWI8esnra5rojem31a9XZFHVXW7JjXQef/+obH3q5DeBjNdeCYW23ie8=
-Received: from MWHPR16MB1455.namprd16.prod.outlook.com (10.175.5.21) by
- MWHPR16MB0110.namprd16.prod.outlook.com (10.172.97.148) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2220.18; Thu, 29 Aug 2019 17:40:57 +0000
-Received: from MWHPR16MB1455.namprd16.prod.outlook.com
- ([fe80::48f4:c6d9:3a8:e7dd]) by MWHPR16MB1455.namprd16.prod.outlook.com
- ([fe80::48f4:c6d9:3a8:e7dd%4]) with mapi id 15.20.2220.013; Thu, 29 Aug 2019
- 17:40:57 +0000
-From:   "Shirley Her (SC)" <shirley.her@bayhubtech.com>
-To:     "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     "Chevron Li (WH)" <chevron.li@bayhubtech.com>,
-        "Shaper Liu (WH)" <shaper.liu@bayhubtech.com>,
-        "Louis Lu (TP)" <louis.lu@bayhubtech.com>,
-        "Xiaoguang Yu (WH)" <xiaoguang.yu@bayhubtech.com>,
-        "Max Huang (SC)" <max.huang@bayhubtech.com>,
-        "Shirley Her (SC)" <shirley.her@bayhubtech.com>
-Subject: [PATCH V9 2/3] mmc: sdhci-pci-o2micro: Move functions in preparation
- to fix DLL lock phase shift issue
-Thread-Topic: [PATCH V9 2/3] mmc: sdhci-pci-o2micro: Move functions in
- preparation to fix DLL lock phase shift issue
-Thread-Index: AQHVXpDqqVggdWx2XESNdLxRh+b02Q==
-Date:   Thu, 29 Aug 2019 17:40:57 +0000
-Message-ID: <1567100454-5905-1-git-send-email-shirley.her@bayhubtech.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR02CA0062.namprd02.prod.outlook.com
- (2603:10b6:a03:54::39) To MWHPR16MB1455.namprd16.prod.outlook.com
- (2603:10b6:320:28::21)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=shirley.her@bayhubtech.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.7.4
-x-originating-ip: [209.36.105.184]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 021fd66d-4568-4b99-a8c2-08d72ca80c57
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600166)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MWHPR16MB0110;
-x-ms-traffictypediagnostic: MWHPR16MB0110:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MWHPR16MB01101B75144C946D7BDD80AB8BA20@MWHPR16MB0110.namprd16.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:126;
-x-forefront-prvs: 0144B30E41
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(39840400004)(366004)(346002)(396003)(376002)(199004)(189003)(2616005)(6436002)(486006)(476003)(14444005)(36756003)(256004)(71190400001)(71200400001)(26005)(14454004)(102836004)(386003)(6506007)(186003)(52116002)(3846002)(305945005)(6116002)(7736002)(8936002)(50226002)(508600001)(2501003)(99286004)(54906003)(316002)(110136005)(2201001)(86362001)(6486002)(8676002)(81156014)(81166006)(66946007)(66446008)(64756008)(66556008)(25786009)(4326008)(53936002)(5660300002)(107886003)(6512007)(2906002)(66066001)(66476007);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR16MB0110;H:MWHPR16MB1455.namprd16.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: bayhubtech.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: wm1irtOY1MUqusKpc3wmKJnoIzRT/G+ul7NUdLlhcdzntLerpw7Lbk7raRlcr9CoWVc+T/wCj+P7obLNrfPV9HdtKMcAEHvW0mWtdc+zNTnajHCrUA9/PmtuggPUj8+SVs7+hAeDOCh9PIuZYzbjlCkhn1HDuzNdRK7/ME0gj/gQtS8hvnhp+ky4/Sub0TNfWi1zPGT3CA3qLpxobvm+367Ya9EvXaO6OMMxYmu5P9GaaVjNATB4dx0KoziujxrtOvoYp88dITjoEilQPFfSdl8dGIpGTGO2EegXqOf0w2CnPbFNCq7hpGe7xDjSqea8PK3gdOs2bvGs71lKnyAn9k0N0IMHIU8F9e4+Q2bpkaOhSRFnJ6ALZIlZfxr2f80BTrWnBo6Nc1x9TIOR0rX9Y9+EE7lL/meecXlJcmVdnxY=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=q0/wEQOY41ZAwBlbnwMnPIcIDqJGJYBAEzaUfyt/UCA=;
+        b=RxAdYwWHCc51YWNiPsz3mKegfEe4w4o1SQpJRubLe15x3wQxumvC0x0pbMl/hxXzBg
+         uHPnACDF2ylQF8pcwTKJg5lsvtbbUfb4KdEsa4YqLefKOwV+d4EyllVFGVI/VjycXU+0
+         I9QNa9yh9ywYEqtZ7aMVzLFlvoM+Fa8jLOPkg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=q0/wEQOY41ZAwBlbnwMnPIcIDqJGJYBAEzaUfyt/UCA=;
+        b=aS5Uy9TdShMFIiANYITiOAuDeP094sfDNYJgio0ucSyX+djnfnmh3wS7Fw1bICnelw
+         K5gslVrr1RVe34xcqtBeNA6KRvLd4MpywoCfiyq6wsGAcfa3SlBaeY648z09dlzm5JHG
+         TVPv7/KpxWk6X4eyZ4XuSPiTzrUSPab61XWTDhKiZcSRNse/1DnsQzyf5hGn/G/fdlnm
+         v7B/DaXQh9+pPsENJVUPWF0CdstisbwKT1Wmac+zF0XcVYuIYXFu7/sBoJ4vHWOWbhA8
+         MurVrQdzmQi70g2ZfmAqadDEnUTIyJJkTc4IVvpkhcQIlMLKLofAulsqYzG2zUJenmOC
+         zAoA==
+X-Gm-Message-State: APjAAAWG2f8dqiXzoevc8+YyNc6VUNv4ueAVCUJLvAi6A1K7ps2bF4ZY
+        i5JwoRenZnQhH+0P45BE01LEMOQzxtk=
+X-Google-Smtp-Source: APXvYqwOhpZAJLQYhKN9SzPrV1jauH/B4sujJpYXz1QOdJMQsqTpzMwuDzKpWCGstLthDLlpO1G40A==
+X-Received: by 2002:a02:9a0b:: with SMTP id b11mr549653jal.106.1567100670977;
+        Thu, 29 Aug 2019 10:44:30 -0700 (PDT)
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com. [209.85.166.48])
+        by smtp.gmail.com with ESMTPSA id p1sm2476911iol.11.2019.08.29.10.44.30
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Aug 2019 10:44:30 -0700 (PDT)
+Received: by mail-io1-f48.google.com with SMTP id b10so8671414ioj.2
+        for <linux-mmc@vger.kernel.org>; Thu, 29 Aug 2019 10:44:30 -0700 (PDT)
+X-Received: by 2002:a6b:d006:: with SMTP id x6mr12265612ioa.218.1567100669783;
+ Thu, 29 Aug 2019 10:44:29 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: bayhubtech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 021fd66d-4568-4b99-a8c2-08d72ca80c57
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Aug 2019 17:40:57.2772
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0a7aae2b-8f2e-44df-ba2f-42de7f93c642
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aZRbPkQI0JXlp6i15/qip+OxD2sICL0H1DjVnfe+31LN4nUWAtKVO1Hz0nS2TAUbGmN/mEqjUgkyDD+znz/ilL7ULJdD3FkaSae1M5fm+Kk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR16MB0110
+References: <20190828214620.66003-1-mka@chromium.org> <20190828214620.66003-2-mka@chromium.org>
+In-Reply-To: <20190828214620.66003-2-mka@chromium.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 29 Aug 2019 10:44:17 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UhKCKzj7W+LGAGuzukCsOag1meHk4dW7=XQF21KeS_pg@mail.gmail.com>
+Message-ID: <CAD=FV=UhKCKzj7W+LGAGuzukCsOag1meHk4dW7=XQF21KeS_pg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: core: Run handlers for pending SDIO interrupts
+ on resume
+To:     Matthias Kaehlcke <mka@chromium.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Move functions in preparation to fix DLL lock phase shift issue
+Hi,
 
-Signed-off-by: Shirley Her <shirley.her@bayhubtech.com>
----
-change in V9:
- 1. modify subject and commit message to match the patch
+On Wed, Aug 28, 2019 at 2:46 PM Matthias Kaehlcke <mka@chromium.org> wrote:
+>
+> With commit 83293386bc95 ("mmc: core: Prevent processing SDIO IRQs
+> when the card is suspended") SDIO interrupts are dropped if they
+> occur while the card is suspended. Dropping the interrupts can cause
+> problems after resume with cards that remain powered during suspend
+> and preserve their state. These cards may end up in an inconsistent
+> state since the event that triggered the interrupt is never processed
+> and remains pending. One example is the Bluetooth function of the
+> Marvell 8997, SDIO is broken on resume (for both Bluetooth and WiFi)
+> when processing of a pending HCI event is skipped.
+>
+> For cards that remained powered during suspend check on resume if
+> SDIO interrupts are pending, and trigger interrupt processing if
+> needed.
+>
+> Fixes: 83293386bc95 ("mmc: core: Prevent processing SDIO IRQs when the card is suspended")
+> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+> ---
+>  drivers/mmc/core/sdio.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+> index 8dd8fc32ecca..a6b4742a91c6 100644
+> --- a/drivers/mmc/core/sdio.c
+> +++ b/drivers/mmc/core/sdio.c
+> @@ -975,6 +975,7 @@ static int mmc_sdio_suspend(struct mmc_host *host)
+>  static int mmc_sdio_resume(struct mmc_host *host)
+>  {
+>         int err = 0;
+> +       u8 pending = 0;
+>
+>         /* Basic card reinitialization. */
+>         mmc_claim_host(host);
+> @@ -1009,6 +1010,14 @@ static int mmc_sdio_resume(struct mmc_host *host)
+>         /* Allow SDIO IRQs to be processed again. */
+>         mmc_card_clr_suspended(host->card);
+>
+> +       if (!mmc_card_keep_power(host))
+> +               goto skip_pending_irqs;
+> +
+> +       if (!sdio_get_pending_irqs(host, &pending) &&
+> +           pending != 0)
+> +               sdio_signal_irq(host);
+> +
+> +skip_pending_irqs:
+>         if (host->sdio_irqs) {
 
-change in V8:
- 1. fix patch format error
+nit: I'd prefer to avoid the "goto" if possible.  Using "goto" to
+handle unwinding during error handling always makes good sent to me,
+but here you're not doing unwinding--you're just using the "goto" as
+an unstructured "if".  I'd rather just see:
 
-change in V7:
- 1. change subject to match the patch
- 2. move functions in preparation to fix DLL lock phase shift issue
+  if (mmc_card_keep_power(host) &&
+      !sdio_get_pending_irqs(host, &pending) && pending != 0)
+          sdio_signal_irq(host);
 
-change in V6:
- 1. change subject and commit message to match the patch
- 2. modify the get CD status function
- 3. re-arrange the order of some functions
+Other than that this patch seems sane to me though (obviously) the
+person you'd need to convince is Ulf.  ;-)
 
-change in V5:
- 1. split 2 patches into 3 patches
- 2. make dll_adjust_count start from 0
- 3. fix ret overwritten issue
- 4. use break instead of goto
-
-change in V4:
- 1. add a bug fix for V3
-
-change in V3:
- 1. add more explanation in dll_recovery and execute_tuning function
- 2. move dll_adjust_count to O2_host struct
- 3. fix some coding style error
- 4. renaming O2_PLL_WDT_CONTROL1 TO O2_PLL_DLL_WDT_CONTROL1
-
-change in V2:
- 1. use usleep_range instead of udelay
- 2. move dll_adjust_count to sdhci-pci-o2micro.c
-
-chagne in V1:
- 1. add error recovery function to relock DLL with correct phase
- 2. retuning HS200 after DLL locked
----
- drivers/mmc/host/sdhci-pci-o2micro.c | 187 ++++++++++++++++++-------------=
-----
- 1 file changed, 94 insertions(+), 93 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-=
-pci-o2micro.c
-index b3a33d9..57c8b83 100644
---- a/drivers/mmc/host/sdhci-pci-o2micro.c
-+++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-@@ -58,6 +58,100 @@
-=20
- #define O2_SD_DETECT_SETTING 0x324
-=20
-+static void sdhci_o2_wait_card_detect_stable(struct sdhci_host *host)
-+{
-+	ktime_t timeout;
-+	u32 scratch32;
-+
-+	/* Wait max 50 ms */
-+	timeout =3D ktime_add_ms(ktime_get(), 50);
-+	while (1) {
-+		bool timedout =3D ktime_after(ktime_get(), timeout);
-+
-+		scratch32 =3D sdhci_readl(host, SDHCI_PRESENT_STATE);
-+		if ((scratch32 & SDHCI_CARD_PRESENT) >> SDHCI_CARD_PRES_SHIFT
-+		    =3D=3D (scratch32 & SDHCI_CD_LVL) >> SDHCI_CD_LVL_SHIFT)
-+			break;
-+
-+		if (timedout) {
-+			pr_err("%s: Card Detect debounce never finished.\n",
-+			       mmc_hostname(host->mmc));
-+			sdhci_dumpregs(host);
-+			return;
-+		}
-+		udelay(10);
-+	}
-+}
-+
-+static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
-+{
-+	ktime_t timeout;
-+	u16 scratch;
-+	u32 scratch32;
-+
-+	/* PLL software reset */
-+	scratch32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
-+	scratch32 |=3D O2_PLL_SOFT_RESET;
-+	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
-+	udelay(1);
-+	scratch32 &=3D ~(O2_PLL_SOFT_RESET);
-+	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
-+
-+	/* PLL force active */
-+	scratch32 |=3D O2_PLL_FORCE_ACTIVE;
-+	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
-+
-+	/* Wait max 20 ms */
-+	timeout =3D ktime_add_ms(ktime_get(), 20);
-+	while (1) {
-+		bool timedout =3D ktime_after(ktime_get(), timeout);
-+
-+		scratch =3D sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1);
-+		if (scratch & O2_PLL_LOCK_STATUS)
-+			break;
-+		if (timedout) {
-+			pr_err("%s: Internal clock never stabilised.\n",
-+			       mmc_hostname(host->mmc));
-+			sdhci_dumpregs(host);
-+			goto out;
-+		}
-+		udelay(10);
-+	}
-+
-+	/* Wait for card detect finish */
-+	udelay(1);
-+	sdhci_o2_wait_card_detect_stable(host);
-+
-+out:
-+	/* Cancel PLL force active */
-+	scratch32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
-+	scratch32 &=3D ~O2_PLL_FORCE_ACTIVE;
-+	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
-+}
-+
-+static int sdhci_o2_get_cd(struct mmc_host *mmc)
-+{
-+	struct sdhci_host *host =3D mmc_priv(mmc);
-+
-+	sdhci_o2_enable_internal_clock(host);
-+
-+	return !!(sdhci_readl(host, SDHCI_PRESENT_STATE) & SDHCI_CARD_PRESENT);
-+}
-+
-+static void o2_pci_set_baseclk(struct sdhci_pci_chip *chip, u32 value)
-+{
-+	u32 scratch_32;
-+
-+	pci_read_config_dword(chip->pdev,
-+			      O2_SD_PLL_SETTING, &scratch_32);
-+
-+	scratch_32 &=3D 0x0000FFFF;
-+	scratch_32 |=3D value;
-+
-+	pci_write_config_dword(chip->pdev,
-+			       O2_SD_PLL_SETTING, scratch_32);
-+}
-+
- static void sdhci_o2_set_tuning_mode(struct sdhci_host *host)
- {
- 	u16 reg;
-@@ -136,19 +230,6 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mm=
-c, u32 opcode)
- 	return 0;
- }
-=20
--static void o2_pci_set_baseclk(struct sdhci_pci_chip *chip, u32 value)
--{
--	u32 scratch_32;
--	pci_read_config_dword(chip->pdev,
--			      O2_SD_PLL_SETTING, &scratch_32);
--
--	scratch_32 &=3D 0x0000FFFF;
--	scratch_32 |=3D value;
--
--	pci_write_config_dword(chip->pdev,
--			       O2_SD_PLL_SETTING, scratch_32);
--}
--
- static void o2_pci_led_enable(struct sdhci_pci_chip *chip)
- {
- 	int ret;
-@@ -284,86 +365,6 @@ static void sdhci_pci_o2_enable_msi(struct sdhci_pci_c=
-hip *chip,
- 	host->irq =3D pci_irq_vector(chip->pdev, 0);
- }
-=20
--static void sdhci_o2_wait_card_detect_stable(struct sdhci_host *host)
--{
--	ktime_t timeout;
--	u32 scratch32;
--
--	/* Wait max 50 ms */
--	timeout =3D ktime_add_ms(ktime_get(), 50);
--	while (1) {
--		bool timedout =3D ktime_after(ktime_get(), timeout);
--
--		scratch32 =3D sdhci_readl(host, SDHCI_PRESENT_STATE);
--		if ((scratch32 & SDHCI_CARD_PRESENT) >> SDHCI_CARD_PRES_SHIFT
--		    =3D=3D (scratch32 & SDHCI_CD_LVL) >> SDHCI_CD_LVL_SHIFT)
--			break;
--
--		if (timedout) {
--			pr_err("%s: Card Detect debounce never finished.\n",
--			       mmc_hostname(host->mmc));
--			sdhci_dumpregs(host);
--			return;
--		}
--		udelay(10);
--	}
--}
--
--static void sdhci_o2_enable_internal_clock(struct sdhci_host *host)
--{
--	ktime_t timeout;
--	u16 scratch;
--	u32 scratch32;
--
--	/* PLL software reset */
--	scratch32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
--	scratch32 |=3D O2_PLL_SOFT_RESET;
--	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
--	udelay(1);
--	scratch32 &=3D ~(O2_PLL_SOFT_RESET);
--	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
--
--	/* PLL force active */
--	scratch32 |=3D O2_PLL_FORCE_ACTIVE;
--	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
--
--	/* Wait max 20 ms */
--	timeout =3D ktime_add_ms(ktime_get(), 20);
--	while (1) {
--		bool timedout =3D ktime_after(ktime_get(), timeout);
--
--		scratch =3D sdhci_readw(host, O2_PLL_DLL_WDT_CONTROL1);
--		if (scratch & O2_PLL_LOCK_STATUS)
--			break;
--		if (timedout) {
--			pr_err("%s: Internal clock never stabilised.\n",
--			       mmc_hostname(host->mmc));
--			sdhci_dumpregs(host);
--			goto out;
--		}
--		udelay(10);
--	}
--
--	/* Wait for card detect finish */
--	udelay(1);
--	sdhci_o2_wait_card_detect_stable(host);
--
--out:
--	/* Cancel PLL force active */
--	scratch32 =3D sdhci_readl(host, O2_PLL_DLL_WDT_CONTROL1);
--	scratch32 &=3D ~O2_PLL_FORCE_ACTIVE;
--	sdhci_writel(host, scratch32, O2_PLL_DLL_WDT_CONTROL1);
--}
--
--static int sdhci_o2_get_cd(struct mmc_host *mmc)
--{
--	struct sdhci_host *host =3D mmc_priv(mmc);
--
--	sdhci_o2_enable_internal_clock(host);
--
--	return !!(sdhci_readl(host, SDHCI_PRESENT_STATE) & SDHCI_CARD_PRESENT);
--}
--
- static void sdhci_o2_enable_clk(struct sdhci_host *host, u16 clk)
- {
- 	/* Enable internal clock */
---=20
-2.7.4
-
+-Doug
