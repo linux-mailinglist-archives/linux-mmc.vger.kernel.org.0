@@ -2,112 +2,131 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E575A325D
-	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 10:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E29C8A3411
+	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 11:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726495AbfH3I3m (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 30 Aug 2019 04:29:42 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:33048 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725780AbfH3I3m (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 30 Aug 2019 04:29:42 -0400
-Received: by mail-vs1-f66.google.com with SMTP id m18so4281042vsr.0
-        for <linux-mmc@vger.kernel.org>; Fri, 30 Aug 2019 01:29:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uBe6XaZnp1DnbEiSR3tbPdbSTWUBiMGkZ5MQKY+Y/KY=;
-        b=HSSx1i5MvIQIppnHZp5fqcZbrHRsEuE5YKsm/+pYHehWrBMRK+Fd6yYLM9RPceYWJd
-         2KN6Ql6owRNffruGbdNcZSAqSso17tFIIcpLbRp0zC8kl60dO1JXkxCOZvRcyu1dIufG
-         1hvgSKaVKD1JOa1eugdmJFPrx3JHFGraiG6Yc+aNazmxxyKhIeW0A1MPoue8sWBjkHg1
-         2U/LjQQvHxtbyHKyKIvRHUSrnvL/0y4viuiAdHl86m6N5FXBwrgxRMsJfPfOTkX2P/xF
-         bddVRikttGaleYOjqpQag/5g5JIML0+a/1FaVIA8U+xTCk8rUGlWv6r2EV2vQ8hSxIyC
-         SbMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uBe6XaZnp1DnbEiSR3tbPdbSTWUBiMGkZ5MQKY+Y/KY=;
-        b=k5TGWCelFuEgKUimTqFzfmL4mLZfgOoC9CMtf8j5bdzJvNsZng9gbGPGPTiz9uTl7v
-         JlDAlKUAWf5SbV5LUY2yXhSxjS4nxg1eh+++STVuRk/2mT/R7KKMKAUAmuAlZhUQX1+v
-         IJl2ZVyO+vrSdu57kHNU8o9/dyG8T0Vr8lSGjjcUL4+CUEDmnqB+YIP2OeTXImU1hc/u
-         BkvQRGlAeXVJvUzC6w6MK055O0+cMDnFzknUV04m871T19vRyY1GwyGEcLEARgqBhjzB
-         6Am1xFKlz1bj5vQ/YV472Q+6JWgT/cG22pAHyQkTsdhN9dxzTWASNCrISen/lueKYF4Z
-         gsVA==
-X-Gm-Message-State: APjAAAWRlyaUWLpfoWSV+LfQjjZfuKOrCyq7JNH0n98nz8mctCdrVNUd
-        n9EtelqA/2VKHBYzBfdf40pXYayf+fji6acdS8pNcA==
-X-Google-Smtp-Source: APXvYqwT1/od4MWptrO2+eo5tENQaNYQ7XxIzCOrNHxyh49sPnVWPm0JNv85t1DAPIYt12rpwJzChBk7AwrIozo1u18=
-X-Received: by 2002:a67:e287:: with SMTP id g7mr7906924vsf.200.1567153781210;
- Fri, 30 Aug 2019 01:29:41 -0700 (PDT)
+        id S1727522AbfH3Jd2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 30 Aug 2019 05:33:28 -0400
+Received: from mail-40136.protonmail.ch ([185.70.40.136]:46263 "EHLO
+        mail-40136.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727236AbfH3Jd1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 30 Aug 2019 05:33:27 -0400
+Date:   Fri, 30 Aug 2019 09:33:17 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.ch;
+        s=default; t=1567157604;
+        bh=nz1yhbjeCbxbAmzZQWi05SYwfjQwsTGBfY7/Mxb28jo=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:
+         Feedback-ID:From;
+        b=d0pPR4cipoP4CS8PEBlKd7zCj/Px5jusbUnimhrjUrcqa5rCgVV75B/RmBeI62716
+         Cd/SWpZFGMGGX9G+n3emibLsGIRYBPqZZ/beAT7mPzdG3qyrVJXQyjAZf5BEFaR8kX
+         b9b+EocIouDMBVnG4VJ8zK/IdFSjWdlkSraHdmyg=
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+From:   =?UTF-8?Q?Tam=C3=A1s_Sz=C5=B1cs?= <tszucs@protonmail.ch>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Reply-To: =?UTF-8?Q?Tam=C3=A1s_Sz=C5=B1cs?= <tszucs@protonmail.ch>
+Subject: Re: [PATCH v2] mmc: sdhi: fill in actual_clock
+Message-ID: <zQCmpTJgh3DStTAOFOYXmO44eMRsagV7uM-pCHjc3YlsFmTQuG2GNK9ELGBQZsFn44kr91MRGZ3U7z45D79XHNvCuMTuA6PltlSDx379ws0=@protonmail.ch>
+In-Reply-To: <CAMuHMdVe_d6N8hhG0VNZMKAGwXm7kiOQVnqNkL9+6DbkBsKAZw@mail.gmail.com>
+References: <20190829183634.3376-1-tszucs@protonmail.ch>
+ <CAMuHMdVe_d6N8hhG0VNZMKAGwXm7kiOQVnqNkL9+6DbkBsKAZw@mail.gmail.com>
+Feedback-ID: nIMxuco3ul2LtVHhzi8PphYHQLjwNa0SMoiI49kuTHKENnPWKUsinAdWedFtAsi63naFGY15tCjh3_itnNk3og==:Ext:ProtonMail
 MIME-Version: 1.0
-References: <20190830074644.10936-1-andrew@aj.id.au> <20190830074644.10936-2-andrew@aj.id.au>
- <CAPDyKFrKXfB1F2dh63KrkCiKGbmbBWaAM16vJqtQncnF4YctQw@mail.gmail.com> <6feca359-34ce-445e-87bf-62fa063d785f@www.fastmail.com>
-In-Reply-To: <6feca359-34ce-445e-87bf-62fa063d785f@www.fastmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 30 Aug 2019 10:29:04 +0200
-Message-ID: <CAPDyKFpiftO194L2pf-_Yxu_BbizP6ss46YUZNO9ZxceeeWw4Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: sdhci-of-aspeed: Uphold clocks-on post-condition
- of set_clock()
-To:     Andrew Jeffery <andrew@aj.id.au>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Ryan Chen <ryanchen.aspeed@gmail.com>,
-        openbmc@lists.ozlabs.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=7.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM autolearn=ham
+        autolearn_force=no version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.protonmail.ch
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 30 Aug 2019 at 10:07, Andrew Jeffery <andrew@aj.id.au> wrote:
+Hi Geert,
+
+You are correct, there is no way to distinguish between the old and new ker=
+nels just by mmc ios output when the bus is down. I don't think it's an iss=
+ue. I find it more helpful to have this information available.
+Yes, actual_clock should only display when non-zero and it should be zero w=
+hen the bus is down. I fixed this in v2.
+
+Kind regards,
+Tamas
+
+
+Tam=C3=A1s Sz=C5=B1cs
+tszucs@protonmail.ch
+
+=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original Me=
+ssage =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
+On Friday, August 30, 2019 9:21 AM, Geert Uytterhoeven <geert@linux-m68k.or=
+g> wrote:
+
+> Hi Tam=C3=A1s,
 >
+> On Thu, Aug 29, 2019 at 8:37 PM Tam=C3=A1s Sz=C5=B1cs tszucs@protonmail.c=
+h wrote:
 >
+> > Save set clock in mmc_host actual_clock enabling exporting it via debug=
+fs.
+> > This will indicate the precise SD clock in I/O settings rather than onl=
+y the
+> > sometimes misleading requested clock.
+> > Signed-off-by: Tam=C3=A1s Sz=C5=B1cs tszucs@protonmail.ch
 >
-> On Fri, 30 Aug 2019, at 17:31, Ulf Hansson wrote:
-> > On Fri, 30 Aug 2019 at 09:46, Andrew Jeffery <andrew@aj.id.au> wrote:
-> > >
-> > > The early-exit didn't seem to matter on the AST2500, but on the AST2600
-> > > the SD clock genuinely may not be running on entry to
-> > > aspeed_sdhci_set_clock(). Remove the early exit to ensure we always run
-> > > sdhci_enable_clk().
-> > >
-> > > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> > > ---
-> > >  drivers/mmc/host/sdhci-of-aspeed.c | 3 ---
-> > >  1 file changed, 3 deletions(-)
-> > >
-> > > diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
-> > > index d5acb5afc50f..a9175ca85696 100644
-> > > --- a/drivers/mmc/host/sdhci-of-aspeed.c
-> > > +++ b/drivers/mmc/host/sdhci-of-aspeed.c
-> > > @@ -55,9 +55,6 @@ static void aspeed_sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
-> > >         int div;
-> > >         u16 clk;
-> > >
-> > > -       if (clock == host->clock)
-> > > -               return;
-> > > -
-> > >         sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-> > >
-> > >         if (clock == 0)
-> > > --
-> > > 2.20.1
-> > >
+> Thanks for the update!
+>
+> Reviewed-by: Geert Uytterhoeven geert+renesas@glider.be
+>
+> However, one question below.
+>
+> > --- a/drivers/mmc/host/renesas_sdhi_core.c
+> > +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> > @@ -166,10 +166,13 @@ static void renesas_sdhi_set_clock(struct tmio_mm=
+c_host *host,
+> > sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, ~CLK_CTL_SCLKEN &
+> > sd_ctrl_read16(host, CTL_SD_CARD_CLK_CTL));
 > >
-> > Further down in aspeed_sdhci_set_clock() you should probably also
-> > remove the assignment of host->clock = clock, as that is already
-> > managed by sdhci_set_ios().
+> > -         if (new_clock =3D=3D 0)
+> >
+> >
+> >
+> > -         if (new_clock =3D=3D 0) {
+> >
+> >
+> > -                 host->mmc->actual_clock =3D 0;
+> >
+> >
 >
-> Ah, I'll fix that in a v2 once I have your thoughts on patch 2/2.
+> The actual clock is present in the debugfs output only when non-zero.
+> Hence userspace cannot distinguish between an old kernel where the
+> Renesas SDHI driver didn't fill in actual_clock, and a new kernel when
+> the SDHI controller is powered down.
+> Could that be an issue? Should the old value be retained?
+> Probably it's OK, as this is debugfs, not an official ABI.
+>
+> Gr{oetje,eeting}s,
+>
+> Geert
+>
+> -------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+------------------
+>
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m6=
+8k.org
+>
+> In personal conversations with technical people, I call myself a hacker. =
+But
+> when I'm talking to journalists I just say "programmer" or something like=
+ that.
+> -- Linus Torvalds
 
-I leave this one to Adrian to comment on, as he knows this better than me.
 
-[...]
-
-Kind regards
-Uffe
