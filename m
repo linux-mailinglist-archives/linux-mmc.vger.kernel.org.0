@@ -2,70 +2,92 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEAA3A30D4
-	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 09:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 834AAA30E0
+	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 09:21:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727889AbfH3HUG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 30 Aug 2019 03:20:06 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:35009 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727866AbfH3HUF (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 30 Aug 2019 03:20:05 -0400
-Received: by mail-vs1-f66.google.com with SMTP id q16so4162028vsm.2
-        for <linux-mmc@vger.kernel.org>; Fri, 30 Aug 2019 00:20:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=28VtnhZLetuKNWTwnsupiNM8l/3Xr9JApxUQqA/jSLQ=;
-        b=WawhvhYmWzIQL6MU/6+vZtOgC1oMf0Kaal5NRPxQKYClM9so5IZS/jKDunt34jPjS3
-         G8xrl55MLrTUJSMcyIUgIy3OilhvlBZdcbdawFLsKBgMBGRgW29XLgRuXdWeJIjv8TOO
-         tixtann9Lx146aYxIRWtVyZ0d+aFv8ikMDbSBkJoVSewI2wa8JiJzSUCqVnPeFWEPpcY
-         go6yRgR63Uz5xeqx5u3JbrvK9bA5s7M2OTxbIH9CDPmXLjf8LWayhBHpWcynIqKyIuG9
-         3SJrM4sZhE64gHQnvNWhtRPTrSM32CLkiiq11yrpRpbyo8evW6fSF1UXIH4tcg3W1pAs
-         Mftw==
+        id S1726334AbfH3HV6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Fri, 30 Aug 2019 03:21:58 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:40756 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725780AbfH3HV6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 30 Aug 2019 03:21:58 -0400
+Received: by mail-ot1-f65.google.com with SMTP id c34so6019784otb.7;
+        Fri, 30 Aug 2019 00:21:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=28VtnhZLetuKNWTwnsupiNM8l/3Xr9JApxUQqA/jSLQ=;
-        b=GXlVU5VhFFsTu4lNN34n7UfpPvGJbG9SoeK1dKl3uIFu31CfLEESqxeP+eehcwqxIJ
-         RhYJ6aVDKdVUV0NCcY068chC6AyxuLOW8psGvHKRaCw853o9V6ZxMv0ykwGEnA7RBraa
-         btD+3pE5dTU4zvNQ9I6VXfqioV4xHj4usbp+qSa+8uaPO3jcsEJD/R7ICEwrLGJ2MpaD
-         n3K7JUfxZvlFsm28LYJx8XpShrMEd8ldiWcNinuCDy4avXbtNvvzgLKe83Yi92CClSmc
-         2qUJ3FLiHdxOTHXDwpd3O3DM8q1F24jwnPddLiubHWqnoj5GyeniFhP9fFSr4K+auF4X
-         rGlg==
-X-Gm-Message-State: APjAAAWlNWIkTnsOhec8BgqKReAXl8A7v4GGsa0jNsWKMDk28exbj5at
-        Y0gtOLhTk9w769ECRN9hB46BPFBW40MH9QXG0a+xA6I5
-X-Google-Smtp-Source: APXvYqwRTzthMZv/p070SaQmVBrSKgxVL7QAyqiFS5dHq8lHhCYDWu5OgH6w+x08TxmBtLfvep1k6vyNWkpTQvVA2kA=
-X-Received: by 2002:a67:e287:: with SMTP id g7mr7791406vsf.200.1567149604830;
- Fri, 30 Aug 2019 00:20:04 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=F9kLJ3BZ5QkD9+EtZF2mlsKCvekaahe0KCRfMZNMwmo=;
+        b=sG5dqECvwb9ukFVFEpwHSVoyrUwTT/rirQH5CPPSLv78MWa1CqB0pB05ow+S4Jruj9
+         Qrf3U1hiDBTYlA+yFLSPN+txRoN4rTvQ3tD3/tZNt0YilPrnjIhuTTHpA+xadBl++bmI
+         LLpKz0v8+2F/K9izX2DqNTKGiHS/zSK3SvcCNtuhrR103YBn5/QYsOezS2r4q9BNDiti
+         06CmDvGLzOHLIyn14kY2Lukyp+1ZIdymXTXbc+lc5M3A3nDqalYC51OyMDBvfCqHQC8T
+         /g/5vY2VJVH9iToaqK87E4wrLonzdwh4mVyEHhp7oALb20wEIU2zzbKySw8yJ9sVDFmZ
+         onaw==
+X-Gm-Message-State: APjAAAXfR2nq4PLaVWn92W7yaCX0F2yzKUl6APcWVLpAVefAhSB0lQyL
+        2GkI0mZM+yeIQtOmJZ9QtVCvgnUp4iq5a5yBRFY=
+X-Google-Smtp-Source: APXvYqy/RC14KohSI8aaNfC8W69ti0COcczX0pr/6LRBlAsQ86y25mBPxnCCrjxp0EM2dnTcDzAdTgyu2dDDY4Eu//Q=
+X-Received: by 2002:a9d:3e50:: with SMTP id h16mr10571919otg.107.1567149717383;
+ Fri, 30 Aug 2019 00:21:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190827081043.15443-1-ulf.hansson@linaro.org> <201908291723.x7THNWMj097729@thunder2.prohost.de>
-In-Reply-To: <201908291723.x7THNWMj097729@thunder2.prohost.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 30 Aug 2019 09:19:28 +0200
-Message-ID: <CAPDyKFrRArZ-nMWZuf_zzYX4Bc6x925o43bVPzpOU1Tv22BREA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: core: Fix init of SD cards reporting an invalid VDD range
-To:     Manuel Presnitz <mail@mpy.de>
-Cc:     Linux MMC Development <linux-mmc@vger.kernel.org>
+References: <20190829183634.3376-1-tszucs@protonmail.ch>
+In-Reply-To: <20190829183634.3376-1-tszucs@protonmail.ch>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 30 Aug 2019 09:21:45 +0200
+Message-ID: <CAMuHMdVe_d6N8hhG0VNZMKAGwXm7kiOQVnqNkL9+6DbkBsKAZw@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhi: fill in actual_clock
+To:     =?UTF-8?B?VGFtw6FzIFN6xbFjcw==?= <tszucs@protonmail.ch>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 29 Aug 2019 at 19:42, Manuel Presnitz <mail@mpy.de> wrote:
->
-> Thanks for your efforts and the patch!
->
-> I tested it on my "Fujitsu Celsius H760" notebook running kernel version 5.2.7 (Arch). It has a "Realtek Semiconductor Co., Ltd. RTS524A PCI Express Card Reader" using the "rtsx_pci" module.
->
-> Without the patch my "SanDisk Extreme SD-XC UHS-I" card (128GB) had thrown the error "mmc0: error -110 whilst initialising SD card", but with the patch the very same card is recognized and is working flawlessly!
+Hi Tamás,
 
-That's great news, thanks for testing and reporting back!
+On Thu, Aug 29, 2019 at 8:37 PM Tamás Szűcs <tszucs@protonmail.ch> wrote:
+> Save set clock in mmc_host actual_clock enabling exporting it via debugfs.
+> This will indicate the precise SD clock in I/O settings rather than only the
+> sometimes misleading requested clock.
+>
+> Signed-off-by: Tamás Szűcs <tszucs@protonmail.ch>
 
-I all a tested-by tag from you, thanks!
+Thanks for the update!
 
-Kind regards
-Uffe
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+However, one question below.
+
+> --- a/drivers/mmc/host/renesas_sdhi_core.c
+> +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> @@ -166,10 +166,13 @@ static void renesas_sdhi_set_clock(struct tmio_mmc_host *host,
+>         sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, ~CLK_CTL_SCLKEN &
+>                 sd_ctrl_read16(host, CTL_SD_CARD_CLK_CTL));
+>
+> -       if (new_clock == 0)
+> +       if (new_clock == 0) {
+> +               host->mmc->actual_clock = 0;
+
+The actual clock is present in the debugfs output only when non-zero.
+Hence userspace cannot distinguish between an old kernel where the
+Renesas SDHI driver didn't fill in actual_clock, and a new kernel when
+the SDHI controller is powered down.
+Could that be an issue? Should the old value be retained?
+Probably it's OK, as this is debugfs, not an official ABI.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
