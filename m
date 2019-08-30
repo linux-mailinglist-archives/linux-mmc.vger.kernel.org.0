@@ -2,62 +2,52 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43126A3960
-	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 16:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 852CCA3C34
+	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 18:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727887AbfH3OjT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 30 Aug 2019 10:39:19 -0400
-Received: from mga12.intel.com ([192.55.52.136]:28588 "EHLO mga12.intel.com"
+        id S1728152AbfH3QkJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 30 Aug 2019 12:40:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44004 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727780AbfH3OjT (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 30 Aug 2019 10:39:19 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Aug 2019 07:39:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,447,1559545200"; 
-   d="scan'208";a="182666581"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 30 Aug 2019 07:39:17 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id EB46A10B; Fri, 30 Aug 2019 17:39:16 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1] mmc: mmc_spi: Convert to use for_each_sg()
-Date:   Fri, 30 Aug 2019 17:39:16 +0300
-Message-Id: <20190830143916.21793-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.23.0.rc1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727876AbfH3QkI (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 30 Aug 2019 12:40:08 -0400
+Subject: Re: [GIT PULL] MMC fixes for v5.3-rc7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567183208;
+        bh=3w05IZaFw4Zq4OAO+9qmAJjzhQNBpvbzD7cVOf/PzHY=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=nju5dpgjffgzJ0MZZWQSNobgA4vwXIxM75Uk2f6ElF8c7gATNXOVSmnGEaqoLG2rr
+         sx4Gbk1YeF49Ikct+gJZaudNm/FGxq48RKx7DDS+aew/fZsXuA8bL4kuZUbahzLLV2
+         G6ns5DNVIML74S9F7s1s586kqAVAKJi1Md5d8Ke4=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20190830074147.3691-1-ulf.hansson@linaro.org>
+References: <20190830074147.3691-1-ulf.hansson@linaro.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20190830074147.3691-1-ulf.hansson@linaro.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3-rc5
+X-PR-Tracked-Commit-Id: e73a3896eaca95ea5fc895720502a3f040eb4b39
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 0d70787b65941a8db36fd2c35d25c93178f8b545
+Message-Id: <156718320803.32023.885555795131888742.pr-tracker-bot@kernel.org>
+Date:   Fri, 30 Aug 2019 16:40:08 +0000
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Use for_each_sg() macro instead of open coded variant.
+The pull request you sent on Fri, 30 Aug 2019 09:41:47 +0200:
 
-No functional change intended.
+> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3-rc5
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/mmc/host/mmc_spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/0d70787b65941a8db36fd2c35d25c93178f8b545
 
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 19544b121276..66e354d51ee9 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -891,7 +891,7 @@ mmc_spi_data_do(struct mmc_spi_host *host, struct mmc_command *cmd,
- 	/* Handle scatterlist segments one at a time, with synch for
- 	 * each 512-byte block
- 	 */
--	for (sg = data->sg, n_sg = data->sg_len; n_sg; n_sg--, sg++) {
-+	for_each_sg(data->sg, sg, data->sg_len, n_sg) {
- 		int			status = 0;
- 		dma_addr_t		dma_addr = 0;
- 		void			*kmap_addr;
+Thank you!
+
 -- 
-2.23.0.rc1
-
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
