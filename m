@@ -2,56 +2,56 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1AD8A2CC7
-	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 04:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D0D0A2CCF
+	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 04:24:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727392AbfH3CX1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 22:23:27 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:37063 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727344AbfH3CX1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 22:23:27 -0400
-Received: by mail-pf1-f196.google.com with SMTP id y9so3512312pfl.4;
-        Thu, 29 Aug 2019 19:23:27 -0700 (PDT)
+        id S1727398AbfH3CYv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 22:24:51 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:41598 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727344AbfH3CYv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 22:24:51 -0400
+Received: by mail-pg1-f195.google.com with SMTP id x15so2668840pgg.8;
+        Thu, 29 Aug 2019 19:24:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=189g0JP68z9u+Ep1GWrcVIMocc6+TBCdAX4Yd+2DXKM=;
-        b=KZkZXYNnsSOYG4pBmr3NpVOqOvf7VPO/THlxI88gRD31nCWIDvzbA3wEhdyF6CqeMx
-         s4YmBLm2aN+FmjsRvg8q8i15zKSxJclUqrgQTVy+tiZWOuvEG46tp6993lhhpl+kG//i
-         7uVazj0a2Pzzs5r6VD3ZDCgAZjYbiVlRAKzZbgsGO1Lj6A3fTtKCLuXlwfjD37lPa2CV
-         EYWMgalEtjy5moP21SSxY9J/ZnwWmGPuGlgEoHm5tXjhUfmIUTvEKFY6RDau1nxan1xY
-         tEq4JVUrPHtznWP+gHW7k181+zOT/TVBHJ6ZTkRtdCbqz/6OrP+KLH0MT9Oen5K3qp4S
-         ikKQ==
+        bh=qfHiLZajGyQDnbfm/jvtW9Y9R5M2p7DW5ZQEIckHoIU=;
+        b=AEE15Scqgeqfee6h9MeLygul9EiReiKiMPLySc5IHgyQDjIttqvfWRkTeHoR9cQ4ZC
+         Bs8a+YMTsmvohPYqoa4ZISQRzf5MbaafXCVf/lvEbJCu/YCast/gVqy7hn3/3qniO9Zp
+         Ofm4j+/PgRGeegh9vSk86mryoeb+TAfrMK/i/vpVWwato9FosqnNRsyWn+mAB3evqWjT
+         Hkk7cBUThfvhb4JTR3JQdibcJEo7ZDKTj7ZigD0z56phvENT5F1Yjkq1PLGaV4nsoJHG
+         yFK5ephsFoBT9XYnA5TG8p/MCcpY5l6kRaY5bw4TtQ5y3k5JLUKLdfB7vcDzdMsAVV7s
+         PRJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=189g0JP68z9u+Ep1GWrcVIMocc6+TBCdAX4Yd+2DXKM=;
-        b=ThmgKEAkisuS63sKy0C5oxkZaHzcev/2aTpdwMbFm6nd3+USchIb/GBsVbEQLG2cJL
-         ugfk/4uCxFrzPhjZFWXPFh14Fqloi9ZevoOyzmqCJIOOOafrIxTeK8wZBOrbOKStSal1
-         GH7/cTYSB6tJ0ZBQaBuAQbTGLuyAWqcwnvlif6jFGLPtyfEy+4cyZHLeR+fHOzcZ44ju
-         LNGCawi/Q6osPPX0TIDB2rOBcVMNs0Udu26HjKCQJisw/9glOcuzmgurhuH46Ge8QIU5
-         MWLPGjjoSUdTdyJ/SxEqSzIzj8aUa8RJjQjEHNFnZQGHTx9x4qhXOFUWd1muy7Muny2T
-         WRJw==
-X-Gm-Message-State: APjAAAUI/zfBQZ6CA2g4ZdD3+T+jS0N6irMwX7qfe6w+HSVjwyPgQQrL
-        D9QmgwgpMnyXytbbywkcybA=
-X-Google-Smtp-Source: APXvYqz98XE7ZA33vSW3tGTSup6MQ14PIAiPIRYNP8U7FD5EtdNbLDTw2qEr2RUy8sVxZesoZ00FXw==
-X-Received: by 2002:a63:2c8:: with SMTP id 191mr10828976pgc.139.1567131807077;
-        Thu, 29 Aug 2019 19:23:27 -0700 (PDT)
+        bh=qfHiLZajGyQDnbfm/jvtW9Y9R5M2p7DW5ZQEIckHoIU=;
+        b=G1dMsfWqCbiWwYdN4aYM4ymK2o8NGPgyQan9dyE+O4ZwFEe+Kd+hUmO+v6v5NNR6jy
+         iYV9177BOrguY2c6KvqYfg6UgGdAVGcY05PRv1z1W34vUIc2EENzYwi7vg9j2st/xWyo
+         a0kVtt64AeEeSkCr2S+LNz54FD7olt8Yaske2l0Xj0NUi5BCRP13N9+mwmKSz0M3q8WO
+         bg5RBmLLQ0cE7IcAhm/u88rwUHLBVYdpnE1msA5ZWI3lak9V51F+B9txhTNWjzSVwxE+
+         k1pIoMcERpdyrl/OcImTP8jrZheXcYNMkzGv177Uw4KgyKpYKNv4P3EJhaxvkkzssYXE
+         bu5A==
+X-Gm-Message-State: APjAAAXIhDaCDPA8DWF2Jh2kIA7zTZcO8yaYtW5nCUqLbyeY4F83v38L
+        COto5gcyi4BZthdjGAk7geo=
+X-Google-Smtp-Source: APXvYqzHxjwFfhhNfzkE0ZbWpuup5FH96HqX+rEvBA5/FoBj8a68JGhKksj2O3CU5esDbG3a+sOx/A==
+X-Received: by 2002:a62:e50f:: with SMTP id n15mr12638906pff.208.1567131890874;
+        Thu, 29 Aug 2019 19:24:50 -0700 (PDT)
 Received: from gli-arch.genesyslogic.com.tw (60-251-58-169.HINET-IP.hinet.net. [60.251.58.169])
-        by smtp.gmail.com with ESMTPSA id l124sm8652379pgl.54.2019.08.29.19.23.25
+        by smtp.gmail.com with ESMTPSA id 6sm4890944pfa.7.2019.08.29.19.24.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 19:23:26 -0700 (PDT)
+        Thu, 29 Aug 2019 19:24:50 -0700 (PDT)
 From:   Ben Chuang <benchuanggli@gmail.com>
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
 Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         johnsonm@danlj.org, ben.chuang@genesyslogic.com.tw,
         Ben Chuang <benchuanggli@gmail.com>
-Subject: [PATCH V7 2/5] mmc: sdhci: Add PLL Enable support to internal clock setup
-Date:   Fri, 30 Aug 2019 10:23:25 +0800
-Message-Id: <20190830022325.8348-1-benchuanggli@gmail.com>
+Subject: [PATCH V7 3/5] PCI: Add Genesys Logic, Inc. Vendor ID
+Date:   Fri, 30 Aug 2019 10:24:49 +0800
+Message-Id: <20190830022449.8445-1-benchuanggli@gmail.com>
 X-Mailer: git-send-email 2.22.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -62,66 +62,29 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 
-The GL9750 and GL9755 chipsets, and possibly others, require PLL Enable
-setup as part of the internal clock setup as described in 3.2.1 Internal
-Clock Setup Sequence of SD Host Controller Simplified Specification
-Version 4.20.
+Add the Genesys Logic, Inc. vendor ID to pci_ids.h.
 
 Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 Co-developed-by: Michael K Johnson <johnsonm@danlj.org>
 Signed-off-by: Michael K Johnson <johnsonm@danlj.org>
 Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- drivers/mmc/host/sdhci.c | 23 +++++++++++++++++++++++
- drivers/mmc/host/sdhci.h |  1 +
- 2 files changed, 24 insertions(+)
+ include/linux/pci_ids.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index bed0760a6c2a..9106ebc7a422 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -1653,6 +1653,29 @@ void sdhci_enable_clk(struct sdhci_host *host, u16 clk)
- 		udelay(10);
- 	}
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 70e86148cb1e..4f7e12772a14 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2403,6 +2403,8 @@
+ #define PCI_DEVICE_ID_RDC_R6061		0x6061
+ #define PCI_DEVICE_ID_RDC_D1010		0x1010
  
-+	if (host->version >= SDHCI_SPEC_410 && host->v4_mode) {
-+		clk |= SDHCI_CLOCK_PLL_EN;
-+		clk &= ~SDHCI_CLOCK_INT_STABLE;
-+		sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
++#define PCI_VENDOR_ID_GLI		0x17a0
 +
-+		/* Wait max 150 ms */
-+		timeout = ktime_add_ms(ktime_get(), 150);
-+		while (1) {
-+			bool timedout = ktime_after(ktime_get(), timeout);
-+
-+			clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+			if (clk & SDHCI_CLOCK_INT_STABLE)
-+				break;
-+			if (timedout) {
-+				pr_err("%s: PLL clock never stabilised.\n",
-+				       mmc_hostname(host->mmc));
-+				sdhci_dumpregs(host);
-+				return;
-+			}
-+			udelay(10);
-+		}
-+	}
-+
- 	clk |= SDHCI_CLOCK_CARD_EN;
- 	sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
- }
-diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
-index 199712e7adbb..72601a4d2e95 100644
---- a/drivers/mmc/host/sdhci.h
-+++ b/drivers/mmc/host/sdhci.h
-@@ -114,6 +114,7 @@
- #define  SDHCI_DIV_HI_MASK	0x300
- #define  SDHCI_PROG_CLOCK_MODE	0x0020
- #define  SDHCI_CLOCK_CARD_EN	0x0004
-+#define  SDHCI_CLOCK_PLL_EN	0x0008
- #define  SDHCI_CLOCK_INT_STABLE	0x0002
- #define  SDHCI_CLOCK_INT_EN	0x0001
+ #define PCI_VENDOR_ID_LENOVO		0x17aa
  
+ #define PCI_VENDOR_ID_QCOM		0x17cb
 -- 
 2.22.1
 
