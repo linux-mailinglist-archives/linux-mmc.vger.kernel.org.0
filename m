@@ -2,56 +2,56 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A217A2CB3
-	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 04:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A405EA2CC5
+	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 04:23:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727361AbfH3CUn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Aug 2019 22:20:43 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:41335 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727351AbfH3CUn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 22:20:43 -0400
-Received: by mail-pg1-f194.google.com with SMTP id x15so2663199pgg.8;
-        Thu, 29 Aug 2019 19:20:42 -0700 (PDT)
+        id S1727361AbfH3CXM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Aug 2019 22:23:12 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:43144 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727344AbfH3CXM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Aug 2019 22:23:12 -0400
+Received: by mail-pf1-f194.google.com with SMTP id v12so3496405pfn.10;
+        Thu, 29 Aug 2019 19:23:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=TRHcnIepKK5U2wNfUCScZ2wTbvSrlBuU+oVE4yt3loQ=;
-        b=j37L7Al5CTzS+uEeWPzG2no8G3GAm82pD6DnC65KkfBWv5UCKc3ENxVPfnx6NE2nRp
-         VkpT1IFhadWb6iQ33X3JNpeqk5kHDhzElJrwOM2rLFit00Iq9oEljm/GHeIm9dFSZc0f
-         WJBrJx8zmiEY29bfQ+iOriHew+ACzyDJqtMsT8OagSkrG5gVHbJ5yXYeGk6cWxMdA7Tt
-         gnlNAvleoZUXm80Ylbaf/KyXZFmVJhNBIbsnYPtJCNoefKGLl2eXY/7+tjM2i4oF//yf
-         dJ8qMMhcoYiYz5NJt29AY+bQnRm7lG47ddugbr05HFShK60EmXa9DaxS0NPXevd8Li4Z
-         tliw==
+        bh=kyP8YtTFMbDNG7qsSo2w5pZq5BUurmqPvqGOvI+33I4=;
+        b=rWDWXTP702wCGI624fpXgt3wQTyudNC5ks+AxLmDINU0IG4hpia4jffy04LubJ+6FJ
+         3J9fzomGghyOAFnNdIHOF92yQes/q9vsDG6AtSF/MYC/5/NC68QPpTardqn+t/tyrxpI
+         64Ic+KzV2muXl7r97bMzxEH53rWDI9omFh9KAdJp+QBPzhDyDRMLZigFWK6Ux4nrOGln
+         +jpirFjI3lO1Z1hy+s54+fHYuX++TiY7g6IthPlRxKstTiCD7XEsSRP9ilR3O/mE81oR
+         zAcgaDkXM47vtcrkUMlMGeKuDfA5hxP97i/uXSpo/OuBUvySOy2UqQZFEwuTu3NFwizs
+         Y1DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=TRHcnIepKK5U2wNfUCScZ2wTbvSrlBuU+oVE4yt3loQ=;
-        b=eqjp57+t2sjJBZzL+12qozNxqrEIWN0zCuM8m/2GUBh6YNaEV5Y8C4cReThekvvXlp
-         blNCXETledy9jSmYOBiXkyDCET0/z2xWyn468IeFkd5tL0AtvvTfsGESwKF0vZ/kYhiS
-         RUbJnohI86m1WFWXwFycbSZoDXo0aqd+EqjK+MbrFaKP5b4V3nfe6nUf9S73GiCaTaW8
-         /y/Ao0yBwGr72gu53bH7pIN5EiQX0eIs9JLnU80E8cUzXs8gEXy92du9+aVCFrbpM6mT
-         9gHm0uu4yr3TWblxLO4wtp/qexQRpDx6mnWYjwQIqSXpqHzT74qJBgrulDTcGwMp0UaN
-         9aNw==
-X-Gm-Message-State: APjAAAXKTYZ30dy8KjWXgVr3raDkjSf//fH7sua87AeUEIL0T+vsNFoK
-        B13OP+/YR3JCKDzDNND3HzI=
-X-Google-Smtp-Source: APXvYqyRQP2+H5hOEHYHiDdlJiEP9CNZ/q0q1WYaIpeXgasDhwLdBANWFCseWJcs8sXVL97EjQYI1w==
-X-Received: by 2002:a62:3046:: with SMTP id w67mr9486666pfw.5.1567131642214;
-        Thu, 29 Aug 2019 19:20:42 -0700 (PDT)
+        bh=kyP8YtTFMbDNG7qsSo2w5pZq5BUurmqPvqGOvI+33I4=;
+        b=gytAb3y4fOVZzvhxhg99ieCDR2B1nKK6kNzC0ywF47hUfSlLM28nQJkRVl5u1GVz4A
+         Ss5+i34Ez/z37k/QUAe3M2+SZH5Iwb/I2uya4VII7iCO6Qjb0i96nyBuRF2mOjqAkKgK
+         CiGTsSSK+qt+1fRXUVQHdje/lqNdifnFznJ+Hk0iPfbmp7qiN0mfbsNl229WmpHEwwW8
+         4hasCFMLZPYFPBjkprIGGBB99wUKridUm1NC2LEjLSHLH/1DkbKUAQF15s/TGFAv6XKO
+         aZ2HW1mOe/sKwONbmMnGuRTUdb9SQXkTvow2e9/BizwFOeiKR5e1rBZXf5EBH5ThlpHf
+         0+RA==
+X-Gm-Message-State: APjAAAV8NRRkPujBzWC0MtE7BNhmahaX3I+CxO8zbPBJVlR47trsLq6+
+        Vz7PXPHKSCLijA67vp7Z6UA6FQgg
+X-Google-Smtp-Source: APXvYqwNoezNZPMbXavWEQcLm3PgRE/QzsUs6IR2c9RsVMOYbOJ/axfZDqM7Kc++s47GBrpL7Emfhw==
+X-Received: by 2002:a62:8344:: with SMTP id h65mr15360588pfe.85.1567131791880;
+        Thu, 29 Aug 2019 19:23:11 -0700 (PDT)
 Received: from gli-arch.genesyslogic.com.tw (60-251-58-169.HINET-IP.hinet.net. [60.251.58.169])
-        by smtp.gmail.com with ESMTPSA id u16sm3104843pgm.83.2019.08.29.19.20.39
+        by smtp.gmail.com with ESMTPSA id a11sm3231896pju.2.2019.08.29.19.23.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 19:20:41 -0700 (PDT)
+        Thu, 29 Aug 2019 19:23:11 -0700 (PDT)
 From:   Ben Chuang <benchuanggli@gmail.com>
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
 Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         johnsonm@danlj.org, ben.chuang@genesyslogic.com.tw,
         Ben Chuang <benchuanggli@gmail.com>
-Subject: [PATCH V7 0/5] Add Genesys Logic GL975x support
-Date:   Fri, 30 Aug 2019 10:20:39 +0800
-Message-Id: <20190830022039.8210-1-benchuanggli@gmail.com>
+Subject: [PATCH V7 1/5] mmc: sdhci: Change timeout of loop for checking internal clock stable
+Date:   Fri, 30 Aug 2019 10:23:10 +0800
+Message-Id: <20190830022310.8299-1-benchuanggli@gmail.com>
 X-Mailer: git-send-email 2.22.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -62,58 +62,33 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 
-The patches modify internal clock setup to match SD Host Controller
-Simplified Specifications 4.20 and support Genesys Logic GL9750/GL9755 chipsets.
+According to section 3.2.1 internal clock setup in SD Host Controller
+Simplified Specifications 4.20, the timeout of loop for checking
+internal clock stable is defined as 150ms.
 
-v7:
- - remove condition define CONFIG_MMC_SDHCI_IO_ACCESSORS from sdhci-pci-gli.c
- - making the accessors(MMC_SDHCI_IO_ACCESSORS) always available when selecting
-   MMC_SDHCI_PCI in Kconfig
+Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Co-developed-by: Michael K Johnson <johnsonm@danlj.org>
+Signed-off-by: Michael K Johnson <johnsonm@danlj.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+---
+ drivers/mmc/host/sdhci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-V6:
- - export sdhci_abot_tuning() function symbol
- - use C-style comments
- - use BIT, FIELD_{GET,PREP} and GENMASK to define bit fields of register
- - use host->ops->platform_execute_tuning instead of mmc->ops->execute_tuning
- - call sdhci_reset() instead of duplicating the code in sdhci_gl9750_reset
- - remove .hw_reset 
- - use condition define CONFIG_MMC_SDHCI_IO_ACCESSORS for read_l
-
-V5:
- - add "change timeout of loop .." to a patch
- - fix typo "verndor" to "vendor"
-
-V4:
- - change name from sdhci_gli_reset to sdhci_gl9750_reset
- - fix sdhci_reset to sdhci_gl9750_reset in sdhci_gl9750_ops
- - fix sdhci_gli_reset to sdhci_reset in sdhci_gl9755_ops
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 59acf8e3331e..bed0760a6c2a 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -1636,8 +1636,8 @@ void sdhci_enable_clk(struct sdhci_host *host, u16 clk)
+ 	clk |= SDHCI_CLOCK_INT_EN;
+ 	sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
  
-V3:
- - change usleep_range to udelay
- - add Genesys Logic PCI Vendor ID to a patch
- - separate the Genesys Logic specific part to a patch
-
-V2:
- - change udelay to usleep_range
-
-Ben Chuang (5):
-  mmc: sdhci: Change timeout of loop for checking internal clock stable
-  mmc: sdhci: Add PLL Enable support to internal clock setup
-  PCI: Add Genesys Logic, Inc. Vendor ID
-  mmc: sdhci: Export sdhci_abort_tuning function symbol
-  mmc: host: sdhci-pci: Add Genesys Logic GL975x support
-
- drivers/mmc/host/Kconfig          |   1 +
- drivers/mmc/host/Makefile         |   2 +-
- drivers/mmc/host/sdhci-pci-core.c |   2 +
- drivers/mmc/host/sdhci-pci-gli.c  | 350 ++++++++++++++++++++++++++++++
- drivers/mmc/host/sdhci-pci.h      |   5 +
- drivers/mmc/host/sdhci.c          |  30 ++-
- drivers/mmc/host/sdhci.h          |   2 +
- include/linux/pci_ids.h           |   2 +
- 8 files changed, 390 insertions(+), 4 deletions(-)
- create mode 100644 drivers/mmc/host/sdhci-pci-gli.c
-
+-	/* Wait max 20 ms */
+-	timeout = ktime_add_ms(ktime_get(), 20);
++	/* Wait max 150 ms */
++	timeout = ktime_add_ms(ktime_get(), 150);
+ 	while (1) {
+ 		bool timedout = ktime_after(ktime_get(), timeout);
+ 
 -- 
 2.22.1
 
