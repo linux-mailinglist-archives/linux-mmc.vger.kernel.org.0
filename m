@@ -2,115 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5998A3150
-	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 09:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0087A3173
+	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2019 09:46:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728527AbfH3Hlx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 30 Aug 2019 03:41:53 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:38482 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727916AbfH3Hlw (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 30 Aug 2019 03:41:52 -0400
-Received: by mail-lj1-f196.google.com with SMTP id x3so5560789lji.5
-        for <linux-mmc@vger.kernel.org>; Fri, 30 Aug 2019 00:41:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=PHzpuIcTRjA1mq8KL5MN0wJTgcqsL2rY6mp+YXB52Ls=;
-        b=hfPabs5hMPL1EJxJkAJjbgTZUMT+5b1e3bLviGhv9lgFwvTGdleR3fO8EI20ZW4355
-         UEEbFWGrQNXnAtb4gagdSUl261WsGq6GKEeen2ycendY/OatHM5RrjTlDDLYkatxbdlW
-         B/NR9cK4bMa3SvLVZ4ec+BKSX1KFNshlwWvc1oX3IbwEEHkFGnDpnHNlYdiNotdOUN3R
-         NEtZIU35z9GnyGsAVjQSdVzYzcjoY0SViHowyfnc2t/no0u5E26YbmChxVnLwpvYEh+E
-         Vt2KVQEByvtuJ+duAeYBHa6BZEyPNj7/4M8vDOiWZQGSCDSFVIpvJn7wsqGahqXx+874
-         50Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=PHzpuIcTRjA1mq8KL5MN0wJTgcqsL2rY6mp+YXB52Ls=;
-        b=KY1zXQLTzscrPahwNodOoP4c5XUPlgqpM7SvnFPbG0V62r8BsR9Bb/MM9WjgSmbc/w
-         rX93EoGllD4SWee0QwOCXdUxmVWyaIKgNc7Ovp7C72z0LbNCTN+Z9bJGGYGlWEY/yKE8
-         JCNbiSrmF4/nJzE6fENBwFwpDNONe+kwB3Q/LV2xWAT/4HjPvBzBChyXK5KmqJFqc8Tm
-         aAGCg8sggf7+k7UgqpQutElIpLXh/8RcZqpre1gTqxSoqvuKL7EENyAM+yFLqRLZoUI4
-         MsPiGWebnPXgNuio8kjLZr3Eob8eTMe4cXC38AJNEomuox1n0UInucy4QwqgtMcPu2ZP
-         /qpg==
-X-Gm-Message-State: APjAAAWELKya+wBqI58vWqukd5SQ3dT3+2Q+Foad4omqYGHDLjRpGFtt
-        2IMoSZKOz2ZMHzCMiOJ/Jn4wZQ==
-X-Google-Smtp-Source: APXvYqyMKbsWiChlmyh4S1z7TBoAjspNNmohTUFxHh0jW3nfrhk/M/R0o7Ru4+/2nY1j8l+PByVLjQ==
-X-Received: by 2002:a2e:8085:: with SMTP id i5mr7888581ljg.23.1567150909990;
-        Fri, 30 Aug 2019 00:41:49 -0700 (PDT)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id u13sm714119ljj.40.2019.08.30.00.41.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Aug 2019 00:41:49 -0700 (PDT)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC fixes for v5.3-rc7
-Date:   Fri, 30 Aug 2019 09:41:47 +0200
-Message-Id: <20190830074147.3691-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        id S1727156AbfH3Hqj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 30 Aug 2019 03:46:39 -0400
+Received: from out2-smtp.messagingengine.com ([66.111.4.26]:51115 "EHLO
+        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727054AbfH3Hqj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 30 Aug 2019 03:46:39 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 1AFE3210F2;
+        Fri, 30 Aug 2019 03:46:38 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Fri, 30 Aug 2019 03:46:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=from
+        :to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=fm3; bh=wOiPzLG3FhxjtzR8rsBkC79oy1
+        3YcSX1rCw5Ip7LvOk=; b=QOcqzeZAvNkdX0XrmuI/41pdvneLhtVk+adFkiK8Jd
+        xkjTDB/Z9UdtH6CVT9XFRrU/m178LYhbaH2qF6bmU7Lggshign+2mhLdsXyEWE27
+        gpaAS4ua+CTurEp0IYTrFRUdowCdzsLTEIfa1fz8cK+Pmo2p5KECYYOfmMDErOsI
+        Ltj1V/zoQw8Xk0PMhZtkZs2IP24Ror++YkMtw957Horncu1zNHSvL+WT3xrx9EQV
+        2uznitynpymlwI2uLLx4IIfDCHUv6QEYWOexettkzzJi3I4yx02lTJan4o6T5Qmy
+        XNPnVssx/tyE4D4Bxrc0hTculT/caS1QFOApUkJN0xxg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=wOiPzLG3FhxjtzR8r
+        sBkC79oy13YcSX1rCw5Ip7LvOk=; b=1H1dbsIzWAOdpx7lcBsSNh8xQqir/bqpa
+        RoEpc/IGrrncVUYSadJU7HPmajDudhVbyVrpigJNt5KyfoDRBpwBZNj0FdipJ4V3
+        FVs2kG46zuICyI10xicke0dyWyXq0HlIsppHg3CEW4cJl/Q5RbY4tVmpgfOenWr+
+        DgHPXTROLbPLr95ZJ0bl7qvSpK6pomU4Atc2eNVhUEZuC4TewLA+WEdJcnuT9qpp
+        +zl+p5xRnTT/+o3K0syw2rE6wfa1oIGs9OaDbrFuUw4CKnR/vXH2h2/kqnMKYuW5
+        gtUiMsmM7CHNp4REMN7vnO2cOV+pEIze9Mpzdpyb/WlQzMG85cdtQ==
+X-ME-Sender: <xms:WtRoXRJpycpv8bq9ZYWroPC8dbNZoOC0f2YgaZHEgarQTFwEw91DuQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudeifedguddvudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecunecujfgurhephffvufffkffoggfgsedtkeertd
+    ertddtnecuhfhrohhmpeetnhgurhgvficulfgvfhhfvghrhicuoegrnhgurhgvfiesrghj
+    rdhiugdrrghuqeenucfkphepvddtfedrheejrddvudehrddujeeknecurfgrrhgrmhepmh
+    grihhlfhhrohhmpegrnhgurhgvfiesrghjrdhiugdrrghunecuvehluhhsthgvrhfuihii
+    vgeptd
+X-ME-Proxy: <xmx:WtRoXcIydX4ajN2Gjn9zQkLTF4IiE2BLocK07jfkTD3KszNDJHPsDQ>
+    <xmx:WtRoXWXWcxCsps0CZuPIVgBiChwt0G4adj1xuuBksRthQwbU6ee2ug>
+    <xmx:WtRoXcndN8ysDArbdYrXJJaDuFj5qQdg9N5gmHgcQEPxfIW5VKsTsA>
+    <xmx:XtRoXX_-l60JPiQyz7jdX98IQDRAUYIPlvirQihJA0cHDfMTcS3_tw>
+Received: from localhost.localdomain (203-57-215-178.dyn.iinet.net.au [203.57.215.178])
+        by mail.messagingengine.com (Postfix) with ESMTPA id D8181D60057;
+        Fri, 30 Aug 2019 03:46:30 -0400 (EDT)
+From:   Andrew Jeffery <andrew@aj.id.au>
+To:     linux-mmc@vger.kernel.org
+Cc:     Andrew Jeffery <andrew@aj.id.au>, adrian.hunter@intel.com,
+        ulf.hansson@linaro.org, joel@jms.id.au, ryanchen.aspeed@gmail.com,
+        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] mmc: sdhci-of-aspeed: Fixes for AST2600 eMMC support
+Date:   Fri, 30 Aug 2019 17:16:42 +0930
+Message-Id: <20190830074644.10936-1-andrew@aj.id.au>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+Hello,
 
-Here's a PR with a couple of MMC fixes intended for v5.3-rc7. Details about the
-highlights are as usual found in the signed tag.
+The ASPEED SDHCI driver patches sent previously were based on testing on the
+AST2500. The SD controllers in the 2500 and 2600 had the same register layout
+according to the documentation, so we added the necessary devicetree compatible
+string at the same time.
 
-Please pull this in!
+Now that I've got access to 2600 hardware with an eMMC chip I have a couple of
+patches that are fixes enabling support for it. I don't think the first patch
+is too controversial - in some cases we weren't ensuring the clock was enabled
+before returning from the set_clock() callback.
 
-Kind regards
-Ulf Hansson
+I'm a bit unsure about the second patch though which enables use of
+max-frequency in the devicetree, it feels a bit hacky so I'm looking for any
+suggestions on the approach.
 
+Please review!
 
-The following changes since commit d1abaeb3be7b5fa6d7a1fbbd2e14e3310005c4c1:
+Andrew
 
-  Linux 5.3-rc5 (2019-08-18 14:31:08 -0700)
+Andrew Jeffery (2):
+  mmc: sdhci-of-aspeed: Uphold clocks-on post-condition of set_clock()
+  mmc: sdhci-of-aspeed: Allow max-frequency limitation of SDCLK
 
-are available in the Git repository at:
+ drivers/mmc/host/sdhci-of-aspeed.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3-rc5
+-- 
+2.20.1
 
-for you to fetch changes up to e73a3896eaca95ea5fc895720502a3f040eb4b39:
-
-  mmc: sdhci-cadence: enable v4_mode to fix ADMA 64-bit addressing (2019-08-30 09:17:53 +0200)
-
-----------------------------------------------------------------
-MMC core:
- - Fix init of SD cards reporting an invalid VDD range
-
-MMC host:
- - sdhci-sprd: Fixes for clocks, card-detect, write-protect etc
- - sdhci-cadence: Fix ADMA 64-bit addressing
- - sdhci-tegra: Re-allow writing to SD card when GPIO pin is absent
- - sdhci-of-at91: Fix eMMC init by clearing HS200 cap as it's not supported
-
-----------------------------------------------------------------
-Chunyan Zhang (5):
-      mmc: sdhci-sprd: fixed incorrect clock divider
-      mmc: sdhci-sprd: add get_ro hook function
-      mmc: sdhci-sprd: add SDHCI_QUIRK2_PRESET_VALUE_BROKEN
-      mms: sdhci-sprd: add SDHCI_QUIRK_BROKEN_CARD_DETECTION
-      mmc: sdhci-sprd: clear the UHS-I modes read from registers
-
-Dmitry Osipenko (1):
-      Revert "mmc: sdhci-tegra: drop ->get_ro() implementation"
-
-Eugen Hristev (1):
-      mmc: sdhci-of-at91: add quirk for broken HS200
-
-Masahiro Yamada (1):
-      mmc: sdhci-cadence: enable v4_mode to fix ADMA 64-bit addressing
-
-Ulf Hansson (1):
-      mmc: core: Fix init of SD cards reporting an invalid VDD range
-
- drivers/mmc/core/sd.c            |  6 ++++++
- drivers/mmc/host/sdhci-cadence.c |  1 +
- drivers/mmc/host/sdhci-of-at91.c |  3 +++
- drivers/mmc/host/sdhci-sprd.c    | 30 +++++++++++++++++++++++++-----
- drivers/mmc/host/sdhci-tegra.c   | 14 ++++++++++++++
- 5 files changed, 49 insertions(+), 5 deletions(-)
