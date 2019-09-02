@@ -2,80 +2,212 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E8B4A5DA4
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Sep 2019 23:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD0A2A5DB9
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 00:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726933AbfIBVrE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 2 Sep 2019 17:47:04 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:35157 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727594AbfIBVrE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 2 Sep 2019 17:47:04 -0400
-Received: by mail-pl1-f194.google.com with SMTP id gn20so6989417plb.2
-        for <linux-mmc@vger.kernel.org>; Mon, 02 Sep 2019 14:47:03 -0700 (PDT)
+        id S1727780AbfIBWF3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 2 Sep 2019 18:05:29 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:44906 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727775AbfIBWF3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 2 Sep 2019 18:05:29 -0400
+Received: by mail-pg1-f195.google.com with SMTP id i18so7981365pgl.11;
+        Mon, 02 Sep 2019 15:05:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=bE3CAGhnJZegvIyfQXiX7dFDWRKDXbLDv++b0LQi4ZA=;
-        b=j/KvpmYKp5WcE2QOK0RAlwqt+IgtxvzMAxVB8SmfSj0/pOnQV6c2CsE3AhMxEGZ7LO
-         QHoUNeRRlAwj6j2iwtZMqBLNwFsXOT9docsS2b86DNBZRE7vNX7MG+axOrC0MA0QnjMK
-         luQSr0KbW9tQ2SEmb7nPpFCRhkC0RIOVXlh6YM9O9Sg5g4VbVYdjagxeLsMMSHm1rQ8e
-         aMJlnnuzI09Dj53mES7Bzt4WXwZ7m8nyMMU4IWG3o+BPiGpZheP82fcUcJgEI2yw7ZfR
-         eqQhoJTb5btqwS+2uAS9Etps6GRDO9Glz3AxMp0Z2mFP73H+Vhjy02G6cpdk6gJVBPny
-         pEbA==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qheEaqbo7JPkZrd6C0f084OuMiH7jmWGMxuDz2HD13Q=;
+        b=kJNxvgSJhbmsCH9tyXj23F4iPNyvuMKdcr8FWc6ZElFc18oDscBjGvhUJ3PDIDa9iU
+         CWGMW8m0sfdiBv6oQKDmlHwGdaRrbDDsSk1fiYkdJiljmZ8bD7aeFxodRED39OPOciID
+         kLhBZ/GpY30Oz0enJF9Tbps8pXSxb2zZa/a+7X25NXaJIwMhskAZpads3GF8jKVbCzfF
+         UG8UVILu8KHtxM6J0I7uiUfloT06mcdkspYdZgQ0xGhU8fL+/BZx9oHrTNHxNAeR7vBX
+         A5nGgwQHMq09NTH3jOsTZQ+wYO2v2VcMfL9uUY6cVdKftHC1eM0ubd/k8F27n+hIQ6NZ
+         NMUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=bE3CAGhnJZegvIyfQXiX7dFDWRKDXbLDv++b0LQi4ZA=;
-        b=t1XKRrO4+sb+2mwfMj3Q3Xynwv88R0wE/1BVyKY+QvbLUvEAI2CFgiKM5BPMem0R4j
-         glBjjRAZiDoW0BxmYaJbjfdYphKmgOSIaHsf46r+hQDq0ZbtkUe62KCkthYwMkSkDKHD
-         QLBiCRjT7Lx6dCea1flxhQmEIEDBOXKNmCVQ+o0SVyEOHwGbPbNNFJIfERni4bjvFAx+
-         TXjXQGlk52xL1E7UuhDSfCsSUQK/liyQT6+M/dIPUXgublRLsXM9RAiIlq7ok6efUjuE
-         cT9nEw4YI1mdUQOyBWuP4DxsPof2GvG6wA5jwwPylbKzkxm5J6iYEWflAk0sUAcopx4A
-         bk4A==
-X-Gm-Message-State: APjAAAWn6QGKQxI2gyheK/2i9TniVlTY/14J8z3qdOZ5N7QnXbdimInW
-        DDvFbSDY8nUtD9EgaM4AT2kkKg==
-X-Google-Smtp-Source: APXvYqyJzfQKPBEQy19FPz3Lq5G4NPwWwbdV/9eJxkhq7nV/UN/iSGM54S9/O1hVayoRRjcFiYFOTA==
-X-Received: by 2002:a17:902:b48c:: with SMTP id y12mr5329126plr.92.1567460823386;
-        Mon, 02 Sep 2019 14:47:03 -0700 (PDT)
-Received: from [192.168.1.188] (66.29.164.166.static.utbb.net. [66.29.164.166])
-        by smtp.gmail.com with ESMTPSA id 71sm20770525pfw.157.2019.09.02.14.47.01
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 02 Sep 2019 14:47:02 -0700 (PDT)
-Subject: Re: [PATCH v10 3/4] block: add a helper function to merge the
- segments
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        ulf.hansson@linaro.org, hch@lst.de, m.szyprowski@samsung.com,
-        robin.murphy@arm.com, joro@8bytes.org
-Cc:     wsa+renesas@sang-engineering.com, linux-mmc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-block@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-References: <1566995743-5614-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1566995743-5614-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <e549e8e7-9dfe-6f68-2148-f49a9089db37@kernel.dk>
-Date:   Mon, 2 Sep 2019 15:47:00 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qheEaqbo7JPkZrd6C0f084OuMiH7jmWGMxuDz2HD13Q=;
+        b=X37D1YaYWRl4XNzEi9PGkRIIwE92izMHJz/fcZ7ybEaegTPueofKx8nuNt81YV+KDu
+         naCCjQ1N0jyySaNg5CMz6r2fzn70B0oL523fR1oNHGEKCseDTlTwrR5MDQDg1w+VJk6d
+         +VY1NIU5NV+SMCf67/dKOtbqR82aL5UPjbK3Tsw07NwPi/LGLoyjCu9yV7KLccleOJI1
+         bIAlcqtkTGvQsu4tg/CoH7qbVXLtCRvHMcg9OgV7SwwjrdkQD5S2fvUqB+lJjrhBJ/tt
+         sdio1vQmikcXMNRzBjhagCUOFdI2Q+FKOMV0n6b0gJWx26ZSSG0r20DgQauzDgy0dJRU
+         C1DQ==
+X-Gm-Message-State: APjAAAVxm4w3Xd2pxQmY9avLINSRPkQnXffNRMOS1rw2TBOfVmXP0y+Z
+        X9JPWKZf341gqbNJKh5AqpGjPr1NFXtve+Sa3zU=
+X-Google-Smtp-Source: APXvYqyasWDR1xLzwKeqcueQCv5COBd18dK6l6Wtf8Qyqbkz2ADCtnVUtROABP8V561xswifjBnUL/RTRzK3s2Ew4Qs=
+X-Received: by 2002:a17:90a:bf01:: with SMTP id c1mr15294811pjs.30.1567461928498;
+ Mon, 02 Sep 2019 15:05:28 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1566995743-5614-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190830022542.8571-1-benchuanggli@gmail.com>
+In-Reply-To: <20190830022542.8571-1-benchuanggli@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 3 Sep 2019 01:05:16 +0300
+Message-ID: <CAHp75Vfx4FukybSjQjiNNQpHUNQrUsvwOen4ibqxOONKTJNxww@mail.gmail.com>
+Subject: Re: [PATCH V7 5/5] mmc: host: sdhci-pci: Add Genesys Logic GL975x support
+To:     Ben Chuang <benchuanggli@gmail.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        johnsonm@danlj.org, ben.chuang@genesyslogic.com.tw
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 8/28/19 6:35 AM, Yoshihiro Shimoda wrote:
-> This patch adds a helper function whether a queue can merge
-> the segments by the DMA MAP layer (e.g. via IOMMU).
+On Fri, Aug 30, 2019 at 5:28 AM Ben Chuang <benchuanggli@gmail.com> wrote:
+>
+> From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+>
+> Add support for the GL9750 and GL9755 chipsets.
+>
+> Enable v4 mode and wait 5ms after set 1.8V signal enable for GL9750/
+> GL9755. Fix the value of SDHCI_MAX_CURRENT register and use the vendor
+> tuning flow for GL9750.
+>
 
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
+> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+
+Usually last one for latest developer / submitter goes on.
+
+> Co-developed-by: Michael K Johnson <johnsonm@danlj.org>
+> Signed-off-by: Michael K Johnson <johnsonm@danlj.org>
+
+
+> +#define GLI_MAX_TUNING_LOOP 40
+
+
+> +static void gli_set_9750(struct sdhci_host *host)
+> +{
+> +       u32 driving_value = 0;
+> +       u32 pll_value = 0;
+> +       u32 sw_ctrl_value = 0;
+> +       u32 misc_value = 0;
+> +       u32 parameter_value = 0;
+> +       u32 control_value = 0;
+
+> +
+
+Redundant blank line.
+
+> +       u16 ctrl2 = 0;
+
+Do you need these all assignments above?
+
+> +       driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
+> +       pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
+> +       sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
+> +       misc_value = sdhci_readl(host, SDHCI_GLI_9750_MISC);
+> +       parameter_value = sdhci_readl(host, SDHCI_GLI_9750_TUNING_PARAMETERS);
+> +       control_value = sdhci_readl(host, SDHCI_GLI_9750_TUNING_CONTROL);
+
+
+
+> +
+> +       udelay(1);
+
+This misses the answer to question why. Why this is needed and why
+timeout is this long?
+
+> +
+> +       gl9750_wt_off(host);
+> +}
+
+> +static int __sdhci_execute_tuning_9750(struct sdhci_host *host, u32 opcode)
+> +{
+> +       int i;
+
+> +       int rx_inv = 0;
+
+Duplicate assignment.
+
+> +
+> +       for (rx_inv = 0; rx_inv < 2; rx_inv++) {
+
+> +               if (rx_inv & 0x1)
+> +                       gli_set_9750_rx_inv(host, true);
+> +               else
+> +                       gli_set_9750_rx_inv(host, false);
+
+gli_set_...(host, !!rx_inv);
+
+> +
+> +               sdhci_start_tuning(host);
+> +
+> +               for (i = 0; i < GLI_MAX_TUNING_LOOP; i++) {
+> +                       u16 ctrl;
+> +
+> +                       sdhci_send_tuning(host, opcode);
+> +
+> +                       if (!host->tuning_done) {
+
+> +                               if (rx_inv == 1) {
+
+It's an invariant to the loop. So, you may do this check after outter loop.
+
+> +                                       pr_info("%s: Tuning timeout, falling back to fixed sampling clock\n",
+> +                                               mmc_hostname(host->mmc));
+
+> +                                       sdhci_abort_tuning(host, opcode);
+
+It will also de-duplicates this call.
+
+> +                                       return -ETIMEDOUT;
+> +                               }
+> +                               sdhci_abort_tuning(host, opcode);
+> +                               break;
+> +                       }
+
+> +               }
+> +       }
+> +
+> +       pr_info("%s: Tuning failed, falling back to fixed sampling clock\n",
+> +               mmc_hostname(host->mmc));
+> +       sdhci_reset_tuning(host);
+> +       return -EAGAIN;
+> +}
+
+> +static void sdhci_gli_voltage_switch(struct sdhci_host *host)
+> +{
+
+Any comment why?
+
+> +       usleep_range(5000, 5500);
+> +}
+
+> +static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
+> +{
+> +       u32 value;
+> +
+> +       value = readl(host->ioaddr + reg);
+
+> +       if (unlikely(reg == SDHCI_MAX_CURRENT)) {
+> +               if (!(value & 0xff))
+> +                       value |= 0xc8;
+> +       }
+
+if (a) {
+ if (b) {
+   ...
+ }
+}
+
+is the same as
+
+if (a && b) {
+ ...
+}
+
+> +       return value;
+> +}
+
+> +#define PCI_DEVICE_ID_GLI_9755         0x9755
+> +#define PCI_DEVICE_ID_GLI_9750         0x9750
 
 -- 
-Jens Axboe
-
+With Best Regards,
+Andy Shevchenko
