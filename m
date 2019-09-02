@@ -2,138 +2,147 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A75CA4E07
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Sep 2019 05:58:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25AACA4E3A
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Sep 2019 06:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729531AbfIBD6r (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 1 Sep 2019 23:58:47 -0400
-Received: from wout4-smtp.messagingengine.com ([64.147.123.20]:44357 "EHLO
-        wout4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729262AbfIBD6q (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 1 Sep 2019 23:58:46 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 380EF428;
-        Sun,  1 Sep 2019 23:58:45 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Sun, 01 Sep 2019 23:58:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=from
-        :to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=fm3; bh=L4EL0S354nCKb
-        obvrleuPdmXpWAwO2XcwtXNi/sy4WI=; b=HARQ7LNhsamaQlUi8XrA9c9XgM4ej
-        okbinmIfdkOyLMUHlFVu/WfWYSw/P/uFClhEk5UhKy/7Kh1XOn7o2p5B1ebEEC1m
-        wJEf/MehcgXONCbfbtBZ1nNj5IbYQ5nIRaiAusgnk8jZPR1/60lHbifnOBhmTYa2
-        6T5ZTtzpfM3n4J5iU6nMK9EUtaFrXZLXHTjT9+HQioBA43n1DuH4Opn47cNwgSWC
-        xRjJ3w3EA18yEURb4nR2onFCWE37RNvHnkNVGEArpcZw0EELLlnFRdHFew3+auG2
-        bi/kwJx+YCp9LLCgfZvo7DuNo0C1/KHguKJajkz7Rh56gJ+F/89mfMqzw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:date:from
-        :in-reply-to:message-id:mime-version:references:subject:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; bh=L4EL0S354nCKbobvrleuPdmXpWAwO2XcwtXNi/sy4WI=; b=K/R8LjBG
-        ca3yJTTI1ErfnRSgU3X2raDIqDvDc3ZgFGyInGbt36buGSeTaWLQ22NVYJ2T+0Zt
-        vUs8RC03tmdAs/BgBE6yjM8xicWuRngV7nIZInFobiYsiOT8QQDeEYyxpAZw8idh
-        BjsSig2OcXirUzOkAp61cmsf257yoL0aKNxsJbeWFKPRqF/YvJFMM0zuLjzsMWEg
-        fVS9HtWDMO4Y10SUWRUWCOoqY7bbjkpCVBIdQHEQR7xfRjkoOd7lm/4MevUD92fR
-        6NJt+aIsqf25m1FPXScCN7s8BxUIwjNbDHbBP5fcCK7jZcIVm5xlBHvA91s9/n6E
-        Gr7ClhgjeKymag==
-X-ME-Sender: <xms:dJNsXS4FYebJUzXj6tQWUvzgWm-jkesn8Ws8e7AChMW2KBfR_wc6Cw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudeiledgjeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgjfhgggfestdekre
-    dtredttdenucfhrhhomheptehnughrvgifucflvghffhgvrhihuceorghnughrvgifsegr
-    jhdrihgurdgruheqnecukfhppedvtdefrdehjedrvdduhedrudejkeenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghnughrvgifsegrjhdrihgurdgruhenucevlhhushhtvghrufhi
-    iigvpeef
-X-ME-Proxy: <xmx:dJNsXeMsWIkZvls6181yCWKzUB2kZBpQ-lMIr2XHPYXkLJt8QKPfwQ>
-    <xmx:dJNsXQJs9gqGYmgbdw1I1_rwBwqpW6ZZkPB0QFX-JA9Rn26rC6pX3w>
-    <xmx:dJNsXcHe-ta20xQ8kutYalNx7E4OHCXasO3UrAD5cnrE-QjLrXVvlw>
-    <xmx:dJNsXYfkF93ocDMrpJ6G9XWLFCNDZm33KA0MKpD-u68-U8yPj3rhRA>
-Received: from localhost.localdomain (203-57-215-178.dyn.iinet.net.au [203.57.215.178])
-        by mail.messagingengine.com (Postfix) with ESMTPA id D8D6AD60062;
-        Sun,  1 Sep 2019 23:58:41 -0400 (EDT)
-From:   Andrew Jeffery <andrew@aj.id.au>
-To:     linux-mmc@vger.kernel.org
-Cc:     Andrew Jeffery <andrew@aj.id.au>, adrian.hunter@intel.com,
-        ulf.hansson@linaro.org, joel@jms.id.au, openbmc@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/4] mmc: sdhci-of-aspeed: Allow max-frequency limitation of SDCLK
-Date:   Mon,  2 Sep 2019 13:28:42 +0930
-Message-Id: <20190902035842.2747-5-andrew@aj.id.au>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190902035842.2747-1-andrew@aj.id.au>
-References: <20190902035842.2747-1-andrew@aj.id.au>
+        id S1726105AbfIBENE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 2 Sep 2019 00:13:04 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:34488 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725839AbfIBENE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 2 Sep 2019 00:13:04 -0400
+Received: by mail-qk1-f194.google.com with SMTP id q203so2226953qke.1;
+        Sun, 01 Sep 2019 21:13:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tEtrc1rdzh/Z7dC3mMEoNjpzKu9VEPrGxsmA4Ux5oa0=;
+        b=dN7IQbc7odvWieIZ5FEdT/iecR2k9co0ZKCiVEoF2+XtJgJEdBx8dxIzOy3zhL02jM
+         Ng4NLHSa7h/5wwE7q5SJd047yMm+wIvJm2pobbFMrlKBydk8kDSkH9Vuy1khb04sb0IG
+         QvFDdo4L8E5TGP0OzMn69C3bccFG0s+t/Y2hM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tEtrc1rdzh/Z7dC3mMEoNjpzKu9VEPrGxsmA4Ux5oa0=;
+        b=orcVABPt4ULBT+94U0s03B1Zlt25T7Au5CY7K4BwxixIggbbSsh+3DmqSL/BAJ4h+C
+         0xf11/39xkewqQF6845saZZCt0QgasBnlVkROvJ3qDhSCZZzcw0Jsu0m1XdO2HrPioE5
+         Onj+GLL7CvAQU7fCm3wHWJKdGFN13E3hgpxXnpOjcIp3lfGPClFZayAU7yn5rqwjXtbJ
+         EvsZL3UjAMeKPW8nBAPnz0X0yoA3rGYDHSNrNh+ANx83tFyalMDdXx7SYAw41decAJgV
+         nLk90URF1cKFrVnNV1jlbmbnBk+pLVub6tn1owO3aw9+14t4FH4Jn9KMVaMmKpdVRYL/
+         EK2Q==
+X-Gm-Message-State: APjAAAUeBQG9mBnYBJF8B3j7MgTDa4d6JTVJ82Zifyol7x3jpvJrCBTY
+        aqvgA83U5SzAe8UBEGye1y/Y8tsyzTUuEzvrykRbunPU
+X-Google-Smtp-Source: APXvYqx0AbdqwDb0w0SXIQPBfCsiY91eO/PaLq21Y0/TBBmbdFC4DKJXXqARBT3GurZhBmBSWqMC8OS98b5LFv7L5rI=
+X-Received: by 2002:a37:4f4c:: with SMTP id d73mr13799291qkb.171.1567397583086;
+ Sun, 01 Sep 2019 21:13:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190902035842.2747-1-andrew@aj.id.au> <20190902035842.2747-2-andrew@aj.id.au>
+In-Reply-To: <20190902035842.2747-2-andrew@aj.id.au>
+From:   Joel Stanley <joel@jms.id.au>
+Date:   Mon, 2 Sep 2019 04:12:51 +0000
+Message-ID: <CACPK8XfYgEUfaK6rtr+FdEq-Vau6d4wE2Rvfp6Q4G2-kjVLT0g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] mmc: sdhci-of-aspeed: Fix link failure for SPARC
+To:     Andrew Jeffery <andrew@aj.id.au>, Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-mmc@vger.kernel.org, adrian.hunter@intel.com,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kbuild test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add a get_max_clock() handler to sdhci-of-aspeed to report f_max as the
-maximum clock rate if it is set. This enables artificial limitation of
-the bus speed via max-frequency in the devicetree for e.g. the AST2600
-evaluation board where I was seeing errors at 200MHz.
+On Mon, 2 Sep 2019 at 03:58, Andrew Jeffery <andrew@aj.id.au> wrote:
+>
+> Resolves the following build error reported by the 0-day bot:
+>
+>     ERROR: "of_platform_device_create" [drivers/mmc/host/sdhci-of-aspeed.ko] undefined!
+>
+> SPARC does not set CONFIG_OF_ADDRESS so the symbol is missing. Guard the
+> callsite to maintain build coverage for the rest of the driver.
+>
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+> ---
+>  drivers/mmc/host/sdhci-of-aspeed.c | 38 ++++++++++++++++++++----------
+>  1 file changed, 25 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
+> index d5acb5afc50f..96ca494752c5 100644
+> --- a/drivers/mmc/host/sdhci-of-aspeed.c
+> +++ b/drivers/mmc/host/sdhci-of-aspeed.c
+> @@ -224,10 +224,30 @@ static struct platform_driver aspeed_sdhci_driver = {
+>         .remove         = aspeed_sdhci_remove,
+>  };
+>
+> -static int aspeed_sdc_probe(struct platform_device *pdev)
+> -
+> +static int aspeed_sdc_create_sdhcis(struct platform_device *pdev)
+>  {
+> +#if defined(CONFIG_OF_ADDRESS)
 
-Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
----
- drivers/mmc/host/sdhci-of-aspeed.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+This is going to be untested code forever, as no one will be running
+on a chip with this hardware present but OF_ADDRESS disabled.
 
-diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
-index c31d74427c49..a8a5341b526c 100644
---- a/drivers/mmc/host/sdhci-of-aspeed.c
-+++ b/drivers/mmc/host/sdhci-of-aspeed.c
-@@ -52,16 +52,24 @@ static void aspeed_sdc_configure_8bit_mode(struct aspeed_sdc *sdc,
- 
- static void aspeed_sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
- {
-+	struct sdhci_pltfm_host *pltfm_host;
-+	unsigned long parent;
- 	int div;
- 	u16 clk;
- 
-+	pltfm_host = sdhci_priv(host);
-+	parent = clk_get_rate(pltfm_host->clk);
-+
- 	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
- 
- 	if (clock == 0)
- 		return;
- 
-+	if (WARN_ON(clock > host->max_clk))
-+		clock = host->max_clk;
-+
- 	for (div = 1; div < 256; div *= 2) {
--		if ((host->max_clk / div) <= clock)
-+		if ((parent / div) <= clock)
- 			break;
- 	}
- 	div >>= 1;
-@@ -71,6 +79,14 @@ static void aspeed_sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
- 	sdhci_enable_clk(host, clk);
- }
- 
-+static unsigned int aspeed_sdhci_get_max_clock(struct sdhci_host *host)
-+{
-+	if (host->mmc->f_max)
-+		return host->mmc->f_max;
-+
-+	return sdhci_pltfm_clk_get_max_clock(host);
-+}
-+
- static void aspeed_sdhci_set_bus_width(struct sdhci_host *host, int width)
- {
- 	struct sdhci_pltfm_host *pltfm_priv;
-@@ -97,7 +113,7 @@ static void aspeed_sdhci_set_bus_width(struct sdhci_host *host, int width)
- 
- static const struct sdhci_ops aspeed_sdhci_ops = {
- 	.set_clock = aspeed_sdhci_set_clock,
--	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
-+	.get_max_clock = aspeed_sdhci_get_max_clock,
- 	.set_bus_width = aspeed_sdhci_set_bus_width,
- 	.get_timeout_clock = sdhci_pltfm_clk_get_max_clock,
- 	.reset = sdhci_reset,
--- 
-2.20.1
+How about we make the driver depend on OF_ADDRESS instead?
 
+Cheers,
+
+Joel
+
+
+
+>         struct device_node *parent, *child;
+> +
+> +       parent = pdev->dev.of_node;
+> +
+> +       for_each_available_child_of_node(parent, child) {
+> +               struct platform_device *cpdev;
+> +
+> +               cpdev = of_platform_device_create(child, NULL, &pdev->dev);
+> +               if (!cpdev) {
+> +                       of_node_put(child);
+> +                       return -ENODEV;
+> +               }
+> +       }
+> +#endif
+> +
+> +       return 0;
+> +}
+> +
+> +static int aspeed_sdc_probe(struct platform_device *pdev)
+> +
+> +{
+>         struct aspeed_sdc *sdc;
+>         int ret;
+>
+> @@ -256,17 +276,9 @@ static int aspeed_sdc_probe(struct platform_device *pdev)
+>
+>         dev_set_drvdata(&pdev->dev, sdc);
+>
+> -       parent = pdev->dev.of_node;
+> -       for_each_available_child_of_node(parent, child) {
+> -               struct platform_device *cpdev;
+> -
+> -               cpdev = of_platform_device_create(child, NULL, &pdev->dev);
+> -               if (!cpdev) {
+> -                       of_node_put(child);
+> -                       ret = -ENODEV;
+> -                       goto err_clk;
+> -               }
+> -       }
+> +       ret = aspeed_sdc_create_sdhcis(pdev);
+> +       if (ret)
+> +               goto err_clk;
+>
+>         return 0;
+>
+> --
+> 2.20.1
+>
