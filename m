@@ -2,45 +2,42 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D07A6FF9
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 18:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1972EA6FA2
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 18:35:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730731AbfICQfn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 3 Sep 2019 12:35:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49170 "EHLO mail.kernel.org"
+        id S1730757AbfICQeA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 3 Sep 2019 12:34:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49958 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730500AbfICQ1m (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 3 Sep 2019 12:27:42 -0400
+        id S1731059AbfICQ2M (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 3 Sep 2019 12:28:12 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 77C5123789;
-        Tue,  3 Sep 2019 16:27:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 22D82238CE;
+        Tue,  3 Sep 2019 16:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567528061;
-        bh=+ItCqgWYRJjOhPpDJikclwg8Eu/+KA6wJDHRAQozRts=;
+        s=default; t=1567528092;
+        bh=z04+1h1s5hTR+aw24LvmqbSECzVvja8kNEUB03vK7iA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fn7DICNKmPCigLW2SzSkZ8jlbh+WHU7Q5mUV8Ie9/HXVbLetyJv9fY54I5cVGQR/h
-         w+YI2pM37taEwTzs+PDpWBUGabCiO3lJ3STClR13iOsOSl15ueK3INMjX1D2WY38H+
-         LmOAarC8H5PeLRBVWvdUnu8bQzi+k4cuoNeOb3w4=
+        b=KwPrnaKY3fu83bMrZpNH9eLR9X6f70JmdcBF2XN+NzcaPCLLb8IJ2yd6/oV0JFzYU
+         M5G1TepLVGPDYqNqqBrrVmdj2wi9bwIZ8+mMgMXb2VXvieRHHOEgKmgO4mXsU7ehJU
+         Tu5aQk54/wz4qy8KNcy9RxAmvZjOXVbmee+pVAeQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Takeshi Saito <takeshi.saito.xv@renesas.com>,
-        Marek Vasut <marek.vasut+renesas@gmail.com>,
-        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+Cc:     Sowjanya Komatineni <skomatineni@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Rob Herring <robh@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 076/167] mmc: renesas_sdhi: Fix card initialization failure in high speed mode
-Date:   Tue,  3 Sep 2019 12:23:48 -0400
-Message-Id: <20190903162519.7136-76-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 101/167] dt-bindings: mmc: Add supports-cqe property
+Date:   Tue,  3 Sep 2019 12:24:13 -0400
+Message-Id: <20190903162519.7136-101-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190903162519.7136-1-sashal@kernel.org>
 References: <20190903162519.7136-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -49,81 +46,37 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Takeshi Saito <takeshi.saito.xv@renesas.com>
+From: Sowjanya Komatineni <skomatineni@nvidia.com>
 
-[ Upstream commit d30ae056adb81e1d2b8b953efa74735a020b8e3b ]
+[ Upstream commit c7fddbd5db5cffd10ed4d18efa20e36803d1899f ]
 
-This fixes card initialization failure in high speed mode.
+Add supports-cqe optional property for MMC hosts.
 
-If U-Boot uses SDR or HS200/400 mode before starting Linux and Linux
-DT does not enable SDR/HS200/HS400 mode, card initialization fails in
-high speed mode.
+This property is used to identify the specific host controller
+supporting command queue.
 
-It is necessary to initialize SCC registers during card initialization
-phase. HW reset function is registered only for a port with either of
-SDR/HS200/HS400 properties in device tree. If SDR/HS200/HS400 properties
-are not present in device tree, SCC registers will not be reset. In SoC
-that support SCC registers, HW reset function should be registered
-regardless of the configuration of device tree.
-
-Reproduction procedure:
-- Use U-Boot that support MMC HS200/400 mode.
-- Delete HS200/HS400 properties in device tree.
-  (Delete mmc-hs200-1_8v and mmc-hs400-1_8v)
-- MMC port works high speed mode and all commands fail.
-
-Signed-off-by: Takeshi Saito <takeshi.saito.xv@renesas.com>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@gmail.com>
-Cc: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Cc: Simon Horman <horms+renesas@verge.net.au>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+Reviewed-by: Thierry Reding <treding@nvidia.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/renesas_sdhi_core.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/mmc/mmc.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index 45baf5d9120e3..61f0faddfd889 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -636,6 +636,13 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 		host->ops.card_busy = renesas_sdhi_card_busy;
- 		host->ops.start_signal_voltage_switch =
- 			renesas_sdhi_start_signal_voltage_switch;
-+
-+		/* SDR and HS200/400 registers requires HW reset */
-+		if (of_data && of_data->scc_offset) {
-+			priv->scc_ctl = host->ctl + of_data->scc_offset;
-+			host->mmc->caps |= MMC_CAP_HW_RESET;
-+			host->hw_reset = renesas_sdhi_hw_reset;
-+		}
- 	}
+diff --git a/Documentation/devicetree/bindings/mmc/mmc.txt b/Documentation/devicetree/bindings/mmc/mmc.txt
+index f5a0923b34ca1..cdbcfd3a4ff21 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc.txt
++++ b/Documentation/devicetree/bindings/mmc/mmc.txt
+@@ -62,6 +62,8 @@ Optional properties:
+   be referred to mmc-pwrseq-simple.txt. But now it's reused as a tunable delay
+   waiting for I/O signalling and card power supply to be stable, regardless of
+   whether pwrseq-simple is used. Default to 10ms if no available.
++- supports-cqe : The presence of this property indicates that the corresponding
++  MMC host controller supports HW command queue feature.
  
- 	/* Orginally registers were 16 bit apart, could be 32 or 64 nowadays */
-@@ -693,8 +700,6 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 		const struct renesas_sdhi_scc *taps = of_data->taps;
- 		bool hit = false;
- 
--		host->mmc->caps |= MMC_CAP_HW_RESET;
--
- 		for (i = 0; i < of_data->taps_num; i++) {
- 			if (taps[i].clk_rate == 0 ||
- 			    taps[i].clk_rate == host->mmc->f_max) {
-@@ -707,12 +712,10 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 		if (!hit)
- 			dev_warn(&host->pdev->dev, "Unknown clock rate for SDR104\n");
- 
--		priv->scc_ctl = host->ctl + of_data->scc_offset;
- 		host->init_tuning = renesas_sdhi_init_tuning;
- 		host->prepare_tuning = renesas_sdhi_prepare_tuning;
- 		host->select_tuning = renesas_sdhi_select_tuning;
- 		host->check_scc_error = renesas_sdhi_check_scc_error;
--		host->hw_reset = renesas_sdhi_hw_reset;
- 		host->prepare_hs400_tuning =
- 			renesas_sdhi_prepare_hs400_tuning;
- 		host->hs400_downgrade = renesas_sdhi_disable_scc;
+ *NOTE* on CD and WP polarity. To use common for all SD/MMC host controllers line
+ polarity properties, we have to fix the meaning of the "normal" and "inverted"
 -- 
 2.20.1
 
