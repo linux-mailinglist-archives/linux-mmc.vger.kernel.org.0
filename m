@@ -2,76 +2,128 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E883CA6CDC
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 17:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82D07A6FF9
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 18:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728854AbfICPZb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 3 Sep 2019 11:25:31 -0400
-Received: from sauhun.de ([88.99.104.3]:55040 "EHLO pokefinder.org"
+        id S1730731AbfICQfn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 3 Sep 2019 12:35:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49170 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728679AbfICPZb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 3 Sep 2019 11:25:31 -0400
-Received: from localhost (p54B3348D.dip0.t-ipconnect.de [84.179.52.141])
-        by pokefinder.org (Postfix) with ESMTPSA id 7E8672C4F2F;
-        Tue,  3 Sep 2019 17:25:29 +0200 (CEST)
-Date:   Tue, 3 Sep 2019 17:25:29 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     =?utf-8?B?VGFtw6FzIFN6xbFjcw==?= <tszucs@protonmail.ch>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        id S1730500AbfICQ1m (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 3 Sep 2019 12:27:42 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 77C5123789;
+        Tue,  3 Sep 2019 16:27:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567528061;
+        bh=+ItCqgWYRJjOhPpDJikclwg8Eu/+KA6wJDHRAQozRts=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Fn7DICNKmPCigLW2SzSkZ8jlbh+WHU7Q5mUV8Ie9/HXVbLetyJv9fY54I5cVGQR/h
+         w+YI2pM37taEwTzs+PDpWBUGabCiO3lJ3STClR13iOsOSl15ueK3INMjX1D2WY38H+
+         LmOAarC8H5PeLRBVWvdUnu8bQzi+k4cuoNeOb3w4=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Takeshi Saito <takeshi.saito.xv@renesas.com>,
+        Marek Vasut <marek.vasut+renesas@gmail.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v2] mmc: sdhi: fill in actual_clock
-Message-ID: <20190903152529.GB6718@kunai>
-References: <20190829183634.3376-1-tszucs@protonmail.ch>
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 076/167] mmc: renesas_sdhi: Fix card initialization failure in high speed mode
+Date:   Tue,  3 Sep 2019 12:23:48 -0400
+Message-Id: <20190903162519.7136-76-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190903162519.7136-1-sashal@kernel.org>
+References: <20190903162519.7136-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tsOsTdHNUZQcU9Ye"
-Content-Disposition: inline
-In-Reply-To: <20190829183634.3376-1-tszucs@protonmail.ch>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+From: Takeshi Saito <takeshi.saito.xv@renesas.com>
 
---tsOsTdHNUZQcU9Ye
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit d30ae056adb81e1d2b8b953efa74735a020b8e3b ]
 
-On Thu, Aug 29, 2019 at 08:36:34PM +0200, Tam=C3=A1s Sz=C5=B1cs wrote:
-> Save set clock in mmc_host actual_clock enabling exporting it via debugfs.
-> This will indicate the precise SD clock in I/O settings rather than only =
-the
-> sometimes misleading requested clock.
->=20
-> Signed-off-by: Tam=C3=A1s Sz=C5=B1cs <tszucs@protonmail.ch>
+This fixes card initialization failure in high speed mode.
 
-Oops, I thought I replied already. For the record:
+If U-Boot uses SDR or HS200/400 mode before starting Linux and Linux
+DT does not enable SDR/HS200/HS400 mode, card initialization fails in
+high speed mode.
 
-Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+It is necessary to initialize SCC registers during card initialization
+phase. HW reset function is registered only for a port with either of
+SDR/HS200/HS400 properties in device tree. If SDR/HS200/HS400 properties
+are not present in device tree, SCC registers will not be reset. In SoC
+that support SCC registers, HW reset function should be registered
+regardless of the configuration of device tree.
 
+Reproduction procedure:
+- Use U-Boot that support MMC HS200/400 mode.
+- Delete HS200/HS400 properties in device tree.
+  (Delete mmc-hs200-1_8v and mmc-hs400-1_8v)
+- MMC port works high speed mode and all commands fail.
 
---tsOsTdHNUZQcU9Ye
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Takeshi Saito <takeshi.saito.xv@renesas.com>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@gmail.com>
+Cc: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Cc: Simon Horman <horms+renesas@verge.net.au>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mmc/host/renesas_sdhi_core.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+index 45baf5d9120e3..61f0faddfd889 100644
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -636,6 +636,13 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 		host->ops.card_busy = renesas_sdhi_card_busy;
+ 		host->ops.start_signal_voltage_switch =
+ 			renesas_sdhi_start_signal_voltage_switch;
++
++		/* SDR and HS200/400 registers requires HW reset */
++		if (of_data && of_data->scc_offset) {
++			priv->scc_ctl = host->ctl + of_data->scc_offset;
++			host->mmc->caps |= MMC_CAP_HW_RESET;
++			host->hw_reset = renesas_sdhi_hw_reset;
++		}
+ 	}
+ 
+ 	/* Orginally registers were 16 bit apart, could be 32 or 64 nowadays */
+@@ -693,8 +700,6 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 		const struct renesas_sdhi_scc *taps = of_data->taps;
+ 		bool hit = false;
+ 
+-		host->mmc->caps |= MMC_CAP_HW_RESET;
+-
+ 		for (i = 0; i < of_data->taps_num; i++) {
+ 			if (taps[i].clk_rate == 0 ||
+ 			    taps[i].clk_rate == host->mmc->f_max) {
+@@ -707,12 +712,10 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 		if (!hit)
+ 			dev_warn(&host->pdev->dev, "Unknown clock rate for SDR104\n");
+ 
+-		priv->scc_ctl = host->ctl + of_data->scc_offset;
+ 		host->init_tuning = renesas_sdhi_init_tuning;
+ 		host->prepare_tuning = renesas_sdhi_prepare_tuning;
+ 		host->select_tuning = renesas_sdhi_select_tuning;
+ 		host->check_scc_error = renesas_sdhi_check_scc_error;
+-		host->hw_reset = renesas_sdhi_hw_reset;
+ 		host->prepare_hs400_tuning =
+ 			renesas_sdhi_prepare_hs400_tuning;
+ 		host->hs400_downgrade = renesas_sdhi_disable_scc;
+-- 
+2.20.1
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl1uheUACgkQFA3kzBSg
-KbaCwg/+O2P7U/V3PSUWunSFkHZg7dqiAeb5loMjy2RYmUnjrc7PCir2Cb44mRkz
-Tyz9XMXpx3g+7VtqUNHG7pj76M7em1OdiulP631pOUroRmVzfo8vpEu/JJlGTAhG
-cymJ5x4KSaBA5itAdYWa4TbIdIxfDTxCNkxdZvvpI8LwR5TZ6anPXgwZwQBeYEhk
-jyFbyPgoa7ipivVCJKtNCIlxzWPvTOwNiOD/Y8AwL4MdvTXXqdIM6yD6lhao9wm2
-+HaSrMYLX9yv0sFBP2OyOpB3tgTPtsyj9MTjYpffzvy/BVeombUE2qYJg2uuOAda
-rcUWQNST5hMRoblcWaLoh1pEX5DiuDeV0J9x5x3cnuRAQnpevPo4mli/GLTyaZYB
-nklFBJMhr3Yi9cXrnBYmtNvOnm8A6pjo7ML8G/5q3d1+LrqqMEEE2totRFs7/bw/
-CXYhW5Y2/m3VEhPflPwq8nzg5jycVegtm9dz7FphAGvYuzCVY0zbggMNPVkBiTbS
-RNZJGmlepoJJiR126SOJDNYyedH8zuHpj2DFazOZlfi+aBAehNBoGAmDJTiOzHrf
-hXdhPFENueQgdu0nJ71mYNwqatqiYTgcPfSEA5mFV8g2ji5xsS80alB97neoODKS
-lBCuQAWSwPF0oPQlTYgRhpd81h+9gYa7IX1SQoAeLIlQoCBo/lE=
-=0Ztz
------END PGP SIGNATURE-----
-
---tsOsTdHNUZQcU9Ye--
