@@ -2,97 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B8FA6C98
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 17:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 609DEA6C9A
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 17:11:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729720AbfICPLU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 3 Sep 2019 11:11:20 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:36167 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729709AbfICPLU (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Sep 2019 11:11:20 -0400
-Received: by mail-vs1-f65.google.com with SMTP id r1so8729938vsq.3
-        for <linux-mmc@vger.kernel.org>; Tue, 03 Sep 2019 08:11:19 -0700 (PDT)
+        id S1728679AbfICPLb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 3 Sep 2019 11:11:31 -0400
+Received: from mail-vk1-f194.google.com ([209.85.221.194]:42755 "EHLO
+        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725782AbfICPLb (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Sep 2019 11:11:31 -0400
+Received: by mail-vk1-f194.google.com with SMTP id t136so3639548vkt.9
+        for <linux-mmc@vger.kernel.org>; Tue, 03 Sep 2019 08:11:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=hFtwKcjhJAcLLvYRWcB0GjH8TlxQpGn6eTjYWs9Yv7Y=;
-        b=ylEZdt5wX+4ng+59TTe8Z5AM0jrzsN3AaMEYIMADmVTg11r8Zg8hSdomYSWn5vAtNS
-         WdPx+HvtbD0mbkYe04TqreDYO2AwhAlo8DcK5wMufHfP3jzW8OLpbSgh9m2ITtJ/93+C
-         IuPbGmZNWPRv2XhykPmlWrr3YsWnKOtgf5nZ/c+/4P8yTxomsVGN95qF4sBUOuGdrlSa
-         dUqglLFdIaNNuo1end7siNiC4igj3IxjO3ObKeO6Y+PaKLq7Omf2MD0V81QYibQTHBU3
-         romyh0SkZgsXqvo8dIMYuUDydOZSEwQ1DoCBYCk4j5XUpRNtrOV9fAzRqNM5npPZQPj9
-         JXIA==
+        bh=597kM3j7GMQPvL0o4gYpdI/ql7rF2tjaizbjC1K9t98=;
+        b=dtjaqiYatHI8zLkjyXFRKziKxzEOaWF8lq/JNf5VCBgrOoA5kY9jkDPcA5PnEwjmwc
+         7o/y3TPaKBofPlgYuSHpC83INXaIP3rKNN/2P62Fq9qDgVgg6n8fq4IAcT4nJBnzDyln
+         HGErEJj0l1k/5z14iXY4Qe9U+c2hDzUIeOPou+HqSNnmHZ7eptzdacvsahovXFrQmlw5
+         s4Em0nEZhE+CBuo3e5I1CCIN6WB+BMf23dLQRKpehGoCbmkUtAVQ7BEfiPbG/8goOqi4
+         Vnqn7ME0PQ9O6BHyNq3u1wFUULmRHmhtaFXYtTGOdlEtQ97BhQHv9vnj9RpAaKNewLey
+         sRYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=hFtwKcjhJAcLLvYRWcB0GjH8TlxQpGn6eTjYWs9Yv7Y=;
-        b=SeYa/bs4bfWJCA72kJWu+qgU9ijAfXWlD98KgYARoluqe6r9vfsKFMrsjyc3SM9+zb
-         Jfmndxwram1JOoPaIUwueCR3bxfvIDXQH2QwN3O0LmoAFWRRBXS0U4xSBRxD3m0YvmgE
-         D9tLalg9pr3OGnPnLR1+6yPAeeYs8XPT8tFSOvXagAiFYZFj6+SCwKhErxZVm0uCqkYB
-         9HevlEhzUjs1QGkTGQccJjUpL5mMbFh1NEADDrWdevtLVMfTFSzi3m59H2VKJbiKjsoR
-         kZqXJsceqTinOyYZZj11MUhdifhOArfE5OWhE258zpibikDhBgzapXgAGiCZwe3wrqg0
-         mTfQ==
-X-Gm-Message-State: APjAAAWF0Z/TFQiXvcLqsixnCcI3TM5YiQrOjqPn/tBRHHQIH6Rb4GCE
-        BtqivZCAUJerPyIz0j8aRLkwptgRKnfu8NkRpnMSwg==
-X-Google-Smtp-Source: APXvYqxpIMYeuIve5wcn6H3G3LreaM9TjDByR/E25jlqIh9Wcl9ULuHLdLtj22DL88uDB10bfQJRFWazPxLWyNi4TXU=
-X-Received: by 2002:a67:983:: with SMTP id 125mr13702796vsj.191.1567523478905;
- Tue, 03 Sep 2019 08:11:18 -0700 (PDT)
+        bh=597kM3j7GMQPvL0o4gYpdI/ql7rF2tjaizbjC1K9t98=;
+        b=E+L3yTLgMss3UdAFHlHKrW8DAQmoZQ06dB6N/Mduc8A7d6iyLsRoB8z4rI2wNhRyjG
+         7R2LXWdd3W8m087jVwXKu6js8P3PCbfdbNtSxDF+i05MN8aMR0/HRF6zDrJVvaJgE2Ix
+         kV/LMtextv5FOd4ycezaGLzkOVRXR4sFzGJVJe5FEI5IH+up4x7iOwSJ6TAKzaWMRvr1
+         Cli7b8TsFTASxtV1lgSCq+wtZ2lhk85k+KKtoUjsTVXK1JREcgpfPhKrmXSfr1CoGPO9
+         QVCAKd7NMyUgqldzv/iVJLlWGT/oRA9rr0sVB3KYFiZ6mgabYqrmU++RrRykGNHilU/b
+         5EpA==
+X-Gm-Message-State: APjAAAWmT6+w9zBRdGvkJMQfVxnQ9tDux5wII461PGESxHmlm1aK1szs
+        1prHywYFeT7/Ka69y+SKsanBfKSrR8gOSSgGaunG6Q==
+X-Google-Smtp-Source: APXvYqy0Ku9DQM4xh6AXf28ArKwxBLwOsxhGt3RKLQVioVoIwxVGXDuVVOTMMWpQPhemG4IoW6RxVsOLNem2DvWzsTk=
+X-Received: by 2002:a1f:5602:: with SMTP id k2mr16121674vkb.36.1567523490576;
+ Tue, 03 Sep 2019 08:11:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190902035842.2747-1-andrew@aj.id.au>
-In-Reply-To: <20190902035842.2747-1-andrew@aj.id.au>
+References: <20190820114229.11948-1-ja.kaisrlik@gmail.com>
+In-Reply-To: <20190820114229.11948-1-ja.kaisrlik@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 3 Sep 2019 17:10:42 +0200
-Message-ID: <CAPDyKFph4C7fCcGYzFp2PwwJsaFvw6a0Do4Vm0uF8mbwD7zUzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] mmc: sdhci-of-aspeed: Fixes for AST2600 eMMC support
-To:     Andrew Jeffery <andrew@aj.id.au>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Joel Stanley <joel@jms.id.au>,
-        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Tue, 3 Sep 2019 17:10:54 +0200
+Message-ID: <CAPDyKFrz3AsGTz_Km7Y5GNevmEnDHouCaCA_exGQkAQ23X=LYg@mail.gmail.com>
+Subject: Re: [PATCH] Revert "mmc: core: do not retry CMD6 in __mmc_switch()"
+To:     Jan Kaisrlik <ja.kaisrlik@gmail.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 2 Sep 2019 at 05:58, Andrew Jeffery <andrew@aj.id.au> wrote:
+On Tue, 20 Aug 2019 at 13:42, <ja.kaisrlik@gmail.com> wrote:
 >
-> Hello,
+> From: Jan Kaisrlik <ja.kaisrlik@gmail.com>
 >
-> I've added a couple of patches since v1 of this series. The horizon has
-> broadened slightly with a fix for SPARC builds as well in patch 1/4. Ulf
-> suggested a minor cleanup on v1 with respect to handling of the current clock
-> value, so that's now patch 2/4. Patches 3/4 and 4/4 are as they were in v1.
+> This reverts commit 3a0681c7448b174e5dcfd19e9079cdd281c35f1a.
+>
+> Turns out the patch breaks initialization of Toshiba THGBMNG5.
+> [    1.648951] mmc0: mmc_select_hs200 failed, error -84
+> [    1.648988] mmc0: error -84 whilst initialising MMC card
+>
+> Signed-off-by: Jan Kaisrlik <ja.kaisrlik@gmail.com>
 
-Applied patch 2->4 for next, thanks!
+Applied for fixes and by adding some more information to the
+changelog, according to our additional findings.
 
-Kind regards
+Thanks and kind regards
 Uffe
 
 
+> ---
+>  drivers/mmc/core/mmc_ops.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> The v1 series can be found here:
+> diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
+> index 74e4364bc9fb..09113b9ad679 100644
+> --- a/drivers/mmc/core/mmc_ops.c
+> +++ b/drivers/mmc/core/mmc_ops.c
+> @@ -564,7 +564,7 @@ int __mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
+>         if (index == EXT_CSD_SANITIZE_START)
+>                 cmd.sanitize_busy = true;
 >
-> https://patchwork.ozlabs.org/cover/1155757/
->
-> Please review!
->
-> Andrew
->
-> Andrew Jeffery (4):
->   mmc: sdhci-of-aspeed: Fix link failure for SPARC
->   mmc: sdhci-of-aspeed: Drop redundant assignment to host->clock
->   mmc: sdhci-of-aspeed: Uphold clocks-on post-condition of set_clock()
->   mmc: sdhci-of-aspeed: Allow max-frequency limitation of SDCLK
->
->  drivers/mmc/host/sdhci-of-aspeed.c | 62 ++++++++++++++++++++----------
->  1 file changed, 42 insertions(+), 20 deletions(-)
+> -       err = mmc_wait_for_cmd(host, &cmd, 0);
+> +       err = mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
+>         if (err)
+>                 goto out;
 >
 > --
 > 2.20.1
