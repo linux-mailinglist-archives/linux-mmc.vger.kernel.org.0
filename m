@@ -2,116 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC2BDA61A8
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 08:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6D6CA67CF
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 13:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726200AbfICGmH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 3 Sep 2019 02:42:07 -0400
-Received: from mail-eopbgr1410093.outbound.protection.outlook.com ([40.107.141.93]:5562
-        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725919AbfICGmH (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 3 Sep 2019 02:42:07 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AMrIXzwPitZnw76jKP4+f9UQgA1VfcuzVbJJC7r1BoDp3rUCUe8qtvkN+vb1t7mcLs6k756fGGM1D7WseH/ELWt3kH85FtSO9ReZNHYZSB4Jnbyplpom9c4J5DBNvwo9+Kf6nYqN6Lr9SDu6bJLGUQPbis37rq5fmVnRKsquZ4OPc/xoAoMfdAS6nUbu36FYtNww41cArJ/+ELX3WL5lrPl39lzWZ4TSa8J1B0qnu0ZIA/QoJmSFhq30Lr5W7wCpnoBgRUKxEuHUdNLey0/XfYhFoaC1Or8M6bXFtQ0WPfHvXee44TuK54W+4rc2U0yyGkKNjjlGxrKQy1/qBIM5Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ocw05ZN3JO3zFg8qoJWZGcqy42udnHpIDET+/1Hig1M=;
- b=Rd13KDkUk+Z7W8154UbC6ToJSWeCwzgfwgPSeNXnqLBwqRonCFMYZcf6Uf02WtLSbCWW5sGpVWIsliQFYlH5tovwMZ56sHfjHxqruoc0+jWIfov32MomUf1D/m7M7qeGYST2oPw4JtthWRv9C/zzTpARAGcV6YdSR2Ah2mGiAPBIye//Iw8nv/axB2sDtrMdUzyfSZHLYhelXNFSk0rmIpnIvvvF8o3sc7/+u4twtSdc8AClPyauJeeImOQoKvjFFQ+XeWAtulFdo2kS5pNAqa3V23/o/FPcb1oyxhBrmvnCNByraboj10sQ2nmIj8CtpqDB0Ht1UGFJaA4HKjowYw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
+        id S1728571AbfICLva (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 3 Sep 2019 07:51:30 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:42460 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726631AbfICLv3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Sep 2019 07:51:29 -0400
+Received: by mail-wr1-f68.google.com with SMTP id b16so17125214wrq.9;
+        Tue, 03 Sep 2019 04:51:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ocw05ZN3JO3zFg8qoJWZGcqy42udnHpIDET+/1Hig1M=;
- b=NnO06CovIbBqdNL36uZXxaL5pLQzGqYdHOkvWVfRqDCS96FKVxYxw0n97cAe1XB01cqq6aMyeyHey1tRNKzRc9+RKWJL4zY/exC2txbDno2ZD2bR7dgrywB+cHixaZedFn/c2GiIQUuCW5YPkFYlXg4Rm9Rdp/Fo869zDGCS8VU=
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com (20.179.175.203) by
- TYAPR01MB4686.jpnprd01.prod.outlook.com (20.179.175.14) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2220.20; Tue, 3 Sep 2019 06:42:02 +0000
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::6564:f61f:f179:facf]) by TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::6564:f61f:f179:facf%5]) with mapi id 15.20.2220.022; Tue, 3 Sep 2019
- 06:42:02 +0000
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     "hch@lst.de" <hch@lst.de>
-CC:     "wsa+renesas@sang-engineering.com" <wsa+renesas@sang-engineering.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
-        "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        "joro@8bytes.org" <joro@8bytes.org>, Jens Axboe <axboe@kernel.dk>
-Subject: RE: [PATCH v10 3/4] block: add a helper function to merge the
- segments
-Thread-Topic: [PATCH v10 3/4] block: add a helper function to merge the
- segments
-Thread-Index: AQHVXZ1a3dgM7EWWT0y+9VldzhpkbqcY9KsAgAB3rzCAABuDAIAAAUSA
-Date:   Tue, 3 Sep 2019 06:42:02 +0000
-Message-ID: <TYAPR01MB454479A82FB240305961035CD8B90@TYAPR01MB4544.jpnprd01.prod.outlook.com>
-References: <1566995743-5614-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1566995743-5614-4-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <e549e8e7-9dfe-6f68-2148-f49a9089db37@kernel.dk>
- <TYAPR01MB454492ADBC8561C0BEC6F449D8B90@TYAPR01MB4544.jpnprd01.prod.outlook.com>
- <20190903063350.GA16908@lst.de>
-In-Reply-To: <20190903063350.GA16908@lst.de>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
-x-originating-ip: [150.249.235.54]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: e2beca01-60a2-484b-4d09-08d73039d42a
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:TYAPR01MB4686;
-x-ms-traffictypediagnostic: TYAPR01MB4686:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <TYAPR01MB4686C35642E228445662B1D2D8B90@TYAPR01MB4686.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-forefront-prvs: 01494FA7F7
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(366004)(346002)(136003)(396003)(39860400002)(376002)(199004)(189003)(74316002)(71200400001)(316002)(71190400001)(6916009)(33656002)(6246003)(4744005)(7696005)(76176011)(6436002)(5640700003)(26005)(6306002)(25786009)(7416002)(102836004)(66476007)(66556008)(66946007)(66446008)(64756008)(9686003)(86362001)(76116006)(2906002)(54906003)(6506007)(53936002)(3846002)(6116002)(99286004)(186003)(2351001)(476003)(8936002)(55016002)(52536014)(966005)(2501003)(4326008)(66066001)(7736002)(486006)(8676002)(81156014)(5660300002)(446003)(478600001)(81166006)(305945005)(1730700003)(229853002)(11346002)(14454004)(256004);DIR:OUT;SFP:1102;SCL:1;SRVR:TYAPR01MB4686;H:TYAPR01MB4544.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: renesas.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: vd4u/zVGIFd3sYUr67XhAvsrDLolYmlEfVFEgx3OroApzQcp9yQeiY5M/ENCFFmk5jrR5j19BaIRHwhIB9opJma3gc3AzB2fDnZ0G+FmpN3WzRK61+Q4TUIVMVt0ohRl0mUE4o92XyCVDFeEpkkQqqo0AoKBtBThpFHJK2r/2waQSICcRk3GflUJTX2WDoSiFY7jxMBv/wJpSJUDLH8wi/MPlrfVd87vSUtMRpf2DTd7Ar0oSmhE+E5yKA45OpCYbleI4iIZdn5SbSr3vt9OceYgBe7CrAaX8MP+SvXBw8W14xwEA0ZhbLftwIe6t2QtOnaOC6/q96ZK/hOb0TlTyVDBe1nJnXf6MS3TMFm/957vIz2Z1Vn2IuyXvfapjqiRHKwNbp6KNV7mYKN0dhiqGhkEHH0ps3EacKmAmACVACk=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2beca01-60a2-484b-4d09-08d73039d42a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Sep 2019 06:42:02.5776
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: r4+7j+sO7sih72WXh4AhNoMWgaqGlYDvVZgXjOOuVDZ2AOSlr0GnuZCnrkAT5ujZ3R5CXdEYQv6xm3JEU6woTQWSAJBSpyeSuZKvY58NpoKvXNEoGQZII4z7yiUo/Jg5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAPR01MB4686
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=LFB91c3nmv/pz8b+u80goQVipPJpjyjQS62qRFXUgtQ=;
+        b=bJ0krnZRH3xIjehbkmbbVQxBnkUa74KSuTBDO//BQo0cigELoAv1mrtFxrColLkIZM
+         omcKsHUfEe9PPcv836qz1cl2MBhLKye0mZu2NLvhOEuEaN2UywKFLZ39fexi+pwe18ZQ
+         2HXkAewEgMuqKFVDkXpvnuXzhsuDab9mG1+oyzKqcOX+Vz/UIMWwhjq8h4oNkYiITH4K
+         H4wY8S4xnA712lpsnpJoBc4BIEgALRz3H2B6LkKSuQunJ7ug5co/gSfJKJfL6YrUlc24
+         oAiOd5ckrjC+FCtJF4F4lWHxd71KtESgi9ImmMb1SNcvCF+fPxFyc7pEJXOsLPtJUBGa
+         l2Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=LFB91c3nmv/pz8b+u80goQVipPJpjyjQS62qRFXUgtQ=;
+        b=qYIWYDir8ccONDlup4/U8gsh3CsbmWs7OvcbR5N1Aml1TDTp+Mc9COQvohSm5PTGUH
+         /Y9d1xdZOHfGeRrWmrX8CQZzTgAZl0aO7M8gj5q9nEx4kFBRH68HzbvUU519JMQ+m0cR
+         F8njjRdKfmVuzTWh6Jx68vKao2SmZe28uaX01zQ9JHitnwAeqJKfFNfglMuYxRSb2heW
+         vFsi2lyi4MwRuHpna2ET/rohnsx+hk2g3RxEqSqw13KYWy3xmjsArWAiJqgAscEUWX7W
+         L7T2TK0HIRKH7dUXwmvDRV/fmotbhdpW6Jmn3DFolkfWVDqxwjG4vhQoXEQvMDBuSRbS
+         b4ig==
+X-Gm-Message-State: APjAAAXOpR0R0mf2Ff7OObe8eBsFPomhssit6rzAuflKdalBOLX6VNJa
+        d5NbpbIx4/wJw/w7r3lMZKt6nuOZ
+X-Google-Smtp-Source: APXvYqwbEWX6uMe+Chq94s40RNi2NT4phCD3BvTPenhL7mFjVNrfZ2XEQ/SieLlzjcCHquFVjwcwPg==
+X-Received: by 2002:a5d:4bc1:: with SMTP id l1mr8441064wrt.259.1567511487060;
+        Tue, 03 Sep 2019 04:51:27 -0700 (PDT)
+Received: from stbsrv-and-01.and.broadcom.net ([192.19.231.250])
+        by smtp.gmail.com with ESMTPSA id a192sm22926128wma.1.2019.09.03.04.51.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Sep 2019 04:51:26 -0700 (PDT)
+From:   Al Cooper <alcooperx@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Al Cooper <alcooperx@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH] mmc: sdhci: Fix incorrect switch to HS mode
+Date:   Tue,  3 Sep 2019 07:51:14 -0400
+Message-Id: <20190903115114.33053-1-alcooperx@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Christoph,
+When switching from any MMC speed mode that requires 1.8v
+(HS200, HS400 and HS400ES) to High Speed (HS) mode, the system
+ends up configured for SDR12 with a 50MHz clock which is an illegal
+mode.
 
-> > Now this patch series got {Ack,Review}ed-by from each maintainer.
-> > https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=3D1=
-66501
-> >
-> > So, would you pick this up through the dma-mapping tree as you said bef=
-ore?
->=20
-> I've applied it to the dma-mapping tree for 5.4 now, thanks a lot!
+This happens because the SDHCI_CTRL_VDD_180 bit in the
+SDHCI_HOST_CONTROL2 register is left set and when this bit is
+set, the speed mode is controlled by the SDHCI_CTRL_UHS field
+in the SDHCI_HOST_CONTROL2 register. The SDHCI_CTRL_UHS field
+will end up being set to 0 (SDR12) by sdhci_set_uhs_signaling()
+because there is no UHS mode being set.
 
-Thank you very much for your support!
+The fix is to change sdhci_set_uhs_signaling() to set the
+SDHCI_CTRL_UHS field to SDR25 (which is the same as HS) for
+any switch to HS mode.
 
-Best regards,
-Yoshihiro Shimoda
+This was found on a new eMMC controller that does strict checking
+of the speed mode and the corresponding clock rate. It caused the
+switch to HS400 mode to fail because part of the sequence to switch
+to HS400 requires a switch from HS200 to HS before going to HS400.
+
+This fix was suggested by Adrian Hunter
+
+Signed-off-by: Al Cooper <alcooperx@gmail.com>
+---
+ drivers/mmc/host/sdhci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 61d845fe0b97..068149640ecd 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -1858,7 +1858,9 @@ void sdhci_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
+ 		ctrl_2 |= SDHCI_CTRL_UHS_SDR104;
+ 	else if (timing == MMC_TIMING_UHS_SDR12)
+ 		ctrl_2 |= SDHCI_CTRL_UHS_SDR12;
+-	else if (timing == MMC_TIMING_UHS_SDR25)
++	else if (timing == MMC_TIMING_SD_HS ||
++		 timing == MMC_TIMING_MMC_HS ||
++		 timing == MMC_TIMING_UHS_SDR25)
+ 		ctrl_2 |= SDHCI_CTRL_UHS_SDR25;
+ 	else if (timing == MMC_TIMING_UHS_SDR50)
+ 		ctrl_2 |= SDHCI_CTRL_UHS_SDR50;
+-- 
+2.17.1
 
