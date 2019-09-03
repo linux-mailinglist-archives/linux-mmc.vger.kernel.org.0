@@ -2,103 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6D6CA67CF
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 13:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC25AA6B42
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2019 16:23:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728571AbfICLva (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 3 Sep 2019 07:51:30 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:42460 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726631AbfICLv3 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Sep 2019 07:51:29 -0400
-Received: by mail-wr1-f68.google.com with SMTP id b16so17125214wrq.9;
-        Tue, 03 Sep 2019 04:51:28 -0700 (PDT)
+        id S1729581AbfICOWi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 3 Sep 2019 10:22:38 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:46710 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727005AbfICOWg (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Sep 2019 10:22:36 -0400
+Received: by mail-lf1-f67.google.com with SMTP id t8so582110lfc.13
+        for <linux-mmc@vger.kernel.org>; Tue, 03 Sep 2019 07:22:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id;
-        bh=LFB91c3nmv/pz8b+u80goQVipPJpjyjQS62qRFXUgtQ=;
-        b=bJ0krnZRH3xIjehbkmbbVQxBnkUa74KSuTBDO//BQo0cigELoAv1mrtFxrColLkIZM
-         omcKsHUfEe9PPcv836qz1cl2MBhLKye0mZu2NLvhOEuEaN2UywKFLZ39fexi+pwe18ZQ
-         2HXkAewEgMuqKFVDkXpvnuXzhsuDab9mG1+oyzKqcOX+Vz/UIMWwhjq8h4oNkYiITH4K
-         H4wY8S4xnA712lpsnpJoBc4BIEgALRz3H2B6LkKSuQunJ7ug5co/gSfJKJfL6YrUlc24
-         oAiOd5ckrjC+FCtJF4F4lWHxd71KtESgi9ImmMb1SNcvCF+fPxFyc7pEJXOsLPtJUBGa
-         l2Pw==
+        bh=jxeGFOcZojq09mDU5ChwaMdlo1ENQtr/dK8PzPkIcNw=;
+        b=kOUvGuZPDWhYmoFZ35uZfgKof779e/mNRWaIlCuKoDc0z3PMHRNxbDGTHBXqZz/2iX
+         OSKysAxrn1xT+ofGb+IXLEQgvcNF0k9/Tn7YqJc2ZYwjSaGQl4RkDUQjiBAfnJMNUOV4
+         iE1GyRugTEu3VYfJInaXRoeFiej1bLSQBZ7NBwz3WnFC25vDBmuusqNYItGjFwbLtlDX
+         aqgKGQ0I/2WguqVVqp2ALpPELYXObaA8Vz/6M+j1xt6Vy0ulakacsE45tKyvIQQhOpjE
+         zhMsdp7RQhJE4lJaf1MYw3tzhQumhHZbkTP21KOW3EmBVEAwibHTnZ+dhArKcBLzP8Tg
+         nQCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=LFB91c3nmv/pz8b+u80goQVipPJpjyjQS62qRFXUgtQ=;
-        b=qYIWYDir8ccONDlup4/U8gsh3CsbmWs7OvcbR5N1Aml1TDTp+Mc9COQvohSm5PTGUH
-         /Y9d1xdZOHfGeRrWmrX8CQZzTgAZl0aO7M8gj5q9nEx4kFBRH68HzbvUU519JMQ+m0cR
-         F8njjRdKfmVuzTWh6Jx68vKao2SmZe28uaX01zQ9JHitnwAeqJKfFNfglMuYxRSb2heW
-         vFsi2lyi4MwRuHpna2ET/rohnsx+hk2g3RxEqSqw13KYWy3xmjsArWAiJqgAscEUWX7W
-         L7T2TK0HIRKH7dUXwmvDRV/fmotbhdpW6Jmn3DFolkfWVDqxwjG4vhQoXEQvMDBuSRbS
-         b4ig==
-X-Gm-Message-State: APjAAAXOpR0R0mf2Ff7OObe8eBsFPomhssit6rzAuflKdalBOLX6VNJa
-        d5NbpbIx4/wJw/w7r3lMZKt6nuOZ
-X-Google-Smtp-Source: APXvYqwbEWX6uMe+Chq94s40RNi2NT4phCD3BvTPenhL7mFjVNrfZ2XEQ/SieLlzjcCHquFVjwcwPg==
-X-Received: by 2002:a5d:4bc1:: with SMTP id l1mr8441064wrt.259.1567511487060;
-        Tue, 03 Sep 2019 04:51:27 -0700 (PDT)
-Received: from stbsrv-and-01.and.broadcom.net ([192.19.231.250])
-        by smtp.gmail.com with ESMTPSA id a192sm22926128wma.1.2019.09.03.04.51.25
+        bh=jxeGFOcZojq09mDU5ChwaMdlo1ENQtr/dK8PzPkIcNw=;
+        b=fIwzi7Bbd3lOzeYT5236xF7voTCxXQA+0xUJFDaa/XDX0yEdfX0muvfv5N2bYvFLsK
+         JTh/uKcD9n+qtH9NVYoYJTOJmoqnhBP0Okfv5iu4VTKlFEY5WtcNMDu29YFM6WJjhysz
+         tiTYc2LqIzp94hWIF71SdZ8GH3NVwX1st8r+wGmMrOwZvf/Vp9yz9IrfnA4ZAAs+iN96
+         vaOaUeOR9t2ZqZ77YoYTEHFV885hg9sOJrSjgeE62rsyi+UjJpp3Y1DB1u9nKTY7F/Bx
+         H61w+mdfErde6EWi1RBV6L/hMkdgqqu2eJpUT382/ZriHRxxhWsmY/ttv7u2jT9AiT7v
+         5YXw==
+X-Gm-Message-State: APjAAAW5yTCmfsdT54otV0SzCLwgRiV9SMspr0XZSaHD2i5gfr6BrZmm
+        HdzIu+E9xWVgrkKUbqyu33J/iKDrGLE=
+X-Google-Smtp-Source: APXvYqw8xc5Srvx7uVIgZ6CAWg48jVMdxECIPClJ1jocPjMMn6ha3+WY+sH6SwYYQ8AJcdr0Js7Fsg==
+X-Received: by 2002:ac2:5dfa:: with SMTP id z26mr13175013lfq.37.1567520553527;
+        Tue, 03 Sep 2019 07:22:33 -0700 (PDT)
+Received: from uffe-XPS-13-9360.ideon.se ([85.235.10.227])
+        by smtp.gmail.com with ESMTPSA id v10sm2430862ljc.64.2019.09.03.07.22.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2019 04:51:26 -0700 (PDT)
-From:   Al Cooper <alcooperx@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Al Cooper <alcooperx@gmail.com>,
+        Tue, 03 Sep 2019 07:22:32 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH] mmc: sdhci: Fix incorrect switch to HS mode
-Date:   Tue,  3 Sep 2019 07:51:14 -0400
-Message-Id: <20190903115114.33053-1-alcooperx@gmail.com>
+        Douglas Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+Cc:     Shawn Lin <shawn.lin@rock-chips.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Yong Mao <yong.mao@mediatek.com>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 00/11] mmc: core: PM fixes/improvements for SDIO IRQs 
+Date:   Tue,  3 Sep 2019 16:21:56 +0200
+Message-Id: <20190903142207.5825-1-ulf.hansson@linaro.org>
 X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-When switching from any MMC speed mode that requires 1.8v
-(HS200, HS400 and HS400ES) to High Speed (HS) mode, the system
-ends up configured for SDR12 with a 50MHz clock which is an illegal
-mode.
+The power management support for SDIO cards have slowly been improved, but
+there are still quite some serious problems, especially when dealing with the
+so called SDIO IRQs during system suspend/resume.
 
-This happens because the SDHCI_CTRL_VDD_180 bit in the
-SDHCI_HOST_CONTROL2 register is left set and when this bit is
-set, the speed mode is controlled by the SDHCI_CTRL_UHS field
-in the SDHCI_HOST_CONTROL2 register. The SDHCI_CTRL_UHS field
-will end up being set to 0 (SDR12) by sdhci_set_uhs_signaling()
-because there is no UHS mode being set.
+This series makes some additional improvements to this code in the mmc core,
+but also includes some needed adaptations for the sdhci, the dw_mmc and the
+mtk-sd host drivers.
 
-The fix is to change sdhci_set_uhs_signaling() to set the
-SDHCI_CTRL_UHS field to SDR25 (which is the same as HS) for
-any switch to HS mode.
+So far the series has only been compile tested, so definitely need some help in
+testing this on HW, which of course would be greatly appreciated.
 
-This was found on a new eMMC controller that does strict checking
-of the speed mode and the corresponding clock rate. It caused the
-switch to HS400 mode to fail because part of the sequence to switch
-to HS400 requires a switch from HS200 to HS before going to HS400.
+The series is also available at:
+git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git sdio_irq_suspend_next
 
-This fix was suggested by Adrian Hunter
+Kind regards
+Uffe
 
-Signed-off-by: Al Cooper <alcooperx@gmail.com>
----
- drivers/mmc/host/sdhci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index 61d845fe0b97..068149640ecd 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -1858,7 +1858,9 @@ void sdhci_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
- 		ctrl_2 |= SDHCI_CTRL_UHS_SDR104;
- 	else if (timing == MMC_TIMING_UHS_SDR12)
- 		ctrl_2 |= SDHCI_CTRL_UHS_SDR12;
--	else if (timing == MMC_TIMING_UHS_SDR25)
-+	else if (timing == MMC_TIMING_SD_HS ||
-+		 timing == MMC_TIMING_MMC_HS ||
-+		 timing == MMC_TIMING_UHS_SDR25)
- 		ctrl_2 |= SDHCI_CTRL_UHS_SDR25;
- 	else if (timing == MMC_TIMING_UHS_SDR50)
- 		ctrl_2 |= SDHCI_CTRL_UHS_SDR50;
+Matthias Kaehlcke (1):
+  mmc: core: Move code to get pending SDIO IRQs to a function
+
+Ulf Hansson (10):
+  mmc: core: Add helper function to indicate if SDIO IRQs is enabled
+  mmc: dw_mmc: Re-store SDIO IRQs mask at system resume
+  mmc: mtk-sd: Re-store SDIO IRQs mask at system resume
+  mmc: core: Clarify sdio_irq_pending flag for
+    MMC_CAP2_SDIO_IRQ_NOTHREAD
+  mmc: core: Clarify that the ->ack_sdio_irq() callback is mandatory
+  mmc: core: WARN if SDIO IRQs are enabled for non-powered card in
+    suspend
+  mmc: core: Fixup processing of SDIO IRQs during system suspend/resume
+  mmc: sdhci: Drop redundant check in sdhci_ack_sdio_irq()
+  mmc: sdhci: Drop redundant code for SDIO IRQs
+  mmc: sdhci: Convert to use sdio_irq_enabled()
+
+ drivers/mmc/core/sdio.c            |  4 ++-
+ drivers/mmc/core/sdio_irq.c        | 57 +++++++++++++++++++-----------
+ drivers/mmc/host/dw_mmc.c          |  4 +++
+ drivers/mmc/host/mtk-sd.c          |  3 ++
+ drivers/mmc/host/sdhci-esdhc-imx.c | 34 ++++++++----------
+ drivers/mmc/host/sdhci.c           | 12 ++-----
+ drivers/mmc/host/sdhci.h           |  6 ----
+ include/linux/mmc/host.h           | 10 ++++++
+ 8 files changed, 75 insertions(+), 55 deletions(-)
+
 -- 
 2.17.1
 
