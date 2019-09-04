@@ -2,105 +2,101 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EAD2A78B1
-	for <lists+linux-mmc@lfdr.de>; Wed,  4 Sep 2019 04:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD73A78D8
+	for <lists+linux-mmc@lfdr.de>; Wed,  4 Sep 2019 04:36:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726770AbfIDCUt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 3 Sep 2019 22:20:49 -0400
-Received: from wout4-smtp.messagingengine.com ([64.147.123.20]:47825 "EHLO
-        wout4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727065AbfIDCUs (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Sep 2019 22:20:48 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id DD8344FF;
-        Tue,  3 Sep 2019 22:20:46 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Tue, 03 Sep 2019 22:20:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=from
-        :to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding; s=fm3; bh=0OPawNPcXoaz6itJ9OLuJZ+eo+
-        4zgp53fsik4iX6Y5A=; b=bUpB5qhwONHVcB/LkxyhBPPs4qTdJBZXSmbrFxSTcJ
-        92TXrH1wYZdpRiyTtVwvkeN2/a2T6uKm6Ze5w/QS9G+sZqri/5lWjOnhzTwe2TCD
-        TNE72RGJAKufDF0PB/X94IwTcae53qa+fM++DXwP+0bCzRbQw2aoSQ1GTO5EeRQb
-        IeLdKmKacwvuNr/bVUaAUrPcyNAxk6FWd54Znxrm+mZZbJxJWPz4TTKlI0EnH8Fl
-        txsXwYJehSrzOWHAsTK6dR6DdO8YXzO0NvCislhISfpF6GTlmBVrKmVZ0o6HvZ+T
-        oV+LLOF7qWZ0FyowDQEJI/xc0wNJdG6Z9m7Tqz8JN4/Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:date:from
-        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=0OPawNPcXoaz6itJ9
-        OLuJZ+eo+4zgp53fsik4iX6Y5A=; b=aHkwBUfdVOz919lRbW3s0C/fAMdKFV0x+
-        ZYP7AEM7cT3YuXCYRrLos9Y38ihlmfhzk4PlRWDLbXS0++rzTR+/K9+pUJM5koTy
-        Kc2/CmKDDjap69Tnr+QbEJcA+cJne37Gzv/p0VLnrw7j71Z81wyFNoAsbISsfwwM
-        92cNKXz+y1QSM6yS5e5/zZBllzINa8gp8kKPiIBIKHbKfX9SzVe+rjyUpEB8xCAO
-        Gu/ciU3unWSKrQeBmoCiZWXUUXCtQJdMRxuOTsTrJ1mfVeT/PXQVudFjevT3QYJ8
-        +CCeRrmGzKaMkg361tnyHnUc2xEphCHjdUtd3D9K/CSuuWgW0iq8g==
-X-ME-Sender: <xms:fR9vXThOywdquuTHqB5WK9u6cRRLdroK8yAz90O8nChsB55IXSnF2A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudejgedgheegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtre
-    dttdenucfhrhhomheptehnughrvgifucflvghffhgvrhihuceorghnughrvgifsegrjhdr
-    ihgurdgruheqnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkphepvddtfedrhe
-    ejrddvudehrddujeeknecurfgrrhgrmhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghj
-    rdhiugdrrghunecuvehluhhsthgvrhfuihiivgeptd
-X-ME-Proxy: <xmx:fR9vXYYdpaVaMDvBDQYcEqe0CJQD0Tk-oF7coHtC6EAZDDGORCzPWg>
-    <xmx:fR9vXfIr6kfZHrZqcDvsdkQDj8ZjCX2aZNgMKexQM0LMI_OxYZC5Fg>
-    <xmx:fR9vXVvztQC8bxljLHw2O96MWiEZ_r-uqKEUJRicw_EPOPKUK6IELA>
-    <xmx:fh9vXRVnebMtj_QQWeJhX8aiIv66Y3St9pbVADOY8yxyWnhEyXl0hQ>
-Received: from localhost.localdomain (203-57-215-178.dyn.iinet.net.au [203.57.215.178])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 4E4F2D6005B;
-        Tue,  3 Sep 2019 22:20:42 -0400 (EDT)
-From:   Andrew Jeffery <andrew@aj.id.au>
-To:     linux-mmc@vger.kernel.org
-Cc:     Andrew Jeffery <andrew@aj.id.au>, adrian.hunter@intel.com,
-        ulf.hansson@linaro.org, joel@jms.id.au, openbmc@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        kbuild test robot <lkp@intel.com>
-Subject: [PATCH v3] mmc: sdhci-of-aspeed: Depend on CONFIG_OF_ADDRESS
-Date:   Wed,  4 Sep 2019 11:51:20 +0930
-Message-Id: <20190904022120.4174-1-andrew@aj.id.au>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1728107AbfIDCgF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 3 Sep 2019 22:36:05 -0400
+Received: from lucky1.263xmail.com ([211.157.147.131]:37254 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727722AbfIDCgD (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Sep 2019 22:36:03 -0400
+X-Greylist: delayed 450 seconds by postgrey-1.27 at vger.kernel.org; Tue, 03 Sep 2019 22:36:02 EDT
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.177])
+        by lucky1.263xmail.com (Postfix) with ESMTP id 0803063E54;
+        Wed,  4 Sep 2019 10:28:27 +0800 (CST)
+X-263anti-spam: KSV:0;BIG:0;
+X-MAIL-GRAY: 1
+X-MAIL-DELIVERY: 0
+X-KSVirus-check: 0
+X-ADDR-CHECKED4: 1
+X-ABS-CHECKED: 1
+X-SKE-CHECKED: 1
+X-ANTISPAM-LEVEL: 2
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P10084T140370216199936S1567564098828954_;
+        Wed, 04 Sep 2019 10:28:25 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <fd477a8e067e3326f6773ed9a13e4d86>
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-SENDER: lintao@rock-chips.com
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-FST-TO: ulf.hansson@linaro.org
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-DNS-TYPE: 0
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Jaehoon Chung <jh80.chung@samsung.com>, linux-mmc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        Heiko Stuebner <heiko@sntech.de>,
+        Douglas Anderson <dianders@chromium.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH] mmc: dw_mmc-rockchip: Using 180 sample phase if all phases work
+Date:   Wed,  4 Sep 2019 10:27:10 +0800
+Message-Id: <1567564030-83224-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Resolves the following build error reported by the 0-day bot:
+default_sample_phase is used to make sure the cards are enumurated
+properly and will be set to 0 if not assigned. However, the sample
+phase should depends on the tuned phase if running higher clock rate.
+If all phases work but default_sample_phase isn't assigned, driver
+set sample phase to 0 for this case, which isn't the best choice,
+because we always expect to set phase to the middle of window. To
+solve the following continually issues we have seen in the test, we
+need set phase to the more stable one, 180, if all phases work.
 
-    ERROR: "of_platform_device_create" [drivers/mmc/host/sdhci-of-aspeed.ko] undefined!
+mmcblk1: error -84 transferring data, sector 1735064, nr 8, cmd
+response 0x900, card status 0xb00
+mmcblk1: retrying using single block read
+dwmmc_rockchip ff0f0000.dwmmc: All phases work, using default phase 0.
+mmcblk1: retrying because a re-tune was needed
 
-SPARC does not set CONFIG_OF_ADDRESS so the symbol is missing. Depend on
-CONFIG_OF_ADDRESS to ensure the driver is only built for supported
-configurations.
+.....
 
-Fixes: 2d28dbe042f4 ("mmc: sdhci-of-aspeed: Add support for the ASPEED SD controller")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+mmcblk1: error -84 transferring data, sector 1728672, nr 248, cmd
+response 0x900, card status 0xb00
+mmcblk1: retrying using single block read
+dwmmc_rockchip ff0f0000.dwmmc: All phases work, using default phase 0.
+
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 ---
-v2 was a series of 4 patches, three of which were applied leaving this build
-fix to be reworked. The v2 series can be found here:
 
-https://patchwork.ozlabs.org/cover/1156457/
+ drivers/mmc/host/dw_mmc-rockchip.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
- drivers/mmc/host/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 0f8a230de2f3..3a52f5703286 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -157,7 +157,7 @@ config MMC_SDHCI_OF_ARASAN
- config MMC_SDHCI_OF_ASPEED
- 	tristate "SDHCI OF support for the ASPEED SDHCI controller"
- 	depends on MMC_SDHCI_PLTFM
--	depends on OF
-+	depends on OF && OF_ADDRESS
- 	help
- 	  This selects the ASPEED Secure Digital Host Controller Interface.
+diff --git a/drivers/mmc/host/dw_mmc-rockchip.c b/drivers/mmc/host/dw_mmc-rockchip.c
+index d4d0213..9ef9723 100644
+--- a/drivers/mmc/host/dw_mmc-rockchip.c
++++ b/drivers/mmc/host/dw_mmc-rockchip.c
+@@ -209,9 +209,8 @@ static int dw_mci_rk3288_execute_tuning(struct dw_mci_slot *slot, u32 opcode)
+ 	}
+ 
+ 	if (ranges[0].start == 0 && ranges[0].end == priv->num_phases - 1) {
+-		clk_set_phase(priv->sample_clk, priv->default_sample_phase);
+-		dev_info(host->dev, "All phases work, using default phase %d.",
+-			 priv->default_sample_phase);
++		clk_set_phase(priv->sample_clk, 180);
++		dev_info(host->dev, "All phases work, using phase 180.");
+ 		goto free;
+ 	}
  
 -- 
-2.20.1
+1.9.1
+
+
 
