@@ -2,155 +2,115 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BD25A8D56
-	for <lists+linux-mmc@lfdr.de>; Wed,  4 Sep 2019 21:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF29A9768
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 01:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732083AbfIDQqi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 4 Sep 2019 12:46:38 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:34237 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729471AbfIDQqh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 Sep 2019 12:46:37 -0400
-Received: by mail-io1-f68.google.com with SMTP id s21so45740593ioa.1
-        for <linux-mmc@vger.kernel.org>; Wed, 04 Sep 2019 09:46:37 -0700 (PDT)
+        id S1730219AbfIDX6m (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 4 Sep 2019 19:58:42 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:35921 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727156AbfIDX6m (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 Sep 2019 19:58:42 -0400
+Received: by mail-pg1-f195.google.com with SMTP id l21so328669pgm.3
+        for <linux-mmc@vger.kernel.org>; Wed, 04 Sep 2019 16:58:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=9BM6pxRzc9IZitNAzk5af/DmUwUUWyKkwjAttI9Bp0s=;
-        b=A7BtxuCSvbKKSEcL0GJCf9Ph8dzwh9vRXZRA2B/HdNFpgZNHLf96gFpkLFsLLszJmc
-         W6tOiSaoHwnTIg30Fnb64vCHx6OPnSLRW9ZqB2g8cf+cEogIFgOkW6gIqH8DyNzuY9Ue
-         oF/4gXVf+MAkxMcckJPJKvOGtPRHEYAuYRrqg=
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=nzCBcaJ5OXHeTAD9ReyC4ft6yTqJSMLEq74ZF5Dx+sE=;
+        b=iC/g4yXM5OocLK4SajwTUkJeyEO8+T4E3re+X57It084S75WZuMT1xW/XtDBxbV3e1
+         rCwI6Cu8qUa6oMG/pTQ0f0F1LnsX/2SSFRLJ+IJXdxI55ZaWStRd9opIk8cUoqqwNrIP
+         H7tpNxuUkgkrFUP3vXeObEMl8Nso1hqkDA488=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=9BM6pxRzc9IZitNAzk5af/DmUwUUWyKkwjAttI9Bp0s=;
-        b=KhjE9b4IMv4cV814ABVkpVbJ+mWtxC3IxPQ2TP/gItgkRRxy4urIOMALOZOd0Z6Dt+
-         mcUmDDpuclyd+i6ykqptJatJIR2MnZ8RwYSyim6HUDu/EAXr2tjB1Y8vYmT/+vd+e/xk
-         pvTcceTkgI5NZoAscd1jdUJMkSKe7PM67EtlAKueBdRwB0JefCM4gqFEpSH0sDlQEBto
-         2LrrwOKhl/qS0ka+4UEj7UFpgOFK8qfCN+XwmqiN1u+DIHvpYsS0S9A5GlK9om1yl05n
-         zyEmigIhXbO/6gE2QaAYY2FghlH0/M9waHqgoN5q7ytga8lGwgrWbhmXMbK0HnEGjo71
-         AlAQ==
-X-Gm-Message-State: APjAAAV/YRo5WxpcwBJ2acjBGJBWEOxTtWFmhQGDYPGXB3z2uEjuL6YE
-        aEIb8MiatpIlfRE6QuKO/QEeeA==
-X-Google-Smtp-Source: APXvYqy3gvo/TxNI4EHirZ362AB0g09Kqxz/Iy/AapnWUbtnKGchWU456LQFqmOPTi0R5R24n/Saww==
-X-Received: by 2002:a5d:8957:: with SMTP id b23mr9219353iot.291.1567615597000;
-        Wed, 04 Sep 2019 09:46:37 -0700 (PDT)
-Received: from localhost ([2620:15c:183:0:82e0:aef8:11bc:24c4])
-        by smtp.gmail.com with ESMTPSA id o3sm13641860iob.64.2019.09.04.09.46.36
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=nzCBcaJ5OXHeTAD9ReyC4ft6yTqJSMLEq74ZF5Dx+sE=;
+        b=qMHhwsAAr4MQNrDMZXNkiJdjpQRIKB4JiejVw6CplZviBez6PuqSJGPY1VfSC84/KA
+         cfaDw44ZYIiftFaMHZedeCeiSecc2rmG+V7iVJtCZE8z1UeihiRXJvgYp55vxec0DfXN
+         yKUmbuwOVEHALvgDt1IIut/19yeuXQKhGSiWoQNK4WOy+wdPn5PBN4dyvS0iDe29bN4t
+         QiRiTF5JHKJNfQ6/UWBlTlucYwHCHPiaBnngIVdnN69xuGZ502dlibi5nIEtDtR4kx2U
+         p2okGDDJlUDjgHFgpkCoENwifzABr7gTqNc4TPTjHadAfDR72wMu0X5X51hV++n0p9Ql
+         d/qQ==
+X-Gm-Message-State: APjAAAXrL97KwNDWw9CFW+hssFGHphbx8Je/ra3L4gv66xX9RQm3Xpll
+        ZqX90Dj6BNsPhbMwGDouokGv+A==
+X-Google-Smtp-Source: APXvYqzrzu0vmwj7KrAElXE3dLnEORa8R7ryqq/uOGycM4Twl5etL9SOdCv1415tg9jmkA1mu+6Rng==
+X-Received: by 2002:aa7:8f08:: with SMTP id x8mr423535pfr.48.1567641521708;
+        Wed, 04 Sep 2019 16:58:41 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
+        by smtp.gmail.com with ESMTPSA id d69sm187118pfd.175.2019.09.04.16.58.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Sep 2019 09:46:36 -0700 (PDT)
-From:   Raul E Rangel <rrangel@chromium.org>
-To:     adrian.hunter@intel.com
-Cc:     Raul E Rangel <rrangel@chromium.org>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 2/2] mmc: sdhci: Quirk for AMD SDHC Device 0x7906
-Date:   Wed,  4 Sep 2019 10:46:25 -0600
-Message-Id: <20190904164625.236978-2-rrangel@chromium.org>
-X-Mailer: git-send-email 2.23.0.187.g17f5b7556c-goog
-In-Reply-To: <20190904164625.236978-1-rrangel@chromium.org>
-References: <20190904164625.236978-1-rrangel@chromium.org>
+        Wed, 04 Sep 2019 16:58:41 -0700 (PDT)
+Date:   Wed, 4 Sep 2019 16:58:36 -0700
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Yong Mao <yong.mao@mediatek.com>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/11] mmc: core: Add helper function to indicate if SDIO
+ IRQs is enabled
+Message-ID: <20190904235836.GG70797@google.com>
+References: <20190903142207.5825-1-ulf.hansson@linaro.org>
+ <20190903142207.5825-2-ulf.hansson@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190903142207.5825-2-ulf.hansson@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-AMD SDHC 0x7906 requires a hard reset to clear all internal state.
-Otherwise it can get into a bad state where the DATA lines are always
-read as zeros.
+Hi Ulf,
 
-This change requires firmware that can transition the device into
-D3Cold for it to work correctly. If the firmware does not support
-transitioning to D3Cold then the power state transitions are a no-op.
+On Tue, Sep 03, 2019 at 04:21:57PM +0200, Ulf Hansson wrote:
+> To avoid each host driver supporting SDIO IRQs, from keeping track
+> internally about if SDIO IRQs has been enabled, let's introduce a common
+> helper function, sdio_irq_enabled().
+> 
+> The function returns true if SDIO IRQs are enabled, via using the
+> information about the number of claimed irqs. This is safe, even without
+> any locks, as long as the helper function is called only from
+> runtime/system suspend callbacks of the host driver.
+> 
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> ---
+>  include/linux/mmc/host.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> index 4a351cb7f20f..0c0a565c7ff1 100644
+> --- a/include/linux/mmc/host.h
+> +++ b/include/linux/mmc/host.h
+> @@ -493,6 +493,15 @@ void mmc_command_done(struct mmc_host *host, struct mmc_request *mrq);
+>  
+>  void mmc_cqe_request_done(struct mmc_host *host, struct mmc_request *mrq);
+>  
+> +/*
+> + * May be called from host driver's system/runtime suspend/resume callbacks,
+> + * to know if SDIO IRQs has been enabled.
+> +*/
+> +static inline bool sdio_irq_enabled(struct mmc_host *host)
+> +{
+> +	return host->sdio_irqs > 0;
+> +}
+> +
 
-Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
----
-This is just a resend of https://patchwork.kernel.org/patch/10925467/
+The name of the function is a bit misleadling, since it indicates
+if SDIO IRQs should be enabled, not whether they are actually enabled
+by the host. The resulting code can look a bit confusing to the
+uninstructed reader:
 
+  if (sdio_irq_enabled(host->slot->mmc))
+    __dw_mci_enable_sdio_irq(host->slot, 1);
 
- drivers/mmc/host/sdhci-pci-core.c | 51 ++++++++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+), 1 deletion(-)
+aka 'if SDIO IRQ is enabled, enable SDIO IRQ'.
 
-diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-index 7d06e2860c36..84931ebe0c93 100644
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -21,6 +21,7 @@
- #include <linux/mmc/mmc.h>
- #include <linux/scatterlist.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/gpio.h>
- #include <linux/pm_runtime.h>
- #include <linux/mmc/slot-gpio.h>
-@@ -1590,11 +1591,59 @@ static int amd_probe(struct sdhci_pci_chip *chip)
- 	return 0;
- }
- 
-+static u32 sdhci_read_present_state(struct sdhci_host *host)
-+{
-+	return sdhci_readl(host, SDHCI_PRESENT_STATE);
-+}
-+
-+void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
-+{
-+	struct sdhci_pci_slot *slot = sdhci_priv(host);
-+	struct pci_dev *pdev = slot->chip->pdev;
-+	u32 present_state;
-+
-+	/*
-+	 * SDHC 0x7906 requires a hard reset to clear all internal state.
-+	 * Otherwise it can get into a bad state where the DATA lines are always
-+	 * read as zeros.
-+	 */
-+	if (pdev->device == 0x7906 && (mask & SDHCI_RESET_ALL)) {
-+		pci_clear_master(pdev);
-+
-+		pci_save_state(pdev);
-+
-+		pci_set_power_state(pdev, PCI_D3cold);
-+		pr_debug("%s: power_state=%u\n", mmc_hostname(host->mmc),
-+			pdev->current_state);
-+		pci_set_power_state(pdev, PCI_D0);
-+
-+		pci_restore_state(pdev);
-+
-+		/*
-+		 * SDHCI_RESET_ALL says the card detect logic should not be
-+		 * reset, but since we need to reset the entire controller
-+		 * we should wait until the card detect logic has stabilized.
-+		 *
-+		 * This normally takes about 40ms.
-+		 */
-+		readx_poll_timeout(
-+			sdhci_read_present_state,
-+			host,
-+			present_state,
-+			present_state & SDHCI_CD_STABLE,
-+			10000,
-+			100000
-+		);
-+	}
-+
-+	return sdhci_reset(host, mask);
-+}
-+
- static const struct sdhci_ops amd_sdhci_pci_ops = {
- 	.set_clock			= sdhci_set_clock,
- 	.enable_dma			= sdhci_pci_enable_dma,
- 	.set_bus_width			= sdhci_set_bus_width,
--	.reset				= sdhci_reset,
-+	.reset				= amd_sdhci_reset,
- 	.set_uhs_signaling		= sdhci_set_uhs_signaling,
- };
- 
--- 
-2.23.0.187.g17f5b7556c-goog
+sdio_irqs_claimed() could be a possible alternative.
 
+No biggie though, just something I noticed.
