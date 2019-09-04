@@ -2,196 +2,142 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03806A7D26
-	for <lists+linux-mmc@lfdr.de>; Wed,  4 Sep 2019 09:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 552D6A7DEE
+	for <lists+linux-mmc@lfdr.de>; Wed,  4 Sep 2019 10:33:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729313AbfIDHy7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 4 Sep 2019 03:54:59 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:51881 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729112AbfIDHy6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 Sep 2019 03:54:58 -0400
-X-UUID: 838997b885c34f9ca05f1094a8b60309-20190904
-X-UUID: 838997b885c34f9ca05f1094a8b60309-20190904
-Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw02.mediatek.com
-        (envelope-from <chaotian.jing@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1684064925; Wed, 04 Sep 2019 15:54:54 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Wed, 4 Sep 2019 15:54:52 +0800
-Received: from localhost.localdomain (10.17.3.153) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Wed, 4 Sep 2019 15:54:51 +0800
-From:   Chaotian Jing <chaotian.jing@mediatek.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Matthias Brugger <matthias.bgg@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ming Lei <ming.lei@redhat.com>, Chris Boot <bootc@bootc.net>,
-        Zachary Hays <zhays@lexmark.com>, <linux-mmc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>, <srv_heupstream@mediatek.com>
-Subject: [PATCH 2/2] mmc: block: add CMD13 polling for ioctl() cmd with R1B response
-Date:   Wed, 4 Sep 2019 15:54:44 +0800
-Message-ID: <20190904075444.2163-3-chaotian.jing@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20190904075444.2163-1-chaotian.jing@mediatek.com>
-References: <20190904075444.2163-1-chaotian.jing@mediatek.com>
+        id S1727544AbfIDIdH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 4 Sep 2019 04:33:07 -0400
+Received: from mga05.intel.com ([192.55.52.43]:7729 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727054AbfIDIdH (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 4 Sep 2019 04:33:07 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Sep 2019 01:33:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,465,1559545200"; 
+   d="scan'208";a="198976730"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.66]) ([10.237.72.66])
+  by fmsmga001.fm.intel.com with ESMTP; 04 Sep 2019 01:33:04 -0700
+Subject: Re: [PATCH v2] mmc: tegra: Implement enable_dma() to set dma_mask
+To:     Nicolin Chen <nicoleotsuka@gmail.com>
+Cc:     ulf.hansson@linaro.org, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, linux-mmc@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+        vdumpa@nvidia.com
+References: <20190814005741.13331-1-nicoleotsuka@gmail.com>
+ <09d9ba41-f4cd-e515-cd2d-0b4134648059@intel.com>
+ <20190815231646.GA15635@Asurada-Nvidia.nvidia.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <4a9c5d15-5f33-4275-8cf0-24cf374ad86b@intel.com>
+Date:   Wed, 4 Sep 2019 11:31:56 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <20190815231646.GA15635@Asurada-Nvidia.nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-currently there is no CMD13 polling and other code to wait card
-change to transfer state after R1B command completed. and this
-polling operation cannot do in user space, because other request
-may coming before the CMD13 from user space.
+On 16/08/19 2:16 AM, Nicolin Chen wrote:
+> On Thu, Aug 15, 2019 at 02:48:20PM +0300, Adrian Hunter wrote:
+>> On 14/08/19 3:57 AM, Nicolin Chen wrote:
+>>> [ Integrated the change and commit message made by Thierry Reding ]
+>>>
+>>> The SDHCI controller found in early Tegra SoCs (from Tegra20 through
+>>> Tegra114) used an AHB interface to the memory controller, which allowed
+>>> only 32 bits of memory to be addressed.
+>>>
+>>> Starting with Tegra124, this limitation was removed by making the SDHCI
+>>> controllers native MCCIF clients, which means that they got increased
+>>> bandwidth and better arbitration to the memory controller as well as an
+>>> address range extended to 40 bits, out of which only 34 were actually
+>>> used (bits 34-39 are tied to 0 in the controller).
+>>>
+>>> For Tegra186, all of the 40 bits can be used; For Tegra194, 39-bit can
+>>> be used.
+>>>
+>>> So far, sdhci-tegra driver has been relying on sdhci core to configure
+>>> the DMA_BIT_MASK between 32-bit or 64-bit, using one of quirks2 flags:
+>>> SDHCI_QUIRK2_BROKEN_64_BIT_DMA. However, there is a common way, being
+>>> mentioned in sdhci.c file, to set dma_mask via enable_dma() callback in
+>>> the device driver directly.
+>>>
+>>> So this patch implements an enable_dma() callback in the sdhci-tegra,
+>>> in order to set an accurate DMA_BIT_MASK, other than just 32/64 bits.
+>>
+>> Is there a reason this cannot be done at probe time?
+> 
+> It's supposed to be done at probe() time. But sdhci_setup_host()
+> does both 32-bit/64-bit dma_mask setting and dma_alloc(), so if
+> the dma_mask isn't correctly set inside sdhci_setup_host(), the
+> allocation would fall to a 64-bit IOVA range that hardware does
+> not support -- smmu error would happen and crash the system. On
+> the other hand, ->enable_dma() is called in that function right
+> after 32-bit/64-bit dma_mask setting. Or is there any other way
+> of adding to probe() that I am missing here?
 
-Signed-off-by: Chaotian Jing <chaotian.jing@mediatek.com>
+Hmmm.  Maybe we should clean that up a bit.  What do about this:
+
+From: Adrian Hunter <adrian.hunter@intel.com>
+Date: Wed, 4 Sep 2019 11:28:51 +0300
+Subject: [PATCH] mmc: sdhci: Let drivers define their DMA mask
+
+Add host operation ->set_dma_mask() so that drivers can define their own
+DMA masks.
+
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- drivers/mmc/core/block.c | 107 ++++++++++++++++++++-------------------
- 1 file changed, 55 insertions(+), 52 deletions(-)
+ drivers/mmc/host/sdhci.c | 12 ++++--------
+ drivers/mmc/host/sdhci.h |  1 +
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index aa7c19f7e298..9d6f7a5612b5 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -468,6 +468,58 @@ static int ioctl_do_sanitize(struct mmc_card *card)
- 	return err;
- }
- 
-+static inline bool mmc_blk_in_tran_state(u32 status)
-+{
-+	/*
-+	 * Some cards mishandle the status bits, so make sure to check both the
-+	 * busy indication and the card state.
-+	 */
-+	return status & R1_READY_FOR_DATA &&
-+	       (R1_CURRENT_STATE(status) == R1_STATE_TRAN);
-+}
-+
-+static int card_busy_detect(struct mmc_card *card, unsigned int timeout_ms,
-+			    u32 *resp_errs)
-+{
-+	unsigned long timeout = jiffies + msecs_to_jiffies(timeout_ms);
-+	int err = 0;
-+	u32 status;
-+
-+	do {
-+		bool done = time_after(jiffies, timeout);
-+
-+		err = __mmc_send_status(card, &status, 5);
-+		if (err) {
-+			dev_err(mmc_dev(card->host),
-+				"error %d requesting status\n", err);
-+			return err;
-+		}
-+
-+		/* Accumulate any response error bits seen */
-+		if (resp_errs)
-+			*resp_errs |= status;
-+
-+		/*
-+		 * Timeout if the device never becomes ready for data and never
-+		 * leaves the program state.
-+		 */
-+		if (done) {
-+			dev_err(mmc_dev(card->host),
-+				"Card stuck in wrong state! %s status: %#x\n",
-+				 __func__, status);
-+			return -ETIMEDOUT;
-+		}
-+
-+		/*
-+		 * Some cards mishandle the status bits,
-+		 * so make sure to check both the busy
-+		 * indication and the card state.
-+		 */
-+	} while (!mmc_blk_in_tran_state(status));
-+
-+	return err;
-+}
-+
- static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
- 			       struct mmc_blk_ioc_data *idata)
- {
-@@ -623,6 +675,9 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
- 					__func__, status, err);
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 66c2cf89ee22..43d32ba63ff5 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -3756,18 +3756,14 @@ int sdhci_setup_host(struct sdhci_host *host)
+ 		host->flags &= ~SDHCI_USE_ADMA;
  	}
  
-+	if (!err && (cmd.flags & MMC_RSP_R1B))
-+		err = card_busy_detect(card, MMC_BLK_TIMEOUT_MS, NULL);
-+
- 	return err;
- }
- 
-@@ -970,58 +1025,6 @@ static unsigned int mmc_blk_data_timeout_ms(struct mmc_host *host,
- 	return ms;
- }
- 
--static inline bool mmc_blk_in_tran_state(u32 status)
--{
 -	/*
--	 * Some cards mishandle the status bits, so make sure to check both the
--	 * busy indication and the card state.
+-	 * It is assumed that a 64-bit capable device has set a 64-bit DMA mask
+-	 * and *must* do 64-bit DMA.  A driver has the opportunity to change
+-	 * that during the first call to ->enable_dma().  Similarly
+-	 * SDHCI_QUIRK2_BROKEN_64_BIT_DMA must be left to the drivers to
+-	 * implement.
 -	 */
--	return status & R1_READY_FOR_DATA &&
--	       (R1_CURRENT_STATE(status) == R1_STATE_TRAN);
--}
--
--static int card_busy_detect(struct mmc_card *card, unsigned int timeout_ms,
--			    u32 *resp_errs)
--{
--	unsigned long timeout = jiffies + msecs_to_jiffies(timeout_ms);
--	int err = 0;
--	u32 status;
--
--	do {
--		bool done = time_after(jiffies, timeout);
--
--		err = __mmc_send_status(card, &status, 5);
--		if (err) {
--			dev_err(mmc_dev(card->host),
--				"error %d requesting status\n", err);
--			return err;
--		}
--
--		/* Accumulate any response error bits seen */
--		if (resp_errs)
--			*resp_errs |= status;
--
--		/*
--		 * Timeout if the device never becomes ready for data and never
--		 * leaves the program state.
--		 */
--		if (done) {
--			dev_err(mmc_dev(card->host),
--				"Card stuck in wrong state! %s status: %#x\n",
--				 __func__, status);
--			return -ETIMEDOUT;
--		}
--
--		/*
--		 * Some cards mishandle the status bits,
--		 * so make sure to check both the busy
--		 * indication and the card state.
--		 */
--	} while (!mmc_blk_in_tran_state(status));
--
--	return err;
--}
--
- static int mmc_blk_reset(struct mmc_blk_data *md, struct mmc_host *host,
- 			 int type)
- {
+ 	if (sdhci_can_64bit_dma(host))
+ 		host->flags |= SDHCI_USE_64_BIT_DMA;
+ 
+ 	if (host->flags & (SDHCI_USE_SDMA | SDHCI_USE_ADMA)) {
+-		ret = sdhci_set_dma_mask(host);
++		if (host->ops->set_dma_mask)
++			ret = host->ops->set_dma_mask(host);
++		else
++			ret = sdhci_set_dma_mask(host);
+ 
+ 		if (!ret && host->ops->enable_dma)
+ 			ret = host->ops->enable_dma(host);
+diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+index 81e23784475a..a9ab2deaeb45 100644
+--- a/drivers/mmc/host/sdhci.h
++++ b/drivers/mmc/host/sdhci.h
+@@ -623,6 +623,7 @@ struct sdhci_ops {
+ 	u32		(*irq)(struct sdhci_host *host, u32 intmask);
+ 
+ 	int		(*enable_dma)(struct sdhci_host *host);
++	int		(*set_dma_mask)(struct sdhci_host *host);
+ 	unsigned int	(*get_max_clock)(struct sdhci_host *host);
+ 	unsigned int	(*get_min_clock)(struct sdhci_host *host);
+ 	/* get_timeout_clock should return clk rate in unit of Hz */
 -- 
-2.18.0
+2.17.1
 
