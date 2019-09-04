@@ -2,142 +2,330 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EE83A8884
-	for <lists+linux-mmc@lfdr.de>; Wed,  4 Sep 2019 21:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F48AA8932
+	for <lists+linux-mmc@lfdr.de>; Wed,  4 Sep 2019 21:23:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730528AbfIDOMG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 4 Sep 2019 10:12:06 -0400
-Received: from esa3.hgst.iphmx.com ([216.71.153.141]:51025 "EHLO
-        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730512AbfIDOMG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 Sep 2019 10:12:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1567606326; x=1599142326;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Bw8ekpPmDqVi3QJtyu87RQ4jJQT6BFh2NoOQHO4+it8=;
-  b=Yvzr2jjHk9ntGP1McxfrPD5jRRZvXtuzNY4T5DSx1F6hqpGkI/pmDOwu
-   qmeI84J5/RgC7zGSlqA36bFN9QH9aQ17cAuTvBCTWOW431WzUABpWo8Pl
-   mgV4JwIoGHNXocJzIAvVOc+AIDSSOhQBHavePblEroRDdoWaDx4FdNVwD
-   CgM5mtWa4tf06ovjjM5IeVRIdnwqDVtU0GPU2DJJdJpff/k4cq2DQbVBe
-   2lj5jITTPsr1Z2co7cpV05hrAjZwWxehCj4wWuWREU0K+fqmBQ6sw5gnU
-   lu/0r8ILj03QqnYBc+wska2jJa/RZXs+oznbnYnHDz2lo8Ow4GveI1h6U
-   g==;
-IronPort-SDR: VddtBeQ9qCxoNCJSwWeihBoZL5CRVVkP/BtEPpRY5B1377ZmTfdZi2N0eN5nO3MLkSBMOx2J7M
- mzFdHqbPW7PjJLkj/jf2zFWefJeSggasj0ti+elphmB/yZTiueIiGS6bvnSpv8+zqXua/UNN1s
- 7EpWrGDAEXJ4Jine1/i1c4FxeTB6UE90A2HQQKXIue8xA46pwKfB2uOyg6AoWaB/esB7yHuZRT
- EGHJhhqrJpFqM61mAbSOMGKgkp1ywaPUapSEdRAdDJfw50BUyU6Y/dmv4lJQb/FS0T6f3AIgeW
- uaQ=
-X-IronPort-AV: E=Sophos;i="5.64,467,1559491200"; 
-   d="scan'208";a="121974734"
-Received: from mail-sn1nam01lp2053.outbound.protection.outlook.com (HELO NAM01-SN1-obe.outbound.protection.outlook.com) ([104.47.32.53])
-  by ob1.hgst.iphmx.com with ESMTP; 04 Sep 2019 22:12:00 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gjl12I8Yi7jm0P8o5tP1nWAYHx8Qa+0tFF+kqVwPA69bgr0VgHV0sFTG/WzX0/p84jrIlNYsxatrAo2e6hU5QiZDlhW9dUTM5/tCDjnkHLauphsuFkkH9gXNITt7VbnOCveXM6NXbMY+cA+y2ffvL95xmnHxvDaC8++bPp5qISpN3luj7S5+IwCod6D4HCNIGXGerC253F5OscWixWpoZcucGIGBsGiqj/jKXOM6xUfFTRzqfZ/GB3s7qY9w3IhFERVqm+H9pI8p+8ky47xyKTPo8T7G6yXOw0pBqKfPLdjfXoTafajGE7G/KwPkGeYg5fgWn/ODemutUlQXv0h2hQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=51wCs06DUa2QcWW20+MVpvW8IwMh3ja27k1LgkdwRvU=;
- b=JOwDgzD8dN4AMS5GT1vaLKXZIw5q/sOfWRZGariVYhk2CTr8Cu+3Wljc1+cO/UFkvKnWzOQCrGl5pfId2LJDaSKhDWmHRsGdMM5hWMtne/NLZE7HNezKy8NFDqyBxsp0UYtQGzRoZvtEroUZHjVC2GgXWERtRXk7vkRxftvykIEwcdBScI84Nq2gsUCONOFuDpbph690bfN2Q4ArPGo8q3lqcJXjbzR15q2tecMNHvOWmYLLIYGQCvCNcXQYzXY/8ye7ancs/r+fvknoipYR8J1hTd3pSnr5tzaqwjIp55ygof98YT/ziJVOiI9mPDFsmsiZYiWTcjCNMTuWqtvbGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=51wCs06DUa2QcWW20+MVpvW8IwMh3ja27k1LgkdwRvU=;
- b=FpqZhKTvXmqqc7HrKD1FIFFU3uCvXJEC94d009xHT2gblhq45hDdbSijIt0jPDcffY43Hsnd7Qjh9oIh9oSmTcpr8Tmns2e1ll0ROJy1z2RLaDW2lt5dtn7bEzuTty4RJyn8R8BJZTyPErkHDvVnvu0n3JuTiHx2uUpNvkuuY0I=
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
- MN2PR04MB6416.namprd04.prod.outlook.com (52.132.170.206) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2241.13; Wed, 4 Sep 2019 14:11:58 +0000
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::9c2b:ac1b:67b8:f371]) by MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::9c2b:ac1b:67b8:f371%2]) with mapi id 15.20.2220.022; Wed, 4 Sep 2019
- 14:11:58 +0000
-From:   Avri Altman <Avri.Altman@wdc.com>
-To:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Matthias Brugger <matthias.bgg@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ming Lei <ming.lei@redhat.com>, Chris Boot <bootc@bootc.net>,
-        Zachary Hays <zhays@lexmark.com>,
+        id S1731168AbfIDPFB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 4 Sep 2019 11:05:01 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:22286 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730135AbfIDPFB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 Sep 2019 11:05:01 -0400
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x84F0vtA013269;
+        Wed, 4 Sep 2019 17:04:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=dNUukUDNlrngzjB224KnsIWFvzpNxNKzPZCl7nlhcig=;
+ b=WS+J8YkbiP28erHXV+1OKyFn6iMaW66L642WJAaVr/Lk1ISu1mSRRL5jIheUfIkYT4xu
+ 6GLuOcTaf7VIrTRRwgk88Q+OeASJLduRnKVHHi9UphfuC5cfv77QknSNSh1nW961BgGw
+ ECsBlbtiZcAUn603wMrZle5bBInPS19KrUkHf7WBLS3unw0hapznWGXhU9BCpSJ/mEHM
+ DOtjK1LJM02YFNo0eycYH/lge26LemN+dJjQuAfD+rvS+iAgfV7nFmq8KXmrZ3M6B7AE
+ FVkqsDgvMsyKZ/vGzYVfN2Or+0mcvzQEhQw5fKuqUPD+Z2I3JiuoY8sjhjlgf3VMwg4r 9w== 
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2uqec3243e-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 04 Sep 2019 17:04:43 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 9BCDF4E;
+        Wed,  4 Sep 2019 15:04:32 +0000 (GMT)
+Received: from Webmail-eu.st.com (Safex1hubcas23.st.com [10.75.90.46])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id EE9D52C2A0D;
+        Wed,  4 Sep 2019 17:04:31 +0200 (CEST)
+Received: from SAFEX1HUBCAS22.st.com (10.75.90.93) by SAFEX1HUBCAS23.st.com
+ (10.75.90.46) with Microsoft SMTP Server (TLS) id 14.3.439.0; Wed, 4 Sep 2019
+ 17:04:31 +0200
+Received: from lmecxl0923.lme.st.com (10.48.0.237) by Webmail-ga.st.com
+ (10.75.90.48) with Microsoft SMTP Server (TLS) id 14.3.439.0; Wed, 4 Sep 2019
+ 17:04:31 +0200
+Subject: Re: [PATCH V5 1/3] mmc: mmci: add hardware busy timeout feature
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Rob Herring <robh+dt@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        "srv_heupstream@mediatek.com" <srv_heupstream@mediatek.com>
-Subject: RE: [PATCH 2/2] mmc: block: add CMD13 polling for ioctl() cmd with
- R1B response
-Thread-Topic: [PATCH 2/2] mmc: block: add CMD13 polling for ioctl() cmd with
- R1B response
-Thread-Index: AQHVYvYWr7zFcN7xD0GIE0WcESsTdacbjhBA
-Date:   Wed, 4 Sep 2019 14:11:58 +0000
-Message-ID: <MN2PR04MB6991F51F6DDCA28FC23D02FEFCB80@MN2PR04MB6991.namprd04.prod.outlook.com>
-References: <20190904075444.2163-1-chaotian.jing@mediatek.com>
- <20190904075444.2163-3-chaotian.jing@mediatek.com>
-In-Reply-To: <20190904075444.2163-3-chaotian.jing@mediatek.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Avri.Altman@wdc.com; 
-x-originating-ip: [212.25.79.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 08b6b784-e010-43c5-b0af-08d73141d984
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:MN2PR04MB6416;
-x-ms-traffictypediagnostic: MN2PR04MB6416:
-x-microsoft-antispam-prvs: <MN2PR04MB64164D8465E4397CA7ED9E57FCB80@MN2PR04MB6416.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 0150F3F97D
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(366004)(39860400002)(346002)(396003)(376002)(199004)(189003)(6246003)(54906003)(305945005)(110136005)(86362001)(2906002)(25786009)(66946007)(4744005)(14454004)(4326008)(76116006)(446003)(74316002)(5660300002)(33656002)(8936002)(6116002)(7416002)(7696005)(3846002)(476003)(11346002)(53936002)(71190400001)(71200400001)(256004)(478600001)(6506007)(81166006)(486006)(81156014)(316002)(52536014)(186003)(102836004)(9686003)(6436002)(55016002)(99286004)(8676002)(76176011)(7736002)(229853002)(66066001)(14444005)(64756008)(66556008)(66446008)(26005)(66476007);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB6416;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: dhXHev53uAbgm4xxIgZyc21nn67XzLaDY5BXfC/ejcG914J1EMY7RGtVlzirlZNgrLLBeba+VpBi1Q0o16+hIcBHoTyW5iiT3GtoXDK2vAlC31IjbLTgYI0qFK6sMnps/erOuVHapLJEJE0/ZIJDlE/h6paleukqfapdJ2Oh+pba1ePoHpFWEKfILT2egQPSlA5gZdmif8/C7iKGY7L4KxlBiePhhFJmSudl9+2btJHOvTzaSZ6y5Vwku5amupzdCAeHcuziA2Rx8QWD6awYaqNF4hOpGXxxsVib4VIVo9vnZvwJFA1NNm5Vo1cS2wSEO6BoS08Zv4TK1/0cwARzo4/7QStUTJFCl2Js55d09/rGY+8taoEsUPnZrBHHL9wgwIw8DUqp2qF3C4qnRt4MGhj755Uz2jAZWM6I0UUQmlk=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        <linux-stm32@st-md-mailman.stormreply.com>
+References: <20190813095951.26275-1-ludovic.Barre@st.com>
+ <20190813095951.26275-2-ludovic.Barre@st.com>
+ <CAPDyKFpOj8g+eY-vTxW4Sk+wVYTP1-4jDJB=nE=24eSubBvN-g@mail.gmail.com>
+From:   Ludovic BARRE <ludovic.barre@st.com>
+Message-ID: <87d0ea00-0410-ba40-fec5-4dd7f0d7a0dc@st.com>
+Date:   Wed, 4 Sep 2019 17:04:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08b6b784-e010-43c5-b0af-08d73141d984
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2019 14:11:58.6880
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wqdppwAIIBUz4R/8fpkC521g5A4InXclTlZObZ3KhPdsoqjP4JGtreDKPXr4Bu0VHzbrNcv4Oni1fj8N03JtaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB6416
+In-Reply-To: <CAPDyKFpOj8g+eY-vTxW4Sk+wVYTP1-4jDJB=nE=24eSubBvN-g@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.48.0.237]
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-09-04_04:2019-09-04,2019-09-04 signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
->  static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct
-> mmc_blk_data *md,
->                                struct mmc_blk_ioc_data *idata)
->  {
-> @@ -623,6 +675,9 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card
-> *card, struct mmc_blk_data *md,
->                                         __func__, status, err);
->         }
->=20
-> +       if (!err && (cmd.flags & MMC_RSP_R1B))
-> +               err =3D card_busy_detect(card, MMC_BLK_TIMEOUT_MS, NULL);
-> +
->         return err;
->  }
-You have both the R1B flag check, and status poll (for rpmb) few line above=
-.
-Maybe you could re-use it.
-It will both simplify this patch, and save the tad optimization of your fir=
-st patch.
+hi Ulf
 
-Thanks,
-Avri
+On 8/26/19 1:39 PM, Ulf Hansson wrote:
+> On Tue, 13 Aug 2019 at 12:00, Ludovic Barre <ludovic.Barre@st.com> wrote:
+>>
+>> From: Ludovic Barre <ludovic.barre@st.com>
+>>
+>> In some variants, the data timer starts and decrements
+>> when the DPSM enters in Wait_R or Busy state
+>> (while data transfer or MMC_RSP_BUSY), and generates a
+>> data timeout error if the counter reach 0.
+> 
+> I don't quite follow here, sorry. Can you please try to elaborate on
+> the use case(s) more exactly?
+> 
+> For example, what happens when a data transfer has just finished (for
+> example when MCI_DATAEND has been received) and we are going to send a
+> CMD12 to stop it? In this case the CMD12 has the MMC_RSP_BUSY flag
+> set.
+>
+
+example with cmd25 (write multi block)
+mmci_request
+     - mmci_start_data
+	set MMCIDATATIMER, MMCIDATALENGTH, MMCIMASK0
+     - mmci_start_command:
+	set MMCIARGUMENT, MMCICOMMAND (cmd25)
+
+mmci_irq:
+     - irq MCI_CMDRESPEND
+     - irq MCI_DATAEND
+     - send cmd12 => mmci_start_command(host->stop_abort or data->stop)
+     these cmds have flag rsp_busy and no data associate
+     host->cmd = cmd (host->stop_abort or data->stop) for next irq
+
+mmci_irq:
+     - irq MCI_CMDRESPEND
+     - irq BUSYD0END
+     - mmci_request_end
+
+> Another example is the CMD5, which has no data with it.
+> 
+>>
+>> -Define max_busy_timeout (in ms) according to clock.
+>> -Set data timer register if the command has rsp_busy flag.
+>>   If busy_timeout is not defined by framework, the busy
+>>   length after Data Burst is defined as 1 second
+>>   (refer: 4.6.2.2 Write of sd specification part1 v6-0).
+> 
+> One second is not sufficient for all operations, like ERASE for
+> example. However, I understand that you want to pick some value, as a
+> safety. I guess that's fine.
+> 
+> I am thinking that if the command has the MMC_RSP_BUSY flag set, the
+> core should really provide a busy timeout for it. That said, maybe the
+> host driver should splat a WARN in case there is not busy timeout
+> specified.
+
+Today, I just see a busy_timeout not defined on write request.
+On erase request, the timeout is defined in function mmc_do_erase.
+In core, there are several paths to done a write request, and I not
+be sure to fix all. For safety, I preferred fix with the max value of
+write request.
+
+> 
+>> -Add MCI_DATATIMEOUT error management in mmci_cmd_irq.
+>>
+>> Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
+>> ---
+>>   drivers/mmc/host/mmci.c | 37 ++++++++++++++++++++++++++++++++-----
+>>   drivers/mmc/host/mmci.h |  3 +++
+>>   2 files changed, 35 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+>> index c37e70dbe250..c50586540765 100644
+>> --- a/drivers/mmc/host/mmci.c
+>> +++ b/drivers/mmc/host/mmci.c
+>> @@ -1075,6 +1075,7 @@ static void
+>>   mmci_start_command(struct mmci_host *host, struct mmc_command *cmd, u32 c)
+>>   {
+>>          void __iomem *base = host->base;
+>> +       unsigned long long clks = 0;
+>>
+>>          dev_dbg(mmc_dev(host->mmc), "op %02x arg %08x flags %08x\n",
+>>              cmd->opcode, cmd->arg, cmd->flags);
+>> @@ -1097,6 +1098,19 @@ mmci_start_command(struct mmci_host *host, struct mmc_command *cmd, u32 c)
+>>                  else
+>>                          c |= host->variant->cmdreg_srsp;
+>>          }
+>> +
+>> +       if (host->variant->busy_timeout && !host->mrq->data) {
+> 
+> Suppose this is a CMD12 command, having the MMC_RSP_BUSY flag set. The
+> command would then be sent to stop the transmission and then
+> host->mrq->data would also be set.
+
+Sorry, it's a mistake introduce by v5.
+I would keep the clear of datatimer when is not needed
+(no data & no rsp busy, see below). But on cmd23 (set_block_count) with 
+datactrl_first variant property the datatimer should be protected.
+
+To simplify and fix the code, I will remove the clear of datatimer
+when there is no data & no rsp busy.
+
+- if (host->variant->busy_timeout && !host->mrq->data) {
++ if (host->variant->busy_timeout && !cmd->flags & MMC_RSP_BUSY) {
++         ....
++         writel_relaxed(clks, host->base + MMCIDATATIMER);
++ }
+
+> 
+> If I recall earlier what you stated about the new sdmmc variant, the
+> CMD12 is needed to exit the DPSM. Hence don't you need to re-program a
+> new value for the MMCIDATATIMER register for this scenario?
+> 
+>> +               if (cmd->flags & MMC_RSP_BUSY) {
+>> +                       if (!cmd->busy_timeout)
+>> +                               cmd->busy_timeout = 1000;
+>> +
+>> +                       clks = (unsigned long long)cmd->busy_timeout;
+>> +                       clks *= host->cclk;
+> 
+> Any problems with putting the above on one line?
+
+No, it was just to not exceed 80 characters.
+
+> 
+>> +                       do_div(clks, MSEC_PER_SEC);
+>> +               }
+>> +               writel_relaxed(clks, host->base + MMCIDATATIMER);
+> 
+> This is writing zero to MMCIDATATIMER in case the MMC_RSP_BUSY isn't
+> set, is that on purpose?
+
+It was to clear the datatimer when the command has
+no data & no rsp_busy. This allowed to look if the datatimer
+was used and not correctly set with the right value (with datatimeout).
+
+Like said above, I will remove this and set datatimer only
+on rsp_busy flag.
+
+> 
+>> +       }
+>> +
+>>          if (/*interrupt*/0)
+>>                  c |= MCI_CPSM_INTERRUPT;
+>>
+>> @@ -1203,6 +1217,7 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+>>   {
+>>          void __iomem *base = host->base;
+>>          bool sbc, busy_resp;
+>> +       u32 err_msk;
+>>
+>>          if (!cmd)
+>>                  return;
+>> @@ -1215,8 +1230,12 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+>>           * handling. Note that we tag on any latent IRQs postponed
+>>           * due to waiting for busy status.
+>>           */
+>> -       if (!((status|host->busy_status) &
+>> -             (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT|MCI_CMDSENT|MCI_CMDRESPEND)))
+>> +       err_msk = MCI_CMDCRCFAIL | MCI_CMDTIMEOUT;
+> 
+> You might as well move the initial assignment of err_msk to the its
+> declaration above.
+> 
+
+OK, thx
+
+>> +       if (host->variant->busy_timeout && busy_resp)
+>> +               err_msk |= MCI_DATATIMEOUT;
+>> +
+>> +       if (!((status | host->busy_status) &
+>> +             (err_msk | MCI_CMDSENT | MCI_CMDRESPEND)))
+>>                  return;
+>>
+>>          /* Handle busy detection on DAT0 if the variant supports it. */
+>> @@ -1235,8 +1254,7 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+>>                   * while, to allow it to be set, but tests indicates that it
+>>                   * isn't needed.
+>>                   */
+>> -               if (!host->busy_status &&
+>> -                   !(status & (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT)) &&
+>> +               if (!host->busy_status && !(status & err_msk) &&
+>>                      (readl(base + MMCISTATUS) & host->variant->busy_detect_flag)) {
+>>
+>>                          writel(readl(base + MMCIMASK0) |
+>> @@ -1290,6 +1308,9 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+>>                  cmd->error = -ETIMEDOUT;
+>>          } else if (status & MCI_CMDCRCFAIL && cmd->flags & MMC_RSP_CRC) {
+>>                  cmd->error = -EILSEQ;
+>> +       } else if (host->variant->busy_timeout && busy_resp &&
+>> +                  status & MCI_DATATIMEOUT) {
+>> +               cmd->error = -ETIMEDOUT;
+>>          } else {
+>>                  cmd->resp[0] = readl(base + MMCIRESPONSE0);
+>>                  cmd->resp[1] = readl(base + MMCIRESPONSE1);
+>> @@ -1948,6 +1969,8 @@ static int mmci_probe(struct amba_device *dev,
+>>           * Enable busy detection.
+>>           */
+>>          if (variant->busy_detect) {
+>> +               u32 max_busy_timeout = 0;
+>> +
+>>                  mmci_ops.card_busy = mmci_card_busy;
+>>                  /*
+>>                   * Not all variants have a flag to enable busy detection
+>> @@ -1957,7 +1980,11 @@ static int mmci_probe(struct amba_device *dev,
+>>                          mmci_write_datactrlreg(host,
+>>                                                 host->variant->busy_dpsm_flag);
+>>                  mmc->caps |= MMC_CAP_WAIT_WHILE_BUSY;
+>> -               mmc->max_busy_timeout = 0;
+>> +
+>> +               if (variant->busy_timeout)
+>> +                       max_busy_timeout = ~0UL / (mmc->f_max / MSEC_PER_SEC);
+> 
+> It looks like the max busy timeout is depending on the current picked
+> clock rate, right?
+> 
+> In such case, perhaps it's better to update mmc->max_busy_timeout as
+> part of the ->set_ios() callback, as it's from there the clock rate
+> gets updated. Or what do you think?
+
+yes, it's possible
+
+> 
+>> +
+>> +               mmc->max_busy_timeout = max_busy_timeout;
+>>          }
+>>
+>>          /* Prepare a CMD12 - needed to clear the DPSM on some variants. */
+>> diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
+>> index 833236ecb31e..d8b7f6774e8f 100644
+>> --- a/drivers/mmc/host/mmci.h
+>> +++ b/drivers/mmc/host/mmci.h
+>> @@ -287,6 +287,8 @@ struct mmci_host;
+>>    * @signal_direction: input/out direction of bus signals can be indicated
+>>    * @pwrreg_clkgate: MMCIPOWER register must be used to gate the clock
+>>    * @busy_detect: true if the variant supports busy detection on DAT0.
+>> + * @busy_timeout: true if the variant starts data timer when the DPSM
+>> + *               enter in Wait_R or Busy state.
+>>    * @busy_dpsm_flag: bitmask enabling busy detection in the DPSM
+>>    * @busy_detect_flag: bitmask identifying the bit in the MMCISTATUS register
+>>    *                   indicating that the card is busy
+>> @@ -333,6 +335,7 @@ struct variant_data {
+>>          u8                      signal_direction:1;
+>>          u8                      pwrreg_clkgate:1;
+>>          u8                      busy_detect:1;
+>> +       u8                      busy_timeout:1;
+>>          u32                     busy_dpsm_flag;
+>>          u32                     busy_detect_flag;
+>>          u32                     busy_detect_mask;
+>> --
+>> 2.17.1
+>>
+> 
+> Kind regards
+> Uffe
+> 
