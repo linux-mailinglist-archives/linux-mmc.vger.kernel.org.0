@@ -2,151 +2,224 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC459A77BA
-	for <lists+linux-mmc@lfdr.de>; Wed,  4 Sep 2019 02:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61572A77F5
+	for <lists+linux-mmc@lfdr.de>; Wed,  4 Sep 2019 02:58:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726451AbfIDACX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 3 Sep 2019 20:02:23 -0400
-Received: from wout2-smtp.messagingengine.com ([64.147.123.25]:58325 "EHLO
-        wout2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725882AbfIDACX (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Sep 2019 20:02:23 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 616A04EC;
-        Tue,  3 Sep 2019 20:02:21 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute4.internal (MEProxy); Tue, 03 Sep 2019 20:02:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm3; bh=e2m08tJLme9DAXqhOo/SiutMgnTWzRV
-        5kaLQ5K1ekAY=; b=nzDjn94z9twTnGbhrKJ/a73kjcHrGTL9VWrGlAJuPT6XS2b
-        ghrJMcXU8s6VbgR17WvlJaho31+Eh/OQwEkyj0vYFsgn2UHXgny78fRx/LjbptIS
-        MhA1CSzESkwlAeP5Akm6WDmDXiJ3OlqUq8jF1jq5Wc+/9RgOQAALIOwcRzYqpCcV
-        By30GqX5fXYxyOKKlqg7YrvUE+e+W4BpDRYZIG93ILZPheSplnh+9ldj3A05OMuV
-        5T2pyhvcZZ/wHOBYb/4ivhjA+AtQ2iaUdRYaMG/3dE0frBQ7oMNKk41qtCH6V7xw
-        Nmehft5ZwLynGIrFxHg0s6gAjW4j3Xq8czo2qpg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=e2m08t
-        JLme9DAXqhOo/SiutMgnTWzRV5kaLQ5K1ekAY=; b=TP9LTiUreJY4bZLWzMJ1fk
-        oTwdGNuCbqXjxZX+qj8doMbEAr4qwhNPd0ogE7rUnt3pj6MUxznpkmNGE3Na2iW7
-        IuqYY92EMFrTnCEf3MENAU2Ob/jtroq4uJY8zWCf8ntpoRF35EejGSJ0Uxp2TI65
-        IOC7h3GDw/zy0DamxQ00nV8D2qxIDjzCRa7554IGJTw+rUCFqNzmmw0RTqjaRVDQ
-        ruU6uRB5l0LFQ9nwEgO87wSKTK31bHvsmH9KOOhGVNjLZRmdi2ZifZtBY1C//NRh
-        Cj/v+pJU4ujHPC5+kayV9O6kokfdKuFCCB2IwIQ1uXlyonfmdHDcAUshtV75jNMQ
-        ==
-X-ME-Sender: <xms:C_9uXbcxP2ZIW9ShjiBFkTgSlNMrsYIBE_TuiLO1yU8EpbgBExZ96g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudejgedgvdejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdetnhgu
-    rhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghjrdhiugdrrghunecuvehluhhsthgv
-    rhfuihiivgeptd
-X-ME-Proxy: <xmx:C_9uXUNGfWVK6Pu3ZUBOvzJ6bFKv4JeQID4Y8l2M4pzPGY8cVJnxAA>
-    <xmx:C_9uXeb4vzNVrfsUUkEuXqkogR7Cad-_J3fBJm2JG3AYTvbzJ-ODAA>
-    <xmx:C_9uXYC3_rVXSh611uTU2_uEd4lFI-hBt5mTDTqHpKAeGEikQsWqDQ>
-    <xmx:Df9uXa8S4WRLMDJI7BY_Rw3nHq-_YQE3oi5P35WPeIkz-w1PjvkFnQ>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 2A685E00A3; Tue,  3 Sep 2019 20:02:19 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.1.7-154-gfa7592a-fmstable-20190829v1
-Mime-Version: 1.0
-Message-Id: <38ff59e7-491b-478b-afff-a664d8f66547@www.fastmail.com>
-In-Reply-To: <CAPDyKFpWJu3RH4TWoO_wcJq0LDrM_fAUfsCC==e8O_6A8dLhiA@mail.gmail.com>
-References: <20190902035842.2747-1-andrew@aj.id.au>
- <20190902035842.2747-2-andrew@aj.id.au>
- <CACPK8XfYgEUfaK6rtr+FdEq-Vau6d4wE2Rvfp6Q4G2-kjVLT0g@mail.gmail.com>
- <83570e25-b20a-4a17-85ea-15a9a53289bf@www.fastmail.com>
- <CAPDyKFpWJu3RH4TWoO_wcJq0LDrM_fAUfsCC==e8O_6A8dLhiA@mail.gmail.com>
-Date:   Wed, 04 Sep 2019 09:32:44 +0930
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Ulf Hansson" <ulf.hansson@linaro.org>
-Cc:     "Joel Stanley" <joel@jms.id.au>, "Arnd Bergmann" <arnd@arndb.de>,
+        id S1727314AbfIDA6d (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 3 Sep 2019 20:58:33 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:39689 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727168AbfIDA6d (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Sep 2019 20:58:33 -0400
+Received: by mail-ed1-f66.google.com with SMTP id u6so14786960edq.6;
+        Tue, 03 Sep 2019 17:58:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=96k3Ap6WgO1ubCZcnQYSOq5Fr6vkCvjWMlxPWHE7mDg=;
+        b=pYFQLhMoijP7Erg+oZF4nfoYi8XoHLvkNJI/nc6PcR14Pzz+yx+gC7xAtPj8RZ3Di/
+         dufXhWzuZSq0mtmDnLFLUvgPJZ3ALLyCn4ZcCQdUOnlSZHeAsM31Q1U0Goq6T5Cnd6m7
+         IIjVcoKNfKwRsIcFk7vK5Zdwv/fsZhg+tEsPdEwgsfeuaxRMaFBkEh0/GH56rs5rH8pl
+         YMWR43dWvgeUGtr0trLgmmiX2mc26aC1DWMSe3mR6N117vE67+AJSupANu2Z4RuwyMKu
+         Kzr/OZNWq+vw9Nzotn6+aRvZucNWPsZlaNJP4QyNm6/00GAPn9DJTNK67NOXD4daPWfZ
+         DoWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=96k3Ap6WgO1ubCZcnQYSOq5Fr6vkCvjWMlxPWHE7mDg=;
+        b=NwlLNkW402MTzcZQLDEFTA0RhjevHXmt8LtpcfAA1uoa5LG18/BMTmhyQtJSMdQIu0
+         GfCnBt4iYBnVCF/EjurgwO11JkYtczaET2QHCLMRut4uwdLXABnBvBVndrUXh9sTIZ0b
+         kLNWI6gMhHSL+V4MmSXIVmIPvFexhZOTVp31cT9PdeZL1Fw5SKiMf3A9k0idBev4D582
+         5MZiaI7XMbgOsMKrWHcT1VUuT8XbEgnbX38bmE47u9tBUNqzVxOy7L+LwS9+FQAkLO6l
+         ebqP+i2/iikRQrb3jZAOZ6cUNfSg7PxVbkXW2x+RyTgJqqnZZfROA+a2ZPzJpwmswunU
+         PTow==
+X-Gm-Message-State: APjAAAVg9CEhRpi/ns8HCWC2Uyc5IKZ2EsGm1XkElJOhZfPLrgVse7/h
+        pDU3ehGIwRRVLrkg92RVhzTUMXT8+Ge8NXvOFW4=
+X-Google-Smtp-Source: APXvYqxL7/6g4WdVoKygQkrH4jcXN6BTdspG9dGdMAlhilwJAGcSn0H2CM3jOBlSmOT2Dm8VejWdD185ViqKxfc4VSg=
+X-Received: by 2002:a50:ad5b:: with SMTP id z27mr25396902edc.252.1567558711317;
+ Tue, 03 Sep 2019 17:58:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190830022542.8571-1-benchuanggli@gmail.com> <CAHp75Vfx4FukybSjQjiNNQpHUNQrUsvwOen4ibqxOONKTJNxww@mail.gmail.com>
+In-Reply-To: <CAHp75Vfx4FukybSjQjiNNQpHUNQrUsvwOen4ibqxOONKTJNxww@mail.gmail.com>
+From:   Ben Chuang <benchuanggli@gmail.com>
+Date:   Wed, 4 Sep 2019 08:58:19 +0800
+Message-ID: <CACT4zj_+7r=0pO-c4H_QzEJzY=pSJn5pQkAK-5bM+vR6u8qS3Q@mail.gmail.com>
+Subject: Re: [PATCH V7 5/5] mmc: host: sdhci-pci: Add Genesys Logic GL975x support
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         linux-mmc <linux-mmc@vger.kernel.org>,
-        "Adrian Hunter" <adrian.hunter@intel.com>,
-        "OpenBMC Maillist" <openbmc@lists.ozlabs.org>,
-        "Linux ARM" <linux-arm-kernel@lists.infradead.org>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        "kbuild test robot" <lkp@intel.com>
-Subject: Re: [PATCH v2 1/4] mmc: sdhci-of-aspeed: Fix link failure for SPARC
-Content-Type: text/plain
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Michael K. Johnson" <johnsonm@danlj.org>,
+        Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Tue, Sep 3, 2019 at 6:05 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Fri, Aug 30, 2019 at 5:28 AM Ben Chuang <benchuanggli@gmail.com> wrote:
+> >
+> > From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+> >
+> > Add support for the GL9750 and GL9755 chipsets.
+> >
+> > Enable v4 mode and wait 5ms after set 1.8V signal enable for GL9750/
+> > GL9755. Fix the value of SDHCI_MAX_CURRENT register and use the vendor
+> > tuning flow for GL9750.
+> >
+>
+> > Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+>
+> Usually last one for latest developer / submitter goes on.
+>
+> > Co-developed-by: Michael K Johnson <johnsonm@danlj.org>
+> > Signed-off-by: Michael K Johnson <johnsonm@danlj.org>
+>
+>
+> > +#define GLI_MAX_TUNING_LOOP 40
+>
+>
+> > +static void gli_set_9750(struct sdhci_host *host)
+> > +{
+> > +       u32 driving_value = 0;
+> > +       u32 pll_value = 0;
+> > +       u32 sw_ctrl_value = 0;
+> > +       u32 misc_value = 0;
+> > +       u32 parameter_value = 0;
+> > +       u32 control_value = 0;
+>
+> > +
+>
+> Redundant blank line.
+>
+> > +       u16 ctrl2 = 0;
+>
+> Do you need these all assignments above?
+>
+> > +       driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
+> > +       pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
+> > +       sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
+> > +       misc_value = sdhci_readl(host, SDHCI_GLI_9750_MISC);
+> > +       parameter_value = sdhci_readl(host, SDHCI_GLI_9750_TUNING_PARAMETERS);
+> > +       control_value = sdhci_readl(host, SDHCI_GLI_9750_TUNING_CONTROL);
+>
+>
+>
+> > +
+> > +       udelay(1);
+>
+> This misses the answer to question why. Why this is needed and why
+> timeout is this long?
+>
+> > +
+> > +       gl9750_wt_off(host);
+> > +}
+>
+> > +static int __sdhci_execute_tuning_9750(struct sdhci_host *host, u32 opcode)
+> > +{
+> > +       int i;
+>
+> > +       int rx_inv = 0;
+>
+> Duplicate assignment.
+>
+> > +
+> > +       for (rx_inv = 0; rx_inv < 2; rx_inv++) {
+>
+> > +               if (rx_inv & 0x1)
+> > +                       gli_set_9750_rx_inv(host, true);
+> > +               else
+> > +                       gli_set_9750_rx_inv(host, false);
+>
+> gli_set_...(host, !!rx_inv);
+>
+> > +
+> > +               sdhci_start_tuning(host);
+> > +
+> > +               for (i = 0; i < GLI_MAX_TUNING_LOOP; i++) {
+> > +                       u16 ctrl;
+> > +
+> > +                       sdhci_send_tuning(host, opcode);
+> > +
+> > +                       if (!host->tuning_done) {
+>
+> > +                               if (rx_inv == 1) {
+>
+> It's an invariant to the loop. So, you may do this check after outter loop.
+>
+> > +                                       pr_info("%s: Tuning timeout, falling back to fixed sampling clock\n",
+> > +                                               mmc_hostname(host->mmc));
+>
+> > +                                       sdhci_abort_tuning(host, opcode);
+>
+> It will also de-duplicates this call.
+>
+> > +                                       return -ETIMEDOUT;
+> > +                               }
+> > +                               sdhci_abort_tuning(host, opcode);
+> > +                               break;
+> > +                       }
+>
+> > +               }
+> > +       }
+> > +
+> > +       pr_info("%s: Tuning failed, falling back to fixed sampling clock\n",
+> > +               mmc_hostname(host->mmc));
+> > +       sdhci_reset_tuning(host);
+> > +       return -EAGAIN;
+> > +}
+>
+> > +static void sdhci_gli_voltage_switch(struct sdhci_host *host)
+> > +{
+>
+> Any comment why?
+>
+> > +       usleep_range(5000, 5500);
+> > +}
+>
+> > +static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
+> > +{
+> > +       u32 value;
+> > +
+> > +       value = readl(host->ioaddr + reg);
+>
+> > +       if (unlikely(reg == SDHCI_MAX_CURRENT)) {
+> > +               if (!(value & 0xff))
+> > +                       value |= 0xc8;
+> > +       }
+>
+> if (a) {
+>  if (b) {
+>    ...
+>  }
+> }
+>
+> is the same as
+>
+> if (a && b) {
+>  ...
+> }
+>
+> > +       return value;
+> > +}
+>
+> > +#define PCI_DEVICE_ID_GLI_9755         0x9755
+> > +#define PCI_DEVICE_ID_GLI_9750         0x9750
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
+Hi, Andy,
 
-On Wed, 4 Sep 2019, at 00:18, Ulf Hansson wrote:
-> On Mon, 2 Sep 2019 at 07:26, Andrew Jeffery <andrew@aj.id.au> wrote:
-> >
-> >
-> >
-> > On Mon, 2 Sep 2019, at 13:42, Joel Stanley wrote:
-> > > On Mon, 2 Sep 2019 at 03:58, Andrew Jeffery <andrew@aj.id.au> wrote:
-> > > >
-> > > > Resolves the following build error reported by the 0-day bot:
-> > > >
-> > > >     ERROR: "of_platform_device_create" [drivers/mmc/host/sdhci-of-aspeed.ko] undefined!
-> > > >
-> > > > SPARC does not set CONFIG_OF_ADDRESS so the symbol is missing. Guard the
-> > > > callsite to maintain build coverage for the rest of the driver.
-> > > >
-> > > > Reported-by: kbuild test robot <lkp@intel.com>
-> > > > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> > > > ---
-> > > >  drivers/mmc/host/sdhci-of-aspeed.c | 38 ++++++++++++++++++++----------
-> > > >  1 file changed, 25 insertions(+), 13 deletions(-)
-> > > >
-> > > > diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
-> > > > index d5acb5afc50f..96ca494752c5 100644
-> > > > --- a/drivers/mmc/host/sdhci-of-aspeed.c
-> > > > +++ b/drivers/mmc/host/sdhci-of-aspeed.c
-> > > > @@ -224,10 +224,30 @@ static struct platform_driver aspeed_sdhci_driver = {
-> > > >         .remove         = aspeed_sdhci_remove,
-> > > >  };
-> > > >
-> > > > -static int aspeed_sdc_probe(struct platform_device *pdev)
-> > > > -
-> > > > +static int aspeed_sdc_create_sdhcis(struct platform_device *pdev)
-> > > >  {
-> > > > +#if defined(CONFIG_OF_ADDRESS)
-> > >
-> > > This is going to be untested code forever, as no one will be running
-> > > on a chip with this hardware present but OF_ADDRESS disabled.
-> > >
-> > > How about we make the driver depend on OF_ADDRESS instead?
-> >
-> > Testing is split into two pieces here: compile-time and run-time.
-> > Clearly the run-time behaviour is going to be broken on configurations
-> > without CONFIG_OF_ADDRESS (SPARC as mentioned), but I don't think
-> > that means we shouldn't allow it to be compiled in that case
-> > (e.g. CONFIG_COMPILE_TEST performs a similar role).
-> >
-> > With respect to compile-time it's possible to compile either path as
-> > demonstrated by the build failure report.
-> >
-> > Having said that there's no reason we  couldn't do what you suggest,
-> > just it wasn't the existing solution pattern for the problem (there are
-> > several other drivers that suffered the same bug that were fixed in the
-> > style of this patch). Either way works, it's all somewhat academic.
-> > Your suggestion is more obvious in terms of correctness, but this
-> > patch is basically just code motion (the only addition is the `#if`/
-> > `#endif` lines over what was already there if we disregard the
-> > function declaration/invocation). I'll change it if there are further
-> > complaints and a reason to do a v3.
-> 
-> I am in favor of Joel's suggestion as I don't really like having
-> ifdefs bloating around in the driver (unless very good reasons).
-> Please re-spin a v3.
-> 
-> Another option is to implement stub function and to deal with error
-> codes, but that sounds more like a long term thingy, if even
-> applicable here.
+Thank you for your comments to make the code better.
+Waiting to see if Adrian has any other comments.
 
-No worries then, will post a respin shortly.
-
-Andrew
+Best Regards,
+Ben Chuang
