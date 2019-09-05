@@ -2,22 +2,22 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6E8FA9C0D
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 09:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE933A9C17
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 09:40:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732151AbfIEHjU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Sep 2019 03:39:20 -0400
-Received: from sender4-pp-o95.zoho.com ([136.143.188.95]:25511 "EHLO
+        id S1732183AbfIEHkX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Sep 2019 03:40:23 -0400
+Received: from sender4-pp-o95.zoho.com ([136.143.188.95]:25501 "EHLO
         sender4-pp-o95.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728072AbfIEHjT (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 03:39:19 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1567669116; cv=none; 
+        with ESMTP id S1731361AbfIEHkX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 03:40:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1567669130; cv=none; 
         d=zoho.com; s=zohoarc; 
-        b=TlFcqFBhTxkXFm+qZD2KmWorCV1Q995Frdh/169tde8AvUxfGyll78ONAE+W/T1spGsd4f3k6dn8JmsKz0qn4Vz0kIK2SFlmgfqxPoivyjPyuNLRweZMSu/JNC/QQSmHstUP0H1M5BikZkfyRK2bVJxMJCCV9nSTMd+XKg7XPNc=
+        b=dhcLkStAdsTM1o4nHBlvqvbUNxZuGcQyUBirvZm4qmhgSWCaIq6TwuZb4N+RhEWsruQPJkpV5lr31JLTRGKe2NgRy0pHCmx/JXCyPqWeE/lUm4CRkf/GPP8Qs66u2BMOHt96ibGtLwkRTE8XtUlNRZDa2/WLPGjO7GWJojycFHg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
-        t=1567669116; h=Cc:Date:From:In-Reply-To:Message-ID:References:Subject:To:ARC-Authentication-Results; 
-        bh=no85iaJ0HmXEGz1jZcuzTck29a5rHbtxXoVG0kJSZfk=; 
-        b=jgr6OOi9C5oSZElvpTiQhWaHO5r3zCPwN7YOu4gSbUCkLR7YW+xfjJIA4QPCFDNlhWsTsQewe+Sj8lWQOGaRwXOsRnz21hpSIVnFcO9dfYLqhzrNhy1B7K4+xAkelpiXRMQMJKCA+p26vnmiqvq5chWO/axDD9arKKK6aTD2YU8=
+        t=1567669130; h=Cc:Date:From:In-Reply-To:Message-ID:References:Subject:To:ARC-Authentication-Results; 
+        bh=Heqr9SZkadaVS8gLSB7N1qy++ZERfguRdtxZqkfJX0A=; 
+        b=TeeCahrW1FxZNnGtRY/HJ++aIRXxwzEaA1R6vuHtSYigzOWIDtpG64Embd1UxvnfnfTyUfIcb+c80fWktW4vyhoTg4rNwu0yKqnZeYaLpG+8yXzlpQAUjxcKDHUo/0WV37Uc3NkuX2cVom7V3t0mVvdXAeEHeRVsG0hlHN7/hxE=
 ARC-Authentication-Results: i=1; mx.zoho.com;
         dkim=pass  header.i=zoho.com;
         spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
@@ -25,17 +25,17 @@ ARC-Authentication-Results: i=1; mx.zoho.com;
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
   s=zapps768; d=zoho.com; 
   h=from:to:cc:subject:date:message-id:in-reply-to:references; 
-  b=iILQy9qJtg8BR1p8ai3nvXG+HInP2Q+AnD8DKMPFaK4wiCGHaEBdzx6qzmaqSBIqCz4oA9BqebaZ
-    g39VXCqxKJ4fiokxmKhYhmFBoRHk8XJ49OIwa4LNfR2XAVT1cGYj  
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1567669116;
+  b=i2voXQ3nizZYL+xtYxnA9lL4pNt7arpQADgXeZk8KBRkG+XHjmm9js3xtqrcz9NsYWfkTb1On1BX
+    +ZD+G5tdImbqQ7t6fAjhQWT+bCNoN/ILCimAZhrf8DBgaeyo2Cb8  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1567669130;
         s=zm2019; d=zoho.com; i=zhouyanjie@zoho.com;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        l=3100; bh=no85iaJ0HmXEGz1jZcuzTck29a5rHbtxXoVG0kJSZfk=;
-        b=Z2UiLHs+5XZxY00bTJNE7UKyyiBbLUSkqIOEcvHTMNCSEy32mqBePScQM8cTF8ok
-        mhnJWK5ff12hiVp0oeV2PYZ2DW3YLZ7ECytYU+472pE21GJbsLYYhv571qbDEwCglBn
-        5OI4+LIg7UQGrTBx+sbiuDJ+FFSdRbKPpG+IXqlA=
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; l=873;
+        bh=Heqr9SZkadaVS8gLSB7N1qy++ZERfguRdtxZqkfJX0A=;
+        b=Nb9f65AlyTRCbjP1L15gZrRZ5ns0cq40NUB1ZR2y62PwUa/zeX+S4Y/or0AAaIgI
+        P7a52uJKv5F9IOlwKTxxHZPwzPBfvjk/P66XpOw8BiPV8RBYfcE12wxdfcS/qxm0SbN
+        +y7S6t7ZB5SWP/2jeqNNVBsaNNnEt/bvrg9MPBTE=
 Received: from zhouyanjie-virtual-machine.localdomain (125.71.5.36 [125.71.5.36]) by mx.zohomail.com
-        with SMTPS id 1567669114862143.77120560367462; Thu, 5 Sep 2019 00:38:34 -0700 (PDT)
+        with SMTPS id 1567669129342200.53823429847387; Thu, 5 Sep 2019 00:38:49 -0700 (PDT)
 From:   Zhou Yanjie <zhouyanjie@zoho.com>
 To:     linux-mips@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
@@ -44,9 +44,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         paul@crapouillou.net, malat@debian.org, yuehaibing@huawei.com,
         ezequiel@collabora.com, robh+dt@kernel.org, mark.rutland@arm.com,
         syq@debian.org, jiaxun.yang@flygoat.com
-Subject: [PATCH 1/4] MMC: Ingenic: Adjust the macro definition name.
-Date:   Thu,  5 Sep 2019 15:38:06 +0800
-Message-Id: <1567669089-88693-2-git-send-email-zhouyanjie@zoho.com>
+Subject: [PATCH 3/4] dt-bindings: MMC: Add JZ4760 bindings.
+Date:   Thu,  5 Sep 2019 15:38:08 +0800
+Message-Id: <1567669089-88693-4-git-send-email-zhouyanjie@zoho.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
 References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
@@ -56,94 +56,25 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Adjust the macro definition name to match the corresponding
-register name in the datasheet.
+Add the MMC bindings for the JZ4760 Soc from Ingenic.
 
 Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
 ---
- drivers/mmc/host/jz4740_mmc.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ Documentation/devicetree/bindings/mmc/jz4740.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index ffdbfaa..1b1fcb7 100644
---- a/drivers/mmc/host/jz4740_mmc.c
-+++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -28,7 +28,7 @@
- #include <asm/mach-jz4740/dma.h>
- 
- #define JZ_REG_MMC_STRPCL	0x00
--#define JZ_REG_MMC_STATUS	0x04
-+#define JZ_REG_MMC_STAT		0x04
- #define JZ_REG_MMC_CLKRT	0x08
- #define JZ_REG_MMC_CMDAT	0x0C
- #define JZ_REG_MMC_RESTO	0x10
-@@ -40,7 +40,7 @@
- #define JZ_REG_MMC_IREG		0x28
- #define JZ_REG_MMC_CMD		0x2C
- #define JZ_REG_MMC_ARG		0x30
--#define JZ_REG_MMC_RESP_FIFO	0x34
-+#define JZ_REG_MMC_RES		0x34
- #define JZ_REG_MMC_RXFIFO	0x38
- #define JZ_REG_MMC_TXFIFO	0x3C
- #define JZ_REG_MMC_DMAC		0x44
-@@ -391,7 +391,7 @@ static void jz4740_mmc_clock_disable(struct jz4740_mmc_host *host)
- 
- 	writew(JZ_MMC_STRPCL_CLOCK_STOP, host->base + JZ_REG_MMC_STRPCL);
- 	do {
--		status = readl(host->base + JZ_REG_MMC_STATUS);
-+		status = readl(host->base + JZ_REG_MMC_STAT);
- 	} while (status & JZ_MMC_STATUS_CLK_EN && --timeout);
- }
- 
-@@ -403,7 +403,7 @@ static void jz4740_mmc_reset(struct jz4740_mmc_host *host)
- 	writew(JZ_MMC_STRPCL_RESET, host->base + JZ_REG_MMC_STRPCL);
- 	udelay(10);
- 	do {
--		status = readl(host->base + JZ_REG_MMC_STATUS);
-+		status = readl(host->base + JZ_REG_MMC_STAT);
- 	} while (status & JZ_MMC_STATUS_IS_RESETTING && --timeout);
- }
- 
-@@ -446,7 +446,7 @@ static void jz4740_mmc_transfer_check_state(struct jz4740_mmc_host *host,
- {
- 	int status;
- 
--	status = readl(host->base + JZ_REG_MMC_STATUS);
-+	status = readl(host->base + JZ_REG_MMC_STAT);
- 	if (status & JZ_MMC_STATUS_WRITE_ERROR_MASK) {
- 		if (status & (JZ_MMC_STATUS_TIMEOUT_WRITE)) {
- 			host->req->cmd->error = -ETIMEDOUT;
-@@ -580,10 +580,10 @@ static bool jz4740_mmc_read_data(struct jz4740_mmc_host *host,
- 	/* For whatever reason there is sometime one word more in the fifo then
- 	 * requested */
- 	timeout = 1000;
--	status = readl(host->base + JZ_REG_MMC_STATUS);
-+	status = readl(host->base + JZ_REG_MMC_STAT);
- 	while (!(status & JZ_MMC_STATUS_DATA_FIFO_EMPTY) && --timeout) {
- 		d = readl(fifo_addr);
--		status = readl(host->base + JZ_REG_MMC_STATUS);
-+		status = readl(host->base + JZ_REG_MMC_STAT);
- 	}
- 
- 	return false;
-@@ -614,7 +614,7 @@ static void jz4740_mmc_read_response(struct jz4740_mmc_host *host,
- {
- 	int i;
- 	uint16_t tmp;
--	void __iomem *fifo_addr = host->base + JZ_REG_MMC_RESP_FIFO;
-+	void __iomem *fifo_addr = host->base + JZ_REG_MMC_RES;
- 
- 	if (cmd->flags & MMC_RSP_136) {
- 		tmp = readw(fifo_addr);
-@@ -797,7 +797,7 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
- 	struct mmc_command *cmd = host->cmd;
- 	uint32_t irq_reg, status, tmp;
- 
--	status = readl(host->base + JZ_REG_MMC_STATUS);
-+	status = readl(host->base + JZ_REG_MMC_STAT);
- 	irq_reg = jz4740_mmc_read_irq_reg(host);
- 
- 	tmp = irq_reg;
+diff --git a/Documentation/devicetree/bindings/mmc/jz4740.txt b/Documentation/devicetree/bindings/mmc/jz4740.txt
+index 8a6f87f..13796fe 100644
+--- a/Documentation/devicetree/bindings/mmc/jz4740.txt
++++ b/Documentation/devicetree/bindings/mmc/jz4740.txt
+@@ -8,6 +8,7 @@ Required properties:
+ - compatible: Should be one of the following:
+   - "ingenic,jz4740-mmc" for the JZ4740
+   - "ingenic,jz4725b-mmc" for the JZ4725B
++  - "ingenic,jz4760-mmc" for the JZ4760
+   - "ingenic,jz4780-mmc" for the JZ4780
+ - reg: Should contain the MMC controller registers location and length.
+ - interrupts: Should contain the interrupt specifier of the MMC controller.
 -- 
 2.7.4
 
