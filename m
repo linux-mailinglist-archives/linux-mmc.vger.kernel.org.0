@@ -2,46 +2,46 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F80AAAB57
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 20:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA733AAB96
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 20:57:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731938AbfIESnk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Sep 2019 14:43:40 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:40508 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729719AbfIESnk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 14:43:40 -0400
-Received: by mail-pg1-f195.google.com with SMTP id w10so1900355pgj.7
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 11:43:40 -0700 (PDT)
+        id S2387623AbfIES5L (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Sep 2019 14:57:11 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:40794 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729782AbfIES5L (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 14:57:11 -0400
+Received: by mail-pf1-f194.google.com with SMTP id x127so2368460pfb.7
+        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 11:57:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=Fn8SAMa0kHIf62H+0ZvQwfwKj3AOqtxXz/Ns6Tf+0hg=;
-        b=m5TQ/l8/gpBIBBYyzHTkSLKUh00lD/2kUVoHlrS31oAm2wuKupko2sk49zGnZeRC5w
-         XETHnJsuQSxmL+X2PatVMr3RHntKClFgnxL2YuqJhMGVKTpYzE3xq0hvhXy0+BS5n3tN
-         AvUD4Lcosyd8BO3ed/74ILca3jY3et4g3zES0=
+        bh=/nCAictNnDUt8UpNPme+HYcx2otpA2Cq+yz30/+CpwQ=;
+        b=NkNLDHA1VNhBtMVPNbVO1C5wzS2IJF6G42tikzBj/vtgLee3JtCwOn8nZFRmJd+FV3
+         HXshvjVtv4qoUM77bzcr0eGqB7H/v6SyJcDIWBp0yXpWyOy8xIvuvXm087A9M3xanwPO
+         2T9Bf9D7eBPH07y05dBCrUV9mAp6Y6XVc7Qrc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Fn8SAMa0kHIf62H+0ZvQwfwKj3AOqtxXz/Ns6Tf+0hg=;
-        b=JK+cL2Wwp3Tuaj/i9uKETXT4RNiGrdhOf4zFkeLnDXPpRszSOp1imawaCRRaCUduwk
-         yNn4E0H2A078tRKyUKXV3Qg0eltToSlE81jK4PxuhRbXcpHUMU6XfzZApqbUTffUuSlo
-         +Cnd6onmhU6kfdwxQs+HjDdjryLkgIh6Km7/pKCnqveVD1lowIis3J5Mt2xmNKi+g6Bn
-         El/pSIck+O2qpFaM5a3smTIR4xYyCJkxuRwciOVZUlIF9nbDFQTo8f+60nuBq/X0/LpA
-         YBfTCXDqP0iHZCAvzKhgoiDB9lm5W5Vn9k4xLe083QTB3wVHuEzc+PKP678X7rt9OYcu
-         ggeg==
-X-Gm-Message-State: APjAAAVYdHL3z2PfH7Cq1nI7eTm7UmCJZnK3NaNZm/JBX5ABPWaYyxdO
-        fVvgdNiP01u54SegfdjqnRzTnQ==
-X-Google-Smtp-Source: APXvYqxsoC2iAUPy8yQ6zCuWue0mOAZvhGJlSFrzwhw4M7Z/y03wd0Fknx/UhdR/a62nnuLNXPy0rA==
-X-Received: by 2002:aa7:8592:: with SMTP id w18mr5708116pfn.237.1567709019909;
-        Thu, 05 Sep 2019 11:43:39 -0700 (PDT)
+        bh=/nCAictNnDUt8UpNPme+HYcx2otpA2Cq+yz30/+CpwQ=;
+        b=sqi5mjc0nFxkt/CnooCf//2vF36eWJJJ+8CXLL4+FS+yfZ2fyqF7of6+77MEP3sVSq
+         9r7kUVFooBPadQs/9ev2YA35OHkLo/IhNr/hjkbe5PBu2g3Y0i21q4PajdflqCKQIVqQ
+         7b9gMS6/5a4hM5swiCmO7ozS6nNPTuoVUqKferxv2g70/3nu8q6Mc+ENCtmhHAF/58iv
+         R6Cb/1SwLl25bxTeQE2NzReNQCava4frgpPMP64AoHo/+w3bZfiWjZn8ceQt8Z5VxGzH
+         iOAZBLf5XgK/ZwmlQWI0Ocdrn1dYa15267dua85O/tjAAtblbDvnWcg7Dxm/Ki3vFALk
+         7bSQ==
+X-Gm-Message-State: APjAAAVSaHb4mJx6wVA/A+sr2DV8GK7VAd/duwodZCFEjRZXbyHDBT1x
+        52S9nSdseMfbC5N8ZAdKIQsfvg==
+X-Google-Smtp-Source: APXvYqxOhQTVz0pPuDWSAX1OvL95Ohbrj2oEDFudGxtOgutg4YfVTwRb168DYmxy9uq3o36uVT0LKw==
+X-Received: by 2002:a63:f07:: with SMTP id e7mr4769504pgl.238.1567709831061;
+        Thu, 05 Sep 2019 11:57:11 -0700 (PDT)
 Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id d14sm6312439pfh.36.2019.09.05.11.43.39
+        by smtp.gmail.com with ESMTPSA id y192sm4868626pfg.141.2019.09.05.11.57.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Sep 2019 11:43:39 -0700 (PDT)
-Date:   Thu, 5 Sep 2019 11:43:37 -0700
+        Thu, 05 Sep 2019 11:57:10 -0700 (PDT)
+Date:   Thu, 5 Sep 2019 11:57:08 -0700
 From:   Matthias Kaehlcke <mka@chromium.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
@@ -51,95 +51,46 @@ Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
         Yong Mao <yong.mao@mediatek.com>,
         Chaotian Jing <chaotian.jing@mediatek.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/11] mmc: core: Fixup processing of SDIO IRQs during
- system suspend/resume
-Message-ID: <20190905184337.GA133864@google.com>
+Subject: Re: [PATCH 09/11] mmc: sdhci: Drop redundant check in
+ sdhci_ack_sdio_irq()
+Message-ID: <20190905185708.GB133864@google.com>
 References: <20190903142207.5825-1-ulf.hansson@linaro.org>
- <20190903142207.5825-9-ulf.hansson@linaro.org>
+ <20190903142207.5825-10-ulf.hansson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190903142207.5825-9-ulf.hansson@linaro.org>
+In-Reply-To: <20190903142207.5825-10-ulf.hansson@linaro.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Sep 03, 2019 at 04:22:04PM +0200, Ulf Hansson wrote:
-> System suspend/resume of SDIO cards, with SDIO IRQs enabled and when using
-> MMC_CAP2_SDIO_IRQ_NOTHREAD is unfortunate still suffering from a fragile
-> behaviour. Some problems have been taken care of so far, but more issues
-> remains.
-> 
-> For example, calling the ->ack_sdio_irq() callback to let host drivers
-> re-enable the SDIO IRQs is a bad idea, unless the IRQ have been consumed,
-> which may not be the case during system suspend/resume. This may lead to
-> that a host driver re-signals the same SDIO IRQ over and over again,
-> causing a storm of IRQs and gives a ping-pong effect towards the
-> sdio_irq_work().
-> 
-> Moreover, calling the ->enable_sdio_irq() callback at system resume to
-> re-enable already enabled SDIO IRQs for the host, causes the runtime PM
-> count for some host drivers to become in-balanced. This then leads to the
-> host to remain runtime resumed, no matter if it's needed or not.
-> 
-> To fix these problems, let's check if process_sdio_pending_irqs() actually
-> consumed the SDIO IRQ, before we continue to ack the IRQ by invoking the
-> ->ack_sdio_irq() callback.
-> 
-> Additionally, there should be no need to re-enable SDIO IRQs as the host
-> driver already knows if they were enabled at system suspend, thus also
-> whether it needs to re-enable them at system resume. For this reason, drop
-> the call to ->enable_sdio_irq() during system resume.
-> 
-> In regards to these changes there is yet another issue, which is when there
-> is an SDIO IRQ being signaled by the host driver, but after the SDIO card
-> has been system suspended. Currently these IRQs are just thrown away, while
-> we should at least make sure to try to consume them when the SDIO card has
-> been system resumed. Fix this by calling sdio_signal_irq() after system
-> resumed the SDIO card.
+On Tue, Sep 03, 2019 at 04:22:05PM +0200, Ulf Hansson wrote:
+> The sdhci_ack_sdio_irq() is called only when SDIO IRQs are enabled.
+> Therefore, let's drop the redundant check of the internal
+> SDHCI_SDIO_IRQ_ENABLED flag and just re-enable the IRQs immediately.
 > 
 > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > ---
->  drivers/mmc/core/sdio.c     | 2 +-
->  drivers/mmc/core/sdio_irq.c | 3 ++-
->  2 files changed, 3 insertions(+), 2 deletions(-)
+>  drivers/mmc/host/sdhci.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-> index c557f1519b77..3114d496495a 100644
-> --- a/drivers/mmc/core/sdio.c
-> +++ b/drivers/mmc/core/sdio.c
-> @@ -1015,7 +1015,7 @@ static int mmc_sdio_resume(struct mmc_host *host)
->  		if (!(host->caps2 & MMC_CAP2_SDIO_IRQ_NOTHREAD))
->  			wake_up_process(host->sdio_irq_thread);
->  		else if (host->caps & MMC_CAP_SDIO_IRQ)
-> -			host->ops->enable_sdio_irq(host, 1);
-> +			sdio_signal_irq(host);
-
-You could possibly limit this to cards that remain powered during
-suspend, but doing it always should do no harm.
-
->  	}
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index c1ebc26846db..2a9be044448a 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -2161,8 +2161,7 @@ static void sdhci_ack_sdio_irq(struct mmc_host *mmc)
+>  	unsigned long flags;
 >  
->  out:
-> diff --git a/drivers/mmc/core/sdio_irq.c b/drivers/mmc/core/sdio_irq.c
-> index d7965b53a6d2..900871073bd7 100644
-> --- a/drivers/mmc/core/sdio_irq.c
-> +++ b/drivers/mmc/core/sdio_irq.c
-> @@ -115,7 +115,8 @@ static void sdio_run_irqs(struct mmc_host *host)
->  	mmc_claim_host(host);
->  	if (host->sdio_irqs) {
->  		process_sdio_pending_irqs(host);
-> -		host->ops->ack_sdio_irq(host);
-> +		if (!host->sdio_irq_pending)
-> +			host->ops->ack_sdio_irq(host);
->  	}
->  	mmc_release_host(host);
+>  	spin_lock_irqsave(&host->lock, flags);
+> -	if (host->flags & SDHCI_SDIO_IRQ_ENABLED)
+> -		sdhci_enable_sdio_irq_nolock(host, true);
+> +	sdhci_enable_sdio_irq_nolock(host, true);
+>  	spin_unlock_irqrestore(&host->lock, flags);
 >  }
 
-I'm by no means a SDIO expert, but as far as I can tell this looks
-good. I verified that this patch fixes a problem with SDIO interrupts
-that are ignored while suspending.
 
-Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
+FWIW:
+
+Reviewed-by:  Matthias Kaehlcke <mka@chromium.org>
