@@ -2,60 +2,60 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E81CA9D4F
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 10:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E147A9D64
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 10:44:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730867AbfIEInF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Sep 2019 04:43:05 -0400
-Received: from esa4.hgst.iphmx.com ([216.71.154.42]:25550 "EHLO
-        esa4.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726073AbfIEInE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 04:43:04 -0400
+        id S1731935AbfIEIok (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Sep 2019 04:44:40 -0400
+Received: from esa5.hgst.iphmx.com ([216.71.153.144]:6205 "EHLO
+        esa5.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731772AbfIEIoj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 04:44:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1567672984; x=1599208984;
+  t=1567673080; x=1599209080;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=GxOr2rNiVhQoWKfx7Z8pZ3PQbWb4PsX+HKo+F1pinFQ=;
-  b=XhlCG4rJrjEPieVolLYmSOHHQPq7fKun+4Z1Mq0wcnsMHlgd8gRF2n0A
-   rWJ0Zwbu6iAjgW7ZVo9pojOZeSttzX9K+9Wjx/FQxsD6a3COp5RwNUJI6
-   XaUTPNYTksarhcU99dTZUQyxinDOXRBpiulM4vR6xFhAbOByNYdQOAM6u
-   D5v+vLOoY76Xp/h5EZgj7Zckdmztm+gzXZ9SrC8IvQ4NJ+Dv4burPqqxt
-   Ped2kQpsvDaIw2P8Qubej2AIC756B1zeZG12e5zroe7fYIVSR8Tn3qL2R
-   uv/LmGB47yotxAnH3J9/ua3JENMW1h0rOu97N/Nrn3W4HAuyfWjpqujih
-   w==;
-IronPort-SDR: 2TyVadzNtrKDdPx3w2DsVWswaPfpEEXAKlavrrMlHdN3u2Y2PdOkPYphutnFAnwurApbAit3EC
- v3I5uOpZwKPQ4lVBX2hEgRviDzeciYlK9MnpSYfi1W3SE4NaGWHzCFAAap33JwjXAXJvujrsMT
- AZVm3n8wZNo24QUDW0S452x0XCJwLAPJN3L3GNGZUYFn3QkiQOk+kr8GBzJhJvapAsOKGH+ZRU
- /3Hv74sl9ELV8gJKHnselw9qwka+Y7w13TwJuKdaUYOu/RUbbzj2OWF/iElB7lIExOOobw30vo
- Gu8=
+  bh=4NdGWVOfFBg9vN1vd36not3xMvSXGtQkuCnHi0X9aAA=;
+  b=LFc5+jrIOnTqLYdVoxVOVxt9LG1Aqup8//fcCtgEN84H+lemlmpXE1Rm
+   kMolqNlnCb+igCtHXpLF07cXdxSXmg4pR1WNoo+s2K1vDkvdGSNspvKBo
+   +P3DrpiMfpA6APmFXGRaLguDSe0AwQ+yR9mL2nvJTD7znFuHzKgmr37L1
+   PF1WCw1JMkOAVQntQ2A8Vr3znlbNp7JKCqMqdUqBPnToK74oO5vdY+jYg
+   ifbRmEX3ZUk06QtAR6aZ4ZoLIXTTMpOvQkcUhkRjPQiYRwrnJ1visCkSu
+   4/QCydpjJb0FZeiT3R/IJf+rjjuhpPLXxSj4rrBYXL4FLoExpN4M8gBB5
+   Q==;
+IronPort-SDR: k80FLqrxZbdixP5tXmEPppRrAt6AE0YhxMsUSYSxn9nzxI8Fo+iGdQGNbY+FVRKaRv+HOrd/cs
+ 6JyxRwXipTqw0HXsUE7dw59tN+z1QIvHB3V/IzKTXxbkEIhAr1WE6H/ZkfMMGSPXJHs8JSgZBZ
+ Z+jZDbgz9muLGu4w/5GWqfxYziMSVZS1dUBjjsSxNKtRrUThyacS5wMnw9l4ogeAiYm2zdcxzG
+ Nlc+G8pC/G5LkI1VQyASA1QDWAyS6rvsWWtHUbz2Q7syfcpBr017GiSfgedHibN6wPxfI419DS
+ Q7k=
 X-IronPort-AV: E=Sophos;i="5.64,470,1559491200"; 
-   d="scan'208";a="117520626"
-Received: from mail-by2nam01lp2059.outbound.protection.outlook.com (HELO NAM01-BY2-obe.outbound.protection.outlook.com) ([104.47.34.59])
-  by ob1.hgst.iphmx.com with ESMTP; 05 Sep 2019 16:43:03 +0800
+   d="scan'208";a="118421646"
+Received: from mail-bn3nam01lp2055.outbound.protection.outlook.com (HELO NAM01-BN3-obe.outbound.protection.outlook.com) ([104.47.33.55])
+  by ob1.hgst.iphmx.com with ESMTP; 05 Sep 2019 16:44:38 +0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bP1ew3xCOks3eIjObZ7IPu8sMHl8rFNhenoc5Zp8jEkKxTX/eGNlL57aqfo36RtCoc/nuutIcce7WP2HvpgRQ7kmkz97H5NxPktDFVh20cAyjLtE8AHL9FFdNknKIMISHJB2InG9uuX/rPQM/MyvTdmIEuPVEyVMxNRXFHDmlW62JaVmCe24jaymo+Zab+zS31z+pU8esQ982RbIg+SMq99hCzOhAxPvKgFGh2vwt4FnEXTNeAo8HcDaalt7S28kk+sMCheD3SzLoPsjyR+8SvDcedT2LfTg6FmJY5U+TujCg0u9chGkJjh8vVx7kqlZjKcQk9ovMQYY7qu1GD0PzA==
+ b=HM0ygg9YmS/DTCGQ7m3/OAQc+lNK0O0RuGiH81NFIR7ZXWxTdSrsaWJgetRMq3zl+QGNGZasAYT2FnXWWxzhodC4HCaiy3t5lcefyN+yq51/BiawK5IjtKOCKNfEwjEY/pCRyiDMudnmGeEzCarQYC/lIaimzPXUNhHvaudFVUTIaf419NC9+oQNC3RTa52bwYyFWKvjaxjMkBOeRKcVcA70gFYkZDdSV1pdw+jjI1I8DvIU2NUaqJpGiFCzegUmSd7jAOGcKL1CgnttpHy5Zlfv/qp7eYoKIOFW5Fv+lwH1wO3YYt7nJBA79vM5gjLN7YkxPpkBRcyzipgwOG1NTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GxOr2rNiVhQoWKfx7Z8pZ3PQbWb4PsX+HKo+F1pinFQ=;
- b=jApHlGGLjRFMMT8/7B23wJKtPcy4enBS6moPSkVM65rmpfQ6B3YiKOY7pw1vK6aLoiZrn3JH2s9/1WVVZYTgqbC1kUqHjLPhZRhoYXOWDmP0bH4cVO8Q5IbkyuW3DYWB6k4OQCdAk66eBuRLBweJrQqyILCMs6x0fLA9KQe7yCTwBPK8dhyq657V+rN8efvcAWH8HhQfiJqN6XQXlJy8nu5G37StB9ylSEMGrg7YjcX6jPr1P0kLhatSDvNJ+lGWTu8dZ5mQnwj9VpxT4nyaxnlzulTjVUxXDKfCVtfXQrxHldMFN9i9IXRwG1GlNmoxQZ9tS4nKDW0XyoMRDSFtsg==
+ bh=4NdGWVOfFBg9vN1vd36not3xMvSXGtQkuCnHi0X9aAA=;
+ b=Ok4S2DfP47B3vEp7RwWn4TRqAdiS2XEOteAkVXiDEaUGwpCzYHNxDjvJYHQizaQOE28QEMimONZ3AiP0lIkkUrWfNGBgYp5rHeKCEiV7DSA3v+YOFOlw4GaPqwbbfXZT0CqgKeIe12250u+F44meI6vKNGAfGWnt5le0Ej6URqwbF7RtOdvN9RoRDmJd0YJ/hTje46sotY/XfIdY2p/0wEmAEMPSbYJweO2hgLCvkCAROfK2IleLzJXxLN9LG48cz6xnJrD3FSZ2Th7HnObhd8Jf5kfcfRKtmp5EQwBDmpdzMf/ivqJ+Wf8Cm5Shri/zbfQ6zLWPo/hAwzuCoyoTRQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
  header.d=wdc.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GxOr2rNiVhQoWKfx7Z8pZ3PQbWb4PsX+HKo+F1pinFQ=;
- b=hpIQzluwx8fU+eu66xR8l/B55YX4bEua3ybI0IRaWzE9gOH5N++Dh3UagrbD3oSridLylVpfb9sjPrcigV6JC6dsPBGk+QI0azLnQizBiN7rqbYFlJBQWPoKQVAtTs62MqXTaigV0/6NO831z5kugzDaZ670KLxyrb4rZPa+Ko0=
+ bh=4NdGWVOfFBg9vN1vd36not3xMvSXGtQkuCnHi0X9aAA=;
+ b=Xc8fSxsq+IveGmDfcxH/l6C/6AHkT4E5q7EuQCC8KbPYxbK1co17NdCUiDM4vQRqHMKkYC1iVjnFQ2ttzSepxzwVhB1ruDCf31LUFigpvW46zymPxCyWsoy2KmGgORDLDUk4mCreIrgDCgK2PHK1yRJ5fde3e0w23bu5haQ2wTs=
 Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
  MN2PR04MB6784.namprd04.prod.outlook.com (10.141.117.143) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2220.19; Thu, 5 Sep 2019 08:43:02 +0000
+ 15.20.2220.19; Thu, 5 Sep 2019 08:44:35 +0000
 Received: from MN2PR04MB6991.namprd04.prod.outlook.com
  ([fe80::9c2b:ac1b:67b8:f371]) by MN2PR04MB6991.namprd04.prod.outlook.com
  ([fe80::9c2b:ac1b:67b8:f371%2]) with mapi id 15.20.2220.022; Thu, 5 Sep 2019
- 08:43:02 +0000
+ 08:44:35 +0000
 From:   Avri Altman <Avri.Altman@wdc.com>
 To:     Chaotian Jing <chaotian.jing@mediatek.com>,
         Ulf Hansson <ulf.hansson@linaro.org>
@@ -72,16 +72,16 @@ CC:     Matthias Brugger <matthias.bgg@gmail.com>,
         "linux-mediatek@lists.infradead.org" 
         <linux-mediatek@lists.infradead.org>,
         "srv_heupstream@mediatek.com" <srv_heupstream@mediatek.com>
-Subject: RE: [PATCH v2 1/2] mmc: block: make the card_busy_detect() more
- generic
-Thread-Topic: [PATCH v2 1/2] mmc: block: make the card_busy_detect() more
- generic
-Thread-Index: AQHVY78D2wIhLs0r0UOGUgZKZkbOgKccwK8w
-Date:   Thu, 5 Sep 2019 08:43:01 +0000
-Message-ID: <MN2PR04MB69916E18CB87074C1189D82CFCBB0@MN2PR04MB6991.namprd04.prod.outlook.com>
+Subject: RE: [PATCH v2 2/2] mmc: block: add CMD13 polling for ioctl() cmd with
+ R1B response
+Thread-Topic: [PATCH v2 2/2] mmc: block: add CMD13 polling for ioctl() cmd
+ with R1B response
+Thread-Index: AQHVY78FV3LC8eVs1UiHHYg0C+TgPaccxI9Q
+Date:   Thu, 5 Sep 2019 08:44:35 +0000
+Message-ID: <MN2PR04MB6991D9707092B671FB129DC0FCBB0@MN2PR04MB6991.namprd04.prod.outlook.com>
 References: <20190905075318.15554-1-chaotian.jing@mediatek.com>
- <20190905075318.15554-2-chaotian.jing@mediatek.com>
-In-Reply-To: <20190905075318.15554-2-chaotian.jing@mediatek.com>
+ <20190905075318.15554-3-chaotian.jing@mediatek.com>
+In-Reply-To: <20190905075318.15554-3-chaotian.jing@mediatek.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -90,46 +90,42 @@ authentication-results: spf=none (sender IP is )
  smtp.mailfrom=Avri.Altman@wdc.com; 
 x-originating-ip: [212.25.79.133]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8c68b9b7-b75e-417d-a8bd-08d731dd0fe6
+x-ms-office365-filtering-correlation-id: c365405c-3b67-42fe-056f-08d731dd47de
 x-ms-office365-filtering-ht: Tenant
 x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:MN2PR04MB6784;
 x-ms-traffictypediagnostic: MN2PR04MB6784:
-x-microsoft-antispam-prvs: <MN2PR04MB6784392BB9EAE3A1FACDC3C0FCBB0@MN2PR04MB6784.namprd04.prod.outlook.com>
+x-microsoft-antispam-prvs: <MN2PR04MB6784914D9EFEAE4B2AD1CD98FCBB0@MN2PR04MB6784.namprd04.prod.outlook.com>
 wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:923;
+x-ms-oob-tlc-oobclassifiers: OLM:4941;
 x-forefront-prvs: 015114592F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(979002)(4636009)(376002)(366004)(136003)(39860400002)(396003)(346002)(199004)(189003)(81156014)(5660300002)(316002)(54906003)(26005)(110136005)(81166006)(14444005)(7696005)(476003)(25786009)(6436002)(6116002)(3846002)(8676002)(52536014)(71190400001)(71200400001)(102836004)(99286004)(229853002)(486006)(66066001)(6506007)(478600001)(2906002)(8936002)(4326008)(7736002)(446003)(305945005)(14454004)(4744005)(256004)(186003)(9686003)(74316002)(86362001)(7416002)(11346002)(76176011)(55016002)(33656002)(76116006)(53936002)(66946007)(66476007)(6246003)(64756008)(66556008)(66446008)(41533002)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB6784;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(376002)(366004)(136003)(39860400002)(396003)(346002)(199004)(189003)(81156014)(5660300002)(316002)(54906003)(26005)(110136005)(81166006)(14444005)(7696005)(476003)(25786009)(6436002)(6116002)(3846002)(8676002)(52536014)(71190400001)(71200400001)(102836004)(99286004)(229853002)(486006)(66066001)(6506007)(478600001)(2906002)(8936002)(4326008)(7736002)(446003)(305945005)(14454004)(4744005)(256004)(186003)(9686003)(74316002)(86362001)(7416002)(11346002)(76176011)(55016002)(33656002)(76116006)(53936002)(66946007)(66476007)(6246003)(64756008)(66556008)(66446008);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB6784;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: VNBrc5Kt8xsltZxn4cd3H06Wl0aRNYyW4sPSWBVAJoyMAJu2NewePevBgcGN8SwZKVGjF/3thMJSzJKR9o8DrHr1F0FBLxpYkCMsUv0WHgPBH9+tp4FlqvW+Qai/gfYK0XG8IJyX7waYAZk7DwcTlXVKqjhJ9boJGjROeIdT9xYWQ6o20fKJU8iCPRcdLS+TzfYrWnB8+WIDY3RQ5F/qu7jCRKXx8WYI6Krq+NC2T12qwpz26L04lW0qrkxPJ8SIe5mu1tXO4uunSBeTY8aiyzLvHAIvvgA6eLHWO6oG03dQJhcAe8dF8QmNL/VlST82NLbRMJa3E9500RuFF2tvxXpEL+WahMX4lHlUs+viyGGtOrqzkeVaB5mnXTHYUbHkY7WklEDGjUclczrofwq2BHLHtYDYL7ZYoh07/ZyXZzk=
+x-microsoft-antispam-message-info: mT09dlgI7BOOu1LFWdRO3VJetslmHh67wSYvxgiEsucAsxZc7whNeYKiSPkOV1MN3dkq1WLFZIlRWcGYsIbYWjJwv0a7dy9shX/reDeYgURIPDMuF1TOesdia8+yPTXcXV4GotHYq6Zn3qNEERYRz3S6Ovu6Uz9/J3WSexrsL0bzQmtHcRT5HmmmAduRby/LM1G/SefTWLcwvEfHYzWxAo3T7fp6BwQkM8jtqQ7n4Oq9XMmQq4QtgFX6oCNSf46DYCJRhd5E+dfsJmaVFiDrGZwWr5Gr/6W8qiXOwFwgvYxHahO9pA1Y8Xz6JUl2F/pP+xGjPp5MbqLkMRzmE8JyQXsHZ2lzRaAFvn1GjB4ov7pXd+16AHlArD33xA/Sv+Htf2LfidKZJEPudLm1BUjKmh1tS9ZvATGdf80KVjjBFjk=
 x-ms-exchange-transport-forked: True
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c68b9b7-b75e-417d-a8bd-08d731dd0fe6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2019 08:43:01.8771
+X-MS-Exchange-CrossTenant-Network-Message-Id: c365405c-3b67-42fe-056f-08d731dd47de
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2019 08:44:35.6298
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LiYie7xnxH72BiErNhedXJxPtoaHiwbz87CPx+y7gmhyTlcQqgI0WPXsLN4inpBS9dbh5c6u2atyKC0mp7Pu+Q==
+X-MS-Exchange-CrossTenant-userprincipalname: DmIGjktbr7+KvvfqoaO213lNIlgNEzH7DLZ14dnwTyB7glYd3Npje8hiiVdpN9gaEAYf+GFF7ools0TmLCjZ+A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB6784
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+
 >=20
-> to use the card_busy_detect() to wait card levae the programming state,
-> there may be do not have the "struct request *" argument.
-Maybe reword the commit log to make it more clear:
-
-A tad optimization, removing the "struct request *" argument from card_busy=
-_detect().
-It's not really needed there, and will prove its worth in the next patch,
-Where we'll use it in __mmc_blk_ioctl_cmd where struct request is not avail=
-able.
-
+>=20
+> currently there is no CMD13 polling and other code to wait card
+> change to transfer state after R1B command completed. and this
+> polling operation cannot do in user space, because other request
+> may coming before the CMD13 from user space.
 >=20
 > Signed-off-by: Chaotian Jing <chaotian.jing@mediatek.com>
 Reviewed-by: Avri Altman <avri.altman@wdc.com>
