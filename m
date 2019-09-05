@@ -2,52 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19F5BA9BC3
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 09:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8B92A9BF2
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 09:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731775AbfIEH3m (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Sep 2019 03:29:42 -0400
-Received: from mail-vk1-f193.google.com ([209.85.221.193]:46667 "EHLO
-        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730659AbfIEH3l (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 03:29:41 -0400
-Received: by mail-vk1-f193.google.com with SMTP id 130so251196vkn.13
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 00:29:41 -0700 (PDT)
+        id S1731491AbfIEHev (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Sep 2019 03:34:51 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:45162 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731476AbfIEHeu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 03:34:50 -0400
+Received: by mail-io1-f67.google.com with SMTP id f12so2473704iog.12
+        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 00:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=uBfs4YkHZgtMLprfzNd0i3dDb2iTuL+OjOCmqmK9w1M=;
-        b=vvlTxI5a5SLMaTrqP9ZEdG5a/NyJ9OtSDs05uwqN9iYWj8F4/xZeN2pHdwBofFvxtR
-         FE1p1toqXbV8+T75o7w/W4d0rsxQcKhddqNHveuteEB7kS5IjLaQEypmYCPAk7Awz+uk
-         UOawqVHAkxsO+dMNUDlcq6x2Oews9PvEHKbx2BRNDFXQ7SaMyYsGM5LwL87JcEhDCf11
-         uyZaRdBAb0jCOkNnMz3N38yYr1eeCU4W3RNwBT+6Ag+YmhqJ9GhByE51mtuR8KG/g9NQ
-         aSHUa5uMHWUpSbNKXC1kVcdEwAkxg94H9PYUmILtSkJIgSPMBLAQlQ0ZneIwB8r3LX7u
-         aEHQ==
+        bh=6LhtZNoNzRvZSAH108XwpLGps2Yh2JazOU/N47b9DrY=;
+        b=wGBJ24FSeI0ftQz8FoR/io+cmoZSq4R9WzfX1YRTQqq4bDgjuQOkMUAc14czc8A7fE
+         RTrc4/G6LeaIqGNA3081SM+a34BEuP4u/UCEBaarcn5N0AtDBWgMtm37BzK5eP1a3aF/
+         5avzku2ru/lbbGW2fQQX03vBNtZuEMABjof0IGjaj585cv49PXFRxy/vdW18T0On14d9
+         +T6f4drlFCbaT1yKDNV2UunHvRAkbbnfoMQG6sxiILp2U6WlYLjrK4shCrzb2+uUDRiC
+         RGJFVMinNMBmSvVlQKNuR+u53wJP06152MYY+LT7Xxy+BlEw9EzgU6ug0hvkVG7WL+HU
+         yGLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=uBfs4YkHZgtMLprfzNd0i3dDb2iTuL+OjOCmqmK9w1M=;
-        b=ibaeK7qg4Rv7nrXPgY4IurICYq85LpdLPwe7ipsd7xVvmt9yd03lzLwZq2X5E354LW
-         rbMPW1QS0V9xiN2/92rPkTecknjAmknVz+Hq9en7nfdtTZbBqEYEWXsArrxRo07ACDBx
-         UOzvmX1E5ex76ye6MvX0s+77akmBzVCuLTu4jP8qZQ2+OwF1LVeoTDUwsduiRXIwTeqQ
-         IRNt6FLNdm2sO3wUXjUc8CBb1Rb9e0vsjGT0Y3O0F4c/iBPelKm+e7a8MIvb5I1KPuxb
-         JcVCF2cIQYO9SLpaRsEnBrUtolIh2f9iFZ+PAvAqp1UILuyGQIgeN7ZPNFcQ5xlkSkPZ
-         0kaQ==
-X-Gm-Message-State: APjAAAW6kRq2O79x0gRTfTy8e+o0n2lu7OrcCwje9/OIeOh028+s+HRa
-        IqJP643OMbR6KwS8YrZkdjXc+cfZLzjvkEYNSvOEgA==
-X-Google-Smtp-Source: APXvYqwcWUJBRRXfpd2mPOlpgDJEpvpFsrXG9kvj6xlKXECr6mPtD638auCxApkUIpWoI7nQ2nUt1SJsJaHOl04CPlc=
-X-Received: by 2002:a1f:5602:: with SMTP id k2mr755971vkb.36.1567668580847;
- Thu, 05 Sep 2019 00:29:40 -0700 (PDT)
+        bh=6LhtZNoNzRvZSAH108XwpLGps2Yh2JazOU/N47b9DrY=;
+        b=EsaB9l8bE39tBMuTFxgQN+B3d62/8yZIDYME6ZO0zxfMP9cTU3AYk5Rkehf7T4OaCe
+         OcrKlgio16LF59sEU8L0DCJZejqk1wLUaQiTGPp1+FAwBSrGyq6CekfkObNcufnHbLsb
+         ENaSAIfIThnaTmWYQ7PObAEZMsrJkvIVH5zUgdrbIBT3VaHPjqBZxouE1FFNAzrNzzZ0
+         kWCBAqkxQEyn4DPDPTk9ZmoKWAsoxG5svw4s3UvArmB9wkPeIdRM4pAjBKxnwYQaaftu
+         veBq6gad8uzOBqgTXnZOuzvzOjlq9gVFNeIUm68uTlkv1BfsnW7Z8zRnQDivMvTb8XCT
+         XSZQ==
+X-Gm-Message-State: APjAAAUF+N8t+TpIK3Gc7+gpNTy+MTkOKBjRqv2vOnhndbkBSM3QllQL
+        VM52BD+V2UCnqVZwD8EpnGF4QPKfuTknbhXigqaWyew7
+X-Google-Smtp-Source: APXvYqwU8zzHowwK8eJgPAFUKUJwghzX5S69y3kO09icT4sMBL7iKeXUnrBl56ZIApRGLl790kJN3KLeXRuu6kqsKDY=
+X-Received: by 2002:ab0:1562:: with SMTP id p31mr669621uae.15.1567668574370;
+ Thu, 05 Sep 2019 00:29:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190903142207.5825-1-ulf.hansson@linaro.org> <20190903142207.5825-3-ulf.hansson@linaro.org>
- <20190905001422.GH70797@google.com>
-In-Reply-To: <20190905001422.GH70797@google.com>
+References: <20190903142207.5825-1-ulf.hansson@linaro.org> <20190903142207.5825-2-ulf.hansson@linaro.org>
+ <20190904235836.GG70797@google.com>
+In-Reply-To: <20190904235836.GG70797@google.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 5 Sep 2019 09:29:04 +0200
-Message-ID: <CAPDyKFryCPu+VWGoc2CV3dgUN+aLNjH8BC5qPjsbCBpUKN=GqQ@mail.gmail.com>
-Subject: Re: [PATCH 02/11] mmc: dw_mmc: Re-store SDIO IRQs mask at system resume
+Date:   Thu, 5 Sep 2019 09:28:58 +0200
+Message-ID: <CAPDyKFqAiBHb3Tta3VXWbhxJkRP_KyokgkXAr+CmJxAXqE7Cvg@mail.gmail.com>
+Subject: Re: [PATCH 01/11] mmc: core: Add helper function to indicate if SDIO
+ IRQs is enabled
 To:     Matthias Kaehlcke <mka@chromium.org>
 Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -63,65 +64,58 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 5 Sep 2019 at 02:14, Matthias Kaehlcke <mka@chromium.org> wrote:
+On Thu, 5 Sep 2019 at 01:58, Matthias Kaehlcke <mka@chromium.org> wrote:
 >
-> On Tue, Sep 03, 2019 at 04:21:58PM +0200, Ulf Hansson wrote:
-> > In cases when SDIO IRQs have been enabled, runtime suspend is prevented by
-> > the driver. However, this still means dw_mci_runtime_suspend|resume() gets
-> > called during system suspend/resume, via pm_runtime_force_suspend|resume().
-> > This means during system suspend/resume, the register context of the dw_mmc
-> > device most likely loses its register context, even in cases when SDIO IRQs
-> > have been enabled.
+> Hi Ulf,
+>
+> On Tue, Sep 03, 2019 at 04:21:57PM +0200, Ulf Hansson wrote:
+> > To avoid each host driver supporting SDIO IRQs, from keeping track
+> > internally about if SDIO IRQs has been enabled, let's introduce a common
+> > helper function, sdio_irq_enabled().
 > >
-> > To re-enable the SDIO IRQs during system resume, the dw_mmc driver
-> > currently relies on the mmc core to re-enable the SDIO IRQs when it resumes
-> > the SDIO card, but this isn't the recommended solution. Instead, it's
-> > better to deal with this locally in the dw_mmc driver, so let's do that.
+> > The function returns true if SDIO IRQs are enabled, via using the
+> > information about the number of claimed irqs. This is safe, even without
+> > any locks, as long as the helper function is called only from
+> > runtime/system suspend callbacks of the host driver.
 > >
 > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > > ---
-> >  drivers/mmc/host/dw_mmc.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
+> >  include/linux/mmc/host.h | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
 > >
-> > diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-> > index eea52e2c5a0c..f114710e82b4 100644
-> > --- a/drivers/mmc/host/dw_mmc.c
-> > +++ b/drivers/mmc/host/dw_mmc.c
-> > @@ -3460,6 +3460,10 @@ int dw_mci_runtime_resume(struct device *dev)
-> >       /* Force setup bus to guarantee available clock output */
-> >       dw_mci_setup_bus(host->slot, true);
+> > diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> > index 4a351cb7f20f..0c0a565c7ff1 100644
+> > --- a/include/linux/mmc/host.h
+> > +++ b/include/linux/mmc/host.h
+> > @@ -493,6 +493,15 @@ void mmc_command_done(struct mmc_host *host, struct mmc_request *mrq);
 > >
-> > +     /* Re-enable SDIO interrupts. */
-> > +     if (sdio_irq_enabled(host->slot->mmc))
-> > +             __dw_mci_enable_sdio_irq(host->slot, 1);
+> >  void mmc_cqe_request_done(struct mmc_host *host, struct mmc_request *mrq);
+> >
+> > +/*
+> > + * May be called from host driver's system/runtime suspend/resume callbacks,
+> > + * to know if SDIO IRQs has been enabled.
+> > +*/
+> > +static inline bool sdio_irq_enabled(struct mmc_host *host)
+> > +{
+> > +     return host->sdio_irqs > 0;
+> > +}
 > > +
-> >       /* Now that slots are all setup, we can enable card detect */
-> >       dw_mci_enable_cd(host);
 >
-> Looks reasonable to me, besides the bikeshedding over
-> 'sdio_irq_enabled' (in "mmc: core: Add helper function to indicate
-> if SDIO IRQs is enabled").
+> The name of the function is a bit misleadling, since it indicates
+> if SDIO IRQs should be enabled, not whether they are actually enabled
+> by the host. The resulting code can look a bit confusing to the
+> uninstructed reader:
 >
-> One thing I wonder is why this change is only needed for dw_mmc and
-> mtk-sd, but not for others like sunxi_mmc. Any insights for a SDIO
-> newb?
+>   if (sdio_irq_enabled(host->slot->mmc))
+>     __dw_mci_enable_sdio_irq(host->slot, 1);
+>
+> aka 'if SDIO IRQ is enabled, enable SDIO IRQ'.
+>
+> sdio_irqs_claimed() could be a possible alternative.
+>
+> No biggie though, just something I noticed.
 
-mtk-sd and dw_mmc is using MMC_CAP2_SDIO_IRQ_NOTHREAD and
-sdio_signal_irq(). This is also the case for sdhci, but sdhci is
-already internally dealing restoring SDIO IRQs during system resume.
-
-The other host drivers haven't yet converted to
-MMC_CAP2_SDIO_IRQ_NOTHREAD. I have a series for that, not yet
-completed and thus not ready to be posted. Once that happens, all host
-drivers needs to care about re-enabling SDIO IRQs durings system
-resume as well.
-
-For those host that currently doesn't use MMC_CAP2_SDIO_IRQ_NOTHREAD,
-the core wakes up the sdio_irq_thread from mmc_sdio_resume(), which
-later will calls the ->enable_sdio_irq().
-
-Perhaps I should add some information about this in the changelog, let
-me think about it for the next version.
+Thanks for the suggestions. It makes perfect sense to me, let me rename it.
 
 Kind regards
 Uffe
