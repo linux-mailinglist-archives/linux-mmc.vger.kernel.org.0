@@ -2,72 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B55CFA9EEB
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 11:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6522AA2FE
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 14:22:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731733AbfIEJxq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Sep 2019 05:53:46 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:34489 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731058AbfIEJxq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 05:53:46 -0400
-Received: by mail-qk1-f193.google.com with SMTP id q203so1525111qke.1
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 02:53:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dH6c47o1bqW0T/VDO/DwsdyvGbN/LKQ+TVfqPRq30KM=;
-        b=LARva/AOlGtskecJn49i4atzPRksvRQPNLCJwb+qXUACmQCqPeDD2+uSZDzW9cIPZf
-         OkuYVI9QoRHHOJAzgKQeqq0CYps25cmRlNV4N5O1iuYSWbNuDAXklgmO5ubGf0LZEGBV
-         kfxHK8lZzsAWpm/2M23X6OKkNnmL271Fm3dPquf9JcOW9Roru2sASxDR/vYVCFkTG4xg
-         CxBaz3cnCZR7MUfOOdjlqnlWD2vhX1YYBDJPVA1GKCGp/l5Wn4vU+/86raKn3UG0iL6S
-         Exjh26QDxsSjdOQPV/b9NJ67vxDWAeLr6mZ4ZrmA1RkGPHl9/mFKg1RlIkK+svRmTNP2
-         8+YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dH6c47o1bqW0T/VDO/DwsdyvGbN/LKQ+TVfqPRq30KM=;
-        b=o1MSHXUEt50pRtpHobauk8ua1xxVOqRywukUuBp0V9C/UP0xJ28NiaOQv33n6NXrBQ
-         Z+KeCKEOVZTiKlDsMw2oQGMxmuNLwH/97iz+TwiT4TWcI13bGXwUay9+ybVyLxRAN2NL
-         1fjAWT6n2SgEFQi0/9l/5l8c3crE1lQ08OmXb0oCnfr191k652VEJOpmUUfDbpu2ZNIh
-         BPx6gdhb29YLQixO7cxpUKQhoQrqTv7PNObKEAw/HIl9TwyAHelxkrVKD/t8CTlTaXRr
-         vmTiW0DAsJRWEexP40tt6qDuFv1Bt3ZTscyL+cTD6aBv7NuS/bQaIAKY9HmvEhLqvPzt
-         RIXA==
-X-Gm-Message-State: APjAAAVWaS1fWqfUMA78/Mo40/qaTNYRKtTaUv/nqfY7MiHEUGr9XRph
-        aD21wWue0Wz8Ix2CDzC+/6scqgM0bCRBHTXhE6/1DQ==
-X-Google-Smtp-Source: APXvYqy2RcJgNErkLRhk6vGyqNEsVyaAE5kDDf9FWZN8cjfsKkhmOcT0s9Xw/KepD2nJ2lF4odiYxQPN8qRhlnzK3YI=
-X-Received: by 2002:a37:883:: with SMTP id 125mr1807511qki.478.1567677225577;
- Thu, 05 Sep 2019 02:53:45 -0700 (PDT)
+        id S1733016AbfIEMWV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Sep 2019 08:22:21 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:29330 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726498AbfIEMWV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 08:22:21 -0400
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x85CM7CR009310;
+        Thu, 5 Sep 2019 14:22:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=CFc7V5XirXSeitPE35aKToc2Pe4j/3PUS9ILTMJMjb8=;
+ b=J5xdMWbzdXsLGs+8QgJxl4949aVCBtI0VaFF9K1UybUOaNQUqcjnHceD4Y5PwT+s3pTF
+ p9lvGaHny750VUu5JLo4hYYgoVsxw/aevHGYqj0dDJ6Y8RBIUyRQOh1kfc9GlrMkTTs5
+ kv+6GgPh4S4K0xSgeXiShAKbo3f/QRvWObOfOsA/NMHPIuqdVd4p5CKdXzvtXhVPYkQ6
+ XiL4uWFNpRVKD4s4qwI1OK0Fa3dh4pT2zk/WxlsYhy5eGSbmjPEvAjbNJUiT7jkuR17t
+ Li4gp9O86TmEOQMVSNVbc2t2Ovou30VssSQ/WnP9AK5c4LBL9sSjgFcQ7S7jzn6Yubjl 4w== 
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2uqe1a09eg-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Thu, 05 Sep 2019 14:22:10 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 34E3654;
+        Thu,  5 Sep 2019 12:21:51 +0000 (GMT)
+Received: from Webmail-eu.st.com (Safex1hubcas23.st.com [10.75.90.46])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D28ED2CBDA8;
+        Thu,  5 Sep 2019 14:21:49 +0200 (CEST)
+Received: from SAFEX1HUBCAS22.st.com (10.75.90.93) by SAFEX1HUBCAS23.st.com
+ (10.75.90.46) with Microsoft SMTP Server (TLS) id 14.3.439.0; Thu, 5 Sep 2019
+ 14:21:49 +0200
+Received: from lmecxl0923.lme.st.com (10.48.0.237) by Webmail-ga.st.com
+ (10.75.90.48) with Microsoft SMTP Server (TLS) id 14.3.439.0; Thu, 5 Sep 2019
+ 14:21:49 +0200
+From:   Ludovic Barre <ludovic.Barre@st.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Ludovic Barre <ludovic.barre@st.com>
+Subject: [PATCH V6 0/3] mmc: mmci: add busy detect for stm32 sdmmc variant
+Date:   Thu, 5 Sep 2019 14:21:09 +0200
+Message-ID: <20190905122112.29672-1-ludovic.Barre@st.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <CH2PR16MB3479DFF5DE7E598252E76CC4E5BB0@CH2PR16MB3479.namprd16.prod.outlook.com>
-In-Reply-To: <CH2PR16MB3479DFF5DE7E598252E76CC4E5BB0@CH2PR16MB3479.namprd16.prod.outlook.com>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Thu, 5 Sep 2019 17:53:34 +0800
-Message-ID: <CAD8Lp45V8exPbQjO4+xmQO7kHGKKt=vzjU_ynBiwzJPosSnpcQ@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mmc: sdhci: Remove unneeded quirk2 flag of O2 SD
- host controller"
-To:     "Ernest Zhang(WH)" <ernest.zhang@bayhubtech.com>
-Cc:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.48.0.237]
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-09-05_04:2019-09-04,2019-09-05 signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Sep 5, 2019 at 5:33 PM Ernest Zhang(WH)
-<ernest.zhang@bayhubtech.com> wrote:
-> Hi Daniel,
->         I suggestion that you set PCR(PCI Configuration Register) 0x308 bit4 to 1 before load module " sdhci_pci " then test again.
->         For support 1.8V eMMC chip better, I had submit some patches to Linux kernel.  But these patches are only work when PCR 0x308 bit4 is 1.
+From: Ludovic Barre <ludovic.barre@st.com>
 
-Writes to this register seem to be ignored. I tried 8 bit, 16 bit and
-32 bit access, using the setpci command, and I wasn't able to change
-any of the bits.
-The 32 bit value at this address has value 0x01000800 and as it seems
-to be read-only I'm unable to follow your suggestion.
+This patch series adds busy detect for stm32 sdmmc variant.
+Some adaptations are required:
+-On sdmmc the data timer is started on data transfert
+and busy state, so we must add hardware busy timeout support.
+-Add busy_complete callback at mmci_host_ops to allow to define
+a specific busy completion by variant.
+-Add sdmmc busy_complete callback.
 
-Daniel
+V6:
+-mmci_start_command: set datatimer only on rsp_busy flag
+(remove host->mrq->data).
+-move max_busy_timeout in set_ios callback.
+-typo fix: err_msk, clks on one lines.
+
+V5:
+-Replaces !cmd->data to !host->mrq->data to avoid overwrite
+ of datatimer register by the first command (cmd23, without data) of
+ SBC request.
+
+V4:
+-Re-work with busy_complete callback
+-In series, move "mmc: mmci: add hardware busy timeout feature" in
+first to simplify busy_complete prototype with err_msk parameter.
+
+V3:
+-rebase on latest mmc next
+-replace re-read by status parameter. 
+
+V2:
+-mmci_cmd_irq cleanup in separate patch.
+-simplify the busy_detect_flag exclude
+-replace sdmmc specific comment in
+"mmc: mmci: avoid fake busy polling in mmci_irq"
+to focus on common behavior
+
+Ludovic Barre (3):
+  mmc: mmci: add hardware busy timeout feature
+  mmc: mmci: add busy_complete callback
+  mmc: mmci: sdmmc: add busy_complete callback
+
+ drivers/mmc/host/mmci.c             | 183 +++++++++++++++++-----------
+ drivers/mmc/host/mmci.h             |   7 +-
+ drivers/mmc/host/mmci_stm32_sdmmc.c |  38 ++++++
+ 3 files changed, 156 insertions(+), 72 deletions(-)
+
+-- 
+2.17.1
+
