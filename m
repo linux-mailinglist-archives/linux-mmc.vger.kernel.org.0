@@ -2,127 +2,150 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5A1AACAC
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 22:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8A1AAF3B
+	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 01:47:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725945AbfIEUBn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Sep 2019 16:01:43 -0400
-Received: from mout.kundenserver.de ([212.227.126.187]:39145 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730622AbfIEUBn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 16:01:43 -0400
-Received: from localhost ([83.135.64.178]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis) id
- 1MCKSA-1hxgTQ3KWg-009QYv; Thu, 05 Sep 2019 22:01:38 +0200
-Date:   Thu, 5 Sep 2019 22:01:38 +0200
-From:   Tim Schumacher <tim@timakro.de>
-To:     linux-mmc@vger.kernel.org
-Cc:     pher1989@hotmail.com
-Subject: Black screen while resuming a SDXC (UHS) card (_mmc_sd_resume)
-Message-ID: <20190905200138.GA19037@impa.localdomain>
+        id S2389769AbfIEXrU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Sep 2019 19:47:20 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:37066 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389695AbfIEXrU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 19:47:20 -0400
+Received: by mail-io1-f68.google.com with SMTP id r4so8752046iop.4
+        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 16:47:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=siNwSdIYFNtVZ3AHic9j9ZXRlU43cbV/eECxgsuYWQ0=;
+        b=gicLTwd9Yg/AWWDtsWsMOScBKzSbHe6y74CyVJLLUU+pK0fluT99gtJrzBRk3xEMr1
+         RXVe+9H9EosBTGKbhvtnZbGwpqQph+kg3r/esw7b+DnXQgWFMwqNrhftMkXkPvjPDQU4
+         AJQ7C1xsKnUa+qe7oAzgOdZkRhzz/18iO7PCI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=siNwSdIYFNtVZ3AHic9j9ZXRlU43cbV/eECxgsuYWQ0=;
+        b=KeeLnr3+7gCblvCiD5Oj3S9jBMxpGIPPef9tCCCBT8dk9HOt3nW8fIovM8NWJnKY5Z
+         cCd2JFflACsoym0uH+Vl0K1wy+/Mvd5VKZcp4tdYG8fWaSRfMzrCyuF3RjfG4xHKKlGa
+         Y9GZNAZvu/aH6E6I8sGQtrdxVkhYkW2vPmCa27eZDXfR+YwfahCROM7oE0/kK3lu0zIm
+         Hi1TTtcHkRMj0LiG1C7IS0pQzYGOGDaMsBvMUophTJsRLtYpnZCbkhftqHKt1Cbh/9qn
+         vhaw7yhHBuijDJM8FPSaT1xjbKLS91TztQQ5gKdjLZEUSngSUn4mLpJSdFHikSbGrlaM
+         vBRw==
+X-Gm-Message-State: APjAAAVLFOEmUWOoAZ217Td5tds117lTBojsyiw5fft7a4882ewDyuoV
+        GGHsFN9WvKHp9q2TV4CvcJTbiuhLynU=
+X-Google-Smtp-Source: APXvYqxx5yDSLMVyyyqpMyti7JwmDP2WaK+Z73RtYV4tlXnz8XEBoHrWGgMBsWKfSkOp65tm2KJv+g==
+X-Received: by 2002:a05:6602:2193:: with SMTP id b19mr3932221iob.113.1567727238786;
+        Thu, 05 Sep 2019 16:47:18 -0700 (PDT)
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com. [209.85.166.44])
+        by smtp.gmail.com with ESMTPSA id 80sm6555663iou.13.2019.09.05.16.47.17
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Sep 2019 16:47:17 -0700 (PDT)
+Received: by mail-io1-f44.google.com with SMTP id j4so8674561iog.11
+        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 16:47:17 -0700 (PDT)
+X-Received: by 2002:a6b:ee17:: with SMTP id i23mr6820804ioh.168.1567727237453;
+ Thu, 05 Sep 2019 16:47:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="RnlQjJ0d97Da+TV1"
-Content-Disposition: inline
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Provags-ID: V03:K1:f5+7HBay9gGtBxlktx9bRvd4DSnuzfHhPjhK0tGYWr7yU8073jc
- P461yhHWjWJV5Y5cKAj/QgLQN+HPMHI5xKCDSCFiSTH5DU24lEXvW4bOs0mEH4YhzIJ3tJ2
- Ldp45E87sqYZ/5Cr0hYMgBwGicccrN7itd/sOb3fCICTn8B2l9XJVd0QszWEar1HH/V30Z1
- +V0pJRbSOt+m7Q1UODfbg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:AvKa37S9cQ8=:0TKdk/HVqMaRcgogDA6f5/
- dsf6RMPvJv2+qg2WLlRSH3K70NomTUG8bEpOeciyXEl/iztWdDW41oQuC8YLUOPvAGAvhIBy9
- JywTyJL5pJ4bLZ4Ya502o32HpUOtF4vlAOy9+y4dHxOD1s9VhVXmTxIKhxN4htdptD5FUrKK8
- v0BFAuLRZpfwV51p1+pD0PiRoYTgcJ39EqKJHinZuhiz0BYtsbFh8pcCJKLkQ09Q16VxdVsuE
- vZqdYQ5SutzIrkRdLKMOGruW6s7N/VWlyM84k2CWgRATTj6hbNbrGgjVbw3eHZhJRW6pk3t//
- r10KR65i9bhw26TSGW+BhiJ3DsaIjJoCj/X87zFQ6xYSCidnryjiB4My+nVEpf7obXxCuOxOf
- zKcTnja00HUfdbMfUzbjED843WY1by/TwnFrx9nxngG52afia2abQCqNkqZvVm8O846mQTRgC
- ihNnAvBvLzENCHm4Wo+G8OvBdH3U0bjNllOeVcb08t+U2lwK3dIbcKS3dgHHkL6SX3cUJuEiE
- ttYMlPDu44k56nhgLNPbe92oCwVQ324jUdRD32DAr8CmxpEE2/d8pjDTyHtPX7sX+L/ZbkGwH
- AA28+nJtxnarVFL0Cayb8VGl9VLCBXAwcUEjLZEctZ4gbxGvkStWZv68eF3TKiNJDXYyfcwDX
- R63Sityydy6k/Qz0WPyfn2GkdH4c4vn+Wuomt4PfOT4auy5Y7vUqENMNoaw+aYvlVNK0vO2uf
- EMy68qydCKtqX/jio0UUt+uDkjU0HerZzDID2TR7k0e8kL2NHDc1pH/BwxCfYRG0LIrp2++6q
- DEYLiI5nRTxPCzZjtKJ22r/DcEuVh7S9ITpk0/Io/CzoH9mVck=
+References: <20190903142207.5825-1-ulf.hansson@linaro.org> <20190903142207.5825-3-ulf.hansson@linaro.org>
+In-Reply-To: <20190903142207.5825-3-ulf.hansson@linaro.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 5 Sep 2019 16:47:05 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=XaaC=RpCiF09WAuhmDgte3EmFjFxk9y7xpX=HBwaRr9g@mail.gmail.com>
+Message-ID: <CAD=FV=XaaC=RpCiF09WAuhmDgte3EmFjFxk9y7xpX=HBwaRr9g@mail.gmail.com>
+Subject: Re: [PATCH 02/11] mmc: dw_mmc: Re-store SDIO IRQs mask at system resume
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Yong Mao <yong.mao@mediatek.com>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-
---RnlQjJ0d97Da+TV1
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
 Hi,
 
-I'm sending this old bug by mail since a lot of developers don't use
-bugzilla.
+On Tue, Sep 3, 2019 at 7:22 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> In cases when SDIO IRQs have been enabled, runtime suspend is prevented by
+> the driver. However, this still means dw_mci_runtime_suspend|resume() gets
+> called during system suspend/resume, via pm_runtime_force_suspend|resume().
+> This means during system suspend/resume, the register context of the dw_mmc
+> device most likely loses its register context, even in cases when SDIO IRQs
+> have been enabled.
 
-Original bug report on bugzilla by Pedro Rodrigues from 2019-01-30:
+Even if they weren't lost the resume code currently has this statement:
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D202459
+mci_writel(host, INTMASK, SDMMC_INT_CMD_DONE | SDMMC_INT_DATA_OVER |
+   SDMMC_INT_TXDR | SDMMC_INT_RXDR |
+   DW_MCI_ERROR_FLAGS);
 
-> This bug can be found on a Lenovo Miix 320-10ICR
->=20
-> When using a SDXC (UHS) card, the screen becomes black if
-> _mmc_sd_resume() is called. After some investigation, I found that an
-> UHS card uses 1.8 V for signalling while a normal SD card uses 3.3 V. By
-> forcing the SDXC to use 3.3 V the black screen does not appear. It seems
-> that during a _mmc_sd_resume function call, while claiming the host, an
-> I2C resume function is called based on an existing supplier link between
-> the I2C bus and the card device.  The problem is that if the signalling
-> voltage is configured to 1.8 V, during the I2C resume call, the screen
-> turns black.  I was able to fix this issue by setting the initial signal
-> voltage (3.3 V) before suspending the card, so that when the card is
-> resumed, the voltage is in the original state. To do this I added a
-> function call to mmc_set_initial_signal_voltage() during mmc_power_off
-> routine (drivers/mmc/core/core.c).  As I=E2=80=99m not an expert on Linux=
-,  I=E2=80=99m
-> posting the issue and possible solution so that it could be implemented
-> on a future release.
->=20
-> Please, share your thoughts :)
+...so that would have clobbered any existing state even if register
+state wasn't lost.  ;-)
 
-I can't provide further insight but I'm interested if this is possibly
-the cause for the general issues people are having with the SD card
-reader on Lenovo Miix 320 devices.
+> To re-enable the SDIO IRQs during system resume, the dw_mmc driver
+> currently relies on the mmc core to re-enable the SDIO IRQs when it resumes
+> the SDIO card, but this isn't the recommended solution. Instead, it's
+> better to deal with this locally in the dw_mmc driver, so let's do that.
+>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> ---
+>  drivers/mmc/host/dw_mmc.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+> index eea52e2c5a0c..f114710e82b4 100644
+> --- a/drivers/mmc/host/dw_mmc.c
+> +++ b/drivers/mmc/host/dw_mmc.c
+> @@ -3460,6 +3460,10 @@ int dw_mci_runtime_resume(struct device *dev)
+>         /* Force setup bus to guarantee available clock output */
+>         dw_mci_setup_bus(host->slot, true);
+>
+> +       /* Re-enable SDIO interrupts. */
+> +       if (sdio_irq_enabled(host->slot->mmc))
+> +               __dw_mci_enable_sdio_irq(host->slot, 1);
+> +
 
-Those issues described in posts like
+There's a slight bit of subtleness here and I guess we need to figure
+out if it matters.  From testing things seem to work OK so maybe we're
+fine, but just to explain what's bugging me:
 
-https://vincent-ventures.com/2018/12/arch-linux-on-lenovo-ideapad-miix-320/
-https://esc.sh/blog/linux-on-lenovo-miix-320/
+If we got an SDIO interrupt that was never ACKed then this is going to
+act like an implicit ACK.  Notice that dw_mci_ack_sdio_irq() is
+exactly this call because when the SDIO IRQ fires we mask it out.
+...then unmask when Acked.
 
-are (1) black screen when booting with an SD card installed and (2) when
-inserting an SD card after booting it shows up but upon trying to access
-it the screen turns black until the card is removed again.
+Specifically after your series is applied, I think this is what
+happens if an interrupt fires while the SDIO bus is officially
+suspended:
 
-I can confirm (1) on my Lenovo Miix 320-10ICR with kernel version
-5.2.11. I can also confirm that only SDXC cards are affected, SD and
-SDHC cards work as expected.
+1. dw_mci_interrupt() will get called which will mask the SDIO IRQ and
+then call sdio_signal_irq()
 
-Thanks
+2. sdio_signal_irq() will queue some delayed work.
 
-- Tim
+3. The work will call sdio_run_irqs()
 
---RnlQjJ0d97Da+TV1
-Content-Type: application/pgp-signature; name="signature.asc"
+4. sdio_run_irqs() _won't_ ack the IRQ, so it will stay disabled.
 
------BEGIN PGP SIGNATURE-----
+5. When we get to the resume we'll re-enable the interrupt.
 
-iQIzBAABCAAdFiEEsPhBXfDN+Hkdup3Co9aePamg/zQFAl1xaZ8ACgkQo9aePamg
-/zSNpQ/+M31HqmG8Iof7k6Oc3Fcoise5gQQsK6KgLkRZ3PvByFKYMUjaR2A9LEOL
-oleAFXl2eCCOXAmz1cQ3uWipLdKtF6vCobtjVNkQxNf+4//qZJQQZHKN+R6I60JC
-saeZcl89CfwajZyiPvhrdGTgy5ms7DIWOoOLkURr/FkPkcLTOVGcK5asrCn2VvxT
-KCT1xgExKSJDaK+18lcQO4sDIUyJ8IwrRBLgNcz5zYECFfC63cM8iISJPSeutQKX
-5aRDFVS8WDPh3zgfR+ZI2ikz0IeaFhg6912URv2EH/C+d0/N4IEgTYyb5LU48Ova
-xh2wQWUrFw15RvGd2vbQ94DTQ+/kijNBLmzHWovfS/UznCs24Zfp4ZZiLtwAa6u4
-SmazBH0nMt4k/Cv0i0saRZRI3R/uRGQhXLbQtL+0ZPwgk0IzenMIv1rdz6+1GPBQ
-e3MsQmnPcFozHaej348N7pAiiFQcuKT9Djp6OvyVrJ3T8Aj1oo+S+Q8W+0kn8vd8
-Rd0xXiVtT85fhbYigAnrfxo+fRalQ/MOMGVQ9ymCzbdEoIEdoNknnjOEiuurD+VG
-wLvHd5tsplRebrrpOOH0IjFKbPS/8XXdho8ZOEWcB2ZBm5zyLvdpfpkPGUjB/zZY
-cHwWiQMYExh3iMN6rh6kGNjb4AFEruH7/IXqeC/XAXqCGSkqBuY=
-=dlnD
------END PGP SIGNATURE-----
+I guess that's fine, but it is a little weird that we might not really
+be restoring it simply because it got disabled due to the clobbering
+of INTMASK but also because we implicitly skipped Acking an interrupt
+that fired.
 
---RnlQjJ0d97Da+TV1--
+
+I wonder if the correct fix is to just add an explit zeroing of the
+INTMASK (so mask all interrupts) in dw_mmc's suspend callback.  Then
+there's no possible way we could get an interrupt during suspend...
+
+
+
+-Doug
