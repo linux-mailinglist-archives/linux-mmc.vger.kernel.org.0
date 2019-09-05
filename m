@@ -2,116 +2,127 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D263EAABAB
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 21:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D5A1AACAC
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 22:01:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390315AbfIETCu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Sep 2019 15:02:50 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:42474 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390303AbfIETCu (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 15:02:50 -0400
-Received: by mail-pf1-f196.google.com with SMTP id w22so2376808pfi.9
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 12:02:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=qhPdMk5kkl4vNeHNFRv6+uGYtSiMWgPfsCU3Jo4srKc=;
-        b=nP777WelkoqBWLusAI8NNTc6RCCo83H0DHAW7A4N4d7RCInwVMsCwQsmwMhaFILWxw
-         kLlPX35isKrcDbSFmVOL93LVxLEER4uhM3RIoZ8v9s0pwS4NqZdD3+/9Zwcvk/p9Ry/8
-         bAdTB//w8Pu5XJNPviOp4gdaA3YK2eIq8lmW4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=qhPdMk5kkl4vNeHNFRv6+uGYtSiMWgPfsCU3Jo4srKc=;
-        b=nzHotxkGNZ6m3390vj3K7WgZ4S50mNfGce6iAWIuU/rGdl5pCYye/hgU8ctZlbI/Kj
-         XAkIspXRTrA0YowH6QLnW76q/htoJqViJLD9BCnS9Lbi3XLDwWzNg4yo0G2HaG/09e3c
-         GEIfotCrDtuo30xZiZ2S0uUF29lhYLNa9cgRrN2yUPfje60KzW10sAx7o23hbCy1DwAc
-         H0ztt6WJHXXrdHwHfJb41BHkd44/4iTwLn/iSVE7UEtGXyom+RH81qNm9HF+QTxLkoqv
-         V1+1t3+mVP+Fqu33nVa4Dg5A26/PVah58Q8U2CkP3W2H2ERElv/vMQNPxUvJb7/C4J+d
-         Zxjw==
-X-Gm-Message-State: APjAAAU79uyuVbO2td2x64YTA8x8ygYfg1gbGV2s65ML96h7+fKpXHDe
-        sK09mHqGQaRKGiwKScjiS98NDA==
-X-Google-Smtp-Source: APXvYqzA4VdWjZM+dp24ITBO4oiitE4WoUSoiaEXBHpKSS25seOWddBWZq1HjdPFW1+gQk2W+9R8vQ==
-X-Received: by 2002:a63:784c:: with SMTP id t73mr4728585pgc.268.1567710169579;
-        Thu, 05 Sep 2019 12:02:49 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id f74sm7307103pfa.34.2019.09.05.12.02.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Sep 2019 12:02:48 -0700 (PDT)
-Date:   Thu, 5 Sep 2019 12:02:46 -0700
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Yong Mao <yong.mao@mediatek.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 11/11] mmc: sdhci: Convert to use sdio_irq_enabled()
-Message-ID: <20190905190246.GC133864@google.com>
-References: <20190903142207.5825-1-ulf.hansson@linaro.org>
- <20190903142207.5825-12-ulf.hansson@linaro.org>
+        id S1725945AbfIEUBn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Sep 2019 16:01:43 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:39145 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730622AbfIEUBn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 16:01:43 -0400
+Received: from localhost ([83.135.64.178]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis) id
+ 1MCKSA-1hxgTQ3KWg-009QYv; Thu, 05 Sep 2019 22:01:38 +0200
+Date:   Thu, 5 Sep 2019 22:01:38 +0200
+From:   Tim Schumacher <tim@timakro.de>
+To:     linux-mmc@vger.kernel.org
+Cc:     pher1989@hotmail.com
+Subject: Black screen while resuming a SDXC (UHS) card (_mmc_sd_resume)
+Message-ID: <20190905200138.GA19037@impa.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="RnlQjJ0d97Da+TV1"
 Content-Disposition: inline
-In-Reply-To: <20190903142207.5825-12-ulf.hansson@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Provags-ID: V03:K1:f5+7HBay9gGtBxlktx9bRvd4DSnuzfHhPjhK0tGYWr7yU8073jc
+ P461yhHWjWJV5Y5cKAj/QgLQN+HPMHI5xKCDSCFiSTH5DU24lEXvW4bOs0mEH4YhzIJ3tJ2
+ Ldp45E87sqYZ/5Cr0hYMgBwGicccrN7itd/sOb3fCICTn8B2l9XJVd0QszWEar1HH/V30Z1
+ +V0pJRbSOt+m7Q1UODfbg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:AvKa37S9cQ8=:0TKdk/HVqMaRcgogDA6f5/
+ dsf6RMPvJv2+qg2WLlRSH3K70NomTUG8bEpOeciyXEl/iztWdDW41oQuC8YLUOPvAGAvhIBy9
+ JywTyJL5pJ4bLZ4Ya502o32HpUOtF4vlAOy9+y4dHxOD1s9VhVXmTxIKhxN4htdptD5FUrKK8
+ v0BFAuLRZpfwV51p1+pD0PiRoYTgcJ39EqKJHinZuhiz0BYtsbFh8pcCJKLkQ09Q16VxdVsuE
+ vZqdYQ5SutzIrkRdLKMOGruW6s7N/VWlyM84k2CWgRATTj6hbNbrGgjVbw3eHZhJRW6pk3t//
+ r10KR65i9bhw26TSGW+BhiJ3DsaIjJoCj/X87zFQ6xYSCidnryjiB4My+nVEpf7obXxCuOxOf
+ zKcTnja00HUfdbMfUzbjED843WY1by/TwnFrx9nxngG52afia2abQCqNkqZvVm8O846mQTRgC
+ ihNnAvBvLzENCHm4Wo+G8OvBdH3U0bjNllOeVcb08t+U2lwK3dIbcKS3dgHHkL6SX3cUJuEiE
+ ttYMlPDu44k56nhgLNPbe92oCwVQ324jUdRD32DAr8CmxpEE2/d8pjDTyHtPX7sX+L/ZbkGwH
+ AA28+nJtxnarVFL0Cayb8VGl9VLCBXAwcUEjLZEctZ4gbxGvkStWZv68eF3TKiNJDXYyfcwDX
+ R63Sityydy6k/Qz0WPyfn2GkdH4c4vn+Wuomt4PfOT4auy5Y7vUqENMNoaw+aYvlVNK0vO2uf
+ EMy68qydCKtqX/jio0UUt+uDkjU0HerZzDID2TR7k0e8kL2NHDc1pH/BwxCfYRG0LIrp2++6q
+ DEYLiI5nRTxPCzZjtKJ22r/DcEuVh7S9ITpk0/Io/CzoH9mVck=
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Sep 03, 2019 at 04:22:07PM +0200, Ulf Hansson wrote:
-> Instead of keeping track of whether SDIO IRQs have been enabled via an
-> internal sdhci status flag, avoid the open-coding and convert into using
-> sdio_irq_enabled().
-> 
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> ---
->  drivers/mmc/host/sdhci.c | 7 +------
->  drivers/mmc/host/sdhci.h | 1 -
->  2 files changed, 1 insertion(+), 7 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index a7df22ed65aa..4b4db41aec50 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -2142,11 +2142,6 @@ void sdhci_enable_sdio_irq(struct mmc_host *mmc, int enable)
->  		pm_runtime_get_noresume(host->mmc->parent);
->  
->  	spin_lock_irqsave(&host->lock, flags);
-> -	if (enable)
-> -		host->flags |= SDHCI_SDIO_IRQ_ENABLED;
-> -	else
-> -		host->flags &= ~SDHCI_SDIO_IRQ_ENABLED;
-> -
->  	sdhci_enable_sdio_irq_nolock(host, enable);
->  	spin_unlock_irqrestore(&host->lock, flags);
->  
-> @@ -3380,7 +3375,7 @@ int sdhci_runtime_resume_host(struct sdhci_host *host, int soft_reset)
->  	host->runtime_suspended = false;
->  
->  	/* Enable SDIO IRQ */
-> -	if (host->flags & SDHCI_SDIO_IRQ_ENABLED)
-> +	if (sdio_irq_enabled(mmc))
->  		sdhci_enable_sdio_irq_nolock(host, true);
->  
->  	/* Enable Card Detection */
-> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
-> index 8effaac61c3a..a29c4cd2d92e 100644
-> --- a/drivers/mmc/host/sdhci.h
-> +++ b/drivers/mmc/host/sdhci.h
-> @@ -512,7 +512,6 @@ struct sdhci_host {
->  #define SDHCI_AUTO_CMD12	(1<<6)	/* Auto CMD12 support */
->  #define SDHCI_AUTO_CMD23	(1<<7)	/* Auto CMD23 support */
->  #define SDHCI_PV_ENABLED	(1<<8)	/* Preset value enabled */
-> -#define SDHCI_SDIO_IRQ_ENABLED	(1<<9)	/* SDIO irq enabled */
->  #define SDHCI_USE_64_BIT_DMA	(1<<12)	/* Use 64-bit DMA */
->  #define SDHCI_HS400_TUNING	(1<<13)	/* Tuning for HS400 */
->  #define SDHCI_SIGNALING_330	(1<<14)	/* Host is capable of 3.3V signaling */
 
-Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
+--RnlQjJ0d97Da+TV1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+I'm sending this old bug by mail since a lot of developers don't use
+bugzilla.
+
+Original bug report on bugzilla by Pedro Rodrigues from 2019-01-30:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=3D202459
+
+> This bug can be found on a Lenovo Miix 320-10ICR
+>=20
+> When using a SDXC (UHS) card, the screen becomes black if
+> _mmc_sd_resume() is called. After some investigation, I found that an
+> UHS card uses 1.8 V for signalling while a normal SD card uses 3.3 V. By
+> forcing the SDXC to use 3.3 V the black screen does not appear. It seems
+> that during a _mmc_sd_resume function call, while claiming the host, an
+> I2C resume function is called based on an existing supplier link between
+> the I2C bus and the card device.  The problem is that if the signalling
+> voltage is configured to 1.8 V, during the I2C resume call, the screen
+> turns black.  I was able to fix this issue by setting the initial signal
+> voltage (3.3 V) before suspending the card, so that when the card is
+> resumed, the voltage is in the original state. To do this I added a
+> function call to mmc_set_initial_signal_voltage() during mmc_power_off
+> routine (drivers/mmc/core/core.c).  As I=E2=80=99m not an expert on Linux=
+,  I=E2=80=99m
+> posting the issue and possible solution so that it could be implemented
+> on a future release.
+>=20
+> Please, share your thoughts :)
+
+I can't provide further insight but I'm interested if this is possibly
+the cause for the general issues people are having with the SD card
+reader on Lenovo Miix 320 devices.
+
+Those issues described in posts like
+
+https://vincent-ventures.com/2018/12/arch-linux-on-lenovo-ideapad-miix-320/
+https://esc.sh/blog/linux-on-lenovo-miix-320/
+
+are (1) black screen when booting with an SD card installed and (2) when
+inserting an SD card after booting it shows up but upon trying to access
+it the screen turns black until the card is removed again.
+
+I can confirm (1) on my Lenovo Miix 320-10ICR with kernel version
+5.2.11. I can also confirm that only SDXC cards are affected, SD and
+SDHC cards work as expected.
+
+Thanks
+
+- Tim
+
+--RnlQjJ0d97Da+TV1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEsPhBXfDN+Hkdup3Co9aePamg/zQFAl1xaZ8ACgkQo9aePamg
+/zSNpQ/+M31HqmG8Iof7k6Oc3Fcoise5gQQsK6KgLkRZ3PvByFKYMUjaR2A9LEOL
+oleAFXl2eCCOXAmz1cQ3uWipLdKtF6vCobtjVNkQxNf+4//qZJQQZHKN+R6I60JC
+saeZcl89CfwajZyiPvhrdGTgy5ms7DIWOoOLkURr/FkPkcLTOVGcK5asrCn2VvxT
+KCT1xgExKSJDaK+18lcQO4sDIUyJ8IwrRBLgNcz5zYECFfC63cM8iISJPSeutQKX
+5aRDFVS8WDPh3zgfR+ZI2ikz0IeaFhg6912URv2EH/C+d0/N4IEgTYyb5LU48Ova
+xh2wQWUrFw15RvGd2vbQ94DTQ+/kijNBLmzHWovfS/UznCs24Zfp4ZZiLtwAa6u4
+SmazBH0nMt4k/Cv0i0saRZRI3R/uRGQhXLbQtL+0ZPwgk0IzenMIv1rdz6+1GPBQ
+e3MsQmnPcFozHaej348N7pAiiFQcuKT9Djp6OvyVrJ3T8Aj1oo+S+Q8W+0kn8vd8
+Rd0xXiVtT85fhbYigAnrfxo+fRalQ/MOMGVQ9ymCzbdEoIEdoNknnjOEiuurD+VG
+wLvHd5tsplRebrrpOOH0IjFKbPS/8XXdho8ZOEWcB2ZBm5zyLvdpfpkPGUjB/zZY
+cHwWiQMYExh3iMN6rh6kGNjb4AFEruH7/IXqeC/XAXqCGSkqBuY=
+=dlnD
+-----END PGP SIGNATURE-----
+
+--RnlQjJ0d97Da+TV1--
