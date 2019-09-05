@@ -2,140 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EFBAA9A94
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 08:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65FEAA9B9A
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Sep 2019 09:20:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731293AbfIEGVL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Sep 2019 02:21:11 -0400
-Received: from esa5.hgst.iphmx.com ([216.71.153.144]:22625 "EHLO
-        esa5.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731095AbfIEGVL (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 02:21:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1567664471; x=1599200471;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=JzndiPsjMZDobhc6IsEFGhRIFcASWkXnm8leedOg6+Y=;
-  b=m1934IDYV0WxxdwUrpjT1L2rAw7F0HSlAU5SHE4DA1KGqUF7bmfg8fgG
-   3uXe1mfG8qS3cB0vRAVagVqeOUu1X9Zv+w9MLAs60iH8cXf4xFaORG3Db
-   VG2KOSzPp5beO2U9274jsj6nFuwDs/7J4ho+eqj93y7CCfrvU814cuAn8
-   nEIaMV3bRJk3kGSSaDazbICkFd6zgavSH/CDX58x7iXFricvUtf9P/wdl
-   ES6LDMp378gCJODIFr9MEHC2JrptwZD27NlzrmrJ9ghXv6J/Nwvlw1XLU
-   2F6fjVDiBkHc6GDJsTnMqbOFJyMKteHIFncOfyihSugP2BwG9kv6H2cAm
-   A==;
-IronPort-SDR: bSYgU5uliINj3AdarGoniuv/S5LiFgsaeRjH6onPH+2J6eBP0FJfQMve/t4uJP+FigH2oVKrgg
- R1MN1ktPXOOaXTr6K488JhLLjBvwtGrHGZAenRyUa205WzZwajKdNoUggqZpVJ9Aw/dKOCI+iu
- MOKV5ZbmhgdFb6vA0U6yd8ByU3uUyZVvcUYR8OY3UDunDqQZQ6q5c92xxUfcxVntPJwk9M6Mw8
- qE8qO2+VTynZa6QxLxW/e/yYQiAC3QUewmMUH8KSmBRWN6vYeffrolxZ+xfp02wX5aeTPxs094
- LmI=
-X-IronPort-AV: E=Sophos;i="5.64,469,1559491200"; 
-   d="scan'208";a="118406040"
-Received: from mail-co1nam04lp2054.outbound.protection.outlook.com (HELO NAM04-CO1-obe.outbound.protection.outlook.com) ([104.47.45.54])
-  by ob1.hgst.iphmx.com with ESMTP; 05 Sep 2019 14:21:09 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FEKwqp0u4bmt5z+fFUjEvhG6fflRSJRgQYvEIkn2rVcqylhWRHeC4ZmXtP83w1bOHGVvNbfPGn1iOEoUNr+R/FuOqggRoxpgYaOMzIampRg8ubM5Ljvpa+z1Hn4jcnCcONj2sTx9jTvUmRnU0Tgv8ButeocJLotXKKYBRbGQCZxb9w6AhN1mrfq95XhMSnH2m3uKJrGTCreEUHfTyta2vNWJEhlGyC4sqODaQFAEkdt7UunABaJjS8W4wyS3Kyo6Mh3n5nKWK4mc8z1Qa/4dP7MyAEHKyZruW96DDhBE+Ze4rUrksCUWD9Owntk1ktWLmpstIEQ2oTuApDi8lEgUzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JzndiPsjMZDobhc6IsEFGhRIFcASWkXnm8leedOg6+Y=;
- b=g7JiXw0u8dVBEIT6KSonEQYBXF891QRqWaULrbGjyhze0xA1a9S3xvjLlscxjOk2tnp0nybJCqRDcSLew8/YtPj37UdxOHgXJYZs5SzuGKu6Cp0A35jJmbEQMJEnXg6+Bl2KRG5xNra2kDLa/fhWJzucBfl/34Qjl2cW/5Wnpmall0hy/jAiu1tRSf8qZZS1lKw1RLcseiBQ+LCFK6JuduCggb7v0Qqin0ueCzOvmYW6XpqBen8w/VWAozXaC1dGnO8qiAM03sM1SYm2xhPZtomUtaoyWi9aQfPTpapvDs2/ANWzioXBSk/cDHMRhR/Jyuy7YsftagP8mYcRgkTS+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
+        id S1731879AbfIEHUT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Sep 2019 03:20:19 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:42121 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731901AbfIEHUT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 03:20:19 -0400
+Received: by mail-vs1-f67.google.com with SMTP id m22so859714vsl.9
+        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 00:20:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JzndiPsjMZDobhc6IsEFGhRIFcASWkXnm8leedOg6+Y=;
- b=Ps3KsSys7ISl4GftQeF8i0WvgAYjPWv1C2zEI/aYvIQnjLsEyimWNcOREz3ARdspq3R7c5qSRFekNxTQzzaG+Mf/bZ7B/hTGpG+PX2vLgxT/RPwKsIrxXscWEufU6815cbHNdPGK9uCK4hLL4+xelyzvPBVfL+vhIaWUQxGH9ck=
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
- MN2PR04MB6013.namprd04.prod.outlook.com (20.178.246.216) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2220.20; Thu, 5 Sep 2019 06:21:07 +0000
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::9c2b:ac1b:67b8:f371]) by MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::9c2b:ac1b:67b8:f371%2]) with mapi id 15.20.2220.022; Thu, 5 Sep 2019
- 06:21:07 +0000
-From:   Avri Altman <Avri.Altman@wdc.com>
-To:     Chaotian Jing <chaotian.jing@mediatek.com>
-CC:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ming Lei <ming.lei@redhat.com>, Chris Boot <bootc@bootc.net>,
-        Zachary Hays <zhays@lexmark.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        "srv_heupstream@mediatek.com" <srv_heupstream@mediatek.com>
-Subject: RE: [PATCH 2/2] mmc: block: add CMD13 polling for ioctl() cmd with
- R1B response
-Thread-Topic: [PATCH 2/2] mmc: block: add CMD13 polling for ioctl() cmd with
- R1B response
-Thread-Index: AQHVYvYWr7zFcN7xD0GIE0WcESsTdacbjhBAgADWzACAADk94A==
-Date:   Thu, 5 Sep 2019 06:21:07 +0000
-Message-ID: <MN2PR04MB6991B08ECDBC4021AEFDD06EFCBB0@MN2PR04MB6991.namprd04.prod.outlook.com>
-References: <20190904075444.2163-1-chaotian.jing@mediatek.com>
-         <20190904075444.2163-3-chaotian.jing@mediatek.com>
-         <MN2PR04MB6991F51F6DDCA28FC23D02FEFCB80@MN2PR04MB6991.namprd04.prod.outlook.com>
- <1567652136.11483.1.camel@mhfsdcap03>
-In-Reply-To: <1567652136.11483.1.camel@mhfsdcap03>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Avri.Altman@wdc.com; 
-x-originating-ip: [212.25.79.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 510bf163-0fda-4a89-a62c-08d731c93ce2
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:MN2PR04MB6013;
-x-ms-traffictypediagnostic: MN2PR04MB6013:
-x-microsoft-antispam-prvs: <MN2PR04MB60139125FB24DEE42304DBC2FCBB0@MN2PR04MB6013.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 015114592F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(376002)(366004)(136003)(396003)(39860400002)(346002)(189003)(199004)(7696005)(6916009)(8676002)(71200400001)(186003)(81166006)(81156014)(66066001)(6506007)(74316002)(9686003)(71190400001)(4744005)(6246003)(26005)(86362001)(54906003)(33656002)(8936002)(256004)(478600001)(14444005)(7416002)(66556008)(66476007)(229853002)(486006)(5660300002)(53936002)(64756008)(11346002)(316002)(476003)(2906002)(66446008)(76116006)(102836004)(7736002)(76176011)(446003)(14454004)(55016002)(3846002)(6116002)(305945005)(52536014)(6436002)(66946007)(99286004)(4326008)(25786009);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB6013;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: UK7u3aP7762IqznTlVJE7b9oqTe9+3sPYTZC2ahN4fYm9qGytOUAl5l6Ojtx14XJL3CUVTbyCJX+bt9d2XxrnPfRgFXFtRCDMRZnXX6i8P67akrnayL2TvzuIjQos1r5ALejgIFtMLVkwW+lXZknP+HZ3pAqU8q27F2wG+uxrcORYuUjaIgrnbrEEaK0Mlbg2KxWby/Jox6hjfsWmGXEcEA6VbCnLO2ynCd+xSKPdDHni+qWTbnCCLFLlzX477Bb981+JH8CFUmXdcS3P+7uCoLLFK88dWEEEfR9IkO8zdO1GAUACxycKx8LHGDarFU1JnVUNcyLx7uDftZ9fIj31PJFwNhD44mBud/LXukS1MIvB+eTLTfhv05DySAoI0erxeB8NQaAwiOcEQ7mR2JNSNFFoDYDe6Rr0AwCcNqsRO8=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=qDqZN7fS5F+EG0FlyTVmrynQo8TpwF01x1Wwh0NjrGQ=;
+        b=JDhKLshl3g4lJiNgrOi1FCf80+dutqw3IsmtHMyJZ7VJI0h+WJrU7QtAj9etFuISE4
+         fGegTZinnugsz4Wu/l2ZbFpdBeDupgEmp5sBQaUD+WS5wNT1rn1NCs4SKb/ljekD8JZS
+         /kjweFfNlFk1snVP0nA7Fgk3W4tI2T3kV9+7fjbw5A1m8TlBDoLm5nLwl8ySZoYhIzu1
+         H88WnLQW4A6RZ7MTts2XRY+HTB7mL0tN6c497k2HhkkvZ2GVpaTopOQ7L+dHIkCu+Rte
+         Pu5/IkScDn+bPpeJ2aX8EoQA5OCl8o2ht0G8Jrlk7It1cpXdQvPdVom5efvFl9Cqcy9K
+         TL0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=qDqZN7fS5F+EG0FlyTVmrynQo8TpwF01x1Wwh0NjrGQ=;
+        b=dDAOMaDGHzSW+1RZbDI4wr0C0hwucKt8FczbHu/FofHC+lARo+H+DDttnt5qjEVeSL
+         aqLCulSly60FMFGpETr89VYMXmkjjg9u46MQ/H2dyX1ukKQYTgm/fTSY7MW2TF4Im3rY
+         tFXHp+VHgvxQQsKRk96BSfp91mI7hOUzvh7lLx2ZC93qfsLwDmxJlSga0r4MxwY/motx
+         gb7pE1VlWiiTbOo9bs2XyITHimaGx/h0kqGwiNPGGFDjtl7mwf5+p9KNbU6tnD3NV4AQ
+         Cdio+JP4yODBwlGq7PpJu7WP5iR3v8HO/2h/aYxOSBKeSY1+iyYwRAbovPuIibqIuCN4
+         o8vg==
+X-Gm-Message-State: APjAAAWKhkhlO16g1n8UWrfaUcBouG8LOnG7aqxIDaq6uOTXbtEQf3gP
+        SkxpHmyWwC0WX8bFNdj25lYcgjmOdfxQ0DZQ0wDx/pDQ
+X-Google-Smtp-Source: APXvYqyCWubkmCdHsA5rv6+utUu8svk9Q5oiFeDScE/poY3B/xRiRre3XakE2UsLkiqCYXL5PUV3McOIS1uD2lNWMsc=
+X-Received: by 2002:a67:e2cf:: with SMTP id i15mr953569vsm.165.1567668017695;
+ Thu, 05 Sep 2019 00:20:17 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 510bf163-0fda-4a89-a62c-08d731c93ce2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2019 06:21:07.4027
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AP+mBR+snI8ts7umKQ5HKNsDYJgFDzRE+4XeeHIxvXknh3SabjC1Ub9hd9SgQcKi1I0+VBjzeirCrP+mUSqksg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB6013
+References: <d355e790-7c60-5681-3ea5-dc4fd6206628@zoho.com>
+ <CAPDyKFqKxSo50FSmesuOBz+FfE_DEFsZmEHD5CiU8SORv1Jrow@mail.gmail.com> <5e787d78-1489-dde8-41bb-b22ce011599d@zoho.com>
+In-Reply-To: <5e787d78-1489-dde8-41bb-b22ce011599d@zoho.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 5 Sep 2019 09:19:40 +0200
+Message-ID: <CAPDyKFqO9+Lodaks4vBguQTUKtOeFU=CJmoQbwcqqe7cJxqD8g@mail.gmail.com>
+Subject: Re: Asus VivoBook Flip TP202NA-EH012T EMMC problem
+To:     =?UTF-8?B?w5N2w6FyaQ==?= <ovari123@zoho.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Tom Reynolds <tomreyn@megaglest.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-IA0KPiBPbiBXZWQsIDIwMTktMDktMDQgYXQgMTQ6MTEgKzAwMDAsIEF2cmkgQWx0bWFuIHdyb3Rl
-Og0KPiA+ID4gIHN0YXRpYyBpbnQgX19tbWNfYmxrX2lvY3RsX2NtZChzdHJ1Y3QgbW1jX2NhcmQg
-KmNhcmQsIHN0cnVjdA0KPiA+ID4gbW1jX2Jsa19kYXRhICptZCwNCj4gPiA+ICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgbW1jX2Jsa19pb2NfZGF0YSAqaWRhdGEpDQo+ID4g
-PiAgew0KPiA+ID4gQEAgLTYyMyw2ICs2NzUsOSBAQCBzdGF0aWMgaW50IF9fbW1jX2Jsa19pb2N0
-bF9jbWQoc3RydWN0DQo+IG1tY19jYXJkDQo+ID4gPiAqY2FyZCwgc3RydWN0IG1tY19ibGtfZGF0
-YSAqbWQsDQo+ID4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX19m
-dW5jX18sIHN0YXR1cywgZXJyKTsNCj4gPiA+ICAgICAgICAgfQ0KPiA+ID4NCj4gPiA+ICsgICAg
-ICAgaWYgKCFlcnIgJiYgKGNtZC5mbGFncyAmIE1NQ19SU1BfUjFCKSkNCj4gPiA+ICsgICAgICAg
-ICAgICAgICBlcnIgPSBjYXJkX2J1c3lfZGV0ZWN0KGNhcmQsIE1NQ19CTEtfVElNRU9VVF9NUywN
-Cj4gTlVMTCk7DQo+ID4gPiArDQo+ID4gPiAgICAgICAgIHJldHVybiBlcnI7DQo+ID4gPiAgfQ0K
-PiA+IFlvdSBoYXZlIGJvdGggdGhlIFIxQiBmbGFnIGNoZWNrLCBhbmQgc3RhdHVzIHBvbGwgKGZv
-ciBycG1iKSBmZXcgbGluZQ0KPiBhYm92ZS4NCj4gPiBNYXliZSB5b3UgY291bGQgcmUtdXNlIGl0
-Lg0KPiA+IEl0IHdpbGwgYm90aCBzaW1wbGlmeSB0aGlzIHBhdGNoLCBhbmQgc2F2ZSB0aGUgdGFk
-IG9wdGltaXphdGlvbiBvZiB5b3VyDQo+IGZpcnN0IHBhdGNoLg0KPiA+DQo+ID4gVGhhbmtzLA0K
-PiA+IEF2cmkNCj4gDQo+IFNvIHRoYXQgd2UgY2FuIGRyb3AgdGhlIGlvY3RsX3JwbWJfY2FyZF9z
-dGF0dXNfcG9sbCgpIGFzIGl0IGRvIGFsbW9zdA0KPiB0aGUgc2FtZSB0aGluZyB3aXRoIGNhcmRf
-YnVzeV9kZXRlY3QoKS4NCj4gDQpyaWdodA0K
+On Wed, 4 Sep 2019 at 23:09, =C3=93v=C3=A1ri <ovari123@zoho.com> wrote:
+>
+> Hi Uffe,
+>
+> Thank you for your email.
+>
+> Which version of the linux kernel would your patch land in?
+>
+> We are not experienced with git nor gpg.
+>
+> Is there a *.deb file with your patch that we can
+> sudo dpkg -i *.deb
+> with the live session of Ubuntu 18.04 LTS 64-bit/Linux Mint 19.x to repla=
+ce the kernel on the bootable USB stick?
+>
+> Would this scenario be helpful if we:
+>
+> 1. Download the Ubuntu 18.04 LTS/Linux Mint 19.x iso
+>
+> 2. Create a USB Bootable stick from the iso
+>
+> 3. Live boot the USB stick
+>
+> 4. Replace the kernel on the USB bootable stick with the required kernel =
+(would need your help/instructions on how to do achieve this)
+>
+> 5. Boot a live session from the USB stick on the production computer and =
+extract the reports, error and otherwise, you require.
+>
+> What do you think?
+>
+> Steps 1-4 could be done on any computer.
+>
+> Step 5 would be done on the production computer.
+>
+> Would this work?
+>
+> Thank you
+>
+> =C3=93v=C3=A1ri
+
+Hi Ovari,
+
+I am sorry to disappoint you, but I simply don't have the bandwidth of
+time to guide on this path. Perhaps look at the Ubuntu forums, I am
+sure there is guide somewhere.
+
+[...]
+
+Kind regards
+Uffe
