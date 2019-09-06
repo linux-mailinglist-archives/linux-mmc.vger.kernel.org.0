@@ -2,135 +2,89 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC508AB512
-	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 11:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0125AB5B4
+	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 12:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392958AbfIFJnD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 6 Sep 2019 05:43:03 -0400
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:37487 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392945AbfIFJnC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Sep 2019 05:43:02 -0400
-Received: by mail-ua1-f68.google.com with SMTP id f9so1849599uaj.4
-        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 02:43:01 -0700 (PDT)
+        id S1730443AbfIFKVl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 6 Sep 2019 06:21:41 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:39394 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388384AbfIFKVl (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Sep 2019 06:21:41 -0400
+Received: by mail-lj1-f193.google.com with SMTP id j16so5509941ljg.6
+        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 03:21:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=R38QwJRDDtxieDfNJJcxGNZ/wA4BpQhs/ThTqx6ON3E=;
-        b=wGB/lSQRuv+WEWnp8pInqrefO3rA6K08hHFuIa7+RI3L1SbahglRzPRYKBHgn3v8We
-         t16jocpe1ui7QDUF7Fv5y1uryLnDi0dV5jPkL3fUiqcchi+jHsEiZHVz6Due2t+HtZC7
-         AJhvD3Q/G17X67OlvpAsE0baTIBWYL7QazmiTeYvzvD0GkTgxpOw3GJMGTWlXz2UApY7
-         H5Vid+JsPwKM/uwvjtvlj34qBTZAbXmEnHvEr4TtsJnpwgB+vSlSfrYMtZ6gmSMSXrJb
-         L6wSCkU8Kfmdyxlvt6v6CzEd+ctJA6igA/VMhsABL5vcbBNpZb9P6vTYBWRcDsAfLFuq
-         jHfQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=1XE2iMKxqeBeswKR1xzlvsta7f6sdclLOJUEbI6gihw=;
+        b=YgHnUrQFNAnUFKkSbc+ykNP3SwrMbo4pz/pL3+7+Qx9w+CAWd+tNrsn2u0v+YLkekQ
+         dCwgypVInxxZ5mQfogIfnoLu+yPJ1WI3NVcVIm8FBMQjHrmC37Fh6i7jV4g32cjj5mL9
+         b12VsfeTm1Hz70kyn6v+HJyIRkOjafMVsu2S0DoguhuHantMkAfnktdV8qrXwIuha5z+
+         zdj72rwfsCx2X/Iq4keEi4fIV1V5tQlHGQhJvS9zmzHvTfHyEOKcUBqxD0Uj99WtrNHV
+         IqS+HISWroSfN/+i+orD93kB3ndJXJdpI5IpLje5PFWW1GqT3KtyuJuZytxLWxfoPapy
+         g+qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=R38QwJRDDtxieDfNJJcxGNZ/wA4BpQhs/ThTqx6ON3E=;
-        b=VV/rG75lEIp81J7ZSPNsdi3og4WkOmDd60ca/JmC2Mp2h46g4jx5gLkuZV8tluoMxw
-         kZcsXi1q31TIhTaEOdN5LQlY0DefQLfwIazdudix6N/YTUTNuQqdNoWuG/RS1V56KGyy
-         LLXXvJ2bdcGT6Ubd2afwfq/mJAwexGefdZQYsiz2s/7FCKdH4SK9lmkJY++DhiCTwwex
-         tuL/cNDnpfyA9RSpgNgjfsnFa69Ydbsg7Ul5a7b7gbdXLreBoRMsjCwCVhua1OXICoA7
-         upxP73gRj3zV2bjrgTmrAwCTItovHsXHPY1o1qv+mMZp9OmCCyQJicj33IcH93DOY2sl
-         0McA==
-X-Gm-Message-State: APjAAAU6Zihi5m6hyPnJD9P0pEMVhdGGc5YPri8ohCdFeFxycPhXbh7h
-        1WAad8qZG64mvY+Uq1ptMzIJ89qlPBNCT89nxE9sow==
-X-Google-Smtp-Source: APXvYqyGI6SsPqpEbbDCT8Ryeuwx2k9MJlewX3O+7qe6csw2dm/4l3P/AFie5Gl8NoFZfDeO42q3zsCkto5+vzm2ok4=
-X-Received: by 2002:ab0:15e9:: with SMTP id j38mr3943851uae.19.1567762981472;
- Fri, 06 Sep 2019 02:43:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190903142207.5825-1-ulf.hansson@linaro.org> <20190903142207.5825-9-ulf.hansson@linaro.org>
- <CAD=FV=WYA2BkEJxUbk1sO3KYWDRtjuDNDK90AXPYge24fOxsBw@mail.gmail.com>
-In-Reply-To: <CAD=FV=WYA2BkEJxUbk1sO3KYWDRtjuDNDK90AXPYge24fOxsBw@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=1XE2iMKxqeBeswKR1xzlvsta7f6sdclLOJUEbI6gihw=;
+        b=ZNkNsl+RDX8Y2bCNcQ9HwnOFuPeeT7ILC+XtebgFsOd6FCg0RDzjuV5yq026TcG2TX
+         jHznsYjUMyHQ2PyRB24d8pn1eqOQw4O+7f6ZcnXsP75LpgmGujuhwM0bduBmw1FG3/bH
+         nxnnzVwfLBcEhb/AVmFOuL3xOTXX/CMO9vcwO7nl99WnYFyP9uAorKKNTHsTf99c4DlS
+         NZOo4NML46Ew1YbEp6e7X0KJXXk9m+cEtRBtNMBMUBq3M/tNn6WP6NyfFdg2xdrO+IYW
+         5iit/X1+F2rLwXQiAtBSzmoApua1/RsxhHuTzUays5KolEzcj+iOZnc0IouDSX/foCLR
+         kLKA==
+X-Gm-Message-State: APjAAAVN3FrXYQcO5MvdL75xMk7rawGv1ZIOoFseRI3vrWnu3GaqO6V/
+        Yy8j9AelIbw3rYtorf/CgBK+kQ==
+X-Google-Smtp-Source: APXvYqztTS4qpegFJb8eFFnKk7dV5idrDYMnWk/xNLDWvDE9Uz5saL21N7D+aNgevoeKewjXLExpzg==
+X-Received: by 2002:a2e:50b:: with SMTP id 11mr5314059ljf.11.1567765299406;
+        Fri, 06 Sep 2019 03:21:39 -0700 (PDT)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id s7sm855763lji.26.2019.09.06.03.21.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Sep 2019 03:21:38 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 6 Sep 2019 11:42:25 +0200
-Message-ID: <CAPDyKFrTUgkxdwuFHy=2zDyrNnoi6UVnXEUL-cfrtUigvBunNQ@mail.gmail.com>
-Subject: Re: [PATCH 08/11] mmc: core: Fixup processing of SDIO IRQs during
- system suspend/resume
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Yong Mao <yong.mao@mediatek.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC fixes for v5.3-rc8
+Date:   Fri,  6 Sep 2019 12:21:37 +0200
+Message-Id: <20190906102137.637-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 6 Sep 2019 at 01:48, Doug Anderson <dianders@chromium.org> wrote:
->
-> Hi,
->
-> On Tue, Sep 3, 2019 at 7:22 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > System suspend/resume of SDIO cards, with SDIO IRQs enabled and when using
-> > MMC_CAP2_SDIO_IRQ_NOTHREAD is unfortunate still suffering from a fragile
-> > behaviour. Some problems have been taken care of so far, but more issues
-> > remains.
-> >
-> > For example, calling the ->ack_sdio_irq() callback to let host drivers
-> > re-enable the SDIO IRQs is a bad idea, unless the IRQ have been consumed,
-> > which may not be the case during system suspend/resume. This may lead to
-> > that a host driver re-signals the same SDIO IRQ over and over again,
-> > causing a storm of IRQs and gives a ping-pong effect towards the
-> > sdio_irq_work().
-> >
-> > Moreover, calling the ->enable_sdio_irq() callback at system resume to
-> > re-enable already enabled SDIO IRQs for the host, causes the runtime PM
-> > count for some host drivers to become in-balanced. This then leads to the
-> > host to remain runtime resumed, no matter if it's needed or not.
-> >
-> > To fix these problems, let's check if process_sdio_pending_irqs() actually
-> > consumed the SDIO IRQ, before we continue to ack the IRQ by invoking the
-> > ->ack_sdio_irq() callback.
-> >
-> > Additionally, there should be no need to re-enable SDIO IRQs as the host
-> > driver already knows if they were enabled at system suspend, thus also
-> > whether it needs to re-enable them at system resume. For this reason, drop
-> > the call to ->enable_sdio_irq() during system resume.
-> >
-> > In regards to these changes there is yet another issue, which is when there
-> > is an SDIO IRQ being signaled by the host driver, but after the SDIO card
-> > has been system suspended. Currently these IRQs are just thrown away, while
-> > we should at least make sure to try to consume them when the SDIO card has
-> > been system resumed. Fix this by calling sdio_signal_irq() after system
-> > resumed the SDIO card.
-> >
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > ---
-> >  drivers/mmc/core/sdio.c     | 2 +-
-> >  drivers/mmc/core/sdio_irq.c | 3 ++-
-> >  2 files changed, 3 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-> > index c557f1519b77..3114d496495a 100644
-> > --- a/drivers/mmc/core/sdio.c
-> > +++ b/drivers/mmc/core/sdio.c
-> > @@ -1015,7 +1015,7 @@ static int mmc_sdio_resume(struct mmc_host *host)
-> >                 if (!(host->caps2 & MMC_CAP2_SDIO_IRQ_NOTHREAD))
-> >                         wake_up_process(host->sdio_irq_thread);
-> >                 else if (host->caps & MMC_CAP_SDIO_IRQ)
-> > -                       host->ops->enable_sdio_irq(host, 1);
-> > +                       sdio_signal_irq(host);
->
-> Is this always safe?  On 1-function cards you won't poll CCCR_INTx so
-> you'll always signal an interrupt at resume time, won't you?
+Hi Linus,
 
-Good point!
+Here's a PR with an MMC fix intended for v5.3-rc8. Details about the
+highlights are as usual found in the signed tag.
 
-What we really want to do is to just schedule the work and not include
-to set the sdio_irq_pending flag. Actually, the flag may have been
-set, in case a host driver have called sdio_signal_irq() when the SDIO
-card was suspended - but that is the intention.
-
-Thanks for pointing out the issue, I will re-spin and fix it!
+Please pull this in!
 
 Kind regards
-Uffe
+Ulf Hansson
+
+
+The following changes since commit 089cf7f6ecb266b6a4164919a2e69bd2f938374a:
+
+  Linux 5.3-rc7 (2019-09-02 09:57:40 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3-rc7
+
+for you to fetch changes up to 8ad8e02c2fa70cfddc1ded53ba9001c9d444075d:
+
+  Revert "mmc: core: do not retry CMD6 in __mmc_switch()" (2019-09-03 16:53:28 +0200)
+
+----------------------------------------------------------------
+MMC core:
+ - Fix card init for some eMMCs that need retries for CMD6
+
+----------------------------------------------------------------
+Jan Kaisrlik (1):
+      Revert "mmc: core: do not retry CMD6 in __mmc_switch()"
+
+ drivers/mmc/core/mmc_ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
