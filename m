@@ -2,59 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A755AAC204
-	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 23:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3587CAC216
+	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 23:37:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732110AbfIFVaZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 6 Sep 2019 17:30:25 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:44728 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391546AbfIFVaX (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Sep 2019 17:30:23 -0400
-Received: by mail-io1-f65.google.com with SMTP id j4so16016622iog.11
-        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 14:30:22 -0700 (PDT)
+        id S2404406AbfIFVhS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 6 Sep 2019 17:37:18 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:36753 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404402AbfIFVhS (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Sep 2019 17:37:18 -0400
+Received: by mail-io1-f68.google.com with SMTP id b136so16138582iof.3
+        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 14:37:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=w6XmAQuLEI6LRXi7I+W7PqdETWZbpre6aa0r24jUMtc=;
-        b=cJaIsxiBzzg6x+h0oqnrF19NvReVCCqvleCX1I2rRkSvgb8RNY2iSVxx3RM+x5sb5U
-         P1H4GTBRJggED7MxJXYsM6VVQGFUwmqCCIY6tLU/r+wumfqFHMb8drmWaZRVpdfu4lsJ
-         8z6blICBQ52bQfdkymMKen63Mmb+3Ll+GbHaQ=
+        bh=NidIhVM02tPKbRZ5DwnVb5R6omkDxX7AIIG8GN/6+Rg=;
+        b=ayHodLxvu5uXfkVz48qkl7kn1M+MpNK7uuaH1flUeiVMFQk7ng31rPd3uh2AfpTepG
+         chBGLgs2Br+oSAnwcE1cCmKLe8GROWcN0n1LTELL7IjPu8w51PT8CGKFTzOM3a99m+2e
+         4EFaAH4KvreE8+HxWyHpq210Z6IROH5khFlPY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=w6XmAQuLEI6LRXi7I+W7PqdETWZbpre6aa0r24jUMtc=;
-        b=KzPJ8q2LWb965hmNWqz4JxFz6RHJ7YbXMPYSZb59lRU3nAuLV5QUg+/Xp/3fTVQWBQ
-         g67dVQbioGy1jO3LPDMFxZntX4S9LAz499WxoAP6ylX8pidcXavNHHCwYEfu72winMvi
-         fcO54cegX4u67pWryHU547TEwOObAjNaSv8hgDCNvVSRYhXAN75M41sUG/BjfBy6OodA
-         ZU7ioY9IwhdIgk3YPW3vWXx0SxZM6XJZ4hhu+gA5JttLSr/f8v+pVZeu2XFk0MvoEK8N
-         XfJJQYtG251Ogm16Pqkabupvfnn46LebQ003cqN4X2DWU7WEy6sqfPMTgmPlRasqumWS
-         1DLA==
-X-Gm-Message-State: APjAAAVCfA9eSNkp65/NUFkXZjFa+LytYPRMkUOUrWVUV2p6NtPy6DWC
-        EhUof6BaJVcqoz06W/cl4Ui2yhN8a44=
-X-Google-Smtp-Source: APXvYqz24eApZoSvsewpHTLt5qmoSWxk56Ngew+isL9UqtCUI8LL9Buccwee0lWB5vgJ+u6MH7NjXw==
-X-Received: by 2002:a5d:84c8:: with SMTP id z8mr1634545ior.214.1567805421408;
-        Fri, 06 Sep 2019 14:30:21 -0700 (PDT)
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com. [209.85.166.53])
-        by smtp.gmail.com with ESMTPSA id z9sm5150067ior.79.2019.09.06.14.30.20
+        bh=NidIhVM02tPKbRZ5DwnVb5R6omkDxX7AIIG8GN/6+Rg=;
+        b=sRqUHOT+VR+gJqB72KXQUDqj918G8WxjjNLr8dYNm41oEZ5vUa0WXoKcKHVrJUEOyW
+         b85Wxfl4aP93nf7vZGspbS5iVFF+Jgjjkdw/KenF1shWIg1xZYmBf2TevHe/vScz4WGm
+         CCcSC0l7NnpThDTjea+uUyfc0rQ4VsiLW1B4jMUyzRF5Y2iGYs89D9eBA3aGcW7tb6dp
+         Imk0IPfl7fRe1tgo/limu/7WRMy9mzjLsighBI62z75tJAVvjUnzRPdZ9We8Ufguzv/f
+         w0LdMyRqh68Uz35lh8XdyoVR/XnUdRUSHwGrYuskxUpFhvFtTvltamox1g7PRErVFN86
+         ScDw==
+X-Gm-Message-State: APjAAAV7FVGBZQiKepy0G3HX2SXYL9IGrpo30Ctw/FgkgPWYMF1qQRqr
+        Rz/cPEDUesxWVvg2t/mJpP1I+aWt3Wo=
+X-Google-Smtp-Source: APXvYqw5NB5MRoH8SCzQusOeJwFB04z4+GWJchKAJw516M4pa52f647FlO+B6YzZYwDTVU3GLRJoOA==
+X-Received: by 2002:a5e:8407:: with SMTP id h7mr13158078ioj.47.1567805837138;
+        Fri, 06 Sep 2019 14:37:17 -0700 (PDT)
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com. [209.85.166.54])
+        by smtp.gmail.com with ESMTPSA id m67sm8595553iof.21.2019.09.06.14.37.16
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Sep 2019 14:30:21 -0700 (PDT)
-Received: by mail-io1-f53.google.com with SMTP id b136so16101205iof.3
-        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 14:30:20 -0700 (PDT)
-X-Received: by 2002:a6b:b704:: with SMTP id h4mr9483813iof.218.1567805419931;
- Fri, 06 Sep 2019 14:30:19 -0700 (PDT)
+        Fri, 06 Sep 2019 14:37:16 -0700 (PDT)
+Received: by mail-io1-f54.google.com with SMTP id r26so16028648ioh.8
+        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 14:37:16 -0700 (PDT)
+X-Received: by 2002:a6b:b445:: with SMTP id d66mr13600851iof.269.1567805836148;
+ Fri, 06 Sep 2019 14:37:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190903142207.5825-1-ulf.hansson@linaro.org> <20190903142207.5825-6-ulf.hansson@linaro.org>
- <CAD=FV=UhA4pxui29k+SHygCYq+a3O8ELJCq7=6iVSUrnwvk8DQ@mail.gmail.com> <CAPDyKFo3BNjFcqfURP2TWrMWB3SGC6p4hMcxz++QRRBwCsLH4w@mail.gmail.com>
-In-Reply-To: <CAPDyKFo3BNjFcqfURP2TWrMWB3SGC6p4hMcxz++QRRBwCsLH4w@mail.gmail.com>
+References: <20190903142207.5825-1-ulf.hansson@linaro.org> <20190903142207.5825-3-ulf.hansson@linaro.org>
+ <CAD=FV=XaaC=RpCiF09WAuhmDgte3EmFjFxk9y7xpX=HBwaRr9g@mail.gmail.com> <CAPDyKFo7j=m0OWuhspzY-viU0cg1xdYqu83D1sfDsqz54YngQw@mail.gmail.com>
+In-Reply-To: <CAPDyKFo7j=m0OWuhspzY-viU0cg1xdYqu83D1sfDsqz54YngQw@mail.gmail.com>
 From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 6 Sep 2019 14:30:08 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UStS7xbChnmZwgcrqQJqC2xCjrNn9wKe-8Yod9xjWTKw@mail.gmail.com>
-Message-ID: <CAD=FV=UStS7xbChnmZwgcrqQJqC2xCjrNn9wKe-8Yod9xjWTKw@mail.gmail.com>
-Subject: Re: [PATCH 05/11] mmc: core: Clarify sdio_irq_pending flag for MMC_CAP2_SDIO_IRQ_NOTHREAD
+Date:   Fri, 6 Sep 2019 14:37:04 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=XsEYg8vKMwynNTH1uCo7bXhorG2ON2zjBhsBDBZeTYSw@mail.gmail.com>
+Message-ID: <CAD=FV=XsEYg8vKMwynNTH1uCo7bXhorG2ON2zjBhsBDBZeTYSw@mail.gmail.com>
+Subject: Re: [PATCH 02/11] mmc: dw_mmc: Re-store SDIO IRQs mask at system resume
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -80,137 +80,123 @@ On Fri, Sep 6, 2019 at 2:20 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 > >
 > > On Tue, Sep 3, 2019 at 7:22 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 > > >
-> > > In the single SDIO IRQ handler case, the sdio_irq_pending flag is used to
-> > > avoid reading the SDIO_CCCR_INTx register and instead immediately call the
-> > > SDIO func's >irq_handler() callback.
-> > >
-> > > To clarify the use behind the flag for the MMC_CAP2_SDIO_IRQ_NOTHREAD case,
-> > > let's set the flag from inside sdio_signal_irq(), rather from
-> > > sdio_run_irqs().
+> > > In cases when SDIO IRQs have been enabled, runtime suspend is prevented by
+> > > the driver. However, this still means dw_mci_runtime_suspend|resume() gets
+> > > called during system suspend/resume, via pm_runtime_force_suspend|resume().
+> > > This means during system suspend/resume, the register context of the dw_mmc
+> > > device most likely loses its register context, even in cases when SDIO IRQs
+> > > have been enabled.
 > >
-> > I'm having a hard time parsing the above statement...  Can you reword
-> > and maybe I'll understand?
->
-> Sure, I admit, it's not very good. :-) How about the below.
->
-> The sdio_irq_pending flag is used to let host drivers indicate that it
-> has signaled an IRQ. If that is the case and we only have a single
-> SDIO func that have claimed an SDIO IRQ, our assumption is that we can
-> avoid reading the SDIO_CCCR_INTx register and just call the SDIO func
-> irq handler immediately. This makes sense, but the flag is set/cleared
-> in a somewhat messy order, let's fix that up according to below.
->
-> First, the flag is currently set in sdio_run_irqs(), which is executed
-> as a work that was scheduled from sdio_signal_irq(). To make it more
-> implicit that the host have signaled an IRQ, let's instead immediately
-> set the flag in sdio_signal_irq(). This also makes the behavior
-> consistent with host drivers that uses the legacy,
-> mmc_signal_sdio_irq() API. This have no functional impact, because we
-> don't expect host drivers to call sdio_signal_irq() until after the
-> work (sdio_run_irqs()) have been executed anyways.
->
-> Second, currently we never clears the flag when using the
-> sdio_run_irqs() work, but only when using the sdio_irq_thread(). Let
-> make the behavior consistent, by moving the flag to be cleared inside
-> the common process_sdio_pending_irqs() function. Additionally, tweak
-> the behavior of the flag slightly, by avoiding to clear it unless we
-> processed the SDIO IRQ. The purpose with this at this point, is to
-> keep the information about whether there have been an SDIO IRQ
-> signaled by the host, so at system resume we can decide to process it
-> without reading the SDIO_CCCR_INTx register.
->
+> > Even if they weren't lost the resume code currently has this statement:
 > >
+> > mci_writel(host, INTMASK, SDMMC_INT_CMD_DONE | SDMMC_INT_DATA_OVER |
+> >    SDMMC_INT_TXDR | SDMMC_INT_RXDR |
+> >    DW_MCI_ERROR_FLAGS);
 > >
-> > > Moreover, let's also reset the flag when the SDIO IRQ have
-> > > been properly processed.
+> > ...so that would have clobbered any existing state even if register
+> > state wasn't lost.  ;-)
+> >
+> > > To re-enable the SDIO IRQs during system resume, the dw_mmc driver
+> > > currently relies on the mmc core to re-enable the SDIO IRQs when it resumes
+> > > the SDIO card, but this isn't the recommended solution. Instead, it's
+> > > better to deal with this locally in the dw_mmc driver, so let's do that.
 > > >
 > > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > > > ---
-> > >  drivers/mmc/core/sdio_irq.c | 9 ++++++---
-> > >  1 file changed, 6 insertions(+), 3 deletions(-)
-> >
-> > Nice!  This looks like it addresses some of the things that came up in
-> > the previous discussion [1] and should be a nice improvement.  From
-> > re-reading that discussion that will probably change the behvaior
-> > slightly (hopefully for the better) in the single-function case where
-> > we might actually poll CCCR_INTx sometimes now.
->
-> Correct!
->
-> >
-> >
-> > > diff --git a/drivers/mmc/core/sdio_irq.c b/drivers/mmc/core/sdio_irq.c
-> > > index f75043266984..0962a4357d54 100644
-> > > --- a/drivers/mmc/core/sdio_irq.c
-> > > +++ b/drivers/mmc/core/sdio_irq.c
-> > > @@ -59,6 +59,7 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
-> > >  {
-> > >         struct mmc_card *card = host->card;
-> > >         int i, ret, count;
-> > > +       bool sdio_irq_pending = host->sdio_irq_pending;
-> > >         unsigned char pending;
-> > >         struct sdio_func *func;
+> > >  drivers/mmc/host/dw_mmc.c | 4 ++++
+> > >  1 file changed, 4 insertions(+)
 > > >
-> > > @@ -66,13 +67,16 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
-> > >         if (mmc_card_suspended(card))
-> > >                 return 0;
+> > > diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+> > > index eea52e2c5a0c..f114710e82b4 100644
+> > > --- a/drivers/mmc/host/dw_mmc.c
+> > > +++ b/drivers/mmc/host/dw_mmc.c
+> > > @@ -3460,6 +3460,10 @@ int dw_mci_runtime_resume(struct device *dev)
+> > >         /* Force setup bus to guarantee available clock output */
+> > >         dw_mci_setup_bus(host->slot, true);
 > > >
-> > > +       /* Clear the flag to indicate that we have processed the IRQ. */
-> > > +       host->sdio_irq_pending = false;
+> > > +       /* Re-enable SDIO interrupts. */
+> > > +       if (sdio_irq_enabled(host->slot->mmc))
+> > > +               __dw_mci_enable_sdio_irq(host->slot, 1);
 > > > +
-> > >         /*
-> > >          * Optimization, if there is only 1 function interrupt registered
-> > >          * and we know an IRQ was signaled then call irq handler directly.
-> > >          * Otherwise do the full probe.
-> > >          */
-> > >         func = card->sdio_single_irq;
-> > > -       if (func && host->sdio_irq_pending) {
-> > > +       if (func && sdio_irq_pending) {
-> > >                 func->irq_handler(func);
-> > >                 return 1;
-> > >         }
-> > > @@ -110,7 +114,6 @@ static void sdio_run_irqs(struct mmc_host *host)
-> > >  {
-> > >         mmc_claim_host(host);
-> > >         if (host->sdio_irqs) {
-> > > -               host->sdio_irq_pending = true;
-> > >                 process_sdio_pending_irqs(host);
-> > >                 if (host->ops->ack_sdio_irq)
-> > >                         host->ops->ack_sdio_irq(host);
-> > > @@ -128,6 +131,7 @@ void sdio_irq_work(struct work_struct *work)
-> > >
-> > >  void sdio_signal_irq(struct mmc_host *host)
-> > >  {
-> > > +       host->sdio_irq_pending = true;
 > >
-> > Is this safe to do without claiming the host or any other type of
-> > locking?  sdio_signal_irq() is called directly from the interrupt
-> > handler on dw_mmc with no locks held at all.  Could we have races /
-> > problems with weakly ordered memory?
+> > There's a slight bit of subtleness here and I guess we need to figure
+> > out if it matters.  From testing things seem to work OK so maybe we're
+> > fine, but just to explain what's bugging me:
+> >
+> > If we got an SDIO interrupt that was never ACKed then this is going to
+> > act like an implicit ACK.  Notice that dw_mci_ack_sdio_irq() is
+> > exactly this call because when the SDIO IRQ fires we mask it out.
+> > ...then unmask when Acked.
+> >
+> > Specifically after your series is applied, I think this is what
+> > happens if an interrupt fires while the SDIO bus is officially
+> > suspended:
+> >
+> > 1. dw_mci_interrupt() will get called which will mask the SDIO IRQ and
+> > then call sdio_signal_irq()
+> >
+> > 2. sdio_signal_irq() will queue some delayed work.
+> >
+> > 3. The work will call sdio_run_irqs()
+> >
+> > 4. sdio_run_irqs() _won't_ ack the IRQ, so it will stay disabled.
+> >
+> > 5. When we get to the resume we'll re-enable the interrupt.
 >
-> At this point, for $subject patch and @subject series, I don't see any
-> issues. But perhaps when we go forward and start using the flag
-> slightly differently.
+> Correct.
+>
+> >
+> > I guess that's fine, but it is a little weird that we might not really
+> > be restoring it simply because it got disabled due to the clobbering
+> > of INTMASK but also because we implicitly skipped Acking an interrupt
+> > that fired.
+>
+> Let me comment on that, because there is actually two cases that are
+> relevant here to be covered.
+>
+> 1. After the SDIO card has been system suspended, sdio_run_irqs()
+> doesn't call the ->ack_sdio_irq() callback, as to prevents the host
+> driver from re-enabling the SDIO irq (acking). This is to avoid the
+> host from re-signalling the same SDIO IRQ over and over again when the
+> SDIO card is suspended.
+>
+> 2. Dealing with the SDIO IRQ bit-mask when the host driver system
+> suspends/resumes. This is host specific, but a common behavior is that
+> the driver can't allow any IRQ to be managed by its IRQ handler in a
+> suspended state. This is because the device (MMC controller) may be
+> put into a low power state (no clocks enabled, register context is
+> lost and not accessible, etc), which makes the device non-functional.
 
-Lockless concurrency always makes my head hurt (especially when I try
-to consider weakly ordered memory) and I've learned that the only way
-I can reason about it and have any belief that I got it right is to
-always make sure I access values in a context where things are locked.
+Yeah, if you look at dw_mci_runtime_suspend() you can actually see
+that (at least in many cases) we actually disable the "BIU" clock.  I
+believe this fully turns the clock off the controller and it can't
+fire interrupts.
+
+If I remember correctly the problem I actually saw before was that the
+moment we turned the BIU back on in resume the SDIO interrupt fired.
 :-P
 
-Let's see if I can figure out any actual problem, though...
 
-Certainly the queue_delayed_work() would act as a barrier so you don't
-have to worry about the worker not seeing the "= true".
+> > I wonder if the correct fix is to just add an explit zeroing of the
+> > INTMASK (so mask all interrupts) in dw_mmc's suspend callback.  Then
+> > there's no possible way we could get an interrupt during suspend...
+>
+> Exactly. Other host drivers do this as well.
+>
+> Although note that the host device gets system suspended after the
+> sdio card device, so there is still a window when an SDIO IRQ can be
+> signaled. This is covered by 1) above.
+>
+> Also note that, in general it also depends on whether there is wakeup
+> IRQ configured and how that wakeup might be handled. This is another
+> story, which doesn't seem relevant for dw_mmc, at least not at this
+> point.
 
-I suppose it's definitely possible that (if the worker is already
-running) that our "= true" will get clobbered by an "= false" from a
-previous instance of the worker running.  I guess that's unlikely
-because we can't get a second IRQ signaled until the "->ack_sdio_irq"
-ran and presumably there's enough stuff after the "= false" that one
-of them would have a barrier that made sure that the "= false" didn't
-affect us in a delayed way.
+I guess for now things will work OK so we can leave things as they
+are.  If I see problems I can try masking all the interrupts at
+suspend time, making sure that I don't mess up runtime suspend in
+cases where we have a removable card using the builtin CD...
 
-So I guess we're fine...
+Thanks!
 
 -Doug
