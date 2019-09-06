@@ -2,48 +2,48 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECF2FAB169
-	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 05:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE321AB16A
+	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 05:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392215AbfIFDwz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Sep 2019 23:52:55 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:45312 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392213AbfIFDwy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 23:52:54 -0400
-Received: by mail-pf1-f195.google.com with SMTP id y72so3369600pfb.12
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 20:52:54 -0700 (PDT)
+        id S2404473AbfIFDw7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Sep 2019 23:52:59 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:42827 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404469AbfIFDw6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Sep 2019 23:52:58 -0400
+Received: by mail-pg1-f196.google.com with SMTP id p3so2671128pgb.9
+        for <linux-mmc@vger.kernel.org>; Thu, 05 Sep 2019 20:52:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :in-reply-to:references;
-        bh=EBpVgRZKtjnDtjrwrB9mrGRM/gKC++RB5oNke1k5+K0=;
-        b=WlFs3zRfTQzKlu/iTvwfrRb3LuO9bpKb7bMRAP3fFRCTTBU+Kpu/QJmmZ2wV7wARkt
-         ikgPokG0OUliflF0l2MBe+3TRb/midzsick+m+wP93enWtA/Ol0+RdyoH7u/3oT8rTJs
-         WOhrOW+CZAKbT1i2Xx8LF1n4RbR12BrxQ/OPXBxqyHPEzukJPwXycPHN1FjkKTEqiFQE
-         l4nuN02Ats9HX8x21emOXHkoOmAlhjwdKErjdpHYQl1M5rJrbt9i2IYm+vkzx51s1/N1
-         BO3QYiec+jkUxUM9/7YGWrHy9s0t1H6YSs0T7lerdoPRUpjp7JD4Wmo+wP6LIlZIyqYL
-         76Xw==
+        bh=+Qa6FN4bybUWpL4Kw6U5VKtqicdkV7LDgiUgYM+LUYg=;
+        b=uxSBN916hJwbA+vDDyLagwrLfwSaXLXvaXvT7/GTQRAnzOsCH+WDXs7QncMqgzLmyF
+         y27gY2CoyiyQUPwpQGgqGY7xxPWrlVRjXUHMiTVZIVaFCFgroupu/GPS5I9tho3uYkVu
+         YZnGJ1zDf3f2JB4R8y5x3qpb5Ych0HA5/0wGnDtMqlHI2Zi/It8lL+pKtNubEnu5BMId
+         NDZh9X9bJctDYxCIRQIFR9QDuLO+3outSSYq4rk0LROg2ALEJ/zbABXB6DRIxE2S07tx
+         Z2Bntybcl/W7gKM4knG+5bCVyOZ8yt4pODOwEfBvb9y0MB+8LqFcucZ3iK1w+Vzhknt7
+         v/vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=EBpVgRZKtjnDtjrwrB9mrGRM/gKC++RB5oNke1k5+K0=;
-        b=dPj5YdfqNOyME7joqQneaM6uxNcPkkLKuDzSY386Hg9OZEUBg8KiUNrrYUi/Mb+cbS
-         BA16C2ezrsUmxTT+NFDYajD2TXrxnQuFvmxBuXPk0b+pjfdELvdKFwQhBmjpaYwurv1r
-         s/hvyqxS9td/E3CB6iCoRo3LWzb2WCwDBKrOKe2JV2U9HNh6JyIhxPmbH/KkT99xGFdJ
-         TQob7cmDUvn5qagR25xCENb+lbnEBHiKwwlgCr+7RG6z05Q6r1iPHNkZcB19NkF7Pa9d
-         HxAzjtquQPpfFSV+LYvZ2t08JPkyqGPRNzLlVpGQj21kH3Vb2srKvUIbHMIT10oMJd3Q
-         l1+A==
-X-Gm-Message-State: APjAAAWkCb2MaNpevlvOfvqpPLGefGA1fwSSZFJdcK2XfCVvK4AVrQ7t
-        y9Imjo/W54zravCWplhm/XCPzw==
-X-Google-Smtp-Source: APXvYqz6scEQcTixXjaqz+eoiijc1YqpN5TaS+1+WrsoKjcmFWwBZjtEFDUbOwnWqgOA+WbuQPOWug==
-X-Received: by 2002:a17:90a:e397:: with SMTP id b23mr7339960pjz.140.1567741973694;
-        Thu, 05 Sep 2019 20:52:53 -0700 (PDT)
+        bh=+Qa6FN4bybUWpL4Kw6U5VKtqicdkV7LDgiUgYM+LUYg=;
+        b=VnHX8VtSLMh5rgyrRTpymnT7rwjt7NpnrlVB29w7jgq/mFAYDABOvebPZ/bsoMP9uU
+         oEsEKxk9+FvFqZbRxL7BVS+qo0eDVZwRRj91lns4hPGa86mJKsL/Wv6U7NvTj3VW14H3
+         seMyNx7Lk+AryyfQq9cwVPjQsO6pzSwhL98pf5ULzOUON4xwyAzeDxqB7egPYst+MKcg
+         u/EURqRe0r60b9Z0makcXBbEqD+7JJcyLc8tMe36WXVJVdOeytQzTU7j6Hqg8Db5Y2gq
+         Y/6Nbagh+LMvkfZrzGeA/q+qh7acHyMXkUKr7JhO+qpCtKap0/3WY+XeTF1rTl/DTv18
+         3QUQ==
+X-Gm-Message-State: APjAAAWthpS7qKu+4rJJ2vdHBYYBMpFzmEEkK8+rRuySJpXoag3D6U8J
+        EDmoun/y33K2ipe5hGNk4CB+1w==
+X-Google-Smtp-Source: APXvYqyp3IrbhUseZOadAuJ9eNKifK2EkmY8dSVlptCa+kQ7p2PqkkuEr7vYQE2iIP+uLJv8tOCWUA==
+X-Received: by 2002:a63:4522:: with SMTP id s34mr6154076pga.362.1567741977816;
+        Thu, 05 Sep 2019 20:52:57 -0700 (PDT)
 Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id j7sm4205770pfi.96.2019.09.05.20.52.49
+        by smtp.gmail.com with ESMTPSA id j7sm4205770pfi.96.2019.09.05.20.52.53
         (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 05 Sep 2019 20:52:53 -0700 (PDT)
+        Thu, 05 Sep 2019 20:52:57 -0700 (PDT)
 From:   Baolin Wang <baolin.wang@linaro.org>
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
         riteshh@codeaurora.org, asutoshd@codeaurora.org
@@ -51,9 +51,9 @@ Cc:     orsonzhai@gmail.com, zhang.lyra@gmail.com, arnd@arndb.de,
         linus.walleij@linaro.org, vincent.guittot@linaro.org,
         baolin.wang@linaro.org, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] mmc: host: sdhci-sprd: Add virtual command queue support
-Date:   Fri,  6 Sep 2019 11:52:01 +0800
-Message-Id: <c8cb69b48dd8b6317a9e53e87c5669fbfbeedc30.1567740135.git.baolin.wang@linaro.org>
+Subject: [PATCH 4/4] mmc: host: sdhci: Add virtual command queue support
+Date:   Fri,  6 Sep 2019 11:52:02 +0800
+Message-Id: <fc8a0fe513d244375013546c3c03967510feea4a.1567740135.git.baolin.wang@linaro.org>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1567740135.git.baolin.wang@linaro.org>
 References: <cover.1567740135.git.baolin.wang@linaro.org>
@@ -64,81 +64,46 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add virtual command queue support.
+Add cqhci_virt_finalize_request() to help to complete a request
+from virtual command queue.
 
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 ---
- drivers/mmc/host/Kconfig      |    1 +
- drivers/mmc/host/sdhci-sprd.c |   16 ++++++++++++++++
- 2 files changed, 17 insertions(+)
+ drivers/mmc/host/sdhci.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index e2a12c3..851e947 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -619,6 +619,7 @@ config MMC_SDHCI_SPRD
- 	depends on ARCH_SPRD
- 	depends on MMC_SDHCI_PLTFM
- 	select MMC_SDHCI_IO_ACCESSORS
-+	select MMC_VIRTUAL_CQHCI
- 	help
- 	  This selects the SDIO Host Controller in Spreadtrum
- 	  SoCs, this driver supports R11(IP version: R11P0).
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index 19a2104..ff4886a3 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -19,6 +19,7 @@
- #include <linux/slab.h>
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 4e9ebc8..fb5983e 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -32,6 +32,7 @@
+ #include <linux/mmc/slot-gpio.h>
  
- #include "sdhci-pltfm.h"
+ #include "sdhci.h"
 +#include "cqhci.h"
  
- /* SDHCI_ARGUMENT2 register high 16bit */
- #define SDHCI_SPRD_ARG2_STUFF		GENMASK(31, 16)
-@@ -515,6 +516,7 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- {
- 	struct sdhci_host *host;
- 	struct sdhci_sprd_host *sprd_host;
-+	struct cqhci_host *cqv_host;
- 	struct clk *clk;
- 	int ret = 0;
+ #define DRIVER_NAME "sdhci"
  
-@@ -625,6 +627,17 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
+@@ -2710,7 +2711,8 @@ static bool sdhci_request_done(struct sdhci_host *host)
  
- 	sprd_host->flags = host->flags;
+ 	spin_unlock_irqrestore(&host->lock, flags);
  
-+	cqv_host = devm_kzalloc(&pdev->dev,
-+				sizeof(*cqv_host), GFP_KERNEL);
-+	if (!cqv_host) {
-+		ret = -ENOMEM;
-+		goto err_cleanup_host;
-+	}
-+
-+	ret = cqhci_virt_init(cqv_host, host->mmc);
-+	if (ret)
-+		goto err_cleanup_host;
-+
- 	ret = __sdhci_add_host(host);
- 	if (ret)
- 		goto err_cleanup_host;
-@@ -685,6 +698,7 @@ static int sdhci_sprd_runtime_suspend(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
+-	mmc_request_done(host->mmc, mrq);
++	if (!cqhci_virt_finalize_request(host->mmc, mrq))
++		mmc_request_done(host->mmc, mrq);
  
-+	cqhci_virt_suspend(host->mmc);
- 	sdhci_runtime_suspend_host(host);
+ 	return false;
+ }
+@@ -3133,7 +3135,8 @@ static irqreturn_t sdhci_irq(int irq, void *dev_id)
  
- 	clk_disable_unprepare(sprd_host->clk_sdio);
-@@ -713,6 +727,8 @@ static int sdhci_sprd_runtime_resume(struct device *dev)
- 		goto clk_disable;
+ 	/* Process mrqs ready for immediate completion */
+ 	for (i = 0; i < SDHCI_MAX_MRQS; i++) {
+-		if (mrqs_done[i])
++		if (mrqs_done[i] &&
++		    !cqhci_virt_finalize_request(host->mmc, mrqs_done[i]))
+ 			mmc_request_done(host->mmc, mrqs_done[i]);
+ 	}
  
- 	sdhci_runtime_resume_host(host, 1);
-+	cqhci_virt_resume(host->mmc);
-+
- 	return 0;
- 
- clk_disable:
 -- 
 1.7.9.5
 
