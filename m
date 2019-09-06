@@ -2,66 +2,69 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4329AB4B6
-	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 11:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0A53AB4BC
+	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 11:17:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730704AbfIFJOj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 6 Sep 2019 05:14:39 -0400
-Received: from mail-ed1-f51.google.com ([209.85.208.51]:34196 "EHLO
-        mail-ed1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728356AbfIFJOj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Sep 2019 05:14:39 -0400
-Received: by mail-ed1-f51.google.com with SMTP id s49so5696707edb.1
-        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 02:14:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=Y8XpBjHz7mb0N++Ul1x8wa+bfCjFml4ncflAiiwutQs=;
-        b=JEN3yw9EPdQYCUXP9cOoce2KgijMvowL/mYBbxE0lt9bDgpPQlpPXB6sJBPtbqSSjX
-         moVVjotdeMg8waTrUf785Q7CoV4eG6Va1BsX1iT4VXL6XhYVeSyKLzTgKgvj5j01y/LZ
-         XN5nshYDd3OGYViIIKmJGom9KNTQJknkc1eEF8i9TwS1DZSwD6nbqnrqUm4cXjMFIpfb
-         PK0VT2YFz3Pcj9zUjL0ymUQx2gKMB5zeR11qTKPHuyH/u8j8Z7WnzdCHtya4Ch+WDmbu
-         aoNoI3UzPY7ibDv4PY4lCjERkuRVcp81VWSi5ygB3zxLcnMWtWV2a1MEb7BRMy2Ls3Xb
-         zVvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=Y8XpBjHz7mb0N++Ul1x8wa+bfCjFml4ncflAiiwutQs=;
-        b=IOX9oj9sYVtS6TsoglYyyREvFbFyZgywjvzDDqsY9izJzV4dZSo6MPtTm4uuXqNLoG
-         bdGLS0QQQ/DMnoe6w41UH7bIVM4n8vkRnuwpIBBFw99FLbhGgTiryzFE+cm87kurP8Co
-         xSz8k4okDsTKRP8xSQfQp2xSKYn2Gf/1fNlr/Mc7AdnnUTXUPXfRcon9JmwHkiRfiBrk
-         FlP5Vs+D2ORa0WbIJ0TxsFd7YNEP3EpvPb7iZjPVR217R1vFvZXR4FgwgVTZ+Q7MIVVD
-         TbYY9AiawdUOZS5CJyQQCerbyoQQit4zSeQ9WPNWbRIurf/1+xXkRIuQsa4lzG4nayCE
-         3buw==
-X-Gm-Message-State: APjAAAWZFtqjmU4rFPIgam7cgI6C/JSnmI4s6vik3uABMGCprG4ehRXy
-        C2lkmyeT8r2/ANRDngoQ2CuvczFZYOkKd/t2QJqxi5fkcyc=
-X-Google-Smtp-Source: APXvYqy/aHEVCkjFsT3eefhTJAM8TC4zJCE1uhplJ7sjM7UGEzhj2beFBezJ7r1/qETLKbQXtZSs7UNr/PzzrQpboww=
-X-Received: by 2002:a17:906:1f14:: with SMTP id w20mr6297478ejj.248.1567761277692;
- Fri, 06 Sep 2019 02:14:37 -0700 (PDT)
+        id S2404078AbfIFJRW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 6 Sep 2019 05:17:22 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59987 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728356AbfIFJRW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Sep 2019 05:17:22 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i6AMp-0002s2-OD; Fri, 06 Sep 2019 09:17:19 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jaehoon Chung <jh80.chung@samsung.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] mmc: dw_mmc: hi3798cv200: make array degrees static const, makes object smaller
+Date:   Fri,  6 Sep 2019 10:17:19 +0100
+Message-Id: <20190906091719.24886-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-From:   Belisko Marek <marek.belisko@gmail.com>
-Date:   Fri, 6 Sep 2019 11:14:26 +0200
-Message-ID: <CAAfyv37SXnNz07a4tKkLiY9CtD72YjBJmKhHcQq=QiM2608-fA@mail.gmail.com>
-Subject: slow emmc speed 4.12 am437x
-To:     linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+From: Colin Ian King <colin.king@canonical.com>
 
-I'm trying to get some insights about how to debug emmc speed issue.
-We're using board with am437x CPU using mainline 4.12 kernel (added
-only devicetree for our custom board). eMMC is 8bit connect (using
-sandisk SDINBDG4-8G-I1 chip).
+Don't populate the array degrees on the stack but instead make it
+static const. Makes the object code smaller by 46 bytes.
 
-Issue is that when copying data from SD card to eMMC we get throughput
-only ~300kB/s (it should be bit higher IIRC). I'm just looking for
-some advice what to check and how to find out where issue can be
-(still unsure if SW or HW). Thanks a lot.
+Before:
+   text	   data	    bss	    dec	    hex	filename
+   5356	   1560	      0	   6916	   1b04	dw_mmc-hi3798cv200.o
 
-BR,
+After:
+   text	   data	    bss	    dec	    hex	filename
+   5214	   1656	      0	   6870	   1ad6	dw_mmc-hi3798cv200.o
 
-marek
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/mmc/host/dw_mmc-hi3798cv200.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/dw_mmc-hi3798cv200.c b/drivers/mmc/host/dw_mmc-hi3798cv200.c
+index bc51cef47c47..83e1bad0a008 100644
+--- a/drivers/mmc/host/dw_mmc-hi3798cv200.c
++++ b/drivers/mmc/host/dw_mmc-hi3798cv200.c
+@@ -66,7 +66,7 @@ static void dw_mci_hi3798cv200_set_ios(struct dw_mci *host, struct mmc_ios *ios)
+ static int dw_mci_hi3798cv200_execute_tuning(struct dw_mci_slot *slot,
+ 					     u32 opcode)
+ {
+-	int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
++	static const int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
+ 	struct dw_mci *host = slot->host;
+ 	struct hi3798cv200_priv *priv = host->priv;
+ 	int raise_point = -1, fall_point = -1;
+-- 
+2.20.1
+
