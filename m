@@ -2,89 +2,125 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0125AB5B4
-	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 12:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D1E1AB7EE
+	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 14:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730443AbfIFKVl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 6 Sep 2019 06:21:41 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:39394 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388384AbfIFKVl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Sep 2019 06:21:41 -0400
-Received: by mail-lj1-f193.google.com with SMTP id j16so5509941ljg.6
-        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 03:21:40 -0700 (PDT)
+        id S2391899AbfIFMQH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 6 Sep 2019 08:16:07 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:46164 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731749AbfIFMQH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Sep 2019 08:16:07 -0400
+Received: by mail-ua1-f68.google.com with SMTP id k12so1953950uan.13
+        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 05:16:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=1XE2iMKxqeBeswKR1xzlvsta7f6sdclLOJUEbI6gihw=;
-        b=YgHnUrQFNAnUFKkSbc+ykNP3SwrMbo4pz/pL3+7+Qx9w+CAWd+tNrsn2u0v+YLkekQ
-         dCwgypVInxxZ5mQfogIfnoLu+yPJ1WI3NVcVIm8FBMQjHrmC37Fh6i7jV4g32cjj5mL9
-         b12VsfeTm1Hz70kyn6v+HJyIRkOjafMVsu2S0DoguhuHantMkAfnktdV8qrXwIuha5z+
-         zdj72rwfsCx2X/Iq4keEi4fIV1V5tQlHGQhJvS9zmzHvTfHyEOKcUBqxD0Uj99WtrNHV
-         IqS+HISWroSfN/+i+orD93kB3ndJXJdpI5IpLje5PFWW1GqT3KtyuJuZytxLWxfoPapy
-         g+qg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=y/zpb8mats7+Tv4fVkl9qIebYzNK8a9N8FTdZdR4Rn0=;
+        b=dEtRRNu65Pt5+v/2LT8aSSnLyT8O93IntGuVDaxVMDY8AFdp10j80fFUpgUKwbNfop
+         vN6yOQVk9b2s0d58ZnDk2Lr1vln21lc4N3FQw4G2+WeIEmrcKBHNBY8nCkaSsE+xmfbQ
+         t0Pi0IsweUHixrt0kScCPGvOrpRODxm9+gNRTn2PSLhlz66msVjVaVHgCW7PBIMS2LyO
+         jk4hroKk6mTWPZ91l4O20P6SilLthsgnmvG0JE8NTHvDsCoq/PwSA8+oHNhxW0nwhCiz
+         +rY1yIQn5yqV52gKIJyROKstrKneGjVB/AcqBkNlRHLKi8TcBrcGradf+YVLB7GmeZWE
+         rLAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=1XE2iMKxqeBeswKR1xzlvsta7f6sdclLOJUEbI6gihw=;
-        b=ZNkNsl+RDX8Y2bCNcQ9HwnOFuPeeT7ILC+XtebgFsOd6FCg0RDzjuV5yq026TcG2TX
-         jHznsYjUMyHQ2PyRB24d8pn1eqOQw4O+7f6ZcnXsP75LpgmGujuhwM0bduBmw1FG3/bH
-         nxnnzVwfLBcEhb/AVmFOuL3xOTXX/CMO9vcwO7nl99WnYFyP9uAorKKNTHsTf99c4DlS
-         NZOo4NML46Ew1YbEp6e7X0KJXXk9m+cEtRBtNMBMUBq3M/tNn6WP6NyfFdg2xdrO+IYW
-         5iit/X1+F2rLwXQiAtBSzmoApua1/RsxhHuTzUays5KolEzcj+iOZnc0IouDSX/foCLR
-         kLKA==
-X-Gm-Message-State: APjAAAVN3FrXYQcO5MvdL75xMk7rawGv1ZIOoFseRI3vrWnu3GaqO6V/
-        Yy8j9AelIbw3rYtorf/CgBK+kQ==
-X-Google-Smtp-Source: APXvYqztTS4qpegFJb8eFFnKk7dV5idrDYMnWk/xNLDWvDE9Uz5saL21N7D+aNgevoeKewjXLExpzg==
-X-Received: by 2002:a2e:50b:: with SMTP id 11mr5314059ljf.11.1567765299406;
-        Fri, 06 Sep 2019 03:21:39 -0700 (PDT)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id s7sm855763lji.26.2019.09.06.03.21.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Sep 2019 03:21:38 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=y/zpb8mats7+Tv4fVkl9qIebYzNK8a9N8FTdZdR4Rn0=;
+        b=KWIMB288tcEo2qfxSmMZ1th/N1hoPW050UWmj3rlpmJaZezveeBc6bgI35B7I6TIT/
+         HSF4C/3Uj3DKzw98Yt3m9vifIuYkWzfRWC+XyVvhpIQC3rVIzUQA6uiNGK/gGcgxdcoO
+         KbGZnGg8s7F6gdB5S4MKiuzBXu6suovkpI8jT0Bof8JFhHEYyKbxkvjzdlaUJ5MmTzMD
+         QfE8ge/GA6+fkb4dEEyOe2MLvdnkPRxlRCmaMf/6kGq/OmIWAygwcptRNxAv1TOva615
+         lTz/HAc8beWkJnByE9WUZCD0HIZwvN1pDG7jwJ62/YbHg6kv4NFmlJpfqwMsSXn9OxiJ
+         AA6g==
+X-Gm-Message-State: APjAAAXmLrhfX5GT6ZNmrrJhF90Xo6QHPdAwDKLCD5PUAZLX829ACJn1
+        AKMlURtD97qRUgxsGh4XZTv3ufagjdIZ3jwqez1GFQ==
+X-Google-Smtp-Source: APXvYqxoeNmW6MapUd6kZvK5ApdXTX6MDXsDnU3/fU6Qf3/Sg3kbc4tbwwe/BcjrQE70EK7rc2gE7G46JgewVB5XF/Y=
+X-Received: by 2002:ab0:210f:: with SMTP id d15mr4142547ual.129.1567772166306;
+ Fri, 06 Sep 2019 05:16:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190905200138.GA19037@impa.localdomain>
+In-Reply-To: <20190905200138.GA19037@impa.localdomain>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC fixes for v5.3-rc8
-Date:   Fri,  6 Sep 2019 12:21:37 +0200
-Message-Id: <20190906102137.637-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+Date:   Fri, 6 Sep 2019 14:15:30 +0200
+Message-ID: <CAPDyKFqo-LecRE5R4T+vrGgNs83WFmQr84oaieEUTCjLFOLXoA@mail.gmail.com>
+Subject: Re: Black screen while resuming a SDXC (UHS) card (_mmc_sd_resume)
+To:     Tim Schumacher <tim@timakro.de>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        pher1989@hotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+On Thu, 5 Sep 2019 at 22:01, Tim Schumacher <tim@timakro.de> wrote:
+>
+> Hi,
+>
+> I'm sending this old bug by mail since a lot of developers don't use
+> bugzilla.
+>
+> Original bug report on bugzilla by Pedro Rodrigues from 2019-01-30:
+>
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D202459
+>
+> > This bug can be found on a Lenovo Miix 320-10ICR
+> >
+> > When using a SDXC (UHS) card, the screen becomes black if
+> > _mmc_sd_resume() is called. After some investigation, I found that an
+> > UHS card uses 1.8 V for signalling while a normal SD card uses 3.3 V. B=
+y
+> > forcing the SDXC to use 3.3 V the black screen does not appear. It seem=
+s
+> > that during a _mmc_sd_resume function call, while claiming the host, an
+> > I2C resume function is called based on an existing supplier link betwee=
+n
+> > the I2C bus and the card device.  The problem is that if the signalling
+> > voltage is configured to 1.8 V, during the I2C resume call, the screen
+> > turns black.  I was able to fix this issue by setting the initial signa=
+l
+> > voltage (3.3 V) before suspending the card, so that when the card is
+> > resumed, the voltage is in the original state. To do this I added a
+> > function call to mmc_set_initial_signal_voltage() during mmc_power_off
+> > routine (drivers/mmc/core/core.c).  As I=E2=80=99m not an expert on Lin=
+ux,  I=E2=80=99m
+> > posting the issue and possible solution so that it could be implemented
+> > on a future release.
+> >
+> > Please, share your thoughts :)
+>
+> I can't provide further insight but I'm interested if this is possibly
+> the cause for the general issues people are having with the SD card
+> reader on Lenovo Miix 320 devices.
+>
+> Those issues described in posts like
+>
+> https://vincent-ventures.com/2018/12/arch-linux-on-lenovo-ideapad-miix-32=
+0/
+> https://esc.sh/blog/linux-on-lenovo-miix-320/
+>
+> are (1) black screen when booting with an SD card installed and (2) when
+> inserting an SD card after booting it shows up but upon trying to access
+> it the screen turns black until the card is removed again.
+>
+> I can confirm (1) on my Lenovo Miix 320-10ICR with kernel version
+> 5.2.11. I can also confirm that only SDXC cards are affected, SD and
+> SDHC cards work as expected.
 
-Here's a PR with an MMC fix intended for v5.3-rc8. Details about the
-highlights are as usual found in the signed tag.
+For the mmc community to help, you need to provide some kernel logs,
+output from lspci, figure out what mmc host driver that is being used,
+etc - in general collect more data. Then re-post the data to
+linux-mmc, me and a potential mmc host driver maintainer (if there is
+one). Yes, we can look into bugzilla as well, but first we need some
+more overall info in an email.
 
-Please pull this in!
+Most likely, if there is any response, you will be asked to test
+patches. So you need to be able build and boot a new kernel, but I
+guess you already know that part.
 
 Kind regards
-Ulf Hansson
-
-
-The following changes since commit 089cf7f6ecb266b6a4164919a2e69bd2f938374a:
-
-  Linux 5.3-rc7 (2019-09-02 09:57:40 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3-rc7
-
-for you to fetch changes up to 8ad8e02c2fa70cfddc1ded53ba9001c9d444075d:
-
-  Revert "mmc: core: do not retry CMD6 in __mmc_switch()" (2019-09-03 16:53:28 +0200)
-
-----------------------------------------------------------------
-MMC core:
- - Fix card init for some eMMCs that need retries for CMD6
-
-----------------------------------------------------------------
-Jan Kaisrlik (1):
-      Revert "mmc: core: do not retry CMD6 in __mmc_switch()"
-
- drivers/mmc/core/mmc_ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Uffe
