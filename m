@@ -2,201 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3587CAC216
-	for <lists+linux-mmc@lfdr.de>; Fri,  6 Sep 2019 23:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4421ACB5B
+	for <lists+linux-mmc@lfdr.de>; Sun,  8 Sep 2019 09:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404406AbfIFVhS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 6 Sep 2019 17:37:18 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:36753 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404402AbfIFVhS (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Sep 2019 17:37:18 -0400
-Received: by mail-io1-f68.google.com with SMTP id b136so16138582iof.3
-        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 14:37:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NidIhVM02tPKbRZ5DwnVb5R6omkDxX7AIIG8GN/6+Rg=;
-        b=ayHodLxvu5uXfkVz48qkl7kn1M+MpNK7uuaH1flUeiVMFQk7ng31rPd3uh2AfpTepG
-         chBGLgs2Br+oSAnwcE1cCmKLe8GROWcN0n1LTELL7IjPu8w51PT8CGKFTzOM3a99m+2e
-         4EFaAH4KvreE8+HxWyHpq210Z6IROH5khFlPY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NidIhVM02tPKbRZ5DwnVb5R6omkDxX7AIIG8GN/6+Rg=;
-        b=sRqUHOT+VR+gJqB72KXQUDqj918G8WxjjNLr8dYNm41oEZ5vUa0WXoKcKHVrJUEOyW
-         b85Wxfl4aP93nf7vZGspbS5iVFF+Jgjjkdw/KenF1shWIg1xZYmBf2TevHe/vScz4WGm
-         CCcSC0l7NnpThDTjea+uUyfc0rQ4VsiLW1B4jMUyzRF5Y2iGYs89D9eBA3aGcW7tb6dp
-         Imk0IPfl7fRe1tgo/limu/7WRMy9mzjLsighBI62z75tJAVvjUnzRPdZ9We8Ufguzv/f
-         w0LdMyRqh68Uz35lh8XdyoVR/XnUdRUSHwGrYuskxUpFhvFtTvltamox1g7PRErVFN86
-         ScDw==
-X-Gm-Message-State: APjAAAV7FVGBZQiKepy0G3HX2SXYL9IGrpo30Ctw/FgkgPWYMF1qQRqr
-        Rz/cPEDUesxWVvg2t/mJpP1I+aWt3Wo=
-X-Google-Smtp-Source: APXvYqw5NB5MRoH8SCzQusOeJwFB04z4+GWJchKAJw516M4pa52f647FlO+B6YzZYwDTVU3GLRJoOA==
-X-Received: by 2002:a5e:8407:: with SMTP id h7mr13158078ioj.47.1567805837138;
-        Fri, 06 Sep 2019 14:37:17 -0700 (PDT)
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com. [209.85.166.54])
-        by smtp.gmail.com with ESMTPSA id m67sm8595553iof.21.2019.09.06.14.37.16
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Sep 2019 14:37:16 -0700 (PDT)
-Received: by mail-io1-f54.google.com with SMTP id r26so16028648ioh.8
-        for <linux-mmc@vger.kernel.org>; Fri, 06 Sep 2019 14:37:16 -0700 (PDT)
-X-Received: by 2002:a6b:b445:: with SMTP id d66mr13600851iof.269.1567805836148;
- Fri, 06 Sep 2019 14:37:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190903142207.5825-1-ulf.hansson@linaro.org> <20190903142207.5825-3-ulf.hansson@linaro.org>
- <CAD=FV=XaaC=RpCiF09WAuhmDgte3EmFjFxk9y7xpX=HBwaRr9g@mail.gmail.com> <CAPDyKFo7j=m0OWuhspzY-viU0cg1xdYqu83D1sfDsqz54YngQw@mail.gmail.com>
-In-Reply-To: <CAPDyKFo7j=m0OWuhspzY-viU0cg1xdYqu83D1sfDsqz54YngQw@mail.gmail.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 6 Sep 2019 14:37:04 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XsEYg8vKMwynNTH1uCo7bXhorG2ON2zjBhsBDBZeTYSw@mail.gmail.com>
-Message-ID: <CAD=FV=XsEYg8vKMwynNTH1uCo7bXhorG2ON2zjBhsBDBZeTYSw@mail.gmail.com>
-Subject: Re: [PATCH 02/11] mmc: dw_mmc: Re-store SDIO IRQs mask at system resume
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Yong Mao <yong.mao@mediatek.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1725937AbfIHHqx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 8 Sep 2019 03:46:53 -0400
+Received: from mout.gmx.net ([212.227.17.20]:36027 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725908AbfIHHqx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 8 Sep 2019 03:46:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1567928796;
+        bh=6F0QummU8imcXMVMrHV6+BZ6LAb4e7PC70awvqL69uU=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=aFXc/C/jjspa3E8a5GfmVYXWb7qxSARK4wdrzPrfOobAj7nFr8KoGrUcxN6y08pl2
+         gN5f7pdHtCyhcJxFSqWzA9lrvXzTjO0JWwkA49c9DJhdMdtgOga4xOYfcn9Y9gV3R8
+         Kof7KAsHVnhoYByvxnhKZ6fdh1CxfGgYRn0koMw8=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost.localdomain ([37.4.249.90]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N0XD2-1iIswK0UUO-00wSFT; Sun, 08
+ Sep 2019 09:46:36 +0200
+From:   Stefan Wahren <wahrenst@gmx.net>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Eric Anholt <eric@anholt.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Lukas Wunner <lukas@wunner.de>
+Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Stefan Wahren <wahrenst@gmx.net>, stable@vger.kernel.org
+Subject: [PATCH] Revert "mmc: bcm2835: Terminate timeout work synchronously"
+Date:   Sun,  8 Sep 2019 09:45:52 +0200
+Message-Id: <1567928752-2557-1-git-send-email-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.7.4
+X-Provags-ID: V03:K1:VwIaAgaE77BXr/OK8ymof3uAGLOUwsyBEkzyr0AbfRe+SAK6zDU
+ V38GQU5finceBHAa44KL9PSo2iPyW9hAJ/PllzN7PFdXC3tEeYfcvSNEaXhCtXbWzzA9rBl
+ CE2WuWLxEpfsm8XZekOsu+W2lll5TTsganOt/n1ZeJ2Vc4jZVWIe4qpgJnW1wmJQZMXG6St
+ cKo+1rp9nrblsX49+AssQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:quBeLoVv08c=:KPB0k4C+t3kzBH3NJ1NLE/
+ 16Re7YIMzT5wkuoJi+8mXU+2yYQ/EJ18Wh9H0V8EDvdkn5Eycw0CbEF4SxfeTadiR+Qmzq7NJ
+ nUFw5XmJzKKU9l2lNTn6+W7pszH36VHeWW3ber5S28h97QdiQUH0u/I5yY/3+3uToSUrXQTmy
+ FWv7Z+cWljSc1dVGe3BCMyEcZqiqdNAEfNAmRNBcrV+XcIlf9UhEpsnxoUOupg4BFlNF4Ngyt
+ NFyxpLwgPtK2Ay3exIMHnzPI1lk4pItq3OQ/0EJtA5obu4sfjkOzEr4WL8B2wSicyXYXCtLOc
+ h/x9X6VFeXw6/ffB+/gtOhlY+dgMKnTcQeqXY2nWlg2Po0003KdRxxjMCnJVpzBXkVfRkYIgd
+ o0z9tYgHAeZFTYtjJVP5rGB6h5QGNu6mKUqQ2YFQVkxtHG7/dkSdUfpjAXMksxKt1E+FK9eAc
+ kFwShhyMJEv+gvqFh1I5zTLpWS9eYIfxpulEBibfN4D1In6mG5aedxmkX+8OwqbWlCHUbHvvg
+ SmgtJLv7I1eUdAU0Rzvp0bn4TgAGufTqVeOwjyJ3SzQjpJR0HMtFz+Pcy/6V0NeRyfXcQp3C9
+ EdEMzjYYm/7ut9swjacYShk7A20sfRXKDbieiGAWz5Es7Ams2RRfVU8EnB+mS3QU8QGAbjk3W
+ v4Q/es6UUJKhs4QIspuCefnrkaP2EnOhufuYhnzOxsuyHIPt4LHqH4PrnzHw3f+LAtE84dSlU
+ K2Ff2258XqdJGgGw84qcq4XkeCMUeZcL56Hq07MrPrtpWZjzeXB6IVfSgQa/+AQJoTS0qc+LX
+ 7ybr8Z451UDb9B26SyjpKQ+4ryV9RDLYQcORUBAn0++g/6i1vu7fo/78Aak3WqGEVT5XCclFx
+ gsdHD5pSITgscj5iH7ppj85cbfsPXd6GXNjjelkVvx3sgcwQ72yBvl0cbM3bOwgeuZS9/yYA6
+ WD7SQwMD9+xcFNhnTMeajvchWD2JX7/h16uI2FnZWdkky7gH/LKRVTd7Y0Wi6aeAWpeWUQAoG
+ PKLHUciPUDlBPwqkivjAZIMDAycQZ3aOaq4f+XWjuixTukCSNRVkPHH35ygEj2oxpH6bAqs8k
+ EBxt2hm+pKJTYQR5NCPrFq1E/Q2fbWfBD+VXYuuaXxOWf8iG6pNHI1+9J0yi+Qx0KRRAEEdwv
+ NNa9A+4wr3OFO7hRxlf3EFSoIwOlXg5XpBZEO+3TQHncJkiRizdXrZNbf9o24fm7d4h6w=
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+The commit 37fefadee8bb ("mmc: bcm2835: Terminate timeout work
+synchronously") causes lockups in case of hardware timeouts due the
+timeout work also calling cancel_delayed_work_sync() on its own.
+So revert it.
 
-On Fri, Sep 6, 2019 at 2:20 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> On Fri, 6 Sep 2019 at 01:47, Doug Anderson <dianders@chromium.org> wrote:
-> >
-> > Hi,
-> >
-> > On Tue, Sep 3, 2019 at 7:22 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > >
-> > > In cases when SDIO IRQs have been enabled, runtime suspend is prevented by
-> > > the driver. However, this still means dw_mci_runtime_suspend|resume() gets
-> > > called during system suspend/resume, via pm_runtime_force_suspend|resume().
-> > > This means during system suspend/resume, the register context of the dw_mmc
-> > > device most likely loses its register context, even in cases when SDIO IRQs
-> > > have been enabled.
-> >
-> > Even if they weren't lost the resume code currently has this statement:
-> >
-> > mci_writel(host, INTMASK, SDMMC_INT_CMD_DONE | SDMMC_INT_DATA_OVER |
-> >    SDMMC_INT_TXDR | SDMMC_INT_RXDR |
-> >    DW_MCI_ERROR_FLAGS);
-> >
-> > ...so that would have clobbered any existing state even if register
-> > state wasn't lost.  ;-)
-> >
-> > > To re-enable the SDIO IRQs during system resume, the dw_mmc driver
-> > > currently relies on the mmc core to re-enable the SDIO IRQs when it resumes
-> > > the SDIO card, but this isn't the recommended solution. Instead, it's
-> > > better to deal with this locally in the dw_mmc driver, so let's do that.
-> > >
-> > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > > ---
-> > >  drivers/mmc/host/dw_mmc.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > >
-> > > diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-> > > index eea52e2c5a0c..f114710e82b4 100644
-> > > --- a/drivers/mmc/host/dw_mmc.c
-> > > +++ b/drivers/mmc/host/dw_mmc.c
-> > > @@ -3460,6 +3460,10 @@ int dw_mci_runtime_resume(struct device *dev)
-> > >         /* Force setup bus to guarantee available clock output */
-> > >         dw_mci_setup_bus(host->slot, true);
-> > >
-> > > +       /* Re-enable SDIO interrupts. */
-> > > +       if (sdio_irq_enabled(host->slot->mmc))
-> > > +               __dw_mci_enable_sdio_irq(host->slot, 1);
-> > > +
-> >
-> > There's a slight bit of subtleness here and I guess we need to figure
-> > out if it matters.  From testing things seem to work OK so maybe we're
-> > fine, but just to explain what's bugging me:
-> >
-> > If we got an SDIO interrupt that was never ACKed then this is going to
-> > act like an implicit ACK.  Notice that dw_mci_ack_sdio_irq() is
-> > exactly this call because when the SDIO IRQ fires we mask it out.
-> > ...then unmask when Acked.
-> >
-> > Specifically after your series is applied, I think this is what
-> > happens if an interrupt fires while the SDIO bus is officially
-> > suspended:
-> >
-> > 1. dw_mci_interrupt() will get called which will mask the SDIO IRQ and
-> > then call sdio_signal_irq()
-> >
-> > 2. sdio_signal_irq() will queue some delayed work.
-> >
-> > 3. The work will call sdio_run_irqs()
-> >
-> > 4. sdio_run_irqs() _won't_ ack the IRQ, so it will stay disabled.
-> >
-> > 5. When we get to the resume we'll re-enable the interrupt.
->
-> Correct.
->
-> >
-> > I guess that's fine, but it is a little weird that we might not really
-> > be restoring it simply because it got disabled due to the clobbering
-> > of INTMASK but also because we implicitly skipped Acking an interrupt
-> > that fired.
->
-> Let me comment on that, because there is actually two cases that are
-> relevant here to be covered.
->
-> 1. After the SDIO card has been system suspended, sdio_run_irqs()
-> doesn't call the ->ack_sdio_irq() callback, as to prevents the host
-> driver from re-enabling the SDIO irq (acking). This is to avoid the
-> host from re-signalling the same SDIO IRQ over and over again when the
-> SDIO card is suspended.
->
-> 2. Dealing with the SDIO IRQ bit-mask when the host driver system
-> suspends/resumes. This is host specific, but a common behavior is that
-> the driver can't allow any IRQ to be managed by its IRQ handler in a
-> suspended state. This is because the device (MMC controller) may be
-> put into a low power state (no clocks enabled, register context is
-> lost and not accessible, etc), which makes the device non-functional.
+Fixes: 37fefadee8bb ("mmc: bcm2835: Terminate timeout work synchronously")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+=2D--
+ drivers/mmc/host/bcm2835.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yeah, if you look at dw_mci_runtime_suspend() you can actually see
-that (at least in many cases) we actually disable the "BIU" clock.  I
-believe this fully turns the clock off the controller and it can't
-fire interrupts.
+diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
+index 7e0d3a4..bb31e13 100644
+=2D-- a/drivers/mmc/host/bcm2835.c
++++ b/drivers/mmc/host/bcm2835.c
+@@ -597,7 +597,7 @@ static void bcm2835_finish_request(struct bcm2835_host=
+ *host)
+ 	struct dma_chan *terminate_chan =3D NULL;
+ 	struct mmc_request *mrq;
 
-If I remember correctly the problem I actually saw before was that the
-moment we turned the BIU back on in resume the SDIO interrupt fired.
-:-P
+-	cancel_delayed_work_sync(&host->timeout_work);
++	cancel_delayed_work(&host->timeout_work);
 
+ 	mrq =3D host->mrq;
 
-> > I wonder if the correct fix is to just add an explit zeroing of the
-> > INTMASK (so mask all interrupts) in dw_mmc's suspend callback.  Then
-> > there's no possible way we could get an interrupt during suspend...
->
-> Exactly. Other host drivers do this as well.
->
-> Although note that the host device gets system suspended after the
-> sdio card device, so there is still a window when an SDIO IRQ can be
-> signaled. This is covered by 1) above.
->
-> Also note that, in general it also depends on whether there is wakeup
-> IRQ configured and how that wakeup might be handled. This is another
-> story, which doesn't seem relevant for dw_mmc, at least not at this
-> point.
+=2D-
+2.7.4
 
-I guess for now things will work OK so we can leave things as they
-are.  If I see problems I can try masking all the interrupts at
-suspend time, making sure that I don't mess up runtime suspend in
-cases where we have a removable card using the builtin CD...
-
-Thanks!
-
--Doug
