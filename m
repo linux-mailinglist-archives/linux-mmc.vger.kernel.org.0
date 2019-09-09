@@ -2,100 +2,127 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 588C6ACC11
-	for <lists+linux-mmc@lfdr.de>; Sun,  8 Sep 2019 12:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65521AD311
+	for <lists+linux-mmc@lfdr.de>; Mon,  9 Sep 2019 08:25:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728067AbfIHKc6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 8 Sep 2019 06:32:58 -0400
-Received: from mail-vk1-f194.google.com ([209.85.221.194]:46899 "EHLO
-        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726186AbfIHKc6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 8 Sep 2019 06:32:58 -0400
-Received: by mail-vk1-f194.google.com with SMTP id s28so357812vkm.13
-        for <linux-mmc@vger.kernel.org>; Sun, 08 Sep 2019 03:32:57 -0700 (PDT)
+        id S1727488AbfIIGZp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 9 Sep 2019 02:25:45 -0400
+Received: from mail-ed1-f53.google.com ([209.85.208.53]:34037 "EHLO
+        mail-ed1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726823AbfIIGZp (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Sep 2019 02:25:45 -0400
+Received: by mail-ed1-f53.google.com with SMTP id c20so2849002eds.1
+        for <linux-mmc@vger.kernel.org>; Sun, 08 Sep 2019 23:25:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=bX3KqjL4fKpxNJSQAl68andrMAZ0zFQA7utOvXr90Wk=;
-        b=c04Ea7Qd/zMKT/FcbxFqguzMDiyky5hl4KTgVxYklu0gvxwcYx9WE7wEZOM7bJ3q+T
-         LpLB04fsPXAQGKS7ORsUyao+D9Ck/clQqS4zXpFn/MU9UZR94Z/MNfiW4kShbHjWnF2i
-         VHF9l48x7V4MhX+e++ks14gtSiiDwTUwFRNKh2+8M27ZHd/db64VmIvFtq0a7uQvlGii
-         2YuySmS+2dFEs5XirH5TuhCAvqRlBtRheiUbAGGBINaarTGq6VFq1I1yN4JHmIgR889R
-         iblEZexgIi9vJAXzXuIsetwC501NJImDYFMCDS/vnHP+FuwuSu5iCcWzFDWKIJzq7pyT
-         V5Yg==
+        bh=zwsGj9+xuJuYBJgScqyFgqrBWkUeQbYZSWkNUSVly3M=;
+        b=CjVahCS81fEFGzRgUon0jMYeTA9VLsLeHnwWK3wXBziFx1aVOLmii0dfIa6/+3Z33z
+         ixS8P8nSxrUm3h49gEjwSu+bZ2A33x+odKdihFccBy1T+MDQHAmr/tRt/eIrdM6Q0BJb
+         zS6CnpU1t+NwyS6dGRSaQwmHcu9qcx/miwH5HX8sMWstYF2e3XdKCgYsW9Zy9DZ3/ffH
+         AKg3QC8Tfj1evTlZNkiGmXGYQPu0yHwAuezGVuaDYcOMOea2GG4yvzoV+oJ64grcOZk3
+         jgH6xiij+1SqhDqQpG2zubWjJJEDQE51vjm0i1+MPW3kRi/ZGXNrapQ/OhVz1ni5KWrW
+         lfow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=bX3KqjL4fKpxNJSQAl68andrMAZ0zFQA7utOvXr90Wk=;
-        b=XjTSPsUM9ekfX+LVE7n8vrUYQ9k2jqxPcnmknHMTlUfVH9A+4krfm43PZiR5Etbf46
-         Z2Q4L97+GvVKuvuvU21IXOvYLz7WUNFbMUhyJBspmkV7Oljlk9Rqj4JvepX4OH3A/TSx
-         t96xbjHieCIqroH1PP52HlPCAzayXzF2/2jMLc8LRsqGDHyOtwiTZoQVCxQaXzVjWUhy
-         KJiaOxda9CuCaJKdCliYpNHMxRJA9mDI3Ox30yH+1ye7cldoFmrQvx7xM/bW5TuqooYK
-         KMGkf/aaAgKCr9Qfp3C9803wUne+RdurFIj4dwcH0urU3/5ahaMFoSQB2jeo+jVGlj3L
-         5z4g==
-X-Gm-Message-State: APjAAAXqiOlE+KmYhSkMMxhWMzf/8hvgB1gSIsblf/x8YdIshcmHUx0z
-        69YtzLR4d21/9xTdz3/8ZisR0GoDolACpp6y9MFReA==
-X-Google-Smtp-Source: APXvYqx6AtGiyvrIbxIWnNr0Pg+dtCTgbgAuq/Fhl9QAovGWe1AuWd8I7KV41uSYL4a46U13t4KwGpG64r4f7TfJw2E=
-X-Received: by 2002:a1f:5e4f:: with SMTP id s76mr8536398vkb.4.1567938777211;
- Sun, 08 Sep 2019 03:32:57 -0700 (PDT)
+        bh=zwsGj9+xuJuYBJgScqyFgqrBWkUeQbYZSWkNUSVly3M=;
+        b=JzBKGCrYJH6Uh2EHiZ0qZ8wOLBTTr0Xz+IOGFHHaCK4c+mmR0iz+3xWDtwQ6vYHXn3
+         MW8KLeEWBbLHbQaRqFbMHOQOekh8BsvtjiQQlhugprbakdeCqRRxZaXOdTI0EYLUjEDV
+         3d5ribT8Bz02MPqVfVjhqriU+faPsX5il8jbnkuFp/FAj40TE6nVgjcT5/9UOciSJ+Fg
+         XSFVpaOe7A6Gm8EFH7zFtPA3Bfoi0kZcXV4UfHKf+fSXjV8kcpvmhhhuM6ahdECfYvSO
+         wDrMZcSkWfjiIOxDds0ZcuUTdGqxNsgwXRHwtwcgnv4v+WEid2uXa5OKYoc1r1EOpEBJ
+         fN3g==
+X-Gm-Message-State: APjAAAW4W/N8D2RZF82PEYvuZ1eNS6zGh5/Ts8rboXxuhLecZeHJcTLb
+        5eptyFkdYVq91XYNjyXJt0LJtMP4jfchGDp3b+Y=
+X-Google-Smtp-Source: APXvYqxScqdA0F9kVniNOAqLet6UQ0cI3eQ0jtgNWPUb03zlWXGEiKjy6OJGK26hO8B6qLyFoyHXwVz5KQ6oBRJSQcc=
+X-Received: by 2002:a50:ba0e:: with SMTP id g14mr23037820edc.241.1568010343702;
+ Sun, 08 Sep 2019 23:25:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <1567928752-2557-1-git-send-email-wahrenst@gmx.net>
-In-Reply-To: <1567928752-2557-1-git-send-email-wahrenst@gmx.net>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Sun, 8 Sep 2019 12:32:21 +0200
-Message-ID: <CAPDyKFpdZnQaH9NfTsmFk2pjREL_pv6netQjwubMzrkXAOg6hA@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mmc: bcm2835: Terminate timeout work synchronously"
-To:     Stefan Wahren <wahrenst@gmx.net>
-Cc:     Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "# 4.0+" <stable@vger.kernel.org>
+References: <CAAfyv37SXnNz07a4tKkLiY9CtD72YjBJmKhHcQq=QiM2608-fA@mail.gmail.com>
+ <CAPDyKFo5E3a0w6YKReMNrU_Z1td6jTbgKH-d+shOynhyPsGGHA@mail.gmail.com>
+ <CAAfyv34JHtLHRrCnF-5qg+odUvy_2PqRFfXwYK3xjDSN9TA7gg@mail.gmail.com> <CAPDyKFoU5zVEKRmbR-uJPdKpJJKW51BJG1k1DsdxAareEu2Nbg@mail.gmail.com>
+In-Reply-To: <CAPDyKFoU5zVEKRmbR-uJPdKpJJKW51BJG1k1DsdxAareEu2Nbg@mail.gmail.com>
+From:   Belisko Marek <marek.belisko@gmail.com>
+Date:   Mon, 9 Sep 2019 08:25:32 +0200
+Message-ID: <CAAfyv36nFnRtFnk5cAYy+GesGyDbSQOukFzL=U-01NfJZW+N=g@mail.gmail.com>
+Subject: Re: slow emmc speed 4.12 am437x
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 8 Sep 2019 at 09:46, Stefan Wahren <wahrenst@gmx.net> wrote:
+On Fri, Sep 6, 2019 at 2:57 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> The commit 37fefadee8bb ("mmc: bcm2835: Terminate timeout work
-> synchronously") causes lockups in case of hardware timeouts due the
-> timeout work also calling cancel_delayed_work_sync() on its own.
-> So revert it.
+> On Fri, 6 Sep 2019 at 14:26, Belisko Marek <marek.belisko@gmail.com> wrote:
+> >
+> > On Fri, Sep 6, 2019 at 2:19 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > >
+> > > On Fri, 6 Sep 2019 at 11:14, Belisko Marek <marek.belisko@gmail.com> wrote:
+> > > >
+> > > > Hi,
+> > > >
+> > > > I'm trying to get some insights about how to debug emmc speed issue.
+> > > > We're using board with am437x CPU using mainline 4.12 kernel (added
+> > > > only devicetree for our custom board). eMMC is 8bit connect (using
+> > > > sandisk SDINBDG4-8G-I1 chip).
+> > > >
+> > > > Issue is that when copying data from SD card to eMMC we get throughput
+> > > > only ~300kB/s (it should be bit higher IIRC). I'm just looking for
+> > > > some advice what to check and how to find out where issue can be
+> > > > (still unsure if SW or HW). Thanks a lot.
+> > >
+> > > Mount debugfs and look at the ios node for the mmc host in question.
+> > > There is information about clocks, busdwidth, etc.
+> > Thanks for info. From below it looks quite ok:
+> > clock:          52000000 Hz
+> > vdd:            21 (3.3 ~ 3.4 V)
+> > bus mode:       2 (push-pull)
+> > chip select:    0 (don't care)
+> > power mode:     2 (on)
+> > bus width:      3 (8 bits)
+> > timing spec:    1 (mmc high-speed)
+> > signal voltage: 0 (3.30 V)
+> > driver type:    0 (driver type B)
+> >
+> > compared to gumstix poblano (same cpu):
+> > cat /sys/kernel/debug/mmc1/ios
+> > clock:          50000000 Hz
+> > vdd:            21 (3.3 ~ 3.4 V)
+> > bus mode:       2 (push-pull)
+> > chip select:    0 (don't care)
+> > power mode:     2 (on)
+> > bus width:      2 (4 bits)
+> > timing spec:    2 (sd high-speed)
+> > signal voltage: 0 (3.30 V)
+> > driver type:    0 (driver type B)
+> >
+> > difference is in bus width (I'm confused as poblano according dts +
+> > schematics should also have 8 bit interface) and timing spec are
+> > different for my case. Anything else I can check? Thanks.
 >
-> Fixes: 37fefadee8bb ("mmc: bcm2835: Terminate timeout work synchronously")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+> This looks fine to me. I think you need to do some deeper debug to
+> find out what the issue is, sorry for not being able to help any more
+> than this.
+Isn't timing spec doing any difference in speed? Just curious.
+>
+> Of course you already tried reading/writing to the eMMC and SD
+> independently, so you have a reference of the throughput values?
+For poblano I have with bs=4096 throughput ~ 10MB/sec while on my
+platform only 1,6MB/s when copying same file to eMMC.
+So trying to understand what can be an issue. AFAIK on my platform I
+have some new Sandisk eMMC (5.2). Could be possible that support for
+that needs to be added or interface to eMMC is still the same?
+Thanks.
+>
+> Kind regards
+> Uffe
 
-Applied for fixes, thanks!
+BR,
 
-Kind regards
-Uffe
-
-
-> ---
->  drivers/mmc/host/bcm2835.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
-> index 7e0d3a4..bb31e13 100644
-> --- a/drivers/mmc/host/bcm2835.c
-> +++ b/drivers/mmc/host/bcm2835.c
-> @@ -597,7 +597,7 @@ static void bcm2835_finish_request(struct bcm2835_host *host)
->         struct dma_chan *terminate_chan = NULL;
->         struct mmc_request *mrq;
->
-> -       cancel_delayed_work_sync(&host->timeout_work);
-> +       cancel_delayed_work(&host->timeout_work);
->
->         mrq = host->mrq;
->
-> --
-> 2.7.4
->
+marek
