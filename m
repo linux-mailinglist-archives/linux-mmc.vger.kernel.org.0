@@ -2,58 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45805AE111
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 00:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E2F3AE114
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 00:33:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730052AbfIIWc4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 Sep 2019 18:32:56 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:44946 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729858AbfIIWc4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Sep 2019 18:32:56 -0400
-Received: by mail-ua1-f66.google.com with SMTP id z8so4886486uaq.11
-        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:32:56 -0700 (PDT)
+        id S1729858AbfIIWdG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 9 Sep 2019 18:33:06 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:45637 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388106AbfIIWdF (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Sep 2019 18:33:05 -0400
+Received: by mail-vs1-f65.google.com with SMTP id s3so9904663vsi.12
+        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:33:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=U2/wdjSFx2+V/ddpY88+7IJ+97cajsbLNJq+vIVE05k=;
-        b=GsssujDG2Jb1LEpkEswcOYwgHaexAs9/2blhp1bINcplff13C20hpT93h15JDcjMXC
-         beaKFpQeCBOT0ojrnOjOUBbdawlhBx8SzkD31yx8g4SLZq/p82s1oLTzcx2JZkgC79YH
-         d03hUr59Fiw2VWMX1DlmE9yUaxK3BgKf+aC7A=
+        bh=z6vf48QEjz8Sz6LLhjmSSSD9RkuuyFccpcd9mtNGMf8=;
+        b=bPBDmsaqenLPEt1pVbouKW4aBIyDJuSdenKbkcFvtDSEnThgUxOJEfhX9ZuBx1+Ar+
+         SvPPIIHa2+VvpLU0/RiU1ADuWcBI4xYXB2NVEqYPQc0jLqq+kXQ2DDQHYYQGUlCnjkEp
+         zv+CWoPz/QdwYLOpGK5xrN2kCw9cY1EWNjvS4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=U2/wdjSFx2+V/ddpY88+7IJ+97cajsbLNJq+vIVE05k=;
-        b=qAMKCK6HBv0Ae4tG3r3KQl+NulZQ8K8n4zwHooFI7VFN/sY//OAt8UVzbMwjwzmEad
-         0v87OLGsz1deaooG0FGZAOccKWTTpYb9937OrkpWREatllX2qLDraXr/Wf1jDIww3qQY
-         nxgwG5uzCUJLEjgd16OmOXo4Fe/cvK7ZcqYV5L6gm1fK2uEExprujAh39Vpi5jEUTpHS
-         DdqUUovJ7ocC4yzs6BPm4Pmt0ZHvAySbg2Bpu5TBbbGts6XTAeH60xcaH49DzeLOBI8k
-         mCSpDO+fAOgeT/TKqMScOc7hyKI1YsTmnZf0dbTAq92kSYvvxZRnWkb3Fsi+x+O9Wwb5
-         oBEg==
-X-Gm-Message-State: APjAAAWwYtj+buCO7wdEXcOZDpEhDl6exMUsVHiK+98OgF96tzWxLQFR
-        +p7kUyD8uTyrYRl/3MuEz96Yu8uNCUE=
-X-Google-Smtp-Source: APXvYqxmOUJrxru3gOwdtdX0QwNOD8nNfVjvr1R5XwjfltPLhwmTcPYBefbWa+oYMWWhFo1h/cBIJw==
-X-Received: by 2002:ab0:503:: with SMTP id 3mr6509543uax.96.1568068375373;
-        Mon, 09 Sep 2019 15:32:55 -0700 (PDT)
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com. [209.85.222.48])
-        by smtp.gmail.com with ESMTPSA id g128sm5236290vsc.17.2019.09.09.15.32.54
+        bh=z6vf48QEjz8Sz6LLhjmSSSD9RkuuyFccpcd9mtNGMf8=;
+        b=IEueVY0uVPEGuVN/X3fbr7e9F8Hi8deOKNTQZdnNxnHicWgPc0JRPxKTiqfb687F8s
+         /YHb/T7P5KqbIjR/KZegmoidToe4uBv8k+kT4/GzHcdfzoWe4vGheIK9BNjpB1l/IpTx
+         XnJDCnSf0vgf0O5go9owaIW2QxRkmxUGdl3ttBftFojzmfx8qISGpwCe7oMA+Mqg8uLC
+         s5CzXJXf/gFjYtvw7GLPdviy7jD8aaObGETQjPqYDpHus3BVs9uUPNLk6kRJABQCPtRB
+         0mhu5IdOPsBU0BMdwYooWwWhjVnKvfmlXJnaRk+RGJppWdiP6o3PivruJ02SCcD5tqhN
+         CIrQ==
+X-Gm-Message-State: APjAAAVK/5vps5BPwofXCL+u1Jop+CAth8dg/vuiXGk9TYnX7+H/4bkg
+        Z3mVfhsG/rZSMjEci4novNYPIvBuQHo=
+X-Google-Smtp-Source: APXvYqw6zmIQ7Jd5QWfLFbg2ymlL/Cee1B3c9UCYeCYWksA6DoEFuzTvTbiJmcJawNeUDPLF8uzHNg==
+X-Received: by 2002:a67:2c47:: with SMTP id s68mr14903563vss.4.1568068383978;
+        Mon, 09 Sep 2019 15:33:03 -0700 (PDT)
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com. [209.85.222.44])
+        by smtp.gmail.com with ESMTPSA id b207sm6322877vka.12.2019.09.09.15.33.02
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Sep 2019 15:32:54 -0700 (PDT)
-Received: by mail-ua1-f48.google.com with SMTP id i17so4893540ual.7
-        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:32:54 -0700 (PDT)
-X-Received: by 2002:a9f:24c4:: with SMTP id 62mr6002335uar.104.1568068374367;
- Mon, 09 Sep 2019 15:32:54 -0700 (PDT)
+        Mon, 09 Sep 2019 15:33:03 -0700 (PDT)
+Received: by mail-ua1-f44.google.com with SMTP id k12so4874372uan.13
+        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:33:02 -0700 (PDT)
+X-Received: by 2002:ab0:2eab:: with SMTP id y11mr12640675uay.0.1568068382471;
+ Mon, 09 Sep 2019 15:33:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190908101236.2802-1-ulf.hansson@linaro.org> <20190908101236.2802-3-ulf.hansson@linaro.org>
-In-Reply-To: <20190908101236.2802-3-ulf.hansson@linaro.org>
+References: <20190908101236.2802-1-ulf.hansson@linaro.org> <20190908101236.2802-5-ulf.hansson@linaro.org>
+In-Reply-To: <20190908101236.2802-5-ulf.hansson@linaro.org>
 From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 9 Sep 2019 15:32:41 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=V3gkAW6xLdi_yPkKzwZCMAgnmHKYi-jpXTzqS1+EU5fA@mail.gmail.com>
-Message-ID: <CAD=FV=V3gkAW6xLdi_yPkKzwZCMAgnmHKYi-jpXTzqS1+EU5fA@mail.gmail.com>
-Subject: Re: [PATCH v2 02/11] mmc: dw_mmc: Re-store SDIO IRQs mask at system resume
+Date:   Mon, 9 Sep 2019 15:32:51 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=WhJ_wL181sWUZoKKaQWnZUDkkG=QovJsugsBVOzAOi9Q@mail.gmail.com>
+Message-ID: <CAD=FV=WhJ_wL181sWUZoKKaQWnZUDkkG=QovJsugsBVOzAOi9Q@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] mmc: core: Move code to get pending SDIO IRQs to
+ a function
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -73,22 +74,17 @@ Hi,
 
 On Sun, Sep 8, 2019 at 3:12 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> In cases when SDIO IRQs have been enabled, runtime suspend is prevented by
-> the driver. However, this still means dw_mci_runtime_suspend|resume() gets
-> called during system suspend/resume, via pm_runtime_force_suspend|resume().
-> This means during system suspend/resume, the register context of the dw_mmc
-> device most likely loses its register context, even in cases when SDIO IRQs
-> have been enabled.
+> From: Matthias Kaehlcke <mka@chromium.org>
 >
-> To re-enable the SDIO IRQs during system resume, the dw_mmc driver
-> currently relies on the mmc core to re-enable the SDIO IRQs when it resumes
-> the SDIO card, but this isn't the recommended solution. Instead, it's
-> better to deal with this locally in the dw_mmc driver, so let's do that.
+> To improve code quality, let's move the code that gets pending SDIO IRQs
+> from process_sdio_pending_irqs() into a dedicated function.
 >
+> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+> [Ulf: Converted function into static]
 > Tested-by: Matthias Kaehlcke <mka@chromium.org>
 > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > ---
->  drivers/mmc/host/dw_mmc.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  drivers/mmc/core/sdio_irq.c | 46 ++++++++++++++++++++++++-------------
+>  1 file changed, 30 insertions(+), 16 deletions(-)
 
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
