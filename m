@@ -2,59 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47904AE117
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 00:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3432AE119
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 00:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388692AbfIIWeW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 Sep 2019 18:34:22 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:36277 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388453AbfIIWeW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Sep 2019 18:34:22 -0400
-Received: by mail-vs1-f65.google.com with SMTP id v19so4787776vsv.3
-        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:34:21 -0700 (PDT)
+        id S2388914AbfIIWe3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 9 Sep 2019 18:34:29 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:35450 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388894AbfIIWe3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Sep 2019 18:34:29 -0400
+Received: by mail-vs1-f68.google.com with SMTP id b11so9955034vsq.2
+        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:34:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=z7Qp29xzD8VvJiLxwfvacqSffZ0ENSm28PrjV0lzFoM=;
-        b=Uf8+ffjXXmM2NbLvr4C9kbLqYl6no1tOg1R0W5/8jQvZmMtKAL9gZmXrcKn+WUfsGG
-         xSC+CCOMfTRj3Ib76ParYaXGiCIcG5CSqey5aRt4HDJKBrnI3FBE+QafrOTVgUZZpfx7
-         53DTzNdr0sq6u+04sJtZYmJWFJZ1h3j24/hhA=
+        bh=9uKn57lFOcZJRC0waWtjBCYVHQrktLOwjpylqAIocBE=;
+        b=hT7S2S3A5LRDDsAHmdxFXDuEqQuO8/hNDC6KOuDOvVekoEombOVU8xLQeyM47bKn1O
+         rNW9mVx9vCfFumzrMoUNac6RM4UoMUPMMMhvICFRVk8gMI7yg1AB5eRnB5d3uO53034N
+         tjqfLDf+VRf8bA0Y9TNXW35HiKT38bz1QOhuE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=z7Qp29xzD8VvJiLxwfvacqSffZ0ENSm28PrjV0lzFoM=;
-        b=VzxZHU99V64C5Oh0ylXLV/cwKOs2JhnbFVQLySU0VZSMZfLCjwoHNs5Ke5XiZD7Rfp
-         wpXD2bx75cOdn7/gGZdilz8iuTLRog/b7uX/5BQVNRdW2kHbupnkhR7iMFx+H+/ZcOYJ
-         6sRy2/UBff1homBagC+PkIrZCmX3GIsrX7X4bmwRUMBmKQYgPXQLaLhi0wX6txBkkVdg
-         8TyI4s0vyRLIaX4TrlRKyyMtGHAtAkpN3XCD5f4ipu9wNXR1KBhD5Zdp11xjbW7krM7b
-         zByO8DUJyftzs5qTGGtmsRydiY3vfhNcdGw8TwmcoPIUPJs0x3bc+HumQ+jUIg9jnc59
-         KCgg==
-X-Gm-Message-State: APjAAAUXBvZDtkFuXrXuuX1NsHR6QdK/ud8Www/p8IQu+rAUKBHQf5CA
-        w3J10uNklezgHuWTVU0xkC3OTk4yRsI=
-X-Google-Smtp-Source: APXvYqz26K0Q4hiPvvWI1hL6HyF8X8oaiNhrWUNeejOZyA3FK/csaMg0QgXcixmleqdmDhn2xECs/g==
-X-Received: by 2002:a67:e8d6:: with SMTP id y22mr2528489vsn.49.1568068461139;
-        Mon, 09 Sep 2019 15:34:21 -0700 (PDT)
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com. [209.85.217.42])
-        by smtp.gmail.com with ESMTPSA id c5sm16485486vke.47.2019.09.09.15.34.19
+        bh=9uKn57lFOcZJRC0waWtjBCYVHQrktLOwjpylqAIocBE=;
+        b=GjAz0+QDA/CGqvLsKUhZTTSWpznzqaIuhHi3yIVFohuXVSmOVU9DZ9rFVt/3kL432Q
+         1ibHulv//0hhn+f24U4OUlFgj9Yu2plGxe6VhmEgTtL2ihbWEciM3z4x9uK5kjUNL5fU
+         4KLAUP1LrMdMxmEgQU3zN1GzW1WuYsZFeNOL7P+1JsIhgow/SHoLGFiJcHZpajGIf3cw
+         hcb2szNhDzDMlpgQHYNj2WWvyTA1ueZnqD3/tlPSdvXHbUE7Z9Qk7zGj00K3iXMu+qPG
+         XnfLNxa/hC07PtVD26poWOLKld7NgdhmkyqIIecMbLaoiUflm4vYBLwsEXnjrZhbQwfd
+         uRUA==
+X-Gm-Message-State: APjAAAVGstUOscZlf+TrtiIUI9Yy65CnBUYuAosyrKuoKI/JoQ9z7ktb
+        S5u9Rqt0W8MTMdL/GOxJ3qVBaqRnSL8=
+X-Google-Smtp-Source: APXvYqx/sZy21L5op2yzCIc4OZmaPl/VdKRa0jI9x9fpoaRxgdpuPgjLTIgdKqx+n2rJBUvqqsUdiw==
+X-Received: by 2002:a67:ed90:: with SMTP id d16mr8302743vsp.167.1568068467944;
+        Mon, 09 Sep 2019 15:34:27 -0700 (PDT)
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com. [209.85.221.177])
+        by smtp.gmail.com with ESMTPSA id 11sm3018629uas.17.2019.09.09.15.34.27
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Sep 2019 15:34:20 -0700 (PDT)
-Received: by mail-vs1-f42.google.com with SMTP id w195so9905622vsw.11
-        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:34:19 -0700 (PDT)
-X-Received: by 2002:a67:2981:: with SMTP id p123mr2608309vsp.121.1568068459597;
- Mon, 09 Sep 2019 15:34:19 -0700 (PDT)
+        Mon, 09 Sep 2019 15:34:27 -0700 (PDT)
+Received: by mail-vk1-f177.google.com with SMTP id j5so3117918vkn.6
+        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:34:27 -0700 (PDT)
+X-Received: by 2002:a1f:5e4f:: with SMTP id s76mr1414955vkb.4.1568068466575;
+ Mon, 09 Sep 2019 15:34:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190908101236.2802-1-ulf.hansson@linaro.org> <20190908101236.2802-7-ulf.hansson@linaro.org>
-In-Reply-To: <20190908101236.2802-7-ulf.hansson@linaro.org>
+References: <20190908101236.2802-1-ulf.hansson@linaro.org> <20190908101236.2802-9-ulf.hansson@linaro.org>
+In-Reply-To: <20190908101236.2802-9-ulf.hansson@linaro.org>
 From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 9 Sep 2019 15:34:07 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UM5_FzEuS5AfvA94_gKw5aog2VKDtZrnRiA_gAz+bq+A@mail.gmail.com>
-Message-ID: <CAD=FV=UM5_FzEuS5AfvA94_gKw5aog2VKDtZrnRiA_gAz+bq+A@mail.gmail.com>
-Subject: Re: [PATCH v2 06/11] mmc: core: Clarify that the ->ack_sdio_irq()
- callback is mandatory
+Date:   Mon, 9 Sep 2019 15:34:15 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=U+eqnMX9TuyBhi7r_qjG39P9dtHHO9=PvKOvRKuoOvKw@mail.gmail.com>
+Message-ID: <CAD=FV=U+eqnMX9TuyBhi7r_qjG39P9dtHHO9=PvKOvRKuoOvKw@mail.gmail.com>
+Subject: Re: [PATCH v2 08/11] mmc: core: Fixup processing of SDIO IRQs during
+ system suspend/resume
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -74,20 +74,50 @@ Hi,
 
 On Sun, Sep 8, 2019 at 3:12 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> For the MMC_CAP2_SDIO_IRQ_NOTHREAD case and when using sdio_signal_irq(),
-> the ->ack_sdio_irq() is already mandatory, which was not the case for those
-> host drivers that called sdio_run_irqs() directly.
+> System suspend/resume of SDIO cards, with SDIO IRQs enabled and when using
+> MMC_CAP2_SDIO_IRQ_NOTHREAD is unfortunate still suffering from a fragile
+> behaviour. Some problems have been taken care of so far, but more issues
+> remains.
 >
-> As there are no longer any drivers calling sdio_run_irqs(), let's clarify
-> the code by dropping the unnecessary check and explicitly state that the
-> callback is mandatory in the header file.
+> For example, calling the ->ack_sdio_irq() callback to let host drivers
+> re-enable the SDIO IRQs is a bad idea, unless the IRQ have been consumed,
+> which may not be the case during system suspend/resume. This may lead to
+> that a host driver re-signals the same SDIO IRQ over and over again,
+> causing a storm of IRQs and gives a ping-pong effect towards the
+> sdio_irq_work().
+>
+> Moreover, calling the ->enable_sdio_irq() callback at system resume to
+> re-enable already enabled SDIO IRQs for the host, causes the runtime PM
+> count for some host drivers to become in-balanced. This then leads to the
+> host to remain runtime resumed, no matter if it's needed or not.
+>
+> To fix these problems, let's check if process_sdio_pending_irqs() actually
+> consumed the SDIO IRQ, before we continue to ack the IRQ by invoking the
+> ->ack_sdio_irq() callback.
+>
+> Additionally, there should be no need to re-enable SDIO IRQs as the host
+> driver already knows if they were enabled at system suspend, thus also
+> whether it needs to re-enable them at system resume. For this reason, drop
+> the call to ->enable_sdio_irq() during system resume.
+>
+> In regards to these changes there is yet another issue, which is when there
+> is an SDIO IRQ being signaled by the host driver, but after the SDIO card
+> has been system suspended. Currently these IRQs are just thrown away, while
+> we should at least make sure to try to consume them when the SDIO card has
+> been system resumed. Fix this by queueing a sdio_irq_work() after we system
+> resumed the SDIO card.
 >
 > Tested-by: Matthias Kaehlcke <mka@chromium.org>
 > Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
 > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > ---
->  drivers/mmc/core/sdio_irq.c | 3 +--
->  include/linux/mmc/host.h    | 1 +
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> Changes in v2:
+>         - Queue a sdio_irq_work() rather using sdio_signal_irq().
+>
+> ---
+>  drivers/mmc/core/sdio.c     | 2 +-
+>  drivers/mmc/core/sdio_irq.c | 3 ++-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
 
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
