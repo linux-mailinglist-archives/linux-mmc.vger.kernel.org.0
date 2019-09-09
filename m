@@ -2,80 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2471AD94D
-	for <lists+linux-mmc@lfdr.de>; Mon,  9 Sep 2019 14:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 043DAAD972
+	for <lists+linux-mmc@lfdr.de>; Mon,  9 Sep 2019 14:57:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727130AbfIIMpC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 Sep 2019 08:45:02 -0400
-Received: from mga01.intel.com ([192.55.52.88]:31239 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726008AbfIIMpC (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 9 Sep 2019 08:45:02 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Sep 2019 05:45:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,484,1559545200"; 
-   d="scan'208";a="383963542"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.66]) ([10.237.72.66])
-  by fmsmga005.fm.intel.com with ESMTP; 09 Sep 2019 05:44:58 -0700
-Subject: Re: [PATCH 2/4] mmc: Add virtual command queue support
-To:     Baolin Wang <baolin.wang@linaro.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, riteshh@codeaurora.org,
-        asutoshd@codeaurora.org, Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <cover.1567740135.git.baolin.wang@linaro.org>
- <14599f7165f23db2bf7b71a2596e808e2bc2056c.1567740135.git.baolin.wang@linaro.org>
- <3bcd69fd-2f8e-9b87-7292-4b0b1aa5be78@intel.com>
- <CAMz4kuKsk7ZN2BnD4zp53PQE22jD-BTsJLL53SL3ndZ5=OCHYA@mail.gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <3d83db18-7e80-944c-fc4b-244249c71bbf@intel.com>
-Date:   Mon, 9 Sep 2019 15:43:48 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726752AbfIIM5D (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 9 Sep 2019 08:57:03 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:38487 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726317AbfIIM5D (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Sep 2019 08:57:03 -0400
+Received: by mail-wm1-f67.google.com with SMTP id o184so14535191wme.3;
+        Mon, 09 Sep 2019 05:57:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DqBuAhLk8WUfA1MYmYB0V6NwagpBGla+VruOq7texiI=;
+        b=pfMQ0N0vQFNrlf7+Euo0B+eu/R9lqsB2N6y/Zf6dCfmXjNpc8lVq/rsNd2K+m/tdQo
+         NsFPf3E58S5t836nUBN7kByqFDaUYjcByFgizXjX8zh6Bdaoao+7/LInzczFiFpa/6GH
+         o7mqH05RH2yNis8PC9tXH6aEStmnoebyLhBnpid2qbxrYPXn1Htbxt79QXLE9U/2FZxC
+         9wfDYFiU0sNaVZ8yoBoHlqRlWuDgjTvEmzVzPykw86/tB6E4Ii0843fous5s9lrSCuWX
+         pByoxLxJyXxNzv4PEsTvmPreXk3vpGXiB4/E2bAnqXdN0WoZLOoFmeHvK93xRSip9rKH
+         egtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DqBuAhLk8WUfA1MYmYB0V6NwagpBGla+VruOq7texiI=;
+        b=Zgwd58UwS5zNQVuPWmP1Pk6oNRwtwz8PUaXTiR1qvqtUo9dCCVWcrPikvJSAyYCh6S
+         aYbpgRCxa9PgCqRmzzoo1+hOw6PNAhG8MZ9TgwCgT9B6PGVD0QFWTRXyf75oroV4IsRd
+         f36JaUoRqQnjQ71CnS5danIR6OjavtE6wHbhnK4RrtLYHti3zFcW7VjtyyvS++TiVdvD
+         45oiY9YhmcCV63Lo9RAs2Dhv2gInbYhuzp7Hl+VlTHP/tQ7d0YOOkxlGGiZztFscQgw9
+         jkhI/HyYyIWSagd6J/qfHW1P+n24zMNd5z/dTUdSgDWIkhN/+dLiMsN7pvOTUqjBlgqj
+         gdRg==
+X-Gm-Message-State: APjAAAUR7upX4qkPxWmrqA33q6tsb6HLmACrH9pjuT4/Fu2cC0/NeC2O
+        JQoneORF0j059TB0yXjywYa6MYcK
+X-Google-Smtp-Source: APXvYqyXgpZUJfJVC5gENHP0+6FV5H/yIWLx5Co3Rn4FgyQ44vdgInN4M/6j6o9YKW+BKqfij5Bjrw==
+X-Received: by 2002:a05:600c:20f:: with SMTP id 15mr17217044wmi.24.1568033820460;
+        Mon, 09 Sep 2019 05:57:00 -0700 (PDT)
+Received: from localhost (p2E5BE0B8.dip0.t-ipconnect.de. [46.91.224.184])
+        by smtp.gmail.com with ESMTPSA id r16sm16166050wrc.81.2019.09.09.05.56.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Sep 2019 05:56:59 -0700 (PDT)
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Jens Axboe <axboe@kernel.dk>, Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Jon Hunter <jonathanh@nvidia.com>, linux-block@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: [PATCH 0/3] mmc: Fix scatter/gather on SDHCI
+Date:   Mon,  9 Sep 2019 14:56:55 +0200
+Message-Id: <20190909125658.30559-1-thierry.reding@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <CAMz4kuKsk7ZN2BnD4zp53PQE22jD-BTsJLL53SL3ndZ5=OCHYA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 9/09/19 3:16 PM, Baolin Wang wrote:
-> Hi Adrian,
-> 
-> On Mon, 9 Sep 2019 at 20:02, Adrian Hunter <adrian.hunter@intel.com> wrote:
->>
->> On 6/09/19 6:52 AM, Baolin Wang wrote:
->>> Now the MMC read/write stack will always wait for previous request is
->>> completed by mmc_blk_rw_wait(), before sending a new request to hardware,
->>> or queue a work to complete request, that will bring context switching
->>> overhead, especially for high I/O per second rates, to affect the IO
->>> performance.
->>>
->>> Thus this patch introduces virtual command queue interface, which is
->>> similar with the hardware command queue engine's idea, that can remove
->>> the context switching.
->>
->> CQHCI is a hardware interface for eMMC's that support command queuing.  What
->> you are doing is a software issue queue, unrelated to CQHCI.  I think you
-> 
-> Yes.
-> 
->> should avoid all reference to CQHCI i.e. call it something else.
-> 
-> Since its process is similar with CQHCI and re-use the CQHCI's
-> interfaces, I called it virtual command queue. I am not sure what else
-> name is better, any thoughts? VCQHCI? Thanks.
+From: Thierry Reding <treding@nvidia.com>
 
-What about swq for software queue.  Maybe Ulf can suggest something?
+Commit 158a6d3ce3bc ("iommu/dma: add a new dma_map_ops of
+get_merge_boundary()") causes scatter/gather to break for SDHCI and
+potentially other MMC hosts.
+
+The reason is that the commit ends up tricking the block layer into
+believing that there's effectively no limit on the segment size. While
+this may be true for some device, it's certainly not true for all. The
+DMA descriptors used by SDHCI, for example, have a 16-bit field that
+contains the number of bytes to transmit for that particular transfer.
+As a result of the segment size exceeding the capabilities of the
+hardware, the scatterlist ends up containing entries that are too large
+to fit into a single descriptor.
+
+This small series fixes this by making the block layer respect the
+segment size restrictions set for the device. It also prevents the MMC
+queue code to attempt to overwrite the maximum segment size of a device
+that may already have been set up. Finally it configures the maximum
+segment size for SDHCI. The last step is technically not required
+because the maximum segment size for SDHCI coincides with the default,
+but I think it's better to be explicit here.
+
+As a result, all entries in the scatterlist are now small enough to fit
+into SDHCI DMA descriptors. Some improvements could be made to how the
+scatterlist is packed. For example, the dma-iommu code compacts the SG
+entries so that they result in segments less than the maximum segment,
+but doesn't split up individual entries. This often results in holes in
+the individual segments. In order to create full 64 KiB segments with
+only the last segment being partial, the code would have to split up
+individual entries. This should be possible but is not done as part of
+this series.
+
+Thierry
+
+Thierry Reding (3):
+  block: Respect the device's maximum segment size
+  mmc: core: Respect MMC host's maximum segment size
+  mmc: sdhci: Set DMA maximum segment size to 64 KiB
+
+ block/blk-settings.c     | 24 +++++++++++++++---------
+ drivers/mmc/core/queue.c |  2 --
+ drivers/mmc/host/sdhci.c |  5 +++++
+ drivers/mmc/host/sdhci.h |  1 +
+ 4 files changed, 21 insertions(+), 11 deletions(-)
+
+-- 
+2.23.0
+
