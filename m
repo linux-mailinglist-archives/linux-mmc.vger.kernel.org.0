@@ -2,58 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00B61AE116
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 00:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47904AE117
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 00:34:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726406AbfIIWeJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 Sep 2019 18:34:09 -0400
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:33047 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388553AbfIIWeH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Sep 2019 18:34:07 -0400
-Received: by mail-ua1-f68.google.com with SMTP id g11so4908551uak.0
-        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:34:06 -0700 (PDT)
+        id S2388692AbfIIWeW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 9 Sep 2019 18:34:22 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:36277 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388453AbfIIWeW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Sep 2019 18:34:22 -0400
+Received: by mail-vs1-f65.google.com with SMTP id v19so4787776vsv.3
+        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:34:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=fyzZ7zehYhgdgW33H/RHHfH+ojER9btCEjhF4ZBw3xo=;
-        b=Huvo2HD+Q6gGEUDmrk3hkHjLQMYrB+mDOOFw05wBWVYVgrnDpZyuCm1o6jZVpXUcjO
-         94Fqu3QxrMZW0bWR4hTe2yFWxdgv/3CtTrIb+t/6uJnKoVTXytY/q4hZLJekXd2MpUpP
-         owDDEleKbJRLcfA5ilYS7xr7ebYjy0mzIoZNc=
+        bh=z7Qp29xzD8VvJiLxwfvacqSffZ0ENSm28PrjV0lzFoM=;
+        b=Uf8+ffjXXmM2NbLvr4C9kbLqYl6no1tOg1R0W5/8jQvZmMtKAL9gZmXrcKn+WUfsGG
+         xSC+CCOMfTRj3Ib76ParYaXGiCIcG5CSqey5aRt4HDJKBrnI3FBE+QafrOTVgUZZpfx7
+         53DTzNdr0sq6u+04sJtZYmJWFJZ1h3j24/hhA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=fyzZ7zehYhgdgW33H/RHHfH+ojER9btCEjhF4ZBw3xo=;
-        b=mTYmasvqX2bL6+rFkP76orLuHO0HMoW9Ci7p1zbZfzdyCSqWkuR43Jcva87wZ7tECi
-         AtMRwpgypwpljQCwt4iDZ/0F/pCVkdFToQt5Oln32O70oFynQRIccnzPqoXNMS8aeuDP
-         mQNb1/COZieetox4Aj0nOjStJ40o7j6x8AGkBXX/6Y3XiIJxq6HeqMagP2Js6Tb4+T/U
-         FiuuhMrs0TO445CkrXe4zBXJR2OqUa9LfWv6rgLsSFtRZDTWbDiMfXkgg3rKx7beAxLA
-         5iSCOwZzxVCbQmrBJ9uwQ13epGlTpmY4blbQwGRuLl3z+cOabbDpXHfWZjdV8Prcvqn1
-         1LMQ==
-X-Gm-Message-State: APjAAAWKnLExlG+5PrQGOfkOT4OZsBivFLlG/1heqndHqV1Hew5neOBr
-        p4CDD5kait4PTRw0BNF6GDs5hnI7aVA=
-X-Google-Smtp-Source: APXvYqwZkheDkE3tg1LGYdYUhrd1FUXYxfkZB5YYPZrmbYWIVZoaMyNskxUSd1bX59eMaDl5sU/uBg==
-X-Received: by 2002:ab0:7097:: with SMTP id m23mr12270296ual.89.1568068445869;
-        Mon, 09 Sep 2019 15:34:05 -0700 (PDT)
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com. [209.85.222.49])
-        by smtp.gmail.com with ESMTPSA id t10sm3863125uaj.14.2019.09.09.15.34.04
+        bh=z7Qp29xzD8VvJiLxwfvacqSffZ0ENSm28PrjV0lzFoM=;
+        b=VzxZHU99V64C5Oh0ylXLV/cwKOs2JhnbFVQLySU0VZSMZfLCjwoHNs5Ke5XiZD7Rfp
+         wpXD2bx75cOdn7/gGZdilz8iuTLRog/b7uX/5BQVNRdW2kHbupnkhR7iMFx+H+/ZcOYJ
+         6sRy2/UBff1homBagC+PkIrZCmX3GIsrX7X4bmwRUMBmKQYgPXQLaLhi0wX6txBkkVdg
+         8TyI4s0vyRLIaX4TrlRKyyMtGHAtAkpN3XCD5f4ipu9wNXR1KBhD5Zdp11xjbW7krM7b
+         zByO8DUJyftzs5qTGGtmsRydiY3vfhNcdGw8TwmcoPIUPJs0x3bc+HumQ+jUIg9jnc59
+         KCgg==
+X-Gm-Message-State: APjAAAUXBvZDtkFuXrXuuX1NsHR6QdK/ud8Www/p8IQu+rAUKBHQf5CA
+        w3J10uNklezgHuWTVU0xkC3OTk4yRsI=
+X-Google-Smtp-Source: APXvYqz26K0Q4hiPvvWI1hL6HyF8X8oaiNhrWUNeejOZyA3FK/csaMg0QgXcixmleqdmDhn2xECs/g==
+X-Received: by 2002:a67:e8d6:: with SMTP id y22mr2528489vsn.49.1568068461139;
+        Mon, 09 Sep 2019 15:34:21 -0700 (PDT)
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com. [209.85.217.42])
+        by smtp.gmail.com with ESMTPSA id c5sm16485486vke.47.2019.09.09.15.34.19
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Sep 2019 15:34:04 -0700 (PDT)
-Received: by mail-ua1-f49.google.com with SMTP id u18so4908745uap.2
-        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:34:04 -0700 (PDT)
-X-Received: by 2002:ab0:2088:: with SMTP id r8mr12584681uak.90.1568068443932;
- Mon, 09 Sep 2019 15:34:03 -0700 (PDT)
+        Mon, 09 Sep 2019 15:34:20 -0700 (PDT)
+Received: by mail-vs1-f42.google.com with SMTP id w195so9905622vsw.11
+        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 15:34:19 -0700 (PDT)
+X-Received: by 2002:a67:2981:: with SMTP id p123mr2608309vsp.121.1568068459597;
+ Mon, 09 Sep 2019 15:34:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190908101236.2802-1-ulf.hansson@linaro.org> <20190908101236.2802-6-ulf.hansson@linaro.org>
-In-Reply-To: <20190908101236.2802-6-ulf.hansson@linaro.org>
+References: <20190908101236.2802-1-ulf.hansson@linaro.org> <20190908101236.2802-7-ulf.hansson@linaro.org>
+In-Reply-To: <20190908101236.2802-7-ulf.hansson@linaro.org>
 From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 9 Sep 2019 15:33:52 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XixFRMaKV8z84aBSwZirfoFmy9PcXGaD4aPuyu0BQy-A@mail.gmail.com>
-Message-ID: <CAD=FV=XixFRMaKV8z84aBSwZirfoFmy9PcXGaD4aPuyu0BQy-A@mail.gmail.com>
-Subject: Re: [PATCH v2 05/11] mmc: core: Clarify sdio_irq_pending flag for MMC_CAP2_SDIO_IRQ_NOTHREAD
+Date:   Mon, 9 Sep 2019 15:34:07 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UM5_FzEuS5AfvA94_gKw5aog2VKDtZrnRiA_gAz+bq+A@mail.gmail.com>
+Message-ID: <CAD=FV=UM5_FzEuS5AfvA94_gKw5aog2VKDtZrnRiA_gAz+bq+A@mail.gmail.com>
+Subject: Re: [PATCH v2 06/11] mmc: core: Clarify that the ->ack_sdio_irq()
+ callback is mandatory
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -73,46 +74,20 @@ Hi,
 
 On Sun, Sep 8, 2019 at 3:12 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> The sdio_irq_pending flag is used to let host drivers indicate that it has
-> signaled an IRQ. If that is the case and we only have a single SDIO func
-> that have claimed an SDIO IRQ, our assumption is that we can avoid reading
-> the SDIO_CCCR_INTx register and just call the SDIO func irq handler
-> immediately. This makes sense, but the flag is set/cleared in a somewhat
-> messy order, let's fix that up according to below.
+> For the MMC_CAP2_SDIO_IRQ_NOTHREAD case and when using sdio_signal_irq(),
+> the ->ack_sdio_irq() is already mandatory, which was not the case for those
+> host drivers that called sdio_run_irqs() directly.
 >
-> First, the flag is currently set in sdio_run_irqs(), which is executed as a
-> work that was scheduled from sdio_signal_irq(). To make it more implicit
-> that the host have signaled an IRQ, let's instead immediately set the flag
-> in sdio_signal_irq(). This also makes the behavior consistent with host
-> drivers that uses the legacy, mmc_signal_sdio_irq() API. This have no
-> functional impact, because we don't expect host drivers to call
-> sdio_signal_irq() until after the work (sdio_run_irqs()) have been executed
-> anyways.
->
-> Second, currently we never clears the flag when using the sdio_run_irqs()
-> work, but only when using the sdio_irq_thread(). Let make the behavior
-
-s/Let/Let's
-
-
-> consistent, by moving the flag to be cleared inside the common
-> process_sdio_pending_irqs() function. Additionally, tweak the behavior of
-> the flag slightly, by avoiding to clear it unless we processed the SDIO
-> IRQ. The purpose with this at this point, is to keep the information about
-> whether there have been an SDIO IRQ signaled by the host, so at system
-> resume we can decide to process it without reading the SDIO_CCCR_INTx
-> register.
+> As there are no longer any drivers calling sdio_run_irqs(), let's clarify
+> the code by dropping the unnecessary check and explicitly state that the
+> callback is mandatory in the header file.
 >
 > Tested-by: Matthias Kaehlcke <mka@chromium.org>
 > Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
 > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > ---
->
-> Changes in v2:
->         - Re-wrote changelog.
->
-> ---
->  drivers/mmc/core/sdio_irq.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+>  drivers/mmc/core/sdio_irq.c | 3 +--
+>  include/linux/mmc/host.h    | 1 +
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
