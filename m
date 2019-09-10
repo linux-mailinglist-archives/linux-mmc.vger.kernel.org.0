@@ -2,155 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7A23AE231
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 04:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1FC7AE28F
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 05:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726903AbfIJCEC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 Sep 2019 22:04:02 -0400
-Received: from mail-eopbgr1400097.outbound.protection.outlook.com ([40.107.140.97]:24463
-        "EHLO JPN01-TY1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726470AbfIJCEC (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 9 Sep 2019 22:04:02 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hRZq7+l1d1JkSUWpQMY4Jyt+tLLH9O1yBkmW+5uIqfhSg3gY70wLFlM1IoAZ4EWKpxHWNF5N6opk8R3Bdy0e3vmAyZuvrVbavM4egyqdmx9NhuCIyWpecUYWR6uDxk+EjV+byPxTBdxMNHkd20B2VH6jgfzBwt2vv22WTXBlGS7teJtoeRdPCkIo/a2roTbJdg0eKtR8uIXL956y4madd7ZGPQk82WXzX22f5wVQcxwM7g81VJvprAEVG7lzoRgRwhtmNh0JSjXmdZulRqIYkq/LwvKa71D31+s8QGK2rTfT7G8RWpAQvmHp2jmjWN4lAfRsw4VkFyjUdMqMHBnE4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=78D4q5J2b8GVtoAdqKz97HLt0Juo2jSBQ+C5WlQ+Aw8=;
- b=LMYm0ns+F1/DS5mB/BZ0PXh81rH5VElH9QSqM2mxZPn4ise8FhFd+HZ29iJWTiBv2YVVpvLbfrsg+EOFXQyDCibIQ5qKYVC5C7WQa/LoxyLpsVpt77GPtAClVDjfs6oGHDnGPYmg2hE3anMFJSuRLPPlEElh2B4QCd3VPlYlJg/hW8/Xgc5hcbWZ6P3c+rcmp6pW89Z9ayjgpWG1U/e2u/wCCM3dxCVMsYOrBq15d99nuhdTPLp8sQkzMNSCSb8Q9j0Jaiy10MD/z1HWU27WU/1t4WmBRcU6IqaOEFWDSPaJnJNttxmyUZGWFonlTE/fBYsOPzNT/ia/zQ8WazUP/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
+        id S2389814AbfIJD1Y (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 9 Sep 2019 23:27:24 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:36812 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729012AbfIJD1X (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Sep 2019 23:27:23 -0400
+Received: by mail-lf1-f67.google.com with SMTP id x80so12243963lff.3
+        for <linux-mmc@vger.kernel.org>; Mon, 09 Sep 2019 20:27:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=78D4q5J2b8GVtoAdqKz97HLt0Juo2jSBQ+C5WlQ+Aw8=;
- b=ISVXBTQLN2C2qt7JvJr69Zy45o5K00QrStd8GJobGS3FVNA/5yNS3Mj+8Vdyx+EWcYpUgbdNSegpw/Um0Vlw8LRGbuNGl/HMKiflpbrLqRD+8HN6bgmfUKjDIKIx8ohkaLbw9YIBtYN+hD1ZMhtB2FNzNU+DX/QZbRkGVWD+25g=
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com (20.179.175.203) by
- TYAPR01MB2527.jpnprd01.prod.outlook.com (20.177.102.145) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2241.17; Tue, 10 Sep 2019 02:03:17 +0000
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::7da1:bfc1:6c7f:8977]) by TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::7da1:bfc1:6c7f:8977%7]) with mapi id 15.20.2241.018; Tue, 10 Sep 2019
- 02:03:17 +0000
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Jens Axboe <axboe@kernel.dk>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: RE: [PATCH 1/3] block: Respect the device's maximum segment size
-Thread-Topic: [PATCH 1/3] block: Respect the device's maximum segment size
-Thread-Index: AQHVZw4VWMEEraTQbECBt67bhcbO/KcjhO+AgAAz34CAAG4C4A==
-Date:   Tue, 10 Sep 2019 02:03:17 +0000
-Message-ID: <TYAPR01MB454470364B682B9BF708E557D8B60@TYAPR01MB4544.jpnprd01.prod.outlook.com>
-References: <20190909125658.30559-1-thierry.reding@gmail.com>
- <20190909125658.30559-2-thierry.reding@gmail.com>
- <20190909161331.GA19650@lst.de> <20190909191911.GC23804@mithrandir>
-In-Reply-To: <20190909191911.GC23804@mithrandir>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
-x-originating-ip: [150.249.235.54]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 07419aa2-d5aa-4f7a-299e-08d735930be6
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:TYAPR01MB2527;
-x-ms-traffictypediagnostic: TYAPR01MB2527:
-x-microsoft-antispam-prvs: <TYAPR01MB2527ECA10459280664158E7ED8B60@TYAPR01MB2527.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 01565FED4C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(366004)(346002)(136003)(39860400002)(376002)(396003)(199004)(189003)(52314003)(7736002)(2906002)(66066001)(6116002)(71200400001)(71190400001)(3846002)(8676002)(81156014)(7696005)(86362001)(5660300002)(8936002)(52536014)(81166006)(478600001)(66946007)(99286004)(54906003)(110136005)(74316002)(76116006)(316002)(66556008)(66476007)(561944003)(66446008)(64756008)(305945005)(186003)(256004)(14444005)(7416002)(4326008)(102836004)(229853002)(6436002)(25786009)(26005)(76176011)(6246003)(6506007)(11346002)(9686003)(446003)(55016002)(33656002)(476003)(486006)(14454004)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:TYAPR01MB2527;H:TYAPR01MB4544.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: renesas.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: F4GHTnrWmyhyuOEQiADITToaFZuyK99XxsVj5rGbYUE07HnuX9p/hGqsniZk53y/7ol+/0fmxcqD0TrR1gF3kXBg2XXYDqQTn8u1BYz4LNKdOCPGbaWanRwrtWYwu4rHr2NvXbB5IWS+/B4FmLDyGwJIS1sp5yUEu4jlQ8lptyuy8WNBJfCEXIQ+Y5OYZp+26xo6YAxzP3Y0v8lGebtrgkKtLn0/d71lHb0kX7gPKeygtLu0q6EmNCIjla4wdI4B75KpAZLGYgnXnHiupTrpHd3aSCRiCYVkRK8ECnFTDetoJ4Ai1fMU/Q2UvZ/RgwUDJGh4nMtf0kwhI6ddoRhDBnHkyipQM8ePCErstpFSeurS9E/6n4YJmHMc+GFY+V/v00B6wjl5l1hVNHm7yp2/PrtyCEUmLQeryQKhS0SySw8=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ropqFminAsuYzLc+qA9K24nUNWnD7cn3AN/0FfpV44M=;
+        b=auysCQzPijlKbJ8dj8RvUZmk6jgRVymv2glX5u2Ca08XLuwMRh+1OyCCZNBpXOpPXX
+         LbbVNuA6VM+3y6KQE58M5Y6pnkcZssZo4yOra6Hobd8cT2oqx1nNnbIt9HXeBi5mgoqx
+         i7oyVOpS9eASObqUbyci7/CyCeMy1qp0gEPnTPZdjO5iMgR5+Pmk3s3JFG08FDoYnEgV
+         2lh+gs73JByv8yUfwrHoFZKTlCKTeLvETjUZ61b1IG27loNPtdmujlL+FQgNfAB/hqzM
+         +nAHSxwnaKaiXQXaRXyfGOHI5V4b7ZvIAyT5CA8U+/IgLSCtEf1EexVlhG7OxL5zCxsc
+         zXqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ropqFminAsuYzLc+qA9K24nUNWnD7cn3AN/0FfpV44M=;
+        b=ky+2zYh0OJHQDEIWTLbkBqABNGjCppOS9BFDcIkpTKvVN10dqqrwHj97riBzipeM7D
+         BYlZsOtC0in65bMx0mDJ5+OCdc5fUUtYG81tDEeNZfoZbDcDMcrXzNsYDBk+G4G6TjhX
+         YeNFWdtkFSLSc8yUyxIMcAsnubj5vI2FpUDFkbtj3HOYYa5ozCAB3542eKTSEQCJBm3l
+         XSQJC8lCsZMUAs5waAgxMgZPGOvZPBzPn10LO8PM9tBj+Y6h4sAjJzKeyKD1SDCuT9Sb
+         0E+8pEkDrX9OY4BO+3HeL7a8SytY51VUz0uAtobWWUQOjdMHn4wQqgTwmgG4ECmn6pTs
+         5j9w==
+X-Gm-Message-State: APjAAAXd6XPuoWnL3V62fauEMihB6fCFDcsQt4awNkxQLQxkNPYoz+oj
+        H8LBMxlK5xE1XJAPoNjF+rDd/8a2Ej0sKz/KN//wKg==
+X-Google-Smtp-Source: APXvYqypB9y/im+Z9qxmaZUuMkgXQGzTCs7vAzL0uU20Vdq5CFvQMJu0Kd+GW2/zmWzljJE618/x2qTXAZhWQCSOXPY=
+X-Received: by 2002:ac2:4424:: with SMTP id w4mr18492565lfl.65.1568086041766;
+ Mon, 09 Sep 2019 20:27:21 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07419aa2-d5aa-4f7a-299e-08d735930be6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2019 02:03:17.0233
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BGIEYtPqDXFjFswAS9NCsimrpLlbfRJu4znfIxlTq7iZ30WwagGGz9f6S5KNwS2glp/FdLjk/eIcEO+ynEikQHGxodPUWeKcaGlU/9aq0RZSNgkOnQReZp7X1eUvV+Ei
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAPR01MB2527
+References: <cover.1567740135.git.baolin.wang@linaro.org> <14599f7165f23db2bf7b71a2596e808e2bc2056c.1567740135.git.baolin.wang@linaro.org>
+ <3bcd69fd-2f8e-9b87-7292-4b0b1aa5be78@intel.com> <CAMz4kuKsk7ZN2BnD4zp53PQE22jD-BTsJLL53SL3ndZ5=OCHYA@mail.gmail.com>
+ <3d83db18-7e80-944c-fc4b-244249c71bbf@intel.com>
+In-Reply-To: <3d83db18-7e80-944c-fc4b-244249c71bbf@intel.com>
+From:   Baolin Wang <baolin.wang@linaro.org>
+Date:   Tue, 10 Sep 2019 11:27:09 +0800
+Message-ID: <CAMz4kuLLjDC_bLpen9qEsxEJTF5WWg9zsH_J-3Xp=Mj_Wss7Eg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] mmc: Add virtual command queue support
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Thierry,
-
-> From: Thierry Reding, Sent: Tuesday, September 10, 2019 4:19 AM
->=20
-> On Mon, Sep 09, 2019 at 06:13:31PM +0200, Christoph Hellwig wrote:
-> > On Mon, Sep 09, 2019 at 02:56:56PM +0200, Thierry Reding wrote:
-> > > From: Thierry Reding <treding@nvidia.com>
-> > >
-> > > When enabling the DMA map merging capability for a queue, ensure that
-> > > the maximum segment size does not exceed the device's limit.
+On Mon, 9 Sep 2019 at 20:45, Adrian Hunter <adrian.hunter@intel.com> wrote:
+>
+> On 9/09/19 3:16 PM, Baolin Wang wrote:
+> > Hi Adrian,
 > >
-> > We can't do that unfortunately.  If we use the virt_boundary setting
-> > we do aggressive merges that there is no accounting for.  So we can't
-> > limit the segment size.
->=20
-> But that's kind of the point here. My understanding is that the maximum
-> segment size in the device's DMA parameters defines the maximum size of
-> the segment that the device can handle.
->=20
-> In the particular case that I'm trying to fix, according to the SDHCI
-> specification, these devices can handle segments that are a maximum of
-> 64 KiB in size. If we allow that segment size to be exceeded, the device
-> will no longer be able to handle them.
->=20
-> > And at least for the case how devices usually do the addressing
-> > (page based on not sgl based) that needs the virt_boundary there isn't
-> > really any concept like a segment anyway.
->=20
-> I do understand that aspect of it. However, devices that do the
-> addressing this way, wouldn't they want to set the maximum segment size
-> to something large (like UINT_MAX, which many users that don't have the
-> concept of a segment already do)?
->=20
-> If you disagree, do you have any alternative proposals other than
-> reverting the offending patch? linux-next is currently broken on all
-> systems where the SDHCI controller is behind an IOMMU.
+> > On Mon, 9 Sep 2019 at 20:02, Adrian Hunter <adrian.hunter@intel.com> wrote:
+> >>
+> >> On 6/09/19 6:52 AM, Baolin Wang wrote:
+> >>> Now the MMC read/write stack will always wait for previous request is
+> >>> completed by mmc_blk_rw_wait(), before sending a new request to hardware,
+> >>> or queue a work to complete request, that will bring context switching
+> >>> overhead, especially for high I/O per second rates, to affect the IO
+> >>> performance.
+> >>>
+> >>> Thus this patch introduces virtual command queue interface, which is
+> >>> similar with the hardware command queue engine's idea, that can remove
+> >>> the context switching.
+> >>
+> >> CQHCI is a hardware interface for eMMC's that support command queuing.  What
+> >> you are doing is a software issue queue, unrelated to CQHCI.  I think you
+> >
+> > Yes.
+> >
+> >> should avoid all reference to CQHCI i.e. call it something else.
+> >
+> > Since its process is similar with CQHCI and re-use the CQHCI's
+> > interfaces, I called it virtual command queue. I am not sure what else
+> > name is better, any thoughts? VCQHCI? Thanks.
+>
+> What about swq for software queue.  Maybe Ulf can suggest something?
 
-I'm sorry for causing this trouble on your environment. I have a proposal t=
-o
-resolve this issue. The mmc_host struct will have a new caps2 flag
-like MMC_CAP2_MERGE_CAPABLE and add a condition into the queue.c like below=
-.
+Um, though changing to use swq, still need reuse command queue's
+interfaces, like 'mq->use-cqe', 'host->cqe_depth' and cqe ops and so
+on, looks a little weird for me. But if you all agree with this name,
+then I am okay. Ulf, what do you suggest?
 
-+	if (host->caps2 & MMC_CAP2_MERGE_CAPABLE &&
-+	    host->max_segs < MMC_DMA_MAP_MERGE_SEGMENTS &&
-	    dma_get_merge_boundary(mmc_dev(host)))
-		host->can_dma_map_merge =3D 1;
-	else
-		host->can_dma_map_merge =3D 0;
-
-After that, all mmc controllers disable the feature as default, and if a mm=
-c
-controller has such capable, the host driver should set the flag.
-Ulf, is such a patch acceptable for v5.4-rcN? Anyway, I'll submit such a pa=
-tch later.
-
-Best regards,
-Yoshihiro Shimoda
-
-> Thierry
-
+-- 
+Baolin Wang
+Best Regards
