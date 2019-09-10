@@ -2,59 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6331DAE2BA
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 06:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A76DFAE387
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Sep 2019 08:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725857AbfIJEDD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 10 Sep 2019 00:03:03 -0400
-Received: from relmlor1.renesas.com ([210.160.252.171]:54600 "EHLO
-        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725283AbfIJEDD (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Sep 2019 00:03:03 -0400
-X-IronPort-AV: E=Sophos;i="5.64,487,1559487600"; 
-   d="scan'208";a="26188877"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 10 Sep 2019 13:02:59 +0900
-Received: from localhost.localdomain (unknown [10.166.17.210])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 9E351400194B;
-        Tue, 10 Sep 2019 13:02:59 +0900 (JST)
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com
-Cc:     treding@nvidia.com, linux-mmc@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH 2/2] mmc: renesas_sdhi_internal_dmac: Add MMC_CAP2_MERGE_CAPABLE
-Date:   Tue, 10 Sep 2019 13:02:59 +0900
-Message-Id: <1568088179-16865-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1568088179-16865-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-References: <1568088179-16865-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S1729465AbfIJGNx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 Sep 2019 02:13:53 -0400
+Received: from verein.lst.de ([213.95.11.211]:56516 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729301AbfIJGNw (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 10 Sep 2019 02:13:52 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id E7A4868B02; Tue, 10 Sep 2019 08:13:48 +0200 (CEST)
+Date:   Tue, 10 Sep 2019 08:13:48 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH 1/3] block: Respect the device's maximum segment size
+Message-ID: <20190910061348.GA30982@lst.de>
+References: <20190909125658.30559-1-thierry.reding@gmail.com> <20190909125658.30559-2-thierry.reding@gmail.com> <20190909161331.GA19650@lst.de> <20190909191911.GC23804@mithrandir> <TYAPR01MB454470364B682B9BF708E557D8B60@TYAPR01MB4544.jpnprd01.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <TYAPR01MB454470364B682B9BF708E557D8B60@TYAPR01MB4544.jpnprd01.prod.outlook.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Since this host controller can merge bigger segments if DMA API
-layer cam merge the segments, this patch adds the flag.
+On Tue, Sep 10, 2019 at 02:03:17AM +0000, Yoshihiro Shimoda wrote:
+> I'm sorry for causing this trouble on your environment. I have a proposal to
+> resolve this issue. The mmc_host struct will have a new caps2 flag
+> like MMC_CAP2_MERGE_CAPABLE and add a condition into the queue.c like below.
+> 
+> +	if (host->caps2 & MMC_CAP2_MERGE_CAPABLE &&
+> +	    host->max_segs < MMC_DMA_MAP_MERGE_SEGMENTS &&
+> 	    dma_get_merge_boundary(mmc_dev(host)))
+> 		host->can_dma_map_merge = 1;
+> 	else
+> 		host->can_dma_map_merge = 0;
+> 
+> After that, all mmc controllers disable the feature as default, and if a mmc
+> controller has such capable, the host driver should set the flag.
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
----
- drivers/mmc/host/renesas_sdhi_internal_dmac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-index 751fe91..a66f8d6 100644
---- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-+++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-@@ -106,7 +106,7 @@ static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
- 			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2,
- 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
- 			  MMC_CAP_CMD23,
--	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
-+	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT | MMC_CAP2_MERGE_CAPABLE,
- 	.bus_shift	= 2,
- 	.scc_offset	= 0x1000,
- 	.taps		= rcar_gen3_scc_taps,
--- 
-2.7.4
-
+That sounds sensible to me.  Alternatively we'd have to limit
+max_sectors to 16-bit values for sdhci if using an iommu that can
+merge.
