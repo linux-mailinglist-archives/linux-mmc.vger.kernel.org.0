@@ -2,60 +2,56 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA38EAFEA1
-	for <lists+linux-mmc@lfdr.de>; Wed, 11 Sep 2019 16:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87D7DAFEA3
+	for <lists+linux-mmc@lfdr.de>; Wed, 11 Sep 2019 16:21:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728110AbfIKOVn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 11 Sep 2019 10:21:43 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:45915 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728181AbfIKOVn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Sep 2019 10:21:43 -0400
-Received: by mail-vs1-f65.google.com with SMTP id s3so13817342vsi.12
-        for <linux-mmc@vger.kernel.org>; Wed, 11 Sep 2019 07:21:42 -0700 (PDT)
+        id S1728230AbfIKOVs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 11 Sep 2019 10:21:48 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:39229 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728054AbfIKOVr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Sep 2019 10:21:47 -0400
+Received: by mail-vs1-f68.google.com with SMTP id y62so13825975vsb.6
+        for <linux-mmc@vger.kernel.org>; Wed, 11 Sep 2019 07:21:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=nNQLAaHUHZxYUSMT1J/A7Ih8261Mrki+Cw1p0rlmNX8=;
-        b=iivHYilyJ9TUXUdXgier7M4mee7Duyop+p71Pl0nbuxXPTlfMHKqCIGolPaaZd22/k
-         svQ2bCrwbMKIpp7+8b0gd9FndAX30QzO35/WWOtFgdW+xR8cP4eOezOkIqN6y6bdhAXJ
-         89arpp3uJxACcHBmfs1GGOgkA/u6GpWx/MVnYSq249JYt0Cj+sXxlSTeS5adQ0SQ6tYG
-         O8HAJ9audr9wZEFM+1BFpFoPax7anXjFppESWGrptWZoOP207nPn1Dxk4NcGPnAqBYwU
-         V35EkNpWg1bXMNMHBV8bglEXqT/7ySG03XYvxdK/luK4PkmVQb/Ii3RODRwIEW6eQSjj
-         auOg==
+        bh=SE8uv0620DszQIIqIp0PxyUJ6JTkZhRtluqSwePzHjw=;
+        b=jbGWlG/fZofyHg1AjrnEcVtreKeWj+MwNubg9oxIHHP267Ghc0/E2+C8uMrwIl69go
+         HA3HXaeo0eVPhNZw2UVhX4PHs4f5jlZsfKYEZJahGz/5VFYsXh4x17PXHguT4aS3oY5a
+         6CNanWI7Z/pTfiDzXPjIQOGd9O1pXM8ijzyhMseiFhJHjuT4osQ6G2Bfv5DttnMQIPl5
+         nG/ABXcryPJf3QQgxhPJbQrIDzrhgD0GuV1HqnxTArLkPKPginX4zIBOj39gEriHZnPs
+         7FYMgo8Ekzg2F7rTkjR6VZ6DrJsxDtWE10i1B7+1wcU/NSt8EkkWHkCLbzAsfUUJqw9s
+         FZhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=nNQLAaHUHZxYUSMT1J/A7Ih8261Mrki+Cw1p0rlmNX8=;
-        b=C+zgqE7CIGpW+KNHdpnGIWV2lq1XInUzsQxzKQ+6Pbgui5eKfnl4/yEU1hW8EZpv5y
-         fNkjPmwA5R2a71t36cjddhR3Tg/Z6hMbRUKE4Bks5OQ19UGU3Vqy99gYytXniJHgsZO/
-         4m7PTipSzQXoBzIoGMvQnuOWerZENPAy6z0Xnc/HU+grjljBYj094U1fzTZ30zXOIbz3
-         aHEVt8hPMfJ0pyJo63g7TDyQWOPrGm05plEg+8Tc/qyAL6cvagptlwwHe82JbT1NvDH0
-         Y8J1aWORddxKYE3btZyh2N5F0e4CbaHbfkFFhF1FEuE2CHRGZoj134Wu0rrmjQBpg7lr
-         IJag==
-X-Gm-Message-State: APjAAAVoyeJSf6JA+Ib97GsNR0ZFIW4EO+axoh1LHq7vdTSM634bLYD0
-        idQxDl06ktw9fbHfjo+vGPU8DWZUohqmHYryR2Q3i9qg+V8x7w==
-X-Google-Smtp-Source: APXvYqzvX0jRUjotQgNbokEtb0cVlv2nwPsN8d5DgMZaTbJuMOC5uy7G2qiEtJ7AyLBysxY8B/tN+1Ihh21RRcbdtAI=
-X-Received: by 2002:a67:e246:: with SMTP id w6mr6456701vse.200.1568211701960;
- Wed, 11 Sep 2019 07:21:41 -0700 (PDT)
+        bh=SE8uv0620DszQIIqIp0PxyUJ6JTkZhRtluqSwePzHjw=;
+        b=mXYX3DkVO4vl6OQD3TsJvguhCV+8rqyi9FWcrgi6a+1Owr0BYmK2qaUUEUGGvgQXz4
+         2Uenb9oI44ptC6Z4bmV1rHVvkXWCZjgd52eY3O2ibC18FZzoB6hhk5MeAwu5RZaZR1d3
+         /TfMp8R1GTbgTU6ulo9Bqxl0C0sj6xuhBTce9u5gxT35JcFbciyBFN/qMnx6vdDD5s0F
+         Hyh/JkHb/y0K//GQctepZxb76k+zzYaKBd1M7GYYKHCrfDi1KVXz7EDnPI75615x/kAk
+         pmYabmGeVUsnpDSwK3Wj0HlQ3Q4MVpSIVPmO5veElNYU1L3cAvN1X5Ei5d7QLWuRobj+
+         nTcg==
+X-Gm-Message-State: APjAAAXv+hTqcOUfJ0oVtu9j0et2SQxWSWvOQH+TLtsTZbtpqGUwMyN9
+        AiPelognEPCRVs0To6ml24ILpKbctTMMSHDdpEKSEQ==
+X-Google-Smtp-Source: APXvYqxLO/N6RIaYCa3g/6C9VO4qOYNMICb4ruutrNimvJNFOZl7tnk35z7d5rSoqmOeAWgEFUSoUo4Y6m6XP29/sI4=
+X-Received: by 2002:a67:983:: with SMTP id 125mr20385963vsj.191.1568211706866;
+ Wed, 11 Sep 2019 07:21:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190908101236.2802-1-ulf.hansson@linaro.org>
-In-Reply-To: <20190908101236.2802-1-ulf.hansson@linaro.org>
+References: <20190906091719.24886-1-colin.king@canonical.com>
+In-Reply-To: <20190906091719.24886-1-colin.king@canonical.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 11 Sep 2019 16:21:06 +0200
-Message-ID: <CAPDyKFrx1pGSp56fZ6ksmWKpv66mMdPas=VE3V6JwF4J_xwCKQ@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] mmc: core: PM fixes/improvements for SDIO IRQs
-To:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>
-Cc:     Shawn Lin <shawn.lin@rock-chips.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Yong Mao <yong.mao@mediatek.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
+Date:   Wed, 11 Sep 2019 16:21:10 +0200
+Message-ID: <CAPDyKFqriNuywSzk-c77==abgJQLWRXuKWSn_04jVy+gaB8h-Q@mail.gmail.com>
+Subject: Re: [PATCH] mmc: dw_mmc: hi3798cv200: make array degrees static
+ const, makes object smaller
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
@@ -63,63 +59,48 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 8 Sep 2019 at 12:12, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+On Fri, 6 Sep 2019 at 11:17, Colin King <colin.king@canonical.com> wrote:
 >
-> Changes in v2:
->         - Added reviewed/tested-by tags.
->         - Updated some changelogs.
->         - Renamed sdio_irq_enabled() to sdio_irq_claimed().
->         - Don't set sdio_irq_pending when resuming SDIO card, but just queue the
->         work.
+> From: Colin Ian King <colin.king@canonical.com>
 >
-> The power management support for SDIO cards have slowly been improved, but
-> there are still quite some serious problems, especially when dealing with the
-> so called SDIO IRQs during system suspend/resume.
+> Don't populate the array degrees on the stack but instead make it
+> static const. Makes the object code smaller by 46 bytes.
 >
-> This series makes some additional improvements to this code in the mmc core,
-> but also includes some needed adaptations for the sdhci, the dw_mmc and the
-> mtk-sd host drivers.
+> Before:
+>    text    data     bss     dec     hex filename
+>    5356    1560       0    6916    1b04 dw_mmc-hi3798cv200.o
 >
-> The series is also available at:
-> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git sdio_irq_suspend_next_v2
+> After:
+>    text    data     bss     dec     hex filename
+>    5214    1656       0    6870    1ad6 dw_mmc-hi3798cv200.o
 >
-> Kind regards
-> Uffe
+> (gcc version 9.2.1, amd64)
 >
->
-> Matthias Kaehlcke (1):
->   mmc: core: Move code to get pending SDIO IRQs to a function
->
-> Ulf Hansson (10):
->   mmc: core: Add helper function to indicate if SDIO IRQs is enabled
->   mmc: dw_mmc: Re-store SDIO IRQs mask at system resume
->   mmc: mtk-sd: Re-store SDIO IRQs mask at system resume
->   mmc: core: Clarify sdio_irq_pending flag for
->     MMC_CAP2_SDIO_IRQ_NOTHREAD
->   mmc: core: Clarify that the ->ack_sdio_irq() callback is mandatory
->   mmc: core: WARN if SDIO IRQs are enabled for non-powered card in
->     suspend
->   mmc: core: Fixup processing of SDIO IRQs during system suspend/resume
->   mmc: sdhci: Drop redundant check in sdhci_ack_sdio_irq()
->   mmc: sdhci: Drop redundant code for SDIO IRQs
->   mmc: sdhci: Convert to use sdio_irq_claimed()
->
->  drivers/mmc/core/sdio.c            |  4 ++-
->  drivers/mmc/core/sdio_irq.c        | 57 +++++++++++++++++++-----------
->  drivers/mmc/host/dw_mmc.c          |  4 +++
->  drivers/mmc/host/mtk-sd.c          |  3 ++
->  drivers/mmc/host/sdhci-esdhc-imx.c | 34 ++++++++----------
->  drivers/mmc/host/sdhci.c           | 12 ++-----
->  drivers/mmc/host/sdhci.h           |  6 ----
->  include/linux/mmc/host.h           | 10 ++++++
->  8 files changed, 75 insertions(+), 55 deletions(-)
->
-> --
-> 2.17.1
->
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-So, I have queued this up for next (using v3 of patch 3), thanks all
-for reviewing and testing!
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/host/dw_mmc-hi3798cv200.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/dw_mmc-hi3798cv200.c b/drivers/mmc/host/dw_mmc-hi3798cv200.c
+> index bc51cef47c47..83e1bad0a008 100644
+> --- a/drivers/mmc/host/dw_mmc-hi3798cv200.c
+> +++ b/drivers/mmc/host/dw_mmc-hi3798cv200.c
+> @@ -66,7 +66,7 @@ static void dw_mci_hi3798cv200_set_ios(struct dw_mci *host, struct mmc_ios *ios)
+>  static int dw_mci_hi3798cv200_execute_tuning(struct dw_mci_slot *slot,
+>                                              u32 opcode)
+>  {
+> -       int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
+> +       static const int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
+>         struct dw_mci *host = slot->host;
+>         struct hi3798cv200_priv *priv = host->priv;
+>         int raise_point = -1, fall_point = -1;
+> --
+> 2.20.1
+>
