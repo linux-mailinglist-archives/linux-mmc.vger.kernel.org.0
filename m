@@ -2,167 +2,261 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DAFDAFD86
-	for <lists+linux-mmc@lfdr.de>; Wed, 11 Sep 2019 15:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A7DAFE83
+	for <lists+linux-mmc@lfdr.de>; Wed, 11 Sep 2019 16:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728139AbfIKNPW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 11 Sep 2019 09:15:22 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:37880 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728135AbfIKNPV (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Sep 2019 09:15:21 -0400
-Received: by mail-pf1-f193.google.com with SMTP id y5so10905724pfo.4
-        for <linux-mmc@vger.kernel.org>; Wed, 11 Sep 2019 06:15:21 -0700 (PDT)
+        id S1726012AbfIKORe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 11 Sep 2019 10:17:34 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:33068 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726381AbfIKORe (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Sep 2019 10:17:34 -0400
+Received: by mail-vs1-f67.google.com with SMTP id s18so13863897vsa.0
+        for <linux-mmc@vger.kernel.org>; Wed, 11 Sep 2019 07:17:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :in-reply-to:references;
-        bh=HJGZrNijsmlC5WTcQ4d8JI7jp4tO9JVLJxVcQXONoXo=;
-        b=uyKc+aH4wratJZkJatOcySBRFbiAHLNyssKiIe5+5Gg+7LIiuamaypPhAC6tpNkoAi
-         DtKNRqmoKD/BbzkoSATkV9Gm4UC5lDJRgz1Zr9hmpyv6faXhjpSSwYDcbJBjwcB1uznb
-         nK8FFqbVs6fwO6tcPELepSySimc//fSBv5YkUYLwx0rR55tpmZo5MLAPKDr6BOEEZm4V
-         miGE/jElyvvcUGhB1/QqJx9eTkyK8LqNtQ4KBgob1qHPfF5TJIgcA+HNmlMcDkVD4iMI
-         h6Jsaz8DcEn8IoXxxJ0RPaxB5EJNH4DFlfs1O1+tywoaqTg685b4Qxgal76ncan4lDR1
-         hPew==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=l+9pvgORhqnWUSyFDG/LHfU+Cb2BybcfpX2WH+KolT4=;
+        b=qpKXGCDTjnXktk634PobR/AmUOeK2HpvCUenfoJPuMpSlkLF9ncwMkAW9a33LdOFiw
+         Q91vmmdx+/1eXOFiugfbRF485LfBxmnsLgGW7EMwSPrjzAR++Ub4kOSGuNd/ylVjVq3i
+         tpYwUTv2UpQW7DqhiIn478OonrT8wafTamRHjxXKG0xE+gRvSLFZVkN2VISLi/uZ7B64
+         Imc60p8e3DpzuhmuzuDX0kv1V5Xh5DDzlRUUmj9jOn9S3UFt5DkUTix8wjjMNvWfmPVN
+         JD0VbS5ivTtXlAuKRVHcsWyoiAPVDKB6FU0ww6Y7EQbhj6AfNbWJypGk7OVMp05qL7Qi
+         7fhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:in-reply-to:references;
-        bh=HJGZrNijsmlC5WTcQ4d8JI7jp4tO9JVLJxVcQXONoXo=;
-        b=eUpFacmZ74+VVIMZH3MqUoXyxoCGS6oiTnbcQCC8dpODfher5AwTT5wl4hymW2fVhK
-         Z8Yq27Jfhw/tA7ji5quo4Tl13R2ruGPd/RzQqoH+tqv3RnelvNE/MIeqtLue3Ssk7Z/h
-         pyxtxg6n2Q9Z/Uz+PatEjYJ7ffpJrvB7/bsPbvXZuuURJmDZtGmRGV623AhsOCJqgN3H
-         EILao9cumqzaLm7QB9puKiOMsP4n5CsyiiGjVRuBamNPtT1JWjcedHwPEx/5TEtBD/Q8
-         9PrPuIvLQU8n2PHqWTjPav9NBOkULLoyHcURT1iUYbbqSjuWaPLyP+W9MfCB9t2qgNjU
-         QgQQ==
-X-Gm-Message-State: APjAAAX3HZvEzeWeMvQuKKaPAxyWLr1jO3U9jpTThM5qe/7mtQA29AGY
-        GYnlHZ1a4auEc4J7/u2ZkMnqrQ==
-X-Google-Smtp-Source: APXvYqwaBtIn5Ydg+bFThEB8HKE8FUyy085EWCxRpciLQul2CPSU5IOFKxXZ+54lEHwo+5eJRhNwRg==
-X-Received: by 2002:a17:90a:17c5:: with SMTP id q63mr5449836pja.106.1568207720620;
-        Wed, 11 Sep 2019 06:15:20 -0700 (PDT)
-Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id e21sm6420120pgr.43.2019.09.11.06.15.16
-        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 11 Sep 2019 06:15:19 -0700 (PDT)
-From:   Baolin Wang <baolin.wang@linaro.org>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        asutoshd@codeaurora.org
-Cc:     orsonzhai@gmail.com, zhang.lyra@gmail.com, arnd@arndb.de,
-        linus.walleij@linaro.org, vincent.guittot@linaro.org,
-        baolin.wang@linaro.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/4] mmc: host: sdhci-sprd: Add software queue support
-Date:   Wed, 11 Sep 2019 21:14:43 +0800
-Message-Id: <351897e271069582a7ce7775fd803d556b5bebde.1568206300.git.baolin.wang@linaro.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <cover.1568206300.git.baolin.wang@linaro.org>
-References: <cover.1568206300.git.baolin.wang@linaro.org>
-In-Reply-To: <cover.1568206300.git.baolin.wang@linaro.org>
-References: <cover.1568206300.git.baolin.wang@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=l+9pvgORhqnWUSyFDG/LHfU+Cb2BybcfpX2WH+KolT4=;
+        b=p4Hf8YTW6/YzEZ8OOLLYVM/l3wdVBnU2vVRcykM3V+XSVLEPHJzjysdFkss1TEYUWd
+         sn8/zoTcM9B8Wkn62Uikr++LkHcmib63GWeRIMo9wZFdvg15Ls+NVpcKe9+qYpchRF5n
+         8q85TPhvSI2vDrSNDJANb9IzgvgIBTCx3r40zg2ZaL4eP4EOJwOttUPn/4z6crP4hL/C
+         tLi0Kdav9LiBDuEd1a8OcKhRj+BsmE0MR813sndH9NLMiDpoxT4v80PA2aLq/W8aW/mT
+         5VYzGQ1AhA8Jop5IiZxGQDJntaXN/aLmf4R8ojbN/PvWkp5SSD+c2BI/9m+xujN5GX1L
+         fKpg==
+X-Gm-Message-State: APjAAAVJo9WzhKj+AkfGyvvNMiiXRtL7ojd88YejY/nCytk/dlDesVKq
+        rXspXRJso1JlTg87bLz5jWb3HzWcoNjXLsj+ATARsfmuJPY=
+X-Google-Smtp-Source: APXvYqyRnx3kUKn4DKp57bVoVos2gBWXyYttvV4PnVC8dAVa06xYZVQJpAUDKjDTaY0Hm2CzWx3LSgGpQr9ZHtbBHuw=
+X-Received: by 2002:a67:eb51:: with SMTP id x17mr10746289vso.34.1568211452965;
+ Wed, 11 Sep 2019 07:17:32 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190909104649.4960-1-ulf.hansson@linaro.org>
+In-Reply-To: <20190909104649.4960-1-ulf.hansson@linaro.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 11 Sep 2019 16:16:56 +0200
+Message-ID: <CAPDyKFp8ruNvNM-EJxk_eF4YLRzpTU1H4cAyK1jZSk=S+NbmrQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: tmio: Fixup runtime PM management during probe and remove
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     Ulrich Hecht <uli+renesas@fpond.eu>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Niklas Soderlund <niklas.soderlund@ragnatech.se>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add software queue support to improve the performance.
+On Mon, 9 Sep 2019 at 12:46, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> During probe, tmio variant drivers calls pm_runtime_enable() before they
+> call tmio_mmc_host_probe(). This doesn't work as expected, because
+> tmio_mmc_host_probe() calls pm_runtime_set_active(), which fails to set the
+> status to RPM_ACTIVE for the device, when its been enabled for runtime PM.
+>
+> Fix this by calling pm_runtime_enable() from tmio_mmc_host_probe() instead.
+> To avoid the device from being runtime suspended during the probe phase,
+> let's also increase the runtime PM usage count in tmio_mmc_host_probe().
+> Consequentially, each tmio variant driver can decide themselves when to
+> call pm_runtime_put(), to allow the device to become runtime suspended.
+>
+> Additionally, if the tmio variant driver decided to call pm_runtime_put()
+> during probe, it's is expected that it also calls pm_runtime_get_sync() to
+> restore the usage count, before it calls tmio_mmc_host_remove().
+>
+> Fixes: 7ff213193310 ("mmc: tmio: move runtime PM enablement to the driver implementations")
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
----
- drivers/mmc/host/Kconfig      |    1 +
- drivers/mmc/host/sdhci-sprd.c |   26 ++++++++++++++++++++++++++
- 2 files changed, 27 insertions(+)
+So I decided to apply this for my fixes branch, as to get it tested
+for a few days.
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index d117f18..862e8e9 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -619,6 +619,7 @@ config MMC_SDHCI_SPRD
- 	depends on ARCH_SPRD
- 	depends on MMC_SDHCI_PLTFM
- 	select MMC_SDHCI_IO_ACCESSORS
-+	select MMC_SQHCI
- 	help
- 	  This selects the SDIO Host Controller in Spreadtrum
- 	  SoCs, this driver supports R11(IP version: R11P0).
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index d07b979..f6f157f 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -19,6 +19,7 @@
- #include <linux/slab.h>
- 
- #include "sdhci-pltfm.h"
-+#include "sqhci.h"
- 
- /* SDHCI_ARGUMENT2 register high 16bit */
- #define SDHCI_SPRD_ARG2_STUFF		GENMASK(31, 16)
-@@ -379,6 +380,16 @@ static unsigned int sdhci_sprd_get_ro(struct sdhci_host *host)
- 	return 0;
- }
- 
-+static void sdhci_sprd_request_done(struct sdhci_host *host,
-+				    struct mmc_request *mrq)
-+{
-+	/* Validate if the request was from software queue firstly. */
-+	if (sqhci_finalize_request(host->mmc, mrq))
-+		return;
-+
-+	 mmc_request_done(host->mmc, mrq);
-+}
-+
- static struct sdhci_ops sdhci_sprd_ops = {
- 	.read_l = sdhci_sprd_readl,
- 	.write_l = sdhci_sprd_writel,
-@@ -392,6 +403,7 @@ static unsigned int sdhci_sprd_get_ro(struct sdhci_host *host)
- 	.hw_reset = sdhci_sprd_hw_reset,
- 	.get_max_timeout_count = sdhci_sprd_get_max_timeout_count,
- 	.get_ro = sdhci_sprd_get_ro,
-+	.request_done = sdhci_sprd_request_done,
- };
- 
- static void sdhci_sprd_request(struct mmc_host *mmc, struct mmc_request *mrq)
-@@ -521,6 +533,7 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- {
- 	struct sdhci_host *host;
- 	struct sdhci_sprd_host *sprd_host;
-+	struct cqhci_host *sq_host;
- 	struct clk *clk;
- 	int ret = 0;
- 
-@@ -631,6 +644,16 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 
- 	sprd_host->flags = host->flags;
- 
-+	sq_host = devm_kzalloc(&pdev->dev, sizeof(*sq_host), GFP_KERNEL);
-+	if (!sq_host) {
-+		ret = -ENOMEM;
-+		goto err_cleanup_host;
-+	}
-+
-+	ret = sqhci_init(sq_host, host->mmc);
-+	if (ret)
-+		goto err_cleanup_host;
-+
- 	ret = __sdhci_add_host(host);
- 	if (ret)
- 		goto err_cleanup_host;
-@@ -689,6 +712,7 @@ static int sdhci_sprd_runtime_suspend(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
- 
-+	sqhci_suspend(host->mmc);
- 	sdhci_runtime_suspend_host(host);
- 
- 	clk_disable_unprepare(sprd_host->clk_sdio);
-@@ -717,6 +741,8 @@ static int sdhci_sprd_runtime_resume(struct device *dev)
- 		goto clk_disable;
- 
- 	sdhci_runtime_resume_host(host, 1);
-+	sqhci_resume(host->mmc);
-+
- 	return 0;
- 
- clk_disable:
--- 
-1.7.9.5
+If you have any objections, please tell.
 
+Kind regards
+Uffe
+
+> ---
+>  drivers/mmc/host/renesas_sdhi_core.c | 10 +++-------
+>  drivers/mmc/host/tmio_mmc.c          |  6 ++----
+>  drivers/mmc/host/tmio_mmc_core.c     |  8 +++++---
+>  drivers/mmc/host/uniphier-sd.c       |  6 ++----
+>  4 files changed, 12 insertions(+), 18 deletions(-)
+>
+> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+> index 4c9774dbcfc1..6846c6b688a2 100644
+> --- a/drivers/mmc/host/renesas_sdhi_core.c
+> +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> @@ -777,8 +777,6 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+>         /* All SDHI have SDIO status bits which must be 1 */
+>         mmc_data->flags |= TMIO_MMC_SDIO_STATUS_SETBITS;
+>
+> -       pm_runtime_enable(&pdev->dev);
+> -
+>         ret = renesas_sdhi_clk_enable(host);
+>         if (ret)
+>                 goto efree;
+> @@ -845,6 +843,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+>                 goto eirq;
+>         }
+>
+> +       pm_runtime_put(&pdev->dev);
+> +
+>         dev_info(&pdev->dev, "%s base at 0x%08lx max clock rate %u MHz\n",
+>                  mmc_hostname(host->mmc), (unsigned long)
+>                  (platform_get_resource(pdev, IORESOURCE_MEM, 0)->start),
+> @@ -858,9 +858,6 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+>         renesas_sdhi_clk_disable(host);
+>  efree:
+>         tmio_mmc_host_free(host);
+> -
+> -       pm_runtime_disable(&pdev->dev);
+> -
+>         return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(renesas_sdhi_probe);
+> @@ -869,11 +866,10 @@ int renesas_sdhi_remove(struct platform_device *pdev)
+>  {
+>         struct tmio_mmc_host *host = platform_get_drvdata(pdev);
+>
+> +       pm_runtime_get_sync(&pdev->dev);
+>         tmio_mmc_host_remove(host);
+>         renesas_sdhi_clk_disable(host);
+>
+> -       pm_runtime_disable(&pdev->dev);
+> -
+>         return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(renesas_sdhi_remove);
+> diff --git a/drivers/mmc/host/tmio_mmc.c b/drivers/mmc/host/tmio_mmc.c
+> index 8539e10784b4..219029a1c420 100644
+> --- a/drivers/mmc/host/tmio_mmc.c
+> +++ b/drivers/mmc/host/tmio_mmc.c
+> @@ -172,7 +172,6 @@ static int tmio_mmc_probe(struct platform_device *pdev)
+>         host->mmc->f_max = pdata->hclk;
+>         host->mmc->f_min = pdata->hclk / 512;
+>
+> -       pm_runtime_enable(&pdev->dev);
+>
+>         ret = tmio_mmc_host_probe(host);
+>         if (ret)
+> @@ -184,6 +183,7 @@ static int tmio_mmc_probe(struct platform_device *pdev)
+>         if (ret)
+>                 goto host_remove;
+>
+> +       pm_runtime_put(&pdev->dev);
+>         pr_info("%s at 0x%08lx irq %d\n", mmc_hostname(host->mmc),
+>                 (unsigned long)host->ctl, irq);
+>
+> @@ -193,7 +193,6 @@ static int tmio_mmc_probe(struct platform_device *pdev)
+>         tmio_mmc_host_remove(host);
+>  host_free:
+>         tmio_mmc_host_free(host);
+> -       pm_runtime_disable(&pdev->dev);
+>  cell_disable:
+>         if (cell->disable)
+>                 cell->disable(pdev);
+> @@ -206,12 +205,11 @@ static int tmio_mmc_remove(struct platform_device *pdev)
+>         const struct mfd_cell *cell = mfd_get_cell(pdev);
+>         struct tmio_mmc_host *host = platform_get_drvdata(pdev);
+>
+> +       pm_runtime_get_sync(&pdev->dev);
+>         tmio_mmc_host_remove(host);
+>         if (cell->disable)
+>                 cell->disable(pdev);
+>
+> -       pm_runtime_disable(&pdev->dev);
+> -
+>         return 0;
+>  }
+>
+> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+> index 2cb3f951c3e2..ad8f3e902daa 100644
+> --- a/drivers/mmc/host/tmio_mmc_core.c
+> +++ b/drivers/mmc/host/tmio_mmc_core.c
+> @@ -1257,9 +1257,11 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
+>         /* See if we also get DMA */
+>         tmio_mmc_request_dma(_host, pdata);
+>
+> +       pm_runtime_get_noresume(&pdev->dev);
+>         pm_runtime_set_active(&pdev->dev);
+>         pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
+>         pm_runtime_use_autosuspend(&pdev->dev);
+> +       pm_runtime_enable(&pdev->dev);
+>
+>         ret = mmc_add_host(mmc);
+>         if (ret)
+> @@ -1283,9 +1285,6 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
+>         if (host->pdata->flags & TMIO_MMC_SDIO_IRQ)
+>                 sd_ctrl_write16(host, CTL_TRANSACTION_CTL, 0x0000);
+>
+> -       if (!host->native_hotplug)
+> -               pm_runtime_get_sync(&pdev->dev);
+> -
+>         dev_pm_qos_hide_latency_limit(&pdev->dev);
+>
+>         mmc_remove_host(mmc);
+> @@ -1294,7 +1293,10 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
+>         tmio_mmc_release_dma(host);
+>
+>         pm_runtime_dont_use_autosuspend(&pdev->dev);
+> +       if (host->native_hotplug)
+> +               pm_runtime_put_noidle(&pdev->dev);
+>         pm_runtime_put_sync(&pdev->dev);
+> +       pm_runtime_disable(&pdev->dev);
+>  }
+>  EXPORT_SYMBOL_GPL(tmio_mmc_host_remove);
+>
+> diff --git a/drivers/mmc/host/uniphier-sd.c b/drivers/mmc/host/uniphier-sd.c
+> index e09336f9166d..8f7bf138408b 100644
+> --- a/drivers/mmc/host/uniphier-sd.c
+> +++ b/drivers/mmc/host/uniphier-sd.c
+> @@ -629,7 +629,6 @@ static int uniphier_sd_probe(struct platform_device *pdev)
+>         host->clk_disable = uniphier_sd_clk_disable;
+>         host->set_clock = uniphier_sd_set_clock;
+>
+> -       pm_runtime_enable(&pdev->dev);
+>         ret = uniphier_sd_clk_enable(host);
+>         if (ret)
+>                 goto free_host;
+> @@ -647,12 +646,11 @@ static int uniphier_sd_probe(struct platform_device *pdev)
+>         if (ret)
+>                 goto free_host;
+>
+> +       pm_runtime_put(&pdev->dev);
+>         return 0;
+>
+>  free_host:
+>         tmio_mmc_host_free(host);
+> -       pm_runtime_disable(&pdev->dev);
+> -
+>         return ret;
+>  }
+>
+> @@ -660,9 +658,9 @@ static int uniphier_sd_remove(struct platform_device *pdev)
+>  {
+>         struct tmio_mmc_host *host = platform_get_drvdata(pdev);
+>
+> +       pm_runtime_get_sync(&pdev->dev);
+>         tmio_mmc_host_remove(host);
+>         uniphier_sd_clk_disable(host);
+> -       pm_runtime_disable(&pdev->dev);
+>
+>         return 0;
+>  }
+> --
+> 2.17.1
+>
