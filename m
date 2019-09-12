@@ -2,61 +2,49 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A5BB0782
-	for <lists+linux-mmc@lfdr.de>; Thu, 12 Sep 2019 06:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81A6CB0A0C
+	for <lists+linux-mmc@lfdr.de>; Thu, 12 Sep 2019 10:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726203AbfILEOA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 12 Sep 2019 00:14:00 -0400
-Received: from relmlor1.renesas.com ([210.160.252.171]:42304 "EHLO
-        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726166AbfILEOA (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 12 Sep 2019 00:14:00 -0400
-X-IronPort-AV: E=Sophos;i="5.64,495,1559487600"; 
-   d="scan'208";a="26391057"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie5.idc.renesas.com with ESMTP; 12 Sep 2019 13:13:57 +0900
-Received: from localhost.localdomain (unknown [10.166.17.210])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 09C4C417A2F1;
-        Thu, 12 Sep 2019 13:13:57 +0900 (JST)
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     hch@lst.de, ulf.hansson@linaro.org,
-        wsa+renesas@sang-engineering.com
-Cc:     treding@nvidia.com, linux-mmc@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH v2 2/2] mmc: renesas_sdhi_internal_dmac: Add MMC_CAP2_MERGE_CAPABLE
-Date:   Thu, 12 Sep 2019 13:13:56 +0900
-Message-Id: <1568261636-25625-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1568261636-25625-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-References: <1568261636-25625-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S1728582AbfILITs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 12 Sep 2019 04:19:48 -0400
+Received: from verein.lst.de ([213.95.11.211]:45250 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726952AbfILITs (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 12 Sep 2019 04:19:48 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id EDA73227A81; Thu, 12 Sep 2019 10:19:44 +0200 (CEST)
+Date:   Thu, 12 Sep 2019 10:19:44 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Ming Lei <ming.lei@redhat.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Jon Hunter <jonathanh@nvidia.com>, linux-block@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH 1/3] block: Respect the device's maximum segment size
+Message-ID: <20190912081944.GB14283@lst.de>
+References: <20190909125658.30559-1-thierry.reding@gmail.com> <20190909125658.30559-2-thierry.reding@gmail.com> <20190909161331.GA19650@lst.de> <20190912005728.GA2731@ming.t460p>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190912005728.GA2731@ming.t460p>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Since this host controller can merge bigger segments if DMA API
-layer cam merge the segments, this patch adds the flag.
+On Thu, Sep 12, 2019 at 08:57:29AM +0800, Ming Lei wrote:
+> Could you explain a bit why we can't do that?
+> 
+> The segment size limit is basically removed since the following commit
+> 200a9aff7b02 ("block: remove the segment size check in bio_will_gap").
+> 
+> Before that commit, the max segment size limit worked.
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
----
- drivers/mmc/host/renesas_sdhi_internal_dmac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-index 751fe91..a66f8d6 100644
---- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-+++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-@@ -106,7 +106,7 @@ static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
- 			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2,
- 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
- 			  MMC_CAP_CMD23,
--	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
-+	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT | MMC_CAP2_MERGE_CAPABLE,
- 	.bus_shift	= 2,
- 	.scc_offset	= 0x1000,
- 	.taps		= rcar_gen3_scc_taps,
--- 
-2.7.4
-
+No, it didn't as explained in the commit log.  It worked for some
+cases but not others.
