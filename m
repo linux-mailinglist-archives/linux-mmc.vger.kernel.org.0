@@ -2,111 +2,121 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FD97B1505
-	for <lists+linux-mmc@lfdr.de>; Thu, 12 Sep 2019 22:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AD3FB151E
+	for <lists+linux-mmc@lfdr.de>; Thu, 12 Sep 2019 22:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726483AbfILUEJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 12 Sep 2019 16:04:09 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:36946 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726017AbfILUEJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 12 Sep 2019 16:04:09 -0400
-Received: by mail-lj1-f195.google.com with SMTP id y5so14019654lji.4
-        for <linux-mmc@vger.kernel.org>; Thu, 12 Sep 2019 13:04:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ragnatech-se.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=dlSbUffYh87vX8XFargUby+DArN8nxc7+WgEvizRtOk=;
-        b=p8eAsF96FBBy97PBGSPmfUR5YfyYqueNYX6lDlnmnhVXKdRnL+kiVCB8ZubK4Hse/i
-         VWjcWW0bxVUC9EPK2axFdi9/uq3KoIZSYuTSot0pbcDGJMJD0hVvjIJ7mNPmSX7jN1N3
-         5+knXRRonfpK5kT1M8ungO0TnE3NyZws5zBRYWDJbT3P6mO6eFpvKH0uHit0NwcOgc3a
-         4y18ZYsfXFgpFHyG11YIfnXJpn7XaBTjjGQwOhT3MfsBSdqlbARd9kW5YRhlZZ6gw4Iu
-         Kzk3dxzbhb6ZwWpQXBMl5W7vJlrR4e8iczs+2m8thZwtS3B1hLHzQ8YhwBdsTJW8RsHA
-         InRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=dlSbUffYh87vX8XFargUby+DArN8nxc7+WgEvizRtOk=;
-        b=EfPhLZWsaxevOmWBjTjYWt46d+DFUmlaq+Xq13IRcmnBXrTVUv8MjualRs4fAoC02J
-         7y5fWhJBb0dasTaFZcqVrh0IHEoNOPjrrOa+yfXFxnymiEOwmFLbweYDPmq9jZBfemZj
-         EXObENqutZBbM71VzyBgqkE4NC2ci0EE+eywTdyh2xWNvvIcuMqORqq0wLoaYfVJl1NA
-         qQAJr0/OQkRz8xXYZYzuL60kfsvMotE8C3Zbh26MVeq2dOCV+kNBFKntQ2xPWgLAR7ql
-         x1nmLR++DTzyNyoA8WTVJLkSBVRnRbAavOPgbekraaS/PHn/AY8Wca1fA+/48dtOa4zF
-         q8gA==
-X-Gm-Message-State: APjAAAUzAUmYNc5pwUGf7TyLr3EMMBX4BDvoV3XDcpNYhdCKs2p7z6mI
-        CnNDQNA88BvlsjImNSfSbtupr2WB9EY=
-X-Google-Smtp-Source: APXvYqzpWncV0budLVT8z6vDldIgcOp6cLskECQJObHS1uwfTHS2nOIed1YkmEBHUxz3A/2ouMAGCg==
-X-Received: by 2002:a05:651c:1021:: with SMTP id w1mr19746096ljm.145.1568318647423;
-        Thu, 12 Sep 2019 13:04:07 -0700 (PDT)
-Received: from localhost (h-93-159.A463.priv.bahnhof.se. [46.59.93.159])
-        by smtp.gmail.com with ESMTPSA id t82sm6590944lff.58.2019.09.12.13.04.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Sep 2019 13:04:06 -0700 (PDT)
-Date:   Thu, 12 Sep 2019 22:04:06 +0200
-From:   Niklas Soderlund <niklas.soderlund@ragnatech.se>
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ulrich Hecht <uli+renesas@fpond.eu>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] mmc: tmio: Fixup runtime PM management during probe and
- remove
-Message-ID: <20190912200406.GC12549@bigcity.dyn.berto.se>
-References: <20190909104649.4960-1-ulf.hansson@linaro.org>
- <CAPDyKFp8ruNvNM-EJxk_eF4YLRzpTU1H4cAyK1jZSk=S+NbmrQ@mail.gmail.com>
- <20190912180547.GD919@kunai>
+        id S1727117AbfILUJ2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 12 Sep 2019 16:09:28 -0400
+Received: from esa5.microchip.iphmx.com ([216.71.150.166]:22175 "EHLO
+        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726329AbfILUJ2 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 12 Sep 2019 16:09:28 -0400
+Received-SPF: Pass (esa5.microchip.iphmx.com: domain of
+  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
+  permitted sender) identity=mailfrom;
+  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
+  envelope-from="Ludovic.Desroches@microchip.com";
+  x-sender="Ludovic.Desroches@microchip.com";
+  x-conformance=spf_only; x-record-type="v=spf1";
+  x-record-text="v=spf1 mx a:ushub1.microchip.com
+  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
+  a:mx2.microchip.iphmx.com include:servers.mcsv.net
+  include:mktomail.com include:spf.protection.outlook.com ~all"
+Received-SPF: None (esa5.microchip.iphmx.com: no sender
+  authenticity information available from domain of
+  postmaster@email.microchip.com) identity=helo;
+  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
+  envelope-from="Ludovic.Desroches@microchip.com";
+  x-sender="postmaster@email.microchip.com";
+  x-conformance=spf_only
+Authentication-Results: esa5.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
+IronPort-SDR: GNDS3s3JLom+rZWyh4asQBjdgjybdJ0dcQ2hqdbq+vyBSvzIzNWxxxEAF4k8wOmiy69Y1T4wFM
+ Icg+maMwEfwBJz4AmKAGEODNWM6ady0L8oH4dTjP2Nb1P+V4K80SRBwe9vbq9LToyj4obuNTHT
+ Vknd8HlloevCm0da1nN5v5a9X1FVo6fzd0DnPBz5CLTd22lctO6VBFgbauUSdrFyyo/69HRP6F
+ sZvmlxkNMMmMZqLmDomdzkTO+VojPt96Hz1RDLwLMTvvFRfTCnGeaNHOMu56urR3aMusoO+A9M
+ rXw=
+X-IronPort-AV: E=Sophos;i="5.64,498,1559545200"; 
+   d="scan'208";a="47283694"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 12 Sep 2019 13:09:27 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 12 Sep 2019 13:09:25 -0700
+Received: from sekiro.microchip.com (10.10.85.251) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.1713.5 via Frontend Transport; Thu, 12 Sep 2019 13:09:24 -0700
+From:   Ludovic Desroches <ludovic.desroches@microchip.com>
+To:     <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <nicolas.ferre@microchip.com>,
+        <ludovic.desroches@microchip.com>, <adrian.hunter@intel.com>,
+        <linux-kernel@vger.kernel.org>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <claudiu.beznea@microchip.com>
+Subject: [PATCH 1/3] dt-bindings: sdhci-of-at91: new compatible string and update properties
+Date:   Thu, 12 Sep 2019 22:09:06 +0200
+Message-ID: <20190912200908.31318-1-ludovic.desroches@microchip.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190912180547.GD919@kunai>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 2019-09-12 19:05:47 +0100, Wolfram Sang wrote:
-> On Wed, Sep 11, 2019 at 04:16:56PM +0200, Ulf Hansson wrote:
-> > On Mon, 9 Sep 2019 at 12:46, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > >
-> > > During probe, tmio variant drivers calls pm_runtime_enable() before they
-> > > call tmio_mmc_host_probe(). This doesn't work as expected, because
-> > > tmio_mmc_host_probe() calls pm_runtime_set_active(), which fails to set the
-> > > status to RPM_ACTIVE for the device, when its been enabled for runtime PM.
-> > >
-> > > Fix this by calling pm_runtime_enable() from tmio_mmc_host_probe() instead.
-> > > To avoid the device from being runtime suspended during the probe phase,
-> > > let's also increase the runtime PM usage count in tmio_mmc_host_probe().
-> > > Consequentially, each tmio variant driver can decide themselves when to
-> > > call pm_runtime_put(), to allow the device to become runtime suspended.
-> > >
-> > > Additionally, if the tmio variant driver decided to call pm_runtime_put()
-> > > during probe, it's is expected that it also calls pm_runtime_get_sync() to
-> > > restore the usage count, before it calls tmio_mmc_host_remove().
-> > >
-> > > Fixes: 7ff213193310 ("mmc: tmio: move runtime PM enablement to the driver implementations")
-> > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > 
-> > So I decided to apply this for my fixes branch, as to get it tested
-> > for a few days.
-> > 
-> > If you have any objections, please tell.
-> 
-> Sadly, I can't test until next week because I am still on the road. Yet,
-> I recall Niklas said at LPC that the patch looks good to him, at least.
-> 
+There is a new compatible string for the SAM9X60 sdhci device. It involves
+an update of the properties about the clocks stuff.
 
-Yes I think it looks good and was planing to test it. Unfortunately I'm 
-also on the road until the end of next week ;-(
+Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+---
+ .../devicetree/bindings/mmc/sdhci-atmel.txt   | 25 ++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
+index 1b662d7171a0..364ceea330b6 100644
+--- a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
++++ b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
+@@ -5,12 +5,19 @@ Documentation/devicetree/bindings/mmc/mmc.txt and the properties used by the
+ sdhci-of-at91 driver.
+ 
+ Required properties:
+-- compatible:		Must be "atmel,sama5d2-sdhci".
++- compatible:		Must be "atmel,sama5d2-sdhci" or "microchip,sam9x60-sdhci".
+ - clocks:		Phandlers to the clocks.
+-- clock-names:		Must be "hclock", "multclk", "baseclk";
++- clock-names:		Must be "hclock", "multclk", "baseclk" for
++			"atmel,sama5d2-sdhci".
++			Must be "hclock", "multclk" for "microchip,sam9x60-sdhci".
+ 
++Optional properties:
++- assigned-clocks:	The same with "multclk".
++- assigned-clock-rates	The rate of "multclk" in order to not rely on the
++			gck configuration set by previous components.
+ 
+-Example:
++
++Examples:
+ 
+ sdmmc0: sdio-host@a0000000 {
+ 	compatible = "atmel,sama5d2-sdhci";
+@@ -18,4 +25,16 @@ sdmmc0: sdio-host@a0000000 {
+ 	interrupts = <31 IRQ_TYPE_LEVEL_HIGH 0>;
+ 	clocks = <&sdmmc0_hclk>, <&sdmmc0_gclk>, <&main>;
+ 	clock-names = "hclock", "multclk", "baseclk";
++	assigned-clocks = <&sdmmc0_gclk>;
++	assigned-clock-rates = <480000000>;
++};
++
++sdmmc0: sdio-host@80000000 {
++	compatible = "microchip,sam9x60-sdhci";
++	reg = <0x80000000 0x300>;
++	interrupts = <12 IRQ_TYPE_LEVEL_HIGH 0>;
++	clocks = <&pmc PMC_TYPE_PERIPHERAL 12>, <&pmc PMC_TYPE_GCK 12>;
++	clock-names = "hclock", "multclk";
++	assigned-clocks = <&pmc PMC_TYPE_GCK 12>;
++	assigned-clock-rates = <100000000>;
+ };
 -- 
-Regards,
-Niklas Söderlund
+2.23.0
+
