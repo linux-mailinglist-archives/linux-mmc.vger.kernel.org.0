@@ -2,101 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18D95B1522
-	for <lists+linux-mmc@lfdr.de>; Thu, 12 Sep 2019 22:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE73FB15AA
+	for <lists+linux-mmc@lfdr.de>; Thu, 12 Sep 2019 23:06:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727965AbfILUJd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 12 Sep 2019 16:09:33 -0400
-Received: from esa2.microchip.iphmx.com ([68.232.149.84]:49202 "EHLO
-        esa2.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726586AbfILUJd (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 12 Sep 2019 16:09:33 -0400
-Received-SPF: Pass (esa2.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa2.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa2.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa2.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa2.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: k55UhUVvseHoxsxZLGCkDYEmleLTHCcJbs1dE81Px8bX3JjzxF6xYlGZLivaGo2mRDvt7kBbr/
- a3ihEToS4W7XYroGY5TDJFiexNqi71KTVtgF+o7k7gnG1PPmB9Y//OINJ/DpNkbf36euVED8y8
- h0ltWzOyPwVHm3MuVni3DeS1TNIu1GH8xkRLEY2pgmSJoWotekNwerdhKal5UqEn+d9NKiZGH4
- bVuxuMHJjeCUP1TZswcIWYfYRq+/dngYIcQ+GtnWxg9n8lf3gN/z9DtCa6QM4pX0VBMHmiM/GS
- vLI=
-X-IronPort-AV: E=Sophos;i="5.64,498,1559545200"; 
-   d="scan'208";a="48745929"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 12 Sep 2019 13:09:32 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Thu, 12 Sep 2019 13:09:31 -0700
-Received: from sekiro.microchip.com (10.10.85.251) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.1713.5 via Frontend Transport; Thu, 12 Sep 2019 13:09:29 -0700
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-mmc@vger.kernel.org>
-CC:     <ulf.hansson@linaro.org>, <nicolas.ferre@microchip.com>,
-        <ludovic.desroches@microchip.com>, <adrian.hunter@intel.com>,
-        <linux-kernel@vger.kernel.org>, <robh+dt@kernel.org>,
-        <mark.rutland@arm.com>, <claudiu.beznea@microchip.com>
-Subject: [PATCH 3/3] ARM: dts: at91: sama5d2: set the sdmmc gclk frequency
-Date:   Thu, 12 Sep 2019 22:09:08 +0200
-Message-ID: <20190912200908.31318-3-ludovic.desroches@microchip.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190912200908.31318-1-ludovic.desroches@microchip.com>
-References: <20190912200908.31318-1-ludovic.desroches@microchip.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
+        id S1728179AbfILVGI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 12 Sep 2019 17:06:08 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.20]:32056 "EHLO
+        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728158AbfILVGI (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 12 Sep 2019 17:06:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1568322367;
+        s=strato-dkim-0002; d=heimpold.de;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=Mi1lP9vRc/aLKH9/n4xIdI/HXW4LRzD1v7CFSpx+60U=;
+        b=Ye/CzkbtfKzIjHpewklTrL8weQ/tJ1ZCx1eu191LYLNnoaZQq7Men8oSBePJNmmPvv
+        V67nXT91290qAu4XfZfLccSLVDQ1MHbzL+6U99ZR/Q2PgxrhEedybIMrHjt6sEjqHENz
+        fIJTFuwLHXsoOyA4XtHxOUrST12Atwq4uVKrW2Jz9SFU/ZdbeXEvVd5aLUPmBvpmJFFt
+        mnO355OgAXZ04LUP9cMXSMNbvlC6etlXrmF00Ju733QjN+W/Pi/6TF5/FWyj1nj14F31
+        u+dS7sEe8EXlEq/tfB69C8BCyu3ApUnhUVdv+oXsbSIZo1HBMM92mnuOCsjNO/zRR0q2
+        RGTw==
+X-RZG-AUTH: ":O2kGeEG7b/pS1EW8QnKjhhg/vO4pzqdNytq77N6ZKUSN7PfdWTGQORRBv+ASfYPl1MuRNIWka+y/+PT9jgm56Hi0Pw27ZIWQ+TEC"
+X-RZG-CLASS-ID: mo00
+Received: from tonne.mhei.heimpold.itr
+        by smtp.strato.de (RZmta 44.27.0 AUTH)
+        with ESMTPSA id 601202v8CL66d62
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Thu, 12 Sep 2019 23:06:06 +0200 (CEST)
+Received: from kerker.mhei.heimpold.itr (kerker.mhei.heimpold.itr [192.168.8.1])
+        by tonne.mhei.heimpold.itr (Postfix) with ESMTP id 00F5E1407DF;
+        Thu, 12 Sep 2019 23:06:06 +0200 (CEST)
+From:   Michael Heimpold <mhei@heimpold.de>
+To:     chris@printf.net
+Cc:     linux-mmc@vger.kernel.org,
+        Michael Heimpold <michael.heimpold@i2se.com>,
+        Michael Heimpold <mhei@heimpold.de>
+Subject: [PATCH mmc-utils v2 1/5] Check calloc's return value before using the pointer
+Date:   Thu, 12 Sep 2019 23:05:05 +0200
+Message-Id: <20190912210509.19816-2-mhei@heimpold.de>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190912210509.19816-1-mhei@heimpold.de>
+References: <20190912210509.19816-1-mhei@heimpold.de>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Set the frequency of the generated clock used by sdmmc devices in order
-to not rely on the configuration done by previous components.
+From: Michael Heimpold <michael.heimpold@i2se.com>
 
-Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+If calloc fails, bail out immediately instead of trying to
+use the NULL pointer.
+
+Signed-off-by: Michael Heimpold <michael.heimpold@i2se.com>
+Cc: Michael Heimpold <mhei@heimpold.de>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
 ---
- arch/arm/boot/dts/sama5d2.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ lsmmc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/sama5d2.dtsi b/arch/arm/boot/dts/sama5d2.dtsi
-index 2e2c1a7b1d1d..8d79ff75e3cd 100644
---- a/arch/arm/boot/dts/sama5d2.dtsi
-+++ b/arch/arm/boot/dts/sama5d2.dtsi
-@@ -300,6 +300,8 @@
- 			interrupts = <31 IRQ_TYPE_LEVEL_HIGH 0>;
- 			clocks = <&pmc PMC_TYPE_PERIPHERAL 31>, <&pmc PMC_TYPE_GCK 31>, <&pmc PMC_TYPE_CORE PMC_MAIN>;
- 			clock-names = "hclock", "multclk", "baseclk";
-+			assigned-clocks = <&pmc PMC_TYPE_GCK 31>;
-+			assigned-clock-rates = <480000000>;
- 			status = "disabled";
- 		};
+diff --git a/lsmmc.c b/lsmmc.c
+index 9737b37..e514c83 100644
+--- a/lsmmc.c
++++ b/lsmmc.c
+@@ -374,6 +374,8 @@ char *to_binstr(char *hexstr)
+ 	char *binstr;
  
-@@ -309,6 +311,8 @@
- 			interrupts = <32 IRQ_TYPE_LEVEL_HIGH 0>;
- 			clocks = <&pmc PMC_TYPE_PERIPHERAL 32>, <&pmc PMC_TYPE_GCK 32>, <&pmc PMC_TYPE_CORE PMC_MAIN>;
- 			clock-names = "hclock", "multclk", "baseclk";
-+			assigned-clocks = <&pmc PMC_TYPE_GCK 32>;
-+			assigned-clock-rates = <480000000>;
- 			status = "disabled";
- 		};
+ 	binstr = calloc(strlen(hexstr) * 4 + 1, sizeof(char));
++	if (!binstr)
++		return NULL;
  
+ 	while (hexstr && *hexstr != '\0') {
+ 		if (!isxdigit(*hexstr))
 -- 
-2.23.0
+2.17.1
 
