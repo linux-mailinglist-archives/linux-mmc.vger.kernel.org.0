@@ -2,49 +2,36 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81A6CB0A0C
-	for <lists+linux-mmc@lfdr.de>; Thu, 12 Sep 2019 10:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 460AAB0EBC
+	for <lists+linux-mmc@lfdr.de>; Thu, 12 Sep 2019 14:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728582AbfILITs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 12 Sep 2019 04:19:48 -0400
-Received: from verein.lst.de ([213.95.11.211]:45250 "EHLO verein.lst.de"
+        id S1731503AbfILMRx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 12 Sep 2019 08:17:53 -0400
+Received: from verein.lst.de ([213.95.11.211]:46732 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726952AbfILITs (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 12 Sep 2019 04:19:48 -0400
+        id S1731283AbfILMRx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 12 Sep 2019 08:17:53 -0400
 Received: by verein.lst.de (Postfix, from userid 2407)
-        id EDA73227A81; Thu, 12 Sep 2019 10:19:44 +0200 (CEST)
-Date:   Thu, 12 Sep 2019 10:19:44 +0200
+        id 78A73227A81; Thu, 12 Sep 2019 14:17:49 +0200 (CEST)
+Date:   Thu, 12 Sep 2019 14:17:49 +0200
 From:   Christoph Hellwig <hch@lst.de>
-To:     Ming Lei <ming.lei@redhat.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        Jon Hunter <jonathanh@nvidia.com>, linux-block@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 1/3] block: Respect the device's maximum segment size
-Message-ID: <20190912081944.GB14283@lst.de>
-References: <20190909125658.30559-1-thierry.reding@gmail.com> <20190909125658.30559-2-thierry.reding@gmail.com> <20190909161331.GA19650@lst.de> <20190912005728.GA2731@ming.t460p>
+To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc:     hch@lst.de, ulf.hansson@linaro.org,
+        wsa+renesas@sang-engineering.com, treding@nvidia.com,
+        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] mmc: queue: Fix bigger segments usage
+Message-ID: <20190912121749.GA18421@lst.de>
+References: <1568261636-25625-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190912005728.GA2731@ming.t460p>
+In-Reply-To: <1568261636-25625-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Sep 12, 2019 at 08:57:29AM +0800, Ming Lei wrote:
-> Could you explain a bit why we can't do that?
-> 
-> The segment size limit is basically removed since the following commit
-> 200a9aff7b02 ("block: remove the segment size check in bio_will_gap").
-> 
-> Before that commit, the max segment size limit worked.
+Thanks,
 
-No, it didn't as explained in the commit log.  It worked for some
-cases but not others.
+applied to the dma-mapping tree for 5.4.
