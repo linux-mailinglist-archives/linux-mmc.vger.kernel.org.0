@@ -2,105 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0C73B1CB8
-	for <lists+linux-mmc@lfdr.de>; Fri, 13 Sep 2019 13:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B169B221F
+	for <lists+linux-mmc@lfdr.de>; Fri, 13 Sep 2019 16:39:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727918AbfIML53 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 13 Sep 2019 07:57:29 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:45052 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726822AbfIML52 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 13 Sep 2019 07:57:28 -0400
-Received: by mail-lj1-f196.google.com with SMTP id u14so26796739ljj.11
-        for <linux-mmc@vger.kernel.org>; Fri, 13 Sep 2019 04:57:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=ROgbE+3raduhHlfWCJNflMmrX0r350QDpKoqnEeP7DY=;
-        b=GlvuQisF98mojrnxV4d6NKXMH5YNvoaB29RjaJpKK86BVgVVCgQz+RpcLtvkCGp+V9
-         XSV4T65A0yi17oXRJ+2AoOQ9bAnsix120JXuWsgOg/k3zHhS4Vei/KLDQsi88RJq9Rt7
-         99jENXpT/yWguA4Yzu+fP1XuIlGbRlJKM7AaUXJYcePb2gEnqereSov+DKexgcnYFPLW
-         HisimDJsyc6EdT0KoafCPSF5tCNob9OBrJ8vEI6uwLk+WizLkYLJfnEFxcPlrNR6QOug
-         yxxow4pgMKrbFlH+RtVOrxv1/h/xd92fWRbze1q4GgeWgImXjXIrZTjzmLRjRyQf5F3V
-         VjJA==
+        id S1730622AbfIMOgM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 13 Sep 2019 10:36:12 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:44678 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730599AbfIMOgL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 13 Sep 2019 10:36:11 -0400
+Received: by mail-oi1-f195.google.com with SMTP id w6so2781135oie.11;
+        Fri, 13 Sep 2019 07:36:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=ROgbE+3raduhHlfWCJNflMmrX0r350QDpKoqnEeP7DY=;
-        b=kxn+qngVKOsm6vmE1Vs8xhgu3DwSyHXfRjgbQo8Zaz0mW3U39VWYuORccTrwcHi8//
-         iZYGkRWKLd8Ioaa1nDrIO7O4UzaQvMQ3VXfvST20Iv7qV5nodxuL31eZItloCm719PbN
-         QB23ivDVRzMKTQWEwFsxdDsCDVT12Vkm4VI1prEUz/6z9IBa1rOzHtzz4kLld4F//sTV
-         dDBUtrs6ND7jX8bM8THFwyKri5iuIjgsBKrwbjZ6vIUV0ZkXGVNHp8ryrwbT74p7LNYC
-         JPeerb1c6TeuUpwVv7wfoOwYp18u6Z4buctJdxDYTqsXD7JjVReStftMd9Wjgu5JRzYh
-         6vrA==
-X-Gm-Message-State: APjAAAWNRRIAXCh5W5pOh/wFkLzIfqDoBtKzdSIBDyBSWMKeFD72UWLg
-        rUmRdxb6gmtzT6vKflF707rb3w==
-X-Google-Smtp-Source: APXvYqziVf1W94/u3XEgGnEwoA8qZRGTRovME6sYwuX4BNWHICQdnulK4e7OLxTeWA1icF2lGA/VFA==
-X-Received: by 2002:a2e:984e:: with SMTP id e14mr3826328ljj.167.1568375846679;
-        Fri, 13 Sep 2019 04:57:26 -0700 (PDT)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id q26sm6890649lfd.53.2019.09.13.04.57.25
+        h=x-gm-message-state:message-id:date:from:subject:references
+         :in-reply-to:cc:cc:to;
+        bh=oxIkj2CNgBskqdF16UTAfCDEmh7bzDWtwz7a7nYV7m4=;
+        b=oRkdSjAhC71hVz8CkVkuKTXiSeCerJcqFvl7uJ8E8xObFNKQeN+OKn3LeyOocS98wC
+         XPiQ2C3O4SMbUA8Vc3DFrkq5FzwbtJYXtt/5kGlC8jfc6qduSZ9Bcbkvu2JKR3t5Ufl4
+         qCILinkAmgwTidg+BDUsoW1WRAWEluBkXbGLjR0v0sYpBrJIxeAD/dNaA5nvMZ0J4dV6
+         uJejaNrfTmBb9PL6Ue+3UhD3jq63aTM/BNrTjN6rvkZ6ua0FmvX2c31K1GtFLszOfxAT
+         dw6xKTCyTST4jlq2yx5Q45yL5qqPeedBQE0FIprkXxqA/we3DDM+XwXBstcb2HKwurQD
+         B57w==
+X-Gm-Message-State: APjAAAU5meRHrhM5Lp6lF5ACslx0FvzSqrGgjKJqkcCqi28RWJDWhwOK
+        Qm9oUte5jjmtTMwKJEBvzk5Y2qk=
+X-Google-Smtp-Source: APXvYqxcrl/631YMGwB+UwWJt79oo9grQdoNpC+7iTxV9IDUGlWNjL5LS3tbpSDEWPiQKQIZUpWmpQ==
+X-Received: by 2002:a54:4516:: with SMTP id l22mr3435794oil.122.1568385370176;
+        Fri, 13 Sep 2019 07:36:10 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id 11sm10231061otg.62.2019.09.13.07.36.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 04:57:26 -0700 (PDT)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC fixes for v5.3-rc9
-Date:   Fri, 13 Sep 2019 13:57:24 +0200
-Message-Id: <20190913115724.22341-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        Fri, 13 Sep 2019 07:36:09 -0700 (PDT)
+Message-ID: <5d7ba959.1c69fb81.44f68.50b6@mx.google.com>
+Date:   Fri, 13 Sep 2019 15:36:09 +0100
+From:   Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 3/4] dt-bindings: MMC: Add JZ4760 bindings.
+References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com> <1567669089-88693-4-git-send-email-zhouyanjie@zoho.com>
+In-Reply-To: <1567669089-88693-4-git-send-email-zhouyanjie@zoho.com>
+Cc:     linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, ulf.hansson@linaro.org,
+        paul.burton@mips.com, linus.walleij@linaro.org,
+        paul@crapouillou.net, malat@debian.org, yuehaibing@huawei.com,
+        ezequiel@collabora.com, robh+dt@kernel.org, mark.rutland@arm.com,
+        syq@debian.org, jiaxun.yang@flygoat.com
+To:     Zhou Yanjie <zhouyanjie@zoho.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+On Thu,  5 Sep 2019 15:38:08 +0800, Zhou Yanjie wrote:
+> Add the MMC bindings for the JZ4760 Soc from Ingenic.
+> 
+> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
+> ---
+>  Documentation/devicetree/bindings/mmc/jz4740.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-Here's a PR with a couple of MMC fixes intended for v5.3-rc9. Details about the
-highlights are as usual found in the signed tag.
+Acked-by: Rob Herring <robh@kernel.org>
 
-Please pull this in!
-
-Kind regards
-Ulf Hansson
-
-
-The following changes since commit f74c2bb98776e2de508f4d607cd519873065118e:
-
-  Linux 5.3-rc8 (2019-09-08 13:33:15 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.3-rc8
-
-for you to fetch changes up to 87b5d602a1cc76169b8d81ec2c74c8d95d9350dc:
-
-  mmc: tmio: Fixup runtime PM management during remove (2019-09-13 13:49:09 +0200)
-
-----------------------------------------------------------------
-MMC host:
- - tmio: Fixup runtime PM management during probe and remove
- - sdhci-pci-o2micro: Fix eMMC initialization for an AMD SoC
- - bcm2835: Prevent lockups when terminating work
-
-----------------------------------------------------------------
-Daniel Drake (1):
-      Revert "mmc: sdhci: Remove unneeded quirk2 flag of O2 SD host controller"
-
-Stefan Wahren (1):
-      Revert "mmc: bcm2835: Terminate timeout work synchronously"
-
-Ulf Hansson (3):
-      Revert "mmc: tmio: move runtime PM enablement to the driver implementations"
-      mmc: tmio: Fixup runtime PM management during probe
-      mmc: tmio: Fixup runtime PM management during remove
-
- drivers/mmc/host/bcm2835.c           |  2 +-
- drivers/mmc/host/renesas_sdhi_core.c |  6 ------
- drivers/mmc/host/sdhci-pci-o2micro.c |  2 +-
- drivers/mmc/host/tmio_mmc.c          |  5 -----
- drivers/mmc/host/tmio_mmc.h          |  1 +
- drivers/mmc/host/tmio_mmc_core.c     | 27 ++++++++++++++-------------
- drivers/mmc/host/uniphier-sd.c       |  3 ---
- 7 files changed, 17 insertions(+), 29 deletions(-)
