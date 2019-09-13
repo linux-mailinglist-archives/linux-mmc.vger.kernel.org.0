@@ -2,101 +2,140 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBDE8B1AF6
-	for <lists+linux-mmc@lfdr.de>; Fri, 13 Sep 2019 11:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A07DB1B0A
+	for <lists+linux-mmc@lfdr.de>; Fri, 13 Sep 2019 11:44:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388006AbfIMJlZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 13 Sep 2019 05:41:25 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:37295 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388000AbfIMJlZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 13 Sep 2019 05:41:25 -0400
-Received: by mail-lf1-f67.google.com with SMTP id w67so21620869lff.4
-        for <linux-mmc@vger.kernel.org>; Fri, 13 Sep 2019 02:41:23 -0700 (PDT)
+        id S1727380AbfIMJoG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 13 Sep 2019 05:44:06 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:43821 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728142AbfIMJoG (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 13 Sep 2019 05:44:06 -0400
+Received: by mail-vs1-f65.google.com with SMTP id u21so18154197vsl.10
+        for <linux-mmc@vger.kernel.org>; Fri, 13 Sep 2019 02:44:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=QS5aLvWZAGl2qy1uqqrDaZesBLdCRvn2tS/IES0IrhM=;
-        b=yZ5hsC3wpKS6si95BrlMuHu1YR8h/0bTMI9DXnxjZWspdHqN1NRmsaGxp+nAxstv92
-         1fzPPu9jEAL6CNzjvzEjLp3g5hmREbhMnxAnZKOVckJvwdCAu+bJxIyKdlR0Qi6YVo4b
-         5OLcr7zH3kOTDBXAfUWTiPfaKSQrrO/oIeQuBf8qX8wUaMyVk37vlWX27hoxlGuF/+UY
-         ZAyTx1v2oq1OSd8OlcaHIAtDfN5ElolhZyhFTyFLrygAk9maOIMXSQWY49hELJZBT2Tn
-         Jp6rEBMG+D8e4yy7qTe/q2oOWmRdxz+x5Puswfi2iho4OcCIWM+ZDvDq2hc0/0gOrJiz
-         qung==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=80RvEwYyuB+u/98u+eWvtmDgBVcfY4scsu9DHWzqZxs=;
+        b=L0dZYTvEqgBLimoKJx2lzzayIj8+os5aC6aMMzwAVz3T17Jel/0H4c/875PR82tmVc
+         9C55oIfP/BiKkVGjS3Kf16pUAx+NLZOjPyBfTwVZILMUncs0ALeljrCAPxqj9OfEH3gn
+         E5M+Lh2lgRzEQzm9olZA+c8r1yr+pgRJOyhRrywHfAV4dmEeff6YdaZEjx0S5kGkdrYa
+         jqNSxeJc/+sio8eZ7DW2UbnbQkBwnDcUbfRcKA0WGlokKRTGHOy7vpXXpprqlOFlYh77
+         zQv0zLZygRsYUTWfvFdmcwSUASs6qCsnvSVFuv6C0NMuPFO6W+NquX7ZPcODD/ROz2ev
+         WRyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=QS5aLvWZAGl2qy1uqqrDaZesBLdCRvn2tS/IES0IrhM=;
-        b=Bf7V864z3BmyQ6sfN0EjhYf317NNmIL9oQz1zyJprqSqsIiv5hXUffOd3xZYryzrN/
-         Mk91dPqQyxyFB8lQyojg8Qwja/BLGnr0oI4FjzWpMJ8uK8gECf8IlYyGN8yKtDYaacqb
-         k+wikVe7dWeZwaTfhQ+vnlz8/kY+B7U6/r+qstJy+JfGkLpbadWlAlKqowz/jd+YIp4J
-         B0TVgyKOEtesXUmSVf88GVqCglI/p0mO03FIQuQGjw6YNy74fBWXVbUXfGkkqULHYej8
-         nl+ZaLRy5s0aYG+NNcMyfZ6jCXiw6KibW1GVUy/DXwaS4yER55YZ9IZIt+mRjUxylZjk
-         ++Ug==
-X-Gm-Message-State: APjAAAUfzApL6+OCZnunKNGpAp5h/Ihff7qjpMNyiQwNmykSLHFGYrvd
-        DGlNom6vpR3AWP33D1OKEmgLXdXsAO4=
-X-Google-Smtp-Source: APXvYqyUxASV7kYcJEmZaWXICNtRekMjOPkhAQ78JgYbxBn5y94tN6W9C5mpRNzDqz1V5ckldlf5eg==
-X-Received: by 2002:ac2:51cd:: with SMTP id u13mr8658216lfm.135.1568367682684;
-        Fri, 13 Sep 2019 02:41:22 -0700 (PDT)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id h21sm6198268ljg.34.2019.09.13.02.41.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 02:41:22 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=80RvEwYyuB+u/98u+eWvtmDgBVcfY4scsu9DHWzqZxs=;
+        b=fLIqidrhJAYlchcmtoyrBpLgJksGTSerm1xgqsWOKYlmTQyNn1mWi+OhTMxhQqI7P4
+         FUtDoN0sWiw1d7HzUUtu4fHYDQ6xLRaZjVZkChSM1bRmSJg7UKqOZSgwPvcz9MWS3KTe
+         fOZbmnmtoRpzaT+eVbDKOtT/+HedQUzi22so1mknwYbQaNLe03FwCGjZa8Qnqy9+G/I/
+         7VJZECxDIpE9IrRJbRP1vK5lirXdlTxzjjtlO245rM0tded1bomAzGoCWO4cf1Ku9CfH
+         2cA4AsgtSGn+PCd2+hMIpMRlsCBJxOc7Iauhj+eCaIsNvB+LiY4iMg3MmUz8xDNY7knI
+         kOcQ==
+X-Gm-Message-State: APjAAAWV6JvUSnsYIe9vZiZmSepKrnaEsSmN7EQSC2grPxW91K6JcwH5
+        gMYKn4QGkkfZVy/fiFwKHXdpE/OIzUsV3zMkN0SACg==
+X-Google-Smtp-Source: APXvYqxXGEmHtPVfonl0/l/TtQ9KmOUzjVuNfLkqltHh0O5+83iSzBtoYR8HzHWsa7WQNQUS/oq9EDShQeaeX0coy6M=
+X-Received: by 2002:a67:e2cf:: with SMTP id i15mr25614558vsm.165.1568367845002;
+ Fri, 13 Sep 2019 02:44:05 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190909104649.4960-1-ulf.hansson@linaro.org> <CAPDyKFp8ruNvNM-EJxk_eF4YLRzpTU1H4cAyK1jZSk=S+NbmrQ@mail.gmail.com>
+ <20190912180547.GD919@kunai> <20190912200406.GC12549@bigcity.dyn.berto.se>
+ <CAMuHMdVpa1F2b=hZGpmUfjmKt=4q=cgjb1vHjx0aAXtLBhF+8A@mail.gmail.com>
+ <CAPDyKFrD_YsKubH=aOSxSv-h83Q1vh4+evPHVTN5pciXSSQLnQ@mail.gmail.com>
+ <CAMuHMdWL7Wcq17abiPuC7mQuSJU8MyfAbJBcAMjB1nKStXTGDw@mail.gmail.com>
+ <CAPDyKFqPeW6ExFTvyxwHepVMKAuur88=cRLkvZ=__v=ZgTQz6A@mail.gmail.com> <CAMuHMdV8SXKUXjV57W2X_kCKQgmWH91KyLEFsHW1zHPK1G5e-A@mail.gmail.com>
+In-Reply-To: <CAMuHMdV8SXKUXjV57W2X_kCKQgmWH91KyLEFsHW1zHPK1G5e-A@mail.gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+Date:   Fri, 13 Sep 2019 11:43:29 +0200
+Message-ID: <CAPDyKFoCC4m_EDmgU2qc7UCsnuUfFg_b9tG_QuojsWYxiG3_QQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: tmio: Fixup runtime PM management during probe and remove
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Niklas Soderlund <niklas.soderlund@ragnatech.se>,
+        Wolfram Sang <wsa@the-dreams.de>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     Ulrich Hecht <uli+renesas@fpond.eu>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulrich Hecht <uli+renesas@fpond.eu>,
         Simon Horman <horms+renesas@verge.net.au>,
-        Niklas Soderlund <niklas.soderlund@ragnatech.se>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        stable@vger.kernel.org
-Subject: [PATCH 3/3] mmc: tmio: Fixup runtime PM management during remove
-Date:   Fri, 13 Sep 2019 11:41:18 +0200
-Message-Id: <20190913094118.21243-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Accessing the device when it may be runtime suspended is a bug, which is
-the case in tmio_mmc_host_remove(). Let's fix the behaviour.
+On Fri, 13 Sep 2019 at 11:38, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+> Hi Ulf,
+>
+> On Fri, Sep 13, 2019 at 11:32 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > On Fri, 13 Sep 2019 at 09:44, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > On Fri, Sep 13, 2019 at 9:41 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > > > On Fri, 13 Sep 2019 at 08:37, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > > > On Thu, Sep 12, 2019 at 10:04 PM Niklas Soderlund
+> > > > > <niklas.soderlund@ragnatech.se> wrote:
+> > > > > > On 2019-09-12 19:05:47 +0100, Wolfram Sang wrote:
+> > > > > > > On Wed, Sep 11, 2019 at 04:16:56PM +0200, Ulf Hansson wrote:
+> > > > > > > > On Mon, 9 Sep 2019 at 12:46, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > > > > > > > >
+> > > > > > > > > During probe, tmio variant drivers calls pm_runtime_enable() before they
+> > > > > > > > > call tmio_mmc_host_probe(). This doesn't work as expected, because
+> > > > > > > > > tmio_mmc_host_probe() calls pm_runtime_set_active(), which fails to set the
+> > > > > > > > > status to RPM_ACTIVE for the device, when its been enabled for runtime PM.
+> > > > > > > > >
+> > > > > > > > > Fix this by calling pm_runtime_enable() from tmio_mmc_host_probe() instead.
+> > > > > > > > > To avoid the device from being runtime suspended during the probe phase,
+> > > > > > > > > let's also increase the runtime PM usage count in tmio_mmc_host_probe().
+> > > > > > > > > Consequentially, each tmio variant driver can decide themselves when to
+> > > > > > > > > call pm_runtime_put(), to allow the device to become runtime suspended.
+> > > > > > > > >
+> > > > > > > > > Additionally, if the tmio variant driver decided to call pm_runtime_put()
+> > > > > > > > > during probe, it's is expected that it also calls pm_runtime_get_sync() to
+> > > > > > > > > restore the usage count, before it calls tmio_mmc_host_remove().
+> > > > > > > > >
+> > > > > > > > > Fixes: 7ff213193310 ("mmc: tmio: move runtime PM enablement to the driver implementations")
+> > > > > > > > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > > > > > > >
+> > > > > > > > So I decided to apply this for my fixes branch, as to get it tested
+> > > > > > > > for a few days.
+> > > > > > > >
+> > > > > > > > If you have any objections, please tell.
+> > > > > > >
+> > > > > > > Sadly, I can't test until next week because I am still on the road. Yet,
+> > > > > > > I recall Niklas said at LPC that the patch looks good to him, at least.
+> > > > > > >
+> > > > > >
+> > > > > > Yes I think it looks good and was planing to test it. Unfortunately I'm
+> > > > > > also on the road until the end of next week ;-(
+> > > > >
+> > > > > So I decided to give it a try on my boards.  Note that apart from eMMC,
+> > > > > I do not have any SD cards inserted.
+> > > >
+> > > > Thanks for testing!
+> > >
+> > > [...]
+> > >
+> > > > Let's have a look at that in the next steps though and fix the probe
+> > > > problems first. I can post a patch or two in an hour or so, have you
+> > > > the possibility to test this today?
+> > >
+> > > Probably I can. Else it'll happen on Monday.
+> >
+> > Currently compile testing, posting three patch in few minutes.
+> >
+> > If we can't make it today, we will probably don't make it for 5.3. On
+> > the other hand, the problem has been there for a while anyway.
+>
+> Oh, I thought you were aiming for v5.4...
+>
+> Including it in v5.3 may be a stretch, as Wolfram and Niklas can't test it
+> before the release of v5.3.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
----
- drivers/mmc/host/tmio_mmc_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+The point is, v5.3 is broken anyway and older kernels as well.
 
-diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-index 32f9679ec42e..9b6e1001e77c 100644
---- a/drivers/mmc/host/tmio_mmc_core.c
-+++ b/drivers/mmc/host/tmio_mmc_core.c
-@@ -1274,12 +1274,11 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
- 	struct platform_device *pdev = host->pdev;
- 	struct mmc_host *mmc = host->mmc;
- 
-+	pm_runtime_get_sync(&pdev->dev);
-+
- 	if (host->pdata->flags & TMIO_MMC_SDIO_IRQ)
- 		sd_ctrl_write16(host, CTL_TRANSACTION_CTL, 0x0000);
- 
--	if (!host->native_hotplug)
--		pm_runtime_get_sync(&pdev->dev);
--
- 	dev_pm_qos_hide_latency_limit(&pdev->dev);
- 
- 	mmc_remove_host(mmc);
-@@ -1288,6 +1287,8 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
- 	tmio_mmc_release_dma(host);
- 
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
-+	if (host->native_hotplug)
-+		pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- }
--- 
-2.17.1
+Anyway, the patches is out, let's see what you find out.
 
+Kind regards
+Uffe
