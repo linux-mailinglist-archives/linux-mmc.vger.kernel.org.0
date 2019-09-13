@@ -2,134 +2,148 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB57AB2226
-	for <lists+linux-mmc@lfdr.de>; Fri, 13 Sep 2019 16:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3271B2372
+	for <lists+linux-mmc@lfdr.de>; Fri, 13 Sep 2019 17:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730599AbfIMOgO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 13 Sep 2019 10:36:14 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:46162 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730648AbfIMOgN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 13 Sep 2019 10:36:13 -0400
-Received: by mail-oi1-f196.google.com with SMTP id v16so2774568oiv.13;
-        Fri, 13 Sep 2019 07:36:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Z79bT51s8X9t468gxQ2+1ZKqbdd8xzju/Fxq/NSNMTo=;
-        b=Jm+J5GkgwMCuUZ1KSyzH9i7NijIXZIl3spYFI92qz9iRF2aAUuBCmp9XCLZEEv+g/3
-         islda/JF+qAqnsOkpf//OLV2KrKKx6FzIiIKgI8uDRsF9UU/OdqDxPJ+wxumx17bbkuP
-         r5EjQQGuIANZE1Z0wRr6AoLZ6Oeoytz1Z2bmvxZ/P8UHFYDS4uLAzTHiNfelxvg0tT7n
-         PnKITcZBlqrN7zVp3Pac5x8heJQnsrGaacRcE3teqB9GcXSjGCAaPReIhspsRFIevp9m
-         wr+ypXHC4huVsPpyCrlvrEgyOUnb8Z8qUUZj0o5Z4syhJ5JQjF7QWONCQBbrDLVgP5pQ
-         btRg==
-X-Gm-Message-State: APjAAAXQd14hnP1olhry1Qk8tEjwDTqKxNenFsIKhwVntaHEWzgUHqNH
-        A1v4oW/4pccExM7c2sK1AQ==
-X-Google-Smtp-Source: APXvYqys48uCX3cKqHL275Upcx6Znn3+mIOh8UgFx1fG2pm+46Ii25BVGfwriubeNdu+E5Hy4OkcZA==
-X-Received: by 2002:aca:2402:: with SMTP id n2mr3696427oic.32.1568385373025;
-        Fri, 13 Sep 2019 07:36:13 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id v6sm913643oie.4.2019.09.13.07.36.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 07:36:12 -0700 (PDT)
-Message-ID: <5d7ba95c.1c69fb81.edf8e.6556@mx.google.com>
-Date:   Fri, 13 Sep 2019 15:36:11 +0100
-From:   Rob Herring <robh@kernel.org>
-To:     Pradeep P V K <ppvk@codeaurora.org>
-Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        asutoshd@codeaurora.org, vbadigan@codeaurora.org,
-        stummala@codeaurora.org, sayalil@codeaurora.org,
-        rampraka@codeaurora.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [RFC 2/2] dt-bindings: mmc: sdhci-msm: Add Bus BW vote supported
- strings
-References: <1567774037-2344-1-git-send-email-ppvk@codeaurora.org>
- <1567774037-2344-3-git-send-email-ppvk@codeaurora.org>
+        id S1729908AbfIMPdA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 13 Sep 2019 11:33:00 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:57372 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727452AbfIMPc7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 13 Sep 2019 11:32:59 -0400
+Received: from [IPv6:2001:8a0:6c2f:b301:66f4:e6a0:633:7a5e] (unknown [IPv6:2001:8a0:6c2f:b301:66f4:e6a0:633:7a5e])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: ezequiel)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 279BE28B9BE;
+        Fri, 13 Sep 2019 16:32:56 +0100 (BST)
+Message-ID: <e9ef3a9093e8572eb3be2aa654dd30069c493a4b.camel@collabora.com>
+Subject: Re: [PATCH 1/4] MMC: Ingenic: Adjust the macro definition name.
+From:   Ezequiel Garcia <ezequiel@collabora.com>
+To:     Zhou Yanjie <zhouyanjie@zoho.com>, linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, ulf.hansson@linaro.org,
+        paul.burton@mips.com, linus.walleij@linaro.org,
+        paul@crapouillou.net, malat@debian.org, yuehaibing@huawei.com,
+        robh+dt@kernel.org, mark.rutland@arm.com, syq@debian.org,
+        jiaxun.yang@flygoat.com
+Date:   Fri, 13 Sep 2019 16:32:52 +0100
+In-Reply-To: <1567669089-88693-2-git-send-email-zhouyanjie@zoho.com>
+References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
+         <1567669089-88693-2-git-send-email-zhouyanjie@zoho.com>
+Organization: Collabora
+X-Priority: 1
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1567774037-2344-3-git-send-email-ppvk@codeaurora.org>
-X-Mutt-References: <1567774037-2344-3-git-send-email-ppvk@codeaurora.org>
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Sep 06, 2019 at 06:17:17PM +0530, Pradeep P V K wrote:
-> Add Bus bandwidth voting supported strings for qcom-sdhci controller.
+Hi Zhou,
 
-What is bus bandwidth voting?
+Thanks for your interest in this driver, I'm glad
+so see it's more used.
 
+On Thu, 2019-09-05 at 15:38 +0800, Zhou Yanjie wrote:
+> Adjust the macro definition name to match the corresponding
+> register name in the datasheet.
 > 
-> Signed-off-by: Pradeep P V K <ppvk@codeaurora.org>
+
+It's not really an issue to have slighlt different
+names on the macros. They are currently sufficiently
+descriptive, and I don't think it's deserves a patch.
+
+Thanks,
+Ezequiel
+
+> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
 > ---
->  .../devicetree/bindings/mmc/sdhci-msm.txt          | 32 ++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
+>  drivers/mmc/host/jz4740_mmc.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-> index da4edb1..8255d92 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-> @@ -39,6 +39,25 @@ Required properties:
->  	"cal"	- reference clock for RCLK delay calibration (optional)
->  	"sleep"	- sleep clock for RCLK delay calibration (optional)
+> diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
+> index ffdbfaa..1b1fcb7 100644
+> --- a/drivers/mmc/host/jz4740_mmc.c
+> +++ b/drivers/mmc/host/jz4740_mmc.c
+> @@ -28,7 +28,7 @@
+>  #include <asm/mach-jz4740/dma.h>
 >  
-> +Optional Properties:
-> +* Following bus parameters are required for bus bw voting:
-> +- interconnects: Pairs of phandles and interconnect provider specifier
-> +		 to denote the edge source and destination ports of
-> +		 the interconnect path. Please refer to
-> +		 Documentation/devicetree/bindings/interconnect/
-> +		 for more details.
-> +- interconnect-names: List of interconnect path name strings sorted in the same
-> +		order as the interconnects property. Consumers drivers will use
-> +		interconnect-names to match interconnect paths with interconnect
-> +		specifiers. Please refer to Documentation/devicetree/bindings/
-> +		interconnect/ for more details.
-
-How many? What are the strings?
-
-> +- qcom,msm-bus,name: string describing the bus path
-> +- qcom,msm-bus,num-cases: number of configurations in which sdhc can operate in
-> +- qcom,msm-bus,num-paths: number of paths to vote for
-> +- qcom,msm-bus,vectors-KBps: Takes a tuple <ib ab>, <ib ab> (2 tuples for 2
-
-ib and ab are what? Didn't we just add interconnect bindings for 
-expressing bandwidth?
-
-> +				num-paths) The number of these entries *must*
-> +				be same as num-cases.
-
-Are all these properties SDHCI specific or can we expect to get these 
-for *all* the QCom blocks?
-
-> +
->  Example:
+>  #define JZ_REG_MMC_STRPCL	0x00
+> -#define JZ_REG_MMC_STATUS	0x04
+> +#define JZ_REG_MMC_STAT		0x04
+>  #define JZ_REG_MMC_CLKRT	0x08
+>  #define JZ_REG_MMC_CMDAT	0x0C
+>  #define JZ_REG_MMC_RESTO	0x10
+> @@ -40,7 +40,7 @@
+>  #define JZ_REG_MMC_IREG		0x28
+>  #define JZ_REG_MMC_CMD		0x2C
+>  #define JZ_REG_MMC_ARG		0x30
+> -#define JZ_REG_MMC_RESP_FIFO	0x34
+> +#define JZ_REG_MMC_RES		0x34
+>  #define JZ_REG_MMC_RXFIFO	0x38
+>  #define JZ_REG_MMC_TXFIFO	0x3C
+>  #define JZ_REG_MMC_DMAC		0x44
+> @@ -391,7 +391,7 @@ static void jz4740_mmc_clock_disable(struct jz4740_mmc_host *host)
 >  
->  	sdhc_1: sdhci@f9824900 {
-> @@ -56,6 +75,19 @@ Example:
+>  	writew(JZ_MMC_STRPCL_CLOCK_STOP, host->base + JZ_REG_MMC_STRPCL);
+>  	do {
+> -		status = readl(host->base + JZ_REG_MMC_STATUS);
+> +		status = readl(host->base + JZ_REG_MMC_STAT);
+>  	} while (status & JZ_MMC_STATUS_CLK_EN && --timeout);
+>  }
 >  
->  		clocks = <&gcc GCC_SDCC1_APPS_CLK>, <&gcc GCC_SDCC1_AHB_CLK>;
->  		clock-names = "core", "iface";
-> +		interconnects = <&qnoc 50 &qnoc 512>,
-> +				<&qnoc 1 &qnoc 544>;
-> +		interconnect-names = "sdhc-ddr","cpu-sdhc";
-> +		qcom,msm-bus,name = "sdhc1";
-> +		qcom,msm-bus,num-cases = <3>;
-> +		qcom,msm-bus,num-paths = <2>;
-> +		qcom,msm-bus,vectors-KBps =
-> +		/* No Vote */
-> +		<0 0>, <0 0>,
-> +		/* 50 MB/s */
-> +		<130718 200000>, <133320 133320>,
-> +		/* 200 MB/s */
-> +		<1338562 4096000>, <1338562 4096000>;
->  	};
+> @@ -403,7 +403,7 @@ static void jz4740_mmc_reset(struct jz4740_mmc_host *host)
+>  	writew(JZ_MMC_STRPCL_RESET, host->base + JZ_REG_MMC_STRPCL);
+>  	udelay(10);
+>  	do {
+> -		status = readl(host->base + JZ_REG_MMC_STATUS);
+> +		status = readl(host->base + JZ_REG_MMC_STAT);
+>  	} while (status & JZ_MMC_STATUS_IS_RESETTING && --timeout);
+>  }
 >  
->  	sdhc_2: sdhci@f98a4900 {
-> -- 
-> 1.9.1
-> 
+> @@ -446,7 +446,7 @@ static void jz4740_mmc_transfer_check_state(struct jz4740_mmc_host *host,
+>  {
+>  	int status;
+>  
+> -	status = readl(host->base + JZ_REG_MMC_STATUS);
+> +	status = readl(host->base + JZ_REG_MMC_STAT);
+>  	if (status & JZ_MMC_STATUS_WRITE_ERROR_MASK) {
+>  		if (status & (JZ_MMC_STATUS_TIMEOUT_WRITE)) {
+>  			host->req->cmd->error = -ETIMEDOUT;
+> @@ -580,10 +580,10 @@ static bool jz4740_mmc_read_data(struct jz4740_mmc_host *host,
+>  	/* For whatever reason there is sometime one word more in the fifo then
+>  	 * requested */
+>  	timeout = 1000;
+> -	status = readl(host->base + JZ_REG_MMC_STATUS);
+> +	status = readl(host->base + JZ_REG_MMC_STAT);
+>  	while (!(status & JZ_MMC_STATUS_DATA_FIFO_EMPTY) && --timeout) {
+>  		d = readl(fifo_addr);
+> -		status = readl(host->base + JZ_REG_MMC_STATUS);
+> +		status = readl(host->base + JZ_REG_MMC_STAT);
+>  	}
+>  
+>  	return false;
+> @@ -614,7 +614,7 @@ static void jz4740_mmc_read_response(struct jz4740_mmc_host *host,
+>  {
+>  	int i;
+>  	uint16_t tmp;
+> -	void __iomem *fifo_addr = host->base + JZ_REG_MMC_RESP_FIFO;
+> +	void __iomem *fifo_addr = host->base + JZ_REG_MMC_RES;
+>  
+>  	if (cmd->flags & MMC_RSP_136) {
+>  		tmp = readw(fifo_addr);
+> @@ -797,7 +797,7 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
+>  	struct mmc_command *cmd = host->cmd;
+>  	uint32_t irq_reg, status, tmp;
+>  
+> -	status = readl(host->base + JZ_REG_MMC_STATUS);
+> +	status = readl(host->base + JZ_REG_MMC_STAT);
+>  	irq_reg = jz4740_mmc_read_irq_reg(host);
+>  
+>  	tmp = irq_reg;
+
+
 
