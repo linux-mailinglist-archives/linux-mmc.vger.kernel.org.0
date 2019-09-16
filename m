@@ -2,86 +2,166 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89ABAB3E08
-	for <lists+linux-mmc@lfdr.de>; Mon, 16 Sep 2019 17:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37A22B3F7B
+	for <lists+linux-mmc@lfdr.de>; Mon, 16 Sep 2019 19:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389529AbfIPPq5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 16 Sep 2019 11:46:57 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:36752 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728792AbfIPPq4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Sep 2019 11:46:56 -0400
-Received: by mail-pg1-f196.google.com with SMTP id m29so237717pgc.3
-        for <linux-mmc@vger.kernel.org>; Mon, 16 Sep 2019 08:46:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0YPh4ZPworY3ZEjE24wMYeyXg9KZRbq3tqWyWWQ8XlQ=;
-        b=BfWwhPEGMjqhNnMmtn0lC4DzNN1IjQpfnqP/T++6lj+rV9L/5Bg0t/1kgQ5MOGeFAx
-         xvUy28z95tNCGC9WQKuJJ5uoldqdK9xtCEx8RAzKXN6zirGepppIDIEHtIXHtmmmxffj
-         ZIsLh5V4yQwFT9p5F3gIArlVndMNXi9LzjZucd23CMQ1n40vSGuqSb2eyvhzxq2bJMU+
-         SdghuOWAi+Hcr2wqG0wBhIOSLvQ7Bd3zqaMcChDhPfJaJpTE5aSUcE/UjeMG5OhRs13D
-         re7vcxUA/3C1ix8b6r8uh4RU3u3NCuHy6+jhrk3EW0f/3MDp1OpREjGICKmrz0IAEjHt
-         4c2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=0YPh4ZPworY3ZEjE24wMYeyXg9KZRbq3tqWyWWQ8XlQ=;
-        b=gSYEqdy9by6h4dO95Ebav/E749X2VGJkM8YK5yd6ZJylPA9UmcsUMRM9DJPJ2DYBoX
-         BiDiUlDNDDTocwjRKTzWDU4MCpXJk7LXPG/69W3LPtLx280FPN+FUspGevL1KIJrImgo
-         W5E+fNXMiqSs3we7UVRwp2yUFksLGYpgihG2bv/w+PrrkfnPIeb/870otqECJa2WQ0pO
-         vJmlAoOaun3mqa2MH6Nc5HUh1ux5J0acS0KojxuL+Huo6z/4kPo7tlDtB2kUzDo3pyQQ
-         cvKy6zjKWQcI68hOOI9Fx89vnmmVDRp+zjh0SaNs04vWjQbW30LjKcBIMRzHLNfZO9jB
-         RDRg==
-X-Gm-Message-State: APjAAAVVqqbNC14WCezHuOfzsTZAi/Iu3pytzOW9Tn3S0KWC0rbkhrJC
-        P82KXuqNsh8dlrQoCDxYzJ8L
-X-Google-Smtp-Source: APXvYqyYx2ww8kVi2qoPwBEokJosm1TyyK6KqDfDlsvQfRrorAIUQCpG72R/TxSYvntUByBP1MkqIg==
-X-Received: by 2002:a62:1e82:: with SMTP id e124mr16568271pfe.136.1568648815572;
-        Mon, 16 Sep 2019 08:46:55 -0700 (PDT)
-Received: from localhost.localdomain ([2409:4072:90b:91ce:94c2:ef93:5bd:cfe8])
-        by smtp.gmail.com with ESMTPSA id s5sm36227670pfe.52.2019.09.16.08.46.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Sep 2019 08:46:55 -0700 (PDT)
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     ulf.hansson@linaro.org, afaerber@suse.de, robh+dt@kernel.org,
-        sboyd@kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        thomas.liau@actions-semi.com, linux-actions@lists.infradead.org,
-        linus.walleij@linaro.org, linux-clk@vger.kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH v4 7/7] arm64: configs: Enable Actions Semi platform in defconfig
-Date:   Mon, 16 Sep 2019 21:15:46 +0530
-Message-Id: <20190916154546.24982-8-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190916154546.24982-1-manivannan.sadhasivam@linaro.org>
-References: <20190916154546.24982-1-manivannan.sadhasivam@linaro.org>
+        id S1729420AbfIPRPT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 16 Sep 2019 13:15:19 -0400
+Received: from pandora.armlinux.org.uk ([78.32.30.218]:55856 "EHLO
+        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729297AbfIPRPT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Sep 2019 13:15:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+        Message-ID:Subject:To:From:Date:Reply-To:Cc:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=P9qVJKlvyn4aP4f/O45V2DON/bGLrejbbTHVrSmMC9s=; b=sdt2E3nCJoFE3/EYgWaYHDEZj
+        g3aKS0Ib7TuJ9UInEBMifyjx5z9Y9fSrJ1sFbFtC1zktxUKpuPdlmnf/Qp8enN0JM06P56rvHrr/9
+        NHVZDFZbTDTMM6smtwDd7VcPDNHRK74tPUAGGVMjtqIfC3IMmf+fv9NAA8Nq8V8FssAc8nzwplO9r
+        Sh82I3VHQkKqHDKXi3V37/ki9tceqxqgGRT8wCBK+lbVNQLhWvFQCFuDucYxE/T2CZdhsHY7T7AgX
+        0AnLgW794rmBTDyXmi/IWbtIx+fudp3Y+gMbcDFdMm51YFsFW3oVRM8QgWfrwz5dEPsTTV/7NJ1Tn
+        2n//kgAPg==;
+Received: from shell.armlinux.org.uk ([2001:4d48:ad52:3201:5054:ff:fe00:4ec]:32770)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1i9uam-0004yx-RV; Mon, 16 Sep 2019 18:15:12 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1i9uak-0000TK-1f; Mon, 16 Sep 2019 18:15:10 +0100
+Date:   Mon, 16 Sep 2019 18:15:10 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Adrian Hunter <adrian.hunter@intel.com>, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [REGRESSION] sdhci no longer detects SD cards on LX2160A
+Message-ID: <20190916171509.GG25745@shell.armlinux.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Since the Actions Semi platform can now boot a distro, enable it in
-ARM64 defconfig.
+Hi,
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+It seems that somewhere between v5.2 and v5.3, sdhci fails to detect
+SD cards on the NXP LX2160A, but continues to work with eMMC.
+This uses the sdhci-esdhc driver.
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 0e58ef02880c..8e27777d6687 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -29,6 +29,7 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_KALLSYMS_ALL=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
-+CONFIG_ARCH_ACTIONS=y
- CONFIG_ARCH_AGILEX=y
- CONFIG_ARCH_SUNXI=y
- CONFIG_ARCH_ALPINE=y
+v5.2:
+
+sdhci: Secure Digital Host Controller Interface driver
+sdhci: Copyright(c) Pierre Ossman
+sdhci-pltfm: SDHCI platform and OF driver helper
+mmc0: SDHCI controller on 2140000.esdhc [2140000.esdhc] using ADMA 64-bit
+mmc1: SDHCI controller on 2150000.esdhc [2150000.esdhc] using ADMA 64-bit
+mmc0: new high speed SDHC card at address aaaa
+mmcblk0: mmc0:aaaa SU04G 3.69 GiB
+mmc1: new HS400 MMC card at address 0001
+mmcblk1: mmc1:0001 DF4064 58.2 GiB
+mmcblk1boot0: mmc1:0001 DF4064 partition 1 4.00 MiB
+mmcblk1boot1: mmc1:0001 DF4064 partition 2 4.00 MiB
+mmcblk1rpmb: mmc1:0001 DF4064 partition 3 4.00 MiB, chardev (247:0)
+ mmcblk1: p1
+
+v5.3:
+
+sdhci: Secure Digital Host Controller Interface driver
+sdhci: Copyright(c) Pierre Ossman
+sdhci-pltfm: SDHCI platform and OF driver helper
+mmc0: SDHCI controller on 2140000.esdhc [2140000.esdhc] using ADMA 64-bit
+mmc1: SDHCI controller on 2150000.esdhc [2150000.esdhc] using ADMA 64-bit
+mmc0: ADMA error
+mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00002202
+mmc0: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000001
+mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+mmc0: sdhci: Present:   0x01f50008 | Host ctl: 0x00000038
+mmc0: sdhci: Power:     0x00000003 | Blk gap:  0x00000000
+mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x000040d8
+mmc0: sdhci: Timeout:   0x00000003 | Int stat: 0x00000001
+mmc0: sdhci: Int enab:  0x037f108f | Sig enab: 0x037f108b
+mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00002202
+mmc0: sdhci: Caps:      0x35fa0000 | Caps_1:   0x0000af00
+mmc0: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
+mmc0: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x001d8a33
+mmc0: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x3f400e00
+mmc0: sdhci: Host ctl2: 0x00000000
+mmc0: sdhci: ADMA Err:  0x00000009 | ADMA Ptr: 0x000000236d43820c
+mmc0: sdhci: ============================================
+mmc0: error -5 whilst initialising SD card
+mmc0: ADMA error
+mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00002202
+mmc0: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000001
+mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+mmc0: sdhci: Present:   0x01f50008 | Host ctl: 0x00000038
+mmc0: sdhci: Power:     0x00000003 | Blk gap:  0x00000000
+mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x00008098
+mmc0: sdhci: Timeout:   0x00000002 | Int stat: 0x00000001
+mmc0: sdhci: Int enab:  0x037f108f | Sig enab: 0x037f108b
+mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00002202
+mmc0: sdhci: Caps:      0x35fa0000 | Caps_1:   0x0000af00
+mmc0: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
+mmc0: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x001d8a33
+mmc0: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x3f400e00
+mmc0: sdhci: Host ctl2: 0x00000000
+mmc0: sdhci: ADMA Err:  0x00000009 | ADMA Ptr: 0x000000236d43820c
+mmc0: sdhci: ============================================
+mmc0: error -5 whilst initialising SD card
+mmc1: new HS400 MMC card at address 0001
+mmcblk1: mmc1:0001 DF4064 58.2 GiB
+mmcblk1boot0: mmc1:0001 DF4064 partition 1 4.00 MiB
+mmcblk1boot1: mmc1:0001 DF4064 partition 2 4.00 MiB
+mmcblk1rpmb: mmc1:0001 DF4064 partition 3 4.00 MiB, chardev (247:0)
+ mmcblk1: p1
+mmc0: ADMA error
+mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00002202
+mmc0: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000001
+mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+mmc0: sdhci: Present:   0x01f50008 | Host ctl: 0x00000038
+mmc0: sdhci: Power:     0x00000003 | Blk gap:  0x00000000
+mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x000080d8
+mmc0: sdhci: Timeout:   0x00000002 | Int stat: 0x00000001
+mmc0: sdhci: Int enab:  0x037f108f | Sig enab: 0x037f108b
+mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00002202
+mmc0: sdhci: Caps:      0x35fa0000 | Caps_1:   0x0000af00
+mmc0: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
+mmc0: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x001d8a33
+mmc0: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x3f400e00
+mmc0: sdhci: Host ctl2: 0x00000000
+mmc0: sdhci: ADMA Err:  0x00000009 | ADMA Ptr: 0x000000236d43820c
+mmc0: sdhci: ============================================
+mmc0: error -5 whilst initialising SD card
+mmc0: ADMA error
+mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00002202
+mmc0: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000001
+mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+mmc0: sdhci: Present:   0x01f50008 | Host ctl: 0x00000038
+mmc0: sdhci: Power:     0x00000003 | Blk gap:  0x00000000
+mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x000080f8
+mmc0: sdhci: Timeout:   0x00000002 | Int stat: 0x00000001
+mmc0: sdhci: Int enab:  0x037f108f | Sig enab: 0x037f108b
+mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00002202
+mmc0: sdhci: Caps:      0x35fa0000 | Caps_1:   0x0000af00
+mmc0: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
+mmc0: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x001d8a33
+mmc0: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x3f400e00
+mmc0: sdhci: Host ctl2: 0x00000000
+mmc0: sdhci: ADMA Err:  0x00000009 | ADMA Ptr: 0x000000236d43820c
+mmc0: sdhci: ============================================
+mmc0: error -5 whilst initialising SD card
+
+The platform has an iommu, which is in pass-through mode, via
+arm_smmu.disable_bypass=0.
+
 -- 
-2.17.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
+According to speedtest.net: 11.9Mbps down 500kbps up
