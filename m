@@ -2,72 +2,82 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47546B3FE4
-	for <lists+linux-mmc@lfdr.de>; Mon, 16 Sep 2019 20:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 869FAB4266
+	for <lists+linux-mmc@lfdr.de>; Mon, 16 Sep 2019 22:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389022AbfIPSAx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 16 Sep 2019 14:00:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34552 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727039AbfIPSAw (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 16 Sep 2019 14:00:52 -0400
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A967B21852;
-        Mon, 16 Sep 2019 18:00:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568656851;
-        bh=dMVZGCnsh4fILPwk9WjxtUMiqu6/4VUD7cpn/PynxBU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=dA+WUt4bl+6RjbJXd6HF1hu64FfIcM9QX9YW4t2hzTazyLV/Iaoca7f3s5hvMGRfX
-         dUkMCuyYjsg7LbTHbUT4NtHLI1jntNf386bm+W+Sn/j/D/cwc/e5hXg3YRgLTnilsp
-         ekJXXM1ZL9uIJUpxuj4/0YcEw835CHNKr6fffgxY=
-Received: by mail-qt1-f171.google.com with SMTP id j31so931613qta.5;
-        Mon, 16 Sep 2019 11:00:51 -0700 (PDT)
-X-Gm-Message-State: APjAAAVsDqTzLINh9ipHMcOIavKoReorSFevySVF7khyAZPMXSyS1ElA
-        ALHHzDV/7sA+cWyqzxLHH1/zHIzsBDFmmTUaGA==
-X-Google-Smtp-Source: APXvYqyf350ByfqcVlNXWlnTIksw+7j/6O4GUGxPPUMBxsS6Jl38vpunqWIRMsPX1zJ/s4uT+gn50ziIwq/u9H4MMs4=
-X-Received: by 2002:ac8:444f:: with SMTP id m15mr938733qtn.110.1568656850832;
- Mon, 16 Sep 2019 11:00:50 -0700 (PDT)
+        id S1730509AbfIPUrp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 16 Sep 2019 16:47:45 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:38106 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391655AbfIPUrp (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Sep 2019 16:47:45 -0400
+Received: by mail-wm1-f68.google.com with SMTP id o184so706934wme.3;
+        Mon, 16 Sep 2019 13:47:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=3cjyw4iwufFr2TJPexscuSdiVbwU5mYSUwRk7WraBNI=;
+        b=Tr8MstYMiKd76A0jbU81wmUaK3mG8bOCOCjqAnKQjMSzM3+p2IOo5VlN3LLNoZYRz7
+         F7ed+xbcJCdl9c/jcME5w2fghr7deqNSw2HjuoHdzPszgI3r7EC+4o7UkOMFKfIfJhvo
+         R3gwvYk5yp75qXdfUffW3miAEUXLB5q2QpHL0c+NsOWXho2EwtZ4vczH5+1desM3SclK
+         13o+sPa2AwU87ktvHDAvBQe2vQKDNM4m3OOsKHYCDc31PpV3fFJj/Jq+VLJU0zfPwItN
+         cUuUuSZGmo37JjYW3ekQmRzJCgKsBXcJlQ1A3orreoXs1V/h/uxCl0ke2Pl2Oe+hy8el
+         ayhA==
+X-Gm-Message-State: APjAAAXnBT2PeyZnnbmXKyWJFHvGxqpYbBJp8QX/0C8oxERBwGXSlrRc
+        RS6kh0bqaR7wgQItHA1Tazjv+AMxhEs=
+X-Google-Smtp-Source: APXvYqzMPwcH5G6tl3Joo+Hv1PKsJgaFKV0jqz+iiMxqYzKNshopG5ryQA7iKmg12oFq25aYnYYLhA==
+X-Received: by 2002:a1c:9615:: with SMTP id y21mr704785wmd.5.1568666863156;
+        Mon, 16 Sep 2019 13:47:43 -0700 (PDT)
+Received: from black.home (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.googlemail.com with ESMTPSA id x6sm231437wmf.38.2019.09.16.13.47.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Sep 2019 13:47:42 -0700 (PDT)
+From:   Denis Efremov <efremov@linux.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Denis Efremov <efremov@linux.com>, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, Andrew Murray <andrew.murray@arm.com>,
+        linux-mmc@vger.kernel.org,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v3 23/26] memstick: use PCI_STD_NUM_BARS
+Date:   Mon, 16 Sep 2019 23:41:55 +0300
+Message-Id: <20190916204158.6889-24-efremov@linux.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190916204158.6889-1-efremov@linux.com>
+References: <20190916204158.6889-1-efremov@linux.com>
 MIME-Version: 1.0
-References: <20190916154546.24982-1-manivannan.sadhasivam@linaro.org> <20190916154546.24982-3-manivannan.sadhasivam@linaro.org>
-In-Reply-To: <20190916154546.24982-3-manivannan.sadhasivam@linaro.org>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 16 Sep 2019 13:00:39 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJP6JiZTV=DwuSQLLEv9dMST82Xkrb5AnqREjR5hk5=7Q@mail.gmail.com>
-Message-ID: <CAL_JsqJP6JiZTV=DwuSQLLEv9dMST82Xkrb5AnqREjR5hk5=7Q@mail.gmail.com>
-Subject: Re: [PATCH v4 2/7] dt-bindings: mmc: Add Actions Semi SD/MMC/SDIO
- controller binding
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        Thomas Liau <thomas.liau@actions-semi.com>,
-        linux-actions@lists.infradead.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-clk <linux-clk@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Sep 16, 2019 at 10:46 AM Manivannan Sadhasivam
-<manivannan.sadhasivam@linaro.org> wrote:
->
-> Add devicetree YAML binding for Actions Semi Owl SoC's SD/MMC/SDIO
-> controller.
->
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->  .../devicetree/bindings/mmc/owl-mmc.yaml      | 59 +++++++++++++++++++
->  1 file changed, 59 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mmc/owl-mmc.yaml
+Use define PCI_STD_NUM_BARS instead of PCI_ROM_RESOURCE for the number of
+PCI BARs.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Cc: Maxim Levitsky <maximlevitsky@gmail.com>
+Cc: Alex Dubov <oakad@yahoo.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Denis Efremov <efremov@linux.com>
+---
+ drivers/memstick/host/jmb38x_ms.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/memstick/host/jmb38x_ms.c b/drivers/memstick/host/jmb38x_ms.c
+index 32747425297d..fd281c1d39b1 100644
+--- a/drivers/memstick/host/jmb38x_ms.c
++++ b/drivers/memstick/host/jmb38x_ms.c
+@@ -848,7 +848,7 @@ static int jmb38x_ms_count_slots(struct pci_dev *pdev)
+ {
+ 	int cnt, rc = 0;
+ 
+-	for (cnt = 0; cnt < PCI_ROM_RESOURCE; ++cnt) {
++	for (cnt = 0; cnt < PCI_STD_NUM_BARS; ++cnt) {
+ 		if (!(IORESOURCE_MEM & pci_resource_flags(pdev, cnt)))
+ 			break;
+ 
+-- 
+2.21.0
+
