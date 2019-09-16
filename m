@@ -2,191 +2,121 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67C54B3713
-	for <lists+linux-mmc@lfdr.de>; Mon, 16 Sep 2019 11:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3639FB3DE9
+	for <lists+linux-mmc@lfdr.de>; Mon, 16 Sep 2019 17:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731942AbfIPJZs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 16 Sep 2019 05:25:48 -0400
-Received: from mail-vk1-f196.google.com ([209.85.221.196]:45790 "EHLO
-        mail-vk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725850AbfIPJZs (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Sep 2019 05:25:48 -0400
-Received: by mail-vk1-f196.google.com with SMTP id u192so7192704vkb.12
-        for <linux-mmc@vger.kernel.org>; Mon, 16 Sep 2019 02:25:47 -0700 (PDT)
+        id S2389349AbfIPPqT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 16 Sep 2019 11:46:19 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:34944 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731014AbfIPPqT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Sep 2019 11:46:19 -0400
+Received: by mail-pl1-f193.google.com with SMTP id s17so72615plp.2
+        for <linux-mmc@vger.kernel.org>; Mon, 16 Sep 2019 08:46:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lVvZxMvnkUm7v4Djpl2U0876asmMVjf66fovgS1q9Ug=;
-        b=gVXp8UFlHkCIlom8seAltI7o8a13/Hlm/Mrba9+7euLO02gFV09aCzpaMwkeF3hnxy
-         k0fLEskzYTy4q0fzku0gOQa/TVB30Y2dKSW4aLTAGpY5f0iNslDRd+2AUbeTIZFrLMuB
-         +HZLmGdI8ozvaGzqyyS/xCBTgRRTV3rlWz1TfY58/Ly1KeEMJlxd1TlQpvXm/s/+Tf4I
-         L4v9qCZq7b/5OewX8bdBVEZRWiVXXrUCTF4vRXPt2Uadh9AF7LUyg2JXRXAXmYgL9LpM
-         sGjnYi5LO/DbO8SVeT6H36hNq6nYPR96VGYq2rNxqUoRaIsW6nUNtJHDHJTATjL7AZyI
-         wXYg==
+        h=from:to:cc:subject:date:message-id;
+        bh=A4sU7UOqqLDDD2RT3o3Y/vMwQW6JnCqfyCA4YeqCaoI=;
+        b=IKvxlx+nu16eSsm9sL3A0k2aBI/C2r1rf9Yqhm/YfngGL8GNi2G8ltF+JPoKuYITmp
+         vi8iMMiBXxItKSE3SjVowtWhTsQPzemF1+I4gAkg+yXKiaMymxzivYM1Ydm0esiqOMKo
+         16loTJNenDz//rlIfBkCLd/BMUUdQcuJ4R8sCFuZ5y/mdNH1qSFoGXdgjh2CJcjoApXA
+         DR88nhw1vYmi4+AICxXge47mAfJ0gYakuefwxcwhZfCF4duNZB6pJ7tNTnSHcsB7fmzL
+         JoO0qvrD3wcL03dRDDNPUtmBr3J+MWWavDyPENpFGjWtjdaSDI53JzErfSAFzKlMBVEF
+         aQDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lVvZxMvnkUm7v4Djpl2U0876asmMVjf66fovgS1q9Ug=;
-        b=VBLPFunMxYtc6NYruh4iO7cNvg7MoqFonWqCljjI/b7v9qenwsCkNH6eb2Qy3U9wtO
-         M0IuztYR3I17LlI07O/+uwp4vCl4uLQ7lWdwD26n16+tuHULgfLTaeGZwZ9YnyGmOGtY
-         fmQ97Q/R0ASuLjQk3lN3xyqUzTburUCjBWHusMSN0txAA8rI4JFbPiVs+A6WTRr/zi3J
-         JKWlNuqJeCtVnDVZt/0ZHN/GPG9TIDmL7AbwYIempO5BkzF5/OJuOycEvcW7meB4esHM
-         ijFu0Ym/Sdz7od56xvZ2WP7rjz7OI4fIUSq5OhbVrSpokJD5BdC0AcU3Fg6eP9e0AyPP
-         EfFA==
-X-Gm-Message-State: APjAAAXDGR4pcj4sqeqqJee9obboZFMyxbSREwMqna2EKQZjW9GsQRkk
-        hMyrTOK6RxXX6DaQmVn69GnxIg3feCJ6GZYa+aoyELKH
-X-Google-Smtp-Source: APXvYqz8yNYoxi4lVLbhbNGaX+7YoPtphAV0D2lpTntT8mdxcEuM1NT2n7OYNKP0e1WxjFqDnGY2Wo/FL1nClmIaEw4=
-X-Received: by 2002:a1f:8fc4:: with SMTP id r187mr28293588vkd.17.1568625946461;
- Mon, 16 Sep 2019 02:25:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190722193939.125578-1-dianders@chromium.org>
- <CAPDyKFoND5Kaam72zxO4wChO0z_1XL2KWX6oNjVcMUGA7G8RFg@mail.gmail.com> <CAD=FV=VTLoqGbxFFMT8h72cfHCLupyvZpD75JB0N86+kFA+vzw@mail.gmail.com>
-In-Reply-To: <CAD=FV=VTLoqGbxFFMT8h72cfHCLupyvZpD75JB0N86+kFA+vzw@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 16 Sep 2019 11:25:10 +0200
-Message-ID: <CAPDyKFrPHguMrMvXN0yHbD9GmEg4m=J1Un=LcpE0PB7WqMRYSg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] mmc: core: Fix Marvell WiFi reset by adding SDIO
- API to replug card
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Andreas Fenkart <afenkart@gmail.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        netdev <netdev@vger.kernel.org>,
-        Avri Altman <avri.altman@wdc.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=A4sU7UOqqLDDD2RT3o3Y/vMwQW6JnCqfyCA4YeqCaoI=;
+        b=GJTQ54xw7zj6BGKPvtmM6qtU0F4sq9XFZU3jlBZcwHPrLxXIcfCJkd4L2qDicnk3rh
+         yQqPbd5BUnzGJEbqd0SPfxh+GxTDkoIpXKiMcdfoDOB5nc6ZDYlcIJJjJrAk9j57AzEC
+         TNQFOGmyIj+i2CoeOd7EN1TyJKJEKzLn2pOma/0UYREhu7RcnszaT+xa7OuECg7lJWsq
+         ijvUGuM7UQk7PTT5hc5Z/8LDZp+747+C7KM54hlJngS0MVjlseaD+DXj+TWSolWy944/
+         cTZev7TftlDqcrVqbKD5IHnU5+vg/nbZz3xnuVQkBz0RtRdKFhJwdSMfRnYvlfBM6Kf2
+         2ocg==
+X-Gm-Message-State: APjAAAXpsaMbqHS6q1GoOA9BtWcMg+tH9sTYO/UjUeV2RuY8v6FJzkXt
+        A2z9Si/TbZi+923fZJEhIs9j
+X-Google-Smtp-Source: APXvYqxk5VLgwP3lklFM2rG/C+bvxjlT6Hptimo7FwML/QOQvdmeKrrB7LDz5ASrq59+SjzqZJfjqA==
+X-Received: by 2002:a17:902:8e84:: with SMTP id bg4mr445925plb.43.1568648777356;
+        Mon, 16 Sep 2019 08:46:17 -0700 (PDT)
+Received: from localhost.localdomain ([2409:4072:90b:91ce:94c2:ef93:5bd:cfe8])
+        by smtp.gmail.com with ESMTPSA id s5sm36227670pfe.52.2019.09.16.08.46.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Sep 2019 08:46:16 -0700 (PDT)
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     ulf.hansson@linaro.org, afaerber@suse.de, robh+dt@kernel.org,
+        sboyd@kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        thomas.liau@actions-semi.com, linux-actions@lists.infradead.org,
+        linus.walleij@linaro.org, linux-clk@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH v4 0/7] Add SD/MMC driver for Actions Semi S900 SoC
+Date:   Mon, 16 Sep 2019 21:15:39 +0530
+Message-Id: <20190916154546.24982-1-manivannan.sadhasivam@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 11 Sep 2019 at 23:26, Doug Anderson <dianders@chromium.org> wrote:
->
-> Hi,
->
-> On Thu, Jul 25, 2019 at 6:28 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > On Mon, 22 Jul 2019 at 21:41, Douglas Anderson <dianders@chromium.org> wrote:
-> > >
-> > > As talked about in the thread at:
-> > >
-> > > http://lkml.kernel.org/r/CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com
-> > >
-> > > ...when the Marvell WiFi card tries to reset itself it kills
-> > > Bluetooth.  It was observed that we could re-init the card properly by
-> > > unbinding / rebinding the host controller.  It was also observed that
-> > > in the downstream Chrome OS codebase the solution used was
-> > > mmc_remove_host() / mmc_add_host(), which is similar to the solution
-> > > in this series.
-> > >
-> > > So far I've only done testing of this series using the reset test
-> > > source that can be simulated via sysfs.  Specifically I ran this test:
-> > >
-> > > for i in $(seq 1000); do
-> > >   echo "LOOP $i --------"
-> > >   echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
-> > >
-> > >   while true; do
-> > >     if ! ping -w15 -c1 "${GW}" >/dev/null 2>&1; then
-> > >       fail=$(( fail + 1 ))
-> > >       echo "Fail WiFi ${fail}"
-> > >       if [[ ${fail} == 3 ]]; then
-> > >         exit 1
-> > >       fi
-> > >     else
-> > >       fail=0
-> > >       break
-> > >     fi
-> > >   done
-> > >
-> > >   hciconfig hci0 down
-> > >   sleep 1
-> > >   if ! hciconfig hci0 up; then
-> > >     echo "Fail BT"
-> > >     exit 1
-> > >   fi
-> > > done
-> > >
-> > > I ran this several times and got several hundred iterations each
-> > > before a failure.  When I saw failures:
-> > >
-> > > * Once I saw a "Fail BT"; manually resetting the card again fixed it.
-> > >   I didn't give it time to see if it would have detected this
-> > >   automatically.
-> > > * Once I saw the ping fail because (for some reason) my device only
-> > >   got an IPv6 address from my router and the IPv4 ping failed.  I
-> > >   changed my script to use 'ping6' to see if that would help.
-> > > * Once I saw the ping fail because the higher level network stack
-> > >   ("shill" in my case) seemed to crash.  A few minutes later the
-> > >   system recovered itself automatically.  https://crbug.com/984593 if
-> > >   you want more details.
-> > > * Sometimes while I was testing I saw "Fail WiFi 1" indicating a
-> > >   transitory failure.  Usually this was an association failure, but in
-> > >   one case I saw the device do "Firmware wakeup failed" after I
-> > >   triggered the reset.  This caused the driver to trigger a re-reset
-> > >   of itself which eventually recovered things.  This was good because
-> > >   it was an actual test of the normal reset flow (not the one
-> > >   triggered via sysfs).
-> > >
-> > > Changes in v2:
-> > > - s/routnine/routine (Brian Norris, Matthias Kaehlcke).
-> > > - s/contining/containing (Matthias Kaehlcke).
-> > > - Add Matthias Reviewed-by tag.
-> > > - Removed clear_bit() calls and old comment (Brian Norris).
-> > > - Explicit CC of Andreas Fenkart.
-> > > - Explicit CC of Brian Norris.
-> > > - Add "Fixes" pointing at the commit Brian talked about.
-> > > - Add Brian's Reviewed-by tag.
-> > >
-> > > Douglas Anderson (2):
-> > >   mmc: core: Add sdio_trigger_replug() API
-> > >   mwifiex: Make use of the new sdio_trigger_replug() API to reset
-> > >
-> > >  drivers/mmc/core/core.c                     | 28 +++++++++++++++++++--
-> > >  drivers/mmc/core/sdio_io.c                  | 20 +++++++++++++++
-> > >  drivers/net/wireless/marvell/mwifiex/sdio.c | 16 +-----------
-> > >  include/linux/mmc/host.h                    | 15 ++++++++++-
-> > >  include/linux/mmc/sdio_func.h               |  2 ++
-> > >  5 files changed, 63 insertions(+), 18 deletions(-)
-> > >
-> >
-> > Doug, thanks for sending this!
-> >
-> > As you know, I have been working on additional changes for SDIO
-> > suspend/resume (still WIP and not ready for sharing) and this series
-> > is related.
-> >
-> > The thing is, that even during system suspend/resume, synchronizations
-> > are needed between the different layers (mmc host, mmc core and
-> > sdio-funcs), which is common to the problem you want to solve.
-> >
-> > That said, I need to scratch my head a bit more before I can provide
-> > you some feedback on $subject series. Moreover, it's vacation period
-> > at my side so things are moving a bit slower. Please be patient.
->
-> I had kinda forgotten about this series after we landed it locally in
-> Chrome OS, but I realized that it never got resolved upstream.  Any
-> chance your head has been sufficiently scratched and you're now happy
-> with $subject series?  ;-)
+Hello,
 
-It's still on my TODO list. Apologize for the delay, but I still need
-more time to look into it, possibly later this week.
+This patchset adds SD/MMC driver for Actions Semi S900 SoC from Owl
+family SoCs. There are 4 SD/MMC controller present in this SoC but
+only 2 are enabled currently for Bubblegum96 board to access uSD and
+onboard eMMC. SDIO support for this driver is not currently implemented.
 
-In any case, let's make sure we get this problem resolved for v5.5.
+Note: Currently, driver uses 2 completion mechanisms for maintaining
+the coherency between SDC and DMA interrupts and I know that it is not
+efficient. Hence, I'd like to hear any suggestions for reimplementing
+the logic if anyone has.
 
-Kind regards
-Uffe
+With this driver, this patchset also fixes one clk driver issue and enables
+the Actions Semi platform in ARM64 defconfig.
+
+Thanks,
+Mani
+
+Changes in v4:
+
+* Incorporated review comments from Rob on dt binding
+
+Changes in v3:
+
+* Incorporated a review comment from Andreas on board dts patch
+* Modified the MAINTAINERS entry for devicetree YAML binding
+
+Changes in v2:
+
+* Converted the devicetree bindings to YAML
+* Misc changes to bubblegum devicetree as per the review from Andreas
+* Dropped the read/write wrappers and renamed all functions to use owl-
+  prefix as per the review from Ulf
+* Renamed clk_val_best to owl_clk_val_best and added Reviewed-by tag
+  from Stephen
+
+Manivannan Sadhasivam (7):
+  clk: actions: Fix factor clk struct member access
+  dt-bindings: mmc: Add Actions Semi SD/MMC/SDIO controller binding
+  arm64: dts: actions: Add MMC controller support for S900
+  arm64: dts: actions: Add uSD and eMMC support for Bubblegum96
+  mmc: Add Actions Semi Owl SoCs SD/MMC driver
+  MAINTAINERS: Add entry for Actions Semi SD/MMC driver and binding
+  arm64: configs: Enable Actions Semi platform in defconfig
+
+ .../devicetree/bindings/mmc/owl-mmc.yaml      |  59 ++
+ MAINTAINERS                                   |   2 +
+ .../boot/dts/actions/s900-bubblegum-96.dts    |  62 ++
+ arch/arm64/boot/dts/actions/s900.dtsi         |  45 ++
+ arch/arm64/configs/defconfig                  |   1 +
+ drivers/clk/actions/owl-factor.c              |   7 +-
+ drivers/mmc/host/Kconfig                      |   8 +
+ drivers/mmc/host/Makefile                     |   1 +
+ drivers/mmc/host/owl-mmc.c                    | 696 ++++++++++++++++++
+ 9 files changed, 877 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mmc/owl-mmc.yaml
+ create mode 100644 drivers/mmc/host/owl-mmc.c
+
+-- 
+2.17.1
+
