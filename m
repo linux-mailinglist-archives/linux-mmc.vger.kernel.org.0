@@ -2,97 +2,90 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A8B3B5328
-	for <lists+linux-mmc@lfdr.de>; Tue, 17 Sep 2019 18:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41EAAB54E8
+	for <lists+linux-mmc@lfdr.de>; Tue, 17 Sep 2019 20:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727002AbfIQQgj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 Sep 2019 12:36:39 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:40542 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728591AbfIQQgi (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Sep 2019 12:36:38 -0400
-Received: by mail-pg1-f196.google.com with SMTP id w10so2298988pgj.7
-        for <linux-mmc@vger.kernel.org>; Tue, 17 Sep 2019 09:36:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=6oL27CCsiCgWC+s9QdRYX453QCLZxLS2++aHbtnJhwo=;
-        b=YA0FtVOqhPZ+x3BfaIoVZIEZexqC9TyNKApW9YBx6UryG5ITeV5G/PcVyovxlcN+mC
-         os44E6Ij+VtAx8kdLvm5CDW3dSDIYirj+oo2lcs2vH01UDW4bGLLNb9WTGyjObDvjKoj
-         fBuR+TQerwfgIFxcGZl8M9n99ztxdoJWyHTr3aKJskQWgCTjdqc3CzWAMMCPIWWV27uk
-         r6QlYUhCtyjRpnvTXR0DG8uzBazHmw40E5sw5yAMAHs41eotxnNZMhM36rvMkaTMxCjz
-         4Q5hfisagPglftlQNRwob/iecOFYUAkervhL5SGw2H57K6310ejYzOFpMM61c3xeiltY
-         gc0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=6oL27CCsiCgWC+s9QdRYX453QCLZxLS2++aHbtnJhwo=;
-        b=Vm1RpNfAgpr4Zl9iCwSHfED11V1QwK1SfpPOZvtT0lJfDE/csOcELoWoKUqtCeQdrJ
-         ULrPv3f7YWXFbwxbM/HOHuBuUCjFf9GOmoehVGnIRYRpQjHCNxxLnmOtxW/z43U55IDt
-         vVaqzc+TTtU5tIj5geLrnyLDzfOwX61PtF5Q+4Y3Vdw3Fk75F5nbHkjKu/HEIvJHgbi1
-         GzNmrXzlXPETYlo2KrJbx0dQYegx7KE5cZoH6czRrclposFB2JU0D6T6pmbsRCxe0tzP
-         GOcFDeqG4SV1QvgaK25nHsRTHYc9zxtl98Hhz6eY0hYv0shDuAd4lV7SwkKWrA8zPtHT
-         v80w==
-X-Gm-Message-State: APjAAAVHNZVeFsabsVNSV3hkyH964vGY8KCrI0Ronk2o83EGeGaiyYkU
-        1sT29YqI2cJRIKjSU41ulf+3
-X-Google-Smtp-Source: APXvYqylABHbwwGnTpG+yB/f0dYMRAjI9T2OAHarx7EJA+9sLbutDPD4P64xC24J0U/cyFBf2nmCMw==
-X-Received: by 2002:a17:90a:fa0c:: with SMTP id cm12mr5692720pjb.137.1568738197253;
-        Tue, 17 Sep 2019 09:36:37 -0700 (PDT)
-Received: from Mani-XPS-13-9360 ([2409:4072:111:7ed:2c13:36f7:e70f:4a47])
-        by smtp.gmail.com with ESMTPSA id w6sm8080461pfw.84.2019.09.17.09.36.31
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 17 Sep 2019 09:36:36 -0700 (PDT)
-Date:   Tue, 17 Sep 2019 22:06:28 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     afaerber@suse.de, robh+dt@kernel.org, ulf.hansson@linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        thomas.liau@actions-semi.com, linux-actions@lists.infradead.org,
-        linus.walleij@linaro.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v4 1/7] clk: actions: Fix factor clk struct member access
-Message-ID: <20190917163628.GA2615@Mani-XPS-13-9360>
-References: <20190916154546.24982-1-manivannan.sadhasivam@linaro.org>
- <20190916154546.24982-2-manivannan.sadhasivam@linaro.org>
- <20190917163419.4C4DD20665@mail.kernel.org>
+        id S1728453AbfIQSIT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 Sep 2019 14:08:19 -0400
+Received: from sauhun.de ([88.99.104.3]:55498 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726883AbfIQSIS (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 17 Sep 2019 14:08:18 -0400
+Received: from localhost (p54B331E4.dip0.t-ipconnect.de [84.179.49.228])
+        by pokefinder.org (Postfix) with ESMTPSA id CD1592C0489;
+        Tue, 17 Sep 2019 20:08:15 +0200 (CEST)
+Date:   Tue, 17 Sep 2019 20:08:06 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulrich Hecht <uli+renesas@fpond.eu>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Niklas Soderlund <niklas.soderlund@ragnatech.se>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 1/3] Revert "mmc: tmio: move runtime PM enablement to the
+ driver implementations"
+Message-ID: <20190917180805.GA28182@ninjato>
+References: <20190913094053.20753-1-ulf.hansson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="3MwIy2ne0vdjdPXF"
 Content-Disposition: inline
-In-Reply-To: <20190917163419.4C4DD20665@mail.kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190913094053.20753-1-ulf.hansson@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Sep 17, 2019 at 09:34:18AM -0700, Stephen Boyd wrote:
-> Quoting Manivannan Sadhasivam (2019-09-16 08:45:40)
-> > Since the helper "owl_factor_helper_round_rate" is shared between factor
-> > and composite clocks, using the factor clk specific helper function
-> > like "hw_to_owl_factor" to access its members will create issues when
-> > called from composite clk specific code. Hence, pass the "factor_hw"
-> > struct pointer directly instead of fetching it using factor clk specific
-> > helpers.
-> > 
-> > This issue has been observed when a composite clock like "sd0_clk" tried
-> > to call "owl_factor_helper_round_rate" resulting in pointer dereferencing
-> > error.
-> > 
-> > While we are at it, let's rename the "clk_val_best" function to
-> > "owl_clk_val_best" since this is an owl SoCs specific helper.
-> > 
-> > Fixes: 4bb78fc9744a ("clk: actions: Add factor clock support")
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-> > ---
-> 
-> I can apply this to clk-next?
 
-Yes, please :-) Rest can go through Ulf's tree.
+--3MwIy2ne0vdjdPXF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
-Mani
+On Fri, Sep 13, 2019 at 11:40:53AM +0200, Ulf Hansson wrote:
+> This reverts commit 7ff213193310ef8d0ee5f04f79d791210787ac2c.
+>=20
+> It turns out that the above commit introduces other problems. For example,
+> calling pm_runtime_set_active() must not be done prior calling
+> pm_runtime_enable() as that makes it fail. This leads to additional
+> problems, such as clock enables being wrongly balanced.
+>=20
+> Rather than fixing the problem on top, let's start over by doing a revert.
+>=20
+> Fixes: 7ff213193310 ("mmc: tmio: move runtime PM enablement to the driver=
+ implementations")
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-> 
+For the record, for all three patches:
+
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+
+eMMC and both SD card slots operate normally on Renesas R-Car H3 ES2.0
+and M3-N. clk_summary looks normal, too, but I just glimpsed that
+because Geert already provided details.
+
+
+--3MwIy2ne0vdjdPXF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl2BIQEACgkQFA3kzBSg
+KbbJsg//cTMGU+Nol8FhlNc2YrXDdPggNa8MpyBoVqET+aD24UgrPnHd+CAjvDuv
+uc7zqpj5vAPB9LbBVTK02umj5yk33fyzfPSUQWnGZ6PKRGmBj7+0NVy9fgfGOZDr
+l9sgdYPv2GcssgNo2MWNWFSVtSIoFoTui5au/NVRZl0mgVAvED42FlI3pSwozlch
+ZRtDfb6eytudUsmpm3vLDQojKumh//BjEEfvE6q69JVYQBgWPF0zcKmE4ZwhaCqr
+bLtko/NAFX1KBlWhJwCzUU4ZQE3Z/8yJ6g3wQGvdG7P7gAswzApwagnqDXe/D6da
+ovqEotmYrPozdynklBiS3hoaNkJASPq0BHdua/vSt5XvgSGANm5baiqTvF+IiRqs
+8mX2LqZI4CreZDmNrJ+0yXHM8A+7l5rl479NzQ79/K46HHfYMMv/tRXxqExkabio
+ucy4whSy2mQCxF1NEQ0+vbHNg00vL39tEib+pSPp6V3QGPU/wwB6Btso/vYznoQP
+z57DGakmieA1aHLeaZD/fyHeUehVTrwPhVeYvWi5uwC45RM/L/VRbf/gxy05zWr+
+9VPazePFsL80rRn6DDDRynX3sp4VagQlvq9qb36mb84iIu5+UIeWbmq9Fhd8dCNV
+NFqGyopDm/7HfkuDzwzzPYgGqH9sQbsB/OM/fOlrtkrCmWO5wcc=
+=UZj7
+-----END PGP SIGNATURE-----
+
+--3MwIy2ne0vdjdPXF--
