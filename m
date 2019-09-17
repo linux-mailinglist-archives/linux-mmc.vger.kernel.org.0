@@ -2,46 +2,39 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F74B4FA7
-	for <lists+linux-mmc@lfdr.de>; Tue, 17 Sep 2019 15:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFE10B4FAB
+	for <lists+linux-mmc@lfdr.de>; Tue, 17 Sep 2019 15:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726878AbfIQNuD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 Sep 2019 09:50:03 -0400
-Received: from pandora.armlinux.org.uk ([78.32.30.218]:41660 "EHLO
-        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726735AbfIQNuD (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Sep 2019 09:50:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=ixPF66S1XEW6DoFy8CVYHJVE6hgRd/68MWIlm+YGQGQ=; b=b6pUmwH9IlXUvL2KhzslExPfl
-        np33xjAdjKROOrqn4uH4Paxg5CeDEsA6ylMWZS4E7AIvjNSMA5yA4vMZ5s2+HgbHt+0DDFwDNyEN2
-        4LdtDwXhvhN/vFsT67gkDO4HORY4Y9N2Pro1+uemfeeoXt7NH2Sd3XiE5BfgjMcfeuoo/pF0hrN1c
-        C4XuwXiDEjI+nCXPNlcVSTvLyMJinPfZRDvn5qbo/1jzTQ3AVq6M8wu1BNmayKsowMbGjDFx1DGJX
-        HyECt9iuw8fyU1CMr5m96uoNo5wz6tCu71yMDOZAxVszdBxMLJJdPF/5AMo/8oIAcZ0HDyNgyC7p0
-        HCbt/rEjA==;
-Received: from shell.armlinux.org.uk ([2002:4e20:1eda:1:5054:ff:fe00:4ec]:40648)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1iADra-0002C1-6k; Tue, 17 Sep 2019 14:49:50 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1iADrX-0001L1-82; Tue, 17 Sep 2019 14:49:47 +0100
-Date:   Tue, 17 Sep 2019 14:49:47 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+        id S1725868AbfIQNui (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 Sep 2019 09:50:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40610 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725796AbfIQNuJ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 17 Sep 2019 09:50:09 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 789B920640;
+        Tue, 17 Sep 2019 13:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568728208;
+        bh=EF+cokmhO844wU/4E9FL9Kj9ejUO2xemZNs6ofyBbn0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IvRwRRjnAr5zTaNftoPS4pX32ccElvTTlH+lVfGvBripBgTJC1sgMNmMUVvvms2wv
+         nT94fQkKBlsMKygEXcw28S11v61/DieDU9F4R5lxEDWurTWrOKhFZp58dYkrhdczbT
+         q3w/4NqWhCyynQfMJV+OqtWoVtNedf7LTIYBvjcQ=
+Date:   Tue, 17 Sep 2019 14:50:03 +0100
+From:   Will Deacon <will@kernel.org>
 To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Adrian Hunter <adrian.hunter@intel.com>,
         Will Deacon <will.deacon@arm.com>,
         Nicolin Chen <nicoleotsuka@gmail.com>,
         dann frazier <dann.frazier@canonical.com>,
         Christoph Hellwig <hch@lst.de>, linux-mmc@vger.kernel.org,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
 Subject: Re: [REGRESSION] sdhci no longer detects SD cards on LX2160A
-Message-ID: <20190917134947.GS25745@shell.armlinux.org.uk>
+Message-ID: <20190917135002.5rolyvlgmnyepk2c@willie-the-truck>
 References: <20190916171509.GG25745@shell.armlinux.org.uk>
  <b19a0640-5d71-a005-eb0f-c6840f181e5d@free.fr>
  <20190917081931.GI25745@shell.armlinux.org.uk>
@@ -55,7 +48,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <c12e21c3-6bef-38ed-3693-b958be17d555@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
@@ -282,29 +275,10 @@ On Tue, Sep 17, 2019 at 02:38:00PM +0100, Robin Murphy wrote:
 > addresses that the controller needed additional configuration to be able to
 > access[1] - no amount of cache maintenance would affect that.
 
-As already replied, v4 mode is not documented as being available on
-the LX2160A - the bit in the control register is marked as "reserved".
-This is as expected as it is documented that it is using a v3.00 of
-the SDHCI standard, rather than v4.00.
+To be honest, the conclusion in that other thread wasn't exactly satisfying.
+The reporter says "Probably, my device is not 64-bit capable." and the fix
+changes the buffer allocation enough that I wouldn't rule out the same
+coherency issue as being the root cause. I don't think we ever tried adding
+cache flushing to see if it helped.
 
-So, sorry, enabling "v4 mode" isn't a workaround in this scenario.
-
-Given that v4 mode is not mandatory, this shouldn't be a work-around.
-
-Given that it _does_ work some of the time with the table >4GB, then
-this is not an addressing limitation.
-
-> However, the other difference between getting a single page directly from
-> the page allocator vs. the CMA area is that accesses to the linear mapping
-> of the CMA area are probably pretty rare, whereas for the single-page case
-> it's much more likely that kernel tasks using adjacent pages could lead to
-> prefetching of the descriptor page's cacheable alias. That could certainly
-> explain how reverting that commit manages to hide an apparent coherency
-> issue.
-
-Right, so how do we fix this?
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+Will
