@@ -2,62 +2,68 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE445B556D
-	for <lists+linux-mmc@lfdr.de>; Tue, 17 Sep 2019 20:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11301B569A
+	for <lists+linux-mmc@lfdr.de>; Tue, 17 Sep 2019 22:01:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726231AbfIQSgz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 Sep 2019 14:36:55 -0400
-Received: from sauhun.de ([88.99.104.3]:55818 "EHLO pokefinder.org"
+        id S1727106AbfIQUBm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 Sep 2019 16:01:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34504 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725865AbfIQSgz (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 17 Sep 2019 14:36:55 -0400
-Received: from localhost (p54B331E4.dip0.t-ipconnect.de [84.179.49.228])
-        by pokefinder.org (Postfix) with ESMTPSA id 460B22C0489;
-        Tue, 17 Sep 2019 20:36:53 +0200 (CEST)
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH] mmc: tmio: remove workaround for NON_REMOVABLE
-Date:   Tue, 17 Sep 2019 20:36:52 +0200
-Message-Id: <20190917183652.7310-1-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726668AbfIQUBm (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 17 Sep 2019 16:01:42 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B9313214AF;
+        Tue, 17 Sep 2019 20:01:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568750501;
+        bh=Che2+9+ePoUuGZV/h3gxyTYSugwlLxiZHrpBbNST7tU=;
+        h=In-Reply-To:References:Cc:To:From:Subject:Date:From;
+        b=NT6KqF8XvAQFJRCWcD/2ejgKGLjoEZN6nYr++HDJeb3ghE3e9ctBtccsz+h7KQGrc
+         ebYzv9TqEbDI80Mq8b4BYzGO2onxdYpkrKQO3nwIA5vaWgK09xdHl6so/l90tYBMK+
+         2m5gtoJYEqfa38QXLidx1ZBBI3oSb25yLAZgVZXo=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190916154546.24982-2-manivannan.sadhasivam@linaro.org>
+References: <20190916154546.24982-1-manivannan.sadhasivam@linaro.org> <20190916154546.24982-2-manivannan.sadhasivam@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        thomas.liau@actions-semi.com, linux-actions@lists.infradead.org,
+        linus.walleij@linaro.org, linux-clk@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        afaerber@suse.de, robh+dt@kernel.org, ulf.hansson@linaro.org
+From:   Stephen Boyd <sboyd@kernel.org>
+Subject: Re: [PATCH v4 1/7] clk: actions: Fix factor clk struct member access
+User-Agent: alot/0.8.1
+Date:   Tue, 17 Sep 2019 13:01:40 -0700
+Message-Id: <20190917200141.B9313214AF@mail.kernel.org>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-PM has been reworked, so eMMC gets now detected on R-Car H3 ES1.0 and
-2.0 as well as M3-N without the workaround. Card detect and write
-protect also still work. Remove the workaround.
+Quoting Manivannan Sadhasivam (2019-09-16 08:45:40)
+> Since the helper "owl_factor_helper_round_rate" is shared between factor
+> and composite clocks, using the factor clk specific helper function
+> like "hw_to_owl_factor" to access its members will create issues when
+> called from composite clk specific code. Hence, pass the "factor_hw"
+> struct pointer directly instead of fetching it using factor clk specific
+> helpers.
+>=20
+> This issue has been observed when a composite clock like "sd0_clk" tried
+> to call "owl_factor_helper_round_rate" resulting in pointer dereferencing
+> error.
+>=20
+> While we are at it, let's rename the "clk_val_best" function to
+> "owl_clk_val_best" since this is an owl SoCs specific helper.
+>=20
+> Fixes: 4bb78fc9744a ("clk: actions: Add factor clock support")
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+> ---
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/mmc/host/tmio_mmc_core.c | 9 ---------
- 1 file changed, 9 deletions(-)
-
-diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-index 9b6e1001e77c..63dc37481fba 100644
---- a/drivers/mmc/host/tmio_mmc_core.c
-+++ b/drivers/mmc/host/tmio_mmc_core.c
-@@ -1208,15 +1208,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
- 	if (!_host->reset)
- 		_host->reset = tmio_mmc_reset;
- 
--	/*
--	 * On Gen2+, eMMC with NONREMOVABLE currently fails because native
--	 * hotplug gets disabled. It seems RuntimePM related yet we need further
--	 * research. Since we are planning a PM overhaul anyway, let's enforce
--	 * for now the device being active by enabling native hotplug always.
--	 */
--	if (pdata->flags & TMIO_MMC_MIN_RCAR2)
--		_host->native_hotplug = true;
--
- 	/*
- 	 * While using internal tmio hardware logic for card detection, we need
- 	 * to ensure it stays powered for it to work.
--- 
-2.20.1
+Applied to clk-next
 
