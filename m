@@ -2,77 +2,124 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79893B5F07
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Sep 2019 10:22:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92B17B606F
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Sep 2019 11:33:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730132AbfIRIWM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 18 Sep 2019 04:22:12 -0400
-Received: from sauhun.de ([88.99.104.3]:36620 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726131AbfIRIWM (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 18 Sep 2019 04:22:12 -0400
-Received: from localhost (p5486CF1F.dip0.t-ipconnect.de [84.134.207.31])
-        by pokefinder.org (Postfix) with ESMTPSA id 826CB2C04A3;
-        Wed, 18 Sep 2019 10:22:10 +0200 (CEST)
-Date:   Wed, 18 Sep 2019 10:22:10 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Takeshi Saito <takeshi.saito.xv@renesas.com>
-Subject: Re: [PATCH] mmc: renesas_sdhi: fix hang up in HS400 timing mode
- selection
-Message-ID: <20190918082210.GA1379@kunai>
-References: <20190917225023.6035-1-wsa+renesas@sang-engineering.com>
- <TYAPR01MB45444D01948B219CEE4F86E0D88E0@TYAPR01MB4544.jpnprd01.prod.outlook.com>
+        id S1726593AbfIRJdc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 18 Sep 2019 05:33:32 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:50884 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726818AbfIRJdc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Sep 2019 05:33:32 -0400
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8I9LiLC012659;
+        Wed, 18 Sep 2019 11:33:17 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=w2DW76qUSewnb1/9cIUq9BbK5Drmqq+tMdxCCn/J9V8=;
+ b=I1Zy9RDpW/qOpImzeliSW2ZhFKIYE8lxtzo/CF1AWxe4+MUxtIhUp3wyGNcWHCcEuJIv
+ 9aJCw9kB3R88uCEbYslFaKO/y7xUYyFSggCKFamcvKDhSiTijdJ249Pbb+pBRxumeHgc
+ 3htuC9vMVKdNB9dMsXDwjm7qFub3LaFR2E8c4hlb4ng4ojoTKCCXb2CK2Buva2JntihK
+ yaO6OEPgYskuDPWU8YSTw4G81dYeer/pCoJNwFSqWjJ4XU2GFRa/jG/3y9jhYDtq/cA2
+ 3dMHqy6mART+qbblqv5hqPxboPsTrna8U0+k49PX5fBvBfX8JOdeD3701d8x79NWS2xn Cg== 
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2v37kh39fw-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 18 Sep 2019 11:33:17 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 2783951;
+        Wed, 18 Sep 2019 09:33:10 +0000 (GMT)
+Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D249C2B06B4;
+        Wed, 18 Sep 2019 11:33:09 +0200 (CEST)
+Received: from lmecxl0923.lme.st.com (10.75.127.51) by SFHDAG6NODE1.st.com
+ (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 18 Sep
+ 2019 11:33:09 +0200
+Subject: Re: [PATCH V6 0/3] mmc: mmci: add busy detect for stm32 sdmmc variant
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+References: <20190905122112.29672-1-ludovic.Barre@st.com>
+From:   Ludovic BARRE <ludovic.barre@st.com>
+Message-ID: <940e3ce8-1a4f-7e03-dfec-25330051ea5f@st.com>
+Date:   Wed, 18 Sep 2019 11:33:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="huq684BweRXVnRxX"
-Content-Disposition: inline
-In-Reply-To: <TYAPR01MB45444D01948B219CEE4F86E0D88E0@TYAPR01MB4544.jpnprd01.prod.outlook.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190905122112.29672-1-ludovic.Barre@st.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.75.127.51]
+X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG6NODE1.st.com
+ (10.75.127.16)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-09-18_06:2019-09-17,2019-09-18 signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+hi Ulf
 
---huq684BweRXVnRxX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Just a "gentleman ping" about this series and
+https://lkml.org/lkml/2019/9/4/747
 
+Regards
+Ludo
 
-> I asked the BSP team about this topic, and then they have a concern about
-> the retune. Since they would like to check whether the software is
-> doing tune or not, just tuning situation is lacking on this patch.
-> So, if MMC subsystem has such a new flag as "doing_tune" in struct mmc_host,
-> it's helpful for it. (Also, perhaps it's helpful for adding extra quirks
-> on this driver in the future). What do you think?
-
-I understand the concern. I will check this.
-
-
---huq684BweRXVnRxX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl2B6S4ACgkQFA3kzBSg
-KbaQzg//eCzKFzx2DD9oEY8ixryCJTh9F0yFNRoY3t3WLNH1byAftd89Kfhz3Sen
-SHRCC8V/rpRPUREdjhsL81/SAw03YGKmyU8HuAvjIptk+BfanKhv9OHAy2BZQLMZ
-jf1nYzoxvvKtYrSn+gg8p6nwd8TMxAuRSWjCEMidz+yiI4Z/UW9ywzKbQYLVPwzO
-r9yBKWv2eENMDPOKDoG+uJduogbeFrwVxtXkbJ1AOrm+CNv2LGVQl24pbdWPm9r2
-5BxI2etRo5L+5hwMxNl0E8loA2syVW5SybNsw5OXDDBr2jv9ZqJoHkxutP2vHXDW
-N/yUqOOMThxFWDmPLhJ5yCUlnOrkLCMUtplajX2/Rt4KCocg+vNmZVl/XfjTgfpG
-FZUTxMiaVWMZOEkSmgwjVSjF+b9WOEBiaQRh5MOTJlZ4eEQTeEXlfWspOLC5kWKU
-Ba4ko9Hg2W3jv3lkeg8vqvN1At8r5M1Z3oxhH6jvYfU/5KFz/u905M0czOWXsUwo
-jVf6sJ/t8dT3VgqEO+a9kkbk7GzFDLWsefWPd6bnbjm2fCBeewFCtKaEFHnW6yG3
-+OoM3QcjVAB1H02Z9DeXgAR663JE7ZRz4WRVBo7k8Gg4rc2kRgLdwPv4jAHKzR+b
-dGFRuDCpEdQeq12/NpSwo0PVlTA7U6zHWFclmhz9J966QnwzPSo=
-=bvFP
------END PGP SIGNATURE-----
-
---huq684BweRXVnRxX--
+Le 9/5/19 à 2:21 PM, Ludovic Barre a écrit :
+> From: Ludovic Barre <ludovic.barre@st.com>
+> 
+> This patch series adds busy detect for stm32 sdmmc variant.
+> Some adaptations are required:
+> -On sdmmc the data timer is started on data transfert
+> and busy state, so we must add hardware busy timeout support.
+> -Add busy_complete callback at mmci_host_ops to allow to define
+> a specific busy completion by variant.
+> -Add sdmmc busy_complete callback.
+> 
+> V6:
+> -mmci_start_command: set datatimer only on rsp_busy flag
+> (remove host->mrq->data).
+> -move max_busy_timeout in set_ios callback.
+> -typo fix: err_msk, clks on one lines.
+> 
+> V5:
+> -Replaces !cmd->data to !host->mrq->data to avoid overwrite
+>   of datatimer register by the first command (cmd23, without data) of
+>   SBC request.
+> 
+> V4:
+> -Re-work with busy_complete callback
+> -In series, move "mmc: mmci: add hardware busy timeout feature" in
+> first to simplify busy_complete prototype with err_msk parameter.
+> 
+> V3:
+> -rebase on latest mmc next
+> -replace re-read by status parameter.
+> 
+> V2:
+> -mmci_cmd_irq cleanup in separate patch.
+> -simplify the busy_detect_flag exclude
+> -replace sdmmc specific comment in
+> "mmc: mmci: avoid fake busy polling in mmci_irq"
+> to focus on common behavior
+> 
+> Ludovic Barre (3):
+>    mmc: mmci: add hardware busy timeout feature
+>    mmc: mmci: add busy_complete callback
+>    mmc: mmci: sdmmc: add busy_complete callback
+> 
+>   drivers/mmc/host/mmci.c             | 183 +++++++++++++++++-----------
+>   drivers/mmc/host/mmci.h             |   7 +-
+>   drivers/mmc/host/mmci_stm32_sdmmc.c |  38 ++++++
+>   3 files changed, 156 insertions(+), 72 deletions(-)
+> 
