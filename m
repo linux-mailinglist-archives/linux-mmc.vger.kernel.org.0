@@ -2,174 +2,131 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBE87B5B61
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Sep 2019 07:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBDD8B5EDB
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Sep 2019 10:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726363AbfIRFzF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 18 Sep 2019 01:55:05 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:34709 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725904AbfIRFzE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Sep 2019 01:55:04 -0400
-Received: by mail-ua1-f66.google.com with SMTP id q11so1196088uao.1
-        for <linux-mmc@vger.kernel.org>; Tue, 17 Sep 2019 22:55:02 -0700 (PDT)
+        id S1729966AbfIRIPI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 18 Sep 2019 04:15:08 -0400
+Received: from mail-eopbgr1400119.outbound.protection.outlook.com ([40.107.140.119]:50678
+        "EHLO JPN01-TY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729939AbfIRIPG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 18 Sep 2019 04:15:06 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Q5TgWUgwvEVxyYLBSWaEZmm/bB/5vxumF2tc/NhTeNbPnt1EJQOmvZnmCudNmiUMeAwjicqwuoIzSeDkcRZVLZvyvDwj3yH7PaTjcLnwd9xcbRvUzolWgehWNYBY+lmkBbHjtvmPuEgNHrJZ+0M45//NGxNtVx2D8mJqvBEyJYEgf7CdvviepPnFWBY5DYWrxCIqIEB9Nwh7wrCxWUbjd78p8CcwriV2DFYzDCV+6XvCWmAz3WNxJqVqRHwdeZ+T5O5M1p6jHHCiKlVLaiULVtzhPNl3f1jkRS5p7eATm+yWxSBxdUx9M4faqZKwFSuQq/aQgHyGzwhNxPXOY1YaLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mtRSHNmE7w6V1yw58RnmnhWh/iPQ4GXe9gSTu0ciB5w=;
+ b=hJDJze2gEFjhZWfq7O4CJS6poRa+mcilLBKlKSu6u23GwfLfJF583kJhzxLbrejnYFKXv7bc1IzF+OIofmMfmN2WbU6ltpjeoHTKCxptecDhFcVSldWrzYBMbhhsxc9wX8x5e1AZ69g3JiYISMV4gKtG8PjXwPu8WR0CdASUvAK/qbqgjASytyKGAn8LxKyaTr5SUt1W242smmXdNBK3rNt1J3KOKPjcex55OzaKm8RUHadCm4jtUhEtJ4jLsIqGk1JTG/R+Btd+RpMmctuHk+K8njV0NcANOp9IE3i9j59KDrGLzAnOD6jakfZAyszgBYXu5xCLaiCcYmlPhYS4yw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=y2QteH55/uw8xk8TfmuiYN+/migIXlq/KzctUglrM54=;
-        b=ZTzCiqaYpOrp0ONwQ69i00RMDXKtXW+333/D66kdMMwtU4pk/dBy11OhXpenQzl3sn
-         k1e0a47AC36pgRFI/wo4QojzcRe9qWiyk9zhMZh6XduI1ubpuz1rtO470XjvpX9EJYfW
-         1cFvudw3AV9kFHvdwWSsQ0LEJRXSknZoh8Frg93oytQJQiXJqif1aXRJQuSOoLASndIA
-         /MpdlxoxejKi3eOLbqYAMXJuoAuQ4mSZpj58tJvd65bUNr4WwwjQquVd/rIu/Lj61dRi
-         fl5OBUnmlRHTuwAAIFdFMxQxN89US3POI+KBhjjbLaFQN7/cT5kP7ZhxQH5L+UGoJSYG
-         uITg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=y2QteH55/uw8xk8TfmuiYN+/migIXlq/KzctUglrM54=;
-        b=q5jv59YAg+fPRbaqCQEhZ77xTkvNntb1JOKJ5SPOqboaWpk3GLYNklxc/Ss7QmhR3W
-         TqEw1GZqvDGWe9imh4kipR3hfuCN830c1FfCKFweBlWyhewzhtAleMN+FxlGwg00NH4q
-         gGqM2STj3E78RcHBd9DpqlyV+H1F0Fp/Om5A5EJ6nlUO1xWCTpExJFIgHIO1D9g5Sww9
-         3f18ghfKRGGIat8sD6xN5UjirQpPzNhycDc0Hxw4iRYQJQLaNwcRV69nzY3OqgY/u0XN
-         m6dJ5J6tcqEwuDQU6RdAZun76l98Ebx5ce7BH+sX6BEx9mAeEviQ9iK71db7R5Bd2ibH
-         oM1w==
-X-Gm-Message-State: APjAAAVbt3z9YHnLboSTrF6LF1e3LgfnIsWTQpQA7jGGhR+RahGEg/Hk
-        w3PQ5ovNdagkkEjSkrjJ9hvd7iyVTHWf4ZXt2O6cQaw+
-X-Google-Smtp-Source: APXvYqxVSjoCAGtAL9WPGwxmOzKzi+Hh0L/7NT0Jc3Riwg3+rEKL3k7t4hbVmV6sl4PaDOFROuRN2kPY+aBouz535AM=
-X-Received: by 2002:ab0:d8f:: with SMTP id i15mr1363688uak.15.1568786101785;
- Tue, 17 Sep 2019 22:55:01 -0700 (PDT)
-MIME-Version: 1.0
+ d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mtRSHNmE7w6V1yw58RnmnhWh/iPQ4GXe9gSTu0ciB5w=;
+ b=gVQw/beukrVZdTSrlJXWEEioCp9U9xScMVLe1RCFaH3LFUEpW6pu+ITiHu6UFmSXOoJdMyZumV/jIuTceHSv0qbBXpKWsjAJRxxIOLLvvdrM805ggIDhoJyfWM7EuDQzLs0PhD0el0upENCU+w5a+YySJOnZvWi20qxWNBi0x8g=
+Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com (20.179.175.203) by
+ TYAPR01MB3726.jpnprd01.prod.outlook.com (20.178.136.203) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2284.19; Wed, 18 Sep 2019 08:15:03 +0000
+Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com
+ ([fe80::7da1:bfc1:6c7f:8977]) by TYAPR01MB4544.jpnprd01.prod.outlook.com
+ ([fe80::7da1:bfc1:6c7f:8977%7]) with mapi id 15.20.2263.023; Wed, 18 Sep 2019
+ 08:15:03 +0000
+From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+CC:     "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        =?iso-8859-1?Q?Niklas_S=F6derlund?= <niklas.soderlund@ragnatech.se>,
+        Takeshi Saito <takeshi.saito.xv@renesas.com>
+Subject: RE: [PATCH] mmc: renesas_sdhi: fix hang up in HS400 timing mode
+ selection
+Thread-Topic: [PATCH] mmc: renesas_sdhi: fix hang up in HS400 timing mode
+ selection
+Thread-Index: AQHVbapRlmNlBZu4E0OZmsTlLvIQ5KcxE55Q
+Date:   Wed, 18 Sep 2019 08:15:02 +0000
+Message-ID: <TYAPR01MB45444D01948B219CEE4F86E0D88E0@TYAPR01MB4544.jpnprd01.prod.outlook.com>
 References: <20190917225023.6035-1-wsa+renesas@sang-engineering.com>
 In-Reply-To: <20190917225023.6035-1-wsa+renesas@sang-engineering.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 18 Sep 2019 07:54:24 +0200
-Message-ID: <CAPDyKFo=x2+x6zXwqNnMJEZJfwfEDaF2T+ow_MQMqAzNgf4D8w@mail.gmail.com>
-Subject: Re: [PATCH] mmc: renesas_sdhi: fix hang up in HS400 timing mode selection
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Takeshi Saito <takeshi.saito.xv@renesas.com>
-Content-Type: text/plain; charset="UTF-8"
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
+x-originating-ip: [150.249.235.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f6fb4883-2ca3-4250-6f6f-08d73c104e92
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:TYAPR01MB3726;
+x-ms-traffictypediagnostic: TYAPR01MB3726:|TYAPR01MB3726:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <TYAPR01MB3726584BEF3A4CA4C0C6490CD88E0@TYAPR01MB3726.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 01644DCF4A
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(376002)(396003)(136003)(39860400002)(346002)(366004)(199004)(189003)(8676002)(81156014)(81166006)(6436002)(7736002)(8936002)(486006)(110136005)(186003)(229853002)(5660300002)(71200400001)(71190400001)(476003)(11346002)(54906003)(446003)(9686003)(478600001)(107886003)(7696005)(6246003)(26005)(55016002)(76176011)(6506007)(2906002)(316002)(99286004)(14454004)(102836004)(64756008)(66556008)(3846002)(6116002)(66446008)(66946007)(4326008)(25786009)(2501003)(66066001)(66476007)(52536014)(256004)(86362001)(305945005)(33656002)(74316002)(76116006);DIR:OUT;SFP:1102;SCL:1;SRVR:TYAPR01MB3726;H:TYAPR01MB4544.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: renesas.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: ROK6A0CfrEcKZPRrBD+aW/AthZMbkCHOPXPhDFVuWRp+tUWEX/HRQwCGuMggmRa+fqigpkcIMDYdIh02S/vcfxna8rZWV7ceoYqfxQXrI07efIfCh+iD6E+2P1wEkZUdDQxIJkhuO21HIHhSihWmtcrcHl3Wy4JS014sUOvFqHjSfofXvCoB9DEP0FPn/VSK6IquDlvQ5cmGLRCfqtjeQJhTbhg5/o+mqkAeJOCRkR2Sx8BbyXK+21xw6rclnMcibVS/gbcMAxbSDsmKQ/eAgQKvPgm9JG9J5p3lCd9HGe6OtNcqC/LuK//bo3S7dGaIf1lk7t+6YgE1u2L87ImsW+9M4ZOIbqVOic75CCqbZ70KyDB9i2NGer6vw+ZtCcQCVuF3MudWHgp6uhV6fQRusjU0Jij3+zlJFZx+LB98CJg=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6fb4883-2ca3-4250-6f6f-08d73c104e92
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2019 08:15:02.9738
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: L8x3V2D3+EFk6h1Rnoa1iD2x7JAvBQXqlZ1qINLBpBLuVBvYkQTTAhFsxvGvPy19HaxiwVnv5HSq2Ewk7VniYlpRsMC1fib2Nw4w3t4nzeGoS6IAVT7cIZrz2UHX6qk+
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAPR01MB3726
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 18 Sep 2019 at 00:50, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
->
-> From: Takeshi Saito <takeshi.saito.xv@renesas.com>
->
+Hi Wolfram-san,
+
+> From: Wolfram Sang, Sent: Wednesday, September 18, 2019 7:50 AM
+<snip>
+>=20
 > In HS400 timing mode selection, SD clock is switched like:
->
+>=20
 > 1) HS200 (200MHz) for tuning
-> 2) High Speed (<= 52MHz) for select HS400 mode (card)
+> 2) High Speed (<=3D 52MHz) for select HS400 mode (card)
 > 3) HS400 (200MHz)
->
+>=20
 > The SDHI controller needs its internal SCC component for HS400 and other
 > modes which need tuning. However, SCC gets only fed a clock when the
 > module clk is > 100MHz. Make sure the SCC is always active with tuning
 > by enforcing at least 100MHz. Note that we only change the module clock.
 > An internal divider ensures that we will still talk to the card at
 > 52MHz.
->
+>=20
 > Signed-off-by: Takeshi Saito <takeshi.saito.xv@renesas.com>
 > [wsa: don't overwrite 'new_freq', use 'mmc_doing_retune', improve docs]
 > Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-Assuming you want this for stable as well, but perhaps we can also
-find a commit to add a fixes tag? Do you have any suggestions for a
-commit?
-
-Kind regards
-Uffe
-
 > ---
->
+>=20
 > Shimoda-san: can you forward this patch to the BSP team to have a look,
 > too? I needed to change their version of checking various MMC_TIMING_*
 > constants because this approach did not work with current mainline for
 > me. After some testing and researching, I think the solution with
 > 'mmc_doing_retune' is not only working again, but also more future
 > proof, in general.
->
->  drivers/mmc/host/renesas_sdhi.h               | 2 ++
->  drivers/mmc/host/renesas_sdhi_core.c          | 8 +++++++-
->  drivers/mmc/host/renesas_sdhi_internal_dmac.c | 2 ++
->  3 files changed, 11 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/renesas_sdhi.h b/drivers/mmc/host/renesas_sdhi.h
-> index c0504aa90857..33a1acc67cb4 100644
-> --- a/drivers/mmc/host/renesas_sdhi.h
-> +++ b/drivers/mmc/host/renesas_sdhi.h
-> @@ -27,6 +27,7 @@ struct renesas_sdhi_of_data {
->         dma_addr_t dma_rx_offset;
->         unsigned int bus_shift;
->         int scc_offset;
-> +       unsigned int scc_base_f_min;
->         struct renesas_sdhi_scc *taps;
->         int taps_num;
->         unsigned int max_blk_count;
-> @@ -49,6 +50,7 @@ struct renesas_sdhi {
->         struct pinctrl *pinctrl;
->         struct pinctrl_state *pins_default, *pins_uhs;
->         void __iomem *scc_ctl;
-> +       unsigned int scc_base_f_min;
->         u32 scc_tappos;
->         u32 scc_tappos_hs400;
->  };
-> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-> index 4a2872f49a60..82a492567016 100644
-> --- a/drivers/mmc/host/renesas_sdhi_core.c
-> +++ b/drivers/mmc/host/renesas_sdhi_core.c
-> @@ -120,16 +120,21 @@ static int renesas_sdhi_clk_enable(struct tmio_mmc_host *host)
->  }
->
->  static unsigned int renesas_sdhi_clk_update(struct tmio_mmc_host *host,
-> -                                           unsigned int new_clock)
-> +                                           unsigned int req_clock)
->  {
->         struct renesas_sdhi *priv = host_to_priv(host);
->         unsigned int freq, diff, best_freq = 0, diff_min = ~0;
-> +       unsigned int new_clock = req_clock;
->         int i, ret;
->
->         /* tested only on R-Car Gen2+ currently; may work for others */
->         if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
->                 return clk_get_rate(priv->clk);
->
-> +       /* When SCC is needed, make sure it gets a proper clock */
-> +       if (mmc_doing_retune(host->mmc) && new_clock < priv->scc_base_f_min)
-> +               new_clock = priv->scc_base_f_min;
-> +
->         /*
->          * We want the bus clock to be as close as possible to, but no
->          * greater than, new_clock.  As we can divide by 1 << i for
-> @@ -709,6 +714,7 @@ int renesas_sdhi_probe(struct platform_device *pdev,
->                 mmc_data->max_segs = of_data->max_segs;
->                 dma_priv->dma_buswidth = of_data->dma_buswidth;
->                 host->bus_shift = of_data->bus_shift;
-> +               priv->scc_base_f_min = of_data->scc_base_f_min;
->         }
->
->         host->write16_hook      = renesas_sdhi_write16_hook;
-> diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> index 751fe91c7571..7010c524b180 100644
-> --- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> +++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> @@ -109,6 +109,8 @@ static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
->         .capabilities2  = MMC_CAP2_NO_WRITE_PROTECT,
->         .bus_shift      = 2,
->         .scc_offset     = 0x1000,
-> +       /* SCC module clock (SDnH) is enabled at 100MHz or more */
-> +       .scc_base_f_min = 100000000,
->         .taps           = rcar_gen3_scc_taps,
->         .taps_num       = ARRAY_SIZE(rcar_gen3_scc_taps),
->         /* DMAC can handle 32bit blk count but only 1 segment */
-> --
-> 2.20.1
->
+
+I asked the BSP team about this topic, and then they have a concern about
+the retune. Since they would like to check whether the software is
+doing tune or not, just tuning situation is lacking on this patch.
+So, if MMC subsystem has such a new flag as "doing_tune" in struct mmc_host=
+,
+it's helpful for it. (Also, perhaps it's helpful for adding extra quirks
+on this driver in the future). What do you think?
+
+Best regards,
+Yoshihiro Shimoda
+
