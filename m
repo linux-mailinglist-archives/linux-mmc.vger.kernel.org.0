@@ -2,170 +2,221 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6484B6339
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Sep 2019 14:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F1DB6715
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Sep 2019 17:27:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728040AbfIRM2q (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 18 Sep 2019 08:28:46 -0400
-Received: from mout.web.de ([212.227.15.4]:37371 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725902AbfIRM2q (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 18 Sep 2019 08:28:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568809719;
-        bh=wuV3PsgL4Q/zL6yMThKk604Y/MBD3bAO7nU5CWeKQ60=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=EywlomUJx/ELKGZPyjLtfDPOwmYdJWvYQFeUvliT80p3JPLiY8JMAKde2ycJubQHF
-         rlxO5hfMyBOMAcrC2jIT5hP+l6wR6qLHW/1/jW0f5taQAzJf3EMe0yPbYFLHveaVYI
-         msDMMmoLKvcLw43San/tSoKHyG7RWjhTC2NweacY=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MEVQ1-1iQENq1l6H-00FjCz; Wed, 18
- Sep 2019 14:28:39 +0200
-To:     linux-mmc@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Jan Glauber <jglauber@cavium.com>,
-        "Steven J. Hill" <Steven.Hill@cavium.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] mmc: cavium-octeon: Use devm_platform_ioremap_resource() in
- octeon_mmc_probe()
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <4ad4cdb5-3623-4416-d3d2-b3c048a42139@web.de>
-Date:   Wed, 18 Sep 2019 14:28:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        id S1727536AbfIRP1t (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 18 Sep 2019 11:27:49 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:34646 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727057AbfIRP1t (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Sep 2019 11:27:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Type:MIME-Version:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=gdFHiFVbMqVJw3CBF4SoBjQ/uM5M5qm+KSwdRCShL1k=; b=Iu7nhtAaql/og2GAvnceGjKAbq
+        Cbk8RrS9C1NwKD+UZKy/Y6zws/CMAR/gkDf4wy5Ad3gAAsROwXmfJBW3O3v+X3dOpptf4lMrcN2Ti
+        nhGfQbKKerTGgc00UBSp72uBLs8wbgfuHhUjQj/fugE8nLWb6jbQP7ynshgbYgvChydIsmKhSvE5c
+        BJV3aRwJG6gFty8IsVQ7rMzVkHZ4SjuKLCG9OuaOynHJMVpqHPbcC9GlCR6cU3GO+IfP0zXKnXNPP
+        we1cBUhF6TcK3anK7/mjHxi+KrV/YpV7TTBUSBKUoRxrdihfJ5/mmOO09Uwa2UVW8LEIRa9Aa8o0L
+        NlH5q1jQ==;
+Received: from [12.1.75.136] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+        id 1iAbrw-0002Ft-Bj; Wed, 18 Sep 2019 15:27:48 +0000
+Date:   Wed, 18 Sep 2019 08:27:48 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-mmc@vger.kernel.org, iommu@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] dma-mapping updates for 5.4
+Message-ID: <20190918152748.GA21241@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:S3XUzB7O291lbOL5MJquw8tiEGRFFwcrUS6z1R7+qd/5HJsFiUz
- bMT82XRFhoTLloH98O+YT9gTBkhsnBK23L2BtLk4eC29vzulNr+mh5Tj86SXPDqOACLbaGU
- kynKy6G9zUFakynJ2uYDf6/3Pt1i2u4lDWTmAP2kwZ4Fm8qcfPAWWAC9UCyYpF8xHeYKUjf
- glD8ONAxYc9Zj5ic3rMbA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kzIqa/7qGuw=:rIIQAw6p2J2AU+M1JWKsku
- R+i6kpEHoP3Guc4g4iPqwSSb/DfA1Va994myK2BpDtlwUF62CKBCCHvoEzpjKXrozyh0EEgCG
- 4IakWmABUaOxx6FJjP2vlvJidk031LkhkGBFuMBbJMw6fqKUmbFJkVjRHIomocuAoxyH/nI5/
- qOmauIHI9Yq5BaUhKC0ec9i0blWkzD+M8VDlVmwNXVH251T1EX+OZiFGKPRS6oascDvjsPlxd
- HraTn+N3t1hHP6fAkMKxDpufzFOTq0o4SsMDl0Utk86Nx75SwbPTwt3rp5K/uyeSPX4xGLC6C
- 98Q+zsa5AGjQfq7x7HXEhUdGYz4L85I8wsqwUes0w2qPPVaLpXmA769MToHKqn+d6fp/Ht/By
- N02pmBPTIiQNtvX1+iVcoA/eItEDTTujxDnCGmqPaYFFi6IXGhERaYAQGAM9HtjZcVeu0TAgt
- 7qpMELT3CV+KLzEYqNix7NwQAN031CJnZiTClmM/Q2EZxdgmRoZDw0yudJVtwnLM/rPzg5P0u
- n/zlHW/+IjICcTXXA0RPof0alSBF/ASoJT+0Wy04any2XCdaA19zsQ+Z6J3sCU2OB3zMFtYds
- x8VmLMWW4fODfH9oQJk12qBA64c13n9KXvv0na6gsIkfuHMsVNnT0Dn46YEeNGGaEbrOLhRxV
- XEU3OygjG0fs+dBKheAXoKKHNWzH524VBjXDmnLf68fUrVikLWiunzuUBHSKT+V/AYB6wJGay
- Vgy96OQDmoWuKVjT2VL44mPYp4GdvAGiEaD5tEhIbxtgE4XbnZYj0kZz1n5vtyu5d17RffF8H
- JjeK84nuxKZ7RWA3HMyVNWUO18PA2AdoC1WO7ai+9AGxvYSeoJL7er7Fvr1E3sBvOXLO4xZnu
- vcGgMBSQpKrzeMDQDjZISpfB1NHfL+P8noXonH1zUcUxqBpXxBWT1nH5ReVkc+P58m6UEoOgG
- ZgzoMRAGOzwcx7Q9gYTVSWYWtNO5mnXk3za926ccb42UJFmHNRzD5x1JVp5kEQf5RP007Fw0u
- Z6hs2V+f6AjPuZxfXYLdW/oz1TkzhBrw81BOW2Xre1Dzg+m4PNxTuT3peeIivqqis0EG75I3I
- nLNkjKHlEiJ3Q3ZKdOVV6zC1DRKO9ViBd/0FKampVCmd4DbXiCbyuYe/kcexrv4nOL0/yVFRX
- cmLEEWDojtKH4c/MXX3Q7a5vzgfh6DoeuMHCv3wdmvw+UWbKrUJTpWa8NMchtq54wWJWKk5AE
- ICKDl8r42zPhrMnpOakJZza90Xz1wXujsLWRS2iIH+HvbIS4AxgC8vtEXY2A=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Sep 2019 14:20:34 +0200
+Hi Linus,
 
-Simplify this function implementation by using a known wrapper function.
+please pull the dma-mapping updates for 5.4.
 
-This issue was detected by using the Coccinelle software.
+In addition to the usual Kconfig conflics where you just want to keep
+both edits there are a few more interesting merge issues this time:
+ 
+ - most importanly powerpc and microblaze add new callers of
+   dma_atomic_pool_init, while this tree marks the function static
+   and calls it from a common postcore_initcall().  The trivial
+   functions added in powerpc and microblaze adding the calls
+   need to be removed for the code to compile.  This will not show up
+   as a merge conflict and needs to be dealt with manually!
+ - the csky tree has edits close to edits from this tree in
+   arch/csky/mm/dma-mapping.c, keep both edits as there are no
+   functional conflicts.
+ - for ia64 keep the removal of arch/ia64/sn/pci/pci_dma.c from the
+   ia64 tree.  The ia64 tree moves sba_dma_ops around a bit.  Keep
+   the move and the wiring up of ->mmap and ->get_sgtable from this
+   tree.
+ - the -mm tree adds a new compound_nr helper that some of the Xen
+   code removed in this pull request removes.  Keep the removal from
+   this tree.
+ - the block tree adds a new helper next to the new block helpers from
+   this tree, keep both
+ - the arm64 tree removes a __KERNEL__ ifdef from
+   arch/arm64/include/asm/dma-mapping.h, which is removed in this tree.
+   Keep the removal.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/mmc/host/cavium-octeon.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+The following changes since commit a55aa89aab90fae7c815b0551b07be37db359d76:
 
-diff --git a/drivers/mmc/host/cavium-octeon.c b/drivers/mmc/host/cavium-oc=
-teon.c
-index 22aded1065ae..916746c6c2c7 100644
-=2D-- a/drivers/mmc/host/cavium-octeon.c
-+++ b/drivers/mmc/host/cavium-octeon.c
-@@ -148,7 +148,6 @@ static int octeon_mmc_probe(struct platform_device *pd=
-ev)
- {
- 	struct device_node *cn, *node =3D pdev->dev.of_node;
- 	struct cvm_mmc_host *host;
--	struct resource	*res;
- 	void __iomem *base;
- 	int mmc_irq[9];
- 	int i, ret =3D 0;
-@@ -205,23 +204,13 @@ static int octeon_mmc_probe(struct platform_device *=
-pdev)
+  Linux 5.3-rc6 (2019-08-25 12:01:23 -0700)
 
- 	host->last_slot =3D -1;
+are available in the Git repository at:
 
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		dev_err(&pdev->dev, "Platform resource[0] is missing\n");
--		return -ENXIO;
--	}
--	base =3D devm_ioremap_resource(&pdev->dev, res);
-+	base =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
- 	host->base =3D (void __iomem *)base;
- 	host->reg_off =3D 0;
+  git://git.infradead.org/users/hch/dma-mapping.git tags/dma-mapping-5.4
 
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 1);
--	if (!res) {
--		dev_err(&pdev->dev, "Platform resource[1] is missing\n");
--		return -EINVAL;
--	}
--	base =3D devm_ioremap_resource(&pdev->dev, res);
-+	base =3D devm_platform_ioremap_resource(pdev, 1);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
- 	host->dma_base =3D (void __iomem *)base;
-=2D-
-2.23.0
+for you to fetch changes up to c7d9eccb3c1e802c5cbb2a764eb0eb9807d9f12e:
 
+  mmc: renesas_sdhi_internal_dmac: Add MMC_CAP2_MERGE_CAPABLE (2019-09-12 13:14:09 +0100)
+
+----------------------------------------------------------------
+dma-mapping updates for 5.4:
+
+ - add dma-mapping and block layer helpers to take care of IOMMU
+   merging for mmc plus subsequent fixups (Yoshihiro Shimoda)
+ - rework handling of the pgprot bits for remapping (me)
+ - take care of the dma direct infrastructure for swiotlb-xen (me)
+ - improve the dma noncoherent remapping infrastructure (me)
+ - better defaults for ->mmap, ->get_sgtable and ->get_required_mask (me)
+ - cleanup mmaping of coherent DMA allocations (me)
+ - various misc cleanups (Andy Shevchenko, me)
+
+----------------------------------------------------------------
+Andy Shevchenko (1):
+      dma-mapping: fix filename references
+
+Christoph Hellwig (34):
+      unicore32: remove the unused pgprot_dmacoherent define
+      arm-nommu: remove the unused pgprot_dmacoherent define
+      dma-mapping: remove arch_dma_mmap_pgprot
+      dma-mapping: make dma_atomic_pool_init self-contained
+      arm64: document the choice of page attributes for pgprot_dmacoherent
+      MIPS: document mixing "slightly different CCAs"
+      dma-mapping: move the dma_get_sgtable API comments from arm to common code
+      dma-mapping: explicitly wire up ->mmap and ->get_sgtable
+      dma-mapping: add a dma_can_mmap helper
+      ALSA: pcm: use dma_can_mmap() to check if a device supports dma_mmap_*
+      arm-nommu: call dma_mmap_from_dev_coherent directly
+      parisc: don't set ARCH_NO_COHERENT_DMA_MMAP
+      dma-mapping: remove CONFIG_ARCH_NO_COHERENT_DMA_MMAP
+      dma-mapping: remove dma_{alloc,free,mmap}_writecombine
+      dma-mapping: remove dma_release_declared_memory
+      dma-mapping: remove the dma_mmap_from_dev_coherent export
+      remoteproc: don't allow modular build
+      dma-mapping: remove the dma_declare_coherent_memory export
+      dma-mapping: provide a better default ->get_required_mask
+      vmalloc: lift the arm flag for coherent mappings to common code
+      dma-mapping: always use VM_DMA_COHERENT for generic DMA remap
+      dma-mapping: introduce a dma_common_find_pages helper
+      arm: remove wrappers for the generic dma remap helpers
+      xen/arm: use dma-noncoherent.h calls for xen-swiotlb cache maintainance
+      xen/arm: consolidate page-coherent.h
+      xen/arm: use dev_is_dma_coherent
+      xen/arm: simplify dma_cache_maint
+      xen/arm: remove xen_dma_ops
+      xen: remove the exports for xen_{create,destroy}_contiguous_region
+      swiotlb-xen: remove xen_swiotlb_dma_mmap and xen_swiotlb_dma_get_sgtable
+      swiotlb-xen: use the same foreign page check everywhere
+      swiotlb-xen: simplify cache maintainance
+      swiotlb-xen: merge xen_unmap_single into xen_swiotlb_unmap_page
+      arm64: use asm-generic/dma-mapping.h
+
+Yoshihiro Shimoda (6):
+      block: add a helper function to merge the segments
+      mmc: queue: use bigger segments if DMA MAP layer can merge the segments
+      dma-mapping: introduce dma_get_merge_boundary()
+      iommu/dma: add a new dma_map_ops of get_merge_boundary()
+      mmc: queue: Fix bigger segments usage
+      mmc: renesas_sdhi_internal_dmac: Add MMC_CAP2_MERGE_CAPABLE
+
+ Documentation/DMA-API.txt                     |  19 ++--
+ Documentation/x86/x86_64/boot-options.rst     |   2 +-
+ arch/Kconfig                                  |   3 -
+ arch/alpha/kernel/pci_iommu.c                 |   2 +
+ arch/arc/mm/dma.c                             |   6 --
+ arch/arm/Kconfig                              |   2 +-
+ arch/arm/include/asm/device.h                 |   3 -
+ arch/arm/include/asm/dma-mapping.h            |   6 --
+ arch/arm/include/asm/pgtable-nommu.h          |   1 -
+ arch/arm/include/asm/xen/page-coherent.h      |  93 -------------------
+ arch/arm/mm/dma-mapping-nommu.c               |   5 +-
+ arch/arm/mm/dma-mapping.c                     |  84 +++--------------
+ arch/arm/mm/mm.h                              |   3 -
+ arch/arm/xen/mm.c                             | 129 ++++++++------------------
+ arch/arm64/Kconfig                            |   1 -
+ arch/arm64/include/asm/Kbuild                 |   1 +
+ arch/arm64/include/asm/dma-mapping.h          |  31 -------
+ arch/arm64/include/asm/pgtable.h              |  12 +++
+ arch/arm64/include/asm/xen/page-coherent.h    |  75 ---------------
+ arch/arm64/mm/dma-mapping.c                   |  16 +---
+ arch/c6x/Kconfig                              |   1 -
+ arch/csky/mm/dma-mapping.c                    |   6 --
+ arch/ia64/hp/common/sba_iommu.c               |   2 +
+ arch/ia64/kernel/setup.c                      |   2 +-
+ arch/ia64/sn/pci/pci_dma.c                    |   2 +
+ arch/m68k/Kconfig                             |   2 -
+ arch/m68k/include/asm/pgtable_mm.h            |   3 +
+ arch/m68k/kernel/dma.c                        |   3 +-
+ arch/microblaze/Kconfig                       |   1 -
+ arch/mips/Kconfig                             |   9 +-
+ arch/mips/jazz/jazzdma.c                      |   2 +
+ arch/mips/mm/dma-noncoherent.c                |   8 --
+ arch/nds32/kernel/dma.c                       |   6 --
+ arch/parisc/Kconfig                           |   1 -
+ arch/powerpc/kernel/dma-iommu.c               |   2 +
+ arch/powerpc/platforms/ps3/system-bus.c       |  11 +--
+ arch/powerpc/platforms/pseries/vio.c          |   2 +
+ arch/s390/pci/pci_dma.c                       |   2 +
+ arch/sh/Kconfig                               |   1 -
+ arch/unicore32/include/asm/pgtable.h          |   2 -
+ arch/x86/include/asm/xen/page-coherent.h      |  14 ---
+ arch/x86/kernel/amd_gart_64.c                 |   3 +
+ arch/x86/kernel/pci-calgary_64.c              |   2 +
+ arch/x86/kernel/pci-swiotlb.c                 |   1 -
+ arch/x86/kernel/setup.c                       |   2 +-
+ arch/x86/pci/sta2x11-fixup.c                  |   4 +-
+ arch/x86/xen/mmu_pv.c                         |   2 -
+ arch/xtensa/Kconfig                           |   1 -
+ arch/xtensa/kernel/pci-dma.c                  |   4 +-
+ block/blk-settings.c                          |  23 +++++
+ drivers/gpu/drm/omapdrm/dss/dispc.c           |  11 +--
+ drivers/iommu/amd_iommu.c                     |   2 +
+ drivers/iommu/dma-iommu.c                     |  29 +++---
+ drivers/iommu/intel-iommu.c                   |   2 +
+ drivers/mmc/core/queue.c                      |  41 +++++++-
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c |   2 +-
+ drivers/parisc/ccio-dma.c                     |   1 +
+ drivers/parisc/sba_iommu.c                    |   1 +
+ drivers/remoteproc/Kconfig                    |   2 +-
+ drivers/xen/swiotlb-xen.c                     |  84 ++++-------------
+ include/linux/blkdev.h                        |   2 +
+ include/linux/dma-mapping.h                   |  34 +++----
+ include/linux/dma-noncoherent.h               |  13 ++-
+ include/linux/mmc/host.h                      |   2 +
+ include/linux/vmalloc.h                       |   2 +
+ include/xen/arm/hypervisor.h                  |   2 -
+ include/xen/arm/page-coherent.h               |  24 +++--
+ include/xen/swiotlb-xen.h                     |   5 +
+ kernel/dma/Kconfig                            |  12 ++-
+ kernel/dma/coherent.c                         |  13 ---
+ kernel/dma/mapping.c                          | 105 ++++++++++++++-------
+ kernel/dma/remap.c                            |  51 ++++++----
+ mm/vmalloc.c                                  |   5 +-
+ sound/core/pcm_native.c                       |  13 ++-
+ 74 files changed, 399 insertions(+), 677 deletions(-)
+ delete mode 100644 arch/arm64/include/asm/dma-mapping.h
