@@ -2,170 +2,156 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2047B6912
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Sep 2019 19:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87327B6A2C
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Sep 2019 20:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387398AbfIRR2j (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 18 Sep 2019 13:28:39 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:44061 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729319AbfIRR2i (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Sep 2019 13:28:38 -0400
-Received: by mail-pl1-f195.google.com with SMTP id q15so257108pll.11;
-        Wed, 18 Sep 2019 10:28:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=3Yblg+LB3V/R3GdNlbQif00/TPj0swNUNYsErjlgIhk=;
-        b=HXFUoMVf9oYz5skz3MXc8uOX2c+LVWUkc+AnYLuxa+VPe4GMYiTSJZRTduFYB90vYA
-         wsF/clRsQJpZgHxDCYENhzvfpsJuWYpdZswM/OE2TpT7C74RKshiWkUGMlwWq5ERjR8U
-         dbozY19G4vKTB+A+M9xrLHMkmqzurVlBzXt5gglIlxmkFp4pjw5TIo3rdSakni6zodzg
-         RnaKIm4r9H2WCyRfgZ6B52RR09/dnQ6S+Ri4h91KhOl/oDT/037dTsuM1m+157PenJor
-         U//lr+7bYy+A5b9MWMO4lUqBqNvjZghw0wfCegy+lZNzsPsHtTUQlZPEC8SNspurvWfJ
-         keZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=3Yblg+LB3V/R3GdNlbQif00/TPj0swNUNYsErjlgIhk=;
-        b=Qlnaxp7Gr9ixmXCkl4meMd5/u7bIr2gPI2r7P6E7c6Eo4LxYeRulah7+Nygp3Yxlf3
-         ceto7gRDGR5mKLT8OuGlQdArD3L4/WDNQSYZPzv7pD04S66DHwrkdlQCNRzgfCbBKnzv
-         ZnbzsuhJe12b1tC6mV2il/iHbGuxYQXTePaH2ijr6w899rPBe6zzL7yu8ajT00S0yrx2
-         tXpzI3Vw3jDP3GK0rsS+DN8HFhMjQiuwJ6nAyUFCzRXlFVxP5WbMiY1Ds4W6g74f/F6Z
-         RDbd5QqGxyQwopxTiUTBdFnlLIx6JkktYh2DFnkz0T8NWVnQL/Yw7OoZ+RGlfUJUSHbt
-         3EOQ==
-X-Gm-Message-State: APjAAAUBWJWqdT1HfQbJEkno6zwVoJAP28tarNJOrp8J0x+O9cqnMGRd
-        hPkI/kXaFT34M88RrvqgQgd2htq6
-X-Google-Smtp-Source: APXvYqxgZ752VxRN/due03VPsQCrS1XF3ptF4c7Qi7o+2sjsIsCmJ3TdigcZ8OdrVxhX8iv+SHQpPQ==
-X-Received: by 2002:a17:902:bd41:: with SMTP id b1mr5374116plx.174.1568827717447;
-        Wed, 18 Sep 2019 10:28:37 -0700 (PDT)
-Received: from SD ([2405:204:828a:aaec:f0de:d7f9:abdf:1568])
-        by smtp.gmail.com with ESMTPSA id q42sm3385855pja.16.2019.09.18.10.28.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2019 10:28:36 -0700 (PDT)
-Date:   Wed, 18 Sep 2019 22:58:23 +0530
-From:   Saiyam Doshi <saiyamdoshi.in@gmail.com>
-To:     ludovic.desroches@microchip.com, ulf.hansson@linaro.org,
-        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mmc: host: atmel-mci: assign false/true to bool variable
-Message-ID: <20190918172823.GA28786@SD>
+        id S1729542AbfIRSBR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 18 Sep 2019 14:01:17 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:59747 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726369AbfIRSBR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Sep 2019 14:01:17 -0400
+Received: from localhost (lfbn-1-1545-137.w90-65.abo.wanadoo.fr [90.65.161.137])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 53E51240002;
+        Wed, 18 Sep 2019 18:01:14 +0000 (UTC)
+Date:   Wed, 18 Sep 2019 20:01:12 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Saiyam Doshi <saiyamdoshi.in@gmail.com>
+Cc:     ludovic.desroches@microchip.com, ulf.hansson@linaro.org,
+        nicolas.ferre@microchip.com, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mmc: host: atmel-mci: assign false/true to bool variable
+Message-ID: <20190918180112.GR21254@piout.net>
+References: <20190918172823.GA28786@SD>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190918172823.GA28786@SD>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Use false/true instead of 0/1 in bool variable assignment.
+Hello,
 
-This fixes below coccicheck warning.
-"WARNING: Assignment of 0/1 to bool variable"
+On 18/09/2019 22:58:23+0530, Saiyam Doshi wrote:
+> Use false/true instead of 0/1 in bool variable assignment.
+> 
+> This fixes below coccicheck warning.
+> "WARNING: Assignment of 0/1 to bool variable"
+> 
+> Generated by: scripts/coccinelle/misc/boolinit.cocci
+> 
+> More information about semantic patching is available at
+> http://coccinelle.lip6.fr/
+> 
 
-Generated by: scripts/coccinelle/misc/boolinit.cocci
+More useful than information than info on semantic patching, it would be
+good to have info on why you feel this is necessary.
 
-More information about semantic patching is available at
-http://coccinelle.lip6.fr/
+> Signed-off-by: Saiyam Doshi <saiyamdoshi.in@gmail.com>
+> ---
+>  drivers/mmc/host/atmel-mci.c | 50 ++++++++++++++++++------------------
+>  1 file changed, 25 insertions(+), 25 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
+> index c26fbe5f2222..91088b1712ae 100644
+> --- a/drivers/mmc/host/atmel-mci.c
+> +++ b/drivers/mmc/host/atmel-mci.c
+> @@ -706,7 +706,7 @@ static void atmci_timeout_timer(struct timer_list *t)
+>  		host->mrq->cmd->error = -ETIMEDOUT;
+>  		host->cmd = NULL;
+>  	}
+> -	host->need_reset = 1;
+> +	host->need_reset = true;
+>  	host->state = STATE_END_REQUEST;
+>  	smp_wmb();
+>  	tasklet_schedule(&host->tasklet);
+> @@ -1610,7 +1610,7 @@ static void atmci_command_complete(struct atmel_mci *host,
+>  	else if (host->mrq->data && (host->mrq->data->blksz & 3)) {
+>  		if (host->caps.need_blksz_mul_4) {
+>  			cmd->error = -EINVAL;
+> -			host->need_reset = 1;
+> +			host->need_reset = true;
+>  		}
+>  	} else
+>  		cmd->error = 0;
+> @@ -2396,45 +2396,45 @@ static void atmci_get_cap(struct atmel_mci *host)
+>  	dev_info(&host->pdev->dev,
+>  			"version: 0x%x\n", version);
+>  
+> -	host->caps.has_dma_conf_reg = 0;
+> -	host->caps.has_pdc = 1;
+> -	host->caps.has_cfg_reg = 0;
+> -	host->caps.has_cstor_reg = 0;
+> -	host->caps.has_highspeed = 0;
+> -	host->caps.has_rwproof = 0;
+> -	host->caps.has_odd_clk_div = 0;
+> -	host->caps.has_bad_data_ordering = 1;
+> -	host->caps.need_reset_after_xfer = 1;
+> -	host->caps.need_blksz_mul_4 = 1;
+> -	host->caps.need_notbusy_for_read_ops = 0;
+> +	host->caps.has_dma_conf_reg = false;
+> +	host->caps.has_pdc = true;
+> +	host->caps.has_cfg_reg = false;
+> +	host->caps.has_cstor_reg = false;
+> +	host->caps.has_highspeed = false;
+> +	host->caps.has_rwproof = false;
+> +	host->caps.has_odd_clk_div = false;
+> +	host->caps.has_bad_data_ordering = true;
+> +	host->caps.need_reset_after_xfer = true;
+> +	host->caps.need_blksz_mul_4 = true;
+> +	host->caps.need_notbusy_for_read_ops = false;
+>  
+>  	/* keep only major version number */
+>  	switch (version & 0xf00) {
+>  	case 0x600:
+>  	case 0x500:
+> -		host->caps.has_odd_clk_div = 1;
+> +		host->caps.has_odd_clk_div = true;
+>  		/* Fall through */
+>  	case 0x400:
+>  	case 0x300:
+> -		host->caps.has_dma_conf_reg = 1;
+> -		host->caps.has_pdc = 0;
+> -		host->caps.has_cfg_reg = 1;
+> -		host->caps.has_cstor_reg = 1;
+> -		host->caps.has_highspeed = 1;
+> +		host->caps.has_dma_conf_reg = true;
+> +		host->caps.has_pdc = false;
+> +		host->caps.has_cfg_reg = true;
+> +		host->caps.has_cstor_reg = true;
+> +		host->caps.has_highspeed = true;
+>  		/* Fall through */
+>  	case 0x200:
+> -		host->caps.has_rwproof = 1;
+> -		host->caps.need_blksz_mul_4 = 0;
+> -		host->caps.need_notbusy_for_read_ops = 1;
+> +		host->caps.has_rwproof = true;
+> +		host->caps.need_blksz_mul_4 = false;
+> +		host->caps.need_notbusy_for_read_ops = true;
+>  		/* Fall through */
+>  	case 0x100:
+> -		host->caps.has_bad_data_ordering = 0;
+> -		host->caps.need_reset_after_xfer = 0;
+> +		host->caps.has_bad_data_ordering = false;
+> +		host->caps.need_reset_after_xfer = false;
+>  		/* Fall through */
+>  	case 0x0:
+>  		break;
+>  	default:
+> -		host->caps.has_pdc = 0;
+> +		host->caps.has_pdc = false;
+>  		dev_warn(&host->pdev->dev,
+>  				"Unmanaged mci version, set minimum capabilities\n");
+>  		break;
+> -- 
+> 2.20.1
+> 
 
-Signed-off-by: Saiyam Doshi <saiyamdoshi.in@gmail.com>
----
- drivers/mmc/host/atmel-mci.c | 50 ++++++++++++++++++------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
-
-diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
-index c26fbe5f2222..91088b1712ae 100644
---- a/drivers/mmc/host/atmel-mci.c
-+++ b/drivers/mmc/host/atmel-mci.c
-@@ -706,7 +706,7 @@ static void atmci_timeout_timer(struct timer_list *t)
- 		host->mrq->cmd->error = -ETIMEDOUT;
- 		host->cmd = NULL;
- 	}
--	host->need_reset = 1;
-+	host->need_reset = true;
- 	host->state = STATE_END_REQUEST;
- 	smp_wmb();
- 	tasklet_schedule(&host->tasklet);
-@@ -1610,7 +1610,7 @@ static void atmci_command_complete(struct atmel_mci *host,
- 	else if (host->mrq->data && (host->mrq->data->blksz & 3)) {
- 		if (host->caps.need_blksz_mul_4) {
- 			cmd->error = -EINVAL;
--			host->need_reset = 1;
-+			host->need_reset = true;
- 		}
- 	} else
- 		cmd->error = 0;
-@@ -2396,45 +2396,45 @@ static void atmci_get_cap(struct atmel_mci *host)
- 	dev_info(&host->pdev->dev,
- 			"version: 0x%x\n", version);
- 
--	host->caps.has_dma_conf_reg = 0;
--	host->caps.has_pdc = 1;
--	host->caps.has_cfg_reg = 0;
--	host->caps.has_cstor_reg = 0;
--	host->caps.has_highspeed = 0;
--	host->caps.has_rwproof = 0;
--	host->caps.has_odd_clk_div = 0;
--	host->caps.has_bad_data_ordering = 1;
--	host->caps.need_reset_after_xfer = 1;
--	host->caps.need_blksz_mul_4 = 1;
--	host->caps.need_notbusy_for_read_ops = 0;
-+	host->caps.has_dma_conf_reg = false;
-+	host->caps.has_pdc = true;
-+	host->caps.has_cfg_reg = false;
-+	host->caps.has_cstor_reg = false;
-+	host->caps.has_highspeed = false;
-+	host->caps.has_rwproof = false;
-+	host->caps.has_odd_clk_div = false;
-+	host->caps.has_bad_data_ordering = true;
-+	host->caps.need_reset_after_xfer = true;
-+	host->caps.need_blksz_mul_4 = true;
-+	host->caps.need_notbusy_for_read_ops = false;
- 
- 	/* keep only major version number */
- 	switch (version & 0xf00) {
- 	case 0x600:
- 	case 0x500:
--		host->caps.has_odd_clk_div = 1;
-+		host->caps.has_odd_clk_div = true;
- 		/* Fall through */
- 	case 0x400:
- 	case 0x300:
--		host->caps.has_dma_conf_reg = 1;
--		host->caps.has_pdc = 0;
--		host->caps.has_cfg_reg = 1;
--		host->caps.has_cstor_reg = 1;
--		host->caps.has_highspeed = 1;
-+		host->caps.has_dma_conf_reg = true;
-+		host->caps.has_pdc = false;
-+		host->caps.has_cfg_reg = true;
-+		host->caps.has_cstor_reg = true;
-+		host->caps.has_highspeed = true;
- 		/* Fall through */
- 	case 0x200:
--		host->caps.has_rwproof = 1;
--		host->caps.need_blksz_mul_4 = 0;
--		host->caps.need_notbusy_for_read_ops = 1;
-+		host->caps.has_rwproof = true;
-+		host->caps.need_blksz_mul_4 = false;
-+		host->caps.need_notbusy_for_read_ops = true;
- 		/* Fall through */
- 	case 0x100:
--		host->caps.has_bad_data_ordering = 0;
--		host->caps.need_reset_after_xfer = 0;
-+		host->caps.has_bad_data_ordering = false;
-+		host->caps.need_reset_after_xfer = false;
- 		/* Fall through */
- 	case 0x0:
- 		break;
- 	default:
--		host->caps.has_pdc = 0;
-+		host->caps.has_pdc = false;
- 		dev_warn(&host->pdev->dev,
- 				"Unmanaged mci version, set minimum capabilities\n");
- 		break;
 -- 
-2.20.1
-
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
