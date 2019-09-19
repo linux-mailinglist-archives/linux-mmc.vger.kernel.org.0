@@ -2,53 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E5D0B78BD
-	for <lists+linux-mmc@lfdr.de>; Thu, 19 Sep 2019 13:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B81CB7AD0
+	for <lists+linux-mmc@lfdr.de>; Thu, 19 Sep 2019 15:50:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389810AbfISL4q (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 19 Sep 2019 07:56:46 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:35256 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388771AbfISL4q (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Sep 2019 07:56:46 -0400
-Received: by mail-ua1-f67.google.com with SMTP id n63so964253uan.2;
-        Thu, 19 Sep 2019 04:56:45 -0700 (PDT)
+        id S2388242AbfISNuB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 19 Sep 2019 09:50:01 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:39086 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387924AbfISNuB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Sep 2019 09:50:01 -0400
+Received: by mail-lj1-f196.google.com with SMTP id y3so2284107ljj.6
+        for <linux-mmc@vger.kernel.org>; Thu, 19 Sep 2019 06:50:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=5z5u0o7PbQVY4AiWOVq68ozptawOh6Ts0gi7RJ8q+vc=;
-        b=Z95ybOizbHlFYWAPfDhf0TXuaP4IpO+79JGGupMcSCwPlnvldsXaVpcVhuZ63Z/KlO
-         RsgQ5bomH78tVFurWCQg+L83jek3Eb7aiYGtbgBNawt5U55K2+tSmCcO3b5UhVw80+NO
-         ho3uTnpnaAmk49RmnBcDbRenxBvwCdy91hPhBZKOCseBPjt0Ttk3RHZZC74vU2rcRuUk
-         Ll6UaI2wG4c7nBdSYnZSiP3o0SyTrib5O1eChdNeYWS11MCY1GG7k6HtHJSUtFG8KXal
-         abp2tYNnSilQ4fPrOIlA//c/YjgVLxkkNpisjz61EzwkqMp3M92yxZlDyAaZD/F4zlTb
-         UKhA==
+        bh=0KI50c5DVE3uwnA2Yo5W/sRZ/AbTOBQXWS/KDcSVNcs=;
+        b=QlfLRPU2XPxXFwAPvQajEriBO0hzz6U91rb0O4khV0WMcadCiYyfz044sHQiJ/Zp3E
+         Ypl4dbggH9gZy7T3z48RvKTVmNbugho48jRt4JaYgmxzNEiLLGXQuDMdXdprMJTUIKBv
+         Rta9CpiJS6V7gZOl3Xf5nOvjK1EpCSp0GV4Qrb5Ot1g5GMdGG1j3CZeoqOJ4rQUWY8/H
+         XGZKGWawL5Wafw3yqFehSHxNmYdJcBkzWWph15d6Z+flDZsApQuexNcL+DfbY3iZRSqa
+         054rmTCXKGLGH4LBRaC3VPdHqXox6cxPvxiJpGH3/EG69cB6QxSdVAk3vV/rFxV6ou/Q
+         Jd1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5z5u0o7PbQVY4AiWOVq68ozptawOh6Ts0gi7RJ8q+vc=;
-        b=a3tnCf8vzcXEAPjOK04+CNm4MdRpFKhrZFKC0qz17hTVSlaiCbAhhsD1W6EdMyCbdx
-         LFkK3b8y9tAzxIG9ihqeLbZy+CF8Rzi0qZiVbIDu8e2bwqB7SXlLbplwKlgnRAcSizZN
-         63964t7eT80YqbzNkzH4W/NblIV0s2Iq2AoUFzulNrSiAiwn6/Ei2N21McSjQwHMdRFo
-         46B0yiPEvHJ1RgVK105MceUDUnb2FFU8LSvd0jHKYbqWrXP0mWr6hfKoAIlO5YnPyIZ3
-         y2HHliyAPX0uFR0URyPvLEearjnrqgEfELCZ6YKUejusi34uJFQKbzTp2pbfGrfNpYB4
-         bCkQ==
-X-Gm-Message-State: APjAAAXxl+X3iVjXzxOfiZAUyis8Kn4JLUDXFwyU0Ww/Kbj7bx78mfJ0
-        FWOZPflYGpcsFieAzpuhK1y9bd2HnLSSL3KkLI4=
-X-Google-Smtp-Source: APXvYqxKATzXSuOngJ1GS37vVqVjID3FljIjWDx4H4TM0nY6yDDgsOmCGP2jzJhWk9wmDDAjQAZ9nIDtwOUseh2uA3A=
-X-Received: by 2002:ab0:240f:: with SMTP id f15mr4747430uan.103.1568894205232;
- Thu, 19 Sep 2019 04:56:45 -0700 (PDT)
+        bh=0KI50c5DVE3uwnA2Yo5W/sRZ/AbTOBQXWS/KDcSVNcs=;
+        b=hA06SFiFPPg9v5ARJXVAgRjlHAAPNlHP0skoOCpxMVZ1MV80wOgTIKmQJkUcJ+0iCm
+         LnIYU2fTVntlHYhzVU1YIsXrY/LvvQVKLmqZAqF9VBwStRYTRbyafv/f03J/qph+T74i
+         usG/H1YzJbMH3kby5kfkB5zDLp2qjoMo94AIOpcWjoC2zzJROsmcB+V4ZQYg8oBi/hB6
+         WSZt1t/pj8WAP+NiZ5tniThdVyzuPguw0uSMzGhdSSejq1oV0R8xrQtg4s5PTF6iwJYK
+         cxrclcs9Hk58XgKdasAaxRB5cuVlPv1VD8HYJsV4o3kxXvbo7kK8AO59USJt/tK5dixP
+         kr/g==
+X-Gm-Message-State: APjAAAVHapup9kV4HsxO2Jxdqk2Xud9gNcnhgHZQbm0VAXqleOtWKopH
+        +cTdd5VnV2+mmXZ8qVsHMj8N9gWwFqBUrTPmcdylkoI5Zlc=
+X-Google-Smtp-Source: APXvYqzcD9JqNlfx0nTWpYF6LRWekyOrrs/+lRmyoXbBw6JTsPssmUhILIrw+w8Q7QmzxQ3gy2Ew2vzi8qvmPQwmRl4=
+X-Received: by 2002:a2e:9015:: with SMTP id h21mr5673483ljg.234.1568900999256;
+ Thu, 19 Sep 2019 06:49:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190903115114.33053-1-alcooperx@gmail.com> <CAPDyKFqaNBH3Thwy1O+KXkcsgM2gMrm9zNGYWH8vVP+Y2vSLdA@mail.gmail.com>
-In-Reply-To: <CAPDyKFqaNBH3Thwy1O+KXkcsgM2gMrm9zNGYWH8vVP+Y2vSLdA@mail.gmail.com>
-From:   Alan Cooper <alcooperx@gmail.com>
-Date:   Thu, 19 Sep 2019 07:57:45 -0400
-Message-ID: <CAOGqxeUJD7eQxRnH1rep=m2+Ga5DDF=uWMsc_j2NZgC+EnZqsg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci: Fix incorrect switch to HS mode
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+References: <20190912210509.19816-1-mhei@heimpold.de> <MN2PR04MB6991CE61681D33F1F7E76ADAFC890@MN2PR04MB6991.namprd04.prod.outlook.com>
+In-Reply-To: <MN2PR04MB6991CE61681D33F1F7E76ADAFC890@MN2PR04MB6991.namprd04.prod.outlook.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 19 Sep 2019 15:49:22 +0200
+Message-ID: <CAPDyKFrae36rymcD-o9RELiWVTzMd-ccM2q1q-dO7GiWYaqw+w@mail.gmail.com>
+Subject: Re: [PATCH mmc-utils v2 0/5] Various fixes for mmc-utils
+To:     Avri Altman <Avri.Altman@wdc.com>
+Cc:     Michael Heimpold <mhei@heimpold.de>,
+        "chris@printf.net" <chris@printf.net>,
         Adrian Hunter <adrian.hunter@intel.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -57,66 +58,33 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This does correct the sequence of switching to HS400 but it might be
-safest to just add this to the latest until it gets a little testing
-to make sure it doesn't expose some bug in existing controllers.
+On Thu, 19 Sep 2019 at 11:41, Avri Altman <Avri.Altman@wdc.com> wrote:
+>
+> Ulf/Adrian,
+>
+> As Chris is less responsive in the past few years,
+> We might want to follow the scsi ML practice with regard to the ufs driver:
+> Add several reviewers while Martin is pulling the patches.
 
-Thanks
-Al
+This has been discussed earlier [1] and Chris also agreed that it
+seems like a good idea.
 
-On Tue, Sep 3, 2019 at 10:52 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> On Tue, 3 Sep 2019 at 13:51, Al Cooper <alcooperx@gmail.com> wrote:
-> >
-> > When switching from any MMC speed mode that requires 1.8v
-> > (HS200, HS400 and HS400ES) to High Speed (HS) mode, the system
-> > ends up configured for SDR12 with a 50MHz clock which is an illegal
-> > mode.
-> >
-> > This happens because the SDHCI_CTRL_VDD_180 bit in the
-> > SDHCI_HOST_CONTROL2 register is left set and when this bit is
-> > set, the speed mode is controlled by the SDHCI_CTRL_UHS field
-> > in the SDHCI_HOST_CONTROL2 register. The SDHCI_CTRL_UHS field
-> > will end up being set to 0 (SDR12) by sdhci_set_uhs_signaling()
-> > because there is no UHS mode being set.
-> >
-> > The fix is to change sdhci_set_uhs_signaling() to set the
-> > SDHCI_CTRL_UHS field to SDR25 (which is the same as HS) for
-> > any switch to HS mode.
-> >
-> > This was found on a new eMMC controller that does strict checking
-> > of the speed mode and the corresponding clock rate. It caused the
-> > switch to HS400 mode to fail because part of the sequence to switch
-> > to HS400 requires a switch from HS200 to HS before going to HS400.
-> >
-> > This fix was suggested by Adrian Hunter
-> >
-> > Signed-off-by: Al Cooper <alcooperx@gmail.com>
+> It is working quite well since then.
 >
-> Should this be applied for fixes and tagged for stable you think?
->
-> Kind regards
-> Uffe
->
-> > ---
-> >  drivers/mmc/host/sdhci.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> > index 61d845fe0b97..068149640ecd 100644
-> > --- a/drivers/mmc/host/sdhci.c
-> > +++ b/drivers/mmc/host/sdhci.c
-> > @@ -1858,7 +1858,9 @@ void sdhci_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
-> >                 ctrl_2 |= SDHCI_CTRL_UHS_SDR104;
-> >         else if (timing == MMC_TIMING_UHS_SDR12)
-> >                 ctrl_2 |= SDHCI_CTRL_UHS_SDR12;
-> > -       else if (timing == MMC_TIMING_UHS_SDR25)
-> > +       else if (timing == MMC_TIMING_SD_HS ||
-> > +                timing == MMC_TIMING_MMC_HS ||
-> > +                timing == MMC_TIMING_UHS_SDR25)
-> >                 ctrl_2 |= SDHCI_CTRL_UHS_SDR25;
-> >         else if (timing == MMC_TIMING_UHS_SDR50)
-> >                 ctrl_2 |= SDHCI_CTRL_UHS_SDR50;
-> > --
-> > 2.17.1
-> >
+> Is this something that you might consider?
+
+As said, it's been discussed. I think it boils down to that someone
+must volunteer to help Chris. Then it's just a matter of formalizing
+this, set up git push permissions and document the new ways of
+maintenance.
+
+Perhaps you would be interested to help out?
+
+[...]
+
+Kind regards
+Uffe
+
+[1]
+https://patchwork.kernel.org/patch/10709543/
