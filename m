@@ -2,144 +2,167 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4121B721E
-	for <lists+linux-mmc@lfdr.de>; Thu, 19 Sep 2019 06:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FE62B72EF
+	for <lists+linux-mmc@lfdr.de>; Thu, 19 Sep 2019 07:59:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725909AbfISENY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 19 Sep 2019 00:13:24 -0400
-Received: from mail-eopbgr80087.outbound.protection.outlook.com ([40.107.8.87]:7120
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725320AbfISENY (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 19 Sep 2019 00:13:24 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cGKnVVEeR2kuWJ02MO3Q1Nh7vZNSkxuW4DiBI+xI07TZXXWMdqw++sIYLo/15lTUFMclA7T8QJlq9agNeh0RVQy4l9nZfhBvGEM8loD+Q5+Jr4K7qboX/kPIuKK2ZZCPVR7y2gFUUcpgLEytvNN7TgeMHsrLt/+RHwa3tgy1gPTMXq4a7nc6xO1kMeRYAUSnEoTjg6vSlM4S0vw0vya1S96SdRPe8vM7g85xQPb0hTewH/37w9y910t+S8dXVWYAkPaLw9LVdkWkizVMbuW8k/3XBvuAJVD/oEMvlRcesY9n9GrGxsV6jyW109Czocv+bTkAxK4LGRPmKeiOEk+kSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k7xRG/ZTdm1KH2yW9OsHvgv+w8RX0NO2MT+Ng3D2xXU=;
- b=lZCE9SGECPXZiVHlAC6+5xCLDOKEQwcqacjMQnC3BFb+42mKSkkemzeQ3s/yyjLJSxvnv/56prMLA5+9gUWiQNxte+GSGMsI9Dr0kGZecpVNPkVTF5pw1JKQOEoY9XYd4oBUdetlQiSStSk5mbs8LqcRz917h/ytUx/Blr3cfU8BPnVETDcIPBVv2YjvZHJaE6EsEa5pOD4BzjCSsT0OWf+KpQEYhHAh1Ra4s4ggLLzfh4Dv1fR5+x/fHMrkXEm1Zf1HzGOZX9na0zYM+XYrb0AF2aRzoxrrbXqf4/3K5KbIr59b57g1peSwUSdo0JotpC+j12OTbJBQ3/MpBPF7wA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k7xRG/ZTdm1KH2yW9OsHvgv+w8RX0NO2MT+Ng3D2xXU=;
- b=ZftljBo9DopB/MfXCobDbfvSRQw1Q+0hQt6HwqwqYM17yhCyirXGf2Rj/CngoHGK6TcpARK6Du8TC15PLq6OxrzmozXbaARUhxF7axKd6kqyG06xRa7iXj5uDD1BffwkqW9d1liyE6K0gT3LsLNc/jQLbrY66uJjM7rKHPFMB0Q=
-Received: from VI1PR0401MB2237.eurprd04.prod.outlook.com (10.169.132.138) by
- VI1PR0401MB2335.eurprd04.prod.outlook.com (10.169.136.11) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2284.20; Thu, 19 Sep 2019 04:13:20 +0000
-Received: from VI1PR0401MB2237.eurprd04.prod.outlook.com
- ([fe80::40fb:b35c:722a:101f]) by VI1PR0401MB2237.eurprd04.prod.outlook.com
- ([fe80::40fb:b35c:722a:101f%10]) with mapi id 15.20.2263.023; Thu, 19 Sep
- 2019 04:13:20 +0000
-From:   "Y.b. Lu" <yangbo.lu@nxp.com>
-To:     Leo Li <leoyang.li@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>
-CC:     Adrian Hunter <adrian.hunter@intel.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        Will Deacon <will.deacon@arm.com>,
-        dann frazier <dann.frazier@canonical.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>
-Subject: RE: [REGRESSION] sdhci no longer detects SD cards on LX2160A
-Thread-Topic: [REGRESSION] sdhci no longer detects SD cards on LX2160A
-Thread-Index: AQHVbLJSA+GEI3GLz0ux+LeK9AebcqcvhCUAgAADuYCAACfPAIAACaWAgAAHKgCAAA5TAIAACaeAgAAEvoCAAAJUgIAAAuGAgAACVoCAAAFogIAAQKgAgAJAkDA=
-Date:   Thu, 19 Sep 2019 04:13:20 +0000
-Message-ID: <VI1PR0401MB22376A0EA85123B2AEB72EDEF8890@VI1PR0401MB2237.eurprd04.prod.outlook.com>
-References: <b19a0640-5d71-a005-eb0f-c6840f181e5d@free.fr>
- <20190917081931.GI25745@shell.armlinux.org.uk>
- <20190917104200.GJ25745@shell.armlinux.org.uk>
- <20190917111631.GL25745@shell.armlinux.org.uk>
- <20190917114210.GM25745@shell.armlinux.org.uk>
- <20190917123326.GN25745@shell.armlinux.org.uk>
- <20190917130759.GO25745@shell.armlinux.org.uk>
- <CAOMZO5DXv8g5qTGdvobDdLWim+tW=vK4+K=P-VqJK23KERMhJw@mail.gmail.com>
- <20190917133317.GQ25745@shell.armlinux.org.uk>
- <CAOMZO5DS_1Uc9TMc29e+8tCg-srvMjf3uth_9P3cnro6det+7A@mail.gmail.com>
- <20190917135157.GT25745@shell.armlinux.org.uk>
- <CAOMZO5BDirX0Fwo716v1ddYaaO+OL8Woht63mw8OEhDuMBTb8Q@mail.gmail.com>
- <CADRPPNQ-WTY0QC7_bX=N0QeueKve=k0SaMvbjOrByyvzFojz2g@mail.gmail.com>
-In-Reply-To: <CADRPPNQ-WTY0QC7_bX=N0QeueKve=k0SaMvbjOrByyvzFojz2g@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yangbo.lu@nxp.com; 
-x-originating-ip: [92.121.36.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c20c493a-7f92-4110-2ea1-08d73cb7b48c
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600167)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:VI1PR0401MB2335;
-x-ms-traffictypediagnostic: VI1PR0401MB2335:|VI1PR0401MB2335:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR0401MB23359730D9AA19F2725A10FFF8890@VI1PR0401MB2335.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 016572D96D
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(39860400002)(346002)(376002)(136003)(396003)(189003)(199004)(66066001)(446003)(256004)(6506007)(186003)(2906002)(316002)(486006)(53546011)(6246003)(66946007)(66476007)(14444005)(55016002)(76116006)(54906003)(71200400001)(71190400001)(26005)(305945005)(6116002)(74316002)(3846002)(102836004)(7736002)(110136005)(76176011)(52536014)(14454004)(99286004)(229853002)(4326008)(25786009)(7696005)(8676002)(33656002)(66556008)(66446008)(64756008)(8936002)(81156014)(81166006)(6436002)(86362001)(5660300002)(11346002)(9686003)(476003)(478600001);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR0401MB2335;H:VI1PR0401MB2237.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 36dsu5wRr8sxwxGYbdY9aQtQPEPxXNYM8DDEv7IV0dANxiXtQcgZB+dxIMLEzoKpdsN3ynpWCowY9Powydhlv56ZV09NA5BjcgLQ2Q5PcmNrXZL2bkWzDmHYD13ZySPjcHB52DFSZDIe0weAjrHddVafURl7CX5saqEAXBt/J/HZRl+MojbImZ16PlvfLU9P92S1Qnm3VmM6U68Uoy3sZvraOvCEKU36Pe85njekz9Kq8yTQjyIvrAJxH7c0McxiCTTOO4m3+EOXnSCBVJN14bQFXl1GaBvYAldu1ftpvwOcAmOdbP58YWNHWDB7ny9JjJ8XkfKH6OcxFAHBZcfIEk63jXOSBFRZYpT5VKWmC0XLUdXKOvdsvkE4uvcv3BBHknc5kNR6s8QrOy4Pepan2v4wM0puv93qXKUM/Y0EDMc=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c20c493a-7f92-4110-2ea1-08d73cb7b48c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Sep 2019 04:13:20.0922
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hCWa1Rmsnm+cXORy11J0CwevlmAMsuiPITFH2hWP83f5ze7OG1eCqIvNPMh+fF40LdRkSiXAGT1zT8mG6SBLRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2335
+        id S1731512AbfISF7J (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 19 Sep 2019 01:59:09 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:36137 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731450AbfISF7H (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Sep 2019 01:59:07 -0400
+Received: by mail-pf1-f196.google.com with SMTP id y22so1552070pfr.3
+        for <linux-mmc@vger.kernel.org>; Wed, 18 Sep 2019 22:59:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=dgIbwimAQkKlSbgSJtp+/dbeJWRHJe81c9/KX+VIXkA=;
+        b=Mx/H2l9leg+629kRjV3+tiwLwEZ6F/KyzkTl6eX6RY6pupN7Xff6M+EMKN3/umfHHv
+         HmSV3r/hM3awiSBfYWeH90K1//aKCBjTFLn/gPz3lxOaDgNLBzpUK7wrxNcfXYErKz8g
+         nsTJ0SR/Q/V4XtK45n45CopPBtRiqMp2T1I8kzCNJGshf/cpYzRdMy/eAkFwQ/z1C+W2
+         1c5sezQKa7URE96MzFNDmVYH0xmRkV2wR+X+qwfHRkjdcZsILECVvf+Y26Kgw5UN3bEE
+         Q8uN0RDphMiawxn+MfbqqNbCI4Qd5qRYk+AbiMWqRFzZoIRNffJosT82jbm6SqEb/lVW
+         Li+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=dgIbwimAQkKlSbgSJtp+/dbeJWRHJe81c9/KX+VIXkA=;
+        b=GZSJv1P52QePyCpzwpHdIQvGtSJDJKl5+VCBcsMiaSUDLN7DN+LotoPoDJwYNGqh17
+         D052Q+t1UJI5qK+w2f7ohBdbR8ERb2PRGrk39FjqmLtmvb2ypjBat6ERnAABE+Egnwp2
+         27lq23lwRWOZyNu+QBUdsxqFu8rybUjJm+QDq8Us6K3IRRdt75AMvrVwfmRLEX/lYPen
+         IiEamSZu/qkKUHZTQfmMCUoiVrdC9C2JJLIrIP7ocnUVgpf89sj0C7cHdiGNe9V4p5lw
+         6nu7agORzthkzD0A12to65FlXAQo3ATXruqwhQt0VPPeVNKRi/53f2UEoUC/Q5cgLLSm
+         ag0A==
+X-Gm-Message-State: APjAAAUZ5AwOYj+StOKHPfnRaqsXBuw2+Okl92kZNBcBPpiJ04s312+L
+        iLH8ty7ieIlR0aB8WUeeTTuWsw==
+X-Google-Smtp-Source: APXvYqxU2SNk/ft+XHxPveItevSjUrywmPGWEbwcAe5zoy/dD14xqkRCRTvVutRSRRzgDKhfZ0fp7w==
+X-Received: by 2002:a65:5cc8:: with SMTP id b8mr7711967pgt.30.1568872745170;
+        Wed, 18 Sep 2019 22:59:05 -0700 (PDT)
+Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
+        by smtp.gmail.com with ESMTPSA id c127sm9666027pfb.5.2019.09.18.22.59.00
+        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 18 Sep 2019 22:59:03 -0700 (PDT)
+From:   Baolin Wang <baolin.wang@linaro.org>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        asutoshd@codeaurora.org
+Cc:     orsonzhai@gmail.com, zhang.lyra@gmail.com, arnd@arndb.de,
+        linus.walleij@linaro.org, vincent.guittot@linaro.org,
+        baolin.wang@linaro.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/3] Add MMC software queue support
+Date:   Thu, 19 Sep 2019 13:58:44 +0800
+Message-Id: <cover.1568864712.git.baolin.wang@linaro.org>
+X-Mailer: git-send-email 1.7.9.5
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-U29ycnkuIE15IGVtYWlsIHdhcyByZWplY3RlZCBieSBtYWlsaW5nIGxpc3RzLiBMZXQgbWUgcmUt
-c2VuZC4NCg0KSGkgUnVzc2VsbCwNCg0KSeKAmW0gbm90IHN1cmUgd2hhdCBib2FyZCB5b3Ugd2Vy
-ZSB1c2luZyBmb3IgTFgyMTYwQS4NCldlIGhhZCBhbiBrbm93biBpc3N1ZSBmb3IgZVNESEMgY29u
-dHJvbGxlciBhbmQgYWxsIE5YUCBMYXllcnNjYXBlIFJEQiBib2FyZHMuDQplU0RIQyBjb3VsZG7i
-gJl0IHByb3ZpZGUgcG93ZXItY3ljbGUgdG8gU0QgY2FyZCwgYW5kIGV2ZW4gd29yc2UsIGJvYXJk
-IHJlc2V0IGNvdWxkbuKAmXQgcHJvdmlkZSBwb3dlci1jeWNsZSB0byBTRCBjYXJkIGVpdGhlci4N
-CkJ1dCBmb3IgVUhTLUkgU0QgY2FyZCwgaXTigJlzIHJlcXVpcmVkIHRvIGhhdmUgYSBwb3dlci1j
-eWNsZSB0byByZXNldCBjYXJkIGlmIGl0IGdvZXMgaW50byBVSFMtSSBtb2RlLiBPdGhlcndpc2Us
-IHdlIGRvbuKAmXQga25vdyB3aGF0IHdpbGwgaGFwcGVuIHdoZW4ga2VybmVsIGluaXRpYWxpemVz
-IFNEIGNhcmQgYWZ0ZXIgYSByZWJvb3QvcmVzZXQuDQoNCkkgY291bGQgcmVwcm9kdWNlIHRoYXQg
-aXNzdWUgd2l0aCBiZWxvdyBzdGVwcyBvbiBsYXRlc3QgbWFpbmxpbmUga2VybmVsLg0KMS4gUG93
-ZXIgb2ZmIGJvYXJkLCBhbmQgcG93ZXIgb24gYm9hcmQuDQoyLiBTdGFydCB1cCBrZXJuZWwsIHRo
-ZSBTRCBjYXJkIHdvcmtzIGZpbmUgaW4gVUhTLUkgbW9kZS4NCjMuIFJlYm9vdC9yZXNldCBib2Fy
-ZC4gKFRoaXMgY291bGRu4oCZdCBwcm92aWRlIHBvd2VyLWN5Y2xlIHRvIFNEIGNhcmQpDQo0LiBT
-dGFydCB1cCBrZXJuZWwsIHRoZSBTRCBjYXJkIGdldHMgdGhhdCBBRE1BIGVycm9yIGlzc3VlLg0K
-DQpTbyBjb3VsZCB5b3UgaGF2ZSBhIHRyeSB0byBwb3dlciBvZmYvcG93ZXIgb24gdGhlIGJvYXJk
-LCBhbmQgdGhlbiBzdGFydCB1cCBrZXJuZWwuIERvbuKAmXQgdXNlIHJlYm9vdCwgb3IgYm9hcmQg
-cmVzZXQgYnV0dG9uLg0KT3IgeW91IGNhbiByZW1vdmUgU0QgY2FyZCBhbmQgc3RhcnQgdXAga2Vy
-bmVsLCBhbmQgaW5zZXJ0IFNEIGNhcmQgd2hlbiBrZXJuZWwgaGFzIGJlZW4gc3RhcnRlZCB1cC4N
-ClRoYW5rcyBhIGxvdC4NCg0KQmVzdCByZWdhcmRzLA0KWWFuZ2JvIEx1DQoNCg0KRnJvbTogTGkg
-WWFuZyA8bGVveWFuZy5saUBueHAuY29tPiANClNlbnQ6IFdlZG5lc2RheSwgU2VwdGVtYmVyIDE4
-LCAyMDE5IDE6NDggQU0NClRvOiBGYWJpbyBFc3RldmFtIDxmZXN0ZXZhbUBnbWFpbC5jb20+OyBZ
-LmIuIEx1IDx5YW5nYm8ubHVAbnhwLmNvbT4NCkNjOiBBZHJpYW4gSHVudGVyIDxhZHJpYW4uaHVu
-dGVyQGludGVsLmNvbT47IENocmlzdG9waCBIZWxsd2lnIDxoY2hAbHN0LmRlPjsgTGludXggQVJN
-IDxsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc+OyBOaWNvbGluIENoZW4gPG5p
-Y29sZW90c3VrYUBnbWFpbC5jb20+OyBSdXNzZWxsIEtpbmcgLSBBUk0gTGludXggYWRtaW4gPGxp
-bnV4QGFybWxpbnV4Lm9yZy51az47IFdpbGwgRGVhY29uIDx3aWxsLmRlYWNvbkBhcm0uY29tPjsg
-ZGFubiBmcmF6aWVyIDxkYW5uLmZyYXppZXJAY2Fub25pY2FsLmNvbT47IGxpbnV4LW1tYyA8bGlu
-dXgtbW1jQHZnZXIua2VybmVsLm9yZz4NClN1YmplY3Q6IFJlOiBbUkVHUkVTU0lPTl0gc2RoY2kg
-bm8gbG9uZ2VyIGRldGVjdHMgU0QgY2FyZHMgb24gTFgyMTYwQQ0KDQoNCg0KT24gVHVlLCBTZXAg
-MTcsIDIwMTkgYXQgNjozMSBQTSBGYWJpbyBFc3RldmFtIDxtYWlsdG86ZmVzdGV2YW1AZ21haWwu
-Y29tPiB3cm90ZToNCltBZGRpbmcgTGkgWWFuZ10NCg0KT24gVHVlLCBTZXAgMTcsIDIwMTkgYXQg
-MTA6NTIgQU0gUnVzc2VsbCBLaW5nIC0gQVJNIExpbnV4IGFkbWluDQo8bWFpbHRvOmxpbnV4QGFy
-bWxpbnV4Lm9yZy51az4gd3JvdGU6DQoNCj4gVGhlIHByZXNzaW5nIHF1ZXN0aW9uIHNlZW1zIHRv
-IGJlIHRoaXM6DQo+DQo+IEFyZSB0aGUgZVNESEMgb24gdGhlIExYMjE2MEEgRE1BIGNvaGVyZW50
-IG9yIGFyZSB0aGV5IG5vdD8NCj4NCj4gQW55IGNoYW5jZXMgb2YgZmluZGluZyBvdXQgaW50ZXJu
-YWxseSB3aGF0IHRoZSB0cnVlIGFuc3dlciB0byB0aGF0LA0KPiByYXRoZXIgdGhhbiBtZSBwb2tp
-bmcgYWJvdXQgdHJ5aW5nIHN0dWZmIGV4cGVyaW1lbnRhbGx5P8KgIEhhdmluZyBhDQo+IGRlZmlu
-aXRpdmUgYW5zd2VyIGZvciBhIHBvdGVudGlhbGx5IGRhdGEtY29ycnVwdGluZyBjaGFuZ2Ugd291
-bGQNCj4gYmUgcmVhbGx5IGdvb2QuLi4NCg0KTGkgWWFuZywNCg0KQ291bGQgeW91IHBsZWFzZSBo
-ZWxwIHRvIGNvbmZpcm0gUnVzc2VsbCdzIHF1ZXN0aW9uPw0KQWRkaW5nIFlhbmdibyB3aG8gaXMg
-d29ya2luZyBvbiBTREhDLg0KDQpSZWdhcmRzLA0KTGVvDQo=
+Hi All,
+
+Now the MMC read/write stack will always wait for previous request is
+completed by mmc_blk_rw_wait(), before sending a new request to hardware,
+or queue a work to complete request, that will bring context switching
+overhead, especially for high I/O per second rates, to affect the IO
+performance.
+
+Thus this patch set will introduce the MMC software command queue support
+based on command queue engine's interfaces, and set the queue depth as 2,
+that means we do not need wait for previous request is completed and can
+queue 2 requests in flight. It is enough to let the irq handler always
+trigger the next request without a context switch and then ask the blk_mq
+layer for the next one to get queued, as well as avoiding a long latency.
+
+Moreover we can expand the MMC software queue interface to support
+MMC packed request or packed command instead of adding new interfaces,
+according to previosus discussion.
+
+Below are some comparison data with fio tool. The fio command I used
+is like below with changing the '--rw' parameter and enabling the direct
+IO flag to measure the actual hardware transfer speed in 4K block size.
+
+./fio --filename=/dev/mmcblk0p30 --direct=1 --iodepth=20 --rw=read --bs=4K --size=512M --group_reporting --numjobs=20 --name=test_read
+
+My eMMC card working at HS400 Enhanced strobe mode:
+[    2.229856] mmc0: new HS400 Enhanced strobe MMC card at address 0001
+[    2.237566] mmcblk0: mmc0:0001 HBG4a2 29.1 GiB 
+[    2.242621] mmcblk0boot0: mmc0:0001 HBG4a2 partition 1 4.00 MiB
+[    2.249110] mmcblk0boot1: mmc0:0001 HBG4a2 partition 2 4.00 MiB
+[    2.255307] mmcblk0rpmb: mmc0:0001 HBG4a2 partition 3 4.00 MiB, chardev (248:0)
+
+1. Without MMC software queue
+I tested 3 times for each case and output a average speed.
+
+1) Sequential read:
+Speed: 28.9MiB/s, 26.4MiB/s, 30.9MiB/s
+Average speed: 28.7MiB/s
+
+2) Random read:
+Speed: 18.2MiB/s, 8.9MiB/s, 15.8MiB/s
+Average speed: 14.3MiB/s
+
+3) Sequential write:
+Speed: 21.1MiB/s, 27.9MiB/s, 25MiB/s
+Average speed: 24.7MiB/s
+
+4) Random write:
+Speed: 21.5MiB/s, 18.1MiB/s, 18.1MiB/s
+Average speed: 19.2MiB/s
+
+2. With MMC software queue
+I tested 3 times for each case and output a average speed.
+
+1) Sequential read:
+Speed: 44.1MiB/s, 42.3MiB/s, 44.4MiB/s
+Average speed: 43.6MiB/s
+
+2) Random read:
+Speed: 30.6MiB/s, 30.9MiB/s, 30.5MiB/s
+Average speed: 30.6MiB/s
+
+3) Sequential write:
+Speed: 44.1MiB/s, 45.9MiB/s, 44.2MiB/s
+Average speed: 44.7MiB/s
+
+4) Random write:
+Speed: 45.1MiB/s, 43.3MiB/s, 42.4MiB/s
+Average speed: 43.6MiB/s
+
+Form above data, we can see the MMC software queue can help to improve the
+performance obviously.
+
+Any comments are welcome. Thanks a lot.
+
+Changes from v2:
+ - Remove reference to 'struct cqhci_host' and 'struct cqhci_slot',
+ instead adding 'struct sqhci_host', which is only used by software queue.
+
+Changes from v1:
+ - Add request_done ops for sdhci_ops.
+ - Replace virtual command queue with software queue for functions and
+ variables.
+ - Rename the software queue file and add sqhci.h header file.
+
+Baolin Wang (3):
+  mmc: Add MMC software queue support
+  mmc: host: sdhci: Add request_done ops for struct sdhci_ops
+  mmc: host: sdhci-sprd: Add software queue support
+
+ drivers/mmc/core/block.c      |   61 ++++++++
+ drivers/mmc/core/mmc.c        |   13 +-
+ drivers/mmc/core/queue.c      |   25 ++-
+ drivers/mmc/host/Kconfig      |    9 ++
+ drivers/mmc/host/Makefile     |    1 +
+ drivers/mmc/host/sdhci-sprd.c |   26 ++++
+ drivers/mmc/host/sdhci.c      |   12 +-
+ drivers/mmc/host/sdhci.h      |    2 +
+ drivers/mmc/host/sqhci.c      |  344 +++++++++++++++++++++++++++++++++++++++++
+ drivers/mmc/host/sqhci.h      |   53 +++++++
+ include/linux/mmc/host.h      |    3 +
+ 11 files changed, 537 insertions(+), 12 deletions(-)
+ create mode 100644 drivers/mmc/host/sqhci.c
+ create mode 100644 drivers/mmc/host/sqhci.h
+
+-- 
+1.7.9.5
+
