@@ -2,128 +2,129 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CBB3B7B73
-	for <lists+linux-mmc@lfdr.de>; Thu, 19 Sep 2019 16:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03CCEB7BA6
+	for <lists+linux-mmc@lfdr.de>; Thu, 19 Sep 2019 16:07:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728850AbfISOCo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 19 Sep 2019 10:02:44 -0400
-Received: from foss.arm.com ([217.140.110.172]:58948 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732385AbfISOCm (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 19 Sep 2019 10:02:42 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 765EA337;
-        Thu, 19 Sep 2019 07:02:42 -0700 (PDT)
-Received: from [10.1.197.57] (e110467-lin.cambridge.arm.com [10.1.197.57])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 55E443F59C;
-        Thu, 19 Sep 2019 07:02:41 -0700 (PDT)
-Subject: Re: [REGRESSION] sdhci no longer detects SD cards on LX2160A
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        "Y.b. Lu" <yangbo.lu@nxp.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        dann frazier <dann.frazier@canonical.com>,
-        Christoph Hellwig <hch@lst.de>, linux-mmc@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-References: <b19a0640-5d71-a005-eb0f-c6840f181e5d@free.fr>
- <20190917081931.GI25745@shell.armlinux.org.uk>
- <20190917104200.GJ25745@shell.armlinux.org.uk>
- <20190917111631.GL25745@shell.armlinux.org.uk>
- <20190917114210.GM25745@shell.armlinux.org.uk>
- <20190917123326.GN25745@shell.armlinux.org.uk>
- <20190917130759.GO25745@shell.armlinux.org.uk>
- <c12e21c3-6bef-38ed-3693-b958be17d555@arm.com>
- <20190917134947.GS25745@shell.armlinux.org.uk>
- <ab90e9a4-052d-5a7b-bfae-f2f02f17f1b7@arm.com>
- <20190919091601.GH25745@shell.armlinux.org.uk>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <20fe58a0-f0ed-733b-87fb-47d667094491@arm.com>
-Date:   Thu, 19 Sep 2019 15:02:39 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S2389781AbfISOGx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 19 Sep 2019 10:06:53 -0400
+Received: from esa1.hgst.iphmx.com ([68.232.141.245]:14284 "EHLO
+        esa1.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389045AbfISOGx (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Sep 2019 10:06:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1568902012; x=1600438012;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=WAg+AdM9zX+aobjuEt0wRkwb3EMVAvCa0EzheETqppc=;
+  b=Ov6YbuZKng9woR+pdgPMgMukIkgG3gG2m4mF8xhlAxMEokoyidmHXWSv
+   oZFe3TzfoTqotjYwzjrPzKKA6i861k8t0H8H6SShYII3sraMtM9rm4pdW
+   GjJvH50rDrkAdBFo0ykyYE1AxMV/RoRgXxOKTDJ60ZbxPS4ajqR07Y9HF
+   ZYUXcvq5xALwbNBIJKGoTLyLfohFlpqlQ4cMYJtMqznma5ZLGWRgw6cjM
+   mTB1fjZ0UghUiFBA07gB9TazCJsbxPAvhz1K5KcxtzkeIMGptqOpf84na
+   DzfDI92qZEHnYN9wpx6SIOM6AZqFIAdnpvgF/VrZtHwQBUrRh2+7lxWr0
+   A==;
+IronPort-SDR: I7TjQEwRD4UpZBd0zuGHsn5lTz4PBsCSpD3EEO1q6R9IFv82XXAtCf8RcwB5DFfMxt2yNlKnpN
+ D9j67awn5stUf6kFzI1ZanD86J1e9Qg+YTeXPiMGd0tWfq7CKcE5jDlVUFwSuynbCH6W1sbg7a
+ x3qZGZU++T/97PfHZEOOrtPuVf+faTgSxi39IGr6POFl6NBfgFjKUXPWOI4I8nohinjjOzEzaO
+ NQuMsSaRpyPsqhQT9FIjPXtgASe5Cm7B+7Xzn5zNPTQCCm2aOQq3bm5X7nKvfQZHnjjYYTdT1n
+ Snk=
+X-IronPort-AV: E=Sophos;i="5.64,523,1559491200"; 
+   d="scan'208";a="225460458"
+Received: from mail-by2nam01lp2058.outbound.protection.outlook.com (HELO NAM01-BY2-obe.outbound.protection.outlook.com) ([104.47.34.58])
+  by ob1.hgst.iphmx.com with ESMTP; 19 Sep 2019 22:06:51 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=D45h3/FqEUqfmWYaUY13LwiqAULIimszTP65CSPuTABh8kA3TsnUDGb0LIJK7ngNom84sykQoswCZS3UWOQZ5KB8MVWFNtQKGzKuS33vFa6TN+Dpxqk0tYZLcbutMi2QGdc9CIidpBKiYMPAeEMFcfE9xnrBBGJHNwIBgrazmfQ8neYVIIcUybUpiYR3+zG0DCs5ne8xvhV3zKU9ft2DCQ4sca/mdUs7a2nHNMAUIPi1x6AQ5+8nyJhjktPsm+xE8VTor7LuYarS/ahdce4zyH8OXA1ShWipsuS28zJ1HOX5gdeGpiEeIU+YDli/LwpVaQ/Nqaw+VdhK0MmbmKaxUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WAg+AdM9zX+aobjuEt0wRkwb3EMVAvCa0EzheETqppc=;
+ b=HbrFUBby2iXs0TDcGd2MkWqvz8HgIfqzeEEUp9p/A5iVUakRmwfwLtbf4CGP694FyyG8bVMxn7T7lLGk1on37FDPdVQG2t5eC6rN6zBF9OkWoVYNgrhQBMsZMyN2IL7KzLIni7y0Yv7QaFdSjukEiaJIXk0G+6vvi3xxqY5UDrZQWbJqTFR0Y8g5BdXlaLfmhDH7NjxdSOYUfGCJUPED1YVWXTqpCFMXJ1X+2bILUysOLBISBTM4RXVRDyOZDHt970idEwfMYvmLc4E8soQXcWEq8niiLm/5PIS8kp2Ad5vJBzWQ4rrvvQ9AgI8W1b5hJ+4xUIbvp+MpxlbVbmWeog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WAg+AdM9zX+aobjuEt0wRkwb3EMVAvCa0EzheETqppc=;
+ b=ThqHB5T46xV6leuXZUra3elul78DYNu0A8uFf0UAIojRIYFJhEPEBdQNoX+ojcv4hZw4DMt2SwRa/diRUcQJrAR2DJLynOSRa7HkIduAHdHxWnElEmYvtj9ExFG3bP9A6HlSDExLcIoM4b1dF/cbCnQT16f0Vu8Yq2jt2+DQNRs=
+Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
+ MN2PR04MB5981.namprd04.prod.outlook.com (20.178.246.138) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2284.22; Thu, 19 Sep 2019 14:06:50 +0000
+Received: from MN2PR04MB6991.namprd04.prod.outlook.com
+ ([fe80::9c2b:ac1b:67b8:f371]) by MN2PR04MB6991.namprd04.prod.outlook.com
+ ([fe80::9c2b:ac1b:67b8:f371%2]) with mapi id 15.20.2284.009; Thu, 19 Sep 2019
+ 14:06:50 +0000
+From:   Avri Altman <Avri.Altman@wdc.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Michael Heimpold <mhei@heimpold.de>,
+        "chris@printf.net" <chris@printf.net>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Subject: RE: [PATCH mmc-utils v2 0/5] Various fixes for mmc-utils
+Thread-Topic: [PATCH mmc-utils v2 0/5] Various fixes for mmc-utils
+Thread-Index: AQHVaa67ZkDrfKUAHUuBW2wff6DItKcyx9owgABG3QCAAAPxgA==
+Date:   Thu, 19 Sep 2019 14:06:49 +0000
+Message-ID: <MN2PR04MB69915A035B856C0038633F7AFC890@MN2PR04MB6991.namprd04.prod.outlook.com>
+References: <20190912210509.19816-1-mhei@heimpold.de>
+ <MN2PR04MB6991CE61681D33F1F7E76ADAFC890@MN2PR04MB6991.namprd04.prod.outlook.com>
+ <CAPDyKFrae36rymcD-o9RELiWVTzMd-ccM2q1q-dO7GiWYaqw+w@mail.gmail.com>
+In-Reply-To: <CAPDyKFrae36rymcD-o9RELiWVTzMd-ccM2q1q-dO7GiWYaqw+w@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Avri.Altman@wdc.com; 
+x-originating-ip: [212.25.79.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 197f06eb-bd9e-4bd5-1058-08d73d0a9dae
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MN2PR04MB5981;
+x-ms-traffictypediagnostic: MN2PR04MB5981:
+x-ms-exchange-purlcount: 1
+x-microsoft-antispam-prvs: <MN2PR04MB59815C9EC529D65CA2F032FCFC890@MN2PR04MB5981.namprd04.prod.outlook.com>
+wdcipoutbound: EOP-TRUE
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 016572D96D
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(396003)(39860400002)(346002)(366004)(376002)(199004)(189003)(6306002)(55016002)(9686003)(4326008)(229853002)(6246003)(6116002)(86362001)(3846002)(71190400001)(25786009)(71200400001)(256004)(14444005)(305945005)(74316002)(2906002)(966005)(6436002)(66066001)(478600001)(7736002)(52536014)(81166006)(81156014)(6916009)(8936002)(316002)(99286004)(14454004)(5660300002)(7696005)(76176011)(6506007)(186003)(26005)(102836004)(486006)(66946007)(476003)(446003)(11346002)(8676002)(66476007)(66446008)(64756008)(66556008)(33656002)(54906003)(76116006);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB5981;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: jfT5tgWEuiZRSZU627OsR7vKPtnORhW/AjDm7U7GeSdmon6X/EvK/OpD+M+D1eGzVZKcyVZaASR5fVC6frsQ90Qe0o1jTDOBSAXK4gfMZJqDcfE61e+b2DkS2HUWBOCrhrgEOixQTeo1iWf9CULg4C1afaNDZy7hIa8Ldo4JKV6YphYsPS/tt30SH32hFbieSCryduJsym2xTSrl0Aob5hT1Bo/jAxm7dZn+uDuIIFoSqZlXPLDJY73ximB1QN/5hiF3Bh1yUu7J6Mk+wMwAkFDZ6gohs1OEmIO8WVoIUpiVN/yUx9+T+ft7YSfctky+OoypXs6QSsfbQ7EWyGm4ZGQkSxTdgWrB7RrZkpdcXQKOH2Ap+IUr5fqnj3JcyAN2qgmz6VrT2ek68QFw2YTj+RCBn0DcOf/GP4iDC2BFU20=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <20190919091601.GH25745@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 197f06eb-bd9e-4bd5-1058-08d73d0a9dae
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Sep 2019 14:06:49.8920
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: moIdWpUatUAdjlrk41VJ7PwVpfImd6aMNT8S/v6L2nNTj1e2Hs5tmI4wdlciIL+1lRtOUbcNxVOcSv7AXnbKtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB5981
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 19/09/2019 10:16, Russell King - ARM Linux admin wrote:
-> On Tue, Sep 17, 2019 at 03:03:29PM +0100, Robin Murphy wrote:
->> On 17/09/2019 14:49, Russell King - ARM Linux admin wrote:
->>> As already replied, v4 mode is not documented as being available on
->>> the LX2160A - the bit in the control register is marked as "reserved".
->>> This is as expected as it is documented that it is using a v3.00 of
->>> the SDHCI standard, rather than v4.00.
->>>
->>> So, sorry, enabling "v4 mode" isn't a workaround in this scenario.
->>>
->>> Given that v4 mode is not mandatory, this shouldn't be a work-around.
->>>
->>> Given that it _does_ work some of the time with the table >4GB, then
->>> this is not an addressing limitation.
->>
->> Yes, that's what "something totally different" usually means.
->>
->>>> However, the other difference between getting a single page directly from
->>>> the page allocator vs. the CMA area is that accesses to the linear mapping
->>>> of the CMA area are probably pretty rare, whereas for the single-page case
->>>> it's much more likely that kernel tasks using adjacent pages could lead to
->>>> prefetching of the descriptor page's cacheable alias. That could certainly
->>>> explain how reverting that commit manages to hide an apparent coherency
->>>> issue.
->>>
->>> Right, so how do we fix this?
->>
->> By describing the hardware correctly in the DT.
-> 
-> It would appear that it _is_ correctly described given the default
-> hardware configuration, but the driver sets a bit in a control
-> register that enables cache snooping.
-
-Oh, fun. FWIW, the more general form of that statement would be "by 
-ensuring that the device behaviour and the DT description are 
-consistent", it's just rare to have both degrees of freedom.
-
-Even in these cases, though, it tends to be ultimately necessary to 
-defer to what the DT says, because there can be situations where the IP 
-believes itself capable of enabling snoops, but the integration failed 
-to wire things up correctly for them to actually work. I know we have to 
-deal with that in arm-smmu, for one example.
-
-> Adding "dma-coherent" to the DT description does not seem to be the
-> correct solution, as we are reliant on the DT description and driver
-> implementation both agreeing, which is fragile.
-> 
->  From what I can see, there isn't a way for a driver to say "I've made
-> this device is coherent now" and I suspect making the driver set the
-> DMA snoop bit depending on whether "dma-coherent" is present in DT or
-> not will cause data-corrupting regressions for other people.
-> 
-> So, we're back to where we started - what is the right solution to
-> this problem?
-> 
-> The only thing I can think is that the driver needs to do something
-> like:
-> 
-> 	WARN_ON(!dev_is_dma_coherent(dev));
-> 
-> in esdhc_of_enable_dma() as a first step, and ensuring that the snoop
-> bit matches the state of dev_is_dma_coherent(dev)?  Is it permitted to
-> use dev_is_dma_coherent() in drivers - it doesn't seem to be part of
-> the normal DMA API?
-
-The safest option would be to query the firmware property layer via 
-device_get_dma_attr() - or potentially short-cut to of_dma_is_coherent() 
-for a pure DT driver. Even disregarding API purity, I don't think the 
-DMA API internals are really generic enough yet to reliably poke at 
-(although FWIW, *certain* cases like dma_direct_ops would now actually 
-work as expected if one did the unspeakable and flipped 
-dev->dma_coherent from a driver, but that would definitely not win any 
-friends).
-
-Robin.
+PiBPbiBUaHUsIDE5IFNlcCAyMDE5IGF0IDExOjQxLCBBdnJpIEFsdG1hbiA8QXZyaS5BbHRtYW5A
+d2RjLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBVbGYvQWRyaWFuLA0KPiA+DQo+ID4gQXMgQ2hyaXMg
+aXMgbGVzcyByZXNwb25zaXZlIGluIHRoZSBwYXN0IGZldyB5ZWFycywgV2UgbWlnaHQgd2FudCB0
+bw0KPiA+IGZvbGxvdyB0aGUgc2NzaSBNTCBwcmFjdGljZSB3aXRoIHJlZ2FyZCB0byB0aGUgdWZz
+IGRyaXZlcjoNCj4gPiBBZGQgc2V2ZXJhbCByZXZpZXdlcnMgd2hpbGUgTWFydGluIGlzIHB1bGxp
+bmcgdGhlIHBhdGNoZXMuDQo+IA0KPiBUaGlzIGhhcyBiZWVuIGRpc2N1c3NlZCBlYXJsaWVyIFsx
+XSBhbmQgQ2hyaXMgYWxzbyBhZ3JlZWQgdGhhdCBpdCBzZWVtcyBsaWtlIGENCj4gZ29vZCBpZGVh
+Lg0KVGhlbiBJIHdvdWxkIGxpa2UgdG8gc3VnZ2VzdCBteXNlbGYgYXMgYSByZXZpZXdlciBbUl0u
+DQpJIGhvcGUgdGhhdCBzb21lIG1vcmUgcGVvcGxlIHdvdWxkIGJlIGludGVyZXN0ZWQgdG8gc3Vw
+cG9ydCB0aGlzLg0KV291bGQgeW91IGJlIGFibGUgdG8gcGljayBtbWMtdXRpbHMgcGF0Y2hlcz8N
+Cg0KVGhhbmtzLA0KQXZyaQ0KDQo+IA0KPiA+DQo+ID4gSXQgaXMgd29ya2luZyBxdWl0ZSB3ZWxs
+IHNpbmNlIHRoZW4uDQo+ID4NCj4gPiBJcyB0aGlzIHNvbWV0aGluZyB0aGF0IHlvdSBtaWdodCBj
+b25zaWRlcj8NCj4gDQo+IEFzIHNhaWQsIGl0J3MgYmVlbiBkaXNjdXNzZWQuIEkgdGhpbmsgaXQg
+Ym9pbHMgZG93biB0byB0aGF0IHNvbWVvbmUgbXVzdA0KPiB2b2x1bnRlZXIgdG8gaGVscCBDaHJp
+cy4gVGhlbiBpdCdzIGp1c3QgYSBtYXR0ZXIgb2YgZm9ybWFsaXppbmcgdGhpcywgc2V0IHVwIGdp
+dA0KPiBwdXNoIHBlcm1pc3Npb25zIGFuZCBkb2N1bWVudCB0aGUgbmV3IHdheXMgb2YgbWFpbnRl
+bmFuY2UuDQo+IA0KPiBQZXJoYXBzIHlvdSB3b3VsZCBiZSBpbnRlcmVzdGVkIHRvIGhlbHAgb3V0
+Pw0KPiANCj4gWy4uLl0NCj4gDQo+IEtpbmQgcmVnYXJkcw0KPiBVZmZlDQo+IA0KPiBbMV0NCj4g
+aHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xMDcwOTU0My8NCg==
