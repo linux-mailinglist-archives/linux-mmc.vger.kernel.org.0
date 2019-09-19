@@ -2,68 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 830B9B8395
-	for <lists+linux-mmc@lfdr.de>; Thu, 19 Sep 2019 23:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F134B87F4
+	for <lists+linux-mmc@lfdr.de>; Fri, 20 Sep 2019 01:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390391AbfISVm4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 19 Sep 2019 17:42:56 -0400
-Received: from mail-ed1-f53.google.com ([209.85.208.53]:35267 "EHLO
-        mail-ed1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391441AbfISVmx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Sep 2019 17:42:53 -0400
-Received: by mail-ed1-f53.google.com with SMTP id v8so4558439eds.2
-        for <linux-mmc@vger.kernel.org>; Thu, 19 Sep 2019 14:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fPXt1oW5DrO8Oz/+ZgQWbhpdLKiDcFjVs0zf8G0Ey+0=;
-        b=F7rY2woNh5IcAn5OYZoXJ8RCbJxd2yqyiH4M8f85UZWHRWoLW8sjxdFct2ymo6ZVkB
-         dVMXB2tC3uNyvgUUwJpyEiyqOMCXqRWH+hjIvcN+KTmU8ILI1vlk47akitpXVlldhj5e
-         orWDGJNZiJu9frflXNbP/9bBuZWkaRCZZLtD8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fPXt1oW5DrO8Oz/+ZgQWbhpdLKiDcFjVs0zf8G0Ey+0=;
-        b=olfWcdbwm8rYqTssW/IuyypzomE2kE2+ddTvz+JXkow4v3wyTd9VSZRkcoxSj7RDa4
-         55+4Hva2gs0wLvwWB1LtmXHiozsG4AJqs4GX8+6ZnRIonZ65ee2emJ/i1UHFyZiGGdsJ
-         agP4+a6TOHHkPM87b5/7Xu3WmnbYErHLz0T9NvGZVSfRkY/izzLptQThscYa+ydbhcoU
-         hFUGEcLbdU/RnGOMnvHDrNmQUvp0865x5/9vtyHzpk12OfuZPQ1xZ7VVLYGFfnzmY1Ui
-         Igvuc9pRdV9yT+py0y4QsLl9kMEzdvOos9DZpEnxfHUpfZxZgt5xyAcGgEFWnYj0dWpd
-         o/Ng==
-X-Gm-Message-State: APjAAAUmfgN8sKYzsT3c2xWopSWZeY7q1e+KLxqOjJeVPnXk4XrRtirJ
-        4rtzekaaSRwzNBAUap+JpQTQenKh1Gc=
-X-Google-Smtp-Source: APXvYqwTEQxcqyXlmPW5K5qLSb+nVUcB34NQN0bOMjWkbeyQTknpPyxR4hcJxFlZOfY80H3m8+1fOw==
-X-Received: by 2002:a17:906:d050:: with SMTP id bo16mr16616961ejb.146.1568929371600;
-        Thu, 19 Sep 2019 14:42:51 -0700 (PDT)
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com. [209.85.221.53])
-        by smtp.gmail.com with ESMTPSA id w16sm1872214edd.93.2019.09.19.14.42.51
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Sep 2019 14:42:51 -0700 (PDT)
-Received: by mail-wr1-f53.google.com with SMTP id r5so4617886wrm.12
-        for <linux-mmc@vger.kernel.org>; Thu, 19 Sep 2019 14:42:51 -0700 (PDT)
-X-Received: by 2002:a5d:4689:: with SMTP id u9mr8650228wrq.78.1568929370634;
- Thu, 19 Sep 2019 14:42:50 -0700 (PDT)
+        id S2390883AbfISXRm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Thu, 19 Sep 2019 19:17:42 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:48633 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389806AbfISXRm (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 19 Sep 2019 19:17:42 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 46ZCS303qyz9s7T;
+        Fri, 20 Sep 2019 09:17:38 +1000 (AEST)
+Date:   Fri, 20 Sep 2019 09:17:30 +1000
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAHk-=wjXF63BKNJH=GtnnoJmXZHEnRwjgeu4foJQvFYYBm9HHA@mail.gmail.com>
+References: <20190918152748.GA21241@infradead.org> <CAHk-=wjXF63BKNJH=GtnnoJmXZHEnRwjgeu4foJQvFYYBm9HHA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20190904164625.236978-1-rrangel@chromium.org>
-In-Reply-To: <20190904164625.236978-1-rrangel@chromium.org>
-From:   Raul Rangel <rrangel@chromium.org>
-Date:   Thu, 19 Sep 2019 15:42:39 -0600
-X-Gmail-Original-Message-ID: <CAHQZ30DjvU8iqG=-UTjQgb7m-ayBhoAtRP_mXY4WmjWs_kqZKQ@mail.gmail.com>
-Message-ID: <CAHQZ30DjvU8iqG=-UTjQgb7m-ayBhoAtRP_mXY4WmjWs_kqZKQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: sdhci: Check card status after reset
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     linux-mmc@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Subject: Re: [GIT PULL] dma-mapping updates for 5.4
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>
+CC:     linux-mmc@vger.kernel.org,
+        iommu <iommu@lists.linux-foundation.org>,
+        xen-devel@lists.xenproject.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+From:   Michael Ellerman <michael@ellerman.id.au>
+Message-ID: <D422FEED-06F6-44BE-955F-90318693FD96@ellerman.id.au>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Pinging the patch set to make sure it's not forgotten :)
 
-Thanks
+
+On 20 September 2019 6:33:50 am AEST, Linus Torvalds <torvalds@linux-foundation.org> wrote:
+>On Wed, Sep 18, 2019 at 8:27 AM Christoph Hellwig <hch@infradead.org>
+>wrote:
+>>
+>> please pull the dma-mapping updates for 5.4.
+>
+>Pulled.
+>
+>> In addition to the usual Kconfig conflics where you just want to keep
+>> both edits there are a few more interesting merge issues this time:
+>>
+>>  - most importanly powerpc and microblaze add new callers of
+>>    dma_atomic_pool_init, while this tree marks the function static
+>>    and calls it from a common postcore_initcall().  The trivial
+>>    functions added in powerpc and microblaze adding the calls
+>>    need to be removed for the code to compile.  This will not show up
+>>    as a merge conflict and needs to be dealt with manually!
+>
+>So I haven't gotten the powerpc or microblaze pull requests yet, so
+>I'm not able to fix that part up yet.
+>
+>Intead, I'm cc'ing Michael Ellerman and Michal Simek to ask them to
+>remind me when they _do_ send those pull requests, since otherwise I
+>may well forget and miss it. Without an actual data conflict, and
+>since this won't show up in my build tests either, it would be very
+>easy for me to forget.
+>
+>Micha[e]l, can you both please make sure to remind me?
+
+Yeah I was aware of it, and will make sure to remind you in my pull request.
+
+cheers
+
+-- 
+Sent from my Android phone with K-9 Mail. Please excuse my brevity.
