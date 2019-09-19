@@ -2,100 +2,87 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB6AFB6A2F
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Sep 2019 20:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC1E8B713A
+	for <lists+linux-mmc@lfdr.de>; Thu, 19 Sep 2019 03:50:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726369AbfIRSDJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 18 Sep 2019 14:03:09 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:33872 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725909AbfIRSDI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Sep 2019 14:03:08 -0400
-Received: by mail-pl1-f194.google.com with SMTP id d3so336941plr.1;
-        Wed, 18 Sep 2019 11:03:07 -0700 (PDT)
+        id S2387612AbfISBuo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 18 Sep 2019 21:50:44 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:44859 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387604AbfISBuo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Sep 2019 21:50:44 -0400
+Received: by mail-ed1-f68.google.com with SMTP id r16so1650608edq.11;
+        Wed, 18 Sep 2019 18:50:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=5epdwrSXh24EUYUO/PsVgpCcezuZCgW1f8L8LT4NsHY=;
-        b=i/dJS/VDhqfAqPVgQ/ck7wrtabxGfffmzDn0nMfR5H568dDaQFl2P/Zy079A0htSOA
-         Wiio4no42QZIVigvdIj3Vjd3aA3T0azmWQG1+WLCIJ7LxrqVC7CKEqqP9Gr13E97Y9CL
-         mHQMetm8Gw7sTYI203Av8Kq3UtvNCAvqjAmESgeBdELLWZWyL8H28JA+U98iktz0aqPS
-         zA0KgD2cO/DukWAxD/Yj2EnLCNGqPBsDQTkJiz/VnwdPTgCHImidxiRv1XmDTpky0HT3
-         xhaAMzSAqypcThRZSwxTZDfcNHzN+HpkXlf+GUc1pJZBnwsTh1Mz6LZaG3dPyVjp2+mc
-         cEQw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zVWaU8MWb+toZ7pw699s706Y6cCfK7IRI+Up5RZDOwg=;
+        b=Rg5JsREBofDUaBlAvP5owFysYBFRDKdVXy2dqYT2vvJVD0Oy1qSyT8BsrmzIHwpRd4
+         nWgadBICoQTexCfqiqq5SMXb775GOFLELw8lhBb602ndu+HP6PZyo9qoMWiIfU/i3Gkc
+         3T2yOUlI84QXTz5bQHvYyS7L8L5nFvm6MTJpYksAnIwRY8Mh7YbE3z1GN9nvts0nHRNs
+         oOMavBX/a6I1PHxpb6letKNsCMEJNftyS8ZgwQAt9fnxM3E+GB6njFn90kD9gRvSzOuP
+         PxRBGmaFqR6EVq/r5WNyFHzABHPFAnRGSGbzsXvJmPuhth+t+rU52ddf3PwpYw7mh0Rr
+         PZWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=5epdwrSXh24EUYUO/PsVgpCcezuZCgW1f8L8LT4NsHY=;
-        b=tQIDvYQbgQdUxm7spGB1gJN6XFee38tnw5aEv2B8QNYqPB/13tRVDL+B8t/EDFo/e3
-         FvYyKZzyA4+TQ4rLADLHzb2nwDPt77f0vzVPkxNmPaJCgxjuXrBOCDOVVeH0n3fJc1fV
-         i8PmJRjegCtwT6KToGj5rjZD+Ag71w+UlGeuRY4UECrAi7Xh8SdHOwn9HdtttuEN/fXq
-         v9eCbVvPKW7yXUT/gevtecNKJYGrXup19iD7pbeuV4zI8I3gDi4I7Df1wXzrCcNVGDHz
-         seFrfXLm6Ye0BVA+sAJSCY5n3Ip5L449eNdKmVaaQkEttTwUAqP33ioVd14RkDuOf7pi
-         l10g==
-X-Gm-Message-State: APjAAAUSsQGgdmBoDr6MD1EWqIkDiDMjsEVoND8LwsPJlGA3pGQ6WCjo
-        V6Ha0gYPSxquPnGM8NNsYwk=
-X-Google-Smtp-Source: APXvYqyYqnTo+S8mIhE7N3BpCMpcOR7dlHge/PQw/HZmevaSnGiFmYkE/f8O5PTqUjatXLVoD3/KNg==
-X-Received: by 2002:a17:902:9a07:: with SMTP id v7mr5598867plp.245.1568829787218;
-        Wed, 18 Sep 2019 11:03:07 -0700 (PDT)
-Received: from SD ([2405:204:828a:aaec:f0de:d7f9:abdf:1568])
-        by smtp.gmail.com with ESMTPSA id u18sm5212624pge.69.2019.09.18.11.03.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2019 11:03:06 -0700 (PDT)
-Date:   Wed, 18 Sep 2019 23:32:53 +0530
-From:   Saiyam Doshi <saiyamdoshi.in@gmail.com>
-To:     ulf.hansson@linaro.org, f.fainelli@gmail.com, rjui@broadcom.com,
-        sbranden@broadcom.com, bcm-kernel-feedback-list@broadcom.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mmc: host: bcm2835: use devm_platform_ioremap_resource
- wrapper
-Message-ID: <20190918180253.GA11702@SD>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zVWaU8MWb+toZ7pw699s706Y6cCfK7IRI+Up5RZDOwg=;
+        b=M7H1cg1tBDcohT4L7JgqYEj2Af5vzfVWr7hdO8g8gyNd+4dX6csAybwKImdd8dxCX9
+         /N4SMGOIwB0DEfjmLXr30irL+nhhjsrjiKQ47ybZS8YPpYg/tPIzVLSFIaVp34vIKOBN
+         ppR2GyGyBbAXhsOGKi1aO4X9Yx9i5GWjqi6KYLt7roqOrZ3LB3HGsVQYLXsf+f19OoR3
+         uEX12UoJ3sSe5xmm1otZz0qrjtzawOcvS6VIiaSU7u5PqW4GdBVxpGZzdfyBTH0pI0Tj
+         qJuh47NQnmJGW+1LvLtFda7lQzdz5fqVgZP2dA9hI2FO1uvRHw+ZTKPRBZMzzXC9sVPA
+         xgMA==
+X-Gm-Message-State: APjAAAXB8In6MopM/4PIwxYOCfodF1lAnCL687Q3+esbREY8Jdm+LFJH
+        Zh6kpMXH2ES4t17uZ9i3m4cH69qJb3rdnvFbAQ0=
+X-Google-Smtp-Source: APXvYqwBzDvo3So9aOLPuP1xdqn6CBt2iBHyxzmiOo8rKxFPijZ9V1be7JK1QZNLnMD1wndzERyiuZfXR7lcteUZfUQ=
+X-Received: by 2002:a17:906:5fc4:: with SMTP id k4mr12305306ejv.300.1568857842724;
+ Wed, 18 Sep 2019 18:50:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <cover.1568184581.git.benchuanggli@gmail.com> <2d08c47490a349d7ee5682749f68604adc62f19f.1568184581.git.benchuanggli@gmail.com>
+ <20190918104734.GA3320@people.danlj.org> <781dc676-4903-5ab2-84d1-b5357c11dccd@intel.com>
+In-Reply-To: <781dc676-4903-5ab2-84d1-b5357c11dccd@intel.com>
+From:   Ben Chuang <benchuanggli@gmail.com>
+Date:   Thu, 19 Sep 2019 09:50:31 +0800
+Message-ID: <CACT4zj8dyLWfQ5uDafwXxd7A09S522j1nQTGHV0p5gn8nUzbRQ@mail.gmail.com>
+Subject: Re: [PATCH V9 5/5] mmc: host: sdhci-pci: Add Genesys Logic GL975x support
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     "Michael K. Johnson" <johnsonm@danlj.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Use devm_platform_ioremap_resource helper which wraps
-platform_get_resource() and devm_ioremap_resource() together.
+On Wed, Sep 18, 2019 at 7:09 PM Adrian Hunter <adrian.hunter@intel.com> wrote:
+>
+> On 18/09/19 1:47 PM, Michael K. Johnson wrote:
+> > I see that the first four patches made it into Linus's kernel
+> > yesterday. Is there any chance of this final patch that actually
+> > enables the hardware making it into another pull request still
+> > intended for 5.4?  Waiting on additional acked-by on Ben's work
+> > addressing all the review comments?
+> >
+> > Thanks.
+> >
+> > On Wed, Sep 11, 2019 at 03:23:44PM +0800, Ben Chuang wrote:
+> >> From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+> >>
+> >> Add support for the GL9750 and GL9755 chipsets.
+> >>
+> >> Enable v4 mode and wait 5ms after set 1.8V signal enable for GL9750/
+> >> GL9755. Fix the value of SDHCI_MAX_CURRENT register and use the vendor
+> >> tuning flow for GL9750.
+> >
+>
+> It is OK by me:
+>
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Generated by: scripts/coccinelle/api/devm_platform_ioremap_resource.cocci.
-
-More information about semantic patching is available at
-http://coccinelle.lip6.fr/
-
-Signed-off-by: Saiyam Doshi <saiyamdoshi.in@gmail.com>
----
- drivers/mmc/host/bcm2835.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
-index 148414d7f0c9..99f61fd2a658 100644
---- a/drivers/mmc/host/bcm2835.c
-+++ b/drivers/mmc/host/bcm2835.c
-@@ -1357,7 +1357,6 @@ static int bcm2835_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct clk *clk;
--	struct resource *iomem;
- 	struct bcm2835_host *host;
- 	struct mmc_host *mmc;
- 	const __be32 *regaddr_p;
-@@ -1373,8 +1372,7 @@ static int bcm2835_probe(struct platform_device *pdev)
- 	host->pdev = pdev;
- 	spin_lock_init(&host->lock);
- 
--	iomem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	host->ioaddr = devm_ioremap_resource(dev, iomem);
-+	host->ioaddr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(host->ioaddr)) {
- 		ret = PTR_ERR(host->ioaddr);
- 		goto err;
--- 
-2.20.1
-
+Thank you. Also thanks to other people who have given me their comments.
+Ben
