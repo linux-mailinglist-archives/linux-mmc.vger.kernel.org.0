@@ -2,39 +2,39 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7705BA472
-	for <lists+linux-mmc@lfdr.de>; Sun, 22 Sep 2019 20:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F1E9BA500
+	for <lists+linux-mmc@lfdr.de>; Sun, 22 Sep 2019 20:57:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391793AbfIVSst (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 22 Sep 2019 14:48:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45764 "EHLO mail.kernel.org"
+        id S2394417AbfIVSxt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 22 Sep 2019 14:53:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53842 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391775AbfIVSst (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:48:49 -0400
+        id S2394410AbfIVSxs (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:53:48 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 64099214AF;
-        Sun, 22 Sep 2019 18:48:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 03E1F21BE5;
+        Sun, 22 Sep 2019 18:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178128;
-        bh=tNKTrgo6pekEMV7o4Yg/oW12mfaytm7NtZ+DZIXJrIo=;
+        s=default; t=1569178426;
+        bh=fP7mtkBeozDd3ru7q/dWJl8QsplEw+feOxj/O/dCgDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RpurSQpBkpBIOhx3rgc9ixAjdJQ0SsK7zP3fwh25zQ93hjRMnMl+yn+usxckylw0K
-         RkCcNLWwwgY7/D3CeLwpFiXIyGWZvnvqOyngep4YJtGkBWEp01s4yrmOjGKCO4/NSZ
-         Fdz1f22vNbBV96/YMQfBT+YBTpgYlR4NB0yWNW5A=
+        b=F6XjAJuHpMBA8eSpRAlG+KMKpy6NwOGNs+QZtTVzLPmHNEdvCqcVWVGaVJM/NN3US
+         Y4upe4CDPBbp9vAbXYSaMvKOMCaorSvJi6I5eAE7Q0Cj/OqoEvaw8iD/EsL3P8pwFU
+         kGrlBUvZKAy13UV/BmPmVBsyP8FoWAFUntAYRZn4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         Matthias Kaehlcke <mka@chromium.org>,
         Douglas Anderson <dianders@chromium.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 181/203] mmc: core: Clarify sdio_irq_pending flag for MMC_CAP2_SDIO_IRQ_NOTHREAD
-Date:   Sun, 22 Sep 2019 14:43:27 -0400
-Message-Id: <20190922184350.30563-181-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 163/185] mmc: core: Clarify sdio_irq_pending flag for MMC_CAP2_SDIO_IRQ_NOTHREAD
+Date:   Sun, 22 Sep 2019 14:49:01 -0400
+Message-Id: <20190922184924.32534-163-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
-References: <20190922184350.30563-1-sashal@kernel.org>
+In-Reply-To: <20190922184924.32534-1-sashal@kernel.org>
+References: <20190922184924.32534-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -85,7 +85,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/mmc/core/sdio_irq.c b/drivers/mmc/core/sdio_irq.c
-index 0bcc5e83bd1a0..40109a6159228 100644
+index 9f54a259a1b36..e4823ef0a0de9 100644
 --- a/drivers/mmc/core/sdio_irq.c
 +++ b/drivers/mmc/core/sdio_irq.c
 @@ -31,6 +31,7 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
@@ -114,7 +114,7 @@ index 0bcc5e83bd1a0..40109a6159228 100644
  		func->irq_handler(func);
  		return 1;
  	}
-@@ -96,7 +100,6 @@ static void sdio_run_irqs(struct mmc_host *host)
+@@ -96,7 +100,6 @@ void sdio_run_irqs(struct mmc_host *host)
  {
  	mmc_claim_host(host);
  	if (host->sdio_irqs) {
@@ -122,7 +122,7 @@ index 0bcc5e83bd1a0..40109a6159228 100644
  		process_sdio_pending_irqs(host);
  		if (host->ops->ack_sdio_irq)
  			host->ops->ack_sdio_irq(host);
-@@ -114,6 +117,7 @@ void sdio_irq_work(struct work_struct *work)
+@@ -115,6 +118,7 @@ void sdio_irq_work(struct work_struct *work)
  
  void sdio_signal_irq(struct mmc_host *host)
  {
@@ -130,7 +130,7 @@ index 0bcc5e83bd1a0..40109a6159228 100644
  	queue_delayed_work(system_wq, &host->sdio_irq_work, 0);
  }
  EXPORT_SYMBOL_GPL(sdio_signal_irq);
-@@ -159,7 +163,6 @@ static int sdio_irq_thread(void *_host)
+@@ -160,7 +164,6 @@ static int sdio_irq_thread(void *_host)
  		if (ret)
  			break;
  		ret = process_sdio_pending_irqs(host);
