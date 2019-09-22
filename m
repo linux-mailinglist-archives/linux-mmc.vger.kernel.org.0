@@ -2,39 +2,39 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5177ABA799
-	for <lists+linux-mmc@lfdr.de>; Sun, 22 Sep 2019 21:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3AB1BA864
+	for <lists+linux-mmc@lfdr.de>; Sun, 22 Sep 2019 21:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438825AbfIVS7T (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 22 Sep 2019 14:59:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34388 "EHLO mail.kernel.org"
+        id S1729732AbfIVTDD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 22 Sep 2019 15:03:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38496 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2438823AbfIVS7T (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:59:19 -0400
+        id S1729534AbfIVTCH (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 22 Sep 2019 15:02:07 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AB9592184D;
-        Sun, 22 Sep 2019 18:59:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7A1CF2196E;
+        Sun, 22 Sep 2019 19:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178758;
-        bh=V+EsCjQI6pwEz0xG635aQChwJvmLDUEbk1VmxR03NkI=;
+        s=default; t=1569178926;
+        bh=fuQVCnZpD/kZPOjogsugRHIBxW76GMvJxErOmtJ5zVw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s+YMjfm4fN81hFJbPzKWY6Qr5AzSqGu6yRXOxae84XJwj9D8mLdhn6MG8ku5X3IWM
-         cjd72ra88CqaoIHEpfB+GeuvAif1/T+pjwDCgumjcL1e3dUuEg9rSwu3jnUQOqdVja
-         +a4iXzV6P833Invrqcu+jD6zBkwoMFj/m/gGSVwM=
+        b=omMjaJGt2ThgKmgW2yyAHjTgOcqY1zRs9rTdvCe9ZCEvDz4Mq413Qm8yXEww0K1r5
+         x2k2ydqICBBNTsxtWj9pP70jPR7omNkuIwyFjPwhdsXUM3xJt/eNOySllznV5xZTYA
+         leMFLxR4YaLAA+0MiHsMIKg6FGuVsiyd87vMOFPw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Al Cooper <alcooperx@gmail.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 80/89] mmc: sdhci: Fix incorrect switch to HS mode
-Date:   Sun, 22 Sep 2019 14:57:08 -0400
-Message-Id: <20190922185717.3412-80-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 40/44] mmc: sdhci: Fix incorrect switch to HS mode
+Date:   Sun, 22 Sep 2019 15:00:58 -0400
+Message-Id: <20190922190103.4906-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922185717.3412-1-sashal@kernel.org>
-References: <20190922185717.3412-1-sashal@kernel.org>
+In-Reply-To: <20190922190103.4906-1-sashal@kernel.org>
+References: <20190922190103.4906-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -78,10 +78,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index 9540fda7fc6ba..3741d4c846e5e 100644
+index 62d37d2ac557b..1d6dfde1104d1 100644
 --- a/drivers/mmc/host/sdhci.c
 +++ b/drivers/mmc/host/sdhci.c
-@@ -1635,7 +1635,9 @@ void sdhci_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
+@@ -1452,7 +1452,9 @@ void sdhci_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
  		ctrl_2 |= SDHCI_CTRL_UHS_SDR104;
  	else if (timing == MMC_TIMING_UHS_SDR12)
  		ctrl_2 |= SDHCI_CTRL_UHS_SDR12;
