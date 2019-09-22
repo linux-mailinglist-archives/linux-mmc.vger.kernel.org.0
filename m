@@ -2,39 +2,39 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E1F3BA744
-	for <lists+linux-mmc@lfdr.de>; Sun, 22 Sep 2019 21:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E32BA797
+	for <lists+linux-mmc@lfdr.de>; Sun, 22 Sep 2019 21:48:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394709AbfIVS46 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 22 Sep 2019 14:56:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59304 "EHLO mail.kernel.org"
+        id S2404860AbfIVS7T (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 22 Sep 2019 14:59:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34346 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394707AbfIVS45 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:56:57 -0400
+        id S2395044AbfIVS7S (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:59:18 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 80BFD206C2;
-        Sun, 22 Sep 2019 18:56:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 64695206C2;
+        Sun, 22 Sep 2019 18:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178617;
-        bh=KJZP5vaTsjAVzDWxjovzOMv5p50y5XYVPNkVMPbUt7E=;
+        s=default; t=1569178757;
+        bh=6b5jTT1uSMagUS3nV3QpOU2+HHivB8utPxBdWmXGx7o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mEkjOsw6FbnPx/HOSBO/m5kDsJPeg7VMnXslnQovKC8dhpvzWJOMRKRwS7USn9RAP
-         CxmKyFaG6QSrXe9oEt43VC7gcm/faaQU9SVwxUXn+GxznLNqhJaMm41IX5L0LKefhw
-         Ukbf8jWeGhCMmKT/0Hf5cnC07npAkmR1EsUgQhFY=
+        b=fNxxlARCIXu+mj7Th+D+0iDE3TCVCGx1E4H9agZcVPvvLcho1AYQ2J1mU0pGIOzM5
+         gZ9jRyespnzKsnr60datgVYcIg90vJ+JMBwCc/4ez9WJ0xckOGCqP6LE/tmNUo4/nt
+         hGJ1AF8/B+WQ4azrvpstXknBG7KE5Xvf+12iw1RY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Al Cooper <alcooperx@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 116/128] mmc: sdhci: Fix incorrect switch to HS mode
-Date:   Sun, 22 Sep 2019 14:54:06 -0400
-Message-Id: <20190922185418.2158-116-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 79/89] mmc: core: Clarify sdio_irq_pending flag for MMC_CAP2_SDIO_IRQ_NOTHREAD
+Date:   Sun, 22 Sep 2019 14:57:07 -0400
+Message-Id: <20190922185717.3412-79-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922185418.2158-1-sashal@kernel.org>
-References: <20190922185418.2158-1-sashal@kernel.org>
+In-Reply-To: <20190922185717.3412-1-sashal@kernel.org>
+References: <20190922185717.3412-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,54 +44,100 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Al Cooper <alcooperx@gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit c894e33ddc1910e14d6f2a2016f60ab613fd8b37 ]
+[ Upstream commit 36d57efb4af534dd6b442ea0b9a04aa6dfa37abe ]
 
-When switching from any MMC speed mode that requires 1.8v
-(HS200, HS400 and HS400ES) to High Speed (HS) mode, the system
-ends up configured for SDR12 with a 50MHz clock which is an illegal
-mode.
+The sdio_irq_pending flag is used to let host drivers indicate that it has
+signaled an IRQ. If that is the case and we only have a single SDIO func
+that have claimed an SDIO IRQ, our assumption is that we can avoid reading
+the SDIO_CCCR_INTx register and just call the SDIO func irq handler
+immediately. This makes sense, but the flag is set/cleared in a somewhat
+messy order, let's fix that up according to below.
 
-This happens because the SDHCI_CTRL_VDD_180 bit in the
-SDHCI_HOST_CONTROL2 register is left set and when this bit is
-set, the speed mode is controlled by the SDHCI_CTRL_UHS field
-in the SDHCI_HOST_CONTROL2 register. The SDHCI_CTRL_UHS field
-will end up being set to 0 (SDR12) by sdhci_set_uhs_signaling()
-because there is no UHS mode being set.
+First, the flag is currently set in sdio_run_irqs(), which is executed as a
+work that was scheduled from sdio_signal_irq(). To make it more implicit
+that the host have signaled an IRQ, let's instead immediately set the flag
+in sdio_signal_irq(). This also makes the behavior consistent with host
+drivers that uses the legacy, mmc_signal_sdio_irq() API. This have no
+functional impact, because we don't expect host drivers to call
+sdio_signal_irq() until after the work (sdio_run_irqs()) have been executed
+anyways.
 
-The fix is to change sdhci_set_uhs_signaling() to set the
-SDHCI_CTRL_UHS field to SDR25 (which is the same as HS) for
-any switch to HS mode.
+Second, currently we never clears the flag when using the sdio_run_irqs()
+work, but only when using the sdio_irq_thread(). Let make the behavior
+consistent, by moving the flag to be cleared inside the common
+process_sdio_pending_irqs() function. Additionally, tweak the behavior of
+the flag slightly, by avoiding to clear it unless we processed the SDIO
+IRQ. The purpose with this at this point, is to keep the information about
+whether there have been an SDIO IRQ signaled by the host, so at system
+resume we can decide to process it without reading the SDIO_CCCR_INTx
+register.
 
-This was found on a new eMMC controller that does strict checking
-of the speed mode and the corresponding clock rate. It caused the
-switch to HS400 mode to fail because part of the sequence to switch
-to HS400 requires a switch from HS200 to HS before going to HS400.
-
-Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Al Cooper <alcooperx@gmail.com>
+Tested-by: Matthias Kaehlcke <mka@chromium.org>
+Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/core/sdio_irq.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index c749d3dc1d36d..eb33b892b484c 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -1713,7 +1713,9 @@ void sdhci_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
- 		ctrl_2 |= SDHCI_CTRL_UHS_SDR104;
- 	else if (timing == MMC_TIMING_UHS_SDR12)
- 		ctrl_2 |= SDHCI_CTRL_UHS_SDR12;
--	else if (timing == MMC_TIMING_UHS_SDR25)
-+	else if (timing == MMC_TIMING_SD_HS ||
-+		 timing == MMC_TIMING_MMC_HS ||
-+		 timing == MMC_TIMING_UHS_SDR25)
- 		ctrl_2 |= SDHCI_CTRL_UHS_SDR25;
- 	else if (timing == MMC_TIMING_UHS_SDR50)
- 		ctrl_2 |= SDHCI_CTRL_UHS_SDR50;
+diff --git a/drivers/mmc/core/sdio_irq.c b/drivers/mmc/core/sdio_irq.c
+index 2fdd84c67f191..0656d740b0dd2 100644
+--- a/drivers/mmc/core/sdio_irq.c
++++ b/drivers/mmc/core/sdio_irq.c
+@@ -35,6 +35,7 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
+ {
+ 	struct mmc_card *card = host->card;
+ 	int i, ret, count;
++	bool sdio_irq_pending = host->sdio_irq_pending;
+ 	unsigned char pending;
+ 	struct sdio_func *func;
+ 
+@@ -42,13 +43,16 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
+ 	if (mmc_card_suspended(card))
+ 		return 0;
+ 
++	/* Clear the flag to indicate that we have processed the IRQ. */
++	host->sdio_irq_pending = false;
++
+ 	/*
+ 	 * Optimization, if there is only 1 function interrupt registered
+ 	 * and we know an IRQ was signaled then call irq handler directly.
+ 	 * Otherwise do the full probe.
+ 	 */
+ 	func = card->sdio_single_irq;
+-	if (func && host->sdio_irq_pending) {
++	if (func && sdio_irq_pending) {
+ 		func->irq_handler(func);
+ 		return 1;
+ 	}
+@@ -100,7 +104,6 @@ void sdio_run_irqs(struct mmc_host *host)
+ {
+ 	mmc_claim_host(host);
+ 	if (host->sdio_irqs) {
+-		host->sdio_irq_pending = true;
+ 		process_sdio_pending_irqs(host);
+ 		if (host->ops->ack_sdio_irq)
+ 			host->ops->ack_sdio_irq(host);
+@@ -119,6 +122,7 @@ void sdio_irq_work(struct work_struct *work)
+ 
+ void sdio_signal_irq(struct mmc_host *host)
+ {
++	host->sdio_irq_pending = true;
+ 	queue_delayed_work(system_wq, &host->sdio_irq_work, 0);
+ }
+ EXPORT_SYMBOL_GPL(sdio_signal_irq);
+@@ -163,7 +167,6 @@ static int sdio_irq_thread(void *_host)
+ 		if (ret)
+ 			break;
+ 		ret = process_sdio_pending_irqs(host);
+-		host->sdio_irq_pending = false;
+ 		mmc_release_host(host);
+ 
+ 		/*
 -- 
 2.20.1
 
