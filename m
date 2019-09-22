@@ -2,37 +2,39 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A203CBA648
-	for <lists+linux-mmc@lfdr.de>; Sun, 22 Sep 2019 21:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B042BA6E6
+	for <lists+linux-mmc@lfdr.de>; Sun, 22 Sep 2019 21:47:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391908AbfIVSs6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 22 Sep 2019 14:48:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45898 "EHLO mail.kernel.org"
+        id S2394438AbfIVSxw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 22 Sep 2019 14:53:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54014 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391881AbfIVSs5 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:48:57 -0400
+        id S2394433AbfIVSxw (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:53:52 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8BDF7208C2;
-        Sun, 22 Sep 2019 18:48:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F3E0A2190F;
+        Sun, 22 Sep 2019 18:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178136;
-        bh=dWZQeEXELj4oPCyvPKatzqbyZkyD3e/BEQa+Mm6YXN8=;
+        s=default; t=1569178431;
+        bh=8zGTGHMcYcZ5vPDHzmRtC8gsvJEvulmKyj4ydCxN5i8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MEm2Am+PyUhnIQrkbGpCHMx9En0eHFrm7u7c/VaSMlAcWAmVBQ9sD91ANnW3N04Cd
-         Oxyv27gQlzhJ1akcpmQAeJDlUnBYD2xq4WjVG0Ky77dkohBueZldEWWyNnpXXpPr1f
-         cB3Hs97Gnmfsm4FyGvfIkXVJLB16ylb4I0Y3Xx4k=
+        b=D+T8lTtoNL73gugQWN8N9OVN11sNyTpevH5+cCSxutj0luBrdUAwcexJxSrNeNorU
+         2vWOwdK8Utm7LR+KJL/+LEkdmrLnRZC2M4WwZ8HUho7Bhiej8XtVXxgbT+yYEVeXQj
+         JVqC16ClBwpe3KFru4f8Ev/GKUyPFK9gFw1iRjYo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 187/203] mmc: mtk-sd: Re-store SDIO IRQs mask at system resume
-Date:   Sun, 22 Sep 2019 14:43:33 -0400
-Message-Id: <20190922184350.30563-187-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 167/185] mmc: dw_mmc: Re-store SDIO IRQs mask at system resume
+Date:   Sun, 22 Sep 2019 14:49:05 -0400
+Message-Id: <20190922184924.32534-167-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
-References: <20190922184350.30563-1-sashal@kernel.org>
+In-Reply-To: <20190922184924.32534-1-sashal@kernel.org>
+References: <20190922184924.32534-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,41 +46,44 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 1c81d69d4c98aab56c5a7d5a810f84aefdb37e9b ]
+[ Upstream commit 7c526608d5afb62cbc967225e2ccaacfdd142e9d ]
 
 In cases when SDIO IRQs have been enabled, runtime suspend is prevented by
-the driver. However, this still means msdc_runtime_suspend|resume() gets
+the driver. However, this still means dw_mci_runtime_suspend|resume() gets
 called during system suspend/resume, via pm_runtime_force_suspend|resume().
-
-This means during system suspend/resume, the register context of the mtk-sd
+This means during system suspend/resume, the register context of the dw_mmc
 device most likely loses its register context, even in cases when SDIO IRQs
 have been enabled.
 
-To re-enable the SDIO IRQs during system resume, the mtk-sd driver
+To re-enable the SDIO IRQs during system resume, the dw_mmc driver
 currently relies on the mmc core to re-enable the SDIO IRQs when it resumes
 the SDIO card, but this isn't the recommended solution. Instead, it's
-better to deal with this locally in the mtk-sd driver, so let's do that.
+better to deal with this locally in the dw_mmc driver, so let's do that.
 
+Tested-by: Matthias Kaehlcke <mka@chromium.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mmc/host/dw_mmc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index 33f4b6387ef71..978c8ccce7e31 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -2421,6 +2421,9 @@ static void msdc_restore_reg(struct msdc_host *host)
- 	} else {
- 		writel(host->save_para.pad_tune, host->base + tune_reg);
- 	}
-+
-+	if (sdio_irq_claimed(host->mmc))
-+		__msdc_enable_sdio_irq(host, 1);
- }
+diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+index 60c3a06e3469a..45c3490546839 100644
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -3482,6 +3482,10 @@ int dw_mci_runtime_resume(struct device *dev)
+ 	/* Force setup bus to guarantee available clock output */
+ 	dw_mci_setup_bus(host->slot, true);
  
- static int msdc_runtime_suspend(struct device *dev)
++	/* Re-enable SDIO interrupts. */
++	if (sdio_irq_claimed(host->slot->mmc))
++		__dw_mci_enable_sdio_irq(host->slot, 1);
++
+ 	/* Now that slots are all setup, we can enable card detect */
+ 	dw_mci_enable_cd(host);
+ 
 -- 
 2.20.1
 
