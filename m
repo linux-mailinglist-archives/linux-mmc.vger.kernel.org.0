@@ -2,117 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 749B7BAE3B
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 Sep 2019 09:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E67FCBAEBD
+	for <lists+linux-mmc@lfdr.de>; Mon, 23 Sep 2019 09:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393142AbfIWHAg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 23 Sep 2019 03:00:36 -0400
-Received: from mga14.intel.com ([192.55.52.115]:55747 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393062AbfIWHAf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 23 Sep 2019 03:00:35 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Sep 2019 00:00:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,539,1559545200"; 
-   d="scan'208";a="200438503"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.66]) ([10.237.72.66])
-  by orsmga002.jf.intel.com with ESMTP; 23 Sep 2019 00:00:32 -0700
-Subject: Re: [PATCH 2/3] mmc: sdhci-of-esdhc: set DMA snooping based on DMA
- coherence
-To:     Russell King <rmk+kernel@armlinux.org.uk>,
-        Robin Murphy <robin.murphy@arm.com>,
-        dann frazier <dann.frazier@canonical.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        "Y.b. Lu" <yangbo.lu@nxp.com>, Christoph Hellwig <hch@lst.de>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-References: <20190922102341.GO25745@shell.armlinux.org.uk>
- <E1iBz50-0008Mc-8K@rmk-PC.armlinux.org.uk>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <bc2ef677-d094-b436-dd68-3fcaa82cf857@intel.com>
-Date:   Mon, 23 Sep 2019 09:59:16 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2405191AbfIWHyA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 23 Sep 2019 03:54:00 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:43542 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405395AbfIWHyA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Sep 2019 03:54:00 -0400
+Received: by mail-lf1-f67.google.com with SMTP id u3so9314514lfl.10
+        for <linux-mmc@vger.kernel.org>; Mon, 23 Sep 2019 00:53:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5+GerYcmYMO5YvdQkT9Zn07Af1kbLUNX6Y/+zHLXd0M=;
+        b=cxP+eNFJeT5F7TXm7atEyHSr+rSnR0aDK+1Ma2XO3DcJMuXnJi3Kyiblt4jzyxaAgY
+         iQsQQx61Vyx07Lf5+MXyG+KFgsme4snyfnEmCQcMe6HPIfWd1uAwyGlhQ9wFzheHpHNF
+         9kBUomEAJ5cIgxpxx1dW7u1pc9ClpQl3q48Le6vpIYMFMuvxLCzJ9UUc0sWP0F9f1HQS
+         TijYSh1rchb3JIi7BvctqmmwmS/dLORk3PROROTTZxiAaALC/4/x0XRW89hvN6N2MxvF
+         eqS/h+VXoB4MKNPUtUypd2drjogttxVHJBNGuV9bZzXzqWEQL2I92tvi58htdPtonp6S
+         CU/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5+GerYcmYMO5YvdQkT9Zn07Af1kbLUNX6Y/+zHLXd0M=;
+        b=lr6KUK11A3Eay7CSyMm2WVCTiXPpWjspekRLUyn3D+Q8yuZqtYJuY9TIOF7PuV97jv
+         Oa9IduEKqogLvoEtqEKSjACYmiokuKGSZYLTkklCvepOMuBMqHhUKbEZ5rwIjim3qmJV
+         bCfBoqb2geesyjR+5lUISv77Em0mTcNh5e159KPArg1xIRiaMXihBEL5inPS25fyUeBX
+         1vFD/xH0qUHK6MraDpHNaR7ZA7AelUI2iWss2iF+3NSuPKlm0LQPNJ1ilVqFbKBthtcq
+         HF7rHk4q5d8+Wc28ypR9edLH2IF/q+Dujia4swzvf6z6KJTA+uXO6kFm/USxODuUPoMt
+         sd0w==
+X-Gm-Message-State: APjAAAUSXChmNU2RtRDGoLvnHQS9qhbryWye7U++cu8t7ElsVTimFT0B
+        OH+SyqeHvBYv3jZHMbGwFt1VdwnILRbKlBEBxLlyTA==
+X-Google-Smtp-Source: APXvYqygvtnIx3QdOPmtm3Dh6aqMWmYMQVt8wtC93BSYUtfHNLQsNjV49z9+Q2sxHmdCkSPAzmVRPbM40h0JA4wnEV0=
+X-Received: by 2002:ac2:5148:: with SMTP id q8mr15155737lfd.84.1569225236069;
+ Mon, 23 Sep 2019 00:53:56 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <E1iBz50-0008Mc-8K@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <63395d0c73f0bb1cf7c2f52545137fd4014f84ba.1568864712.git.baolin.wang@linaro.org>
+ <20190921144922.GB13091@xsang-OptiPlex-9020>
+In-Reply-To: <20190921144922.GB13091@xsang-OptiPlex-9020>
+From:   Baolin Wang <baolin.wang@linaro.org>
+Date:   Mon, 23 Sep 2019 15:53:44 +0800
+Message-ID: <CAMz4kuJONoMYAmQrKukxxpDbYDQQ8G7SYaL4svk8A6ewr2sYEA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] mmc: Add MMC software queue support
+To:     kbuild test robot <lkp@intel.com>
+Cc:     kbuild-all@01.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 22/09/19 1:26 PM, Russell King wrote:
-> We must not unconditionally set the DMA snoop bit; if the DMA API is
-> assuming that the device is not DMA coherent, and the device snoops the
-> CPU caches, the device can see stale cache lines brought in by
-> speculative prefetch.
-> 
-> This leads to the device seeing stale data, potentially resulting in
-> corrupted data transfers.  Commonly, this results in a descriptor fetch
-> error such as:
-> 
-> mmc0: ADMA error
-> mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
-> mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00002202
-> mmc0: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000001
-> mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
-> mmc0: sdhci: Present:   0x01f50008 | Host ctl: 0x00000038
-> mmc0: sdhci: Power:     0x00000003 | Blk gap:  0x00000000
-> mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x000040d8
-> mmc0: sdhci: Timeout:   0x00000003 | Int stat: 0x00000001
-> mmc0: sdhci: Int enab:  0x037f108f | Sig enab: 0x037f108b
-> mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00002202
-> mmc0: sdhci: Caps:      0x35fa0000 | Caps_1:   0x0000af00
-> mmc0: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
-> mmc0: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x001d8a33
-> mmc0: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x3f400e00
-> mmc0: sdhci: Host ctl2: 0x00000000
-> mmc0: sdhci: ADMA Err:  0x00000009 | ADMA Ptr: 0x000000236d43820c
-> mmc0: sdhci: ============================================
-> mmc0: error -5 whilst initialising SD card
-> 
-> but can lead to other errors, and potentially direct the SDHCI
-> controller to read/write data to other memory locations (e.g. if a valid
-> descriptor is visible to the device in a stale cache line.)
-> 
-> Fix this by ensuring that the DMA snoop bit corresponds with the
-> behaviour of the DMA API.  Since the driver currently only supports DT,
-> use of_dma_is_coherent().  Note that device_get_dma_attr() can not be
-> used as that risks re-introducing this bug if/when the driver is
-> converted to ACPI.
-> 
-> Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+Hi,
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+On Sat, 21 Sep 2019 at 22:43, kbuild test robot <lkp@intel.com> wrote:
+>
+> Hi Baolin,
+>
+> I love your patch! Yet something to improve:
+>
+> [auto build test ERROR on linus/master]
+> [cannot apply to v5.3 next-20190918]
+> [if your patch is applied to the wrong git tree, please drop us a note to help
+> improve the system. BTW, we also suggest to use '--base' option to specify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+>
+> url:    https://github.com/0day-ci/linux/commits/Baolin-Wang/mmc-Add-MMC-software-queue-support/20190919-140107
+> config: i386-allmodconfig (attached as .config)
+> compiler: gcc-7 (Debian 7.4.0-13) 7.4.0
+> reproduce:
+>         # save the attached .config to linux build tree
+>         make ARCH=i386
+> :::::: branch date: 7 hours ago
+> :::::: commit date: 7 hours ago
+>
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+>
+> All errors (new ones prefixed by >>):
+>
+>    ld: drivers/mmc/host/sqhci.o: in function `sqhci_finalize_request':
+> >> (.text+0x644): undefined reference to `mmc_cqe_request_done'
 
-> ---
->  drivers/mmc/host/sdhci-of-esdhc.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-> index 4dd43b1adf2c..74de5e8c45c8 100644
-> --- a/drivers/mmc/host/sdhci-of-esdhc.c
-> +++ b/drivers/mmc/host/sdhci-of-esdhc.c
-> @@ -495,7 +495,12 @@ static int esdhc_of_enable_dma(struct sdhci_host *host)
->  		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(40));
->  
->  	value = sdhci_readl(host, ESDHC_DMA_SYSCTL);
-> -	value |= ESDHC_DMA_SNOOP;
-> +
-> +	if (of_dma_is_coherent(dev->of_node))
-> +		value |= ESDHC_DMA_SNOOP;
-> +	else
-> +		value &= ~ESDHC_DMA_SNOOP;
-> +
->  	sdhci_writel(host, value, ESDHC_DMA_SYSCTL);
->  	return 0;
->  }
-> 
+OK. I will fix this issue in the next version and wait for a while to
+see if there are any new comments for this patch set. Thanks.
 
+-- 
+Baolin Wang
+Best Regards
