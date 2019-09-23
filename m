@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6339BBE2A
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 Sep 2019 23:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F28AFBBE2B
+	for <lists+linux-mmc@lfdr.de>; Mon, 23 Sep 2019 23:55:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390757AbfIWVzZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 23 Sep 2019 17:55:25 -0400
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:44891 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387520AbfIWVzZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Sep 2019 17:55:25 -0400
-Received: by mail-ua1-f65.google.com with SMTP id n2so4850893ual.11
-        for <linux-mmc@vger.kernel.org>; Mon, 23 Sep 2019 14:55:23 -0700 (PDT)
+        id S2390761AbfIWVzb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 23 Sep 2019 17:55:31 -0400
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:37593 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387520AbfIWVzb (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Sep 2019 17:55:31 -0400
+Received: by mail-ua1-f66.google.com with SMTP id f9so4874925uaj.4
+        for <linux-mmc@vger.kernel.org>; Mon, 23 Sep 2019 14:55:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=MBT3Db6V0RCdk9MkaZmhWBxtvLD/Af76jFo64HoOBeI=;
-        b=benxuRmzmLFhm7xj36+4hmpIGybL1LCdEOGcPPfa1Mka2sx96iD+2mxpNHHysxhkDM
-         cTJsvAMlfXj632f0S78RwsA8bDKmv7rOxXgZznA7fgkoxxS9RcBZpsTAdR0+W133HdV8
-         Y0JVlLtmYD7AywL1q2kPMe+sYcxHlCx3lOG3kendDo2V6VtlajezRBpooZ8saYHzgLjq
-         qL3chwtLuyTQyPFZi572OgqB6MbvUwgY63EcB04CmCZiEp/W5clAy125j7XPikyAd53G
-         Q0UY+gOLDbxHA7fovUHK4unByY+KDim/qagaz2r7TmldtX9BOmXzjY4qs9ZEBSfcSMTz
-         VIew==
+        bh=I8HE0xxgJIdBygBr0LPfHnPWj798ffNarvcJbPJ7Ow0=;
+        b=L/X0zWW2HLVUwUk7XKX2JM3b2Rdh6Nld8BblfE4zqSe+TwYwq4CNgYyAF7iKJaWNKe
+         fwkKSjQfdbcwaC/XdwVEOAtw8x1BjKbvVwZkGHFlWYMaLG0PBmhrDrD0dRZn6MGxRiM3
+         dcbJdPJ/7Kiqwl2YGXmOI6xvrDSw2ZkdGHoaFDLrCi+/lQu3NSaeCZBcu3WamRBnK3SG
+         loToV0kTCcq2Y5NZIbMJFfwpv+65fVZhJ5c5g5ariBGNhG37TCadTY0JoZorV0WDwiMp
+         GqJ+7ECwgSJhsylsqWOzV3FkRB4Ulaqq1nwh7b9kLrRpANSvlL59jkoB52E37iDgBGYz
+         AcLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=MBT3Db6V0RCdk9MkaZmhWBxtvLD/Af76jFo64HoOBeI=;
-        b=K5/ZahV5ruNm/p2y75/MvcLJqevbrPAzFruz2wo701LCIKQDnaTygQHsHCuAl3qoCg
-         aI6Qn/pi4r4bbTAhKuiozJ1IlIrKY3LGrGon0zWnnBQFGGR18hjAeSRewQzs9Cy5Zu0r
-         Cu64tlC2na8Kdrmm6c5sJKA/euFX5fl8xFr5mdy3lP/JgL3z/3w0yVEpAVBFdF35xlL8
-         vLJaIkL/i55lIgtEC2QJluy/oaGXpcg9mYw7x1of46yer05xZHIGFMc2FtHW++bSQhvz
-         S72jXbDWK5nhRdyMUlGLvNNKM8WLNUhOrtIfiwVEqKXf5CAViAo7+7qrtN4sLryGxTZA
-         BWng==
-X-Gm-Message-State: APjAAAUo1rG+VeA/o28mhpdk/rpSIWh7Kq5OlugxhX1idw5EPUI5Mho4
-        AaB3EITd7eFtVE1VjSjNmgfZEzzCmMxva+KcBuOPmA==
-X-Google-Smtp-Source: APXvYqxSlTkjicQD/SBCB1YP5+6EQVvpPwLYkYHSNKsYS/EHuKQ4u7NN2WARz8V/OrSNN+DdfdRUCFaF/GXcdojUQFk=
-X-Received: by 2002:ab0:3113:: with SMTP id e19mr390086ual.129.1569275722401;
- Mon, 23 Sep 2019 14:55:22 -0700 (PDT)
+        bh=I8HE0xxgJIdBygBr0LPfHnPWj798ffNarvcJbPJ7Ow0=;
+        b=qDfs6W56wbGF2c96GJ1pVRCOLzZZ2q4dFGFp8tHiB3dOYSCvd9P2ygpC56q90bUcD4
+         ii2G+o00bOhqhzzd6XcWJbW3ApwtfX6XaHt13HYympd/lU7t2J6C8C0Gr7a8yX6pglSP
+         vyLO67RPOJJKfiOahZA5ogeEFmihkMAFnbwyJot2wMLRu0Vit7Tfbcarwt2UC8J9TsNu
+         tqqvKJ5J9vSuqF7bXIJ3DSQEdeDLLAYMBCOeQmbne/ZpuxyhQDPqv/Kn8G9ARr4t0Om7
+         xWTkq2BNBR4GMZEHv1c8vwydaYUeV0zbDtYEjU+goig9MvqeY66BFj+9BP+iUunRFdAs
+         /O9A==
+X-Gm-Message-State: APjAAAXia7ACDm/3/MVmRD/p7uxrIhDNbesgBqODotFtQoP2KIslwKSC
+        MDQvz23H1Ot89lN9AROKkog9Pn6P2tasXeC0WhcPzg==
+X-Google-Smtp-Source: APXvYqwNAJfeaQHbBbihzaYwIQbFiFZyrr2MKWfGo/FSzwOeexwJrdKxpdRPjEVAv2pO08DQUhRn2dZGuw8Gohde1CU=
+X-Received: by 2002:ab0:3098:: with SMTP id h24mr924785ual.100.1569275730470;
+ Mon, 23 Sep 2019 14:55:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190922102341.GO25745@shell.armlinux.org.uk> <E1iBz4v-0008MV-4k@rmk-PC.armlinux.org.uk>
-In-Reply-To: <E1iBz4v-0008MV-4k@rmk-PC.armlinux.org.uk>
+References: <20190922102341.GO25745@shell.armlinux.org.uk> <E1iBz50-0008Mc-8K@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1iBz50-0008Mc-8K@rmk-PC.armlinux.org.uk>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 23 Sep 2019 23:54:46 +0200
-Message-ID: <CAPDyKFqmO3aRPzN2Wctx9Ww5w_YBbcjJqMHeasQAHb97Dwar0A@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mmc: sdhci: improve ADMA error reporting
+Date:   Mon, 23 Sep 2019 23:54:54 +0200
+Message-ID: <CAPDyKFrnPpkWoRob+9FUYromqepXPtiC1pM_sgUx2Mfz-PPvWA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] mmc: sdhci-of-esdhc: set DMA snooping based on DMA coherence
 To:     Russell King <rmk+kernel@armlinux.org.uk>
 Cc:     Robin Murphy <robin.murphy@arm.com>,
         dann frazier <dann.frazier@canonical.com>,
@@ -63,83 +63,75 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 On Sun, 22 Sep 2019 at 12:27, Russell King <rmk+kernel@armlinux.org.uk> wrote:
 >
-> ADMA errors are potentially data corrupting events; although we print
-> the register state, we do not usefully print the ADMA descriptors.
-> Worse than that, we print them by referencing their virtual address
-> which is meaningless when the register state gives us the DMA address
-> of the failing descriptor.
+> We must not unconditionally set the DMA snoop bit; if the DMA API is
+> assuming that the device is not DMA coherent, and the device snoops the
+> CPU caches, the device can see stale cache lines brought in by
+> speculative prefetch.
 >
-> Print the ADMA descriptors giving their DMA addresses rather than their
-> virtual addresses, and print them using SDHCI_DUMP() rather than DBG().
+> This leads to the device seeing stale data, potentially resulting in
+> corrupted data transfers.  Commonly, this results in a descriptor fetch
+> error such as:
 >
-> We also do not show the correct value of the interrupt status register;
-> the register dump shows the current value, after we have cleared the
-> pending interrupts we are going to service.  What is more useful is to
-> print the interrupts that _were_ pending at the time the ADMA error was
-> encountered.  Fix that too.
+> mmc0: ADMA error
+> mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+> mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00002202
+> mmc0: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000001
+> mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+> mmc0: sdhci: Present:   0x01f50008 | Host ctl: 0x00000038
+> mmc0: sdhci: Power:     0x00000003 | Blk gap:  0x00000000
+> mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x000040d8
+> mmc0: sdhci: Timeout:   0x00000003 | Int stat: 0x00000001
+> mmc0: sdhci: Int enab:  0x037f108f | Sig enab: 0x037f108b
+> mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00002202
+> mmc0: sdhci: Caps:      0x35fa0000 | Caps_1:   0x0000af00
+> mmc0: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
+> mmc0: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x001d8a33
+> mmc0: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x3f400e00
+> mmc0: sdhci: Host ctl2: 0x00000000
+> mmc0: sdhci: ADMA Err:  0x00000009 | ADMA Ptr: 0x000000236d43820c
+> mmc0: sdhci: ============================================
+> mmc0: error -5 whilst initialising SD card
+>
+> but can lead to other errors, and potentially direct the SDHCI
+> controller to read/write data to other memory locations (e.g. if a valid
+> descriptor is visible to the device in a stale cache line.)
+>
+> Fix this by ensuring that the DMA snoop bit corresponds with the
+> behaviour of the DMA API.  Since the driver currently only supports DT,
+> use of_dma_is_coherent().  Note that device_get_dma_attr() can not be
+> used as that risks re-introducing this bug if/when the driver is
+> converted to ACPI.
 >
 > Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 
-This seems useful to land for 5.4, so I have queued this up via my fixes branch.
-
-Perhaps we should also tag this for stable, what do you think?
+Applied for fixes and taged for stable, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci.c | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
+>  drivers/mmc/host/sdhci-of-esdhc.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index a5dc5aae973e..0f33097c55ec 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -2855,6 +2855,7 @@ static void sdhci_cmd_irq(struct sdhci_host *host, u32 intmask, u32 *intmask_p)
->  static void sdhci_adma_show_error(struct sdhci_host *host)
->  {
->         void *desc = host->adma_table;
-> +       dma_addr_t dma = host->adma_addr;
+> diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
+> index 4dd43b1adf2c..74de5e8c45c8 100644
+> --- a/drivers/mmc/host/sdhci-of-esdhc.c
+> +++ b/drivers/mmc/host/sdhci-of-esdhc.c
+> @@ -495,7 +495,12 @@ static int esdhc_of_enable_dma(struct sdhci_host *host)
+>                 dma_set_mask_and_coherent(dev, DMA_BIT_MASK(40));
 >
->         sdhci_dumpregs(host);
->
-> @@ -2862,18 +2863,21 @@ static void sdhci_adma_show_error(struct sdhci_host *host)
->                 struct sdhci_adma2_64_desc *dma_desc = desc;
->
->                 if (host->flags & SDHCI_USE_64_BIT_DMA)
-> -                       DBG("%p: DMA 0x%08x%08x, LEN 0x%04x, Attr=0x%02x\n",
-> -                           desc, le32_to_cpu(dma_desc->addr_hi),
-> +                       SDHCI_DUMP("%08llx: DMA 0x%08x%08x, LEN 0x%04x, Attr=0x%02x\n",
-> +                           (unsigned long long)dma,
-> +                           le32_to_cpu(dma_desc->addr_hi),
->                             le32_to_cpu(dma_desc->addr_lo),
->                             le16_to_cpu(dma_desc->len),
->                             le16_to_cpu(dma_desc->cmd));
->                 else
-> -                       DBG("%p: DMA 0x%08x, LEN 0x%04x, Attr=0x%02x\n",
-> -                           desc, le32_to_cpu(dma_desc->addr_lo),
-> +                       SDHCI_DUMP("%08llx: DMA 0x%08x, LEN 0x%04x, Attr=0x%02x\n",
-> +                           (unsigned long long)dma,
-> +                           le32_to_cpu(dma_desc->addr_lo),
->                             le16_to_cpu(dma_desc->len),
->                             le16_to_cpu(dma_desc->cmd));
->
->                 desc += host->desc_sz;
-> +               dma += host->desc_sz;
->
->                 if (dma_desc->cmd & cpu_to_le16(ADMA2_END))
->                         break;
-> @@ -2949,7 +2953,8 @@ static void sdhci_data_irq(struct sdhci_host *host, u32 intmask)
->                         != MMC_BUS_TEST_R)
->                 host->data->error = -EILSEQ;
->         else if (intmask & SDHCI_INT_ADMA_ERROR) {
-> -               pr_err("%s: ADMA error\n", mmc_hostname(host->mmc));
-> +               pr_err("%s: ADMA error: 0x%08x\n", mmc_hostname(host->mmc),
-> +                      intmask);
->                 sdhci_adma_show_error(host);
->                 host->data->error = -EIO;
->                 if (host->ops->adma_workaround)
+>         value = sdhci_readl(host, ESDHC_DMA_SYSCTL);
+> -       value |= ESDHC_DMA_SNOOP;
+> +
+> +       if (of_dma_is_coherent(dev->of_node))
+> +               value |= ESDHC_DMA_SNOOP;
+> +       else
+> +               value &= ~ESDHC_DMA_SNOOP;
+> +
+>         sdhci_writel(host, value, ESDHC_DMA_SYSCTL);
+>         return 0;
+>  }
 > --
 > 2.7.4
 >
