@@ -2,276 +2,186 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80CBDBB1EC
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 Sep 2019 12:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25FBEBB2A3
+	for <lists+linux-mmc@lfdr.de>; Mon, 23 Sep 2019 13:10:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405390AbfIWKIR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 23 Sep 2019 06:08:17 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:39911 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405389AbfIWKIR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Sep 2019 06:08:17 -0400
-Received: by mail-wr1-f66.google.com with SMTP id r3so13233408wrj.6;
-        Mon, 23 Sep 2019 03:08:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=eGzE/JEJtt+rvm91KEZllp8C2a/sv8MDOECcgYTWrp4=;
-        b=qNVe5cllZXwIgGgc+Y49JzgZFlBGYqVrqy320/XyQvq4D0adVk/p3rfM6gn8QmIMhm
-         rVcfW7q1L8aWD4sGnyPqcuK4vdR3HGR1lR1dd4QwSHNUWoqh98sy7tuOW3vmRyKnO/MB
-         kubCtIQl7hsf7+7t2QQdDs5enciQ54XvdJLsc22RHhPfpPqGB6bgzUCMmQ8mce+dVi5B
-         DVHsPm3tNxA6ePwv9f565008d5CVENcU88Dng66L6sPchTuhAV0NU92DaICWWPz03ig2
-         ifSz9Q0mh6e/oiqcFuZfnm4H91fjQSXi/qUcUH5fRsEhUAw6TLbg5aVXvuNMmrBScGlT
-         kjQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=eGzE/JEJtt+rvm91KEZllp8C2a/sv8MDOECcgYTWrp4=;
-        b=ggKwuLSR0PJrZBMpPD4ybAdQ9Uoe8d0lZQE2vW/4akxG3St0jL5J4VmvKOVh5EZX8k
-         mARaeLYB1FucQiAAlldORmTQxTTxJaE+XjvZSE9PQ50XRf7TYqPyiHAOOSICox/Slkp1
-         +GCyhrbKm3ECsUpHT5R6OZB9WNv8PReDZAvW4rn9Cy2VQv3FjwU21J42b8P2wjcYSBBk
-         ELWZ9k04vtBl1qWtzsfIxR9dFNgHnbOAaCJTQzLhrnaQBhmNSKtluUlawLCsUizv0HEw
-         71D+GhIasDFvRPdJC5waDQfY3NqbIg0N57uQyyFcJvm0wmsBlERg//hV+vq/faNp0SSW
-         wp/Q==
-X-Gm-Message-State: APjAAAWQ/lxfERgOH7ivXNjlxfukj1gH+23SENSGN9OD4ul0OjDDwWWY
-        1LLG+gNtzXDKdkioG5z3fOQ=
-X-Google-Smtp-Source: APXvYqzAKeHpn5DdsVoIdn0Rnwpwx7oDjkyyi5edbCPKTyjYii+IQjWIzOl/pB4FprjKwdj4Myl3qQ==
-X-Received: by 2002:adf:f606:: with SMTP id t6mr20253689wrp.197.1569233294337;
-        Mon, 23 Sep 2019 03:08:14 -0700 (PDT)
-Received: from localhost (p2E5BE2CE.dip0.t-ipconnect.de. [46.91.226.206])
-        by smtp.gmail.com with ESMTPSA id y13sm13796985wrg.8.2019.09.23.03.08.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2019 03:08:13 -0700 (PDT)
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Jon Hunter <jonathanh@nvidia.com>,
+        id S2392809AbfIWLKi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 23 Sep 2019 07:10:38 -0400
+Received: from pandora.armlinux.org.uk ([78.32.30.218]:51250 "EHLO
+        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387395AbfIWLKi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Sep 2019 07:10:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=F6jj2JAZcKjgDi2qZal50WvLmuEupljKKCnH6rZaFpM=; b=YvtmfjYa+80mDuDhWaTGjep/k
+        Olt0597MJd1IYKFdyXkyZRENMT7B1FzHIoaWzi5dMrTTIgU15+rn+W/S4JJd8uQ/zFJMWFdFStsYs
+        OwAW8bZV5OIAEqy/bn2vJLN4e5vAJwe/kOcpJ+ryH4B0yCHwG3tzDGOlhV6BfcqpZEQLwkSo6R35b
+        p613OM/MrqtQCXYMBk9vwAFEKUYYcO+mKMvyrDmJ/Pff7VpzL4nyeND62JdGX2f5N2UHiUVqPdIdt
+        Io+KSnYvwrLT9PXz0Q4OYRA36tqbPaZ1ONEPXTq+VNGAzhEAN7brqP9CdJTLF6nWRo5qmqEQcjspA
+        DtqBjSnDA==;
+Received: from shell.armlinux.org.uk ([2002:4e20:1eda:1:5054:ff:fe00:4ec]:43080)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1iCMEY-0003zl-3t; Mon, 23 Sep 2019 12:10:22 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1iCMES-0000FU-Kz; Mon, 23 Sep 2019 12:10:16 +0100
+Date:   Mon, 23 Sep 2019 12:10:16 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     "Y.b. Lu" <yangbo.lu@nxp.com>
+Cc:     Robin Murphy <robin.murphy@arm.com>,
+        dann frazier <dann.frazier@canonical.com>,
+        Will Deacon <will.deacon@arm.com>,
         Nicolin Chen <nicoleotsuka@gmail.com>,
-        linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] mmc: tegra: Implement ->set_dma_mask()
-Date:   Mon, 23 Sep 2019 12:08:10 +0200
-Message-Id: <20190923100810.12698-2-thierry.reding@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190923100810.12698-1-thierry.reding@gmail.com>
-References: <20190923100810.12698-1-thierry.reding@gmail.com>
+        Christoph Hellwig <hch@lst.de>,
+        Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Subject: Re: [PATCH 2/3] mmc: sdhci-of-esdhc: set DMA snooping based on DMA
+ coherence
+Message-ID: <20190923111016.GC1344@shell.armlinux.org.uk>
+References: <20190922102341.GO25745@shell.armlinux.org.uk>
+ <E1iBz50-0008Mc-8K@rmk-PC.armlinux.org.uk>
+ <VI1PR0401MB223771C40FEC48E770088CBDF8850@VI1PR0401MB2237.eurprd04.prod.outlook.com>
+ <20190923084134.GT25745@shell.armlinux.org.uk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190923084134.GT25745@shell.armlinux.org.uk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Nicolin Chen <nicoleotsuka@gmail.com>
+On Mon, Sep 23, 2019 at 09:41:34AM +0100, Russell King - ARM Linux admin wrote:
+> On Mon, Sep 23, 2019 at 02:51:15AM +0000, Y.b. Lu wrote:
+> > Hi Russell,
+> > 
+> > > -----Original Message-----
+> > > From: Russell King <rmk@armlinux.org.uk> On Behalf Of Russell King
+> > > Sent: Sunday, September 22, 2019 6:27 PM
+> > > To: Robin Murphy <robin.murphy@arm.com>; dann frazier
+> > > <dann.frazier@canonical.com>; Will Deacon <will.deacon@arm.com>; Nicolin
+> > > Chen <nicoleotsuka@gmail.com>; Y.b. Lu <yangbo.lu@nxp.com>; Christoph
+> > > Hellwig <hch@lst.de>
+> > > Cc: Adrian Hunter <adrian.hunter@intel.com>; Ulf Hansson
+> > > <ulf.hansson@linaro.org>; linux-mmc@vger.kernel.org
+> > > Subject: [PATCH 2/3] mmc: sdhci-of-esdhc: set DMA snooping based on DMA
+> > > coherence
+> > > 
+> > > We must not unconditionally set the DMA snoop bit; if the DMA API is
+> > > assuming that the device is not DMA coherent, and the device snoops the CPU
+> > > caches, the device can see stale cache lines brought in by speculative prefetch.
+> > > 
+> > > This leads to the device seeing stale data, potentially resulting in corrupted
+> > > data transfers.  Commonly, this results in a descriptor fetch error such as:
+> > > 
+> > > mmc0: ADMA error
+> > > mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+> > > mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00002202
+> > > mmc0: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000001
+> > > mmc0: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+> > > mmc0: sdhci: Present:   0x01f50008 | Host ctl: 0x00000038
+> > > mmc0: sdhci: Power:     0x00000003 | Blk gap:  0x00000000
+> > > mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x000040d8
+> > > mmc0: sdhci: Timeout:   0x00000003 | Int stat: 0x00000001
+> > > mmc0: sdhci: Int enab:  0x037f108f | Sig enab: 0x037f108b
+> > > mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00002202
+> > > mmc0: sdhci: Caps:      0x35fa0000 | Caps_1:   0x0000af00
+> > > mmc0: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
+> > > mmc0: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x001d8a33
+> > > mmc0: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x3f400e00
+> > > mmc0: sdhci: Host ctl2: 0x00000000
+> > > mmc0: sdhci: ADMA Err:  0x00000009 | ADMA Ptr: 0x000000236d43820c
+> > > mmc0: sdhci: ============================================
+> > > mmc0: error -5 whilst initialising SD card
+> > > 
+> > > but can lead to other errors, and potentially direct the SDHCI controller to
+> > > read/write data to other memory locations (e.g. if a valid descriptor is visible
+> > > to the device in a stale cache line.)
+> > > 
+> > > Fix this by ensuring that the DMA snoop bit corresponds with the behaviour of
+> > > the DMA API.  Since the driver currently only supports DT, use
+> > > of_dma_is_coherent().  Note that device_get_dma_attr() can not be used as
+> > > that risks re-introducing this bug if/when the driver is converted to ACPI.
+> > 
+> > [Y.b. Lu] May I have your suggestion how to check this condition with ACPI?
+> > Although we didn’t support APCI on upstream for this driver now, as I know we had already had ACPI used internally and would be upstreamed.
+> > Thanks.
+> 
+> The short answer is, I don't believe there is an equivalent for ACPI.
+> However, it's a question for ACPI people, not me, as I have little
+> knowedge about ACPI.
+> 
+> From what I've looked at so far, for ACPI, the decision used for
+> dev->dma_coherent() / dev_is_dma_coherent() (which controls the DMA
+> API behaviour) is not available - this is a decision by the SMMU code.
+> 
+> See:
+> 	drivers/acpi/arm64/iort.c:arm_smmu_dma_configure()
+> 	drivers/acpi/scan.c:acpi_dma_configure()
+> 	arch/arm64/mm/dma-mapping.c:arch_setup_dma_ops()
+> 
+> The decision is made whether the SMMU is in coherent walk mode.
+> 
+> The proposed interface to use is device_get_dma_attr().  For OF,
+> this works as expected - it mirrors of_dma_is_coherent().  However,
+> for ACPI it does not - under ACPI, it uses acpi_get_dma_attr().
+> 
+> See:
+> 	drivers/acpi/scan.c:acpi_get_dma_attr()
+> 
+> This can return one of three states.  Let's concentrate on the
+> coherent/non-coherent states.  This depends on
+> adev->flags.coherent_dma.  This gets set by acpi_init_coherency(),
+> which looks up the _CCA property in the device handle.
+> 
+> It looks to me like it is entirely possible for ACPI to say that, for
+> example, the SMMU is coherent, which will cause dev->dma_coherent to
+> be set, but the device (and it's parents) not to have _CCA indicating
+> that the device is coherent.
+> 
+> It seems that the only way this could be guaranteed is if the ESDHC
+> was a child of the SMMU - but I don't know whether that is the case
+> or not.  If it isn't, using device_get_dma_attr() will result in a
+> coherency disagreement between the DMA API and the device, which
+> will lead to ADMA errors and potential data corruption.
+> 
+> There may be some subtle reason this can't happen, but from merely
+> looking at the code, I'd say using device_get_dma_attr() here would
+> be dangerous.
 
-The SDHCI controller on Tegra186 supports 40-bit addressing, which is
-usually enough to address all of system memory. However, if the SDHCI
-controller is behind an IOMMU, the address space can go beyond. This
-happens on Tegra186 and later where the ARM SMMU has an input address
-space of 48 bits. If the DMA API is backed by this ARM SMMU, the top-
-down IOVA allocator will cause IOV addresses to be returned that the
-SDHCI controller cannot access.
+The best I can come up with is something like:
 
-Unfortunately, prior to the introduction of the ->set_dma_mask() host
-operation, the SDHCI core would set either a 64-bit DMA mask if the
-controller claimed to support 64-bit addressing, or a 32-bit DMA mask
-otherwise.
+	enum dev_dma_attr attr, expected;
 
-Since the full 64 bits cannot be addressed on Tegra, this had to be
-worked around in commit 68481a7e1c84 ("mmc: tegra: Mark 64 bit dma
-broken on Tegra186") by setting the SDHCI_QUIRK2_BROKEN_64_BIT_DMA
-quirk, which effectively restricts the DMA mask to 32 bits.
+	attr = device_get_dma_attr(dev);
+	expected = dev_is_dma_coherent(dev) ? DEV_DMA_COHERENT :
+			DEV_DMA_NON_COHERENT;
 
-One disadvantage of this is that dma_map_*() APIs will now try to use
-the swiotlb to bounce DMA to addresses beyond of the controller's DMA
-mask. This in turn caused degraded performance and can lead to
-situations where the swiotlb buffer is exhausted, which in turn leads
-to DMA transfers to fail.
+	WARN_ON(attr != expected);
 
-With the recent introduction of the ->set_dma_mask() host operation,
-this can now be properly fixed. For each generation of Tegra, the exact
-supported DMA mask can be configured. This kills two birds with one
-stone: it avoids the use of bounce buffers because system memory never
-exceeds the addressable memory range of the SDHCI controllers on these
-devices, and at the same time when an IOMMU is involved, it prevents
-IOV addresses from being allocated beyond the addressible range of the
-controllers.
+Maybe even aborting the probe if they don't agree.  However, it seems
+dev_is_dma_coherent() is an IOMMU/DMA API implementation detail that
+only IOMMU drivers and arch code are supposed to use.
 
-Since the DMA mask is now properly handled, the 64-bit DMA quirk can be
-removed.
+What I'm hearing at the moment from Jon Nettleton is that the NXP ACPI
+description does not include an IORT table and doesn't mention the
+SMMU.  If I'm reading the code correctly, that means the Linux DMA API
+will assume all devices are DMA non-coherent - and if we use
+device_get_dma_attr() for this, and the ACPI device description has
+_CCA=1, we'll end up with potentially data corrupting mismatched DMA
+coherency expectations.
 
-Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
-[treding@nvidia.com: provide more background in commit message]
-Tested-by: Nicolin Chen <nicoleotsuka@gmail.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
----
-Changes in v2:
-- add Tested-by from Nicolin, Acked-by from Adrian
-
- drivers/mmc/host/sdhci-tegra.c | 48 ++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index 02d8f524bb9e..7bc950520fd9 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -4,6 +4,7 @@
-  */
- 
- #include <linux/delay.h>
-+#include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -104,6 +105,7 @@
- 
- struct sdhci_tegra_soc_data {
- 	const struct sdhci_pltfm_data *pdata;
-+	u64 dma_mask;
- 	u32 nvquirks;
- 	u8 min_tap_delay;
- 	u8 max_tap_delay;
-@@ -1233,11 +1235,25 @@ static const struct cqhci_host_ops sdhci_tegra_cqhci_ops = {
- 	.update_dcmd_desc = sdhci_tegra_update_dcmd_desc,
- };
- 
-+static int tegra_sdhci_set_dma_mask(struct sdhci_host *host)
-+{
-+	struct sdhci_pltfm_host *platform = sdhci_priv(host);
-+	struct sdhci_tegra *tegra = sdhci_pltfm_priv(platform);
-+	const struct sdhci_tegra_soc_data *soc = tegra->soc_data;
-+	struct device *dev = mmc_dev(host->mmc);
-+
-+	if (soc->dma_mask)
-+		return dma_set_mask_and_coherent(dev, soc->dma_mask);
-+
-+	return 0;
-+}
-+
- static const struct sdhci_ops tegra_sdhci_ops = {
- 	.get_ro     = tegra_sdhci_get_ro,
- 	.read_w     = tegra_sdhci_readw,
- 	.write_l    = tegra_sdhci_writel,
- 	.set_clock  = tegra_sdhci_set_clock,
-+	.set_dma_mask = tegra_sdhci_set_dma_mask,
- 	.set_bus_width = sdhci_set_bus_width,
- 	.reset      = tegra_sdhci_reset,
- 	.platform_execute_tuning = tegra_sdhci_execute_tuning,
-@@ -1257,6 +1273,7 @@ static const struct sdhci_pltfm_data sdhci_tegra20_pdata = {
- 
- static const struct sdhci_tegra_soc_data soc_data_tegra20 = {
- 	.pdata = &sdhci_tegra20_pdata,
-+	.dma_mask = DMA_BIT_MASK(32),
- 	.nvquirks = NVQUIRK_FORCE_SDHCI_SPEC_200 |
- 		    NVQUIRK_ENABLE_BLOCK_GAP_DET,
- };
-@@ -1283,6 +1300,7 @@ static const struct sdhci_pltfm_data sdhci_tegra30_pdata = {
- 
- static const struct sdhci_tegra_soc_data soc_data_tegra30 = {
- 	.pdata = &sdhci_tegra30_pdata,
-+	.dma_mask = DMA_BIT_MASK(32),
- 	.nvquirks = NVQUIRK_ENABLE_SDHCI_SPEC_300 |
- 		    NVQUIRK_ENABLE_SDR50 |
- 		    NVQUIRK_ENABLE_SDR104 |
-@@ -1295,6 +1313,7 @@ static const struct sdhci_ops tegra114_sdhci_ops = {
- 	.write_w    = tegra_sdhci_writew,
- 	.write_l    = tegra_sdhci_writel,
- 	.set_clock  = tegra_sdhci_set_clock,
-+	.set_dma_mask = tegra_sdhci_set_dma_mask,
- 	.set_bus_width = sdhci_set_bus_width,
- 	.reset      = tegra_sdhci_reset,
- 	.platform_execute_tuning = tegra_sdhci_execute_tuning,
-@@ -1316,6 +1335,7 @@ static const struct sdhci_pltfm_data sdhci_tegra114_pdata = {
- 
- static const struct sdhci_tegra_soc_data soc_data_tegra114 = {
- 	.pdata = &sdhci_tegra114_pdata,
-+	.dma_mask = DMA_BIT_MASK(32),
- };
- 
- static const struct sdhci_pltfm_data sdhci_tegra124_pdata = {
-@@ -1325,22 +1345,13 @@ static const struct sdhci_pltfm_data sdhci_tegra124_pdata = {
- 		  SDHCI_QUIRK_NO_HISPD_BIT |
- 		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
- 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
--		   /*
--		    * The TRM states that the SD/MMC controller found on
--		    * Tegra124 can address 34 bits (the maximum supported by
--		    * the Tegra memory controller), but tests show that DMA
--		    * to or from above 4 GiB doesn't work. This is possibly
--		    * caused by missing programming, though it's not obvious
--		    * what sequence is required. Mark 64-bit DMA broken for
--		    * now to fix this for existing users (e.g. Nyan boards).
--		    */
--		   SDHCI_QUIRK2_BROKEN_64_BIT_DMA,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
- 	.ops  = &tegra114_sdhci_ops,
- };
- 
- static const struct sdhci_tegra_soc_data soc_data_tegra124 = {
- 	.pdata = &sdhci_tegra124_pdata,
-+	.dma_mask = DMA_BIT_MASK(34),
- };
- 
- static const struct sdhci_ops tegra210_sdhci_ops = {
-@@ -1349,6 +1360,7 @@ static const struct sdhci_ops tegra210_sdhci_ops = {
- 	.write_w    = tegra210_sdhci_writew,
- 	.write_l    = tegra_sdhci_writel,
- 	.set_clock  = tegra_sdhci_set_clock,
-+	.set_dma_mask = tegra_sdhci_set_dma_mask,
- 	.set_bus_width = sdhci_set_bus_width,
- 	.reset      = tegra_sdhci_reset,
- 	.set_uhs_signaling = tegra_sdhci_set_uhs_signaling,
-@@ -1369,6 +1381,7 @@ static const struct sdhci_pltfm_data sdhci_tegra210_pdata = {
- 
- static const struct sdhci_tegra_soc_data soc_data_tegra210 = {
- 	.pdata = &sdhci_tegra210_pdata,
-+	.dma_mask = DMA_BIT_MASK(34),
- 	.nvquirks = NVQUIRK_NEEDS_PAD_CONTROL |
- 		    NVQUIRK_HAS_PADCALIB |
- 		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
-@@ -1383,6 +1396,7 @@ static const struct sdhci_ops tegra186_sdhci_ops = {
- 	.read_w     = tegra_sdhci_readw,
- 	.write_l    = tegra_sdhci_writel,
- 	.set_clock  = tegra_sdhci_set_clock,
-+	.set_dma_mask = tegra_sdhci_set_dma_mask,
- 	.set_bus_width = sdhci_set_bus_width,
- 	.reset      = tegra_sdhci_reset,
- 	.set_uhs_signaling = tegra_sdhci_set_uhs_signaling,
-@@ -1398,20 +1412,13 @@ static const struct sdhci_pltfm_data sdhci_tegra186_pdata = {
- 		  SDHCI_QUIRK_NO_HISPD_BIT |
- 		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
- 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
--		   /* SDHCI controllers on Tegra186 support 40-bit addressing.
--		    * IOVA addresses are 48-bit wide on Tegra186.
--		    * With 64-bit dma mask used for SDHCI, accesses can
--		    * be broken. Disable 64-bit dma, which would fall back
--		    * to 32-bit dma mask. Ideally 40-bit dma mask would work,
--		    * But it is not supported as of now.
--		    */
--		   SDHCI_QUIRK2_BROKEN_64_BIT_DMA,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
- 	.ops  = &tegra186_sdhci_ops,
- };
- 
- static const struct sdhci_tegra_soc_data soc_data_tegra186 = {
- 	.pdata = &sdhci_tegra186_pdata,
-+	.dma_mask = DMA_BIT_MASK(40),
- 	.nvquirks = NVQUIRK_NEEDS_PAD_CONTROL |
- 		    NVQUIRK_HAS_PADCALIB |
- 		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
-@@ -1424,6 +1431,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra186 = {
- 
- static const struct sdhci_tegra_soc_data soc_data_tegra194 = {
- 	.pdata = &sdhci_tegra186_pdata,
-+	.dma_mask = DMA_BIT_MASK(39),
- 	.nvquirks = NVQUIRK_NEEDS_PAD_CONTROL |
- 		    NVQUIRK_HAS_PADCALIB |
- 		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
 -- 
-2.23.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
+According to speedtest.net: 11.9Mbps down 500kbps up
