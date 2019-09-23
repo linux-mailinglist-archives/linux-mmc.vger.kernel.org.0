@@ -2,119 +2,258 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70B5BBACE2
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 Sep 2019 05:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F1DDBADF5
+	for <lists+linux-mmc@lfdr.de>; Mon, 23 Sep 2019 08:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406015AbfIWDeg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 22 Sep 2019 23:34:36 -0400
-Received: from mail-eopbgr140080.outbound.protection.outlook.com ([40.107.14.80]:49496
-        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2404054AbfIWDeg (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 22 Sep 2019 23:34:36 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Dk5SxNBZ4W/8PgS92LX3o2OFUs4Qj/i/KSaTtykbbtW+2XDjGrHfrCJorVmiSIxswvZWNjTv4FAjEYNF9m287ZlH+BOHtEvwViAqwx/3pNaW1plzvHChmOt0JmqsgPSu4ztZcICTrFJvzmb7p3M6ihsbKxXe6F18hDxENk4+vmK8G8UFgzQA32YOkkGDKre9ZMdKInVr529qxzisJUwNdqxe7t9tyTbWIVTePvTZ5EQqHdhEN7219UKGZlTiCQa/59ddBD7eg95K2fWa/6eGPT5Lh83uXenJc1AmcVxzsv3oJrXWu/rmawu75jOltdkkHVxJ+ORxmgYUEwZRXBhw4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cxOUI9x4EiYJa5P4flD+vKUnXLAQaatq71HgXzMTI50=;
- b=ArY+s8ZlfoCRFqlVle4sxb2EdirTxIzq9O4Ctlu3b8OUNfq0tHfLbenprPtlZcuzHplt5UkSEpPpti4KnYnC04/5M4lB0RDbZL/Eq6bTFYhIw4ejXHCh/rxGmMU4V7pBj3jh/33845BlL+I91IcLPmXd4Ir953WEEHvEhd6v1+b2q7+L3ai/aOy0gZKMwFluUD0DBQUDgxk/AXIbz4YCD8PEEqHowEjj/BzUxjmHEqsVUpKxWFXGiOHximjhae5e+5MVd/GDrvS7teQAQapSOLhQxFvzfh+o2O/lafDe0QQsSpxcp8KVo1ROdEU012JTLtzpXCnWHcgQ3zIjJbYWIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cxOUI9x4EiYJa5P4flD+vKUnXLAQaatq71HgXzMTI50=;
- b=sihuUYAww0k5AcBofODBZUsfYo4Im9A+pzx1GZtBbGUdiYMWSYdYw1LYU973hu8cRdfXhXP84GFVKrcVjqOdjou42EI+M83cjATZWeo63zobOXDij4ktIEzjfL8Cq/uZrOCd6UpqRfkS639vj77Ktjo/0jv4/haGo2DST2tiih0=
-Received: from VI1PR0401MB2237.eurprd04.prod.outlook.com (10.169.132.138) by
- VI1PR0401MB2638.eurprd04.prod.outlook.com (10.168.65.7) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2284.20; Mon, 23 Sep 2019 03:34:32 +0000
-Received: from VI1PR0401MB2237.eurprd04.prod.outlook.com
- ([fe80::40fb:b35c:722a:101f]) by VI1PR0401MB2237.eurprd04.prod.outlook.com
- ([fe80::40fb:b35c:722a:101f%10]) with mapi id 15.20.2284.023; Mon, 23 Sep
- 2019 03:34:32 +0000
-From:   "Y.b. Lu" <yangbo.lu@nxp.com>
-To:     "Y.b. Lu" <yangbo.lu@nxp.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Subject: RE: [PATCH 0/3] mmc: sdhci-of-esdhc: fix up erratum A-008171
- workaround
-Thread-Topic: [PATCH 0/3] mmc: sdhci-of-esdhc: fix up erratum A-008171
- workaround
-Thread-Index: AQHVbRKr9nYXX9/R10K1bDu08bs63Kc4pVvA
-Date:   Mon, 23 Sep 2019 03:34:32 +0000
-Message-ID: <VI1PR0401MB22374C1326E5964E76913F79F8850@VI1PR0401MB2237.eurprd04.prod.outlook.com>
-References: <20190917044631.3161-1-yangbo.lu@nxp.com>
-In-Reply-To: <20190917044631.3161-1-yangbo.lu@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yangbo.lu@nxp.com; 
-x-originating-ip: [92.121.36.197]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6cec871e-d3b4-4d36-3af6-08d73fd6f2b7
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:VI1PR0401MB2638;
-x-ms-traffictypediagnostic: VI1PR0401MB2638:|VI1PR0401MB2638:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR0401MB263860861CAB8929EE48276FF8850@VI1PR0401MB2638.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 0169092318
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(376002)(346002)(366004)(136003)(396003)(13464003)(189003)(199004)(305945005)(7736002)(2906002)(52536014)(76116006)(66476007)(229853002)(64756008)(3846002)(6116002)(86362001)(4744005)(66446008)(33656002)(14454004)(256004)(25786009)(5660300002)(66946007)(110136005)(478600001)(66556008)(66066001)(446003)(476003)(316002)(11346002)(71190400001)(55016002)(8936002)(99286004)(71200400001)(486006)(9686003)(6246003)(2501003)(53546011)(6506007)(81156014)(81166006)(186003)(7696005)(26005)(6436002)(74316002)(76176011)(102836004)(8676002);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR0401MB2638;H:VI1PR0401MB2237.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: UJSmmwu0+MVwKAUrdIDPGAnVgeOEW0qXvkbmlYlyPe2HThC10A6oRd7P0TfvIcFO4r+TFj1crtifgl6p8bTxypifDvemXCOL/ouSStXiLeIFpSsJVsRR7WcFSVNWiGgOv81vxbQCyyEPt2Wka3dfKbvZMSEGb1+XoshDpG5R/q/aa94twtH04Sj6wFRn7eLGcVvt3kvMn2VyBXqorOMvJSB/zwXy/BukzPiHtLxG7PAMvQi2ji7knbQHYJ5QmkBCFNboCehk/Mfr0oVAR1E4Q/p7r42TpFp9fD4xDfxVYDVWQ2E5ZZAlaAQwkjWSgova4EnCDIlDNUbvfLNPvzgd5SL9JBKOBZKXU55+iJlE1bZM6/pYIr+Lq2QNdxHWTAma6HoDKvE7kwiRaYqz1yK/7a5Hx0mOk19WLfK8YuskLuA=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S2404653AbfIWGmj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 23 Sep 2019 02:42:39 -0400
+Received: from mga17.intel.com ([192.55.52.151]:16827 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404528AbfIWGmi (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 23 Sep 2019 02:42:38 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Sep 2019 23:42:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,539,1559545200"; 
+   d="scan'208";a="200435180"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.66]) ([10.237.72.66])
+  by orsmga002.jf.intel.com with ESMTP; 22 Sep 2019 23:42:36 -0700
+Subject: Re: [PATCH 2/2] mmc: tegra: Implement ->set_dma_mask()
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Jon Hunter <jonathanh@nvidia.com>,
+        Nicolin Chen <nicoleotsuka@gmail.com>,
+        linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20190920145317.11972-1-thierry.reding@gmail.com>
+ <20190920145317.11972-3-thierry.reding@gmail.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <3532e035-d1b2-265d-1a02-37f10142eb38@intel.com>
+Date:   Mon, 23 Sep 2019 09:41:20 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6cec871e-d3b4-4d36-3af6-08d73fd6f2b7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2019 03:34:32.2990
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: d9mh7sZ+BNdNuh1FyU55eZqcLlbJdWSWmH3U7mwOyDSD0LZxyS0oPBuMyqqK4vLGkoegpAknH40e8teu4KCakQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2638
+In-Reply-To: <20190920145317.11972-3-thierry.reding@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Any comments?
-Thanks :)
+On 20/09/19 5:53 PM, Thierry Reding wrote:
+> From: Nicolin Chen <nicoleotsuka@gmail.com>
+> 
+> The SDHCI controller on Tegra186 supports 40-bit addressing, which is
+> usually enough to address all of system memory. However, if the SDHCI
+> controller is behind an IOMMU, the address space can go beyond. This
+> happens on Tegra186 and later where the ARM SMMU has an input address
+> space of 48 bits. If the DMA API is backed by this ARM SMMU, the top-
+> down IOVA allocator will cause IOV addresses to be returned that the
+> SDHCI controller cannot access.
+> 
+> Unfortunately, prior to the introduction of the ->set_dma_mask() host
+> operation, the SDHCI core would set either a 64-bit DMA mask if the
+> controller claimed to support 64-bit addressing, or a 32-bit DMA mask
+> otherwise.
+> 
+> Since the full 64 bits cannot be addressed on Tegra, this had to be
+> worked around in commit 68481a7e1c84 ("mmc: tegra: Mark 64 bit dma
+> broken on Tegra186") by setting the SDHCI_QUIRK2_BROKEN_64_BIT_DMA
+> quirk, which effectively restricts the DMA mask to 32 bits.
+> 
+> One disadvantage of this is that dma_map_*() APIs will now try to use
+> the swiotlb to bounce DMA to addresses beyond of the controller's DMA
+> mask. This in turn caused degraded performance and can lead to
+> situations where the swiotlb buffer is exhausted, which in turn leads
+> to DMA transfers to fail.
+> 
+> With the recent introduction of the ->set_dma_mask() host operation,
+> this can now be properly fixed. For each generation of Tegra, the exact
+> supported DMA mask can be configured. This kills two birds with one
+> stone: it avoids the use of bounce buffers because system memory never
+> exceeds the addressable memory range of the SDHCI controllers on these
+> devices, and at the same time when an IOMMU is involved, it prevents
+> IOV addresses from being allocated beyond the addressible range of the
+> controllers.
+> 
+> Since the DMA mask is now properly handled, the 64-bit DMA quirk can be
+> removed.
+> 
+> Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
+> [treding@nvidia.com: provide more background in commit message]
+> Signed-off-by: Thierry Reding <treding@nvidia.com>
 
-> -----Original Message-----
-> From: Yangbo Lu <yangbo.lu@nxp.com>
-> Sent: Tuesday, September 17, 2019 12:46 PM
-> To: linux-mmc@vger.kernel.org; Ulf Hansson <ulf.hansson@linaro.org>; Adri=
-an
-> Hunter <adrian.hunter@intel.com>
-> Cc: Y.b. Lu <yangbo.lu@nxp.com>
-> Subject: [PATCH 0/3] mmc: sdhci-of-esdhc: fix up erratum A-008171
-> workaround
->=20
-> This patch-set is to fix up erratum A-008171 workaround. It had been veri=
-fied
-> on LS1046A eSDHC + Phison 32G eMMC which could trigger the erratum.
->=20
-> Yangbo Lu (3):
->   mmc: sdhci: introduce start_tuning() hook
->   mmc: sdhci-of-esdhc: poll ESDHC_FLUSH_ASYNC_FIFO bit until completion
->   mmc: sdhci-of-esdhc: fix up erratum A-008171 workaround
->=20
->  drivers/mmc/host/sdhci-esdhc.h    |   9 ++
->  drivers/mmc/host/sdhci-of-esdhc.c | 248
-> +++++++++++++++++++++++++++++++++-----
->  drivers/mmc/host/sdhci.c          |   5 +-
->  drivers/mmc/host/sdhci.h          |   1 +
->  4 files changed, 229 insertions(+), 34 deletions(-)
->=20
-> --
-> 2.7.4
+And again with inux->mmc -> linux-mmc
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
+> ---
+>  drivers/mmc/host/sdhci-tegra.c | 48 ++++++++++++++++++++--------------
+>  1 file changed, 28 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+> index 02d8f524bb9e..7bc950520fd9 100644
+> --- a/drivers/mmc/host/sdhci-tegra.c
+> +++ b/drivers/mmc/host/sdhci-tegra.c
+> @@ -4,6 +4,7 @@
+>   */
+>  
+>  #include <linux/delay.h>
+> +#include <linux/dma-mapping.h>
+>  #include <linux/err.h>
+>  #include <linux/module.h>
+>  #include <linux/init.h>
+> @@ -104,6 +105,7 @@
+>  
+>  struct sdhci_tegra_soc_data {
+>  	const struct sdhci_pltfm_data *pdata;
+> +	u64 dma_mask;
+>  	u32 nvquirks;
+>  	u8 min_tap_delay;
+>  	u8 max_tap_delay;
+> @@ -1233,11 +1235,25 @@ static const struct cqhci_host_ops sdhci_tegra_cqhci_ops = {
+>  	.update_dcmd_desc = sdhci_tegra_update_dcmd_desc,
+>  };
+>  
+> +static int tegra_sdhci_set_dma_mask(struct sdhci_host *host)
+> +{
+> +	struct sdhci_pltfm_host *platform = sdhci_priv(host);
+> +	struct sdhci_tegra *tegra = sdhci_pltfm_priv(platform);
+> +	const struct sdhci_tegra_soc_data *soc = tegra->soc_data;
+> +	struct device *dev = mmc_dev(host->mmc);
+> +
+> +	if (soc->dma_mask)
+> +		return dma_set_mask_and_coherent(dev, soc->dma_mask);
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct sdhci_ops tegra_sdhci_ops = {
+>  	.get_ro     = tegra_sdhci_get_ro,
+>  	.read_w     = tegra_sdhci_readw,
+>  	.write_l    = tegra_sdhci_writel,
+>  	.set_clock  = tegra_sdhci_set_clock,
+> +	.set_dma_mask = tegra_sdhci_set_dma_mask,
+>  	.set_bus_width = sdhci_set_bus_width,
+>  	.reset      = tegra_sdhci_reset,
+>  	.platform_execute_tuning = tegra_sdhci_execute_tuning,
+> @@ -1257,6 +1273,7 @@ static const struct sdhci_pltfm_data sdhci_tegra20_pdata = {
+>  
+>  static const struct sdhci_tegra_soc_data soc_data_tegra20 = {
+>  	.pdata = &sdhci_tegra20_pdata,
+> +	.dma_mask = DMA_BIT_MASK(32),
+>  	.nvquirks = NVQUIRK_FORCE_SDHCI_SPEC_200 |
+>  		    NVQUIRK_ENABLE_BLOCK_GAP_DET,
+>  };
+> @@ -1283,6 +1300,7 @@ static const struct sdhci_pltfm_data sdhci_tegra30_pdata = {
+>  
+>  static const struct sdhci_tegra_soc_data soc_data_tegra30 = {
+>  	.pdata = &sdhci_tegra30_pdata,
+> +	.dma_mask = DMA_BIT_MASK(32),
+>  	.nvquirks = NVQUIRK_ENABLE_SDHCI_SPEC_300 |
+>  		    NVQUIRK_ENABLE_SDR50 |
+>  		    NVQUIRK_ENABLE_SDR104 |
+> @@ -1295,6 +1313,7 @@ static const struct sdhci_ops tegra114_sdhci_ops = {
+>  	.write_w    = tegra_sdhci_writew,
+>  	.write_l    = tegra_sdhci_writel,
+>  	.set_clock  = tegra_sdhci_set_clock,
+> +	.set_dma_mask = tegra_sdhci_set_dma_mask,
+>  	.set_bus_width = sdhci_set_bus_width,
+>  	.reset      = tegra_sdhci_reset,
+>  	.platform_execute_tuning = tegra_sdhci_execute_tuning,
+> @@ -1316,6 +1335,7 @@ static const struct sdhci_pltfm_data sdhci_tegra114_pdata = {
+>  
+>  static const struct sdhci_tegra_soc_data soc_data_tegra114 = {
+>  	.pdata = &sdhci_tegra114_pdata,
+> +	.dma_mask = DMA_BIT_MASK(32),
+>  };
+>  
+>  static const struct sdhci_pltfm_data sdhci_tegra124_pdata = {
+> @@ -1325,22 +1345,13 @@ static const struct sdhci_pltfm_data sdhci_tegra124_pdata = {
+>  		  SDHCI_QUIRK_NO_HISPD_BIT |
+>  		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
+>  		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
+> -	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
+> -		   /*
+> -		    * The TRM states that the SD/MMC controller found on
+> -		    * Tegra124 can address 34 bits (the maximum supported by
+> -		    * the Tegra memory controller), but tests show that DMA
+> -		    * to or from above 4 GiB doesn't work. This is possibly
+> -		    * caused by missing programming, though it's not obvious
+> -		    * what sequence is required. Mark 64-bit DMA broken for
+> -		    * now to fix this for existing users (e.g. Nyan boards).
+> -		    */
+> -		   SDHCI_QUIRK2_BROKEN_64_BIT_DMA,
+> +	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+>  	.ops  = &tegra114_sdhci_ops,
+>  };
+>  
+>  static const struct sdhci_tegra_soc_data soc_data_tegra124 = {
+>  	.pdata = &sdhci_tegra124_pdata,
+> +	.dma_mask = DMA_BIT_MASK(34),
+>  };
+>  
+>  static const struct sdhci_ops tegra210_sdhci_ops = {
+> @@ -1349,6 +1360,7 @@ static const struct sdhci_ops tegra210_sdhci_ops = {
+>  	.write_w    = tegra210_sdhci_writew,
+>  	.write_l    = tegra_sdhci_writel,
+>  	.set_clock  = tegra_sdhci_set_clock,
+> +	.set_dma_mask = tegra_sdhci_set_dma_mask,
+>  	.set_bus_width = sdhci_set_bus_width,
+>  	.reset      = tegra_sdhci_reset,
+>  	.set_uhs_signaling = tegra_sdhci_set_uhs_signaling,
+> @@ -1369,6 +1381,7 @@ static const struct sdhci_pltfm_data sdhci_tegra210_pdata = {
+>  
+>  static const struct sdhci_tegra_soc_data soc_data_tegra210 = {
+>  	.pdata = &sdhci_tegra210_pdata,
+> +	.dma_mask = DMA_BIT_MASK(34),
+>  	.nvquirks = NVQUIRK_NEEDS_PAD_CONTROL |
+>  		    NVQUIRK_HAS_PADCALIB |
+>  		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
+> @@ -1383,6 +1396,7 @@ static const struct sdhci_ops tegra186_sdhci_ops = {
+>  	.read_w     = tegra_sdhci_readw,
+>  	.write_l    = tegra_sdhci_writel,
+>  	.set_clock  = tegra_sdhci_set_clock,
+> +	.set_dma_mask = tegra_sdhci_set_dma_mask,
+>  	.set_bus_width = sdhci_set_bus_width,
+>  	.reset      = tegra_sdhci_reset,
+>  	.set_uhs_signaling = tegra_sdhci_set_uhs_signaling,
+> @@ -1398,20 +1412,13 @@ static const struct sdhci_pltfm_data sdhci_tegra186_pdata = {
+>  		  SDHCI_QUIRK_NO_HISPD_BIT |
+>  		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
+>  		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
+> -	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
+> -		   /* SDHCI controllers on Tegra186 support 40-bit addressing.
+> -		    * IOVA addresses are 48-bit wide on Tegra186.
+> -		    * With 64-bit dma mask used for SDHCI, accesses can
+> -		    * be broken. Disable 64-bit dma, which would fall back
+> -		    * to 32-bit dma mask. Ideally 40-bit dma mask would work,
+> -		    * But it is not supported as of now.
+> -		    */
+> -		   SDHCI_QUIRK2_BROKEN_64_BIT_DMA,
+> +	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+>  	.ops  = &tegra186_sdhci_ops,
+>  };
+>  
+>  static const struct sdhci_tegra_soc_data soc_data_tegra186 = {
+>  	.pdata = &sdhci_tegra186_pdata,
+> +	.dma_mask = DMA_BIT_MASK(40),
+>  	.nvquirks = NVQUIRK_NEEDS_PAD_CONTROL |
+>  		    NVQUIRK_HAS_PADCALIB |
+>  		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
+> @@ -1424,6 +1431,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra186 = {
+>  
+>  static const struct sdhci_tegra_soc_data soc_data_tegra194 = {
+>  	.pdata = &sdhci_tegra186_pdata,
+> +	.dma_mask = DMA_BIT_MASK(39),
+>  	.nvquirks = NVQUIRK_NEEDS_PAD_CONTROL |
+>  		    NVQUIRK_HAS_PADCALIB |
+>  		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
+> 
 
