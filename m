@@ -2,149 +2,101 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52FC8BDD4F
-	for <lists+linux-mmc@lfdr.de>; Wed, 25 Sep 2019 13:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FDD2BE5FD
+	for <lists+linux-mmc@lfdr.de>; Wed, 25 Sep 2019 22:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730025AbfIYLmh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 25 Sep 2019 07:42:37 -0400
-Received: from imap1.codethink.co.uk ([176.9.8.82]:47052 "EHLO
-        imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404639AbfIYLmh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 Sep 2019 07:42:37 -0400
-Received: from [167.98.27.226] (helo=rainbowdash.codethink.co.uk)
-        by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
-        id 1iD5gn-00058b-2H; Wed, 25 Sep 2019 12:42:33 +0100
-Received: from ben by rainbowdash.codethink.co.uk with local (Exim 4.92.2)
-        (envelope-from <ben@rainbowdash.codethink.co.uk>)
-        id 1iD5gm-0004bH-Jd; Wed, 25 Sep 2019 12:42:32 +0100
-From:   Ben Dooks <ben.dooks@codethink.co.uk>
-To:     linux-mmc@vger.kernel.org
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ludovic Barre <ludovic.barre@st.com>,
-        Ben Dooks <ben.dooks@codethink.co.uk>
-Subject: [PATCH] mmc: mmci: make unexported functions static
-Date:   Wed, 25 Sep 2019 12:42:31 +0100
-Message-Id: <20190925114231.17640-1-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.23.0
+        id S1728074AbfIYUB3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 25 Sep 2019 16:01:29 -0400
+Received: from mail-lj1-f179.google.com ([209.85.208.179]:44417 "EHLO
+        mail-lj1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726731AbfIYUB2 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 Sep 2019 16:01:28 -0400
+Received: by mail-lj1-f179.google.com with SMTP id m13so6969390ljj.11
+        for <linux-mmc@vger.kernel.org>; Wed, 25 Sep 2019 13:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=s5wwxTyTDa55aQZtv0+ZgEX7xgGF5fBsXI69BKYf71A=;
+        b=aixefv/ISzcW+I2UhnTkIIiLgiqqD0I/W2+S+W3lUWD7RUd1ycjbbkpDT9ctzghJF4
+         DQxSJqAYa067E8rGQQwqyIA8pMI0s36/VLmIWVuWxyX1kmvWRpSywINqdQWKAW047G3h
+         z4CGv00I84j/pWZKKfUWhLRWPWW3GgUsvsoebT15eKeYS19hVuOTBg8CvtHwVeNxZQlt
+         1/2cMJbOn+JNBR3qx7GotMD445Y0ScEuoRto7G9RyPf0noxjBBjNVO+KUVyUAlMY8bYl
+         YUygpBV5Pya019SPEb4O4ue9rH8p0JgCflK0afZAqGxL2cT33d5V53RC8A0cwXokHtxZ
+         2uDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=s5wwxTyTDa55aQZtv0+ZgEX7xgGF5fBsXI69BKYf71A=;
+        b=XcAs/gz95ALeQ0xbPlXY5ZChn7h+AVizZw5+h4uAgCjQsQSi/hzPJS6XQ8jQqevL0g
+         UROLGmfMLWcyyKXuLDtHOhXjfni7+Pob+FE5BtdMs8Y2a2omZ7RIMwL2JHkAC4/hBUZx
+         yBo6BwAqd9ytb6iBPDbcE7ets7FYQMyOkwOLoWoubaTQFS0QMD4CQSWLmVlSCj7JwALT
+         EHBo8IF19p2BWu/rzJp1kLqBHM0gUtUxXNaQBWbtaqiHvyEYYzEcjO6tMM88nY4iUL48
+         gTAXcQOsrRuQ6vGTWBeEYVvak9I1LPT3fbqUMG6nKtKlEU8/xBAKWYymCeoax16seTqa
+         0kSg==
+X-Gm-Message-State: APjAAAW7JHSQPZupfLLpgEYIy75oGnixjrkm9pmWF5RRpOI19lMjMB+O
+        ZNivxUJa76VXQW6rHsytWeCaht2kjbjjsVDcOdU=
+X-Google-Smtp-Source: APXvYqwS99/VjRgPmHWy2p+b7GcjTBJZg+mCjahw0cYQpxp9J8YO92EGhzfl40nnN7Gy+6mzth44JfMvGacRa+Nb4Yc=
+X-Received: by 2002:a2e:9450:: with SMTP id o16mr64458ljh.178.1569441686543;
+ Wed, 25 Sep 2019 13:01:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Wed, 25 Sep 2019 17:01:35 -0300
+Message-ID: <CAOMZO5DmkV10xrz7g_JzU-LokoxcCair_2xP4S-ZBCtmnprhZA@mail.gmail.com>
+Subject: SD card failure on i.MX7ULP EVK
+To:     Yongcai Huang <anson.huang@nxp.com>,
+        Bough Chen <haibo.chen@nxp.com>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Fix the following sparse warnings by making any functions not used
-outsde the mmci.c driver static.
+Hi,
 
-drivers/mmc/host/mmci.c:422:6: warning: symbol 'mmci_dma_release' was not declared. Should it be static?
-drivers/mmc/host/mmci.c:430:6: warning: symbol 'mmci_dma_setup' was not declared. Should it be static?
-drivers/mmc/host/mmci.c:465:5: warning: symbol 'mmci_prep_data' was not declared. Should it be static?
-drivers/mmc/host/mmci.c:481:6: warning: symbol 'mmci_unprep_data' was not declared. Should it be static?
-drivers/mmc/host/mmci.c:490:6: warning: symbol 'mmci_get_next_data' was not declared. Should it be static?
-drivers/mmc/host/mmci.c:498:5: warning: symbol 'mmci_dma_start' was not declared. Should it be static?
-drivers/mmc/host/mmci.c:533:6: warning: symbol 'mmci_dma_finalize' was not declared. Should it be static?
-drivers/mmc/host/mmci.c:542:6: warning: symbol 'mmci_dma_error' was not declared. Should it be static?
-drivers/mmc/host/mmci.c:951:6: warning: symbol 'mmci_variant_init' was not declared. Should it be static?
-drivers/mmc/host/mmci.c:956:6: warning: symbol 'ux500v2_variant_init' was not declared. Should it be static?
+When booting a 5.2 or 5.3 kernel on imx7ulp-evk I see the following sdhc error:
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
----
- drivers/mmc/host/mmci.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+[    3.132133] sdhci-esdhc-imx 40370000.mmc: Got CD GPIO
+[    3.238632] mmc0: Reset 0x1 never completed.
+[    3.242935] mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+[    3.249490] mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00000002
+[    3.256047] mmc0: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000001
+[    3.262515] mmc0: sdhci: Argument:  0x0000885c | Trn mode: 0x00000000
+[    3.269071] mmc0: sdhci: Present:   0x00088088 | Host ctl: 0x00000002
+[    3.275620] mmc0: sdhci: Power:     0x00000000 | Blk gap:  0x00000080
+[    3.282084] mmc0: sdhci: Wake-up:   0x00000008 | Clock:    0x0000007f
+[    3.288640] mmc0: sdhci: Timeout:   0x0000008c | Int stat: 0x00000000
+[    3.295190] mmc0: sdhci: Int enab:  0x007f010b | Sig enab: 0x00000000
+[    3.301653] mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00008402
+[    3.308209] mmc0: sdhci: Caps:      0x07eb0000 | Caps_1:   0x0000b400
+[    3.314671] mmc0: sdhci: Cmd:       0x0000113a | Max curr: 0x00ffffff
+[    3.321225] mmc0: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x003b377f
+[    3.327775] mmc0: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x00400e00
+[    3.334239] mmc0: sdhci: Host ctl2: 0x00000000
+[    3.338788] mmc0: sdhci: ============================================
+[    3.447581] mmc0: Reset 0x1 never completed.
+[    3.451890] mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+[    3.458453] mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00000002
+[    3.465008] mmc0: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000001
+[    3.471469] mmc0: sdhci: Argument:  0x0000885c | Trn mode: 0x00000000
+[    3.478027] mmc0: sdhci: Present:   0x00088088 | Host ctl: 0x00000002
+[    3.484493] mmc0: sdhci: Power:     0x00000000 | Blk gap:  0x00000080
+[    3.491051] mmc0: sdhci: Wake-up:   0x00000008 | Clock:    0x0000007f
+[    3.497601] mmc0: sdhci: Timeout:   0x0000008c | Int stat: 0x00000000
+[    3.504063] mmc0: sdhci: Int enab:  0x00000000 | Sig enab: 0x00000000
+[    3.510618] mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00008402
+[    3.517171] mmc0: sdhci: Caps:      0x07eb0000 | Caps_1:   0x0000b400
+[    3.523633] mmc0: sdhci: Cmd:       0x0000113a | Max curr: 0x00ffffff
+[    3.530189] mmc0: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x003b377f
+[    3.536740] mmc0: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x00400e00
+[    3.543201] mmc0: sdhci: Host ctl2: 0x00000000
+[    3.547756] mmc0: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0x00000000
+[    3.554214] mmc0: sdhci: ============================================
+[    3.601580] mmc0: SDHCI controller on 40370000.mmc [40370000.mmc] using ADMA
 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index c37e70dbe250..e14003e52058 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -419,7 +419,7 @@ static void mmci_set_clkreg(struct mmci_host *host, unsigned int desired)
- 	mmci_write_clkreg(host, clk);
- }
- 
--void mmci_dma_release(struct mmci_host *host)
-+static void mmci_dma_release(struct mmci_host *host)
- {
- 	if (host->ops && host->ops->dma_release)
- 		host->ops->dma_release(host);
-@@ -427,7 +427,7 @@ void mmci_dma_release(struct mmci_host *host)
- 	host->use_dma = false;
- }
- 
--void mmci_dma_setup(struct mmci_host *host)
-+static void mmci_dma_setup(struct mmci_host *host)
- {
- 	if (!host->ops || !host->ops->dma_setup)
- 		return;
-@@ -462,7 +462,7 @@ static int mmci_validate_data(struct mmci_host *host,
- 	return 0;
- }
- 
--int mmci_prep_data(struct mmci_host *host, struct mmc_data *data, bool next)
-+static int mmci_prep_data(struct mmci_host *host, struct mmc_data *data, bool next)
- {
- 	int err;
- 
-@@ -478,7 +478,7 @@ int mmci_prep_data(struct mmci_host *host, struct mmc_data *data, bool next)
- 	return err;
- }
- 
--void mmci_unprep_data(struct mmci_host *host, struct mmc_data *data,
-+static void mmci_unprep_data(struct mmci_host *host, struct mmc_data *data,
- 		      int err)
- {
- 	if (host->ops && host->ops->unprep_data)
-@@ -487,7 +487,7 @@ void mmci_unprep_data(struct mmci_host *host, struct mmc_data *data,
- 	data->host_cookie = 0;
- }
- 
--void mmci_get_next_data(struct mmci_host *host, struct mmc_data *data)
-+static void mmci_get_next_data(struct mmci_host *host, struct mmc_data *data)
- {
- 	WARN_ON(data->host_cookie && data->host_cookie != host->next_cookie);
- 
-@@ -495,7 +495,7 @@ void mmci_get_next_data(struct mmci_host *host, struct mmc_data *data)
- 		host->ops->get_next_data(host, data);
- }
- 
--int mmci_dma_start(struct mmci_host *host, unsigned int datactrl)
-+static int mmci_dma_start(struct mmci_host *host, unsigned int datactrl)
- {
- 	struct mmc_data *data = host->data;
- 	int ret;
-@@ -530,7 +530,7 @@ int mmci_dma_start(struct mmci_host *host, unsigned int datactrl)
- 	return 0;
- }
- 
--void mmci_dma_finalize(struct mmci_host *host, struct mmc_data *data)
-+static void mmci_dma_finalize(struct mmci_host *host, struct mmc_data *data)
- {
- 	if (!host->use_dma)
- 		return;
-@@ -539,7 +539,7 @@ void mmci_dma_finalize(struct mmci_host *host, struct mmc_data *data)
- 		host->ops->dma_finalize(host, data);
- }
- 
--void mmci_dma_error(struct mmci_host *host)
-+static void mmci_dma_error(struct mmci_host *host)
- {
- 	if (!host->use_dma)
- 		return;
-@@ -948,12 +948,12 @@ static struct mmci_host_ops mmci_variant_ops = {
- };
- #endif
- 
--void mmci_variant_init(struct mmci_host *host)
-+static void mmci_variant_init(struct mmci_host *host)
- {
- 	host->ops = &mmci_variant_ops;
- }
- 
--void ux500v2_variant_init(struct mmci_host *host)
-+static void ux500v2_variant_init(struct mmci_host *host)
- {
- 	host->ops = &mmci_variant_ops;
- 	host->ops->get_datactrl_cfg = ux500v2_get_dctrl_cfg;
--- 
-2.23.0
+Any ideas?
 
+Thanks,
+
+Fabio Estevam
