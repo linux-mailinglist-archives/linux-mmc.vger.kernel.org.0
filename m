@@ -2,104 +2,111 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5622BD2D8
-	for <lists+linux-mmc@lfdr.de>; Tue, 24 Sep 2019 21:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC1F7BD841
+	for <lists+linux-mmc@lfdr.de>; Wed, 25 Sep 2019 08:24:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438074AbfIXTht (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 24 Sep 2019 15:37:49 -0400
-Received: from mga04.intel.com ([192.55.52.120]:32855 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730886AbfIXTht (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 24 Sep 2019 15:37:49 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2019 12:37:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,545,1559545200"; 
-   d="scan'208";a="179589358"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 24 Sep 2019 12:37:46 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id ECA63228; Tue, 24 Sep 2019 22:37:42 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2 6/6] iommu/amd: Switch to use acpi_dev_hid_uid_match()
-Date:   Tue, 24 Sep 2019 22:37:39 +0300
-Message-Id: <20190924193739.86133-7-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190924193739.86133-1-andriy.shevchenko@linux.intel.com>
-References: <20190924193739.86133-1-andriy.shevchenko@linux.intel.com>
+        id S2411875AbfIYGYN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 25 Sep 2019 02:24:13 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45338 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404570AbfIYGYN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 Sep 2019 02:24:13 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id EA4E861197; Wed, 25 Sep 2019 06:24:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569392651;
+        bh=efyvQV7q7fIN6ZkOeoxT6VazF4LiJT3OJPSTTXRZbJQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ogaMPrR+nmcQbEvlzytpjir1Xy/qKVqEGmn5ROTxTq8C81BvoSE7POnTLXwIKgBgj
+         tx2zGwFW0ps/spY586xrdcflVRQUGMzPTX2cpk44BPmodH+EHNAYbeknxeheXjecJd
+         8sVlaO1xL6gSyL71OJWFVeW4BymdvSCHhuuWwUg0=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 3292560128;
+        Wed, 25 Sep 2019 06:24:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569392651;
+        bh=efyvQV7q7fIN6ZkOeoxT6VazF4LiJT3OJPSTTXRZbJQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ogaMPrR+nmcQbEvlzytpjir1Xy/qKVqEGmn5ROTxTq8C81BvoSE7POnTLXwIKgBgj
+         tx2zGwFW0ps/spY586xrdcflVRQUGMzPTX2cpk44BPmodH+EHNAYbeknxeheXjecJd
+         8sVlaO1xL6gSyL71OJWFVeW4BymdvSCHhuuWwUg0=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 25 Sep 2019 11:54:11 +0530
+From:   ppvk@codeaurora.org
+To:     Georgi Djakov <georgi.djakov@linaro.org>
+Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        robh+dt@kernel.org, asutoshd@codeaurora.org,
+        vbadigan@codeaurora.org, stummala@codeaurora.org,
+        sayalil@codeaurora.org, rampraka@codeaurora.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Subhash Jadavani <subhashj@codeaurora.org>,
+        Andy Gross <agross@kernel.org>, linux-mmc-owner@vger.kernel.org
+Subject: Re: [RFC 1/2] mmc: sdhci-msm: Add support for bus bandwidth voting
+In-Reply-To: <616c7a8c-a1cf-2043-4ea4-f452ee90f083@linaro.org>
+References: <1567774037-2344-1-git-send-email-ppvk@codeaurora.org>
+ <1567774037-2344-2-git-send-email-ppvk@codeaurora.org>
+ <616c7a8c-a1cf-2043-4ea4-f452ee90f083@linaro.org>
+Message-ID: <d10c21360d4830c864374a57c491c21c@codeaurora.org>
+X-Sender: ppvk@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Since we have a generic helper, drop custom implementation in the driver.
+On 2019-09-12 18:26, Georgi Djakov wrote:
+> Hi Pradeep,
+> 
+> Thanks for the patch!
+> 
+> On 9/6/19 15:47, Pradeep P V K wrote:
+>> Vote for the MSM bus bandwidth required by SDHC driver
+>> based on the clock frequency and bus width of the card.
+>> Otherwise,the system clocks may run at minimum clock speed
+>> and thus affecting the performance.
+>> 
+>> This change is based on Georgi Djakov [RFC]
+>> (https://lkml.org/lkml/2018/10/11/499)
+> 
+> I am just wondering whether do we really need to predefine the 
+> bandwidth values
+> in DT? Can't we use the computations from the above patch or is there 
+> any
+> problem with that approach?
+> 
+> Thanks,
+> Georgi
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iommu/amd_iommu.c | 30 +++++-------------------------
- 1 file changed, 5 insertions(+), 25 deletions(-)
+Hi Georgi,
 
-diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
-index 61de81965c44..79d38191e502 100644
---- a/drivers/iommu/amd_iommu.c
-+++ b/drivers/iommu/amd_iommu.c
-@@ -125,30 +125,6 @@ static struct lock_class_key reserved_rbtree_key;
-  *
-  ****************************************************************************/
- 
--static inline int match_hid_uid(struct device *dev,
--				struct acpihid_map_entry *entry)
--{
--	struct acpi_device *adev = ACPI_COMPANION(dev);
--	const char *hid, *uid;
--
--	if (!adev)
--		return -ENODEV;
--
--	hid = acpi_device_hid(adev);
--	uid = acpi_device_uid(adev);
--
--	if (!hid || !(*hid))
--		return -ENODEV;
--
--	if (!uid || !(*uid))
--		return strcmp(hid, entry->hid);
--
--	if (!(*entry->uid))
--		return strcmp(hid, entry->hid);
--
--	return (strcmp(hid, entry->hid) || strcmp(uid, entry->uid));
--}
--
- static inline u16 get_pci_device_id(struct device *dev)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
-@@ -159,10 +135,14 @@ static inline u16 get_pci_device_id(struct device *dev)
- static inline int get_acpihid_device_id(struct device *dev,
- 					struct acpihid_map_entry **entry)
- {
-+	struct acpi_device *adev = ACPI_COMPANION(dev);
- 	struct acpihid_map_entry *p;
- 
-+	if (!adev)
-+		return -ENODEV;
-+
- 	list_for_each_entry(p, &acpihid_map, list) {
--		if (!match_hid_uid(dev, p)) {
-+		if (acpi_dev_hid_uid_match(adev, p->hid, p->uid)) {
- 			if (entry)
- 				*entry = p;
- 			return p->devid;
--- 
-2.23.0
+By using the direct required bandwidth(bw / 1000) values, it will not 
+guarantee
+that all the NOC clocks are running in the same voltage corner as 
+required,
+which is very crucial for power concern devices like Mobiles etc.
+Also, it will not guarantee that the value passed is in proper Clock 
+Plans domain
+there by effecting the requested Bandwidth.
+I think, you already aware of these consequences on using direct 
+bandwidth values for
+RPMh based devices.
 
+The value the we passed in DT will make sure that all the NOC clocks 
+between the end points
+are running in the same voltage corners as required and also it will 
+guarantee that
+the requested BW's for the clients are obtained.
+
+Hence the reason for passing the predefined bandwidth values in DT.
+
+Thanks and Regards,
+Pradeep
