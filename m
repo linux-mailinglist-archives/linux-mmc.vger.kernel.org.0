@@ -2,99 +2,70 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E523BF623
-	for <lists+linux-mmc@lfdr.de>; Thu, 26 Sep 2019 17:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EFA8BF734
+	for <lists+linux-mmc@lfdr.de>; Thu, 26 Sep 2019 18:56:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727356AbfIZPpf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 26 Sep 2019 11:45:35 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:46386 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726845AbfIZPpe (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 26 Sep 2019 11:45:34 -0400
-Received: by mail-ot1-f66.google.com with SMTP id f21so2379046otl.13;
-        Thu, 26 Sep 2019 08:45:34 -0700 (PDT)
+        id S1727500AbfIZQ4s (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 26 Sep 2019 12:56:48 -0400
+Received: from mail-lj1-f180.google.com ([209.85.208.180]:46985 "EHLO
+        mail-lj1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727444AbfIZQ4s (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 26 Sep 2019 12:56:48 -0400
+Received: by mail-lj1-f180.google.com with SMTP id d1so1870309ljl.13
+        for <linux-mmc@vger.kernel.org>; Thu, 26 Sep 2019 09:56:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kBowK7TWmJVGxLzKO1vf00Bi1k9GFMvujKzJ43Tue4Y=;
+        b=tv7KvC2bzbPFUbOVh5d0MiTFwH/XPflbm3a338HIVOEdCxkkJtbabuoDKMULoHRJ/Y
+         8wGLig9LJE/pVqsrWpjxLCcaM+B9wqS+lbebKNrnjd+A0XMhacPL//Zw6mc92iIGGHve
+         isQrLrykcwwIP/+iR0avyaCJVVn9WNFEXI/pqkTemgVmKcTLuvLBLpYHqYys62WXmlCG
+         18iXOt66/rNi2fIPOyKtjh/LRluGyuc5VYnEtGmETtILMcP5j0iItrwox9U3eH+/Nld4
+         ZkoVZDvUry38i0eEr2bs9rWDkeqEMhVxdpsyfcFojudNATDguShfvG/+yulCU+hSWGpx
+         xwWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FIWxszgfgisGPP3A+ce1ZeEImOz1s/va5HhSEsRsTJk=;
-        b=NnI3F5FHcKlYR2igduA7NCNB/GroR8KATNT5G+ZzjuchrxOC1pmrp+b3eGoBzHWVmf
-         l5vhclOlb3fm84+JHV7E5e8DUqNYEnO/a95osLecAFoCosAF+Mlt54ZS90FSf4lqdmvl
-         sbLB/eUInK6sFxSLUNFrSZJUSMRLlxzLNBW8phVXT9NBgztJE5AaQWKouhS+kzQU1gKJ
-         UPiWGuz/IPWHec6er/U8UyN2xGzyGP3j1NWdN1Lj6HAElqtzMJi4HpV1l9DCYGrPable
-         hxXwGDHTa3DPE6psXszlq4Ss68cjpffAFMelXuLVgQfYMuGC641RweW0g1b/sn3VXtL2
-         ChUA==
-X-Gm-Message-State: APjAAAXrOEYJb4ULnhpfMLTefBj0bmv9g8QGRf2bR8ghMi9/Tfpnl7N1
-        jGWqWfmbAZNnL7LVMHl1cNk1Y3Z86dkhZbEOUo8=
-X-Google-Smtp-Source: APXvYqzVuOaw6VZQW8p4uOOG8hUo6NV7jxRKRvUIGiQ/XZPsu7G6qBQC0jGmFPp6/MhluRh71PcTM5xga7jtfUWAKFQ=
-X-Received: by 2002:a9d:17e6:: with SMTP id j93mr3199131otj.297.1569512733783;
- Thu, 26 Sep 2019 08:45:33 -0700 (PDT)
+        bh=kBowK7TWmJVGxLzKO1vf00Bi1k9GFMvujKzJ43Tue4Y=;
+        b=POOPaySAyoKPu5b5zwnd4Q02jL48qoR52nasvLhoJnDPSXpTdo3cVJnsTED7IiPkcG
+         QoRlRDKYwa/CP1uanpqluPPwJIDUqlc2eLS5ZmvcffuNoxOl9Jjw/w/c727GOTjXJS3a
+         bc5eFJug9zrEBmXDgIn+WR6pTp2YOQPRZAhsdXE/gY2MxK4YuUW0fy0d+Q/+pjMKpoWf
+         zfue+QOzoYDa3KRVXRArrPhfnmnVxH339jWuUweqA9k0Hc1TGFbQWoGox0dhP/+HiW3k
+         1m0SjV7kyixNqtdakAa8nYhvTLUNgt3TZy8vNlGcXlP0fKNa5WHhJH/ZR4pTkAHQoiqm
+         Dj4Q==
+X-Gm-Message-State: APjAAAW/UVkebEutHRRYAbUaDWutVSi9Y4mF/rrVXRSoTil2X8H3W4pY
+        s+ZfhavA+QEZm8Ml0LRZODSi/DfJBpIlyKuCO22l5mHM
+X-Google-Smtp-Source: APXvYqxfhby9YZG5l8z9Ky8ffShJ/jxI62N+5F2lkiB740ZzmxSwITv87otAhZWQ5RJOAoeme0HkToOEfwC8Xv/Blwg=
+X-Received: by 2002:a2e:9d44:: with SMTP id y4mr2141272ljj.115.1569517006234;
+ Thu, 26 Sep 2019 09:56:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
- <CAMuHMdUsLCciw7KFudSC7pRqfwwaGH5iJSgv906kY342V+6ocQ@mail.gmail.com> <OSBPR01MB21036B8294382D1A7A50816BB8860@OSBPR01MB2103.jpnprd01.prod.outlook.com>
-In-Reply-To: <OSBPR01MB21036B8294382D1A7A50816BB8860@OSBPR01MB2103.jpnprd01.prod.outlook.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 26 Sep 2019 17:45:22 +0200
-Message-ID: <CAMuHMdXq1BaNSrOTqUkE34kS6i1kyEXLXe=S5pMdRiEvkD4fvw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
-To:     Biju Das <biju.das@bp.renesas.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+References: <CAOMZO5DmkV10xrz7g_JzU-LokoxcCair_2xP4S-ZBCtmnprhZA@mail.gmail.com>
+ <DB3PR0402MB39164C0B4789A08A1FC557C3F5860@DB3PR0402MB3916.eurprd04.prod.outlook.com>
+In-Reply-To: <DB3PR0402MB39164C0B4789A08A1FC557C3F5860@DB3PR0402MB3916.eurprd04.prod.outlook.com>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Thu, 26 Sep 2019 13:56:57 -0300
+Message-ID: <CAOMZO5B2Jiy-nCU7+ksn7NOFTUtD=LL0KiHfT0cnai4C=hDi-Q@mail.gmail.com>
+Subject: Re: SD card failure on i.MX7ULP EVK
+To:     Anson Huang <anson.huang@nxp.com>
+Cc:     BOUGH CHEN <haibo.chen@nxp.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Biju,
+Hi Anson,
 
-On Thu, Sep 26, 2019 at 5:11 PM Biju Das <biju.das@bp.renesas.com> wrote:
-> > Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
-> > On Tue, Sep 24, 2019 at 8:49 AM Biju Das <biju.das@bp.renesas.com> wrote:
-> > > This patch adds SDHI support for RZ/G2N (R8A774B1) SoC.
-> > >
-> > > Signed-off-by: Biju Das <biju.das@bp.renesas.com>
-> > > ---
-> > >  drivers/mmc/host/renesas_sdhi_internal_dmac.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> > > b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> > > index 751fe91..7c6020e 100644
-> > > --- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> > > +++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> > > @@ -308,6 +308,7 @@ static const struct soc_device_attribute
-> > soc_whitelist[] = {
-> > >           .data = (void *)BIT(SDHI_INTERNAL_DMAC_ONE_RX_ONLY) },
-> > >         /* generic ones */
-> > >         { .soc_id = "r8a774a1" },
-> > > +       { .soc_id = "r8a774b1" },
-> > >         { .soc_id = "r8a774c0" },
-> > >         { .soc_id = "r8a77470" },
-> > >         { .soc_id = "r8a7795" },
-> >
-> > Is this sufficient?
-> > Do you need a tuning quirk entry in sdhi_quirks_match[]?
+On Wed, Sep 25, 2019 at 9:26 PM Anson Huang <anson.huang@nxp.com> wrote:
 >
-> Do you mean the  "quirks->manual_calibration"  as mentioned in the below patch ?
->
-> https://patchwork.kernel.org/patch/11024131/
+> Hi, Fabio
+>         See attached patch, this is due to HW special requirement, but clock maintainer does NOT ack my patch, he prefer to fix it from clock core driver, but I think that make things complicated and also it looks like NOT feasible.
 
-Exactly. Is RZ/G2N affected?
+Thanks.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+It would be nice if you could resend the clk patch to Stephen so that
+the solution can be discussed.
