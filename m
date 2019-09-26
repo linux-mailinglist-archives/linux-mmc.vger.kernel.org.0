@@ -2,47 +2,44 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0079EBF327
-	for <lists+linux-mmc@lfdr.de>; Thu, 26 Sep 2019 14:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77804BF4F1
+	for <lists+linux-mmc@lfdr.de>; Thu, 26 Sep 2019 16:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726163AbfIZMkj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 26 Sep 2019 08:40:39 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:37827 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725945AbfIZMkj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 26 Sep 2019 08:40:39 -0400
-Received: by mail-ot1-f68.google.com with SMTP id k32so1856639otc.4;
-        Thu, 26 Sep 2019 05:40:36 -0700 (PDT)
+        id S1727066AbfIZOVi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 26 Sep 2019 10:21:38 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:46553 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726500AbfIZOVi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 26 Sep 2019 10:21:38 -0400
+Received: by mail-oi1-f193.google.com with SMTP id k25so2190736oiw.13;
+        Thu, 26 Sep 2019 07:21:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Tjar5vOvYjte8zpZAV+QkDQ1vCYinUJV81Pu14/JHo8=;
-        b=IUEuQqqLgsggSP8kh8+YKFKsBkaDRjGKariSFLa9FqFoUttmVPo0AdaNpb6czCbggE
-         B1D0Dj5pL0BG17qG7HNBE1Bo8X7PRnao3HelOZUxXgBwIh32ZoO0uLEmPsqjLmy8Xsfs
-         DOYrbhbgNZmoNXx3wQ7ldSJloVX8e2hA0Hf4ch8ZePs5Fhhe9YOZJ8AXbVg8EDngkkpP
-         9bjYnXVUL9OssqDaKuFtSvdXAOp+29/JOAPA1ObtZVgxmMtghbqGvhnh7j/dnZg3Unvu
-         uTlaZg9J2Mq5OTk63uh5BwIHAK8SWWF1FALb06IFB0DwbwEpQZkshOvcGAAF0QfijYEc
-         V/Tg==
-X-Gm-Message-State: APjAAAU/n/bxzu4PJNHAqKKooeFLU7g57VElzc/U4aEU7pUCuvqoWv0Q
-        yz4u6/2vmQh3qkSclOn9So9ITPdod8peu5R8B8Y=
-X-Google-Smtp-Source: APXvYqysscjYqqtAX9aZNqnCUfS9l7FaQJaPJcmoR8p4K0r+15bKE2JDM8iz1PIrvIoEaupZMwAO0MriKrGi9soTP8Y=
-X-Received: by 2002:a9d:5a06:: with SMTP id v6mr225417oth.250.1569501636510;
- Thu, 26 Sep 2019 05:40:36 -0700 (PDT)
+        bh=cgHzLkYplj2i4qoYgDi3569/ZWf0OLMkzDgo6QeJPTI=;
+        b=td9RU0MNSwk9uGoJ3sPUQ/bgFuO94nZ60O6Ptu7cLBzxHq0Xc0QyR32qcMTkrlU6Us
+         rygMqLAN2LXDmHCyw3NvcfYYKe09GhZaDDPruJytcOYFtV1pMwWzzeku9Y6Hr0tOBvol
+         4ysBEB+8g0KKTmkLw75hFV6Viam4X7fugInRCnRPU8zJa5TVdwDwMvlZud0RglQAB0xo
+         LN6pQSEes8/c87wkCSFuhLmp/Zj+gIjxTtUYmX41TI95E/XIEWA6DO0Duu+NpsVqrv4M
+         s//7T6ezpqSVLlfiOR11CEwVlJB4ZSDA/J633SC+zN13Erh0W7JRp0Tckwot4sL7SvD+
+         A2wA==
+X-Gm-Message-State: APjAAAWUPsT+UpMtZU1qs09/D0ShKidXg6OdrHR4nqp0riW8NROENond
+        93lBtlKYEhOuRfO/HvMJBrqkTOQoGb7VhM7jHj8=
+X-Google-Smtp-Source: APXvYqxlkEXAncwfUIVu29icOsjQzyxCZCopagTQDcmg791smqspqnoLki272BMstIRGwhww/jALs9/hzP1BO2R4z6M=
+X-Received: by 2002:aca:b654:: with SMTP id g81mr2672480oif.153.1569507697259;
+ Thu, 26 Sep 2019 07:21:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <1569307615-38914-1-git-send-email-biju.das@bp.renesas.com>
-In-Reply-To: <1569307615-38914-1-git-send-email-biju.das@bp.renesas.com>
+References: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
+In-Reply-To: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 26 Sep 2019 14:40:25 +0200
-Message-ID: <CAMuHMdVXE1QSdZB4Sis4zHUWwp-jL-Zd2VCNTrsd6bmZBEMfrw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: mmc: renesas_sdhi: Add r8a774b1 support
+Date:   Thu, 26 Sep 2019 16:21:26 +0200
+Message-ID: <CAMuHMdUsLCciw7KFudSC7pRqfwwaGH5iJSgv906kY342V+6ocQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
 To:     Biju Das <biju.das@bp.renesas.com>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
         Linux MMC List <linux-mmc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Simon Horman <horms@verge.net.au>,
         Chris Paterson <Chris.Paterson2@renesas.com>,
@@ -54,12 +51,31 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Sep 24, 2019 at 8:47 AM Biju Das <biju.das@bp.renesas.com> wrote:
-> Document RZ/G2N (R8A774B1) SoC bindings.
+Hi Biju,
+
+On Tue, Sep 24, 2019 at 8:49 AM Biju Das <biju.das@bp.renesas.com> wrote:
+> This patch adds SDHI support for RZ/G2N (R8A774B1) SoC.
 >
 > Signed-off-by: Biju Das <biju.das@bp.renesas.com>
+> ---
+>  drivers/mmc/host/renesas_sdhi_internal_dmac.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+> index 751fe91..7c6020e 100644
+> --- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+> +++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+> @@ -308,6 +308,7 @@ static const struct soc_device_attribute soc_whitelist[] = {
+>           .data = (void *)BIT(SDHI_INTERNAL_DMAC_ONE_RX_ONLY) },
+>         /* generic ones */
+>         { .soc_id = "r8a774a1" },
+> +       { .soc_id = "r8a774b1" },
+>         { .soc_id = "r8a774c0" },
+>         { .soc_id = "r8a77470" },
+>         { .soc_id = "r8a7795" },
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Is this sufficient?
+Do you need a tuning quirk entry in sdhi_quirks_match[]?
 
 Gr{oetje,eeting}s,
 
