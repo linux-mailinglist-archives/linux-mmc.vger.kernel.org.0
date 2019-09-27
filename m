@@ -2,125 +2,159 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E82FBC0C77
-	for <lists+linux-mmc@lfdr.de>; Fri, 27 Sep 2019 22:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5C6C0E6A
+	for <lists+linux-mmc@lfdr.de>; Sat, 28 Sep 2019 01:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727243AbfI0UPR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 27 Sep 2019 16:15:17 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:38152 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726036AbfI0UPQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 27 Sep 2019 16:15:16 -0400
-Received: by mail-lj1-f195.google.com with SMTP id b20so3703057ljj.5
-        for <linux-mmc@vger.kernel.org>; Fri, 27 Sep 2019 13:15:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qXC46ElY52rOcZF+haJMaG9kGcpXjGEmuqnl/s6D7sU=;
-        b=iJFiMf8oaWyvJ8t2FRdzBieJmBW5yu3HRnK01HFEMVSw7D+/9QK25m8hgUZhlWOrkd
-         GziWqf9HwAaV/7hi26Io+K/S80D/MN/x+ezIQfe7uGfBQiGtpImE2fapnlVBtF1Vb+/3
-         yQFsiXQup4fp1DCtB1o8KLpGpzcrECIOGG0AqChAK5VdPoNZvJJkWfrIX+n1PXyv3VmT
-         xGys7w1WQGLfw68iLVFJYjP9Y2g0uImlpyLL/hpSnSJNSyZYO9tVpYVdCkiH5gkniz8q
-         qLMAKTa17sTc5w77+WioyDKi/0DjMl+dAoWnHWw2RP+jPn1YO6K5X6L28U4WNAe5qVco
-         U9RQ==
+        id S1728103AbfI0Xkv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 27 Sep 2019 19:40:51 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:35217 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725990AbfI0Xkv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 27 Sep 2019 19:40:51 -0400
+Received: by mail-lf1-f67.google.com with SMTP id w6so3114025lfl.2;
+        Fri, 27 Sep 2019 16:40:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qXC46ElY52rOcZF+haJMaG9kGcpXjGEmuqnl/s6D7sU=;
-        b=HGVmTp1iO94cz9tch1lXasEZ0MX+/m/KyJeF2L4RdlTtKFrt5cSLZsT5Xygzwm+Goc
-         kYa4IYm2iWYnAPjLmB9pOB/7KfFg6N7dmoeG0wa0S9vV7hPuLs48JJB41pA4DlFXyel7
-         DmiPDOPa+0FHt03GgyworvJ62LEjD+E588YICzfez5PHZwNM77gjhRnff8dxtytF9Cvo
-         eA/WYUzzDpEgYcgU6WFYcmQheLncLf+almZ9cQ/Y/OnjT/UBIeEDUTsJcpVnWZu/mhmf
-         WKDpCjwc7GX3PTy+cvkLVMqg9n6DbjFg7OcJ5TkTMOcdbsw7OOZe5x0vSNz2Djy+6kOX
-         mY+A==
-X-Gm-Message-State: APjAAAVpn697rY3YDFLzCNNl3WP+p2sAw3By2UkKn+rkPcuU6AmYdQLe
-        Wg9sym8bAIV7kDUAyzHQSEpy8cHOnylRV43w+Oeh1A==
-X-Google-Smtp-Source: APXvYqyc5PxTmVaJ0Ok+2gj+DX5t1h/U/xZZiw2Ey28AqH+xKmSmLTYAFO5aIUid9OVGoQCZP/0p7sxnItq2tt3rgmM=
-X-Received: by 2002:a2e:98ce:: with SMTP id s14mr4228705ljj.108.1569615315050;
- Fri, 27 Sep 2019 13:15:15 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=/vjA3feuVjhECJGCJlv7w7hKdoWzVAzTRzB0psX8g5s=;
+        b=cyYcyUamH/ZJxf1UPzvn/4gz0YorW7s+CfbhnVmploaBcmV29oJLvYo3uJwU0mjY58
+         3LWWSqUd8ot/ev0O7q3aZAJpUR1POuZMfY2vKm0V3xuUf7ZeMNZjutuJHIavuOa4azPF
+         XRNkWfLv6RBEMZcJX4IfJT5Z74EzX4Zvlb9ZknQvFacosYbT+VGJcv4Mq2iJhNU6D/Rt
+         hRwKC4wEfDeURwXeCr6uxvYfkyWO2U6rV+P7GGXXdtoEHmqk5vLIgYXe3uF8HCavjLaD
+         wG703e3baIwYGGDSZILhLVcOM/afcTqJG6Ume4iYUaX9aFh0llteu5a4JB4M53kygSxa
+         6Acw==
+X-Gm-Message-State: APjAAAXafwV/kRJo63q6NYOpyM5CSiynf+c+Iq9sebobZLx66zGoXoeb
+        pT2b/y18TMmkWfo3zr3cjKE=
+X-Google-Smtp-Source: APXvYqzJjAsZOxffDP6X1PyAJObAmIHMhsLPPyKIAwdxjZFuFJU1hlQRv1yAEhIhnnum3sSXraXujg==
+X-Received: by 2002:ac2:568c:: with SMTP id 12mr4300543lfr.133.1569627646034;
+        Fri, 27 Sep 2019 16:40:46 -0700 (PDT)
+Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.googlemail.com with ESMTPSA id x25sm778810ljb.60.2019.09.27.16.40.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Sep 2019 16:40:45 -0700 (PDT)
+From:   Denis Efremov <efremov@linux.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Denis Efremov <efremov@linux.com>, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        x86@kernel.org, linux-s390@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, kvm@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-usb@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-serial@vger.kernel.org, linux-mmc@vger.kernel.org
+Subject: [PATCH RESEND v3 00/26] Add definition for the number of standard PCI BARs
+Date:   Sat, 28 Sep 2019 02:40:26 +0300
+Message-Id: <20190927234026.23342-1-efremov@linux.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190916204158.6889-3-efremov@linux.com>
+References: <20190916204158.6889-3-efremov@linux.com>
 MIME-Version: 1.0
-References: <1563776607-8368-1-git-send-email-wahrenst@gmx.net>
- <1563776607-8368-3-git-send-email-wahrenst@gmx.net> <CACRpkdabfiDbGmAQciAUSThY-KfTsVq3tHz0bBszs2j_ej18Nw@mail.gmail.com>
- <63f17284-5551-9492-9eff-f8a4c003196b@gmx.net> <66dc2cad-673e-0a0b-0aeb-3d62fa2d4ccf@gmx.net>
-In-Reply-To: <66dc2cad-673e-0a0b-0aeb-3d62fa2d4ccf@gmx.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 27 Sep 2019 22:15:01 +0200
-Message-ID: <CACRpkdb9pxCF-WvA0f3rU2cttX1XmQxB=xtOhPAaP+nYoBd_LA@mail.gmail.com>
-Subject: Re: [PATCH 12/18] pinctrl: bcm2835: Add support for BCM2711 pull-up functionality
-To:     Stefan Wahren <wahrenst@gmx.net>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Ray Jui <rjui@broadcom.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        linux-rpi-kernel <linux-rpi-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Sep 27, 2019 at 9:29 PM Stefan Wahren <wahrenst@gmx.net> wrote:
+Code that iterates over all standard PCI BARs typically uses
+PCI_STD_RESOURCE_END, but this is error-prone because it requires
+"i <= PCI_STD_RESOURCE_END" rather than something like
+"i < PCI_STD_NUM_BARS". We could add such a definition and use it the same
+way PCI_SRIOV_NUM_BARS is used. The patchset also replaces constant (6)
+with new define PCI_STD_NUM_BARS where appropriate and removes local
+declarations for the number of PCI BARs.
 
-> today i had the time to try this out. Instead of the following:
->
->     i2c0_gpio0: i2c0_gpio0 {
->         brcm,pins = <0 1>;
->         brcm,function = <BCM2835_FSEL_ALT0>;
->         brcm,pull = <BCM2835_PUD_UP
->                  BCM2835_PUD_OFF>;
->     }
->
-> you want this?
->
->     i2c0_gpio0: i2c0_gpio0 {
->         pin-sda {
->             function = "alt0";
->             pins = "gpio0";
->             bias-pull-up;
->         };
->         pin-scl {
->             function = "alt0";
->             pins = "gpio1";
->             bias-disable;
->         };
->     };
+Changes in v3:
+  - Updated commits description.
+  - Refactored "< PCI_ROM_RESOURCE" with "< PCI_STD_NUM_BARS" in loops.
+  - Refactored "<= BAR_5" with "< PCI_STD_NUM_BARS" in loops.
+  - Removed local define GASKET_NUM_BARS.
+  - Removed local define PCI_NUM_BAR_RESOURCES.
 
-Yes that looks much better. In my opinion.
+Changes in v2:
+  - Reversed checks in pci_iomap_range,pci_iomap_wc_range.
+  - Refactored loops in vfio_pci to keep PCI_STD_RESOURCES.
+  - Added 2 new patches to replace the magic constant with new define.
+  - Splitted net patch in v1 to separate stmmac and dwc-xlgmac patches.
 
-I understand that it puts some developers off because of being
-more lines or excessively verbose, so to be on the clear,
-verboseness in itself is not the goal.
+Denis Efremov (26):
+  PCI: Add define for the number of standard PCI BARs
+  PCI: hv: Use PCI_STD_NUM_BARS
+  PCI: dwc: Use PCI_STD_NUM_BARS
+  PCI: endpoint: Use PCI_STD_NUM_BARS
+  misc: pci_endpoint_test: Use PCI_STD_NUM_BARS
+  s390/pci: Use PCI_STD_NUM_BARS
+  x86/PCI: Loop using PCI_STD_NUM_BARS
+  alpha/PCI: Use PCI_STD_NUM_BARS
+  ia64: Use PCI_STD_NUM_BARS
+  stmmac: pci: Loop using PCI_STD_NUM_BARS
+  net: dwc-xlgmac: Loop using PCI_STD_NUM_BARS
+  ixgb: use PCI_STD_NUM_BARS
+  e1000: Use PCI_STD_NUM_BARS
+  rapidio/tsi721: Loop using PCI_STD_NUM_BARS
+  efifb: Loop using PCI_STD_NUM_BARS
+  fbmem: use PCI_STD_NUM_BARS
+  vfio_pci: Loop using PCI_STD_NUM_BARS
+  scsi: pm80xx: Use PCI_STD_NUM_BARS
+  ata: sata_nv: Use PCI_STD_NUM_BARS
+  staging: gasket: Use PCI_STD_NUM_BARS
+  serial: 8250_pci: Use PCI_STD_NUM_BARS
+  pata_atp867x: Use PCI_STD_NUM_BARS
+  memstick: use PCI_STD_NUM_BARS
+  USB: core: Use PCI_STD_NUM_BARS
+  usb: pci-quirks: Use PCI_STD_NUM_BARS
+  devres: use PCI_STD_NUM_BARS
 
-The goal is universal
-portability: i.e. it should not matter one bit whether I work
-on an 2001 Intel StrongARM SoC, a 2019 Broadcom SoC
-or a 2011 ST-Ericsson SoC: I will understand what bias-disable;
-or bias-pull-up; means, which lowers the threshold to
-maintenance.
+ arch/alpha/kernel/pci-sysfs.c                 |  8 ++---
+ arch/ia64/sn/pci/pcibr/pcibr_dma.c            |  4 +--
+ arch/s390/include/asm/pci.h                   |  5 +--
+ arch/s390/include/asm/pci_clp.h               |  6 ++--
+ arch/s390/pci/pci.c                           | 16 +++++-----
+ arch/s390/pci/pci_clp.c                       |  6 ++--
+ arch/x86/pci/common.c                         |  2 +-
+ arch/x86/pci/intel_mid_pci.c                  |  2 +-
+ drivers/ata/pata_atp867x.c                    |  2 +-
+ drivers/ata/sata_nv.c                         |  2 +-
+ drivers/memstick/host/jmb38x_ms.c             |  2 +-
+ drivers/misc/pci_endpoint_test.c              |  8 ++---
+ drivers/net/ethernet/intel/e1000/e1000.h      |  1 -
+ drivers/net/ethernet/intel/e1000/e1000_main.c |  2 +-
+ drivers/net/ethernet/intel/ixgb/ixgb.h        |  1 -
+ drivers/net/ethernet/intel/ixgb/ixgb_main.c   |  2 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_pci.c  |  4 +--
+ .../net/ethernet/synopsys/dwc-xlgmac-pci.c    |  2 +-
+ drivers/pci/controller/dwc/pci-dra7xx.c       |  2 +-
+ .../pci/controller/dwc/pci-layerscape-ep.c    |  2 +-
+ drivers/pci/controller/dwc/pcie-artpec6.c     |  2 +-
+ .../pci/controller/dwc/pcie-designware-plat.c |  2 +-
+ drivers/pci/controller/dwc/pcie-designware.h  |  2 +-
+ drivers/pci/controller/pci-hyperv.c           | 10 +++---
+ drivers/pci/endpoint/functions/pci-epf-test.c | 10 +++---
+ drivers/pci/pci-sysfs.c                       |  4 +--
+ drivers/pci/pci.c                             | 13 ++++----
+ drivers/pci/proc.c                            |  4 +--
+ drivers/pci/quirks.c                          |  4 +--
+ drivers/rapidio/devices/tsi721.c              |  2 +-
+ drivers/scsi/pm8001/pm8001_hwi.c              |  2 +-
+ drivers/scsi/pm8001/pm8001_init.c             |  2 +-
+ drivers/staging/gasket/gasket_constants.h     |  3 --
+ drivers/staging/gasket/gasket_core.c          | 12 +++----
+ drivers/staging/gasket/gasket_core.h          |  4 +--
+ drivers/tty/serial/8250/8250_pci.c            |  8 ++---
+ drivers/usb/core/hcd-pci.c                    |  2 +-
+ drivers/usb/host/pci-quirks.c                 |  2 +-
+ drivers/vfio/pci/vfio_pci.c                   | 11 ++++---
+ drivers/vfio/pci/vfio_pci_config.c            | 32 ++++++++++---------
+ drivers/vfio/pci/vfio_pci_private.h           |  4 +--
+ drivers/video/fbdev/core/fbmem.c              |  4 +--
+ drivers/video/fbdev/efifb.c                   |  2 +-
+ include/linux/pci-epc.h                       |  2 +-
+ include/linux/pci.h                           |  2 +-
+ include/uapi/linux/pci_regs.h                 |  1 +
+ lib/devres.c                                  |  2 +-
+ 47 files changed, 112 insertions(+), 115 deletions(-)
 
-Opaque macros, however helpfully named, still creates
-a higher cognitive resistance and stresses developers.
+-- 
+2.21.0
 
-> Unfortunately i don't know U-Boot is handle the BCM2835 specific pinctrl
-> functions.
-
-I think it would be nice if boot loaders avoid to forking the
-standards, but I suppose it will invariably happen.
-Just keep in mind the IETF motto "rough consensus and
-running code".
-
-Yours,
-Linus Walleij
