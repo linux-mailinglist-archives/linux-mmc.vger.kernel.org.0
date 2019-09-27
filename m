@@ -2,171 +2,128 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD384BF7AC
-	for <lists+linux-mmc@lfdr.de>; Thu, 26 Sep 2019 19:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75F3EC0251
+	for <lists+linux-mmc@lfdr.de>; Fri, 27 Sep 2019 11:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727731AbfIZRij (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 26 Sep 2019 13:38:39 -0400
-Received: from mail-qk1-f178.google.com ([209.85.222.178]:37316 "EHLO
-        mail-qk1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727707AbfIZRij (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 26 Sep 2019 13:38:39 -0400
-Received: by mail-qk1-f178.google.com with SMTP id u184so2507722qkd.4
-        for <linux-mmc@vger.kernel.org>; Thu, 26 Sep 2019 10:38:38 -0700 (PDT)
+        id S1725911AbfI0J2L (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 27 Sep 2019 05:28:11 -0400
+Received: from mail-eopbgr1410100.outbound.protection.outlook.com ([40.107.141.100]:39264
+        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725890AbfI0J2L (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 27 Sep 2019 05:28:11 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MMlgl5KMnTkiCDk5pfCV2QR0mgtjc9L1cSKMgUQrAy17/ZXjz0xO/WCJYSOeYkYt4kDJyn+z75DZeJd0OBKx4uqS25rdyoHLS6bjuZEqTqn5FqmebGkXlYCoXDYxpkjQuJLKceOiD/x7kr1CBtzHIs9em1NOuxhSu6cPXnyf4TvxJNqJqGY7jVFsbFXtd7GaymusUrF7C4AgKn3uHmLO9l8SYqzjgc9PIf01AqdKHoOa2d+wHpdh1d5l5WQGFZ7y95oQMjiJSMqlE2ZfnG97AqY8L7LVT35o91boDs/C/W3BrnneOusSCgP4USYYDnbjcol4/ooQKVLwzoOOSQyd2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9sChrIM6QmmaAjJiMJQcAd1LYeqJ4szkpW/ZHzqXF8Y=;
+ b=cTkG65NH6rF2hfi6NOhlXCGWWi6TD8UFzjg05MyM0xcIkMVH5Chn/Atkj10qDWktieHYTlT1poJfGrLUIK59fDaxRv6cbNYZAUQDpO6712Kj1Te9gUZBityoV1G5BCRA7yYXszAh5Cea8yQU1+nVZNaNVOY1crGk6SN9chACGELRUPw92+Vyb5ZoMluY4QAx2NFkv1SDiw91lhmjTR0OJVrDsZCAgTgV8bCXxnfpsebnHfEVVNIMuN5RqOLGCh0382gdkLrZvqCxh4NM4Lj6/3/ODbZ6wa/YTSKQntrhmPoWLOWY9lHNx/GBz/Ff7RMxukRd/pWZ44RKfzNpeh+EyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=YFG6TczL/4x1QuQeJGNpaC1iKvQCR1RuKGaulOHWFkA=;
-        b=Z23RywyAD28BnGpjOfRo3tkSgYwjBhNdoUXhHeCsH9ZHnWxbUAMA+tJIcn4ECXwGPg
-         Oxy9nRIt2DzTfL2ToxFfg/ruBIZUD03hm+4BZsXzKryhoLikyx42rQcrrrRfeJbwDhL2
-         56jc324O0zOmguIbK7lDeCPejv4obr9FC3F+qUJSHUqd0FBy+bZxHxY32iO/IjuvjR0L
-         oZx4k0qTxRC5Si2ah3eC4l+fvmZr5+n+owSRjCVSVqrWWWDd44oa1mq6Hcx8ikRPRCxj
-         xyE18YGtzwTTvnuYRiwJjxlbOmIaulqfjb0iLhze/ze8zn3BZT+8NVfS3JgESQ7NhocM
-         UzMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=YFG6TczL/4x1QuQeJGNpaC1iKvQCR1RuKGaulOHWFkA=;
-        b=QcE+FQHabjdK8iyakW2PmGocCfhgBd6yt4X5GS+qDts8M4XteQwzz5C7t7+XDt/eLO
-         7dCPWSULAyjiqmsrn7mJ0ln3pdYx4eS3Xm5krs0URSRgGy9ol0QHynLOKhvhktbC8Lck
-         kjXQtMeuOo711wmKeIrgzux7EOmXR8bTZUf0g8eQ9IhzNUHD5Ft3Sc6DOtNIln7yeTJG
-         Cbmvs6BIObvvDhXiLkdB/ckbBUrFrnxxzn99gIOBa+Rl/Ldb0DpSEzwvq3lWx4nL7UIO
-         5b/suQRfP0En+GuJC2e0h3d/cDJaqyBWOQLDp0BHv5VgrbP8bfE3RLO/a6gOJXjhuOiG
-         uY7g==
-X-Gm-Message-State: APjAAAXx+6vLHDqsZO5hPuj21FdEzFqnvWWP1rFh2Zxy2+Wf+rV8Me3/
-        gp0AVS5YBhDo2AXr5rluR1EH3peDIhpcFzRA7Q0=
-X-Google-Smtp-Source: APXvYqwWBlDrVsdRsARr/PU2vOknSAyue9TsuRb0tw3n/73Sl4tylJAvYcX7RtKA2q2nZ8jhowdK2PL6eLNJ7aabyV8=
-X-Received: by 2002:a37:985:: with SMTP id 127mr4534321qkj.43.1569519518184;
- Thu, 26 Sep 2019 10:38:38 -0700 (PDT)
+ d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9sChrIM6QmmaAjJiMJQcAd1LYeqJ4szkpW/ZHzqXF8Y=;
+ b=iSYgpeImBh0aUHNFEPrKwfLGZS7RO/qul0VAZ0zmYq2irostqN/onpqscr9A2iUfEdts9NMHxCxUSjXOen4ZNw5F1i6Au6aJvCGzyOHQrvuPyo55dniRhZxCwdhZd8D0QYOHQXBG7lWuQwLTNjg9F1Lh2SSqslzA9ai1UB7zLgA=
+Received: from OSBPR01MB2103.jpnprd01.prod.outlook.com (52.134.242.17) by
+ OSBPR01MB2375.jpnprd01.prod.outlook.com (52.134.254.143) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2305.20; Fri, 27 Sep 2019 09:28:07 +0000
+Received: from OSBPR01MB2103.jpnprd01.prod.outlook.com
+ ([fe80::746b:49c1:925d:e9eb]) by OSBPR01MB2103.jpnprd01.prod.outlook.com
+ ([fe80::746b:49c1:925d:e9eb%5]) with mapi id 15.20.2284.023; Fri, 27 Sep 2019
+ 09:28:07 +0000
+From:   Biju Das <biju.das@bp.renesas.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+CC:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Subject: RE: [PATCH] mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
+Thread-Topic: [PATCH] mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
+Thread-Index: AQHVcqQwVUdoU56Bi06ox7Sw0gSDmqc+BhQAgAAM8rCAAAqBAIABH8mQ
+Date:   Fri, 27 Sep 2019 09:28:06 +0000
+Message-ID: <OSBPR01MB210339B59E1B57FFDB00038AB8810@OSBPR01MB2103.jpnprd01.prod.outlook.com>
+References: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
+ <CAMuHMdUsLCciw7KFudSC7pRqfwwaGH5iJSgv906kY342V+6ocQ@mail.gmail.com>
+ <OSBPR01MB21036B8294382D1A7A50816BB8860@OSBPR01MB2103.jpnprd01.prod.outlook.com>
+ <CAMuHMdXq1BaNSrOTqUkE34kS6i1kyEXLXe=S5pMdRiEvkD4fvw@mail.gmail.com>
+In-Reply-To: <CAMuHMdXq1BaNSrOTqUkE34kS6i1kyEXLXe=S5pMdRiEvkD4fvw@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=biju.das@bp.renesas.com; 
+x-originating-ip: [193.141.220.21]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 70a2f0cf-559f-4e5e-63af-08d7432d0159
+x-ms-office365-filtering-ht: Tenant
+x-ms-traffictypediagnostic: OSBPR01MB2375:|OSBPR01MB2375:
+x-ms-exchange-purlcount: 1
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <OSBPR01MB23754E84EFE364F6D503FAADB8810@OSBPR01MB2375.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4125;
+x-forefront-prvs: 0173C6D4D5
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(396003)(366004)(376002)(39860400002)(346002)(189003)(51914003)(199004)(26005)(256004)(25786009)(8676002)(81166006)(81156014)(86362001)(7736002)(305945005)(71200400001)(71190400001)(6916009)(74316002)(229853002)(66946007)(6436002)(55016002)(3846002)(66476007)(66556008)(76116006)(66446008)(64756008)(4326008)(14454004)(2906002)(8936002)(6246003)(6306002)(9686003)(186003)(446003)(6116002)(11346002)(99286004)(44832011)(476003)(102836004)(966005)(66066001)(7696005)(54906003)(33656002)(76176011)(5660300002)(53546011)(316002)(6506007)(486006)(478600001)(52536014);DIR:OUT;SFP:1102;SCL:1;SRVR:OSBPR01MB2375;H:OSBPR01MB2103.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:0;
+received-spf: None (protection.outlook.com: bp.renesas.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: GNMN8UejZrow5vwlv+CRkBAuoJC08hWGSCZsj9nOQPt716EMXpH1yBcSa6xulP1OSdOhvZxKS6gSBAuk0z6X5BadVBfAytf3cbJ1VL3/8XHaTwa5dBec9e9AhW4JaL5KMKD+0f1R22KJ007vfsL9Qj9b1ldak1SvxfmswaNIu4Aq5oHj1Gw2y5gqeowdETSyeqYl+hDqrkr4hC7lSK5w7SjjBEfp4eo1yxGIHCmyyGqeDCRw9wPbw0CZE1JaB/xthpMfnoLfAxlnTYvVxt2v6jBZCiur/XMvlP1AvUtQnfbFuirw/b+ELDJ4rdJImcEqcaXVVG1uv7+THMywVwSpvkuXr+pnAde8W8+G7JdFgSpKYxcqVrofyz5+ZXFfgCO5PQn3g6Adwlq4+PW6XTPMgwiRQjHzxRw8rPK1V2qtme7zlTLrqMfY1Cm3wkeWpP+/p/FpzXL40U2Woc2gYjTu2Q==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-From:   Paul Thomas <pthomas8589@gmail.com>
-Date:   Thu, 26 Sep 2019 13:38:26 -0400
-Message-ID: <CAD56B7eTM-KKUMoGwwKnEz2G1Ug5oh3vG4vwPiwdrvJua9Sj3Q@mail.gmail.com>
-Subject: mmc: Timeout waiting for hardware interrupt
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70a2f0cf-559f-4e5e-63af-08d7432d0159
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Sep 2019 09:28:06.7131
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Mn0ha95KtJUGOkr0qnxlgnhvp7QpgsKp6Jhd6jbPiwv1OHq7SwuO/EsWVrkyF+8XdGIrsciDGSYfQa6Shy021A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB2375
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi All,
-
-Every once in awhile I get this "Timeout waiting for hardware
-interrupt" error. This is with a uSD on a zynq ultrascale board
-running a 5.2.10-rt5 kernel (PREEMPT RT is enabled). The device tree
-entries are:
-/* SD1 with level shifter */
-&sdhci1 {
-    status = "okay";
-    no-1-8-v;    /* for 1.0 silicon */
-    wp-inverted;
-    xlnx,mio_bank = <1>;
-};
-and
-sdhci1: mmc@ff170000 {
-    compatible = "arasan,sdhci-8.9a";
-    status = "disabled";
-    interrupt-parent = <&gic>;
-    interrupts = <0 49 4>;
-    reg = <0x0 0xff170000 0x0 0x1000>;
-    clock-names = "clk_xin", "clk_ahb";
-};
-
-Maybe someone sees something.
-
-thanks,
-Paul
-
-# [ 4764.611187] 003: mmc0: Timeout waiting for hardware interrupt.
-[ 4764.611195] 003: mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
-[ 4764.611199] 003: mmc0: sdhci: Sys addr:  0x00000020 | Version:  0x00001002
-[ 4764.611202] 003: mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000020
-[ 4764.611205] 003: mmc0: sdhci: Argument:  0x00d83150 | Trn mode: 0x0000003b
-[ 4764.611209] 003: mmc0: sdhci: Present:   0x1ff70206 | Host ctl: 0x0000003d
-[ 4764.611212] 003: mmc0: sdhci: Power:     0x0000000f | Blk gap:  0x00000080
-[ 4764.611215] 003: mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x00000207
-[ 4764.611218] 003: mmc0: sdhci: Timeout:   0x00000006 | Int stat: 0x00000000
-[ 4764.611221] 003: mmc0: sdhci: Int enab:  0x03ff000b | Sig enab: 0x03ff000b
-[ 4764.611224] 003: mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
-[ 4764.611227] 003: mmc0: sdhci: Caps:      0x75ec3281 | Caps_1:   0x00002007
-[ 4764.611230] 003: mmc0: sdhci: Cmd:       0x0000123a | Max curr: 0x00000000
-[ 4764.611233] 003: mmc0: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0xffffffff
-[ 4764.611236] 003: mmc0: sdhci: Resp[2]:   0x320f5903 | Resp[3]:  0x00000900
-[ 4764.611239] 003: mmc0: sdhci: Host ctl2: 0x00000000
-[ 4764.611242] 003: mmc0: sdhci: ADMA Err:  0x00000000 | ADMA Ptr:
-0x0000000070048200
-[ 4764.611245] 003: mmc0: sdhci: ============================================
-[ 4764.711249] 003: mmc0: Reset 0x2 never completed.
-[ 4764.711252] 003: mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
-[ 4764.711254] 003: mmc0: sdhci: Sys addr:  0x00000020 | Version:  0x00001002
-[ 4764.711257] 003: mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000020
-[ 4764.711260] 003: mmc0: sdhci: Argument:  0x00d83150 | Trn mode: 0x0000003b
-[ 4764.711263] 003: mmc0: sdhci: Present:   0x1ff70206 | Host ctl: 0x0000003d
-[ 4764.711266] 003: mmc0: sdhci: Power:     0x0000000f | Blk gap:  0x00000080
-[ 4764.711269] 003: mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x00000207
-[ 4764.711272] 003: mmc0: sdhci: Timeout:   0x00000006 | Int stat: 0x00000000
-[ 4764.711275] 003: mmc0: sdhci: Int enab:  0x03ff000b | Sig enab: 0x03ff000b
-[ 4764.711278] 003: mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
-[ 4764.711281] 003: mmc0: sdhci: Caps:      0x75ec3281 | Caps_1:   0x00002007
-[ 4764.711284] 003: mmc0: sdhci: Cmd:       0x0000123a | Max curr: 0x00000000
-[ 4764.711287] 003: mmc0: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0xffffffff
-[ 4764.711290] 003: mmc0: sdhci: Resp[2]:   0x320f5903 | Resp[3]:  0x00000900
-[ 4764.711292] 003: mmc0: sdhci: Host ctl2: 0x00000000
-[ 4764.711295] 003: mmc0: sdhci: ADMA Err:  0x00000000 | ADMA Ptr:
-0x0000000070048200
-[ 4764.711298] 003: mmc0: sdhci: ============================================
-[ 4764.811302] 003: mmc0: Reset 0x4 never completed.
-[ 4764.811304] 003: mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
-[ 4764.811307] 003: mmc0: sdhci: Sys addr:  0x00000020 | Version:  0x00001002
-[ 4764.811309] 003: mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000020
-[ 4764.811312] 003: mmc0: sdhci: Argument:  0x00d83150 | Trn mode: 0x0000003b
-[ 4764.811315] 003: mmc0: sdhci: Present:   0x1ff70206 | Host ctl: 0x0000003d
-[ 4764.811318] 003: mmc0: sdhci: Power:     0x0000000f | Blk gap:  0x00000080
-[ 4764.811321] 003: mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x00000207
-[ 4764.811323] 003: mmc0: sdhci: Timeout:   0x00000006 | Int stat: 0x00000000
-[ 4764.811326] 003: mmc0: sdhci: Int enab:  0x03ff000b | Sig enab: 0x03ff000b
-[ 4764.811329] 003: mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
-[ 4764.811331] 003: mmc0: sdhci: Caps:      0x75ec3281 | Caps_1:   0x00002007
-[ 4764.811334] 003: mmc0: sdhci: Cmd:       0x0000123a | Max curr: 0x00000000
-[ 4764.811337] 003: mmc0: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0xffffffff
-[ 4764.811340] 003: mmc0: sdhci: Resp[2]:   0x320f5903 | Resp[3]:  0x00000900
-[ 4764.811342] 003: mmc0: sdhci: Host ctl2: 0x00000000
-[ 4764.811345] 003: mmc0: sdhci: ADMA Err:  0x00000000 | ADMA Ptr:
-0x0000000070048200
-[ 4764.811347] 003: mmc0: sdhci: ============================================
-[ 4772.035195] 002: INFO: task kworker/0:2H:1027 blocked for more than
-10 seconds.
-[ 4772.035202] 002:       Tainted: G         C
-5.2.10-rt5-00011-g2b6ca6e3766b-dirty #64
-[ 4772.035205] 002: "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-[ 4772.035209] 002: kworker/0:2H    D    0  1027      2 0x00000028
-[ 4772.035232] 002: Workqueue: kblockd blk_mq_run_work_fn
-[ 4772.035235] 002: Call trace:
-[ 4772.035237] 002: __switch_to (arch/arm64/kernel/process.c:514)
-[ 4772.035244] 002: __schedule (kernel/sched/core.c:2962
-kernel/sched/core.c:3587)
-[ 4772.035251] 002: schedule (kernel/sched/core.c:3655 (discriminator 1))
-[ 4772.035255] 002: mmc_blk_rw_wait (drivers/mmc/core/block.c:2160
-(discriminator 8))
-[ 4772.035261] 002: mmc_blk_mq_issue_rq (drivers/mmc/core/block.c:2182
-drivers/mmc/core/block.c:2261)
-[ 4772.035265] 002: mmc_mq_queue_rq (drivers/mmc/core/queue.c:313)
-[ 4772.035269] 002: blk_mq_dispatch_rq_list (block/blk-mq.c:1271)
-[ 4772.035274] 002: blk_mq_do_dispatch_sched (block/blk-mq-sched.c:115)
-[ 4772.035279] 002: blk_mq_sched_dispatch_requests (block/blk-mq-sched.c:211)
-[ 4772.035283] 002: __blk_mq_run_hw_queue (block/blk-mq.c:1402
-(discriminator 3))
-[ 4772.035287] 002: blk_mq_run_work_fn (block/blk-mq.c:1635)
-[ 4772.035291] 002: process_one_work (./include/linux/compiler.h:194
-./include/asm-generic/atomic-instrumented.h:27
-./include/linux/jump_label.h:251 ./include/linux/jump_label.h:261
-./include/trace/events/workqueue.h:114 kernel/workqueue.c:2277)
-[ 4772.035296] 002: worker_thread (./include/linux/compiler.h:194
-./include/linux/list.h:254 kernel/workqueue.c:2419)
-[ 4772.035300] 002: kthread (kernel/kthread.c:255)
-[ 4772.035305] 002: ret_from_fork (arch/arm64/kernel/entry.S:1174)
-[ 4774.851130] 003: mmc0: Timeout waiting for hardware interrupt.
+SGkgR2VlcnQsDQoNClRoYW5rcyBmb3IgdGhlIGZlZWRiYWNrLg0KDQo+IFN1YmplY3Q6IFJlOiBb
+UEFUQ0hdIG1tYzogcmVuZXNhc19zZGhpX2ludGVybmFsX2RtYWM6IEFkZCByOGE3NzRiMQ0KPiBz
+dXBwb3J0DQo+IA0KPiBIaSBCaWp1LA0KPiANCj4gT24gVGh1LCBTZXAgMjYsIDIwMTkgYXQgNTox
+MSBQTSBCaWp1IERhcyA8YmlqdS5kYXNAYnAucmVuZXNhcy5jb20+IHdyb3RlOg0KPiA+ID4gU3Vi
+amVjdDogUmU6IFtQQVRDSF0gbW1jOiByZW5lc2FzX3NkaGlfaW50ZXJuYWxfZG1hYzogQWRkIHI4
+YTc3NGIxDQo+ID4gPiBzdXBwb3J0IE9uIFR1ZSwgU2VwIDI0LCAyMDE5IGF0IDg6NDkgQU0gQmlq
+dSBEYXMNCj4gPGJpanUuZGFzQGJwLnJlbmVzYXMuY29tPiB3cm90ZToNCj4gPiA+ID4gVGhpcyBw
+YXRjaCBhZGRzIFNESEkgc3VwcG9ydCBmb3IgUlovRzJOIChSOEE3NzRCMSkgU29DLg0KPiA+ID4g
+Pg0KPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBCaWp1IERhcyA8YmlqdS5kYXNAYnAucmVuZXNhcy5j
+b20+DQo+ID4gPiA+IC0tLQ0KPiA+ID4gPiAgZHJpdmVycy9tbWMvaG9zdC9yZW5lc2FzX3NkaGlf
+aW50ZXJuYWxfZG1hYy5jIHwgMSArDQo+ID4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRp
+b24oKykNCj4gPiA+ID4NCj4gPiA+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbW1jL2hvc3QvcmVu
+ZXNhc19zZGhpX2ludGVybmFsX2RtYWMuYw0KPiA+ID4gPiBiL2RyaXZlcnMvbW1jL2hvc3QvcmVu
+ZXNhc19zZGhpX2ludGVybmFsX2RtYWMuYw0KPiA+ID4gPiBpbmRleCA3NTFmZTkxLi43YzYwMjBl
+IDEwMDY0NA0KPiA+ID4gPiAtLS0gYS9kcml2ZXJzL21tYy9ob3N0L3JlbmVzYXNfc2RoaV9pbnRl
+cm5hbF9kbWFjLmMNCj4gPiA+ID4gKysrIGIvZHJpdmVycy9tbWMvaG9zdC9yZW5lc2FzX3NkaGlf
+aW50ZXJuYWxfZG1hYy5jDQo+ID4gPiA+IEBAIC0zMDgsNiArMzA4LDcgQEAgc3RhdGljIGNvbnN0
+IHN0cnVjdCBzb2NfZGV2aWNlX2F0dHJpYnV0ZQ0KPiA+ID4gc29jX3doaXRlbGlzdFtdID0gew0K
+PiA+ID4gPiAgICAgICAgICAgLmRhdGEgPSAodm9pZCAqKUJJVChTREhJX0lOVEVSTkFMX0RNQUNf
+T05FX1JYX09OTFkpIH0sDQo+ID4gPiA+ICAgICAgICAgLyogZ2VuZXJpYyBvbmVzICovDQo+ID4g
+PiA+ICAgICAgICAgeyAuc29jX2lkID0gInI4YTc3NGExIiB9LA0KPiA+ID4gPiArICAgICAgIHsg
+LnNvY19pZCA9ICJyOGE3NzRiMSIgfSwNCj4gPiA+ID4gICAgICAgICB7IC5zb2NfaWQgPSAicjhh
+Nzc0YzAiIH0sDQo+ID4gPiA+ICAgICAgICAgeyAuc29jX2lkID0gInI4YTc3NDcwIiB9LA0KPiA+
+ID4gPiAgICAgICAgIHsgLnNvY19pZCA9ICJyOGE3Nzk1IiB9LA0KPiA+ID4NCj4gPiA+IElzIHRo
+aXMgc3VmZmljaWVudD8NCj4gPiA+IERvIHlvdSBuZWVkIGEgdHVuaW5nIHF1aXJrIGVudHJ5IGlu
+IHNkaGlfcXVpcmtzX21hdGNoW10/DQo+ID4NCj4gPiBEbyB5b3UgbWVhbiB0aGUgICJxdWlya3Mt
+Pm1hbnVhbF9jYWxpYnJhdGlvbiIgIGFzIG1lbnRpb25lZCBpbiB0aGUgYmVsb3cNCj4gcGF0Y2gg
+Pw0KPiA+DQo+ID4gaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xMTAyNDEzMS8N
+Cj4gDQo+IEV4YWN0bHkuIElzIFJaL0cyTiBhZmZlY3RlZD8NCg0KTm8uIFJaL0cyTiBpcyBub3Qg
+YWZmZWN0ZWQuICBJIGhhdmUgZW5hYmxlZCBIUzQwMCBtb2RlIG9uIFJaL0cyTiBib2FyZCBhbmQg
+d2l0aG91dCB0aGlzIHBhdGNoIGl0IHdvcmtzIGZpbmUuDQoNCk5vdGU6LQ0KIEkgYWxzbyB0ZXN0
+ZWQgd2l0aCBxdWlyayBlbnRyeSBhZGRlZCBpbiBzZGhpX3F1aXJrc19tYXRjaC4gIFRoYXQgaXMg
+YWxzbyB3b3JrcyBmaW5lLg0KDQpSZWdhcmRzLA0KQmlqdQ0K
