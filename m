@@ -2,54 +2,55 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB5C6C0E6A
-	for <lists+linux-mmc@lfdr.de>; Sat, 28 Sep 2019 01:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 291F9C11D7
+	for <lists+linux-mmc@lfdr.de>; Sat, 28 Sep 2019 20:50:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728103AbfI0Xkv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 27 Sep 2019 19:40:51 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:35217 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725990AbfI0Xkv (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 27 Sep 2019 19:40:51 -0400
-Received: by mail-lf1-f67.google.com with SMTP id w6so3114025lfl.2;
-        Fri, 27 Sep 2019 16:40:46 -0700 (PDT)
+        id S1726155AbfI1Sun (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 28 Sep 2019 14:50:43 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:34997 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725965AbfI1Sum (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 28 Sep 2019 14:50:42 -0400
+Received: by mail-wr1-f65.google.com with SMTP id v8so6620810wrt.2
+        for <linux-mmc@vger.kernel.org>; Sat, 28 Sep 2019 11:50:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TulEG5PLhY2aVNki5vcfpKGXNZTyPAijTH/d4NuYlvU=;
+        b=RaG6Hq0Xx8d56rDP7iIY8j1Tdo5AmQrvx50oOyCUECAVL30vqgo8BOCPZEA03Iil6D
+         EPi8qRg8mTuIU4izdDQzmskxvCWBoX8Lk/S7ysGugulb+YOywdQsU9gpbzzp7M85uOKH
+         F6JLKHiPYl5yI9MsbwTAcu1/wxzebndbUAsD4Ecg1NERhwL+dsfkwMaZI2IEIJVC1Eol
+         Rl/SbZzQzHHTo8hoBwHc9UiokiLM7mjc377fz4ZFO0Fdaqp3bowiWL9vv7k6Vdj75SaK
+         1fcmwxcIkR3du9cKdpgzfnKT8j+WVdVGwZsS/JIY/1pl86Kr/ORXnpgpS3KEewwTbvMu
+         +RcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=/vjA3feuVjhECJGCJlv7w7hKdoWzVAzTRzB0psX8g5s=;
-        b=cyYcyUamH/ZJxf1UPzvn/4gz0YorW7s+CfbhnVmploaBcmV29oJLvYo3uJwU0mjY58
-         3LWWSqUd8ot/ev0O7q3aZAJpUR1POuZMfY2vKm0V3xuUf7ZeMNZjutuJHIavuOa4azPF
-         XRNkWfLv6RBEMZcJX4IfJT5Z74EzX4Zvlb9ZknQvFacosYbT+VGJcv4Mq2iJhNU6D/Rt
-         hRwKC4wEfDeURwXeCr6uxvYfkyWO2U6rV+P7GGXXdtoEHmqk5vLIgYXe3uF8HCavjLaD
-         wG703e3baIwYGGDSZILhLVcOM/afcTqJG6Ume4iYUaX9aFh0llteu5a4JB4M53kygSxa
-         6Acw==
-X-Gm-Message-State: APjAAAXafwV/kRJo63q6NYOpyM5CSiynf+c+Iq9sebobZLx66zGoXoeb
-        pT2b/y18TMmkWfo3zr3cjKE=
-X-Google-Smtp-Source: APXvYqzJjAsZOxffDP6X1PyAJObAmIHMhsLPPyKIAwdxjZFuFJU1hlQRv1yAEhIhnnum3sSXraXujg==
-X-Received: by 2002:ac2:568c:: with SMTP id 12mr4300543lfr.133.1569627646034;
-        Fri, 27 Sep 2019 16:40:46 -0700 (PDT)
-Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
-        by smtp.googlemail.com with ESMTPSA id x25sm778810ljb.60.2019.09.27.16.40.44
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TulEG5PLhY2aVNki5vcfpKGXNZTyPAijTH/d4NuYlvU=;
+        b=E8xaGu4uiSbgb5EEUjeTxeF053X95uTXrQ/j0ARYm3pQthVHgFzffHrvhMfHAb6xtW
+         KFYcR+nM3wXQ3xYWcQXj6Y2f25Bci0wvaLDgIaaCg616CPrBn0xxjBs3nNY92RGlYcGG
+         cjJTfO3A8XfGenMFJHHEpj4IXOZJGJrjIu/KtKJlYmCi54ls9/4klvN6BhcY845yVGuT
+         w2BxlDoe1Tu8IPrT7TGY6mM1PFkeJIZiAfM3KVjPloHvodR94E8fh1WsMH7RdK0VOMhq
+         Nn4N6YX5/1afy3dbR4D1074saFSARfDJqqOoS2re/dFvhsL0wRyIrBmxOxarjtKIjFon
+         psJw==
+X-Gm-Message-State: APjAAAW7oTgwD5h2S+mNmYvaM+yT68+MQi1paWqsshjqQp4KCfULJVES
+        s2J/NmUPg2Ynn6qjSNU2V4so+yvu3ZI=
+X-Google-Smtp-Source: APXvYqz0DjP/K3pCNXYforcYkSWcMzP/LGv1iq4pSaOwrJBK9/YgtWx1wsT/GLkz93UhdivpibHtHw==
+X-Received: by 2002:adf:ec91:: with SMTP id z17mr7820509wrn.346.1569696640266;
+        Sat, 28 Sep 2019 11:50:40 -0700 (PDT)
+Received: from kali.home (lfbn-ren-1-785-122.w83-197.abo.wanadoo.fr. [83.197.112.122])
+        by smtp.gmail.com with ESMTPSA id i1sm21717934wmb.19.2019.09.28.11.50.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2019 16:40:45 -0700 (PDT)
-From:   Denis Efremov <efremov@linux.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Denis Efremov <efremov@linux.com>, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        x86@kernel.org, linux-s390@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, kvm@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-usb@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-serial@vger.kernel.org, linux-mmc@vger.kernel.org
-Subject: [PATCH RESEND v3 00/26] Add definition for the number of standard PCI BARs
-Date:   Sat, 28 Sep 2019 02:40:26 +0300
-Message-Id: <20190927234026.23342-1-efremov@linux.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190916204158.6889-3-efremov@linux.com>
-References: <20190916204158.6889-3-efremov@linux.com>
+        Sat, 28 Sep 2019 11:50:39 -0700 (PDT)
+From:   Fabrice Fontaine <fontaine.fabrice@gmail.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Subject: [PATCH] mmc_cmds.c: fix build with gcc 4.9
+Date:   Sat, 28 Sep 2019 20:51:07 +0200
+Message-Id: <20190928185107.21125-1-fontaine.fabrice@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
@@ -57,104 +58,34 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Code that iterates over all standard PCI BARs typically uses
-PCI_STD_RESOURCE_END, but this is error-prone because it requires
-"i <= PCI_STD_RESOURCE_END" rather than something like
-"i < PCI_STD_NUM_BARS". We could add such a definition and use it the same
-way PCI_SRIOV_NUM_BARS is used. The patchset also replaces constant (6)
-with new define PCI_STD_NUM_BARS where appropriate and removes local
-declarations for the number of PCI BARs.
+Fix following error with gcc 4.9:
 
-Changes in v3:
-  - Updated commits description.
-  - Refactored "< PCI_ROM_RESOURCE" with "< PCI_STD_NUM_BARS" in loops.
-  - Refactored "<= BAR_5" with "< PCI_STD_NUM_BARS" in loops.
-  - Removed local define GASKET_NUM_BARS.
-  - Removed local define PCI_NUM_BAR_RESOURCES.
+mmc_cmds.c:1918:9: error: missing braces around initializer [-Werror=missing-braces]
+  struct rpmb_frame frame_status = {0};
 
-Changes in v2:
-  - Reversed checks in pci_iomap_range,pci_iomap_wc_range.
-  - Refactored loops in vfio_pci to keep PCI_STD_RESOURCES.
-  - Added 2 new patches to replace the magic constant with new define.
-  - Splitted net patch in v1 to separate stmmac and dwc-xlgmac patches.
+Fixes:
+ - http://autobuild.buildroot.org/results/bf3b6f9f6ef39b99842b3c92495b7bf359c68158
 
-Denis Efremov (26):
-  PCI: Add define for the number of standard PCI BARs
-  PCI: hv: Use PCI_STD_NUM_BARS
-  PCI: dwc: Use PCI_STD_NUM_BARS
-  PCI: endpoint: Use PCI_STD_NUM_BARS
-  misc: pci_endpoint_test: Use PCI_STD_NUM_BARS
-  s390/pci: Use PCI_STD_NUM_BARS
-  x86/PCI: Loop using PCI_STD_NUM_BARS
-  alpha/PCI: Use PCI_STD_NUM_BARS
-  ia64: Use PCI_STD_NUM_BARS
-  stmmac: pci: Loop using PCI_STD_NUM_BARS
-  net: dwc-xlgmac: Loop using PCI_STD_NUM_BARS
-  ixgb: use PCI_STD_NUM_BARS
-  e1000: Use PCI_STD_NUM_BARS
-  rapidio/tsi721: Loop using PCI_STD_NUM_BARS
-  efifb: Loop using PCI_STD_NUM_BARS
-  fbmem: use PCI_STD_NUM_BARS
-  vfio_pci: Loop using PCI_STD_NUM_BARS
-  scsi: pm80xx: Use PCI_STD_NUM_BARS
-  ata: sata_nv: Use PCI_STD_NUM_BARS
-  staging: gasket: Use PCI_STD_NUM_BARS
-  serial: 8250_pci: Use PCI_STD_NUM_BARS
-  pata_atp867x: Use PCI_STD_NUM_BARS
-  memstick: use PCI_STD_NUM_BARS
-  USB: core: Use PCI_STD_NUM_BARS
-  usb: pci-quirks: Use PCI_STD_NUM_BARS
-  devres: use PCI_STD_NUM_BARS
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ mmc_cmds.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- arch/alpha/kernel/pci-sysfs.c                 |  8 ++---
- arch/ia64/sn/pci/pcibr/pcibr_dma.c            |  4 +--
- arch/s390/include/asm/pci.h                   |  5 +--
- arch/s390/include/asm/pci_clp.h               |  6 ++--
- arch/s390/pci/pci.c                           | 16 +++++-----
- arch/s390/pci/pci_clp.c                       |  6 ++--
- arch/x86/pci/common.c                         |  2 +-
- arch/x86/pci/intel_mid_pci.c                  |  2 +-
- drivers/ata/pata_atp867x.c                    |  2 +-
- drivers/ata/sata_nv.c                         |  2 +-
- drivers/memstick/host/jmb38x_ms.c             |  2 +-
- drivers/misc/pci_endpoint_test.c              |  8 ++---
- drivers/net/ethernet/intel/e1000/e1000.h      |  1 -
- drivers/net/ethernet/intel/e1000/e1000_main.c |  2 +-
- drivers/net/ethernet/intel/ixgb/ixgb.h        |  1 -
- drivers/net/ethernet/intel/ixgb/ixgb_main.c   |  2 +-
- .../net/ethernet/stmicro/stmmac/stmmac_pci.c  |  4 +--
- .../net/ethernet/synopsys/dwc-xlgmac-pci.c    |  2 +-
- drivers/pci/controller/dwc/pci-dra7xx.c       |  2 +-
- .../pci/controller/dwc/pci-layerscape-ep.c    |  2 +-
- drivers/pci/controller/dwc/pcie-artpec6.c     |  2 +-
- .../pci/controller/dwc/pcie-designware-plat.c |  2 +-
- drivers/pci/controller/dwc/pcie-designware.h  |  2 +-
- drivers/pci/controller/pci-hyperv.c           | 10 +++---
- drivers/pci/endpoint/functions/pci-epf-test.c | 10 +++---
- drivers/pci/pci-sysfs.c                       |  4 +--
- drivers/pci/pci.c                             | 13 ++++----
- drivers/pci/proc.c                            |  4 +--
- drivers/pci/quirks.c                          |  4 +--
- drivers/rapidio/devices/tsi721.c              |  2 +-
- drivers/scsi/pm8001/pm8001_hwi.c              |  2 +-
- drivers/scsi/pm8001/pm8001_init.c             |  2 +-
- drivers/staging/gasket/gasket_constants.h     |  3 --
- drivers/staging/gasket/gasket_core.c          | 12 +++----
- drivers/staging/gasket/gasket_core.h          |  4 +--
- drivers/tty/serial/8250/8250_pci.c            |  8 ++---
- drivers/usb/core/hcd-pci.c                    |  2 +-
- drivers/usb/host/pci-quirks.c                 |  2 +-
- drivers/vfio/pci/vfio_pci.c                   | 11 ++++---
- drivers/vfio/pci/vfio_pci_config.c            | 32 ++++++++++---------
- drivers/vfio/pci/vfio_pci_private.h           |  4 +--
- drivers/video/fbdev/core/fbmem.c              |  4 +--
- drivers/video/fbdev/efifb.c                   |  2 +-
- include/linux/pci-epc.h                       |  2 +-
- include/linux/pci.h                           |  2 +-
- include/uapi/linux/pci_regs.h                 |  1 +
- lib/devres.c                                  |  2 +-
- 47 files changed, 112 insertions(+), 115 deletions(-)
-
+diff --git a/mmc_cmds.c b/mmc_cmds.c
+index fb37189..6b09f26 100644
+--- a/mmc_cmds.c
++++ b/mmc_cmds.c
+@@ -1915,7 +1915,9 @@ static int do_rpmb_op(int fd,
+ 	u_int16_t rpmb_type;
+ 	struct mmc_ioc_multi_cmd *mioc;
+ 	struct mmc_ioc_cmd *ioc;
+-	struct rpmb_frame frame_status = {0};
++	struct rpmb_frame frame_status;
++
++	memset(&frame_status, 0, sizeof(frame_status));
+ 
+ 	if (!frame_in || !frame_out || !out_cnt)
+ 		return -EINVAL;
 -- 
-2.21.0
+2.23.0
 
