@@ -2,36 +2,37 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B29C3F62
-	for <lists+linux-mmc@lfdr.de>; Tue,  1 Oct 2019 20:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D254C3F71
+	for <lists+linux-mmc@lfdr.de>; Tue,  1 Oct 2019 20:08:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728573AbfJASHH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 1 Oct 2019 14:07:07 -0400
-Received: from baptiste.telenet-ops.be ([195.130.132.51]:48676 "EHLO
+        id S1729420AbfJASIh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 1 Oct 2019 14:08:37 -0400
+Received: from baptiste.telenet-ops.be ([195.130.132.51]:54086 "EHLO
         baptiste.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725844AbfJASHH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 1 Oct 2019 14:07:07 -0400
+        with ESMTP id S1728734AbfJASIh (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 1 Oct 2019 14:08:37 -0400
 Received: from ramsan ([84.194.98.4])
         by baptiste.telenet-ops.be with bizsmtp
-        id 8J752100105gfCL01J75v0; Tue, 01 Oct 2019 20:07:05 +0200
+        id 8J8b2100305gfCL01J8bCc; Tue, 01 Oct 2019 20:08:35 +0200
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan with esmtp (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1iFMYD-0008Kj-1K; Tue, 01 Oct 2019 20:07:05 +0200
+        id 1iFMZf-0008LA-0r; Tue, 01 Oct 2019 20:08:35 +0200
 Received: from geert by rox.of.borg with local (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1iFMYC-0000Fj-W1; Tue, 01 Oct 2019 20:07:05 +0200
+        id 1iFMZe-0000JZ-Vp; Tue, 01 Oct 2019 20:08:34 +0200
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Jiri Slaby <jslaby@suse.com>
 Cc:     Stephen Boyd <swboyd@chromium.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-renesas-soc@vger.kernel.org, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] mmc: renesas_sdhi: Do not use platform_get_irq() to count interrupts
-Date:   Tue,  1 Oct 2019 20:07:03 +0200
-Message-Id: <20191001180703.910-1-geert+renesas@glider.be>
+Subject: [PATCH] mmc: sh_mmcif: Use platform_get_irq_optional() for optional interrupt
+Date:   Tue,  1 Oct 2019 20:08:34 +0200
+Message-Id: <20191001180834.1158-1-geert+renesas@glider.be>
 X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
@@ -39,74 +40,42 @@ List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
 As platform_get_irq() now prints an error when the interrupt does not
-exist, counting interrupts by looping until failure causes the printing
-of scary messages like:
+exist, a scary warning may be printed for an optional interrupt:
 
-    renesas_sdhi_internal_dmac ee140000.sd: IRQ index 1 not found
+    sh_mmcif ee200000.mmc: IRQ index 1 not found
 
-Fix this by using the platform_irq_count() helper to avoid touching
-non-existent interrupts.
+Fix this by calling platform_get_irq_optional() instead for the second
+interrupt, which is optional.
+
+Remove the now superfluous error printing for the first interrupt, which
+is mandatory.
 
 Fixes: 7723f4c5ecdb8d83 ("driver core: platform: Add an error message to platform_get_irq*()")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 This is a fix for v5.4-rc1.
 ---
- drivers/mmc/host/renesas_sdhi_core.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/mmc/host/sh_mmcif.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index d4ada5cca2d14f6a..122f429602d825bd 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -646,8 +646,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 	struct tmio_mmc_dma *dma_priv;
- 	struct tmio_mmc_host *host;
- 	struct renesas_sdhi *priv;
-+	int num_irqs, irq, ret, i;
- 	struct resource *res;
--	int irq, ret, i;
- 	u16 ver;
+diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
+index 81bd9afb0980525e..98c575de43c755ed 100644
+--- a/drivers/mmc/host/sh_mmcif.c
++++ b/drivers/mmc/host/sh_mmcif.c
+@@ -1393,11 +1393,9 @@ static int sh_mmcif_probe(struct platform_device *pdev)
+ 	const char *name;
  
- 	of_data = of_device_get_match_data(&pdev->dev);
-@@ -825,24 +825,26 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 		host->hs400_complete = renesas_sdhi_hs400_complete;
- 	}
- 
--	i = 0;
--	while (1) {
-+	/* There must be at least one IRQ source */
-+	num_irqs = platform_irq_count(pdev);
-+	if (num_irqs < 1) {
-+		ret = num_irqs;
-+		goto eirq;
-+	}
-+
-+	for (i = 0; i < num_irqs; i++) {
- 		irq = platform_get_irq(pdev, i);
--		if (irq < 0)
--			break;
--		i++;
-+		if (irq < 0) {
-+			ret = irq;
-+			goto eirq;
-+		}
-+
- 		ret = devm_request_irq(&pdev->dev, irq, tmio_mmc_irq, 0,
- 				       dev_name(&pdev->dev), host);
- 		if (ret)
- 			goto eirq;
- 	}
- 
--	/* There must be at least one IRQ source */
--	if (!i) {
--		ret = irq;
--		goto eirq;
+ 	irq[0] = platform_get_irq(pdev, 0);
+-	irq[1] = platform_get_irq(pdev, 1);
+-	if (irq[0] < 0) {
+-		dev_err(dev, "Get irq error\n");
++	irq[1] = platform_get_irq_optional(pdev, 1);
++	if (irq[0] < 0)
+ 		return -ENXIO;
 -	}
--
- 	dev_info(&pdev->dev, "%s base at 0x%08lx max clock rate %u MHz\n",
- 		 mmc_hostname(host->mmc), (unsigned long)
- 		 (platform_get_resource(pdev, IORESOURCE_MEM, 0)->start),
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	reg = devm_ioremap_resource(dev, res);
 -- 
 2.17.1
 
