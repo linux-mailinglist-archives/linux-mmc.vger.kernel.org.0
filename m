@@ -2,66 +2,124 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 392AEC8AF0
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Oct 2019 16:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1429C8CE6
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Oct 2019 17:29:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728089AbfJBOT2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 2 Oct 2019 10:19:28 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:34481 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728231AbfJBOT1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Oct 2019 10:19:27 -0400
-Received: by mail-qt1-f195.google.com with SMTP id 3so26578370qta.1;
-        Wed, 02 Oct 2019 07:19:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:subject:references
-         :in-reply-to:cc:cc:to;
-        bh=6K7h81n5R+8N5AYxLG2UrQyGpz0OM8kQJKC93Y2B28Y=;
-        b=PubIfMPGPixET196Kg04etocm/lJ+emIpJ91Qk54sc84xbYBLOZvIkqTxT3grusx/Q
-         eOsb8L4nnomfylt83b4Lb4bznTGhSj5uAIDYab8wDO6PQTPO8wUFLSrWyxE8hl/SjyHp
-         Mh31iK3llAoPyJzaxIcwq2WGT3f31l9KxBWx1Dk+xDjJT2LLp6qCCPzyKDGPZWXtfYuq
-         9jpHLrUrQOB6HdNLnEy7Xxz9fSqiJTRDTnsXlKZnt8xE1ktDCSLCzq5XMRZYPjgLHwEP
-         sKpDb4xfE9WIv9AoOzbhgoK1ByTQhaocRPfvzgtTyV23CO9PFitYh4yJjJ8WH/CHcrfT
-         WD5Q==
-X-Gm-Message-State: APjAAAXjl1Tire55+L5c4bLmkz5sr5rABFu0NzbrHjkiXkx1aQW3FhX6
-        4x74ApS3e7r8uOt/9li93A==
-X-Google-Smtp-Source: APXvYqyEow9CPhTFiohWRgy15ugJtNjrfTTlldI+woJBQ5VtiYXeuxNGDjIOA3xkAN/VR8uHPoy4OA==
-X-Received: by 2002:a0c:8828:: with SMTP id 37mr3249987qvl.44.1570025966336;
-        Wed, 02 Oct 2019 07:19:26 -0700 (PDT)
-Received: from localhost ([132.205.230.8])
-        by smtp.gmail.com with ESMTPSA id n44sm16531159qtf.51.2019.10.02.07.19.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2019 07:19:25 -0700 (PDT)
-Message-ID: <5d94b1ed.1c69fb81.7069a.47e7@mx.google.com>
-Date:   Wed, 02 Oct 2019 09:19:22 -0500
-From:   Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] dt-bindings: mmc: renesas_sdhi: Add r8a774b1 support
-References: <1569307615-38914-1-git-send-email-biju.das@bp.renesas.com>
-In-Reply-To: <1569307615-38914-1-git-send-email-biju.das@bp.renesas.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Cc:     Biju Das <biju.das@bp.renesas.com>, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org
-To:     Biju Das <biju.das@bp.renesas.com>
+        id S1726330AbfJBP3u (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Oct 2019 11:29:50 -0400
+Received: from laurent.telenet-ops.be ([195.130.137.89]:60494 "EHLO
+        laurent.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725875AbfJBP3u (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Oct 2019 11:29:50 -0400
+Received: from ramsan ([84.194.98.4])
+        by laurent.telenet-ops.be with bizsmtp
+        id 8fVn2100n05gfCL01fVnvm; Wed, 02 Oct 2019 17:29:48 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iFgZX-0000sZ-LH; Wed, 02 Oct 2019 17:29:47 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iFgZX-00031d-Is; Wed, 02 Oct 2019 17:29:47 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Stephen Boyd <swboyd@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        linux-renesas-soc@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2] mmc: renesas_sdhi: Do not use platform_get_irq() to count interrupts
+Date:   Wed,  2 Oct 2019 17:29:46 +0200
+Message-Id: <20191002152946.11586-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 24 Sep 2019 07:46:55 +0100, Biju Das wrote:
-> Document RZ/G2N (R8A774B1) SoC bindings.
-> 
-> Signed-off-by: Biju Das <biju.das@bp.renesas.com>
-> ---
->  Documentation/devicetree/bindings/mmc/renesas,sdhi.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
+As platform_get_irq() now prints an error when the interrupt does not
+exist, counting interrupts by looping until failure causes the printing
+of scary messages like:
 
-Acked-by: Rob Herring <robh@kernel.org>
+    renesas_sdhi_internal_dmac ee140000.sd: IRQ index 1 not found
+
+Fix this by using the platform_irq_count() helper to avoid touching
+non-existent interrupts.
+
+Fixes: 7723f4c5ecdb8d83 ("driver core: platform: Add an error message to platform_get_irq*()")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+v2:
+  - Add Reviewed-by, Tested-by,
+  - Return failure in case num_irqs is zero, as before.
+
+This is a fix for v5.4-rc1.
+---
+ drivers/mmc/host/renesas_sdhi_core.c | 31 +++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+index d4ada5cca2d14f6a..234551a68739b65b 100644
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -646,8 +646,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 	struct tmio_mmc_dma *dma_priv;
+ 	struct tmio_mmc_host *host;
+ 	struct renesas_sdhi *priv;
++	int num_irqs, irq, ret, i;
+ 	struct resource *res;
+-	int irq, ret, i;
+ 	u16 ver;
+ 
+ 	of_data = of_device_get_match_data(&pdev->dev);
+@@ -825,24 +825,31 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 		host->hs400_complete = renesas_sdhi_hs400_complete;
+ 	}
+ 
+-	i = 0;
+-	while (1) {
++	num_irqs = platform_irq_count(pdev);
++	if (num_irqs < 0) {
++		ret = num_irqs;
++		goto eirq;
++	}
++
++	/* There must be at least one IRQ source */
++	if (!num_irqs) {
++		ret = -ENXIO;
++		goto eirq;
++	}
++
++	for (i = 0; i < num_irqs; i++) {
+ 		irq = platform_get_irq(pdev, i);
+-		if (irq < 0)
+-			break;
+-		i++;
++		if (irq < 0) {
++			ret = irq;
++			goto eirq;
++		}
++
+ 		ret = devm_request_irq(&pdev->dev, irq, tmio_mmc_irq, 0,
+ 				       dev_name(&pdev->dev), host);
+ 		if (ret)
+ 			goto eirq;
+ 	}
+ 
+-	/* There must be at least one IRQ source */
+-	if (!i) {
+-		ret = irq;
+-		goto eirq;
+-	}
+-
+ 	dev_info(&pdev->dev, "%s base at 0x%08lx max clock rate %u MHz\n",
+ 		 mmc_hostname(host->mmc), (unsigned long)
+ 		 (platform_get_resource(pdev, IORESOURCE_MEM, 0)->start),
+-- 
+2.17.1
 
