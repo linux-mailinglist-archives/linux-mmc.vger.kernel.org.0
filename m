@@ -2,135 +2,99 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A65AC9B82
-	for <lists+linux-mmc@lfdr.de>; Thu,  3 Oct 2019 12:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5808DC9B86
+	for <lists+linux-mmc@lfdr.de>; Thu,  3 Oct 2019 12:05:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729729AbfJCKB4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 3 Oct 2019 06:01:56 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:41538 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729691AbfJCKB4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Oct 2019 06:01:56 -0400
-Received: by mail-vs1-f66.google.com with SMTP id l2so1270755vsr.8
-        for <linux-mmc@vger.kernel.org>; Thu, 03 Oct 2019 03:01:55 -0700 (PDT)
+        id S1726763AbfJCKCC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 3 Oct 2019 06:02:02 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:38069 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726070AbfJCKCC (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Oct 2019 06:02:02 -0400
+Received: by mail-vs1-f67.google.com with SMTP id b123so1284886vsb.5
+        for <linux-mmc@vger.kernel.org>; Thu, 03 Oct 2019 03:02:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=bQZgMiPBlch+da9eCpuVvMh7cDd98498ZGUQ3xlwUWM=;
-        b=FuER+l0gj2hl/fxpTFxvQ3nYlHiIWdyz8MM9HC+XQxx5GTIH0AH9LvMxKjOxn40Vro
-         o+KyzVClab/FiyZjLNkL5uvla+jp3D7dYdVVtEYEy44JiAKab3nvxz4nJd6Ys5vh0SUy
-         royoVNCuLwNLyUgLj8W8Kuh10mXwzsJo9jNwQvoyIDXn2nmCgvO3lybBQKlhuooIgcTk
-         MTwDkH6MQUPFv7fjj6JIj4n7fE/l+oVA44YgZLiT1EaCIAO6iROTdyF8i9qsSVZy9x6O
-         L44zkMJjvgyat95nf/WiY2dPlBJluv73B32vxzs2rYOxLxVvrEFQWW3MjOncsHTUgB4g
-         T4+w==
+        bh=WZwCwSWOc22kro/2vgaznXfgYQv3kw7oQQTG/2sS/lI=;
+        b=HOfcCttDVtAQO4QKBPRfTckaGADehLqGF2iEvR1F78kBciOlBBcNrpNWotOrVlki2Y
+         3IlmlUNSmZ7G+Yb3b+rYvA9vLbJScsfl2RJsabQw4O2WNoT5yxRrFomLCzhDBiko3eiA
+         LzrG2tJHBI0p9x/bqjLhg0qaN2czPFI5ZtgpiR4SnlxAiKSbdzc24AgaE+wLOcmARTpU
+         TTl5qTBXdZT9eMHKeRF08rGC62PxihtovXvH+cbl3o1lXu+1MZRPHSL8JJoGkV7CGFVt
+         JWjWRDMLY2Lv6Sh26QeG2c2vOn9gHUSpTBPrJp9680bPTzohE1+btOAq8gXypg47gWe8
+         GmuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=bQZgMiPBlch+da9eCpuVvMh7cDd98498ZGUQ3xlwUWM=;
-        b=bZrFdQEs733N22KjWL/pVlUJVx3c9Yvm/jYnGD4jtHoafhEdA7D+vcSctuBWJOtuWG
-         NI+AIdT5WmMoH7sMElsHyTqJn2pF1LSq2CLOxN+D/j3wnL1cFdNnLN0TNne3/wW79rii
-         uh17gpgWSBLcY9c5MxPMcIdKDnYP0UsTKwQZcbaNTvBLBKFBvGfmmA11fxWnskQ0z9ec
-         FTtO6GgExoiv9J3ARCSSGOvT4VE6WnDDgqROzKIC1vIZ8qsUSlEFHAWIpmft5ReWv/2X
-         yfkQJzm9GCc6kD4Qfu2Lxj10WPrZpVksf+9f7pmgqixljIWD92azMrRH/rJ04z7Kq1V+
-         Wyig==
-X-Gm-Message-State: APjAAAVrvrgrCSSrV1sUoUNOLMZ+pcLFsKsPYc0W4XguZfrSUJxOyZ5b
-        3UTrlxSUZg0WYgCOx7Zr+JoSzqhSzUOqaV30OGsWpTuc
-X-Google-Smtp-Source: APXvYqzuSKcUmTZ9N2NNO3rEXGfkm5tGlVKGyINBteWvalYdV0+g5zqRsur4hFkbU0QLK6GOzgBpgwJYcfHAKQXzTWE=
-X-Received: by 2002:a67:e414:: with SMTP id d20mr4534032vsf.191.1570096914812;
- Thu, 03 Oct 2019 03:01:54 -0700 (PDT)
+        bh=WZwCwSWOc22kro/2vgaznXfgYQv3kw7oQQTG/2sS/lI=;
+        b=Fb1Lv2anwb+DbGIkzNYSQS56GoslHMffZv4CNxucocd2AmwdwllWoQq80wqvwFuRrK
+         9x2fhKncYG1dQzr7v0VTKOsx9SzK+V1KwSsDoKaMETh7IEbfooTpnbNgNpWFTwRRO3Ua
+         aQSbXSt9ZzCo144WLGh2LTK14gkJZuVitTPK30w1bWxjYTnb0h2+IAaOzCazrIo/W3JO
+         IdgKD/XzVuV6u3mCG30lucAJdoUCoMnwGFCCqX8TVa+Xk1CCxm22b9dIVEm6fGRaRheb
+         zcJwczNSR9DRJuxkcPt1myOMgBnAkZSZxPj9c4OCmGrMT9FoKsOYvy3ZJ/VEvgkqCQoS
+         +Rnw==
+X-Gm-Message-State: APjAAAX6BGDBFsGHk6iEQ3jrbULUoXkzs+mMN96yuXucqPzvIBkmFSuk
+        cirgNTozXA3RPnUPa1x2aAAbTOZlXbZI7S1owNt4E9L4
+X-Google-Smtp-Source: APXvYqyvTemNF6sB2ZOwkWKuYJdVxx6KlAP43NRkOij0K3U4Fa3wXm7HzorJbnnhEJ3ufyHC0AhucGjoXHSdz6Os5SA=
+X-Received: by 2002:a67:fc42:: with SMTP id p2mr4562222vsq.34.1570096921334;
+ Thu, 03 Oct 2019 03:02:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190916154546.24982-1-manivannan.sadhasivam@linaro.org>
-In-Reply-To: <20190916154546.24982-1-manivannan.sadhasivam@linaro.org>
+References: <20190917183652.7310-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20190917183652.7310-1-wsa+renesas@sang-engineering.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 3 Oct 2019 12:01:18 +0200
-Message-ID: <CAPDyKFqsZ1mZ53b9wLruATzi+ymFrUCLhxzx7NFUq48p5w0Gtw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/7] Add SD/MMC driver for Actions Semi S900 SoC
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>, thomas.liau@actions-semi.com,
-        linux-actions@lists.infradead.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-clk <linux-clk@vger.kernel.org>
+Date:   Thu, 3 Oct 2019 12:01:25 +0200
+Message-ID: <CAPDyKFrDsYsOyhP7j0kGv=a7hYn88pYzM2gM8aaEJQQTgnD2VA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: tmio: remove workaround for NON_REMOVABLE
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 16 Sep 2019 at 17:46, Manivannan Sadhasivam
-<manivannan.sadhasivam@linaro.org> wrote:
+On Tue, 17 Sep 2019 at 20:36, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 >
-> Hello,
+> PM has been reworked, so eMMC gets now detected on R-Car H3 ES1.0 and
+> 2.0 as well as M3-N without the workaround. Card detect and write
+> protect also still work. Remove the workaround.
 >
-> This patchset adds SD/MMC driver for Actions Semi S900 SoC from Owl
-> family SoCs. There are 4 SD/MMC controller present in this SoC but
-> only 2 are enabled currently for Bubblegum96 board to access uSD and
-> onboard eMMC. SDIO support for this driver is not currently implemented.
->
-> Note: Currently, driver uses 2 completion mechanisms for maintaining
-> the coherency between SDC and DMA interrupts and I know that it is not
-> efficient. Hence, I'd like to hear any suggestions for reimplementing
-> the logic if anyone has.
->
-> With this driver, this patchset also fixes one clk driver issue and enables
-> the Actions Semi platform in ARM64 defconfig.
->
-> Thanks,
-> Mani
->
-> Changes in v4:
->
-> * Incorporated review comments from Rob on dt binding
->
-> Changes in v3:
->
-> * Incorporated a review comment from Andreas on board dts patch
-> * Modified the MAINTAINERS entry for devicetree YAML binding
->
-> Changes in v2:
->
-> * Converted the devicetree bindings to YAML
-> * Misc changes to bubblegum devicetree as per the review from Andreas
-> * Dropped the read/write wrappers and renamed all functions to use owl-
->   prefix as per the review from Ulf
-> * Renamed clk_val_best to owl_clk_val_best and added Reviewed-by tag
->   from Stephen
->
-> Manivannan Sadhasivam (7):
->   clk: actions: Fix factor clk struct member access
->   dt-bindings: mmc: Add Actions Semi SD/MMC/SDIO controller binding
->   arm64: dts: actions: Add MMC controller support for S900
->   arm64: dts: actions: Add uSD and eMMC support for Bubblegum96
->   mmc: Add Actions Semi Owl SoCs SD/MMC driver
->   MAINTAINERS: Add entry for Actions Semi SD/MMC driver and binding
->   arm64: configs: Enable Actions Semi platform in defconfig
->
->  .../devicetree/bindings/mmc/owl-mmc.yaml      |  59 ++
->  MAINTAINERS                                   |   2 +
->  .../boot/dts/actions/s900-bubblegum-96.dts    |  62 ++
->  arch/arm64/boot/dts/actions/s900.dtsi         |  45 ++
->  arch/arm64/configs/defconfig                  |   1 +
->  drivers/clk/actions/owl-factor.c              |   7 +-
->  drivers/mmc/host/Kconfig                      |   8 +
->  drivers/mmc/host/Makefile                     |   1 +
->  drivers/mmc/host/owl-mmc.c                    | 696 ++++++++++++++++++
->  9 files changed, 877 insertions(+), 4 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mmc/owl-mmc.yaml
->  create mode 100644 drivers/mmc/host/owl-mmc.c
->
-> --
-> 2.17.1
->
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-I have picked up the mmc patches for next and as Stephen picked the
-clock patch, the rest are now for arm-soc, I guess!?
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/host/tmio_mmc_core.c | 9 ---------
+>  1 file changed, 9 deletions(-)
+>
+> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+> index 9b6e1001e77c..63dc37481fba 100644
+> --- a/drivers/mmc/host/tmio_mmc_core.c
+> +++ b/drivers/mmc/host/tmio_mmc_core.c
+> @@ -1208,15 +1208,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
+>         if (!_host->reset)
+>                 _host->reset = tmio_mmc_reset;
+>
+> -       /*
+> -        * On Gen2+, eMMC with NONREMOVABLE currently fails because native
+> -        * hotplug gets disabled. It seems RuntimePM related yet we need further
+> -        * research. Since we are planning a PM overhaul anyway, let's enforce
+> -        * for now the device being active by enabling native hotplug always.
+> -        */
+> -       if (pdata->flags & TMIO_MMC_MIN_RCAR2)
+> -               _host->native_hotplug = true;
+> -
+>         /*
+>          * While using internal tmio hardware logic for card detection, we need
+>          * to ensure it stays powered for it to work.
+> --
+> 2.20.1
+>
