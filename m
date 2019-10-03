@@ -2,108 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B543C9B5C
-	for <lists+linux-mmc@lfdr.de>; Thu,  3 Oct 2019 12:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C406C9B5E
+	for <lists+linux-mmc@lfdr.de>; Thu,  3 Oct 2019 12:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729303AbfJCKBI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 3 Oct 2019 06:01:08 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:44922 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729155AbfJCKBH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Oct 2019 06:01:07 -0400
-Received: by mail-ua1-f67.google.com with SMTP id n2so681502ual.11
-        for <linux-mmc@vger.kernel.org>; Thu, 03 Oct 2019 03:01:06 -0700 (PDT)
+        id S1729324AbfJCKBL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 3 Oct 2019 06:01:11 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:41478 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729155AbfJCKBL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Oct 2019 06:01:11 -0400
+Received: by mail-vs1-f67.google.com with SMTP id l2so1269226vsr.8
+        for <linux-mmc@vger.kernel.org>; Thu, 03 Oct 2019 03:01:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ML7iGjCkdk3T2RUYqxLIiWX6QK9V+cTAyo+lZTGYhEg=;
-        b=k2WgVKBMUG6BnJ7WwXT6WneVf49y81sfCSZmPfn4mNlx3geInIen0RP3hPUbg/jkXm
-         epQR2qrp2xxsefUoDIQx0BIsoTQSx1xF8K6pwuCU2c1EuO+oj9oEnidz3dFC+VBQiAZl
-         aI3o8KTvSSY4rBGL0vRHcaeBVAGFJvxRjkE4XaDcYcQY+spQepqqgLhBsdGOay95Jv+L
-         /a7aiJFJJvZxf2Wtj5WsgPLsmo06HHbLfQs7Q+fAnVNxDh0Yb8kBeK9jVAIqZrBVYTjQ
-         JevdRziG3ApzhBJ/oTGw35uFFzHKk6Mz7Ui0nPUgahL3ZOUPwx95+jf3h7Bw2zj95+Dp
-         4wzA==
+        bh=bakFfnlZF09kbsnlbZ07B9DU8D4j1dfMyTsDOBOw2b8=;
+        b=DbrLz0wQAjSavOeMSjXt6eLcI/arNBJcEW7EqIxXilGcd6duieosUwjnEechJgMeH7
+         18RjqkDYewx/zBv9IGUvFGpUds/tl49c9hfWciwEuGBba4pWy62tAR8NCUM4p8ogG+wc
+         HqA3NSL9G57C/gnKsSrIYJSLYZ6BTWcKJDBa6j7QPZJ5OPl2kdQDYj0QrxOnaFAFe1MH
+         lGpTBxh1NcxLD0pQ+igDcNKLUVQ4zMB4kobOhXiZeHmBWHmvNmt8gVxnLsQqFtpt0rYO
+         Pke0fAcACw5+OYHeLmBwLpaynCvkSA5DzORKx9kmZxDi8/8T0Hm2pGCHPoCBr7iLXoxq
+         v56A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ML7iGjCkdk3T2RUYqxLIiWX6QK9V+cTAyo+lZTGYhEg=;
-        b=AE8xyrVSkY5KbaOq+onqsFjxaAfqHMErfoxiM+RAwRGzhmOgg55afNT0uV8KtTCCB7
-         28l+PsqiSWY4369MCV3Ya0umkU9fFEWtOhK3uRA++MuvAtsmM3W97S+4Sz3QtoW7RgX2
-         DfTv83aTQyoTii8UFNQlgALLHsGhFT61BDi+lRnGGb9c9Ioj7FEHYdhuxb0/eHtNjanO
-         MbmXGyed3nK7tkrG7L4T7NqN77re8ExBFrErhHVdO9oR59wZ5GTj5z42Cdbzz1bIDPTZ
-         PwQEhujKJNJ7FShARb5tGFEEYD/yGk7udv5DIqLdRMA577RhxTThDPaHei93KL9SPd5s
-         OSPQ==
-X-Gm-Message-State: APjAAAUnzhSpTVM4CprwpwQ+Zxfsab3qoBCjMQepnSoIOsGeeCtgQexL
-        lcc/XK5XlrADD8pMpbEeaND3+GGdvNoG0Ci/Q/2FOg==
-X-Google-Smtp-Source: APXvYqxdtcpDHsTAYowYb9631c0RBuYsoH8cHEL10avvjnLuGotCXrQZLi8185Qxw90DxHswtjDxgdlZmu0frmN+y+M=
-X-Received: by 2002:ab0:1856:: with SMTP id j22mr4554523uag.19.1570096865564;
- Thu, 03 Oct 2019 03:01:05 -0700 (PDT)
+        bh=bakFfnlZF09kbsnlbZ07B9DU8D4j1dfMyTsDOBOw2b8=;
+        b=lYlddNY5ZJMPqZ3fgxIx7IAETiXYbIeJ+6d1DJX6hL3ce/QmlT+kbBVREicEjXJDzT
+         yJ/V5aLKNaNIc/liys5j6Xy/iZ2GNlvteI42qH827P2A2Rpqb6eluY1icqXTVQhzp9+/
+         9IzBSUXib1IJEDRN9iBYddlTcWvTIDS3jFPiy1gwNMJaRGUYhLw8cOT1sn36UBt+efP7
+         byz2FNNZ3e6402L/9jXbeyKu+ZgM0J6XhEkh+esvqdf4JcnEZL+fMBwD3CJMuJqAyNvR
+         trgTJV/PpMvymXEVtyDuNm9CtIexLrpqa80GyqYTu8CLrDExj8Edktff04o6Hk5hoK7X
+         QNqg==
+X-Gm-Message-State: APjAAAWlKPE4nS4Vg4ZqGSnupVhBkB9p69057Scwfh24qOQmAEIWwBla
+        YGuBjRF89gbQFagNvA/qwt3fNRHYPhWmZBJuN0NhRQ==
+X-Google-Smtp-Source: APXvYqwAIMhOZpRi89+0NzMxZmnhLFx+VXEtGsfYDPPYmE6C974D2DxOHSxiXkhQa9E5JLVtEI71WvXwE7Xnttyw/eA=
+X-Received: by 2002:a67:e414:: with SMTP id d20mr4531692vsf.191.1570096869917;
+ Thu, 03 Oct 2019 03:01:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191001142725.30857-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20191001142725.30857-1-andriy.shevchenko@linux.intel.com>
+References: <20190904164625.236978-1-rrangel@chromium.org>
+In-Reply-To: <20190904164625.236978-1-rrangel@chromium.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 3 Oct 2019 12:00:29 +0200
-Message-ID: <CAPDyKFq_HPDW5i5ND_df4GJsnaOowHWbFTkgCCOP6w9ar2uo6w@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] ACPI / utils: add new helper for HID/UID match
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Joerg Roedel <joro@8bytes.org>,
-        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
-        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Date:   Thu, 3 Oct 2019 12:00:33 +0200
+Message-ID: <CAPDyKFpy_bC=pngV8c6PuTYm4UGeH0FtQxGPSydCf8VB9MvH9A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: sdhci: Check card status after reset
+To:     Raul E Rangel <rrangel@chromium.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 1 Oct 2019 at 16:27, Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 4 Sep 2019 at 18:46, Raul E Rangel <rrangel@chromium.org> wrote:
 >
-> There are few users outside of ACPI realm that re-introduce a custom
-> solution to match ACPI device against HID/UID. Add a generic helper for
-> them.
+> In sdhci_do_reset we call the reset callback which is typically
+> sdhci_reset. sdhci_reset can wait for up to 100ms waiting for the
+> controller to reset. If SDHCI_RESET_ALL was passed as the flag, the
+> controller will clear the IRQ mask. If during that 100ms the card is
+> removed there is no notification to the MMC system that the card was
+> removed. So from the drivers point of view the card is always present.
 >
-> The series is supposed to go via linux-pm tree.
+> By making sdhci_reinit compare the present state it can schedule a
+> rescan if the card was removed while a reset was in progress.
 >
-> In v3:
-> - correct logic in sdhci-acpi for qcom devices (Adrian)
-> - add Mika's Ack
->
-> In v2:
-> - add patch 2 due to latent issue in the header (lkp)
-> - get rid of match_hid_uid() completely in patch 6
->
-> Andy Shevchenko (6):
->   ACPI / utils: Describe function parameters in kernel-doc
->   ACPI / utils: Move acpi_dev_get_first_match_dev() under CONFIG_ACPI
->   ACPI / utils: Introduce acpi_dev_hid_uid_match() helper
->   ACPI / LPSS: Switch to use acpi_dev_hid_uid_match()
->   mmc: sdhci-acpi: Switch to use acpi_dev_hid_uid_match()
->   iommu/amd: Switch to use acpi_dev_hid_uid_match()
->
->  drivers/acpi/acpi_lpss.c      | 21 +++------------
->  drivers/acpi/utils.c          | 32 +++++++++++++++++++++++
->  drivers/iommu/amd_iommu.c     | 30 ++++-----------------
->  drivers/mmc/host/sdhci-acpi.c | 49 ++++++++++++-----------------------
->  include/acpi/acpi_bus.h       |  8 +++---
->  include/linux/acpi.h          |  6 +++++
->  6 files changed, 67 insertions(+), 79 deletions(-)
->
-> --
-> 2.23.0
->
+> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
 
-I guess Rafael intend to pick this up for v5.5?
-
-In any case, for the mmc patch, feel free to add:
-
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+> Sorry this took me so long to send out. I tested out the patch set on
+> 5.3-rc5 with multiple devices.
+>
+> This patch was proposed here by Adrian: https://patchwork.kernel.org/patch/10925469/#22691177
+>
+>  drivers/mmc/host/sdhci.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index a5dc5aae973e..b0045880ee3d 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -337,8 +337,19 @@ static void sdhci_init(struct sdhci_host *host, int soft)
+>
+>  static void sdhci_reinit(struct sdhci_host *host)
+>  {
+> +       u32 cd = host->ier & (SDHCI_INT_CARD_REMOVE | SDHCI_INT_CARD_INSERT);
+> +
+>         sdhci_init(host, 0);
+>         sdhci_enable_card_detection(host);
+> +
+> +       /*
+> +        * A change to the card detect bits indicates a change in present state,
+> +        * refer sdhci_set_card_detection(). A card detect interrupt might have
+> +        * been missed while the host controller was being reset, so trigger a
+> +        * rescan to check.
+> +        */
+> +       if (cd != (host->ier & (SDHCI_INT_CARD_REMOVE | SDHCI_INT_CARD_INSERT)))
+> +               mmc_detect_change(host->mmc, msecs_to_jiffies(200));
+>  }
+>
+>  static void __sdhci_led_activate(struct sdhci_host *host)
+> --
+> 2.23.0.187.g17f5b7556c-goog
+>
