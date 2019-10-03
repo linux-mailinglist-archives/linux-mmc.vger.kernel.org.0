@@ -2,162 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB79EC9B5F
-	for <lists+linux-mmc@lfdr.de>; Thu,  3 Oct 2019 12:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32529C9B62
+	for <lists+linux-mmc@lfdr.de>; Thu,  3 Oct 2019 12:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729381AbfJCKBQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 3 Oct 2019 06:01:16 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:41756 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729369AbfJCKBP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Oct 2019 06:01:15 -0400
-Received: by mail-ua1-f66.google.com with SMTP id l13so688372uap.8
-        for <linux-mmc@vger.kernel.org>; Thu, 03 Oct 2019 03:01:14 -0700 (PDT)
+        id S1729463AbfJCKBU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 3 Oct 2019 06:01:20 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:35705 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729448AbfJCKBT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Oct 2019 06:01:19 -0400
+Received: by mail-vs1-f65.google.com with SMTP id s7so1296295vsl.2
+        for <linux-mmc@vger.kernel.org>; Thu, 03 Oct 2019 03:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=WFXtDFTHO0HF9pGMt5XFsRsW4Q3dt04mUBjZZSzIhJ8=;
-        b=FGI6fw/+nrQ6ZIl+M0Mz1bs2QtbMyBtxBY1sHJvmbJHgntBE/reTItw3dSkx1wCALQ
-         IJ2PwH1uwdK/sHDPFbIuLXsWKkJXfrcbbHFMAtIHqB8HHe/h7espu5APJxjQLdsP0dLh
-         xYJ7YCoj7D1CbSkijjXW/yNsYYKlqCdHzrDceuvSqsSEUSIpeGeu4JA8YySNLkaho8uh
-         hGe44GkHC6ggmxwV6F60LOMlkx9mfKR7Trsal89+xFjNN/lCyJRPw8v7+NZHwrGJSL3h
-         4yqXe9LBAHdfp+dJyz0WLUGsJTQtHGjeNyszL7Gbig+fYmffgTtqgnLR2V2iOpV3dP0h
-         NGrQ==
+        bh=g7o/eWbmZMF7tghY7GsYEgJqo9ZWWmUzNSO/fUncz0A=;
+        b=Xh8EMbKY8aUMNCtd9DUk/0wH/Cr5O1kZc86NxICkCkr8/5PS8F6GlN+2xs/2vC4dRt
+         ty6r0pI4DfdkBIGyf6NOHIOalxh4X7molyh8nDuemr2wIlG1iOjJph8u57o+djetShsw
+         Kj/3UVZnZ5QOlYHJk7wQjcBrHqwGWCCqfUUK9DFrPxWL8a8F6nyvKqxbesZcVtcYsLm5
+         NScs9MRfxVTUalFccr+KrbLArk0aUbbHEsoVQVQGSZOSXn5SIYwZikl3ey2zRAru/kfq
+         o9Mb1VVopEMb9ew/nbeSwZnf6LsozSC7GavxSyBodf7NtSsDCx29YO3o8vkfL/P8gVU7
+         /Qjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WFXtDFTHO0HF9pGMt5XFsRsW4Q3dt04mUBjZZSzIhJ8=;
-        b=Km/5S73fHx0HEkCTjxdB+qkL6Hx1So4gBOV95JFIRv/dJqlnve7uSTFOMxJtJ9TzK/
-         3u9/leGLw638nY5D3PLvRDIijnKvAbojHDSj3es4dUqwyBtowlTU0YkpfwpQUfQGzjvI
-         LXXtM52jbsf/Wx8nqUULQCP7dVBKNvwB/VoClpf+m0mNo3iXgcenF6RrJ6hyowIw0s/r
-         lFDLqHOApa1822ptLKK0tgShXKbIQXedcwNN4hHfuLwVumYsownzml/YofUYIVnq8dR5
-         MQywY2X5Q8D8RiP/uqReGW1JV97x30Ho9RPCqUOsiLyxykhk+c4SvE19i1ONC0vGH6gx
-         jvbA==
-X-Gm-Message-State: APjAAAVmUJFti0c4KEcPgfXGJE61zvc3wE+S1rYYDBqIvW95fHfxMKYz
-        DLIWOcBsGI1a9CX4pKiXbkBqq2hOUxGSKhmISq3Qfw==
-X-Google-Smtp-Source: APXvYqwBA9hmJGoXg7Fwkp50y3YnNy7YwEVTr8gN2ylX6xhtnNzW3AzpImVWkLsxbsR/YidCguMGldZfB0pHUrALsuQ=
-X-Received: by 2002:a9f:24c4:: with SMTP id 62mr4430721uar.104.1570096874324;
- Thu, 03 Oct 2019 03:01:14 -0700 (PDT)
+        bh=g7o/eWbmZMF7tghY7GsYEgJqo9ZWWmUzNSO/fUncz0A=;
+        b=Nyjyn4NWApZehQeTD2fO5s7AdN+V2Mm2GywsIxOo1GOIsRdSyNky1jTUq5jCjV9RGa
+         9qMr8z87NAAQPQUwZO9jm9uiRfd7czN9d1aUPt/RRWCGpaUvn3+C/NFFnm9QtVNXrZFF
+         QKyMLPErV/p+i5JGds9euMImBJP6Koc9U1jgwFkgXnEcIJ+4vG3IqWy9tc82w5TSe024
+         ligGFTUllyrP/rHuNbmZE/OLPe+zBU/7pNj5e9NNZe5cfi9cpESL8grCWZFR+9vpSI+P
+         +JUTq337FOHHE3SOJU2D1yOd4RLiO3eJx7qyArcQXHhGTjmSliE2PPlTbVqvlYWBjyyr
+         0QRQ==
+X-Gm-Message-State: APjAAAVUCrkELsr78iksIHA3cudYIvrUByzf2FzW4pQwRQ3Bxzm3ZpWj
+        4t5NWk3oEuWFJ9cVJEf1eyMgF70kij+caOI0dvKVqQ==
+X-Google-Smtp-Source: APXvYqxL07NmXssn+CMHMD5w5w42iHOG7BGWk291TkCuQfaiwZmMl3OFL+eI+fxDOQEw+ydwytxswi6ADkBUqx8K79Q=
+X-Received: by 2002:a67:fc42:: with SMTP id p2mr4559906vsq.34.1570096878598;
+ Thu, 03 Oct 2019 03:01:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190904164625.236978-1-rrangel@chromium.org> <20190904164625.236978-2-rrangel@chromium.org>
-In-Reply-To: <20190904164625.236978-2-rrangel@chromium.org>
+References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com> <1567669089-88693-5-git-send-email-zhouyanjie@zoho.com>
+In-Reply-To: <1567669089-88693-5-git-send-email-zhouyanjie@zoho.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 3 Oct 2019 12:00:37 +0200
-Message-ID: <CAPDyKFpgNQ_MbrM8wqox3a9JutemNng+qrCjz91uam=gaLW-HQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mmc: sdhci: Quirk for AMD SDHC Device 0x7906
-To:     Raul E Rangel <rrangel@chromium.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+Date:   Thu, 3 Oct 2019 12:00:42 +0200
+Message-ID: <CAPDyKFo0aR2fhCd8qCNAf7hoXSjV+9vG1BqB6vEM=B9Vpmpovg@mail.gmail.com>
+Subject: Re: [PATCH 4/4] MMC: Ingenic: Add support for JZ4760 and support for LPM.
+To:     Zhou Yanjie <zhouyanjie@zoho.com>
+Cc:     linux-mips@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        DTML <devicetree@vger.kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Mathieu Malaterre <malat@debian.org>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Ezequiel Garcia <ezequiel@collabora.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, syq@debian.org,
+        jiaxun.yang@flygoat.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 4 Sep 2019 at 18:46, Raul E Rangel <rrangel@chromium.org> wrote:
+On Thu, 5 Sep 2019 at 09:40, Zhou Yanjie <zhouyanjie@zoho.com> wrote:
 >
-> AMD SDHC 0x7906 requires a hard reset to clear all internal state.
-> Otherwise it can get into a bad state where the DATA lines are always
-> read as zeros.
->
-> This change requires firmware that can transition the device into
-> D3Cold for it to work correctly. If the firmware does not support
-> transitioning to D3Cold then the power state transitions are a no-op.
->
-> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-> Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> 1.add support for probing mmc driver on the JZ4760 Soc from Ingenic.
+> 2.add support for Low Power Mode of Ingenic's MMC/SD Controller.
 
-Applied for next, thanks!
+Normally we try to make "one" change per patch, unless there are some
+good reasons not to.
+
+In this case, it seems like you should rather split this patch into
+two separate pieces. Can you please do that?
+
+Additionally, please change the prefix for the commit message header
+to start with "mmc: jz4740:"
+
+[...]
 
 Kind regards
 Uffe
-
-
-> ---
-> This is just a resend of https://patchwork.kernel.org/patch/10925467/
->
->
->  drivers/mmc/host/sdhci-pci-core.c | 51 ++++++++++++++++++++++++++++++-
->  1 file changed, 50 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-> index 7d06e2860c36..84931ebe0c93 100644
-> --- a/drivers/mmc/host/sdhci-pci-core.c
-> +++ b/drivers/mmc/host/sdhci-pci-core.c
-> @@ -21,6 +21,7 @@
->  #include <linux/mmc/mmc.h>
->  #include <linux/scatterlist.h>
->  #include <linux/io.h>
-> +#include <linux/iopoll.h>
->  #include <linux/gpio.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/mmc/slot-gpio.h>
-> @@ -1590,11 +1591,59 @@ static int amd_probe(struct sdhci_pci_chip *chip)
->         return 0;
->  }
->
-> +static u32 sdhci_read_present_state(struct sdhci_host *host)
-> +{
-> +       return sdhci_readl(host, SDHCI_PRESENT_STATE);
-> +}
-> +
-> +void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
-> +{
-> +       struct sdhci_pci_slot *slot = sdhci_priv(host);
-> +       struct pci_dev *pdev = slot->chip->pdev;
-> +       u32 present_state;
-> +
-> +       /*
-> +        * SDHC 0x7906 requires a hard reset to clear all internal state.
-> +        * Otherwise it can get into a bad state where the DATA lines are always
-> +        * read as zeros.
-> +        */
-> +       if (pdev->device == 0x7906 && (mask & SDHCI_RESET_ALL)) {
-> +               pci_clear_master(pdev);
-> +
-> +               pci_save_state(pdev);
-> +
-> +               pci_set_power_state(pdev, PCI_D3cold);
-> +               pr_debug("%s: power_state=%u\n", mmc_hostname(host->mmc),
-> +                       pdev->current_state);
-> +               pci_set_power_state(pdev, PCI_D0);
-> +
-> +               pci_restore_state(pdev);
-> +
-> +               /*
-> +                * SDHCI_RESET_ALL says the card detect logic should not be
-> +                * reset, but since we need to reset the entire controller
-> +                * we should wait until the card detect logic has stabilized.
-> +                *
-> +                * This normally takes about 40ms.
-> +                */
-> +               readx_poll_timeout(
-> +                       sdhci_read_present_state,
-> +                       host,
-> +                       present_state,
-> +                       present_state & SDHCI_CD_STABLE,
-> +                       10000,
-> +                       100000
-> +               );
-> +       }
-> +
-> +       return sdhci_reset(host, mask);
-> +}
-> +
->  static const struct sdhci_ops amd_sdhci_pci_ops = {
->         .set_clock                      = sdhci_set_clock,
->         .enable_dma                     = sdhci_pci_enable_dma,
->         .set_bus_width                  = sdhci_set_bus_width,
-> -       .reset                          = sdhci_reset,
-> +       .reset                          = amd_sdhci_reset,
->         .set_uhs_signaling              = sdhci_set_uhs_signaling,
->  };
->
-> --
-> 2.23.0.187.g17f5b7556c-goog
->
