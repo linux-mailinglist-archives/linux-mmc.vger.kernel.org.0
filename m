@@ -2,58 +2,56 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9CECC9B8E
-	for <lists+linux-mmc@lfdr.de>; Thu,  3 Oct 2019 12:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A87C7C9B90
+	for <lists+linux-mmc@lfdr.de>; Thu,  3 Oct 2019 12:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728207AbfJCKCQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 3 Oct 2019 06:02:16 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:44518 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729778AbfJCKCQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Oct 2019 06:02:16 -0400
-Received: by mail-vs1-f65.google.com with SMTP id w195so1262636vsw.11
-        for <linux-mmc@vger.kernel.org>; Thu, 03 Oct 2019 03:02:14 -0700 (PDT)
+        id S1729779AbfJCKCV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 3 Oct 2019 06:02:21 -0400
+Received: from mail-vk1-f196.google.com ([209.85.221.196]:39478 "EHLO
+        mail-vk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725827AbfJCKCV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Oct 2019 06:02:21 -0400
+Received: by mail-vk1-f196.google.com with SMTP id u4so482561vkl.6
+        for <linux-mmc@vger.kernel.org>; Thu, 03 Oct 2019 03:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=L9j8LD9n1/rnTvXeM15o45g67BHvuZ5Bz7byS7S6kVc=;
-        b=ZDwNgTSke7WQvmLJiRzveQ1bKNNP6yyU67i3nwD4J5JDwu+g7sfX2+Q2M9Q1eUSrAU
-         bmJoF+j1vbH5mci4/tcG+b2ZIkCFUVJwEzc6jWSSmoZzLZezzLdzfwzs5RCNuMp9lBUk
-         lV7ECYvYJGT4g3nILS711DFDgTCTKkl7yzyprXlgnwnSbKC1h8R7/bShr9pZZ81K3xpU
-         +G5oQ7XJuTu0hcPbta6kdGA5PCZU27uFWtR88ol+XoUbYhN0RT9wXY2ZP29hBy6EyBDA
-         VDXP/j92bz+JwyACQ0AffJE4cJFJKPSJyyty2bwZmLYo1K4t0gjzP+3sU2wpcDRZ2ffn
-         bHZw==
+        bh=4+KY5ywrPHYVrJYnT/Bh9w1+Qmgw3NE8hQjMYcsTI1k=;
+        b=qqSVoiSh06E14trLCSHMQOJoJfg9OEuVBgr9YRPJBjwn+DHZapbRsX0KL0wEaN+tpy
+         2qb8e8BD0D0Gu/aDa0SRFnEiYPewzD8cpA3SIZc25bT0SG0EKCzzXvYWsnnMNoAytd+k
+         ES930igP2ZxogA+fsD6gvT8/CMHFtuLPAkR/C7ItRU1IobB/qzIl0V+nKXq5Xzy2ac7m
+         kc2naQX8sUSeH4calwjJqO1zsjPuFRKamnUUovhWANy+cTg0TYZdxAWi1F5HZ8R9vOr2
+         T+Qe+rn3HAKwQb210SUX4KI2+CaH8spLZBvZ7JSTNtzx40cpV98LtLLOLH8klfRjsSYr
+         238g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=L9j8LD9n1/rnTvXeM15o45g67BHvuZ5Bz7byS7S6kVc=;
-        b=iC5iwtZIqAtXoOaY/WjWzLE2tm0jl1vG+BqOQVFpwg53eti6VbaAA7pAe7ya4KLCzo
-         7Kkeu7Ox3lmIAh4m/D0PDpZgmLO4u5o1KTcB7UmQuLbZZ8TvjXDDQvqNjmIDG5BGgT4S
-         2fhwlMw2rwkxJETVob7W2idRNQcXweE20yV20t2EUi+jSJKYrX7MlcovWP4S2wW7lqXp
-         DfxQcuIEdEu4JH4mlo+pA7b/XDOzSyETK1tjmOCq7PoJ23eHHFUiLhLwSHDBPuN4JGcp
-         aeYl6cjHVydDz5T/tMCGQHOkyrAHwT6xdparWNqKlNhrWYujABVBSzdEKqL2n3U9MTWJ
-         gWuQ==
-X-Gm-Message-State: APjAAAUX25zH/2pLhjmwPfg+Wdnz56wvrejBR8yELQjEcRZeuVWITOuj
-        dPmDwkrsCvwZgn2oyCQRS5bIcIVxQrjN8H0KFRm1Mw==
-X-Google-Smtp-Source: APXvYqyNh+gLwIl1W9laIqP5ANou/nZUVmjlfSUUmVTGXPR2HMKTPYOw64WXP1acl6Q+S9RTPodCbv1xTNRFLaL1RLc=
-X-Received: by 2002:a67:eb84:: with SMTP id e4mr4474520vso.165.1570096933748;
- Thu, 03 Oct 2019 03:02:13 -0700 (PDT)
+        bh=4+KY5ywrPHYVrJYnT/Bh9w1+Qmgw3NE8hQjMYcsTI1k=;
+        b=iXyaKYbbGC2aEUPM+kvT41Io/YLp3+lTlHz+/KGGyFJvZcpReqfxQrrdchTv7OO7oZ
+         lLGtj9kT7Dsx2bO6x48/wbdI4OWZlyNgwSOk+l8YoXmBPDs3OWwtFEajuo7MBlb0AopA
+         VFSzLPfmXTjrazPURL0x1BM8m/yqiNxuvcn3EnH7S4EJ+CmYiJ+ukCB7DnhmHCSBZivj
+         Ck/fddQrTyqPJ7USSkjfr/D+iF3E7Q+SDljjIb5p67b9PE4QXAuLOXnKG4R6fj8sHOMP
+         6wVqAJR/MiRpIuNgZ6s2HIBbo+eJGUFsHKdcdHtZkBlKZdBCIot9HTnrBPYIUw3WDpX5
+         E0zg==
+X-Gm-Message-State: APjAAAW6Z6m+w5pzyfIwoFOPHkE7G3C0YHDy4r/4/+Qi8V5If0Qkk4vE
+        uA2u0/M3vQDQ6ZgdD/KMQ/dfYXMcBvT37bkITTlvGg==
+X-Google-Smtp-Source: APXvYqwcNdJGDVlZakhLGrvx148tAR191tZOT/k4c2coupoTTHeFcjkTwm+I5RMWJmhHKaZQYu2ZYh8VIr0dPyEOMhA=
+X-Received: by 2002:a1f:3491:: with SMTP id b139mr4711393vka.40.1570096939692;
+ Thu, 03 Oct 2019 03:02:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191001180834.1158-1-geert+renesas@glider.be>
-In-Reply-To: <20191001180834.1158-1-geert+renesas@glider.be>
+References: <20190918180253.GA11702@SD>
+In-Reply-To: <20190918180253.GA11702@SD>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 3 Oct 2019 12:01:37 +0200
-Message-ID: <CAPDyKFo3_QmWHSwmKAXsvfr8F=UviP+vSGOuDMoJppYjv1_aNA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sh_mmcif: Use platform_get_irq_optional() for
- optional interrupt
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Jiri Slaby <jslaby@suse.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+Date:   Thu, 3 Oct 2019 12:01:43 +0200
+Message-ID: <CAPDyKFo0ExfCcOjBF31NnPAQuj1eekCoZa0m9xKvqevBsWM1cQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: host: bcm2835: use devm_platform_ioremap_resource wrapper
+To:     Saiyam Doshi <saiyamdoshi.in@gmail.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -62,52 +60,50 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 1 Oct 2019 at 20:08, Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+On Wed, 18 Sep 2019 at 20:03, Saiyam Doshi <saiyamdoshi.in@gmail.com> wrote:
 >
-> As platform_get_irq() now prints an error when the interrupt does not
-> exist, a scary warning may be printed for an optional interrupt:
+> Use devm_platform_ioremap_resource helper which wraps
+> platform_get_resource() and devm_ioremap_resource() together.
 >
->     sh_mmcif ee200000.mmc: IRQ index 1 not found
+> Generated by: scripts/coccinelle/api/devm_platform_ioremap_resource.cocci.
 >
-> Fix this by calling platform_get_irq_optional() instead for the second
-> interrupt, which is optional.
+> More information about semantic patching is available at
+> http://coccinelle.lip6.fr/
 >
-> Remove the now superfluous error printing for the first interrupt, which
-> is mandatory.
->
-> Fixes: 7723f4c5ecdb8d83 ("driver core: platform: Add an error message to platform_get_irq*()")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Saiyam Doshi <saiyamdoshi.in@gmail.com>
 
-Applied for fixes, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
-> This is a fix for v5.4-rc1.
-> ---
->  drivers/mmc/host/sh_mmcif.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  drivers/mmc/host/bcm2835.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
-> index 81bd9afb0980525e..98c575de43c755ed 100644
-> --- a/drivers/mmc/host/sh_mmcif.c
-> +++ b/drivers/mmc/host/sh_mmcif.c
-> @@ -1393,11 +1393,9 @@ static int sh_mmcif_probe(struct platform_device *pdev)
->         const char *name;
+> diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
+> index 148414d7f0c9..99f61fd2a658 100644
+> --- a/drivers/mmc/host/bcm2835.c
+> +++ b/drivers/mmc/host/bcm2835.c
+> @@ -1357,7 +1357,6 @@ static int bcm2835_probe(struct platform_device *pdev)
+>  {
+>         struct device *dev = &pdev->dev;
+>         struct clk *clk;
+> -       struct resource *iomem;
+>         struct bcm2835_host *host;
+>         struct mmc_host *mmc;
+>         const __be32 *regaddr_p;
+> @@ -1373,8 +1372,7 @@ static int bcm2835_probe(struct platform_device *pdev)
+>         host->pdev = pdev;
+>         spin_lock_init(&host->lock);
 >
->         irq[0] = platform_get_irq(pdev, 0);
-> -       irq[1] = platform_get_irq(pdev, 1);
-> -       if (irq[0] < 0) {
-> -               dev_err(dev, "Get irq error\n");
-> +       irq[1] = platform_get_irq_optional(pdev, 1);
-> +       if (irq[0] < 0)
->                 return -ENXIO;
-> -       }
->
->         res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->         reg = devm_ioremap_resource(dev, res);
+> -       iomem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -       host->ioaddr = devm_ioremap_resource(dev, iomem);
+> +       host->ioaddr = devm_platform_ioremap_resource(pdev, 0);
+>         if (IS_ERR(host->ioaddr)) {
+>                 ret = PTR_ERR(host->ioaddr);
+>                 goto err;
 > --
-> 2.17.1
+> 2.20.1
 >
