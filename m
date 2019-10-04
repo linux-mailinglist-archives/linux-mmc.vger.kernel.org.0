@@ -2,162 +2,265 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB1DCC618
-	for <lists+linux-mmc@lfdr.de>; Sat,  5 Oct 2019 00:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4369CC635
+	for <lists+linux-mmc@lfdr.de>; Sat,  5 Oct 2019 01:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725775AbfJDWxh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 4 Oct 2019 18:53:37 -0400
-Received: from pandora.armlinux.org.uk ([78.32.30.218]:38412 "EHLO
-        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725730AbfJDWxg (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Oct 2019 18:53:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=2iHPu4RmYJMaYcpA+iK/U0jkAvhp4C3OjDPLkyJEgv8=; b=WQ4Tp88IK0UmF21ZDykXnztuE
-        3ebpu0OUpt8TTr5aQMwJEavrEz0i6A44HRvCz8YVdJKj9lMdaM8+p5PHE2dAVBXdJimnfjEdL3xPX
-        5HLpUnEx4BZ+woIoRidc9o5bCkurirl5ieydyO4uph8Bw6VL8eb7I+lg0vyg/IbbeumBxXNrqMEAZ
-        dupb1lOHX74Cddt4/RrGTSnB1XFuxbCb0GMtpA9cS8khgCwl7TzaVzNBL2USiSaMuZmeUie6Mpm01
-        nUIC0ukWPPng7edMoJvOgDBP4RqNZGNsJWlNC28y70ora22cgijMTprFDOafGG6W/+pIAO3PfHhS4
-        6XrDbb/kA==;
-Received: from shell.armlinux.org.uk ([2002:4e20:1eda:1:5054:ff:fe00:4ec]:47654)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1iGWS1-0007Si-2h; Fri, 04 Oct 2019 23:53:29 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1iGWRu-00037l-V9; Fri, 04 Oct 2019 23:53:22 +0100
-Date:   Fri, 4 Oct 2019 23:53:22 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Christian Zigotzky <chzigotzky@xenosoft.de>
+        id S1728773AbfJDXKT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 4 Oct 2019 19:10:19 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.165]:30093 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbfJDXKT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Oct 2019 19:10:19 -0400
+X-Greylist: delayed 1120 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Oct 2019 19:10:15 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1570230612;
+        s=strato-dkim-0002; d=xenosoft.de;
+        h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=Fpl157rZw7kboPBeaAFMZVFU1EaZImVHHtobJyIDJ08=;
+        b=LcPIKRHQzXDfMrJ2Cfwkc6H1xRB+JOM3VqHcJ5w1xWLZ09b/9o6BACFDVorZExiq9m
+        Eh718FflFluxvOMfS30CorQfqaVG1Fn+T0OzYAAYYAxsH8rx/iYZWKAQeOtr+wmwRrtP
+        D38Er3+MO/3F86croxZcQO5ax5BbekewHjw/AnnYdXBHCojS4/PkE5Y0nv5Nl26bS0GY
+        gSztx7g+j2Nm+9WwQah+7sSBC6QwTccGCUML8tULPGS7s915vxVwzdBMlszY3fMtbyWV
+        uJ9wHs67Vvh7fHPd4bvk8nnNELbTsaNnFeulk0RIZMxEQaTYn16utpgYaF2LZy0whN2R
+        3GPw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhWLruUDw4lbugEXqTsP2OdwP6HOA=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:5860:ec51:d806:5a6c]
+        by smtp.strato.de (RZmta 44.28.0 AUTH)
+        with ESMTPSA id g03e8av94NA83X8
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Sat, 5 Oct 2019 01:10:08 +0200 (CEST)
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
+ updates
+To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
 Cc:     ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
         Christian Zigotzky <info@xenosoft.de>,
         "contact@a-eon.com" <contact@a-eon.com>,
         "R.T.Dickinson" <rtd2@xtra.co.nz>,
         mad skateman <madskateman@gmail.com>
-Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
- updates
-Message-ID: <20191004225322.GA25745@shell.armlinux.org.uk>
 References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <20191004225322.GA25745@shell.armlinux.org.uk>
+From:   Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <3c3dd3fa-92ed-a561-8cef-58ca64b4197a@xenosoft.de>
+Date:   Sat, 5 Oct 2019 01:10:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191004225322.GA25745@shell.armlinux.org.uk>
+Content-Type: multipart/mixed;
+ boundary="------------2364C5B9BD46DFC509F78FC3"
+Content-Language: de-DE
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, Oct 05, 2019 at 12:45:29AM +0200, Christian Zigotzky wrote:
-> Hello,
-> 
-> The onboard SD card of the Cyrus+ PowerPC board (A-EON AmigaOne X5000) [1]
-> doesn't work anymore after the 'mmc-v5.4-2' updates [2].
+This is a multi-part message in MIME format.
+--------------2364C5B9BD46DFC509F78FC3
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Christian,
+On 05 October 2019 at 00:53 am, Russell King - ARM Linux admin wrote:
+> On Sat, Oct 05, 2019 at 12:45:29AM +0200, Christian Zigotzky wrote:
+>> Hello,
+>>
+>> The onboard SD card of the Cyrus+ PowerPC board (A-EON AmigaOne X5000) [1]
+>> doesn't work anymore after the 'mmc-v5.4-2' updates [2].
+> Hi Christian,
+>
+> Please can you help us understand what is going on with your setup.
+> Obviously, your board wants the SDHCI controller to be DMA coherent,
+> but I guess that DT on your platform does not specify the
+> "dma-coherent" property.  Can you confirm that?
+>
+> If that's the case, the question is what we do about that - do we add
+> it (and wait for further reports?)
+>
+> The only alternative I can see is that we split ARM usage from PowerPC
+> usage of this driver; it seems PowerPC can get away with being more
+> lenient wrt DT DMA coherency correctness than the ARM architecture.
+>
+> Thanks.
+>
+Hi Russell,
 
-Please can you help us understand what is going on with your setup.
-Obviously, your board wants the SDHCI controller to be DMA coherent,
-but I guess that DT on your platform does not specify the
-"dma-coherent" property.  Can you confirm that?
+I didn't find the property "dma-coherent" in the dtb source files 
+(attached).
 
-If that's the case, the question is what we do about that - do we add
-it (and wait for further reports?)
+Output of "fdtdump cyrus_p5020_eth_poweroff.dtb | grep dma":
 
-The only alternative I can see is that we split ARM usage from PowerPC
-usage of this driver; it seems PowerPC can get away with being more
-lenient wrt DT DMA coherency correctness than the ARM architecture.
-
-Thanks.
-
-> 
-> Error messages:
-> 
-> [�� 12.118148] mmc0: SDHCI controller on ffe114000.sdhc [ffe114000.sdhc]
-> using ADMA
-> [�� 12.232869] mmc0: ADMA error: 0x02000000
-> [�� 12.237977] mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
-> [�� 12.243137] mmc0: sdhci: Sys addr:� 0x00000000 | Version: 0x00001301
-> [�� 12.248307] mmc0: sdhci: Blk size:� 0x00000008 | Blk cnt: 0x00000001
-> [�� 12.253448] mmc0: sdhci: Argument:� 0x00000000 | Trn mode: 0x00000013
-> [�� 12.258530] mmc0: sdhci: Present:�� 0x01fd020a | Host ctl: 0x00000030
-> [�� 12.263572] mmc0: sdhci: Power:���� 0x00000002 | Blk gap: 0x00000000
-> [�� 12.268574] mmc0: sdhci: Wake-up:�� 0x00000000 | Clock: 0x000020f8
-> [�� 12.273535] mmc0: sdhci: Timeout:�� 0x00000003 | Int stat: 0x00000001
-> [�� 12.278461] mmc0: sdhci: Int enab:� 0x037f008f | Sig enab: 0x037f008b
-> [�� 12.283339] mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00001301
-> [�� 12.288198] mmc0: sdhci: Caps:����� 0x05fa0000 | Caps_1: 0x00000000
-> [�� 12.293032] mmc0: sdhci: Cmd:������ 0x0000333a | Max curr: 0x00000000
-> [�� 12.297861] mmc0: sdhci: Resp[0]:�� 0x00000920 | Resp[1]: 0x001dd533
-> [�� 12.302615] mmc0: sdhci: Resp[2]:�� 0x325b5900 | Resp[3]: 0x3f400e00
-> [�� 12.307312] mmc0: sdhci: Host ctl2: 0x00000000
-> [�� 12.311940] mmc0: sdhci: ADMA Err:� 0x00000009 | ADMA Ptr: 0x7e04f208
-> [�� 12.316573] mmc0: sdhci: ============================================
-> [�� 12.321204] mmc0: sdhci: 7e04f200: DMA 0xfc000000, LEN 0x0008, Attr=0x23
-> [�� 12.326022] mmc0: error -5 whilst initialising SD card
-> [�� 12.507466] mmc0: invalid bus width
-> [�� 12.512154] mmc0: error -22 whilst initialising SD card
-> [�� 12.683457] mmc0: invalid bus width
-> [�� 12.688968] mmc0: error -22 whilst initialising SD card
-> [�� 12.774281] mmc0: invalid bus width
-> [�� 12.779910] mmc0: error -22 whilst initialising SD card
-> 
-> -------------------------
-> 
-> I have found the issue in the DMA changes of the 'mmc-v5.4-2' updates. It's
-> the commit "121bd08b029e03404c451bb237729cdff76eafed (mmc: sdhci-of-esdhc:
-> set DMA snooping based on DMA coherence)" [3].
-> 
-> Please find attached a patch. This patch solves the issue.
-> 
-> dmesg output after compiling with the attached patch:
-> 
-> [�� 12.117149] mmc0: SDHCI controller on ffe114000.sdhc [ffe114000.sdhc]
-> using ADMA
-> [�� 12.208646] mmc0: new high speed SDHC card at address 59b4
-> [�� 12.230808] mmcblk0: mmc0:59b4 USD�� 3.73 GiB
-> 
-> -------------------------
-> 
-> Please check the commit "121bd08b029e03404c451bb237729cdff76eafed" [3].
-> 
-> Thanks,
-> Christian
-> 
-> 
-> [1] https://www.amigaos.net/hardware/133/amigaone-x5000 and
-> http://wiki.amiga.org/index.php?title=X5000
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v5.4-rc1&id=c710364f78afdef8c2ed07556d0743c5a30ed429
-> [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=121bd08b029e03404c451bb237729cdff76eafed
-> 
-
-> diff -rupN a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-> --- a/drivers/mmc/host/sdhci-of-esdhc.c	2019-10-04 12:40:23.736729250 +0200
-> +++ b/drivers/mmc/host/sdhci-of-esdhc.c	2019-10-04 12:40:46.476869118 +0200
-> @@ -495,12 +495,7 @@ static int esdhc_of_enable_dma(struct sd
->  		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(40));
->  
->  	value = sdhci_readl(host, ESDHC_DMA_SYSCTL);
-> -
-> -	if (of_dma_is_coherent(dev->of_node))
-> -		value |= ESDHC_DMA_SNOOP;
-> -	else
-> -		value &= ~ESDHC_DMA_SNOOP;
-> -
-> +	value |= ESDHC_DMA_SNOOP;
->  	sdhci_writel(host, value, ESDHC_DMA_SYSCTL);
->  	return 0;
->  }
-> 
+dma0 = "/soc@ffe000000/dma@100300";
+         dma1 = "/soc@ffe000000/dma@101300";
+         dma@100300 {
+             compatible = "fsl,eloplus-dma";
+             dma-channel@0 {
+                 compatible = "fsl,eloplus-dma-channel";
+             dma-channel@80 {
+                 compatible = "fsl,eloplus-dma-channel";
+             dma-channel@100 {
+                 compatible = "fsl,eloplus-dma-channel";
+             dma-channel@180 {
+                 compatible = "fsl,eloplus-dma-channel";
+         dma@101300 {
+             compatible = "fsl,eloplus-dma";
+             dma-channel@0 {
+                 compatible = "fsl,eloplus-dma-channel";
+             dma-channel@80 {
+                 compatible = "fsl,eloplus-dma-channel";
+             dma-channel@100 {
+                 compatible = "fsl,eloplus-dma-channel";
+             dma-channel@180 {
+                 compatible = "fsl,eloplus-dma-channel";
 
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+Thanks,
+Christian
+
+--------------2364C5B9BD46DFC509F78FC3
+Content-Type: text/plain; charset=UTF-8;
+ name="cyrus-pre.dtsi"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="cyrus-pre.dtsi"
+
+LyoKICogUDUwMjAvUDUwMTAgU2lsaWNvbi9Tb0MgRGV2aWNlIFRyZWUgU291cmNlIChwcmUg
+aW5jbHVkZSkKICoKICogQ29weXJpZ2h0IDIwMTEgLSAyMDE1IEZyZWVzY2FsZSBTZW1pY29u
+ZHVjdG9yIEluYy4KICoKICogUmVkaXN0cmlidXRpb24gYW5kIHVzZSBpbiBzb3VyY2UgYW5k
+IGJpbmFyeSBmb3Jtcywgd2l0aCBvciB3aXRob3V0CiAqIG1vZGlmaWNhdGlvbiwgYXJlIHBl
+cm1pdHRlZCBwcm92aWRlZCB0aGF0IHRoZSBmb2xsb3dpbmcgY29uZGl0aW9ucyBhcmUgbWV0
+OgogKiAgICAgKiBSZWRpc3RyaWJ1dGlvbnMgb2Ygc291cmNlIGNvZGUgbXVzdCByZXRhaW4g
+dGhlIGFib3ZlIGNvcHlyaWdodAogKiAgICAgICBub3RpY2UsIHRoaXMgbGlzdCBvZiBjb25k
+aXRpb25zIGFuZCB0aGUgZm9sbG93aW5nIGRpc2NsYWltZXIuCiAqICAgICAqIFJlZGlzdHJp
+YnV0aW9ucyBpbiBiaW5hcnkgZm9ybSBtdXN0IHJlcHJvZHVjZSB0aGUgYWJvdmUgY29weXJp
+Z2h0CiAqICAgICAgIG5vdGljZSwgdGhpcyBsaXN0IG9mIGNvbmRpdGlvbnMgYW5kIHRoZSBm
+b2xsb3dpbmcgZGlzY2xhaW1lciBpbiB0aGUKICogICAgICAgZG9jdW1lbnRhdGlvbiBhbmQv
+b3Igb3RoZXIgbWF0ZXJpYWxzIHByb3ZpZGVkIHdpdGggdGhlIGRpc3RyaWJ1dGlvbi4KICog
+ICAgICogTmVpdGhlciB0aGUgbmFtZSBvZiBGcmVlc2NhbGUgU2VtaWNvbmR1Y3RvciBub3Ig
+dGhlCiAqICAgICAgIG5hbWVzIG9mIGl0cyBjb250cmlidXRvcnMgbWF5IGJlIHVzZWQgdG8g
+ZW5kb3JzZSBvciBwcm9tb3RlIHByb2R1Y3RzCiAqICAgICAgIGRlcml2ZWQgZnJvbSB0aGlz
+IHNvZnR3YXJlIHdpdGhvdXQgc3BlY2lmaWMgcHJpb3Igd3JpdHRlbiBwZXJtaXNzaW9uLgog
+KgogKgogKiBBTFRFUk5BVElWRUxZLCB0aGlzIHNvZnR3YXJlIG1heSBiZSBkaXN0cmlidXRl
+ZCB1bmRlciB0aGUgdGVybXMgb2YgdGhlCiAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNl
+ICgiR1BMIikgYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlCiAqIEZvdW5kYXRp
+b24sIGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhhdCBMaWNlbnNlIG9yIChhdCB5b3VyIG9wdGlv
+bikgYW55CiAqIGxhdGVyIHZlcnNpb24uCiAqCiAqIFRISVMgU09GVFdBUkUgSVMgUFJPVklE
+RUQgQlkgRnJlZXNjYWxlIFNlbWljb25kdWN0b3IgYGBBUyBJUycnIEFORCBBTlkKICogRVhQ
+UkVTUyBPUiBJTVBMSUVEIFdBUlJBTlRJRVMsIElOQ0xVRElORywgQlVUIE5PVCBMSU1JVEVE
+IFRPLCBUSEUgSU1QTElFRAogKiBXQVJSQU5USUVTIE9GIE1FUkNIQU5UQUJJTElUWSBBTkQg
+RklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UgQVJFCiAqIERJU0NMQUlNRUQuIElO
+IE5PIEVWRU5UIFNIQUxMIEZyZWVzY2FsZSBTZW1pY29uZHVjdG9yIEJFIExJQUJMRSBGT1Ig
+QU5ZCiAqIERJUkVDVCwgSU5ESVJFQ1QsIElOQ0lERU5UQUwsIFNQRUNJQUwsIEVYRU1QTEFS
+WSwgT1IgQ09OU0VRVUVOVElBTCBEQU1BR0VTCiAqIChJTkNMVURJTkcsIEJVVCBOT1QgTElN
+SVRFRCBUTywgUFJPQ1VSRU1FTlQgT0YgU1VCU1RJVFVURSBHT09EUyBPUiBTRVJWSUNFUzsK
+ICogTE9TUyBPRiBVU0UsIERBVEEsIE9SIFBST0ZJVFM7IE9SIEJVU0lORVNTIElOVEVSUlVQ
+VElPTikgSE9XRVZFUiBDQVVTRUQgQU5ECiAqIE9OIEFOWSBUSEVPUlkgT0YgTElBQklMSVRZ
+LCBXSEVUSEVSIElOIENPTlRSQUNULCBTVFJJQ1QgTElBQklMSVRZLCBPUiBUT1JUCiAqIChJ
+TkNMVURJTkcgTkVHTElHRU5DRSBPUiBPVEhFUldJU0UpIEFSSVNJTkcgSU4gQU5ZIFdBWSBP
+VVQgT0YgVEhFIFVTRSBPRiBUSElTCiAqIFNPRlRXQVJFLCBFVkVOIElGIEFEVklTRUQgT0Yg
+VEhFIFBPU1NJQklMSVRZIE9GIFNVQ0ggREFNQUdFLgogKi8KCi9kdHMtdjEvOwoKL2luY2x1
+ZGUvICJlNTUwMF9wb3dlcl9pc2EuZHRzaSIKCi8gewoJY29tcGF0aWJsZSA9ICJmc2wsUDUw
+MjAiOwoJI2FkZHJlc3MtY2VsbHMgPSA8Mj47Cgkjc2l6ZS1jZWxscyA9IDwyPjsKCWludGVy
+cnVwdC1wYXJlbnQgPSA8Jm1waWM+OwoKCWFsaWFzZXMgewoJCWNjc3IgPSAmc29jOwoJCWRj
+c3IgPSAmZGNzcjsKCgkJc2VyaWFsMCA9ICZzZXJpYWwwOwoJCXNlcmlhbDEgPSAmc2VyaWFs
+MTsKCQlzZXJpYWwyID0gJnNlcmlhbDI7CgkJc2VyaWFsMyA9ICZzZXJpYWwzOwoJCXBjaTAg
+PSAmcGNpMDsKCQlwY2kxID0gJnBjaTE7CgkJcGNpMiA9ICZwY2kyOwoJCXBjaTMgPSAmcGNp
+MzsKCQl1c2IwID0gJnVzYjA7CgkJdXNiMSA9ICZ1c2IxOwoJCWRtYTAgPSAmZG1hMDsKCQlk
+bWExID0gJmRtYTE7CgkJc2RoYyA9ICZzZGhjOwoJCW1zaTAgPSAmbXNpMDsKCQltc2kxID0g
+Jm1zaTE7CgkJbXNpMiA9ICZtc2kyOwoKCQljcnlwdG8gPSAmY3J5cHRvOwoJCXNlY19qcjAg
+PSAmc2VjX2pyMDsKCQlzZWNfanIxID0gJnNlY19qcjE7CgkJc2VjX2pyMiA9ICZzZWNfanIy
+OwoJCXNlY19qcjMgPSAmc2VjX2pyMzsKCQlydGljX2EgPSAmcnRpY19hOwoJCXJ0aWNfYiA9
+ICZydGljX2I7CgkJcnRpY19jID0gJnJ0aWNfYzsKCQlydGljX2QgPSAmcnRpY19kOwoJCXNl
+Y19tb24gPSAmc2VjX21vbjsKCgkJcmFpZGVuZyA9ICZyYWlkZW5nOwoJCXJhaWRlbmdfanIw
+ID0gJnJhaWRlbmdfanIwOwoJCXJhaWRlbmdfanIxID0gJnJhaWRlbmdfanIxOwoJCXJhaWRl
+bmdfanIyID0gJnJhaWRlbmdfanIyOwoJCXJhaWRlbmdfanIzID0gJnJhaWRlbmdfanIzOwoK
+CQlmbWFuMCA9ICZmbWFuMDsKCQlldGhlcm5ldDAgPSAmZW5ldDM7CgkJZXRoZXJuZXQxID0g
+JmVuZXQ0OwoJfTsKCgljcHVzIHsKCQkjYWRkcmVzcy1jZWxscyA9IDwxPjsKCQkjc2l6ZS1j
+ZWxscyA9IDwwPjsKCgkJY3B1MDogUG93ZXJQQyxlNTUwMEAwIHsKCQkJZGV2aWNlX3R5cGUg
+PSAiY3B1IjsKCQkJcmVnID0gPDA+OwoJCQljbG9ja3MgPSA8Jm11eDA+OwoJCQluZXh0LWxl
+dmVsLWNhY2hlID0gPCZMMl8wPjsKCQkJZnNsLHBvcnRpZC1tYXBwaW5nID0gPDB4ODAwMDAw
+MDA+OwoJCQlMMl8wOiBsMi1jYWNoZSB7CgkJCQluZXh0LWxldmVsLWNhY2hlID0gPCZjcGM+
+OwoJCQl9OwoJCX07CgkJY3B1MTogUG93ZXJQQyxlNTUwMEAxIHsKCQkJZGV2aWNlX3R5cGUg
+PSAiY3B1IjsKCQkJcmVnID0gPDE+OwoJCQljbG9ja3MgPSA8Jm11eDE+OwoJCQluZXh0LWxl
+dmVsLWNhY2hlID0gPCZMMl8xPjsKCQkJZnNsLHBvcnRpZC1tYXBwaW5nID0gPDB4NDAwMDAw
+MDA+OwoJCQlMMl8xOiBsMi1jYWNoZSB7CgkJCQluZXh0LWxldmVsLWNhY2hlID0gPCZjcGM+
+OwoJCQl9OwoJCX07Cgl9Owp9Owo=
+--------------2364C5B9BD46DFC509F78FC3
+Content-Type: audio/vnd.dts;
+ name="cyrus_p5020.eth.dts"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="cyrus_p5020.eth.dts"
+
+LyoKICogQ3lydXMgNTAyMCBEZXZpY2UgVHJlZSBTb3VyY2UsIGJhc2VkIG9uIHA1MDIwZHMu
+ZHRzCiAqCiAqIENvcHlyaWdodCAyMDE1IEFuZHkgRmxlbWluZwogKgogKiBwNTAyMGRzLmR0
+cyBjb3B5cmlnaHQ6CiAqIENvcHlyaWdodCAyMDEwIC0gMjAxNCBGcmVlc2NhbGUgU2VtaWNv
+bmR1Y3RvciBJbmMuCiAqCiAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3Ug
+Y2FuIHJlZGlzdHJpYnV0ZSAgaXQgYW5kL29yIG1vZGlmeSBpdAogKiB1bmRlciAgdGhlIHRl
+cm1zIG9mICB0aGUgR05VIEdlbmVyYWwgIFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxpc2hlZCBi
+eSB0aGUKICogRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyAgZWl0aGVyIHZlcnNpb24gMiBv
+ZiB0aGUgIExpY2Vuc2UsIG9yIChhdCB5b3VyCiAqIG9wdGlvbikgYW55IGxhdGVyIHZlcnNp
+b24uCiAqLwoKL2luY2x1ZGUvICJjeXJ1cy1wcmUuZHRzaSIKCi8gewoJbW9kZWwgPSAidmFy
+aXN5cyxDWVJVUyI7Cgljb21wYXRpYmxlID0gInZhcmlzeXMsQ1lSVVMiOwoJI2FkZHJlc3Mt
+Y2VsbHMgPSA8Mj47Cgkjc2l6ZS1jZWxscyA9IDwyPjsKCWludGVycnVwdC1wYXJlbnQgPSA8
+Jm1waWM+OwoKCWFsaWFzZXMgewoJCXBoeV9yZ21paV8zID0gJnBoeV9yZ21paV8zOwoJCXBo
+eV9yZ21paV83ID0gJnBoeV9yZ21paV83OwoJfTsKCgltZW1vcnkgewoJCWRldmljZV90eXBl
+ID0gIm1lbW9yeSI7Cgl9OwoKCXJlc2VydmVkLW1lbW9yeSB7CgkJI2FkZHJlc3MtY2VsbHMg
+PSA8Mj47CgkJI3NpemUtY2VsbHMgPSA8Mj47CgkJcmFuZ2VzOwoKCQlibWFuX2ZicHI6IGJt
+YW4tZmJwciB7CgkJCXNpemUgPSA8MCAweDEwMDAwMDA+OwoJCQlhbGlnbm1lbnQgPSA8MCAw
+eDEwMDAwMDA+OwoJCX07CgkJcW1hbl9mcWQ6IHFtYW4tZnFkIHsKCQkJc2l6ZSA9IDwwIDB4
+NDAwMDAwPjsKCQkJYWxpZ25tZW50ID0gPDAgMHg0MDAwMDA+OwoJCX07CgkJcW1hbl9wZmRy
+OiBxbWFuLXBmZHIgewoJCQlzaXplID0gPDAgMHgyMDAwMDAwPjsKCQkJYWxpZ25tZW50ID0g
+PDAgMHgyMDAwMDAwPjsKCQl9OwoJfTsKCglkY3NyOiBkY3NyQGYwMDAwMDAwMCB7CgkJcmFu
+Z2VzID0gPDB4MDAwMDAwMDAgMHhmIDB4MDAwMDAwMDAgMHgwMTAwODAwMD47Cgl9OwoKCWJw
+b3J0YWxzOiBibWFuLXBvcnRhbHNAZmY0MDAwMDAwIHsKCQlyYW5nZXMgPSA8MHgwIDB4ZiAw
+eGY0MDAwMDAwIDB4MjAwMDAwPjsKCX07CgoJcXBvcnRhbHM6IHFtYW4tcG9ydGFsc0BmZjQy
+MDAwMDAgewoJCXJhbmdlcyA9IDwweDAgMHhmIDB4ZjQyMDAwMDAgMHgyMDAwMDA+OwoJfTsK
+Cglzb2M6IHNvY0BmZmUwMDAwMDAgewoJCXJhbmdlcyA9IDwweDAwMDAwMDAwIDB4ZiAweGZl
+MDAwMDAwIDB4MTAwMDAwMD47CgkJcmVnID0gPDB4ZiAweGZlMDAwMDAwIDAgMHgwMDAwMTAw
+MD47CgkJc3BpQDExMDAwMCB7CgkJfTsKCgkJaTJjQDExODEwMCB7CgkJfTsKCgkJaTJjQDEx
+OTEwMCB7CgkJCXJ0Y0A2ZiB7CgkJCQljb21wYXRpYmxlID0gIm1pY3JvY2hpcCxtY3A3OTQx
+eCI7CgkJCQlyZWcgPSA8MHg2Zj47CgkJCX07CgkJfTsKCQlmbWFuQDQwMDAwMCB7CgoJCQlt
+ZGlvQGUxMTIwIHsKCgkJCQlwaHlfcmdtaWlfMzogZXRoZXJuZXQtcGh5QDMgewoJCQkJCXJl
+ZyA9IDwweDM+OwoJCQkJfTsKCgkJCQlwaHlfcmdtaWlfNzogZXRoZXJuZXQtcGh5QDcgewoJ
+CQkJCXJlZyA9IDwweDc+OwoJCQkJfTsKCQkJfTsKCgkJCWV0aGVybmV0QGU2MDAwIHsKCQkJ
+CXBoeS1oYW5kbGUgPSA8JnBoeV9yZ21paV8zPjsKCQkJCXBoeS1jb25uZWN0aW9uLXR5cGUg
+PSAicmdtaWkiOwoJCQl9OwoKCQkJZXRoZXJuZXRAZTgwMDAgewoJCQkJcGh5LWhhbmRsZSA9
+IDwmcGh5X3JnbWlpXzc+OwoJCQkJcGh5LWNvbm5lY3Rpb24tdHlwZSA9ICJyZ21paSI7CgkJ
+CX07CgoJCX07Cgl9OwoKCXJpbzogcmFwaWRpb0BmZmUwYzAwMDAgewoJCXJlZyA9IDwweGYg
+MHhmZTBjMDAwMCAwIDB4MTEwMDA+OwoKCQlwb3J0MSB7CgkJCXJhbmdlcyA9IDwwIDAgMHhj
+IDB4MjAwMDAwMDAgMCAweDEwMDAwMDAwPjsKCQl9OwoJCXBvcnQyIHsKCQkJcmFuZ2VzID0g
+PDAgMCAweGMgMHgzMDAwMDAwMCAwIDB4MTAwMDAwMDA+OwoJCX07Cgl9OwoKCWxiYzogbG9j
+YWxidXNAZmZlMTI0MDAwIHsKCQlyZWcgPSA8MHhmIDB4ZmUxMjQwMDAgMCAweDEwMDA+OwoJ
+CXJhbmdlcyA9IDwwIDAgMHhmIDB4ZTgwMDAwMDAgMHgwODAwMDAwMAoJCQkgIDIgMCAweGYg
+MHhmZmEwMDAwMCAweDAwMDQwMDAwCgkJCSAgMyAwIDB4ZiAweGZmZGYwMDAwIDB4MDAwMDgw
+MDA+OwoJfTsKCglwY2kwOiBwY2llQGZmZTIwMDAwMCB7CgkJcmVnID0gPDB4ZiAweGZlMjAw
+MDAwIDAgMHgxMDAwPjsKCQlyYW5nZXMgPSA8MHgwMjAwMDAwMCAwIDB4ZTAwMDAwMDAgMHhj
+IDB4MDAwMDAwMDAgMHgwIDB4MjAwMDAwMDAKCQkJICAweDAxMDAwMDAwIDAgMHgwMDAwMDAw
+MCAweGYgMHhmODAwMDAwMCAweDAgMHgwMDAxMDAwMD47CgkJcGNpZUAwIHsKCQkJcmFuZ2Vz
+ID0gPDB4MDIwMDAwMDAgMCAweGUwMDAwMDAwCgkJCQkgIDB4MDIwMDAwMDAgMCAweGUwMDAw
+MDAwCgkJCQkgIDAgMHgyMDAwMDAwMAoKCQkJCSAgMHgwMTAwMDAwMCAwIDB4MDAwMDAwMDAK
+CQkJCSAgMHgwMTAwMDAwMCAwIDB4MDAwMDAwMDAKCQkJCSAgMCAweDAwMDEwMDAwPjsKCQl9
+OwoJfTsKCglwY2kxOiBwY2llQGZmZTIwMTAwMCB7CgkJcmVnID0gPDB4ZiAweGZlMjAxMDAw
+IDAgMHgxMDAwPjsKCQlyYW5nZXMgPSA8MHgwMjAwMDAwMCAweDAgMHhlMDAwMDAwMCAweGMg
+MHgyMDAwMDAwMCAweDAgMHgyMDAwMDAwMAoJCQkgIDB4MDEwMDAwMDAgMHgwIDB4MDAwMDAw
+MDAgMHhmIDB4ZjgwMTAwMDAgMHgwIDB4MDAwMTAwMDA+OwoJCXBjaWVAMCB7CgkJCXJhbmdl
+cyA9IDwweDAyMDAwMDAwIDAgMHhlMDAwMDAwMAoJCQkJICAweDAyMDAwMDAwIDAgMHhlMDAw
+MDAwMAoJCQkJICAwIDB4MjAwMDAwMDAKCgkJCQkgIDB4MDEwMDAwMDAgMCAweDAwMDAwMDAw
+CgkJCQkgIDB4MDEwMDAwMDAgMCAweDAwMDAwMDAwCgkJCQkgIDAgMHgwMDAxMDAwMD47CgkJ
+fTsKCX07CgoJcGNpMjogcGNpZUBmZmUyMDIwMDAgewoJCXJlZyA9IDwweGYgMHhmZTIwMjAw
+MCAwIDB4MTAwMD47CgkJcmFuZ2VzID0gPDB4MDIwMDAwMDAgMCAweGUwMDAwMDAwIDB4YyAw
+eDQwMDAwMDAwIDAgMHgyMDAwMDAwMAoJCQkgIDB4MDEwMDAwMDAgMCAweDAwMDAwMDAwIDB4
+ZiAweGY4MDIwMDAwIDAgMHgwMDAxMDAwMD47CgkJcGNpZUAwIHsKCQkJcmFuZ2VzID0gPDB4
+MDIwMDAwMDAgMCAweGUwMDAwMDAwCgkJCQkgIDB4MDIwMDAwMDAgMCAweGUwMDAwMDAwCgkJ
+CQkgIDAgMHgyMDAwMDAwMAoKCQkJCSAgMHgwMTAwMDAwMCAwIDB4MDAwMDAwMDAKCQkJCSAg
+MHgwMTAwMDAwMCAwIDB4MDAwMDAwMDAKCQkJCSAgMCAweDAwMDEwMDAwPjsKCQl9OwoJfTsK
+CglwY2kzOiBwY2llQGZmZTIwMzAwMCB7CgkJcmVnID0gPDB4ZiAweGZlMjAzMDAwIDAgMHgx
+MDAwPjsKCQlyYW5nZXMgPSA8MHgwMjAwMDAwMCAwIDB4ZTAwMDAwMDAgMHhjIDB4NjAwMDAw
+MDAgMCAweDIwMDAwMDAwCgkJCSAgMHgwMTAwMDAwMCAwIDB4MDAwMDAwMDAgMHhmIDB4Zjgw
+MzAwMDAgMCAweDAwMDEwMDAwPjsKCQlwY2llQDAgewoJCQlyYW5nZXMgPSA8MHgwMjAwMDAw
+MCAwIDB4ZTAwMDAwMDAKCQkJCSAgMHgwMjAwMDAwMCAwIDB4ZTAwMDAwMDAKCQkJCSAgMCAw
+eDIwMDAwMDAwCgoJCQkJICAweDAxMDAwMDAwIDAgMHgwMDAwMDAwMAoJCQkJICAweDAxMDAw
+MDAwIDAgMHgwMDAwMDAwMAoJCQkJICAwIDB4MDAwMTAwMDA+OwoJCX07Cgl9Owp9OwoKL2lu
+Y2x1ZGUvICJwNTAyMHNpLXBvc3QuZHRzaSIK
+--------------2364C5B9BD46DFC509F78FC3--
