@@ -2,74 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B847CB7D8
-	for <lists+linux-mmc@lfdr.de>; Fri,  4 Oct 2019 12:04:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAECCBAD7
+	for <lists+linux-mmc@lfdr.de>; Fri,  4 Oct 2019 14:52:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727452AbfJDKEW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 4 Oct 2019 06:04:22 -0400
-Received: from mga14.intel.com ([192.55.52.115]:26276 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726082AbfJDKEW (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 4 Oct 2019 06:04:22 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Oct 2019 03:04:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,256,1566889200"; 
-   d="scan'208";a="275997544"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.66]) ([10.237.72.66])
-  by orsmga001.jf.intel.com with ESMTP; 04 Oct 2019 03:04:20 -0700
-Subject: Re: [PATCH] mmc: sdhci-pci: Make function amd_sdhci_reset static
-To:     zhengbin <zhengbin13@huawei.com>, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org
-References: <1570182260-135818-1-git-send-email-zhengbin13@huawei.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <4064d4ba-57df-7803-65e9-c97b13f6c596@intel.com>
-Date:   Fri, 4 Oct 2019 13:02:59 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2387734AbfJDMwe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 4 Oct 2019 08:52:34 -0400
+Received: from mx2.suse.de ([195.135.220.15]:42540 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2387545AbfJDMwe (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 4 Oct 2019 08:52:34 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 59CBAB125;
+        Fri,  4 Oct 2019 12:52:32 +0000 (UTC)
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com
+Cc:     wahrenst@gmx.net, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] mmc: sdhci-iproc: fix spurious interrupts on Multiblock reads with bcm2711
+Date:   Fri,  4 Oct 2019 14:52:26 +0200
+Message-Id: <20191004125226.27037-1-nsaenzjulienne@suse.de>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <1570182260-135818-1-git-send-email-zhengbin13@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 4/10/19 12:44 PM, zhengbin wrote:
-> Fix sparse warnings:
-> 
-> drivers/mmc/host/sdhci-pci-core.c:1599:6: warning: symbol 'amd_sdhci_reset' was not declared. Should it be static?
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: zhengbin <zhengbin13@huawei.com>
+The Raspberry Pi 4 SDHCI hardware seems to automatically issue CMD12
+after multiblock reads even when ACMD12 is disabled. This triggers
+spurious interrupts after the data transfer is done with the following
+message:
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+  mmc1: Got data interrupt 0x00000002 even though no data operation was in progress.
+  mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+  mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00001002
+  mmc1: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000
+  mmc1: sdhci: Argument:  0x00000000 | Trn mode: 0x00000033
+  mmc1: sdhci: Present:   0x1fff0000 | Host ctl: 0x00000017
+  mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000080
+  mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000107
+  mmc1: sdhci: Timeout:   0x00000000 | Int stat: 0x00000000
+  mmc1: sdhci: Int enab:  0x03ff100b | Sig enab: 0x03ff100b
+  mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+  mmc1: sdhci: Caps:      0x45ee6432 | Caps_1:   0x0000a525
+  mmc1: sdhci: Cmd:       0x00000c1a | Max curr: 0x00080008
+  mmc1: sdhci: Resp[0]:   0x00000b00 | Resp[1]:  0x00edc87f
+  mmc1: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x00400e00
+  mmc1: sdhci: Host ctl2: 0x00000001
+  mmc1: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0xf3025208
+  mmc1: sdhci: ============================================
 
-> ---
->  drivers/mmc/host/sdhci-pci-core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-> index 659878a..de50e1d 100644
-> --- a/drivers/mmc/host/sdhci-pci-core.c
-> +++ b/drivers/mmc/host/sdhci-pci-core.c
-> @@ -1596,7 +1596,7 @@ static u32 sdhci_read_present_state(struct sdhci_host *host)
->  	return sdhci_readl(host, SDHCI_PRESENT_STATE);
->  }
-> 
-> -void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
-> +static void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
->  {
->  	struct sdhci_pci_slot *slot = sdhci_priv(host);
->  	struct pci_dev *pdev = slot->chip->pdev;
-> --
-> 2.7.4
-> 
-> 
+Enable SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12 to enable ACMD12 on multiblock
+reads and suppress the spurious interrupts.
+
+Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Tested-by: Matthias Brugger <mbrugger@suse.com>
+---
+ drivers/mmc/host/sdhci-iproc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
+index 2b9cdcd1dd9d..f4f5f0a70cda 100644
+--- a/drivers/mmc/host/sdhci-iproc.c
++++ b/drivers/mmc/host/sdhci-iproc.c
+@@ -262,6 +262,7 @@ static const struct sdhci_iproc_data bcm2835_data = {
+ };
+ 
+ static const struct sdhci_pltfm_data sdhci_bcm2711_pltfm_data = {
++	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
+ 	.ops = &sdhci_iproc_32only_ops,
+ };
+ 
+-- 
+2.23.0
 
