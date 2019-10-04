@@ -2,117 +2,261 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31708CAF75
-	for <lists+linux-mmc@lfdr.de>; Thu,  3 Oct 2019 21:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E01CFCB45A
+	for <lists+linux-mmc@lfdr.de>; Fri,  4 Oct 2019 08:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731863AbfJCTmH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 3 Oct 2019 15:42:07 -0400
-Received: from relay7-d.mail.gandi.net ([217.70.183.200]:49973 "EHLO
-        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731191AbfJCTmH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Oct 2019 15:42:07 -0400
-X-Originating-IP: 86.202.229.42
-Received: from localhost (lfbn-lyo-1-146-42.w86-202.abo.wanadoo.fr [86.202.229.42])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id B8B852010D;
-        Thu,  3 Oct 2019 19:42:03 +0000 (UTC)
-Date:   Thu, 3 Oct 2019 21:42:03 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Eugen.Hristev@microchip.com
-Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        adrian.hunter@intel.com, Nicolas.Ferre@microchip.com,
-        ulf.hansson@linaro.org
-Subject: Re: [PATCH 2/2] ARM: dts: at91: sama5d27_som1_ek: add mmc
- capabilities for SDMMC0
-Message-ID: <20191003194203.GI575@piout.net>
-References: <1565252928-28994-1-git-send-email-eugen.hristev@microchip.com>
- <1565252928-28994-2-git-send-email-eugen.hristev@microchip.com>
- <20190808124217.wrmcxohw5i6ju2qe@M43218.corp.atmel.com>
- <04fd74c3-a828-1064-b77b-f3de07a26190@intel.com>
- <20190809062322.syuieymdqjs4e7lh@M43218.corp.atmel.com>
- <fa0debbb-b84c-1f74-f8b8-8fdd7812aaee@microchip.com>
- <20190813065306.tqz57hqeiofofbnz@M43218.corp.atmel.com>
- <c2c355cd-b798-02de-0606-0f6442f6fdca@microchip.com>
+        id S2388231AbfJDGN3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 4 Oct 2019 02:13:29 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:38720 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388230AbfJDGN3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Oct 2019 02:13:29 -0400
+Received: by mail-vs1-f68.google.com with SMTP id b123so3395685vsb.5
+        for <linux-mmc@vger.kernel.org>; Thu, 03 Oct 2019 23:13:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PlYxemLyGEw2z7tzBw1cpulBtK9wmECqFWdHMP2WOUo=;
+        b=jpFnppB/F4Z075p99ZTBhY5zAVoG46Q7/SnMiOdezjKLrflNe6s8JRs6xRJvgERdrw
+         aEPfEcfKl4SQwW7u6Sd4l/dI06qV4pDy0Eex8B0tXg5Wj+vZZRMG5TSX2TPXodlbxwvg
+         FHYKaA+FLGIT3mYgPi8RK+U5O4Nfh0stmkbM2GE2BBYqkwNEtdbFy6JziNs14DBCeO+O
+         CNaIPw72WB8BNEp/Ri6OcQxZ2zqEQv8r9mTDJXvg7wDrFOkY9JPrCe0AekBpyIOiap3+
+         NZM03X0fyhLA3OrMANTCBZWOxOgEOadAl9Yy0ffZ+rThltRJtUIisJpKxoreADXRfq18
+         qffQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PlYxemLyGEw2z7tzBw1cpulBtK9wmECqFWdHMP2WOUo=;
+        b=ohn9v75zlyjz5O207nqhx36Re9m0Lnf764ccYcYKmpXSjViIXG2eQkYhI/v+nZrQdO
+         sHOVARSSZ16OsKnuSdPWjqnwnVI5c9zbLCM2SevI8zCVf7gavUjYrNC84BT6vKfVq0En
+         8WbxGSTBzZiqZbiS9DKJ+DgYKsoPjIYPaD2PJSmneePUOlfWvQtPbPPObRW3HEIpu6eW
+         u1F3m1mS6qPYCX7XEPmi7OSuUG8cdDKOq+Rap1UCeJtb6T+pED8ek9HAMgGqk2M2Zpoi
+         Q2716Vu2j1qgRrwzhOutq/E2VSA4vO9HNdD5uIoYbPjsfLJpSSp1UUbAfkKdBAy+iGZf
+         uutw==
+X-Gm-Message-State: APjAAAUbU4F8P/5aC+D09+/ANMiJRyOL1N3LEEjeAS3gK3ZK2vk1VdYD
+        8zxoP8cvZz/szdjlMYzbFAgbrhDRzRbZn0qh6yNo7S8CeCw=
+X-Google-Smtp-Source: APXvYqwe4FiRLNALsADBsQ1M2wb6h4k6tCXwHwPsKcPofn8xLo+JhI+CH7xO3En2d3+P52nm5VQNA4f1xN+2Jgppu2Q=
+X-Received: by 2002:a67:e414:: with SMTP id d20mr7072671vsf.191.1570169608232;
+ Thu, 03 Oct 2019 23:13:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c2c355cd-b798-02de-0606-0f6442f6fdca@microchip.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20190905122112.29672-1-ludovic.Barre@st.com> <20190905122112.29672-2-ludovic.Barre@st.com>
+In-Reply-To: <20190905122112.29672-2-ludovic.Barre@st.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 4 Oct 2019 08:12:51 +0200
+Message-ID: <CAPDyKFpcb=dT0XBAGVL68t--xi5853Dzsgak-vbx5VcvxLZ4zA@mail.gmail.com>
+Subject: Re: [PATCH V6 1/3] mmc: mmci: add hardware busy timeout feature
+To:     Ludovic Barre <ludovic.Barre@st.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 03/10/2019 10:24:52+0000, Eugen.Hristev@microchip.com wrote:
-> 
-> 
-> On 13.08.2019 09:53, Ludovic Desroches wrote:
-> > On Mon, Aug 12, 2019 at 03:38:34PM +0000, Eugen.Hristev@microchip.com wrote:
-> >> On 09.08.2019 09:23, Ludovic Desroches wrote:
-> >>> On Thu, Aug 08, 2019 at 03:57:30PM +0300, Adrian Hunter wrote:
-> >>>> On 8/08/19 3:42 PM, Ludovic Desroches wrote:
-> >>>>> On Thu, Aug 08, 2019 at 10:35:43AM +0200, Eugen Hristev - M18282 wrote:
-> >>>>>> From: Eugen Hristev <eugen.hristev@microchip.com>
-> >>>>>>
-> >>>>>> Add mmc capabilities for SDMMC0 for this board.
-> >>>>>> With this enabled, eMMC connected card is detected as:
-> >>>>>>
-> >>>>>> mmc0: new DDR MMC card at address 0001
-> >>>>>>
-> >>>>>> Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
-> >>>>> Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com>
-> >>>>>
-> >>>>> I am interested to have the some insights about the use of sd-uhs-*
-> >>>>> properties.
-> >>>>>
-> >>>>> Our IP can't deal with 1V8 by itself. It has a 1V8SEL signal which can
-> >>>>> be used as the logic control input of a mux. So even if the IP claims
-> >>>>> to support UHS modes, it depends on the board.
-> >>>>>
-> >>>>> Are the sd-uhs-* properties a way to deal with this? I tend to think no
-> >>>>> as sdhci_setup_host() will set the caps depending on the content of the
-> >>>>> capabilities register. Do we have to use the SDHCI_QUIRK_MISSING_CAPS
-> >>>>> quirk or sdhci-caps/sdhci-caps-mask?
-> >>>>
-> >>>> There is "no-1-8-v" which it looks like sdhci-of-at91.c already supports:
-> >>>>
-> >>>>     sdhci_at91_probe() -> sdhci_get_of_property() -> sdhci_get_property()
-> >>>>
-> >>>>       	if (device_property_present(dev, "no-1-8-v"))
-> >>>> 		host->quirks2 |= SDHCI_QUIRK2_NO_1_8_V;
-> >>>>
-> >>>
-> >>> Right, I forgot this property. Thanks.
-> >>>
-> >>> Eugen, do you see cases we can't cover with this property?
-> >>
-> >> Hi,
-> >>
-> >> For current requirements and driver support, this should be enough.
-> >>
-> >> I noticed one thing regarding SD-Cards, if I add property sd-uhs-sdr104
-> >> the class 10 uhs1 cards are detected as SDR104 . Without this property
-> >> they are detected as DDR50. Any idea why the difference ? The controller
-> >> does not claim to have SDR104 support ?  We should add it ?
-> > 
-> > With the mainline, our tree or both? In our tree, SDR104 is removed from
-> > the capabilities.
-> > 
-> > Ludovic
-> > 
-> 
-> 
-> Hello Alexandre,
-> 
-> Anything more needed regarding this patch ?
-> 
-
-I was not sure it was applicable, seeing the discussion. I'll apply it
-now.
+On Thu, 5 Sep 2019 at 14:21, Ludovic Barre <ludovic.Barre@st.com> wrote:
+>
+> From: Ludovic Barre <ludovic.barre@st.com>
+>
+> In some variants, the data timer starts and decrements
+> when the DPSM enters in Wait_R or Busy state
+> (while data transfer or MMC_RSP_BUSY), and generates a
+> data timeout error if the counter reach 0.
 
 
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+>
+> -Define max_busy_timeout (in ms) according to clock.
+> -Set data timer register if the command has rsp_busy flag.
+>  If busy_timeout is not defined by framework, the busy
+>  length after Data Burst is defined as 1 second
+>  (refer: 4.6.2.2 Write of sd specification part1 v6-0).
+
+How about re-phrasing this as below:
+
+-----
+In the stm32_sdmmc variant, the datatimer is active not only during
+data transfers with the DPSM, but also while waiting for the busyend
+IRQs from commands having the MMC_RSP_BUSY flag set. This leads to an
+incorrect IRQ being raised to signal MCI_DATATIMEOUT error, which
+simply breaks the behaviour.
+
+Address this by updating the datatimer value before sending a command
+having the MMC_RSP_BUSY flag set. To inform the mmc core about the
+maximum supported busy timeout, which also depends on the current
+clock rate, set ->max_busy_timeout (in ms).
+-----
+
+Regarding the busy_timeout, the core should really assign it a value
+for all commands having the RSP_BUSY flag set. However, I realize the
+core needs to be improved to cover all these cases - and I am looking
+at that, but not there yet.
+
+I would also suggest to use a greater value than 1s, as that seems a
+bit low for the "undefined" case. Perhaps use the max_busy_timeout,
+which would be nice a simple or 10s, which I think is used by some
+other drivers.
+
+> -Add MCI_DATATIMEOUT error management in mmci_cmd_irq.
+>
+> Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
+> ---
+>  drivers/mmc/host/mmci.c | 42 ++++++++++++++++++++++++++++++++++++-----
+>  drivers/mmc/host/mmci.h |  3 +++
+>  2 files changed, 40 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+> index c37e70dbe250..c30319255dc2 100644
+> --- a/drivers/mmc/host/mmci.c
+> +++ b/drivers/mmc/host/mmci.c
+> @@ -1075,6 +1075,7 @@ static void
+>  mmci_start_command(struct mmci_host *host, struct mmc_command *cmd, u32 c)
+>  {
+>         void __iomem *base = host->base;
+> +       unsigned long long clks;
+>
+>         dev_dbg(mmc_dev(host->mmc), "op %02x arg %08x flags %08x\n",
+>             cmd->opcode, cmd->arg, cmd->flags);
+> @@ -1097,6 +1098,16 @@ mmci_start_command(struct mmci_host *host, struct mmc_command *cmd, u32 c)
+>                 else
+>                         c |= host->variant->cmdreg_srsp;
+>         }
+> +
+> +       if (host->variant->busy_timeout && cmd->flags & MMC_RSP_BUSY) {
+> +               if (!cmd->busy_timeout)
+> +                       cmd->busy_timeout = 1000;
+> +
+> +               clks = (unsigned long long)cmd->busy_timeout * host->cclk;
+> +               do_div(clks, MSEC_PER_SEC);
+> +               writel_relaxed(clks, host->base + MMCIDATATIMER);
+> +       }
+> +
+>         if (/*interrupt*/0)
+>                 c |= MCI_CPSM_INTERRUPT;
+>
+> @@ -1201,6 +1212,7 @@ static void
+>  mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+>              unsigned int status)
+>  {
+> +       u32 err_msk = MCI_CMDCRCFAIL | MCI_CMDTIMEOUT;
+>         void __iomem *base = host->base;
+>         bool sbc, busy_resp;
+>
+> @@ -1215,8 +1227,11 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+>          * handling. Note that we tag on any latent IRQs postponed
+>          * due to waiting for busy status.
+>          */
+> -       if (!((status|host->busy_status) &
+> -             (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT|MCI_CMDSENT|MCI_CMDRESPEND)))
+> +       if (host->variant->busy_timeout && busy_resp)
+> +               err_msk |= MCI_DATATIMEOUT;
+> +
+> +       if (!((status | host->busy_status) &
+> +             (err_msk | MCI_CMDSENT | MCI_CMDRESPEND)))
+>                 return;
+>
+>         /* Handle busy detection on DAT0 if the variant supports it. */
+> @@ -1235,8 +1250,7 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+>                  * while, to allow it to be set, but tests indicates that it
+>                  * isn't needed.
+>                  */
+> -               if (!host->busy_status &&
+> -                   !(status & (MCI_CMDCRCFAIL|MCI_CMDTIMEOUT)) &&
+> +               if (!host->busy_status && !(status & err_msk) &&
+>                     (readl(base + MMCISTATUS) & host->variant->busy_detect_flag)) {
+>
+>                         writel(readl(base + MMCIMASK0) |
+> @@ -1290,6 +1304,9 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+>                 cmd->error = -ETIMEDOUT;
+>         } else if (status & MCI_CMDCRCFAIL && cmd->flags & MMC_RSP_CRC) {
+>                 cmd->error = -EILSEQ;
+> +       } else if (host->variant->busy_timeout && busy_resp &&
+> +                  status & MCI_DATATIMEOUT) {
+> +               cmd->error = -ETIMEDOUT;
+
+It's not really clear to me what happens with the busy detection
+status bit (variant->busy_detect_flag), in case a MCI_DATATIMEOUT IRQ
+is raised, while also having host->busy_status set (waiting for
+busyend).
+
+By looking at the code a few lines above this, we may do a "return;"
+while waiting for the busyend IRQ even if MCI_DATATIMEOUT also is
+raised, potentially losing that from being caught. Is that really
+correct?
+
+>         } else {
+>                 cmd->resp[0] = readl(base + MMCIRESPONSE0);
+>                 cmd->resp[1] = readl(base + MMCIRESPONSE1);
+> @@ -1583,6 +1600,20 @@ static void mmci_request(struct mmc_host *mmc, struct mmc_request *mrq)
+>         spin_unlock_irqrestore(&host->lock, flags);
+>  }
+>
+> +static void mmci_set_max_busy_timeout(struct mmc_host *mmc)
+> +{
+> +       struct mmci_host *host = mmc_priv(mmc);
+> +       u32 max_busy_timeout = 0;
+> +
+> +       if (!host->variant->busy_detect)
+> +               return;
+> +
+> +       if (host->variant->busy_timeout && mmc->actual_clock)
+> +               max_busy_timeout = ~0UL / (mmc->actual_clock / MSEC_PER_SEC);
+> +
+> +       mmc->max_busy_timeout = max_busy_timeout;
+> +}
+> +
+>  static void mmci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+>  {
+>         struct mmci_host *host = mmc_priv(mmc);
+> @@ -1687,6 +1718,8 @@ static void mmci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+>         else
+>                 mmci_set_clkreg(host, ios->clock);
+>
+> +       mmci_set_max_busy_timeout(mmc);
+> +
+>         if (host->ops && host->ops->set_pwrreg)
+>                 host->ops->set_pwrreg(host, pwr);
+>         else
+> @@ -1957,7 +1990,6 @@ static int mmci_probe(struct amba_device *dev,
+>                         mmci_write_datactrlreg(host,
+>                                                host->variant->busy_dpsm_flag);
+>                 mmc->caps |= MMC_CAP_WAIT_WHILE_BUSY;
+> -               mmc->max_busy_timeout = 0;
+>         }
+>
+>         /* Prepare a CMD12 - needed to clear the DPSM on some variants. */
+> diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
+> index 833236ecb31e..d8b7f6774e8f 100644
+> --- a/drivers/mmc/host/mmci.h
+> +++ b/drivers/mmc/host/mmci.h
+> @@ -287,6 +287,8 @@ struct mmci_host;
+>   * @signal_direction: input/out direction of bus signals can be indicated
+>   * @pwrreg_clkgate: MMCIPOWER register must be used to gate the clock
+>   * @busy_detect: true if the variant supports busy detection on DAT0.
+> + * @busy_timeout: true if the variant starts data timer when the DPSM
+> + *               enter in Wait_R or Busy state.
+>   * @busy_dpsm_flag: bitmask enabling busy detection in the DPSM
+>   * @busy_detect_flag: bitmask identifying the bit in the MMCISTATUS register
+>   *                   indicating that the card is busy
+> @@ -333,6 +335,7 @@ struct variant_data {
+>         u8                      signal_direction:1;
+>         u8                      pwrreg_clkgate:1;
+>         u8                      busy_detect:1;
+> +       u8                      busy_timeout:1;
+>         u32                     busy_dpsm_flag;
+>         u32                     busy_detect_flag;
+>         u32                     busy_detect_mask;
+> --
+> 2.17.1
+>
+
+Kind regards
+Uffe
