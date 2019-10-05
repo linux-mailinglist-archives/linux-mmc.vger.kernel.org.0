@@ -2,55 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C125CC734
-	for <lists+linux-mmc@lfdr.de>; Sat,  5 Oct 2019 03:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 591E1CC998
+	for <lists+linux-mmc@lfdr.de>; Sat,  5 Oct 2019 13:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725947AbfJEB0Y (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 4 Oct 2019 21:26:24 -0400
-Received: from void.printf.net ([40.143.112.133]:41860 "EHLO void.printf.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725730AbfJEB0X (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 4 Oct 2019 21:26:23 -0400
-Received: from chris by void.printf.net with local (Exim 4.69)
-        (envelope-from <chris@void.printf.net>)
-        id 1iGYMT-0006N5-Hv; Sat, 05 Oct 2019 01:55:53 +0100
-Date:   Sat, 5 Oct 2019 01:55:53 +0100
-From:   Chris Ball <chris@printf.net>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Avri Altman <Avri.Altman@wdc.com>,
-        Michael Heimpold <mhei@heimpold.de>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Subject: Re: [PATCH mmc-utils v2 0/5] Various fixes for mmc-utils
-Message-ID: <20191005005553.GB24379@void.printf.net>
-References: <20190912210509.19816-1-mhei@heimpold.de> <MN2PR04MB6991CE61681D33F1F7E76ADAFC890@MN2PR04MB6991.namprd04.prod.outlook.com> <CAPDyKFrae36rymcD-o9RELiWVTzMd-ccM2q1q-dO7GiWYaqw+w@mail.gmail.com> <MN2PR04MB69915A035B856C0038633F7AFC890@MN2PR04MB6991.namprd04.prod.outlook.com> <CAPDyKFpZ8ASL4KhyzqGw+HYr1_8oh4xDU7LzBWz3c16=URK+8g@mail.gmail.com>
+        id S1727597AbfJELVN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 5 Oct 2019 07:21:13 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:31449 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726198AbfJELVN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 5 Oct 2019 07:21:13 -0400
+Received: from localhost.localdomain ([93.22.148.54])
+        by mwinf5d13 with ME
+        id 9nM52100B1AfE5H03nM6cy; Sat, 05 Oct 2019 13:21:09 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 05 Oct 2019 13:21:09 +0200
+X-ME-IP: 93.22.148.54
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     maximlevitsky@gmail.com, oakad@yahoo.com, ulf.hansson@linaro.org,
+        will@kernel.org, gustavo.pimentel@synopsys.com,
+        colin.king@canonical.com, gustavo@embeddedor.com,
+        efremov@linux.com, tglx@linutronix.de, yuehaibing@huawei.com
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] memstick: jmb38x_ms: Fix an error handling path in 'jmb38x_ms_probe()'
+Date:   Sat,  5 Oct 2019 13:21:01 +0200
+Message-Id: <20191005112101.14410-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFpZ8ASL4KhyzqGw+HYr1_8oh4xDU7LzBWz3c16=URK+8g@mail.gmail.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi folks,
+If 'jmb38x_ms_count_slots()' returns 0, we must undo the previous
+'pci_request_regions()' call.
 
-On Thu, Oct 03, 2019 at 12:22:28PM +0200, Ulf Hansson wrote:
-> > Then I would like to suggest myself as a reviewer [R].
-> > I hope that some more people would be interested to support this.
-> > Would you be able to pick mmc-utils patches?
-> 
-> Really great that you are willing to help!
-> 
-> No, I can't pick patches, as don't have the permission to push them to
-> the git tree. Only Chris can do that at this point.
-> 
-> We could create a group to share publish permissions to the git, but
-> it depending on what Chris feels about that.
+Goto 'err_out_int' to fix it.
 
-Yes, if it's possible to share permissions on the current repo to
-include Ulf and Avri too, that works fine for me.
+Fixes: 60fdd931d577 ("memstick: add support for JMicron jmb38x MemoryStick host controller")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/memstick/host/jmb38x_ms.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/memstick/host/jmb38x_ms.c b/drivers/memstick/host/jmb38x_ms.c
+index c4a477643977..0a9c5ddf2f59 100644
+--- a/drivers/memstick/host/jmb38x_ms.c
++++ b/drivers/memstick/host/jmb38x_ms.c
+@@ -941,7 +941,7 @@ static int jmb38x_ms_probe(struct pci_dev *pdev,
+ 	if (!cnt) {
+ 		rc = -ENODEV;
+ 		pci_dev_busy = 1;
+-		goto err_out;
++		goto err_out_int;
+ 	}
+ 
+ 	jm = kzalloc(sizeof(struct jmb38x_ms)
 -- 
-Chris Ball   <http://printf.net/>
+2.20.1
+
