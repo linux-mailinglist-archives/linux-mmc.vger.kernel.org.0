@@ -2,65 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 591E1CC998
-	for <lists+linux-mmc@lfdr.de>; Sat,  5 Oct 2019 13:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B727CCEEA
+	for <lists+linux-mmc@lfdr.de>; Sun,  6 Oct 2019 07:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727597AbfJELVN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 5 Oct 2019 07:21:13 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:31449 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726198AbfJELVN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 5 Oct 2019 07:21:13 -0400
-Received: from localhost.localdomain ([93.22.148.54])
-        by mwinf5d13 with ME
-        id 9nM52100B1AfE5H03nM6cy; Sat, 05 Oct 2019 13:21:09 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 05 Oct 2019 13:21:09 +0200
-X-ME-IP: 93.22.148.54
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     maximlevitsky@gmail.com, oakad@yahoo.com, ulf.hansson@linaro.org,
-        will@kernel.org, gustavo.pimentel@synopsys.com,
-        colin.king@canonical.com, gustavo@embeddedor.com,
-        efremov@linux.com, tglx@linutronix.de, yuehaibing@huawei.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] memstick: jmb38x_ms: Fix an error handling path in 'jmb38x_ms_probe()'
-Date:   Sat,  5 Oct 2019 13:21:01 +0200
-Message-Id: <20191005112101.14410-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1726115AbfJFF7B (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 6 Oct 2019 01:59:01 -0400
+Received: from sender4-pp-o95.zoho.com ([136.143.188.95]:25526 "EHLO
+        sender4-pp-o95.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726087AbfJFF7B (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 6 Oct 2019 01:59:01 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1570341511; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=QruYSnbHA0yyNDY/sgQYXicI+jC/qwjzuFoMQZmVs3usxOg5E0lE34ZdydyhHFQxpn5PK/9ezuZTqcghGsQprHTmFcSwPMW/0t16ziNS7PE5UqiyawJyUg5NTkvyoNlBbz6Waavgb/ktngkWZbCTowIW/jTl7HTGG/awOf9xkdw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1570341511; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To:ARC-Authentication-Results; 
+        bh=FIVmd6RsuPA3669yj2KqpaCMQ3WoQUu2gHxtBlIpTTU=; 
+        b=N6xELN1wDY83oG4cUNWMwaGGJu+btURHCd7oQ99dulTcestCPPzjeZ2+NGcdSvWJEq86hiO6ZyFnMWcOiug9SvEK1LZXhbSq65gQbbaylAyFgU6E9u31z93e12TAU5CBWJeKRT54/Bwe0jNchGbmcey4zXu3A433xX3q6tVm1oM=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=zoho.com;
+        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
+        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
+  s=zapps768; d=zoho.com; 
+  h=subject:to:references:cc:from:message-id:date:user-agent:mime-version:in-reply-to:content-type; 
+  b=tge/DNPCR423FXM+9+fHt2KFD7ONafxrNKUeOCHFbuXuXI76etVqhZ3+brx9obILTPiKVJTOwD44
+    5WUB37H3f/dLuSM5LxorQxwPEpBXvj47T8sPFuyeuszc+7aKPttq  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1570341511;
+        s=zm2019; d=zoho.com; i=zhouyanjie@zoho.com;
+        h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+        l=747; bh=FIVmd6RsuPA3669yj2KqpaCMQ3WoQUu2gHxtBlIpTTU=;
+        b=fopFJTxW+5Sq2WarzwK+qaEywXDKt1iyvpK360sR8zEDpLzrp6NPRYJwhR9rzOoU
+        uZG1bLt/SJVMLuUVBsR7OyBQLGxckhu+xf8ToBT3Uie7HVOQ6KBN6p77mERJyrixO1A
+        RsybX5KbZ7L1+e+jWNrgYXfQiHDyP/F/oTDiMEag=
+Received: from [192.168.88.140] (171.221.113.164 [171.221.113.164]) by mx.zohomail.com
+        with SMTPS id 1570341509230422.7816399434387; Sat, 5 Oct 2019 22:58:29 -0700 (PDT)
+Subject: Re: [PATCH 4/4] MMC: Ingenic: Add support for JZ4760 and support for
+ LPM.
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
+ <1567669089-88693-5-git-send-email-zhouyanjie@zoho.com>
+ <CAPDyKFo0aR2fhCd8qCNAf7hoXSjV+9vG1BqB6vEM=B9Vpmpovg@mail.gmail.com>
+Cc:     linux-mips@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Mathieu Malaterre <malat@debian.org>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Ezequiel Garcia <ezequiel@collabora.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, syq@debian.org,
+        jiaxun.yang@flygoat.com
+From:   Zhou Yanjie <zhouyanjie@zoho.com>
+Message-ID: <5D99827E.9070505@zoho.com>
+Date:   Sun, 6 Oct 2019 13:58:22 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPDyKFo0aR2fhCd8qCNAf7hoXSjV+9vG1BqB6vEM=B9Vpmpovg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-If 'jmb38x_ms_count_slots()' returns 0, we must undo the previous
-'pci_request_regions()' call.
+Hi Uffe,
+On 2019=E5=B9=B410=E6=9C=8803=E6=97=A5 18:00, Ulf Hansson wrote:
+> On Thu, 5 Sep 2019 at 09:40, Zhou Yanjie <zhouyanjie@zoho.com> wrote:
+>> 1.add support for probing mmc driver on the JZ4760 Soc from Ingenic.
+>> 2.add support for Low Power Mode of Ingenic's MMC/SD Controller.
+> Normally we try to make "one" change per patch, unless there are some
+> good reasons not to.
+>
+> In this case, it seems like you should rather split this patch into
+> two separate pieces. Can you please do that?
 
-Goto 'err_out_int' to fix it.
+OK,I'll split it in v2.
 
-Fixes: 60fdd931d577 ("memstick: add support for JMicron jmb38x MemoryStick host controller")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/memstick/host/jmb38x_ms.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> Additionally, please change the prefix for the commit message header
+> to start with "mmc: jz4740:"
 
-diff --git a/drivers/memstick/host/jmb38x_ms.c b/drivers/memstick/host/jmb38x_ms.c
-index c4a477643977..0a9c5ddf2f59 100644
---- a/drivers/memstick/host/jmb38x_ms.c
-+++ b/drivers/memstick/host/jmb38x_ms.c
-@@ -941,7 +941,7 @@ static int jmb38x_ms_probe(struct pci_dev *pdev,
- 	if (!cnt) {
- 		rc = -ENODEV;
- 		pci_dev_busy = 1;
--		goto err_out;
-+		goto err_out_int;
- 	}
- 
- 	jm = kzalloc(sizeof(struct jmb38x_ms)
--- 
-2.20.1
+sure, it will be change in v2.
+
+>
+> [...]
+>
+> Kind regards
+> Uffe
+Thanks  and best regards!
+
 
