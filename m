@@ -2,98 +2,93 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B727CCEEA
-	for <lists+linux-mmc@lfdr.de>; Sun,  6 Oct 2019 07:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A78C1CDA72
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2019 04:32:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726115AbfJFF7B (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 6 Oct 2019 01:59:01 -0400
-Received: from sender4-pp-o95.zoho.com ([136.143.188.95]:25526 "EHLO
-        sender4-pp-o95.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726087AbfJFF7B (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 6 Oct 2019 01:59:01 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1570341511; cv=none; 
-        d=zoho.com; s=zohoarc; 
-        b=QruYSnbHA0yyNDY/sgQYXicI+jC/qwjzuFoMQZmVs3usxOg5E0lE34ZdydyhHFQxpn5PK/9ezuZTqcghGsQprHTmFcSwPMW/0t16ziNS7PE5UqiyawJyUg5NTkvyoNlBbz6Waavgb/ktngkWZbCTowIW/jTl7HTGG/awOf9xkdw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
-        t=1570341511; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To:ARC-Authentication-Results; 
-        bh=FIVmd6RsuPA3669yj2KqpaCMQ3WoQUu2gHxtBlIpTTU=; 
-        b=N6xELN1wDY83oG4cUNWMwaGGJu+btURHCd7oQ99dulTcestCPPzjeZ2+NGcdSvWJEq86hiO6ZyFnMWcOiug9SvEK1LZXhbSq65gQbbaylAyFgU6E9u31z93e12TAU5CBWJeKRT54/Bwe0jNchGbmcey4zXu3A433xX3q6tVm1oM=
-ARC-Authentication-Results: i=1; mx.zoho.com;
-        dkim=pass  header.i=zoho.com;
-        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
-        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
-  s=zapps768; d=zoho.com; 
-  h=subject:to:references:cc:from:message-id:date:user-agent:mime-version:in-reply-to:content-type; 
-  b=tge/DNPCR423FXM+9+fHt2KFD7ONafxrNKUeOCHFbuXuXI76etVqhZ3+brx9obILTPiKVJTOwD44
-    5WUB37H3f/dLuSM5LxorQxwPEpBXvj47T8sPFuyeuszc+7aKPttq  
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1570341511;
-        s=zm2019; d=zoho.com; i=zhouyanjie@zoho.com;
-        h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        l=747; bh=FIVmd6RsuPA3669yj2KqpaCMQ3WoQUu2gHxtBlIpTTU=;
-        b=fopFJTxW+5Sq2WarzwK+qaEywXDKt1iyvpK360sR8zEDpLzrp6NPRYJwhR9rzOoU
-        uZG1bLt/SJVMLuUVBsR7OyBQLGxckhu+xf8ToBT3Uie7HVOQ6KBN6p77mERJyrixO1A
-        RsybX5KbZ7L1+e+jWNrgYXfQiHDyP/F/oTDiMEag=
-Received: from [192.168.88.140] (171.221.113.164 [171.221.113.164]) by mx.zohomail.com
-        with SMTPS id 1570341509230422.7816399434387; Sat, 5 Oct 2019 22:58:29 -0700 (PDT)
-Subject: Re: [PATCH 4/4] MMC: Ingenic: Add support for JZ4760 and support for
- LPM.
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
- <1567669089-88693-5-git-send-email-zhouyanjie@zoho.com>
- <CAPDyKFo0aR2fhCd8qCNAf7hoXSjV+9vG1BqB6vEM=B9Vpmpovg@mail.gmail.com>
-Cc:     linux-mips@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Mathieu Malaterre <malat@debian.org>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Ezequiel Garcia <ezequiel@collabora.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, syq@debian.org,
-        jiaxun.yang@flygoat.com
-From:   Zhou Yanjie <zhouyanjie@zoho.com>
-Message-ID: <5D99827E.9070505@zoho.com>
-Date:   Sun, 6 Oct 2019 13:58:22 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.8.0
+        id S1726964AbfJGCct (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 6 Oct 2019 22:32:49 -0400
+Received: from mx.socionext.com ([202.248.49.38]:41744 "EHLO mx.socionext.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726960AbfJGCct (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 6 Oct 2019 22:32:49 -0400
+Received: from unknown (HELO iyokan-ex.css.socionext.com) ([172.31.9.54])
+  by mx.socionext.com with ESMTP; 07 Oct 2019 11:32:46 +0900
+Received: from mail.mfilter.local (m-filter-2 [10.213.24.62])
+        by iyokan-ex.css.socionext.com (Postfix) with ESMTP id 668F6605F8;
+        Mon,  7 Oct 2019 11:32:46 +0900 (JST)
+Received: from 10.213.24.1 (10.213.24.1) by m-FILTER with ESMTP; Mon, 7 Oct 2019 11:32:46 +0900
+Received: from SOC-EX02V.e01.socionext.com (10.213.24.22) by
+ SOC-EX01V.e01.socionext.com (10.213.24.21) with Microsoft SMTP Server (TLS)
+ id 15.0.995.29; Mon, 7 Oct 2019 11:32:45 +0900
+Received: from SOC-EX02V.e01.socionext.com ([10.213.25.22]) by
+ SOC-EX02V.e01.socionext.com ([10.213.25.22]) with mapi id 15.00.0995.028;
+ Mon, 7 Oct 2019 11:32:45 +0900
+From:   <orito.takao@socionext.com>
+To:     <ulf.hansson@linaro.org>
+CC:     <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <adrian.hunter@intel.com>, <linux-mmc@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <masami.hiramatsu@linaro.org>, <jaswinder.singh@linaro.org>,
+        <sugaya.taichi@socionext.com>, <kasai.kazuhiro@socionext.com>,
+        <kanematsu.shinji@socionext.com>
+Subject: Re: [PATCH v3 0/2] mmc: sdhci-milbeaut: add Milbeaut SD driver
+Thread-Topic: [PATCH v3 0/2] mmc: sdhci-milbeaut: add Milbeaut SD driver
+Thread-Index: AQHVZ3ihYlxK3AfGCE+319PUx3aqu6dIPRWAgAXMGQA=
+Date:   Mon, 7 Oct 2019 02:32:44 +0000
+Message-ID: <20191007113235.355F.F0D17A80@socionext.com>
+References: <1568079631-28808-1-git-send-email-orito.takao@socionext.com>
+ <CAPDyKFq6wbscGGq_0Q3_8eGLXk-+xBtmPbjq97jiejR7Qd_QbA@mail.gmail.com>
+In-Reply-To: <CAPDyKFq6wbscGGq_0Q3_8eGLXk-+xBtmPbjq97jiejR7Qd_QbA@mail.gmail.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: Becky! ver. 2.74.02 [ja] (Unregistered)
+x-originating-ip: [10.213.24.1]
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-ID: <36AE662AED835746B2F222A52E6199E0@socionext.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFo0aR2fhCd8qCNAf7hoXSjV+9vG1BqB6vEM=B9Vpmpovg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Uffe,
-On 2019=E5=B9=B410=E6=9C=8803=E6=97=A5 18:00, Ulf Hansson wrote:
-> On Thu, 5 Sep 2019 at 09:40, Zhou Yanjie <zhouyanjie@zoho.com> wrote:
->> 1.add support for probing mmc driver on the JZ4760 Soc from Ingenic.
->> 2.add support for Low Power Mode of Ingenic's MMC/SD Controller.
-> Normally we try to make "one" change per patch, unless there are some
-> good reasons not to.
->
-> In this case, it seems like you should rather split this patch into
-> two separate pieces. Can you please do that?
-
-OK,I'll split it in v2.
-
->
-> Additionally, please change the prefix for the commit message header
-> to start with "mmc: jz4740:"
-
-sure, it will be change in v2.
-
->
-> [...]
->
-> Kind regards
-> Uffe
-Thanks  and best regards!
-
-
+DQpUaGFua3MgZm9yIGNoZWNraW5nIGFuZCBwdXNoaW5nIG15IHBhdGNoICENCg0KT3JpdG8NCg0K
+PiBPbiBUdWUsIDEwIFNlcCAyMDE5IGF0IDAzOjM5LCBUYWthbyBPcml0byA8b3JpdG8udGFrYW9A
+c29jaW9uZXh0LmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBUaGUgZm9sbG93aW5nIHBhdGNoZXMgYWRk
+IGRyaXZlciBmb3IgU0QgSG9zdCBjb250cm9sbGVyIG9uDQo+ID4gU29jaW9uZXh0J3MgTWlsYmVh
+dXQgTTEwViBwbGF0Zm9ybXMuDQo+ID4NCj4gPiBTRCBIb3N0IGNvbnRyb2xsZXIgb24gTWlsYmVh
+dXQgY29uc2lzdHMgb2YgdHdvIGNvbnRyb2xsZXIgcGFydHMuDQo+ID4gT25lIGlzIGNvcmUgY29u
+dHJvbGxlciBGX1NESDMwLCB0aGlzIGlzIHNpbWlsYXIgdG8gc2RoY2ktZnVqaXRzdQ0KPiA+IGNv
+bnRyb2xsZXIuDQo+ID4gQW5vdGhlciBpcyBicmlkZ2UgY29udHJvbGxlci4gVGhpcyBicmlkZ2Ug
+Y29udHJvbGxlciBpcyBub3QgY29tcGF0aWJsZQ0KPiA+IHdpdGggc2RoY2ktZnVqaXRzdSBjb250
+cm9sbGVyLiBUaGlzIGlzIHNwZWNpYWwgZm9yIE1pbGJlYXV0IHNlcmllcy4NCj4gPg0KPiA+IEl0
+IGhhcyB0aGUgc2V2ZXJhbCBwYXJ0cywNCj4gPiAgLSByZXNldCBjb250cm9sDQo+ID4gIC0gY2xv
+Y2sgZW5hYmxlIC8gc2VsZWN0IGZvciBTRFI1MC8yNS8xMg0KPiA+ICAtIGhvbGQgY29udHJvbCBv
+ZiBEQVRBL0NNRCBsaW5lDQo+ID4gIC0gc2VsZWN0IGNoYXJhY3RlcmlzdGljcyBmb3IgV1AvQ0Qv
+TEVEIGxpbmUNCj4gPiAgLSBSZS10dW5pbmcgY29udHJvbCBmb3IgbW9kZTMNCj4gPiAgLSBDYXBh
+YmlsaXR5IHNldHRpbmcNCj4gPiAgICBUaW1lb3V0IENsb2NrIC8gQmFzZSBDbG9jayAvIFRpbWVy
+IENvdW50IGZvciBSZS1UdW5pbmcgLw0KPiA+ICAgIERlYm91bmNlIHBlcmlvZA0KPiA+IFRoZXNl
+IHJlcXVpcmVzIHNwZWNpYWwgcHJvY2VkdXJlcyBhdCByZXNldCBvciBjbG9jayBlbmFibGUvY2hh
+bmdlIG9yDQo+ID4gIGZ1cnRoZXIgdHVuaW5nIG9mIGNsb2NrLg0KPiA+DQo+ID4gVGFrYW8gT3Jp
+dG8gKDIpOg0KPiA+ICAgZHQtYmluZGluZ3M6IG1tYzogYWRkIERUIGJpbmRpbmdzIGZvciBNaWxi
+ZWF1dCBTRCBjb250cm9sbGVyDQo+ID4gICBtbWM6IHNkaGNpLW1pbGJlYXV0OiBhZGQgTWlsYmVh
+dXQgU0QgY29udHJvbGxlciBkcml2ZXINCj4gPg0KPiA+ICAuLi4vZGV2aWNldHJlZS9iaW5kaW5n
+cy9tbWMvc2RoY2ktbWlsYmVhdXQudHh0ICAgICB8ICAzMCArKw0KPiA+ICBkcml2ZXJzL21tYy9o
+b3N0L0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxMSArDQo+ID4gIGRyaXZl
+cnMvbW1jL2hvc3QvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsNCj4g
+PiAgZHJpdmVycy9tbWMvaG9zdC9zZGhjaS1taWxiZWF1dC5jICAgICAgICAgICAgICAgICAgfCAz
+NjIgKysrKysrKysrKysrKysrKysrKysrDQo+ID4gIGRyaXZlcnMvbW1jL2hvc3Qvc2RoY2lfZl9z
+ZGgzMC5jICAgICAgICAgICAgICAgICAgIHwgIDI2ICstDQo+ID4gIGRyaXZlcnMvbW1jL2hvc3Qv
+c2RoY2lfZl9zZGgzMC5oICAgICAgICAgICAgICAgICAgIHwgIDMyICsrDQo+ID4gIDYgZmlsZXMg
+Y2hhbmdlZCwgNDM3IGluc2VydGlvbnMoKyksIDI1IGRlbGV0aW9ucygtKQ0KPiA+ICBjcmVhdGUg
+bW9kZSAxMDA2NDQgRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL21tYy9zZGhjaS1t
+aWxiZWF1dC50eHQNCj4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbW1jL2hvc3Qvc2Ro
+Y2ktbWlsYmVhdXQuYw0KPiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9tbWMvaG9zdC9z
+ZGhjaV9mX3NkaDMwLmgNCj4gPg0KPiA+IC0tDQo+ID4gMS45LjENCj4gPg0KPiA+DQo+IA0KPiBB
+cHBsaWVkIGZvciBuZXh0LCB0aGFua3MhDQo+IA0KPiBLaW5kIHJlZ2FyZHMNCj4gVWZmZQ0KDQot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQ0KVGFrYW8gT3JpdG8NClNvY2lvbmV4dCBJbmMuDQpFLW1haWw6b3JpdG8udGFrYW9A
+c29jaW9uZXh0LmNvbQ0KVGVsOis4MS04MC05ODE1LTE0NjANCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo=
