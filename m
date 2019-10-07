@@ -2,85 +2,45 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 926F6CDC6E
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2019 09:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 500ADCE773
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2019 17:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727028AbfJGHds (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 7 Oct 2019 03:33:48 -0400
-Received: from mga12.intel.com ([192.55.52.136]:50597 "EHLO mga12.intel.com"
+        id S1727935AbfJGP2v (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 7 Oct 2019 11:28:51 -0400
+Received: from 8bytes.org ([81.169.241.247]:57602 "EHLO theia.8bytes.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726960AbfJGHds (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 7 Oct 2019 03:33:48 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Oct 2019 00:33:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,265,1566889200"; 
-   d="scan'208";a="392948085"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga005.fm.intel.com with ESMTP; 07 Oct 2019 00:33:47 -0700
-Received: from [10.226.38.27] (unknown [10.226.38.27])
-        by linux.intel.com (Postfix) with ESMTP id CA96C580332;
-        Mon,  7 Oct 2019 00:33:44 -0700 (PDT)
-Subject: Re: [PATCH v1 2/2] mmc: sdhci-of-arasan: Add Support for Intel LGM
- SDXC
-From:   "Ramuthevar, Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, michal.simek@xilinx.com,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        andriy.shevchenko@intel.com, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com
-References: <20191003040032.37696-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20191003040032.37696-3-vadivel.muruganx.ramuthevar@linux.intel.com>
- <329a38b4-4fba-eb6e-0d40-c241cfa28e25@intel.com>
- <0c3d406c-dc28-a670-91df-7c7e6f818f87@linux.intel.com>
-Message-ID: <535ae010-c8b1-ceda-39dc-2dda049b1952@linux.intel.com>
-Date:   Mon, 7 Oct 2019 15:33:43 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1727830AbfJGP2v (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 7 Oct 2019 11:28:51 -0400
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+        id 2502336D; Mon,  7 Oct 2019 17:28:50 +0200 (CEST)
+Date:   Mon, 7 Oct 2019 17:28:48 +0200
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     iommu@lists.linux-foundation.org,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 6/6] iommu/amd: Switch to use acpi_dev_hid_uid_match()
+Message-ID: <20191007152848.GA20456@8bytes.org>
+References: <20190924193739.86133-1-andriy.shevchenko@linux.intel.com>
+ <20190924193739.86133-7-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <0c3d406c-dc28-a670-91df-7c7e6f818f87@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190924193739.86133-7-andriy.shevchenko@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Adrian,
-
-On 3/10/2019 3:46 PM, Ramuthevar, Vadivel MuruganX wrote:
-> Hi Adrian,
->
->  Thank you for the comments.
->
-> On 3/10/2019 3:02 PM, Adrian Hunter wrote:
->> On 3/10/19 7:00 AM, Ramuthevar,Vadivel MuruganX wrote:
->>> From: Ramuthevar Vadivel Murugan 
->>> <vadivel.muruganx.ramuthevar@linux.intel.com>
->>>
->>> The current arasan sdhci PHY configuration isn't compatible
->>> with the PHY on Intel's LGM(Lightning Mountain) SoC devices.
->>>
->>> Therefore, add a new compatible, to adapt the Intel's LGM
->>> SDXC PHY with arasan-sdhc controller to configure the PHY.
->>>
->>> Signed-off-by: Ramuthevar Vadivel Murugan 
->>> <vadivel.muruganx.ramuthevar@linux.intel.com>
->> Aren't these patches already in v5.4-rc1
->
->  No, these patches are not there in v5.4-rc1.
->
->  The one which is in v5.4-rc1 supports only eMMC, does not SD/SDIO, so 
-> these patches are required.
->
-can you please provide your suggestions and opinions further on the 
-above reply,  to proceed, Thanks!
+On Tue, Sep 24, 2019 at 10:37:39PM +0300, Andy Shevchenko wrote:
+> Since we have a generic helper, drop custom implementation in the driver.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
-> With Best Regards
-> Vadivel Murugan
+>  drivers/iommu/amd_iommu.c | 30 +++++-------------------------
+>  1 file changed, 5 insertions(+), 25 deletions(-)
+
+Acked-by: Joerg Roedel <jroedel@suse.de>
