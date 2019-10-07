@@ -2,66 +2,63 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36EAC23BD02
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Aug 2020 17:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 426DF23C259
+	for <lists+linux-mmc@lfdr.de>; Wed,  5 Aug 2020 01:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728586AbgHDPOk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Aug 2020 11:14:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45350 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729305AbgHDPOD (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 4 Aug 2020 11:14:03 -0400
-Received: from kozik-lap.mshome.net (unknown [194.230.155.117])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8C9FE2086A;
-        Tue,  4 Aug 2020 15:14:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596554043;
-        bh=my56wxLmosOxgUWMEuXlQ1fGu46KvIHPU4Touu/yTO0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=RN0qvKJiOD4wbeapTVHeb9VjpHCEBQefF/0YxmV+YJHmszpRmWME6NqPifgakw+8d
-         E9XJtGLhBK/PigFplW5i1MY0kUFK/l9p3Gy1kuty4gLsidyW/K5DNNeVawzie501/N
-         ORM0Of/X0DA2WwC5gciFKnrae8B36aFEcbP8QcZU=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Ben Dooks <ben-linux@fluff.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] mmc: s3cmci: remove empty kerneldoc comment
-Date:   Tue,  4 Aug 2020 17:13:45 +0200
-Message-Id: <20200804151345.28005-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1727909AbgHDXwc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 4 Aug 2020 19:52:32 -0400
+Received: from [162.242.144.135] ([162.242.144.135]:52272 "EHLO dockerbox"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726788AbgHDXw2 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 4 Aug 2020 19:52:28 -0400
+X-Greylist: delayed 28014 seconds by postgrey-1.27 at vger.kernel.org; Tue, 04 Aug 2020 19:52:28 EDT
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+        by dockerbox (Postfix) with SMTP id 6F4DA5EC5A;
+        Mon,  7 Oct 2019 19:30:12 -0500 (CDT)
+Received: from [32.188.209.113] by 127.0.0.1 with SMTP; Mon, 07 Oct 2019 18:22:17 -0600
+Message-ID: <80v-q$4-o4pqyq0@6eeih174.p55>
+From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+To:     linkos@binet.lv
+Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA
+Date:   Mon, 07 Oct 19 18:22:17 GMT
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+        boundary="_.A4476ECDD73A3"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Remove empty comment to fix W=1 compile warning:
 
-    drivers/mmc/host/s3cmci.c:400: warning: Cannot understand  *
-     on line 400 - I thought it was a doc line
+--_.A4476ECDD73A3
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- drivers/mmc/host/s3cmci.c | 3 ---
- 1 file changed, 3 deletions(-)
+Greetings
 
-diff --git a/drivers/mmc/host/s3cmci.c b/drivers/mmc/host/s3cmci.c
-index 444b2769ae2c..b5df948f8155 100644
---- a/drivers/mmc/host/s3cmci.c
-+++ b/drivers/mmc/host/s3cmci.c
-@@ -396,9 +396,6 @@ static void s3cmci_enable_irq(struct s3cmci_host *host, bool more)
- 	local_irq_restore(flags);
- }
- 
--/**
-- *
-- */
- static void s3cmci_disable_irq(struct s3cmci_host *host, bool transfer)
- {
- 	unsigned long flags;
--- 
-2.17.1
+My name is Barrister Hans Erich.
+
+I have a client who is interested to invest in your country, she is a well=
+ known politician in her country and deserve a lucrative investment partne=
+rship with you outside her country without any delay   Please can you mana=
+ge such investment please Kindly reply for further details.
+
+Your full names --------
+
+
+Your urgent response will be appreciated
+
+Thank you and God bless you.
+
+Barrister Hans Erich
+
+Yours sincerely,
+Barrister Hans Erich
+CONTACT: hanserich9helmut@gmail.com
+
+--_.A4476ECDD73A3--
 
