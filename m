@@ -2,174 +2,205 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0681CEDE4
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2019 22:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE200CEFB9
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Oct 2019 01:47:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728718AbfJGUrc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 7 Oct 2019 16:47:32 -0400
-Received: from ns1.tgtizmir.com ([217.116.196.59]:47023 "EHLO ns1.tgtizmir.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728273AbfJGUrb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 7 Oct 2019 16:47:31 -0400
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-        by ns1.tgtizmir.com (Postfix) with SMTP id E571654D2B0;
-        Mon,  7 Oct 2019 04:32:49 +0300 (+03)
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received-SPF: pass (ns1.tgtizmir.com: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=dave@dbsoundfactory.com; helo=127.0.0.1;
-Received: from (HELO 7pdi8) [118.199.49.221] by 127.0.0.1 id rHy4JJRGOX39; Sun, 06 Oct 2019 19:29:55 -0600
-Message-ID: <3-27bt$$-j39kji6@o4lwa20167h1q>
-From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-To:     linux-mips@linux-mips.org
-Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA
-Date:   Sun, 06 Oct 19 19:29:55 GMT
-X-Mailer: The Bat! (v1.52f) Business
+        id S1729618AbfJGXr3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 7 Oct 2019 19:47:29 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:35776 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729285AbfJGXr3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Oct 2019 19:47:29 -0400
+Received: by mail-oi1-f196.google.com with SMTP id x3so13304412oig.2
+        for <linux-mmc@vger.kernel.org>; Mon, 07 Oct 2019 16:47:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PjC4IOE74uqk6BvdzjxTzi5lzmlkVlCf5u8wFkWOV1M=;
+        b=FCzc0dVJaMula/54qVHjHdG5+S3RTJZtsnEQjayFHj/UgaXAkTNDkQvxpIyV2MbkVM
+         VJCnCpcF/C5uksbCumurz92HwZiD2yiJo2mVj2UtgqibAfCSjpfxYpeLt67xQ3Go/Oj7
+         qvR2ZwnciZv5TNaaBpr2KS/KnRvSVQfEqQO9U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PjC4IOE74uqk6BvdzjxTzi5lzmlkVlCf5u8wFkWOV1M=;
+        b=ubPwKfeaedXVePo4tYilm9uYv8aua/oxw6Clk8qcqoONAPZV0qP2Az9wSGLt96ZemC
+         YbnZF1ZlHzVQerj4vhTiWsHMulzkAIazxk3YkSv6tHXXXhmf8/leK3tfDAfDrXy9uuao
+         wkgtmYzWLqBxGu5dt90CPASFGjbypfDKEaWDajx7zZWdS4nAycltx7ozWakHfHjcwcFm
+         WTtmJ0vc79DYW4KqCFaWUeI0f38lapkP1AAAGkzbRUkcIchDVX/eYvtVBqFmhTsXAqfn
+         1iS0VA/caCSoIjS71AuDLSTMrCk+B3eKz26EkUsppGMWwU0/kzJ5kRe+k3fzIigHs5hh
+         tqNQ==
+X-Gm-Message-State: APjAAAUQdhMJ0TBQuaer6PcrW8dZwy3uI3YMtVQqBMA4ucNF4XI/c20o
+        41Kq8D753XtCEhdMqpVY1h42yBNcPPU=
+X-Google-Smtp-Source: APXvYqxtJMPQ7Uiar1dH1qVtQkzrcGcbDtqpUdjY0J4TZ8evHB+9KXSvrsHhj139HUme5GXNwAtmwQ==
+X-Received: by 2002:a05:6808:b0d:: with SMTP id s13mr1544112oij.52.1570492047972;
+        Mon, 07 Oct 2019 16:47:27 -0700 (PDT)
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com. [209.85.166.49])
+        by smtp.gmail.com with ESMTPSA id 100sm4799418otl.48.2019.10.07.16.47.27
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Oct 2019 16:47:27 -0700 (PDT)
+Received: by mail-io1-f49.google.com with SMTP id c6so32530566ioo.13
+        for <linux-mmc@vger.kernel.org>; Mon, 07 Oct 2019 16:47:27 -0700 (PDT)
+X-Received: by 2002:a92:4a11:: with SMTP id m17mr31969418ilf.142.1570491585206;
+ Mon, 07 Oct 2019 16:39:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="BB118ED_BAB2D5FF1EA50F"
-X-Priority: 3
-X-MSMail-Priority: Normal
+References: <20190722193939.125578-1-dianders@chromium.org>
+ <CAPDyKFoND5Kaam72zxO4wChO0z_1XL2KWX6oNjVcMUGA7G8RFg@mail.gmail.com>
+ <CAD=FV=VTLoqGbxFFMT8h72cfHCLupyvZpD75JB0N86+kFA+vzw@mail.gmail.com> <CAPDyKFrPHguMrMvXN0yHbD9GmEg4m=J1Un=LcpE0PB7WqMRYSg@mail.gmail.com>
+In-Reply-To: <CAPDyKFrPHguMrMvXN0yHbD9GmEg4m=J1Un=LcpE0PB7WqMRYSg@mail.gmail.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Mon, 7 Oct 2019 16:39:32 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=W-qh2NnDc-C1_Tki3=D7vzNGG2PgnZjCjdLU9gL68AxA@mail.gmail.com>
+Message-ID: <CAD=FV=W-qh2NnDc-C1_Tki3=D7vzNGG2PgnZjCjdLU9gL68AxA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mmc: core: Fix Marvell WiFi reset by adding SDIO
+ API to replug card
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Andreas Fenkart <afenkart@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        netdev <netdev@vger.kernel.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Hi,
 
---BB118ED_BAB2D5FF1EA50F
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+On Mon, Sep 16, 2019 at 2:25 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> On Wed, 11 Sep 2019 at 23:26, Doug Anderson <dianders@chromium.org> wrote:
+> >
+> > Hi,
+> >
+> > On Thu, Jul 25, 2019 at 6:28 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > >
+> > > On Mon, 22 Jul 2019 at 21:41, Douglas Anderson <dianders@chromium.org> wrote:
+> > > >
+> > > > As talked about in the thread at:
+> > > >
+> > > > http://lkml.kernel.org/r/CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com
+> > > >
+> > > > ...when the Marvell WiFi card tries to reset itself it kills
+> > > > Bluetooth.  It was observed that we could re-init the card properly by
+> > > > unbinding / rebinding the host controller.  It was also observed that
+> > > > in the downstream Chrome OS codebase the solution used was
+> > > > mmc_remove_host() / mmc_add_host(), which is similar to the solution
+> > > > in this series.
+> > > >
+> > > > So far I've only done testing of this series using the reset test
+> > > > source that can be simulated via sysfs.  Specifically I ran this test:
+> > > >
+> > > > for i in $(seq 1000); do
+> > > >   echo "LOOP $i --------"
+> > > >   echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
+> > > >
+> > > >   while true; do
+> > > >     if ! ping -w15 -c1 "${GW}" >/dev/null 2>&1; then
+> > > >       fail=$(( fail + 1 ))
+> > > >       echo "Fail WiFi ${fail}"
+> > > >       if [[ ${fail} == 3 ]]; then
+> > > >         exit 1
+> > > >       fi
+> > > >     else
+> > > >       fail=0
+> > > >       break
+> > > >     fi
+> > > >   done
+> > > >
+> > > >   hciconfig hci0 down
+> > > >   sleep 1
+> > > >   if ! hciconfig hci0 up; then
+> > > >     echo "Fail BT"
+> > > >     exit 1
+> > > >   fi
+> > > > done
+> > > >
+> > > > I ran this several times and got several hundred iterations each
+> > > > before a failure.  When I saw failures:
+> > > >
+> > > > * Once I saw a "Fail BT"; manually resetting the card again fixed it.
+> > > >   I didn't give it time to see if it would have detected this
+> > > >   automatically.
+> > > > * Once I saw the ping fail because (for some reason) my device only
+> > > >   got an IPv6 address from my router and the IPv4 ping failed.  I
+> > > >   changed my script to use 'ping6' to see if that would help.
+> > > > * Once I saw the ping fail because the higher level network stack
+> > > >   ("shill" in my case) seemed to crash.  A few minutes later the
+> > > >   system recovered itself automatically.  https://crbug.com/984593 if
+> > > >   you want more details.
+> > > > * Sometimes while I was testing I saw "Fail WiFi 1" indicating a
+> > > >   transitory failure.  Usually this was an association failure, but in
+> > > >   one case I saw the device do "Firmware wakeup failed" after I
+> > > >   triggered the reset.  This caused the driver to trigger a re-reset
+> > > >   of itself which eventually recovered things.  This was good because
+> > > >   it was an actual test of the normal reset flow (not the one
+> > > >   triggered via sysfs).
+> > > >
+> > > > Changes in v2:
+> > > > - s/routnine/routine (Brian Norris, Matthias Kaehlcke).
+> > > > - s/contining/containing (Matthias Kaehlcke).
+> > > > - Add Matthias Reviewed-by tag.
+> > > > - Removed clear_bit() calls and old comment (Brian Norris).
+> > > > - Explicit CC of Andreas Fenkart.
+> > > > - Explicit CC of Brian Norris.
+> > > > - Add "Fixes" pointing at the commit Brian talked about.
+> > > > - Add Brian's Reviewed-by tag.
+> > > >
+> > > > Douglas Anderson (2):
+> > > >   mmc: core: Add sdio_trigger_replug() API
+> > > >   mwifiex: Make use of the new sdio_trigger_replug() API to reset
+> > > >
+> > > >  drivers/mmc/core/core.c                     | 28 +++++++++++++++++++--
+> > > >  drivers/mmc/core/sdio_io.c                  | 20 +++++++++++++++
+> > > >  drivers/net/wireless/marvell/mwifiex/sdio.c | 16 +-----------
+> > > >  include/linux/mmc/host.h                    | 15 ++++++++++-
+> > > >  include/linux/mmc/sdio_func.h               |  2 ++
+> > > >  5 files changed, 63 insertions(+), 18 deletions(-)
+> > > >
+> > >
+> > > Doug, thanks for sending this!
+> > >
+> > > As you know, I have been working on additional changes for SDIO
+> > > suspend/resume (still WIP and not ready for sharing) and this series
+> > > is related.
+> > >
+> > > The thing is, that even during system suspend/resume, synchronizations
+> > > are needed between the different layers (mmc host, mmc core and
+> > > sdio-funcs), which is common to the problem you want to solve.
+> > >
+> > > That said, I need to scratch my head a bit more before I can provide
+> > > you some feedback on $subject series. Moreover, it's vacation period
+> > > at my side so things are moving a bit slower. Please be patient.
+> >
+> > I had kinda forgotten about this series after we landed it locally in
+> > Chrome OS, but I realized that it never got resolved upstream.  Any
+> > chance your head has been sufficiently scratched and you're now happy
+> > with $subject series?  ;-)
+>
+> It's still on my TODO list. Apologize for the delay, but I still need
+> more time to look into it, possibly later this week.
+>
+> In any case, let's make sure we get this problem resolved for v5.5.
 
-Greetings
-
-My name is Barrister Hans Erich.
-
-I have a client who is interested to invest in your country, she is a well=
- known politician in her country and deserve a lucrative investment partne=
-rship with you outside her country without any delay   Please can you mana=
-ge such investment please Kindly reply for further details.
-
-Your full names --------
+Hi Ulf.  It's your friendly pest, Doug, here to ask how things are going.  :-P
 
 
-Your urgent response will be appreciated
-
-Thank you and God bless you.
-
-Barrister Hans Erich
-
-Yours sincerely,
-Barrister Hans Erich
-CONTACT: hanserich9helmut@gmail.com
-
---BB118ED_BAB2D5FF1EA50F--
-
+-Doug
