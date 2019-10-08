@@ -2,144 +2,122 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE2C1CF603
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Oct 2019 11:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E74BCF687
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Oct 2019 11:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729790AbfJHJ2T (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Oct 2019 05:28:19 -0400
-Received: from esa2.microchip.iphmx.com ([68.232.149.84]:52992 "EHLO
-        esa2.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729440AbfJHJ2T (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Oct 2019 05:28:19 -0400
-Received-SPF: Pass (esa2.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa2.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa2.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa2.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa2.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: pDzxr0OUpql/p028ANa/qShsuGwVQJ+VlFqqMdoAYI3NgErKPw/kU2uB+3PGIK3tUS8gy6VRkD
- Weq23HT8B2olfafGZccCnOLgf69Q93nz5ojgpkiH50uFyUjnC5HGlvKic/xSR2O+wHsSPk/fDC
- 9+le4PgmTTiJkCI8WO+YNI9TG2IGlRX0UhNfKjHdE2acXwLlEDUF6eP1GTxS5DTvOfvGSGGbWk
- svbwmDuVNGlkJ8xw2NcOUxDu3jHDRPLlO7W3v/Kt+rP7NXSWmmBbs1KpFkj8fpT7gP8VYQGZpl
- a5g=
-X-IronPort-AV: E=Sophos;i="5.67,270,1566889200"; 
-   d="scan'208";a="51904800"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 08 Oct 2019 02:28:18 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Tue, 8 Oct 2019 02:28:18 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Tue, 8 Oct 2019 02:28:17 -0700
-Date:   Tue, 8 Oct 2019 11:28:27 +0200
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Rob Herring <robh@kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <ulf.hansson@linaro.org>, <nicolas.ferre@microchip.com>,
-        <adrian.hunter@intel.com>, <linux-kernel@vger.kernel.org>,
-        <mark.rutland@arm.com>, <claudiu.beznea@microchip.com>
-Subject: Re: [PATCH 1/3] dt-bindings: sdhci-of-at91: new compatible string
- and update properties
-Message-ID: <20191008092826.63kbia2wkggeab74@M43218.corp.atmel.com>
-Mail-Followup-To: Rob Herring <robh@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-mmc@vger.kernel.org, ulf.hansson@linaro.org,
-        nicolas.ferre@microchip.com, adrian.hunter@intel.com,
-        linux-kernel@vger.kernel.org, mark.rutland@arm.com,
-        claudiu.beznea@microchip.com
-References: <20190912200908.31318-1-ludovic.desroches@microchip.com>
- <20190930145613.GA11254@bogus>
+        id S1730409AbfJHJ4b (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Oct 2019 05:56:31 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:13734 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730408AbfJHJ4a (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Oct 2019 05:56:30 -0400
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x989q3T5002806;
+        Tue, 8 Oct 2019 11:56:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=lalHdG7UJQKEamzJtgMq1V9aYOha/nksgz4VLZDsBvA=;
+ b=hZGvZF6Um9r+0Rf/q9onqdXuiWZDQ2Ld3rqIJKGOtmpQesJIL5DDvfLnAilxtw5eUtgN
+ nrRhwvD8WdgDBnuC/mdPvdSSAozRuGCO8tN19UbUAPOVN9GwkZ2kD/4TOBH4nXKfN95q
+ UQiLt/Sunt0IS5Nin8Nd7L3uQevCATpcMXrwknjWnxakxKM1W84eWViOnP9e7Rh3X9lX
+ m2Z6c9JxzvlndWH+gLyf25CvFGLjj0mnV3qfTY+7Uv50+zXVpV7EO61dewq5+oH8r0TE
+ 0VF+NrChDfFuOKRDv9CCqDeY2llT494APGo/FwBex9caC3UkjHC4SY9IzrkwQxxgSOwG bg== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2vegagyygt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 08 Oct 2019 11:56:20 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 312A410002A;
+        Tue,  8 Oct 2019 11:56:19 +0200 (CEST)
+Received: from Webmail-eu.st.com (Safex1hubcas24.st.com [10.75.90.94])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 21C6D2B40AD;
+        Tue,  8 Oct 2019 11:56:19 +0200 (CEST)
+Received: from SAFEX1HUBCAS23.st.com (10.75.90.46) by Safex1hubcas24.st.com
+ (10.75.90.94) with Microsoft SMTP Server (TLS) id 14.3.439.0; Tue, 8 Oct 2019
+ 11:56:19 +0200
+Received: from lmecxl0923.lme.st.com (10.48.0.237) by webmail-ga.st.com
+ (10.75.90.48) with Microsoft SMTP Server (TLS) id 14.3.439.0; Tue, 8 Oct 2019
+ 11:56:18 +0200
+From:   Ludovic Barre <ludovic.Barre@st.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Ludovic Barre <ludovic.barre@st.com>
+Subject: [PATCH V7 0/3] mmc: mmci: add busy detect for stm32 sdmmc variant
+Date:   Tue, 8 Oct 2019 11:56:01 +0200
+Message-ID: <20191008095604.20675-1-ludovic.Barre@st.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20190930145613.GA11254@bogus>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
+X-Originating-IP: [10.48.0.237]
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-08_03:2019-10-07,2019-10-08 signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Sep 30, 2019 at 09:56:13AM -0500, Rob Herring wrote:
-> On Thu, Sep 12, 2019 at 10:09:06PM +0200, Ludovic Desroches wrote:
-> > There is a new compatible string for the SAM9X60 sdhci device. It involves
-> > an update of the properties about the clocks stuff.
-> > 
-> > Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
-> > ---
-> >  .../devicetree/bindings/mmc/sdhci-atmel.txt   | 25 ++++++++++++++++---
-> >  1 file changed, 22 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
-> > index 1b662d7171a0..364ceea330b6 100644
-> > --- a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
-> > +++ b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
-> > @@ -5,12 +5,19 @@ Documentation/devicetree/bindings/mmc/mmc.txt and the properties used by the
-> >  sdhci-of-at91 driver.
-> >  
-> >  Required properties:
-> > -- compatible:		Must be "atmel,sama5d2-sdhci".
-> > +- compatible:		Must be "atmel,sama5d2-sdhci" or "microchip,sam9x60-sdhci".
-> >  - clocks:		Phandlers to the clocks.
-> > -- clock-names:		Must be "hclock", "multclk", "baseclk";
-> > +- clock-names:		Must be "hclock", "multclk", "baseclk" for
-> > +			"atmel,sama5d2-sdhci".
-> > +			Must be "hclock", "multclk" for "microchip,sam9x60-sdhci".
-> >  
-> > +Optional properties:
-> > +- assigned-clocks:	The same with "multclk".
-> > +- assigned-clock-rates	The rate of "multclk" in order to not rely on the
-> > +			gck configuration set by previous components.
-> >  
-> > -Example:
-> > +
-> > +Examples:
-> >  
-> >  sdmmc0: sdio-host@a0000000 {
-> >  	compatible = "atmel,sama5d2-sdhci";
-> > @@ -18,4 +25,16 @@ sdmmc0: sdio-host@a0000000 {
-> >  	interrupts = <31 IRQ_TYPE_LEVEL_HIGH 0>;
-> >  	clocks = <&sdmmc0_hclk>, <&sdmmc0_gclk>, <&main>;
-> >  	clock-names = "hclock", "multclk", "baseclk";
-> > +	assigned-clocks = <&sdmmc0_gclk>;
-> > +	assigned-clock-rates = <480000000>;
-> > +};
-> > +
-> > +sdmmc0: sdio-host@80000000 {
-> 
-> mmc@...
-> 
-> Though I don't see much value in a second example. Examples are not a 
-> complete enumeration of all possible dts entries.
-> 
+From: Ludovic Barre <ludovic.barre@st.com>
 
-Ok, I'll skip this example.
+This patch series adds busy detect for stm32 sdmmc variant.
+Some adaptations are required:
+-On sdmmc the data timer is started on data transfert
+and busy state, so we must add hardware busy timeout support.
+-Add busy_complete callback at mmci_host_ops to allow to define
+a specific busy completion by variant.
+-Add sdmmc busy_complete callback.
 
-Ludovic
+V7:
+-Patch 1/3: rephrasing like proposed (thx ulf)
+-If busy timeout is undefined => increase to 10s
+-Keep busy_detect.
+-Patch 3/3: rephrasing comment header
+-Avoid twice read of status register
+-Avoid writing in MMCIMASK0 & MMCICLEAR if not modified
 
-> > +	compatible = "microchip,sam9x60-sdhci";
-> > +	reg = <0x80000000 0x300>;
-> > +	interrupts = <12 IRQ_TYPE_LEVEL_HIGH 0>;
-> > +	clocks = <&pmc PMC_TYPE_PERIPHERAL 12>, <&pmc PMC_TYPE_GCK 12>;
-> > +	clock-names = "hclock", "multclk";
-> > +	assigned-clocks = <&pmc PMC_TYPE_GCK 12>;
-> > +	assigned-clock-rates = <100000000>;
-> >  };
-> > -- 
-> > 2.23.0
-> > 
+V6:
+-mmci_start_command: set datatimer only on rsp_busy flag
+(remove host->mrq->data).
+-move max_busy_timeout in set_ios callback.
+-typo fix: err_msk, clks on one lines.
+
+V5:
+-Replaces !cmd->data to !host->mrq->data to avoid overwrite
+ of datatimer register by the first command (cmd23, without data) of
+ SBC request.
+
+V4:
+-Re-work with busy_complete callback
+-In series, move "mmc: mmci: add hardware busy timeout feature" in
+first to simplify busy_complete prototype with err_msk parameter.
+
+V3:
+-rebase on latest mmc next
+-replace re-read by status parameter. 
+
+V2:
+-mmci_cmd_irq cleanup in separate patch.
+-simplify the busy_detect_flag exclude
+-replace sdmmc specific comment in
+"mmc: mmci: avoid fake busy polling in mmci_irq"
+to focus on common behavior
+
+Ludovic Barre (3):
+  mmc: mmci: add hardware busy timeout feature
+  mmc: mmci: add busy_complete callback
+  mmc: mmci: sdmmc: add busy_complete callback
+
+ drivers/mmc/host/mmci.c             | 178 +++++++++++++++++-----------
+ drivers/mmc/host/mmci.h             |   5 +
+ drivers/mmc/host/mmci_stm32_sdmmc.c |  42 +++++++
+ 3 files changed, 159 insertions(+), 66 deletions(-)
+
+-- 
+2.17.1
+
