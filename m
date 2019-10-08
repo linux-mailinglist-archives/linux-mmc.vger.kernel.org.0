@@ -2,68 +2,87 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 736D4CFBA5
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Oct 2019 15:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC5A3CFF32
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Oct 2019 18:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725839AbfJHNyx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Oct 2019 09:54:53 -0400
-Received: from mga03.intel.com ([134.134.136.65]:45962 "EHLO mga03.intel.com"
+        id S1727514AbfJHQqT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Oct 2019 12:46:19 -0400
+Received: from sauhun.de ([88.99.104.3]:50784 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725795AbfJHNyx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 8 Oct 2019 09:54:53 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Oct 2019 06:54:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,270,1566889200"; 
-   d="scan'208";a="192580434"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga008.fm.intel.com with ESMTP; 08 Oct 2019 06:54:50 -0700
-Received: from andy by smile with local (Exim 4.92.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iHpwv-0002BP-9u; Tue, 08 Oct 2019 16:54:49 +0300
-Date:   Tue, 8 Oct 2019 16:54:49 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Joerg Roedel <joro@8bytes.org>
-Cc:     iommu@lists.linux-foundation.org,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] iommu/amd: Switch to use acpi_dev_hid_uid_match()
-Message-ID: <20191008135449.GK32742@smile.fi.intel.com>
-References: <20190924193739.86133-1-andriy.shevchenko@linux.intel.com>
- <20190924193739.86133-7-andriy.shevchenko@linux.intel.com>
- <20191007152848.GA20456@8bytes.org>
+        id S1725966AbfJHQqT (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 8 Oct 2019 12:46:19 -0400
+Received: from localhost (p54B3324A.dip0.t-ipconnect.de [84.179.50.74])
+        by pokefinder.org (Postfix) with ESMTPSA id A39662C07B8;
+        Tue,  8 Oct 2019 18:46:16 +0200 (CEST)
+Date:   Tue, 8 Oct 2019 18:46:16 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Takeshi Saito <takeshi.saito.xv@renesas.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi: fix hang up in HS400 timing mode
+ selection
+Message-ID: <20191008164616.GA2966@kunai>
+References: <20190917225023.6035-1-wsa+renesas@sang-engineering.com>
+ <TYAPR01MB45444D01948B219CEE4F86E0D88E0@TYAPR01MB4544.jpnprd01.prod.outlook.com>
+ <20190918082210.GA1379@kunai>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="vkogqOf2sHV7VnPd"
 Content-Disposition: inline
-In-Reply-To: <20191007152848.GA20456@8bytes.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20190918082210.GA1379@kunai>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Oct 07, 2019 at 05:28:48PM +0200, Joerg Roedel wrote:
-> On Tue, Sep 24, 2019 at 10:37:39PM +0300, Andy Shevchenko wrote:
-> > Since we have a generic helper, drop custom implementation in the driver.
-> > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
-> >  drivers/iommu/amd_iommu.c | 30 +++++-------------------------
-> >  1 file changed, 5 insertions(+), 25 deletions(-)
-> 
-> Acked-by: Joerg Roedel <jroedel@suse.de>
 
-Thanks!
-There is v3 available, does it apply to it?
+--vkogqOf2sHV7VnPd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-With Best Regards,
-Andy Shevchenko
+On Wed, Sep 18, 2019 at 10:22:10AM +0200, Wolfram Sang wrote:
+>=20
+> > I asked the BSP team about this topic, and then they have a concern abo=
+ut
+> > the retune. Since they would like to check whether the software is
+> > doing tune or not, just tuning situation is lacking on this patch.
+> > So, if MMC subsystem has such a new flag as "doing_tune" in struct mmc_=
+host,
+> > it's helpful for it. (Also, perhaps it's helpful for adding extra quirks
+> > on this driver in the future). What do you think?
+>=20
+> I understand the concern. I will check this.
+
+For the record, I am still working on this. I am currently researching
+if the hs400_downgrade() function has some relevance to it. However,
+I wasn't able to trigger the fault condition the last days. Will keep
+trying...
 
 
+--vkogqOf2sHV7VnPd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl2cvVMACgkQFA3kzBSg
+KbY8yBAAmmJaSMM2cXYVqBCIGNGHtPpf0lS6cVlc8ssQWgzIYqPdD5YCMLu1Vd9H
+KEE+kz2A5dgO0qGQQxdPWVgSAmGo6SbUTiAX2dQFLI1BZZ3S/LygUJstzvtVsBwo
+aYjen9mJHE6VE3ccs0uoyfkMp5wbohpeWE4mdSIslQSgtKUayYOWQBLs2QfYRwwU
+X/8mT4GmeUbuz8muU7Vla6HThdP96aKZx1Cw1SDdgY3Jmp2HAPLByT8uBKUR547Z
+xzdbIE9gmXvpyD4Fn8/m55pwNi7fq1rWMtFTuYyZQApPLBE1wblgbEdrkZC3dn+s
++P26qo5+PwWWPupGunS6yEb0gMQauIcy6HcL6jtpNh+Lq2G0nJadp0T9uTlHv+pk
+YHnoKxCBvYTJngTlkrwrfdA3OOa66zpCzItil26tR+OzGi+vFleEHeBej6iK1+vK
+V+gGIIIP826AI/7rT+dpw4gIgTbIk+TN1grzPA3VkUG+j8CBnv8fqAbQi3qDALo0
+y5VDJ2OVQWIvpuv2uzh62h22YE5t0S4Ue+0UECENgasti1TAmTEaZx20MsbGQ4Qx
+8QZxorYDJd8Ij45kjTXO/d7zrTAPdwr2w9MZysEwhhzZfLhJtFoQTQthZ6NUDmlM
+/zaXTHwWpB7SlOPcBYMMyn0426U0FBR0OPnc1qYDri9uYVBusQs=
+=seba
+-----END PGP SIGNATURE-----
+
+--vkogqOf2sHV7VnPd--
