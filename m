@@ -2,92 +2,129 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22272D0AA9
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Oct 2019 11:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77EA9D0AAC
+	for <lists+linux-mmc@lfdr.de>; Wed,  9 Oct 2019 11:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730305AbfJIJNA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Oct 2019 05:13:00 -0400
-Received: from mail-vk1-f194.google.com ([209.85.221.194]:45452 "EHLO
-        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725942AbfJIJNA (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Oct 2019 05:13:00 -0400
-Received: by mail-vk1-f194.google.com with SMTP id q25so366511vkn.12
-        for <linux-mmc@vger.kernel.org>; Wed, 09 Oct 2019 02:12:59 -0700 (PDT)
+        id S1730406AbfJIJNG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 9 Oct 2019 05:13:06 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:44256 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730398AbfJIJNG (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Oct 2019 05:13:06 -0400
+Received: by mail-vs1-f67.google.com with SMTP id w195so1011061vsw.11
+        for <linux-mmc@vger.kernel.org>; Wed, 09 Oct 2019 02:13:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=w/4hXJ2P5thQjL8BZ4wbLsS4F+qlk2Hz+i7D5Bd6mvM=;
-        b=J2opt7Ir85befVRMF6lGkdCHwViRgg6EYr40E7L/sxhguVLAVBxGdF6YnHdd87NmFi
-         R1kLC1pM91GPv7AqibnD7i7jtV0Efrkub6VFyvhRBj855sFJAOLS+7zTo2hM4u0cN04O
-         OI5CjIOdd4JMUEOPfTnw4IKgEe7rsUFPjUcmxy7K9ikliGzHvfW7HyVFOqv2TKldORpF
-         iNj/kKIKEDA52DB0bjhJJHpo8Booqq+lyhUpa+4MK8G2zXLQp/dGhsw9yi333zctsh7F
-         YO6WOsGmSCPz/EYDjTsc1sh/VvLwcMICVfEY5fSUPCI96ENOEGyO1peqhnfrCxTB6QXL
-         BTow==
+        bh=czvwlzjYxEI9/u0IXNcmOe4QZHiW6rPzIFMH9Q1LDCk=;
+        b=Qc2Deu0jcIu8UninSS/S0zk70x0bqBdhAd0yfA7qBpIuezQeZhtsCMTgl2oQe67acx
+         u4wk111JrrgX/Jufsar0klMlx/zh57vz5Os14hIVrppTBRjeDz1m/qPp14Igo/yautTp
+         5Yp2IuccCgRDP8J+M/yEawZoabNWJj43fHG3X77q630c9m3abY5NfhVAsc6wFldOdZ0s
+         URDbnfkIgbDn2cMwtKsMIazie7O3cxvzTzVpMxvAs2ppmr3oy88BoEjddyECLhglvj7O
+         8MikkaTtXlf/pIq8kNTiyPvhLgkdFMroK2tRyngXNEVw+M8Nbi4i+K5qvBjvoqJ3g0Ud
+         N/MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=w/4hXJ2P5thQjL8BZ4wbLsS4F+qlk2Hz+i7D5Bd6mvM=;
-        b=GA9+2vIdMsq9sW4YgiJiGQpg8+e8y4P5Fm+hOuWU8AIB/tdVGrzFzCbRLvN0uN2vZT
-         7cE55wzYoCwAvCiF1hC7EKgVqnXqYy9KbsYuLvGo5U1KHQ51V+vW/tVCpONURKSMOQyb
-         6SWjgKWm/6Js5vla0A+Ee/rC+sfFIRXApD1eKlPp/Z5bOXeJ+PzlnO2syLYhkwDzbY2c
-         CoGU84VoQoQaNlCrFI+I1yE9RtzXLvU99BFkX23ZL/2ODuwPC8Q+IX2Ub045dYEV3gxh
-         UJhigPtIP9SC3nv2wBztpVchmQv9qnRYTcoTIIcKXcIDLE78yhZBPymRcIMjxiQgWi+H
-         PPUw==
-X-Gm-Message-State: APjAAAWlZ/E5raW/GDhqPK6WhA9uFydUprNBVRSB+JHDbdSxDXLzRbTD
-        BRbA3NyU8uZ2DvU3CPmkx96Nd31QCSJWLgkHQua22qQC
-X-Google-Smtp-Source: APXvYqxsO740Ct4rsidJ0kq5+1xxkCvRCKQBOQSD/zCdU68ceTq0F0K8ccYuS84qF5hAhSWs6vmZgSmuMm/rbhPpLJ0=
-X-Received: by 2002:a1f:ae0a:: with SMTP id x10mr1448504vke.25.1570612378948;
- Wed, 09 Oct 2019 02:12:58 -0700 (PDT)
+        bh=czvwlzjYxEI9/u0IXNcmOe4QZHiW6rPzIFMH9Q1LDCk=;
+        b=apz30wQcoCGR13rrqyCo6Of4yFMtGDo6HkNVEg+7mDvtW/oXTkR3wJI90T4P+A9mdQ
+         XIiejfvu6+FTFaIOcyN4c21AauezCYQlPcAQe7N4NIw/I/TDm4NZwOYT4q1SPCY9HPyF
+         cG/z8aOoW2BIhMbT+sDBw58fjVUuI7AIfZnpXUbTI6Fl3eq2sK4zILGy/vlNhmqQFHyA
+         OxBz2Xs0JJaJRwE4f0ay+Ishi66j1HfFGo71fOR/nXydj8eWIUrGb+g3bZwxSqAlkEPZ
+         o6OS0fSubrCW1rZM4cOAmPkmHCCJn3ccKNf5zXzMEAB2tyrg3iUchW1sUE/bYaI/GlUM
+         s2aQ==
+X-Gm-Message-State: APjAAAU4Df94EwHw8kK6m9lXQ4k7joA8oPJY1sh/itWuWcfS0YqumsvV
+        M6SEGRY53kDjB5K2OUtN4Zircr2tln6Jx+pRcUytvg==
+X-Google-Smtp-Source: APXvYqzP3FVres/j/D8kUEjQC+HXZ/OT5WzktimrnRbXf6/XBUuevqgnd5AQdUIZ6APOTW+/Qh/g5LVfGjLDkHD8OAw=
+X-Received: by 2002:a67:ef89:: with SMTP id r9mr1243756vsp.200.1570612385264;
+ Wed, 09 Oct 2019 02:13:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <1570182260-135818-1-git-send-email-zhengbin13@huawei.com>
-In-Reply-To: <1570182260-135818-1-git-send-email-zhengbin13@huawei.com>
+References: <20191004134452.6493-1-nsaenzjulienne@suse.de>
+In-Reply-To: <20191004134452.6493-1-nsaenzjulienne@suse.de>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 9 Oct 2019 11:12:22 +0200
-Message-ID: <CAPDyKFqRTGtQ0sS43_rkLyKrokq7g9ZLQ8LmUSorWUtXmksgnQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-pci: Make function amd_sdhci_reset static
-To:     zhengbin <zhengbin13@huawei.com>
+Date:   Wed, 9 Oct 2019 11:12:29 +0200
+Message-ID: <CAPDyKFpprt9TVP2Ywu2urqy6zB_H7Xrbo=N6OGp6-O6Qk7rLPw@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhci-iproc: fix spurious interrupts on
+ Multiblock reads with bcm2711
+To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
+        Stefan Wahren <wahrenst@gmx.net>,
+        Matthias Brugger <mbrugger@suse.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 4 Oct 2019 at 11:37, zhengbin <zhengbin13@huawei.com> wrote:
+On Fri, 4 Oct 2019 at 15:45, Nicolas Saenz Julienne
+<nsaenzjulienne@suse.de> wrote:
 >
-> Fix sparse warnings:
+> The Raspberry Pi 4 SDHCI hardware seems to automatically issue CMD12
+> after multiblock reads even when ACMD12 is disabled. This triggers
+> spurious interrupts after the data transfer is done with the following
+> message:
 >
-> drivers/mmc/host/sdhci-pci-core.c:1599:6: warning: symbol 'amd_sdhci_reset' was not declared. Should it be static?
+>   mmc1: Got data interrupt 0x00000002 even though no data operation was in progress.
+>   mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+>   mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00001002
+>   mmc1: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000
+>   mmc1: sdhci: Argument:  0x00000000 | Trn mode: 0x00000033
+>   mmc1: sdhci: Present:   0x1fff0000 | Host ctl: 0x00000017
+>   mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000080
+>   mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000107
+>   mmc1: sdhci: Timeout:   0x00000000 | Int stat: 0x00000000
+>   mmc1: sdhci: Int enab:  0x03ff100b | Sig enab: 0x03ff100b
+>   mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+>   mmc1: sdhci: Caps:      0x45ee6432 | Caps_1:   0x0000a525
+>   mmc1: sdhci: Cmd:       0x00000c1a | Max curr: 0x00080008
+>   mmc1: sdhci: Resp[0]:   0x00000b00 | Resp[1]:  0x00edc87f
+>   mmc1: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x00400e00
+>   mmc1: sdhci: Host ctl2: 0x00000001
+>   mmc1: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0xf3025208
+>   mmc1: sdhci: ============================================
 >
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: zhengbin <zhengbin13@huawei.com>
+> Enable SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12 to enable ACMD12 on multiblock
+> reads and suppress the spurious interrupts.
+>
+> Fixes: f84e411c85be ("mmc: sdhci-iproc: Add support for emmc2 of the BCM2711")
+> Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+> Tested-by: Matthias Brugger <mbrugger@suse.com>
+> Acked-by: Stefan Wahren <wahrenst@gmx.net>
 
-Applied for next, thanks!
+Applied for fixes, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-pci-core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-> index 659878a..de50e1d 100644
-> --- a/drivers/mmc/host/sdhci-pci-core.c
-> +++ b/drivers/mmc/host/sdhci-pci-core.c
-> @@ -1596,7 +1596,7 @@ static u32 sdhci_read_present_state(struct sdhci_host *host)
->         return sdhci_readl(host, SDHCI_PRESENT_STATE);
->  }
+> Changes since v1:
+> - Add Fixes tag and Acked-by
 >
-> -void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
-> +static void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
->  {
->         struct sdhci_pci_slot *slot = sdhci_priv(host);
->         struct pci_dev *pdev = slot->chip->pdev;
+>  drivers/mmc/host/sdhci-iproc.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
+> index 2b9cdcd1dd9d..f4f5f0a70cda 100644
+> --- a/drivers/mmc/host/sdhci-iproc.c
+> +++ b/drivers/mmc/host/sdhci-iproc.c
+> @@ -262,6 +262,7 @@ static const struct sdhci_iproc_data bcm2835_data = {
+>  };
+>
+>  static const struct sdhci_pltfm_data sdhci_bcm2711_pltfm_data = {
+> +       .quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
+>         .ops = &sdhci_iproc_32only_ops,
+>  };
+>
 > --
-> 2.7.4
+> 2.23.0
 >
