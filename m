@@ -2,92 +2,92 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F90D0AA7
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Oct 2019 11:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22272D0AA9
+	for <lists+linux-mmc@lfdr.de>; Wed,  9 Oct 2019 11:13:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730217AbfJIJM4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Oct 2019 05:12:56 -0400
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:44017 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730215AbfJIJM4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Oct 2019 05:12:56 -0400
-Received: by mail-ua1-f65.google.com with SMTP id k24so531504uag.10
-        for <linux-mmc@vger.kernel.org>; Wed, 09 Oct 2019 02:12:55 -0700 (PDT)
+        id S1730305AbfJIJNA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 9 Oct 2019 05:13:00 -0400
+Received: from mail-vk1-f194.google.com ([209.85.221.194]:45452 "EHLO
+        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725942AbfJIJNA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Oct 2019 05:13:00 -0400
+Received: by mail-vk1-f194.google.com with SMTP id q25so366511vkn.12
+        for <linux-mmc@vger.kernel.org>; Wed, 09 Oct 2019 02:12:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=p1GmngvaE0ei9mnU0CMOs2O9a2/80q1j0u6r2u5SeZc=;
-        b=BccNwjKJUEGqADR82Dz9D/6hW+muC5tovZ4TZzhwUcNnNClOKsj/TwIl0wYjsBc6x/
-         k1jtHRsZBJkB5XEBmk3c3UjCkpbbJEm71c44rBeHs/1RinFqBdS/F2PzyJWDllL97ZWq
-         R36grS6Yw8KUikd970xY+zw1tW0efxzzxuwQj++jIOgnM40NPOcZT1j0GIHNir/gUb9D
-         SsbIN4DTBuySQXcqwM56bQmkLUurSE8OGIOQjpx5TF3imZWJgl5h8U/i/wbheVJOR3uU
-         XV1QEGFlVmSwqtsGm4UUlvuHWl+RqT5TEvnUXoXnM54OWXZ+iKW12DFa69CWmIskhgBS
-         w/Aw==
+        bh=w/4hXJ2P5thQjL8BZ4wbLsS4F+qlk2Hz+i7D5Bd6mvM=;
+        b=J2opt7Ir85befVRMF6lGkdCHwViRgg6EYr40E7L/sxhguVLAVBxGdF6YnHdd87NmFi
+         R1kLC1pM91GPv7AqibnD7i7jtV0Efrkub6VFyvhRBj855sFJAOLS+7zTo2hM4u0cN04O
+         OI5CjIOdd4JMUEOPfTnw4IKgEe7rsUFPjUcmxy7K9ikliGzHvfW7HyVFOqv2TKldORpF
+         iNj/kKIKEDA52DB0bjhJJHpo8Booqq+lyhUpa+4MK8G2zXLQp/dGhsw9yi333zctsh7F
+         YO6WOsGmSCPz/EYDjTsc1sh/VvLwcMICVfEY5fSUPCI96ENOEGyO1peqhnfrCxTB6QXL
+         BTow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=p1GmngvaE0ei9mnU0CMOs2O9a2/80q1j0u6r2u5SeZc=;
-        b=Y2dqZEhF/pJA38mAaeA6sroeXBqTB1s4SuSI1RXNaqGJ8t2YEoluluGq3HT64Zawd/
-         ccplL1bkCIRjZD0rWr/grMALMKtkUExf2aOEWeW53Xvut0L1ktDbS1MNBUUGhJAlNuAw
-         6VNI6CP75U94cem6mdzCC9vu+BaYyBKrMakyemeVHGbo8Jl0xD5v6PZO4cj+hE8G2EBT
-         DXuXIvB8Nbt/56/KjLz02Xlu3VqxsTImJCyASNhfP/Xj3a3EFnizkS7Z2kIxDLG0mF3l
-         xjsKtObqHeh72Ph099yXG/uuwtXEVm0rkx/tt4hJExqVqBe8p2cibNHiSmaGW3gGIfb7
-         aL8A==
-X-Gm-Message-State: APjAAAUdEUejjTZn0XKK7cZ3NMjjbGuGAsc/A93VjhjP6wey2ZMdxL9s
-        VO0nzjPeV87fgdCP1iVIKtEeK1DsYSqGrFk0jMhdlw==
-X-Google-Smtp-Source: APXvYqzHUvKtG9TlAFWzdGLKFE3B3LLPRPS/NhDVFx+CEadl3quKcUNTlMODJCYW2p+AVM5OUZYunx3BcWwMwDCc9Ds=
-X-Received: by 2002:ab0:331a:: with SMTP id r26mr1234478uao.104.1570612375253;
- Wed, 09 Oct 2019 02:12:55 -0700 (PDT)
+        bh=w/4hXJ2P5thQjL8BZ4wbLsS4F+qlk2Hz+i7D5Bd6mvM=;
+        b=GA9+2vIdMsq9sW4YgiJiGQpg8+e8y4P5Fm+hOuWU8AIB/tdVGrzFzCbRLvN0uN2vZT
+         7cE55wzYoCwAvCiF1hC7EKgVqnXqYy9KbsYuLvGo5U1KHQ51V+vW/tVCpONURKSMOQyb
+         6SWjgKWm/6Js5vla0A+Ee/rC+sfFIRXApD1eKlPp/Z5bOXeJ+PzlnO2syLYhkwDzbY2c
+         CoGU84VoQoQaNlCrFI+I1yE9RtzXLvU99BFkX23ZL/2ODuwPC8Q+IX2Ub045dYEV3gxh
+         UJhigPtIP9SC3nv2wBztpVchmQv9qnRYTcoTIIcKXcIDLE78yhZBPymRcIMjxiQgWi+H
+         PPUw==
+X-Gm-Message-State: APjAAAWlZ/E5raW/GDhqPK6WhA9uFydUprNBVRSB+JHDbdSxDXLzRbTD
+        BRbA3NyU8uZ2DvU3CPmkx96Nd31QCSJWLgkHQua22qQC
+X-Google-Smtp-Source: APXvYqxsO740Ct4rsidJ0kq5+1xxkCvRCKQBOQSD/zCdU68ceTq0F0K8ccYuS84qF5hAhSWs6vmZgSmuMm/rbhPpLJ0=
+X-Received: by 2002:a1f:ae0a:: with SMTP id x10mr1448504vke.25.1570612378948;
+ Wed, 09 Oct 2019 02:12:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191009012818.32763-1-vadivel.muruganx.ramuthevar@linux.intel.com>
-In-Reply-To: <20191009012818.32763-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+References: <1570182260-135818-1-git-send-email-zhengbin13@huawei.com>
+In-Reply-To: <1570182260-135818-1-git-send-email-zhengbin13@huawei.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 9 Oct 2019 11:12:19 +0200
-Message-ID: <CAPDyKFqDB_aOikZYSDEvQKF3PsD=AXq0PZJTj8AUAH0XaGj8Eg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] mmc: sdhci-of-arasan: Add Support for Intel LGM SDXC
-To:     "Ramuthevar,Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Rob Herring <robh+dt@kernel.org>, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com
+Date:   Wed, 9 Oct 2019 11:12:22 +0200
+Message-ID: <CAPDyKFqRTGtQ0sS43_rkLyKrokq7g9ZLQ8LmUSorWUtXmksgnQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-pci: Make function amd_sdhci_reset static
+To:     zhengbin <zhengbin13@huawei.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 9 Oct 2019 at 03:28, Ramuthevar,Vadivel MuruganX
-<vadivel.muruganx.ramuthevar@linux.intel.com> wrote:
+On Fri, 4 Oct 2019 at 11:37, zhengbin <zhengbin13@huawei.com> wrote:
 >
-> The current arasan sdhci PHY configuration isn't compatible
-> with the PHY on Intel's LGM(Lightning Mountain) SoC devices.
+> Fix sparse warnings:
 >
-> Therefore, add a new compatible, to adapt the Intel's LGM
-> SDXC PHY with arasan-sdhc controller to configure the PHY.
+> drivers/mmc/host/sdhci-pci-core.c:1599:6: warning: symbol 'amd_sdhci_reset' was not declared. Should it be static?
 >
-> Linux code base : V5.4-rc1
->
-> Ramuthevar Vadivel Murugan (2):
->   dt-bindings: mmc: sdhci-of-arasan: Add new compatible for Intel LGM
->     SDXC
->   mmc: sdhci-of-arasan: Add Support for Intel LGM SDXC
->
-> changes from v1:
->  -  commit message updated
->  -  Acked-by tag added
->
->  Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 17 +++++++++++++++++
->  drivers/mmc/host/sdhci-of-arasan.c                     | 15 +++++++++++++++
->  2 files changed, 32 insertions(+)
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: zhengbin <zhengbin13@huawei.com>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/host/sdhci-pci-core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+> index 659878a..de50e1d 100644
+> --- a/drivers/mmc/host/sdhci-pci-core.c
+> +++ b/drivers/mmc/host/sdhci-pci-core.c
+> @@ -1596,7 +1596,7 @@ static u32 sdhci_read_present_state(struct sdhci_host *host)
+>         return sdhci_readl(host, SDHCI_PRESENT_STATE);
+>  }
+>
+> -void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
+> +static void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
+>  {
+>         struct sdhci_pci_slot *slot = sdhci_priv(host);
+>         struct pci_dev *pdev = slot->chip->pdev;
+> --
+> 2.7.4
+>
