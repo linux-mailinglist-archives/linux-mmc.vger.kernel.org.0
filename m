@@ -2,73 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84BF2D0E09
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Oct 2019 13:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 036F0D278E
+	for <lists+linux-mmc@lfdr.de>; Thu, 10 Oct 2019 12:52:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730843AbfJILyW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Oct 2019 07:54:22 -0400
-Received: from imap1.codethink.co.uk ([176.9.8.82]:55319 "EHLO
-        imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727002AbfJILyW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Oct 2019 07:54:22 -0400
-Received: from [167.98.27.226] (helo=rainbowdash.codethink.co.uk)
-        by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
-        id 1iIAXo-0004fs-Gw; Wed, 09 Oct 2019 12:54:16 +0100
-Received: from ben by rainbowdash.codethink.co.uk with local (Exim 4.92.2)
-        (envelope-from <ben@rainbowdash.codethink.co.uk>)
-        id 1iIAXo-00045q-4l; Wed, 09 Oct 2019 12:54:16 +0100
-From:   Ben Dooks <ben.dooks@codethink.co.uk>
-To:     linux-kernel@lists.codethink.co.uk
-Cc:     Ben Dooks <ben.dooks@codethink.co.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-mmc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] mmc: mmci: stm32: make sdmmc_idma_validate_data static
-Date:   Wed,  9 Oct 2019 12:54:15 +0100
-Message-Id: <20191009115415.15691-1-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.23.0
+        id S1733167AbfJJKvz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 10 Oct 2019 06:51:55 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:53748 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726201AbfJJKvy (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 10 Oct 2019 06:51:54 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9AAppY3025712;
+        Thu, 10 Oct 2019 05:51:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1570704711;
+        bh=XliUJLuFlKaXm7moRyemAIXwBCYUezk8mD1oOP4tL/4=;
+        h=From:To:CC:Subject:Date;
+        b=VWoUIcV5P1Q0lX2rGonFyGrhv6XlFshYs58FpzK97RH28zdf4vVZqIeoBpUWGcq6c
+         9JltJReyowpcs8/UgWVeMJewMVSxAq0mpLEilPcrVY9365Zs8LOLMSCvEpIl/1bJYb
+         yxfMRyPcWQK7XAK16Hv5u17pFBQAmi0OvMPA+YDo=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9AApoqG125211
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 10 Oct 2019 05:51:51 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 10
+ Oct 2019 05:51:50 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Thu, 10 Oct 2019 05:51:47 -0500
+Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9AApmvE122351;
+        Thu, 10 Oct 2019 05:51:49 -0500
+From:   Faiz Abbas <faiz_abbas@ti.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <adrian.hunter@intel.com>,
+        <kishon@ti.com>, <faiz_abbas@ti.com>
+Subject: [PATCH] mmc: sdhci-omap: Fix Tuning procedure for temperatures < -20C
+Date:   Thu, 10 Oct 2019 16:22:30 +0530
+Message-ID: <20191010105230.16736-1-faiz_abbas@ti.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Make sdmmc_idma_validate_data to avoid the following warning
-from sparse:
+According to the App note[1] detailing the tuning algorithm, for
+temperatures < -20C, the initial tuning value should be min(largest
+value in LPW - 24, ceil(13/16 ratio of LPW)). The largest value in
+LPW is (max_window + 4 * (max_len - 1)) and not (max_window + 4 * max_len)
+itself. Fix this implementation.
 
-drivers/mmc/host/mmci_stm32_sdmmc.c:28:5: warning: symbol 'sdmmc_idma_validate_data' was not declared. Should it be static?
+[1] http://www.ti.com/lit/an/spraca9b/spraca9b.pdf
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Fixes: 961de0a856e3 ("mmc: sdhci-omap: Workaround errata regarding
+SDR104/HS200 tuning failures (i929)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
 ---
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>
-Cc: linux-mmc@vger.kernel.org
-Cc: linux-stm32@st-md-mailman.stormreply.com
-Cc: linux-arm-kernel@lists.infradead.org
----
- drivers/mmc/host/mmci_stm32_sdmmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-omap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/mmci_stm32_sdmmc.c b/drivers/mmc/host/mmci_stm32_sdmmc.c
-index 8e83ae6920ae..296be8a060a6 100644
---- a/drivers/mmc/host/mmci_stm32_sdmmc.c
-+++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
-@@ -25,8 +25,8 @@ struct sdmmc_priv {
- 	void *sg_cpu;
- };
- 
--int sdmmc_idma_validate_data(struct mmci_host *host,
--			     struct mmc_data *data)
-+static int sdmmc_idma_validate_data(struct mmci_host *host,
-+				    struct mmc_data *data)
- {
- 	struct scatterlist *sg;
- 	int i;
+diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
+index 41c2677c587f..083e7e053c95 100644
+--- a/drivers/mmc/host/sdhci-omap.c
++++ b/drivers/mmc/host/sdhci-omap.c
+@@ -372,7 +372,7 @@ static int sdhci_omap_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 	 * on temperature
+ 	 */
+ 	if (temperature < -20000)
+-		phase_delay = min(max_window + 4 * max_len - 24,
++		phase_delay = min(max_window + 4 * (max_len - 1) - 24,
+ 				  max_window +
+ 				  DIV_ROUND_UP(13 * max_len, 16) * 4);
+ 	else if (temperature < 20000)
 -- 
-2.23.0
+2.19.2
 
