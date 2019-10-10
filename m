@@ -2,84 +2,101 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA3D5D3275
-	for <lists+linux-mmc@lfdr.de>; Thu, 10 Oct 2019 22:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D2D0D3285
+	for <lists+linux-mmc@lfdr.de>; Thu, 10 Oct 2019 22:43:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726268AbfJJUez (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 10 Oct 2019 16:34:55 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:36719 "EHLO
+        id S1726568AbfJJUit (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 10 Oct 2019 16:38:49 -0400
+Received: from mout.kundenserver.de ([212.227.126.133]:58855 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725867AbfJJUez (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 10 Oct 2019 16:34:55 -0400
+        with ESMTP id S1726132AbfJJUis (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 10 Oct 2019 16:38:48 -0400
 Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
  (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MuF4v-1hxQGJ3NEb-00uawx; Thu, 10 Oct 2019 22:34:38 +0200
+ 1MvKTJ-1i0io918NN-00rJAB; Thu, 10 Oct 2019 22:38:12 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Kukjin Kim <kgene@kernel.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Sangbeom Kim <sbkim73@samsung.com>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Liam Girdwood <lgirdwood@gmail.com>
 Cc:     linux-samsung-soc@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linus.walleij@linaro.org,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Olof Johansson <olof@lixom.net>,
         Sascha Hauer <s.hauer@pengutronix.de>,
+        =?UTF-8?q?Cl=C3=A9ment=20P=C3=A9ron?= <peron.clem@gmail.com>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
-Subject: [PATCH 08/36] ARM: exynos: stop selecting PLAT_SAMSUNG
-Date:   Thu, 10 Oct 2019 22:29:52 +0200
-Message-Id: <20191010203043.1241612-8-arnd@arndb.de>
+        Faiz Abbas <faiz_abbas@ti.com>, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: [PATCH 11/36] ARM: s5pv210: split from plat-samsung
+Date:   Thu, 10 Oct 2019 22:29:55 +0200
+Message-Id: <20191010203043.1241612-11-arnd@arndb.de>
 X-Mailer: git-send-email 2.20.0
 In-Reply-To: <20191010203043.1241612-1-arnd@arndb.de>
 References: <20191010202802.1132272-1-arnd@arndb.de>
  <20191010203043.1241612-1-arnd@arndb.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:uwZUxKfHU6aXQrxq5LBsqRjtGw4Jouv7a9Oj5nhgoB0hlXyrcjq
- cQyW2Cc79CrgKEOR6AddSkd8kEBELnOavaFnpiNz+2wYC6JLZtkFkNgiIgcAb7IBPMKOVw0
- /4ytjJKtS7vIIFSkZF7IEeIC9HtyP3lGkyhZhf4Pi3jKK/5gN5ZDuHWv+OUxglNHQchIV00
- 9MUCnTUKaPQYLOuhuq7Yg==
+X-Provags-ID: V03:K1:DeCWCHOpOlptkpY1Z/HIZH2sQ5vntA19TvDZ7kwzXVESbUwtDT/
+ nya/g+yk9RmYCdn7Mnh6OP8xv47pVGRSws4DiX1LHA12gXOzQ1qn6lxQpZRRKqP7iAcdbOu
+ l8p40rlKc+olt+OUsDEnNqYSWkVcmXc0U/jNtH57wqSdtcs66pZwaDfNStTfnXSHjMdAuUp
+ DXP4NCRq3Rv4Wl6NcQjBg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:MjZuD1WSriM=:hwMzUoxCknZvCwSvNSjCMN
- 7y6Uvi/BhIjqy3zK9+GLPLSNPmAYLF6XMR5MVm9RdReMkMhEpRn9U0e2Bqx/jFGajmKkkwPaF
- OwPQDZ/+fO1eN5nL+6z52rQyDTWBG/uTALbBrsxJFjw2IXpGkynCbp+CvOZSYprMJ+B+R4ASg
- 8BLcQdVkFnlwHipnDjJMzkOCDq8f/K/fea3DmU+S6WllVxMBke4EAGCFCz+N7DLEAdxr1uit2
- UHXrt4ArSWWE1IOV1hWsBjL9OoKUx6cb9T4rAhjcQrYQRjP8dXIy1yExNCq/K1pvVZm+chtMl
- gpJJYL3sYB5Hg7Aa6mC4X2/uNwbpQyBbZCXB1Lcxc6Rj402rXZQCV2Xjc4m5va6u+CCtnXL4x
- 4yC/wMNz5qcSvYatDm8uHxsqOXJ2qvf4Eh7HcD8JzxLmcY1MjSa3NB8LRnEZgol+ONBYmvDoz
- OEh2KpTH7cbgo3nQxW3+JuTkmuCV+x+NlnA1/PJKIzzxG2jj7xoi1GAS7ZrZwhGb/J9FU/oZa
- sMXSrcHyKE9XN+8rl6ymRIH1La+GHJZXvQw6Sd70xeGKzq5WJSqpklT2Ql4aKALBCxsLCaGxt
- Gvs7d/Fj8p4WWGHEyJNaHyK0X5ltlQo2XUe7WBqDH65jq+4uEstinmPiWPi7rgkwSppRrlyu+
- kBzlPLcpQxheqyt2DqjQ9FMOnqx5mGNz1Oj6JaLtBKUDi8RpaZp7TGvCZ+njWgcqEhIGm/FQQ
- S5Y24w/1H9yJpgB9XlgNpINBNfESIaOnFJqyFXF7R12fdZ4/L7hfjdGcZ74xss1Qn9i4MeOBB
- t3OBWaJsXz357+6RJFLHXKD3cL1S4doTsLpMWmh5tniImws1g/Gy4X2PoBsyOv3h5d3eZfz6l
- rMhwf0F77SGifPySmcCg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:KPFFi7urTwk=:P0VUAx0mQV0RyAkge1tOF5
+ Z/OBFZSRG+nwpOLZGYULeoFGwoagH/2P2LEXzhRAW5zMvDhMqbJQ9mzjtzfnRNeEhVZ0gDYDJ
+ CykC+d1CzLd+aW2GVrWocU5wdIZKVAUw2oYck3ZT1FdLuisDLLRlQ7ooz86osiHPW71TBFJ6t
+ WXuQ3fwfJAgQ9rIth2pQBuJ1gpMig4USaOiJ3vhpUL65WUmTBdpPHyfLsHUmlLgcpvbvqIIfv
+ n4P7ECrvi49H/eGtb18RgiEGiHPLzJO807ZMamHJapIyHua/szElJoTQFCPKNuYdAjV9DeTYk
+ RdNLLkZNBGKwKMtKs4zm1QcO1qnkxdXIbrUY8PU7BWG4wBuLTwpgxMaapIiZF/bwwg8JJ6/6a
+ 8y8/iEHqyoJ9xKOaKtfljEBDENzJN1GqRuyTpwv/12cIfBczoHDZQpbAb5rFd/bnswKf1lu0a
+ dVVJpLcnkD6ihqNhDimLNkuOiK8TxYEwSj6KAnp7ExU955M50aatPaOjHGHXac0JTa7Mm/Kfp
+ gJp/qGkOHKTLJW/vCb8IwwHfs7GYXefBiiwjIqkaLeIi/KYEL2VF9Mg0HTU42gmIPKD3Wqe95
+ q8txmDV6AE20P3VWTv0S2OIbEACrqPRaBu4im4BNZtZG7LcyBV3JkeK3B30+N5qCkfvZt8qKj
+ U2QVc5t/ZrUMYEk7nZcq8nF4p5vJT/AkVOXRmnXLHMHkwxkVfuUWgeKebZ62c/HhMMtJ0QQ3a
+ mtytbdoOtXYX3+AwX13fJNiqZrvW34Yt48Wg4UQbbwxucTrepEGTomVXxdK9NZ7NWFSnMnEUy
+ h1MUWk7gsGxTlCkbcZ3fj1Sg+w94MIdMWSb6xCLtIHMV3Io+qK/kbjhlHaRiP/LqBeq61X6GA
+ 5dQG3dEGuSPEkJVAfh0A==
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Now that no code in arch/arm is shared between mach-exynos and the
-others, make the split formal.
+These can be build completely independently, so split
+the two Kconfig symbols.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm/Kconfig.debug        | 8 ++++----
+ arch/arm/Kconfig.debug        | 6 +++---
  arch/arm/Makefile             | 1 -
- arch/arm/mach-exynos/Makefile | 4 ----
- arch/arm/plat-samsung/Kconfig | 4 ++--
+ arch/arm/plat-samsung/Kconfig | 2 +-
  drivers/mmc/host/Kconfig      | 2 +-
- 5 files changed, 7 insertions(+), 12 deletions(-)
+ drivers/pwm/Kconfig           | 2 +-
+ drivers/spi/Kconfig           | 2 +-
+ drivers/tty/serial/Kconfig    | 2 +-
+ sound/soc/samsung/Kconfig     | 2 +-
+ 8 files changed, 9 insertions(+), 10 deletions(-)
 
 diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
-index d05b836dfeb2..9c4f2d6deb06 100644
+index 9c4f2d6deb06..4c4e97ae4fcb 100644
 --- a/arch/arm/Kconfig.debug
 +++ b/arch/arm/Kconfig.debug
 @@ -998,7 +998,7 @@ choice
  		  via SCIFA4 on Renesas SH-Mobile AG5 (SH73A0).
  
  	config DEBUG_S3C_UART0
--		depends on PLAT_SAMSUNG
-+		depends on PLAT_SAMSUNG || ARCH_EXYNOS
+-		depends on PLAT_SAMSUNG || ARCH_EXYNOS
++		depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS
  		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
  		select DEBUG_S3C24XX_UART if ARCH_S3C24XX
  		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
@@ -87,8 +104,8 @@ index d05b836dfeb2..9c4f2d6deb06 100644
  		  by the boot-loader before use.
  
  	config DEBUG_S3C_UART1
--		depends on PLAT_SAMSUNG
-+		depends on PLAT_SAMSUNG || ARCH_EXYNOS
+-		depends on PLAT_SAMSUNG || ARCH_EXYNOS
++		depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS
  		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
  		select DEBUG_S3C24XX_UART if ARCH_S3C24XX
  		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
@@ -96,82 +113,101 @@ index d05b836dfeb2..9c4f2d6deb06 100644
  		  by the boot-loader before use.
  
  	config DEBUG_S3C_UART2
--		depends on PLAT_SAMSUNG
-+		depends on PLAT_SAMSUNG || ARCH_EXYNOS
+-		depends on PLAT_SAMSUNG || ARCH_EXYNOS
++		depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS
  		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
  		select DEBUG_S3C24XX_UART if ARCH_S3C24XX
  		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
-@@ -1034,7 +1034,7 @@ choice
- 		  by the boot-loader before use.
- 
- 	config DEBUG_S3C_UART3
--		depends on PLAT_SAMSUNG && (ARCH_EXYNOS || ARCH_S5PV210)
-+		depends on ARCH_EXYNOS || ARCH_S5PV210
- 		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
- 		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
- 		select DEBUG_S5PV210_UART if ARCH_S5PV210
 diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index db857d07114f..f492d7c338fe 100644
+index f492d7c338fe..a1bc15cda751 100644
 --- a/arch/arm/Makefile
 +++ b/arch/arm/Makefile
-@@ -233,7 +233,6 @@ machine-$(CONFIG_PLAT_SPEAR)		+= spear
- 
- # Platform directory name.  This list is sorted alphanumerically
+@@ -235,7 +235,6 @@ machine-$(CONFIG_PLAT_SPEAR)		+= spear
  # by CONFIG_* macro name.
--plat-$(CONFIG_ARCH_EXYNOS)	+= samsung
  plat-$(CONFIG_ARCH_OMAP)	+= omap
  plat-$(CONFIG_ARCH_S3C64XX)	+= samsung
- plat-$(CONFIG_ARCH_S5PV210)	+= samsung
-diff --git a/arch/arm/mach-exynos/Makefile b/arch/arm/mach-exynos/Makefile
-index 0fd3fcf8bfb0..53fa363c8e44 100644
---- a/arch/arm/mach-exynos/Makefile
-+++ b/arch/arm/mach-exynos/Makefile
-@@ -3,10 +3,6 @@
- # Copyright (c) 2010-2011 Samsung Electronics Co., Ltd.
- #		http://www.samsung.com/
- 
--ccflags-$(CONFIG_ARCH_MULTIPLATFORM) += -I$(srctree)/$(src)/include -I$(srctree)/arch/arm/plat-samsung/include
--
--# Core
--
- obj-$(CONFIG_ARCH_EXYNOS)	+= exynos.o exynos-smc.o firmware.o
- 
- obj-$(CONFIG_EXYNOS_CPU_SUSPEND) += pm.o sleep.o
+-plat-$(CONFIG_ARCH_S5PV210)	+= samsung
+ plat-$(CONFIG_PLAT_ORION)	+= orion
+ plat-$(CONFIG_PLAT_PXA)		+= pxa
+ plat-$(CONFIG_PLAT_S3C24XX)	+= samsung
 diff --git a/arch/arm/plat-samsung/Kconfig b/arch/arm/plat-samsung/Kconfig
-index 832ab0e6cd72..e31a156a27df 100644
+index 740bdb23f38a..1530946cc672 100644
 --- a/arch/arm/plat-samsung/Kconfig
 +++ b/arch/arm/plat-samsung/Kconfig
 @@ -4,7 +4,7 @@
  
  config PLAT_SAMSUNG
  	bool
--	depends on PLAT_S3C24XX || ARCH_S3C64XX || ARCH_EXYNOS || ARCH_S5PV210
-+	depends on PLAT_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210
+-	depends on PLAT_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210
++	depends on PLAT_S3C24XX || ARCH_S3C64XX
  	default y
  	select GENERIC_IRQ_CHIP
  	select NO_IOPORT_MAP
-@@ -240,7 +240,7 @@ config SAMSUNG_PM_DEBUG
- 	bool "Samsung PM Suspend debug"
- 	depends on PM && DEBUG_KERNEL
- 	depends on PLAT_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210
--	depends on DEBUG_EXYNOS_UART || DEBUG_S3C24XX_UART || DEBUG_S3C2410_UART
-+	depends on DEBUG_S3C24XX_UART || DEBUG_S3C2410_UART
- 	help
- 	  Say Y here if you want verbose debugging from the PM Suspend and
- 	  Resume code. See <file:Documentation/arm/samsung-s3c24xx/suspend.rst>
 diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 49ea02c467bf..400a581c918c 100644
+index 400a581c918c..16a0e5430b44 100644
 --- a/drivers/mmc/host/Kconfig
 +++ b/drivers/mmc/host/Kconfig
 @@ -275,7 +275,7 @@ config MMC_SDHCI_TEGRA
  
  config MMC_SDHCI_S3C
  	tristate "SDHCI support on Samsung S3C SoC"
--	depends on MMC_SDHCI && PLAT_SAMSUNG
-+	depends on MMC_SDHCI && (PLAT_SAMSUNG || ARCH_EXYNOS)
+-	depends on MMC_SDHCI && (PLAT_SAMSUNG || ARCH_EXYNOS)
++	depends on MMC_SDHCI && (PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS)
  	help
  	  This selects the Secure Digital Host Controller Interface (SDHCI)
  	  often referrered to as the HSMMC block in some of the Samsung S3C
+diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+index e3a2518503ed..8eb738cac0c7 100644
+--- a/drivers/pwm/Kconfig
++++ b/drivers/pwm/Kconfig
+@@ -394,7 +394,7 @@ config PWM_ROCKCHIP
+ 
+ config PWM_SAMSUNG
+ 	tristate "Samsung PWM support"
+-	depends on PLAT_SAMSUNG || ARCH_EXYNOS
++	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS
+ 	help
+ 	  Generic PWM framework driver for Samsung.
+ 
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 6f7fdcbb9151..355391ee643d 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -625,7 +625,7 @@ config SPI_S3C24XX_FIQ
+ 
+ config SPI_S3C64XX
+ 	tristate "Samsung S3C64XX series type SPI"
+-	depends on (PLAT_SAMSUNG || ARCH_EXYNOS || COMPILE_TEST)
++	depends on (PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST)
+ 	help
+ 	  SPI driver for Samsung S3C64XX and newer SoCs.
+ 
+diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+index 4789b5d62f63..17f01cf3009c 100644
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -237,7 +237,7 @@ config SERIAL_CLPS711X_CONSOLE
+ 
+ config SERIAL_SAMSUNG
+ 	tristate "Samsung SoC serial support"
+-	depends on PLAT_SAMSUNG || ARCH_EXYNOS
++	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS
+ 	select SERIAL_CORE
+ 	help
+ 	  Support for the on-chip UARTs on the Samsung S3C24XX series CPUs,
+diff --git a/sound/soc/samsung/Kconfig b/sound/soc/samsung/Kconfig
+index 638983123d8f..7a0035dd9995 100644
+--- a/sound/soc/samsung/Kconfig
++++ b/sound/soc/samsung/Kconfig
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ menuconfig SND_SOC_SAMSUNG
+ 	tristate "ASoC support for Samsung"
+-	depends on PLAT_SAMSUNG || ARCH_EXYNOS || COMPILE_TEST
++	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
+ 	depends on COMMON_CLK
+ 	select SND_SOC_GENERIC_DMAENGINE_PCM
+ 	---help---
 -- 
 2.20.0
 
