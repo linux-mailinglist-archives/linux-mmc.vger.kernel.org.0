@@ -2,71 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92905D29F0
-	for <lists+linux-mmc@lfdr.de>; Thu, 10 Oct 2019 14:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08A3DD2AE4
+	for <lists+linux-mmc@lfdr.de>; Thu, 10 Oct 2019 15:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387594AbfJJMre (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 10 Oct 2019 08:47:34 -0400
-Received: from mga04.intel.com ([192.55.52.120]:64616 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733288AbfJJMrd (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 10 Oct 2019 08:47:33 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Oct 2019 05:47:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,280,1566889200"; 
-   d="scan'208";a="184400195"
-Received: from ahunter-desktop.fi.intel.com ([10.237.72.188])
-  by orsmga007.jf.intel.com with ESMTP; 10 Oct 2019 05:47:31 -0700
-From:   Adrian Hunter <adrian.hunter@intel.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>
-Subject: [PATCH] mmc: sdhci-pci: Add support for Intel JSL
-Date:   Thu, 10 Oct 2019 15:46:30 +0300
-Message-Id: <20191010124630.30977-1-adrian.hunter@intel.com>
-X-Mailer: git-send-email 2.17.1
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+        id S2388324AbfJJNRu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 10 Oct 2019 09:17:50 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:37213 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388141AbfJJNRo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 10 Oct 2019 09:17:44 -0400
+Received: by mail-ot1-f65.google.com with SMTP id k32so4824902otc.4
+        for <linux-mmc@vger.kernel.org>; Thu, 10 Oct 2019 06:17:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ub-ac-id.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=kbDD0ETnfb+9T5ky4afnuU19WL5B3TgSTtrvr8/78l52RfSJ/bD7cjcm8C45XsJ4wr
+         kY8zUv/ms1sLDr56E/0rqAcpldgbTirzVsO1TqrlTRt5AL5IhxusLfWbWkCQZqSDApog
+         xVZixZPZF5pv+wD9wYHHFszyBuRJ0Z0/71+2E/SGgHwnMzv66/86w9uplcX1z0grTv9p
+         1TYZ7MtIagYr+hnMPgyspL8CH18dkY1RexU6NSgr6L6/lGHi7jHNMmmGOoiBuh2azqNd
+         aWHFVXbx5cxjkbX5kJe7PAp4IU2wf06fogqa+YoO9ylF7jna+POCU+xNsHXT6R2wFQg9
+         YqYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=aV3zNNDNiGgKkJ6FmzRi9WDPBwmhJM1vVUce6JG6ZkjGfwMWzMpK8sPYCVNFtv8Iu4
+         X5GuYENW7mHYojvis2mELNSCSgh6Q7Z0vyMIKYT97eOFy0qDqud9xlbm07KeZjRYXnHf
+         4805KJg/tkIe8J/JFDp4cExGc6XGwI8GDfe4/QqkBRVOzP7HhwdnuVZW7RTgw2Ohyo2u
+         X0QuDI3hukg2Qfd/4AaAG4FF+4+etLtaNP/t0AFUN1Im/jwd/hreKX4IfznjnitjmQAr
+         QATIkHHpU7rAciqnPHq4mg8uQYs59vWHzhIaQOqiAsSYhKZCYWPHvZjwQMmqwmxziVYt
+         6a5w==
+X-Gm-Message-State: APjAAAWjD3aWOgnwcBFZ/Ixs3eypVd6NfzYCg5nVZvSUTTlS/NNVnxV6
+        +IFIb2wTpNcZkP5ZuqGwvCqfgThf5ZBzNS3xx/qs
+X-Google-Smtp-Source: APXvYqwe5B6z/3dUuNDQtQ0n2oQYOsdY3HQR3dkIin1gqVhu0NNteov05tKzv4DhJBBR4bjK2RG7Phnj6WUHoBrkRYc=
+X-Received: by 2002:a05:6830:1103:: with SMTP id w3mr7909437otq.312.1570713462861;
+ Thu, 10 Oct 2019 06:17:42 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a4a:3346:0:0:0:0:0 with HTTP; Thu, 10 Oct 2019 06:17:41
+ -0700 (PDT)
+Reply-To: sunrisefundingltd50@gmail.com
+From:   Valentina Yurina <v_yurina@ub.ac.id>
+Date:   Thu, 10 Oct 2019 14:17:41 +0100
+Message-ID: <CAKoEkvu4vc5Yn9-hzxQ5dYmUL=oO69=GSP0FC7O+CGz9Jni8+Q@mail.gmail.com>
+Subject: Apply For Financial investment at a lower rate 2%
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add PCI Ids for Intel JSL.
-
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
----
- drivers/mmc/host/sdhci-pci-core.c | 2 ++
- drivers/mmc/host/sdhci-pci.h      | 2 ++
- 2 files changed, 4 insertions(+)
-
-diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-index 659878a8efb2..6534b4dc3466 100644
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -1722,6 +1722,8 @@ static const struct pci_device_id pci_ids[] = {
- 	SDHCI_PCI_DEVICE(INTEL, CML_EMMC,  intel_glk_emmc),
- 	SDHCI_PCI_DEVICE(INTEL, CML_SD,    intel_byt_sd),
- 	SDHCI_PCI_DEVICE(INTEL, CMLH_SD,   intel_byt_sd),
-+	SDHCI_PCI_DEVICE(INTEL, JSL_EMMC,  intel_glk_emmc),
-+	SDHCI_PCI_DEVICE(INTEL, JSL_SD,    intel_byt_sd),
- 	SDHCI_PCI_DEVICE(O2, 8120,     o2),
- 	SDHCI_PCI_DEVICE(O2, 8220,     o2),
- 	SDHCI_PCI_DEVICE(O2, 8221,     o2),
-diff --git a/drivers/mmc/host/sdhci-pci.h b/drivers/mmc/host/sdhci-pci.h
-index 558202fe64c6..981bbbe63aff 100644
---- a/drivers/mmc/host/sdhci-pci.h
-+++ b/drivers/mmc/host/sdhci-pci.h
-@@ -55,6 +55,8 @@
- #define PCI_DEVICE_ID_INTEL_CML_EMMC	0x02c4
- #define PCI_DEVICE_ID_INTEL_CML_SD	0x02f5
- #define PCI_DEVICE_ID_INTEL_CMLH_SD	0x06f5
-+#define PCI_DEVICE_ID_INTEL_JSL_EMMC	0x4dc4
-+#define PCI_DEVICE_ID_INTEL_JSL_SD	0x4df8
- 
- #define PCI_DEVICE_ID_SYSKONNECT_8000	0x8000
- #define PCI_DEVICE_ID_VIA_95D0		0x95d0
 -- 
-2.17.1
+Hello,
 
+We are private lenders based in UK.
+
+Do you need a loan (credit) as soon as possible. Are you in search of
+money to solve your personal needs or finance your business venture,
+then get Your desired loan today! Consult us at Sunrise Funding Ltd.
+
+* We offer personal loan & huge capital loan at 2% interest rate to
+the general public both locally and internationally.
+* Credit amount range from $5,000.00 -- $500,000.00 and above.
+* Special $10,000,000.00 Loan offer for huge project also available.
+* Loan period of 6 months -- 10 years.
+* Loan is granted 24 hours after approval and accredited, directly in
+hand or bank account.
+
+Please note that you are advised to contact us for more details via
+the following e-mail address below;
+
+EMAIL : sunrisefundingltd50@gmail.com
+FIRM : Sunrise Funding Ltd UK.
