@@ -2,161 +2,87 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4139D3FC5
-	for <lists+linux-mmc@lfdr.de>; Fri, 11 Oct 2019 14:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84C1BD40D4
+	for <lists+linux-mmc@lfdr.de>; Fri, 11 Oct 2019 15:16:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728004AbfJKMlX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 11 Oct 2019 08:41:23 -0400
-Received: from esa4.microchip.iphmx.com ([68.232.154.123]:33669 "EHLO
-        esa4.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727883AbfJKMlX (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 11 Oct 2019 08:41:23 -0400
-Received-SPF: Pass (esa4.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa4.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa4.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: A8xT/E/CVKbbleRDp0WY8b2d2QofEf8hYYdpccP6Q+ZwmJV4ZxIoEKj/2RBL7uGK34Eqe9S82e
- hsPTIsZWPDbX/WfSMIp2P9fxbWwhXaND8GlHmAvFj4Jp3YlNjKdk3oZx/XbDHkDiY82XZBSp8y
- +2e+lWXld7lUhJG/5e7gfCpSWZzkxw3ExOmVJ3rgy8jW1K92LdM/SFAb5lWM7IDpVWEcrQcXzf
- p+MbQt8XC9p1jQlmk9KSCWZG7Zwl3mUAOgycp25b6EazWaScty6b7tEkyFs/flZG2VSA7Ex8yU
- ap8=
-X-IronPort-AV: E=Sophos;i="5.67,284,1566889200"; 
-   d="scan'208";a="51296468"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 11 Oct 2019 05:41:22 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 11 Oct 2019 05:41:17 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Fri, 11 Oct 2019 05:41:17 -0700
-Date:   Fri, 11 Oct 2019 14:41:16 +0200
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Nicolas Ferre <nicolas.ferre@microchip.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <robh+dt@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        <linux-kernel@vger.kernel.org>, <ulf.hansson@linaro.org>,
-        <adrian.hunter@intel.com>
-Subject: Re: [PATCH 2/2] mmc: sdhci-of-at91: add DT property to enable
- calibration on full reset
-Message-ID: <20191011124115.a3qqkhxri6aaydcl@M43218.corp.atmel.com>
-Mail-Followup-To: Nicolas Ferre <nicolas.ferre@microchip.com>,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-kernel@vger.kernel.org, ulf.hansson@linaro.org,
-        adrian.hunter@intel.com
-References: <4d269f30b1122487a2b5c8b48e24f78f2b75a509.1570537903.git.nicolas.ferre@microchip.com>
- <d25c8f909d039938a5696e8de32396cf2aaf54b7.1570537903.git.nicolas.ferre@microchip.com>
+        id S1728350AbfJKNPl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 11 Oct 2019 09:15:41 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:53445 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728245AbfJKNPk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 11 Oct 2019 09:15:40 -0400
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9BD6lxu021879;
+        Fri, 11 Oct 2019 15:15:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=2OJ63JRDHcE35+LH+1/BTSgThb8JET2V1q7cuqnG+F0=;
+ b=uIUnsRMlUIA++sDY+nCBcDNNH3YlJtiiOVOt88abPsuDz0wB4V8cMuAvWxiNr8gvmhxi
+ 9JbYbEt9W5/ZPNOT5MwG5dr9hDJkuTKzTpt5epXeDRv8YKRFeKYGgZ4EqcvsYdPQTWKA
+ d9rIqaKqB49S0Vd4TVRJgdYwnK5t6OssiS0n5SCbScCRiOVcA+pjbv7GL8tHnbh+fdlA
+ fm902q1QSvLjSFtbW6QB4WSxefLFgvsr+9O5sj+iAMp2zSquHsnmStl4CZiOPxALkr5H
+ bZ+UgYGGNN7bVY+JlUxN52NlvhotyLvTAKd5pEEiFb2PUqHMNIvVqKv9a17svKRncnpr +w== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2vegxw9yag-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Oct 2019 15:15:30 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id CA71310002A;
+        Fri, 11 Oct 2019 15:15:29 +0200 (CEST)
+Received: from Webmail-eu.st.com (Safex1hubcas21.st.com [10.75.90.44])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id B5F6B2BEC72;
+        Fri, 11 Oct 2019 15:15:29 +0200 (CEST)
+Received: from SAFEX1HUBCAS23.st.com (10.75.90.46) by SAFEX1HUBCAS21.st.com
+ (10.75.90.44) with Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 11 Oct
+ 2019 15:15:29 +0200
+Received: from lmecxl0923.lme.st.com (10.48.0.237) by webmail-ga.st.com
+ (10.75.90.48) with Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 11 Oct
+ 2019 15:15:29 +0200
+From:   Ludovic Barre <ludovic.Barre@st.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Ludovic Barre <ludovic.barre@st.com>
+Subject: [PATCH 0/2] mmc: add unstuck function if host is in deadlock state
+Date:   Fri, 11 Oct 2019 15:15:00 +0200
+Message-ID: <20191011131502.29579-1-ludovic.Barre@st.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <d25c8f909d039938a5696e8de32396cf2aaf54b7.1570537903.git.nicolas.ferre@microchip.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
+X-Originating-IP: [10.48.0.237]
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-11_08:2019-10-10,2019-10-11 signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Oct 08, 2019 at 02:34:32PM +0200, Nicolas Ferre wrote:
-> Add a property to keep the analog calibration cell powered.
-> This feature is specific to the Microchip SDHCI IP and outside
-> of the standard SDHCI register map.
-> 
-> By always keeping it on, after a full reset sequence, we make sure
-> that this feature is activated and not disabled.
-> 
-> We expose a hardware property to the DT as this feature can be used
-> to adapt SDHCI behavior vs. how the SDCAL SoC pin is connected
-> on the board.
-> 
-> Note that managing properly this property would reduce
-> power consumption on some SAMA5D2 SiP revisions.
-> 
-> Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+From: Ludovic Barre <ludovic.barre@st.com>
 
-Thanks
+As discussed in this thread: https://patchwork.kernel.org/patch/10786421/
+After a request, the host could be in deadlock state, and waiting
+for a specific action to unstuck the hardware block before
+resending a new command. This series adds mmc_hw_unstuck
+callback (structure mmc_host_ops) before resending a new command
+(call in mmc_blk_mq_rw_recovery, mmc_wait_for_req_done).
 
-Ludovic
+Ludovic Barre (2):
+  mmc: add unstuck function if host is in deadlock state
+  mmc: mmci: add unstuck feature
 
-> ---
->  drivers/mmc/host/sdhci-of-at91.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-of-at91.c
-> index e7d1920729fb..9571c4a882a9 100644
-> --- a/drivers/mmc/host/sdhci-of-at91.c
-> +++ b/drivers/mmc/host/sdhci-of-at91.c
-> @@ -27,6 +27,9 @@
->  #define SDMMC_CACR	0x230
->  #define		SDMMC_CACR_CAPWREN	BIT(0)
->  #define		SDMMC_CACR_KEY		(0x46 << 8)
-> +#define SDMMC_CALCR	0x240
-> +#define		SDMMC_CALCR_EN		BIT(0)
-> +#define		SDMMC_CALCR_ALWYSON	BIT(4)
->  
->  #define SDHCI_AT91_PRESET_COMMON_CONF	0x400 /* drv type B, programmable clock mode */
->  
-> @@ -35,6 +38,7 @@ struct sdhci_at91_priv {
->  	struct clk *gck;
->  	struct clk *mainck;
->  	bool restore_needed;
-> +	bool cal_always_on;
->  };
->  
->  static void sdhci_at91_set_force_card_detect(struct sdhci_host *host)
-> @@ -116,10 +120,17 @@ static void sdhci_at91_set_uhs_signaling(struct sdhci_host *host,
->  
->  static void sdhci_at91_reset(struct sdhci_host *host, u8 mask)
->  {
-> +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-> +	struct sdhci_at91_priv *priv = sdhci_pltfm_priv(pltfm_host);
-> +
->  	sdhci_reset(host, mask);
->  
->  	if (host->mmc->caps & MMC_CAP_NONREMOVABLE)
->  		sdhci_at91_set_force_card_detect(host);
-> +
-> +	if (priv->cal_always_on && (mask & SDHCI_RESET_ALL))
-> +		sdhci_writel(host, SDMMC_CALCR_ALWYSON | SDMMC_CALCR_EN,
-> +			     SDMMC_CALCR);
->  }
->  
->  static const struct sdhci_ops sdhci_at91_sama5d2_ops = {
-> @@ -345,6 +356,14 @@ static int sdhci_at91_probe(struct platform_device *pdev)
->  
->  	priv->restore_needed = false;
->  
-> +	/*
-> +	 * if SDCAL pin is wrongly connected, we must enable
-> +	 * the analog calibration cell permanently.
-> +	 */
-> +	priv->cal_always_on =
-> +		device_property_read_bool(&pdev->dev,
-> +					  "microchip,sdcal-inverted");
-> +
->  	ret = mmc_of_parse(host->mmc);
->  	if (ret)
->  		goto clocks_disable_unprepare;
-> -- 
-> 2.17.1
-> 
+ drivers/mmc/core/block.c | 11 +++++++++++
+ drivers/mmc/core/core.c  | 35 +++++++++++++++++++++++++++++++++--
+ drivers/mmc/host/mmci.c  | 23 +++++++++++++++++++++--
+ include/linux/mmc/core.h |  1 +
+ include/linux/mmc/host.h |  7 +++++++
+ 5 files changed, 73 insertions(+), 4 deletions(-)
+
+-- 
+2.17.1
+
