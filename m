@@ -2,67 +2,55 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BC06D4E00
-	for <lists+linux-mmc@lfdr.de>; Sat, 12 Oct 2019 09:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4418DD5221
+	for <lists+linux-mmc@lfdr.de>; Sat, 12 Oct 2019 21:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728636AbfJLHfh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 12 Oct 2019 03:35:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38468 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727014AbfJLHfh (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 12 Oct 2019 03:35:37 -0400
-Received: from localhost (unknown [62.119.166.9])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 62B002067B;
-        Sat, 12 Oct 2019 07:35:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570865736;
-        bh=GxHn9HvGbNAY8QyAyt0bW9sVjM5iu68qu3vwy7Md6hw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Wf0Chk14Q8JRdONhUFmvnnjQF+nf84HsjEcys57x/X2LyBiiaLSOL0wLH1SNjY7QJ
-         +AHjCBhflbxwGYJN8LBpK7MhTp3WmXkco4A7Ohj3HxZGNIrrFzJxzaeocaR0NYvcef
-         BoI72kqFgiRNidLDZIyhTQdnodkX8I4Ny1Ak2f6U=
-Date:   Sat, 12 Oct 2019 09:35:31 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Zhou Yanjie <zhouyanjie@zoho.com>
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, paul.burton@mips.com, mark.rutland@arm.com,
-        syq@debian.org, ulf.hansson@linaro.org, linus.walleij@linaro.org,
-        armijn@tjaldur.nl, tglx@linutronix.de, yuehaibing@huawei.com,
-        malat@debian.org, ezequiel@collabora.com, paul@crapouillou.net,
-        linux-serial@vger.kernel.org, jslaby@suse.com,
-        jiaxun.yang@flygoat.com, 772753199@qq.com
-Subject: Re: [PATCH v3 1/2] Serial: Ingenic: Add support for the X1000.
-Message-ID: <20191012073531.GA2036970@kroah.com>
-References: <1548667176-119830-1-git-send-email-zhouyanjie@zoho.com>
- <1548695029-11900-1-git-send-email-zhouyanjie@zoho.com>
- <1548695029-11900-2-git-send-email-zhouyanjie@zoho.com>
+        id S1729458AbfJLTXv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 12 Oct 2019 15:23:51 -0400
+Received: from nms02.ip-net.mgrs.ru ([178.237.242.9]:56412 "EHLO
+        nms02.ip-net.mgrs.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728579AbfJLTXv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 12 Oct 2019 15:23:51 -0400
+Received: from User (localhost.localdomain [127.0.0.1])
+        by nms02.ip-net.mgrs.ru (Postfix) with SMTP id C89BE4E11B8;
+        Sat, 12 Oct 2019 08:16:19 +0300 (MSK)
+Reply-To: <kepe19655@aol.com>
+From:   "Mr. Henk Boelens" <info@wholeearth.com>
+To:     henkboelens2016@contractor.net
+Subject: GOOD DAY?
+Date:   Fri, 11 Oct 2019 22:17:04 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1548695029-11900-2-git-send-email-zhouyanjie@zoho.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20191012051620.C89BE4E11B8@nms02.ip-net.mgrs.ru>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, Oct 12, 2019 at 01:13:23PM +0800, Zhou Yanjie wrote:
-> Add support for probing the 8250_ingenic driver on the
-> X1000 Soc from Ingenic.
-> 
-> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
-> ---
->  drivers/tty/serial/8250/8250_ingenic.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
+Western Associate Bank
+Bank Address:Tower Building 83 Hull Road
+Oxwich Brussels Belgium
 
-<snip>
+Dear Friend
 
-you seem to have two patches merged into one here, please fix up and
-resend.
+Please accept my apologies if this request does not meet your personal ethics as it is not intended to cause you any embarrassment in what ever form. I got your
+contact email address from the internet directory and decided to contact you for this transaction that is based on trust and your outstanding. I have an interesting business proposal for you that will be of immense benefit to both of us. Although this may be hard for you to believe because i know that there is absolutely going to be a great doubt and distrust in your heart in respect of this email as this might sound strange to you and coupled with the fact that, so many individuals have taken possession of the Internet to facilitate their nefarious deeds, thereby making it extremely difficult for genuine and legitimate persons to get attention and recognition. Please grant me the benefit of doubt and hear me out.
 
-thanks,
+My name is Henk Boelens . I work with Western Associate Bank here in Belgium as a branch bank manager. I discovered an abandoned sum of GBP 19,850,000.00 (Nineteen Million Eight Hundred And Fifty Thousand British Pounds) in an account that belongs to one of our foreign customers Late Dr. Erin Jacobson, an American citizen who unfortunately lost his life and his entire family in Montana plane crash on March 23, 2009, on their way to a group ski vacation. The choice of contacting you is aroused from the geographical nature of where you live, particularly due to the sensitivity of this transaction and the confidentiality herein. Now our bank has been waiting for any of the relatives to come up for the claim but nobody has done that. I personally tried to locate any member of his family but have been unsuccessful in locating the relatives for 7 years now, i have also checked the deposit documents and discovered that he did not declare any next of kin on the deposit.
 
-greg k-h
+Now the Management of our bank as instructed me to look for the next of kin or they will convert the funds into the Government Treasury Account as unclaimed funds and the funds will be wasted. Therefore, I cannot claim these funds without presenting a foreigner to stand as next of kin. This is reason why I contacted you to seek your consent to present you as an next of kin so that the funds will be release to you, then we share it 55% for me and 45% for you because am not a
+greedy person and is deal between me and you.
+
+I have employed the service of an Attorney who will secure all necessary legal documents that could be used to back up this claim. All the attorney need to do is to fill in your names to the documents and legalize it in the Court here to prove you as the legitimate next of kin to the late depositor Dr. Erin Jacobson then the bank will release the funds to you as the rightful beneficiary.
+
+This is a fair deal without any risk attached either on your part or on my part as long as we comply with the laws governing the claiming of funds in our establishment. All I require is your honest co-operation to enable us see this deal through, and with my position in the bank as a bank manager, I will do every thing possible to protect your interest and to make sure everything workout successfully.
+
+If you are interested in this deal, kindly send me your complete information, your full names and address, Your Private telephone and Fax numbers, and Cell phone so that the attorney will start processing the necessary paperwork that would facilitate the release of the funds to you.
+
+Mr. Henk Boelens
