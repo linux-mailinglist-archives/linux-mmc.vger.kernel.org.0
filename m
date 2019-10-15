@@ -2,93 +2,74 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E685CD78E0
-	for <lists+linux-mmc@lfdr.de>; Tue, 15 Oct 2019 16:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55B72D839F
+	for <lists+linux-mmc@lfdr.de>; Wed, 16 Oct 2019 00:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732635AbfJOOk6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 15 Oct 2019 10:40:58 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:50563 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732448AbfJOOk5 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 15 Oct 2019 10:40:57 -0400
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1iKO0N-0003SG-8e; Tue, 15 Oct 2019 16:40:55 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <sha@pengutronix.de>)
-        id 1iKO0M-0002Mf-D3; Tue, 15 Oct 2019 16:40:54 +0200
-Date:   Tue, 15 Oct 2019 16:40:54 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Fabio Estevam <festevam@gmail.com>
-Cc:     Marek Vasut <marex@denx.de>, Stefan Wahren <info@lategoodbye.de>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>
-Subject: Re: mmc failure on mx28 running 5.3.2
-Message-ID: <20191015144054.kd2cgn2xhctr6x3w@pengutronix.de>
-References: <CAOMZO5ACYH_vuf4FevsPNkdxt8Y0irFeDNDcFns1bhsxB=M68w@mail.gmail.com>
+        id S1732443AbfJOWZn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 15 Oct 2019 18:25:43 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:32773 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732259AbfJOWZn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 15 Oct 2019 18:25:43 -0400
+Received: by mail-oi1-f194.google.com with SMTP id a15so18319880oic.0;
+        Tue, 15 Oct 2019 15:25:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=tpZzHubzWvtT+e+zyO26iki0QI2tO46rJ2oh72lmgVs=;
+        b=EkGxJ2sBlLZC6If4f71niSgGD9CN19yN4qz3iAY/p5fd32Y8zC9fEQ28AgAWb1YZv8
+         mOtVVkvYuDdx5hBFJEGAwllolsjDzjUfz6lRj5s+PpOiw/mZOOCITNLNa3gQUCWsByIf
+         +MpxW864sISM9MP7TJJyr6zc47N5+o8egSHtnGIEIzRkIOE7BvnE6DE4+6xg6soQd6Nm
+         UKL1s5GG+IsonDmYi/k8d9H2VphXsP+uKCc4VD2bfOTabrFEA6bK/e/68D/ngYnEbWkZ
+         Mn3cZRSsS+zsDU1+I49eGipby2GaJm/dOKt8dxTUroEjQOc8BgShizZBgO+ZeLCCgv75
+         tJoA==
+X-Gm-Message-State: APjAAAWtVJo4lDcW3/q6xyAO3rUSP8rXQ029tFTVNbF1gKJZgyps26/k
+        n/4t4h8wuIc9DKN3dbkBSA==
+X-Google-Smtp-Source: APXvYqzXJ6yRVpNf0oqDJd6fjxHnHGZXaCrTI1YnhJhr065Sbh5/U0tQmOOWaN3izrkWT3c6WMXQMg==
+X-Received: by 2002:aca:fc41:: with SMTP id a62mr783767oii.92.1571178341934;
+        Tue, 15 Oct 2019 15:25:41 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id 36sm7085167ott.66.2019.10.15.15.25.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Oct 2019 15:25:41 -0700 (PDT)
+Date:   Tue, 15 Oct 2019 17:25:40 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc:     Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-kernel@vger.kernel.org, ulf.hansson@linaro.org,
+        adrian.hunter@intel.com,
+        Nicolas Ferre <nicolas.ferre@microchip.com>
+Subject: Re: [PATCH 1/2] dt-bindings: sdhci-of-at91: add the
+ microchip,sdcal-inverted property
+Message-ID: <20191015222540.GA13117@bogus>
+References: <4d269f30b1122487a2b5c8b48e24f78f2b75a509.1570537903.git.nicolas.ferre@microchip.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAOMZO5ACYH_vuf4FevsPNkdxt8Y0irFeDNDcFns1bhsxB=M68w@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 16:38:49 up 99 days, 20:49, 105 users,  load average: 0.04, 0.12,
- 0.10
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
+In-Reply-To: <4d269f30b1122487a2b5c8b48e24f78f2b75a509.1570537903.git.nicolas.ferre@microchip.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Fabio,
-
-On Fri, Oct 04, 2019 at 10:21:46AM -0300, Fabio Estevam wrote:
-> Hi,
+On Tue, 8 Oct 2019 14:34:31 +0200, Nicolas Ferre wrote:
+> Add the specific microchip,sdcal-inverted property to at91 sdhci
+> device binding.
+> This optional property describes how the SoC SDCAL pin is connected.
+> It could be handled at SiP, SoM or board level.
 > 
-> Booting kernel 5.3.2 on a imx28-evk leads to the mmc following error:
+> This property read by at91 sdhci driver will allow to put in place a
+> software workaround that would reduce power consumption.
 > 
-> [    4.781251] Waiting for root device /dev/mmcblk0p3...
-> [    6.786434] mmc0: error -110 whilst initialising SDIO card
-> [    6.792765] mxs-mmc 80010000.spi: no support for card's volts
-> [    6.798635] mmc0: error -22 whilst initialising SD card
-> [   10.463583] mmc0: error -110 whilst initialising SDIO card
-> [   10.469429] mxs-mmc 80010000.spi: no support for card's volts
-> [   10.475520] mmc0: error -22 whilst initialising SD card
-> [   12.861119] mxs-mmc 80010000.spi: card claims to support voltages
-> below defined range
-> [   12.869069] mxs-mmc 80010000.spi: no support for card's volts
-> [   12.875141] mmc0: error -22 whilst initialising SDIO card
-> [   12.881346] mxs-mmc 80010000.spi: no support for card's volts
-> [   12.887213] mmc0: error -22 whilst initialising SD card
-> [   16.543620] mmc0: error -110 whilst initialising SDIO card
-> [   16.549490] mxs-mmc 80010000.spi: no support for card's volts
-> [   16.555588] mmc0: error -22 whilst initialising SD card
-> [   18.941140] mxs-mmc 80010000.spi: card claims to support voltages
-> below defined range
-> [   18.949093] mxs-mmc 80010000.spi: no support for card's volts
-> [   18.955165] mmc0: error -22 whilst initialising SDIO card
-> [   18.961103] mxs-mmc 80010000.spi: no support for card's volts
+> Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+> ---
+>  Documentation/devicetree/bindings/mmc/sdhci-atmel.txt | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> I haven't debugged this regression yet, but I am wondering if anyone
-> else has an idea about it.
 
-Have you seen https://www.spinics.net/lists/linux-mtd/msg09535.html? I
-think your issue is something else though.
-
-Regards
- Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Reviewed-by: Rob Herring <robh@kernel.org>
