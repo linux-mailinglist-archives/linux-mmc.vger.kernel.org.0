@@ -2,131 +2,93 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4F1CD7859
-	for <lists+linux-mmc@lfdr.de>; Tue, 15 Oct 2019 16:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E685CD78E0
+	for <lists+linux-mmc@lfdr.de>; Tue, 15 Oct 2019 16:40:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732591AbfJOOYF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 15 Oct 2019 10:24:05 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:36532 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732050AbfJOOYF (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 15 Oct 2019 10:24:05 -0400
-Received: by mail-wr1-f67.google.com with SMTP id y19so24146823wrd.3;
-        Tue, 15 Oct 2019 07:24:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=FAnSKJ9Pew82PkAXBmKY6NLtUVGPV5vweCMQygZLvvc=;
-        b=vdm+Kl7Gd2y8KQLrE/HVhM8oojADmvZGvILZ1fyliGX2ZgMa9FIC9w8kzDxAMJuDjd
-         tqCIlnyOggnEoSYxZJ1Y7rUjNA8gBdVlFKsxpYi6hy+nkIaklBboKo7lkhwMrlJaFdcL
-         0MgFqVTbuVUK1wuhcUhTp6rfthPK1vSdRge5O5Pcq3XW0+3kZIbigf+Y6dfavg/k4dCB
-         ghGvkniJqx3yGmzSZ/i0UOfsGeMwIDESQLlGA6wl4Sfvol8nxxLE84K0mdY9BbZriZMa
-         jRZoCjXC1ZUMbID1bn/0THaqWglcm+43TCn6DU24RN3vOs0NIrGxEtg6aXLoyDPw1t9r
-         60rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=FAnSKJ9Pew82PkAXBmKY6NLtUVGPV5vweCMQygZLvvc=;
-        b=LoRbyyAamea4yIyHmKq3+N3E268YK1cwMt/LUb0XVPDjJtEDael2FatBqbLHPEiMMi
-         fdiGNv59qkE+Fnq6mbYcLg2EZ6ZmwCIsgJkIGEsr4AHAHLjavOwhjreUNTot0RnX4x/h
-         J01Bw8dGYGhswoScBGuMdluceudXqFREkNj0GcTheUM0KHojga/TQnAVSWuAFNCamrXj
-         xVwXyGGwqxBtDKEHHSPDtXCtcmwJeJjaj34PUMAeCiRMIrbuUKoV+gtZ0z+HU4n/GZ/+
-         uPH+BE6l7nhu0F8gni6TlJsFdSs1SqzsGx4amiHn/LY++xRjt4a8MJ33Srp8kHPpeStf
-         kFXQ==
-X-Gm-Message-State: APjAAAU8kNazSvLVC2tY93MIt+OD5xan5O29/OoWkrUSKNk16hKvpL7T
-        xnxzCnNxfCWlJH22OZBXxpo=
-X-Google-Smtp-Source: APXvYqxMLLgnR0vPxF/fKc2CDYJpM14udBOYJNSRJ7usNIA2JSpBWl8XxRhB+VXeRePSyanx9OYDig==
-X-Received: by 2002:a5d:51c8:: with SMTP id n8mr215083wrv.228.1571149442587;
-        Tue, 15 Oct 2019 07:24:02 -0700 (PDT)
-Received: from localhost (p2E5BE2CE.dip0.t-ipconnect.de. [46.91.226.206])
-        by smtp.gmail.com with ESMTPSA id f20sm17308471wmb.6.2019.10.15.07.24.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2019 07:24:00 -0700 (PDT)
-Date:   Tue, 15 Oct 2019 16:23:59 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Sangbeom Kim <sbkim73@samsung.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linus.walleij@linaro.org,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Olof Johansson <olof@lixom.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        =?utf-8?B?Q2zDqW1lbnQgUMOpcm9u?= <peron.clem@gmail.com>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Faiz Abbas <faiz_abbas@ti.com>, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH 11/36] ARM: s5pv210: split from plat-samsung
-Message-ID: <20191015142359.GA1101003@ulmo>
-References: <20191010202802.1132272-1-arnd@arndb.de>
- <20191010203043.1241612-1-arnd@arndb.de>
- <20191010203043.1241612-11-arnd@arndb.de>
+        id S1732635AbfJOOk6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 15 Oct 2019 10:40:58 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:50563 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732448AbfJOOk5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 15 Oct 2019 10:40:57 -0400
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1iKO0N-0003SG-8e; Tue, 15 Oct 2019 16:40:55 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <sha@pengutronix.de>)
+        id 1iKO0M-0002Mf-D3; Tue, 15 Oct 2019 16:40:54 +0200
+Date:   Tue, 15 Oct 2019 16:40:54 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     Fabio Estevam <festevam@gmail.com>
+Cc:     Marek Vasut <marex@denx.de>, Stefan Wahren <info@lategoodbye.de>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Sascha Hauer <kernel@pengutronix.de>
+Subject: Re: mmc failure on mx28 running 5.3.2
+Message-ID: <20191015144054.kd2cgn2xhctr6x3w@pengutronix.de>
+References: <CAOMZO5ACYH_vuf4FevsPNkdxt8Y0irFeDNDcFns1bhsxB=M68w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="d6Gm4EdcadzBjdND"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191010203043.1241612-11-arnd@arndb.de>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <CAOMZO5ACYH_vuf4FevsPNkdxt8Y0irFeDNDcFns1bhsxB=M68w@mail.gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 16:38:49 up 99 days, 20:49, 105 users,  load average: 0.04, 0.12,
+ 0.10
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Hi Fabio,
 
---d6Gm4EdcadzBjdND
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Fri, Oct 04, 2019 at 10:21:46AM -0300, Fabio Estevam wrote:
+> Hi,
+> 
+> Booting kernel 5.3.2 on a imx28-evk leads to the mmc following error:
+> 
+> [    4.781251] Waiting for root device /dev/mmcblk0p3...
+> [    6.786434] mmc0: error -110 whilst initialising SDIO card
+> [    6.792765] mxs-mmc 80010000.spi: no support for card's volts
+> [    6.798635] mmc0: error -22 whilst initialising SD card
+> [   10.463583] mmc0: error -110 whilst initialising SDIO card
+> [   10.469429] mxs-mmc 80010000.spi: no support for card's volts
+> [   10.475520] mmc0: error -22 whilst initialising SD card
+> [   12.861119] mxs-mmc 80010000.spi: card claims to support voltages
+> below defined range
+> [   12.869069] mxs-mmc 80010000.spi: no support for card's volts
+> [   12.875141] mmc0: error -22 whilst initialising SDIO card
+> [   12.881346] mxs-mmc 80010000.spi: no support for card's volts
+> [   12.887213] mmc0: error -22 whilst initialising SD card
+> [   16.543620] mmc0: error -110 whilst initialising SDIO card
+> [   16.549490] mxs-mmc 80010000.spi: no support for card's volts
+> [   16.555588] mmc0: error -22 whilst initialising SD card
+> [   18.941140] mxs-mmc 80010000.spi: card claims to support voltages
+> below defined range
+> [   18.949093] mxs-mmc 80010000.spi: no support for card's volts
+> [   18.955165] mmc0: error -22 whilst initialising SDIO card
+> [   18.961103] mxs-mmc 80010000.spi: no support for card's volts
+> 
+> I haven't debugged this regression yet, but I am wondering if anyone
+> else has an idea about it.
 
-On Thu, Oct 10, 2019 at 10:29:55PM +0200, Arnd Bergmann wrote:
-[...]
-> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-> index e3a2518503ed..8eb738cac0c7 100644
-> --- a/drivers/pwm/Kconfig
-> +++ b/drivers/pwm/Kconfig
-> @@ -394,7 +394,7 @@ config PWM_ROCKCHIP
-> =20
->  config PWM_SAMSUNG
->  	tristate "Samsung PWM support"
-> -	depends on PLAT_SAMSUNG || ARCH_EXYNOS
-> +	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS
->  	help
->  	  Generic PWM framework driver for Samsung.
-> =20
+Have you seen https://www.spinics.net/lists/linux-mtd/msg09535.html? I
+think your issue is something else though.
 
-Acked-by: Thierry Reding <thierry.reding@gmail.com>
+Regards
+ Sascha
 
---d6Gm4EdcadzBjdND
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl2l1n0ACgkQ3SOs138+
-s6Eb7xAAsZ9JZaeRn7IjUZs/yz8zD5TWoNpojsmj6Kzf947MW5cgaZEJei22skVy
-3Kv1ogZu1N2WO2L7v//P9waAgCs0EuHgeRkT+UgsW2AapaShdkNmMh0tgJNWGFLm
-JwwGVB6rfjuBVYQgICBlfKzPdA9KDQNlxJPJmE3lC2kAQ5KWtsWHJIuWpk3zruQK
-rZyp33ecFy4Xa+Sxue8CTgyUoHv+t7fhjtpAn/NgMJGy4WGi5lfn8S9bkb9uULHD
-cZY4hv+EPC/GAaMQJ6HX9BwGnY1l+Mh8K7uH323OWAMQUqNAgKYuGvhUYSCtLPB1
-WNdTjM1kkz93c1pLaikNdKtO3NhqrmXD+fKwmEF7xCQqEfBvPznq4ipHb4MHJEih
-YLw8CGBBCX51LOghEJsYi0dMhvWdq4WFJcmXCcjWBYygVWkbvwkdCZSOTdeyI3GE
-QTTlWslD1YDL7FuwCYPLBpldFi1JT8hFwP8oK3VTSxmpd4j8mjDKsMHpHtzzTGe/
-6Le5t6ewz0rvR5ZFAnZB04VlIFV+l+Zx3e3Bxaqc2h/I6u1yagTZuPSknB7FJRPs
-ic4Qr6sfKbK7LMuIIohElzhuVHcEeIfZ3NYAkWh7t9sqefIRrJUcDcPkz3sQ/8Vn
-ChkBlbp/IuPwYuSPNI9nf7EW5vFjV7aTYZFXI7mj5M3kK5suvsU=
-=4m87
------END PGP SIGNATURE-----
-
---d6Gm4EdcadzBjdND--
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
