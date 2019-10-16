@@ -2,102 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D03F8D9094
-	for <lists+linux-mmc@lfdr.de>; Wed, 16 Oct 2019 14:15:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 472BCD9214
+	for <lists+linux-mmc@lfdr.de>; Wed, 16 Oct 2019 15:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731275AbfJPMPp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 16 Oct 2019 08:15:45 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:41308 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729700AbfJPMPp (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 16 Oct 2019 08:15:45 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9GCFeI1060048;
-        Wed, 16 Oct 2019 07:15:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1571228140;
-        bh=wKieuGRLvabSjHqoDmCuf3EOS6/B7AT44LWOVpIWWSk=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=rbWocP/cCJ35PiwrODNVJT6UIxprruGA7w5KlUufch+W1YKxtaXJkHBhD9PdBE57r
-         FBhphP90YDRSP6TAbIhQjccQ9uIUiMx9KPKynlWRQsn+ICILE9xXIADrBzwQ8ZK14I
-         03koi9WPlYuCwNxZcNBMgfiWNAZrwkbfBuNR1Jys=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9GCFe23011353
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Oct 2019 07:15:40 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 16
- Oct 2019 07:15:33 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 16 Oct 2019 07:15:33 -0500
-Received: from [172.24.190.215] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9GCFb4j082576;
-        Wed, 16 Oct 2019 07:15:38 -0500
-Subject: Re: [RFC] mmc: cqhci: commit descriptors before setting the doorbell
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
-CC:     <ulf.hansson@linaro.org>, <asutoshd@codeaurora.org>,
-        <riteshh@codeaurora.org>, <venkatg@codeaurora.org>
-References: <20191014183849.14864-1-faiz_abbas@ti.com>
- <fac9ad28-dbc3-3948-d99c-742420f3e651@ti.com>
- <ca62cbaa-111c-4546-afd5-aad70eb98993@intel.com>
-From:   Faiz Abbas <faiz_abbas@ti.com>
-Message-ID: <2275bfdc-ff30-719e-ae78-8c8bd20b8c80@ti.com>
-Date:   Wed, 16 Oct 2019 17:46:32 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2393483AbfJPNMu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 16 Oct 2019 09:12:50 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:41136 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727080AbfJPNMu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 16 Oct 2019 09:12:50 -0400
+Received: by mail-qt1-f195.google.com with SMTP id v52so35955111qtb.8
+        for <linux-mmc@vger.kernel.org>; Wed, 16 Oct 2019 06:12:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8JThs1XG1ijPDoWXd001r2c0QxpUa5W2X+j98FgzGb4=;
+        b=UB9ELyOZDOPd221KTRZ44E6coQpNcftSoMxNazf7t7nDHFWdnlu49LfY4juaUuij+u
+         uyg+XuKVTfjGgg6f4yohjI/jki6Ey5vm/kSgHuM8jhxf8/TeIfQLhCTR8hCp5SKkjOEc
+         aghKyx6Go8GpAiGyEFJslvNxarC4F497LwkwyzhKWbLaZ7BdJv16xCl6s8xTFOtqdhID
+         TJFzruv3A7f6Abldxi7qPSb4ZpmJ2yHh+g3JpVmUCO+vLOrQZZ3rIcfXGEVyYPEgFO+H
+         f2kIyl+jZ8TgDuq7pviRq5YjYRyEK5T0FwsIZlAqJsL0s9vXcXnOHCVpJctB3HcgeqZH
+         ClHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8JThs1XG1ijPDoWXd001r2c0QxpUa5W2X+j98FgzGb4=;
+        b=OBjcfp//dQ0qQNbOh/tM+sWeqLYjrAQxzpBIKEZPWvbRQIzI9jwPWQIbOYu6qU0VG7
+         5mF13HPT926HDQFW03ExnvidE+Gc8Je/prfsCdciS7wRQYcilVTwBOHLsp/D8t0apPQk
+         9NdX3i5PHmRATZN/wsUfRKzOMg47Keq5Un8dAh/F6xgsNtUPynZitRxd5PuMpu21Lua3
+         FkH5qcEtXwvaUpLM2UpkPGU/qRbj+EmLx261iBkWd12nR2YuQXm3QmZtB1wl43zPQxL5
+         gZCVcuW0QYd+i6wC2MR5O9eKnEYkoP/jVoRn1aufWf4CXMluFkbrnnxw2seIoerJ16m5
+         ThiQ==
+X-Gm-Message-State: APjAAAW689oOMc+wGvKpWQvRt6Xui4iRDynuNKKd4yDS8HN63KWRHyge
+        1Fql4sBXBbSfn3l9M+yVTftuwiT++fEeWfZklTCOgw==
+X-Google-Smtp-Source: APXvYqz4WACK7QZCPQXxStJci3zXaPb5Yc24BDtLg9Q18h0g3nKjgnK1rXsHGJ3td2yB7eQaUO55uFjrFVgjSv4QrKM=
+X-Received: by 2002:aed:2462:: with SMTP id s31mr45553740qtc.40.1571231567878;
+ Wed, 16 Oct 2019 06:12:47 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <ca62cbaa-111c-4546-afd5-aad70eb98993@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20191010202802.1132272-1-arnd@arndb.de> <20191010203043.1241612-1-arnd@arndb.de>
+ <20191010203043.1241612-23-arnd@arndb.de>
+In-Reply-To: <20191010203043.1241612-23-arnd@arndb.de>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 16 Oct 2019 15:12:36 +0200
+Message-ID: <CACRpkdb07KyJDgACuh2ho822pHAUcw2ubu=WJwqxf8NO-Pv+_A@mail.gmail.com>
+Subject: Re: [PATCH 23/36] ARM: s3c: move s3cmci pinctrl handling into board files
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Ben Dooks <ben-linux@fluff.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Adrian,
+On Thu, Oct 10, 2019 at 10:47 PM Arnd Bergmann <arnd@arndb.de> wrote:
 
-On 15/10/19 7:15 PM, Adrian Hunter wrote:
-> On 15/10/19 10:55 AM, Faiz Abbas wrote:
->> Hi,
->>
->> On 15/10/19 12:08 AM, Faiz Abbas wrote:
->>> Add a write memory barrier to make sure that descriptors are actually
->>> written to memory before ringing the doorbell.
->>>
->>> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
->>> ---
->>>
->>> This patch fixes a very infrequent ADMA error (1 out of 100 times) that
->>> I have been seeing after enabling command queuing for J721e.
->>> Also looking at memory-barriers.txt and this commit[1],
->>> it looks like we should be doing this before any descriptor write
->>> followed by a doorbell ring operation. It'll be nice if someone with more
->>> expertise in memory barriers can comment.
->>>
->>> [1] ad1a1b9cd67a ("scsi: ufs: commit descriptors before setting the
->>>     doorbell")
->>
->> So I see that cqhci_readl/writel() use readl/writel_relaxed() which
->> seems to be causing this issue. Should I just fix this by converting
->> those to readl/writel with memory barriers instead?
-> 
-> Perhaps we could do both changes i.e. add wmb() and convert to non-relaxed
-> readl/writel
-> 
+> Rather than call the internal s3c_gpio_cfgall_range() function
+> through a platform header, move the code into the set_power
+> callback that is already exported by the board, and add
+> a default implementation.
+>
+> In DT mode, the code already does not set the pin config,
+> so nothing changes there.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-readl is implemented as  readl_relaxed(); __rmb();
-and
-writel is implemented as wmb(); writel_relaxed();
+It looks good:
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-I think another wmb() before writel will be redundant.
+It would feel better if someone was actually testing it on these
+boards. I see Ben is listed as maintainer so I bet he will
+pull the board out :)
 
-Maybe this patch is good enough in itself.
-
-Thanks,
-Faiz
+Yours,
+Linus Walleij
