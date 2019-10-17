@@ -2,46 +2,47 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97674DAEDC
-	for <lists+linux-mmc@lfdr.de>; Thu, 17 Oct 2019 15:57:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54F45DAEDE
+	for <lists+linux-mmc@lfdr.de>; Thu, 17 Oct 2019 15:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437320AbfJQN54 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 17 Oct 2019 09:57:56 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:35018 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437305AbfJQN54 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 17 Oct 2019 09:57:56 -0400
-Received: by mail-lf1-f66.google.com with SMTP id w6so1988134lfl.2
-        for <linux-mmc@vger.kernel.org>; Thu, 17 Oct 2019 06:57:54 -0700 (PDT)
+        id S2437308AbfJQN55 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 17 Oct 2019 09:57:57 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:35850 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726470AbfJQN55 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 17 Oct 2019 09:57:57 -0400
+Received: by mail-lf1-f65.google.com with SMTP id u16so1987964lfq.3
+        for <linux-mmc@vger.kernel.org>; Thu, 17 Oct 2019 06:57:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=MPvIgeYyS5sEH2/sdzpYI6YJY72ljFxd5CJtu+IHloQ=;
-        b=YMFYY9SOWuw2gCta52O4XJLM08tWAp/9Z2kzoqZLJ/YQ4cX4Spn3oy410avVSqTrMw
-         YK4NEVG/uPHsWOYvvrIrZsGN8ISXf+SYEgDbnsuqF/OKiXcI9qHA//el6AZ5DQ7LZCPN
-         6DHX9qWhxCEQ6AoBBEMZ4UpjJythPE92PTmADKDtOXqquPiaK6gZzB04gh85tAQvMkmv
-         0Eqj7k/oRwQbZA+ViQQPtLonzcIJnULli0n+vAesSX9gPVzipWVx3MaQvnmkesxm9lbP
-         L5KssgY0CPwSdejFzqUvC4yyQro28W3uvW45/UZoVG/cku3ZXxv33Zci8NlZMvT+qBMO
-         h4mQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=W/IUaSbhHG4wv7nj6S/SBAPb0kMokkckyKlISAFdDyg=;
+        b=t+8qBMvE/y8RBPIQXO8pK0OYJq/4UahUSKfRo968q0KRtIBLbZxzfkR8l0K1moMpN2
+         kgLf2lJ9VJmqhrDP8vKnut+e46V9D+014tJ53GQNrIB4xCTnXih8D4s56ub1qy2PaS68
+         VSHSB0aTl/WObl74yg3tHB++wvXtlOfuV8eHWk0XVAyy+VkHpJn5edYxdECRR23iMru9
+         dqfkTPGhjS6pgcu92sKKBpc9SfdSW2PS8a3Ts1q1d4hvNh9BPOhOkbfMTdwNbndTUoD8
+         +iMCWx+hfBZHmQvxgKGHfuNzmwIQTldrR8AvzVots22cyjseUcGhRzRp3J6cZ//N2VXU
+         IWAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=MPvIgeYyS5sEH2/sdzpYI6YJY72ljFxd5CJtu+IHloQ=;
-        b=giuoIy6fCRN5IxUIs/nrKM+/489UJCVvq2DWc9MZ4MER86uYDitrVtSutGyNMd6syL
-         25gZdDez2ymfHTLGDTs8THkuT8TvZ2vGumN/suSXVAoxV2S/R1r1Ytu5+1flRIGmkquK
-         wrx4o7aTVoEwZT4RVmhYiHvCJ08jLQ3XyOW3nX0DlL0iwSwf7S5SSUFAfOWM1HDggBE8
-         eJBkYHrNdv4UPIAAXXSlJDPfSqr9Rty8WzgrxfUBzKWkXpbqqfUCjURLBAQyu0HXev/k
-         IPrA7YAFval9TOS8TCc3l/U3Q0t8zRPr0TQvhqW6tFL0RVYEcIgNl3sL1GOYxjYRDm8k
-         nw2g==
-X-Gm-Message-State: APjAAAXYHTI0wCS1cVDljbJxozfGS15XHV1oFciogcSDKSDOOSofdD6/
-        CiSs7CUVQV/bONEyh6jU83JAc0yWfKg=
-X-Google-Smtp-Source: APXvYqzgFfNbRiS1dqPAYHp+u5VFayansAF4dMt2TlvUi3kylGKp6MkSIK6/8d+dmnSpQfZGH71o1w==
-X-Received: by 2002:a19:8c05:: with SMTP id o5mr2459368lfd.53.1571320673697;
-        Thu, 17 Oct 2019 06:57:53 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=W/IUaSbhHG4wv7nj6S/SBAPb0kMokkckyKlISAFdDyg=;
+        b=UWkaDPMvjWGrKBlYU4AgYvymWiXRVvrZLxdI6/MQByESV9Ra4iuG9u8BoNkpinBAEb
+         s+hcyQe8cyT94SKII8XsKB4AbbpsP+7nRypyO4SMxAB0cADtu6nCHHrWALfQvYgRBKHY
+         tV7uxTTvRBVMFK3l0bcDop0rpoqeiPcv4FnutVnFTADUAhirkAt/Gl3jqt0hip+GFRq5
+         TSlajAwtU+tuxgWClWGJkAVKHP0ImtofIyim5opewLMj+dlNi1qJ3U+I5Nx9emtoClco
+         0nrBAZyTZV2l5EmsRKqDbdUHGiyywnV42gQ6ETstsg8Xe3t1Mrrt1YYy1rTydIcPXy0s
+         azeA==
+X-Gm-Message-State: APjAAAVehe8xnGM+ZVs6oBPfcI3py773mQwocx0K8r2qs8plLROAIWbD
+        tc7x/Mmiai05sjGzNKdz9qlYOuWdy4g=
+X-Google-Smtp-Source: APXvYqwBVphSUSV/EpVwjWyAvyg263gkH8JSDcG/pQR4rUzerRHYeILmO4ZHlINFlt4u0aJj7QmJEg==
+X-Received: by 2002:a19:5504:: with SMTP id n4mr2529787lfe.106.1571320675138;
+        Thu, 17 Oct 2019 06:57:55 -0700 (PDT)
 Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id x17sm975088lji.62.2019.10.17.06.57.52
+        by smtp.gmail.com with ESMTPSA id x17sm975088lji.62.2019.10.17.06.57.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2019 06:57:52 -0700 (PDT)
+        Thu, 17 Oct 2019 06:57:54 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
 To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -53,40 +54,46 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Erik Stromdahl <erik.stromdahl@gmail.com>,
         Eyal Reizer <eyalreizer@gmail.com>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 0/2] mmc: core: Fixup HW reset for SDIO cards
-Date:   Thu, 17 Oct 2019 15:57:37 +0200
-Message-Id: <20191017135739.1315-1-ulf.hansson@linaro.org>
+Subject: [PATCH 1/2] mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
+Date:   Thu, 17 Oct 2019 15:57:38 +0200
+Message-Id: <20191017135739.1315-2-ulf.hansson@linaro.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191017135739.1315-1-ulf.hansson@linaro.org>
+References: <20191017135739.1315-1-ulf.hansson@linaro.org>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-It has turned out that it's not a good idea to try to power cycle and to
-re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
-because there may be multiple SDIO funcs attached to the same SDIO card and
-some of the others that didn't execute the call to mmc_hw_reset(), may then
-simply experience an undefined behaviour.
+Upfront in mmc_rescan() we use the host->rescan_entered flag, to allow
+scanning only once for non-removable cards. Therefore, it's also not
+possible that we can have bus attached, when we are scanning non-removable
+cards. For this reason, let' drop the check for mmc_card_is_removable() as
+it's redundant.
 
-The following two patches in this series attempts to address this problem, by
-reworking the mmc_hw_reset() behaviour for SDIO.
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+---
+ drivers/mmc/core/core.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-Note that, the code has only compile tested, so any test on HW is greatly
-appreciated.
-
-Kind regards
-Uffe
-
-
-Ulf Hansson (2):
-  mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
-  mmc: core: Re-work HW reset for SDIO cards
-
- drivers/mmc/core/core.c | 10 +++-------
- drivers/mmc/core/core.h |  2 ++
- drivers/mmc/core/sdio.c | 11 +++++++++--
- 3 files changed, 14 insertions(+), 9 deletions(-)
-
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index 221127324709..6f8342702c73 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -2297,11 +2297,8 @@ void mmc_rescan(struct work_struct *work)
+ 
+ 	mmc_bus_get(host);
+ 
+-	/*
+-	 * if there is a _removable_ card registered, check whether it is
+-	 * still present
+-	 */
+-	if (host->bus_ops && !host->bus_dead && mmc_card_is_removable(host))
++	/* Verify a registered card to be functional, else remove it. */
++	if (host->bus_ops && !host->bus_dead)
+ 		host->bus_ops->detect(host);
+ 
+ 	host->detect_change = 0;
 -- 
 2.17.1
 
