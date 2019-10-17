@@ -2,407 +2,197 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9069DA578
-	for <lists+linux-mmc@lfdr.de>; Thu, 17 Oct 2019 08:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FDADDA811
+	for <lists+linux-mmc@lfdr.de>; Thu, 17 Oct 2019 11:11:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437882AbfJQGWU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 17 Oct 2019 02:22:20 -0400
-Received: from mail-eopbgr800077.outbound.protection.outlook.com ([40.107.80.77]:14896
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2437766AbfJQGWU (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 17 Oct 2019 02:22:20 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TDLvtw5/79V9v/f+SinjiOPOsYF5Nna6w1V+KMBvPdNEz9e4W8JXxcRdq1/45QDrvVa64aVlCKkGrEuZwvqaqSTBxaGrzVVVzMiXtClHBT/doyX4Grz7x3rjmk8Lhkc62xPe/DO3Yt8VmEkFFTQneRyyMrjxSGNLL/n7GUrvsgCmJhX1eKzpiN0oPDwvPt6pCGrhrEMXUlid+tUEf1o5v9rjCIhvo2NZeZ1D+2TIKFFuFigRiX8liPE/c8FVjCw3bXb1bqlpPrelQYsa45VGr05y7/orKggfzMZtLBC5fehJVf1KcRBWKfC4oV2MkzbwsGLyssaNbN8E8QB/wFX4FA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V0CuAPC7/crThHnovy0j0JxqVT6wkqTovNppIq1SNpM=;
- b=CiGx89YgT1NmLErHuTYLfG2GzwQzyZSkAcm6CCV+enA47NXQARRyxHUlt0vhVuXsxTVxEykXfaaF5XH85RupBRhHpl5UNxTxt55GIJkprNqb1amb40s8luUodZ72YXTsynDMRLyoydzcc6Mm/epPrHYt0vUBeEIvzSNW/YQkto520BUrYU+5BmGB3NaWlltdYHXsE3sd/FletCVodUS0gtYbJGUdR6idXtA6g+YhIbVklc1K2PUVp1JYV3/RzVYXiI1rrOXOK+SA/aZ/OIk/1cemMpoO0DPVT3YVlIhRBJiEWCzvGSJ4RTE39Zh7FVcE3MEJo2wD9Nhd6DOufmnpig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.60.83) smtp.rcpttodomain=arm.com smtp.mailfrom=xilinx.com;
- dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
- not signed); arc=none
+        id S2408452AbfJQJLA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 17 Oct 2019 05:11:00 -0400
+Received: from mail-vk1-f193.google.com ([209.85.221.193]:37141 "EHLO
+        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408407AbfJQJLA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 17 Oct 2019 05:11:00 -0400
+Received: by mail-vk1-f193.google.com with SMTP id v78so344070vke.4
+        for <linux-mmc@vger.kernel.org>; Thu, 17 Oct 2019 02:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V0CuAPC7/crThHnovy0j0JxqVT6wkqTovNppIq1SNpM=;
- b=KTfEw7678gVjg+cLL0CY8UxJs0PIYXgKldyy97qPI2L9dxYx2nVQAZauwgSWjbTtKO8/8Z88JXmKoqR+wmz1cx7Hxtm0Oo0N9EO1IaF66pO8pnPcAEF5VSDmQwYS23CqtfCQWQTiKNoyyW3cWC8Prh+vtoRZytXIXRCxpNp0WHY=
-Received: from SN4PR0201CA0067.namprd02.prod.outlook.com
- (2603:10b6:803:20::29) by DM6PR02MB5899.namprd02.prod.outlook.com
- (2603:10b6:5:152::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2347.16; Thu, 17 Oct
- 2019 06:22:15 +0000
-Received: from SN1NAM02FT025.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e44::203) by SN4PR0201CA0067.outlook.office365.com
- (2603:10b6:803:20::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2347.18 via Frontend
- Transport; Thu, 17 Oct 2019 06:22:14 +0000
-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; arm.com; dkim=none (message not signed)
- header.d=none;arm.com; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- SN1NAM02FT025.mail.protection.outlook.com (10.152.72.87) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2367.14
- via Frontend Transport; Thu, 17 Oct 2019 06:22:14 +0000
-Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
-        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
-        (envelope-from <manish.narani@xilinx.com>)
-        id 1iKzAs-0004bS-1O; Wed, 16 Oct 2019 23:22:14 -0700
-Received: from [127.0.0.1] (helo=localhost)
-        by xsj-pvapsmtp01 with smtp (Exim 4.63)
-        (envelope-from <manish.narani@xilinx.com>)
-        id 1iKzAm-0003mX-US; Wed, 16 Oct 2019 23:22:08 -0700
-Received: from [172.23.64.104] (helo=xhdvnc123.xilinx.com)
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <mnarani@xilinx.com>)
-        id 1iKzAg-0003kk-AG; Wed, 16 Oct 2019 23:22:02 -0700
-Received: by xhdvnc123.xilinx.com (Postfix, from userid 16987)
-        id 86ECE43A9A; Thu, 17 Oct 2019 11:52:01 +0530 (IST)
-From:   Manish Narani <manish.narani@xilinx.com>
-To:     ulf.hansson@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        adrian.hunter@intel.com, michal.simek@xilinx.com,
-        jolly.shah@xilinx.com, rajan.vaja@xilinx.com,
-        nava.manne@xilinx.com, mdf@kernel.org, manish.narani@xilinx.com
-Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        git@xilinx.com
-Subject: [PATCH v3 8/8] mmc: sdhci-of-arasan: Add support for ZynqMP Platform Tap Delays Setup
-Date:   Thu, 17 Oct 2019 11:51:50 +0530
-Message-Id: <1571293310-92563-9-git-send-email-manish.narani@xilinx.com>
-X-Mailer: git-send-email 2.1.1
-In-Reply-To: <1571293310-92563-1-git-send-email-manish.narani@xilinx.com>
-References: <1571293310-92563-1-git-send-email-manish.narani@xilinx.com>
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.83;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(396003)(376002)(346002)(136003)(39860400002)(199004)(189003)(486006)(6266002)(4326008)(107886003)(478600001)(36756003)(103686004)(50466002)(336012)(426003)(50226002)(8936002)(305945005)(44832011)(8676002)(81156014)(81166006)(11346002)(126002)(2616005)(2906002)(446003)(14444005)(476003)(5660300002)(70206006)(42186006)(51416003)(356004)(316002)(16586007)(47776003)(36386004)(70586007)(186003)(26005)(48376002)(6666004)(76176011)(106002)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR02MB5899;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-83.xilinx.com;A:1;MX:1;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=04hgzc9qmWLKJ4qr0kQdZsxTdQTI10306q/6E8gxvtc=;
+        b=AqiK/AqAzagnlRkDP5D7TqpB+zWnEWzzdcE1+ogvr7ovwCaWkS1E6dkGJIs2VYkna0
+         HA4p49iuZmap9bwrWQDRVBDRirGN4C+C2Zd7u80MbHPDi5LXzDcZodamYr8fGpxOJG9+
+         cQZnATF4Ea0ykf2DI2LFkN6+oO+au47cMBmY/ah6FOd0Yu8NwLdx2gXP6PK0zgfk/FVl
+         d5XrEkNmgDNqjUJTKWvbkMQHDg5i7+QZcSxqmZGGzma5dZtwr+ebc4iw4oBBUKILyGwe
+         5vi75QlYGSAmHTq0wmbKn0zm/loaA1/zPSK2vMr5cX+3JCAUa64xiho02j7x4kDXzF9s
+         eq/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=04hgzc9qmWLKJ4qr0kQdZsxTdQTI10306q/6E8gxvtc=;
+        b=X2WSK4+fuxikbE/lQ/67i1tP/1Hx+DG7jzNw8JCMHAQHO+NaNx3TiKQbr9LrGIP1kh
+         4ffq4wKbgPqbZkxaTJcNAeqose6Z5JCYzXnoALh8er6qVg/J/uoloL3tKXzkFKro7xb/
+         /wCHvkCP9SvuOq48i3FrZ89ikFHxDqWoX8OFf0eXHSq3+yD5asOM6uL6Y5Lm+QXrPwxD
+         Yrj4dNxoiGFjNSVe21ap8MdVCQw6OfO9wFKNZv8+hajkAovn1gO8i8w9I549fawaZxeR
+         LPjcoqzteYBa2pf9+D4q5jvUgzqjYP2IAZxbEk/OCj2NjH49j74b9+rcfRmPw785hJ2H
+         n70A==
+X-Gm-Message-State: APjAAAUnxadhl8y7HwmkH0ghvveo4iMWaz0lJ8g1OpsVekkBmrWwISwU
+        lujF2V/ruaUcTaR/1i1OKNs9aPm62Oe7dCArpH8zYA==
+X-Google-Smtp-Source: APXvYqy6RzDXcXpkWwa0bGaEo+8n7N3C2W0z0lEf79Xa7qw1LYxocO3L07nV4sCDvLvAw7yANGge1FFEGo3O1xtTF/4=
+X-Received: by 2002:a1f:2f51:: with SMTP id v78mr1342917vkv.101.1571303457218;
+ Thu, 17 Oct 2019 02:10:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f7a091de-7f1e-450f-3f09-08d752ca5a32
-X-MS-TrafficTypeDiagnostic: DM6PR02MB5899:
-X-Microsoft-Antispam-PRVS: <DM6PR02MB5899C1FB409505A9695B4619C16D0@DM6PR02MB5899.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:3513;
-X-Forefront-PRVS: 01930B2BA8
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7XEnKkt9juv5SNQjAA2X7JF9Qv2q8xzAwlHaPvVXVFC6rrF9MrHY1Ws2uSNYsgpyM2hI4a22WzSbZ+MDyuo677+2NWoV7qNlwB/lWJHG225b10Gim1mC8WHnNpBjLU2ygD70HbmXiqpFlGxA12zT6wYrXzDh2TyDub4MjrARRVVndadOD0DJIivjCmEYqlMz0NPjXd9gZrGcK1hhbILiYHOyZYu78LPib+V/gvsPUWJA6ZbSBKHZOXp8BNVXEhoKIfDqj8LoWhg9YodYqFCokPACDBbeQEJPdMsRxc8ReUSxPuh4/1jiCY1j9NhLpCto4fOOjIhi2cy9NI+esJ7/7PAw5FF6+JQQXwVNSGkg7xzyDR5kuccjDj9KmM0yJdp4tYFO/YS8PAdt90qRjTFR4pswVM65eZfjYhL1Jbu+Fb0=
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2019 06:22:14.4486
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f7a091de-7f1e-450f-3f09-08d752ca5a32
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB5899
+References: <20190722193939.125578-1-dianders@chromium.org>
+ <20190722193939.125578-2-dianders@chromium.org> <CAPDyKFpKWo4n+nmBXVcDc4TNzFV3vc+3aeKcu_nKaB=hj=RKUQ@mail.gmail.com>
+ <CAD=FV=WTKy3PmMSCbjKA_Ro_MP+dFE89oCzi_Bs7YeCrcD+3Xg@mail.gmail.com>
+In-Reply-To: <CAD=FV=WTKy3PmMSCbjKA_Ro_MP+dFE89oCzi_Bs7YeCrcD+3Xg@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 17 Oct 2019 11:10:21 +0200
+Message-ID: <CAPDyKFrwUgi6MzyZm0VgGWOahCGW6KgGRrWC7v=KvM=vbFY4RA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mmc: core: Add sdio_trigger_replug() API
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Andreas Fenkart <afenkart@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        netdev <netdev@vger.kernel.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Apart from taps set by auto tuning, ZynqMP platform has feature to set
-the tap values manually. Add support to set tap delay values in HW via
-ZynqMP SoC framework.
+On Thu, 17 Oct 2019 at 02:22, Doug Anderson <dianders@chromium.org> wrote:
+>
+> Hi,
+>
+> On Thu, Oct 10, 2019 at 7:11 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >
+> > On Mon, 22 Jul 2019 at 21:41, Douglas Anderson <dianders@chromium.org> wrote:
+> > >
+> > > When using Marvell WiFi SDIO cards, it is not uncommon for Linux WiFi
+> > > driver to fully lose the communication channel to the firmware running
+> > > on the card.  Presumably the firmware on the card has a bug or two in
+> > > it and occasionally crashes.
+> > >
+> > > The Marvell WiFi driver attempts to recover from this problem.
+> > > Specifically the driver has the function mwifiex_sdio_card_reset()
+> > > which is called when communcation problems are found.  That function
+> > > attempts to reset the state of things by utilizing the mmc_hw_reset()
+> > > function.
+> > >
+> > > The current solution is a bit complex because the Marvell WiFi driver
+> > > needs to manually deinit and reinit the WiFi driver around the reset
+> > > call.  This means it's going through a bunch of code paths that aren't
+> > > normally tested.  However, complexity isn't our only problem.  The
+> > > other (bigger) problem is that Marvell WiFi cards are often combo
+> > > WiFi/Bluetooth cards and Bluetooth runs on a second SDIO func.  While
+> > > the WiFi driver knows that it should re-init its own state around the
+> > > mmc_hw_reset() call there is no good way to inform the Bluetooth
+> > > driver.  That means that in Linux today when you reset the Marvell
+> > > WiFi driver you lose all Bluetooth communication.  Doh!
+> >
+> > Thanks for a nice description to the problem!
+> >
+> > In principle it makes mmc_hw_reset() quite questionable to use for
+> > SDIO func drivers, at all. However, let's consider that for later.
+>
+> Yeah, unless you somehow knew that your card would only have one function.
+>
+>
+> > > One way to fix the above problems is to leverage a more standard way
+> > > to reset the Marvell WiFi card where we go through the same code paths
+> > > as card unplug and the card plug.  In this patch we introduce a new
+> > > API call for doing just that: sdio_trigger_replug().  This API call
+> > > will trigger an unplug of the SDIO card followed by a plug of the
+> > > card.  As part of this the card will be nicely reset.
+> >
+> > I have been thinking back and forth on this, exploring various
+> > options, perhaps adding some callbacks that the core could invoke to
+> > inform the SDIO func drivers of what is going on.
+> >
+> > Although, in the end this boils done to complexity and I think your
+> > approach is simply the most superior in regards to this. However, I
+> > think there is a few things that we can do to even further simply your
+> > approach, let me comment on the code below.
+>
+> Right.  Unplugging / re-plugging is sorta gross / inelegant, but it is
+> definitely simpler and nice that it doesn't add so many new code
+> paths.  For cases where you're just trying to re-init things with a
+> hammer it works pretty well.
+>
+>
+> > > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> > > Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
+> > > ---
+> > >
+> > > Changes in v2:
+> > > - s/routnine/routine (Brian Norris, Matthias Kaehlcke).
+> > > - s/contining/containing (Matthias Kaehlcke).
+> > > - Add Matthias Reviewed-by tag.
+> > >
+> > >  drivers/mmc/core/core.c       | 28 ++++++++++++++++++++++++++--
+> > >  drivers/mmc/core/sdio_io.c    | 20 ++++++++++++++++++++
+> > >  include/linux/mmc/host.h      | 15 ++++++++++++++-
+> > >  include/linux/mmc/sdio_func.h |  2 ++
+> > >  4 files changed, 62 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+> > > index 221127324709..5da365b1fdb4 100644
+> > > --- a/drivers/mmc/core/core.c
+> > > +++ b/drivers/mmc/core/core.c
+> > > @@ -2161,6 +2161,12 @@ int mmc_sw_reset(struct mmc_host *host)
+> > >  }
+> > >  EXPORT_SYMBOL(mmc_sw_reset);
+> > >
+> > > +void mmc_trigger_replug(struct mmc_host *host)
+> > > +{
+> > > +       host->trigger_replug_state = MMC_REPLUG_STATE_UNPLUG;
+> > > +       _mmc_detect_change(host, 0, false);
+> > > +}
+> > > +
+> > >  static int mmc_rescan_try_freq(struct mmc_host *host, unsigned freq)
+> > >  {
+> > >         host->f_init = freq;
+> > > @@ -2214,6 +2220,11 @@ int _mmc_detect_card_removed(struct mmc_host *host)
+> > >         if (!host->card || mmc_card_removed(host->card))
+> > >                 return 1;
+> > >
+> > > +       if (host->trigger_replug_state == MMC_REPLUG_STATE_UNPLUG) {
+> > > +               mmc_card_set_removed(host->card);
+> > > +               return 1;
+> >
+> > Do you really need to set state of the card to "removed"?
+> >
+> > If I understand correctly, what you need is to allow mmc_rescan() to
+> > run a second time, in particular for non removable cards.
+> >
+> > In that path, mmc_rescan should find the card being non-functional,
+> > thus it should remove it and then try to re-initialize it again. Etc.
+> >
+> > Do you want me to send a patch to show you what I mean!?
+>
+> If you don't mind, that would probably be easiest.  I've totally
+> swapped out all of the implementation details of this from my brain
+> now, but if I saw a patch from you it would be easy for me to analyze
+> it and test it.
 
-Signed-off-by: Manish Narani <manish.narani@xilinx.com>
----
- drivers/mmc/host/sdhci-of-arasan.c | 206 ++++++++++++++++++++++++++++-
- 1 file changed, 204 insertions(+), 2 deletions(-)
+Alright, I think I owe you that because of my slow review pase. :-)
 
-diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-index 9b2b7b6399b3..45cde17da5a2 100644
---- a/drivers/mmc/host/sdhci-of-arasan.c
-+++ b/drivers/mmc/host/sdhci-of-arasan.c
-@@ -22,6 +22,7 @@
- #include <linux/phy/phy.h>
- #include <linux/regmap.h>
- #include <linux/of.h>
-+#include <linux/firmware/xlnx-zynqmp.h>
- 
- #include "cqhci.h"
- #include "sdhci-pltfm.h"
-@@ -32,6 +33,10 @@
- 
- #define PHY_CLK_TOO_SLOW_HZ		400000
- 
-+/* Default settings for ZynqMP Clock Phases */
-+#define ZYNQMP_ICLK_PHASE {0, 63, 63, 0, 63,  0,   0, 183, 54,  0, 0}
-+#define ZYNQMP_OCLK_PHASE {0, 60, 72, 0, 60, 72, 135, 180, 72, 36, 0}
-+
- /*
-  * On some SoCs the syscon area has a feature where the upper 16-bits of
-  * each 32-bit register act as a write mask for the lower 16-bits.  This allows
-@@ -80,6 +85,7 @@ struct sdhci_arasan_soc_ctl_map {
-  * @clk_phase_in:	Array of Input Clock Phase Delays for all speed modes
-  * @clk_phase_out:	Array of Output Clock Phase Delays for all speed modes
-  * @set_clk_delays:	Function pointer for setting Clock Delays
-+ * @clk_of_data:	Platform specific runtime clock data storage pointer
-  */
- struct sdhci_arasan_clk_data {
- 	struct clk_hw	sdcardclk_hw;
-@@ -89,6 +95,11 @@ struct sdhci_arasan_clk_data {
- 	int		clk_phase_in[MMC_TIMING_MMC_HS400 + 1];
- 	int		clk_phase_out[MMC_TIMING_MMC_HS400 + 1];
- 	void		(*set_clk_delays)(struct sdhci_host *host);
-+	void		*clk_of_data;
-+};
-+
-+struct sdhci_arasan_zynqmp_clk_data {
-+	const struct zynqmp_eemi_ops *eemi_ops;
- };
- 
- /**
-@@ -525,6 +536,10 @@ static const struct of_device_id sdhci_arasan_of_match[] = {
- 		.compatible = "arasan,sdhci-4.9a",
- 		.data = &sdhci_arasan_data,
- 	},
-+	{
-+		.compatible = "xlnx,zynqmp-8.9a",
-+		.data = &sdhci_arasan_data,
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sdhci_arasan_of_match);
-@@ -583,6 +598,150 @@ static const struct clk_ops arasan_sampleclk_ops = {
- 	.recalc_rate = sdhci_arasan_sampleclk_recalc_rate,
- };
- 
-+/**
-+ * sdhci_zynqmp_sdcardclk_set_phase - Set the SD Output Clock Tap Delays
-+ *
-+ * Set the SD Output Clock Tap Delays for Output path
-+ *
-+ * @hw:			Pointer to the hardware clock structure.
-+ * @degrees		The clock phase shift between 0 - 359.
-+ * Return: 0 on success and error value on error
-+ */
-+static int sdhci_zynqmp_sdcardclk_set_phase(struct clk_hw *hw, int degrees)
-+
-+{
-+	struct sdhci_arasan_clk_data *clk_data =
-+		container_of(hw, struct sdhci_arasan_clk_data, sdcardclk_hw);
-+	struct sdhci_arasan_data *sdhci_arasan =
-+		container_of(clk_data, struct sdhci_arasan_data, clk_data);
-+	struct sdhci_host *host = sdhci_arasan->host;
-+	struct sdhci_arasan_zynqmp_clk_data *zynqmp_clk_data =
-+		clk_data->clk_of_data;
-+	const struct zynqmp_eemi_ops *eemi_ops = zynqmp_clk_data->eemi_ops;
-+	const char *clk_name = clk_hw_get_name(hw);
-+	u32 node_id = !strcmp(clk_name, "clk_out_sd0") ? NODE_SD_0 : NODE_SD_1;
-+	u8 tap_delay, tap_max = 0;
-+	int ret;
-+
-+	/*
-+	 * This is applicable for SDHCI_SPEC_300 and above
-+	 * ZynqMP does not set phase for <=25MHz clock.
-+	 * If degrees is zero, no need to do anything.
-+	 */
-+	if (host->version < SDHCI_SPEC_300 ||
-+	    host->timing == MMC_TIMING_LEGACY ||
-+	    host->timing == MMC_TIMING_UHS_SDR12 || !degrees)
-+		return 0;
-+
-+	switch (host->timing) {
-+	case MMC_TIMING_MMC_HS:
-+	case MMC_TIMING_SD_HS:
-+	case MMC_TIMING_UHS_SDR25:
-+	case MMC_TIMING_UHS_DDR50:
-+	case MMC_TIMING_MMC_DDR52:
-+		/* For 50MHz clock, 30 Taps are available */
-+		tap_max = 30;
-+		break;
-+	case MMC_TIMING_UHS_SDR50:
-+		/* For 100MHz clock, 15 Taps are available */
-+		tap_max = 15;
-+		break;
-+	case MMC_TIMING_UHS_SDR104:
-+	case MMC_TIMING_MMC_HS200:
-+		/* For 200MHz clock, 8 Taps are available */
-+		tap_max = 8;
-+	default:
-+		break;
-+	}
-+
-+	tap_delay = (degrees * tap_max) / 360;
-+
-+	/* Set the Clock Phase */
-+	ret = eemi_ops->ioctl(node_id, IOCTL_SET_SD_TAPDELAY,
-+			      PM_TAPDELAY_OUTPUT, tap_delay, NULL);
-+	if (ret)
-+		pr_err("Error setting Output Tap Delay\n");
-+
-+	return ret;
-+}
-+
-+static const struct clk_ops zynqmp_sdcardclk_ops = {
-+	.recalc_rate = sdhci_arasan_sdcardclk_recalc_rate,
-+	.set_phase = sdhci_zynqmp_sdcardclk_set_phase,
-+};
-+
-+/**
-+ * sdhci_zynqmp_sampleclk_set_phase - Set the SD Input Clock Tap Delays
-+ *
-+ * Set the SD Input Clock Tap Delays for Input path
-+ *
-+ * @hw:			Pointer to the hardware clock structure.
-+ * @degrees		The clock phase shift between 0 - 359.
-+ * Return: 0 on success and error value on error
-+ */
-+static int sdhci_zynqmp_sampleclk_set_phase(struct clk_hw *hw, int degrees)
-+
-+{
-+	struct sdhci_arasan_clk_data *clk_data =
-+		container_of(hw, struct sdhci_arasan_clk_data, sampleclk_hw);
-+	struct sdhci_arasan_data *sdhci_arasan =
-+		container_of(clk_data, struct sdhci_arasan_data, clk_data);
-+	struct sdhci_host *host = sdhci_arasan->host;
-+	struct sdhci_arasan_zynqmp_clk_data *zynqmp_clk_data =
-+		clk_data->clk_of_data;
-+	const struct zynqmp_eemi_ops *eemi_ops = zynqmp_clk_data->eemi_ops;
-+	const char *clk_name = clk_hw_get_name(hw);
-+	u32 node_id = !strcmp(clk_name, "clk_in_sd0") ? NODE_SD_0 : NODE_SD_1;
-+	u8 tap_delay, tap_max = 0;
-+	int ret;
-+
-+	/*
-+	 * This is applicable for SDHCI_SPEC_300 and above
-+	 * ZynqMP does not set phase for <=25MHz clock.
-+	 * If degrees is zero, no need to do anything.
-+	 */
-+	if (host->version < SDHCI_SPEC_300 ||
-+	    host->timing == MMC_TIMING_LEGACY ||
-+	    host->timing == MMC_TIMING_UHS_SDR12 || !degrees)
-+		return 0;
-+
-+	switch (host->timing) {
-+	case MMC_TIMING_MMC_HS:
-+	case MMC_TIMING_SD_HS:
-+	case MMC_TIMING_UHS_SDR25:
-+	case MMC_TIMING_UHS_DDR50:
-+	case MMC_TIMING_MMC_DDR52:
-+		/* For 50MHz clock, 120 Taps are available */
-+		tap_max = 120;
-+		break;
-+	case MMC_TIMING_UHS_SDR50:
-+		/* For 100MHz clock, 60 Taps are available */
-+		tap_max = 60;
-+		break;
-+	case MMC_TIMING_UHS_SDR104:
-+	case MMC_TIMING_MMC_HS200:
-+		/* For 200MHz clock, 30 Taps are available */
-+		tap_max = 30;
-+	default:
-+		break;
-+	}
-+
-+	tap_delay = (degrees * tap_max) / 360;
-+
-+	/* Set the Clock Phase */
-+	ret = eemi_ops->ioctl(node_id, IOCTL_SET_SD_TAPDELAY,
-+			      PM_TAPDELAY_INPUT, tap_delay, NULL);
-+	if (ret)
-+		pr_err("Error setting Input Tap Delay\n");
-+
-+	return ret;
-+}
-+
-+static const struct clk_ops zynqmp_sampleclk_ops = {
-+	.recalc_rate = sdhci_arasan_sampleclk_recalc_rate,
-+	.set_phase = sdhci_zynqmp_sampleclk_set_phase,
-+};
-+
- /**
-  * sdhci_arasan_update_clockmultiplier - Set corecfg_clockmultiplier
-  *
-@@ -708,6 +867,10 @@ static void arasan_dt_read_clk_phase(struct device *dev,
- static void arasan_dt_parse_clk_phases(struct device *dev,
- 				      struct sdhci_arasan_clk_data *clk_data)
- {
-+	int *iclk_phase, *oclk_phase;
-+	u32 mio_bank = 0;
-+	int i;
-+
- 	/*
- 	 * This has been kept as a pointer and is assigned a function here.
- 	 * So that different controller variants can assign their own handling
-@@ -715,6 +878,22 @@ static void arasan_dt_parse_clk_phases(struct device *dev,
- 	 */
- 	clk_data->set_clk_delays = sdhci_arasan_set_clk_delays;
- 
-+	if (of_device_is_compatible(dev->of_node, "xlnx,zynqmp-8.9a")) {
-+		iclk_phase = (int [MMC_TIMING_MMC_HS400 + 1]) ZYNQMP_ICLK_PHASE;
-+		oclk_phase = (int [MMC_TIMING_MMC_HS400 + 1]) ZYNQMP_OCLK_PHASE;
-+
-+		of_property_read_u32(dev->of_node, "xlnx,mio-bank", &mio_bank);
-+		if (mio_bank == 2) {
-+			oclk_phase[MMC_TIMING_UHS_SDR104] = 90;
-+			oclk_phase[MMC_TIMING_MMC_HS200] = 90;
-+		}
-+
-+		for (i = 0; i <= MMC_TIMING_MMC_HS400; i++) {
-+			clk_data->clk_phase_in[i] = iclk_phase[i];
-+			clk_data->clk_phase_out[i] = oclk_phase[i];
-+		}
-+	}
-+
- 	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_LEGACY,
- 				 "clk-phase-legacy");
- 	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS,
-@@ -773,7 +952,10 @@ sdhci_arasan_register_sdcardclk(struct sdhci_arasan_data *sdhci_arasan,
- 	sdcardclk_init.parent_names = &parent_clk_name;
- 	sdcardclk_init.num_parents = 1;
- 	sdcardclk_init.flags = CLK_GET_RATE_NOCACHE;
--	sdcardclk_init.ops = &arasan_sdcardclk_ops;
-+	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a"))
-+		sdcardclk_init.ops = &zynqmp_sdcardclk_ops;
-+	else
-+		sdcardclk_init.ops = &arasan_sdcardclk_ops;
- 
- 	clk_data->sdcardclk_hw.init = &sdcardclk_init;
- 	clk_data->sdcardclk =
-@@ -822,7 +1004,10 @@ sdhci_arasan_register_sampleclk(struct sdhci_arasan_data *sdhci_arasan,
- 	sampleclk_init.parent_names = &parent_clk_name;
- 	sampleclk_init.num_parents = 1;
- 	sampleclk_init.flags = CLK_GET_RATE_NOCACHE;
--	sampleclk_init.ops = &arasan_sampleclk_ops;
-+	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a"))
-+		sampleclk_init.ops = &zynqmp_sampleclk_ops;
-+	else
-+		sampleclk_init.ops = &arasan_sampleclk_ops;
- 
- 	clk_data->sampleclk_hw.init = &sampleclk_init;
- 	clk_data->sampleclk =
-@@ -1031,6 +1216,23 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto clk_disable_all;
- 
-+	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a")) {
-+		struct sdhci_arasan_zynqmp_clk_data *zynqmp_clk_data;
-+		const struct zynqmp_eemi_ops *eemi_ops;
-+
-+		zynqmp_clk_data = devm_kzalloc(&pdev->dev,
-+					       sizeof(*zynqmp_clk_data),
-+					       GFP_KERNEL);
-+		eemi_ops = zynqmp_pm_get_eemi_ops();
-+		if (IS_ERR(eemi_ops)) {
-+			ret = PTR_ERR(eemi_ops);
-+			goto unreg_clk;
-+		}
-+
-+		zynqmp_clk_data->eemi_ops = eemi_ops;
-+		sdhci_arasan->clk_data.clk_of_data = zynqmp_clk_data;
-+	}
-+
- 	arasan_dt_parse_clk_phases(&pdev->dev, &sdhci_arasan->clk_data);
- 
- 	ret = mmc_of_parse(host->mmc);
--- 
-2.17.1
+Patches are coming soon!
 
+Kind regards
+Uffe
