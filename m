@@ -2,76 +2,147 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C7E2DC629
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 15:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB47DC8E0
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 17:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730379AbfJRNei (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Oct 2019 09:34:38 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:51009 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393758AbfJRNei (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 09:34:38 -0400
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1iLSOq-0000QE-KA; Fri, 18 Oct 2019 15:34:36 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <sha@pengutronix.de>)
-        id 1iLSOp-0008G9-Vw; Fri, 18 Oct 2019 15:34:35 +0200
-Date:   Fri, 18 Oct 2019 15:34:35 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Fabio Estevam <festevam@gmail.com>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Bruno Thomsen <bruno.thomsen@gmail.com>,
-        stable <stable@vger.kernel.org>
-Subject: Re: [PATCH] mmc: mxs: fix flags passed to dmaengine_prep_slave_sg
-Message-ID: <20191018133435.oncn7nktihpqyj4z@pengutronix.de>
-References: <20191018093934.29695-1-s.hauer@pengutronix.de>
- <CAOMZO5DUoj4xVZQSvk9Juw9z37UgrMn3g24h2_pAMxuTkBjw4g@mail.gmail.com>
+        id S2389152AbfJRPh6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Oct 2019 11:37:58 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:60928 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730468AbfJRPh6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 11:37:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1571413074; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yvFr+nNghkKZwR4mawCKvHUmrMBJduw6erMI6YTlcHM=;
+        b=v470AP/WoXYbHAA0MikRhd2C2Q47Jva7B2tAsqSQJh2nMYK2q/AuxV6ILjajalIe9ifrUq
+        QQ5AMEkFZxjYo9B3QckbJkKJ22INg6mA+cpEFKl/QqzArCcPa/pKii/EQODfOjJpBl38Oc
+        nlS76mnfHy2OQjR4ZofesDfcpS7rIQ0=
+Date:   Fri, 18 Oct 2019 17:37:47 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 6/6 v2] MMC: JZ4740: Add support for LPM.
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Zhou Yanjie <zhouyanjie@zoho.com>, linux-mips@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-mmc@vger.kernel.org, DTML <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Mark Rutland <mark.rutland@arm.com>, syq@debian.org,
+        Linus Walleij <linus.walleij@linaro.org>, armijn@tjaldur.nl,
+        Thomas Gleixner <tglx@linutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        Ezequiel Garcia <ezequiel@collabora.com>
+Message-Id: <1571413067.3.0@crapouillou.net>
+In-Reply-To: <CAPDyKFo9juNmf6hrcBjzOprS6GwzAPBq8y3ReGu=ry+MdxT9Bg@mail.gmail.com>
+References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
+        <1570857203-49192-1-git-send-email-zhouyanjie@zoho.com>
+        <1570857203-49192-7-git-send-email-zhouyanjie@zoho.com>
+        <CAPDyKFo9juNmf6hrcBjzOprS6GwzAPBq8y3ReGu=ry+MdxT9Bg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOMZO5DUoj4xVZQSvk9Juw9z37UgrMn3g24h2_pAMxuTkBjw4g@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 15:29:33 up 102 days, 19:39, 100 users,  load average: 0.02, 0.12,
- 0.15
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Oct 18, 2019 at 10:25:21AM -0300, Fabio Estevam wrote:
-> Hi Sascha,
-> 
-> On Fri, Oct 18, 2019 at 6:39 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > Since ceeeb99cd821 we no longer abuse the DMA_CTRL_ACK flag for custom
-> > driver use and introduced the MXS_DMA_CTRL_WAIT4END instead. We have not
-> > changed all users to this flag though. This patch fixes it for the
-> > mxs-mmc driver.
-> 
-> If I read this correctly, this patch is not the complete fix for all users.
-> 
-> Wouldn't it be better to revert the offending commit instead?
+Hi Uffe,
 
-We would probably also have to revert the exec_op conversion of the gpmi
-NAND driver, something which I'd rather not do.
 
-Sascha
+Le ven., oct. 18, 2019 at 10:52, Ulf Hansson <ulf.hansson@linaro.org> a=20
+=E9crit :
+> On Sat, 12 Oct 2019 at 07:19, Zhou Yanjie <zhouyanjie@zoho.com> wrote:
+>>=20
+>>  add support for low power mode of Ingenic's MMC/SD Controller.
+>>=20
+>>  Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
+>=20
+> I couldn't find a proper coverletter for the series, please provide
+> that next time as it really helps review. Additionally, it seems like
+> you forgot to change the prefix of the patches to "mmc: jz4740" (or at
+> least you chosed upper case letters), but I will take care of that
+> this time. So, I have applied the series for next, thanks!
+>=20
+> I also have a general question. Should we perhaps rename the driver
+> from jz4740_mmc.c to ingenic.c (and the file for the DT bindings, the
+> Kconfig, etc), as that seems like a more appropriate name? No?
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Is there a kernel policy regarding renaming drivers? Since it trashes=20
+the git history. Anyway you're the subsystem maintainer so I guess=20
+that's up to you. I can send a patch to rename it if you want.
+
+Cheers,
+-Paul
+
+
+>=20
+> Kind regards
+> Uffe
+>=20
+>=20
+>>  ---
+>>   drivers/mmc/host/jz4740_mmc.c | 23 +++++++++++++++++++++++
+>>   1 file changed, 23 insertions(+)
+>>=20
+>>  diff --git a/drivers/mmc/host/jz4740_mmc.c=20
+>> b/drivers/mmc/host/jz4740_mmc.c
+>>  index 44a04fe..4cbe7fb 100644
+>>  --- a/drivers/mmc/host/jz4740_mmc.c
+>>  +++ b/drivers/mmc/host/jz4740_mmc.c
+>>  @@ -43,6 +43,7 @@
+>>   #define JZ_REG_MMC_RESP_FIFO   0x34
+>>   #define JZ_REG_MMC_RXFIFO      0x38
+>>   #define JZ_REG_MMC_TXFIFO      0x3C
+>>  +#define JZ_REG_MMC_LPM         0x40
+>>   #define JZ_REG_MMC_DMAC                0x44
+>>=20
+>>   #define JZ_MMC_STRPCL_EXIT_MULTIPLE BIT(7)
+>>  @@ -102,6 +103,12 @@
+>>   #define JZ_MMC_DMAC_DMA_SEL BIT(1)
+>>   #define JZ_MMC_DMAC_DMA_EN BIT(0)
+>>=20
+>>  +#define        JZ_MMC_LPM_DRV_RISING BIT(31)
+>>  +#define        JZ_MMC_LPM_DRV_RISING_QTR_PHASE_DLY BIT(31)
+>>  +#define        JZ_MMC_LPM_DRV_RISING_1NS_DLY BIT(30)
+>>  +#define        JZ_MMC_LPM_SMP_RISING_QTR_OR_HALF_PHASE_DLY BIT(29)
+>>  +#define        JZ_MMC_LPM_LOW_POWER_MODE_EN BIT(0)
+>>  +
+>>   #define JZ_MMC_CLK_RATE 24000000
+>>=20
+>>   enum jz4740_mmc_version {
+>>  @@ -860,6 +867,22 @@ static int jz4740_mmc_set_clock_rate(struct=20
+>> jz4740_mmc_host *host, int rate)
+>>          }
+>>=20
+>>          writew(div, host->base + JZ_REG_MMC_CLKRT);
+>>  +
+>>  +       if (real_rate > 25000000) {
+>>  +               if (host->version >=3D JZ_MMC_X1000) {
+>>  +                       writel(JZ_MMC_LPM_DRV_RISING_QTR_PHASE_DLY |
+>>  +                                 =20
+>> JZ_MMC_LPM_SMP_RISING_QTR_OR_HALF_PHASE_DLY |
+>>  +                                  JZ_MMC_LPM_LOW_POWER_MODE_EN,
+>>  +                                  host->base + JZ_REG_MMC_LPM);
+>>  +               } else if (host->version >=3D JZ_MMC_JZ4760) {
+>>  +                       writel(JZ_MMC_LPM_DRV_RISING |
+>>  +                                  JZ_MMC_LPM_LOW_POWER_MODE_EN,
+>>  +                                  host->base + JZ_REG_MMC_LPM);
+>>  +               } else if (host->version >=3D JZ_MMC_JZ4725B)
+>>  +                       writel(JZ_MMC_LPM_LOW_POWER_MODE_EN,
+>>  +                                  host->base + JZ_REG_MMC_LPM);
+>>  +       }
+>>  +
+>>          return real_rate;
+>>   }
+>>=20
+>>  --
+>>  2.7.4
+>>=20
+>>=20
+
+=
+
