@@ -2,103 +2,91 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BD49DC221
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 12:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E787DDC268
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 12:15:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407876AbfJRKIV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Oct 2019 06:08:21 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:43354 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731332AbfJRKIU (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 06:08:20 -0400
-Received: by mail-lj1-f193.google.com with SMTP id n14so5590619ljj.10
-        for <linux-mmc@vger.kernel.org>; Fri, 18 Oct 2019 03:08:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=q1/kouGHNSHjsTnVr5JR5wPq5E3JDIov11IhxvB0x4M=;
-        b=mMoXTlqjYb6Fj1JD+8Ey2QBWeRvXrJiTFv2PkD6Fj8C6KeZ0a8rKjZghzQLnd3tFwY
-         A/QsrZ62UFp6pIfYprl27NE3EAUMsFQyjAnsehjXB0aZ5/xDqs412HGqUMfdvRCRZNRA
-         r+KLfcnAdm/CnUqg0b9zoqf04V6HFn+HAl4t7CJHqpcT4M3JG7gWl5D0q9T54pDXHDzq
-         JpcF/gr/pTBw9pO2OwNbQa39XZfziXzaNpVQRGAhTRgQUaCOeTLvndauZBWJk7chSkhm
-         tI6umHGCYzj8PCWmYHZazd6KMEbZjMASB6IkaWfaRsTTrgA5qFHGWAA/I8vhaoQ9EWzb
-         zsxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=q1/kouGHNSHjsTnVr5JR5wPq5E3JDIov11IhxvB0x4M=;
-        b=g66ClbkJBhn5htmk4KsFZVxYCo36/c4OghfaoB7bdurROKjBokOTEH/9us2EIL2MiP
-         +ZDJGPdsgKCmCBp78BirRdmdfL+rb3JmF7hLI+zm2fV5b5JapF+pRfIahUN38vMbtpz9
-         Vu4JVpBWbVahJ9k73givSwTfh1NufWq6OWRBrh4DDQZa/Mgt4xDWpBvUkBkrk1vZ9G/F
-         pV6qHnMytRTq0uiYd8bSUOQaCk+AKmvn31GDrLXG16T58bBC8GT+oC0dVCM15g+Kw+75
-         P73ZcoKE/G/8/B5Rrd9fwvaZ5Jfv6MPUF6aRGYAkf1bi7PjjSGYpg+cYSwOsXsDD0wFs
-         ZpBA==
-X-Gm-Message-State: APjAAAVDQ/sZrXsZGxoAA8kvg0HY99TtU00BQpZjcVVLzyo5FBL1ugDi
-        zgespkkhaVnC6OQ7Ri4TjpfJBw==
-X-Google-Smtp-Source: APXvYqxrWp0IG5kCVWm+HwfH0r9h0mO2qpZtvHqhzG8i4ufKUpotm8r51l5/N1oUl+ODMVw39kAneg==
-X-Received: by 2002:a2e:97ca:: with SMTP id m10mr5662027ljj.190.1571393296692;
-        Fri, 18 Oct 2019 03:08:16 -0700 (PDT)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id y3sm1974997lji.53.2019.10.18.03.08.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2019 03:08:15 -0700 (PDT)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC fixes for v5.4-rc4
-Date:   Fri, 18 Oct 2019 12:08:14 +0200
-Message-Id: <20191018100814.5265-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        id S1732723AbfJRKO6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Oct 2019 06:14:58 -0400
+Received: from pandora.armlinux.org.uk ([78.32.30.218]:60808 "EHLO
+        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2633389AbfJRKNu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 06:13:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=Z0sSMVnDx6pKSl+j6a5OWLy8DuLUQGBB0Kqfgd0KOoE=; b=1CFOMur8Okse85O9q/uJ7TXrv
+        RanJgKl7jXEhV54f8hRBQAKAr4FqxYBSHKS5fQrR/+DEuik4WtZ03mqccILbs8QI1lEYLzKqB6XMk
+        TZjA2+gqALQ0AmUYhNoE+7a4/1LMt161euyo3/4VKCmLXjD+DdPlgnr2t+yzcNfhk/7JRFKiyq6x4
+        Cxh63h4vn/KZ46Sq4VK7C3i3nQKsKLwaPoLVejnBBaUqub2FjH4qCH/3/XZUw6GjUvkeQnUXZjyCW
+        xlE8EVVHBTkWVeVcsS1LpNGbCTOExSusjIVI89EqYVRvioFUf2MX7yXbWc0huVfYxhupb0w8Je+4Y
+        17oXXheIw==;
+Received: from shell.armlinux.org.uk ([2001:4d48:ad52:3201:5054:ff:fe00:4ec]:44254)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1iLPGF-0006nP-PA; Fri, 18 Oct 2019 11:13:32 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1iLPG7-0000eB-9q; Fri, 18 Oct 2019 11:13:23 +0100
+Date:   Fri, 18 Oct 2019 11:13:23 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Christian Zigotzky <info@xenosoft.de>,
+        "contact@a-eon.com" <contact@a-eon.com>,
+        "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        mad skateman <madskateman@gmail.com>
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
+ updates
+Message-ID: <20191018101323.GG25745@shell.armlinux.org.uk>
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
+ <20191015125105.GU25745@shell.armlinux.org.uk>
+ <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
+ <20191015131750.GV25745@shell.armlinux.org.uk>
+ <CAPDyKFq_0P8X-6hkjko1chLtOrwsxGcEFR31GcbffhhUQNw+bw@mail.gmail.com>
+ <ed35a87495b0f0d322f555a16fb3e0f7574415ac.camel@kernel.crashing.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ed35a87495b0f0d322f555a16fb3e0f7574415ac.camel@kernel.crashing.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+On Thu, Oct 17, 2019 at 01:16:00PM +1100, Benjamin Herrenschmidt wrote:
+> On Tue, 2019-10-15 at 15:44 +0200, Ulf Hansson wrote:
+> > > Hmm, so it looks like PowerPC doesn't mark devices that are dma
+> > > coherent with a property that describes them as such.
+> > > 
+> > > I think this opens a wider question - what should
+> > > of_dma_is_coherent()
+> > > return for PowerPC?  It seems right now that it returns false for
+> > > devices that are DMA coherent, which seems to me to be a recipe for
+> > > future mistakes.
+> > 
+> > Perhaps implement the arch_setup_dma_ops() for PPC, that set
+> > "dev->dma_coherent = true" could work?
+> 
+> Only for coherent ops :)
 
-Here's a PR with a couple of MMC fixes intended for v5.4-rc4. Details about the
-highlights are as usual found in the signed tag.
+For those of us who have never touched the PowerPC code before, any
+suggestion where you would like to see that?  No file in arch/powerpc/mm
+stands out as a place for DMA stuff (and dma-noncoherent.c is certainly
+not correct.)
 
-Please pull this in!
+Thanks.
 
-Kind regards
-Ulf Hansson
-
-
-The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
-
-  Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.4-rc1
-
-for you to fetch changes up to 28c9fac09ab0147158db0baeec630407a5e9b892:
-
-  memstick: jmb38x_ms: Fix an error handling path in 'jmb38x_ms_probe()' (2019-10-09 11:08:03 +0200)
-
-----------------------------------------------------------------
-MMC host:
- - sdhci-iproc: Prevent some spurious interrupts
- - renesas_sdhi/sh_mmcif: Avoid false warnings about IRQs not found
-
-MEMSTICK host:
- - jmb38x_ms: Fix an error handling path at ->probe()
-
-----------------------------------------------------------------
-Christophe JAILLET (1):
-      memstick: jmb38x_ms: Fix an error handling path in 'jmb38x_ms_probe()'
-
-Geert Uytterhoeven (2):
-      mmc: renesas_sdhi: Do not use platform_get_irq() to count interrupts
-      mmc: sh_mmcif: Use platform_get_irq_optional() for optional interrupt
-
-Nicolas Saenz Julienne (1):
-      mmc: sdhci-iproc: fix spurious interrupts on Multiblock reads with bcm2711
-
- drivers/memstick/host/jmb38x_ms.c    |  2 +-
- drivers/mmc/host/renesas_sdhi_core.c | 31 +++++++++++++++++++------------
- drivers/mmc/host/sdhci-iproc.c       |  1 +
- drivers/mmc/host/sh_mmcif.c          |  6 ++----
- 4 files changed, 23 insertions(+), 17 deletions(-)
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
+According to speedtest.net: 11.9Mbps down 500kbps up
