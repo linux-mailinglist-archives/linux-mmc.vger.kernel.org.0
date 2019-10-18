@@ -2,84 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1412FDBDE3
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 08:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBBCDDBE3E
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 09:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504372AbfJRGym (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Oct 2019 02:54:42 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:38087 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2504371AbfJRGym (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 02:54:42 -0400
-Received: by mail-qt1-f193.google.com with SMTP id j31so7649937qta.5
-        for <linux-mmc@vger.kernel.org>; Thu, 17 Oct 2019 23:54:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=v1zxBK4MG0oEJKpuDH6kcwKbZMnNjx3WUdNM0cN1GA8=;
-        b=CdRg2x/bBHBAOe9XZT8eUwOLaLvl8x4dvs4Ld4p4uwn9ZOrbi1NseBe0nH4sU/zMXK
-         0qySDE3CXFSYnLsE5TLMCy5VX8vV+Y7/VC+VScPudpVZ4qrSx9NEcov4BKOJZ0m5RZ/8
-         th9hZvz1aiGwkE8aNpY6inzMQFiM2MAkWJNOsjN0oZL50Wx+M5l/tJoPawYJpoBthro8
-         0zCW4C9ZIk935tMs34bzsZLrSwtCFVTet3O/vQp/H3iiRXsG0af1yXYdHLb0IWszyxSo
-         DTV8LrU3GO/9+9nffms6CWcSwMS2I/rFPfmrC4Vyqisdzv+NKkO1EXCuw1swalpkJWoF
-         vSXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=v1zxBK4MG0oEJKpuDH6kcwKbZMnNjx3WUdNM0cN1GA8=;
-        b=PrylqTcxYNzorL+0ywTlvPOj0uKK6HmI18uc4gTCYmn+Y1NmxGcXMmU+LN5psoh+X+
-         NTnaTHCDm39WR572gHcF6Oe8Bey05F3ClH5qA6hB773kzqbuUvbo2OJm7iCBPvW+XY2x
-         Fr1c0XGDCiaeFmngzlRdzcBIpcxU7b2Xl+iz/BLeVNNr0fSuejOiW94wkgSs/klaK605
-         rgvsl5ngV7KgdhCsh3Z28r101yj2/GYB4dw2efvwCBNXIVnshECCUBO3yRhNzfh5sOvT
-         KYBbby641yYCW+jHJEs4OLKDCgpXjFNz8itXNSCx8xDfYUUjOASSVos+DINxXrK0u2sy
-         iroQ==
-X-Gm-Message-State: APjAAAXPaIX2LdDluPtyR0lcNTFVUN/xtFBI3JSId8nWl4jwxofTRpg2
-        cuEj0esfExJ3hy/XHg2LcYzQbhod+2SK39fIaN2Zp5kO
-X-Google-Smtp-Source: APXvYqzQgp/PaxFFyTt6R1daunXVgx8zsjHEsiLgvwDjyiFoN1vo7mP+HuSwGEiEALWzpuf+i3gpmdO/v8aYZTnRiiQ=
-X-Received: by 2002:a0c:e90b:: with SMTP id a11mr8384286qvo.32.1571381681287;
- Thu, 17 Oct 2019 23:54:41 -0700 (PDT)
+        id S2389298AbfJRHWK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Oct 2019 03:22:10 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:32928 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728011AbfJRHWK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 03:22:10 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9I7M5W9067649;
+        Fri, 18 Oct 2019 02:22:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1571383325;
+        bh=RpPaRO7ZRWVjZleEqs7yCJlM2aZ2GVtQ8fqMaEjjlng=;
+        h=Subject:From:To:CC:References:Date:In-Reply-To;
+        b=FaujRgc91+0rgOSAbvs+IcSplygQYruOhGbBB3c2sjxyKiw0dySB04Z+NgWZnjuvN
+         HbYCn/yQGyXHrnE39etIcQ1hoDjXKtAfrc8scoyQ6epA51c6WgqnlQWuBy3o8ZeYuW
+         TD3nKvH0274m9rkG5xsF8wIGmTrKpXwvn2us83zw=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9I7M5s0128202
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 18 Oct 2019 02:22:05 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 18
+ Oct 2019 02:21:57 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Fri, 18 Oct 2019 02:21:57 -0500
+Received: from [172.24.190.215] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9I7M2Gn120859;
+        Fri, 18 Oct 2019 02:22:03 -0500
+Subject: Re: [RFC] mmc: cqhci: commit descriptors before setting the doorbell
+From:   Faiz Abbas <faiz_abbas@ti.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <asutoshd@codeaurora.org>,
+        <riteshh@codeaurora.org>, <venkatg@codeaurora.org>
+References: <20191014183849.14864-1-faiz_abbas@ti.com>
+ <fac9ad28-dbc3-3948-d99c-742420f3e651@ti.com>
+ <ca62cbaa-111c-4546-afd5-aad70eb98993@intel.com>
+ <2275bfdc-ff30-719e-ae78-8c8bd20b8c80@ti.com>
+Message-ID: <8fba4072-a252-7397-15b2-791e2619024d@ti.com>
+Date:   Fri, 18 Oct 2019 12:52:55 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20191016111542.31358-1-laa@kamstrup.com> <20191016111542.31358-3-laa@kamstrup.com>
- <MN2PR04MB6991625FB8093E29605880F2FC6D0@MN2PR04MB6991.namprd04.prod.outlook.com>
-In-Reply-To: <MN2PR04MB6991625FB8093E29605880F2FC6D0@MN2PR04MB6991.namprd04.prod.outlook.com>
-From:   Lars Pedersen <lapeddk@gmail.com>
-Date:   Fri, 18 Oct 2019 08:54:30 +0200
-Message-ID: <CAKd8=GtBJtdifnhVXs9s+7KJRDTWjDN_+4if79=wooU0xw9U4g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mmc-utils: Support for bkops start when manual
- background operation is used.
-To:     Avri Altman <Avri.Altman@wdc.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "michael.heimpold@i2se.com" <michael.heimpold@i2se.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <2275bfdc-ff30-719e-ae78-8c8bd20b8c80@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Thanks for the review. I'll create a V2 with the missing signing.
-Regarding BKOPS_START the standard tells:
+Adrian,
 
-7.4.81 "Writing any value to this field shall manually start
-background operations. Device shall stay busy till no
-more background operations are needed"
+On 16/10/19 5:46 PM, Faiz Abbas wrote:
+> Adrian,
+> 
+> On 15/10/19 7:15 PM, Adrian Hunter wrote:
+>> On 15/10/19 10:55 AM, Faiz Abbas wrote:
+>>> Hi,
+>>>
+>>> On 15/10/19 12:08 AM, Faiz Abbas wrote:
+>>>> Add a write memory barrier to make sure that descriptors are actually
+>>>> written to memory before ringing the doorbell.
+>>>>
+>>>> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
+>>>> ---
+>>>>
+>>>> This patch fixes a very infrequent ADMA error (1 out of 100 times) that
+>>>> I have been seeing after enabling command queuing for J721e.
+>>>> Also looking at memory-barriers.txt and this commit[1],
+>>>> it looks like we should be doing this before any descriptor write
+>>>> followed by a doorbell ring operation. It'll be nice if someone with more
+>>>> expertise in memory barriers can comment.
+>>>>
+>>>> [1] ad1a1b9cd67a ("scsi: ufs: commit descriptors before setting the
+>>>>     doorbell")
+>>>
+>>> So I see that cqhci_readl/writel() use readl/writel_relaxed() which
+>>> seems to be causing this issue. Should I just fix this by converting
+>>> those to readl/writel with memory barriers instead?
+>>
+>> Perhaps we could do both changes i.e. add wmb() and convert to non-relaxed
+>> readl/writel
+>>
+> 
+> readl is implemented as  readl_relaxed(); __rmb();
+> and
+> writel is implemented as wmb(); writel_relaxed();
+> 
+> I think another wmb() before writel will be redundant.
+> 
+> Maybe this patch is good enough in itself.
+> 
 
-So I don't think it makes sense to have an unset, since it just acts
-as a trigger register and blocks until done.
+Do you agree?
 
-/Lars Pedersen
-
-> > From: Lars Pedersen <lapeddk@gmail.com>
-> Proper signing
->
-> >
-> > Add bkops start functionality when BKOPS_EN[0](MANUAL_EN) is set.
->
->
-> > +       ret = write_extcsd_value(fd, EXT_CSD_BKOPS_START, BKOPS_START);
-> You may want to allow to unset it as well,
-> otherwise you'll need to reset the platform to do so.
->
-> Thanks,
-> Avri
+Thanks,
+Faiz
