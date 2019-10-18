@@ -2,104 +2,84 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 120F7DB607
-	for <lists+linux-mmc@lfdr.de>; Thu, 17 Oct 2019 20:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1412FDBDE3
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 08:54:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2441374AbfJQSW6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 17 Oct 2019 14:22:58 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:41770 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2438481AbfJQSW6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 17 Oct 2019 14:22:58 -0400
-Received: by mail-oi1-f196.google.com with SMTP id g81so2984443oib.8;
-        Thu, 17 Oct 2019 11:22:57 -0700 (PDT)
+        id S2504372AbfJRGym (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Oct 2019 02:54:42 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:38087 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2504371AbfJRGym (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 02:54:42 -0400
+Received: by mail-qt1-f193.google.com with SMTP id j31so7649937qta.5
+        for <linux-mmc@vger.kernel.org>; Thu, 17 Oct 2019 23:54:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=v1zxBK4MG0oEJKpuDH6kcwKbZMnNjx3WUdNM0cN1GA8=;
+        b=CdRg2x/bBHBAOe9XZT8eUwOLaLvl8x4dvs4Ld4p4uwn9ZOrbi1NseBe0nH4sU/zMXK
+         0qySDE3CXFSYnLsE5TLMCy5VX8vV+Y7/VC+VScPudpVZ4qrSx9NEcov4BKOJZ0m5RZ/8
+         th9hZvz1aiGwkE8aNpY6inzMQFiM2MAkWJNOsjN0oZL50Wx+M5l/tJoPawYJpoBthro8
+         0zCW4C9ZIk935tMs34bzsZLrSwtCFVTet3O/vQp/H3iiRXsG0af1yXYdHLb0IWszyxSo
+         DTV8LrU3GO/9+9nffms6CWcSwMS2I/rFPfmrC4Vyqisdzv+NKkO1EXCuw1swalpkJWoF
+         vSXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=+Bk+owFUyFzKLHxVQ9TZGi955m3fUTDdG0rIAOhgZF4=;
-        b=t/2+zWJyIVGYFiSuVM5vGDE63Fz5raip/EpAbiht03WczwzGnJ7JVFoWuR1GbhIknz
-         rdJHsRAbi3szLECM8X4s0XR5eOgIg/JkaQKzyc8o2n7jtcwGdpXvFf4Jt9PmQo3egxhm
-         Rs+jxfrccYfMJyHooHUkYegvBKurSHi6UwFkJoUndna1IH1HU7v7dYCBS+PTcMv6EklT
-         6Uq7MURR0sqryfcAnQ/WiIR11zMSuYpxc07zpEy8fV+48/cJq5AA/pqnh7VaWLFBJtGY
-         /QGICPpG+QIeb8H6gwPBVxqSJdI8nr2j0plUGjsPDlE5xhBz7Q1TRG4lJ21NEK0m41sY
-         7FPA==
-X-Gm-Message-State: APjAAAXDnX8GhcHpiiWqmReUp5PRgLwCqD+lIYO59GTfUnhuuPhUEVB7
-        L95zk8WAW1X+shmpOADCvw==
-X-Google-Smtp-Source: APXvYqxoyB6LIwYRwOT7YZvltCww+hzSZ2xpYH5QFe7x2JQodAk8yt9q3uBJpfEDLYt0WE9APEi6/A==
-X-Received: by 2002:aca:110b:: with SMTP id 11mr4377794oir.135.1571336577100;
-        Thu, 17 Oct 2019 11:22:57 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 21sm686623oin.26.2019.10.17.11.22.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2019 11:22:56 -0700 (PDT)
-Date:   Thu, 17 Oct 2019 13:22:55 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Manish Narani <manish.narani@xilinx.com>
-Cc:     ulf.hansson@linaro.org, mark.rutland@arm.com,
-        adrian.hunter@intel.com, michal.simek@xilinx.com,
-        jolly.shah@xilinx.com, rajan.vaja@xilinx.com,
-        nava.manne@xilinx.com, mdf@kernel.org, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, git@xilinx.com
-Subject: Re: [PATCH v3 4/8] dt-bindings: mmc: arasan: Add optional properties
- for Arasan SDHCI
-Message-ID: <20191017182255.GA7053@bogus>
-References: <1571293310-92563-1-git-send-email-manish.narani@xilinx.com>
- <1571293310-92563-5-git-send-email-manish.narani@xilinx.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=v1zxBK4MG0oEJKpuDH6kcwKbZMnNjx3WUdNM0cN1GA8=;
+        b=PrylqTcxYNzorL+0ywTlvPOj0uKK6HmI18uc4gTCYmn+Y1NmxGcXMmU+LN5psoh+X+
+         NTnaTHCDm39WR572gHcF6Oe8Bey05F3ClH5qA6hB773kzqbuUvbo2OJm7iCBPvW+XY2x
+         Fr1c0XGDCiaeFmngzlRdzcBIpcxU7b2Xl+iz/BLeVNNr0fSuejOiW94wkgSs/klaK605
+         rgvsl5ngV7KgdhCsh3Z28r101yj2/GYB4dw2efvwCBNXIVnshECCUBO3yRhNzfh5sOvT
+         KYBbby641yYCW+jHJEs4OLKDCgpXjFNz8itXNSCx8xDfYUUjOASSVos+DINxXrK0u2sy
+         iroQ==
+X-Gm-Message-State: APjAAAXPaIX2LdDluPtyR0lcNTFVUN/xtFBI3JSId8nWl4jwxofTRpg2
+        cuEj0esfExJ3hy/XHg2LcYzQbhod+2SK39fIaN2Zp5kO
+X-Google-Smtp-Source: APXvYqzQgp/PaxFFyTt6R1daunXVgx8zsjHEsiLgvwDjyiFoN1vo7mP+HuSwGEiEALWzpuf+i3gpmdO/v8aYZTnRiiQ=
+X-Received: by 2002:a0c:e90b:: with SMTP id a11mr8384286qvo.32.1571381681287;
+ Thu, 17 Oct 2019 23:54:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1571293310-92563-5-git-send-email-manish.narani@xilinx.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191016111542.31358-1-laa@kamstrup.com> <20191016111542.31358-3-laa@kamstrup.com>
+ <MN2PR04MB6991625FB8093E29605880F2FC6D0@MN2PR04MB6991.namprd04.prod.outlook.com>
+In-Reply-To: <MN2PR04MB6991625FB8093E29605880F2FC6D0@MN2PR04MB6991.namprd04.prod.outlook.com>
+From:   Lars Pedersen <lapeddk@gmail.com>
+Date:   Fri, 18 Oct 2019 08:54:30 +0200
+Message-ID: <CAKd8=GtBJtdifnhVXs9s+7KJRDTWjDN_+4if79=wooU0xw9U4g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc-utils: Support for bkops start when manual
+ background operation is used.
+To:     Avri Altman <Avri.Altman@wdc.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "michael.heimpold@i2se.com" <michael.heimpold@i2se.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Oct 17, 2019 at 11:51:46AM +0530, Manish Narani wrote:
-> Add optional propeties for Arasan SDHCI which are used to set clk delays
+Thanks for the review. I'll create a V2 with the missing signing.
+Regarding BKOPS_START the standard tells:
 
-properties
+7.4.81 "Writing any value to this field shall manually start
+background operations. Device shall stay busy till no
+more background operations are needed"
 
-> for different speed modes in the controller.
-> 
-> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
-> ---
->  .../devicetree/bindings/mmc/arasan,sdhci.txt      | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> index b51e40b2e0c5..e0369dd7fb18 100644
-> --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> @@ -46,6 +46,21 @@ Optional Properties:
->      properly. Test mode can be used to force the controller to function.
->    - xlnx,int-clock-stable-broken: when present, the controller always reports
->      that the internal clock is stable even when it is not.
-> +  - clk-phase-legacy: Input/Output Clock Delay pair in degrees for Legacy Mode.
-> +  - clk-phase-mmc-hs: Input/Output Clock Delay pair degrees for MMC HS.
-> +  - clk-phase-sd-hs: Input/Output Clock Delay pair in degrees for SD HS.
-> +  - clk-phase-uhs-sdr12: Input/Output Clock Delay pair in degrees for SDR12.
-> +  - clk-phase-uhs-sdr25: Input/Output Clock Delay pair in degrees for SDR25.
-> +  - clk-phase-uhs-sdr50: Input/Output Clock Delay pair in degrees for SDR50.
-> +  - clk-phase-uhs-sdr104: Input/Output Clock Delay pair in degrees for SDR104.
-> +  - clk-phase-uhs-ddr50: Input/Output Clock Delay pair in degrees for SD DDR50.
-> +  - clk-phase-mmc-ddr52: Input/Output Clock Delay pair in degrees for MMC DDR52.
-> +  - clk-phase-mmc-hs200: Input/Output Clock Delay pair in degrees for MMC HS200.
-> +  - clk-phase-mmc-hs400: Input/Output Clock Delay pair in degrees for MMC HS400.
+So I don't think it makes sense to have an unset, since it just acts
+as a trigger register and blocks until done.
 
-Should be common?
+/Lars Pedersen
 
-Range of values?
-
-> +
-> +  Above mentioned are the clock (phase) delays which are to be configured in the
-> +  controller while switching to particular speed mode. If not specified, driver
-> +  will configure the default value defined for particular mode in it.
->  
->  Example:
->  	sdhci@e0100000 {
-> -- 
-> 2.17.1
-> 
+> > From: Lars Pedersen <lapeddk@gmail.com>
+> Proper signing
+>
+> >
+> > Add bkops start functionality when BKOPS_EN[0](MANUAL_EN) is set.
+>
+>
+> > +       ret = write_extcsd_value(fd, EXT_CSD_BKOPS_START, BKOPS_START);
+> You may want to allow to unset it as well,
+> otherwise you'll need to reset the platform to do so.
+>
+> Thanks,
+> Avri
