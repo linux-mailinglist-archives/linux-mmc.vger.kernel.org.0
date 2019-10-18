@@ -2,158 +2,92 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB725DC47E
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 14:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 152ABDC5D4
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 15:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404240AbfJRMOx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Oct 2019 08:14:53 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:41996 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2407755AbfJRMOw (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 08:14:52 -0400
-Received-SPF: Pass (esa3.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa3.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa3.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: WpcM4t+h+BiSE5DAkXqotBcFPlp7WhdvXZzB+lFIrne06zK9oZZQtt/2uL6ioL8hRCVMTmzKTY
- 1I7aE6yfQ7Tvd78K9cB7L7cca9Zpw/cDYRkKA4fQe9wg0cogpmgQUq25RnZ+oiufmSGojNgfux
- BanWzd7u24H2pi0KDtDD8ycCQA/dPxSXw3myTUhUPk4Qm9Yxl8DWBIrqi/lcQy9BPIPaSRBJlt
- XD7RgHNjgKOy1nojLVf/1rNcQmMl5c9oQxedlxweIG56qVKoRj75XapEjtthOWIo751UnZNNnk
- F2M=
-X-IronPort-AV: E=Sophos;i="5.67,311,1566889200"; 
-   d="scan'208";a="53522909"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 18 Oct 2019 05:14:50 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 18 Oct 2019 05:14:49 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Fri, 18 Oct 2019 05:14:50 -0700
-Date:   Fri, 18 Oct 2019 14:15:23 +0200
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        <claudiu.beznea@microchip.com>, <Eugen.Hristev@microchip.com>
-Subject: Re: [PATCH v2 1/3] dt-bindings: sdhci-of-at91: new compatible string
- and update properties
-Message-ID: <20191018121522.vq2co7b42kb2ykox@M43218.corp.atmel.com>
-Mail-Followup-To: Ulf Hansson <ulf.hansson@linaro.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, claudiu.beznea@microchip.com,
-        Eugen.Hristev@microchip.com
-References: <20191011103340.26749-1-ludovic.desroches@microchip.com>
- <CAPDyKFqxfBG-CDd_O9d8X89GZmNFXh=CoFE2QqptgtLtOU5=_Q@mail.gmail.com>
+        id S2410227AbfJRNNt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Oct 2019 09:13:49 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:46309 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729109AbfJRNNt (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 09:13:49 -0400
+Received: by mail-pg1-f196.google.com with SMTP id e15so3349443pgu.13;
+        Fri, 18 Oct 2019 06:13:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hULzerLYG/gcRIJMPWxpg7FxjyhoxEiB2hYB8bieHL8=;
+        b=fGDqicuc+QPDMddr7IShi196Ot2soVvfxejuv4rrVhvzoHa3CwXmQkD9XtnyRmqavi
+         OuRrKjXc14dWuv/D4tn1EJZj2uJHqC4AoyYZJIi55Rh+9Tkedr0qJbAZXxF6nTl3DYe6
+         N8/Is6ep9/0jxJrXYxbJyC+p2tajR51viaJAa4ej2yYBC/1OjShpTEyC0/3OG/+HxVHN
+         tehT4bwNs8FBrl4T8ZUQI2epb5rgyM4b/nhR1NQPnvbJhUmMUtyNBSpn0bNWBFCBCln/
+         RH33LMePj+DRGNbexZCyCjHR8PWsPGQu1kwSV/pAdicex7/seIMCnWF8KcA9C5fdbYod
+         Sj/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hULzerLYG/gcRIJMPWxpg7FxjyhoxEiB2hYB8bieHL8=;
+        b=MHuCkApHBo1CnJQDim/nr7fdfsM7qMBZxDU+RAKZUthw23vTXG50F3h78zqjX2z4Te
+         0ys/6JML2WshgwWi0m65Z6HqhrTzEXN7qaToqDV6BRXkoKKmD4utOfY19E6sldSqOU15
+         QUiyh1F+Oe+nrwhLaTQ7Tp6Jse6zu0U7BdWFq2vVO8uZyq26iLTSWaZFm7ad5iUxfaWu
+         Z90Ff52cKmKiB1ivrisQT+1k+GoXjrtq3MjEBipilNwBPhLP0Jp0oSqtre8LcbX3/x8T
+         vziyXpbS9i7USIBPD73t21kTMDihWHFam1/TlXkY4MXFrZHBNZfCkYeh82x2CVwPjWUR
+         0d1A==
+X-Gm-Message-State: APjAAAUYZM+xdpAYRZK4K2NxCwjeZKJ8EsVZtt/uaA4+LZzphrSVkpEt
+        3EJz3J+ZeJpArpRNi11SMsk=
+X-Google-Smtp-Source: APXvYqxJQreCnPuShoe0YBOWfKU6B6vaxEAoSMVug4Mfi8Rjc3+0lpKksGSi9yh28irqzpgFjNkhog==
+X-Received: by 2002:a63:1c03:: with SMTP id c3mr9866955pgc.198.1571404428261;
+        Fri, 18 Oct 2019 06:13:48 -0700 (PDT)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
+        by smtp.gmail.com with ESMTPSA id ce16sm6307205pjb.29.2019.10.18.06.13.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2019 06:13:47 -0700 (PDT)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH] mmc: renesas_sdhi: add checks for pinctrl_lookup_state
+Date:   Fri, 18 Oct 2019 21:13:38 +0800
+Message-Id: <20191018131338.11713-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFqxfBG-CDd_O9d8X89GZmNFXh=CoFE2QqptgtLtOU5=_Q@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Oct 18, 2019 at 12:56:14PM +0200, Ulf Hansson wrote:
-> On Fri, 11 Oct 2019 at 12:33, Ludovic Desroches
-> <ludovic.desroches@microchip.com> wrote:
-> >
-> > There is a new compatible string for the SAM9X60 sdhci device. It involves
-> > an update of the properties about the clocks stuff.
-> >
-> > Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
-> 
-> This doesn't apply any more, can you please re-spin it?
+renesas_sdhi_probe misses checks for pinctrl_lookup_state and may miss
+failures.
+Add checks for them to fix the problem.
 
-Sure, I'll rebase these patches and send a v2
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+ drivers/mmc/host/renesas_sdhi_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Regards
+diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+index d4ada5cca2d1..dc5ad6632df3 100644
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -694,8 +694,13 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 	if (!IS_ERR(priv->pinctrl)) {
+ 		priv->pins_default = pinctrl_lookup_state(priv->pinctrl,
+ 						PINCTRL_STATE_DEFAULT);
++		if (IS_ERR(priv->pins_default))
++			return PTR_ERR(priv->pins_default);
++
+ 		priv->pins_uhs = pinctrl_lookup_state(priv->pinctrl,
+ 						"state_uhs");
++		if (IS_ERR(priv->pins_uhs))
++			return PTR_ERR(priv->pins_uhs);
+ 	}
+ 
+ 	host = tmio_mmc_host_alloc(pdev, mmc_data);
+-- 
+2.20.1
 
-Ludovic
-
-> 
-> Kind regards
-> Uffe
-> 
-> 
-> > ---
-> >
-> > Changes:
-> > - v2: remove the extra example and fix node label
-> >
-> > This patch conflicts with Nicolas' one: "dt-bindings: sdhci-of-at91: add
-> > the microchip,sdcal-inverted property". Let me know which one has to be
-> > rebased or you can handle it.
-> >
-> > Ludovic
-> >
-> >
-> >  .../devicetree/bindings/mmc/sdhci-atmel.txt       | 15 ++++++++++++---
-> >  1 file changed, 12 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
-> > index 1b662d7171a0..5d541ad4d4eb 100644
-> > --- a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
-> > +++ b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
-> > @@ -5,17 +5,26 @@ Documentation/devicetree/bindings/mmc/mmc.txt and the properties used by the
-> >  sdhci-of-at91 driver.
-> >
-> >  Required properties:
-> > -- compatible:          Must be "atmel,sama5d2-sdhci".
-> > +- compatible:          Must be "atmel,sama5d2-sdhci" or "microchip,sam9x60-sdhci".
-> >  - clocks:              Phandlers to the clocks.
-> > -- clock-names:         Must be "hclock", "multclk", "baseclk";
-> > +- clock-names:         Must be "hclock", "multclk", "baseclk" for
-> > +                       "atmel,sama5d2-sdhci".
-> > +                       Must be "hclock", "multclk" for "microchip,sam9x60-sdhci".
-> > +
-> > +Optional properties:
-> > +- assigned-clocks:     The same with "multclk".
-> > +- assigned-clock-rates The rate of "multclk" in order to not rely on the
-> > +                       gck configuration set by previous components.
-> >
-> >
-> >  Example:
-> >
-> > -sdmmc0: sdio-host@a0000000 {
-> > +mmc0: sdio-host@a0000000 {
-> >         compatible = "atmel,sama5d2-sdhci";
-> >         reg = <0xa0000000 0x300>;
-> >         interrupts = <31 IRQ_TYPE_LEVEL_HIGH 0>;
-> >         clocks = <&sdmmc0_hclk>, <&sdmmc0_gclk>, <&main>;
-> >         clock-names = "hclock", "multclk", "baseclk";
-> > +       assigned-clocks = <&sdmmc0_gclk>;
-> > +       assigned-clock-rates = <480000000>;
-> >  };
-> > --
-> > 2.23.0
-> >
