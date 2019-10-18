@@ -2,145 +2,185 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87A53DC05E
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 10:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0866EDC084
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 11:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730092AbfJRIxT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Oct 2019 04:53:19 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:37235 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387598AbfJRIxT (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 04:53:19 -0400
-Received: by mail-vs1-f66.google.com with SMTP id p13so3529207vsr.4
-        for <linux-mmc@vger.kernel.org>; Fri, 18 Oct 2019 01:53:18 -0700 (PDT)
+        id S2392775AbfJRJFv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Oct 2019 05:05:51 -0400
+Received: from mail-eopbgr740070.outbound.protection.outlook.com ([40.107.74.70]:36192
+        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729213AbfJRJFv (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 18 Oct 2019 05:05:51 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EWE6u6r6/YjcpHd3pzIEpSxk1g34kgxVXZtv9SkYIGo6bwsj2b7akDec0BEP60Op/lxaFVnYE2nlcH1eTJJWbqMy8aRU33dkcNyfvo/pxYNbuFLjAtlV80U23YdZaoRD7ZlM2m2hFInXwfnIT8zHkabbJ8sVDAbSoeVxfRdh8NuqQ3SJq3AsJ9Bz4SBlJ6egEt5sqWNhpQ7v7DD6dTa9vP7EvnWOWTtOBOV/DRy5cFuF+ZCbz+OnQVX8vjYvX16HulylwZUQuFzsCHjTsrbDIOJQwXREgmReO8uTzK4SdiqnpNmBq+b5FLVb1DR48QWYuNTTM2LpGEoWqr3jItLiaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vdDGdfhKK4DumTJ5T0x8DdxN4eMF0rmum9BgfEUCWM4=;
+ b=OztUOh7AS//PkWahUHQsitmxhoW96murHqYLpyFr2t9+iinEgZZm7rskzkzp/HtH1qYX5Z8ACQOp9NID7CnvFznuor8RjkpzHZGZRDA9m/CuL1AmXz7RcbUDIOAK/JH25/h8isZEc3Oo1EPnuYIrbXGSVTmrq40jI5BzTQquSkXoF2sH4niSYhuBQnM5U9NFmw1o/b9OP2qosU9ikOYBakDmUCs6uy1tcPeimv0Gq0TItXiWwPK0qPw0e6S0yfIRmxi5gBcq/kq7pbWFAEj9w7Lmu/mq3GIzaJKUyWRLf2iQUmj33rUbx3UrqqB4OTPvRcsjvfsHawKgRcv+WTqK/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZFGj7CW4hdUtWSJdWVNaVmZMeTl6mFJ/pi0dDaNSBNI=;
-        b=Mue1fKqhFIuquMu+rQdYue5Ab10+aIYtB6Q9/0NGn6yqBrOgXLgFxSg9NHgyKSbFSE
-         P/wYniqUzElGGRUAv73GH8vxgzAqIkRFcXnKtK9ERXdptaI+2SGSIs/jXswG4speKbto
-         lvoSDiJeqxjuzOzIefrZ/deo7u6TdlJP7VTwxZFuteA/G4mV3V/aqdXyku3K8eU9Xoif
-         xAyZGXgX2NNhi62LjQKANeErNlNX/Za8ktqBzNRyqHutbskgjId182FjA9IqnNqFz+zm
-         ZXV01E9q9XPvlg0rZAq3Q2UEHuoAvj3+8z07VtkHMPYeXNncwhRl6aFysiNItkIHFYs1
-         L2bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZFGj7CW4hdUtWSJdWVNaVmZMeTl6mFJ/pi0dDaNSBNI=;
-        b=lgpuojF87vWIKcuDCxhXfCJQQ35LrWisrPxSxvfeV6QpGjhSYxr5rrmY/BygkaPmxi
-         hlqdixouTvT52LWPVen2vnq6WrKQokrJ2IYkg7kneaHbZgIYMVFJDtXTVEFwsuX6cWI2
-         934fJ3OH0t7LZmJYd8dP+8Ii/PmSiWj1pzBfsL0BmXlJSL4c6AF6xqdFfDEe53j9UElB
-         0qYF3WUFaoiAEJ065YOmtiZbKi0fmP8trHiDyhIp6eNnLBqLXXvgF+Xnsf+Uj4kzOq/D
-         guUacEQofgPXqSPYdKeHhgRTpxC07+cbNr0CVvarJDUw2IOYfYO2mlDmc16iBVe2EdFc
-         L8MQ==
-X-Gm-Message-State: APjAAAVjgeiTJs1P2WQo4AMOxi0wLAV76b1iTq/xjtBBftsfSKRWiFzY
-        wOTInfVscz33wReqs5ZHJY8zRCqgNLO+TrbN+3wdsw==
-X-Google-Smtp-Source: APXvYqxx1CtlN+u0DoDjVeLLVdh/4lNPYBI0SFJLfPUK/RX16/kP5dPKuMLW2YkmIBl0ktGJ57HLSuHmNeIqxg0/6RQ=
-X-Received: by 2002:a67:ebc2:: with SMTP id y2mr4733668vso.191.1571388797894;
- Fri, 18 Oct 2019 01:53:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
- <1570857203-49192-1-git-send-email-zhouyanjie@zoho.com> <1570857203-49192-7-git-send-email-zhouyanjie@zoho.com>
-In-Reply-To: <1570857203-49192-7-git-send-email-zhouyanjie@zoho.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 18 Oct 2019 10:52:41 +0200
-Message-ID: <CAPDyKFo9juNmf6hrcBjzOprS6GwzAPBq8y3ReGu=ry+MdxT9Bg@mail.gmail.com>
-Subject: Re: [PATCH 6/6 v2] MMC: JZ4740: Add support for LPM.
-To:     Zhou Yanjie <zhouyanjie@zoho.com>,
-        Paul Cercueil <paul@crapouillou.net>
-Cc:     linux-mips@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vdDGdfhKK4DumTJ5T0x8DdxN4eMF0rmum9BgfEUCWM4=;
+ b=ITsGvMKUSBI4EZmDB84VE4kVK/QRNQFTkE6IhyzEwcpH5anm+YFY7rKexEwWzqBhOWXulFKm7UlRFbG//0cvKjjA9bWeTFSY26687Gvl9hznhYZc6f0maO5oPAvEFR66KgcZhy3NkrepD8JCTmPosxFgElL2WZqCitmF/KdG3Zs=
+Received: from MN2PR02MB6029.namprd02.prod.outlook.com (52.132.174.207) by
+ MN2PR02MB6173.namprd02.prod.outlook.com (52.132.174.18) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2347.21; Fri, 18 Oct 2019 09:05:07 +0000
+Received: from MN2PR02MB6029.namprd02.prod.outlook.com
+ ([fe80::7830:9d9a:b79a:40e7]) by MN2PR02MB6029.namprd02.prod.outlook.com
+ ([fe80::7830:9d9a:b79a:40e7%6]) with mapi id 15.20.2347.026; Fri, 18 Oct 2019
+ 09:05:07 +0000
+From:   Manish Narani <MNARANI@xilinx.com>
+To:     Rob Herring <robh@kernel.org>
+CC:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+        Michal Simek <michals@xilinx.com>,
+        Jolly Shah <JOLLYS@xilinx.com>, Rajan Vaja <RAJANV@xilinx.com>,
+        Nava kishore Manne <navam@xilinx.com>,
+        "mdf@kernel.org" <mdf@kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Mark Rutland <mark.rutland@arm.com>, syq@debian.org,
-        Linus Walleij <linus.walleij@linaro.org>, armijn@tjaldur.nl,
-        Thomas Gleixner <tglx@linutronix.de>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Mathieu Malaterre <malat@debian.org>,
-        Ezequiel Garcia <ezequiel@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>, git <git@xilinx.com>
+Subject: RE: [PATCH v3 4/8] dt-bindings: mmc: arasan: Add optional properties
+ for Arasan SDHCI
+Thread-Topic: [PATCH v3 4/8] dt-bindings: mmc: arasan: Add optional properties
+ for Arasan SDHCI
+Thread-Index: AQHVhLNB61L4BxlTxk+rSkpwaMUAS6dfJmOAgAD1W5A=
+Date:   Fri, 18 Oct 2019 09:05:07 +0000
+Message-ID: <MN2PR02MB602959AB68B4C88B81359F2EC16C0@MN2PR02MB6029.namprd02.prod.outlook.com>
+References: <1571293310-92563-1-git-send-email-manish.narani@xilinx.com>
+ <1571293310-92563-5-git-send-email-manish.narani@xilinx.com>
+ <20191017182255.GA7053@bogus>
+In-Reply-To: <20191017182255.GA7053@bogus>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=MNARANI@xilinx.com; 
+x-originating-ip: [149.199.50.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e21799c4-1848-4b8c-7597-08d753aa45ab
+x-ms-office365-filtering-ht: Tenant
+x-ms-traffictypediagnostic: MN2PR02MB6173:|MN2PR02MB6173:
+x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MN2PR02MB6173A51B5BFC033749BE7F0FC16C0@MN2PR02MB6173.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-forefront-prvs: 01949FE337
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(346002)(396003)(39860400002)(366004)(376002)(136003)(199004)(189003)(13464003)(33656002)(6916009)(11346002)(446003)(186003)(66946007)(486006)(476003)(52536014)(66476007)(66556008)(64756008)(66446008)(76116006)(6116002)(3846002)(2906002)(86362001)(256004)(4326008)(6246003)(107886003)(55016002)(6436002)(9686003)(7696005)(99286004)(102836004)(53546011)(6506007)(26005)(76176011)(7736002)(54906003)(229853002)(316002)(71190400001)(14454004)(305945005)(8936002)(71200400001)(66066001)(8676002)(81166006)(5660300002)(81156014)(7416002)(74316002)(25786009)(478600001);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR02MB6173;H:MN2PR02MB6029.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: xilinx.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: VxHAmmWdjgRIP2EZitAtde07idnY7U5xD2BAYbnXwlqwfbvS3dTmakzXk3fWXWjzXkNmrzWR+8Fdn74t8ZbzGiy2XfC6Sy8LIUN92ScWwQXue+WXe6iBeXjtTGNvx9hgh3PuGjcZRlh3umpAOUCJ3pO3Cy9JWZWy+p2LRejdIBwSrkOqdj+GMgtvfUebSjipiUJ7F3p2JMgqzfqgZBPidysOKUBs//JkIboYmS09aHz2VB9M/agIQZ1vAE8fbe4gLWdG8CuxV+XH1pBFjQcQyOVbcJ9rO8QNwd1Si3Ky0C4yIbZeVhbO7wcbEuJSwPvdJhX+jGmZJ5Kwjyx7ep0ijEecXot2yrRk+hU5uVGdsMYWdVMJ/UIjLIiVVtHLuPVmmQxaQxRhBc8X95U9NcO/kuU0Mq6WLSHx75DvbhTlh3E=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e21799c4-1848-4b8c-7597-08d753aa45ab
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2019 09:05:07.1916
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uk9fl15d0lIRvfHgGexfRRXwH7giT1ypAZe6qjKJr/Qa6wzAtnU5naj8haBlROYCeYlJjapj4SY9izDIB/eJxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB6173
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 12 Oct 2019 at 07:19, Zhou Yanjie <zhouyanjie@zoho.com> wrote:
->
-> add support for low power mode of Ingenic's MMC/SD Controller.
->
-> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
+Hi Rob,
 
-I couldn't find a proper coverletter for the series, please provide
-that next time as it really helps review. Additionally, it seems like
-you forgot to change the prefix of the patches to "mmc: jz4740" (or at
-least you chosed upper case letters), but I will take care of that
-this time. So, I have applied the series for next, thanks!
+Thank you so much for the review.
+Please find my comments inline below.
 
-I also have a general question. Should we perhaps rename the driver
-from jz4740_mmc.c to ingenic.c (and the file for the DT bindings, the
-Kconfig, etc), as that seems like a more appropriate name? No?
+Thanks,
+Manish
 
-Kind regards
-Uffe
+> -----Original Message-----
+> From: Rob Herring <robh@kernel.org>
+> Sent: Thursday, October 17, 2019 11:53 PM
+> To: Manish Narani <MNARANI@xilinx.com>
+> Cc: ulf.hansson@linaro.org; mark.rutland@arm.com; adrian.hunter@intel.com=
+;
+> Michal Simek <michals@xilinx.com>; Jolly Shah <JOLLYS@xilinx.com>; Rajan
+> Vaja <RAJANV@xilinx.com>; Nava kishore Manne <navam@xilinx.com>;
+> mdf@kernel.org; linux-mmc@vger.kernel.org; devicetree@vger.kernel.org;
+> linux-kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org; git
+> <git@xilinx.com>
+> Subject: Re: [PATCH v3 4/8] dt-bindings: mmc: arasan: Add optional proper=
+ties
+> for Arasan SDHCI
+>=20
+> On Thu, Oct 17, 2019 at 11:51:46AM +0530, Manish Narani wrote:
+> > Add optional propeties for Arasan SDHCI which are used to set clk delay=
+s
+>=20
+> properties
+>=20
+> > for different speed modes in the controller.
+> >
+> > Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+> > ---
+> >  .../devicetree/bindings/mmc/arasan,sdhci.txt      | 15 +++++++++++++++
+> >  1 file changed, 15 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> > index b51e40b2e0c5..e0369dd7fb18 100644
+> > --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> > +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
+> > @@ -46,6 +46,21 @@ Optional Properties:
+> >      properly. Test mode can be used to force the controller to functio=
+n.
+> >    - xlnx,int-clock-stable-broken: when present, the controller always =
+reports
+> >      that the internal clock is stable even when it is not.
+> > +  - clk-phase-legacy: Input/Output Clock Delay pair in degrees for Leg=
+acy
+> Mode.
+> > +  - clk-phase-mmc-hs: Input/Output Clock Delay pair degrees for MMC HS=
+.
+> > +  - clk-phase-sd-hs: Input/Output Clock Delay pair in degrees for SD H=
+S.
+> > +  - clk-phase-uhs-sdr12: Input/Output Clock Delay pair in degrees for =
+SDR12.
+> > +  - clk-phase-uhs-sdr25: Input/Output Clock Delay pair in degrees for =
+SDR25.
+> > +  - clk-phase-uhs-sdr50: Input/Output Clock Delay pair in degrees for =
+SDR50.
+> > +  - clk-phase-uhs-sdr104: Input/Output Clock Delay pair in degrees for
+> SDR104.
+> > +  - clk-phase-uhs-ddr50: Input/Output Clock Delay pair in degrees for =
+SD
+> DDR50.
+> > +  - clk-phase-mmc-ddr52: Input/Output Clock Delay pair in degrees for =
+MMC
+> DDR52.
+> > +  - clk-phase-mmc-hs200: Input/Output Clock Delay pair in degrees for =
+MMC
+> HS200.
+> > +  - clk-phase-mmc-hs400: Input/Output Clock Delay pair in degrees for =
+MMC
+> HS400.
+>=20
+> Should be common?
+Yes, these properties should be common.
 
+>=20
+> Range of values?
+As these values are in degrees, the range of values is 0 to 359 degrees.
 
-> ---
->  drivers/mmc/host/jz4740_mmc.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
->
-> diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-> index 44a04fe..4cbe7fb 100644
-> --- a/drivers/mmc/host/jz4740_mmc.c
-> +++ b/drivers/mmc/host/jz4740_mmc.c
-> @@ -43,6 +43,7 @@
->  #define JZ_REG_MMC_RESP_FIFO   0x34
->  #define JZ_REG_MMC_RXFIFO      0x38
->  #define JZ_REG_MMC_TXFIFO      0x3C
-> +#define JZ_REG_MMC_LPM         0x40
->  #define JZ_REG_MMC_DMAC                0x44
->
->  #define JZ_MMC_STRPCL_EXIT_MULTIPLE BIT(7)
-> @@ -102,6 +103,12 @@
->  #define JZ_MMC_DMAC_DMA_SEL BIT(1)
->  #define JZ_MMC_DMAC_DMA_EN BIT(0)
->
-> +#define        JZ_MMC_LPM_DRV_RISING BIT(31)
-> +#define        JZ_MMC_LPM_DRV_RISING_QTR_PHASE_DLY BIT(31)
-> +#define        JZ_MMC_LPM_DRV_RISING_1NS_DLY BIT(30)
-> +#define        JZ_MMC_LPM_SMP_RISING_QTR_OR_HALF_PHASE_DLY BIT(29)
-> +#define        JZ_MMC_LPM_LOW_POWER_MODE_EN BIT(0)
-> +
->  #define JZ_MMC_CLK_RATE 24000000
->
->  enum jz4740_mmc_version {
-> @@ -860,6 +867,22 @@ static int jz4740_mmc_set_clock_rate(struct jz4740_mmc_host *host, int rate)
->         }
->
->         writew(div, host->base + JZ_REG_MMC_CLKRT);
-> +
-> +       if (real_rate > 25000000) {
-> +               if (host->version >= JZ_MMC_X1000) {
-> +                       writel(JZ_MMC_LPM_DRV_RISING_QTR_PHASE_DLY |
-> +                                  JZ_MMC_LPM_SMP_RISING_QTR_OR_HALF_PHASE_DLY |
-> +                                  JZ_MMC_LPM_LOW_POWER_MODE_EN,
-> +                                  host->base + JZ_REG_MMC_LPM);
-> +               } else if (host->version >= JZ_MMC_JZ4760) {
-> +                       writel(JZ_MMC_LPM_DRV_RISING |
-> +                                  JZ_MMC_LPM_LOW_POWER_MODE_EN,
-> +                                  host->base + JZ_REG_MMC_LPM);
-> +               } else if (host->version >= JZ_MMC_JZ4725B)
-> +                       writel(JZ_MMC_LPM_LOW_POWER_MODE_EN,
-> +                                  host->base + JZ_REG_MMC_LPM);
-> +       }
-> +
->         return real_rate;
->  }
->
-> --
-> 2.7.4
->
->
+Thanks,
+Manish
