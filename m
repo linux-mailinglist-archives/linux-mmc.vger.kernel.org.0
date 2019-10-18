@@ -2,52 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50DB1DC33A
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 12:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9AEDC33D
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 12:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728358AbfJRK6s (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Oct 2019 06:58:48 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:43319 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726838AbfJRK6s (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 06:58:48 -0400
-Received: by mail-vs1-f66.google.com with SMTP id b1so3710164vsr.10
-        for <linux-mmc@vger.kernel.org>; Fri, 18 Oct 2019 03:58:47 -0700 (PDT)
+        id S2439339AbfJRK6w (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Oct 2019 06:58:52 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:45644 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439252AbfJRK6v (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 06:58:51 -0400
+Received: by mail-ua1-f65.google.com with SMTP id j5so1577942uak.12
+        for <linux-mmc@vger.kernel.org>; Fri, 18 Oct 2019 03:58:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Rio9HHOlkvh+lIpCQASjDvFu34ch6yz1YASODTUfN2A=;
-        b=x+ivwMa1fuOo73+TkPEdt11VJpA5s5IaNM4sh0A4umv+Kpq/SIrNSspl+Tx6BxkHYY
-         RGSVUmvMZ49HKAPY82E2W2EXufUFG0ArEJgsKO2irYjk/IFl7cZriGK8qRvmlpM5DiI4
-         cW4RyJmj6uE0YSjjvo3dcX10dzCulzvu3Wdu8JdDMZA8ZyqvmS1gBcQtAT6sZMSEGUxe
-         b3hhe8+ibWVBQRUWstv/Fvg1kRt6EKrLFHH+vqY7nvhAYcBSj/NDyg1zXhKZySE4005U
-         /Gbap+Mi81K6+uIXOrxUfYlABOUqEqwZBfS0dsqwISFWanRaHb3jm1VdybIarZTQFU0m
-         4jfw==
+        bh=ca95FDLqVIwTMxVi4C0ayivApjVlDjhZW98VO/akMgw=;
+        b=txob3QU1ZZTBr0fz4z1FAnmHKFKvTJ+uRKGQjWfv+3JhC2sJ1lflA9qM3Kst2lbjmb
+         UU2KSKOk2eLmzH1mxykoepji9eYZNIvnZa72C/jt4hcAlBVJleXvYm9YDNZMxvoQWBNO
+         VF4Bxr9D8QmRL2D8MZ9EWW+I3n3etbUrDnpYt/ZC+o0Wj+c+ix3TSf8+Suhyeh115NUC
+         tStpPj7Ror60+sjVEEZQa7O0LtgYRjv0BjsUKjv5uA4fe1Z1Q5ouuTwEVwfx0V85FIZa
+         zWBehNZCpxNuuobsMOgM96pxaT527zwyBf2bM638+HGqDRPGYtoj++kskg67e+ENTC7Y
+         gLLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Rio9HHOlkvh+lIpCQASjDvFu34ch6yz1YASODTUfN2A=;
-        b=WE+DzEIAkg/3Ueld0LbjuOZMcrnihmSReQooqdVxancFAcCUMpY+YMeOb3uLyNyTR8
-         a2oED6CDgR5TwWhw0bp52DcpBDDo7hu09jye/fHyXhuo8tZ+qfvJqXcjVHM4haMQ2RCT
-         Dw2SEqaQ4SsAJib6pElgb1/xzRtuWAZaEDk1XLhsA47iV3sx84qBysg8eEkvhddZP/LC
-         cW2sGB9RHT/5sNAB+AFRYk7rJkhD4vrIupgTdqB2wRSWKutHik4hWHbvzx57NHXe9/wI
-         i+IXrnxyYIG5P93fYCfvjZit24IopXhN+0rpCv6mivMeZAZxPXhDDi3VFM4jElys0SCO
-         EVxw==
-X-Gm-Message-State: APjAAAWnVKN15PNk7fDh1DvSy3qamHk3G2pS9jFatk455URuWBauZh/X
-        YsDiRwKUo1ReXcHt00Sdr8zHLVblKo//Gkd4C95F7g==
-X-Google-Smtp-Source: APXvYqwRBr47REEzkA0e8ZYJ3EAkV4RqwFlssr91UqI3z8UAFs6Fwd6iaf/97SDUNB8MbcQd5ZnSNa99yYm/Z5IUQR4=
-X-Received: by 2002:a67:cf05:: with SMTP id y5mr5230380vsl.34.1571396327014;
- Fri, 18 Oct 2019 03:58:47 -0700 (PDT)
+        bh=ca95FDLqVIwTMxVi4C0ayivApjVlDjhZW98VO/akMgw=;
+        b=HV218G4ymyKxYZPN3NXQQSPSQGHk0+q6pk6OQZ7n+z17uwVAwkwPov0msmZkX0Fw0r
+         hn2rfqmK/E7tIwkAw8jXWFOzUSDgctJ/3hLGYWC6z+susQq84XzxwQAG1jvORh5MR8HN
+         1h2RQ77PYbxfeC57YpsRfZ8WiPsoqqLwdM0YXWBRD5ZD0HHQey0EnDHfPjYSnVE2vUO/
+         pKhzFOIdLJcYrBDyFOKgjrpSX/a0UG32AqOD8uKnF8gqvhXxkW2NTOY6SOOMmDhyrZvs
+         3AcDq5E8CAmi52N+FXGAkVV6HRYMtBA/jn17MqC57neNMRqoiZGhkW398uhivLZGuUfS
+         Dk3w==
+X-Gm-Message-State: APjAAAW4Ao6kTA+f56hEQwMCX0aOkM8z6gY2hYIVX3eH4LOuuxhz03FU
+        fBqNJyjMooo+ZXnIxdlcvTgIY+XAtdypJUWHGU2TDw==
+X-Google-Smtp-Source: APXvYqziBvPUdA/pLLnCkQCMGiBKL9xGlNYI+FQR3EGKYfmEWMjStiFUlTUn4Sou39IKFohPDlanYzU+rI6rRKbtiJo=
+X-Received: by 2002:ab0:348c:: with SMTP id c12mr534722uar.100.1571396330137;
+ Fri, 18 Oct 2019 03:58:50 -0700 (PDT)
 MIME-Version: 1.0
 References: <4d269f30b1122487a2b5c8b48e24f78f2b75a509.1570537903.git.nicolas.ferre@microchip.com>
-In-Reply-To: <4d269f30b1122487a2b5c8b48e24f78f2b75a509.1570537903.git.nicolas.ferre@microchip.com>
+ <d25c8f909d039938a5696e8de32396cf2aaf54b7.1570537903.git.nicolas.ferre@microchip.com>
+In-Reply-To: <d25c8f909d039938a5696e8de32396cf2aaf54b7.1570537903.git.nicolas.ferre@microchip.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 18 Oct 2019 12:58:10 +0200
-Message-ID: <CAPDyKFqcOKhqza=Gbjbwim1no2_NBLEzrq6JRoK_7U9hGXL5Xg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: sdhci-of-at91: add the
- microchip,sdcal-inverted property
+Date:   Fri, 18 Oct 2019 12:58:14 +0200
+Message-ID: <CAPDyKFrR810Yb+CqrhvJpSPW0yDEuWsNBysnbEq=3YHcOsVLhw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: sdhci-of-at91: add DT property to enable
+ calibration on full reset
 To:     Nicolas Ferre <nicolas.ferre@microchip.com>
 Cc:     Ludovic Desroches <ludovic.desroches@microchip.com>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
@@ -65,13 +66,19 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 On Tue, 8 Oct 2019 at 14:34, Nicolas Ferre <nicolas.ferre@microchip.com> wrote:
 >
-> Add the specific microchip,sdcal-inverted property to at91 sdhci
-> device binding.
-> This optional property describes how the SoC SDCAL pin is connected.
-> It could be handled at SiP, SoM or board level.
+> Add a property to keep the analog calibration cell powered.
+> This feature is specific to the Microchip SDHCI IP and outside
+> of the standard SDHCI register map.
 >
-> This property read by at91 sdhci driver will allow to put in place a
-> software workaround that would reduce power consumption.
+> By always keeping it on, after a full reset sequence, we make sure
+> that this feature is activated and not disabled.
+>
+> We expose a hardware property to the DT as this feature can be used
+> to adapt SDHCI behavior vs. how the SDCAL SoC pin is connected
+> on the board.
+>
+> Note that managing properly this property would reduce
+> power consumption on some SAMA5D2 SiP revisions.
 >
 > Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 
@@ -82,25 +89,64 @@ Uffe
 
 
 > ---
->  Documentation/devicetree/bindings/mmc/sdhci-atmel.txt | 5 +++++
->  1 file changed, 5 insertions(+)
+>  drivers/mmc/host/sdhci-of-at91.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 >
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
-> index 1b662d7171a0..503c6dbac1b2 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
-> @@ -9,6 +9,11 @@ Required properties:
->  - clocks:              Phandlers to the clocks.
->  - clock-names:         Must be "hclock", "multclk", "baseclk";
+> diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-of-at91.c
+> index e7d1920729fb..9571c4a882a9 100644
+> --- a/drivers/mmc/host/sdhci-of-at91.c
+> +++ b/drivers/mmc/host/sdhci-of-at91.c
+> @@ -27,6 +27,9 @@
+>  #define SDMMC_CACR     0x230
+>  #define                SDMMC_CACR_CAPWREN      BIT(0)
+>  #define                SDMMC_CACR_KEY          (0x46 << 8)
+> +#define SDMMC_CALCR    0x240
+> +#define                SDMMC_CALCR_EN          BIT(0)
+> +#define                SDMMC_CALCR_ALWYSON     BIT(4)
 >
-> +Optional properties:
-> +- microchip,sdcal-inverted: when present, polarity on the SDCAL SoC pin is
-> +  inverted. The default polarity for this signal is described in the datasheet.
-> +  For instance on SAMA5D2, the pin is usually tied to the GND with a resistor
-> +  and a capacitor (see "SDMMC I/O Calibration" chapter).
+>  #define SDHCI_AT91_PRESET_COMMON_CONF  0x400 /* drv type B, programmable clock mode */
 >
->  Example:
+> @@ -35,6 +38,7 @@ struct sdhci_at91_priv {
+>         struct clk *gck;
+>         struct clk *mainck;
+>         bool restore_needed;
+> +       bool cal_always_on;
+>  };
 >
+>  static void sdhci_at91_set_force_card_detect(struct sdhci_host *host)
+> @@ -116,10 +120,17 @@ static void sdhci_at91_set_uhs_signaling(struct sdhci_host *host,
+>
+>  static void sdhci_at91_reset(struct sdhci_host *host, u8 mask)
+>  {
+> +       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +       struct sdhci_at91_priv *priv = sdhci_pltfm_priv(pltfm_host);
+> +
+>         sdhci_reset(host, mask);
+>
+>         if (host->mmc->caps & MMC_CAP_NONREMOVABLE)
+>                 sdhci_at91_set_force_card_detect(host);
+> +
+> +       if (priv->cal_always_on && (mask & SDHCI_RESET_ALL))
+> +               sdhci_writel(host, SDMMC_CALCR_ALWYSON | SDMMC_CALCR_EN,
+> +                            SDMMC_CALCR);
+>  }
+>
+>  static const struct sdhci_ops sdhci_at91_sama5d2_ops = {
+> @@ -345,6 +356,14 @@ static int sdhci_at91_probe(struct platform_device *pdev)
+>
+>         priv->restore_needed = false;
+>
+> +       /*
+> +        * if SDCAL pin is wrongly connected, we must enable
+> +        * the analog calibration cell permanently.
+> +        */
+> +       priv->cal_always_on =
+> +               device_property_read_bool(&pdev->dev,
+> +                                         "microchip,sdcal-inverted");
+> +
+>         ret = mmc_of_parse(host->mmc);
+>         if (ret)
+>                 goto clocks_disable_unprepare;
 > --
 > 2.17.1
 >
