@@ -2,98 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19F25DC156
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 11:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BD49DC221
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 12:08:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2442400AbfJRJjy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Oct 2019 05:39:54 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:32909 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2442431AbfJRJjw (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 05:39:52 -0400
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1iLOjf-0006mw-3H; Fri, 18 Oct 2019 11:39:51 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1iLOje-0007me-LL; Fri, 18 Oct 2019 11:39:50 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     linux-mmc@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Bruno Thomsen <bruno.thomsen@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH] mmc: mxs: fix flags passed to dmaengine_prep_slave_sg
-Date:   Fri, 18 Oct 2019 11:39:34 +0200
-Message-Id: <20191018093934.29695-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.23.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
+        id S2407876AbfJRKIV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Oct 2019 06:08:21 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:43354 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731332AbfJRKIU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 06:08:20 -0400
+Received: by mail-lj1-f193.google.com with SMTP id n14so5590619ljj.10
+        for <linux-mmc@vger.kernel.org>; Fri, 18 Oct 2019 03:08:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=q1/kouGHNSHjsTnVr5JR5wPq5E3JDIov11IhxvB0x4M=;
+        b=mMoXTlqjYb6Fj1JD+8Ey2QBWeRvXrJiTFv2PkD6Fj8C6KeZ0a8rKjZghzQLnd3tFwY
+         A/QsrZ62UFp6pIfYprl27NE3EAUMsFQyjAnsehjXB0aZ5/xDqs412HGqUMfdvRCRZNRA
+         r+KLfcnAdm/CnUqg0b9zoqf04V6HFn+HAl4t7CJHqpcT4M3JG7gWl5D0q9T54pDXHDzq
+         JpcF/gr/pTBw9pO2OwNbQa39XZfziXzaNpVQRGAhTRgQUaCOeTLvndauZBWJk7chSkhm
+         tI6umHGCYzj8PCWmYHZazd6KMEbZjMASB6IkaWfaRsTTrgA5qFHGWAA/I8vhaoQ9EWzb
+         zsxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=q1/kouGHNSHjsTnVr5JR5wPq5E3JDIov11IhxvB0x4M=;
+        b=g66ClbkJBhn5htmk4KsFZVxYCo36/c4OghfaoB7bdurROKjBokOTEH/9us2EIL2MiP
+         +ZDJGPdsgKCmCBp78BirRdmdfL+rb3JmF7hLI+zm2fV5b5JapF+pRfIahUN38vMbtpz9
+         Vu4JVpBWbVahJ9k73givSwTfh1NufWq6OWRBrh4DDQZa/Mgt4xDWpBvUkBkrk1vZ9G/F
+         pV6qHnMytRTq0uiYd8bSUOQaCk+AKmvn31GDrLXG16T58bBC8GT+oC0dVCM15g+Kw+75
+         P73ZcoKE/G/8/B5Rrd9fwvaZ5Jfv6MPUF6aRGYAkf1bi7PjjSGYpg+cYSwOsXsDD0wFs
+         ZpBA==
+X-Gm-Message-State: APjAAAVDQ/sZrXsZGxoAA8kvg0HY99TtU00BQpZjcVVLzyo5FBL1ugDi
+        zgespkkhaVnC6OQ7Ri4TjpfJBw==
+X-Google-Smtp-Source: APXvYqxrWp0IG5kCVWm+HwfH0r9h0mO2qpZtvHqhzG8i4ufKUpotm8r51l5/N1oUl+ODMVw39kAneg==
+X-Received: by 2002:a2e:97ca:: with SMTP id m10mr5662027ljj.190.1571393296692;
+        Fri, 18 Oct 2019 03:08:16 -0700 (PDT)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id y3sm1974997lji.53.2019.10.18.03.08.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2019 03:08:15 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC fixes for v5.4-rc4
+Date:   Fri, 18 Oct 2019 12:08:14 +0200
+Message-Id: <20191018100814.5265-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Since ceeeb99cd821 we no longer abuse the DMA_CTRL_ACK flag for custom
-driver use and introduced the MXS_DMA_CTRL_WAIT4END instead. We have not
-changed all users to this flag though. This patch fixes it for the
-mxs-mmc driver.
+Hi Linus,
 
-Fixes: ceeeb99cd821 ("dmaengine: mxs: rename custom flag")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Tested-by: Fabio Estevam <festevam@gmail.com>
-Reported-by: Bruno Thomsen <bruno.thomsen@gmail.com>
-Tested-by: Bruno Thomsen <bruno.thomsen@gmail.com>
-Cc: stable@vger.kernel.org
----
- drivers/mmc/host/mxs-mmc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Here's a PR with a couple of MMC fixes intended for v5.4-rc4. Details about the
+highlights are as usual found in the signed tag.
 
-diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
-index 78e7e350655c..4031217d21c3 100644
---- a/drivers/mmc/host/mxs-mmc.c
-+++ b/drivers/mmc/host/mxs-mmc.c
-@@ -17,6 +17,7 @@
- #include <linux/interrupt.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
-+#include <linux/dma/mxs-dma.h>
- #include <linux/highmem.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-@@ -266,7 +267,7 @@ static void mxs_mmc_bc(struct mxs_mmc_host *host)
- 	ssp->ssp_pio_words[2] = cmd1;
- 	ssp->dma_dir = DMA_NONE;
- 	ssp->slave_dirn = DMA_TRANS_NONE;
--	desc = mxs_mmc_prep_dma(host, DMA_CTRL_ACK);
-+	desc = mxs_mmc_prep_dma(host, MXS_DMA_CTRL_WAIT4END);
- 	if (!desc)
- 		goto out;
- 
-@@ -311,7 +312,7 @@ static void mxs_mmc_ac(struct mxs_mmc_host *host)
- 	ssp->ssp_pio_words[2] = cmd1;
- 	ssp->dma_dir = DMA_NONE;
- 	ssp->slave_dirn = DMA_TRANS_NONE;
--	desc = mxs_mmc_prep_dma(host, DMA_CTRL_ACK);
-+	desc = mxs_mmc_prep_dma(host, MXS_DMA_CTRL_WAIT4END);
- 	if (!desc)
- 		goto out;
- 
-@@ -441,7 +442,7 @@ static void mxs_mmc_adtc(struct mxs_mmc_host *host)
- 	host->data = data;
- 	ssp->dma_dir = dma_data_dir;
- 	ssp->slave_dirn = slave_dirn;
--	desc = mxs_mmc_prep_dma(host, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	desc = mxs_mmc_prep_dma(host, DMA_PREP_INTERRUPT | MXS_DMA_CTRL_WAIT4END);
- 	if (!desc)
- 		goto out;
- 
--- 
-2.23.0
+Please pull this in!
 
+Kind regards
+Ulf Hansson
+
+
+The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
+
+  Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.4-rc1
+
+for you to fetch changes up to 28c9fac09ab0147158db0baeec630407a5e9b892:
+
+  memstick: jmb38x_ms: Fix an error handling path in 'jmb38x_ms_probe()' (2019-10-09 11:08:03 +0200)
+
+----------------------------------------------------------------
+MMC host:
+ - sdhci-iproc: Prevent some spurious interrupts
+ - renesas_sdhi/sh_mmcif: Avoid false warnings about IRQs not found
+
+MEMSTICK host:
+ - jmb38x_ms: Fix an error handling path at ->probe()
+
+----------------------------------------------------------------
+Christophe JAILLET (1):
+      memstick: jmb38x_ms: Fix an error handling path in 'jmb38x_ms_probe()'
+
+Geert Uytterhoeven (2):
+      mmc: renesas_sdhi: Do not use platform_get_irq() to count interrupts
+      mmc: sh_mmcif: Use platform_get_irq_optional() for optional interrupt
+
+Nicolas Saenz Julienne (1):
+      mmc: sdhci-iproc: fix spurious interrupts on Multiblock reads with bcm2711
+
+ drivers/memstick/host/jmb38x_ms.c    |  2 +-
+ drivers/mmc/host/renesas_sdhi_core.c | 31 +++++++++++++++++++------------
+ drivers/mmc/host/sdhci-iproc.c       |  1 +
+ drivers/mmc/host/sh_mmcif.c          |  6 ++----
+ 4 files changed, 23 insertions(+), 17 deletions(-)
