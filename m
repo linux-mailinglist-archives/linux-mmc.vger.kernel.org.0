@@ -2,92 +2,71 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 152ABDC5D4
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 15:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 584A0DC5F6
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Oct 2019 15:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410227AbfJRNNt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Oct 2019 09:13:49 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:46309 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729109AbfJRNNt (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 09:13:49 -0400
-Received: by mail-pg1-f196.google.com with SMTP id e15so3349443pgu.13;
-        Fri, 18 Oct 2019 06:13:48 -0700 (PDT)
+        id S2410278AbfJRNZd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Oct 2019 09:25:33 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:35960 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729109AbfJRNZd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Oct 2019 09:25:33 -0400
+Received: by mail-lj1-f195.google.com with SMTP id v24so6243744ljj.3;
+        Fri, 18 Oct 2019 06:25:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hULzerLYG/gcRIJMPWxpg7FxjyhoxEiB2hYB8bieHL8=;
-        b=fGDqicuc+QPDMddr7IShi196Ot2soVvfxejuv4rrVhvzoHa3CwXmQkD9XtnyRmqavi
-         OuRrKjXc14dWuv/D4tn1EJZj2uJHqC4AoyYZJIi55Rh+9Tkedr0qJbAZXxF6nTl3DYe6
-         N8/Is6ep9/0jxJrXYxbJyC+p2tajR51viaJAa4ej2yYBC/1OjShpTEyC0/3OG/+HxVHN
-         tehT4bwNs8FBrl4T8ZUQI2epb5rgyM4b/nhR1NQPnvbJhUmMUtyNBSpn0bNWBFCBCln/
-         RH33LMePj+DRGNbexZCyCjHR8PWsPGQu1kwSV/pAdicex7/seIMCnWF8KcA9C5fdbYod
-         Sj/Q==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lF1BtpGFJkCASpl5WSWPvr60tGpzDuIXmmIMMq39PQI=;
+        b=rnmvCCNNWjE7wD3FgdVmW00kWt25xtwi4OglY6YgqfL4vRpG13U+cIvYKK4ki+hY81
+         OASKWhDGIF6uHTu/t4KZvfIaeHC2965PeVcNmShf8ON0I9gbaFcRtb/QcYZAZu5KnYnj
+         Gatt24gDlfNBbF04He18mskX5P2rU6kZOy1zbIX8pAz3kt1nB+6ogTCxuTBFKlsbA2/X
+         gQSmM7mg7YTz1fuDsP16zZfuPOOCcT7bpU6BuX613QRHqhEKleE7u29NN8BLd/JLHrvm
+         kh7XBbRXhFhWoHfqcMPw86u8OubxWPESpOyQFVF1eA6ZdWxWPxBcdfqgb5M7pPfRk8ys
+         w4TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hULzerLYG/gcRIJMPWxpg7FxjyhoxEiB2hYB8bieHL8=;
-        b=MHuCkApHBo1CnJQDim/nr7fdfsM7qMBZxDU+RAKZUthw23vTXG50F3h78zqjX2z4Te
-         0ys/6JML2WshgwWi0m65Z6HqhrTzEXN7qaToqDV6BRXkoKKmD4utOfY19E6sldSqOU15
-         QUiyh1F+Oe+nrwhLaTQ7Tp6Jse6zu0U7BdWFq2vVO8uZyq26iLTSWaZFm7ad5iUxfaWu
-         Z90Ff52cKmKiB1ivrisQT+1k+GoXjrtq3MjEBipilNwBPhLP0Jp0oSqtre8LcbX3/x8T
-         vziyXpbS9i7USIBPD73t21kTMDihWHFam1/TlXkY4MXFrZHBNZfCkYeh82x2CVwPjWUR
-         0d1A==
-X-Gm-Message-State: APjAAAUYZM+xdpAYRZK4K2NxCwjeZKJ8EsVZtt/uaA4+LZzphrSVkpEt
-        3EJz3J+ZeJpArpRNi11SMsk=
-X-Google-Smtp-Source: APXvYqxJQreCnPuShoe0YBOWfKU6B6vaxEAoSMVug4Mfi8Rjc3+0lpKksGSi9yh28irqzpgFjNkhog==
-X-Received: by 2002:a63:1c03:: with SMTP id c3mr9866955pgc.198.1571404428261;
-        Fri, 18 Oct 2019 06:13:48 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
-        by smtp.gmail.com with ESMTPSA id ce16sm6307205pjb.29.2019.10.18.06.13.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2019 06:13:47 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] mmc: renesas_sdhi: add checks for pinctrl_lookup_state
-Date:   Fri, 18 Oct 2019 21:13:38 +0800
-Message-Id: <20191018131338.11713-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lF1BtpGFJkCASpl5WSWPvr60tGpzDuIXmmIMMq39PQI=;
+        b=tCGr8xeGftf+BHAaLK93J3VByaRoM0wELphdSKqWR2fEXgf+L8sPEzpJtepHHtit1G
+         zBZrX6wD/dxyb9utzp02Jf+NJDChkjk/Sb6dfah+npfj72mKVnKBxR1ljmLHVpSrlTPR
+         dddlB5kAWpHGOg4PvrelC740OOf6VvRRT9nUnmC+X02/TcRnHEFYFEkJ980yN75DmdxK
+         zIEgnJExSg5UjQtnXYQ/amSKg337WIHJHCd3d0Xz+Y55XShNQB3aHlbSQLFz3vpkL9VY
+         jCPRYr7oHeia4l70TX68apt7QjOpLYenSdCxjUiziQU6Xepsf2DGJsiE06yUFIOZJo/Z
+         nu0g==
+X-Gm-Message-State: APjAAAWD9rTlWDjkbJMhb4SZActqBc8zRWiqfvGvysdzbAP8TNw2fkWK
+        aVgaFDfNVObo4Y7ca3b5rOq4lcuiGi8JkmiqWok=
+X-Google-Smtp-Source: APXvYqxBWxZcbSmPnmp2TiOdZhdxUmFsCcBX+5WFJGNoV6aA5tYzjMdRq7eRtbqxUHM80PfUpkgNI/cW/JzO1C5ZYIA=
+X-Received: by 2002:a2e:b4d5:: with SMTP id r21mr6084759ljm.149.1571405130323;
+ Fri, 18 Oct 2019 06:25:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+References: <20191018093934.29695-1-s.hauer@pengutronix.de>
+In-Reply-To: <20191018093934.29695-1-s.hauer@pengutronix.de>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Fri, 18 Oct 2019 10:25:21 -0300
+Message-ID: <CAOMZO5DUoj4xVZQSvk9Juw9z37UgrMn3g24h2_pAMxuTkBjw4g@mail.gmail.com>
+Subject: Re: [PATCH] mmc: mxs: fix flags passed to dmaengine_prep_slave_sg
+To:     Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Bruno Thomsen <bruno.thomsen@gmail.com>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-renesas_sdhi_probe misses checks for pinctrl_lookup_state and may miss
-failures.
-Add checks for them to fix the problem.
+Hi Sascha,
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
- drivers/mmc/host/renesas_sdhi_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+On Fri, Oct 18, 2019 at 6:39 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> Since ceeeb99cd821 we no longer abuse the DMA_CTRL_ACK flag for custom
+> driver use and introduced the MXS_DMA_CTRL_WAIT4END instead. We have not
+> changed all users to this flag though. This patch fixes it for the
+> mxs-mmc driver.
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index d4ada5cca2d1..dc5ad6632df3 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -694,8 +694,13 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 	if (!IS_ERR(priv->pinctrl)) {
- 		priv->pins_default = pinctrl_lookup_state(priv->pinctrl,
- 						PINCTRL_STATE_DEFAULT);
-+		if (IS_ERR(priv->pins_default))
-+			return PTR_ERR(priv->pins_default);
-+
- 		priv->pins_uhs = pinctrl_lookup_state(priv->pinctrl,
- 						"state_uhs");
-+		if (IS_ERR(priv->pins_uhs))
-+			return PTR_ERR(priv->pins_uhs);
- 	}
- 
- 	host = tmio_mmc_host_alloc(pdev, mmc_data);
--- 
-2.20.1
+If I read this correctly, this patch is not the complete fix for all users.
 
+Wouldn't it be better to revert the offending commit instead?
