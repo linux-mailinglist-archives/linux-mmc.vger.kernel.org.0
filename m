@@ -2,125 +2,73 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C13EDDA42
-	for <lists+linux-mmc@lfdr.de>; Sat, 19 Oct 2019 20:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3E7CDDAF2
+	for <lists+linux-mmc@lfdr.de>; Sat, 19 Oct 2019 22:45:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726508AbfJSSl6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 19 Oct 2019 14:41:58 -0400
-Received: from mo4-p04-ob.smtp.rzone.de ([81.169.146.177]:33684 "EHLO
-        mo4-p04-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726388AbfJSSl5 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 19 Oct 2019 14:41:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571510511;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=ghOjg962ogCTFSl+WarS5kwHM8++CbDNCWRtO1jWLTk=;
-        b=KuldUVGHcPNu1X7NDi5MTgY9yWo6HfoZddIoAuYqHTJ4cdfcN4efsCBcsNvWruhMuf
-        yHHveeugsTzrq2k2NjAJmRQuwGlzMHhpSssJPk8ajfZ32BRuHknOlikbNiwIYVlU9OmJ
-        uB8YmdmH2aNN1990r6XzXi5w9WVYRoPEURPKy4RTeBYklJoE003rkeDheucLbvcCSM5B
-        IWUBZFDYPPLmL3Q7OmXE5UsWx8HtZOFm3LZv4caZ/Mu4ZSukbNHFeZT4RYWgkshyi/p3
-        P8jKbYhnQgwk65JjaOgVREgrB/EndKwwz896VI5jTX+VxEzZxRbx+JWV3g2k1WQhhgSH
-        4PVA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0pAyXkHTz8="
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-        by smtp.strato.de (RZmta 44.28.1 DYNA|AUTH)
-        with ESMTPSA id R0b2a8v9JIfcFMW
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Sat, 19 Oct 2019 20:41:38 +0200 (CEST)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, stable@vger.kernel.org
-Subject: [PATCH v2 11/11] net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
-Date:   Sat, 19 Oct 2019 20:41:26 +0200
-Message-Id: <da609ecf83eca8af70172627ada29902b096bae9.1571510481.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <cover.1571510481.git.hns@goldelico.com>
-References: <cover.1571510481.git.hns@goldelico.com>
+        id S1726325AbfJSUom convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Sat, 19 Oct 2019 16:44:42 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:49748 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726136AbfJSUol (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 19 Oct 2019 16:44:41 -0400
+Received: from turkeyburger.collabora.co.uk (turkeyburger.collabora.co.uk [46.235.227.230])
+        by bhuna.collabora.co.uk (Postfix) with ESMTP id C2434263BB2;
+        Sat, 19 Oct 2019 21:44:38 +0100 (BST)
+Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <5DA9EE2F.4030603@zoho.com>
+From:   "Ezequiel Garcia" <ezequiel.garcia@collabora.com>
+X-Forward: 81.67.116.94
+Date:   Sat, 19 Oct 2019 21:44:38 +0100
+Cc:     "Ulf Hansson" <ulf.hansson@linaro.org>,
+        "Paul Cercueil" <paul@crapouillou.net>, linux-mips@vger.kernel.org,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        =?utf-8?q?linux-mmc=40vger=2Ekernel=2Eorg?= 
+        <linux-mmc@vger.kernel.org>, "DTML" <devicetree@vger.kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Paul Burton" <paul.burton@mips.com>,
+        "Mark Rutland" <mark.rutland@arm.com>, syq@debian.org,
+        "Linus Walleij" <linus.walleij@linaro.org>, armijn@tjaldur.nl,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "YueHaibing" <yuehaibing@huawei.com>,
+        "Mathieu Malaterre" <malat@debian.org>
+To:     "Zhou Yanjie" <zhouyanjie@zoho.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <47f6-5dab7580-33-5680128@176712317>
+Subject: =?utf-8?q?Re=3A?==?utf-8?q?_=5BPATCH?==?utf-8?q?_6=2F6?==?utf-8?q?_v2=5D?=
+ =?utf-8?q?_MMC=3A?==?utf-8?q?_JZ4740=3A?= Add support for 
+ =?utf-8?q?LPM=2E?=
+User-Agent: SOGoMail 4.0.7
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-They are already included from mmc/sdio_ids.h and do not need
-a local definition.
+On Friday, October 18, 2019 13:54 -03, Zhou Yanjie <zhouyanjie@zoho.com> wrote: 
+ 
 
-Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
+> 
+> >
+> > I also have a general question. Should we perhaps rename the driver
+> > from jz4740_mmc.c to ingenic.c (and the file for the DT bindings, the
+> > Kconfig, etc), as that seems like a more appropriate name? No?
+> 
+> I am very much in favor of this proposal. Now jz4740_mmc.c is not only used
+> for the JZ4740 processor, it is also used for JZ4725, JZ4760, JZ4770, JZ4780
+> and X1000, and now Ingenic's processor is no longer named after JZ47xx,
+> it is divided into three product lines: M, T, and X. It is easy to cause 
+> some
+> misunderstandings by using jz4740_mmc.c. At the same time, I think that
+> some register names also need to be adjusted. For example, the STLPPL
+> register name has only appeared in JZ4730 and JZ4740, and this register
+> in all subsequent processors is called CTRL. This time I was confused by
+> the STLPPL when I added drivers for the JZ4760's and X1000's LPM.
+> 
 
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
-Cc: <stable@vger.kernel.org> # 4.11.0
----
- drivers/net/wireless/ti/wl1251/sdio.c | 8 --------
- drivers/net/wireless/ti/wlcore/sdio.c | 8 --------
- 2 files changed, 16 deletions(-)
+I am very much against renamings, for several reasons. As Paul already mentioned, it's pointless and just adds noise to the git-log, making history harder to recover. Driver file names don't really have to reflect the device exactly. For the compatibility list, it's far easier to just git-grep for compatible strings, or git-grep Documentation and/or Kconfig.
 
-diff --git a/drivers/net/wireless/ti/wl1251/sdio.c b/drivers/net/wireless/ti/wl1251/sdio.c
-index 42b55f3a50df..3c4d5e38c66c 100644
---- a/drivers/net/wireless/ti/wl1251/sdio.c
-+++ b/drivers/net/wireless/ti/wl1251/sdio.c
-@@ -22,14 +22,6 @@
- 
- #include "wl1251.h"
- 
--#ifndef SDIO_VENDOR_ID_TI
--#define SDIO_VENDOR_ID_TI		0x104c
--#endif
--
--#ifndef SDIO_DEVICE_ID_TI_WL1251
--#define SDIO_DEVICE_ID_TI_WL1251	0x9066
--#endif
--
- struct wl1251_sdio {
- 	struct sdio_func *func;
- 	u32 elp_val;
-diff --git a/drivers/net/wireless/ti/wlcore/sdio.c b/drivers/net/wireless/ti/wlcore/sdio.c
-index 7afaf35f2453..9fd8cf2d270c 100644
---- a/drivers/net/wireless/ti/wlcore/sdio.c
-+++ b/drivers/net/wireless/ti/wlcore/sdio.c
-@@ -26,14 +26,6 @@
- #include "wl12xx_80211.h"
- #include "io.h"
- 
--#ifndef SDIO_VENDOR_ID_TI
--#define SDIO_VENDOR_ID_TI		0x0097
--#endif
--
--#ifndef SDIO_DEVICE_ID_TI_WL1271
--#define SDIO_DEVICE_ID_TI_WL1271	0x4076
--#endif
--
- static bool dump = false;
- 
- struct wl12xx_sdio_glue {
--- 
-2.19.1
+Renaming macros and register names, is equally pointless and equally git-history invasive. Simply adding some documentation is enough.
+
+Thanks,
+Ezequiel
 
