@@ -2,123 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2835EDF0B0
-	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 16:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E596DDF0F9
+	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 17:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727674AbfJUO7u (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 21 Oct 2019 10:59:50 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:43667 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727140AbfJUO7u (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 10:59:50 -0400
-Received: by mail-ot1-f65.google.com with SMTP id o44so11243198ota.10;
-        Mon, 21 Oct 2019 07:59:49 -0700 (PDT)
+        id S1727309AbfJUPNM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 21 Oct 2019 11:13:12 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:41689 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726847AbfJUPNM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 11:13:12 -0400
+Received: by mail-vs1-f68.google.com with SMTP id l2so9089050vsr.8
+        for <linux-mmc@vger.kernel.org>; Mon, 21 Oct 2019 08:13:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=l00m7i2g3h4sFL0Iz9ZtMToycl29HM6ENN8hVPE+L40=;
+        b=ZZqwlbgYx1rOKTMM9TnPAVIz2uZ5iLe1hk9/63PNIRVXTWLaWWQJZZq/8/NbfYKSYS
+         8qr60wAbDxcFtDBtBNnFaSThY5kjxmU5Aoapqj27zU+4TthbccRUOdY7RcD4oxg1Vv3r
+         1gTR3TutrIkMldp2sGCaDRU/QtEzhPf0vxkzCWcz50AuaGrGpj4sgiLimiHvrgF4qjpy
+         wKk6llqtbPIy72fzk/jRdms+VUDCGppxQFPIkIcH9yURBokUdXEVMIo4wRT+842Jc9Ek
+         IYM0gQteAXqmSOngrKBxodivEY6z34Ufnu1Dp4wvevsdHwMYy7bLF3+BnimyPyhyCSSu
+         DQHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=oQ9Hhq6j199wCYON733LhiZ9S9XG9VAo1ttmANYkXWA=;
-        b=Le7yBPNn1HgcUk+NAnqBovP0IoRX++4CPA5QWcJiDyafjbBnc8CEb+RC9Lqmv4fqYm
-         lkVHLsGCE+yfTwxruJ+mwQ66HjhkOnMHY0b3Kyx9iDFSDO0x/J8l1vgHTHWK/9Iq7Uqd
-         /ey5RkiZb72THV6okeTKY0b6cedrRHmJpMy/KDptNEvQXOl4mVZq2bLH8/WKWC0mhHOn
-         EEiChek5wGaRxtCZe2lffHdQlo/+2ir7/klarYNptRRCoGMPec18nFK5JIZxIX9EwSzY
-         eRusUiRyJ2aTMuoNE72DpUdeXpo9teV/U+qUdeQxL/Mq9JL6d05NA0QeWrYQg6W1ukn/
-         S06Q==
-X-Gm-Message-State: APjAAAWVc1srt9fMz3TsLbcofwZsP8X13c+GB/MlLJlx0mb1wnrEiZnV
-        3G6I/GNp40GdLth5GevdE1PzximVY7TN/9wAnXg=
-X-Google-Smtp-Source: APXvYqzCov0X1UPjRitvXQeN6gJblYG138w3wiV1o43RbRbpx0942OOlVOzwt/sTEVsk+ESIGxOVEJBjKOJtFYVhrqo=
-X-Received: by 2002:a05:6830:1544:: with SMTP id l4mr19010917otp.297.1571669989079;
- Mon, 21 Oct 2019 07:59:49 -0700 (PDT)
+        bh=l00m7i2g3h4sFL0Iz9ZtMToycl29HM6ENN8hVPE+L40=;
+        b=t0WubI+g4c79OawB5AlDS1mYz+J5iI+J2HxwiPjaVURsH8jWmsjqRlenOIJJZRMAHX
+         tziacrX95t87PXXwbd72jn6Eu+F4Il++8jrPFCka2KA6Je10PTcbo99r0fZLNAKY0BqL
+         gt7Q8EiL+7LnoKihAikaht0/DvreKySTLrC/r3Coh9n7YZK2D79j/YtKjyrtNCZbSKQH
+         uYItha1s722hh8of7yfqYSnKCbuwlsbRt3uGmoC2e8o1CHyT90fzEO4xbtA9d6C93/Yw
+         YD8e3Uupg1GSkOWafLNU5HBD/AW733LNs4Oe+U5q/m6FfmOK4RQz5EE9G7QUAl7oDWZW
+         3nBA==
+X-Gm-Message-State: APjAAAWke7nNTn+8UWqwzNtHb4C1ofhBIk5PZCdrinWoYAbf7mfEFr71
+        ETTb+XitOL/mvh1lDYnrj7PF07knKcthF9IFz4EVleys
+X-Google-Smtp-Source: APXvYqwD6hVdXz8ZHq+vaI8FotZi8/NPEwHEd7C0LEntTPzaeZPhoG6c9shoxwvg/UF8lHl8FIyOlXFmW+V4b7Xw6V8=
+X-Received: by 2002:a67:cf05:: with SMTP id y5mr14077790vsl.34.1571670791235;
+ Mon, 21 Oct 2019 08:13:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191021143742.14487-1-geert+renesas@glider.be>
- <20191021143742.14487-2-geert+renesas@glider.be> <20191021144548.GA41107@kroah.com>
-In-Reply-To: <20191021144548.GA41107@kroah.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 21 Oct 2019 16:59:37 +0200
-Message-ID: <CAMuHMdXdd87FwcHs0iQrjmLaAJPRC7P7ZByUhw+DkzZ6J+eGqw@mail.gmail.com>
-Subject: Re: [PATCH 1/7] debugfs: Add debugfs_create_xul() for hexadecimal
- unsigned long
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <CAJPHfYNiibuOnQb_oJPVfB7rDiOqO1widt8wkTU4oQ1fJ6NwMQ@mail.gmail.com>
+In-Reply-To: <CAJPHfYNiibuOnQb_oJPVfB7rDiOqO1widt8wkTU4oQ1fJ6NwMQ@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 21 Oct 2019 17:12:34 +0200
+Message-ID: <CAPDyKFodHpYgpHdBZ=09GK+WjamQ-6YETQr-Z0BtH5JH63S+Rg@mail.gmail.com>
+Subject: Re: MMC life-time register, why not updated very time when reading
+ the attribute in /sys
+To:     Yi Zheng <goodmenzy@gmail.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Jungseung Lee <js07.lee@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Greg,
-
-On Mon, Oct 21, 2019 at 4:45 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
-> On Mon, Oct 21, 2019 at 04:37:36PM +0200, Geert Uytterhoeven wrote:
-> > The existing debugfs_create_ulong() function supports objects of
-> > type "unsigned long", which are 32-bit or 64-bit depending on the
-> > platform, in decimal form.  To format objects in hexadecimal, various
-> > debugfs_create_x*() functions exist, but all of them take fixed-size
-> > types.
-> >
-> > Add a debugfs helper for "unsigned long" objects in hexadecimal format.
-> > This avoids the need for users to open-code the same, or introduce
-> > bugs when casting the value pointer to "u32 *" or "u64 *" to call
-> > debugfs_create_x{32,64}().
-> >
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > ---
-> >  include/linux/debugfs.h | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
-> > index 33690949b45d6904..d7b2aebcc277d65e 100644
-> > --- a/include/linux/debugfs.h
-> > +++ b/include/linux/debugfs.h
-> > @@ -356,4 +356,14 @@ static inline ssize_t debugfs_write_file_bool(struct file *file,
-> >
-> >  #endif
-> >
-> > +static inline void debugfs_create_xul(const char *name, umode_t mode,
-> > +                                   struct dentry *parent,
-> > +                                   unsigned long *value)
-> > +{
-> > +     if (sizeof(*value) == sizeof(u32))
-> > +             debugfs_create_x32(name, mode, parent, (u32 *)value);
-> > +     else
-> > +             debugfs_create_x64(name, mode, parent, (u64 *)value);
-> > +}
+On Mon, 21 Oct 2019 at 10:21, Yi Zheng <goodmenzy@gmail.com> wrote:
 >
-> Looks sane, but can you add some kernel-doc comments here so that we can
-> pull it into the debugfs documentation?  Also there is debugfs
+> Hi, all,
+>
+>   In the commit v4.10-rc8-9-g46bc5c408e4e, Jungseung Lee introduced an easy
+> way to access the EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A/B registers.
+>
+>   That is fine, it avoid to parse the ECSD raw data from the debugfs mnt point:
+>  /sys/kernel/debug/mmc0/mmc0:0001/ext_csd.
+>
+> But the code seems that only read the ECSD when init the Card. On our machines
+> with BGA chip, run in long time, that sysfs attr seems not updated. It
+> only keeps the
+> original values when booting/init.
+>
+> Any plan to update that ?
 
-Sure, will do.
+Well, the current approach is as you say, a snapshot taken at card
+initialization.
 
-> documentation in Documentation/filesystems/ so maybe also add this
-> there?  I am going to be overhauling the debugfs documentation "soon"
-> but it's at the lower part of my todo list, so it will take a while,
-> might as well keep it up to date with new stuff added like this so that
-> people don't get lost.
+The life time time bits is not the only bits that may get updated over
+time, so it seems we need to re-read the EXT_CSD to get the latest
+data. At least for some of the bits in the EXT_CSD.
 
-Right. Currently it already lacks debugfs_create_ulong(). Will add both
-debugfs_create_ulong() and debugfs_create_xul().
+If you or someone else sends a patch, I would not have a problem accepting that.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Kind regards
+Uffe
