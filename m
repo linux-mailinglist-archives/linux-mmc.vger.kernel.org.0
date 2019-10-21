@@ -2,74 +2,101 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22E67DEF8D
-	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 16:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB9FADEFA6
+	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 16:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727670AbfJUOaQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 21 Oct 2019 10:30:16 -0400
-Received: from muru.com ([72.249.23.125]:38364 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727406AbfJUOaP (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 21 Oct 2019 10:30:15 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id A43AE80CC;
-        Mon, 21 Oct 2019 14:30:46 +0000 (UTC)
-Date:   Mon, 21 Oct 2019 07:30:08 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com
-Subject: Re: [PATCH v2 07/11] omap: remove old hsmmc.[ch] and in Makefile
-Message-ID: <20191021143008.GS5610@atomide.com>
-References: <cover.1571510481.git.hns@goldelico.com>
- <9bd4c0bb0df26523d7f5265cdb06d86d63dafba8.1571510481.git.hns@goldelico.com>
+        id S1727322AbfJUOd1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 21 Oct 2019 10:33:27 -0400
+Received: from mail-vk1-f195.google.com ([209.85.221.195]:35305 "EHLO
+        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726227AbfJUOd1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 10:33:27 -0400
+Received: by mail-vk1-f195.google.com with SMTP id d66so2802284vka.2
+        for <linux-mmc@vger.kernel.org>; Mon, 21 Oct 2019 07:33:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8jfA0P/Q8T8UjCLrgdWWyNBUpvtRRs/536E+E+xKTUI=;
+        b=fo+M5yNGWjh6WpyTan0dMaP6adElk8Q28uVOOSVGR6oiDnQuPMI6e5xfGmEds2bvv2
+         IZMqR+5WOgGiJjjultpETJ7uo8T7veXupA55susBuyXB3N3RA8t2kBkiFC7FeiwQrY0a
+         S3uv76RJKvqdexspozSjBMMdh+Fbw7PUvOfTRlUkCf3WFVU48277x4gcmqd5D63DMsLp
+         SvtWTKOaN/08hHadAKZNaTeN3YkefHsndbvdf3CYoc7cu4n3287YMpAgef4nIr6AXUWQ
+         lQfJ9MA1fE89OMxCfSUQ29NsqZEh07ssu/CmNX5i+UalUOUU+JKl/VNLstP4teC6m+4q
+         AVtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8jfA0P/Q8T8UjCLrgdWWyNBUpvtRRs/536E+E+xKTUI=;
+        b=i6uHrio1JUKGCp0jSnHVauG3A9JwYeKqdQXfY9/dsOmy/bb9tu7hDqlHB7Bh3HZ1tz
+         JpyjWI9c0q7i3u99ai5zdbhFyzCSwNS6dXmnVnfuyTbvGx1KR6w8Jg1KbMTfdflIykD8
+         ZzPb5sGSPU2QxtH0NIGSKLK/qpdQ0GfADg9/k8KW4Rqo+gNdMq3p6RvDa5kLaa3G1NsD
+         BE765n8uk5Hul1fPNDy0vLlydq6UsPpeuaTqnm0Gd5bdUGnedjMzcndScZ5+5YABCN8L
+         fiQ4diVImSAEM9bj6JpOoQq64+aHpojcXNWpSUDMFM6O54Nz1tLNXz4tbuLOhTI3MZ+X
+         LOvw==
+X-Gm-Message-State: APjAAAVLAaaVqcN0L1ArxMjYvI3xbukh//12LN8Dk27BcOS/ru0ICVxL
+        yAIWVUQ7SFPGZ7YohejqiPBQMrqr08zdp420+BjHkoYdeMQ=
+X-Google-Smtp-Source: APXvYqwxG+OOH5vTVcxbeM++YEq/oLjw7diPz4dlTQB9dJJL+KeH2klQ2bLGQpl2ZMsrWsuLtAulGEUhOnAzfVkF7Ws=
+X-Received: by 2002:a1f:2f51:: with SMTP id v78mr12965554vkv.101.1571668405527;
+ Mon, 21 Oct 2019 07:33:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9bd4c0bb0df26523d7f5265cdb06d86d63dafba8.1571510481.git.hns@goldelico.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20191018131338.11713-1-hslester96@gmail.com>
+In-Reply-To: <20191018131338.11713-1-hslester96@gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 21 Oct 2019 16:32:49 +0200
+Message-ID: <CAPDyKFoBYchP96hv=7XfTo8CrCSD+KC0h_oFRAsOYT-Lc1SFZQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi: add checks for pinctrl_lookup_state
+To:     Chuhong Yuan <hslester96@gmail.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [191019 18:43]:
-> --- a/arch/arm/mach-omap2/Makefile
-> +++ b/arch/arm/mach-omap2/Makefile
-> @@ -216,7 +216,6 @@ obj-$(CONFIG_MACH_NOKIA_N8X0)		+= board-n8x0.o
->  
->  # Platform specific device init code
->  
-> -omap-hsmmc-$(CONFIG_MMC_OMAP_HS)	:= hsmmc.o
->  obj-y					+= $(omap-hsmmc-m) $(omap-hsmmc-y)
+On Fri, 18 Oct 2019 at 15:13, Chuhong Yuan <hslester96@gmail.com> wrote:
+>
+> renesas_sdhi_probe misses checks for pinctrl_lookup_state and may miss
+> failures.
+> Add checks for them to fix the problem.
+>
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> ---
+>  drivers/mmc/host/renesas_sdhi_core.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+> index d4ada5cca2d1..dc5ad6632df3 100644
+> --- a/drivers/mmc/host/renesas_sdhi_core.c
+> +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> @@ -694,8 +694,13 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+>         if (!IS_ERR(priv->pinctrl)) {
+>                 priv->pins_default = pinctrl_lookup_state(priv->pinctrl,
+>                                                 PINCTRL_STATE_DEFAULT);
+> +               if (IS_ERR(priv->pins_default))
+> +                       return PTR_ERR(priv->pins_default);
+> +
+>                 priv->pins_uhs = pinctrl_lookup_state(priv->pinctrl,
+>                                                 "state_uhs");
+> +               if (IS_ERR(priv->pins_uhs))
+> +                       return PTR_ERR(priv->pins_uhs);
+>         }
 
-The related obj-y line can go now too, right?
+This looks correct to me, as I guess if there is a pinctrl specified
+for device node of the controller, it means that it should be used!?
 
-And looks like common.h also has struct omap2_hsmmc_info
-so maybe check by grepping for hsmmc_info to see it's gone.
+I understand that this is only used for those variants that supports
+UHS-I via the renesas_sdhi_start_signal_voltage_switch(). Wolfram, is
+this fine you think?
 
-Regards,
+>
+>         host = tmio_mmc_host_alloc(pdev, mmc_data);
+> --
+> 2.20.1
+>
 
-Tony
+Kind regards
+Uffe
