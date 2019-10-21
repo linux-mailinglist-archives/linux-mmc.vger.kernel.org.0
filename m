@@ -2,187 +2,122 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F7B1DF050
-	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 16:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8925DF0A3
+	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 16:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbfJUOtQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 21 Oct 2019 10:49:16 -0400
-Received: from mail-vk1-f193.google.com ([209.85.221.193]:43473 "EHLO
-        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728132AbfJUOtQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 10:49:16 -0400
-Received: by mail-vk1-f193.google.com with SMTP id i21so766973vka.10
-        for <linux-mmc@vger.kernel.org>; Mon, 21 Oct 2019 07:49:14 -0700 (PDT)
+        id S1726955AbfJUO6E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 21 Oct 2019 10:58:04 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:39430 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727739AbfJUO6D (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 10:58:03 -0400
+Received: by mail-ua1-f68.google.com with SMTP id b14so3899319uap.6
+        for <linux-mmc@vger.kernel.org>; Mon, 21 Oct 2019 07:58:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jW5VBJqbIKfc0TSTZ4BubhIyInqE5Fh+T6DH/lX3Eug=;
-        b=YYqrP+N6Nifpgr/HxnzrSkEW2+xxljCCdzjzcfweZwOUgpaW3wnUS0oAI/P9Qz3PZv
-         IZ66ZNy/lLtc/nd98M4LE/URKM6mr4OHM+/JeRJ4GISUJeecJRAnyqE6eUNK/vaa+sAm
-         bROawRG0+OPvXB+zEsOYAO5WYXkRFjUhVCgGPcRgeI+uyUyr+EdzWETJDdLHWbKMMD9R
-         0quIcCw6d079pjMY2fDEcShGViQTwRD74LNX5q3GIMoSnlqtfqPSOIHFerV+LBoB393H
-         28+w7/p4m1WsdkPObaOxX7x1NFQyeEJfWo/BHCQIBSfTyILp7UGwI4Hn2Kx2U6QxBmI6
-         KeUQ==
+         :cc:content-transfer-encoding;
+        bh=xl5HbtCvAk9GKynQL9GOsijJT7m6YA6GZF9QqoAexoI=;
+        b=DoMy1wWt5SqZIDChScV+zdd7Y/Ie0TLM9sKJrQs2S1hZ+hsiLtUtPUHxCUMMEX8LbO
+         vb3opcGd+/Na4K9DSLQaZaOK1JHr+l+jy0YE6BUfkWll6cIaz78qArRQZsm7zaV6jF/q
+         TbEH7N0DzGXwR4FJv02eq9B2qrJXTP9myHnx6zDjUn3k1fmT6lHKNdfhK6YZjOjXQwxm
+         iJJgca2JS9CzzeIFrgiqXAR40ulixXCiblT2rmpxPf0JYOF/sCaQT7s/wSVAZLyIo2LY
+         r0x2B56H4BEb0qhbjRqzLE0aXuVfEbeXRJz5/OEopQxtmNJmODXX5kZIg130P9JUkZ+H
+         NMQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jW5VBJqbIKfc0TSTZ4BubhIyInqE5Fh+T6DH/lX3Eug=;
-        b=nTd+AY0gDmT9Pw9o4+lBx+ukewHYpa6xojv8wWMLwN/yKI6DkDAtF/mmF6aCB6wzkC
-         0uD0smQHPv77RkT/eM96A8h+Hv2RB7yAAocBZsDKHkW2F2ihC/HZzfmgqN97/8FmOp+X
-         6v7zAwMp4cowiJgrYUjyYOFz1KiQtrojZ5S70Ly3Uqb23mIGfGmYmzzZYpiyxK4KZHpo
-         jonTdm6jO/OCIUMLHZyeWpMUb7FL7P8VZPq1Uezd0bvjaAVHsY5UnbAKMrI/c+WNvKHD
-         PNXj+S5uSAbFEScbLoeAPYlfNk+AkYT4QX813IUsrKZLEAdfesehJOA3Yx8phmMK6GVy
-         +ksQ==
-X-Gm-Message-State: APjAAAWfbi1viOSP/odNvzbWLPXlDzBH+lp/C0gXWk3hAEgglSgosVum
-        8yCBCPQGAy6xiO2uhTvRUrEoYAjCGo76iAIqtYeowxze
-X-Google-Smtp-Source: APXvYqxRy2+ZGoTsikdopdOC2eqH8gw2kW8P73kcyVRKSYXNjgRfKYX2dY6SYcwslJ688wp9ul7buSMGBxoMDWF4we0=
-X-Received: by 2002:a1f:a293:: with SMTP id l141mr13126073vke.43.1571669353545;
- Mon, 21 Oct 2019 07:49:13 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=xl5HbtCvAk9GKynQL9GOsijJT7m6YA6GZF9QqoAexoI=;
+        b=X5Xwsuez2VxddwkY8OseJiyVwoyHgcgPnsVT2iloxfwcQi8wKBVZuSCIthPn3a6foV
+         73UPyPU4vcYRW9Zxm7kdJqCuns8zmlWw5iMA4V1CAaAjxEnycLbVTjFBv9Urmj64P+c7
+         MDYaSeYR0rIXzEKNYswGZtVZzsIA5VeBHweEIzo6ao2nxfHJ8s1w7EwZXZRZxjMxbJac
+         6veXBkDGpSjvlJsxeHRQkza9Xm65RpBnDbOkJrI4hdeJz1h/51czaszRADBg3BREFL8x
+         psR57FZgPfK5ljGjBMwSJjFONq7meCYkFf5K+NDxPbVYWjNwaQnVLAOUOQzE38Cdam14
+         qZzQ==
+X-Gm-Message-State: APjAAAU70btkK297+cXvpqLNi0O2VAndkhk+aDAsH9+7tfCgQocMYGkw
+        x/SDmGOUVTtFWF+PBElSvXVgyzhI/iojZBnQgubaNA==
+X-Google-Smtp-Source: APXvYqwR8uDfCggaF5xEo1UJr8wTwbIeCqoiB4/XGD3itd7jHcJkuglR2FjN1rtjKVpnR3u4ZBFOp3qgc5xIPsE/sIw=
+X-Received: by 2002:ab0:331a:: with SMTP id r26mr6107644uao.104.1571669882589;
+ Mon, 21 Oct 2019 07:58:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <1571637541-119016-1-git-send-email-jianxin.pan@amlogic.com>
- <fc1f61e1-b156-11e6-3f21-c498d2f0a8c6@baylibre.com> <1jwocybgpw.fsf@starbuckisacylon.baylibre.com>
-In-Reply-To: <1jwocybgpw.fsf@starbuckisacylon.baylibre.com>
+References: <5DA9EE2F.4030603@zoho.com> <47f6-5dab7580-33-5680128@176712317>
+In-Reply-To: <47f6-5dab7580-33-5680128@176712317>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 21 Oct 2019 16:48:37 +0200
-Message-ID: <CAPDyKFq_YAB0tycE2ypdJp8gckfeiFRv=A120ZedyDDhu3K17w@mail.gmail.com>
-Subject: Re: [PATCH] mmc: fix mmc dma operation
-To:     Jerome Brunet <jbrunet@baylibre.com>
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        Jianxin Pan <jianxin.pan@amlogic.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Nan Li <nan.li@amlogic.com>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+Date:   Mon, 21 Oct 2019 16:57:26 +0200
+Message-ID: <CAPDyKFqzT5Gf1R_26Hzyt-_xEshk4k-EW3yUSKw1MVi7ayh3QA@mail.gmail.com>
+Subject: Re: [PATCH 6/6 v2] MMC: JZ4740: Add support for LPM.
+To:     Ezequiel Garcia <ezequiel.garcia@collabora.com>
+Cc:     Zhou Yanjie <zhouyanjie@zoho.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-mips@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Victor Wan <victor.wan@amlogic.com>
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Mark Rutland <mark.rutland@arm.com>, syq@debian.org,
+        Linus Walleij <linus.walleij@linaro.org>, armijn@tjaldur.nl,
+        Thomas Gleixner <tglx@linutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Mathieu Malaterre <malat@debian.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 21 Oct 2019 at 11:17, Jerome Brunet <jbrunet@baylibre.com> wrote:
+On Sat, 19 Oct 2019 at 22:44, Ezequiel Garcia
+<ezequiel.garcia@collabora.com> wrote:
 >
+> On Friday, October 18, 2019 13:54 -03, Zhou Yanjie <zhouyanjie@zoho.com> =
+wrote:
 >
-> On Mon 21 Oct 2019 at 09:57, Neil Armstrong <narmstrong@baylibre.com> wrote:
->
-> > Hi,
-> >
-> > Thanks for the fix.
-> >
-> > First, you should add "mmc: meson-gx:" in the subject.
-> >
-> > On 21/10/2019 07:59, Jianxin Pan wrote:
-> >> From: Nan Li <nan.li@amlogic.com>
-> >>
-> >> In MMC dma transfer, the region requested by dma_map_sg() may be released
-> >> by dma_unmap_sg() before the transfer is completed.
-> >>
-> >> Put the unmap operation in front of mmc_request_done() to avoid this.
-> >
->
-> Since we have seen this problem (yet), could you briefly how you've
-> triggered it ?
 >
 > >
-> > You should add a "Fixes:" tag so it can be backported on stable kernels.
+> > >
+> > > I also have a general question. Should we perhaps rename the driver
+> > > from jz4740_mmc.c to ingenic.c (and the file for the DT bindings, the
+> > > Kconfig, etc), as that seems like a more appropriate name? No?
 > >
-> >>
-> >> Signed-off-by: Nan Li <nan.li@amlogic.com>
-> >> Signed-off-by: Jianxin Pan <jianxin.pan@amlogic.com>
-> >> ---
-> >>  drivers/mmc/host/meson-gx-mmc.c | 15 ++++++++-------
-> >>  1 file changed, 8 insertions(+), 7 deletions(-)
-> >>
-> >> diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
-> >> index e712315..7667e8a 100644
-> >> --- a/drivers/mmc/host/meson-gx-mmc.c
-> >> +++ b/drivers/mmc/host/meson-gx-mmc.c
-> >> @@ -173,6 +173,7 @@ struct meson_host {
-> >>      int irq;
-> >>
-> >>      bool vqmmc_enabled;
-> >> +    bool needs_pre_post_req;
-> >>  };
-> >>
-> >>  #define CMD_CFG_LENGTH_MASK GENMASK(8, 0)
-> >> @@ -654,6 +655,8 @@ static void meson_mmc_request_done(struct mmc_host *mmc,
-> >>      struct meson_host *host = mmc_priv(mmc);
-> >>
-> >>      host->cmd = NULL;
-> >> +    if (host->needs_pre_post_req)
-> >> +            meson_mmc_post_req(mmc, mrq, 0);
-> >>      mmc_request_done(host->mmc, mrq);
-> >>  }
-> >>
-> >> @@ -803,25 +806,23 @@ static void meson_mmc_start_cmd(struct mmc_host *mmc, struct mmc_command *cmd)
-> >>  static void meson_mmc_request(struct mmc_host *mmc, struct mmc_request *mrq)
-> >>  {
-> >>      struct meson_host *host = mmc_priv(mmc);
-> >> -    bool needs_pre_post_req = mrq->data &&
-> >> +
-> >> +    host->needs_pre_post_req = mrq->data &&
-> >>                      !(mrq->data->host_cookie & SD_EMMC_PRE_REQ_DONE);
-> >>
-> >> -    if (needs_pre_post_req) {
-> >> +    if (host->needs_pre_post_req) {
-> >>              meson_mmc_get_transfer_mode(mmc, mrq);
-> >>              if (!meson_mmc_desc_chain_mode(mrq->data))
-> >> -                    needs_pre_post_req = false;
-> >> +                    host->needs_pre_post_req = false;
-> >>      }
-> >>
-> >> -    if (needs_pre_post_req)
-> >> +    if (host->needs_pre_post_req)
-> >>              meson_mmc_pre_req(mmc, mrq);
-> >>
-> >>      /* Stop execution */
-> >>      writel(0, host->regs + SD_EMMC_START);
-> >>
-> >>      meson_mmc_start_cmd(mmc, mrq->sbc ?: mrq->cmd);
-> >> -
-> >> -    if (needs_pre_post_req)
-> >> -            meson_mmc_post_req(mmc, mrq, 0);
-> >>  }
+> > I am very much in favor of this proposal. Now jz4740_mmc.c is not only =
+used
+> > for the JZ4740 processor, it is also used for JZ4725, JZ4760, JZ4770, J=
+Z4780
+> > and X1000, and now Ingenic's processor is no longer named after JZ47xx,
+> > it is divided into three product lines: M, T, and X. It is easy to caus=
+e
+> > some
+> > misunderstandings by using jz4740_mmc.c. At the same time, I think that
+> > some register names also need to be adjusted. For example, the STLPPL
+> > register name has only appeared in JZ4730 and JZ4740, and this register
+> > in all subsequent processors is called CTRL. This time I was confused b=
+y
+> > the STLPPL when I added drivers for the JZ4760's and X1000's LPM.
+> >
 >
-> The code around all this is getting quite difficult to follow eventhough
-> it does not actually do much
->
-> The root of the problem seems be that meson_mmc_pre_req() and
-> meson_mmc_post_req() are passed to framework but also called manually
-> from meson_mmc_request().
->
-> Because of this, some code is added to make sure we don't do things twice.
-> Maybe I'm missing something but it look weird ? Ulf, could you give us
-> your view ?
+> I am very much against renamings, for several reasons. As Paul already me=
+ntioned, it's pointless and just adds noise to the git-log, making history =
+harder to recover. Driver file names don't really have to reflect the devic=
+e > > exactly. For the compatibility list, it's far easier to just git-grep=
+ for compatible strings, or git-grep Documentation and/or Kconfig.
 
-This is tricky, unfortunately.
-
-The main problem boils done to that, there is no guarantee that the
-->pre|post_request() host callbacks is called at all, as that depends
-on if the mmc block layer has more than one requests in the pipe to
-send. Additionally, that of course varies dynamically on a running
-system.
+I have no strong opinions. What matters to me, is that people agree on
+the best option, based on a case by case discussion.
 
 >
-> As far as I can tell:
->  * pre_req : determine if we use CHAIN_MODE or not AND
->              dma_map_sg() if we do
->  * post_req : dma_unmap_sg() if previously allocated
->
-> Do we really need to do all this meson_mmc_request() ? Shouldn't we let the
-> framework do the calls to pre/post_req for us ?
+> Renaming macros and register names, is equally pointless and equally git-=
+history invasive. Simply adding some documentation is enough.
 
-Whether we theoretically could simplify the path, by for example
-always calling the ->pre|post_request() callbacks if those exists, is
-probably too late to change. Well, unless we can change all host
-drivers implementing them as well... so it's probably just easier to
-accept this as is.
+Sounds like documentation is what people prefer here - and the DT doc
+seems already fine in regards to that.
 
-One thing though, make sure you have a nice self descriptive naming of
-variables and functions, to deal with this. That helps a lot.
+Perhaps some more words added to the header in driver's c-file could
+be and option to consider, as today it only mentions "JZ4740 SD/MMC
+controller driver".
+
+Anyway, it's up to you. :-)
 
 Kind regards
 Uffe
