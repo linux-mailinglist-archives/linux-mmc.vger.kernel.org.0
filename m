@@ -2,73 +2,136 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEDC7DE159
-	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 02:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90886DE21B
+	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 04:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726607AbfJUAHT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 20 Oct 2019 20:07:19 -0400
-Received: from gate.crashing.org ([63.228.1.57]:48162 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726597AbfJUAHT (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 20 Oct 2019 20:07:19 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9L06Rln002804;
-        Sun, 20 Oct 2019 19:06:29 -0500
-Message-ID: <c467eeb45a545263311ae28a49ea5599bb2a882c.camel@kernel.crashing.org>
-Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
- updates
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "contact@a-eon.com" <contact@a-eon.com>,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        mad skateman <madskateman@gmail.com>
-Date:   Mon, 21 Oct 2019 11:06:26 +1100
-In-Reply-To: <8d7fd474-a1ad-e33f-f2ba-ec47f4bcc995@xenosoft.de>
-References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
-         <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
-         <20191015125105.GU25745@shell.armlinux.org.uk>
-         <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
-         <20191015131750.GV25745@shell.armlinux.org.uk>
-         <CAPDyKFq_0P8X-6hkjko1chLtOrwsxGcEFR31GcbffhhUQNw+bw@mail.gmail.com>
-         <ed35a87495b0f0d322f555a16fb3e0f7574415ac.camel@kernel.crashing.org>
-         <20191018101323.GG25745@shell.armlinux.org.uk>
-         <499d70835d5f3e3cc191e5b5444475cd5a8c4604.camel@kernel.crashing.org>
-         <8d7fd474-a1ad-e33f-f2ba-ec47f4bcc995@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1726819AbfJUC1k (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 20 Oct 2019 22:27:40 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:36929 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726791AbfJUC1k (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 20 Oct 2019 22:27:40 -0400
+Received: by mail-pg1-f196.google.com with SMTP id p1so6797815pgi.4
+        for <linux-mmc@vger.kernel.org>; Sun, 20 Oct 2019 19:27:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=+XgAS3p3ETrEIu1jjk49WnshOluu9ziyQFPp12n3bCU=;
+        b=HBXUvt040GMIEwLCNj0cv5hSZlRkL/uSj5D7wLWdq/dK4otL0nVEbSqZR/yA3O2Og9
+         AGWR8nz33JcyPwt0cVzYqNq50Faf18+z3imXfVGexdoVV7YqaTAx1/VUr9tWFd1T5Cbb
+         Tf3GaNcBURk5SkpU/x/jomYDDMhIfJxW71YTg5rvruJX3ueO8ezhfGPDpZ8h4aBGcFO7
+         kumSOPEltTLr+L4+0n9vUg4CWg75RR45G4UAxyVxqOpn3JU7cI+2DI4kkwOVZWPX+nFt
+         EIZgqQsA7otGwkMKpKWeRDE8Vka9aexA24uKnw1PmWmT0weSSgJHTEGbfcCA0RE8KN8b
+         2ajw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=+XgAS3p3ETrEIu1jjk49WnshOluu9ziyQFPp12n3bCU=;
+        b=U/pTpeTepQrOQB8ZRam4c+pP1gDGteWBcTu9NhT+qKpaVBGk8UzrIG1hXcTgkUT410
+         0wOcuNSZ7Uh0mTiSL08OhN9Tse9mt8V0Om4RqygURaDkyCU6Z/YviscmXaAWoVYIL9mZ
+         4H/XMCrktI8HQrBNKEcDe4i/gCNoOAtWUUo1gTSJxzgIL82aqSnXT/mZWvoG7hJC4ILg
+         Nm7NlYumoAH2jDQe31SAMTSnxqA5KSC915/LlcMAOuFC07he8vy52LhFI662hZ16cuH5
+         xKllwKR7mmB6n7xVJBTfOJUtVGBHrtAVVPBaQMI95yV7lXnSDKV/hO/C2NoEPV6HWoJc
+         xs4A==
+X-Gm-Message-State: APjAAAUxVS0nUCGJdl3WwcguLiMP4gsDxmOHPjVz9VDIZ2EM/L1DsHHc
+        JG9dMdVGDNMSQUE/7Nx2lwEpAg==
+X-Google-Smtp-Source: APXvYqwgXGc8U+6JV2azREgJVpwvucEYJlBr8fKvxMlwaeCP9tIcS23wt/WioWPY0VSEsf3wqmlSTg==
+X-Received: by 2002:a63:4e52:: with SMTP id o18mr11185515pgl.153.1571624859157;
+        Sun, 20 Oct 2019 19:27:39 -0700 (PDT)
+Received: from localhost ([122.172.151.112])
+        by smtp.gmail.com with ESMTPSA id f17sm20835265pgd.8.2019.10.20.19.27.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 20 Oct 2019 19:27:38 -0700 (PDT)
+Date:   Mon, 21 Oct 2019 07:57:36 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Mark Brown <broonie@kernel.org>, linux-clk@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
+        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 05/46] ARM: pxa: split up mach/hardware.h
+Message-ID: <20191021022736.yu6unspozqf5634p@vireshk-i7>
+References: <20191018154052.1276506-1-arnd@arndb.de>
+ <20191018154201.1276638-5-arnd@arndb.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191018154201.1276638-5-arnd@arndb.de>
+User-Agent: NeoMutt/20180716-391-311a52
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 2019-10-20 at 14:04 +0200, Christian Zigotzky wrote:
+On 18-10-19, 17:41, Arnd Bergmann wrote:
+> The mach/hardware.h is included in lots of places, and it provides
+> three different things on pxa:
 > 
-> Thanks a lot for your suggestion!
+> - the cpu_is_pxa* macros
+> - an indirect inclusion of mach/addr-map.h
+> - the __REG() and io_pv2() helper macros
 > 
-> I had to create a patch because I wasn't able to select 
-> "CONFIG_NOT_COHERENT_CACHE" in the kernel configuration (patch attached).
+> Split it up into separate <linux/soc/pxa/cpu.h> and mach/pxa-regs.h
+> headers, then change all the files that use mach/hardware.h to
+> include the exact set of those three headers that they actually
+> need, allowing for further more targeted cleanup.
 > 
-> After patching I was able to select "CONFIG_NOT_COHERENT_CACHE" in the 
-> kernel config. I compiled a new RC3 of kernel 5.4 with this kernel 
-> config option yesterday.
+> linux/soc/pxa/cpu.h can remain permanently exported and is now in
+> a global location along with similar headers. pxa-regs.h and
+> addr-map.h are only used in a very small number of drivers now
+> and can be moved to arch/arm/mach-pxa/ directly when those drivers
+> are to pass the necessary data as resources.
 > 
-> The good news is, that the onboard SD card works! We successfully tested 
-> it on two AmigaOnes (X5000/20 and X5000/40) yesterday but we need a new 
-> patch
-> because of the possibility to select "CONFIG_NOT_COHERENT_CACHE" in the 
-> kernel config
+> Cc: Michael Turquette <mturquette@baylibre.com>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Viresh Kumar <viresh.kumar@linaro.org>
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Dominik Brodowski <linux@dominikbrodowski.net>
+> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: linux-clk@vger.kernel.org
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-input@vger.kernel.org
+> Cc: linux-leds@vger.kernel.org
+> Cc: linux-mmc@vger.kernel.org
+> Cc: linux-mtd@lists.infradead.org
+> Cc: linux-rtc@vger.kernel.org
+> Cc: linux-usb@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: linux-watchdog@vger.kernel.org
+> Cc: alsa-devel@alsa-project.org
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/cpufreq/pxa2xx-cpufreq.c              |  1 +
+>  drivers/cpufreq/pxa3xx-cpufreq.c              |  1 +
 
-What I find weird is why would it be non-coherent ? A system based on a
-E500 should be coherent afaik...
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-Cheers,
-Ben.
-
-
+-- 
+viresh
