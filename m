@@ -2,88 +2,74 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E3EADEFDA
-	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 16:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22E67DEF8D
+	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 16:30:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729305AbfJUOg4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 21 Oct 2019 10:36:56 -0400
-Received: from alexa-out-blr-02.qualcomm.com ([103.229.18.198]:30511 "EHLO
-        alexa-out-blr-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729084AbfJUOgy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 10:36:54 -0400
-Received: from ironmsg02-blr.qualcomm.com ([10.86.208.131])
-  by alexa-out-blr-02.qualcomm.com with ESMTP/TLS/AES256-SHA; 21 Oct 2019 20:00:46 +0530
-IronPort-SDR: Ri63J7Aw6uMGMaKnhSMcHacbpjjmbEpNbp0lA+lRpSBZWZ+fEZRN+FwrTUBPe5zbbvdVs6pezi
- Bol0g/ndn7RC3f5YJj9VOayAvWmO02jMVft7VRJi4i97g9eN98k3DYNhXvPYBOQNqy1T2+HfeN
- m6J+5J2ZwWEeAKy/Ndfc5ZVSHRXL2OvDPBi16Y/2eNOeih5HSQ76aixS/BKaQA+m8a/lQg2n1A
- PHl/QA2x8v+pThueahwQTiyressiIZxkmPy5kWba/9cW+P6bVrNxQu8HU5CadjbUVblkUIgIQ+
- fhDmDQWWem2W8teNFvrXGSzX
-Received: from rampraka-linux.qualcomm.com ([10.206.25.221])
-  by ironmsg02-blr.qualcomm.com with ESMTP; 21 Oct 2019 20:00:45 +0530
-Received: by rampraka-linux.qualcomm.com (Postfix, from userid 2305851)
-        id 84EA9329D; Mon, 21 Oct 2019 20:00:44 +0530 (IST)
-From:   Ram Prakash Gupta <rampraka@codeaurora.org>
-To:     asutoshd@codeaurora.org, stummala@codeaurora.org,
-        sayalil@codeaurora.org, rampraka@codeaurora.org,
-        vbadigan@codeaurora.org, cang@codeaurora.org, ppvk@codeaurora.org,
-        adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        robh+dt@kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [RFC 6/6] dt-bindings: mmc: sdhci-msm: Add clk scaling dt parameters
-Date:   Mon, 21 Oct 2019 19:59:37 +0530
-Message-Id: <1571668177-3766-7-git-send-email-rampraka@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1571668177-3766-1-git-send-email-rampraka@codeaurora.org>
-References: <1571668177-3766-1-git-send-email-rampraka@codeaurora.org>
+        id S1727670AbfJUOaQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 21 Oct 2019 10:30:16 -0400
+Received: from muru.com ([72.249.23.125]:38364 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727406AbfJUOaP (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 21 Oct 2019 10:30:15 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A43AE80CC;
+        Mon, 21 Oct 2019 14:30:46 +0000 (UTC)
+Date:   Mon, 21 Oct 2019 07:30:08 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com
+Subject: Re: [PATCH v2 07/11] omap: remove old hsmmc.[ch] and in Makefile
+Message-ID: <20191021143008.GS5610@atomide.com>
+References: <cover.1571510481.git.hns@goldelico.com>
+ <9bd4c0bb0df26523d7f5265cdb06d86d63dafba8.1571510481.git.hns@goldelico.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9bd4c0bb0df26523d7f5265cdb06d86d63dafba8.1571510481.git.hns@goldelico.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Adding clk scaling dt parameters.
+* H. Nikolaus Schaller <hns@goldelico.com> [191019 18:43]:
+> --- a/arch/arm/mach-omap2/Makefile
+> +++ b/arch/arm/mach-omap2/Makefile
+> @@ -216,7 +216,6 @@ obj-$(CONFIG_MACH_NOKIA_N8X0)		+= board-n8x0.o
+>  
+>  # Platform specific device init code
+>  
+> -omap-hsmmc-$(CONFIG_MMC_OMAP_HS)	:= hsmmc.o
+>  obj-y					+= $(omap-hsmmc-m) $(omap-hsmmc-y)
 
-Signed-off-by: Ram Prakash Gupta <rampraka@codeaurora.org>
----
- Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+The related obj-y line can go now too, right?
 
-diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-index da4edb1..afaf88d 100644
---- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-+++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-@@ -39,6 +39,21 @@ Required properties:
- 	"cal"	- reference clock for RCLK delay calibration (optional)
- 	"sleep"	- sleep clock for RCLK delay calibration (optional)
- 
-+Optional properties:
-+- devfreq,freq-table - specifies supported frequencies for clock scaling.
-+	Clock scaling logic shall toggle between these frequencies based
-+	on card load. In case the defined frequencies are over or below
-+	the supported card frequencies, they will be overridden
-+	during card init. In case this entry is not supplied,
-+	the driver will construct one based on the card
-+	supported max and min frequencies.
-+	The frequencies must be ordered from lowest to highest.
-+
-+- scaling-lower-bus-speed-mode - Few hosts can support DDR52 mode at the
-+	same lower system voltage corner as high-speed mode. In such
-+	cases, it is always better to put it in DDR  mode which will
-+	improve the performance without any power impact.
-+
- Example:
- 
- 	sdhc_1: sdhci@f9824900 {
-@@ -56,6 +71,10 @@ Example:
- 
- 		clocks = <&gcc GCC_SDCC1_APPS_CLK>, <&gcc GCC_SDCC1_AHB_CLK>;
- 		clock-names = "core", "iface";
-+
-+		devfreq,freq-table = <50000000 200000000>;
-+		scaling-lower-bus-speed-mode = "DDR52"
-+
- 	};
- 
- 	sdhc_2: sdhci@f98a4900 {
--- 
-1.9.1
+And looks like common.h also has struct omap2_hsmmc_info
+so maybe check by grepping for hsmmc_info to see it's gone.
 
+Regards,
+
+Tony
