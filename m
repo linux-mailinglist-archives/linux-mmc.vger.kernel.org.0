@@ -2,122 +2,125 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8925DF0A3
-	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 16:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29448DF0AB
+	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 16:59:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbfJUO6E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 21 Oct 2019 10:58:04 -0400
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:39430 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727739AbfJUO6D (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 10:58:03 -0400
-Received: by mail-ua1-f68.google.com with SMTP id b14so3899319uap.6
-        for <linux-mmc@vger.kernel.org>; Mon, 21 Oct 2019 07:58:03 -0700 (PDT)
+        id S1727309AbfJUO7t (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 21 Oct 2019 10:59:49 -0400
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:41019 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727101AbfJUO7t (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 10:59:49 -0400
+Received: by mail-ua1-f66.google.com with SMTP id l13so3885978uap.8
+        for <linux-mmc@vger.kernel.org>; Mon, 21 Oct 2019 07:59:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=xl5HbtCvAk9GKynQL9GOsijJT7m6YA6GZF9QqoAexoI=;
-        b=DoMy1wWt5SqZIDChScV+zdd7Y/Ie0TLM9sKJrQs2S1hZ+hsiLtUtPUHxCUMMEX8LbO
-         vb3opcGd+/Na4K9DSLQaZaOK1JHr+l+jy0YE6BUfkWll6cIaz78qArRQZsm7zaV6jF/q
-         TbEH7N0DzGXwR4FJv02eq9B2qrJXTP9myHnx6zDjUn3k1fmT6lHKNdfhK6YZjOjXQwxm
-         iJJgca2JS9CzzeIFrgiqXAR40ulixXCiblT2rmpxPf0JYOF/sCaQT7s/wSVAZLyIo2LY
-         r0x2B56H4BEb0qhbjRqzLE0aXuVfEbeXRJz5/OEopQxtmNJmODXX5kZIg130P9JUkZ+H
-         NMQQ==
+         :cc;
+        bh=SQEMzZ3n9HZGBVGN9SO76x64fTpC/nzRkT+q4TdyARE=;
+        b=YwpD2tlOXEpFV0G2oPpmEUBq0eGPZxEyQvbg0Ij+S7eUl/o1VWXxdjZCtbD3GtOmGJ
+         XQxPjqGl84eW26nD6MqIyMFyXJ+JGDHSOXytEpKkJ4yfGGXGb/O1X1sNnooGJrcVpRSn
+         cgZZsx1hTzCItMGjYjs2oJKbl3Ns6cpGep20mXta9VJ4IIKv8QrlbajnxvnVeEWuEI4v
+         0tlV3nmgqmTa9BMufNh5qsiRTSA79CcPRZtjUgFWkg5OBmtuthxvUcy3phm9NkDd9UZU
+         2k0lWC3vQboogfErXaUcTwHHzL3OP9Y++fpxA2M7GL2zsczZSwGHVO6UHeJ3BT6vVi1W
+         xu0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=xl5HbtCvAk9GKynQL9GOsijJT7m6YA6GZF9QqoAexoI=;
-        b=X5Xwsuez2VxddwkY8OseJiyVwoyHgcgPnsVT2iloxfwcQi8wKBVZuSCIthPn3a6foV
-         73UPyPU4vcYRW9Zxm7kdJqCuns8zmlWw5iMA4V1CAaAjxEnycLbVTjFBv9Urmj64P+c7
-         MDYaSeYR0rIXzEKNYswGZtVZzsIA5VeBHweEIzo6ao2nxfHJ8s1w7EwZXZRZxjMxbJac
-         6veXBkDGpSjvlJsxeHRQkza9Xm65RpBnDbOkJrI4hdeJz1h/51czaszRADBg3BREFL8x
-         psR57FZgPfK5ljGjBMwSJjFONq7meCYkFf5K+NDxPbVYWjNwaQnVLAOUOQzE38Cdam14
-         qZzQ==
-X-Gm-Message-State: APjAAAU70btkK297+cXvpqLNi0O2VAndkhk+aDAsH9+7tfCgQocMYGkw
-        x/SDmGOUVTtFWF+PBElSvXVgyzhI/iojZBnQgubaNA==
-X-Google-Smtp-Source: APXvYqwR8uDfCggaF5xEo1UJr8wTwbIeCqoiB4/XGD3itd7jHcJkuglR2FjN1rtjKVpnR3u4ZBFOp3qgc5xIPsE/sIw=
-X-Received: by 2002:ab0:331a:: with SMTP id r26mr6107644uao.104.1571669882589;
- Mon, 21 Oct 2019 07:58:02 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=SQEMzZ3n9HZGBVGN9SO76x64fTpC/nzRkT+q4TdyARE=;
+        b=IwedF7IQrZKoWw5sCpZ+ajMsD2/TRTb6l9VPn0fJbWBUHBOBAbfkGg+DloHS9m8wnO
+         5bZkYaIuugEfPvtyWvcDANHRZCyKJBaMRaDt3yxOnELEsQGPop1ieiu1GfkSd7WRbjJd
+         d00ffUnoN/81yVqIuGSw/sEkbQ7+bmDcajJcxr9zo3O758g0BJZeU5qAxVTUHmgEVOOm
+         qH2jJBzD034iTyCp+bKY8kHuYYb7Q+jhDQACqv/UEn4UowtyySYspNEPk0/wpMV95/l1
+         /oM1DvDMedkANlkB4cMBMfcXI23NsywK1XOiXtRS+KGGG73R9SUbRTB1gv6UAc/M673s
+         r4hg==
+X-Gm-Message-State: APjAAAX6vFMvhTpryuZz8I9HVJmSIi4GSSh+jlDPGkKbCJ0H7nLINbRw
+        BbXsO10J7wc3xXA6xM0mPIGWHgaxHa/IM6DcDTS+2Q==
+X-Google-Smtp-Source: APXvYqwnixcjjN0hTjPTgM8HUTjEJfsmWob9as5b1hcMrBpF54oMkgriOisnDJXO5PLMwuSGBM2NvnsyU6AObb8y6UA=
+X-Received: by 2002:ab0:331a:: with SMTP id r26mr6111832uao.104.1571669988369;
+ Mon, 21 Oct 2019 07:59:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <5DA9EE2F.4030603@zoho.com> <47f6-5dab7580-33-5680128@176712317>
-In-Reply-To: <47f6-5dab7580-33-5680128@176712317>
+References: <20191018093934.29695-1-s.hauer@pengutronix.de>
+In-Reply-To: <20191018093934.29695-1-s.hauer@pengutronix.de>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 21 Oct 2019 16:57:26 +0200
-Message-ID: <CAPDyKFqzT5Gf1R_26Hzyt-_xEshk4k-EW3yUSKw1MVi7ayh3QA@mail.gmail.com>
-Subject: Re: [PATCH 6/6 v2] MMC: JZ4740: Add support for LPM.
-To:     Ezequiel Garcia <ezequiel.garcia@collabora.com>
-Cc:     Zhou Yanjie <zhouyanjie@zoho.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-mips@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Mark Rutland <mark.rutland@arm.com>, syq@debian.org,
-        Linus Walleij <linus.walleij@linaro.org>, armijn@tjaldur.nl,
-        Thomas Gleixner <tglx@linutronix.de>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Mathieu Malaterre <malat@debian.org>
+Date:   Mon, 21 Oct 2019 16:59:12 +0200
+Message-ID: <CAPDyKFo7-rb3285L9XpCi_eAE=RqfuKaz-njEWQjGYzfCoSLwQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: mxs: fix flags passed to dmaengine_prep_slave_sg
+To:     Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Bruno Thomsen <bruno.thomsen@gmail.com>,
+        "# 4.0+" <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 19 Oct 2019 at 22:44, Ezequiel Garcia
-<ezequiel.garcia@collabora.com> wrote:
+On Fri, 18 Oct 2019 at 11:39, Sascha Hauer <s.hauer@pengutronix.de> wrote:
 >
-> On Friday, October 18, 2019 13:54 -03, Zhou Yanjie <zhouyanjie@zoho.com> =
-wrote:
+> Since ceeeb99cd821 we no longer abuse the DMA_CTRL_ACK flag for custom
+> driver use and introduced the MXS_DMA_CTRL_WAIT4END instead. We have not
+> changed all users to this flag though. This patch fixes it for the
+> mxs-mmc driver.
 >
->
-> >
-> > >
-> > > I also have a general question. Should we perhaps rename the driver
-> > > from jz4740_mmc.c to ingenic.c (and the file for the DT bindings, the
-> > > Kconfig, etc), as that seems like a more appropriate name? No?
-> >
-> > I am very much in favor of this proposal. Now jz4740_mmc.c is not only =
-used
-> > for the JZ4740 processor, it is also used for JZ4725, JZ4760, JZ4770, J=
-Z4780
-> > and X1000, and now Ingenic's processor is no longer named after JZ47xx,
-> > it is divided into three product lines: M, T, and X. It is easy to caus=
-e
-> > some
-> > misunderstandings by using jz4740_mmc.c. At the same time, I think that
-> > some register names also need to be adjusted. For example, the STLPPL
-> > register name has only appeared in JZ4730 and JZ4740, and this register
-> > in all subsequent processors is called CTRL. This time I was confused b=
-y
-> > the STLPPL when I added drivers for the JZ4760's and X1000's LPM.
-> >
->
-> I am very much against renamings, for several reasons. As Paul already me=
-ntioned, it's pointless and just adds noise to the git-log, making history =
-harder to recover. Driver file names don't really have to reflect the devic=
-e > > exactly. For the compatibility list, it's far easier to just git-grep=
- for compatible strings, or git-grep Documentation and/or Kconfig.
+> Fixes: ceeeb99cd821 ("dmaengine: mxs: rename custom flag")
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Tested-by: Fabio Estevam <festevam@gmail.com>
+> Reported-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+> Tested-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+> Cc: stable@vger.kernel.org
 
-I have no strong opinions. What matters to me, is that people agree on
-the best option, based on a case by case discussion.
-
->
-> Renaming macros and register names, is equally pointless and equally git-=
-history invasive. Simply adding some documentation is enough.
-
-Sounds like documentation is what people prefer here - and the DT doc
-seems already fine in regards to that.
-
-Perhaps some more words added to the header in driver's c-file could
-be and option to consider, as today it only mentions "JZ4740 SD/MMC
-controller driver".
-
-Anyway, it's up to you. :-)
+Applied for fixes, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/host/mxs-mmc.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
+> index 78e7e350655c..4031217d21c3 100644
+> --- a/drivers/mmc/host/mxs-mmc.c
+> +++ b/drivers/mmc/host/mxs-mmc.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/dmaengine.h>
+> +#include <linux/dma/mxs-dma.h>
+>  #include <linux/highmem.h>
+>  #include <linux/clk.h>
+>  #include <linux/err.h>
+> @@ -266,7 +267,7 @@ static void mxs_mmc_bc(struct mxs_mmc_host *host)
+>         ssp->ssp_pio_words[2] = cmd1;
+>         ssp->dma_dir = DMA_NONE;
+>         ssp->slave_dirn = DMA_TRANS_NONE;
+> -       desc = mxs_mmc_prep_dma(host, DMA_CTRL_ACK);
+> +       desc = mxs_mmc_prep_dma(host, MXS_DMA_CTRL_WAIT4END);
+>         if (!desc)
+>                 goto out;
+>
+> @@ -311,7 +312,7 @@ static void mxs_mmc_ac(struct mxs_mmc_host *host)
+>         ssp->ssp_pio_words[2] = cmd1;
+>         ssp->dma_dir = DMA_NONE;
+>         ssp->slave_dirn = DMA_TRANS_NONE;
+> -       desc = mxs_mmc_prep_dma(host, DMA_CTRL_ACK);
+> +       desc = mxs_mmc_prep_dma(host, MXS_DMA_CTRL_WAIT4END);
+>         if (!desc)
+>                 goto out;
+>
+> @@ -441,7 +442,7 @@ static void mxs_mmc_adtc(struct mxs_mmc_host *host)
+>         host->data = data;
+>         ssp->dma_dir = dma_data_dir;
+>         ssp->slave_dirn = slave_dirn;
+> -       desc = mxs_mmc_prep_dma(host, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+> +       desc = mxs_mmc_prep_dma(host, DMA_PREP_INTERRUPT | MXS_DMA_CTRL_WAIT4END);
+>         if (!desc)
+>                 goto out;
+>
+> --
+> 2.23.0
+>
