@@ -2,100 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 994CEDF1CD
-	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 17:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0560DF3D6
+	for <lists+linux-mmc@lfdr.de>; Mon, 21 Oct 2019 19:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727680AbfJUPnH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 21 Oct 2019 11:43:07 -0400
-Received: from smtprelay0214.hostedemail.com ([216.40.44.214]:42857 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726289AbfJUPnH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 11:43:07 -0400
-X-Greylist: delayed 336 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Oct 2019 11:43:06 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave03.hostedemail.com (Postfix) with ESMTP id 05EDF1803E8ED;
-        Mon, 21 Oct 2019 15:37:32 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 1B985182CF66C;
-        Mon, 21 Oct 2019 15:37:30 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::::::::,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:4321:4605:5007:8603:8660:10004:10400:11026:11232:11233:11473:11658:11914:12043:12048:12114:12297:12438:12679:12740:12760:12895:13069:13148:13230:13311:13357:13439:14096:14097:14659:14721:21080:21627:30029:30054:30070:30091,0,RBL:47.151.135.224:@perches.com:.lbl8.mailshell.net-62.14.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:25,LUA_SUMMARY:none
-X-HE-Tag: dolls01_240eb4bb83a00
-X-Filterd-Recvd-Size: 2849
-Received: from XPS-9350.home (unknown [47.151.135.224])
-        (Authenticated sender: joe@perches.com)
-        by omf12.hostedemail.com (Postfix) with ESMTPA;
-        Mon, 21 Oct 2019 15:37:27 +0000 (UTC)
-Message-ID: <0f91839d858fcb03435ebc85e61ee4e75371ff37.camel@perches.com>
-Subject: Re: [PATCH 1/7] debugfs: Add debugfs_create_xul() for hexadecimal
- unsigned long
-From:   Joe Perches <joe@perches.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        id S1727328AbfJURIH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 21 Oct 2019 13:08:07 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.84]:32198 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726847AbfJURIH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 21 Oct 2019 13:08:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571677682;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=g5fftcy+sbjcXJkucAV/OZbKo+UWi5WQTkrvCV2Jtos=;
+        b=MCpa+9rRKrdom/xaOpun1m6gqtX0goa1UYwlgcdk+bUa7vOK5N5D/I6Gpd2icxGPFb
+        VPW3wd2o3OPlb6EII1dFDERgH46BzQRrXeWmsg5QSFUpNQBjNKt7p27ys1l/c/xfPDjy
+        GxudTskSRd6qrn2lWgpMdDF68/6tGAGD14y3tLP1f7rhGJIFtUIBMP90yQOwuo/RAjij
+        OoQz2iiSsyt+2CDiNGYpMCWOcJtyHk0fQWQu4AU2wcNPtw5QMhnJINkwqlmfViY8G7hJ
+        lXufkL/Pu1Wyg+TvB99AN5V6UAt1m6bCwmifRDuBiqREsTYbwtmOBOpxS+0tTQ2ByCuk
+        QE9w==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDVCbXA4Ewxc="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 44.28.1 DYNA|AUTH)
+        with ESMTPSA id R0b2a8v9LH7VLxq
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Mon, 21 Oct 2019 19:07:31 +0200 (CEST)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [PATCH v2 07/11] omap: remove old hsmmc.[ch] and in Makefile
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20191021143008.GS5610@atomide.com>
+Date:   Mon, 21 Oct 2019 19:07:31 +0200
+Cc:     =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 21 Oct 2019 08:37:26 -0700
-In-Reply-To: <20191021143742.14487-2-geert+renesas@glider.be>
-References: <20191021143742.14487-1-geert+renesas@glider.be>
-         <20191021143742.14487-2-geert+renesas@glider.be>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.32.1-2 
-MIME-Version: 1.0
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com
 Content-Transfer-Encoding: 7bit
+Message-Id: <3FDBE28F-B2C5-4EDE-905C-687F601462B6@goldelico.com>
+References: <cover.1571510481.git.hns@goldelico.com> <9bd4c0bb0df26523d7f5265cdb06d86d63dafba8.1571510481.git.hns@goldelico.com> <20191021143008.GS5610@atomide.com>
+To:     Tony Lindgren <tony@atomide.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 2019-10-21 at 16:37 +0200, Geert Uytterhoeven wrote:
-> The existing debugfs_create_ulong() function supports objects of
-> type "unsigned long", which are 32-bit or 64-bit depending on the
-> platform, in decimal form.  To format objects in hexadecimal, various
-> debugfs_create_x*() functions exist, but all of them take fixed-size
-> types.
+
+> Am 21.10.2019 um 16:30 schrieb Tony Lindgren <tony@atomide.com>:
 > 
-> Add a debugfs helper for "unsigned long" objects in hexadecimal format.
-> This avoids the need for users to open-code the same, or introduce
-> bugs when casting the value pointer to "u32 *" or "u64 *" to call
-> debugfs_create_x{32,64}().
-[]
-> diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
-[]
-> @@ -356,4 +356,14 @@ static inline ssize_t debugfs_write_file_bool(struct file *file,
->  
->  #endif
->  
-> +static inline void debugfs_create_xul(const char *name, umode_t mode,
-> +				      struct dentry *parent,
-> +				      unsigned long *value)
-> +{
-> +	if (sizeof(*value) == sizeof(u32))
-> +		debugfs_create_x32(name, mode, parent, (u32 *)value);
-> +	else
-> +		debugfs_create_x64(name, mode, parent, (u64 *)value);
+> * H. Nikolaus Schaller <hns@goldelico.com> [191019 18:43]:
+>> --- a/arch/arm/mach-omap2/Makefile
+>> +++ b/arch/arm/mach-omap2/Makefile
+>> @@ -216,7 +216,6 @@ obj-$(CONFIG_MACH_NOKIA_N8X0)		+= board-n8x0.o
+>> 
+>> # Platform specific device init code
+>> 
+>> -omap-hsmmc-$(CONFIG_MMC_OMAP_HS)	:= hsmmc.o
+>> obj-y					+= $(omap-hsmmc-m) $(omap-hsmmc-y)
+> 
+> The related obj-y line can go now too, right?
 
-trivia: the casts are unnecessary.
+Yes, I think so. It is a construction that I have never seen before :)
+Therefore I did not recognize that it is related.
 
-This might be more sensible using #ifdef
+> And looks like common.h also has struct omap2_hsmmc_info
+> so maybe check by grepping for hsmmc_info to see it's gone.
 
-static inline void debugfs_create_xul(const char *name, umode_t mode,
-				      struct dentry *parent,
-				      unsigned long *value)
-{
-#if BITS_PER_LONG == 64
-	debugfs_create_x64(name, mode, parent, value);
-#else
-	debugfs_create_x32(name, mode, parent, value);
-#endif
-}
+Yes, it is just a forward-declaration of the struct name with
+no user anywhere.
 
+Scheduled for v3.
+
+BTW: should this series go through your tree since it is an
+omap machine?
+
+BR and thanks,
+Nikolaus
 
