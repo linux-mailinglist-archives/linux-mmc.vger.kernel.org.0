@@ -2,167 +2,123 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B232CDFD6C
-	for <lists+linux-mmc@lfdr.de>; Tue, 22 Oct 2019 08:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FD46DFDAA
+	for <lists+linux-mmc@lfdr.de>; Tue, 22 Oct 2019 08:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731100AbfJVF7u (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 22 Oct 2019 01:59:50 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:38718 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731096AbfJVF7u (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Oct 2019 01:59:50 -0400
-Received: by mail-pf1-f195.google.com with SMTP id h195so9935345pfe.5
-        for <linux-mmc@vger.kernel.org>; Mon, 21 Oct 2019 22:59:50 -0700 (PDT)
+        id S1731028AbfJVGUc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 22 Oct 2019 02:20:32 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:32952 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727978AbfJVGUc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Oct 2019 02:20:32 -0400
+Received: by mail-vs1-f66.google.com with SMTP id p13so10588747vso.0
+        for <linux-mmc@vger.kernel.org>; Mon, 21 Oct 2019 23:20:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :in-reply-to:references;
-        bh=shSJXxHkqiOnwVznDt/3eHxUBXqubG/+hrNMGFN/+WI=;
-        b=gAXkknV0IucthKymxPq6B+aWK9aCNWfbX4eYnr4pyGjA0hMdT1OztIzNZPrdJn7u8K
-         Z1ykMhxLWpFO52vL4nSGDmaXBg+yCIt3WUr5hC4LqFjJCh/9miVn2JYz6FDwSHJ5rFXq
-         uKshCmFJeG51cvhsB/FCvyJMaMOR6jdMl+vwmRu0R2fPAZ9dL3hob3qfBhmq39zsre3T
-         aFf99CL7FKDHbIfcWo4UYJrbL26o6TJ2rPcyXlShN2rhCvyM3ZMkNy/3y+oCYI7zs6aX
-         kuLEneqiXs1VLpG6Z9mZMCaID7JPILuVPGFcZMBgpkq+mEdPedz0vjEeUA5z3X2fiZrJ
-         L0mQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=k8DW9vd1TIycb0sU0HAtL003PnMYaqF/Te0E+k23Gg8=;
+        b=TQ0Nb+kieO5MMn1rHD6P0qJMUfJ6iTIbZ2TVn3pGuctKRPEgEIYZkA6rJfGg9vLqw3
+         YPeqXraDyVEV3lnJm4Uv1UxZ6w+aYr2pnrKj85XP+0Y7oSWtjA2Ou1TAzgy/Djlo5alq
+         Muj7WQ+1yc54PPSWjfqEnSU9kVTSE2HWAhQzsf5jjE2VXq7Na+o+8oIBtWCWQJc8pVck
+         FaCDI8y3Vk9DJzCHAH5tn+4Ka8z7AjGZg3McnSAOCJFESVqW/BZMzgQpBdT7/3t6+TNT
+         lNKRqNvDbu9oQjPv2DnHXnDA7eVOW6MKCWZvOVz/i+WlGgN/Xe6TL5XWZWUvzV2X1obN
+         QmGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:in-reply-to:references;
-        bh=shSJXxHkqiOnwVznDt/3eHxUBXqubG/+hrNMGFN/+WI=;
-        b=otloVFjlJshTxJqDc8bYuvkvC9n0h/WphmdrLfBTirT9M3Te2EXOr10q2MITGrAPJm
-         BkVEy3tBxYasMoNqr/LkFbA1mFiN89+CTYM9MxUSUSktRqbRQztnirrn76zaRcwEdRz1
-         +4lgyYgwQT48WsCsw8+YK/Eymsog6GnDX6wi6lIXykY5QzTmejmh87UEH3S+JnSrDJtr
-         HOZCtEyoUvz5O1HoPdX9cQpveC+fYon84iWg6Z4sYiItx9f5YMYvpu4drukiusv9lzyq
-         BkXmOs2t7mMJ4rQEgHuTIMn3vhn3ntRmsfguQcyRTH4BVu6mvm/O4V5B87nJ/hQ1BS0g
-         KlUg==
-X-Gm-Message-State: APjAAAUksoBf9s7sZ4gfTVPZci/WtwigAKOTy73K0w+Nf2nLXPhhFLtD
-        YFKVKm0LN1xkjOAywnkOvhongg==
-X-Google-Smtp-Source: APXvYqzjoLSvUGt8Q1QqZRMMmRg+VMwOLpmfXvYascTlsJAQYMKM43f/kIbY3Q4CvcoWWUgNKGr7HQ==
-X-Received: by 2002:a63:1d60:: with SMTP id d32mr1932366pgm.37.1571723989575;
-        Mon, 21 Oct 2019 22:59:49 -0700 (PDT)
-Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id g35sm16568061pgg.42.2019.10.21.22.59.45
-        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 21 Oct 2019 22:59:48 -0700 (PDT)
-From:   Baolin Wang <baolin.wang@linaro.org>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        asutoshd@codeaurora.org
-Cc:     orsonzhai@gmail.com, zhang.lyra@gmail.com, arnd@arndb.de,
-        linus.walleij@linaro.org, vincent.guittot@linaro.org,
-        baolin.wang@linaro.org, baolin.wang7@gmail.com,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/3] mmc: host: sdhci-sprd: Add software queue support
-Date:   Tue, 22 Oct 2019 13:58:57 +0800
-Message-Id: <eea9982c738e90c527de2e92c6f2ca97ac74d97f.1571722391.git.baolin.wang@linaro.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <cover.1571722391.git.baolin.wang@linaro.org>
-References: <cover.1571722391.git.baolin.wang@linaro.org>
-In-Reply-To: <cover.1571722391.git.baolin.wang@linaro.org>
-References: <cover.1571722391.git.baolin.wang@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=k8DW9vd1TIycb0sU0HAtL003PnMYaqF/Te0E+k23Gg8=;
+        b=OGAMwGa9kaRaUsXny/ylxonDgF2JGbQCXtBjK4//+t1FNaDTeDuRsg0TQDGjtm3pyy
+         cuGs4+C6c6RgbgiDZZrTXu6mbOoduYXWaOZ3WJr206iVVCPPy1Ft4A3f9xw7tWR1Zz5+
+         /Gkceb2gbnb3fWWA+4DLtZLKouV0KigS0QdbwWIbF8Cf4QvYZW6zTNxs2FcNvlj63jsX
+         Avi1oDEVyxj8D/WsV4LI885PwFGnXAp0Tel29XUCeVtrWqrsh47z/cbNeUM3MnFONT+B
+         68SxB7I25CuPQKF5dijXyM3kOQgid8MCrWm1jpPMzCqrgFsU4M6jTpypp02UhYCzaqE4
+         mFzQ==
+X-Gm-Message-State: APjAAAUR9bv2lwJJrGdMNQyDP/vYBeCtXpHuKl27ZG4+SOsWqT5xyY6l
+        ZRGUClFuBSJFmkpiNjtcqVPhdBMaQUm6ysG7fMR2Zw==
+X-Google-Smtp-Source: APXvYqzkYXuPseyXcdejvdvVSZXrEV06mZj0Op9CmRCQocYg4WimxvN1pSQnH8nJ/I9kGzCrw1RMyltd+I7tD0ELvMo=
+X-Received: by 2002:a67:cf05:: with SMTP id y5mr918147vsl.34.1571725230784;
+ Mon, 21 Oct 2019 23:20:30 -0700 (PDT)
+MIME-Version: 1.0
+References: <20191017135739.1315-1-ulf.hansson@linaro.org> <20191017135739.1315-2-ulf.hansson@linaro.org>
+ <CAD=FV=Wh3bnvNu-_1cXf1xT44-EwomoZEWDt88PZzhUVCn9PcQ@mail.gmail.com>
+In-Reply-To: <CAD=FV=Wh3bnvNu-_1cXf1xT44-EwomoZEWDt88PZzhUVCn9PcQ@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 22 Oct 2019 08:19:53 +0200
+Message-ID: <CAPDyKFo58zdN5A18kY9tieFspC_dEPqomAE_FfC+NhpcL7LC9A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add software queue support to improve the performance.
+On Tue, 22 Oct 2019 at 00:13, Doug Anderson <dianders@chromium.org> wrote:
+>
+> Hi,
+>
+> On Thu, Oct 17, 2019 at 6:57 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >
+> > Upfront in mmc_rescan() we use the host->rescan_entered flag, to allow
+> > scanning only once for non-removable cards. Therefore, it's also not
+> > possible that we can have bus attached, when we are scanning non-removable
+> > cards. For this reason, let' drop the check for mmc_card_is_removable() as
+> > it's redundant.
+> >
+> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > ---
+> >  drivers/mmc/core/core.c | 7 ++-----
+> >  1 file changed, 2 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+> > index 221127324709..6f8342702c73 100644
+> > --- a/drivers/mmc/core/core.c
+> > +++ b/drivers/mmc/core/core.c
+> > @@ -2297,11 +2297,8 @@ void mmc_rescan(struct work_struct *work)
+> >
+> >         mmc_bus_get(host);
+> >
+> > -       /*
+> > -        * if there is a _removable_ card registered, check whether it is
+> > -        * still present
+> > -        */
+> > -       if (host->bus_ops && !host->bus_dead && mmc_card_is_removable(host))
+> > +       /* Verify a registered card to be functional, else remove it. */
+> > +       if (host->bus_ops && !host->bus_dead)
+> >                 host->bus_ops->detect(host);
+>
+> At first I thought this was a bit more of a change than your
+> description makes it sound like.  Specifically it seemed like
+> non-removable cards used to never call host->bus_ops->detect() here
+> (even during the first call to mmc_rescan) but now they would call it
+> the first time through.
+>
+> ...so I put in a bunch of printouts.  It appears that the first time
+> through mmc_rescan() host->bus_ops is NULL.
+>
+> ...ah, and this is what that sentence in your description means about
+> having a bus attached.  Now I get it!  :-)
+>
+> ...so, right, this looks fine.
+>
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
 
-Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
----
- drivers/mmc/host/Kconfig      |    1 +
- drivers/mmc/host/sdhci-sprd.c |   26 ++++++++++++++++++++++++++
- 2 files changed, 27 insertions(+)
+Thanks for testing and reviewing! Let me amend the changelog a bit, to
+try to clarify that the host->bus_ops is NULL.
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index efa4019..54b86f6 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -632,6 +632,7 @@ config MMC_SDHCI_SPRD
- 	depends on ARCH_SPRD
- 	depends on MMC_SDHCI_PLTFM
- 	select MMC_SDHCI_IO_ACCESSORS
-+	select MMC_HSQ
- 	help
- 	  This selects the SDIO Host Controller in Spreadtrum
- 	  SoCs, this driver supports R11(IP version: R11P0).
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index d07b979..3cc1277 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -19,6 +19,7 @@
- #include <linux/slab.h>
- 
- #include "sdhci-pltfm.h"
-+#include "mmc_hsq.h"
- 
- /* SDHCI_ARGUMENT2 register high 16bit */
- #define SDHCI_SPRD_ARG2_STUFF		GENMASK(31, 16)
-@@ -379,6 +380,16 @@ static unsigned int sdhci_sprd_get_ro(struct sdhci_host *host)
- 	return 0;
- }
- 
-+static void sdhci_sprd_request_done(struct sdhci_host *host,
-+				    struct mmc_request *mrq)
-+{
-+	/* Validate if the request was from software queue firstly. */
-+	if (mmc_hsq_finalize_request(host->mmc, mrq))
-+		return;
-+
-+	 mmc_request_done(host->mmc, mrq);
-+}
-+
- static struct sdhci_ops sdhci_sprd_ops = {
- 	.read_l = sdhci_sprd_readl,
- 	.write_l = sdhci_sprd_writel,
-@@ -392,6 +403,7 @@ static unsigned int sdhci_sprd_get_ro(struct sdhci_host *host)
- 	.hw_reset = sdhci_sprd_hw_reset,
- 	.get_max_timeout_count = sdhci_sprd_get_max_timeout_count,
- 	.get_ro = sdhci_sprd_get_ro,
-+	.request_done = sdhci_sprd_request_done,
- };
- 
- static void sdhci_sprd_request(struct mmc_host *mmc, struct mmc_request *mrq)
-@@ -521,6 +533,7 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- {
- 	struct sdhci_host *host;
- 	struct sdhci_sprd_host *sprd_host;
-+	struct mmc_hsq *hsq;
- 	struct clk *clk;
- 	int ret = 0;
- 
-@@ -631,6 +644,16 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 
- 	sprd_host->flags = host->flags;
- 
-+	hsq = devm_kzalloc(&pdev->dev, sizeof(*hsq), GFP_KERNEL);
-+	if (!hsq) {
-+		ret = -ENOMEM;
-+		goto err_cleanup_host;
-+	}
-+
-+	ret = mmc_hsq_init(hsq, host->mmc);
-+	if (ret)
-+		goto err_cleanup_host;
-+
- 	ret = __sdhci_add_host(host);
- 	if (ret)
- 		goto err_cleanup_host;
-@@ -689,6 +712,7 @@ static int sdhci_sprd_runtime_suspend(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
- 
-+	mmc_hsq_suspend(host->mmc);
- 	sdhci_runtime_suspend_host(host);
- 
- 	clk_disable_unprepare(sprd_host->clk_sdio);
-@@ -717,6 +741,8 @@ static int sdhci_sprd_runtime_resume(struct device *dev)
- 		goto clk_disable;
- 
- 	sdhci_runtime_resume_host(host, 1);
-+	mmc_hsq_resume(host->mmc);
-+
- 	return 0;
- 
- clk_disable:
--- 
-1.7.9.5
+Additionally, I think this one should be tagged for stable, but let's
+see what happens with patch 2/2 first.
 
+Kind regards
+Uffe
