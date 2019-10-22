@@ -2,96 +2,125 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1B91E090E
-	for <lists+linux-mmc@lfdr.de>; Tue, 22 Oct 2019 18:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C71E0AC0
+	for <lists+linux-mmc@lfdr.de>; Tue, 22 Oct 2019 19:35:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389502AbfJVQg2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 22 Oct 2019 12:36:28 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:58756 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389416AbfJVQg1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Oct 2019 12:36:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=M16s+hjSDlE6TNgtBa3MKM4TCqAq6AmiEIcWbfZK0/Y=; b=fNUlDze7oxEGXu0bsJvv6CQWR
-        sTGIW/95FU2RCYkgoZAholUl+Q+0Ndxbv84tD+w1SfX7zOT42kiyBr1omdpPem6a1I1Ty+hvpKmL6
-        rNyBWgZgynitj5VjL3zsJwsd+4Uf8MFzh9t63NFjcpMtMT+uizU711YueP+vFO/PXn9Zs=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.co.uk>)
-        id 1iMx8o-00072B-Aa; Tue, 22 Oct 2019 16:36:14 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id C47D82743259; Tue, 22 Oct 2019 17:36:13 +0100 (BST)
-Date:   Tue, 22 Oct 2019 17:36:13 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
+        id S1726915AbfJVRfc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 22 Oct 2019 13:35:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35486 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725837AbfJVRfc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 22 Oct 2019 13:35:32 -0400
+Received: from localhost (mobile-166-172-186-56.mycingular.net [166.172.186.56])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B094320700;
+        Tue, 22 Oct 2019 17:35:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571765730;
+        bh=Jld/hYcxZXmjGFVuWBdEY4QI+QyPIanxZKbLtqBLGBc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KjIZP5hfgFgUn1+Ljz18nxHSEXDVd7I1a8ueHM1nX8sqKYwTPALZAdaZeymD9A5Xk
+         AhqKSe2drZC6ffhxX2VDu2wyGx51R4WPVjG0f6K8p+Z2h7rwP81FZEar+clOopjyBk
+         JWILQvQH0HfCGebHAWRAKurHRkWaeIRbs5Klfa/c=
+Date:   Tue, 22 Oct 2019 13:35:27 -0400
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <linux@roeck-us.net>, linux-clk@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
-        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH 05/46] ARM: pxa: split up mach/hardware.h
-Message-ID: <20191022163613.GL5554@sirena.co.uk>
-References: <20191018154052.1276506-1-arnd@arndb.de>
- <20191018154201.1276638-5-arnd@arndb.de>
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/7] debugfs: Add debugfs_create_xul() for hexadecimal
+ unsigned long
+Message-ID: <20191022173527.GD230934@kroah.com>
+References: <20191021143742.14487-1-geert+renesas@glider.be>
+ <20191021143742.14487-2-geert+renesas@glider.be>
+ <0f91839d858fcb03435ebc85e61ee4e75371ff37.camel@perches.com>
+ <CAMuHMdU4OhsK6Jvy406ZCM+OeGcfVB0b7ccsne9KdMZFLf=JqQ@mail.gmail.com>
+ <a32b6a6b5f48ff0c4685bd417a8fb66229d95033.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cy9Nn4fUvYST66Pl"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191018154201.1276638-5-arnd@arndb.de>
-X-Cookie: Whip it, whip it good!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <a32b6a6b5f48ff0c4685bd417a8fb66229d95033.camel@perches.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Tue, Oct 22, 2019 at 02:07:34AM -0700, Joe Perches wrote:
+> On Tue, 2019-10-22 at 10:03 +0200, Geert Uytterhoeven wrote:
+> > Hi Joe,
+> 
+> Hey again Geert.
+> 
+> > On Mon, Oct 21, 2019 at 5:37 PM Joe Perches <joe@perches.com> wrote:
+> > > On Mon, 2019-10-21 at 16:37 +0200, Geert Uytterhoeven wrote:
+> > > > The existing debugfs_create_ulong() function supports objects of
+> > > > type "unsigned long", which are 32-bit or 64-bit depending on the
+> > > > platform, in decimal form.  To format objects in hexadecimal, various
+> > > > debugfs_create_x*() functions exist, but all of them take fixed-size
+> > > > types.
+> > > > 
+> > > > Add a debugfs helper for "unsigned long" objects in hexadecimal format.
+> > > > This avoids the need for users to open-code the same, or introduce
+> > > > bugs when casting the value pointer to "u32 *" or "u64 *" to call
+> > > > debugfs_create_x{32,64}().
+> > > []
+> > > > diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
+> > > []
+> > > > @@ -356,4 +356,14 @@ static inline ssize_t debugfs_write_file_bool(struct file *file,
+> > > > 
+> > > >  #endif
+> > > > 
+> > > > +static inline void debugfs_create_xul(const char *name, umode_t mode,
+> > > > +                                   struct dentry *parent,
+> > > > +                                   unsigned long *value)
+> > > > +{
+> > > > +     if (sizeof(*value) == sizeof(u32))
+> > > > +             debugfs_create_x32(name, mode, parent, (u32 *)value);
+> > > > +     else
+> > > > +             debugfs_create_x64(name, mode, parent, (u64 *)value);
+> > > 
+> > > trivia: the casts are unnecessary.
+> > 
+> > They are necessary, in both calls (so using #ifdef as suggested below
+> > won't help):
+> 
+> Silly thinko, (I somehow thought the compiler would
+> eliminate the code after the branch not taken, but
+> of course it has to compile it first...  oops)
+> though the #ifdef should work.
+> 
+> > > This might be more sensible using #ifdef
+> > > 
+> > > static inline void debugfs_create_xul(const char *name, umode_t mode,
+> > >                                       struct dentry *parent,
+> > >                                       unsigned long *value)
+> > > {
+> > > #if BITS_PER_LONG == 64
+> > >         debugfs_create_x64(name, mode, parent, value);
+> > > #else
+> > >         debugfs_create_x32(name, mode, parent, value);
+> > > #endif
+> > > }
+> > 
+> > ... at the expense of the compiler checking only one branch.
+> > 
+> > Just like "if (IS_ENABLED(CONFIG_<foo>)" (when possible) is preferred
+> > over "#ifdef CONFIG_<foo>" because of compile-coverage, I think using
+> > "if" here is better than using "#if".
+> 
+> True if all compilers will always eliminate the unused branch.
 
---cy9Nn4fUvYST66Pl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Fri, Oct 18, 2019 at 05:41:20PM +0200, Arnd Bergmann wrote:
-> The mach/hardware.h is included in lots of places, and it provides
-> three different things on pxa:
-
-Acked-by: Mark Brown <broonie@kernel.org>
-
---cy9Nn4fUvYST66Pl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2vL/wACgkQJNaLcl1U
-h9A46Qf/bdiNYPmWVC2CHNC1L2OLkyJ66QpIcTPyD+TqK5kJogwOBaO1gXSF9Zzl
-FrZ20C2apP/oPsDhXu0l5d3giQifXBNvev/89QnOX2UBhrtJV9qE4LHll1hjeyKZ
-BEGejSMZnKNLyUDKEbrGg/LeAlDx8G1odI34QfZvmSJVBKinRssnwpnH7UNZhU9s
-9SvLSPJjxoWD6gDsShV0vYuFkd6XQ68qOna4lj6KknkkAE9jIpQb+fFBVqYNKNgp
-Ttp0KkT/l1DAlDx4lMDfWkr/8u3807G0HTJ6xYcjeyd7e40utLqPnFLeQpMS+RGb
-96bq1ZoL9nd8PdzO8lOK09fB0kB8Mg==
-=tCNh
------END PGP SIGNATURE-----
-
---cy9Nn4fUvYST66Pl--
+Good ones will, we don't care about bad ones :)
