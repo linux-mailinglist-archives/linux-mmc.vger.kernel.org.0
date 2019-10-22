@@ -2,128 +2,131 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDE6EE05BA
-	for <lists+linux-mmc@lfdr.de>; Tue, 22 Oct 2019 16:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F9F6E06AC
+	for <lists+linux-mmc@lfdr.de>; Tue, 22 Oct 2019 16:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731961AbfJVOBc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Tue, 22 Oct 2019 10:01:32 -0400
-Received: from mout.kundenserver.de ([212.227.126.187]:60191 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727805AbfJVOBc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Oct 2019 10:01:32 -0400
-Received: from mail-qk1-f173.google.com ([209.85.222.173]) by
- mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1Ml6Vg-1hbmf00qzM-00lVCj; Tue, 22 Oct 2019 16:01:30 +0200
-Received: by mail-qk1-f173.google.com with SMTP id u184so16330124qkd.4;
-        Tue, 22 Oct 2019 07:01:29 -0700 (PDT)
-X-Gm-Message-State: APjAAAXylN35vLp7LcKQWl1mf/SQRyJQ+Jhfx/+/q50VBkwkAbUAvipI
-        gNDSSJZLA0cTPMgfqe6gRRGBTM0Cjfe+mrVbDZM=
-X-Google-Smtp-Source: APXvYqzNJSBsmzArUiJoxHmomaDqQtkgb7eiZl33ieH3Pnwwm1/FZ2lXqT+Z19UoP0NfH21IBu5WdckCCzmNgI5QFYQ=
-X-Received: by 2002:a37:a50f:: with SMTP id o15mr1985123qke.3.1571752888552;
- Tue, 22 Oct 2019 07:01:28 -0700 (PDT)
+        id S1728448AbfJVOrR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 22 Oct 2019 10:47:17 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:43335 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726955AbfJVOrR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Oct 2019 10:47:17 -0400
+Received: by mail-il1-f196.google.com with SMTP id t5so15656621ilh.10
+        for <linux-mmc@vger.kernel.org>; Tue, 22 Oct 2019 07:47:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RtR0PWo1dnvCC8sVNqIrEQULx6YseetGPasRYtSEfgU=;
+        b=MhxylbhKkpmyjYOkefoLAam3gigL71xHU7w6C3RixbGIvY/htZLZ3NLPukRnCrP3tb
+         EQ/HSW2Pf9P7GEFdQvHA7IkPm+joLGn+EnOslY9EhkKYD7B47a5V+ks4rnpudK5oQytn
+         78uU9PCAmnihBor54R6P4YKJ3jC1Qdq4YKuNk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RtR0PWo1dnvCC8sVNqIrEQULx6YseetGPasRYtSEfgU=;
+        b=B+KdbZPuTQLV3XKE7/Jcrs9K1NfT/amdoQKdBVutC4GKqb7QUyoaeTA1vZ9TRaFbgL
+         H+IQhj67fZXESWOaI1HNczXzxaus4x1+AhU3NAOWpRhiVvXCKW0kdNU3zPhfNMdmKi/r
+         vNcvfo+VLshiwL/nLuV3fZpZwFVE4Q+Nbj2h1PKVWa1MdgLuLwgyA3IDX+OW/zXHZDuv
+         jd+q8z+Z1fU9L+A1iGmlLGCZa8tg69J92TJmfNwszu4ytbahjWTaKxjbca9ZRxSPrE2l
+         I38g67W3nXOf+40hLNX4qsvqNt8fxSdjUArBQe1Ea+62qjIwTos/SyVsIogTXS/hnIVr
+         qKBg==
+X-Gm-Message-State: APjAAAXdADmwAsjmQgFvPuO3MZHU9YTU3I6ypCilcXkDB6TvTZetPDDH
+        IWOd34q3fIRxqTY4/bnvdxefrc2O1fI=
+X-Google-Smtp-Source: APXvYqwIRLc56ja7jxENUpnpvsOU7HSYYmyWRXh9i3uc7LYnLGFEchZR3Vr5lLiTGYga+EM5SVyMcQ==
+X-Received: by 2002:a92:381c:: with SMTP id f28mr5887747ila.169.1571755636078;
+        Tue, 22 Oct 2019 07:47:16 -0700 (PDT)
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com. [209.85.166.169])
+        by smtp.gmail.com with ESMTPSA id d2sm3458566iob.22.2019.10.22.07.47.15
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Oct 2019 07:47:15 -0700 (PDT)
+Received: by mail-il1-f169.google.com with SMTP id l12so15677813ilq.4
+        for <linux-mmc@vger.kernel.org>; Tue, 22 Oct 2019 07:47:15 -0700 (PDT)
+X-Received: by 2002:a92:1e03:: with SMTP id e3mr8267234ile.168.1571755634923;
+ Tue, 22 Oct 2019 07:47:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191010202802.1132272-1-arnd@arndb.de> <20191010203043.1241612-1-arnd@arndb.de>
- <20191010203043.1241612-11-arnd@arndb.de> <20191011055149.4dudr4tk2znpt65u@pengutronix.de>
-In-Reply-To: <20191011055149.4dudr4tk2znpt65u@pengutronix.de>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 22 Oct 2019 16:01:12 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1st8gR7u+8-oyP6HrzZdmrzhq7PRonYuz0a5O8rfKaSA@mail.gmail.com>
-Message-ID: <CAK8P3a1st8gR7u+8-oyP6HrzZdmrzhq7PRonYuz0a5O8rfKaSA@mail.gmail.com>
-Subject: Re: [PATCH 11/36] ARM: s5pv210: split from plat-samsung
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Sangbeom Kim <sbkim73@samsung.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
-        <linux-samsung-soc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Olof Johansson <olof@lixom.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        =?UTF-8?B?Q2zDqW1lbnQgUMOpcm9u?= <peron.clem@gmail.com>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-serial@vger.kernel.org,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>
+References: <20191017135739.1315-1-ulf.hansson@linaro.org> <20191017135739.1315-3-ulf.hansson@linaro.org>
+ <CAD=FV=XsCGqLwKOicW47Yk3y3mHzU+9fR8kS7jx2pW6SzjgCbg@mail.gmail.com> <CAPDyKFq_Utz+ztdXTV534pY9Q9CyTSBJV_mfyPKAsHxaSyZjpA@mail.gmail.com>
+In-Reply-To: <CAPDyKFq_Utz+ztdXTV534pY9Q9CyTSBJV_mfyPKAsHxaSyZjpA@mail.gmail.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Tue, 22 Oct 2019 07:47:03 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=U7Tm0eB00Ze8PUvCvDw_nqHFL6nGO=vEP2t9d-zVveTw@mail.gmail.com>
+Message-ID: <CAD=FV=U7Tm0eB00Ze8PUvCvDw_nqHFL6nGO=vEP2t9d-zVveTw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: core: Re-work HW reset for SDIO cards
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Provags-ID: V03:K1:Hv7SAjdeGUOuU0McebMKe8pPPZg0PjMGWOl/Urvv+a4u20VCEki
- BFcgNMzF1Ce2YeJaDkJj/8e1qZD+QsK9q7XCqvXzzhWPfq25ha/TveFndkJVh3L2f/jhBlx
- JciffjQ98mgELP72Tjk9qG3zcowbLTUYNBfBre1jKWUn5R768dPB81VhbT5M0AnUbkgzJYs
- ZewkdgDUCJWp7CJE7usUg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:hRmFgw04pHw=:GuyhHbXPjvHIFHW4LRgnKZ
- JUUU3xWSamtSYw54My8YFjIeR73SnkKRIsMIAdVCUi9rvsNxaJDcJxRYNlfLkI9DzpPfqpQTA
- I7G1r69BMop3/1BDwtYEmRW0ol67cpVwD/kRph1WTOrhogNP4yfHwpwAygty8a9J5EPEFMil9
- KWPpH/57iFFSeaJ2YSuFIPyWMBBLQl++b3TSh0BHi/XCSUDfvpjhqMgO4R1ah5Jw6OWW4lHMu
- wHzuHnAmBRT9HCPxwqvPkFsKoJ1IkKua7U8vB/6Pt2WkXimrVAhOKtzbeh+tQnF5aArHzooI2
- BKkzGzuHxPakyMObe5/QrkDyKv89Rg1fE1Tjf2oCbGlQXVnxUPsgKK6hM9Ocm7HgKQY4sdfBG
- /B2HCfkNZwHUdK6ZWvg84yx54x5BvnSLxf8zXn78HzDm+IsVlr1PDezP3mgrfXj3zQK+h+l7G
- Glkjok+W2Nb8gODf1HZ31B3Yw8cStsgywOo2itc9dTJ2hFqEvHrGQA0urUm+7j/uW0JJ6MsQ+
- bC9PCelDGsrVTiO2ViP/Lpam7+ce0lYliOJv1EkYMITtMm//AcupeTwf0O/j9mghlw2gSMgdL
- ezJMy71zKCYvT99BZzOgTJuaUEOtzv9Eu0ZzW5YJaI1iZZ2mMr4uA00vDupp4Q8dQfW5k3RHY
- 6k4TnW4N/haFxfLXHSwFbv9quv8KHVwTWLUXy9ygc3odU+r+hpSfgfAPD/wYDJlCHDLu7X0LF
- l4A+x3+t3SGQHn8iI91phMXHlOW5YMGjvfVpPrU6aJZzSJWKOCAewYLuFBiF6C7SiNgfB7jbe
- 2Pq0cXaLg4l7xTsen5u4CNRbXmq2yYggxPCbU73Fyk5nVz+3xg8cIrHy/l7DmXg1wfM444Q9S
- tU94dcFtWb1hgiPPpMyw==
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 7:51 AM Uwe Kleine-König
-<u.kleine-koenig@pengutronix.de> wrote:
+Hi,
+
+On Mon, Oct 21, 2019 at 11:51 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> On Thu, Oct 10, 2019 at 10:29:55PM +0200, Arnd Bergmann wrote:
-> > These can be build completely independently, so split
-> > the two Kconfig symbols.
+> > The problem I see here is that callers of this reset function aren't
+> > expecting it to work this way.  Look specifically at
+> > mwifiex_sdio_card_reset_work().  It's assuming that it needs to do
+> > things like shutdown / reinit.  Now it's true that the old
+> > mwifiex_sdio_card_reset_work() was pretty broken on any systems that
+> > also had SDIO bluetooth, but presumably it worked OK on systems
+> > without SDIO Bluetooth.  I don't think it'll work so well now.
+>
+> Good point!
+>
+> I guess I was hoping that running through ->remove() and then
+> ->probe() for the SDIO func drivers should simply take care of
+> whatever that may be needed. In some way this makes the driver broken
+> already in regards to this path, but never mind.
+
+Yeah, probably true.  I guess if anyone actually expected to use one
+of these cards as a removable SDIO card (I have seen such dev boards
+long ago) then it would always have been possible for someone to
+remove the card at just the wrong time and break things.
+
+
+> > Testing shows that indeed your patch breaks mwifiex reset worse than
+> > it was before (AKA WiFi totally fails instead of it just killing
+> > Bluetooth).
 > >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > I think it may be better to add a new API call rather than trying to
+> > co-opt the old one.  Maybe put a WARN_ON() for the old API call to
+> > make people move away from it, or something?
 >
-> I'd mention the two symbols' names you're working on in the commit log.
-> I guess it's about PLAT_SAMSUNG and ARCH_S5PV210. And I wouldn't call it
-> "split" which IMHO suggests there was only one symbol before.
+> Thanks again for testing and for valuable feedback! Clearly this needs
+> a little more thinking.
 >
-> Maybe:
+> An additional concern I see with the "hotplug approach" implemented in
+> $subject patch, is that it becomes unnecessary heavy when there is
+> only one SDIO func driver bound.
 >
->         Don't imply PLAT_SAMSUNG if ARCH_S5PV210 is enabled
->
-> would be a better subject line?
+> In one way I am tempted to try to address that situation, as it seems
+> a bit silly to do full hotplug dance when it isn't needed.
 
-Ok, changed to
+True, though I kinda like the heavy solution here.  At least in the
+mwifiex case this isn't a part of the normal flow.  AKA: we don't call
+this function during normal bootup nor during any normal operations.
+It's much more of an "oh crap, something's not working and we don't
+know what to do" type solution.  I mean, I guess it's still not
+uncommon that we end up in this code path due to the number of bugs in
+Marvell firmware, but I'm just trying to say that it's an error code
+path and not a normal one.  In my mind that means the more things we
+can re-init the better.
 
-ARM: s5pv210: don't imply CONFIG_PLAT_SAMSUNG
+If this was, on the other hand, a reset that we were supposed to
+always assert when doing a normal operation (like it wants us to reset
+it when we switch modes, or something) then a lighter operation would
+make more sense.
 
-> > @@ -235,7 +235,6 @@ machine-$(CONFIG_PLAT_SPEAR)              += spear
-> >  # by CONFIG_* macro name.
-> >  plat-$(CONFIG_ARCH_OMAP)     += omap
-> >  plat-$(CONFIG_ARCH_S3C64XX)  += samsung
-> > -plat-$(CONFIG_ARCH_S5PV210)  += samsung
->
-> Would it make more sense to make this
->
->         plat-$(PLAT_SAMSUNG) += samsung
->
-> (in a separate patch)? Hmm, it seems there is no plat-y for
-> PLAT_S3C24XX=y builds. Is this intended? If yes, the directory name
-> containing "samsung" suggests something that seems untrue.
-
-By the end of the series, the plat-samsung directory is completely
-removed (folded into mach-s3c), so that would only add more
-churn for the same result I think.
-
-     Arnd
+-Doug
