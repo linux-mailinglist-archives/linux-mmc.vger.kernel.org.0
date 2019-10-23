@@ -2,125 +2,79 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29C71E0AC0
-	for <lists+linux-mmc@lfdr.de>; Tue, 22 Oct 2019 19:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 109DCE0F9C
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 03:18:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726915AbfJVRfc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 22 Oct 2019 13:35:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35486 "EHLO mail.kernel.org"
+        id S1731266AbfJWBSM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 22 Oct 2019 21:18:12 -0400
+Received: from gate.crashing.org ([63.228.1.57]:33457 "EHLO gate.crashing.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725837AbfJVRfc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 22 Oct 2019 13:35:32 -0400
-Received: from localhost (mobile-166-172-186-56.mycingular.net [166.172.186.56])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B094320700;
-        Tue, 22 Oct 2019 17:35:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571765730;
-        bh=Jld/hYcxZXmjGFVuWBdEY4QI+QyPIanxZKbLtqBLGBc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KjIZP5hfgFgUn1+Ljz18nxHSEXDVd7I1a8ueHM1nX8sqKYwTPALZAdaZeymD9A5Xk
-         AhqKSe2drZC6ffhxX2VDu2wyGx51R4WPVjG0f6K8p+Z2h7rwP81FZEar+clOopjyBk
-         JWILQvQH0HfCGebHAWRAKurHRkWaeIRbs5Klfa/c=
-Date:   Tue, 22 Oct 2019 13:35:27 -0400
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        id S1727140AbfJWBSM (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 22 Oct 2019 21:18:12 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9N1HUmB004727;
+        Tue, 22 Oct 2019 20:17:31 -0500
+Message-ID: <01389cb3b2eff0aea512ae2352d3fc4363a501be.camel@kernel.crashing.org>
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
+ updates
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:     Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/7] debugfs: Add debugfs_create_xul() for hexadecimal
- unsigned long
-Message-ID: <20191022173527.GD230934@kroah.com>
-References: <20191021143742.14487-1-geert+renesas@glider.be>
- <20191021143742.14487-2-geert+renesas@glider.be>
- <0f91839d858fcb03435ebc85e61ee4e75371ff37.camel@perches.com>
- <CAMuHMdU4OhsK6Jvy406ZCM+OeGcfVB0b7ccsne9KdMZFLf=JqQ@mail.gmail.com>
- <a32b6a6b5f48ff0c4685bd417a8fb66229d95033.camel@perches.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a32b6a6b5f48ff0c4685bd417a8fb66229d95033.camel@perches.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "contact@a-eon.com" <contact@a-eon.com>,
+        "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        mad skateman <madskateman@gmail.com>
+Date:   Wed, 23 Oct 2019 12:17:30 +1100
+In-Reply-To: <850A5079-4B0D-4508-9B46-A79074DAEEFD@xenosoft.de>
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+         <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
+         <20191015125105.GU25745@shell.armlinux.org.uk>
+         <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
+         <20191015131750.GV25745@shell.armlinux.org.uk>
+         <CAPDyKFq_0P8X-6hkjko1chLtOrwsxGcEFR31GcbffhhUQNw+bw@mail.gmail.com>
+         <ed35a87495b0f0d322f555a16fb3e0f7574415ac.camel@kernel.crashing.org>
+         <20191018101323.GG25745@shell.armlinux.org.uk>
+         <499d70835d5f3e3cc191e5b5444475cd5a8c4604.camel@kernel.crashing.org>
+         <8d7fd474-a1ad-e33f-f2ba-ec47f4bcc995@xenosoft.de>
+         <c467eeb45a545263311ae28a49ea5599bb2a882c.camel@kernel.crashing.org>
+         <850A5079-4B0D-4508-9B46-A79074DAEEFD@xenosoft.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Oct 22, 2019 at 02:07:34AM -0700, Joe Perches wrote:
-> On Tue, 2019-10-22 at 10:03 +0200, Geert Uytterhoeven wrote:
-> > Hi Joe,
-> 
-> Hey again Geert.
-> 
-> > On Mon, Oct 21, 2019 at 5:37 PM Joe Perches <joe@perches.com> wrote:
-> > > On Mon, 2019-10-21 at 16:37 +0200, Geert Uytterhoeven wrote:
-> > > > The existing debugfs_create_ulong() function supports objects of
-> > > > type "unsigned long", which are 32-bit or 64-bit depending on the
-> > > > platform, in decimal form.  To format objects in hexadecimal, various
-> > > > debugfs_create_x*() functions exist, but all of them take fixed-size
-> > > > types.
-> > > > 
-> > > > Add a debugfs helper for "unsigned long" objects in hexadecimal format.
-> > > > This avoids the need for users to open-code the same, or introduce
-> > > > bugs when casting the value pointer to "u32 *" or "u64 *" to call
-> > > > debugfs_create_x{32,64}().
-> > > []
-> > > > diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
-> > > []
-> > > > @@ -356,4 +356,14 @@ static inline ssize_t debugfs_write_file_bool(struct file *file,
-> > > > 
-> > > >  #endif
-> > > > 
-> > > > +static inline void debugfs_create_xul(const char *name, umode_t mode,
-> > > > +                                   struct dentry *parent,
-> > > > +                                   unsigned long *value)
-> > > > +{
-> > > > +     if (sizeof(*value) == sizeof(u32))
-> > > > +             debugfs_create_x32(name, mode, parent, (u32 *)value);
-> > > > +     else
-> > > > +             debugfs_create_x64(name, mode, parent, (u64 *)value);
-> > > 
-> > > trivia: the casts are unnecessary.
+On Mon, 2019-10-21 at 08:39 +0200, Christian Zigotzky wrote:
 > > 
-> > They are necessary, in both calls (so using #ifdef as suggested below
-> > won't help):
+> Hi Ben,
 > 
-> Silly thinko, (I somehow thought the compiler would
-> eliminate the code after the branch not taken, but
-> of course it has to compile it first...  oops)
-> though the #ifdef should work.
+> I think it isn’t good to use the kernel config option
+> "CONFIG_NOT_COHERENT_CACHE" if the system is coherent, is it?
 > 
-> > > This might be more sensible using #ifdef
-> > > 
-> > > static inline void debugfs_create_xul(const char *name, umode_t mode,
-> > >                                       struct dentry *parent,
-> > >                                       unsigned long *value)
-> > > {
-> > > #if BITS_PER_LONG == 64
-> > >         debugfs_create_x64(name, mode, parent, value);
-> > > #else
-> > >         debugfs_create_x32(name, mode, parent, value);
-> > > #endif
-> > > }
-> > 
-> > ... at the expense of the compiler checking only one branch.
-> > 
-> > Just like "if (IS_ENABLED(CONFIG_<foo>)" (when possible) is preferred
-> > over "#ifdef CONFIG_<foo>" because of compile-coverage, I think using
-> > "if" here is better than using "#if".
+> We tested the kernel with "CONFIG_NOT_COHERENT_CACHE" yesterday but
+> we didn’t find any differences to the coherent kernel.
 > 
-> True if all compilers will always eliminate the unused branch.
+> Could you please explain us the difference between the coherent and
+> not coherent kernel?
 
-Good ones will, we don't care about bad ones :)
+So first, ideally, we should make this a runtime mechanism...
+historical crap.
+
+Fundamentally when you set CONFIG_NOT_COHERENT_CACHE you tell the
+kernel that your processor isn't snooping the bus for DMA accesses
+colliding with the caches. Thus SW has to explicitly maintain cache
+coherency around DMA operations by invalidating or flushing the cache
+accordingly and by keeping pool(s) of non-cachable memory around
+to use for the consistent allocator.
+
+This slows things down.
+
+Cheers,
+Ben. 
+
