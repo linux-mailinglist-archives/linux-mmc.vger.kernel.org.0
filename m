@@ -2,100 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B95E1B04
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 14:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B204AE1BD7
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 15:11:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391622AbfJWMnz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Oct 2019 08:43:55 -0400
-Received: from mout.kundenserver.de ([212.227.17.24]:34143 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729191AbfJWMnz (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Oct 2019 08:43:55 -0400
-Received: from mail-qt1-f170.google.com ([209.85.160.170]) by
- mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1Miqvq-1hkv2T3MQ8-00ey7s; Wed, 23 Oct 2019 14:43:54 +0200
-Received: by mail-qt1-f170.google.com with SMTP id t20so32002027qtr.10;
-        Wed, 23 Oct 2019 05:43:53 -0700 (PDT)
-X-Gm-Message-State: APjAAAUsi8K06+gM1liavPuZEqai+ERGQU0ngcAP3QpNZZ1m5c5Iedin
-        7t/+FUOJqAjMhw8HjHYDkPBQhOxxuDp/riuFVkA=
-X-Google-Smtp-Source: APXvYqwNvhXDrr6AHjcTLNQwmEbDOVOaCUMULb04vjXb82DPGWeMlJtUjbZ9hzvBPBa+1tZw0f1o0rKNFQGqQEfhgWY=
-X-Received: by 2002:ac8:6956:: with SMTP id n22mr8785341qtr.7.1571834632511;
- Wed, 23 Oct 2019 05:43:52 -0700 (PDT)
+        id S2390807AbfJWNK4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 23 Oct 2019 09:10:56 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:35592 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726032AbfJWNK4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Oct 2019 09:10:56 -0400
+Received: by mail-ed1-f68.google.com with SMTP id k2so5018362edx.2;
+        Wed, 23 Oct 2019 06:10:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=lzwXfyhUE7yc9zrzbjqMe71sKuHvjq9U3aqm0Bd1AoI=;
+        b=S/A3aIGnph7/r49FdcX/+rOROLnuReURWi9z5AaaiFgwNDyHNguoHy2jLTKIg0AobS
+         Ii8Aob7iyqUE9px3EJl+QbMXPlHqS2i4AJjUkEXgVYMOpJB5ylqfR28AxSRz0LGrE0oN
+         dz0N+b0G4A1+WoZyqXNpZC27TiMgZrwh3OQIocjQVBgN+3XtOoyCaMvlIaqATpBbxqeb
+         aH+TRLRapqnj+ldkTcAZ0Bi9oR73bzEGJ0oLBkEdJwU7OEXluqUoH1Bhl4rcsWPwWDMa
+         DGF3xhA2WaMsusqyac2NzMIPJnBzhBlKnq/yDYu7/oI4+szOWAtVn2bNxBf1GiYtQfaY
+         jRtQ==
+X-Gm-Message-State: APjAAAXIBu2F0LkRRidZBYch85DAr88A/27wF1+klG85knTLuwFmQPUI
+        Ki2dfON5MI5tkKTRGbG4ylA=
+X-Google-Smtp-Source: APXvYqyft44OcCGb0xN0+fC1gmfK8usNRgvA/I5KY4vuTv2zLifQ5kptU9qNo1AQahi2rM4m7Aa/dg==
+X-Received: by 2002:aa7:c595:: with SMTP id g21mr36717915edq.79.1571836252860;
+        Wed, 23 Oct 2019 06:10:52 -0700 (PDT)
+Received: from pi3 ([194.230.155.217])
+        by smtp.googlemail.com with ESMTPSA id b12sm785479edq.75.2019.10.23.06.10.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2019 06:10:52 -0700 (PDT)
+Date:   Wed, 23 Oct 2019 15:10:49 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Kukjin Kim <kgene@kernel.org>, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-clk@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
+        Lihua Yao <ylhuajnu@163.com>,
+        =?utf-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
+        Lihua Yao <ylhuajnu@outlook.com>,
+        Sergio Prado <sergio.prado@e-labworks.com>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: Re: [PATCH 00/36] ARM: samsung platform cleanup
+Message-ID: <20191023131049.GG11048@pi3>
+References: <20191010202802.1132272-1-arnd@arndb.de>
 MIME-Version: 1.0
-References: <20191010202802.1132272-1-arnd@arndb.de> <20191010203043.1241612-1-arnd@arndb.de>
- <20191010203043.1241612-8-arnd@arndb.de> <20191023105717.GF10630@pi3>
-In-Reply-To: <20191023105717.GF10630@pi3>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 23 Oct 2019 14:43:36 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2k0nZCJu-DCC7unMM_rOU7edmBOnb7dTKw_mAsi5sUuA@mail.gmail.com>
-Message-ID: <CAK8P3a2k0nZCJu-DCC7unMM_rOU7edmBOnb7dTKw_mAsi5sUuA@mail.gmail.com>
-Subject: Re: [PATCH 08/36] ARM: exynos: stop selecting PLAT_SAMSUNG
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Kukjin Kim <kgene@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
-        <linux-samsung-soc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Olof Johansson <olof@lixom.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:L4atwlEocu90YjR8kiseY9DslQMah477JvLfpWOhKR/rmD2Bv6N
- lpxuh4EyXZHErIWkJIPqqttHoJUiUAiJ5cJTFNpOIPhOdz15qWoTsZHvroO38XGLiw52cZ0
- 0z72sejYN1kRj3EgrXryKCXN+NhLFdDZL4gc3P8GWAVxlpe6C5YU0UZDeerkajM4PRlG88r
- uQV74O4Pj+RP8Gptliz9A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:IW6Av6rs4T0=:VPxx28Gp8EMmMBDCDFDd59
- BTxb7zuxHXwCMGHJqsZFM337k0SBt1J8Vaxl5w9EM43CwFhI2RLsI09MMk1C00/fNdcq1nK7r
- t8069eoiB87XGoIuT+GMGa71uHSOF3PTinoB3lc+g6bebkIVtqlvTt8QOA4wQ55A1PoICaVy0
- oHGQhaK5sbsOUKyBRQzeum2bHuPCaKjjooiCl/BjGQxwncAn4H+GC0uz5K0fZQp0zCLYFn30O
- Qpf3QMWPMUCHUcLtW0DIc6Q6yvoRIZR/P7tX5iW09p5H547tLkqtcA7iDtjzFaBHu8sGsI7kd
- jpVoAMgQTdEMlV5UcMSP4hEeEsi2oIg+N/Jc7s7dBluuVnZXMun8AuJd4nzpgmpqu5Lr9W9ST
- KSUkktbWwhL0V+MJRgSD2LoAiTFHDtl7wHaek05038LGBdxtnvWDNRXmFN7xdy/BjwelDThTS
- mvJhQRQQQIpn4NmjcaucPKnWH7mkvWbRy3pr3bp0pCmaAPBic7aGy2d+SKPErDMfpXP4LiCcT
- Q2oXnnYd05yCEunJH9ILMwtitcUVu4rg6bj/07zaioC2ePeZY2fPdgUixQPwA7B1fLmR6IMMq
- LpIdkiL2BlgykIPpW8SidODeECo0ym96jwjxAHmHyolxGvkzrTi8zjWayeR5gc0kw7g0Ou7qn
- /FRsecRduMpcpJsyFuBqxSOWD2ctn5O0Ul87qvpA4HJIdVKsxmn7ymjkSjiUTnPmJ0vMWhSUM
- rFlTdcU5y1/CbiSt71AHa3DaeM50zXGhiPZGx/9BCdyHdbW4BklPdiY7/ak8jprwLgjnSI261
- EKoFZNchJhmKcm6wPAASuQN0HGm6hEhmw1Qdz8q3423aN8vmltPSReNeC0PMKpvo+wVsmd11P
- eJSaAhz1gF+sGZkNDmhw==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20191010202802.1132272-1-arnd@arndb.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Oct 23, 2019 at 12:57 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> On Thu, Oct 10, 2019 at 10:29:52PM +0200, Arnd Bergmann wrote:
-> > @@ -1022,7 +1022,7 @@ choice
-> >                 by the boot-loader before use.
-> >
-> >       config DEBUG_S3C_UART2
-> > -             depends on PLAT_SAMSUNG
-> > +             depends on PLAT_SAMSUNG || ARCH_EXYNOS
-> >               select DEBUG_EXYNOS_UART if ARCH_EXYNOS
-> >               select DEBUG_S3C24XX_UART if ARCH_S3C24XX
-> >               select DEBUG_S3C64XX_UART if ARCH_S3C64XX
-> > @@ -1034,7 +1034,7 @@ choice
-> >                 by the boot-loader before use.
-> >
-> >       config DEBUG_S3C_UART3
-> > -             depends on PLAT_SAMSUNG && (ARCH_EXYNOS || ARCH_S5PV210)
-> > +             depends on ARCH_EXYNOS || ARCH_S5PV210
->
-> You need to keep PLAT_SAMSUNG because of additional architectures, so
-> follow pattern from DEBUG_S3C_UART2.
+On Thu, Oct 10, 2019 at 10:28:02PM +0200, Arnd Bergmann wrote:
+> I've spent some time looking at the remaining ARMv4/ARMv5 platforms
+> that are not part of ARCH_MULTIPLATFORM, and tried to get them closer
+> to that. Here is what came out of that for the samsung platforms:
+> 
+> * Exynos and s5pv210 are made independent of plat-samsung
+> * device drivers stop using mach/*.h headers for s3c24xx
+>   (and other platforms not in this series)
+> * s3c24xx and s3c64xx get merged into mach-s3c, removing
+>   the need for plat-samsung (I have other patches for the
+>   remaining plat-* directories)
+> * mach/io.h gets cleaned up to only be needed for BAST
+>   PC104 mode (looking for ideas to proceed)
+> * mach/irqs.h remains for now, this still needs to be converted
+>   to sparse IRQs.
+> 
+> Some bits are a little ugly, but overall I think this a big
+> improvement.
+> 
+> The contents are available for testing in
+> 
+> git://kernel.org:/pub/scm/linux/kernel/git/arnd/playground.git s3c-multiplatform
 
-Are you sure? I think my version is correct: for UART2, the
-"PLAT_SAMSUNG || ARCH_EXYNOS" is equivalent to "s3c24xx || s3c64xx ||
-s5pv210 || exynos", which keeps the existing behavior unchanged.
+When sending v2, can you Cc:
 
-For UART3, the "PLAT_SAMSUNG && ..." is redundant, this is already
-limited to "s5pv210 || exynos", which my patch keeps. Changing it to
-"PLAT_SAMSUNG || ..." would allow selecting the symbol on s3c24xx
-and s3c64xx, which presumably is not valid.
+Paweł Chmiel <pawel.mikolaj.chmiel@gmail.com>
+Lihua Yao <ylhuajnu@outlook.com>
+(or Lihua Yao <ylhuajnu@163.com> if outlook.com bounces)
+Sergio Prado <sergio.prado@e-labworks.com>
+Sylwester Nawrocki <s.nawrocki@samsung.com>
 
-      Arnd
+These are folks which to my knowledge had working S3C and S5P boards
+so maybe they could provide testing.
+
+Best regards,
+Krzysztof
+
