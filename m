@@ -2,198 +2,127 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00019E1E04
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 16:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87AFFE1E37
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 16:32:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391072AbfJWOWE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Oct 2019 10:22:04 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:17517 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725852AbfJWOWD (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Oct 2019 10:22:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571840521;
-        s=strato-dkim-0002; d=xenosoft.de;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=4vLgsN6RbRzedKIzquMpNM2ncOlDpPB+Smka4HKMEXs=;
-        b=ab5bylqN22dxY9kviuulMD+5iSmQe2FhsPHAQuxblZbFZiZJQZeF+6a59xUq0tR7lZ
-        1Oa+okpxN58avMX9Uf960LB4etVXkzhPrNmSe5oXUfa7j8Wr/FGlem5BgKANyaml70b+
-        bCGsB1zAf9gVcIKX0geEuI+cuawowwocsQs2ASTbadg+rFEQHy/7lCQh5B+kUQt0bwKe
-        e1QtkDiAdOEYQyeAs0U1bSyA7qa0MbCVKv/1iZjgGW3HqsfVRuVrU3tG9hKnjw6S5cIJ
-        rj7oL/eU8CyEOduyfIRzISfvqi/fTwrD1PGQWjENi0sGDIfU3fKPB2o0Cl4QDLAtKtZa
-        vvSA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7NWZ5grphlic4MXDJs3VGLK6t/vDxAYt7W8HwvHU="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a01:598:8189:4baa:25fa:a65:e9dc:c66a]
-        by smtp.strato.de (RZmta 44.28.1 AUTH)
-        with ESMTPSA id 60869dv9NEKhlnb
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Wed, 23 Oct 2019 16:20:43 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (1.0)
-Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2' updates
-From:   Christian Zigotzky <chzigotzky@xenosoft.de>
-X-Mailer: iPhone Mail (16G102)
-In-Reply-To: <87muds586t.fsf@mpe.ellerman.id.au>
-Date:   Wed, 23 Oct 2019 16:20:42 +0200
-Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, Christian Zigotzky <info@xenosoft.de>,
+        id S2390019AbfJWOcR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Oct 2019 10:32:17 -0400
+Received: from pandora.armlinux.org.uk ([78.32.30.218]:60754 "EHLO
+        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389995AbfJWOcR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Oct 2019 10:32:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=cjPuS08fLHV8el8EaxndD6I/d/IQPJlUbi111PAD/l4=; b=iJ2v+CSstuLBKM08pLTx576aM
+        VxntxxCQSSo10E8/SL6JaCu7DGHBQbYKoGE9AWr2TOiZmWMAk1KfV1lMlOkN3GsHB0ajoUGKqdzj8
+        u202GiupQQbUAZAkvODo9ATZleYIkhkrpJRPRnu8LY4MSuAHQSWl3ggq8+45cAm2o2shQTiCGE7oc
+        QAJHHRgOHofIUFTKn/4GK+tcL3Hv9lV0IQf2zQLc3zHoiaLLO8l4DaQpQFUp1fN3yI7bBQAM2O2eN
+        Ph+2cwxlod+dsiP0rzFs98e6Yows2hrmXXJjtI8ixe3nYg/6TeHUpejwD6D/kMIr5FIou+yUS0Rpj
+        F7KtKig6Q==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58106)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1iNHg8-0005SK-LT; Wed, 23 Oct 2019 15:32:00 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1iNHg7-0005cA-5R; Wed, 23 Oct 2019 15:31:59 +0100
+Date:   Wed, 23 Oct 2019 15:31:59 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Paul Mackerras <paulus@samba.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Christian Zigotzky <info@xenosoft.de>,
         "contact@a-eon.com" <contact@a-eon.com>,
         "R.T.Dickinson" <rtd2@xtra.co.nz>,
         mad skateman <madskateman@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <AD53973C-4491-4114-9CEE-81F516EF6249@xenosoft.de>
-References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de> <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de> <20191015125105.GU25745@shell.armlinux.org.uk> <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de> <20191015131750.GV25745@shell.armlinux.org.uk> <87muds586t.fsf@mpe.ellerman.id.au>
-To:     Michael Ellerman <mpe@ellerman.id.au>
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
+ updates
+Message-ID: <20191023143159.GB25745@shell.armlinux.org.uk>
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
+ <20191015125105.GU25745@shell.armlinux.org.uk>
+ <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
+ <20191015131750.GV25745@shell.armlinux.org.uk>
+ <87muds586t.fsf@mpe.ellerman.id.au>
+ <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
+ <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+On Wed, Oct 23, 2019 at 08:52:33AM -0500, Rob Herring wrote:
+> > I think this should have been done the other way around and default to
+> > coherent since most traditional OF platforms are coherent, and you
+> > can't just require those DTs to change.
+> 
+> You can blame me. This was really only intended for cases where
+> coherency is configurable on a per peripheral basis and can't be
+> determined in other ways.
+> 
+> The simple solution here is simply to use the compatible string for
+> the device to determine coherent or not.
 
-The patch below works. I compiled the RC4 of kernel 5.4 with this patch toda=
-y and the onboard SD card works without any problems.
+It really isn't that simple.
 
-Thanks!
+There are two aspects to coherency, both of which must match:
 
-Christian
+1) The configuration of the device
+2) The configuration of the kernel's DMA API
 
-> On 23. Oct 2019, at 07:42, Michael Ellerman <mpe@ellerman.id.au> wrote:
->=20
-> Russell King - ARM Linux admin <linux@armlinux.org.uk> writes:
->>> On Tue, Oct 15, 2019 at 03:12:49PM +0200, Christian Zigotzky wrote:
->>> Hello Russell,
->>>=20
->>> You asked me about "dma-coherent" in the Cyrus device tree. Unfortunatel=
-y I
->>> don't find the property "dma-coherent" in the dtb source files.
->>>=20
->>> Output of "fdtdump cyrus_p5020_eth_poweroff.dtb | grep dma":
->>>=20
->>> dma0 =3D "/soc@ffe000000/dma@100300";
->>>         dma1 =3D "/soc@ffe000000/dma@101300";
->>>         dma@100300 {
->>>             compatible =3D "fsl,eloplus-dma";
->>>             dma-channel@0 {
->>>                 compatible =3D "fsl,eloplus-dma-channel";
->>>             dma-channel@80 {
->>>                 compatible =3D "fsl,eloplus-dma-channel";
->>>             dma-channel@100 {
->>>                 compatible =3D "fsl,eloplus-dma-channel";
->>>             dma-channel@180 {
->>>                 compatible =3D "fsl,eloplus-dma-channel";
->>>         dma@101300 {
->>>             compatible =3D "fsl,eloplus-dma";
->>>             dma-channel@0 {
->>>                 compatible =3D "fsl,eloplus-dma-channel";
->>>             dma-channel@80 {
->>>                 compatible =3D "fsl,eloplus-dma-channel";
->>>             dma-channel@100 {
->>>                 compatible =3D "fsl,eloplus-dma-channel";
->>>             dma-channel@180 {
->>>                 compatible =3D "fsl,eloplus-dma-channel";
->>=20
->> Hmm, so it looks like PowerPC doesn't mark devices that are dma
->> coherent with a property that describes them as such.
->>=20
->> I think this opens a wider question - what should of_dma_is_coherent()
->> return for PowerPC?  It seems right now that it returns false for
->> devices that are DMA coherent, which seems to me to be a recipe for
->> future mistakes.
->=20
-> Right, it seems of_dma_is_coherent() has baked in the assumption that
-> devices are non-coherent unless explicitly marked as coherent.
->=20
-> Which is wrong on all or at least most existing powerpc systems
-> according to Ben.
->=20
->> Any ideas from the PPC maintainers?
->=20
-> Fixing it at the source seems like the best option to prevent future
-> breakage.
->=20
-> So I guess that would mean making of_dma_is_coherent() return true/false
-> based on CONFIG_NOT_COHERENT_CACHE on powerpc.
->=20
-> We could do it like below, which would still allow the dma-coherent
-> property to work if it ever makes sense on a future powerpc platform.
->=20
-> I don't really know any of this embedded stuff well, so happy to take
-> other suggestions on how to handle this mess.
->=20
-> cheers
->=20
->=20
-> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setu=
-p-common.c
-> index 25aaa3903000..b96c9010acb6 100644
-> --- a/arch/powerpc/kernel/setup-common.c
-> +++ b/arch/powerpc/kernel/setup-common.c
-> @@ -760,6 +760,22 @@ static int __init check_cache_coherency(void)
-> late_initcall(check_cache_coherency);
-> #endif /* CONFIG_CHECK_CACHE_COHERENCY */
->=20
-> +#ifndef CONFIG_NOT_COHERENT_CACHE
-> +/*
-> + * For historical reasons powerpc kernels are built with hard wired knowl=
-edge of
-> + * whether or not DMA accesses are cache coherent. Additionally device tr=
-ees on
-> + * powerpc do not typically support the dma-coherent property.
-> + *
-> + * So when we know that DMA is coherent, override arch_of_dma_is_coherent=
-() to
-> + * tell the drivers/of code that all devices are coherent regardless of w=
-hether
-> + * they have a dma-coherent property.
-> + */
-> +bool arch_of_dma_is_coherent(struct device_node *np)
-> +{
-> +    return true;
-> +}
-> +#endif
-> +
-> #ifdef CONFIG_DEBUG_FS
-> struct dentry *powerpc_debugfs_root;
-> EXPORT_SYMBOL(powerpc_debugfs_root);
-> diff --git a/drivers/of/address.c b/drivers/of/address.c
-> index 978427a9d5e6..3a4b2949a322 100644
-> --- a/drivers/of/address.c
-> +++ b/drivers/of/address.c
-> @@ -993,6 +993,14 @@ int of_dma_get_range(struct device_node *np, u64 *dma=
-_addr, u64 *paddr, u64 *siz
-> }
-> EXPORT_SYMBOL_GPL(of_dma_get_range);
->=20
-> +/*
-> + * arch_of_dma_is_coherent - Arch hook to determine if device is coherent=
- for DMA
-> + */
-> +bool __weak arch_of_dma_is_coherent(struct device_node *np)
-> +{
-> +    return false;
-> +}
-> +
-> /**
->  * of_dma_is_coherent - Check if device is coherent
->  * @np:    device node
-> @@ -1002,8 +1010,12 @@ EXPORT_SYMBOL_GPL(of_dma_get_range);
->  */
-> bool of_dma_is_coherent(struct device_node *np)
-> {
-> -    struct device_node *node =3D of_node_get(np);
-> +    struct device_node *node;
-> +
-> +    if (arch_of_dma_is_coherent(np))
-> +        return true;
->=20
-> +    np =3D of_node_get(np);
->    while (node) {
->        if (of_property_read_bool(node, "dma-coherent")) {
->            of_node_put(node);
+(1) is controlled by the driver, which can make the decision any way
+it pleases.
+
+(2) on ARM64 is controlled depending on whether or not "dma-coherent"
+is specified in the device tree, since ARM64 can have a mixture of
+DMA coherent and non-coherent devices.
+
+A mismatch between (1) and (2) results in data corruption, potentially
+eating your filesystem.  So, it's very important that the two match.
+
+These didn't match for the LX2160A, but, due to the way CMA was working,
+we sort of got away with it, but it was very dangerous as far as data
+safety went.
+
+Then, a change to CMA happened which moved where it was located, which
+caused a regression.  Reverting the CMA changes didn't seem to be an
+option, so another solution had to be found.
+
+I started a discussion on how best to solve this:
+
+https://archive.armlinux.org.uk/lurker/thread/20190919.041320.1e53541f.en.html
+
+and the solution that the discussion came out with was the one that has
+been merged - which we now know caused a regression on PPC.
+
+Using compatible strings doesn't solve the issue: there is no way to
+tell the DMA API from the driver that the device is coherent.  The
+only way to do that is via the "dma-coherent" property in DT on ARM64.
+
+To say that this is a mess is an under-statement, but we seem to have
+ended up here because of a series of piece-meal changes that don't seem
+to have been thought through enough.
+
+So, what's the right way to solve this, and ensure that the DMA API and
+device match as far as their coherency expectations go?  Revert all the
+changes for sdhci-of-esdhc and CMA back to 5.0 or 5.1 state?
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
+According to speedtest.net: 11.9Mbps down 500kbps up
