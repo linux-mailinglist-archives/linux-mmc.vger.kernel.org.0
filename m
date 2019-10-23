@@ -2,127 +2,146 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87AFFE1E37
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 16:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 283C4E1ED9
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 17:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390019AbfJWOcR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Oct 2019 10:32:17 -0400
-Received: from pandora.armlinux.org.uk ([78.32.30.218]:60754 "EHLO
-        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389995AbfJWOcR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Oct 2019 10:32:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=cjPuS08fLHV8el8EaxndD6I/d/IQPJlUbi111PAD/l4=; b=iJ2v+CSstuLBKM08pLTx576aM
-        VxntxxCQSSo10E8/SL6JaCu7DGHBQbYKoGE9AWr2TOiZmWMAk1KfV1lMlOkN3GsHB0ajoUGKqdzj8
-        u202GiupQQbUAZAkvODo9ATZleYIkhkrpJRPRnu8LY4MSuAHQSWl3ggq8+45cAm2o2shQTiCGE7oc
-        QAJHHRgOHofIUFTKn/4GK+tcL3Hv9lV0IQf2zQLc3zHoiaLLO8l4DaQpQFUp1fN3yI7bBQAM2O2eN
-        Ph+2cwxlod+dsiP0rzFs98e6Yows2hrmXXJjtI8ixe3nYg/6TeHUpejwD6D/kMIr5FIou+yUS0Rpj
-        F7KtKig6Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58106)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1iNHg8-0005SK-LT; Wed, 23 Oct 2019 15:32:00 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1iNHg7-0005cA-5R; Wed, 23 Oct 2019 15:31:59 +0100
-Date:   Wed, 23 Oct 2019 15:31:59 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Paul Mackerras <paulus@samba.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Christian Zigotzky <info@xenosoft.de>,
-        "contact@a-eon.com" <contact@a-eon.com>,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        mad skateman <madskateman@gmail.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
- updates
-Message-ID: <20191023143159.GB25745@shell.armlinux.org.uk>
-References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
- <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
- <20191015125105.GU25745@shell.armlinux.org.uk>
- <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
- <20191015131750.GV25745@shell.armlinux.org.uk>
- <87muds586t.fsf@mpe.ellerman.id.au>
- <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
- <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+        id S2390922AbfJWPHc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Oct 2019 11:07:32 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:40720 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390530AbfJWPHc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Oct 2019 11:07:32 -0400
+Received: by mail-vs1-f66.google.com with SMTP id v10so14001090vsc.7
+        for <linux-mmc@vger.kernel.org>; Wed, 23 Oct 2019 08:07:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=50+55fOZpgMJ3ywx+S/l93zu0e/H3x84JmCU84w/5zk=;
+        b=q7Ee2Ifo7ppiH/FKiG1JgwqGKZ1PinhbWDZf6kFjfFckO3ROAeO8HOoKPARGjpGWMm
+         k8InVem2hsg+7b4mzlj7oe3E/rBJf3xO2TOVOww8SH3xZiP4HH4Y92n0FsFTeuuY8OgS
+         G5V6hEmg7OuenV8hm8f/b8CmDQaAhriuDFvPur/9kNekVNyupla+jLGoXs9qrHhqaYwJ
+         maQoszO5pAuw2uPDjCduhAbH0FjaiMDlV+cTzG+3D7rXtAJSNI3bV/tborPPKSBEjRsm
+         jqmSrtUlAmwVIxF9Dd6iwGe34Zx5IJEjp415rTvdbuK4J8CnsYrd+LKAhuVnAogllQcQ
+         sPiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=50+55fOZpgMJ3ywx+S/l93zu0e/H3x84JmCU84w/5zk=;
+        b=IoktTFSYR4mz8eOJnuYTNM4hCYmeXnOewXZ6VLkps1Azy+8GvWvehJmV9kRGroBW3a
+         cJmB/zFy2z0Deu/2Z/FtVmwjrDIsU2NguAMRc/ZFWFiXpwvHYC+9mq+odRN/ZeLXEtkO
+         trYgvVn9xSsH70F5fMioVTOFxufVKB9kiwTTIUvj5HcdzhaOjL2bF5j3suiLtilE/gu7
+         iLd4h6d+k9XuT6t5IeFk6ScZtq6sKLcxlmajXfGGI4t0qcOP+dz1yj8nyUn/kc4XmqCa
+         vhmMsSFCE6+A1It5TsQmkECha33sflHZnWzCfG35nLN+7jmn1LzwmdR8l11TK2gK5G2y
+         pywg==
+X-Gm-Message-State: APjAAAUAykQ3bwqMs4hYXjhs19Ck1hTYTX25KKKRZ21Yb5iMNvsjtmTT
+        7gNt51MUne0f5IQkve3qhJqOzv1fKEq1mL+MlpwHEg==
+X-Google-Smtp-Source: APXvYqzS3l7CbELaPuMRCmS340ZTE5lYOpf9CdTCmiur80L7lI/V0txZw8FoZiJ8vdITAcD+/zadl2+515h4rqpyhiQ=
+X-Received: by 2002:a67:ead4:: with SMTP id s20mr3477590vso.165.1571843250696;
+ Wed, 23 Oct 2019 08:07:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191017135739.1315-1-ulf.hansson@linaro.org> <20191017135739.1315-3-ulf.hansson@linaro.org>
+ <CAD=FV=XsCGqLwKOicW47Yk3y3mHzU+9fR8kS7jx2pW6SzjgCbg@mail.gmail.com>
+ <CAPDyKFq_Utz+ztdXTV534pY9Q9CyTSBJV_mfyPKAsHxaSyZjpA@mail.gmail.com> <CAD=FV=U7Tm0eB00Ze8PUvCvDw_nqHFL6nGO=vEP2t9d-zVveTw@mail.gmail.com>
+In-Reply-To: <CAD=FV=U7Tm0eB00Ze8PUvCvDw_nqHFL6nGO=vEP2t9d-zVveTw@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 23 Oct 2019 17:06:54 +0200
+Message-ID: <CAPDyKFoumdj9u1B4fQh8ws2PqvtYtVekDyq+M4nLs=hriqD-VA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: core: Re-work HW reset for SDIO cards
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Oct 23, 2019 at 08:52:33AM -0500, Rob Herring wrote:
-> > I think this should have been done the other way around and default to
-> > coherent since most traditional OF platforms are coherent, and you
-> > can't just require those DTs to change.
-> 
-> You can blame me. This was really only intended for cases where
-> coherency is configurable on a per peripheral basis and can't be
-> determined in other ways.
-> 
-> The simple solution here is simply to use the compatible string for
-> the device to determine coherent or not.
+On Tue, 22 Oct 2019 at 16:47, Doug Anderson <dianders@chromium.org> wrote:
+>
+> Hi,
+>
+> On Mon, Oct 21, 2019 at 11:51 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >
+> > > The problem I see here is that callers of this reset function aren't
+> > > expecting it to work this way.  Look specifically at
+> > > mwifiex_sdio_card_reset_work().  It's assuming that it needs to do
+> > > things like shutdown / reinit.  Now it's true that the old
+> > > mwifiex_sdio_card_reset_work() was pretty broken on any systems that
+> > > also had SDIO bluetooth, but presumably it worked OK on systems
+> > > without SDIO Bluetooth.  I don't think it'll work so well now.
+> >
+> > Good point!
+> >
+> > I guess I was hoping that running through ->remove() and then
+> > ->probe() for the SDIO func drivers should simply take care of
+> > whatever that may be needed. In some way this makes the driver broken
+> > already in regards to this path, but never mind.
+>
+> Yeah, probably true.  I guess if anyone actually expected to use one
+> of these cards as a removable SDIO card (I have seen such dev boards
+> long ago) then it would always have been possible for someone to
+> remove the card at just the wrong time and break things.
 
-It really isn't that simple.
+Well, this isn't solely about card removal but driver removal as well.
+And the latter can be managed from user space at any point in time.
 
-There are two aspects to coherency, both of which must match:
+>
+>
+> > > Testing shows that indeed your patch breaks mwifiex reset worse than
+> > > it was before (AKA WiFi totally fails instead of it just killing
+> > > Bluetooth).
+> > >
+> > > I think it may be better to add a new API call rather than trying to
+> > > co-opt the old one.  Maybe put a WARN_ON() for the old API call to
+> > > make people move away from it, or something?
+> >
+> > Thanks again for testing and for valuable feedback! Clearly this needs
+> > a little more thinking.
+> >
+> > An additional concern I see with the "hotplug approach" implemented in
+> > $subject patch, is that it becomes unnecessary heavy when there is
+> > only one SDIO func driver bound.
+> >
+> > In one way I am tempted to try to address that situation, as it seems
+> > a bit silly to do full hotplug dance when it isn't needed.
+>
+> True, though I kinda like the heavy solution here.  At least in the
+> mwifiex case this isn't a part of the normal flow.  AKA: we don't call
+> this function during normal bootup nor during any normal operations.
+> It's much more of an "oh crap, something's not working and we don't
+> know what to do" type solution.  I mean, I guess it's still not
+> uncommon that we end up in this code path due to the number of bugs in
+> Marvell firmware, but I'm just trying to say that it's an error code
+> path and not a normal one.  In my mind that means the more things we
+> can re-init the better.
 
-1) The configuration of the device
-2) The configuration of the kernel's DMA API
+You have a point, but...
 
-(1) is controlled by the driver, which can make the decision any way
-it pleases.
+>
+> If this was, on the other hand, a reset that we were supposed to
+> always assert when doing a normal operation (like it wants us to reset
+> it when we switch modes, or something) then a lighter operation would
+> make more sense.
 
-(2) on ARM64 is controlled depending on whether or not "dma-coherent"
-is specified in the device tree, since ARM64 can have a mixture of
-DMA coherent and non-coherent devices.
+This is indeed the tricky part, as it depends on the level of bugs,
+but also under what specific circumstances the reset is getting
+called.
 
-A mismatch between (1) and (2) results in data corruption, potentially
-eating your filesystem.  So, it's very important that the two match.
+In the TI case (drivers/net/wireless/ti/wlcore/sdio.c) the reset is
+executed at the "power on" case, which for example is at system
+resume. And we want system resume to be as fast as possible...
 
-These didn't match for the LX2160A, but, due to the way CMA was working,
-we sort of got away with it, but it was very dangerous as far as data
-safety went.
+I am exploring a few options to deal with both cases, let's see what I
+can come up with in a day or two.
 
-Then, a change to CMA happened which moved where it was located, which
-caused a regression.  Reverting the CMA changes didn't seem to be an
-option, so another solution had to be found.
-
-I started a discussion on how best to solve this:
-
-https://archive.armlinux.org.uk/lurker/thread/20190919.041320.1e53541f.en.html
-
-and the solution that the discussion came out with was the one that has
-been merged - which we now know caused a regression on PPC.
-
-Using compatible strings doesn't solve the issue: there is no way to
-tell the DMA API from the driver that the device is coherent.  The
-only way to do that is via the "dma-coherent" property in DT on ARM64.
-
-To say that this is a mess is an under-statement, but we seem to have
-ended up here because of a series of piece-meal changes that don't seem
-to have been thought through enough.
-
-So, what's the right way to solve this, and ensure that the DMA API and
-device match as far as their coherency expectations go?  Revert all the
-changes for sdhci-of-esdhc and CMA back to 5.0 or 5.1 state?
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+Kind regards
+Uffe
