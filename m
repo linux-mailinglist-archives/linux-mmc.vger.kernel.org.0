@@ -2,76 +2,186 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B3E4E1255
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 08:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E786E1863
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 12:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732574AbfJWGmO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Oct 2019 02:42:14 -0400
-Received: from gate.crashing.org ([63.228.1.57]:38835 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729666AbfJWGmO (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 23 Oct 2019 02:42:14 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9N6fObv015843;
-        Wed, 23 Oct 2019 01:41:25 -0500
-Message-ID: <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
-Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
- updates
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Paul Mackerras <paulus@samba.org>
-Cc:     ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
-        Christian Zigotzky <info@xenosoft.de>,
-        "contact@a-eon.com" <contact@a-eon.com>,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        mad skateman <madskateman@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Date:   Wed, 23 Oct 2019 17:41:24 +1100
-In-Reply-To: <87muds586t.fsf@mpe.ellerman.id.au>
-References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
-         <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
-         <20191015125105.GU25745@shell.armlinux.org.uk>
-         <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
-         <20191015131750.GV25745@shell.armlinux.org.uk>
-         <87muds586t.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S2390611AbfJWK5W (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Oct 2019 06:57:22 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:43921 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390540AbfJWK5W (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Oct 2019 06:57:22 -0400
+Received: by mail-ed1-f68.google.com with SMTP id q24so9419919edr.10;
+        Wed, 23 Oct 2019 03:57:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=AVFd6LJ96F4qd/EigznQJuvz3SMKebF4Tl0OCKWEbU4=;
+        b=QzWyaQ7NqoDAwu3CVR9ad0gwsDFCbX0bqO8rrs6wPJchDSXiyHyIDgpHz5oDIRW1kN
+         jxOIRVSrZK/8e4qwWvE4BFo06pJId/91uJIlPt7HCmR6SNWky5BmJB4Kz4DEB6vKvCaw
+         rCEFWsiPeHEyd+IIeity+8p1Exxo4WPSIZP3l/sZRtSKClLBc1fqIJ4Ll8IGdwzp/ngS
+         oo2PQco+ck9k3ujfjKxF9sRwyNlgvtZNjvVRBzF8gQue0dG4qt2CcYT5aGb0qInL1DBM
+         6nF/PC+rjf0haW7Yb5jCWXcr7dk2YT4z/SC1xIU1nOsSOjrzojDI7wdUM+pf00CbbVQT
+         ItQA==
+X-Gm-Message-State: APjAAAX5VPED3PoKSSZeNKt83ug2mwXN9JLQlVVnEN4ZzbNCBgNT44dR
+        lAQ8193bos/6iMLliVK5ZuhJAEGR
+X-Google-Smtp-Source: APXvYqz2m9c3DsGIx81hfOZRR9q8BRfSarhYDkrVPcLRoup2R/1lZqDrXp+W/zwiqQP1RT4zv9Z6wQ==
+X-Received: by 2002:a17:906:585a:: with SMTP id h26mr20637220ejs.329.1571828239818;
+        Wed, 23 Oct 2019 03:57:19 -0700 (PDT)
+Received: from pi3 ([194.230.155.217])
+        by smtp.googlemail.com with ESMTPSA id m5sm143443ejc.70.2019.10.23.03.57.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2019 03:57:19 -0700 (PDT)
+Date:   Wed, 23 Oct 2019 12:57:17 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Kukjin Kim <kgene@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linus.walleij@linaro.org,
+        Olof Johansson <olof@lixom.net>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
+Subject: Re: [PATCH 08/36] ARM: exynos: stop selecting PLAT_SAMSUNG
+Message-ID: <20191023105717.GF10630@pi3>
+References: <20191010202802.1132272-1-arnd@arndb.de>
+ <20191010203043.1241612-1-arnd@arndb.de>
+ <20191010203043.1241612-8-arnd@arndb.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191010203043.1241612-8-arnd@arndb.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 2019-10-23 at 16:42 +1100, Michael Ellerman wrote:
+On Thu, Oct 10, 2019 at 10:29:52PM +0200, Arnd Bergmann wrote:
+> Now that no code in arch/arm is shared between mach-exynos and the
+> others, make the split formal.
 > 
-> Right, it seems of_dma_is_coherent() has baked in the assumption that
-> devices are non-coherent unless explicitly marked as coherent.
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/arm/Kconfig.debug        | 8 ++++----
+>  arch/arm/Makefile             | 1 -
+>  arch/arm/mach-exynos/Makefile | 4 ----
+>  arch/arm/plat-samsung/Kconfig | 4 ++--
+>  drivers/mmc/host/Kconfig      | 2 +-
+>  5 files changed, 7 insertions(+), 12 deletions(-)
 > 
-> Which is wrong on all or at least most existing powerpc systems
-> according to Ben.
+> diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+> index d05b836dfeb2..9c4f2d6deb06 100644
+> --- a/arch/arm/Kconfig.debug
+> +++ b/arch/arm/Kconfig.debug
+> @@ -998,7 +998,7 @@ choice
+>  		  via SCIFA4 on Renesas SH-Mobile AG5 (SH73A0).
+>  
+>  	config DEBUG_S3C_UART0
+> -		depends on PLAT_SAMSUNG
+> +		depends on PLAT_SAMSUNG || ARCH_EXYNOS
+>  		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
+>  		select DEBUG_S3C24XX_UART if ARCH_S3C24XX
+>  		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
+> @@ -1010,7 +1010,7 @@ choice
+>  		  by the boot-loader before use.
+>  
+>  	config DEBUG_S3C_UART1
+> -		depends on PLAT_SAMSUNG
+> +		depends on PLAT_SAMSUNG || ARCH_EXYNOS
+>  		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
+>  		select DEBUG_S3C24XX_UART if ARCH_S3C24XX
+>  		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
+> @@ -1022,7 +1022,7 @@ choice
+>  		  by the boot-loader before use.
+>  
+>  	config DEBUG_S3C_UART2
+> -		depends on PLAT_SAMSUNG
+> +		depends on PLAT_SAMSUNG || ARCH_EXYNOS
+>  		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
+>  		select DEBUG_S3C24XX_UART if ARCH_S3C24XX
+>  		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
+> @@ -1034,7 +1034,7 @@ choice
+>  		  by the boot-loader before use.
+>  
+>  	config DEBUG_S3C_UART3
+> -		depends on PLAT_SAMSUNG && (ARCH_EXYNOS || ARCH_S5PV210)
+> +		depends on ARCH_EXYNOS || ARCH_S5PV210
 
-This is probably broken on sparc(64) as well and whatever else uses
-DT and is an intrinsicly coherent architecture (did we ever have
-DT enabled x86s ? Wasn't OLPC such a beast ?).
+You need to keep PLAT_SAMSUNG because of additional architectures, so
+follow pattern from DEBUG_S3C_UART2.
 
-I think this should have been done the other way around and default to
-coherent since most traditional OF platforms are coherent, and you
-can't just require those DTs to change.
+Best regards,
+Krzysztof
 
-> > Any ideas from the PPC maintainers?
+>  		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
+>  		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
+>  		select DEBUG_S5PV210_UART if ARCH_S5PV210
+> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+> index db857d07114f..f492d7c338fe 100644
+> --- a/arch/arm/Makefile
+> +++ b/arch/arm/Makefile
+> @@ -233,7 +233,6 @@ machine-$(CONFIG_PLAT_SPEAR)		+= spear
+>  
+>  # Platform directory name.  This list is sorted alphanumerically
+>  # by CONFIG_* macro name.
+> -plat-$(CONFIG_ARCH_EXYNOS)	+= samsung
+>  plat-$(CONFIG_ARCH_OMAP)	+= omap
+>  plat-$(CONFIG_ARCH_S3C64XX)	+= samsung
+>  plat-$(CONFIG_ARCH_S5PV210)	+= samsung
+> diff --git a/arch/arm/mach-exynos/Makefile b/arch/arm/mach-exynos/Makefile
+> index 0fd3fcf8bfb0..53fa363c8e44 100644
+> --- a/arch/arm/mach-exynos/Makefile
+> +++ b/arch/arm/mach-exynos/Makefile
+> @@ -3,10 +3,6 @@
+>  # Copyright (c) 2010-2011 Samsung Electronics Co., Ltd.
+>  #		http://www.samsung.com/
+>  
+> -ccflags-$(CONFIG_ARCH_MULTIPLATFORM) += -I$(srctree)/$(src)/include -I$(srctree)/arch/arm/plat-samsung/include
+> -
+> -# Core
+> -
+>  obj-$(CONFIG_ARCH_EXYNOS)	+= exynos.o exynos-smc.o firmware.o
+>  
+>  obj-$(CONFIG_EXYNOS_CPU_SUSPEND) += pm.o sleep.o
+> diff --git a/arch/arm/plat-samsung/Kconfig b/arch/arm/plat-samsung/Kconfig
+> index 832ab0e6cd72..e31a156a27df 100644
+> --- a/arch/arm/plat-samsung/Kconfig
+> +++ b/arch/arm/plat-samsung/Kconfig
+> @@ -4,7 +4,7 @@
+>  
+>  config PLAT_SAMSUNG
+>  	bool
+> -	depends on PLAT_S3C24XX || ARCH_S3C64XX || ARCH_EXYNOS || ARCH_S5PV210
+> +	depends on PLAT_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210
+>  	default y
+>  	select GENERIC_IRQ_CHIP
+>  	select NO_IOPORT_MAP
+> @@ -240,7 +240,7 @@ config SAMSUNG_PM_DEBUG
+>  	bool "Samsung PM Suspend debug"
+>  	depends on PM && DEBUG_KERNEL
+>  	depends on PLAT_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210
+> -	depends on DEBUG_EXYNOS_UART || DEBUG_S3C24XX_UART || DEBUG_S3C2410_UART
+> +	depends on DEBUG_S3C24XX_UART || DEBUG_S3C2410_UART
+>  	help
+>  	  Say Y here if you want verbose debugging from the PM Suspend and
+>  	  Resume code. See <file:Documentation/arm/samsung-s3c24xx/suspend.rst>
+> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> index 49ea02c467bf..400a581c918c 100644
+> --- a/drivers/mmc/host/Kconfig
+> +++ b/drivers/mmc/host/Kconfig
+> @@ -275,7 +275,7 @@ config MMC_SDHCI_TEGRA
+>  
+>  config MMC_SDHCI_S3C
+>  	tristate "SDHCI support on Samsung S3C SoC"
+> -	depends on MMC_SDHCI && PLAT_SAMSUNG
+> +	depends on MMC_SDHCI && (PLAT_SAMSUNG || ARCH_EXYNOS)
+>  	help
+>  	  This selects the Secure Digital Host Controller Interface (SDHCI)
+>  	  often referrered to as the HSMMC block in some of the Samsung S3C
+> -- 
+> 2.20.0
 > 
-> Fixing it at the source seems like the best option to prevent future
-> breakage.
-> 
-> So I guess that would mean making of_dma_is_coherent() return true/false
-> based on CONFIG_NOT_COHERENT_CACHE on powerpc.
-> 
-> We could do it like below, which would still allow the dma-coherent
-> property to work if it ever makes sense on a future powerpc platform.
-> 
-> I don't really know any of this embedded stuff well, so happy to take
-> other suggestions on how to handle this mess.
-
