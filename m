@@ -2,37 +2,34 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44C4FE1F09
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 17:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA83E1F62
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 17:33:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406574AbfJWPQb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Oct 2019 11:16:31 -0400
-Received: from sauhun.de ([88.99.104.3]:45168 "EHLO pokefinder.org"
+        id S2406712AbfJWPdQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Oct 2019 11:33:16 -0400
+Received: from sauhun.de ([88.99.104.3]:45324 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406466AbfJWPQb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 23 Oct 2019 11:16:31 -0400
+        id S2403853AbfJWPdQ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 23 Oct 2019 11:33:16 -0400
 Received: from localhost (p54B33207.dip0.t-ipconnect.de [84.179.50.7])
-        by pokefinder.org (Postfix) with ESMTPSA id 6076C2C001C;
-        Wed, 23 Oct 2019 17:16:29 +0200 (CEST)
-Date:   Wed, 23 Oct 2019 17:16:29 +0200
+        by pokefinder.org (Postfix) with ESMTPSA id 367582C001C;
+        Wed, 23 Oct 2019 17:33:14 +0200 (CEST)
+Date:   Wed, 23 Oct 2019 17:33:13 +0200
 From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Biju Das <biju.das@bp.renesas.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Chuhong Yuan <hslester96@gmail.com>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-mmc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
-Message-ID: <20191023151629.GA5153@kunai>
-References: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mmc: renesas_sdhi: add checks for pinctrl_lookup_state
+Message-ID: <20191023153313.GB5153@kunai>
+References: <20191018131338.11713-1-hslester96@gmail.com>
+ <CAPDyKFoBYchP96hv=7XfTo8CrCSD+KC0h_oFRAsOYT-Lc1SFZQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="LZvS9be/3tNcYl/X"
+        protocol="application/pgp-signature"; boundary="gatW/ieO32f1wygP"
 Content-Disposition: inline
-In-Reply-To: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
+In-Reply-To: <CAPDyKFoBYchP96hv=7XfTo8CrCSD+KC0h_oFRAsOYT-Lc1SFZQ@mail.gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
@@ -40,41 +37,75 @@ List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
 
---LZvS9be/3tNcYl/X
+--gatW/ieO32f1wygP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 24, 2019 at 07:49:04AM +0100, Biju Das wrote:
-> This patch adds SDHI support for RZ/G2N (R8A774B1) SoC.
+On Mon, Oct 21, 2019 at 04:32:49PM +0200, Ulf Hansson wrote:
+> On Fri, 18 Oct 2019 at 15:13, Chuhong Yuan <hslester96@gmail.com> wrote:
+> >
+> > renesas_sdhi_probe misses checks for pinctrl_lookup_state and may miss
+> > failures.
+> > Add checks for them to fix the problem.
+> >
+> > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> > ---
+> >  drivers/mmc/host/renesas_sdhi_core.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/re=
+nesas_sdhi_core.c
+> > index d4ada5cca2d1..dc5ad6632df3 100644
+> > --- a/drivers/mmc/host/renesas_sdhi_core.c
+> > +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> > @@ -694,8 +694,13 @@ int renesas_sdhi_probe(struct platform_device *pde=
+v,
+> >         if (!IS_ERR(priv->pinctrl)) {
+> >                 priv->pins_default =3D pinctrl_lookup_state(priv->pinct=
+rl,
+> >                                                 PINCTRL_STATE_DEFAULT);
+> > +               if (IS_ERR(priv->pins_default))
+> > +                       return PTR_ERR(priv->pins_default);
+> > +
+> >                 priv->pins_uhs =3D pinctrl_lookup_state(priv->pinctrl,
+> >                                                 "state_uhs");
+> > +               if (IS_ERR(priv->pins_uhs))
+> > +                       return PTR_ERR(priv->pins_uhs);
+> >         }
 >=20
-> Signed-off-by: Biju Das <biju.das@bp.renesas.com>
+> This looks correct to me, as I guess if there is a pinctrl specified
+> for device node of the controller, it means that it should be used!?
+>=20
+> I understand that this is only used for those variants that supports
+> UHS-I via the renesas_sdhi_start_signal_voltage_switch(). Wolfram, is
+> this fine you think?
 
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Well, I don't like to bail out because this error is not fatal for basic
+operations. How about releasing priv->pinctrl again with an additional
+warning that pinctrl settings are broken and will prevent 1.8v modes?
 
-But please keep an eye on the patch which Geert mentioned and check with
-your HW team if your SoC needs this, too. (You can't really test that
-without a very specific setup)
+Opinions?
 
 
---LZvS9be/3tNcYl/X
+--gatW/ieO32f1wygP
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl2wbscACgkQFA3kzBSg
-KbbMlQ/+MeBwFVzaqf6EXCE6bn2GRx7vqw6OJTMHp2l12gOWR2FB3mhkouj+hoOz
-T1TriugqHs8Zhbe04V+7cmFQycYkp1MbUcgpoR/DgvW0siAvLQNbTmHkPo8JedB0
-dCZWrQpNQ/DjDnM5BNTQmBYDPX0TIe9S8TWB05qjocZOuv17ijh8cIXq49swxy8l
-1vouhorQ0KJpES8DiDHwYDlOpd5EAUSgMrB0E9X+y0xSXscV04P8o5UCmSdZ8Bjr
-SezS7wUp4kQTaC1zYsCc/Q/NSoWNansgb1p/EycI89RB53FI8FjxwaaqgYcQYYTi
-44vT9YrRENWaRF5w4PS3Q66QROMJhQJqAiCiEAcn4LGN4QFeWUVAsiSHVmKJHLbs
-+xml1vWbq8h99/Z+fOGdKPTSyhQYlwpcPEmXWZafVicVInqrujn1P/sosvENAqOw
-ZnHbaDXbabtwfpHY7iLNMRRzMvnoq74Hcwkiqv6dLaYy2Yr9wk0+ZVt6CTKlPN5V
-knf0x/ZGWBO7VHlOkN8HggzvRvO/NH+R0cw4vKvBl4foqQm2Ep/f3bug8Yb1vGMe
-Rc8l40/WrEBsNhGlrEeWQPfj2SMYosvw3wdybGS2GftWe/JS5PErtRQKt5jYZ/Cp
-VPNwbwbgkD0NHZ1+hNKn2r/h4q8M4ACsOiPAICUgbi6XPbnbndg=
-=3foK
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl2wcrkACgkQFA3kzBSg
+KbYLrA//c8zF4HqJkaFNFIInZh0QWFD/4DVtK/SARs7eE/Ccf0DEE3hKk8WxvZAQ
+r21YVOhBw/dPlgog4xF0zBZZ2B4KIptDyJRZPVj/ZVoFBFrA1w+hu4HlUtiJMr79
+apZNpwlhSkxTYfO6PEo4wuFuGmoLRA6qj+PJDeFb9uAWdxMUTU26KVwa6jZBAbE6
+Hzfzvs4OXZGoawXSxfzY9IkwtHKR8CWaB8FpcdUSN88wwWVMopejAVMr2zUrOeec
+6E6/mjT29Qut+rBl0SUcZZyy/9ZKsAsrslFOU8YLAMknHAonz0NYO+6XKu26qRhH
+wHgv6/6htzpeFJh8f8wbQ4aRdeRuCJFFvcAd1bqeTrWJ5sFq1MYFMRJs38bFgs1J
+AbWD5BBSC2nIGhHGXt9dHv7hxl4SDE+JCZu+VNjbdJOYqbGlNBMGyMXfZ2ZjPNS1
+Z8cwz4l6KModx+s4sqM0BkSbn/uLzlCtmVHN7s/lLs0FMXOG4NQkKZwgowu6cKJX
+/PzXcT4N3Roswar2c5sncYHMPvTYNkknmp2T9qXQ3XELHZsb9f5xgONyzxNjwap1
+K2H1ZCuoTrJMpi7NNQwmG5NovFEcAOQ7qlRlCE2ITBniH4XFeduveigSntXnioEE
+K5RKUqi+9gOjU9+BbXxLSzo8OCrF+6o+psCNCUWdVQHbnTgtKsw=
+=S45A
 -----END PGP SIGNATURE-----
 
---LZvS9be/3tNcYl/X--
+--gatW/ieO32f1wygP--
