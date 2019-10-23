@@ -2,146 +2,79 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 283C4E1ED9
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 17:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44C4FE1F09
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 17:16:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390922AbfJWPHc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Oct 2019 11:07:32 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:40720 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390530AbfJWPHc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Oct 2019 11:07:32 -0400
-Received: by mail-vs1-f66.google.com with SMTP id v10so14001090vsc.7
-        for <linux-mmc@vger.kernel.org>; Wed, 23 Oct 2019 08:07:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=50+55fOZpgMJ3ywx+S/l93zu0e/H3x84JmCU84w/5zk=;
-        b=q7Ee2Ifo7ppiH/FKiG1JgwqGKZ1PinhbWDZf6kFjfFckO3ROAeO8HOoKPARGjpGWMm
-         k8InVem2hsg+7b4mzlj7oe3E/rBJf3xO2TOVOww8SH3xZiP4HH4Y92n0FsFTeuuY8OgS
-         G5V6hEmg7OuenV8hm8f/b8CmDQaAhriuDFvPur/9kNekVNyupla+jLGoXs9qrHhqaYwJ
-         maQoszO5pAuw2uPDjCduhAbH0FjaiMDlV+cTzG+3D7rXtAJSNI3bV/tborPPKSBEjRsm
-         jqmSrtUlAmwVIxF9Dd6iwGe34Zx5IJEjp415rTvdbuK4J8CnsYrd+LKAhuVnAogllQcQ
-         sPiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=50+55fOZpgMJ3ywx+S/l93zu0e/H3x84JmCU84w/5zk=;
-        b=IoktTFSYR4mz8eOJnuYTNM4hCYmeXnOewXZ6VLkps1Azy+8GvWvehJmV9kRGroBW3a
-         cJmB/zFy2z0Deu/2Z/FtVmwjrDIsU2NguAMRc/ZFWFiXpwvHYC+9mq+odRN/ZeLXEtkO
-         trYgvVn9xSsH70F5fMioVTOFxufVKB9kiwTTIUvj5HcdzhaOjL2bF5j3suiLtilE/gu7
-         iLd4h6d+k9XuT6t5IeFk6ScZtq6sKLcxlmajXfGGI4t0qcOP+dz1yj8nyUn/kc4XmqCa
-         vhmMsSFCE6+A1It5TsQmkECha33sflHZnWzCfG35nLN+7jmn1LzwmdR8l11TK2gK5G2y
-         pywg==
-X-Gm-Message-State: APjAAAUAykQ3bwqMs4hYXjhs19Ck1hTYTX25KKKRZ21Yb5iMNvsjtmTT
-        7gNt51MUne0f5IQkve3qhJqOzv1fKEq1mL+MlpwHEg==
-X-Google-Smtp-Source: APXvYqzS3l7CbELaPuMRCmS340ZTE5lYOpf9CdTCmiur80L7lI/V0txZw8FoZiJ8vdITAcD+/zadl2+515h4rqpyhiQ=
-X-Received: by 2002:a67:ead4:: with SMTP id s20mr3477590vso.165.1571843250696;
- Wed, 23 Oct 2019 08:07:30 -0700 (PDT)
+        id S2406574AbfJWPQb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Oct 2019 11:16:31 -0400
+Received: from sauhun.de ([88.99.104.3]:45168 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2406466AbfJWPQb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 23 Oct 2019 11:16:31 -0400
+Received: from localhost (p54B33207.dip0.t-ipconnect.de [84.179.50.7])
+        by pokefinder.org (Postfix) with ESMTPSA id 6076C2C001C;
+        Wed, 23 Oct 2019 17:16:29 +0200 (CEST)
+Date:   Wed, 23 Oct 2019 17:16:29 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Biju Das <biju.das@bp.renesas.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-mmc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
+Message-ID: <20191023151629.GA5153@kunai>
+References: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
 MIME-Version: 1.0
-References: <20191017135739.1315-1-ulf.hansson@linaro.org> <20191017135739.1315-3-ulf.hansson@linaro.org>
- <CAD=FV=XsCGqLwKOicW47Yk3y3mHzU+9fR8kS7jx2pW6SzjgCbg@mail.gmail.com>
- <CAPDyKFq_Utz+ztdXTV534pY9Q9CyTSBJV_mfyPKAsHxaSyZjpA@mail.gmail.com> <CAD=FV=U7Tm0eB00Ze8PUvCvDw_nqHFL6nGO=vEP2t9d-zVveTw@mail.gmail.com>
-In-Reply-To: <CAD=FV=U7Tm0eB00Ze8PUvCvDw_nqHFL6nGO=vEP2t9d-zVveTw@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 23 Oct 2019 17:06:54 +0200
-Message-ID: <CAPDyKFoumdj9u1B4fQh8ws2PqvtYtVekDyq+M4nLs=hriqD-VA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mmc: core: Re-work HW reset for SDIO cards
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="LZvS9be/3tNcYl/X"
+Content-Disposition: inline
+In-Reply-To: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 22 Oct 2019 at 16:47, Doug Anderson <dianders@chromium.org> wrote:
->
-> Hi,
->
-> On Mon, Oct 21, 2019 at 11:51 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > > The problem I see here is that callers of this reset function aren't
-> > > expecting it to work this way.  Look specifically at
-> > > mwifiex_sdio_card_reset_work().  It's assuming that it needs to do
-> > > things like shutdown / reinit.  Now it's true that the old
-> > > mwifiex_sdio_card_reset_work() was pretty broken on any systems that
-> > > also had SDIO bluetooth, but presumably it worked OK on systems
-> > > without SDIO Bluetooth.  I don't think it'll work so well now.
-> >
-> > Good point!
-> >
-> > I guess I was hoping that running through ->remove() and then
-> > ->probe() for the SDIO func drivers should simply take care of
-> > whatever that may be needed. In some way this makes the driver broken
-> > already in regards to this path, but never mind.
->
-> Yeah, probably true.  I guess if anyone actually expected to use one
-> of these cards as a removable SDIO card (I have seen such dev boards
-> long ago) then it would always have been possible for someone to
-> remove the card at just the wrong time and break things.
 
-Well, this isn't solely about card removal but driver removal as well.
-And the latter can be managed from user space at any point in time.
+--LZvS9be/3tNcYl/X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
->
-> > > Testing shows that indeed your patch breaks mwifiex reset worse than
-> > > it was before (AKA WiFi totally fails instead of it just killing
-> > > Bluetooth).
-> > >
-> > > I think it may be better to add a new API call rather than trying to
-> > > co-opt the old one.  Maybe put a WARN_ON() for the old API call to
-> > > make people move away from it, or something?
-> >
-> > Thanks again for testing and for valuable feedback! Clearly this needs
-> > a little more thinking.
-> >
-> > An additional concern I see with the "hotplug approach" implemented in
-> > $subject patch, is that it becomes unnecessary heavy when there is
-> > only one SDIO func driver bound.
-> >
-> > In one way I am tempted to try to address that situation, as it seems
-> > a bit silly to do full hotplug dance when it isn't needed.
->
-> True, though I kinda like the heavy solution here.  At least in the
-> mwifiex case this isn't a part of the normal flow.  AKA: we don't call
-> this function during normal bootup nor during any normal operations.
-> It's much more of an "oh crap, something's not working and we don't
-> know what to do" type solution.  I mean, I guess it's still not
-> uncommon that we end up in this code path due to the number of bugs in
-> Marvell firmware, but I'm just trying to say that it's an error code
-> path and not a normal one.  In my mind that means the more things we
-> can re-init the better.
+On Tue, Sep 24, 2019 at 07:49:04AM +0100, Biju Das wrote:
+> This patch adds SDHI support for RZ/G2N (R8A774B1) SoC.
+>=20
+> Signed-off-by: Biju Das <biju.das@bp.renesas.com>
 
-You have a point, but...
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
->
-> If this was, on the other hand, a reset that we were supposed to
-> always assert when doing a normal operation (like it wants us to reset
-> it when we switch modes, or something) then a lighter operation would
-> make more sense.
+But please keep an eye on the patch which Geert mentioned and check with
+your HW team if your SoC needs this, too. (You can't really test that
+without a very specific setup)
 
-This is indeed the tricky part, as it depends on the level of bugs,
-but also under what specific circumstances the reset is getting
-called.
 
-In the TI case (drivers/net/wireless/ti/wlcore/sdio.c) the reset is
-executed at the "power on" case, which for example is at system
-resume. And we want system resume to be as fast as possible...
+--LZvS9be/3tNcYl/X
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I am exploring a few options to deal with both cases, let's see what I
-can come up with in a day or two.
+-----BEGIN PGP SIGNATURE-----
 
-Kind regards
-Uffe
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl2wbscACgkQFA3kzBSg
+KbbMlQ/+MeBwFVzaqf6EXCE6bn2GRx7vqw6OJTMHp2l12gOWR2FB3mhkouj+hoOz
+T1TriugqHs8Zhbe04V+7cmFQycYkp1MbUcgpoR/DgvW0siAvLQNbTmHkPo8JedB0
+dCZWrQpNQ/DjDnM5BNTQmBYDPX0TIe9S8TWB05qjocZOuv17ijh8cIXq49swxy8l
+1vouhorQ0KJpES8DiDHwYDlOpd5EAUSgMrB0E9X+y0xSXscV04P8o5UCmSdZ8Bjr
+SezS7wUp4kQTaC1zYsCc/Q/NSoWNansgb1p/EycI89RB53FI8FjxwaaqgYcQYYTi
+44vT9YrRENWaRF5w4PS3Q66QROMJhQJqAiCiEAcn4LGN4QFeWUVAsiSHVmKJHLbs
++xml1vWbq8h99/Z+fOGdKPTSyhQYlwpcPEmXWZafVicVInqrujn1P/sosvENAqOw
+ZnHbaDXbabtwfpHY7iLNMRRzMvnoq74Hcwkiqv6dLaYy2Yr9wk0+ZVt6CTKlPN5V
+knf0x/ZGWBO7VHlOkN8HggzvRvO/NH+R0cw4vKvBl4foqQm2Ep/f3bug8Yb1vGMe
+Rc8l40/WrEBsNhGlrEeWQPfj2SMYosvw3wdybGS2GftWe/JS5PErtRQKt5jYZ/Cp
+VPNwbwbgkD0NHZ1+hNKn2r/h4q8M4ACsOiPAICUgbi6XPbnbndg=
+=3foK
+-----END PGP SIGNATURE-----
+
+--LZvS9be/3tNcYl/X--
