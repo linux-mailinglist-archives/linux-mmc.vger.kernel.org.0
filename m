@@ -2,79 +2,135 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 109DCE0F9C
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 03:18:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E0D8E11C7
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 07:42:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731266AbfJWBSM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 22 Oct 2019 21:18:12 -0400
-Received: from gate.crashing.org ([63.228.1.57]:33457 "EHLO gate.crashing.org"
+        id S1731908AbfJWFmo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Oct 2019 01:42:44 -0400
+Received: from ozlabs.org ([203.11.71.1]:51899 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727140AbfJWBSM (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 22 Oct 2019 21:18:12 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9N1HUmB004727;
-        Tue, 22 Oct 2019 20:17:31 -0500
-Message-ID: <01389cb3b2eff0aea512ae2352d3fc4363a501be.camel@kernel.crashing.org>
-Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
- updates
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "contact@a-eon.com" <contact@a-eon.com>,
+        id S1727850AbfJWFmn (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 23 Oct 2019 01:42:43 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 46yfR16cXzz9sPf;
+        Wed, 23 Oct 2019 16:42:37 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1571809359;
+        bh=oMjPusDwzIapfzvZsuF4G8wT87g7UxFK7FpRIUhOEFs=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=oq/KwXikEaGSQn/BBKoITvCUpV1xw+tInmTh3QZIvEIzGdEtAK0WDJu0aJMoSlCdQ
+         oE7NnYD5llOCf7w48WgI/abHeMbU5cFh1owHai3PXy/aClQF/J/iL/A/VnpAkXLe9J
+         LVDYUVJKn8OcU57mnra+JtH9nv0gzOGliJOAxsiQ0SlJnXqeQAqLxZxn8iWq7C5bC4
+         UOwVEnDmt/Kxk0QCiX1+gj33Ix0Sb9ogtaZP48YxwiDcwE9PIMcvbOFbBgumHfwrEs
+         Duu6U8fO8Uq3cv22WkuQTDWD7PaN0d5BahDF/EH/K07h9wgzkWJDx0edE/O8nSPru4
+         W1EByUwKBg5tA==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>
+Cc:     ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
+        Christian Zigotzky <info@xenosoft.de>,
+        "contact\@a-eon.com" <contact@a-eon.com>,
         "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        mad skateman <madskateman@gmail.com>
-Date:   Wed, 23 Oct 2019 12:17:30 +1100
-In-Reply-To: <850A5079-4B0D-4508-9B46-A79074DAEEFD@xenosoft.de>
-References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
-         <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
-         <20191015125105.GU25745@shell.armlinux.org.uk>
-         <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
-         <20191015131750.GV25745@shell.armlinux.org.uk>
-         <CAPDyKFq_0P8X-6hkjko1chLtOrwsxGcEFR31GcbffhhUQNw+bw@mail.gmail.com>
-         <ed35a87495b0f0d322f555a16fb3e0f7574415ac.camel@kernel.crashing.org>
-         <20191018101323.GG25745@shell.armlinux.org.uk>
-         <499d70835d5f3e3cc191e5b5444475cd5a8c4604.camel@kernel.crashing.org>
-         <8d7fd474-a1ad-e33f-f2ba-ec47f4bcc995@xenosoft.de>
-         <c467eeb45a545263311ae28a49ea5599bb2a882c.camel@kernel.crashing.org>
-         <850A5079-4B0D-4508-9B46-A79074DAEEFD@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        mad skateman <madskateman@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2' updates
+In-Reply-To: <20191015131750.GV25745@shell.armlinux.org.uk>
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de> <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de> <20191015125105.GU25745@shell.armlinux.org.uk> <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de> <20191015131750.GV25745@shell.armlinux.org.uk>
+Date:   Wed, 23 Oct 2019 16:42:34 +1100
+Message-ID: <87muds586t.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 2019-10-21 at 08:39 +0200, Christian Zigotzky wrote:
-> > 
-> Hi Ben,
-> 
-> I think it isn’t good to use the kernel config option
-> "CONFIG_NOT_COHERENT_CACHE" if the system is coherent, is it?
-> 
-> We tested the kernel with "CONFIG_NOT_COHERENT_CACHE" yesterday but
-> we didn’t find any differences to the coherent kernel.
-> 
-> Could you please explain us the difference between the coherent and
-> not coherent kernel?
-
-So first, ideally, we should make this a runtime mechanism...
-historical crap.
-
-Fundamentally when you set CONFIG_NOT_COHERENT_CACHE you tell the
-kernel that your processor isn't snooping the bus for DMA accesses
-colliding with the caches. Thus SW has to explicitly maintain cache
-coherency around DMA operations by invalidating or flushing the cache
-accordingly and by keeping pool(s) of non-cachable memory around
-to use for the consistent allocator.
-
-This slows things down.
-
-Cheers,
-Ben. 
-
+UnVzc2VsbCBLaW5nIC0gQVJNIExpbnV4IGFkbWluIDxsaW51eEBhcm1saW51eC5vcmcudWs+IHdy
+aXRlczoNCj4gT24gVHVlLCBPY3QgMTUsIDIwMTkgYXQgMDM6MTI6NDlQTSArMDIwMCwgQ2hyaXN0
+aWFuIFppZ290emt5IHdyb3RlOg0KPj4gSGVsbG8gUnVzc2VsbCwNCj4+IA0KPj4gWW91IGFza2Vk
+IG1lIGFib3V0ICJkbWEtY29oZXJlbnQiIGluIHRoZSBDeXJ1cyBkZXZpY2UgdHJlZS4gVW5mb3J0
+dW5hdGVseSBJDQo+PiBkb24ndCBmaW5kIHRoZSBwcm9wZXJ0eSAiZG1hLWNvaGVyZW50IiBpbiB0
+aGUgZHRiIHNvdXJjZSBmaWxlcy4NCj4+IA0KPj4gT3V0cHV0IG9mICJmZHRkdW1wIGN5cnVzX3A1
+MDIwX2V0aF9wb3dlcm9mZi5kdGIgfCBncmVwIGRtYSI6DQo+PiANCj4+IGRtYTAgPSAiL3NvY0Bm
+ZmUwMDAwMDAvZG1hQDEwMDMwMCI7DQo+PiDCoMKgwqDCoMKgwqDCoCBkbWExID0gIi9zb2NAZmZl
+MDAwMDAwL2RtYUAxMDEzMDAiOw0KPj4gwqDCoMKgwqDCoMKgwqAgZG1hQDEwMDMwMCB7DQo+PiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbXBhdGlibGUgPSAiZnNsLGVsb3BsdXMtZG1hIjsNCj4+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZG1hLWNoYW5uZWxAMCB7DQo+PiDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJmc2wsZWxvcGx1cy1kbWEtY2hhbm5lbCI7
+DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRtYS1jaGFubmVsQDgwIHsNCj4+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImZzbCxlbG9wbHVzLWRtYS1jaGFu
+bmVsIjsNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZG1hLWNoYW5uZWxAMTAwIHsNCj4+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImZzbCxlbG9wbHVzLWRt
+YS1jaGFubmVsIjsNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZG1hLWNoYW5uZWxAMTgwIHsN
+Cj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImZzbCxlbG9w
+bHVzLWRtYS1jaGFubmVsIjsNCj4+IMKgwqDCoMKgwqDCoMKgIGRtYUAxMDEzMDAgew0KPj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImZzbCxlbG9wbHVzLWRtYSI7DQo+PiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRtYS1jaGFubmVsQDAgew0KPj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIGNvbXBhdGlibGUgPSAiZnNsLGVsb3BsdXMtZG1hLWNoYW5uZWwiOw0K
+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkbWEtY2hhbm5lbEA4MCB7DQo+PiDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJmc2wsZWxvcGx1cy1kbWEtY2hhbm5l
+bCI7DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRtYS1jaGFubmVsQDEwMCB7DQo+PiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJmc2wsZWxvcGx1cy1kbWEt
+Y2hhbm5lbCI7DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRtYS1jaGFubmVsQDE4MCB7DQo+
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJmc2wsZWxvcGx1
+cy1kbWEtY2hhbm5lbCI7DQo+DQo+IEhtbSwgc28gaXQgbG9va3MgbGlrZSBQb3dlclBDIGRvZXNu
+J3QgbWFyayBkZXZpY2VzIHRoYXQgYXJlIGRtYQ0KPiBjb2hlcmVudCB3aXRoIGEgcHJvcGVydHkg
+dGhhdCBkZXNjcmliZXMgdGhlbSBhcyBzdWNoLg0KPg0KPiBJIHRoaW5rIHRoaXMgb3BlbnMgYSB3
+aWRlciBxdWVzdGlvbiAtIHdoYXQgc2hvdWxkIG9mX2RtYV9pc19jb2hlcmVudCgpDQo+IHJldHVy
+biBmb3IgUG93ZXJQQz8gIEl0IHNlZW1zIHJpZ2h0IG5vdyB0aGF0IGl0IHJldHVybnMgZmFsc2Ug
+Zm9yDQo+IGRldmljZXMgdGhhdCBhcmUgRE1BIGNvaGVyZW50LCB3aGljaCBzZWVtcyB0byBtZSB0
+byBiZSBhIHJlY2lwZSBmb3INCj4gZnV0dXJlIG1pc3Rha2VzLg0KDQpSaWdodCwgaXQgc2VlbXMg
+b2ZfZG1hX2lzX2NvaGVyZW50KCkgaGFzIGJha2VkIGluIHRoZSBhc3N1bXB0aW9uIHRoYXQNCmRl
+dmljZXMgYXJlIG5vbi1jb2hlcmVudCB1bmxlc3MgZXhwbGljaXRseSBtYXJrZWQgYXMgY29oZXJl
+bnQuDQoNCldoaWNoIGlzIHdyb25nIG9uIGFsbCBvciBhdCBsZWFzdCBtb3N0IGV4aXN0aW5nIHBv
+d2VycGMgc3lzdGVtcw0KYWNjb3JkaW5nIHRvIEJlbi4NCg0KPiBBbnkgaWRlYXMgZnJvbSB0aGUg
+UFBDIG1haW50YWluZXJzPw0KDQpGaXhpbmcgaXQgYXQgdGhlIHNvdXJjZSBzZWVtcyBsaWtlIHRo
+ZSBiZXN0IG9wdGlvbiB0byBwcmV2ZW50IGZ1dHVyZQ0KYnJlYWthZ2UuDQoNClNvIEkgZ3Vlc3Mg
+dGhhdCB3b3VsZCBtZWFuIG1ha2luZyBvZl9kbWFfaXNfY29oZXJlbnQoKSByZXR1cm4gdHJ1ZS9m
+YWxzZQ0KYmFzZWQgb24gQ09ORklHX05PVF9DT0hFUkVOVF9DQUNIRSBvbiBwb3dlcnBjLg0KDQpX
+ZSBjb3VsZCBkbyBpdCBsaWtlIGJlbG93LCB3aGljaCB3b3VsZCBzdGlsbCBhbGxvdyB0aGUgZG1h
+LWNvaGVyZW50DQpwcm9wZXJ0eSB0byB3b3JrIGlmIGl0IGV2ZXIgbWFrZXMgc2Vuc2Ugb24gYSBm
+dXR1cmUgcG93ZXJwYyBwbGF0Zm9ybS4NCg0KSSBkb24ndCByZWFsbHkga25vdyBhbnkgb2YgdGhp
+cyBlbWJlZGRlZCBzdHVmZiB3ZWxsLCBzbyBoYXBweSB0byB0YWtlDQpvdGhlciBzdWdnZXN0aW9u
+cyBvbiBob3cgdG8gaGFuZGxlIHRoaXMgbWVzcy4NCg0KY2hlZXJzDQoNCg0KZGlmZiAtLWdpdCBh
+L2FyY2gvcG93ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMgYi9hcmNoL3Bvd2VycGMva2VybmVs
+L3NldHVwLWNvbW1vbi5jDQppbmRleCAyNWFhYTM5MDMwMDAuLmI5NmM5MDEwYWNiNiAxMDA2NDQN
+Ci0tLSBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMNCisrKyBiL2FyY2gvcG93
+ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMNCkBAIC03NjAsNiArNzYwLDIyIEBAIHN0YXRpYyBp
+bnQgX19pbml0IGNoZWNrX2NhY2hlX2NvaGVyZW5jeSh2b2lkKQ0KIGxhdGVfaW5pdGNhbGwoY2hl
+Y2tfY2FjaGVfY29oZXJlbmN5KTsNCiAjZW5kaWYgLyogQ09ORklHX0NIRUNLX0NBQ0hFX0NPSEVS
+RU5DWSAqLw0KIA0KKyNpZm5kZWYgQ09ORklHX05PVF9DT0hFUkVOVF9DQUNIRQ0KKy8qDQorICog
+Rm9yIGhpc3RvcmljYWwgcmVhc29ucyBwb3dlcnBjIGtlcm5lbHMgYXJlIGJ1aWx0IHdpdGggaGFy
+ZCB3aXJlZCBrbm93bGVkZ2Ugb2YNCisgKiB3aGV0aGVyIG9yIG5vdCBETUEgYWNjZXNzZXMgYXJl
+IGNhY2hlIGNvaGVyZW50LiBBZGRpdGlvbmFsbHkgZGV2aWNlIHRyZWVzIG9uDQorICogcG93ZXJw
+YyBkbyBub3QgdHlwaWNhbGx5IHN1cHBvcnQgdGhlIGRtYS1jb2hlcmVudCBwcm9wZXJ0eS4NCisg
+Kg0KKyAqIFNvIHdoZW4gd2Uga25vdyB0aGF0IERNQSBpcyBjb2hlcmVudCwgb3ZlcnJpZGUgYXJj
+aF9vZl9kbWFfaXNfY29oZXJlbnQoKSB0bw0KKyAqIHRlbGwgdGhlIGRyaXZlcnMvb2YgY29kZSB0
+aGF0IGFsbCBkZXZpY2VzIGFyZSBjb2hlcmVudCByZWdhcmRsZXNzIG9mIHdoZXRoZXINCisgKiB0
+aGV5IGhhdmUgYSBkbWEtY29oZXJlbnQgcHJvcGVydHkuDQorICovDQorYm9vbCBhcmNoX29mX2Rt
+YV9pc19jb2hlcmVudChzdHJ1Y3QgZGV2aWNlX25vZGUgKm5wKQ0KK3sNCisJcmV0dXJuIHRydWU7
+DQorfQ0KKyNlbmRpZg0KKw0KICNpZmRlZiBDT05GSUdfREVCVUdfRlMNCiBzdHJ1Y3QgZGVudHJ5
+ICpwb3dlcnBjX2RlYnVnZnNfcm9vdDsNCiBFWFBPUlRfU1lNQk9MKHBvd2VycGNfZGVidWdmc19y
+b290KTsNCmRpZmYgLS1naXQgYS9kcml2ZXJzL29mL2FkZHJlc3MuYyBiL2RyaXZlcnMvb2YvYWRk
+cmVzcy5jDQppbmRleCA5Nzg0MjdhOWQ1ZTYuLjNhNGIyOTQ5YTMyMiAxMDA2NDQNCi0tLSBhL2Ry
+aXZlcnMvb2YvYWRkcmVzcy5jDQorKysgYi9kcml2ZXJzL29mL2FkZHJlc3MuYw0KQEAgLTk5Myw2
+ICs5OTMsMTQgQEAgaW50IG9mX2RtYV9nZXRfcmFuZ2Uoc3RydWN0IGRldmljZV9ub2RlICpucCwg
+dTY0ICpkbWFfYWRkciwgdTY0ICpwYWRkciwgdTY0ICpzaXoNCiB9DQogRVhQT1JUX1NZTUJPTF9H
+UEwob2ZfZG1hX2dldF9yYW5nZSk7DQogDQorLyoNCisgKiBhcmNoX29mX2RtYV9pc19jb2hlcmVu
+dCAtIEFyY2ggaG9vayB0byBkZXRlcm1pbmUgaWYgZGV2aWNlIGlzIGNvaGVyZW50IGZvciBETUEN
+CisgKi8NCitib29sIF9fd2VhayBhcmNoX29mX2RtYV9pc19jb2hlcmVudChzdHJ1Y3QgZGV2aWNl
+X25vZGUgKm5wKQ0KK3sNCisJcmV0dXJuIGZhbHNlOw0KK30NCisNCiAvKioNCiAgKiBvZl9kbWFf
+aXNfY29oZXJlbnQgLSBDaGVjayBpZiBkZXZpY2UgaXMgY29oZXJlbnQNCiAgKiBAbnA6CWRldmlj
+ZSBub2RlDQpAQCAtMTAwMiw4ICsxMDEwLDEyIEBAIEVYUE9SVF9TWU1CT0xfR1BMKG9mX2RtYV9n
+ZXRfcmFuZ2UpOw0KICAqLw0KIGJvb2wgb2ZfZG1hX2lzX2NvaGVyZW50KHN0cnVjdCBkZXZpY2Vf
+bm9kZSAqbnApDQogew0KLQlzdHJ1Y3QgZGV2aWNlX25vZGUgKm5vZGUgPSBvZl9ub2RlX2dldChu
+cCk7DQorCXN0cnVjdCBkZXZpY2Vfbm9kZSAqbm9kZTsNCisNCisJaWYgKGFyY2hfb2ZfZG1hX2lz
+X2NvaGVyZW50KG5wKSkNCisJCXJldHVybiB0cnVlOw0KIA0KKwlucCA9IG9mX25vZGVfZ2V0KG5w
+KTsNCiAJd2hpbGUgKG5vZGUpIHsNCiAJCWlmIChvZl9wcm9wZXJ0eV9yZWFkX2Jvb2wobm9kZSwg
+ImRtYS1jb2hlcmVudCIpKSB7DQogCQkJb2Zfbm9kZV9wdXQobm9kZSk7DQo=
