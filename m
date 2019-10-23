@@ -2,107 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7A86E1CF1
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 15:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B8EDE1D5C
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2019 15:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405941AbfJWNjz convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 23 Oct 2019 09:39:55 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:43825 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392089AbfJWNjy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Oct 2019 09:39:54 -0400
-Received: from mail-qt1-f177.google.com ([209.85.160.177]) by
- mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1Mf0Nm-1hmXPR1EIE-00gboz; Wed, 23 Oct 2019 15:39:51 +0200
-Received: by mail-qt1-f177.google.com with SMTP id o49so24470171qta.7;
-        Wed, 23 Oct 2019 06:39:49 -0700 (PDT)
-X-Gm-Message-State: APjAAAU6rjuILI+dBSQWkepJeZcFXjrhStzYWyvwa71wsCNVgYufVnZt
-        iHt9MtJEPLOwsEVZaopkvY4n9SDmIlf2VoWvAbc=
-X-Google-Smtp-Source: APXvYqyt7m8OnGbGOfKvN6UapNf8Y0PixnD+b/5MFVO15QeK4AzpoE5xCHBxjuJT4OWklHgs4L5FWsrmt4sucJ53v+g=
-X-Received: by 2002:ac8:18eb:: with SMTP id o40mr9289234qtk.304.1571837989082;
- Wed, 23 Oct 2019 06:39:49 -0700 (PDT)
+        id S2406064AbfJWNwq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Oct 2019 09:52:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34474 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404484AbfJWNwq (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 23 Oct 2019 09:52:46 -0400
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 86A8A21BE5
+        for <linux-mmc@vger.kernel.org>; Wed, 23 Oct 2019 13:52:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571838765;
+        bh=L2YvqC4bmvGKE85dTFRNQdVbKDb1o3LV4h060+5yHLA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Tqi4iNym3c4aGq5lPmy/v5BRwv5D/mTCqGD1rpjHIfR21u0ajdU7UvlMKihQmwcQ3
+         W+zrGy23JfPYVrFQLTAXd2mmVXIl5E9f1VT9IKcAcBsB1hKNZHb3SJEn0Pg1mPNO0f
+         tDcT0mqvjtfEnfJ1v531vSPaclS4fgd1EjmBw/Dc=
+Received: by mail-qk1-f172.google.com with SMTP id e66so19784465qkf.13
+        for <linux-mmc@vger.kernel.org>; Wed, 23 Oct 2019 06:52:45 -0700 (PDT)
+X-Gm-Message-State: APjAAAXBmaJMBJs0zmMZUUCMSP7mMo5rSm42wxtRyrelMBfwO4qdJqxf
+        Si8jglgK2SeIxYf3FivnOZ/nEbz2qbqqvIS32Q==
+X-Google-Smtp-Source: APXvYqzGWo2+pYN2T0o4NXgTDtjFyejmifDo8RHY+pr1SSlX+84WLu8rymxxmRgumcm+7thQm16eVcW2Z1bEiLdMOgo=
+X-Received: by 2002:a37:98c1:: with SMTP id a184mr7812012qke.119.1571838764568;
+ Wed, 23 Oct 2019 06:52:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191010202802.1132272-1-arnd@arndb.de> <20191023131049.GG11048@pi3>
-In-Reply-To: <20191023131049.GG11048@pi3>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 23 Oct 2019 15:39:32 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1v2-+geD+JbNP-t418ZjntQNSte4rt8c7N6sJdpb3+DQ@mail.gmail.com>
-Message-ID: <CAK8P3a1v2-+geD+JbNP-t418ZjntQNSte4rt8c7N6sJdpb3+DQ@mail.gmail.com>
-Subject: Re: [PATCH 00/36] ARM: samsung platform cleanup
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        linux-leds@vger.kernel.org,
-        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
-        <linux-samsung-soc@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Lihua Yao <ylhuajnu@outlook.com>,
-        Kukjin Kim <kgene@kernel.org>, linux-serial@vger.kernel.org,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
-        =?UTF-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Sergio Prado <sergio.prado@e-labworks.com>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        Lihua Yao <ylhuajnu@163.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-hwmon@vger.kernel.org, patches@opensource.cirrus.com,
-        USB list <linux-usb@vger.kernel.org>,
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de> <20191015125105.GU25745@shell.armlinux.org.uk>
+ <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de> <20191015131750.GV25745@shell.armlinux.org.uk>
+ <87muds586t.fsf@mpe.ellerman.id.au> <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
+In-Reply-To: <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Wed, 23 Oct 2019 08:52:33 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+Message-ID: <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2' updates
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Paul Mackerras <paulus@samba.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
+        Christian Zigotzky <info@xenosoft.de>,
+        "contact@a-eon.com" <contact@a-eon.com>,
+        "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        mad skateman <madskateman@gmail.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Provags-ID: V03:K1:NLof35stNYTGVLCCiBOj5shE8fEwjZaac7cdAu2nrrmym/kOcjv
- Qnfa/3i0a5qyJkyMXctYodBV7VP0bHQaFrXIBjwV/gpmENyzPTQE7+sVihuV4liYROCT33b
- 9WO8+gy5V2fG2DuQgIo6thaPwkDMewwBExepC4yasYMIPkDiS0zr+8kJODaOpU4HPFc7gMV
- MPShUYeuOvxdtdljHgfJg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:DaQc5ZGaJsY=:F603/POvpKLPXWa0X1lFEH
- aQjxfOCxGD/pIMHmKlHcbcFD80Nc+ewErQWmvj+Qgp6xaAE5MxfbNNNrin9LMgRKve0v8GrHu
- BPPYcLBIJd/tRGzy7EoHKzi1xCTWBRKPuZW+NRo5Q3c4o6tNWGjXzPGUI9xyOYPIzGuB4sxow
- ECbUMNeq+vtLAQSVxvpHOttzchCbbhPJcjfvA+bQAYJp52FgAuxb7i+4FvHbE4PKIBUfZrfn7
- RTWpJntJNT2FyPouWE44kX34NjZBTj4rpIcCKzq/vJGEBiexW1JIi5IKVdXZvOH5f6ayOyfG4
- N5aMRdit65bReN0guN1SsKJ7uFbD0kzxYt0bE1Mf25djeRlbjBl6eNdESrSyRRUYp5EHOfQ/A
- Sa10vMW4Ena5av/pF9Ivtanmnx43oe8gg/n1e283kgsPXqMvxru3WC5Nzl6w8FtOo8cSrKeIA
- 4cwYy4vh4ukZW7IvGkXi8VTyHR5QO0uX/EIi41POGGpNZfuz2RZFE3OQuaZ2ZAWDyKIDIkMiS
- w6MOzO71LwFlzMud8Juwt083ioitXDvT/9TIYbAIAmfnUtb8NIa87LZjq9LnymQfMT/771jDX
- Pv0pU2J8yDYscI2Ar/9iY65bLYD1odSzwo1yupcBRkEYBk2LtDP2ofqM/FtIHQxHEgUCSL8BF
- +DQWO4nbj5c/D8V8Rcbk6xIsj3dpX/eZmDwcjBHzixCuvxTtC6bkTqxwxXemSc09w9sXO96BH
- 8wrLVBqppvA4u9/3mwzDk1TPdUl264mBZECZMuP2bwYmiOyo6CZ+bMP0dYsot7zDsLQZk6JM2
- zgDILD/0tZiVRCT1r1eA1ueLWwCTN+MFNjGnfX1TAxma6wIGEoHuP9Uzto3sTth328X/tkiaT
- tiL3D4xHp9lUaPHnTz2w==
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Oct 23, 2019 at 3:11 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> On Thu, Oct 10, 2019 at 10:28:02PM +0200, Arnd Bergmann wrote:
-> > The contents are available for testing in
+On Wed, Oct 23, 2019 at 1:41 AM Benjamin Herrenschmidt
+<benh@kernel.crashing.org> wrote:
+>
+> On Wed, 2019-10-23 at 16:42 +1100, Michael Ellerman wrote:
 > >
-> > git://kernel.org:/pub/scm/linux/kernel/git/arnd/playground.git s3c-multiplatform
+> > Right, it seems of_dma_is_coherent() has baked in the assumption that
+> > devices are non-coherent unless explicitly marked as coherent.
+> >
+> > Which is wrong on all or at least most existing powerpc systems
+> > according to Ben.
 >
-> When sending v2, can you Cc:
->
-> Paweł Chmiel <pawel.mikolaj.chmiel@gmail.com>
-> Lihua Yao <ylhuajnu@outlook.com>
-> (or Lihua Yao <ylhuajnu@163.com> if outlook.com bounces)
-> Sergio Prado <sergio.prado@e-labworks.com>
-> Sylwester Nawrocki <s.nawrocki@samsung.com>
->
-> These are folks which to my knowledge had working S3C and S5P boards
-> so maybe they could provide testing.
+> This is probably broken on sparc(64) as well and whatever else uses
+> DT and is an intrinsicly coherent architecture (did we ever have
+> DT enabled x86s ? Wasn't OLPC such a beast ?).
 
-Ok, will do. I've uploaded the modified version based on your comments to
-the above URL for now.
+Only if those platforms use one of the 5 drivers that call this function:
 
-I'll probably give it a little more time before resending, but they
-could already
-start testing that version.
+drivers/ata/ahci_qoriq.c:       qoriq_priv->is_dmacoherent =
+of_dma_is_coherent(np);
+drivers/crypto/ccree/cc_driver.c:       new_drvdata->coherent =
+of_dma_is_coherent(np);
+drivers/iommu/arm-smmu-v3.c:    if (of_dma_is_coherent(dev->of_node))
+drivers/iommu/arm-smmu.c:       if (of_dma_is_coherent(dev->of_node))
+drivers/mmc/host/sdhci-of-esdhc.c:      if (of_dma_is_coherent(dev->of_node))
 
-Thanks a lot for the review!
+Curious that a PPC specific driver (ahci_qoriq) calls it...
 
-      Arnd
+Note that the value is also passed to arch_setup_dma_ops(), but only
+arc, arm, arm64, and mips implement arch_setup_dma_ops.
+
+> I think this should have been done the other way around and default to
+> coherent since most traditional OF platforms are coherent, and you
+> can't just require those DTs to change.
+
+You can blame me. This was really only intended for cases where
+coherency is configurable on a per peripheral basis and can't be
+determined in other ways.
+
+The simple solution here is simply to use the compatible string for
+the device to determine coherent or not.
+
+Rob
