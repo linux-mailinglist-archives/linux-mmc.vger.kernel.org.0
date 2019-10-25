@@ -2,135 +2,144 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E929E55B2
-	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2019 23:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E397E567C
+	for <lists+linux-mmc@lfdr.de>; Sat, 26 Oct 2019 00:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725919AbfJYVNl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 25 Oct 2019 17:13:41 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:46861 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbfJYVNl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Oct 2019 17:13:41 -0400
-Received: by mail-oi1-f193.google.com with SMTP id c2so2492628oic.13;
-        Fri, 25 Oct 2019 14:13:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=YsHXnqwoM7wQXF0uPaovfdPHuECAxo/T6mEqOx5c+dY=;
-        b=d5n/hl88X3WT/lDSfXeXeT7eh88OeCGJXh8DRG3bf/6br3ocb/wuas+P+uO5Lb3nbw
-         DPjWOGbTZlvh5mTFAO4IO+vImTbmuJ5tNUrRaOg98/5mIIOkNGhaouW8CVGujBOB2jjg
-         VbZRAR5dfuu8UZ27vhgKAqADN7gKY6Dy9B3xPwuP/7+TJUeR8/kVXH6gJ8s01CzUqhN9
-         XqgtCuX8+Jau/J2Th0uMDWgg7HuxN+IruTh4GMaWknCIOzE8QR0itD02xgSCIPsjVm1d
-         Syd86ZMT9UBjAv2+HIiiz1iACDvvaXRpQJ8KdYnLThigdYv8wXuX9rkgJw1Ls42prPLe
-         QRNg==
-X-Gm-Message-State: APjAAAU7tpQIs/Z2bDboLH0G3FwCCcelOfp4pPvbDRYrJxzaVPUbCw7D
-        tfW6+Qfe/pt4cuJ/Re94eg==
-X-Google-Smtp-Source: APXvYqwE4WNyEIPHUmWISUbe3EXRa308MBi5x/EUd8BbYKV1jvLUEmP2vAxDgTjVnSwi+WqgYLFnXA==
-X-Received: by 2002:aca:1e0e:: with SMTP id m14mr4801375oic.72.1572038019693;
-        Fri, 25 Oct 2019 14:13:39 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id n4sm875917oic.2.2019.10.25.14.13.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2019 14:13:38 -0700 (PDT)
-Date:   Fri, 25 Oct 2019 16:13:38 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        devicetree@vger.kernel.org, letux-kernel@openphoenux.org,
-        linux-mmc@vger.kernel.org, kernel@pyra-handheld.com,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 01/11] Documentation: dt: wireless: update wl1251 for
- sdio
-Message-ID: <20191025211338.GA20249@bogus>
-References: <cover.1571510481.git.hns@goldelico.com>
- <741828f69eca2a9c9a0a7e80973c91f50cc71f9b.1571510481.git.hns@goldelico.com>
+        id S1726487AbfJYW27 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 25 Oct 2019 18:28:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39682 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726483AbfJYW27 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 25 Oct 2019 18:28:59 -0400
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7EBB0222C4
+        for <linux-mmc@vger.kernel.org>; Fri, 25 Oct 2019 22:28:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572042537;
+        bh=3evtaW0DllhNjB+6uE12Xtr767SicH4mL/3jr13JPnw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Y0xPYNWIhy+X9xuv5u4Wa/zCefNIPCanVXobNlhDKDX+Owz52aqUAH58jQ+mNPs63
+         O3mMjAqP71Ir0UCSIrBSJIhnTx3HMFGLlfJAKFrZq2/utHjIKqYV0lRegpvqlNse6+
+         htEoGVaqJTN39uF3gK96EmNCmnRhLEiw9Z3VeLDA=
+Received: by mail-qt1-f175.google.com with SMTP id y39so262475qty.0
+        for <linux-mmc@vger.kernel.org>; Fri, 25 Oct 2019 15:28:57 -0700 (PDT)
+X-Gm-Message-State: APjAAAWp0EMndOK0kSIlhOI+ksBxwxF0VNhTmK6SgvOZ5cu8fG7Z4JgL
+        n4netamtSeITu2U0nPTJu/H/BybtbSm0L7t8Vw==
+X-Google-Smtp-Source: APXvYqwUeo+87jGdwN8O2BI8pdyipeup5umEsuiEp7ShvmiozlvhXNWOXf+HdZp099/MAKe+FyPRmNOe/EwJehO/q28=
+X-Received: by 2002:a0c:eed0:: with SMTP id h16mr5912628qvs.85.1572042536551;
+ Fri, 25 Oct 2019 15:28:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <741828f69eca2a9c9a0a7e80973c91f50cc71f9b.1571510481.git.hns@goldelico.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de> <20191015125105.GU25745@shell.armlinux.org.uk>
+ <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de> <20191015131750.GV25745@shell.armlinux.org.uk>
+ <87muds586t.fsf@mpe.ellerman.id.au> <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
+ <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com> <20191023143159.GB25745@shell.armlinux.org.uk>
+In-Reply-To: <20191023143159.GB25745@shell.armlinux.org.uk>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Fri, 25 Oct 2019 17:28:45 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
+Message-ID: <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2' updates
+To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Paul Mackerras <paulus@samba.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Christian Zigotzky <info@xenosoft.de>,
+        "contact@a-eon.com" <contact@a-eon.com>,
+        "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        mad skateman <madskateman@gmail.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, Oct 19, 2019 at 08:41:16PM +0200, H. Nikolaus Schaller wrote:
-> The standard method for sdio devices connected to
-> an sdio interface is to define them as a child node
-> like we can see with wlcore.
-> 
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> Acked-by: Kalle Valo <kvalo@codeaurora.org>
-> ---
->  .../bindings/net/wireless/ti,wl1251.txt       | 26 +++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt b/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt
-> index bb2fcde6f7ff..88612ff29f2d 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt
-> +++ b/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt
-> @@ -35,3 +35,29 @@ Examples:
->  		ti,power-gpio = <&gpio3 23 GPIO_ACTIVE_HIGH>; /* 87 */
->  	};
->  };
-> +
-> +&mmc3 {
-> +	vmmc-supply = <&wlan_en>;
-> +
-> +	bus-width = <4>;
-> +	non-removable;
-> +	ti,non-removable;
-> +	cap-power-off-card;
-> +
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&mmc3_pins>;
+On Wed, Oct 23, 2019 at 9:32 AM Russell King - ARM Linux admin
+<linux@armlinux.org.uk> wrote:
+>
+> On Wed, Oct 23, 2019 at 08:52:33AM -0500, Rob Herring wrote:
+> > > I think this should have been done the other way around and default to
+> > > coherent since most traditional OF platforms are coherent, and you
+> > > can't just require those DTs to change.
+> >
+> > You can blame me. This was really only intended for cases where
+> > coherency is configurable on a per peripheral basis and can't be
+> > determined in other ways.
+> >
+> > The simple solution here is simply to use the compatible string for
+> > the device to determine coherent or not.
+>
+> It really isn't that simple.
 
-None of the above are really relevant to this binding.
+This doesn't work?:
 
-> +
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +
-> +	wlan: wl1251@1 {
+        if (IS_ENABLED(CONFIG_PPC) || of_dma_is_coherent(dev->of_node))
+                value |= ESDHC_DMA_SNOOP;
+        else
+                value &= ~ESDHC_DMA_SNOOP;
 
-wifi@1
+While I said use the compatibles, using the kconfig symbol is easier
+than sorting out which compatibles are PPC SoCs. Though if that's
+already done elsewhere in the driver, you could set a flag and use
+that here. I'd be surprised if this was the only difference between
+ARM and PPC SoCs for this block.
 
-> +		compatible = "ti,wl1251";
-> +
-> +		reg = <1>;
-> +
-> +		interrupt-parent = <&gpio1>;
-> +		interrupts = <21 IRQ_TYPE_LEVEL_HIGH>;	/* GPIO_21 */
-> +
-> +		ti,wl1251-has-eeprom;
-> +	};
-> +};
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> There are two aspects to coherency, both of which must match:
+>
+> 1) The configuration of the device
+> 2) The configuration of the kernel's DMA API
+>
+> (1) is controlled by the driver, which can make the decision any way
+> it pleases.
+>
+> (2) on ARM64 is controlled depending on whether or not "dma-coherent"
+> is specified in the device tree, since ARM64 can have a mixture of
+> DMA coherent and non-coherent devices.
+>
+> A mismatch between (1) and (2) results in data corruption, potentially
+> eating your filesystem.  So, it's very important that the two match.
+>
+> These didn't match for the LX2160A, but, due to the way CMA was working,
+> we sort of got away with it, but it was very dangerous as far as data
+> safety went.
+>
+> Then, a change to CMA happened which moved where it was located, which
+> caused a regression.  Reverting the CMA changes didn't seem to be an
+> option, so another solution had to be found.
+>
+> I started a discussion on how best to solve this:
+>
+> https://archive.armlinux.org.uk/lurker/thread/20190919.041320.1e53541f.en.html
+>
+> and the solution that the discussion came out with was the one that has
+> been merged - which we now know caused a regression on PPC.
+>
+> Using compatible strings doesn't solve the issue: there is no way to
+> tell the DMA API from the driver that the device is coherent.  The
+> only way to do that is via the "dma-coherent" property in DT on ARM64.
+>
+> To say that this is a mess is an under-statement, but we seem to have
+> ended up here because of a series of piece-meal changes that don't seem
+> to have been thought through enough.
+>
+> So, what's the right way to solve this, and ensure that the DMA API and
+> device match as far as their coherency expectations go?  Revert all the
+> changes for sdhci-of-esdhc and CMA back to 5.0 or 5.1 state?
+
+The other option is similar to earlier in the thread and just add to
+of_dma_is_coherent():
+
+/* Powerpc is normally cache coherent DMA */
+if (IS_ENABLED(CONFIG_PPC) && !IS_ENABLED(CONFIG_NOT_COHERENT_CACHE))
+    return true;
+
+We could do the all the weak arch hooks, but that seems like overkill
+to me at this point.
+
+Rob
