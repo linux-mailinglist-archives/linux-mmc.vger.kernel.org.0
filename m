@@ -2,101 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACDECE48E8
-	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2019 12:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3385FE4955
+	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2019 13:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394501AbfJYKvJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 25 Oct 2019 06:51:09 -0400
-Received: from mout.kundenserver.de ([217.72.192.74]:45981 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392198AbfJYKvJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Oct 2019 06:51:09 -0400
-Received: from mail-qk1-f181.google.com ([209.85.222.181]) by
- mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1Mj831-1hlZxU1VH3-00fEqI; Fri, 25 Oct 2019 12:51:05 +0200
-Received: by mail-qk1-f181.google.com with SMTP id q70so1261022qke.12;
-        Fri, 25 Oct 2019 03:51:04 -0700 (PDT)
-X-Gm-Message-State: APjAAAWA6fFViRcJqREnWWJ4XnLSnh9uc5TR3f3XkJRs4iop43nFUxmc
-        NGQ8ccT6lVNGOrvmjR3QEB2RQ+274bWdUrVtGAM=
-X-Google-Smtp-Source: APXvYqx2Oor6PcLHOX4Sy8TtHwX6a9dti7RuLVSJPm8RZ72aJo7WkeFnANJ7SePVIoWyJuP+ht+PknNC97FPJwMamtQ=
-X-Received: by 2002:a37:58d:: with SMTP id 135mr2252602qkf.394.1572000663226;
- Fri, 25 Oct 2019 03:51:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191018154052.1276506-1-arnd@arndb.de> <87v9slg9k5.fsf@belgarion.home>
- <CAK8P3a1JDtHsOW=iaxEycbJ4TBkR9MHUyDMeJnwxCtb=tefnBQ@mail.gmail.com>
- <CAK8P3a0376Anmoc8VWXcEBg+z2B+1vcxJoywYYROBQNxpVmZuA@mail.gmail.com>
- <87r239f2g8.fsf@belgarion.home> <87eez1rhqo.fsf@belgarion.home>
-In-Reply-To: <87eez1rhqo.fsf@belgarion.home>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 25 Oct 2019 12:50:46 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0L3_Hs48X5bh0UD2L_AaxLcUOQ_YS7ZpSd5W-8xcgAog@mail.gmail.com>
-Message-ID: <CAK8P3a0L3_Hs48X5bh0UD2L_AaxLcUOQ_YS7ZpSd5W-8xcgAog@mail.gmail.com>
-Subject: Re: [PATCH 00/46] ARM: pxa: towards multiplatform support
-To:     Robert Jarzmik <robert.jarzmik@free.fr>
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        IDE-ML <linux-ide@vger.kernel.org>,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
-        linux-leds@vger.kernel.org, linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-rtc@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
-        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:bBFl5bX9BqXoDP8OrdvcfGlrYLRY5B1GUhWZJswEMUsHfqL7ZPS
- wNKiBQqI9J4lWaKwMKWpeuRP8Q7gNW1Huux28MpdQbLQHsG8keYqULuxokAyz8cXvUuDQNr
- Y4OmkYoxdwxMOhV/OoYmkmbTVaeZ1jGsBbuhOyjPDaixMEDPYwwWYKYrS8WnrToePTYktVe
- isgPlih4bJp7b5na0cbDg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+amIHTsvEsM=:wxrSdcXp8fCl0WvOtbji8T
- eiMYbEG4cst6pRKOmo34ky4eqFrbI9L+1xHjnaiY+H7o5c4AvretiveY6HsD/8Q4GCTo+d4EF
- 6KHQlLX/3bCOUITQRQRqZXMcO8+d/5yBWQ4PLvO/++od9zW+FSeEXlBspQqZItGbvkewyaSgM
- V2RuqHgZsRHubh1xP1lsxIE2YLtSonVpvh2iNYDMLLKocefeURCWHULZHpLKqb637/1ILOFmh
- oY55eIQP5dCvyMde+02h4Sc41A/coK0VSMYnmjZbIdabokN8wJmd5BpuqN52whvBKMyQB7Drx
- +rJNk043np+L19CHym/KU1GD0+Jh/hYMmdbAesunIc/XFNfshrJppNPggA2jYuD+WHt0GoW0h
- vIRvBMeg6dWxtHSt5iN2OWe8YRwmJozAghx6eaxs/+mtKjhlwdb8pg8wgjMJTT4UVZPNck6ai
- ETIxAKLIg48ERY2PKPCwjHZWIF59mr9ihwrIm7/PoRVzhB2DgY1bXT+r0Xf1ifNLX95PYOB5M
- zAGClTyzoyjzTzKwNgwcV4nTh4Je81xIc8FEG8D5S5n2odlouWYtMUHvQkobX+2UgP+dk+Rdq
- Yf9piYlNy1SKL1OHQdycWsLTFQ3jMWeWKCJRb5PSzWdnYIqeBZU1jM0z+jjUqPYhNrA/3/oIY
- 6RHI26+ovszi6E37l9e4YOUqQLgkyayuNJDsaLxUKkKdzoog8Z1n6LZPKD/u4+MRIXZCKCrGx
- pWVDvdMh6MitMHpzAZXm52z3k1A8T63a1CoAVUlqw1z/kLR1+hrsr4BnhFtpR4HNXe8FSWIge
- SE0Vg8VrS1FRrUX3m8HXrRagLwmAmfEk5PCq5WPOx/NjbgPEUnw5nqQ9HVCS9jOGnKIZvBw5Z
- /NMhJY+Zi7eyYSpPjOOA==
+        id S2503697AbfJYLJI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 25 Oct 2019 07:09:08 -0400
+Received: from xavier.telenet-ops.be ([195.130.132.52]:36614 "EHLO
+        xavier.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2503164AbfJYLIs (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Oct 2019 07:08:48 -0400
+Received: from ramsan ([84.195.182.253])
+        by xavier.telenet-ops.be with bizsmtp
+        id Hn8b2100e5USYZQ01n8bmB; Fri, 25 Oct 2019 13:08:46 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iNxSN-0003rD-Iz; Fri, 25 Oct 2019 13:08:35 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iNw6A-0006mq-Ia; Fri, 25 Oct 2019 11:41:34 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-doc@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2 0/7] debugfs: Add and use debugfs_create_xul()
+Date:   Fri, 25 Oct 2019 11:41:23 +0200
+Message-Id: <20191025094130.26033-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 10:50 PM Robert Jarzmik <robert.jarzmik@free.fr> wrote:
-> Robert Jarzmik <robert.jarzmik@free.fr> writes:
-> >>> I've now pushed it to
-> >>>
-> >>> git://git.kernel.org:/pub/scm/linux/kernel/git/arnd/playground.git
-> >>> pxa-multiplatform
-> >>
-> >> Sorry for the duplication, I had some problems with email configuration
-> >> so my reply got rejected, let's see if it goes through this time.
-> > I have it now, thanks, I'll test and review as soon as I can.
-> >
-> > Cheers.
->
-> Ok Arnd, I have a preliminary test report.
->
-> I tested only the pxa27x (mioa701), which happens to have a lot of drivers, and
-> only the platform_data flavor (ie. no device-tree test yet). Apart a panic in
-> the regulator framework (which is a known issue [1]), your version seems
-> equivalent so far in terms of runtime to Linux 5.4-rc3).
->
-> The sound and RTC seem broken, but not by you ...
->
-> I'll continue the test onwards for pxa3xx and pxa2xx when I'll gather a bit of
-> time, and try to review as well the mach-pxa part.
+        Hi all,
 
-Awesome, thanks for testing so far and for the report!
+The existing debugfs_create_ulong() function supports objects of
+type "unsigned long", which are 32-bit or 64-bit depending on the
+platform, in decimal form.  To format objects in hexadecimal, various
+debugfs_create_x*() functions exist, but all of them take fixed-size
+types. 
+  
+To work around this, some drivers call one of debugfs_create_x{32,64}(),
+depending on the size of unsigned long.
+Other drivers just cast the value pointer to "u32 *" or "u64 *",
+introducing portability bugs or data leaks in the process.
+ 
+Hence this patch series adds a debugfs helper for "unsigned long"
+objects in hexadecimal format, and converts drivers to make use of it.
+It also contains two cleanups removing superfluous casts, which I added
+to this series to avoid conflicts.
+ 
+Changes compared to v1[1]:
+  - Add kerneldoc,
+  - Update Documentation/filesystems/debugfs.txt,
+  - Add Acked-by.
 
-        Arnd
+Dependencies:
+  - The first patch now depends on "Documentation: debugfs: Document
+    debugfs helper for unsigned long values"[2], which Jon said he
+    applied to his tree.
+
+Thanks!
+
+[1] https://lore.kernel.org/lkml/20191021143742.14487-1-geert+renesas@glider.be/
+[2] https://lore.kernel.org/lkml/20191021150645.32440-1-geert+renesas@glider.be/
+
+Geert Uytterhoeven (7):
+  debugfs: Add debugfs_create_xul() for hexadecimal unsigned long
+  mac80211: Use debugfs_create_xul() helper
+  net: caif: Fix debugfs on 64-bit platforms
+  mmc: atmel-mci: Fix debugfs on 64-bit platforms
+  mmc: atmel-mci: Remove superfluous cast in debugfs_create_u32() call
+  mmc: dw_mmc: Fix debugfs on 64-bit platforms
+  mmc: dw_mmc: Remove superfluous cast in debugfs_create_u32() call
+
+ Documentation/filesystems/debugfs.txt |  5 ++++-
+ drivers/mmc/host/atmel-mci.c          | 10 +++++-----
+ drivers/mmc/host/dw_mmc.c             | 10 +++++-----
+ drivers/net/caif/caif_serial.c        |  4 ++--
+ include/linux/debugfs.h               | 21 +++++++++++++++++++++
+ net/mac80211/debugfs_sta.c            | 17 +++--------------
+ 6 files changed, 40 insertions(+), 27 deletions(-)
+
+-- 
+2.17.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
