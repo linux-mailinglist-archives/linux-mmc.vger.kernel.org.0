@@ -2,85 +2,123 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B640E3D89
-	for <lists+linux-mmc@lfdr.de>; Thu, 24 Oct 2019 22:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68DB1E451E
+	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2019 10:02:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726483AbfJXUuG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 24 Oct 2019 16:50:06 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:51745 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727464AbfJXUuG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Oct 2019 16:50:06 -0400
-Received: from belgarion ([90.76.41.223])
-        by mwinf5d87 with ME
-        id HYps210044otT8A03Ypz5w; Thu, 24 Oct 2019 22:50:03 +0200
-X-ME-Helo: belgarion
-X-ME-Auth: amFyem1pay5yb2JlcnRAb3JhbmdlLmZy
-X-ME-Date: Thu, 24 Oct 2019 22:50:03 +0200
-X-ME-IP: 90.76.41.223
-From:   Robert Jarzmik <robert.jarzmik@free.fr>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        IDE-ML <linux-ide@vger.kernel.org>,
-        "open list\:HID CORE LAYER" <linux-input@vger.kernel.org>,
-        linux-leds@vger.kernel.org, linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-rtc@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
-        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>
-Subject: Re: [PATCH 00/46] ARM: pxa: towards multiplatform support
-References: <20191018154052.1276506-1-arnd@arndb.de>
-        <87v9slg9k5.fsf@belgarion.home>
-        <CAK8P3a1JDtHsOW=iaxEycbJ4TBkR9MHUyDMeJnwxCtb=tefnBQ@mail.gmail.com>
-        <CAK8P3a0376Anmoc8VWXcEBg+z2B+1vcxJoywYYROBQNxpVmZuA@mail.gmail.com>
-        <87r239f2g8.fsf@belgarion.home>
-X-URL:  http://belgarath.falguerolles.org/
-Date:   Thu, 24 Oct 2019 22:49:51 +0200
-In-Reply-To: <87r239f2g8.fsf@belgarion.home> (Robert Jarzmik's message of
-        "Sat, 19 Oct 2019 12:35:03 +0200")
-Message-ID: <87eez1rhqo.fsf@belgarion.home>
-User-Agent: Gnus/5.130008 (Ma Gnus v0.8) Emacs/26 (gnu/linux)
+        id S2406055AbfJYICs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 25 Oct 2019 04:02:48 -0400
+Received: from esa6.microchip.iphmx.com ([216.71.154.253]:47028 "EHLO
+        esa6.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405453AbfJYICr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Oct 2019 04:02:47 -0400
+Received-SPF: Pass (esa6.microchip.iphmx.com: domain of
+  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
+  permitted sender) identity=mailfrom;
+  client-ip=198.175.253.82; receiver=esa6.microchip.iphmx.com;
+  envelope-from="Ludovic.Desroches@microchip.com";
+  x-sender="Ludovic.Desroches@microchip.com";
+  x-conformance=spf_only; x-record-type="v=spf1";
+  x-record-text="v=spf1 mx a:ushub1.microchip.com
+  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
+  a:mx2.microchip.iphmx.com include:servers.mcsv.net
+  include:mktomail.com include:spf.protection.outlook.com ~all"
+Received-SPF: None (esa6.microchip.iphmx.com: no sender
+  authenticity information available from domain of
+  postmaster@email.microchip.com) identity=helo;
+  client-ip=198.175.253.82; receiver=esa6.microchip.iphmx.com;
+  envelope-from="Ludovic.Desroches@microchip.com";
+  x-sender="postmaster@email.microchip.com";
+  x-conformance=spf_only
+Authentication-Results: esa6.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
+IronPort-SDR: okAxLpkf03Y4C1W42prpxYb3sZ9jXvYf+/H5BOw1AlH/UK9Ukdc772kia6FUmXKPJmz3vYJ6OI
+ TdTz7agHB0yLDhBZ/Pr9MnHS0rahBRSQvDyRYhrBoSYkQlC7vAFOwVUnQIMS3Y4tmgrqdzKdyw
+ L+aOmGlhuCFwKgbbNUhn8HwUlrWZhBpa3omZvp4qQ6akXva79rvVOG4au1c0N1kelNP33sJPO9
+ JWRJsAGfEOIV2PJYzv9kP9ttUvaxFiWwdu8ZPjtxuA9e4mcmdo36jM0uNdmKVgvIlMnAw0KZWb
+ tUs=
+X-IronPort-AV: E=Sophos;i="5.68,228,1569308400"; 
+   d="scan'208";a="51523132"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 25 Oct 2019 01:02:46 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Fri, 25 Oct 2019 01:02:43 -0700
+Received: from M43218.corp.atmel.com (10.10.85.251) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.1713.5 via Frontend Transport; Fri, 25 Oct 2019 01:02:41 -0700
+From:   Ludovic Desroches <ludovic.desroches@microchip.com>
+To:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <nicolas.ferre@microchip.com>,
+        <adrian.hunter@intel.com>, <linux-kernel@vger.kernel.org>,
+        <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <claudiu.beznea@microchip.com>, <Eugen.Hristev@microchip.com>,
+        <alexandre.belloni@bootlin.com>,
+        "Ludovic Desroches" <ludovic.desroches@microchip.com>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v3 1/3] dt-bindings: sdhci-of-at91: new compatible string and update properties
+Date:   Fri, 25 Oct 2019 10:03:42 +0200
+Message-ID: <20191025080344.15492-1-ludovic.desroches@microchip.com>
+X-Mailer: git-send-email 2.24.0.rc0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Robert Jarzmik <robert.jarzmik@free.fr> writes:
+There is a new compatible string for the SAM9X60 sdhci device. It involves
+an update of the properties about the clocks stuff.
 
->>> I've now pushed it to
->>>
->>> git://git.kernel.org:/pub/scm/linux/kernel/git/arnd/playground.git
->>> pxa-multiplatform
->>
->> Sorry for the duplication, I had some problems with email configuration
->> so my reply got rejected, let's see if it goes through this time.
-> I have it now, thanks, I'll test and review as soon as I can.
->
-> Cheers.
+Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
 
-Ok Arnd, I have a preliminary test report.
+Changes:
+- v3: rebase due to conflict with Nicolas' patch
+- v2: remove the extra example and fix node label
 
-I tested only the pxa27x (mioa701), which happens to have a lot of drivers, and
-only the platform_data flavor (ie. no device-tree test yet). Apart a panic in
-the regulator framework (which is a known issue [1]), your version seems
-equivalent so far in terms of runtime to Linux 5.4-rc3).
+ .../devicetree/bindings/mmc/sdhci-atmel.txt         | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-The sound and RTC seem broken, but not by you ...
-
-I'll continue the test onwards for pxa3xx and pxa2xx when I'll gather a bit of
-time, and try to review as well the mach-pxa part.
-
-Cheers.
-
+diff --git a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
+index 503c6dbac1b2..69edfd4d3922 100644
+--- a/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
++++ b/Documentation/devicetree/bindings/mmc/sdhci-atmel.txt
+@@ -5,11 +5,16 @@ Documentation/devicetree/bindings/mmc/mmc.txt and the properties used by the
+ sdhci-of-at91 driver.
+ 
+ Required properties:
+-- compatible:		Must be "atmel,sama5d2-sdhci".
++- compatible:		Must be "atmel,sama5d2-sdhci" or "microchip,sam9x60-sdhci".
+ - clocks:		Phandlers to the clocks.
+-- clock-names:		Must be "hclock", "multclk", "baseclk";
++- clock-names:		Must be "hclock", "multclk", "baseclk" for
++			"atmel,sama5d2-sdhci".
++			Must be "hclock", "multclk" for "microchip,sam9x60-sdhci".
+ 
+ Optional properties:
++- assigned-clocks:	The same with "multclk".
++- assigned-clock-rates	The rate of "multclk" in order to not rely on the
++			gck configuration set by previous components.
+ - microchip,sdcal-inverted: when present, polarity on the SDCAL SoC pin is
+   inverted. The default polarity for this signal is described in the datasheet.
+   For instance on SAMA5D2, the pin is usually tied to the GND with a resistor
+@@ -17,10 +22,12 @@ Optional properties:
+ 
+ Example:
+ 
+-sdmmc0: sdio-host@a0000000 {
++mmc0: sdio-host@a0000000 {
+ 	compatible = "atmel,sama5d2-sdhci";
+ 	reg = <0xa0000000 0x300>;
+ 	interrupts = <31 IRQ_TYPE_LEVEL_HIGH 0>;
+ 	clocks = <&sdmmc0_hclk>, <&sdmmc0_gclk>, <&main>;
+ 	clock-names = "hclock", "multclk", "baseclk";
++	assigned-clocks = <&sdmmc0_gclk>;
++	assigned-clock-rates = <480000000>;
+ };
 -- 
-Robert
+2.24.0.rc0
 
-[1] https://lore.kernel.org/patchwork/patch/1130436/
