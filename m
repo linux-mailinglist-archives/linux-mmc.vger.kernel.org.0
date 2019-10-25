@@ -2,97 +2,152 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AFE9E4D8D
-	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2019 16:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C998BE4EBD
+	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2019 16:17:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394918AbfJYOBC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 25 Oct 2019 10:01:02 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:46729 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394872AbfJYOBC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Oct 2019 10:01:02 -0400
-Received: by mail-lf1-f66.google.com with SMTP id t8so1829310lfc.13
-        for <linux-mmc@vger.kernel.org>; Fri, 25 Oct 2019 07:01:00 -0700 (PDT)
+        id S1729541AbfJYORP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 25 Oct 2019 10:17:15 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:37043 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729370AbfJYORP (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Oct 2019 10:17:15 -0400
+Received: by mail-ua1-f68.google.com with SMTP id l38so646994uad.4
+        for <linux-mmc@vger.kernel.org>; Fri, 25 Oct 2019 07:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=e7m0bUbtXBnv2hG0jP20Z7UVOAvXLu5pS/p16iFFTtw=;
-        b=dTbh5kRFKAeUJ02fzEg55m56Or2mkpSYde3jDq4pzWcZwd6/SrI4odBoyFcvBrKJad
-         MhcMpgr3O0oAZZi3DXy8C0rzsg1+6LGICBjQjKU9L00oBicm1Z89mTIIXksUId9S1nrk
-         f0ixzXz/Y1sx/3389MQyaVOt7o0opef11dj2UdvvbBPYnplJrsC/0VDqJ6NTQNo3L0iu
-         t7yKps03RIs8WKtfmgDnJx//L7LHMLWvUXeEMbDR3ZWw4zmUjuz8pdCI0eiPyMU/zoQq
-         fgvKgJJAa95yE98rAMyuhS+Swp+ffMkPcZ3ANDoHaotRv6M0wyQfAxr7PL7oQu8sazyp
-         QDcw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0CAVWEuC0Wr/mgCNhsciXMq3IOIcM2OeEJA1ru10OHU=;
+        b=BrEeBRwZDH9LZLeKgrqHeOgCWaKAmVmTI7cMNQIKEaYEOK53dhkfxvTEKUGua8pEYn
+         KKNJzY8SmgtZ+dw3qe1Agc2vGppEXIG1RGP5HC2P1kKZXPTbKtIpQR2SQKACoXr5lq0C
+         TScshIyi3sg7b5Hy25a2fSckkchRRsFhi9RlnSQvUaIw1Nf3d0C7L32mPGonpNC9s3ad
+         f4mEbkmZNu+GPe98/k+KnUyrpi8nNMWjrct9aw2hMFaPKKo5NTYPbfK68XGpHZn2x6Xn
+         HuYO8WGSuebDL5haCxBpBYPspmBzdf7z9PY+tx2jmxlCfYCe1cwL6ZN1dZnJqBMUa0Dz
+         hUUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=e7m0bUbtXBnv2hG0jP20Z7UVOAvXLu5pS/p16iFFTtw=;
-        b=SvTC8Ub3rtXsD5M7CL+/WYd2WkeKSCCRdKhuFzuLt3wFWBfMuO/HprtEZyF/vAe6Cz
-         WsjM0t4h4gcSXOtX1HZAaUtLboT3K7hEK0Xbyn4Nb7OtaQxqPO1ZjUpC7vhwrgkwNfxf
-         rjjbCRM+jNP/ILKZu71nbNbIteNNAoMKZsd5zMkjs2hr8q7Wik4UBHwkWqtIoBgQ3nGh
-         8O5umUatRWPcfuNynPl2+EDGl07tffjASlmgtOnBkQhUP7T453HH2up7ljIr6Fw/20Ok
-         p15KgyByckdtBra4Wn8Nxid1gH6OuIvEGHpo0V38fUDUtTo1zYwDxQbyeR8co/hr83F3
-         QDCg==
-X-Gm-Message-State: APjAAAWR8T3l5qy1f136FCcjQgCpHBmm3/vmDB9T8WelPmsoODLYn2Lh
-        U9x6mOpjDFnzb1CSTt8jPwc5mg==
-X-Google-Smtp-Source: APXvYqzUu4gv63DpUe1KdnUYahz+kl9nNDKPV19VnKiZ/1tr8k6IFuBIcP79aFsZaoepqv8RnWLI1Q==
-X-Received: by 2002:ac2:5108:: with SMTP id q8mr2996751lfb.150.1572012059852;
-        Fri, 25 Oct 2019 07:00:59 -0700 (PDT)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id x17sm811970lji.62.2019.10.25.07.00.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2019 07:00:59 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0CAVWEuC0Wr/mgCNhsciXMq3IOIcM2OeEJA1ru10OHU=;
+        b=tOl+Tj/18QJEY0S6h+tjhZapTbfKnV+k4DqpHuwvZvqTnn3+c9tDZCh7Y4izfQKvUw
+         /dW/If3rrfZg098VTNVEp+tLReMC1GMzw560rdPbBBKo4viP4Zz66LT4Y9+4rtrX/ApW
+         zQaCwwkqED/hkMtOqnhhMgFyukV7JJ+XoGcP4KnYnAmKOCSMYgpHh7Qrmz9jlABI5BAr
+         C+B+wbgiYj5q86iySmTyc31YJqSAGtpGut+Fwi2HHdSrBouiYwGjSZ7070Ad6ptTK3Y+
+         d0naYXRUmRwkR/7saU/i7ioUhbXj0uo6EkxFdIdLYKhvwDb6ND+yP41zZz40y3co63F0
+         WO2A==
+X-Gm-Message-State: APjAAAWOr2golT9vtfbA9abm9yigdXSAF2pWH2rQ6wZHzTjd4XEsRgFR
+        tw5mMd8Ag4QBxgC24O4uJLFuZa6WKYwbFVJigayW7g==
+X-Google-Smtp-Source: APXvYqyZno3A9J1kXU5Ta+j5fFJXc9VmiZWw3ERbPW0XjhEwv684O2MnRYorcI0NUgB1j37apIhbef6Vu3yrO3CrrDc=
+X-Received: by 2002:ab0:5a97:: with SMTP id w23mr1758543uae.129.1572013032335;
+ Fri, 25 Oct 2019 07:17:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <20191017135739.1315-1-ulf.hansson@linaro.org> <20191017135739.1315-3-ulf.hansson@linaro.org>
+ <CAD=FV=XsCGqLwKOicW47Yk3y3mHzU+9fR8kS7jx2pW6SzjgCbg@mail.gmail.com>
+ <CAPDyKFq_Utz+ztdXTV534pY9Q9CyTSBJV_mfyPKAsHxaSyZjpA@mail.gmail.com>
+ <CAD=FV=U7Tm0eB00Ze8PUvCvDw_nqHFL6nGO=vEP2t9d-zVveTw@mail.gmail.com> <CAPDyKFoumdj9u1B4fQh8ws2PqvtYtVekDyq+M4nLs=hriqD-VA@mail.gmail.com>
+In-Reply-To: <CAPDyKFoumdj9u1B4fQh8ws2PqvtYtVekDyq+M4nLs=hriqD-VA@mail.gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC fixes for v5.4-rc5
-Date:   Fri, 25 Oct 2019 16:00:58 +0200
-Message-Id: <20191025140058.10668-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+Date:   Fri, 25 Oct 2019 16:16:36 +0200
+Message-ID: <CAPDyKFrR7O-Jkmor7=OcRduNS9MMjTH6d0ij1ToYp_=h_viZSg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: core: Re-work HW reset for SDIO cards
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+On Wed, 23 Oct 2019 at 17:06, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> On Tue, 22 Oct 2019 at 16:47, Doug Anderson <dianders@chromium.org> wrote:
+> >
+> > Hi,
+> >
+> > On Mon, Oct 21, 2019 at 11:51 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > >
+> > > > The problem I see here is that callers of this reset function aren't
+> > > > expecting it to work this way.  Look specifically at
+> > > > mwifiex_sdio_card_reset_work().  It's assuming that it needs to do
+> > > > things like shutdown / reinit.  Now it's true that the old
+> > > > mwifiex_sdio_card_reset_work() was pretty broken on any systems that
+> > > > also had SDIO bluetooth, but presumably it worked OK on systems
+> > > > without SDIO Bluetooth.  I don't think it'll work so well now.
+> > >
+> > > Good point!
+> > >
+> > > I guess I was hoping that running through ->remove() and then
+> > > ->probe() for the SDIO func drivers should simply take care of
+> > > whatever that may be needed. In some way this makes the driver broken
+> > > already in regards to this path, but never mind.
+> >
+> > Yeah, probably true.  I guess if anyone actually expected to use one
+> > of these cards as a removable SDIO card (I have seen such dev boards
+> > long ago) then it would always have been possible for someone to
+> > remove the card at just the wrong time and break things.
+>
+> Well, this isn't solely about card removal but driver removal as well.
+> And the latter can be managed from user space at any point in time.
+>
+> >
+> >
+> > > > Testing shows that indeed your patch breaks mwifiex reset worse than
+> > > > it was before (AKA WiFi totally fails instead of it just killing
+> > > > Bluetooth).
+> > > >
+> > > > I think it may be better to add a new API call rather than trying to
+> > > > co-opt the old one.  Maybe put a WARN_ON() for the old API call to
+> > > > make people move away from it, or something?
+> > >
+> > > Thanks again for testing and for valuable feedback! Clearly this needs
+> > > a little more thinking.
+> > >
+> > > An additional concern I see with the "hotplug approach" implemented in
+> > > $subject patch, is that it becomes unnecessary heavy when there is
+> > > only one SDIO func driver bound.
+> > >
+> > > In one way I am tempted to try to address that situation, as it seems
+> > > a bit silly to do full hotplug dance when it isn't needed.
+> >
+> > True, though I kinda like the heavy solution here.  At least in the
+> > mwifiex case this isn't a part of the normal flow.  AKA: we don't call
+> > this function during normal bootup nor during any normal operations.
+> > It's much more of an "oh crap, something's not working and we don't
+> > know what to do" type solution.  I mean, I guess it's still not
+> > uncommon that we end up in this code path due to the number of bugs in
+> > Marvell firmware, but I'm just trying to say that it's an error code
+> > path and not a normal one.  In my mind that means the more things we
+> > can re-init the better.
+>
+> You have a point, but...
+>
+> >
+> > If this was, on the other hand, a reset that we were supposed to
+> > always assert when doing a normal operation (like it wants us to reset
+> > it when we switch modes, or something) then a lighter operation would
+> > make more sense.
+>
+> This is indeed the tricky part, as it depends on the level of bugs,
+> but also under what specific circumstances the reset is getting
+> called.
+>
+> In the TI case (drivers/net/wireless/ti/wlcore/sdio.c) the reset is
+> executed at the "power on" case, which for example is at system
+> resume. And we want system resume to be as fast as possible...
+>
+> I am exploring a few options to deal with both cases, let's see what I
+> can come up with in a day or two.
 
-Here's a PR with a couple of MMC fixes intended for v5.4-rc5. Details about the
-highlights are as usual found in the signed tag.
-
-Please pull this in!
+FYI, still exploring and trying a few slightly different options. I
+should be able to post something early next week, stay tuned. :-)
 
 Kind regards
-Ulf Hansson
-
-
-The following changes since commit 7d194c2100ad2a6dded545887d02754948ca5241:
-
-  Linux 5.4-rc4 (2019-10-20 15:56:22 -0400)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.4-rc4
-
-for you to fetch changes up to 2bb9f7566ba7ab3c2154964461e37b52cdc6b91b:
-
-  mmc: mxs: fix flags passed to dmaengine_prep_slave_sg (2019-10-21 16:16:38 +0200)
-
-----------------------------------------------------------------
-MMC host:
- - mxs: Fix flags passed to dmaengine_prep_slave_sg
- - cqhci: Add a missing memory barrier
- - sdhci-omap: Fix tuning procedure for temperatures < -20C
-
-----------------------------------------------------------------
-Faiz Abbas (2):
-      mmc: sdhci-omap: Fix Tuning procedure for temperatures < -20C
-      mmc: cqhci: Commit descriptors before setting the doorbell
-
-Sascha Hauer (1):
-      mmc: mxs: fix flags passed to dmaengine_prep_slave_sg
-
- drivers/mmc/host/cqhci.c      | 3 ++-
- drivers/mmc/host/mxs-mmc.c    | 7 ++++---
- drivers/mmc/host/sdhci-omap.c | 2 +-
- 3 files changed, 7 insertions(+), 5 deletions(-)
+Uffe
