@@ -2,142 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F123E5943
-	for <lists+linux-mmc@lfdr.de>; Sat, 26 Oct 2019 10:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D74A1E6DEF
+	for <lists+linux-mmc@lfdr.de>; Mon, 28 Oct 2019 09:20:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726010AbfJZIYf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 26 Oct 2019 04:24:35 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:29148 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725996AbfJZIYf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 26 Oct 2019 04:24:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1572078269;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=i+MQHbSzYrAECD2i9GTqSSZFbktvxXHglJFMdbybaRE=;
-        b=LNqqwElIvEiAjEsa2LSRu+A6IpBmygpF81iPakauQHuZVCUwGfzXQVv2gK5NtqJSDK
-        E7RwKoB7utIOwMOedtguOI/atFZYOdxSxQFhc3pRVQOWgK7Hm1gLj7Op98hR9aWLfmOf
-        atGTu8l6QR9ploMezQoPI9gSeIxahf0coppzuXAWygrSQwic0+IuaWvcSQp2l7hh2Sns
-        8VI6IxVarZP3brRrUz6nrPl8Ow369ykyONCBib2O+sSz7wH1NTsu4VRkt4happKyNBpg
-        SoYhipHE4YXckL2s8aGjmCh0RCtt65jH89uXnLxS79nkyR3lqKx3eD+XkRa1LO8Iv+rs
-        B6iQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBp5hRw/qOxWRk4dCysP/lx4uw33QyGXuNISy7Vq++g6sYlqLxXuQw="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2001:16b8:2694:9c00:1e1:24c4:3f0e:1772]
-        by smtp.strato.de (RZmta 44.28.1 AUTH)
-        with ESMTPSA id R0b2a8v9Q8Nvkz4
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Sat, 26 Oct 2019 10:23:57 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH v2 01/11] Documentation: dt: wireless: update wl1251 for sdio
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20191025211338.GA20249@bogus>
-Date:   Sat, 26 Oct 2019 10:24:05 +0200
-Cc:     =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        devicetree@vger.kernel.org, letux-kernel@openphoenux.org,
-        linux-mmc@vger.kernel.org, kernel@pyra-handheld.com,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3A15C879-3A17-4FFC-B41E-0B98B63E8F7C@goldelico.com>
-References: <cover.1571510481.git.hns@goldelico.com> <741828f69eca2a9c9a0a7e80973c91f50cc71f9b.1571510481.git.hns@goldelico.com> <20191025211338.GA20249@bogus>
-To:     Rob Herring <robh@kernel.org>
-X-Mailer: Apple Mail (2.3124)
+        id S1730714AbfJ1IUK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 28 Oct 2019 04:20:10 -0400
+Received: from mga09.intel.com ([134.134.136.24]:17624 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729786AbfJ1IUK (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 28 Oct 2019 04:20:10 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Oct 2019 01:20:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,239,1569308400"; 
+   d="scan'208";a="198017817"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.55]) ([10.237.72.55])
+  by fmsmga008.fm.intel.com with ESMTP; 28 Oct 2019 01:20:06 -0700
+Subject: Re: [PATCH v4 2/3] mmc: host: sdhci: Add request_done ops for struct
+ sdhci_ops
+To:     Baolin Wang <baolin.wang@linaro.org>, ulf.hansson@linaro.org,
+        asutoshd@codeaurora.org
+Cc:     orsonzhai@gmail.com, zhang.lyra@gmail.com, arnd@arndb.de,
+        linus.walleij@linaro.org, vincent.guittot@linaro.org,
+        baolin.wang7@gmail.com, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1571722391.git.baolin.wang@linaro.org>
+ <487c2e45810c6dc6485638474136e375cb567807.1571722391.git.baolin.wang@linaro.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <50696230-75f4-3de4-7424-c33d531ee159@intel.com>
+Date:   Mon, 28 Oct 2019 10:19:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <487c2e45810c6dc6485638474136e375cb567807.1571722391.git.baolin.wang@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On 22/10/19 8:58 AM, Baolin Wang wrote:
+> Add request_done ops for struct sdhci_ops as a preparation in case some
+> host controllers have different method to complete one request, such as
+> supporting request completion of MMC software queue.
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+> ---
+>  drivers/mmc/host/sdhci.c |   12 ++++++++++--
+>  drivers/mmc/host/sdhci.h |    2 ++
+>  2 files changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index b056400..850241f 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -2729,7 +2729,10 @@ static bool sdhci_request_done(struct sdhci_host *host)
+>  
+>  	spin_unlock_irqrestore(&host->lock, flags);
+>  
+> -	mmc_request_done(host->mmc, mrq);
+> +	if (host->ops->request_done)
+> +		host->ops->request_done(host, mrq);
 
-> Am 25.10.2019 um 23:13 schrieb Rob Herring <robh@kernel.org>:
->=20
-> On Sat, Oct 19, 2019 at 08:41:16PM +0200, H. Nikolaus Schaller wrote:
->> The standard method for sdio devices connected to
->> an sdio interface is to define them as a child node
->> like we can see with wlcore.
->>=20
->> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
->> Acked-by: Kalle Valo <kvalo@codeaurora.org>
->> ---
->> .../bindings/net/wireless/ti,wl1251.txt       | 26 =
-+++++++++++++++++++
->> 1 file changed, 26 insertions(+)
->>=20
->> diff --git =
-a/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt =
-b/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt
->> index bb2fcde6f7ff..88612ff29f2d 100644
->> --- a/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt
->> +++ b/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt
->> @@ -35,3 +35,29 @@ Examples:
->> 		ti,power-gpio =3D <&gpio3 23 GPIO_ACTIVE_HIGH>; /* 87 */
->> 	};
->> };
->> +
->> +&mmc3 {
->> +	vmmc-supply =3D <&wlan_en>;
->> +
->> +	bus-width =3D <4>;
->> +	non-removable;
->> +	ti,non-removable;
->> +	cap-power-off-card;
->> +
->> +	pinctrl-names =3D "default";
->> +	pinctrl-0 =3D <&mmc3_pins>;
->=20
-> None of the above are really relevant to this binding.
+For hsq, couldn't this result in sdhci_request() being called interrupt
+context here.
 
-Ok, but how and where do we document that they are needed to make both =
-ends of the interface work together?
+To prevent that you would need to add a condition to sdhci_defer_done() so
+it always defers when using hsq.
 
->=20
->> +
->> +	#address-cells =3D <1>;
->> +	#size-cells =3D <0>;
->> +
->> +	wlan: wl1251@1 {
->=20
-> wifi@1
+That would be a separate patch.
 
-Ok.
+> +	else
+> +		mmc_request_done(host->mmc, mrq);
+>  
+>  	return false;
+>  }
+> @@ -3157,7 +3160,12 @@ static irqreturn_t sdhci_irq(int irq, void *dev_id)
+>  
+>  	/* Process mrqs ready for immediate completion */
+>  	for (i = 0; i < SDHCI_MAX_MRQS; i++) {
+> -		if (mrqs_done[i])
+> +		if (!mrqs_done[i])
+> +			continue;
+> +
+> +		if (host->ops->request_done)
+> +			host->ops->request_done(host, mrqs_done[i]);
+> +		else
+>  			mmc_request_done(host->mmc, mrqs_done[i]);
+>  	}
+>  
+> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+> index 0ed3e0e..d89cdb9 100644
+> --- a/drivers/mmc/host/sdhci.h
+> +++ b/drivers/mmc/host/sdhci.h
+> @@ -644,6 +644,8 @@ struct sdhci_ops {
+>  	void	(*voltage_switch)(struct sdhci_host *host);
+>  	void	(*adma_write_desc)(struct sdhci_host *host, void **desc,
+>  				   dma_addr_t addr, int len, unsigned int cmd);
+> +	void	(*request_done)(struct sdhci_host *host,
+> +				struct mmc_request *mrq);
+>  };
+>  
+>  #ifdef CONFIG_MMC_SDHCI_IO_ACCESSORS
+> 
 
->=20
->> +		compatible =3D "ti,wl1251";
->> +
->> +		reg =3D <1>;
->> +
->> +		interrupt-parent =3D <&gpio1>;
->> +		interrupts =3D <21 IRQ_TYPE_LEVEL_HIGH>;	/* =
-GPIO_21 */
->> +
->> +		ti,wl1251-has-eeprom;
->> +	};
->> +};
->> --=20
->> 2.19.1
->>=20
-
-BR and thanks,
-Nikolaus=
