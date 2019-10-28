@@ -2,65 +2,123 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A58C7E7260
-	for <lists+linux-mmc@lfdr.de>; Mon, 28 Oct 2019 14:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20D12E790F
+	for <lists+linux-mmc@lfdr.de>; Mon, 28 Oct 2019 20:14:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388602AbfJ1NHn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 28 Oct 2019 09:07:43 -0400
-Received: from wb2.trendsitesontheweb.com ([72.52.244.203]:54394 "EHLO
-        wb2.trendsitesontheweb.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388578AbfJ1NHm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 28 Oct 2019 09:07:42 -0400
-X-Greylist: delayed 16387 seconds by postgrey-1.27 at vger.kernel.org; Mon, 28 Oct 2019 09:07:42 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=consultgeo.com; s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=mVMRyIJQNxb0V4n5NWSTHfcx6jV8XyEtT27Iqxly5FQ=; b=GNPpCiH4fmnDwidiOe78hBYxCw
-        8iJa1iyGNeaCnffiynXNE26j4s9vFr+cfH3FbzFjAVQ6e7PlTipoct/s9wjFvV+4+UgTgZgIiaeHn
-        1zyzAQ9iHKJKU3wALWDQH11PR5Kd/NE8dE2dauxuLN9V5ai/04Qdxn4hJ7y4a8OWJn0T1RqtGXdX1
-        htsrMwp3Yi9qVqzaPIay2P4+XGFBqj/Xi/ib29wOvr9d5iuiBk4t5pGNf8hhPAfCQqSG00JxuV1Ys
-        8vUqUVWNMWyMAa0qdinWn1AfmHsi5r0y1HQgcERfcHbhslDLYGoEMjcOAbU6U4/KnC4pcuBKXLGeC
-        qBx2bwoA==;
-Received: from [::1] (port=44584 helo=wb2.trendsitesontheweb.com)
-        by wb2.trendsitesontheweb.com with esmtpa (Exim 4.92)
-        (envelope-from <testing@consultgeo.com>)
-        id 1iP0Ij-0009H3-JK; Mon, 28 Oct 2019 04:22:57 -0400
+        id S1730077AbfJ1TO1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 28 Oct 2019 15:14:27 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:21924 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730022AbfJ1TO0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 28 Oct 2019 15:14:26 -0400
+Received: from belgarion ([90.55.204.252])
+        by mwinf5d17 with ME
+        id K7EJ2100B5TFNlm037EJ4o; Mon, 28 Oct 2019 20:14:24 +0100
+X-ME-Helo: belgarion
+X-ME-Auth: amFyem1pay5yb2JlcnRAb3JhbmdlLmZy
+X-ME-Date: Mon, 28 Oct 2019 20:14:24 +0100
+X-ME-IP: 90.55.204.252
+From:   Robert Jarzmik <robert.jarzmik@free.fr>
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@arm.linux.org.uk>
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Mark Brown <broonie@kernel.org>, linux-clk@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
+        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 05/46] ARM: pxa: split up mach/hardware.h
+References: <20191018154052.1276506-1-arnd@arndb.de>
+        <20191018154201.1276638-5-arnd@arndb.de>
+X-URL:  http://belgarath.falguerolles.org/
+Date:   Mon, 28 Oct 2019 20:14:18 +0100
+In-Reply-To: <20191018154201.1276638-5-arnd@arndb.de> (Arnd Bergmann's message
+        of "Fri, 18 Oct 2019 17:41:20 +0200")
+Message-ID: <87d0egof79.fsf@belgarion.home>
+User-Agent: Gnus/5.130008 (Ma Gnus v0.8) Emacs/26 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 28 Oct 2019 04:22:57 -0400
-From:   FRANK MOORE <testing@consultgeo.com>
-To:     undisclosed-recipients:;
-Subject: THANKS FOR YOUR EFFORT
-Reply-To: marksonw02@gmail.com
-Mail-Reply-To: marksonw02@gmail.com
-Message-ID: <60fb488787d3efc691f00a5f96fb0ffc@consultgeo.com>
-X-Sender: testing@consultgeo.com
-User-Agent: Roundcube Webmail/1.3.8
-X-OutGoing-Spam-Status: No, score=2.3
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - wb2.trendsitesontheweb.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - consultgeo.com
-X-Get-Message-Sender-Via: wb2.trendsitesontheweb.com: authenticated_id: testing@consultgeo.com
-X-Authenticated-Sender: wb2.trendsitesontheweb.com: testing@consultgeo.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Did you receive the money i sent to you?. if not contact Mr Williams 
-Johnson at ( marksonw02@gmail.com ) with your Full Name, Country, 
-Address and Direct phone Number for immediate release of your fund to 
-you.
+Arnd Bergmann <arnd@arndb.de> writes:
 
-Best Regard.
-Frank Moore
+> The mach/hardware.h is included in lots of places, and it provides
+> three different things on pxa:
+>
+> - the cpu_is_pxa* macros
+> - an indirect inclusion of mach/addr-map.h
+> - the __REG() and io_pv2() helper macros
+>
+> Split it up into separate <linux/soc/pxa/cpu.h> and mach/pxa-regs.h
+> headers, then change all the files that use mach/hardware.h to
+> include the exact set of those three headers that they actually
+> need, allowing for further more targeted cleanup.
+>
+> linux/soc/pxa/cpu.h can remain permanently exported and is now in
+> a global location along with similar headers. pxa-regs.h and
+> addr-map.h are only used in a very small number of drivers now
+> and can be moved to arch/arm/mach-pxa/ directly when those drivers
+> are to pass the necessary data as resources.
+
+For the pxa part, that looks fine to me.
+I'd like to focus a bit of Russell's attention to the sa11xx part (reminder in
+[1]), and more specifically :
+
+ - the change to drivers/pcmcia/soc_common.c
+ - the change to drivers/pcmcia/sa1111_generic.c
+
+I must admit my knowledge of PCMCIA is relatively poor, and even if the patch
+looks harmless, one never knows if Assebet will ever by same after ...
+
+Cheers.
+
+--
+Robert
+
+[1] Extract of the patch for Russell's scrutiny
+> diff --git a/drivers/pcmcia/sa1111_generic.c b/drivers/pcmcia/sa1111_generic.c
+> index 11783410223b..2f556fa37c43 100644
+> --- a/drivers/pcmcia/sa1111_generic.c
+> +++ b/drivers/pcmcia/sa1111_generic.c
+> @@ -17,7 +17,6 @@
+>  
+>  #include <pcmcia/ss.h>
+>  
+> -#include <mach/hardware.h>
+>  #include <asm/hardware/sa1111.h>
+>  #include <asm/mach-types.h>
+>  #include <asm/irq.h>
+... zip ...
+
+> diff --git a/drivers/pcmcia/soc_common.c b/drivers/pcmcia/soc_common.c
+> index 3a8c84bb174d..9276a628473d 100644
+> --- a/drivers/pcmcia/soc_common.c
+> +++ b/drivers/pcmcia/soc_common.c
+> @@ -47,8 +47,6 @@
+>  #include <linux/spinlock.h>
+>  #include <linux/timer.h>
+>  
+> -#include <mach/hardware.h>
+> -
+>  #include "soc_common.h"
+>  
+>  static irqreturn_t soc_common_pcmcia_interrupt(int irq, void *dev);
