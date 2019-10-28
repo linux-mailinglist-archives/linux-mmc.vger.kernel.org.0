@@ -2,82 +2,123 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E9E1E6E72
-	for <lists+linux-mmc@lfdr.de>; Mon, 28 Oct 2019 09:47:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD60E6EBA
+	for <lists+linux-mmc@lfdr.de>; Mon, 28 Oct 2019 10:11:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387642AbfJ1Irp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 28 Oct 2019 04:47:45 -0400
-Received: from gate.crashing.org ([63.228.1.57]:53273 "EHLO gate.crashing.org"
+        id S1732014AbfJ1JLU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 28 Oct 2019 05:11:20 -0400
+Received: from mga14.intel.com ([192.55.52.115]:41383 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387634AbfJ1Irp (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 28 Oct 2019 04:47:45 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9S8l1T2019620;
-        Mon, 28 Oct 2019 03:47:02 -0500
-Message-ID: <e68c5f8d73fbf1841531bf07eef0132d409e91b3.camel@kernel.crashing.org>
-Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
- updates
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Christoph Hellwig <hch@infradead.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Paul Mackerras <paulus@samba.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Christian Zigotzky <info@xenosoft.de>,
-        "contact@a-eon.com" <contact@a-eon.com>,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        mad skateman <madskateman@gmail.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Date:   Mon, 28 Oct 2019 19:47:01 +1100
-In-Reply-To: <20191026063918.GA24015@infradead.org>
-References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
-         <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
-         <20191015125105.GU25745@shell.armlinux.org.uk>
-         <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
-         <20191015131750.GV25745@shell.armlinux.org.uk>
-         <87muds586t.fsf@mpe.ellerman.id.au>
-         <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
-         <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
-         <20191023143159.GB25745@shell.armlinux.org.uk>
-         <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
-         <20191026063918.GA24015@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
+        id S1728769AbfJ1JLU (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 28 Oct 2019 05:11:20 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Oct 2019 02:11:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,239,1569308400"; 
+   d="scan'208";a="198026515"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.55]) ([10.237.72.55])
+  by fmsmga008.fm.intel.com with ESMTP; 28 Oct 2019 02:11:17 -0700
+Subject: Re: [PATCH v4 2/3] mmc: host: sdhci: Add request_done ops for struct
+ sdhci_ops
+To:     Baolin Wang <baolin.wang@linaro.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        baolin.wang7@gmail.com, linux-mmc <linux-mmc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+References: <cover.1571722391.git.baolin.wang@linaro.org>
+ <487c2e45810c6dc6485638474136e375cb567807.1571722391.git.baolin.wang@linaro.org>
+ <50696230-75f4-3de4-7424-c33d531ee159@intel.com>
+ <CAMz4kuJAwV7f=pjUqs1nO3+L5NbcwCQrCi-HGUPPXgp7rWUs=g@mail.gmail.com>
+ <CAMz4kuKfqMoM3WdaG8o0JHpXeUZHYpLt4P15BsOriU2h2OV--A@mail.gmail.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <60aabcc6-9def-1472-0e1f-3fec391ef1cd@intel.com>
+Date:   Mon, 28 Oct 2019 11:10:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <CAMz4kuKfqMoM3WdaG8o0JHpXeUZHYpLt4P15BsOriU2h2OV--A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 2019-10-25 at 23:39 -0700, Christoph Hellwig wrote:
-> On Fri, Oct 25, 2019 at 05:28:45PM -0500, Rob Herring wrote:
-> > This doesn't work?:
-> > 
-> >         if (IS_ENABLED(CONFIG_PPC) || of_dma_is_coherent(dev-
-> > >of_node))
-> >                 value |= ESDHC_DMA_SNOOP;
-> >         else
-> >                 value &= ~ESDHC_DMA_SNOOP;
-> > 
-> > While I said use the compatibles, using the kconfig symbol is
-> > easier
-> > than sorting out which compatibles are PPC SoCs. Though if that's
-> > already done elsewhere in the driver, you could set a flag and use
-> > that here. I'd be surprised if this was the only difference between
-> > ARM and PPC SoCs for this block.
+On 28/10/19 10:38 AM, Baolin Wang wrote:
+> On Mon, 28 Oct 2019 at 16:27, Baolin Wang <baolin.wang@linaro.org> wrote:
+>>
+>> Hi Adrian,
+>>
+>> On Mon, 28 Oct 2019 at 16:20, Adrian Hunter <adrian.hunter@intel.com> wrote:
+>>>
+>>> On 22/10/19 8:58 AM, Baolin Wang wrote:
+>>>> Add request_done ops for struct sdhci_ops as a preparation in case some
+>>>> host controllers have different method to complete one request, such as
+>>>> supporting request completion of MMC software queue.
+>>>>
+>>>> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+>>>> ---
+>>>>  drivers/mmc/host/sdhci.c |   12 ++++++++++--
+>>>>  drivers/mmc/host/sdhci.h |    2 ++
+>>>>  2 files changed, 12 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+>>>> index b056400..850241f 100644
+>>>> --- a/drivers/mmc/host/sdhci.c
+>>>> +++ b/drivers/mmc/host/sdhci.c
+>>>> @@ -2729,7 +2729,10 @@ static bool sdhci_request_done(struct sdhci_host *host)
+>>>>
+>>>>       spin_unlock_irqrestore(&host->lock, flags);
+>>>>
+>>>> -     mmc_request_done(host->mmc, mrq);
+>>>> +     if (host->ops->request_done)
+>>>> +             host->ops->request_done(host, mrq);
+>>>
+>>> For hsq, couldn't this result in sdhci_request() being called interrupt
+>>> context here.
+>>
+>> Right, now it did not support.
+>>
+>>>
+>>> To prevent that you would need to add a condition to sdhci_defer_done() so
+>>> it always defers when using hsq.
+>>
+>> Yes, but now the condition can be matched in sdhci_defer_done()  when
+>> using hsq. So no need to worry that the sdhci_request() will be called
+>> in interrupt
+>> context in this patch set. Thanks.
+>>
 > 
-> I think the right thing is a Kconfig variable that the architectures
-> selects which says if OF is by default coherent or incoherent, and
-> then use that in of_dma_is_coherent.
+> Wait, sorry, I realized some drivers may not select the
+> SDHCI_REQ_USE_DMA flag in sdhci_defer_done()  when using hsq. OK, So
+> how about below changes?
+> 
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 850241f..6c7a396 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -3035,7 +3035,7 @@ static inline bool sdhci_defer_done(struct
+> sdhci_host *host,
+>  {
+>         struct mmc_data *data = mrq->data;
+> 
+> -       return host->pending_reset ||
+> +       return IS_ENABLED(CONFIG_MMC_HSQ) || host->pending_reset ||
 
-That too. We could also define properties for both ways so we can
-override the default either way.
+Just because it is configured does not mean it is used.  How about adding a
+variable host->always_defer_done and set it in sdhci_sprd_probe().
 
-Cheers,
-Ben.
-
+>                ((host->flags & SDHCI_REQ_USE_DMA) && data &&
+>                 data->host_cookie == COOKIE_MAPPED);
+>  }
+> 
 
