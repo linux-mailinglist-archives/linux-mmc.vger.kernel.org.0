@@ -2,83 +2,74 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25202E8D8C
-	for <lists+linux-mmc@lfdr.de>; Tue, 29 Oct 2019 18:03:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B64EE8F6A
+	for <lists+linux-mmc@lfdr.de>; Tue, 29 Oct 2019 19:40:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390618AbfJ2RCx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 29 Oct 2019 13:02:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43520 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727279AbfJ2RCx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 29 Oct 2019 13:02:53 -0400
-Received: from localhost (unknown [69.71.4.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 93AD520656;
-        Tue, 29 Oct 2019 17:02:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572368573;
-        bh=uRow4DFq01/iQXmseqOfm0lJg6W4SSyElcj46INIcUs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=JxGocHmgHuhGaFAIOYYHZP6jO38X2g9p0rDpJrEy7DLJQ+M1Cr57XwP1R9DzHgUX+
-         /QcHgkWxbWBXlYSQoR+PP7mEpKUZrKuKnZfBolIILWAUnPQHOFPPm+7zTqB+H1UiD0
-         I2DR9s4009EVXChMlP+FyzhEabrMXQtaknEFpZk8=
-Date:   Tue, 29 Oct 2019 12:02:50 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Michael ." <keltoiboy@gmail.com>
-Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Trevor Jacobs <trevor_jacobs@aol.com>,
-        Kris Cleveland <tridentperfusion@yahoo.com>,
-        Jeff <bluerocksaddles@willitsonline.com>,
-        Morgan Klym <moklym@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Philip Langdale <philipl@overt.org>,
-        Pierre Ossman <pierre@ossman.eu>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        linux-mmc@vger.kernel.org
-Subject: Re: PCI device function not being enumerated [Was: PCMCIA not
- working on Panasonic Toughbook CF-29]
-Message-ID: <20191029170250.GA43972@google.com>
+        id S1729825AbfJ2SkR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 29 Oct 2019 14:40:17 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:41747 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727746AbfJ2SkR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 29 Oct 2019 14:40:17 -0400
+Received: by mail-ot1-f66.google.com with SMTP id 94so10654333oty.8;
+        Tue, 29 Oct 2019 11:40:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=iDxdZruyiKYu6zF9b1JiWGiLIkNbAfqYufuqttmPvyM=;
+        b=hg3YAV2dqSRfF+V1UOq2d7OPrNIUkgcjcjAfhF8p0l32iL9bvjUq3yvBEXX3djVE3E
+         sl6vthF/BiNtxC/e0WspOGjLBJQIodQgQ4oIVvm+IEeCbytbx6cPuXJ2RM8zhVDJs6Ud
+         G6/BeWoQ8vu1OFzRSC7LKMMLwBpch9rc5aevWutz+JQEWwukNuwiCbFDECUB3PLJlror
+         MqLO0bX+/xD/+Ms/Leak9F2m7AmrSIY7LEZGTyfcyntrBEUILbmbEOKXUDRxeNqcVdnZ
+         f49Q6xK6LnI1anoy11w/d2nihoDagfEDlAzDNfv4ma6ISvs7y5A6Z505wiq1nXNKCWsW
+         xMXg==
+X-Gm-Message-State: APjAAAWK4bnx+SizqAnoidOhn5+ZfJ51/4K2eRAqO4est80TNnhaQvl9
+        UapqyvAGX1mP52Z2EFeTSQ==
+X-Google-Smtp-Source: APXvYqxGDWSxCV3m1MjSffGqN3eqpsL9XchgtHMl706xJRcvchuAFMgZoqmBkf0ja7eF7gUpCpJdCQ==
+X-Received: by 2002:a9d:ef0:: with SMTP id 103mr18967111otj.2.1572374416544;
+        Tue, 29 Oct 2019 11:40:16 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id z1sm3178864oih.14.2019.10.29.11.40.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2019 11:40:15 -0700 (PDT)
+Date:   Tue, 29 Oct 2019 13:40:14 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Manish Narani <manish.narani@xilinx.com>
+Cc:     ulf.hansson@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        adrian.hunter@intel.com, michal.simek@xilinx.com,
+        jolly.shah@xilinx.com, nava.manne@xilinx.com,
+        rajan.vaja@xilinx.com, manish.narani@xilinx.com,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        git@xilinx.com
+Subject: Re: [PATCH v4 2/8] dt-bindings: mmc: arasan: Update Documentation
+ for the input clock
+Message-ID: <20191029184014.GA837@bogus>
+References: <1572345042-101207-1-git-send-email-manish.narani@xilinx.com>
+ <1572345042-101207-2-git-send-email-manish.narani@xilinx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAFjuqNihuEb4_5Lny5X7vA258c0ogemVg8pQ5Y_ANgOsqhSXhg@mail.gmail.com>
+In-Reply-To: <1572345042-101207-2-git-send-email-manish.narani@xilinx.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-[+cc Ulf, Philip, Pierre, Maxim, linux-mmc; see [1] for beginning of
-thread, [2] for problem report and the patch Michael tested]
-
-On Tue, Oct 29, 2019 at 07:58:27PM +1100, Michael . wrote:
-> Bjorn and Dominik.
-> I am happy to let you know the patch did the trick, it compiled well
-> on 5.4-rc4 and my friends in the CC list have tested the modified
-> kernel and confirmed that both slots are now working as they should.
-> As a group of dedicated Toughbook users and Linux users please accept
-> our thanks your efforts and assistance is greatly appreciated.
+On Tue, 29 Oct 2019 16:00:36 +0530, Manish Narani wrote:
+> Add documentation for an optional input clock which is essentially used
+> in sampling the input data coming from the card.
 > 
-> Now that we know this patch works what kernel do you think it will be
-> released in? Will it make 5.4 or will it be put into 5.5 development
-> for further testing?
+> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+> ---
+>  Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
 
-That patch was not intended to be a fix; it was just to test my guess
-that the quirk might be related.
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
 
-Removing the quirk solved the problem *you're* seeing, but the quirk
-was added in the first place to solve some other problem, and if we
-simply remove the quirk, we may reintroduce the original problem.
-
-So we have to look at the history and figure out some way to solve
-both problems.  I cc'd some people who might have insight.  Here are
-some commits that look relevant:
-
-  5ae70296c85f ("mmc: Disabler for Ricoh MMC controller")
-  03cd8f7ebe0c ("ricoh_mmc: port from driver to pci quirk")
-
-
-[1] https://lore.kernel.org/r/CAFjuqNi+knSb9WVQOahCVFyxsiqoGgwoM7Z1aqDBebNzp_-jYw@mail.gmail.com/
-[2] https://lore.kernel.org/r/20191021160952.GA229204@google.com/
+If a tag was not added on purpose, please state why and what changed.
