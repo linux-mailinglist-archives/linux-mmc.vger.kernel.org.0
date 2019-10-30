@@ -2,116 +2,161 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 625B8E9E86
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Oct 2019 16:12:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B987EEA160
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Oct 2019 17:10:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727018AbfJ3PKk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Oct 2019 11:10:40 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:33117 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726490AbfJ3PKk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Oct 2019 11:10:40 -0400
-Received: by mail-ua1-f66.google.com with SMTP id c16so803562uan.0
-        for <linux-mmc@vger.kernel.org>; Wed, 30 Oct 2019 08:10:39 -0700 (PDT)
+        id S1728207AbfJ3QCM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Oct 2019 12:02:12 -0400
+Received: from mail-vk1-f194.google.com ([209.85.221.194]:34368 "EHLO
+        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727882AbfJ3Pvz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Oct 2019 11:51:55 -0400
+Received: by mail-vk1-f194.google.com with SMTP id d126so604017vkb.1
+        for <linux-mmc@vger.kernel.org>; Wed, 30 Oct 2019 08:51:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vWPvK2c6OyfVAzdkhOXR9vFmByKTbx2YLS3Y29+afB4=;
-        b=zuiLR9ai+hclT9+gwgqH0OqEi9Pd7dVRwQNDKVvY0EhBOLUCH3P0UiTqHUEXd/9bIo
-         39mGEcFR2pZf/6vm/H0RoPat1+r9ropVskZU0VeM1tCVTdr42PL11wLJI3CqL2Kt6QPu
-         gXzi32Ty2JjjIO4GfAI92xHtepkfGZDvbzKaUBKQRPHVf59P26N4e52n+zE7KWKSLIgn
-         TFkUagCeRZ8edR9CeWUh+J8THTj1gPBvPskSsZ+G6OB8wi2ou+hUAhhCemNyAzTOavI0
-         z+IPXYh39UsJVpMLXvwfulPJZvgMQm4bM5oFq62630edcJ+K2gHYvtou+ijEa7+co3lG
-         QimA==
+        bh=MM8FYPP/M/qSGLzrMimtzxUAQYpF/zt1wu6EL2luqtE=;
+        b=g63vcrfvchtAY5Rd4CuFqJnAncPsp38RdAVZRNM9WTGTq5FdrGZl2oMdK24C0ouZMv
+         Zx3My7Upbfwkqdu1ZF5cDQ1kc66k/jp8wegkgxnQ/ALeyvgSeFHS/snQ/xWL75V7Phqp
+         4MalfrNRHwi4CpIylLOnmzj9sdkHNkEDYEmmwx+aVxrHD+QCV51Rzzl6vHtIJ3iMO30J
+         kFpmzeq4jWbaxsqwIjDZZneLyXJaaJdjcH+c/BSSTf8iRjl2gNc5j54vOdQqJfw/rePZ
+         P3cKjDCcYPbQxJlN9cpB5CkBmYD/3vyML4pHLz4SnMVneG80kChlnAC6NwFHN0uFm/d2
+         8DyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vWPvK2c6OyfVAzdkhOXR9vFmByKTbx2YLS3Y29+afB4=;
-        b=fFupU+TxTbvshtXV4hIKRHsDgKgs0lYzqtIWLYePfpHsSKI6P0+r/wFYyh2+NEXC6b
-         n0cE/f/oFcq+MhGy9gZMmKKH6XRSEDzIMv6mRPgYPhKJ03+3xCKCQEQaTkJsJs96JLu3
-         znpChDpAX26l2bZUMIfgtEc3A+NMjVQucQKkLP44v8EBGav7phsVylvEDwuLbQf63AHf
-         8QIySTNy7QMXzNPEmXgx2uzH7WxoSmldcHEtLai/N8AS2DNb6PUJnD3m+ObdeVVmbmjk
-         oZrUamQBL4zIfo+upXhG2hAczm/NHFWmZw9KOrXPNPF8lttyEC4EczUlHgYB8vsn6v3e
-         mqGg==
-X-Gm-Message-State: APjAAAW0KtrVM7EzUF6288yEvYX3cgvQ7TKWdIDHGe4MOQG/8GH5DYER
-        GkCaXl1DV5j+0yzoF0cg2gUW1tEsKLx6CsgNc8iyCQ9n
-X-Google-Smtp-Source: APXvYqyN7EMi9zEVMgWyfpCXNVxROb40i9/Ejprhx08G0ucwyOjmrTjTzCNWCO/6pYP/j7+DITGa5pFj59ti5wgdlH8=
-X-Received: by 2002:ab0:2258:: with SMTP id z24mr75332uan.100.1572448234841;
- Wed, 30 Oct 2019 08:10:34 -0700 (PDT)
+        bh=MM8FYPP/M/qSGLzrMimtzxUAQYpF/zt1wu6EL2luqtE=;
+        b=lQ//Et1zzzTq3DKEfvNlVJgLTEuCQvRg0a27KvEpaAphYJz0hVBcVp1NG2oqKzu7Wo
+         SrlyCppq96dVeN22deY158CNw0k1lwujsaf6yxLUByiffOKg9ycZM+tQ5lcG4SfT6yA/
+         OE+2RN/NJOFMME6nlYoyHbMsf5E0UiEHCxZWQG8jGEcXRzCnuKCQgKSB0YpLeoEXKbk8
+         KNA7KpK3EJMtWcxho1zOISt8tXP71jfl8vIabfuP6qRlHcfYs6uIcJV84yQoGYCCHjxd
+         BbuCdnZ4kcVp2t/dMG+iV4kY2yu67n7QzPe2Cg/Y5VRCSMz3b8nR+h9V+C/cYC21HLAk
+         NbiA==
+X-Gm-Message-State: APjAAAXVTnHj0f7XGASMcu+8AaeACMxMGF/HslwKhPTedzWHnrYP2K+H
+        Z7EZ3GB5h/IeItiHcasZ0jQNSeDD830C+5OqknOw5A==
+X-Google-Smtp-Source: APXvYqyHupdgWHa7qCIjuf/ufG4zCQRus8URSrYdV3I3LkSUfaiNNDW1LPfNwtjXqRaPr+zQbaPiggFXKTik4rvlgIk=
+X-Received: by 2002:a1f:2f51:: with SMTP id v78mr15055854vkv.101.1572450713564;
+ Wed, 30 Oct 2019 08:51:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191018131338.11713-1-hslester96@gmail.com> <CAPDyKFoBYchP96hv=7XfTo8CrCSD+KC0h_oFRAsOYT-Lc1SFZQ@mail.gmail.com>
- <20191023153313.GB5153@kunai>
-In-Reply-To: <20191023153313.GB5153@kunai>
+References: <cover.1571510481.git.hns@goldelico.com> <0887d84402f796d1e7361261b88ec6057fbb0065.1571510481.git.hns@goldelico.com>
+In-Reply-To: <0887d84402f796d1e7361261b88ec6057fbb0065.1571510481.git.hns@goldelico.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 30 Oct 2019 16:09:58 +0100
-Message-ID: <CAPDyKFo9wYwhdy-1BDcRMJKTjADappsT-gBaKZE7hTLE4obxiA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: renesas_sdhi: add checks for pinctrl_lookup_state
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Chuhong Yuan <hslester96@gmail.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+Date:   Wed, 30 Oct 2019 16:51:17 +0100
+Message-ID: <CAPDyKFp3EjTuCTj+HXhxf+Ssti0hW8eMDR-NrGYWDWSDmQz6Lw@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] mmc: host: omap_hsmmc: add code for special init
+ of wl1251 to get rid of pandora_wl1251_init_card
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        "# 4.0+" <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 23 Oct 2019 at 17:33, Wolfram Sang <wsa@the-dreams.de> wrote:
+On Sat, 19 Oct 2019 at 20:42, H. Nikolaus Schaller <hns@goldelico.com> wrote:
 >
-> On Mon, Oct 21, 2019 at 04:32:49PM +0200, Ulf Hansson wrote:
-> > On Fri, 18 Oct 2019 at 15:13, Chuhong Yuan <hslester96@gmail.com> wrote:
-> > >
-> > > renesas_sdhi_probe misses checks for pinctrl_lookup_state and may miss
-> > > failures.
-> > > Add checks for them to fix the problem.
-> > >
-> > > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> > > ---
-> > >  drivers/mmc/host/renesas_sdhi_core.c | 5 +++++
-> > >  1 file changed, 5 insertions(+)
-> > >
-> > > diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-> > > index d4ada5cca2d1..dc5ad6632df3 100644
-> > > --- a/drivers/mmc/host/renesas_sdhi_core.c
-> > > +++ b/drivers/mmc/host/renesas_sdhi_core.c
-> > > @@ -694,8 +694,13 @@ int renesas_sdhi_probe(struct platform_device *pdev,
-> > >         if (!IS_ERR(priv->pinctrl)) {
-> > >                 priv->pins_default = pinctrl_lookup_state(priv->pinctrl,
-> > >                                                 PINCTRL_STATE_DEFAULT);
-> > > +               if (IS_ERR(priv->pins_default))
-> > > +                       return PTR_ERR(priv->pins_default);
-> > > +
-> > >                 priv->pins_uhs = pinctrl_lookup_state(priv->pinctrl,
-> > >                                                 "state_uhs");
-> > > +               if (IS_ERR(priv->pins_uhs))
-> > > +                       return PTR_ERR(priv->pins_uhs);
-> > >         }
-> >
-> > This looks correct to me, as I guess if there is a pinctrl specified
-> > for device node of the controller, it means that it should be used!?
-> >
-> > I understand that this is only used for those variants that supports
-> > UHS-I via the renesas_sdhi_start_signal_voltage_switch(). Wolfram, is
-> > this fine you think?
+> Pandora_wl1251_init_card was used to do special pdata based
+> setup of the sdio mmc interface. This does no longer work with
+> v4.7 and later. A fix requires a device tree based mmc3 setup.
 >
-> Well, I don't like to bail out because this error is not fatal for basic
-> operations. How about releasing priv->pinctrl again with an additional
-> warning that pinctrl settings are broken and will prevent 1.8v modes?
+> Therefore we move the special setup to omap_hsmmc.c instead
+> of calling some pdata supplied init_card function.
 >
-> Opinions?
+> The new code checks for a DT child node compatible to wl1251
+> so it will not affect other MMC3 use cases.
+>
+> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
+>
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Cc: <stable@vger.kernel.org> # 4.7.0
+> ---
+>  drivers/mmc/host/omap_hsmmc.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+>
+> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+> index 952fa4063ff8..03ba80bcf319 100644
+> --- a/drivers/mmc/host/omap_hsmmc.c
+> +++ b/drivers/mmc/host/omap_hsmmc.c
+> @@ -1512,6 +1512,27 @@ static void omap_hsmmc_init_card(struct mmc_host *mmc, struct mmc_card *card)
+>
+>         if (mmc_pdata(host)->init_card)
+>                 mmc_pdata(host)->init_card(card);
+> +       else if (card->type == MMC_TYPE_SDIO || card->type == MMC_TYPE_SD_COMBO) {
+> +               struct device_node *np = mmc_dev(mmc)->of_node;
+> +
+> +               np = of_get_compatible_child(np, "ti,wl1251");
+> +               if (np) {
+> +                       /*
+> +                        * We have TI wl1251 attached to MMC3. Pass this information to
+> +                        * SDIO core because it can't be probed by normal methods.
+> +                        */
+> +
+> +                       dev_info(host->dev, "found wl1251\n");
+> +                       card->quirks |= MMC_QUIRK_NONSTD_SDIO;
+> +                       card->cccr.wide_bus = 1;
+> +                       card->cis.vendor = 0x104c;
+> +                       card->cis.device = 0x9066;
+> +                       card->cis.blksize = 512;
+> +                       card->cis.max_dtr = 24000000;
+> +                       card->ocr = 0x80;
 
-Hmm, from a mmc driver probe point of view, I don't quite share this approach.
+These things should really be figured out by the mmc core during SDIO
+card initialization itself, not via the host ops ->init_card()
+callback. That is just poor hack, which in the long run should go
+away.
 
-I would rather fail as it forces the DTB to be corrected immediately,
-rather than trusting some developer to look at a warning in a log. The
-point is, in such a case it may never get fixed, if the product is
-shipped with the wrong DTB.
+Moreover, I think we should add a subnode to the host node in the DT,
+to describe the embedded SDIO card, rather than parsing the subnode
+for the SDIO func - as that seems wrong to me.
 
-My concern at this point is rather to break existing DTBs, but it
-seems that should not be an issue, right?
+To add a subnode for the SDIO card, we already have a binding that I
+think we should extend. Please have a look at
+Documentation/devicetree/bindings/mmc/mmc-card.txt.
+
+If you want an example of how to implement this for your case, do a
+git grep "broken-hpi" in the driver/mmc/core/, I think it will tell
+you more of what I have in mind.
+
+> +                       of_node_put(np);
+> +               }
+> +       }
+>  }
+>
+>  static void omap_hsmmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
+> --
+> 2.19.1
+>
 
 Kind regards
 Uffe
