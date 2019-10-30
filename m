@@ -2,93 +2,173 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20817EA130
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Oct 2019 17:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1796EA1FA
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Oct 2019 17:45:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728657AbfJ3P7N (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Oct 2019 11:59:13 -0400
-Received: from mail-vk1-f194.google.com ([209.85.221.194]:35951 "EHLO
-        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729083AbfJ3P5b (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Oct 2019 11:57:31 -0400
-Received: by mail-vk1-f194.google.com with SMTP id r85so608042vke.3
-        for <linux-mmc@vger.kernel.org>; Wed, 30 Oct 2019 08:57:31 -0700 (PDT)
+        id S1727029AbfJ3Qo7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Oct 2019 12:44:59 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:41692 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726999AbfJ3Qo7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Oct 2019 12:44:59 -0400
+Received: by mail-ua1-f65.google.com with SMTP id q4so908228uap.8
+        for <linux-mmc@vger.kernel.org>; Wed, 30 Oct 2019 09:44:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=yJeQS9cFeGl1OPSSl6cPS0WOzk7e89rbPQpCN40pRm4=;
-        b=mo1Ke15458v/vlvhjBXcmWHlSfc7pqPA7K38Pbo+8VtoaUcrWE1z6EHBDJG+096Gyp
-         Z21AqErrPKNDAlc6XNJCZBKhaZi0UJoPkSCJJx92vLPauys7MOe+Q6BnX8+0VqPOm8Qp
-         Y878FL6Aa5z+2w2CESN6cvHxxGiv3/MdI/m36jumjIjzS5Xg8wxzgAHZYg4Puefdo4dT
-         gdJLuEWpBBzHo5Fx4KUeqSZreK836lUWLIYyX0nB4gD9xeV5yFXKcbr36eSo3nZsYJuL
-         dtaWLTXbSllV84m/yULlfhSMnksqPYJOsgQneVjKKJRlOjiWc7UXO0t2cLUi/Al3vefC
-         wC2A==
+        bh=p3/pbvedwS4IhZb4B6nbOhbMOZh2AXw7ndulwhv3TfM=;
+        b=uKbzD6z3ZGjc1fWALJKpEEB/bbWW4HPabd5njl25crREYFACWhI8l1Kir807xOxFpf
+         uaLa/jYOBB4myt492ky0Bm4YMaUYwzK/94ra2AKsk/hjtGfxyIUNsYZMw3k03FhB7aa+
+         D2OMDUrVDFG4lh3JnM9JNhFiNrQATzIWHgWWrsFo/gfWlZcp7D/KPuimOVmXF9dmZDOE
+         kqpQKHr+JjnMM9ArF0cPmyy5HSVupmLBQmTJ2rUO9BmpLiphAUI7CTD1n8sVbxM3f7P+
+         y4tJ9cXCf+NQfuudxvOK6UYmowPV5Kf2WNvQcUvzZdfMJCJXPEp22cQ//ywxY1dvTRRP
+         vp1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=yJeQS9cFeGl1OPSSl6cPS0WOzk7e89rbPQpCN40pRm4=;
-        b=UFGBLutVlwPFHaaUfWhDVSKhoPrCLLPP+r2+Wa4uF0nuMSRgr8TkiDlU88ySQX5yUK
-         mWj8+Z1j1axBMjeBTP+kndJIgDMt4CLjzYq4wUDA130Wu6q0NtkBEL3pQczRRLRICtRy
-         0lSWOjYvXgz9pjEnP3Ey8yz71osjg0MJ6SFmARYXrF8TLMvP0LDjDpcm9SnxB3RSgjYX
-         JrbkNR+K0wKb2NHBeDFKcIJh6vhh2fQfRTJAtcUPwb8dOoy2iy6anAxqWEHu5Or8RImY
-         1JTXw47aN83h66nhhQ76nPQD7ytieAfOtHzzUWB6g0vqUvFnEokC7hj+tDzHX58DUqLN
-         n/cA==
-X-Gm-Message-State: APjAAAWjdhjxrCeWM3Fj3NJvhC3ruLgigirNo9aicZvtHrSCz5U+r5uc
-        HyvKBWDFkIdGyKoJsfO2WCgGlGTQyeKgTlkMhhyJ1Gc4
-X-Google-Smtp-Source: APXvYqwXf+9b2dlOFi2XWNYH+wHUypr7rezsWHjr1zgOe7uguG/zo+9y/AtodCpKvf0rggo+VpvTzzgQzhHJmZYD82U=
-X-Received: by 2002:a1f:2f51:: with SMTP id v78mr15068742vkv.101.1572451050456;
- Wed, 30 Oct 2019 08:57:30 -0700 (PDT)
+        bh=p3/pbvedwS4IhZb4B6nbOhbMOZh2AXw7ndulwhv3TfM=;
+        b=NSXa+z0VoF7d9gdD6LQjIHXBZkMBiE5PZlVfkH7PlcE//zO0wDUhvt3wSx7pD9Niqm
+         3i5LG8R/SyWpchya9SBihNiyG/il4dRH+OUSSOp36P2EVzhiDG/tEjklWleCzQnxcQfT
+         /n0bFIjr0+d6ZtSvaigYxZWRvQ55PlcyVp16EhLiZOA/Lr+xhsGfmYotvhmYFJkY8kGT
+         4zF8HKI+gMJwNjeIuGuoP6K45K7T5lw+pJ5P/eNTJCpQCiP4Hx0QN5j/9t+YPGByhFMR
+         HDzdsd05ZaahlocPOvOQhubqEt2QK2NfOv7/6gpX8NLCftUYJQAAa9lDoCbh6YpZ6RSv
+         LlmQ==
+X-Gm-Message-State: APjAAAWcVAgYMzZurKwmtkZpg2yT/2voxWWyl46iB35bvc9/zUESo59p
+        kGv/hcWoN5cwSpkxO5qLGz0OYuuieXQC+QYMsq8/Mw==
+X-Google-Smtp-Source: APXvYqxJtN6SyNTtxvr9eHmowjOiNggxSentSJ3MZnyqcgsnfmMgt0WjJPDMGJJ+lnTYhFM/TEriRkTW1hDBpWXDXFc=
+X-Received: by 2002:ab0:2258:: with SMTP id z24mr367974uan.100.1572453897721;
+ Wed, 30 Oct 2019 09:44:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
-In-Reply-To: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
+References: <cover.1571510481.git.hns@goldelico.com> <bec9d76e6da03d734649b9bdf76e9d575c57631a.1571510481.git.hns@goldelico.com>
+In-Reply-To: <bec9d76e6da03d734649b9bdf76e9d575c57631a.1571510481.git.hns@goldelico.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 30 Oct 2019 16:56:54 +0100
-Message-ID: <CAPDyKFrHbytKUeGkT0sVAmhcgc65x4miv+cLgMLj7jDcGzJxUg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
-To:     Biju Das <biju.das@bp.renesas.com>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+Date:   Wed, 30 Oct 2019 17:44:21 +0100
+Message-ID: <CAPDyKFrMQ3fBaeeAYVJfUdL8m=PDRU9Xt_9oGw6D1XOY68qDuQ@mail.gmail.com>
+Subject: Re: [PATCH v2 03/11] DTS: ARM: pandora-common: define wl1251 as child
+ node of mmc3
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        "# 4.0+" <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 24 Sep 2019 at 08:49, Biju Das <biju.das@bp.renesas.com> wrote:
+On Sat, 19 Oct 2019 at 20:42, H. Nikolaus Schaller <hns@goldelico.com> wrote:
 >
-> This patch adds SDHI support for RZ/G2N (R8A774B1) SoC.
+> Since v4.7 the dma initialization requires that there is a
+> device tree property for "rx" and "tx" channels which is
+> not provided by the pdata-quirks initialization.
 >
-> Signed-off-by: Biju Das <biju.das@bp.renesas.com>
+> By conversion of the mmc3 setup to device tree this will
+> finally allows to remove the OpenPandora wlan specific omap3
+> data-quirks.
+>
+> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
+>
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Cc: <stable@vger.kernel.org> # 4.7.0
+> ---
+>  arch/arm/boot/dts/omap3-pandora-common.dtsi | 37 +++++++++++++++++++--
+>  1 file changed, 35 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/arm/boot/dts/omap3-pandora-common.dtsi b/arch/arm/boot/dts/omap3-pandora-common.dtsi
+> index ec5891718ae6..c595b3eb314d 100644
+> --- a/arch/arm/boot/dts/omap3-pandora-common.dtsi
+> +++ b/arch/arm/boot/dts/omap3-pandora-common.dtsi
+> @@ -226,6 +226,18 @@
+>                 gpio = <&gpio6 4 GPIO_ACTIVE_HIGH>;     /* GPIO_164 */
+>         };
+>
+> +       /* wl1251 wifi+bt module */
+> +       wlan_en: fixed-regulator-wg7210_en {
+> +               compatible = "regulator-fixed";
+> +               regulator-name = "vwlan";
+> +               regulator-min-microvolt = <1800000>;
+> +               regulator-max-microvolt = <1800000>;
 
-Applied for next, thanks!
+I doubt these are correct.
+
+I guess this should be in the range of 2.7V-3.6V.
+
+> +               startup-delay-us = <50000>;
+> +               regulator-always-on;
+
+Always on?
+
+> +               enable-active-high;
+> +               gpio = <&gpio1 23 GPIO_ACTIVE_HIGH>;
+> +       };
+> +
+>         /* wg7210 (wifi+bt module) 32k clock buffer */
+>         wg7210_32k: fixed-regulator-wg7210_32k {
+>                 compatible = "regulator-fixed";
+> @@ -522,9 +534,30 @@
+>         /*wp-gpios = <&gpio4 31 GPIO_ACTIVE_HIGH>;*/    /* GPIO_127 */
+>  };
+>
+> -/* mmc3 is probed using pdata-quirks to pass wl1251 card data */
+>  &mmc3 {
+> -       status = "disabled";
+> +       vmmc-supply = <&wlan_en>;
+> +
+> +       bus-width = <4>;
+> +       non-removable;
+> +       ti,non-removable;
+> +       cap-power-off-card;
+> +
+> +       pinctrl-names = "default";
+> +       pinctrl-0 = <&mmc3_pins>;
+> +
+> +       #address-cells = <1>;
+> +       #size-cells = <0>;
+> +
+> +       wlan: wl1251@1 {
+> +               compatible = "ti,wl1251";
+> +
+> +               reg = <1>;
+> +
+> +               interrupt-parent = <&gpio1>;
+> +               interrupts = <21 IRQ_TYPE_LEVEL_HIGH>;  /* GPIO_21 */
+> +
+> +               ti,wl1251-has-eeprom;
+> +       };
+>  };
+>
+>  /* bluetooth*/
+> --
+> 2.19.1
+>
 
 Kind regards
 Uffe
-
-
-> ---
->  drivers/mmc/host/renesas_sdhi_internal_dmac.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> index 751fe91..7c6020e 100644
-> --- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> +++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> @@ -308,6 +308,7 @@ static const struct soc_device_attribute soc_whitelist[] = {
->           .data = (void *)BIT(SDHI_INTERNAL_DMAC_ONE_RX_ONLY) },
->         /* generic ones */
->         { .soc_id = "r8a774a1" },
-> +       { .soc_id = "r8a774b1" },
->         { .soc_id = "r8a774c0" },
->         { .soc_id = "r8a77470" },
->         { .soc_id = "r8a7795" },
-> --
-> 2.7.4
->
