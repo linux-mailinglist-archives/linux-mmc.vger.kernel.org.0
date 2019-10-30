@@ -2,161 +2,93 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B987EEA160
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Oct 2019 17:10:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20817EA130
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Oct 2019 17:09:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728207AbfJ3QCM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Oct 2019 12:02:12 -0400
-Received: from mail-vk1-f194.google.com ([209.85.221.194]:34368 "EHLO
+        id S1728657AbfJ3P7N (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Oct 2019 11:59:13 -0400
+Received: from mail-vk1-f194.google.com ([209.85.221.194]:35951 "EHLO
         mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727882AbfJ3Pvz (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Oct 2019 11:51:55 -0400
-Received: by mail-vk1-f194.google.com with SMTP id d126so604017vkb.1
-        for <linux-mmc@vger.kernel.org>; Wed, 30 Oct 2019 08:51:54 -0700 (PDT)
+        with ESMTP id S1729083AbfJ3P5b (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Oct 2019 11:57:31 -0400
+Received: by mail-vk1-f194.google.com with SMTP id r85so608042vke.3
+        for <linux-mmc@vger.kernel.org>; Wed, 30 Oct 2019 08:57:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=MM8FYPP/M/qSGLzrMimtzxUAQYpF/zt1wu6EL2luqtE=;
-        b=g63vcrfvchtAY5Rd4CuFqJnAncPsp38RdAVZRNM9WTGTq5FdrGZl2oMdK24C0ouZMv
-         Zx3My7Upbfwkqdu1ZF5cDQ1kc66k/jp8wegkgxnQ/ALeyvgSeFHS/snQ/xWL75V7Phqp
-         4MalfrNRHwi4CpIylLOnmzj9sdkHNkEDYEmmwx+aVxrHD+QCV51Rzzl6vHtIJ3iMO30J
-         kFpmzeq4jWbaxsqwIjDZZneLyXJaaJdjcH+c/BSSTf8iRjl2gNc5j54vOdQqJfw/rePZ
-         P3cKjDCcYPbQxJlN9cpB5CkBmYD/3vyML4pHLz4SnMVneG80kChlnAC6NwFHN0uFm/d2
-         8DyA==
+        bh=yJeQS9cFeGl1OPSSl6cPS0WOzk7e89rbPQpCN40pRm4=;
+        b=mo1Ke15458v/vlvhjBXcmWHlSfc7pqPA7K38Pbo+8VtoaUcrWE1z6EHBDJG+096Gyp
+         Z21AqErrPKNDAlc6XNJCZBKhaZi0UJoPkSCJJx92vLPauys7MOe+Q6BnX8+0VqPOm8Qp
+         Y878FL6Aa5z+2w2CESN6cvHxxGiv3/MdI/m36jumjIjzS5Xg8wxzgAHZYg4Puefdo4dT
+         gdJLuEWpBBzHo5Fx4KUeqSZreK836lUWLIYyX0nB4gD9xeV5yFXKcbr36eSo3nZsYJuL
+         dtaWLTXbSllV84m/yULlfhSMnksqPYJOsgQneVjKKJRlOjiWc7UXO0t2cLUi/Al3vefC
+         wC2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=MM8FYPP/M/qSGLzrMimtzxUAQYpF/zt1wu6EL2luqtE=;
-        b=lQ//Et1zzzTq3DKEfvNlVJgLTEuCQvRg0a27KvEpaAphYJz0hVBcVp1NG2oqKzu7Wo
-         SrlyCppq96dVeN22deY158CNw0k1lwujsaf6yxLUByiffOKg9ycZM+tQ5lcG4SfT6yA/
-         OE+2RN/NJOFMME6nlYoyHbMsf5E0UiEHCxZWQG8jGEcXRzCnuKCQgKSB0YpLeoEXKbk8
-         KNA7KpK3EJMtWcxho1zOISt8tXP71jfl8vIabfuP6qRlHcfYs6uIcJV84yQoGYCCHjxd
-         BbuCdnZ4kcVp2t/dMG+iV4kY2yu67n7QzPe2Cg/Y5VRCSMz3b8nR+h9V+C/cYC21HLAk
-         NbiA==
-X-Gm-Message-State: APjAAAXVTnHj0f7XGASMcu+8AaeACMxMGF/HslwKhPTedzWHnrYP2K+H
-        Z7EZ3GB5h/IeItiHcasZ0jQNSeDD830C+5OqknOw5A==
-X-Google-Smtp-Source: APXvYqyHupdgWHa7qCIjuf/ufG4zCQRus8URSrYdV3I3LkSUfaiNNDW1LPfNwtjXqRaPr+zQbaPiggFXKTik4rvlgIk=
-X-Received: by 2002:a1f:2f51:: with SMTP id v78mr15055854vkv.101.1572450713564;
- Wed, 30 Oct 2019 08:51:53 -0700 (PDT)
+        bh=yJeQS9cFeGl1OPSSl6cPS0WOzk7e89rbPQpCN40pRm4=;
+        b=UFGBLutVlwPFHaaUfWhDVSKhoPrCLLPP+r2+Wa4uF0nuMSRgr8TkiDlU88ySQX5yUK
+         mWj8+Z1j1axBMjeBTP+kndJIgDMt4CLjzYq4wUDA130Wu6q0NtkBEL3pQczRRLRICtRy
+         0lSWOjYvXgz9pjEnP3Ey8yz71osjg0MJ6SFmARYXrF8TLMvP0LDjDpcm9SnxB3RSgjYX
+         JrbkNR+K0wKb2NHBeDFKcIJh6vhh2fQfRTJAtcUPwb8dOoy2iy6anAxqWEHu5Or8RImY
+         1JTXw47aN83h66nhhQ76nPQD7ytieAfOtHzzUWB6g0vqUvFnEokC7hj+tDzHX58DUqLN
+         n/cA==
+X-Gm-Message-State: APjAAAWjdhjxrCeWM3Fj3NJvhC3ruLgigirNo9aicZvtHrSCz5U+r5uc
+        HyvKBWDFkIdGyKoJsfO2WCgGlGTQyeKgTlkMhhyJ1Gc4
+X-Google-Smtp-Source: APXvYqwXf+9b2dlOFi2XWNYH+wHUypr7rezsWHjr1zgOe7uguG/zo+9y/AtodCpKvf0rggo+VpvTzzgQzhHJmZYD82U=
+X-Received: by 2002:a1f:2f51:: with SMTP id v78mr15068742vkv.101.1572451050456;
+ Wed, 30 Oct 2019 08:57:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1571510481.git.hns@goldelico.com> <0887d84402f796d1e7361261b88ec6057fbb0065.1571510481.git.hns@goldelico.com>
-In-Reply-To: <0887d84402f796d1e7361261b88ec6057fbb0065.1571510481.git.hns@goldelico.com>
+References: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
+In-Reply-To: <1569307744-42479-1-git-send-email-biju.das@bp.renesas.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 30 Oct 2019 16:51:17 +0100
-Message-ID: <CAPDyKFp3EjTuCTj+HXhxf+Ssti0hW8eMDR-NrGYWDWSDmQz6Lw@mail.gmail.com>
-Subject: Re: [PATCH v2 04/11] mmc: host: omap_hsmmc: add code for special init
- of wl1251 to get rid of pandora_wl1251_init_card
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+Date:   Wed, 30 Oct 2019 16:56:54 +0100
+Message-ID: <CAPDyKFrHbytKUeGkT0sVAmhcgc65x4miv+cLgMLj7jDcGzJxUg@mail.gmail.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
+To:     Biju Das <biju.das@bp.renesas.com>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        "# 4.0+" <stable@vger.kernel.org>
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 19 Oct 2019 at 20:42, H. Nikolaus Schaller <hns@goldelico.com> wrote:
+On Tue, 24 Sep 2019 at 08:49, Biju Das <biju.das@bp.renesas.com> wrote:
 >
-> Pandora_wl1251_init_card was used to do special pdata based
-> setup of the sdio mmc interface. This does no longer work with
-> v4.7 and later. A fix requires a device tree based mmc3 setup.
+> This patch adds SDHI support for RZ/G2N (R8A774B1) SoC.
 >
-> Therefore we move the special setup to omap_hsmmc.c instead
-> of calling some pdata supplied init_card function.
->
-> The new code checks for a DT child node compatible to wl1251
-> so it will not affect other MMC3 use cases.
->
-> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
->
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> Cc: <stable@vger.kernel.org> # 4.7.0
-> ---
->  drivers/mmc/host/omap_hsmmc.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
->
-> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
-> index 952fa4063ff8..03ba80bcf319 100644
-> --- a/drivers/mmc/host/omap_hsmmc.c
-> +++ b/drivers/mmc/host/omap_hsmmc.c
-> @@ -1512,6 +1512,27 @@ static void omap_hsmmc_init_card(struct mmc_host *mmc, struct mmc_card *card)
->
->         if (mmc_pdata(host)->init_card)
->                 mmc_pdata(host)->init_card(card);
-> +       else if (card->type == MMC_TYPE_SDIO || card->type == MMC_TYPE_SD_COMBO) {
-> +               struct device_node *np = mmc_dev(mmc)->of_node;
-> +
-> +               np = of_get_compatible_child(np, "ti,wl1251");
-> +               if (np) {
-> +                       /*
-> +                        * We have TI wl1251 attached to MMC3. Pass this information to
-> +                        * SDIO core because it can't be probed by normal methods.
-> +                        */
-> +
-> +                       dev_info(host->dev, "found wl1251\n");
-> +                       card->quirks |= MMC_QUIRK_NONSTD_SDIO;
-> +                       card->cccr.wide_bus = 1;
-> +                       card->cis.vendor = 0x104c;
-> +                       card->cis.device = 0x9066;
-> +                       card->cis.blksize = 512;
-> +                       card->cis.max_dtr = 24000000;
-> +                       card->ocr = 0x80;
+> Signed-off-by: Biju Das <biju.das@bp.renesas.com>
 
-These things should really be figured out by the mmc core during SDIO
-card initialization itself, not via the host ops ->init_card()
-callback. That is just poor hack, which in the long run should go
-away.
-
-Moreover, I think we should add a subnode to the host node in the DT,
-to describe the embedded SDIO card, rather than parsing the subnode
-for the SDIO func - as that seems wrong to me.
-
-To add a subnode for the SDIO card, we already have a binding that I
-think we should extend. Please have a look at
-Documentation/devicetree/bindings/mmc/mmc-card.txt.
-
-If you want an example of how to implement this for your case, do a
-git grep "broken-hpi" in the driver/mmc/core/, I think it will tell
-you more of what I have in mind.
-
-> +                       of_node_put(np);
-> +               }
-> +       }
->  }
->
->  static void omap_hsmmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
-> --
-> 2.19.1
->
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/host/renesas_sdhi_internal_dmac.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+> index 751fe91..7c6020e 100644
+> --- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+> +++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+> @@ -308,6 +308,7 @@ static const struct soc_device_attribute soc_whitelist[] = {
+>           .data = (void *)BIT(SDHI_INTERNAL_DMAC_ONE_RX_ONLY) },
+>         /* generic ones */
+>         { .soc_id = "r8a774a1" },
+> +       { .soc_id = "r8a774b1" },
+>         { .soc_id = "r8a774c0" },
+>         { .soc_id = "r8a77470" },
+>         { .soc_id = "r8a7795" },
+> --
+> 2.7.4
+>
