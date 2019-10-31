@@ -2,223 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59961EB5A8
-	for <lists+linux-mmc@lfdr.de>; Thu, 31 Oct 2019 17:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D928FEB98D
+	for <lists+linux-mmc@lfdr.de>; Thu, 31 Oct 2019 23:12:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728737AbfJaQ7o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 31 Oct 2019 12:59:44 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:39007 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728856AbfJaQ7n (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 31 Oct 2019 12:59:43 -0400
-Received: by mail-vs1-f67.google.com with SMTP id y129so4553333vsc.6
-        for <linux-mmc@vger.kernel.org>; Thu, 31 Oct 2019 09:59:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rBXjy64QhAJngU1bLCgW8NmRIabhTqAJ4rYpSUJH/vA=;
-        b=MFPuR6yrPRTAmL9shB7f7ccQmfeaxlzOoX57mPiTDTNTInAdnhDq1qiWaZtEhzbSLI
-         aLEv7aV9AfTmYN2RGLov44yiuhk/5h8r4Z03gT3ZXWcaMGCrA2GoczDlv5IVrmoOhv4t
-         WcfOOehtYLlEpYEn0voLWT83cdteFabhYfsqZC54x6OQXZwgDcqZkFmA5SMMHwjWTNSG
-         sYg9VpHJwIznNow79XZhVdyqPv493SMXP9sXVX7fApFQoibaYXQZ08TdkHafK52H7w9Y
-         fikkLMrmkfpckOrp6DlZiXfmWE8rD0t0Bw6Jbyw+t93JF2MRH6PaH9+QYnvO5UucNtMy
-         ON5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rBXjy64QhAJngU1bLCgW8NmRIabhTqAJ4rYpSUJH/vA=;
-        b=DdDAyRDH5+LhnKjngx13bKgyrNOldXnyVetE3OCOzSn9TtdDtzyp9rRrGF7EbgoIhG
-         K01x+D0xJmyU/H8I98tY0y2DCBe8SEDqj7NN+LZ0e1WxGRWbkFdJ3EFLPo4MmwNieq/L
-         nElr4EvLnT14z00776rYyEBt1ddzfdFs6ssauHNru2z4tfV0mMr38o/5kAJsZ4FqhUWw
-         SLSTA829ckxuHiCGRSr2/zROLXUV2Op8Oc44KofmCNwLPNwdjoJMbI6uLUrceVXUTHmH
-         uOF8APP/Gff/75vLJ7RPxlX+s7u4kY/Xq/I/htOWX5QHG6S1Jy1k5rL205WVqQkdFMtp
-         j5rg==
-X-Gm-Message-State: APjAAAXzTy5FxliScmSVfnOghLR8/hG/3nPhtSfSYbZ3G2aTfSYgtGB1
-        rog63HFFA63537RQcX40otj/TeGFRmk3uS0ScrzHwQ==
-X-Google-Smtp-Source: APXvYqxUDYzIwZUL5FbFN+ofBpA8OFEwiksm7t/nLo1J8VkpA/QJoge6ynXgiOcDbF0m20N6ahz2Rokt9mlDmh48qB4=
-X-Received: by 2002:a67:fb5a:: with SMTP id e26mr3354691vsr.200.1572541182099;
- Thu, 31 Oct 2019 09:59:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1571510481.git.hns@goldelico.com> <bec9d76e6da03d734649b9bdf76e9d575c57631a.1571510481.git.hns@goldelico.com>
- <CAPDyKFrMQ3fBaeeAYVJfUdL8m=PDRU9Xt_9oGw6D1XOY68qDuQ@mail.gmail.com> <D9A82904-35BE-41F2-A308-9A49606428B1@goldelico.com>
-In-Reply-To: <D9A82904-35BE-41F2-A308-9A49606428B1@goldelico.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 31 Oct 2019 17:59:05 +0100
-Message-ID: <CAPDyKFrbOH=ROv_JefSQsEnmGqN6oFVfbhpqscOK=KUqJgzarw@mail.gmail.com>
-Subject: Re: [PATCH v2 03/11] DTS: ARM: pandora-common: define wl1251 as child
- node of mmc3
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        id S1728659AbfJaWMQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 31 Oct 2019 18:12:16 -0400
+Received: from sauhun.de ([88.99.104.3]:37458 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726602AbfJaWMQ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 31 Oct 2019 18:12:16 -0400
+Received: from localhost (unknown [77.130.135.221])
+        by pokefinder.org (Postfix) with ESMTPSA id 6726A2C009F;
+        Thu, 31 Oct 2019 23:12:13 +0100 (CET)
+Date:   Thu, 31 Oct 2019 23:12:11 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Chuhong Yuan <hslester96@gmail.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        "# 4.0+" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mmc: renesas_sdhi: add checks for pinctrl_lookup_state
+Message-ID: <20191031221211.GA3853@kunai>
+References: <20191018131338.11713-1-hslester96@gmail.com>
+ <CAPDyKFoBYchP96hv=7XfTo8CrCSD+KC0h_oFRAsOYT-Lc1SFZQ@mail.gmail.com>
+ <20191023153313.GB5153@kunai>
+ <CAPDyKFo9wYwhdy-1BDcRMJKTjADappsT-gBaKZE7hTLE4obxiA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="C7zPtVaVf+AK4Oqc"
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFo9wYwhdy-1BDcRMJKTjADappsT-gBaKZE7hTLE4obxiA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 30 Oct 2019 at 18:25, H. Nikolaus Schaller <hns@goldelico.com> wrote:
->
->
-> > Am 30.10.2019 um 17:44 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
+
+--C7zPtVaVf+AK4Oqc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+HI Ulf,
+
+> > Well, I don't like to bail out because this error is not fatal for basic
+> > operations. How about releasing priv->pinctrl again with an additional
+> > warning that pinctrl settings are broken and will prevent 1.8v modes?
 > >
-> > On Sat, 19 Oct 2019 at 20:42, H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> >>
-> >> Since v4.7 the dma initialization requires that there is a
-> >> device tree property for "rx" and "tx" channels which is
-> >> not provided by the pdata-quirks initialization.
-> >>
-> >> By conversion of the mmc3 setup to device tree this will
-> >> finally allows to remove the OpenPandora wlan specific omap3
-> >> data-quirks.
-> >>
-> >> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
-> >>
-> >> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> >> Cc: <stable@vger.kernel.org> # 4.7.0
-> >> ---
-> >> arch/arm/boot/dts/omap3-pandora-common.dtsi | 37 +++++++++++++++++++--
-> >> 1 file changed, 35 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/arch/arm/boot/dts/omap3-pandora-common.dtsi b/arch/arm/boot/dts/omap3-pandora-common.dtsi
-> >> index ec5891718ae6..c595b3eb314d 100644
-> >> --- a/arch/arm/boot/dts/omap3-pandora-common.dtsi
-> >> +++ b/arch/arm/boot/dts/omap3-pandora-common.dtsi
-> >> @@ -226,6 +226,18 @@
-> >>                gpio = <&gpio6 4 GPIO_ACTIVE_HIGH>;     /* GPIO_164 */
-> >>        };
-> >>
-> >> +       /* wl1251 wifi+bt module */
-> >> +       wlan_en: fixed-regulator-wg7210_en {
-> >> +               compatible = "regulator-fixed";
-> >> +               regulator-name = "vwlan";
-> >> +               regulator-min-microvolt = <1800000>;
-> >> +               regulator-max-microvolt = <1800000>;
-> >
-> > I doubt these are correct.
-> >
-> > I guess this should be in the range of 2.7V-3.6V.
->
-> Well, it is a gpio which enables some LDO inside the
-> wifi chip. We do not really know the voltage it produces
-> and it does not matter. The gpio voltage is 1.8V.
->
-> Basically we use a fixed-regulator to "translate" a
-> regulator into a control gpio because the mmc interface
-> wants to see a vmmc-supply.
+> > Opinions?
+>=20
+> Hmm, from a mmc driver probe point of view, I don't quite share this appr=
+oach.
+>=20
+> I would rather fail as it forces the DTB to be corrected immediately,
+> rather than trusting some developer to look at a warning in a log. The
+> point is, in such a case it may never get fixed, if the product is
+> shipped with the wrong DTB.
 
-The vmmc supply represent the core power to the SDIO card (or
-SD/(e)MMC). Depending on what voltage range the vmmc supply supports,
-the so called OCR mask is created by the mmc core. The mask is then
-used to let the core negotiate the voltage level with the SDIO card,
-during the card initialization. This is not to confuse with the I/O
-voltage level, which is a different regulator.
+I could agree to this arguement, iff the only way pinctrl_select fails
+is a DT misconfiguration. I am not sure if this is true right now, and
+we can't be sure about the future. Or?
 
-Anyway, according to the TI WiLink series specifications, it looks
-like vmmc should be a regulator supporting 3-3.3V (in many schematics
-it's called VBAT).
+> My concern at this point is rather to break existing DTBs, but it
+> seems that should not be an issue, right?
 
-Furthermore I decided to dig into various DTS files that specifies the
-vmmc regulator, of course for mmc nodes having a subnode specifying an
-SDIO card for a TI WiLink. In most cases a 1.8V fixed GPIO regulator
-is used. This looks wrong to me. The fixed GPIO regulator isn't really
-the one that should model vmmc.
+AFAIK not for the upstream ones, I don't know the customer ones.
 
-The proper solution, would rather be to use separate regulator for
-vmmc and instead use a so called mmc-pwrseq node to manage the GPIO.
+I still prefer to not bail out.
 
-To conclude from my side, as we have lots of DTS that are wrong, I
-don't really care if we add another one in the way you suggest above.
-But feel free to look into the mmc-pwrseq option.
+Kind regards,
 
->
-> >
-> >> +               startup-delay-us = <50000>;
-> >> +               regulator-always-on;
-> >
-> > Always on?
->
-> Oops. Yes, that is something to check!
+   Wolfram
 
-As it's a GPIO regulator, for sure it's not always on.
 
->
-> >
-> >> +               enable-active-high;
-> >> +               gpio = <&gpio1 23 GPIO_ACTIVE_HIGH>;
-> >> +       };
-> >> +
-> >>        /* wg7210 (wifi+bt module) 32k clock buffer */
-> >>        wg7210_32k: fixed-regulator-wg7210_32k {
-> >>                compatible = "regulator-fixed";
-> >> @@ -522,9 +534,30 @@
-> >>        /*wp-gpios = <&gpio4 31 GPIO_ACTIVE_HIGH>;*/    /* GPIO_127 */
-> >> };
-> >>
-> >> -/* mmc3 is probed using pdata-quirks to pass wl1251 card data */
-> >> &mmc3 {
-> >> -       status = "disabled";
-> >> +       vmmc-supply = <&wlan_en>;
-> >> +
-> >> +       bus-width = <4>;
-> >> +       non-removable;
-> >> +       ti,non-removable;
-> >> +       cap-power-off-card;
-> >> +
-> >> +       pinctrl-names = "default";
-> >> +       pinctrl-0 = <&mmc3_pins>;
-> >> +
-> >> +       #address-cells = <1>;
-> >> +       #size-cells = <0>;
-> >> +
-> >> +       wlan: wl1251@1 {
-> >> +               compatible = "ti,wl1251";
-> >> +
-> >> +               reg = <1>;
-> >> +
-> >> +               interrupt-parent = <&gpio1>;
-> >> +               interrupts = <21 IRQ_TYPE_LEVEL_HIGH>;  /* GPIO_21 */
-> >> +
-> >> +               ti,wl1251-has-eeprom;
-> >> +       };
-> >> };
-> >>
-> >> /* bluetooth*/
-> >> --
-> >> 2.19.1
-> >>
->
-> BR and thanks,
-> Nikolaus
->
+--C7zPtVaVf+AK4Oqc
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Kind regards
-Uffe
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl27XDcACgkQFA3kzBSg
+KbYYBRAAiikrBSwiMJ26xkXJxt4soVNJykMZrHS9niXYlb+cM9mznO9ah9yPKjFL
+Op6LtWP5EKJPU7Yz1FM+wjKKyLgC/nvLKw3gvbXXDI1GhZAa4yl0e9diIBzECp8g
+5EMTYmB5i9u5Z1MBkNQB8/UuQ7JlVNtGuWI3YcbcG0reM6i20BaynpDthwVKa9vv
+2h+5OWf8Ep76B5CEOmqF/TePJeTwR/Dzzzf9PxJOqu/v3MW8Pwc9WF7UwWSmxLel
+yBHr4bHOxYg4WEta99YirlXYadlxdv9cZ3+lcx+6kwaWd0kgv+xF5sxsxJFz2G/Y
+d8c1zYso/Js37VFI/E0lxCDnVBbZaiDDpSkkS2E+ZmBFZeHigFhRvRenkPKnjxCu
+S38I9e3M4pE//z7UirjR/uHv6VDopd1nEOmx4Md6eo0Yj5QhrlPOromAIVenpECO
+S2/L5NWy+sNZ4APAUeesKqRy0yQVqEEg3U01AC6PQpqfIHrjKXXHObsTwtt24ct3
+Vy51uTTB0BWZGY3cO+YuHJiJTCS5aC1k63FA7XCINArVhZh3ZTqGQZH3MoGy9dvj
+L168HXbOVK5HkDh/xZx9b1S0dkdPvciYYHiJ3GU2b63ICOczGPsF0vIwJdbgzN7i
+66m5ckYQdR1zDZVQAdWSoAMGAUYScPDMm3sU6/MTTu7I9D2H4ks=
+=XBqM
+-----END PGP SIGNATURE-----
+
+--C7zPtVaVf+AK4Oqc--
