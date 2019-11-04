@@ -2,172 +2,201 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFC03EE164
-	for <lists+linux-mmc@lfdr.de>; Mon,  4 Nov 2019 14:37:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AB51EE2CB
+	for <lists+linux-mmc@lfdr.de>; Mon,  4 Nov 2019 15:45:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727838AbfKDNhz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 4 Nov 2019 08:37:55 -0500
-Received: from esa6.hgst.iphmx.com ([216.71.154.45]:41953 "EHLO
-        esa6.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727236AbfKDNhz (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 4 Nov 2019 08:37:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1572874675; x=1604410675;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=seRPaLhDA4dWrjXKUvCCznh27RBvvuw/jblz1N545Ag=;
-  b=WR3jYNL4VshpdZ36YLqUmGPQkgfftUS3mxjCkXhKxfqUO0/eX766W8ZY
-   QsaphW1J3PGeF6qjgecJ4jBDYsw4ilR724Lj02M/TvbOR28hezIOKdpG5
-   SXtHHIWUdzugU8o1GoRLmEhTBcXT/zlwqgJNnYDuykrO6uthOl+GpRqqU
-   Mp5F2flTkDWUneTQgZTclhE+YfCsb+MlHYS5bmfmNtrk0mQZrTKWKeK37
-   Ox1j2kswtVE1S7FG6dtsjVzmNlXEJP9mxuGgcPP1PjqzG+NSL+4fbM7Pl
-   UjvdU6XL3O7gYEM0yict67hxsIFgKZGoRie11iTg6xQgwMXzDD6yJFFbT
-   Q==;
-IronPort-SDR: Ybj3ETyPJ3hoG10Ll0xKpekm4Ac6HH4JMjCOLjLklOqFy5wDLS5qJoT2jj2jfyyUe6QQdX5iKz
- 6lgKQsFjZGE/t0XT4HsCRu5nHOfZ9iWA9PDeeSF2USDSiy3L8xeaRkUVMFrWEbx9KPnO1DstwD
- 9UvyGR55Ku/wDsKLzht01/0Qe8I8RWrGNfmzgT68RBJ3mI8tDyeWtn9bkuec8i3kt47hCgRraM
- ZgSBR4mNiwgiTd96eoP++/O1eJY9RWD1ybXgmp7csw1+zEdCoxEYu42SVn+flOk8F0zcz24/WI
- Pvo=
-X-IronPort-AV: E=Sophos;i="5.68,267,1569254400"; 
-   d="scan'208";a="123652266"
-Received: from mail-sn1nam04lp2052.outbound.protection.outlook.com (HELO NAM04-SN1-obe.outbound.protection.outlook.com) ([104.47.44.52])
-  by ob1.hgst.iphmx.com with ESMTP; 04 Nov 2019 21:37:54 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LxbcoZNY0Nomn1PeJ0KYVkRo9SniEC8bfnD3j7KE4MQzgfBTe2JAi4rcTj76GQoJ2zUt0zQFtz1RBBVbC7QaIJDFcHBCxMGP+Hnf0q1YYnOvE3pc3lcMaWtH/BbxBAfStNwSnmwByHQTBp3MSlpZ9jIjILy+91AvLi+hs6V0tOfv3XXqKe64sztDMeTwem63xHNCPEDmfSjhROZi2yoi7Jkc0KgUtE8wutTI2f8kmRoMA4OOWrrD02S5r1FqxAbvPLs7CvEcxASX3dbogQGk45jZoTebxjsIj+ugyAzQ1fSR3nKr6viEucgBe9B6CW5yDjQBMjwWEgQFzXWUPobYVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iRbEe5sRhn6IVTGKZ95kv764QD0GluXpc4BXuAN08uE=;
- b=TwioxwuS3aV7ytsLuXB/kDA1Qnp264keGsy/c7HCpZeGs2weWnkvtqh8CQoVZyTMAnWTZ/ZzY8brunVY4FiFVNRujAiE6IV7eanbPVWmgq/0ee36/GwynPFFhLcHpVjz8PvxWu8TdwDdb55Sv0rlWqv6vqWSv1/0ejCwsCcSzIL5oGzimvtrXqC+Tqsim+fKE8ZGvYQr/SS3XIYy3Vn1TCmU1EKnfb8bixGRB0obQPyAeCoCQjMHc46uE50K3pxNaHACtfCI/FW+/LZ4Jm8Mpmjs8r+gMhB3CHziN/bwtQCWbg7u2Hjl0wsDB7oCh7Kdvtoi2Y5F2tYrP3jzZH7MOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iRbEe5sRhn6IVTGKZ95kv764QD0GluXpc4BXuAN08uE=;
- b=ImGjTiN4zj9uMxOySCRCj/thwJA4FsuiJMe0DeIu8IhySdODypuIig63i86lCfbdSX8tRPuOAX0rYkNruS6eDvvUEl9shK+KmmdYiFtbAXKrU0FexqoRxpjljdOk+fmhjISxqwmwR9Bh+1QcaHjcDlcz/udfqmfrILIL3lXAEf0=
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
- MN2PR04MB5775.namprd04.prod.outlook.com (20.179.23.84) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2408.24; Mon, 4 Nov 2019 13:37:52 +0000
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::5852:6199:7952:c2ce]) by MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::5852:6199:7952:c2ce%7]) with mapi id 15.20.2408.024; Mon, 4 Nov 2019
- 13:37:52 +0000
-From:   Avri Altman <Avri.Altman@wdc.com>
-To:     Bradley Bolen <bradleybolen@gmail.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "kstewart@linuxfoundation.org" <kstewart@linuxfoundation.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "info@metux.net" <info@metux.net>,
-        "hongjiefang@asrmicro.com" <hongjiefang@asrmicro.com>,
-        "wsa+renesas@sang-engineering.com" <wsa+renesas@sang-engineering.com>,
-        "yinbo.zhu@nxp.com" <yinbo.zhu@nxp.com>
-Subject: RE: [PATCH] mmc: core: Fix size overflow for mmc partitions
-Thread-Topic: [PATCH] mmc: core: Fix size overflow for mmc partitions
-Thread-Index: AQHVj4iHC/4Zqf+xVky+q9mZEDTeuad7Cq3Q
-Date:   Mon, 4 Nov 2019 13:37:52 +0000
-Message-ID: <MN2PR04MB6991B930872AB555EB56F16CFC7F0@MN2PR04MB6991.namprd04.prod.outlook.com>
-References: <20191031011132.5947-1-bradleybolen@gmail.com>
-In-Reply-To: <20191031011132.5947-1-bradleybolen@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Avri.Altman@wdc.com; 
-x-originating-ip: [212.25.79.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 4e39053e-3be7-4338-e7fd-08d7612c3108
-x-ms-traffictypediagnostic: MN2PR04MB5775:
-x-microsoft-antispam-prvs: <MN2PR04MB5775EF8927C14FF2B00C603EFC7F0@MN2PR04MB5775.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 0211965D06
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(366004)(376002)(39860400002)(396003)(346002)(189003)(199004)(8936002)(3846002)(8676002)(486006)(81166006)(316002)(476003)(81156014)(6116002)(66946007)(64756008)(66476007)(66556008)(66446008)(2501003)(52536014)(11346002)(6436002)(76116006)(110136005)(446003)(4326008)(256004)(25786009)(2906002)(54906003)(99286004)(478600001)(66066001)(102836004)(26005)(7696005)(186003)(55016002)(14454004)(6506007)(6246003)(5660300002)(71200400001)(86362001)(71190400001)(229853002)(7736002)(33656002)(76176011)(305945005)(7416002)(74316002)(9686003);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB5775;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MYCNtNMt81oklcU1F+f2PEBcg/f+BSLrecUu/pt2J6gNlkskHjrqv9NF/xfSr0LmLw+sY17RUi0CyB6f9wsC3o39BQPlqhh7Iv89iWrAK74lxddWK6rlwS6ATzmpTwPTerCCAKm09RUfpt9hMhZdTWNAbX0ssao2rwOz9MyEAhVjH9fQvlWXufWAjsUWUG+aMFDj3KPZHFzru0G+YT5/jQswnIDt/5upu9y7lmg0eUXPvVkBJ2QB5o5FAXhg7y4hVyqYW2npyVuvLkms79isyKoy44Vt8nQWUxY9FOssbAAxJc3TgwSWabR/OYd5694FONirQpd6aaHAcxjBnqQTowv/8+Aa7/6TiBd1PAUNwHaM56G3SxrYROfLz1xvYIlMoJbqOFHdptuEmadPvGYFYOB8qOZhobMSg1zwDxz9n0V3B7KUrsi+pivbW3qIw7vz
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1727998AbfKDOpV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 4 Nov 2019 09:45:21 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:33881 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727891AbfKDOpU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 4 Nov 2019 09:45:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1572878714;
+        s=strato-dkim-0002; d=xenosoft.de;
+        h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=BB2ap7qMcOQPaAUjvQiQp65120KVs8wsApOjC50LPr8=;
+        b=VLPrK6rHRvWdJAhAISsRkKXahALUUR4XN6VG7ugSRHHt2wHlhk1PHyorYrGmlbYBhY
+        nmtOVTbx1hEVAUEQ+koMrE9u5/XqbgWL1i85l2+xHfScaqjlyWvHRNBpTJCiq5/vHj3J
+        XW/W4Lc/8BXZVWRcNcMrYXGWz97959erBubSHlgv+Sy0sVYP1mQmYXFqSw+EZhy5MrR1
+        UldEq26xenw+34r5vW5eYcJCLXx8cnb0IsN55mBXQ48G6QMWbv8gH4zhiukZ5VK+YoEP
+        LNNYfjx6qcDO4JEOGxzhIYI0tD+pORpZMfpTjAL6yZPCjlSu5zPV+5ZNQw1pAvi37A25
+        HdpA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhRLvD1C7gwmlA7f0DygmF7yo72KQ=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:2873:af5c:c097:9730]
+        by smtp.strato.de (RZmta 44.29.0 AUTH)
+        with ESMTPSA id q007c8vA4EiadWs
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Mon, 4 Nov 2019 15:44:36 +0100 (CET)
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
+ updates
+From:   Christian Zigotzky <chzigotzky@xenosoft.de>
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org, Christian Zigotzky <info@xenosoft.de>,
+        "contact@a-eon.com" <contact@a-eon.com>,
+        "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        mad skateman <madskateman@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
+ <20191015125105.GU25745@shell.armlinux.org.uk>
+ <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
+ <20191015131750.GV25745@shell.armlinux.org.uk>
+ <87muds586t.fsf@mpe.ellerman.id.au>
+ <AD53973C-4491-4114-9CEE-81F516EF6249@xenosoft.de>
+Message-ID: <668ae8d5-f9f9-6304-d389-a854da53c2d2@xenosoft.de>
+Date:   Mon, 4 Nov 2019 15:44:35 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e39053e-3be7-4338-e7fd-08d7612c3108
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Nov 2019 13:37:52.4455
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sSF5oPvLIDre3zzt4tpOQbfi7pIy4Mbhqmmr90GOuV9IGA6hsmy10e96jqZhXVqYqS8jbJhiutXiiR3XV3/YqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB5775
+In-Reply-To: <AD53973C-4491-4114-9CEE-81F516EF6249@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
->=20
->=20
-> With large eMMC cards, it is possible to create general purpose partition=
-s that
-> are bigger than 4GB.  The size member of the mmc_part struct is only an
-> unsigned int which overflows for gp partitions larger than 4GB.  Change t=
-his to a
-> u64 to handle the overflow.
->=20
-> Signed-off-by: Bradley Bolen <bradleybolen@gmail.com>
-> ---
->  drivers/mmc/core/mmc.c   | 4 ++--
->  include/linux/mmc/card.h | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c index
-> c8804895595f..4e89cf6524a1 100644
-> --- a/drivers/mmc/core/mmc.c
-> +++ b/drivers/mmc/core/mmc.c
-> @@ -297,7 +297,7 @@ static void mmc_manage_enhanced_area(struct
-> mmc_card *card, u8 *ext_csd)
->         }
->  }
->=20
-> -static void mmc_part_add(struct mmc_card *card, unsigned int size,
-> +static void mmc_part_add(struct mmc_card *card, u64 size,
->                          unsigned int part_cfg, char *name, int idx, bool=
- ro,
->                          int area_type)
->  {
-> @@ -345,7 +345,7 @@ static void mmc_manage_gp_partitions(struct
-> mmc_card *card, u8 *ext_csd)
->                                 ext_csd[EXT_CSD_GP_SIZE_MULT + idx * 3];
->                         part_size *=3D (size_t)(hc_erase_grp_sz *
-Need to adjust part_size as well.
+FYI: The onboard SD card works also with the RC6 of kernel 5.4 with the 
+patch below.
 
-Thanks,
-Avri
->                                 hc_wp_grp_sz);
-> -                       mmc_part_add(card, part_size << 19,
-> +                       mmc_part_add(card, (u64)part_size << 19,
->                                 EXT_CSD_PART_CONFIG_ACC_GP0 + idx,
->                                 "gp%d", idx, false,
->                                 MMC_BLK_DATA_AREA_GP); diff --git
-> a/include/linux/mmc/card.h b/include/linux/mmc/card.h index
-> 9b6336ad3266..b59d35bb50ba 100644
-> --- a/include/linux/mmc/card.h
-> +++ b/include/linux/mmc/card.h
-> @@ -226,7 +226,7 @@ struct mmc_queue_req;
->   * MMC Physical partitions
->   */
->  struct mmc_part {
-> -       unsigned int    size;   /* partition size (in bytes) */
-> +       u64             size;   /* partition size (in bytes) */
->         unsigned int    part_cfg;       /* partition type */
->         char    name[MAX_MMC_PART_NAME_LEN];
->         bool    force_ro;       /* to make boot parts RO by default */
-> --
-> 2.17.1
+-- Christian
+
+On 23 October 2019 at 4:20pm, Christian Zigotzky wrote:
+> Hello,
+>
+> The patch below works. I compiled the RC4 of kernel 5.4 with this patch today and the onboard SD card works without any problems.
+>
+> Thanks!
+>
+> Christian
+>
+>> On 23. Oct 2019, at 07:42, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>
+>> Russell King - ARM Linux admin <linux@armlinux.org.uk> writes:
+>>>> On Tue, Oct 15, 2019 at 03:12:49PM +0200, Christian Zigotzky wrote:
+>>>> Hello Russell,
+>>>>
+>>>> You asked me about "dma-coherent" in the Cyrus device tree. Unfortunately I
+>>>> don't find the property "dma-coherent" in the dtb source files.
+>>>>
+>>>> Output of "fdtdump cyrus_p5020_eth_poweroff.dtb | grep dma":
+>>>>
+>>>> dma0 = "/soc@ffe000000/dma@100300";
+>>>>          dma1 = "/soc@ffe000000/dma@101300";
+>>>>          dma@100300 {
+>>>>              compatible = "fsl,eloplus-dma";
+>>>>              dma-channel@0 {
+>>>>                  compatible = "fsl,eloplus-dma-channel";
+>>>>              dma-channel@80 {
+>>>>                  compatible = "fsl,eloplus-dma-channel";
+>>>>              dma-channel@100 {
+>>>>                  compatible = "fsl,eloplus-dma-channel";
+>>>>              dma-channel@180 {
+>>>>                  compatible = "fsl,eloplus-dma-channel";
+>>>>          dma@101300 {
+>>>>              compatible = "fsl,eloplus-dma";
+>>>>              dma-channel@0 {
+>>>>                  compatible = "fsl,eloplus-dma-channel";
+>>>>              dma-channel@80 {
+>>>>                  compatible = "fsl,eloplus-dma-channel";
+>>>>              dma-channel@100 {
+>>>>                  compatible = "fsl,eloplus-dma-channel";
+>>>>              dma-channel@180 {
+>>>>                  compatible = "fsl,eloplus-dma-channel";
+>>> Hmm, so it looks like PowerPC doesn't mark devices that are dma
+>>> coherent with a property that describes them as such.
+>>>
+>>> I think this opens a wider question - what should of_dma_is_coherent()
+>>> return for PowerPC?  It seems right now that it returns false for
+>>> devices that are DMA coherent, which seems to me to be a recipe for
+>>> future mistakes.
+>> Right, it seems of_dma_is_coherent() has baked in the assumption that
+>> devices are non-coherent unless explicitly marked as coherent.
+>>
+>> Which is wrong on all or at least most existing powerpc systems
+>> according to Ben.
+>>
+>>> Any ideas from the PPC maintainers?
+>> Fixing it at the source seems like the best option to prevent future
+>> breakage.
+>>
+>> So I guess that would mean making of_dma_is_coherent() return true/false
+>> based on CONFIG_NOT_COHERENT_CACHE on powerpc.
+>>
+>> We could do it like below, which would still allow the dma-coherent
+>> property to work if it ever makes sense on a future powerpc platform.
+>>
+>> I don't really know any of this embedded stuff well, so happy to take
+>> other suggestions on how to handle this mess.
+>>
+>> cheers
+>>
+>>
+>> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+>> index 25aaa3903000..b96c9010acb6 100644
+>> --- a/arch/powerpc/kernel/setup-common.c
+>> +++ b/arch/powerpc/kernel/setup-common.c
+>> @@ -760,6 +760,22 @@ static int __init check_cache_coherency(void)
+>> late_initcall(check_cache_coherency);
+>> #endif /* CONFIG_CHECK_CACHE_COHERENCY */
+>>
+>> +#ifndef CONFIG_NOT_COHERENT_CACHE
+>> +/*
+>> + * For historical reasons powerpc kernels are built with hard wired knowledge of
+>> + * whether or not DMA accesses are cache coherent. Additionally device trees on
+>> + * powerpc do not typically support the dma-coherent property.
+>> + *
+>> + * So when we know that DMA is coherent, override arch_of_dma_is_coherent() to
+>> + * tell the drivers/of code that all devices are coherent regardless of whether
+>> + * they have a dma-coherent property.
+>> + */
+>> +bool arch_of_dma_is_coherent(struct device_node *np)
+>> +{
+>> +    return true;
+>> +}
+>> +#endif
+>> +
+>> #ifdef CONFIG_DEBUG_FS
+>> struct dentry *powerpc_debugfs_root;
+>> EXPORT_SYMBOL(powerpc_debugfs_root);
+>> diff --git a/drivers/of/address.c b/drivers/of/address.c
+>> index 978427a9d5e6..3a4b2949a322 100644
+>> --- a/drivers/of/address.c
+>> +++ b/drivers/of/address.c
+>> @@ -993,6 +993,14 @@ int of_dma_get_range(struct device_node *np, u64 *dma_addr, u64 *paddr, u64 *siz
+>> }
+>> EXPORT_SYMBOL_GPL(of_dma_get_range);
+>>
+>> +/*
+>> + * arch_of_dma_is_coherent - Arch hook to determine if device is coherent for DMA
+>> + */
+>> +bool __weak arch_of_dma_is_coherent(struct device_node *np)
+>> +{
+>> +    return false;
+>> +}
+>> +
+>> /**
+>>   * of_dma_is_coherent - Check if device is coherent
+>>   * @np:    device node
+>> @@ -1002,8 +1010,12 @@ EXPORT_SYMBOL_GPL(of_dma_get_range);
+>>   */
+>> bool of_dma_is_coherent(struct device_node *np)
+>> {
+>> -    struct device_node *node = of_node_get(np);
+>> +    struct device_node *node;
+>> +
+>> +    if (arch_of_dma_is_coherent(np))
+>> +        return true;
+>>
+>> +    np = of_node_get(np);
+>>     while (node) {
+>>         if (of_property_read_bool(node, "dma-coherent")) {
+>>             of_node_put(node);
 
