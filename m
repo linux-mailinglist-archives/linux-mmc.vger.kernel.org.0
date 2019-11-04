@@ -2,255 +2,89 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76C7BEDCB6
-	for <lists+linux-mmc@lfdr.de>; Mon,  4 Nov 2019 11:40:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 824ABEDD8F
+	for <lists+linux-mmc@lfdr.de>; Mon,  4 Nov 2019 12:16:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726633AbfKDKke (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 4 Nov 2019 05:40:34 -0500
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:44660 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726526AbfKDKke (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 4 Nov 2019 05:40:34 -0500
-Received: by mail-lf1-f65.google.com with SMTP id v4so11839844lfd.11
-        for <linux-mmc@vger.kernel.org>; Mon, 04 Nov 2019 02:40:30 -0800 (PST)
+        id S1727766AbfKDLQm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 4 Nov 2019 06:16:42 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:32934 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727322AbfKDLQm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 4 Nov 2019 06:16:42 -0500
+Received: by mail-lj1-f194.google.com with SMTP id t5so17152581ljk.0
+        for <linux-mmc@vger.kernel.org>; Mon, 04 Nov 2019 03:16:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=yjnqhy8E7NYtlcNHcFXgpysfQnacGyIOCYVRgolBBIw=;
-        b=b7LoRxKrRUfkFgRyw8mwAsJTqm72zC9cvP8ZdKJdg6qQbBFemL/sOsvKLQUDcQxF6z
-         OjWj6H1Bogd+ErBSzbPSx58dqU9jukPzJa/G7xgYQ+OXHY4mFKCBmImXu7Y4Hb09T0+P
-         9HEXg6f29rD/pzQBpqQM0RKfd0k1DhHbP1w1yv0qhbLiogmUVEAIhr1sangG0G8TuWEO
-         mEdpceYdZEXZcj/abZCE3oSIhTQp06iCg3bUZkCmgCI8OWfFlhbu7sKnPwU/K4N+6mbW
-         FKzZeNO5ISE5JjrM3M7v+HgmNo4dU1na2lYbvtTgNljEskr6zG6svTeKeO/uw0P3BRpJ
-         fH/Q==
+        h=from:to:subject:date:message-id;
+        bh=EeTFOOYKrSClkOwik36tTLvKJAVQNTgceAjoI/9c9oY=;
+        b=SZDb18lKPJI6fBj4upNX9diNR6/sW+AGGRX/n/E/cQpqxOdORJbMEM3ZBKxf2BIomv
+         si6atCFY/bZ4W3bslIgfLm3VzT0wj4EAcdHP339LHGns+AWsZsuFzRQyRvy1z9piSOB1
+         bH2iZXXerLCB/91t1nIdO5Z6otAo2xd64qKMrXewu+Z71JMjQ/iP+/uqjgsNPhtYmz/t
+         PUknveHsBy5J9pRbbC7CXYwAqeEr0a5huVXdzQK14H/dDbJxn//aC1d0+D1ThTtfTcIS
+         TZe/r0QMCxqIKB0XFQ8NBVTLapHkQFrgrjHFgz/MLlC0sJF4awp9nlpY7NWCl5+bGmFT
+         Jszg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=yjnqhy8E7NYtlcNHcFXgpysfQnacGyIOCYVRgolBBIw=;
-        b=EgVsP0sCKCAzrRnPOtBkz4cPtpoqkkgXqmpQt1FGfXQOf3V8UzFfJh1pgZ6pk3fN7A
-         8YVOHcbemjDrf3BRQ3FT5Olt4P/d8TBqxtqrDJ+MIKYN34rkcFk9ZNZ/tuGmpRYs3Qit
-         ChOymRq5v5ZVWAbM9uq0muhBQAsJXnUQecP4Gux8vkGUsRRxkdQfoclgKyI4b6nidNVX
-         TT2Gf4CeHiw8/bKTR8DVu60aKYZ+u8dM3XXoHdYsB15RNMrKo8KhJMdZ0hSelzGu7Tkh
-         Ob068pVWkhE8GoL1bCJxsYGGpEwJIBnjwpB6SX8rTQqbXcJNxZjCz7CV24/aeaiRfAEv
-         vEKA==
-X-Gm-Message-State: APjAAAUMJDl1DFTXZDNMtdc0l4NUAm30z7laU2iqXhEXyDH0MyAESbyu
-        oT/7jzvZyuDg/O4SMI41IZAJUoCNBwaWVA==
-X-Google-Smtp-Source: APXvYqycmpSx0FutvePW0Xbemh0cmabuQSGLGSlkmlxou0CMhrtaHRVM9sBxKyONbL8h8w4hl9/fnw==
-X-Received: by 2002:ac2:46c9:: with SMTP id p9mr15000417lfo.166.1572864029462;
-        Mon, 04 Nov 2019 02:40:29 -0800 (PST)
-Received: from localhost.bredbandsbolaget (c-79c8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.200.121])
-        by smtp.gmail.com with ESMTPSA id t135sm7209596lff.70.2019.11.04.02.40.27
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=EeTFOOYKrSClkOwik36tTLvKJAVQNTgceAjoI/9c9oY=;
+        b=TDKCZQZU4IGhEoIoxG/ejPcUgVuP5t48pw9EneqeYioAVfy8B2UaLCUMyXe1fsbNEY
+         +/CvD6rIhxxFAfpCiBnYZl1lnMPOZn2MSxFUYEVBqX6ToKNdSQkD4Pj+C22NrQ71BLzU
+         +waAx8l1Xo/Vb+TH2EoJ3L+hg5L94M6dgwiGh2qHeqgTrHtTODb+j0k3oEzZ4DnY+JNV
+         IrjLFG8acs2vUdHR8vNGzXDdyt4uziwqpfnt/mOo3W3MtKuPEuHOXt8FUEWIkBc4vO3v
+         saALdtk3V6sBLsg1RSr3wUqErB0HrUYa2Ke2nkMAnmyf7nPrZQWn2umKxw1XXpNekaWv
+         NSnw==
+X-Gm-Message-State: APjAAAWbojKp1Uj2yxQ0BOSO3oVSNlarG2wkzGZIRVICrdel/Wt+royh
+        qW4KA1yXcAyJAB8NMCxX5PLSVg82UtQ=
+X-Google-Smtp-Source: APXvYqzaDs6ZVMi6zFpR/sN5Xw0857V58+YTvxR+N6fs0cG4i+ptEjKi+Nh2goa/J1SYAirf1dEMcg==
+X-Received: by 2002:a2e:8204:: with SMTP id w4mr18690634ljg.212.1572866198567;
+        Mon, 04 Nov 2019 03:16:38 -0800 (PST)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id d27sm8099348lfb.3.2019.11.04.03.16.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2019 02:40:28 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Ludovic Barre <ludovic.barre@st.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Niklas Cassel <niklas.cassel@linaro.org>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH v2] mmc: mmci: Support odd block sizes for ux500v2 and qcom variant
-Date:   Mon,  4 Nov 2019 11:40:21 +0100
-Message-Id: <20191104104021.7063-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.21.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Mon, 04 Nov 2019 03:16:37 -0800 (PST)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Tony Olech <tony.olech@elandigitalsystems.com>
+Subject: [PATCH] mmc: vub300: Drop redundant host ops ->init_card()
+Date:   Mon,  4 Nov 2019 12:16:32 +0100
+Message-Id: <20191104111632.31354-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+The ->init_card() host ops is printing message to the log, without actually
+doing something useful. Let's just drop this code.
 
-This is something like the 5th time this patch is posted,
-so let's try to fix this now, once and for all.
-
-For the ux500v2 variant of the PL18x block, odd block sizes are
-supported. This is necessary to support some SDIO transfers
-such as single bytes. This also affects the QCOM MMCI variant.
-
-This will work fine for PIO using IRQs: SDIO packets are
-accepted down to single bytes and the transfers go through
-just fine.
-
-This patch has proven necessary for enabling SDIO for WLAN on
-PostmarketOS-based Ux500 platforms.
-
-This patch is based on Ulf Hansson's patch
-http://www.spinics.net/lists/linux-mmc/msg12160.html
-
-Ulf noted on an earlier iteration in:
-https://marc.info/?l=linux-mmc&m=140845189316370&w=2
-
-"There are some prerequisites of the data buffers to supports
-any block size, at least for ux500. (...) The conclusion from
-the above is that we need to adopt mmci_pio_write() to handle
-corner cases."
-
-This points back to a discussion in 2012. The main point was
-made by Russell in this message:
-https://marc.info/?l=linux-arm-kernel&m=135351237018301&w=2
-
-IIUC this pertains to this code (now gone from the patch):
-
-  if (data->sg->offset & 3) {
-      dev_err(...);
-      return -EINVAL;
-  }
-
-This hit Stephan as he noticed that DMA (DMA40) would not work
-with the MMCI driver, so this patch combined with disabling
-DMA would do the trick. That way we don't toss unaligned
-accesses at the DMA engine as SDIO apparently tends to
-do. (This is not a problem when writing ordinary block device
-blocks as these are always 512 bytes aligned on a 4-byte
-boundary.)
-
-As Ulf notes, odd SG offsets like this should be handled
-by the driver even if we run it in DMA mode. I conclude
-it must be the duty of the DMA driver to say NO to SG
-offsets it cannot handle, or otherwise bitstuff things
-around to avoid the situation.
-
-So as a first step make sure errors are propagated upward
-from the DMA engine, and assume the DMA engine will say no
-to things with weird SG offsets that it cannot handle, and
-then the driver will fall back to using PIO.
-
-It might be that some DMA engines (such as the Ux500
-DMA40) do not properly say no to sglists with uneven
-offsets, or ignore the offset altogether resulting in
-unpredictable behavior. That is in that case a bug in the
-DMA driver and needs to be fixed there. I got the impression
-that the Qualcomm DMA actually can handle these odd
-alignments without problems.
-
-(Make a drive-by fix for datactrl_blocksz, misspelled.)
-
-Cc: Ludovic Barre <ludovic.barre@st.com>
-Cc: Brian Masney <masneyb@onstation.org>
-Cc: Stephan Gerhold <stephan@gerhold.net>
-Cc: Niklas Cassel <niklas.cassel@linaro.org>
-Cc: Russell King <rmk+kernel@armlinux.org.uk>
-Tested-by: Stephan Gerhold <stephan@gerhold.net>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
-ChangeLog v1->v2:
-- Specify odd blocksize field to 1 bit (:1)
-- Specify that STMMC supports odd block sizes
-- Collect Stephan's test tag
----
- drivers/mmc/host/mmci.c | 20 ++++++++++++++++----
- drivers/mmc/host/mmci.h |  6 +++++-
- 2 files changed, 21 insertions(+), 5 deletions(-)
+ drivers/mmc/host/vub300.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index c37e70dbe250..3ffcdf78a428 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -168,6 +168,7 @@ static struct variant_data variant_ux500 = {
- 	.cmdreg_srsp		= MCI_CPSM_RESPONSE,
- 	.datalength_bits	= 24,
- 	.datactrl_blocksz	= 11,
-+	.datactrl_odd_blocksz	= true,
- 	.datactrl_mask_sdio	= MCI_DPSM_ST_SDIOEN,
- 	.st_sdio		= true,
- 	.st_clkdiv		= true,
-@@ -201,6 +202,7 @@ static struct variant_data variant_ux500v2 = {
- 	.datactrl_mask_ddrmode	= MCI_DPSM_ST_DDRMODE,
- 	.datalength_bits	= 24,
- 	.datactrl_blocksz	= 11,
-+	.datactrl_odd_blocksz	= true,
- 	.datactrl_mask_sdio	= MCI_DPSM_ST_SDIOEN,
- 	.st_sdio		= true,
- 	.st_clkdiv		= true,
-@@ -260,6 +262,7 @@ static struct variant_data variant_stm32_sdmmc = {
- 	.datacnt_useless	= true,
- 	.datalength_bits	= 25,
- 	.datactrl_blocksz	= 14,
-+	.datactrl_odd_blocksz	= true,
- 	.stm32_idmabsize_mask	= GENMASK(12, 5),
- 	.init			= sdmmc_variant_init,
- };
-@@ -279,6 +282,7 @@ static struct variant_data variant_qcom = {
- 	.data_cmd_enable	= MCI_CPSM_QCOM_DATCMD,
- 	.datalength_bits	= 24,
- 	.datactrl_blocksz	= 11,
-+	.datactrl_odd_blocksz	= true,
- 	.pwrreg_powerup		= MCI_PWR_UP,
- 	.f_max			= 208000000,
- 	.explicit_mclk_control	= true,
-@@ -447,10 +451,11 @@ void mmci_dma_setup(struct mmci_host *host)
- static int mmci_validate_data(struct mmci_host *host,
- 			      struct mmc_data *data)
- {
-+	struct variant_data *variant = host->variant;
-+
- 	if (!data)
- 		return 0;
+diff --git a/drivers/mmc/host/vub300.c b/drivers/mmc/host/vub300.c
+index a3680c900689..6ced1b7f642f 100644
+--- a/drivers/mmc/host/vub300.c
++++ b/drivers/mmc/host/vub300.c
+@@ -2070,18 +2070,11 @@ static void vub300_enable_sdio_irq(struct mmc_host *mmc, int enable)
+ 	kref_put(&vub300->kref, vub300_delete);
+ }
+ 
+-static void vub300_init_card(struct mmc_host *mmc, struct mmc_card *card)
+-{				/* NOT irq */
+-	struct vub300_mmc_host *vub300 = mmc_priv(mmc);
+-	dev_info(&vub300->udev->dev, "NO host QUIRKS for this card\n");
+-}
 -
--	if (!is_power_of_2(data->blksz)) {
-+	if (!is_power_of_2(data->blksz) && !variant->datactrl_odd_blocksz) {
- 		dev_err(mmc_dev(host->mmc),
- 			"unsupported block size (%d bytes)\n", data->blksz);
- 		return -EINVAL;
-@@ -515,7 +520,9 @@ int mmci_dma_start(struct mmci_host *host, unsigned int datactrl)
- 		 "Submit MMCI DMA job, sglen %d blksz %04x blks %04x flags %08x\n",
- 		 data->sg_len, data->blksz, data->blocks, data->flags);
+ static const struct mmc_host_ops vub300_mmc_ops = {
+ 	.request = vub300_mmc_request,
+ 	.set_ios = vub300_mmc_set_ios,
+ 	.get_ro = vub300_mmc_get_ro,
+ 	.enable_sdio_irq = vub300_enable_sdio_irq,
+-	.init_card = vub300_init_card,
+ };
  
--	host->ops->dma_start(host, &datactrl);
-+	ret = host->ops->dma_start(host, &datactrl);
-+	if (ret)
-+		return ret;
- 
- 	/* Trigger the DMA transfer */
- 	mmci_write_datactrlreg(host, datactrl);
-@@ -872,9 +879,14 @@ int mmci_dmae_prep_data(struct mmci_host *host,
- int mmci_dmae_start(struct mmci_host *host, unsigned int *datactrl)
- {
- 	struct mmci_dmae_priv *dmae = host->dma_priv;
-+	int ret;
- 
- 	host->dma_in_progress = true;
--	dmaengine_submit(dmae->desc_current);
-+	ret = dma_submit_error(dmaengine_submit(dmae->desc_current));
-+	if (ret < 0) {
-+		host->dma_in_progress = false;
-+		return ret;
-+	}
- 	dma_async_issue_pending(dmae->cur);
- 
- 	*datactrl |= MCI_DPSM_DMAENABLE;
-diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
-index 833236ecb31e..c7f94726eaa1 100644
---- a/drivers/mmc/host/mmci.h
-+++ b/drivers/mmc/host/mmci.h
-@@ -278,7 +278,10 @@ struct mmci_host;
-  * @stm32_clkdiv: true if using a STM32-specific clock divider algorithm
-  * @datactrl_mask_ddrmode: ddr mode mask in datactrl register.
-  * @datactrl_mask_sdio: SDIO enable mask in datactrl register
-- * @datactrl_blksz: block size in power of two
-+ * @datactrl_blocksz: block size in power of two
-+ * @datactrl_odd_blocksz: true if block any sizes are supported, such as one
-+ *		      single character, as is necessary when using some SDIO
-+ *		      devices.
-  * @datactrl_first: true if data must be setup before send command
-  * @datacnt_useless: true if you could not use datacnt register to read
-  *		     remaining data
-@@ -323,6 +326,7 @@ struct variant_data {
- 	unsigned int		datactrl_mask_ddrmode;
- 	unsigned int		datactrl_mask_sdio;
- 	unsigned int		datactrl_blocksz;
-+	u8			datactrl_odd_blocksz:1;
- 	u8			datactrl_first:1;
- 	u8			datacnt_useless:1;
- 	u8			st_sdio:1;
+ static int vub300_probe(struct usb_interface *interface,
 -- 
-2.21.0
+2.17.1
 
