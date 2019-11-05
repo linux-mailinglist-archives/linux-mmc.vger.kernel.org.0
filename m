@@ -2,177 +2,117 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14130EF10E
-	for <lists+linux-mmc@lfdr.de>; Tue,  5 Nov 2019 00:14:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 309A2EF51C
+	for <lists+linux-mmc@lfdr.de>; Tue,  5 Nov 2019 06:51:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729834AbfKDXOa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 4 Nov 2019 18:14:30 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:37069 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729710AbfKDXOa (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 4 Nov 2019 18:14:30 -0500
-Received: by mail-oi1-f196.google.com with SMTP id y194so15806481oie.4;
-        Mon, 04 Nov 2019 15:14:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=0s5eHuTsunlw8bqFz+rzViXBrMYpKgr6RnCJYn4WElg=;
-        b=czJ3ZF17rrmNIRqIv5LGRrgYzeRotpPSNKw8uaabIgEaRrMauy6kQj7WCBqrxRXBvQ
-         cmhW+NXMWhhdCDdszMypflg2K6vPwdV2wpcLNov9GPKk9q5SZ0jkHVXdwLFC1Xuy1Xto
-         7mhHaKuPrbgfgCw65My/u65NjKCVaBNCn0Lalb1NbwSQN4UAJDvYlsI2LLxdunGJ/Kyf
-         ojI6sCX51hPEpIS6gOIO4n+K19+vigTsHsEFkEguj6/Cvb+XwRcNFgi+YWsIwrer5CPm
-         EcLUdtH7MZdryHoT4O+2+O38btIcGz/6DNnkX1wGV/PCvn0FR3MHynqjRL/x2sWfTWKP
-         O/cg==
-X-Gm-Message-State: APjAAAWTGx74q/shWWOFLuwuU2jM+r0DUe3jPZ/S8GJsZl86tLmVy7Ld
-        ITnYxgD8wa2nptOaZi84UQ==
-X-Google-Smtp-Source: APXvYqx+ynBSlgqnWKE4r7VqCKzMalb5FPZcpp7PVoYmQGaUXm4gN7FKLPzlCpmpR3QcYqmpPcjtKQ==
-X-Received: by 2002:aca:1e14:: with SMTP id m20mr1388093oic.20.1572909268626;
-        Mon, 04 Nov 2019 15:14:28 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id e93sm5785180otb.60.2019.11.04.15.14.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2019 15:14:28 -0800 (PST)
-Date:   Mon, 4 Nov 2019 17:14:27 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Manish Narani <manish.narani@xilinx.com>
-Cc:     ulf.hansson@linaro.org, mark.rutland@arm.com,
-        adrian.hunter@intel.com, michal.simek@xilinx.com,
-        jolly.shah@xilinx.com, nava.manne@xilinx.com,
-        rajan.vaja@xilinx.com, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, git@xilinx.com
-Subject: Re: [PATCH v5 4/8] dt-bindings: mmc: Add optional generic properties
- for mmc
-Message-ID: <20191104231427.GA7606@bogus>
-References: <1572588353-110682-1-git-send-email-manish.narani@xilinx.com>
- <1572588353-110682-5-git-send-email-manish.narani@xilinx.com>
+        id S1727132AbfKEFvB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 5 Nov 2019 00:51:01 -0500
+Received: from smtp1.de.adit-jv.com ([93.241.18.167]:50743 "EHLO
+        smtp1.de.adit-jv.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726820AbfKEFvB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 5 Nov 2019 00:51:01 -0500
+Received: from localhost (smtp1.de.adit-jv.com [127.0.0.1])
+        by smtp1.de.adit-jv.com (Postfix) with ESMTP id CFDB93C0588;
+        Tue,  5 Nov 2019 06:50:56 +0100 (CET)
+Received: from smtp1.de.adit-jv.com ([127.0.0.1])
+        by localhost (smtp1.de.adit-jv.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id SGKHH59H7g6m; Tue,  5 Nov 2019 06:50:51 +0100 (CET)
+Received: from HI2EXCH01.adit-jv.com (hi2exch01.adit-jv.com [10.72.92.24])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp1.de.adit-jv.com (Postfix) with ESMTPS id 2F7D23C0585;
+        Tue,  5 Nov 2019 06:50:51 +0100 (CET)
+Received: from vmlxhi-102.adit-jv.com (10.72.93.184) by HI2EXCH01.adit-jv.com
+ (10.72.92.24) with Microsoft SMTP Server (TLS) id 14.3.468.0; Tue, 5 Nov 2019
+ 06:50:50 +0100
+From:   Eugeniu Rosca <erosca@de.adit-jv.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        <linux-mmc@vger.kernel.org>
+CC:     Linus Walleij <linus.walleij@linaro.org>,
+        Mathieu Malaterre <malat@debian.org>,
+        Pavel Machek <pavel@ucw.cz>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Eugeniu Rosca <erosca@de.adit-jv.com>,
+        Eugeniu Rosca <roscaeugeniu@gmail.com>
+Subject: [PATCH 1/3] dt-bindings: mmc: Add 'fixed-emmc-driver-type-hs{200,400}'
+Date:   Tue, 5 Nov 2019 06:50:13 +0100
+Message-ID: <20191105055015.23656-1-erosca@de.adit-jv.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1572588353-110682-5-git-send-email-manish.narani@xilinx.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.72.93.184]
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Nov 01, 2019 at 11:35:49AM +0530, Manish Narani wrote:
-> Add optional properties for mmc hosts which are used to set clk delays
-> for different speed modes in the controller.
-> 
-> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
-> ---
->  .../bindings/mmc/mmc-controller.yaml          | 92 +++++++++++++++++++
->  1 file changed, 92 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-> index 080754e0ef35..87a83d966851 100644
-> --- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-> @@ -212,6 +212,98 @@ properties:
->      description:
->        eMMC HS400 enhanced strobe mode is supported
->  
-> +  # Below mentioned are the clock (phase) delays which are to be configured
-> +  # in the controller while switching to particular speed mode. The range
-> +  # of values are 0 to 359 degrees.
-> +
-> +  clk-phase-legacy:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for Legacy Mode.
-> +
-> +  clk-phase-mmc-hs:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair degrees for MMC HS.
-> +
-> +  clk-phase-sd-hs:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for SD HS.
-> +
-> +  clk-phase-uhs-sdr12:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for SDR12.
-> +
-> +  clk-phase-uhs-sdr25:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for SDR25.
-> +
-> +  clk-phase-uhs-sdr50:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for SDR50.
-> +
-> +  clk-phase-uhs-sdr104:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for SDR104.
-> +
-> +  clk-phase-uhs-ddr50:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for SD DDR50.
-> +
-> +  clk-phase-mmc-ddr52:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for MMC DDR52.
-> +
-> +  clk-phase-mmc-hs200:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for MMC HS200.
-> +
-> +  clk-phase-mmc-hs400:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 359
-> +    description:
-> +      Input/Output Clock Delay pair in degrees for MMC HS400.
+A certain eMMC manufacturer provided below requirement:
+ ---snip---
+ Use "drive strength" value of 4 or 1 for HS400 or 0 for HS200.
+ ---snip---
 
-This can be condensed into:
+The existing "fixed-emmc-driver-type" property [1] is the closest one
+to implement the above, but it falls short due to being unable to define
+two values to differentiate between HS200 and HS400 (both modes may be
+supported by the same non-removable MMC device).
 
-patternProperties:
-  
-"^clk-phase-(legacy|sd-hs|mmc-(hs|hs[24]00|ddr52)|uhs-(sdr(12|25|50|104)|ddr50))$":
+To allow users to set a preferred HS200/HS400 "drive strength", provide
+two more bindings inspired from [1]:
+ - fixed-emmc-driver-type-hs200
+ - fixed-emmc-driver-type-hs400
 
-Or if you want to divide them between SD and MMC ones, that would be 
-fine for me.
+For more details about eMMC I/O driver strength types, see Jedec spec.
+Keep "fixed-emmc-driver-type" in place for backward compatibility.
 
-Rob
+[1] commit 6186d06c519e21 ("mmc: parse new binding for eMMC fixed driver type")
+
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
+---
+ .../bindings/mmc/mmc-controller.yaml          | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+index 080754e0ef35..1c64b14f91a3 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
++++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+@@ -248,6 +248,24 @@ properties:
+       the driver type as specified in the eMMC specification (table
+       206 in spec version 5.1)
+ 
++  fixed-emmc-driver-type-hs200:
++    allOf:
++      - $ref: /schemas/types.yaml#/definitions/uint32
++      - minimum: 0
++      - maximum: 4
++    description:
++      Same as "fixed-emmc-driver-type", but specific to HS200 mode.
++      If defined, overrides "fixed-emmc-driver-type" in HS200 mode.
++
++  fixed-emmc-driver-type-hs400:
++    allOf:
++      - $ref: /schemas/types.yaml#/definitions/uint32
++      - minimum: 0
++      - maximum: 4
++    description:
++      Same as "fixed-emmc-driver-type", but specific to HS400 mode.
++      If defined, overrides "fixed-emmc-driver-type" in HS400 mode.
++
+   post-power-on-delay-ms:
+     allOf:
+       - $ref: /schemas/types.yaml#/definitions/uint32
+@@ -336,6 +354,8 @@ patternProperties:
+ dependencies:
+   cd-debounce-delay-ms: [ cd-gpios ]
+   fixed-emmc-driver-type: [ non-removable ]
++  fixed-emmc-driver-type-hs200: [ non-removable ]
++  fixed-emmc-driver-type-hs400: [ non-removable ]
+ 
+ examples:
+   - |
+-- 
+2.23.0
+
