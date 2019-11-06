@@ -2,160 +2,262 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16592F15F0
-	for <lists+linux-mmc@lfdr.de>; Wed,  6 Nov 2019 13:17:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C257F1C01
+	for <lists+linux-mmc@lfdr.de>; Wed,  6 Nov 2019 18:02:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730456AbfKFMRr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 6 Nov 2019 07:17:47 -0500
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:44139 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725856AbfKFMRr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 6 Nov 2019 07:17:47 -0500
-Received: by mail-lf1-f67.google.com with SMTP id v4so17873092lfd.11
-        for <linux-mmc@vger.kernel.org>; Wed, 06 Nov 2019 04:17:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pyaNKtEJ2dhdRbX0XGG2IskdfPoKWgFFcpf2S2Y9JTA=;
-        b=QpM1stPsxibreOYhSOYUvFH3b58z/8EkMAfLRJIfpyMKCIlh9GtTXfpiruDZlg8eht
-         r2JBScHEAOT2u0L9HZ+5bAYM9jptDj61F9/f6V+0yodOwA58RwzbAbAwKKBkZeB8FyYu
-         Agf48Vn+n4ExxJBgcjkDJjwCA94IHRIGaT549OBxaDMCxvilIbJHMJuUPqsEaI+RjiWT
-         IeRQp0/t5wvonASnw0GmcIyzxvHahqQRYLNqbNgmErk89iUHiA7j1+BsDWN1HY+/qcTj
-         isnsKQqi2JOPJX1VmctAkMgJLB3Cqudx0+Jsq1dQwKR6QqaUSlyDCnMjsi+27R8riVkZ
-         E0UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pyaNKtEJ2dhdRbX0XGG2IskdfPoKWgFFcpf2S2Y9JTA=;
-        b=NyngO1XI6Sf3Qe64RkQD2nWnMeTT8Bdebx5GU+7Tu8P4cEVYQsr8UB/SOrG4drcBLw
-         KWZM8FTxcaSDa1yoh5bcLL8sMdnoo7I0sbzhRkyAeJhHabRn+bCP9C+r2F7fgDbcCkjU
-         hbuxgoVgh8ABG0pmvaI0oP4qu9EM9JUywdH4cnFjxGfdfE++0ebse99n624k5TYUwoE0
-         etPapHDzyd82GvgNqg2R/xIdvljdZoCMVhTvSrRJyBXnBYDOAgphhuP3FkUD0IwHaoOf
-         itO0EkA6Rm8gtFs1FD4lF1GXsunkJF0U0ksp7LWEsok8QVlvKPTM2RZSs9+CLJIsnkqG
-         Uj1Q==
-X-Gm-Message-State: APjAAAWkPczy3pJetpt987MVrMhL/yhCrPdbAeuxZSGZOK/C7sCS2ykc
-        eTPe5o2w4vy/B8qb59QsQ29tAH0lx7zXVf6PH5aNkw==
-X-Google-Smtp-Source: APXvYqx+lORr/vSCqzfbkFGbeK30H8ZblAIlW+SCvvXD14BAbMOWSorLfroow+ULiuR/LwyISg5vX0un2676lvzS7PU=
-X-Received: by 2002:a19:a40c:: with SMTP id q12mr11951247lfc.65.1573042664331;
- Wed, 06 Nov 2019 04:17:44 -0800 (PST)
+        id S1732246AbfKFRC0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 6 Nov 2019 12:02:26 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:37426 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1732194AbfKFRC0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 6 Nov 2019 12:02:26 -0500
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xA6GqiEo025942;
+        Wed, 6 Nov 2019 18:02:11 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=7WCpCgfw9RqI6UDhMd2PommfIsCuY3X4p4xKZk9/wQg=;
+ b=sBUpwNUdAm16Bpc/ZkuqIpe+BbQrdKNvwCNS09Z1IIwt2Yts3WobBik2+EICzSB0zOPm
+ z0S3ItnwdRPw09uCgUPAaiNpcjWs7gQ9lYU5ZegKXsN6hGx7gsK+TxWC8InDxzW6QXNo
+ dO0j1n3PVD0vGPkLflbLCN6hZvgjt6C3YqfuTFIeFYmjnoNPgX/QyLBF1VPFxPtUPGgZ
+ l2li0/JHmhnTeV2ZMO7TJr7TwnRHT+zwC9AN/PZsagq4J7mAGHkaGlyjGGpc0wXKkk97
+ 7r3T0eUcy4D7H6y7HE5NhWFtEu5VIW6uo48DvFUib3ZaqVQ3m7T9yAMY3jZ3SJusEBfp LQ== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2w41vgr3gy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Nov 2019 18:02:11 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 093B710002A;
+        Wed,  6 Nov 2019 18:02:09 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id DE7C02FF5F1;
+        Wed,  6 Nov 2019 18:02:09 +0100 (CET)
+Received: from lmecxl0923.lme.st.com (10.75.127.51) by SFHDAG6NODE1.st.com
+ (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 6 Nov
+ 2019 18:02:09 +0100
+Subject: Re: [PATCH v2] mmc: mmci: Support odd block sizes for ux500v2 and
+ qcom variant
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        <linux-mmc@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Brian Masney <masneyb@onstation.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Niklas Cassel <niklas.cassel@linaro.org>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+References: <20191104104021.7063-1-linus.walleij@linaro.org>
+From:   Ludovic BARRE <ludovic.barre@st.com>
+Message-ID: <965e6d7b-836b-1072-a457-9e7a26a6a128@st.com>
+Date:   Wed, 6 Nov 2019 18:02:08 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-References: <cover.1572326519.git.baolin.wang@linaro.org> <19910a2f34b9be81f64637a5a5fc8d07bd5f4885.1572326519.git.baolin.wang@linaro.org>
- <a9f42792-3432-48f2-c5c4-8b03c32995dd@intel.com> <CAMz4kuK=wV1qtO4tOCcqibzKAFD-_p8+OzGOjdkvajVymJ5EgA@mail.gmail.com>
- <2ed0bcd1-fa74-d095-97ee-7d0c46a4fdbb@intel.com>
-In-Reply-To: <2ed0bcd1-fa74-d095-97ee-7d0c46a4fdbb@intel.com>
-From:   Baolin Wang <baolin.wang@linaro.org>
-Date:   Wed, 6 Nov 2019 20:17:33 +0800
-Message-ID: <CAMz4kuJe64hdVGBTCvZW3t4_JGnTBRF=NhYDookrzNPiXacq_w@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] mmc: host: sdhci: Add a variable to defer to
- complete data requests if needed
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        baolin.wang7@gmail.com, linux-mmc <linux-mmc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191104104021.7063-1-linus.walleij@linaro.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.75.127.51]
+X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG6NODE1.st.com
+ (10.75.127.16)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-06_05:2019-11-06,2019-11-06 signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 6 Nov 2019 at 20:02, Adrian Hunter <adrian.hunter@intel.com> wrote:
->
-> On 6/11/19 12:48 PM, Baolin Wang wrote:
-> > On Wed, 6 Nov 2019 at 18:10, Adrian Hunter <adrian.hunter@intel.com> wrote:
-> >>
-> >> On 29/10/19 7:43 AM, Baolin Wang wrote:
-> >>> When using the host software queue, it will trigger the next request in
-> >>> irq handler without a context switch. But the sdhci_request() can not be
-> >>> called in interrupt context when using host software queue for some host
-> >>> drivers, due to the get_cd() ops can be sleepable.
-> >>>
-> >>> But for some host drivers, such as Spreadtrum host driver, the card is
-> >>> nonremovable, so the get_cd() ops is not sleepable, which means we can
-> >>> complete the data request and trigger the next request in irq handler
-> >>> to remove the context switch for the Spreadtrum host driver.
-> >>>
-> >>> Thus we still need introduce a variable in struct sdhci_host to indicate
-> >>> that we will always to defer to complete data requests if the sdhci_request()
-> >>> can not be called in interrupt context for some host drivers, when using
-> >>> the host software queue.
-> >>>
-> >>> Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-> >>> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-> >>> ---
-> >>>  drivers/mmc/host/sdhci.c |    2 +-
-> >>>  drivers/mmc/host/sdhci.h |    1 +
-> >>>  2 files changed, 2 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> >>> index 850241f..9cf2130 100644
-> >>> --- a/drivers/mmc/host/sdhci.c
-> >>> +++ b/drivers/mmc/host/sdhci.c
-> >>> @@ -3035,7 +3035,7 @@ static inline bool sdhci_defer_done(struct sdhci_host *host,
-> >>>  {
-> >>>       struct mmc_data *data = mrq->data;
-> >>>
-> >>> -     return host->pending_reset ||
-> >>> +     return host->pending_reset || (host->always_defer_done && data) ||
->
-> To move ahead in the meantime without a new host API, just defer always i.e.
+hi Linus
 
-OK.
+sdio and sdmmc tests ok on stm32mp157 dk2 board (sdmmc variant)
 
-And I'll wait for a while to see if Ulf will post some comments for
-this patch set before new version. Thanks.
+Tested-by: Ludovic Barre <ludovic.barre@st.com>
 
->
-> +     return host->pending_reset || host->always_defer_done ||
->
-> >>
-> >> I didn't realize you still wanted to call the request function in interrupt
-> >> context.  In my view that needs a new host API
-> >> i.e. int (*request_atomic)(struct mmc_host *mmc, struct mmc_request *mrq)
-> >
-> > Actually there are no documentation said that the
-> > mmc_host_ops->request() is a sleepable API, so I introduce a
-> > host->always_defer_done flag to decide if the request can be called in
-> > interrupt context or not, since for some host drivers, the request()
-> > implementation can be called in interrupt context.
-> >
-> > Yes, I agree a new host API is more reasonable, if you do not like the
-> > current approach, I can add new patches to introduce the new
-> > request_atomic() API. But can I create another separate patch set to
-> > do this? since in this patch set, the Spreadtrum host driver's
-> > request() implementation can be called in interrupt context. Or you
-> > still want these changes introducing new request_atomic() can be done
-> > in this patch set? Thanks.
-> >
-> >>
-> >>>              ((host->flags & SDHCI_REQ_USE_DMA) && data &&
-> >>>               data->host_cookie == COOKIE_MAPPED);
-> >>>  }
-> >>> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
-> >>> index d89cdb9..38fbd18 100644
-> >>> --- a/drivers/mmc/host/sdhci.h
-> >>> +++ b/drivers/mmc/host/sdhci.h
-> >>> @@ -533,6 +533,7 @@ struct sdhci_host {
-> >>>       bool pending_reset;     /* Cmd/data reset is pending */
-> >>>       bool irq_wake_enabled;  /* IRQ wakeup is enabled */
-> >>>       bool v4_mode;           /* Host Version 4 Enable */
-> >>> +     bool always_defer_done; /* Always defer to complete data requests */
-> >>>
-> >>>       struct mmc_request *mrqs_done[SDHCI_MAX_MRQS];  /* Requests done */
-> >>>       struct mmc_command *cmd;        /* Current command */
-> >>>
-> >>
-> >
-> >
->
-
-
--- 
-Baolin Wang
-Best Regards
+Le 11/4/19 à 11:40 AM, Linus Walleij a écrit :
+> From: Ulf Hansson <ulf.hansson@linaro.org>
+> 
+> This is something like the 5th time this patch is posted,
+> so let's try to fix this now, once and for all.
+> 
+> For the ux500v2 variant of the PL18x block, odd block sizes are
+> supported. This is necessary to support some SDIO transfers
+> such as single bytes. This also affects the QCOM MMCI variant.
+> 
+> This will work fine for PIO using IRQs: SDIO packets are
+> accepted down to single bytes and the transfers go through
+> just fine.
+> 
+> This patch has proven necessary for enabling SDIO for WLAN on
+> PostmarketOS-based Ux500 platforms.
+> 
+> This patch is based on Ulf Hansson's patch
+> http://www.spinics.net/lists/linux-mmc/msg12160.html
+> 
+> Ulf noted on an earlier iteration in:
+> https://marc.info/?l=linux-mmc&m=140845189316370&w=2
+> 
+> "There are some prerequisites of the data buffers to supports
+> any block size, at least for ux500. (...) The conclusion from
+> the above is that we need to adopt mmci_pio_write() to handle
+> corner cases."
+> 
+> This points back to a discussion in 2012. The main point was
+> made by Russell in this message:
+> https://marc.info/?l=linux-arm-kernel&m=135351237018301&w=2
+> 
+> IIUC this pertains to this code (now gone from the patch):
+> 
+>    if (data->sg->offset & 3) {
+>        dev_err(...);
+>        return -EINVAL;
+>    }
+> 
+> This hit Stephan as he noticed that DMA (DMA40) would not work
+> with the MMCI driver, so this patch combined with disabling
+> DMA would do the trick. That way we don't toss unaligned
+> accesses at the DMA engine as SDIO apparently tends to
+> do. (This is not a problem when writing ordinary block device
+> blocks as these are always 512 bytes aligned on a 4-byte
+> boundary.)
+> 
+> As Ulf notes, odd SG offsets like this should be handled
+> by the driver even if we run it in DMA mode. I conclude
+> it must be the duty of the DMA driver to say NO to SG
+> offsets it cannot handle, or otherwise bitstuff things
+> around to avoid the situation.
+> 
+> So as a first step make sure errors are propagated upward
+> from the DMA engine, and assume the DMA engine will say no
+> to things with weird SG offsets that it cannot handle, and
+> then the driver will fall back to using PIO.
+> 
+> It might be that some DMA engines (such as the Ux500
+> DMA40) do not properly say no to sglists with uneven
+> offsets, or ignore the offset altogether resulting in
+> unpredictable behavior. That is in that case a bug in the
+> DMA driver and needs to be fixed there. I got the impression
+> that the Qualcomm DMA actually can handle these odd
+> alignments without problems.
+> 
+> (Make a drive-by fix for datactrl_blocksz, misspelled.)
+> 
+> Cc: Ludovic Barre <ludovic.barre@st.com>
+> Cc: Brian Masney <masneyb@onstation.org>
+> Cc: Stephan Gerhold <stephan@gerhold.net>
+> Cc: Niklas Cassel <niklas.cassel@linaro.org>
+> Cc: Russell King <rmk+kernel@armlinux.org.uk>
+> Tested-by: Stephan Gerhold <stephan@gerhold.net>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v1->v2:
+> - Specify odd blocksize field to 1 bit (:1)
+> - Specify that STMMC supports odd block sizes
+> - Collect Stephan's test tag
+> ---
+>   drivers/mmc/host/mmci.c | 20 ++++++++++++++++----
+>   drivers/mmc/host/mmci.h |  6 +++++-
+>   2 files changed, 21 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+> index c37e70dbe250..3ffcdf78a428 100644
+> --- a/drivers/mmc/host/mmci.c
+> +++ b/drivers/mmc/host/mmci.c
+> @@ -168,6 +168,7 @@ static struct variant_data variant_ux500 = {
+>   	.cmdreg_srsp		= MCI_CPSM_RESPONSE,
+>   	.datalength_bits	= 24,
+>   	.datactrl_blocksz	= 11,
+> +	.datactrl_odd_blocksz	= true,
+>   	.datactrl_mask_sdio	= MCI_DPSM_ST_SDIOEN,
+>   	.st_sdio		= true,
+>   	.st_clkdiv		= true,
+> @@ -201,6 +202,7 @@ static struct variant_data variant_ux500v2 = {
+>   	.datactrl_mask_ddrmode	= MCI_DPSM_ST_DDRMODE,
+>   	.datalength_bits	= 24,
+>   	.datactrl_blocksz	= 11,
+> +	.datactrl_odd_blocksz	= true,
+>   	.datactrl_mask_sdio	= MCI_DPSM_ST_SDIOEN,
+>   	.st_sdio		= true,
+>   	.st_clkdiv		= true,
+> @@ -260,6 +262,7 @@ static struct variant_data variant_stm32_sdmmc = {
+>   	.datacnt_useless	= true,
+>   	.datalength_bits	= 25,
+>   	.datactrl_blocksz	= 14,
+> +	.datactrl_odd_blocksz	= true,
+>   	.stm32_idmabsize_mask	= GENMASK(12, 5),
+>   	.init			= sdmmc_variant_init,
+>   };
+> @@ -279,6 +282,7 @@ static struct variant_data variant_qcom = {
+>   	.data_cmd_enable	= MCI_CPSM_QCOM_DATCMD,
+>   	.datalength_bits	= 24,
+>   	.datactrl_blocksz	= 11,
+> +	.datactrl_odd_blocksz	= true,
+>   	.pwrreg_powerup		= MCI_PWR_UP,
+>   	.f_max			= 208000000,
+>   	.explicit_mclk_control	= true,
+> @@ -447,10 +451,11 @@ void mmci_dma_setup(struct mmci_host *host)
+>   static int mmci_validate_data(struct mmci_host *host,
+>   			      struct mmc_data *data)
+>   {
+> +	struct variant_data *variant = host->variant;
+> +
+>   	if (!data)
+>   		return 0;
+> -
+> -	if (!is_power_of_2(data->blksz)) {
+> +	if (!is_power_of_2(data->blksz) && !variant->datactrl_odd_blocksz) {
+>   		dev_err(mmc_dev(host->mmc),
+>   			"unsupported block size (%d bytes)\n", data->blksz);
+>   		return -EINVAL;
+> @@ -515,7 +520,9 @@ int mmci_dma_start(struct mmci_host *host, unsigned int datactrl)
+>   		 "Submit MMCI DMA job, sglen %d blksz %04x blks %04x flags %08x\n",
+>   		 data->sg_len, data->blksz, data->blocks, data->flags);
+>   
+> -	host->ops->dma_start(host, &datactrl);
+> +	ret = host->ops->dma_start(host, &datactrl);
+> +	if (ret)
+> +		return ret;
+>   
+>   	/* Trigger the DMA transfer */
+>   	mmci_write_datactrlreg(host, datactrl);
+> @@ -872,9 +879,14 @@ int mmci_dmae_prep_data(struct mmci_host *host,
+>   int mmci_dmae_start(struct mmci_host *host, unsigned int *datactrl)
+>   {
+>   	struct mmci_dmae_priv *dmae = host->dma_priv;
+> +	int ret;
+>   
+>   	host->dma_in_progress = true;
+> -	dmaengine_submit(dmae->desc_current);
+> +	ret = dma_submit_error(dmaengine_submit(dmae->desc_current));
+> +	if (ret < 0) {
+> +		host->dma_in_progress = false;
+> +		return ret;
+> +	}
+>   	dma_async_issue_pending(dmae->cur);
+>   
+>   	*datactrl |= MCI_DPSM_DMAENABLE;
+> diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
+> index 833236ecb31e..c7f94726eaa1 100644
+> --- a/drivers/mmc/host/mmci.h
+> +++ b/drivers/mmc/host/mmci.h
+> @@ -278,7 +278,10 @@ struct mmci_host;
+>    * @stm32_clkdiv: true if using a STM32-specific clock divider algorithm
+>    * @datactrl_mask_ddrmode: ddr mode mask in datactrl register.
+>    * @datactrl_mask_sdio: SDIO enable mask in datactrl register
+> - * @datactrl_blksz: block size in power of two
+> + * @datactrl_blocksz: block size in power of two
+> + * @datactrl_odd_blocksz: true if block any sizes are supported, such as one
+> + *		      single character, as is necessary when using some SDIO
+> + *		      devices.
+>    * @datactrl_first: true if data must be setup before send command
+>    * @datacnt_useless: true if you could not use datacnt register to read
+>    *		     remaining data
+> @@ -323,6 +326,7 @@ struct variant_data {
+>   	unsigned int		datactrl_mask_ddrmode;
+>   	unsigned int		datactrl_mask_sdio;
+>   	unsigned int		datactrl_blocksz;
+> +	u8			datactrl_odd_blocksz:1;
+>   	u8			datactrl_first:1;
+>   	u8			datacnt_useless:1;
+>   	u8			st_sdio:1;
+> 
