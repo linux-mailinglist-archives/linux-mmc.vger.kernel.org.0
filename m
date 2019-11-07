@@ -2,262 +2,147 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C257F1C01
-	for <lists+linux-mmc@lfdr.de>; Wed,  6 Nov 2019 18:02:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9E37F235E
+	for <lists+linux-mmc@lfdr.de>; Thu,  7 Nov 2019 01:39:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732246AbfKFRC0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 6 Nov 2019 12:02:26 -0500
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:37426 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1732194AbfKFRC0 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 6 Nov 2019 12:02:26 -0500
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xA6GqiEo025942;
-        Wed, 6 Nov 2019 18:02:11 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=7WCpCgfw9RqI6UDhMd2PommfIsCuY3X4p4xKZk9/wQg=;
- b=sBUpwNUdAm16Bpc/ZkuqIpe+BbQrdKNvwCNS09Z1IIwt2Yts3WobBik2+EICzSB0zOPm
- z0S3ItnwdRPw09uCgUPAaiNpcjWs7gQ9lYU5ZegKXsN6hGx7gsK+TxWC8InDxzW6QXNo
- dO0j1n3PVD0vGPkLflbLCN6hZvgjt6C3YqfuTFIeFYmjnoNPgX/QyLBF1VPFxPtUPGgZ
- l2li0/JHmhnTeV2ZMO7TJr7TwnRHT+zwC9AN/PZsagq4J7mAGHkaGlyjGGpc0wXKkk97
- 7r3T0eUcy4D7H6y7HE5NhWFtEu5VIW6uo48DvFUib3ZaqVQ3m7T9yAMY3jZ3SJusEBfp LQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx08-00178001.pphosted.com with ESMTP id 2w41vgr3gy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 06 Nov 2019 18:02:11 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 093B710002A;
-        Wed,  6 Nov 2019 18:02:09 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id DE7C02FF5F1;
-        Wed,  6 Nov 2019 18:02:09 +0100 (CET)
-Received: from lmecxl0923.lme.st.com (10.75.127.51) by SFHDAG6NODE1.st.com
- (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 6 Nov
- 2019 18:02:09 +0100
-Subject: Re: [PATCH v2] mmc: mmci: Support odd block sizes for ux500v2 and
- qcom variant
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        <linux-mmc@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Brian Masney <masneyb@onstation.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Niklas Cassel <niklas.cassel@linaro.org>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-References: <20191104104021.7063-1-linus.walleij@linaro.org>
-From:   Ludovic BARRE <ludovic.barre@st.com>
-Message-ID: <965e6d7b-836b-1072-a457-9e7a26a6a128@st.com>
-Date:   Wed, 6 Nov 2019 18:02:08 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        id S1727949AbfKGAjK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 6 Nov 2019 19:39:10 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:42430 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727718AbfKGAjK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 6 Nov 2019 19:39:10 -0500
+Received: by mail-ot1-f67.google.com with SMTP id b16so465406otk.9;
+        Wed, 06 Nov 2019 16:39:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=o+/HJxTvSCyoqhymvzvwCfhGsto5bnJFMBEXf55oU0g=;
+        b=K5VMsvzFXZw3llCAPttG7LMh0RYvA9uO/lHwYpexnh75Q3gBG5NwhyH8ex9Ekwxc1O
+         /+HZJm98OWZDEhKZfJzbxlTuLQiK7fSLvH4+hsxeM/u9DqQg5+bY+MXiDrLT33qIdVBi
+         i/OKMABGluO+kfAUJVxe0XwtnPec67Wq/tBct6KUVp0X27BLwU9GtOc7e3Tu2AHLIoA2
+         jztWF8N+MAVSpB60o9BFNlP3QQb9UZylSCvaNf+0L4NUylApXaypKnw0nbggA0Nx2Cq/
+         TYJNXYaQVNBr87zcLM/0RuaeYi4Haf5xtmZsHxmRI62cLzgoErecuiwc05env5UfSP9G
+         faeQ==
+X-Gm-Message-State: APjAAAXOsZ5uQkXsiR7gGcPEfyXNFEQ4uVKh8EmnBdZ9IQ0iuTBIPpwq
+        Wcuoza6gCMCyMdZpA9lvYg==
+X-Google-Smtp-Source: APXvYqx3kcit6yKTxQqdYPFidJcqRKe6j40BSePHIBgl4Ua3SYXRmKvqCgIbr9Lwwd4KmiWwvLiJEg==
+X-Received: by 2002:a9d:5c0e:: with SMTP id o14mr432330otk.361.1573087148994;
+        Wed, 06 Nov 2019 16:39:08 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id 63sm198561oty.58.2019.11.06.16.39.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2019 16:39:08 -0800 (PST)
+Date:   Wed, 6 Nov 2019 18:39:07 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Eugeniu Rosca <erosca@de.adit-jv.com>
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-mmc@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mathieu Malaterre <malat@debian.org>,
+        Pavel Machek <pavel@ucw.cz>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Eugeniu Rosca <roscaeugeniu@gmail.com>
+Subject: Re: [PATCH 1/3] dt-bindings: mmc: Add
+ 'fixed-emmc-driver-type-hs{200,400}'
+Message-ID: <20191107003907.GA22634@bogus>
+References: <20191105055015.23656-1-erosca@de.adit-jv.com>
+ <20191105062223.GB1048@kunai>
+ <20191105083213.GA24603@vmlxhi-102.adit-jv.com>
 MIME-Version: 1.0
-In-Reply-To: <20191104104021.7063-1-linus.walleij@linaro.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.75.127.51]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG6NODE1.st.com
- (10.75.127.16)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-06_05:2019-11-06,2019-11-06 signatures=0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191105083213.GA24603@vmlxhi-102.adit-jv.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-hi Linus
+On Tue, Nov 05, 2019 at 09:32:13AM +0100, Eugeniu Rosca wrote:
+> Hi Wolfram,
+> 
+> On Tue, Nov 05, 2019 at 07:22:23AM +0100, Wolfram Sang wrote:
+> > Hi Eugeniu,
+> > 
+> > thanks for this work!
+> 
+> Thanks for the prompt response. Very much appreciated.
+> 
+> > 
+> > > A certain eMMC manufacturer provided below requirement:
+> > >  ---snip---
+> > >  Use "drive strength" value of 4 or 1 for HS400 or 0 for HS200.
+> > >  ---snip---
+> > 
+> > I see.
+> > 
+> > > The existing "fixed-emmc-driver-type" property [1] is the closest one
+> > > to implement the above, but it falls short due to being unable to define
+> > > two values to differentiate between HS200 and HS400 (both modes may be
+> > > supported by the same non-removable MMC device).
+> > > 
+> > > To allow users to set a preferred HS200/HS400 "drive strength", provide
+> > > two more bindings inspired from [1]:
+> > >  - fixed-emmc-driver-type-hs200
+> > >  - fixed-emmc-driver-type-hs400
+> > 
+> > Main question before looking at the code: Can't we just extend the
+> > existing binding with an optional second parameter?
 
-sdio and sdmmc tests ok on stm32mp157 dk2 board (sdmmc variant)
+I was thinking the same thing...
 
-Tested-by: Ludovic Barre <ludovic.barre@st.com>
+> 
+> That's a great question/proposal, but before pushing the v2 right away,
+> I would like to first share some thoughts.
+> 
+> >         minItems: 1
+> >         maxItems: 2
+> > 
+> > I tend to favour this approach...
+> 
+> The first question which pops up in my mind is related to the meaning
+> of each item. The option which I envision based on your proposal is:
+> 
+>   * minItems: 1
+>   * maxItems: 2
+>   * Item[0]: Presumably equivalent to the current
+>     "fixed-emmc-driver-type", i.e. the strength value applied in both
+>     HS200 and HS400 modes.
+>   * Item[1] (optional): Presumably equivalent to
+>     "fixed-emmc-driver-type-hs400" proposed in this series. If this
+>     element is provided, the first one should likely change its role
+>     and become an equivalent of "fixed-emmc-driver-type-hs200" from
+>     this series.
+>   + Pro: Full backward compatibility. No need to touch the existing
+>     users of "fixed-emmc-driver-type".
+>   - Con: Not sure we have such DT bindings which dynamically change
+>     their semantics based on the usage pattern.
+>   - Con: Can't easily achieve the same flexibility as accomplished in
+>     this series. For example, current implementation allows users to
+>     define each of the three parameters (i.e. HSx00-agnostic drive
+>     strength, HS200 and HS400 specific drive strengths) individually,
+>     as well as in all possible combinations. This might be needed if,
+>     in certain HSx00 mode, users still need to rely on the
+>     RAW/unmodified drive strength. I am unsure if/how this can be
+>     achieved with an array OF property with a constant or variable
+>     number of elements (I try to sketch one solution below).
+> 
+> One option to achieve a similar degree of flexibility by using an array
+> OF property (instead of several u32 properties) would be to agree on a
+> convention based on magic values, i.e. below DT one-liner could be an
+> example of providing solely the "fixed-emmc-driver-type-hs200" value
+> (based on the agreement that 0xFF values are discarded by the driver):
+> 
+>     fixed-emmc-driver-type = <0xFF 0x1 0xFF>;
 
-Le 11/4/19 à 11:40 AM, Linus Walleij a écrit :
-> From: Ulf Hansson <ulf.hansson@linaro.org>
-> 
-> This is something like the 5th time this patch is posted,
-> so let's try to fix this now, once and for all.
-> 
-> For the ux500v2 variant of the PL18x block, odd block sizes are
-> supported. This is necessary to support some SDIO transfers
-> such as single bytes. This also affects the QCOM MMCI variant.
-> 
-> This will work fine for PIO using IRQs: SDIO packets are
-> accepted down to single bytes and the transfers go through
-> just fine.
-> 
-> This patch has proven necessary for enabling SDIO for WLAN on
-> PostmarketOS-based Ux500 platforms.
-> 
-> This patch is based on Ulf Hansson's patch
-> http://www.spinics.net/lists/linux-mmc/msg12160.html
-> 
-> Ulf noted on an earlier iteration in:
-> https://marc.info/?l=linux-mmc&m=140845189316370&w=2
-> 
-> "There are some prerequisites of the data buffers to supports
-> any block size, at least for ux500. (...) The conclusion from
-> the above is that we need to adopt mmci_pio_write() to handle
-> corner cases."
-> 
-> This points back to a discussion in 2012. The main point was
-> made by Russell in this message:
-> https://marc.info/?l=linux-arm-kernel&m=135351237018301&w=2
-> 
-> IIUC this pertains to this code (now gone from the patch):
-> 
->    if (data->sg->offset & 3) {
->        dev_err(...);
->        return -EINVAL;
->    }
-> 
-> This hit Stephan as he noticed that DMA (DMA40) would not work
-> with the MMCI driver, so this patch combined with disabling
-> DMA would do the trick. That way we don't toss unaligned
-> accesses at the DMA engine as SDIO apparently tends to
-> do. (This is not a problem when writing ordinary block device
-> blocks as these are always 512 bytes aligned on a 4-byte
-> boundary.)
-> 
-> As Ulf notes, odd SG offsets like this should be handled
-> by the driver even if we run it in DMA mode. I conclude
-> it must be the duty of the DMA driver to say NO to SG
-> offsets it cannot handle, or otherwise bitstuff things
-> around to avoid the situation.
-> 
-> So as a first step make sure errors are propagated upward
-> from the DMA engine, and assume the DMA engine will say no
-> to things with weird SG offsets that it cannot handle, and
-> then the driver will fall back to using PIO.
-> 
-> It might be that some DMA engines (such as the Ux500
-> DMA40) do not properly say no to sglists with uneven
-> offsets, or ignore the offset altogether resulting in
-> unpredictable behavior. That is in that case a bug in the
-> DMA driver and needs to be fixed there. I got the impression
-> that the Qualcomm DMA actually can handle these odd
-> alignments without problems.
-> 
-> (Make a drive-by fix for datactrl_blocksz, misspelled.)
-> 
-> Cc: Ludovic Barre <ludovic.barre@st.com>
-> Cc: Brian Masney <masneyb@onstation.org>
-> Cc: Stephan Gerhold <stephan@gerhold.net>
-> Cc: Niklas Cassel <niklas.cassel@linaro.org>
-> Cc: Russell King <rmk+kernel@armlinux.org.uk>
-> Tested-by: Stephan Gerhold <stephan@gerhold.net>
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> ChangeLog v1->v2:
-> - Specify odd blocksize field to 1 bit (:1)
-> - Specify that STMMC supports odd block sizes
-> - Collect Stephan's test tag
-> ---
->   drivers/mmc/host/mmci.c | 20 ++++++++++++++++----
->   drivers/mmc/host/mmci.h |  6 +++++-
->   2 files changed, 21 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-> index c37e70dbe250..3ffcdf78a428 100644
-> --- a/drivers/mmc/host/mmci.c
-> +++ b/drivers/mmc/host/mmci.c
-> @@ -168,6 +168,7 @@ static struct variant_data variant_ux500 = {
->   	.cmdreg_srsp		= MCI_CPSM_RESPONSE,
->   	.datalength_bits	= 24,
->   	.datactrl_blocksz	= 11,
-> +	.datactrl_odd_blocksz	= true,
->   	.datactrl_mask_sdio	= MCI_DPSM_ST_SDIOEN,
->   	.st_sdio		= true,
->   	.st_clkdiv		= true,
-> @@ -201,6 +202,7 @@ static struct variant_data variant_ux500v2 = {
->   	.datactrl_mask_ddrmode	= MCI_DPSM_ST_DDRMODE,
->   	.datalength_bits	= 24,
->   	.datactrl_blocksz	= 11,
-> +	.datactrl_odd_blocksz	= true,
->   	.datactrl_mask_sdio	= MCI_DPSM_ST_SDIOEN,
->   	.st_sdio		= true,
->   	.st_clkdiv		= true,
-> @@ -260,6 +262,7 @@ static struct variant_data variant_stm32_sdmmc = {
->   	.datacnt_useless	= true,
->   	.datalength_bits	= 25,
->   	.datactrl_blocksz	= 14,
-> +	.datactrl_odd_blocksz	= true,
->   	.stm32_idmabsize_mask	= GENMASK(12, 5),
->   	.init			= sdmmc_variant_init,
->   };
-> @@ -279,6 +282,7 @@ static struct variant_data variant_qcom = {
->   	.data_cmd_enable	= MCI_CPSM_QCOM_DATCMD,
->   	.datalength_bits	= 24,
->   	.datactrl_blocksz	= 11,
-> +	.datactrl_odd_blocksz	= true,
->   	.pwrreg_powerup		= MCI_PWR_UP,
->   	.f_max			= 208000000,
->   	.explicit_mclk_control	= true,
-> @@ -447,10 +451,11 @@ void mmci_dma_setup(struct mmci_host *host)
->   static int mmci_validate_data(struct mmci_host *host,
->   			      struct mmc_data *data)
->   {
-> +	struct variant_data *variant = host->variant;
-> +
->   	if (!data)
->   		return 0;
-> -
-> -	if (!is_power_of_2(data->blksz)) {
-> +	if (!is_power_of_2(data->blksz) && !variant->datactrl_odd_blocksz) {
->   		dev_err(mmc_dev(host->mmc),
->   			"unsupported block size (%d bytes)\n", data->blksz);
->   		return -EINVAL;
-> @@ -515,7 +520,9 @@ int mmci_dma_start(struct mmci_host *host, unsigned int datactrl)
->   		 "Submit MMCI DMA job, sglen %d blksz %04x blks %04x flags %08x\n",
->   		 data->sg_len, data->blksz, data->blocks, data->flags);
->   
-> -	host->ops->dma_start(host, &datactrl);
-> +	ret = host->ops->dma_start(host, &datactrl);
-> +	if (ret)
-> +		return ret;
->   
->   	/* Trigger the DMA transfer */
->   	mmci_write_datactrlreg(host, datactrl);
-> @@ -872,9 +879,14 @@ int mmci_dmae_prep_data(struct mmci_host *host,
->   int mmci_dmae_start(struct mmci_host *host, unsigned int *datactrl)
->   {
->   	struct mmci_dmae_priv *dmae = host->dma_priv;
-> +	int ret;
->   
->   	host->dma_in_progress = true;
-> -	dmaengine_submit(dmae->desc_current);
-> +	ret = dma_submit_error(dmaengine_submit(dmae->desc_current));
-> +	if (ret < 0) {
-> +		host->dma_in_progress = false;
-> +		return ret;
-> +	}
->   	dma_async_issue_pending(dmae->cur);
->   
->   	*datactrl |= MCI_DPSM_DMAENABLE;
-> diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
-> index 833236ecb31e..c7f94726eaa1 100644
-> --- a/drivers/mmc/host/mmci.h
-> +++ b/drivers/mmc/host/mmci.h
-> @@ -278,7 +278,10 @@ struct mmci_host;
->    * @stm32_clkdiv: true if using a STM32-specific clock divider algorithm
->    * @datactrl_mask_ddrmode: ddr mode mask in datactrl register.
->    * @datactrl_mask_sdio: SDIO enable mask in datactrl register
-> - * @datactrl_blksz: block size in power of two
-> + * @datactrl_blocksz: block size in power of two
-> + * @datactrl_odd_blocksz: true if block any sizes are supported, such as one
-> + *		      single character, as is necessary when using some SDIO
-> + *		      devices.
->    * @datactrl_first: true if data must be setup before send command
->    * @datacnt_useless: true if you could not use datacnt register to read
->    *		     remaining data
-> @@ -323,6 +326,7 @@ struct variant_data {
->   	unsigned int		datactrl_mask_ddrmode;
->   	unsigned int		datactrl_mask_sdio;
->   	unsigned int		datactrl_blocksz;
-> +	u8			datactrl_odd_blocksz:1;
->   	u8			datactrl_first:1;
->   	u8			datacnt_useless:1;
->   	u8			st_sdio:1;
-> 
+I don't understand why you have 3 values instead of 2.
+
+I would just use -1 if you want to ignore an entry. If that's the common 
+case, then I'd stick with what you originally proposed. If rare, then I 
+think an array is the better route.
+
+Rob
