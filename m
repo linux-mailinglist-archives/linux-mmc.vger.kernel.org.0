@@ -2,384 +2,170 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3892CF7529
-	for <lists+linux-mmc@lfdr.de>; Mon, 11 Nov 2019 14:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 234F2F761D
+	for <lists+linux-mmc@lfdr.de>; Mon, 11 Nov 2019 15:13:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727089AbfKKNib (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Nov 2019 08:38:31 -0500
-Received: from mail-vk1-f195.google.com ([209.85.221.195]:35215 "EHLO
-        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726910AbfKKNib (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 08:38:31 -0500
-Received: by mail-vk1-f195.google.com with SMTP id e205so3201050vke.2
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Nov 2019 05:38:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TseRgVO5KMxUPu8yg6AH/nb9GpfwCcnFGSRrzoJ8Pw0=;
-        b=MXvmIvvkLnHT3nGUTSGEBIRXDjdazqjSQW0G5EPHVze8R3G9fZhwqK7Nk5ivgS3iRR
-         4gVpUMcXb3yVVjCOWISEUpq/g4urGg3MjRbqZ+Vu4ICLtoEk2WGvK87YhBFRnitxX5+U
-         Z/DFQgXkqUpBV8+JTDF6esWrl4/KmthCGo46L7cj9/WC0GWeG5SON9ZzmVL/WQSbbwba
-         Dm8Z3f+PWGiybizOrNAqKBGNH5pebrBF5BVic4hW12rrJCr9CF34KucWNXbV3qTFSqB8
-         SmVvorR23HEj1kdlHR0FTdn23dKc/VHHTlto3OywPfg/b2WmuDuJY7MDzrauO0OyMS8e
-         5vlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TseRgVO5KMxUPu8yg6AH/nb9GpfwCcnFGSRrzoJ8Pw0=;
-        b=pQANlsmcdM1YjQb8PJRQRN1kYhvKeQ5Iz7dCD4EZXJ9qm7Rb6wbvETfovtNJLwOxP9
-         SKjpJ6quhg8wvFFLNvIicN6kWxKPrS8dgaT2WCtE1I+Mc3Ly4ylQ9zW9ikyXKnYrpujv
-         D6cRBbFH7oE93xAYt2/lN9GbsAxqxQqXvs7qVsCdA01II5QZgd0BNlztDIpxMHsBNQRg
-         nPy7ID4T6p4C5g6iZ+DbDf4u/wlafBBc2mAzGRm5EnFwr5JSuB/aIKAiQcWsWHGp8S/N
-         EvyJn8/ejP3NSm7FauPRA8ldkqtlzbYHZy0AW9xMkMttCQl+dkOPk0THu5ARgkv6mu4S
-         xk0A==
-X-Gm-Message-State: APjAAAX2I4ZcVxtqLF79xFDxnd+E4pGo3xwBnGSk2GeJH1SimPz/ChFy
-        RAs2djiT/U9zmt5OTZnv2I2B3C7tLCxpCB7HrJiK8A==
-X-Google-Smtp-Source: APXvYqxnr5ZW7MuTR56E3PWgQp6UVn+dMM0TlslXroVCAveGqOdArQ6NsC5UPVVmIVLceQRld5c1oKyu05yFIeYQPt8=
-X-Received: by 2002:a1f:7381:: with SMTP id o123mr13357405vkc.53.1573479509614;
- Mon, 11 Nov 2019 05:38:29 -0800 (PST)
+        id S1726949AbfKKONg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Nov 2019 09:13:36 -0500
+Received: from wp126.webpack.hosteurope.de ([80.237.132.133]:43700 "EHLO
+        wp126.webpack.hosteurope.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726888AbfKKONf (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 09:13:35 -0500
+Received: from [2003:a:659:3f00:1e6f:65ff:fe31:d1d5] (helo=hermes.fivetechno.de); authenticated
+        by wp126.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        id 1iUARg-0004oX-Rp; Mon, 11 Nov 2019 15:13:32 +0100
+X-Virus-Scanned: by amavisd-new 2.11.1 using newest ClamAV at
+        linuxbbg.five-lan.de
+Received: from [192.168.34.101] (p5098d998.dip0.t-ipconnect.de [80.152.217.152])
+        (authenticated bits=0)
+        by hermes.fivetechno.de (8.15.2/8.14.5/SuSE Linux 0.8) with ESMTPSA id xABEDVj2011080
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+        Mon, 11 Nov 2019 15:13:31 +0100
+From:   Markus Reichl <m.reichl@fivetechno.de>
+Subject: arm64: dts: rockchip: Add SDR104 mode to SD-card I/F on rk3399-roc-pc
+To:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Jagan Teki <jagan@amarulasolutions.com>,
+        Markus Reichl <m.reichl@fivetechno.de>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Autocrypt: addr=m.reichl@fivetechno.de; prefer-encrypt=mutual; keydata=
+ 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
+ eD/Xv4SsK2JTO4nkQYw8
+Organization: five technologies GmbH
+Message-ID: <f03c978c-86de-b8bb-22c2-177d7fafed94@fivetechno.de>
+Date:   Mon, 11 Nov 2019 15:13:31 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-References: <1572590582-11056-1-git-send-email-chun-hung.wu@mediatek.com> <1572590582-11056-2-git-send-email-chun-hung.wu@mediatek.com>
-In-Reply-To: <1572590582-11056-2-git-send-email-chun-hung.wu@mediatek.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 11 Nov 2019 14:37:53 +0100
-Message-ID: <CAPDyKFqJEhTsPOsBJPCx6acDNKsiJ+kZX_NRwy901xEVCbiR4Q@mail.gmail.com>
-Subject: Re: [PATCH 2/3] [2/3] mmc: mediatek: command queue support
-To:     Chun-Hung Wu <chun-hung.wu@mediatek.com>
-Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Pan Bian <bianpan2016@163.com>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        Kuohong Wang <kuohong.wang@mediatek.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-mediatek@lists.infradead.org, wsd_upstream@mediatek.com,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-DE
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;m.reichl@fivetechno.de;1573481615;ef732f39;
+X-HE-SMSGID: 1iUARg-0004oX-Rp
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-+ Trimmed cc list (please do that as well for your next submission).
+Add SDR104 capability and regulators to SD card node.
+While at it, fix a typo in lcd pinctrl and remove two
+undocumented bindings from pmic.
 
-On Fri, 1 Nov 2019 at 07:43, Chun-Hung Wu <chun-hung.wu@mediatek.com> wrote:
->
-> Support command queue for mt6779 platform.
+Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
+---
+ .../boot/dts/rockchip/rk3399-roc-pc.dtsi      | 31 +++++++++++++++----
+ 1 file changed, 25 insertions(+), 6 deletions(-)
 
-A lot of changes summarized on only one line. I would appreciate some
-more information here, please.
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+index 33df95e384b4..e86a6db54499 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+@@ -135,6 +135,20 @@
+ 		vin-supply = <&vcc_1v8>;
+ 	};
+ 
++	vcc3v0_sd: vcc3v0-sd {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = <&gpio4 RK_PD6 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&vcc3v0_sd_en>;
++		regulator-name = "vcc3v0_sd";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <3000000>;
++		regulator-max-microvolt = <3000000>;
++		vin-supply = <&vcc3v3_sys>;
++	};
++
+ 	vcc3v3_sys: vcc3v3-sys {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc3v3_sys";
+@@ -279,8 +293,6 @@
+ 		vcc10-supply = <&vcc3v3_sys>;
+ 		vcc11-supply = <&vcc3v3_sys>;
+ 		vcc12-supply = <&vcc3v3_sys>;
+-		vcc13-supply = <&vcc3v3_sys>;
+-		vcc14-supply = <&vcc3v3_sys>;
+ 		vddio-supply = <&vcc_3v0>;
+ 
+ 		regulators {
+@@ -562,7 +574,7 @@
+ 
+ 	lcd-panel {
+ 		lcd_panel_reset: lcd-panel-reset {
+-			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_up>;
++			rockchip,pins = <4 RK_PD5 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
+ 	};
+ 
+@@ -588,6 +600,10 @@
+ 		vsel2_gpio: vsel2-gpio {
+ 			rockchip,pins = <1 RK_PB6 RK_FUNC_GPIO &pcfg_pull_down>;
+ 		};
++
++		pmic_int_l: pmic-int-l {
++			rockchip,pins = <1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
+ 	};
+ 
+ 	sdio-pwrseq {
+@@ -596,9 +612,9 @@
+ 		};
+ 	};
+ 
+-	pmic {
+-		pmic_int_l: pmic-int-l {
+-			rockchip,pins = <1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
++	sdmmc {
++		vcc3v0_sd_en: vcc3v0-sd-en {
++			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 	};
+ 
+@@ -653,6 +669,9 @@
+ 	cd-gpios = <&gpio0 RK_PA7 GPIO_ACTIVE_LOW>;
+ 	disable-wp;
+ 	max-frequency = <150000000>;
++	sd-uhs-sdr104;
++	vmmc-supply = <&vcc3v0_sd>;
++	vqmmc-supply = <&vcc_sdio>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&sdmmc_clk &sdmmc_cmd &sdmmc_bus4>;
+ 	status = "okay";
+-- 
+2.20.1
 
->
-> Change-Id: I56b866fa4097a3c0bee77f53486c470e4f1944b9
-> Feature:
-
-Drop these please.
-
-> Signed-off-by: Chun-Hung Wu <chun-hung.wu@mediatek.com>
-
-For the next submission, please add the maintainers for the cqhci
-driver. They may have some valuable feedback for you.
-
-Below follows a few review comments, which are more from a patch
-formatting point of view, than technical.
-
-> ---
->  drivers/mmc/host/mtk-sd.c | 151 +++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 141 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-> index 189e426..b132397 100644
-> --- a/drivers/mmc/host/mtk-sd.c
-> +++ b/drivers/mmc/host/mtk-sd.c
-> @@ -31,6 +31,8 @@
->  #include <linux/mmc/sdio.h>
->  #include <linux/mmc/slot-gpio.h>
->
-> +#include "cqhci.h"
-> +
->  #define MAX_BD_NUM          1024
->
->  /*--------------------------------------------------------------------------*/
-> @@ -151,6 +153,7 @@
->  #define MSDC_INT_DMA_BDCSERR    (0x1 << 17)    /* W1C */
->  #define MSDC_INT_DMA_GPDCSERR   (0x1 << 18)    /* W1C */
->  #define MSDC_INT_DMA_PROTECT    (0x1 << 19)    /* W1C */
-> +#define MSDC_INT_CMDQ           (0x1 << 28)    /* W1C */
->
->  /* MSDC_INTEN mask */
->  #define MSDC_INTEN_MMCIRQ       (0x1 << 0)     /* RW */
-> @@ -181,6 +184,7 @@
->  /* SDC_CFG mask */
->  #define SDC_CFG_SDIOINTWKUP     (0x1 << 0)     /* RW */
->  #define SDC_CFG_INSWKUP         (0x1 << 1)     /* RW */
-> +#define SDC_CFG_WRDTOC          (0x1fff  << 2)  /* RW */
->  #define SDC_CFG_BUSWIDTH        (0x3 << 16)    /* RW */
->  #define SDC_CFG_SDIO            (0x1 << 19)    /* RW */
->  #define SDC_CFG_SDIOIDE         (0x1 << 20)    /* RW */
-> @@ -228,6 +232,7 @@
->  #define MSDC_PATCH_BIT_SPCPUSH    (0x1 << 29)  /* RW */
->  #define MSDC_PATCH_BIT_DECRCTMO   (0x1 << 30)  /* RW */
->
-> +#define MSDC_PB1_BUSY_CHECK_SEL   (0x1 << 7)    /* RW */
->  #define MSDC_PATCH_BIT1_STOP_DLY  (0xf << 8)    /* RW */
->
->  #define MSDC_PATCH_BIT2_CFGRESP   (0x1 << 15)   /* RW */
-> @@ -431,6 +436,7 @@ struct msdc_host {
->         struct msdc_save_para save_para; /* used when gate HCLK */
->         struct msdc_tune_para def_tune_para; /* default tune setting */
->         struct msdc_tune_para saved_tune_para; /* tune result of CMD21/CMD19 */
-> +       struct cqhci_host *cq_host;
->  };
->
->  static const struct mtk_mmc_compatible mt8135_compat = {
-> @@ -527,6 +533,18 @@ struct msdc_host {
->         .use_internal_cd = true,
->  };
->
-> +static const struct mtk_mmc_compatible mt6779_compat = {
-> +       .clk_div_bits = 12,
-> +       .hs400_tune = false,
-> +       .pad_tune_reg = MSDC_PAD_TUNE0,
-> +       .async_fifo = true,
-> +       .data_tune = true,
-> +       .busy_check = true,
-> +       .stop_clk_fix = true,
-> +       .enhance_rx = true,
-> +       .support_64g = true,
-> +};
-> +
->  static const struct of_device_id msdc_of_ids[] = {
->         { .compatible = "mediatek,mt8135-mmc", .data = &mt8135_compat},
->         { .compatible = "mediatek,mt8173-mmc", .data = &mt8173_compat},
-> @@ -536,6 +554,7 @@ struct msdc_host {
->         { .compatible = "mediatek,mt7622-mmc", .data = &mt7622_compat},
->         { .compatible = "mediatek,mt8516-mmc", .data = &mt8516_compat},
->         { .compatible = "mediatek,mt7620-mmc", .data = &mt7620_compat},
-> +       { .compatible = "mediatek,mt6779-mmc", .data = &mt6779_compat},
->         {}
->  };
->  MODULE_DEVICE_TABLE(of, msdc_of_ids);
-> @@ -698,21 +717,21 @@ static void msdc_unprepare_data(struct msdc_host *host, struct mmc_request *mrq)
->         }
->  }
->
-> -/* clock control primitives */
-> -static void msdc_set_timeout(struct msdc_host *host, u32 ns, u32 clks)
-> +static u64 msdc_timeout_cal(struct msdc_host *host, u64 ns, u64 clks)
->  {
-> -       u32 timeout, clk_ns;
-> +       u64 timeout, clk_ns;
->         u32 mode = 0;
->
-> -       host->timeout_ns = ns;
-> -       host->timeout_clks = clks;
->         if (host->mmc->actual_clock == 0) {
->                 timeout = 0;
->         } else {
-> -               clk_ns  = 1000000000UL / host->mmc->actual_clock;
-> -               timeout = (ns + clk_ns - 1) / clk_ns + clks;
-> +               clk_ns  = 1000000000ULL;
-> +               do_div(clk_ns, host->mmc->actual_clock);
-> +               timeout = ns + clk_ns - 1;
-> +               do_div(timeout, clk_ns);
-> +               timeout += clks;
->                 /* in 1048576 sclk cycle unit */
-> -               timeout = (timeout + (0x1 << 20) - 1) >> 20;
-> +               timeout = DIV_ROUND_UP(timeout, (0x1 << 20));
->                 if (host->dev_comp->clk_div_bits == 8)
->                         sdr_get_field(host->base + MSDC_CFG,
->                                       MSDC_CFG_CKMOD, &mode);
-> @@ -722,9 +741,30 @@ static void msdc_set_timeout(struct msdc_host *host, u32 ns, u32 clks)
->                 /*DDR mode will double the clk cycles for data timeout */
->                 timeout = mode >= 2 ? timeout * 2 : timeout;
->                 timeout = timeout > 1 ? timeout - 1 : 0;
-> -               timeout = timeout > 255 ? 255 : timeout;
->         }
-> -       sdr_set_field(host->base + SDC_CFG, SDC_CFG_DTOC, timeout);
-> +       return timeout;
-> +}
-> +
-> +/* clock control primitives */
-> +static void msdc_set_timeout(struct msdc_host *host, u64 ns, u64 clks)
-> +{
-> +       u64 timeout;
-> +
-> +       host->timeout_ns = ns;
-> +       host->timeout_clks = clks;
-> +
-> +       timeout = msdc_timeout_cal(host, ns, clks);
-> +       sdr_set_field(host->base + SDC_CFG, SDC_CFG_DTOC,
-> +                     (u32)(timeout > 255 ? 255 : timeout));
-> +}
-
-Does the above changes make sense to split out in a separate patch?
-
-It looks to me, that these are generic clock updates to the driver
-that really doesn't have to be included in $subject patch.
-
-> +
-> +static void msdc_set_busy_timeout(struct msdc_host *host, u64 ns, u64 clks)
-> +{
-> +       u64 timeout;
-> +
-> +       timeout = msdc_timeout_cal(host, ns, clks);
-> +       sdr_set_field(host->base + SDC_CFG, SDC_CFG_WRDTOC,
-> +                     (u32)(timeout > 8191 ? 8191 : timeout));
->  }
->
->  static void msdc_gate_clock(struct msdc_host *host)
-> @@ -1413,6 +1453,36 @@ static void msdc_enable_sdio_irq(struct mmc_host *mmc, int enb)
->                 pm_runtime_put_noidle(host->dev);
->  }
->
-> +#if IS_ENABLED(CONFIG_MMC_CQHCI)
-
-Other drivers Kconfig option, uses "select MMC_CQHCI". Would that make
-this more simple and allowing to remove the "if IS_ENABLED" thingy?
-
-> +static irqreturn_t msdc_cmdq_irq(struct msdc_host *host, u32 intsts)
-> +{
-> +       int cmd_err = 0, dat_err = 0;
-> +
-> +       if (intsts & MSDC_INT_RSPCRCERR) {
-> +               cmd_err = (unsigned int)-EILSEQ;
-> +               dev_err(host->dev, "%s: CMD CRC ERR", __func__);
-> +       } else if (intsts & MSDC_INT_CMDTMO) {
-> +               cmd_err = (unsigned int)-ETIMEDOUT;
-> +               dev_err(host->dev, "%s: CMD TIMEOUT ERR", __func__);
-> +       }
-> +
-> +       if (intsts & MSDC_INT_DATCRCERR) {
-> +               dat_err = (unsigned int)-EILSEQ;
-> +               dev_err(host->dev, "%s: DATA CRC ERR", __func__);
-> +       } else if (intsts & MSDC_INT_DATTMO) {
-> +               dat_err = (unsigned int)-ETIMEDOUT;
-> +               dev_err(host->dev, "%s: DATA TIMEOUT ERR", __func__);
-> +       }
-> +
-> +       if (cmd_err || dat_err) {
-> +               dev_err(host->dev, "cmd_err = %d, dat_err =%d, intsts = 0x%x",
-> +                       cmd_err, dat_err, intsts);
-> +       }
-> +
-> +       return cqhci_irq(host->mmc, 0, cmd_err, dat_err);
-> +}
-> +#endif
-> +
->  static irqreturn_t msdc_irq(int irq, void *dev_id)
->  {
->         struct msdc_host *host = (struct msdc_host *) dev_id;
-> @@ -1449,6 +1519,16 @@ static irqreturn_t msdc_irq(int irq, void *dev_id)
->                 if (!(events & (event_mask & ~MSDC_INT_SDIOIRQ)))
->                         break;
->
-> +#if IS_ENABLED(CONFIG_MMC_CQHCI)
-
-Again, please to avoid these "IS_ENABLED".
-
-> +               if ((host->mmc->caps2 & MMC_CAP2_CQE) &&
-> +                   (events & MSDC_INT_CMDQ)) {
-> +                       msdc_cmdq_irq(host, events);
-> +                       /* clear interrupts */
-> +                       writel(events, host->base + MSDC_INT);
-> +                       return IRQ_HANDLED;
-> +               }
-> +#endif
-> +
->                 if (!mrq) {
->                         dev_err(host->dev,
->                                 "%s: MRQ=NULL; events=%08X; event_mask=%08X\n",
-> @@ -2132,6 +2212,36 @@ static int msdc_get_cd(struct mmc_host *mmc)
->                 return !val;
->  }
->
-> +static void msdc_cqe_enable(struct mmc_host *mmc)
-> +{
-> +       struct msdc_host *host = mmc_priv(mmc);
-> +
-> +       /* enable cmdq irq */
-> +       writel(MSDC_INT_CMDQ, host->base + MSDC_INTEN);
-> +       /* enable busy check */
-> +       sdr_set_bits(host->base + MSDC_PATCH_BIT1, MSDC_PB1_BUSY_CHECK_SEL);
-> +       /* default write data / busy timeout 20s */
-> +       msdc_set_busy_timeout(host, 20 * 1000000000ULL, 0);
-> +       /* default read data timeout 1s */
-> +       msdc_set_timeout(host, 1000000000ULL, 0);
-
-Some magic timeout values here. Can you elaborate why these values?
-
-> +}
-> +
-> +void msdc_cqe_disable(struct mmc_host *mmc, bool recovery)
-> +{
-> +       struct msdc_host *host = mmc_priv(mmc);
-> +
-> +       /* disable cmdq irq */
-> +       sdr_clr_bits(host->base + MSDC_INTEN, MSDC_INT_CMDQ);
-> +       /* disable busy check */
-> +       sdr_clr_bits(host->base + MSDC_PATCH_BIT1, MSDC_PB1_BUSY_CHECK_SEL);
-> +
-> +       if (recovery) {
-> +               sdr_set_field(host->base + MSDC_DMA_CTRL,
-> +                             MSDC_DMA_CTRL_STOP, 1);
-> +               msdc_reset_hw(host);
-> +       }
-> +}
-> +
->  static const struct mmc_host_ops mt_msdc_ops = {
->         .post_req = msdc_post_req,
->         .pre_req = msdc_pre_req,
-> @@ -2148,6 +2258,11 @@ static int msdc_get_cd(struct mmc_host *mmc)
->         .hw_reset = msdc_hw_reset,
-
-The hw_reset callback is really for resetting the card, but it seems
-like you are using it to reset the controller. No?
-
-I notice there are some other drivers abusing the callback as well,
-but I am wondering whether it's time to really look into what's going
-on here.
-
-Can you elaborate on why you need this?
-
->  };
->
-> +static const struct cqhci_host_ops msdc_cmdq_ops = {
-> +       .enable         = msdc_cqe_enable,
-> +       .disable        = msdc_cqe_disable,
-> +};
-> +
->  static void msdc_of_property_parse(struct platform_device *pdev,
->                                    struct msdc_host *host)
->  {
-> @@ -2299,6 +2414,22 @@ static int msdc_drv_probe(struct platform_device *pdev)
->                 host->dma_mask = DMA_BIT_MASK(32);
->         mmc_dev(mmc)->dma_mask = &host->dma_mask;
->
-> +#if IS_ENABLED(CONFIG_MMC_CQHCI)
-> +       if (mmc->caps2 & MMC_CAP2_CQE) {
-> +               host->cq_host = devm_kzalloc(host->mmc->parent,
-> +                                            sizeof(*host->cq_host),
-> +                                            GFP_KERNEL);
-> +               host->cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
-> +               host->cq_host->mmio = host->base + 0x800;
-> +               host->cq_host->ops = &msdc_cmdq_ops;
-> +               cqhci_init(host->cq_host, mmc, true);
-> +               mmc->max_segs = 128;
-> +               /* cqhci 16bit length */
-> +               /* 0 size, means 65536 so we don't have to -1 here */
-> +               mmc->max_seg_size = 64 * 1024;
-> +       }
-> +#endif
-> +
->         host->timeout_clks = 3 * 1048576;
->         host->dma.gpd = dma_alloc_coherent(&pdev->dev,
->                                 2 * sizeof(struct mt_gpdma_desc),
-> --
-> 1.9.1
->
-
-Kind regards
-Uffe
