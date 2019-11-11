@@ -2,118 +2,75 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F3FFF7FF8
-	for <lists+linux-mmc@lfdr.de>; Mon, 11 Nov 2019 20:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88714F82BA
+	for <lists+linux-mmc@lfdr.de>; Mon, 11 Nov 2019 23:08:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbfKKTcE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Nov 2019 14:32:04 -0500
-Received: from wp126.webpack.hosteurope.de ([80.237.132.133]:56388 "EHLO
-        wp126.webpack.hosteurope.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726950AbfKKTcE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 14:32:04 -0500
-Received: from [2003:a:659:3f00:1e6f:65ff:fe31:d1d5] (helo=hermes.fivetechno.de); authenticated
-        by wp126.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        id 1iUFPr-00017a-Bc; Mon, 11 Nov 2019 20:31:59 +0100
-X-Virus-Scanned: by amavisd-new 2.11.1 using newest ClamAV at
-        linuxbbg.five-lan.de
-Received: from dell2.five-lan.de (pD9E89174.dip0.t-ipconnect.de [217.232.145.116])
-        (authenticated bits=0)
-        by hermes.fivetechno.de (8.15.2/8.14.5/SuSE Linux 0.8) with ESMTPSA id xABJVvBQ021691
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-        Mon, 11 Nov 2019 20:31:58 +0100
-Subject: Re: arm64: dts: rockchip: Add SDR104 mode to SD-card I/F on
- rk3399-roc-pc
+        id S1726916AbfKKWIR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Nov 2019 17:08:17 -0500
+Received: from muru.com ([72.249.23.125]:41752 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726845AbfKKWIR (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 11 Nov 2019 17:08:17 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 68BB58047;
+        Mon, 11 Nov 2019 22:08:52 +0000 (UTC)
+Date:   Mon, 11 Nov 2019 14:08:12 -0800
+From:   Tony Lindgren <tony@atomide.com>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-References: <f03c978c-86de-b8bb-22c2-177d7fafed94@fivetechno.de>
- <CAPDyKFqn06LZZMXLD2o-M6A0R6KU97PFUTN=NgYnMtf=ESULTA@mail.gmail.com>
-From:   Markus Reichl <m.reichl@fivetechno.de>
-Message-ID: <e69268d2-4a3f-3cd8-fc2e-57ae52ad337a@fivetechno.de>
-Date:   Mon, 11 Nov 2019 20:31:57 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] mmc: Fixup HW reset for SDIO cards
+Message-ID: <20191111220812.GX43123@atomide.com>
+References: <20191109103046.26445-1-ulf.hansson@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFqn06LZZMXLD2o-M6A0R6KU97PFUTN=NgYnMtf=ESULTA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: de-DE
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;m.reichl@fivetechno.de;1573500722;d304cc47;
-X-HE-SMSGID: 1iUFPr-00017a-Bc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191109103046.26445-1-ulf.hansson@linaro.org>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Ulf,
+Hi,
 
-Am 11.11.19 um 18:27 schrieb Ulf Hansson:
-> On Mon, 11 Nov 2019 at 15:13, Markus Reichl <m.reichl@fivetechno.de> wrote:
->>
->> Add SDR104 capability and regulators to SD card node.
->> While at it, fix a typo in lcd pinctrl and remove two
->> undocumented bindings from pmic.
->>
->> Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
->> ---
->>  .../boot/dts/rockchip/rk3399-roc-pc.dtsi      | 31 +++++++++++++++----
->>  1 file changed, 25 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
->> index 33df95e384b4..e86a6db54499 100644
->> --- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
->> +++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
->> @@ -135,6 +135,20 @@
->>                 vin-supply = <&vcc_1v8>;
->>         };
->>
->> +       vcc3v0_sd: vcc3v0-sd {
->> +               compatible = "regulator-fixed";
->> +               enable-active-high;
->> +               gpio = <&gpio4 RK_PD6 GPIO_ACTIVE_HIGH>;
->> +               pinctrl-names = "default";
->> +               pinctrl-0 = <&vcc3v0_sd_en>;
->> +               regulator-name = "vcc3v0_sd";
->> +               regulator-always-on;
+* Ulf Hansson <ulf.hansson@linaro.org> [191109 10:31]:
+> Changes in v2:
+> 	- Add adaptations to the mwifiex driver.
+> 	- Keep existing syncronous reset behaviour if the SDIO card has a single
+> 	func driver.
 > 
-> This looks odd. A GPIO regulator being always on?
+> It has turned out that it's not a good idea to try to power cycle and to
+> re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
+> because there may be multiple SDIO funcs attached to the same SDIO card and
+> some of the others that didn't execute the call to mmc_hw_reset(), may then
+> simply experience an undefined behaviour.
+> 
+> The following patches in this series attempts to address this problem, by
+> reworking the mmc_hw_reset() behaviour for SDIO and by adopting the Marvel
+> mwifiex driver to these changes.
+> 
+> Note that, I don't have the HW at hand so the the code has only compile tested.
+> Test on HW is greatly appreciated!
 
-This is a standard micro SD card socket that can also be used for
-booting the board. I wanted to be cautious and start
-working with it and several SD cards and explore the capabilities.
+Looks good to me. I tried testing this, but looks like at least on duovero
+mwifiex_sdio is broken in v5.4-rc7:
 
-On this board nearly all regulators are still continously
-switched on. I plan to remove the always-on properties step
-by step from the regulators when the board runs stable with it's
-components all enbled. 
+# dmesg | grep mwifi
+mwifiex_sdio mmc1:0001:1: poll card status failed, tries = 100
+mwifiex_sdio mmc1:0001:1: FW download with helper:       poll status timeout @ 0
+mwifiex_sdio mmc1:0001:1: prog_fw failed ret=0xffffffff
+mwifiex_sdio mmc1:0001:1: info: _mwifiex_fw_dpc: unregister device
 
-> 
->> +               regulator-boot-on;
->> +               regulator-min-microvolt = <3000000>;
->> +               regulator-max-microvolt = <3000000>;
->> +               vin-supply = <&vcc3v3_sys>;
->> +       };
-> 
-> Assumes this powers an SDIO embedded card. Often those have a specific
-> power sequence, just wanted to make sure the above are really
-> sufficient? No delays or external clock needed?
+No idea when it broke and what might be the issue this time around.
+Any ideas?
 
-It's not embedded, just a standard µSD plug. It is already enabled
-by mainline U-Boot and ejecting and inserting the card works fine.
+Regards,
 
---
-Gruß,
-Markus
-> 
-> [...]
-> 
-> Kind regards
-> Uffe
-> 
+Tony
