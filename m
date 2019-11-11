@@ -2,170 +2,157 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 234F2F761D
-	for <lists+linux-mmc@lfdr.de>; Mon, 11 Nov 2019 15:13:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55172F7958
+	for <lists+linux-mmc@lfdr.de>; Mon, 11 Nov 2019 17:59:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726949AbfKKONg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Nov 2019 09:13:36 -0500
-Received: from wp126.webpack.hosteurope.de ([80.237.132.133]:43700 "EHLO
-        wp126.webpack.hosteurope.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726888AbfKKONf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 09:13:35 -0500
-Received: from [2003:a:659:3f00:1e6f:65ff:fe31:d1d5] (helo=hermes.fivetechno.de); authenticated
-        by wp126.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        id 1iUARg-0004oX-Rp; Mon, 11 Nov 2019 15:13:32 +0100
-X-Virus-Scanned: by amavisd-new 2.11.1 using newest ClamAV at
-        linuxbbg.five-lan.de
-Received: from [192.168.34.101] (p5098d998.dip0.t-ipconnect.de [80.152.217.152])
-        (authenticated bits=0)
-        by hermes.fivetechno.de (8.15.2/8.14.5/SuSE Linux 0.8) with ESMTPSA id xABEDVj2011080
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-        Mon, 11 Nov 2019 15:13:31 +0100
-From:   Markus Reichl <m.reichl@fivetechno.de>
-Subject: arm64: dts: rockchip: Add SDR104 mode to SD-card I/F on rk3399-roc-pc
-To:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        Markus Reichl <m.reichl@fivetechno.de>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Autocrypt: addr=m.reichl@fivetechno.de; prefer-encrypt=mutual; keydata=
- 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
- eD/Xv4SsK2JTO4nkQYw8
-Organization: five technologies GmbH
-Message-ID: <f03c978c-86de-b8bb-22c2-177d7fafed94@fivetechno.de>
-Date:   Mon, 11 Nov 2019 15:13:31 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+        id S1727126AbfKKQ7Y (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Nov 2019 11:59:24 -0500
+Received: from mout.kundenserver.de ([212.227.126.130]:53627 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727119AbfKKQ7Y (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 11:59:24 -0500
+Received: from mail-qt1-f169.google.com ([209.85.160.169]) by
+ mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MKsaz-1iBJdX1Vmv-00LIvc; Mon, 11 Nov 2019 17:59:22 +0100
+Received: by mail-qt1-f169.google.com with SMTP id r20so2301401qtp.13;
+        Mon, 11 Nov 2019 08:59:22 -0800 (PST)
+X-Gm-Message-State: APjAAAWzh2rNG7Ir5NiGDXSmuzJYgBAbjIfK1wxowWcPQnzP8lp2wNxq
+        huKlawMpl6uEb8mB/XxWU0WPSqxrdlkXs3Ixjoc=
+X-Google-Smtp-Source: APXvYqwdpCREOtyE93H9Pt1lAWwTPnjT7PbL4Gw+dA+pJFVEH9MO3ijOUHhBfbs9wSdqzXpcqYACk9InxetZ/cZN4Ss=
+X-Received: by 2002:ac8:1908:: with SMTP id t8mr26432376qtj.18.1573491561034;
+ Mon, 11 Nov 2019 08:59:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: de-DE
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;m.reichl@fivetechno.de;1573481615;ef732f39;
-X-HE-SMSGID: 1iUARg-0004oX-Rp
+References: <cover.1573456283.git.baolin.wang@linaro.org> <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
+ <CAMz4kuK9HEuGdhNqHO_qoy9jD=ccsPPhD_dKYwNRgQyWyYwqRA@mail.gmail.com>
+In-Reply-To: <CAMz4kuK9HEuGdhNqHO_qoy9jD=ccsPPhD_dKYwNRgQyWyYwqRA@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 11 Nov 2019 17:59:04 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
+Message-ID: <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
+Subject: Re: [PATCH v6 0/4] Add MMC software queue support
+To:     Baolin Wang <baolin.wang@linaro.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Lyra Zhang <zhang.lyra@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        baolin.wang7@gmail.com, linux-mmc <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Hannes Reinecke <hare@suse.com>,
+        linux-block <linux-block@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:qgSgaiHikjIpEOImULQPeWlakma4RKciwFOLji7+fC7/BbIdHgT
+ RB2gPue3reW9Ylv6Lrj150quuj/QUh00y3LYskGDABnjKcnD/yzvlotUzV0cPoK+4WuL15S
+ MY+A01y5zg1mrv4F7g0JHQ9Xn+tv2qoVeaEWji3mIhyoYHELlzDlGBP/q8V99PkRqPyBgL4
+ 8ZGuzhwSBy09rzEeAu96w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:BBG3QbBEaaw=:kgUTLp4XoqEJGHXbWpyMle
+ BWo/L+GdaARLlCrP8M0/skZ5GRvMnbDFz2qri9bB7nxfnYC4CHg6wd5vwI/RGCsU0h/Iu3bz/
+ M2uWFLYgnTVzROR2cx8fVrXTe6sPR0qmc8SOvf8/XdbwmNNTxPz1KiJ+PSWdqG+UAPh37hwmd
+ q3dVn0Le9egTF1RyTU+J/12h8HeSVHdq9nv7M/ue8tZgsu2AHiZ2QmqxkoJppPexDLq7WiV9C
+ w09zjsIogb2PYkx4Dlk21vMfwtTepwM+ocSCgb2DurjSHdciWpsWl3vAAAoADAZ2l4E3v1eYT
+ JcSOkQS8NEDKvRHHB1+04ExKwR/gN5n/FDCraBQS5nGHN/GbfiYYhnDNArxYYV0X3sfiiAKTT
+ hkaT4PfoRpPgwfQKf8UUH1YJddmYZfnUiGYUu/o6Jy5bpZIOM7KH29hS/66+ukTNlwetdYvH6
+ tANgu3Xl0lNv1Xa/iCw26LNkOjhv/3q6Dm76axjxlQh7nE7afyHufTLu0Ekp7yxOaCVllLPIP
+ Wox29Y3zCfgQ112AqdQd57+AfQ9deV2c3mKRjydjSQe8heCHBGlIwQXNQv9REzF0HyQfbFhaH
+ MJF6o6SyzwiNNbXWZQ+UnBN+nzazzuOjlUKmcLoZYvCe+NjR3WDcxKvY/snMxNDZylNGs6yXB
+ 5kGyHFk2kFzrtnazWcGCXj55Ko35B/IQ6Im2ce0l2hEJlRAotNtWF5qYSDSG/IEx5o94g/H81
+ +98etpwjsmKhsAvtxnZZweJQ+NtEDvJDvi16zaLGwFD3MPESMNH2RjXNUDwnGb3UWrMODdC4r
+ EFeaY+ddj4GqovHOmSngSBD1097G/qFS5uM8fgsIwyeSzmtg+89GVsKeQ4bVRXJJOlQMilYED
+ 9MrmUIYqgLRB4xIAEhmw==
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add SDR104 capability and regulators to SD card node.
-While at it, fix a typo in lcd pinctrl and remove two
-undocumented bindings from pmic.
+On Mon, Nov 11, 2019 at 1:58 PM Baolin Wang <baolin.wang@linaro.org> wrote:
+> On Mon, 11 Nov 2019 at 17:28, Arnd Bergmann <arnd@arndb.de> wrote:
+> > On Mon, Nov 11, 2019 at 8:35 AM Baolin Wang <baolin.wang@linaro.org> wrote:
+> > - Removing all the context switches and workqueues from the data submission
+> >   path is also the right idea. As you found, there is still a workqueue inside
+> >   of blk_mq that is used because it may get called from atomic context but
+> >   the submission may get blocked in __mmc_claim_host(). This really
+> >   needs to be changed as well, but not in the way I originally suggested:
+> >   As Hannes suggested, the host interrrupt handler should always use
+> >   request_threaded_irq() to have its own process context, and then pass a
+> >   flag to blk_mq to say that we never need another workqueue there.
+>
+> So you mean we should complete the request in the host driver irq
+> thread context, then issue another request in this context by calling
+> blk_mq_run_hw_queues()?
 
-Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
----
- .../boot/dts/rockchip/rk3399-roc-pc.dtsi      | 31 +++++++++++++++----
- 1 file changed, 25 insertions(+), 6 deletions(-)
+Yes. I assumed there was already code that would always run
+blk_mq_run_hw_queue() at I/O completion, but I can't find where
+that happens today.
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-index 33df95e384b4..e86a6db54499 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-@@ -135,6 +135,20 @@
- 		vin-supply = <&vcc_1v8>;
- 	};
- 
-+	vcc3v0_sd: vcc3v0-sd {
-+		compatible = "regulator-fixed";
-+		enable-active-high;
-+		gpio = <&gpio4 RK_PD6 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&vcc3v0_sd_en>;
-+		regulator-name = "vcc3v0_sd";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <3000000>;
-+		regulator-max-microvolt = <3000000>;
-+		vin-supply = <&vcc3v3_sys>;
-+	};
-+
- 	vcc3v3_sys: vcc3v3-sys {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vcc3v3_sys";
-@@ -279,8 +293,6 @@
- 		vcc10-supply = <&vcc3v3_sys>;
- 		vcc11-supply = <&vcc3v3_sys>;
- 		vcc12-supply = <&vcc3v3_sys>;
--		vcc13-supply = <&vcc3v3_sys>;
--		vcc14-supply = <&vcc3v3_sys>;
- 		vddio-supply = <&vcc_3v0>;
- 
- 		regulators {
-@@ -562,7 +574,7 @@
- 
- 	lcd-panel {
- 		lcd_panel_reset: lcd-panel-reset {
--			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_up>;
-+			rockchip,pins = <4 RK_PD5 RK_FUNC_GPIO &pcfg_pull_up>;
- 		};
- 	};
- 
-@@ -588,6 +600,10 @@
- 		vsel2_gpio: vsel2-gpio {
- 			rockchip,pins = <1 RK_PB6 RK_FUNC_GPIO &pcfg_pull_down>;
- 		};
-+
-+		pmic_int_l: pmic-int-l {
-+			rockchip,pins = <1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
-+		};
- 	};
- 
- 	sdio-pwrseq {
-@@ -596,9 +612,9 @@
- 		};
- 	};
- 
--	pmic {
--		pmic_int_l: pmic-int-l {
--			rockchip,pins = <1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
-+	sdmmc {
-+		vcc3v0_sd_en: vcc3v0-sd-en {
-+			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
- 		};
- 	};
- 
-@@ -653,6 +669,9 @@
- 	cd-gpios = <&gpio0 RK_PA7 GPIO_ACTIVE_LOW>;
- 	disable-wp;
- 	max-frequency = <150000000>;
-+	sd-uhs-sdr104;
-+	vmmc-supply = <&vcc3v0_sd>;
-+	vqmmc-supply = <&vcc_sdio>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&sdmmc_clk &sdmmc_cmd &sdmmc_bus4>;
- 	status = "okay";
--- 
-2.20.1
+As I understand, the main difference to today is that
+__blk_mq_delay_run_hw_queue() can call into __blk_mq_run_hw_queue
+directly rather than using the delayed work queue once we
+can skip the BLK_MQ_F_BLOCKING check.
 
+> > - With that change in place calling a blocking __mmc_claim_host() is
+> >   still a problem, so there should still be a nonblocking mmc_try_claim_host()
+> >   for the submission path, leading to a BLK_STS_DEV_RESOURCE (?)
+> >   return code from mmc_mq_queue_rq(). Basically mmc_mq_queue_rq()
+> >   should always return right away, either after having queued the next I/O
+> >   or with an error, but not waiting for the device in any way.
+>
+> Actually not only the mmc_claim_host() will block the MMC request
+> processing, in this routine, the mmc_blk_part_switch() and
+> mmc_retune() can also block the request processing. Moreover the part
+> switching and tuning should be sync operations, and we can not move
+> them to a work or a thread.
+
+Ok, I see.
+
+Those would also cause requests to be sent to the device or the host
+controller, right? Maybe we can treat them as "a non-IO request
+has successfully been queued to the device" events, returning
+busy from the mmc_mq_queue_rq() function and then running
+the queue again when they complete?
+
+> > - For the packed requests, there is apparently a very simple way to implement
+> >   that without a software queue: mmc_mq_queue_rq() is allowed to look at
+> >   and dequeue all requests that are currently part of the request_queue,
+> >   so it should take out as many as it wants to submit at once and send
+> >   them all down to the driver together, avoiding the need for any further
+> >   round-trips to blk_mq or maintaining a queue in mmc.
+>
+> You mean we can dispatch a request directly from
+> elevator->type->ops.dispatch_request()?  but we still need some helper
+> functions to check if these requests can be packed (the package
+> condition), and need to invent new APIs to start a packed request (or
+> using cqe interfaces, which means we still need to implement some cqe
+> callbacks).
+
+I don't know how the dispatch_request() function fits in there,
+what Hannes told me is that in ->queue_rq() you can always
+look at the following requests that are already queued up
+and take the next ones off the list. Looking at bd->last
+tells you if there are additional requests. If there are, you can
+look at the next one from blk_mq_hw_ctx (not sure how, but
+should not be hard to find)
+
+I also see that there is a commit_rqs() callback that may
+go along with queue_rq(), implementing that one could make
+this easier as well.
+
+> > - The DMA management (bounce buffer, map, unmap) that is currently
+> >   done in mmc_blk_mq_issue_rq() should ideally be done in the
+> >   init_request()/exit_request()  (?) callbacks from mmc_mq_ops so this
+> >   can be done asynchronously, out of the critical timing path for the
+> >   submission. With this, there won't be any need for a software queue.
+>
+> This is not true, now the blk-mq will allocate some static request
+> objects (usually the static requests number should be the same with
+> the hardware queue depth) saved in struct blk_mq_tags. So the
+> init_request() is used to initialize the static requests when
+> allocating them, and call exit_request to free the static requests
+> when freeing the 'struct blk_mq_tags', such as the queue is dead. So
+> we can not move the DMA management into the init_request/exit_request.
+
+Ok, I must have misremembered which callback that is then, but I guess
+there is some other place to do it.
+
+       Arnd
