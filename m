@@ -2,248 +2,129 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F037AF70AF
-	for <lists+linux-mmc@lfdr.de>; Mon, 11 Nov 2019 10:28:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5562F7164
+	for <lists+linux-mmc@lfdr.de>; Mon, 11 Nov 2019 11:09:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726832AbfKKJ2w (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Nov 2019 04:28:52 -0500
-Received: from mout.kundenserver.de ([217.72.192.74]:50149 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726823AbfKKJ2v (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 04:28:51 -0500
-Received: from mail-qk1-f174.google.com ([209.85.222.174]) by
- mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1M5wY1-1iWa2V3SiR-007R0n; Mon, 11 Nov 2019 10:28:49 +0100
-Received: by mail-qk1-f174.google.com with SMTP id 15so10575809qkh.6;
-        Mon, 11 Nov 2019 01:28:48 -0800 (PST)
-X-Gm-Message-State: APjAAAVwD8dC+4GN/GFLwBWbdd8HutqZPCzHtzLfX5Bh6xqp/F1fpg2W
-        EULLDsCXWqriL7UV/6pxfv39+6pBnO+dBWLwXdA=
-X-Google-Smtp-Source: APXvYqwSu9lgfUBDF0nm5OtSH0s90suFF6U6hyuHCymJtgyPoF0wodDyO+XeG82Hd3hh9gp5e0Ri92Us7MzrxXcNFWY=
-X-Received: by 2002:a05:620a:a0e:: with SMTP id i14mr9083164qka.3.1573464527336;
- Mon, 11 Nov 2019 01:28:47 -0800 (PST)
+        id S1726808AbfKKKJ1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Nov 2019 05:09:27 -0500
+Received: from wp126.webpack.hosteurope.de ([80.237.132.133]:41050 "EHLO
+        wp126.webpack.hosteurope.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726768AbfKKKJ1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 05:09:27 -0500
+X-Greylist: delayed 1091 seconds by postgrey-1.27 at vger.kernel.org; Mon, 11 Nov 2019 05:09:26 EST
+Received: from [2003:a:659:3f00:1e6f:65ff:fe31:d1d5] (helo=hermes.fivetechno.de); authenticated
+        by wp126.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        id 1iU6Lj-0004sK-2G; Mon, 11 Nov 2019 10:51:07 +0100
+X-Virus-Scanned: by amavisd-new 2.11.1 using newest ClamAV at
+        linuxbbg.five-lan.de
+Received: from [192.168.34.101] (p5098d998.dip0.t-ipconnect.de [80.152.217.152])
+        (authenticated bits=0)
+        by hermes.fivetechno.de (8.15.2/8.14.5/SuSE Linux 0.8) with ESMTPSA id xAB9p4Uv000587
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+        Mon, 11 Nov 2019 10:51:05 +0100
+Subject: arm64: dts: rockchip: Disable HS400 for mmc on rk3399-roc-pc
+To:     Christoph Muellner <christoph.muellner@theobroma-systems.com>,
+        robh+dt@kernel.org, mark.rutland@arm.com, heiko@sntech.de,
+        shawn.lin@rock-chips.com
+Cc:     devicetree@vger.kernel.org, Jeffy Chen <jeffy.chen@rock-chips.com>,
+        linux-kernel@vger.kernel.org,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vicente Bergas <vicencb@gmail.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        linux-rockchip@lists.infradead.org,
+        Tony Xie <tony.xie@rock-chips.com>,
+        Klaus Goger <klaus.goger@theobroma-systems.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Randy Li <ayaka@soulik.info>,
+        Philipp Tomsich <philipp.tomsich@theobroma-systems.com>,
+        Ezequiel Garcia <ezequiel@collabora.com>,
+        linux-arm-kernel@lists.infradead.org,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+References: <20190301153348.29870-1-christoph.muellner@theobroma-systems.com>
+ <20190301153348.29870-2-christoph.muellner@theobroma-systems.com>
+From:   Markus Reichl <m.reichl@fivetechno.de>
+Autocrypt: addr=m.reichl@fivetechno.de; prefer-encrypt=mutual; keydata=
+ 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
+ eD/Xv4SsK2JTO4nkQYw8
+Organization: five technologies GmbH
+Message-ID: <367bf78a-f079-f0b4-68fe-52c86823c174@fivetechno.de>
+Date:   Mon, 11 Nov 2019 10:51:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-References: <cover.1573456283.git.baolin.wang@linaro.org>
-In-Reply-To: <cover.1573456283.git.baolin.wang@linaro.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 11 Nov 2019 10:28:30 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
-Message-ID: <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] Add MMC software queue support
-To:     Baolin Wang <baolin.wang@linaro.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Lyra Zhang <zhang.lyra@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        baolin.wang7@gmail.com, linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Hannes Reinecke <hare@suse.com>,
-        linux-block <linux-block@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:NlmBSiEUcJdUp+oONEBeZKwIJlNQNohnkpRONpwp95+rgwaRFxR
- DLHHG0cPDGRDd3FngkKns5Bl01wyLBARZ57tYrLrqbbdbFbQmLBLpHlWQC5SG4WFEJZFTEm
- SQhQ6b26vKjVfyBpn42oMJ184hNdaUeghrItCRzHGHAZEli4XT2Lz2x426fa9UJXXaFQ/BR
- xteH+vzD5YxXNB9JQDZ0g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:e1qDkpaWia4=:PGv/l0hvWS2wIlyAKoXPEG
- k+r6DT3klBoQCgzXNmU648JQirHfptvCKrCjrXNsDzv6dP45CxcmXnff2neV+CJX715KpaNnM
- pQprNGuajq+e5zJhXpt3uRY+jSnpe3+xTKT7NFvcEasOs/P4gtDr8GvSWBEDnK7jmF4HgiGma
- cr7uUqZrRT8dDki9QqoX8P5Mewq+wAFF2An8o7F4/8PZERD5bW2USpNOPkl8CmcaOlKRhqRaP
- wlgfCnv9P5dluLTs9Q+BBN/eO1RMl2UAP5ouvmanowvO9ngXIjeaW+bQ1ulPJ6fhVSJjPV6fX
- e97CiY0rJq3o6iUgvmv/93DLPcGqcHSl/WUCUU1QOWgZMJDFB1+iwPsTjLd1uCpQE2bhPVdTw
- CICDl+tgFC2L/4kZ55G2CVlrJlrNa7qgSn15ckR0Ra/4FfbTzCRwddNtmiJqteC6gv/4/1nU+
- b9s/o2xpxTjUIDLjR/jRj0/oqoBr9/ROykNXxlVP0/YM+kvZrTeuLYfAeSvcqKlp583olYkOj
- YGkMVtDQA2f9MapiarwkaMT/eqhfAdyc6g3DOU1A85ug5WLR6Exmc54CBiA3MuAJpPJo4xg4M
- mbmC4iANc+s4yxSG4yGoGQ08wUYo+LfbDjFGsEoowxmIGourVH6oMPmj8eJLiDKvL3YmbzP+3
- 0mSZR6lVSUJhRnkKB7hpwIm+48mNccXjz2jbi9l5Z5P8gWvk3iZ2Id/PI/xGqX/LmbQg2pyRI
- u/C7oiZDC+fVD6i9yaJgoxPcfDXjKiKa55Q5axC/2fBsssag3bX6WAxTFKMDZhhkEL/91WfKt
- PPcIFaX3vRqMUNsZgSHhdnaiW9pTl74u53TEVuOQuckPoJ/JMLQ/JCGra+war5k8pQKMaPGCZ
- Hg0RfwMsdKh4UCgjrn/Q==
+In-Reply-To: <20190301153348.29870-2-christoph.muellner@theobroma-systems.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-DE
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;m.reichl@fivetechno.de;1573466966;6f4b0a21;
+X-HE-SMSGID: 1iU6Lj-0004sK-2G
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Nov 11, 2019 at 8:35 AM Baolin Wang <baolin.wang@linaro.org> wrote:
->
-> Hi All,
->
-> Now the MMC read/write stack will always wait for previous request is
-> completed by mmc_blk_rw_wait(), before sending a new request to hardware,
-> or queue a work to complete request, that will bring context switching
-> overhead, especially for high I/O per second rates, to affect the IO
-> performance.
+Working with rootfs on two 128GB mmcs on rk3399-roc-pc.
 
-Hi Baolin,
+One (mmc name 128G72, one screw hole) works fine in HS400 mode.
+Other (mmc name DJNB4R, firefly on pcb, two screw holes) gets lots of
+mmc1: "running CQE recovery", even hangs with damaged fs,
+when running under heavy load, e.g. compiling kernel.
+Both run fine with HS200.
 
-I had a chance to discuss your changes and what other improvements
-can be done to the way mmc-blk works with Hannes Reinecke during the ELC
-conference. He had some good suggestions. Adding him and the linux-block
-mailing list to Cc to make sure I'm correctly representing this.
+Disabling CQ with patch mmc: core: Add MMC Command Queue Support kernel parameter [0] did not help.
+[0] https://gitlab.com/ayufan-repos/rock64/linux-mainline-kernel/commit/54e264154b87dfe32a8359b2726e2d5611adbaf3
 
-- For the queue_depth of a non-queuing block device, you indeed need to
-  leave it at e.g. 32 or 64 rather than 1 or 2, as you do now (I was wrong
-  here originally, but just confirmed that). The queue depth is just used to
-  ensure there is room for reordering and merging, as you also noticed.
+Therefore I propose to disable HS400 mode on roc-pc for now.
 
-- Removing all the context switches and workqueues from the data submission
-  path is also the right idea. As you found, there is still a workqueue inside
-  of blk_mq that is used because it may get called from atomic context but
-  the submission may get blocked in __mmc_claim_host(). This really
-  needs to be changed as well, but not in the way I originally suggested:
-  As Hannes suggested, the host interrrupt handler should always use
-  request_threaded_irq() to have its own process context, and then pass a
-  flag to blk_mq to say that we never need another workqueue there.
+Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
+---
+ arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-- With that change in place calling a blocking __mmc_claim_host() is
-  still a problem, so there should still be a nonblocking mmc_try_claim_host()
-  for the submission path, leading to a BLK_STS_DEV_RESOURCE (?)
-  return code from mmc_mq_queue_rq(). Basically mmc_mq_queue_rq()
-  should always return right away, either after having queued the next I/O
-  or with an error, but not waiting for the device in any way.
-
-- For the packed requests, there is apparently a very simple way to implement
-  that without a software queue: mmc_mq_queue_rq() is allowed to look at
-  and dequeue all requests that are currently part of the request_queue,
-  so it should take out as many as it wants to submit at once and send
-  them all down to the driver together, avoiding the need for any further
-  round-trips to blk_mq or maintaining a queue in mmc.
-
-- The DMA management (bounce buffer, map, unmap) that is currently
-  done in mmc_blk_mq_issue_rq() should ideally be done in the
-  init_request()/exit_request()  (?) callbacks from mmc_mq_ops so this
-  can be done asynchronously, out of the critical timing path for the
-  submission. With this, there won't be any need for a software queue.
-
-Hannes,
-
-Let me know if I misunderstood any of the above, or if I missed any
-additional points.
-
-       Arnd
-
-> Thus this patch set will introduce the MMC software command queue support
-> based on command queue engine's interfaces, and set the queue depth as 32
-> to allow more requests can be be prepared, merged and inserted into IO
-> scheduler, but we only allow 2 requests in flight, that is enough to let
-> the irq handler always trigger the next request without a context switch,
-> as well as avoiding a long latency.
->
-> Moreover we can expand the MMC software queue interface to support
-> MMC packed request or packed command instead of adding new interfaces,
-> according to previosus discussion.
->
-> Below are some comparison data with fio tool. The fio command I used
-> is like below with changing the '--rw' parameter and enabling the direct
-> IO flag to measure the actual hardware transfer speed in 4K block size.
->
-> ./fio --filename=/dev/mmcblk0p30 --direct=1 --iodepth=20 --rw=read --bs=4K --size=1G --group_reporting --numjobs=20 --name=test_read
->
-> My eMMC card working at HS400 Enhanced strobe mode:
-> [    2.229856] mmc0: new HS400 Enhanced strobe MMC card at address 0001
-> [    2.237566] mmcblk0: mmc0:0001 HBG4a2 29.1 GiB
-> [    2.242621] mmcblk0boot0: mmc0:0001 HBG4a2 partition 1 4.00 MiB
-> [    2.249110] mmcblk0boot1: mmc0:0001 HBG4a2 partition 2 4.00 MiB
-> [    2.255307] mmcblk0rpmb: mmc0:0001 HBG4a2 partition 3 4.00 MiB, chardev (248:0)
->
-> 1. Without MMC software queue
-> I tested 5 times for each case and output a average speed.
->
-> 1) Sequential read:
-> Speed: 59.4MiB/s, 63.4MiB/s, 57.5MiB/s, 57.2MiB/s, 60.8MiB/s
-> Average speed: 59.66MiB/s
->
-> 2) Random read:
-> Speed: 26.9MiB/s, 26.9MiB/s, 27.1MiB/s, 27.1MiB/s, 27.2MiB/s
-> Average speed: 27.04MiB/s
->
-> 3) Sequential write:
-> Speed: 71.6MiB/s, 72.5MiB/s, 72.2MiB/s, 64.6MiB/s, 67.5MiB/s
-> Average speed: 69.68MiB/s
->
-> 4) Random write:
-> Speed: 36.3MiB/s, 35.4MiB/s, 38.6MiB/s, 34MiB/s, 35.5MiB/s
-> Average speed: 35.96MiB/s
->
-> 2. With MMC software queue
-> I tested 5 times for each case and output a average speed.
->
-> 1) Sequential read:
-> Speed: 59.2MiB/s, 60.4MiB/s, 63.6MiB/s, 60.3MiB/s, 59.9MiB/s
-> Average speed: 60.68MiB/s
->
-> 2) Random read:
-> Speed: 31.3MiB/s, 31.4MiB/s, 31.5MiB/s, 31.3MiB/s, 31.3MiB/s
-> Average speed: 31.36MiB/s
->
-> 3) Sequential write:
-> Speed: 71MiB/s, 71.8MiB/s, 72.3MiB/s, 72.2MiB/s, 71MiB/s
-> Average speed: 71.66MiB/s
->
-> 4) Random write:
-> Speed: 68.9MiB/s, 68.7MiB/s, 68.8MiB/s, 68.6MiB/s, 68.8MiB/s
-> Average speed: 68.76MiB/s
->
-> Form above data, we can see the MMC software queue can help to improve some
-> performance obviously for random read and write, though no obvious improvement
-> for sequential read and write.
->
-> Any comments are welcome. Thanks a lot.
->
-> Hi Ulf,
->
-> This patch set was pending for a while, and I've tested it several times and
-> have not found any recessions. Hope this patch set can be merged into v5.5
-> if no objection from you, since I still have some patches introducing the
-> packed request depend on the mmc software queue as we talked before.
-> Thanks a lot.
->
-> Changes from v5:
->  - Modify the condition of defering to complete request suggested by Adrian.
->
-> Changes from v4:
->  - Add a seperate patch to introduce a variable to defer to complete
->  data requests for some host drivers, when using host software queue.
->
-> Changes from v3:
->  - Use host software queue instead of sqhci.
->  - Fix random config building issue.
->  - Change queue depth to 32, but still only allow 2 requests in flight.
->  - Update the testing data.
->
-> Changes from v2:
->  - Remove reference to 'struct cqhci_host' and 'struct cqhci_slot',
->  instead adding 'struct sqhci_host', which is only used by software queue.
->
-> Changes from v1:
->  - Add request_done ops for sdhci_ops.
->  - Replace virtual command queue with software queue for functions and
->  variables.
->  - Rename the software queue file and add sqhci.h header file.
->
-> Baolin Wang (4):
->   mmc: Add MMC host software queue support
->   mmc: host: sdhci: Add request_done ops for struct sdhci_ops
->   mmc: host: sdhci-sprd: Add software queue support
->   mmc: host: sdhci: Add a variable to defer to complete requests if
->     needed
->
->  drivers/mmc/core/block.c      |   61 ++++++++
->  drivers/mmc/core/mmc.c        |   13 +-
->  drivers/mmc/core/queue.c      |   33 +++-
->  drivers/mmc/host/Kconfig      |    8 +
->  drivers/mmc/host/Makefile     |    1 +
->  drivers/mmc/host/mmc_hsq.c    |  344 +++++++++++++++++++++++++++++++++++++++++
->  drivers/mmc/host/mmc_hsq.h    |   30 ++++
->  drivers/mmc/host/sdhci-sprd.c |   26 ++++
->  drivers/mmc/host/sdhci.c      |   14 +-
->  drivers/mmc/host/sdhci.h      |    3 +
->  include/linux/mmc/host.h      |    3 +
->  11 files changed, 523 insertions(+), 13 deletions(-)
->  create mode 100644 drivers/mmc/host/mmc_hsq.c
->  create mode 100644 drivers/mmc/host/mmc_hsq.h
->
-> --
-> 1.7.9.5
->
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+index 29a50a083c42..33df95e384b4 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+@@ -660,8 +660,6 @@
+ 
+ &sdhci {
+ 	bus-width = <8>;
+-	mmc-hs400-1_8v;
+-	mmc-hs400-enhanced-strobe;
+ 	non-removable;
+ 	status = "okay";
+ };
+-- 
+2.20.1
