@@ -2,110 +2,96 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F467F99AA
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 20:24:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D03CF9B36
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 21:50:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727054AbfKLTYN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Nov 2019 14:24:13 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:37363 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725997AbfKLTYN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 14:24:13 -0500
-Received: by mail-lj1-f193.google.com with SMTP id d5so9620055ljl.4
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 11:24:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=BaMOVcZpZpD3yn88ajr63mpct/txiCTpzh3Ew3F7lD8=;
-        b=jXNX1x9oN5RshyGaMfPM6PqZjbTpfbyIcuOhxQXvTmceNpVZOd37cnZUqlohbhECZM
-         dl6SeMgxHUBfBZJIU8CTIIw3shbGnJjqmnv/ptIpu2Kx6ZRwSJfZ3HNySrwnmQEkIDKf
-         N2Y6FRpgb2bZ6O0NUdaXnbQlST9JQfUTPwhYug2UBq9X70W/kG2u6XCqNy+zVnk1FCEd
-         hGPGUpuJlD/lIaP/QW4qJfJkyklGwX7qZGmY2YF3e2cKPliCDlXsnl6BTIjUMjTQgDLW
-         3yEbU98Q9VT8LCub/5zYB7TbCxy8EmZbWqJASs8rVjeNNYbSL1/a9yr/QE8pk3XZks8B
-         nL8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=BaMOVcZpZpD3yn88ajr63mpct/txiCTpzh3Ew3F7lD8=;
-        b=fJxI/l8rz859gyZKeYd/orEeWHYX/UKl6XNK4QpuhINY58QcFsahUgvtJmAWc7SzSS
-         UeBuhM9RKBZ6YKoxw7AfinrRZrnQSFgfowY769e+jtMjLcsc6WZ3xcP/MdamKUjDWZf3
-         4s5NepiRhjAn5B5sZDGBtvtIV2GBetDQ81lmR2n9ZT5m4x8bIBuySVyCmvPTG5djA0R8
-         +cni9Ev5BatCkLv26CFB1b1QwgUeLpJ68tk8DFMoYJlBxmioTwSmr+7C9myHHqpKVQyn
-         vavZpMHICH9CMPKt4U50pfbytTKRpxzX+vJtPHW7K4+61UPezDCPXuOKjnt8+VRsg4nJ
-         S4+A==
-X-Gm-Message-State: APjAAAW7gpBrHA0K6ByZm9xU5XDH+G2Y6RVZ8FA98572SiQ1MUnen/Hb
-        DYk57w0ry7AI5By5gV/UXuEJgES3PxMrJaCBg34=
-X-Google-Smtp-Source: APXvYqxibJ+Obu6cqj6l3jSwEGCzoOtywdCq+xAOn3RuBrPlRpy3G52I555w037cXCxwB0mW/O9sd9pBF/YlVOkB1lM=
-X-Received: by 2002:a2e:9f4d:: with SMTP id v13mr587588ljk.78.1573586650655;
- Tue, 12 Nov 2019 11:24:10 -0800 (PST)
+        id S1726697AbfKLUt4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Nov 2019 15:49:56 -0500
+Received: from sauhun.de ([88.99.104.3]:37204 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726645AbfKLUt4 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 12 Nov 2019 15:49:56 -0500
+Received: from localhost (x590c7292.dyn.telefonica.de [89.12.114.146])
+        by pokefinder.org (Postfix) with ESMTPSA id CDE132C015F;
+        Tue, 12 Nov 2019 21:49:52 +0100 (CET)
+Date:   Tue, 12 Nov 2019 21:49:52 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Eugeniu Rosca <erosca@de.adit-jv.com>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Eugeniu Rosca <roscaeugeniu@gmail.com>,
+        Harish Jenny K N <harish_kandiga@mentor.com>,
+        Andrew Gabbasov <andrew_gabbasov@mentor.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add MMC_CAP_ERASE to
+ Gen3 SoCs
+Message-ID: <20191112204952.GA2976@kunai>
+References: <20191112134808.23546-1-erosca@de.adit-jv.com>
 MIME-Version: 1.0
-Received: by 2002:a2e:9d55:0:0:0:0:0 with HTTP; Tue, 12 Nov 2019 11:24:10
- -0800 (PST)
-Reply-To: hamzak_wadraogo@yahoo.com
-From:   Hamzak Wadrago <hazat01zongo@gmail.com>
-Date:   Tue, 12 Nov 2019 20:24:10 +0100
-Message-ID: <CAMHs5O4wvU2gc=yxJm9m4j7QfSddZ8xM5t2mOPt+GBOcBREcQA@mail.gmail.com>
-Subject: From Mr Hamzak Wadrago
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5mCyUwZo2JvN/JJP"
+Content-Disposition: inline
+In-Reply-To: <20191112134808.23546-1-erosca@de.adit-jv.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dear Friend,
 
-I decided to contact you after a careful thought that you may be
-capable of handling this business transaction which I explained below,
-I am the head of Accounts and Audit Department of Bank of Africa
-Ouagadougou. In my department while cross-checking the files of
-foreigners. since our federal government has announced on the need of
-settling all foreign bills to enable foreign investors to come into
-our country and as an order from African unity governed by African
-heads, I discovered an abandoned sum of $15.5m US dollars (fifteen
-million, five hundred thousand US dollars). In an account that belongs
-to one of our foreign customer who died along with his entire family
-in a plane crash.
+--5mCyUwZo2JvN/JJP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Since i got information about his death, The bank have been expecting
-his next of kin to come over and claim his money because The fund
-cannot be released unless somebody applies for it as next of kin or
-relation to the deceased as indicated in our banking guidelines but
-unfortunately I learnt that his supposed next of kin(his son and wife)
-died alongside with him at the plane crash leaving nobody behind for
-the claim .It is therefore upon this discovery that I now decided to
-make this business proposal to you and release the money to you as the
-next of kin (I want to present you as his business associate )to the
-deceased for safety and subsequent disbursement since nobody is coming
-for it and I don't want this money to go into the Bank treasury as
-unclaimed Bill.
+On Tue, Nov 12, 2019 at 02:48:08PM +0100, Eugeniu Rosca wrote:
+> From: Harish Jenny K N <harish_kandiga@mentor.com>
+>=20
+> Enable MMC_CAP_ERASE capability in the driver to allow
+> erase/discard/trim requests.
+>=20
+> Suggested-by: Andrew Gabbasov <andrew_gabbasov@mentor.com>
+> Signed-off-by: Harish Jenny K N <harish_kandiga@mentor.com>
+> [erosca: Forward-port and test on v5.4-rc7 using H3ULCB-KF:
+>          "blkdiscard /dev/mmcblk0" passes with this patch applied
+>          and complains otherwise:
+> 	 "BLKDISCARD ioctl failed: Operation not supported"]
+> Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
 
-The Banking law and guideline here stipulates that if such money
-remained Unclaimed after Nine years, the money will be transferred
-into the Bank treasury as unclaimed fund.. The request of foreigner as
-next of kin in this business is occasioned by the fact that the
-customer was a foreigner and a Burkina be cannot stand as next of kin
-to a foreigner.
+Looks good to me. Just a generic question, probably more for Ulf:
 
-I agree that 40% of this money will be for you as foreign partner, in
-respect to the provision of a foreign account, 60% would be for me .
-There after I will visit your country for disbursement according to
-the percentages indicated. Therefore to enable the immediate transfer
-of this fund to your account as arranged, you must apply first to the
-bank as next of kin of the deceased customer.
+Why does this CAP_ERASE exist? As I understand, the driver only needs to
+set the flag and no further handling is required. Why would a driver not
+set this flag and not support erase/trim commands?
 
-Upon receipt of your reply, more details and text of application form
-will be given to you for immediate transfer of the fund, I will not
-fail to bring to your notice that this transaction is hitch free and
-that you should not entertain any atom of fear as all required
-arrangements have been made for the transfer.
+Kind regards,
 
-i will like  you to send me this information about you such as  your
-full names, direct telephone numbers, and physical address.
+   Wolfram
 
-Your quick response will be highly appreciated.
 
-Yours sincerely,
+--5mCyUwZo2JvN/JJP
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Mr. Hamzak Wadrago.
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl3LGusACgkQFA3kzBSg
+KbYKkw//VxC8isy0WeY7yOM8Eu1mt8LljuDDozsi46StVWx608b6GQAsLW34WLCs
+sFTSRhYuQkld3iiYD+mFiQ/4X/W6Wj7c45SaIQ9doP+2EjT592pUMaSNhMTrPt84
+XP48vZKZa4SOyEkP/TUSkAXqgFZsqO3Kos/qceqJb02il5N+biuEmFQM6rwj71sx
+P71aDgWiq1eKVej8WEHn4t/A+UNsUbQpVmqvyyUXYm7KVgM5PZjogQBzc6Y8p+12
+gI6AlUm0h5Nl8o7NDM6jy1VgP+UgZ8qjTTylFcYr6wSKKiUvJNb+U0Imd+txY8DZ
+gtoWBuMDPQEAdngoX9jbw6Q9zFI41eJ6fM1LX5UnVO5VxopY+WRqiLfmp4u356tT
+T2e/VNX9ZnGTrYWazo3jmpDpL0DoAPhbfgRkrpAG98vtNujOb3xtejglxbPfUYx+
+8aXP3a0htCkgsaap34hHeAu4UiOyuZsh6Ie4iHukMP+S3m+5+vX9uXEi7ZQHgiLC
+t9ANcKGUki2syaauaCZSSon0E0offhnuNqb6SRHla3rKAptSKNwoqlnDz2LoIUIV
+Z+I/YUl2PNcHAJk1IkqIJwnBeMZKVUlMPdi38VlDdFQG0kXdCb6dABe7Km4kOr/e
+AgdIusuIpZxP90NAGtgBm3JPiDEzEHxOEVobI7kJNKMCISgWYto=
+=vVLb
+-----END PGP SIGNATURE-----
+
+--5mCyUwZo2JvN/JJP--
