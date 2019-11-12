@@ -2,191 +2,131 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF397F8B02
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 09:48:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D158F8B2F
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 09:59:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725899AbfKLIso (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Nov 2019 03:48:44 -0500
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:41371 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725821AbfKLIso (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 03:48:44 -0500
-Received: by mail-qt1-f193.google.com with SMTP id o3so18915935qtj.8;
-        Tue, 12 Nov 2019 00:48:43 -0800 (PST)
+        id S1726954AbfKLI7O (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Nov 2019 03:59:14 -0500
+Received: from mail-ua1-f47.google.com ([209.85.222.47]:42621 "EHLO
+        mail-ua1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726952AbfKLI7O (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 03:59:14 -0500
+Received: by mail-ua1-f47.google.com with SMTP id 31so4464525uas.9
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 00:59:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uYpmcMMqlT0yk3qneW+aFmnPdVZOuZEw3kSyEOhlztI=;
-        b=Ve3lo0jiYJa14s3msCDNn9GhL6p/qKWcyhW9L+uj13YuJJlTSxLB583XojGwXpWMVX
-         BxDYQmKB9eLD/KgpQ8HLXRWKnKCjVts5VltLViERwCLdtfj7LUpeJw8gs/I8xnagawgk
-         pM3wV73ZyPXWeAofuphgsR2zz0l7rkMVrsDENGkaPeDJ5NePysvrsSB7CzFJLEc7dV5T
-         vRrn8jN94HYtx7Mb3Lo6eIkJco/RH6MLAB3NwFHzy1uTG7e1437GbPtex6eMTqViYBve
-         p9wPF6636QeHTweuImCwMIDOWiCNF8NKgoeAp58dradBoy40ebKmg1ocub1suSEA9Gv/
-         AQIA==
+         :cc:content-transfer-encoding;
+        bh=tf2mudZCYNcbKijnx7l8kTR9ghpKz810SOwwndyzloo=;
+        b=cBi1XhD0izth7qoDufpZuhLyMbzgjKIertes3s+oTmfIQUcjyLC8nW7YvKMwUZ/Al9
+         UuIzrbTfcLHfhcS1agSm4E5e9xzV4StaELnCTzrZmFgfAUu9xlkw6reZZ6QDIR21pmkz
+         2TCmzM/P3XZfnY6UuHhqasT074EnDsb/CuuEobGXrsW1IZ1fF8KVfToYsOnG4K6dmuuC
+         THbZYKW5WoYK29Lm1OtsYJWZFCM+TzHFu9SoQQ4W/BSff3vARAm6NMYoBRME8PINAAe8
+         /BW6SN00vqrBxU3PCxxhw5KTWeIZ+Bi+hg/ePhibVioqHu6mYwP0GFedmy79HOB3a48i
+         MXcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uYpmcMMqlT0yk3qneW+aFmnPdVZOuZEw3kSyEOhlztI=;
-        b=MkoV2ERSNxGzHG6Lw0Mkm+mHe/96Jp/uETqSBjP8rQcpQCSqxFlAY77fYmT3aecAQB
-         IIaY3lMm+DUgOsoMXdV4clo2QOhhupaw+i9Dq28Q0jnduLvD2DFIK5YGe2AD4+xg1IQc
-         l6LzTzV9VBUW900LxqE2XIm4giQe8l6w6n3Arvk/BkJWGJuanQ8Ht36aj8+j5WyLt1JW
-         zogFFdDig9I5hIZ6yENClH7JEk39pjCKRpXy7kLSLpJvoaN56kKtCkmj4VVKCXS94XJf
-         fvkF8dkacKhLooi1oT3jMuOypN6/aPUTmV1WjuL/oHvkgNgJ7x1nKCkvm8P5c944FDpi
-         fIQQ==
-X-Gm-Message-State: APjAAAUq7EMXqjn6Gvcr7cdDtTI/0vK4XhC++aOd0sbKA9aW0plpENqm
-        ILljsSKXOwNLFhMGuV4GFM0b0ILXoy8QGoy2Usc=
-X-Google-Smtp-Source: APXvYqxkp1jFnexlebfbXASIu1U5hQGAC2jxZMUc41DFcbrEOVmcUn50Kgp0PNnoln36L7QiwSNYKH+uzN6b9fxwlkM=
-X-Received: by 2002:ac8:28c7:: with SMTP id j7mr32051234qtj.4.1573548522730;
- Tue, 12 Nov 2019 00:48:42 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=tf2mudZCYNcbKijnx7l8kTR9ghpKz810SOwwndyzloo=;
+        b=WV5kTsN1qKB3BFcNcwGTBb1poPylqrmJB4U6pTdA6pL5VXH85iDCtZhPw8dajUmBIc
+         IoNy2tQoRTvlEH04R8kp7W46yyecRftKLi5hNRkeDCCk/AO3cwLupeO/22AafdHb6CCb
+         dZgqWAmHmw0omB6UO3eMqji8JVcGCEgFe8ngP0+lqGFNNzTPV+3CTC5/8a9mgvgbeIwJ
+         Jm/vC7Lg0bNR21B8ZUyZqPamRWjHJgnmsgPOCaP3G1VfPimLD4e3xe6e6sfV4hhPQcVr
+         h6MtXEHByqWN97m/PxRg/LO8To90YwXMBE9UIq1wC7FJOF9GP0hlEiOGc4EpeTTPk7pH
+         SkyQ==
+X-Gm-Message-State: APjAAAUny/M+cKSL/PsH9LDTm2trWNm777Sr0gKkYCeaJFgJRIhsaqdR
+        AvZdYWfx04gIXthfvoQDgWSFrJtj2dF5DcZT8HPJFA==
+X-Google-Smtp-Source: APXvYqxFPhWgc8iHkpTuygj7MTTUYu4BcQnzbVKGkW6JXLBaDAutQSmw9xt4FZ9zvOyXuQCGXHtYTV2Sub2XRMdS+zw=
+X-Received: by 2002:ab0:648d:: with SMTP id p13mr113924uam.129.1573549153321;
+ Tue, 12 Nov 2019 00:59:13 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1573456283.git.baolin.wang@linaro.org> <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
- <CAMz4kuK9HEuGdhNqHO_qoy9jD=ccsPPhD_dKYwNRgQyWyYwqRA@mail.gmail.com> <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
-In-Reply-To: <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
-From:   Baolin Wang <baolin.wang7@gmail.com>
-Date:   Tue, 12 Nov 2019 16:48:30 +0800
-Message-ID: <CADBw62pzV+5ZXBEbFvTQJ9essAd4cd7Xkz5j9AXB5rAQy0wLqA@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] Add MMC software queue support
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Baolin Wang <baolin.wang@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Lyra Zhang <zhang.lyra@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Hannes Reinecke <hare@suse.com>,
-        linux-block <linux-block@vger.kernel.org>
+References: <f03c978c-86de-b8bb-22c2-177d7fafed94@fivetechno.de>
+ <CAPDyKFqn06LZZMXLD2o-M6A0R6KU97PFUTN=NgYnMtf=ESULTA@mail.gmail.com> <e69268d2-4a3f-3cd8-fc2e-57ae52ad337a@fivetechno.de>
+In-Reply-To: <e69268d2-4a3f-3cd8-fc2e-57ae52ad337a@fivetechno.de>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 12 Nov 2019 09:58:37 +0100
+Message-ID: <CAPDyKFrsQNMhDb3yh4M1EPGtftFrVmHY-pmpR7AbfrXW=xzyyg@mail.gmail.com>
+Subject: Re: arm64: dts: rockchip: Add SDR104 mode to SD-card I/F on rk3399-roc-pc
+To:     Markus Reichl <m.reichl@fivetechno.de>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Jagan Teki <jagan@amarulasolutions.com>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Nov 12, 2019 at 12:59 AM Arnd Bergmann <arnd@arndb.de> wrote:
+On Mon, 11 Nov 2019 at 20:32, Markus Reichl <m.reichl@fivetechno.de> wrote:
 >
-> On Mon, Nov 11, 2019 at 1:58 PM Baolin Wang <baolin.wang@linaro.org> wrote:
-> > On Mon, 11 Nov 2019 at 17:28, Arnd Bergmann <arnd@arndb.de> wrote:
-> > > On Mon, Nov 11, 2019 at 8:35 AM Baolin Wang <baolin.wang@linaro.org> wrote:
-> > > - Removing all the context switches and workqueues from the data submission
-> > >   path is also the right idea. As you found, there is still a workqueue inside
-> > >   of blk_mq that is used because it may get called from atomic context but
-> > >   the submission may get blocked in __mmc_claim_host(). This really
-> > >   needs to be changed as well, but not in the way I originally suggested:
-> > >   As Hannes suggested, the host interrrupt handler should always use
-> > >   request_threaded_irq() to have its own process context, and then pass a
-> > >   flag to blk_mq to say that we never need another workqueue there.
+> Hi Ulf,
+>
+> Am 11.11.19 um 18:27 schrieb Ulf Hansson:
+> > On Mon, 11 Nov 2019 at 15:13, Markus Reichl <m.reichl@fivetechno.de> wr=
+ote:
+> >>
+> >> Add SDR104 capability and regulators to SD card node.
+> >> While at it, fix a typo in lcd pinctrl and remove two
+> >> undocumented bindings from pmic.
+> >>
+> >> Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
+> >> ---
+> >>  .../boot/dts/rockchip/rk3399-roc-pc.dtsi      | 31 +++++++++++++++---=
+-
+> >>  1 file changed, 25 insertions(+), 6 deletions(-)
+> >>
+> >> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/ar=
+m64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+> >> index 33df95e384b4..e86a6db54499 100644
+> >> --- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+> >> +++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+> >> @@ -135,6 +135,20 @@
+> >>                 vin-supply =3D <&vcc_1v8>;
+> >>         };
+> >>
+> >> +       vcc3v0_sd: vcc3v0-sd {
+> >> +               compatible =3D "regulator-fixed";
+> >> +               enable-active-high;
+> >> +               gpio =3D <&gpio4 RK_PD6 GPIO_ACTIVE_HIGH>;
+> >> +               pinctrl-names =3D "default";
+> >> +               pinctrl-0 =3D <&vcc3v0_sd_en>;
+> >> +               regulator-name =3D "vcc3v0_sd";
+> >> +               regulator-always-on;
 > >
-> > So you mean we should complete the request in the host driver irq
-> > thread context, then issue another request in this context by calling
-> > blk_mq_run_hw_queues()?
+> > This looks odd. A GPIO regulator being always on?
 >
-> Yes. I assumed there was already code that would always run
-> blk_mq_run_hw_queue() at I/O completion, but I can't find where
-> that happens today.
-
-OK. Now we will complete a request in block softirq, which means the
-irq thread of host driver should call blk_mq_complete_request() to
-complete this request (triggering the block softirq) and call
-blk_mq_run_hw_queues() to dispatch another request in this context.
-
+> This is a standard micro SD card socket that can also be used for
+> booting the board. I wanted to be cautious and start
+> working with it and several SD cards and explore the capabilities.
 >
-> As I understand, the main difference to today is that
-> __blk_mq_delay_run_hw_queue() can call into __blk_mq_run_hw_queue
-> directly rather than using the delayed work queue once we
-> can skip the BLK_MQ_F_BLOCKING check.
-
-Right. Need to improve this as you suggested.
-
+> On this board nearly all regulators are still continously
+> switched on. I plan to remove the always-on properties step
+> by step from the regulators when the board runs stable with it's
+> components all enbled.
 >
-> > > - With that change in place calling a blocking __mmc_claim_host() is
-> > >   still a problem, so there should still be a nonblocking mmc_try_claim_host()
-> > >   for the submission path, leading to a BLK_STS_DEV_RESOURCE (?)
-> > >   return code from mmc_mq_queue_rq(). Basically mmc_mq_queue_rq()
-> > >   should always return right away, either after having queued the next I/O
-> > >   or with an error, but not waiting for the device in any way.
 > >
-> > Actually not only the mmc_claim_host() will block the MMC request
-> > processing, in this routine, the mmc_blk_part_switch() and
-> > mmc_retune() can also block the request processing. Moreover the part
-> > switching and tuning should be sync operations, and we can not move
-> > them to a work or a thread.
->
-> Ok, I see.
->
-> Those would also cause requests to be sent to the device or the host
-> controller, right? Maybe we can treat them as "a non-IO request
-
-Right.
-
-> has successfully been queued to the device" events, returning
-> busy from the mmc_mq_queue_rq() function and then running
-> the queue again when they complete?
-
-Yes, seems reasonable to me.
-
->
-> > > - For the packed requests, there is apparently a very simple way to implement
-> > >   that without a software queue: mmc_mq_queue_rq() is allowed to look at
-> > >   and dequeue all requests that are currently part of the request_queue,
-> > >   so it should take out as many as it wants to submit at once and send
-> > >   them all down to the driver together, avoiding the need for any further
-> > >   round-trips to blk_mq or maintaining a queue in mmc.
+> >> +               regulator-boot-on;
+> >> +               regulator-min-microvolt =3D <3000000>;
+> >> +               regulator-max-microvolt =3D <3000000>;
+> >> +               vin-supply =3D <&vcc3v3_sys>;
+> >> +       };
 > >
-> > You mean we can dispatch a request directly from
-> > elevator->type->ops.dispatch_request()?  but we still need some helper
-> > functions to check if these requests can be packed (the package
-> > condition), and need to invent new APIs to start a packed request (or
-> > using cqe interfaces, which means we still need to implement some cqe
-> > callbacks).
+> > Assumes this powers an SDIO embedded card. Often those have a specific
+> > power sequence, just wanted to make sure the above are really
+> > sufficient? No delays or external clock needed?
 >
-> I don't know how the dispatch_request() function fits in there,
-> what Hannes told me is that in ->queue_rq() you can always
-> look at the following requests that are already queued up
-> and take the next ones off the list. Looking at bd->last
-> tells you if there are additional requests. If there are, you can
-> look at the next one from blk_mq_hw_ctx (not sure how, but
-> should not be hard to find)
->
-> I also see that there is a commit_rqs() callback that may
-> go along with queue_rq(), implementing that one could make
-> this easier as well.
+> It's not embedded, just a standard =C2=B5SD plug. It is already enabled
+> by mainline U-Boot and ejecting and inserting the card works fine.
 
-Yes, we can use queue_rq()/commit_rqs() and bd->last (now bd->last may
-can not work well, see [1]), but like we talked before, for packed
-request, we still need some new interfaces (for example, a interface
-used to start a packed request, and a interface used to complete a
-packed request), but at last we got a consensus that we should re-use
-the CQE interfaces instead of new invention.
+Ah, thanks for confirming.
 
-[1] https://lore.kernel.org/patchwork/patch/1102897/
-
->
-> > > - The DMA management (bounce buffer, map, unmap) that is currently
-> > >   done in mmc_blk_mq_issue_rq() should ideally be done in the
-> > >   init_request()/exit_request()  (?) callbacks from mmc_mq_ops so this
-> > >   can be done asynchronously, out of the critical timing path for the
-> > >   submission. With this, there won't be any need for a software queue.
-> >
-> > This is not true, now the blk-mq will allocate some static request
-> > objects (usually the static requests number should be the same with
-> > the hardware queue depth) saved in struct blk_mq_tags. So the
-> > init_request() is used to initialize the static requests when
-> > allocating them, and call exit_request to free the static requests
-> > when freeing the 'struct blk_mq_tags', such as the queue is dead. So
-> > we can not move the DMA management into the init_request/exit_request.
->
-> Ok, I must have misremembered which callback that is then, but I guess
-> there is some other place to do it.
-
-I checked the 'struct blk_mq_ops', and I did not find a ops can be
-used to do DMA management. And I also checked UFS driver, it also did
-the DMA mapping in the queue_rq() (scsi_queue_rq() --->
-ufshcd_queuecommand() ---> ufshcd_map_sg()). Maybe I missed something?
-
-Moreover like I said above, for the packed request, we still need
-implement something (like the software queue) based on the CQE
-interfaces to help to handle packed requests.
+Kind regards
+Uffe
