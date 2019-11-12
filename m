@@ -2,106 +2,182 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F7A8F96C1
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 18:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7481F976D
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 18:43:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727041AbfKLRMy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Nov 2019 12:12:54 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:45194 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726008AbfKLRMy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 12:12:54 -0500
-Received: by mail-wr1-f66.google.com with SMTP id z10so14097951wrs.12
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 09:12:53 -0800 (PST)
+        id S1726959AbfKLRnB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Nov 2019 12:43:01 -0500
+Received: from mail-il1-f193.google.com ([209.85.166.193]:39511 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726718AbfKLRnB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 12:43:01 -0500
+Received: by mail-il1-f193.google.com with SMTP id a7so15877468ild.6
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 09:43:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=references:user-agent:from:to:cc:subject:in-reply-to:date
-         :message-id:mime-version;
-        bh=ZxA7qLekk+N/Dav/LrYpCZKrEOoovHS5Dd7O1QxXvPg=;
-        b=iGA4sXN2p266Ip8URNSy7dqjA/Z0C+WYgUk+6xMsl8LgS8bQgxVyULQaD2vb0SR7j2
-         b0jhJlUwjYJvkMwRbwUwpaVWo7gx+SAZpqX1vVRK6QL489vU1ZEdKUra77E8EtGU9uhd
-         yZqI3JL4SvYL3q2fpJuUdqnj0+6CYdXOe3ZAUe8+8Y+ZAqwKXk1l4hbcJjN7ksDyiMkv
-         ishUSxPcrA6ABohA6CRqfS6BQLRS0usW5wBDdATWnpCMk+yVjagnw17hoxiwrVaKeaqt
-         NOvBrHvX8TmE6a0vkaYOk/ykSY4EPIB6Qoj6yTd8XczCrvFovihLLqBkLJjVpgJYkiP2
-         XfEw==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=E3UHqP3o5zZJEpYfrtVP0mD87+dZ1Bwo+ajrvoNwtlM=;
+        b=X1PfXE8W6HzqybqIKAx4IeCMwl6LGXCAgVVjo3JYE7YJIE9ttLAVoCxypLJPp7Kbka
+         IHKtZVHOuKbAT1dZ9BBY5MKiFr3O/r9Be9+plwm1n4oqjaiUdf9deCjnPmbn0NIvKB2l
+         RBMRwAy3HhLBwzsaU4XDhGarkG1kT1lOCdOEY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:references:user-agent:from:to:cc:subject
-         :in-reply-to:date:message-id:mime-version;
-        bh=ZxA7qLekk+N/Dav/LrYpCZKrEOoovHS5Dd7O1QxXvPg=;
-        b=O2ySh3mvjAVju3xGSBNQS+QnCiWGimbnao6iqphkdwRTnfWiPk3Nk/C+wpmeFsfn1N
-         X8gWszQj4HfBHUFGh7GQvYXpgOjCA3WOFhWbJ/dX0E3qufLJ3LDXy/NnaekDzjml2Ij2
-         CK+3MSHmI457h+UCi6BLOk+GrjOlxPLReWGGvssl3Titl9vav+CeO4Meinzxv69qDHRC
-         n0R8Vu1V8yP5DwTrhgnM3isRJw7fLHUddJneo/1NJSzcH1zpGoxbA2+0uGapchN0J/G5
-         UoP5U4Wtv6ElvVYtLzgiEm3llGtOLEnO6LzywlezbC+TBYji3Me0FLZcZAlBM+IPGqR7
-         8W2w==
-X-Gm-Message-State: APjAAAUl4GwTqmoJgKEg/VzLhn1L7ndttmNf9VKlK647slzI3L5z9O1a
-        zOQ0yLX0HkNJp1cBvgEld6phLg==
-X-Google-Smtp-Source: APXvYqxXk4QOi5t3c39JBIu/PqABL6KO249PbGRNZPb3VwQ97nfEmIS7gx53xgfuocXSPkN34AVp8Q==
-X-Received: by 2002:adf:d4d0:: with SMTP id w16mr2761615wrk.184.1573578772462;
-        Tue, 12 Nov 2019 09:12:52 -0800 (PST)
-Received: from localhost (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id r15sm42846928wrc.5.2019.11.12.09.12.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2019 09:12:51 -0800 (PST)
-References: <1572868495-84816-1-git-send-email-jianxin.pan@amlogic.com> <1ja79b4mje.fsf@starbuckisacylon.baylibre.com> <e80cb817-e58a-68ce-a3c6-d82636aaf7d3@amlogic.com> <1j8sou4u1g.fsf@starbuckisacylon.baylibre.com> <7ec2e682-cfec-395e-cf38-58f050440c40@amlogic.com> <1j7e4e4sab.fsf@starbuckisacylon.baylibre.com> <dee789ae-6825-3f4c-16e7-227e064562d6@amlogic.com> <1j5zjy4fif.fsf@starbuckisacylon.baylibre.com> <ec705819-9763-b0d2-9480-949e7ccd1cb9@amlogic.com>
-User-agent: mu4e 1.3.3; emacs 26.2
-From:   Jerome Brunet <jbrunet@baylibre.com>
-To:     Nan Li <Nan.Li@amlogic.com>, Jianxin Pan <Jianxin.Pan@amlogic.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        "linux-amlogic\@lists.infradead.org" 
-        <linux-amlogic@lists.infradead.org>,
-        "linux-mmc\@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Victor Wan <victor.wan@amlogic.com>
-Subject: Re: [PATCH v2] mmc: meson-gx: fix mmc dma operation
-In-reply-to: <ec705819-9763-b0d2-9480-949e7ccd1cb9@amlogic.com>
-Date:   Tue, 12 Nov 2019 18:12:50 +0100
-Message-ID: <1jeeydf27h.fsf@starbuckisacylon.baylibre.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=E3UHqP3o5zZJEpYfrtVP0mD87+dZ1Bwo+ajrvoNwtlM=;
+        b=EuPEu9PgpRcihj3tUTbaE10S+uUJuo0abPUH64IW2Bf39+dUAmwrvRMl6nXXJzdC52
+         xKUL0h58Jpb9lPPjB4ycX+j9hMdQ2Q6fC3i/Y7YpGLrCB0QWq8PaQ4n7k91yts0ALGf1
+         TcDHXpA93ntoI6o93xON0CaiJdwgWAJRXZYKhWZEIx3vbv/T7yJ6K8bNU6Qu3Nhpinez
+         24QFPUOVix3jYfk9b8TWFRcDM8Iz+tq00/4tNxVg3zmvablOhIsURU56IAZPWiiGE+XI
+         B8yp+5S6EINwmZqT5O4eBBtxoZGtRCoUcOwqoBvQxCdEy7Acr8JPXiQZFXK3+t0nh2Y9
+         ub7Q==
+X-Gm-Message-State: APjAAAVYcVGTYVgTnbD/syf2qXWBaS5c58WfKNyyuQTWkq8DswNhNAHK
+        Jn7IrGJH5+yTcb7l5x+GTpCXE/LT5h8=
+X-Google-Smtp-Source: APXvYqzfbFMkwymHg4WHbPHzNYl2d8DApwu/9qCTlf1GvdhsWMYNrQOoUG+RHsoJ5Mgbf35zTY3icw==
+X-Received: by 2002:a92:864f:: with SMTP id g76mr33719648ild.37.1573580579845;
+        Tue, 12 Nov 2019 09:42:59 -0800 (PST)
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com. [209.85.166.179])
+        by smtp.gmail.com with ESMTPSA id t7sm1594138iog.85.2019.11.12.09.42.58
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Nov 2019 09:42:59 -0800 (PST)
+Received: by mail-il1-f179.google.com with SMTP id z12so16348610ilp.2
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 09:42:58 -0800 (PST)
+X-Received: by 2002:a92:ca8d:: with SMTP id t13mr36050724ilo.58.1573580578448;
+ Tue, 12 Nov 2019 09:42:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20191109103046.26445-1-ulf.hansson@linaro.org>
+ <CAD=FV=Wv9DgzQZZE8YvB+qjBzPsKdJvafSnFy8YAN_dN6UJbtQ@mail.gmail.com> <CAPDyKFq5=B8u=9awGaXuhTmYK6Sbbe6EmF9EMhBQQyyrD1bKRw@mail.gmail.com>
+In-Reply-To: <CAPDyKFq5=B8u=9awGaXuhTmYK6Sbbe6EmF9EMhBQQyyrD1bKRw@mail.gmail.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Tue, 12 Nov 2019 09:42:46 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=Xf5O_ew+hG9BLSZUM7bKAZvEvqaK4Cy1xUWgKdTGUMwA@mail.gmail.com>
+Message-ID: <CAD=FV=Xf5O_ew+hG9BLSZUM7bKAZvEvqaK4Cy1xUWgKdTGUMwA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] mmc: Fixup HW reset for SDIO cards
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Hi,
 
-On Wed 06 Nov 2019 at 04:28, Nan Li <Nan.Li@amlogic.com> wrote:
+On Tue, Nov 12, 2019 at 4:28 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> On Tue, 12 Nov 2019 at 01:51, Doug Anderson <dianders@chromium.org> wrote:
+> >
+> > Hi,
+> >
+> > On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > >
+> > > Changes in v2:
+> > >         - Add adaptations to the mwifiex driver.
+> > >         - Keep existing syncronous reset behaviour if the SDIO card has a single
+> > >         func driver.
+> > >
+> > > It has turned out that it's not a good idea to try to power cycle and to
+> > > re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
+> > > because there may be multiple SDIO funcs attached to the same SDIO card and
+> > > some of the others that didn't execute the call to mmc_hw_reset(), may then
+> > > simply experience an undefined behaviour.
+> > >
+> > > The following patches in this series attempts to address this problem, by
+> > > reworking the mmc_hw_reset() behaviour for SDIO and by adopting the Marvel
+> > > mwifiex driver to these changes.
+> > >
+> > > Note that, I don't have the HW at hand so the the code has only compile tested.
+> > > Test on HW is greatly appreciated!
+> > >
+> > > Ulf Hansson (3):
+> > >   mwifiex: Re-work support for SDIO HW reset
+> > >   mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
+> > >   mmc: core: Re-work HW reset for SDIO cards
+> > >
+> > >  drivers/mmc/core/core.c                     | 12 +++-----
+> > >  drivers/mmc/core/core.h                     |  2 ++
+> > >  drivers/mmc/core/sdio.c                     | 28 ++++++++++++++++-
+> > >  drivers/mmc/core/sdio_bus.c                 |  9 +++++-
+> > >  drivers/net/wireless/marvell/mwifiex/main.c |  6 +++-
+> > >  drivers/net/wireless/marvell/mwifiex/main.h |  1 +
+> > >  drivers/net/wireless/marvell/mwifiex/sdio.c | 33 ++++++++++++++-------
+> > >  include/linux/mmc/card.h                    |  1 +
+> > >  8 files changed, 70 insertions(+), 22 deletions(-)
+> >
+> > I put this on rk3288-veyron-jerry atop v5.4-rc7 and I could run my
+> > test case for a while, AKA I got over 50 cycles of:
+> >
+> > ---
+> >
+> > for i in $(seq 1000); do
+> >   echo "LOOP $i --------"
+> >   echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
+> >
+> >   while true; do
+> >     if ! ping6 -w15 -c1 "${GW}" >/dev/null 2>&1; then
+> >       fail=$(( fail + 1 ))
+> >       echo "Fail WiFi ${fail}"
+> >       if [[ ${fail} == 3 ]]; then
+> >         exit 1
+> >       fi
+> >     else
+> >       fail=0
+> >       break
+> >     fi
+> >   done
+> >
+> >   hciconfig hci0 down
+> >   sleep 1
+> >   if ! hciconfig hci0 up; then
+> >     echo "Fail BT"
+> >     exit 1
+> >   fi
+> >
+> > done
+> >
+> > ---
+> >
+> > NOTE: with no patches I couldn't even get my test case to pass w/out
+> > the BT bits and I swear that used to work before.  ...but I didn't
+> > debug since the end result (with full card hotplug) is happy-working
+> > for me.  I'll still use it as further argument that (IMO) full unplug
+> > / plug of the card is better it uses more standard code paths and is
+> > less likely to break.  ;-)
+> >
+> > Tested-by: Douglas Anderson <dianders@chromium.org>
+>
+> Thanks, I add this to the series and make a re-spin.
+>
+> What do you think about tagging the patches for stable?
+>
+> I guess there is a risk that we may "break" the other two users of
+> mmc_hw_reset(). But, as I said, in that case those needs to be fixed
+> anyways.
 
->
-> I see what you mean, pre/post_req already provides callbacks in meson_mmc_ops for the framework to decide whether to invoke the chain mode or not.
->
-> However, I searched the frame of MMC and found the use of mmc_pre_req() for this callback in the block layer mmc_blk_mq_issue_rw_rq().
->
-> Block layer mmc_blk_mq_issue_rw_rq() may be useful for emmc and SD card devices.
->
-> But it may not be useful for reading and writing operations of sdio wifi, and the sdio device communication may not use the chain mode.
->
->
-> Our chain-mode is a way to transfer data using dma.
->
-> This approach is very efficient for reading and writing large amounts of data.
->
-> If you don't do it that way, you'll do it the other way, the bounce buf way, which is limited by the size of the buf, so when you do big data reads and writes, it affects the transfer rate.
->
-> Therefore, our chain mode means that emmc, SD card or sdio device will use dma to transfer data when reading and writing operations, so our previous driver and the patch behind me all ensure this.
->
+I'm not sure how to make that judgement call.  Certainly it would help
+anyone using the Marvell case and the Marvell case was pretty broken
+before.
 
-I see.
-The problem is that you are providing the same function to pre/post_req
-callbacks and the request()
+How about this: if you can get a Tested-by from the other users then
+I'd be good with a general CC: stable.  Otherwise, I'd be OK with a CC
+to stable for 5.4, but I'd be a little hesitant to send it back to
+older kernels (even though it certainly applies and fixes problems).
+At least in the case of Chrome OS we already have a workable solution
+for our 4.19 tree (my previous patches), and I'd guess anyone testing
+on real hardware is either not seeing problems or has their own
+private patches already.  If things have been sitting stable on 5.4
+for a while and no problems were reported, then we could consider
+going back further?
 
-IOW, things mapped in the pre_req() callback might be unmapped by
-request_done() instead post_req() which, I think, is not great.
-
-It's been like that so far, your patch is not making much worse, so I
-guess you can go ahead with it but we need to look a this before it
-blows again
-
-In the future, we should probably use the cookie to distinguish the 2
-cases ... or drop pre/post_req in the ops.
-
-Regards
-Jerome
+-Doug
