@@ -2,150 +2,173 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 35D3CF8596
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 01:51:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61DA1F8AE7
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 09:45:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbfKLAv1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Nov 2019 19:51:27 -0500
-Received: from mail-il1-f194.google.com ([209.85.166.194]:32860 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726902AbfKLAv1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 19:51:27 -0500
-Received: by mail-il1-f194.google.com with SMTP id m5so13956870ilq.0
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Nov 2019 16:51:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5fqCSy9rwXM+rp0J01BNk/6lUOMoJGghUMwnadvjbXU=;
-        b=fRk1IvsmiSzlXUg2hL2f1J++6G1E9Sn5WwnERiVBs3tkLjHROWL+ov0leW6sOrPiyQ
-         D2AEM68fYTwVBOIulX1dCYm7jQ4ITSKFCGJO79kkEL0BRXjRnAo/h1RNdbEN9F+4SHA1
-         83lT7dqVbbT4BU3ARTb5gL5WFOlFQNENVAmJk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5fqCSy9rwXM+rp0J01BNk/6lUOMoJGghUMwnadvjbXU=;
-        b=YzuNFkT024rtZ5JloSHCDk5na5Ie2m94sbB7uUVOU/JWfVEXbomBP2ynDF6GoLTWo9
-         F73I0+1YdO7NcQY7pxHQoCaGAXWVlgNfF0Di3EbIgV+St/Yg1K5GNMgDu7Rd0hvTBmek
-         udHBBD+yVh/1/gepq4n+SvT2RB/tdencsRR3JDWeojc62KYzE4eSLC599Wkc/GTK2wBQ
-         FIfcSQCYItU3TcHBTXqJ1Imf0DIJ0RpCasPYE23sKhew4+nbna9knws46XMGt5IFQHFD
-         GlBoqNmznlC7NmRfwhCZAjbyR5a2+xeyDk6yumgDSBrk66rQTAhlTrrLplf3wnX3WdBa
-         8nDw==
-X-Gm-Message-State: APjAAAU34mmXHc8TL/g6tKiCP8I3dbOrwDM8NeqxE2xU7i1WQaAO+gCe
-        m07QGWbS9C3OmEusjISHOd1qwItq5g4=
-X-Google-Smtp-Source: APXvYqx1AeFTbiHG733EEfqfrXSQygmFAJfZqbP3iwdUFQz5T6me7xpiHCekaL9rqvjqb0YJb93AkQ==
-X-Received: by 2002:a92:d58e:: with SMTP id a14mr31368006iln.4.1573519885645;
-        Mon, 11 Nov 2019 16:51:25 -0800 (PST)
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com. [209.85.166.50])
-        by smtp.gmail.com with ESMTPSA id n28sm2256782ili.70.2019.11.11.16.51.24
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Nov 2019 16:51:24 -0800 (PST)
-Received: by mail-io1-f50.google.com with SMTP id i13so15441092ioj.5
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Nov 2019 16:51:24 -0800 (PST)
-X-Received: by 2002:a5d:9059:: with SMTP id v25mr22934437ioq.58.1573519883624;
- Mon, 11 Nov 2019 16:51:23 -0800 (PST)
+        id S1725834AbfKLIpm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Nov 2019 03:45:42 -0500
+Received: from wp126.webpack.hosteurope.de ([80.237.132.133]:35468 "EHLO
+        wp126.webpack.hosteurope.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725775AbfKLIpm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 03:45:42 -0500
+Received: from [2003:a:659:3f00:1e6f:65ff:fe31:d1d5] (helo=hermes.fivetechno.de); authenticated
+        by wp126.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        id 1iURnt-0001V4-Nn; Tue, 12 Nov 2019 09:45:37 +0100
+X-Virus-Scanned: by amavisd-new 2.11.1 using newest ClamAV at
+        linuxbbg.five-lan.de
+Received: from [192.168.34.101] (p5098d998.dip0.t-ipconnect.de [80.152.217.152])
+        (authenticated bits=0)
+        by hermes.fivetechno.de (8.15.2/8.14.5/SuSE Linux 0.8) with ESMTPSA id xAC8jaTj012944
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+        Tue, 12 Nov 2019 09:45:36 +0100
+From:   Markus Reichl <m.reichl@fivetechno.de>
+Subject: [PATCH v2] arm64: dts: rockchip: Add SDR104 mode to SD-card I/F on
+ rk3399-roc-pc
+To:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Jagan Teki <jagan@amarulasolutions.com>,
+        Markus Reichl <m.reichl@fivetechno.de>,
+        "'Ulf Hansson'" <ulf.hansson@linaro.org>
+Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Autocrypt: addr=m.reichl@fivetechno.de; prefer-encrypt=mutual; keydata=
+ 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
+ eD/Xv4SsK2JTO4nkQYw8
+Organization: five technologies GmbH
+Message-ID: <25466090-3b24-2695-10fb-88c59be3f149@fivetechno.de>
+Date:   Tue, 12 Nov 2019 09:45:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-References: <20191109103046.26445-1-ulf.hansson@linaro.org>
-In-Reply-To: <20191109103046.26445-1-ulf.hansson@linaro.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 11 Nov 2019 16:51:10 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=Wv9DgzQZZE8YvB+qjBzPsKdJvafSnFy8YAN_dN6UJbtQ@mail.gmail.com>
-Message-ID: <CAD=FV=Wv9DgzQZZE8YvB+qjBzPsKdJvafSnFy8YAN_dN6UJbtQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] mmc: Fixup HW reset for SDIO cards
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-DE
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;m.reichl@fivetechno.de;1573548341;6398de21;
+X-HE-SMSGID: 1iURnt-0001V4-Nn
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+Add SDR104 capability and regulators to SD card node.
+While at it, fix a typo in lcd pinctrl and remove two
+undocumented bindings from pmic.
 
-On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> Changes in v2:
->         - Add adaptations to the mwifiex driver.
->         - Keep existing syncronous reset behaviour if the SDIO card has a single
->         func driver.
->
-> It has turned out that it's not a good idea to try to power cycle and to
-> re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
-> because there may be multiple SDIO funcs attached to the same SDIO card and
-> some of the others that didn't execute the call to mmc_hw_reset(), may then
-> simply experience an undefined behaviour.
->
-> The following patches in this series attempts to address this problem, by
-> reworking the mmc_hw_reset() behaviour for SDIO and by adopting the Marvel
-> mwifiex driver to these changes.
->
-> Note that, I don't have the HW at hand so the the code has only compile tested.
-> Test on HW is greatly appreciated!
->
-> Ulf Hansson (3):
->   mwifiex: Re-work support for SDIO HW reset
->   mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
->   mmc: core: Re-work HW reset for SDIO cards
->
->  drivers/mmc/core/core.c                     | 12 +++-----
->  drivers/mmc/core/core.h                     |  2 ++
->  drivers/mmc/core/sdio.c                     | 28 ++++++++++++++++-
->  drivers/mmc/core/sdio_bus.c                 |  9 +++++-
->  drivers/net/wireless/marvell/mwifiex/main.c |  6 +++-
->  drivers/net/wireless/marvell/mwifiex/main.h |  1 +
->  drivers/net/wireless/marvell/mwifiex/sdio.c | 33 ++++++++++++++-------
->  include/linux/mmc/card.h                    |  1 +
->  8 files changed, 70 insertions(+), 22 deletions(-)
-
-I put this on rk3288-veyron-jerry atop v5.4-rc7 and I could run my
-test case for a while, AKA I got over 50 cycles of:
-
+Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
 ---
-
-for i in $(seq 1000); do
-  echo "LOOP $i --------"
-  echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
-
-  while true; do
-    if ! ping6 -w15 -c1 "${GW}" >/dev/null 2>&1; then
-      fail=$(( fail + 1 ))
-      echo "Fail WiFi ${fail}"
-      if [[ ${fail} == 3 ]]; then
-        exit 1
-      fi
-    else
-      fail=0
-      break
-    fi
-  done
-
-  hciconfig hci0 down
-  sleep 1
-  if ! hciconfig hci0 up; then
-    echo "Fail BT"
-    exit 1
-  fi
-
-done
-
+v2: Remove always-on from vcc3v0_sd
 ---
+ .../boot/dts/rockchip/rk3399-roc-pc.dtsi      | 30 +++++++++++++++----
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-NOTE: with no patches I couldn't even get my test case to pass w/out
-the BT bits and I swear that used to work before.  ...but I didn't
-debug since the end result (with full card hotplug) is happy-working
-for me.  I'll still use it as further argument that (IMO) full unplug
-/ plug of the card is better it uses more standard code paths and is
-less likely to break.  ;-)
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+index d1eb55c855b3..a31099f7620b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+@@ -135,6 +135,19 @@
+ 		vin-supply = <&vcc_1v8>;
+ 	};
+ 
++	vcc3v0_sd: vcc3v0-sd {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = <&gpio4 RK_PD6 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&vcc3v0_sd_en>;
++		regulator-name = "vcc3v0_sd";
++		regulator-boot-on;
++		regulator-min-microvolt = <3000000>;
++		regulator-max-microvolt = <3000000>;
++		vin-supply = <&vcc3v3_sys>;
++	};
++
+ 	vcc3v3_sys: vcc3v3-sys {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc3v3_sys";
+@@ -293,8 +306,6 @@
+ 		vcc10-supply = <&vcc3v3_sys>;
+ 		vcc11-supply = <&vcc3v3_sys>;
+ 		vcc12-supply = <&vcc3v3_sys>;
+-		vcc13-supply = <&vcc3v3_sys>;
+-		vcc14-supply = <&vcc3v3_sys>;
+ 		vddio-supply = <&vcc_3v0>;
+ 
+ 		regulators {
+@@ -576,7 +587,7 @@
+ 
+ 	lcd-panel {
+ 		lcd_panel_reset: lcd-panel-reset {
+-			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_up>;
++			rockchip,pins = <4 RK_PD5 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
+ 	};
+ 
+@@ -602,6 +613,10 @@
+ 		vsel2_gpio: vsel2-gpio {
+ 			rockchip,pins = <1 RK_PB6 RK_FUNC_GPIO &pcfg_pull_down>;
+ 		};
++
++		pmic_int_l: pmic-int-l {
++			rockchip,pins = <1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
+ 	};
+ 
+ 	sdio-pwrseq {
+@@ -610,9 +625,9 @@
+ 		};
+ 	};
+ 
+-	pmic {
+-		pmic_int_l: pmic-int-l {
+-			rockchip,pins = <1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
++	sdmmc {
++		vcc3v0_sd_en: vcc3v0-sd-en {
++			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 	};
+ 
+@@ -667,6 +682,9 @@
+ 	cd-gpios = <&gpio0 RK_PA7 GPIO_ACTIVE_LOW>;
+ 	disable-wp;
+ 	max-frequency = <150000000>;
++	sd-uhs-sdr104;
++	vmmc-supply = <&vcc3v0_sd>;
++	vqmmc-supply = <&vcc_sdio>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&sdmmc_clk &sdmmc_cmd &sdmmc_bus4>;
+ 	status = "okay";
+-- 
+2.20.1
 
-Tested-by: Douglas Anderson <dianders@chromium.org>
