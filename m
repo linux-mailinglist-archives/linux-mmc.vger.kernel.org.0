@@ -2,237 +2,84 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC137F8FC8
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 13:40:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E8EEF90F7
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 14:48:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727012AbfKLMkf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Nov 2019 07:40:35 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:36540 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727044AbfKLMkf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 07:40:35 -0500
-Received: by mail-lj1-f196.google.com with SMTP id k15so17629584lja.3
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 04:40:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=VYIHY64Ig6hMKas5CfEIAmktuNgjbKEtyRGq8tTo16M=;
-        b=aMrH3JlvfQFUbEz0UlQFVtwnt/lyMDpRuRM2OClIiWMID0mbPC7n+/hAVDdw4higmm
-         QWe+1bYEU4Q2z7A2bIKdt5ZuF4o8qiYv1tkL1LP2BoDMjRk5E66nr9J4AUf04jEzmt4I
-         bI6v8wAz/vgPwpZ5HUftcchHbgU4niROZW3QH4rtTi1/nUd+drXYVFJF9zTJ/lCa4shQ
-         itUafgd5XCubbbFeIdukgApht9j4eqxAT/Qum3ixjnlSMCl/0mezP3nxtxYBPYuZAYLZ
-         7i7/NWoMYFbLqD6RCnWWBeQGsVSdTAlcj3EFfKZM5IxmQA/ScBntUxCP95GW4878MAYb
-         A7ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=VYIHY64Ig6hMKas5CfEIAmktuNgjbKEtyRGq8tTo16M=;
-        b=evoYirtsST0AnEBiUbZ/ciDawN3VlIEel+u15ovkP/wbe5Lx212ERyVMwO7zGJK/bi
-         XhtfI7PWC1o8aE0NEKd13+onXBLd/9PTMqOontPcbJmlHTcDtoMvsImM+VCBiVkroJ4T
-         gKqmV3Ln0h8Xac32QqCaK6d5Trd9DOjl7MNUuchaP4Tf5DAZ1JUw2NSATeDfLMo13vOQ
-         2RDI0kpcCpPe/qXOqthR7i/mirQBhub5M/wNZuPHujdj52P3/7YcYq+CLdfY0hMNC0sR
-         FqDw/sINv3ac3q1waM1LEHD2JCf6TyDlCP/Nvp813+P9f0+ZZMBTGi5GizWL8PbFNLuX
-         v5PQ==
-X-Gm-Message-State: APjAAAXyS4gnmnWhdDed9zHCwDcEEDIZd+I6eMdA9tljRlzHOzuaD6ss
-        uFkQoH14cznZfLJtZjcWhqfRliwh/nA=
-X-Google-Smtp-Source: APXvYqzoUipiI2KkVe9Qz1ndQr2QucogrG5ac6Irt0iozB5VCIRCCN8QE3tN54Hxvo7ukpV1GvFZRw==
-X-Received: by 2002:a2e:558:: with SMTP id 85mr20280094ljf.67.1573562432644;
-        Tue, 12 Nov 2019 04:40:32 -0800 (PST)
-Received: from uffe-XPS-13-9360.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id z19sm8375096ljk.66.2019.11.12.04.40.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2019 04:40:32 -0800 (PST)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH v3 3/3] mmc: core: Re-work HW reset for SDIO cards
-Date:   Tue, 12 Nov 2019 13:40:21 +0100
-Message-Id: <20191112124021.8718-4-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191112124021.8718-1-ulf.hansson@linaro.org>
-References: <20191112124021.8718-1-ulf.hansson@linaro.org>
+        id S1726008AbfKLNso (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Nov 2019 08:48:44 -0500
+Received: from smtp1.de.adit-jv.com ([93.241.18.167]:40624 "EHLO
+        smtp1.de.adit-jv.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725919AbfKLNso (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 08:48:44 -0500
+Received: from localhost (smtp1.de.adit-jv.com [127.0.0.1])
+        by smtp1.de.adit-jv.com (Postfix) with ESMTP id 19DA53C04C0;
+        Tue, 12 Nov 2019 14:48:41 +0100 (CET)
+Received: from smtp1.de.adit-jv.com ([127.0.0.1])
+        by localhost (smtp1.de.adit-jv.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id EMTLDXMunEnY; Tue, 12 Nov 2019 14:48:32 +0100 (CET)
+Received: from HI2EXCH01.adit-jv.com (hi2exch01.adit-jv.com [10.72.92.24])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp1.de.adit-jv.com (Postfix) with ESMTPS id 9C9ED3C009C;
+        Tue, 12 Nov 2019 14:48:32 +0100 (CET)
+Received: from vmlxhi-102.adit-jv.com (10.72.93.184) by HI2EXCH01.adit-jv.com
+ (10.72.92.24) with Microsoft SMTP Server (TLS) id 14.3.468.0; Tue, 12 Nov
+ 2019 14:48:32 +0100
+From:   Eugeniu Rosca <erosca@de.adit-jv.com>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-renesas-soc@vger.kernel.org>,
+        Eugeniu Rosca <erosca@de.adit-jv.com>,
+        Eugeniu Rosca <roscaeugeniu@gmail.com>,
+        Harish Jenny K N <harish_kandiga@mentor.com>,
+        Andrew Gabbasov <andrew_gabbasov@mentor.com>
+Subject: [PATCH] mmc: renesas_sdhi_internal_dmac: Add MMC_CAP_ERASE to Gen3 SoCs
+Date:   Tue, 12 Nov 2019 14:48:08 +0100
+Message-ID: <20191112134808.23546-1-erosca@de.adit-jv.com>
+X-Mailer: git-send-email 2.24.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.72.93.184]
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-It have turned out that it's not a good idea to unconditionally do a power
-cycle and then to re-initialize the SDIO card, as currently done through
-mmc_hw_reset() -> mmc_sdio_hw_reset(). This because there may be multiple
-SDIO func drivers probed, who also shares the same SDIO card.
+From: Harish Jenny K N <harish_kandiga@mentor.com>
 
-To address these scenarios, one may be tempted to use a notification
-mechanism, as to allow the core to inform each of the probed func drivers,
-about an ongoing HW reset. However, supporting such an operation from the
-func driver point of view, may not be entirely trivial.
+Enable MMC_CAP_ERASE capability in the driver to allow
+erase/discard/trim requests.
 
-Therefore, let's use a more simplistic approach to solve the problem, by
-instead forcing the card to be removed and re-detected, via scheduling a
-rescan-work. In this way, we can rely on existing infrastructure, as the
-func driver's ->remove() and ->probe() callbacks, becomes invoked to deal
-with the cleanup and the re-initialization.
-
-This solution may be considered as rather heavy, especially if a func
-driver doesn't share its card with other func drivers. To address this,
-let's keep the current immediate HW reset option as well, but run it only
-when there is one func driver probed for the card.
-
-Finally, to allow the caller of mmc_hw_reset(), to understand if the reset
-is being asynchronously managed from a scheduled work, it returns 1
-(propagated from mmc_sdio_hw_reset()). If the HW reset is executed
-successfully and synchronously it returns 0, which maintains the existing
-behaviour.
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Suggested-by: Andrew Gabbasov <andrew_gabbasov@mentor.com>
+Signed-off-by: Harish Jenny K N <harish_kandiga@mentor.com>
+[erosca: Forward-port and test on v5.4-rc7 using H3ULCB-KF:
+         "blkdiscard /dev/mmcblk0" passes with this patch applied
+         and complains otherwise:
+	 "BLKDISCARD ioctl failed: Operation not supported"]
+Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
 ---
- drivers/mmc/core/core.c     |  5 ++---
- drivers/mmc/core/core.h     |  2 ++
- drivers/mmc/core/sdio.c     | 28 +++++++++++++++++++++++++++-
- drivers/mmc/core/sdio_bus.c |  9 ++++++++-
- include/linux/mmc/card.h    |  1 +
- 5 files changed, 40 insertions(+), 5 deletions(-)
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index 6f8342702c73..abf8f5eb0a1c 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -1469,8 +1469,7 @@ void mmc_detach_bus(struct mmc_host *host)
- 	mmc_bus_put(host);
- }
- 
--static void _mmc_detect_change(struct mmc_host *host, unsigned long delay,
--				bool cd_irq)
-+void _mmc_detect_change(struct mmc_host *host, unsigned long delay, bool cd_irq)
- {
- 	/*
- 	 * If the device is configured as wakeup, we prevent a new sleep for
-@@ -2129,7 +2128,7 @@ int mmc_hw_reset(struct mmc_host *host)
- 	ret = host->bus_ops->hw_reset(host);
- 	mmc_bus_put(host);
- 
--	if (ret)
-+	if (ret < 0)
- 		pr_warn("%s: tried to HW reset card, got error %d\n",
- 			mmc_hostname(host), ret);
- 
-diff --git a/drivers/mmc/core/core.h b/drivers/mmc/core/core.h
-index 328c78dbee66..575ac0257af2 100644
---- a/drivers/mmc/core/core.h
-+++ b/drivers/mmc/core/core.h
-@@ -70,6 +70,8 @@ void mmc_rescan(struct work_struct *work);
- void mmc_start_host(struct mmc_host *host);
- void mmc_stop_host(struct mmc_host *host);
- 
-+void _mmc_detect_change(struct mmc_host *host, unsigned long delay,
-+			bool cd_irq);
- int _mmc_detect_card_removed(struct mmc_host *host);
- int mmc_detect_card_removed(struct mmc_host *host);
- 
-diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index 26cabd53ddc5..ebb387aa5158 100644
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -1048,9 +1048,35 @@ static int mmc_sdio_runtime_resume(struct mmc_host *host)
- 	return ret;
- }
- 
-+/*
-+ * SDIO HW reset
-+ *
-+ * Returns 0 if the HW reset was executed synchronously, returns 1 if the HW
-+ * reset was asynchronously scheduled, else a negative error code.
-+ */
- static int mmc_sdio_hw_reset(struct mmc_host *host)
- {
--	mmc_power_cycle(host, host->card->ocr);
-+	struct mmc_card *card = host->card;
-+
-+	/*
-+	 * In case the card is shared among multiple func drivers, reset the
-+	 * card through a rescan work. In this way it will be removed and
-+	 * re-detected, thus all func drivers becomes informed about it.
-+	 */
-+	if (atomic_read(&card->sdio_funcs_probed) > 1) {
-+		if (mmc_card_removed(card))
-+			return 1;
-+		host->rescan_entered = 0;
-+		mmc_card_set_removed(card);
-+		_mmc_detect_change(host, 0, false);
-+		return 1;
-+	}
-+
-+	/*
-+	 * A single func driver has been probed, then let's skip the heavy
-+	 * hotplug dance above and execute the reset immediately.
-+	 */
-+	mmc_power_cycle(host, card->ocr);
- 	return mmc_sdio_reinit_card(host);
- }
- 
-diff --git a/drivers/mmc/core/sdio_bus.c b/drivers/mmc/core/sdio_bus.c
-index 2963e6542958..3cc928282af7 100644
---- a/drivers/mmc/core/sdio_bus.c
-+++ b/drivers/mmc/core/sdio_bus.c
-@@ -138,6 +138,8 @@ static int sdio_bus_probe(struct device *dev)
- 	if (ret)
- 		return ret;
- 
-+	atomic_inc(&func->card->sdio_funcs_probed);
-+
- 	/* Unbound SDIO functions are always suspended.
- 	 * During probe, the function is set active and the usage count
- 	 * is incremented.  If the driver supports runtime PM,
-@@ -153,7 +155,10 @@ static int sdio_bus_probe(struct device *dev)
- 	/* Set the default block size so the driver is sure it's something
- 	 * sensible. */
- 	sdio_claim_host(func);
--	ret = sdio_set_block_size(func, 0);
-+	if (mmc_card_removed(func->card))
-+		ret = -ENOMEDIUM;
-+	else
-+		ret = sdio_set_block_size(func, 0);
- 	sdio_release_host(func);
- 	if (ret)
- 		goto disable_runtimepm;
-@@ -165,6 +170,7 @@ static int sdio_bus_probe(struct device *dev)
- 	return 0;
- 
- disable_runtimepm:
-+	atomic_dec(&func->card->sdio_funcs_probed);
- 	if (func->card->host->caps & MMC_CAP_POWER_OFF_CARD)
- 		pm_runtime_put_noidle(dev);
- 	dev_pm_domain_detach(dev, false);
-@@ -181,6 +187,7 @@ static int sdio_bus_remove(struct device *dev)
- 		pm_runtime_get_sync(dev);
- 
- 	drv->remove(func);
-+	atomic_dec(&func->card->sdio_funcs_probed);
- 
- 	if (func->irq_handler) {
- 		pr_warn("WARNING: driver %s did not remove its interrupt handler!\n",
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index 9b6336ad3266..e459b38ef33c 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -291,6 +291,7 @@ struct mmc_card {
- 	struct sd_switch_caps	sw_caps;	/* switch (CMD6) caps */
- 
- 	unsigned int		sdio_funcs;	/* number of SDIO functions */
-+	atomic_t		sdio_funcs_probed; /* number of probed SDIO funcs */
- 	struct sdio_cccr	cccr;		/* common card info */
- 	struct sdio_cis		cis;		/* common tuple info */
- 	struct sdio_func	*sdio_func[SDIO_MAX_FUNCS]; /* SDIO functions (devices) */
+diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+index a66f8d6d61d1..61fcbf51c947 100644
+--- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
++++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+@@ -105,7 +105,7 @@ static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
+ 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
+ 			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2,
+ 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
+-			  MMC_CAP_CMD23,
++			  MMC_CAP_ERASE | MMC_CAP_CMD23,
+ 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT | MMC_CAP2_MERGE_CAPABLE,
+ 	.bus_shift	= 2,
+ 	.scc_offset	= 0x1000,
 -- 
-2.17.1
+2.24.0
 
