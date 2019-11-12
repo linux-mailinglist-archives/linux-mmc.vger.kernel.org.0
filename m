@@ -2,125 +2,213 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F7CF8E8F
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 12:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3803DF8F74
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 13:14:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725944AbfKLL2m (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Nov 2019 06:28:42 -0500
-Received: from esa4.hgst.iphmx.com ([216.71.154.42]:14017 "EHLO
-        esa4.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725865AbfKLL2m (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 06:28:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1573558121; x=1605094121;
-  h=from:to:subject:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version;
-  bh=YnDbp/+U9PGcnjQkeG30kOI0/QXGVpN2li4hnTTfKBc=;
-  b=SQoxrehnvBv1gLXX4ribhfKelpDKW2dYw+/waET0mgWwgh2NgGa0+OQr
-   IAzYgRdka9raa4xZTaxe5XnLyEj5R2BTfxMfHPRi4NKki+3Eg4/8BpSuR
-   jo1wcr49RN0gviXKMfpuaXjLiJBXYQhrrjROg7DhCck745hl9hDXDK4n0
-   q0TvgpeMchon7pqNh9vmtt0ohbpO/FCQJ7quwgm9XsrSMcpNs9ogevL7+
-   0GOgGI4DZS+qqd38+pxweB147yT/akTectys3cvSq7ZEkMNsAupBy4Rd2
-   k2qQjofggHvdv52l9UmjJTOMHy8znxW3thNXSRxIMb1k8tvUDAylsPa3k
-   A==;
-IronPort-SDR: 19f8MDPgbZk+iqE52uDRyXUBbnOBsOzavkXS7xm+BhL9qV3/hD2kPTqaZb5yzkUz9RFoMeS7l2
- vVxbenjDZe3ZmuM3GfC89ljLH04sbWXUwfFtN5m/t4i/3gpG0VMy8EN1pNwYgAxxBQWmp04E+P
- lzJrj2ZZlUs3x5UNFgDepIQcDcCI+U6Gsf7gEv0HEu66ze5+PCsDXE/2xwj4lvBGNSTBwmfRM6
- pwDtMhHWvSvgawgdUTuEcVMhGbnGvu3CDbpkGEHlgpXQvoRhyQ5B3cbcX5G53KkPqEwpfvnV1L
- RAM=
-X-IronPort-AV: E=Sophos;i="5.68,296,1569254400"; 
-   d="scan'208";a="122745035"
-Received: from mail-sn1nam04lp2055.outbound.protection.outlook.com (HELO NAM04-SN1-obe.outbound.protection.outlook.com) ([104.47.44.55])
-  by ob1.hgst.iphmx.com with ESMTP; 12 Nov 2019 19:26:50 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WXVEa53hIosyY0uOveYmlsMuz83xNQeFUn1xUZIbVyR6gV2j0SnRmcPkVcHXD/ZrYjXVcpSix3rJo6OGTofjYzoj7anY+3qvqpff73Fzb0S29JFAqS/uljGgt+SA9+53lp1S6it3Tjl7LIeqKZ6w/JGoo4LBqcvDnaDp130dMoFxAv3ymyTiKKgKNiaBGqnMJxwfL5JxPgCJh60csuRWhESeIypfdq9Uf5Rf62rmpddh36hk1gUjUiKjFnmN3SvC7FE+rIpXlI6fHNgjfqC93/1IUmV5Md2ujig4ei6oG9EUyO0BCjT53L7wmEliUvWlBB+wbnFmVG0YgQBI2eV7tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WleKgJX/PDyqHX/LepDO9pdOODcbPkccfhN6uSBC7aI=;
- b=PVdhaP8sKXBYkj81UAtuQy3uHWkQd6XssR6Ku7mHp7/eFQrHMN1EHamkTvvE6dp0kXSFMMZWs/rrLuNcdwuu+ogi5Hzp4Ugb4/kObBdEbBxdLwfKfGrvanUjVhpe3u9yPai8Uigno+wWNGOdYezxClOTkrllrsWd22ibFmLGwIqAyCd6j/ica9Za3Vg4oXwCj2KTV5w22IJYgPx09Ub4ExvdN/tT2L4zN45rbGa+Qjl/aTeGX54b77ktULV1lBYung3RBTHT3GAwGSBuEcadudjb2po+LAYEGCkJxm9t9DPKhSo09y+L51+6OcgHet4Lt6CRPzyjgkzPq8Oxm9Ku5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
+        id S1726376AbfKLMOA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Nov 2019 07:14:00 -0500
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:45887 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725954AbfKLMOA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 07:14:00 -0500
+Received: by mail-ua1-f66.google.com with SMTP id j4so1358271uak.12
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 04:13:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WleKgJX/PDyqHX/LepDO9pdOODcbPkccfhN6uSBC7aI=;
- b=rrvuFAUOwEuzPz+ZUQXhjodVu6fXL/LGiaHRbhrZxgbdKiSsU9i6o7pr6lkawhZ1b395BCJZ0dtha+V9Bw1WCWATK242Qry56tmU2e3VNP7hgRX3Wgmql7H5atYFI1i2Atx9hIBDmWit8wE6XhQHB2x6q7LRgFxlJKdw+Tl5PJo=
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
- MN2PR04MB6317.namprd04.prod.outlook.com (52.132.170.137) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2430.20; Tue, 12 Nov 2019 11:26:49 +0000
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::5852:6199:7952:c2ce]) by MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::5852:6199:7952:c2ce%7]) with mapi id 15.20.2430.027; Tue, 12 Nov 2019
- 11:26:49 +0000
-From:   Avri Altman <Avri.Altman@wdc.com>
-To:     Lars Pedersen <lapeddk@gmail.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "michael.heimpold@i2se.com" <michael.heimpold@i2se.com>
-Subject: RE: [PATCH v3] mmc-utils: Add AUTO_EN support in the BKOPS_EN
-Thread-Topic: [PATCH v3] mmc-utils: Add AUTO_EN support in the BKOPS_EN
-Thread-Index: AQHVmH9mz6RGDfDBMEiPITk6bv1HAKeHZfvA
-Date:   Tue, 12 Nov 2019 11:26:49 +0000
-Message-ID: <MN2PR04MB6991723BC215D74DAF6D1E30FC770@MN2PR04MB6991.namprd04.prod.outlook.com>
-References: <20191111110051.16490-1-lapeddk@gmail.com>
-In-Reply-To: <20191111110051.16490-1-lapeddk@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Avri.Altman@wdc.com; 
-x-originating-ip: [212.25.79.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: d604501d-1c55-49f2-2cc7-08d7676335b5
-x-ms-traffictypediagnostic: MN2PR04MB6317:
-x-microsoft-antispam-prvs: <MN2PR04MB63175E8D262FA5650C56170DFC770@MN2PR04MB6317.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:232;
-x-forefront-prvs: 021975AE46
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(346002)(39860400002)(376002)(366004)(396003)(189003)(199004)(9686003)(478600001)(229853002)(14454004)(6436002)(316002)(8676002)(256004)(81156014)(55016002)(81166006)(3846002)(6116002)(6246003)(86362001)(8936002)(186003)(7736002)(2501003)(52536014)(476003)(446003)(76116006)(26005)(99286004)(74316002)(486006)(66556008)(64756008)(66446008)(2906002)(66476007)(33656002)(71190400001)(71200400001)(102836004)(76176011)(4744005)(25786009)(66066001)(2201001)(6506007)(66946007)(5660300002)(7696005)(11346002)(305945005)(110136005);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB6317;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: gEcYriUkoNvpM9jx9nIBHC62AUsXwHMiaYm9fjeiwRt06fUlBilYBanbmgK1BE1pgRqL/HKEY+6PmxBTEMC3TKp3+b4cDwSW0gupzrwNRYOz1bl1Y8AAZeQvzCs5C2vK1JnJhNTrehMjwn4/j0T6AOCEkSzbailwEjfdjMERBuKnFP3dQUO5VGXwtOK94tqeoNxiAy22jjJHjevlnclMQgAzOn8D0H45HmefMVdGpugRVh9AxGmUkPQ9fHkpB20c6agzEjcgsz9dgHP2VE6Wb8sPjmTI+Q51Z2RsuQS/XpUstoG/gzVePjAIwcr12uqMGxx6Gm4msnjXZI5kHRRtdQB0rz/eE7nrJZ8GwH8qWn11tkKKjMuW/9ruZJ/85zA7kocIkk7wtfGyQUULZi7asEpbeZKP1GDxnOhpmn+phgP45Qz9qUpG5OYmIBQBJPO+
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Kb99iT/gCFdRTk8k9ih2vk74MRQtd9fd4gG9oDPpRPU=;
+        b=LfHRMW9zKX0g/y5YE2nRAWDy6iiFynO0+GL59U9QMcdYL+WQ4aK0gtejV8kFobOSCR
+         eLQ4ZsKOTM/73Tgb7Oiuhv/Xkw+ugRqjJR+AMbygNxxpOJLRy8Tcu8wyYQl+C+Zr16f8
+         gZqh6fgPv7hpJx5Xw1qVTmI9I4KMVQ6nEx7A1f0ou4txSBP3Vvmp54Lrqc3LeZco+YpP
+         VVL+P2v1TvgBjV9eE7e5KWfo5fHxXJTeBUc/C5ocWr3ax1s6NtgpDcyAVMLP3V7PrUzW
+         QSDvrn4Bcjs5M3fp1GACSRgLyNgLtFDQS6O1T041u1f/xKxP0FWxcs/Qp9BHSP+ARUou
+         zMhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Kb99iT/gCFdRTk8k9ih2vk74MRQtd9fd4gG9oDPpRPU=;
+        b=uY9GDsyaoaqAdmN7QNmp08rvL35MXn6P8A2x8qSLj5+yrF8nk+q4qofPmQ+hgPT2Pv
+         zJhHQCN3fE45p2dGyIQ+n2jk2QOtUMU0I7sZxnUjPJZr2nrEA/VOstB4WpJ8c2rVxi3s
+         kJS0C5K2Mlz3YnUHlycjXApjEQqJqje02/LOvA2iK08jorxlfOaMGZqtGawHBahreUHg
+         qwAzAiKxxQH23V2Ks+FwCM6JghJQTsmHWIDR0j5XmxiPtSX/Ag5K7tUaz+iOOwc43TfW
+         PDDgta8CXNIsiQaIWX15YQ5HhA1+jijoPM2n0sYKvGQR70PnOhuRd8cQvdpveLdy/omV
+         uu+A==
+X-Gm-Message-State: APjAAAU+kGwuFR1Ao5DH6sXgCRlBwYaaBN6T4Yr0PdPMQaJ6uwcRwUTw
+        8U2A9yijE0pXsRwIYh4ANVT7c9F+hg1gVXVnSjKUnQ==
+X-Google-Smtp-Source: APXvYqydXctJQNC9TmCyGpFwkkXqlkIRQS22kEBsajTRr6z5rsRsfJr1kpR/ATqoy0NuRqvTXOODHcqTvPtSJWzPdoA=
+X-Received: by 2002:ab0:648d:: with SMTP id p13mr552984uam.129.1573560838317;
+ Tue, 12 Nov 2019 04:13:58 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d604501d-1c55-49f2-2cc7-08d7676335b5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2019 11:26:49.4592
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EycdCTB/At0YpvkEMy6BhAn8HKZA3Yr1jXVnbrXaUtUWlzkPJ6gPQp8ut5vPpPU6Z4iZB6mfBCPf1lUS9LLehw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB6317
+References: <20191109103046.26445-1-ulf.hansson@linaro.org>
+ <20191109103046.26445-2-ulf.hansson@linaro.org> <CAD=FV=WccuUCnQXHq-HuojCRAKVA02D7HBS9PgqSqq3+b2v4CA@mail.gmail.com>
+In-Reply-To: <CAD=FV=WccuUCnQXHq-HuojCRAKVA02D7HBS9PgqSqq3+b2v4CA@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 12 Nov 2019 13:13:21 +0100
+Message-ID: <CAPDyKFq-djJFyYu6Wzg9t9hLOQMuqff9KVhbx5Zp5i=Fsynsdw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] mwifiex: Re-work support for SDIO HW reset
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+On Tue, 12 Nov 2019 at 01:33, Doug Anderson <dianders@chromium.org> wrote:
+>
+> Hi,
+>
+> On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >
+> > The SDIO HW reset procedure in mwifiex_sdio_card_reset_work() is broken,
+> > when the SDIO card is shared with another SDIO func driver. This is the
+> > case when the Bluetooth btmrvl driver is being used in combination with
+> > mwifiex. More precisely, when mwifiex_sdio_card_reset_work() runs to resets
+> > the SDIO card, the btmrvl driver doesn't get notified about it. Beyond that
+> > point, the btmrvl driver will fail to communicate with the SDIO card.
+> >
+> > This is a generic problem for SDIO func drivers sharing an SDIO card, which
+> > are about to be addressed in subsequent changes to the mmc core and the
+> > mmc_hw_reset() interface. In principle, these changes means the
+> > mmc_hw_reset() interface starts to return 1 if the are multiple drivers for
+> > the SDIO card, as to indicate to the caller that the reset needed to be
+> > scheduled asynchronously through a hotplug mechanism of the SDIO card.
+> >
+> > Let's prepare the mwifiex driver to support the upcoming new behaviour of
+> > mmc_hw_reset(), which means extending the mwifiex_sdio_card_reset_work() to
+> > support the asynchronous SDIO HW reset path. This also means, we need to
+> > allow the ->remove() callback to run, without waiting for the FW to be
+> > loaded. Additionally, during system suspend, mwifiex_sdio_suspend() may be
+> > called when a reset has been scheduled, but waiting to be executed. In this
+> > scenario let's simply return -EBUSY to abort the suspend process, as to
+> > allow the reset to be completed first.
+> >
+> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > ---
+> >  drivers/net/wireless/marvell/mwifiex/main.c |  6 +++-
+> >  drivers/net/wireless/marvell/mwifiex/main.h |  1 +
+> >  drivers/net/wireless/marvell/mwifiex/sdio.c | 33 ++++++++++++++-------
+> >  3 files changed, 28 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+> > index a9657ae6d782..dbdbdd6769a9 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/main.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/main.c
+> > @@ -76,6 +76,7 @@ static int mwifiex_register(void *card, struct device *dev,
+> >         *padapter = adapter;
+> >         adapter->dev = dev;
+> >         adapter->card = card;
+> > +       adapter->is_adapter_up = false;
+>
+> Probably not needed.  The 'adapter' was kzalloc-ed a few lines above
+> and there's no need to re-init to 0.
 
->=20
-> Signed-off-by: Lars Pedersen <lapeddk@gmail.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Right, let me re-spin and drop this.
 
+>
+>
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+> > index 24c041dad9f6..2417c94c29c0 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+> > @@ -444,6 +444,9 @@ static int mwifiex_sdio_suspend(struct device *dev)
+> >                 return 0;
+> >         }
+> >
+> > +       if (!adapter->is_adapter_up)
+> > +               return -EBUSY;
+>
+> I'm moderately concerned that there might be cases where firmware
+> never got loaded but we could suspend/resume OK.  ...and now we never
+> will?  I'm not familiar enough with the code to know if this is a real
+> concern, so I guess we can do this and then see...
 
-> --- a/mmc_cmds.c
-> +++ b/mmc_cmds.c
-> @@ -734,13 +734,15 @@ int do_write_bkops_en(int nargs, char **argv)
->         __u8 ext_csd[512], value =3D 0;
->         int fd, ret;
->         char *device;
-> +       char *en_type;
-A small nit - preferably do your strcmp and assign some type variable,
-But that's fine as well.
+There is a completion variable that is used to make sure the firmware
+is loaded, before the mwifiex driver runs ->suspend|remove(). This is
+needed, because during ->probe() the FW will be loaded asynchronously,
+hence both mwifiex_sdio_remove() and mwifiex_sdio_suspend(), may be
+called while waiting for the FW to be loaded.
 
-Thanks,
-Avri
+If a HW reset has been scheduled but not completed, which would be the
+case if mmc_hw_reset() gets called after mmc_pm_notify() with a
+PM_SUSPEND_PREPARE. This is because mmc_pm_notify() then disables the
+rescan work, but then re-kicks/enables it at PM_POST_SUSPEND (after
+the system has resumed).
 
+Returning -EBUSY, should allow the mmc rescan work to be completed
+when the system have resumed.
+
+Of course, one could also considering using pm_wakeup_event(), in case
+mmc_hw_reset() needed to schedule the reset, as to prevent the system
+for suspending for a small amount of time. As to make sure the rescan
+work, gets to run. But I am not sure that's needed here.
+
+>
+>
+> > @@ -2220,22 +2223,30 @@ static void mwifiex_sdio_card_reset_work(struct mwifiex_adapter *adapter)
+> >         struct sdio_func *func = card->func;
+> >         int ret;
+> >
+> > +       /* Prepare the adapter for the reset. */
+> >         mwifiex_shutdown_sw(adapter);
+> > +       clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
+> > +       clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
+> >
+> > -       /* power cycle the adapter */
+> > +       /* Run a HW reset of the SDIO interface. */
+> >         sdio_claim_host(func);
+> > -       mmc_hw_reset(func->card->host);
+> > +       ret = mmc_hw_reset(func->card->host);
+> >         sdio_release_host(func);
+> >
+> > -       /* Previous save_adapter won't be valid after this. We will cancel
+> > -        * pending work requests.
+> > -        */
+> > -       clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
+> > -       clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
+>
+> I don't know enough about the clearing of these bits to confirm that
+> it's OK to move their clearing to be before the mmc_hw_reset().
+> Possibly +Brian Norris does?
+
+That shouldn't matter, because we are running in the path of the
+mwifiex_sdio_work(), as work from the system_wq. Unless I am mistaken,
+only one work of the type mwifiex_sdio_work() can execute at the same
+time. By clearing these bits, we want to cancel any potential recently
+scheduled work. It should matter if that's done before or after
+mmc_hw_reset().
+
+Moreover, this change makes it more consistent with how the pcie
+driver clears the bits.
+
+>
+>
+> I can't promise that I didn't miss anything, but to the best of my
+> knowledge this is good now:
+>
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+
+Thanks!
+
+Finally, if you want to verify that the above system suspend path
+works fine, you could change the call to "_mmc_detect_change(host, 0,
+false)" in mmc_sdio_hw_reset(), into "_mmc_detect_change(host,
+msecs_to_jiffies(30000), false)", in patch3.
+
+This should leave you a 30s window of where you can try to system
+suspend the platform, while also waiting for the scheduled reset to be
+completed.
+
+Kind regards
+Uffe
