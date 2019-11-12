@@ -2,58 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A791F8550
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 01:34:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35D3CF8596
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 01:51:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbfKLAeD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Nov 2019 19:34:03 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:42705 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726887AbfKLAeC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 19:34:02 -0500
-Received: by mail-io1-f66.google.com with SMTP id k13so8305372ioa.9
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Nov 2019 16:34:00 -0800 (PST)
+        id S1726908AbfKLAv1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Nov 2019 19:51:27 -0500
+Received: from mail-il1-f194.google.com ([209.85.166.194]:32860 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726902AbfKLAv1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Nov 2019 19:51:27 -0500
+Received: by mail-il1-f194.google.com with SMTP id m5so13956870ilq.0
+        for <linux-mmc@vger.kernel.org>; Mon, 11 Nov 2019 16:51:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=zMT4TtiLLjvcaVBuuUVFAqyUJbsnxDxtixXVboFNnfc=;
-        b=RBDCBuJzAvnQvErbcYdWKdwqOMzH4pnQRpt4Tt5inZiU9Jw/GPgiCPYAbmkyXJgJ9o
-         cdBDPnhd3fFoEcRDE4UInmjNojVBx/CtWC6C3SOGuS6UwnblLDQMh4jkSiR4+40lv/Sp
-         TOMtG9OUBsvIRQK/LsvERhoDx6nzJ7DLjV0YA=
+        bh=5fqCSy9rwXM+rp0J01BNk/6lUOMoJGghUMwnadvjbXU=;
+        b=fRk1IvsmiSzlXUg2hL2f1J++6G1E9Sn5WwnERiVBs3tkLjHROWL+ov0leW6sOrPiyQ
+         D2AEM68fYTwVBOIulX1dCYm7jQ4ITSKFCGJO79kkEL0BRXjRnAo/h1RNdbEN9F+4SHA1
+         83lT7dqVbbT4BU3ARTb5gL5WFOlFQNENVAmJk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=zMT4TtiLLjvcaVBuuUVFAqyUJbsnxDxtixXVboFNnfc=;
-        b=petbQ4NBrciuWO9RVks6shJdr929LKROiT+VpHI2rHkFmk/d1iArr5zg7sjqrPfARw
-         ncTPWURD5F02lzB3Eu2sYWfJ2+3tuipOafbIovxkSkqleQV8uZvCJYybTMjENDoYk4Dz
-         gN+qcKcy0/LJLGe+6F9GxG6kAdoF/u+bwBcjIH8UfLZ2KIXtR4lyf2fkAmDSevZzwbsh
-         0rdGv7YMHitKUaSlVeb2ZvfDRwIq5OmQhvmkUZy+Wmd/PDk7BhUjT348d3r4Fk9ka8kK
-         qr2jnKSJ/M9WovgDTRm8e8ir3f8QX4bQfx+zE86MPDE/XOlLf97Y1De9ujWiiDVNdCcG
-         VR0A==
-X-Gm-Message-State: APjAAAUp2d51dlA53rTP49LcqS3PtvWYLAdV2z4qOs0Sck6wejdt4KQs
-        hU8KdnkDzTgPS+Dwmqcfw39NTFrtazw=
-X-Google-Smtp-Source: APXvYqx/vwU6HW0+R1seong3iu/lTw2fmonDqy8mTRFPt3SLmsejRvp6PWWiAMa0LQjeCe3juvuKmA==
-X-Received: by 2002:a02:c989:: with SMTP id b9mr27752358jap.59.1573518839715;
-        Mon, 11 Nov 2019 16:33:59 -0800 (PST)
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com. [209.85.166.49])
-        by smtp.gmail.com with ESMTPSA id o4sm1327718ilq.15.2019.11.11.16.33.57
+        bh=5fqCSy9rwXM+rp0J01BNk/6lUOMoJGghUMwnadvjbXU=;
+        b=YzuNFkT024rtZ5JloSHCDk5na5Ie2m94sbB7uUVOU/JWfVEXbomBP2ynDF6GoLTWo9
+         F73I0+1YdO7NcQY7pxHQoCaGAXWVlgNfF0Di3EbIgV+St/Yg1K5GNMgDu7Rd0hvTBmek
+         udHBBD+yVh/1/gepq4n+SvT2RB/tdencsRR3JDWeojc62KYzE4eSLC599Wkc/GTK2wBQ
+         FIfcSQCYItU3TcHBTXqJ1Imf0DIJ0RpCasPYE23sKhew4+nbna9knws46XMGt5IFQHFD
+         GlBoqNmznlC7NmRfwhCZAjbyR5a2+xeyDk6yumgDSBrk66rQTAhlTrrLplf3wnX3WdBa
+         8nDw==
+X-Gm-Message-State: APjAAAU34mmXHc8TL/g6tKiCP8I3dbOrwDM8NeqxE2xU7i1WQaAO+gCe
+        m07QGWbS9C3OmEusjISHOd1qwItq5g4=
+X-Google-Smtp-Source: APXvYqx1AeFTbiHG733EEfqfrXSQygmFAJfZqbP3iwdUFQz5T6me7xpiHCekaL9rqvjqb0YJb93AkQ==
+X-Received: by 2002:a92:d58e:: with SMTP id a14mr31368006iln.4.1573519885645;
+        Mon, 11 Nov 2019 16:51:25 -0800 (PST)
+Received: from mail-io1-f50.google.com (mail-io1-f50.google.com. [209.85.166.50])
+        by smtp.gmail.com with ESMTPSA id n28sm2256782ili.70.2019.11.11.16.51.24
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Nov 2019 16:33:59 -0800 (PST)
-Received: by mail-io1-f49.google.com with SMTP id c11so16712801iom.10
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Nov 2019 16:33:57 -0800 (PST)
-X-Received: by 2002:a5d:9059:: with SMTP id v25mr22885777ioq.58.1573518836636;
- Mon, 11 Nov 2019 16:33:56 -0800 (PST)
+        Mon, 11 Nov 2019 16:51:24 -0800 (PST)
+Received: by mail-io1-f50.google.com with SMTP id i13so15441092ioj.5
+        for <linux-mmc@vger.kernel.org>; Mon, 11 Nov 2019 16:51:24 -0800 (PST)
+X-Received: by 2002:a5d:9059:: with SMTP id v25mr22934437ioq.58.1573519883624;
+ Mon, 11 Nov 2019 16:51:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20191109103046.26445-1-ulf.hansson@linaro.org> <20191109103046.26445-2-ulf.hansson@linaro.org>
-In-Reply-To: <20191109103046.26445-2-ulf.hansson@linaro.org>
+References: <20191109103046.26445-1-ulf.hansson@linaro.org>
+In-Reply-To: <20191109103046.26445-1-ulf.hansson@linaro.org>
 From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 11 Nov 2019 16:33:45 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=WccuUCnQXHq-HuojCRAKVA02D7HBS9PgqSqq3+b2v4CA@mail.gmail.com>
-Message-ID: <CAD=FV=WccuUCnQXHq-HuojCRAKVA02D7HBS9PgqSqq3+b2v4CA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] mwifiex: Re-work support for SDIO HW reset
+Date:   Mon, 11 Nov 2019 16:51:10 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=Wv9DgzQZZE8YvB+qjBzPsKdJvafSnFy8YAN_dN6UJbtQ@mail.gmail.com>
+Message-ID: <CAD=FV=Wv9DgzQZZE8YvB+qjBzPsKdJvafSnFy8YAN_dN6UJbtQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] mmc: Fixup HW reset for SDIO cards
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -75,95 +75,77 @@ Hi,
 
 On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> The SDIO HW reset procedure in mwifiex_sdio_card_reset_work() is broken,
-> when the SDIO card is shared with another SDIO func driver. This is the
-> case when the Bluetooth btmrvl driver is being used in combination with
-> mwifiex. More precisely, when mwifiex_sdio_card_reset_work() runs to resets
-> the SDIO card, the btmrvl driver doesn't get notified about it. Beyond that
-> point, the btmrvl driver will fail to communicate with the SDIO card.
+> Changes in v2:
+>         - Add adaptations to the mwifiex driver.
+>         - Keep existing syncronous reset behaviour if the SDIO card has a single
+>         func driver.
 >
-> This is a generic problem for SDIO func drivers sharing an SDIO card, which
-> are about to be addressed in subsequent changes to the mmc core and the
-> mmc_hw_reset() interface. In principle, these changes means the
-> mmc_hw_reset() interface starts to return 1 if the are multiple drivers for
-> the SDIO card, as to indicate to the caller that the reset needed to be
-> scheduled asynchronously through a hotplug mechanism of the SDIO card.
+> It has turned out that it's not a good idea to try to power cycle and to
+> re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
+> because there may be multiple SDIO funcs attached to the same SDIO card and
+> some of the others that didn't execute the call to mmc_hw_reset(), may then
+> simply experience an undefined behaviour.
 >
-> Let's prepare the mwifiex driver to support the upcoming new behaviour of
-> mmc_hw_reset(), which means extending the mwifiex_sdio_card_reset_work() to
-> support the asynchronous SDIO HW reset path. This also means, we need to
-> allow the ->remove() callback to run, without waiting for the FW to be
-> loaded. Additionally, during system suspend, mwifiex_sdio_suspend() may be
-> called when a reset has been scheduled, but waiting to be executed. In this
-> scenario let's simply return -EBUSY to abort the suspend process, as to
-> allow the reset to be completed first.
+> The following patches in this series attempts to address this problem, by
+> reworking the mmc_hw_reset() behaviour for SDIO and by adopting the Marvel
+> mwifiex driver to these changes.
 >
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> ---
+> Note that, I don't have the HW at hand so the the code has only compile tested.
+> Test on HW is greatly appreciated!
+>
+> Ulf Hansson (3):
+>   mwifiex: Re-work support for SDIO HW reset
+>   mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
+>   mmc: core: Re-work HW reset for SDIO cards
+>
+>  drivers/mmc/core/core.c                     | 12 +++-----
+>  drivers/mmc/core/core.h                     |  2 ++
+>  drivers/mmc/core/sdio.c                     | 28 ++++++++++++++++-
+>  drivers/mmc/core/sdio_bus.c                 |  9 +++++-
 >  drivers/net/wireless/marvell/mwifiex/main.c |  6 +++-
 >  drivers/net/wireless/marvell/mwifiex/main.h |  1 +
 >  drivers/net/wireless/marvell/mwifiex/sdio.c | 33 ++++++++++++++-------
->  3 files changed, 28 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-> index a9657ae6d782..dbdbdd6769a9 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/main.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/main.c
-> @@ -76,6 +76,7 @@ static int mwifiex_register(void *card, struct device *dev,
->         *padapter = adapter;
->         adapter->dev = dev;
->         adapter->card = card;
-> +       adapter->is_adapter_up = false;
+>  include/linux/mmc/card.h                    |  1 +
+>  8 files changed, 70 insertions(+), 22 deletions(-)
 
-Probably not needed.  The 'adapter' was kzalloc-ed a few lines above
-and there's no need to re-init to 0.
+I put this on rk3288-veyron-jerry atop v5.4-rc7 and I could run my
+test case for a while, AKA I got over 50 cycles of:
 
+---
 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> index 24c041dad9f6..2417c94c29c0 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> @@ -444,6 +444,9 @@ static int mwifiex_sdio_suspend(struct device *dev)
->                 return 0;
->         }
->
-> +       if (!adapter->is_adapter_up)
-> +               return -EBUSY;
+for i in $(seq 1000); do
+  echo "LOOP $i --------"
+  echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
 
-I'm moderately concerned that there might be cases where firmware
-never got loaded but we could suspend/resume OK.  ...and now we never
-will?  I'm not familiar enough with the code to know if this is a real
-concern, so I guess we can do this and then see...
+  while true; do
+    if ! ping6 -w15 -c1 "${GW}" >/dev/null 2>&1; then
+      fail=$(( fail + 1 ))
+      echo "Fail WiFi ${fail}"
+      if [[ ${fail} == 3 ]]; then
+        exit 1
+      fi
+    else
+      fail=0
+      break
+    fi
+  done
 
+  hciconfig hci0 down
+  sleep 1
+  if ! hciconfig hci0 up; then
+    echo "Fail BT"
+    exit 1
+  fi
 
-> @@ -2220,22 +2223,30 @@ static void mwifiex_sdio_card_reset_work(struct mwifiex_adapter *adapter)
->         struct sdio_func *func = card->func;
->         int ret;
->
-> +       /* Prepare the adapter for the reset. */
->         mwifiex_shutdown_sw(adapter);
-> +       clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
-> +       clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
->
-> -       /* power cycle the adapter */
-> +       /* Run a HW reset of the SDIO interface. */
->         sdio_claim_host(func);
-> -       mmc_hw_reset(func->card->host);
-> +       ret = mmc_hw_reset(func->card->host);
->         sdio_release_host(func);
->
-> -       /* Previous save_adapter won't be valid after this. We will cancel
-> -        * pending work requests.
-> -        */
-> -       clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
-> -       clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
+done
 
-I don't know enough about the clearing of these bits to confirm that
-it's OK to move their clearing to be before the mmc_hw_reset().
-Possibly +Brian Norris does?
+---
 
+NOTE: with no patches I couldn't even get my test case to pass w/out
+the BT bits and I swear that used to work before.  ...but I didn't
+debug since the end result (with full card hotplug) is happy-working
+for me.  I'll still use it as further argument that (IMO) full unplug
+/ plug of the card is better it uses more standard code paths and is
+less likely to break.  ;-)
 
-I can't promise that I didn't miss anything, but to the best of my
-knowledge this is good now:
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
