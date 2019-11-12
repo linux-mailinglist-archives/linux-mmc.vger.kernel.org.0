@@ -2,165 +2,125 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5B90F8B3A
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 10:00:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16F7CF8E8F
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2019 12:28:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727192AbfKLJAK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Nov 2019 04:00:10 -0500
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:42331 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726960AbfKLJAJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 04:00:09 -0500
-Received: by mail-ua1-f66.google.com with SMTP id 31so4465289uas.9
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 01:00:09 -0800 (PST)
+        id S1725944AbfKLL2m (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Nov 2019 06:28:42 -0500
+Received: from esa4.hgst.iphmx.com ([216.71.154.42]:14017 "EHLO
+        esa4.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725865AbfKLL2m (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 06:28:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1573558121; x=1605094121;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=YnDbp/+U9PGcnjQkeG30kOI0/QXGVpN2li4hnTTfKBc=;
+  b=SQoxrehnvBv1gLXX4ribhfKelpDKW2dYw+/waET0mgWwgh2NgGa0+OQr
+   IAzYgRdka9raa4xZTaxe5XnLyEj5R2BTfxMfHPRi4NKki+3Eg4/8BpSuR
+   jo1wcr49RN0gviXKMfpuaXjLiJBXYQhrrjROg7DhCck745hl9hDXDK4n0
+   q0TvgpeMchon7pqNh9vmtt0ohbpO/FCQJ7quwgm9XsrSMcpNs9ogevL7+
+   0GOgGI4DZS+qqd38+pxweB147yT/akTectys3cvSq7ZEkMNsAupBy4Rd2
+   k2qQjofggHvdv52l9UmjJTOMHy8znxW3thNXSRxIMb1k8tvUDAylsPa3k
+   A==;
+IronPort-SDR: 19f8MDPgbZk+iqE52uDRyXUBbnOBsOzavkXS7xm+BhL9qV3/hD2kPTqaZb5yzkUz9RFoMeS7l2
+ vVxbenjDZe3ZmuM3GfC89ljLH04sbWXUwfFtN5m/t4i/3gpG0VMy8EN1pNwYgAxxBQWmp04E+P
+ lzJrj2ZZlUs3x5UNFgDepIQcDcCI+U6Gsf7gEv0HEu66ze5+PCsDXE/2xwj4lvBGNSTBwmfRM6
+ pwDtMhHWvSvgawgdUTuEcVMhGbnGvu3CDbpkGEHlgpXQvoRhyQ5B3cbcX5G53KkPqEwpfvnV1L
+ RAM=
+X-IronPort-AV: E=Sophos;i="5.68,296,1569254400"; 
+   d="scan'208";a="122745035"
+Received: from mail-sn1nam04lp2055.outbound.protection.outlook.com (HELO NAM04-SN1-obe.outbound.protection.outlook.com) ([104.47.44.55])
+  by ob1.hgst.iphmx.com with ESMTP; 12 Nov 2019 19:26:50 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WXVEa53hIosyY0uOveYmlsMuz83xNQeFUn1xUZIbVyR6gV2j0SnRmcPkVcHXD/ZrYjXVcpSix3rJo6OGTofjYzoj7anY+3qvqpff73Fzb0S29JFAqS/uljGgt+SA9+53lp1S6it3Tjl7LIeqKZ6w/JGoo4LBqcvDnaDp130dMoFxAv3ymyTiKKgKNiaBGqnMJxwfL5JxPgCJh60csuRWhESeIypfdq9Uf5Rf62rmpddh36hk1gUjUiKjFnmN3SvC7FE+rIpXlI6fHNgjfqC93/1IUmV5Md2ujig4ei6oG9EUyO0BCjT53L7wmEliUvWlBB+wbnFmVG0YgQBI2eV7tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WleKgJX/PDyqHX/LepDO9pdOODcbPkccfhN6uSBC7aI=;
+ b=PVdhaP8sKXBYkj81UAtuQy3uHWkQd6XssR6Ku7mHp7/eFQrHMN1EHamkTvvE6dp0kXSFMMZWs/rrLuNcdwuu+ogi5Hzp4Ugb4/kObBdEbBxdLwfKfGrvanUjVhpe3u9yPai8Uigno+wWNGOdYezxClOTkrllrsWd22ibFmLGwIqAyCd6j/ica9Za3Vg4oXwCj2KTV5w22IJYgPx09Ub4ExvdN/tT2L4zN45rbGa+Qjl/aTeGX54b77ktULV1lBYung3RBTHT3GAwGSBuEcadudjb2po+LAYEGCkJxm9t9DPKhSo09y+L51+6OcgHet4Lt6CRPzyjgkzPq8Oxm9Ku5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1mTS09YV5sLbGRhR8eLBR8az5kI+VEtyXkMiASWLN98=;
-        b=YOUp0Sb06dRuaudxR7t7caTwSTstbvIIdATOS4cpPVNBtB8mbaIJyxZAurEvSsKwhu
-         j6KD9pvfJYz2QJr9Wg8Lkuyx0LEC4wAwEfKx/Oti0eD8qvVCV0JQ6KoTRYOGcEDL6Qp6
-         GECThp5a8BbccT0sBfHGbUfvnicncyqsspf6ISAwZ7HYOxZ1EzbF6I5mchGssao0Hv60
-         GEltbF2Jfx1T1ZMhrqJwIHFXhSEVlYR9nWi9gL/l/q+lY7n3nZGptVdTOUwpA9LDRqBs
-         zcn8s15pCOUOXG2SlncwUP0j8Ql61wdbe1m5siOyJ50PUmu+FxdXenD9CYpRSxaO3bI8
-         rV+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1mTS09YV5sLbGRhR8eLBR8az5kI+VEtyXkMiASWLN98=;
-        b=RDM1wjGhIO6139tHCpqjr0ddaj3477SCH/W4fgub5jmP56VEBNA0BRQ3CkxVv1kgkx
-         mu4yfE521y9+JI01WtBhxHV3ZCfAPeRr89lotI5nUQi6fbnD3uIe8ys/zfkMAW+pwAVD
-         tvHY47vGrni2HXLAgxOT/oRpUkH1alH40JFuTgMS6iZoWzBzXg1LnBHHjldDvMyO6AgI
-         EFHiPyZHd/Pa/erTGqv7u1gyawmmrog7WI9byjWcnmGiHwzv8FiShDPongKnwpUfrSZ2
-         edspGjZD6PxspAclsUvhiQHLvdZZzw+1QM74TFI/u1I9IFEnVz5ADOYd2r/7OlrLPK6r
-         GZhw==
-X-Gm-Message-State: APjAAAWvF9aYdK+c79fsaPlqFW2ydwUls1OYJnAzo12ZaivVp6zGcXub
-        wZG8LZvnmG2EFRQnZM7eEpFKnwrPLCPAXTdHbUydJw==
-X-Google-Smtp-Source: APXvYqxabd40sALVZ8OQ7ToAPJNZ/uS9Scd5B48SraEZjMFQA9vGEPI0Qj3t3JkXgO0wuY66RFrxxze3Ex9ZHJlQsok=
-X-Received: by 2002:ab0:24ce:: with SMTP id k14mr19253276uan.15.1573549208426;
- Tue, 12 Nov 2019 01:00:08 -0800 (PST)
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WleKgJX/PDyqHX/LepDO9pdOODcbPkccfhN6uSBC7aI=;
+ b=rrvuFAUOwEuzPz+ZUQXhjodVu6fXL/LGiaHRbhrZxgbdKiSsU9i6o7pr6lkawhZ1b395BCJZ0dtha+V9Bw1WCWATK242Qry56tmU2e3VNP7hgRX3Wgmql7H5atYFI1i2Atx9hIBDmWit8wE6XhQHB2x6q7LRgFxlJKdw+Tl5PJo=
+Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
+ MN2PR04MB6317.namprd04.prod.outlook.com (52.132.170.137) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2430.20; Tue, 12 Nov 2019 11:26:49 +0000
+Received: from MN2PR04MB6991.namprd04.prod.outlook.com
+ ([fe80::5852:6199:7952:c2ce]) by MN2PR04MB6991.namprd04.prod.outlook.com
+ ([fe80::5852:6199:7952:c2ce%7]) with mapi id 15.20.2430.027; Tue, 12 Nov 2019
+ 11:26:49 +0000
+From:   Avri Altman <Avri.Altman@wdc.com>
+To:     Lars Pedersen <lapeddk@gmail.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "michael.heimpold@i2se.com" <michael.heimpold@i2se.com>
+Subject: RE: [PATCH v3] mmc-utils: Add AUTO_EN support in the BKOPS_EN
+Thread-Topic: [PATCH v3] mmc-utils: Add AUTO_EN support in the BKOPS_EN
+Thread-Index: AQHVmH9mz6RGDfDBMEiPITk6bv1HAKeHZfvA
+Date:   Tue, 12 Nov 2019 11:26:49 +0000
+Message-ID: <MN2PR04MB6991723BC215D74DAF6D1E30FC770@MN2PR04MB6991.namprd04.prod.outlook.com>
+References: <20191111110051.16490-1-lapeddk@gmail.com>
+In-Reply-To: <20191111110051.16490-1-lapeddk@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Avri.Altman@wdc.com; 
+x-originating-ip: [212.25.79.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: d604501d-1c55-49f2-2cc7-08d7676335b5
+x-ms-traffictypediagnostic: MN2PR04MB6317:
+x-microsoft-antispam-prvs: <MN2PR04MB63175E8D262FA5650C56170DFC770@MN2PR04MB6317.namprd04.prod.outlook.com>
+wdcipoutbound: EOP-TRUE
+x-ms-oob-tlc-oobclassifiers: OLM:232;
+x-forefront-prvs: 021975AE46
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(346002)(39860400002)(376002)(366004)(396003)(189003)(199004)(9686003)(478600001)(229853002)(14454004)(6436002)(316002)(8676002)(256004)(81156014)(55016002)(81166006)(3846002)(6116002)(6246003)(86362001)(8936002)(186003)(7736002)(2501003)(52536014)(476003)(446003)(76116006)(26005)(99286004)(74316002)(486006)(66556008)(64756008)(66446008)(2906002)(66476007)(33656002)(71190400001)(71200400001)(102836004)(76176011)(4744005)(25786009)(66066001)(2201001)(6506007)(66946007)(5660300002)(7696005)(11346002)(305945005)(110136005);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB6317;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: gEcYriUkoNvpM9jx9nIBHC62AUsXwHMiaYm9fjeiwRt06fUlBilYBanbmgK1BE1pgRqL/HKEY+6PmxBTEMC3TKp3+b4cDwSW0gupzrwNRYOz1bl1Y8AAZeQvzCs5C2vK1JnJhNTrehMjwn4/j0T6AOCEkSzbailwEjfdjMERBuKnFP3dQUO5VGXwtOK94tqeoNxiAy22jjJHjevlnclMQgAzOn8D0H45HmefMVdGpugRVh9AxGmUkPQ9fHkpB20c6agzEjcgsz9dgHP2VE6Wb8sPjmTI+Q51Z2RsuQS/XpUstoG/gzVePjAIwcr12uqMGxx6Gm4msnjXZI5kHRRtdQB0rz/eE7nrJZ8GwH8qWn11tkKKjMuW/9ruZJ/85zA7kocIkk7wtfGyQUULZi7asEpbeZKP1GDxnOhpmn+phgP45Qz9qUpG5OYmIBQBJPO+
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <25466090-3b24-2695-10fb-88c59be3f149@fivetechno.de>
-In-Reply-To: <25466090-3b24-2695-10fb-88c59be3f149@fivetechno.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 12 Nov 2019 09:59:32 +0100
-Message-ID: <CAPDyKFqo76wi0-7LQqSXuH3YOUSdTTLySzsxEGkEvZayAPuj6g@mail.gmail.com>
-Subject: Re: [PATCH v2] arm64: dts: rockchip: Add SDR104 mode to SD-card I/F
- on rk3399-roc-pc
-To:     Markus Reichl <m.reichl@fivetechno.de>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d604501d-1c55-49f2-2cc7-08d7676335b5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2019 11:26:49.4592
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: EycdCTB/At0YpvkEMy6BhAn8HKZA3Yr1jXVnbrXaUtUWlzkPJ6gPQp8ut5vPpPU6Z4iZB6mfBCPf1lUS9LLehw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB6317
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 12 Nov 2019 at 09:45, Markus Reichl <m.reichl@fivetechno.de> wrote:
->
-> Add SDR104 capability and regulators to SD card node.
-> While at it, fix a typo in lcd pinctrl and remove two
-> undocumented bindings from pmic.
->
-> Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
+Hi,
 
-FWIW:
+>=20
+> Signed-off-by: Lars Pedersen <lapeddk@gmail.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
 
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-Kind regards
-Uffe
+> --- a/mmc_cmds.c
+> +++ b/mmc_cmds.c
+> @@ -734,13 +734,15 @@ int do_write_bkops_en(int nargs, char **argv)
+>         __u8 ext_csd[512], value =3D 0;
+>         int fd, ret;
+>         char *device;
+> +       char *en_type;
+A small nit - preferably do your strcmp and assign some type variable,
+But that's fine as well.
 
-> ---
-> v2: Remove always-on from vcc3v0_sd
-> ---
->  .../boot/dts/rockchip/rk3399-roc-pc.dtsi      | 30 +++++++++++++++----
->  1 file changed, 24 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-> index d1eb55c855b3..a31099f7620b 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-> @@ -135,6 +135,19 @@
->                 vin-supply = <&vcc_1v8>;
->         };
->
-> +       vcc3v0_sd: vcc3v0-sd {
-> +               compatible = "regulator-fixed";
-> +               enable-active-high;
-> +               gpio = <&gpio4 RK_PD6 GPIO_ACTIVE_HIGH>;
-> +               pinctrl-names = "default";
-> +               pinctrl-0 = <&vcc3v0_sd_en>;
-> +               regulator-name = "vcc3v0_sd";
-> +               regulator-boot-on;
-> +               regulator-min-microvolt = <3000000>;
-> +               regulator-max-microvolt = <3000000>;
-> +               vin-supply = <&vcc3v3_sys>;
-> +       };
-> +
->         vcc3v3_sys: vcc3v3-sys {
->                 compatible = "regulator-fixed";
->                 regulator-name = "vcc3v3_sys";
-> @@ -293,8 +306,6 @@
->                 vcc10-supply = <&vcc3v3_sys>;
->                 vcc11-supply = <&vcc3v3_sys>;
->                 vcc12-supply = <&vcc3v3_sys>;
-> -               vcc13-supply = <&vcc3v3_sys>;
-> -               vcc14-supply = <&vcc3v3_sys>;
->                 vddio-supply = <&vcc_3v0>;
->
->                 regulators {
-> @@ -576,7 +587,7 @@
->
->         lcd-panel {
->                 lcd_panel_reset: lcd-panel-reset {
-> -                       rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_up>;
-> +                       rockchip,pins = <4 RK_PD5 RK_FUNC_GPIO &pcfg_pull_up>;
->                 };
->         };
->
-> @@ -602,6 +613,10 @@
->                 vsel2_gpio: vsel2-gpio {
->                         rockchip,pins = <1 RK_PB6 RK_FUNC_GPIO &pcfg_pull_down>;
->                 };
-> +
-> +               pmic_int_l: pmic-int-l {
-> +                       rockchip,pins = <1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
-> +               };
->         };
->
->         sdio-pwrseq {
-> @@ -610,9 +625,9 @@
->                 };
->         };
->
-> -       pmic {
-> -               pmic_int_l: pmic-int-l {
-> -                       rockchip,pins = <1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
-> +       sdmmc {
-> +               vcc3v0_sd_en: vcc3v0-sd-en {
-> +                       rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
->                 };
->         };
->
-> @@ -667,6 +682,9 @@
->         cd-gpios = <&gpio0 RK_PA7 GPIO_ACTIVE_LOW>;
->         disable-wp;
->         max-frequency = <150000000>;
-> +       sd-uhs-sdr104;
-> +       vmmc-supply = <&vcc3v0_sd>;
-> +       vqmmc-supply = <&vcc_sdio>;
->         pinctrl-names = "default";
->         pinctrl-0 = <&sdmmc_clk &sdmmc_cmd &sdmmc_bus4>;
->         status = "okay";
-> --
-> 2.20.1
->
+Thanks,
+Avri
+
