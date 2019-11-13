@@ -2,87 +2,264 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE3B4FAD0F
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 10:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99F0AFAE19
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 11:09:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727189AbfKMJfW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 Nov 2019 04:35:22 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:47520 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727185AbfKMJfV (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 04:35:21 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAD9Z8pX120169;
-        Wed, 13 Nov 2019 03:35:08 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1573637708;
-        bh=u3ZvJsFOOfO8a0rAzgmvXe0foFjNhQpaW0ZsCfur1kw=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=bn7l0zfNnZ8KC8BrugwAGVFgVIdZalaFTGg9uLrXOOvAW56pIu7/5UpSqQaM9YPBB
-         YkYcxCd1OXO7O4qbbwFCGsXIIqVWIVlt4RaL+7wRcwEmjJiB5AHj0l2ZlvfRe2kgwC
-         Oc4sjAEheYmA2JJAoVaqrsski1WLpcR1YCckrAbM=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAD9Z8s4051456;
-        Wed, 13 Nov 2019 03:35:08 -0600
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 13
- Nov 2019 03:34:50 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 13 Nov 2019 03:34:50 -0600
-Received: from feketebors.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAD9Z0hV086866;
-        Wed, 13 Nov 2019 03:35:06 -0600
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-To:     <ulf.hansson@linaro.org>, <ludovic.desroches@microchip.com>
-CC:     <vkoul@kernel.org>, <linux-mmc@vger.kernel.org>,
+        id S1726155AbfKMKJY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Nov 2019 05:09:24 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:13130 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726107AbfKMKJX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 05:09:23 -0500
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xADA7X3u000396;
+        Wed, 13 Nov 2019 11:08:58 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=LN9GfHT8J8E/J1FjZzDKs8dd1ZDPcHLn4UnTjLS5qt4=;
+ b=vqtpbLG63F4Fmtdn+dCCkh1RRje6fgseyGikfy6WQjO52GTKNCqqEyUHWcZlkxOMdueN
+ j8Uy/5MXgBB87+8ij+kPNObM3MLUOGv1lghbIbMFRFl4ttJ4uYK4HU/dOee1DAeMHx0h
+ YaqZylg1ivtyLyzz820RX27YUMDy3yz2tF0T+gxiieJQOwwh30RdR0wISgqvy3Z2LJo1
+ iCs3QFp8+zadRPGia0VtWpuYzVdBaq+89mAOKw/83ikq748ssEKmE2qcAH5+asHR4iOt
+ pFXwgbK/IpVDk7Gj0X7dIqLyNjCpJRN7AJrAL1L0xsq6rwQ36Thm5Y4qQVsSIx2tCKiD 9g== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2w7psf7f1p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 13 Nov 2019 11:08:58 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 98F62100038;
+        Wed, 13 Nov 2019 11:08:57 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 78AB72B494E;
+        Wed, 13 Nov 2019 11:08:57 +0100 (CET)
+Received: from lmecxl0923.lme.st.com (10.75.127.50) by SFHDAG6NODE1.st.com
+ (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 13 Nov
+ 2019 11:08:56 +0100
+Subject: Re: [PATCH 1/3] mmc: mmci: Support odd block sizes for ux500v2 and
+ qcom variant
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        <linux-mmc@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <nicolas.ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>
-Subject: [PATCH 2/2] mmc: moxart: Use dma_request_chan() directly for channel request
-Date:   Wed, 13 Nov 2019 11:36:16 +0200
-Message-ID: <20191113093616.32474-3-peter.ujfalusi@ti.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191113093616.32474-1-peter.ujfalusi@ti.com>
-References: <20191113093616.32474-1-peter.ujfalusi@ti.com>
+        Stephan Gerhold <stephan@gerhold.net>
+CC:     Russell King <linux@arm.linux.org.uk>,
+        Brian Masney <masneyb@onstation.org>,
+        Niklas Cassel <niklas.cassel@linaro.org>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+References: <20191113075335.31775-1-linus.walleij@linaro.org>
+ <20191113075335.31775-2-linus.walleij@linaro.org>
+From:   Ludovic BARRE <ludovic.barre@st.com>
+Message-ID: <e52b49cf-6f16-85f1-455c-3fe95bab5aef@st.com>
+Date:   Wed, 13 Nov 2019 11:08:56 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
+In-Reply-To: <20191113075335.31775-2-linus.walleij@linaro.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Originating-IP: [10.75.127.50]
+X-ClientProxiedBy: SFHDAG4NODE3.st.com (10.75.127.12) To SFHDAG6NODE1.st.com
+ (10.75.127.16)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-13_02:2019-11-13,2019-11-13 signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-dma_request_slave_channel_reason() is:
-#define dma_request_slave_channel_reason(dev, name) \
-	dma_request_chan(dev, name)
+Tested-by: Ludovic Barre <ludovic.barre@st.com>
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
----
- drivers/mmc/host/moxart-mmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mmc/host/moxart-mmc.c b/drivers/mmc/host/moxart-mmc.c
-index a0670e9cd012..fc6b9cf27d0b 100644
---- a/drivers/mmc/host/moxart-mmc.c
-+++ b/drivers/mmc/host/moxart-mmc.c
-@@ -608,8 +608,8 @@ static int moxart_probe(struct platform_device *pdev)
- 	host->timeout = msecs_to_jiffies(1000);
- 	host->sysclk = clk_get_rate(clk);
- 	host->fifo_width = readl(host->base + REG_FEATURE) << 2;
--	host->dma_chan_tx = dma_request_slave_channel_reason(dev, "tx");
--	host->dma_chan_rx = dma_request_slave_channel_reason(dev, "rx");
-+	host->dma_chan_tx = dma_request_chan(dev, "tx");
-+	host->dma_chan_rx = dma_request_chan(dev, "rx");
- 
- 	spin_lock_init(&host->lock);
- 
--- 
-Peter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
+Le 11/13/19 à 8:53 AM, Linus Walleij a écrit :
+> From: Ulf Hansson <ulf.hansson@linaro.org>
+> 
+> This is something like the 5th time this patch is posted,
+> so let's try to fix this now, once and for all.
+> 
+> For the ux500v2 variant of the PL18x block, odd block sizes are
+> supported. This is necessary to support some SDIO transfers
+> such as single bytes. This also affects the QCOM MMCI variant.
+> 
+> This will work fine for PIO using IRQs: SDIO packets are
+> accepted down to single bytes and the transfers go through
+> just fine.
+> 
+> This patch has proven necessary for enabling SDIO for WLAN on
+> PostmarketOS-based Ux500 platforms.
+> 
+> This patch is based on Ulf Hansson's patch
+> http://www.spinics.net/lists/linux-mmc/msg12160.html
+> 
+> Ulf noted on an earlier iteration in:
+> https://marc.info/?l=linux-mmc&m=140845189316370&w=2
+> 
+> "There are some prerequisites of the data buffers to supports
+> any block size, at least for ux500. (...) The conclusion from
+> the above is that we need to adopt mmci_pio_write() to handle
+> corner cases."
+> 
+> This points back to a discussion in 2012. The main point was
+> made by Russell in this message:
+> https://marc.info/?l=linux-arm-kernel&m=135351237018301&w=2
+> 
+> IIUC this pertains to this code (now gone from the patch):
+> 
+>    if (data->sg->offset & 3) {
+>        dev_err(...);
+>        return -EINVAL;
+>    }
+> 
+> This hit Stephan as he noticed that DMA (DMA40) would not work
+> with the MMCI driver, so this patch combined with disabling
+> DMA would do the trick. That way we don't toss unaligned
+> accesses at the DMA engine as SDIO apparently tends to
+> do. (This is not a problem when writing ordinary block device
+> blocks as these are always 512 bytes aligned on a 4-byte
+> boundary.)
+> 
+> As Ulf notes, odd SG offsets like this should be handled
+> by the driver even if we run it in DMA mode. I conclude
+> it must be the duty of the DMA driver to say NO to SG
+> offsets it cannot handle, or otherwise bitstuff things
+> around to avoid the situation.
+> 
+> So as a first step make sure errors are propagated upward
+> from the DMA engine, and assume the DMA engine will say no
+> to things with weird SG offsets that it cannot handle, and
+> then the driver will fall back to using PIO.
+> 
+> It might be that some DMA engines (such as the Ux500
+> DMA40) do not properly say no to sglists with uneven
+> offsets, or ignore the offset altogether resulting in
+> unpredictable behavior. That is in that case a bug in the
+> DMA driver and needs to be fixed there. I got the impression
+> that the Qualcomm DMA actually can handle these odd
+> alignments without problems.
+> 
+> (Make a drive-by fix for datactrl_blocksz, misspelled.)
+> 
+> Cc: Ludovic Barre <ludovic.barre@st.com>
+> Cc: Brian Masney <masneyb@onstation.org>
+> Cc: Stephan Gerhold <stephan@gerhold.net>
+> Cc: Niklas Cassel <niklas.cassel@linaro.org>
+> Cc: Russell King <rmk+kernel@armlinux.org.uk>
+> Tested-by: Stephan Gerhold <stephan@gerhold.net>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v2->v3:
+> - Repost with the inclusion of other patches.
+> ChangeLog v1->v2:
+> - Specify odd blocksize field to 1 bit (:1)
+> - Specify that STMMC supports odd block sizes
+> - Collect Stephan's test tag
+> ---
+>   drivers/mmc/host/mmci.c | 20 ++++++++++++++++----
+>   drivers/mmc/host/mmci.h |  6 +++++-
+>   2 files changed, 21 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+> index c37e70dbe250..3ffcdf78a428 100644
+> --- a/drivers/mmc/host/mmci.c
+> +++ b/drivers/mmc/host/mmci.c
+> @@ -168,6 +168,7 @@ static struct variant_data variant_ux500 = {
+>   	.cmdreg_srsp		= MCI_CPSM_RESPONSE,
+>   	.datalength_bits	= 24,
+>   	.datactrl_blocksz	= 11,
+> +	.datactrl_odd_blocksz	= true,
+>   	.datactrl_mask_sdio	= MCI_DPSM_ST_SDIOEN,
+>   	.st_sdio		= true,
+>   	.st_clkdiv		= true,
+> @@ -201,6 +202,7 @@ static struct variant_data variant_ux500v2 = {
+>   	.datactrl_mask_ddrmode	= MCI_DPSM_ST_DDRMODE,
+>   	.datalength_bits	= 24,
+>   	.datactrl_blocksz	= 11,
+> +	.datactrl_odd_blocksz	= true,
+>   	.datactrl_mask_sdio	= MCI_DPSM_ST_SDIOEN,
+>   	.st_sdio		= true,
+>   	.st_clkdiv		= true,
+> @@ -260,6 +262,7 @@ static struct variant_data variant_stm32_sdmmc = {
+>   	.datacnt_useless	= true,
+>   	.datalength_bits	= 25,
+>   	.datactrl_blocksz	= 14,
+> +	.datactrl_odd_blocksz	= true,
+>   	.stm32_idmabsize_mask	= GENMASK(12, 5),
+>   	.init			= sdmmc_variant_init,
+>   };
+> @@ -279,6 +282,7 @@ static struct variant_data variant_qcom = {
+>   	.data_cmd_enable	= MCI_CPSM_QCOM_DATCMD,
+>   	.datalength_bits	= 24,
+>   	.datactrl_blocksz	= 11,
+> +	.datactrl_odd_blocksz	= true,
+>   	.pwrreg_powerup		= MCI_PWR_UP,
+>   	.f_max			= 208000000,
+>   	.explicit_mclk_control	= true,
+> @@ -447,10 +451,11 @@ void mmci_dma_setup(struct mmci_host *host)
+>   static int mmci_validate_data(struct mmci_host *host,
+>   			      struct mmc_data *data)
+>   {
+> +	struct variant_data *variant = host->variant;
+> +
+>   	if (!data)
+>   		return 0;
+> -
+> -	if (!is_power_of_2(data->blksz)) {
+> +	if (!is_power_of_2(data->blksz) && !variant->datactrl_odd_blocksz) {
+>   		dev_err(mmc_dev(host->mmc),
+>   			"unsupported block size (%d bytes)\n", data->blksz);
+>   		return -EINVAL;
+> @@ -515,7 +520,9 @@ int mmci_dma_start(struct mmci_host *host, unsigned int datactrl)
+>   		 "Submit MMCI DMA job, sglen %d blksz %04x blks %04x flags %08x\n",
+>   		 data->sg_len, data->blksz, data->blocks, data->flags);
+>   
+> -	host->ops->dma_start(host, &datactrl);
+> +	ret = host->ops->dma_start(host, &datactrl);
+> +	if (ret)
+> +		return ret;
+>   
+>   	/* Trigger the DMA transfer */
+>   	mmci_write_datactrlreg(host, datactrl);
+> @@ -872,9 +879,14 @@ int mmci_dmae_prep_data(struct mmci_host *host,
+>   int mmci_dmae_start(struct mmci_host *host, unsigned int *datactrl)
+>   {
+>   	struct mmci_dmae_priv *dmae = host->dma_priv;
+> +	int ret;
+>   
+>   	host->dma_in_progress = true;
+> -	dmaengine_submit(dmae->desc_current);
+> +	ret = dma_submit_error(dmaengine_submit(dmae->desc_current));
+> +	if (ret < 0) {
+> +		host->dma_in_progress = false;
+> +		return ret;
+> +	}
+>   	dma_async_issue_pending(dmae->cur);
+>   
+>   	*datactrl |= MCI_DPSM_DMAENABLE;
+> diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
+> index 833236ecb31e..c7f94726eaa1 100644
+> --- a/drivers/mmc/host/mmci.h
+> +++ b/drivers/mmc/host/mmci.h
+> @@ -278,7 +278,10 @@ struct mmci_host;
+>    * @stm32_clkdiv: true if using a STM32-specific clock divider algorithm
+>    * @datactrl_mask_ddrmode: ddr mode mask in datactrl register.
+>    * @datactrl_mask_sdio: SDIO enable mask in datactrl register
+> - * @datactrl_blksz: block size in power of two
+> + * @datactrl_blocksz: block size in power of two
+> + * @datactrl_odd_blocksz: true if block any sizes are supported, such as one
+> + *		      single character, as is necessary when using some SDIO
+> + *		      devices.
+>    * @datactrl_first: true if data must be setup before send command
+>    * @datacnt_useless: true if you could not use datacnt register to read
+>    *		     remaining data
+> @@ -323,6 +326,7 @@ struct variant_data {
+>   	unsigned int		datactrl_mask_ddrmode;
+>   	unsigned int		datactrl_mask_sdio;
+>   	unsigned int		datactrl_blocksz;
+> +	u8			datactrl_odd_blocksz:1;
+>   	u8			datactrl_first:1;
+>   	u8			datacnt_useless:1;
+>   	u8			st_sdio:1;
+> 
