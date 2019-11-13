@@ -2,91 +2,106 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F17B2FB12F
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 14:17:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8119FB142
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 14:24:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbfKMNRy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 Nov 2019 08:17:54 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:44260 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726186AbfKMNRy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 08:17:54 -0500
-Received: by mail-lf1-f66.google.com with SMTP id z188so1904277lfa.11
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Nov 2019 05:17:52 -0800 (PST)
+        id S1727032AbfKMNYm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Nov 2019 08:24:42 -0500
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:34694 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726957AbfKMNYm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 08:24:42 -0500
+Received: by mail-lf1-f68.google.com with SMTP id y186so1967755lfa.1
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Nov 2019 05:24:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ODdjAsv6V42vaVg7OoS5YP4kHhdsnwsr8eTSaT+/TyI=;
-        b=cAUOWGd9VlFqH5jzJiEP2SX1oEbTG4eUyljPTjFnPWaCuBIZtZIyYnQqxHEiu+PQGO
-         BrEcQ1Cu8NQJZsEWNx1ccJ+yIfODPTVv8Vv3Vc7xEBKc8HhipY6JuaEqEGLlHZQNdtwS
-         AXkJNfOi2XFtLUFJJZcjnDVlsGlzBx2env2DS39kWlq7d91iilbK6kK6oH6xXxtKAFsT
-         zVyCS9YUNqYayXwTh5RfehPgMvuA2OVdINitY02+JaUS7kvMM4A/+1OJQsUdReTkCV44
-         8AEwDVllvRLQAD06lvZkK2qMCyoE5UaOghUuzZbaTrteieKE8pIyvgHinDJ4YthMAr3W
-         iglA==
+        bh=GQo/splhUGv9XSw+8c37KzMY1kcM0qsjSZS8+fTXlnY=;
+        b=YuZmtIb4LvusfIFt5PoAHeeujiVoF8Ldptn3dd5cjJawoDdzoUxMIMZtvujA2uYgWT
+         0d+IahXjLhwTY238iQKTgr+SZ6tp8WRerCIg8PbT68bOZbDdQ+6uPM/Cw7lT//H6AlJY
+         YH7a2c4ZIuy5uYe5jeLUIq5qdorAGyfSvAU7VOrHsOnALDt/3z09g5j097HFsLaedU7q
+         0Ra5Vk3Ks+FmME35qTjr8SoaRzHAaVtQT8rCyWeaV3xiw5xVkqK30LwL2EO4V7kUNRF4
+         Z7Al2qFfL9aU9esnLRc6vTGLvZgU9d+QElqmlg9ziVfAqJCVN0lpHEGUBgsvW79zZcis
+         Gi8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ODdjAsv6V42vaVg7OoS5YP4kHhdsnwsr8eTSaT+/TyI=;
-        b=ndhxBgfeyQjyfU09LM8J78t9wr6aTh82tRDLVf0DcG4o2i9GT2/aeId5LOOYfwsTXw
-         dGpy+qvhxtWz/nxNNcmtlXNUsWUyYupLBEnTT1qXAuwzOfrbxwZkCfY7Pr2HVYCMnkmg
-         lBIMBY/zkTxrnzvibDjFNbAn4AaZS82NyIRNV68OhNDLzg2rsZNy2F6M0/ta4Kjsof+s
-         fBgAQH29XlaaFMd/a/bVyvkwC3qXTFCU/dUxNIkTnAtE2ZglEO8LDx7R1mO6HS9oOUcN
-         Kjj1cXWAg7G4+fQxe+TpjZLGPyU9ccnUcWpE7OKF7wHD6Gpuz0gA5eAGpUmloPzFUC7o
-         ayGA==
-X-Gm-Message-State: APjAAAWPvRSJA7Tt74vIurhfQvutCeURvwLZ9QAxJyV6GZ78vNlhoRfv
-        ncp4FpxAk+yyVC3IPtsbgza9j1H1QkB+1iJB3IuXrIL4oLw=
-X-Google-Smtp-Source: APXvYqx8siTYYDaL+IE0BEI1+P+9W94Je2xzQCR4dKQpvN8lQXygO2DokX4wXnJNdzV0d0Q/PDb6Oiww7sjiGj1A9XE=
-X-Received: by 2002:ac2:48b8:: with SMTP id u24mr1361429lfg.133.1573651072109;
- Wed, 13 Nov 2019 05:17:52 -0800 (PST)
+        bh=GQo/splhUGv9XSw+8c37KzMY1kcM0qsjSZS8+fTXlnY=;
+        b=f97vH1/ymqMXm3o/zc1jdA8Zf0fqPtQjup+yTsyuUZOIhAmpgWYZUJk7Q/DlrZr1z/
+         A/vMtrFRYfdB+tp/WqpnEhxtBjE50HRqL0xy/K5DJCqynzhnc+lrUzEjIsYztdWPM1PC
+         8pkk/iwMeF1EzRwlsTxLZ9IYr6clRMwaEeadM0/mH96mwHVa9vhwcBHJIdV1ePNABhbQ
+         BoZcQgiCZUWl1qTQcykj39n/rAoxvqZohQSonqPYQpP8JT1sUnRDVEQvoTwfUf386Vd6
+         4MvPsuHdzvpolq4/PCMHHzZJi5UqF/C1WNOkvqo7vLu/pWCxSugZefQzRsWghYjB0KF7
+         +bRw==
+X-Gm-Message-State: APjAAAWYjbiRuXgXVRJYLISrqyQJeRBHbFTMVeY0UL9jRF1x3bmJwYsC
+        KHiv/kxos7zeSTJWjj3NpgotYgCj2d6lm2nCqTeAjQ==
+X-Google-Smtp-Source: APXvYqx2WrB+YBqtNKpqKOlKtR1VDhJUWFftKmthD7IevKwMwOuLXKtvmD0wiAB1j7jKkZaJjG40omA9GmjrLHMb5+8=
+X-Received: by 2002:ac2:48b8:: with SMTP id u24mr1383965lfg.133.1573651478899;
+ Wed, 13 Nov 2019 05:24:38 -0800 (PST)
 MIME-Version: 1.0
-References: <20191113075335.31775-1-linus.walleij@linaro.org>
- <20191113075335.31775-2-linus.walleij@linaro.org> <CAPDyKFqx-0J0ck-hyeJsX8LrOP+BWiS6PihLd1Y3EMoXX+qYiQ@mail.gmail.com>
-In-Reply-To: <CAPDyKFqx-0J0ck-hyeJsX8LrOP+BWiS6PihLd1Y3EMoXX+qYiQ@mail.gmail.com>
+References: <20191113075335.31775-1-linus.walleij@linaro.org> <20191113075335.31775-4-linus.walleij@linaro.org>
+In-Reply-To: <20191113075335.31775-4-linus.walleij@linaro.org>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 13 Nov 2019 14:17:40 +0100
-Message-ID: <CACRpkdZhMjWyWQav1HhmfDkvUxOU8gGGbYJrd-tRXw8u+d2-Rg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mmc: mmci: Support odd block sizes for ux500v2 and
- qcom variant
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+Date:   Wed, 13 Nov 2019 14:24:27 +0100
+Message-ID: <CACRpkdZLiy4BSh1JYtQj0HjKk3=qdyKoj9tQv4HrthDi=4e-Bg@mail.gmail.com>
+Subject: Re: [PATCH 3/3] mmc: mmci: Proper PIO residue handling
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Russell King <linux@arm.linux.org.uk>,
+        Stephan Gerhold <stephan@gerhold.net>
+Cc:     Russell King <linux@arm.linux.org.uk>,
         Ludovic Barre <ludovic.barre@st.com>,
         Brian Masney <masneyb@onstation.org>,
         Niklas Cassel <niklas.cassel@linaro.org>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+        Russell King <rmk+kernel@armlinux.org.uk>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Nov 13, 2019 at 12:06 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+On Wed, Nov 13, 2019 at 8:53 AM Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> > From: Ulf Hansson <ulf.hansson@linaro.org>
-(...)
-> There is no need to keep my authorship of the patch, it's very much
-> different than the original. I would rather replace it that with a
-> suggested-by tag.
+> +               /* Pack the residue into a 32bit word */
+> +               for (i = 0; i < host->pio_write_residue_sz; i++) {
+> +                       val |= host->pio_write_residue[i];
+> +                       val <<= 8;
+> +               }
+> +               /* Top up with new data */
+> +               for (i = 0; i < fill; i++) {
+> +                       val |= *ptr;
+> +                       val <<= 8;
+> +                       ptr++;
+> +                       remain--;
+> +               }
 
-OK
+I'm worried that I might have gotten this wrong.
 
-> This is too early in the series. You need to deal with the DMA and pio
-> issues, before releasing this constraint.
->
-> In other words, I would rather split this patch in two pieces. One
-> patch dealing with dma submit error path, placed first in the series
-> and another patch that adds the odd block sizes variant and releases
-> the constraint, which should comes last.
->
-> Makes sense?
+iowrite32_rep() reads the data little-endian (native endianness)
+from memory does it not?
 
-Sure thing, I fix. We need to get the whole slew tested first then
-I'll collect the Tested-by's and reorder and split.
+Bytes  [0 1 2 3] end up in the FIFO like [3 2 1 0].
+
+So it will pack the first byte into the lowest 8 bits, second byte into
+bits 8-15 etc.
+
+So I should rewrite all the loops like this:
+
+for (i = 0; i < host->pio_write_residue_sz; i++) {
+        val |= (host->pio_write_residue[i] << 24);
+        val >>= 8;
+}
+
+So I shift the value down from the high bits instead of the
+other way around.
+
+This also gives a pretty plausible hint att what might be wrong with the
+DMA in non-divisible by 4.
+
+As suggested by Stephan in another context, I will try to set up my
+own test rig for this.
 
 Yours,
 Linus Walleij
