@@ -2,27 +2,27 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DD5CFA476
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 03:17:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6831DFA1CC
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 03:00:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728471AbfKMCRM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Nov 2019 21:17:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48186 "EHLO mail.kernel.org"
+        id S1728066AbfKMB7c (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Nov 2019 20:59:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54006 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729382AbfKMB4I (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 12 Nov 2019 20:56:08 -0500
+        id S1730285AbfKMB72 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 12 Nov 2019 20:59:28 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BECAD2245D;
-        Wed, 13 Nov 2019 01:56:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6666122469;
+        Wed, 13 Nov 2019 01:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573610167;
-        bh=PoHu/DhS+f5VCbwNRPxqlH6ZIVZ4cG59h9sqHS6KGpY=;
+        s=default; t=1573610367;
+        bh=xfiRYlBrrR42DVKHJwACyiYlj/Argp6WATZos1+CRlg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mYSR6vwuwedjCDq10mEhSWx9UE8gDtPjtSyQCjlOTuQIubwvAakqeURHsZy3B9TD+
-         svAJR1mlW0ZvxT/7xy1ByzUPSvS/IzGAS2VTlZ2Ya8LQOTi5ynBby9E/+OaznJsY3v
-         DtpvykzpX7TewfCPw7FaxFDreUAwObpMM/qin8fE=
+        b=C+Mc0UzHtkrMBAn6c3Jv7PHDT6WfiU0tsSI06/y2lXTP/7tWbpkuWrz2EaVH/bQBU
+         PzCrKmtDoIvdR5qC546T0k8atJXspieH2OYIo4wBnQYmIZpDq29aOtfN0T86U52f04
+         6ojYvJvVAsvYPl6LONg9vF0cp96Ty85H7AkY6Eic=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Takeshi Saito <takeshi.saito.xv@renesas.com>,
@@ -31,12 +31,12 @@ Cc:     Takeshi Saito <takeshi.saito.xv@renesas.com>,
         Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 208/209] mmc: tmio: fix SCC error handling to avoid false positive CRC error
-Date:   Tue, 12 Nov 2019 20:50:24 -0500
-Message-Id: <20191113015025.9685-208-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 115/115] mmc: tmio: fix SCC error handling to avoid false positive CRC error
+Date:   Tue, 12 Nov 2019 20:56:22 -0500
+Message-Id: <20191113015622.11592-115-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
-References: <20191113015025.9685-1-sashal@kernel.org>
+In-Reply-To: <20191113015622.11592-1-sashal@kernel.org>
+References: <20191113015622.11592-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-index 94c43c3d3ae58..35630ccbe9e5d 100644
+index 01e51b7945750..2fd862dc97701 100644
 --- a/drivers/mmc/host/tmio_mmc_core.c
 +++ b/drivers/mmc/host/tmio_mmc_core.c
-@@ -926,8 +926,9 @@ static void tmio_mmc_finish_request(struct tmio_mmc_host *host)
+@@ -914,8 +914,9 @@ static void tmio_mmc_finish_request(struct tmio_mmc_host *host)
  	if (mrq->cmd->error || (mrq->data && mrq->data->error))
  		tmio_mmc_abort_dma(host);
  
