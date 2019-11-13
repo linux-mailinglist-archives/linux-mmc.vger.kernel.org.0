@@ -2,84 +2,84 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C9D7F9DDC
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 00:11:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A962FA19E
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 02:58:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726932AbfKLXL1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Nov 2019 18:11:27 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:32904 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726980AbfKLXL0 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Nov 2019 18:11:26 -0500
-Received: by mail-lj1-f194.google.com with SMTP id t5so368202ljk.0
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 15:11:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Tvqr7Enmi/ocfgyYnlGqiPzgim6aB1Y8HMuhsyaz+1w=;
-        b=B2Tn4fYYTM5wjuJbkUXQ/aZsUJCZagjIoofBHyG9XGuS6huwxn+NT/c21aOLx3Ns1A
-         fbf8EXVwP1/r8dh7qggQQEsV8nmGPxeNeP2Ln7RxFSCV+foMB7IlY9pnMabajCGj+LYD
-         rM8BOrOC4rcPFI+scgGEMMpRzf4b1Y+MOz4CZMl8LCs7Oru7L9CD5eYBDoc9xZheHpdT
-         6gkXvVSv0JFwwthrGvV+e56ZMTendxbU4fxtH6Y+3i6+ECSzrSItfRNURo8JYNSUPrTU
-         Uo1dUwtjIh1BeMGbBbdk+k95ztODpSUKnU/sGOaHywltcGXpq5FmKqi7jsj3+Tm/HePc
-         Xllg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Tvqr7Enmi/ocfgyYnlGqiPzgim6aB1Y8HMuhsyaz+1w=;
-        b=E9SFbslBeG/Eob2Z1ct5LdV2MdhVcCA3iCyUmIprtYYvZHj8w0V2ZNqrGuArM1eKOL
-         +64vaSDuxJXAFUDTnwrphSsRBfvQ4HnFBEzrvSF4e5u/zHnfwO5I1aTPinZHhXK3zIwI
-         pv9pup7DFYlJP2UBxLLdhiZVvki1i/wcypBBTe+YOAFx1uP8Fgzbc6DE7mS5JFmAlE+r
-         9Kb/F7iZ/5ItllRfNeKutwIZDkJzQhP7yeE3qkgocyqwRdX7aSHd6nDlzhN3nN42RpCt
-         7J8PM5xXNxQDjMT8GM1GiTHAP3nRBgnnbf90yF+vx6SAjF007DTu/rtnnU0c3f40GWgW
-         TFiA==
-X-Gm-Message-State: APjAAAWSO91cTdDT5FnDV63SvhPo3fft+CkXoS52sIgsAu9H6B+LFB0u
-        S+X3P+StCr3XL4w5EXfTQiHBn9y4xyeEdABkRb6vcA==
-X-Google-Smtp-Source: APXvYqw7QDA1w5xtLQcUrrOL5Jz7y1c4OMfpHVZeNsT9aMfYuRsXUGzKt70JLZYhPoRVIzWv0w75TLlzz7akYxQc8hc=
-X-Received: by 2002:a2e:90b:: with SMTP id 11mr152843ljj.233.1573600283271;
- Tue, 12 Nov 2019 15:11:23 -0800 (PST)
-MIME-Version: 1.0
-References: <20191105055015.23656-1-erosca@de.adit-jv.com> <20191105062223.GB1048@kunai>
- <20191105083213.GA24603@vmlxhi-102.adit-jv.com> <20191107003907.GA22634@bogus>
- <20191112211950.GB3402@kunai>
-In-Reply-To: <20191112211950.GB3402@kunai>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 13 Nov 2019 00:11:11 +0100
-Message-ID: <CACRpkdYyYAaW8AYqpC3E7eBx25-3yJqitSE=0yVfxCDtM-CwqA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] dt-bindings: mmc: Add 'fixed-emmc-driver-type-hs{200,400}'
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Rob Herring <robh@kernel.org>,
-        Eugeniu Rosca <erosca@de.adit-jv.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+        id S1727840AbfKMB6h (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Nov 2019 20:58:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52496 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729652AbfKMB6g (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 12 Nov 2019 20:58:36 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0358E2245C;
+        Wed, 13 Nov 2019 01:58:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573610315;
+        bh=UG/trRbmRpxl3vtMnIFWUwEZ1MwIeNkNhQGy5Vhy+B4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=m8Ce4ZsC0vhJHT58DrRIwYkT4QORivPEY85XjS4N9yFGX7u42/i0v2orHXHrOtZeU
+         IsIax7zi5CWAvKoRjOPZR0r4WXcUpvqv4Oj8HO+EI0k5wXNP9H5S6R5fla0UqCazhH
+         Gb9eOdAoB1nq6A8H8D+XDJuj5WPAL4Kd/li1ukMc=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Masaharu Hayakawa <masaharu.hayakawa.ry@renesas.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Mathieu Malaterre <malat@debian.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Eugeniu Rosca <roscaeugeniu@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 081/115] mmc: tmio: Fix SCC error detection
+Date:   Tue, 12 Nov 2019 20:55:48 -0500
+Message-Id: <20191113015622.11592-81-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191113015622.11592-1-sashal@kernel.org>
+References: <20191113015622.11592-1-sashal@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Nov 12, 2019 at 10:19 PM Wolfram Sang <wsa@the-dreams.de> wrote:
+From: Masaharu Hayakawa <masaharu.hayakawa.ry@renesas.com>
 
-> What I have seen so far: setting drive strength alone is more on the
-> rare side. Setting specific values for default and HS200/400 seems even
-> more rare to me. With this patchset, it is the first time I hear about
-> it.
+[ Upstream commit b85fb0a1c8aeaaa40d08945d51a6656b512173f0 ]
 
-Like I wrote to Eugeniu this sounds like some kind of errata
-for the eMMC ext CSD and should likely be a card quirk rather
-than some generic device tree properties.
+SDR104, HS200 and HS400 need to check for SCC error. If SCC error is
+detected, retuning is necessary.
 
-I might be wrong, we'll hash it out.
+Signed-off-by: Masaharu Hayakawa <masaharu.hayakawa.ry@renesas.com>
+[Niklas: update commit message]
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mmc/host/tmio_mmc_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Yours,
-Linus Walleij
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index 2437fcde915a7..01e51b7945750 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -914,8 +914,8 @@ static void tmio_mmc_finish_request(struct tmio_mmc_host *host)
+ 	if (mrq->cmd->error || (mrq->data && mrq->data->error))
+ 		tmio_mmc_abort_dma(host);
+ 
+-	if (host->check_scc_error)
+-		host->check_scc_error(host);
++	if (host->check_scc_error && host->check_scc_error(host))
++		mrq->cmd->error = -EILSEQ;
+ 
+ 	/* If SET_BLOCK_COUNT, continue with main command */
+ 	if (host->mrq && !mrq->cmd->error) {
+-- 
+2.20.1
+
