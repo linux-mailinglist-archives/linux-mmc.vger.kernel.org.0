@@ -2,106 +2,90 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8119FB142
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 14:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 856B4FB160
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 14:33:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727032AbfKMNYm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 Nov 2019 08:24:42 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:34694 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726957AbfKMNYm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 08:24:42 -0500
-Received: by mail-lf1-f68.google.com with SMTP id y186so1967755lfa.1
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Nov 2019 05:24:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GQo/splhUGv9XSw+8c37KzMY1kcM0qsjSZS8+fTXlnY=;
-        b=YuZmtIb4LvusfIFt5PoAHeeujiVoF8Ldptn3dd5cjJawoDdzoUxMIMZtvujA2uYgWT
-         0d+IahXjLhwTY238iQKTgr+SZ6tp8WRerCIg8PbT68bOZbDdQ+6uPM/Cw7lT//H6AlJY
-         YH7a2c4ZIuy5uYe5jeLUIq5qdorAGyfSvAU7VOrHsOnALDt/3z09g5j097HFsLaedU7q
-         0Ra5Vk3Ks+FmME35qTjr8SoaRzHAaVtQT8rCyWeaV3xiw5xVkqK30LwL2EO4V7kUNRF4
-         Z7Al2qFfL9aU9esnLRc6vTGLvZgU9d+QElqmlg9ziVfAqJCVN0lpHEGUBgsvW79zZcis
-         Gi8Q==
+        id S1727166AbfKMNdl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Nov 2019 08:33:41 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:35848 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726190AbfKMNdl (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 08:33:41 -0500
+Received: by mail-ot1-f68.google.com with SMTP id f10so1607630oto.3;
+        Wed, 13 Nov 2019 05:33:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GQo/splhUGv9XSw+8c37KzMY1kcM0qsjSZS8+fTXlnY=;
-        b=f97vH1/ymqMXm3o/zc1jdA8Zf0fqPtQjup+yTsyuUZOIhAmpgWYZUJk7Q/DlrZr1z/
-         A/vMtrFRYfdB+tp/WqpnEhxtBjE50HRqL0xy/K5DJCqynzhnc+lrUzEjIsYztdWPM1PC
-         8pkk/iwMeF1EzRwlsTxLZ9IYr6clRMwaEeadM0/mH96mwHVa9vhwcBHJIdV1ePNABhbQ
-         BoZcQgiCZUWl1qTQcykj39n/rAoxvqZohQSonqPYQpP8JT1sUnRDVEQvoTwfUf386Vd6
-         4MvPsuHdzvpolq4/PCMHHzZJi5UqF/C1WNOkvqo7vLu/pWCxSugZefQzRsWghYjB0KF7
-         +bRw==
-X-Gm-Message-State: APjAAAWYjbiRuXgXVRJYLISrqyQJeRBHbFTMVeY0UL9jRF1x3bmJwYsC
-        KHiv/kxos7zeSTJWjj3NpgotYgCj2d6lm2nCqTeAjQ==
-X-Google-Smtp-Source: APXvYqx2WrB+YBqtNKpqKOlKtR1VDhJUWFftKmthD7IevKwMwOuLXKtvmD0wiAB1j7jKkZaJjG40omA9GmjrLHMb5+8=
-X-Received: by 2002:ac2:48b8:: with SMTP id u24mr1383965lfg.133.1573651478899;
- Wed, 13 Nov 2019 05:24:38 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=JMGlC8/pif+jB1W9f7yADN5pub681PWuOZ+nengKGCU=;
+        b=Qr0ycIfWrnd1ks/W+lyYxxeqoxdTAsyK0QGm91lIBqgDFIbGyxBQUKLkJokB7kqv2i
+         74KkIUk5XJzWE0oYa3zhXx7HsFwVnimXSfJOsWUWTqx4naxfqSh20v9giThqoPXIazPx
+         nHSYi00nQ5/xRc15KUxC3BgGbrM/vDZuCXf0uwTk3tTCU9bA1lLjlFRWZWOBpD4g75cR
+         JYMegTN1CcOc8euP4zINJtxhM9TpJae+HG3FU/dyqR4Wxx5fbBkRjfmLV2wsV3+E0NUp
+         ZOcQiRizXOU17R+97u9QOMAv1Tk8IceLGCbCfc/FPTHrMfeU2CyM2Xqi1b3g3NRRlel/
+         K0XQ==
+X-Gm-Message-State: APjAAAXTnC4iCD++3kzuOt7FlHZQN6fVf5SgHzUS5KzWjT8RwJBcyHrL
+        K4LKe7Puokel2bTljoTxtg==
+X-Google-Smtp-Source: APXvYqxD6IWsewO9TdJ3bFTU+gY51WG3vNByXca8SVZxroh1OIj61piRW22xnKzAJ5FMxoSywmWh5A==
+X-Received: by 2002:a05:6830:1f4b:: with SMTP id u11mr2802561oth.60.1573652018588;
+        Wed, 13 Nov 2019 05:33:38 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id u204sm685118oig.35.2019.11.13.05.33.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2019 05:33:37 -0800 (PST)
+Date:   Wed, 13 Nov 2019 07:33:37 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        devicetree@vger.kernel.org, letux-kernel@openphoenux.org,
+        linux-mmc@vger.kernel.org, kernel@pyra-handheld.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 01/12] Documentation: dt: wireless: update wl1251 for
+ sdio
+Message-ID: <20191113133337.GA3987@bogus>
+References: <cover.1573122644.git.hns@goldelico.com>
+ <17b12e91c878dcb74160e3df5f88bc8a9e3f7fce.1573122644.git.hns@goldelico.com>
 MIME-Version: 1.0
-References: <20191113075335.31775-1-linus.walleij@linaro.org> <20191113075335.31775-4-linus.walleij@linaro.org>
-In-Reply-To: <20191113075335.31775-4-linus.walleij@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 13 Nov 2019 14:24:27 +0100
-Message-ID: <CACRpkdZLiy4BSh1JYtQj0HjKk3=qdyKoj9tQv4HrthDi=4e-Bg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] mmc: mmci: Proper PIO residue handling
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Stephan Gerhold <stephan@gerhold.net>
-Cc:     Russell King <linux@arm.linux.org.uk>,
-        Ludovic Barre <ludovic.barre@st.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Niklas Cassel <niklas.cassel@linaro.org>,
-        Russell King <rmk+kernel@armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17b12e91c878dcb74160e3df5f88bc8a9e3f7fce.1573122644.git.hns@goldelico.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Nov 13, 2019 at 8:53 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+On Thu,  7 Nov 2019 11:30:34 +0100, "H. Nikolaus Schaller" wrote:
+> The standard method for sdio devices connected to
+> an sdio interface is to define them as a child node
+> like we can see with wlcore.
+> 
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+> ---
+>  .../bindings/net/wireless/ti,wl1251.txt       | 26 +++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
 
-> +               /* Pack the residue into a 32bit word */
-> +               for (i = 0; i < host->pio_write_residue_sz; i++) {
-> +                       val |= host->pio_write_residue[i];
-> +                       val <<= 8;
-> +               }
-> +               /* Top up with new data */
-> +               for (i = 0; i < fill; i++) {
-> +                       val |= *ptr;
-> +                       val <<= 8;
-> +                       ptr++;
-> +                       remain--;
-> +               }
-
-I'm worried that I might have gotten this wrong.
-
-iowrite32_rep() reads the data little-endian (native endianness)
-from memory does it not?
-
-Bytes  [0 1 2 3] end up in the FIFO like [3 2 1 0].
-
-So it will pack the first byte into the lowest 8 bits, second byte into
-bits 8-15 etc.
-
-So I should rewrite all the loops like this:
-
-for (i = 0; i < host->pio_write_residue_sz; i++) {
-        val |= (host->pio_write_residue[i] << 24);
-        val >>= 8;
-}
-
-So I shift the value down from the high bits instead of the
-other way around.
-
-This also gives a pretty plausible hint att what might be wrong with the
-DMA in non-divisible by 4.
-
-As suggested by Stephan in another context, I will try to set up my
-own test rig for this.
-
-Yours,
-Linus Walleij
+Reviewed-by: Rob Herring <robh@kernel.org>
