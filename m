@@ -2,145 +2,83 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2ECDFAA01
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 07:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F750FAB58
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 08:53:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726165AbfKMGEQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 13 Nov 2019 01:04:16 -0500
-Received: from mail-sh.amlogic.com ([58.32.228.43]:8879 "EHLO
-        mail-sh.amlogic.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725843AbfKMGEP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 01:04:15 -0500
-Received: from mail-sz.amlogic.com (10.28.11.5) by mail-sh.amlogic.com
- (10.18.11.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Wed, 13 Nov
- 2019 14:04:34 +0800
-Received: from mail-sz.amlogic.com ([fe80::ed49:2000:aa3e:d8d6]) by
- mail-sz.amlogic.com ([fe80::ed49:2000:aa3e:d8d6%4]) with mapi id
- 15.01.1591.008; Wed, 13 Nov 2019 14:04:34 +0800
-From:   Nan Li <Nan.Li@amlogic.com>
-To:     Jerome Brunet <jbrunet@baylibre.com>,
-        Jianxin Pan <Jianxin.Pan@amlogic.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>
-CC:     Neil Armstrong <narmstrong@baylibre.com>,
-        "linux-amlogic@lists.infradead.org" 
-        <linux-amlogic@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Victor Wan <victor.wan@amlogic.com>
-Subject: Re: [PATCH v2] mmc: meson-gx: fix mmc dma operation
-Thread-Topic: [PATCH v2] mmc: meson-gx: fix mmc dma operation
-Thread-Index: AQHVkwa5AzBtskG6eEysgtiGF2SGpqd6sqWAgACWuoCAAG0ugIAAA9SAgAAGwQCAAAMtAIAASewAgADp/gCAClRwAIAA154A
-Date:   Wed, 13 Nov 2019 06:04:34 +0000
-Message-ID: <bef7d514-874f-e70d-63ac-9db1a46b478c@amlogic.com>
-References: <1572868495-84816-1-git-send-email-jianxin.pan@amlogic.com>
- <1ja79b4mje.fsf@starbuckisacylon.baylibre.com>
- <e80cb817-e58a-68ce-a3c6-d82636aaf7d3@amlogic.com>
- <1j8sou4u1g.fsf@starbuckisacylon.baylibre.com>
- <7ec2e682-cfec-395e-cf38-58f050440c40@amlogic.com>
- <1j7e4e4sab.fsf@starbuckisacylon.baylibre.com>
- <dee789ae-6825-3f4c-16e7-227e064562d6@amlogic.com>
- <1j5zjy4fif.fsf@starbuckisacylon.baylibre.com>
- <ec705819-9763-b0d2-9480-949e7ccd1cb9@amlogic.com>
- <1jeeydf27h.fsf@starbuckisacylon.baylibre.com>
-In-Reply-To: <1jeeydf27h.fsf@starbuckisacylon.baylibre.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
-x-originating-ip: [10.28.39.107]
-Content-Type: text/plain; charset="Windows-1252"
-Content-ID: <6F2D462936CE644781F034542D8ACFB4@amlogic.com>
-Content-Transfer-Encoding: 8BIT
+        id S1726074AbfKMHxo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Nov 2019 02:53:44 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:45245 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725908AbfKMHxo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 02:53:44 -0500
+Received: by mail-lj1-f193.google.com with SMTP id n21so1400035ljg.12
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2019 23:53:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XqEmLAzEQb9ps3ZlETCYtkOJ5L4AjuKlcBGtyB1ev2Y=;
+        b=URdTYiPPZI+OHS8Y85BIshRaCjUVitFN0qeuAdugtAmJ8F9vgjtPkpCYsrV87m+UkL
+         p3JzfSgYlS2qcthS7lixjMyYDeQAxpoEV4a65ZAhImKWQFu3Lr8oa5460070EyWTu13F
+         u1KXR0ZcAMwMjhwgoxYWSipM8okmYD1J4/eUTBwXp3QhSRsv8/uUNAxEc2UIHjcGSy0D
+         KrGfJKOJGZUKPYTlXuHNChKn/484p7Diy/9zc2WKOALA5QCp6iYOdyKyowuD77Qhggwy
+         V5VaZievWht7aKQhV3v/IXDKbLosRF1SYib2iZ+rVV3s+l4uY8Qj5oVNuNCwDiGNg/hp
+         1CLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XqEmLAzEQb9ps3ZlETCYtkOJ5L4AjuKlcBGtyB1ev2Y=;
+        b=kBC/cWPraOsbgnxr4QP4uCZcr01lWgaZU4x74cVm8U8FWbS+aRID3KvFZgeazFbdOe
+         GHgx9OTg9IntgqZmTK2uJCunTK/sutwoyD+IHIcDtR3BMNWEuL8jri8r1/99KfSJB3oi
+         6vUZC5YHwia+gOMjXYl9ue4e5LcwcHyRnk2m9VLZy5VIezbufmXRqYg3czq4AOpZszVz
+         PfPr9AnkahG3HoUZADRwwKrI+As7uSsZqwryjzOywEgz3im01k1/yJdfprou/dc+P5Z/
+         fgGMegduaiucUNdKFGLqQwrw70rRFo9fIX851SL5pD1NyanbgIuNhAB+sm3p52a86X5A
+         kJ1Q==
+X-Gm-Message-State: APjAAAX1+ZsbFyukUN47o0/KAxk6sfm78O3JJLb+05yfgwo8Jk5aLpgV
+        ylsCGA/MniMXb911u+EbyyLRPw==
+X-Google-Smtp-Source: APXvYqxT+481QIW+ft1eL3zgVvBTr68GKAFTc1+PVVpmCMb21pTHaXGVZsUUj8P2J0TlZe8yQCUOlg==
+X-Received: by 2002:a05:651c:87:: with SMTP id 7mr1567752ljq.20.1573631621703;
+        Tue, 12 Nov 2019 23:53:41 -0800 (PST)
+Received: from localhost.bredbandsbolaget (c-79c8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.200.121])
+        by smtp.gmail.com with ESMTPSA id j10sm610110lfc.43.2019.11.12.23.53.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2019 23:53:40 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Stephan Gerhold <stephan@gerhold.net>
+Cc:     Russell King <linux@arm.linux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 0/3] MMCI odd buffer alignment fixes
+Date:   Wed, 13 Nov 2019 08:53:32 +0100
+Message-Id: <20191113075335.31775-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 2019/11/13 1:12, Jerome Brunet wrote:
-> 
-> On Wed 06 Nov 2019 at 04:28, Nan Li <Nan.Li@amlogic.com> wrote:
-> 
->>
->> I see what you mean, pre/post_req already provides callbacks in meson_mmc_ops for the framework to decide whether to invoke the chain mode or not.
->>
->> However, I searched the frame of MMC and found the use of mmc_pre_req() for this callback in the block layer mmc_blk_mq_issue_rw_rq().
->>
->> Block layer mmc_blk_mq_issue_rw_rq() may be useful for emmc and SD card devices.
->>
->> But it may not be useful for reading and writing operations of sdio wifi, and the sdio device communication may not use the chain mode.
->>
->>
->> Our chain-mode is a way to transfer data using dma.
->>
->> This approach is very efficient for reading and writing large amounts of data.
->>
->> If you don't do it that way, you'll do it the other way, the bounce buf way, which is limited by the size of the buf, so when you do big data reads and writes, it affects the transfer rate.
->>
->> Therefore, our chain mode means that emmc, SD card or sdio device will use dma to transfer data when reading and writing operations, so our previous driver and the patch behind me all ensure this.
->>
-> 
-> I see.
-> The problem is that you are providing the same function to pre/post_req
-> callbacks and the request()
-> 
-> IOW, things mapped in the pre_req() callback might be unmapped by
-> request_done() instead post_req() which, I think, is not great.
-> 
-> It's been like that so far, your patch is not making much worse, so I
-> guess you can go ahead with it but we need to look a this before it
-> blows again
-> 
-> In the future, we should probably use the cookie to distinguish the 2
-> cases ... or drop pre/post_req in the ops.
-> 
+This is an attempt to fix the three independent issues seen
+by Ulf in the MMCI driver.
 
-Yes, you are right. The previous version of kernel did not have the 
-callback of pre/post_req, so our drivers all took dma operation, which 
-would improve the interaction efficiency.
+I am unable to test patches 2 & 3 since I can't provoke the
+right traffic, but I hope Stephan can try it with his
+Broadcom WiFi.
 
-I still have a doubt. In kernel, block layer calls the callback of 
-pre/post_req to complete the mode selection, so the call of sdio is 
-omitted. Since the read and write operation of sdio does not go through 
-the interface of block layer, is this the function loss of the framework?
+Linus Walleij (2):
+  mmc: mmci: Bail out from odd DMA on Ux500
+  mmc: mmci: Proper PIO residue handling
 
-You are concerned that the umap_sg() operation will be repeated in 
-request_done(), which is risky.So we can restrict that.
-For example:
-1. Add conditions in the driver. When only operating on sdio devices, 
-pre/post_req interface is called in the driver.
-2. Determine whether host_cookie has been assigned 
-SD_EMMC_DESC_CHAIN_MODE before calling pre/post_req. If host_cookie has 
-been assigned, it means that the block layer has called pre/post_req 
-callback.
-This should prevent duplicate calls.What do you think?
+Ulf Hansson (1):
+  mmc: mmci: Support odd block sizes for ux500v2 and qcom variant
 
-----8<-----
-diff --git a/drivers/mmc/host/meson-gx-mmc.c 
-b/drivers/mmc/host/meson-gx-mmc.c 
+ drivers/mmc/host/mmci.c | 166 ++++++++++++++++++++++++++++++++++++----
+ drivers/mmc/host/mmci.h |  18 ++++-
+ 2 files changed, 169 insertions(+), 15 deletions(-)
 
-index f7ac88c..3eaae4d 100644
---- a/drivers/mmc/host/meson-gx-mmc.c
-+++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -282,6 +282,11 @@ static void meson_mmc_pre_req(struct mmc_host *mmc, 
-struct mmc_request *mrq)
-     if (!data)
-         return;
-
-+   if (meson_mmc_desc_chain_mode(data)) {
-+       host->needs_pre_post_req = false;
-+       return;
-+   }
-+
-     meson_mmc_get_transfer_mode(mmc, mrq);
-     data->host_cookie |= SD_EMMC_PRE_REQ_DONE;
----->8-----
-
-> Regards
-> Jerome
-> 
+-- 
+2.21.0
 
