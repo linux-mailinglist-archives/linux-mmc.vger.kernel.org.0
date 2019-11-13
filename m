@@ -2,80 +2,132 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3E86FB28D
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 15:28:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8464FB314
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 16:00:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727460AbfKMO2S (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 Nov 2019 09:28:18 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:44476 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726410AbfKMO2S (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 09:28:18 -0500
-Received: by mail-lf1-f68.google.com with SMTP id z188so2101548lfa.11
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Nov 2019 06:28:17 -0800 (PST)
+        id S1727958AbfKMPA6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Nov 2019 10:00:58 -0500
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:41741 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727550AbfKMPA5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 10:00:57 -0500
+Received: by mail-vs1-f65.google.com with SMTP id 190so1520524vss.8
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Nov 2019 07:00:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=t4Br6s5tJ4L1zVkGHFm9nI2kU0+XpkWE4+fr2OAuoLA=;
-        b=g3xvfdpeL4WhflkdqvFIf0sp3bsmmDqyBmGTTvSd0WbexD/iYz/QRxWLCrSoV8uBm6
-         MxLvUlgSwN9+pcc6arb/YCpcd2uIyR+LP0ImjhPQPHzrSSoxJEnV4Aqf3mMHORn7efd8
-         UrObo3Znzj5KBNFJTLnTgqPX07wzEKj9Z/VdEHs8Qm76QF0/xsRRlJ5grWrXvnLGVQ8E
-         urh4n2r5oDH2qPXJz5Ccr8xQGIB5Kn8+G63mxytvx4DCeNKqx3a5iH1NvfpeOsIa66Gq
-         UnTdSdSsapDwtmVjlhpp9EcTB2wWYomumBMX2ckJuDb4IbG+LZXFJzIfCoNtbFSr3ngO
-         Yb7A==
+        bh=18QPHmOseXT+yzsFwAer/TbjlpYB5o9UBaAP9/d9pUE=;
+        b=GLJS4YyNw1JPNotlqgFZOM8VcQAD3ZVZLhiii8V0hbXP94GlRKCJ469G3NMKdY7Pfr
+         004DqpiT8ITxKKZLi/ucgwFHVeKqzTqlFZOGkvmbMONa/06MaWEUwGgNfWVJGvrzyAAO
+         wctEGsJhuN2Lc2nam60lMoCYAgT1qRuRlrd7e3/kHV25RDeHAuy4TrHHQAwz8taGxYPQ
+         2LVD/KhvvzufAex4I3xjLV07+LS+fbBxDPl+Oetc6ufjv0VmEkiMnR8+uDk6iIgdPm6/
+         431d5rOvc5vMPSPCwawPYuJ6Oj07QdltIa2vu9X9Ckc6+OGAIDZ9opO+sJXFoor4joU2
+         UV6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=t4Br6s5tJ4L1zVkGHFm9nI2kU0+XpkWE4+fr2OAuoLA=;
-        b=hgFv9AlJqgT37gjadJFseq30u7L0HjOjZuIG86qjZ1Qt6kO4z+fzbGNBWXi2igx+cw
-         jXm1wtDW5p+stnl4WuH4bG6nkSdsZfhqKVN7HBsNHJqfvTSTqRHQrG4/kpLsZGVBYFJp
-         4C1H3EiyBV4iPGGuippV1vhiSMZ0JnL8C3QR8V65NkObbKrp3UEHSTPUJP7TTO/ri2nT
-         d2rxazezLN+guv7h9yxMBYdNzaHSRy5BVf/61RtNhUThKkuydbWcax9pIKSmw6a8jIZP
-         6Gldx4135SiBrMOXrc/z88kR+WYspfNTD7W6qoA//U/SGf1vKdPMxuJB+vRDhqSQPcz5
-         ZC6w==
-X-Gm-Message-State: APjAAAU/N7qMSP6tynP/s+aCULZkJG5LKxfai1NjY5xC+E210lhpEv5X
-        FsHjob4TS4RtfRLc7Hi9zAFlcNheQWVzS4AAULKwcA==
-X-Google-Smtp-Source: APXvYqy3NtMfniXtu2zud+Kl2BXXUcMjxJFOjULwGGbFTpijwYWIw97dIEANaBIleld3reEDnxzEZB6WWUWhGfFzOD4=
-X-Received: by 2002:ac2:4a8f:: with SMTP id l15mr2916588lfp.5.1573655296620;
- Wed, 13 Nov 2019 06:28:16 -0800 (PST)
+        bh=18QPHmOseXT+yzsFwAer/TbjlpYB5o9UBaAP9/d9pUE=;
+        b=ZGTPdws8tsm4mxwyPkmrdDR6y251bvythsg67VWcBD9t0Q7y3DqBqhBZzyfrMsYQiK
+         g6cWMcQdZUIc4BAvSz8LqRKT8dSdxzeQrKGABlUrg1tiW/UAvOqpWQB0ffhwZgfdzMI9
+         WOZa2ErewdbFwnYm26lYtriTMsZa4PDUdJumXlmNaubHEx+I5ng8zInKYeLvfY6Byhbm
+         yHmLk/vMwzE21JqiAb9JfERktuyUVkvQhxQ1vIQXhHlzxwBXOtUvL23ALLQMz25JNR7+
+         TQeOx9p2bmZFZuiHYV/R/BocaGvsbKJGjvA5xPncWqmVFx6hgxGC3WJWUKBLez0sxC9t
+         +weQ==
+X-Gm-Message-State: APjAAAWDjv7eKypcVu9Yw5yxdkpByci69iDQYwiLckHBT/uHzeB58t7d
+        IFBtAyV0XqR0nBlV2yZ99u2YWo000wJl9ZSDwmtshA==
+X-Google-Smtp-Source: APXvYqyuVsKw1hxxOrfbrro4rOldCyXuIdYgmON1Ze1BYkf6ZoLctTL/jjZGyEOVIodkjH/epFXAKbozJM7fdv7uNJ8=
+X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr2230043vsa.34.1573657256572;
+ Wed, 13 Nov 2019 07:00:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20191108160900.3280960-1-thierry.reding@gmail.com>
-In-Reply-To: <20191108160900.3280960-1-thierry.reding@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 13 Nov 2019 15:28:05 +0100
-Message-ID: <CACRpkdZH1e856Rnoy_rwHuM2nyMDwCiXLvxOV2CJ0arXaTwj0Q@mail.gmail.com>
-Subject: Re: [PATCH] mmc: mmc_spi: Use proper debounce time for CD GPIO
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, Pavel Machek <pavel@denx.de>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20191109103046.26445-1-ulf.hansson@linaro.org>
+ <20191109103046.26445-2-ulf.hansson@linaro.org> <CAD=FV=WccuUCnQXHq-HuojCRAKVA02D7HBS9PgqSqq3+b2v4CA@mail.gmail.com>
+ <CAPDyKFq-djJFyYu6Wzg9t9hLOQMuqff9KVhbx5Zp5i=Fsynsdw@mail.gmail.com> <CAD=FV=VWdzqGY778SXZnC1YDyxc6EHPgRjkJ_2sOHrxHTams-w@mail.gmail.com>
+In-Reply-To: <CAD=FV=VWdzqGY778SXZnC1YDyxc6EHPgRjkJ_2sOHrxHTams-w@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 13 Nov 2019 16:00:20 +0100
+Message-ID: <CAPDyKFoz_RTC=PLbsGgOZi15uwqBT618zEjBzRZgvd3HFQPEWg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] mwifiex: Re-work support for SDIO HW reset
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Nov 8, 2019 at 5:09 PM Thierry Reding <thierry.reding@gmail.com> wrote:
-
-> From: Thierry Reding <treding@nvidia.com>
+On Tue, 12 Nov 2019 at 19:05, Doug Anderson <dianders@chromium.org> wrote:
 >
-> According to the comment, board files used to specify 1 ms for the
-> debounce time. gpiod_set_debounce() needs the debounce time to be
-> specified in units of microseconds, so make sure to multiply the value
-> by 1000.
+> Hi,
 >
-> Note that, according to the git log, the board files actually did
-> specify 1 us for bounce times, but that seems really low. Device tree
-> bindings for this type of GPIO typically specify the debounce times in
-> milliseconds, so setting this default value to 1 ms seems like it would
-> be somewhat safer.
+> On Tue, Nov 12, 2019 at 4:14 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >
+> > > > diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+> > > > index 24c041dad9f6..2417c94c29c0 100644
+> > > > --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
+> > > > +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+> > > > @@ -444,6 +444,9 @@ static int mwifiex_sdio_suspend(struct device *dev)
+> > > >                 return 0;
+> > > >         }
+> > > >
+> > > > +       if (!adapter->is_adapter_up)
+> > > > +               return -EBUSY;
+> > >
+> > > I'm moderately concerned that there might be cases where firmware
+> > > never got loaded but we could suspend/resume OK.  ...and now we never
+> > > will?  I'm not familiar enough with the code to know if this is a real
+> > > concern, so I guess we can do this and then see...
+> >
+> > There is a completion variable that is used to make sure the firmware
+> > is loaded, before the mwifiex driver runs ->suspend|remove(). This is
+> > needed, because during ->probe() the FW will be loaded asynchronously,
+> > hence both mwifiex_sdio_remove() and mwifiex_sdio_suspend(), may be
+> > called while waiting for the FW to be loaded.
+> >
+> > If a HW reset has been scheduled but not completed, which would be the
+> > case if mmc_hw_reset() gets called after mmc_pm_notify() with a
+> > PM_SUSPEND_PREPARE. This is because mmc_pm_notify() then disables the
+> > rescan work, but then re-kicks/enables it at PM_POST_SUSPEND (after
+> > the system has resumed).
+> >
+> > Returning -EBUSY, should allow the mmc rescan work to be completed
+> > when the system have resumed.
+> >
+> > Of course, one could also considering using pm_wakeup_event(), in case
+> > mmc_hw_reset() needed to schedule the reset, as to prevent the system
+> > for suspending for a small amount of time. As to make sure the rescan
+> > work, gets to run. But I am not sure that's needed here.
 >
-> Signed-off-by: Thierry Reding <treding@nvidia.com>
+> I was more worried that we could get into a state where we'd return
+> EBUSY forever, but I think I've convinced myself that this isn't
+> possible.  If we fail to load things then the adapter variable will be
+> freed anyway.
+>
+>
+> > Finally, if you want to verify that the above system suspend path
+> > works fine, you could change the call to "_mmc_detect_change(host, 0,
+> > false)" in mmc_sdio_hw_reset(), into "_mmc_detect_change(host,
+> > msecs_to_jiffies(30000), false)", in patch3.
+> >
+> > This should leave you a 30s window of where you can try to system
+> > suspend the platform, while also waiting for the scheduled reset to be
+> > completed.
+>
+> It worked.
+>
+> https://pastebin.com/NdsvAdE8
 
-Makes perfect sense.
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Great, thanks for confirming!
 
-Yours,
-Linus Walleij
+Kind regards
+Uffe
