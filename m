@@ -2,144 +2,57 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13499FBCD0
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 01:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B5ABFBE95
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 05:33:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726409AbfKNAEV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 13 Nov 2019 19:04:21 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:50896 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726300AbfKNAEV (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 19:04:21 -0500
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xADNuVFq074169
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Nov 2019 19:04:20 -0500
-Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [192.155.248.82])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2w8rt8p5xt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Nov 2019 19:04:20 -0500
-Received: from localhost
-        by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
-        for <linux-mmc@vger.kernel.org> from <miltonm@us.ibm.com>;
-        Thu, 14 Nov 2019 00:04:19 -0000
-Received: from us1a3-smtp06.a3.dal06.isc4sb.com (10.146.103.243)
-        by smtp.notes.na.collabserv.com (10.106.227.105) with smtp.notes.na.collabserv.com ESMTP;
-        Thu, 14 Nov 2019 00:04:10 -0000
-Received: from us1a3-mail228.a3.dal06.isc4sb.com ([10.146.103.71])
-          by us1a3-smtp06.a3.dal06.isc4sb.com
-          with ESMTP id 2019111400040938-1142723 ;
-          Thu, 14 Nov 2019 00:04:09 +0000 
-In-Reply-To: <20191113155237.30646-3-i.mikhaylov@yadro.com>
-From:   "Milton Miller II" <miltonm@us.ibm.com>
-To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
-Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-aspeed@lists.ozlabs.org, Andrew Jeffery <andrew@aj.id.au>,
-        openbmc@lists.ozlabs.org, linux-mmc@vger.kernel.org,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org
-Date:   Thu, 14 Nov 2019 00:04:09 +0000
+        id S1727059AbfKNEdm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Nov 2019 23:33:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58828 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726489AbfKNEdm (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 13 Nov 2019 23:33:42 -0500
+Received: from localhost (unknown [223.226.110.181])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E66EA206D7;
+        Thu, 14 Nov 2019 04:33:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573706021;
+        bh=1FxZ42f2AIJYenT1OaTPcGMZpiI8ej2h466P3PP7pW8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QGWoiiZhnjPLMKkCMLn/7b4elo6wq3isdXgsyDxQBxR6YLZnUWKPjHlT3MIuu73ip
+         lw6D49OhBP+ufIpsqMIE7frtv1xAoH08zIcnREbztY5Hll1Awof4kQXDb+KnLZJrZm
+         SWvD9SCN8RM0ia97qdT+kZOAgR9Nx7DUUw425v/k=
+Date:   Thu, 14 Nov 2019 10:03:37 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc:     ulf.hansson@linaro.org, ludovic.desroches@microchip.com,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com
+Subject: Re: [PATCH 0/2] mms: Use dma_request_chan() directly for channel
+ request
+Message-ID: <20191114043337.GF952516@vkoul-mobl>
+References: <20191113093616.32474-1-peter.ujfalusi@ti.com>
 MIME-Version: 1.0
-Sensitivity: 
-Importance: Normal
-X-Priority: 3 (Normal)
-References: <20191113155237.30646-3-i.mikhaylov@yadro.com>,<20191113155237.30646-1-i.mikhaylov@yadro.com>
-X-Mailer: IBM iNotes ($HaikuForm 1054.1) | IBM Domino Build
- SCN1812108_20180501T0841_FP62 November 04, 2019 at 09:47
-X-LLNOutbound: False
-X-Disclaimed: 46159
-X-TNEFEvaluated: 1
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset=UTF-8
-x-cbid: 19111400-9463-0000-0000-00000173B243
-X-IBM-SpamModules-Scores: BY=0; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
- SC=0.40962; ST=0; TS=0; UL=0; ISC=; MB=0.002686
-X-IBM-SpamModules-Versions: BY=3.00012103; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000292; SDB=6.01289727; UDB=6.00684066; IPR=6.01071925;
- MB=3.00029520; MTD=3.00000008; XFM=3.00000015; UTC=2019-11-14 00:04:17
-X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
-X-IBM-AV-VERSION: SAVI=2019-11-13 22:35:31 - 6.00010644
-x-cbparentid: 19111400-9464-0000-0000-000049232CB6
-Message-Id: <OF20F73C7F.F32D5A9E-ON002584B1.00836403-002584B2.0000614A@notes.na.collabserv.com>
-Subject: Re:  [PATCH 2/2] mmc: sdhci-of-aspeed: add inversion signal presence
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-13_06:,,
- signatures=0
-X-Proofpoint-Spam-Reason: safe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191113093616.32474-1-peter.ujfalusi@ti.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 11/13/2019 around 09:57AM in some time zone, Ivan Mikhaylov wrote:
->Change the default .get_cd callback. Add inverted signal card
->detection
->check.
->
->Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
->
->diff --git a/drivers/mmc/host/sdhci-of-aspeed.c
->b/drivers/mmc/host/sdhci-of-aspeed.c
->index 8962f6664381..8eded8a6ed8d 100644
->--- a/drivers/mmc/host/sdhci-of-aspeed.c
->+++ b/drivers/mmc/host/sdhci-of-aspeed.c
->@@ -31,6 +31,7 @@ struct aspeed_sdc {
-> struct aspeed_sdhci {
-> 	struct aspeed_sdc *parent;
-> 	u32 width_mask;
->+	u8 cd_inverted;
-
-The mmc core/host.c checks the device tree and stores the
-result as mmc->caps2 & MMC_CAP2_CD_ACTIVE_HIGH
-
-This appears to be accessale as sdhci_host->mmc->caps2.
-
-Please reuse this bit like the other drivers.
-
-> };
+On 13-11-19, 11:36, Peter Ujfalusi wrote:
+> Hi,
 > 
-> static void aspeed_sdc_configure_8bit_mode(struct aspeed_sdc *sdc,
->@@ -143,6 +144,21 @@ static inline int
->aspeed_sdhci_calculate_slot(struct aspeed_sdhci *dev,
-> 	return (delta / 0x100) - 1;
-> }
-> 
->+static int aspeed_get_cd(struct mmc_host *mmc)
->+{
->+	struct aspeed_sdhci *aspeed_sdhci;
->+	struct sdhci_pltfm_host *pltfm_priv;
->+	struct sdhci_host *host = mmc_priv(mmc);
->+
->+	int presence = !!(sdhci_readl(host, SDHCI_PRESENT_STATE)
->+			 & SDHCI_CARD_PRESENT);
->+
->+	pltfm_priv = sdhci_priv(host);
->+	aspeed_sdhci = sdhci_pltfm_priv(pltfm_priv);
->+
->+	return presence ^ aspeed_sdhci->cd_inverted;
->+}
->+
-> static int aspeed_sdhci_probe(struct platform_device *pdev)
-> {
-> 	struct sdhci_pltfm_host *pltfm_host;
->@@ -183,6 +199,13 @@ static int aspeed_sdhci_probe(struct
->platform_device *pdev)
-> 		goto err_pltfm_free;
-> 	}
-> 
->+	dev->cd_inverted = 0;
->+	host->mmc_host_ops.get_cd = aspeed_get_cd;
->+	if (of_property_read_bool(pdev->dev.of_node, "cd-inverted")) {
->+		dev->cd_inverted = 1;
->+		dev_info(&pdev->dev, "aspeed: sdhci: presence signal inversion
->enabled\n");
->+	}
->+
-> 	ret = mmc_of_parse(host->mmc);
-> 	if (ret)
-> 		goto err_sdhci_add;
->-- 
->2.20.1
->
->
+> I'm going through the tree to remove dma_request_slave_channel_reason() as it
+> is just:
+> #define dma_request_slave_channel_reason(dev, name) \
+> 	dma_request_chan(dev, name)
 
+Reviewed-by: Vinod Koul <vkoul@kernel.org>
+
+-- 
+~Vinod
