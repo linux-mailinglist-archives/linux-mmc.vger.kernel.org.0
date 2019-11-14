@@ -2,53 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB651FC939
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 15:50:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6132FC98E
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 16:10:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726597AbfKNOuA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Nov 2019 09:50:00 -0500
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:34435 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726263AbfKNOt7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 09:49:59 -0500
-Received: by mail-vs1-f66.google.com with SMTP id y23so4048025vso.1
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 06:49:58 -0800 (PST)
+        id S1727001AbfKNPKA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Nov 2019 10:10:00 -0500
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:33089 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726988AbfKNPKA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 10:10:00 -0500
+Received: by mail-vs1-f67.google.com with SMTP id c25so4090258vsp.0
+        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 07:09:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=O7wapv4EE4G+0Gc1i2jjis8KTbTPULbvSuyjxNMdOtM=;
-        b=AVxDQJqsoylkSQmx08lzQrUBZCxelJXskce1tNwhtJqrv1m/adiDXhfzeb/LLtfBmP
-         9J1MdAGXQYOU9lve3TdlhlSPCWYIik4z3gbcbniH/2ZP/ZXc2kJetKj4I6hyBbDXALnt
-         iKgDNTMw7gO1UcDjUwYeFQTYgymS3hwkbr6BYeprE9le1g2rtD7363gMpJaobyJD2GCh
-         gPfFepXZyZOTSZe8PbbwFXolc3mrqQPUCjmh109X07tuR9ew5b1b8Jf0XUoKppFBALdL
-         lykqOOtEIukCrxxKeAwPCpErBEAHgDQIf7n8jAKX4QF8oNgh1YmEKac+5Hot/3WZQEHA
-         V5uQ==
+         :cc;
+        bh=xnl8/R+wC38rXwVuF4Uv1hht9TdtUwdSGAq6WJK/Inw=;
+        b=Dban84AkznJz4/Lo/AGf01Og1BxBmDR+H65oFtBjz52lqptwVFpC1gWv3V8jYPsBpI
+         As6k5VcWLVCOIMCyBkzaCesd6pKtXjMeU6xbf4qcYJE1Qu/4yEHTYA3noX4RsOZSYgzQ
+         STXXzW7X7w1gqLjdSnPUTzLpPcD3RkTvrBnCnijnCOcwaH2+t+zC6dkaffiGxkBH4la2
+         bHVElB+VRghkDSDaKSct8oDhHUG9KHGEmEU6DPLHRuNhnio0uzkswhzJGchV1rDCZlAn
+         J7THWdPWIjq42YLCCN+wFYb8fc/vV6/6nKM6UIBu6E+u8QHgnd4RPJyWyKV4TEYdkOhV
+         jIJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=O7wapv4EE4G+0Gc1i2jjis8KTbTPULbvSuyjxNMdOtM=;
-        b=L9VWYWh0HONkiNdeNxWk8E1oujXoG1fIf9NHnVSuqqv+fnh0608HNy9sTHv+1S9ZxZ
-         fjy/YftUSQUFqUwTbkD/yDebzJIKvJ6hCNivTMV+bVo8QOm1m07O36eGeNA1pyty/mqi
-         wfpDHN2CdxhLFQfuNHgN7gSBsqW/ozhA5t2sz5MnDG9d5CvCU37DNMALH7W46gUaN2l7
-         Hco3iLzeF4llQwSh7+R+D/27YAn6j6rwOtiv4jig54BhiAAVESdhQr4IG1MKHzVV2pO4
-         vpSkWQvsOp96CbeAzvUMelRRVslSeDHSs+3e/kTb9D7Pl46c+2GWIinaRm4vsDLpRsNC
-         Xi3g==
-X-Gm-Message-State: APjAAAWXttSyjfpgtiIqaYOzMplrBT5zw62D+MkPTc7vSdt5i+JSugSX
-        5ilNhwhsMgkHzO+h3df5Qi/M0RDKoZYbfj89a5Pvog==
-X-Google-Smtp-Source: APXvYqzcyR0y7F+ha4XEbI+5EzDrdrJyK1AZpIJppA2pHa1tvpOnu8Gvhe0K17/wE+Byt8XJXfmdlVGMNecJ5wVu/x0=
-X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr6134394vsa.34.1573742998082;
- Thu, 14 Nov 2019 06:49:58 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=xnl8/R+wC38rXwVuF4Uv1hht9TdtUwdSGAq6WJK/Inw=;
+        b=k4KI3yOh3nJL1icnFMR5yeVMdVYsJmzIryvnw8RmqzrANBXszrIBrpZOZu7JCs0ed1
+         xmkB04SGTJKS8QFLOZUH7rodalBeNZ5AK3PrDp9fmJR/0iQHMp2VWUxxVcIfDETHmvn0
+         gj/8bRIls0Vh//QQ+QkKNNoNz102LzpgkwUBdStehVVVfa3o73z05uI1UFz9dfBDgPnt
+         JG5cnU6ahFQ0BMKz4HxkA30lZWxnkcv51R6zigL2w+0/7JsvXwa5gBCwfc+EtbUNKIPt
+         zQcVVAvPpl/Lj55ZxC4Nj16xpjM3RGi0LPJKXKSIP275y59J4G0X9RrkEMYKm1gDs0/4
+         Pkvw==
+X-Gm-Message-State: APjAAAWevuRH1fCiicl+WtSbj4/g0oSFg8PFRc/zCnWNNe8joHamO083
+        oIlHiJa+OEhjooCDgYcUhaiTatl9LhCgnVaUSW/UMg==
+X-Google-Smtp-Source: APXvYqxtziN/hu01bi+v1OPZ/nveSSQBkA3nNdrugi9zOjFDw+spxc18pADtGTWNLmf/e/FtNr359aBj6yMsZNnsg90=
+X-Received: by 2002:a67:2087:: with SMTP id g129mr5900116vsg.191.1573744198308;
+ Thu, 14 Nov 2019 07:09:58 -0800 (PST)
 MIME-Version: 1.0
-References: <20191011131502.29579-1-ludovic.Barre@st.com> <20191011131502.29579-2-ludovic.Barre@st.com>
- <CAPDyKFqE09nqdev_qewwNzjjUuhm0UUC03tgvY=ZukYY4az7wg@mail.gmail.com> <d8d82f39-319b-c8f8-255a-a02a81980671@st.com>
-In-Reply-To: <d8d82f39-319b-c8f8-255a-a02a81980671@st.com>
+References: <20191113172514.19052-1-ludovic.Barre@st.com>
+In-Reply-To: <20191113172514.19052-1-ludovic.Barre@st.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Nov 2019 15:49:21 +0100
-Message-ID: <CAPDyKFpvOdwnwNa94ppF_Gum26ML52oeXDSeR1qKtSaH_wQU+g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: add unstuck function if host is in deadlock state
-To:     Ludovic BARRE <ludovic.barre@st.com>
+Date:   Thu, 14 Nov 2019 16:09:22 +0100
+Message-ID: <CAPDyKFooSJUn6UCE6QkFmJOCovm00ehz_nAPbiNQM3AcJT_bJQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mmc: mmci: add threaded irq to abort DPSM of
+ non-functional state
+To:     Ludovic Barre <ludovic.Barre@st.com>
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
@@ -59,101 +59,160 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         linux-stm32@st-md-mailman.stormreply.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 13 Nov 2019 at 17:54, Ludovic BARRE <ludovic.barre@st.com> wrote:
+On Wed, 13 Nov 2019 at 18:25, Ludovic Barre <ludovic.Barre@st.com> wrote:
 >
+> From: Ludovic Barre <ludovic.barre@st.com>
 >
->
-> Le 10/21/19 =C3=A0 3:35 PM, Ulf Hansson a =C3=A9crit :
-> > On Fri, 11 Oct 2019 at 15:15, Ludovic Barre <ludovic.Barre@st.com> wrot=
-e:
-> >>
-> >> From: Ludovic Barre <ludovic.barre@st.com>
-> >>
-> >> After a request a host may be in deadlock state, and wait
-> >> a specific action to unstuck the hardware block before
-> >> re-sending a new command.
-> >
-> > Rather than talking about "unstuck" and "deadlock", how about instead
-> > describing that an MMC controller, may end up in an non-functional
-> > state hanging on something. Then to allow it to serve new requests it
-> > needs to be reset.
-> >
->
-> Ok, deadlock naming is perhaps too stronght and scary.
->
-> >>
-> >> This patch adds an optional callback mmc_hw_unstuck which
-> >> allows the host to unstuck the controller. In order to avoid
-> >> a critical context, this callback must be called when the
-> >> request is completed. Depending the mmc request, the completion
-> >> function is defined by mrq->done and could be in block.c or core.c.
-> >
-> > I think it's important to state exactly what is expected from the core
-> > perspective, by the mmc host driver when it calls this new host ops.
-> > We need to clarify that.
-> >
-> >>
-> >> mmc_hw_unstuck is called if the host returns an cmd/sbc/stop/data
-> >> DEADLK error.
-> >
-> > To me, this approach seems a bit upside-down. Although, I have to
-> > admit that I haven't thought through this completely yet.
-> >
-> > The thing is, to make this useful for host drivers in general, I
-> > instead think we need to add timeout to each request that the core
-> > sends to the host driver. In other words, rather than waiting forever
-> > in the core for the completion variable to be set, via calling
-> > wait_for_completion() we could call wait_for_completion_timeout(). The
-> > tricky part is to figure out what timeout to use for each request.
-> > Perhaps that is even why you picked the approach as implemented in
-> > @subject patch instead?
->
-> On STM32 SDMMC variant, If datatimeout occurs on R1B request the Data
-> Path State Machine stays in busy and only the DPSM is non-functional.
-> The hardware block waits a software action to abort the DPSM.
->
-> Like the CPSM stay alive, the framework can sent some requests
-> (without data, example cmd13:status) before to had this
-> timeout issue.
->
-> POV framework I understand the possibility to have a completion_timeout,
-> for more safety. But for this specific sdmmc case, I'm not fan, because
-> the completion timeout error will occur several requests after the real
-> issue (which put the DPSM non-functional). when the completion timeout
-> occurs we can't know if it's due to R1B timeout or an other issue.
+> If datatimeout occurs on R1B request, the Data Path State Machine stays
+> in busy and is non-functional. Only a reset aborts the DPSM.
 
-Right, I see what you are saying. So let's drop the approach suggested
-in $subject series.
+Please clarify/extend this information to tell that this is for the
+variant, that keeps DPSM enabled and uses the data timer while sending
+a CMD12. Or something along those lines.
 
 >
-> To resolve the SDMMC's specificity, I can proposed you to add a threaded
-> irq in mmci drivers to abort the DPSM and terminate the request.
+> Like a reset must be outside of critical section, this patch adds
 
-Okay, so the threaded IRQ handler is needed, because the reset
-operation may sleep (can't be executed in atomic context). Right?
+/s/critical section/atomic context
 
-That should work, but... let's move the discussion to that patch instead.
-
+> threaded irq function to release state machine. In this case,
+> the mmc_request_done is called at the end of threaded irq and
+> skipped into irq handler.
 >
-> >
-> > Anyway, the typical scenario I see, is that the host driver is
-> > hanging, likely waiting for an IRQ that never get raised. So, unless
-> > it implements it own variant of a "request timeout" mechanism, it
-> > simple isn't able to call mmc_request_done() to inform the core about
-> > that the request has failed.
-> >
-> > For comments to the code, I defer that to the next step, when we have
-> > agreed on the way forward.
-> >
-> > Kind regards
-> > Uffe
-> >
+> Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
+> ---
+>  drivers/mmc/host/mmci.c | 44 ++++++++++++++++++++++++++++++++++++-----
+>  drivers/mmc/host/mmci.h |  1 +
+>  2 files changed, 40 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+> index 40e72c30ea84..ec6e249c87ca 100644
+> --- a/drivers/mmc/host/mmci.c
+> +++ b/drivers/mmc/host/mmci.c
+> @@ -556,6 +556,9 @@ static void mmci_dma_error(struct mmci_host *host)
+>  static void
+>  mmci_request_end(struct mmci_host *host, struct mmc_request *mrq)
+>  {
+> +       if (host->irq_action == IRQ_WAKE_THREAD)
+> +               return;
+> +
+>         writel(0, host->base + MMCICOMMAND);
+>
+>         BUG_ON(host->data);
+> @@ -1321,6 +1324,7 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+>         } else if (host->variant->busy_timeout && busy_resp &&
+>                    status & MCI_DATATIMEOUT) {
+>                 cmd->error = -ETIMEDOUT;
+> +               host->irq_action = IRQ_WAKE_THREAD;
+>         } else {
+>                 cmd->resp[0] = readl(base + MMCIRESPONSE0);
+>                 cmd->resp[1] = readl(base + MMCIRESPONSE1);
+> @@ -1532,9 +1536,9 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
+>  {
+>         struct mmci_host *host = dev_id;
+>         u32 status;
+> -       int ret = 0;
+>
+>         spin_lock(&host->lock);
+> +       host->irq_action = IRQ_HANDLED;
+>
+>         do {
+>                 status = readl(host->base + MMCISTATUS);
+> @@ -1574,12 +1578,41 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
+>                 if (host->variant->busy_detect_flag)
+>                         status &= ~host->variant->busy_detect_flag;
+>
+> -               ret = 1;
+>         } while (status);
+>
+>         spin_unlock(&host->lock);
+>
+> -       return IRQ_RETVAL(ret);
+> +       return host->irq_action;
+> +}
+> +
+> +/*
+> + * mmci_irq_threaded is call if the mmci host need to release state machines
+> + * before to terminate the request.
+> + * If datatimeout occurs on R1B request, the Data Path State Machine stays
+> + * in busy and is non-functional. Only a reset can to abort the DPSM.
+> + */
+> +static irqreturn_t mmci_irq_threaded(int irq, void *dev_id)
+> +{
+> +       struct mmci_host *host = dev_id;
+> +       unsigned long flags;
+> +
+> +       if (host->rst) {
+> +               reset_control_assert(host->rst);
+> +               udelay(2);
+> +               reset_control_deassert(host->rst);
+> +       }
+> +
+> +       spin_lock_irqsave(&host->lock, flags);
+> +       writel(host->clk_reg, host->base + MMCICLOCK);
+> +       writel(host->pwr_reg, host->base + MMCIPOWER);
+> +       writel(MCI_IRQENABLE | host->variant->start_err,
+> +              host->base + MMCIMASK0);
+> +
+> +       host->irq_action = IRQ_HANDLED;
+> +       mmci_request_end(host, host->mrq);
+> +       spin_unlock_irqrestore(&host->lock, flags);
+> +
+> +       return host->irq_action;
+>  }
+>
+>  static void mmci_request(struct mmc_host *mmc, struct mmc_request *mrq)
+> @@ -2071,8 +2104,9 @@ static int mmci_probe(struct amba_device *dev,
+>                         goto clk_disable;
+>         }
+>
+> -       ret = devm_request_irq(&dev->dev, dev->irq[0], mmci_irq, IRQF_SHARED,
+> -                       DRIVER_NAME " (cmd)", host);
+> +       ret = devm_request_threaded_irq(&dev->dev, dev->irq[0], mmci_irq,
+> +                                       mmci_irq_threaded, IRQF_SHARED,
+> +                                       DRIVER_NAME " (cmd)", host);
+
+In general it's a good idea to move drivers into using a threaded IRQ handler.
+
+However, the reason this hasn't been done for mmci before, is because
+there are some legacy variants, that doesn't support HW flow control.
+
+Unless I am mistaken, that means when the fifo gets full during data
+transfers - it's too late to act. In other words, running the handler
+in hard IRQ context, should increase the probability of not missing
+the deadline.
+
+If a threaded IRQ handler also is sufficient for these legacy
+variants, only tests can tell.
+
+An option, would be to use a threaded handler for those variants that
+supports HW flow control. Not sure how messy the code would be with
+this option, perhaps you can give this a try?
+
+
+>         if (ret)
+>                 goto clk_disable;
+>
+> diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
+> index 158e1231aa23..5e63c0596364 100644
+> --- a/drivers/mmc/host/mmci.h
+> +++ b/drivers/mmc/host/mmci.h
+> @@ -412,6 +412,7 @@ struct mmci_host {
+>
+>         struct timer_list       timer;
+>         unsigned int            oldstat;
+> +       u32                     irq_action;
+>
+>         /* pio stuff */
+>         struct sg_mapping_iter  sg_miter;
+> --
+> 2.17.1
+>
 
 Kind regards
 Uffe
