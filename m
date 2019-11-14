@@ -2,183 +2,144 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5A4AFB662
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2019 18:25:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13499FBCD0
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 01:04:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727032AbfKMRZo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 Nov 2019 12:25:44 -0500
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:1780 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726120AbfKMRZo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 12:25:44 -0500
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xADHMA1i002755;
-        Wed, 13 Nov 2019 18:25:29 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=8jtImWavCrw85wxjiK84rn3kDNWNi5jgBLEtUg33Spo=;
- b=XHQBKkOM82F7cd0cUFcxuRXBJxe+owe/lgMT1KfYbk40byD1Xl9Bm0qZadrWGqwOgDQS
- 7TQ4GGkDrSYy8+i/G8Y89p10QQpznyl3pOIEEAN/tdZK0Wi85+5wen3kHRJLzcGoso5N
- zMXTS4+oRUMxdo7Tq14aGPlD0161SdB7rA96dSpflsiL/2OVbViOYkRY9Y2ASucsjbeT
- sDLx3rh4EAzI7W9UnulU5vSeHeSre0V5WXwiovLORWc6ct116U3jmFDt6+pHcvFVS/Yr
- nbClOJFbIgF+w7CqLMTO+2llSeZEnGjbsacGAO9Y3iHA3sSEnfnt1zOApjPtXbjkZWXV 2A== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2w7psb9g09-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 13 Nov 2019 18:25:29 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7393910002A;
-        Wed, 13 Nov 2019 18:25:28 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 613B12BA7D0;
-        Wed, 13 Nov 2019 18:25:28 +0100 (CET)
-Received: from lmecxl0923.lme.st.com (10.75.127.47) by SFHDAG6NODE1.st.com
- (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 13 Nov
- 2019 18:25:27 +0100
-From:   Ludovic Barre <ludovic.Barre@st.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Ludovic Barre <ludovic.barre@st.com>
-Subject: [PATCH 1/1] mmc: mmci: add threaded irq to abort DPSM of non-functional state
-Date:   Wed, 13 Nov 2019 18:25:14 +0100
-Message-ID: <20191113172514.19052-1-ludovic.Barre@st.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726409AbfKNAEV convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 13 Nov 2019 19:04:21 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:50896 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726300AbfKNAEV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Nov 2019 19:04:21 -0500
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xADNuVFq074169
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Nov 2019 19:04:20 -0500
+Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [192.155.248.82])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2w8rt8p5xt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Nov 2019 19:04:20 -0500
+Received: from localhost
+        by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
+        for <linux-mmc@vger.kernel.org> from <miltonm@us.ibm.com>;
+        Thu, 14 Nov 2019 00:04:19 -0000
+Received: from us1a3-smtp06.a3.dal06.isc4sb.com (10.146.103.243)
+        by smtp.notes.na.collabserv.com (10.106.227.105) with smtp.notes.na.collabserv.com ESMTP;
+        Thu, 14 Nov 2019 00:04:10 -0000
+Received: from us1a3-mail228.a3.dal06.isc4sb.com ([10.146.103.71])
+          by us1a3-smtp06.a3.dal06.isc4sb.com
+          with ESMTP id 2019111400040938-1142723 ;
+          Thu, 14 Nov 2019 00:04:09 +0000 
+In-Reply-To: <20191113155237.30646-3-i.mikhaylov@yadro.com>
+From:   "Milton Miller II" <miltonm@us.ibm.com>
+To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-aspeed@lists.ozlabs.org, Andrew Jeffery <andrew@aj.id.au>,
+        openbmc@lists.ozlabs.org, linux-mmc@vger.kernel.org,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org
+Date:   Thu, 14 Nov 2019 00:04:09 +0000
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG4NODE2.st.com (10.75.127.11) To SFHDAG6NODE1.st.com
- (10.75.127.16)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-13_04:2019-11-13,2019-11-13 signatures=0
+Sensitivity: 
+Importance: Normal
+X-Priority: 3 (Normal)
+References: <20191113155237.30646-3-i.mikhaylov@yadro.com>,<20191113155237.30646-1-i.mikhaylov@yadro.com>
+X-Mailer: IBM iNotes ($HaikuForm 1054.1) | IBM Domino Build
+ SCN1812108_20180501T0841_FP62 November 04, 2019 at 09:47
+X-LLNOutbound: False
+X-Disclaimed: 46159
+X-TNEFEvaluated: 1
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=UTF-8
+x-cbid: 19111400-9463-0000-0000-00000173B243
+X-IBM-SpamModules-Scores: BY=0; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
+ SC=0.40962; ST=0; TS=0; UL=0; ISC=; MB=0.002686
+X-IBM-SpamModules-Versions: BY=3.00012103; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000292; SDB=6.01289727; UDB=6.00684066; IPR=6.01071925;
+ MB=3.00029520; MTD=3.00000008; XFM=3.00000015; UTC=2019-11-14 00:04:17
+X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
+X-IBM-AV-VERSION: SAVI=2019-11-13 22:35:31 - 6.00010644
+x-cbparentid: 19111400-9464-0000-0000-000049232CB6
+Message-Id: <OF20F73C7F.F32D5A9E-ON002584B1.00836403-002584B2.0000614A@notes.na.collabserv.com>
+Subject: Re:  [PATCH 2/2] mmc: sdhci-of-aspeed: add inversion signal presence
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-13_06:,,
+ signatures=0
+X-Proofpoint-Spam-Reason: safe
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Ludovic Barre <ludovic.barre@st.com>
+On 11/13/2019 around 09:57AM in some time zone, Ivan Mikhaylov wrote:
+>Change the default .get_cd callback. Add inverted signal card
+>detection
+>check.
+>
+>Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
+>
+>diff --git a/drivers/mmc/host/sdhci-of-aspeed.c
+>b/drivers/mmc/host/sdhci-of-aspeed.c
+>index 8962f6664381..8eded8a6ed8d 100644
+>--- a/drivers/mmc/host/sdhci-of-aspeed.c
+>+++ b/drivers/mmc/host/sdhci-of-aspeed.c
+>@@ -31,6 +31,7 @@ struct aspeed_sdc {
+> struct aspeed_sdhci {
+> 	struct aspeed_sdc *parent;
+> 	u32 width_mask;
+>+	u8 cd_inverted;
 
-If datatimeout occurs on R1B request, the Data Path State Machine stays
-in busy and is non-functional. Only a reset aborts the DPSM.
+The mmc core/host.c checks the device tree and stores the
+result as mmc->caps2 & MMC_CAP2_CD_ACTIVE_HIGH
 
-Like a reset must be outside of critical section, this patch adds
-threaded irq function to release state machine. In this case,
-the mmc_request_done is called at the end of threaded irq and
-skipped into irq handler.
+This appears to be accessale as sdhci_host->mmc->caps2.
 
-Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
----
- drivers/mmc/host/mmci.c | 44 ++++++++++++++++++++++++++++++++++++-----
- drivers/mmc/host/mmci.h |  1 +
- 2 files changed, 40 insertions(+), 5 deletions(-)
+Please reuse this bit like the other drivers.
 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 40e72c30ea84..ec6e249c87ca 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -556,6 +556,9 @@ static void mmci_dma_error(struct mmci_host *host)
- static void
- mmci_request_end(struct mmci_host *host, struct mmc_request *mrq)
- {
-+	if (host->irq_action == IRQ_WAKE_THREAD)
-+		return;
-+
- 	writel(0, host->base + MMCICOMMAND);
- 
- 	BUG_ON(host->data);
-@@ -1321,6 +1324,7 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
- 	} else if (host->variant->busy_timeout && busy_resp &&
- 		   status & MCI_DATATIMEOUT) {
- 		cmd->error = -ETIMEDOUT;
-+		host->irq_action = IRQ_WAKE_THREAD;
- 	} else {
- 		cmd->resp[0] = readl(base + MMCIRESPONSE0);
- 		cmd->resp[1] = readl(base + MMCIRESPONSE1);
-@@ -1532,9 +1536,9 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
- {
- 	struct mmci_host *host = dev_id;
- 	u32 status;
--	int ret = 0;
- 
- 	spin_lock(&host->lock);
-+	host->irq_action = IRQ_HANDLED;
- 
- 	do {
- 		status = readl(host->base + MMCISTATUS);
-@@ -1574,12 +1578,41 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
- 		if (host->variant->busy_detect_flag)
- 			status &= ~host->variant->busy_detect_flag;
- 
--		ret = 1;
- 	} while (status);
- 
- 	spin_unlock(&host->lock);
- 
--	return IRQ_RETVAL(ret);
-+	return host->irq_action;
-+}
-+
-+/*
-+ * mmci_irq_threaded is call if the mmci host need to release state machines
-+ * before to terminate the request.
-+ * If datatimeout occurs on R1B request, the Data Path State Machine stays
-+ * in busy and is non-functional. Only a reset can to abort the DPSM.
-+ */
-+static irqreturn_t mmci_irq_threaded(int irq, void *dev_id)
-+{
-+	struct mmci_host *host = dev_id;
-+	unsigned long flags;
-+
-+	if (host->rst) {
-+		reset_control_assert(host->rst);
-+		udelay(2);
-+		reset_control_deassert(host->rst);
-+	}
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	writel(host->clk_reg, host->base + MMCICLOCK);
-+	writel(host->pwr_reg, host->base + MMCIPOWER);
-+	writel(MCI_IRQENABLE | host->variant->start_err,
-+	       host->base + MMCIMASK0);
-+
-+	host->irq_action = IRQ_HANDLED;
-+	mmci_request_end(host, host->mrq);
-+	spin_unlock_irqrestore(&host->lock, flags);
-+
-+	return host->irq_action;
- }
- 
- static void mmci_request(struct mmc_host *mmc, struct mmc_request *mrq)
-@@ -2071,8 +2104,9 @@ static int mmci_probe(struct amba_device *dev,
- 			goto clk_disable;
- 	}
- 
--	ret = devm_request_irq(&dev->dev, dev->irq[0], mmci_irq, IRQF_SHARED,
--			DRIVER_NAME " (cmd)", host);
-+	ret = devm_request_threaded_irq(&dev->dev, dev->irq[0], mmci_irq,
-+					mmci_irq_threaded, IRQF_SHARED,
-+					DRIVER_NAME " (cmd)", host);
- 	if (ret)
- 		goto clk_disable;
- 
-diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
-index 158e1231aa23..5e63c0596364 100644
---- a/drivers/mmc/host/mmci.h
-+++ b/drivers/mmc/host/mmci.h
-@@ -412,6 +412,7 @@ struct mmci_host {
- 
- 	struct timer_list	timer;
- 	unsigned int		oldstat;
-+	u32			irq_action;
- 
- 	/* pio stuff */
- 	struct sg_mapping_iter	sg_miter;
--- 
-2.17.1
+> };
+> 
+> static void aspeed_sdc_configure_8bit_mode(struct aspeed_sdc *sdc,
+>@@ -143,6 +144,21 @@ static inline int
+>aspeed_sdhci_calculate_slot(struct aspeed_sdhci *dev,
+> 	return (delta / 0x100) - 1;
+> }
+> 
+>+static int aspeed_get_cd(struct mmc_host *mmc)
+>+{
+>+	struct aspeed_sdhci *aspeed_sdhci;
+>+	struct sdhci_pltfm_host *pltfm_priv;
+>+	struct sdhci_host *host = mmc_priv(mmc);
+>+
+>+	int presence = !!(sdhci_readl(host, SDHCI_PRESENT_STATE)
+>+			 & SDHCI_CARD_PRESENT);
+>+
+>+	pltfm_priv = sdhci_priv(host);
+>+	aspeed_sdhci = sdhci_pltfm_priv(pltfm_priv);
+>+
+>+	return presence ^ aspeed_sdhci->cd_inverted;
+>+}
+>+
+> static int aspeed_sdhci_probe(struct platform_device *pdev)
+> {
+> 	struct sdhci_pltfm_host *pltfm_host;
+>@@ -183,6 +199,13 @@ static int aspeed_sdhci_probe(struct
+>platform_device *pdev)
+> 		goto err_pltfm_free;
+> 	}
+> 
+>+	dev->cd_inverted = 0;
+>+	host->mmc_host_ops.get_cd = aspeed_get_cd;
+>+	if (of_property_read_bool(pdev->dev.of_node, "cd-inverted")) {
+>+		dev->cd_inverted = 1;
+>+		dev_info(&pdev->dev, "aspeed: sdhci: presence signal inversion
+>enabled\n");
+>+	}
+>+
+> 	ret = mmc_of_parse(host->mmc);
+> 	if (ret)
+> 		goto err_sdhci_add;
+>-- 
+>2.20.1
+>
+>
 
