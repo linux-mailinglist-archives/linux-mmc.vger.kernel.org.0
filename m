@@ -2,103 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F42DFC4C6
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 11:57:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D280FC51B
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 12:12:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726139AbfKNK5B (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Nov 2019 05:57:01 -0500
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:39529 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726002AbfKNK5A (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 05:57:00 -0500
-Received: by mail-vs1-f67.google.com with SMTP id x21so3557974vsp.6
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 02:57:00 -0800 (PST)
+        id S1726087AbfKNLMk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Nov 2019 06:12:40 -0500
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:41247 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725977AbfKNLMk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 06:12:40 -0500
+Received: by mail-vs1-f65.google.com with SMTP id 190so3578384vss.8
+        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 03:12:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=WeEnAyy7qQpCSp7RUf5vRqqgRBjs74WC3kZmLk7/Ets=;
-        b=hoeZrow+SCevu622cFh3TszkhCUOxa3lUQgjfUCIWC4BX/gNASmzS9cGhMXa4zNzKo
-         +PERA2StHl/qsusa2pLHZSgkZPwoiECiBZcmKTTXMhJvLVnFBrIDWJxyv3t/BeGkiO0+
-         tvEsYEmPc2swbb5vv+8SZQ7EK/BazbhLRQiOdBduH6DOYm/JOKqt18MH4D6VPtraUvku
-         YLxxdMMG2HzwW9+302wLEGbodoqDcZA709B/SebE9PM2kwaTMSqK2lLJGxB2lnf7Y9bV
-         970SL3Q3RFGvV2mfFl3M3E6iqr5Wj75p2WkXF+xehF2JxAhKe3Ewn7DGz7XF0XUVNtVu
-         zZuA==
+        bh=3wGJc1b1i6izoCeCYX7Kg1wuag10LQ4c4CnoB2uBxSg=;
+        b=Q3emd+JRbaoyBe0PEuLk5BBMgYUllek5nU3jPhXciimdF+b/lq5eO5r3NKsx+uSBn5
+         D3f6WghoaOSuUGJRj6zKcw5GsPPRCrgkHvNy5BDcVx7bqYTnLf8ERdyTJu93UXkUqqbp
+         v/oGL5DygC5WxU+Q+rGsplMV4LDmssYOwNECNoCDhM8B9aE6br5Xbbe2ue9R8bW1E6lE
+         0+FmcdTd+6Bcmt7/c46hs3ABRn5Lg+6PaBshIwwFO9abDrLhDJ7ETy0x/sfwIpD990zt
+         Yp/g8D4iP90c449yR/9bJvtWfBDHc2pfx/MPGULgzxB2097UaOVpnDhZHVv++ULIjLu9
+         zFLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WeEnAyy7qQpCSp7RUf5vRqqgRBjs74WC3kZmLk7/Ets=;
-        b=e0x9VuSlhr1JD95ipkvh1W83X0JwyL4umSj4GT5pIxHZ8B9+WgRxCPh+aKkN/cfIB5
-         CI356Bgjh/OAJAzihBbZBe2PzySNjqEbo+dxpwB8bhJyhGvspmg7WamuXqkT6Rd5nPXc
-         FTV4uY6C/HKK1SxDH/sZeM+uiKo24lvwZCbZ+st5kG9WnmSCRMV3BlKa69+3T1QgC8HY
-         +s4FFTb7OH9d19gI1Jgml+pqkSp+CnEKy9TPGUIGX9d8jsLUdm+o/ZaNaP//VLwcT9yB
-         ALJvZaEaw0zh+T7cHels3WXwGBcRFGi1pK+Ez/ELSD5GIlflbNDwR7KesIOAlGgI772i
-         mWIA==
-X-Gm-Message-State: APjAAAWYe/ObJCsROOljIC7bnNwJqx+dgkJa4Hxl1wZe0pm5RF7VK2eX
-        6TOANkf8iCzXrVbD/V+QK8d/Qm135eVdnrRUSIEzvQ==
-X-Google-Smtp-Source: APXvYqzOQq0UWfeeYjSHzzZXhI40LLsR/zrXlGUA890HQ1DWvHEp6xuek4vuAejASyAVhkmYw01lMEF15EypZPUQORk=
-X-Received: by 2002:a67:fc04:: with SMTP id o4mr4992340vsq.35.1573729019802;
- Thu, 14 Nov 2019 02:56:59 -0800 (PST)
+        bh=3wGJc1b1i6izoCeCYX7Kg1wuag10LQ4c4CnoB2uBxSg=;
+        b=ezfjgkPeUoFoV+H6Mmhb3Y7dXzf/9k6/DRODf1iEF1SR9HnNVbfcnwAN03p1Gay6bu
+         /q8ut9JxulAytI1Nc0ApvhQePn+Q4w9uDp05DqzZHwbcwbXFq+QjCwj+ugibh7wya6Et
+         x2VIUcxnogBFkgGLtzaKvTbx1yEnQ25a4jzb5n9nOnRACKVLK1a69B+3IxTMcT0lyAHd
+         7logjPeZCgiAgZHJaExOZW/HtwRzkk0PHn3GJMdSVl9YonsVmI6MRQHLHX7cpoD+VVIP
+         VQiPndQN+pJ8JSJQPGRNbLU2IVcxTVq5kzozYQWIuobMhFyWecrFfi213aeaUuP80UQH
+         txoQ==
+X-Gm-Message-State: APjAAAXVKYg3ESeJXPGOPAb1/72P9tIfS/FqW7R3AoFSPDCNM9Ml1ayF
+        43ZCVzz7k9miUC0eP1PHvydg7AZtNhmuYTag7Umfow==
+X-Google-Smtp-Source: APXvYqyCJNbtDOAC7W0igpGwVzK49rBCRVOKJlPUyb9DPPalIM+2RwOD2hBhMLOqOXEE9bHyAUoglvI/Bnnn+BNgGDQ=
+X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr5458771vsa.34.1573729957703;
+ Thu, 14 Nov 2019 03:12:37 -0800 (PST)
 MIME-Version: 1.0
-References: <20191112134808.23546-1-erosca@de.adit-jv.com> <20191112204952.GA2976@kunai>
-In-Reply-To: <20191112204952.GA2976@kunai>
+References: <1573097159-3914-1-git-send-email-bradleybolen@gmail.com>
+In-Reply-To: <1573097159-3914-1-git-send-email-bradleybolen@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Nov 2019 11:56:23 +0100
-Message-ID: <CAPDyKFq8oVk26ruNA_R8HDXhMGKhDeHnL0q82xi40g1aeo109A@mail.gmail.com>
-Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add MMC_CAP_ERASE to
- Gen3 SoCs
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Eugeniu Rosca <erosca@de.adit-jv.com>,
+Date:   Thu, 14 Nov 2019 12:12:01 +0100
+Message-ID: <CAPDyKFokrmxu8CLOTVjtbzf3sMQcLahVqAtYP5X=wnqST5+Zdg@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: core: Fix size overflow for mmc partitions
+To:     Bradley Bolen <bradleybolen@gmail.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Avri Altman <avri.altman@wdc.com>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Eugeniu Rosca <roscaeugeniu@gmail.com>,
-        Harish Jenny K N <harish_kandiga@mentor.com>,
-        Andrew Gabbasov <andrew_gabbasov@mentor.com>
+        "yinbo.zhu" <yinbo.zhu@nxp.com>,
+        Hongjie Fang <hongjiefang@asrmicro.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 12 Nov 2019 at 21:49, Wolfram Sang <wsa@the-dreams.de> wrote:
+On Thu, 7 Nov 2019 at 04:26, Bradley Bolen <bradleybolen@gmail.com> wrote:
 >
-> On Tue, Nov 12, 2019 at 02:48:08PM +0100, Eugeniu Rosca wrote:
-> > From: Harish Jenny K N <harish_kandiga@mentor.com>
-> >
-> > Enable MMC_CAP_ERASE capability in the driver to allow
-> > erase/discard/trim requests.
-> >
-> > Suggested-by: Andrew Gabbasov <andrew_gabbasov@mentor.com>
-> > Signed-off-by: Harish Jenny K N <harish_kandiga@mentor.com>
-> > [erosca: Forward-port and test on v5.4-rc7 using H3ULCB-KF:
-> >          "blkdiscard /dev/mmcblk0" passes with this patch applied
-> >          and complains otherwise:
-> >        "BLKDISCARD ioctl failed: Operation not supported"]
-> > Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
+> With large eMMC cards, it is possible to create general purpose
+> partitions that are bigger than 4GB.  The size member of the mmc_part
+> struct is only an unsigned int which overflows for gp partitions larger
+> than 4GB.  Change this to a u64 to handle the overflow.
 >
-> Looks good to me. Just a generic question, probably more for Ulf:
+> Signed-off-by: Bradley Bolen <bradleybolen@gmail.com>
+> ---
+>  drivers/mmc/core/mmc.c   | 6 +++---
+>  include/linux/mmc/card.h | 2 +-
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 >
-> Why does this CAP_ERASE exist? As I understand, the driver only needs to
-> set the flag and no further handling is required. Why would a driver not
-> set this flag and not support erase/trim commands?
+> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+> index c880489..fc02124 100644
+> --- a/drivers/mmc/core/mmc.c
+> +++ b/drivers/mmc/core/mmc.c
+> @@ -297,7 +297,7 @@ static void mmc_manage_enhanced_area(struct mmc_card *card, u8 *ext_csd)
+>         }
+>  }
+>
+> -static void mmc_part_add(struct mmc_card *card, unsigned int size,
+> +static void mmc_part_add(struct mmc_card *card, u64 size,
+>                          unsigned int part_cfg, char *name, int idx, bool ro,
+>                          int area_type)
+>  {
+> @@ -313,7 +313,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
+>  {
+>         int idx;
+>         u8 hc_erase_grp_sz, hc_wp_grp_sz;
+> -       unsigned int part_size;
+> +       u64 part_size;
 
-I am working on removing the cap, altogether. Step by step, this is
-getting closer now.
+There is also a cast to a "size_t" while computing the part_size in
+mmc_manage_gp_partitions(). Should we remove that as well?
 
-The main problem has been about busy detect timeouts, as an erase
-command may have a very long busy timeout. On the host side, they
-typically need to respect the cmd->busy_timeout for the request, and
-if it can't because of some HW limitation, it needs to set
-mmc->max_busy_timeout.
-
-Once that is fixed for all, we can drop CAP_ERASE.
+[...]
 
 Kind regards
 Uffe
