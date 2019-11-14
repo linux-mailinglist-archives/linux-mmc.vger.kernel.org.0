@@ -2,148 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E103FFC687
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 13:49:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4D80FC699
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 13:54:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbfKNMtT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Nov 2019 07:49:19 -0500
-Received: from mail-vk1-f194.google.com ([209.85.221.194]:40657 "EHLO
+        id S1726736AbfKNMyB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Nov 2019 07:54:01 -0500
+Received: from mail-vk1-f194.google.com ([209.85.221.194]:36724 "EHLO
         mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726202AbfKNMtT (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 07:49:19 -0500
-Received: by mail-vk1-f194.google.com with SMTP id k24so1431614vko.7
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 04:49:18 -0800 (PST)
+        with ESMTP id S1726270AbfKNMyB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 07:54:01 -0500
+Received: by mail-vk1-f194.google.com with SMTP id d10so1443246vke.3
+        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 04:54:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=b1Q/m149A5PiemLfT6SquJYIvD0phNlImqR3A8L8/X0=;
-        b=oDQOBZJMEqbwzWlmHcUKV9gnBv6LEuxHn1x4GtULF1fRydbf3dBCCVMd1Z5cWdSNjQ
-         c1ZTfSEqLGcacYp4m6Xm4fNvVBRSarsr3C/Qo32kdAYLIvdZoIq8XnJjrKKL/EVY0hXh
-         AG+WANyP6rcYS8fVx4CvjjYVZl9VEdZT1qBZZ8G9+s37MUakC7E2nqlmdemIT13yjDak
-         0uOxTYdCgIS9sR/eXC6qNR5EHvj0AFE6c7zco+xBwItSrqedQROlEYCqCE4gT1XvImup
-         wNUFikPH3cdaqOScbjGf5gCbCledicHsIM/Zyn/bqFrDWLDWmBLqCqdwSUToAS7WCgl/
-         8fPw==
+        bh=j7kaYv+E/e8ORn2Gy+9BvMNe/wGdZZ8Ltu87P0bR2PM=;
+        b=jmdHDXBhhLyio2z3d9cvr0uOQLVHLSVGA2z0qYJ0zIbiAo2MFl8MKHWVLkO6Q1QBjI
+         nEgVba6NRuH2arLCk89WtqyD60ns5PQ/ABDOj29hb9Ldw3HqqjxABeeBov79x0lCy3A3
+         1dKSzwQ+rrK15q38Y4AZJkv1wJeEQQE/wyh055dPZMKFzbRoQEQqjSOOXd4jR6kS1ZVb
+         WrwOQFRQDHK1xcO6unINH3oMoi8ffSUFg4rvPzydLnGNliXQw3cUglJv22pXKzItg+hp
+         KhRV8uCAZVvYZNpVo6wgwcLJ8QMOvFZ967e8VrI1A7x3UCYcCbA9hboWp+nvxDWRF4UR
+         FnKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=b1Q/m149A5PiemLfT6SquJYIvD0phNlImqR3A8L8/X0=;
-        b=YAHLTszEgFYqcAc/XrWXTyUzCNEHrWOYdORj5UG9KPA1TUjBbFEZc39e7xJ3gnBDTr
-         84cyCRtkRH9Qsdh/ce19Q9NHIeA/VLJEymYY11XY5KvjQCjwZqgsGAeY1vh4bfrwvc7V
-         T96oQ/wZMMEI6gEqpMPVdanhfEe8nhJ02/qOW6ncQgaZqFWfiDUsXWJE/HPECiWZokfr
-         GfgcDhlRcw3AjXNFeM3u51OcduRcOw6zy87qlhinR4mEhjsvhZXKWy2+41xkNLlKOSlS
-         SJC/KcctADjclKp4r0I0mLXYR0DxpZS9jyHaAwJ9Brl9z8mnfx0NxfEvVcyrOqZzI+BY
-         kRsg==
-X-Gm-Message-State: APjAAAWyRucIwq1IQ6va3TvJFLhGxTXXlR6/K/xitwLHVASafwJIJp4p
-        IQwVy2OxjT+u1RkjPHTSMLnbNP7xvEd80VjNnA1/nA==
-X-Google-Smtp-Source: APXvYqzeR1eD9xbTpxqtVCXbvQ0errOunVTWRox8BRoqYOgFufup0NzneBdevNKkYj3L0OW3QOUm0DwWKPTS2uChrsA=
-X-Received: by 2002:a1f:fe0a:: with SMTP id l10mr4953847vki.59.1573735757811;
- Thu, 14 Nov 2019 04:49:17 -0800 (PST)
+        bh=j7kaYv+E/e8ORn2Gy+9BvMNe/wGdZZ8Ltu87P0bR2PM=;
+        b=IXpy+vlRtAW+GrJaf9tADzKVPzZINRig6X9VSUgfeHAQPcXNbG/J0AxhobRfRz/pj2
+         gUxmakB8kVFqEb2MJLiVbNkRNPhoTfVx5akRfHk6qSjHTO1kEdoLjpeIiXjahMV9jvvY
+         MqaKiFgXkABvmPCcRA7ZXksfE+RQMRKKrQQBTzNG4xcpwm8PZmRJ2Zo+CIThtHCjhAN4
+         FhX3UHXLBX2KUCuxuMuaHoi2AvLj+xFUjdWnTZsCJyhl+fbtolPGTjxvvJsjl6Ibxfrn
+         GCGWgcEaNy1W7GMKGt3KOCaYvIHl2RC3WjMY1J1PXQjbMs7pRauttdhin3ZM98yWNUN7
+         ytMA==
+X-Gm-Message-State: APjAAAXgVjYHsA2+SIBV2opji0s8HaK3r1x2hOihP3bfd0PKIlUMlB5x
+        CIaySJYfM449bHtA1E5VCSbu8dsySCCne4kIhwhgjQ==
+X-Google-Smtp-Source: APXvYqyqmcQFAkEm9m1Jnd6vFouVrLC+OhhaXGWaFFzu1LdB9oTyBPhsXXff0IBdvNsBO1U1ZdQHtW10o/YdvuxHcPw=
+X-Received: by 2002:a1f:ee0f:: with SMTP id m15mr5092437vkh.43.1573736039900;
+ Thu, 14 Nov 2019 04:53:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20191112134808.23546-1-erosca@de.adit-jv.com> <20191112204952.GA2976@kunai>
- <CAPDyKFq8oVk26ruNA_R8HDXhMGKhDeHnL0q82xi40g1aeo109A@mail.gmail.com> <20191114113743.GA19656@vmlxhi-102.adit-jv.com>
-In-Reply-To: <20191114113743.GA19656@vmlxhi-102.adit-jv.com>
+References: <1572949321-8193-1-git-send-email-peng.fan@nxp.com>
+In-Reply-To: <1572949321-8193-1-git-send-email-peng.fan@nxp.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Nov 2019 13:48:41 +0100
-Message-ID: <CAPDyKFp5iqrFDM1EWnYBwFmQAiAA5FADDLAyuVVBgMu4Sx=x5w@mail.gmail.com>
-Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add MMC_CAP_ERASE to
- Gen3 SoCs
-To:     Eugeniu Rosca <erosca@de.adit-jv.com>
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Simon Horman <horms+renesas@verge.net.au>,
+Date:   Thu, 14 Nov 2019 13:53:23 +0100
+Message-ID: <CAPDyKFoL7oJ+2hvi77N9=1hBKFgCXRUppcte1u=eF4z+Fz8TQw@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: mmc: fsl-imx-esdhc: add imx8m compatible string
+To:     Peng Fan <peng.fan@nxp.com>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        Abel Vesa <abel.vesa@nxp.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Aisheng Dong <aisheng.dong@nxp.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Eugeniu Rosca <roscaeugeniu@gmail.com>,
-        Harish Jenny K N <harish_kandiga@mentor.com>,
-        Andrew Gabbasov <andrew_gabbasov@mentor.com>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 14 Nov 2019 at 12:37, Eugeniu Rosca <erosca@de.adit-jv.com> wrote:
+On Tue, 5 Nov 2019 at 11:23, Peng Fan <peng.fan@nxp.com> wrote:
 >
-> Hi everyone,
+> From: Peng Fan <peng.fan@nxp.com>
 >
-> On Thu, Nov 14, 2019 at 11:56:23AM +0100, Ulf Hansson wrote:
-> > On Tue, 12 Nov 2019 at 21:49, Wolfram Sang <wsa@the-dreams.de> wrote:
-> > >
-> > > On Tue, Nov 12, 2019 at 02:48:08PM +0100, Eugeniu Rosca wrote:
-> > > > From: Harish Jenny K N <harish_kandiga@mentor.com>
-> > > >
-> > > > Enable MMC_CAP_ERASE capability in the driver to allow
-> > > > erase/discard/trim requests.
-> > > >
-> > > > Suggested-by: Andrew Gabbasov <andrew_gabbasov@mentor.com>
-> > > > Signed-off-by: Harish Jenny K N <harish_kandiga@mentor.com>
-> > > > [erosca: Forward-port and test on v5.4-rc7 using H3ULCB-KF:
-> > > >          "blkdiscard /dev/mmcblk0" passes with this patch applied
-> > > >          and complains otherwise:
-> > > >        "BLKDISCARD ioctl failed: Operation not supported"]
-> > > > Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
-> > >
-> > > Looks good to me. Just a generic question, probably more for Ulf:
-> > >
-> > > Why does this CAP_ERASE exist? As I understand, the driver only needs to
-> > > set the flag and no further handling is required. Why would a driver not
-> > > set this flag and not support erase/trim commands?
-> >
-> > I am working on removing the cap, altogether. Step by step, this is
-> > getting closer now.
-> >
-> > The main problem has been about busy detect timeouts, as an erase
-> > command may have a very long busy timeout. On the host side, they
-> > typically need to respect the cmd->busy_timeout for the request, and
-> > if it can't because of some HW limitation, it needs to set
-> > mmc->max_busy_timeout.
+> Add imx8mq/m/n compatible string
 >
-> FWIW we've discussed such concerns internally, based on past commits
-> which either disable [1-2] busy timeouts or increase their value [3].
->
-> To get a feeling if this is relevant for R-Car3, I've run blkdiscard on
-> a 64 GiB eMMC without noticing any issues on v5.4-rc7. Hopefully this
-> is sufficient as testing?
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-Let's first take a step back, because I don't know how the HW busy
-detection works for your controller.
-
-I have noticed there is TMIO_STAT_CMD_BUSY bit being set for some
-variants, which seems to cause renesas_sdhi_wait_idle() to loop for a
-pre-defined number of loops/timeout. This looks scary, but I can't
-tell if it's really a problem.
-
-BTW, do you know what TMIO_STAT_CMD_BUSY actually is monitoring?
-
-I have also noticed that MMC_CAP_WAIT_WHILE_BUSY isn't set for any of
-the renesas/tmio variant hosts. Is that simply because the HW doesn't
-support this? Or because implementation is missing?
-
-If you want to run a test that stretches the behaviour on the timeout
-path, I would rather use an SD-card (the older the better). For eMMCs
-the erase likely translates to a trim/discard, which is far more
-quicker than a real erase - as is what happens on an old SD card.
-
->
-> >
-> > Once that is fixed for all, we can drop CAP_ERASE.
-> >
-> > Kind regards
-> > Uffe
->
-> [1] 93caf8e69eac76 ("omap_hsmmc: add erase capability")
-> [2] b13d1f0f9ad64b ("mmc: omap: Add erase capability")
-> [3] ec30f11e821f2d ("mmc: rtsx_usb: Use the provided busy timeout from the mmc core")
->
-> --
-> Best Regards,
-> Eugeniu
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>
+> V1:
+>  imx8mq/m/n.dtsi already use this compatible string,
+>  but not listed in binding doc, so add it.
+>
+>  Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
+> index f707b8bee304..2fb466ca2a9d 100644
+> --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
+> +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
+> @@ -18,6 +18,9 @@ Required properties:
+>                "fsl,imx6ull-usdhc"
+>                "fsl,imx7d-usdhc"
+>                "fsl,imx7ulp-usdhc"
+> +              "fsl,imx8mq-usdhc"
+> +              "fsl,imx8mm-usdhc"
+> +              "fsl,imx8mn-usdhc"
+>                "fsl,imx8qxp-usdhc"
+>
+>  Optional properties:
+> --
+> 2.16.4
+>
