@@ -2,174 +2,158 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68CB4FC8AC
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 15:19:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB651FC939
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 15:50:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726549AbfKNOTI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Nov 2019 09:19:08 -0500
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:37561 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726474AbfKNOTG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 09:19:06 -0500
-Received: by mail-vs1-f67.google.com with SMTP id u6so3965509vsp.4
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 06:19:05 -0800 (PST)
+        id S1726597AbfKNOuA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Nov 2019 09:50:00 -0500
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:34435 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726263AbfKNOt7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 09:49:59 -0500
+Received: by mail-vs1-f66.google.com with SMTP id y23so4048025vso.1
+        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 06:49:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mF9QJkIN8Qk+EGkxO+jVoBbFR7FMIpRA3CjmA8m3d7Y=;
-        b=Ml/cOiBysl9RO47an1PTBHLBV9w/7hUJ5RTzC9SA1Mtzt+/DhPojZxalupt6UqYxdQ
-         Z6JVbt31LezzDArBbJjiKL2Y5fmaM9zvJ7unZ4BgDdfgF9mW0AXrx+BoEeZrvPk8v4Na
-         vFp/6s+uvZ+tazuT9dOHmkygy3CCIjNpWHbDS4RdoO1Ax+9gtplcOkQGyvu+xkTNpwvf
-         BQOZDKA6W1skAgd0wkcQQjy4KYmerLP5JSisRTka6/XXrK6yecbJSVLJ+KeRGxhACdKH
-         8qTLgfs22vZ7hOJ8kyH9jH6x5yGzqyYsrJoASTpX+UbbwnAEwMt16yGMLqfSMGWl0VET
-         jivg==
+         :cc:content-transfer-encoding;
+        bh=O7wapv4EE4G+0Gc1i2jjis8KTbTPULbvSuyjxNMdOtM=;
+        b=AVxDQJqsoylkSQmx08lzQrUBZCxelJXskce1tNwhtJqrv1m/adiDXhfzeb/LLtfBmP
+         9J1MdAGXQYOU9lve3TdlhlSPCWYIik4z3gbcbniH/2ZP/ZXc2kJetKj4I6hyBbDXALnt
+         iKgDNTMw7gO1UcDjUwYeFQTYgymS3hwkbr6BYeprE9le1g2rtD7363gMpJaobyJD2GCh
+         gPfFepXZyZOTSZe8PbbwFXolc3mrqQPUCjmh109X07tuR9ew5b1b8Jf0XUoKppFBALdL
+         lykqOOtEIukCrxxKeAwPCpErBEAHgDQIf7n8jAKX4QF8oNgh1YmEKac+5Hot/3WZQEHA
+         V5uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mF9QJkIN8Qk+EGkxO+jVoBbFR7FMIpRA3CjmA8m3d7Y=;
-        b=f8VAYR3IcUEoIalVjUXcfr8emBJZtJmfhrac3fU8Tr/vcq2MFNssmHyr6laLnaZW+P
-         ZOvmsh6MyUconVvafKF9/EANAkRpjjnJzRU6TfQQvy8+eJ4RjvMIcSYB9XbijKHbOBKG
-         X5s3GnyH0Veu3jD/fmSTHOgxEgXpZ2EGdcLcaNjjmpTX9TKwd3kqUPFIFKoo8tkUAE3i
-         PM+FdLjL/ElA8ezgtAj3YGf3PMVn4NRzh9EKSXoTz0f3aQRKae2sm1mkhHjG3VdvVpdv
-         2qW+C3s+00ADiakkyDTwZTJeASbFoQcsB8WUAnFSQtv62vZxoJ/MTCdnfEs577MOuG9g
-         5cag==
-X-Gm-Message-State: APjAAAX1aMEnbesuOZQBencuRZAozrVia2eoYrYVQriMZRbdfaXK6S7F
-        8rNoG1KE6tCRCEdbGwDaOu9WKL7HKfh9yh1n87SaOg==
-X-Google-Smtp-Source: APXvYqwgCmwHYSDSJ68Em4upupN+YGH3wrjpaM8fSyc24xbueo9viz0GrcVPQXBkKEvWLAXn8LtIFd6tV6myvBaAjVM=
-X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr6019578vsa.34.1573741145328;
- Thu, 14 Nov 2019 06:19:05 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=O7wapv4EE4G+0Gc1i2jjis8KTbTPULbvSuyjxNMdOtM=;
+        b=L9VWYWh0HONkiNdeNxWk8E1oujXoG1fIf9NHnVSuqqv+fnh0608HNy9sTHv+1S9ZxZ
+         fjy/YftUSQUFqUwTbkD/yDebzJIKvJ6hCNivTMV+bVo8QOm1m07O36eGeNA1pyty/mqi
+         wfpDHN2CdxhLFQfuNHgN7gSBsqW/ozhA5t2sz5MnDG9d5CvCU37DNMALH7W46gUaN2l7
+         Hco3iLzeF4llQwSh7+R+D/27YAn6j6rwOtiv4jig54BhiAAVESdhQr4IG1MKHzVV2pO4
+         vpSkWQvsOp96CbeAzvUMelRRVslSeDHSs+3e/kTb9D7Pl46c+2GWIinaRm4vsDLpRsNC
+         Xi3g==
+X-Gm-Message-State: APjAAAWXttSyjfpgtiIqaYOzMplrBT5zw62D+MkPTc7vSdt5i+JSugSX
+        5ilNhwhsMgkHzO+h3df5Qi/M0RDKoZYbfj89a5Pvog==
+X-Google-Smtp-Source: APXvYqzcyR0y7F+ha4XEbI+5EzDrdrJyK1AZpIJppA2pHa1tvpOnu8Gvhe0K17/wE+Byt8XJXfmdlVGMNecJ5wVu/x0=
+X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr6134394vsa.34.1573742998082;
+ Thu, 14 Nov 2019 06:49:58 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1573122644.git.hns@goldelico.com>
-In-Reply-To: <cover.1573122644.git.hns@goldelico.com>
+References: <20191011131502.29579-1-ludovic.Barre@st.com> <20191011131502.29579-2-ludovic.Barre@st.com>
+ <CAPDyKFqE09nqdev_qewwNzjjUuhm0UUC03tgvY=ZukYY4az7wg@mail.gmail.com> <d8d82f39-319b-c8f8-255a-a02a81980671@st.com>
+In-Reply-To: <d8d82f39-319b-c8f8-255a-a02a81980671@st.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Nov 2019 15:18:29 +0100
-Message-ID: <CAPDyKFrntf2Kd9Zf7uxRCUk_OrKD8B3xOKmvPaf04X21L5HwWA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/12] OpenPandora: make wl1251 connected to mmc3 sdio
- port of OpenPandora work again
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Thu, 14 Nov 2019 15:49:21 +0100
+Message-ID: <CAPDyKFpvOdwnwNa94ppF_Gum26ML52oeXDSeR1qKtSaH_wQU+g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: add unstuck function if host is in deadlock state
+To:     Ludovic BARRE <ludovic.barre@st.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com
+        linux-stm32@st-md-mailman.stormreply.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 7 Nov 2019 at 11:31, H. Nikolaus Schaller <hns@goldelico.com> wrote:
+On Wed, 13 Nov 2019 at 17:54, Ludovic BARRE <ludovic.barre@st.com> wrote:
 >
 >
-> * add a revisit note for special wl1251 handling code because it should
->   be solved more generic in mmc core - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> * remove init_card callback from platform_data/hsmmc-omap.h - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> * remove obstructive always-on for vwlan regulator - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> * rename DT node - suggested by Rob Herring <robh@kernel.org>
-> * fix ARM: dts: subject prefix - suggested by Tony Lindgren <tony@atomide.com>
-> * also remove omap2_hsmmc_info and obc-y line in Makefile - suggested by Tony Lindgren <tony@atomide.com>
+>
+> Le 10/21/19 =C3=A0 3:35 PM, Ulf Hansson a =C3=A9crit :
+> > On Fri, 11 Oct 2019 at 15:15, Ludovic Barre <ludovic.Barre@st.com> wrot=
+e:
+> >>
+> >> From: Ludovic Barre <ludovic.barre@st.com>
+> >>
+> >> After a request a host may be in deadlock state, and wait
+> >> a specific action to unstuck the hardware block before
+> >> re-sending a new command.
+> >
+> > Rather than talking about "unstuck" and "deadlock", how about instead
+> > describing that an MMC controller, may end up in an non-functional
+> > state hanging on something. Then to allow it to serve new requests it
+> > needs to be reset.
+> >
+>
+> Ok, deadlock naming is perhaps too stronght and scary.
+>
+> >>
+> >> This patch adds an optional callback mmc_hw_unstuck which
+> >> allows the host to unstuck the controller. In order to avoid
+> >> a critical context, this callback must be called when the
+> >> request is completed. Depending the mmc request, the completion
+> >> function is defined by mrq->done and could be in block.c or core.c.
+> >
+> > I think it's important to state exactly what is expected from the core
+> > perspective, by the mmc host driver when it calls this new host ops.
+> > We need to clarify that.
+> >
+> >>
+> >> mmc_hw_unstuck is called if the host returns an cmd/sbc/stop/data
+> >> DEADLK error.
+> >
+> > To me, this approach seems a bit upside-down. Although, I have to
+> > admit that I haven't thought through this completely yet.
+> >
+> > The thing is, to make this useful for host drivers in general, I
+> > instead think we need to add timeout to each request that the core
+> > sends to the host driver. In other words, rather than waiting forever
+> > in the core for the completion variable to be set, via calling
+> > wait_for_completion() we could call wait_for_completion_timeout(). The
+> > tricky part is to figure out what timeout to use for each request.
+> > Perhaps that is even why you picked the approach as implemented in
+> > @subject patch instead?
+>
+> On STM32 SDMMC variant, If datatimeout occurs on R1B request the Data
+> Path State Machine stays in busy and only the DPSM is non-functional.
+> The hardware block waits a software action to abort the DPSM.
+>
+> Like the CPSM stay alive, the framework can sent some requests
+> (without data, example cmd13:status) before to had this
+> timeout issue.
+>
+> POV framework I understand the possibility to have a completion_timeout,
+> for more safety. But for this specific sdmmc case, I'm not fan, because
+> the completion timeout error will occur several requests after the real
+> issue (which put the DPSM non-functional). when the completion timeout
+> occurs we can't know if it's due to R1B timeout or an other issue.
 
-No further comments from my side. Let's just agree on how to deal with
-the ti,power-gpio, then I can apply this.
+Right, I see what you are saying. So let's drop the approach suggested
+in $subject series.
 
-Thanks a lot for fixing all this mess!
+>
+> To resolve the SDMMC's specificity, I can proposed you to add a threaded
+> irq in mmci drivers to abort the DPSM and terminate the request.
+
+Okay, so the threaded IRQ handler is needed, because the reset
+operation may sleep (can't be executed in atomic context). Right?
+
+That should work, but... let's move the discussion to that patch instead.
+
+>
+> >
+> > Anyway, the typical scenario I see, is that the host driver is
+> > hanging, likely waiting for an IRQ that never get raised. So, unless
+> > it implements it own variant of a "request timeout" mechanism, it
+> > simple isn't able to call mmc_request_done() to inform the core about
+> > that the request has failed.
+> >
+> > For comments to the code, I defer that to the next step, when we have
+> > agreed on the way forward.
+> >
+> > Kind regards
+> > Uffe
+> >
 
 Kind regards
 Uffe
-
->
-> PATCH V2 2019-10-19 20:41:47:
-> * added acked-by for wl1251 patches - Kalle Valo <kvalo@codeaurora.org>
-> * really removed old pdata-quirks code (not through #if 0)
-> * splited out a partial revert of
->         efdfeb079cc3b ("regulator: fixed: Convert to use GPIO descriptor only")
->   because that was introduced after v4.19 and stops the removal of
->   the pdata-quirks patch from cleanly applying to v4.9, v4.14, v4.19
->   - reported by Sasha Levin <sashal@kernel.org>
-> * added a new patch to remove old omap hsmmc since pdata quirks
->   were last user - suggested by Tony Lindgren <tony@atomide.com>
->
-> PATCH V1 2019-10-18 22:25:39:
-> Here we have a set of scattered patches to make the OpenPandora WiFi work again.
->
-> v4.7 did break the pdata-quirks which made the mmc3 interface
-> fail completely, because some code now assumes device tree
-> based instantiation.
->
-> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
->
-> v4.11 did break the sdio qirks for wl1251 which made the driver no longer
-> load, although the device was found as an sdio client.
->
-> Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
->
-> To solve these issues:
-> * we convert mmc3 and wl1251 initialization from pdata-quirks
->   to device tree
-> * we make the wl1251 driver read properties from device tree
-> * we fix the mmc core vendor ids and quirks
-> * we fix the wl1251 (and wl1271) driver to use only vendor ids
->   from header file instead of (potentially conflicting) local
->   definitions
->
->
-> H. Nikolaus Schaller (12):
->   Documentation: dt: wireless: update wl1251 for sdio
->   net: wireless: ti: wl1251 add device tree support
->   ARM: dts: pandora-common: define wl1251 as child node of mmc3
->   mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid
->     of pandora_wl1251_init_card
->   omap: pdata-quirks: revert pandora specific gpiod additions
->   omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
->   omap: remove omap2_hsmmc_info in old hsmmc.[ch] and update Makefile
->   mmc: host: omap-hsmmc: remove init_card pdata callback from pdata
->   mmc: sdio: fix wl1251 vendor id
->   mmc: core: fix wl1251 sdio quirks
->   net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
->   net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
->
->  .../bindings/net/wireless/ti,wl1251.txt       |  26 +++
->  arch/arm/boot/dts/omap3-pandora-common.dtsi   |  36 +++-
->  arch/arm/mach-omap2/Makefile                  |   3 -
->  arch/arm/mach-omap2/common.h                  |   1 -
->  arch/arm/mach-omap2/hsmmc.c                   | 171 ------------------
->  arch/arm/mach-omap2/hsmmc.h                   |  32 ----
->  arch/arm/mach-omap2/pdata-quirks.c            | 105 -----------
->  drivers/mmc/core/quirks.h                     |   7 +
->  drivers/mmc/host/omap_hsmmc.c                 |  30 ++-
->  drivers/net/wireless/ti/wl1251/sdio.c         |  23 ++-
->  drivers/net/wireless/ti/wlcore/sdio.c         |   8 -
->  include/linux/mmc/sdio_ids.h                  |   2 +
->  include/linux/platform_data/hsmmc-omap.h      |   3 -
->  13 files changed, 111 insertions(+), 336 deletions(-)
->  delete mode 100644 arch/arm/mach-omap2/hsmmc.c
->  delete mode 100644 arch/arm/mach-omap2/hsmmc.h
->
-> --
-> 2.23.0
->
