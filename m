@@ -2,105 +2,123 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12713FC9C5
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 16:21:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F06CFFCBAF
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 18:19:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726339AbfKNPVW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Nov 2019 10:21:22 -0500
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:46171 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726179AbfKNPVV (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 10:21:21 -0500
-Received: by mail-vs1-f66.google.com with SMTP id m6so4076560vsn.13
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 07:21:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CTj31BsHt77pizQHfqTXcG4Y8Xqz7vH9lp04XnwoX3Y=;
-        b=kMF2SGDqPqEyc4bWjv3jPz9VdcJgEbLrQpHazCmkk0/sHjASd7K28ntsBujBJlG2vR
-         pEFdJGa4JYiI8L23DcMG7UpifvZr9Id3qyiD4Es6ZeyRlVPMPZvL+/6mcBcBCCUYf4Gh
-         BU3X6ZKlpDAmTmJaMUguZ35VD9ExfS8kLBjn4crjaDHAxoYMylGIRnhj3pxQR69tflNX
-         hjz4j9p70Po8DwuJbe7yWQt5YjQlH8GTLRPtz3Z1dm/amd8LKk/b8EFw4CO/W2LB9nhP
-         DaagLnoD6IeMhck5J8S02M193rYvKzgz51GAL5e7FxAbjGbJxTnsDb6okXXOHGkPCQTe
-         BHQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CTj31BsHt77pizQHfqTXcG4Y8Xqz7vH9lp04XnwoX3Y=;
-        b=QY/l8rU7me7nDJS76sqUOq7Yusc1W8cHIOJP2SFlSWymk7p5s+zv2D8y/G7N9d+UeC
-         IYjTXqZQ/hyz9t7l6bXYyB6ivEZmts+YWrsUBIHxYHiVjAka9A6m5YtugU/ggdbNhvvv
-         wOc6JxAEZKr4XauxMoEnYr7RKjFMxa3vDRyvoGsTT1rOtyfV0TDYtw6xgcSzy0ZKFtpp
-         JlbT1FeB5M+QhVxvUMN2ZhNtfMYGukUsrdggTh+6ON50GiL8RAU1hGhbQcwlHOWCTI86
-         lYLeKlCtIqsKtlvzKAEFHW6JcigsLQaW5VQcy5YgODbP+O0mWNUDhRXg/wAdmfKGq61w
-         4Q+g==
-X-Gm-Message-State: APjAAAWEwjqJzKZX0cTi24T76XMgKuOxtamduojLp1WPOx3EAlaNQLwC
-        QR8D8jvPbbdwyDMdJ1GvAPQTWF2LOeRjrYHsnDaE1Q==
-X-Google-Smtp-Source: APXvYqxiuvpRYMsGYY6NuJLDwUZLkTNqUqEcN0OQx17Yoi7RMRREZpQQticclmMj8odDs6Qd3B1VL7irV7+oTA8d4+g=
-X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr6254116vsa.34.1573744880931;
- Thu, 14 Nov 2019 07:21:20 -0800 (PST)
-MIME-Version: 1.0
-References: <20191112124021.8718-1-ulf.hansson@linaro.org> <20191112124021.8718-2-ulf.hansson@linaro.org>
- <87zhgybids.fsf@tynnyri.adurom.net>
-In-Reply-To: <87zhgybids.fsf@tynnyri.adurom.net>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Nov 2019 16:20:44 +0100
-Message-ID: <CAPDyKFrjEcsGKOwtRtns4a3dWExTvpbe2_16Gp9rwwxGbxynAg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mwifiex: Re-work support for SDIO HW reset
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
+        id S1726969AbfKNRTm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Nov 2019 12:19:42 -0500
+Received: from mta-02.yadro.com ([89.207.88.252]:42072 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726410AbfKNRTm (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 14 Nov 2019 12:19:42 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 21B3A42E7D;
+        Thu, 14 Nov 2019 17:19:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-transfer-encoding:mime-version:user-agent:content-type
+        :content-type:organization:references:in-reply-to:date:date:from
+        :from:subject:subject:message-id:received:received:received; s=
+        mta-01; t=1573751977; x=1575566378; bh=P3FU1d3ro99r7uRl5lGjcNRn5
+        WqlYzCAmN7MBkdbr3Y=; b=LqdTURpIXk1RD39o6BfgxURK8wwxrfauvNYFNb6YL
+        7tPSe2Xiua69ovHuZqN0lAj4Nq/33qjR3XOOvOVhCAfY3lw4FZRcTKhQqUvsObMt
+        itpqEASW82dQU5Vjy44qmb/ffpzTwtOHoS8AW26CUAM6t8P0aAESBbrur6WVnb73
+        tM=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id k52oKM3PmY_C; Thu, 14 Nov 2019 20:19:37 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id D050A411D9;
+        Thu, 14 Nov 2019 20:19:35 +0300 (MSK)
+Received: from localhost.localdomain (172.17.15.69) by
+ T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Thu, 14 Nov 2019 20:19:35 +0300
+Message-ID: <b443738f5e2a3c7ba96b329a8347374f7f934483.camel@yadro.com>
+Subject: Re: [PATCH v2 2/2] mmc: sdhci-of-aspeed: add inversion
+ sighttps://elixir.bootlin.com/linux/v4.6/ident/sdhci_opsnal presence
+From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>
+CC:     Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Ulf Hansson" <ulf.hansson@linaro.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <openbmc@lists.ozlabs.org>
+Date:   Thu, 14 Nov 2019 20:19:31 +0300
+In-Reply-To: <fcb5f8b5-40b9-6497-b24d-0b73e2525949@intel.com>
+References: <20191114125435.27756-1-i.mikhaylov@yadro.com>
+         <20191114125435.27756-3-i.mikhaylov@yadro.com>
+         <fcb5f8b5-40b9-6497-b24d-0b73e2525949@intel.com>
+Organization: YADRO
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [172.17.15.69]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 14 Nov 2019 at 16:13, Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Ulf Hansson <ulf.hansson@linaro.org> writes:
->
-> > The SDIO HW reset procedure in mwifiex_sdio_card_reset_work() is broken,
-> > when the SDIO card is shared with another SDIO func driver. This is the
-> > case when the Bluetooth btmrvl driver is being used in combination with
-> > mwifiex. More precisely, when mwifiex_sdio_card_reset_work() runs to resets
-> > the SDIO card, the btmrvl driver doesn't get notified about it. Beyond that
-> > point, the btmrvl driver will fail to communicate with the SDIO card.
-> >
-> > This is a generic problem for SDIO func drivers sharing an SDIO card, which
-> > are about to be addressed in subsequent changes to the mmc core and the
-> > mmc_hw_reset() interface. In principle, these changes means the
-> > mmc_hw_reset() interface starts to return 1 if the are multiple drivers for
-> > the SDIO card, as to indicate to the caller that the reset needed to be
-> > scheduled asynchronously through a hotplug mechanism of the SDIO card.
-> >
-> > Let's prepare the mwifiex driver to support the upcoming new behaviour of
-> > mmc_hw_reset(), which means extending the mwifiex_sdio_card_reset_work() to
-> > support the asynchronous SDIO HW reset path. This also means, we need to
-> > allow the ->remove() callback to run, without waiting for the FW to be
-> > loaded. Additionally, during system suspend, mwifiex_sdio_suspend() may be
-> > called when a reset has been scheduled, but waiting to be executed. In this
-> > scenario let's simply return -EBUSY to abort the suspend process, as to
-> > allow the reset to be completed first.
-> >
-> > Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> > Tested-by: Douglas Anderson <dianders@chromium.org>
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
->
-> Look good to me. Ulf, I assume you are going to take this so here's my
-> ack:
->
-> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+On Thu, 2019-11-14 at 15:10 +0200, Adrian Hunter wrote:
+> On 14/11/19 2:54 PM, Ivan Mikhaylov wrote:
+> > Change the default .get_cd callback. Add inverted signal card detection
+> > check.
+> > 
+> > Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
+> > 
+> > diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-
+> > aspeed.c
+> > index 8962f6664381..186559ee8fcc 100644
+> > --- a/drivers/mmc/host/sdhci-of-aspeed.c
+> > +++ b/drivers/mmc/host/sdhci-of-aspeed.c
+> > @@ -143,6 +143,19 @@ static inline int aspeed_sdhci_calculate_slot(struct
+> > aspeed_sdhci *dev,
+> >  	return (delta / 0x100) - 1;
+> >  }
+> >  
+> > +static int aspeed_get_cd(struct mmc_host *mmc)
+> > +{
+> > +	struct sdhci_host *host = mmc_priv(mmc);
+> > +
+> > +	int present = !!(sdhci_readl(host, SDHCI_PRESENT_STATE)
+> > +			 & SDHCI_CARD_PRESENT);
+> > +
+> > +	if (mmc->caps2 & MMC_CAP2_CD_ACTIVE_HIGH)
+> > +		present = !present;
+> 
+> Perhaps safer to flip the bit using CONFIG_MMC_SDHCI_IO_ACCESSORS and
+> ->readl() callback
+> 
 
-Thanks, I have queued it via my tree this time.
+Sorry, don't quite understand what you're saying. You want to instantiate
+'.read_l' callback instead of '.get_cd' in sdhci_ops and substitute the real
+value?
 
-Kind regards
-Uffe
+res = readl(base, reg);
+if (reg == SDHCI_PRESENT_STATE)
+	if (mmc->caps2 & MMC_CAP2_CD_ACTIVE_HIGH)
+		return !res;
+return res;
+
+Something like this?
+
+>  
+> > +	host->mmc_host_ops.get_cd = aspeed_get_cd;
+> > +	if (of_property_read_bool(pdev->dev.of_node, "cd-inverted"))
+> > +		dev_info(&pdev->dev, "aspeed: sdhci: presence signal inversion
+> > enabled\n");
+> 
+> Is this print really needed?
+> 
+I can remove it if you think it's redundant.
+
+Thanks.
+
