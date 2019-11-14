@@ -2,104 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B1CFC498
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 11:47:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F42DFC4C6
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Nov 2019 11:57:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726202AbfKNKrD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Nov 2019 05:47:03 -0500
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:37778 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726106AbfKNKrD (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 05:47:03 -0500
-Received: by mail-ua1-f65.google.com with SMTP id l38so1717643uad.4
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 02:47:02 -0800 (PST)
+        id S1726139AbfKNK5B (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Nov 2019 05:57:01 -0500
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:39529 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726002AbfKNK5A (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Nov 2019 05:57:00 -0500
+Received: by mail-vs1-f67.google.com with SMTP id x21so3557974vsp.6
+        for <linux-mmc@vger.kernel.org>; Thu, 14 Nov 2019 02:57:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=+Z7zzjF1yR5HW1GmAitGOf39HmOM3mJTrajNy5woG3s=;
-        b=QmKQUDdoeOMyx6GoduNvAB+A6ByZBHDCd+m44cbjKkLycBOCHODSVbwGUtmtZnFncI
-         jBSatmf+RWZClV7+/BbAdYlKRMyyAijZM/mTIM/4AIh3nL2mbNlizGws7XFqqjSyznmX
-         Dn0gEK8v15SByp0mIgAuXm4ACcaG+8wlLEZZIjr9uDr4PeVGEzM043Uj4wVOg+qktF6d
-         PE94zBhSofxflwJqnIoljIpQNv0gzelfMX/0QBMZNpLbhBsuR9WUPo8TdZDTUPrI9b4H
-         HFDaB0Obzgblcc6SmVLw2/kbduFDbXerQRneC2C3GZMrJz5OvaV7L/qCpremwSvgrsIl
-         +o0Q==
+        bh=WeEnAyy7qQpCSp7RUf5vRqqgRBjs74WC3kZmLk7/Ets=;
+        b=hoeZrow+SCevu622cFh3TszkhCUOxa3lUQgjfUCIWC4BX/gNASmzS9cGhMXa4zNzKo
+         +PERA2StHl/qsusa2pLHZSgkZPwoiECiBZcmKTTXMhJvLVnFBrIDWJxyv3t/BeGkiO0+
+         tvEsYEmPc2swbb5vv+8SZQ7EK/BazbhLRQiOdBduH6DOYm/JOKqt18MH4D6VPtraUvku
+         YLxxdMMG2HzwW9+302wLEGbodoqDcZA709B/SebE9PM2kwaTMSqK2lLJGxB2lnf7Y9bV
+         970SL3Q3RFGvV2mfFl3M3E6iqr5Wj75p2WkXF+xehF2JxAhKe3Ewn7DGz7XF0XUVNtVu
+         zZuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=+Z7zzjF1yR5HW1GmAitGOf39HmOM3mJTrajNy5woG3s=;
-        b=shBiDy2husekRA7300H00NEXy3pMn3nZDqiw2WgobyIx0kwvJFGi6j6V34pRXUOc6D
-         CJQmeAD5lvcsnM8bHnj7zaWjZZ8825PKKNm8uolx934w19dZieN/0ap/tJKcp+n1rhZf
-         gWt1q5/T8HcYRNTCCxveFU3BhkHh9pKq/K13u8/ht1y8CXEyDRDpxl5krzDIKaWyDhRF
-         6W4w6AcZDFW1iLGPEcvtKZstu1vgo6iArxTIhk+xo90Ff+DTzNf77t/jSVQzLYAFafzT
-         iX9YV7exOMm2Efptj2Zj4lapTQvUwZQeQg1nnVpQyzZmz4yCnm6DqVgCXyfGG3vcs6iU
-         i9VA==
-X-Gm-Message-State: APjAAAVNjwxNScjf/cLf2pqqytk4PEKJ4jPJ6gtKiKeUZmzFek7RKjPU
-        vwcngBVh6PVx0g2tfg0UWNYAsx2NA0nUJNlv8+yz9g==
-X-Google-Smtp-Source: APXvYqzs2hzCHGhzo4MLkvjZ4GdlPj6hUM6/5I/OJ+TEn23Lr7XxbNQB98pkh3DLyHV1zrutRRH8jaIY8J3D/SKfoY0=
-X-Received: by 2002:ab0:2042:: with SMTP id g2mr4940760ual.19.1573728422241;
- Thu, 14 Nov 2019 02:47:02 -0800 (PST)
+        bh=WeEnAyy7qQpCSp7RUf5vRqqgRBjs74WC3kZmLk7/Ets=;
+        b=e0x9VuSlhr1JD95ipkvh1W83X0JwyL4umSj4GT5pIxHZ8B9+WgRxCPh+aKkN/cfIB5
+         CI356Bgjh/OAJAzihBbZBe2PzySNjqEbo+dxpwB8bhJyhGvspmg7WamuXqkT6Rd5nPXc
+         FTV4uY6C/HKK1SxDH/sZeM+uiKo24lvwZCbZ+st5kG9WnmSCRMV3BlKa69+3T1QgC8HY
+         +s4FFTb7OH9d19gI1Jgml+pqkSp+CnEKy9TPGUIGX9d8jsLUdm+o/ZaNaP//VLwcT9yB
+         ALJvZaEaw0zh+T7cHels3WXwGBcRFGi1pK+Ez/ELSD5GIlflbNDwR7KesIOAlGgI772i
+         mWIA==
+X-Gm-Message-State: APjAAAWYe/ObJCsROOljIC7bnNwJqx+dgkJa4Hxl1wZe0pm5RF7VK2eX
+        6TOANkf8iCzXrVbD/V+QK8d/Qm135eVdnrRUSIEzvQ==
+X-Google-Smtp-Source: APXvYqzOQq0UWfeeYjSHzzZXhI40LLsR/zrXlGUA890HQ1DWvHEp6xuek4vuAejASyAVhkmYw01lMEF15EypZPUQORk=
+X-Received: by 2002:a67:fc04:: with SMTP id o4mr4992340vsq.35.1573729019802;
+ Thu, 14 Nov 2019 02:56:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20191105055015.23656-1-erosca@de.adit-jv.com> <20191105062223.GB1048@kunai>
- <20191105083213.GA24603@vmlxhi-102.adit-jv.com> <20191107003907.GA22634@bogus>
- <20191112211950.GB3402@kunai>
-In-Reply-To: <20191112211950.GB3402@kunai>
+References: <20191112134808.23546-1-erosca@de.adit-jv.com> <20191112204952.GA2976@kunai>
+In-Reply-To: <20191112204952.GA2976@kunai>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Nov 2019 11:46:26 +0100
-Message-ID: <CAPDyKFoXT-UtO05xbHRVJTJAg+yYJK9AM7KjK18QcaGM0Bqn9g@mail.gmail.com>
-Subject: Re: [PATCH 1/3] dt-bindings: mmc: Add 'fixed-emmc-driver-type-hs{200,400}'
+Date:   Thu, 14 Nov 2019 11:56:23 +0100
+Message-ID: <CAPDyKFq8oVk26ruNA_R8HDXhMGKhDeHnL0q82xi40g1aeo109A@mail.gmail.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add MMC_CAP_ERASE to
+ Gen3 SoCs
 To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Rob Herring <robh@kernel.org>,
-        Eugeniu Rosca <erosca@de.adit-jv.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Cc:     Eugeniu Rosca <erosca@de.adit-jv.com>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Simon Horman <horms+renesas@verge.net.au>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mathieu Malaterre <malat@debian.org>,
-        Pavel Machek <pavel@ucw.cz>, DTML <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Eugeniu Rosca <roscaeugeniu@gmail.com>
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Eugeniu Rosca <roscaeugeniu@gmail.com>,
+        Harish Jenny K N <harish_kandiga@mentor.com>,
+        Andrew Gabbasov <andrew_gabbasov@mentor.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-[...]
-
-> > >
-> > > One option to achieve a similar degree of flexibility by using an array
-> > > OF property (instead of several u32 properties) would be to agree on a
-> > > convention based on magic values, i.e. below DT one-liner could be an
-> > > example of providing solely the "fixed-emmc-driver-type-hs200" value
-> > > (based on the agreement that 0xFF values are discarded by the driver):
-> > >
-> > >     fixed-emmc-driver-type = <0xFF 0x1 0xFF>;
+On Tue, 12 Nov 2019 at 21:49, Wolfram Sang <wsa@the-dreams.de> wrote:
+>
+> On Tue, Nov 12, 2019 at 02:48:08PM +0100, Eugeniu Rosca wrote:
+> > From: Harish Jenny K N <harish_kandiga@mentor.com>
 > >
-> > I don't understand why you have 3 values instead of 2.
+> > Enable MMC_CAP_ERASE capability in the driver to allow
+> > erase/discard/trim requests.
+> >
+> > Suggested-by: Andrew Gabbasov <andrew_gabbasov@mentor.com>
+> > Signed-off-by: Harish Jenny K N <harish_kandiga@mentor.com>
+> > [erosca: Forward-port and test on v5.4-rc7 using H3ULCB-KF:
+> >          "blkdiscard /dev/mmcblk0" passes with this patch applied
+> >          and complains otherwise:
+> >        "BLKDISCARD ioctl failed: Operation not supported"]
+> > Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
 >
-> Because he sketches maximum flexibility here. Have a non-HS (default)
-> value, one for HS200, and one for HS400:
+> Looks good to me. Just a generic question, probably more for Ulf:
 >
->         fixed-emmc-driver-type = <[default] [HS200] [HS400]>;
->
-> > I would just use -1 if you want to ignore an entry. If that's the common
->
-> '-1' sounds good to me, too.
->
-> > case, then I'd stick with what you originally proposed. If rare, then I
-> > think an array is the better route.
->
-> What I have seen so far: setting drive strength alone is more on the
-> rare side. Setting specific values for default and HS200/400 seems even
-> more rare to me. With this patchset, it is the first time I hear about
-> it.
->
-> Yet, my experience might be a bit limited, maybe others (Hi Ulf! ;)) can add
-> their views, too?
+> Why does this CAP_ERASE exist? As I understand, the driver only needs to
+> set the flag and no further handling is required. Why would a driver not
+> set this flag and not support erase/trim commands?
 
-My experience in this field is quite limited. No input from me, sorry.
+I am working on removing the cap, altogether. Step by step, this is
+getting closer now.
+
+The main problem has been about busy detect timeouts, as an erase
+command may have a very long busy timeout. On the host side, they
+typically need to respect the cmd->busy_timeout for the request, and
+if it can't because of some HW limitation, it needs to set
+mmc->max_busy_timeout.
+
+Once that is fixed for all, we can drop CAP_ERASE.
 
 Kind regards
 Uffe
