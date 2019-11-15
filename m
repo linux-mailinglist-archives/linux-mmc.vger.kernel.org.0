@@ -2,115 +2,202 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C562AFDC2D
-	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 12:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C1EAFDC60
+	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 12:39:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbfKOLWn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 15 Nov 2019 06:22:43 -0500
-Received: from inva021.nxp.com ([92.121.34.21]:35504 "EHLO inva021.nxp.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726983AbfKOLWn (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 15 Nov 2019 06:22:43 -0500
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 42F9F200101;
-        Fri, 15 Nov 2019 12:22:40 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B9E29200094;
-        Fri, 15 Nov 2019 12:22:35 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 3A256402F8;
-        Fri, 15 Nov 2019 19:22:30 +0800 (SGT)
-From:   haibo.chen@nxp.com
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de
-Cc:     festevam@gmail.com, linux-mmc@vger.kernel.org, linux-imx@nxp.com,
-        haibo.chen@nxp.com
-Subject: [PATCH 14/14] mmc: cqhci: clear pending interrupt and halt
-Date:   Fri, 15 Nov 2019 19:20:35 +0800
-Message-Id: <1573816835-26884-1-git-send-email-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+        id S1727254AbfKOLjQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 15 Nov 2019 06:39:16 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:33888 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727196AbfKOLjQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 15 Nov 2019 06:39:16 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAFBdDEp104147;
+        Fri, 15 Nov 2019 05:39:13 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1573817953;
+        bh=DEBO99vGzZiqzGLPACsrYr2rPMREEYd/ww5CNsIVt2w=;
+        h=From:To:CC:Subject:Date;
+        b=UfacSTFCA7emtxHwitX4x9vrePd9t5eippio0IbDMIBHy9DWiSSWnFe7hUZFRBVw0
+         MpMUF1Cg7EBywCQBVTOD643V5TeLgXv9uE39ALq1a7XNuw+Aeav3F+bptB4sAbwMFq
+         oZygmFDgu0L2aRw3BiUjFsLqZOHrZySyas7FJHDU=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAFBdDUu092010;
+        Fri, 15 Nov 2019 05:39:13 -0600
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 15
+ Nov 2019 05:39:12 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Fri, 15 Nov 2019 05:39:12 -0600
+Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAFBdAZt015936;
+        Fri, 15 Nov 2019 05:39:11 -0600
+From:   Faiz Abbas <faiz_abbas@ti.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+CC:     <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>,
+        <faiz_abbas@ti.com>
+Subject: [PATCH] mmc: sdhci_am654: Add Support for Command Queuing Engine to J721E
+Date:   Fri, 15 Nov 2019 17:10:09 +0530
+Message-ID: <20191115114009.20090-1-faiz_abbas@ti.com>
+X-Mailer: git-send-email 2.19.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Haibo Chen <haibo.chen@nxp.com>
+Add Support for CQHCI (Command Queuing Host Controller Interface)
+for each of the host controllers present in TI's J721E devices.
+Add cqhci_ops and a .irq() callback to handle cqhci specific interrupts.
 
-On i.MX8MM, we are running Dual Linux OS, with 1st Linux using SD Card
-as rootfs storage, 2nd Linux using eMMC as rootfs storage. We let the
-the 1st linux configure power/clock for the 2nd Linux.
-
-When the 2nd Linux is booting into rootfs stage, we let the 1st Linux
-to destroy the 2nd linux, then restart the 1st linux, we met SDHCI dump
-as following, after we clear the pending interrupt and halt CQCTL, issue
-gone.
-
-[ 1.334594] mmc2: Got command interrupt 0x00000001 even though no command operation was in progress.
-[ 1.334595] mmc2: sdhci: ============ SDHCI REGISTER DUMP ===========
-[ 1.334599] mmc2: sdhci: Sys addr: 0xa05dcc00 | Version: 0x00000002
-[ 1.340819] lib80211: common routines for IEEE802.11 drivers
-[ 1.345538] mmc2: sdhci: Blk size: 0x00000200 | Blk cnt: 0x00000000
-[ 1.345541] mmc2: sdhci: Argument: 0x00018000 | Trn mode: 0x00000033
-[ 1.345543] mmc2: sdhci: Present: 0x01f88008 | Host ctl: 0x00000031
-[ 1.345547] mmc2: sdhci: Power: 0x00000002 | Blk gap: 0x00000080
-[ 1.357903] mmc2: sdhci: Wake-up: 0x00000008 | Clock: 0x0000003f
-[ 1.357905] mmc2: sdhci: Timeout: 0x0000008f | Int stat: 0x00000000
-[ 1.357908] mmc2: sdhci: Int enab: 0x107f100b | Sig enab: 0x107f100b
-[ 1.357911] mmc2: sdhci: AC12 err: 0x00000000 | Slot int: 0x00000502
-[ 1.370268] mmc2: sdhci: Caps: 0x07eb0000 | Caps_1: 0x0000b400
-[ 1.370270] mmc2: sdhci: Cmd: 0x00000d1a | Max curr: 0x00ffffff
-[ 1.370273] mmc2: sdhci: Resp[0]: 0x00000b00 | Resp[1]: 0xffffffff
-[ 1.370276] mmc2: sdhci: Resp[2]: 0x328f5903 | Resp[3]: 0x00d00f00
-[ 1.382132] mmc2: sdhci: Host ctl2: 0x00000000
-[ 1.382135] mmc2: sdhci: ADMA Err: 0x00000000 | ADMA Ptr: 0xa2040208
-
-[ 2.060932] mmc2: Unexpected interrupt 0x00004000.
-[ 2.065538] mmc2: sdhci: ============ SDHCI REGISTER DUMP ===========
-[ 2.071720] mmc2: sdhci: Sys addr: 0x00000000 | Version: 0x00000002
-[ 2.077902] mmc2: sdhci: Blk size: 0x00000200 | Blk cnt: 0x00000001
-[ 2.084083] mmc2: sdhci: Argument: 0x00000000 | Trn mode: 0x00000000
-[ 2.090264] mmc2: sdhci: Present: 0x01f88009 | Host ctl: 0x00000011
-[ 2.096446] mmc2: sdhci: Power: 0x00000002 | Blk gap: 0x00000080
-[ 2.102627] mmc2: sdhci: Wake-up: 0x00000008 | Clock: 0x000010ff
-[ 2.108809] mmc2: sdhci: Timeout: 0x0000008f | Int stat: 0x00004000
-[ 2.114990] mmc2: sdhci: Int enab: 0x007f1003 | Sig enab: 0x007f1003
-[ 2.121171] mmc2: sdhci: AC12 err: 0x00000000 | Slot int: 0x00000502
-[ 2.127353] mmc2: sdhci: Caps: 0x07eb0000 | Caps_1: 0x0000b400
-[ 2.133534] mmc2: sdhci: Cmd: 0x0000371a | Max curr: 0x00ffffff
-[ 2.139715] mmc2: sdhci: Resp[0]: 0x00000900 | Resp[1]: 0xffffffff
-[ 2.145896] mmc2: sdhci: Resp[2]: 0x328f5903 | Resp[3]: 0x00d00f00
-[ 2.152077] mmc2: sdhci: Host ctl2: 0x00000000
-[ 2.156342] mmc2: sdhci: ADMA Err: 0x00000000 | ADMA Ptr: 0x00000000
-
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mmc/host/Kconfig       |  1 +
+ drivers/mmc/host/sdhci_am654.c | 71 +++++++++++++++++++++++++++++++++-
+ 2 files changed, 71 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 83b4156b2cf4..7cd5046f33ce 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -1483,6 +1483,7 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
- 	struct cqhci_host *cq_host;
- 	int err;
- 	struct pltfm_imx_data *imx_data;
-+	u32 status;
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index 49ea02c467bf..25f12ef813ff 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -1011,6 +1011,7 @@ config MMC_SDHCI_AM654
+ 	tristate "Support for the SDHCI Controller in TI's AM654 SOCs"
+ 	depends on MMC_SDHCI_PLTFM && OF && REGMAP_MMIO
+ 	select MMC_SDHCI_IO_ACCESSORS
++	select CONFIG_MMC_CQHCI
+ 	help
+ 	  This selects the Secure Digital Host Controller Interface (SDHCI)
+ 	  support present in TI's AM654 SOCs. The controller supports
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index bb90757ecace..b8e897e31e2e 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -12,6 +12,7 @@
+ #include <linux/property.h>
+ #include <linux/regmap.h>
  
- 	host = sdhci_pltfm_init(pdev, &sdhci_esdhc_imx_pdata,
- 				sizeof(*imx_data));
-@@ -1590,6 +1591,10 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
- 		err = cqhci_init(cq_host, host->mmc, false);
- 		if (err)
- 			goto disable_ahb_clk;
++#include "cqhci.h"
+ #include "sdhci-pltfm.h"
+ 
+ /* CTL_CFG Registers */
+@@ -68,6 +69,9 @@
+ 
+ #define CLOCK_TOO_SLOW_HZ	400000
+ 
++/* Command Queue Host Controller Interface Base address */
++#define SDHCI_AM654_CQE_BASE_ADDR 0x200
 +
-+		status = cqhci_readl(cq_host, CQHCI_IS);
-+		cqhci_writel(cq_host, status, CQHCI_IS);
-+		cqhci_writel(cq_host, CQHCI_HALT, CQHCI_CTL);
- 	}
+ static struct regmap_config sdhci_am654_regmap_config = {
+ 	.reg_bits = 32,
+ 	.val_bits = 32,
+@@ -259,6 +263,19 @@ static const struct sdhci_am654_driver_data sdhci_am654_drvdata = {
+ 	.flags = IOMUX_PRESENT | FREQSEL_2_BIT | STRBSEL_4_BIT | DLL_PRESENT,
+ };
  
- 	if (of_id)
++static u32 sdhci_am654_cqhci_irq(struct sdhci_host *host, u32 intmask)
++{
++	int cmd_error = 0;
++	int data_error = 0;
++
++	if (!sdhci_cqe_irq(host, intmask, &cmd_error, &data_error))
++		return intmask;
++
++	cqhci_irq(host->mmc, intmask, cmd_error, data_error);
++
++	return 0;
++}
++
+ static struct sdhci_ops sdhci_j721e_8bit_ops = {
+ 	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
+ 	.get_timeout_clock = sdhci_pltfm_clk_get_max_clock,
+@@ -267,6 +284,7 @@ static struct sdhci_ops sdhci_j721e_8bit_ops = {
+ 	.set_power = sdhci_am654_set_power,
+ 	.set_clock = sdhci_am654_set_clock,
+ 	.write_b = sdhci_am654_write_b,
++	.irq = sdhci_am654_cqhci_irq,
+ 	.reset = sdhci_reset,
+ };
+ 
+@@ -290,6 +308,7 @@ static struct sdhci_ops sdhci_j721e_4bit_ops = {
+ 	.set_power = sdhci_am654_set_power,
+ 	.set_clock = sdhci_j721e_4bit_set_clock,
+ 	.write_b = sdhci_am654_write_b,
++	.irq = sdhci_am654_cqhci_irq,
+ 	.reset = sdhci_reset,
+ };
+ 
+@@ -304,6 +323,40 @@ static const struct sdhci_am654_driver_data sdhci_j721e_4bit_drvdata = {
+ 	.pdata = &sdhci_j721e_4bit_pdata,
+ 	.flags = IOMUX_PRESENT,
+ };
++
++static void sdhci_am654_dumpregs(struct mmc_host *mmc)
++{
++	sdhci_dumpregs(mmc_priv(mmc));
++}
++
++static const struct cqhci_host_ops sdhci_am654_cqhci_ops = {
++	.enable		= sdhci_cqe_enable,
++	.disable	= sdhci_cqe_disable,
++	.dumpregs	= sdhci_am654_dumpregs,
++};
++
++static int sdhci_am654_cqe_add_host(struct sdhci_host *host)
++{
++	struct cqhci_host *cq_host;
++	int ret;
++
++	cq_host = devm_kzalloc(host->mmc->parent, sizeof(struct cqhci_host),
++			       GFP_KERNEL);
++	if (!cq_host)
++		return -ENOMEM;
++
++	cq_host->mmio = host->ioaddr + SDHCI_AM654_CQE_BASE_ADDR;
++	cq_host->quirks |= CQHCI_QUIRK_SHORT_TXFR_DESC_SZ;
++	cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
++	cq_host->ops = &sdhci_am654_cqhci_ops;
++
++	host->mmc->caps2 |= MMC_CAP2_CQE;
++
++	ret = cqhci_init(cq_host, host->mmc, 1);
++
++	return ret;
++}
++
+ static int sdhci_am654_init(struct sdhci_host *host)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+@@ -344,7 +397,23 @@ static int sdhci_am654_init(struct sdhci_host *host)
+ 	regmap_update_bits(sdhci_am654->base, CTL_CFG_2, SLOTTYPE_MASK,
+ 			   ctl_cfg_2);
+ 
+-	return sdhci_add_host(host);
++	ret = sdhci_setup_host(host);
++	if (ret)
++		return ret;
++
++	ret = sdhci_am654_cqe_add_host(host);
++	if (ret)
++		goto err_cleanup_host;
++
++	ret = __sdhci_add_host(host);
++	if (ret)
++		goto err_cleanup_host;
++
++	return 0;
++
++err_cleanup_host:
++	sdhci_cleanup_host(host);
++	return ret;
+ }
+ 
+ static int sdhci_am654_get_of_property(struct platform_device *pdev,
 -- 
-2.17.1
+2.19.2
 
