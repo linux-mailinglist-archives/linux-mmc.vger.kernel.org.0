@@ -2,89 +2,122 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FAF5FD7C4
-	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 09:12:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4AAEFD8A2
+	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 10:20:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726818AbfKOIM4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 15 Nov 2019 03:12:56 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:35086 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725829AbfKOIM4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 15 Nov 2019 03:12:56 -0500
-Received: by mail-lj1-f193.google.com with SMTP id r7so9717777ljg.2
-        for <linux-mmc@vger.kernel.org>; Fri, 15 Nov 2019 00:12:54 -0800 (PST)
+        id S1727089AbfKOJUR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 15 Nov 2019 04:20:17 -0500
+Received: from mail-vk1-f194.google.com ([209.85.221.194]:36467 "EHLO
+        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725829AbfKOJUR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 15 Nov 2019 04:20:17 -0500
+Received: by mail-vk1-f194.google.com with SMTP id d10so2207740vke.3
+        for <linux-mmc@vger.kernel.org>; Fri, 15 Nov 2019 01:20:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=0Lu//mayZU/5NBGVoU0YLJLr4UOFey7PELfDjgGamXw=;
-        b=F+WUh27B46iCe7FcHeV4d1aCCxlBM/6wUo3AlSiE0xF52QZCnYRj70IB/xPc3bd4xJ
-         91KfTchMRlaqWK7ht9wZ23b4pZKHtR9Xb2iUKn4rbPufek7YbPg9HD0gnSR/hA+ZXLaC
-         HHy1oKEF11qMh4MtU3Mne4btFdrDGsOiwJqZ5fCCW8nFiqQojnXkgf9kpA7S6gojx61F
-         fuBxF24AD31lVFq1xJsYbAtoYlIVdYMrdShZqR7ZVBQhwNyHTudZ2svPqjTWJ1PcKQk+
-         9tohH85x/VZS0d6ZIqrHcrgVfBsGWETRt8BMTtbUOKrwbWoza69ByENpde6cmQm9y1xG
-         vOPA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=iq9uxDFFl/7R3Enfz7ThtyPFSTWSzvQY67xCc3VRtUg=;
+        b=S/998+wZ1h0OvX9wPzQw6FItUWJUooke2YKgZHsySOGgG7sH+n4ZTj912GvMu0yhqz
+         tn7x3k0Vy5itxaSs+VkNf3fUHWdi2YsOGHeYKQgZqZxyywLV+ADDNaIVH+nGpdzS6o0K
+         xHRBmJWbc1v2chKnSbhPsIGhQZu/9Bl1xwQwH8sAjyGWiGL+PkNgal/JBeqR9o11UcD2
+         mJJOTH6FWITSUWsHYsYZSsFVG3C4thpRFlVzcAo0oyqZi77IkirWUTONpbU80PPMxVc3
+         V5NOijHMIT3PB5qXL4qBHAvvY7HIvp6Sx1FTwZA7z0goWBg2CT2in4jOwlOVqUXRtsfh
+         Qt/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=0Lu//mayZU/5NBGVoU0YLJLr4UOFey7PELfDjgGamXw=;
-        b=mtjRH9fCB64CckkHFlqLg/RrsULltysv8GD+Ni7jfstZI+Cl9JDf+MnCm7Ejm8AtaW
-         m7bqSE9yzHS125ROf7lVwL6n4tnQpRzOP/n5MImHCKHB6aYR0FBK96TWsUUSvoDYfDbS
-         BLGM1EEtIdEYsIGnVMpmAvihqnn9MLTRjmAkH+DIaaQM2aKrKtDET6ArR+UceSXwNAQx
-         hrp3BTtSytyR/cN3I9R4RhyJci4rp6X95XEL0u9qLUSbkwrlbn2YuiUV3SvB4Ei9kgBR
-         bOw8nAXRzHkNPtR9H96Uva9l9e2/BdqeqSkaEFPz2DPZiyV3Hc3iRdRo8N8DZ3m5bFbL
-         KGEQ==
-X-Gm-Message-State: APjAAAUAL2pcWVlsWRRxyhFRU8t/yDYgV2Zw7keq0TdT6DZL/ripjbLj
-        igcAkHqZzNVNLLuNuuOzzntag3AOCFs=
-X-Google-Smtp-Source: APXvYqyiv8GyvjaodcO+frJbS5JbpC1GtB9/bgc6kyn6rb2OCIYQpUoV0ipbrUQ7sQImCdm4+7x8fQ==
-X-Received: by 2002:a2e:81c6:: with SMTP id s6mr10113994ljg.61.1573805574084;
-        Fri, 15 Nov 2019 00:12:54 -0800 (PST)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id a144sm5458482lfd.27.2019.11.15.00.12.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2019 00:12:53 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iq9uxDFFl/7R3Enfz7ThtyPFSTWSzvQY67xCc3VRtUg=;
+        b=GyaNyVxKDTj/G/1VeIQaDpJZTb8tygQJtxhG4xYGY3MFJCDA1YJsPF7V9KZMEedDwc
+         Wi7HCur0cHceA9EY7LWcq+kro9MfEVLbSghTgpLvC+S2bcJuA9Cw5c7sF4n1aUlY4Wm8
+         oeW8JZr7cz6kaYPVmVDUocVJz2u0Q8sWxTrIzqKWpNhJLXuuxg0skSTCsxqycXuMQsLl
+         k7pyGUL8ZYXlEREnU79gufR3fvXu2ocU49wYZbLxZFbSHGAXkKDYOmuzQQBDnKURsPfo
+         QcVA5yb3j2678XACpE1kRaRBYzkzlXzdWJHfwN69MT35m6/rlI2g2lyCX9ZYBhz3/Ya5
+         eGMg==
+X-Gm-Message-State: APjAAAVJYrQMpVIzqSmzVLzi86blni/ISG9xkM5IhSOQXOdlQTZf3cfE
+        eRA8eBlFPY13BPgryCMBnvw2u38wpaOf+P84i7RDRw==
+X-Google-Smtp-Source: APXvYqwpH4i6bh57UOCdu1M+WDA2ARzT7NfT4hh3f3AhDxVxh+gW4JIjt5X6Ic+nNsdNmBXwbu9ncA2AtQDZBknOnZQ=
+X-Received: by 2002:ac5:cd47:: with SMTP id n7mr324617vkm.101.1573809616652;
+ Fri, 15 Nov 2019 01:20:16 -0800 (PST)
+MIME-Version: 1.0
+References: <20191112134808.23546-1-erosca@de.adit-jv.com> <20191112204952.GA2976@kunai>
+ <CAPDyKFq8oVk26ruNA_R8HDXhMGKhDeHnL0q82xi40g1aeo109A@mail.gmail.com>
+ <20191114113743.GA19656@vmlxhi-102.adit-jv.com> <CAPDyKFp5iqrFDM1EWnYBwFmQAiAA5FADDLAyuVVBgMu4Sx=x5w@mail.gmail.com>
+ <20191114201514.GA3058@kunai>
+In-Reply-To: <20191114201514.GA3058@kunai>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC fixes for v5.4-rc8
-Date:   Fri, 15 Nov 2019 09:12:52 +0100
-Message-Id: <20191115081252.20154-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+Date:   Fri, 15 Nov 2019 10:19:40 +0100
+Message-ID: <CAPDyKFpbu0tCWyUHRjVySRF3QR6Hzd8MXA+RhNeCjED1nPtkYg@mail.gmail.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add MMC_CAP_ERASE to
+ Gen3 SoCs
+To:     Wolfram Sang <wsa@the-dreams.de>
+Cc:     Eugeniu Rosca <erosca@de.adit-jv.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Eugeniu Rosca <roscaeugeniu@gmail.com>,
+        Harish Jenny K N <harish_kandiga@mentor.com>,
+        Andrew Gabbasov <andrew_gabbasov@mentor.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+On Thu, 14 Nov 2019 at 21:15, Wolfram Sang <wsa@the-dreams.de> wrote:
+>
+> Hi Ulf,
+>
+> thanks again for the heads up.
+>
+> > Let's first take a step back, because I don't know how the HW busy
+> > detection works for your controller.
+> >
+> > I have noticed there is TMIO_STAT_CMD_BUSY bit being set for some
+> > variants, which seems to cause renesas_sdhi_wait_idle() to loop for a
+> > pre-defined number of loops/timeout. This looks scary, but I can't
+> > tell if it's really a problem.
+>
+> That should be okay. The datasheet mentions that some registers can only
+> be accessed when either CBSY or SCLKDIVEN bits signal non-busyness.
+> renesas_sdhi_wait_idle() is for that.
+>
+> > BTW, do you know what TMIO_STAT_CMD_BUSY actually is monitoring?
+>
+> 0: A command sequence has been completed.
+> 1: A command sequence is being executed.
 
-Here's a PR with one trivial MMC fix, intended for v5.4-rc8. Details about the
-highlights are as usual found in the signed tag.
+Alright, thanks for clarifying!
 
-Please pull this in!
+>
+> > I have also noticed that MMC_CAP_WAIT_WHILE_BUSY isn't set for any of
+> > the renesas/tmio variant hosts. Is that simply because the HW doesn't
+> > support this? Or because implementation is missing?
+>
+> Good thing we use public development. I recalled we discussed this
+> before but I needed a search engine to find it again:
+>
+> https://patchwork.kernel.org/patch/8114821/
+>
+> Summary: The HW (at least since Gen2) has HW support for busy timeout
+> detection but I never came around to implement it (and even forgot about
+> it :( ). So, we still use a workqueue for it.
+
+I had a vague memory about this discussion as well, thanks for giving
+the pointers to it.
+
+I think using a workqueue for scheduling a reset work with a timeout
+of 5 s, as in your case.
+
+However, as a heads up, if/when implementing support for busy
+detection and adding MMC_CAP_WAIT_WHILE_BUSY, needs to update that
+timeout according to cmd->busy_timeout, which is provided by the core.
 
 Kind regards
-Ulf Hansson
-
-
-The following changes since commit 31f4f5b495a62c9a8b15b1c3581acd5efeb9af8c:
-
-  Linux 5.4-rc7 (2019-11-10 16:17:15 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.4-rc7
-
-for you to fetch changes up to fed23c5829ecab4ddc712d7b0046e59610ca3ba4:
-
-  mmc: sdhci-of-at91: fix quirk2 overwrite (2019-11-14 14:57:53 +0100)
-
-----------------------------------------------------------------
-MMC host:
-- sdhci-of-at91: Don't overwrite quirk flags
-
-----------------------------------------------------------------
-Eugen Hristev (1):
-      mmc: sdhci-of-at91: fix quirk2 overwrite
-
- drivers/mmc/host/sdhci-of-at91.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Uffe
