@@ -2,35 +2,34 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37C7AFDC0C
-	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 12:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C069FDC1E
+	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 12:18:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbfKOLOt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 15 Nov 2019 06:14:49 -0500
-Received: from inva020.nxp.com ([92.121.34.13]:44672 "EHLO inva020.nxp.com"
+        id S1727151AbfKOLSv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 15 Nov 2019 06:18:51 -0500
+Received: from inva020.nxp.com ([92.121.34.13]:49320 "EHLO inva020.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726986AbfKOLOt (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 15 Nov 2019 06:14:49 -0500
+        id S1726521AbfKOLSv (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 15 Nov 2019 06:18:51 -0500
 Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A8A491A04EF;
-        Fri, 15 Nov 2019 12:14:46 +0100 (CET)
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B4DAD1A050C;
+        Fri, 15 Nov 2019 12:18:49 +0100 (CET)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 679F31A04FD;
-        Fri, 15 Nov 2019 12:14:42 +0100 (CET)
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 42CCD1A0A30;
+        Fri, 15 Nov 2019 12:18:44 +0100 (CET)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id D1C4B402FB;
-        Fri, 15 Nov 2019 19:14:36 +0800 (SGT)
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id A57B0402F8;
+        Fri, 15 Nov 2019 19:18:37 +0800 (SGT)
 From:   haibo.chen@nxp.com
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de
-Cc:     festevam@gmail.com, linux-mmc@vger.kernel.org, linux-imx@nxp.com,
-        haibo.chen@nxp.com
-Subject: [PATCH 07/14] mmc: sdhci-esdhc-imx: restore the per_clk rate in PM_RUNTIME
-Date:   Fri, 15 Nov 2019 19:12:41 +0800
-Message-Id: <1573816361-26535-4-git-send-email-haibo.chen@nxp.com>
+        shawnguo@kernel.org, s.hauer@pengutronix.de, robh+dt@kernel.org,
+        mark.rutland@arm.com, kernel@pengutronix.de
+Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
+        linux-mmc@vger.kernel.org, linux-imx@nxp.com, haibo.chen@nxp.com
+Subject: [PATCH 08/14] doc: dt: fsl-imx-esdhc: add strobe-dll-delay-target binding
+Date:   Fri, 15 Nov 2019 19:16:45 +0800
+Message-Id: <1573816606-26779-1-git-send-email-haibo.chen@nxp.com>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1573816361-26535-1-git-send-email-haibo.chen@nxp.com>
-References: <1573816361-26535-1-git-send-email-haibo.chen@nxp.com>
 X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
@@ -39,56 +38,29 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Haibo Chen <haibo.chen@nxp.com>
 
-When pm_runtime_suspend is run, a call to SCFW power off the SS (SS is a
-power domain, usdhc belong to this SS power domain) in which the resource
-resides is made. The SCFW can power off the SS if no other resource in
-active in that SS. If so, all state associated with all the resources within
-the SS that is powered off is lost, this includes the clock rates, clock state
-etc. When pm_runtime_resume is called, the SS associated with that resource
-is powered up. But the clocks are left in the default state.
-
-This patch restore clock rate in pm_runtime_resume, make sure the
-clock is right rather than depending on the default state setting
-by SCFW.
+Add fsl,strobe-dll-delay-target binding.
 
 Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 2c8a78218c8e..448b29b2da62 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -162,6 +162,8 @@
- #define ESDHC_FLAG_PMQOS		BIT(13)
- /* The IP state got lost in low power mode */
- #define ESDHC_FLAG_STATE_LOST_IN_LPMODE		BIT(14)
-+/* The IP lost clock rate in PM_RUNTIME */
-+#define ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME	BIT(15)
+diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
+index f707b8bee304..d50144f5f1d2 100644
+--- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
++++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
+@@ -38,6 +38,11 @@ Optional properties:
+   This property allows user to change the tuning step to more than one delay
+   cells which is useful for some special boards or cards when the default
+   tuning step can't find the proper delay window within limited tuning retries.
++- fsl,strobe-dll-delay-target: Specify the strobe dll control slave delay target.
++  This delay target programming host controller loopback read clock, and this
++  property allows user to change the delay target for the strobe input read clock.
++  If not use this property, driver default set the delay target to value 7.
++  Only eMMC HS400 mode need to take care of this property.
  
- struct esdhc_soc_data {
- 	u32 flags;
-@@ -225,7 +227,8 @@ static struct esdhc_soc_data usdhc_imx8qxp_data = {
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
- 			| ESDHC_FLAG_CQHCI
--			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
-+			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
-+			| ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME,
- };
+ Examples:
  
- struct pltfm_imx_data {
-@@ -1711,6 +1714,9 @@ static int sdhci_esdhc_runtime_resume(struct device *dev)
- 		pm_qos_add_request(&imx_data->pm_qos_req,
- 			PM_QOS_CPU_DMA_LATENCY, 0);
- 
-+	if (imx_data->socdata->flags & ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME)
-+		clk_set_rate(imx_data->clk_per, pltfm_host->clock);
-+
- 	err = clk_prepare_enable(imx_data->clk_ahb);
- 	if (err)
- 		goto remove_pm_qos_request;
 -- 
 2.17.1
 
