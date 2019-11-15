@@ -2,215 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14299FD904
-	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 10:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF62EFDADB
+	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 11:12:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727341AbfKOJaZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 15 Nov 2019 04:30:25 -0500
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:45857 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727329AbfKOJaY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 15 Nov 2019 04:30:24 -0500
-Received: by mail-ua1-f65.google.com with SMTP id w10so343816uar.12
-        for <linux-mmc@vger.kernel.org>; Fri, 15 Nov 2019 01:30:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=U0K8GRiXqSgIpN48tBNHcV+jI/oiDgvDhl7ShZIVOhE=;
-        b=dms2AT6yjYIujdBp5vLXzT3QSWBUJdp+Ja/bHoPGCKS84bKo37q9DYAWmQ+OhvnX47
-         wQESQqhFjyBsKxLBW14sJM6Kkxy/Yvicy1Vttr/bmnfFi1qkmbGWwvZC6/I2T2hc0dc4
-         E6e4jsZ8R7HPGQj7VhbAeZXMKd4W+mV9z0NBs1wYV93Cw7drye59WzshJHguKEkNXCPt
-         fHF0ouNrAUlgmAVwGBwpW7V1N92+w5PRrvnambZTbfMnbWUBMJIPHZCBuMz5iDZ3km48
-         QxwxVl+99j/KVNaPgNldx2y1f+snHTdbPP0IYzr0FUgyc31xgzkXkCrLt9Puderh1g1W
-         O9fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=U0K8GRiXqSgIpN48tBNHcV+jI/oiDgvDhl7ShZIVOhE=;
-        b=D9f0ikint03m9JoN7PZgY5oqanSj6s3f+qv9mlocykJ3C68eTWgOkDAcM7KtjanOlE
-         +9huzgc9Y/lN+kh0+q2cRhRJkoiPgFRvyYAh6cLkz5x23rUg/otuAQ1oJRWWonZw0le5
-         Pda3S730OxlipM4PLZveqtVOnUhfGk9yqWS8lMbUFrAoGE51oBMqeIiV/nj3YUQgqnkI
-         Pl0OtF30gw8xnRwQDSpjG2ayszMTAeQIgwWe3p3s6bTaxyq3gLMLy19vYMapGMClw1p+
-         HPeApz1H50Rfx0fquF9ZJHn1jU7+Ng5XzcrZ99I0qI1ZVp/DHIllSeT5T6wpE5EyffLt
-         T6iQ==
-X-Gm-Message-State: APjAAAUSCz6tzM4W/vAyrDyrEBjfpW/McrSkF/Zq/JC11ewxpUPcySyR
-        hCRqczSanv9vh0I8/ZDdGfkujEHk12lMB1XdXzttag==
-X-Google-Smtp-Source: APXvYqzU6WJnGjb2iLphku/+v8QsaQ8unugsql39hfm0KRqoySp6l08BYKltD9R0v8e99ePYA9xvGwkzshWggfN0FEM=
-X-Received: by 2002:ab0:74cd:: with SMTP id f13mr8348393uaq.104.1573810223324;
- Fri, 15 Nov 2019 01:30:23 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1573122644.git.hns@goldelico.com> <CAPDyKFrntf2Kd9Zf7uxRCUk_OrKD8B3xOKmvPaf04X21L5HwWA@mail.gmail.com>
- <5F5A5FC0-8F91-4D5B-9EF6-AF36FE38B588@goldelico.com>
-In-Reply-To: <5F5A5FC0-8F91-4D5B-9EF6-AF36FE38B588@goldelico.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 15 Nov 2019 10:29:46 +0100
-Message-ID: <CAPDyKFr=Uk1i0c=3WvuOYCQ__Skpr-9mjVM2Yqst-hd8zY6OeQ@mail.gmail.com>
-Subject: Re: [PATCH v3 00/12] OpenPandora: make wl1251 connected to mmc3 sdio
- port of OpenPandora work again
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        DTML <devicetree@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Petr Mladek <pmladek@suse.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        kernel@pyra-handheld.com,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        John Stultz <john.stultz@linaro.org>,
-        David Sterba <dsterba@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Allison Randal <allison@lohutok.net>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1727022AbfKOKMI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 15 Nov 2019 05:12:08 -0500
+Received: from sauhun.de ([88.99.104.3]:59306 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725829AbfKOKMI (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 15 Nov 2019 05:12:08 -0500
+Received: from localhost (p54B33606.dip0.t-ipconnect.de [84.179.54.6])
+        by pokefinder.org (Postfix) with ESMTPSA id E65DD2C03E3;
+        Fri, 15 Nov 2019 11:12:05 +0100 (CET)
+Date:   Fri, 15 Nov 2019 11:12:05 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Eugeniu Rosca <erosca@de.adit-jv.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Simon Horman <horms+renesas@verge.net.au>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        netdev <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Eugeniu Rosca <roscaeugeniu@gmail.com>,
+        Harish Jenny K N <harish_kandiga@mentor.com>,
+        Andrew Gabbasov <andrew_gabbasov@mentor.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi_internal_dmac: Add MMC_CAP_ERASE to
+ Gen3 SoCs
+Message-ID: <20191115101205.GB2227@kunai>
+References: <20191112134808.23546-1-erosca@de.adit-jv.com>
+ <20191112204952.GA2976@kunai>
+ <CAPDyKFq8oVk26ruNA_R8HDXhMGKhDeHnL0q82xi40g1aeo109A@mail.gmail.com>
+ <20191114113743.GA19656@vmlxhi-102.adit-jv.com>
+ <CAPDyKFp5iqrFDM1EWnYBwFmQAiAA5FADDLAyuVVBgMu4Sx=x5w@mail.gmail.com>
+ <20191114201514.GA3058@kunai>
+ <CAPDyKFpbu0tCWyUHRjVySRF3QR6Hzd8MXA+RhNeCjED1nPtkYg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="LpQ9ahxlCli8rRTG"
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpbu0tCWyUHRjVySRF3QR6Hzd8MXA+RhNeCjED1nPtkYg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 14 Nov 2019 at 16:16, H. Nikolaus Schaller <hns@goldelico.com> wrote:
->
-> Hi Ulf,
->
-> > Am 14.11.2019 um 15:18 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
-> >
-> > On Thu, 7 Nov 2019 at 11:31, H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> >>
-> >>
-> >> * add a revisit note for special wl1251 handling code because it should
-> >>  be solved more generic in mmc core - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> >> * remove init_card callback from platform_data/hsmmc-omap.h - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> >> * remove obstructive always-on for vwlan regulator - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> >> * rename DT node - suggested by Rob Herring <robh@kernel.org>
-> >> * fix ARM: dts: subject prefix - suggested by Tony Lindgren <tony@atomide.com>
-> >> * also remove omap2_hsmmc_info and obc-y line in Makefile - suggested by Tony Lindgren <tony@atomide.com>
-> >
-> > No further comments from my side. Let's just agree on how to deal with
-> > the ti,power-gpio, then I can apply this.
->
-> I'd say it can be a separate patch since it does not fix the Pandora
-> issues, but is a new and independent optimization.
->
-> And in case someone complains and uses it for some out-of tree purpose
-> it can be discussed or even be reverted easier if it is a separate patch.
->
-> I can do it in the next days.
 
-Okay, that sounds reasonable.
-
-In the meantime, I have queued up the series on my next branch (for v5.5).
-
-I fixed up a couple of complaints from checkpatch, and also added
-stable tags for the first two patches in the series, as that what
-missing.
-
-Kind regards
-Uffe
+--LpQ9ahxlCli8rRTG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
 
->
-> > Thanks a lot for fixing all this mess!
->
-> I hope the users also appreciate our work.
->
-> Best regards,
-> Nikolaus
->
-> >
-> > Kind regards
-> > Uffe
-> >
-> >>
-> >> PATCH V2 2019-10-19 20:41:47:
-> >> * added acked-by for wl1251 patches - Kalle Valo <kvalo@codeaurora.org>
-> >> * really removed old pdata-quirks code (not through #if 0)
-> >> * splited out a partial revert of
-> >>        efdfeb079cc3b ("regulator: fixed: Convert to use GPIO descriptor only")
-> >>  because that was introduced after v4.19 and stops the removal of
-> >>  the pdata-quirks patch from cleanly applying to v4.9, v4.14, v4.19
-> >>  - reported by Sasha Levin <sashal@kernel.org>
-> >> * added a new patch to remove old omap hsmmc since pdata quirks
-> >>  were last user - suggested by Tony Lindgren <tony@atomide.com>
-> >>
-> >> PATCH V1 2019-10-18 22:25:39:
-> >> Here we have a set of scattered patches to make the OpenPandora WiFi work again.
-> >>
-> >> v4.7 did break the pdata-quirks which made the mmc3 interface
-> >> fail completely, because some code now assumes device tree
-> >> based instantiation.
-> >>
-> >> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
-> >>
-> >> v4.11 did break the sdio qirks for wl1251 which made the driver no longer
-> >> load, although the device was found as an sdio client.
-> >>
-> >> Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
-> >>
-> >> To solve these issues:
-> >> * we convert mmc3 and wl1251 initialization from pdata-quirks
-> >>  to device tree
-> >> * we make the wl1251 driver read properties from device tree
-> >> * we fix the mmc core vendor ids and quirks
-> >> * we fix the wl1251 (and wl1271) driver to use only vendor ids
-> >>  from header file instead of (potentially conflicting) local
-> >>  definitions
-> >>
-> >>
-> >> H. Nikolaus Schaller (12):
-> >>  Documentation: dt: wireless: update wl1251 for sdio
-> >>  net: wireless: ti: wl1251 add device tree support
-> >>  ARM: dts: pandora-common: define wl1251 as child node of mmc3
-> >>  mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid
-> >>    of pandora_wl1251_init_card
-> >>  omap: pdata-quirks: revert pandora specific gpiod additions
-> >>  omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
-> >>  omap: remove omap2_hsmmc_info in old hsmmc.[ch] and update Makefile
-> >>  mmc: host: omap-hsmmc: remove init_card pdata callback from pdata
-> >>  mmc: sdio: fix wl1251 vendor id
-> >>  mmc: core: fix wl1251 sdio quirks
-> >>  net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
-> >>  net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
-> >>
-> >> .../bindings/net/wireless/ti,wl1251.txt       |  26 +++
-> >> arch/arm/boot/dts/omap3-pandora-common.dtsi   |  36 +++-
-> >> arch/arm/mach-omap2/Makefile                  |   3 -
-> >> arch/arm/mach-omap2/common.h                  |   1 -
-> >> arch/arm/mach-omap2/hsmmc.c                   | 171 ------------------
-> >> arch/arm/mach-omap2/hsmmc.h                   |  32 ----
-> >> arch/arm/mach-omap2/pdata-quirks.c            | 105 -----------
-> >> drivers/mmc/core/quirks.h                     |   7 +
-> >> drivers/mmc/host/omap_hsmmc.c                 |  30 ++-
-> >> drivers/net/wireless/ti/wl1251/sdio.c         |  23 ++-
-> >> drivers/net/wireless/ti/wlcore/sdio.c         |   8 -
-> >> include/linux/mmc/sdio_ids.h                  |   2 +
-> >> include/linux/platform_data/hsmmc-omap.h      |   3 -
-> >> 13 files changed, 111 insertions(+), 336 deletions(-)
-> >> delete mode 100644 arch/arm/mach-omap2/hsmmc.c
-> >> delete mode 100644 arch/arm/mach-omap2/hsmmc.h
-> >>
-> >> --
-> >> 2.23.0
-> >>
->
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> I think using a workqueue for scheduling a reset work with a timeout
+> of 5 s, as in your case.
+
+Sorry, I didn't get it. You think what exactly? Is it good / bad / ok
+for now / ok in general?
+
+
+--LpQ9ahxlCli8rRTG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl3OefIACgkQFA3kzBSg
+KbblBQ/9HgErqN5Lks0LB5r5uAF5wdOycdeKNnc/CQPztX6vJRiZpLH7l5fihnqz
+PsXHSmMoKEKNOMTkaI7Gz0q0Il+H0yOeUEMCvN9MpzoNIIPhiiqBOuH0pQ2D80+f
+4j1g19/WdVVTp2NYuzKxkzwNk7eUUJqjbo+k0R9Zph/PJ0duqe9TcbKQQoAgC4in
+vpg/li9U0NAVR27GQ4l5+ouRWCmFNu0s0D6WZp7kkBz/cZSYfANswzbJNgP5VQgd
+63SfaRev3VKxrOw4a9dJMdiQZyo9vPFYuyCFiQmuGHMKy1r8+y/EjLRdl5iSzenB
+Pl/QrxzFXtQastX6aUxyplXE5KYRi+wB7aq5YQkWAiyTQ1Vc1sZKNpm8hw7W1Ryu
+R/aNCRpUk9gEOTpOcz6yuSpJtqr7JA5WPdP+SkX5QvYjAFOq9wb1yMNrae09Ud78
+dA5uzAg1k2LNkdMrf3q2KfmbDA+ZndOdXR8DAwSCNUi3V7/LSxWGVmzX0u9qtEXI
+W+e49Rez56d7kQyfm2Yd9/vD//1Th2/EqyIrKP5V9lRunBDGfmmP2oG4eUbVcW7d
+uTtEZc1jtwlgBKhbyYLrWhYHFCAHG6F9LxyjjpBDg8yNVBb9oh37jAVJzarJlYl9
+lr+hfy7lV5OiPpU8ZZx+R9fkJEu3BbaBWXdnv/S8VHrRHOgtxG0=
+=G8P7
+-----END PGP SIGNATURE-----
+
+--LpQ9ahxlCli8rRTG--
