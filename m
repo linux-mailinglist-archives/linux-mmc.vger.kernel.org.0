@@ -2,84 +2,202 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 588F5FDC2A
-	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 12:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD8C3FDC22
+	for <lists+linux-mmc@lfdr.de>; Fri, 15 Nov 2019 12:19:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726983AbfKOLUf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 15 Nov 2019 06:20:35 -0500
-Received: from inva020.nxp.com ([92.121.34.13]:51078 "EHLO inva020.nxp.com"
+        id S1727192AbfKOLTb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Fri, 15 Nov 2019 06:19:31 -0500
+Received: from gloria.sntech.de ([185.11.138.130]:51278 "EHLO gloria.sntech.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726521AbfKOLUf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 15 Nov 2019 06:20:35 -0500
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 8D9491A0A30;
-        Fri, 15 Nov 2019 12:20:33 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4CF991A0AB2;
-        Fri, 15 Nov 2019 12:20:29 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id B7C8A40309;
-        Fri, 15 Nov 2019 19:20:23 +0800 (SGT)
-From:   haibo.chen@nxp.com
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de
-Cc:     festevam@gmail.com, linux-mmc@vger.kernel.org, linux-imx@nxp.com,
-        haibo.chen@nxp.com
-Subject: [PATCH 13/14] mmc: sdhci-esdhc-imx: handle 'auto-cmd23-broken' from devicetree
-Date:   Fri, 15 Nov 2019 19:18:31 +0800
-Message-Id: <1573816712-26841-4-git-send-email-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1573816712-26841-1-git-send-email-haibo.chen@nxp.com>
-References: <1573816712-26841-1-git-send-email-haibo.chen@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+        id S1726521AbfKOLTb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 15 Nov 2019 06:19:31 -0500
+Received: from ip5f5a6266.dynamic.kabel-deutschland.de ([95.90.98.102] helo=diego.localnet)
+        by gloria.sntech.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <heiko@sntech.de>)
+        id 1iVZdC-0008IT-Uf; Fri, 15 Nov 2019 12:19:14 +0100
+From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To:     Markus Reichl <m.reichl@fivetechno.de>
+Cc:     mark.rutland@arm.com, devicetree@vger.kernel.org,
+        Brian Norris <briannorris@chromium.org>,
+        Tony Xie <tony.xie@rock-chips.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        shawn.lin@rock-chips.com, Jeffy Chen <jeffy.chen@rock-chips.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Vicente Bergas <vicencb@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-rockchip@lists.infradead.org, robh+dt@kernel.org,
+        Klaus Goger <klaus.goger@theobroma-systems.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Philipp Tomsich <philipp.tomsich@theobroma-systems.com>,
+        Randy Li <ayaka@soulik.info>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Ezequiel Garcia <ezequiel@collabora.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Christoph Muellner <christoph.muellner@theobroma-systems.com>
+Subject: Re: arm64: dts: rockchip: Disable HS400 for mmc on rk3399-roc-pc
+Date:   Fri, 15 Nov 2019 12:19:13 +0100
+Message-ID: <3460135.SDF8zhHPq4@diego>
+In-Reply-To: <69472c06-8b21-c3d8-acad-1a0a292c0fa2@fivetechno.de>
+References: <20190301153348.29870-1-christoph.muellner@theobroma-systems.com> <2766673.iMURPl8gB5@phil> <69472c06-8b21-c3d8-acad-1a0a292c0fa2@fivetechno.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="iso-8859-1"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Haibo Chen <haibo.chen@nxp.com>
+Hi Markus,
 
-Since L4.15, community involve the commit 105819c8a545 ("mmc: core: use mrq->sbc
-when sending CMD23 for RPMB"), let the usdhc to decide whether to use ACMD23 for
-RPMB. This CMD23 for RPMB need to set the bit 31 to its argument, if not, the
-RPMB write operation will return general fail.
+Am Freitag, 15. November 2019, 11:37:58 CET schrieb Markus Reichl:
+> Am 14.11.19 um 14:10 schrieb Heiko Stuebner:
+> > $subject is missing the [PATCH] prefix
+> will fix.
 
-According to the sdhci logic, SDMA mode will disable the ACMD23, and only in
-ADMA mode, it will chose to use ACMD23 if the host support. But according to
-debug, and confirm with IC, the imx6qpdl/imx6sx/imx6sl/imx7d do not support
-the ACMD23 feature completely. These SoCs only use the 16 bit block count of
-the register 0x4 (BLOCK_ATT) as the CMD23's argument in ACMD23 mode, which
-means it will ignore the upper 16 bit of the CMD23's argument. This will block
-the reliable write operation in RPMB, because RPMB reliable write need to set
-the bit31 of the CMD23's argument. This is the hardware limitation. Due to
-imx6sl use SDMA, so for imx6qpdl/imx6sx/imx7d, it need to broke the ACMD23 for
-eMMC, SD card do not has this limitation, because SD card do not support reliable
-write.
+no need to resend just for this ... just to keep in mind for future patches ;-)
 
-For imx6ul/imx6ull/imx6sll/imx7ulp/imx8, it support the ACMD23 completely, it
-change to use the 0x0 register (DS_ADDR) to put the CMD23's argument in ADMA mode.
 
-This patch handle 'fsl,auto-cmd23-broken' from devicetree.
+> > Am Montag, 11. November 2019, 10:51:04 CET schrieb Markus Reichl:
+> >> Working with rootfs on two 128GB mmcs on rk3399-roc-pc.
+> >> 
+> >> One (mmc name 128G72, one screw hole) works fine in HS400 mode.
+> >> Other (mmc name DJNB4R, firefly on pcb, two screw holes) gets lots of
+> >> mmc1: "running CQE recovery", even hangs with damaged fs,
+> >> when running under heavy load, e.g. compiling kernel.
+> >> Both run fine with HS200.
+> >> 
+> >> Disabling CQ with patch mmc: core: Add MMC Command Queue Support kernel parameter [0] did not help.
+> >> [0] https://gitlab.com/ayufan-repos/rock64/linux-mainline-kernel/commit/54e264154b87dfe32a8359b2726e2d5611adbaf3
+> > 
+> > I'm hoping for some input from other people in Cc but your mail headers
+> > also referenced the drive-impendance series from Christoph [0], which
+> > it seems we need to poke the phy maintainer again.
+> > 
+> > Did you check if changing the impedance helped (like the signal dampening
+> > Philipp described in one of the replies there).
+> 
+> checked with
+> 
+> &emmc_phy {
+> +       drive-impedance-ohm = <33>;
+> 
+> gives no improvement:
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
----
- drivers/mmc/host/sdhci-esdhc-imx.c | 3 +++
- 1 file changed, 3 insertions(+)
+That is sad ... I guess we really should disable hs400 then ...
+that may give others more incentive to dive deeper ;-)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 80a148f8009e..83b4156b2cf4 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -1374,6 +1374,9 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
- 	if (of_find_property(np, "no-1-8-v", NULL))
- 		host->quirks2 |= SDHCI_QUIRK2_NO_1_8_V;
- 
-+	if (of_find_property(np, "fsl,auto-cmd23-broken", NULL))
-+		host->quirks2 |= SDHCI_QUIRK2_ACMD23_BROKEN;
-+
- 	if (of_property_read_u32(np, "fsl,delay-line", &boarddata->delay_line))
- 		boarddata->delay_line = 0;
- 
--- 
-2.17.1
+
+Heiko
+
+
+> [    1.688590] mmc1: CQHCI version 5.10
+> [    1.714157] mmc1: SDHCI controller on fe330000.sdhci [fe330000.sdhci] using ADMA
+> [    1.797822] mmc1: Command Queue Engine enabled
+> [    1.798259] mmc1: new HS400 Enhanced strobe MMC card at address 0001
+> [    1.800034] mmcblk1: mmc1:0001 DJNB4R 116 GiB 
+> [    1.800643] mmcblk1boot0: mmc1:0001 DJNB4R partition 1 4.00 MiB
+> [    1.801408] mmcblk1boot1: mmc1:0001 DJNB4R partition 2 4.00 MiB
+> [    1.802886] mmcblk1rpmb: mmc1:0001 DJNB4R partition 3 4.00 MiB, chardev (246:0)
+> ...
+> [  100.118020] mmc1: running CQE recovery
+> [  100.120890] ------------[ cut here ]------------
+> [  100.121310] mmc1: cqhci: spurious TCN for tag 2
+> [  100.121802] WARNING: CPU: 0 PID: 232 at drivers/mmc/host/cqhci.c:729 cqhci_irq+0x30c/0x480
+> [  100.122530] Modules linked in: rfkill snd_soc_hdmi_codec dw_hdmi_i2s_audio dw_hdmi_cec rockchipdrm crct10dif_ce analogix_dp dw_mipi_dsi snd_soc_simple_card dw_hdmi cec snd_soc_rockchip_i2s snd_soc_simple_card_utils panfrost snd_soc_rockchip_pcm drm_kms_helper snd_soc_core gpu_sched snd_pcm_dmaengine syscopyarea sysfillrect sysimgblt snd_pcm fb_sys_fops snd_timer snd drm soundcore fusb302 tcpm typec rockchip_saradc drm_panel_orientation_quirks ipv6
+> [  100.126097] CPU: 0 PID: 232 Comm: kworker/0:2H Not tainted 5.4.0-rc7-next-20191112-00007-g2ad177c77749 #44
+> [  100.126946] Hardware name: Firefly ROC-RK3399-PC Board (DT)
+> [  100.127454] Workqueue: kblockd blk_mq_run_work_fn
+> [  100.127885] pstate: 20000085 (nzCv daIf -PAN -UAO)
+> [  100.128318] pc : cqhci_irq+0x30c/0x480
+> [  100.128660] lr : cqhci_irq+0x30c/0x480
+> [  100.128997] sp : ffff800010003d10
+> [  100.129298] x29: ffff800010003d10 x28: 0000000000000000 
+> [  100.129777] x27: 0000000000000001 x26: ffff8000108e0fe8 
+> [  100.130257] x25: ffff0000f5ae5c98 x24: ffff800010b7e1a8 
+> [  100.130737] x23: ffff800010b198c8 x22: ffff0000f5a80000 
+> [  100.131216] x21: 0000000000000002 x20: 0000000000000002 
+> [  100.131694] x19: ffff0000f5ae5c80 x18: 0000000000000010 
+> [  100.132173] x17: 0000000000000000 x16: 0000000000000000 
+> [  100.132653] x15: ffffffffffffffff x14: ffff800010b198c8 
+> [  100.133132] x13: ffff800090003a77 x12: ffff800010003a7f 
+> [  100.133612] x11: ffff800010b30000 x10: ffff800010003a00 
+> [  100.134092] x9 : 00000000ffffffd0 x8 : ffff80001045a060 
+> [  100.134571] x7 : 000000000000025f x6 : ffff800010b979e2 
+> [  100.135050] x5 : 0000000000000001 x4 : 0000000000000000 
+> [  100.135529] x3 : 0000000000000000 x2 : 0000000000000000 
+> [  100.136007] x1 : e005989da46f2500 x0 : 0000000000000000 
+> [  100.136486] Call trace:
+> [  100.136719]  cqhci_irq+0x30c/0x480
+> [  100.137033]  sdhci_arasan_cqhci_irq+0x58/0x80
+> [  100.137430]  sdhci_irq+0xb8/0xbb8
+> [  100.137742]  __handle_irq_event_percpu+0x6c/0x170
+> [  100.138169]  handle_irq_event_percpu+0x34/0x88
+> [  100.138575]  handle_irq_event+0x44/0xc8
+> [  100.138927]  handle_fasteoi_irq+0xb4/0x160
+> [  100.139302]  generic_handle_irq+0x24/0x38
+> [  100.139670]  __handle_domain_irq+0x60/0xb8
+> [  100.140045]  gic_handle_irq+0xc0/0x158
+> [  100.140389]  el1_irq+0xb8/0x180
+> [  100.140684]  _raw_spin_unlock_irqrestore+0x20/0x48
+> [  100.141119]  sdhci_cqe_enable+0xec/0x108
+> [  100.141478]  sdhci_arasan_cqe_enable+0x4c/0x58
+> [  100.141880]  cqhci_request+0x2d0/0x500
+> [  100.142226]  mmc_cqe_start_req+0x50/0x60
+> [  100.142585]  mmc_blk_mq_issue_rq+0x430/0x794
+> [  100.142974]  mmc_mq_queue_rq+0x104/0x270
+> [  100.143332]  blk_mq_dispatch_rq_list+0xa8/0x580
+> [  100.143746]  blk_mq_sched_dispatch_requests+0xf4/0x1d8
+> [  100.144210]  __blk_mq_run_hw_queue+0xac/0x120
+> [  100.144605]  blk_mq_run_work_fn+0x1c/0x28
+> [  100.144974]  process_one_work+0x1e0/0x358
+> [  100.145340]  worker_thread+0x40/0x488
+> [  100.145679]  kthread+0x118/0x120
+> [  100.145977]  ret_from_fork+0x10/0x18
+> [  100.146302] ---[ end trace 6277099ad751ed64 ]---
+> [  100.213815] mmc1: running CQE recovery
+> [  100.413933] mmc1: running CQE recovery
+> 
+> > 
+> > [0] https://patchwork.kernel.org/patch/10835567/
+> > most current v2 it seems is https://patchwork.kernel.org/patch/10842421/
+> > 
+> >> Therefore I propose to disable HS400 mode on roc-pc for now.
+> > 
+> > Hoping for more input :-)
+> 
+> Hoping, too.
+> 
+> 
+> Gruß,
+> > 
+> > 
+> > Heiko
+> > 
+> > 
+> >> Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
+> >> ---
+> >>  arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi | 2 --
+> >>  1 file changed, 2 deletions(-)
+> >> 
+> >> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+> >> index 29a50a083c42..33df95e384b4 100644
+> >> --- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+> >> +++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+> >> @@ -660,8 +660,6 @@
+> >>  
+> >>  &sdhci {
+> >>  	bus-width = <8>;
+> >> -	mmc-hs400-1_8v;
+> >> -	mmc-hs400-enhanced-strobe;
+> >>  	non-removable;
+> >>  	status = "okay";
+> >>  };
+> >> 
+> > 
+> 
+> 
+
+
+
 
