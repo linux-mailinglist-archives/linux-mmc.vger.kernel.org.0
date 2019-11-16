@@ -2,38 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C52D0FF3AF
-	for <lists+linux-mmc@lfdr.de>; Sat, 16 Nov 2019 17:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C129FF1C3
+	for <lists+linux-mmc@lfdr.de>; Sat, 16 Nov 2019 17:14:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727960AbfKPPlj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 16 Nov 2019 10:41:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44854 "EHLO mail.kernel.org"
+        id S1729782AbfKPPrp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 16 Nov 2019 10:47:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54518 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727953AbfKPPli (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 16 Nov 2019 10:41:38 -0500
+        id S1729774AbfKPPro (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 16 Nov 2019 10:47:44 -0500
 Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DDDF42081E;
-        Sat, 16 Nov 2019 15:41:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BFE3B208E3;
+        Sat, 16 Nov 2019 15:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573918898;
-        bh=0dbdYLGTq2BVs9/jCLHYxBB0RMEi4AQzMdhJs3x8hd0=;
+        s=default; t=1573919264;
+        bh=wk9K6+R12aMkBHHoJ+8wPEfa30a10Re55114L6oEtzQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I4wSMHd7dNVqCjNotxgLaH6TGYqb3MuTDTud179jHbTw1/JAwyJ7UIP+9Lqlk1Zq0
-         dL1H64nxjcD0w7rpDSWLheq/0jZegrAqPJjDBYdsc96uEug5yLuNJ2+BEDfG7EH6oG
-         G4zsMJmIOfdsLnpBKVSWQfKCX0wfmRzgjevQUDUA=
+        b=x+mhpQOs08cu0O4AUYN1jyGqurCQKKZnFBN5G3+pdNknS5VNqHlQJ33YNYOW5+vVs
+         UnpAQm9VNUhy/1V7+HGs63PGOfgPvHZFNHZw/e6Uflllcm2KxXMf68IWGOPDC5PLl4
+         nCv3zR/DREhbFa/2pPZ7ppCS3GavwS4qpPPIMEUo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 025/237] mmc: mediatek: fix cannot receive new request when msdc_cmd_is_ready fail
-Date:   Sat, 16 Nov 2019 10:37:40 -0500
-Message-Id: <20191116154113.7417-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 015/150] mmc: mediatek: fix cannot receive new request when msdc_cmd_is_ready fail
+Date:   Sat, 16 Nov 2019 10:45:13 -0500
+Message-Id: <20191116154729.9573-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191116154113.7417-1-sashal@kernel.org>
-References: <20191116154113.7417-1-sashal@kernel.org>
+In-Reply-To: <20191116154729.9573-1-sashal@kernel.org>
+References: <20191116154729.9573-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +61,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index 621c914dc5c01..673f6a9616cd9 100644
+index 267f7ab08420e..a2ac9938d9459 100644
 --- a/drivers/mmc/host/mtk-sd.c
 +++ b/drivers/mmc/host/mtk-sd.c
-@@ -1056,6 +1056,7 @@ static void msdc_start_command(struct msdc_host *host,
+@@ -885,6 +885,7 @@ static void msdc_start_command(struct msdc_host *host,
  	WARN_ON(host->cmd);
  	host->cmd = cmd;
  
@@ -72,7 +72,7 @@ index 621c914dc5c01..673f6a9616cd9 100644
  	if (!msdc_cmd_is_ready(host, mrq, cmd))
  		return;
  
-@@ -1067,7 +1068,6 @@ static void msdc_start_command(struct msdc_host *host,
+@@ -896,7 +897,6 @@ static void msdc_start_command(struct msdc_host *host,
  
  	cmd->error = 0;
  	rawcmd = msdc_cmd_prepare_raw_cmd(host, mrq, cmd);
