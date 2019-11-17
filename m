@@ -2,84 +2,127 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C129FF1C3
-	for <lists+linux-mmc@lfdr.de>; Sat, 16 Nov 2019 17:14:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8B7AFF63E
+	for <lists+linux-mmc@lfdr.de>; Sun, 17 Nov 2019 02:00:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729782AbfKPPrp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 16 Nov 2019 10:47:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54518 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729774AbfKPPro (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 16 Nov 2019 10:47:44 -0500
-Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BFE3B208E3;
-        Sat, 16 Nov 2019 15:47:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573919264;
-        bh=wk9K6+R12aMkBHHoJ+8wPEfa30a10Re55114L6oEtzQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x+mhpQOs08cu0O4AUYN1jyGqurCQKKZnFBN5G3+pdNknS5VNqHlQJ33YNYOW5+vVs
-         UnpAQm9VNUhy/1V7+HGs63PGOfgPvHZFNHZw/e6Uflllcm2KxXMf68IWGOPDC5PLl4
-         nCv3zR/DREhbFa/2pPZ7ppCS3GavwS4qpPPIMEUo=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 015/150] mmc: mediatek: fix cannot receive new request when msdc_cmd_is_ready fail
-Date:   Sat, 16 Nov 2019 10:45:13 -0500
-Message-Id: <20191116154729.9573-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191116154729.9573-1-sashal@kernel.org>
-References: <20191116154729.9573-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S1726037AbfKQBAy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 16 Nov 2019 20:00:54 -0500
+Received: from mail-yb1-f194.google.com ([209.85.219.194]:35577 "EHLO
+        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725776AbfKQBAy (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 16 Nov 2019 20:00:54 -0500
+Received: by mail-yb1-f194.google.com with SMTP id h23so5672416ybg.2;
+        Sat, 16 Nov 2019 17:00:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=1KZD/D+ITfpzGjs6DVMtpV8mRW5uG0idJZBpcTB84Go=;
+        b=BvuOjV9V+dVpP0IQAE3P/Eb6Rrk8j9j+nDkewdjuy4DViDZ9VKm0fpLRlGfEaw13cN
+         Fkj46mSmLwexhT+VKQQ/H4sqKhrXjmGfFo/xh1M0u9S4cT4wW4YFxFnGljRE5gZ6nEQ1
+         IS3Ft+b5JXDeznJOWFkSQKhB+zrWWbfLQFlJZlD5m/jj5rRrFRgyUvzwyA9/QtaUMdEd
+         msCwOsAJjx9kCjq/5xprJL6Gq2G4EMNPmWL/RR7MlTy0vmhB2yBwo2pDrO5jTky39mMO
+         B2lwTjQrBS7cm0UDHpCHLL4ED0+/tJ5So2S9VZ57qzxQszYFH7TxlsX93Ju+PANDxb1L
+         ayGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=1KZD/D+ITfpzGjs6DVMtpV8mRW5uG0idJZBpcTB84Go=;
+        b=ReW7qUrRO8C5H/Tj3/azpymFCxtg6Uxz/ui1dDmmx7/wHUqwCElyRcl3Jkl04nU9UV
+         X2oN9KL/TSCv0e8Z0Vb2NNngHiCZDKCYdbW4qljl1in9RphyIb1FdD/k8k0dqUKjlwLr
+         Haia+5+agiJrrJpEIQfXBjbWr0sM5jjyJQHe9G2YidlZ0fCASGaI1DqM7op+ZsSXR+jA
+         ZE1WtFlX55RGvmXyurbhPOQtfYf2FT3lAOfosfzMhY7oPWRWzyQ3xW4aX+uYk+STS/fW
+         qhnWslbidtjWqYGr68IZXYwpBw+DELkbyb7l7FhRSlkadAjTaOz8sODavVCNWBi3DcCd
+         +7Gw==
+X-Gm-Message-State: APjAAAX7+c0UErZiz+SD/gjyjZOHsMw2Qz7oDxNDyoQ3Rpn1abLTx6Mg
+        yeEnUFEeMLcwIhReGAJVD2wrRdCulio=
+X-Google-Smtp-Source: APXvYqxZ80SmwZHAhq0UXG3+UE6Rc3pCkQyQI4MEJmcJ5bDoCp7m7yejyfbJgHZDKicPsp+Sg7D/9A==
+X-Received: by 2002:a5b:78d:: with SMTP id b13mr17221605ybq.157.1573952453404;
+        Sat, 16 Nov 2019 17:00:53 -0800 (PST)
+Received: from bonecrusher.natcky.rr.com ([2605:a000:1707:c42b:7331:4754:500a:5064])
+        by smtp.gmail.com with ESMTPSA id j188sm6386386ywd.50.2019.11.16.17.00.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 16 Nov 2019 17:00:52 -0800 (PST)
+From:   Bradley Bolen <bradleybolen@gmail.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, ulf.hansson@linaro.org,
+        kstewart@linuxfoundation.org, tglx@linutronix.de, info@metux.net,
+        hongjiefang@asrmicro.com, avri.altman@wdc.com,
+        wsa+renesas@sang-engineering.com, yinbo.zhu@nxp.com,
+        Bradley Bolen <bradleybolen@gmail.com>
+Subject: [PATCH v3] mmc: core: Fix size overflow for mmc partitions
+Date:   Sat, 16 Nov 2019 20:00:45 -0500
+Message-Id: <20191117010045.4902-1-bradleybolen@gmail.com>
+X-Mailer: git-send-email 2.9.5
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Chaotian Jing <chaotian.jing@mediatek.com>
+With large eMMC cards, it is possible to create general purpose
+partitions that are bigger than 4GB.  The size member of the mmc_part
+struct is only an unsigned int which overflows for gp partitions larger
+than 4GB.  Change this to a u64 to handle the overflow.
 
-[ Upstream commit f38a9774ddde9d79b3487dd888edd8b8623552af ]
-
-when msdc_cmd_is_ready return fail, the req_timeout work has not been
-inited and cancel_delayed_work() will return false, then, the request
-return directly and never call mmc_request_done().
-
-so need call mod_delayed_work() before msdc_cmd_is_ready()
-
-Signed-off-by: Chaotian Jing <chaotian.jing@mediatek.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bradley Bolen <bradleybolen@gmail.com>
 ---
- drivers/mmc/host/mtk-sd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/core/mmc.c   | 9 ++++-----
+ include/linux/mmc/card.h | 2 +-
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index 267f7ab08420e..a2ac9938d9459 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -885,6 +885,7 @@ static void msdc_start_command(struct msdc_host *host,
- 	WARN_ON(host->cmd);
- 	host->cmd = cmd;
+diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+index c8804895595f..f6912ded652d 100644
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -297,7 +297,7 @@ static void mmc_manage_enhanced_area(struct mmc_card *card, u8 *ext_csd)
+ 	}
+ }
  
-+	mod_delayed_work(system_wq, &host->req_timeout, DAT_TIMEOUT);
- 	if (!msdc_cmd_is_ready(host, mrq, cmd))
- 		return;
+-static void mmc_part_add(struct mmc_card *card, unsigned int size,
++static void mmc_part_add(struct mmc_card *card, u64 size,
+ 			 unsigned int part_cfg, char *name, int idx, bool ro,
+ 			 int area_type)
+ {
+@@ -313,7 +313,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
+ {
+ 	int idx;
+ 	u8 hc_erase_grp_sz, hc_wp_grp_sz;
+-	unsigned int part_size;
++	u64 part_size;
  
-@@ -896,7 +897,6 @@ static void msdc_start_command(struct msdc_host *host,
+ 	/*
+ 	 * General purpose partition feature support --
+@@ -343,8 +343,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
+ 				(ext_csd[EXT_CSD_GP_SIZE_MULT + idx * 3 + 1]
+ 				<< 8) +
+ 				ext_csd[EXT_CSD_GP_SIZE_MULT + idx * 3];
+-			part_size *= (size_t)(hc_erase_grp_sz *
+-				hc_wp_grp_sz);
++			part_size *= (hc_erase_grp_sz * hc_wp_grp_sz);
+ 			mmc_part_add(card, part_size << 19,
+ 				EXT_CSD_PART_CONFIG_ACC_GP0 + idx,
+ 				"gp%d", idx, false,
+@@ -362,7 +361,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
+ static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
+ {
+ 	int err = 0, idx;
+-	unsigned int part_size;
++	u64 part_size;
+ 	struct device_node *np;
+ 	bool broken_hpi = false;
  
- 	cmd->error = 0;
- 	rawcmd = msdc_cmd_prepare_raw_cmd(host, mrq, cmd);
--	mod_delayed_work(system_wq, &host->req_timeout, DAT_TIMEOUT);
- 
- 	sdr_set_bits(host->base + MSDC_INTEN, cmd_ints_mask);
- 	writel(cmd->arg, host->base + SDC_ARG);
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index 9b6336ad3266..b59d35bb50ba 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -226,7 +226,7 @@ struct mmc_queue_req;
+  * MMC Physical partitions
+  */
+ struct mmc_part {
+-	unsigned int	size;	/* partition size (in bytes) */
++	u64		size;	/* partition size (in bytes) */
+ 	unsigned int	part_cfg;	/* partition type */
+ 	char	name[MAX_MMC_PART_NAME_LEN];
+ 	bool	force_ro;	/* to make boot parts RO by default */
 -- 
-2.20.1
+2.17.1
 
