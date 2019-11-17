@@ -2,127 +2,131 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8B7AFF63E
-	for <lists+linux-mmc@lfdr.de>; Sun, 17 Nov 2019 02:00:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05692FFA39
+	for <lists+linux-mmc@lfdr.de>; Sun, 17 Nov 2019 15:27:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726037AbfKQBAy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 16 Nov 2019 20:00:54 -0500
-Received: from mail-yb1-f194.google.com ([209.85.219.194]:35577 "EHLO
-        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbfKQBAy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 16 Nov 2019 20:00:54 -0500
-Received: by mail-yb1-f194.google.com with SMTP id h23so5672416ybg.2;
-        Sat, 16 Nov 2019 17:00:54 -0800 (PST)
+        id S1726069AbfKQO1b (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 17 Nov 2019 09:27:31 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:46189 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726037AbfKQO1a (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 17 Nov 2019 09:27:30 -0500
+Received: by mail-wr1-f65.google.com with SMTP id b3so16403030wrs.13;
+        Sun, 17 Nov 2019 06:27:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=1KZD/D+ITfpzGjs6DVMtpV8mRW5uG0idJZBpcTB84Go=;
-        b=BvuOjV9V+dVpP0IQAE3P/Eb6Rrk8j9j+nDkewdjuy4DViDZ9VKm0fpLRlGfEaw13cN
-         Fkj46mSmLwexhT+VKQQ/H4sqKhrXjmGfFo/xh1M0u9S4cT4wW4YFxFnGljRE5gZ6nEQ1
-         IS3Ft+b5JXDeznJOWFkSQKhB+zrWWbfLQFlJZlD5m/jj5rRrFRgyUvzwyA9/QtaUMdEd
-         msCwOsAJjx9kCjq/5xprJL6Gq2G4EMNPmWL/RR7MlTy0vmhB2yBwo2pDrO5jTky39mMO
-         B2lwTjQrBS7cm0UDHpCHLL4ED0+/tJ5So2S9VZ57qzxQszYFH7TxlsX93Ju+PANDxb1L
-         ayGQ==
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lO0ksvtY9zH08AEg8nMyPZuqK7PCO3+wK/C9fssW7po=;
+        b=OvfyMqRL7cZ3gebd6XwHEtVV9YVnBnpmUQ+SGXLKpFtR+NrDinyEXHs1csdkoydp8q
+         Pz76g1Xstz23VWOmKek8l1li8ywKoeE91ym2jWw5r0salZd2DyYTtQDTJZD3EZqLK+Wr
+         rZfRQfXX4Pd02T1ESdgH3cO+K1M+ipl06n/5SGW7RSR6nCFkVMX+eIk3fHU3q4bKITzN
+         qcOEy1X6k8BlmtyeRq4P9eNBUMNO8ilWvlM6OY3sCi/uKnNkDLw81zLflSH/5Ar9DrZp
+         1nC6TsOAY5vZzPe1eTTfPvKLr2qxbOphRb4PmqLerXtD+tHrXowmqJB58gpfshhQh2PU
+         tKKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=1KZD/D+ITfpzGjs6DVMtpV8mRW5uG0idJZBpcTB84Go=;
-        b=ReW7qUrRO8C5H/Tj3/azpymFCxtg6Uxz/ui1dDmmx7/wHUqwCElyRcl3Jkl04nU9UV
-         X2oN9KL/TSCv0e8Z0Vb2NNngHiCZDKCYdbW4qljl1in9RphyIb1FdD/k8k0dqUKjlwLr
-         Haia+5+agiJrrJpEIQfXBjbWr0sM5jjyJQHe9G2YidlZ0fCASGaI1DqM7op+ZsSXR+jA
-         ZE1WtFlX55RGvmXyurbhPOQtfYf2FT3lAOfosfzMhY7oPWRWzyQ3xW4aX+uYk+STS/fW
-         qhnWslbidtjWqYGr68IZXYwpBw+DELkbyb7l7FhRSlkadAjTaOz8sODavVCNWBi3DcCd
-         +7Gw==
-X-Gm-Message-State: APjAAAX7+c0UErZiz+SD/gjyjZOHsMw2Qz7oDxNDyoQ3Rpn1abLTx6Mg
-        yeEnUFEeMLcwIhReGAJVD2wrRdCulio=
-X-Google-Smtp-Source: APXvYqxZ80SmwZHAhq0UXG3+UE6Rc3pCkQyQI4MEJmcJ5bDoCp7m7yejyfbJgHZDKicPsp+Sg7D/9A==
-X-Received: by 2002:a5b:78d:: with SMTP id b13mr17221605ybq.157.1573952453404;
-        Sat, 16 Nov 2019 17:00:53 -0800 (PST)
-Received: from bonecrusher.natcky.rr.com ([2605:a000:1707:c42b:7331:4754:500a:5064])
-        by smtp.gmail.com with ESMTPSA id j188sm6386386ywd.50.2019.11.16.17.00.51
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 16 Nov 2019 17:00:52 -0800 (PST)
-From:   Bradley Bolen <bradleybolen@gmail.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, ulf.hansson@linaro.org,
-        kstewart@linuxfoundation.org, tglx@linutronix.de, info@metux.net,
-        hongjiefang@asrmicro.com, avri.altman@wdc.com,
-        wsa+renesas@sang-engineering.com, yinbo.zhu@nxp.com,
-        Bradley Bolen <bradleybolen@gmail.com>
-Subject: [PATCH v3] mmc: core: Fix size overflow for mmc partitions
-Date:   Sat, 16 Nov 2019 20:00:45 -0500
-Message-Id: <20191117010045.4902-1-bradleybolen@gmail.com>
-X-Mailer: git-send-email 2.9.5
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lO0ksvtY9zH08AEg8nMyPZuqK7PCO3+wK/C9fssW7po=;
+        b=VP1jKrxDDVJT+8b97sMyTpqEB48YI7vfoX/1YdsyOvIj0wotVjz74SDbHYCqMe4+9V
+         +vbg5CFVKNnFy9Fwxvx4O4xreA7HpnqpMG39s9FPSji0kRkrKWGPRJvFkiYSfSIAw6aC
+         qmGmpkXq7QcsJ28SLO963LxSXi9jk2CdP7Ljrqj+uHZPpqiVWPOAm5Bz9yQ/VKvtq53T
+         MtWh2RAv3FRuVOsg9m7dpsrU6OfDOStmVCdJ28UmD+MLtoPpIglmIjl7lHN2jzl6RSs3
+         VhsfxMTHt2S1vrFd2RU2Ubu/mKRFVSHHJ/iom/uqo47qQ2j3p4JGQGILK4Ht2hIugQ3Z
+         Mizw==
+X-Gm-Message-State: APjAAAX5dZeGAOFBpQnUZXhbsZbRi+svZBoSWIE87S3XesXzw7HbLUhV
+        6UhIbIrHt3Guw4HHw+M6Bks=
+X-Google-Smtp-Source: APXvYqzEOXSm+kKjgZdpqwrHaA8h04j+OEbYC2GEcLTVyczWFWgQ3/gy003iaQEgrZvvJmrJxZk5ag==
+X-Received: by 2002:adf:ed48:: with SMTP id u8mr24028265wro.28.1574000848452;
+        Sun, 17 Nov 2019 06:27:28 -0800 (PST)
+Received: from localhost.localdomain (p200300F1371CB100428D5CFFFEB99DB8.dip0.t-ipconnect.de. [2003:f1:371c:b100:428d:5cff:feb9:9db8])
+        by smtp.googlemail.com with ESMTPSA id y6sm19298404wrw.6.2019.11.17.06.27.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Nov 2019 06:27:27 -0800 (PST)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-mmc@vger.kernel.org, robh+dt@kernel.org,
+        ulf.hansson@linaro.org
+Cc:     jianxin.pan@amlogic.com, mark.rutland@arm.com,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        lnykww@gmail.com, yinxin_1989@aliyun.com,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: Amlogic 32-bit Meson SoC SDHC MMC controller driver
+Date:   Sun, 17 Nov 2019 15:27:14 +0100
+Message-Id: <20191117142716.154764-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.24.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-With large eMMC cards, it is possible to create general purpose
-partitions that are bigger than 4GB.  The size member of the mmc_part
-struct is only an unsigned int which overflows for gp partitions larger
-than 4GB.  Change this to a u64 to handle the overflow.
+Hello,
 
-Signed-off-by: Bradley Bolen <bradleybolen@gmail.com>
----
- drivers/mmc/core/mmc.c   | 9 ++++-----
- include/linux/mmc/card.h | 2 +-
- 2 files changed, 5 insertions(+), 6 deletions(-)
+this is the first non-RFC version of the driver for the Amlogic "SDHC"
+MMC controller found on Meson6, Meson8, Meson8b and Meson8m2 SoCs.
 
-diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-index c8804895595f..f6912ded652d 100644
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -297,7 +297,7 @@ static void mmc_manage_enhanced_area(struct mmc_card *card, u8 *ext_csd)
- 	}
- }
- 
--static void mmc_part_add(struct mmc_card *card, unsigned int size,
-+static void mmc_part_add(struct mmc_card *card, u64 size,
- 			 unsigned int part_cfg, char *name, int idx, bool ro,
- 			 int area_type)
- {
-@@ -313,7 +313,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
- {
- 	int idx;
- 	u8 hc_erase_grp_sz, hc_wp_grp_sz;
--	unsigned int part_size;
-+	u64 part_size;
- 
- 	/*
- 	 * General purpose partition feature support --
-@@ -343,8 +343,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
- 				(ext_csd[EXT_CSD_GP_SIZE_MULT + idx * 3 + 1]
- 				<< 8) +
- 				ext_csd[EXT_CSD_GP_SIZE_MULT + idx * 3];
--			part_size *= (size_t)(hc_erase_grp_sz *
--				hc_wp_grp_sz);
-+			part_size *= (hc_erase_grp_sz * hc_wp_grp_sz);
- 			mmc_part_add(card, part_size << 19,
- 				EXT_CSD_PART_CONFIG_ACC_GP0 + idx,
- 				"gp%d", idx, false,
-@@ -362,7 +361,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
- static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
- {
- 	int err = 0, idx;
--	unsigned int part_size;
-+	u64 part_size;
- 	struct device_node *np;
- 	bool broken_hpi = false;
- 
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index 9b6336ad3266..b59d35bb50ba 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -226,7 +226,7 @@ struct mmc_queue_req;
-  * MMC Physical partitions
-  */
- struct mmc_part {
--	unsigned int	size;	/* partition size (in bytes) */
-+	u64		size;	/* partition size (in bytes) */
- 	unsigned int	part_cfg;	/* partition type */
- 	char	name[MAX_MMC_PART_NAME_LEN];
- 	bool	force_ro;	/* to make boot parts RO by default */
+The public S805 (Meson8b) datasheet has some documentation starting on
+page 74: [0]
+
+It's performance is still not as good as the driver from Amlogic's 3.10
+kernel, but it does not corrupt data anymore (as RFC v1 did).
+
+Special thanks to the people who supported me off-list - you are
+amazing and deserve to be mentioned here:
+- Xin Yin who helped me fix two more write corruption problems. I am
+  hoping that he will reply with Reviewed-by, Tested-by and Bug-fixed-by
+- Jianxin Pan for sharing some of the internal workings of this MMC
+  controller with me
+- Wei Wang for spotting the initial write corruption problem and helping
+  test this driver on his board. I have his permission to add his
+  Tested-by (off-list, he's Cc'ed so if there's any problem he can speak
+  up)
+
+
+Changes since RFC v1 at [1]:
+- don't set MESON_SDHC_MISC_MANUAL_STOP to fix one of three write
+  corruption problems. the out-of-tree 3.10 "reference" driver doesn't
+  set it either
+- check against data->flags instead of cmd->flags when testing for
+  MMC_DATA_WRITE as spotted by Xin Yin (many thanks!). This fixes
+  another write corruption problem
+- clear the FIFOs after successfully transferring data as suggested by
+  Xin Yin (many thanks!). This is what the 3.10 driver did and fixes yet
+  another write corruption problem
+- integrate the clock suggestions from Jianxin Pan so the driver is now
+  able to set up the clocks correctly for all known cases. documentation
+  is also added to the patch description. Thank you Jianxin for the
+  help!
+- set the correct max_busy_timeout as suggested by Jianxin Pan (thanks!)
+- convert the dt-bindings to .yaml (which is why I didn't add Rob's
+  Reviewed-by)
+- switch to struct clk_parent_data as part of newer common clock
+  framework APIs to simplify the clock setup
+- dropped CMD23 support because it seems to hurt read and write
+  performance by 10-20% in my tests. it's not clear why, but for now we
+  can live without this.
+- use devm_platform_ioremap_resource instead of open-coding it
+
+
+[0] https://dn.odroid.com/S805/Datasheet/S805_Datasheet%20V0.8%2020150126.pdf
+[1] https://patchwork.kernel.org/cover/11035505/
+
+
+Martin Blumenstingl (2):
+  dt-bindings: mmc: Document the Amlogic Meson SDHC MMC host controller
+  mmc: host: meson-mx-sdhc: new driver for the Amlogic Meson SDHC host
+
+ .../bindings/mmc/amlogic,meson-mx-sdhc.yaml   |   64 +
+ drivers/mmc/host/Kconfig                      |   14 +
+ drivers/mmc/host/Makefile                     |    1 +
+ drivers/mmc/host/meson-mx-sdhc.c              | 1174 +++++++++++++++++
+ 4 files changed, 1253 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/amlogic,meson-mx-sdhc.yaml
+ create mode 100644 drivers/mmc/host/meson-mx-sdhc.c
+
 -- 
-2.17.1
+2.24.0
 
