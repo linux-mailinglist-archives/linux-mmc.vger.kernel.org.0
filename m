@@ -2,172 +2,82 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83A0C1002BD
-	for <lists+linux-mmc@lfdr.de>; Mon, 18 Nov 2019 11:44:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C5FA1002D2
+	for <lists+linux-mmc@lfdr.de>; Mon, 18 Nov 2019 11:47:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726890AbfKRKn4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 18 Nov 2019 05:43:56 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:39521 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726562AbfKRKnz (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 18 Nov 2019 05:43:55 -0500
-Received: by mail-pj1-f66.google.com with SMTP id t103so1374706pjb.6;
-        Mon, 18 Nov 2019 02:43:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :in-reply-to:references;
-        bh=nn1ZIH5FykXJcqKbMnJbBFiTcSLprwBTAdbttbSmu1c=;
-        b=up7FKGdsAUKzK/7smdx4XvpBr5BlN8uUQObNojVhC65e8PHjGCY7ER/w+Xo5HAfkC4
-         7R4M497BiCKs8dnFRPEJW9I7ZFSeiBMRdMRhCUPsDLQ4Gj8gVscm4z97cBY9hpGH9eOO
-         ex01QvevtzHm+t3JR+z3Y3RjAuKWxiSeBSWTBWP1R5JKJSggGr/rbs5fWwVeHLdH1Qsu
-         SH/Nc2cmOrll7klQR0KJgek5v9hPXMrd/CWQAjteEoAxNhvkuPAaVguA2hAeDN98GGky
-         TpJbFdbp12WwqorAph/ts8KZp4kdHZOqW3oclxx8ry8ed4+meHXwpubhui+E8X+Yvz+7
-         HVww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:in-reply-to:references;
-        bh=nn1ZIH5FykXJcqKbMnJbBFiTcSLprwBTAdbttbSmu1c=;
-        b=E+S/xmH4/81pv/2SdTVK4uncGwf9sTL418A/9FuJDIL/8G5xE8ODZrxKedpkD5U8F7
-         XaGfDe3ByIGaxd7v9VzVLlvq44Hs6sNuTJHxOK7iJeoE/ope2AZIcdHdBIX9duc0Z2r0
-         H5iwJ3tno/TBocaOB/13+n7KB1gQpAIoBsZq9rcK0Fb8fSFNFTWQsW0ffjx6YF9jz+fY
-         TkrCrxeclRfX6qbNOzyCPRYS7BjNiyt3im1dJJuCg6fGpmRvTsNOeJdf9eSGWNYMgNmf
-         xU873K9T64FpoI6U6LmaF60VMHyxdWtBJbzN/9YugzuNaJFwkaccVkCmRWTAXJhzzh4L
-         cudQ==
-X-Gm-Message-State: APjAAAVkhwnhWdlVddduEvhiFN2x3JOYOv3+JHPxKpD17thxbFh0M73R
-        Lfy69bkXsdzEDGChhRa0ni0=
-X-Google-Smtp-Source: APXvYqz9SHImOx5T8xyhYkcrzWqBuwr+UANHqCAAyP/PnFd83tvydxnCy8h3H9OR0XbltuXGkx00BA==
-X-Received: by 2002:a17:902:b582:: with SMTP id a2mr29037410pls.103.1574073834664;
-        Mon, 18 Nov 2019 02:43:54 -0800 (PST)
-Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id c13sm19343905pfo.5.2019.11.18.02.43.51
-        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 18 Nov 2019 02:43:54 -0800 (PST)
-From:   Baolin Wang <baolin.wang7@gmail.com>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        asutoshd@codeaurora.org
-Cc:     orsonzhai@gmail.com, zhang.lyra@gmail.com, arnd@arndb.de,
-        linus.walleij@linaro.org, vincent.guittot@linaro.org,
-        baolin.wang@linaro.org, baolin.wang7@gmail.com,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v7 4/4] mmc: host: sdhci-sprd: Add software queue support
-Date:   Mon, 18 Nov 2019 18:43:22 +0800
-Message-Id: <2f194a08e69e922bb706528cde409b739cda0151.1574073572.git.baolin.wang7@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <cover.1574073572.git.baolin.wang7@gmail.com>
-References: <cover.1574073572.git.baolin.wang7@gmail.com>
-In-Reply-To: <cover.1574073572.git.baolin.wang7@gmail.com>
-References: <cover.1574073572.git.baolin.wang7@gmail.com>
+        id S1726728AbfKRKrE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 18 Nov 2019 05:47:04 -0500
+Received: from mta-02.yadro.com ([89.207.88.252]:41094 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726460AbfKRKrD (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 18 Nov 2019 05:47:03 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 3D39F43597;
+        Mon, 18 Nov 2019 10:47:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1574074021; x=
+        1575888422; bh=WSfhOJmQyfFAWkKlccMB2tHDhi2Hlxmn98sJpTThN/k=; b=b
+        gu+9u0iI67pDCnf5ECJzVpYatLNW7cJPntbEfkA5SbBfLx+OYm0NRQ+dcaK9e5yC
+        QxsTm9W85+k8cLH75HhQ+jyvK5ysRNGHCxSTN831UUQcPyC0Fag/DGgC/Q3dLVBI
+        5oRIWl0j6Dj3zVTYp5uAcFnKuOhONrWERlOrHKO4X0=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Tc8DqeEH5YAN; Mon, 18 Nov 2019 13:47:01 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 1BEB042009;
+        Mon, 18 Nov 2019 13:47:00 +0300 (MSK)
+Received: from localhost.dev.yadro.com (172.17.15.69) by
+ T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Mon, 18 Nov 2019 13:46:59 +0300
+From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
+CC:     Ivan Mikhaylov <i.mikhaylov@yadro.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <openbmc@lists.ozlabs.org>
+Subject: [PATCH v3 0/3] add inversion signal presence support
+Date:   Mon, 18 Nov 2019 13:46:43 +0300
+Message-ID: <20191118104646.3838-1-i.mikhaylov@yadro.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.17.15.69]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Baolin Wang <baolin.wang@linaro.org>
+Vesnin BMC uses microSD with card presence signal inversion in the
+schematics. Add the .read_l callback to detect 'cd-inverted' option
+in dts. There is no WP switch, due to this 'disable-wp' also was added
+into vesnin dts for sdhci.
 
-Add software queue support to improve the performance.
+Ivan Mikhaylov (3):
+  aspeed: dts: add sd card for vesnin
+  mmc: sdhci-of-aspeed: enable CONFIG_MMC_SDHCI_IO_ACCESSORS
+  mmc: sdhci-of-aspeed: add inversion signal presence
 
-Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-Signed-off-by: Baolin Wang <baolin.wang7@gmail.com>
----
- drivers/mmc/host/Kconfig      |    1 +
- drivers/mmc/host/sdhci-sprd.c |   28 ++++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ arch/arm/boot/dts/aspeed-bmc-opp-vesnin.dts | 13 +++++++++++++
+ drivers/mmc/host/Kconfig                    |  1 +
+ drivers/mmc/host/sdhci-of-aspeed.c          | 12 ++++++++++++
+ 3 files changed, 26 insertions(+)
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index efa4019..54b86f6 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -632,6 +632,7 @@ config MMC_SDHCI_SPRD
- 	depends on ARCH_SPRD
- 	depends on MMC_SDHCI_PLTFM
- 	select MMC_SDHCI_IO_ACCESSORS
-+	select MMC_HSQ
- 	help
- 	  This selects the SDIO Host Controller in Spreadtrum
- 	  SoCs, this driver supports R11(IP version: R11P0).
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index d07b979..d346223 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -19,6 +19,7 @@
- #include <linux/slab.h>
- 
- #include "sdhci-pltfm.h"
-+#include "mmc_hsq.h"
- 
- /* SDHCI_ARGUMENT2 register high 16bit */
- #define SDHCI_SPRD_ARG2_STUFF		GENMASK(31, 16)
-@@ -379,6 +380,16 @@ static unsigned int sdhci_sprd_get_ro(struct sdhci_host *host)
- 	return 0;
- }
- 
-+static void sdhci_sprd_request_done(struct sdhci_host *host,
-+				    struct mmc_request *mrq)
-+{
-+	/* Validate if the request was from software queue firstly. */
-+	if (mmc_hsq_finalize_request(host->mmc, mrq))
-+		return;
-+
-+	 mmc_request_done(host->mmc, mrq);
-+}
-+
- static struct sdhci_ops sdhci_sprd_ops = {
- 	.read_l = sdhci_sprd_readl,
- 	.write_l = sdhci_sprd_writel,
-@@ -392,6 +403,7 @@ static unsigned int sdhci_sprd_get_ro(struct sdhci_host *host)
- 	.hw_reset = sdhci_sprd_hw_reset,
- 	.get_max_timeout_count = sdhci_sprd_get_max_timeout_count,
- 	.get_ro = sdhci_sprd_get_ro,
-+	.request_done = sdhci_sprd_request_done,
- };
- 
- static void sdhci_sprd_request(struct mmc_host *mmc, struct mmc_request *mrq)
-@@ -521,6 +533,7 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- {
- 	struct sdhci_host *host;
- 	struct sdhci_sprd_host *sprd_host;
-+	struct mmc_hsq *hsq;
- 	struct clk *clk;
- 	int ret = 0;
- 
-@@ -631,6 +644,18 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 
- 	sprd_host->flags = host->flags;
- 
-+	hsq = devm_kzalloc(&pdev->dev, sizeof(*hsq), GFP_KERNEL);
-+	if (!hsq) {
-+		ret = -ENOMEM;
-+		goto err_cleanup_host;
-+	}
-+
-+	ret = mmc_hsq_init(hsq, host->mmc);
-+	if (ret)
-+		goto err_cleanup_host;
-+
-+	host->always_defer_done = true;
-+
- 	ret = __sdhci_add_host(host);
- 	if (ret)
- 		goto err_cleanup_host;
-@@ -689,6 +714,7 @@ static int sdhci_sprd_runtime_suspend(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
- 
-+	mmc_hsq_suspend(host->mmc);
- 	sdhci_runtime_suspend_host(host);
- 
- 	clk_disable_unprepare(sprd_host->clk_sdio);
-@@ -717,6 +743,8 @@ static int sdhci_sprd_runtime_resume(struct device *dev)
- 		goto clk_disable;
- 
- 	sdhci_runtime_resume_host(host, 1);
-+	mmc_hsq_resume(host->mmc);
-+
- 	return 0;
- 
- clk_disable:
 -- 
-1.7.9.5
+2.20.1
 
