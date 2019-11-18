@@ -2,208 +2,140 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC02FFFF89
-	for <lists+linux-mmc@lfdr.de>; Mon, 18 Nov 2019 08:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A79541000EE
+	for <lists+linux-mmc@lfdr.de>; Mon, 18 Nov 2019 10:08:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726400AbfKRHfY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 18 Nov 2019 02:35:24 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:39550 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726397AbfKRHfY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 18 Nov 2019 02:35:24 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAI7ZG6r099577;
-        Mon, 18 Nov 2019 01:35:16 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1574062516;
-        bh=jAuRpekXF3jtoawWT7hGxk6T2pAz5AKTl9w23pKdMXY=;
-        h=From:To:CC:Subject:Date;
-        b=MweProfqMkKsL3KxQc0UkuH2LV3TiUL1OOFsctkFlJ8Yt2I2MYiFnj4UvNDQZv7b6
-         C/cUsvcAXOGnf1xYtncRgO6Vf56jA3QOsui/74mKGujG25wVXQ4hTtMUTCJ8LweIdj
-         7DPAeznZ2X//7+9c2yaJsJis4wbf5d66ECkxo9zA=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAI7ZFhH124319
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 18 Nov 2019 01:35:16 -0600
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 18
- Nov 2019 01:35:15 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Mon, 18 Nov 2019 01:35:15 -0600
-Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAI7ZDYI011349;
-        Mon, 18 Nov 2019 01:35:14 -0600
-From:   Faiz Abbas <faiz_abbas@ti.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
-CC:     <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>,
-        <faiz_abbas@ti.com>
-Subject: [PATCH v2] mmc: sdhci_am654: Add Support for Command Queuing Engine to J721E
-Date:   Mon, 18 Nov 2019 13:06:09 +0530
-Message-ID: <20191118073609.22921-1-faiz_abbas@ti.com>
-X-Mailer: git-send-email 2.19.2
+        id S1726465AbfKRJIe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 18 Nov 2019 04:08:34 -0500
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:37841 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726442AbfKRJIe (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 18 Nov 2019 04:08:34 -0500
+Received: by mail-vs1-f67.google.com with SMTP id u6so11003757vsp.4
+        for <linux-mmc@vger.kernel.org>; Mon, 18 Nov 2019 01:08:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BghPULC5UyPGqCyK1zeAHOjx8ZZLIefg+Am36y5/pbE=;
+        b=Pw0MMj8p0LlnfNL5IbJOueH/jHLg1Qa/uTp/EbX9PeEYraZm4/4ucchRNkZd+JXdr5
+         5ZlPMG2O4DnKmDogObQljO1T4/UIwSo2B2d45lvJ2cECcebDcTKBuOHn6/BlYS70GzVQ
+         zT1fD1WSZc+An41joFH5Ganlb0k+izYv67b3GGueB0eohIGHtnSmIxzhe0JaTSq/Nh2K
+         PFMJuIpqKmDTi22uTsfmrjKK5MG2ugKRNofZ5BPWvy0rLbjEwkMypZkBcd1ilvyvQvpq
+         9jt8khp2Rti2CkuVZkhtj2f6ki7PtshRfQWTBhbnqC5YHd52RlAUfcB+7eA0HMxGYWhE
+         2dTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BghPULC5UyPGqCyK1zeAHOjx8ZZLIefg+Am36y5/pbE=;
+        b=ACKRLD9C8qLPzyTzTXNawbB4KNS3DZ26AyR4doj1/WY1QOjsfn+YeoKBA1ue9wMGri
+         DFRnOhptG7yvGkxMMqjBk/RqDaNaMTM1ivgdnSoWahB20frgLNW46mWtOhoKLQydd7/v
+         rTdLNyO+DYx08D+zVgW/uv9MSZ7M2EtfQ26a/4OV1MQUFk5u/8SFzvDF6Z2iN4cBFmNI
+         kgZA/fZAaEWcCI3f4vLvvY+fd5o/gwDjDWTtKPePzSiIiyhjEoRarPXLPmSE6Z3GY1JX
+         xwXRpLnG6gR6kbDMTWtbrWsYJjURWqOr+8BpHGrNZwBP04q5kjWZip6PyS+ZMGFFEyrP
+         mXHw==
+X-Gm-Message-State: APjAAAV5P96sJ1SK1VPMLrPrNQ99JgPeLvNzeSI2Bl1Zi2MRcq/Sqgx9
+        3v7T37P8bGjUiuIRzSNRJdVoxEcO2LX9JzNOyngn6g==
+X-Google-Smtp-Source: APXvYqxZ2cPOQDOOgbtbMRMPYyOPuVXbLXuf68UzKvf/TwmE5hxQYuGLkkLxzfpAHMKV3VLA+3FdtAgs3lyTtO7bPxA=
+X-Received: by 2002:a67:2087:: with SMTP id g129mr18038208vsg.191.1574068113132;
+ Mon, 18 Nov 2019 01:08:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20191117010045.4902-1-bradleybolen@gmail.com>
+In-Reply-To: <20191117010045.4902-1-bradleybolen@gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 18 Nov 2019 10:07:57 +0100
+Message-ID: <CAPDyKFreYm3EsLO=e97RCOqaKJxkYJ+fqJcgskO7PtO15Tj4fQ@mail.gmail.com>
+Subject: Re: [PATCH v3] mmc: core: Fix size overflow for mmc partitions
+To:     Bradley Bolen <bradleybolen@gmail.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        Hongjie Fang <hongjiefang@asrmicro.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "yinbo.zhu" <yinbo.zhu@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add Support for CQHCI (Command Queuing Host Controller Interface)
-for each of the host controllers present in TI's J721E devices.
-Add cqhci_ops and a .irq() callback to handle cqhci specific interrupts.
+On Sun, 17 Nov 2019 at 02:00, Bradley Bolen <bradleybolen@gmail.com> wrote:
+>
+> With large eMMC cards, it is possible to create general purpose
+> partitions that are bigger than 4GB.  The size member of the mmc_part
+> struct is only an unsigned int which overflows for gp partitions larger
+> than 4GB.  Change this to a u64 to handle the overflow.
+>
+> Signed-off-by: Bradley Bolen <bradleybolen@gmail.com>
 
-Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
-Reported-by: kbuild test robot <lkp@intel.com>
----
+Applied for next, thanks!
 
-v2: Dropped CONFIG_ prefix from select MMC_CQHCI which led to build
-failures. Successfully built with the .config provided by the kbuild test robot.
+Kind regards
+Uffe
 
- drivers/mmc/host/Kconfig       |  1 +
- drivers/mmc/host/sdhci_am654.c | 71 +++++++++++++++++++++++++++++++++-
- 2 files changed, 71 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 49ea02c467bf..7c1310ed26c6 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -1011,6 +1011,7 @@ config MMC_SDHCI_AM654
- 	tristate "Support for the SDHCI Controller in TI's AM654 SOCs"
- 	depends on MMC_SDHCI_PLTFM && OF && REGMAP_MMIO
- 	select MMC_SDHCI_IO_ACCESSORS
-+	select MMC_CQHCI
- 	help
- 	  This selects the Secure Digital Host Controller Interface (SDHCI)
- 	  support present in TI's AM654 SOCs. The controller supports
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index bb90757ecace..b8e897e31e2e 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -12,6 +12,7 @@
- #include <linux/property.h>
- #include <linux/regmap.h>
- 
-+#include "cqhci.h"
- #include "sdhci-pltfm.h"
- 
- /* CTL_CFG Registers */
-@@ -68,6 +69,9 @@
- 
- #define CLOCK_TOO_SLOW_HZ	400000
- 
-+/* Command Queue Host Controller Interface Base address */
-+#define SDHCI_AM654_CQE_BASE_ADDR 0x200
-+
- static struct regmap_config sdhci_am654_regmap_config = {
- 	.reg_bits = 32,
- 	.val_bits = 32,
-@@ -259,6 +263,19 @@ static const struct sdhci_am654_driver_data sdhci_am654_drvdata = {
- 	.flags = IOMUX_PRESENT | FREQSEL_2_BIT | STRBSEL_4_BIT | DLL_PRESENT,
- };
- 
-+static u32 sdhci_am654_cqhci_irq(struct sdhci_host *host, u32 intmask)
-+{
-+	int cmd_error = 0;
-+	int data_error = 0;
-+
-+	if (!sdhci_cqe_irq(host, intmask, &cmd_error, &data_error))
-+		return intmask;
-+
-+	cqhci_irq(host->mmc, intmask, cmd_error, data_error);
-+
-+	return 0;
-+}
-+
- static struct sdhci_ops sdhci_j721e_8bit_ops = {
- 	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
- 	.get_timeout_clock = sdhci_pltfm_clk_get_max_clock,
-@@ -267,6 +284,7 @@ static struct sdhci_ops sdhci_j721e_8bit_ops = {
- 	.set_power = sdhci_am654_set_power,
- 	.set_clock = sdhci_am654_set_clock,
- 	.write_b = sdhci_am654_write_b,
-+	.irq = sdhci_am654_cqhci_irq,
- 	.reset = sdhci_reset,
- };
- 
-@@ -290,6 +308,7 @@ static struct sdhci_ops sdhci_j721e_4bit_ops = {
- 	.set_power = sdhci_am654_set_power,
- 	.set_clock = sdhci_j721e_4bit_set_clock,
- 	.write_b = sdhci_am654_write_b,
-+	.irq = sdhci_am654_cqhci_irq,
- 	.reset = sdhci_reset,
- };
- 
-@@ -304,6 +323,40 @@ static const struct sdhci_am654_driver_data sdhci_j721e_4bit_drvdata = {
- 	.pdata = &sdhci_j721e_4bit_pdata,
- 	.flags = IOMUX_PRESENT,
- };
-+
-+static void sdhci_am654_dumpregs(struct mmc_host *mmc)
-+{
-+	sdhci_dumpregs(mmc_priv(mmc));
-+}
-+
-+static const struct cqhci_host_ops sdhci_am654_cqhci_ops = {
-+	.enable		= sdhci_cqe_enable,
-+	.disable	= sdhci_cqe_disable,
-+	.dumpregs	= sdhci_am654_dumpregs,
-+};
-+
-+static int sdhci_am654_cqe_add_host(struct sdhci_host *host)
-+{
-+	struct cqhci_host *cq_host;
-+	int ret;
-+
-+	cq_host = devm_kzalloc(host->mmc->parent, sizeof(struct cqhci_host),
-+			       GFP_KERNEL);
-+	if (!cq_host)
-+		return -ENOMEM;
-+
-+	cq_host->mmio = host->ioaddr + SDHCI_AM654_CQE_BASE_ADDR;
-+	cq_host->quirks |= CQHCI_QUIRK_SHORT_TXFR_DESC_SZ;
-+	cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
-+	cq_host->ops = &sdhci_am654_cqhci_ops;
-+
-+	host->mmc->caps2 |= MMC_CAP2_CQE;
-+
-+	ret = cqhci_init(cq_host, host->mmc, 1);
-+
-+	return ret;
-+}
-+
- static int sdhci_am654_init(struct sdhci_host *host)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-@@ -344,7 +397,23 @@ static int sdhci_am654_init(struct sdhci_host *host)
- 	regmap_update_bits(sdhci_am654->base, CTL_CFG_2, SLOTTYPE_MASK,
- 			   ctl_cfg_2);
- 
--	return sdhci_add_host(host);
-+	ret = sdhci_setup_host(host);
-+	if (ret)
-+		return ret;
-+
-+	ret = sdhci_am654_cqe_add_host(host);
-+	if (ret)
-+		goto err_cleanup_host;
-+
-+	ret = __sdhci_add_host(host);
-+	if (ret)
-+		goto err_cleanup_host;
-+
-+	return 0;
-+
-+err_cleanup_host:
-+	sdhci_cleanup_host(host);
-+	return ret;
- }
- 
- static int sdhci_am654_get_of_property(struct platform_device *pdev,
--- 
-2.19.2
-
+> ---
+>  drivers/mmc/core/mmc.c   | 9 ++++-----
+>  include/linux/mmc/card.h | 2 +-
+>  2 files changed, 5 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+> index c8804895595f..f6912ded652d 100644
+> --- a/drivers/mmc/core/mmc.c
+> +++ b/drivers/mmc/core/mmc.c
+> @@ -297,7 +297,7 @@ static void mmc_manage_enhanced_area(struct mmc_card *card, u8 *ext_csd)
+>         }
+>  }
+>
+> -static void mmc_part_add(struct mmc_card *card, unsigned int size,
+> +static void mmc_part_add(struct mmc_card *card, u64 size,
+>                          unsigned int part_cfg, char *name, int idx, bool ro,
+>                          int area_type)
+>  {
+> @@ -313,7 +313,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
+>  {
+>         int idx;
+>         u8 hc_erase_grp_sz, hc_wp_grp_sz;
+> -       unsigned int part_size;
+> +       u64 part_size;
+>
+>         /*
+>          * General purpose partition feature support --
+> @@ -343,8 +343,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
+>                                 (ext_csd[EXT_CSD_GP_SIZE_MULT + idx * 3 + 1]
+>                                 << 8) +
+>                                 ext_csd[EXT_CSD_GP_SIZE_MULT + idx * 3];
+> -                       part_size *= (size_t)(hc_erase_grp_sz *
+> -                               hc_wp_grp_sz);
+> +                       part_size *= (hc_erase_grp_sz * hc_wp_grp_sz);
+>                         mmc_part_add(card, part_size << 19,
+>                                 EXT_CSD_PART_CONFIG_ACC_GP0 + idx,
+>                                 "gp%d", idx, false,
+> @@ -362,7 +361,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
+>  static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
+>  {
+>         int err = 0, idx;
+> -       unsigned int part_size;
+> +       u64 part_size;
+>         struct device_node *np;
+>         bool broken_hpi = false;
+>
+> diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+> index 9b6336ad3266..b59d35bb50ba 100644
+> --- a/include/linux/mmc/card.h
+> +++ b/include/linux/mmc/card.h
+> @@ -226,7 +226,7 @@ struct mmc_queue_req;
+>   * MMC Physical partitions
+>   */
+>  struct mmc_part {
+> -       unsigned int    size;   /* partition size (in bytes) */
+> +       u64             size;   /* partition size (in bytes) */
+>         unsigned int    part_cfg;       /* partition type */
+>         char    name[MAX_MMC_PART_NAME_LEN];
+>         bool    force_ro;       /* to make boot parts RO by default */
+> --
+> 2.17.1
+>
