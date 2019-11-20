@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 389F5103A89
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Nov 2019 13:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0586A103A8E
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Nov 2019 13:59:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728146AbfKTM7c (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Nov 2019 07:59:32 -0500
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:38404 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728110AbfKTM7c (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Nov 2019 07:59:32 -0500
-Received: by mail-ua1-f68.google.com with SMTP id u99so7742672uau.5
-        for <linux-mmc@vger.kernel.org>; Wed, 20 Nov 2019 04:59:31 -0800 (PST)
+        id S1728201AbfKTM7o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Nov 2019 07:59:44 -0500
+Received: from mail-vk1-f193.google.com ([209.85.221.193]:37460 "EHLO
+        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728272AbfKTM7l (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Nov 2019 07:59:41 -0500
+Received: by mail-vk1-f193.google.com with SMTP id l5so5991855vkb.4
+        for <linux-mmc@vger.kernel.org>; Wed, 20 Nov 2019 04:59:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=nuqJ0vbClL23gGoYcppi0FrFy7e9Hz/yNcjMSMNBxqE=;
-        b=dYP/0q1UJs+hkupL0Ks33xZa/oPu9OOQ/1POhchabco+MYLW/OVqUGMujUfpI5uX/Z
-         guc95gIHgm0ENwks6ezoHMtNBDv5NpD4kZOt3rckVtc2TNrFfHdbtpCHIzg2WdJrYaXH
-         /xSfomvFi7E/T0tCpoUNe3K5d8eLKhwMpXTlLq8hD5ihVf1MmjEnX8Zrc+Q4dl9OF8vp
-         voHqwV0OwDc47bzLAoCx81iHGZpBIJjGrkq9aPtBI615OOd+WVm9zHE2PC2D1k+vGxR4
-         4PUF1/lLiew7UxLBcxzFkhUWuY57TX2Ka8I2YZ+NgeOlXACnlaJC6D7tFhA87pTU3x45
-         HmRw==
+        bh=mv3ivjIPtynZHdywCSMliDx/clqr1q5FAXmvUn8sv20=;
+        b=DZZd0nosT6fMGQa1LrZVBdRXKbdVyqsPindUQS1a1nqo5KvOOvDL6TYkJpiTiwvqJm
+         kj/g0mCy/d36pCSmPRACtWRYhBo+puCWySIvVjJkhBdjQlOJX/vdsIwvOFJXKTqWEIkJ
+         qilWi7YApsYcUIF/Ghp5HFDBliyzAw2KPYzEBMtEnuPBotdX72kg7XjjLYcdPlzZ6eTE
+         mJzOOAhDrtjtwPvojZ3vCHKnUlRdvUb5r2UjPybqDbDV7PKTti/mA0zC4GArhWLwD1pu
+         09jXs0Rs4TfHjCztF/mr43pLNjcug2oAeU+TFTbYX8J1siDHLBfAw3ku2nwrQVzY2d3/
+         8HkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=nuqJ0vbClL23gGoYcppi0FrFy7e9Hz/yNcjMSMNBxqE=;
-        b=CjQ0LIYIAlixNBnDUhVVSoc/r9Ka4iQurNb0Sk4Wi9uN3vlL+oq3tYTyLl/weDzeSC
-         KNQMkD8iiH+J8z0W2O/9ucqKHqLFSFqIrTaGK7C90FX3nOs0Bto4Z6Xy8OZICJBduNPq
-         Z0olELEZ1fi66Ur0LAmyqIq4WTxF0i9SYR9CiAucNCDDTUvRt6JFnF5Z87slTMbqbwPP
-         iCkEXso8/Op1pSe7pxq91a4E73L2Prrq2m2CsGlLcKyzF5MLm5wcASD8ig43UrRDSPGe
-         Pi47ad8RGDC4bfNYlx43Tq2WxFX1H7XZg22/c4kWDZ4k9YfR61pApKxBhYZv+nJWWU3X
-         Gxrw==
-X-Gm-Message-State: APjAAAWCbcW9er7hDt6r4jzN4q2Px0ynbQnPm6Xt3b9Bp/Ae12hI3Jos
-        A1xw74PrvGncB/kOLGsmNMHC+yPYLrqd2EDcwyR3sQ==
-X-Google-Smtp-Source: APXvYqzczwcqmzJh3GjUqnWFQGP/+Gp7RUJwV58YrFcSe+bfPCganPSc0GYA3NZbmUkPuarP338JjoXHT98NVoW0E1U=
-X-Received: by 2002:ab0:2042:: with SMTP id g2mr1511287ual.19.1574254771069;
- Wed, 20 Nov 2019 04:59:31 -0800 (PST)
+        bh=mv3ivjIPtynZHdywCSMliDx/clqr1q5FAXmvUn8sv20=;
+        b=DRVq1JILauj4wk2UWKnp7yW6OsYPDLQ2kN0KZBynt2224dhQz7G6BkxWQe2TAOCw9j
+         oMKlEtseH5JAguTc4CGsrw0VZPsXzUw4gJQV+7pulmxjJA6uMbChbvh+/h7Uzaajr4C4
+         couMcyxS+neup145TkroSgGcx07ndeLJbd0PK8baXjbIE3WXDVmhiSfdWFrIsVT7yHT1
+         cWQyjrLwXo35/9qmiSPGwb2Ta+u0WYlUjEaBN9gVJq2dxa5uMvuxXjLMWja/jIaI39tV
+         RoynJqlabV2PQNZK/wnZ4xM/EP0lxW4slehLbfyApAPP6400Rin8bi7JKbXdJGVvmdgk
+         Q3VQ==
+X-Gm-Message-State: APjAAAWQFSvIZ1B+u9A9z7MRYst67pt9pNnQ9vfTGYjkv5cZuTvJuQdZ
+        b92EpTgi12Eou85vHup7gbVhkH+7AntkHg+dAPGRaQ==
+X-Google-Smtp-Source: APXvYqxQDALgcQNWwHLSVFVl8w6QJkMBvvg1vKNEOr6M8d/if/KbiPE09YO/XzOrupoT94zbpYTuK0JTffdMAGJDNgk=
+X-Received: by 2002:a05:6122:1181:: with SMTP id x1mr1311701vkn.25.1574254780111;
+ Wed, 20 Nov 2019 04:59:40 -0800 (PST)
 MIME-Version: 1.0
-References: <20191118104646.3838-1-i.mikhaylov@yadro.com> <20191118104646.3838-3-i.mikhaylov@yadro.com>
-In-Reply-To: <20191118104646.3838-3-i.mikhaylov@yadro.com>
+References: <20191118104646.3838-1-i.mikhaylov@yadro.com> <20191118104646.3838-4-i.mikhaylov@yadro.com>
+In-Reply-To: <20191118104646.3838-4-i.mikhaylov@yadro.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 20 Nov 2019 13:58:55 +0100
-Message-ID: <CAPDyKFoz3ipYBGR-6ubfqhtQVG9h16axoHNdSoo+OyNgKRs2Tw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] mmc: sdhci-of-aspeed: enable CONFIG_MMC_SDHCI_IO_ACCESSORS
+Date:   Wed, 20 Nov 2019 13:59:04 +0100
+Message-ID: <CAPDyKFrshWd1P9dZGTSuU=5P0L6LSPz=v2nn+0SWi3ZZazKrRw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] mmc: sdhci-of-aspeed: add inversion signal presence
 To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
 Cc:     Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
         Rob Herring <robh+dt@kernel.org>,
@@ -66,30 +66,45 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 On Mon, 18 Nov 2019 at 11:47, Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
 >
-> Enable CONFIG_MMC_SDHCI_IO_ACCESSORS on the aspeed board. The read_l
-> callback is used for inverted card detection.
+> Add read_l callback in sdhci_ops with flipping of SDHCI_CARD_PRESENT
+> bit in case of inverted card detection signal.
 >
 > Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
 
-Applied for next, updating the changelog according to Andrew's comments, thanks!
+Applied for next, thanks!
+
+For clarity, I am leaving patch 1 for arm-soc.
 
 Kind regards
 Uffe
 
 
+
 >
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 49ea02c467bf..c9c1bb722368 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -159,6 +159,7 @@ config MMC_SDHCI_OF_ASPEED
->         tristate "SDHCI OF support for the ASPEED SDHCI controller"
->         depends on MMC_SDHCI_PLTFM
->         depends on OF && OF_ADDRESS
-> +       select MMC_SDHCI_IO_ACCESSORS
->         help
->           This selects the ASPEED Secure Digital Host Controller Interface.
+> diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
+> index 8962f6664381..56912e30c47e 100644
+> --- a/drivers/mmc/host/sdhci-of-aspeed.c
+> +++ b/drivers/mmc/host/sdhci-of-aspeed.c
+> @@ -111,7 +111,19 @@ static void aspeed_sdhci_set_bus_width(struct sdhci_host *host, int width)
+>         sdhci_writeb(host, ctrl, SDHCI_HOST_CONTROL);
+>  }
 >
+> +static u32 aspeed_sdhci_readl(struct sdhci_host *host, int reg)
+> +{
+> +       u32 val = readl(host->ioaddr + reg);
+> +
+> +       if (unlikely(reg == SDHCI_PRESENT_STATE) &&
+> +           (host->mmc->caps2 & MMC_CAP2_CD_ACTIVE_HIGH))
+> +               val ^= SDHCI_CARD_PRESENT;
+> +
+> +       return val;
+> +}
+> +
+>  static const struct sdhci_ops aspeed_sdhci_ops = {
+> +       .read_l = aspeed_sdhci_readl,
+>         .set_clock = aspeed_sdhci_set_clock,
+>         .get_max_clock = aspeed_sdhci_get_max_clock,
+>         .set_bus_width = aspeed_sdhci_set_bus_width,
 > --
 > 2.20.1
 >
