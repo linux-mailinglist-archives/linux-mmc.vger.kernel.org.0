@@ -2,126 +2,159 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39EF8103447
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Nov 2019 07:28:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C34DB10346F
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Nov 2019 07:47:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726554AbfKTG2V (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Nov 2019 01:28:21 -0500
-Received: from a27-21.smtp-out.us-west-2.amazonses.com ([54.240.27.21]:51510
-        "EHLO a27-21.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725832AbfKTG2V (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Nov 2019 01:28:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574231300;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=2DbCZfizzX83H18NXUU+cijwVZjvJWmnkVQmn16iT30=;
-        b=nYUkb0LgkK8fvXpZQnMxqW2wWeXoqFcKRK5REzic3EW1pVAnA6ZsXUdTY+kaDc1M
-        XuSc0d44pEnSojbgih7kLtvpyBE9fpztgkAHfO2uD/KqRTqCdPtgYkyAitazjw3DtYJ
-        RmsZCOqUJhbZJCRgR7MunFAeuHWO28uh98dD8kkU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574231300;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=2DbCZfizzX83H18NXUU+cijwVZjvJWmnkVQmn16iT30=;
-        b=gp8ZAqM3o4Kr8pvf9dTYPAtuDDnWVXPaf7ZEEGSw5txP9/TnHPEhmSoHh40BpPvH
-        AdU4hu8VTTUHVfoCkIc5TSCWX1k1JsFV0PupB9E5VNnS1V/K/tbTa3Gcr7XbvNZHx9X
-        YJsKUkyrHi4D5mSz0ZPQOaIeV97naRj1mxyph7Ng=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 925BDC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Wen Gong <wgong@codeaurora.org>
-Cc:     Doug Anderson <dianders@chromium.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] mmc: core: Re-work HW reset for SDIO cards
-References: <20191109103046.26445-1-ulf.hansson@linaro.org>
-        <20191109103046.26445-4-ulf.hansson@linaro.org>
-        <CAD=FV=VHReD5qnvcQLHvfgKHnHLbfDLZHwXtY-LV5uy_VCYpPA@mail.gmail.com>
-        <CAPDyKFrCyJBz2=RzKPxqn0FSEq500=dEDsTUWYZeoFKWvSRAdA@mail.gmail.com>
-Date:   Wed, 20 Nov 2019 06:28:19 +0000
-In-Reply-To: <CAPDyKFrCyJBz2=RzKPxqn0FSEq500=dEDsTUWYZeoFKWvSRAdA@mail.gmail.com>
-        (Ulf Hansson's message of "Tue, 12 Nov 2019 13:19:55 +0100")
-Message-ID: <0101016e877f56ce-8c7f312f-49d9-47e5-8473-30657f87bdd2-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1727579AbfKTGr4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Nov 2019 01:47:56 -0500
+Received: from mail-eopbgr740079.outbound.protection.outlook.com ([40.107.74.79]:34816
+        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726038AbfKTGry (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 20 Nov 2019 01:47:54 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mQeftY/cY5rcnWQCnb8ONlthSlor4e0yityvb+gUF8TUV8UesNZxzhbGaviKbI+UrBvPgeYeoyE5UVpgoslY4p+YWqpIg/h3OIGdpYOkOg3d3Oo2EG7ov3lpTUpXHE/6U1gujxO/CSZ5Ig32EaM3JCwSjb6pdMg0vq4t34cthMzHp5iFvCFWOCUGCcbV+Ihu0Clmb+9eIRA/EQGVx/Ea0EvlKzcCVUZVdzbRwMFU+t9ijkAdCxtQ468wu+ZuPsum4VVrqOS9Uim8twR5XLeO8MeXxsFgFORQ13OKfeSjxuIvMeAV/h6BT561H2tO0GlgkInbSwDpi2MCa2e0VmtNqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GK2Og5rGVawjCNyET2Ne6BuZnLTiF1HsXwJIvMpWDdY=;
+ b=mUuZeswTbqucYmsOQtbMLMOeqfUvAPLxhs4co3u9tpedKPMnmAzGweTyNN/rBJNXJpc3lTBRqXmu2K609kbAOeODxaZMrt51Z1Km8KZKotpU6aNIyCvfd/qxXrGPLWIOV/0MmisLQzIuJYIzJsg6zRGOSWHVnQXEakCJtd1iZVcUyaB+4/yIC2jr4tFc0DJrhtdIHB7gc6IVvnIaxTs6Ca/uoMLpIjf4+Xc0nh4DYcIchvI4403O7Jr2PqOOJXUzSz8Q8FiUcMZ1hHduoam9lDs7zb5ZU3mgPiJ18w42PNGBZHdp3ULnfHum7KglH0wsGa96vpFCGcNqOZT0plWw5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.83) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GK2Og5rGVawjCNyET2Ne6BuZnLTiF1HsXwJIvMpWDdY=;
+ b=by4m/lPtsAq88t5/8i5oAyJJkfKuyHu/qxO4aktQw1VX07/pWK+rgXiPbfHTuDeBsl+hPw5XxhrtjKlY9HcJqArkouRLM4BMsVAbFAki3TKfkQvT26Os3PGr1K0jKtTtTMJMqBucbrpPTv08q/zEVw4ZHSujB5vNIbuepOwEEqw=
+Received: from BL0PR02CA0143.namprd02.prod.outlook.com (2603:10b6:208:35::48)
+ by MN2PR02MB6687.namprd02.prod.outlook.com (2603:10b6:208:1dc::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2474.16; Wed, 20 Nov
+ 2019 06:47:48 +0000
+Received: from BL2NAM02FT004.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::200) by BL0PR02CA0143.outlook.office365.com
+ (2603:10b6:208:35::48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2451.23 via Frontend
+ Transport; Wed, 20 Nov 2019 06:47:48 +0000
+Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ BL2NAM02FT004.mail.protection.outlook.com (10.152.76.168) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2474.17
+ via Frontend Transport; Wed, 20 Nov 2019 06:47:48 +0000
+Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
+        (envelope-from <manish.narani@xilinx.com>)
+        id 1iXJmF-000616-F8; Tue, 19 Nov 2019 22:47:47 -0800
+Received: from [127.0.0.1] (helo=localhost)
+        by xsj-pvapsmtp01 with smtp (Exim 4.63)
+        (envelope-from <manish.narani@xilinx.com>)
+        id 1iXJmA-00049o-BK; Tue, 19 Nov 2019 22:47:42 -0800
+Received: from xsj-pvapsmtp01 (maildrop.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id xAK6la1t001801;
+        Tue, 19 Nov 2019 22:47:37 -0800
+Received: from [172.23.64.106] (helo=xhdvnc125.xilinx.com)
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <mnarani@xilinx.com>)
+        id 1iXJm4-00048z-KB; Tue, 19 Nov 2019 22:47:36 -0800
+Received: by xhdvnc125.xilinx.com (Postfix, from userid 16987)
+        id D1B9A12127B; Wed, 20 Nov 2019 12:17:35 +0530 (IST)
+From:   Manish Narani <manish.narani@xilinx.com>
+To:     ulf.hansson@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        adrian.hunter@intel.com, michal.simek@xilinx.com,
+        jolly.shah@xilinx.com, rajan.vaja@xilinx.com,
+        nava.manne@xilinx.com, mdf@kernel.org, manish.narani@xilinx.com
+Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        git@xilinx.com
+Subject: [PATCH v6 0/8] Arasan SDHCI enhancements and ZynqMP Tap Delays Handling
+Date:   Wed, 20 Nov 2019 12:17:21 +0530
+Message-Id: <1574232449-13570-1-git-send-email-manish.narani@xilinx.com>
+X-Mailer: git-send-email 2.1.1
+X-RCIS-Action: ALLOW
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:149.199.60.83;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(136003)(346002)(376002)(39860400002)(396003)(199004)(189003)(106002)(14444005)(186003)(44832011)(26005)(336012)(47776003)(36386004)(4326008)(6666004)(356004)(36756003)(126002)(107886003)(486006)(2616005)(6266002)(51416003)(48376002)(81156014)(81166006)(476003)(8676002)(426003)(5660300002)(478600001)(8936002)(50226002)(305945005)(2906002)(316002)(16586007)(42186006)(70206006)(70586007)(50466002)(103686004)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR02MB6687;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-83.xilinx.com;A:1;MX:1;
 MIME-Version: 1.0
 Content-Type: text/plain
-X-SES-Outgoing: 2019.11.20-54.240.27.21
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 5b23c3b4-a715-4da2-dae9-08d76d858e51
+X-MS-TrafficTypeDiagnostic: MN2PR02MB6687:
+X-Microsoft-Antispam-PRVS: <MN2PR02MB6687DD9AB34A9ABCA3F466C3C14F0@MN2PR02MB6687.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Forefront-PRVS: 02272225C5
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 9Q4r4i8EQ6JMs1lmmu7Jqz6E1G2TVBuF90GxuANexQDXB7nBK44COqV+4MWQKxHmS2o+cF09Vyg9AMV5yQIYZ3sDdisvLAyrmi0RqdnuBMHK4/Dj3ttH2hz23KKfCUmnmKKuddX2RFSji/Nldd9hvnyjLMUEIkRig0paeJSnbHbyzqb6a5EeRi38hrWT1o0gqe+lZWgNEuBPHeoYdrQCoY5sl3R1HjF+4n15XIRy2Vbjh/n9HemLCHsuE20D4hOdcSkRLpnmvUehg6nddf0YQ39mm+52hPi/jWQWDd7gaMLYLbdluaqYs1LtXYqPyjDqSZcegz/0OdpesrER9DaBugAn1BY/NHI1h6lFw5j+5JAF6BT2P8i79L+pB4chnPpCIWM4bDe5sWfbw8R2hrzrDBP6eho2o8Loqn9HZULjeM0sqwcriNwWZRrqiWyY9U3U
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2019 06:47:48.0270
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b23c3b4-a715-4da2-dae9-08d76d858e51
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB6687
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-+ wen, ath10k
+This patch series does the following:
+ - Reorganize the Clock Handling in Arasan SD driver
+ - Adds new sampling clock in Arasan SD driver
+ - Adds support to set Clock Delays in SD Arasan Driver
+ - Add SDIO Tap Delay handling in ZynqMP firmware driver
+ - Add support for ZynqMP Tap Delays setting in Arasan SD driver
 
-Ulf Hansson <ulf.hansson@linaro.org> writes:
+Changes in v2:
+	- Replaced the deprecated calls to clock framework APIs
+	- Added support for dev_clk_get() call to work for SD card clock
+	- Separated the clock data struct
+	- Fragmented the patch series in smaller patches to make it more
+	  readable
 
-> On Tue, 12 Nov 2019 at 01:33, Doug Anderson <dianders@chromium.org> wrote:
->>
->> Hi,
->>
->> On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->> >
->> > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
->> > index 6f8342702c73..abf8f5eb0a1c 100644
->> > --- a/drivers/mmc/core/core.c
->> > +++ b/drivers/mmc/core/core.c
->> > @@ -1469,8 +1469,7 @@ void mmc_detach_bus(struct mmc_host *host)
->> >         mmc_bus_put(host);
->> >  }
->> >
->> > -static void _mmc_detect_change(struct mmc_host *host, unsigned long delay,
->> > -                               bool cd_irq)
->> > +void _mmc_detect_change(struct mmc_host *host, unsigned long delay, bool cd_irq)
->> >  {
->> >         /*
->> >          * If the device is configured as wakeup, we prevent a new sleep for
->> > @@ -2129,7 +2128,7 @@ int mmc_hw_reset(struct mmc_host *host)
->> >         ret = host->bus_ops->hw_reset(host);
->> >         mmc_bus_put(host);
->> >
->> > -       if (ret)
->> > +       if (ret < 0)
->> >                 pr_warn("%s: tried to HW reset card, got error %d\n",
->> >                         mmc_hostname(host), ret);
->>
->> Other callers besides marvell need to be updated?  In theory only SDIO
->> should have positive return values so I guess we don't care about the
->> caller in drivers/mmc/core/block.c, right?
->
-> Correct, but maybe I should add some more information about that in a
-> function header of mmc_hw_reset(). Let me consider doing that as a
-> change on top.
->
->>  What about:
->>
->> drivers/net/wireless/ath/ath10k/sdio.c
->>
->> ...I guess I don't know if there is more than one function probed
->> there.  Maybe there's not and thus we're fine here too?
->
-> Well, honestly I don't know.
->
-> In any case, that would mean the driver is broken anyways and needs to
-> be fixed. At least that's my approach to doing this change.
+Changes in v3:
+	- Reverted "Replaced the deprecated calls to clock framework APIs"
+	- Removed devm_clk_get() call which was added in v2
 
-Wen, does QCA6174 or QCA9377 SDIO devices have other SDIO functions, for
-example bluetooth? I'm just wondering how should we handle this in
-ath10k.
+Changes in v4:
+	- Made the Phase Delay properties Arasan specific
+
+Changes in v5:
+	- Made Clock Phase Delay properties common
+	- Moved documentation of them to the common mmc documentation.
+
+Changes in v6:
+	- Clubbed all Clk Phase Delay properties' into a pattern
+	  Property
+
+Manish Narani (8):
+  mmc: sdhci-of-arasan: Separate out clk related data to another
+    structure
+  dt-bindings: mmc: arasan: Update Documentation for the input clock
+  mmc: sdhci-of-arasan: Add sampling clock for a phy to use
+  dt-bindings: mmc: Add optional generic properties for mmc
+  mmc: sdhci-of-arasan: Add support to set clock phase delays for SD
+  firmware: xilinx: Add SDIO Tap Delay nodes
+  dt-bindings: mmc: arasan: Document 'xlnx,zynqmp-8.9a' controller
+  mmc: sdhci-of-arasan: Add support for ZynqMP Platform Tap Delays Setup
+
+ .../devicetree/bindings/mmc/arasan,sdhci.txt  |  25 +-
+ .../bindings/mmc/mmc-controller.yaml          |  13 +
+ drivers/mmc/host/sdhci-of-arasan.c            | 478 +++++++++++++++++-
+ include/linux/firmware/xlnx-zynqmp.h          |  13 +-
+ 4 files changed, 497 insertions(+), 32 deletions(-)
 
 -- 
-Kalle Valo
+2.17.1
+
