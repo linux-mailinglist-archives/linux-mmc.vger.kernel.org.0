@@ -2,86 +2,126 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41AE4103424
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Nov 2019 07:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39EF8103447
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Nov 2019 07:28:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726554AbfKTGIB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Nov 2019 01:08:01 -0500
-Received: from new4-smtp.messagingengine.com ([66.111.4.230]:56287 "EHLO
-        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726014AbfKTGIB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Nov 2019 01:08:01 -0500
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 8120168AD;
-        Wed, 20 Nov 2019 01:08:00 -0500 (EST)
-Received: from imap2 ([10.202.2.52])
-  by compute4.internal (MEProxy); Wed, 20 Nov 2019 01:08:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm1; bh=DsuQsdMCwuKKG1c6E9zMMunZDORO9yG
-        MRO643pGAkco=; b=Fd0L4n9gK6ybYYBcSg1jQ+1Anq3REZ7jgGzCovtPqAE/Qf7
-        nibUPdKv3eDWgqvMYN2XxG0LYtAm7iqdLElZ2SU2EcuQDU97upof3y5/rKu7J0qj
-        4wd+UsSZoz5ns+jTk6oFghvBCuGKVESjgCqmLYDqvvMIi8+7PGqQ97iXDXslWWB/
-        hNys4hZmVfu9EB1q9yAK+U3HRuFeXrqidnlTdgVLOoMhdzR+kWFII8B2uTCkRJ/i
-        H3DuC4ThZzInqSom3lkAxl6YHjictrV9Ubn3izRoEoA3rng2VGb8fEoG5XienYtR
-        FIIk6KuzAAevM6ygdCWFFcjQDifODP/tQjoe5Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=DsuQsd
-        MCwuKKG1c6E9zMMunZDORO9yGMRO643pGAkco=; b=wSfHHMIqeIxz7uUn2d14w+
-        RVJjFGK++vJnIvk+WVWo+2LhVPANmImCx1DFfogwrz0w4+XWbNfJ5f6BIeoQeW+q
-        yV+f3UxVN3dKbrGFNSp5QtlhwEgHbMsXh5PgNmZ1pfC7bxvF9YAWORWMzKNGpCtK
-        uYBODeLR5kopolY3BPcOKPzqLljOVF5GUaZ0PAW/nvvKFjlYXqihy0iUl14pKLlS
-        99bgQBQ82BSvwtROesF3tUuZu085Htvrm59DQiGUOyMOGmIDZWK5MpS4x3GHFP3g
-        IfM6Frwfacx1N8JxtCfmqswSgX0v2QgQUqvzplK5741QIJTyzljQcbEJKTc3SXvQ
-        ==
-X-ME-Sender: <xms:QNjUXWJ2ujlBAKIfuc9xx6W73U9KNM57P4vef5G9WMlmfLGd-1iX0g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudegledgledvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdetnhgu
-    rhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghjrdhiugdrrghunecuvehluhhsthgv
-    rhfuihiivgeptd
-X-ME-Proxy: <xmx:QNjUXV626hPjxjiHuOLWBVDS-F3NZe_zGbxRynf3AD9D_lPoK1etCw>
-    <xmx:QNjUXbuJg1QQvHvrn9xtjvmCsDQSdZkBc2ntB7i2C9AJEZqIqAGP8w>
-    <xmx:QNjUXTZh-E3-mu7lCLDC6Av9Czb4yjJMXjLnR-9fqX_lO6ChGEgxVw>
-    <xmx:QNjUXTZvhspj1tktg1bwvQlCwqHwSasFZ_W2ijcrQRSSGu_GuGIyrQ>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 49FE6E00A3; Wed, 20 Nov 2019 01:08:00 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.1.7-578-g826f590-fmstable-20191119v1
-Mime-Version: 1.0
-Message-Id: <ebe4c175-a1a0-47d3-9c01-1dfeeffc97e5@www.fastmail.com>
-In-Reply-To: <20191118104646.3838-2-i.mikhaylov@yadro.com>
-References: <20191118104646.3838-1-i.mikhaylov@yadro.com>
- <20191118104646.3838-2-i.mikhaylov@yadro.com>
-Date:   Wed, 20 Nov 2019 16:39:25 +1030
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Ivan Mikhaylov" <i.mikhaylov@yadro.com>
-Cc:     "Joel Stanley" <joel@jms.id.au>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        "Adrian Hunter" <adrian.hunter@intel.com>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-mmc <linux-mmc@vger.kernel.org>, openbmc@lists.ozlabs.org
-Subject: Re: [PATCH v3 1/3] aspeed: dts: add sd card for vesnin
+        id S1726554AbfKTG2V (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Nov 2019 01:28:21 -0500
+Received: from a27-21.smtp-out.us-west-2.amazonses.com ([54.240.27.21]:51510
+        "EHLO a27-21.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725832AbfKTG2V (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Nov 2019 01:28:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574231300;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=2DbCZfizzX83H18NXUU+cijwVZjvJWmnkVQmn16iT30=;
+        b=nYUkb0LgkK8fvXpZQnMxqW2wWeXoqFcKRK5REzic3EW1pVAnA6ZsXUdTY+kaDc1M
+        XuSc0d44pEnSojbgih7kLtvpyBE9fpztgkAHfO2uD/KqRTqCdPtgYkyAitazjw3DtYJ
+        RmsZCOqUJhbZJCRgR7MunFAeuHWO28uh98dD8kkU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574231300;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=2DbCZfizzX83H18NXUU+cijwVZjvJWmnkVQmn16iT30=;
+        b=gp8ZAqM3o4Kr8pvf9dTYPAtuDDnWVXPaf7ZEEGSw5txP9/TnHPEhmSoHh40BpPvH
+        AdU4hu8VTTUHVfoCkIc5TSCWX1k1JsFV0PupB9E5VNnS1V/K/tbTa3Gcr7XbvNZHx9X
+        YJsKUkyrHi4D5mSz0ZPQOaIeV97naRj1mxyph7Ng=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 925BDC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Wen Gong <wgong@codeaurora.org>
+Cc:     Doug Anderson <dianders@chromium.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        ath10k@lists.infradead.org
+Subject: Re: [PATCH v2 3/3] mmc: core: Re-work HW reset for SDIO cards
+References: <20191109103046.26445-1-ulf.hansson@linaro.org>
+        <20191109103046.26445-4-ulf.hansson@linaro.org>
+        <CAD=FV=VHReD5qnvcQLHvfgKHnHLbfDLZHwXtY-LV5uy_VCYpPA@mail.gmail.com>
+        <CAPDyKFrCyJBz2=RzKPxqn0FSEq500=dEDsTUWYZeoFKWvSRAdA@mail.gmail.com>
+Date:   Wed, 20 Nov 2019 06:28:19 +0000
+In-Reply-To: <CAPDyKFrCyJBz2=RzKPxqn0FSEq500=dEDsTUWYZeoFKWvSRAdA@mail.gmail.com>
+        (Ulf Hansson's message of "Tue, 12 Nov 2019 13:19:55 +0100")
+Message-ID: <0101016e877f56ce-8c7f312f-49d9-47e5-8473-30657f87bdd2-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
 Content-Type: text/plain
+X-SES-Outgoing: 2019.11.20-54.240.27.21
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
++ wen, ath10k
 
+Ulf Hansson <ulf.hansson@linaro.org> writes:
 
-On Mon, 18 Nov 2019, at 21:16, Ivan Mikhaylov wrote:
-> Presence signal is inverted for vesnin boards, 'cd-inverted' added
-> for invertion signal enablement. Vesnin BMC uses microSD, there is
-> no WP switch, 'disable-wp' is used for this purpose.
-> 
-> Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
+> On Tue, 12 Nov 2019 at 01:33, Doug Anderson <dianders@chromium.org> wrote:
+>>
+>> Hi,
+>>
+>> On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>> >
+>> > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+>> > index 6f8342702c73..abf8f5eb0a1c 100644
+>> > --- a/drivers/mmc/core/core.c
+>> > +++ b/drivers/mmc/core/core.c
+>> > @@ -1469,8 +1469,7 @@ void mmc_detach_bus(struct mmc_host *host)
+>> >         mmc_bus_put(host);
+>> >  }
+>> >
+>> > -static void _mmc_detect_change(struct mmc_host *host, unsigned long delay,
+>> > -                               bool cd_irq)
+>> > +void _mmc_detect_change(struct mmc_host *host, unsigned long delay, bool cd_irq)
+>> >  {
+>> >         /*
+>> >          * If the device is configured as wakeup, we prevent a new sleep for
+>> > @@ -2129,7 +2128,7 @@ int mmc_hw_reset(struct mmc_host *host)
+>> >         ret = host->bus_ops->hw_reset(host);
+>> >         mmc_bus_put(host);
+>> >
+>> > -       if (ret)
+>> > +       if (ret < 0)
+>> >                 pr_warn("%s: tried to HW reset card, got error %d\n",
+>> >                         mmc_hostname(host), ret);
+>>
+>> Other callers besides marvell need to be updated?  In theory only SDIO
+>> should have positive return values so I guess we don't care about the
+>> caller in drivers/mmc/core/block.c, right?
+>
+> Correct, but maybe I should add some more information about that in a
+> function header of mmc_hw_reset(). Let me consider doing that as a
+> change on top.
+>
+>>  What about:
+>>
+>> drivers/net/wireless/ath/ath10k/sdio.c
+>>
+>> ...I guess I don't know if there is more than one function probed
+>> there.  Maybe there's not and thus we're fine here too?
+>
+> Well, honestly I don't know.
+>
+> In any case, that would mean the driver is broken anyways and needs to
+> be fixed. At least that's my approach to doing this change.
 
-Acked-by: Andrew Jeffery <andrew@aj.id.au>
+Wen, does QCA6174 or QCA9377 SDIO devices have other SDIO functions, for
+example bluetooth? I'm just wondering how should we handle this in
+ath10k.
+
+-- 
+Kalle Valo
