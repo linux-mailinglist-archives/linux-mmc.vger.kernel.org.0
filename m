@@ -2,138 +2,73 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 966BA103514
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Nov 2019 08:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA2ED10357D
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Nov 2019 08:46:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726380AbfKTHUG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Nov 2019 02:20:06 -0500
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:60012
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726163AbfKTHUG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Nov 2019 02:20:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574234405;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=REOd7Vs1wlMJlS39Ft1QjmPJxJV9TOjNK+aSCA7YT2U=;
-        b=kyoMN7CMWHXpRooOlrvspQoBC1/PAVBfM3/4bGLUrk0MDDiYdxQIvwe/FZtYZ5Rk
-        69iNmPDoCQGIyLrAmgMM0t0J4ocM8DXhLCPbDZTqiHZ+UEnWHFv4Wl7VRhvVz/zthJG
-        beR7EaZyHhm5/rYhKDJFOVeneGe9PEmsAeOfMj38=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574234405;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=REOd7Vs1wlMJlS39Ft1QjmPJxJV9TOjNK+aSCA7YT2U=;
-        b=SjiNrIYKazBxL0ZW1iEGczSebXm75gfj4MxnYpTLTWrLA67KzLQBVgS1x7+lujJy
-        /hGQtHW0zvpg5HgZLl/PK9cmj0dHxxhxJ4Ws94WNy1lNUEmqrp5cpyjtXKIym5OOjsL
-        ikjQUI0WFw3Y0rluiRrlBkwqep/Vr+FmIZqUfAxs=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7F622C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     wgong@codeaurora.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Doug Anderson <dianders@chromium.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] mmc: core: Re-work HW reset for SDIO cards
-References: <20191109103046.26445-1-ulf.hansson@linaro.org>
-        <20191109103046.26445-4-ulf.hansson@linaro.org>
-        <CAD=FV=VHReD5qnvcQLHvfgKHnHLbfDLZHwXtY-LV5uy_VCYpPA@mail.gmail.com>
-        <CAPDyKFrCyJBz2=RzKPxqn0FSEq500=dEDsTUWYZeoFKWvSRAdA@mail.gmail.com>
-        <87zhgr5af6.fsf@codeaurora.org>
-        <6e6b53b28581a8f1a2944ca0bc65311e@codeaurora.org>
-Date:   Wed, 20 Nov 2019 07:20:05 +0000
-In-Reply-To: <6e6b53b28581a8f1a2944ca0bc65311e@codeaurora.org>
-        (wgong@codeaurora.org's message of "Wed, 20 Nov 2019 15:10:13 +0800")
-Message-ID: <0101016e87aeb8bc-69ce520c-0611-4c7b-9988-465b993bde9f-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1727784AbfKTHp7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Nov 2019 02:45:59 -0500
+Received: from mga07.intel.com ([134.134.136.100]:21334 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727052AbfKTHp7 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 20 Nov 2019 02:45:59 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Nov 2019 23:45:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,221,1571727600"; 
+   d="scan'208";a="204745189"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.197]) ([10.237.72.197])
+  by fmsmga007.fm.intel.com with ESMTP; 19 Nov 2019 23:45:54 -0800
+Subject: Re: [PATCH v3 2/3] mmc: sdhci-of-aspeed: enable
+ CONFIG_MMC_SDHCI_IO_ACCESSORS
+To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
+Cc:     Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, openbmc@lists.ozlabs.org
+References: <20191118104646.3838-1-i.mikhaylov@yadro.com>
+ <20191118104646.3838-3-i.mikhaylov@yadro.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <e181d523-bc57-3eb4-cddc-92299e888f5f@intel.com>
+Date:   Wed, 20 Nov 2019 09:44:56 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2019.11.20-54.240.27.186
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+In-Reply-To: <20191118104646.3838-3-i.mikhaylov@yadro.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-wgong@codeaurora.org writes:
+On 18/11/19 12:46 PM, Ivan Mikhaylov wrote:
+> Enable CONFIG_MMC_SDHCI_IO_ACCESSORS on the aspeed board. The read_l
+> callback is used for inverted card detection.
+> 
+> Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
 
-> On 2019-11-20 14:28, Kalle Valo wrote:
->> + wen, ath10k
->>
->> Ulf Hansson <ulf.hansson@linaro.org> writes:
->>
->>> On Tue, 12 Nov 2019 at 01:33, Doug Anderson <dianders@chromium.org>
->>> wrote:
->>>>
->>>> Hi,
->>>>
->>>> On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson
->>>> <ulf.hansson@linaro.org> wrote:
->>>> >
->>>> > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
->>>> > index 6f8342702c73..abf8f5eb0a1c 100644
->>>> > --- a/drivers/mmc/core/core.c
->>>> > +++ b/drivers/mmc/core/core.c
->>>> > @@ -1469,8 +1469,7 @@ void mmc_detach_bus(struct mmc_host *host)
->>>> >         mmc_bus_put(host);
->>>> >  }
->>>> >
->>>> > -static void _mmc_detect_change(struct mmc_host *host, unsigned long delay,
->>>> > -                               bool cd_irq)
->>>> > +void _mmc_detect_change(struct mmc_host *host, unsigned long delay, bool cd_irq)
->>>> >  {
->>>> >         /*
->>>> >          * If the device is configured as wakeup, we prevent a new sleep for
->>>> > @@ -2129,7 +2128,7 @@ int mmc_hw_reset(struct mmc_host *host)
->>>> >         ret = host->bus_ops->hw_reset(host);
->>>> >         mmc_bus_put(host);
->>>> >
->>>> > -       if (ret)
->>>> > +       if (ret < 0)
->>>> >                 pr_warn("%s: tried to HW reset card, got error %d\n",
->>>> >                         mmc_hostname(host), ret);
->>>>
->>>> Other callers besides marvell need to be updated?  In theory only
->>>> SDIO
->>>> should have positive return values so I guess we don't care about the
->>>> caller in drivers/mmc/core/block.c, right?
->>>
->>> Correct, but maybe I should add some more information about that in a
->>> function header of mmc_hw_reset(). Let me consider doing that as a
->>> change on top.
->>>
->>>>  What about:
->>>>
->>>> drivers/net/wireless/ath/ath10k/sdio.c
->>>>
->>>> ...I guess I don't know if there is more than one function probed
->>>> there.  Maybe there's not and thus we're fine here too?
->>>
->>> Well, honestly I don't know.
->>>
->>> In any case, that would mean the driver is broken anyways and needs to
->>> be fixed. At least that's my approach to doing this change.
->>
->> Wen, does QCA6174 or QCA9377 SDIO devices have other SDIO functions,
->> for
->> example bluetooth? I'm just wondering how should we handle this in
->> ath10k.
->
-> it does not have other SDIO functions for QCA6174 or QCA9377.
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Thanks, then I don't think we need to change anything in ath10k.
+> 
+> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> index 49ea02c467bf..c9c1bb722368 100644
+> --- a/drivers/mmc/host/Kconfig
+> +++ b/drivers/mmc/host/Kconfig
+> @@ -159,6 +159,7 @@ config MMC_SDHCI_OF_ASPEED
+>  	tristate "SDHCI OF support for the ASPEED SDHCI controller"
+>  	depends on MMC_SDHCI_PLTFM
+>  	depends on OF && OF_ADDRESS
+> +	select MMC_SDHCI_IO_ACCESSORS
+>  	help
+>  	  This selects the ASPEED Secure Digital Host Controller Interface.
+>  
+> 
 
--- 
-Kalle Valo
