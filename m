@@ -2,100 +2,70 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACA97105A1D
-	for <lists+linux-mmc@lfdr.de>; Thu, 21 Nov 2019 20:01:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89C4A105A61
+	for <lists+linux-mmc@lfdr.de>; Thu, 21 Nov 2019 20:28:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726722AbfKUTB3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 21 Nov 2019 14:01:29 -0500
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:38152 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726546AbfKUTB3 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 Nov 2019 14:01:29 -0500
-Received: by mail-ed1-f66.google.com with SMTP id s10so3754379edi.5;
-        Thu, 21 Nov 2019 11:01:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WGlv9N7emzPPMkGFW2suWUAOKKS+im2D/mbhQrUjPOw=;
-        b=hw0tGGpydIclVWzvfKyqExS+ky3mFe5zVFYzo8L/vE9QIsquY7DLXT3bxgRHCc913E
-         QPYswTjKLbcK2rh16yudPur9Safmg77tW/A/pa8QnF37XhIQ5u2H6l5XQnrqZ0aSXohF
-         y6vPt6lysOVpBO2kR2FnrJoNlGusPUTt7c8MvEYo4Ow7Xs5zpbwdCctguSfnT+blVgEB
-         Q4i301/C0VgEKQcp8OXyj0B4DEMiIH+KW8S+llH6hOmRla4aO4RRVQjT1xyHulgZf1VE
-         +VPAp76Wx4D/VNMQcC/VxE3KHRvxo2QJLj9rf50nPHnZVipfoaeoJSPhd6ml6WK1/f/3
-         nZ8Q==
+        id S1726803AbfKUT2S (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 21 Nov 2019 14:28:18 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:33827 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726293AbfKUT2S (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 Nov 2019 14:28:18 -0500
+Received: by mail-ot1-f68.google.com with SMTP id w11so4035220ote.1;
+        Thu, 21 Nov 2019 11:28:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WGlv9N7emzPPMkGFW2suWUAOKKS+im2D/mbhQrUjPOw=;
-        b=geFjy27muvt1MM06Qe8Pm0+7EIjbkjcgAY3n8YcKQkKrVV67OdF5EeHB1JhrgigUjU
-         7L+9duCpy1YYkV8Iy+5AvUi+1KhF+LHR4j3KpDnkgNYPIMRfwFrdpmhksBmOGMLtrudw
-         24yfbuZ/KCIfbEmYZvs5EUQo4GPmUQJlcrRqiuk3ka+UHu57EDUYSEeNQwjHoVuzRRwc
-         /+/MFI6RbHZ+VSHeJfGfj/8r+27iPpo1SbVkrHIIJ2G1xj91mqt/9f9ZlUq+Qm8HRJtr
-         s87sQneT52NZy40ecmTs0DkEl8ZWc2q9GLOaKEHYYLtQN0tH+/Gh977LGxHJrQWp/1XQ
-         8ACQ==
-X-Gm-Message-State: APjAAAWwTnSo7PqxS1SMTMD8DMlYFf41ToHJ9ICqf8ElvKSk0OPmEubn
-        nd2qvgr5wU/tAGgOByZCZeY+7B+lx38dcjzr+7fkAoFI
-X-Google-Smtp-Source: APXvYqw7XM4/ilKVdiKymLyfmxi48lasfzIxyiJ681Tf/Q+giqd2n8es7XgsJNBR5MISNx52NIpdSQew5FnTSv5teuU=
-X-Received: by 2002:a17:906:11cf:: with SMTP id o15mr16093149eja.208.1574362887584;
- Thu, 21 Nov 2019 11:01:27 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=CHTfKDAdZLhL1Zm6CO6s2kP8nxK/JV3N7UW7tF4nQP4=;
+        b=WrwjpA9U7OiemGH4eYKo8N7n3uHifrrmMCswleR0zyUb1hO93Y35no4bTkFuGFXa39
+         7uvEl/kSbAxzv/L9ak9m4uWfXyxPxDxpw7H+iDcZlX1+jQhJlCoF22la9gFOev373W9n
+         TyljE5D1gfQbw9smY0ahOs81RUG/t4w5AbRCNMNGsN8oLszhIHy/KKuaE8Y6nIV+JNZp
+         Cemzhngv7BLmRY1bGMZzutENOUYD5NZK71tvlBV3OhUms7sv8sHwowDKDzeCFgh7MjoE
+         KSEIp/U8cNOqqzoKOL+TfLVGzcToTNut2vP7FlPswLtJjEuQiC5Vq/KreuFs98T9KqA0
+         rUhA==
+X-Gm-Message-State: APjAAAVqq50mRGKpKYAVrd+89LrYIADWAnHMm/2nTwZWeMLQHsG7yVD5
+        W+bZ7V6nHkKEv43rzUH5kQ==
+X-Google-Smtp-Source: APXvYqwSY+m1VVKP1lJWWFMDzjmXAD1VirqNMJL368kLdu7zD5Tqa73Qd9dLlvlXyGQDu+Uma4tvig==
+X-Received: by 2002:a9d:365:: with SMTP id 92mr8439326otv.9.1574364497464;
+        Thu, 21 Nov 2019 11:28:17 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id u204sm1219085oig.35.2019.11.21.11.28.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Nov 2019 11:28:16 -0800 (PST)
+Date:   Thu, 21 Nov 2019 13:28:16 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-mmc@vger.kernel.org, ulf.hansson@linaro.org,
+        jianxin.pan@amlogic.com, mark.rutland@arm.com,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        lnykww@gmail.com, yinxin_1989@aliyun.com
+Subject: Re: [PATCH v2 1/2] dt-bindings: mmc: Document the Amlogic Meson SDHC
+ MMC host controller
+Message-ID: <20191121192816.GA7377@bogus>
+References: <20191117142716.154764-1-martin.blumenstingl@googlemail.com>
+ <20191117142716.154764-2-martin.blumenstingl@googlemail.com>
 MIME-Version: 1.0
-References: <1574232449-13570-1-git-send-email-manish.narani@xilinx.com> <1574232449-13570-5-git-send-email-manish.narani@xilinx.com>
-In-Reply-To: <1574232449-13570-5-git-send-email-manish.narani@xilinx.com>
-From:   Rob Herring <rob.e.herring@gmail.com>
-Date:   Thu, 21 Nov 2019 13:01:16 -0600
-Message-ID: <CAC=3edbHWA7gv-mTFVXXcMzN6hyzO4LPqkbcRZ-zDp5BAm8_Vw@mail.gmail.com>
-Subject: Re: [PATCH v6 4/8] dt-bindings: mmc: Add optional generic properties
- for mmc
-To:     Manish Narani <manish.narani@xilinx.com>
-Cc:     ulf.hansson@linaro.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, adrian.hunter@intel.com,
-        michal.simek@xilinx.com, jolly.shah@xilinx.com,
-        rajan.vaja@xilinx.com, nava.manne@xilinx.com, mdf@kernel.org,
-        linux-mmc@vger.kernel.org, devicetree <devicetree@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        git@xilinx.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191117142716.154764-2-martin.blumenstingl@googlemail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Nov 20, 2019 at 12:49 AM Manish Narani <manish.narani@xilinx.com> wrote:
->
-> Add optional properties for mmc hosts which are used to set clk delays
-> for different speed modes in the controller.
->
-> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+On Sun, Nov 17, 2019 at 03:27:15PM +0100, Martin Blumenstingl wrote:
+> This documents the devicetree bindings for the SDHC MMC host controller
+> found in Meson6, Meson8, Meson8b and Meson8m2 SoCs. It can use a
+> bus-width of 1/4/8-bit and it supports eMMC spec 4.4x/4.5x including
+> HS200 mode (up to 100MHz clock).
+> 
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 > ---
->  .../devicetree/bindings/mmc/mmc-controller.yaml     | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-> index 080754e0ef35..305b2016bc17 100644
-> --- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-> @@ -333,6 +333,18 @@ patternProperties:
->      required:
->        - reg
->
-> +  "^clk-phase-(legacy|sd-hs|mmc-(hs|hs[24]00|ddr52)|uhs-(sdr(12|25|50|104)|ddr50))$":
-> +    minItems: 2
-> +    maxItems: 2
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +        maximum: 359
+>  .../bindings/mmc/amlogic,meson-mx-sdhc.yaml   | 64 +++++++++++++++++++
+>  1 file changed, 64 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mmc/amlogic,meson-mx-sdhc.yaml
 
-This is wrong. It can't be both minItems of 2 and a single uint32.
-What's needed is:
-
-allOf:
-  - $ref: /schemas/types.yaml#/definitions/uint32-array
-minItems: 2
-maxItems: 2
-items:
-  minimum: 0
-  maximum: 359
+Reviewed-by: Rob Herring <robh@kernel.org>
