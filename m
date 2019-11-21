@@ -2,103 +2,100 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8C67105185
-	for <lists+linux-mmc@lfdr.de>; Thu, 21 Nov 2019 12:36:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACA97105A1D
+	for <lists+linux-mmc@lfdr.de>; Thu, 21 Nov 2019 20:01:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726342AbfKULg7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 21 Nov 2019 06:36:59 -0500
-Received: from mga11.intel.com ([192.55.52.93]:19445 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726170AbfKULg6 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 21 Nov 2019 06:36:58 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Nov 2019 03:36:58 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,224,1571727600"; 
-   d="scan'208";a="205123654"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.197]) ([10.237.72.197])
-  by fmsmga007.fm.intel.com with ESMTP; 21 Nov 2019 03:36:57 -0800
-Subject: Re: [PATCH] mmc: sdhci: fix up CMD12 sending
-To:     "Y.b. Lu" <yangbo.lu@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-References: <20191114111814.35199-1-yangbo.lu@nxp.com>
- <CAPDyKFo16PZHd-0vAvBg6FCbGvrgsarPe5h=EcR3rCtRi27SWA@mail.gmail.com>
- <VI1PR0401MB22374449D6FEC683E08BDF99F84E0@VI1PR0401MB2237.eurprd04.prod.outlook.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <9e692f0b-6bac-6be8-bc82-5d47930dd4e2@intel.com>
-Date:   Thu, 21 Nov 2019 13:35:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726722AbfKUTB3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 21 Nov 2019 14:01:29 -0500
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:38152 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726546AbfKUTB3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 Nov 2019 14:01:29 -0500
+Received: by mail-ed1-f66.google.com with SMTP id s10so3754379edi.5;
+        Thu, 21 Nov 2019 11:01:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WGlv9N7emzPPMkGFW2suWUAOKKS+im2D/mbhQrUjPOw=;
+        b=hw0tGGpydIclVWzvfKyqExS+ky3mFe5zVFYzo8L/vE9QIsquY7DLXT3bxgRHCc913E
+         QPYswTjKLbcK2rh16yudPur9Safmg77tW/A/pa8QnF37XhIQ5u2H6l5XQnrqZ0aSXohF
+         y6vPt6lysOVpBO2kR2FnrJoNlGusPUTt7c8MvEYo4Ow7Xs5zpbwdCctguSfnT+blVgEB
+         Q4i301/C0VgEKQcp8OXyj0B4DEMiIH+KW8S+llH6hOmRla4aO4RRVQjT1xyHulgZf1VE
+         +VPAp76Wx4D/VNMQcC/VxE3KHRvxo2QJLj9rf50nPHnZVipfoaeoJSPhd6ml6WK1/f/3
+         nZ8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WGlv9N7emzPPMkGFW2suWUAOKKS+im2D/mbhQrUjPOw=;
+        b=geFjy27muvt1MM06Qe8Pm0+7EIjbkjcgAY3n8YcKQkKrVV67OdF5EeHB1JhrgigUjU
+         7L+9duCpy1YYkV8Iy+5AvUi+1KhF+LHR4j3KpDnkgNYPIMRfwFrdpmhksBmOGMLtrudw
+         24yfbuZ/KCIfbEmYZvs5EUQo4GPmUQJlcrRqiuk3ka+UHu57EDUYSEeNQwjHoVuzRRwc
+         /+/MFI6RbHZ+VSHeJfGfj/8r+27iPpo1SbVkrHIIJ2G1xj91mqt/9f9ZlUq+Qm8HRJtr
+         s87sQneT52NZy40ecmTs0DkEl8ZWc2q9GLOaKEHYYLtQN0tH+/Gh977LGxHJrQWp/1XQ
+         8ACQ==
+X-Gm-Message-State: APjAAAWwTnSo7PqxS1SMTMD8DMlYFf41ToHJ9ICqf8ElvKSk0OPmEubn
+        nd2qvgr5wU/tAGgOByZCZeY+7B+lx38dcjzr+7fkAoFI
+X-Google-Smtp-Source: APXvYqw7XM4/ilKVdiKymLyfmxi48lasfzIxyiJ681Tf/Q+giqd2n8es7XgsJNBR5MISNx52NIpdSQew5FnTSv5teuU=
+X-Received: by 2002:a17:906:11cf:: with SMTP id o15mr16093149eja.208.1574362887584;
+ Thu, 21 Nov 2019 11:01:27 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <VI1PR0401MB22374449D6FEC683E08BDF99F84E0@VI1PR0401MB2237.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1574232449-13570-1-git-send-email-manish.narani@xilinx.com> <1574232449-13570-5-git-send-email-manish.narani@xilinx.com>
+In-Reply-To: <1574232449-13570-5-git-send-email-manish.narani@xilinx.com>
+From:   Rob Herring <rob.e.herring@gmail.com>
+Date:   Thu, 21 Nov 2019 13:01:16 -0600
+Message-ID: <CAC=3edbHWA7gv-mTFVXXcMzN6hyzO4LPqkbcRZ-zDp5BAm8_Vw@mail.gmail.com>
+Subject: Re: [PATCH v6 4/8] dt-bindings: mmc: Add optional generic properties
+ for mmc
+To:     Manish Narani <manish.narani@xilinx.com>
+Cc:     ulf.hansson@linaro.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, adrian.hunter@intel.com,
+        michal.simek@xilinx.com, jolly.shah@xilinx.com,
+        rajan.vaja@xilinx.com, nava.manne@xilinx.com, mdf@kernel.org,
+        linux-mmc@vger.kernel.org, devicetree <devicetree@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        git@xilinx.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 21/11/19 4:21 AM, Y.b. Lu wrote:
-> Hi, 
-> 
->> -----Original Message-----
->> From: Ulf Hansson <ulf.hansson@linaro.org>
->> Sent: Thursday, November 14, 2019 9:54 PM
->> To: Y.b. Lu <yangbo.lu@nxp.com>
->> Cc: linux-mmc@vger.kernel.org; Adrian Hunter <adrian.hunter@intel.com>
->> Subject: Re: [PATCH] mmc: sdhci: fix up CMD12 sending
->>
->> On Thu, 14 Nov 2019 at 12:18, Yangbo Lu <yangbo.lu@nxp.com> wrote:
->>>
->>> The STOP command is disabled for multiple blocks r/w commands with
->>> auto CMD12, when start to send. However, if there is data error,
->>> software still needs to send CMD12 according to SD spec.
->>> This patch is to allow software CMD12 sending for this case.
->>>
->>> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
->>> ---
->>>  drivers/mmc/host/sdhci.c | 17 +++--------------
->>>  1 file changed, 3 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c index
->>> 09cdbe8..3041c39 100644
->>> --- a/drivers/mmc/host/sdhci.c
->>> +++ b/drivers/mmc/host/sdhci.c
->>> @@ -1326,12 +1326,12 @@ static void sdhci_finish_data(struct
->>> sdhci_host *host)
->>>
->>>         /*
->>>          * Need to send CMD12 if -
->>> -        * a) open-ended multiblock transfer (no CMD23)
->>> +        * a) open-ended multiblock transfer not using auto CMD12 (no
->>> + CMD23)
->>>          * b) error in multiblock transfer
->>>          */
->>>         if (data->stop &&
->>> -           (data->error ||
->>> -            !data->mrq->sbc)) {
->>> +           ((!data->mrq->sbc && !sdhci_auto_cmd12(host, data->mrq)) ||
->>> +            data->error)) {
->>
->> Per your other reply to this thread, I don't think there is any harm in always
->> sending a CMD12 if there is an error, at least from the card's point of view.
->>
->> The worst thing that can happen is that there are two CMD12 sent to the card
->> and I don't think that is a problem for the error path.
->>
->> My only concern, is to understand if $subject patch causes other changes in
->> behaviours for the SDHCI driver. Let's see what Adrian thinks.
-> 
-> [Y.b. Lu] Yes. The purpose is to avoid no CMD12 sent if get data error. That will makes block driver failed at block r/w recovery when sending CMD13 to get status.
-> Our platform on some boards at old kernel 4.14 seems to hit this case.
-> 
-> Hi Adrian,
-> Could you help to review the changes?
+On Wed, Nov 20, 2019 at 12:49 AM Manish Narani <manish.narani@xilinx.com> wrote:
+>
+> Add optional properties for mmc hosts which are used to set clk delays
+> for different speed modes in the controller.
+>
+> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+> ---
+>  .../devicetree/bindings/mmc/mmc-controller.yaml     | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+> index 080754e0ef35..305b2016bc17 100644
+> --- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+> @@ -333,6 +333,18 @@ patternProperties:
+>      required:
+>        - reg
+>
+> +  "^clk-phase-(legacy|sd-hs|mmc-(hs|hs[24]00|ddr52)|uhs-(sdr(12|25|50|104)|ddr50))$":
+> +    minItems: 2
+> +    maxItems: 2
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> +      - minimum: 0
+> +        maximum: 359
 
-I don't think the auto-cmd12 error handling was ever done properly, so it
-will take we a while to review it.
+This is wrong. It can't be both minItems of 2 and a single uint32.
+What's needed is:
+
+allOf:
+  - $ref: /schemas/types.yaml#/definitions/uint32-array
+minItems: 2
+maxItems: 2
+items:
+  minimum: 0
+  maximum: 359
