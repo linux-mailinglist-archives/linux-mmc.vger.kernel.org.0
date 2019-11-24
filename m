@@ -2,116 +2,108 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 692E410739F
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Nov 2019 14:50:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3549E108185
+	for <lists+linux-mmc@lfdr.de>; Sun, 24 Nov 2019 04:20:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727166AbfKVNuC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 22 Nov 2019 08:50:02 -0500
-Received: from mout.kundenserver.de ([212.227.17.10]:35309 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726961AbfKVNuC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 Nov 2019 08:50:02 -0500
-Received: from mail-qk1-f171.google.com ([209.85.222.171]) by
- mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1N95mL-1hjb390sfn-016Bs7; Fri, 22 Nov 2019 14:50:00 +0100
-Received: by mail-qk1-f171.google.com with SMTP id e2so6302682qkn.5;
-        Fri, 22 Nov 2019 05:49:59 -0800 (PST)
-X-Gm-Message-State: APjAAAW3bKjJ0TVudyGpz+iEAw6aPURBBsMdthaSU7pSDRy1+nYcYm3E
-        UUKyPnYYHCUoUPuOSEOOxtOlEFKLHoxBusuD5P0=
-X-Google-Smtp-Source: APXvYqxg3ILrHYVaxe+mUN7l+DKLHBgh2CYz7q6KL/X1TBQ2KSTbaCNeIK7dnSWX71Vt/Go7Beuq9hcatumuaCjpLR8=
-X-Received: by 2002:a37:a757:: with SMTP id q84mr2719071qke.394.1574430598876;
- Fri, 22 Nov 2019 05:49:58 -0800 (PST)
+        id S1726705AbfKXDUu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 23 Nov 2019 22:20:50 -0500
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:38903 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726676AbfKXDUu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 23 Nov 2019 22:20:50 -0500
+Received: by mail-ed1-f65.google.com with SMTP id s10so9441126edi.5;
+        Sat, 23 Nov 2019 19:20:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DswDOcFLyZVT9xwF1vsGxZkcCPuWKeyXIg9og7dtlf8=;
+        b=piZgvaJNNJQkFNPD1naXDJPog8oAuiZWrOQxtD1YTv+pcKCBikgoGCMpeqILfe0Gcl
+         rdHxFgCLIY5QG00zAvQ7v5br8WNxct8b8wGKtBExOc9zhmTDuOUyzoKlNOl4kVZbAPBS
+         +3FLkTXVjOI4CAUhp6orJFeregApqmjoRg4Y7jmCfUZbe1YoDrKKA03D4Tb3hPTjbOhd
+         6IkCz89DN/hff2OSqbvRF4URhnC4WaBp5F1nowZVwizhY8Ug0a3NwHajxkJG9o+BHvf2
+         xE8FHM3JhkgfTHmVEYDt8VDwZYsG/0NiTKMQAK3wQ/OIa/7yVWbi5eZ5KefpJxYRPkBU
+         zQ7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DswDOcFLyZVT9xwF1vsGxZkcCPuWKeyXIg9og7dtlf8=;
+        b=aeYLXGZwLUt1tIQUZyz/xu+s0W0QXIxSN93aOzsoqOST/r4K4pn35lbBZ3pEajUirr
+         q6lUoJ1djy7yhM+KdjG3M336/bhAPPWKlNxNOEhqv8RQj/0Dv/Ubtz5jExGvk3zgVGBB
+         zsdt/KflSB4w+Hz0KraUkTiXEReRhG7n6RfW89ILka5mGej8197RXUn1JrPrzt5Y5TP/
+         OYzyY7G+S6I/1CYjSKkBC9qHlUtU5jiofgq5Rd0YqTxiOsa2/OpFrZD454PiR1UHGyLK
+         hoD8Hws2UuEXmPqov+/Z8wQB3ceNlM+UnaTbBQzYJFdh7UUgV4GR7nu8FL5P2LDpc3xU
+         Lyhg==
+X-Gm-Message-State: APjAAAX7IMqPtX7A2IefNFkrG9Mx2wpE4GodLPP3pY1q6yQEFeQIN8JF
+        zm0CeShpHrRfxUz1mq6HOXg4soK6MvrBm6+gIM44H1X54pI=
+X-Google-Smtp-Source: APXvYqxLkOueyCCVMHm0DePIqYpYXzySy3uuoEYtr96WqVqLGFs7hNFPXn3gVAe9suXLaj7G7+0vxP2j2+7SjATIM4o=
+X-Received: by 2002:a17:906:aad0:: with SMTP id kt16mr5218127ejb.223.1574565648659;
+ Sat, 23 Nov 2019 19:20:48 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1573456283.git.baolin.wang@linaro.org> <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
- <CAMz4kuK9HEuGdhNqHO_qoy9jD=ccsPPhD_dKYwNRgQyWyYwqRA@mail.gmail.com>
- <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
- <CADBw62pzV+5ZXBEbFvTQJ9essAd4cd7Xkz5j9AXB5rAQy0wLqA@mail.gmail.com>
- <CAMz4kuK_3q4JY1vNXe6zGHDNF8Ep-SkcUq6Z25r790VSz4+Bjw@mail.gmail.com>
- <CAK8P3a11vJb1riYseqPnF_5SuJA+YnYuGwC0XWx6_rk+eQ0Bmw@mail.gmail.com> <CACRpkdbzN8_YFT0Di88Oi1j+TTMT-VJLSbv6J8jxP+AsA3j1Dg@mail.gmail.com>
-In-Reply-To: <CACRpkdbzN8_YFT0Di88Oi1j+TTMT-VJLSbv6J8jxP+AsA3j1Dg@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 22 Nov 2019 14:49:42 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a16tv3V78rSb306wCb1H2OF_nkkk1ZO5HAwjrkEGHUScg@mail.gmail.com>
-Message-ID: <CAK8P3a16tv3V78rSb306wCb1H2OF_nkkk1ZO5HAwjrkEGHUScg@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] Add MMC software queue support
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     "(Exiting) Baolin Wang" <baolin.wang@linaro.org>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+References: <20191018131338.11713-1-hslester96@gmail.com> <CAPDyKFoBYchP96hv=7XfTo8CrCSD+KC0h_oFRAsOYT-Lc1SFZQ@mail.gmail.com>
+ <20191023153313.GB5153@kunai> <CAPDyKFo9wYwhdy-1BDcRMJKTjADappsT-gBaKZE7hTLE4obxiA@mail.gmail.com>
+ <20191031221211.GA3853@kunai> <CAMuHMdXSKU40E8Br0Z53H2FyrQsLxnB-EERZoN6HQHExP5tqxQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdXSKU40E8Br0Z53H2FyrQsLxnB-EERZoN6HQHExP5tqxQ@mail.gmail.com>
+From:   Chuhong Yuan <hslester96@gmail.com>
+Date:   Sun, 24 Nov 2019 11:20:38 +0800
+Message-ID: <CANhBUQ3CsPbPWrs=NUZoFAv6g_ckuEV9sxy0Z_DTiPRJaXi+7g@mail.gmail.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi: add checks for pinctrl_lookup_state
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Asutosh Das <asutoshd@codeaurora.org>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Lyra Zhang <zhang.lyra@gmail.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Hannes Reinecke <hare@suse.com>,
-        linux-block <linux-block@vger.kernel.org>,
-        Paolo Valente <paolo.valente@linaro.org>
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:Tv7D5aPF3m7gli8X46lkL3LrjJZjc7FOoo/MW+i+WEq3WHXS7gw
- d2JfKApVJOlgSnPVjzxHSPE8wyfv8EQqgaqDJWQbUSpwvhWsOMuqbgcFrJ4eDzNGC3PEeFb
- v0QlQZh1Kldpt45q8Msh5zaj2mj/n2uU9Q1wYkMWV0thjRiJVyZ1TTQ0ZTFfL7MfW+UrZeS
- JJyNxB5uQRTyDF8RnJ1aw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:83zYc4a3aw4=:3lhuH7Pw1iw6jl6Sh5zbwM
- WD8ZqoDYUarhccL4mAliVJ/tT4Za00JURObyvWf7NQmTbqI3l0YEn8hK+yVj5m8k5o1hubBtg
- FPP21v/MkzHwiePRnrs/rMf+vuTeJbDkXHBj0Ilbfefvw1Z6t17k8BzT5RP2HaVUsueUv2qqY
- Qzrxw0B8NvxT2seO/2N2EiLQeaXraFLWQdjHS3GtKMrFJW7U1vv8t0XruwB7X8SYc5LErxZPy
- bHkQHdLRfcO7k/6TBobXrVDqfrgP2c3QFQVmmmU6+geIV1Cmq9TbTjw3m3Izj4qD7pYgoFxBc
- DaL114aInsX4Vf2Au1qEG3BFgRJ3V/lWc3HcDfh+SiePsEWUMZOUb+yeDPs6EaN8Qgefuvvja
- XRZVWR31B308P/BisZ2NQEjHQfm27w8SLhzFuaBuYN3OAso7420x3x0AQFZRsn9WdUiMzrkvh
- 0DzAtmzIUXnb267VgU4O+03ydEMMVrsgM8n3/eEOmeMvDx3nlOb9UMYrxAI+CLEileppzxnJS
- VC5usciyspCcSdb2gh40vHrhxpCr+y7Jf6Zg+E3CtqAB/iyb65NXd5O3N5a8VJ0RUvHJXidtM
- C84UzidPE3eNRNviIngI0em1aPR4LLVNyPYrs+SRT+6N9o4Fs7UpoOMwX3AzMtc9SDDWWl8oL
- grM0PgH5Sr6dhXQHqL6G43zgvF4cm8Net97ElsS4RGiCI0y2qp0kQqRLyVT1+L0wOfD7+26Ge
- nsw5DZpczMxZVVUePd6QolpAfJts4xU7Mgfesyv1FC60stQG4nrok7589d5u23nTV2pJwo8FT
- q7Vpewu5gpI0dqHCsjDqGIa/dv9DlriRLO0W0OM6hTXNQhEo4WwLcDOaxWRS4m3Td5MXxt+zd
- XYae+FvmBu3VMDCzQTpg==
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Nov 22, 2019 at 2:20 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+On Thu, Nov 7, 2019 at 4:30 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 >
-> On Fri, Nov 22, 2019 at 10:50 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> Hi Wolfram,
 >
-> > I suppose to make the submission non-blocking, all operations that
-> > currently block in the submission path may have to be changed first.
+> On Thu, Oct 31, 2019 at 11:58 PM Wolfram Sang <wsa@the-dreams.de> wrote:
+> > > > Well, I don't like to bail out because this error is not fatal for basic
+> > > > operations. How about releasing priv->pinctrl again with an additional
+> > > > warning that pinctrl settings are broken and will prevent 1.8v modes?
+> > > >
+> > > > Opinions?
+> > >
+> > > Hmm, from a mmc driver probe point of view, I don't quite share this approach.
+> > >
+> > > I would rather fail as it forces the DTB to be corrected immediately,
+> > > rather than trusting some developer to look at a warning in a log. The
+> > > point is, in such a case it may never get fixed, if the product is
+> > > shipped with the wrong DTB.
 > >
-> > For the case of a partition switch (same for retune), I suppose
-> > something like this can be done:
-> >
-> > - in queue_rq() check whether a partition switch is needed. If not,
-> >   submit the current rq
-> > - if a partition switch is needed, submit the partition switch cmd
-> >   instead, and return busy status
-> > - when the completion arrives for the partition switch, call back into
-> >   blk_mq to have it call queue_rq again.
-> >
-> > Or possibly even (this might not be possible without signifcant
-> > restructuring):
-> >
-> > - when preparing a request that would require a partition switch,
-> >   insert another meta-request to switch the partition ahead of it.
-> >
-> > I do realize that this is a significant departure from how it was done
-> > in the past, but it seems cleaner that way to me.
+> > I could agree to this arguement, iff the only way pinctrl_select fails
+> > is a DT misconfiguration. I am not sure if this is true right now, and
+> > we can't be sure about the future. Or?
 >
-> This partition business really need a proper overhaul.
+> Isn't "state_uhs" optional? So bailing out if it doesn't exist is wrong.
+> "default" should be there, if the device node has pinctrl properties.
 >
-> I outlined the work elsewhere but the problem is that the
-> eMMC "partitions" such as boot partitions and the usecase-defined
-> "general" partition (notice SD cards do not have this problem)
-> are badly integrated with the Linux partition manager.
+> renesas_sdhi_start_signal_voltage_switch() already handles fallback
+> to 3v3 operation.
+>
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
 
-I think that's a totally orthogonal problem though: we may
-well be able to come up with a different way of representing
-the extra partitions to user space or as separate block devices,
-but in the end, this looks exactly the same to mm
- ->queue_rq() callback. If we have send a cmd to one partition
-and want to send the next cmd to another partition, we first
-have to send the partition switch cmd.
+Just ping this thread.
+I am not clear about what is the conclusion of how to deal with the error?
+Should I resend a new version of the patch?
 
-      Arnd
+Regards,
+Chuhong
+
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
