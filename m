@@ -2,279 +2,150 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E68C108B94
-	for <lists+linux-mmc@lfdr.de>; Mon, 25 Nov 2019 11:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D21D108C5C
+	for <lists+linux-mmc@lfdr.de>; Mon, 25 Nov 2019 11:57:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727367AbfKYKYh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 25 Nov 2019 05:24:37 -0500
-Received: from esa6.microchip.iphmx.com ([216.71.154.253]:23384 "EHLO
-        esa6.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725828AbfKYKYh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 25 Nov 2019 05:24:37 -0500
-Received-SPF: Pass (esa6.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa6.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com -exists:%{i}.spf.microchip.iphmx.com
-  include:servers.mcsv.net include:mktomail.com
-  include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa6.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa6.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa6.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: 9WZjFYDuuuaK/eNGnTNB5mDz/ZTnKSiyPGKejqZNaswo3vvjMh4/kKc9PBVoXqCb1KF37wOtRj
- ApXTRXVUDDJ0PQxJdU/oNYChL1u/VdJQhuVa/a2xYk8Y3Ax7NikTBpmbANMRPL2n/d0SaGCsrh
- aeyM4wM9vARBA4o5yWHLh8FPA7e14i1WPP2W+gJINwge9agTYXpVFu2ux29MoHMZVFbeIwEweN
- cGq4nVlfSqhENpJ3GuN2DFmr4G0FxGBD24KKf2it8C29qnyZN0jkPGLdzPnFbfZrYC+AGDfOuQ
- Lrw=
-X-IronPort-AV: E=Sophos;i="5.69,241,1571727600"; 
-   d="scan'208";a="55524063"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 25 Nov 2019 03:24:35 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 25 Nov 2019 03:24:34 -0700
-Received: from M43218.microchip.com (10.10.85.251) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.1713.5 via Frontend Transport; Mon, 25 Nov 2019 03:24:31 -0700
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>
-CC:     <ulf.hansson@linaro.org>, <nicolas.ferre@microchip.com>,
-        <adrian.hunter@intel.com>, <linux-kernel@vger.kernel.org>,
-        <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <claudiu.beznea@microchip.com>, <Eugen.Hristev@microchip.com>,
-        <alexandre.belloni@bootlin.com>,
-        "Ludovic Desroches" <ludovic.desroches@microchip.com>
-Subject: [PATCH v4 2/3] mmc: sdhci-of-at91: rework clocks management to support SAM9x60 device
-Date:   Mon, 25 Nov 2019 11:24:15 +0100
-Message-ID: <20191125102415.11341-1-ludovic.desroches@microchip.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <1351fc1a-3d07-4a56-2622-07ea92727c4f@intel.com>
-References: <1351fc1a-3d07-4a56-2622-07ea92727c4f@intel.com>
+        id S1727395AbfKYK5J (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 25 Nov 2019 05:57:09 -0500
+Received: from mail-eopbgr40077.outbound.protection.outlook.com ([40.107.4.77]:41567
+        "EHLO EUR03-DB5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727278AbfKYK5J (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 25 Nov 2019 05:57:09 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OyFQOxYV3aCz9nEtfo4iWUc2jY+n9L3HfzHy3g37cVnZbcce80hu4+9mB8xgspIiV6R4M4hENjqRk4CxibrhhDGFm0pfv/E1a3pg1ZzwWJfBaxmK1Rn98RqOXW3XWxWSRQnb60YpD1VexUzOM8ErhtBB2xjxGlH9/3LkXTzk9PDZgdMq/NtHU05zJz3RinGp8YqWe+EmHg2waws7VjI/bH/UtDD6aN8z0S+dQfBzs3qvm08vMLf1gTFDcpZ/I07K8rAICqvupYz9WoDKM1D9NWOm38JRJmJ2cGNUR1/Ta2YrCIIHVyzkTjT3TdhWptMev7anvBq62QIx/3gnElrQrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gkMRRQoNySwIj9SmllfkCytE3eGDAyWsz5tV8TdqSrE=;
+ b=bQo2tmbE/6cbIBLY1rQldci6KdR+nZWJyEb2D92J+qRrz/K+coPKnvdQh4WMQUa7nh0ieLc4oqiX2BC38if4K2ODylaZ/tp/+vp2PinwPNZCejKNFGk5Tpf/GQemglghEdbhub36YhL4agus6uYJRl08+SgWorUrY8V4XoL6ZEMU+kGYScI029kz+guwJTrsUERpiPIs9qPlW2RVvBAxoDxrITTVha6hkug7OaBwJGSyQgiOfaPLOBiKPF+oWHUqOtLWzpC7SECAeZ244XkiX9F8coHh4aV77YIOR2sBK//74U+AxC1gRp6LaSCXigEL4B6wIzdfgrVgiIgnhJq7+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gkMRRQoNySwIj9SmllfkCytE3eGDAyWsz5tV8TdqSrE=;
+ b=Z+MuTU8KUQeRrrKL8elMC7XaFOZ9E5tfJxd5g0QsvPdSnrLjUEE3SCCngC7/BCJuCgNTvg+wdOgpzTst0IqYmSiVOsnE4VfxPphjAo6M+eTiet04mmpg5mZ96MAhrky1KCDfGZK9clXcpOipdxCQ/XqzT7eg2m9q+wSAgJFo82c=
+Received: from VI1PR0401MB2237.eurprd04.prod.outlook.com (10.169.132.138) by
+ VI1PR0401MB2637.eurprd04.prod.outlook.com (10.168.61.7) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2474.17; Mon, 25 Nov 2019 10:57:03 +0000
+Received: from VI1PR0401MB2237.eurprd04.prod.outlook.com
+ ([fe80::2d81:2d60:747c:d0ad]) by VI1PR0401MB2237.eurprd04.prod.outlook.com
+ ([fe80::2d81:2d60:747c:d0ad%3]) with mapi id 15.20.2474.023; Mon, 25 Nov 2019
+ 10:57:03 +0000
+From:   "Y.b. Lu" <yangbo.lu@nxp.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Subject: RE: [PATCH] mmc: sdhci: fix up CMD12 sending
+Thread-Topic: [PATCH] mmc: sdhci: fix up CMD12 sending
+Thread-Index: AQHVmt010K5vWAAIEUqaLh2zVaVaTaeKsE+AgAo8BHCAAJ2iAIAGOBow
+Date:   Mon, 25 Nov 2019 10:57:03 +0000
+Message-ID: <VI1PR0401MB223777071D4FDC6657B3A7FBF84A0@VI1PR0401MB2237.eurprd04.prod.outlook.com>
+References: <20191114111814.35199-1-yangbo.lu@nxp.com>
+ <CAPDyKFo16PZHd-0vAvBg6FCbGvrgsarPe5h=EcR3rCtRi27SWA@mail.gmail.com>
+ <VI1PR0401MB22374449D6FEC683E08BDF99F84E0@VI1PR0401MB2237.eurprd04.prod.outlook.com>
+ <9e692f0b-6bac-6be8-bc82-5d47930dd4e2@intel.com>
+In-Reply-To: <9e692f0b-6bac-6be8-bc82-5d47930dd4e2@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=yangbo.lu@nxp.com; 
+x-originating-ip: [92.121.36.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 8c139847-7114-4bc5-e119-08d77196348d
+x-ms-traffictypediagnostic: VI1PR0401MB2637:
+x-microsoft-antispam-prvs: <VI1PR0401MB2637D62B86DDD8ECBF158CD0F84A0@VI1PR0401MB2637.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-forefront-prvs: 0232B30BBC
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(346002)(39860400002)(396003)(366004)(376002)(136003)(13464003)(199004)(189003)(76116006)(66556008)(64756008)(66446008)(66476007)(66946007)(52536014)(5660300002)(6246003)(478600001)(229853002)(6506007)(11346002)(81166006)(8936002)(6436002)(53546011)(446003)(7696005)(74316002)(99286004)(102836004)(14444005)(86362001)(14454004)(186003)(33656002)(256004)(81156014)(8676002)(76176011)(305945005)(316002)(2906002)(26005)(7736002)(9686003)(110136005)(25786009)(4326008)(71200400001)(66066001)(3846002)(71190400001)(6116002)(55016002);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR0401MB2637;H:VI1PR0401MB2237.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: PV3jWdIPEJbtaTx1eROyuPJPcwV1576lvFBk7LRep1Kx2Un4sDDUTrVU15ZCf/hERwamkpC29vWqFBbiyjKAQHIoU+YPXOsKTQWsX0X8ttKov1pSKqyJei6KapnYpiiWJz46sUSO4Es/mRxuRlqM4Kp5Ne1ASJuMApOPbHOPIRXbGmZGjIHxv7Vo2WjvO9Gmf5s244+kFXQNNWEzctQJ+ic1iPX9+q0wT+VKUFJm/a/weOcBkM7M7PpZCufOzp+U1Y72021zvSq5iffWuxAt938U61+Od1PeNP3NPEee2RNLd2MeCHn/5yfpWXdZV7nEnTW2D8vXOvMXsj8w7l4GqAUH6lxxxhdTPtClOyYymtqjjwx7Oyp6MAL8bbzSWVtE4gFDTvTUsnI1BrOGM3sScWa0kS5/x/XKskkapmDHZopWSw4f0TdWDnCQWEIoZC1Y
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c139847-7114-4bc5-e119-08d77196348d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Nov 2019 10:57:03.5941
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: cySQg01FrnRDdx3sHZj9wnP9lhPdxU5gBYKtPw2Bg2aMWBzGVLPwaJWJ0CCMvJk59oKoM1KibN8YfYEqTtm+JQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2637
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-In the SAM9x60 SoC, there are only two clocks instead of three for the
-SDHCI device. The base clk is no longer provided, it is generated
-internally from the mult clk.
-
-The values of the base clk and mul in the capabilities registers may not
-reflect the reality as the mult clk is a programmable clock which can take
-several rates. As we can't trust those values, take them from the clock
-tree and update the capabilities according to.
-
-As we can have the same pitfall, in some cases, with the SAMA5D2 Soc,
-stop relying on capabilities too.
-
-Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
----
-
-Thanks Adrian for pointing out the typo. It's fixed and re-tested.
-
-Let me know if you want to me to resend the full serie or if it's ok.
-
-Regards
-
-Ludovic
-
- drivers/mmc/host/sdhci-of-at91.c | 105 +++++++++++++++++--------------
- 1 file changed, 58 insertions(+), 47 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-of-at91.c
-index 5959e394b416..b95ac4b27f22 100644
---- a/drivers/mmc/host/sdhci-of-at91.c
-+++ b/drivers/mmc/host/sdhci-of-at91.c
-@@ -33,7 +33,14 @@
- 
- #define SDHCI_AT91_PRESET_COMMON_CONF	0x400 /* drv type B, programmable clock mode */
- 
-+struct sdhci_at91_soc_data {
-+	const struct sdhci_pltfm_data *pdata;
-+	bool baseclk_is_generated_internally;
-+	unsigned int divider_for_baseclk;
-+};
-+
- struct sdhci_at91_priv {
-+	const struct sdhci_at91_soc_data *soc_data;
- 	struct clk *hclock;
- 	struct clk *gck;
- 	struct clk *mainck;
-@@ -141,12 +148,24 @@ static const struct sdhci_ops sdhci_at91_sama5d2_ops = {
- 	.set_power		= sdhci_at91_set_power,
- };
- 
--static const struct sdhci_pltfm_data soc_data_sama5d2 = {
-+static const struct sdhci_pltfm_data sdhci_sama5d2_pdata = {
- 	.ops = &sdhci_at91_sama5d2_ops,
- };
- 
-+static const struct sdhci_at91_soc_data soc_data_sama5d2 = {
-+	.pdata = &sdhci_sama5d2_pdata,
-+	.baseclk_is_generated_internally = false,
-+};
-+
-+static const struct sdhci_at91_soc_data soc_data_sam9x60 = {
-+	.pdata = &sdhci_sama5d2_pdata,
-+	.baseclk_is_generated_internally = true,
-+	.divider_for_baseclk = 2,
-+};
-+
- static const struct of_device_id sdhci_at91_dt_match[] = {
- 	{ .compatible = "atmel,sama5d2-sdhci", .data = &soc_data_sama5d2 },
-+	{ .compatible = "microchip,sam9x60-sdhci", .data = &soc_data_sam9x60 },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, sdhci_at91_dt_match);
-@@ -156,50 +175,37 @@ static int sdhci_at91_set_clks_presets(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_at91_priv *priv = sdhci_pltfm_priv(pltfm_host);
--	int ret;
- 	unsigned int			caps0, caps1;
- 	unsigned int			clk_base, clk_mul;
--	unsigned int			gck_rate, real_gck_rate;
-+	unsigned int			gck_rate, clk_base_rate;
- 	unsigned int			preset_div;
- 
--	/*
--	 * The mult clock is provided by as a generated clock by the PMC
--	 * controller. In order to set the rate of gck, we have to get the
--	 * base clock rate and the clock mult from capabilities.
--	 */
- 	clk_prepare_enable(priv->hclock);
- 	caps0 = readl(host->ioaddr + SDHCI_CAPABILITIES);
- 	caps1 = readl(host->ioaddr + SDHCI_CAPABILITIES_1);
--	clk_base = (caps0 & SDHCI_CLOCK_V3_BASE_MASK) >> SDHCI_CLOCK_BASE_SHIFT;
--	clk_mul = (caps1 & SDHCI_CLOCK_MUL_MASK) >> SDHCI_CLOCK_MUL_SHIFT;
--	gck_rate = clk_base * 1000000 * (clk_mul + 1);
--	ret = clk_set_rate(priv->gck, gck_rate);
--	if (ret < 0) {
--		dev_err(dev, "failed to set gck");
--		clk_disable_unprepare(priv->hclock);
--		return ret;
--	}
--	/*
--	 * We need to check if we have the requested rate for gck because in
--	 * some cases this rate could be not supported. If it happens, the rate
--	 * is the closest one gck can provide. We have to update the value
--	 * of clk mul.
--	 */
--	real_gck_rate = clk_get_rate(priv->gck);
--	if (real_gck_rate != gck_rate) {
--		clk_mul = real_gck_rate / (clk_base * 1000000) - 1;
--		caps1 &= (~SDHCI_CLOCK_MUL_MASK);
--		caps1 |= ((clk_mul << SDHCI_CLOCK_MUL_SHIFT) &
--			  SDHCI_CLOCK_MUL_MASK);
--		/* Set capabilities in r/w mode. */
--		writel(SDMMC_CACR_KEY | SDMMC_CACR_CAPWREN,
--		       host->ioaddr + SDMMC_CACR);
--		writel(caps1, host->ioaddr + SDHCI_CAPABILITIES_1);
--		/* Set capabilities in ro mode. */
--		writel(0, host->ioaddr + SDMMC_CACR);
--		dev_info(dev, "update clk mul to %u as gck rate is %u Hz\n",
--			 clk_mul, real_gck_rate);
--	}
-+
-+	gck_rate = clk_get_rate(priv->gck);
-+	if (priv->soc_data->baseclk_is_generated_internally)
-+		clk_base_rate = gck_rate / priv->soc_data->divider_for_baseclk;
-+	else
-+		clk_base_rate = clk_get_rate(priv->mainck);
-+
-+	clk_base = clk_base_rate / 1000000;
-+	clk_mul = gck_rate / clk_base_rate - 1;
-+
-+	caps0 &= (~SDHCI_CLOCK_V3_BASE_MASK);
-+	caps0 |= ((clk_base << SDHCI_CLOCK_BASE_SHIFT) & SDHCI_CLOCK_V3_BASE_MASK);
-+	caps1 &= (~SDHCI_CLOCK_MUL_MASK);
-+	caps1 |= ((clk_mul << SDHCI_CLOCK_MUL_SHIFT) & SDHCI_CLOCK_MUL_MASK);
-+	/* Set capabilities in r/w mode. */
-+	writel(SDMMC_CACR_KEY | SDMMC_CACR_CAPWREN, host->ioaddr + SDMMC_CACR);
-+	writel(caps0, host->ioaddr + SDHCI_CAPABILITIES);
-+	writel(caps1, host->ioaddr + SDHCI_CAPABILITIES_1);
-+	/* Set capabilities in ro mode. */
-+	writel(0, host->ioaddr + SDMMC_CACR);
-+
-+	dev_info(dev, "update clk mul to %u as gck rate is %u Hz and clk base is %u Hz\n",
-+		 clk_mul, gck_rate, clk_base_rate);
- 
- 	/*
- 	 * We have to set preset values because it depends on the clk_mul
-@@ -207,19 +213,19 @@ static int sdhci_at91_set_clks_presets(struct device *dev)
- 	 * maximum sd clock value is 120 MHz instead of 208 MHz. For that
- 	 * reason, we need to use presets to support SDR104.
- 	 */
--	preset_div = DIV_ROUND_UP(real_gck_rate, 24000000) - 1;
-+	preset_div = DIV_ROUND_UP(gck_rate, 24000000) - 1;
- 	writew(SDHCI_AT91_PRESET_COMMON_CONF | preset_div,
- 	       host->ioaddr + SDHCI_PRESET_FOR_SDR12);
--	preset_div = DIV_ROUND_UP(real_gck_rate, 50000000) - 1;
-+	preset_div = DIV_ROUND_UP(gck_rate, 50000000) - 1;
- 	writew(SDHCI_AT91_PRESET_COMMON_CONF | preset_div,
- 	       host->ioaddr + SDHCI_PRESET_FOR_SDR25);
--	preset_div = DIV_ROUND_UP(real_gck_rate, 100000000) - 1;
-+	preset_div = DIV_ROUND_UP(gck_rate, 100000000) - 1;
- 	writew(SDHCI_AT91_PRESET_COMMON_CONF | preset_div,
- 	       host->ioaddr + SDHCI_PRESET_FOR_SDR50);
--	preset_div = DIV_ROUND_UP(real_gck_rate, 120000000) - 1;
-+	preset_div = DIV_ROUND_UP(gck_rate, 120000000) - 1;
- 	writew(SDHCI_AT91_PRESET_COMMON_CONF | preset_div,
- 	       host->ioaddr + SDHCI_PRESET_FOR_SDR104);
--	preset_div = DIV_ROUND_UP(real_gck_rate, 50000000) - 1;
-+	preset_div = DIV_ROUND_UP(gck_rate, 50000000) - 1;
- 	writew(SDHCI_AT91_PRESET_COMMON_CONF | preset_div,
- 	       host->ioaddr + SDHCI_PRESET_FOR_DDR50);
- 
-@@ -314,7 +320,7 @@ static const struct dev_pm_ops sdhci_at91_dev_pm_ops = {
- static int sdhci_at91_probe(struct platform_device *pdev)
- {
- 	const struct of_device_id	*match;
--	const struct sdhci_pltfm_data	*soc_data;
-+	const struct sdhci_at91_soc_data	*soc_data;
- 	struct sdhci_host		*host;
- 	struct sdhci_pltfm_host		*pltfm_host;
- 	struct sdhci_at91_priv		*priv;
-@@ -325,17 +331,22 @@ static int sdhci_at91_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	soc_data = match->data;
- 
--	host = sdhci_pltfm_init(pdev, soc_data, sizeof(*priv));
-+	host = sdhci_pltfm_init(pdev, soc_data->pdata, sizeof(*priv));
- 	if (IS_ERR(host))
- 		return PTR_ERR(host);
- 
- 	pltfm_host = sdhci_priv(host);
- 	priv = sdhci_pltfm_priv(pltfm_host);
-+	priv->soc_data = soc_data;
- 
- 	priv->mainck = devm_clk_get(&pdev->dev, "baseclk");
- 	if (IS_ERR(priv->mainck)) {
--		dev_err(&pdev->dev, "failed to get baseclk\n");
--		return PTR_ERR(priv->mainck);
-+		if (soc_data->baseclk_is_generated_internally) {
-+			priv->mainck = NULL;
-+		} else {
-+			dev_err(&pdev->dev, "failed to get baseclk\n");
-+			return PTR_ERR(priv->mainck);
-+		}
- 	}
- 
- 	priv->hclock = devm_clk_get(&pdev->dev, "hclock");
--- 
-2.24.0
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogbGludXgtbW1jLW93bmVy
+QHZnZXIua2VybmVsLm9yZyA8bGludXgtbW1jLW93bmVyQHZnZXIua2VybmVsLm9yZz4NCj4gT24g
+QmVoYWxmIE9mIEFkcmlhbiBIdW50ZXINCj4gU2VudDogVGh1cnNkYXksIE5vdmVtYmVyIDIxLCAy
+MDE5IDc6MzYgUE0NCj4gVG86IFkuYi4gTHUgPHlhbmdiby5sdUBueHAuY29tPjsgVWxmIEhhbnNz
+b24gPHVsZi5oYW5zc29uQGxpbmFyby5vcmc+DQo+IENjOiBsaW51eC1tbWNAdmdlci5rZXJuZWwu
+b3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIG1tYzogc2RoY2k6IGZpeCB1cCBDTUQxMiBzZW5k
+aW5nDQo+IA0KPiBPbiAyMS8xMS8xOSA0OjIxIEFNLCBZLmIuIEx1IHdyb3RlOg0KPiA+IEhpLA0K
+PiA+DQo+ID4+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+IEZyb206IFVsZiBIYW5z
+c29uIDx1bGYuaGFuc3NvbkBsaW5hcm8ub3JnPg0KPiA+PiBTZW50OiBUaHVyc2RheSwgTm92ZW1i
+ZXIgMTQsIDIwMTkgOTo1NCBQTQ0KPiA+PiBUbzogWS5iLiBMdSA8eWFuZ2JvLmx1QG54cC5jb20+
+DQo+ID4+IENjOiBsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnOyBBZHJpYW4gSHVudGVyDQo+ID4+
+IDxhZHJpYW4uaHVudGVyQGludGVsLmNvbT4NCj4gPj4gU3ViamVjdDogUmU6IFtQQVRDSF0gbW1j
+OiBzZGhjaTogZml4IHVwIENNRDEyIHNlbmRpbmcNCj4gPj4NCj4gPj4gT24gVGh1LCAxNCBOb3Yg
+MjAxOSBhdCAxMjoxOCwgWWFuZ2JvIEx1IDx5YW5nYm8ubHVAbnhwLmNvbT4gd3JvdGU6DQo+ID4+
+Pg0KPiA+Pj4gVGhlIFNUT1AgY29tbWFuZCBpcyBkaXNhYmxlZCBmb3IgbXVsdGlwbGUgYmxvY2tz
+IHIvdyBjb21tYW5kcyB3aXRoDQo+ID4+PiBhdXRvIENNRDEyLCB3aGVuIHN0YXJ0IHRvIHNlbmQu
+IEhvd2V2ZXIsIGlmIHRoZXJlIGlzIGRhdGEgZXJyb3IsDQo+ID4+PiBzb2Z0d2FyZSBzdGlsbCBu
+ZWVkcyB0byBzZW5kIENNRDEyIGFjY29yZGluZyB0byBTRCBzcGVjLg0KPiA+Pj4gVGhpcyBwYXRj
+aCBpcyB0byBhbGxvdyBzb2Z0d2FyZSBDTUQxMiBzZW5kaW5nIGZvciB0aGlzIGNhc2UuDQo+ID4+
+Pg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTogWWFuZ2JvIEx1IDx5YW5nYm8ubHVAbnhwLmNvbT4NCj4g
+Pj4+IC0tLQ0KPiA+Pj4gIGRyaXZlcnMvbW1jL2hvc3Qvc2RoY2kuYyB8IDE3ICsrKy0tLS0tLS0t
+LS0tLS0tDQo+ID4+PiAgMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMTQgZGVsZXRp
+b25zKC0pDQo+ID4+Pg0KPiA+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2ku
+YyBiL2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2kuYw0KPiA+Pj4gaW5kZXgNCj4gPj4+IDA5Y2RiZTgu
+LjMwNDFjMzkgMTAwNjQ0DQo+ID4+PiAtLS0gYS9kcml2ZXJzL21tYy9ob3N0L3NkaGNpLmMNCj4g
+Pj4+ICsrKyBiL2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2kuYw0KPiA+Pj4gQEAgLTEzMjYsMTIgKzEz
+MjYsMTIgQEAgc3RhdGljIHZvaWQgc2RoY2lfZmluaXNoX2RhdGEoc3RydWN0DQo+ID4+PiBzZGhj
+aV9ob3N0ICpob3N0KQ0KPiA+Pj4NCj4gPj4+ICAgICAgICAgLyoNCj4gPj4+ICAgICAgICAgICog
+TmVlZCB0byBzZW5kIENNRDEyIGlmIC0NCj4gPj4+IC0gICAgICAgICogYSkgb3Blbi1lbmRlZCBt
+dWx0aWJsb2NrIHRyYW5zZmVyIChubyBDTUQyMykNCj4gPj4+ICsgICAgICAgICogYSkgb3Blbi1l
+bmRlZCBtdWx0aWJsb2NrIHRyYW5zZmVyIG5vdCB1c2luZyBhdXRvIENNRDEyDQo+ID4+PiArIChu
+bw0KPiA+Pj4gKyBDTUQyMykNCj4gPj4+ICAgICAgICAgICogYikgZXJyb3IgaW4gbXVsdGlibG9j
+ayB0cmFuc2Zlcg0KPiA+Pj4gICAgICAgICAgKi8NCj4gPj4+ICAgICAgICAgaWYgKGRhdGEtPnN0
+b3AgJiYNCj4gPj4+IC0gICAgICAgICAgIChkYXRhLT5lcnJvciB8fA0KPiA+Pj4gLSAgICAgICAg
+ICAgICFkYXRhLT5tcnEtPnNiYykpIHsNCj4gPj4+ICsgICAgICAgICAgICgoIWRhdGEtPm1ycS0+
+c2JjICYmICFzZGhjaV9hdXRvX2NtZDEyKGhvc3QsIGRhdGEtPm1ycSkpDQo+IHx8DQo+ID4+PiAr
+ICAgICAgICAgICAgZGF0YS0+ZXJyb3IpKSB7DQo+ID4+DQo+ID4+IFBlciB5b3VyIG90aGVyIHJl
+cGx5IHRvIHRoaXMgdGhyZWFkLCBJIGRvbid0IHRoaW5rIHRoZXJlIGlzIGFueSBoYXJtDQo+ID4+
+IGluIGFsd2F5cyBzZW5kaW5nIGEgQ01EMTIgaWYgdGhlcmUgaXMgYW4gZXJyb3IsIGF0IGxlYXN0
+IGZyb20gdGhlIGNhcmQncyBwb2ludA0KPiBvZiB2aWV3Lg0KPiA+Pg0KPiA+PiBUaGUgd29yc3Qg
+dGhpbmcgdGhhdCBjYW4gaGFwcGVuIGlzIHRoYXQgdGhlcmUgYXJlIHR3byBDTUQxMiBzZW50IHRv
+DQo+ID4+IHRoZSBjYXJkIGFuZCBJIGRvbid0IHRoaW5rIHRoYXQgaXMgYSBwcm9ibGVtIGZvciB0
+aGUgZXJyb3IgcGF0aC4NCj4gPj4NCj4gPj4gTXkgb25seSBjb25jZXJuLCBpcyB0byB1bmRlcnN0
+YW5kIGlmICRzdWJqZWN0IHBhdGNoIGNhdXNlcyBvdGhlcg0KPiA+PiBjaGFuZ2VzIGluIGJlaGF2
+aW91cnMgZm9yIHRoZSBTREhDSSBkcml2ZXIuIExldCdzIHNlZSB3aGF0IEFkcmlhbiB0aGlua3Mu
+DQo+ID4NCj4gPiBbWS5iLiBMdV0gWWVzLiBUaGUgcHVycG9zZSBpcyB0byBhdm9pZCBubyBDTUQx
+MiBzZW50IGlmIGdldCBkYXRhIGVycm9yLiBUaGF0DQo+IHdpbGwgbWFrZXMgYmxvY2sgZHJpdmVy
+IGZhaWxlZCBhdCBibG9jayByL3cgcmVjb3Zlcnkgd2hlbiBzZW5kaW5nIENNRDEzIHRvDQo+IGdl
+dCBzdGF0dXMuDQo+ID4gT3VyIHBsYXRmb3JtIG9uIHNvbWUgYm9hcmRzIGF0IG9sZCBrZXJuZWwg
+NC4xNCBzZWVtcyB0byBoaXQgdGhpcyBjYXNlLg0KPiA+DQo+ID4gSGkgQWRyaWFuLA0KPiA+IENv
+dWxkIHlvdSBoZWxwIHRvIHJldmlldyB0aGUgY2hhbmdlcz8NCj4gDQo+IEkgZG9uJ3QgdGhpbmsg
+dGhlIGF1dG8tY21kMTIgZXJyb3IgaGFuZGxpbmcgd2FzIGV2ZXIgZG9uZSBwcm9wZXJseSwgc28g
+aXQgd2lsbA0KPiB0YWtlIHdlIGEgd2hpbGUgdG8gcmV2aWV3IGl0Lg0KDQpbWS5iLiBMdV0gVGhh
+bmtzIEFkcmlhbi4NCkkgYW0gY29uZnVzZWQgd2hlcmUgdGhlIGluaXRpYWwgZXJyb3IgcmVjb3Zl
+cnkgc2hvdWxkIHN0YXJ0IGZvciBtdWx0aS1ibG9jayByL3cgKHdpdGggQVVUTyBDTUQxMikgZXJy
+b3IuDQpJIGNhbiBzZWUgdHdvIHBsYWNlcyB3aGljaCBtYXkgc2VuZCBDTUQxMi4NCjEuIEluIHNk
+aGNpX2ZpbmlzaF9kYXRhKCksIGFzIG15IHBhdGNoIGNoYW5nZXMsIEkgdGhpbmsgZm9yIGRhdGEt
+PmVycm9yLCB0aGUgQ01EMTIgc2hvdWxkIGJlIHNlbnQuDQoyLiBJbiBtbWNfYmxrX21xX3J3X3Jl
+Y292ZXJ5KCkgaW4gYmxvY2suYywgQ01EMTMgd2lsbCBiZSBzZW50IHdpdGggb25lIG1vcmUgcmV0
+cnkgKHJldHVuaW5nIG1heSBoYXBwZW4pLCBiZWZvcmUgQ01EMTIuDQoNCkFuZCBJIGRvdWJ0IHRo
+ZSByZWNvdmVyeSAxIGlmIHdlIGNhbiBzdGlsbCB1c2UgQ0MvVEMvRFRPRSBpbnRlcnJ1cHRzIHRv
+IGNoZWNrIENNRDEyIHN1Y2Nlc3Mgb3Igbm90IChvciB3ZSBzaG91bGQganVzdCBwb2xsIERBVDAp
+LCBmb3IgZGF0YSBlcnJvciBpbiB0dW5pbmcgbW9kZS4NClRoYW5rcy4NCg0K
