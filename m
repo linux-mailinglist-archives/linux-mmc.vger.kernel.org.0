@@ -2,85 +2,138 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D4A410AC56
-	for <lists+linux-mmc@lfdr.de>; Wed, 27 Nov 2019 10:00:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A643710AD4F
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 Nov 2019 11:11:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726181AbfK0JAc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 27 Nov 2019 04:00:32 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:55510 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726112AbfK0JAc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 27 Nov 2019 04:00:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=JmTonCKgBwtH6ZCVvvwC0xYOpQiZgyClbkDvnybuHtY=; b=qyNGXAMLgO2TTMGb2Td8AI4m+
-        PCOkAfCO0joXtNVP9+JPW9awSmqB2GzhLrHj22gsOAtVSrKg6d/6W6adhJorKoXkY5BaplSIhIeYp
-        EjT+nB1V747ljsacXboUhg6x76TOwqjflIHqx4eI+/jpRx6bUcdLDF3kCpgFBMxhGFD+LjyONGCWP
-        mD22ZsmLp6peakUCMmRIYJPnNA0N2cawuDYgEP5hMDU8E3Z3eX75UEqvGktfu3xtV8EMCYVy6PJzE
-        WScVHuOl59ZGVaNGCA+FrLA6DeALfOia6cydMSnVZQwgFWtudK2Qoyz9fCvNihRp6R3xfAt5BIXe2
-        GYvMy1H5Q==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iZtBP-0000Io-Jy; Wed, 27 Nov 2019 09:00:23 +0000
-Date:   Wed, 27 Nov 2019 01:00:23 -0800
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Hannes Reinecke <hare@suse.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "(Exiting) Baolin Wang" <baolin.wang@linaro.org>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Lyra Zhang <zhang.lyra@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Hannes Reinecke <hare@suse.com>,
-        linux-block <linux-block@vger.kernel.org>,
-        Paolo Valente <paolo.valente@linaro.org>
-Subject: Re: [PATCH v6 0/4] Add MMC software queue support
-Message-ID: <20191127090023.GA23040@infradead.org>
-References: <cover.1573456283.git.baolin.wang@linaro.org>
- <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
- <CAMz4kuK9HEuGdhNqHO_qoy9jD=ccsPPhD_dKYwNRgQyWyYwqRA@mail.gmail.com>
- <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
- <CADBw62pzV+5ZXBEbFvTQJ9essAd4cd7Xkz5j9AXB5rAQy0wLqA@mail.gmail.com>
- <CAMz4kuK_3q4JY1vNXe6zGHDNF8Ep-SkcUq6Z25r790VSz4+Bjw@mail.gmail.com>
- <CAK8P3a11vJb1riYseqPnF_5SuJA+YnYuGwC0XWx6_rk+eQ0Bmw@mail.gmail.com>
- <f88856aa-9175-2a93-3747-c98215cb79c3@suse.de>
+        id S1726698AbfK0KLk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 27 Nov 2019 05:11:40 -0500
+Received: from mga04.intel.com ([192.55.52.120]:30460 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726292AbfK0KLk (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 27 Nov 2019 05:11:40 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 02:11:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,249,1571727600"; 
+   d="scan'208";a="383457143"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.70]) ([10.237.72.70])
+  by orsmga005.jf.intel.com with ESMTP; 27 Nov 2019 02:11:37 -0800
+Subject: Re: [PATCH 03/14] mmc: sdhci: correct the DMA setting for IOMMU
+To:     BOUGH CHEN <haibo.chen@nxp.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>
+References: <1573816075-26390-1-git-send-email-haibo.chen@nxp.com>
+ <1573816075-26390-3-git-send-email-haibo.chen@nxp.com>
+ <620dc251-4411-1306-c9db-267a96a091d2@intel.com>
+ <VI1PR04MB5040E0936672CBAA882A8AF390440@VI1PR04MB5040.eurprd04.prod.outlook.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <97300bc9-a840-c73a-fa35-ad2f7faef76a@intel.com>
+Date:   Wed, 27 Nov 2019 12:10:41 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f88856aa-9175-2a93-3747-c98215cb79c3@suse.de>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <VI1PR04MB5040E0936672CBAA882A8AF390440@VI1PR04MB5040.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Nov 26, 2019 at 12:17:15PM +0100, Hannes Reinecke wrote:
-> Aligning with the 'traditional' linux way for partition handling is
-> definitely the way to go IMO; otherwise you'll end up having to worry
-> about resource allocation between distinct queues (like you have to do
-> now), and will be having a hard time trying to map it properly to the
-> underlying hardware abstraction in blk-mq.
+On 27/11/19 10:25 AM, BOUGH CHEN wrote:
+> 
+>> -----Original Message-----
+>> From: linux-mmc-owner@vger.kernel.org <linux-mmc-owner@vger.kernel.org>
+>> On Behalf Of Adrian Hunter
+>> Sent: 2019年11月26日 19:46
+>> To: BOUGH CHEN <haibo.chen@nxp.com>; ulf.hansson@linaro.org
+>> Cc: linux-mmc@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>
+>> Subject: Re: [PATCH 03/14] mmc: sdhci: correct the DMA setting for IOMMU
+>>
+>> On 15/11/19 1:07 PM, haibo.chen@nxp.com wrote:
+>>> From: Haibo Chen <haibo.chen@nxp.com>
+>>>
+>>> The default max segment size of IOMMU is 64KB, which exceed the ADMA
+>>> limitation if ADMA only support max to 65535, 64KB - 1Byte. IOMMU will
+>>> optimize the segments it received, merge the little segment into one
+>>> big segment. If we use the default IOMMU config, then ADMA will get
+>>> some segments which it's size is 64KB. Then ADMA error will shows up.
+>>>
+>>> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+>>> ---
+>>>  drivers/mmc/host/sdhci.c | 16 ++++++++++++++--
+>>>  1 file changed, 14 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c index
+>>> 1436cc9c5f82..3a8093de26c7 100644
+>>> --- a/drivers/mmc/host/sdhci.c
+>>> +++ b/drivers/mmc/host/sdhci.c
+>>> @@ -3743,6 +3743,7 @@ static inline bool sdhci_can_64bit_dma(struct
+>>> sdhci_host *host)  int sdhci_setup_host(struct sdhci_host *host)  {
+>>>  	struct mmc_host *mmc;
+>>> +	struct device *dev;
+>>>  	u32 max_current_caps;
+>>>  	unsigned int ocr_avail;
+>>>  	unsigned int override_timeout_clk;
+>>> @@ -3754,6 +3755,7 @@ int sdhci_setup_host(struct sdhci_host *host)
+>>>  		return -EINVAL;
+>>>
+>>>  	mmc = host->mmc;
+>>> +	dev = mmc_dev(mmc);
+>>>
+>>>  	/*
+>>>  	 * If there are external regulators, get them. Note this must be
+>>> done @@ -4224,10 +4226,20 @@ int sdhci_setup_host(struct sdhci_host
+>> *host)
+>>>  	 * be larger than 64 KiB though.
+>>>  	 */
+>>>  	if (host->flags & SDHCI_USE_ADMA) {
+>>> -		if (host->quirks & SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC)
+>>> +		if (host->quirks & SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC) {
+>>>  			mmc->max_seg_size = 65535;
+>>> -		else
+>>> +
+>>> +			/*
+>>> +			 * send the ADMA limitation to IOMMU. In default,
+>>> +			 * the max segment size of IOMMU is 64KB, this exceed
+>>> +			 * the ADMA max segment limitation, which is 65535.
+>>> +			 */
+>>> +			dev->dma_parms = devm_kzalloc(dev,
+>>> +					sizeof(*dev->dma_parms), GFP_KERNEL);
+>>> +			dma_set_max_seg_size(dev, SZ_64K - 1);
+>>
+>> Doesn't mmc_setup_queue() already do this?
+> 
+> mmc_setup_queue do call the function dma_set_max_seg_size(), but it do not give value to dev->dma_parms.
+> So in dma_set_max_seg_size(), it do nothing, just return -EIO. 
+> Should I fix this in mmc_setup_queue()? 
+> 
+> 725 static inline int dma_set_max_seg_size(struct device *dev, unsigned int size)
+> 726 {
+> 727         if (dev->dma_parms) {
+> 728                 dev->dma_parms->max_segment_size = size;
+> 729                 return 0;
+> 730         }
+> 731         return -EIO;
+> 732 } 
 
-Sorry, but this is complete bullshit.  Except for the very unfortunate
-name MMC partitions have nothing to do with partitions.  They are a
-concept roughly equivalent to SCSI logical units and nvme namespace,
-just with a pretty idiotic design decision that only allows I/O to one
-of them at a time.  The block layer way to deal with them is to use
-a shared tagset for multiple request queues, which doesn't use up a
-whole lot of resources.  The only hard part is the draining when
-switching between partitions, and there is no really nice way to
-deal with that.   If requests are batched enough we could just drain
-and switch every time an other partition access comes in.  Especially
-so if people only use partitions for boot partitions and other rarely
-used areas.  If that doesn't work out we'll just have to reject other
-partition access and then use a timer and/or counter to eventually
-switch and provide basic fairness.
+I don't know where is the best place to create dev->dma_parms.  Ask some DMA
+people.
+
+> 
+>>
+>>> +		} else {
+>>>  			mmc->max_seg_size = 65536;
+>>> +		}
+>>>  	} else {
+>>>  		mmc->max_seg_size = mmc->max_req_size;
+>>>  	}
+>>>
+> 
+
