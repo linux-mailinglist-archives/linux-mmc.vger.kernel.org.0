@@ -2,135 +2,340 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A520210A91B
-	for <lists+linux-mmc@lfdr.de>; Wed, 27 Nov 2019 04:34:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1148210AB4C
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 Nov 2019 08:49:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726664AbfK0DeZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Nov 2019 22:34:25 -0500
-Received: from mail-eopbgr80040.outbound.protection.outlook.com ([40.107.8.40]:21831
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726346AbfK0DeZ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 26 Nov 2019 22:34:25 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cCOA5+6jrsqsVhKS1l/uiMZ0eRuw2nmyeebHFYK73heXHDmfdC0WZl32hhrS+pNeSwJbFXuWSPBQzRKCMrcuuXdAEw6mfB9bKuCyZfJo3YimYlDrCh3z4Fj0MeJL5lJvIjx7snOtnbltd48h4zPfyi8lB31bM2OwimvNtVCnq0H5qz9qXKYbwFMGcjtnZntNvLJCpGe0hTAmrZA4E4u22gBt/c5R4th5cu20TGvAH/e/4A2T0iZUl2GX17T/WXhksQGVJQC0fog0xKTz64fnGbw1OMmg+NHXPe7knmNTv+ymuFtTIcGrATtUhGxQO5g1x0oRuac3hW3YhRaVXpgeYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BK/8SOb8pYWddTbug/5tc6w+K0vAAXNh7ahhVZKiCrs=;
- b=Dc1aO8Dzv2ih8p5gLGpvYiSBuJVcSRwCCDGzBgRN3RJF41CH1DESISP4IdfE9ua87qG26MUA9PKIxKDsJ4NTcEzMy17rAltKc2opLHQdRlZclEe9vd+NVK4y2rGjg4Z1+85X+vOMzwdgi8je8sorru6HDaYu/6rssTF3RfsVJMf7lp4A5PAQpRFSi2wi6Irl57QAxj4IeYp7r73U43mG3spvfEJhRoUwxWpP0K4kpIPsWqrMyKfZwXqHkvpGjqwlSrSGNd0Kl1SK727RK5bMT/XOLwWKVvxUDD9Oqq3fIPovCPICbxdq18ByjbX9H4iSbxVVvrsZKONlBpopBJUfLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BK/8SOb8pYWddTbug/5tc6w+K0vAAXNh7ahhVZKiCrs=;
- b=s3i6x52ZWhVlVnJQxUtl2iSzGsTMkkcqY5cSDZlJYcw5hOcmmCogOpysloNuUBcdtGrj+HMIM0LA/jxez7JI8SAPe3atEjlyVWfLBu4pZhEONO7LZp6OmFsgv1ID7WmpxGREWjHTIlfGreMvpso8kJfj7JqIw4Twuu6kwpttayA=
-Received: from VI1PR04MB5040.eurprd04.prod.outlook.com (20.177.52.24) by
- VI1PR04MB6880.eurprd04.prod.outlook.com (52.133.244.206) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2495.17; Wed, 27 Nov 2019 03:33:41 +0000
-Received: from VI1PR04MB5040.eurprd04.prod.outlook.com
- ([fe80::c5f3:ba8e:2b17:1f28]) by VI1PR04MB5040.eurprd04.prod.outlook.com
- ([fe80::c5f3:ba8e:2b17:1f28%5]) with mapi id 15.20.2474.023; Wed, 27 Nov 2019
- 03:33:41 +0000
-From:   BOUGH CHEN <haibo.chen@nxp.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
-CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>
-Subject: RE: [PATCH 02/14] mmc: sdhci: clear DMA_SEL before sending tuning
- command for Standard tuning
-Thread-Topic: [PATCH 02/14] mmc: sdhci: clear DMA_SEL before sending tuning
- command for Standard tuning
-Thread-Index: AQHVm6VDfO4nxXCd8ESl3h3o+2qsn6edajOAgAEEjfA=
-Date:   Wed, 27 Nov 2019 03:33:41 +0000
-Message-ID: <VI1PR04MB504017A4108A3C994B29C43390440@VI1PR04MB5040.eurprd04.prod.outlook.com>
-References: <1573816075-26390-1-git-send-email-haibo.chen@nxp.com>
- <1573816075-26390-2-git-send-email-haibo.chen@nxp.com>
- <4cc20a77-24c9-1425-3059-32839113b62a@intel.com>
-In-Reply-To: <4cc20a77-24c9-1425-3059-32839113b62a@intel.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=haibo.chen@nxp.com; 
-x-originating-ip: [119.31.174.71]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: d5da2b3b-904a-41ea-682f-08d772ea9946
-x-ms-traffictypediagnostic: VI1PR04MB6880:|VI1PR04MB6880:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR04MB688095A8C668DBDF4A98B7A290440@VI1PR04MB6880.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 023495660C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(136003)(39860400002)(346002)(376002)(396003)(13464003)(189003)(199004)(478600001)(66066001)(102836004)(8936002)(99286004)(66556008)(76116006)(66946007)(7696005)(76176011)(66476007)(71200400001)(229853002)(2501003)(6506007)(5660300002)(71190400001)(6116002)(3846002)(53546011)(256004)(14444005)(11346002)(52536014)(446003)(81156014)(8676002)(186003)(9686003)(81166006)(14454004)(33656002)(64756008)(305945005)(54906003)(110136005)(55016002)(74316002)(2906002)(7736002)(86362001)(6246003)(66446008)(25786009)(4326008)(6436002)(316002)(26005);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR04MB6880;H:VI1PR04MB5040.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: IrJUf2Uw5m+WgMNdhc0zOLRtCzs1FsPY/TXv2fzI5FOLa7DsbVga0abh/5aqtXgkmYqBN31IgE5sC3d5B1ZwGWnG9A8wU3ywN7Z3Vw//+XgrONiXYYpv5SKnYBjDzzvdP2zGWtRRUft1wvwnuPt/ud3rf5VURK5E+2TFP6wJvEZt1herARxddg6hUbIzPEAY8V6Nd9NV0HXPGnMST3yfvMts6Hb1qfogyMO0xIJZadl+5nnhTOHVW67RYSJTdKV2iozKH1BtyzlxD1NXRMK5g7pInX8n2hOZdzdsR9fB+iITPDc2LuLnBpDNqhK2Y3xP6fUMVlzSB/bTUZGTzqwvoCjtQpT7xRC89Nh2YGru+AE3mWwNw88g49JoOYQfuseetC1BZ2500GSZmy3fzCflD2G7iXqAISTxXLV1e7v1A3sbEqGK3F1IwJ1GYAc0t7Rw
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726111AbfK0Htf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 27 Nov 2019 02:49:35 -0500
+Received: from mail-qv1-f65.google.com ([209.85.219.65]:41335 "EHLO
+        mail-qv1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726092AbfK0Htf (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 27 Nov 2019 02:49:35 -0500
+Received: by mail-qv1-f65.google.com with SMTP id g18so8476409qvp.8;
+        Tue, 26 Nov 2019 23:49:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=URBhL8PpZl6y4mPSJi9+JN8TebUxyY96sXs5n6EYQtw=;
+        b=YexOT8YMMQw8h5ujb5PDiPou7uGp++YsZwMVbYaywb0rTYURRCcaEaWoxFiTRCE4ri
+         9HisL3m07ojTE74p9ZAgeV+Z4RjennzrFncRNbrOo34GzZyIFXtvslCZiA/VRdKv0sm4
+         LMrUKgmZi64Gn8u0HXqlJWFYJNYxwOsfDcKlbDYyrS4KvsynHh+llNL6G7RAzNV/JukB
+         D7W6JOGgk7MFlb6Yxw1dQw0KtuJDINl3fsegOitBgEpxIJ7pnR9v3V746sFU9uHPpS4k
+         BDcEuKdN0BBXbyQfoaZx3WxEO8DWjw29irWDEPMW11DfODj1J7oY7oq9zjR0a0O/V4yQ
+         nQKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=URBhL8PpZl6y4mPSJi9+JN8TebUxyY96sXs5n6EYQtw=;
+        b=ZmYf34AC92JhzzqWJuevjEdcQnORwLWghU/r93x7XiXW5i3XQGEquzHYGHhnEGBtg5
+         jJTtAKLLzHx4yW7NM2/4Flb2YODBh3DgaLDD/3AgfAh3jZGrpbwBwXWwiCIVdSnYm/Jm
+         ne5ktLC1dvvbRO/tEjCJ7tGKNTNr4W5eF1xvuVdOgpoPn4/O5SpiSuaFiWxjQb1jBeuo
+         815zcN2Vj+7OqPc73CiddSX/i2RAPsl9yQYRDPyLhEMxeSKai+ar+73c9XjcheSgxK1x
+         SFfopFYu6VRddJvylU413BuKETO5D1lJJZ0HklD2qglc5ZFq4JPTBdGbatj+sKV4TTTL
+         g7SA==
+X-Gm-Message-State: APjAAAVVsCZM+RocKLrc6f7y5aiJxjp2wCHgcz0wfHREZBEFygy4zLAL
+        eU0RJe592ydMoSBgDpR47NIar8pHMmiWDZw0+pw=
+X-Google-Smtp-Source: APXvYqyquwPZMtnggXp1IYxzTVF7MXCTCZ4RMSPiY+woHrAp1dOaJEgDXlOXDjonP8eNOweO2LA7lGiE3vqFdbSqM+k=
+X-Received: by 2002:ad4:558c:: with SMTP id e12mr3303406qvx.191.1574840973438;
+ Tue, 26 Nov 2019 23:49:33 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5da2b3b-904a-41ea-682f-08d772ea9946
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Nov 2019 03:33:41.4483
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wms9X8PaPAfQr8NoLM+iVKzc/8Ye/tDPcoAbo05jluHp2Qj11G0jftyAcuManDbUfmd9GFh36/dkBquNpPWmnw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6880
+References: <cover.1573456283.git.baolin.wang@linaro.org> <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
+ <CAMz4kuK9HEuGdhNqHO_qoy9jD=ccsPPhD_dKYwNRgQyWyYwqRA@mail.gmail.com>
+ <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
+ <CADBw62pzV+5ZXBEbFvTQJ9essAd4cd7Xkz5j9AXB5rAQy0wLqA@mail.gmail.com>
+ <CAMz4kuK_3q4JY1vNXe6zGHDNF8Ep-SkcUq6Z25r790VSz4+Bjw@mail.gmail.com>
+ <CAK8P3a11vJb1riYseqPnF_5SuJA+YnYuGwC0XWx6_rk+eQ0Bmw@mail.gmail.com> <f88856aa-9175-2a93-3747-c98215cb79c3@suse.de>
+In-Reply-To: <f88856aa-9175-2a93-3747-c98215cb79c3@suse.de>
+From:   Baolin Wang <baolin.wang7@gmail.com>
+Date:   Wed, 27 Nov 2019 15:49:20 +0800
+Message-ID: <CADBw62o83ePHoveo1uKEbakQ+_i3-LLyJ22H0XEU11OqW88dOQ@mail.gmail.com>
+Subject: Re: [PATCH v6 0/4] Add MMC software queue support
+To:     Hannes Reinecke <hare@suse.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "(Exiting) Baolin Wang" <baolin.wang@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Lyra Zhang <zhang.lyra@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Hannes Reinecke <hare@suse.com>,
+        linux-block <linux-block@vger.kernel.org>,
+        Paolo Valente <paolo.valente@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFkcmlhbiBIdW50ZXIgPGFk
-cmlhbi5odW50ZXJAaW50ZWwuY29tPg0KPiBTZW50OiAyMDE55bm0MTHmnIgyNuaXpSAxOTo1OA0K
-PiBUbzogQk9VR0ggQ0hFTiA8aGFpYm8uY2hlbkBueHAuY29tPjsgdWxmLmhhbnNzb25AbGluYXJv
-Lm9yZw0KPiBDYzogbGludXgtbW1jQHZnZXIua2VybmVsLm9yZzsgZGwtbGludXgtaW14IDxsaW51
-eC1pbXhAbnhwLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCAwMi8xNF0gbW1jOiBzZGhjaTog
-Y2xlYXIgRE1BX1NFTCBiZWZvcmUgc2VuZGluZyB0dW5pbmcNCj4gY29tbWFuZCBmb3IgU3RhbmRh
-cmQgdHVuaW5nDQo+IA0KPiBPbiAxNS8xMS8xOSAxOjA3IFBNLCBoYWliby5jaGVuQG54cC5jb20g
-d3JvdGU6DQo+ID4gRnJvbTogSGFpYm8gQ2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPg0KPiA+DQo+
-ID4gQ3VycmVudGx5LCB3aGVuIHVzZSBzdGFuZGFyZCB0dW5pbmcsIGRyaXZlciBkZWZhdWx0IGRp
-c2FibGUgRE1BIGp1c3QNCj4gPiBiZWZvcmUgc2VuZCB0dW5pbmcgY29tbWFuZC4gQnV0IG9uIGku
-TVg4IHVzZGhjLCB0aGlzIGlzIG5vdCBlbm91Z2guDQo+ID4gTmVlZCBhbHNvIGNsZWFyIERNQV9T
-RUwuIElmIG5vdCwgb25jZSB0aGUgRE1BX1NFTCBzZWxlY3QgQU1EQTIgYmVmb3JlLA0KPiA+IGV2
-ZW4gZG1hIGFscmVhZHkgZGlzYWJsZWQsIHdoZW4gc2VuZCB0dW5pbmcgY29tbWFuZCwgdXNkaGMg
-d2lsbCBzdGlsbA0KPiA+IHByZWZldGNoIHRoZSBBRE1BIHNjcmlwdCBmcm9tIHdyb25nIERNQSBh
-ZGRyZXNzLCB0aGVuIHdlIHdpbGwgc2VlDQo+ID4gSU9NTVUgcmVwb3J0IHNvbWUgZXJyb3Igd2hp
-Y2ggc2hvdyBsYWNrIG9mIFRMQiBtYXBwaW5nLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSGFp
-Ym8gQ2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL21tYy9o
-b3N0L3NkaGNpLmMgfCAxMiArKysrKysrKysrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDEyIGlu
-c2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21tYy9ob3N0L3NkaGNp
-LmMgYi9kcml2ZXJzL21tYy9ob3N0L3NkaGNpLmMgaW5kZXgNCj4gPiA2OGRiODZjMWI0YzkuLjE0
-MzZjYzljNWY4MiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL21tYy9ob3N0L3NkaGNpLmMNCj4g
-PiArKysgYi9kcml2ZXJzL21tYy9ob3N0L3NkaGNpLmMNCj4gPiBAQCAtMjM2MSw2ICsyMzYxLDcg
-QEAgdm9pZCBzZGhjaV9zZW5kX3R1bmluZyhzdHJ1Y3Qgc2RoY2lfaG9zdCAqaG9zdCwNCj4gdTMy
-IG9wY29kZSkNCj4gPiAgCXN0cnVjdCBtbWNfcmVxdWVzdCBtcnEgPSB7fTsNCj4gPiAgCXVuc2ln
-bmVkIGxvbmcgZmxhZ3M7DQo+ID4gIAl1MzIgYiA9IGhvc3QtPnNkbWFfYm91bmRhcnk7DQo+ID4g
-Kwl1OCBjdHJsOw0KPiA+DQo+ID4gIAlzcGluX2xvY2tfaXJxc2F2ZSgmaG9zdC0+bG9jaywgZmxh
-Z3MpOw0KPiA+DQo+ID4gQEAgLTIzODgsNiArMjM4OSwxNyBAQCB2b2lkIHNkaGNpX3NlbmRfdHVu
-aW5nKHN0cnVjdCBzZGhjaV9ob3N0ICpob3N0LA0KPiB1MzIgb3Bjb2RlKQ0KPiA+ICAJICovDQo+
-ID4gIAlzZGhjaV93cml0ZXcoaG9zdCwgU0RIQ0lfVFJOU19SRUFELCBTREhDSV9UUkFOU0ZFUl9N
-T0RFKTsNCj4gPg0KPiA+ICsNCj4gPiArCS8qIERNQSBhbHJlYWR5IGRpc2FibGVkLCBzbyBjbGVh
-ciB0aGUgRE1BIFNlbGVjdCBoZXJlLg0KPiA+ICsJICogT3RoZXJ3aXNlLCBpZiB1c2UgQURNQTIs
-IGV2ZW4gZGlzYWJsZSBETUEsIHNvbWUNCj4gPiArCSAqIGNvbnRyb2xsZXJzIGxpa2UgaS5NWCB1
-c2RoYyB3aWxsIHN0aWxsIHByZWZldGNoIHRoZQ0KPiA+ICsJICogQURNQSBzY3JpcHQgd2hlbiBz
-ZW5kIHR1bmluZyBjb21tYW5kLCB3aGljaCB3aWxsIGNhdXNlDQo+ID4gKwkgKiBJT01NVSByZXBv
-cnQgbGFjayBvZiBUTEIgbWFwcGluZyBlcnJvcg0KPiA+ICsJICovDQo+ID4gKwljdHJsID0gc2Ro
-Y2lfcmVhZGIoaG9zdCwgU0RIQ0lfSE9TVF9DT05UUk9MKTsNCj4gPiArCWN0cmwgJj0gflNESENJ
-X0NUUkxfRE1BX01BU0s7DQo+IA0KPiBWYWx1ZSB6ZXJvIGlzIFNETUEsIHNvIHRoaXMgZG9lcyBu
-b3QgbG9vayBsaWtlIGEgZ2VuZXJpYyBzZGhjaSBjaGFuZ2UuICBXaGF0DQo+IGFib3V0IGRvaW5n
-IGl0IGluIHNkaGNpLWVzZGhjLWlteC5jIGJlZm9yZSBleGVjdXRpbmcgdHVuaW5nPw0KPiANCk9r
-YXksIHRoZSB2YWx1ZSB6ZXJvIGZvciBpLm14IHVzZGhjIG1lYW5zICJObyBETUEgb3IgU2ltcGxl
-IERNQSBpcyBzZWxlY3RlZCIsIGEgbGl0dGxlIGJpdCBkaWZmZXJlbnQgd2l0aCBnZW5lcmljIHNk
-aGNpIGRlZmluaXRpb24uDQpJIHdpbGwgYWRkIHRoaXMgY2hhbmdlIGluIHNkaGNpLWVzZGhjLWlt
-eC5jIGluIFYyIHBhdGNoLiANClRoYW5rcyENCg0KSGFpYm8gQ2hlbg0KDQoNCj4gPiArCXNkaGNp
-X3dyaXRlYihob3N0LCBjdHJsLCBTREhDSV9IT1NUX0NPTlRST0wpOw0KPiA+ICsNCj4gPiAgCXNk
-aGNpX3NlbmRfY29tbWFuZChob3N0LCAmY21kKTsNCj4gPg0KPiA+ICAJaG9zdC0+Y21kID0gTlVM
-TDsNCj4gPg0KDQo=
+On Tue, Nov 26, 2019 at 7:17 PM Hannes Reinecke <hare@suse.de> wrote:
+>
+> On 11/22/19 10:50 AM, Arnd Bergmann wrote:
+> > (adding Paolo as well, maybe he has some more insights)
+> >
+> > On Mon, Nov 18, 2019 at 11:04 AM (Exiting) Baolin Wang
+> > <baolin.wang@linaro.org> wrote:
+> >> On Tue, 12 Nov 2019 at 16:48, Baolin Wang <baolin.wang7@gmail.com> wrote:
+> >>> On Tue, Nov 12, 2019 at 12:59 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> >>>> On Mon, Nov 11, 2019 at 1:58 PM Baolin Wang <baolin.wang@linaro.org> wrote:
+> >>>>>> - With that change in place calling a blocking __mmc_claim_host() is
+> >>>>>>   still a problem, so there should still be a nonblocking mmc_try_claim_host()
+> >>>>>>   for the submission path, leading to a BLK_STS_DEV_RESOURCE (?)
+> >>>>>>   return code from mmc_mq_queue_rq(). Basically mmc_mq_queue_rq()
+> >>>>>>   should always return right away, either after having queued the next I/O
+> >>>>>>   or with an error, but not waiting for the device in any way.
+> >>>>>
+> >>>>> Actually not only the mmc_claim_host() will block the MMC request
+> >>>>> processing, in this routine, the mmc_blk_part_switch() and
+> >>>>> mmc_retune() can also block the request processing. Moreover the part
+> >>>>> switching and tuning should be sync operations, and we can not move
+> >>>>> them to a work or a thread.
+> >>>>
+> >>>> Ok, I see.
+> >>>>
+> >>>> Those would also cause requests to be sent to the device or the host
+> >>>> controller, right? Maybe we can treat them as "a non-IO request
+> >>>
+> >>> Right.
+> >>>
+> >>>> has successfully been queued to the device" events, returning
+> >>>> busy from the mmc_mq_queue_rq() function and then running
+> >>>> the queue again when they complete?
+> >>>
+> >>> Yes, seems reasonable to me.
+> >>>
+> >>>>
+> >>>>>> - For the packed requests, there is apparently a very simple way to implement
+> >>>>>>   that without a software queue: mmc_mq_queue_rq() is allowed to look at
+> >>>>>>   and dequeue all requests that are currently part of the request_queue,
+> >>>>>>   so it should take out as many as it wants to submit at once and send
+> >>>>>>   them all down to the driver together, avoiding the need for any further
+> >>>>>>   round-trips to blk_mq or maintaining a queue in mmc.
+> >>>>>
+> >>>>> You mean we can dispatch a request directly from
+> >>>>> elevator->type->ops.dispatch_request()?  but we still need some helper
+> >>>>> functions to check if these requests can be packed (the package
+> >>>>> condition), and need to invent new APIs to start a packed request (or
+> >>>>> using cqe interfaces, which means we still need to implement some cqe
+> >>>>> callbacks).
+> >>>>
+> >>>> I don't know how the dispatch_request() function fits in there,
+> >>>> what Hannes told me is that in ->queue_rq() you can always
+> >>>> look at the following requests that are already queued up
+> >>>> and take the next ones off the list. Looking at bd->last
+> >>>> tells you if there are additional requests. If there are, you can
+> >>>> look at the next one from blk_mq_hw_ctx (not sure how, but
+> >>>> should not be hard to find)
+> >>>>
+> >>>> I also see that there is a commit_rqs() callback that may
+> >>>> go along with queue_rq(), implementing that one could make
+> >>>> this easier as well.
+> >>>
+> >>> Yes, we can use queue_rq()/commit_rqs() and bd->last (now bd->last may
+> >>> can not work well, see [1]), but like we talked before, for packed
+> >>> request, we still need some new interfaces (for example, a interface
+> >>> used to start a packed request, and a interface used to complete a
+> >>> packed request), but at last we got a consensus that we should re-use
+> >>> the CQE interfaces instead of new invention.
+> >>>
+> >>> [1] https://lore.kernel.org/patchwork/patch/1102897/
+> >>>
+> >>>>
+> >>>>>> - The DMA management (bounce buffer, map, unmap) that is currently
+> >>>>>>   done in mmc_blk_mq_issue_rq() should ideally be done in the
+> >>>>>>   init_request()/exit_request()  (?) callbacks from mmc_mq_ops so this
+> >>>>>>   can be done asynchronously, out of the critical timing path for the
+> >>>>>>   submission. With this, there won't be any need for a software queue.
+> >>>>>
+> >>>>> This is not true, now the blk-mq will allocate some static request
+> >>>>> objects (usually the static requests number should be the same with
+> >>>>> the hardware queue depth) saved in struct blk_mq_tags. So the
+> >>>>> init_request() is used to initialize the static requests when
+> >>>>> allocating them, and call exit_request to free the static requests
+> >>>>> when freeing the 'struct blk_mq_tags', such as the queue is dead. So
+> >>>>> we can not move the DMA management into the init_request/exit_request.
+> >>>>
+> >>>> Ok, I must have misremembered which callback that is then, but I guess
+> >>>> there is some other place to do it.
+> >>>
+> >>> I checked the 'struct blk_mq_ops', and I did not find a ops can be
+> >>> used to do DMA management. And I also checked UFS driver, it also did
+> >>> the DMA mapping in the queue_rq() (scsi_queue_rq() --->
+> >>> ufshcd_queuecommand() ---> ufshcd_map_sg()). Maybe I missed something?
+> >>>
+> >>> Moreover like I said above, for the packed request, we still need
+> >>> implement something (like the software queue) based on the CQE
+> >>> interfaces to help to handle packed requests.
+> >>
+> >> After some investigation and offline discussion with you, I still have
+> >> some concerns about your suggestion.
+> >>
+> >> 1) Now blk-mq have not supplied some ops to prepare a request, which is
+> >> used to do some DMA management asynchronously. But yes, we can
+> >> introduce new ops for blk-mq. But there are still some remaining
+> >> preparation in mmc_mq_queue_rq(), like mmc part switch. For software
+> >> queue, we can prepare a request totally after issuing one.
+> >
+> > I suppose to make the submission non-blocking, all operations that
+> > currently block in the submission path may have to be changed first.
+> >
+> > For the case of a partition switch (same for retune), I suppose
+> > something like this can be done:
+> >
+> > - in queue_rq() check whether a partition switch is needed. If not,
+> >   submit the current rq
+> > - if a partition switch is needed, submit the partition switch cmd
+> >   instead, and return busy status
+> > - when the completion arrives for the partition switch, call back into
+> >   blk_mq to have it call queue_rq again.
+> >
+> > Or possibly even (this might not be possible without signifcant
+> > restructuring):
+> >
+> > - when preparing a request that would require a partition switch,
+> >   insert another meta-request to switch the partition ahead of it.
+> >
+> > I do realize that this is a significant departure from how it was done
+> > in the past, but it seems cleaner that way to me.
+> >
+> I would be treating the partition issue separate from the queued/batched
+> submission.
+>
+> Aligning with the 'traditional' linux way for partition handling is
+> definitely the way to go IMO; otherwise you'll end up having to worry
+> about resource allocation between distinct queues (like you have to do
+> now), and will be having a hard time trying to map it properly to the
+> underlying hardware abstraction in blk-mq.
+>
+> For starters I would keep a partition marker in the driver instance, and
+> calculate the parition for each incoming request. If the partition is
+> different you'll have to insert a partition switch request before
+> submitting the actual one.
+>
+> To do this efficiently it would be good to know if:
+> a) How invasive is the partition switch? Would it be feasible to eg add
+> a partition switch for every command? This might sound daft now, but if
+> we get request batching going it might not the _that_ expensive after all...
+
+This is expensive I think, now not all SD host controllers or cards
+can handle batching request, only for those which can support ADMA3 or
+packed command.
+
+> b) Can the request switch command batched together with the normal
+> command? IE is is possible to have them both send in one go?
+
+I do not think that the switch command can be batched together with
+the normal command. We must wait for the completion of the switch
+command before sending the normal command. It should be the SYNC
+command in MMC stack.
+
+I think the first method suggested by Arnd can work.
+
+> If so it would make life _so_ much easier; we could submit both command
+> at the same time, and won't have to worry about handling internal
+> completions ...
+>
+> >> 2) I wonder if it is appropriate that using the irq threaded context
+> >> to dispatch next request, actually we will still introduce a context
+> >> switch here. Now we will complete a request in the hard irq handler
+> >> and kick the softirq to do time-consuming operations, like DMA
+> >> unmapping , and will start next request in the hard irq handler
+> >> without context switch. Moreover if we remove the BLK_MQ_F_BLOCKING in
+> >> future like you suggested, then we can remove all context switch. And
+> >> I think we can dispatch next request in the softirq context (actually
+> >> the CQE already did).
+> >
+> > I hope Hannes (or someone else) can comment here, as I don't
+> > know exactly what his objection to kicking off the next cmd in the
+> > hardirq was.
+> >
+> The point being that you'll have to have a context switch anyway
+> (between hardirq and softirq), and you'll be able to better handle
+> recovery as the hardirq handler is pretty generic and the won't be any
+> chance of that one becoming stuck.
+> And, of course, modern software design :-)
+>
+> > I think generally, deferring all slow operations to an irqthread
+> > rather than a softirq is a good idea, but I share your concern that
+> > this can introduce an unnecessary latency between the the
+> > the IRQ is signaled and the time the following cmd is sent to the
+> > hardware.
+> > > Doing everything in a single (irqthread) context is clearly simpler,
+> > so this would need to be measured carefully to avoid unnecessary
+> > complexity, but I think don't see anything stopping us from having
+> > the fast-path where the low-level driver first checks for any possible
+> > error conditions in hardirq context and the fires off a prepared cmd
+> > right away whenever it can before triggering the irqthread that does
+> > everything else. I think this has to be a per-driver optimization, so
+> > the common case would just have an irqthread.
+> >
+> >> 3) For packed request support, I did not see an example that block
+> >> driver can dispatch a request from the IO scheduler in queue_rq() and
+> >> no APIs supported from blk-mq. And we do not know where can dispatch a
+> >> request in queue_rq(), from IO scheduler? from ctx? or from
+> >> hctx->dispatch list? and if this request can not be passed to host
+> >> now, how to do it? Seems lots of complicated things.
+> >
+> > The only way I can see is the ->last flag, so if blk_mq submits multiple
+> > requests in a row to queue_rq() with this flag cleared and  calls
+> > ->commit_rqs() after the last one. This seems to be what the scsi
+> > disk driver and the nvme driver rely on, and we should be able to use
+> > it the same way for packed cmds, by checking each time in queue_rq()
+> > whether requests can/should be combined and reporting busy otherwise
+> > (after preparing a combined mmc cmd).
+> > blk_mq will then call commit_rqs, which should do the actual submission
+> > to the hardware driver.
+> >
+> The ->last flag really depends on the submission thread, eg if something
+> in the upper layers is using on-stack plugging.
+> In my experience this is done only in some specific use-cases resp.
+> filesystems, so this is not something you can rely on to make any decisions.
+
+The on-stack plugging is enabled in my case, and from the commit
+message of introducing this structure, the ->last flag is used to
+indicate the last request in the chain, but seems work abnormally.
+
+"Since we have the notion of a 'last' request in a chain, we can use
+    this to have the hardware optimize the issuing of requests. Add
+    a list_head parameter to queue_rq that the driver can use to
+    temporarily store hw commands for issue when 'last' is true. If we
+    are doing a chain of requests, pass in a NULL list for the first
+    request to force issue of that immediately, then batch the remainder
+    for deferred issue until the last request has been sent."
+
+>
+> > Now as you point out, the *big* problem with this is that we never
+> > get multiple requests together in practice, i.e. the last flag is almost
+> > always set, and any optimization around it has no effect.
+> >
+> See above. I don't think the using the ->last flag is the way to go here.
+> What you really need to do here is to inject some 'pushback' into the
+> block layer so that is has a _chance_ of assembling more requests.
+
+How about Arnd's suggestion? looks reasonable to me that we can have a
+new API to handle batching request.
+https://paste.ubuntu.com/p/MfSRwKqFCs/
+
+>
+> But the actual design really needs to take hardware features into account.
+>
+> As mentioned above, initially I would concentrate on getting the
+> partitioning working with a single request queue; once that is done we
+> can look at request batching proper.
+
+OK.
+
+>
+> And for that you could have a look at the S/390 DASD driver (right,
+> Arndt?), which has a very similar concept.
+
+Yes, I've looked at the dasd.c driver, and it used a list to link
+requests from blk-mq and handled them with a tasklet, but if this will
+cause a long latency if we linked more requests into the list and
+dispatched them to the controller slowly?
+
+Thanks for your input.
