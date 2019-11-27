@@ -2,330 +2,135 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34D7010A175
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Nov 2019 16:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A520210A91B
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 Nov 2019 04:34:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728654AbfKZPs4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Nov 2019 10:48:56 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:34000 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728653AbfKZPs4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Nov 2019 10:48:56 -0500
-Received: by mail-lf1-f66.google.com with SMTP id l28so14543275lfj.1
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Nov 2019 07:48:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=I4B/Re/hgNqBwoAAuBSrak8Ob1EG/go5G8FMWZ/8iMw=;
-        b=bSevDZYdkuZreR7Lpz1knVq90h0bgEi1/dXsuJstawftKE2tO8R3kY/seqjh7Wn+dq
-         p0WDKEqHya8f47WUBDBuO/+iKyifTc5XGrfK5cTpw5/6rchqu7PcUHGEMR/4cv0fs1nX
-         JFhAwEzoDTZ1EuqGupyn3FKPELXwCTGgWv+VvNggckmufwpIG2pev9Bk/MIaMPn/1GHV
-         i4Rm1e51vvuWi5PD0aUzB6riwUc0RHiNLzX2icrOj1QlxhT160vLGdeI7kKAa8SPKjFF
-         sDVqChsmZDbL9OzqlNfxuBj2vskJWGQuLrR9suvobKVpLBo7rCc2yiGgQVFsHZ+u12ee
-         hzOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=I4B/Re/hgNqBwoAAuBSrak8Ob1EG/go5G8FMWZ/8iMw=;
-        b=r6gFYvdcsIBE0wU6JZh079gGX1c5W9KKY/gKNZfBL7W2mnG70RAxzj5fg43HUyQEN4
-         RSY5vmPvpGtXJXF1ioxwVKhcKrryMRhHSQ9yCnxIR0140gVLpJoqpi5hWZL3GiAuve49
-         UUhji+7uQP8NaR7t91Lt1sfbKZBbK+e6SpTUWWRz1kzubTAImoQNw8aXU5Yd+oBz2/BH
-         X1tMjoV9QEmgQuWQNgFVG5fk56yLIhSeNlihg0c0qBmWN8Qmhe4XAOlA+sPe2Afy2Ngi
-         QhQHFmEcuBaPVl0fdpX349zMpCyaG31dr9xgrN62NHqFzTnf2Byu+vSzitbufFK8pB9t
-         pydg==
-X-Gm-Message-State: APjAAAWhMEpoE22a/aUII6mLgSWHn5vlacQUuiGTn8MXzKK63iJJW7AI
-        DZYccd6FWtwoEB3jfJeBIgYnKA==
-X-Google-Smtp-Source: APXvYqyPUTb5QP78H8diGB3Fh63N1wxdpzeJog8q5e4vIED6xF1NMwYaR+SItIwk4btT8sB8O7bvCw==
-X-Received: by 2002:a19:7b18:: with SMTP id w24mr25909812lfc.48.1574783333424;
-        Tue, 26 Nov 2019 07:48:53 -0800 (PST)
-Received: from uffe-XPS-13-9360.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id s27sm5487465lfc.31.2019.11.26.07.48.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2019 07:48:52 -0800 (PST)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC and MEMSTICK updates for v5.5
-Date:   Tue, 26 Nov 2019 16:48:51 +0100
-Message-Id: <20191126154851.14737-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        id S1726664AbfK0DeZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Nov 2019 22:34:25 -0500
+Received: from mail-eopbgr80040.outbound.protection.outlook.com ([40.107.8.40]:21831
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726346AbfK0DeZ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 26 Nov 2019 22:34:25 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cCOA5+6jrsqsVhKS1l/uiMZ0eRuw2nmyeebHFYK73heXHDmfdC0WZl32hhrS+pNeSwJbFXuWSPBQzRKCMrcuuXdAEw6mfB9bKuCyZfJo3YimYlDrCh3z4Fj0MeJL5lJvIjx7snOtnbltd48h4zPfyi8lB31bM2OwimvNtVCnq0H5qz9qXKYbwFMGcjtnZntNvLJCpGe0hTAmrZA4E4u22gBt/c5R4th5cu20TGvAH/e/4A2T0iZUl2GX17T/WXhksQGVJQC0fog0xKTz64fnGbw1OMmg+NHXPe7knmNTv+ymuFtTIcGrATtUhGxQO5g1x0oRuac3hW3YhRaVXpgeYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BK/8SOb8pYWddTbug/5tc6w+K0vAAXNh7ahhVZKiCrs=;
+ b=Dc1aO8Dzv2ih8p5gLGpvYiSBuJVcSRwCCDGzBgRN3RJF41CH1DESISP4IdfE9ua87qG26MUA9PKIxKDsJ4NTcEzMy17rAltKc2opLHQdRlZclEe9vd+NVK4y2rGjg4Z1+85X+vOMzwdgi8je8sorru6HDaYu/6rssTF3RfsVJMf7lp4A5PAQpRFSi2wi6Irl57QAxj4IeYp7r73U43mG3spvfEJhRoUwxWpP0K4kpIPsWqrMyKfZwXqHkvpGjqwlSrSGNd0Kl1SK727RK5bMT/XOLwWKVvxUDD9Oqq3fIPovCPICbxdq18ByjbX9H4iSbxVVvrsZKONlBpopBJUfLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BK/8SOb8pYWddTbug/5tc6w+K0vAAXNh7ahhVZKiCrs=;
+ b=s3i6x52ZWhVlVnJQxUtl2iSzGsTMkkcqY5cSDZlJYcw5hOcmmCogOpysloNuUBcdtGrj+HMIM0LA/jxez7JI8SAPe3atEjlyVWfLBu4pZhEONO7LZp6OmFsgv1ID7WmpxGREWjHTIlfGreMvpso8kJfj7JqIw4Twuu6kwpttayA=
+Received: from VI1PR04MB5040.eurprd04.prod.outlook.com (20.177.52.24) by
+ VI1PR04MB6880.eurprd04.prod.outlook.com (52.133.244.206) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2495.17; Wed, 27 Nov 2019 03:33:41 +0000
+Received: from VI1PR04MB5040.eurprd04.prod.outlook.com
+ ([fe80::c5f3:ba8e:2b17:1f28]) by VI1PR04MB5040.eurprd04.prod.outlook.com
+ ([fe80::c5f3:ba8e:2b17:1f28%5]) with mapi id 15.20.2474.023; Wed, 27 Nov 2019
+ 03:33:41 +0000
+From:   BOUGH CHEN <haibo.chen@nxp.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
+CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>
+Subject: RE: [PATCH 02/14] mmc: sdhci: clear DMA_SEL before sending tuning
+ command for Standard tuning
+Thread-Topic: [PATCH 02/14] mmc: sdhci: clear DMA_SEL before sending tuning
+ command for Standard tuning
+Thread-Index: AQHVm6VDfO4nxXCd8ESl3h3o+2qsn6edajOAgAEEjfA=
+Date:   Wed, 27 Nov 2019 03:33:41 +0000
+Message-ID: <VI1PR04MB504017A4108A3C994B29C43390440@VI1PR04MB5040.eurprd04.prod.outlook.com>
+References: <1573816075-26390-1-git-send-email-haibo.chen@nxp.com>
+ <1573816075-26390-2-git-send-email-haibo.chen@nxp.com>
+ <4cc20a77-24c9-1425-3059-32839113b62a@intel.com>
+In-Reply-To: <4cc20a77-24c9-1425-3059-32839113b62a@intel.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=haibo.chen@nxp.com; 
+x-originating-ip: [119.31.174.71]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: d5da2b3b-904a-41ea-682f-08d772ea9946
+x-ms-traffictypediagnostic: VI1PR04MB6880:|VI1PR04MB6880:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VI1PR04MB688095A8C668DBDF4A98B7A290440@VI1PR04MB6880.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-forefront-prvs: 023495660C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(136003)(39860400002)(346002)(376002)(396003)(13464003)(189003)(199004)(478600001)(66066001)(102836004)(8936002)(99286004)(66556008)(76116006)(66946007)(7696005)(76176011)(66476007)(71200400001)(229853002)(2501003)(6506007)(5660300002)(71190400001)(6116002)(3846002)(53546011)(256004)(14444005)(11346002)(52536014)(446003)(81156014)(8676002)(186003)(9686003)(81166006)(14454004)(33656002)(64756008)(305945005)(54906003)(110136005)(55016002)(74316002)(2906002)(7736002)(86362001)(6246003)(66446008)(25786009)(4326008)(6436002)(316002)(26005);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR04MB6880;H:VI1PR04MB5040.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: IrJUf2Uw5m+WgMNdhc0zOLRtCzs1FsPY/TXv2fzI5FOLa7DsbVga0abh/5aqtXgkmYqBN31IgE5sC3d5B1ZwGWnG9A8wU3ywN7Z3Vw//+XgrONiXYYpv5SKnYBjDzzvdP2zGWtRRUft1wvwnuPt/ud3rf5VURK5E+2TFP6wJvEZt1herARxddg6hUbIzPEAY8V6Nd9NV0HXPGnMST3yfvMts6Hb1qfogyMO0xIJZadl+5nnhTOHVW67RYSJTdKV2iozKH1BtyzlxD1NXRMK5g7pInX8n2hOZdzdsR9fB+iITPDc2LuLnBpDNqhK2Y3xP6fUMVlzSB/bTUZGTzqwvoCjtQpT7xRC89Nh2YGru+AE3mWwNw88g49JoOYQfuseetC1BZ2500GSZmy3fzCflD2G7iXqAISTxXLV1e7v1A3sbEqGK3F1IwJ1GYAc0t7Rw
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5da2b3b-904a-41ea-682f-08d772ea9946
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Nov 2019 03:33:41.4483
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: wms9X8PaPAfQr8NoLM+iVKzc/8Ye/tDPcoAbo05jluHp2Qj11G0jftyAcuManDbUfmd9GFh36/dkBquNpPWmnw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6880
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
-
-Here's the PR with updates for MMC and MEMSTICK for v5.5. Details about the
-highlights are as usual found in the signed tag.
-
-However, note at this time the PR contains quite some additional changes
-reaching beyond both the MMC and MEMSTICK subsystems. This is primarily because
-of fixing an old regression for a WiFi driver based on the SDIO interface on an
-OMAP openpandora board.
-
-I haven't noticed any reports about merge conflicts in linux-next, but just let
-me know if you encounter any issues.
-
-Please pull this in!
-
-Kind regards
-Ulf Hansson
-
-
-The following changes since commit fed23c5829ecab4ddc712d7b0046e59610ca3ba4:
-
-  mmc: sdhci-of-at91: fix quirk2 overwrite (2019-11-14 14:57:53 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.5
-
-for you to fetch changes up to def7bd940f8cceb41ec3d1383acd8ab937056dcb:
-
-  dt-bindings: mmc: Correct the type of the clk phase properties (2019-11-22 08:43:43 +0100)
-
-----------------------------------------------------------------
-MMC core:
- - Add CMD13 polling for MMC IOCTLS with R1B response.
- - Add common DT properties for clk-phase-delays for various speed modes.
- - Fix size overflow for mmc gp-partitions.
- - Re-work HW reset for SDIO cards, which also includes a re-work for
-   Marvell's WiFi mwifiex SDIO func driver.
-
-MMC host:
- - jz4740: Add support for X1000 and JZ4760.
- - jz4740: Add support for 8-bit bus and for low power mode.
- - mmci: Add support for HW busy timeout for the stm32_sdmmc variant.
- - owl-mmc: Add driver for Actions Semi Owl SoCs SD/MMC controller.
- - renesas_sdhi: Add support for r8a774b1.
- - sdhci_am654: Add support for Command Queuing Engine for J721E.
- - sdhci-milbeaut: Add driver for the Milbeaut SD controller.
- - sdhci-of-arasan: Add support for ZynqMP tap-delays.
- - sdhci-of-arasan: Add support for clk-phase-delays for SD cards.
- - sdhci-of-arasan: Add support for Intel LGM SDXC.
- - sdhci-of-aspeed: Allow inversion of the internal card detect signal.
- - sdhci-of-esdhc: Fixup workaround for erratum A-008171 for tunings.
- - sdhci-of-at91: Improve support for calibration.
- - sdhci-pci: Add support for Intel JSL.
- - sdhci-pci: Add quirk for AMD SDHC Device 0x7906.
- - tmio: Enable support for erase/discard/trim requests.
-
-MMC/OMAP/pandora/wl1251:
-The TI wl1251 WiFi driver for SDIO on the OMAP openpandora board has been
-broken since v4.7. To fix the problems, changes have been made cross
-subsystems, but also to OMAP2 machine code and to openpandora DTS files, as
-summarized below. Note that, relevant changes have been tagged for stable.
-
- - mmc/wl1251: Re-introduce lost SDIO quirks and vendor-id for wl1251
- - omap/omap_hsmmc: Remove redundant platform config for openpandora
- - omap_hsmmc: Initialize non-std SDIO card for wl1251 for pandora
- - omap/dts/pandora: Specify wl1251 through a child node of mmc3
- - wl1251: Add devicetree support for TI wl1251 SDIO
-
-----------------------------------------------------------------
-Adrian Hunter (1):
-      mmc: sdhci-pci: Add support for Intel JSL
-
-Ben Dooks (2):
-      mmc: mmci: make unexported functions static
-      mmc: mmci: stm32: make sdmmc_idma_validate_data static
-
-Biju Das (2):
-      dt-bindings: mmc: renesas_sdhi: Add r8a774b1 support
-      mmc: renesas_sdhi_internal_dmac: Add r8a774b1 support
-
-Bradley Bolen (1):
-      mmc: core: Fix size overflow for mmc partitions
-
-Chaotian Jing (2):
-      mmc: block: Make card_busy_detect() a bit more generic
-      mmc: block: Add CMD13 polling for MMC IOCTLS with R1B response
-
-Colin Ian King (2):
-      memstick: jmb38x_ms: clean up indentation issue
-      mmc: dw_mmc: fix indentation issue
-
-Eugeniu Rosca (1):
-      mmc: tmio: Add MMC_CAP_ERASE to allow erase/discard/trim requests
-
-Fabio Estevam (1):
-      mmc: sdhci: Fix grammar in warning message
-
-Faiz Abbas (1):
-      mmc: sdhci_am654: Add Support for Command Queuing Engine to J721E
-
-H. Nikolaus Schaller (12):
-      Documentation: dt: wireless: update wl1251 for sdio
-      net: wireless: ti: wl1251 add device tree support
-      ARM: dts: pandora-common: define wl1251 as child node of mmc3
-      mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid of pandora_wl1251_init_card
-      omap: pdata-quirks: revert pandora specific gpiod additions
-      omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
-      omap: remove omap2_hsmmc_info in old hsmmc.[ch] and update Makefile
-      mmc: host: omap-hsmmc: remove init_card pdata callback from pdata
-      mmc: sdio: fix wl1251 vendor id
-      mmc: core: fix wl1251 sdio quirks
-      net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
-      net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
-
-Ivan Mikhaylov (2):
-      mmc: sdhci-of-aspeed: enable CONFIG_MMC_SDHCI_IO_ACCESSORS
-      mmc: sdhci-of-aspeed: add inversion signal presence
-
-Krzysztof Kozlowski (1):
-      memstick: Fix Kconfig indentation
-
-Ludovic Barre (3):
-      mmc: mmci: add hardware busy timeout feature
-      mmc: mmci: add busy_complete callback
-      mmc: mmci: sdmmc: add busy_complete callback
-
-Manish Narani (9):
-      mmc: sdhci-of-arasan: Separate out clk related data to another structure
-      dt-bindings: mmc: arasan: Update Documentation for the input clock
-      mmc: sdhci-of-arasan: Add sampling clock for a phy to use
-      dt-bindings: mmc: Add optional generic properties for mmc
-      mmc: sdhci-of-arasan: Add support to set clock phase delays for SD
-      firmware: xilinx: Add SDIO Tap Delay nodes
-      dt-bindings: mmc: arasan: Document 'xlnx,zynqmp-8.9a' controller
-      mmc: sdhci-of-arasan: Add support for ZynqMP Platform Tap Delays Setup
-      dt-bindings: mmc: Correct the type of the clk phase properties
-
-Manivannan Sadhasivam (3):
-      dt-bindings: mmc: Add Actions Semi SD/MMC/SDIO controller binding
-      mmc: Add Actions Semi Owl SoCs SD/MMC driver
-      MAINTAINERS: Add entry for Actions Semi SD/MMC driver and binding
-
-Markus Elfring (1):
-      mmc: cavium-octeon: Use devm_platform_ioremap_resource()
-
-Nicolas Ferre (2):
-      dt-bindings: sdhci-of-at91: add the microchip,sdcal-inverted property
-      mmc: sdhci-of-at91: add DT property to enable calibration on full reset
-
-Peng Fan (1):
-      dt-bindings: mmc: fsl-imx-esdhc: add imx8m compatible string
-
-Peter Ujfalusi (2):
-      mmc: atmel-mci: Use dma_request_chan() directly for channel request
-      mmc: moxart: Use dma_request_chan() directly for channel request
-
-Ramuthevar Vadivel Murugan (2):
-      dt-bindings: mmc: sdhci-of-arasan: Add new compatible for Intel LGM SDXC
-      mmc: sdhci-of-arasan: Add Support for Intel LGM SDXC
-
-Raul E Rangel (2):
-      mmc: sdhci: Check card status after reset
-      mmc: sdhci-pci: Quirk for AMD SDHC Device 0x7906
-
-Saiyam Doshi (1):
-      mmc: bcm2835: Use devm_platform_ioremap_resource wrapper
-
-Takao Orito (2):
-      dt-bindings: mmc: add DT bindings for Milbeaut SD controller
-      mmc: sdhci-milbeaut: add Milbeaut SD controller driver
-
-Thierry Reding (1):
-      mmc: mmc_spi: Use proper debounce time for CD GPIO
-
-Ulf Hansson (6):
-      mmc: vub300: Drop redundant host ops ->init_card()
-      MAINTAINERS: Mark vub300 mmc driver as orphan
-      mwifiex: Re-work support for SDIO HW reset
-      mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
-      mmc: core: Re-work HW reset for SDIO cards
-      Merge branch 'fixes' into next
-
-Wolfram Sang (2):
-      mmc: tmio: remove workaround for NON_REMOVABLE
-      Revert "mmc: tmio: remove workaround for NON_REMOVABLE"
-
-Yangbo Lu (2):
-      mmc: sdhci-of-esdhc: poll ESDHC_FLUSH_ASYNC_FIFO bit until completion
-      mmc: sdhci-of-esdhc: fix up erratum A-008171 workaround
-
-Zhou Yanjie (6):
-      mmc: jz4740: Add 8bit mode support
-      dt-bindings: mmc: jz4740: Add bindings for JZ4760
-      mmc: jz4740: Add support for JZ4760
-      dt-bindings: mmc: jz4740: Add bindings for X1000
-      mmc: jz4740: Add support for X1000
-      mmc: jz4740: Add support for Low Power Mode (LPM)
-
-zhengbin (1):
-      mmc: sdhci-pci: Make function amd_sdhci_reset static
-
- .../devicetree/bindings/mmc/arasan,sdhci.txt       |  42 +-
- .../devicetree/bindings/mmc/fsl-imx-esdhc.txt      |   3 +
- Documentation/devicetree/bindings/mmc/jz4740.txt   |   8 +-
- .../devicetree/bindings/mmc/mmc-controller.yaml    |  14 +
- Documentation/devicetree/bindings/mmc/owl-mmc.yaml |  59 ++
- .../devicetree/bindings/mmc/renesas,sdhi.txt       |   1 +
- .../devicetree/bindings/mmc/sdhci-atmel.txt        |   5 +
- .../devicetree/bindings/mmc/sdhci-milbeaut.txt     |  30 +
- .../devicetree/bindings/net/wireless/ti,wl1251.txt |  26 +
- MAINTAINERS                                        |   6 +-
- arch/arm/boot/dts/omap3-pandora-common.dtsi        |  36 +-
- arch/arm/mach-omap2/Makefile                       |   3 -
- arch/arm/mach-omap2/common.h                       |   1 -
- arch/arm/mach-omap2/hsmmc.c                        | 171 -----
- arch/arm/mach-omap2/hsmmc.h                        |  32 -
- arch/arm/mach-omap2/pdata-quirks.c                 | 105 ----
- drivers/memstick/core/Kconfig                      |  18 +-
- drivers/memstick/host/Kconfig                      |   4 +-
- drivers/memstick/host/jmb38x_ms.c                  |  12 +-
- drivers/mmc/core/block.c                           | 151 ++---
- drivers/mmc/core/core.c                            |  12 +-
- drivers/mmc/core/core.h                            |   2 +
- drivers/mmc/core/mmc.c                             |   9 +-
- drivers/mmc/core/quirks.h                          |   7 +
- drivers/mmc/core/sdio.c                            |  28 +-
- drivers/mmc/core/sdio_bus.c                        |   9 +-
- drivers/mmc/host/Kconfig                           |  21 +
- drivers/mmc/host/Makefile                          |   2 +
- drivers/mmc/host/atmel-mci.c                       |   3 +-
- drivers/mmc/host/bcm2835.c                         |   4 +-
- drivers/mmc/host/cavium-octeon.c                   |  15 +-
- drivers/mmc/host/dw_mmc.c                          |   4 +-
- drivers/mmc/host/jz4740_mmc.c                      |  41 +-
- drivers/mmc/host/mmc_spi.c                         |   2 +-
- drivers/mmc/host/mmci.c                            | 198 +++---
- drivers/mmc/host/mmci.h                            |   5 +
- drivers/mmc/host/mmci_stm32_sdmmc.c                |  46 +-
- drivers/mmc/host/moxart-mmc.c                      |   4 +-
- drivers/mmc/host/omap_hsmmc.c                      |  31 +-
- drivers/mmc/host/owl-mmc.c                         | 696 +++++++++++++++++++++
- drivers/mmc/host/renesas_sdhi_internal_dmac.c      |   1 +
- drivers/mmc/host/sdhci-esdhc.h                     |  14 +
- drivers/mmc/host/sdhci-milbeaut.c                  | 362 +++++++++++
- drivers/mmc/host/sdhci-of-arasan.c                 | 493 ++++++++++++++-
- drivers/mmc/host/sdhci-of-aspeed.c                 |  12 +
- drivers/mmc/host/sdhci-of-at91.c                   |  19 +
- drivers/mmc/host/sdhci-of-esdhc.c                  | 257 ++++++--
- drivers/mmc/host/sdhci-pci-core.c                  |  53 +-
- drivers/mmc/host/sdhci-pci.h                       |   2 +
- drivers/mmc/host/sdhci.c                           |  15 +-
- drivers/mmc/host/sdhci_am654.c                     |  71 ++-
- drivers/mmc/host/sdhci_f_sdh30.c                   |  26 +-
- drivers/mmc/host/sdhci_f_sdh30.h                   |  32 +
- drivers/mmc/host/tmio_mmc_core.c                   |   2 +-
- drivers/mmc/host/vub300.c                          |   7 -
- drivers/net/wireless/marvell/mwifiex/main.c        |   5 +-
- drivers/net/wireless/marvell/mwifiex/main.h        |   1 +
- drivers/net/wireless/marvell/mwifiex/sdio.c        |  33 +-
- drivers/net/wireless/ti/wl1251/sdio.c              |  25 +-
- drivers/net/wireless/ti/wlcore/sdio.c              |   8 -
- include/linux/firmware/xlnx-zynqmp.h               |  13 +-
- include/linux/mmc/card.h                           |   3 +-
- include/linux/mmc/sdio_ids.h                       |   2 +
- include/linux/platform_data/hsmmc-omap.h           |   3 -
- 64 files changed, 2631 insertions(+), 694 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mmc/owl-mmc.yaml
- create mode 100644 Documentation/devicetree/bindings/mmc/sdhci-milbeaut.txt
- delete mode 100644 arch/arm/mach-omap2/hsmmc.c
- delete mode 100644 arch/arm/mach-omap2/hsmmc.h
- create mode 100644 drivers/mmc/host/owl-mmc.c
- create mode 100644 drivers/mmc/host/sdhci-milbeaut.c
- create mode 100644 drivers/mmc/host/sdhci_f_sdh30.h
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFkcmlhbiBIdW50ZXIgPGFk
+cmlhbi5odW50ZXJAaW50ZWwuY29tPg0KPiBTZW50OiAyMDE55bm0MTHmnIgyNuaXpSAxOTo1OA0K
+PiBUbzogQk9VR0ggQ0hFTiA8aGFpYm8uY2hlbkBueHAuY29tPjsgdWxmLmhhbnNzb25AbGluYXJv
+Lm9yZw0KPiBDYzogbGludXgtbW1jQHZnZXIua2VybmVsLm9yZzsgZGwtbGludXgtaW14IDxsaW51
+eC1pbXhAbnhwLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCAwMi8xNF0gbW1jOiBzZGhjaTog
+Y2xlYXIgRE1BX1NFTCBiZWZvcmUgc2VuZGluZyB0dW5pbmcNCj4gY29tbWFuZCBmb3IgU3RhbmRh
+cmQgdHVuaW5nDQo+IA0KPiBPbiAxNS8xMS8xOSAxOjA3IFBNLCBoYWliby5jaGVuQG54cC5jb20g
+d3JvdGU6DQo+ID4gRnJvbTogSGFpYm8gQ2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPg0KPiA+DQo+
+ID4gQ3VycmVudGx5LCB3aGVuIHVzZSBzdGFuZGFyZCB0dW5pbmcsIGRyaXZlciBkZWZhdWx0IGRp
+c2FibGUgRE1BIGp1c3QNCj4gPiBiZWZvcmUgc2VuZCB0dW5pbmcgY29tbWFuZC4gQnV0IG9uIGku
+TVg4IHVzZGhjLCB0aGlzIGlzIG5vdCBlbm91Z2guDQo+ID4gTmVlZCBhbHNvIGNsZWFyIERNQV9T
+RUwuIElmIG5vdCwgb25jZSB0aGUgRE1BX1NFTCBzZWxlY3QgQU1EQTIgYmVmb3JlLA0KPiA+IGV2
+ZW4gZG1hIGFscmVhZHkgZGlzYWJsZWQsIHdoZW4gc2VuZCB0dW5pbmcgY29tbWFuZCwgdXNkaGMg
+d2lsbCBzdGlsbA0KPiA+IHByZWZldGNoIHRoZSBBRE1BIHNjcmlwdCBmcm9tIHdyb25nIERNQSBh
+ZGRyZXNzLCB0aGVuIHdlIHdpbGwgc2VlDQo+ID4gSU9NTVUgcmVwb3J0IHNvbWUgZXJyb3Igd2hp
+Y2ggc2hvdyBsYWNrIG9mIFRMQiBtYXBwaW5nLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSGFp
+Ym8gQ2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL21tYy9o
+b3N0L3NkaGNpLmMgfCAxMiArKysrKysrKysrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDEyIGlu
+c2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21tYy9ob3N0L3NkaGNp
+LmMgYi9kcml2ZXJzL21tYy9ob3N0L3NkaGNpLmMgaW5kZXgNCj4gPiA2OGRiODZjMWI0YzkuLjE0
+MzZjYzljNWY4MiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL21tYy9ob3N0L3NkaGNpLmMNCj4g
+PiArKysgYi9kcml2ZXJzL21tYy9ob3N0L3NkaGNpLmMNCj4gPiBAQCAtMjM2MSw2ICsyMzYxLDcg
+QEAgdm9pZCBzZGhjaV9zZW5kX3R1bmluZyhzdHJ1Y3Qgc2RoY2lfaG9zdCAqaG9zdCwNCj4gdTMy
+IG9wY29kZSkNCj4gPiAgCXN0cnVjdCBtbWNfcmVxdWVzdCBtcnEgPSB7fTsNCj4gPiAgCXVuc2ln
+bmVkIGxvbmcgZmxhZ3M7DQo+ID4gIAl1MzIgYiA9IGhvc3QtPnNkbWFfYm91bmRhcnk7DQo+ID4g
+Kwl1OCBjdHJsOw0KPiA+DQo+ID4gIAlzcGluX2xvY2tfaXJxc2F2ZSgmaG9zdC0+bG9jaywgZmxh
+Z3MpOw0KPiA+DQo+ID4gQEAgLTIzODgsNiArMjM4OSwxNyBAQCB2b2lkIHNkaGNpX3NlbmRfdHVu
+aW5nKHN0cnVjdCBzZGhjaV9ob3N0ICpob3N0LA0KPiB1MzIgb3Bjb2RlKQ0KPiA+ICAJICovDQo+
+ID4gIAlzZGhjaV93cml0ZXcoaG9zdCwgU0RIQ0lfVFJOU19SRUFELCBTREhDSV9UUkFOU0ZFUl9N
+T0RFKTsNCj4gPg0KPiA+ICsNCj4gPiArCS8qIERNQSBhbHJlYWR5IGRpc2FibGVkLCBzbyBjbGVh
+ciB0aGUgRE1BIFNlbGVjdCBoZXJlLg0KPiA+ICsJICogT3RoZXJ3aXNlLCBpZiB1c2UgQURNQTIs
+IGV2ZW4gZGlzYWJsZSBETUEsIHNvbWUNCj4gPiArCSAqIGNvbnRyb2xsZXJzIGxpa2UgaS5NWCB1
+c2RoYyB3aWxsIHN0aWxsIHByZWZldGNoIHRoZQ0KPiA+ICsJICogQURNQSBzY3JpcHQgd2hlbiBz
+ZW5kIHR1bmluZyBjb21tYW5kLCB3aGljaCB3aWxsIGNhdXNlDQo+ID4gKwkgKiBJT01NVSByZXBv
+cnQgbGFjayBvZiBUTEIgbWFwcGluZyBlcnJvcg0KPiA+ICsJICovDQo+ID4gKwljdHJsID0gc2Ro
+Y2lfcmVhZGIoaG9zdCwgU0RIQ0lfSE9TVF9DT05UUk9MKTsNCj4gPiArCWN0cmwgJj0gflNESENJ
+X0NUUkxfRE1BX01BU0s7DQo+IA0KPiBWYWx1ZSB6ZXJvIGlzIFNETUEsIHNvIHRoaXMgZG9lcyBu
+b3QgbG9vayBsaWtlIGEgZ2VuZXJpYyBzZGhjaSBjaGFuZ2UuICBXaGF0DQo+IGFib3V0IGRvaW5n
+IGl0IGluIHNkaGNpLWVzZGhjLWlteC5jIGJlZm9yZSBleGVjdXRpbmcgdHVuaW5nPw0KPiANCk9r
+YXksIHRoZSB2YWx1ZSB6ZXJvIGZvciBpLm14IHVzZGhjIG1lYW5zICJObyBETUEgb3IgU2ltcGxl
+IERNQSBpcyBzZWxlY3RlZCIsIGEgbGl0dGxlIGJpdCBkaWZmZXJlbnQgd2l0aCBnZW5lcmljIHNk
+aGNpIGRlZmluaXRpb24uDQpJIHdpbGwgYWRkIHRoaXMgY2hhbmdlIGluIHNkaGNpLWVzZGhjLWlt
+eC5jIGluIFYyIHBhdGNoLiANClRoYW5rcyENCg0KSGFpYm8gQ2hlbg0KDQoNCj4gPiArCXNkaGNp
+X3dyaXRlYihob3N0LCBjdHJsLCBTREhDSV9IT1NUX0NPTlRST0wpOw0KPiA+ICsNCj4gPiAgCXNk
+aGNpX3NlbmRfY29tbWFuZChob3N0LCAmY21kKTsNCj4gPg0KPiA+ICAJaG9zdC0+Y21kID0gTlVM
+TDsNCj4gPg0KDQo=
