@@ -2,79 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AFC610C800
-	for <lists+linux-mmc@lfdr.de>; Thu, 28 Nov 2019 12:34:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C265010C879
+	for <lists+linux-mmc@lfdr.de>; Thu, 28 Nov 2019 13:17:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726594AbfK1Le2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 28 Nov 2019 06:34:28 -0500
-Received: from mga06.intel.com ([134.134.136.31]:33397 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726227AbfK1Le2 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 28 Nov 2019 06:34:28 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Nov 2019 03:34:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,253,1571727600"; 
-   d="scan'208";a="207167586"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.70]) ([10.237.72.70])
-  by fmsmga007.fm.intel.com with ESMTP; 28 Nov 2019 03:34:25 -0800
-Subject: Re: [PATCH] Revert "mmc: sdhci: Fix incorrect switch to HS mode"
-To:     Faiz Abbas <faiz_abbas@ti.com>, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-Cc:     ulf.hansson@linaro.org, alcooperx@gmail.com
-References: <20191128110422.25917-1-faiz_abbas@ti.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <3f3cd789-55a7-dee8-593c-6eb208877dd6@intel.com>
-Date:   Thu, 28 Nov 2019 13:33:29 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726561AbfK1MRC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 28 Nov 2019 07:17:02 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:57640 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726227AbfK1MRC (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 Nov 2019 07:17:02 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xASCEURn041078;
+        Thu, 28 Nov 2019 12:15:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=K23tF4ZOTDK2mqDQjS6SPO2vyRMwZ30j/1NOK4W0JhU=;
+ b=U899dvbj2nf503rUrhC7bjlnabTEc8CnGq3kxTbIN9FQZZ7PaHselctxJP0PdlYJaLh1
+ MtUr7y3iYlfnHUUoy7vW84HeRpysuJAHISh6hp36cHyPZ8CrfKPoUBbZerKOHfreJwJl
+ 7UyhVeXac0Z2hHde+5XqVvg+llnJGS44sBpSHGrgmhKkhT/zKgScPs5ijVSg3N9rSZEt
+ 0MpHQyi4PugxpNgdpMGeUxSXJyw4X+sETczYGhlCdIvjimklQs6DGtd17fc/S8IXirJi
+ TkpL89TnxKaDyZDfgmvkf9es+AiGbWfo8LmUTCQ6BreW71hxMJ8MdO+fmzWmLT2jn2tT Pg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2wevqqkbnc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 28 Nov 2019 12:15:20 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xASCEOYE100925;
+        Thu, 28 Nov 2019 12:15:19 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2why49ykr4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 28 Nov 2019 12:15:19 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xASCFD2B023073;
+        Thu, 28 Nov 2019 12:15:14 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 28 Nov 2019 04:15:12 -0800
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Hannes Reinecke <hare@suse.de>, Arnd Bergmann <arnd@arndb.de>,
+        "\(Exiting\) Baolin Wang" <baolin.wang@linaro.org>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Lyra Zhang <zhang.lyra@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Hannes Reinecke <hare@suse.com>,
+        linux-block <linux-block@vger.kernel.org>,
+        Paolo Valente <paolo.valente@linaro.org>
+Subject: Re: [PATCH v6 0/4] Add MMC software queue support
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <cover.1573456283.git.baolin.wang@linaro.org>
+        <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
+        <CAMz4kuK9HEuGdhNqHO_qoy9jD=ccsPPhD_dKYwNRgQyWyYwqRA@mail.gmail.com>
+        <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
+        <CADBw62pzV+5ZXBEbFvTQJ9essAd4cd7Xkz5j9AXB5rAQy0wLqA@mail.gmail.com>
+        <CAMz4kuK_3q4JY1vNXe6zGHDNF8Ep-SkcUq6Z25r790VSz4+Bjw@mail.gmail.com>
+        <CAK8P3a11vJb1riYseqPnF_5SuJA+YnYuGwC0XWx6_rk+eQ0Bmw@mail.gmail.com>
+        <f88856aa-9175-2a93-3747-c98215cb79c3@suse.de>
+        <20191127090023.GA23040@infradead.org>
+Date:   Thu, 28 Nov 2019 07:15:09 -0500
+In-Reply-To: <20191127090023.GA23040@infradead.org> (Christoph Hellwig's
+        message of "Wed, 27 Nov 2019 01:00:23 -0800")
+Message-ID: <yq1v9r46vua.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20191128110422.25917-1-faiz_abbas@ti.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9454 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=949
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911280108
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9454 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911280108
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 28/11/19 1:04 PM, Faiz Abbas wrote:
-> This reverts commit c894e33ddc1910e14d6f2a2016f60ab613fd8b37.
-> 
-> This commit aims to treat SD High speed and SDR25 as the same while
-> setting UHS Timings in HOST_CONTROL2 which leads to failures with some
-> SD cards in AM65x. Revert this commit.
-> 
-> The issue this commit was trying to fix can be implemented in a platform
-> specific callback instead of common sdhci code.
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Christoph,
 
-> ---
->  drivers/mmc/host/sdhci.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index 3140fe2e5dba..296d955ede59 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -1882,9 +1882,7 @@ void sdhci_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
->  		ctrl_2 |= SDHCI_CTRL_UHS_SDR104;
->  	else if (timing == MMC_TIMING_UHS_SDR12)
->  		ctrl_2 |= SDHCI_CTRL_UHS_SDR12;
-> -	else if (timing == MMC_TIMING_SD_HS ||
-> -		 timing == MMC_TIMING_MMC_HS ||
-> -		 timing == MMC_TIMING_UHS_SDR25)
-> +	else if (timing == MMC_TIMING_UHS_SDR25)
->  		ctrl_2 |= SDHCI_CTRL_UHS_SDR25;
->  	else if (timing == MMC_TIMING_UHS_SDR50)
->  		ctrl_2 |= SDHCI_CTRL_UHS_SDR50;
-> 
+> equivalent to SCSI logical units and nvme namespace, just with a
+> pretty idiotic design decision that only allows I/O to one of them at
+> a time.  The block layer way to deal with them is to use a shared
+> tagset for multiple request queues, which doesn't use up a whole lot
+> of resources.  The only hard part is the draining when switching
+> between partitions, and there is no really nice way to deal with that.
+> If requests are batched enough we could just drain and switch every
+> time an other partition access comes in.
 
+This mirrors single_lun in SCSI closely. I was hoping we could
+eventually get rid of that travesty but if MMC needs something similar,
+maybe it would be good to move that plumbing to block?
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
