@@ -2,77 +2,206 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA83010CC22
-	for <lists+linux-mmc@lfdr.de>; Thu, 28 Nov 2019 16:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01C3310D1DA
+	for <lists+linux-mmc@lfdr.de>; Fri, 29 Nov 2019 08:34:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726401AbfK1Pyd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 28 Nov 2019 10:54:33 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:33608 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726510AbfK1Pyc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 Nov 2019 10:54:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=M7wa2eYP8n8bEo5wUF/1ZUe+1l62DJk2bgC8MhhDcWk=; b=NHjInXez6NpLI5NrOhBl6GRca
-        d5U9QaifWR9l6XE8K3jP15QhlLjODuTN/P0YTkB/00QikEBv5xNvfckbM4Q9AJO5ElbfuYofi6R6Q
-        X1TK7FRKJrkoVx0a4MTdS5rVVROpwH2uEjz4NalPjazU5UynV8y1wVn18yh7YztdwA7tUJTnRQvuw
-        cKxXBF7L1qQdGrYXhQnVKqc9ENF7lf2vbCwgzzg7xQN45HiP4YngQkY48D2kF1j7RH85zqT/3TBPS
-        7e4Vyd7Gr5fWKa3Mp2HdlcrcHdEWknua68ZmedZkNzafuTMygvdXZteMhO4py08gNrT+yvYVacTQm
-        hqvrBbr+Q==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iaM7e-0000I6-6c; Thu, 28 Nov 2019 15:54:26 +0000
-Date:   Thu, 28 Nov 2019 07:54:26 -0800
-From:   Christoph Hellwig <hch@infradead.org>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Hannes Reinecke <hare@suse.de>, Arnd Bergmann <arnd@arndb.de>,
-        "(Exiting) Baolin Wang" <baolin.wang@linaro.org>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Lyra Zhang <zhang.lyra@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Hannes Reinecke <hare@suse.com>,
-        linux-block <linux-block@vger.kernel.org>,
-        Paolo Valente <paolo.valente@linaro.org>
-Subject: Re: [PATCH v6 0/4] Add MMC software queue support
-Message-ID: <20191128155426.GA31042@infradead.org>
-References: <cover.1573456283.git.baolin.wang@linaro.org>
- <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
- <CAMz4kuK9HEuGdhNqHO_qoy9jD=ccsPPhD_dKYwNRgQyWyYwqRA@mail.gmail.com>
- <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
- <CADBw62pzV+5ZXBEbFvTQJ9essAd4cd7Xkz5j9AXB5rAQy0wLqA@mail.gmail.com>
- <CAMz4kuK_3q4JY1vNXe6zGHDNF8Ep-SkcUq6Z25r790VSz4+Bjw@mail.gmail.com>
- <CAK8P3a11vJb1riYseqPnF_5SuJA+YnYuGwC0XWx6_rk+eQ0Bmw@mail.gmail.com>
- <f88856aa-9175-2a93-3747-c98215cb79c3@suse.de>
- <20191127090023.GA23040@infradead.org>
- <yq1v9r46vua.fsf@oracle.com>
+        id S1726889AbfK2Hed (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 29 Nov 2019 02:34:33 -0500
+Received: from a27-11.smtp-out.us-west-2.amazonses.com ([54.240.27.11]:39556
+        "EHLO a27-11.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726360AbfK2Hed (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 29 Nov 2019 02:34:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575012872;
+        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID;
+        bh=rhr7M/9VQSLL9ItyaTuW8gPDFzO9OiKg/pTfRZGl9ZI=;
+        b=pGiAdvShf1ywSsWV4nL+/IGFbc04fRtHhMX/XAsxsnPsBG1Nz/gG/zmJ1ldctHyz
+        kzOt96S5/b20z7GINQao+gwh8X28w5tlWO9RRGhW/wwumjJ5qIoYD0/4R44JlL82/zS
+        PDK+pqkiC8CRMsMuOMEMNHIrm3u6N4/eeXCEfhqo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575012872;
+        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:Feedback-ID;
+        bh=rhr7M/9VQSLL9ItyaTuW8gPDFzO9OiKg/pTfRZGl9ZI=;
+        b=VMlf4bxtgZh3pn7RXe36jmGsEtn3Dc7ECNWHWRRcVw9bZHXCmwlKQZe9dkqR8w5S
+        rPemt/CDkv2i8m/AR0ZdL3UZ+a5u1GmOcXIdzYx4TDelkOeOvbaXSimnmPbanQomMb/
+        imd22SD5cwFZL3oOZqEK0O7A4RzfNyfw7+Qqtlzw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq1v9r46vua.fsf@oracle.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 29 Nov 2019 07:34:32 +0000
+From:   rampraka@codeaurora.org
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Asutosh Das <asutoshd@codeaurora.org>,
+        Sahitya Tummala <stummala@codeaurora.org>,
+        Sayali Lokhande <sayalil@codeaurora.org>,
+        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
+        cang@codeaurora.org, ppvk@codeaurora.org,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-mmc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>, dianders@google.com
+Subject: Re: [RFC 0/6] mmc: Add clock scaling support for mmc driver
+In-Reply-To: <CAPDyKFoZEc-m7NMnaAa5bjtCSp4wyJqic3cLHk95xracoWcCUA@mail.gmail.com>
+References: <1571668177-3766-1-git-send-email-rampraka@codeaurora.org>
+ <CAPDyKFoZEc-m7NMnaAa5bjtCSp4wyJqic3cLHk95xracoWcCUA@mail.gmail.com>
+Message-ID: <0101016eb6152f28-3f0e44c8-2cc5-4ed2-a9a3-f830ef6e3adf-000000@us-west-2.amazonses.com>
+X-Sender: rampraka@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
+X-SES-Outgoing: 2019.11.29-54.240.27.11
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Nov 28, 2019 at 07:15:09AM -0500, Martin K. Petersen wrote:
-> This mirrors single_lun in SCSI closely. I was hoping we could
-> eventually get rid of that travesty but if MMC needs something similar,
-> maybe it would be good to move that plumbing to block?
+Hi Ulf,
 
-Oh, I totally forgot about single_lun.  Given that it is only set
-for ancient CD changers I'm not even sure that code works properly
-anymore.  Having common code that is exercised regularly by mmc would
-certainly be better than the current SCSI code, but I'm not sure how
-well this is going to work out.
+Seems some setting issue with my thunderbird application.
+Sorry for spams, please ignore my last responses as unsupported
+characters got added.
+
+Typing my response again from browser and re-sending.
+
+Thanks,
+Ram
+
+On 2019-10-22 14:10, Ulf Hansson wrote:
+> On Mon, 21 Oct 2019 at 16:30, Ram Prakash Gupta 
+> <rampraka@codeaurora.org> wrote:
+>> 
+>> This change adds the use of devfreq based clock scaling to MMC.
+>> This applicable for eMMC and SDCard.
+>> For some workloads, such as video playback, it isn't necessary
+>> for these cards to run at high speed. Running at lower
+>> frequency, in such cases can still meet the deadlines for data
+>> transfers.
+>> 
+>> Scaling down the clock frequency dynamically has power savings
+>> not only because the bus is running at lower frequency but also
+>> has an advantage of scaling down the system core voltage, if
+>> supported. Provide an ondemand clock scaling support similar
+>> to the cpufreq ondemand governor having two thresholds,
+>> up_threshold and down_threshold to decide whether to increase
+>> the frequency or scale it down respectively as per load.
+> 
+> This sounds simple, but what the series is doing is far more
+> complicated but scaling the bus clock, as it also re-negotiates the
+> bus speed mode.
+> 
+> Each time the triggering point for scaling up/down is hit, then a
+> series of commands needs to be sent to the card, including running the
+> tuning procedure. The point is, for sure, this doesn't come for free,
+> both from a latency point of view, but also from an energy cost point
+> of view. So, whether this really improves the behaviour, seems like
+> very use case sensitive, right!?
+
+Switching modes would incur some latency for sending commands to switch
+modes, but tuning is not needed as most of the emmc devices used now a
+days are with enhanced strobe support, so tuning would not add up any
+latency as it is not required in hs400 enhanced strobe mode.
+
+This feature is implemented for video playback case, where data transfer
+request is less, where this feature helps with saving power consumption.
+
+And when there is burst of data transfer request, load will remain 
+_high_
+so there won't be any switching and hence it won't affect any existing
+use cases from latency point of view.
+
+Also if hw supports to switch clk frequency without changing mode. I 
+will
+make change in code. For this I have seek input from hw team.
+
+ From collected data, I see this feature is helping in saving power
+consumption. And no energy penalty is observed. Please share if I am
+missing any specific. Power saving using this feature is quite good
+and considerable. Please find the data below.
+
+Use Case                             Delta at Battery  Power Impact
+30 fps at HD 1080p decode 20Mbps       10 mA               11%
+30 fps at UHD 8b H.264 42 Mbps         20.93 mA            19%
+
+> 
+> Overall, when it comes to use cases, we have very limited knowledge
+> about them at the mmc block layer level. I think it should remain like
+> that. If at any place at all, this information is better maintained by
+> the generic block layer and potentially the configured I/O scheduler.
+
+I think, generic block layer do not have knowledge of use case for data
+transfer request. And devfreq framework have been used to implement this
+feature, which should be same in any layer.
+
+Also mobile platforms comes mostly with emmc and ufs as storage media.
+And clock scaling is already implemented in upstream ufs driver using
+devfreq framework. On similar line, this feature is implemented for mmc
+driver. So I believe, clk scaling implementation is better placed in mmc
+driver rather in generic block layer.
+
+> 
+> This brings me to a question about the tests you have you run. Can you
+> share some information and data about that?
+
+Test case used are 1080p and 4k video playback use case. As this feature
+is implemented specifically for video playback use case.
+> 
+>> 
+>> 
+>> Ram Prakash Gupta (6):
+>>   mmc: core: Parse clk scaling dt entries
+>>   mmc: core: Add core scaling support in driver
+>>   mmc: core: Initialize clk scaling for mmc and SDCard
+>>   mmc: core: Add debugfs entries for scaling support
+>>   mmc: sdhci-msm: Add capability in platfrom host
+>>   dt-bindings: mmc: sdhci-msm: Add clk scaling dt parameters
+>> 
+>>  .../devicetree/bindings/mmc/sdhci-msm.txt          |  19 +
+> 
+> I noticed that the DT patch was put last in the series, but the
+> parsing is implemented in the first patch. Please flip this around. If
+> you want to implement DT parsing of new bindings, please make sure to
+> discuss the new bindings first.
+
+I will update in next post.
+
+> 
+>>  drivers/mmc/core/block.c                           |  19 +-
+>>  drivers/mmc/core/core.c                            | 777 
+>> +++++++++++++++++++++
+>>  drivers/mmc/core/core.h                            |  17 +
+>>  drivers/mmc/core/debugfs.c                         |  90 +++
+>>  drivers/mmc/core/host.c                            | 226 ++++++
+>>  drivers/mmc/core/mmc.c                             | 246 ++++++-
+>>  drivers/mmc/core/queue.c                           |   2 +
+>>  drivers/mmc/core/sd.c                              |  84 ++-
+>>  drivers/mmc/host/sdhci-msm.c                       |   2 +
+>>  include/linux/mmc/card.h                           |   7 +
+>>  include/linux/mmc/host.h                           |  66 ++
+>>  12 files changed, 1550 insertions(+), 5 deletions(-)
+> 
+> This is a lot of new code in the mmc core, which I would then need to
+> maintain, of course. I have to admit, I am a bit concerned about that,
+> so you have to convince me that there are good reasons for me to apply
+> this.
+> 
+> As I stated above, I think the approach looks quite questionable in
+> general. And even if you can share measurement, that it improves the
+> behaviour, I suspect (without a deeper code review) that some of the
+> code better belongs in common block device layer.
+
+ From the collected power data, I see this as good reason to have this
+feature in mmc driver as number is quite considerable.
+
+For approach, it would be helpful if you share your inputs regarding 
+this
+approach. And as you have stated, this can be further discussed after a
+review from you.
+
+> 
+> Kind regards
+> Uffe
