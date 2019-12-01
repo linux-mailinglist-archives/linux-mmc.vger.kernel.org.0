@@ -2,100 +2,89 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2456A10D31D
-	for <lists+linux-mmc@lfdr.de>; Fri, 29 Nov 2019 10:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6EE610E32A
+	for <lists+linux-mmc@lfdr.de>; Sun,  1 Dec 2019 19:32:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726586AbfK2JSO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 29 Nov 2019 04:18:14 -0500
-Received: from mga05.intel.com ([192.55.52.43]:26108 "EHLO mga05.intel.com"
+        id S1727374AbfLAScB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 1 Dec 2019 13:32:01 -0500
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:8986 "EHLO mtax.cdmx.gob.mx"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726143AbfK2JSO (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 29 Nov 2019 04:18:14 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Nov 2019 01:18:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,257,1571727600"; 
-   d="scan'208";a="384033767"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.95]) ([10.237.72.95])
-  by orsmga005.jf.intel.com with ESMTP; 29 Nov 2019 01:18:12 -0800
-Subject: Re: [PATCH] mmc: sdhci: fix up CMD12 sending
-To:     Yangbo Lu <yangbo.lu@nxp.com>, linux-mmc@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>
-References: <20191114111814.35199-1-yangbo.lu@nxp.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <d16270bd-7d88-2c6e-252c-7df191ef2e59@intel.com>
-Date:   Fri, 29 Nov 2019 11:17:19 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+        id S1727327AbfLAScA (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 1 Dec 2019 13:32:00 -0500
+X-Greylist: delayed 7265 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:32:00 EST
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1575217662; h=DKIM-Filter:X-Virus-Scanned:
+         Content-Type:MIME-Version:Content-Transfer-Encoding:
+         Content-Description:Subject:To:From:Date:Message-Id:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
+         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
+         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
+        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
+        8=; b=FQdX5hnWaeOehFr7iY8WJHAT1H/VxWHxnxPcxghhbnR8
+        oc5K1ApAVmXl4I5QHyor3olcJptr1pnEpG7TEn/R5YQqn8NcQj
+        TABDqoixARL93rEptAzJiTf7ChhvKd0X/70N8+uaHapL0LIfp7
+        5PVZGAb1b4PPizEFIAsJ2OgCeeA=
+Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
+        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
+         id 1dee_667a_c0f71e64_c692_4e92_9901_2d06ba48344f;
+        Sun, 01 Dec 2019 10:27:41 -0600
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id 350F51E27A1;
+        Sun,  1 Dec 2019 10:18:59 -0600 (CST)
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ikeQtVaWhr6o; Sun,  1 Dec 2019 10:18:59 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id B82591E3097;
+        Sun,  1 Dec 2019 10:14:26 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx B82591E3097
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
+        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216866;
+        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Message-Id;
+        b=sOdmwbwyPnZBOQPymSQPLPug3NfStFeOvYAf5bXvd8Jcat1/N6zV5Y487F+InVOR7
+         yZT/bFbA9oPvJtd4GMmuSTs7HgdXWBjdp14ISkZiwDnEgiBJrBgJ82t/cx3cp47yLE
+         0u2KM0mOsIt6daCb5jJHKEcbQ//R/rrm1EjcHsto=
+X-Virus-Scanned: amavisd-new at cdmx.gob.mx
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id pfuLP74L7QgO; Sun,  1 Dec 2019 10:14:26 -0600 (CST)
+Received: from [192.168.0.104] (unknown [188.125.168.160])
+        by cdmx.gob.mx (Postfix) with ESMTPSA id B19F71E32DC;
+        Sun,  1 Dec 2019 10:05:57 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <20191114111814.35199-1-yangbo.lu@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Congratulations
+To:     Recipients <aac-styfe@cdmx.gob.mx>
+From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
+Date:   Sun, 01 Dec 2019 17:05:50 +0100
+Message-Id: <20191201160557.B19F71E32DC@cdmx.gob.mx>
+X-AnalysisOut: [v=2.2 cv=cLaQihWN c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
+X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
+X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
+X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
+X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
+X-SAAS-TrackingID: cf9e3ed5.0.90879898.00-2283.152484044.s12p02m012.mxlogic.net
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
+ <1840193> : uri <2949750>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 14/11/19 1:18 pm, Yangbo Lu wrote:
-> The STOP command is disabled for multiple blocks r/w commands
-> with auto CMD12, when start to send. However, if there is data
-> error, software still needs to send CMD12 according to SD spec.
-> This patch is to allow software CMD12 sending for this case.
-> 
-> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
+Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
+ them with this email for more information =
 
-Sorry for the delay.  This looks good to me.  Sending a STOP command
-on the error path in the auto-CMD12 case should be fine whether it has
-been sent already or not.
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-
-> ---
->  drivers/mmc/host/sdhci.c | 17 +++--------------
->  1 file changed, 3 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index 09cdbe8..3041c39 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -1326,12 +1326,12 @@ static void sdhci_finish_data(struct sdhci_host *host)
->  
->  	/*
->  	 * Need to send CMD12 if -
-> -	 * a) open-ended multiblock transfer (no CMD23)
-> +	 * a) open-ended multiblock transfer not using auto CMD12 (no CMD23)
->  	 * b) error in multiblock transfer
->  	 */
->  	if (data->stop &&
-> -	    (data->error ||
-> -	     !data->mrq->sbc)) {
-> +	    ((!data->mrq->sbc && !sdhci_auto_cmd12(host, data->mrq)) ||
-> +	     data->error)) {
->  		/*
->  		 * 'cap_cmd_during_tfr' request must not use the command line
->  		 * after mmc_command_done() has been called. It is upper layer's
-> @@ -1825,17 +1825,6 @@ void sdhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
->  
->  	sdhci_led_activate(host);
->  
-> -	/*
-> -	 * Ensure we don't send the STOP for non-SET_BLOCK_COUNTED
-> -	 * requests if Auto-CMD12 is enabled.
-> -	 */
-> -	if (sdhci_auto_cmd12(host, mrq)) {
-> -		if (mrq->stop) {
-> -			mrq->data->stop = NULL;
-> -			mrq->stop = NULL;
-> -		}
-> -	}
-> -
->  	if (!present || host->flags & SDHCI_DEVICE_DEAD) {
->  		mrq->cmd->error = -ENOMEDIUM;
->  		sdhci_finish_mrq(host, mrq);
-> 
-
+EMail: allenandvioletlargeaward@gmail.com
