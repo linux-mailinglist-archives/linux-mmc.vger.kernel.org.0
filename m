@@ -2,89 +2,84 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6EE610E32A
-	for <lists+linux-mmc@lfdr.de>; Sun,  1 Dec 2019 19:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FFC310E6D7
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2019 09:20:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727374AbfLAScB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 1 Dec 2019 13:32:01 -0500
-Received: from mtax.cdmx.gob.mx ([187.141.35.197]:8986 "EHLO mtax.cdmx.gob.mx"
+        id S1726024AbfLBIUp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 2 Dec 2019 03:20:45 -0500
+Received: from sauhun.de ([88.99.104.3]:41652 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727327AbfLAScA (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 1 Dec 2019 13:32:00 -0500
-X-Greylist: delayed 7265 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:32:00 EST
-X-NAI-Header: Modified by McAfee Email Gateway (4500)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
-        t=1575217662; h=DKIM-Filter:X-Virus-Scanned:
-         Content-Type:MIME-Version:Content-Transfer-Encoding:
-         Content-Description:Subject:To:From:Date:Message-Id:
-         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
-         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
-         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
-         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
-        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
-        8=; b=FQdX5hnWaeOehFr7iY8WJHAT1H/VxWHxnxPcxghhbnR8
-        oc5K1ApAVmXl4I5QHyor3olcJptr1pnEpG7TEn/R5YQqn8NcQj
-        TABDqoixARL93rEptAzJiTf7ChhvKd0X/70N8+uaHapL0LIfp7
-        5PVZGAb1b4PPizEFIAsJ2OgCeeA=
-Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
-        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
-         id 1dee_667a_c0f71e64_c692_4e92_9901_2d06ba48344f;
-        Sun, 01 Dec 2019 10:27:41 -0600
-Received: from localhost (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTP id 350F51E27A1;
-        Sun,  1 Dec 2019 10:18:59 -0600 (CST)
-Received: from cdmx.gob.mx ([127.0.0.1])
-        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id ikeQtVaWhr6o; Sun,  1 Dec 2019 10:18:59 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTP id B82591E3097;
-        Sun,  1 Dec 2019 10:14:26 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx B82591E3097
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
-        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216866;
-        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
-         From:Date:Message-Id;
-        b=sOdmwbwyPnZBOQPymSQPLPug3NfStFeOvYAf5bXvd8Jcat1/N6zV5Y487F+InVOR7
-         yZT/bFbA9oPvJtd4GMmuSTs7HgdXWBjdp14ISkZiwDnEgiBJrBgJ82t/cx3cp47yLE
-         0u2KM0mOsIt6daCb5jJHKEcbQ//R/rrm1EjcHsto=
-X-Virus-Scanned: amavisd-new at cdmx.gob.mx
-Received: from cdmx.gob.mx ([127.0.0.1])
-        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id pfuLP74L7QgO; Sun,  1 Dec 2019 10:14:26 -0600 (CST)
-Received: from [192.168.0.104] (unknown [188.125.168.160])
-        by cdmx.gob.mx (Postfix) with ESMTPSA id B19F71E32DC;
-        Sun,  1 Dec 2019 10:05:57 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1725977AbfLBIUp (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 2 Dec 2019 03:20:45 -0500
+Received: from localhost (p54B3363C.dip0.t-ipconnect.de [84.179.54.60])
+        by pokefinder.org (Postfix) with ESMTPSA id 048DD2C04A3;
+        Mon,  2 Dec 2019 09:20:41 +0100 (CET)
+Date:   Mon, 2 Dec 2019 09:20:41 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH] mmc: tmio: remove workaround for NON_REMOVABLE
+Message-ID: <20191202082041.GA1266@kunai>
+References: <20190917183652.7310-1-wsa+renesas@sang-engineering.com>
+ <CAMuHMdVYYveVeF4+16vi8zk+0yVZMMJnMvKbLms7CbQ6w00uVg@mail.gmail.com>
+ <20191119204725.GA1454@kunai>
+ <CAMuHMdV+W62MkSRuYZNT0ezOt_KkyStfoeZohu7m1pOP=4a0HQ@mail.gmail.com>
+ <20191121085702.GA1184@ninjato>
+ <CAMuHMdVHN_wVuqFn3UcbFWxGPLxc5TfbMBRAWpptdt9M36JRHQ@mail.gmail.com>
+ <20191121111025.GB1184@ninjato>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Congratulations
-To:     Recipients <aac-styfe@cdmx.gob.mx>
-From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
-Date:   Sun, 01 Dec 2019 17:05:50 +0100
-Message-Id: <20191201160557.B19F71E32DC@cdmx.gob.mx>
-X-AnalysisOut: [v=2.2 cv=cLaQihWN c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
-X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
-X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
-X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
-X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
-X-SAAS-TrackingID: cf9e3ed5.0.90879898.00-2283.152484044.s12p02m012.mxlogic.net
-X-NAI-Spam-Flag: NO
-X-NAI-Spam-Threshold: 3
-X-NAI-Spam-Score: -5000
-X-NAI-Spam-Rules: 1 Rules triggered
-        WHITELISTED=-5000
-X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
- <1840193> : uri <2949750>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+HP7ph2BbKc20aGI"
+Content-Disposition: inline
+In-Reply-To: <20191121111025.GB1184@ninjato>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
- them with this email for more information =
+
+--+HP7ph2BbKc20aGI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
 
-EMail: allenandvioletlargeaward@gmail.com
+> anymore. However, I know have the issue highly reproducible with
+> renesas_defconfig and renesas-drivers. Good!
+
+Bummer, it is not that reproducible :(
+
+Yesterday, I tried latest linus tree which includes Ulf's changes to
+genpd and it worked, even with the NON_REMOVABLE workaround removed
+again. Then I reverted Ulf's changes to double check it made a
+difference, but the SCC still worked. So, I switched back to the
+renesas-drivers tree which used to fail last week, and it sadly works,
+too. Sigh...
+
+I'll move over now to upport the manual calibration mechanism and will
+keep an eye on if/when the SCC fails again...
+
+
+--+HP7ph2BbKc20aGI
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl3kyVUACgkQFA3kzBSg
+Kbb8Ng//cpuz/gHOGJtL0N7KE25TFZYi/XF0rSm0C/cBe1qwRqvL7i0c8V5Na8y2
+2vbynYT4Kiua4ItZOO2n2rjPNX7wpbRaeb7v4+5kYwl/2L8aygQkyHJnQ+264/T4
+gun84f6ZOJaHX6GZSapyr4ed6gYMcDBaF89nygqueo/yRKVcItI7uh9KPjqUzIC4
+KFrpBj/fm1Y6/1UrzTX0fRPUMcdNjgV9RkCH38zw/U94ETRWTDsLgS5lUuIcGOch
+LU2p8viq5qHWiwHXLsZDSFYMTCEp0UsKDp/u69jEUDN2rIaNcwlS3JC640lK8Fss
+ttqGrO1BbqVUBaps2tEiorDyFm4w2IejuRJm9i3ZBCRDKHvZX9CW1/S9gtiqkcxJ
+WjUafDfroB2eFukICTJsRjrslJvsaHI50bwD2hDxaU4nODYHaucU/dJfa8mGpkiQ
+XXS4B/mN2qKbGWsAeA3af9DMO5hUzdsl/3LFc/tGhR6yvv7Vv6g/vtiyi1v8DMR1
+m1qDhy5B0CEqbsRhZ3b3LiHVK6wsIIlQidlvlksqG4BI0jPw58g65sXyJM9nwBlU
+GsA59ZZAmM9a4VLAUO1XboyRqNlZrdvv64XoEl1J2sbO7GDMDyZw0G7Qk5l+D/lO
+T1h/0H2P4wCTqEtso24jCE0towXhliVBoj9a5B1NkgJo79j0IqQ=
+=0/6o
+-----END PGP SIGNATURE-----
+
+--+HP7ph2BbKc20aGI--
