@@ -2,105 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC0A611284A
-	for <lists+linux-mmc@lfdr.de>; Wed,  4 Dec 2019 10:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6DA4112BBA
+	for <lists+linux-mmc@lfdr.de>; Wed,  4 Dec 2019 13:43:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726899AbfLDJre (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 4 Dec 2019 04:47:34 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:38519 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725971AbfLDJre (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 Dec 2019 04:47:34 -0500
-Received: by mail-lj1-f196.google.com with SMTP id k8so7309496ljh.5
-        for <linux-mmc@vger.kernel.org>; Wed, 04 Dec 2019 01:47:32 -0800 (PST)
+        id S1727892AbfLDMnI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 4 Dec 2019 07:43:08 -0500
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:45193 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727874AbfLDMnA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 Dec 2019 07:43:00 -0500
+Received: by mail-qt1-f194.google.com with SMTP id p5so7508025qtq.12
+        for <linux-mmc@vger.kernel.org>; Wed, 04 Dec 2019 04:42:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=G93r9hSvUWxgt3yBIvCkJ+xgQP9VrLAvhpX54ZmMAJo=;
-        b=AbKGkvljSsanuuqNbL4Wo7QDV3/59IVsq0SZDobwuNMXiY6gvqJkMk2QLS268GsqTj
-         ZmhK93i2lrdx0KkZnVlcN0W+fTSqmovil89zzZ7aNeQF6fDfEnSejNV84pAAvO25u4tc
-         ZMaZbzVCll0j27lXFGIbt2uIR6Y7PC9OEP8InkomeajI94SXMs6GXSUuwF9E36Wut50o
-         Lb7DqpXnPIfNxxVNofeb/Lu4IXybhWxPa5Z55kPa5sjSCAF4oOwX6TZoSX9fLeIycF9s
-         /2d4L2iJpINYVon0xkzK7DtS1BQDXKbQ0Ej+2Pg7SPxtCLchkf3KbmjmEAfBTfSQ1iiu
-         hzUA==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
+        b=AkbuvF8WWOeGkFuNbpEiUPeHs0D9XYCrvYJnn3sJBPk0l/N+bAJ+lU7by52a8c0/XL
+         X5y/+uJVi5SRPzgKpD7LZp2RSO63H/dWhNB+Sgv8CnTmnW6HnNvEkrD3pvFKiHue+ji0
+         Cyct4Vs7hozR5hYKDh8cJJMkT72K9aPHj93bK1Ew++bIIM698i5hGwNXpwVN8RyOlTlg
+         ekVZP06isuUhwZwFxkLwU0Sye3HMnEDkq9yUmWZzxA1JTm8RzibEufZxYTJilauyHwzc
+         pKJFDkaXtzzvkeOyU7ajhljX9QykaA8Ur2FHYJunK1Sxosbxld4ODKAYs9j7AB06Aipc
+         jW5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=G93r9hSvUWxgt3yBIvCkJ+xgQP9VrLAvhpX54ZmMAJo=;
-        b=lb0e6salsuwCYxKz+B0aBpN8p3QlqJ8DzW+GOC2KXiIbNfnhXjC4AchF3qpfdveUEi
-         nFaUMTVKJtIypjbBscBXhSfD1lTPjkvtyyqEWIdqGlCk/TkBNITZHkyiYEhLJT7LQMJ4
-         qkpvcBf0Az1afKH5JSuYK9jNNC99sqjIe4m1ds34R8Lfs7/317DxLnoptFZAQxndPMiZ
-         JWqZ8LBYV2GjU3C2QDFVtMWVtj3P/b3bvU6gNgRsBjbAQ3drFd2t8xDxyssx/cep8KrA
-         JmqZLfH60yumIMjiAChee47MK0N0JWXKIz2KCat/779yZVH/4b916Rhn1giBS1MqgQ65
-         K7pQ==
-X-Gm-Message-State: APjAAAW/OF3D+ECHyoY2+9axOfgDFP34QWN/5lm4KHShd+42l43O1ExF
-        NTUmHvxwkV1KyUFX4sxRuU9ozA==
-X-Google-Smtp-Source: APXvYqzdx3vzXl4t5Le6eL6Hu4xLBaLoKktIe7I2Yps7eDUTjAAFSbmTVs4Xx81n+l3XSLCqwJ77hw==
-X-Received: by 2002:a2e:8eda:: with SMTP id e26mr1306713ljl.65.1575452852013;
-        Wed, 04 Dec 2019 01:47:32 -0800 (PST)
-Received: from ?IPv6:2a00:1fa0:6cb:3eec:c491:ac74:fd08:8d43? ([2a00:1fa0:6cb:3eec:c491:ac74:fd08:8d43])
-        by smtp.gmail.com with ESMTPSA id g15sm2211562ljk.8.2019.12.04.01.47.30
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 04 Dec 2019 01:47:31 -0800 (PST)
-Subject: Re: [PATCH 4/5] mmc: renesas_sdhi: remove 4taps as a TMIO flag
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-References: <20191203200513.1758-1-wsa+renesas@sang-engineering.com>
- <20191203200513.1758-5-wsa+renesas@sang-engineering.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <6789764c-0b90-0b0c-eba8-d545ec1b99ee@cogentembedded.com>
-Date:   Wed, 4 Dec 2019 12:47:22 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
+        b=fwG1e6b46JqBVQzqztLzub+sxucAKAh1LAlEkmJWONdsOtknWEu8nv18oOQnhSLOoY
+         QGyFkYH7dSeedCRTKO8CZp+KRHNNjnTkEDhDZV4NyTXJCBMx8Jt/uaX2I1Y1TyISJ9JK
+         B1NpEzQrO6/42PNHuXHKVazpseqLoUvYunE7qYoYMV7kL6jS4UiX2JG94KTvceJxg1A/
+         +PfDIh/4Xqu0q5OQgAcRiGjobPGrTk26Dqs45LIlJXUFnvyYIIcqduXaP4Gyxt32cA+p
+         M6996LigIspgsDJ2Gvl47LdJSdvNcSYHuij7MRjxMEHqppCoe4lzJ/rVCQvQHEyVit0B
+         LnKg==
+X-Gm-Message-State: APjAAAUFafyeL9ojmAjElB9FJkuFpPJqW1WJIZB4PgLGJqcdU44eLi9E
+        KX+gzv2znPtger+PV4YuqOGjnvZZut+22QTO+JU=
+X-Google-Smtp-Source: APXvYqzw3gCG5cnmI6368TWfhjS/+LLSHd6b95oZCOsPTpsAjIN23auDStB1pQ1PTnMah1qk6gl8uYsnTPaZ7k01uH0=
+X-Received: by 2002:ac8:4a81:: with SMTP id l1mr2434940qtq.357.1575463377714;
+ Wed, 04 Dec 2019 04:42:57 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191203200513.1758-5-wsa+renesas@sang-engineering.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ac8:2f0c:0:0:0:0:0 with HTTP; Wed, 4 Dec 2019 04:42:57 -0800 (PST)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
+        <westernunion.benin982@gmail.com>
+Date:   Wed, 4 Dec 2019 13:42:57 +0100
+Message-ID: <CAP=nHBJXiPmPL21x=_0BHWRk_3N3Yax+tTxcFi=t=AhN7g==1Q@mail.gmail.com>
+Subject: God has remembered your prayers I have already sent you Money Gram
+ payment of $5000.00 today, MG 1029-8096
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello!
+Attn, dear Beneficiary.
 
-On 03.12.2019 23:05, Wolfram Sang wrote:
+God has remembered your prayers
+I have already sent you Money Gram payment of $5000.00 today, MG 1029-8096
+This is because we have finally concluded to effect your transfer
+funds of $4.8,000.000usd
+through MONEY GRAM International Fund transfer Service
+Each payment will be sending to you by $5000.00 daily until the
+($4.8,000.000usd) is completely transferred
+we have this morning sent  MONEY GRAM payment of $5,000.00 in your name today
+So contact the MONEY GRAM Agent to pick up this first payment of $5000 now
 
-> Now that the quirks structure is accesible, we can remove the TMIO flag
+Contact person Mrs. Alan Ude
+Dir. MONEY GRAM Service,Benin
+Phone number: +229 98856728
+E-mail: moneygram.1820@outlook.fr
 
-    Accessible?
+Ask him to give you the complete mtcn, sender name, question and
+answer to enable you
+pick up the $5000.00 sent today,
+Also you are instructed to re-confirm your information's
+to Mrs.Alan Ude as listed below to avoid wrong transactions.
 
-> for HS400 using only 4 taps. This is Renesas specific anyhow.
-> 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
->   drivers/mmc/host/renesas_sdhi_core.c | 8 +++-----
->   include/linux/mfd/tmio.h             | 3 ---
->   2 files changed, 3 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-> index 2c743429e1e3..8ee6298d5a51 100644
-> --- a/drivers/mmc/host/renesas_sdhi_core.c
-> +++ b/drivers/mmc/host/renesas_sdhi_core.c
-[...]
-> @@ -488,7 +488,8 @@ static int renesas_sdhi_select_tuning(struct tmio_mmc_host *host)
->   static bool renesas_sdhi_check_scc_error(struct tmio_mmc_host *host)
->   {
->   	struct renesas_sdhi *priv = host_to_priv(host);
-> -	bool use_4tap = host->pdata->flags & TMIO_MMC_HAVE_4TAP_HS400;
-> +	bool use_4tap = priv->quirks && priv->quirks->hs400_4taps;
-> +
+(1Your Full name:............................................
+(2 Phone number.....................................................
+(3 Contact address:.....................................
+(4 Age:..................................................................
+(5 Country..............................................
+(6) Sex .................................................................
+(7) your occupation...........................................
 
-    Extra empty line?
+(8)Passport/By Attach or Drivers License Number:
+Contact Mrs. Alan Ude for your MONEY GRAM payment of $4.8,000.000usd
+Note please: I have paid service fees for you but the only money you
+are required
+to send to Mrs. Alan Ude is $90.00 only Transfer fee before you can
+pick up your transfer today.
 
->   
->   	/*
->   	 * Skip checking SCC errors when running on 4 taps in HS400 mode as
-[...]
+Send it to via Money Gram
+Receiver's Name-----Alan Ude
+Country----------Benin
+Address-----------Cotonou
+Quest--------Honest
+Ans-----------Trust
 
-MBR, Sergei
+I done all my best for you to receive your transfer now ok.
+We need your urgent reply
+Best Regards
+Rev.Dr Emmanuel Okoye
+CEO Ecobank-benin
+
+If we did not receive it urgent from you today,
+I will go ahead and release you funds to Mrs. Lyndia Ppaulson as your
+representative.
