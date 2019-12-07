@@ -2,61 +2,83 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F1F2115A4F
-	for <lists+linux-mmc@lfdr.de>; Sat,  7 Dec 2019 01:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E2C3115D82
+	for <lists+linux-mmc@lfdr.de>; Sat,  7 Dec 2019 17:28:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726491AbfLGAaG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 6 Dec 2019 19:30:06 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:45628 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726631AbfLGA3z (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Dec 2019 19:29:55 -0500
-Received: by mail-wr1-f67.google.com with SMTP id j42so9587652wrj.12
-        for <linux-mmc@vger.kernel.org>; Fri, 06 Dec 2019 16:29:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=S7m9By4/eRnSy0vxdfJ6TocT5eJ8gcKLceyHvlHTn3o=;
-        b=LXxoS6Ed7of6jWaofmDfQc8/u3Mg9Maolmr3Vpf9Rmy6M9EqjFAuvGQ8h9p7LhnwAL
-         J2FbblgdkGgZHafRFxx28eRdV2u28AyUlEZcVvHuYvVm3rtf1quwzUCMSvqmMRhzvXWg
-         Lr2BVgHFftpJuxoM6FIG7HwvD6NJoH8mvEjpjvV8POe7OxPQSgcaMvRkWz9Uiu2DLDQI
-         zLbCM6eF/2UqhYCC9SzqWLAqDFWNhNPH2Mzqdx7SMOIQYQVzi+r4mUYfVbZ4zkg6G/Rf
-         GMyYZz2zxEAODyOdyEtKF6h6LvlYj6nQy3cPNK/qqQ+yOafhqpdxqfrrNrKMk4+XdZU4
-         ueNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=S7m9By4/eRnSy0vxdfJ6TocT5eJ8gcKLceyHvlHTn3o=;
-        b=ily+adEDnYxu6CCdaAEVdl4KWPfC+oV7VpAPDux0Ee+FH+j7pjKOyKhLqUjxPsAU9f
-         QdIKRtAIIn6KnGqnB8CvP0PoGAREj24H+9WnH9zxyykW5rCslJ/IASPEuFKWTGYPLuhG
-         sblByq5tPLEQNObyO2aODkOcgfc4EOkwNUZh6WpR8wWLFfhZ8rL7uVeetVHQrk1nJpOF
-         dmZq5K7H59YbozPXGmNXD2pDCdudGt20R2hE8OtMpT6tHaDfz19tPD/9rFkyZA8ov5Eh
-         rA1dGt2GAjuE3cQKEiUSMnQ2iiE/4IQKb1TfC2vRad4vxTon4Yx8J+k4FkQ1VufxE7/l
-         9JAQ==
-X-Gm-Message-State: APjAAAUjY57jsM06hGvfsLOaMM3Y0GNC0zi1IkpQSz7jEA2n4LSuv4vN
-        XvyL/AL3KNuUpC+CtMsu6P1sl9YnLNqQLb26/Fc=
-X-Google-Smtp-Source: APXvYqwrh3pZjAB0r+TmXxbhmAM/apODdHlIT+82DMPTCRz8CUTTqPzcZB7T3FAp1SOvDrWQKKNsT0CStxod+O7hBLs=
-X-Received: by 2002:adf:e591:: with SMTP id l17mr16654604wrm.139.1575678594023;
- Fri, 06 Dec 2019 16:29:54 -0800 (PST)
+        id S1726455AbfLGQ2z (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 7 Dec 2019 11:28:55 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:52938 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726414AbfLGQ2z (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Dec 2019 11:28:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1575736132; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IpyMBdwF5y8UNztBuEan4whDPj/FuBdwiixrnrTDE20=;
+        b=L4NqW+Jeqtj7p7rDomQ0Izq0nxzN3lqfek97EXOZ9d0eZV8J2zbYkoVl8ft0lXfAQZ79Gu
+        emYNqAIDca3I0+faYWGmqIZGaMyw9/Jd1z/cbu+UACAFgKXWLMZBGlTNcYnEOXJIYJjuuT
+        YNYDv1N/jfqLdLKSdobsizDOL/j8od8=
+Date:   Sat, 07 Dec 2019 17:28:47 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 8/9] mmc: jz4740: Convert to
+ pinctrl_select_default_state()
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-gpio@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-mmc@vger.kernel.org
+Message-Id: <1575736127.3.1@crapouillou.net>
+In-Reply-To: <20191206170821.29711-9-ulf.hansson@linaro.org>
+References: <20191206170821.29711-1-ulf.hansson@linaro.org>
+        <20191206170821.29711-9-ulf.hansson@linaro.org>
 MIME-Version: 1.0
-Received: by 2002:a5d:678e:0:0:0:0:0 with HTTP; Fri, 6 Dec 2019 16:29:53 -0800 (PST)
-Reply-To: mrs.aalia.ahmed@gmail.com
-From:   "Mrs.Aalia.Ahmed" <adamhana1907@gmail.com>
-Date:   Sat, 7 Dec 2019 00:29:53 +0000
-Message-ID: <CAOGreO=8t36s1Mau26bRqTQErHsnOf5ki10AJ6EA4tNedNUo8g@mail.gmail.com>
-Subject: OK
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Greetings My Dearest One.
+Hi,
 
-My name is Mrs.Aalia.Ahmed, i saw your profile and became interested
-in you, please contact me through my email address
-(mrs.aalia.ahmed@gmail.com) to know each other and i have something
-very important to tell you, i wait for your response to my email ID.
-(mrs.aalia.ahmed@gmail.com
+
+Le ven., d=E9c. 6, 2019 at 18:08, Ulf Hansson <ulf.hansson@linaro.org> a=20
+=E9crit :
+> Let's move away from using pinctrl_pm_select_default_state() as it's
+> scheduled for removal and use pinctrl_select_default_state() instead.
+
+Looks good to me,
+Acked-by: Paul Cercueil <paul@crapouillou.net>
+
+Cheers,
+-Paul
+
+> Cc: Paul Cercueil <paul@crapouillou.net>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> ---
+>  drivers/mmc/host/jz4740_mmc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/mmc/host/jz4740_mmc.c=20
+> b/drivers/mmc/host/jz4740_mmc.c
+> index 78383f60a3dc..fbae87d1f017 100644
+> --- a/drivers/mmc/host/jz4740_mmc.c
+> +++ b/drivers/mmc/host/jz4740_mmc.c
+> @@ -1108,7 +1108,7 @@ static int jz4740_mmc_suspend(struct device=20
+> *dev)
+>=20
+>  static int jz4740_mmc_resume(struct device *dev)
+>  {
+> -	return pinctrl_pm_select_default_state(dev);
+> +	return pinctrl_select_default_state(dev);
+>  }
+>=20
+>  static SIMPLE_DEV_PM_OPS(jz4740_mmc_pm_ops, jz4740_mmc_suspend,
+> --
+> 2.17.1
+>=20
+
+=
+
