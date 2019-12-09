@@ -2,72 +2,106 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 712E5117454
-	for <lists+linux-mmc@lfdr.de>; Mon,  9 Dec 2019 19:37:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8CC8117808
+	for <lists+linux-mmc@lfdr.de>; Mon,  9 Dec 2019 22:10:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726365AbfLIShL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 Dec 2019 13:37:11 -0500
-Received: from rere.qmqm.pl ([91.227.64.183]:45724 "EHLO rere.qmqm.pl"
+        id S1726783AbfLIVJj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 9 Dec 2019 16:09:39 -0500
+Received: from rere.qmqm.pl ([91.227.64.183]:13966 "EHLO rere.qmqm.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726265AbfLIShL (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 9 Dec 2019 13:37:11 -0500
+        id S1726408AbfLIVJi (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 9 Dec 2019 16:09:38 -0500
 Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 47WsL41VqKzCS;
-        Mon,  9 Dec 2019 19:34:36 +0100 (CET)
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 47Wwjz3FfCzKW;
+        Mon,  9 Dec 2019 22:07:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1575916476; bh=or7Oj6xnUL/WDCELdOhIBVwh1AdCpOT9i9SKDT6ot5Y=;
-        h=Date:From:Subject:To:Cc:From;
-        b=FDe0UB5ceT51Pl4PG1WYMSGUL+PxNPgip6WXgT9/QRzRRYsdvHXw4n5/BTpKF0t+N
-         Aux17mYjRjlxjEBkXKeFqp2gBGKu6u+CyDX+9bk+c3c/0mz57OsqRWuFn01lmbVHL1
-         IEyyJ1ZcWCluRdTjLJtuY5iGdAesv2o0AKGIsUNxfPlOEMxg5AsiLkSXBLDJaKQwRw
-         2We52qw2vr0UO+YQ27mp+ngA5CJj3pojIQgZaAWd3DrO2h4YJegAxJiY6ENZHrjpLJ
-         7t9SqeQCbnXauSoWSiV0OGrYa3jt1k6Q89EwEW+r2z4dUgZsp7UvpF/S4yTKIExqQg
-         oASz5B8UKIDrA==
+        t=1575925623; bh=mP4IVsF26GolA/qoisGsW9KuB5321gAdX6Kb63gtye0=;
+        h=Date:In-Reply-To:References:From:Subject:To:Cc:From;
+        b=dt2FTeNtLn5SzVmT4ac/2vCOJvqgwYdnvgjwIvJsvwGIqGB8HHrMqq6Ov40eT3kZa
+         RlYcwgkz/4h78c5S+IEvEe3yAxHqRiQrsP/KgKyvpjJ/vreTkv1655RVB2QrILVdvB
+         pgGDVz99iez3X6+pGrtlMoUoBABIpSPBKlktGNSBGi7Aql1dBaCer7Y/36jhkAHE9w
+         2h/TPpP0K01fKGuL9oaPm7MTVXMO3Dgl71D6lj5A0HyDyIeq6PKvVnmlTx425rbrnP
+         OBramOobh/Sk4+2K3AjVO3nP7F9voOyAX4wXLblSXnZRGEtSwMypVSED23kRPP9Azg
+         4B3u+DL9nBtAw==
 X-Virus-Status: Clean
 X-Virus-Scanned: clamav-milter 0.101.4 at mail
-Date:   Mon, 09 Dec 2019 19:37:05 +0100
-Message-Id: <3f12c2deaae9e77a5e7ab8415db7751a27bc3b98.1575916477.git.mirq-linux@rere.qmqm.pl>
+Date:   Mon, 09 Dec 2019 22:09:35 +0100
+Message-Id: <56d2568cd45a13c738e2804d04348566a8ee8d03.1575925023.git.mirq-linux@rere.qmqm.pl>
+In-Reply-To: <cover.1575925023.git.mirq-linux@rere.qmqm.pl>
+References: <cover.1575925023.git.mirq-linux@rere.qmqm.pl>
 From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Subject: [PATCH] mmc: sdhci-s3c: remove unused ext_cd_gpio field
+Subject: [PATCH 1/4] gpio: add gpiod_toggle_active_low()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-To:     linux-mmc@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Ben Dooks <ben-linux@fluff.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        linux-kernel@vger.kernel.org
+To:     linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Viresh Kumar <vireshk@kernel.org>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Add possibility to toggle active-low flag of a gpio descriptor. This is
+useful for compatibility code, where defaults are inverted vs DT gpio
+flags or the active-low flag is taken from elsewhere.
+
 Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 ---
- drivers/mmc/host/sdhci-s3c.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpio/gpiolib.c        | 11 +++++++++++
+ include/linux/gpio/consumer.h |  7 +++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-s3c.c b/drivers/mmc/host/sdhci-s3c.c
-index 51e096f27388..8b15945dd499 100644
---- a/drivers/mmc/host/sdhci-s3c.c
-+++ b/drivers/mmc/host/sdhci-s3c.c
-@@ -117,7 +117,6 @@ struct sdhci_s3c {
- 	struct s3c_sdhci_platdata *pdata;
- 	int			cur_clk;
- 	int			ext_cd_irq;
--	int			ext_cd_gpio;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 9913886ede90..6130691e2047 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -3363,6 +3363,17 @@ int gpiod_is_active_low(const struct gpio_desc *desc)
+ }
+ EXPORT_SYMBOL_GPL(gpiod_is_active_low);
  
- 	struct clk		*clk_io;
- 	struct clk		*clk_bus[MAX_BUS_CLK];
-@@ -512,7 +511,6 @@ static int sdhci_s3c_probe(struct platform_device *pdev)
- 			goto err_pdata_io_clk;
- 	} else {
- 		memcpy(pdata, pdev->dev.platform_data, sizeof(*pdata));
--		sc->ext_cd_gpio = -1; /* invalid gpio number */
- 	}
++/**
++ * gpiod_toggle_active_low - toggle whether a GPIO is active-low or not
++ * @desc: the gpio descriptor to change
++ */
++void gpiod_toggle_active_low(struct gpio_desc *desc)
++{
++	VALIDATE_DESC_VOID(desc);
++	change_bit(FLAG_ACTIVE_LOW, &desc->flags);
++}
++EXPORT_SYMBOL_GPL(gpiod_toggle_active_low);
++
+ /* I/O calls are only valid after configuration completed; the relevant
+  * "is this a valid GPIO" error checks should already have been done.
+  *
+diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
+index 5215fdba6b9a..bf2d017dd7b7 100644
+--- a/include/linux/gpio/consumer.h
++++ b/include/linux/gpio/consumer.h
+@@ -158,6 +158,7 @@ int gpiod_set_raw_array_value_cansleep(unsigned int array_size,
  
- 	drv_data = sdhci_s3c_get_driver_data(pdev);
+ int gpiod_set_debounce(struct gpio_desc *desc, unsigned debounce);
+ int gpiod_set_transitory(struct gpio_desc *desc, bool transitory);
++void gpiod_toggle_active_low(struct gpio_desc *desc);
+ 
+ int gpiod_is_active_low(const struct gpio_desc *desc);
+ int gpiod_cansleep(const struct gpio_desc *desc);
+@@ -483,6 +484,12 @@ static inline int gpiod_set_transitory(struct gpio_desc *desc, bool transitory)
+ 	return -ENOSYS;
+ }
+ 
++static inline void gpiod_toggle_active_low(struct gpio_desc *desc)
++{
++	/* GPIO can never have been requested */
++	WARN_ON(desc);
++}
++
+ static inline int gpiod_is_active_low(const struct gpio_desc *desc)
+ {
+ 	/* GPIO can never have been requested */
 -- 
 2.20.1
 
