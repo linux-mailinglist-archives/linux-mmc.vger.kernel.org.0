@@ -2,95 +2,119 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA7F118400
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 10:51:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6166A118426
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 10:53:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727434AbfLJJvI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 10 Dec 2019 04:51:08 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:33618 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727265AbfLJJvH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Dec 2019 04:51:07 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBA9p1c2034989;
-        Tue, 10 Dec 2019 03:51:01 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1575971461;
-        bh=UC54qJ82PFOcfq7OoHyUD3NopdFgFjmQjWiGtht1dsE=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=ErHg/7cGvE0rBxpLBeiP2ce31mys3koxvPbt01fwRBBk+GioQp2HY/xISSCo1mC1g
-         tC64dUXtsp8iD+aeDS3QNWtC2GdqvRMqi9T7JBtQa76MAgpBfPcB/kfpL9YwZFb7Ud
-         R6X+OgTb99Dx0pGTeebt0hu/N4CjBV8MnZBHr7sA=
-Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBA9p1Xl069653;
-        Tue, 10 Dec 2019 03:51:01 -0600
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 10
- Dec 2019 03:51:01 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 10 Dec 2019 03:51:00 -0600
-Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBA9oZVq048503;
-        Tue, 10 Dec 2019 03:50:58 -0600
-From:   Faiz Abbas <faiz_abbas@ti.com>
-To:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>
-CC:     <kishon@ti.com>, <adrian.hunter@intel.com>, <mark.rutland@arm.com>,
-        <robh+dt@kernel.org>, <ulf.hansson@linaro.org>,
-        <zhang.chunyan@linaro.org>, <tony@atomide.com>
-Subject: [PATCH v3 7/7] mmc: sdhci-omap: Add am335x and am437x specific compatibles
-Date:   Tue, 10 Dec 2019 15:21:51 +0530
-Message-ID: <20191210095151.15441-8-faiz_abbas@ti.com>
-X-Mailer: git-send-email 2.19.2
-In-Reply-To: <20191210095151.15441-1-faiz_abbas@ti.com>
-References: <20191210095151.15441-1-faiz_abbas@ti.com>
+        id S1727018AbfLJJwe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 Dec 2019 04:52:34 -0500
+Received: from mail-ua1-f67.google.com ([209.85.222.67]:37937 "EHLO
+        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727016AbfLJJwe (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Dec 2019 04:52:34 -0500
+Received: by mail-ua1-f67.google.com with SMTP id z17so6944632uac.5
+        for <linux-mmc@vger.kernel.org>; Tue, 10 Dec 2019 01:52:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yXQm4XaShH7vDVUTEGAeMZToqWYQUJWAg/HCHyGvLf4=;
+        b=p84JhS3g5a0JzgG2JpcG7Mi9FmZPk7bAxfwC/oyBWsMyvc/NjEA9A1otgiLYHelPEo
+         54zDi70S8/58AFmo/e77Hji63uc8DeTyyCTff/2FesPTo15UUvrBubCuqLIxAHcu4yjS
+         ZcSxvo8jyhhqFHyTTkdpuSasA6tjBRBzhcyocJrcdGgMwehSldXT8kPWECdJ4Zwcn045
+         hJUKkkhTc8kiEMCflNvCBRm54pRnaIDri7AhAUHcpeiYh21PC7MnF8vj5bK+Rs2iP9fq
+         mal1Rmi8tcbo9Zm92KrUFP39TBkep5BSnDQkhwoZvSasrnnJctVJhAviREFGe2PT6veu
+         nKnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yXQm4XaShH7vDVUTEGAeMZToqWYQUJWAg/HCHyGvLf4=;
+        b=iJfVSbGgwdEBJAIC4lFamPGuxZvg57yf87zMrqZR5bInaZ9l5O9g0B9pAc/oU8O5bX
+         k8WpjynwzCjrqjQ0m0JBtw19QuWPjZTyORGtqPUNdhiQn3b8EQbXa/l9zu94F64VmiDL
+         A1wB4ZuvcuHgF86OFtM5FZBKIfSF5vOex0tqruFwl56eze9oQ9REx9cRVkaWo9uHN91+
+         WTOQewuDqducuLv4WHFDjDldLuFYbRvOE9zNoHtaoexmjIDzzQF2xa98jTvh9CePEf1g
+         k7pelkjAjrnNv0Wq6FmYrrfYS6vi9ZtFLdcuxly9TbqS49bteIZpO9H0t3Ey2kDwTerZ
+         sXCg==
+X-Gm-Message-State: APjAAAXZZ3y1Tr+2hABUx5tbGJbHm9N++rVCqBiuahmqT4YrOOBfMmbJ
+        X+GcSVH3+ycLz76k/CB02rbncO/FqfgKIcEJ39SN9s+5
+X-Google-Smtp-Source: APXvYqza+Ix1SZeRmRyoVXMKSHvtZJGN0yTOCfS2WK4cCQlWwIzxi0J8vTLQd5ywpsBH0ewa5qs0zc1cPU73yJC2E0c=
+X-Received: by 2002:ab0:6894:: with SMTP id t20mr29138175uar.100.1575971553656;
+ Tue, 10 Dec 2019 01:52:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20191114111814.35199-1-yangbo.lu@nxp.com>
+In-Reply-To: <20191114111814.35199-1-yangbo.lu@nxp.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 10 Dec 2019 10:51:57 +0100
+Message-ID: <CAPDyKFqfMzv1hFzPzS7w5BVHyXybu--7p11wHYa8WTQAVB7r4g@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci: fix up CMD12 sending
+To:     Yangbo Lu <yangbo.lu@nxp.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add support for new compatible for TI's am335x and am437x devices.
+On Thu, 14 Nov 2019 at 12:18, Yangbo Lu <yangbo.lu@nxp.com> wrote:
+>
+> The STOP command is disabled for multiple blocks r/w commands
+> with auto CMD12, when start to send. However, if there is data
+> error, software still needs to send CMD12 according to SD spec.
+> This patch is to allow software CMD12 sending for this case.
+>
+> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 
-Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
----
- drivers/mmc/host/sdhci-omap.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Applied for next, thanks!
 
-diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
-index c54c864fe419..09ed326d150c 100644
---- a/drivers/mmc/host/sdhci-omap.c
-+++ b/drivers/mmc/host/sdhci-omap.c
-@@ -888,6 +888,14 @@ static const struct sdhci_omap_data k2g_data = {
- 	.offset = 0x200,
- };
- 
-+static const struct sdhci_omap_data am335_data = {
-+	.offset = 0x200,
-+};
-+
-+static const struct sdhci_omap_data am437_data = {
-+	.offset = 0x200,
-+};
-+
- static const struct sdhci_omap_data dra7_data = {
- 	.offset = 0x200,
- 	.flags	= SDHCI_OMAP_REQUIRE_IODELAY,
-@@ -896,6 +904,8 @@ static const struct sdhci_omap_data dra7_data = {
- static const struct of_device_id omap_sdhci_match[] = {
- 	{ .compatible = "ti,dra7-sdhci", .data = &dra7_data },
- 	{ .compatible = "ti,k2g-sdhci", .data = &k2g_data },
-+	{ .compatible = "ti,am335-sdhci", .data = &am335_data },
-+	{ .compatible = "ti,am437-sdhci", .data = &am437_data },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, omap_sdhci_match);
--- 
-2.19.2
+Let's see how things go, then we can decide whether to add stable tag as well.
 
+Kind regards
+Uffe
+
+
+> ---
+>  drivers/mmc/host/sdhci.c | 17 +++--------------
+>  1 file changed, 3 insertions(+), 14 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 09cdbe8..3041c39 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -1326,12 +1326,12 @@ static void sdhci_finish_data(struct sdhci_host *host)
+>
+>         /*
+>          * Need to send CMD12 if -
+> -        * a) open-ended multiblock transfer (no CMD23)
+> +        * a) open-ended multiblock transfer not using auto CMD12 (no CMD23)
+>          * b) error in multiblock transfer
+>          */
+>         if (data->stop &&
+> -           (data->error ||
+> -            !data->mrq->sbc)) {
+> +           ((!data->mrq->sbc && !sdhci_auto_cmd12(host, data->mrq)) ||
+> +            data->error)) {
+>                 /*
+>                  * 'cap_cmd_during_tfr' request must not use the command line
+>                  * after mmc_command_done() has been called. It is upper layer's
+> @@ -1825,17 +1825,6 @@ void sdhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
+>
+>         sdhci_led_activate(host);
+>
+> -       /*
+> -        * Ensure we don't send the STOP for non-SET_BLOCK_COUNTED
+> -        * requests if Auto-CMD12 is enabled.
+> -        */
+> -       if (sdhci_auto_cmd12(host, mrq)) {
+> -               if (mrq->stop) {
+> -                       mrq->data->stop = NULL;
+> -                       mrq->stop = NULL;
+> -               }
+> -       }
+> -
+>         if (!present || host->flags & SDHCI_DEVICE_DEAD) {
+>                 mrq->cmd->error = -ENOMEDIUM;
+>                 sdhci_finish_mrq(host, mrq);
+> --
+> 2.7.4
+>
