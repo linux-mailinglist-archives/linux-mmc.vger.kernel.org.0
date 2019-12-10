@@ -2,131 +2,137 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D36BF117D4B
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 02:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF5541183C3
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 10:37:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726562AbfLJBk7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 Dec 2019 20:40:59 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:39866 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726538AbfLJBk7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Dec 2019 20:40:59 -0500
-Received: by mail-lj1-f196.google.com with SMTP id e10so17915288ljj.6;
-        Mon, 09 Dec 2019 17:40:57 -0800 (PST)
+        id S1726957AbfLJJh1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 Dec 2019 04:37:27 -0500
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:35527 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727003AbfLJJh1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Dec 2019 04:37:27 -0500
+Received: by mail-ua1-f66.google.com with SMTP id y23so6949348ual.2
+        for <linux-mmc@vger.kernel.org>; Tue, 10 Dec 2019 01:37:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vlZI4rEGeiq9jWtOY0aFxUeSEkD9VPU1bYTxW9kWFdQ=;
-        b=BmJF6QvuU9k+gicud6GQqh3PEAWQm7BMYysarKVmqLASdkf9Y2zuA2/X2c5UPAqrBq
-         5mt5MzpfDukUo5XlzsMHZp0F6wE+pX+BbqLCZm6TEB1VZoO4azosLsQlSNz5ohVmskmj
-         ofagIgmQ/nDydCKMIWjkDlHfEzb7L8sczSGADD4+vb8yE48LLcvdooCU0y86FL/HANB2
-         MrerD/9WjyqPPX3ggAw51HsaMZadtv6CN6NwZQc5bDRT6O6Yp9ZTz8+YjLDy7DcYIGCD
-         YfcWFZNUAB7DLa3YiqNQHpf5twwfAdxPCimo6doMmWi7emJuc5KK/wkQtxcPlaQ00Vn7
-         lNOQ==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=uCytU3M00vgppQHFdUfwUVTCWccLfFwVZT8F9TsGTdM=;
+        b=lCHh5BlRESGFd8IJw3pd1l7zQCwFYi9SIVuZFu2W54pNbR2iW2Ic1sRAzJQzShL+V8
+         FhndlgDjLhVagoGevcG/kw8XbnLp28EXuw2/Xg3DVYY3SagNVnO4Cn+FmvNTGYE5olT2
+         g1TXLaqWyF10MT3XiskpBKKxDaApmX0A/elIkUrQMpK1xVMvFR2hUc+8XTF0e9kJvvcH
+         U3MHLUQcu6nhmTRgP16una9achLbMN+1uc57r3BdGo3Ugy8I5nseuohBp2cFX8+NHq11
+         YNv9Fk4nAaJNRjJGET0HwK8mBFY+nJhevmfoHDEly0HWcp84CoabM7lydd4+l0wWh95x
+         VJ/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vlZI4rEGeiq9jWtOY0aFxUeSEkD9VPU1bYTxW9kWFdQ=;
-        b=a/NWDOy0x6j6279sDqva/SeQLCN4hd/7oMXEVuFptQt8srOYuabapS79gtTbaxpLD9
-         w8DqA7olQonq8OH2YhzCMAVfkwkn7ZR645pMpbu0F2cZlPCHkotiHHmG7L+VnkhWohOx
-         1qO2i3AMYQIhj9aAqNAM2IjL7aA6thsC52sYf8fNNGL3gKtJTuOZZphwwmgWYJgQqpCF
-         4qiYIxkMGD5xnuDZoXk5Z46lmRVXJneX/X5kDsJe6cLv5Wc6sFh/qZzXYnZuzv95gm30
-         82hzc4Uf8iYhuytmrIDTls1QofPmC2i5Za2rBKqjLHHPXY9b7kQ6ZLLqePJ75K4YxuHg
-         sRDg==
-X-Gm-Message-State: APjAAAUCObs5gkvzSCtchGqYp2eoHPwhy3VVyHcy8BKG4jy2a9/Y+j1h
-        xYGOomT8BHTvSx1hZgO0vyF5SEdW
-X-Google-Smtp-Source: APXvYqwq8U1I4QevksCt7+Ui2gdfuQtFkkgMtrKqkyij2iotR9ysDAJHihyh7B9qC1ZNBOAMNUsYEA==
-X-Received: by 2002:a2e:144b:: with SMTP id 11mr18625869lju.216.1575942056544;
-        Mon, 09 Dec 2019 17:40:56 -0800 (PST)
-Received: from localhost.localdomain (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
-        by smtp.gmail.com with ESMTPSA id r125sm522813lff.70.2019.12.09.17.40.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2019 17:40:56 -0800 (PST)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v1] sdhci: tegra: Add workaround for Broadcom WiFi
-Date:   Tue, 10 Dec 2019 04:40:11 +0300
-Message-Id: <20191210014011.21987-1-digetx@gmail.com>
-X-Mailer: git-send-email 2.24.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=uCytU3M00vgppQHFdUfwUVTCWccLfFwVZT8F9TsGTdM=;
+        b=li6SoxeBcO/nxs8hiJYhzOVraeP3cOt8wnrM+IebUcEM1pz7xpCzC2H5dO1gejdck1
+         F3pdVmiPDzaCiYpZgCmVBLTqd23SQsblgqsN/G4mQ/qOKQ5GUgehHnKpJNNcefR46iBI
+         HUxOLE9of1Fuj6XI6NEXq2cKMgviHK/vblcoP2n3C/qh/51Mncd0KBQj1WyddWcIFEXY
+         babtZSEs4XHNSkABoeNhWntFLLT246+1o8ERN1NgQIppOv3O5mqkfvg95uk5VF4UclTV
+         Jr8hbz8bUC58noFL+QvDbJuOkBf+BxCFwI4KJNlDozZmjEluZXrPEco+TdoKZs8lFZSj
+         CGyw==
+X-Gm-Message-State: APjAAAUNYNvzMnbIkLdmPdemNm56JVonRJSBcptOWg5+k2voCQu+otJx
+        b4/PxYtM9HUEq9NXnJEyoc/IZzFlQIdDgyYpNJEQvg==
+X-Google-Smtp-Source: APXvYqw8/vUxHXJk8srw/I46Ax82pbKgk3Cmvfv6WFW1zub4DRuJ6pt9rcaoDRoxeYXRCfvktNah3Ok5+A/sr3ZmrXw=
+X-Received: by 2002:ab0:4ea6:: with SMTP id l38mr28555420uah.129.1575970645669;
+ Tue, 10 Dec 2019 01:37:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191202144104.5069-1-jun.nie@linaro.org> <20191202144104.5069-5-jun.nie@linaro.org>
+ <20191202175202.GA6488@infradead.org> <CABymUCM09L3TfLsPhLWPkoYXJ6OVGhHvd9_o4FCO07_Z3Y6A8w@mail.gmail.com>
+ <20191203073620.GA360@infradead.org> <CABymUCNHMKvVCkKdwnOcDZC9rNhLTEHLfLoH_O+CEf9XuZY+_A@mail.gmail.com>
+ <20191204150043.3a82cec0@xhacker.debian>
+In-Reply-To: <20191204150043.3a82cec0@xhacker.debian>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 10 Dec 2019 10:36:49 +0100
+Message-ID: <CAPDyKFrreSgNfHX9hSKvYO7UxBEyqu0DSxX9NGp4phbR-F1fxQ@mail.gmail.com>
+Subject: Re: [PATCH 4/4] mmc: sdhci: Add DMA memory boundary workaround
+To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
+        Christoph Hellwig <hch@infradead.org>
+Cc:     Jun Nie <jun.nie@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-All Tegra20 boards that have embedded Broadcom WiFi SDIO chip are affected
-by a problem where WiFi chip reports CCCR v1.10, while it should v1.20.
-In a result high-speed mode isn't enabled for the WiFi card and this
-results in a malfunctioning SDIO communication.
+On Wed, 4 Dec 2019 at 08:14, Jisheng Zhang <Jisheng.Zhang@synaptics.com> wr=
+ote:
+>
+> On Wed, 4 Dec 2019 14:00:08 +0800 Jun Nie wrote:
+>
+> >
+> >
+> > Christoph Hellwig <hch@infradead.org> =E4=BA=8E2019=E5=B9=B412=E6=9C=88=
+3=E6=97=A5=E5=91=A8=E4=BA=8C =E4=B8=8B=E5=8D=883:36=E5=86=99=E9=81=93=EF=BC=
+=9A
+> > >
+> > > On Tue, Dec 03, 2019 at 11:29:15AM +0800, Jun Nie wrote:
+> > > > Thanks for the reminder! So I need to parse the segment_boundary fr=
+om
+> > > > device tree and use below code to set it, right?
+> > > > For the max_segments accounting error, I did not see it so far thou=
+gh I
+> > > > believe it is true in theory. Maybe it is due to segment boundary v=
+alue is
+> > > > very large.
+> > > >
+> > > > +++ b/drivers/mmc/core/queue.c
+> > > > @@ -374,6 +374,7 @@ static void mmc_setup_queue(struct mmc_queue *m=
+q,
+> > > > struct mmc_card *card)
+> > > >                 WARN(!blk_queue_can_use_dma_map_merging(mq->queue,
+> > > >                                                         mmc_dev(hos=
+t)),
+> > > >                      "merging was advertised but not possible");
+> > > > +       blk_queue_segment_boundary(mq->queue, mmc->segment_boundary=
+);
+> > > >         blk_queue_max_segments(mq->queue, mmc_get_max_segments(host=
+));
+> > >
+> > > Yes, I think should do it.  Maybe modulo a check if the low-level
+> > > driver actually sets a segment boundary.
+> >
+> > For the block device, such as SD card, it is right solution. But I
+> > have concern on SDIO case. Maybe we should add workaround together
+> > with block layer segment boundary restriction. How do you think about
+> > it?
+> >
 
- brcmfmac: brcmf_sdio_readframes: read 304 bytes from channel 1 failed: -84
- brcmfmac: brcmf_sdio_rxfail: abort command, terminate frame, send NAK
+Yes, buffers for SDIO are a consern. Especially since those buffers
+are allocated by SDIO func drivers or even from upper layers, such as
+the network stacks, for example.
 
-Downstream kernels are overriding card's CCCR info in SDHCI driver to fix
-the problem, let's do the same in upstream.
+I think SDIO func drivers simply need to respect the constraints the
+host has set via the .segment_boundary, .max_seg_size, .max_segs, etc.
+We should export SDIO func APIs to make the information available for
+the SDIO func drivers.
 
-The change is inspired by omap_hsmmc_init_card() of OMAP's HSMMC driver,
-which overrides card's info for the TI wl1251 WiFi.
+>
+> Another trouble is how to workaround if the sg is constructed by mmc and
+> no block layer interactions at all. e.g __mmc_blk_ioctl_cmd(), and all
+> those sgs in mmc_test.c
 
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- drivers/mmc/host/sdhci-tegra.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Those should be easier to fix, as the buffer/sg allocation can be
+fixed internally by mmc core. Just post some patches. :-)
 
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index 7bc950520fd9..2ad87da98f2c 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -1501,6 +1501,32 @@ static int sdhci_tegra_add_host(struct sdhci_host *host)
- 	return ret;
- }
- 
-+static void sdhci_tegra_init_card(struct mmc_host *mmc, struct mmc_card *card)
-+{
-+	if (card->type == MMC_TYPE_SDIO) {
-+		struct device_node *np = mmc_dev(mmc)->of_node;
-+
-+		np = of_get_compatible_child(np, "brcm,bcm4329-fmac");
-+		if (np) {
-+			dev_info(mmc_dev(mmc), "found bcm4329\n");
-+
-+			/*
-+			 * All Tegra20 boards that have embedded BCM4329
-+			 * chip need to enable high speed for SDIO, otherwise
-+			 * further communication with the card doesn't work
-+			 * well.
-+			 *
-+			 * Later BCM43xx chips do not need this workaround,
-+			 * but there is no good way to differentiate chip's
-+			 * version at this stage and it doesn't cause any
-+			 * harm for the later chips.
-+			 */
-+			card->cccr.high_speed = 1;
-+			of_node_put(np);
-+		}
-+	}
-+}
-+
- static int sdhci_tegra_probe(struct platform_device *pdev)
- {
- 	const struct of_device_id *match;
-@@ -1545,6 +1571,8 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
- 		host->mmc_host_ops.execute_tuning =
- 				tegra_sdhci_execute_hw_tuning;
- 
-+	host->mmc_host_ops.init_card = sdhci_tegra_init_card;
-+
- 	rc = mmc_of_parse(host->mmc);
- 	if (rc)
- 		goto err_parse_dt;
--- 
-2.24.0
+I am more worried about SDIO, as those buffers are not that easy to control=
+.
 
+Note that, there have been suggestions on adding an SDIO interface
+where an sg can be passed [1]. Unfurtunate those patches got stuck and
+didn't make it.
+
+Kind regards
+Uffe
+
+[1]
+https://patchwork.kernel.org/patch/10123143/
