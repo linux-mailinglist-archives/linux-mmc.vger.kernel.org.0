@@ -2,119 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6166A118426
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 10:53:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6679B118450
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 11:06:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727018AbfLJJwe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 10 Dec 2019 04:52:34 -0500
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:37937 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727016AbfLJJwe (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Dec 2019 04:52:34 -0500
-Received: by mail-ua1-f67.google.com with SMTP id z17so6944632uac.5
-        for <linux-mmc@vger.kernel.org>; Tue, 10 Dec 2019 01:52:34 -0800 (PST)
+        id S1727063AbfLJKGO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 Dec 2019 05:06:14 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:35439 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727032AbfLJKGN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Dec 2019 05:06:13 -0500
+Received: by mail-wr1-f67.google.com with SMTP id g17so19328564wro.2
+        for <linux-mmc@vger.kernel.org>; Tue, 10 Dec 2019 02:06:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yXQm4XaShH7vDVUTEGAeMZToqWYQUJWAg/HCHyGvLf4=;
-        b=p84JhS3g5a0JzgG2JpcG7Mi9FmZPk7bAxfwC/oyBWsMyvc/NjEA9A1otgiLYHelPEo
-         54zDi70S8/58AFmo/e77Hji63uc8DeTyyCTff/2FesPTo15UUvrBubCuqLIxAHcu4yjS
-         ZcSxvo8jyhhqFHyTTkdpuSasA6tjBRBzhcyocJrcdGgMwehSldXT8kPWECdJ4Zwcn045
-         hJUKkkhTc8kiEMCflNvCBRm54pRnaIDri7AhAUHcpeiYh21PC7MnF8vj5bK+Rs2iP9fq
-         mal1Rmi8tcbo9Zm92KrUFP39TBkep5BSnDQkhwoZvSasrnnJctVJhAviREFGe2PT6veu
-         nKnw==
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=references:user-agent:from:to:cc:subject:in-reply-to:date
+         :message-id:mime-version;
+        bh=yWA8VuK4fbXWgl7ohEQh+n62QMSnzlWImVwiKu0V3pU=;
+        b=ay8xBFolpoZbEI0WIoC+oZXq9WoJqWUz/KTAkTpaMy4Tgc7Wz9t2HM6ZPg7QRC9SFy
+         30c+BofWslloaWCCK8mVqcOrrMXbY/jDq1ej6KZcqv8TawX51qgQR7UqaLOJ8zhjXbDs
+         L6QZ5Cl2g9lA/rDptk0Sb/cEQq1vKdOYOvderokk3AhS9NbkyVtpPJ096a30i0F6huqb
+         gGQ/xVyLvYlkhFDBxWv72bnbFSx7vEkc+V+rluB2GDYzHVfdQVAA4bNqPwCba/mi9HME
+         rLpYRLq9CrkXCQcvTjQblEpa6coyNP5V0yxOoWT7s9rXpaIZZ8j8JQrT5Go2g2Oi0KNs
+         ih6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yXQm4XaShH7vDVUTEGAeMZToqWYQUJWAg/HCHyGvLf4=;
-        b=iJfVSbGgwdEBJAIC4lFamPGuxZvg57yf87zMrqZR5bInaZ9l5O9g0B9pAc/oU8O5bX
-         k8WpjynwzCjrqjQ0m0JBtw19QuWPjZTyORGtqPUNdhiQn3b8EQbXa/l9zu94F64VmiDL
-         A1wB4ZuvcuHgF86OFtM5FZBKIfSF5vOex0tqruFwl56eze9oQ9REx9cRVkaWo9uHN91+
-         WTOQewuDqducuLv4WHFDjDldLuFYbRvOE9zNoHtaoexmjIDzzQF2xa98jTvh9CePEf1g
-         k7pelkjAjrnNv0Wq6FmYrrfYS6vi9ZtFLdcuxly9TbqS49bteIZpO9H0t3Ey2kDwTerZ
-         sXCg==
-X-Gm-Message-State: APjAAAXZZ3y1Tr+2hABUx5tbGJbHm9N++rVCqBiuahmqT4YrOOBfMmbJ
-        X+GcSVH3+ycLz76k/CB02rbncO/FqfgKIcEJ39SN9s+5
-X-Google-Smtp-Source: APXvYqza+Ix1SZeRmRyoVXMKSHvtZJGN0yTOCfS2WK4cCQlWwIzxi0J8vTLQd5ywpsBH0ewa5qs0zc1cPU73yJC2E0c=
-X-Received: by 2002:ab0:6894:: with SMTP id t20mr29138175uar.100.1575971553656;
- Tue, 10 Dec 2019 01:52:33 -0800 (PST)
+        h=x-gm-message-state:references:user-agent:from:to:cc:subject
+         :in-reply-to:date:message-id:mime-version;
+        bh=yWA8VuK4fbXWgl7ohEQh+n62QMSnzlWImVwiKu0V3pU=;
+        b=YUUb/nIdHQTIyWg8dA2OurZ6VIVwCjVvkw+YPOToUYczbwk8CVmZvd97VCIXkZe+J8
+         b6d2ZDmqKisHprvLUe3qulV/UB4on8m4EkIaHJmnUSSza3VcHDYWn6pav1nXqordE0tw
+         EA5eZF2m46A/wGcQigEasrgJDuQsmxHnBfnBbEUba0QStIDs5Us3H+sCqS9H4tcY8Ryb
+         7SnNeC3Ki/JIXiHqOUgoEnZwZx0EezmdUVog4Rg/WnixaMS2Znj1G0ybKZeLBNS7uasq
+         qQzpIJyiM4vJLD/t31DnEwhFcWhU12+RsCmfgfFA/cMjse/cWt6BW2DkkrJw59agEzws
+         qzQw==
+X-Gm-Message-State: APjAAAW2MzvCs2MgqEAbvOj+v9CAVpklr82/FVn3iwLsSa66mBI/H1q4
+        ByJ+L7hw0GRs8atEedHKp/JZPw==
+X-Google-Smtp-Source: APXvYqzRvBg9WoInjKPSS6kGkuYA+0mP75qg4hZ64I7fw/nPlmqw0YzWtInIDsLmMwZvk0LZtYBZhg==
+X-Received: by 2002:adf:fe12:: with SMTP id n18mr2166082wrr.158.1575972371615;
+        Tue, 10 Dec 2019 02:06:11 -0800 (PST)
+Received: from localhost (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id k4sm2582166wmk.26.2019.12.10.02.06.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Dec 2019 02:06:10 -0800 (PST)
+References: <20191206170821.29711-1-ulf.hansson@linaro.org> <20191206170821.29711-3-ulf.hansson@linaro.org>
+User-agent: mu4e 1.3.3; emacs 26.2
+From:   Jerome Brunet <jbrunet@baylibre.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-gpio@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>
+Subject: Re: [PATCH 2/9] mmc: meson-gx: Convert to pinctrl_select_default_state()
+In-reply-to: <20191206170821.29711-3-ulf.hansson@linaro.org>
+Date:   Tue, 10 Dec 2019 11:06:10 +0100
+Message-ID: <1jv9qowl4d.fsf@starbuckisacylon.baylibre.com>
 MIME-Version: 1.0
-References: <20191114111814.35199-1-yangbo.lu@nxp.com>
-In-Reply-To: <20191114111814.35199-1-yangbo.lu@nxp.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 10 Dec 2019 10:51:57 +0100
-Message-ID: <CAPDyKFqfMzv1hFzPzS7w5BVHyXybu--7p11wHYa8WTQAVB7r4g@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci: fix up CMD12 sending
-To:     Yangbo Lu <yangbo.lu@nxp.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 14 Nov 2019 at 12:18, Yangbo Lu <yangbo.lu@nxp.com> wrote:
+
+On Fri 06 Dec 2019 at 18:08, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+
+> Let's drop the boilerplate code for managing the default pinctrl state and
+> convert into using the new pinctrl_select_default_state().
 >
-> The STOP command is disabled for multiple blocks r/w commands
-> with auto CMD12, when start to send. However, if there is data
-> error, software still needs to send CMD12 according to SD spec.
-> This patch is to allow software CMD12 sending for this case.
->
-> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 
-Applied for next, thanks!
+Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
 
-Let's see how things go, then we can decide whether to add stable tag as well.
-
-Kind regards
-Uffe
-
-
+> Cc: Kevin Hilman <khilman@baylibre.com>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > ---
->  drivers/mmc/host/sdhci.c | 17 +++--------------
->  1 file changed, 3 insertions(+), 14 deletions(-)
+>  drivers/mmc/host/meson-gx-mmc.c | 10 +---------
+>  1 file changed, 1 insertion(+), 9 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index 09cdbe8..3041c39 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -1326,12 +1326,12 @@ static void sdhci_finish_data(struct sdhci_host *host)
->
->         /*
->          * Need to send CMD12 if -
-> -        * a) open-ended multiblock transfer (no CMD23)
-> +        * a) open-ended multiblock transfer not using auto CMD12 (no CMD23)
->          * b) error in multiblock transfer
->          */
->         if (data->stop &&
-> -           (data->error ||
-> -            !data->mrq->sbc)) {
-> +           ((!data->mrq->sbc && !sdhci_auto_cmd12(host, data->mrq)) ||
-> +            data->error)) {
->                 /*
->                  * 'cap_cmd_during_tfr' request must not use the command line
->                  * after mmc_command_done() has been called. It is upper layer's
-> @@ -1825,17 +1825,6 @@ void sdhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
->
->         sdhci_led_activate(host);
->
-> -       /*
-> -        * Ensure we don't send the STOP for non-SET_BLOCK_COUNTED
-> -        * requests if Auto-CMD12 is enabled.
-> -        */
-> -       if (sdhci_auto_cmd12(host, mrq)) {
-> -               if (mrq->stop) {
-> -                       mrq->data->stop = NULL;
-> -                       mrq->stop = NULL;
-> -               }
-> -       }
+> diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+> index e712315c7e8d..35400cf2a2e4 100644
+> --- a/drivers/mmc/host/meson-gx-mmc.c
+> +++ b/drivers/mmc/host/meson-gx-mmc.c
+> @@ -161,7 +161,6 @@ struct meson_host {
+>  	bool dram_access_quirk;
+>  
+>  	struct pinctrl *pinctrl;
+> -	struct pinctrl_state *pins_default;
+>  	struct pinctrl_state *pins_clk_gate;
+>  
+>  	unsigned int bounce_buf_size;
+> @@ -327,7 +326,7 @@ static void meson_mmc_clk_ungate(struct meson_host *host)
+>  	u32 cfg;
+>  
+>  	if (host->pins_clk_gate)
+> -		pinctrl_select_state(host->pinctrl, host->pins_default);
+> +		pinctrl_select_default_state(host->dev);
+>  
+>  	/* Make sure the clock is not stopped in the controller */
+>  	cfg = readl(host->regs + SD_EMMC_CFG);
+> @@ -1101,13 +1100,6 @@ static int meson_mmc_probe(struct platform_device *pdev)
+>  		goto free_host;
+>  	}
+>  
+> -	host->pins_default = pinctrl_lookup_state(host->pinctrl,
+> -						  PINCTRL_STATE_DEFAULT);
+> -	if (IS_ERR(host->pins_default)) {
+> -		ret = PTR_ERR(host->pins_default);
+> -		goto free_host;
+> -	}
 > -
->         if (!present || host->flags & SDHCI_DEVICE_DEAD) {
->                 mrq->cmd->error = -ENOMEDIUM;
->                 sdhci_finish_mrq(host, mrq);
-> --
-> 2.7.4
->
+>  	host->pins_clk_gate = pinctrl_lookup_state(host->pinctrl,
+>  						   "clk-gate");
+>  	if (IS_ERR(host->pins_clk_gate)) {
+
