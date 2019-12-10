@@ -2,106 +2,117 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6C9511841B
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 10:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDF5B118423
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 10:52:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727223AbfLJJv7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 10 Dec 2019 04:51:59 -0500
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:41603 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727222AbfLJJv7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Dec 2019 04:51:59 -0500
-Received: by mail-ua1-f65.google.com with SMTP id f7so6938959uaa.8
-        for <linux-mmc@vger.kernel.org>; Tue, 10 Dec 2019 01:51:58 -0800 (PST)
+        id S1727325AbfLJJwH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 Dec 2019 04:52:07 -0500
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:34687 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727131AbfLJJwH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Dec 2019 04:52:07 -0500
+Received: by mail-vs1-f68.google.com with SMTP id g15so12581938vsf.1
+        for <linux-mmc@vger.kernel.org>; Tue, 10 Dec 2019 01:52:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=xUN3rGfqd0QTJZr6aZxtmVJn1us7qeeluWmJXj0Te7E=;
-        b=xggK1nB9ejv8RrFLLP7MF/oV73DlomCcEFt6HG/TCk2YTOnfjzU3+OzQE8gFIrWdVJ
-         TtWMwOMAm+lNOHbSBgqqfcWGtcvUCv75lA3LChaXWTTz0IACzZ6lxZQSbnTN3Fb3DP2O
-         IJuvDyC789CqjCdgQcDf5UoOTHebBGiol9I8m3u0iIMym5mvaHzTt67ZcXglu22tZM6l
-         vj4qeiLkVAYovR5jRIo0hNv66L1NOWtskL6JUwzFKzCajY4uwA3NIaWBXmgWfJSWKlEj
-         WWrieoWz89mX714X7EAYQ87oD6/+ERYpjZqPZoyFB1vPFlOGCcfg9yzMlnZJzgMAYDNB
-         /0XA==
+        bh=ybsluu38MO5eh/YLSNECYiElz7Q4IKjXe1U2m0DW3pA=;
+        b=zgHuWeY7/innDowtWMwI8fnAseVFKB5h8yAU+F+pXXolVXl7IT59cgR3WjvfyHEKhW
+         1oJBc8pX9KCvwqjcnkqaBTwxHysQW3v4BP42qGr1GA89dxSewio7bUk2jlVDFdS5MNsw
+         tjDpH+kEBA/0avN4I6DtRqv+G+GPp6XyI5rU4VS3cqkpH8P5Ax40K+EH8WfYDK1ACA82
+         L58BwWWTVb46EJwVANNVbkh7gvhikAPoTnL8+pRWF5Q8nR+DrIsPFDhUGp/FtVn49yZp
+         PoI1VeaPwpSrsxY8/BKDruPtuxroFhcqfnCqDCZo/EXdaU8DGyIlqX9ltATOWRYuD+IT
+         aFMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=xUN3rGfqd0QTJZr6aZxtmVJn1us7qeeluWmJXj0Te7E=;
-        b=YizXNx1f6FRfUXUTc5deBJpQDaonVplcKiSrplBFZivRTe6SFGnxwy2fOQeSRMIabn
-         DwV8rrsf0nkFHYsYmr6kuUAATBCqOvN7JcO0mmKDMvC3n2dtXrIWKxuIsVrQK/bbB8NM
-         5PtNz1xT6NKoxOyavasSGb3VjHd0bTd4lFiHCBUlgQiRFc5yxfo6Z7Tpdavr47K0hpJy
-         HKwc+X3w1hr4NsBNLCEapSln1q6pmYe3Tbmk7CjBmd9zfzRrq8Jwk8U6VLsOsT9MsFvz
-         Wqh4BMGSSfFVc1EMACi7BhKBonLQOTnD0DWjq0gUcqzYSGqi+a5QMwVqiQG95cUIZFE4
-         Vjvg==
-X-Gm-Message-State: APjAAAUPtXJpmYo5pZ05NgFh67oPsKS2iYLppBBxdCfcfuoE47bLg2p0
-        pB9JV8bv4Bk9NIb3FfnTha3tN0Syx7EogShhmf0PvQ==
-X-Google-Smtp-Source: APXvYqxI9QdLGOMqq6QaCpjOk+V2l3LXtFs7IfnhUjP0TmSsF2jOR5CpH0EuMu4/BYNbPnekTo3AHs1xkdV1CNj9hNE=
-X-Received: by 2002:ab0:2759:: with SMTP id c25mr2903677uap.104.1575971518126;
- Tue, 10 Dec 2019 01:51:58 -0800 (PST)
+        bh=ybsluu38MO5eh/YLSNECYiElz7Q4IKjXe1U2m0DW3pA=;
+        b=SXGhPua/4LDCJ1ffr+cD3Lj8436zI/pYgwqqHofH0OqveRWOWKP4MnXlDtTzBDDFV4
+         xLyi3Y6iQhitAy2r8LOkqMwpJJwqzKkqMq+g3vAhW62psK0LMejBx7zL0lCsYICNGRzt
+         JVovfKEvFDCn61+BQ3fDnA9yH3KUyTqniG2uqn/lbFK6Hk/O0t3Wdyrkw/jhXzwLmDm2
+         j+FNsPDOm+lwJSI4E7sKON99MfjNuYUJN49GQc3F2sYw1sktJZP7FpsHI8/5Jg20YVY8
+         YzDqinT+7P7E6oMycYOZhpu0iJBYNdRBHp19T2V/z+M51RRjAuvMbYcUKKR6al0O6bSb
+         8fCg==
+X-Gm-Message-State: APjAAAVW9qw17nYz3cGQZED9mho9iDlKQgBKxS+QWpx36nMwOQJPd1hH
+        PKE3tzv0PoNi3wCQOZTceUvndb9YSEuWaQw7CZ1gdg==
+X-Google-Smtp-Source: APXvYqwWNMYBAQkevXVNBP8cKIcAOSNAKJn6/eATEcFnzDvyeoLn5MqjM1Lw9GooaMA+WqRtf1+QrA4tXx8wiDf2JfA=
+X-Received: by 2002:a67:b649:: with SMTP id e9mr24229005vsm.34.1575971526021;
+ Tue, 10 Dec 2019 01:52:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20191204071958.18553-1-chaotian.jing@mediatek.com>
-In-Reply-To: <20191204071958.18553-1-chaotian.jing@mediatek.com>
+References: <20191204085447.27491-1-linux@rasmusvillemoes.dk>
+In-Reply-To: <20191204085447.27491-1-linux@rasmusvillemoes.dk>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 10 Dec 2019 10:51:22 +0100
-Message-ID: <CAPDyKFo9Z2yj7zC5VOS-iX_LyavPp1A4n73eAp7VD-Q+dpoqpw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: mediatek: fix CMD_TA to 2 for MT8173 HS200/HS400 mode
-To:     Chaotian Jing <chaotian.jing@mediatek.com>
-Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
+Date:   Tue, 10 Dec 2019 10:51:30 +0100
+Message-ID: <CAPDyKFqyU1nyVUsuAPC8ZDCm88JOq45aywDM7AqR9vfr0k90jw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-of-esdhc: Revert "mmc: sdhci-of-esdhc: add
+ erratum A-009204 support"
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Yinbo Zhu <yinbo.zhu@nxp.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-mediatek@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        srv_heupstream <srv_heupstream@mediatek.com>, hsinyi@google.com
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 4 Dec 2019 at 08:20, Chaotian Jing <chaotian.jing@mediatek.com> wrote:
+On Wed, 4 Dec 2019 at 09:54, Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 >
-> there is a chance that always get response CRC error after HS200 tuning,
-> the reason is that need set CMD_TA to 2. this modification is only for
-> MT8173.
+> This reverts commit 5dd195522562542bc6ebe6e7bd47890d8b7ca93c.
 >
-> Signed-off-by: Chaotian Jing <chaotian.jing@mediatek.com>
+> First, the fix seems to be plain wrong, since the erratum suggests
+> waiting 5ms before setting setting SYSCTL[RSTD], but this msleep()
+> happens after the call of sdhci_reset() which is where that bit gets
+> set (if SDHCI_RESET_DATA is in mask).
+>
+> Second, walking the whole device tree to figure out if some node has a
+> "fsl,p2020-esdhc" compatible string is hugely expensive - about 70 to
+> 100 us on our mpc8309 board. Walking the device tree is done under a
+> raw_spin_lock, so this is obviously really bad on an -rt system, and a
+> waste of time on all.
+>
+> In fact, since esdhc_reset() seems to get called around 100 times per
+> second, that mpc8309 now spends 0.8% of its time determining that
+> it is not a p2020. Whether those 100 calls/s are normal or due to some
+> other bug or misconfiguration, regularly hitting a 100 us
+> non-preemptible window is unacceptable.
+>
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
-I have applied this for fixes, however it seems like this should also
-be tagged for stable, right?
-
-Is there a specific commit this fixes or should we just find the
-version it applies to?
+Applied for fixes and by adding a stable tag, thanks!
 
 Kind regards
 Uffe
 
 
-
 > ---
->  drivers/mmc/host/mtk-sd.c | 2 ++
->  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-> index 189e42674d85..010fe29a4888 100644
-> --- a/drivers/mmc/host/mtk-sd.c
-> +++ b/drivers/mmc/host/mtk-sd.c
-> @@ -228,6 +228,7 @@
->  #define MSDC_PATCH_BIT_SPCPUSH    (0x1 << 29)  /* RW */
->  #define MSDC_PATCH_BIT_DECRCTMO   (0x1 << 30)  /* RW */
+> The errata sheet for mpc8309 also mentions A-009204, so I'm not at all
+> opposed to having a fix for that. But it needs to be done properly
+> without causing a huge performance or latency impact. We should
+> probably just add a bit to struct sdhci_esdhc which gets initialized
+> in esdhc_init.
 >
-> +#define MSDC_PATCH_BIT1_CMDTA     (0x7 << 3)    /* RW */
->  #define MSDC_PATCH_BIT1_STOP_DLY  (0xf << 8)    /* RW */
+>  drivers/mmc/host/sdhci-of-esdhc.c | 3 ---
+>  1 file changed, 3 deletions(-)
 >
->  #define MSDC_PATCH_BIT2_CFGRESP   (0x1 << 15)   /* RW */
-> @@ -1881,6 +1882,7 @@ static int hs400_tune_response(struct mmc_host *mmc, u32 opcode)
+> diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
+> index 5cca3fa4610b..7f87a90bf56a 100644
+> --- a/drivers/mmc/host/sdhci-of-esdhc.c
+> +++ b/drivers/mmc/host/sdhci-of-esdhc.c
+> @@ -764,9 +764,6 @@ static void esdhc_reset(struct sdhci_host *host, u8 mask)
+>         sdhci_writel(host, host->ier, SDHCI_INT_ENABLE);
+>         sdhci_writel(host, host->ier, SDHCI_SIGNAL_ENABLE);
 >
->         /* select EMMC50 PAD CMD tune */
->         sdr_set_bits(host->base + PAD_CMD_TUNE, BIT(0));
-> +       sdr_set_field(host->base + MSDC_PATCH_BIT1, MSDC_PATCH_BIT1_CMDTA, 2);
->
->         if (mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
->             mmc->ios.timing == MMC_TIMING_UHS_SDR104)
+> -       if (of_find_compatible_node(NULL, NULL, "fsl,p2020-esdhc"))
+> -               mdelay(5);
+> -
+>         if (mask & SDHCI_RESET_ALL) {
+>                 val = sdhci_readl(host, ESDHC_TBCTL);
+>                 val &= ~ESDHC_TB_EN;
 > --
-> 2.18.0
+> 2.23.0
+>
