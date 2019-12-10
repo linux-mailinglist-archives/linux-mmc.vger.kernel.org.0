@@ -2,27 +2,27 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA8521194F8
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 22:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03CF2119830
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 22:39:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729015AbfLJVRe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 10 Dec 2019 16:17:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38282 "EHLO mail.kernel.org"
+        id S1728214AbfLJVhd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 Dec 2019 16:37:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41320 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727296AbfLJVMx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:12:53 -0500
+        id S1730276AbfLJVfb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:35:31 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C3268214AF;
-        Tue, 10 Dec 2019 21:12:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DF25B2467C;
+        Tue, 10 Dec 2019 21:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576012372;
-        bh=ULvkDPCisHoy7HGUGzfkwm3NCT0ZM1p4B1C00hG5DVc=;
+        s=default; t=1576013730;
+        bh=8Nar7KQyexigtXQZAEJ9QBpT9ro7aQBOAsTgfZ6PZ/8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iEKLkDWlS82dsu5DYmgSGamViZ51fxIUIyHLz88ijN7i8iyRx4WW2/v2rvziOntD5
-         7gB64VDuDyP9vOruF8t+JpUk7EiLP1v8aNtZp56w/qYq08Qt6x1/ldto/jxLVp77JQ
-         DMUPpdSCLbd1Xb8V2kDw16fzD0NeYNG1jvAYIq9g=
+        b=gvcI/s+WOlPAp2QAOMOkDbEkCDDCt/2eINKuB60sC2qmEZk8I6haIYvZbgoVTLJun
+         A4YdzGcoM4C3OnG0saYRzYFNTAK7rLnfYpMlMmNIs85oVHhKmqnXzsht2H7frfiTmD
+         cmlgzSoUOJely4Ux2MDTu2A6ePTdDEVjBo3w+31A=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Eugeniu Rosca <erosca@de.adit-jv.com>,
@@ -32,12 +32,12 @@ Cc:     Eugeniu Rosca <erosca@de.adit-jv.com>,
         Harish Jenny K N <harish_kandiga@mentor.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 298/350] mmc: tmio: Add MMC_CAP_ERASE to allow erase/discard/trim requests
-Date:   Tue, 10 Dec 2019 16:06:43 -0500
-Message-Id: <20191210210735.9077-259-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 155/177] mmc: tmio: Add MMC_CAP_ERASE to allow erase/discard/trim requests
+Date:   Tue, 10 Dec 2019 16:31:59 -0500
+Message-Id: <20191210213221.11921-155-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
-References: <20191210210735.9077-1-sashal@kernel.org>
+In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
+References: <20191210213221.11921-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -100,18 +100,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-index 9b6e1001e77c3..dec5a99f52cf8 100644
+index 35630ccbe9e5d..33c9ca8f14a97 100644
 --- a/drivers/mmc/host/tmio_mmc_core.c
 +++ b/drivers/mmc/host/tmio_mmc_core.c
-@@ -1184,7 +1184,7 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
- 	if (ret == -EPROBE_DEFER)
- 		return ret;
+@@ -1267,7 +1267,7 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
+ 			return ret;
+ 	}
  
 -	mmc->caps |= MMC_CAP_4_BIT_DATA | pdata->capabilities;
 +	mmc->caps |= MMC_CAP_ERASE | MMC_CAP_4_BIT_DATA | pdata->capabilities;
  	mmc->caps2 |= pdata->capabilities2;
  	mmc->max_segs = pdata->max_segs ? : 32;
- 	mmc->max_blk_size = TMIO_MAX_BLK_SIZE;
+ 	mmc->max_blk_size = 512;
 -- 
 2.20.1
 
