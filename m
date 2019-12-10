@@ -2,133 +2,138 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B143118C58
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 16:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF9BA119153
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Dec 2019 21:01:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727448AbfLJPSG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 10 Dec 2019 10:18:06 -0500
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:39495 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727380AbfLJPSG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Dec 2019 10:18:06 -0500
-Received: by mail-vs1-f66.google.com with SMTP id p21so13305776vsq.6
-        for <linux-mmc@vger.kernel.org>; Tue, 10 Dec 2019 07:18:05 -0800 (PST)
+        id S1726968AbfLJUAe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 Dec 2019 15:00:34 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:44551 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726691AbfLJUAd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Dec 2019 15:00:33 -0500
+Received: by mail-wr1-f65.google.com with SMTP id q10so21512019wrm.11;
+        Tue, 10 Dec 2019 12:00:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jcUnC0/SEm4HDTIw1YLkWhbNF7DV2HNNDkdfVlTygbE=;
-        b=cSSUpZLtf+hCVZvTD7HbKKL/zq4Rkmgcb2lIlIkDlhoxjyGVl0vVSnKlyJSar8oMju
-         kJKrdwjxQ132req2y4+nrrVfisVcDFp//Vza1JYfv88Pn0pawYqigZnVIjKe8hsBLtwo
-         MCeVhuUG+FD6AVkT5efECIF5yoeCURQPE8pK5mLLWFQv5VUdlsUYexM/XG4pBnG0lMlj
-         homajns2YyoPkCVbVSABDLsSQp/B9WvdKRwStVCpME0KK4gfjaFWk6c6Sp+tT9WhGfwd
-         Wm0n+fvhFn2WYXhdCvCyA4aduw0ySOsjxw4ZHQ5FAt3egnPm7ELrA47hNqGA3SWWB7Yy
-         x0ug==
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+xeCGefpGQy2sjgNGOl+Y50d//RwjlVI7sRbqcHrAp4=;
+        b=BiS1cDh+P9bCWW2ka7NcIQDHU99Kn5O7ZAiRBjLegvHkYyubb9sankMnNyOIadKGtj
+         sipBJHj72DaqrBpuSGE2i1gnbMh+2SPZWmzWWn7kvwwtXAftCIp+/Dy0TFdbAPNB3nap
+         uz0VMQlUU5KpSY0lSU8FRmcC9eL2PfqFKvV4GMf/TaUxKkF7km3Z/NqrhCLSVeittWVO
+         C890+Y3XjK2L1aa5Lr40eSOdznCUEt7P4HhBWwNRcK/wziGaudjuvXmARbN6ukznGH3y
+         9MjTcMUFVHBhu4uWmjeD0UgYLDKKM0txxMrfChn8EjPe5YgrrI+D1xsL6q4kmV95R0mT
+         XQKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jcUnC0/SEm4HDTIw1YLkWhbNF7DV2HNNDkdfVlTygbE=;
-        b=nPHkVjoLRq+w3Ic0FvReOuo6+KU8T7GtcDI1bWsUR5IPzBrXk+Q7XkpU/wNt4/XJ8L
-         VJhmily98iHrBuwPCIahWs+jlxNNzG2Fc8cqHOmbgTk5aB5LCdP1kqqcAtt8/CJmel7p
-         /RrvKmfswyiajibuPfWMLAJy9QXZsnmmgHEI28J4/Fa3BHBjCwIqv/qLyKdLth5uYa2w
-         zYKW8SHlezm4iQr/iiyslACus2JcH4xC5hzhCpm4q4m8X0yTU4ZRNRxEa8XpzOrnqU+a
-         DniZ0Tm2TARRYF9OxES2FYuYyJUdrvBFNwetZ3dNGbMH162xjPvwUKTuL7H4llr2qlQu
-         497Q==
-X-Gm-Message-State: APjAAAViB4jfANuPgfwJsYUuUUj4BADhLRFm1gwvTXrWunenQQFY4ITb
-        SmZ8U0+H/1kOMHdcjyXpI3keNGsQf04fLM4VlIgLmw==
-X-Google-Smtp-Source: APXvYqxHTWP37WCrbgkX6nxMLdBw/0tPKoRg5nRin2f5LJXHzhcKcpphZKWgMGaQKXGnCPL9VoXyCSqg/WxqTmWfZqM=
-X-Received: by 2002:a05:6102:5d1:: with SMTP id v17mr25314853vsf.200.1575991085086;
- Tue, 10 Dec 2019 07:18:05 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+xeCGefpGQy2sjgNGOl+Y50d//RwjlVI7sRbqcHrAp4=;
+        b=I1TNV5wFx7nHjzxdU85PMM8f1eH78WBrFkrfCUN9DEkiL+00jiete0QlwCio7LJerO
+         8udowyHpZVC+Z4EWpZPTlBmbuaX2Gyod/8nyc20iaUt1pyU9H8MsaK68BeC8xUedLZUL
+         pgLon5TliCh6k0rBlt3o0v/f0pZPKmEeq3Ycsrent/5BGS7CBKZQMU2ffQd2nqS/SyX6
+         sn9C9XEk7HpoXrGG8bG6PeWEecHnRzjv4EQ5n1AO/ueTSNsRWIYJRqJspLM3BahYldOb
+         BY/6PQeFqwNsss2TpJCvIIEndwRrVhOqHEXN7EzULPfjfUoJ/uqkRJUTaw1nAa0MjO6V
+         lyug==
+X-Gm-Message-State: APjAAAVu8gxpz//kpvKVJAYxmChiEatua0XORFuyYqiSLC0Eh3dAqySS
+        MitMj+6kEFQ1q/lH5vGgkV0=
+X-Google-Smtp-Source: APXvYqzpu8OOo+U+YwFj7SHZFDBR48BOqfZIl7wVK/FMuNySRzX9p5e7U6/uTahIjSPirfINT95Mrw==
+X-Received: by 2002:adf:9c8f:: with SMTP id d15mr1530407wre.390.1576008031386;
+        Tue, 10 Dec 2019 12:00:31 -0800 (PST)
+Received: from localhost.localdomain (p200300F1371AD700428D5CFFFEB99DB8.dip0.t-ipconnect.de. [2003:f1:371a:d700:428d:5cff:feb9:9db8])
+        by smtp.googlemail.com with ESMTPSA id t81sm4428610wmg.6.2019.12.10.12.00.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Dec 2019 12:00:30 -0800 (PST)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-mmc@vger.kernel.org, ulf.hansson@linaro.org
+Cc:     robh+dt@kernel.org, jianxin.pan@amlogic.com, mark.rutland@arm.com,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        lnykww@gmail.com, yinxin_1989@aliyun.com,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH v3 0/2] Amlogic 32-bit Meson SoC SDHC MMC controller driver
+Date:   Tue, 10 Dec 2019 21:00:20 +0100
+Message-Id: <20191210200022.29696-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <cover.1573456283.git.baolin.wang@linaro.org> <CAK8P3a1we9D5C2NOBww=cW-4L1PT3t0NnDRmknLwiLm652TmKg@mail.gmail.com>
- <CAMz4kuK9HEuGdhNqHO_qoy9jD=ccsPPhD_dKYwNRgQyWyYwqRA@mail.gmail.com>
- <CAK8P3a0rNhyxmUWLUV1js3FsuAESDOPX3E4b8ActtL4GRT4uTA@mail.gmail.com>
- <CADBw62pzV+5ZXBEbFvTQJ9essAd4cd7Xkz5j9AXB5rAQy0wLqA@mail.gmail.com>
- <CAMz4kuK_3q4JY1vNXe6zGHDNF8Ep-SkcUq6Z25r790VSz4+Bjw@mail.gmail.com>
- <CAK8P3a11vJb1riYseqPnF_5SuJA+YnYuGwC0XWx6_rk+eQ0Bmw@mail.gmail.com>
- <f88856aa-9175-2a93-3747-c98215cb79c3@suse.de> <20191127090023.GA23040@infradead.org>
- <CAK8P3a0gUWf_+ZmscuFanvPG=wN09ELL-JpByjJJM4Lo1FYmrQ@mail.gmail.com>
-In-Reply-To: <CAK8P3a0gUWf_+ZmscuFanvPG=wN09ELL-JpByjJJM4Lo1FYmrQ@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 10 Dec 2019 16:17:28 +0100
-Message-ID: <CAPDyKFoNAF1UUvzvEGxTS=yKJshVgHsXqXiCxno75=aasME4kw@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] Add MMC software queue support
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Hannes Reinecke <hare@suse.de>,
-        "(Exiting) Baolin Wang" <baolin.wang@linaro.org>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Asutosh Das <asutoshd@codeaurora.org>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Lyra Zhang <zhang.lyra@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Hannes Reinecke <hare@suse.com>,
-        linux-block <linux-block@vger.kernel.org>,
-        Paolo Valente <paolo.valente@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 27 Nov 2019 at 13:01, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Wed, Nov 27, 2019 at 10:00 AM Christoph Hellwig <hch@infradead.org> wrote:
-> >
-> > On Tue, Nov 26, 2019 at 12:17:15PM +0100, Hannes Reinecke wrote:
-> >  If requests are batched enough we could just drain
-> > and switch every time an other partition access comes in.  Especially
-> > so if people only use partitions for boot partitions and other rarely
-> > used areas.
->
-> We only support a single user partition plus up to two boot partitions that
-> are accessed rarely, I don't think there is any reason to optimize switching
-> between them.
+Hello,
 
-I agree. However, let me just add some more information to this.
+this is the first non-RFC version of the driver for the Amlogic "SDHC"
+MMC controller found on Meson6, Meson8, Meson8b and Meson8m2 SoCs.
 
-There are more partitions, like the RPMB for example. In regards to
-partition switching, after serving a request to the RPMB partition, we
-always switch back to the main user area. I think that is sufficient.
+The public S805 (Meson8b) datasheet has some documentation starting on
+page 74: [0]
 
-Also note that requests for the RPMB partitions are managed via
-REQ_OP_DRV_IN|OUT.
+It's performance is still not as good as the driver from Amlogic's 3.10
+kernel, but it does not corrupt data anymore (as RFC v1 did).
 
->
-> The only change that I think we need here is to change the partition switch
-> from something that is done synchronously during ->queue_rq() to
-> something that fits better into normal scheme of sending a cmd to
-> the device, returning BLK_STS_RESOURCE from ->queue_rq.
+Special thanks to the people who supported me off-list - you are
+amazing and deserve to be mentioned here:
+- Xin Yin who helped me fix two more write corruption problems. I am
+  hoping that he will reply with Reviewed-by, Tested-by and Bug-fixed-by
+- Jianxin Pan for sharing some of the internal workings of this MMC
+  controller with me
+- Wei Wang for spotting the initial write corruption problem and helping
+  test this driver on his board. I have his permission to add his
+  Tested-by (off-list, he's Cc'ed so if there's any problem he can speak
+  up)
 
-You want to translate them to be managed similar to REQ_OP_DRV_IN|OUT, no?
 
-I am just trying to understand what this would help us with, but I
-don't get it, sorry.
+Changes since v2 at [2]:
+- rebased on top of v5.5-rc1
+- added Rob's and Xin Yin's Reviewed-by and Tested-by (thank you!)
+- (note: Kevin had v2 of this series in -next for a few days so the
+   build test robots could play with it. I haven't received any negative
+   feedback in that time)
 
-I realize that I am joining the show a bit late, apologize for that.
-But it seems like you are forgetting about re-tuning, urgent bkops,
-card detect, SDIO combo cards, etc.
+Changes since RFC v1 at [1]:
+- don't set MESON_SDHC_MISC_MANUAL_STOP to fix one of three write
+  corruption problems. the out-of-tree 3.10 "reference" driver doesn't
+  set it either
+- check against data->flags instead of cmd->flags when testing for
+  MMC_DATA_WRITE as spotted by Xin Yin (many thanks!). This fixes
+  another write corruption problem
+- clear the FIFOs after successfully transferring data as suggested by
+  Xin Yin (many thanks!). This is what the 3.10 driver did and fixes yet
+  another write corruption problem
+- integrate the clock suggestions from Jianxin Pan so the driver is now
+  able to set up the clocks correctly for all known cases. documentation
+  is also added to the patch description. Thank you Jianxin for the
+  help!
+- set the correct max_busy_timeout as suggested by Jianxin Pan (thanks!)
+- convert the dt-bindings to .yaml (which is why I didn't add Rob's
+  Reviewed-by)
+- switch to struct clk_parent_data as part of newer common clock
+  framework APIs to simplify the clock setup
+- dropped CMD23 support because it seems to hurt read and write
+  performance by 10-20% in my tests. it's not clear why, but for now we
+  can live without this.
+- use devm_platform_ioremap_resource instead of open-coding it
 
-For example, re-tuning may be required because of a CRC error on the
-previously sent transfer. Thus re-tuning must be done before serving
-the next request.
 
-Likewise, when the device signals urgent bkops status, we must not
-serve any new request until the card has notified us that it is ready
-with it's internal housekeeping operations.
+[0] https://dn.odroid.com/S805/Datasheet/S805_Datasheet%20V0.8%2020150126.pdf
+[1] https://patchwork.kernel.org/cover/11035505/
+[2] http://lists.infradead.org/pipermail/linux-amlogic/2019-November/014576.html
 
-> Possibly this could even be turned into a standard struct request that is
-> added between two normal requests for different partitions at some
-> point, if this simplifies the logic (I suspect it won't, but it may be worth
-> a try).
 
-Doing so, means re-tuning, bkops, etc, also needs to be managed in the
-same way. Is this really the way to go?
+Martin Blumenstingl (2):
+  dt-bindings: mmc: Document the Amlogic Meson SDHC MMC host controller
+  mmc: host: meson-mx-sdhc: new driver for the Amlogic Meson SDHC host
 
-Kind regards
-Uffe
+ .../bindings/mmc/amlogic,meson-mx-sdhc.yaml   |   64 +
+ drivers/mmc/host/Kconfig                      |   14 +
+ drivers/mmc/host/Makefile                     |    1 +
+ drivers/mmc/host/meson-mx-sdhc.c              | 1174 +++++++++++++++++
+ 4 files changed, 1253 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/amlogic,meson-mx-sdhc.yaml
+ create mode 100644 drivers/mmc/host/meson-mx-sdhc.c
+
+-- 
+2.24.0
+
