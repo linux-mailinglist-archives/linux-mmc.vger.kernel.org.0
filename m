@@ -2,33 +2,35 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3700122AAF
-	for <lists+linux-mmc@lfdr.de>; Tue, 17 Dec 2019 12:55:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE18B122AFA
+	for <lists+linux-mmc@lfdr.de>; Tue, 17 Dec 2019 13:11:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726612AbfLQLzT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 Dec 2019 06:55:19 -0500
-Received: from mga05.intel.com ([192.55.52.43]:2032 "EHLO mga05.intel.com"
+        id S1726275AbfLQMLG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 Dec 2019 07:11:06 -0500
+Received: from mga12.intel.com ([192.55.52.136]:27783 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725940AbfLQLzS (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 17 Dec 2019 06:55:18 -0500
+        id S1727152AbfLQMLG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 17 Dec 2019 07:11:06 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 03:55:17 -0800
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 04:11:05 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.69,325,1571727600"; 
-   d="scan'208";a="217761205"
+   d="scan'208";a="247444961"
 Received: from cvg-ubt08.iil.intel.com ([143.185.152.138])
-  by orsmga003.jf.intel.com with ESMTP; 17 Dec 2019 03:55:15 -0800
+  by fmsmga002.fm.intel.com with ESMTP; 17 Dec 2019 04:11:04 -0800
 From:   Vladimir Kondratiev <vladimir.kondratiev@intel.com>
 To:     Adrian Hunter <adrian.hunter@intel.com>,
         Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Vladimir Kondratiev <vladimir.kondratiev@intel.com>,
         linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mmc: sdhci-cadence: tune multi-block read gap
-Date:   Tue, 17 Dec 2019 13:55:02 +0200
-Message-Id: <20191217115502.5590-1-vladimir.kondratiev@intel.com>
+Subject: [PATCH v2] mmc: sdhci-cadence: tune multi-block read gap
+Date:   Tue, 17 Dec 2019 14:11:02 +0200
+Message-Id: <20191217121102.11213-1-vladimir.kondratiev@intel.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191217115502.5590-1-vladimir.kondratiev@intel.com>
+References: <20191217115502.5590-1-vladimir.kondratiev@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -93,7 +95,7 @@ index ae0ec27dd7cc..d0bed1932b6c 100644
 + *
 + * Return: error code
 + */
-+int mmc_send_mb_read(struct mmc_host *host)
++static int mmc_send_mb_read(struct mmc_host *host)
 +{
 +	const int blksz = 512;
 +	const int blocks = 32;
