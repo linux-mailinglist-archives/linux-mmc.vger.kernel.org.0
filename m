@@ -2,91 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4902C1248F4
+	by mail.lfdr.de (Postfix) with ESMTP id BA2931248F5
 	for <lists+linux-mmc@lfdr.de>; Wed, 18 Dec 2019 15:02:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727269AbfLROCE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 18 Dec 2019 09:02:04 -0500
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:45362 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727020AbfLROCE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Dec 2019 09:02:04 -0500
-Received: by mail-vs1-f65.google.com with SMTP id b4so972971vsa.12
-        for <linux-mmc@vger.kernel.org>; Wed, 18 Dec 2019 06:02:03 -0800 (PST)
+        id S1727020AbfLROCH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 18 Dec 2019 09:02:07 -0500
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:32903 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726984AbfLROCH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Dec 2019 09:02:07 -0500
+Received: by mail-vs1-f66.google.com with SMTP id n27so1450933vsa.0
+        for <linux-mmc@vger.kernel.org>; Wed, 18 Dec 2019 06:02:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LbzvOAB9h8zPmYPnoKr818YJbnxD4Y4JMf6k4NJrTs4=;
-        b=P/eZnyY6kzE0QPUrwXSTkAFwyqC+sw/d2uSUfcIdV6trKXr3TWDVAvmHDFgJ2zH0p1
-         gOznHmJPSeXuU7Sp8H+miwvswqwphhMsqJoWVnBrXEsDDF6NJJ//YM+YTxxz+A+IUlX1
-         yC2q19F3yAxPz2bYKO+34x+CoCgqEwkaUYu/34sNnCecXdOhWVDgWZFYSWEe9qWOCrgx
-         z8PmGRuw9MPOIN+RdshMKInFxbQaksahyc2gtrCk6jlCjBCLOlkb33oL6QT5XWzws/OR
-         N8ke64ZIkrnoMfzXa443GQZbFvxjLwjhH1NrkwkSeAY5sIV2+onMGghABuS/iCCIJYf3
-         YxLQ==
+        bh=4d3SXXH9twA4RWZYwhTuwFTUWM9um1n6b5uUiGhYlZ0=;
+        b=ynh8Bijwpv7Fw2OQY8W4NgCGjwyeYIXTkNK1GfhRUMdomy8pdZOpDsgC0z58kcfbnB
+         6mr60Y0MbBGa6hNKzFjyBwDYC1XqI4ooVDJeuVUbj+Bk+ryhjvUeUOsXMSoyrLZV0Nc7
+         BH/+clhibXwnbCU598LPuRsPfXrGVh7N5cdlqjM2H9sDj4Rk5sgDB32mpHgI4U9FpRDt
+         TaUEwvD/qDhaD9WhDZ6K2qDHRFoMXzZAgrMnUR1F/rDjBnj9ZywvBLnyT0FUS62D6ZSW
+         pC1DU6rWVbmPePFH818AVsNdiuswEOctSaaI4lMC499clWuHmeYJuArodtiwqg96Jl9j
+         6NEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LbzvOAB9h8zPmYPnoKr818YJbnxD4Y4JMf6k4NJrTs4=;
-        b=lg8irdb2diZ5iefJ611OldX06TlJjm600ZNqlNC2vDZKwKe2E5pejNy6EfsaQLkYp/
-         ve+yacOeJ5TEBPsn4n1qG33t95gTvl3MJUhruWNQ9vZ5rruJtPhU8SIZZeLe02zVLd2h
-         vhKk6LRwzKRyhDAH8d6W0tjGjk5iiai/1YLa7cAeb1xLkX2tVFv/rW9aRT05d+4fGFu6
-         yqYVLJUwRxsmldXWzoDkZZhgF3rYllHzrSQzRbECNatDzhdiMFr9IiKsh2qtXdAErjXz
-         jGOpNK8j9GXT/gQH0EKUusKwR0mxhgdIZTUur1wcwNJocsWNy3+wS03tU8AbOBolPr8A
-         5Mtw==
-X-Gm-Message-State: APjAAAVAJ9SSGqefS7MwvfhrMUivD9ZeGqPHW+JkiF6Hmq8ZUH5UuFC2
-        WTlOHqLYVn40anw8RPvzmfQhBlvUrwlmE7t4iKAhCA==
-X-Google-Smtp-Source: APXvYqxScyreBRYV+9Nc++M3+Voi1CbhmxmzpN5t+josPeSshD/Gi/DHw3r0wekBSzFFXOYxczxgB5UkCNo1A4Bb0xg=
-X-Received: by 2002:a67:db8f:: with SMTP id f15mr1395917vsk.191.1576677723074;
- Wed, 18 Dec 2019 06:02:03 -0800 (PST)
+        bh=4d3SXXH9twA4RWZYwhTuwFTUWM9um1n6b5uUiGhYlZ0=;
+        b=atUQpDOPm/ks9Zak+5OHsg8WmKd+vsYmg/KceWJdk2N46GDj2iozW5Q5Ovmi/InC6/
+         yoB4HLEzwqCVNOVcG7AC3moF7RYTfk0B0HzUcEKhtoUskcoUS6nl2keMaCFhd2qhyJFs
+         38jdfZwHzUDgANdN9emiwrKGFrCoe+noxbOAwOCUGTbpEGaw6/kdrOz9s2cjr2H3C5WA
+         tN2IwkLXY+5vWqafA2HhtNNiyzBFQ4wJLI37alhqyIpppm5IR1e6VsQ4bycZ2BYVml9K
+         ji7BeaJGVowV0FSYE3sp6ripG1F0t3QF/cKbr7SVsoXfUxcQ228+VoXaRPwH/z5cruIS
+         ZmMA==
+X-Gm-Message-State: APjAAAVb+6+Kjri2uL0ieWQi7NWQNb5igxIeo23qmMcR9+T+cGUKv3ma
+        eRYfwe5FqzqTjfSBGey5c/8MGvW4p+omiPOpLs6Mqg==
+X-Google-Smtp-Source: APXvYqz5G1hflqfmfEWf8UZwh2iKS9jD3zVptc8gTyTz/WT9SAsWCYB0a3N0NGHBnJMRnw3EMWrAC/yvb61PrkvDSlQ=
+X-Received: by 2002:a67:b649:: with SMTP id e9mr1514070vsm.34.1576677725943;
+ Wed, 18 Dec 2019 06:02:05 -0800 (PST)
 MIME-Version: 1.0
-References: <20191216091911.14840-1-yangbo.lu@nxp.com>
-In-Reply-To: <20191216091911.14840-1-yangbo.lu@nxp.com>
+References: <20191217095349.14592-1-adrian.hunter@intel.com>
+In-Reply-To: <20191217095349.14592-1-adrian.hunter@intel.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 18 Dec 2019 15:01:27 +0100
-Message-ID: <CAPDyKFqX+pqTPO4Omiy0htP=uWXV+fQ_ByS82WrQ3oO5-eq2rw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-of-esdhc: use 1/2 periperhal clock for ls1088a
-To:     Yangbo Lu <yangbo.lu@nxp.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
+Date:   Wed, 18 Dec 2019 15:01:30 +0100
+Message-ID: <CAPDyKFqUfWzGDKwqVwuBfNEtSdf-95+1Cg7aD9_xyE+2J_-aAg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: sdhci: Workaround broken command queuing on
+ Intel GLK
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 16 Dec 2019 at 10:20, Yangbo Lu <yangbo.lu@nxp.com> wrote:
+On Tue, 17 Dec 2019 at 10:54, Adrian Hunter <adrian.hunter@intel.com> wrote:
 >
-> The eSDHC on LS1088A platform uses 1/2 peripheral clock as base
-> clock.
+> Command queuing has been reported broken on some Lenovo systems based on
+> Intel GLK. This is likely a BIOS issue, so disable command queuing for
+> Intel GLK if the BIOS vendor string is "LENOVO".
 >
-> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
+> Fixes: 8ee82bda230f ("mmc: sdhci-pci: Add CQHCI support for Intel GLK")
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> Cc: stable@vger.kernel.org
 
-Applied for next, thanks!
+Applied for fixes, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-of-esdhc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/mmc/host/sdhci-pci-core.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-> index 7f87a90..f43abcf 100644
-> --- a/drivers/mmc/host/sdhci-of-esdhc.c
-> +++ b/drivers/mmc/host/sdhci-of-esdhc.c
-> @@ -1228,7 +1228,8 @@ static void esdhc_init(struct platform_device *pdev, struct sdhci_host *host)
->                  * 1/2 peripheral clock.
->                  */
->                 if (of_device_is_compatible(np, "fsl,ls1046a-esdhc") ||
-> -                   of_device_is_compatible(np, "fsl,ls1028a-esdhc"))
-> +                   of_device_is_compatible(np, "fsl,ls1028a-esdhc") ||
-> +                   of_device_is_compatible(np, "fsl,ls1088a-esdhc"))
->                         esdhc->peripheral_clock = clk_get_rate(clk) / 2;
->                 else
->                         esdhc->peripheral_clock = clk_get_rate(clk);
+> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+> index acefb76b4e15..5091e2c1c0e5 100644
+> --- a/drivers/mmc/host/sdhci-pci-core.c
+> +++ b/drivers/mmc/host/sdhci-pci-core.c
+> @@ -27,6 +27,7 @@
+>  #include <linux/mmc/slot-gpio.h>
+>  #include <linux/mmc/sdhci-pci-data.h>
+>  #include <linux/acpi.h>
+> +#include <linux/dmi.h>
+>
+>  #ifdef CONFIG_X86
+>  #include <asm/iosf_mbi.h>
+> @@ -783,11 +784,18 @@ static int byt_emmc_probe_slot(struct sdhci_pci_slot *slot)
+>         return 0;
+>  }
+>
+> +static bool glk_broken_cqhci(struct sdhci_pci_slot *slot)
+> +{
+> +       return slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_GLK_EMMC &&
+> +              dmi_match(DMI_BIOS_VENDOR, "LENOVO");
+> +}
+> +
+>  static int glk_emmc_probe_slot(struct sdhci_pci_slot *slot)
+>  {
+>         int ret = byt_emmc_probe_slot(slot);
+>
+> -       slot->host->mmc->caps2 |= MMC_CAP2_CQE;
+> +       if (!glk_broken_cqhci(slot))
+> +               slot->host->mmc->caps2 |= MMC_CAP2_CQE;
+>
+>         if (slot->chip->pdev->device != PCI_DEVICE_ID_INTEL_GLK_EMMC) {
+>                 slot->host->mmc->caps2 |= MMC_CAP2_HS400_ES,
 > --
-> 2.7.4
+> 2.17.1
 >
