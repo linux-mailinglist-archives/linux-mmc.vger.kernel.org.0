@@ -2,69 +2,111 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09265129E6B
-	for <lists+linux-mmc@lfdr.de>; Tue, 24 Dec 2019 08:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD183129F44
+	for <lists+linux-mmc@lfdr.de>; Tue, 24 Dec 2019 09:42:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbfLXHZX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 24 Dec 2019 02:25:23 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:7738 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725993AbfLXHZG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 24 Dec 2019 02:25:06 -0500
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 9C54F62673D311592F0D;
-        Tue, 24 Dec 2019 15:25:03 +0800 (CST)
-Received: from huawei.com (10.90.53.225) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Tue, 24 Dec 2019
- 15:24:56 +0800
-From:   zhengbin <zhengbin13@huawei.com>
-To:     <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <zhengbin13@huawei.com>
-Subject: [PATCH 6/6] mmc: owl: use true,false for bool variable
-Date:   Tue, 24 Dec 2019 15:32:15 +0800
-Message-ID: <1577172735-18869-7-git-send-email-zhengbin13@huawei.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1577172735-18869-1-git-send-email-zhengbin13@huawei.com>
-References: <1577172735-18869-1-git-send-email-zhengbin13@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.90.53.225]
-X-CFilter-Loop: Reflected
+        id S1726168AbfLXImb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 24 Dec 2019 03:42:31 -0500
+Received: from inva021.nxp.com ([92.121.34.21]:39532 "EHLO inva021.nxp.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726068AbfLXImb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 24 Dec 2019 03:42:31 -0500
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 1763E20105A;
+        Tue, 24 Dec 2019 09:42:29 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B077D20106A;
+        Tue, 24 Dec 2019 09:42:26 +0100 (CET)
+Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 64940402DA;
+        Tue, 24 Dec 2019 16:42:23 +0800 (SGT)
+From:   Yangbo Lu <yangbo.lu@nxp.com>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Yangbo Lu <yangbo.lu@nxp.com>
+Subject: [PATCH 1/2] mmc: sdhci-of-esdhc: fix esdhc_reset() for different controller versions
+Date:   Tue, 24 Dec 2019 16:41:21 +0800
+Message-Id: <20191224084122.25381-1-yangbo.lu@nxp.com>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Fixes coccicheck warning:
+This patch is to fix operating in esdhc_reset() for different
+controller versions, and to add bus-width restoring after data
+reset for eSDHC (verdor version <= 2.2).
 
-drivers/mmc/host/owl-mmc.c:519:2-18: WARNING: Assignment of 0/1 to bool variable
-drivers/mmc/host/owl-mmc.c:523:2-18: WARNING: Assignment of 0/1 to bool variable
+Also add annotation for understanding.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: zhengbin <zhengbin13@huawei.com>
+Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 ---
- drivers/mmc/host/owl-mmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-of-esdhc.c | 38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/host/owl-mmc.c b/drivers/mmc/host/owl-mmc.c
-index 771e3d0..d3b1653 100644
---- a/drivers/mmc/host/owl-mmc.c
-+++ b/drivers/mmc/host/owl-mmc.c
-@@ -516,11 +516,11 @@ static void owl_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
-
- 	/* Enable DDR mode if requested */
- 	if (ios->timing == MMC_TIMING_UHS_DDR50) {
--		owl_host->ddr_50 = 1;
-+		owl_host->ddr_50 = true;
- 		owl_mmc_update_reg(owl_host->base + OWL_REG_SD_EN,
- 			       OWL_SD_EN_DDREN, true);
- 	} else {
--		owl_host->ddr_50 = 0;
-+		owl_host->ddr_50 = false;
- 	}
- }
-
---
+diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
+index cd3b676..502e317 100644
+--- a/drivers/mmc/host/sdhci-of-esdhc.c
++++ b/drivers/mmc/host/sdhci-of-esdhc.c
+@@ -758,23 +758,53 @@ static void esdhc_reset(struct sdhci_host *host, u8 mask)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_esdhc *esdhc = sdhci_pltfm_priv(pltfm_host);
+-	u32 val;
++	u32 val, bus_width = 0;
+ 
++	/* Add delay to make sure all the DMA transfers are finished
++	 * for quirk.
++	 */
+ 	if (esdhc->quirk_delay_before_data_reset &&
+ 	    (mask & SDHCI_RESET_DATA) &&
+ 	    (host->flags & SDHCI_REQ_USE_DMA))
+ 		mdelay(5);
+ 
++	/* Save bus-width for eSDHC whose vendor version is 2.2
++	 * or lower for data reset.
++	 */
++	if ((mask & SDHCI_RESET_DATA) &&
++	    (esdhc->vendor_ver <= VENDOR_V_22)) {
++		val = sdhci_readl(host, ESDHC_PROCTL);
++		bus_width = val & ESDHC_CTRL_BUSWIDTH_MASK;
++	}
++
+ 	sdhci_reset(host, mask);
+ 
+-	sdhci_writel(host, host->ier, SDHCI_INT_ENABLE);
+-	sdhci_writel(host, host->ier, SDHCI_SIGNAL_ENABLE);
++	/* Restore bus-width setting and interrupt registers for eSDHC
++	 * whose vendor version is 2.2 or lower for data reset.
++	 */
++	if ((mask & SDHCI_RESET_DATA) &&
++	    (esdhc->vendor_ver <= VENDOR_V_22)) {
++		val = sdhci_readl(host, ESDHC_PROCTL);
++		val &= ~ESDHC_CTRL_BUSWIDTH_MASK;
++		val |= bus_width;
++		sdhci_writel(host, val, ESDHC_PROCTL);
++
++		sdhci_writel(host, host->ier, SDHCI_INT_ENABLE);
++		sdhci_writel(host, host->ier, SDHCI_SIGNAL_ENABLE);
++	}
+ 
+-	if (mask & SDHCI_RESET_ALL) {
++	/* Some bits have to be cleaned manually for eSDHC whose spec
++	 * version is higher than 3.0 for all reset.
++	 */
++	if ((mask & SDHCI_RESET_ALL) &&
++	    (esdhc->spec_ver >= SDHCI_SPEC_300)) {
+ 		val = sdhci_readl(host, ESDHC_TBCTL);
+ 		val &= ~ESDHC_TB_EN;
+ 		sdhci_writel(host, val, ESDHC_TBCTL);
+ 
++		/* Initialize eSDHC_DLLCFG1[DLL_PD_PULSE_STRETCH_SEL] to
++		 * 0 for quirk.
++		 */
+ 		if (esdhc->quirk_unreliable_pulse_detection) {
+ 			val = sdhci_readl(host, ESDHC_DLLCFG1);
+ 			val &= ~ESDHC_DLL_PD_PULSE_STRETCH_SEL;
+-- 
 2.7.4
 
