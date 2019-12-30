@@ -2,89 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 665C112BD28
-	for <lists+linux-mmc@lfdr.de>; Sat, 28 Dec 2019 10:31:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38E1012CE2E
+	for <lists+linux-mmc@lfdr.de>; Mon, 30 Dec 2019 10:22:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726465AbfL1JbM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 28 Dec 2019 04:31:12 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:39459 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726248AbfL1JbL (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 28 Dec 2019 04:31:11 -0500
-Received: by mail-wr1-f66.google.com with SMTP id y11so28192930wrt.6;
-        Sat, 28 Dec 2019 01:31:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=o9uPVfods/TVOloLC6n+hV7w8ZRoPGnL5hHWUQYyLUc=;
-        b=o0Fg+5oi5HSyrmfBEZQq8OyJEp0SmiMuZ0A6ig6Fmmz+gqe/bQgTgSi1lLY7NsLW7T
-         m4uuidhPQuD611jssxsFee3aPyYuQ92haXXnqhqFFk0cp3aaDtkfwev12eSX5kSCkc1D
-         IbpnolD1qExRXPokhFofQYFRO2h8yKPLDkj0nQ3rMe84NhDLSjigtjHPkUS8khMPg/U3
-         Moud9sMPQuEtJ2sULFizndLerwDI/znaFA77AvVMSKq2QjPpQS2qJ4nRTpfR8VERWFL0
-         0V3gezJUiyS3z9M1TcwjB+KkGgnrAD0qH39jhJJnrKTT09RqWej37cbHZ8mAGMXi1f5R
-         6aww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=o9uPVfods/TVOloLC6n+hV7w8ZRoPGnL5hHWUQYyLUc=;
-        b=BBxseyhe6tjCc36Tj7egsU2X0wL/KYl+AeZROKNlPlu/5MU3kwL5zr4h4T1Qd5un8e
-         14Ri1I9Ia3kVDjWSTibQltajo7I7kYIfihuWyNXLTpt4SuyOwFwamwsmgrmHpKxakJtK
-         nLOJBIXRDeS+KM7xZuyaT4qUU0yJRORIpw+1G7RU2TqKsBuW1XPuF4zqJ1IfDarqUCvL
-         XyL1PnjvhGsb45xyT46vO96em5J/gG+fQNjmXLlDUAqT9n50dOuYSSSTUq4OyQH2ebs5
-         waW4BRHL3reKydmhP0HT8ByM2q8jtlcJ8GQJG3DZ4U2FzKtCwqUHog2cBJMqbpJwsDuW
-         MEWA==
-X-Gm-Message-State: APjAAAUSnS28xbyerRp8gsTLpfvepH8y/DQgcVGn7p21G+L4hzQq5ALI
-        IXiZL9E2+kNjNAR1wTtabHA=
-X-Google-Smtp-Source: APXvYqxwhzxrrXhowjx87gKHx7n+poe0jh8A6oRsexhxdA6dIFus+27xymrwqEZwbLBvIWQomfISXQ==
-X-Received: by 2002:a5d:46c7:: with SMTP id g7mr54555918wrs.11.1577525469686;
-        Sat, 28 Dec 2019 01:31:09 -0800 (PST)
-Received: from debian.home (ip51ccf9cd.speed.planet.nl. [81.204.249.205])
-        by smtp.gmail.com with ESMTPSA id w20sm13776710wmk.34.2019.12.28.01.31.08
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 28 Dec 2019 01:31:09 -0800 (PST)
-From:   Johan Jonker <jbx6244@gmail.com>
-To:     robh+dt@kernel.org
-Cc:     mark.rutland@arm.com, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] dt-bindings: mmc: clarify disable-wp text
-Date:   Sat, 28 Dec 2019 10:30:59 +0100
-Message-Id: <20191228093059.2817-2-jbx6244@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20191228093059.2817-1-jbx6244@gmail.com>
-References: <20191219145843.3823-1-jbx6244@gmail.com>
- <20191228093059.2817-1-jbx6244@gmail.com>
+        id S1727358AbfL3JWj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 30 Dec 2019 04:22:39 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:40452 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727162AbfL3JWi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 Dec 2019 04:22:38 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBU9MQ5E106905;
+        Mon, 30 Dec 2019 03:22:26 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1577697746;
+        bh=sk5S0MGte4P9MP9ui73XhGoTdxKtKisMFY7hjWYkuvI=;
+        h=From:To:CC:Subject:Date;
+        b=xjAuaiR0lCElbE4MHymXNGqBSJTdEhcuV8qi1BE2eg/gC3wantEns9yY8T5pFWCfR
+         HSDlBrbS3HQelG/EdYUgjD+eWpRt94oMhi6NcmeSKgKtFBI7cY0ir3wu2cGBLGQ/ia
+         /UCV5w+RBU1cuNwz2jtTTnin4loi838hKU393wT4=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBU9MQsn044598
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 30 Dec 2019 03:22:26 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 30
+ Dec 2019 03:22:26 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 30 Dec 2019 03:22:26 -0600
+Received: from a0230074-OptiPlex-7010.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBU9MOJi109856;
+        Mon, 30 Dec 2019 03:22:24 -0600
+From:   Faiz Abbas <faiz_abbas@ti.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <adrian.hunter@intel.com>,
+        <faiz_abbas@ti.com>, <shawn.lin@rock-chips.com>
+Subject: [PATCH 0/3] Fix issues with command queuing in arasan controllers
+Date:   Mon, 30 Dec 2019 14:53:40 +0530
+Message-ID: <20191230092343.30692-1-faiz_abbas@ti.com>
+X-Mailer: git-send-email 2.19.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-"disable-wp" has been removed from all Rockchip eMMC and SDIO dts nodes,
-but people still continue to submit new patches with "disable-wp" added
-to other nodes then for the SD card slot,
-what it was designed for in the first place.
-So clarify the "disable-wp" text by adding that this option should
-not be used in combination with eMMC or SDIO.
+In some Arasan SDHCI controllers, after tuning, the tuning pattern data
+is leftover in the sdhci buffer. This leads to issues with future data
+commands, especially when command queuing is enabled. The following
+patches help fix this issue by resetting data lines after tuning is
+finished. The first two patches have been tested with TI's am65x and
+j721e SoCs using the sdhci_am654 driver.
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
----
- Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I have a strong suspicion that this is the same issue with
+the sdhci-of-arasan driver where they are forced to dump data from the
+buffer before enabling command queuing. I need help from someone with a
+compatible platform to test this.
 
-diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-index d668d0fbe..3c0df4016 100644
---- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-+++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-@@ -99,7 +99,7 @@ properties:
-       dedicated write-protect detection logic. If a GPIO is always used
-       for the write-protect detection logic, it is sufficient to not
-       specify the wp-gpios property in the absence of a write-protect
--      line.
-+      line. Not used in combination with eMMC or SDIO.
- 
-   wp-gpios:
-     description:
+Faiz Abbas (3):
+  mmc: sdhci: Add Quirk to reset data lines after tuning
+  mmc: sdhci_am654: Enable Quirk to reset data after tuning
+  mmc: sdhci-of-arasan: Fix Command Queuing enable handling
+
+ drivers/mmc/host/sdhci-of-arasan.c | 21 ++++-----------------
+ drivers/mmc/host/sdhci.c           |  3 +++
+ drivers/mmc/host/sdhci.h           |  4 ++++
+ drivers/mmc/host/sdhci_am654.c     |  9 ++++++---
+ 4 files changed, 17 insertions(+), 20 deletions(-)
+
 -- 
-2.11.0
+2.19.2
 
