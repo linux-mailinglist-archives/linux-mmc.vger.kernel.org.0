@@ -2,115 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF3612F254
-	for <lists+linux-mmc@lfdr.de>; Fri,  3 Jan 2020 01:44:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1571212F6CA
+	for <lists+linux-mmc@lfdr.de>; Fri,  3 Jan 2020 11:38:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725890AbgACAoE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 2 Jan 2020 19:44:04 -0500
-Received: from lucky1.263xmail.com ([211.157.147.132]:43348 "EHLO
-        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725872AbgACAoE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 2 Jan 2020 19:44:04 -0500
-X-Greylist: delayed 422 seconds by postgrey-1.27 at vger.kernel.org; Thu, 02 Jan 2020 19:44:02 EST
-Received: from localhost (unknown [192.168.167.209])
-        by lucky1.263xmail.com (Postfix) with ESMTP id 47AD286504;
-        Fri,  3 Jan 2020 08:36:56 +0800 (CST)
-X-MAIL-GRAY: 1
-X-MAIL-DELIVERY: 0
-X-ADDR-CHECKED4: 1
-X-ANTISPAM-LEVEL: 2
-X-SKE-CHECKED: 1
-X-ABS-CHECKED: 1
-Received: from [172.16.12.37] (unknown [58.22.7.114])
-        by smtp.263.net (postfix) whith ESMTP id P24155T140478920242944S1578011815672162_;
-        Fri, 03 Jan 2020 08:36:56 +0800 (CST)
-X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <4c9a2c64a65767a833e6315775956551>
-X-RL-SENDER: shawn.lin@rock-chips.com
-X-SENDER: lintao@rock-chips.com
-X-LOGIN-NAME: shawn.lin@rock-chips.com
-X-FST-TO: adrian.hunter@intel.com
-X-SENDER-IP: 58.22.7.114
-X-ATTACHMENT-NUM: 0
-X-DNS-TYPE: 0
-Cc:     shawn.lin@rock-chips.com, ulf.hansson@linaro.org,
-        adrian.hunter@intel.com
-Subject: Re: [RFT PATCH 3/3] mmc: sdhci-of-arasan: Fix Command Queuing enable
- handling
-To:     Faiz Abbas <faiz_abbas@ti.com>, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-References: <20191230092343.30692-1-faiz_abbas@ti.com>
- <20191230092343.30692-4-faiz_abbas@ti.com>
-From:   Shawn Lin <shawn.lin@rock-chips.com>
-Message-ID: <5a7f96e5-58f0-083e-612f-7f5867d8eb66@rock-chips.com>
-Date:   Fri, 3 Jan 2020 08:36:55 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+        id S1727540AbgACKiS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 3 Jan 2020 05:38:18 -0500
+Received: from sonic309-20.consmr.mail.ne1.yahoo.com ([66.163.184.146]:40497
+        "EHLO sonic309-20.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727534AbgACKiS (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 Jan 2020 05:38:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1578047897; bh=BwDPrsA2+wE7onqC1JBBbTtzaCQs5syyrmDpzadvHSI=; h=Date:From:Reply-To:Subject:References:From:Subject; b=MmHTJJrC29MaptlkFNWzfL+Z78+RIB+J7Ksd/hLtZ8Wxt4W+c4unEZ9gs+eetjAuLf8qLwpeK2Be9sp8ewyQgmbYHNNs+3vfpyfbAp105hmEQ3CK4rTvu+Au5yrqjzq6UHh10FDhLCV2IAigUaCKgBZlxOGScXaLwsd88W8X/bwjapg5wKz/epMq23k8tYUD9CNRO8GR4iT2hLpLrlZ2hkyCmwvvt59dlODGyJDcp1LsiX4gW3z9VdkZN86pcqlxhumMtWKMktT2Nk5H0etm5uGP8SGvGxs0AcVpuB9WZi1G5OSpUf/wBkW9YmR8RGZnKwbcmg2V4MHs3vgBkTvHKQ==
+X-YMail-OSG: zegebhoVM1nHXoFrF_n3.eoBKLJmwSuvgr9uOdjWxxuyGWU8FpzEUAFZgah8zoF
+ ERbkvljwb16.FCJJkg73nq_TpldpUmcJCvdAJSl9.V0YhDCpTMsKr3fZ4AuVKh5NuKeQ3NIo37Go
+ qxOndK5XPUD_VitG9O6RAUMSS_iiK42pVEbx0bMnVP9Z7uXY4PeHVosZi.iQA5.SszU3AMqgdoII
+ T8HPlup6byklstSOUhjoMRIATvfEI2BAV4Dc0MWjOrVsLA0C_M905uQZe38i44ZR.8HiQjIOj1lr
+ q5wBiWmblZEpgcwVttEDa4h7phyfFxPLYCeVxBjwsxUnYsL16MTDfuYbz5tCuKBGsdeKq1vVXUjb
+ 2xqRYH4E5GfD8qsfoAATTB0oRNVOBkOg43LFTqHHojc3CCRC2D8tz1llWfRTX_X9KhXhWSQR2E1J
+ NhH7l13u.fZHJEfaZZjIDSP_TTW6N9Fh2blEZp4KLuGWIUaj_Dq0DVhqpy22iAq9I0IS2NWjG4HQ
+ mHXeq40StHJ16dbTUDKreLByoW_gLeRmsVO2agN3Q6gc0SHtdb4sKm_g8MrdAi1VR_MBT5CiNVKI
+ BLnuMp2JsIu1wexdh3QT8symyNzRSb9Yvh0sWB_EmiP7yEZ6_ztkkziWYo0w0cdEjrKZwpn72FTB
+ aPV1DpRLioTeD2kGKwXkYjpxd6bhF.jcy48ZuGPHbjlo1bukjd0ZgBw7rHLdbhUIkydFMEVuSy.0
+ mtz1GVovUiYnihUK7QAwF8Uat5tRrt25Poc4t5ieTbi2mKlqyPlTRhAwS1qu8MK_TEHJdgv8LlSs
+ vUCytUgZjMdH_yGTuRDnZVuJ1_u44kUEgvC47CZF.UEkkPwx3CsgK4nDTF3xU6L3BhMCB5f_U36T
+ qcoA7MCG0hmCxKqcBY2Lvg1da0uEig0rFqg2nF0LGMsu2TYUuAVOOkx5NTRcUduW9npSCSXyWU.n
+ 8jn3XREmJaqCJtEZtQ3RYj0FqWmnfHEElKUmdK_6oGs21ZN7wFwekL2q.Dq5MaUn6lJ4gY1H985W
+ EboMxvCH2kz9X4yjNXHIqIOZVdF1U.wRelx.nWOJOSKiSigoS2QjR2HhUUGT7CATUN.5go6fMTew
+ O2633d10hkyC7xtXsSeh5bk2WGzxXojfyOgU2A8eMyjT2pBU1X6s7UCoKXxR2_ZXRnJM7V4kEpne
+ A0x2vm9j_dF_8zoFZvyqGdGH4_U_bg26Olu2EAq7d.qaWo.ZZ_Td13O_Z0HsynnXpN0IKRfvo8Mc
+ wDGEKZTp85r4EeFtLVAq0gjWirYTszL6oXp2twfVOuYq7h4NxMS29wPoGGIaRH9cUiGz8KnoG7c4
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Fri, 3 Jan 2020 10:38:17 +0000
+Date:   Fri, 3 Jan 2020 10:38:16 +0000 (UTC)
+From:   Lisa Williams <wlisa2633@gmail.com>
+Reply-To: lisa.wilams@yahoo.com
+Message-ID: <1632349926.6233681.1578047896191@mail.yahoo.com>
+Subject: Hi Dear
 MIME-Version: 1.0
-In-Reply-To: <20191230092343.30692-4-faiz_abbas@ti.com>
-Content-Type: text/plain; charset=gbk; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+References: <1632349926.6233681.1578047896191.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.14873 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:71.0) Gecko/20100101 Firefox/71.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
 
-On 2019/12/30 17:23, Faiz Abbas wrote:
-> There is a need to dump data from the buffer before enabling command
-> queuing because of leftover data from tuning. Reset the data lines to
-> fix this at the source.
-> 
 
-It seems to work for my platform by porting it to 4.19 LTS.
+Hi Dear,
 
-Tested-by: Shawn Lin <shawn.lin@rock-chips.com>
+ How are you doing hope you are fine and OK?
 
-> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
-> ---
->   drivers/mmc/host/sdhci-of-arasan.c | 21 ++++-----------------
->   1 file changed, 4 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-> index e49b44b4d82e..1495ae72b902 100644
-> --- a/drivers/mmc/host/sdhci-of-arasan.c
-> +++ b/drivers/mmc/host/sdhci-of-arasan.c
-> @@ -376,22 +376,8 @@ static void sdhci_arasan_dumpregs(struct mmc_host *mmc)
->   	sdhci_dumpregs(mmc_priv(mmc));
->   }
->   
-> -static void sdhci_arasan_cqe_enable(struct mmc_host *mmc)
-> -{
-> -	struct sdhci_host *host = mmc_priv(mmc);
-> -	u32 reg;
-> -
-> -	reg = sdhci_readl(host, SDHCI_PRESENT_STATE);
-> -	while (reg & SDHCI_DATA_AVAILABLE) {
-> -		sdhci_readl(host, SDHCI_BUFFER);
-> -		reg = sdhci_readl(host, SDHCI_PRESENT_STATE);
-> -	}
-> -
-> -	sdhci_cqe_enable(mmc);
-> -}
-> -
->   static const struct cqhci_host_ops sdhci_arasan_cqhci_ops = {
-> -	.enable         = sdhci_arasan_cqe_enable,
-> +	.enable         = sdhci_cqe_enable,
->   	.disable        = sdhci_cqe_disable,
->   	.dumpregs       = sdhci_arasan_dumpregs,
->   };
-> @@ -410,8 +396,9 @@ static const struct sdhci_ops sdhci_arasan_cqe_ops = {
->   static const struct sdhci_pltfm_data sdhci_arasan_cqe_pdata = {
->   	.ops = &sdhci_arasan_cqe_ops,
->   	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
-> -	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-> -			SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
-> +	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN	|
-> +		   SDHCI_QUIRK2_RESET_DATA_POST_TUNING	|
-> +		   SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
->   };
->   
->   static struct sdhci_arasan_of_data sdhci_arasan_rk3399_data = {
-> 
+I was just going through the Internet search when I found your email address, I want to make a new and special friend, so I decided to contact you to see how we can make it work out if we can. Please I wish you will have the desire with me so that we can get to know each other better and see what happens in future.
 
+My name is Lisa Williams, I am an American, but presently I live in the UK, I will be glad to see your reply for us to know each other better to exchange pictures and details about us.
 
+Yours
+Lisa.
