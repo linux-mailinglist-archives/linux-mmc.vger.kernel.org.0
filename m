@@ -2,96 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4A9113283E
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 Jan 2020 14:59:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA4FD133017
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 Jan 2020 20:56:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728005AbgAGN7d (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 Jan 2020 08:59:33 -0500
-Received: from mga14.intel.com ([192.55.52.115]:14022 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727658AbgAGN7d (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 7 Jan 2020 08:59:33 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Jan 2020 05:59:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,406,1571727600"; 
-   d="scan'208";a="223185429"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.167]) ([10.237.72.167])
-  by orsmga003.jf.intel.com with ESMTP; 07 Jan 2020 05:59:31 -0800
-Subject: Re: [PATCH v1] mmc: sdhci: Increase sdhci_send_command timeout to
- 100ms
-To:     Peter Seiderer <ps.report@gmx.net>, linux-mmc@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>
-References: <20191227151442.9240-1-ps.report@gmx.net>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <605838f7-be0f-5a78-15ef-33a5f425b241@intel.com>
-Date:   Tue, 7 Jan 2020 15:58:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1728711AbgAGT4n (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 Jan 2020 14:56:43 -0500
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:45210 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728735AbgAGT4j (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Jan 2020 14:56:39 -0500
+Received: by mail-ed1-f66.google.com with SMTP id v28so584320edw.12
+        for <linux-mmc@vger.kernel.org>; Tue, 07 Jan 2020 11:56:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=m/Udengj3famfT4AeeQ1IRW+yMW7VasUnASahB37i/PoeHrkRBk2CGyFKYNukmjW7S
+         L8SRka5Jakx3oOkJPsG2IofN9vOqI+MJeZI3Q0YE0hhIfxJgla/Mvi4GlBIJ0+PXKJyR
+         fGhtIsUmeS9lphgKJPwASTV0Wis5x+akjvA6FztTMBR/K8fgi7sOjdtLa1OeTeeGw/oC
+         WuhGv+1qsxod0shrSr56iRhzuujf6ypC8mQV8JosjFfNeYtuq3xDGNFupimiXFOQL0SO
+         8SxYRsEAywqZcf7WmcQRmN/Qkf20W+/a6rRSJl252WjsQoa/SZxLvQ4mGRJVkfZ3ex9s
+         ABpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=UrcMQBDsQ2WRoIi5cIAeN4Pmgo3c9ot9many6+whgaaAO8+mXLrWPYutOfxHS46NrM
+         HjLoC8mHq1+swsH7gAULfMSTt5ddz7cmZNtxZDN5pxpyUxLs5Sh4oOHIYastYh/NBio1
+         cuvSkIe7KD5sB4km7zzJGiK7P+j23ryohV+Cc7Hgu3T3Rhzk51f94Qxfbijs7IiqJ56f
+         rvVsFi0IDJnKutZO+jc4303lhw7hmcDmMbq031pTDKRFaulEnXKKpB66vbCcCO3LAX8s
+         A5e0YVJvz3fmTC8fqgwov57IsqlN9AOycQ8VfrRNc8vNIjAf3LyrKLyBQXynkQ21gbnB
+         Qmjw==
+X-Gm-Message-State: APjAAAVuBQiohN9gktbIUqP7yep/khw7rVmL23WU+Ymnc7ROUVkbhPTE
+        30u7DZ8CTxGKrdBOxeJS2vwHQS/nX9zoZYoJNSo=
+X-Google-Smtp-Source: APXvYqzNbcT08PcgNHBR6CjdjGMonF1aREtl3FixKkalZzLFfyP3YZsjOtPyVn2SjFoUiZ8TzNVIEuitC7fnDU0d3Kk=
+X-Received: by 2002:a17:907:20ef:: with SMTP id rh15mr1111482ejb.325.1578426995176;
+ Tue, 07 Jan 2020 11:56:35 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191227151442.9240-1-ps.report@gmx.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a17:906:72c6:0:0:0:0 with HTTP; Tue, 7 Jan 2020 11:56:34
+ -0800 (PST)
+Reply-To: dhlexpresscouriercompany.nyusa@gmail.com
+From:   "Dr. William Johnson" <currency1000000@gmail.com>
+Date:   Tue, 7 Jan 2020 20:56:34 +0100
+Message-ID: <CAPqfnSEyU1pBR_7HT2g1KK7i8caLMBQ8yPA8KRDVm+MN-K_Z4w@mail.gmail.com>
+Subject: contact Dhl office New York to receive your Prepaid ATM Master Card
+ worth $15.8Million US DOLLARS now.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 27/12/19 5:14 pm, Peter Seiderer wrote:
-> Fixes:
-> 	$ mmc bootpart enable 1 1 /dev/mmcblk1
-> [ 2339.324062] mmc1: Controller never released inhibit bit(s).
-> [ 2339.329808] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
-> [ 2339.336339] mmc1: sdhci: Sys addr:  0x11044000 | Version:  0x00000002
-> [ 2339.342933] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000001
-> [ 2339.349460] mmc1: sdhci: Argument:  0x03b34801 | Trn mode: 0x00000013
-> [ 2339.356048] mmc1: sdhci: Present:   0x01fd8008 | Host ctl: 0x00000031
-> [ 2339.362637] mmc1: sdhci: Power:     0x00000002 | Blk gap:  0x00000080
-> [ 2339.369230] mmc1: sdhci: Wake-up:   0x00000008 | Clock:    0x0000001f
-> [ 2339.375943] mmc1: sdhci: Timeout:   0x0000000f | Int stat: 0x00000000
-> [ 2339.382542] mmc1: sdhci: Int enab:  0x117f100b | Sig enab: 0x117f100b
-> [ 2339.389257] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000003
-> [ 2339.395856] mmc1: sdhci: Caps:      0x07eb0000 | Caps_1:   0x0000a000
-> [ 2339.402577] mmc1: sdhci: Cmd:       0x0000061b | Max curr: 0x00ffffff
-> [ 2339.409291] mmc1: sdhci: Resp[0]:   0x00000800 | Resp[1]:  0xffffffff
-> [ 2339.415889] mmc1: sdhci: Resp[2]:   0x328f5903 | Resp[3]:  0x00000900
-> [ 2339.422602] mmc1: sdhci: Host ctl2: 0x00000008
-> [ 2339.427203] mmc1: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0x3fc79208
-> [ 2339.433913] mmc1: sdhci: ============================================
-> 
-> Suggested-by: Philipp Zabel <p.zabel@pengutronix.de>
-> Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-> ---
->  drivers/mmc/host/sdhci.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index 275102c0a1bf..011b3d322826 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -1364,8 +1364,8 @@ void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
->  	    cmd->opcode == MMC_STOP_TRANSMISSION)
->  		cmd->flags |= MMC_RSP_BUSY;
->  
-> -	/* Wait max 10 ms */
-> -	timeout = 10;
-> +	/* Wait max 100 ms */
-> +	timeout = 100;
-
-The inhibits bits should not be set, so I am not sure if this is just
-papering over the real issue.  Did mmc (utils) return an error?  Was the
-eMMC useable after the error?  Any chance of getting a register dump without
-the very long console delays?  What device and host controller was it?  What
-kernel version?
-
->  
->  	mask = SDHCI_CMD_INHIBIT;
->  	if (sdhci_data_line_cmd(cmd))
-> 
-
+ATTN Dear Beneficiary.
+Goodnews
+I have Registered your Prepaid ATM Master Card
+worth $15.800,000.00 US DOLLARS with Courier company
+asigned to deliver it to you today.
+So contact Dhl office New York to receive your Prepaid ATM Master Card
+worth $15.8Million US DOLLARS now.
+Contact Person: Mrs. Mary Michael, Director, DHL Courier Company-NY USA. 10218
+Email. dhlexpresscouriercompany.nyusa@gmail.com
+Call the office +(202) 890-8752
+Rec-Confirmed your mailing address to the office as I listed below.
+Your Full Name--------------
+House Address-----------
+Your working Phone Number----------------
+ID copy-------------------------
+Sex-----------------------------
+Note,delivery fee to your address is only $25.00. send it to this
+company urgent on itunes card today so that DHL will deliver this
+Prepaid ATM Master Card to you today according to our finally
+agreement.
+Thanks for coperations,
+Dr. William Johnson
