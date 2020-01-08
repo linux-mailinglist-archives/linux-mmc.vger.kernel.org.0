@@ -2,116 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D06C133E65
-	for <lists+linux-mmc@lfdr.de>; Wed,  8 Jan 2020 10:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 418A2134078
+	for <lists+linux-mmc@lfdr.de>; Wed,  8 Jan 2020 12:28:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbgAHJjL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 8 Jan 2020 04:39:11 -0500
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:59378 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726276AbgAHJjL (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 8 Jan 2020 04:39:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1578476350;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eM1uGwh8VVmZ6cIDPHTHCs/4ViYZmWvL5osn0w16oWg=;
-        b=AL69Ais+b5B8P5ZvSe4e/TQ914BIa6mqi68cfbb+J1v99yvktX3MkMJj515Wf+daoycIJX
-        UiVtzIQQuIriUs2BbovOHC3tj+se1N+DVP4YJhUqSOTUZhM3/0/TGAi+ah0ZEexiA9zCXz
-        qOAb+9PyV6vsh70ofsBgw0DSBk8T4JE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-186-RLTu6sVCOryA6GlAuUbURQ-1; Wed, 08 Jan 2020 04:39:09 -0500
-X-MC-Unique: RLTu6sVCOryA6GlAuUbURQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 747F91800D4E;
-        Wed,  8 Jan 2020 09:39:08 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-117-178.ams2.redhat.com [10.36.117.178])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5C3EF5D9E1;
-        Wed,  8 Jan 2020 09:39:07 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "russianneuromancer @ ya . ru" <russianneuromancer@ya.ru>,
-        linux-mmc@vger.kernel.org
-Subject: [PATCH 2/2] mmc: sdhci-acpi: Disable write protect detection on Acer Aspire Switch 10 (SW5-012)
-Date:   Wed,  8 Jan 2020 10:39:03 +0100
-Message-Id: <20200108093903.57620-3-hdegoede@redhat.com>
-In-Reply-To: <20200108093903.57620-1-hdegoede@redhat.com>
-References: <20200108093903.57620-1-hdegoede@redhat.com>
+        id S1726276AbgAHL2v (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 8 Jan 2020 06:28:51 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:60162 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726252AbgAHL2v (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 8 Jan 2020 06:28:51 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 008BSePi107657;
+        Wed, 8 Jan 2020 05:28:40 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1578482920;
+        bh=4VlFsH0x4nyhfaCnO0v3sjcb4oaBGAFeq3JnlX2SVYM=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=E/y1Xc4dBJ6FaL/brdE0+rP3R/FG7dVzVkw9u2sHH2sBnGAYsAlXGlnrVmJI+X01E
+         Isvfmo5V49gbVkhi0vzOZcHPsKOPSdB8bztiOqONtXiPI6bLwaHW7IEyx2lPJDeFqU
+         Smf7yIDQUoEQHa4jTdJJfW+auCjGC6TpMAHYv4uQ=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 008BSebV049301
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 8 Jan 2020 05:28:40 -0600
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 8 Jan
+ 2020 05:28:39 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 8 Jan 2020 05:28:39 -0600
+Received: from [172.24.190.4] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 008BSbfv103074;
+        Wed, 8 Jan 2020 05:28:38 -0600
+Subject: Re: [PATCH 0/3] Fix issues with command queuing in arasan controllers
+To:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <adrian.hunter@intel.com>,
+        <shawn.lin@rock-chips.com>
+References: <20191230092343.30692-1-faiz_abbas@ti.com>
+From:   Faiz Abbas <faiz_abbas@ti.com>
+Message-ID: <837996b2-c69f-1446-fda4-5577e28ba8e1@ti.com>
+Date:   Wed, 8 Jan 2020 17:00:11 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191230092343.30692-1-faiz_abbas@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On the Acer Aspire Switch 10 (SW5-012) microSD slot always reports the ca=
-rd
-being write-protected even though microSD cards do not have a write-prote=
-ct
-switch at all.
+Hi,
 
-Add a new SDHCI_ACPI_QUIRK_SD_NO_WRITE_PROTECT quirk which when set sets
-the MMC_CAP2_NO_WRITE_PROTECT flag on the controller for the external SD
-slot, and add a DMI quirk which enables this new quirk by default on the
-Acer SW5-012.
+On 30/12/19 2:53 pm, Faiz Abbas wrote:
+> In some Arasan SDHCI controllers, after tuning, the tuning pattern data
+> is leftover in the sdhci buffer. This leads to issues with future data
+> commands, especially when command queuing is enabled. The following
+> patches help fix this issue by resetting data lines after tuning is
+> finished. The first two patches have been tested with TI's am65x and
+> j721e SoCs using the sdhci_am654 driver.
+> 
+> I have a strong suspicion that this is the same issue with
+> the sdhci-of-arasan driver where they are forced to dump data from the
+> buffer before enabling command queuing. I need help from someone with a
+> compatible platform to test this.
+> 
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/mmc/host/sdhci-acpi.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+I had some discussions with our hardware team and they say we should be
+asserting both SRC and SRD reset after tuning to start from a clean
+state. Will update the patches to do that in v2.
 
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.=
-c
-index 9f150c73e958..69485d29b6bc 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -78,6 +78,7 @@ struct sdhci_acpi_host {
-=20
- enum {
- 	SDHCI_ACPI_QUIRK_SD_NO_1_8V			=3D BIT(0),
-+	SDHCI_ACPI_QUIRK_SD_NO_WRITE_PROTECT		=3D BIT(1),
- };
-=20
- static int quirks =3D -1;
-@@ -671,6 +672,18 @@ static const struct dmi_system_id sdhci_acpi_quirks[=
-] =3D {
- 		},
- 		.driver_data =3D (void *)SDHCI_ACPI_QUIRK_SD_NO_1_8V,
- 	},
-+	{
-+		/*
-+		 * The Acer Aspire Switch 10 (SW5-012) microSD slot always
-+		 * reports the card being write-protected even though microSD
-+		 * cards do not have a write-protect switch at all.
-+		 */
-+		.matches =3D {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW5-012"),
-+		},
-+		.driver_data =3D (void *)SDHCI_ACPI_QUIRK_SD_NO_WRITE_PROTECT,
-+	},
- 	{} /* Terminating entry */
- };
-=20
-@@ -798,6 +811,9 @@ static int sdhci_acpi_probe(struct platform_device *p=
-dev)
-=20
- 		if (quirks & SDHCI_ACPI_QUIRK_SD_NO_1_8V)
- 			host->quirks2 |=3D SDHCI_QUIRK2_NO_1_8_V;
-+
-+		if (quirks & SDHCI_ACPI_QUIRK_SD_NO_WRITE_PROTECT)
-+			host->mmc->caps2 |=3D MMC_CAP2_NO_WRITE_PROTECT;
- 	}
-=20
- 	err =3D sdhci_setup_host(host);
---=20
-2.24.1
-
+Thanks,
+Faiz
