@@ -2,126 +2,156 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF78F136EA3
-	for <lists+linux-mmc@lfdr.de>; Fri, 10 Jan 2020 14:50:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 842DE138444
+	for <lists+linux-mmc@lfdr.de>; Sun, 12 Jan 2020 01:25:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728258AbgAJNtV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 10 Jan 2020 08:49:21 -0500
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:44901 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728249AbgAJNtT (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 10 Jan 2020 08:49:19 -0500
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00ADlv1F031938;
-        Fri, 10 Jan 2020 14:49:11 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type; s=STMicroelectronics;
- bh=pJ+w24JgyaLP7e1zcwVqY+8juR4jhF3VPSq9PUdMLDs=;
- b=d6s1gU+HpUA+w/3J0NhO2Gvv+WMnIUxtSrvSrBmSW+jaTCigaI6851ohSaJ0hmAovPSs
- iUMCLVHUSEPgXVze4mlhSNnCdvQFFFQM3l3p8vB+4RoPhngooIhOoEhEE29xSYLOzGch
- zW6bvjAME+JIjOGOUNte9YJCH6dJdiIkXUaTBWczcx6hPQx4/FgUUdT6l9z6FeVjIfWw
- OuIcc1ONFCrtt//4bTTAP3pW2APzzO9TQjBpviKH7g2I4TO4OuCxj5v7z6dGfkdzGcOc
- DKhG8wRCOdR8E0DBPgt5Zy6oZZO4/G+9yrxx7Z7g+k8OUR2RXZuD5xQ5LrWCbMDG81/l CA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2xakur7dud-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Jan 2020 14:49:11 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 9009010003D;
-        Fri, 10 Jan 2020 14:49:06 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 827A82BC7D1;
-        Fri, 10 Jan 2020 14:49:06 +0100 (CET)
-Received: from localhost (10.75.127.47) by SFHDAG6NODE1.st.com (10.75.127.16)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 10 Jan 2020 14:49:05
- +0100
-From:   Ludovic Barre <ludovic.barre@st.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Ludovic Barre <ludovic.barre@st.com>
-Subject: [PATCH 9/9] mmc: mmci: add sdmmc variant revision 2.0
-Date:   Fri, 10 Jan 2020 14:48:23 +0100
-Message-ID: <20200110134823.14882-10-ludovic.barre@st.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200110134823.14882-1-ludovic.barre@st.com>
-References: <20200110134823.14882-1-ludovic.barre@st.com>
+        id S1731747AbgALAZX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 11 Jan 2020 19:25:23 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:38597 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731728AbgALAZW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Jan 2020 19:25:22 -0500
+Received: by mail-wr1-f67.google.com with SMTP id y17so5209443wrh.5;
+        Sat, 11 Jan 2020 16:25:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wAWyALOSBn7tzzbJwWZbezVclSVN3Btt3DEixhDkQII=;
+        b=ArkxWsHLmXqGxa1xxpcAewKDkopPwoqRQ7Sjvi4wr/dZmFyo6BGIZf+NkgvpfZsGpJ
+         lwYzzi3Vq4uSIXp06HKX/2z+nzbEz/sVLzH99QYWZc0F7m83wAW+0SHvXQCrUevzYGIj
+         Io8kio+2MSj/PkepGFUnLmhr91JIfkVLJ8+OiQIMPibdBRag7Rshnw06wBn1ZNvGawfT
+         GIQLE6QHORS7QOl4/6HL6zGsWWH+QytT9ZZJ7zdoTM+y+gNcTxZjtlBF//Ld8TaVMdas
+         K28Y5imMrNB2RQhUIGEBV+cxZCY2xhwL6bkKBMUEpgBQx0YOPrKsO/xWLCfgxA6LmFkJ
+         ZyzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wAWyALOSBn7tzzbJwWZbezVclSVN3Btt3DEixhDkQII=;
+        b=kWkhcXrHkg233VwBc9NdYhKrV3JrzhzGWRs+8VTvakgYrWysZRAY400i56+iUBsCtA
+         O53Da3r6rjqcvPLcuveb5gzK9UseIj3vuZREQa0fMq7/xvc2ox6UoNs/UdZXG77GhNL5
+         I8xGYKC9D0yqlsGPd5JGe5awf8cTxqnBbtiIpFla0rLcoRRE9DQDCu51aGMJyI4L2/l0
+         YFDbIZUw5YSKaPTGZM9JlsqZnZfxAYXh8lE4dv4PqhWdW6d8nTpCc0surq0c3E7hXlvm
+         g44vwqfj0XVl7CcEOVGa/BfHLCxR76IvfPm24SUCiqCNWZGu8QPwEEd8udRv5HLhOUyP
+         CPRQ==
+X-Gm-Message-State: APjAAAXnb4WtPc+GyQEUjizBdTB62LrJP0HEQW6cT+MatFidAdEGk7xm
+        OqbdE0hxg87WTff7lEz1avA=
+X-Google-Smtp-Source: APXvYqyqzfmZato1T8Am2AwdE0KKjdA9VaLATr7JDYJTE28SkegxKFwsYTzvgGymCNZnpbtnOunttw==
+X-Received: by 2002:a5d:5091:: with SMTP id a17mr10663002wrt.362.1578788719231;
+        Sat, 11 Jan 2020 16:25:19 -0800 (PST)
+Received: from localhost.localdomain (p200300F1373A1900428D5CFFFEB99DB8.dip0.t-ipconnect.de. [2003:f1:373a:1900:428d:5cff:feb9:9db8])
+        by smtp.googlemail.com with ESMTPSA id t5sm8407389wrr.35.2020.01.11.16.25.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Jan 2020 16:25:18 -0800 (PST)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-mmc@vger.kernel.org, ulf.hansson@linaro.org,
+        robh+dt@kernel.org
+Cc:     jianxin.pan@amlogic.com, mark.rutland@arm.com,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        lnykww@gmail.com, yinxin_1989@aliyun.com,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH v4 0/3] Amlogic 32-bit Meson SoC SDHC MMC controller driver
+Date:   Sun, 12 Jan 2020 01:24:56 +0100
+Message-Id: <20200112002459.2124850-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG7NODE1.st.com (10.75.127.19) To SFHDAG6NODE1.st.com
- (10.75.127.16)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-10_01:2020-01-10,2020-01-09 signatures=0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This patch adds a sdmmc variant revision 2.0.
-This revision is backward compatible with 1.1, and adds dma
-link list support.
+Hello,
 
-Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
----
- drivers/mmc/host/mmci.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+this is the patchset for a driver for the Amlogic "SDHC" MMC controller
+found on Meson6, Meson8, Meson8b and Meson8m2 SoCs.
 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index d76a59c06cb0..2a570cbf6f69 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -275,6 +275,31 @@ static struct variant_data variant_stm32_sdmmc = {
- 	.init			= sdmmc_variant_init,
- };
- 
-+static struct variant_data variant_stm32_sdmmcv2 = {
-+	.fifosize		= 16 * 4,
-+	.fifohalfsize		= 8 * 4,
-+	.f_max			= 208000000,
-+	.stm32_clkdiv		= true,
-+	.cmdreg_cpsm_enable	= MCI_CPSM_STM32_ENABLE,
-+	.cmdreg_lrsp_crc	= MCI_CPSM_STM32_LRSP_CRC,
-+	.cmdreg_srsp_crc	= MCI_CPSM_STM32_SRSP_CRC,
-+	.cmdreg_srsp		= MCI_CPSM_STM32_SRSP,
-+	.cmdreg_stop		= MCI_CPSM_STM32_CMDSTOP,
-+	.data_cmd_enable	= MCI_CPSM_STM32_CMDTRANS,
-+	.irq_pio_mask		= MCI_IRQ_PIO_STM32_MASK,
-+	.datactrl_first		= true,
-+	.datacnt_useless	= true,
-+	.datalength_bits	= 25,
-+	.datactrl_blocksz	= 14,
-+	.datactrl_any_blocksz	= true,
-+	.stm32_idmabsize_mask	= GENMASK(16, 5),
-+	.dma_lli		= true,
-+	.busy_timeout		= true,
-+	.busy_detect_flag	= MCI_STM32_BUSYD0,
-+	.busy_detect_mask	= MCI_STM32_BUSYD0ENDMASK,
-+	.init			= sdmmc_variant_init,
-+};
-+
- static struct variant_data variant_qcom = {
- 	.fifosize		= 16 * 4,
- 	.fifohalfsize		= 8 * 4,
-@@ -2334,6 +2359,11 @@ static const struct amba_id mmci_ids[] = {
- 		.mask	= 0xf0ffffff,
- 		.data	= &variant_stm32_sdmmc,
- 	},
-+	{
-+		.id     = 0x00253180,
-+		.mask	= 0xf0ffffff,
-+		.data	= &variant_stm32_sdmmcv2,
-+	},
- 	/* Qualcomm variants */
- 	{
- 		.id     = 0x00051180,
+The public S805 (Meson8b) datasheet has some documentation starting on
+page 74: [0]
+
+It's performance is still not as good as the driver from Amlogic's 3.10
+kernel, but it does not corrupt data anymore (as RFC v1 did).
+
+Special thanks to the people who supported me off-list - you are
+amazing and deserve to be mentioned here:
+- Xin Yin who helped me fix two more write corruption problems. I am
+  hoping that he will reply with Reviewed-by, Tested-by and Bug-fixed-by
+- Jianxin Pan for sharing some of the internal workings of this MMC
+  controller with me
+- Wei Wang for spotting the initial write corruption problem and helping
+  test this driver on his board. I have his permission to add his
+  Tested-by (off-list, he's Cc'ed so if there's any problem he can speak
+  up)
+
+
+Changes since v3 at [3]:
+- split the clock bits into a separate clock controller driver because
+  of two reasons: 1) it keeps the MMC controller driver mostly clean of
+  the clock bits 2) the pure clock controller can use
+  devm_clk_hw_register() (instead of devm_clk_register(), which is
+  deprecated) and the MMC controller can act as a pure clock consumer.
+  This also affects the dt-bindings which is why I dropped Rob's
+  Reviewed-by. Thanks to Ulf for the suggestions
+
+Changes since v2 at [2]:
+- rebased on top of v5.5-rc1
+- added Rob's and Xin Yin's Reviewed-by and Tested-by (thank you!)
+- (note: Kevin had v2 of this series in -next for a few days so the
+   build test robots could play with it. I haven't received any negative
+   feedback in that time)
+
+Changes since RFC v1 at [1]:
+- don't set MESON_SDHC_MISC_MANUAL_STOP to fix one of three write
+  corruption problems. the out-of-tree 3.10 "reference" driver doesn't
+  set it either
+- check against data->flags instead of cmd->flags when testing for
+  MMC_DATA_WRITE as spotted by Xin Yin (many thanks!). This fixes
+  another write corruption problem
+- clear the FIFOs after successfully transferring data as suggested by
+  Xin Yin (many thanks!). This is what the 3.10 driver did and fixes yet
+  another write corruption problem
+- integrate the clock suggestions from Jianxin Pan so the driver is now
+  able to set up the clocks correctly for all known cases. documentation
+  is also added to the patch description. Thank you Jianxin for the
+  help!
+- set the correct max_busy_timeout as suggested by Jianxin Pan (thanks!)
+- convert the dt-bindings to .yaml (which is why I didn't add Rob's
+  Reviewed-by)
+- switch to struct clk_parent_data as part of newer common clock
+  framework APIs to simplify the clock setup
+- dropped CMD23 support because it seems to hurt read and write
+  performance by 10-20% in my tests. it's not clear why, but for now we
+  can live without this.
+- use devm_platform_ioremap_resource instead of open-coding it
+
+
+[0] https://dn.odroid.com/S805/Datasheet/S805_Datasheet%20V0.8%2020150126.pdf
+[1] https://patchwork.kernel.org/cover/11035505/
+[2] http://lists.infradead.org/pipermail/linux-amlogic/2019-November/014576.html
+[3] https://patchwork.kernel.org/cover/11283179/
+
+
+Martin Blumenstingl (3):
+  dt-bindings: mmc: Document the Amlogic Meson SDHC MMC host controller
+  clk: meson: add a driver for the Meson8/8b/8m2 SDHC clock controller
+  mmc: host: meson-mx-sdhc: new driver for the Amlogic Meson SDHC host
+
+ .../bindings/mmc/amlogic,meson-mx-sdhc.yaml   |   83 ++
+ drivers/clk/meson/Kconfig                     |    9 +
+ drivers/clk/meson/Makefile                    |    1 +
+ drivers/clk/meson/meson-mx-sdhc.c             |  212 ++++
+ drivers/mmc/host/Kconfig                      |   14 +
+ drivers/mmc/host/Makefile                     |    1 +
+ drivers/mmc/host/meson-mx-sdhc.c              | 1064 +++++++++++++++++
+ .../dt-bindings/clock/meson-mx-sdhc-clkc.h    |    8 +
+ 8 files changed, 1392 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/amlogic,meson-mx-sdhc.yaml
+ create mode 100644 drivers/clk/meson/meson-mx-sdhc.c
+ create mode 100644 drivers/mmc/host/meson-mx-sdhc.c
+ create mode 100644 include/dt-bindings/clock/meson-mx-sdhc-clkc.h
+
 -- 
-2.17.1
+2.24.1
 
