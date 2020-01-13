@@ -2,77 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54155138B0B
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 Jan 2020 06:38:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35022138B43
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 Jan 2020 06:52:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387585AbgAMFiB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 Jan 2020 00:38:01 -0500
-Received: from inva020.nxp.com ([92.121.34.13]:33222 "EHLO inva020.nxp.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729184AbgAMFh6 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 13 Jan 2020 00:37:58 -0500
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 2D5E51A01A4;
-        Mon, 13 Jan 2020 06:37:57 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 2BF871A001D;
-        Mon, 13 Jan 2020 06:37:44 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id EB6EB402F0;
-        Mon, 13 Jan 2020 13:37:30 +0800 (SGT)
-From:   Anson Huang <Anson.Huang@nxp.com>
-To:     robh+dt@kernel.org, mark.rutland@arm.com, vkoul@kernel.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, ulf.hansson@linaro.org,
-        srinivas.kandagatla@linaro.org, broonie@kernel.org,
-        manivannan.sadhasivam@linaro.org, andrew.smirnov@gmail.com,
-        rjones@gateworks.com, marcel.ziswiler@toradex.com,
-        sebastien.szymanski@armadeus.com, aisheng.dong@nxp.com,
-        richard.hu@technexion.com, angus@akkea.ca, cosmin.stoica@nxp.com,
-        l.stach@pengutronix.de, rabeeh@solid-run.com,
-        leonard.crestez@nxp.com, daniel.baluta@nxp.com, jun.li@nxp.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org
-Cc:     Linux-imx@nxp.com
-Subject: [PATCH V2 7/7] dt-bindings: arm: imx: Add the i.MX8MP EVK board
-Date:   Mon, 13 Jan 2020 13:33:22 +0800
-Message-Id: <1578893602-14395-7-git-send-email-Anson.Huang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1578893602-14395-1-git-send-email-Anson.Huang@nxp.com>
-References: <1578893602-14395-1-git-send-email-Anson.Huang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+        id S1733228AbgAMFwe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 Jan 2020 00:52:34 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:45636 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733244AbgAMFw0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Jan 2020 00:52:26 -0500
+Received: by mail-oi1-f194.google.com with SMTP id n16so7171402oie.12
+        for <linux-mmc@vger.kernel.org>; Sun, 12 Jan 2020 21:52:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=El5YZgtDEXJCHEtZrRB1ujEJT5GnrR9nqQvx3oNXkD1KXWKAy5lE4fahagwXmNRBuY
+         Z373bCStdjZZAvrcMmyjZhqXNYKD7qS8gpQ1uKt4Zm/CJYofbOmd6y2KCfdaIf8lu4gx
+         e04Qq2Wd5k0QzXhgODgXLh9+BTAbr7mIJG1kvrHD2cB5892G2QaMtoQjZ8YbwAsn/v/R
+         qN1ulSwy8kLJzDOOwwvDkEa6g0paOaNUUW6lO8NcaOsOsQMTh2eV34LXY/bnRxfyDcL+
+         OFIAYoYpyWTxvo4nB11oXa8J2BNLiFXnr18VfN4DCPOmpXqWPT8f/9GzmZX8VWLxs4VK
+         s+8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=d8v9Ezfa9hZ4GSSFb68do/2Mob84Yp8o6lbXHmlmRTwsEmudkszrdCYwzhNTB5Fxrc
+         LQdHVE8WybZGeFx4oTFB/1HUZ0yvd/4mETEtNywFaoFgR/U+Z/HxFITGPxtCcwlr4U0I
+         c4PNWEbbzshFfc63XaB4dI1EmCYiJTY2tOBl/hT03JQ/V83ccjPKLgX2t+z+2JQPHlSu
+         XIXsmLJT9g0TJ5Rf39dKd7lwUzrzxR/EkySHaU4dN9DzDCaBByf6nNBKLZJDuBm2Nk4F
+         heSSZ5WdU8Yvgahb4K9N0xRaSMgSFU1Ts4xnIfpyjmpsAge3ICk+7WSO8Z3Tk9Hg5Nkr
+         pNCQ==
+X-Gm-Message-State: APjAAAVqWvHHDLBLIFUf2chxdyEW/LrffwFaA07aRAGQADCCfx6XavHs
+        3VX2mAAp5E8AasTDNdjpk9yRwhbKzhCCPdy14Xt9lUmQ
+X-Google-Smtp-Source: APXvYqy7JhGBt0ZjJ/1t4CT74GIhTuvbOMnCynReBbsGRcTAfZPwoiLBCe9XiPA9xaK1JAPmy14eucUMWI9DLkbKsUo=
+X-Received: by 2002:a54:4713:: with SMTP id k19mr11513430oik.113.1578894745174;
+ Sun, 12 Jan 2020 21:52:25 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a4a:41cb:0:0:0:0:0 with HTTP; Sun, 12 Jan 2020 21:52:24
+ -0800 (PST)
+Reply-To: rickschaech@gmail.com
+From:   Rick Schaech <cathben72@gmail.com>
+Date:   Mon, 13 Jan 2020 01:52:24 -0400
+Message-ID: <CAEcBxO=TAnFn5LzizHa22hUC0Db5FuiZJF28m=yX3_9m--jRqg@mail.gmail.com>
+Subject: I wait for your swift response,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add board binding for i.MX8MP EVK board.
+Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
+know we have not meet each other before but sometimes in life God have
+a reason of bringing two people from two different countries together
+as business partners or life partners.
 
-Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
----
-No change.
----
- Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+My dear friend, I have the sum of 15.7 Million USD i wish to put in
+your name due to the death of my late client who died several years
+ago as his next of kin column still remain blank. Though the internet
+medium is highly abuse these days but am assuring you that this
+transaction is legitimate and I am contacting you that we may have a
+deal, note for your cooperation and collaboration 40% of the sum will
+be for you while the other 60% will be for me as well. I wait for your
+swift response for more details. please forward your response to my
+personal E-mail: rickschaech@gmail.com
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index c5b0270..b8c8c72b 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -324,6 +324,12 @@ properties:
-               - fsl,imx8mn-evk            # i.MX8MN LPDDR4 EVK Board
-           - const: fsl,imx8mn
- 
-+      - description: i.MX8MP based Boards
-+        items:
-+          - enum:
-+              - fsl,imx8mp-evk            # i.MX8MP EVK Board
-+          - const: fsl,imx8mp
-+
-       - description: i.MX8MQ based Boards
-         items:
-           - enum:
--- 
-2.7.4
-
+Yours sincerely,
+Rick Schaech.
