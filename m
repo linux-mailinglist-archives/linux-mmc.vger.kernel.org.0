@@ -2,44 +2,44 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3D6A13C817
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 Jan 2020 16:40:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69FE913C85F
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 Jan 2020 16:51:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbgAOPk3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 Jan 2020 10:40:29 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:43125 "EHLO
+        id S1728925AbgAOPv0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 Jan 2020 10:51:26 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:38285 "EHLO
         mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729011AbgAOPk0 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Jan 2020 10:40:26 -0500
-Received: by mail-ot1-f67.google.com with SMTP id p8so16426056oth.10
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Jan 2020 07:40:26 -0800 (PST)
+        with ESMTP id S1726501AbgAOPv0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Jan 2020 10:51:26 -0500
+Received: by mail-ot1-f67.google.com with SMTP id z9so14376167oth.5
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Jan 2020 07:51:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=h8tviBIGxzG0M2SWVlzB/ZX7WYO/ibSFmw3TBS+98tw=;
-        b=uP910g28bmPKkk3tlW+8HcbOC0lhjEpvubUlwcw+7XNl4pUJwvviMD1nWD5R9ilpZZ
-         bHBCynU90+2eGqgkRJFuuWKj8pATRRBh2nGZBHC2T9vykPare9swEARaor8YQGr8Ybjb
-         U8c+QUt/wzzKPD4mCHHwZ17VOP5u/6c1nAQEFiq+xpCsVrTPu7X/7mbx7pw6KcU4zGgq
-         yGc5Jk7LeqYqCEbjh1NnIijHp9+FzvgkecHPG0S/zqAn39pyVB4koFlB5C3Zu05w/QEI
-         xXeFZSA9ldxSTARPgyxco9oXxVswPj6bmt9Qp0kzwgwNya8ABW1b6Mt4+qDjteFpFGBT
-         +tJg==
-X-Gm-Message-State: APjAAAVcxaUMVtPgVK6IRliyZHT0hu1iwAGTLj9aX815Ltu4jETQvw1K
-        xBnTvCweiOuefLQm0e+f8C06Wrk=
-X-Google-Smtp-Source: APXvYqxGK7ln1qHpDtYMCFGozyouUGXTvW9Wxz2JCzOnYq+ByJOWHh+CKjGL6C7gPF79lgg+crB/VA==
-X-Received: by 2002:a05:6830:1e46:: with SMTP id e6mr2994790otj.245.1579102825832;
-        Wed, 15 Jan 2020 07:40:25 -0800 (PST)
+        bh=XZ89QzBAoQ2DzrvbjynM5ltUEoPFqx0Q/mdX+QC5z3Y=;
+        b=edtTcHVi9Gi/D6OwEM6GmzK7jbJgEwsc8fWaKxMroGjIlro6c3a6QPyddeuJPQfkI+
+         kX0bT4fJAWfCDdjDfic53XTI+uwA1Qu23fD3WM3ZNL6voJDS13STL4uMJV64iD/uR1W3
+         iFPmTlZlvXnZVhxT+75kKXJ1U02AIARAie8WY0ewsZMQqnPffHt8QjV9vcI5zzRm0d1B
+         sbrodmmQfbXwii9itMZtxruyGTeLZO0I4NJ03CDwPsfPQVUmuSAx235bq10HzbaFGRMS
+         GGzlwe6576eYGyMAcy1Vp6BVZEZlVXFax6mdVqLcaEVugBCjgsBBF80XM0WhtnGznJle
+         k1XQ==
+X-Gm-Message-State: APjAAAUkxr3PgmUmwqssMAdjsMCy2nYwXqjk58orVHzU3Fi0v3q2gx5b
+        7TCZGfO1l3N5cVXoHRf8Q7SFIr8=
+X-Google-Smtp-Source: APXvYqx92EJ4oTGUQ4ezrqrdiZprjdsdlV2QsY3/u2ybaqpV+k/A8NPW2NkZ9OCGwZz1GpUEY7Nh6w==
+X-Received: by 2002:a9d:69ce:: with SMTP id v14mr3280768oto.248.1579103485206;
+        Wed, 15 Jan 2020 07:51:25 -0800 (PST)
 Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id g8sm6554622otq.19.2020.01.15.07.40.23
+        by smtp.gmail.com with ESMTPSA id l1sm5756091oic.22.2020.01.15.07.51.23
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2020 07:40:24 -0800 (PST)
+        Wed, 15 Jan 2020 07:51:24 -0800 (PST)
 Received: from rob (uid 1000)
         (envelope-from rob@rob-hp-laptop)
-        id 220379
+        id 22061a
         by rob-hp-laptop (DragonFly Mail Agent v0.11);
-        Wed, 15 Jan 2020 09:40:22 -0600
-Date:   Wed, 15 Jan 2020 09:40:22 -0600
+        Wed, 15 Jan 2020 09:42:40 -0600
+Date:   Wed, 15 Jan 2020 09:42:40 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Anson Huang <Anson.Huang@nxp.com>
 Cc:     robh+dt@kernel.org, mark.rutland@arm.com, vkoul@kernel.org,
@@ -56,29 +56,30 @@ Cc:     robh+dt@kernel.org, mark.rutland@arm.com, vkoul@kernel.org,
         dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org,
         Linux-imx@nxp.com
-Subject: Re: [PATCH V2 1/7] dt-bindings: fsl-imx-sdma: Add
- i.MX8MM/i.MX8MN/i.MX8MP compatible string
-Message-ID: <20200115154022.GA10946@bogus>
+Subject: Re: [PATCH V2 2/7] dt-bindings: mmc: fsl-imx-esdhc: add i.MX8MP
+ compatible string
+Message-ID: <20200115154240.GA15071@bogus>
 References: <1578893602-14395-1-git-send-email-Anson.Huang@nxp.com>
+ <1578893602-14395-2-git-send-email-Anson.Huang@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1578893602-14395-1-git-send-email-Anson.Huang@nxp.com>
+In-Reply-To: <1578893602-14395-2-git-send-email-Anson.Huang@nxp.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 13 Jan 2020 13:33:16 +0800, Anson Huang wrote:
-> Add imx8mm/imx8mn/imx8mp sdma support.
+On Mon, 13 Jan 2020 13:33:17 +0800, Anson Huang wrote:
+> Add compatible string for imx8mp
 > 
 > Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
 > ---
 > New patch
 > ---
->  Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt | 3 +++
->  1 file changed, 3 insertions(+)
+>  Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 
 Acked-by: Rob Herring <robh@kernel.org>
