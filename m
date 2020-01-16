@@ -2,40 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E8AC13F1C4
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jan 2020 19:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4563C13F90C
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jan 2020 20:22:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391947AbgAPRZ0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Jan 2020 12:25:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33146 "EHLO mail.kernel.org"
+        id S1730943AbgAPTWe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Jan 2020 14:22:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37262 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729793AbgAPRZZ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:25:25 -0500
+        id S1730902AbgAPQxZ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 16 Jan 2020 11:53:25 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8EB84246D3;
-        Thu, 16 Jan 2020 17:25:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 527E322522;
+        Thu, 16 Jan 2020 16:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579195525;
-        bh=hbejOm8sc5vQB9Dn0jxr/R1aRYq57xznvqqEKeG02qo=;
+        s=default; t=1579193605;
+        bh=ZN3FHz/d8qAmPJ8meazGJB6yyASRZv5YcQU6R5IG9rk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O7Et6dW8hy8uW+0wtNfGPg6yCVIrOZ7tikkQTtdM3G/+10ueNPxp27ppdJjSP+cGY
-         gotntEIpeIUyH30CUlTh57Vxywng8qqPvQm3sG/Y0ap/mpm8/DN5FNoCDyuJrHRfsg
-         bRM9xYBwzowe3obJB2NbbErhh5iJhzhvRW13RRDY=
+        b=2aAdsYwl5C0oYo63AdtqGPE5QNBNhZsGfmRmbGOR5dEE9ITiAJ3g64NFOvCOPUEoF
+         ild9S/VJW+xxa7b11x43yEvp4WNZotxCAurz50IiR1HvWsaRzRLukWEmqqserGgwvG
+         OcqNOww5w6Z7AO7umFfBQnHmNiumx3n4weLivnH4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Stefan Wahren <stefan.wahren@i2se.com>,
+Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 4.14 122/371] mmc: sdhci-brcmstb: handle mmc_of_parse() errors during probe
-Date:   Thu, 16 Jan 2020 12:19:54 -0500
-Message-Id: <20200116172403.18149-65-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 143/205] mmc: sdio: fix wl1251 vendor id
+Date:   Thu, 16 Jan 2020 11:41:58 -0500
+Message-Id: <20200116164300.6705-143-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
-References: <20200116172403.18149-1-sashal@kernel.org>
+In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
+References: <20200116164300.6705-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -45,36 +43,42 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Stefan Wahren <stefan.wahren@i2se.com>
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
 
-[ Upstream commit 1e20186e706da8446f9435f2924cd65ab1397e73 ]
+[ Upstream commit e5db673e7fe2f971ec82039a28dc0811c2100e87 ]
 
-We need to handle mmc_of_parse() errors during probe otherwise the
-MMC driver could start without proper initialization (e.g. power sequence).
+v4.11-rc1 did introduce a patch series that rearranged the
+sdio quirks into a header file. Unfortunately this did forget
+to handle SDIO_VENDOR_ID_TI differently between wl1251 and
+wl1271 with the result that although the wl1251 was found on
+the sdio bus, the firmware did not load any more and there was
+no interface registration.
 
-Fixes: 476bf3d62d5c ("mmc: sdhci-brcmstb: Add driver for Broadcom BRCMSTB SoCs")
-Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+This patch defines separate constants to be used by sdio quirks
+and drivers.
+
+Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Cc: <stable@vger.kernel.org> # v4.11+
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-brcmstb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/mmc/sdio_ids.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-index 552bddc5096c..1cd10356fc14 100644
---- a/drivers/mmc/host/sdhci-brcmstb.c
-+++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -55,7 +55,9 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
- 	}
+diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
+index d1a5d5df02f5..08b25c02b5a1 100644
+--- a/include/linux/mmc/sdio_ids.h
++++ b/include/linux/mmc/sdio_ids.h
+@@ -71,6 +71,8 @@
  
- 	sdhci_get_of_property(pdev);
--	mmc_of_parse(host->mmc);
-+	res = mmc_of_parse(host->mmc);
-+	if (res)
-+		goto err;
+ #define SDIO_VENDOR_ID_TI			0x0097
+ #define SDIO_DEVICE_ID_TI_WL1271		0x4076
++#define SDIO_VENDOR_ID_TI_WL1251		0x104c
++#define SDIO_DEVICE_ID_TI_WL1251		0x9066
  
- 	/*
- 	 * Supply the existing CAPS, but clear the UHS modes. This
+ #define SDIO_VENDOR_ID_STE			0x0020
+ #define SDIO_DEVICE_ID_STE_CW1200		0x2280
 -- 
 2.20.1
 
