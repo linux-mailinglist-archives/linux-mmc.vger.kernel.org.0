@@ -2,87 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D58D313DEAF
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jan 2020 16:24:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A09613DEEB
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jan 2020 16:37:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726587AbgAPPWm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Jan 2020 10:22:42 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:34894 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726778AbgAPPWm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Jan 2020 10:22:42 -0500
-Received: by mail-wr1-f68.google.com with SMTP id g17so19540802wro.2;
-        Thu, 16 Jan 2020 07:22:41 -0800 (PST)
+        id S1726410AbgAPPhN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Jan 2020 10:37:13 -0500
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:44151 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726151AbgAPPhN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Jan 2020 10:37:13 -0500
+Received: by mail-vs1-f67.google.com with SMTP id p6so12913668vsj.11
+        for <linux-mmc@vger.kernel.org>; Thu, 16 Jan 2020 07:37:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=vZZ9VyOzV34iQ0VxY5F4QTnc79//k1XDbodGn0X9/BI=;
-        b=lzs8yVanbsLsplmx8X5y+FC2PfGxjVxhWovxdAuhr5n1AMnQj6FcgATftk365XldMm
-         Pg6rwZzsLrHwxedRZIpfDWG/kaEmH8p0mtVGeojY0qDZ+y6XV7YD7HJH4dR1T3CBYmMb
-         2tYs6RM1uClP+oESBKqqsYBi0AuGK+VvDstUPSvOSGhh20BlPZLlOLZIOQujpc4oOABC
-         1n18InsiE7iRJBH9QmX9lArDfeWyw+pPptGBBQqd0sROgz27kBLzU3XclzaECs4Zh0US
-         fCgktVQY7pHYg4Gl+nQB1JrW4X5QP68n0p1NKuKLr63K1TdzapLQMdjWztcHHYHWhzVO
-         WYvw==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=U8FYtMYgRqfcM3VrVjRmmrLZtQqIBlgUNnDbRk2ys1k=;
+        b=MnT8YTWMSeLsD2sgjF6ZeceXA5LCWYRsKcjb4x0XdOxCwJeXlKyefd7ltqJ2sEiWjS
+         YhDR3mQg6alaFY0a5tNZMz7dJWsEvxupaWm3yqUgZS8jARBU7Kn/Ebpxdo7unFIWv7R2
+         b1g8x9hRuRrK3DD5SEhX/CP9C/n1b5ss/rPb6gyDIF5rpb8t3ffVv5JqLNZijLBI86oA
+         9dbeR6JmOA4c0SGJiylkQHbTEdIZBjjprv6ooPcnNgPAD/V/MmVogbf1M0Isho81z0Hb
+         o6YwgWfzer9k0Suzy6kHne7KWjCFIA/Zt/k2t5bCDvlo2esjQbWRP0tk6nm7oCYlJYQK
+         vrWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=vZZ9VyOzV34iQ0VxY5F4QTnc79//k1XDbodGn0X9/BI=;
-        b=d9kWdoelTVc4HCL4+H8pSg3wHmUhAOEEnqSMHIke6BlfbN3TjEovtgV+Y1mhqiTlMW
-         QthLJbnP3/RgyFCsJD8fUmYP/kg36S9hUS91vwH9FR1BuuiKR2zLn2qy8D/X6EqSSvDf
-         0Ch7kTtufCCcxPpiFIpTepOUePDkYkxuKU5OfqMqk6uPgaH5tlabuUtzan4CM1zDo5vI
-         w2rXr/5a2n93+H6OrqNVzDs1mib0jmUKByfsBjmzjJh1Vb2ncHm3W3qUWYIW3O01Euu2
-         V0CsmdSWOQ5tZ0IOhtabRiWH+BiecqS6qDef6aFLGTLOLvmDPpy545EFU7kDvZU1OPW6
-         PAyg==
-X-Gm-Message-State: APjAAAVa9FrpEVYC3b2gc+kMfnxB+jJ4AEAx9xSv1YafT4DGoO+fH/L5
-        e8HRZcBCDsrBwtjjMQw1XG0=
-X-Google-Smtp-Source: APXvYqyuFSu4gLbVEvoyKNl3FBhw734PapU1CBJhHea/vYM4blIBscvJQWf3mxNqEwlCKpMp0wwGYg==
-X-Received: by 2002:a5d:4fd0:: with SMTP id h16mr3735432wrw.255.1579188160843;
-        Thu, 16 Jan 2020 07:22:40 -0800 (PST)
-Received: from debian.home (ip51ccf9cd.speed.planet.nl. [81.204.249.205])
-        by smtp.gmail.com with ESMTPSA id w8sm18193wmd.2.2020.01.16.07.22.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 Jan 2020 07:22:40 -0800 (PST)
-From:   Johan Jonker <jbx6244@gmail.com>
-To:     ulf.hansson@linaro.org
-Cc:     robh+dt@kernel.org, mark.rutland@arm.com, heiko@sntech.de,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org
-Subject: [PATCH v2 3/3] dt-bindings: mmc: rockchip-dw-mshc: add description for rk3308
-Date:   Thu, 16 Jan 2020 16:22:30 +0100
-Message-Id: <20200116152230.29831-3-jbx6244@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20200116152230.29831-1-jbx6244@gmail.com>
-References: <20200116152230.29831-1-jbx6244@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=U8FYtMYgRqfcM3VrVjRmmrLZtQqIBlgUNnDbRk2ys1k=;
+        b=AE9gsT1ebGmC0Eu0RRHfDQZwNIyyLylMqW0MgI3c92YvF1XlXeIudy9MoW3JeZzyjH
+         YaR/hsstls9cVcljdQ/jpU9dU1G9eiJkHrdY3MLezzWmf47UcEl4hSHuJk9oFNmMrg+q
+         TxFnLePB2y0kdY0NgF0VMsN6+v6FeORhMXZmg5UkM++agJCXOHMujvQBQIiTjbv6ODLk
+         O+2g+00LzPSXe8IGRLCYsIwfDRSE1iPVJF1q56VylRVoBE16SiCN5p/iyPdSn+QSMHx3
+         54tBf2qlZPalbPa9IxQvGhAv9dEi/U2ApY/jqq0yLTLsd8oKVLG2IQH6Liq6nsXigMVH
+         C5Yg==
+X-Gm-Message-State: APjAAAVJDfCGJmR7BE/gDtgv1rkynxNiKOlzTnfdgQa5VoeMtETIdr+o
+        8saKZRQQaEcfLM6KhtDKvNqb3jB5t53L/Ql9K2j+ow==
+X-Google-Smtp-Source: APXvYqwvM8opGLNl1yTY7CdvLKcHqtG2FepjgUgQtLlcPxV3dx6/KM2MQ8hZcAMDqRwwhoZusR7J0wKJUWW48nUE2Ys=
+X-Received: by 2002:a67:314e:: with SMTP id x75mr1759712vsx.35.1579189032070;
+ Thu, 16 Jan 2020 07:37:12 -0800 (PST)
+MIME-Version: 1.0
+References: <20191114111814.35199-1-yangbo.lu@nxp.com> <CAPDyKFqfMzv1hFzPzS7w5BVHyXybu--7p11wHYa8WTQAVB7r4g@mail.gmail.com>
+ <AM7PR04MB68856B9D41A5867AB39D37F2F83E0@AM7PR04MB6885.eurprd04.prod.outlook.com>
+In-Reply-To: <AM7PR04MB68856B9D41A5867AB39D37F2F83E0@AM7PR04MB6885.eurprd04.prod.outlook.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 16 Jan 2020 16:36:35 +0100
+Message-ID: <CAPDyKFq7VnfYAs=RcjUpskAfSC_fatksQ1_sJ6wEOinbPDKmkQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci: fix up CMD12 sending
+To:     "Y.b. Lu" <yangbo.lu@nxp.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Sachin Miglani <sachin.miglani@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The description below is already in use for rk3308.dtsi,
-but was somehow never added to a document, so add
-"rockchip,rk3308-dw-mshc", "rockchip,rk3288-dw-mshc"
-for mmc nodes on a rk3308 platform to rockchip-dw-mshc.yaml.
+On Wed, 8 Jan 2020 at 10:37, Y.b. Lu <yangbo.lu@nxp.com> wrote:
+>
+> Hi Uffe and Adrian,
+>
+> Back again on this topic. Actually we are trying to make the error recovery work after data error of CMD18 in linux-4.14.
+> With this patch, when CMD18 data error got, manual CMD12 would be sent. And then went into mmc_blk_cmd_recovery(). (Should be mmc_blk_mq_rw_recovery() in latest linux-5.5-rc2.)
+> In mmc_blk_cmd_recovery(), re-tuning would fail before sending CMD13 on our specific board.
+> This may be some issue related to specific eMMC card we are investigating.
+>
+> The above is just background introduction, and you may not care about that:)
+> I'd like to have some queries on CMD12 usage in MMC driver.
+> 1. It seems CMD12 is always not using ABORT type for sending in sdhci.c. The SDHCI_CMD_ABORTCMD hasn't been used. Is this issue?
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
----
- Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+I defer that question to Adrian.
 
-diff --git a/Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml b/Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml
-index 2f70f5ef0..89c3edd6a 100644
---- a/Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml
-+++ b/Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml
-@@ -35,6 +35,8 @@ properties:
-             - rockchip,rk3036-dw-mshc
-             # for Rockchip RK322x
-             - rockchip,rk3228-dw-mshc
-+            # for Rockchip RK3308
-+            - rockchip,rk3308-dw-mshc
-             # for Rockchip RK3328
-             - rockchip,rk3328-dw-mshc
-             # for Rockchip RK3368
--- 
-2.11.0
+> 2. In block.c, CMD12 uses R1 response for data reading and R1B response for writing. Is it ok to use R1 response for SD? The SD spec mentions only R1B response for CMD12.
 
+I think the specs isn't that clear on this. In this case, the R1B, is
+an R1 with an *optional* busy signaling on DAT0, unless it has been
+changed lately.
+
+Additionally, as far as can tell, there have been no reports about
+problems with the current approach for "reads". Are you saying there
+is?
+
+[...]
+
+Kind regards
+Uffe
