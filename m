@@ -2,131 +2,148 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7260713D859
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jan 2020 11:52:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02FD713D8D1
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jan 2020 12:20:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728928AbgAPKvQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Jan 2020 05:51:16 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:40842 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728890AbgAPKvM (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Jan 2020 05:51:12 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00GAp4LP013250;
-        Thu, 16 Jan 2020 04:51:04 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1579171864;
-        bh=2vmT1E2KmhvC/4bKeChwhgsTaQiClx8DyYkTcheakOk=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=tlu6dSYK0uthVCPcS1PLXL7JORir3zURuC3byoD9vDqfdgXO2rNpXiqazCaKcTeN4
-         od6MwOgWDfW6LV7+n6YAFTx5/2OZ0seMCt04ORYKeLOjE84RrNAbId1G1G/PcG5TDJ
-         eTiSeleQCt0HdTUBCtDB5ImcKtWhL6TbVCDUYu3k=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00GAp4el101636
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 16 Jan 2020 04:51:04 -0600
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 16
- Jan 2020 04:51:04 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 16 Jan 2020 04:51:04 -0600
-Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00GAoRdc000589;
-        Thu, 16 Jan 2020 04:51:01 -0600
-From:   Faiz Abbas <faiz_abbas@ti.com>
-To:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-mmc@vger.kernel.org>
-CC:     <adrian.hunter@intel.com>, <kishon@ti.com>, <mark.rutland@arm.com>,
-        <robh+dt@kernel.org>, <ulf.hansson@linaro.org>,
-        <faiz_abbas@ti.com>, <tony@atomide.com>
-Subject: [PATCH v5 10/10] mmc: sdhci-omap: Add special reset capability
-Date:   Thu, 16 Jan 2020 16:21:54 +0530
-Message-ID: <20200116105154.7685-11-faiz_abbas@ti.com>
-X-Mailer: git-send-email 2.19.2
-In-Reply-To: <20200116105154.7685-1-faiz_abbas@ti.com>
-References: <20200116105154.7685-1-faiz_abbas@ti.com>
+        id S1726018AbgAPLR7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Jan 2020 06:17:59 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:26072 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725999AbgAPLR7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Jan 2020 06:17:59 -0500
+X-Greylist: delayed 535 seconds by postgrey-1.27 at vger.kernel.org; Thu, 16 Jan 2020 06:17:59 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1579173478;
+        s=strato-dkim-0002; d=xenosoft.de;
+        h=In-Reply-To:Date:Message-ID:From:References:To:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=DzVwqWjiZk9RTH0OHTHksTRoKdVCSVfUgiVNd3dI1vg=;
+        b=obpgcQnQzfHsDEelhB3P2B6gGjmgTJ6iB7e2MA5lqcNMiYKca5oEvgUbZa8FMx7LOW
+        xHNK5dTd+64lpJ60kmqZS9p+RDpN5Id0/l390JtjuIG1QU65ZE8IXwCP7f8U6RrdMF2C
+        ExnuJ+b57fdTiT0kbf0Nn4FvE/gBXHPh0xU4QPQX3M6BhzdiHpsT1uGa3j0V69ahjOxU
+        +CswNCVxvIf07UMKrGuPvGSXsPjHr0shsZC19tTxXp7H8vo4euVQrbRobHLVlz2FQcFy
+        xWSXsZj2axn9Iaab+XN3qsquIh1LZ+83gM5kYt0NXKhQp0PFPqwZVBtvl4SAUkog6kRQ
+        EZeA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgGJxcR6e0MYA9IZCCrKOhys58/Dg=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:e1db:d4a8:b88d:b34e]
+        by smtp.strato.de (RZmta 46.1.4 AUTH)
+        with ESMTPSA id c05c1aw0GB5tghQ
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Thu, 16 Jan 2020 12:05:55 +0100 (CET)
+Subject: [FSL P5020 P5040 PPC] Onboard SD card doesn't work anymore after the
+ 'mmc-v5.4-2' updates
+To:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Darren Stevens <darren@stevens-zone.net>,
+        mad skateman <madskateman@gmail.com>,
+        "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        "contact@a-eon.com" <contact@a-eon.com>,
+        Julian Margetson <runaway@candw.ms>
+References: <20200108093903.57620-1-hdegoede@redhat.com>
+ <20200108093903.57620-2-hdegoede@redhat.com>
+ <61bc9265-ece0-eeb6-d4a1-4631138ecf29@intel.com>
+ <8d67882d-04a8-0607-be4e-c1430b7fda21@redhat.com>
+ <84a32714-ba08-74a0-0c76-3c36db44dd68@intel.com>
+ <93446e09-5f12-800a-62fa-bf3ecea7273d@redhat.com>
+ <399ac7d5-2518-799a-595e-f6b6878cf4ab@intel.com>
+From:   Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <a9ab8946-c599-5f83-7527-2387a9e82e8a@xenosoft.de>
+Date:   Thu, 16 Jan 2020 12:05:55 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <399ac7d5-2518-799a-595e-f6b6878cf4ab@intel.com>
+Content-Type: multipart/mixed;
+ boundary="------------6FAC0AE0BD11F9177C82AFB8"
+Content-Language: de-DE
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Some omap controllers need software to monitor a 0->1->0 for software
-reset. Add a SDHCI_OMAP_SPECIAL_RESET flag to indicate this.
+This is a multi-part message in MIME format.
+--------------6FAC0AE0BD11F9177C82AFB8
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
----
- drivers/mmc/host/sdhci-omap.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+Hi All,
 
-diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
-index 5433c9e6ac10..882053151a47 100644
---- a/drivers/mmc/host/sdhci-omap.c
-+++ b/drivers/mmc/host/sdhci-omap.c
-@@ -86,6 +86,7 @@
+We still need the attached patch for our onboard SD card interface 
+[1,2]. Could you please add this patch to the tree?
+
+Thanks,
+Christian
+
+[1] https://www.spinics.net/lists/linux-mmc/msg56211.html
+[2] 
+http://forum.hyperion-entertainment.com/viewtopic.php?f=58&t=4349&start=20#p49012
+
+
+--------------6FAC0AE0BD11F9177C82AFB8
+Content-Type: text/x-patch; charset=UTF-8;
+ name="coherent_cache-v3.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="coherent_cache-v3.patch"
+
+diff -rupN a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+--- a/arch/powerpc/kernel/setup-common.c	2019-12-03 18:05:52.436070217 +0100
++++ b/arch/powerpc/kernel/setup-common.c	2019-12-03 18:03:20.316629696 +0100
+@@ -780,6 +780,22 @@ static int __init check_cache_coherency(
+ late_initcall(check_cache_coherency);
+ #endif /* CONFIG_CHECK_CACHE_COHERENCY */
  
- /* sdhci-omap controller flags */
- #define SDHCI_OMAP_REQUIRE_IODELAY	BIT(0)
-+#define SDHCI_OMAP_SPECIAL_RESET	BIT(1)
- 
- struct sdhci_omap_data {
- 	u32 offset;
-@@ -779,15 +780,35 @@ static void sdhci_omap_set_uhs_signaling(struct sdhci_host *host,
- 	sdhci_omap_start_clock(omap_host);
++#ifndef CONFIG_NOT_COHERENT_CACHE
++/*
++ * For historical reasons powerpc kernels are built with hard wired knowledge of
++ * whether or not DMA accesses are cache coherent. Additionally device trees on
++ * powerpc do not typically support the dma-coherent property.
++ *
++ * So when we know that DMA is coherent, override arch_of_dma_is_coherent() to
++ * tell the drivers/of code that all devices are coherent regardless of whether
++ * they have a dma-coherent property.
++ */
++bool arch_of_dma_is_coherent(struct device_node *np)
++{
++	return true;
++}
++#endif
++
+ #ifdef CONFIG_DEBUG_FS
+ struct dentry *powerpc_debugfs_root;
+ EXPORT_SYMBOL(powerpc_debugfs_root);
+diff -rupN a/drivers/of/address.c b/drivers/of/address.c
+--- a/drivers/of/address.c	2019-12-03 18:05:57.332052212 +0100
++++ b/drivers/of/address.c	2019-12-03 18:03:20.320629681 +0100
+@@ -990,6 +990,14 @@ out:
+ 	return ret;
  }
  
-+#define MMC_TIMEOUT_US		20000		/* 20000 micro Sec */
- static void sdhci_omap_reset(struct sdhci_host *host, u8 mask)
++/*
++ * arch_of_dma_is_coherent - Arch hook to determine if device is coherent for DMA
++ */
++bool __weak arch_of_dma_is_coherent(struct device_node *np)
++{
++	return false;
++}
++
+ /**
+  * of_dma_is_coherent - Check if device is coherent
+  * @np:	device node
+@@ -999,8 +1007,12 @@ out:
+  */
+ bool of_dma_is_coherent(struct device_node *np)
  {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
-+	unsigned long limit = MMC_TIMEOUT_US;
-+	unsigned long i = 0;
- 
- 	/* Don't reset data lines during tuning operation */
- 	if (omap_host->is_tuning)
- 		mask &= ~SDHCI_RESET_DATA;
- 
-+	if (omap_host->flags & SDHCI_OMAP_SPECIAL_RESET) {
-+		sdhci_writeb(host, mask, SDHCI_SOFTWARE_RESET);
-+		while ((!(sdhci_readb(host, SDHCI_SOFTWARE_RESET) & mask)) &&
-+		       (i++ < limit))
-+			udelay(1);
-+		i = 0;
-+		while ((sdhci_readb(host, SDHCI_SOFTWARE_RESET) & mask) &&
-+		       (i++ < limit))
-+			udelay(1);
+-	struct device_node *node = of_node_get(np);
++	struct device_node *node;
 +
-+		if (sdhci_readb(host, SDHCI_SOFTWARE_RESET) & mask)
-+			dev_err(mmc_dev(host->mmc),
-+				"Timeout waiting on controller reset in %s\n",
-+				__func__);
-+		return;
-+	}
-+
- 	sdhci_reset(host, mask);
- }
++	if (arch_of_dma_is_coherent(np))
++		return true;
  
-@@ -900,10 +921,12 @@ static const struct sdhci_omap_data k2g_data = {
- 
- static const struct sdhci_omap_data am335_data = {
- 	.offset = 0x200,
-+	.flags = SDHCI_OMAP_SPECIAL_RESET,
- };
- 
- static const struct sdhci_omap_data am437_data = {
- 	.offset = 0x200,
-+	.flags = SDHCI_OMAP_SPECIAL_RESET,
- };
- 
- static const struct sdhci_omap_data dra7_data = {
--- 
-2.19.2
++	np = of_node_get(np);
+ 	while (node) {
+ 		if (of_property_read_bool(node, "dma-coherent")) {
+ 			of_node_put(node);
 
+--------------6FAC0AE0BD11F9177C82AFB8--
