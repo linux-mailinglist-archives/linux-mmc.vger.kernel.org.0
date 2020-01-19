@@ -2,62 +2,132 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 004C7141F7A
-	for <lists+linux-mmc@lfdr.de>; Sun, 19 Jan 2020 19:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF15F141FEB
+	for <lists+linux-mmc@lfdr.de>; Sun, 19 Jan 2020 21:12:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728741AbgASSoj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 19 Jan 2020 13:44:39 -0500
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:33117 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728895AbgASSoj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 19 Jan 2020 13:44:39 -0500
-Received: by mail-pg1-f195.google.com with SMTP id 6so14361178pgk.0
-        for <linux-mmc@vger.kernel.org>; Sun, 19 Jan 2020 10:44:38 -0800 (PST)
+        id S1728665AbgASUMp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 19 Jan 2020 15:12:45 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:41098 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727138AbgASUMp (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 19 Jan 2020 15:12:45 -0500
+Received: by mail-ot1-f68.google.com with SMTP id r27so26880232otc.8;
+        Sun, 19 Jan 2020 12:12:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
-        b=gmKBxPx84PXNKr5CdAEsBl4o6OI0Ul1T9kdeNuOonXVMsPZvHaiVfrF6wsqmkO6amC
-         OhpUNNF3SMjaFtPDB5q+oWHWGLwTM1KQcLAEAJsxead1wkkS8vgEkLcKKIbpXv93k89C
-         Il/b6fig8uFQ2ful9dClSdBh6ES0WHCRI487g5LzaF7Sg904xrrN8vXROMW6UBU7S6v1
-         1KY36Pw5SyxrOXfagNts4/xbaFFgof1/AzREyQlil09RYVWfcnHmKvyC/eKHTr8xAdVR
-         8OHIBUIT1uRPI/WtlHnD2gmL8PhGi3ea1Do5nFE3xaprr/6eI7i7Fk2drMcN+8BwExKd
-         ZFxA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=N1QlW5+ESSHKmdKwLymeXI/WjMGPsFxu1rPdBv2tr08=;
+        b=uq+q6Cs0lEcX75ocY472Zgm9rPfPQxXPLVnbxbPzCSq9ENg5x+G4rj0kJg+TBjp1tu
+         29np9UO55CBZJCbrMVeNrL/EMjreQUMwCkUI84HZJJ8upJtruJBlLtRIn7gl3+mpeRdw
+         QlYg418ZBWEyvQC77N2W58TILhCiPvfdbvJrPeX/1/Wd8YReKYRHPhvRNmsLmQHQWcEF
+         n9HfCLfLr612qrAswv6+r5ZRkGjIRyRR8GleT8w4ZVF1Icm97bmx9MQesCXu5MUkpqtB
+         CwMh21pG8zQL6mSaxlmZ2Qm1BS91TukroFSNKxQRokc7jvT26b7uVzVDqjVBRQ7mt/ta
+         rE3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
-        b=PiBep/TceZzusM4mOiw1p6szLMg9EI7IV8nLEox2kBscRuLxuRAVgIQvlrr8cHP4J0
-         9JyrV1W9E6B2V81p0PUiTRCM+R3yCkQrPOhbH4zbrI6pOtu0vssUawVKDM+5CXjR8xtL
-         e5qxaOQd70Qpq91QF+R8ZjBeVFJOig2DJztJLkTqoHeC4opRdo0crGSFXgPOvIB4Dtl+
-         75EGh39bRGcRZneq36xa4QnrIVv+HBk/DraPElpt2gGD0M5kdbSRWB8JAnASvYqZyGjU
-         5PhoJEd9MUb/6/U5gZ1CBfwQAgHFoj8iYtiksuPttrFV8Sz1WX20Cyf6ScmyRSL9b3vE
-         YBqg==
-X-Gm-Message-State: APjAAAXo2TBFq9SITyybNNmHfhVA1TmAcVhSOaWDs2zjQde2+Gskkx3D
-        /oQBaa0nBvwHMdoA38k0WzLrXWjM/0v1yYMyMYs2YG3QSfVrYQ==
-X-Google-Smtp-Source: APXvYqw0/+WGODIUvKkziyHBLuQsuF4sA8inGcr6D1fE0jlGptJu92UkXoVDxAQCBYSMyoJXI0/9BUQNIZC+z8C9ask=
-X-Received: by 2002:a92:5c52:: with SMTP id q79mr7225189ilb.11.1579459477506;
- Sun, 19 Jan 2020 10:44:37 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=N1QlW5+ESSHKmdKwLymeXI/WjMGPsFxu1rPdBv2tr08=;
+        b=hTwClxxExMdR2YQN1+P1l+OK9RgvtUb/HSlI6HQoP7aDzNBwT/wMjZD3xzW0BtWTdh
+         /eTOVvmQpDiT2VEdYKHnqm6nPXGX4NFMK+AwmEEBhUbaX6ohWj47J/+r0p7yatAbFg1m
+         HQWgf/r97Y+zZACJHdaYcneHS/UFkcZZMf/8B2ZmmbTq28iRqYf4rNGiQ/l4wA5zxinN
+         +y5+mYtJecXS3VbvjsJmqfLcRml8I8c0wV9gaAkAuKCN8DS7jMgT97bqVWvqg10mcTLX
+         P/+bDkOwf0f6pZZ23/0edLsqgMrYbmQAN3a7f86eyZVHm8GBSYolA5z3fhh6RE1VYoGV
+         WgGw==
+X-Gm-Message-State: APjAAAVq3vsBklO1UEfWcfP068fKojH6IpzCNt0K4Z4PN7PzmgeSYppZ
+        KM0iAd0nqgK6Xo0jOFNxFb4=
+X-Google-Smtp-Source: APXvYqwv5AvJUHDWpNU31FO2Kz6kxgn5L5SyDnjDPQndmx4yysajcL24OTKkORdM9fCjre/k76psPw==
+X-Received: by 2002:a05:6830:2361:: with SMTP id r1mr13031284oth.88.1579464764967;
+        Sun, 19 Jan 2020 12:12:44 -0800 (PST)
+Received: from ubuntu-x2-xlarge-x86 ([2604:1380:4111:8b00::1])
+        by smtp.gmail.com with ESMTPSA id 97sm11652456otx.29.2020.01.19.12.12.44
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 19 Jan 2020 12:12:44 -0800 (PST)
+Date:   Sun, 19 Jan 2020 13:12:43 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Chunyan Zhang <zhang.lyra@gmail.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-mmc@vger.kernel.org, Faiz Abbas <faiz_abbas@ti.com>,
+        Chunyan Zhang <zhang.chunyan@linaro.org>,
+        linux-kernel@vger.kernel.org, kbuild test robot <lkp@intel.com>,
+        clang-built-linux@googlegroups.com
+Subject: Re: [PATCH] mmc: sdhci: fix an issue of mixing different types
+Message-ID: <20200119201243.GA15269@ubuntu-x2-xlarge-x86>
+References: <20200119034902.20688-1-zhang.chunyan@linaro.org>
 MIME-Version: 1.0
-Received: by 2002:a02:95c8:0:0:0:0:0 with HTTP; Sun, 19 Jan 2020 10:44:37
- -0800 (PST)
-Reply-To: favordens@email.com
-From:   Favor Desmond <contecindy5@gmail.com>
-Date:   Sun, 19 Jan 2020 18:44:37 +0000
-Message-ID: <CAOfCPNxP6Zd30BF2yc=mXgSsiq_K60AW+CVH-5JzXJEsBrwaJA@mail.gmail.com>
-Subject: HELLO
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200119034902.20688-1-zhang.chunyan@linaro.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello Dear
-Greetings to you,I am Favor Desmond from Ivory coast currently living
-in  Togo Republic,I would like to know you more, so that i can tell
-you little amount myself and my photo, email address is
-favordens@email.com
-Thanks
-Favor
+On Sun, Jan 19, 2020 at 11:49:02AM +0800, Chunyan Zhang wrote:
+> Fix an issue reported by sparse, since different type of parameter is
+> used on calling dmaengine_prep_slave_sg().
+> 
+> Fixes: 36e1da441fec (mmc: sdhci: add support for using external DMA devices)
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Chunyan Zhang <zhang.chunyan@linaro.org>
+> ---
+>  drivers/mmc/host/sdhci.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 30b5a624b50e..4503009f993b 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -1235,8 +1235,8 @@ static int sdhci_external_dma_setup(struct sdhci_host *host,
+>  		return -EINVAL;
+>  
+>  	desc = dmaengine_prep_slave_sg(chan, data->sg, data->sg_len,
+> -				       mmc_get_dma_dir(data),
+> -				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+> +			(enum dma_transfer_direction) mmc_get_dma_dir(data),
+> +			DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+>  	if (!desc)
+>  		return -EINVAL;
+>  
+> -- 
+> 2.20.1
+> 
+
+Clang also noticed this through its -Wenum-conversion. I don't really
+like implicit conversions as I think it defeats the point of using the
+enum. I had an explicit conversion locally which I attached below.
+Regardless, this should resolve this issue (although I am not sure I
+like the indentation shift.
+
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+7index 30b5a624b50e..98fa25ba3756 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -1201,6 +1201,7 @@ static int sdhci_external_dma_setup(struct sdhci_host *host,
+ 				    struct mmc_command *cmd)
+ {
+ 	int ret, i;
++	enum dma_transfer_direction dir;
+ 	struct dma_async_tx_descriptor *desc;
+ 	struct mmc_data *data = cmd->data;
+ 	struct dma_chan *chan;
+@@ -1234,8 +1235,12 @@ static int sdhci_external_dma_setup(struct sdhci_host *host,
+ 	if (sg_cnt <= 0)
+ 		return -EINVAL;
+ 
+-	desc = dmaengine_prep_slave_sg(chan, data->sg, data->sg_len,
+-				       mmc_get_dma_dir(data),
++	if (mmc_get_dma_dir(data) == DMA_TO_DEVICE)
++		dir = DMA_MEM_TO_DEV;
++	else
++		dir = DMA_DEV_TO_MEM;
++
++	desc = dmaengine_prep_slave_sg(chan, data->sg, data->sg_len, dir,
+ 				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 	if (!desc)
+ 		return -EINVAL;
