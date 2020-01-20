@@ -2,98 +2,100 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12F0B142948
-	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 12:28:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAE8B14294C
+	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 12:28:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727032AbgATL0T (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 20 Jan 2020 06:26:19 -0500
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:41893 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727026AbgATL0S (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 Jan 2020 06:26:18 -0500
-Received: by mail-ua1-f65.google.com with SMTP id f7so11339825uaa.8
-        for <linux-mmc@vger.kernel.org>; Mon, 20 Jan 2020 03:26:18 -0800 (PST)
+        id S1727990AbgATL0X (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 20 Jan 2020 06:26:23 -0500
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:39606 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726590AbgATL0W (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 Jan 2020 06:26:22 -0500
+Received: by mail-ua1-f66.google.com with SMTP id 73so11354099uac.6
+        for <linux-mmc@vger.kernel.org>; Mon, 20 Jan 2020 03:26:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=CrZ1cNWXoOZ8fT2ookeU6LfhGU/rpts+myRvZ+HzI9g=;
-        b=xKradegzNxSm3JodVwC8bDFeNs++luNLFd954kpauwz05VkHKs22WVAAAHoISqjY9I
-         Os+sr4vpFUHCEs37s+t9iE0oe8OJE07ZZz1WYNUTDZkwif3cWH0dK2me+/qm2oIspyd9
-         hgOcInRmbxlQdqoDb9vD6f24Qo+KGRRtyNPTzQz4J8VYdvRJDRpHfNw6YrUEH23OfgOy
-         U1f4UtJB9n1kz1YwMzlAdrmMhKVI8CtdQMyE2LgsqM70i/8lHF9ixb0F5477R72BnIfz
-         Zs2gFdiJ4Diw/xRrLzfW/kmD25+fwCREa1p7dPFym6CF1i7mXod0rdQRWmOO+JEWAH+N
-         IPcw==
+        bh=iMltZyjqEXLKv+701Vx+gjP4V99Edn3VdTw2YKakZQU=;
+        b=x9SLfMjB7Joymxy2DJJcHt4fk9IEyF7qN97bzNCYwmpcDBqmg1SdTYWO+kyjnMwaO5
+         vlvUyp6xCkzLYG9znKaAlebIE6y7kK9X7Q68jdurP3WSoOblaPzDt5rgUmu/T7GzU//4
+         8FYdO/Lp7bFdhVWgWiCt3KdYFvC1hS2HDZQua1Ou3cx8/TA3PD+Pnezep0ywRPTZU5hs
+         8dzSXMy9v8ZNvyqKx0oB2Ll+5BGcLziuba5+Fb2Fhvp7gG6F7hP/g4O/lk4gQcQmiuPF
+         QIMd9M8CdpLh+4bjIqsnfgmhiGxHi/pBs7PV+EX3YYEbKz8KS4kwmKpoIh7nQqvfEwYr
+         IW2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=CrZ1cNWXoOZ8fT2ookeU6LfhGU/rpts+myRvZ+HzI9g=;
-        b=M2+moiAb9Tx2fJ/DcKff6Pq6SvWlOOkDD6jB5yJI4Q1i+9AmH0aaXjyA9ul+V8eDmU
-         BALvBTuzwPCQx6/RRJXAwj1cusvjhhhgmpXteStLBH8cPUnqv71BdBMF3EaSrV0crKmt
-         6045IGRx1U+CFpV+P/210h66C2+JmePcJHy23+g4ljEVKgkigzwf6aMQAKe0TVWB5W6N
-         pKtV4S8bTcgn13vjEW/OFGdTzOg5Gp++JMDOs9ZCZ0FlAoHJe3DcEwgTXv3DMdd5Mj1h
-         kc+eziY/Bkjs0+snvIbHqFnpzG+MzVlBCrwNLzwfUgeRn73bbrZQ+kYrfpEW+NLUWSVf
-         SYnA==
-X-Gm-Message-State: APjAAAW8WUa4YtDLvWlA70OY0A2+ejjan9YgRYGyeYRWiWtEKKRn0UIq
-        y3QnJI8EqCWFh3l33myZQ8N2GJ6/ocIRRn/ctgbl+Q==
-X-Google-Smtp-Source: APXvYqwq5TZL0CTugyzzhLsfXuM5qOx0iPR5cC/kQQ7lRFAo8Jmioch3YNf9suiAcbDOUQ35/hh4rHffHCEm5/Y7CMw=
-X-Received: by 2002:ab0:e16:: with SMTP id g22mr27445303uak.129.1579519578171;
- Mon, 20 Jan 2020 03:26:18 -0800 (PST)
+        bh=iMltZyjqEXLKv+701Vx+gjP4V99Edn3VdTw2YKakZQU=;
+        b=pH3z3jlJl4yfXsF//kt6PvUYvd5BjLvlWWgDD2X9KnkUMbkDIobUfatbCZ5hslx+Dw
+         yyxLu+BO810j8TNG7zwNC1xbnHwCTIO7yTTTwDWialO81gK7qZed2jRgCZGz9Qb0jntx
+         pGXsJ7y+ex9/bkBrcbfLXPVDgjmvXLFxXzVvnBJi60dmBOJLBCkVzqmF4P/V4ynbboky
+         yp1/8YUonN0dlsv9kpoKDDsjKyGHkRKTyBNArJyv442fEvHnurXGP+35MA5GB7WV7qx+
+         ZyRRZmVnHrCANUdIg66SMja6hgtlOMpCM2cLqvngD12tPBWnX5N7MygnsV+rQzII6d2n
+         vkvQ==
+X-Gm-Message-State: APjAAAVz+lkTsG90aRqZx37QHV+8s/b8jkS/QuOtfCyKXvgbWNU0m461
+        WAEOABXeS1z2URiIoJ3E3Mh14eyfiPwIvLtl7ng3hQ==
+X-Google-Smtp-Source: APXvYqxKOg9xB8XfL4rfLGRcMxbyRFwMSCwEYJNga3Tv3rpmXA1r3UXHbtiJXS2hERZ8PkUrI2DpkswuNuzWn5p+4j4=
+X-Received: by 2002:ab0:6894:: with SMTP id t20mr28696691uar.100.1579519581204;
+ Mon, 20 Jan 2020 03:26:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20200116144322.57308-1-yuehaibing@huawei.com>
-In-Reply-To: <20200116144322.57308-1-yuehaibing@huawei.com>
+References: <20200113210706.11972-1-alcooperx@gmail.com>
+In-Reply-To: <20200113210706.11972-1-alcooperx@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 20 Jan 2020 12:25:42 +0100
-Message-ID: <CAPDyKFqsB3rEF4z-13hvnc2L-xtS-KAPFtDE1uO9kz9T=_4kXQ@mail.gmail.com>
-Subject: Re: [PATCH -next] mmc: sdhci-milbeaut: Remove redundant
- platform_get_irq error message
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Takao Orito <orito.takao@socionext.com>,
+Date:   Mon, 20 Jan 2020 12:25:45 +0100
+Message-ID: <CAPDyKFr3mrkY5KNO8tnjD1Fuqbbbb_4s6vuJ4cyOrOHM1E5vQg@mail.gmail.com>
+Subject: Re: [PATCH 0/6] mmc: sdhci-brcmstb: Driver updates
+To:     Al Cooper <alcooperx@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
+        DTML <devicetree@vger.kernel.org>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sowjanya Komatineni <skomatineni@nvidia.com>,
+        Takao Orito <orito.takao@socionext.com>,
+        YueHaibing <yuehaibing@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 16 Jan 2020 at 15:43, YueHaibing <yuehaibing@huawei.com> wrote:
+On Mon, 13 Jan 2020 at 22:07, Al Cooper <alcooperx@gmail.com> wrote:
 >
-> platform_get_irq() will call dev_err() itself on failure,
-> so there is no need for the driver to also do this.
-> This is detected by coccinelle.
+> The latest BRCMSTB SoC's now use a new Arasan controller along
+> with a custom Broadcom PHY that supports HS200, HS400, SDR104,
+> HS400E-ES and CQE. This series of commits adds support for these
+> new features along with a few bug fixes. The 7216 is the first
+> SoC to have this new hardware.
 >
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Al Cooper (6):
+>   dt-bindings: mmc: brcm,sdhci-brcmstb: Add support for 7216b0
+>   mmc: sdhci-brcmstb: Add ability to use HS400ES transfer mode
+>   mmc: sdhci-brcmstb: Fix driver to defer on clk_get defer
+>   mmc: sdhci-brcmstb: Add shutdown callback
+>   mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)
+>   mmc: sdhci-brcmstb: Fix incorrect switch to HS mode
+>
+>  .../bindings/mmc/brcm,sdhci-brcmstb.txt       |  41 ++-
+>  drivers/mmc/host/Kconfig                      |   1 +
+>  drivers/mmc/host/sdhci-brcmstb.c              | 270 +++++++++++++++++-
+>  3 files changed, 284 insertions(+), 28 deletions(-)
+>
+> --
+> 2.17.1
+>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
-
-
-> ---
->  drivers/mmc/host/sdhci-milbeaut.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci-milbeaut.c b/drivers/mmc/host/sdhci-milbeaut.c
-> index e6245b7..92f30a1 100644
-> --- a/drivers/mmc/host/sdhci-milbeaut.c
-> +++ b/drivers/mmc/host/sdhci-milbeaut.c
-> @@ -246,10 +246,8 @@ static int sdhci_milbeaut_probe(struct platform_device *pdev)
->         struct f_sdhost_priv *priv;
->
->         irq = platform_get_irq(pdev, 0);
-> -       if (irq < 0) {
-> -               dev_err(dev, "%s: no irq specified\n", __func__);
-> +       if (irq < 0)
->                 return irq;
-> -       }
->
->         host = sdhci_alloc_host(dev, sizeof(struct f_sdhost_priv));
->         if (IS_ERR(host))
-> --
-> 2.7.4
->
->
