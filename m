@@ -2,100 +2,91 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE8B14294C
-	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 12:28:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F6514294D
+	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 12:28:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727990AbgATL0X (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 20 Jan 2020 06:26:23 -0500
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:39606 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726590AbgATL0W (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 Jan 2020 06:26:22 -0500
-Received: by mail-ua1-f66.google.com with SMTP id 73so11354099uac.6
-        for <linux-mmc@vger.kernel.org>; Mon, 20 Jan 2020 03:26:21 -0800 (PST)
+        id S1726860AbgATL00 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 20 Jan 2020 06:26:26 -0500
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:37071 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726589AbgATL0Z (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 Jan 2020 06:26:25 -0500
+Received: by mail-vs1-f68.google.com with SMTP id x18so18718904vsq.4
+        for <linux-mmc@vger.kernel.org>; Mon, 20 Jan 2020 03:26:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=iMltZyjqEXLKv+701Vx+gjP4V99Edn3VdTw2YKakZQU=;
-        b=x9SLfMjB7Joymxy2DJJcHt4fk9IEyF7qN97bzNCYwmpcDBqmg1SdTYWO+kyjnMwaO5
-         vlvUyp6xCkzLYG9znKaAlebIE6y7kK9X7Q68jdurP3WSoOblaPzDt5rgUmu/T7GzU//4
-         8FYdO/Lp7bFdhVWgWiCt3KdYFvC1hS2HDZQua1Ou3cx8/TA3PD+Pnezep0ywRPTZU5hs
-         8dzSXMy9v8ZNvyqKx0oB2Ll+5BGcLziuba5+Fb2Fhvp7gG6F7hP/g4O/lk4gQcQmiuPF
-         QIMd9M8CdpLh+4bjIqsnfgmhiGxHi/pBs7PV+EX3YYEbKz8KS4kwmKpoIh7nQqvfEwYr
-         IW2w==
+        bh=A7UThWdp1uXaZcw1/ZLNWeY2Tk0cs8ZTeK6ZI3loXCo=;
+        b=A2511IgGXqHiPBgn5UG2akcEgI8r0/gsE7QttEQt2zJGQ/ZJ6q/37/YGsbV8ixZt6m
+         kVWZRlRiHQvqB7oP50NGeAPGTwG3cXn+s+4ohgPkzjNfvawBtelq+dpNspXX5ASpxqNG
+         5THf1TdbFNOHbN2xTL3FNArnz5V9QFB9VhvnPp+K3aaOBLhbwmhxG3M19fhklJHxZ1Is
+         Qmm3PKKsJswTxrLb4evdcwTqZfFVoJtjLiLz8YgwdfyT3A2jwOz063vIuMWFke3FAXKR
+         3lHq7i9dXLNUL2FfQmHTn2PnEXnyybA3duEWiHMm0SzFTqOB5waF3AuXUHkAAf5h8H+6
+         2Fmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iMltZyjqEXLKv+701Vx+gjP4V99Edn3VdTw2YKakZQU=;
-        b=pH3z3jlJl4yfXsF//kt6PvUYvd5BjLvlWWgDD2X9KnkUMbkDIobUfatbCZ5hslx+Dw
-         yyxLu+BO810j8TNG7zwNC1xbnHwCTIO7yTTTwDWialO81gK7qZed2jRgCZGz9Qb0jntx
-         pGXsJ7y+ex9/bkBrcbfLXPVDgjmvXLFxXzVvnBJi60dmBOJLBCkVzqmF4P/V4ynbboky
-         yp1/8YUonN0dlsv9kpoKDDsjKyGHkRKTyBNArJyv442fEvHnurXGP+35MA5GB7WV7qx+
-         ZyRRZmVnHrCANUdIg66SMja6hgtlOMpCM2cLqvngD12tPBWnX5N7MygnsV+rQzII6d2n
-         vkvQ==
-X-Gm-Message-State: APjAAAVz+lkTsG90aRqZx37QHV+8s/b8jkS/QuOtfCyKXvgbWNU0m461
-        WAEOABXeS1z2URiIoJ3E3Mh14eyfiPwIvLtl7ng3hQ==
-X-Google-Smtp-Source: APXvYqxKOg9xB8XfL4rfLGRcMxbyRFwMSCwEYJNga3Tv3rpmXA1r3UXHbtiJXS2hERZ8PkUrI2DpkswuNuzWn5p+4j4=
-X-Received: by 2002:ab0:6894:: with SMTP id t20mr28696691uar.100.1579519581204;
- Mon, 20 Jan 2020 03:26:21 -0800 (PST)
+        bh=A7UThWdp1uXaZcw1/ZLNWeY2Tk0cs8ZTeK6ZI3loXCo=;
+        b=cZuelFh9ISA1WXmyQsjTdRrKMlDEskPlFZBvcgLeII7s70Q2vwhT/aovnuJbXGHzSd
+         Zuq1MHCKBtWs2CYRajtgf5Hwkckrs2RygihX+q0x4NStMg3mXznhnptRCS5S3BOliJ/l
+         NxPEuZ322ZhvQp2n8MKCM2Gx0n98+N5rJYNuUns2aMbElSffirUN/kMjbLOmD5UcBoNG
+         YN6tV7X8g9bImiIJoNA0A52fnRQdJURm6t+J0qPLT9O/18aEp2SZ+jwWfBIju99Ya+Oz
+         Q58ut2uxgc2OLgLptuwzvZq1qmND3NoLi5FMR0Khrzu69K8PX1qaHsX7pTY0R3U/4y/n
+         6Lxw==
+X-Gm-Message-State: APjAAAU8N6Osc6vYRyihcJZMaKmiV30E6n5YrFjqHEZi5mIu/WUmYuHS
+        fBM837k5Ag6tlo0/AcP3FjMt+rcms//ixXS4o4DKzwEE
+X-Google-Smtp-Source: APXvYqwOO0D+sXYm0LOG4TFymD1hgur6SeOjdCCIbAxoYk9ljqHsljxlagx5FtOUHPVc8ACOh4k2MCThYnM6L1Ogc2Y=
+X-Received: by 2002:a67:6282:: with SMTP id w124mr11972002vsb.191.1579519584474;
+ Mon, 20 Jan 2020 03:26:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20200113210706.11972-1-alcooperx@gmail.com>
-In-Reply-To: <20200113210706.11972-1-alcooperx@gmail.com>
+References: <20200120094835.28050-1-yangbo.lu@nxp.com>
+In-Reply-To: <20200120094835.28050-1-yangbo.lu@nxp.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 20 Jan 2020 12:25:45 +0100
-Message-ID: <CAPDyKFr3mrkY5KNO8tnjD1Fuqbbbb_4s6vuJ4cyOrOHM1E5vQg@mail.gmail.com>
-Subject: Re: [PATCH 0/6] mmc: sdhci-brcmstb: Driver updates
-To:     Al Cooper <alcooperx@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        DTML <devicetree@vger.kernel.org>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sowjanya Komatineni <skomatineni@nvidia.com>,
-        Takao Orito <orito.takao@socionext.com>,
-        YueHaibing <yuehaibing@huawei.com>
+Date:   Mon, 20 Jan 2020 12:25:48 +0100
+Message-ID: <CAPDyKFr48-dVjmu8x-wbC6eQwrt9U_BCOHPqjcR3+R1BR=0cNA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-of-esdhc: fix serious issue clock is always disabled
+To:     Yangbo Lu <yangbo.lu@nxp.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 13 Jan 2020 at 22:07, Al Cooper <alcooperx@gmail.com> wrote:
+On Mon, 20 Jan 2020 at 10:50, Yangbo Lu <yangbo.lu@nxp.com> wrote:
 >
-> The latest BRCMSTB SoC's now use a new Arasan controller along
-> with a custom Broadcom PHY that supports HS200, HS400, SDR104,
-> HS400E-ES and CQE. This series of commits adds support for these
-> new features along with a few bug fixes. The 7216 is the first
-> SoC to have this new hardware.
+> This patch is to fix a serious issue that clock is always disabled
+> in esdhc_of_set_clock().
 >
-> Al Cooper (6):
->   dt-bindings: mmc: brcm,sdhci-brcmstb: Add support for 7216b0
->   mmc: sdhci-brcmstb: Add ability to use HS400ES transfer mode
->   mmc: sdhci-brcmstb: Fix driver to defer on clk_get defer
->   mmc: sdhci-brcmstb: Add shutdown callback
->   mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)
->   mmc: sdhci-brcmstb: Fix incorrect switch to HS mode
->
->  .../bindings/mmc/brcm,sdhci-brcmstb.txt       |  41 ++-
->  drivers/mmc/host/Kconfig                      |   1 +
->  drivers/mmc/host/sdhci-brcmstb.c              | 270 +++++++++++++++++-
->  3 files changed, 284 insertions(+), 28 deletions(-)
->
-> --
-> 2.17.1
->
+> Fixes: 1b21a701aed9 ("mmc: sdhci-of-esdhc: fix clock setting for different controller versions")
+> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/host/sdhci-of-esdhc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
+> index 8c06017..2950ae2 100644
+> --- a/drivers/mmc/host/sdhci-of-esdhc.c
+> +++ b/drivers/mmc/host/sdhci-of-esdhc.c
+> @@ -745,7 +745,7 @@ static void esdhc_of_set_clock(struct sdhci_host *host, unsigned int clock)
+>                 esdhc_clock_enable(host, false);
+>                 esdhc_flush_async_fifo(host);
+>         }
+> -       esdhc_clock_enable(host, false);
+> +       esdhc_clock_enable(host, true);
+>  }
+>
+>  static void esdhc_pltfm_set_bus_width(struct sdhci_host *host, int width)
+> --
+> 2.7.4
+>
