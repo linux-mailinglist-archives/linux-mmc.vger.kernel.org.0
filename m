@@ -2,126 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA03142DBF
-	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 15:39:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0929014323E
+	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 20:32:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbgATOj2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 20 Jan 2020 09:39:28 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:22211 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726642AbgATOj2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 Jan 2020 09:39:28 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579531168; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=BzDRV7ulYCXM+3B574lgGPBya371clGZvJ4IdiMMJzI=; b=KJm8BTuvbMsRwp9bj8MwsakuRbJZl4kIOkfbWJUuH7wx53z6o1c9SE7vJq2niTsmkIKGFgJb
- rmdz5x9oTFQGBmAn5YDmiDMjXMutv66hVzqZXSZwbbbn2uj49EYt1vuGciBl2L842l7F0pAu
- M+bk2MwtNKj/alo8yLs8Nkikg4k=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e25bb9a.7fd55fd684c8-smtp-out-n01;
- Mon, 20 Jan 2020 14:39:22 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 39AA4C4479C; Mon, 20 Jan 2020 14:39:22 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from vbadigan-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: vbadigan)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 28D8AC433CB;
-        Mon, 20 Jan 2020 14:39:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 28D8AC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vbadigan@codeaurora.org
-From:   Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
-To:     ulf.hansson@linaro.org, adrian.hunter@intel.com
-Cc:     asutoshd@codeaurora.org, stummala@codeaurora.org,
-        sayalil@codeaurora.org, cang@codeaurora.org,
-        rampraka@codeaurora.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
-Subject: [PATCH V3] mmc: sdhci: Let a vendor driver supply and update ADMA descriptor size
-Date:   Mon, 20 Jan 2020 20:08:38 +0530
-Message-Id: <1579531122-28341-1-git-send-email-vbadigan@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1579519045-26467-1-git-send-email-vbadigan@codeaurora.org>
-References: <1579519045-26467-1-git-send-email-vbadigan@codeaurora.org>
+        id S1727683AbgATTcD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 20 Jan 2020 14:32:03 -0500
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:34708 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726642AbgATTcD (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 Jan 2020 14:32:03 -0500
+Received: by mail-ed1-f65.google.com with SMTP id l8so630852edw.1
+        for <linux-mmc@vger.kernel.org>; Mon, 20 Jan 2020 11:32:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
+        b=kLfnsSTIjE2YEe6HI6GtqXd6cMnhTRLMcstoRngEtLrpsW8Des52P9cJGak3H8TgGi
+         7pI7x0ReUsZVA5020Qw65cEVulbgAqf7PV7Yj5z98jIQHYXuhdjNseji1wTJmoRk9owd
+         jH0nw85bxKb6JNDbbMZz77rTtrhB/lrp1T9+1Yzp1e0fAmiYnPF2y/wqE3N2vxlEpqDg
+         Q62+v45VGQo8fprIjkXGYdl8n0+0lt4RTeTWLmEirmHeh05e1zsbOQ1RyEmjVmqN0eJc
+         PRg9w7tG3wGqyiL8Rgrtjody799fKx6nbHvtMQHhCmcCncWFfzoetJS1edNfQP320vCH
+         Vilg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
+        b=PUx7/vL9ewHmqENCeLQb2lzUi8wRFYaQhQTS3m49VK8X2ouCBC4A9K/5aEKtM2sSpu
+         bbnN83fbn7nfU9xyJuJ7F/1nTyQ+6x5ynFaqwKjIHMt33H02xyYM08YZNThrxtaF2A6j
+         YD95Ay7YPG0LApUYCGD6ZR0ecHFxTC9AnZiQgboIChssLjE4lLuybiXRR2dOYkRIErui
+         vsy9PbdNFjjKhIWatPxGFZRgT4pjC3n+JV4jb9quh0g+TloQvoA/h3jUa0SXb8KClPxP
+         E29U71hfUrjYiuy+KVQ/KAALzkYup0LKjHrJXGD0HnOGCU98LDQFrJQwEPYZlXVBsIfN
+         yWtQ==
+X-Gm-Message-State: APjAAAUZg45nO1kNQWR1yRD55WF19SJGtkOhR3ioLUJ3XQFpund2ZT76
+        WfBslr3k2qBipYm2d3nNp+yuNj2rvWhFBBBmWY4=
+X-Google-Smtp-Source: APXvYqwPh6D8ihOXjaVWGs/0GLulEekGPU0xOOyxhr7PagnLX+E8xWeQy/UQ09ZNp2jZFCCt0xVGiodDu+D5No4niKg=
+X-Received: by 2002:a05:6402:505:: with SMTP id m5mr609398edv.15.1579548719077;
+ Mon, 20 Jan 2020 11:31:59 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a05:6402:22dc:0:0:0:0 with HTTP; Mon, 20 Jan 2020 11:31:57
+ -0800 (PST)
+Reply-To: mcclainejohn.13@gmail.com
+From:   "Prof, William Roberts" <eco.bank1204@gmail.com>
+Date:   Mon, 20 Jan 2020 20:31:57 +0100
+Message-ID: <CAOE+jAB9Cv76tHqc-hO92yWjVshCsALoX=zT1ruNmX+0-Bjyxw@mail.gmail.com>
+Subject: Contact Diplomatic Agent, Mr. Mcclaine John to receive your ATM CARD
+ valued the sum of $12.8Million United States Dollars
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Let a vendor driver supply the maximum descriptor size that it
-can operate on. ADMA descriptor table would be allocated using this
-supplied size.
-If any SD Host controller is of version prior to v4.10 spec
-but supports 16byte descriptor, this change allows them to supply
-correct descriptor size for ADMA table allocation.
+Attn: Dear Beneficiary,
 
-Also let a vendor driver update the descriptor size by overriding
-sdhc_host->desc_size if it has to operates on a different descriptor
-sizes in different conditions.
+I wish to inform you that the diplomatic agent conveying your ATM CARD
+valued the sum of $12.8Million United States Dollars has misplaced
+your address and he is currently stranded at (George Bush
+International Airport) Houston Texas USA now
+We required you to reconfirm the following information's below to him
+so that he can deliver your Payment CARD to you today or tomorrow
+morning as information provided with open communications via email and
+telephone for security reasons.
+HERE IS THE DETAILS  HE NEED FROM YOU URGENT
+YOUR FULL NAME:========
+ADDRESS:========
+MOBILE NO:========
+NAME OF YOUR NEAREST AIRPORT:========
+A COPY OF YOUR IDENTIFICATION :========
 
-Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
---
-Thanks Adrian.
+Note; do contact the diplomatic agent immediately through the
+information's listed below
+Contact Person: Diplomatic Agent, Mr. Mcclaine John
+EMAIL: mcclainejohn.13@gmail.com
+Tel:(223) 777-7518
 
-Hi Ulf,
-Can you pick this patch instead of earlier one? This is more clean
-change, sorry for the multiple interations.
-Otherwise let me know, I will make these changes as seperate patch.
----
- drivers/mmc/host/sdhci.c | 16 +++++++---------
- drivers/mmc/host/sdhci.h |  3 ++-
- 2 files changed, 9 insertions(+), 10 deletions(-)
+Contact the diplomatic agent immediately
+because he is waiting to hear from you today with the needed information's.
 
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index 3140fe2..7a7a18e 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -3821,15 +3821,13 @@ int sdhci_setup_host(struct sdhci_host *host)
- 		dma_addr_t dma;
- 		void *buf;
- 
--		if (host->flags & SDHCI_USE_64_BIT_DMA) {
--			host->adma_table_sz = host->adma_table_cnt *
--					      SDHCI_ADMA2_64_DESC_SZ(host);
--			host->desc_sz = SDHCI_ADMA2_64_DESC_SZ(host);
--		} else {
--			host->adma_table_sz = host->adma_table_cnt *
--					      SDHCI_ADMA2_32_DESC_SZ;
--			host->desc_sz = SDHCI_ADMA2_32_DESC_SZ;
--		}
-+		if (!(host->flags & SDHCI_USE_64_BIT_DMA))
-+			host->alloc_desc_sz = SDHCI_ADMA2_32_DESC_SZ;
-+		else if (!host->alloc_desc_sz)
-+			host->alloc_desc_sz = SDHCI_ADMA2_64_DESC_SZ(host);
-+
-+		host->desc_sz = host->alloc_desc_sz;
-+		host->adma_table_sz = host->adma_table_cnt * host->desc_sz;
- 
- 		host->align_buffer_sz = SDHCI_MAX_SEGS * SDHCI_ADMA2_ALIGN;
- 		/*
-diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
-index 0ed3e0e..10bda3a 100644
---- a/drivers/mmc/host/sdhci.h
-+++ b/drivers/mmc/host/sdhci.h
-@@ -554,7 +554,8 @@ struct sdhci_host {
- 	dma_addr_t adma_addr;	/* Mapped ADMA descr. table */
- 	dma_addr_t align_addr;	/* Mapped bounce buffer */
- 
--	unsigned int desc_sz;	/* ADMA descriptor size */
-+	unsigned int desc_sz;	/* ADMA current descriptor size */
-+	unsigned int alloc_desc_sz;	/* ADMA descr. max size host supports */
- 
- 	struct workqueue_struct *complete_wq;	/* Request completion wq */
- 	struct work_struct	complete_work;	/* Request completion work */
--- 
-Qualcomm India Private Limited, on behalf of Qualcomm Innovation Center, Inc., is a member of Code Aurora Forum, a Linux Foundation Collaborative Project
+NOTE: The Diplomatic agent does not know that the content of the
+consignment box is $12.800,000,00 Million United States Dollars and on
+no circumstances should you let him know the content. The consignment
+was moved from here as family treasures, so never allow him to open
+the box. Please I have paid delivery fees for you but the only money
+you must send to Mcclaine John is your ATM CARD delivery fee $25.00
+only. text Him as you contact Him Immediately
+
+Thanks,
+with Regards.
+Prof, William Roberts
+Director DHL COURIER SERVICES-Benin
