@@ -2,117 +2,97 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DA10142952
-	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 12:28:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59541142917
+	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 12:19:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728689AbgATL0p (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 20 Jan 2020 06:26:45 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:41075 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726589AbgATL0p (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 Jan 2020 06:26:45 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579519604; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=xDwR6rvudM19JzpXoego2eURGMlAKnT+NaTDfn5CpRw=; b=APZUfh4z97n4+2y4I7LWoRtM6C+dqTBYxedNtf4DW+CSVCFHiP5UMLbIfXjjY4tesBuunHI5
- 8iz9mc9Hrf6OtLzVWaTWqbta1g0MNC+GlJfixipFuy9zqwxm0+5CIp+1zFDFqheh2nEA2hjA
- qVawVVHDJEawGGYZgBsCpBhTmXk=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e258e73.7fc55b2f0768-smtp-out-n02;
- Mon, 20 Jan 2020 11:26:43 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 05E94C447A5; Mon, 20 Jan 2020 11:26:43 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from vbadigan-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: vbadigan)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A5B5BC447A1;
-        Mon, 20 Jan 2020 11:26:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A5B5BC447A1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vbadigan@codeaurora.org
-From:   Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
-To:     ulf.hansson@linaro.org, adrian.hunter@intel.com
-Cc:     asutoshd@codeaurora.org, stummala@codeaurora.org,
-        sayalil@codeaurora.org, cang@codeaurora.org,
-        rampraka@codeaurora.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
-Subject: [PATCH V2 1/2] mmc: sdhci: Let a vendor driver supply and update ADMA descriptor size
-Date:   Mon, 20 Jan 2020 16:47:03 +0530
-Message-Id: <1579519045-26467-1-git-send-email-vbadigan@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1579194192-7942-2-git-send-email-vbadigan@codeaurora.org>
-References: <1579194192-7942-2-git-send-email-vbadigan@codeaurora.org>
+        id S1726876AbgATLTK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 20 Jan 2020 06:19:10 -0500
+Received: from mail-vs1-f47.google.com ([209.85.217.47]:35111 "EHLO
+        mail-vs1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726421AbgATLTK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 Jan 2020 06:19:10 -0500
+Received: by mail-vs1-f47.google.com with SMTP id x123so18723596vsc.2
+        for <linux-mmc@vger.kernel.org>; Mon, 20 Jan 2020 03:19:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gxSL5xhOZst+pCmxYqXG3YKuQuTkwZHSeWZWlmDk2HQ=;
+        b=dO4kN0c5Z35cMUG2zQrTTvrk7RGA1amnG3n9P90IImjqOjjDZjhvuNsBSQhiMMXNLE
+         CDMzF/9s8uqA4Df+Ru+q/8o6Ouxz8CivtgQKiNcmW5hnOdZ8mnY280zn88iNKXHA4HHx
+         v5zrMudqkmHMQsgJ+ZK6LDx/ugBBzSbxVlKmqeIoYtmGlsZNG3E1/Jp9qS/Vh+/O5REk
+         e1cfWSdt0nlct528AyTTlNPiUtRbL7oq0VMka5yYnWJqaw9p9UgOFniXL16lo6h50H4c
+         y7Ehogowgx0mQP8OD9KRCYSTcly0Uhmhx6kZVObbXxBKYt+GzA3udIsIzRADe0patW2A
+         Dy1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gxSL5xhOZst+pCmxYqXG3YKuQuTkwZHSeWZWlmDk2HQ=;
+        b=gGOJTZ+Fi6R65tnpQHuoLvdnWgiapO5uLSuhNKX56HxrILirOaKwn0DvI9dMrFII90
+         rTkXlNz2L5F772L4PyEnoLCfLOQj7Qvs6TqePTymYgDcdgBtgT68g6I3+J9qdCXesr8/
+         f/aVRi0ZwX/SBRIc24FgB5rc9WNALuB4UIsrKTJPcUc4TRWWF8wOXD8KYYObhEJpaUOV
+         t+CG7pInXbiVoYFcBOg5SaBkqnFvPWaGnTITUaSgb47WC4zxlEojejL2E/L00QWnnyvG
+         OBCsn+o3S25ylTGqZAeS0vU+DmzqxXG58MZPnu7tUA2eDQQ+ZxYBHFBUFMJ5oo/NXjoK
+         HnAQ==
+X-Gm-Message-State: APjAAAW/MKLfzWvw1bBxuICqDzC/Km/C49pdcCfbh0Rdqf1XIe9LMJj9
+        572PNNpkCWVzUSyDXbeA6x8x8/M8MjL/r/etKNPquMazT88=
+X-Google-Smtp-Source: APXvYqwEK7V8CGTKtpdB2cbeBf8HgalOPvhYLB27hK6pTw6dPNJlNxuuxk0NzlvlQGtXVEkoS9slrLYLBvgzGRuZTI8=
+X-Received: by 2002:a67:6282:: with SMTP id w124mr11959722vsb.191.1579519149014;
+ Mon, 20 Jan 2020 03:19:09 -0800 (PST)
+MIME-Version: 1.0
+References: <20200108093903.57620-1-hdegoede@redhat.com> <20200108093903.57620-2-hdegoede@redhat.com>
+ <61bc9265-ece0-eeb6-d4a1-4631138ecf29@intel.com> <8d67882d-04a8-0607-be4e-c1430b7fda21@redhat.com>
+ <84a32714-ba08-74a0-0c76-3c36db44dd68@intel.com> <93446e09-5f12-800a-62fa-bf3ecea7273d@redhat.com>
+ <399ac7d5-2518-799a-595e-f6b6878cf4ab@intel.com> <a9ab8946-c599-5f83-7527-2387a9e82e8a@xenosoft.de>
+ <CAPDyKFoydOuSE=Eaq168=2_Ycouo7hzyw+RZXhGq7q4D4Qe8TQ@mail.gmail.com> <fda179eb-df5f-ba87-aaf0-524fffca745b@xenosoft.de>
+In-Reply-To: <fda179eb-df5f-ba87-aaf0-524fffca745b@xenosoft.de>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 20 Jan 2020 12:18:32 +0100
+Message-ID: <CAPDyKFoTuvrq8PYoXVaZoJN+zBUGVkQkYAhwber7rez32y3Sxg@mail.gmail.com>
+Subject: Re: [FSL P5020 P5040 PPC] Onboard SD card doesn't work anymore after
+ the 'mmc-v5.4-2' updates
+To:     Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Darren Stevens <darren@stevens-zone.net>,
+        mad skateman <madskateman@gmail.com>,
+        "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        "contact@a-eon.com" <contact@a-eon.com>,
+        Julian Margetson <runaway@candw.ms>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Let a vendor driver supply the maximum descriptor size that it
-can operate on. ADMA descriptor table would be allocated using this
-supplied size.
-If any SD Host controller is of version prior to v4.10 spec
-but supports 16byte descriptor, this change allows them to supply
-correct descriptor size for ADMA table allocation.
+On Mon, 20 Jan 2020 at 10:17, Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+>
+> Am 16.01.20 um 16:46 schrieb Ulf Hansson:
+> > On Thu, 16 Jan 2020 at 12:18, Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> >> Hi All,
+> >>
+> >> We still need the attached patch for our onboard SD card interface
+> >> [1,2]. Could you please add this patch to the tree?
+> > No, because according to previous discussion that isn't the correct
+> > solution and more importantly it will break other archs (if I recall
+> > correctly).
+> >
+> > Looks like someone from the ppc community needs to pick up the ball.
+> I am not sure if the ppc community have to fix this issue because your
+> updates (mmc-v5.4-2) are responsible for this issue. If nobody wants to
+> fix this issue then we will lost the onboard SD card support in the
+> future. PLEASE check the 'mmc-v5.4-2' updates again.
 
-Also let a vendor driver update the descriptor size by overriding
-sdhc_host->desc_size if it has to operates on a different descriptor
-sizes in different conditions.
+Applying your suggested fix breaks other archs/boards. It's really not
+a good situation, but I will not take a step back when it's quite easy
+to take a step forward instead.
 
-Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
----
- drivers/mmc/host/sdhci.c | 13 +++++++------
- drivers/mmc/host/sdhci.h |  3 ++-
- 2 files changed, 9 insertions(+), 7 deletions(-)
+Someone just need to care and send a patch, it doesn't look that hard
+to me, but maybe I am wrong.
 
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index 3140fe2..44fb446 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -3822,14 +3822,15 @@ int sdhci_setup_host(struct sdhci_host *host)
- 		void *buf;
- 
- 		if (host->flags & SDHCI_USE_64_BIT_DMA) {
--			host->adma_table_sz = host->adma_table_cnt *
--					      SDHCI_ADMA2_64_DESC_SZ(host);
--			host->desc_sz = SDHCI_ADMA2_64_DESC_SZ(host);
-+			if (!host->alloc_desc_sz)
-+				host->alloc_desc_sz =
-+					SDHCI_ADMA2_64_DESC_SZ(host);
- 		} else {
--			host->adma_table_sz = host->adma_table_cnt *
--					      SDHCI_ADMA2_32_DESC_SZ;
--			host->desc_sz = SDHCI_ADMA2_32_DESC_SZ;
-+			host->alloc_desc_sz = SDHCI_ADMA2_32_DESC_SZ;
- 		}
-+		host->desc_sz = host->alloc_desc_sz;
-+		host->adma_table_sz = host->adma_table_cnt *
-+					      host->desc_sz;
- 
- 		host->align_buffer_sz = SDHCI_MAX_SEGS * SDHCI_ADMA2_ALIGN;
- 		/*
-diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
-index 0ed3e0e..10bda3a 100644
---- a/drivers/mmc/host/sdhci.h
-+++ b/drivers/mmc/host/sdhci.h
-@@ -554,7 +554,8 @@ struct sdhci_host {
- 	dma_addr_t adma_addr;	/* Mapped ADMA descr. table */
- 	dma_addr_t align_addr;	/* Mapped bounce buffer */
- 
--	unsigned int desc_sz;	/* ADMA descriptor size */
-+	unsigned int desc_sz;	/* ADMA current descriptor size */
-+	unsigned int alloc_desc_sz;	/* ADMA descr. max size host supports */
- 
- 	struct workqueue_struct *complete_wq;	/* Request completion wq */
- 	struct work_struct	complete_work;	/* Request completion work */
--- 
-Qualcomm India Private Limited, on behalf of Qualcomm Innovation Center, Inc., is a member of Code Aurora Forum, a Linux Foundation Collaborative Project
+Apologies if this isn't the answer you wanted, but that's all I can do
+for now, sorry.
+
+Kind regards
+Uffe
