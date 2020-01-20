@@ -2,107 +2,123 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCD9214294E
-	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 12:28:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FF22142ADB
+	for <lists+linux-mmc@lfdr.de>; Mon, 20 Jan 2020 13:31:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726796AbgATL02 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 20 Jan 2020 06:26:28 -0500
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:37915 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726589AbgATL02 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 20 Jan 2020 06:26:28 -0500
-Received: by mail-vs1-f66.google.com with SMTP id v12so18728044vsv.5
-        for <linux-mmc@vger.kernel.org>; Mon, 20 Jan 2020 03:26:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6I7p0DYe3E0c2Sb2O38eIk7h2VsJf4W1B5fNXeVb4RU=;
-        b=hsnB8D9bQesYBIDfXaf3zegOKSq50RI1ZKvwor+1gXR+cAw0WugFZC5IoeiSqTGWM5
-         4OD7RBdlJvxZqGplbxnYUnBNoQCBErhk9nbVeGjaMxJiR8wSG/Sykw7feUMcQ3onRkfI
-         JbGaLnPjZyN4/uf34q2O2wmjutExgB4axIYiGfYi8aEp0wvOZm7/T9Ay4KGSK2Jfct/0
-         sXU1XlxayukjqHQsUY8dWbySA/SoT53ffhMPE+RsK6P9hFHwJ0dj1jf7G3IoTaZNZmig
-         1YBpbgY294/wPaqTNmbzKRTwJ/CtiUTKdKQn398rGFoTz/eD2mEmtjbCbbPZIsFYda9e
-         Bx3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6I7p0DYe3E0c2Sb2O38eIk7h2VsJf4W1B5fNXeVb4RU=;
-        b=NmPky/j7GDfh7g03LZ/bcvPiX1vvSHka+Td7/kH6eo+TIJJMrvRf3plLXZgicnnbv+
-         ekiLzB1/60NZRfMpAw5ZozAbZ1t7lLqJet8nSOpvZul7NU4BBK8JUkpzZSlaIJCgm4Ia
-         nAhk27yhbptTxf9negl1Sm2B/xdnfxI3atk57IQHOXoTDaYYSyfHBeQJocA2sCVgOZVV
-         yPtrll1aOoBtqg8IbTWmKnN3p/xJcZSWNRFiTNTtZFAbFnFXE5CBX1CuRDmxz1br6ZJX
-         Y9Fc5sNu38yDy0lKv3unrFJ7wDFQKxhxkxJhZy58P2koDaZPnysXRxakUuM7vlnAOOzy
-         pOng==
-X-Gm-Message-State: APjAAAUrJLJGUiptS/wSGMAwamWymYrSW3FjMperIGOoiKJCzH1XAG6M
-        lM9T9l5gfJ1E4OdYJZgHHpDJCNoSC0C8440cACb6lDrr
-X-Google-Smtp-Source: APXvYqyHnxm1pa/shIOsEJ79faDatRSy6U6QXbX2srpmekxmDaXSgoQFzoSofg+n+6M3s+0MjXHITNuQ9v3BQMwC4lo=
-X-Received: by 2002:a67:e9da:: with SMTP id q26mr12060879vso.34.1579519586942;
- Mon, 20 Jan 2020 03:26:26 -0800 (PST)
+        id S1727665AbgATMa4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 20 Jan 2020 07:30:56 -0500
+Received: from mga17.intel.com ([192.55.52.151]:8457 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726626AbgATMaz (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 20 Jan 2020 07:30:55 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jan 2020 04:30:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,342,1574150400"; 
+   d="scan'208";a="399361289"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.167]) ([10.237.72.167])
+  by orsmga005.jf.intel.com with ESMTP; 20 Jan 2020 04:30:51 -0800
+Subject: Re: [PATCH V2 1/2] mmc: sdhci: Let a vendor driver supply and update
+ ADMA descriptor size
+To:     Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
+        ulf.hansson@linaro.org
+Cc:     asutoshd@codeaurora.org, stummala@codeaurora.org,
+        sayalil@codeaurora.org, cang@codeaurora.org,
+        rampraka@codeaurora.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <1579194192-7942-2-git-send-email-vbadigan@codeaurora.org>
+ <1579519045-26467-1-git-send-email-vbadigan@codeaurora.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <9cb3dd40-0edd-6e71-bc31-c4bb4a7282c9@intel.com>
+Date:   Mon, 20 Jan 2020 14:29:56 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-References: <20200117063858.37296-1-yangbo.lu@nxp.com>
-In-Reply-To: <20200117063858.37296-1-yangbo.lu@nxp.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 20 Jan 2020 12:25:51 +0100
-Message-ID: <CAPDyKFrgY5u7hU1Bueujh4DjS8X5Vbutn6dMo3gX2Dfq6r1wYQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-of-esdhc: fix transfer mode register reading
-To:     Yangbo Lu <yangbo.lu@nxp.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1579519045-26467-1-git-send-email-vbadigan@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 17 Jan 2020 at 07:41, Yangbo Lu <yangbo.lu@nxp.com> wrote:
->
-> The standard SD controller uses two 16-bit registers for
-> command sending.
-> 0xC: Transfer Mode Register
-> 0xE: Command Register
->
-> But the eSDHC controller uses one 32-bit register instead.
-> 0xC: XFERTYPE
->
-> For Transfer Mode Register and Command Register writing,
-> the eSDHC driver will store Transfer Mode Register value in
-> a variable first. When Command Register writing happens,
-> driver will directly write a 32-bit value into XFERTYPE
-> register.
->
-> But for Transfer Mode Register reading, driver just returns
-> a actual value. This may cause issue for some read-modify-write
-> operations. We should make both reading and write on that variable
-> for Transfer Mode Register.
->
-> Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
+On 20/01/20 1:17 pm, Veerabhadrarao Badiganti wrote:
+> Let a vendor driver supply the maximum descriptor size that it
+> can operate on. ADMA descriptor table would be allocated using this
+> supplied size.
+> If any SD Host controller is of version prior to v4.10 spec
+> but supports 16byte descriptor, this change allows them to supply
+> correct descriptor size for ADMA table allocation.
+> 
+> Also let a vendor driver update the descriptor size by overriding
+> sdhc_host->desc_size if it has to operates on a different descriptor
+> sizes in different conditions.
 
-Applied for next, thanks!
+A couple of minor tweaks below sorry.
 
-Kind regards
-Uffe
-
-
+> 
+> Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
 > ---
->  drivers/mmc/host/sdhci-of-esdhc.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-> index 8c06017..3ef4973 100644
-> --- a/drivers/mmc/host/sdhci-of-esdhc.c
-> +++ b/drivers/mmc/host/sdhci-of-esdhc.c
-> @@ -173,6 +173,9 @@ static u16 esdhc_readw_fixup(struct sdhci_host *host,
->         u16 ret;
->         int shift = (spec_reg & 0x2) * 8;
->
-> +       if (spec_reg == SDHCI_TRANSFER_MODE)
-> +               return pltfm_host->xfer_mode_shadow;
-> +
->         if (spec_reg == SDHCI_HOST_VERSION)
->                 ret = value & 0xffff;
->         else
-> --
-> 2.7.4
->
+>  drivers/mmc/host/sdhci.c | 13 +++++++------
+>  drivers/mmc/host/sdhci.h |  3 ++-
+>  2 files changed, 9 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 3140fe2..44fb446 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -3822,14 +3822,15 @@ int sdhci_setup_host(struct sdhci_host *host)
+>  		void *buf;
+>  
+>  		if (host->flags & SDHCI_USE_64_BIT_DMA) {
+> -			host->adma_table_sz = host->adma_table_cnt *
+> -					      SDHCI_ADMA2_64_DESC_SZ(host);
+> -			host->desc_sz = SDHCI_ADMA2_64_DESC_SZ(host);
+> +			if (!host->alloc_desc_sz)
+> +				host->alloc_desc_sz =
+> +					SDHCI_ADMA2_64_DESC_SZ(host);
+>  		} else {
+> -			host->adma_table_sz = host->adma_table_cnt *
+> -					      SDHCI_ADMA2_32_DESC_SZ;
+> -			host->desc_sz = SDHCI_ADMA2_32_DESC_SZ;
+> +			host->alloc_desc_sz = SDHCI_ADMA2_32_DESC_SZ;
+>  		}
+
+The following is simpler:
+
+		if (!(host->flags & SDHCI_USE_64_BIT_DMA))
+			host->alloc_desc_sz = SDHCI_ADMA2_32_DESC_SZ;
+		else if (!host->alloc_desc_sz)
+			host->alloc_desc_sz = SDHCI_ADMA2_64_DESC_SZ(host);
+
+> +		host->desc_sz = host->alloc_desc_sz;
+> +		host->adma_table_sz = host->adma_table_cnt *
+> +					      host->desc_sz;
+
+Wrap is not needed
+
+>  
+>  		host->align_buffer_sz = SDHCI_MAX_SEGS * SDHCI_ADMA2_ALIGN;
+>  		/*
+> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+> index 0ed3e0e..10bda3a 100644
+> --- a/drivers/mmc/host/sdhci.h
+> +++ b/drivers/mmc/host/sdhci.h
+> @@ -554,7 +554,8 @@ struct sdhci_host {
+>  	dma_addr_t adma_addr;	/* Mapped ADMA descr. table */
+>  	dma_addr_t align_addr;	/* Mapped bounce buffer */
+>  
+> -	unsigned int desc_sz;	/* ADMA descriptor size */
+> +	unsigned int desc_sz;	/* ADMA current descriptor size */
+> +	unsigned int alloc_desc_sz;	/* ADMA descr. max size host supports */
+>  
+>  	struct workqueue_struct *complete_wq;	/* Request completion wq */
+>  	struct work_struct	complete_work;	/* Request completion work */
+> 
+
