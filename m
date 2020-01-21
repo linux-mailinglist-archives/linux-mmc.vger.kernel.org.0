@@ -2,55 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C2141436EC
-	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jan 2020 07:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB17114377F
+	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jan 2020 08:21:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725890AbgAUGDt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 21 Jan 2020 01:03:49 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:30938 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725789AbgAUGDt (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jan 2020 01:03:49 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579586629; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Date: Message-ID: From: To: Sender;
- bh=2fwXRU2Yt5QWJJo8DPtfPPXb4CAZxjYjNNDV1hnSKfc=; b=BKREsNvjoEmbqBvQkBL9OwTfaM7Q4kifWUc00vb2Vxc0faf1CeoILTeKaciIELrzj6uZhp7L
- 8OKsAgDgSVPTAwlhuxwCwDm3FbSrFzccALEiX3sM22RDmjwGld5/Q54D8DBZeibZLaE1bbjw
- /U4lM1XXR5FlYXZ7VK0e5FCb2JQ=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e269443.7f0e5f1d90d8-smtp-out-n01;
- Tue, 21 Jan 2020 06:03:47 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 130C3C43383; Tue, 21 Jan 2020 06:03:47 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.8 required=2.0 tests=ALL_TRUSTED,MISSING_SUBJECT,
-        SPF_NONE,TVD_SPACE_RATIO autolearn=no autolearn_force=no version=3.4.0
-Received: from [10.242.51.238] (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sbhanu)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 63AF5C433CB
-        for <linux-mmc@vger.kernel.org>; Tue, 21 Jan 2020 06:03:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 63AF5C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=sbhanu@codeaurora.org
-To:     linux-mmc@vger.kernel.org
-From:   Sajida Bhanu <sbhanu@codeaurora.org>
-Message-ID: <506e1df3-c164-5867-629f-aecb9780aa99@codeaurora.org>
-Date:   Tue, 21 Jan 2020 11:33:43 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+        id S1725890AbgAUHVc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 21 Jan 2020 02:21:32 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:3173 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725789AbgAUHVc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jan 2020 02:21:32 -0500
+X-UUID: 57ebe05eca894da19a48dfaa0779a4d8-20200121
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=AEp2wHIess4/ILGCkyl2C/BzMPPTKjrRdre9MKipK4A=;
+        b=pFlzyxHoxin/bt5RDOzjvzkDtI+4Rf0KnsBwG18KSG6HL/HJhoHQVn2arRg9HmnPzbd8UqqUMQ9fp53QytaJlXnGJbH6Jg6IMjV6g4uhkke7+K0fzNpzGxz8gH/ycSI/NusvnsctyT73alUh9mzhzizPg/+OGwo4oBYi5+NDGME=;
+X-UUID: 57ebe05eca894da19a48dfaa0779a4d8-20200121
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        (envelope-from <yong.mao@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1738107707; Tue, 21 Jan 2020 15:21:27 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Tue, 21 Jan 2020 15:20:53 +0800
+Received: from localhost.localdomain (10.17.3.153) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Tue, 21 Jan 2020 15:19:12 +0800
+From:   Yong Mao <yong.mao@mediatek.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Chaotian Jing <chaotian.jing@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        <linux-mmc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <srv_heupstream@mediatek.com>
+Subject: [PATCH] mmc: mediatek: fix SDIO irq issue
+Date:   Tue, 21 Jan 2020 15:20:57 +0800
+Message-ID: <1579591258-30940-1-git-send-email-yong.mao@mediatek.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-subscribe linux-mmc
+eW9uZyBtYW8gKDEpOg0KICBtbWM6IG1lZGlhdGVrOiBmaXggU0RJTyBpcnEgaXNzdWUNCg0KIGRy
+aXZlcnMvbW1jL2hvc3QvbXRrLXNkLmMgfCAzOCArKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKw0KIDEgZmlsZSBjaGFuZ2VkLCAzOCBpbnNlcnRpb25zKCspDQoNCi0tIA0KMi4y
+NC4xDQo=
+
