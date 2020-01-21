@@ -2,140 +2,129 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4938014399C
-	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jan 2020 10:37:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6BFD143AC5
+	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jan 2020 11:22:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727220AbgAUJhE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 21 Jan 2020 04:37:04 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:38741 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725789AbgAUJhE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jan 2020 04:37:04 -0500
-Received: by mail-ed1-f67.google.com with SMTP id i16so2320875edr.5;
-        Tue, 21 Jan 2020 01:37:03 -0800 (PST)
+        id S1729384AbgAUKV5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 21 Jan 2020 05:21:57 -0500
+Received: from mail-mw2nam12on2041.outbound.protection.outlook.com ([40.107.244.41]:6120
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728831AbgAUKV5 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 21 Jan 2020 05:21:57 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nENrV76B90/nL49hB23GOd1qXIAXW93fdJDKkm1ztrc9KdMIl3N9e/CFVUSdWrsqCXqR0mmJmm4wIW5YTWk8GAnP8eXaUvs0va6WA5fqrBIX34G9Hz4kwq/bnby9R0rrEiRIf7tkUIPl3DCIuTkRE664u7WiYQqlFJrmLS3mEW1JaVwnzaMzDNnwYYPuxGWNP9t435nuVuJe6byfJwP2IMAdcOv1UxdgBFI7UkmGXQbg/EV2N4oZu7rDldRpdX6gCUZg3TBj/i7M3Zl23VH6pixd26IxR78Fs5gTx/jKc2jpqPqfUwJq8kiHorAl62v2Ufn6oucv0IR71VDvmqh86g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IJSKX2rj6pYwLWRX67lh36MWnhuaGoIjmki4w+gKq04=;
+ b=ZZNlXjwHFYk/db23yWVoYO4F/bUATbTHm/Z2wH7ks72w39nt6sHIF4LcIz5+GvwYAQf+tSR+t6rzYlCXA+0OBrs3/D8l4VsAhzRTbTZn28SLy3ntvJCj1Fqw8vz3xuxq1vE/ZC3qF23PHA+rqTRc2/dYNz1NPoYcdx/uJI/CulL2fPV+3e+PPYKYfRRNAlpjWQz0uSb53Pm/DDru7v1e6gtbjgopoPh1SK/LGqA14TxfH0wghWtGX+yWITNjzRU0FpQrrONOLQhuq3KQuBdoZ/uqVeHOhT2/1KzQO0vibfQ02auY3Yl0a+nKc7jMDSA+4tb1oP98eGn9hFNmCc7aEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.83) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=AjbOfycbMXADN0Mq2KkmMGoMuT5PMUjYvWEFyCEUP7Y=;
-        b=g9QszvYY6IuYcBoSfX0lEEAuAU6/IaT4deJUh02a+H8d2rChHKE6LmeXDdHjtzW4ph
-         LIgLC/ZdzpZtsESBwuC9w4klE90HBy2fksU9wr8gsSpg0bajrh1KZsbn2jRie7Q+Y5SJ
-         a1hmJSMnUL/Cxul+qG2kjQhmu2fFF/dWy56rox3MfYgrJ2Djy+PkKGXu9swQlpABWdlK
-         zpPfnMVD3Gv8WoUUbgfTHQUwAdzjZBcUJ4YVqq9pHVxn36VDTKnhz0for33CuLYr2ZJs
-         3+VyqVkNu0AgwZ3nu/bEt3/gkODkZ2edEcfpIl3cIQAbA0FP4tYrbbZef4bCI85S6Vbk
-         oawA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AjbOfycbMXADN0Mq2KkmMGoMuT5PMUjYvWEFyCEUP7Y=;
-        b=DwfkuAk4mzhZa2NDNNcfcdEoZgJR1xkfTCoYmsz98sPAkSpJvuzBZ3M8GtIaQUV0KX
-         k4jJkuXuLN6AT/siuQMEf2dFvf8hpbWtSoXZVof9wI7hEtJfgXm4FoPMElVXOJKqhcjM
-         V8SrO9QfgYXL8rZmz6AsjeM+OzEk3bnqehh9CyPsKUyc3cGXSNPKtOApdPY5nSYUMcVW
-         DpV8i1jHf42UuePXkWiOSy1RW5JNy1FuWQyBohK5QG2YSiPDjicUrZXrOp4KJsb5HJQA
-         dTMxvHlKKPlN9d9DlbT/bXgPAqFgM7fkok+Cc1zovFGACPujtO9U7NwyZWgqm1YmaLHr
-         mcyg==
-X-Gm-Message-State: APjAAAX4BxPwgr4zWm4gyz39gcS17IMDu8qK4SnhsUYVV2/7bIcGk387
-        c+KzCHFu+mRybe58pmtz0mCa/MFrMv+QN4tk0Fs=
-X-Google-Smtp-Source: APXvYqw0v0yzEPKMmKN0yxJabc8zTANNBDVY4v8l+JGTZ7upPwUupD05k1F85YJCpnGd4rZGKL62nxjw7AJsQEQg/sY=
-X-Received: by 2002:a17:906:7c47:: with SMTP id g7mr3479180ejp.281.1579599422453;
- Tue, 21 Jan 2020 01:37:02 -0800 (PST)
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IJSKX2rj6pYwLWRX67lh36MWnhuaGoIjmki4w+gKq04=;
+ b=dtOqXwq6LQQQKcxrxbumhaqyoL1Tgi6K9To/45sUHBqHF7bgLuh9EO9HsBLeni8VF1eQI73DqI2bWsFBPDFHTvl5PHPmnPR+LK3JeYZt9lOmKafP54iqKIMxOhsRdIrOvEikJ2rvXfkgMCsaAuTOyRC1SAnNzg+OOcoFkyaPdcY=
+Received: from MN2PR02CA0024.namprd02.prod.outlook.com (2603:10b6:208:fc::37)
+ by BY5PR02MB6242.namprd02.prod.outlook.com (2603:10b6:a03:1fa::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2644.23; Tue, 21 Jan
+ 2020 10:21:53 +0000
+Received: from CY1NAM02FT062.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e45::206) by MN2PR02CA0024.outlook.office365.com
+ (2603:10b6:208:fc::37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2644.20 via Frontend
+ Transport; Tue, 21 Jan 2020 10:21:52 +0000
+Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ CY1NAM02FT062.mail.protection.outlook.com (10.152.75.60) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2644.19
+ via Frontend Transport; Tue, 21 Jan 2020 10:21:52 +0000
+Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
+        (envelope-from <manish.narani@xilinx.com>)
+        id 1itqfQ-0000zE-8H; Tue, 21 Jan 2020 02:21:52 -0800
+Received: from [127.0.0.1] (helo=localhost)
+        by xsj-pvapsmtp01 with smtp (Exim 4.63)
+        (envelope-from <manish.narani@xilinx.com>)
+        id 1itqfL-0003Rc-4e; Tue, 21 Jan 2020 02:21:47 -0800
+Received: from xsj-pvapsmtp01 (xsj-pvapsmtp01.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp2.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id 00LALghh003286;
+        Tue, 21 Jan 2020 02:21:42 -0800
+Received: from [172.23.64.106] (helo=xhdvnc125.xilinx.com)
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <mnarani@xilinx.com>)
+        id 1itqfF-0003Pl-Q8; Tue, 21 Jan 2020 02:21:42 -0800
+Received: by xhdvnc125.xilinx.com (Postfix, from userid 16987)
+        id 06698121E00; Tue, 21 Jan 2020 15:51:40 +0530 (IST)
+From:   Manish Narani <manish.narani@xilinx.com>
+To:     michal.simek@xilinx.com, adrian.hunter@intel.com,
+        ulf.hansson@linaro.org, jolly.shah@xilinx.com,
+        rajan.vaja@xilinx.com, nava.manne@xilinx.com,
+        manish.narani@xilinx.com, tejas.patel@xilinx.com
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org
+Subject: [PATCH 0/4] Enhancements and Bug Fixes in ZynqMP SDHCI
+Date:   Tue, 21 Jan 2020 15:51:31 +0530
+Message-Id: <1579602095-30060-1-git-send-email-manish.narani@xilinx.com>
+X-Mailer: git-send-email 2.1.1
+X-RCIS-Action: ALLOW
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:149.199.60.83;IPV:;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(396003)(346002)(376002)(136003)(39850400004)(199004)(189003)(70206006)(70586007)(426003)(186003)(26005)(8936002)(36756003)(336012)(6266002)(2616005)(6636002)(81156014)(44832011)(4326008)(81166006)(5660300002)(4744005)(42186006)(6666004)(2906002)(316002)(356004)(478600001)(8676002);DIR:OUT;SFP:1101;SCL:1;SRVR:BY5PR02MB6242;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-83.xilinx.com;A:1;MX:1;
 MIME-Version: 1.0
-References: <cover.1578560282.git.benchuanggli@gmail.com>
-In-Reply-To: <cover.1578560282.git.benchuanggli@gmail.com>
-From:   Ben Chuang <benchuanggli@gmail.com>
-Date:   Tue, 21 Jan 2020 17:36:51 +0800
-Message-ID: <CACT4zj9B8BSebZgf5-nc3zGYhsAGQ6gTRvfFf9r1DBB_mpRtHA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/6] Add support UHS-II for GL9755
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        greg.tu@genesyslogic.com.tw,
-        Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8ad5363b-dcec-4072-48a0-08d79e5bbbe8
+X-MS-TrafficTypeDiagnostic: BY5PR02MB6242:
+X-Microsoft-Antispam-PRVS: <BY5PR02MB6242B49A30A5358495672AF3C10D0@BY5PR02MB6242.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Forefront-PRVS: 0289B6431E
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xSLM3qAhvzQ0poGOTMq/zkLqg+9V51edYq/LFdv06EwN3zfWFT7oPOAd9yrUHZOFTvHCXPUBhKVXJB7PeGJwardL4s378CTWdbTBNmGG6yLx612lkwpPIrm+97Y/7hLm/vTeQZdBIGV3vKHt5OmcuQxuR/7c38Ynd92BVE+HaXlzCsM7JwGxUxJ2sBnbC5qQtsSqgSH/qP2KTaH7x8lJTSK8W4MwaKQXe6U46sKBUnzCXyFEYVvkmkq7oAvqiPjlqHfEyjkSKlB5gJyuzjzx1NFOUbSAwTMX/um8bE6HK0Yn+xJ82deArl5KLnkte4vzcMoisi97UjKLpmxZVlnap1WiR+9TwspPvl5rwsMZMYUHEZNCKV4qOyPFckzJV20elkqH3o4SUeErLFOOJXTF0ZrCV44dIDF93AdW/UAMeeq7A8q7uztMwmnYdmDm4wEg
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2020 10:21:52.6708
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ad5363b-dcec-4072-48a0-08d79e5bbbe8
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB6242
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Uffe and Adrian,
+This patch series includes:
+-> Mark the Tap Delay Node as valid for ioctl calls
+-> Add support for DLL reset in firmware driver
+-> Add support to reset DLL from Arasan SDHCI driver for ZynqMP platform
+-> Fix incorrect base clock reporting issue
 
-On Thu, Jan 9, 2020 at 5:13 PM Ben Chuang <benchuanggli@gmail.com> wrote:
->
-> Hi Uffe and Adrian,
->
-> These patches support UHS-II and fix GL9755 UHS-II compatibility.
->
-> The parts of UHS-II are based on [1][2] and porting to Linux 5.5-rc5.
-> I have seen that Uffe comment that splitting the UHS-II parts into smaller
-> patches. Other than splitting into small patches, could you give me some
-> suggestions for refactoring/splitting files?
->
-> Best regards,
-> Ben
+Manish Narani (4):
+  firmware: xilinx: Add ZynqMP Tap Delay setup ioctl to the valid list
+  firmware: xilinx: Add DLL reset support
+  mmc: sdhci-of-arasan: Add support for DLL reset for ZynqMP platforms
+  sdhci: arasan: Remove quirk for broken base clock
 
-Gentle Ping, Any comments?
+ drivers/firmware/xilinx/zynqmp.c     |  2 +
+ drivers/mmc/host/sdhci-of-arasan.c   | 59 +++++++++++++++++++++++++++-
+ include/linux/firmware/xlnx-zynqmp.h |  9 ++++-
+ 3 files changed, 68 insertions(+), 2 deletions(-)
 
-Best regards,
-Ben
+-- 
+2.17.1
 
->
-> References:
-> 1. [RFC,1/2] mmc: core: support UHS-II in core stack.
->    (https://patchwork.kernel.org/patch/5544441/)
-> 2. [RFC,2/2] mmc: sdhci: support UHS-II in SDHCI host.
->    (https://patchwork.kernel.org/patch/5544451/)
->
-> v2:
->   - base on Linux v5.5-rc5
->
-> Ben Chuang (6):
->   mmc: Add UHS-II support in public headers
->   mmc: core: Add UHS-II support in core layer
->   mmc: host: Add UHS-II support in host layer
->   mmc: uhs2: Introduce a uhs2_post_attach_sd function
->   mmc: sdhci-uhs2: Introduce a uhs2_pre_detect_init function
->   mmc: sdhci-pci-gli: Fix power/reset/ZC/timeout for GL9755 UHS-II mode
->
->  drivers/mmc/core/Makefile                  |   3 +-
->  drivers/mmc/core/block.c                   |   7 +-
->  drivers/mmc/core/bus.c                     |   5 +-
->  drivers/mmc/core/core.c                    |  65 +-
->  drivers/mmc/core/core.h                    |   3 +-
->  drivers/mmc/core/regulator.c               |  14 +
->  drivers/mmc/core/sd.c                      |  27 +-
->  drivers/mmc/core/sd_ops.c                  |  12 +
->  drivers/mmc/core/uhs2.c                    | 995 +++++++++++++++++++++
->  drivers/mmc/core/uhs2.h                    |  23 +
->  drivers/mmc/host/Makefile                  |   1 +
->  drivers/mmc/host/{sdhci.c => sdhci-core.c} | 285 +++++-
->  drivers/mmc/host/sdhci-milbeaut.c          |   4 +-
->  drivers/mmc/host/sdhci-of-arasan.c         |   4 +-
->  drivers/mmc/host/sdhci-of-at91.c           |   4 +-
->  drivers/mmc/host/sdhci-omap.c              |   2 +-
->  drivers/mmc/host/sdhci-pci-core.c          |   4 +-
->  drivers/mmc/host/sdhci-pci-gli.c           | 361 +++++++-
->  drivers/mmc/host/sdhci-pxav3.c             |   4 +-
->  drivers/mmc/host/sdhci-uhs2.c              | 754 ++++++++++++++++
->  drivers/mmc/host/sdhci-uhs2.h              |  34 +
->  drivers/mmc/host/sdhci-xenon.c             |   4 +-
->  drivers/mmc/host/sdhci.h                   | 286 +++++-
->  drivers/mmc/host/sdhci_am654.c             |   4 +-
->  include/linux/mmc/card.h                   |   1 +
->  include/linux/mmc/core.h                   |   6 +
->  include/linux/mmc/host.h                   |  31 +
->  include/linux/mmc/uhs2.h                   | 270 ++++++
->  28 files changed, 3137 insertions(+), 76 deletions(-)
->  create mode 100644 drivers/mmc/core/uhs2.c
->  create mode 100644 drivers/mmc/core/uhs2.h
->  rename drivers/mmc/host/{sdhci.c => sdhci-core.c} (94%)
->  create mode 100644 drivers/mmc/host/sdhci-uhs2.c
->  create mode 100644 drivers/mmc/host/sdhci-uhs2.h
->  create mode 100644 include/linux/mmc/uhs2.h
->
->
-> base-commit: c79f46a282390e0f5b306007bf7b11a46d529538
-> --
-> 2.24.1
->
