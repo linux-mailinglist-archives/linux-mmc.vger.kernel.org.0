@@ -2,72 +2,57 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EF9314483C
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 Jan 2020 00:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5435F144C6E
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 Jan 2020 08:23:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726584AbgAUX0B (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 21 Jan 2020 18:26:01 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:41770 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725933AbgAUX0A (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jan 2020 18:26:00 -0500
-Received: by mail-pg1-f196.google.com with SMTP id x8so2354402pgk.8
-        for <linux-mmc@vger.kernel.org>; Tue, 21 Jan 2020 15:26:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=fya0ETVWBsK5/pHiMBVCMTG0c4UO4fQFq/uw5FrlvKc=;
-        b=Gp5wngKjd2Dgmx6PzdIbrPwECnkAIVJNxGqMuUZzr0rEYmuit8y4Ot3ttQpAgp6Qu9
-         Y+8x+QpVRIjrcp+dLI7QD1Q2c+d26pgEFtZDDWI9hmaiADhtbThpYjB+9sOW1dZRNHfr
-         GCpZ+g0VIXXuBQVaqRK4xqCvhSkOZDkyGzqwo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=fya0ETVWBsK5/pHiMBVCMTG0c4UO4fQFq/uw5FrlvKc=;
-        b=hqbKODn9ahuPZ39Q1V/JPU/j8rD3gHEz9W+jOWCKOEX62eearDacIlTmttsmSC7ExL
-         X0YOk9GhvBFdxvEtGy1Cz9ad45dMiGrfC/5EtJyuY68WBJPKOTk6CttyB7u4jUalsUzw
-         XWT5hllbwyw83zxclW0922L07wpB0OLAZnGcJIlvppb1ITHAGDLH+xGRXDWpuNwXJbCl
-         07JCnE0KnjK1fRPbCsNguM7sHrkIEWZkenG3bPhY0OM5l0wUtuXsFqrePeRn1hKD2F2h
-         Ui8vIl6k793aGz8Pe69ux+H6etbmhiTAK3QmMZsl23rza137BipVK76ivwRbAOPxvAPy
-         IDxQ==
-X-Gm-Message-State: APjAAAVEJjQKtxNGLbERXMIeZAfdzGlDcnuf8StuNJbw5ADcdviGJ0RA
-        qlS+SzrsO9aDPTFxnQu2ryu6/g==
-X-Google-Smtp-Source: APXvYqz3gfa3kyqLCQlJ5AYjH73VwhxuTnQbPEn6gYN0WLEi7728RPbNIzLfMAiZi11SXMIUjQjs0w==
-X-Received: by 2002:a62:e40e:: with SMTP id r14mr6686924pfh.115.1579649160249;
-        Tue, 21 Jan 2020 15:26:00 -0800 (PST)
-Received: from localhost ([2620:15c:202:1:4fff:7a6b:a335:8fde])
-        by smtp.gmail.com with ESMTPSA id 7sm45548660pfx.52.2020.01.21.15.25.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jan 2020 15:25:59 -0800 (PST)
-Date:   Tue, 21 Jan 2020 15:25:58 -0800
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Shaik Sajida Bhanu <sbhanu@codeaurora.org>
-Cc:     ulf.hansson@linaro.org, adrian.hunter@intel.com,
-        asutoshd@codeaurora.org, stummala@codeaurora.org,
+        id S1728811AbgAVHXo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 Jan 2020 02:23:44 -0500
+Received: from mga14.intel.com ([192.55.52.115]:18401 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725884AbgAVHXo (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 22 Jan 2020 02:23:44 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jan 2020 23:23:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,348,1574150400"; 
+   d="scan'208";a="399924578"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.167]) ([10.237.72.167])
+  by orsmga005.jf.intel.com with ESMTP; 21 Jan 2020 23:23:39 -0800
+Subject: Re: [PATCH V1] mmc: sdhci-msm: Add system suspend/resume callbacks
+To:     Shaik Sajida Bhanu <sbhanu@codeaurora.org>, ulf.hansson@linaro.org
+Cc:     asutoshd@codeaurora.org, stummala@codeaurora.org,
         vbadigan@codeaurora.org, sayalil@codeaurora.org,
         cang@codeaurora.org, rampraka@codeaurora.org,
         linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, agross@kernel.org,
         bjorn.andersson@linaro.org
-Subject: Re: [PATCH V1] mmc: sdhci-msm: Add system suspend/resume callbacks
-Message-ID: <20200121232558.GV89495@google.com>
 References: <1579617022-13031-1-git-send-email-sbhanu@codeaurora.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <c851e723-3e6c-4548-bb67-05a6023b4169@intel.com>
+Date:   Wed, 22 Jan 2020 09:22:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 In-Reply-To: <1579617022-13031-1-git-send-email-sbhanu@codeaurora.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Shaik,
-
-On Tue, Jan 21, 2020 at 08:00:22PM +0530, Shaik Sajida Bhanu wrote:
+On 21/01/20 4:30 pm, Shaik Sajida Bhanu wrote:
 > Add system suspend/resume callbacks to sdhci-msm platform driver.
+
+There were already callbacks, so the commit subject and messages really do
+not tell what this change is about or why it is needed.  Please explain some
+more.
+
 > 
 > Signed-off-by: Shaik Sajida Bhanu <sbhanu@codeaurora.org>
 > ---
@@ -88,9 +73,6 @@ On Tue, Jan 21, 2020 at 08:00:22PM +0530, Shaik Sajida Bhanu wrote:
 > +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 > +	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
 > +	int ret = 0;
-
-initialization is not needed.
-
 > +
 > +	if (host->mmc->caps2 & MMC_CAP2_CQE) {
 > +		ret = cqhci_suspend(host->mmc);
@@ -112,9 +94,7 @@ initialization is not needed.
 > +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 > +	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
 > +	int ret = 0;
-
-initialization is not needed.
-
+> +
 > +	ret = sdhci_msm_runtime_resume(dev);
 > +	if (ret)
 > +		return ret;
@@ -138,3 +118,5 @@ initialization is not needed.
 >  	SET_RUNTIME_PM_OPS(sdhci_msm_runtime_suspend,
 >  			   sdhci_msm_runtime_resume,
 >  			   NULL)
+> 
+
