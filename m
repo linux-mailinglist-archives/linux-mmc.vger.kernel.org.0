@@ -2,105 +2,143 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E05147247
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 Jan 2020 21:03:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B355147669
+	for <lists+linux-mmc@lfdr.de>; Fri, 24 Jan 2020 02:20:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729180AbgAWUDB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 Jan 2020 15:03:01 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:36796 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728668AbgAWUDB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Jan 2020 15:03:01 -0500
-Received: by mail-lj1-f194.google.com with SMTP id r19so5098429ljg.3
-        for <linux-mmc@vger.kernel.org>; Thu, 23 Jan 2020 12:03:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CE81ES9colZ9LJcYyttHbY8aVJS9UvEcbtX66gtyy2E=;
-        b=GpKn2eY5BAIsAhvRiSFxr/3nfax0j9bVKB9I5iWZy7ejFawDE1lemjHYj3JnD4AYF7
-         WpUf6HzI+kP7xUVkxHwTcBwQWMZ42MGNXd39pry40m8itYHdFFUdzB4XpzZ78vZxlne5
-         pDoqfnWIUXoRXCypX6sLCxKnebUGKNET0TXzl+40ocecSorkdDvQG8iqQS1M6KcDadc1
-         MNG2xHgQ2gxTm8X8fUa/xF5WSPF5UoEB9GnGGRn4QqFgiituOdzWzlgN6bcGGKN9o4dv
-         5QNnhyuvO4ULL+Adw713vc60Z8aKMjIzmOXmrPnlUYTu4/6m3Nj24X10lbLBGzSLawSb
-         +KHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CE81ES9colZ9LJcYyttHbY8aVJS9UvEcbtX66gtyy2E=;
-        b=dajKmsBcpCoutAhOVPfHiMfZ2GEJjWLnSIlEmR5pTAGB3TnTIluCWkaWW7LGnlLbJx
-         5CaPBLl7tLhZjzz02KSkCsj/26kvRa2DGIyh4/L+d5XjwdzyTYfSHEg/vg9gDrBu2nyM
-         mdqOZTGKYeFNnvixDbajIHp+Oo0aTIjFLfzru69iJhtv9ykz/YibasXO9BsT/fXsu5yT
-         6655OcFjQ38PcYRGSIlqp3h2w2+mW2ai7uSsE6xLAVMQ6r7IjnyK79F3omY3g6Wj+kj3
-         9t1hxHKZOpWd8nFyg/xcqg8kG2GDQsLvbW/ud9BlmaAsdZoHJQIKVPHd1hnKi/0D0JT0
-         a0Rg==
-X-Gm-Message-State: APjAAAVmnadlUXoOnBAziTW9s8agRhSIEMPNWMULF99ss7Q9bKC2iEQL
-        m7+iw5Gsps8gzpk2mDidn86k2A==
-X-Google-Smtp-Source: APXvYqxDTc65ooMHbFqtuMAsz5UFQtlLj/mJDMkAbA2hWYv59r7jxMC2Jq1ezf/icxiqcyjcqWBU1Q==
-X-Received: by 2002:a2e:8197:: with SMTP id e23mr32501ljg.250.1579809779317;
-        Thu, 23 Jan 2020 12:02:59 -0800 (PST)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id e8sm2112163ljb.45.2020.01.23.12.02.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2020 12:02:58 -0800 (PST)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC fixes for v5.5-rc8
-Date:   Thu, 23 Jan 2020 21:02:57 +0100
-Message-Id: <20200123200257.17258-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        id S1730568AbgAXBRd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 23 Jan 2020 20:17:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60608 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730540AbgAXBRd (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 23 Jan 2020 20:17:33 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 267BB206A2;
+        Fri, 24 Jan 2020 01:17:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579828652;
+        bh=mjJrS8A36FDuKb9fONPOUFh7RpbbhF9DWKvJqd6eeek=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=WUQAnr1hBA6trx/jqbtxnTW008yoPauNJT7J8Q+RM0i8cQfCPcnH4l1wJJ7i3e3+X
+         Icl3wIBOERFq7q6kJTB0azb/I7+3ZZAlUHAySkTYAL6grtBZEk30Xg9EZHMcfv7DN+
+         yLST+GOIptyiEeSTyuXVDPBrLTAPJAmfD4JM28+g=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Raul E Rangel <rrangel@chromium.org>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 20/33] mmc: sdhci-pci: Quirk for AMD SDHC Device 0x7906
+Date:   Thu, 23 Jan 2020 20:16:55 -0500
+Message-Id: <20200124011708.18232-20-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200124011708.18232-1-sashal@kernel.org>
+References: <20200124011708.18232-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+From: Raul E Rangel <rrangel@chromium.org>
 
-Here's a PR with a couple of MMC fixes intended for v5.5-rc8. Details about the
-highlights are as usual found in the signed tag.
+[ Upstream commit 7a869f00bb15bcefb8804d798a49b086267b03e6 ]
 
-Please pull this in!
+AMD SDHC 0x7906 requires a hard reset to clear all internal state.
+Otherwise it can get into a bad state where the DATA lines are always
+read as zeros.
 
-Kind regards
-Ulf Hansson
+This change requires firmware that can transition the device into
+D3Cold for it to work correctly. If the firmware does not support
+transitioning to D3Cold then the power state transitions are a no-op.
 
+Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mmc/host/sdhci-pci-core.c | 51 ++++++++++++++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 1 deletion(-)
 
-The following changes since commit f667216c5c7c967c3e568cdddefb51fe606bfe26:
+diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+index 642a9667db4dd..96a163f36a395 100644
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -21,6 +21,7 @@
+ #include <linux/mmc/mmc.h>
+ #include <linux/scatterlist.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/gpio.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/mmc/slot-gpio.h>
+@@ -1598,11 +1599,59 @@ static int amd_probe(struct sdhci_pci_chip *chip)
+ 	return 0;
+ }
+ 
++static u32 sdhci_read_present_state(struct sdhci_host *host)
++{
++	return sdhci_readl(host, SDHCI_PRESENT_STATE);
++}
++
++void amd_sdhci_reset(struct sdhci_host *host, u8 mask)
++{
++	struct sdhci_pci_slot *slot = sdhci_priv(host);
++	struct pci_dev *pdev = slot->chip->pdev;
++	u32 present_state;
++
++	/*
++	 * SDHC 0x7906 requires a hard reset to clear all internal state.
++	 * Otherwise it can get into a bad state where the DATA lines are always
++	 * read as zeros.
++	 */
++	if (pdev->device == 0x7906 && (mask & SDHCI_RESET_ALL)) {
++		pci_clear_master(pdev);
++
++		pci_save_state(pdev);
++
++		pci_set_power_state(pdev, PCI_D3cold);
++		pr_debug("%s: power_state=%u\n", mmc_hostname(host->mmc),
++			pdev->current_state);
++		pci_set_power_state(pdev, PCI_D0);
++
++		pci_restore_state(pdev);
++
++		/*
++		 * SDHCI_RESET_ALL says the card detect logic should not be
++		 * reset, but since we need to reset the entire controller
++		 * we should wait until the card detect logic has stabilized.
++		 *
++		 * This normally takes about 40ms.
++		 */
++		readx_poll_timeout(
++			sdhci_read_present_state,
++			host,
++			present_state,
++			present_state & SDHCI_CD_STABLE,
++			10000,
++			100000
++		);
++	}
++
++	return sdhci_reset(host, mask);
++}
++
+ static const struct sdhci_ops amd_sdhci_pci_ops = {
+ 	.set_clock			= sdhci_set_clock,
+ 	.enable_dma			= sdhci_pci_enable_dma,
+ 	.set_bus_width			= sdhci_set_bus_width,
+-	.reset				= sdhci_reset,
++	.reset				= amd_sdhci_reset,
+ 	.set_uhs_signaling		= sdhci_set_uhs_signaling,
+ };
+ 
+-- 
+2.20.1
 
-  mmc: sdhci-of-esdhc: re-implement erratum A-009204 workaround (2019-12-19 08:13:43 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.5-rc2-2
-
-for you to fetch changes up to 2a187d03352086e300daa2044051db00044cd171:
-
-  mmc: sdhci: fix minimum clock rate for v3 controller (2020-01-20 10:36:27 +0100)
-
-----------------------------------------------------------------
-MMC host:
- - sdhci: Fix minimum clock rate for v3 controllers
- - sdhci-tegra: Fix SDR50 tuning override
- - sdhci_am654: Fixup tuning issues and support for CQHCI
- - sdhci_am654: Remove wrong write protect flag
-
-----------------------------------------------------------------
-Faiz Abbas (3):
-      mmc: sdhci_am654: Remove Inverted Write Protect flag
-      mmc: sdhci_am654: Reset Command and Data line after tuning
-      mmc: sdhci_am654: Fix Command Queuing in AM65x
-
-Michał Mirosław (2):
-      mmc: tegra: fix SDR50 tuning override
-      mmc: sdhci: fix minimum clock rate for v3 controller
-
- drivers/mmc/host/sdhci-tegra.c |  2 +-
- drivers/mmc/host/sdhci.c       | 10 ++++----
- drivers/mmc/host/sdhci_am654.c | 54 +++++++++++++++++++++++++++---------------
- 3 files changed, 42 insertions(+), 24 deletions(-)
