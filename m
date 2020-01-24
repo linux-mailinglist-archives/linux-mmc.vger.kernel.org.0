@@ -2,82 +2,143 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04E6D14766C
-	for <lists+linux-mmc@lfdr.de>; Fri, 24 Jan 2020 02:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 878D2148232
+	for <lists+linux-mmc@lfdr.de>; Fri, 24 Jan 2020 12:26:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730653AbgAXBRh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 Jan 2020 20:17:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60716 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730540AbgAXBRg (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 23 Jan 2020 20:17:36 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A53022467E;
-        Fri, 24 Jan 2020 01:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579828656;
-        bh=E0awQwTam+1n25uIcPvb3MI3juss7eRUO4EghGen+rs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=znA0DuXbodEf0gBTFYekrABxloKNS/03GdIQ4uOpYXzqI6P9ow9CRxS8xrYMnPgQM
-         u/E2Y9kLVZ9mJPSOEXpHCLD+VToNR0A8rIg+UPo8yH7gZWs9YVgPBMkkhkj4L2vTXL
-         i9SOExu7IJp8cWFQU15f/nn2FGdgv0CgEh5tzSvY=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 24/33] mmc: core: fix wl1251 sdio quirks
-Date:   Thu, 23 Jan 2020 20:16:59 -0500
-Message-Id: <20200124011708.18232-24-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200124011708.18232-1-sashal@kernel.org>
-References: <20200124011708.18232-1-sashal@kernel.org>
+        id S2403794AbgAXL0I (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 24 Jan 2020 06:26:08 -0500
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:41064 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403904AbgAXL0G (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 24 Jan 2020 06:26:06 -0500
+Received: by mail-vs1-f65.google.com with SMTP id k188so972232vsc.8
+        for <linux-mmc@vger.kernel.org>; Fri, 24 Jan 2020 03:26:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qOVhDHhFnWlF9FUDYt4fHzJxv54r3t+l/PCp99DTE8g=;
+        b=NYKCSRmcwL0rUYuSrq1VwqQIZNkH8SN4ZZ5A3TVgdm0R/hzjxs4JbX4+0Xo1fPtoEK
+         Boro/o30ULd+1byBxjrU4znPuo8TBltkqrjDBAyQPY5P64Cm6yEqQsW9rdt/FiIivoge
+         xNiLEFsa+a+xuUZKanzlEL9L4mq7FBszDsnVxA0NHy/bbQ1ledvMcfTbS7Cx1Ie8xYhd
+         xywqDQPVluykgE5NIUtBJ4PZuMAVVt8C3VEt1J/fpG3rHwplTsZigeaYJAjhnnJWXv/w
+         o5chQJC0l067hVa3y5r6STGGstb17hwZbqJqG4+NMJjxHrMzOWP03vf6irmD5Wh9H6PO
+         u5lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qOVhDHhFnWlF9FUDYt4fHzJxv54r3t+l/PCp99DTE8g=;
+        b=NhxX5LUS2wcevwtHMsrmX1qnxACzXkq17h4UdGzwWCJExsLzeWbI9VtJivzmQ48iZe
+         nXjk8UonIGkqitiYkyb1tHLGpyE0mKCBcmY7wNpJXs/mrZ4mU7XL2yeFpdvozS2SZCuX
+         wNNSgEsT8xLMNr6f/AuC6QZKwJbjFC5jWe18WSG/URM1NpLK0+8vVdUjKqtcEHaNEU91
+         tUzejPrlSd56PpvdIWR4ayO85zO/0bZROl6ELklwLWYfKLzoBF9jdvK2V2KiM8nsOl9A
+         /OZpbTzXv8U0XZIsW2vaMePC8g4m9Eq2Y0PUUrhqETVv0IVS/uLJIjZZbV7mihHbvCUd
+         Tw+g==
+X-Gm-Message-State: APjAAAW4XwihOyORONx/TXiPuqpHb75qeW+qMn8U84QMzvZCZnywWTYm
+        xIST93iGaQHMxkBHW+WWkJanUOriKvCBmJCcVS8kMnKm
+X-Google-Smtp-Source: APXvYqy+M1uWEEV6pkXqgm2LjH+aSiRVIOkGsD38hn1CYw56gxSpzMyk8WBJG4wPxzVUnYw/JZBSj3WLKNpHRR+pQOk=
+X-Received: by 2002:a67:79cd:: with SMTP id u196mr1862322vsc.191.1579865166014;
+ Fri, 24 Jan 2020 03:26:06 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <1579519045-26467-1-git-send-email-vbadigan@codeaurora.org> <1579531122-28341-1-git-send-email-vbadigan@codeaurora.org>
+In-Reply-To: <1579531122-28341-1-git-send-email-vbadigan@codeaurora.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 24 Jan 2020 12:25:30 +0100
+Message-ID: <CAPDyKFpiMU5PdUOP-VZEXT_Rsot9LfHmWp4ZTBC5oboWXiWsDA@mail.gmail.com>
+Subject: Re: [PATCH V3] mmc: sdhci: Let a vendor driver supply and update ADMA
+ descriptor size
+To:     Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Asutosh Das <asutoshd@codeaurora.org>,
+        Sahitya Tummala <stummala@codeaurora.org>,
+        Sayali Lokhande <sayalil@codeaurora.org>, cang@codeaurora.org,
+        Ram Prakash Gupta <rampraka@codeaurora.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
+On Mon, 20 Jan 2020 at 15:39, Veerabhadrarao Badiganti
+<vbadigan@codeaurora.org> wrote:
+>
+> Let a vendor driver supply the maximum descriptor size that it
+> can operate on. ADMA descriptor table would be allocated using this
+> supplied size.
+> If any SD Host controller is of version prior to v4.10 spec
+> but supports 16byte descriptor, this change allows them to supply
+> correct descriptor size for ADMA table allocation.
+>
+> Also let a vendor driver update the descriptor size by overriding
+> sdhc_host->desc_size if it has to operates on a different descriptor
+> sizes in different conditions.
+>
+> Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> --
+> Thanks Adrian.
+>
+> Hi Ulf,
+> Can you pick this patch instead of earlier one? This is more clean
+> change, sorry for the multiple interations.
+> Otherwise let me know, I will make these changes as seperate patch.
 
-[ Upstream commit 16568b4a4f0c34bd35cfadac63303c7af7812764 ]
+Alright, I have replaced the previous version with this one.
 
-wl1251 and wl1271 have different vendor id and device id.
-So we need to handle both with sdio quirks.
+Kind regards
+Uffe
 
-Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Cc: <stable@vger.kernel.org> # v4.11+
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/mmc/core/quirks.h | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index 2d2d9ea8be4f3..3dba15bccce25 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -119,7 +119,14 @@ static const struct mmc_fixup mmc_ext_csd_fixups[] = {
- 	END_FIXUP
- };
- 
-+
- static const struct mmc_fixup sdio_fixup_methods[] = {
-+	SDIO_FIXUP(SDIO_VENDOR_ID_TI_WL1251, SDIO_DEVICE_ID_TI_WL1251,
-+		   add_quirk, MMC_QUIRK_NONSTD_FUNC_IF),
-+
-+	SDIO_FIXUP(SDIO_VENDOR_ID_TI_WL1251, SDIO_DEVICE_ID_TI_WL1251,
-+		   add_quirk, MMC_QUIRK_DISABLE_CD),
-+
- 	SDIO_FIXUP(SDIO_VENDOR_ID_TI, SDIO_DEVICE_ID_TI_WL1271,
- 		   add_quirk, MMC_QUIRK_NONSTD_FUNC_IF),
- 
--- 
-2.20.1
-
+> ---
+>  drivers/mmc/host/sdhci.c | 16 +++++++---------
+>  drivers/mmc/host/sdhci.h |  3 ++-
+>  2 files changed, 9 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 3140fe2..7a7a18e 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -3821,15 +3821,13 @@ int sdhci_setup_host(struct sdhci_host *host)
+>                 dma_addr_t dma;
+>                 void *buf;
+>
+> -               if (host->flags & SDHCI_USE_64_BIT_DMA) {
+> -                       host->adma_table_sz = host->adma_table_cnt *
+> -                                             SDHCI_ADMA2_64_DESC_SZ(host);
+> -                       host->desc_sz = SDHCI_ADMA2_64_DESC_SZ(host);
+> -               } else {
+> -                       host->adma_table_sz = host->adma_table_cnt *
+> -                                             SDHCI_ADMA2_32_DESC_SZ;
+> -                       host->desc_sz = SDHCI_ADMA2_32_DESC_SZ;
+> -               }
+> +               if (!(host->flags & SDHCI_USE_64_BIT_DMA))
+> +                       host->alloc_desc_sz = SDHCI_ADMA2_32_DESC_SZ;
+> +               else if (!host->alloc_desc_sz)
+> +                       host->alloc_desc_sz = SDHCI_ADMA2_64_DESC_SZ(host);
+> +
+> +               host->desc_sz = host->alloc_desc_sz;
+> +               host->adma_table_sz = host->adma_table_cnt * host->desc_sz;
+>
+>                 host->align_buffer_sz = SDHCI_MAX_SEGS * SDHCI_ADMA2_ALIGN;
+>                 /*
+> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+> index 0ed3e0e..10bda3a 100644
+> --- a/drivers/mmc/host/sdhci.h
+> +++ b/drivers/mmc/host/sdhci.h
+> @@ -554,7 +554,8 @@ struct sdhci_host {
+>         dma_addr_t adma_addr;   /* Mapped ADMA descr. table */
+>         dma_addr_t align_addr;  /* Mapped bounce buffer */
+>
+> -       unsigned int desc_sz;   /* ADMA descriptor size */
+> +       unsigned int desc_sz;   /* ADMA current descriptor size */
+> +       unsigned int alloc_desc_sz;     /* ADMA descr. max size host supports */
+>
+>         struct workqueue_struct *complete_wq;   /* Request completion wq */
+>         struct work_struct      complete_work;  /* Request completion work */
+> --
+> Qualcomm India Private Limited, on behalf of Qualcomm Innovation Center, Inc., is a member of Code Aurora Forum, a Linux Foundation Collaborative Project
