@@ -2,126 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 699AD14B15A
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 Jan 2020 10:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3189014B3CE
+	for <lists+linux-mmc@lfdr.de>; Tue, 28 Jan 2020 12:55:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726192AbgA1JHC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 28 Jan 2020 04:07:02 -0500
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:8774 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726066AbgA1JHB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 Jan 2020 04:07:01 -0500
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00S93bqm014416;
-        Tue, 28 Jan 2020 10:06:51 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type; s=STMicroelectronics;
- bh=QftCa2QNdW6rIV5je6s8Ii1o876osqtCa/ZGy3adzdg=;
- b=eylPeeVdxuO9MnFZu/EcJ2OZ/Jg63rvH+r7WaNa4/LIMc7dfZPaI9ZjE5xptrko2FKGT
- jQUxz995mhMnB4biA4RSOVNOE0u6BlYQkudc7ZxLuMBTYmhMb49lLudfQKz818XvOSSV
- YoOX163GH5KX6wQfvgA4Fh+/2uMh7LyzjIis6AhDY+15AWcHayRqPSVxMKfgxFHB2TAM
- ZgF3FjtqXsXQ2SMN2bUKSfTlKxzI1+QtJTqT6KDVxlabrP+FDkOC+f9iLJsNFXOSJJ1L
- RX27JHa6CMm8oopWpK858mPeSCzvD3d/xw7omSgl8H7OpVQtnNW15bSLyUxyZCGM8T0W oA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2xrbpaw4ta-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 28 Jan 2020 10:06:51 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 616A710005A;
-        Tue, 28 Jan 2020 10:06:49 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 536E1212A3A;
-        Tue, 28 Jan 2020 10:06:49 +0100 (CET)
-Received: from localhost (10.75.127.45) by SFHDAG6NODE1.st.com (10.75.127.16)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 28 Jan 2020 10:06:48
- +0100
-From:   Ludovic Barre <ludovic.barre@st.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Ludovic Barre <ludovic.barre@st.com>
-Subject: [PATCH V2 9/9] mmc: mmci: add sdmmc variant revision 2.0
-Date:   Tue, 28 Jan 2020 10:06:36 +0100
-Message-ID: <20200128090636.13689-10-ludovic.barre@st.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200128090636.13689-1-ludovic.barre@st.com>
-References: <20200128090636.13689-1-ludovic.barre@st.com>
+        id S1725959AbgA1Lzf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 28 Jan 2020 06:55:35 -0500
+Received: from bilbo.ozlabs.org ([203.11.71.1]:52975 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725903AbgA1Lzf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 28 Jan 2020 06:55:35 -0500
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 486Q6V2LqGz9sNF;
+        Tue, 28 Jan 2020 22:55:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1580212533;
+        bh=MpHFi4OUxb+RLUqPq8i8z8tgCvvnh/pa/tf3O7Ge6fY=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=gWsMxHURlpx686fwXAh2vgtJx0pDdvohiEbSIvcFTMAFxaTlWftoU7X5IU/2WfOjh
+         fgXGo1rrIX2MzDep+Mpk6x3HLBPQCJ0BgeJCYzin4REnYbcfyj/Pdr+uCL98uBhU8j
+         wAualP1ppZKytFTZRTm9MZyJSj/7Q/Z6Bw6TZ5/9/p+7Bg2uCczAEPG66JJNLnkIWc
+         2DZ9oTSn/NssPGBdJxjZZv6sEdsRCKCsEfcpiRut1T1pJlR5pMtMxceISVVVBQlObW
+         87pEpga1UpvrXmT7biQDx23pc/QZSyZCXOnMIsQKkTxrOMoRfUI3Elb0BVBdKAdMA6
+         5mXHBgv68fWGg==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Darren Stevens <darren@stevens-zone.net>,
+        mad skateman <madskateman@gmail.com>,
+        "linux-mmc\@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Julian Margetson <runaway@candw.ms>,
+        "contact\@a-eon.com" <contact@a-eon.com>,
+        "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>
+Subject: Re: [FSL P5020 P5040 PPC] Onboard SD card doesn't work anymore after the 'mmc-v5.4-2' updates
+In-Reply-To: <de35b0fc-9e24-2989-58f6-ade0585db1a0@xenosoft.de>
+References: <20200108093903.57620-1-hdegoede@redhat.com> <20200108093903.57620-2-hdegoede@redhat.com> <61bc9265-ece0-eeb6-d4a1-4631138ecf29@intel.com> <8d67882d-04a8-0607-be4e-c1430b7fda21@redhat.com> <84a32714-ba08-74a0-0c76-3c36db44dd68@intel.com> <93446e09-5f12-800a-62fa-bf3ecea7273d@redhat.com> <399ac7d5-2518-799a-595e-f6b6878cf4ab@intel.com> <a9ab8946-c599-5f83-7527-2387a9e82e8a@xenosoft.de> <CAPDyKFoydOuSE=Eaq168=2_Ycouo7hzyw+RZXhGq7q4D4Qe8TQ@mail.gmail.com> <8736c5hyhr.fsf@mpe.ellerman.id.au> <de35b0fc-9e24-2989-58f6-ade0585db1a0@xenosoft.de>
+Date:   Tue, 28 Jan 2020 22:55:29 +1100
+Message-ID: <87d0b3hk26.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG7NODE1.st.com (10.75.127.19) To SFHDAG6NODE1.st.com
- (10.75.127.16)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-28_02:2020-01-24,2020-01-28 signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This patch adds a sdmmc variant revision 2.0.
-This revision is backward compatible with 1.1, and adds dma
-link list support.
+Christian Zigotzky <chzigotzky@xenosoft.de> writes:
+> On 24 January 2020 at 12:42 pm, Michael Ellerman wrote:
+>> Ulf Hansson <ulf.hansson@linaro.org> writes:
+>>> On Thu, 16 Jan 2020 at 12:18, Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+>>>> Hi All,
+>>>>
+>>>> We still need the attached patch for our onboard SD card interface
+>>>> [1,2]. Could you please add this patch to the tree?
+>>> No, because according to previous discussion that isn't the correct
+>>> solution and more importantly it will break other archs (if I recall
+>>> correctly).
+>>>
+>>> Looks like someone from the ppc community needs to pick up the ball.
+>> That's a pretty small community these days :) :/
+>>
+>> Christian can you test this please? I think I got the polarity of all
+>> the tests right, but it's Friday night so maybe I'm wrong :)
+>>
+>> cheers
+> Michael,
+>
+> Thanks a lot for the new patch! I compiled the RC7 of kernel 5.5 with 
+> your patch again yesterday and the kernel works without any problems 
+> with our onboard SD cards. [1]
 
-Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
----
- drivers/mmc/host/mmci.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+Thanks for testing.
 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 24e630183ed4..a774c329c212 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -275,6 +275,31 @@ static struct variant_data variant_stm32_sdmmc = {
- 	.init			= sdmmc_variant_init,
- };
- 
-+static struct variant_data variant_stm32_sdmmcv2 = {
-+	.fifosize		= 16 * 4,
-+	.fifohalfsize		= 8 * 4,
-+	.f_max			= 208000000,
-+	.stm32_clkdiv		= true,
-+	.cmdreg_cpsm_enable	= MCI_CPSM_STM32_ENABLE,
-+	.cmdreg_lrsp_crc	= MCI_CPSM_STM32_LRSP_CRC,
-+	.cmdreg_srsp_crc	= MCI_CPSM_STM32_SRSP_CRC,
-+	.cmdreg_srsp		= MCI_CPSM_STM32_SRSP,
-+	.cmdreg_stop		= MCI_CPSM_STM32_CMDSTOP,
-+	.data_cmd_enable	= MCI_CPSM_STM32_CMDTRANS,
-+	.irq_pio_mask		= MCI_IRQ_PIO_STM32_MASK,
-+	.datactrl_first		= true,
-+	.datacnt_useless	= true,
-+	.datalength_bits	= 25,
-+	.datactrl_blocksz	= 14,
-+	.datactrl_any_blocksz	= true,
-+	.stm32_idmabsize_mask	= GENMASK(16, 5),
-+	.dma_lli		= true,
-+	.busy_timeout		= true,
-+	.busy_detect_flag	= MCI_STM32_BUSYD0,
-+	.busy_detect_mask	= MCI_STM32_BUSYD0ENDMASK,
-+	.init			= sdmmc_variant_init,
-+};
-+
- static struct variant_data variant_qcom = {
- 	.fifosize		= 16 * 4,
- 	.fifohalfsize		= 8 * 4,
-@@ -2343,6 +2368,11 @@ static const struct amba_id mmci_ids[] = {
- 		.mask	= 0xf0ffffff,
- 		.data	= &variant_stm32_sdmmc,
- 	},
-+	{
-+		.id     = 0x00253180,
-+		.mask	= 0xf0ffffff,
-+		.data	= &variant_stm32_sdmmcv2,
-+	},
- 	/* Qualcomm variants */
- 	{
- 		.id     = 0x00051180,
--- 
-2.17.1
-
+cheers
