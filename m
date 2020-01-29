@@ -2,26 +2,26 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AFE114D1F8
-	for <lists+linux-mmc@lfdr.de>; Wed, 29 Jan 2020 21:37:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F08014D201
+	for <lists+linux-mmc@lfdr.de>; Wed, 29 Jan 2020 21:37:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726683AbgA2Uh0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 29 Jan 2020 15:37:26 -0500
-Received: from sauhun.de ([88.99.104.3]:41378 "EHLO pokefinder.org"
+        id S1727020AbgA2Uh3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 29 Jan 2020 15:37:29 -0500
+Received: from sauhun.de ([88.99.104.3]:41392 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726672AbgA2Uh0 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 29 Jan 2020 15:37:26 -0500
+        id S1726618AbgA2Uh2 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 29 Jan 2020 15:37:28 -0500
 Received: from localhost (p5486CF2C.dip0.t-ipconnect.de [84.134.207.44])
-        by pokefinder.org (Postfix) with ESMTPSA id B03932C28B4;
-        Wed, 29 Jan 2020 21:37:24 +0100 (CET)
+        by pokefinder.org (Postfix) with ESMTPSA id 77EA32C28B7;
+        Wed, 29 Jan 2020 21:37:26 +0100 (CET)
 From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
 To:     linux-mmc@vger.kernel.org
 Cc:     linux-renesas-soc@vger.kernel.org,
         Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [RFC PATCH 3/6] mmc: tmio: give callback a generic name
-Date:   Wed, 29 Jan 2020 21:37:06 +0100
-Message-Id: <20200129203709.30493-4-wsa+renesas@sang-engineering.com>
+Subject: [RFC PATCH 4/6] mmc: tmio: enforce retune after runtime suspend
+Date:   Wed, 29 Jan 2020 21:37:07 +0100
+Message-Id: <20200129203709.30493-5-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200129203709.30493-1-wsa+renesas@sang-engineering.com>
 References: <20200129203709.30493-1-wsa+renesas@sang-engineering.com>
@@ -32,58 +32,74 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-check_scc_error() is too Renesas specific. Let's just call it
-check_retune() to make it also easier understandable what it does.
-Only a rename, no functional change.
+Currently, select_tuning() is called after RPM resume. But
+select_tuning() needs some additional function calls to work correctly.
+Instead of reimplementing the whole postprocessing, just enforce
+retuning.
 
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/mmc/host/renesas_sdhi_core.c | 2 +-
- drivers/mmc/host/tmio_mmc.h          | 2 +-
- drivers/mmc/host/tmio_mmc_core.c     | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+
+I couldn't trigger RPM suspend even with debug code. Shimoda-san said
+it should only occur with removed cards which is not so easy with
+soldered eMMC. For those cases, I think the aproach taken here is fine.
+Needs more discussion, though, to make sure...
+
+ drivers/mmc/host/renesas_sdhi_core.c | 1 -
+ drivers/mmc/host/tmio_mmc.h          | 1 -
+ drivers/mmc/host/tmio_mmc_core.c     | 8 +-------
+ 3 files changed, 1 insertion(+), 9 deletions(-)
 
 diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index d63aeb35bd0b..24ee8ac1fe21 100644
+index 24ee8ac1fe21..0c9e5e010bda 100644
 --- a/drivers/mmc/host/renesas_sdhi_core.c
 +++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -899,7 +899,7 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+@@ -898,7 +898,6 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 			dev_warn(&host->pdev->dev, "Unknown clock rate for tuning\n");
  
  		host->execute_tuning = renesas_sdhi_execute_tuning;
- 		host->select_tuning = renesas_sdhi_select_tuning;
--		host->check_scc_error = renesas_sdhi_check_scc_error;
-+		host->check_retune = renesas_sdhi_check_scc_error;
+-		host->select_tuning = renesas_sdhi_select_tuning;
+ 		host->check_retune = renesas_sdhi_check_scc_error;
  		host->prepare_hs400_tuning =
  			renesas_sdhi_prepare_hs400_tuning;
- 		host->hs400_downgrade = renesas_sdhi_disable_scc;
 diff --git a/drivers/mmc/host/tmio_mmc.h b/drivers/mmc/host/tmio_mmc.h
-index bfebbe368f02..bdb9973981ff 100644
+index bdb9973981ff..b6fffd3d2650 100644
 --- a/drivers/mmc/host/tmio_mmc.h
 +++ b/drivers/mmc/host/tmio_mmc.h
-@@ -176,7 +176,7 @@ struct tmio_mmc_host {
- 	int (*write16_hook)(struct tmio_mmc_host *host, int addr);
- 	void (*reset)(struct tmio_mmc_host *host);
- 	void (*hw_reset)(struct tmio_mmc_host *host);
--	bool (*check_scc_error)(struct tmio_mmc_host *host);
-+	bool (*check_retune)(struct tmio_mmc_host *host);
+@@ -183,7 +183,6 @@ struct tmio_mmc_host {
+ 	 * and mandatory for SDR104.
+ 	 */
+ 	int (*execute_tuning)(struct tmio_mmc_host *host, u32 opcode);
+-	int (*select_tuning)(struct tmio_mmc_host *host);
  
- 	/*
- 	 * Mandatory callback for tuning to occur which is optional for SDR50
+ 	/* Tuning values: 1 for success, 0 for failure */
+ 	DECLARE_BITMAP(taps, BITS_PER_BYTE * sizeof(long));
 diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-index 593f88cafb6e..3cacb516a66e 100644
+index 3cacb516a66e..aeafa1c68ce2 100644
 --- a/drivers/mmc/host/tmio_mmc_core.c
 +++ b/drivers/mmc/host/tmio_mmc_core.c
-@@ -818,8 +818,8 @@ static void tmio_mmc_finish_request(struct tmio_mmc_host *host)
- 	if (mrq->cmd->error || (mrq->data && mrq->data->error))
- 		tmio_mmc_abort_dma(host);
+@@ -1302,11 +1302,6 @@ int tmio_mmc_host_runtime_suspend(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(tmio_mmc_host_runtime_suspend);
  
--	/* SCC error means retune, but executed command was still successful */
--	if (host->check_scc_error && host->check_scc_error(host))
-+	/* Error means retune, but executed command was still successful */
-+	if (host->check_retune && host->check_retune(host))
- 		mmc_retune_needed(host->mmc);
+-static bool tmio_mmc_can_retune(struct tmio_mmc_host *host)
+-{
+-	return host->tap_num && mmc_can_retune(host->mmc);
+-}
+-
+ int tmio_mmc_host_runtime_resume(struct device *dev)
+ {
+ 	struct tmio_mmc_host *host = dev_get_drvdata(dev);
+@@ -1323,8 +1318,7 @@ int tmio_mmc_host_runtime_resume(struct device *dev)
  
- 	/* If SET_BLOCK_COUNT, continue with main command */
+ 	tmio_mmc_enable_dma(host, true);
+ 
+-	if (tmio_mmc_can_retune(host) && host->select_tuning(host))
+-		dev_warn(&host->pdev->dev, "Tuning selection failed\n");
++	mmc_retune_needed(host->mmc);
+ 
+ 	return 0;
+ }
 -- 
 2.20.1
 
