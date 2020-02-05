@@ -2,172 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD817153120
-	for <lists+linux-mmc@lfdr.de>; Wed,  5 Feb 2020 13:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED52153194
+	for <lists+linux-mmc@lfdr.de>; Wed,  5 Feb 2020 14:18:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728122AbgBEMvg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 5 Feb 2020 07:51:36 -0500
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:43326 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728094AbgBEMvf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 5 Feb 2020 07:51:35 -0500
-Received: by mail-pl1-f195.google.com with SMTP id p11so843146plq.10;
-        Wed, 05 Feb 2020 04:51:33 -0800 (PST)
+        id S1726748AbgBENST (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 5 Feb 2020 08:18:19 -0500
+Received: from mail-lf1-f49.google.com ([209.85.167.49]:47039 "EHLO
+        mail-lf1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726961AbgBENST (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 5 Feb 2020 08:18:19 -0500
+Received: by mail-lf1-f49.google.com with SMTP id z26so1437411lfg.13
+        for <linux-mmc@vger.kernel.org>; Wed, 05 Feb 2020 05:18:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :in-reply-to:references;
-        bh=z2rCwKhMPk5QQnDbc8O1zs9yu0JRS1NKgiYNty4j9ao=;
-        b=X931Yhmlt5lykJmxHSlQn3LYRIUeitZYLnkp5ML0fo7ckqAoWt/tL0qCCLVzoyj4R2
-         4AfbRO5ga4ri3gN8/w77nULBeLd0GjHz+SkMPLgllyxl8I0khXZKKzV+ym/NLnjuBU6t
-         4ypn3cfgezDr9aqrMkiEv08OPrn7n5la/xbqov5TMWFG8JXaxDIenETzT35qv71bQqPK
-         3U1ImKu1C9TOQphMuge5niN4ld5uF3v2JcQH3BUUZekyLV9xBnU3bXssE6D8FYUwiWnG
-         9M5YkP89Zof8L7v9srlmRqyBXpsrDj3rc2/w9oKvSh6oxJYjE8B8makLJfZUHCLyRAGe
-         azXg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=EIOMLYphMJpNA+7/cnaMKo4NunF1Filqifru8THYp3U=;
+        b=sTE7J6DQIsGv0QoWvKETreLGv/z9NWRkt1ySeLStEXXNquRqTGI5xQkolWVEXK4XSN
+         2anrWWTg3/tF8e2gsqsz2I2lAHrkPDYr8dpECqPq+ZpDlZRVGeMJVX6+nLfTaA/RBvZc
+         2kWvSUP3ojXsh0P+Fo7p71Y3nu1cTQcQqys7obQzxOOweeJhPzzaJwpFgVovRiqzqDN+
+         cDi9BcXQ8+zVYP0S95/zt/UyD1QRCkigSM+bg3vg001YMpTtGXERdnWI7grWJJfEM7Vj
+         gyTRSjEIp1vyb6XGWiarxzW6/VNikU349eFyxeK40J236APIetGGBWtl5vncRIY6O+u0
+         TLjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:in-reply-to:references;
-        bh=z2rCwKhMPk5QQnDbc8O1zs9yu0JRS1NKgiYNty4j9ao=;
-        b=t4Gl94Z/xVO8GNdUmxQusbUYZNtyMsgiD23aOXB7DL3hi1CYekGWytJAFZdkys9+8h
-         OAQu12nKq4rCoJs0RMN22KCOqlH8NyFeq1MKH46bj0T7X2sMY6dCetOc2C94wo44avrN
-         j6h9a5tDHZEz1FL/j5AWatvc8/jVFc6WY2HxnsM0X+elqHszyGrZk1svW95JcJ84tplS
-         viqlVT8sv7TBIjBxdzJKWekT1n0jq+NKfjvWnXBvpQodStDGaJYQ4/UW4qlAf0EIczQN
-         PGu7XCFsn1AfjGLeTN3wfTKB/f9TkU5GFPtNmt8tA0TxnJCIFoFr/GJgyNhnOqqolVB+
-         k0Hw==
-X-Gm-Message-State: APjAAAVIIGdKFsU27Hc5Bc4fZwtk89sBpvKvL4r5PSQyCJl5MhArHh1J
-        GDuZYdfQX0hZviEurKvo+88=
-X-Google-Smtp-Source: APXvYqxZ4IRD5HLednMl/VFLWobo0wrxj9CQmKQi4CyUuhEgfruu+Gnwt2VtBAlL08UlIjC42Iotkg==
-X-Received: by 2002:a17:902:24:: with SMTP id 33mr34959814pla.91.1580907093379;
-        Wed, 05 Feb 2020 04:51:33 -0800 (PST)
-Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id y127sm22864784pfg.22.2020.02.05.04.51.30
-        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 05 Feb 2020 04:51:32 -0800 (PST)
-From:   Baolin Wang <baolin.wang7@gmail.com>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        asutoshd@codeaurora.org
-Cc:     orsonzhai@gmail.com, zhang.lyra@gmail.com, arnd@arndb.de,
-        linus.walleij@linaro.org, baolin.wang@linaro.org,
-        baolin.wang7@gmail.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v8 5/5] mmc: host: sdhci-sprd: Add software queue support
-Date:   Wed,  5 Feb 2020 20:50:32 +0800
-Message-Id: <6e11c5faeecafc2ef817c14268577925eee0bd4e.1580894083.git.baolin.wang7@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <cover.1580894083.git.baolin.wang7@gmail.com>
-References: <cover.1580894083.git.baolin.wang7@gmail.com>
-In-Reply-To: <cover.1580894083.git.baolin.wang7@gmail.com>
-References: <cover.1580894083.git.baolin.wang7@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=EIOMLYphMJpNA+7/cnaMKo4NunF1Filqifru8THYp3U=;
+        b=QO8OwiWaE19ECikNXzJIDvT9TT3uPC0Owdd4POX4IMesvuBaA9uTg/PPAlKb2YB9Vb
+         AwrX8LsMHBjdij9l5fA6uKtCqpkYoGTpVx4fEtymq61Hrh4w+e3BFHpKbizd7u/UvYfX
+         9R0753/b+V/sWeCunAiLphd9HKkkBNlIHFzbY3dJdYAoprax9xvPFw7ftLxnTZ+iLiZ0
+         WPiZwRP7+mQZVASM8UgWjjtlJ5yptHbqzn2+bFxhZyuWYAJCZEjut8xcrbvduP5tOwQ1
+         RHNGmr6QqvjttqAt9P0afyQ3DnquDBbAwPpkl4/TTI6kgXvsyS/syK3HqNQd1FjPx9/X
+         bbGg==
+X-Gm-Message-State: APjAAAUAAAiTfOL/XdUbj/q81nH5+fTcBS+KkGN4TbPM5lS4VrAOl8Lv
+        6HHHuV3ou4cZVLpgurzF2joQiUi6889OzEAxFsU=
+X-Google-Smtp-Source: APXvYqz7hg238lNYDFj0O0BaiuXgC/SGZ9yyGOhY3T6SKPMpUxvxkI0EumUC/b9aAUMMrIH1Q4mOqdZDvkQKc2KYa6I=
+X-Received: by 2002:a19:3f51:: with SMTP id m78mr17503275lfa.70.1580908696708;
+ Wed, 05 Feb 2020 05:18:16 -0800 (PST)
+MIME-Version: 1.0
+References: <CAOMZO5DMMCZPfwNbTaG8_iQhWg2K1XeO719nSA0Gsf2ywHy4jQ@mail.gmail.com>
+ <20200205092653.GB2737@bogon.m.sigxcpu.org>
+In-Reply-To: <20200205092653.GB2737@bogon.m.sigxcpu.org>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Wed, 5 Feb 2020 10:18:10 -0300
+Message-ID: <CAOMZO5AAzK0QprHpKHaFOANjspJKd_4YaoMqAoGYG4KftcyiYw@mail.gmail.com>
+Subject: Re: sdhci timeout on imx8mq
+To:     =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Baolin Wang <baolin.wang@linaro.org>
+Hi Guido,
 
-Add software queue support to improve the performance.
+On Wed, Feb 5, 2020 at 6:26 AM Guido G=C3=BCnther <agx@sigxcpu.org> wrote:
 
-Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-Signed-off-by: Baolin Wang <baolin.wang7@gmail.com>
----
- drivers/mmc/host/Kconfig      |    1 +
- drivers/mmc/host/sdhci-sprd.c |   28 ++++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+> I've seen the same occasionally on the librem 5 with older linux-next as
+> well. Do you have a good reproducer?
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 65d3966..3ea45be 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -645,6 +645,7 @@ config MMC_SDHCI_SPRD
- 	depends on ARCH_SPRD
- 	depends on MMC_SDHCI_PLTFM
- 	select MMC_SDHCI_IO_ACCESSORS
-+	select MMC_HSQ
- 	help
- 	  This selects the SDIO Host Controller in Spreadtrum
- 	  SoCs, this driver supports R11(IP version: R11P0).
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index d07b979..d346223 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -19,6 +19,7 @@
- #include <linux/slab.h>
- 
- #include "sdhci-pltfm.h"
-+#include "mmc_hsq.h"
- 
- /* SDHCI_ARGUMENT2 register high 16bit */
- #define SDHCI_SPRD_ARG2_STUFF		GENMASK(31, 16)
-@@ -379,6 +380,16 @@ static unsigned int sdhci_sprd_get_ro(struct sdhci_host *host)
- 	return 0;
- }
- 
-+static void sdhci_sprd_request_done(struct sdhci_host *host,
-+				    struct mmc_request *mrq)
-+{
-+	/* Validate if the request was from software queue firstly. */
-+	if (mmc_hsq_finalize_request(host->mmc, mrq))
-+		return;
-+
-+	 mmc_request_done(host->mmc, mrq);
-+}
-+
- static struct sdhci_ops sdhci_sprd_ops = {
- 	.read_l = sdhci_sprd_readl,
- 	.write_l = sdhci_sprd_writel,
-@@ -392,6 +403,7 @@ static unsigned int sdhci_sprd_get_ro(struct sdhci_host *host)
- 	.hw_reset = sdhci_sprd_hw_reset,
- 	.get_max_timeout_count = sdhci_sprd_get_max_timeout_count,
- 	.get_ro = sdhci_sprd_get_ro,
-+	.request_done = sdhci_sprd_request_done,
- };
- 
- static void sdhci_sprd_request(struct mmc_host *mmc, struct mmc_request *mrq)
-@@ -521,6 +533,7 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- {
- 	struct sdhci_host *host;
- 	struct sdhci_sprd_host *sprd_host;
-+	struct mmc_hsq *hsq;
- 	struct clk *clk;
- 	int ret = 0;
- 
-@@ -631,6 +644,18 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 
- 	sprd_host->flags = host->flags;
- 
-+	hsq = devm_kzalloc(&pdev->dev, sizeof(*hsq), GFP_KERNEL);
-+	if (!hsq) {
-+		ret = -ENOMEM;
-+		goto err_cleanup_host;
-+	}
-+
-+	ret = mmc_hsq_init(hsq, host->mmc);
-+	if (ret)
-+		goto err_cleanup_host;
-+
-+	host->always_defer_done = true;
-+
- 	ret = __sdhci_add_host(host);
- 	if (ret)
- 		goto err_cleanup_host;
-@@ -689,6 +714,7 @@ static int sdhci_sprd_runtime_suspend(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
- 
-+	mmc_hsq_suspend(host->mmc);
- 	sdhci_runtime_suspend_host(host);
- 
- 	clk_disable_unprepare(sprd_host->clk_sdio);
-@@ -717,6 +743,8 @@ static int sdhci_sprd_runtime_resume(struct device *dev)
- 		goto clk_disable;
- 
- 	sdhci_runtime_resume_host(host, 1);
-+	mmc_hsq_resume(host->mmc);
-+
- 	return 0;
- 
- clk_disable:
--- 
-1.7.9.5
+Yes, with linux-next I always get this timeout by just booting the
+kernel and waiting 1 or 2 minutes without any activity.
 
+Regards,
+
+Fabio Estevam
