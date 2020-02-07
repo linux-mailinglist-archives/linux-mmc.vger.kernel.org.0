@@ -2,118 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCF0E155851
-	for <lists+linux-mmc@lfdr.de>; Fri,  7 Feb 2020 14:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A5081559EC
+	for <lists+linux-mmc@lfdr.de>; Fri,  7 Feb 2020 15:46:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726899AbgBGNWt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 7 Feb 2020 08:22:49 -0500
-Received: from alexa-out-blr-01.qualcomm.com ([103.229.18.197]:46541 "EHLO
-        alexa-out-blr-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726674AbgBGNWs (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Feb 2020 08:22:48 -0500
+        id S1727114AbgBGOpv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 7 Feb 2020 09:45:51 -0500
+Received: from alexa-out-blr-02.qualcomm.com ([103.229.18.198]:2101 "EHLO
+        alexa-out-blr-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727065AbgBGOpv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Feb 2020 09:45:51 -0500
 Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
-  by alexa-out-blr-01.qualcomm.com with ESMTP/TLS/AES256-SHA; 07 Feb 2020 18:52:45 +0530
-Received: from c-sbhanu-linux.qualcomm.com ([10.242.50.201])
-  by ironmsg01-blr.qualcomm.com with ESMTP; 07 Feb 2020 18:52:16 +0530
-Received: by c-sbhanu-linux.qualcomm.com (Postfix, from userid 2344807)
-        id 9F5A839EA; Fri,  7 Feb 2020 18:52:14 +0530 (IST)
-From:   Shaik Sajida Bhanu <sbhanu@codeaurora.org>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        robh+dt@kernel.org, mka@chromium.org
-Cc:     asutoshd@codeaurora.org, stummala@codeaurora.org,
-        sayalil@codeaurora.org, cang@codeaurora.org,
-        rampraka@codeaurora.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, agross@kernel.org,
-        bjorn.andersson@linaro.org,
-        Shaik Sajida Bhanu <sbhanu@codeaurora.org>
-Subject: [PATCH V2] mmc: sdhci-msm: Update system suspend/resume callbacks of sdhci-msm platform driver.
-Date:   Fri,  7 Feb 2020 18:50:50 +0530
-Message-Id: <1581081650-22228-1-git-send-email-sbhanu@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+  by alexa-out-blr-02.qualcomm.com with ESMTP/TLS/AES256-SHA; 07 Feb 2020 20:15:45 +0530
+Received: from c-ppvk-linux.qualcomm.com ([10.206.24.34])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 07 Feb 2020 20:15:11 +0530
+Received: by c-ppvk-linux.qualcomm.com (Postfix, from userid 2304101)
+        id DE9F947EB; Fri,  7 Feb 2020 20:15:10 +0530 (IST)
+From:   Pradeep P V K <ppvk@codeaurora.org>
+To:     adrian.hunter@intel.com, robh+dt@kernel.org,
+        ulf.hansson@linaro.org, asutoshd@codeaurora.org,
+        stummala@codeaurora.org, sayalil@codeaurora.org,
+        rampraka@codeaurora.org, vbadigan@codeaurora.org, sboyd@kernel.org,
+        georgi.djakov@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        agross@kernel.org, linux-mmc-owner@vger.kernel.org,
+        mka@chromium.org, Pradeep P V K <ppvk@codeaurora.org>
+Subject: [RFC v3 0/2] Add SDHC interconnect bandwidth scaling
+Date:   Fri,  7 Feb 2020 20:14:53 +0530
+Message-Id: <1581086695-16645-1-git-send-email-ppvk@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The existing suspend/resume callbacks of sdhci-msm driver are just
-gating/un-gating the clocks. During suspend cycle more can be done
-like disabling controller, interrupts and card detection.
+Add interconnect bandwidths for SDHC driver using OPP framework that
+is required by SDHC driver based on the clock frequency and bus width
+of the card. Otherwise, the system clocks may run at minimum clock
+speed and thus affecting the performance.
 
-So updating the system pm callbacks for performing these extra
-actions besides controlling the clocks.
 
-Signed-off-by: Shaik Sajida Bhanu <sbhanu@codeaurora.org>
+This change is based on Georgi Djakov [RFC]
+(https://lkml.org/lkml/2018/10/11/499) and
 
-Changes since V1:
-	Addressed review comments
----
- drivers/mmc/host/sdhci-msm.c | 50 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 48 insertions(+), 2 deletions(-)
+Saravana Kannan [PATCH v6]
+(https://lkml.org/lkml/2019/12/6/740)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index c3a160c..e30c8a3 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -2159,9 +2159,55 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
- 	return 0;
- }
- 
-+static int sdhci_msm_suspend(struct device *dev)
-+{
-+	struct sdhci_host *host = dev_get_drvdata(dev);
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	int ret;
-+
-+	if (host->mmc->caps2 & MMC_CAP2_CQE) {
-+		ret = cqhci_suspend(host->mmc);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = sdhci_suspend_host(host);
-+	if (ret)
-+		return ret;
-+	/* Disable pwr-irq since SDHC would be inactive */
-+	disable_irq(msm_host->pwr_irq);
-+
-+	return pm_runtime_force_suspend(dev);
-+}
-+
-+static int sdhci_msm_resume(struct device *dev)
-+{
-+	struct sdhci_host *host = dev_get_drvdata(dev);
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	int ret;
-+
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret)
-+		return ret;
-+
-+	/* Re-enable pwr irq before SDHC gets reset */
-+	enable_irq(msm_host->pwr_irq);
-+
-+	ret = sdhci_resume_host(host);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (host->mmc->caps2 & MMC_CAP2_CQE)
-+		ret = cqhci_resume(host->mmc);
-+
-+	return ret;
-+}
-+
- static const struct dev_pm_ops sdhci_msm_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				pm_runtime_force_resume)
-+	SET_SYSTEM_SLEEP_PM_OPS(sdhci_msm_suspend,
-+				sdhci_msm_resume)
- 	SET_RUNTIME_PM_OPS(sdhci_msm_runtime_suspend,
- 			   sdhci_msm_runtime_resume,
- 			   NULL)
+change from RFC v2 -> v3 changes:
+- Modified interconnect bandwidth support using OPP framework.
+- Addressed review comments on v2.
+
+Pradeep P V K (2):
+  mmc: sdhci-msm: Add interconnect bus bandwidth scaling support
+  dt-bindings: mmc: sdhci-msm: Add interconnect BW scaling strings
+
+ .../devicetree/bindings/mmc/sdhci-msm.txt          |  18 ++
+ drivers/mmc/host/sdhci-msm.c                       | 251 ++++++++++++++++++++-
+ 2 files changed, 265 insertions(+), 4 deletions(-)
+
 -- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member 
-of Code Aurora Forum, hosted by The Linux Foundation
+1.9.1
 
