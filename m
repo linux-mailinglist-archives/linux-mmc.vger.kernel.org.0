@@ -2,90 +2,71 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 396911559EA
-	for <lists+linux-mmc@lfdr.de>; Fri,  7 Feb 2020 15:46:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4882D155FD6
+	for <lists+linux-mmc@lfdr.de>; Fri,  7 Feb 2020 21:42:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727011AbgBGOpt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 7 Feb 2020 09:45:49 -0500
-Received: from alexa-out-blr-02.qualcomm.com ([103.229.18.198]:2101 "EHLO
-        alexa-out-blr-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726867AbgBGOps (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Feb 2020 09:45:48 -0500
-Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
-  by alexa-out-blr-02.qualcomm.com with ESMTP/TLS/AES256-SHA; 07 Feb 2020 20:15:45 +0530
-Received: from c-ppvk-linux.qualcomm.com ([10.206.24.34])
-  by ironmsg01-blr.qualcomm.com with ESMTP; 07 Feb 2020 20:15:18 +0530
-Received: by c-ppvk-linux.qualcomm.com (Postfix, from userid 2304101)
-        id 587ED47EB; Fri,  7 Feb 2020 20:15:17 +0530 (IST)
-From:   Pradeep P V K <ppvk@codeaurora.org>
-To:     adrian.hunter@intel.com, robh+dt@kernel.org,
-        ulf.hansson@linaro.org, asutoshd@codeaurora.org,
-        stummala@codeaurora.org, sayalil@codeaurora.org,
-        rampraka@codeaurora.org, vbadigan@codeaurora.org, sboyd@kernel.org,
-        georgi.djakov@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        agross@kernel.org, linux-mmc-owner@vger.kernel.org,
-        mka@chromium.org, Pradeep P V K <ppvk@codeaurora.org>
-Subject: [RFC v3 2/2] dt-bindings: mmc: sdhci-msm: Add interconnect BW scaling strings
-Date:   Fri,  7 Feb 2020 20:14:55 +0530
-Message-Id: <1581086695-16645-3-git-send-email-ppvk@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1581086695-16645-1-git-send-email-ppvk@codeaurora.org>
-References: <1581086695-16645-1-git-send-email-ppvk@codeaurora.org>
+        id S1727561AbgBGUmN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 7 Feb 2020 15:42:13 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:42365 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727555AbgBGUmM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Feb 2020 15:42:12 -0500
+Received: by mail-oi1-f193.google.com with SMTP id j132so3277892oih.9
+        for <linux-mmc@vger.kernel.org>; Fri, 07 Feb 2020 12:42:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=YPZJJy834hUJnz7pionGH11ZciL6RrbrPELuvEefyNE4m32c/3BRL7jS6BX3GTRbjW
+         A7PT2XuyoA0DKIOAMXBVLqZDks+EHHVySpQpjboWji0NFQ79t34wrEkdhJ/7mvVnPfcg
+         BPXVuIvRzTGxR9yBINGUBTO7OS1IgYRxQvNJFyy4DMElAWJNigH6Lfy9a++UWnjsZV7K
+         NbU0I3Vhb1neiaj+I96jGm3rPYvdHpbUTw6COrl+fTWEjyjGSvKY6qdov3nXpFudxXNb
+         5mDt4W3AkewRXnJYuxGyMUAK1lkfrMP5hrIUalSBsJd0qxRrK90fgDoK4eboWAVqoACA
+         vQPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=l0QUdhqHW+cgP/g9TPl3D+X6Y7YHp5/Rhbw94HATJahDDGL6sRYI0O3BWkkl4UO7vP
+         xaGVw5jFh4/uttxwixBXWKQ2CTPDTbjGrxv5crpbZQd9ciBko+wINtpAl7DiP3ZLjjii
+         3xdUJwP1WdHmqc/7AGtPd0h1JcIypWWfDz9w6su+fN1lu9+rsOeKlQlqTsQmrE8zWDl0
+         wu1t2/UmTzUAxmnkf9XZsb1ZADVxXT9+vsVvNNbOYU4AircSXCktnMN7qmR+Y9dGjAAk
+         1/1mo7mY/+ts04xc2ZgICAHtjUYoh9OOYxUEBX+lSwB1qIFH32Uq1KOCZnMjEPW5J+X2
+         SDBg==
+X-Gm-Message-State: APjAAAXas4Ugpl4Dr+iCUEUGwDL64LTn6cZuynHJaKEFN8xqkA3+dfJr
+        RldmjZjjfgHOkjG8hrZV/vlRbX7rhEMLzl1j2x+kwjeu+jFSyg==
+X-Google-Smtp-Source: APXvYqwSeJkRlkGgNiWsW1NpF1DiAIFzsJveh9+wRvoFwY/EgylY09EfD37WjburJ+wD5ZF6dcgpmVqlX+UTGTmHly0=
+X-Received: by 2002:aca:c7cb:: with SMTP id x194mr3327726oif.157.1581108131844;
+ Fri, 07 Feb 2020 12:42:11 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:42:11 -0800 (PST)
+Reply-To: auch197722@gmail.com
+From:   "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
+Date:   Fri, 7 Feb 2020 15:42:11 -0500
+Message-ID: <CAPNvSTgeN84MC4a+RJ1wBioXqDfarTE4_m4nbA9Dm=S8bmF0WQ@mail.gmail.com>
+Subject: LETTER OF INQUIRY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add interconnect bandwidth scaling supported strings for qcom-sdhci
-controller.
+Good Day,
 
-changes from RFC v2 -> v3:
-- Addressed review comments on v2.
-- Modified interconnect bandwidth support using OPP framework.
+I work as a clerk in a Bank here in Nigeria, I have a very
+confidential Business Proposition for you. There is a said amount of
+money floating in the bank unclaimed, belonging to the bank Foreign
+customer who die with his family in the Ethiopian Airline crash of
+March 11, 2019.
 
-Signed-off-by: Pradeep P V K <ppvk@codeaurora.org>
----
- Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+I seek your good collaboration to move the fund for our benefit. we
+have agreed that 40% be yours once you help claim.
 
-diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-index 7ee639b..cbe97b8 100644
---- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-+++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-@@ -40,6 +40,21 @@ Required properties:
- 	"cal"	- reference clock for RCLK delay calibration (optional)
- 	"sleep"	- sleep clock for RCLK delay calibration (optional)
- 
-+Optional Properties:
-+* Following bus parameters are required for interconnect bandwidth scaling:
-+- interconnects: Pairs of phandles and interconnect provider specifier
-+		 to denote the edge source and destination ports of
-+		 the interconnect path.
-+
-+- interconnect-names: For sdhc, we have two main paths.
-+		1. Data path : sdhc to ddr
-+		2. Config path : cpu to sdhc
-+		For Data interconnect path the name supposed to be
-+		is "sdhc-ddr" and for config interconnect path it is
-+		"cpu-sdhc".
-+		Please refer to Documentation/devicetree/bindings/
-+		interconnect/ for more details.
-+
- Example:
- 
- 	sdhc_1: sdhci@f9824900 {
-@@ -57,6 +72,9 @@ Example:
- 
- 		clocks = <&gcc GCC_SDCC1_APPS_CLK>, <&gcc GCC_SDCC1_AHB_CLK>;
- 		clock-names = "core", "iface";
-+		interconnects = <&qnoc MASTER_SDCC_ID &qnoc SLAVE_DDR_ID>,
-+				<&qnoc MASTER_CPU_ID &qnoc SLAVE_SDCC_ID>;
-+		interconnect-names = "sdhc-ddr","cpu-sdhc";
- 	};
- 
- 	sdhc_2: sdhci@f98a4900 {
--- 
-1.9.1
+Do get back to with 1) Your Full Name: (2) Residential Address: (3)
+Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
+funds.
 
+Regards
+Theophilus Odadudu
