@@ -2,31 +2,31 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EDF2157140
-	for <lists+linux-mmc@lfdr.de>; Mon, 10 Feb 2020 09:55:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00D48157143
+	for <lists+linux-mmc@lfdr.de>; Mon, 10 Feb 2020 09:55:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726968AbgBJIz2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 10 Feb 2020 03:55:28 -0500
-Received: from inva021.nxp.com ([92.121.34.21]:53306 "EHLO inva021.nxp.com"
+        id S1727121AbgBJIza (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 10 Feb 2020 03:55:30 -0500
+Received: from inva021.nxp.com ([92.121.34.21]:53328 "EHLO inva021.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727121AbgBJIz2 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 10 Feb 2020 03:55:28 -0500
+        id S1727431AbgBJIza (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 10 Feb 2020 03:55:30 -0500
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 8452821B030;
-        Mon, 10 Feb 2020 09:55:26 +0100 (CET)
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 696FE21AFF7;
+        Mon, 10 Feb 2020 09:55:27 +0100 (CET)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 10B0321AFF7;
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AF69721B033;
         Mon, 10 Feb 2020 09:55:23 +0100 (CET)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 89FF7402DF;
-        Mon, 10 Feb 2020 16:55:18 +0800 (SGT)
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 310E5402F3;
+        Mon, 10 Feb 2020 16:55:19 +0800 (SGT)
 From:   haibo.chen@nxp.com
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
         linux-mmc@vger.kernel.org
 Cc:     linux-imx@nxp.com, haibo.chen@nxp.com, linus.walleij@linaro.org
-Subject: [PATCH v3 08/14] mmc: sdhci-esdhc-imx: optimize the strobe dll setting
-Date:   Mon, 10 Feb 2020 16:49:51 +0800
-Message-Id: <1581324597-31031-3-git-send-email-haibo.chen@nxp.com>
+Subject: [PATCH v3 09/14] mmc: sdhci-esdhc-imx: add flag ESDHC_FLAG_BROKEN_AUTO_CMD23
+Date:   Mon, 10 Feb 2020 16:49:52 +0800
+Message-Id: <1581324597-31031-4-git-send-email-haibo.chen@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1581324597-31031-1-git-send-email-haibo.chen@nxp.com>
 References: <1581324597-31031-1-git-send-email-haibo.chen@nxp.com>
@@ -38,55 +38,120 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Haibo Chen <haibo.chen@nxp.com>
 
-After set the STROBE SLV delay target value, it need to wait some
-time to let the usdhc lock the REF and SLV clock. In normal case,
-1~2us is enough for imx8/imx6 and imx7d, and 4~5us is enough for
-imx7ulp, but when do reboot stress test or do the bind/unbind stress
-test, sometimes need to wait about 10us to get the status lock.
+Since L4.15, community involve the commit 105819c8a545 ("mmc: core: use mrq->sbc
+when sending CMD23 for RPMB"), let the usdhc to decide whether to use ACMD23 for
+RPMB. This CMD23 for RPMB need to set the bit 31 to its argument, if not, the
+RPMB write operation will return general fail.
 
-This patch optimize delay handle method, only print the warning
-message if the status is still not lock after 1ms delay.
+According to the sdhci logic, SDMA mode will disable the ACMD23, and only in
+ADMA mode, it will chose to use ACMD23 if the host support. But according to
+debug, and confirm with IC, the imx6qpdl/imx6sx/imx6sl/imx7d do not support
+the ACMD23 feature completely. These SoCs only use the 16 bit block count of
+the register 0x4 (BLOCK_ATT) as the CMD23's argument in ACMD23 mode, which
+means it will ignore the upper 16 bit of the CMD23's argument. This will block
+the reliable write operation in RPMB, because RPMB reliable write need to set
+the bit31 of the CMD23's argument. This is the hardware limitation. So for
+imx6qpdl/imx6sx/imx6sl/imx7d, it need to broke the ACMD23 for eMMC, SD card do
+not has this limitation, because SD card do not support reliable write.
+
+For imx6ul/imx6ull/imx6sll/imx7ulp/imx8, it support the ACMD23 completely, it
+change to use the 0x0 register (DS_ADDR) to put the CMD23's argument in ADMA mode.
+
+This patch add a new flag ESDHC_FLAG_BROKEN_AUTO_CMD23, and add this flag to
+imx6q/imx6sx/imx6sl/imx7d, and due to the imx6sll share the same compatible string
+with imx6sx before, and imx6sll do not has this limitation, so add a new compatible
+string for imx6sll.
 
 Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 34 ++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 6ca01b766604..1ec35cc45fc5 100644
+index 1ec35cc45fc5..98b91b6ff2a9 100644
 --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -1019,6 +1019,7 @@ static void esdhc_set_strobe_dll(struct sdhci_host *host)
- 	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
- 	u32 strobe_delay;
- 	u32 v;
-+	int ret;
+@@ -166,6 +166,18 @@
+ #define ESDHC_FLAG_STATE_LOST_IN_LPMODE		BIT(14)
+ /* The IP lost clock rate in PM_RUNTIME */
+ #define ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME	BIT(15)
++/*
++ * The IP do not support the ACMD23 feature completely when use ADMA mode.
++ * In ADMA mode, it only use the 16 bit block count of the register 0x4
++ * (BLOCK_ATT) as the CMD23's argument for ACMD23 mode, which means it will
++ * ignore the upper 16 bit of the CMD23's argument. This will block the reliable
++ * write operation in RPMB, because RPMB reliable write need to set the bit31
++ * of the CMD23's argument.
++ * imx6qpdl/imx6sx/imx6sl/imx7d has this limitation only for ADMA mode, SDMA
++ * do not has this limitation. so when these SoC use ADMA mode, it need to
++ * disable the ACMD23 feature.
++ */
++#define ESDHC_FLAG_BROKEN_AUTO_CMD23	BIT(16)
  
- 	/* disable clock before enabling strobe dll */
- 	writel(readl(host->ioaddr + ESDHC_VENDOR_SPEC) &
-@@ -1044,15 +1045,13 @@ static void esdhc_set_strobe_dll(struct sdhci_host *host)
- 		ESDHC_STROBE_DLL_CTRL_SLV_UPDATE_INT_DEFAULT |
- 		(strobe_delay << ESDHC_STROBE_DLL_CTRL_SLV_DLY_TARGET_SHIFT);
- 	writel(v, host->ioaddr + ESDHC_STROBE_DLL_CTRL);
--	/* wait 5us to make sure strobe dll status register stable */
--	udelay(5);
--	v = readl(host->ioaddr + ESDHC_STROBE_DLL_STATUS);
--	if (!(v & ESDHC_STROBE_DLL_STS_REF_LOCK))
--		dev_warn(mmc_dev(host->mmc),
--		"warning! HS400 strobe DLL status REF not lock!\n");
--	if (!(v & ESDHC_STROBE_DLL_STS_SLV_LOCK))
+ struct esdhc_soc_data {
+ 	u32 flags;
+@@ -188,21 +200,30 @@ static const struct esdhc_soc_data esdhc_imx53_data = {
+ };
+ 
+ static const struct esdhc_soc_data usdhc_imx6q_data = {
+-	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING,
++	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
++			| ESDHC_FLAG_BROKEN_AUTO_CMD23,
+ };
+ 
+ static const struct esdhc_soc_data usdhc_imx6sl_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_ERR004536
+-			| ESDHC_FLAG_HS200,
++			| ESDHC_FLAG_HS200
++			| ESDHC_FLAG_BROKEN_AUTO_CMD23,
+ };
+ 
+-static const struct esdhc_soc_data usdhc_imx6sx_data = {
++static const struct esdhc_soc_data usdhc_imx6sll_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+ 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
+ };
+ 
++static const struct esdhc_soc_data usdhc_imx6sx_data = {
++	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
++			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
++			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
++			| ESDHC_FLAG_BROKEN_AUTO_CMD23,
++};
 +
-+	/* wait max 50us to get the REF/SLV lock */
-+	ret = readl_poll_timeout(host->ioaddr + ESDHC_STROBE_DLL_STATUS, v,
-+		((v & ESDHC_STROBE_DLL_STS_REF_LOCK) && (v & ESDHC_STROBE_DLL_STS_SLV_LOCK)), 1, 50);
-+	if (ret == -ETIMEDOUT)
- 		dev_warn(mmc_dev(host->mmc),
--		"warning! HS400 strobe DLL status SLV not lock!\n");
-+		"warning! HS400 strobe DLL status REF/SLV not lock in 50us, STROBE DLL status is %x!\n", v);
- }
+ static const struct esdhc_soc_data usdhc_imx6ull_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+@@ -214,7 +235,8 @@ static const struct esdhc_soc_data usdhc_imx7d_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+ 			| ESDHC_FLAG_HS400
+-			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
++			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
++			| ESDHC_FLAG_BROKEN_AUTO_CMD23,
+ };
  
- static void esdhc_reset_tuning(struct sdhci_host *host)
+ static struct esdhc_soc_data usdhc_imx7ulp_data = {
+@@ -276,6 +298,7 @@ static const struct of_device_id imx_esdhc_dt_ids[] = {
+ 	{ .compatible = "fsl,imx53-esdhc", .data = &esdhc_imx53_data, },
+ 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data, },
+ 	{ .compatible = "fsl,imx6sl-usdhc", .data = &usdhc_imx6sl_data, },
++	{ .compatible = "fsl,imx6sll-usdhc", .data = &usdhc_imx6sll_data, },
+ 	{ .compatible = "fsl,imx6q-usdhc", .data = &usdhc_imx6q_data, },
+ 	{ .compatible = "fsl,imx6ull-usdhc", .data = &usdhc_imx6ull_data, },
+ 	{ .compatible = "fsl,imx7d-usdhc", .data = &usdhc_imx7d_data, },
+@@ -1560,6 +1583,9 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_HS400)
+ 		host->quirks2 |= SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400;
+ 
++	if (imx_data->socdata->flags & ESDHC_FLAG_BROKEN_AUTO_CMD23)
++		host->quirks2 |= SDHCI_QUIRK2_ACMD23_BROKEN;
++
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_HS400_ES) {
+ 		host->mmc->caps2 |= MMC_CAP2_HS400_ES;
+ 		host->mmc_host_ops.hs400_enhanced_strobe =
 -- 
 2.17.1
 
