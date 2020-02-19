@@ -2,31 +2,31 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C42163F34
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Feb 2020 09:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D261A163F33
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Feb 2020 09:32:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726514AbgBSIbu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        id S1725904AbgBSIbu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
         Wed, 19 Feb 2020 03:31:50 -0500
-Received: from inva021.nxp.com ([92.121.34.21]:38450 "EHLO inva021.nxp.com"
+Received: from inva021.nxp.com ([92.121.34.21]:38464 "EHLO inva021.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726495AbgBSIbu (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        id S1726514AbgBSIbu (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
         Wed, 19 Feb 2020 03:31:50 -0500
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D248A203957;
-        Wed, 19 Feb 2020 09:31:47 +0100 (CET)
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 45FBC20054C;
+        Wed, 19 Feb 2020 09:31:48 +0100 (CET)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2F77120054C;
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C8DF4202108;
         Wed, 19 Feb 2020 09:31:44 +0100 (CET)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id AF9EA402E1;
-        Wed, 19 Feb 2020 16:31:39 +0800 (SGT)
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 56491402E2;
+        Wed, 19 Feb 2020 16:31:40 +0800 (SGT)
 From:   haibo.chen@nxp.com
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
         linux-mmc@vger.kernel.org
 Cc:     linux-imx@nxp.com, haibo.chen@nxp.com, linus.walleij@linaro.org
-Subject: [PATCH v4 07/14] mmc: sdhci-esdhc-imx: optimize the clock setting
-Date:   Wed, 19 Feb 2020 16:25:50 +0800
-Message-Id: <1582100757-20683-2-git-send-email-haibo.chen@nxp.com>
+Subject: [PATCH v4 08/14] mmc: sdhci-esdhc-imx: optimize the strobe dll setting
+Date:   Wed, 19 Feb 2020 16:25:51 +0800
+Message-Id: <1582100757-20683-3-git-send-email-haibo.chen@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1582100757-20683-1-git-send-email-haibo.chen@nxp.com>
 References: <1582100757-20683-1-git-send-email-haibo.chen@nxp.com>
@@ -38,112 +38,55 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Haibo Chen <haibo.chen@nxp.com>
 
-When force clock off, check the SDOFF of register PRSSTAT to make sure
-the clock is gate off. Before force clock on, check the SDSTB of register
-PRSSTAT to make sure the clock is stable, this will eliminate the clock
-glitch.
+After set the STROBE SLV delay target value, it need to wait some
+time to let the usdhc lock the REF and SLV clock. In normal case,
+1~2us is enough for imx8/imx6 and imx7d, and 4~5us is enough for
+imx7ulp, but when do reboot stress test or do the bind/unbind stress
+test, sometimes need to wait about 10us to get the status lock.
+
+This patch optimize delay handle method, only print the warning
+message if the status is still not lock after 1ms delay.
 
 Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 24 +++++++++++++++++++++++-
- drivers/mmc/host/sdhci-esdhc.h     |  1 +
- 2 files changed, 24 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 3359153304a3..6ca01b766604 100644
+index 6ca01b766604..1ec35cc45fc5 100644
 --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -9,6 +9,7 @@
-  */
- 
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/clk.h>
-@@ -312,6 +313,17 @@ static inline void esdhc_clrset_le(struct sdhci_host *host, u32 mask, u32 val, i
- 	writel(((readl(base) & ~(mask << shift)) | (val << shift)), base);
- }
- 
-+static inline void esdhc_wait_for_card_clock_gate_off(struct sdhci_host *host)
-+{
-+	u32 present_state;
+@@ -1019,6 +1019,7 @@ static void esdhc_set_strobe_dll(struct sdhci_host *host)
+ 	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+ 	u32 strobe_delay;
+ 	u32 v;
 +	int ret;
-+
-+	ret = readl_poll_timeout(host->ioaddr + ESDHC_PRSSTAT, present_state,
-+				(present_state & ESDHC_CLOCK_GATE_OFF), 2, 100);
-+	if (ret == -ETIMEDOUT)
-+		dev_warn(mmc_dev(host->mmc), "%s: card clock still not gate off in 100us!.\n", __func__);
-+}
-+
- static u32 esdhc_readl_le(struct sdhci_host *host, int reg)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-@@ -525,6 +537,8 @@ static void esdhc_writew_le(struct sdhci_host *host, u16 val, int reg)
- 		else
- 			new_val &= ~ESDHC_VENDOR_SPEC_FRC_SDCLK_ON;
- 		writel(new_val, host->ioaddr + ESDHC_VENDOR_SPEC);
-+		if (!(new_val & ESDHC_VENDOR_SPEC_FRC_SDCLK_ON))
-+			esdhc_wait_for_card_clock_gate_off(host);
- 		return;
- 	case SDHCI_HOST_CONTROL2:
- 		new_val = readl(host->ioaddr + ESDHC_VENDOR_SPEC);
-@@ -753,12 +767,14 @@ static inline void esdhc_pltfm_set_clock(struct sdhci_host *host,
- 	int ddr_pre_div = imx_data->is_ddr ? 2 : 1;
- 	int pre_div = 1;
- 	int div = 1;
-+	int ret;
- 	u32 temp, val;
  
- 	if (esdhc_is_usdhc(imx_data)) {
- 		val = readl(host->ioaddr + ESDHC_VENDOR_SPEC);
- 		writel(val & ~ESDHC_VENDOR_SPEC_FRC_SDCLK_ON,
- 			host->ioaddr + ESDHC_VENDOR_SPEC);
-+		esdhc_wait_for_card_clock_gate_off(host);
- 	}
- 
- 	if (clock == 0) {
-@@ -813,13 +829,18 @@ static inline void esdhc_pltfm_set_clock(struct sdhci_host *host,
- 		| (pre_div << ESDHC_PREDIV_SHIFT));
- 	sdhci_writel(host, temp, ESDHC_SYSTEM_CONTROL);
- 
-+	/* need to wait the bit 3 of the PRSSTAT to be set, make sure card clock is stable */
-+	ret = readl_poll_timeout(host->ioaddr + ESDHC_PRSSTAT, temp,
-+				(temp & ESDHC_CLOCK_STABLE), 2, 100);
-+	if (ret == -ETIMEDOUT)
-+		dev_warn(mmc_dev(host->mmc), "card clock still not stable in 100us!.\n");
-+
- 	if (esdhc_is_usdhc(imx_data)) {
- 		val = readl(host->ioaddr + ESDHC_VENDOR_SPEC);
- 		writel(val | ESDHC_VENDOR_SPEC_FRC_SDCLK_ON,
- 			host->ioaddr + ESDHC_VENDOR_SPEC);
- 	}
- 
--	mdelay(1);
- }
- 
- static unsigned int esdhc_pltfm_get_ro(struct sdhci_host *host)
-@@ -1003,6 +1024,7 @@ static void esdhc_set_strobe_dll(struct sdhci_host *host)
+ 	/* disable clock before enabling strobe dll */
  	writel(readl(host->ioaddr + ESDHC_VENDOR_SPEC) &
- 		~ESDHC_VENDOR_SPEC_FRC_SDCLK_ON,
- 		host->ioaddr + ESDHC_VENDOR_SPEC);
-+	esdhc_wait_for_card_clock_gate_off(host);
+@@ -1044,15 +1045,13 @@ static void esdhc_set_strobe_dll(struct sdhci_host *host)
+ 		ESDHC_STROBE_DLL_CTRL_SLV_UPDATE_INT_DEFAULT |
+ 		(strobe_delay << ESDHC_STROBE_DLL_CTRL_SLV_DLY_TARGET_SHIFT);
+ 	writel(v, host->ioaddr + ESDHC_STROBE_DLL_CTRL);
+-	/* wait 5us to make sure strobe dll status register stable */
+-	udelay(5);
+-	v = readl(host->ioaddr + ESDHC_STROBE_DLL_STATUS);
+-	if (!(v & ESDHC_STROBE_DLL_STS_REF_LOCK))
+-		dev_warn(mmc_dev(host->mmc),
+-		"warning! HS400 strobe DLL status REF not lock!\n");
+-	if (!(v & ESDHC_STROBE_DLL_STS_SLV_LOCK))
++
++	/* wait max 50us to get the REF/SLV lock */
++	ret = readl_poll_timeout(host->ioaddr + ESDHC_STROBE_DLL_STATUS, v,
++		((v & ESDHC_STROBE_DLL_STS_REF_LOCK) && (v & ESDHC_STROBE_DLL_STS_SLV_LOCK)), 1, 50);
++	if (ret == -ETIMEDOUT)
+ 		dev_warn(mmc_dev(host->mmc),
+-		"warning! HS400 strobe DLL status SLV not lock!\n");
++		"warning! HS400 strobe DLL status REF/SLV not lock in 50us, STROBE DLL status is %x!\n", v);
+ }
  
- 	/* force a reset on strobe dll */
- 	writel(ESDHC_STROBE_DLL_CTRL_RESET,
-diff --git a/drivers/mmc/host/sdhci-esdhc.h b/drivers/mmc/host/sdhci-esdhc.h
-index 9289bb4d633e..947212f16bc6 100644
---- a/drivers/mmc/host/sdhci-esdhc.h
-+++ b/drivers/mmc/host/sdhci-esdhc.h
-@@ -31,6 +31,7 @@
- 
- /* Present State Register */
- #define ESDHC_PRSSTAT			0x24
-+#define ESDHC_CLOCK_GATE_OFF		0x00000080
- #define ESDHC_CLOCK_STABLE		0x00000008
- 
- /* Protocol Control Register */
+ static void esdhc_reset_tuning(struct sdhci_host *host)
 -- 
 2.17.1
 
