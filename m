@@ -2,31 +2,31 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A9E8163F3B
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Feb 2020 09:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FD58163F39
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Feb 2020 09:32:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726484AbgBSIb5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 19 Feb 2020 03:31:57 -0500
-Received: from inva020.nxp.com ([92.121.34.13]:50172 "EHLO inva020.nxp.com"
+        id S1726668AbgBSIb4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 19 Feb 2020 03:31:56 -0500
+Received: from inva021.nxp.com ([92.121.34.21]:38518 "EHLO inva021.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726495AbgBSIbz (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 19 Feb 2020 03:31:55 -0500
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 85F671A04FF;
+        id S1726484AbgBSIbx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 19 Feb 2020 03:31:53 -0500
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 1783220054C;
         Wed, 19 Feb 2020 09:31:53 +0100 (CET)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1B8861A054B;
-        Wed, 19 Feb 2020 09:31:50 +0100 (CET)
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9FA5320478F;
+        Wed, 19 Feb 2020 09:31:49 +0100 (CET)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id D99DB402AB;
-        Wed, 19 Feb 2020 16:31:42 +0800 (SGT)
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 814EB402E0;
+        Wed, 19 Feb 2020 16:31:43 +0800 (SGT)
 From:   haibo.chen@nxp.com
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
         linux-mmc@vger.kernel.org
 Cc:     linux-imx@nxp.com, haibo.chen@nxp.com, linus.walleij@linaro.org
-Subject: [PATCH v4 12/14] mmc: sdhci-esdhc-imx: clear DMA_SEL when disable DMA mode
-Date:   Wed, 19 Feb 2020 16:25:55 +0800
-Message-Id: <1582100757-20683-7-git-send-email-haibo.chen@nxp.com>
+Subject: [PATCH v4 13/14] mmc: sdhci-esdhc-imx: restore pin state when resume back
+Date:   Wed, 19 Feb 2020 16:25:56 +0800
+Message-Id: <1582100757-20683-8-git-send-email-haibo.chen@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1582100757-20683-1-git-send-email-haibo.chen@nxp.com>
 References: <1582100757-20683-1-git-send-email-haibo.chen@nxp.com>
@@ -38,50 +38,42 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Haibo Chen <haibo.chen@nxp.com>
 
-Currently, when use standard tuning, driver default disable DMA just before
-send tuning command. But on i.MX8 usdhc, this is not enough. Need also clear
-DMA_SEL. If not, once the DMA_SEL select AMDA2 before, even dma already disabled,
-when send tuning command, usdhc will still prefetch the ADMA script from wrong
-DMA address, then we will see IOMMU report some error which show lack of TLB
-mapping.
+In some low power mode, SoC will lose the pin state, so need to restore
+the pin state when resume back.
 
 Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 106097cbd0d4..786305309eb0 100644
+index 786305309eb0..b38b9d7f0a0d 100644
 --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -639,10 +639,24 @@ static void esdhc_writew_le(struct sdhci_host *host, u16 val, int reg)
- 			 * For DMA access restore the levels to default value.
- 			 */
- 			m = readl(host->ioaddr + ESDHC_WTMK_LVL);
--			if (val & SDHCI_TRNS_DMA)
-+			if (val & SDHCI_TRNS_DMA) {
- 				wml = ESDHC_WTMK_LVL_WML_VAL_DEF;
--			else
-+			} else {
-+				u8 ctrl;
- 				wml = ESDHC_WTMK_LVL_WML_VAL_MAX;
+@@ -1731,7 +1731,11 @@ static int sdhci_esdhc_suspend(struct device *dev)
+ 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
+ 		mmc_retune_needed(host->mmc);
+ 
+-	return sdhci_suspend_host(host);
++	ret = sdhci_suspend_host(host);
++	if (!ret)
++		return pinctrl_pm_select_sleep_state(dev);
 +
-+				/*
-+				 * Since already disable DMA mode, so also need
-+				 * to clear the DMASEL. Otherwise, for standard
-+				 * tuning, when send tuning command, usdhc will
-+				 * still prefetch the ADMA script from wrong
-+				 * DMA address, then we will see IOMMU report
-+				 * some error which show lack of TLB mapping.
-+				 */
-+				ctrl = sdhci_readb(host, SDHCI_HOST_CONTROL);
-+				ctrl &= ~SDHCI_CTRL_DMA_MASK;
-+				sdhci_writeb(host, ctrl, SDHCI_HOST_CONTROL);
-+			}
- 			m &= ~(ESDHC_WTMK_LVL_RD_WML_MASK |
- 			       ESDHC_WTMK_LVL_WR_WML_MASK);
- 			m |= (wml << ESDHC_WTMK_LVL_RD_WML_SHIFT) |
++	return ret;
+ }
+ 
+ static int sdhci_esdhc_resume(struct device *dev)
+@@ -1739,6 +1743,10 @@ static int sdhci_esdhc_resume(struct device *dev)
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	int ret;
+ 
++	ret = pinctrl_pm_select_default_state(dev);
++	if (ret)
++		return ret;
++
+ 	/* re-initialize hw state in case it's lost in low power mode */
+ 	sdhci_esdhc_imx_hwinit(host);
+ 
 -- 
 2.17.1
 
