@@ -2,31 +2,31 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEC3B163F3C
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Feb 2020 09:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94DFC163F37
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Feb 2020 09:32:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726495AbgBSIb7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 19 Feb 2020 03:31:59 -0500
-Received: from inva021.nxp.com ([92.121.34.21]:38518 "EHLO inva021.nxp.com"
+        id S1726791AbgBSIby (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 19 Feb 2020 03:31:54 -0500
+Received: from inva021.nxp.com ([92.121.34.21]:38536 "EHLO inva021.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726683AbgBSIbw (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 19 Feb 2020 03:31:52 -0500
+        id S1726691AbgBSIbx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 19 Feb 2020 03:31:53 -0500
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C9BF920054C;
-        Wed, 19 Feb 2020 09:31:50 +0100 (CET)
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 178A9203957;
+        Wed, 19 Feb 2020 09:31:51 +0100 (CET)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5E2522031A5;
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5DF22201296;
         Wed, 19 Feb 2020 09:31:47 +0100 (CET)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 97EBA402ED;
-        Wed, 19 Feb 2020 16:31:41 +0800 (SGT)
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 3ED4F402FB;
+        Wed, 19 Feb 2020 16:31:42 +0800 (SGT)
 From:   haibo.chen@nxp.com
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
         linux-mmc@vger.kernel.org
 Cc:     linux-imx@nxp.com, haibo.chen@nxp.com, linus.walleij@linaro.org
-Subject: [PATCH v4 10/14] mmc: sdhci-esdhc-imx: Add an new esdhc_soc_data for i.MX8MM
-Date:   Wed, 19 Feb 2020 16:25:53 +0800
-Message-Id: <1582100757-20683-5-git-send-email-haibo.chen@nxp.com>
+Subject: [PATCH v4 11/14] mmc: sdhci-esdhc-imx: clear pending interrupt and halt cqhci
+Date:   Wed, 19 Feb 2020 16:25:54 +0800
+Message-Id: <1582100757-20683-6-git-send-email-haibo.chen@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1582100757-20683-1-git-send-email-haibo.chen@nxp.com>
 References: <1582100757-20683-1-git-send-email-haibo.chen@nxp.com>
@@ -38,41 +38,91 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Haibo Chen <haibo.chen@nxp.com>
 
-Add new esdhc_soc_data, with compatible string "fsl,imx8mm-usdhc".
+On i.MX8MM, we are running Dual Linux OS, with 1st Linux using SD Card
+as rootfs storage, 2nd Linux using eMMC as rootfs storage. We let the
+the 1st linux configure power/clock for the 2nd Linux.
+
+When the 2nd Linux is booting into rootfs stage, we let the 1st Linux
+to destroy the 2nd linux, then restart the 2nd linux, we met SDHCI dump
+as following, after we clear the pending interrupt and halt CQCTL, issue
+gone.
+
+[ 1.334594] mmc2: Got command interrupt 0x00000001 even though no command operation was in progress.
+[ 1.334595] mmc2: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 1.334599] mmc2: sdhci: Sys addr: 0xa05dcc00 | Version: 0x00000002
+[ 1.345538] mmc2: sdhci: Blk size: 0x00000200 | Blk cnt: 0x00000000
+[ 1.345541] mmc2: sdhci: Argument: 0x00018000 | Trn mode: 0x00000033
+[ 1.345543] mmc2: sdhci: Present: 0x01f88008 | Host ctl: 0x00000031
+[ 1.345547] mmc2: sdhci: Power: 0x00000002 | Blk gap: 0x00000080
+[ 1.357903] mmc2: sdhci: Wake-up: 0x00000008 | Clock: 0x0000003f
+[ 1.357905] mmc2: sdhci: Timeout: 0x0000008f | Int stat: 0x00000000
+[ 1.357908] mmc2: sdhci: Int enab: 0x107f100b | Sig enab: 0x107f100b
+[ 1.357911] mmc2: sdhci: AC12 err: 0x00000000 | Slot int: 0x00000502
+[ 1.370268] mmc2: sdhci: Caps: 0x07eb0000 | Caps_1: 0x0000b400
+[ 1.370270] mmc2: sdhci: Cmd: 0x00000d1a | Max curr: 0x00ffffff
+[ 1.370273] mmc2: sdhci: Resp[0]: 0x00000b00 | Resp[1]: 0xffffffff
+[ 1.370276] mmc2: sdhci: Resp[2]: 0x328f5903 | Resp[3]: 0x00d00f00
+[ 1.382132] mmc2: sdhci: Host ctl2: 0x00000000
+[ 1.382135] mmc2: sdhci: ADMA Err: 0x00000000 | ADMA Ptr: 0xa2040208
+
+[ 2.060932] mmc2: Unexpected interrupt 0x00004000.
+[ 2.065538] mmc2: sdhci: ============ SDHCI REGISTER DUMP ===========
+[ 2.071720] mmc2: sdhci: Sys addr: 0x00000000 | Version: 0x00000002
+[ 2.077902] mmc2: sdhci: Blk size: 0x00000200 | Blk cnt: 0x00000001
+[ 2.084083] mmc2: sdhci: Argument: 0x00000000 | Trn mode: 0x00000000
+[ 2.090264] mmc2: sdhci: Present: 0x01f88009 | Host ctl: 0x00000011
+[ 2.096446] mmc2: sdhci: Power: 0x00000002 | Blk gap: 0x00000080
+[ 2.102627] mmc2: sdhci: Wake-up: 0x00000008 | Clock: 0x000010ff
+[ 2.108809] mmc2: sdhci: Timeout: 0x0000008f | Int stat: 0x00004000
+[ 2.114990] mmc2: sdhci: Int enab: 0x007f1003 | Sig enab: 0x007f1003
+[ 2.121171] mmc2: sdhci: AC12 err: 0x00000000 | Slot int: 0x00000502
+[ 2.127353] mmc2: sdhci: Caps: 0x07eb0000 | Caps_1: 0x0000b400
+[ 2.133534] mmc2: sdhci: Cmd: 0x0000371a | Max curr: 0x00ffffff
+[ 2.139715] mmc2: sdhci: Resp[0]: 0x00000900 | Resp[1]: 0xffffffff
+[ 2.145896] mmc2: sdhci: Resp[2]: 0x328f5903 | Resp[3]: 0x00d00f00
+[ 2.152077] mmc2: sdhci: Host ctl2: 0x00000000
+[ 2.156342] mmc2: sdhci: ADMA Err: 0x00000000 | ADMA Ptr: 0x00000000
 
 Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 98b91b6ff2a9..100c081cfcae 100644
+index 100c081cfcae..106097cbd0d4 100644
 --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -255,6 +255,14 @@ static struct esdhc_soc_data usdhc_imx8qxp_data = {
- 			| ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME,
- };
+@@ -1233,6 +1233,7 @@ static void sdhci_esdhc_imx_hwinit(struct sdhci_host *host)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
++	struct cqhci_host *cq_host = host->mmc->cqe_private;
+ 	int tmp;
  
-+static struct esdhc_soc_data usdhc_imx8mm_data = {
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
-+			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
-+			| ESDHC_FLAG_CQHCI
-+			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
-+};
+ 	if (esdhc_is_usdhc(imx_data)) {
+@@ -1309,6 +1310,21 @@ static void sdhci_esdhc_imx_hwinit(struct sdhci_host *host)
+ 			tmp &= ~ESDHC_STD_TUNING_EN;
+ 			writel(tmp, host->ioaddr + ESDHC_TUNING_CTRL);
+ 		}
 +
- struct pltfm_imx_data {
- 	u32 scratchpad;
- 	struct pinctrl *pinctrl;
-@@ -304,6 +312,7 @@ static const struct of_device_id imx_esdhc_dt_ids[] = {
- 	{ .compatible = "fsl,imx7d-usdhc", .data = &usdhc_imx7d_data, },
- 	{ .compatible = "fsl,imx7ulp-usdhc", .data = &usdhc_imx7ulp_data, },
- 	{ .compatible = "fsl,imx8qxp-usdhc", .data = &usdhc_imx8qxp_data, },
-+	{ .compatible = "fsl,imx8mm-usdhc", .data = &usdhc_imx8mm_data, },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, imx_esdhc_dt_ids);
++		/*
++		 * On i.MX8MM, we are running Dual Linux OS, with 1st Linux using SD Card
++		 * as rootfs storage, 2nd Linux using eMMC as rootfs storage. We let the
++		 * the 1st linux configure power/clock for the 2nd Linux.
++		 *
++		 * When the 2nd Linux is booting into rootfs stage, we let the 1st Linux
++		 * to destroy the 2nd linux, then restart the 2nd linux, we met SDHCI dump.
++		 * After we clear the pending interrupt and halt CQCTL, issue gone.
++		 */
++		if (cq_host) {
++			tmp = cqhci_readl(cq_host, CQHCI_IS);
++			cqhci_writel(cq_host, tmp, CQHCI_IS);
++			cqhci_writel(cq_host, CQHCI_HALT, CQHCI_CTL);
++		}
+ 	}
+ }
+ 
 -- 
 2.17.1
 
