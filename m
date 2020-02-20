@@ -2,151 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17B1B165A0B
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Feb 2020 10:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24EBE165A8E
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Feb 2020 10:54:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727103AbgBTJVy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 20 Feb 2020 04:21:54 -0500
-Received: from mail27.static.mailgun.info ([104.130.122.27]:44339 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726921AbgBTJVx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Feb 2020 04:21:53 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1582190513; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=c85s8naSK3Xbvoo8BeI3imw+A0YDHtYgT9ZUdHxHtZM=; b=HqlCMKbE9yiYFB75LFvdxy6w7glnCkNRvtSySS0v14/LYTsAZb7nmo/YC0UPQynll3uPOdj1
- oIGfBsRUpefrUGUzOYKW0yFeKRzGjr5840eMGqIBBbwHccRVrhuxtOkyP4QH8t2ioNR9Lt5D
- HTsHPQoIw4InghEfOErWYxaij3Q=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e4e4fac.7fa66f6f9030-smtp-out-n02;
- Thu, 20 Feb 2020 09:21:48 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9D67CC433A2; Thu, 20 Feb 2020 09:21:47 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from sayalil-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sayalil)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B1783C43383;
-        Thu, 20 Feb 2020 09:21:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B1783C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=sayalil@codeaurora.org
-From:   Sayali Lokhande <sayalil@codeaurora.org>
-To:     bjorn.andersson@linaro.org, adrian.hunter@intel.com,
-        robh+dt@kernel.org, ulf.hansson@linaro.org,
-        asutoshd@codeaurora.org, stummala@codeaurora.org,
-        ppvk@codeaurora.org, rampraka@codeaurora.org,
-        vbadigan@codeaurora.org, sboyd@kernel.org,
-        georgi.djakov@linaro.org, mka@chromium.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        agross@kernel.org, linux-mmc-owner@vger.kernel.org,
-        Sayali Lokhande <sayalil@codeaurora.org>
-Subject: [PATCH RFC] mmc: sdhci-msm: Toggle fifo write clk after ungating sdcc clk
-Date:   Thu, 20 Feb 2020 14:50:46 +0530
-Message-Id: <1582190446-4778-2-git-send-email-sayalil@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1582190446-4778-1-git-send-email-sayalil@codeaurora.org>
-References: <1582190446-4778-1-git-send-email-sayalil@codeaurora.org>
+        id S1727046AbgBTJyi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 20 Feb 2020 04:54:38 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:46781 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727036AbgBTJyi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Feb 2020 04:54:38 -0500
+Received: by mail-pf1-f196.google.com with SMTP id k29so1652388pfp.13
+        for <linux-mmc@vger.kernel.org>; Thu, 20 Feb 2020 01:54:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
+        b=KfNWW2kcqvTW/9/08hTLogIqobA7bvlKpQJoYHafvufqDMAEJNGTi16kdgjiBPR6K2
+         IBu4QoBeoD1zPK+mAFEFCyGoW7vmbfnnJRoF3S1jn953AwhHjpsb61lJNKtC5Cd4w3ly
+         LyXVFblZTrGK4xKB1acSQvvf0L0W5gtLLv17Nc8u08V8JuGNOrki7Hu4hIn889cOrocf
+         OI7ofI/Ba26rlHcp25+n0dtCNsZNHdepJpLTvIgblIc5oB7MwKt85sd2HkDRZ6GK9GOZ
+         1AD79o4ZcYs/IVxzGoSLwT+BZX2xrTfctgg/ehk24p/tiuqY5cUAh9nbhz8Oq+hbCjua
+         K5DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
+        b=lrVUYOBC8VCJ3sU2oNkWGHbq1JIUHrAwhFxJJUmEvQV7DVFnAiBOzhYi/zOPrUIB/q
+         14dXJRAkkwhMG+aXv+SCulfEjcJ3nNTAsjcCsDOKO1wBWwuXa9qHFfJJIJnothtRpeXL
+         XwfBck8tpj9RNfz9AZbA6+rcvMlXInrnIB5C0mmcdp9rXVZ/mqBLQgXLiJXyKupQKxk/
+         4QlUqps6Cvxmu6ajsElYJQMBnULywa5NHYnxIJdMm9fvimJdYrSoat2P3w1rNb5JyWzq
+         DfQg+k00bzjAnTbssZGv+oWXG+WZcnGsxtW8+zEVp/ZwpQTBUNUN45Uq140WuLXF80zA
+         H3PQ==
+X-Gm-Message-State: APjAAAWiQM8xWOopPUe/C0OF+iQRIzq5o7DoNzLGr9b31E8nI1UtzSj8
+        5YdbX/fvhUQNZ1LKzROJq55xFPdXnRAEf/YYArc=
+X-Google-Smtp-Source: APXvYqySoCSJ82A8OuYPdZOTOSzwsgpIu/3GOYLR3uHjrSC8cVSsXETPeL8PxFF00bDBm0liDA2StN1CChwALXKR/tU=
+X-Received: by 2002:a62:5bc7:: with SMTP id p190mr30655380pfb.16.1582192477900;
+ Thu, 20 Feb 2020 01:54:37 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a17:90a:90f:0:0:0:0 with HTTP; Thu, 20 Feb 2020 01:54:37
+ -0800 (PST)
+Reply-To: cagesusan199@gmail.com
+From:   "Mrs. Susan S. Cage" <drgoodluckebelejonathan061@gmail.com>
+Date:   Thu, 20 Feb 2020 01:54:37 -0800
+Message-ID: <CALjo5=_qROtCiT4u8zj8ta2R612eUBzRGz6aZpKsD-fVmmvMXA@mail.gmail.com>
+Subject: Attention:Beneficiary
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Ram Prakash Gupta <rampraka@codeaurora.org>
-
-During GCC level clock gating of MCLK, the async FIFO
-gets into some hang condition, such that for the next
-transfer after MCLK ungating, first bit of CMD response
-doesn't get written in to the FIFO. This cause the CPSM
-to hang eventually leading to SW timeout.
-
-To fix the issue, toggle the FIFO write clock after
-MCLK ungated to get the FIFO pointers and flags to
-valid states.
-
-Change-Id: Ibef2d1d283ac0b6983c609a4abc98bc574d31fa6
-Signed-off-by: Ram Prakash Gupta <rampraka@codeaurora.org>
-Signed-off-by: Sayali Lokhande <sayalil@codeaurora.org>
----
- drivers/mmc/host/sdhci-msm.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
-
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index c3a160c..eaa3e95 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -127,6 +127,8 @@
- #define CQHCI_VENDOR_CFG1	0xA00
- #define CQHCI_VENDOR_DIS_RST_ON_CQ_EN	(0x3 << 13)
- 
-+#define RCLK_TOGGLE 0x2
-+
- struct sdhci_msm_offset {
- 	u32 core_hc_mode;
- 	u32 core_mci_data_cnt;
-@@ -1554,6 +1556,43 @@ static void __sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
- 	sdhci_enable_clk(host, clk);
- }
- 
-+/*
-+ * After MCLK ugating, toggle the FIFO write clock to get
-+ * the FIFO pointers and flags to valid state.
-+ */
-+static void sdhci_msm_toggle_fifo_write_clk(struct sdhci_host *host)
-+{
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	const struct sdhci_msm_offset *msm_offset =
-+					msm_host->offset;
-+	struct mmc_card *card = host->mmc->card;
-+
-+	if (msm_host->tuning_done ||
-+			(card && card->ext_csd.strobe_support &&
-+			card->host->ios.enhanced_strobe)) {
-+		/*
-+		 * set HC_REG_DLL_CONFIG_3[1] to select MCLK as
-+		 * DLL input clock
-+		 */
-+		writel_relaxed(((readl_relaxed(host->ioaddr +
-+			msm_offset->core_dll_config_3))
-+			| RCLK_TOGGLE), host->ioaddr +
-+			msm_offset->core_dll_config_3);
-+		/* ensure above write as toggling same bit quickly */
-+		wmb();
-+		udelay(2);
-+		/*
-+		 * clear HC_REG_DLL_CONFIG_3[1] to select RCLK as
-+		 * DLL input clock
-+		 */
-+		writel_relaxed(((readl_relaxed(host->ioaddr +
-+			msm_offset->core_dll_config_3))
-+			& ~RCLK_TOGGLE), host->ioaddr +
-+			msm_offset->core_dll_config_3);
-+	}
-+}
-+
- /* sdhci_msm_set_clock - Called with (host->lock) spinlock held. */
- static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
- {
-@@ -2149,6 +2188,10 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
- 				       msm_host->bulk_clks);
- 	if (ret)
- 		return ret;
-+	if (host->mmc &&
-+			(host->mmc->ios.timing == MMC_TIMING_MMC_HS400))
-+		sdhci_msm_toggle_fifo_write_clk(host);
-+
- 	/*
- 	 * Whenever core-clock is gated dynamically, it's needed to
- 	 * restore the SDR DLL settings when the clock is ungated.
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+Dearest Friend,
+
+Sorry for invading your privacy, my name is Susan S. Cage I am 81
+years, citizen of United States and presently in hospital undergoing
+chromatography for bronchogenic carcinomas (Lung cancer) which
+affected both Lungs. The doctors said I have few days to live because
+the cancer has now affected my brain.
+
+My late husband left Fifteen Million, Five Hundred British Pounds
+Sterling in my account, I want to transfer the money to you and I want
+you to use it as a donate for charitable and help the needy,
+motherless, less privileged and widows within your location.
+
+I need your assurance that you will use the fund for charity, once I a
+favorable reply from you, will inform my Bank through my lawyer to
+transfer the fund to you as my Next of Kin and Sole Beneficiary. Once
+I receive your response, I will inform my bank in writing through my
+lawyer.
+
+
+
+Thank you and God bless you.
+
+Mrs. Susan S. Cage
