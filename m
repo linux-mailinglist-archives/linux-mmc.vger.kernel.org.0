@@ -2,130 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D90016AB39
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 Feb 2020 17:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7D9E16B544
+	for <lists+linux-mmc@lfdr.de>; Tue, 25 Feb 2020 00:22:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727636AbgBXQUn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 Feb 2020 11:20:43 -0500
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:45024 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727378AbgBXQUn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Feb 2020 11:20:43 -0500
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01OGCfam007873;
-        Mon, 24 Feb 2020 17:20:28 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=WOrB9zjTn0T7PtrYAJ4aCW7Dq+zTAEPFOtROr7XMOzo=;
- b=IkyaGR4EFtaiGt7dPLgTYVNiT5WVp0abgnGKHqvs5vb7jFPFo9CCfx7MR6GyWcYI94Pp
- vDjJlFTZxwfD7MgR7i+gIVXHFor29lRKAnyWX72QDjXyARdthSLlyUVR7OhnZdcm96nU
- gTLUdZkFVPS5qIqh+Kj+IHMY/TYLweul/f3DeoUbZbvsSXdVHpxWJe+L39GKH8vDCd5E
- jedIymmRP6bmhuo8z2+i2nkgF/8fGKuf3BH/8v2ZEcTYD0xQr72wxqPTBx6HiIdZArCU
- J864vOCt2r1/Ct0L3qydZ6kIHJVk9s2gQc3505UGe7Onar2sg6qbeYX9cf1t0eD9ltPv Lw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2yatn5ts7a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 24 Feb 2020 17:20:28 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id D7BD410002A;
-        Mon, 24 Feb 2020 17:20:23 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C73DE2A7B2C;
-        Mon, 24 Feb 2020 17:20:23 +0100 (CET)
-Received: from lmecxl0923.lme.st.com (10.75.127.45) by SFHDAG6NODE1.st.com
- (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 24 Feb
- 2020 17:20:23 +0100
-Subject: Re: [PATCH V2 0/9] mmc: mmci: sdmmc: add sdr104 support
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-References: <20200128090636.13689-1-ludovic.barre@st.com>
- <CAPDyKFr+7SvRasPPjFDA2kwG0ERS-Qp3FGbVbRGLrscz5N=L2g@mail.gmail.com>
-From:   Ludovic BARRE <ludovic.barre@st.com>
-Message-ID: <86464a0a-d830-465e-b35b-8dd2e766db70@st.com>
-Date:   Mon, 24 Feb 2020 17:20:22 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        id S1728583AbgBXXWN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 Feb 2020 18:22:13 -0500
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:34447 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728269AbgBXXWN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Feb 2020 18:22:13 -0500
+Received: by mail-lj1-f196.google.com with SMTP id x7so12010378ljc.1;
+        Mon, 24 Feb 2020 15:22:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zapvrSfkAB3Uioa0nez7vq8hKDYWAUjvXWTGHeYzWos=;
+        b=LBIgL2R1SmP7LAGLEx/TpjHkceKP+P5sl9nZPJ1hyTlDFlMVMehRZ6uaqa+TmbNivl
+         faAZ7A4q4sjwQCEyeZ9hJ/CvLphRdl5um0VN8X5bgUKsyc9F/ObUKhLmiWf5Q4tDJKzA
+         bDfgQmQtHNWU7CkdR2DYcddL8JvY18DthXp4V0ZjlqGewVd6CTgko6T9FVyF2K4aWs4L
+         xUOwjQnG7Dk8f8UNVz+n+d6LjH4R+kLPxipZum7HQwCjUAQIoHq+pp7+lByDPDinoxXv
+         ggEw+ESzTgAwIDbRlh2KpoQ+/avsXQ1LWmGn0C0+m2uT4LdPgEGuIUXtYpM+tGQ27rwi
+         Kd7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zapvrSfkAB3Uioa0nez7vq8hKDYWAUjvXWTGHeYzWos=;
+        b=POx4EAh/Ir1mibZFKohq8D55HPE0RABKqYXRzFYOD+qGwZLFPITuh+wMFP1cHR/wDF
+         WWADpCscaaXCThw/xGXMWoYXt9/KHeqgGcXavW7QJk92MJk8iqLaGfSsp24QGhcQ/3/I
+         zw4mvXt7uWOW3pLfW7TTBc/XvlfSUPqH+0wxP+ee9nwykykWVKF5J1Trhapqo+DG7HFf
+         06BOO/kpmaVv8LC2l+J7hpQ140BUACOkASUO5X+DDryUNhmwsMx9mVF+0s/RRQg1xph8
+         DDjx4A06+1LiESzyTmNcWUpj/s2kNKQJuRwqPW2V8c4tvUBQNAXIq2WzQ7xQQV6VcapV
+         HosQ==
+X-Gm-Message-State: APjAAAXhtVutycekfAHiEAEXNah/rdMz8WWtegOG7ru4DTgAdhRU/mlG
+        AsTCLpl4OHBGfnS46q/sM48=
+X-Google-Smtp-Source: APXvYqy2AwxPlR5v2q81yED52jU8uKleIyr/LgSvP0EERemjAGpVSBC7rLykQwNndyW1YfTzcJkBnQ==
+X-Received: by 2002:a2e:9d11:: with SMTP id t17mr32664047lji.169.1582586530637;
+        Mon, 24 Feb 2020 15:22:10 -0800 (PST)
+Received: from localhost.localdomain (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
+        by smtp.gmail.com with ESMTPSA id r10sm8154071ljk.9.2020.02.24.15.22.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2020 15:22:10 -0800 (PST)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Jens Axboe <axboe@kernel.dk>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        David Heidelberg <david@ixit.cz>,
+        Peter Geis <pgwipeout@gmail.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Nicolas Chauvet <kwizart@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Billy Laws <blaws05@gmail.com>
+Cc:     linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
+        Andrey Danin <danindrey@mail.ru>,
+        Gilles Grandou <gilles@grandou.net>,
+        Ryan Grachek <ryan@edited.us>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/3] Introduce NVIDIA Tegra Partition Table
+Date:   Tue, 25 Feb 2020 02:18:38 +0300
+Message-Id: <20200224231841.26550-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFr+7SvRasPPjFDA2kwG0ERS-Qp3FGbVbRGLrscz5N=L2g@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG5NODE3.st.com (10.75.127.15) To SFHDAG6NODE1.st.com
- (10.75.127.16)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-24_04:2020-02-21,2020-02-24 signatures=0
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-hi Ulf
+Some NVIDIA Tegra devices have GPT entry at a wrong location and others may
+even not have it at all. So either a custom workaround for GPT parsing or
+TegraPT support is needed for those devices if we want to support them in
+upstream kernel. The former solution was already rejected [1], let's try
+the latter.
 
-Le 2/19/20 à 11:28 AM, Ulf Hansson a écrit :
-> On Tue, 28 Jan 2020 at 10:06, Ludovic Barre <ludovic.barre@st.com> wrote:
->>
->> To support the sdr104 mode, sdmmc variant needs:
->> -Hardware delay block support for sdmmc variant
->>   with tuning procedure
->> -Voltage switch callbacks
->> -sdmmc revision 2.0
->>
->> V2:
->> -regroup host->mmc_ops & mmc->ops assignment
->> -add timeout define
->> -rename prep_volt_switch to pre_sig_volt_switch
->> -rename volt_switch to post_sig_volt_switch
->> -add 'why' comment for "mmc: mmci: add volt_switch callbacks"
->>
->> Ludovic Barre (9):
->>    mmc: mmci: sdmmc: replace sg_dma_xxx macros
->>    mmc: mmci: sdmmc: rename sdmmc_priv struct to sdmmc_idma
->>    mmc: mmci: add a reference at mmc_host_ops in mmci struct
->>    mmc: mmci: add private pointer for variant
->>    dt-bindings: mmc: mmci: add delay block base register for sdmmc
->>    mmc: mmci: sdmmc: add execute tuning with delay block
->>    mmc: mmci: add volt_switch callbacks
->>    mmc: mmci: sdmmc: add voltage switch functions
->>    mmc: mmci: add sdmmc variant revision 2.0
->>
->>   .../devicetree/bindings/mmc/mmci.txt          |   2 +
->>   drivers/mmc/host/mmci.c                       |  42 +++-
->>   drivers/mmc/host/mmci.h                       |   8 +
->>   drivers/mmc/host/mmci_stm32_sdmmc.c           | 204 +++++++++++++++++-
->>   4 files changed, 248 insertions(+), 8 deletions(-)
->>
->> --
->> 2.17.1
->>
-> 
-> Applied for next, thanks!
+[1] https://patchwork.ozlabs.org/patch/1240809/
 
-thanks Ulf.
+Big thanks to everyone who helped with figuring out the TegraPT format!
 
-> 
-> I took the liberty to do minor amendments to some of the changelogs,
-> but in particular I have change some of prefixes for the commit
-> message headers into "mmc: mmci_sdmmc:".
+Dmitry Osipenko (3):
+  mmc: core: Add raw_boot_mult field to mmc_ext_csd
+  mmc: block: Add mmc_bdev_to_card() helper
+  partitions: Introduce NVIDIA Tegra Partition Table
 
-Ok, I use this prefixe for next commit.
+ arch/arm/mach-tegra/tegra.c         |  35 +++
+ block/partitions/Kconfig            |   8 +
+ block/partitions/Makefile           |   1 +
+ block/partitions/check.c            |   4 +
+ block/partitions/tegra.c            | 373 ++++++++++++++++++++++++++++
+ block/partitions/tegra.h            |  71 ++++++
+ drivers/mmc/core/block.c            |  14 ++
+ drivers/mmc/core/mmc.c              |   2 +
+ include/linux/mmc/card.h            |   4 +
+ include/soc/tegra/bct.h             |  42 ++++
+ include/soc/tegra/common.h          |   9 +
+ include/soc/tegra/partition_table.h |  18 ++
+ 12 files changed, 581 insertions(+)
+ create mode 100644 block/partitions/tegra.c
+ create mode 100644 block/partitions/tegra.h
+ create mode 100644 include/soc/tegra/bct.h
+ create mode 100644 include/soc/tegra/partition_table.h
 
-> 
-> Please tell, if there is anything that you want me to update.
+-- 
+2.24.0
 
-I tested your next branch, and it's ok for me.
-sdmmc upstream is almost finished, I just some recent fixes to send.
-
-> 
-> Kind regards
-> Uffe
-> 
