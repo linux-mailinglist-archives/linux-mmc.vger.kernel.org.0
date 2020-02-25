@@ -2,62 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE9C16F24F
-	for <lists+linux-mmc@lfdr.de>; Tue, 25 Feb 2020 22:57:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8CD16F3E9
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Feb 2020 00:53:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728806AbgBYV5W (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 25 Feb 2020 16:57:22 -0500
-Received: from sonic304-23.consmr.mail.ir2.yahoo.com ([77.238.179.148]:38743
-        "EHLO sonic304-23.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726607AbgBYV5V (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 25 Feb 2020 16:57:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1582667839; bh=8VycBpGz8hZ3tPndsLKcBHgqcsZFnwSsKOwwgzXhjZ8=; h=Date:From:Reply-To:Subject:References:From:Subject; b=hqcUg/HlwsUEaAVtTc4Q0auclH5AKuXrqU2U7dgwfXldATEB/ADoR6U7Urq4Wf6hElkp8Bj7sxohdrYjaG355crXsCL5LQzb6TPdypp1dlE73v2bYPGjNSIilZluIe44kh1tshGlJrp99OU+rLF/nb4SEcZ35t6cK6CgWz688U7XJ1qdKV+s11tm1O2oHpEt5xuWL75Zi3Z+bIpKTGXn+uyp7QOZ4fl9620aqitbDuAE9mGQCxhiPwRGrihE4bRfdrN8IlGHe+jNRqYh8onZ7MWLHR3RIyPeYgYBFG7U2qSaRi5PxMaDYjDqN9UpPDd2Wx+QEKk9xaHN/Bqlfh9L1A==
-X-YMail-OSG: MpEKOCoVM1mPRwGGr_2b.37vDGivkdiadN8Agzhko7FNVtKhaiV5Esj6EIGHhh9
- gPFIy7df_UeVwFmu2FO2xu7RtJ1551K4n0KpFvWwFUC87ap5Slf29HcjFDqE76L3ehu7F.Sx8VU5
- _Xh9qbRMYQSD6uP4cKTZzfI0jWlHe7pwwBN3Rph57Y5L2tbvNzWf2QC_Jdm3A9JnisBliHjD7rDh
- E1qyhv4OYW_p5ev7R70bx8NJlHqCdXifOoKpqYkqx3_N6T4OWX27c0H_Pm8nxbjG64m.OCpPzBHw
- qkIDsqRadM7Ji5zjZkoTYQ3vzwFcBA9jpvI1qGPkZ9U3Et3d_RxAcAbuS1Rxacjy2yoF2MdG.03O
- VOB98R.Tou.WspDdH_TcYaIWicXNdSyatrU63gCh2GJUMTTNCQMJaddhYPYpfWvPqpN_n96DNG0R
- ucFuAiXErOft_i5cdVR4dh.qAjMzLBn5EOH0tP_gQP0eFTddPcL5HbS_OMfFJ3CXbILUrpZfGCoO
- 4DalX06meji6DTx.quq3xhb7u5i2P8Nsw8KV1u1xvlK.y.DuM_jO7.XL.TRVm88fZNjtUSpPkfbf
- cragvbc5XcdCkJhBxM6z8f4POoaMEu1Gbu4qzIFxbrWeqj.fwAUMBWR474PPYL6ejbIjvoHCp64s
- xYm2VWAKVZ3h1siX53faJWBt8qlWNkdprckcxtMtuhCiEqaWUADWiUXb33NPSRXDvOweh9fbOpKg
- MUehuluHgUjp4z2AEGZBHIeYY7tbTTaN145ztdV.MfSYAM3RgG8Wy0TRCrDPBTd3rLjQGBJt8H9b
- PwFM9a8tLVzAELcs2PFDyDt2XXu_e3jxioB3CBPDh6jhS0LQCe70zfzyBtLJ6xaA0fuN26hJZIhJ
- PjUjWwuGoV1aO.BWaMfB6ZH4xTBKfNoyRKpmBCH2.N33aUPSr_WZUzKphtxUeznh8xmbQ2QW116J
- TT8z9RSOu1vE0e.cHgiTPawtdIqcYtwWh0oz9uNZy8v.XoTy5Nb.od_2HmMTLP04NgYJA7Kd4Zml
- dFoxPWrf8nr2Lxrj40meCpbkZlacztt7_ulrKcH5LI8Ozl4dgzAzTbhd4I8StxAfAJEAwEoUUfaI
- gPpUSbo2yTbS19CE_fqz0ulqW0_MacIl0KOMQY6RJWHVU.KF7f0s0yPM8VgIog4uRGiw9N92ky1n
- c9tNQi5QdXuXoK1xa_EDT1Mzar5VGcrumsrH8EBQUzoxG80LpBAmTAg5o4uwjP1nYEuwHxLXDhZ9
- vGP5s1N_ddcjwo8EYQLqAkt_g8zCBvmK3cHKLFZW8sI2wPuH0SM4fvIKLrCgg0Zeu3DN0ew--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ir2.yahoo.com with HTTP; Tue, 25 Feb 2020 21:57:19 +0000
-Date:   Tue, 25 Feb 2020 21:57:14 +0000 (UTC)
-From:   NOORA ABDUL <noora.abdul24@aol.com>
-Reply-To: noora34abdul@gmail.com
-Message-ID: <1484127010.875744.1582667834291@mail.yahoo.com>
-Subject: Hello Dear.
+        id S1727880AbgBYXxJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 25 Feb 2020 18:53:09 -0500
+Received: from mail.willitsonline.com ([216.7.65.54]:53103 "EHLO
+        mail.willitsonline.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729429AbgBYXxJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 25 Feb 2020 18:53:09 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.willitsonline.com (Postfix) with ESMTP id C0D49111E15
+        for <linux-mmc@vger.kernel.org>; Tue, 25 Feb 2020 15:46:50 -0800 (PST)
+X-Virus-Scanned: Debian amavisd-new at iredmail2.willitsonline.com
+Received: from mail.willitsonline.com ([127.0.0.1])
+        by localhost (iredmail2.willitsonline.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id CrWoKvcDpnbM for <linux-mmc@vger.kernel.org>;
+        Tue, 25 Feb 2020 15:46:50 -0800 (PST)
+Received: from _ (localhost.localdomain [127.0.0.1])
+        (Authenticated sender: bluerocksaddles@willitsonline.com)
+        by mail.willitsonline.com (Postfix) with ESMTPSA id E6052111D61;
+        Tue, 25 Feb 2020 15:46:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-References: <1484127010.875744.1582667834291.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15302 YMailNodin Mozilla/5.0 (Windows NT 6.2; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0
-To:     unlisted-recipients:; (no To-header on input)
+Date:   Tue, 25 Feb 2020 15:46:35 -0800
+From:   bluerocksaddles@willitsonline.com
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        "Michael ." <keltoiboy@gmail.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Trevor Jacobs <trevor_jacobs@aol.com>,
+        Kris Cleveland <tridentperfusion@yahoo.com>,
+        Morgan Klym <moklym@gmail.com>,
+        Philip Langdale <philipl@overt.org>,
+        Pierre Ossman <pierre@ossman.eu>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        linux-mmc@vger.kernel.org
+Subject: Re: PCI device function not being enumerated [Was: PCMCIA not working
+ on Panasonic Toughbook CF-29]
+In-Reply-To: <CAPDyKFq_exHufHyibFCjS78PTZ7duS9ZSt3vi18CNM6+jMmwnw@mail.gmail.com>
+References: <20191029170250.GA43972@google.com>
+ <20200222165617.GA207731@google.com>
+ <CAPDyKFq_exHufHyibFCjS78PTZ7duS9ZSt3vi18CNM6+jMmwnw@mail.gmail.com>
+Message-ID: <37a39a53a54ca4ae09b4cfa9d999a47e@willitsonline.com>
+X-Sender: bluerocksaddles@willitsonline.com
+User-Agent: Roundcube Webmail
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello Dear,
+Bjorn,
 
-How are you today, I hope you are doing great. It is my great pleasure
-to contact you and i hope you don't mind, I was just surfing through
-the Internet search when I found your email address, I want to make a
-new and special friend, I hope you don't mind.
+If you folks need a test unit or five, let me know. I can donate any 
+Mark CF-29 to the project. (MK 2 or 3 will duplicate the "problem".) 
+They are non-pae 386.
 
-My name is Noora.Abdul, I am from the South Sudan but presently
-I live in a mission house in Burkina Faso and I will give you pictures
-and details of me as soon as I hear from you.
+Jeff
 
-Bye
-
-Noora.Abdul
+On 2020-02-25 07:03, Ulf Hansson wrote:
+> On Sat, 22 Feb 2020 at 17:56, Bjorn Helgaas <helgaas@kernel.org> wrote:
+>> 
+>> On Tue, Oct 29, 2019 at 12:02:50PM -0500, Bjorn Helgaas wrote:
+>> > [+cc Ulf, Philip, Pierre, Maxim, linux-mmc; see [1] for beginning of
+>> > thread, [2] for problem report and the patch Michael tested]
+>> >
+>> > On Tue, Oct 29, 2019 at 07:58:27PM +1100, Michael . wrote:
+>> > > Bjorn and Dominik.
+>> > > I am happy to let you know the patch did the trick, it compiled well
+>> > > on 5.4-rc4 and my friends in the CC list have tested the modified
+>> > > kernel and confirmed that both slots are now working as they should.
+>> > > As a group of dedicated Toughbook users and Linux users please accept
+>> > > our thanks your efforts and assistance is greatly appreciated.
+>> > >
+>> > > Now that we know this patch works what kernel do you think it will be
+>> > > released in? Will it make 5.4 or will it be put into 5.5 development
+>> > > for further testing?
+>> >
+>> > That patch was not intended to be a fix; it was just to test my guess
+>> > that the quirk might be related.
+>> >
+>> > Removing the quirk solved the problem *you're* seeing, but the quirk
+>> > was added in the first place to solve some other problem, and if we
+>> > simply remove the quirk, we may reintroduce the original problem.
+>> >
+>> > So we have to look at the history and figure out some way to solve
+>> > both problems.  I cc'd some people who might have insight.  Here are
+>> > some commits that look relevant:
+>> >
+>> >   5ae70296c85f ("mmc: Disabler for Ricoh MMC controller")
+>> >   03cd8f7ebe0c ("ricoh_mmc: port from driver to pci quirk")
+>> >
+>> >
+>> > [1] https://lore.kernel.org/r/CAFjuqNi+knSb9WVQOahCVFyxsiqoGgwoM7Z1aqDBebNzp_-jYw@mail.gmail.com/
+>> > [2] https://lore.kernel.org/r/20191021160952.GA229204@google.com/
+>> 
+>> I guess this problem is still unfixed?  I hate the fact that we broke
+>> something that used to work.
+>> 
+>> Maybe we need some sort of DMI check in ricoh_mmc_fixup_rl5c476() so
+>> we skip it for Toughbooks?  Or maybe we limit the quirk to the
+>> machines where it was originally needed?
+> 
+> Both options seems reasonable to me. Do you have time to put together a 
+> patch?
+> 
+> Kind regards
+> Uffe
