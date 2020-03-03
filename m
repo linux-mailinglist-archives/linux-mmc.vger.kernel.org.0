@@ -2,66 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EA2C17821F
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Mar 2020 20:03:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C20E178459
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Mar 2020 21:53:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732581AbgCCSJC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 3 Mar 2020 13:09:02 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:43266 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733136AbgCCSJB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Mar 2020 13:09:01 -0500
-Received: by mail-il1-f193.google.com with SMTP id o18so3575987ilg.10
-        for <linux-mmc@vger.kernel.org>; Tue, 03 Mar 2020 10:09:01 -0800 (PST)
+        id S1731123AbgCCUxs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 3 Mar 2020 15:53:48 -0500
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:37219 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730949AbgCCUxs (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 3 Mar 2020 15:53:48 -0500
+Received: by mail-vs1-f66.google.com with SMTP id h5so3381171vsc.4
+        for <linux-mmc@vger.kernel.org>; Tue, 03 Mar 2020 12:53:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
-        b=q7YmcB4c3xNivUiRnGbEmHi9ciBYsBTGJ3kBqOzI/c6CTS7TSPqRgaWNk025FpfiIk
-         UIHk/34W6/novGmD0W9ZSoJZbAR9qiyBwIbPfw8htytv3Pu+5ladp6JGliaatdTqYqkf
-         Fk69LG5Nm8YzADex4Vi+pf/rIeGNqNr78qVqopOdKzY11PtfTXtKZPzyTZFXbL/EduMu
-         vrTog13bOuCpMRI3PU9oQb0Q48DD/QD7nIIPWvI5CtHad4tT7V7uSdaJEhJ+oaISbJID
-         ga65o7/Vvvpc0yIEqzcmaI77Jw6/EO5F/+EQPV/TUhotVu/KSLDlNqX9UAupuiIWaWiJ
-         N+sw==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vI+3uqtALMSmALpWLnGWke8tkMxf5efx+ZTp2G9Sook=;
+        b=zQ7H2iVKiGhs1VsV1hpWcZUWXL3X5p4asnAO/kn8amUe/ygRYWOepzBBgd7DVgHR/d
+         YYkJdpRhhU4B/T3+gGuEnJsvKukwb0KHk1qcCHpdkeDVN3etR+6Zb4JJHAz0rinjCh75
+         FPd/KhrlB23XWHK5jWZ+cuvUoAIqQJ1ESH8gdHk8WY+2JTDLnpDKEG5mEOIefUKA33nY
+         QTuybiUx53Yu68keH7MQTgTrBxazoiQlEAdSgFQJu1V/R7IQ60Gt7yFp2/TuY9qhjGX/
+         PUfryvhzkSklIh7aZwS/62BbrA5pwhKxAH1exnZlCJcbPT2hYKZt3tF6W941Wj6b8xwY
+         s2QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
-        b=MD44IXkYhJSm3yfI21/0Qr6HuiWX641bJPU2o8u8mkLsKVmIMkzzBKusVjnCqhykHP
-         8h+VvRZ5GkDhvJyuSt3zEpE8MBpOnUNKUnKNbZLLxYJfk10tXKAOgWvv+CHP7kxhCaCA
-         74X53cARxX5sCD2unL8UgxdC193qJtAndXGm68xHFeL+rctXI1ynW6voX9FdBm3iN3ge
-         RIibvMyQGVlZwNDj5j0jqkMjv1ONBfCbhq2VS1vo1WOd69FizzMC4A7dV+lf5uCurcf0
-         rOi6spKj7Q1aG3aMFSBGKpnrO88r0vWJpYKV/P9SQZ4bvqESvWHituhS+XRlzWGUQfpN
-         ikng==
-X-Gm-Message-State: ANhLgQ3iEhNQl0+isA+s3mZImqM2JXvq/s9Bsi0NchLjSPo1ZDEc7zTw
-        02dSMm2OLZU0OiATly9FDtYCELXPlb59QhwjkEo=
-X-Google-Smtp-Source: ADFU+vv6E+wsnvPeg+ajcohjNvpKFAWgFSPumeVI6/s74fKhIZXkTb+ytEUQRfjMVtoUc1OrqPZutNFrjMHjyYaW0Q4=
-X-Received: by 2002:a92:244f:: with SMTP id k76mr6178413ilk.290.1583258940852;
- Tue, 03 Mar 2020 10:09:00 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vI+3uqtALMSmALpWLnGWke8tkMxf5efx+ZTp2G9Sook=;
+        b=kgW/DZmpMlEvomVavrLwfbXrGnDCtc99fLE4pFj1C+6/WoWCEO84AOaBihoBvqgk0O
+         5JNKs3w4dpvum4VfqTJ9oA3vvh//rewCMtvVT8zTsRl5RRamP8dg1IY3MXfMWYdUHcxz
+         WjhqeJ6hfRWQs9rP5u/XHTbRqxzsRIu+vYn+GN1PmQqRyoOaiadUZAnILbqSSKrLdfUJ
+         QuIFuH5Ee0lM9caXIL5UT2EVFvvgWDBg0c1HdlQ8U2ifubPpAnh3CTzIZ/kwsEOtZOUO
+         GSzDgJFqBbW6pSYy0Vdi1Waax89SXZgd5upOPOdUpKDqDvGSLF764rcKiAJZMbxIHzx6
+         NEsg==
+X-Gm-Message-State: ANhLgQ2XEeoS3jDs9bzYpKuqtxeU2ywhp84kVLNbY71PhU5h6JtN+SSF
+        jRtcwBhvtnVd4N5yzJzG3dZja1lztJHEFHq0tLDrCQ==
+X-Google-Smtp-Source: ADFU+vu3WUOrZlLZ0gfxuUVQ88HHcL9ESL+KhUTSd90Hqct++5Qybf7V0kW8Ce5eMdPC1a3PHUMmYFnsn6I2wcm7RlI=
+X-Received: by 2002:a67:646:: with SMTP id 67mr3548791vsg.34.1583268827146;
+ Tue, 03 Mar 2020 12:53:47 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a02:9f04:0:0:0:0:0 with HTTP; Tue, 3 Mar 2020 10:09:00 -0800 (PST)
-Reply-To: dr.challynoah@gmail.com
-From:   DR CHALLY NOAH <mayorabrahamedge404@gmail.com>
-Date:   Tue, 3 Mar 2020 19:09:00 +0100
-Message-ID: <CALqVJWdFx_aWTT4kkN0eD5b+-M5aPDZmP2kebmH9eN3yv-cVBg@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
+References: <20200108150920.14547-1-faiz_abbas@ti.com> <7edb2c28-11fd-e282-a8d7-e61aad8cace2@ti.com>
+In-Reply-To: <7edb2c28-11fd-e282-a8d7-e61aad8cace2@ti.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 3 Mar 2020 21:53:11 +0100
+Message-ID: <CAPDyKFpxVXqtcTC1oRfHxNy=mBHhR-jhOu9VrT86-_5NV2dv9A@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Update phy configuration for AM65x
+To:     Faiz Abbas <faiz_abbas@ti.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Rob Herring <robh+dt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello Dear,
-What Have Kept You Waiting To Claim Your $600,000.00 USD Compensation Award?
-This said fund was issued out by the UNITED NATIONS To compensate
-you.Please If You Have Not Claim Your Fund (Award),Kindly contact me
-at   DR.CHALLYNOAH@GMAIL.COM   for further details on how to proceed your
-fund (award)release to you or better still reply back Immediately You
-Receive This Information For An Urgent Confirmation And Release Of Your
-Fund To You Without Delays, as your email was listed among those to be
-compensated this year.Congratulations..
-Best Regards,
-Dr Chally Noah.
-Minister Of Finance On Foreign Remittance:
+On Mon, 2 Mar 2020 at 20:11, Faiz Abbas <faiz_abbas@ti.com> wrote:
+>
+> Uffe,
+>
+> On 08/01/20 8:39 pm, Faiz Abbas wrote:
+> > The following patches update phy configurations for AM65x as given in
+> > the latest data manual.
+> >
+> > The patches depend on my fixes series posted just before this:
+> > https://patchwork.kernel.org/project/linux-mmc/list/?series=225425
+> >
+> > Device tree patch updating the actual otap values will be posted
+> > separately.
+> >
+> > Tested with Am65x-evm and J721e-evm.
+> >
+> > Faiz Abbas (3):
+> >   dt-bindings: mmc: sdhci-am654: Update Output tap delay binding
+> >   mmc: sdhci_am654: Update OTAPDLY writes
+> >   mmc: sdhci_am654: Enable DLL only for some speed modes
+> >
+> >  .../devicetree/bindings/mmc/sdhci-am654.txt   |  21 +-
+> >  drivers/mmc/host/sdhci_am654.c                | 247 ++++++++++++------
+> >  include/linux/mmc/host.h                      |   2 +
+> >  3 files changed, 192 insertions(+), 78 deletions(-)
+> >
+>
+> Can you help merge this?
+
+Apologize with the delay, still focused on fixing various regressions in v5.6.
+
+I start catching up on my mmc backlog as of tomorrow. Thanks for pinging me.
+
+Kind regards
+Uffe
