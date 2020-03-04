@@ -2,103 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D75717938A
-	for <lists+linux-mmc@lfdr.de>; Wed,  4 Mar 2020 16:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 684EC179390
+	for <lists+linux-mmc@lfdr.de>; Wed,  4 Mar 2020 16:35:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388160AbgCDPfT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 4 Mar 2020 10:35:19 -0500
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:38274 "EHLO
+        id S2388223AbgCDPfY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 4 Mar 2020 10:35:24 -0500
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:43464 "EHLO
         mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388181AbgCDPfQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 Mar 2020 10:35:16 -0500
-Received: by mail-vs1-f65.google.com with SMTP id r18so1409901vso.5
-        for <linux-mmc@vger.kernel.org>; Wed, 04 Mar 2020 07:35:15 -0800 (PST)
+        with ESMTP id S2388206AbgCDPfU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 Mar 2020 10:35:20 -0500
+Received: by mail-vs1-f65.google.com with SMTP id 7so1402904vsr.10
+        for <linux-mmc@vger.kernel.org>; Wed, 04 Mar 2020 07:35:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Giq5UF1F/w38AbHK6DfEKwRi63lSe756DNZSfzRh6gc=;
-        b=B9MoWggoUREkbaq0Aww3Hd0IV/FZbz//+eDkWHFvrVyN1hNCb59mGB+n69EaUIyiFT
-         XInxog98hJoXhkPlCWuBh80LPvporHdZ6sAHxGAWoa9OCU1ncIOQEEf46h+CX9gBq6iT
-         MnX70EKAh4VGozk/sEH32c9LygkTgAcHneDxChqd6MnCqm0Jjp07yHyeKJ6vAmqnOjea
-         egqa0l8s0B0qd5x4bIQAx0KP2wbL2gfZlzmYfNWIXp1NX+IWbYeueZm6RMUb17HEiYQb
-         251NTxJzu0Lob8ZrUSK9cdqyUFrhc/wkmyOe7GhjN81WEPgIM6r22WSFgcOh3YKXE9C/
-         0FHg==
+        bh=00Rmwnfg0e8r9SY74u4uZcoPfhjgx61DXTReZJdbiIk=;
+        b=nCiMaYREzujENq6r9s3oF6FobXuqD+FjnzxchAvr0xEXY3BDosEUmf0+KT3MiYXaJE
+         u6FRN2vn3Gag82PCLB6dOe/67ac8j6AYYwYH/FJHy6IX/AxlXrWSPtmLfjHuIAR4s0dv
+         fGGG7ByifG5zUY+D0jTOjIhUOVQO+vp8wk6GBYytGWwtLUTZ4pY9f8/2gbkZLks8cG7d
+         AmPheQioOaLxCiKBCB9Y0U79GQXzhXDKLz6y8RMUSEbmwDNWLZzVBOHFve/MsqFc4ZX9
+         jAQPleE++XM4XCrTKuEN5jE/ipg/CDvvhpI4y2TgGv3PweP86DhQS9/JUyYiCleXy5nP
+         saYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Giq5UF1F/w38AbHK6DfEKwRi63lSe756DNZSfzRh6gc=;
-        b=jjLK+0NNrtlwsiEPc5WZBatcTC1d66Lav0+jsC7O1Y3a6JEnLI7TC/Iwbdyr1/13DK
-         23V9x/rMMa7o2vbjYmUseoJER6ZMevEvkxBQjlZ9J3KtEx22ShRJsBymmZ+kgj6OM7ap
-         xRDAWJhbYeC7TmcYEqGA593TPBsPBkYtVEMCV59EKHWA5GGDmemi8Qrm1XrYEb5nNvdU
-         cGPvKqbTeNhc+JTEb1AU20NVr5lyWnvd0XdpxkWjaxDF5KnD5Pmz1pMDVUvhJ91P4ktF
-         3ff0OHnVwGHr4DQ8j+45+2Hh41QgUgEj1xjPewcbUkzMEiW2LYqtM34k9r2Q2wqfPpLC
-         ZF1A==
-X-Gm-Message-State: ANhLgQ0GOoUu66s8TkvX5Hr41kFW+OuqQLJcWuVuSLOork/C6S8+keCf
-        dPwLEJ1rsRnzjUNcEmytUYA0iRSV1JfeUlx+5o/7DQ==
-X-Google-Smtp-Source: ADFU+vsb4+c9j0dv5e9XgeArN/34Z+PnfNpjvCDZOLbyY4rsxq8FgCgrfC7M5L0T2U0XF0QE/B0An2pW1WtcCZZclUQ=
-X-Received: by 2002:a05:6102:4af:: with SMTP id r15mr1988389vsa.35.1583336115345;
- Wed, 04 Mar 2020 07:35:15 -0800 (PST)
+        bh=00Rmwnfg0e8r9SY74u4uZcoPfhjgx61DXTReZJdbiIk=;
+        b=AlDQX9OMQVkHwWgbOaSdnbcI0GQFC4mzwDYuueK7yyK10GHA+KcjTXeTIZDNSVrEyN
+         MykxaJE2exCjiO0TyA1aF/Aid7U38CKOO8AOGPsWzXX19gHphfty/pNTLeLRQpEhHbre
+         uB57oyy7dyez/dHtyTOi9ggrWObeHm3yDG9Jnsu8Z3H8nLZfQhgW1jrzyET+4Sh24zaH
+         Hy7KlJPQpZpiGL4kFc9kTKcZrMUMk04/sbYIzZOvLd2qwMjcTdHfX1rslSToyCvQiDnk
+         j1OhwoTyAslJ+Va8Hc+LIx4rb/igEzOcMN9Xq8MBgOTIi0JeotPcYZK0uDUhes+U5J8a
+         rhow==
+X-Gm-Message-State: ANhLgQ3zPeh5DeGJ+THwr4vw0U4i7cMBoDL/P3TNjTEBaZW+WY1WOe1Z
+        V0yem8Di9NDu6sYFUGe6ow67z1R/H2GRlqZve7Zavg==
+X-Google-Smtp-Source: ADFU+vs9hDVln8eSdHw8W62ASMunkWacXNAeeWvHb8JN1bWM8m+X51t4UiXom4UigR9Y6SsrcdqmR8ZMgpiqOySQX6s=
+X-Received: by 2002:a67:f4cf:: with SMTP id s15mr2024818vsn.165.1583336119283;
+ Wed, 04 Mar 2020 07:35:19 -0800 (PST)
 MIME-Version: 1.0
-References: <96f16647f6a6e8cb058c44e46c61b122df027059.1582535202.git.baolin.wang7@gmail.com>
-In-Reply-To: <96f16647f6a6e8cb058c44e46c61b122df027059.1582535202.git.baolin.wang7@gmail.com>
+References: <1581434955-11087-1-git-send-email-vbadigan@codeaurora.org> <1582545470-11530-1-git-send-email-vbadigan@codeaurora.org>
+In-Reply-To: <1582545470-11530-1-git-send-email-vbadigan@codeaurora.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 4 Mar 2020 16:34:39 +0100
-Message-ID: <CAPDyKFr+BRhCQd70L8hMTtq8hfq8N-Z5+PAEmJhPy-rtuP3jMA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: host: sdhci-sprd: Set the missing
- MMC_CAP_WAIT_WHILE_BUSY flag
-To:     Baolin Wang <baolin.wang7@gmail.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
+Date:   Wed, 4 Mar 2020 16:34:43 +0100
+Message-ID: <CAPDyKFok8p+yuokLBZX3RF5U6SQYMKKeDf=co1-WzotBQzprQg@mail.gmail.com>
+Subject: Re: [PATCH V3] dt-bindings: mmc: sdhci-msm: Add CQE reg map
+To:     Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Asutosh Das <asutoshd@codeaurora.org>,
+        Sahitya Tummala <stummala@codeaurora.org>,
+        Sayali Lokhande <sayalil@codeaurora.org>, cang@codeaurora.org,
+        Ram Prakash Gupta <rampraka@codeaurora.org>,
+        Doug Anderson <dianders@google.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 24 Feb 2020 at 10:09, Baolin Wang <baolin.wang7@gmail.com> wrote:
+On Mon, 24 Feb 2020 at 12:58, Veerabhadrarao Badiganti
+<vbadigan@codeaurora.org> wrote:
 >
-> The Spreadtrum host controller supports HW busy detection for I/O
-> operations, which means when the host gets a transfer complete event,
-
-I assume HW busy detection also works for R1B commands, so I am adding
-that information to changelog to clarify this.
-
-Please have a look at the next branch to see that it looks good to you.
-
-> that always indicates the busy signal is released. Thus we can set
-> the MMC_CAP_WAIT_WHILE_BUSY flag to remove some redundant software
-> busy polling.
+> CQE feature has been enabled on sdhci-msm. Add CQE reg map
+> and reg names that need to be supplied for supporting CQE feature.
 >
-> Signed-off-by: Baolin Wang <baolin.wang7@gmail.com>
+> Signed-off-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
 
-So, applied for next, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-sprd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Changes since V2:
+>         - Dropped _mem suffix to reg names.
 >
-> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-> index d346223..2ab42c5 100644
-> --- a/drivers/mmc/host/sdhci-sprd.c
-> +++ b/drivers/mmc/host/sdhci-sprd.c
-> @@ -556,7 +556,7 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
->                 sdhci_sprd_voltage_switch;
+> Changes since V1:
+>         - Updated description for more clarity & Fixed typos.
+> ---
+>  Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 >
->         host->mmc->caps = MMC_CAP_SD_HIGHSPEED | MMC_CAP_MMC_HIGHSPEED |
-> -               MMC_CAP_ERASE | MMC_CAP_CMD23;
-> +               MMC_CAP_ERASE | MMC_CAP_CMD23 | MMC_CAP_WAIT_WHILE_BUSY;
->         ret = mmc_of_parse(host->mmc);
->         if (ret)
->                 goto pltfm_free;
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
+> index 7ee639b..5445931 100644
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
+> @@ -26,7 +26,13 @@ Required properties:
+>
+>  - reg: Base address and length of the register in the following order:
+>         - Host controller register map (required)
+> -       - SD Core register map (required for msm-v4 and below)
+> +       - SD Core register map (required for controllers earlier than msm-v5)
+> +       - CQE register map (Optional, CQE support is present on SDHC instance meant
+> +                           for eMMC and version v4.2 and above)
+> +- reg-names: When CQE register map is supplied, below reg-names are required
+> +       - "hc" for Host controller register map
+> +       - "core" for SD core register map
+> +       - "cqhci" for CQE register map
+>  - interrupts: Should contain an interrupt-specifiers for the interrupts:
+>         - Host controller interrupt (required)
+>  - pinctrl-names: Should contain only one value - "default".
 > --
-> 1.9.1
->
+> Qualcomm India Private Limited, on behalf of Qualcomm Innovation Center, Inc., is a member of Code Aurora Forum, a Linux Foundation Collaborative Project
