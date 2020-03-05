@@ -2,97 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86EC417A371
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Mar 2020 11:52:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E63817A3F3
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Mar 2020 12:16:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726979AbgCEKwn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Mar 2020 05:52:43 -0500
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:36278 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726101AbgCEKwn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Mar 2020 05:52:43 -0500
-Received: by mail-vs1-f68.google.com with SMTP id n6so3254490vsc.3
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Mar 2020 02:52:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Pi5BVwXANUu/utwdzlBNy+WEqRoY0xx0L7WnC6xkeCQ=;
-        b=yl2/8epDcqpe06/Nvq5/cSiwZX9dMqTyoDAr0i1fEJOsPLh1QQvDu9Vm7LxeO337lq
-         tvQY1BBAh7l+hwTqBOZ+2DgOWl305kI0twXxoyEXsNxORdxWdW6WD49uGFHx/NtaqNDb
-         p72raI1yNx2uKFOEfhqWtXiT+vgR0KymVp2AKQ5Qt1zpdVbnfyyUzoWtohD971NSfl7S
-         lM3gAqY9TxjHbFA+8aRolgMRpFJbpN4/4WoiFyxvifvjzsXviVB8DYW7kotA3M7rjPh3
-         HYpZS07fu8Rl1rZyzCT5A/FA5QnfaFc/BjBVK9MvYqEBa4aZf1SOfSpxPFYxLPCBfZeX
-         EouQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Pi5BVwXANUu/utwdzlBNy+WEqRoY0xx0L7WnC6xkeCQ=;
-        b=LxqYEZYSRzTPDlXQ85066XGbgwAC4VoF5fis/+aR4atVdwPItY0BWTFii/7kaizQfV
-         pDC6YHwHReJRiIARbAcAmZLvQfmiuUQKRTm+QKgpOLVIHzaRs06gQj9+sJ4y0d83LBRW
-         V4qvQfng3FHoQP4KXIEPyN7FP3inZzuUU/y6XIY+JWmq5ThXLp9jaRK+OU2lm5YXh9F0
-         e1ynqx8swBbIZlzleLZ3vamNQ+HrVuz69iORCuXh9UowAJuBcvMloubG0CnSzPWbl4yg
-         NWQCHedNk2LA6P0GH7r6PUyJJ6b95y90xAp1O8ZnqsTVxFWXg2A08DlyIfB/UK9K/bpB
-         xHcA==
-X-Gm-Message-State: ANhLgQ1Fyxt73YeT9RUcQsgncvbdFQ9neNokl0NI6tGXMa8O3bMS1sVI
-        uAK3xzXEUJCKw+ZBpDPOXRZXrGhyMPVHQVAZBevzMVKk
-X-Google-Smtp-Source: ADFU+vunWTYijJe97zX4E8cuSYATIRhGHA+itsQ2qAMkuJ3+Pk7yH5mFym3/9lGuFyy9IIDetoT9dDHGIiSdg5V8v9I=
-X-Received: by 2002:a05:6102:4af:: with SMTP id r15mr4431149vsa.35.1583405560439;
- Thu, 05 Mar 2020 02:52:40 -0800 (PST)
+        id S1727308AbgCELQR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Mar 2020 06:16:17 -0500
+Received: from ulan.pagasa.dost.gov.ph ([202.90.128.205]:47754 "EHLO
+        mailgw.pagasa.dost.gov.ph" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725880AbgCELQQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Mar 2020 06:16:16 -0500
+X-Greylist: delayed 1274 seconds by postgrey-1.27 at vger.kernel.org; Thu, 05 Mar 2020 06:16:06 EST
+Received: from webmail.pagasa.dost.int ([10.10.11.8])
+        by mailgw.pagasa.dost.gov.ph  with ESMTP id 025AseSK006737-025AseSM006737
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Thu, 5 Mar 2020 18:54:40 +0800
+Received: from localhost (localhost [127.0.0.1])
+        by webmail.pagasa.dost.int (Postfix) with ESMTP id 2FB4F2981A90;
+        Thu,  5 Mar 2020 18:46:49 +0800 (PST)
+Received: from webmail.pagasa.dost.int ([127.0.0.1])
+        by localhost (webmail.pagasa.dost.int [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id r7J1A0N3aHYl; Thu,  5 Mar 2020 18:46:48 +0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by webmail.pagasa.dost.int (Postfix) with ESMTP id 2232C2981A4C;
+        Thu,  5 Mar 2020 18:46:48 +0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 webmail.pagasa.dost.int 2232C2981A4C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pagasa.dost.gov.ph;
+        s=96B9A03E-48B0-11EA-A7E8-92F42F537CE2; t=1583405208;
+        bh=RC75T5p3JPNk7JUNB+lH0UfaFQO1Ac584gPL3SIL6h8=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=vwxX3L8Z7uHnDJPZBIix9IBQi0XMBiY4sLQTc/9+h6pT2FHeTz61v6B+3f3w6WhXh
+         jUdnW3+FuZCvkf1pcG3LkjpsYvCQO7zO587a10BanpMqFFL6zPGTaTUsrqnCnsqpAd
+         CtN8Atz3iXBEFHZeiXsfNfnWSfk0n7tqEffbmBy8=
+X-Virus-Scanned: amavisd-new at pagasa.dost.int
+Received: from webmail.pagasa.dost.int ([127.0.0.1])
+        by localhost (webmail.pagasa.dost.int [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id WT2tTJV-1oie; Thu,  5 Mar 2020 18:46:47 +0800 (PST)
+Received: from webmail.pagasa.dost.int (webmail.pagasa.dost.int [10.11.1.8])
+        by webmail.pagasa.dost.int (Postfix) with ESMTP id 5119729819D2;
+        Thu,  5 Mar 2020 18:46:46 +0800 (PST)
+Date:   Thu, 5 Mar 2020 18:46:46 +0800 (PST)
+From:   "Juanito S. Galang" <juanito.galang@pagasa.dost.gov.ph>
+Message-ID: <1980644409.3575157.1583405206290.JavaMail.zimbra@pagasa.dost.gov.ph>
+Subject: 
 MIME-Version: 1.0
-References: <1582100757-20683-1-git-send-email-haibo.chen@nxp.com>
- <1582100757-20683-9-git-send-email-haibo.chen@nxp.com> <CAPDyKFrR3oawA0o8KJ1ZEP41Ydb+-QWFbtxLua5TLemHybQ6QQ@mail.gmail.com>
- <20200304162844.GA11727@lst.de>
-In-Reply-To: <20200304162844.GA11727@lst.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 5 Mar 2020 11:52:04 +0100
-Message-ID: <CAPDyKFrkwbr1n_Se+gEA3uSH+aEPawN0qLQBjppjg4y_K4-w=w@mail.gmail.com>
-Subject: Re: [PATCH v4 14/14] mmc: queue: create dev->dma_parms before call dma_set_max_seg_size()
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Haibo Chen <haibo.chen@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.15_GA_3899 (ZimbraWebClient - GC79 (Win)/8.8.15_GA_3895)
+Thread-Index: lWYDQbv6QI/eIWKrWUD3NPCXqIIr9A==
+Thread-Topic: 
+X-FEAS-DKIM: Valid
+Authentication-Results: mailgw.pagasa.dost.gov.ph;
+        dkim=pass header.i=@pagasa.dost.gov.ph
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 4 Mar 2020 at 17:28, Christoph Hellwig <hch@lst.de> wrote:
->
-> On Wed, Mar 04, 2020 at 02:32:42PM +0100, Ulf Hansson wrote:
-> > + Christoph, Arnd
-> >
-> > On Wed, 19 Feb 2020 at 09:31, <haibo.chen@nxp.com> wrote:
-> > >
-> > > From: Haibo Chen <haibo.chen@nxp.com>
-> > >
-> > > To make dma_set_max_seg_size() work, need to create dev->dma_parms.
-> > >
-> > > Find this issue on i.MX8QM mek board, this platform config the
-> > > max_segment_size to 65535, but this dma_set_max_seg_size do not
-> > > actuall work, find sometimes the segment size is 65536, exceed
-> > > the hardware max segment limitation, trigger ADMA error.
-> >
-> > Sounds like we want something along the lines of this to be tagged for
-> > stable as well.
->
-> It really is not the job of the upper level driver to allocate the
-> dma params.  This should be done by the bus driver.
 
-I agree that allocating the dma_parms doesn't belong in the mmc block
-queue layer.
 
-However, it seems silly that each an every mmc host driver needs to do
-this themselves. So, perhaps we could manage this from
-mmc_alloc_host(), which is a common interface that mmc host drivers
-calls during initialization.
-
-Would that make sense - or is there some reasons to why a host driver
-really don't want to do the allocation you think?
-
-Kind regards
-Uffe
+Herzlichen Gl=C3=BCckwunsch Lieber Beg=C3=BCnstigter,Sie erhalten diese E-M=
+ail von der Robert Bailey Foundation. Ich bin ein pensionierter Regierungsa=
+ngestellter aus Harlem und ein Gewinner des Powerball Lottery Jackpot im We=
+rt von 343,8 Millionen US-Dollar. Ich bin der gr=C3=B6=C3=9Fte Jackpot-Gewi=
+nner in der Geschichte der New Yorker Lotterie im US-Bundesstaat Amerika. I=
+ch habe diese Lotterie am 27. Oktober 2018 gewonnen und m=C3=B6chte Sie dar=
+=C3=BCber informieren, dass Google in Zusammenarbeit mit Microsoft Ihre "E-=
+Mail-Adresse" auf meine Bitte, einen Spendenbetrag von 3.000.000,00 Million=
+en Euro zu erhalten, =C3=BCbermittelt hat. Ich spende diese 3 Millionen Eur=
+o an Sie, um den Wohlt=C3=A4tigkeitsheimen und armen Menschen in Ihrer Geme=
+inde zu helfen, damit wir die Welt f=C3=BCr alle verbessern k=C3=B6nnen.Wei=
+tere Informationen finden Sie auf der folgenden Website, damit Sie nicht sk=
+eptisch sind
+Diese Spende von 3 Mio. EUR.https://nypost.com/2018/11/14/meet-the-winner-o=
+f-the-biggest-lottery-jackpot-in-new-york-history/Sie k=C3=B6nnen auch mein=
+ YouTube f=C3=BCr mehr Best=C3=A4tigung aufpassen:
+https://www.youtube.com/watch?v=3DH5vT18Ysavc
+Bitte beachten Sie, dass alle Antworten an (robertdonation7@gmail.com=C2=A0=
+ ) gesendet werden, damit wir das k=C3=B6nnen
+Fahren Sie fort, um das gespendete Geld an Sie zu =C3=BCberweisen.E-Mail: r=
+obertdonation7@gmail.comFreundliche Gr=C3=BC=C3=9Fe,
+Robert Bailey
+* * * * * * * * * * * * * * * *
+Powerball Jackpot Gewinner
