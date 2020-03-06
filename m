@@ -2,110 +2,81 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5A0317B5EC
-	for <lists+linux-mmc@lfdr.de>; Fri,  6 Mar 2020 05:59:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF7F17B947
+	for <lists+linux-mmc@lfdr.de>; Fri,  6 Mar 2020 10:32:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726382AbgCFE7k (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Mar 2020 23:59:40 -0500
-Received: from mail27.static.mailgun.info ([104.130.122.27]:42897 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726674AbgCFE7k (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Mar 2020 23:59:40 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1583470779; h=References: In-Reply-To: References:
- In-Reply-To: Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=KA5SegCo5AW0cExJCz9BWH9qh1K5CDu6sI3vMXYPwJc=; b=Od83nyLpEy4vA0mjN01ouT7ktUVdANOgzOIvnGz3cFuvqnJXq0pTFFg3WjFPWY3w36zpDSXu
- kC6YMr9j2OWL3M1ijQGFqXpMF2PINOhreSZ1V0i2SmKZN7W0khPVbPUyr1cUbRRGuzVJ7rv9
- /zcrDP9j1BNTzgIv91kKNjKLqcA=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e61d8aa.7f0c1fbbc730-smtp-out-n05;
- Fri, 06 Mar 2020 04:59:22 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AB05DC4479F; Fri,  6 Mar 2020 04:59:21 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from pacamara-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: nguyenb)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7CFA7C4479C;
-        Fri,  6 Mar 2020 04:59:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7CFA7C4479C
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=nguyenb@codeaurora.org
-From:   "Bao D. Nguyen" <nguyenb@codeaurora.org>
-To:     ulf.hansson@linaro.org, robh+dt@kernel.org,
-        linux-scsi@vger.kernel.org
-Cc:     linux-mmc@vger.kernel.org, asutoshd@codeaurora.org,
-        cang@codeaurora.org, Sahitya Tummala <stummala@codeaurora.org>,
-        linux-arm-msm@vger.kernel.org,
-        "Bao D. Nguyen" <nguyenb@codeaurora.org>
-Subject: [PATCH v2 4/4] mmc: core: update host->card after getting RCA for SD card
-Date:   Thu,  5 Mar 2020 20:58:18 -0800
-Message-Id: <ca874be0c6eea046d82dc85d66d4665d266cf8c9.1583470026.git.nguyenb@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <cover.1583470026.git.nguyenb@codeaurora.org>
-References: <cover.1583470026.git.nguyenb@codeaurora.org>
-In-Reply-To: <cover.1583470026.git.nguyenb@codeaurora.org>
-References: <cover.1583470026.git.nguyenb@codeaurora.org>
+        id S1726240AbgCFJcI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 6 Mar 2020 04:32:08 -0500
+Received: from sauhun.de ([88.99.104.3]:55980 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726185AbgCFJcI (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 6 Mar 2020 04:32:08 -0500
+Received: from localhost (p54B33158.dip0.t-ipconnect.de [84.179.49.88])
+        by pokefinder.org (Postfix) with ESMTPSA id 597F82C1F2C;
+        Fri,  6 Mar 2020 10:32:05 +0100 (CET)
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH RFT 0/3] mmc: renesas_sdhi: improve TAP selection if all TAPs are good
+Date:   Fri,  6 Mar 2020 10:31:56 +0100
+Message-Id: <20200306093159.6155-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Sahitya Tummala <stummala@codeaurora.org>
+SDHI (with SCC) has a mechanism to select an optimal TAP even if all
+were considered good during the tuning process. This series implements
+support for it. Before that, some refactoring of 'best TAP selection' is
+done to avoid code duplication and get more understandable code.
 
-Make the host->card available before tuning is invoked for SD card.
-In the sdhci_msm_execute_tuning(), we will send CMD13 only if
-host->card is present because it needs the card->rca as its
-argument to be sent. For emmc, host->card is already updated
-immediately after the mmc_alloc_card(). In the similar way,
-this change is for SD card. Without this change, tuning functionality
-will not be able to send CMD13 to make sure the card is ready
-for next data command. If the last tuning command failed
-and we did not send CMD13 to ensure card is in transfer state,
-the next read/write command will fail.
+This work is based on BSP patches by Masaharu Hayakawa and Takeshi
+Saito. It is built on top of mmc/next with two more patches added which
+will be applied separately:
 
-Signed-off-by: Sahitya Tummala <stummala@codeaurora.org>
-Signed-off-by: Bao D. Nguyen <nguyenb@codeaurora.org>
-Signed-off-by: Asutosh Das <asutoshd@codeaurora.org>
----
- drivers/mmc/core/sd.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+"mmc: renesas_sdhi: simplify execute_tuning"
+"mmc: renesas_sdhi: Use BITS_PER_LONG helper"
 
-diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-index 76c7add..f0872e3 100644
---- a/drivers/mmc/core/sd.c
-+++ b/drivers/mmc/core/sd.c
-@@ -989,6 +989,7 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
- 		err = mmc_send_relative_addr(host, &card->rca);
- 		if (err)
- 			goto free_card;
-+		host->card = card;
- 	}
- 
- 	if (!oldcard) {
-@@ -1100,12 +1101,13 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
- 		goto free_card;
- 	}
- done:
--	host->card = card;
- 	return 0;
- 
- free_card:
--	if (!oldcard)
-+	if (!oldcard) {
-+		host->card = NULL;
- 		mmc_remove_card(card);
-+	}
- 
- 	return err;
- }
+For convenience, a branch is here:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/sdhi/new_manual_calib
+
+It has been tested on a Renesas Salvator-XS board (R-Car M3-N). There
+were no regressions detected. HS400 could be tuned the same way, and
+checksumming large files still works. Note that I couldn't test the 'all
+TAPs are good' case without hacking the code. So, maybe the BSP team has
+a setup where this happens without tweaking? This is why the series is
+marked as 'RFT' still.
+
+And while this series is useful by itself, it is also the last
+prerequisite to implement some 'bad tap avoidance' on top which is what
+we are originally aiming for.
+
+Note about backporting: The super useful iterator
+bitmap_for_each_set_region() is only available since v5.6. If you want
+that before, you need to backport the needed bits of e837dfde15a4
+("bitmap: genericize percpu bitmap region iterators"), too.
+
+Looking forward to comments,
+
+   Wolfram
+
+
+Wolfram Sang (3):
+  mmc: renesas_sdhi: refactor calculation of best TAP
+  mmc: renesas_sdhi: clarify handling of selecting TAPs
+  mmc: renesas_sdhi: improve TAP selection if all TAPs are good
+
+ drivers/mmc/host/renesas_sdhi.h      |  2 +
+ drivers/mmc/host/renesas_sdhi_core.c | 64 ++++++++++++++--------------
+ 2 files changed, 34 insertions(+), 32 deletions(-)
+
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+2.20.1
+
