@@ -2,67 +2,68 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2179A181C6C
+	by mail.lfdr.de (Postfix) with ESMTP id 00473181C6E
 	for <lists+linux-mmc@lfdr.de>; Wed, 11 Mar 2020 16:35:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730021AbgCKPfP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 11 Mar 2020 11:35:15 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:43522 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730020AbgCKPfP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Mar 2020 11:35:15 -0400
-Received: by mail-vs1-f66.google.com with SMTP id 7so1585106vsr.10
-        for <linux-mmc@vger.kernel.org>; Wed, 11 Mar 2020 08:35:14 -0700 (PDT)
+        id S1730023AbgCKPfS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 11 Mar 2020 11:35:18 -0400
+Received: from mail-vk1-f195.google.com ([209.85.221.195]:43885 "EHLO
+        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730020AbgCKPfR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Mar 2020 11:35:17 -0400
+Received: by mail-vk1-f195.google.com with SMTP id t3so640990vkm.10
+        for <linux-mmc@vger.kernel.org>; Wed, 11 Mar 2020 08:35:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=7P2TnAozvRUUITxwbv7loMPCIx00QfzH+LiOq7Ku7zk=;
-        b=iWFCV2zcx2BPsAXZhH5ZIIiRUa49aY8/7cj4wiB7qgUyvhk7A7L9gPKV6aSNc6mBtR
-         0AHIBCu6L0stt9RwHa7Wci2rgVw8LTnVGCPvn9bE9us9Z3CtYX9+rColeIZk5MUfePh0
-         Q7qbV0DyqOU7q5eM8LONLriR2d/g/p36nRWCQCp6sCT5HD67oRpYK57KlhKA4koRtXIj
-         SW8rar6XExNsU6aN6uXQrBYxcc2sqAb8Ili8DeHQEk0yyE0fkd5b2KLQppxzLad/vzQf
-         ekalCWvsHrD6l92hsZ8ZwzAiE+pU0c9UwvuLavNqhGptrF6NSjFhWrwag8vTsKxfPOu6
-         U3gA==
+        bh=44KMhJHWm8HZn3OxGvi82dZNfs9ed2LpZdiM7LdpP/Y=;
+        b=VPPIlhV3Af2X+JuRVM1wrhOFW3BuR87y+SfDe+sg4rTNkuDJL02wgw5a96Vtcg4AP8
+         2sryc0lZrN0wiaWVeBKRU0h2IuNoFIoBdBN/c2ZxqfpcVTj3QtONeBmk7dFo/K32qPh0
+         lPQodtTyBk7qGA0neWHyPWREzx9wWetbqu5sTNrZmapw88PSuUthTqb0q87gL9z9dZx7
+         PwLdfmNcvfmB3lH7I6BbtQ0vEnG+mrLbOc8xGgOdFYMsbQ6EeMQ5xR8YbdP3KTpiuLpQ
+         2XNaiqg7+zxt7iRgu/pKBy90kRGUbNtLNyGYHD02Z4Yu53C98MnU9vtD/pRuR/YYOyR4
+         ARdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7P2TnAozvRUUITxwbv7loMPCIx00QfzH+LiOq7Ku7zk=;
-        b=cwqfBJ5D9YJ3blUaXiZR8H5rt0aqwzf120JRiOKLGQYsNbWS4dUs958iw41tnF62Ch
-         QfIP3njvaKsl20Rd6r4uLAAEDGEEHV0Z+JCt9FnMjLKn3/MwKoI8ChZXCbZN5baVpiU0
-         qG+ibxzwedgIGb4bec1O7M0V7e42CHDkppWZei28z/g08Mj9Hz0dKKfbIVm/087CJU8h
-         NjYEXWYa/NIdCiBhrN8F8ArcHLl3I/R5LSjJldrVaS1jlGBtdJk3jfe0UfsTeyX5KmDu
-         Cht7sw296Jicys1vMnm1Wv0BwQ2mq/KmHafghQ8w3lzWiMwJei4mv805jkfuZdB20yzB
-         jtmg==
-X-Gm-Message-State: ANhLgQ13RSSj/BQg+2w+pLSwI8afarJPw0jjmzUN1mAvhtmOKrgiMfYn
-        VeGrIgPT+347L+UTKQsnCR+HTCU8UhtUHLoPRMlSkqRK
-X-Google-Smtp-Source: ADFU+vvYx4lizAB/KxZ/Kx/MUG/Y0X6ILzdCx6DVipqraTwb0PouxhDDT3cdnuGQgyfq71WpTC05cxRhZec+Qgc+bbE=
-X-Received: by 2002:a67:646:: with SMTP id 67mr2310247vsg.34.1583940913839;
- Wed, 11 Mar 2020 08:35:13 -0700 (PDT)
+        bh=44KMhJHWm8HZn3OxGvi82dZNfs9ed2LpZdiM7LdpP/Y=;
+        b=KZRNS9gH1XUqCXlQW3mxpnnTuFTjem4d5/KA0LoiC3BpLeP9EGTnM+0ZbOfFDd5i6h
+         UodSse4v2yc1+v98jOou2wSe9zKohqQu3SMABATvI+gxm0b3idUfa37Ewqst5QJpVGm5
+         TdJV194OKSruDGxXT/tUzma7FgeEA5usy8i1ai82LEC1mxZTrSY5/laz6g2+C+TnoS0i
+         NG6DgLwj2r+PBOM3I2OF4UJeoMmtufa0VJUhflaPcsa4GQe1AxaEKsoT75DMzncc4vXw
+         k8UtVKVw5uafq4rkEwBkbYKGND1Z1wCrSYDeVfrQfxpHl5PaCGbGeMRCHYB2tpT7BOJ9
+         SjEQ==
+X-Gm-Message-State: ANhLgQ30Jzp6pYLNblazvzlh7Z/Wnq05stfbbJ1zj6J7/pWMRaHtqrHA
+        wriRuE0+88CNdRfKpXN6Xed7ThwxMwALDAGolvdlyw==
+X-Google-Smtp-Source: ADFU+vuh8H/6ItX+lmltncMiOZy1e8lV20DlYIwXecECEf4+QeuEY3mWGDBOB7VJvWftDS8S+POR92TGfS5nFTchfuA=
+X-Received: by 2002:a1f:b695:: with SMTP id g143mr2366350vkf.59.1583940916897;
+ Wed, 11 Mar 2020 08:35:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200213163715.8212-1-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20200213163715.8212-1-wsa+renesas@sang-engineering.com>
+References: <20200305151228.24692-1-faiz_abbas@ti.com>
+In-Reply-To: <20200305151228.24692-1-faiz_abbas@ti.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 11 Mar 2020 16:34:37 +0100
-Message-ID: <CAPDyKFoFSaNnuMThV9RfUn3-3wzESPQfvZZMOhmC9SH-u5Zy4w@mail.gmail.com>
-Subject: Re: [PATCH] mmc: renesas_sdhi: simplify execute_tuning
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Date:   Wed, 11 Mar 2020 16:34:40 +0100
+Message-ID: <CAPDyKFrRcCzLs=Oab_ct_1yLkfCAT9mB4exT3er-UyFUKK_ePw@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhci-omap: Add Support for Suspend/Resume
+To:     Faiz Abbas <faiz_abbas@ti.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Kishon <kishon@ti.com>, Adrian Hunter <adrian.hunter@intel.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 13 Feb 2020 at 17:37, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
+On Thu, 5 Mar 2020 at 16:10, Faiz Abbas <faiz_abbas@ti.com> wrote:
 >
-> After refactoring, 'ret' variable is superfluous. Remove it.
+> Add power management ops which save and restore the driver context and
+> facilitate a system suspend and resume.
 >
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
 
 Applied for next, thanks!
 
@@ -71,36 +72,95 @@ Uffe
 
 
 > ---
+> v2:
+> 1. Save and restore only those registers which are not written to by
+>    core
+> 2. Use force_suspend()/resume() APIs instead of runtime_resume()/suspend()
+>    as the driver has no runtime PM support.
+>  drivers/mmc/host/sdhci-omap.c | 57 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
 >
-> Tested on a Salvator-XS (R-Car M3-N). Tuning to HS400 works,
-> checksumming a large file works with no performance regression.
+> diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
+> index 882053151a47..989133ec74d6 100644
+> --- a/drivers/mmc/host/sdhci-omap.c
+> +++ b/drivers/mmc/host/sdhci-omap.c
+> @@ -108,6 +108,11 @@ struct sdhci_omap_host {
+>         struct pinctrl          *pinctrl;
+>         struct pinctrl_state    **pinctrl_state;
+>         bool                    is_tuning;
+> +       /* Omap specific context save */
+> +       u32                     con;
+> +       u32                     hctl;
+> +       u32                     sysctl;
+> +       u32                     capa;
+>  };
 >
->  drivers/mmc/host/renesas_sdhi_core.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  static void sdhci_omap_start_clock(struct sdhci_omap_host *omap_host);
+> @@ -1232,12 +1237,64 @@ static int sdhci_omap_remove(struct platform_device *pdev)
 >
-> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-> index 0f07cc1aee34..df826661366f 100644
-> --- a/drivers/mmc/host/renesas_sdhi_core.c
-> +++ b/drivers/mmc/host/renesas_sdhi_core.c
-> @@ -497,7 +497,7 @@ static int renesas_sdhi_select_tuning(struct tmio_mmc_host *host)
->  static int renesas_sdhi_execute_tuning(struct tmio_mmc_host *host, u32 opcode)
->  {
->         struct renesas_sdhi *priv = host_to_priv(host);
-> -       int i, ret;
-> +       int i;
+>         return 0;
+>  }
+> +#ifdef CONFIG_PM_SLEEP
+> +static void sdhci_omap_context_save(struct sdhci_omap_host *omap_host)
+> +{
+> +       omap_host->con = sdhci_omap_readl(omap_host, SDHCI_OMAP_CON);
+> +       omap_host->hctl = sdhci_omap_readl(omap_host, SDHCI_OMAP_HCTL);
+> +       omap_host->capa = sdhci_omap_readl(omap_host, SDHCI_OMAP_CAPA);
+> +}
+> +
+> +static void sdhci_omap_context_restore(struct sdhci_omap_host *omap_host)
+> +{
+> +       sdhci_omap_writel(omap_host, SDHCI_OMAP_CON, omap_host->con);
+> +       sdhci_omap_writel(omap_host, SDHCI_OMAP_HCTL, omap_host->hctl);
+> +       sdhci_omap_writel(omap_host, SDHCI_OMAP_CAPA, omap_host->capa);
+> +}
+> +
+> +static int __maybe_unused sdhci_omap_suspend(struct device *dev)
+> +{
+> +       struct sdhci_host *host = dev_get_drvdata(dev);
+> +       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +       struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+> +
+> +       sdhci_suspend_host(host);
+> +
+> +       sdhci_omap_context_save(omap_host);
+> +
+> +       pinctrl_pm_select_idle_state(dev);
+> +
+> +       pm_runtime_force_suspend(dev);
+> +
+> +       return 0;
+> +}
+> +
+> +static int __maybe_unused sdhci_omap_resume(struct device *dev)
+> +{
+> +       struct sdhci_host *host = dev_get_drvdata(dev);
+> +       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +       struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+> +
+> +       pm_runtime_force_resume(dev);
+> +
+> +       pinctrl_pm_select_default_state(dev);
+> +
+> +       sdhci_omap_context_restore(omap_host);
+> +
+> +       sdhci_resume_host(host);
+> +
+> +       return 0;
+> +}
+> +#endif
+> +static SIMPLE_DEV_PM_OPS(sdhci_omap_dev_pm_ops, sdhci_omap_suspend,
+> +                        sdhci_omap_resume);
 >
->         priv->tap_num = renesas_sdhi_init_tuning(host);
->         if (!priv->tap_num)
-> @@ -517,8 +517,7 @@ static int renesas_sdhi_execute_tuning(struct tmio_mmc_host *host, u32 opcode)
->                 /* Set sampling clock position */
->                 sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TAPSET, i % priv->tap_num);
->
-> -               ret = mmc_send_tuning(host->mmc, opcode, NULL);
-> -               if (ret == 0)
-> +               if (mmc_send_tuning(host->mmc, opcode, NULL) == 0)
->                         set_bit(i, priv->taps);
->         }
->
+>  static struct platform_driver sdhci_omap_driver = {
+>         .probe = sdhci_omap_probe,
+>         .remove = sdhci_omap_remove,
+>         .driver = {
+>                    .name = "sdhci-omap",
+> +                  .pm = &sdhci_omap_dev_pm_ops,
+>                    .of_match_table = omap_sdhci_match,
+>                   },
+>  };
 > --
-> 2.20.1
+> 2.19.2
 >
