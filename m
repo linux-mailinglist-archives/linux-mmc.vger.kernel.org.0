@@ -2,92 +2,108 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 993CE181EE4
-	for <lists+linux-mmc@lfdr.de>; Wed, 11 Mar 2020 18:15:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE11182355
+	for <lists+linux-mmc@lfdr.de>; Wed, 11 Mar 2020 21:36:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730380AbgCKRO6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 11 Mar 2020 13:14:58 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:19541 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730341AbgCKRO6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Mar 2020 13:14:58 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1583946897; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=hwl+XmvG5JG30mi1BrH5GWZRUzawJld2P9BWiACejEE=; b=xH1ikMiANN4CmROM0qV5icpd89G/1lOprKDw/vrCAzEA1If4oaVzLFYrD7E12DgRQrg8YJ56
- 7kH7r/82VN0zhswJr06+ErCk2b1eJ2ZTxBtx980XhxF6h/x/mG32KnAbK66dJybvBBgRG+lJ
- p2maLXbG71QEw93Qj9iDtol05xg=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e691c8c.7f03b675b228-smtp-out-n01;
- Wed, 11 Mar 2020 17:14:52 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C7923C43636; Wed, 11 Mar 2020 17:14:51 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from vbadigan-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: vbadigan)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4FB72C433BA;
-        Wed, 11 Mar 2020 17:14:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4FB72C433BA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vbadigan@codeaurora.org
-From:   Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
-To:     bjorn.andersson@linaro.org, vkoul@kernel.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE BINDINGS)
-Subject: [PATCH] arm64: dts: qcom: sc7180: Update reg names for SDHC
-Date:   Wed, 11 Mar 2020 22:44:22 +0530
-Message-Id: <1583946863-24308-2-git-send-email-vbadigan@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1583946863-24308-1-git-send-email-vbadigan@codeaurora.org>
-References: <1583946863-24308-1-git-send-email-vbadigan@codeaurora.org>
+        id S1726672AbgCKUg5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 11 Mar 2020 16:36:57 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:45165 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726310AbgCKUg5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Mar 2020 16:36:57 -0400
+Received: by mail-lj1-f195.google.com with SMTP id e18so3845249ljn.12
+        for <linux-mmc@vger.kernel.org>; Wed, 11 Mar 2020 13:36:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=8ykJwDxPueFzEbQacm8bdoNMti2iaCFpaSYaoC2Oz2w=;
+        b=g83wW3Blhd8wEGZ49oJ4YpPj6+jFRA4h5IgpBZAWqUD5uwPU1GR+th+j7lMNNa6B4C
+         BHev5Nei7aayOdGzMunLQtsMOKfvZPYOwFpYm4J5kPYFqYgo71RNz4W/JUXkXV1ZIZgI
+         NQ+5W6WUAE1wjrmnZSPF39lZKTGTlJPXdRoVBMdgwU3rAeMYTGrgVFStj10/FrH36Kf8
+         dwX70q/M65bJMLntl8MDQejuapXbCf30ZLSjB6qsA/knvkxJDm+RxdnjOhXInhEMqACP
+         Bj82qb79uwsTIqOo1hY/AmdBegXydwLqZS6CQbo0jaJ5lvkf/CbB671GgzSwlLVHAPih
+         NpRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=8ykJwDxPueFzEbQacm8bdoNMti2iaCFpaSYaoC2Oz2w=;
+        b=YZ21uRLV2ZGr382HcpC4WECdm/hQKI/e4SCR3WkQ3Vci3Aa11hSH1UBY9T8ZzKLP8F
+         09nK5O2YFZpTdn0IJAorHi9XyeXjs0LctvlRRcBZr9lcy/u4CUmuUCjDrqxrFINv39ug
+         hzcjoMRzYIeVMLNmDdh6s8K5UBJygxHrMOixlZEWqCS+6xxaySyuX8IU1Q3E1bavV3H3
+         7kMm0aCN9W11JsLPIDVvyhQ/w1czntSAIg7Crv7U/8k8MxozPjusjGT3bAqFR8heRFFo
+         f5sof/Kv35TyVeb90qxO/ABUa4gQPu+a0zbI5gVxiFzng8Tj1cG3GvesXzLXU9lYNxjP
+         6DlQ==
+X-Gm-Message-State: ANhLgQ3P5MU8LjgRxVye4cxoAHwHnITB/xSJF8/g0k45ifZlDeQo4U9X
+        Hbe5gJZI9rMc8PXbmfcDmCyHF9sW5ZivlQRvYhY=
+X-Google-Smtp-Source: ADFU+vu1IlGs4vln/khttSI0eVVreTo9gMCajAHrC6Ywwl/fDoXIaFzS1rEU9Pqdq0vebl3Jl3xqs7v/6agHnWNc+Zc=
+X-Received: by 2002:a2e:b0f7:: with SMTP id h23mr3021516ljl.56.1583959015790;
+ Wed, 11 Mar 2020 13:36:55 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:ab3:1813:0:0:0:0:0 with HTTP; Wed, 11 Mar 2020 13:36:55
+ -0700 (PDT)
+From:   Esther Laboso <estherlaboso039@gmail.com>
+Date:   Wed, 11 Mar 2020 13:36:55 -0700
+X-Google-Sender-Auth: nuZAnCkP5lfFW636gkQW0guec5o
+Message-ID: <CAAgGxnv0B0m0Y7Z6fHkbD9knRTXH+vEVsT1Dranbh5oDsOCmrg@mail.gmail.com>
+Subject: TRUSTEE REQUEST.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Remove the redundant _mem suffix for SDHC reg names.
+Good day my beloved one,
 
-For SDcard instance, no need supply reg names since hc reg map
-is accessed with index. So remove reg names for SDcard.
+I am writing you these massage to you with tears and sorrow from my
+heart. I am Esther Laboso a 23 years old girl from Kenya, My father is
+Lorna Laboso the Assistant Minister of Home Affairs who was among the
+plane that crash in a remote area of Kalong=E2=80=99s western Kenya. The pl=
+ane
+crashed occurred on Tuesday 10th, June, 2008. You can read about it in
+the below website:
 
-Signed-off-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
----
- arch/arm64/boot/dts/qcom/sc7180.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+http://edition.cnn.com/2008/WORLD/africa/06/10/kenya.crash/index.html
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index 253274d..efca50a 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -394,7 +394,7 @@
- 			compatible = "qcom,sc7180-sdhci", "qcom,sdhci-msm-v5";
- 			reg = <0 0x7c4000 0 0x1000>,
- 				<0 0x07c5000 0 0x1000>;
--			reg-names = "hc_mem", "cqhci_mem";
-+			reg-names = "hc", "cqhci";
- 
- 			iommus = <&apps_smmu 0x60 0x0>;
- 			interrupts = <GIC_SPI 641 IRQ_TYPE_LEVEL_HIGH>,
-@@ -1234,7 +1234,6 @@
- 		sdhc_2: sdhci@8804000 {
- 			compatible = "qcom,sc7180-sdhci", "qcom,sdhci-msm-v5";
- 			reg = <0 0x08804000 0 0x1000>;
--			reg-names = "hc_mem";
- 
- 			iommus = <&apps_smmu 0x80 0>;
- 			interrupts = <GIC_SPI 204 IRQ_TYPE_LEVEL_HIGH>,
--- 
-Qualcomm India Private Limited, on behalf of Qualcomm Innovation Center, Inc., is a member of Code Aurora Forum, a Linux Foundation Collaborative Project
+
+After the burial ceremony of my father, my stepmother and my uncles
+conspired and sold my father properties to an Expertriate in
+Switzerland and shared the money among themselves and left nothing for
+me because I am female child and my mother died when I was only three
+years old; One faithful morning, I opened my late father briefcase and
+found out a document that my late father deposited a huge amount of
+money in a bank in Burkina Faso with my name as the next of kin.
+
+After then I escape to Burkina Faso to withdraw the money for a better
+life so that I can take care of myself and start a new life. on my
+arrival over here, the Bank Director whom I met in person told me that
+my father made an agreement with the bank that the money should be
+release to me only when I am married or I present a trustee that will
+help me and invest the money overseas. That is the reason I want you a
+honest and reliable person to help me and stand as my trustee for the
+Bank to transfer the money to your bank account oversea. The amount is
+USD$9.4M.
+
+However, You will help me to invest part of the money in a profitable
+business venture in your Country. and you will also help me by
+recommending a nice University in your country, so that I can complete
+my studies. I will compensate you with 30% of the total money for your
+services while the balance shall be my capital, to complete my studies
+and also to invest in your country with your kind idea.
+
+I shall appreciate an urgent response indicating your ability and
+willingness to help me trustfully and sincerely. I thank God Today
+that I am out from my country (KENYA) right now In (Burkina Faso)
+where my father deposited the money with my name as the next of kin,
+and I have confirmed from the bank with the Document I have at hand
+which I will be sending to you after receiving a good respond from
+you, I will also be sending to you my picture's in my next mail.
+
+Thanks and have a nice day.
+
+Yours sincerely,
+
+Esther Laboso.
