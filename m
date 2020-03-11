@@ -2,165 +2,140 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00473181C6E
-	for <lists+linux-mmc@lfdr.de>; Wed, 11 Mar 2020 16:35:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCDE1181CA6
+	for <lists+linux-mmc@lfdr.de>; Wed, 11 Mar 2020 16:44:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730023AbgCKPfS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 11 Mar 2020 11:35:18 -0400
-Received: from mail-vk1-f195.google.com ([209.85.221.195]:43885 "EHLO
-        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730020AbgCKPfR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Mar 2020 11:35:17 -0400
-Received: by mail-vk1-f195.google.com with SMTP id t3so640990vkm.10
-        for <linux-mmc@vger.kernel.org>; Wed, 11 Mar 2020 08:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=44KMhJHWm8HZn3OxGvi82dZNfs9ed2LpZdiM7LdpP/Y=;
-        b=VPPIlhV3Af2X+JuRVM1wrhOFW3BuR87y+SfDe+sg4rTNkuDJL02wgw5a96Vtcg4AP8
-         2sryc0lZrN0wiaWVeBKRU0h2IuNoFIoBdBN/c2ZxqfpcVTj3QtONeBmk7dFo/K32qPh0
-         lPQodtTyBk7qGA0neWHyPWREzx9wWetbqu5sTNrZmapw88PSuUthTqb0q87gL9z9dZx7
-         PwLdfmNcvfmB3lH7I6BbtQ0vEnG+mrLbOc8xGgOdFYMsbQ6EeMQ5xR8YbdP3KTpiuLpQ
-         2XNaiqg7+zxt7iRgu/pKBy90kRGUbNtLNyGYHD02Z4Yu53C98MnU9vtD/pRuR/YYOyR4
-         ARdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=44KMhJHWm8HZn3OxGvi82dZNfs9ed2LpZdiM7LdpP/Y=;
-        b=KZRNS9gH1XUqCXlQW3mxpnnTuFTjem4d5/KA0LoiC3BpLeP9EGTnM+0ZbOfFDd5i6h
-         UodSse4v2yc1+v98jOou2wSe9zKohqQu3SMABATvI+gxm0b3idUfa37Ewqst5QJpVGm5
-         TdJV194OKSruDGxXT/tUzma7FgeEA5usy8i1ai82LEC1mxZTrSY5/laz6g2+C+TnoS0i
-         NG6DgLwj2r+PBOM3I2OF4UJeoMmtufa0VJUhflaPcsa4GQe1AxaEKsoT75DMzncc4vXw
-         k8UtVKVw5uafq4rkEwBkbYKGND1Z1wCrSYDeVfrQfxpHl5PaCGbGeMRCHYB2tpT7BOJ9
-         SjEQ==
-X-Gm-Message-State: ANhLgQ30Jzp6pYLNblazvzlh7Z/Wnq05stfbbJ1zj6J7/pWMRaHtqrHA
-        wriRuE0+88CNdRfKpXN6Xed7ThwxMwALDAGolvdlyw==
-X-Google-Smtp-Source: ADFU+vuh8H/6ItX+lmltncMiOZy1e8lV20DlYIwXecECEf4+QeuEY3mWGDBOB7VJvWftDS8S+POR92TGfS5nFTchfuA=
-X-Received: by 2002:a1f:b695:: with SMTP id g143mr2366350vkf.59.1583940916897;
- Wed, 11 Mar 2020 08:35:16 -0700 (PDT)
+        id S1730020AbgCKPoq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 11 Mar 2020 11:44:46 -0400
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:15042 "EHLO
+        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730084AbgCKPoq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Mar 2020 11:44:46 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5e6907110000>; Wed, 11 Mar 2020 08:43:14 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Wed, 11 Mar 2020 08:44:45 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Wed, 11 Mar 2020 08:44:45 -0700
+Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 11 Mar
+ 2020 15:44:44 +0000
+Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL109.nvidia.com
+ (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+ Transport; Wed, 11 Mar 2020 15:44:44 +0000
+Received: from skomatineni-linux.nvidia.com (Not Verified[10.2.175.232]) by hqnvemgw03.nvidia.com with Trustwave SEG (v7,5,8,10121)
+        id <B5e69076c000a>; Wed, 11 Mar 2020 08:44:44 -0700
+From:   Sowjanya Komatineni <skomatineni@nvidia.com>
+To:     <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>,
+        <baolin.wang@linaro.org>, <kstewart@linuxfoundation.org>,
+        <tglx@linutronix.de>, <bradleybolen@gmail.com>,
+        <gregkh@linuxfoundation.org>, <thierry.reding@gmail.com>,
+        <jonathanh@nvidia.com>, <skomatineni@nvidia.com>
+CC:     <anrao@nvidia.com>, <linux-tegra@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+Subject: [PATCH v2 1/2] sdhci: tegra: Implement Tegra specific set_timeout callback
+Date:   Wed, 11 Mar 2020 08:47:54 -0700
+Message-ID: <1583941675-9884-1-git-send-email-skomatineni@nvidia.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-References: <20200305151228.24692-1-faiz_abbas@ti.com>
-In-Reply-To: <20200305151228.24692-1-faiz_abbas@ti.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 11 Mar 2020 16:34:40 +0100
-Message-ID: <CAPDyKFrRcCzLs=Oab_ct_1yLkfCAT9mB4exT3er-UyFUKK_ePw@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: sdhci-omap: Add Support for Suspend/Resume
-To:     Faiz Abbas <faiz_abbas@ti.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Kishon <kishon@ti.com>, Adrian Hunter <adrian.hunter@intel.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1583941394; bh=3TyCKOUEa+ZZzPxPPgj5u5wAYNCe+MYCECoIl/e8ZLs=;
+        h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+         MIME-Version:Content-Type;
+        b=XwZt0epaa0LqHQLVK6GUCGw5hNKoBEHv0flyVu7com3kh1JzvFkV+nrYbUdrkwD6G
+         n453xOBDNzhdRroNvYIvyxAQWRU71XQ25QNY3O5TUp62kXCfLiV3jRJxfije75fZ47
+         tsw9cDmluLMcMzKKVTp7ZNdWPo5Dv2TFDkPBbRqBtOAQe8vwMHxozyhz5Trfc8Wd4k
+         DxK66eKgKeq3GKZZIMpB8uihZwexORsDT4hEwX5dZQdT/xhL+EG6Mh8VEoyX4LJ6RB
+         nPyJOlKnv+bC2IFs8y2lH9h6//siq7eNSfaO2bTTfNShL7wLOH38fL5VDsDcZQ2Qq7
+         ldXB2348ZT3gQ==
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 5 Mar 2020 at 16:10, Faiz Abbas <faiz_abbas@ti.com> wrote:
->
-> Add power management ops which save and restore the driver context and
-> facilitate a system suspend and resume.
->
-> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
+Tegra host supports HW busy detection and timeouts based on the
+count programmed in SDHCI_TIMEOUT_CONTROL register and max busy
+timeout it supports is 11s in finite busy wait mode.
 
-Applied for next, thanks!
+Some operations like SLEEP_AWAKE, ERASE and flush cache through
+SWITCH commands take longer than 11s and Tegra host supports
+infinite HW busy wait mode where HW waits forever till the card
+is busy without HW timeout.
 
-Kind regards
-Uffe
+This patch implements Tegra specific set_timeout sdhci_ops to allow
+switching between finite and infinite HW busy detection wait modes
+based on the device command expected operation time.
 
+Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+---
+ drivers/mmc/host/sdhci-tegra.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-> ---
-> v2:
-> 1. Save and restore only those registers which are not written to by
->    core
-> 2. Use force_suspend()/resume() APIs instead of runtime_resume()/suspend()
->    as the driver has no runtime PM support.
->  drivers/mmc/host/sdhci-omap.c | 57 +++++++++++++++++++++++++++++++++++
->  1 file changed, 57 insertions(+)
->
-> diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
-> index 882053151a47..989133ec74d6 100644
-> --- a/drivers/mmc/host/sdhci-omap.c
-> +++ b/drivers/mmc/host/sdhci-omap.c
-> @@ -108,6 +108,11 @@ struct sdhci_omap_host {
->         struct pinctrl          *pinctrl;
->         struct pinctrl_state    **pinctrl_state;
->         bool                    is_tuning;
-> +       /* Omap specific context save */
-> +       u32                     con;
-> +       u32                     hctl;
-> +       u32                     sysctl;
-> +       u32                     capa;
->  };
->
->  static void sdhci_omap_start_clock(struct sdhci_omap_host *omap_host);
-> @@ -1232,12 +1237,64 @@ static int sdhci_omap_remove(struct platform_device *pdev)
->
->         return 0;
->  }
-> +#ifdef CONFIG_PM_SLEEP
-> +static void sdhci_omap_context_save(struct sdhci_omap_host *omap_host)
-> +{
-> +       omap_host->con = sdhci_omap_readl(omap_host, SDHCI_OMAP_CON);
-> +       omap_host->hctl = sdhci_omap_readl(omap_host, SDHCI_OMAP_HCTL);
-> +       omap_host->capa = sdhci_omap_readl(omap_host, SDHCI_OMAP_CAPA);
-> +}
-> +
-> +static void sdhci_omap_context_restore(struct sdhci_omap_host *omap_host)
-> +{
-> +       sdhci_omap_writel(omap_host, SDHCI_OMAP_CON, omap_host->con);
-> +       sdhci_omap_writel(omap_host, SDHCI_OMAP_HCTL, omap_host->hctl);
-> +       sdhci_omap_writel(omap_host, SDHCI_OMAP_CAPA, omap_host->capa);
-> +}
-> +
-> +static int __maybe_unused sdhci_omap_suspend(struct device *dev)
-> +{
-> +       struct sdhci_host *host = dev_get_drvdata(dev);
-> +       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-> +       struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
-> +
-> +       sdhci_suspend_host(host);
-> +
-> +       sdhci_omap_context_save(omap_host);
-> +
-> +       pinctrl_pm_select_idle_state(dev);
-> +
-> +       pm_runtime_force_suspend(dev);
-> +
-> +       return 0;
-> +}
-> +
-> +static int __maybe_unused sdhci_omap_resume(struct device *dev)
-> +{
-> +       struct sdhci_host *host = dev_get_drvdata(dev);
-> +       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-> +       struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
-> +
-> +       pm_runtime_force_resume(dev);
-> +
-> +       pinctrl_pm_select_default_state(dev);
-> +
-> +       sdhci_omap_context_restore(omap_host);
-> +
-> +       sdhci_resume_host(host);
-> +
-> +       return 0;
-> +}
-> +#endif
-> +static SIMPLE_DEV_PM_OPS(sdhci_omap_dev_pm_ops, sdhci_omap_suspend,
-> +                        sdhci_omap_resume);
->
->  static struct platform_driver sdhci_omap_driver = {
->         .probe = sdhci_omap_probe,
->         .remove = sdhci_omap_remove,
->         .driver = {
->                    .name = "sdhci-omap",
-> +                  .pm = &sdhci_omap_dev_pm_ops,
->                    .of_match_table = omap_sdhci_match,
->                   },
->  };
-> --
-> 2.19.2
->
+diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+index a25c3a4..fa8f6a4 100644
+--- a/drivers/mmc/host/sdhci-tegra.c
++++ b/drivers/mmc/host/sdhci-tegra.c
+@@ -45,6 +45,7 @@
+ #define SDHCI_TEGRA_CAP_OVERRIDES_DQS_TRIM_SHIFT	8
+ 
+ #define SDHCI_TEGRA_VENDOR_MISC_CTRL			0x120
++#define SDHCI_MISC_CTRL_ERASE_TIMEOUT_LIMIT		BIT(0)
+ #define SDHCI_MISC_CTRL_ENABLE_SDR104			0x8
+ #define SDHCI_MISC_CTRL_ENABLE_SDR50			0x10
+ #define SDHCI_MISC_CTRL_ENABLE_SDHCI_SPEC_300		0x20
+@@ -1227,6 +1228,34 @@ static u32 sdhci_tegra_cqhci_irq(struct sdhci_host *host, u32 intmask)
+ 	return 0;
+ }
+ 
++static void tegra_sdhci_set_timeout(struct sdhci_host *host,
++				    struct mmc_command *cmd)
++{
++	u32 val;
++
++	/*
++	 * HW busy detection timeout is based on programmed data timeout
++	 * counter and maximum supported timeout is 11s which may not be
++	 * enough for long operations like cache flush, sleep awake, erase.
++	 *
++	 * ERASE_TIMEOUT_LIMIT bit of VENDOR_MISC_CTRL register allows
++	 * host controller to wait for busy state until the card is busy
++	 * without HW timeout.
++	 *
++	 * So, use infinite busy wait mode for operations that may take
++	 * more than maximum HW busy timeout of 11s otherwise use finite
++	 * busy wait mode.
++	 */
++	val = sdhci_readl(host, SDHCI_TEGRA_VENDOR_MISC_CTRL);
++	if (cmd && cmd->busy_timeout >= 11 * HZ)
++		val |= SDHCI_MISC_CTRL_ERASE_TIMEOUT_LIMIT;
++	else
++		val &= ~SDHCI_MISC_CTRL_ERASE_TIMEOUT_LIMIT;
++	sdhci_writel(host, val, SDHCI_TEGRA_VENDOR_MISC_CTRL);
++
++	__sdhci_set_timeout(host, cmd);
++}
++
+ static const struct cqhci_host_ops sdhci_tegra_cqhci_ops = {
+ 	.write_l    = tegra_cqhci_writel,
+ 	.enable	= sdhci_tegra_cqe_enable,
+@@ -1366,6 +1395,7 @@ static const struct sdhci_ops tegra210_sdhci_ops = {
+ 	.set_uhs_signaling = tegra_sdhci_set_uhs_signaling,
+ 	.voltage_switch = tegra_sdhci_voltage_switch,
+ 	.get_max_clock = tegra_sdhci_get_max_clock,
++	.set_timeout = tegra_sdhci_set_timeout,
+ };
+ 
+ static const struct sdhci_pltfm_data sdhci_tegra210_pdata = {
+@@ -1403,6 +1433,7 @@ static const struct sdhci_ops tegra186_sdhci_ops = {
+ 	.voltage_switch = tegra_sdhci_voltage_switch,
+ 	.get_max_clock = tegra_sdhci_get_max_clock,
+ 	.irq = sdhci_tegra_cqhci_irq,
++	.set_timeout = tegra_sdhci_set_timeout,
+ };
+ 
+ static const struct sdhci_pltfm_data sdhci_tegra186_pdata = {
+-- 
+2.7.4
+
