@@ -2,53 +2,101 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E40E018503D
-	for <lists+linux-mmc@lfdr.de>; Fri, 13 Mar 2020 21:25:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C715185205
+	for <lists+linux-mmc@lfdr.de>; Sat, 14 Mar 2020 00:04:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727385AbgCMUZI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 13 Mar 2020 16:25:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47594 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726480AbgCMUZH (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 13 Mar 2020 16:25:07 -0400
-Subject: Re: [GIT PULL] MMC fixes for v5.6-rc6 take2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584131107;
-        bh=qh59NKk5b/UE7bO+HoSw6wEWZNyF+IwN4tPCJCBfzf8=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=AQhS98z7eejlitvHDOnM6dvQ4tzkobq8tXXd7qAY6ikVPBuJ/Ad9kVFjNcKVgYFNO
-         ePzZAiklxTeOZlQ13OMg3vt41IUcmqq/oVp51AydNhmpU9nu6At1K7goRQNq2ZfOXv
-         5jy5KitdtiSkd8mApRc/E5XBZttkbhuoU03y87mE=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20200313123202.23685-1-ulf.hansson@linaro.org>
-References: <20200313123202.23685-1-ulf.hansson@linaro.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20200313123202.23685-1-ulf.hansson@linaro.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git
- tags/mmc-v5.6-rc1-2
-X-PR-Tracked-Commit-Id: 18d200460cd73636d4f20674085c39e32b4e0097
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: d36561296bb510bf339750ea22efaa660277642e
-Message-Id: <158413110734.9951.15489734490072348773.pr-tracker-bot@kernel.org>
-Date:   Fri, 13 Mar 2020 20:25:07 +0000
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+        id S1727422AbgCMXED (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 13 Mar 2020 19:04:03 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:42072 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726736AbgCMXEC (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 13 Mar 2020 19:04:02 -0400
+Received: by mail-ua1-f65.google.com with SMTP id v16so3186202ual.9
+        for <linux-mmc@vger.kernel.org>; Fri, 13 Mar 2020 16:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RS54kqU4ZoL/JYf9xb8FmVEyuposBptYBdg1XhxTjvU=;
+        b=Wm2F80U/qMBMSKwzTlzGHa6o1sLnPfF3HvOrwUtm0NxjB+l1CPOtDjpjcN7UGsEaXs
+         MJkWKdzoiWZBrVH/YKlVsWtLo/y0pmgZtOQtPI/fWesyUvta/tmr5Sc6A4cLNQPPJQHr
+         ZbXhPrL1eHpHoounZ1UpwBb7q46D7oRaDqqU0WOgfzjI3QtPs2sMHHQUUL9d/8R8lGyU
+         Wt8ILFTgOQC3fwRuTQj49ZyL3RmQya6KcGA9QgtXCW9LewqD8Qkj806K00ZciJmlIrKU
+         mKsWXvvyBVmcT5eg2mGo4uXDKG3lgiQwR3e8W7+umbSZDImAW83qc49BeY760W2cbWMB
+         /+qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RS54kqU4ZoL/JYf9xb8FmVEyuposBptYBdg1XhxTjvU=;
+        b=CJBIr7eW3V37+keDlXYJTefheZgsvyHuExhjE5FvioK+4GBE01gMmJuoxXv4od0Dze
+         TApg5zrsAbuQPraPm4K4djzTYZRcxmOBHtQQ42gSKvHurJRrj0iZKhi7Y1JVthhs4n2d
+         AoDTyAXNKrvSWDqwelRTgX8WYtOokyz7i9HveC6nJUb9iNWGSZj+IcWNiwpr8FQwN2W5
+         0IX9+BLz4kLJrQpHQMhWS+vPNSOw15/Zggcgg0f3Mn5bUj+kc5oyBDsHcOGPYeCESjta
+         3glJjUH7co9I3r7fTQUjiLG2csSLNq9IViv9ld8qbmAXsp5xFI8Kc6zuas2vaqqM94uj
+         Rz9A==
+X-Gm-Message-State: ANhLgQ29w/BMFdimJa0ehIRoDhs4yEG/Ipxu5vqyaE/YBGIapji3VbXA
+        sLGsY0xyZM0UYk1pnRDVB+b4B80Wzw6gDE3dsr0MTw==
+X-Google-Smtp-Source: ADFU+vslrgWZ+WwLQNF/SvQm9l+ZtDJHO/NTwCrNcP545NTgh6V4fcUru4452BxUtt7jtERTCU5sKZW85KUcjRGmknk=
+X-Received: by 2002:ab0:7381:: with SMTP id l1mr10024983uap.104.1584140641580;
+ Fri, 13 Mar 2020 16:04:01 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200312142904.232822-1-tudor.ambarus@microchip.com>
+In-Reply-To: <20200312142904.232822-1-tudor.ambarus@microchip.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Sat, 14 Mar 2020 00:03:25 +0100
+Message-ID: <CAPDyKFpCnXri=Lj8kDUgWn-zHRudLeOvegDjQakzckR7OndbXA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-of-at91: Display clock changes for debug
+ purpose only
+To:     Tudor.Ambarus@microchip.com
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ludovic Desroches <Ludovic.Desroches@microchip.com>,
+        Nicolas Ferre <Nicolas.Ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Cristian.Birsan@microchip.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The pull request you sent on Fri, 13 Mar 2020 13:32:02 +0100:
+On Thu, 12 Mar 2020 at 15:29, <Tudor.Ambarus@microchip.com> wrote:
+>
+> From: Cristian Birsan <cristian.birsan@microchip.com>
+>
+> The sdhci_at91_set_clks_presets() function is called multiple times
+> at runtime and the messages are shown on the console. Display clk mul,
+> gck rate and clk base for debug porpose only.
+>
+> Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.6-rc1-2
+Applied for next, thanks!
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/d36561296bb510bf339750ea22efaa660277642e
+Kind regards
+Uffe
 
-Thank you!
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+> ---
+>  drivers/mmc/host/sdhci-of-at91.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-of-at91.c
+> index ab2bd314a390..88f17abb69a7 100644
+> --- a/drivers/mmc/host/sdhci-of-at91.c
+> +++ b/drivers/mmc/host/sdhci-of-at91.c
+> @@ -204,8 +204,8 @@ static int sdhci_at91_set_clks_presets(struct device *dev)
+>         /* Set capabilities in ro mode. */
+>         writel(0, host->ioaddr + SDMMC_CACR);
+>
+> -       dev_info(dev, "update clk mul to %u as gck rate is %u Hz and clk base is %u Hz\n",
+> -                clk_mul, gck_rate, clk_base_rate);
+> +       dev_dbg(dev, "update clk mul to %u as gck rate is %u Hz and clk base is %u Hz\n",
+> +               clk_mul, gck_rate, clk_base_rate);
+>
+>         /*
+>          * We have to set preset values because it depends on the clk_mul
+> --
+> 2.23.0
