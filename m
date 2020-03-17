@@ -2,230 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D4711882BD
-	for <lists+linux-mmc@lfdr.de>; Tue, 17 Mar 2020 12:59:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EC7218835C
+	for <lists+linux-mmc@lfdr.de>; Tue, 17 Mar 2020 13:12:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726599AbgCQL7O (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 Mar 2020 07:59:14 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:33799 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726678AbgCQL7O (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Mar 2020 07:59:14 -0400
-Received: by mail-vs1-f67.google.com with SMTP id t10so13639342vsp.1
-        for <linux-mmc@vger.kernel.org>; Tue, 17 Mar 2020 04:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=//nkJUOqKK9I9JAKOxrGmWsdECFuBDzQRPdFg3EsiQg=;
-        b=Bfb5vvyW8Um6QbFHf9848zR/18cgLJjMO0L87YBO9GKGqJwf10dftAbgEho2opGx08
-         7obGXQ1qe6mBHhIoHhF6jRht1KOqrxoGMr/z3cAs0/1QyQCTSGk6cDolrLcqwbs+I5SP
-         lLerm3aKZQ0kF5AeH2GVSQQFym8fztGih20fzvmsedWJsyXHtJ46cH0svzAjGS3RFORJ
-         p9l8Wm1tL/PWwQkrJwhmoxF7IyzbBUaqexr0FWZbQIyAvCmCug9ldI3R8hFj1//VSowR
-         YOg+acFUEN1fnkRXSR5HAC9631JvDr5kD3BcQpmaaeoTHo52qQq87TnWcGlT00W8m30Q
-         qOFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=//nkJUOqKK9I9JAKOxrGmWsdECFuBDzQRPdFg3EsiQg=;
-        b=a3z6ojg9AbjzQJ8G7d2elQUNf7MAIbzidASTHeFdYme3lKRaEVhom1D6b4cC4fhC6m
-         HcvYJSmFnaZxdMEGe7PVtLvMM8axMTDdB0c0ccAs4O4Z9W6p/5L5/kBKd0SMvVu6ltas
-         P4IKBmQ+TqDG7xdaF8z3UhyjKh+Jksi2VQWgnbySN4X9x47ac4DcYkZgSEWGTy7kPQPi
-         //wbtjO9awtYdFBiiiZcL1knMQH6RcbyqpGOvxHpCv4AgVFcJ0AhXje7xPiuNrKhn8yN
-         lbe9SAn7zwxVoos57M7MjC8I5NnjBnc9Hoc5A3L86oxbWOmUVxZ1o9dXvOTaWlsCbf2M
-         h+eg==
-X-Gm-Message-State: ANhLgQ3dkgTJcSKS1LfiYLvyBnlhzvFY9AsVouSPQfww/D3XTTFu8jJ6
-        L0PmfHFPIMlfT3dwGUzl+yKCPKsSyKvGWufdzABRGREP
-X-Google-Smtp-Source: ADFU+vv5isQNdA5g+wqwclUzkcu2IFL4Dmwo02Mc625ND3vHM4gvxgPhQ/GgTAnGZ2t1Kd7nj5BaKeJVqWMMBBRs3H4=
-X-Received: by 2002:a67:646:: with SMTP id 67mr3170330vsg.34.1584446351477;
- Tue, 17 Mar 2020 04:59:11 -0700 (PDT)
+        id S1726965AbgCQML5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 Mar 2020 08:11:57 -0400
+Received: from sonic308-2.consmr.mail.ne1.yahoo.com ([66.163.187.121]:42315
+        "EHLO sonic308-2.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726705AbgCQML4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Mar 2020 08:11:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584447115; bh=kcevCRoll2+Bsa3FDERpIV72LVcB1A4YV1b5N2AWYBk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=iUlGnRLQG6F3FaEVNIp3zcBgcxIJSYrz1n2caipTs0506aGX82j4iJh/jdfSgvf/ydicy2n4aU/zcMuD6FT0MPShSa5Y9D0k1iZPPFL8PIFVehJi7MVWrDXqoMlkPLuvXo9aP+WQB/EErjPvAayMOmUP+gTL/NWxITqPGPZK2XtE9pgcVrWyc3xc/+YTyebWNK+rtmAyWlGP/eliRO3yEsGmz8o9JBSgOoQqhEmw5DHDZJheBrRRyvm+a84qVIzOFpXH9siCaC50IUM0wmFhzZuSMna+3k035X/W95iGIQBCFRdjIOLpT0JSULvvxk0W9DSm14SNXbMEEWQazrStyw==
+X-YMail-OSG: 1HTxhrwVM1kZE2_6l5ymOn55wL.OWIsR9auq.uEqq_ZHTQie.PaPJpxl5rp9igB
+ FCikKZTBgfOj8BtWp.7dvKTeASz9ejKdjMoqxE0hg4RSPq.Xd74XcI5VEnMkqJkyztk67cbM7Or9
+ unzm5W7a3GjGw1sOHs_4l.tEhyFRVj01f6pdEhXinjs1ji5NymU2z43mkQDygHNj16YBZa9wTB07
+ moCD3msk0w8_kdkp22fpPwTX4fLTEmNYBk21vXz6HtPk0.6b3kVjtTGK6_ZZh_OYbaLCc5TFSvT.
+ AENtXRny18CK0gOejXVDH8ptfkWZF5lg6LdBoZiGU43ZYWbhjIXMSDsrYPX.SYJZG3m6aL96RlDc
+ 4vm72HzxkuZRIQhMed8kwuXYxZl_jqoyOlhI.nyfIvgsga1AYHOmHv.U_XZRhERMqBF.P5FA.Wnv
+ 6kMqdwrgGgGIaBeQs75cdTwEmgv5ykzgM2LfpevJOpR_MdTOpjHP08RQMgGirEnMzLLu4uGsG6Jp
+ KxzISBhVgXQ4x9lZvKT1RFpVYF.wX6_RTCbllK1_nHOjYKRfnp8EfjyYm_VsnMOFRAnulZztZzAB
+ juSj9TeppZ71SsI8u6thVsJU0PtFY_.RdSdkfF0PQaXmIwubwv0BR2gR0gt5yXxJV0kAW.bpPwB4
+ 8v7fMU_tvJzbYunZIf9a6A3doFdxSkSIuEfQctkuJZxwf955s2qBys5JamCgpQA5LprKLq3.iR.G
+ BIyc.9HtBGd7_XlYAWyIBlRYB4dhsVF8_yma6nxIJdOXkg7QBy0U0Mba7DucPundHOuIxwEb5Rov
+ KpuYyiiYmAOOobaSJaM8GYdWZLDqdKdCwa.RlA0BHZIK3lDCKK9a76.qpc6gs.WiFFwndlk9SpVe
+ CFz52MUKaSLxUp3Y.jhTJdHuxZgtpswiFP2J_BbRrk3nvH_6qaOcGnaxXjwty5qD_ElDn2rmpKl4
+ a06XHTzdmDucbtqSf1I5rTyiFcVFiIzSREWbA7Kc8Kh_utzmUu7QXM6J87zt9PxzcFHlBHvtZV3d
+ Jt2ydetpORiYIDflivuU8c5bAF93F6tbvCTO1bi7racv42jfg48zkh61iQck2C7pew6.5E.HLDNs
+ CDqJWL0wv05joC45oVjMt6mHEACw8YXaKFnoUMjnlrbHwDktN8ty70H7rYDNrKIM_SRj1rjtWOE2
+ wpRrOZm8gM..Xxb1sh2OeXwtcuiT16WAIZ8HTAtstL3u_TVZOyW_eMVZbtrQE7M7dhwEAxNYa.uz
+ Rdql3UbrnbUdAEu4bpqZDBxt5XwCviqOtp.6WkyD5frAPEgwbHYnAZsPjZPglQsouJX2ttD_S.Kj
+ HBXFqHTAuu1pSYJNaUNcIey6u_eM-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Mar 2020 12:11:55 +0000
+Date:   Tue, 17 Mar 2020 12:09:54 +0000 (UTC)
+From:   Stephen Li <stenn6@gabg.net>
+Reply-To: stephli947701@gmail.com
+Message-ID: <2059527141.1811494.1584446994240@mail.yahoo.com>
+Subject: REF
 MIME-Version: 1.0
-References: <20200316025232.1167-1-ricky_wu@realtek.com> <CAPDyKFrWedEmZ=0trPEG8Z-11nyFX6_OB3cx7+SAdB5VW_vzgQ@mail.gmail.com>
- <6196929373bb43c8b8fbc550ad41e1fc@realtek.com>
-In-Reply-To: <6196929373bb43c8b8fbc550ad41e1fc@realtek.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 17 Mar 2020 12:58:35 +0100
-Message-ID: <CAPDyKFqfNp0uo6oY2ZkYVYknkYiyovtU2Ss4+y39AnuRi4nWVQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: rtsx: Fixed TX/RX register and optimized TX parameter
-To:     =?UTF-8?B?5ZCz5piK5r6EIFJpY2t5?= <ricky_wu@realtek.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <2059527141.1811494.1584446994240.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 17 Mar 2020 at 03:45, =E5=90=B3=E6=98=8A=E6=BE=84 Ricky <ricky_wu@r=
-ealtek.com> wrote:
->
->
-> > -----Original Message-----
-> > From: Ulf Hansson [mailto:ulf.hansson@linaro.org]
-> > Sent: Monday, March 16, 2020 10:17 PM
-> > To: =E5=90=B3=E6=98=8A=E6=BE=84 Ricky
-> > Cc: linux-mmc@vger.kernel.org; Linux Kernel Mailing List; Arnd Bergmann=
-; Greg
-> > Kroah-Hartman
-> > Subject: Re: [PATCH] mmc: rtsx: Fixed TX/RX register and optimized TX
-> > parameter
-> >
-> > On Mon, 16 Mar 2020 at 03:52, <ricky_wu@realtek.com> wrote:
-> > >
-> > > From: Ricky Wu <ricky_wu@realtek.com>
-> > >
-> > > Fixed sd_change_phase TX/RX register
-> > > Optimized rts522a rts524a rts525a rts5260 rts5261 TX initial paramete=
-r
-> >
-> > I don't understand what this actually fixes. Can you try to elaborate
-> > a bit on this, please?
-> >
-> > Do you think this is needed for stable, then why?
->
-> Yes, I think it need patch to stable
->
-> In function sd_change_phase() whether it is TX or RX always write the sam=
-e register(TX), so patch this function make RX and TX can change well.
-> At mmc stack mechanism do not tuning TX phase, so need give a stable para=
-meter for TX phase(sdr104 sdr50 ddr50) at initial.
-
-Alright, I took the liberty to clarify the changelog a bit according
-to this. Please have a look at my fixes branch and tell me if I should
-do some additional changes of the changelog.
-
-Applied for fixes and by adding a stable tag, thanks!
-
-Arnd, Greg, so I am picking this via my mmc tree, please shout at me
-(or ack it) if you have any concerns with this. :-)
-
-Kind regards
-Uffe
 
 
->
-> >
-> > Kind regards
-> > Uffe
-> >
-> > >
-> > > Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
-> > > ---
-> > >  drivers/misc/cardreader/rts5227.c |  2 +-
-> > >  drivers/misc/cardreader/rts5249.c |  2 ++
-> > >  drivers/misc/cardreader/rts5260.c |  2 +-
-> > >  drivers/misc/cardreader/rts5261.c |  2 +-
-> > >  drivers/mmc/host/rtsx_pci_sdmmc.c | 13 ++++++++-----
-> > >  5 files changed, 13 insertions(+), 8 deletions(-)
-> > >
-> > > diff --git a/drivers/misc/cardreader/rts5227.c
-> > b/drivers/misc/cardreader/rts5227.c
-> > > index 4feed296a327..423fecc19fc4 100644
-> > > --- a/drivers/misc/cardreader/rts5227.c
-> > > +++ b/drivers/misc/cardreader/rts5227.c
-> > > @@ -394,7 +394,7 @@ static const struct pcr_ops rts522a_pcr_ops =3D {
-> > >  void rts522a_init_params(struct rtsx_pcr *pcr)
-> > >  {
-> > >         rts5227_init_params(pcr);
-> > > -
-> > > +       pcr->tx_initial_phase =3D SET_CLOCK_PHASE(20, 20, 11);
-> > >         pcr->reg_pm_ctrl3 =3D RTS522A_PM_CTRL3;
-> > >
-> > >         pcr->option.ocp_en =3D 1;
-> > > diff --git a/drivers/misc/cardreader/rts5249.c
-> > b/drivers/misc/cardreader/rts5249.c
-> > > index db936e4d6e56..1a81cda948c1 100644
-> > > --- a/drivers/misc/cardreader/rts5249.c
-> > > +++ b/drivers/misc/cardreader/rts5249.c
-> > > @@ -618,6 +618,7 @@ static const struct pcr_ops rts524a_pcr_ops =3D {
-> > >  void rts524a_init_params(struct rtsx_pcr *pcr)
-> > >  {
-> > >         rts5249_init_params(pcr);
-> > > +       pcr->tx_initial_phase =3D SET_CLOCK_PHASE(27, 29, 11);
-> > >         pcr->option.ltr_l1off_sspwrgate =3D
-> > LTR_L1OFF_SSPWRGATE_5250_DEF;
-> > >         pcr->option.ltr_l1off_snooze_sspwrgate =3D
-> > >                 LTR_L1OFF_SNOOZE_SSPWRGATE_5250_DEF;
-> > > @@ -733,6 +734,7 @@ static const struct pcr_ops rts525a_pcr_ops =3D {
-> > >  void rts525a_init_params(struct rtsx_pcr *pcr)
-> > >  {
-> > >         rts5249_init_params(pcr);
-> > > +       pcr->tx_initial_phase =3D SET_CLOCK_PHASE(25, 29, 11);
-> > >         pcr->option.ltr_l1off_sspwrgate =3D
-> > LTR_L1OFF_SSPWRGATE_5250_DEF;
-> > >         pcr->option.ltr_l1off_snooze_sspwrgate =3D
-> > >                 LTR_L1OFF_SNOOZE_SSPWRGATE_5250_DEF;
-> > > diff --git a/drivers/misc/cardreader/rts5260.c
-> > b/drivers/misc/cardreader/rts5260.c
-> > > index 4214f02a17fd..711054ebad74 100644
-> > > --- a/drivers/misc/cardreader/rts5260.c
-> > > +++ b/drivers/misc/cardreader/rts5260.c
-> > > @@ -662,7 +662,7 @@ void rts5260_init_params(struct rtsx_pcr *pcr)
-> > >         pcr->sd30_drive_sel_1v8 =3D CFG_DRIVER_TYPE_B;
-> > >         pcr->sd30_drive_sel_3v3 =3D CFG_DRIVER_TYPE_B;
-> > >         pcr->aspm_en =3D ASPM_L1_EN;
-> > > -       pcr->tx_initial_phase =3D SET_CLOCK_PHASE(1, 29, 16);
-> > > +       pcr->tx_initial_phase =3D SET_CLOCK_PHASE(27, 29, 11);
-> > >         pcr->rx_initial_phase =3D SET_CLOCK_PHASE(24, 6, 5);
-> > >
-> > >         pcr->ic_version =3D rts5260_get_ic_version(pcr);
-> > > diff --git a/drivers/misc/cardreader/rts5261.c
-> > b/drivers/misc/cardreader/rts5261.c
-> > > index bc4967a6efa1..78c3b1d424c3 100644
-> > > --- a/drivers/misc/cardreader/rts5261.c
-> > > +++ b/drivers/misc/cardreader/rts5261.c
-> > > @@ -764,7 +764,7 @@ void rts5261_init_params(struct rtsx_pcr *pcr)
-> > >         pcr->sd30_drive_sel_1v8 =3D CFG_DRIVER_TYPE_B;
-> > >         pcr->sd30_drive_sel_3v3 =3D CFG_DRIVER_TYPE_B;
-> > >         pcr->aspm_en =3D ASPM_L1_EN;
-> > > -       pcr->tx_initial_phase =3D SET_CLOCK_PHASE(20, 27, 16);
-> > > +       pcr->tx_initial_phase =3D SET_CLOCK_PHASE(27, 27, 11);
-> > >         pcr->rx_initial_phase =3D SET_CLOCK_PHASE(24, 6, 5);
-> > >
-> > >         pcr->ic_version =3D rts5261_get_ic_version(pcr);
-> > > diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c
-> > b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> > > index bd50935dc37d..11087976ab19 100644
-> > > --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-> > > +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> > > @@ -606,19 +606,22 @@ static int sd_change_phase(struct
-> > realtek_pci_sdmmc *host,
-> > >                 u8 sample_point, bool rx)
-> > >  {
-> > >         struct rtsx_pcr *pcr =3D host->pcr;
-> > > -
-> > > +       u16 SD_VP_CTL =3D 0;
-> > >         dev_dbg(sdmmc_dev(host), "%s(%s): sample_point =3D %d\n",
-> > >                         __func__, rx ? "RX" : "TX", sample_point);
-> > >
-> > >         rtsx_pci_write_register(pcr, CLK_CTL, CHANGE_CLK, CHANGE_CLK)=
-;
-> > > -       if (rx)
-> > > +       if (rx) {
-> > > +               SD_VP_CTL =3D SD_VPRX_CTL;
-> > >                 rtsx_pci_write_register(pcr, SD_VPRX_CTL,
-> > >                         PHASE_SELECT_MASK, sample_point);
-> > > -       else
-> > > +       } else {
-> > > +               SD_VP_CTL =3D SD_VPTX_CTL;
-> > >                 rtsx_pci_write_register(pcr, SD_VPTX_CTL,
-> > >                         PHASE_SELECT_MASK, sample_point);
-> > > -       rtsx_pci_write_register(pcr, SD_VPCLK0_CTL, PHASE_NOT_RESET, =
-0);
-> > > -       rtsx_pci_write_register(pcr, SD_VPCLK0_CTL, PHASE_NOT_RESET,
-> > > +       }
-> > > +       rtsx_pci_write_register(pcr, SD_VP_CTL, PHASE_NOT_RESET, 0);
-> > > +       rtsx_pci_write_register(pcr, SD_VP_CTL, PHASE_NOT_RESET,
-> > >                                 PHASE_NOT_RESET);
-> > >         rtsx_pci_write_register(pcr, CLK_CTL, CHANGE_CLK, 0);
-> > >         rtsx_pci_write_register(pcr, SD_CFG1, SD_ASYNC_FIFO_NOT_RST,
-> > 0);
-> > > --
-> > > 2.17.1
-> > >
-> >
-> > ------Please consider the environment before printing this e-mail.
+Greetings,
+I was searching through a local business directory when I found your
+profile. I am Soliciting On-Behalf of my private client who is
+interested in having a serious business investment in your country. If
+you have a valid business, investment or project he can invest
+back to me for more details. Your swift response is highly needed.
+Sincerely
+Stephen Li
+Please response back to me with is my private email below for more details
+stephli947701@gmail.com
