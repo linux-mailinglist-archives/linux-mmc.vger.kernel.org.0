@@ -2,137 +2,149 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 032E518B1D0
-	for <lists+linux-mmc@lfdr.de>; Thu, 19 Mar 2020 11:55:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1559618B2E0
+	for <lists+linux-mmc@lfdr.de>; Thu, 19 Mar 2020 13:00:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727195AbgCSKz0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 19 Mar 2020 06:55:26 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:35154 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727216AbgCSKzZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Mar 2020 06:55:25 -0400
-Received: by mail-pf1-f196.google.com with SMTP id u68so1241841pfb.2;
-        Thu, 19 Mar 2020 03:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :in-reply-to:references;
-        bh=X5441Jy2VbGV6dbzgZxForefu3q50NuP2ovt+obRsE4=;
-        b=brNWfESJSuqO+4+09IIvPRsaedOM8E/pS6J73eUynhP08GAvpMo/aK/w8QFA2Qg4bE
-         roRO7HwQklcJpIqr8DjAl101c1rL3bCjonnjy21/3z0aZVIEGqxms6VjEBh9/zeNBgDX
-         0/i9r9yIF5mn5kA2/nudMZkZ9I5SBLDzJrCIwrUpjNS6d1lbaQHkpDEsevmhXW9xPSvd
-         L4K7qOZ3LX5XksSK7+b0jsbddBkE1gCFTegQVUeAci6TtPWImJCeChHjWECuPSrK2wBl
-         1lmbyImG54W9cU36DqP+5dkLYxTNLBPHidlVPVz4E/Ponii9ozXALQnCvcfZZwo4qIuM
-         ntVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:in-reply-to:references;
-        bh=X5441Jy2VbGV6dbzgZxForefu3q50NuP2ovt+obRsE4=;
-        b=VIRpZzMVZ7/H6Kvfoi/rwlpzZ53RsCY65LE7lFsEXNPpRjUkjW5ZJcKN67G0P2/MQ0
-         WEEDiztk7ODan6Sv+BIscHccDk734chB3ZxAypKnBXONg1/a70D7OGTSNXYsmI+a0eVg
-         v9lfvdvht3wWq8+kx/pGLvrgj1qLq1yVBiqSbjwTcZzeFuWiXuWr2YYheYnSkTIx1Fzh
-         oMd9Cz84bu5DB10pxibysBhxDt+0SRw+Ht7KCiTDpddVsFGrUG5V1vGLIc810N7EbPcJ
-         HrU1MxF6Evk96EOvsQV4bmlO6Q7SDDc80RvnQpUtszEJBP/fJZCRWGNG5pFhIfpyr2oX
-         UWHQ==
-X-Gm-Message-State: ANhLgQ0GgNGdIISeZp1YY1bQmO/n5Jpdow9fVJIszp050rrWPXrPLsI8
-        v804HU/4Qk1aEHpgiaxfSkM=
-X-Google-Smtp-Source: ADFU+vvwr8HV9kNS8ey2y7NUz400nhpNIeCWQcMYfi1GWHsCIpQjBM3WTOp+//wfnfqtqKg2GfParg==
-X-Received: by 2002:a63:7c5b:: with SMTP id l27mr573245pgn.414.1584615324647;
-        Thu, 19 Mar 2020 03:55:24 -0700 (PDT)
-Received: from sh03840pcu.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id f6sm2209949pfk.99.2020.03.19.03.55.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 19 Mar 2020 03:55:24 -0700 (PDT)
-From:   Baolin Wang <baolin.wang7@gmail.com>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
-Cc:     orsonzhai@gmail.com, zhang.lyra@gmail.com, baolin.wang7@gmail.com,
-        arnd@arndb.de, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/4] mmc: host: sdhci-sprd: Implement the request_atomic() API
-Date:   Thu, 19 Mar 2020 18:54:22 +0800
-Message-Id: <2a7469f93323b6fc80176affa92f9396942a56e3.1584615043.git.baolin.wang7@gmail.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <cover.1584615043.git.baolin.wang7@gmail.com>
-References: <cover.1584615043.git.baolin.wang7@gmail.com>
-In-Reply-To: <cover.1584615043.git.baolin.wang7@gmail.com>
-References: <cover.1584615043.git.baolin.wang7@gmail.com>
+        id S1726785AbgCSMAT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 19 Mar 2020 08:00:19 -0400
+Received: from static-213-198-238-194.adsl.eunet.rs ([213.198.238.194]:55096
+        "EHLO fx.arvanta.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726793AbgCSMAT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Mar 2020 08:00:19 -0400
+Received: from arya.arvanta.net (arya.arvanta.net [10.5.1.6])
+        by fx.arvanta.net (Postfix) with ESMTP id D6DC56967;
+        Thu, 19 Mar 2020 13:00:16 +0100 (CET)
+Date:   Thu, 19 Mar 2020 13:00:16 +0100
+From:   Milan =?utf-8?Q?P=2E_Stani=C4=87?= <mps@arvanta.net>
+To:     Shawn Lin <shawn.lin@rock-chips.com>
+Cc:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>
+Subject: Re: PROBLEM: =?utf-8?Q?mmc=5Fselect=5Fhs40?=
+ =?utf-8?B?MGVzIGZhaWxlZCwgZXJyb3IgLTExMOOAkOivt+azqOaEj++8jOmCruS7tg==?=
+ =?utf-8?B?55SxbGludXgtbW1jLW93bmVyQHZnZXIua2VybmVsLm9yZ+S7o+WPkeOAkQ==?=
+Message-ID: <20200319120016.GA31191@arya.arvanta.net>
+References: <20200301220242.GA8276@arya.arvanta.net>
+ <20200318214917.GA9112@arya.arvanta.net>
+ <5922bbd7-e91b-d144-6d44-2632cbd11c78@rock-chips.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5922bbd7-e91b-d144-6d44-2632cbd11c78@rock-chips.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Implement the request_atomic() API for nonremovable cards, that means
-we can submit next request in the irq hard handler context to reduce
-latency.
+Hi Shawn,
 
-Moreover factor out the AUTO CMD23 checking into a separate function
-to reduce duplicate code.
+On Thu, 2020-03-19 at 11:11, Shawn Lin wrote:
+> Hi Milan
+> 
+> [+linux-rockchip to see if someone has a Samsung chromebook one plus
+> and could confirm if it works]
+> 
+> On 2020/3/19 5:49, Milan P. Stanić wrote:
+> > Hello,
+> > 
+> > Sorry to annoy again, but could you tell me if I sent this bug report
+> > to right mail address or I should send it somewhere else.
+> > 
+> > Also, did I sent bug report correctly or I did some mistakes which
+> > caused it to be ignored.
+> > 
+> > -- TIA On Sun, 2020-03-01 at 23:02, Milan P. Stanić wrote:
+> > > Hello,
+> > > 
+> > > I'm not native English speaker and I'm self taught in English so sorry
+> > > if do not write or express correctly. And sorry if I posted bug report
+> > > to wrong address.
+> > > 
+> > > I'm running linux 5.6.0-rc3 without any patches on Samsung chromebook
+> > > one plus, Arm64 rockchip rk3399 based model name:
+> > > Machine model: Google Kevin
+> > > 
+> > > I build kernels from upstream git.kernel.org for this machine for some
+> > > time (iirc, from 5.2.1 and up) but I'm getting error messages in kernel
+> > > after machine resumes from suspend-to-ram.
+> 
+> It sounds to me suspend-to-ram never works for this machine, at least
+> since 5.2.1. Am I right?
 
-Signed-off-by: Baolin Wang <baolin.wang7@gmail.com>
----
- drivers/mmc/host/sdhci-sprd.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+Sorry if I was not clear in previous mail. suspend-to-ram and resume works
+fine if the machine doesn't mount internal emmc card to use it in way.
 
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index 2ab42c5..bc7a8cb 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -406,7 +406,8 @@ static void sdhci_sprd_request_done(struct sdhci_host *host,
- 	.request_done = sdhci_sprd_request_done,
- };
- 
--static void sdhci_sprd_request(struct mmc_host *mmc, struct mmc_request *mrq)
-+static void sdhci_sprd_check_auto_cmd23(struct mmc_host *mmc,
-+					struct mmc_request *mrq)
- {
- 	struct sdhci_host *host = mmc_priv(mmc);
- 	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
-@@ -422,10 +423,23 @@ static void sdhci_sprd_request(struct mmc_host *mmc, struct mmc_request *mrq)
- 	    mrq->sbc && (mrq->sbc->arg & SDHCI_SPRD_ARG2_STUFF) &&
- 	    (host->flags & SDHCI_AUTO_CMD23))
- 		host->flags &= ~SDHCI_AUTO_CMD23;
-+}
-+
-+static void sdhci_sprd_request(struct mmc_host *mmc, struct mmc_request *mrq)
-+{
-+	sdhci_sprd_check_auto_cmd23(mmc, mrq);
- 
- 	sdhci_request(mmc, mrq);
- }
- 
-+static int sdhci_sprd_request_atomic(struct mmc_host *mmc,
-+				      struct mmc_request *mrq)
-+{
-+	sdhci_sprd_check_auto_cmd23(mmc, mrq);
-+
-+	return sdhci_request_atomic(mmc, mrq);
-+}
-+
- static int sdhci_sprd_voltage_switch(struct mmc_host *mmc, struct mmc_ios *ios)
- {
- 	struct sdhci_host *host = mmc_priv(mmc);
-@@ -561,6 +575,11 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto pltfm_free;
- 
-+	if (!mmc_card_is_removable(host->mmc))
-+		host->mmc_host_ops.request_atomic = sdhci_sprd_request_atomic;
-+	else
-+		host->always_defer_done = true;
-+
- 	sprd_host = TO_SPRD_HOST(host);
- 	sdhci_sprd_phy_param_parse(sprd_host, pdev->dev.of_node);
- 
-@@ -654,8 +673,6 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_cleanup_host;
- 
--	host->always_defer_done = true;
--
- 	ret = __sdhci_add_host(host);
- 	if (ret)
- 		goto err_cleanup_host;
+If it boots from external mmc card or ssd disk attached over usb-c
+interface and use root filesystem (or any other filesystem, /home for
+example) on them (external mmc or disk on usb-c) it can go numerous
+times to suspend-resume cycles without any problem.
+
+But if any filesystem from emmc mounted then in can suspend and even
+resume, but when resumed after some random time it start to make
+problems: programs segfault, cant read or write files and similar
+issue.
+
+As I wrote in previous mail I can apply patches, build kernel and
+(maybe) tweak some parameters in kernel source (if I know which one
+should help me) to help subsystem developers to fix this problem.
+
 -- 
-1.9.1
+thanks
 
+> > > excerpt from dmesg output:
+> > > -----------------------------------------------------------------------
+> > > Restarting tasks ... done.
+> > > PM: suspend exit
+> > > mmc_host mmc0: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
+> > > mmc1: mmc_select_hs400es failed, error -110
+> > > mmc1: error -110 doing runtime resume
+> > > mmc1: Got data interrupt 0x00000002 even though no data operation was in progress.
+> > > mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+> > > mmc1: sdhci: Sys addr:  0x00000008 | Version:  0x00001002
+> > > mmc1: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000008
+> > > mmc1: sdhci: Argument:  0x00000000 | Trn mode: 0x00000023
+> > > mmc1: sdhci: Present:   0x1fff0001 | Host ctl: 0x00000035
+> > > mmc1: sdhci: Power:     0x0000000b | Blk gap:  0x00000080
+> > > mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x0000bc07
+> > > mmc1: sdhci: Timeout:   0x0000000d | Int stat: 0x00000000
+> > > mmc1: sdhci: Int enab:  0x03ff000b | Sig enab: 0x03ff000b
+> > > mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+> > > mmc1: sdhci: Caps:      0x44edc880 | Caps_1:   0x801020f7
+> > > mmc1: sdhci: Cmd:       0x00000c1a | Max curr: 0x00000000
+> > > mmc1: sdhci: Resp[0]:   0x00000000 | Resp[1]:  0x373300bd
+> > > mmc1: sdhci: Resp[2]:   0x35303030 | Resp[3]:  0x00000000
+> > > mmc1: sdhci: Host ctl2: 0x00000000
+> > > mmc1: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0xed41e200
+> > > -----------------------------------------------------------------------
+> > > 
+> > > I invoke suspend-to-ram by `echo mem > /sys/power/state` from ACPI power
+> > > and LID button handlers.
+> > > 
+> > > This only happens when I boot and use internal emmc card and never when
+> > > boot and use external mmc card.
+> > > 
+> > > If suspend-to-ram is not invoked (machine is always in normal state)
+> > > this problem never happen (or I missed it somehow).
+> > > 
+> > > I'm attaching kernel .config (file config-5.6.0-rc3-1-gru.conf) which
+> > > use to build kernel, output of the `awk -f scripts/ver_linux` as file
+> > > ver_linux.txt and  output of dmesg as file mmc-err.txt (from which I
+> > > deleted wifi connection logs).
+> > > 
+> > > Sorry if I did something bad or wrong with this bug report, I don't have
+> > > much experience with bug reporting, especially for kernel.
+> > > 
+> > > I'm ready to send you more data, and investigate this more, apply
+> > > patches and rebuild kernel or whatever you ask me (of course if my
+> > > understanding and knowledge is enough for this job).
+> > > 
+> > > Thank in advance
+> > > 
+> > > --
+> > > Kind regards
+> > > 
+> > [...]
+> > 
+> > 
+> 
+> 
