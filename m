@@ -2,32 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B263218FD72
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 Mar 2020 20:18:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E1B18FDEB
+	for <lists+linux-mmc@lfdr.de>; Mon, 23 Mar 2020 20:44:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727922AbgCWTRy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 23 Mar 2020 15:17:54 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:37239 "EHLO rere.qmqm.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727689AbgCWTRy (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 23 Mar 2020 15:17:54 -0400
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 48mPKW0XfjzWS;
-        Mon, 23 Mar 2020 20:17:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1584991071; bh=XQ3m3+vQyM1VoUnzBx+7RSvsto1Yo997gskRv6Y8sNw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EUrv5FztMtosPKGE+IXzco8ePvvAoseoWikMkCmMNukTiH8+xrbqOHtRvbyB1nWiU
-         GaWXoAqpOJ/wr2QLc2P6VXOcd+YPtnl1sjbLY5Xcqi76HEkCoi/p/qVbuZw05wECy9
-         yfIsM51B2DdOta7zwUsRZdOHCpdhlsvCtBUbe/0NewH0+mo+Eeqmh6St9BEGMayBmN
-         KS43CYpOlgggJCu/R18F0sINmLul+wU5NUN24bVpxnvSopb4SjJ1rmrXJ8TacdQSB1
-         dxQS9jXSwgbQiLHnktvCk1tJZqHBzgJStDTVCTxqG1NP3hNut8gcc8b9FgtBNRAMkz
-         w2Y46EOBgTUSg==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.102.2 at mail
-Date:   Mon, 23 Mar 2020 20:17:48 +0100
-From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To:     Dmitry Osipenko <digetx@gmail.com>
+        id S1726203AbgCWToT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 23 Mar 2020 15:44:19 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:39215 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725866AbgCWToT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Mar 2020 15:44:19 -0400
+Received: by mail-lj1-f193.google.com with SMTP id i20so3963157ljn.6;
+        Mon, 23 Mar 2020 12:44:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=PxeFoR7puwfL5UMnOaJme3OEi0Xyw7aUebfMwwSK1j8=;
+        b=bPrQqIujsyit09I1b6HS0plHeSy/7GNoVldQQIa0S/dJSXAF7YI38liDRIGik2JBYI
+         UrBomCmNaw2IK6/aWfpoQ1N86pk1j5X0N3scONHbpag4RBj/8dmXdKH1ouEeLm8GxOKr
+         HfkJKnJt+1BWSVN6Hrx9Zfsu2ykkyY459B9L5AVsetHE8YHQ6Dkx4BuYmhoQZjsvsYj0
+         MN1RCDXd1G7pHvwRO2/2TFZsAJTOCGI4X05MUQuxww8dMFZ4L2PUHPROlkx+mfoJ14JT
+         DUC0WXy2aTpS9gfNMTtcRrULvToyhgdKSxoHw1pZOgjlzHAiKwK10BkIlzeqdXUlIHqq
+         +xRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=PxeFoR7puwfL5UMnOaJme3OEi0Xyw7aUebfMwwSK1j8=;
+        b=r7rXLJ6rt+QIVnb1R/BZUfaPzPyYfoXQVJ6PQpvz6iCD64ELcwgPudZZgJRbc/lvyo
+         3yp25FmqZP8mJ6rY5yF/agN70TS69qV8zG2ILx9kmw9tOja++onHP40nANsd+0aFf6LX
+         vx2nLlhWbjjgmeuo1Ts0AWAsx9op2GNGHdNNFJLmBuABfvWvuP/GQHO/IxKeqT/zvJaL
+         ayHbjQJiDIy6KqTC6Mlm00oAl7JsWotbq52BE+5Y92F9CY+ocwgun5FnTYDYMMW/cCUW
+         YAh356wMDkVfNQ1a7fcefqZQj8B2B/7k/AUjzBDDLU1WPzt3XdJZ/4E1grPOgnHJEsAn
+         J9DQ==
+X-Gm-Message-State: ANhLgQ2w0lYexPYm0BTKGAKM7/AQ3AAvJEgZzl5xqUUvP5yK9Iv/pdeP
+        kuJr7BXI4WZyMs6ygzyROS3tI7st
+X-Google-Smtp-Source: ADFU+vvJyZu6IUSbYZsv/K3Gya6Nma49+gt39zgYnXVmB2IOUGZMTKQf3gSICLzZxL5pEbC4UC4wdA==
+X-Received: by 2002:a2e:924a:: with SMTP id v10mr14123746ljg.21.1584992655648;
+        Mon, 23 Mar 2020 12:44:15 -0700 (PDT)
+Received: from [192.168.2.145] (94-29-39-224.dynamic.spd-mgts.ru. [94.29.39.224])
+        by smtp.googlemail.com with ESMTPSA id s4sm10309834lfs.54.2020.03.23.12.44.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2020 12:44:15 -0700 (PDT)
+Subject: Re: [PATCH v3 00/10] Introduce NVIDIA Tegra Partition Table
+To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
 Cc:     Jens Axboe <axboe@kernel.dk>,
         Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -42,39 +61,49 @@ Cc:     Jens Axboe <axboe@kernel.dk>,
         Gilles Grandou <gilles@grandou.net>,
         Ryan Grachek <ryan@edited.us>, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 03/10] partitions: Introduce NVIDIA Tegra Partition
- Table
-Message-ID: <20200323191748.GB30585@qmqm.qmqm.pl>
 References: <20200323163431.7678-1-digetx@gmail.com>
- <20200323163431.7678-4-digetx@gmail.com>
+ <20200323180750.GA30585@qmqm.qmqm.pl>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <9f63f113-fc67-5e1c-a539-81e3b0cd4e31@gmail.com>
+Date:   Mon, 23 Mar 2020 22:44:13 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
+In-Reply-To: <20200323180750.GA30585@qmqm.qmqm.pl>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200323163431.7678-4-digetx@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Mar 23, 2020 at 07:34:24PM +0300, Dmitry Osipenko wrote:
-> All NVIDIA Tegra devices use a special partition table format for the
-> internal storage partitioning. Most of Tegra devices have GPT partition
-> in addition to TegraPT, but some older Android consumer-grade devices do
-> not or GPT is placed in a wrong sector, and thus, the TegraPT is needed
-> in order to support these devices properly in the upstream kernel. This
-> patch adds support for NVIDIA Tegra Partition Table format that is used
-> at least by all NVIDIA Tegra20 and Tegra30 devices.
+23.03.2020 21:07, Michał Mirosław пишет:
+> On Mon, Mar 23, 2020 at 07:34:21PM +0300, Dmitry Osipenko wrote:
+>> Some NVIDIA Tegra devices have GPT entry at a wrong location and others may
+>> even not have it at all. So either a custom workaround for GPT parsing or
+>> TegraPT support is needed for those devices if we want to support them in
+>> upstream kernel. The former solution was already rejected [1], let's try
+>> the latter.
+> [...]
 > 
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
->  arch/arm/mach-tegra/tegra.c   |  54 ++++
-[...]
+> Hi Dmitry,
+> 
+> This amusing use of whole-device offsets in the TegraPT makes it take
+> a lot of hacks to support it. Have you considered to first join the MMC
+> hardware partitions using DM and its linear target and only then processing
+> the partition table dividing just the merged device?
 
-Please split off this part and make the information available to
-userspace (pt_addr + pt_size) if found. This would make it easier
-to support use the partition table later in initrd instead.
+Hello Michał,
 
-Best Regards
-Micha� Miros�aw
+Thank you very much for the suggestion! I had a thought about that and
+it's not apparent to me how to determine when the joining needs to be
+done and when not.
+
+The joining shouldn't be done for devices that aren't booting from eMMC
+because then the alt GPT entry will be found on a joined block device
+and this shouldn't happen.
+
+Actually, maybe we could create a new MMC device-tree property, telling
+that the joining needs to be performed. Perhaps this indeed could result
+in a less hackery, I'll give it a try and see how it goes.
