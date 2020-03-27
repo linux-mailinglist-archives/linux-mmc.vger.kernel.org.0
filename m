@@ -2,116 +2,70 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A2BB194691
-	for <lists+linux-mmc@lfdr.de>; Thu, 26 Mar 2020 19:34:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FB38195023
+	for <lists+linux-mmc@lfdr.de>; Fri, 27 Mar 2020 05:45:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727919AbgCZSeX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 26 Mar 2020 14:34:23 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:38334 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727995AbgCZSeW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 26 Mar 2020 14:34:22 -0400
-Received: by mail-oi1-f196.google.com with SMTP id w2so6460718oic.5
-        for <linux-mmc@vger.kernel.org>; Thu, 26 Mar 2020 11:34:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zvcRbO8JiiH8TflCF3JYY64FRuv850T5VBR+zKWVaAo=;
-        b=D5KANnoUgA813LQvHjIp5rAoPhY2gTJup4nP+xGLb5FNmM7+8RNwum/ue1O95T+xWb
-         5Ktbnl2iWEXVoCU3oOQg1rH6QozCfngfrmRO501JFNyUSHuo2dqvZagSkuCv/ZkCcdDy
-         9SNPpYOLAEHYsE4N1CYsv1lw2JsDmzr3bO5CAhprXa6CHmJ/wgf3TslEjhp5iWSPZbla
-         6EGwewp3bw3kVgK1ceZl6cCzyM58RIqxXE7Ece2gV1Bkyopg2Mdv5j42z6O1C0vGsEb+
-         xUlK8kqOpBq79qowMpVYE7dI2KBF+1Bmk+h2mEbeqaCTkXHdCSEol6R1AyJ6SpC3NLmt
-         slKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zvcRbO8JiiH8TflCF3JYY64FRuv850T5VBR+zKWVaAo=;
-        b=FWgEzBId8ywhVsi80FGO828tDagLTXPb6NgpkYjPhwL3X34umNnMfw2DtdH4uHx5Df
-         KSdacC3bJq6ZL1Est0bxm3hK/OVGNQZJx3sjsSY3lDOhY4j5qroREQK28TIlEPXwbU5C
-         TGj3iBAFSNJ6IyrcgQln40GfvoDzxvg+BCUowQdVZLCJuB5X4OGxL6VjuudE5RAyVHkL
-         jXhkyf8n6WajBPPaY4NhLthCusV33ywsC9MyD05rx5vkc8rmS9lzh3vtgFYhw1IJ12RK
-         iHm85nGP5lvYhOW1OqtIhEp8naETShNdubWdmO6niQfZ0T9dhftpq7OMOfAArRgczuUc
-         4nkw==
-X-Gm-Message-State: ANhLgQ01gvNRNc/+bJFWEWmEMge6wP7/V9Lgi/oZUkuugyWWdw4uMEz1
-        nvArN8Mm64JHgVBeVkr8UIXDyvWCxGiLcf9qNKiLcQ==
-X-Google-Smtp-Source: ADFU+vuhr19j1Gh9BuMJvyrUH94cq/bHJXqm/DeIzQEZemccehjW6KDkcmRhHiQOfwXBWmMBVCeLo1LvtVagEPcJ2FU=
-X-Received: by 2002:aca:f541:: with SMTP id t62mr1218807oih.172.1585247660202;
- Thu, 26 Mar 2020 11:34:20 -0700 (PDT)
+        id S1726233AbgC0Ep0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 27 Mar 2020 00:45:26 -0400
+Received: from cmccmta3.chinamobile.com ([221.176.66.81]:9587 "EHLO
+        cmccmta3.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725857AbgC0Ep0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 27 Mar 2020 00:45:26 -0400
+X-Greylist: delayed 560 seconds by postgrey-1.27 at vger.kernel.org; Fri, 27 Mar 2020 00:45:24 EDT
+Received: from spf.mail.chinamobile.com (unknown[172.16.121.5]) by rmmx-syy-dmz-app12-12012 (RichMail) with SMTP id 2eec5e7d8287a87-d195e; Fri, 27 Mar 2020 12:35:20 +0800 (CST)
+X-RM-TRANSID: 2eec5e7d8287a87-d195e
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG: 00000000
+Received: from localhost.localdomain (unknown[112.25.154.146])
+        by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee35e7d828648f-0b381;
+        Fri, 27 Mar 2020 12:35:20 +0800 (CST)
+X-RM-TRANSID: 2ee35e7d828648f-0b381
+From:   Tang Bin <tangbin@cmss.chinamobile.com>
+To:     rrichter@marvell.com, ulf.hansson@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tang Bin <tangbin@cmss.chinamobile.com>
+Subject: [PATCH] mmc:cavium-octeon: remove nonsense variable coercion
+Date:   Fri, 27 Mar 2020 12:36:39 +0800
+Message-Id: <20200327043639.6564-1-tangbin@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.20.1.windows.1
 MIME-Version: 1.0
-References: <1584973502-14775-1-git-send-email-ppvk@codeaurora.org> <c17d8842-0e1d-0014-b909-3114952b350b@codeaurora.org>
-In-Reply-To: <c17d8842-0e1d-0014-b909-3114952b350b@codeaurora.org>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 26 Mar 2020 11:33:44 -0700
-Message-ID: <CAGETcx_GD4K9CKyUtJEHKtAjHFKdfrepT0ZdA9WfRoUCF+QKPg@mail.gmail.com>
-Subject: Re: [RFC v6 0/2] Add SDHC interconnect bandwidth scaling
-To:     Rajendra Nayak <rnayak@codeaurora.org>
-Cc:     Pradeep P V K <ppvk@codeaurora.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        adrian.hunter@intel.com, Rob Herring <robh+dt@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>, asutoshd@codeaurora.org,
-        stummala@codeaurora.org, sayalil@codeaurora.org,
-        rampraka@codeaurora.org, vbadigan@codeaurora.org,
-        Stephen Boyd <sboyd@kernel.org>,
-        Georgi Djakov <georgi.djakov@linaro.org>, mka@chromium.org,
-        linux-mmc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        linux-arm-msm@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Andy Gross <agross@kernel.org>,
-        linux-mmc-owner@vger.kernel.org,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Mar 26, 2020 at 2:22 AM Rajendra Nayak <rnayak@codeaurora.org> wrote:
->
-> Adding Viresh and Saravana,
->
-> On 3/23/2020 7:55 PM, Pradeep P V K wrote:
-> > Add interconnect bandwidths for SDHC driver using OPP framework that
-> > is required by SDHC driver based on the clock frequency and bus width
-> > of the card. Otherwise, the system clocks may run at minimum clock
-> > speed and thus affecting the performance.
-> >
-> > This change is based on
-> > [RFC] mmc: host: sdhci-msm: Use the interconnect API
-> > (https://lkml.org/lkml/2018/10/11/499) and
-> >
-> > [PATCH v6] Introduce Bandwidth OPPs for interconnects
-> > (https://lkml.org/lkml/2019/12/6/740)
->
-> Pradeep, since your series seems to depend on the above proposed bw bindings,
-> can you post the DT changes for the platform that you are testing these
-> patches on?
->
-> Please note that the above series is currently deadlocked [1][2] with no clear path
-> forward for now, so looking at how you plan to use this might throw some light onto
-> the requirements
->
-> [1] https://lkml.org/lkml/2020/1/14/511
-> [2] https://lkml.org/lkml/2020/3/20/106
+In this function, the variable 'base' is already 'void __iomem *base',
+and the return function 'devm_platform_ioremap_resource()' also returns
+this type, so the mandatory definition here is redundant.
 
-Sorry, not deadlocked. Just kinda busy. For [1] I believe I agreed
-with Viresh later on. I'll respond to [2] soon.
+Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+---
+ drivers/mmc/host/cavium-octeon.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
--Saravana
+diff --git a/drivers/mmc/host/cavium-octeon.c b/drivers/mmc/host/cavium-octeon.c
+index 916746c6c..e299cdd1e 100644
+--- a/drivers/mmc/host/cavium-octeon.c
++++ b/drivers/mmc/host/cavium-octeon.c
+@@ -207,13 +207,13 @@ static int octeon_mmc_probe(struct platform_device *pdev)
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
+-	host->base = (void __iomem *)base;
++	host->base = base;
+ 	host->reg_off = 0;
+ 
+ 	base = devm_platform_ioremap_resource(pdev, 1);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
+-	host->dma_base = (void __iomem *)base;
++	host->dma_base = base;
+ 	/*
+ 	 * To keep the register addresses shared we intentionaly use
+ 	 * a negative offset here, first register used on Octeon therefore
+-- 
+2.20.1.windows.1
 
->
-> >
-> > Pradeep P V K (2):
-> >    mmc: sdhci-msm: Add interconnect bus bandwidth scaling support
-> >    dt-bindings: mmc: sdhci-msm: Add interconnect BW scaling strings
-> >
-> >   .../devicetree/bindings/mmc/sdhci-msm.txt          |  18 ++
-> >   drivers/mmc/host/sdhci-msm.c                       | 240 ++++++++++++++++++++-
-> >   2 files changed, 254 insertions(+), 4 deletions(-)
-> >
->
-> --
-> QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
-> of Code Aurora Forum, hosted by The Linux Foundation
+
+
