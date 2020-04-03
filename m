@@ -2,85 +2,191 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6725619C090
-	for <lists+linux-mmc@lfdr.de>; Thu,  2 Apr 2020 13:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC1719CE1A
+	for <lists+linux-mmc@lfdr.de>; Fri,  3 Apr 2020 03:21:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388222AbgDBLzK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 2 Apr 2020 07:55:10 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:23679 "EHLO rere.qmqm.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387988AbgDBLzB (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 2 Apr 2020 07:55:01 -0400
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 48tM1t51G6z1vh;
-        Thu,  2 Apr 2020 13:54:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1585828498; bh=MhmlsMfvkZ/jxtgV76LjVAGMwapDNRZk0vRzuKiw1Lc=;
-        h=Date:In-Reply-To:References:From:Subject:To:Cc:From;
-        b=aVyemHYt6ay7agExHU3z9CkG0HakP+LveeeQ+IG1ZvMTlyzZqkIhv7c721tw57yao
-         C79ZYKUO9tWADfUSB/PdMFT5W1Cke1hdD2R/4gKWnFXWzmmi5s60mYPHC8Cdf4Bnn2
-         YztGPrmF6kJxEc2/8ZANqeINlERfScGMa0CUenLO1v/xeNT1ThZfEGsZHn+EZTummg
-         F1lr7SnqP9hvhmRO1zBZ9ui3MrlkKYqTLG3lmwtG+n7jc5f1sOR3uZyUv1e4r+4k96
-         cuR+Mc3kRBFq3NllsQyLk/fE2WeJ3gEKAytF5mECqiHk0WNr+0xApblKxQbO9z47jG
-         3+81UyfnQrOPg==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.102.2 at mail
-Date:   Thu, 02 Apr 2020 13:54:58 +0200
-Message-Id: <84482c3f74fae701f8366bea681fc799918b1ab8.1585827904.git.mirq-linux@rere.qmqm.pl>
-In-Reply-To: <cover.1585827904.git.mirq-linux@rere.qmqm.pl>
-References: <cover.1585827904.git.mirq-linux@rere.qmqm.pl>
-From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Subject: [PATCH 7/7] mmc: sdhci: respect non-zero div quirk in programmable
- clock mode
+        id S2388971AbgDCBVe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 2 Apr 2020 21:21:34 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:46277 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731783AbgDCBVe (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 2 Apr 2020 21:21:34 -0400
+Received: by mail-lf1-f68.google.com with SMTP id q5so4365671lfb.13;
+        Thu, 02 Apr 2020 18:21:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lUNSl/50eGIpSGqTMmeK3n+jOC9cdY6NAvZm5scvZCM=;
+        b=BvvOIHH54JYbLZpG8jHom1v+3utD1GuTCb1GvwQg0cR99xIyeSKWhp0R4iBWGy7qId
+         OedpGcZmKzTat1uZ6YUQY1tcPYu21uniNS30K3bYHSQgEus9m66PVrVoygpghxz2j3Ep
+         lPGp0Fh/mOicFryW8uBemwWxxhCRJRpduLQ0h4RiW1M/HdD5oNjCwW0Cop7uZeQ8WRWU
+         839YbixNatdA+4jmpq06UbVpVgsWuOawhBQRTiTKpy/O0gCyKS8KhNYgRl1eVxE6Fm+v
+         7azUoFEDYAJyV37IgnbpW6sLMWkubimb2Gp2/OwCP61iAja6fARfQYgSLTdxYt4hP+bg
+         8QsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lUNSl/50eGIpSGqTMmeK3n+jOC9cdY6NAvZm5scvZCM=;
+        b=sN+SZSf3iPdW7eyRuW3B5D4BpjcHbeiD4xYbNQAYdVbLYHEToZNNh74gFyGVJ2y6WV
+         6ihkgRsLYKzHCsgNkttDsgrA7Ac9YhJv7WNqnooWrb6T0Y+MXSQE1nBhQca2fVXPkxji
+         bWFjWheKNEugbdcFStsj5m4RIikYPWbADsZIikHVEBChIH2QGavqY1dyvP3mp5RsEFH5
+         /B+JE35HpcMZjJQ9TR4f74bkydrqoyaiqABrcb2pRcxL1pkoIaNK/sf/PoQNhg6CFdrf
+         GWa0hz9TXyUQ48Ck8RjgPf/lSfYwomFg9nf2r2FSV959dExhZcpcdzqKDJJzmlFf/9Oc
+         UBaA==
+X-Gm-Message-State: AGi0PuazZ9YkuGIh9igrfeCPUSoEvM9vhcPqEqaZpAHIgXeaaoD8dw46
+        S7A8sH0UChEGPgBAKokipPe5H/kgWu+eucVAs28=
+X-Google-Smtp-Source: APiQypJl7WYfWV/62lAg1ft5FVLuaKll7/rVzXalCK1EQt+89RB6TIupoVvDtStwgSUR+d7/LPyWGBlw3lsk0g7bOw0=
+X-Received: by 2002:ac2:4199:: with SMTP id z25mr3786670lfh.90.1585876890361;
+ Thu, 02 Apr 2020 18:21:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Kevin Liu <kliu5@marvell.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Suneel Garapati <suneel.garapati@xilinx.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
+References: <cover.1584615043.git.baolin.wang7@gmail.com> <c94b7e9a2fb48ac921fe41dba56df91efcdaa6c4.1584615043.git.baolin.wang7@gmail.com>
+ <3e048723-2edb-cc5b-a8f1-8ab8554e077f@intel.com>
+In-Reply-To: <3e048723-2edb-cc5b-a8f1-8ab8554e077f@intel.com>
+From:   Baolin Wang <baolin.wang7@gmail.com>
+Date:   Fri, 3 Apr 2020 09:21:19 +0800
+Message-ID: <CADBw62r5FxFv42=BZz2ZmF408rkYD18DkxkJpMpy_Z+6mF6eDg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/4] mmc: host: hsq: Handle an unusual case of returing busy
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Make SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN respected also in programmable
-clock mode.
+Hi Adrian,
 
-Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
----
- drivers/mmc/host/sdhci.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+On Thu, Apr 2, 2020 at 6:45 PM Adrian Hunter <adrian.hunter@intel.com> wrote:
+>
+> On 19/03/20 12:54 pm, Baolin Wang wrote:
+> > There is an unusual case that the card is busy when trying to send a
+> > command, and we can not polling the card status in interrupt context
+> > by using request_atomic() to dispatch requests.
+> >
+> > Thus we should queue a work to try again in the non-atomic context
+> > in case the host releases the busy signal later.
+>
+> I think this should be part of patch 1
 
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index 01fd897f8f3c..df80f39c570b 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -1807,9 +1807,6 @@ u16 sdhci_calc_clk(struct sdhci_host *host, unsigned int clock,
- 
- 	div = DIV_ROUND_UP(host->max_clk, clock);
- 
--	if (div == 1 && (host->quirks2 & SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN))
--		div = 2;
--
- 	if (host->version >= SDHCI_SPEC_300) {
- 		/* Version 3.00 divisors must be a multiple of 2. */
- 		div = min(div, SDHCI_MAX_DIV_SPEC_300);
-@@ -1823,6 +1820,12 @@ u16 sdhci_calc_clk(struct sdhci_host *host, unsigned int clock,
- 	real_div = div * 2 + !div;
- 
- clock_set:
-+	if (!div && (host->quirks2 & SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN)) {
-+		/* for div == 1, clock rate is divided by 2 in both modes */
-+		div = 1;
-+		real_div = 2;
-+	}
-+
- 	*actual_clock = (host->max_clk * clk_mul) / real_div;
- 	clk |= (div & SDHCI_DIV_MASK) << SDHCI_DIVIDER_SHIFT;
- 	clk |= ((div & SDHCI_DIV_HI_MASK) >> SDHCI_DIV_MASK_LEN)
+OK. Will move these changes into patch 1.
+
+>
+> >
+> > Signed-off-by: Baolin Wang <baolin.wang7@gmail.com>
+>
+> Sorry for the slow reply.
+>
+> > ---
+> >  drivers/mmc/host/mmc_hsq.c | 37 ++++++++++++++++++++++++++++++++++++-
+> >  drivers/mmc/host/mmc_hsq.h |  1 +
+> >  2 files changed, 37 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/mmc/host/mmc_hsq.c b/drivers/mmc/host/mmc_hsq.c
+> > index fdbaa98..3edad11 100644
+> > --- a/drivers/mmc/host/mmc_hsq.c
+> > +++ b/drivers/mmc/host/mmc_hsq.c
+> > @@ -15,11 +15,33 @@
+> >  #define HSQ_NUM_SLOTS        64
+> >  #define HSQ_INVALID_TAG      HSQ_NUM_SLOTS
+> >
+> > +static void mmc_hsq_retry_handler(struct work_struct *work)
+> > +{
+> > +     struct mmc_hsq *hsq = container_of(work, struct mmc_hsq, retry_work);
+> > +     struct mmc_host *mmc = hsq->mmc;
+> > +     struct mmc_request *mrq = hsq->mrq;
+> > +     struct mmc_data *data = mrq->data;
+> > +
+> > +     if (mmc->ops->request) {
+>
+> ->request() is not an optional mmc operation so checking it is not necessary.
+
+Yes, will remove the checking.
+
+>
+> > +             mmc->ops->request(mmc, mrq);
+> > +             return;
+> > +     }
+> > +
+> > +     /*
+> > +      * If host does not supply the callback in normal context to
+> > +      * handle request, just finish this request.
+> > +      */
+> > +     data->error = -EBUSY;
+> > +     data->bytes_xfered = 0;
+> > +     mmc_hsq_finalize_request(mmc, mrq);
+> > +}
+> > +
+> >  static void mmc_hsq_pump_requests(struct mmc_hsq *hsq)
+> >  {
+> >       struct mmc_host *mmc = hsq->mmc;
+> >       struct hsq_slot *slot;
+> >       unsigned long flags;
+> > +     int ret = 0;
+> >
+> >       spin_lock_irqsave(&hsq->lock, flags);
+> >
+> > @@ -42,9 +64,21 @@ static void mmc_hsq_pump_requests(struct mmc_hsq *hsq)
+> >       spin_unlock_irqrestore(&hsq->lock, flags);
+> >
+> >       if (mmc->ops->request_atomic)
+> > -             mmc->ops->request_atomic(mmc, hsq->mrq);
+> > +             ret = mmc->ops->request_atomic(mmc, hsq->mrq);
+> >       else
+> >               mmc->ops->request(mmc, hsq->mrq);
+> > +
+> > +     /*
+> > +      * If returning BUSY from request_atomic(), which means the card
+> > +      * may be busy now, and we should change to non-atomic context to
+> > +      * try again for this unusual case, to avoid time-consuming operations
+> > +      * in the atomic context.
+> > +      *
+> > +      * Note: we can ignore other error cases, since the host driver
+> > +      * will handle them.
+> > +      */
+> > +     if (ret == -EBUSY)
+> > +             schedule_work(&hsq->retry_work);
+>
+> Let's add a warning for unexpected return values i.e.
+>
+>         WARN_ON_ONCE(ret && ret != -EBUSY);
+
+Sure. Thanks for your comments.
+
+>
+>
+> >  }
+> >
+> >  static void mmc_hsq_update_next_tag(struct mmc_hsq *hsq, int remains)
+> > @@ -327,6 +361,7 @@ int mmc_hsq_init(struct mmc_hsq *hsq, struct mmc_host *mmc)
+> >       hsq->mmc->cqe_private = hsq;
+> >       mmc->cqe_ops = &mmc_hsq_ops;
+> >
+> > +     INIT_WORK(&hsq->retry_work, mmc_hsq_retry_handler);
+> >       spin_lock_init(&hsq->lock);
+> >       init_waitqueue_head(&hsq->wait_queue);
+> >
+> > diff --git a/drivers/mmc/host/mmc_hsq.h b/drivers/mmc/host/mmc_hsq.h
+> > index d51beb7..81f6c4f 100644
+> > --- a/drivers/mmc/host/mmc_hsq.h
+> > +++ b/drivers/mmc/host/mmc_hsq.h
+> > @@ -12,6 +12,7 @@ struct mmc_hsq {
+> >       wait_queue_head_t wait_queue;
+> >       struct hsq_slot *slot;
+> >       spinlock_t lock;
+> > +     struct work_struct retry_work;
+> >
+> >       int next_tag;
+> >       int num_slots;
+> >
+>
+
+
 -- 
-2.20.1
-
+Baolin Wang
