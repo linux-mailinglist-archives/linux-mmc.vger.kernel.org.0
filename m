@@ -2,80 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 059DD1A0643
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 Apr 2020 07:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE56A1A06AD
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 Apr 2020 07:47:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726909AbgDGFMu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 Apr 2020 01:12:50 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:45301 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726861AbgDGFMn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Apr 2020 01:12:43 -0400
-Received: by mail-ot1-f66.google.com with SMTP id c9so460162otl.12
-        for <linux-mmc@vger.kernel.org>; Mon, 06 Apr 2020 22:12:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
-        b=m9m/DCsFRus/zRmIuphflM5sHyenmkMN/TOEnECOGthbLJHVg8u2+iqtFZpNbyb2/k
-         2tLF//qwyXGtNVJKRleGUy+KbEtVjN+06Aw6FbGL98d5M/QEqB9c9SHaIsBPFlQYoUCh
-         Lj+P9EPUGdvyQRip4KeH3oSvDVhqDTV0IJcbcI66BzYP/b9Y/1y4LF++1q0teLhPl3GM
-         v15gBTxOBB8qvH4CNaCnwdm2sugBL+St8qIlm7SqBWweWj6hdsos1F0mjeWO8qJt64R9
-         xl3tya8AfljNAFdSOkZ4tC7INitomO8JQPFHHcp+JAODUsaup01At9KIYDntXEoTQZb0
-         DmdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
-        b=iNiNZm9D4llBKk80NiMo8h/DmiC5xN6z0nROFLpXFiFESUz+Ryaaxgk58zBYudAzjM
-         Ryqt3N1tnd/ZgQKKqDrk7OKy0n+Q4SKNmYhXrPe+wguTjNAu+WLST09oEY2NSvi1nQhw
-         k8pBFnCzTh0eJsoGBNL90FIhyH1QVYOpxqWh25dc6AiI8L/2F1Ne20RSTnOVIcYw3vGo
-         ke7NhTAcaHeYAV5b38ylzllIYIZJLOz47e8exBTs5en87Kv2PzhAnxpERZvSYRF/Bv3k
-         2qo1SwNCeaFLQIRBzRtoecfxFPOf9tN+dnmhQDFDvDLTwDB69bjLS/KWSALUTjqvurKq
-         i4sQ==
-X-Gm-Message-State: AGi0PubXTu7sATqox+1YTc1oG6Cbgs7TFTtpbtbn7xBSynIApinmC3tF
-        K+jsbxxO+rBnKBUxtXsTKbXtOxoQNlyqzjrUMANWgi4hxmw=
-X-Google-Smtp-Source: APiQypIYXniGQUHEpASwiGNjKth4Cu9ElCz4yjrJ2uXbYBYunhfz0887D/TRydUbTstl7MwaeVftG8QxF1P80ST3qos=
-X-Received: by 2002:ab0:a9:: with SMTP id 38mr504317uaj.61.1586236361040; Mon,
- 06 Apr 2020 22:12:41 -0700 (PDT)
+        id S1725817AbgDGFrY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 Apr 2020 01:47:24 -0400
+Received: from mga05.intel.com ([192.55.52.43]:35239 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725802AbgDGFrY (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 7 Apr 2020 01:47:24 -0400
+IronPort-SDR: RvVmck6jAbHHh1mB3wyUv24xr4z38Ij4EBe0n1gSHHfj9Q4dgHzvupqwtph9JDGbs+ICXYbXRA
+ hG2EbZYCFXOg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2020 22:47:24 -0700
+IronPort-SDR: 3S3Zdp0+ED8s7zH2OeAcf0JxgD6iQcUOWo1vQBvUi1zkMiB8kUSYTGkbbt7LgdTJjjAva4kNfm
+ W3HSlQOIOWOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,353,1580803200"; 
+   d="scan'208";a="296856523"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.87]) ([10.237.72.87])
+  by FMSMGA003.fm.intel.com with ESMTP; 06 Apr 2020 22:47:22 -0700
+Subject: Re: [PATCH] mmc: sdhci-sprd: Drop redundant cap flags
+To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+Cc:     Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>
+References: <20200406113724.8504-1-ulf.hansson@linaro.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <9fa56ced-4a6e-31ec-1d58-5a6206e41c4e@intel.com>
+Date:   Tue, 7 Apr 2020 08:46:36 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Received: by 2002:ab0:4929:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:12:40 -0700 (PDT)
-From:   SANDRA DEWI <dewisandra154@gmail.com>
-Date:   Tue, 7 Apr 2020 05:12:40 +0000
-Message-ID: <CABRVPWys0xe4CWBkaU0ZXQW+4d=tjDOjyo8cKohc5-VFkWPkcA@mail.gmail.com>
-Subject: whether this is your correct email address or not
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200406113724.8504-1-ulf.hansson@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dear ,Pastor
+On 6/04/20 2:37 pm, Ulf Hansson wrote:
+> The MMC_CAP_ERASE and MMC_CAP_CMD23 flags are already being set in the
+> common sdhci_setup_host(). This makes it redundant to set them for
+> sdhci-sprd, so let's drop them.
+> 
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
 
+> ---
+>  drivers/mmc/host/sdhci-sprd.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+> index 2ab42c59e4f8..60c3a4c620f9 100644
+> --- a/drivers/mmc/host/sdhci-sprd.c
+> +++ b/drivers/mmc/host/sdhci-sprd.c
+> @@ -556,7 +556,8 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
+>  		sdhci_sprd_voltage_switch;
+>  
+>  	host->mmc->caps = MMC_CAP_SD_HIGHSPEED | MMC_CAP_MMC_HIGHSPEED |
+> -		MMC_CAP_ERASE | MMC_CAP_CMD23 | MMC_CAP_WAIT_WHILE_BUSY;
+> +		MMC_CAP_WAIT_WHILE_BUSY;
+> +
+>  	ret = mmc_of_parse(host->mmc);
+>  	if (ret)
+>  		goto pltfm_free;
+> 
 
-I have a client who is an oil business man and he made a fixed deposit
-of $26 million USD in my bank, where I am the director of the branch,
-My client died with his entire family in Jordanian
-
-50% of the fund will be for the church  for the work of God,the
-balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
-50% for me
-
-intervention in the Syrian Civil War 2014 leaving behind no next of
-kin. I Propose to present you as next of kin to claim the funds, if
-interested reply me for full details and how we are to
-
-
-
-proceed to close this deal.
-
-
-
-
-Mrs. Sandra Dewi
-
-
-
-Email  mrsdewi@gmx.com
