@@ -2,94 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B5991A046C
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 Apr 2020 03:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 059DD1A0643
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 Apr 2020 07:12:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726512AbgDGBSp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 6 Apr 2020 21:18:45 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:45124 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726406AbgDGBSo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Apr 2020 21:18:44 -0400
-Received: by mail-lj1-f196.google.com with SMTP id t17so1772720ljc.12
-        for <linux-mmc@vger.kernel.org>; Mon, 06 Apr 2020 18:18:43 -0700 (PDT)
+        id S1726909AbgDGFMu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 Apr 2020 01:12:50 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:45301 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726861AbgDGFMn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Apr 2020 01:12:43 -0400
+Received: by mail-ot1-f66.google.com with SMTP id c9so460162otl.12
+        for <linux-mmc@vger.kernel.org>; Mon, 06 Apr 2020 22:12:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hnnaieBMYtH8tBz+uOZHqXqOnY597whaeQ5KH/tZ6PI=;
-        b=IuDQD19FsKgVRQNx4NbGbcTDDLKrG7Knwemayb+efXkLUIGiR6fTmoVZ0qJQxNTnKN
-         ozQLjLrvLYEVZkvXwJDm04HN1BwooS5lzoG6cx+VPNRVqGQnjbJYUICpqWX637HzrR44
-         KsCeBZUZLEMjdCKUU2VDZs/UxOffVFopp+zuFHl5lI5c63tum24VwbdKHXPfHEbiZOVQ
-         p/DDs/BllShS3rRTkyqV3/+Def1qMzU5uJK1II0j0CSeYbwP1spRU+Nv0tbEfr+qxnEP
-         No5E3fl2DVfNREy5SrykdObGm8A964nNRtPJzp15OIv1b5J1GagSJejB8R0BHZ3s0bgX
-         xysg==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=m9m/DCsFRus/zRmIuphflM5sHyenmkMN/TOEnECOGthbLJHVg8u2+iqtFZpNbyb2/k
+         2tLF//qwyXGtNVJKRleGUy+KbEtVjN+06Aw6FbGL98d5M/QEqB9c9SHaIsBPFlQYoUCh
+         Lj+P9EPUGdvyQRip4KeH3oSvDVhqDTV0IJcbcI66BzYP/b9Y/1y4LF++1q0teLhPl3GM
+         v15gBTxOBB8qvH4CNaCnwdm2sugBL+St8qIlm7SqBWweWj6hdsos1F0mjeWO8qJt64R9
+         xl3tya8AfljNAFdSOkZ4tC7INitomO8JQPFHHcp+JAODUsaup01At9KIYDntXEoTQZb0
+         DmdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hnnaieBMYtH8tBz+uOZHqXqOnY597whaeQ5KH/tZ6PI=;
-        b=STJTenM3Xn2jkljWGgf97aKqcdg27JLDgLgSX6DpqiOwxpikN8rLJ4qKlfBwMB3qxX
-         K4BjojEWb5qHVUBq+4K0D9rhHrqJVI6xuKGv+IqgYwIVn2G1ZP/0yHPclhopZjhMpcs3
-         j7+4EZTBeTXcXg5WryKHiS7rsoGoaSdyvT/PHoYiImLmEaEsPS3nHFsrOHtfo+V5/aq+
-         GlXgzS2p3DZcVQ5NqFos1gEsMIzvfVcV2zTEmgBUH5kWV5W0QuUfr4bT0xrfn90YdmtZ
-         hXezypGm+4BRWhgbLBgyZiyYB3hbEl1PQ2ZcXnHxaYShd5BNImTpdst71L1o8K6V0unU
-         876Q==
-X-Gm-Message-State: AGi0Pua3zTWtfNjf47KEK0gR/3Fisdpt8MOLJ+FZJT3tNPVl6jjxkcuP
-        KD23yFi8eikOOslKrutC4eMCAhbDj7A9i5H2AV4=
-X-Google-Smtp-Source: APiQypLdckJzrzEt6S+SXIU59sonTXc+Vfa6lNGynhr59/prNFtUnGh5f2zOkWXnh1aR7zLMgpVqBiomnzrGX1Sipyo=
-X-Received: by 2002:a2e:3e1a:: with SMTP id l26mr41920lja.15.1586222322718;
- Mon, 06 Apr 2020 18:18:42 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=iNiNZm9D4llBKk80NiMo8h/DmiC5xN6z0nROFLpXFiFESUz+Ryaaxgk58zBYudAzjM
+         Ryqt3N1tnd/ZgQKKqDrk7OKy0n+Q4SKNmYhXrPe+wguTjNAu+WLST09oEY2NSvi1nQhw
+         k8pBFnCzTh0eJsoGBNL90FIhyH1QVYOpxqWh25dc6AiI8L/2F1Ne20RSTnOVIcYw3vGo
+         ke7NhTAcaHeYAV5b38ylzllIYIZJLOz47e8exBTs5en87Kv2PzhAnxpERZvSYRF/Bv3k
+         2qo1SwNCeaFLQIRBzRtoecfxFPOf9tN+dnmhQDFDvDLTwDB69bjLS/KWSALUTjqvurKq
+         i4sQ==
+X-Gm-Message-State: AGi0PubXTu7sATqox+1YTc1oG6Cbgs7TFTtpbtbn7xBSynIApinmC3tF
+        K+jsbxxO+rBnKBUxtXsTKbXtOxoQNlyqzjrUMANWgi4hxmw=
+X-Google-Smtp-Source: APiQypIYXniGQUHEpASwiGNjKth4Cu9ElCz4yjrJ2uXbYBYunhfz0887D/TRydUbTstl7MwaeVftG8QxF1P80ST3qos=
+X-Received: by 2002:ab0:a9:: with SMTP id 38mr504317uaj.61.1586236361040; Mon,
+ 06 Apr 2020 22:12:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200406113724.8504-1-ulf.hansson@linaro.org>
-In-Reply-To: <20200406113724.8504-1-ulf.hansson@linaro.org>
-From:   Baolin Wang <baolin.wang7@gmail.com>
-Date:   Tue, 7 Apr 2020 09:18:30 +0800
-Message-ID: <CADBw62oUTN5fPecRF9c4v=QNzFWWVXgtbBuP-uis-4Xc1VEEPw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-sprd: Drop redundant cap flags
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>
+Received: by 2002:ab0:4929:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:12:40 -0700 (PDT)
+From:   SANDRA DEWI <dewisandra154@gmail.com>
+Date:   Tue, 7 Apr 2020 05:12:40 +0000
+Message-ID: <CABRVPWys0xe4CWBkaU0ZXQW+4d=tjDOjyo8cKohc5-VFkWPkcA@mail.gmail.com>
+Subject: whether this is your correct email address or not
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Apr 6, 2020 at 7:37 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> The MMC_CAP_ERASE and MMC_CAP_CMD23 flags are already being set in the
-> common sdhci_setup_host(). This makes it redundant to set them for
-> sdhci-sprd, so let's drop them.
->
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-Thanks Ulf.
-Reviewed-by: Baolin Wang <baolin.wang7@gmail.com>
-
-> ---
->  drivers/mmc/host/sdhci-sprd.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-> index 2ab42c59e4f8..60c3a4c620f9 100644
-> --- a/drivers/mmc/host/sdhci-sprd.c
-> +++ b/drivers/mmc/host/sdhci-sprd.c
-> @@ -556,7 +556,8 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
->                 sdhci_sprd_voltage_switch;
->
->         host->mmc->caps = MMC_CAP_SD_HIGHSPEED | MMC_CAP_MMC_HIGHSPEED |
-> -               MMC_CAP_ERASE | MMC_CAP_CMD23 | MMC_CAP_WAIT_WHILE_BUSY;
-> +               MMC_CAP_WAIT_WHILE_BUSY;
-> +
->         ret = mmc_of_parse(host->mmc);
->         if (ret)
->                 goto pltfm_free;
-> --
-> 2.20.1
->
+Dear ,Pastor
 
 
--- 
-Baolin Wang
+
+I have a client who is an oil business man and he made a fixed deposit
+of $26 million USD in my bank, where I am the director of the branch,
+My client died with his entire family in Jordanian
+
+50% of the fund will be for the church  for the work of God,the
+balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
+50% for me
+
+intervention in the Syrian Civil War 2014 leaving behind no next of
+kin. I Propose to present you as next of kin to claim the funds, if
+interested reply me for full details and how we are to
+
+
+
+proceed to close this deal.
+
+
+
+
+Mrs. Sandra Dewi
+
+
+
+Email  mrsdewi@gmx.com
