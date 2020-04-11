@@ -2,94 +2,91 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F9151A4B8F
-	for <lists+linux-mmc@lfdr.de>; Fri, 10 Apr 2020 23:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D2A91A5B95
+	for <lists+linux-mmc@lfdr.de>; Sun, 12 Apr 2020 01:51:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbgDJVaz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 10 Apr 2020 17:30:55 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:37939 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726582AbgDJVaz (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 10 Apr 2020 17:30:55 -0400
-Received: by mail-wr1-f65.google.com with SMTP id k11so3171733wrp.5;
-        Fri, 10 Apr 2020 14:30:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=wK7oayicow+Oht7E02uI/I6DTaomuoaw7CVzUaD0zFw=;
-        b=irNfIkj8z+RIbvc8pcYIslLg7vVNd6XevVz0DH/xawFlaJVD0HkjMHb9E0XePXTa0s
-         tRysnuwMaNQJxsUJEGKOxWOqaE+uC1BfNK6Nemg5kKWMR+wVXgID0uTuzziqvUR75py9
-         Vo1jCACsoIjRm1riMzQ3sMBJ+GuBHKCU0DL57TNGV1MoUGKYlIyB5RQzKn2AJBaN64u7
-         Je1U8AJTA10Hvb/ArOe8PW/N82d8my5NaLuR140WSUDHte0NnWG6qxdIgGGVFM9pySaY
-         qKQks+sLpaeHRMCyyzRd8gzpYLSMmftg9y9TnrObiYgF78WbHqmhQ0+JXi9rkEV4jxsq
-         RfQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=wK7oayicow+Oht7E02uI/I6DTaomuoaw7CVzUaD0zFw=;
-        b=caUOBeK+EFE9Y11nCp0S0Il+6/BNsgRYYwCUAztui94Y01FFhEF29JlWF8WIy+EL/7
-         cJl0uOWYSATP3bMZc+O8ZPnkO7I7NVKMy1JgilD15M9UpTKATI7H+mBarh76LpA2ULar
-         jTLop+URQBLK3QlOir7iycdSmZtb8/oArY/M5ibJFi+7eHHAOY/aiKS8oBzmCx/hGmAa
-         UA5OVfOZvEQAd2JwlNY7S9TDXzb1FCRQw7KmWvZLxruxVonmjbGv5EERTxhOrscW2H6j
-         Y6O6bZjxW2H4aSoK+o6Cb84zHnJsV4Vt1z0Rdw08BXzQDqYOeaM6gtwyG18GNqFfNUdi
-         VgdA==
-X-Gm-Message-State: AGi0Pubr9HVorIU27khftCY6LC5jpWmRHE0MqlfTzvKC0AohpmaFQ+JM
-        AKyYk5GR2bxpQzbpbM0XbYg=
-X-Google-Smtp-Source: APiQypKuWx1zdhzfEOly6Y8HlYpRbiAGOhUn0awSbvgFIK6ZislxpRGqBXRDOz0/kdAWLKA09Fqcog==
-X-Received: by 2002:a5d:460c:: with SMTP id t12mr6340769wrq.75.1586554251923;
-        Fri, 10 Apr 2020 14:30:51 -0700 (PDT)
-Received: from localhost.localdomain (p200300F13710ED00428D5CFFFEB99DB8.dip0.t-ipconnect.de. [2003:f1:3710:ed00:428d:5cff:feb9:9db8])
-        by smtp.googlemail.com with ESMTPSA id v21sm4238463wmj.8.2020.04.10.14.30.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2020 14:30:51 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
-        linux-amlogic@lists.infradead.org
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH 1/1] mmc: meson-mx-sdio: Set MMC_CAP_WAIT_WHILE_BUSY
-Date:   Fri, 10 Apr 2020 23:30:43 +0200
-Message-Id: <20200410213043.1091851-1-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.26.0
+        id S1728740AbgDKXuu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 11 Apr 2020 19:50:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36766 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726937AbgDKXD5 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 11 Apr 2020 19:03:57 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8719020CC7;
+        Sat, 11 Apr 2020 23:03:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586646237;
+        bh=FSf27dSxLFynBy3f4z0uQuP395gcFdgbx8vHr+5lx7k=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=EXAYbUW9ogOkbvbGwtk0AkZHnLnD8Thx3+SL4CaEcGvCzadeqzRN4zYVxxKC21trN
+         /fNg/j5qPto/3Yh3ocqYJFuJGkz1P8P6x6h6TI3PetCIWgZfUk+BedSEIYX+S3Nee3
+         LAWM219gAw2kGjI1yqRJfRYQTaRI5PDtsW3JyAdc=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Haibo Chen <haibo.chen@nxp.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.6 007/149] mmc: sdhci-esdhc-imx: restore pin state when resume back
+Date:   Sat, 11 Apr 2020 19:01:24 -0400
+Message-Id: <20200411230347.22371-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200411230347.22371-1-sashal@kernel.org>
+References: <20200411230347.22371-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The Meson SDIO controller uses the DAT0 lane for hardware busy
-detection. Set MMC_CAP_WAIT_WHILE_BUSY accordingly. This fixes
-the following error observed with Linux 5.7 (pre-rc-1):
-  mmc1: Card stuck being busy! __mmc_poll_for_busy
-  blk_update_request: I/O error, dev mmcblk1, sector 17111080 op
-   0x3:(DISCARD) flags 0x0 phys_seg 1 prio class 0
+From: Haibo Chen <haibo.chen@nxp.com>
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+[ Upstream commit af8fade4bd7bc7bf49851832a20166213e032978 ]
+
+In some low power mode, SoC will lose the pin state, so need to restore
+the pin state when resume back.
+
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://lore.kernel.org/r/1582100757-20683-8-git-send-email-haibo.chen@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-I'm sending this as RFC because I'm not sure if this is a proper fix.
-It "fixes" the issue for me but I want the MMC maintainers to double-
-check this.
+ drivers/mmc/host/sdhci-esdhc-imx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-
- drivers/mmc/host/meson-mx-sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/meson-mx-sdio.c b/drivers/mmc/host/meson-mx-sdio.c
-index 8b038e7b2cd3..fe02130237a8 100644
---- a/drivers/mmc/host/meson-mx-sdio.c
-+++ b/drivers/mmc/host/meson-mx-sdio.c
-@@ -570,7 +570,7 @@ static int meson_mx_mmc_add_host(struct meson_mx_mmc_host *host)
- 	mmc->f_max = clk_round_rate(host->cfg_div_clk,
- 				    clk_get_rate(host->parent_clk));
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index 382f25b2fa458..8d5e7d5e669af 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1617,7 +1617,11 @@ static int sdhci_esdhc_suspend(struct device *dev)
+ 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
+ 		mmc_retune_needed(host->mmc);
  
--	mmc->caps |= MMC_CAP_ERASE | MMC_CAP_CMD23;
-+	mmc->caps |= MMC_CAP_ERASE | MMC_CAP_CMD23 | MMC_CAP_WAIT_WHILE_BUSY;
- 	mmc->ops = &meson_mx_mmc_ops;
+-	return sdhci_suspend_host(host);
++	ret = sdhci_suspend_host(host);
++	if (!ret)
++		return pinctrl_pm_select_sleep_state(dev);
++
++	return ret;
+ }
  
- 	ret = mmc_of_parse(mmc);
+ static int sdhci_esdhc_resume(struct device *dev)
+@@ -1625,6 +1629,10 @@ static int sdhci_esdhc_resume(struct device *dev)
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	int ret;
+ 
++	ret = pinctrl_pm_select_default_state(dev);
++	if (ret)
++		return ret;
++
+ 	/* re-initialize hw state in case it's lost in low power mode */
+ 	sdhci_esdhc_imx_hwinit(host);
+ 
 -- 
-2.26.0
+2.20.1
 
