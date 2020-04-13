@@ -1,182 +1,111 @@
 Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 879C21A6337
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 Apr 2020 08:53:01 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 07AA61A65D6
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 Apr 2020 13:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728848AbgDMGxA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 Apr 2020 02:53:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:54704 "EHLO
+        id S1727780AbgDMLuD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 Apr 2020 07:50:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727546AbgDMGxA (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Apr 2020 02:53:00 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07FCC008651;
-        Sun, 12 Apr 2020 23:52:58 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id h25so7702940lja.10;
-        Sun, 12 Apr 2020 23:52:58 -0700 (PDT)
+        with ESMTP id S1729192AbgDMLuB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Apr 2020 07:50:01 -0400
+X-Greylist: delayed 529 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Apr 2020 07:50:01 EDT
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E24C0085FB
+        for <linux-mmc@vger.kernel.org>; Mon, 13 Apr 2020 04:41:10 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id r14so4366754pfl.12
+        for <linux-mmc@vger.kernel.org>; Mon, 13 Apr 2020 04:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=obx+dgHWtJ+1SmS5nRQdHXALDhbm+OoO8gaF5G34Y6g=;
-        b=Ylx+UI57UMaItJSNaHrmSCBTsp8MTvIoeG+yFhELcHVTOCotrj+JnfujPbwWPlz8mu
-         mPOwVLUV3ZUX8lyK+/4pPbyD1ChVeJ8BPnIkO/KaDNfZrCbOGmu4Myc3zjz5AaVvSxoq
-         YW6AfSVO3t69PQUMY3lAsn+4ILrolNOIr03CQkyJFtEX+B7ezjYdjcha3Q7FoqI58KN7
-         WEg1Sb63OY82K1DTm9Oh6Mkq94lKJrguk7AOZy4Cf1R1FCz0FF8y3GRbcPtSu+LpQL90
-         d10Ekjk0/ufHkPCsJknjlK5sbBaumnoq5OVtpwlwpsCsWwBhQgL2LvVY0pMTjr9WIbF+
-         hIIA==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
+        b=HxOaFJZljqXQIeSLw7dw+YeTIVe76Yo57NkC3rYQjPPsruaWLZEetJYgTw7mDA7iYw
+         4KM/sQKuVdxfTyBgHy0QGrcgvhBAp/s2WR+7lhwMEms7c5U3ARzlxX4w9gHN6kyIVCTo
+         InVjjBwajQbgYMLlLr/dGAnfAOq75HLmi2bmQShdg5UrDH6ZNHdmpjirCjsFE3E+W3lI
+         4HPNdhIk9GHy3wOVy8qt79oLhQ3V0WJ+l2R8YfTk5No8OB207Mc1ssyzLdiNdU6iDIon
+         HSnId1sWR9JHq8BkscMOY+TVCS7WuDDdfTSRJRDObUGUY3pKdsd/NGq97n4qtv5szVJr
+         IEMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=obx+dgHWtJ+1SmS5nRQdHXALDhbm+OoO8gaF5G34Y6g=;
-        b=A3qaPLrvZfLhSwBNtviJx0zaaFtzADW/4AaZBgjWFtxMMRBqYH8QZN6Q023f6Bsi+Y
-         DoDW2wyFLgubpgJUcHUZTBTO8kOjRboQfgEShaZAypYSi6Iz6FNEydHIHZkmG7h+VQOZ
-         ZUFsq6kiKf0LUUfe7NrACHsEFI+Bm/23YdmLmrecX3F4GKj74Dx3D5deOZIa/iDUKrvI
-         hEYi3c12ILCkeJT+Ug2OLtB2JJtxstYFcxuWDzxbf9+fyvkb9at+KmsMXhamga8OMTZD
-         r0bL7A+n3vy1fVkXLMcgGGKxN6cORFPLCaSq765eDuGpWqqLGUX/XS10KlWZmLARmabW
-         m5ZA==
-X-Gm-Message-State: AGi0Pubzlus3bkDuaN5M5F0rxOy8IF1GtxODdZ/tvXjTjaEXfdXanAG1
-        AGPA1m88dWRnfH0CLf5AG6QXgWIXPzJzxGtZLuc=
-X-Google-Smtp-Source: APiQypKuExun26bef57tFMBC0VASpQa9TO67TMeZBmY+f4n/zZ8Cd8v7LctbSsl2eIyIEMKAZtGbpKcis4zSbRUqjiY=
-X-Received: by 2002:a2e:330e:: with SMTP id d14mr9669168ljc.153.1586760777124;
- Sun, 12 Apr 2020 23:52:57 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
+        b=f/AaoIaKqfWaB/aLkoXWfSwBO8OGdpCcurCFksgbSTjj2g866OdZfqdxkxa90KtIeU
+         QpolQhshOu126CTgklKXFwZ8gmKQGvgGVUydfqml2Q7wsf2gl6+2ThpFxaztMK8YnJRu
+         qPNMSbIVrvwPdlUsd3f7feZNxVZwA8Nmo87VCE6lhn1LkWruuZT4YWgsUOqAtwklsJKm
+         ml7s6bJ1J1yyldy+q0GQORx3URKyAGk8Bkm3Lapd1UYugdpJVyEgzJ+JGEZoZXuUmB4l
+         uBUNWlRy0d14nancKYeDsAPhJXEqiatP2TUOrGgU72zNmWNGkkHyKHgASnG9Cmx28XzU
+         QMAg==
+X-Gm-Message-State: AGi0PuY0TiiWpGtIlgcqCxI2c6ThRT5jP69w9/uSuCKh35cBt7jezHeL
+        fMxllKDEGy4egwfXjt/d7/mZ/PTsqX/bZsQ6VAF6vv4=
+X-Google-Smtp-Source: APiQypJ8Xf5JZIaJmuakcegBHklRN/w3ObzOY1fG2hZhiF0393fUgrxf6qaSVcLD5pLEm/4TEQgoj9oGK8tQ5EeyGAU=
+X-Received: by 2002:a05:6e02:c8f:: with SMTP id b15mr14965961ile.35.1586778068198;
+ Mon, 13 Apr 2020 04:41:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <9ed34afa9fb42e0c234065cac5401d7826942b55.1586744073.git.baolin.wang7@gmail.com>
- <202004131350.ewIW96s2%lkp@intel.com>
-In-Reply-To: <202004131350.ewIW96s2%lkp@intel.com>
-From:   Baolin Wang <baolin.wang7@gmail.com>
-Date:   Mon, 13 Apr 2020 14:52:45 +0800
-Message-ID: <CADBw62oRnPr6K0C_1QsQdpZGMJvaQ4dymnVDxgfPsRt9m=t72A@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] mmc: host: sdhci: Implement the request_atomic() API
-To:     kbuild test robot <lkp@intel.com>
-Cc:     kbuild-all@lists.01.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Received: by 2002:a02:5e49:0:0:0:0:0 with HTTP; Mon, 13 Apr 2020 04:41:07
+ -0700 (PDT)
+Reply-To: mgbenin903@gmail.com
+From:   Barrister Robert Richter UN-Attorney at Law Court-Benin 
+        <info.zennitbankplcnigerian@gmail.com>
+Date:   Mon, 13 Apr 2020 13:41:07 +0200
+Message-ID: <CABHzvrm3rWryg1yAooKeHwdxzrKD47PRAEfC+ay1A6i5z3Wdiw@mail.gmail.com>
+Subject: I have already sent you first payment US$5000.00 this morning through
+ MONEY Gram service.it is available to pick up in address now.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+ATTN DEAR BENEFICIARY.
 
-On Mon, Apr 13, 2020 at 1:42 PM kbuild test robot <lkp@intel.com> wrote:
->
-> Hi Baolin,
->
-> I love your patch! Yet something to improve:
->
-> [auto build test ERROR on linus/master]
-> [also build test ERROR on v5.7-rc1 next-20200412]
-> [cannot apply to arm-soc/for-next]
-> [if your patch is applied to the wrong git tree, please drop us a note to help
-> improve the system. BTW, we also suggest to use '--base' option to specify the
-> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
->
-> url:    https://github.com/0day-ci/linux/commits/Baolin-Wang/Introduce-the-request_atomic-for-the-host/20200413-105346
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 8f3d9f354286745c751374f5f1fcafee6b3f3136
-> config: x86_64-randconfig-s2-20200413 (attached as .config)
-> compiler: gcc-5 (Ubuntu 5.5.0-12ubuntu1) 5.5.0 20171010
-> reproduce:
->         # save the attached .config to linux build tree
->         make ARCH=x86_64
->
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kbuild test robot <lkp@intel.com>
+GOOD NEWS.
 
-This patch set is based on Adrian's patch set. Thanks.
-https://www.spinics.net/lists/linux-mmc/msg58529.html
+I have already sent you first payment US$5000.00 this morning through
+MONEY Gram service.it is available to pick up in address now.
 
->
-> All error/warnings (new ones prefixed by >>):
->
->    In file included from include/linux/build_bug.h:5:0,
->                     from include/linux/bitfield.h:10,
->                     from drivers/mmc/host/sdhci.c:12:
->    drivers/mmc/host/sdhci.c: In function 'sdhci_request_atomic':
->    drivers/mmc/host/sdhci.c:2076:6: error: implicit declaration of function 'sdhci_present_error' [-Werror=implicit-function-declaration]
->      if (sdhci_present_error(host, mrq->cmd, true)) {
->          ^
->    include/linux/compiler.h:58:52: note: in definition of macro '__trace_if_var'
->     #define __trace_if_var(cond) (__builtin_constant_p(cond) ? (cond) : __trace_if_value(cond))
->                                                        ^
-> >> drivers/mmc/host/sdhci.c:2076:2: note: in expansion of macro 'if'
->      if (sdhci_present_error(host, mrq->cmd, true)) {
->      ^
->    drivers/mmc/host/sdhci.c:2081:8: error: implicit declaration of function 'sdhci_manual_cmd23' [-Werror=implicit-function-declaration]
->      cmd = sdhci_manual_cmd23(host, mrq) ? mrq->sbc : mrq->cmd;
->            ^
->    drivers/mmc/host/sdhci.c:2090:2: error: invalid use of void expression
->      if (!sdhci_send_command(host, cmd))
->      ^
->    drivers/mmc/host/sdhci.c:2090:2: error: invalid use of void expression
->    In file included from include/linux/build_bug.h:5:0,
->                     from include/linux/bitfield.h:10,
->                     from drivers/mmc/host/sdhci.c:12:
-> >> include/linux/compiler.h:61:16: error: invalid use of void expression
->      static struct ftrace_branch_data  \
->                    ^
->    include/linux/compiler.h:58:69: note: in expansion of macro '__trace_if_value'
->     #define __trace_if_var(cond) (__builtin_constant_p(cond) ? (cond) : __trace_if_value(cond))
->                                                                         ^
->    include/linux/compiler.h:56:28: note: in expansion of macro '__trace_if_var'
->     #define if(cond, ...) if ( __trace_if_var( !!(cond , ## __VA_ARGS__) ) )
->                                ^
->    drivers/mmc/host/sdhci.c:2090:2: note: in expansion of macro 'if'
->      if (!sdhci_send_command(host, cmd))
->      ^
->    cc1: some warnings being treated as errors
->
-> vim +/if +2076 drivers/mmc/host/sdhci.c
->
->   2066
->   2067  int sdhci_request_atomic(struct mmc_host *mmc, struct mmc_request *mrq)
->   2068  {
->   2069          struct sdhci_host *host = mmc_priv(mmc);
->   2070          struct mmc_command *cmd;
->   2071          unsigned long flags;
->   2072          int ret = 0;
->   2073
->   2074          spin_lock_irqsave(&host->lock, flags);
->   2075
-> > 2076          if (sdhci_present_error(host, mrq->cmd, true)) {
->   2077                  sdhci_finish_mrq(host, mrq);
->   2078                  goto out_finish;
->   2079          }
->   2080
->   2081          cmd = sdhci_manual_cmd23(host, mrq) ? mrq->sbc : mrq->cmd;
->   2082
->   2083          /*
->   2084           * The HSQ may send a command in interrupt context without polling
->   2085           * the busy signaling, which means we should return BUSY if controller
->   2086           * has not released inhibit bits to allow HSQ trying to send request
->   2087           * again in non-atomic context. So we should not finish this request
->   2088           * here.
->   2089           */
->   2090          if (!sdhci_send_command(host, cmd))
->   2091                  ret = -EBUSY;
->   2092          else
->   2093                  sdhci_led_activate(host);
->   2094
->   2095  out_finish:
->   2096          spin_unlock_irqrestore(&host->lock, flags);
->   2097          return ret;
->   2098  }
->   2099  EXPORT_SYMBOL_GPL(sdhci_request_atomic);
->   2100
->
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+So we advise you to Contact This Money Gram office to pick up your
+transfer $US5000.00 today.
 
 
+Note that your compensation payment funds is total amount $US2.800,000
+Million Dollars.We have instructed the Money Gram Agent,Mr. James
+Gadner to keep sending the transfer to you daily, but the maximum
+amount you will be receiving everyday is US$5000.00. Contact Agent now
+to pick up your first payment $US5000.00 immediately.
 
--- 
-Baolin Wang
+Contact Person, Mr. James Gadner, Dir. Money Gram Benin.
+Email: mgbenin903@gmail.com
+Telephone Numbers: +229 62819378/ +229 98477762
+
+HERE IS YOUR PAYMENT DETAILS FOR THE FIRST =C2=A3US5000.00 SENT TODAY.
+
+Track View Website link:
+https://secure.moneygram.com/track
+Sender=E2=80=99s First name: David
+Sender=E2=80=99s Last Name: Joiner
+Money Transfer Control Number (MTCN) (REFERENCE)# 26046856
+
+Contact the Mmoney Gram Urgent and reconfirm your address to the
+office before, they will allow you to pick up the transfer today.
+
+HERE IS WHAT REQUIRED OF YOU.
+
+YOUR FULL NAME---------
+ADDRESS--------------
+COUNTRY-----------------------------
+TELEPHONE NUMBERS-----------------
+
+Note, I paid the transfer fee for you, but only you are required to
+send to the office is $75 only,Been Your Payment File activation fee,
+Send once you contact the office,before you can able to pick up your
+transfer today.
+
+Let me know once you pick up first payment today.
+
+Barrister Robert Richter UN-Attorney at Law Court-Benin
