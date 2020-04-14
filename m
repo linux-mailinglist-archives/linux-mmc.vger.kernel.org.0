@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 253421A8454
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B72B51A8465
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390413AbgDNQOn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Apr 2020 12:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54962 "EHLO
+        id S2390415AbgDNQPj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Apr 2020 12:15:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2390521AbgDNQOe (ORCPT
+        by vger.kernel.org with ESMTP id S2390423AbgDNQOe (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:34 -0400
 Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DD6CC061A0C
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:31 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id k28so173678lfe.10
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4104EC061A0E
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:33 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id 131so168709lfh.11
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Drk5vikO+eMqgoiRlkCCu1nIyTRzBQ4eNzUPfgIrlk0=;
-        b=f8tt1y6fsUG4FuFOTOxcmCUl1y8XY4OykCcWGg3sdeQ3pDiqvmiZ7kVd2xkOinMQX/
-         Lr5HBkGlDH2aWz/Biy5r5L/ia7J1Hr1kPq7pZswKNjxGgVYq5JV7KgijmMcbQqt7Xr9J
-         WKx52zGAU2O3ULVisvpbNXtcsPHWX76fGbfOgKw1tOvsqQbvM32ZPAZs/7ir4cqv9bfx
-         OILu4jihPtYoWNQxbW7GhW2Poh53TEXuvzqGvV+7NfTJK6o4MlkbamvHA/KtCwhz5exH
-         Bf7eE7DrkKIxqD/fk2qUAdye4LYKJsvQsR5mlGn/ZPnX129uX/GURaKVEKYNePDO5mxF
-         8X3Q==
+        bh=9QnWaA+YV/c9Li2yPT2LBVJasT99G3qkQ/TJy+CeVPw=;
+        b=mhB60q8XHmKslX9V/PSmnWFU41gKBr1Uwkl54rU2Nh8oLbk4Me9Zansiaoh4oKKls4
+         oYDbWj3VZ5492bw6NgtSYyse7daOzDzfKmSjJ0Ykrikxz2YKTpS1UJQHf3ao92/AOack
+         b1ol2JOc6xG2+TQvluwsX4793IpLo4k39L7AKgFDSqyBf3zZUPJKh7jF+QyBa0NCe46U
+         Lr5wsf/fFkwvIR4xZAwWjZ0Jyn6w9iLJthjpPsTzRaXsE8o7AEjAKiXLLFRx9+pum3zE
+         UspWncBdmJgBTpZHgexGOBdWKaNOGg7jyO01SXDGw6u57XILEDP1jorSiosRdABHr+HS
+         J/rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Drk5vikO+eMqgoiRlkCCu1nIyTRzBQ4eNzUPfgIrlk0=;
-        b=kbct+xAqbXWawIa6QJ34Oh5APIprIzL55dXQJa+agPk4GQ4QnN7a1sAzkc3lGYnZdx
-         BcZ0WYkdfZXcRVFOKkV7nNJY+kxqFyfuiC6f2wRjG+oCgAhuFG7t4mCW2Wk2fdaAibuN
-         LxtX2i0WARw/0TbmN7zFcM0LrDY8e+zc+CIo5J0oyFTpqz6k75YbV+dTqKNRa4LZE92A
-         RmpFou5KTlFNvwwjiSRyRSP4MK1YTtciCkYqa8q8QTTUeHUMBEghklkEQWjrpTXTevRG
-         i2r9aOuq76mA3RXLu+lkhQcimMHOoSUqfZ0pJEwCJDSgd2s1fteQNAQRqbzros6J18eS
-         Fsew==
-X-Gm-Message-State: AGi0PuZotk1Lm1dQVYQErEPGDxxlgw+ExpdB0YZZJ22vNElvhYIBDHMT
-        zNGbqs4pieYzpOHLZSiNadqF6DRSVFA=
-X-Google-Smtp-Source: APiQypJgAn6RWPcdZxUy7YdttREG6dpFC9F1so2iARfkwl8BaVEyPKJpOcK0U7i9LQV4UmYygU+KxQ==
-X-Received: by 2002:ac2:46ea:: with SMTP id q10mr370834lfo.128.1586880869221;
-        Tue, 14 Apr 2020 09:14:29 -0700 (PDT)
+        bh=9QnWaA+YV/c9Li2yPT2LBVJasT99G3qkQ/TJy+CeVPw=;
+        b=DR3bCxZYHnPsBgcsazUCZjwdHQDNfBCmuHG8ekBZRZLy2mKbqWILLzOM9qJVi9HxR0
+         xl38VDwqLlcVR+Ly3pBeUNVCdZivkKnjR3tZjg3MaPO4uzlvGXfd9mEBbQo+KnDBscZ2
+         d1CfcHkNEikayqziCycqlTWBbQ1DcgBPaLFIR9eKy5opUHr4ofNuUKlxMkoUexMzFTua
+         d/F4MNGKqQ4JBnerHnqpxcEp5sg7JVRNHDoHuXtVFVo1WEHnOT/fw/NsZgd/IEDZVscX
+         X16uUPNzY5LQbgv/n0zd9kb5/BSD4faLRak12+WRDzwv3QuGM4LcBn5kLhL2x7fhqhrM
+         hrMQ==
+X-Gm-Message-State: AGi0PuYgrDTJ8FKvRwU8vOtjKaLfVZHfswE7SVDUvZju5lfA5BePES/m
+        JLbZfh9d3VnvxieMOWr/GM9f+2TUhNg=
+X-Google-Smtp-Source: APiQypIPuqtPsAl6LcmL52VbxsBmm8/BLz+8CoOBvDh6Wmj9fQVDtl72gpelIUiST9FPwmaJBPaJ0Q==
+X-Received: by 2002:a19:c64b:: with SMTP id w72mr357854lff.82.1586880871411;
+        Tue, 14 Apr 2020 09:14:31 -0700 (PDT)
 Received: from localhost.localdomain (h-98-128-181-131.NA.cust.bahnhof.se. [98.128.181.131])
-        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.27
+        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2020 09:14:28 -0700 (PDT)
+        Tue, 14 Apr 2020 09:14:30 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
 To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
@@ -65,9 +65,9 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: [PATCH 07/19] mmc: owl-mmc: Respect the cmd->busy_timeout from the mmc core
-Date:   Tue, 14 Apr 2020 18:14:01 +0200
-Message-Id: <20200414161413.3036-8-ulf.hansson@linaro.org>
+Subject: [PATCH 08/19] mmc: sdricoh_cs: Drop unused defines
+Date:   Tue, 14 Apr 2020 18:14:02 +0200
+Message-Id: <20200414161413.3036-9-ulf.hansson@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200414161413.3036-1-ulf.hansson@linaro.org>
 References: <20200414161413.3036-1-ulf.hansson@linaro.org>
@@ -78,57 +78,27 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-For commands that doesn't involve to prepare a data transfer, owl-mmc is
-using a fixed 30s response timeout. This is a bit problematic.
-
-For some commands it means waiting longer than needed for the completion to
-expire, which may not a big issue, but still. For other commands, like for
-an erase (CMD38) that uses a R1B response, may require longer timeouts than
-30s. In these cases, we may end up treating the command as it failed, while
-it just needed some more time to complete successfully.
-
-Fix the problem by respecting the cmd->busy_timeout, which is provided by
-the mmc core.
-
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Sascha Sommer <saschasommer@freenet.de>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- drivers/mmc/host/owl-mmc.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdricoh_cs.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/mmc/host/owl-mmc.c b/drivers/mmc/host/owl-mmc.c
-index 01ffe51f413d..5e20c099fe03 100644
---- a/drivers/mmc/host/owl-mmc.c
-+++ b/drivers/mmc/host/owl-mmc.c
-@@ -92,6 +92,8 @@
- #define OWL_SD_STATE_RC16ER		BIT(1)
- #define OWL_SD_STATE_CRC7ER		BIT(0)
+diff --git a/drivers/mmc/host/sdricoh_cs.c b/drivers/mmc/host/sdricoh_cs.c
+index a38b8b2a4e5c..1fc4db713ef5 100644
+--- a/drivers/mmc/host/sdricoh_cs.c
++++ b/drivers/mmc/host/sdricoh_cs.c
+@@ -57,10 +57,8 @@ static unsigned int switchlocked;
+ #define STATUS_BUSY              0x40000000
  
-+#define OWL_CMD_TIMEOUT_MS		30000
-+
- struct owl_mmc_host {
- 	struct device *dev;
- 	struct reset_control *reset;
-@@ -172,6 +174,7 @@ static void owl_mmc_send_cmd(struct owl_mmc_host *owl_host,
- 			     struct mmc_command *cmd,
- 			     struct mmc_data *data)
- {
-+	unsigned long timeout;
- 	u32 mode, state, resp[2];
- 	u32 cmd_rsp_mask = 0;
+ /* timeouts */
+-#define INIT_TIMEOUT      100
+ #define CMD_TIMEOUT       100000
+ #define TRANSFER_TIMEOUT  100000
+-#define BUSY_TIMEOUT      32767
  
-@@ -239,7 +242,10 @@ static void owl_mmc_send_cmd(struct owl_mmc_host *owl_host,
- 	if (data)
- 		return;
- 
--	if (!wait_for_completion_timeout(&owl_host->sdc_complete, 30 * HZ)) {
-+	timeout = msecs_to_jiffies(cmd->busy_timeout ? cmd->busy_timeout :
-+		OWL_CMD_TIMEOUT_MS);
-+
-+	if (!wait_for_completion_timeout(&owl_host->sdc_complete, timeout)) {
- 		dev_err(owl_host->dev, "CMD interrupt timeout\n");
- 		cmd->error = -ETIMEDOUT;
- 		return;
+ /* list of supported pcmcia devices */
+ static const struct pcmcia_device_id pcmcia_ids[] = {
 -- 
 2.20.1
 
