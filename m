@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 080E41A845A
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4185F1A845F
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391332AbgDNQO4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Apr 2020 12:14:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54968 "EHLO
+        id S1728850AbgDNQPK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Apr 2020 12:15:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2391333AbgDNQOp (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:45 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD850C061A0C
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:43 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id f8so163209lfe.12
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:43 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S2391331AbgDNQOq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:46 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D4AC061A0E
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:46 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id l14so404924ljj.5
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=NAYTGOzmF1yJPLoKf5SgLIcN0uv0T4GhbNXd2UBLOr8=;
-        b=Gfl+HsJWMnWxD/gVNOZTbUdrOLFGtdIuGd3A8G7HoKyhcEA2BIiVTchOnmhPA2whJS
-         bUecBLlWxzcifZpDbNPwUR8K2vocMXWcsRWSNRZ5z4iPoq8DPJpFIbPcaoBFW5Pg2gum
-         awSIam4Mk5yBSkR9AlMJxjOtvO3CUdx6CE+KURe7wvfGbaP6ILwTO+aBLLP5+Njk/HBQ
-         d5L0x5hq/mwv96kzvHWeBvRISzLaCyk8rKXCwGo0qx/un7Std0fkZcHA6wtDYA0pX0ty
-         vDz+5uByI/OkDCWwo/1sltsZG8dLoi4o7LQjDIVGHyRQWcRs2UebcdC/maA4HmpuMxBE
-         fS5A==
+        bh=/312L/upfEChd0s382iQNZQsylwgFpiUnUGKm/8Pqvw=;
+        b=ewtb/Sjv8qGxJkOLX8vFzllchdK+d63Agydpogc3xu9EWnW7sINf01LNLZr5F8lZ7m
+         VKx/mY1H0STlDsoXdidmIqKXssqv59IO3BKPS7vPf8WeK/2LEoT/REqBM5zoPOK8KSx4
+         hKzh3bTWZ7G9jFv33mXoUF9O8eFD2SpEjbItujfK2lcvzT8XdjC3Zp+oC/owtYVLIhkd
+         8wSbxrI0cSuqD/hqScIH0hts1KqMvhcUSau+VTEZFQPZxTBGB1Trbce0a85Ghy4MNHgN
+         poMPTZnQ/juiYaOjvLAKVzP1bn0QnZOUErsCG9jXqoHPzSsBeSa82hRjyem2wyIaptSS
+         SafA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=NAYTGOzmF1yJPLoKf5SgLIcN0uv0T4GhbNXd2UBLOr8=;
-        b=tbBbCR0TvJ9hrfGfwf0KqKLvYvKQuwCZ8CRcxT1JfSNAqWm6534LsQUnvbMNeTcOkc
-         nQw50SnytOAm46+DNEas7VXiPSl9nK37F/GqCmD6nwE3kErLdzDbJ5V8UTBzEQ9uwQ5k
-         HNMGWzYFicfSmYPywPGNrNM7/9CG/qmup+BgtyFSHcQ5sx2SHVKgJp5ZWMNvZVClJjWg
-         gMpsqDZ6vj+0J32pOFGqaW/Hiurv3khTYDf+sc4zjREiQhM1tp72ON1mXL+tHngzC2zh
-         3Irk0O9J/Ty4dzgrU75DHvjf+pfUzwascp2xK+8TlT+bMvrtSb5yZSurV3oMnQHvEgsS
-         W+BA==
-X-Gm-Message-State: AGi0Pub0nUVhwKMvufDJZYNG4QtCZq32xQzeZFgF45oTaoLWGV1WCZZi
-        JPLUneL2EAHxy+rSXkcUfzUqk9DrTos=
-X-Google-Smtp-Source: APiQypKUcnnytIGM2wn/odlVBvvnKz1gy03LB0EZt3MMj6rUtiVm4dzoyP886GmhOPzQBrhDOmbqtw==
-X-Received: by 2002:a05:6512:1046:: with SMTP id c6mr335101lfb.115.1586880881907;
-        Tue, 14 Apr 2020 09:14:41 -0700 (PDT)
+        bh=/312L/upfEChd0s382iQNZQsylwgFpiUnUGKm/8Pqvw=;
+        b=IELHO1qAWKPP5DC+pstroNeC6K0PKgk7IOzYAZ8xskjox/vOQphBmGdj2As+rm+CVQ
+         dyIfkMQo0xcWVoVZU84dhnga5RdXYKB2Lneaho+ilsA+X8DgZBs6Q+yQtwLZ5PVam0Jh
+         Jgp4hpf2y4moR0lr1IRyOak5rQVItIcL+OIllqSj4ixSsUDHTfvumdh718yzfT+C1epx
+         E0u6latxWEBq17KvCoqLfQSNjDIM9ausdUvK0mvTZtecwfAY9pZBjIH0maz5xd4HCLgv
+         RHpX1mNER/Ya1wwVUMeps4v/SPomVxVtBrT+LAemzMGF51AOPcwDOgcjcu3/6yS7svrJ
+         GQxw==
+X-Gm-Message-State: AGi0PuaEHMkw3yCtHYoqZ+DT2d1CXiV9zuM0FA3ACHFvXwmqPeK7XFUe
+        Zo8N270Rm3sAx8b9XQTok2ceNQVTeoQ=
+X-Google-Smtp-Source: APiQypK+AncAZzjPieY0AwSjLMdIGFpdociGqq4Q/Jmw54Oy3dhS1HYlzAy2E9ByK9t60IfuE7yAKQ==
+X-Received: by 2002:a05:651c:48a:: with SMTP id s10mr537009ljc.226.1586880883857;
+        Tue, 14 Apr 2020 09:14:43 -0700 (PDT)
 Received: from localhost.localdomain (h-98-128-181-131.NA.cust.bahnhof.se. [98.128.181.131])
-        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.40
+        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2020 09:14:40 -0700 (PDT)
+        Tue, 14 Apr 2020 09:14:42 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
 To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
@@ -65,9 +65,9 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: [PATCH 14/19] mmc: sdricoh_cs: Respect the cmd->busy_timeout from the mmc core
-Date:   Tue, 14 Apr 2020 18:14:08 +0200
-Message-Id: <20200414161413.3036-15-ulf.hansson@linaro.org>
+Subject: [PATCH 15/19] mmc: tifm_sd: Inform the mmc core about the maximum busy timeout
+Date:   Tue, 14 Apr 2020 18:14:09 +0200
+Message-Id: <20200414161413.3036-16-ulf.hansson@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200414161413.3036-1-ulf.hansson@linaro.org>
 References: <20200414161413.3036-1-ulf.hansson@linaro.org>
@@ -78,54 +78,55 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Using a fixed 1s polling timeout for all commands is a bit problematic.
+Some commands uses R1B responses, which means the card may assert the DAT0
+line to signal busy for a period of time, after it has received the
+command. The mmc core normally specifies the busy period for the command in
+the cmd->busy_timeout. Ideally the driver should respect it, but that
+requires quite some update of the code, so let's defer that to someone with
+the HW at hand.
 
-For some commands it means waiting longer than needed for the polling to be
-aborted, which may not a big issue, but still. For other commands, like for
-an erase (CMD38) that uses a R1B response, may require longer timeouts than
-1s. In these cases, we may end up treating the command as it failed, while
-it just needed some more time to complete successfully.
+Instead, let's inform the mmc core about the maximum supported busy timeout
+in ->max_busy_timeout during ->probe(). This value corresponds to the fixed
+1s timeout used by tifm_sd. In this way, we let the mmc core validate the
+needed timeout, which may lead to that it converts from a R1B into a R1
+response and then use CMD13 to poll for busy completion.
 
-Fix the problem by respecting the cmd->busy_timeout, which is provided by
-the mmc core.
+In other words, this change enables support for commands with longer busy
+periods than 1s, like erase (CMD38) for example.
 
-Note that, even if the sdricoh_cs driver may currently not support HW busy
-detection on DAT0, some comments in the code refer to that the HW may
-support it. Therefore, it seems better to be proactive in this case.
-
-Cc: Sascha Sommer <saschasommer@freenet.de>
+Cc: Alex Dubov <oakad@yahoo.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- drivers/mmc/host/sdricoh_cs.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/mmc/host/tifm_sd.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdricoh_cs.c b/drivers/mmc/host/sdricoh_cs.c
-index d7a191f14337..dfd395ff7c3e 100644
---- a/drivers/mmc/host/sdricoh_cs.c
-+++ b/drivers/mmc/host/sdricoh_cs.c
-@@ -156,7 +156,7 @@ static int sdricoh_query_status(struct sdricoh_host *host, unsigned int wanted)
+diff --git a/drivers/mmc/host/tifm_sd.c b/drivers/mmc/host/tifm_sd.c
+index 54271b92ee59..5987656e0474 100644
+--- a/drivers/mmc/host/tifm_sd.c
++++ b/drivers/mmc/host/tifm_sd.c
+@@ -73,6 +73,8 @@ module_param(fixed_timeout, bool, 0644);
  
- static int sdricoh_mmc_cmd(struct sdricoh_host *host, struct mmc_command *cmd)
- {
--	unsigned int status;
-+	unsigned int status, timeout_us;
- 	int ret;
- 	unsigned char opcode = cmd->opcode;
+ #define TIFM_MMCSD_MAX_BLOCK_SIZE  0x0800UL
  
-@@ -178,9 +178,12 @@ static int sdricoh_mmc_cmd(struct sdricoh_host *host, struct mmc_command *cmd)
- 	if (!opcode)
- 		return 0;
- 
-+	timeout_us = cmd->busy_timeout ? cmd->busy_timeout * 1000 :
-+		SDRICOH_CMD_TIMEOUT_US;
++#define TIFM_MMCSD_REQ_TIMEOUT_MS  1000
 +
- 	ret = readl_poll_timeout(host->iobase + R21C_STATUS, status,
- 			sdricoh_status_ok(host, status, STATUS_CMD_FINISHED),
--			32, SDRICOH_CMD_TIMEOUT_US);
-+			32, timeout_us);
+ enum {
+ 	CMD_READY    = 0x0001,
+ 	FIFO_READY   = 0x0002,
+@@ -959,7 +961,12 @@ static int tifm_sd_probe(struct tifm_dev *sock)
+ 	host = mmc_priv(mmc);
+ 	tifm_set_drvdata(sock, mmc);
+ 	host->dev = sock;
+-	host->timeout_jiffies = msecs_to_jiffies(1000);
++	host->timeout_jiffies = msecs_to_jiffies(TIFM_MMCSD_REQ_TIMEOUT_MS);
++	/*
++	 * We use a fixed request timeout of 1s, hence inform the core about it.
++	 * A future improvement should instead respect the cmd->busy_timeout.
++	 */
++	mmc->max_busy_timeout = TIFM_MMCSD_REQ_TIMEOUT_MS;
  
- 	/*
- 	 * Don't check for timeout status in the loop, as it's not always reset
+ 	tasklet_init(&host->finish_tasklet, tifm_sd_end_cmd,
+ 		     (unsigned long)host);
 -- 
 2.20.1
 
