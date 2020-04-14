@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC0EA1A846E
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 957251A8460
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390614AbgDNQQa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Apr 2020 12:16:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
+        id S2390553AbgDNQOf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Apr 2020 12:14:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2389809AbgDNQOY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:24 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34145C061A0F
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:23 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id q19so375081ljp.9
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:23 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S2389811AbgDNQO0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:26 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC4AEC061A10
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:24 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id k21so426341ljh.2
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=7LduVD2uZS35fq7b3rWpwMCdk3E6T3OQ5w3znT1sZ0o=;
-        b=ybNoaVLxsmcOKKwqgU+D19pNdmFWVntSm7VVsTsiO3lwWfS4JurMrNdeAZ2GrbhEe1
-         QETjMX/gguWOx+2iYkbixlWIVdMgjqxCyOg0JJY2MvLsd4bTHEi0K2I2b9l03sxGrnSc
-         z1nXqYtPsd5MFWYWB18Brf2T8MeAzmlZgUZvsaAwirI5Miua992hGKAJzW9drNqxPfXJ
-         JOljET2+mk2U94PVMnCKfFBH9n85M7QU3Jxcm6PQsBPyco8rQJlcs7TPnLeNWz0L1ulv
-         TaaVUoWMN71z3U1r2FJHqZvjqXm/b4p8IoBHy1zzqJaR1ESYhOu6brNolBo2xLlZxO4e
-         rNYg==
+        bh=/u7NC6yDRYNMvCAgPxU0HxDtYNDMqbE9FekEfbQcOQI=;
+        b=Qe5pJo5dEPudnBkoPikQMvE6hJ5ljLrOG38fGhfx5vrpBWxgRFNkeMDiieUT4RPMKa
+         5tTXHjKo6VeyWJDk8FlOCDwYNQzttV9GQEzosgU1ZSjFxvd+Dq26m5WuGJeOZ8f9NqzE
+         jaqiLnetGzYTiXYEo1xZkCXVigQlaMmQ2J7s8IEL4zGBbBWp2DPjlI8o6u97IGuaJp/8
+         Oc5ZmJSfEV2qR74c1BtvuVO8zmNBb41B6VdWHFJOTInSFFij49C0Cu7s7+ATtWogKlIJ
+         3aXD5TmWUp01eerr7G4uhVPyPv73AFEUABXEBFz7G0RZj12RgibE/4NZFBiqSYvAv1Ru
+         VKIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=7LduVD2uZS35fq7b3rWpwMCdk3E6T3OQ5w3znT1sZ0o=;
-        b=AMAZUXm4H8BtyoeF/qIc21AazFXcaBqWLUVrF6bzMQvZGnbMq8s2IdGxAwkBt22Z1N
-         19p/077heaEOUsXN701CgxmYU3OTgjH/y7ml9Ui5RZuNVmLF59ARaBnC+FxnIPOR/6D9
-         +iHcTUU32r3vquK8el+2WfUEx43hJ/5uRRWqy7EBF8Lv23H5LHaNv26Prw+89g/uzJSv
-         OkKKR0xVV5z9eiatoFUZHZl5qtkBQcKSJfk7T5bpYEj/7r2EDygSZzpXhqddldbPvjB6
-         7YUh1cqWvLZdWNWu0w4WOhvPQE48AvZny0Nj2GmLlaSFNLmKSIoXtaOr0sGu7x7nsS5S
-         T4aA==
-X-Gm-Message-State: AGi0PuYeQNY5Q3y1L8f8CYemSJ2FKpfKnHJ28BYmSZzWTsdfKc7bKj3z
-        8tyxlVcVVZCj2on8NSttcAKf/jBVcac=
-X-Google-Smtp-Source: APiQypKCPWSEYnixJRTEMXCdwuSakasGvOelofBOLCza141ICejNMneeXisEP2I4gmISHO2Rr1Zcsw==
-X-Received: by 2002:a2e:8e3a:: with SMTP id r26mr534954ljk.171.1586880861230;
-        Tue, 14 Apr 2020 09:14:21 -0700 (PDT)
+        bh=/u7NC6yDRYNMvCAgPxU0HxDtYNDMqbE9FekEfbQcOQI=;
+        b=BTZJoLUg5D4i/Gh8uWepeQSHw695cyIskjkXIxzmM7OOEgXcfZJanLcStfFIiISr4N
+         x7UZMnERAcB5T2iYggJ1yapvPl+BtOXjHHaFCU5dpGHvZNje0RhZztbGuWFnzKVwB7uw
+         zgjpR9crEAf2PlZrLGJN6zeuTFJOlbc0kFoNJHip3tpG+CXs3wNx4MLDgoLuAAoEZvXz
+         bHt0hvhfBJ4qwDoCAIINsY9YIt0yoLqiZO+CB819pQlXOdWIFCvQI7reSTHFSqI5DmLn
+         KTC0SdHa0YPepGm79Labwy9DnyFeDVlvS4k4+F42AFHuBu1DJetVWT4Os9ljxmrpcZzb
+         0Iaw==
+X-Gm-Message-State: AGi0PuYppaNcBfmqSOwygO878aHQtpfcGFoR7xqnr40DxS+sQSlYDqNw
+        J/PGWTFjiJ8w0jd+zRUdhpp33bAAjE4=
+X-Google-Smtp-Source: APiQypIgOtfZ87J/KQSZFiapD6CrLOavQOnvdrCDtYDXFD5vzNbytd1wC7vz/1FKmxXrpSQWSVJX1w==
+X-Received: by 2002:a2e:a179:: with SMTP id u25mr568229ljl.192.1586880862780;
+        Tue, 14 Apr 2020 09:14:22 -0700 (PDT)
 Received: from localhost.localdomain (h-98-128-181-131.NA.cust.bahnhof.se. [98.128.181.131])
-        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.19
+        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2020 09:14:20 -0700 (PDT)
+        Tue, 14 Apr 2020 09:14:22 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
 To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
@@ -65,9 +65,9 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: [PATCH 02/19] mmc: atmel-mci: Set the timer per command rather than per request
-Date:   Tue, 14 Apr 2020 18:13:56 +0200
-Message-Id: <20200414161413.3036-3-ulf.hansson@linaro.org>
+Subject: [PATCH 03/19] mmc: atmel-mci: Respect the cmd->busy_timeout from the mmc core
+Date:   Tue, 14 Apr 2020 18:13:57 +0200
+Message-Id: <20200414161413.3036-4-ulf.hansson@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200414161413.3036-1-ulf.hansson@linaro.org>
 References: <20200414161413.3036-1-ulf.hansson@linaro.org>
@@ -78,11 +78,16 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Setting the timer on a per request basis, is rather limiting as the timer
-really depends on what commands that is to be sent as part of the request.
+Using a fixed 2s timeout for all commands is a bit problematic.
 
-Therefore improve the behaviour by programming the timer per command basis
-instead.
+For some commands it means waiting longer than needed for the timer to
+expire, which may not a big issue, but still. For other commands, like for
+an erase (CMD38) that uses a R1B response, may require longer timeouts than
+2s. In these cases, we may end up treating the command as it failed, while
+it just needed some more time to complete successfully.
+
+Fix the problem by respecting the cmd->busy_timeout, which is provided by
+the mmc core.
 
 Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
 Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
@@ -92,36 +97,29 @@ Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
-index 0472df8391b5..7292970065b6 100644
+index 7292970065b6..5cb692687698 100644
 --- a/drivers/mmc/host/atmel-mci.c
 +++ b/drivers/mmc/host/atmel-mci.c
-@@ -169,6 +169,7 @@
- #define	atmci_writel(port, reg, value)			\
- 	__raw_writel((value), (port)->regs + reg)
+@@ -809,6 +809,9 @@ static u32 atmci_prepare_command(struct mmc_host *mmc,
+ static void atmci_send_command(struct atmel_mci *host,
+ 		struct mmc_command *cmd, u32 cmd_flags)
+ {
++	unsigned int timeout_ms = cmd->busy_timeout ? cmd->busy_timeout :
++		ATMCI_CMD_TIMEOUT_MS;
++
+ 	WARN_ON(host->cmd);
+ 	host->cmd = cmd;
  
-+#define ATMCI_CMD_TIMEOUT_MS	2000
- #define AUTOSUSPEND_DELAY	50
- 
- #define ATMCI_DATA_ERROR_FLAGS	(ATMCI_DCRCE | ATMCI_DTOE | ATMCI_OVRE | ATMCI_UNRE)
-@@ -817,6 +818,9 @@ static void atmci_send_command(struct atmel_mci *host,
- 
+@@ -819,8 +822,7 @@ static void atmci_send_command(struct atmel_mci *host,
  	atmci_writel(host, ATMCI_ARGR, cmd->arg);
  	atmci_writel(host, ATMCI_CMDR, cmd_flags);
-+
-+	mod_timer(&host->timer,
-+		  jiffies + msecs_to_jiffies(ATMCI_CMD_TIMEOUT_MS));
+ 
+-	mod_timer(&host->timer,
+-		  jiffies + msecs_to_jiffies(ATMCI_CMD_TIMEOUT_MS));
++	mod_timer(&host->timer, jiffies + msecs_to_jiffies(timeout_ms));
  }
  
  static void atmci_send_stop_cmd(struct atmel_mci *host, struct mmc_data *data)
-@@ -1314,8 +1318,6 @@ static void atmci_start_request(struct atmel_mci *host,
- 	 * prepared yet.)
- 	 */
- 	atmci_writel(host, ATMCI_IER, iflags);
--
--	mod_timer(&host->timer, jiffies +  msecs_to_jiffies(2000));
- }
- 
- static void atmci_queue_request(struct atmel_mci *host,
 -- 
 2.20.1
 
