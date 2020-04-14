@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B72B51A8465
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C09111A8463
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390415AbgDNQPj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Apr 2020 12:15:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54968 "EHLO
+        id S2390411AbgDNQPd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Apr 2020 12:15:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2390423AbgDNQOe (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:34 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4104EC061A0E
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:33 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id 131so168709lfh.11
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:33 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S2391171AbgDNQOf (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:35 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A96BC061A0F
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:35 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id d8so397188ljo.6
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9QnWaA+YV/c9Li2yPT2LBVJasT99G3qkQ/TJy+CeVPw=;
-        b=mhB60q8XHmKslX9V/PSmnWFU41gKBr1Uwkl54rU2Nh8oLbk4Me9Zansiaoh4oKKls4
-         oYDbWj3VZ5492bw6NgtSYyse7daOzDzfKmSjJ0Ykrikxz2YKTpS1UJQHf3ao92/AOack
-         b1ol2JOc6xG2+TQvluwsX4793IpLo4k39L7AKgFDSqyBf3zZUPJKh7jF+QyBa0NCe46U
-         Lr5wsf/fFkwvIR4xZAwWjZ0Jyn6w9iLJthjpPsTzRaXsE8o7AEjAKiXLLFRx9+pum3zE
-         UspWncBdmJgBTpZHgexGOBdWKaNOGg7jyO01SXDGw6u57XILEDP1jorSiosRdABHr+HS
-         J/rQ==
+        bh=ssNZhCk/W8aH/W/Y1Y0b51fjc3318cXifEh7iCUNpWY=;
+        b=byorq+HhD6RQw+ZVbfQkdf7A1wS+BcXsygsl7i9QF9TOlHQ3zVlW7O7peLFC+yyRaH
+         /Tr0pk50Ycv4olUb+202GQ7VDfagVPqO7zamNCITsZindq9hJUTo1GTrYbH/CMT1fM4y
+         X5TiYxYkHyQdfmsjdU415XSKMcgxMtsuEo1yaHx74sLntpupNNhDM15glIJTadLLG/hn
+         YoYw9B+w3tOonSaT+7t8BxtH2m72Ud9ndILWTddmhZv6eBrBVRwt5IEiWYHprdX1srat
+         quCAItruFljqp/+0+tocFBvRz1Fxan3udC+uHh94IpSwc+ztS4nyhWScR82laVbSg2tb
+         D3/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9QnWaA+YV/c9Li2yPT2LBVJasT99G3qkQ/TJy+CeVPw=;
-        b=DR3bCxZYHnPsBgcsazUCZjwdHQDNfBCmuHG8ekBZRZLy2mKbqWILLzOM9qJVi9HxR0
-         xl38VDwqLlcVR+Ly3pBeUNVCdZivkKnjR3tZjg3MaPO4uzlvGXfd9mEBbQo+KnDBscZ2
-         d1CfcHkNEikayqziCycqlTWBbQ1DcgBPaLFIR9eKy5opUHr4ofNuUKlxMkoUexMzFTua
-         d/F4MNGKqQ4JBnerHnqpxcEp5sg7JVRNHDoHuXtVFVo1WEHnOT/fw/NsZgd/IEDZVscX
-         X16uUPNzY5LQbgv/n0zd9kb5/BSD4faLRak12+WRDzwv3QuGM4LcBn5kLhL2x7fhqhrM
-         hrMQ==
-X-Gm-Message-State: AGi0PuYgrDTJ8FKvRwU8vOtjKaLfVZHfswE7SVDUvZju5lfA5BePES/m
-        JLbZfh9d3VnvxieMOWr/GM9f+2TUhNg=
-X-Google-Smtp-Source: APiQypIPuqtPsAl6LcmL52VbxsBmm8/BLz+8CoOBvDh6Wmj9fQVDtl72gpelIUiST9FPwmaJBPaJ0Q==
-X-Received: by 2002:a19:c64b:: with SMTP id w72mr357854lff.82.1586880871411;
-        Tue, 14 Apr 2020 09:14:31 -0700 (PDT)
+        bh=ssNZhCk/W8aH/W/Y1Y0b51fjc3318cXifEh7iCUNpWY=;
+        b=AQQjjYmiazzUNMc6ypq4S1NHdYfDMTSYPPddhtr+rSWcf42GjhwFKfAAdcZs/sTlgT
+         +ABEXy6IXrrexnDeJejfbpAmwf0iczN8KYJza/K0E8pHweXrSAIPWhLnEtNSaYHno7pN
+         79tP6zrq8gfVyDQHBxs1C2BJgB1i3W5JlSOnbOyfzzeK7HBnQfCb/+JavIL6yB7UbQxF
+         PYebkTm05x/LTliQZfG315m46giBDQ1/KoJ7aoqcEyatbuW4fLJ36hLZOcEWF7po2+Q8
+         lWlgWc6KjuwYr/4PdZDiyaXiho1nqhZcH2LFTQCbRMQlI4k4RVOBaSZybH45TCUK3gAh
+         pNDw==
+X-Gm-Message-State: AGi0PuZe3sWXhaO7g5fQIaiGlvFmAcHRYYxicJZEEmIQLaDnoWlIKJPk
+        VB4VeXaaa17lSd0X3O/pNgXJ5CYZmCs=
+X-Google-Smtp-Source: APiQypK+UzFr/X/xwT3LC57UysC+HMAIQ0E8wkILiPjrXHpb2krTr+eX8VeYjT+17rMTHwOOInINFA==
+X-Received: by 2002:a2e:9a0d:: with SMTP id o13mr541104lji.142.1586880873076;
+        Tue, 14 Apr 2020 09:14:33 -0700 (PDT)
 Received: from localhost.localdomain (h-98-128-181-131.NA.cust.bahnhof.se. [98.128.181.131])
-        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.29
+        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2020 09:14:30 -0700 (PDT)
+        Tue, 14 Apr 2020 09:14:32 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
 To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
@@ -65,9 +65,9 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: [PATCH 08/19] mmc: sdricoh_cs: Drop unused defines
-Date:   Tue, 14 Apr 2020 18:14:02 +0200
-Message-Id: <20200414161413.3036-9-ulf.hansson@linaro.org>
+Subject: [PATCH 09/19] mmc: sdricoh_cs: Use MMC_APP_CMD rather than a hardcoded number
+Date:   Tue, 14 Apr 2020 18:14:03 +0200
+Message-Id: <20200414161413.3036-10-ulf.hansson@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200414161413.3036-1-ulf.hansson@linaro.org>
 References: <20200414161413.3036-1-ulf.hansson@linaro.org>
@@ -81,24 +81,30 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 Cc: Sascha Sommer <saschasommer@freenet.de>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- drivers/mmc/host/sdricoh_cs.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/mmc/host/sdricoh_cs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/sdricoh_cs.c b/drivers/mmc/host/sdricoh_cs.c
-index a38b8b2a4e5c..1fc4db713ef5 100644
+index 1fc4db713ef5..a41c0660abbf 100644
 --- a/drivers/mmc/host/sdricoh_cs.c
 +++ b/drivers/mmc/host/sdricoh_cs.c
-@@ -57,10 +57,8 @@ static unsigned int switchlocked;
- #define STATUS_BUSY              0x40000000
+@@ -22,6 +22,7 @@
+ #include <linux/io.h>
  
- /* timeouts */
--#define INIT_TIMEOUT      100
- #define CMD_TIMEOUT       100000
- #define TRANSFER_TIMEOUT  100000
--#define BUSY_TIMEOUT      32767
+ #include <linux/mmc/host.h>
++#include <linux/mmc/mmc.h>
  
- /* list of supported pcmcia devices */
- static const struct pcmcia_device_id pcmcia_ids[] = {
+ #define DRIVER_NAME "sdricoh_cs"
+ 
+@@ -261,7 +262,7 @@ static void sdricoh_request(struct mmc_host *mmc, struct mmc_request *mrq)
+ 	if (host->app_cmd) {
+ 		opcode |= 64;
+ 		host->app_cmd = 0;
+-	} else if (opcode == 55)
++	} else if (opcode == MMC_APP_CMD)
+ 		host->app_cmd = 1;
+ 
+ 	/* read/write commands seem to require this */
 -- 
 2.20.1
 
