@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C76A51A845E
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E94441A845C
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:15:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390667AbgDNQPI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Apr 2020 12:15:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55008 "EHLO
+        id S2390532AbgDNQPA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Apr 2020 12:15:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2391334AbgDNQOt (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:49 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32CCDC061A0C
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:49 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id h6so233272lfc.0
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:49 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S2391335AbgDNQOv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:51 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D621EC061A0E
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:50 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id m8so437732lji.1
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=fV7yLQCho5m6+2k47darI60VgKdimEIQlNdusOHvHrI=;
-        b=F3rQk/4Z//sOg6fzVR2r3vntsIFgxeadDpOTTo0em3oUxUnS2xswqmPCK1NziVLsdm
-         g7MbLjEwesW79tQ/fqcyYUi87aZCcSGCNff2Gt9+bh4saviZsOfOARZKLBHkodig+xaf
-         amCWUOxEnVwrTX5NxrCVc0xjQZXlENrPinN0kbShXtk83w9yddamVgXUFFK9hPqpVuOC
-         Zmy8f3g1owvRV8RQe9DE48mfnTrrmmcz/KzsBgs9xZuqbqCnE9oMOJbalSZ1tVdRtOtn
-         jJRidQakHPpD6C5dZrhKY8uQeO0oNeBD4qMXG2kWdvGjTb0J54jcFXjq4BhdCjGFsRYv
-         3yMA==
+        bh=zv/IOLWsE6pD23wlMRMWXhfDzTXImiUoTlOV8wP43+4=;
+        b=UHJb2dW0l0J4LUncRFQvg4oVtCEMMEfdDnMzVHl4Wb88nTNDhPXS4ozS1vm9XGcZKt
+         IfvNexRyTE2Spm1kKol/wWU5pDiYw4m2kvaJwON0+Cn+sYc9eZr4ZXmAwEI4s7BQT5Xs
+         n6R34d2p7c4RmwmKSkxWQPtAhfZYxDm4JcKywmEP53UH7c4snGkwu5yip74qUrGOgCaC
+         ymVnyf1IjMOoOQ/3XLz1JxXM7EYgZp6TGmNPcOFkWCEGOQdOwTEynckvodv06Llu7uyL
+         3ShoitgMKzNxKKUb9Wn1670P/aBKI/3rPTLthFCyPv5fY7yLYrjkMvbCPBH94Pyh0fdS
+         nPPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=fV7yLQCho5m6+2k47darI60VgKdimEIQlNdusOHvHrI=;
-        b=IMEXzYgRWm4k6hGuPedPqHDJpV03oAkxWOBF3/SNJwI6Xn+Dh8RmjdtvO1My+BevZ0
-         0xNOknFzNtvib1D84ngpDdPcJiVcTw+5IUOSw/VW9WlXNAjsFevjHKXV/zmTBVgp4+LK
-         +v3uTTSsEwtaUZXHhKD+kNO+Ea9yduW0PAiqgIe4bnYcYXDpztfgKFjACC8Mit1N2sWy
-         T4L5OGmGoA4RN4Vdpc7X+GBo20rWSDmbfpUofaI4WRqSVXsVTR0a5xdwM4b5Z624kzSF
-         vhiOMeApsiQXbgh3DiDGpWkxI6RqKwVpPbwlycuGe+ROt0SX1Kb/mco0lRKhf4KFwO3v
-         9dbA==
-X-Gm-Message-State: AGi0Pua/CzujCuy88Usb7+AFSxt2PeD0spU76H86qwXkZkcSKuK3W/2F
-        PXtPq3WXSTcxcnzp3tHxnxTWEx+4MDM=
-X-Google-Smtp-Source: APiQypIx3GuWzm2apEhzDNWzcBGMOHlPS4R60kqm/Gp8FkwUtC+CSX7LB9PF6MpLnCwT97E6W+xm7w==
-X-Received: by 2002:a05:6512:3081:: with SMTP id z1mr359841lfd.102.1586880887299;
-        Tue, 14 Apr 2020 09:14:47 -0700 (PDT)
+        bh=zv/IOLWsE6pD23wlMRMWXhfDzTXImiUoTlOV8wP43+4=;
+        b=APFxyIZBcQiZeT8JJgBBUj0MhpFB0cJYuKjbdvmq5497IJX43BIktJUYf4PUjdHOb3
+         Xu7NTJbphFbhSEyMp+nKEMajXSTjGN1YTCt5IJwJX8pzXiXQ7VayFlso3SXC1YDfxOgl
+         Xx6M1nKU6LUQkfp+rM1KCFLHG0f4C1p4BY+N/+19ayfPUE9wi9eS8rZK692O5mc5jfk/
+         HBjNdAv79YsnumOCpRgn7qPm6ZZa4CIQ640QVZp3r/1nD7CqABQOaKjvGvdDwZYt9zho
+         u59hNx6rE2q2rLofBljT+7RMwRbA2OKdka9Dzmk4vPaS0cYm8O7LLMGIW25PbtDN/ceG
+         dLFA==
+X-Gm-Message-State: AGi0PubhTJlEPGu6uS0OkZsc7vgVwma/BCCq9/EZPqif8iVGIb3AoulI
+        GH4k7YXyoumhIIoMCZVJ0HcF6gfqpHA=
+X-Google-Smtp-Source: APiQypLsgjIE3PF75iBeDOhwcxLS1kxYncfn8xlwnEfL4bMgnXmWOTMFNs0FTXbcxwkDIQPy+TzD7g==
+X-Received: by 2002:a2e:9813:: with SMTP id a19mr510612ljj.215.1586880889001;
+        Tue, 14 Apr 2020 09:14:49 -0700 (PDT)
 Received: from localhost.localdomain (h-98-128-181-131.NA.cust.bahnhof.se. [98.128.181.131])
-        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.45
+        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2020 09:14:46 -0700 (PDT)
+        Tue, 14 Apr 2020 09:14:48 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
 To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
@@ -65,9 +65,9 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: [PATCH 17/19] mmc: mmc_spi: Add/rename defines for timeouts
-Date:   Tue, 14 Apr 2020 18:14:11 +0200
-Message-Id: <20200414161413.3036-18-ulf.hansson@linaro.org>
+Subject: [PATCH 18/19] mmc: mmc_spi: Respect the cmd->busy_timeout from the mmc core
+Date:   Tue, 14 Apr 2020 18:14:12 +0200
+Message-Id: <20200414161413.3036-19-ulf.hansson@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200414161413.3036-1-ulf.hansson@linaro.org>
 References: <20200414161413.3036-1-ulf.hansson@linaro.org>
@@ -79,60 +79,52 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Clarify the use of r1b_timeout, by renaming it to MMC_SPI_R1B_TIMEOUT_MS
-and by dropping the corresponding confusing comment about it.
+Using a fixed 3s polling timeout for all commands with R1B responses is a
+bit problematic.
 
-Additionally, let's also add a new define, MMC_SPI_INIT_TIMEOUT_MS and use
-it during the initialization. Even if these two defines are given the same
-value, the split makes it easier to understand them.
+For some commands it means waiting longer than needed for the polling to be
+aborted, which may not a big issue, but still. For other commands, like for
+an erase (CMD38), may require longer timeouts than 3s. In these cases, we
+may end up treating the command as it failed, while it just needed some
+more time to complete successfully.
+
+Fix the problem by respecting the cmd->busy_timeout, which is provided by
+the mmc core.
 
 Cc: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
 Cc: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- drivers/mmc/host/mmc_spi.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/mmc/host/mmc_spi.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 951f76dc1ddd..5768fe9f8f6f 100644
+index 5768fe9f8f6f..39bb1e30c2d7 100644
 --- a/drivers/mmc/host/mmc_spi.c
 +++ b/drivers/mmc/host/mmc_spi.c
-@@ -77,14 +77,8 @@
- 
- #define MMC_SPI_BLOCKSIZE	512
- 
--
--/* These fixed timeouts come from the latest SD specs, which say to ignore
-- * the CSD values.  The R1B value is for card erase (e.g. the "I forgot the
-- * card's password" scenario); it's mostly applied to STOP_TRANSMISSION after
-- * reads which takes nowhere near that long.  Older cards may be able to use
-- * shorter timeouts ... but why bother?
-- */
--#define r1b_timeout		(HZ * 3)
-+#define MMC_SPI_R1B_TIMEOUT_MS	3000
-+#define MMC_SPI_INIT_TIMEOUT_MS	3000
- 
- /* One of the critical speed parameters is the amount of data which may
-  * be transferred in one command. If this value is too low, the SD card
-@@ -347,7 +341,8 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
+@@ -242,6 +242,7 @@ static char *maptype(struct mmc_command *cmd)
+ static int mmc_spi_response_get(struct mmc_spi_host *host,
+ 		struct mmc_command *cmd, int cs_on)
+ {
++	unsigned long timeout_ms;
+ 	u8	*cp = host->data->status;
+ 	u8	*end = cp + host->t.len;
+ 	int	value = 0;
+@@ -340,9 +341,11 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
+ 		/* maybe we read all the busy tokens already */
  		while (cp < end && *cp == 0)
  			cp++;
- 		if (cp == end)
--			mmc_spi_wait_unbusy(host, r1b_timeout);
-+			mmc_spi_wait_unbusy(host,
-+				msecs_to_jiffies(MMC_SPI_R1B_TIMEOUT_MS));
+-		if (cp == end)
+-			mmc_spi_wait_unbusy(host,
+-				msecs_to_jiffies(MMC_SPI_R1B_TIMEOUT_MS));
++		if (cp == end) {
++			timeout_ms = cmd->busy_timeout ? cmd->busy_timeout :
++				MMC_SPI_R1B_TIMEOUT_MS;
++			mmc_spi_wait_unbusy(host, msecs_to_jiffies(timeout_ms));
++		}
  		break;
  
  	/* SPI R2 == R1 + second status byte; SEND_STATUS
-@@ -1118,7 +1113,7 @@ static void mmc_spi_initsequence(struct mmc_spi_host *host)
- 	/* Try to be very sure any previous command has completed;
- 	 * wait till not-busy, skip debris from any old commands.
- 	 */
--	mmc_spi_wait_unbusy(host, r1b_timeout);
-+	mmc_spi_wait_unbusy(host, msecs_to_jiffies(MMC_SPI_INIT_TIMEOUT_MS));
- 	mmc_spi_readbytes(host, 10);
- 
- 	/*
 -- 
 2.20.1
 
