@@ -2,132 +2,92 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A25A1A845D
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:15:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDC0D1A89D6
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 20:40:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391335AbgDNQPB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Apr 2020 12:15:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55030 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2390667AbgDNQOx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:53 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBEACC061A0F
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:52 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id l11so204839lfc.5
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Bpyge4k8Iz/MW6vpPqOyXsMz3UoNxf4ygGN/PrDN23s=;
-        b=m7tzsSdoqidUMOYYffWIVvNzzOkmdfg+BlltbgNDyDHYItaxuxu7vlYresXdqk6vQv
-         D1vtkIKdiPxe0VmBocbrJb8+RR2jsB5/PR4o9cSrD0CBQ+Deo18au7HngD4aapz8uN5s
-         wNrIqMOeMKLHkGPs6aTOR9HucmlEVNvLYIYwIWk+dcPCMXefe5E35RhttGIciUVbUY7R
-         w0mJd6ufoGcywW0DjWwpcn1mICnTQ7g9bhZpqe8Uw6i+m7KAsSDOvfNer0KNkWMFmjxy
-         Tz9cgFFhelwwDFL8Banrz9p9aK/Z7NLsgIRfpHDyQRvGg/VJqaFDWl9jXElVKKXXe6e4
-         36kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Bpyge4k8Iz/MW6vpPqOyXsMz3UoNxf4ygGN/PrDN23s=;
-        b=JTzbPbQAaipu96ts641SmoXOLcDUMZHetfomuqP5S6cqYQuiwRjsb9bxxWurW2fTN4
-         EfNoyw3wSn71dcPzk8G1PnEqDVz/L+0+q4qxzrx8yRhdKb5QBSbNtnGYeJoZgcCK83W/
-         2CbxLnN8si/vUDQW98BJsoAXyVOIYaTPjlxBVaL3xvGqE+QB+1DjNSxC3dzLtIrHihPV
-         +D1pUy99bD9gSx6oVwDMDc0GnGHmEnvW9TcwlHtdsuCW/7aSHvpwCSVYj1vpJKXqgkuL
-         SY/5DKlrbJGi5TYHnR2BTruHtwqM1PSkupEmNfMHLh2KYk/NAvMXnpNRA60sTX7kPtAL
-         G9QA==
-X-Gm-Message-State: AGi0PualjVE4AJUfGQHv8aA2/B5A40RaEymzO4KXfv708FXLGJiBp9v0
-        PW5ffw8qIfbODMdSbPKUUNDO5SKNhlw=
-X-Google-Smtp-Source: APiQypKs1XralZ2xpuJEJsfyXQSt7ex/4mhrOaimKzrhLIPk2A27zZq8+qJo3Rovpcol1PZ3P4LfzQ==
-X-Received: by 2002:ac2:550e:: with SMTP id j14mr349553lfk.188.1586880890888;
-        Tue, 14 Apr 2020 09:14:50 -0700 (PDT)
-Received: from localhost.localdomain (h-98-128-181-131.NA.cust.bahnhof.se. [98.128.181.131])
-        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2020 09:14:50 -0700 (PDT)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        id S2504116AbgDNSkJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Apr 2020 14:40:09 -0400
+Received: from rere.qmqm.pl ([91.227.64.183]:20322 "EHLO rere.qmqm.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2504142AbgDNSkH (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 14 Apr 2020 14:40:07 -0400
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 491vRl26dgzZ5;
+        Tue, 14 Apr 2020 20:40:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1586889605; bh=kAvGX9pOIPQrCzJXDeL1+Ys815lqtmHIeG4WQmjxbTM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qYgFsAsaQBvMFqmoUjH+bFcjyf2oq3kZYcG/AvFzD49Rq65miu4+/48so7Bcon/SU
+         o+ltd7JJMYHTSI2O84xQXbS1FyjO4uqFPfEecVpQ5xKW8cy4xkh4fmkCt3bHSD5xpi
+         sMrXjLQy+YNEiKdN1AUB2YBtgGbt1QNy4FMtowdMGNmJeK7igGYecEDbiUBKvAUp59
+         AZlGgT7bngA1ChHw0aF0jtzKJdP1/Dc84nF3x6YuTFP8zYChHM3cIiHao3zICXiUgR
+         isE3wX2MErPnEWUfbmymkou//Ho+sUnLBUhCGQ3in/6/AMBmuiF4m0xx1IHuTHdEYf
+         zTw6+ymiiDt7g==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.102.2 at mail
+Date:   Tue, 14 Apr 2020 20:39:59 +0200
+From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Rui Miguel Silva <rmfrfs@gmail.com>,
         Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Jonathan =?iso-8859-2?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
         Bruce Chang <brucechang@via.com.tw>,
         Harald Welte <HaraldWelte@viatech.com>,
         Alex Dubov <oakad@yahoo.com>,
         Sascha Sommer <saschasommer@freenet.de>,
         Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        mirq-linux@rere.qmqm.pl, Jesper Nilsson <jesper.nilsson@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
         Lars Persson <lars.persson@axis.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        greybus-dev@lists.linaro.org
-Subject: [PATCH 19/19] staging: greybus: sdio: Respect the cmd->busy_timeout from the mmc core
-Date:   Tue, 14 Apr 2020 18:14:13 +0200
-Message-Id: <20200414161413.3036-20-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200414161413.3036-1-ulf.hansson@linaro.org>
+        Nicolas Ferre <nicolas.ferre@microchip.com>
+Subject: Re: [PATCH 06/19] mmc: cb710: Inform the mmc core about the maximum
+ busy timeout
+Message-ID: <20200414183959.GA15141@qmqm.qmqm.pl>
 References: <20200414161413.3036-1-ulf.hansson@linaro.org>
+ <20200414161413.3036-7-ulf.hansson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200414161413.3036-7-ulf.hansson@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Using a fixed 1s timeout for all commands is a bit problematic.
+On Tue, Apr 14, 2020 at 06:14:00PM +0200, Ulf Hansson wrote:
+> Some commands uses R1B responses, which means the card may assert the DAT0
+> line to signal busy for a period of time, after it has received the
+> command. The mmc core normally specifies the busy period for the command in
+> the cmd->busy_timeout. Ideally the driver should respect it, but that
+> requires quite some update of the code, so let's defer that to someone with
+> the HW at hand.
+> 
+> Instead, let's inform the mmc core about the maximum supported busy timeout
+> in ->max_busy_timeout during ->probe(). This value corresponds to the fixed
+> ~2s timeout of the polling loop, implemented in cb710_wait_for_event(). In
+> this way, we let the mmc core validate the needed timeout, which may lead
+> to that it converts from a R1B into a R1 response and then use CMD13 to
+> poll for busy completion.
+> 
+> In other words, this change enables support for commands with longer busy
+> periods than 2s, like erase (CMD38) for example.
+[...]
+> +	/*
+> +	 * In cb710_wait_for_event() we use a fixed timeout of ~2s, hence let's
+> +	 * inform the core about it. A future improvement should instead make
+> +	 * use of the cmd->busy_timeout.
+> +	 */
+[...]
 
-For some commands it means waiting longer than needed for the timeout to
-expire, which may not a big issue, but still. For other commands, like for
-an erase (CMD38) that uses a R1B response, may require longer timeouts than
-1s. In these cases, we may end up treating the command as it failed, while
-it just needed some more time to complete successfully.
+I'm not sure whether the controller limits busy signalling time.
+Since this is rare HW now, I would just pass the timeout to
+cb710_wait_for_event() and see if someone reports a bug.
 
-Fix the problem by respecting the cmd->busy_timeout, which is provided by
-the mmc core.
-
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>
-Cc: Johan Hovold <johan@kernel.org>
-Cc: Alex Elder <elder@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: greybus-dev@lists.linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
----
- drivers/staging/greybus/sdio.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/staging/greybus/sdio.c b/drivers/staging/greybus/sdio.c
-index 68c5718be827..c4b16bb5c1a4 100644
---- a/drivers/staging/greybus/sdio.c
-+++ b/drivers/staging/greybus/sdio.c
-@@ -411,6 +411,7 @@ static int gb_sdio_command(struct gb_sdio_host *host, struct mmc_command *cmd)
- 	struct gb_sdio_command_request request = {0};
- 	struct gb_sdio_command_response response;
- 	struct mmc_data *data = host->mrq->data;
-+	unsigned int timeout_ms;
- 	u8 cmd_flags;
- 	u8 cmd_type;
- 	int i;
-@@ -469,9 +470,12 @@ static int gb_sdio_command(struct gb_sdio_host *host, struct mmc_command *cmd)
- 		request.data_blksz = cpu_to_le16(data->blksz);
- 	}
- 
--	ret = gb_operation_sync(host->connection, GB_SDIO_TYPE_COMMAND,
--				&request, sizeof(request), &response,
--				sizeof(response));
-+	timeout_ms = cmd->busy_timeout ? cmd->busy_timeout :
-+		GB_OPERATION_TIMEOUT_DEFAULT;
-+
-+	ret = gb_operation_sync_timeout(host->connection, GB_SDIO_TYPE_COMMAND,
-+					&request, sizeof(request), &response,
-+					sizeof(response), timeout_ms);
- 	if (ret < 0)
- 		goto out;
- 
--- 
-2.20.1
-
+Best Regards,
+Micha³ Miros³aw
