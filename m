@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E13BE1A846D
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B90B1A8453
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Apr 2020 18:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390865AbgDNQQS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Apr 2020 12:16:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54944 "EHLO
+        id S2389811AbgDNQOk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Apr 2020 12:14:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2389812AbgDNQO0 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:26 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70D1DC061A41
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:26 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id h25so369572lja.10
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:26 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S2390413AbgDNQOb (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Apr 2020 12:14:31 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA443C0610D5
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:28 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id j14so180593lfg.9
+        for <linux-mmc@vger.kernel.org>; Tue, 14 Apr 2020 09:14:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=AYdnh8axE7O5nxAM7j16STUfeW8l+S8DGrk3gV3Ki2w=;
-        b=FYSixSDXj+uVpRBQsmoBKTzaDrieN3wjrMbhC5q+4fYMmL0/CTBKEqebCgrrDsU3OU
-         zPl2xwzZRdr1opCFuBqL1MOVlL7r6jndWmP4bsQNDAGy/fk3hiry8bXZgwoSp+IITSMv
-         HrzYz57d4D+qfvswMF5sA8ZyFDwUAHUJr74vY03RvVP7h/BQ71dIZcauFmMSnmXUrbCz
-         Fxs36SiY3EZO+qP6sAM8I6TPdZDYXk1/AM7DIhDRJwrwJuobTNOnKS+qN9LPsfrQGwUw
-         iGqIKy7zqrtF1U13H/iS9Mi/nAfzrpcKbCSWyqrdKdgnTWpg75F6OxyzPpOoiQy9qNYl
-         q7SA==
+        bh=MbZ0bEn9Rkc/WddH3A2e/7d/+RZVhN7mNCvo/MSHe3k=;
+        b=ZEexuQi/A2O3CvayF+xs3mZjQ7ctNr77NL88nKPyhYIfba/s1GZuKnyt7YOYQLlhvF
+         14o/+QF0aB52arqna+S6vf5YYH2caKXTWSCH0jihMDUwbyl/01ttUld4onk1crr1CGgs
+         yh2h6J9e8EU/xa+iHKQmOpeiUC1DYFvGQ1kJaw8XyxEuVDxqTyh7CIoZ7zpRbT4GAyPw
+         IgmlxC1TiP/19sq1GYu+bsaV9/RKs2bmnh2IVLuOg/3ZwhUY7f9kmclduJOK46v6vMNS
+         IGQcb2+kTu+mNHDWUsnsYm4ARypBCDB2n2cY03HJ72hq9nS8YkHHp7A7L/TCiwBIX5xL
+         oHuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AYdnh8axE7O5nxAM7j16STUfeW8l+S8DGrk3gV3Ki2w=;
-        b=n1wZ9h6J2MC0dK8GxqdHsK8tRxReLNUD4ue3RevAfoYHhyjBiQMhAuZiMvqXZoZiSN
-         7LyPK9scqVIITBu9EahPBauJpd2bXNPp7ywMbPt8eS4kpoo0BCXRj2V0fUUfru58izoT
-         hwOVrjC0iNh7AyyrYSfdIouQ88rqN/RT9XTXvI5+N5OngDt8QJpj64C0tsfCzm8y/Eq5
-         jHZLbYN+lZcY8egi5Nhc5HSEe24txD7yt90FCYP6ujZbiz6hnN5yo0BsW+X4xuVsLba8
-         ZaOzMNL+U1MT9VLUMTKS00nZ2i69vtarQ7wR0jlDJXToc4fkzXaRei4M6GtnICjc83B/
-         mofw==
-X-Gm-Message-State: AGi0PubpdJUxq8pJMdKUuHOdwDchXzCvMxWNLS8ndPJ7dx+7pMaQZ6B6
-        KG/XSvBEdjmu4REu/uWELozqRxdvd6c=
-X-Google-Smtp-Source: APiQypL8YkNs8e6IfWiesvrfd+ebEKIwH++gg0sGm7nmkBjls88mayVolw3CRNdAwNLZSh7TJrLLoA==
-X-Received: by 2002:a2e:a303:: with SMTP id l3mr569214lje.166.1586880864266;
-        Tue, 14 Apr 2020 09:14:24 -0700 (PDT)
+        bh=MbZ0bEn9Rkc/WddH3A2e/7d/+RZVhN7mNCvo/MSHe3k=;
+        b=crOR78YI8rTYmbq6K+mUR8MEYc7Y5WD5ciSMVjRQ3bGbT4mTtvYfgPlbd/YYZACl+a
+         7lsk15jD4kloG0editpxaw+6X5H4APuZfZH7U7PulZhsESsbMyu7IV+fV8VT0n2ohzIS
+         mkeiACxSArIMucYHWAv0DxnCkhc/p+1P5CPrwY8sY2uHhl1b8GXE1T4xy6nzukxlVP43
+         HfulRFQHfm2pjnYQ4SmVPK1idhRY9BLkvHwbElZk81gzBOsRm3K2avbIsCHtLJLJezVV
+         gZBX/foRGrUYxFM3BelL6zKgI30kLhjHHI+DZUiS5Geg1Hym6LilgxmJZ/C5kuesdjDp
+         oECA==
+X-Gm-Message-State: AGi0PuZw29b5zC4+YrEyFbpTBrbhBUU1Qctvym9yunvGF1cFz5fbLvI8
+        m4aB03xkftS/jB7MSkEMX5ARjnQNfT0=
+X-Google-Smtp-Source: APiQypIxTTwRXx9V/9uIe1PK0wt899qbViA+d4WR7UWfvLYqgI6bQ3LbehyqfhP0/7toD588uaw9CA==
+X-Received: by 2002:a05:6512:3e2:: with SMTP id n2mr340858lfq.129.1586880865981;
+        Tue, 14 Apr 2020 09:14:25 -0700 (PDT)
 Received: from localhost.localdomain (h-98-128-181-131.NA.cust.bahnhof.se. [98.128.181.131])
-        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.22
+        by smtp.gmail.com with ESMTPSA id a26sm9330669ljn.22.2020.04.14.09.14.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2020 09:14:23 -0700 (PDT)
+        Tue, 14 Apr 2020 09:14:25 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
 To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
@@ -65,9 +65,9 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: [PATCH 04/19] mmc: jz4740: Inform the mmc core about the maximum busy timeout
-Date:   Tue, 14 Apr 2020 18:13:58 +0200
-Message-Id: <20200414161413.3036-5-ulf.hansson@linaro.org>
+Subject: [PATCH 05/19] mmc: usdhi6rol0: Inform the mmc core about the maximum busy timeout
+Date:   Tue, 14 Apr 2020 18:13:59 +0200
+Message-Id: <20200414161413.3036-6-ulf.hansson@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200414161413.3036-1-ulf.hansson@linaro.org>
 References: <20200414161413.3036-1-ulf.hansson@linaro.org>
@@ -87,64 +87,47 @@ the HW at hand.
 
 Instead, let's inform the mmc core about the maximum supported busy timeout
 in ->max_busy_timeout during ->probe(). This value corresponds to the fixed
-5s timeout used by jz4740. In this way, we let the mmc core validate the
-needed timeout, which may lead to that it converts from a R1B into a R1
+4s timeout used by usdhi6rol0. In this way, we let the mmc core validate
+the needed timeout, which may lead to that it converts from a R1B into a R1
 response and then use CMD13 to poll for busy completion.
 
 In other words, this change enables support for commands with longer busy
-periods than 5s, like erase (CMD38) for example.
+periods than 4s, like erase (CMD38) for example.
 
-Cc: Paul Cercueil <paul@crapouillou.net>
+Cc: Jesper Nilsson <jesper.nilsson@axis.com>
+Cc: Lars Persson <lars.persson@axis.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- drivers/mmc/host/jz4740_mmc.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/mmc/host/usdhi6rol0.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index fbae87d1f017..cba7a6fcd178 100644
---- a/drivers/mmc/host/jz4740_mmc.c
-+++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -108,6 +108,7 @@
- #define	JZ_MMC_LPM_LOW_POWER_MODE_EN BIT(0)
+diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
+index 9a0b1e4e405d..369b8dee2e3d 100644
+--- a/drivers/mmc/host/usdhi6rol0.c
++++ b/drivers/mmc/host/usdhi6rol0.c
+@@ -136,6 +136,8 @@
  
- #define JZ_MMC_CLK_RATE 24000000
-+#define JZ_MMC_REQ_TIMEOUT_MS 5000
+ #define USDHI6_MIN_DMA 64
  
- enum jz4740_mmc_version {
- 	JZ_MMC_JZ4740,
-@@ -440,7 +441,8 @@ static unsigned int jz4740_mmc_poll_irq(struct jz4740_mmc_host *host,
- 
- 	if (timeout == 0) {
- 		set_bit(0, &host->waiting);
--		mod_timer(&host->timeout_timer, jiffies + 5*HZ);
-+		mod_timer(&host->timeout_timer,
-+			  jiffies + msecs_to_jiffies(JZ_MMC_REQ_TIMEOUT_MS));
- 		jz4740_mmc_set_irq_enabled(host, irq, true);
- 		return true;
- 	}
-@@ -893,7 +895,8 @@ static void jz4740_mmc_request(struct mmc_host *mmc, struct mmc_request *req)
- 
- 	host->state = JZ4740_MMC_STATE_READ_RESPONSE;
- 	set_bit(0, &host->waiting);
--	mod_timer(&host->timeout_timer, jiffies + 5*HZ);
-+	mod_timer(&host->timeout_timer,
-+		  jiffies + msecs_to_jiffies(JZ_MMC_REQ_TIMEOUT_MS));
- 	jz4740_mmc_send_command(host, req->cmd);
- }
- 
-@@ -1023,6 +1026,12 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 	mmc->f_min = mmc->f_max / 128;
- 	mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34;
- 
++#define USDHI6_REQ_TIMEOUT_MS 4000
++
+ enum usdhi6_wait_for {
+ 	USDHI6_WAIT_FOR_REQUEST,
+ 	USDHI6_WAIT_FOR_CMD,
+@@ -1763,7 +1765,12 @@ static int usdhi6_probe(struct platform_device *pdev)
+ 	host		= mmc_priv(mmc);
+ 	host->mmc	= mmc;
+ 	host->wait	= USDHI6_WAIT_FOR_REQUEST;
+-	host->timeout	= msecs_to_jiffies(4000);
++	host->timeout	= msecs_to_jiffies(USDHI6_REQ_TIMEOUT_MS);
 +	/*
-+	 * We use a fixed timeout of 5s, hence inform the core about it. A
++	 * We use a fixed timeout of 4s, hence inform the core about it. A
 +	 * future improvement should instead respect the cmd->busy_timeout.
 +	 */
-+	mmc->max_busy_timeout = JZ_MMC_REQ_TIMEOUT_MS;
-+
- 	mmc->max_blk_size = (1 << 10) - 1;
- 	mmc->max_blk_count = (1 << 15) - 1;
- 	mmc->max_req_size = mmc->max_blk_size * mmc->max_blk_count;
++	mmc->max_busy_timeout = USDHI6_REQ_TIMEOUT_MS;
+ 
+ 	host->pinctrl = devm_pinctrl_get(&pdev->dev);
+ 	if (IS_ERR(host->pinctrl)) {
 -- 
 2.20.1
 
