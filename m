@@ -2,93 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0E361A99B4
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 Apr 2020 11:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 659931A9B34
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 Apr 2020 12:45:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405668AbgDOJ4c (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 Apr 2020 05:56:32 -0400
-Received: from mga02.intel.com ([134.134.136.20]:26352 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405625AbgDOJ4b (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 15 Apr 2020 05:56:31 -0400
-IronPort-SDR: JV2deZu3/5BvwyguiVm1YnAJzVdThZt303jsN/JkFSU39hIYQfP/mkzPp4TiurJNZFfn6wKOcu
- fR/i9KCk/EUQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2020 02:56:30 -0700
-IronPort-SDR: bbf5Dp6mPqwehj4OyPOVzgHnFNLB2UCJfUQnsyijN7ar/rD9dgPdmvw1CDVMZRQGmecT60E1B4
- izyCuG+MfLzA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,386,1580803200"; 
-   d="scan'208";a="332452142"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.87]) ([10.237.72.87])
-  by orsmga001.jf.intel.com with ESMTP; 15 Apr 2020 02:56:28 -0700
-Subject: Re: [PATCH] mmc: sdhci: add spin lock for sdhci_set_default_irqs in
- sdhci_init
-To:     haibo.chen@nxp.com, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-imx@nxp.com
-References: <1586941255-9237-1-git-send-email-haibo.chen@nxp.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <a798dc19-afc1-133d-1037-43adcb4fd70b@intel.com>
-Date:   Wed, 15 Apr 2020 12:55:38 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S2896468AbgDOKoK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 Apr 2020 06:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56930 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2896467AbgDOKW4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Apr 2020 06:22:56 -0400
+Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF182C061A0E
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Apr 2020 03:22:19 -0700 (PDT)
+Received: by mail-ua1-x941.google.com with SMTP id x18so1112563uap.8
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Apr 2020 03:22:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=F+P0Ra3iC/JXSowntxHaRgfUwGs3p9lTv27KqV4QmgY=;
+        b=yinSAq1kT6zD1vFtfLDkhnd/jpN7wrG7ODN60H5IZPf26eivm1z8qbVdevmvj+nESI
+         nZkUgiclMtRXxn8wlxgMLJhloymD845hPfK9pL/KcGtTJb0d7fX7pwCexJD3h/XqUIDL
+         sC/Ecllg7bxMZ/zKYj0/8EIP26LBpFsV6haHjrJ3Q3Wp+5i/wRyQy3VDQCRyWiOgGpqs
+         sRYyedAtNXFE1+Eible6YMxvgiuvsJKYaaAL+7utOJgKAFToCINEIuZ/ipArRi5R5Fct
+         mAEz5wpBzbacQFz5hqldM4DaVLpl7apIeSSYMb8dIUylxnJOl2KZru1sz0LMGiN1gTvH
+         3Vrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F+P0Ra3iC/JXSowntxHaRgfUwGs3p9lTv27KqV4QmgY=;
+        b=NQT3Xu90jMUNyGCJouC1Eyh6jH5gW82WJfineH7XDgKxdVgQUKaYI/lvPxDJBcHTX6
+         oel8kCDskOuhcTpMhGlNU2rFCmJt5fKOjKQnyUYJX7kDvfuXd4V4IIGh+A6WSnCDYg3d
+         asAvzajSfho/348+FLOdfr/5wskVjFEMVMWcgLn5jZAP5b/8uYymJptWJEL4PObyA716
+         AfqtEk7aDXLPsajXK9+IotrdGA+2dkd4B1PoDu5nrfhdE/MBXt1EI5HMLIHW6L8DqyZY
+         KbatdORQASQluj9tpRxRUFVnqjlYjsaNdelWdDQYDGBrQX+p048iBMsLf28NjMJSUhLV
+         Ks9Q==
+X-Gm-Message-State: AGi0PuYcX0mMwVnQNZM4b80/yEVv8V41Nt4OIYSVZKmwap3eytT2xL6L
+        lH3SGa4HbE6tI22WbLgoAldEOux588yyBgntVl1apA==
+X-Google-Smtp-Source: APiQypKTK11CweNuCLZHuiNsUqScKK2+NgaXl+En6sRY3fEfxKIbqcGPVRHGTngyxhLH42mRakinkb9pbXES1T/eR+k=
+X-Received: by 2002:ab0:6204:: with SMTP id m4mr3886872uao.15.1586946138827;
+ Wed, 15 Apr 2020 03:22:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1586941255-9237-1-git-send-email-haibo.chen@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1586195015-128992-1-git-send-email-manish.narani@xilinx.com>
+In-Reply-To: <1586195015-128992-1-git-send-email-manish.narani@xilinx.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 15 Apr 2020 12:21:42 +0200
+Message-ID: <CAPDyKFqXYTh_+J=tnTTsK0Q1tj6f77hmnnh60Skw=WYwCCY9iQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] Add support for Xilinx Versal SDHCI in Arasan driver
+To:     Manish Narani <manish.narani@xilinx.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        git@xilinx.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 15/04/20 12:00 pm, haibo.chen@nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> When use one SDIO wifi which enable the runtime PM feature on i.MX6SX,
-> we meet system hang. This hang happened during the usdhc runtime resume,
-> in sdhci_init(), when call the sdhci_set_default_irqs. One interrupt
-> (SDHCI_INT_CARD_INT) triggered just after the host->ier update and before
-> the write of register SDHCI_SIGNAL_ENABLE. So in sdhci_irq, it will skip
-> the call of sdio_signal_irq() because current host->ier do not set the
-> SDHCI_INT_CARD_INT. So this SDIO wifi interrupt always keep triggered,
-> let the system stuck in irq handle, can't response any other thread.
-> 
-> This patch add spin lock for the sdhci_set_default_irqs to fix this issue.
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+On Mon, 6 Apr 2020 at 19:43, Manish Narani <manish.narani@xilinx.com> wrote:
+>
+> This patch series includes:
+>  -> Document the Xilinx Versal SD controller
+>  -> Add support for Versal SD Tap Delays
+>  -> Reorganizing the clock operations handling
+>  -> Resolve kernel-doc warnings
+>
+> Changes in v2:
+>         - Addressed review comments given in v1
+>         - Changed clock operation handling for better modularity.
+>         - Changed comments to fix kernel-doc warnings
+>
+> Changes in v3:
+>         - Addressed review comments from v2
+>         - Move platform related structure before doing clock related changes
+>         - Rename sdhci_arasan_data to avoid confusion with another struct name
+>
+> Manish Narani (6):
+>   dt-bindings: mmc: arasan: Document 'xlnx,versal-8.9a' controller
+>   sdhci: arasan: Add support for Versal Tap Delays
+>   mmc: sdhci-of-arasan: Rename sdhci_arasan_data to avoid confusion
+>   mmc: sdhci-of-arasan: Rearrange the platform data structs for
+>     modularity
+>   mmc: sdhci-of-arasan: Modify clock operations handling
+>   mmc: sdhci-of-arasan: Fix kernel-doc warnings
+>
+>  .../devicetree/bindings/mmc/arasan,sdhci.txt       |  15 +
+>  drivers/mmc/host/sdhci-of-arasan.c                 | 473 +++++++++++++++------
+>  2 files changed, 361 insertions(+), 127 deletions(-)
+>
+> --
+> 2.1.1
+>
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Applied for next, by managing some conflicts for patch4, thanks!
 
-> ---
->  drivers/mmc/host/sdhci.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index 3f716466fcfd..79b6324a500c 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -317,6 +317,7 @@ static void sdhci_config_dma(struct sdhci_host *host)
->  static void sdhci_init(struct sdhci_host *host, int soft)
->  {
->  	struct mmc_host *mmc = host->mmc;
-> +	unsigned long flags;
->  
->  	if (soft)
->  		sdhci_do_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
-> @@ -326,7 +327,9 @@ static void sdhci_init(struct sdhci_host *host, int soft)
->  	if (host->v4_mode)
->  		sdhci_do_enable_v4_mode(host);
->  
-> +	spin_lock_irqsave(&host->lock, flags);
->  	sdhci_set_default_irqs(host);
-> +	spin_unlock_irqrestore(&host->lock, flags);
->  
->  	host->cqe_on = false;
->  
-> 
+Note that, unless there is a "fix" part of the series, there is no
+need to ping during the merge window.
 
+Kind regards
+Uffe
