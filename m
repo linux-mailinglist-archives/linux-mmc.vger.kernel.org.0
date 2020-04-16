@@ -2,72 +2,83 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 670731ABB47
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Apr 2020 10:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AEB31ABD7A
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Apr 2020 12:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502321AbgDPIbs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Apr 2020 04:31:48 -0400
-Received: from mga11.intel.com ([192.55.52.93]:18301 "EHLO mga11.intel.com"
+        id S2504346AbgDPKDG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Apr 2020 06:03:06 -0400
+Received: from mga03.intel.com ([134.134.136.65]:36884 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2502185AbgDPIbY (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 16 Apr 2020 04:31:24 -0400
-IronPort-SDR: P6Li/rzeg7v+8Iq4r+KkGeBe8q5WmkA12swj9pwUEeDBaGl/NkPWmTS9X7MAX6XZHP5pPWrpVo
- A5QDu7/H8E7w==
+        id S2504310AbgDPKDD (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 16 Apr 2020 06:03:03 -0400
+IronPort-SDR: K5fii6x0a+Q+J/Cpn5rN+BIwiB3uuhBvprcLs2zaEoCfuhqLzcDt6j3r1v+U9B5PHkMQXYdS0c
+ X25UkglEjZ3w==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 01:27:34 -0700
-IronPort-SDR: qG0NwaN6qsBa8hWHeVRPyQlV8nKbWjYEmpdj2pT06VRmTIx5tQnNTR9poWjqA0wOvSO2aHApsT
- FIEW39hl3jEw==
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 03:03:02 -0700
+IronPort-SDR: D/jtQe/ve3dW6BN9Lpt8Wr74vjlUp9HCDN8CnSWb6ufNQiwpup6kIF+zzmgt2ISB501s+hEHdi
+ b3SwtvYaQC5g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.72,390,1580803200"; 
-   d="scan'208";a="363917386"
+   d="scan'208";a="363940282"
 Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.87]) ([10.237.72.87])
-  by fmsmga001.fm.intel.com with ESMTP; 16 Apr 2020 01:27:30 -0700
-Subject: Re: [PATCH 1/7] mmc: sdhci: fix base clock usage in preset value
-To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kevin Liu <kliu5@marvell.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Suneel Garapati <suneel.garapati@xilinx.com>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Al Cooper <alcooperx@gmail.com>
-References: <cover.1585827904.git.mirq-linux@rere.qmqm.pl>
- <23c3fe72b0ff0eabdbf3a45023a76da1b18a7e90.1585827904.git.mirq-linux@rere.qmqm.pl>
- <218dd61b-48cc-a161-240f-b3823e8f48cb@intel.com>
- <20200415162839.GD19897@qmqm.qmqm.pl>
+  by fmsmga001.fm.intel.com with ESMTP; 16 Apr 2020 03:02:58 -0700
+Subject: Re: [PATCH V1 1/4] mmc: sdhci-msm: Enable MMC_CAP_WAIT_WHILE_BUSY
+ host capability
+To:     Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
+        ulf.hansson@linaro.org
+Cc:     bjorn.andersson@linaro.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Andy Gross <agross@kernel.org>
+References: <1586706808-27337-1-git-send-email-vbadigan@codeaurora.org>
+ <1586706808-27337-2-git-send-email-vbadigan@codeaurora.org>
 From:   Adrian Hunter <adrian.hunter@intel.com>
 Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
  Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <57b494b8-cae9-df10-2a4d-db02e7212f23@intel.com>
-Date:   Thu, 16 Apr 2020 11:26:41 +0300
+Message-ID: <dba669ef-fa43-a380-472e-a682862eb8f3@intel.com>
+Date:   Thu, 16 Apr 2020 13:02:09 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200415162839.GD19897@qmqm.qmqm.pl>
-Content-Type: text/plain; charset=iso-8859-2
+In-Reply-To: <1586706808-27337-2-git-send-email-vbadigan@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 15/04/20 7:28 pm, Micha³ Miros³aw wrote:
-> On Wed, Apr 15, 2020 at 03:25:52PM +0300, Adrian Hunter wrote:
->> On 2/04/20 2:54 pm, Micha³ Miros³aw wrote:
->>> Fixed commit added an unnecessary read of CLOCK_CONTROL. The value read
->>> is overwritten for programmable clock preset, but is carried over for
->>> divided clock preset. This can confuse sdhci_enable_clk() if the register
->>> has enable bits set for some reason at time time of clock calculation.
->>> value to be ORed with enable flags. Remove the read.
->>
->> The read is not needed, but drivers usually manage the enable bits,
->> especially disabling the clock before changing the frequency.  What driver
->> is it?
-> 
-> Hopefully no driver requires this. It's just removing a trap.
+On 12/04/20 6:53 pm, Veerabhadrarao Badiganti wrote:
+> MSM sd host controller is capable of HW busy detection of device busy
+> singaling over DAT0 line.
 
-The only driver that looks like it would benefit is sdhci-brcmstb because it
-does not clear enable bits in sdhci_brcmstb_set_clock().  Adding Al Cooper.
-Al, can you ack this?
+singaling -> signaling
+
+> 
+> So set MMC_CAP_WAIT_WHILE_BUSY capability for qcom sdhc.
+> 
+> Signed-off-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
+> ---
+>  drivers/mmc/host/sdhci-msm.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+> index 09ff731..013dcea 100644
+> --- a/drivers/mmc/host/sdhci-msm.c
+> +++ b/drivers/mmc/host/sdhci-msm.c
+> @@ -2087,6 +2087,8 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+>  		goto clk_disable;
+>  	}
+>  
+> +	msm_host->mmc->caps |= MMC_CAP_WAIT_WHILE_BUSY;
+> +
+>  	pm_runtime_get_noresume(&pdev->dev);
+>  	pm_runtime_set_active(&pdev->dev);
+>  	pm_runtime_enable(&pdev->dev);
+> 
+
