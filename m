@@ -2,193 +2,246 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 111691ACDBA
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Apr 2020 18:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A6FA1ACDD5
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Apr 2020 18:37:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410800AbgDPQ3d (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Apr 2020 12:29:33 -0400
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:2030 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439478AbgDPQ3b (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Apr 2020 12:29:31 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5e9887dd0000>; Thu, 16 Apr 2020 09:29:17 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Thu, 16 Apr 2020 09:29:30 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Thu, 16 Apr 2020 09:29:30 -0700
-Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL101.nvidia.com
- (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 16 Apr
- 2020 16:29:29 +0000
-Received: from [10.2.171.241] (10.124.1.5) by DRHQMAIL107.nvidia.com
- (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 16 Apr
- 2020 16:29:28 +0000
-Subject: Re: [PATCH v2 1/2] sdhci: tegra: Implement Tegra specific set_timeout
- callback
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-CC:     Adrian Hunter <adrian.hunter@intel.com>,
-        "(Exiting) Baolin Wang" <baolin.wang@linaro.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bradley Bolen <bradleybolen@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        "Jon Hunter" <jonathanh@nvidia.com>,
-        Aniruddha Tvs Rao <anrao@nvidia.com>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        <lkft-triage@lists.linaro.org>,
-        linux- stable <stable@vger.kernel.org>
-References: <1583886030-11339-1-git-send-email-skomatineni@nvidia.com>
- <CA+G9fYvreAv5HmZg0O4VvLvf_PYSvzD1rp08XONNQGExctgQ0Q@mail.gmail.com>
- <CAPDyKFpZEiqTdD6O-y6Sw7ifXF__MHAv0zKT=RFKs+Fmvr-K_Q@mail.gmail.com>
-From:   Sowjanya Komatineni <skomatineni@nvidia.com>
-Message-ID: <753ec108-858c-660e-af0a-f57922134609@nvidia.com>
-Date:   Thu, 16 Apr 2020 09:29:27 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1730296AbgDPQhD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Apr 2020 12:37:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57102 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729474AbgDPQhC (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Apr 2020 12:37:02 -0400
+X-Greylist: delayed 22061 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Apr 2020 09:37:00 PDT
+Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE9D7C061A0C
+        for <linux-mmc@vger.kernel.org>; Thu, 16 Apr 2020 09:37:00 -0700 (PDT)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 4934cp0T3wz1ryXj;
+        Thu, 16 Apr 2020 18:36:57 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 4934cm6S0Gz1qr41;
+        Thu, 16 Apr 2020 18:36:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id qQOePZ3Xucm9; Thu, 16 Apr 2020 18:36:55 +0200 (CEST)
+X-Auth-Info: a4i2LNwtTUy3CIjQVHWOhbyQuAHbEyng2TjowzdDeF4=
+Received: from desktop.lan (ip-86-49-35-8.net.upcbroadband.cz [86.49.35.8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Thu, 16 Apr 2020 18:36:54 +0200 (CEST)
+From:   Marek Vasut <marex@denx.de>
+To:     linux-mmc@vger.kernel.org
+Cc:     Marek Vasut <marex@denx.de>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ludovic Barre <ludovic.barre@st.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Patrick Delaunay <patrick.delaunay@st.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH V2 1/3] mmc: Prepare all code for mmc_regulator_set_vqmmc() returning > 0
+Date:   Thu, 16 Apr 2020 18:36:47 +0200
+Message-Id: <20200416163649.336967-1-marex@denx.de>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFpZEiqTdD6O-y6Sw7ifXF__MHAv0zKT=RFKs+Fmvr-K_Q@mail.gmail.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
- DRHQMAIL107.nvidia.com (10.27.9.16)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1587054557; bh=eOQ+w5nhOdv04KeF4PFobQIPtNvZjkMJ66eBaSJNtCw=;
-        h=X-PGP-Universal:Subject:To:CC:References:From:Message-ID:Date:
-         User-Agent:MIME-Version:In-Reply-To:X-Originating-IP:
-         X-ClientProxiedBy:Content-Type:Content-Transfer-Encoding:
-         Content-Language;
-        b=MYWrHESZKzBtEwhd96npLAmGcMdMDTgqfrVKWeywoups5jqGjxXweQEXayywyvIrx
-         zF6ExcqtSN1y9J6xy8Kibwqg001eOcBOr0TlqustT0/JEI5YiETrMl0NsqH5JzoRQT
-         ONj+1WZchStALqtZ7Hlm/DcOTZoKN7XXuvYKGXMC5OGBB8JtjZPA1RspaCEEbLe3rv
-         RSIGGnOJz0qEtOZh8/2BL8Zzl6nsVHpypntHdxPcyq/Z8BZS071IrweUPpAwxiY4oX
-         aG+6WW5D4jRVgEpsFX2T9jurBxl36m8m/00rlATQEbpzXwrbRNPsHXKYtwWsLCSU5i
-         CSYlHmLAo/qZQ==
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Patch all drivers which use mmc_regulator_set_vqmmc() and prepare them for
+the fact that mmc_regulator_set_vqmmc() can return a value > 0, which would
+happen if the signal voltage switch did NOT happen, because the voltage was
+already set correctly.
 
-On 4/16/20 3:59 AM, Ulf Hansson wrote:
-> External email: Use caution opening links or attachments
->
->
-> On Wed, 15 Apr 2020 at 19:55, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
->> On Fri, 13 Mar 2020 at 06:41, Sowjanya Komatineni
->> <skomatineni@nvidia.com> wrote:
->>> Tegra host supports HW busy detection and timeouts based on the
->>> count programmed in SDHCI_TIMEOUT_CONTROL register and max busy
->>> timeout it supports is 11s in finite busy wait mode.
->>>
->>> Some operations like SLEEP_AWAKE, ERASE and flush cache through
->>> SWITCH commands take longer than 11s and Tegra host supports
->>> infinite HW busy wait mode where HW waits forever till the card
->>> is busy without HW timeout.
->>>
->>> This patch implements Tegra specific set_timeout sdhci_ops to allow
->>> switching between finite and infinite HW busy detection wait modes
->>> based on the device command expected operation time.
->>>
->>> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
->>> ---
->>>   drivers/mmc/host/sdhci-tegra.c | 31 +++++++++++++++++++++++++++++++
->>>   1 file changed, 31 insertions(+)
->>>
->>> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
->>> index a25c3a4..fa8f6a4 100644
->>> --- a/drivers/mmc/host/sdhci-tegra.c
->>> +++ b/drivers/mmc/host/sdhci-tegra.c
->>> @@ -45,6 +45,7 @@
->>>   #define SDHCI_TEGRA_CAP_OVERRIDES_DQS_TRIM_SHIFT       8
->>>
->>>   #define SDHCI_TEGRA_VENDOR_MISC_CTRL                   0x120
->>> +#define SDHCI_MISC_CTRL_ERASE_TIMEOUT_LIMIT            BIT(0)
->>>   #define SDHCI_MISC_CTRL_ENABLE_SDR104                  0x8
->>>   #define SDHCI_MISC_CTRL_ENABLE_SDR50                   0x10
->>>   #define SDHCI_MISC_CTRL_ENABLE_SDHCI_SPEC_300          0x20
->>> @@ -1227,6 +1228,34 @@ static u32 sdhci_tegra_cqhci_irq(struct sdhci_host *host, u32 intmask)
->>>          return 0;
->>>   }
->>>
->>> +static void tegra_sdhci_set_timeout(struct sdhci_host *host,
->>> +                                   struct mmc_command *cmd)
->>> +{
->>> +       u32 val;
->>> +
->>> +       /*
->>> +        * HW busy detection timeout is based on programmed data timeout
->>> +        * counter and maximum supported timeout is 11s which may not be
->>> +        * enough for long operations like cache flush, sleep awake, erase.
->>> +        *
->>> +        * ERASE_TIMEOUT_LIMIT bit of VENDOR_MISC_CTRL register allows
->>> +        * host controller to wait for busy state until the card is busy
->>> +        * without HW timeout.
->>> +        *
->>> +        * So, use infinite busy wait mode for operations that may take
->>> +        * more than maximum HW busy timeout of 11s otherwise use finite
->>> +        * busy wait mode.
->>> +        */
->>> +       val = sdhci_readl(host, SDHCI_TEGRA_VENDOR_MISC_CTRL);
->>> +       if (cmd && cmd->busy_timeout >= 11 * HZ)
->>> +               val |= SDHCI_MISC_CTRL_ERASE_TIMEOUT_LIMIT;
->>> +       else
->>> +               val &= ~SDHCI_MISC_CTRL_ERASE_TIMEOUT_LIMIT;
->>> +       sdhci_writel(host, val, SDHCI_TEGRA_VENDOR_MISC_CTRL);
->>> +
->>> +       __sdhci_set_timeout(host, cmd);
->> kernel build on arm and arm64 architecture failed on stable-rc 4.19
->> (arm), 5.4 (arm64) and 5.5 (arm64)
->>
->> drivers/mmc/host/sdhci-tegra.c: In function 'tegra_sdhci_set_timeout':
->> drivers/mmc/host/sdhci-tegra.c:1256:2: error: implicit declaration of
->> function '__sdhci_set_timeout'; did you mean
->> 'tegra_sdhci_set_timeout'? [-Werror=implicit-function-declaration]
->>    __sdhci_set_timeout(host, cmd);
->>    ^~~~~~~~~~~~~~~~~~~
->>    tegra_sdhci_set_timeout
->>
->> Full build log,
->> https://ci.linaro.org/view/lkft/job/openembedded-lkft-linux-stable-rc-5.5/DISTRO=lkft,MACHINE=am57xx-evm,label=docker-lkft/83/consoleText
->> https://ci.linaro.org/view/lkft/job/openembedded-lkft-linux-stable-rc-5.4/DISTRO=lkft,MACHINE=juno,label=docker-lkft/158/consoleText
->> https://ci.linaro.org/view/lkft/job/openembedded-lkft-linux-stable-rc-4.19/DISTRO=lkft,MACHINE=am57xx-evm,label=docker-lkft/511/consoleText
->>
->> - Naresh
-> Thanks for reporting! What a mess.
->
-> It turns out that the commit that was queued for stable that is
-> causing the above errors, also requires another commit.
->
-> The commit that was queued:
-> 5e958e4aacf4 ("sdhci: tegra: Implement Tegra specific set_timeout callback")
->
-> The additional commit needed (which was added in v5.6-rc1):
-> 7d76ed77cfbd ("mmc: sdhci: Refactor sdhci_set_timeout()")
->
-> However, the above commit needs a manual backport (quite trivial, but
-> still) for the relevant stable kernels, to allow it to solve the build
-> problems.
->
-> Greg, Sasha - I suggest you to drop the offending commit from the
-> stable kernels, for now. I think it's better to let Sowjanya deal with
-> the backports, then send them in small series instead.
->
-> Kind regards
-> Uffe
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Alexandre Torgue <alexandre.torgue@st.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Ludovic Barre <ludovic.barre@st.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Patrice Chotard <patrice.chotard@st.com>
+Cc: Patrick Delaunay <patrick.delaunay@st.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-stm32@st-md-mailman.stormreply.com
+To: linux-mmc@vger.kernel.org
+---
+V2: Patch only mmc_regulator_set_vqmmc()
+---
+ drivers/mmc/host/dw_mmc-k3.c         |  2 ++
+ drivers/mmc/host/dw_mmc.c            |  2 ++
+ drivers/mmc/host/meson-gx-mmc.c      |  7 ++++++-
+ drivers/mmc/host/mtk-sd.c            |  2 ++
+ drivers/mmc/host/renesas_sdhi_core.c |  2 ++
+ drivers/mmc/host/sdhci-sprd.c        |  2 ++
+ drivers/mmc/host/sdhci.c             |  6 ++++++
+ drivers/mmc/host/sunxi-mmc.c         | 10 ++++++++--
+ drivers/mmc/host/usdhi6rol0.c        |  2 ++
+ 9 files changed, 32 insertions(+), 3 deletions(-)
 
-Hi Ufee,
-
-Will back-porting below commit cause any issues to other vendors?
-
-7d76ed77cfbd ("mmc: sdhci: Refactor sdhci_set_timeout()")
-
-Thanks
-Sowjanya
+diff --git a/drivers/mmc/host/dw_mmc-k3.c b/drivers/mmc/host/dw_mmc-k3.c
+index 23b6f65b3785..695e29452367 100644
+--- a/drivers/mmc/host/dw_mmc-k3.c
++++ b/drivers/mmc/host/dw_mmc-k3.c
+@@ -424,6 +424,8 @@ static int dw_mci_hi3660_switch_voltage(struct mmc_host *mmc,
+ 
+ 	if (!IS_ERR(mmc->supply.vqmmc)) {
+ 		ret = mmc_regulator_set_vqmmc(mmc, ios);
++		if (ret > 0)
++			ret = 0;
+ 		if (ret) {
+ 			dev_err(host->dev, "Regulator set error %d\n", ret);
+ 			return ret;
+diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+index bc5278ab5707..3f82170f1d98 100644
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -1546,6 +1546,8 @@ static int dw_mci_switch_voltage(struct mmc_host *mmc, struct mmc_ios *ios)
+ 
+ 	if (!IS_ERR(mmc->supply.vqmmc)) {
+ 		ret = mmc_regulator_set_vqmmc(mmc, ios);
++		if (ret > 0)
++			ret = 0;
+ 
+ 		if (ret) {
+ 			dev_dbg(&mmc->class_dev,
+diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+index 35400cf2a2e4..79e15fa6f4fd 100644
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -1004,6 +1004,8 @@ static int meson_mmc_card_busy(struct mmc_host *mmc)
+ 
+ static int meson_mmc_voltage_switch(struct mmc_host *mmc, struct mmc_ios *ios)
+ {
++	int ret;
++
+ 	/* vqmmc regulator is available */
+ 	if (!IS_ERR(mmc->supply.vqmmc)) {
+ 		/*
+@@ -1013,7 +1015,10 @@ static int meson_mmc_voltage_switch(struct mmc_host *mmc, struct mmc_ios *ios)
+ 		 * to 1.8v. Please make sure the regulator framework is aware
+ 		 * of your own regulator constraints
+ 		 */
+-		return mmc_regulator_set_vqmmc(mmc, ios);
++		ret = mmc_regulator_set_vqmmc(mmc, ios);
++		if (ret > 0)
++			ret = 0;
++		return ret;
+ 	}
+ 
+ 	/* no vqmmc regulator, assume fixed regulator at 3/3.3V */
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index b221c02cc71f..9688797f097d 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -1379,6 +1379,8 @@ static int msdc_ops_switch_volt(struct mmc_host *mmc, struct mmc_ios *ios)
+ 		}
+ 
+ 		ret = mmc_regulator_set_vqmmc(mmc, ios);
++		if (ret > 0)
++			ret = 0;
+ 		if (ret) {
+ 			dev_dbg(host->dev, "Regulator set error %d (%d)\n",
+ 				ret, ios->signal_voltage);
+diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+index 68432bb0255b..7ffe17bb1e62 100644
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -237,6 +237,8 @@ static int renesas_sdhi_start_signal_voltage_switch(struct mmc_host *mmc,
+ 			MMC_SIGNAL_VOLTAGE_330 ? 0 : -EINVAL;
+ 
+ 	ret = mmc_regulator_set_vqmmc(host->mmc, ios);
++	if (ret > 0)
++		ret = 0;
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+index 60c3a4c620f9..2a27af3eceef 100644
+--- a/drivers/mmc/host/sdhci-sprd.c
++++ b/drivers/mmc/host/sdhci-sprd.c
+@@ -434,6 +434,8 @@ static int sdhci_sprd_voltage_switch(struct mmc_host *mmc, struct mmc_ios *ios)
+ 
+ 	if (!IS_ERR(mmc->supply.vqmmc)) {
+ 		ret = mmc_regulator_set_vqmmc(mmc, ios);
++		if (ret > 0)
++			ret = 0;
+ 		if (ret) {
+ 			pr_err("%s: Switching signalling voltage failed\n",
+ 			       mmc_hostname(mmc));
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 344a7e0e33fe..a100fb633b40 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2411,6 +2411,8 @@ int sdhci_start_signal_voltage_switch(struct mmc_host *mmc,
+ 
+ 		if (!IS_ERR(mmc->supply.vqmmc)) {
+ 			ret = mmc_regulator_set_vqmmc(mmc, ios);
++			if (ret > 0)
++				ret = 0;
+ 			if (ret) {
+ 				pr_warn("%s: Switching to 3.3V signalling voltage failed\n",
+ 					mmc_hostname(mmc));
+@@ -2434,6 +2436,8 @@ int sdhci_start_signal_voltage_switch(struct mmc_host *mmc,
+ 			return -EINVAL;
+ 		if (!IS_ERR(mmc->supply.vqmmc)) {
+ 			ret = mmc_regulator_set_vqmmc(mmc, ios);
++			if (ret > 0)
++				ret = 0;
+ 			if (ret) {
+ 				pr_warn("%s: Switching to 1.8V signalling voltage failed\n",
+ 					mmc_hostname(mmc));
+@@ -2466,6 +2470,8 @@ int sdhci_start_signal_voltage_switch(struct mmc_host *mmc,
+ 			return -EINVAL;
+ 		if (!IS_ERR(mmc->supply.vqmmc)) {
+ 			ret = mmc_regulator_set_vqmmc(mmc, ios);
++			if (ret > 0)
++				ret = 0;
+ 			if (ret) {
+ 				pr_warn("%s: Switching to 1.2V signalling voltage failed\n",
+ 					mmc_hostname(mmc));
+diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+index f87d7967457f..f70a4249b72b 100644
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -951,9 +951,15 @@ static void sunxi_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ 
+ static int sunxi_mmc_volt_switch(struct mmc_host *mmc, struct mmc_ios *ios)
+ {
++	int ret;
++
+ 	/* vqmmc regulator is available */
+-	if (!IS_ERR(mmc->supply.vqmmc))
+-		return mmc_regulator_set_vqmmc(mmc, ios);
++	if (!IS_ERR(mmc->supply.vqmmc)) {
++		ret = mmc_regulator_set_vqmmc(mmc, ios);
++		if (ret > 0)
++			ret = 0;
++		return ret;
++	}
+ 
+ 	/* no vqmmc regulator, assume fixed regulator at 3/3.3V */
+ 	if (mmc->ios.signal_voltage == MMC_SIGNAL_VOLTAGE_330)
+diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
+index 9a0b1e4e405d..72e698071ddf 100644
+--- a/drivers/mmc/host/usdhi6rol0.c
++++ b/drivers/mmc/host/usdhi6rol0.c
+@@ -1174,6 +1174,8 @@ static int usdhi6_sig_volt_switch(struct mmc_host *mmc, struct mmc_ios *ios)
+ 	int ret;
+ 
+ 	ret = mmc_regulator_set_vqmmc(mmc, ios);
++	if (ret > 0)
++		ret = 0;
+ 	if (ret < 0)
+ 		return ret;
+ 
+-- 
+2.25.1
 
