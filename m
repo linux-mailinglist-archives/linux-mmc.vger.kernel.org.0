@@ -2,132 +2,142 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15F461ACDD6
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Apr 2020 18:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE791ACF2F
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Apr 2020 19:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729474AbgDPQhD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Apr 2020 12:37:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57110 "EHLO
+        id S1727879AbgDPR5Y (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Apr 2020 13:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729697AbgDPQhC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Apr 2020 12:37:02 -0400
-Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC50C061A0F
-        for <linux-mmc@vger.kernel.org>; Thu, 16 Apr 2020 09:37:01 -0700 (PDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4934cr3fK6z1ryXR;
-        Thu, 16 Apr 2020 18:37:00 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 4934cr2Fbyz1qr41;
-        Thu, 16 Apr 2020 18:37:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id gSXwYY6dOFts; Thu, 16 Apr 2020 18:36:58 +0200 (CEST)
-X-Auth-Info: MJkMHv5+LxYhi+3b5NCVG7TqxEiY2WjNpwVZlByK5To=
-Received: from desktop.lan (ip-86-49-35-8.net.upcbroadband.cz [86.49.35.8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Thu, 16 Apr 2020 18:36:58 +0200 (CEST)
-From:   Marek Vasut <marex@denx.de>
-To:     linux-mmc@vger.kernel.org
-Cc:     Marek Vasut <marex@denx.de>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ludovic Barre <ludovic.barre@st.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Patrick Delaunay <patrick.delaunay@st.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH V2 3/3] mmc: mmci: Switch to mmc_regulator_set_vqmmc()
-Date:   Thu, 16 Apr 2020 18:36:49 +0200
-Message-Id: <20200416163649.336967-3-marex@denx.de>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200416163649.336967-1-marex@denx.de>
-References: <20200416163649.336967-1-marex@denx.de>
+        by vger.kernel.org with ESMTP id S1727794AbgDPR5X (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Apr 2020 13:57:23 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFF6C061A0C;
+        Thu, 16 Apr 2020 10:57:23 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id d16so809568edq.7;
+        Thu, 16 Apr 2020 10:57:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JukI2qcxSNyf52yHJpjT80gtxp48IEr/CgsVukdEHTM=;
+        b=P8MVDNhJHnmJHFsyNYdMUXiwT4Boy56Wj9P0YtJb/1bhSGy0Sq9YmMAwAx2VB52AFK
+         Zss8GsK7Kpyp3LpBdHprlBx15LXeBhFrIkVJna99hU10FiNhstMqpfRlqIbRd4nUtUxI
+         /t5t9AhsXVsn6JgUXYHApplj9PeOV9c4wc6T4gdCyoTtCSjuUiObUepbSIu9GBRBIEXJ
+         Z5B4o3o4JFGnTPUil5PURBCM7zLs0u/yyH7eL5prUOV2Buf96fVQfbXTRjicCdB4xbn9
+         qzxOgL7Nqnw86kl0wrZ/lqyQaHs8UDqRnaDcph/hj7J1I59KM4wmo2q9sLEai6zBMnR8
+         jjQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JukI2qcxSNyf52yHJpjT80gtxp48IEr/CgsVukdEHTM=;
+        b=i5LbdZQk85YxNOTEvoBaNi2OIep7NfS9zftrX7PVZVqTUc0NSx8jb6wg8XNqoUynJd
+         bnkD9bDSHaNUh4sHDiMWkLizhSfh8qjLum3op3mXBvR4qIqA2bzfydKz1l5A1QMaumDT
+         Qn++sa8hNU+reCTxAJqFZ622zC/3RX67TXOGCVcyyu6ainJgvBt36nmcjgV/RTrXZfZr
+         edEQla1+thVqlxoHdjw59bywDGtXOqKG4ZcxF7LBPPI/svnmJ9rV3Vp7ElnUcqNmszsD
+         pET4lXMVXlpFrVhVl+GQ1L1+Npb53zH6r1OduLERKXxAeuIAIroJ6EkgLBIen8QJarDd
+         Olaw==
+X-Gm-Message-State: AGi0PuZ2iC1RXL/odBcqXE2uAGN6b9mNKPp6jF+oUgj5jIdfLkzPsLKX
+        Q4cFnOoz12raJns0RM8ySvoCikzF+do9+r/3a+iqiihM32Y=
+X-Google-Smtp-Source: APiQypKcDeq4UvvtUEjHkgd5bJB0lxfAAkyoWXwHMWWPoZHwjBNFu/BEW/23s3wmsXEJ4Qju54+NKGyUKcjSV132BrI=
+X-Received: by 2002:aa7:d3d6:: with SMTP id o22mr4503774edr.52.1587059841831;
+ Thu, 16 Apr 2020 10:57:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200410213043.1091851-1-martin.blumenstingl@googlemail.com>
+ <CAPDyKFpsTTUaTLy--DvOr0oAB71cTBdH1pfTV63LtcKOKOsnDw@mail.gmail.com>
+ <CAFBinCAhfgEdT383x61mh9E0y3-3MLA-fUmZj-4C-_VUdGWtGQ@mail.gmail.com> <CAPDyKFrj6jdHe8OSvtuT7=QdreZ1YzMt=791ABSZfos8yux71A@mail.gmail.com>
+In-Reply-To: <CAPDyKFrj6jdHe8OSvtuT7=QdreZ1YzMt=791ABSZfos8yux71A@mail.gmail.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Thu, 16 Apr 2020 19:57:10 +0200
+Message-ID: <CAFBinCDT08bts6xfNkTV-aqgOq=jDo+BQHGOVOQyFjRSQJpBvA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mmc: meson-mx-sdio: Set MMC_CAP_WAIT_WHILE_BUSY
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Instead of reimplementing the logic in mmc_regulator_set_vqmmc(),
-use the mmc code function directly.
+Hi Ulf,
 
-This fixes a real issue on STM32MP1 where, if the eMMC is supplied with
-VccQ=1.8 V, the post voltage switch code will spin indefinitelly waiting
-for the voltage switch to complete, even though no voltage switch really
-happened. But since mmc_set_signal_voltage() would return 0, then the
-condition for calling .post_sig_volt_switch() is not satisfied if the
-switch did not happen.
+On Thu, Apr 16, 2020 at 1:26 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+[...]
+> > > First, can you double check so the original polling with CMD13 is
+> > > still okay, by trying the below minor change. The intent is to force
+> > > polling with CMD13 for the erase/discard operation.
+> > I have tried this one and it seems to work around the problem (before
+> > I reverted my change and dropped MMC_CAP_WAIT_WHILE_BUSY from
+> > mmc->caps)
+> > also I did not see meson_mx_mmc_card_busy being invoked (not even
+> > once, but I don't know if that's expected)
+>
+> For eMMC it should be used quite frequently, as CMD6 is sent quite
+> often, during initialization for example (see mmc_switch() and
+> __mmc_switch()).
+I only tested the meson-mx-sdio driver with eMMC once (a long time
+ago) and it did not work.
+...maybe this is the reason ;)
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Ludovic Barre <ludovic.barre@st.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Patrice Chotard <patrice.chotard@st.com>
-Cc: Patrick Delaunay <patrick.delaunay@st.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: linux-stm32@st-md-mailman.stormreply.com
-To: linux-mmc@vger.kernel.org
----
-V2: Reword commit message
----
- drivers/mmc/host/mmci.c | 30 ++++++++----------------------
- 1 file changed, 8 insertions(+), 22 deletions(-)
+> For SD cards, it's being used for erase/trim/discard and while
+> changing to UHS-I speed modes (1.8V I/O voltage, see
+> mmc_set_uhs_voltage(). The latter also requires your host driver to
+> implement the ->start_signal_voltage_switch() host ops, which isn't
+> the case (yet!?)
+SD cards and SDIO cards are the main use-case for this driver.
+I don't know of any board which connects this controller to a card
+with 1.8V (or 1.8V/3.3V configurable) I/O voltage. This is why I
+didn't care about ->start_signal_voltage_switch() so far
 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 647567def612..a69d6a0c2e15 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -1861,31 +1861,17 @@ static int mmci_get_cd(struct mmc_host *mmc)
- static int mmci_sig_volt_switch(struct mmc_host *mmc, struct mmc_ios *ios)
- {
- 	struct mmci_host *host = mmc_priv(mmc);
--	int ret = 0;
--
--	if (!IS_ERR(mmc->supply.vqmmc)) {
-+	int ret;
- 
--		switch (ios->signal_voltage) {
--		case MMC_SIGNAL_VOLTAGE_330:
--			ret = regulator_set_voltage(mmc->supply.vqmmc,
--						2700000, 3600000);
--			break;
--		case MMC_SIGNAL_VOLTAGE_180:
--			ret = regulator_set_voltage(mmc->supply.vqmmc,
--						1700000, 1950000);
--			break;
--		case MMC_SIGNAL_VOLTAGE_120:
--			ret = regulator_set_voltage(mmc->supply.vqmmc,
--						1100000, 1300000);
--			break;
--		}
-+	ret = mmc_regulator_set_vqmmc(mmc, ios);
- 
--		if (!ret && host->ops && host->ops->post_sig_volt_switch)
--			ret = host->ops->post_sig_volt_switch(host, ios);
-+	if (!ret && host->ops && host->ops->post_sig_volt_switch)
-+		ret = host->ops->post_sig_volt_switch(host, ios);
-+	else if (ret)
-+		ret = 0;
- 
--		if (ret)
--			dev_warn(mmc_dev(mmc), "Voltage switch failed\n");
--	}
-+	if (ret < 0)
-+		dev_warn(mmc_dev(mmc), "Voltage switch failed\n");
- 
- 	return ret;
- }
--- 
-2.25.1
+[...]
+> > > Second, if the above works, it looks like the polling with
+> > > ->card_busy() isn't really working for meson-mx-sdio.c, together with
+> > > erase/discard. To narrow down that problem, I suggest to try with a
+> > > longer erase/discard timeout in a retry fashion, while using
+> > > ->card_busy(). Along the lines of the below:
+> > I have tried this one as well (before I reverted the earlier CMD13
+> > patch) and with MMC_CAP_WAIT_WHILE_BUSY unset in mmc->caps
+> > This doesn't seem to work around the issue - kernel log extract attached.
+> > Also I'm seeing that the the current meson_mx_mmc_card_busy
+> > implementation returns that the card is busy.
+> > example: 0x1f001f10 & 0x3c00 = 0x1c00. the busy logic in the driver
+> > is: !!0x1c00 = 1
+> >
+> > My conclusion is:
+> > - meson_mx_mmc_card_busy is not working and should be removed (because
+> > I don't know how to make it work). it probably never worked but we
+> > didn't notice until a recent change
+>
+> I see.
+>
+> Depending on what your driver plans to support for the future, see
+> above, you may need to come back to this in future.
+I'll let future Martin deal with that - he can add it back as needed ;-)
+current Martin has his doubts that it'll be needed (see above)
 
+> > - set MMC_CAP_WAIT_WHILE_BUSY as per my initial patch
+> > - use Fixes: ed80a13bb4c4c9 ("mmc: meson-mx-sdio: Add a driver for the
+> > Amlogic Meson8 and Meson8b SoCs")
+> >
+> > Does this make sense?
+>
+> Yes, I think so.
+thank you for double-checking!
+
+> > Also please let me know if you want me to try something else
+>
+> I would also suggest adding a patch that removes the ->card_busy() ops
+> from the meson driver - and that should probably also carry the same
+> fixes tag as above. Just to make sure the callback doesn't get used in
+> some other circumstances, when going forward.
+agreed, I will send a v2 later which adds the Fixes tag, a bit more
+description and an additional patch to remove ->card_busy()
+
+
+Thank you again very much for the insights!
+Have a great day,
+Martin
