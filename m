@@ -2,180 +2,157 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24FD91ABFC3
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Apr 2020 13:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED061ABF1E
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Apr 2020 13:28:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2506531AbgDPLjn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Apr 2020 07:39:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60822 "EHLO
+        id S2633173AbgDPL1E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Apr 2020 07:27:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2505917AbgDPK7n (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Apr 2020 06:59:43 -0400
-Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A0F0C025480
-        for <linux-mmc@vger.kernel.org>; Thu, 16 Apr 2020 03:59:43 -0700 (PDT)
-Received: by mail-ua1-x942.google.com with SMTP id x18so2635873uap.8
-        for <linux-mmc@vger.kernel.org>; Thu, 16 Apr 2020 03:59:43 -0700 (PDT)
+        with ESMTP id S2633100AbgDPL0z (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Apr 2020 07:26:55 -0400
+Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39CAC061A10
+        for <linux-mmc@vger.kernel.org>; Thu, 16 Apr 2020 04:26:55 -0700 (PDT)
+Received: by mail-vk1-xa2f.google.com with SMTP id c23so1796446vkc.0
+        for <linux-mmc@vger.kernel.org>; Thu, 16 Apr 2020 04:26:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=p/NQn3x2dQrPgmua+MkXZ2CPgsicQ89yPGaFimgDCmY=;
-        b=H1PRjyupkz+ecVblYlD5uZ6r4HV5zKCOh+pkNDaV9amQ+qoxu3nkqACQli5ciwIiPE
-         RZYTRcRro5ZMqNbQf4/M1vESYaAobmD4nNuC0g72XoFTuHA9BzE6oyn5+UZPvtNAlJEW
-         ie/Lt169KGZ57WHaUv2tfQZD62uiHLfBim1YFbVgseXfc9JvQkfriTgSS7/0211ybdZR
-         vY785wUltPwG3+Y3GOoKYBsPOR6lhKm25CiMM1z+OitCgs5fCmLii0es72sWXK7AhmWu
-         v4PzLn8cVZR22flguxUivk/kqmXVeFMLyegDsuJNhiW5y+CWuztKa+zfIYH2w41QuLYZ
-         TDog==
+        bh=XNpefsuCct6B4uZId4JS7PFlnG0t9azfDKQ0UhJ7Rz0=;
+        b=oH33bDG29P2eFR0uj2731SAQsoJ8sGIizT62wdYvS1qnjl/GmqpEBWuoqQWb8wLvLc
+         ByMlPaCKTWfabQtKILa6EoWp7X5glWTBhBfEgtOxg8kEtIvDu8Cxk6biWGBkSq9pyZyf
+         nIHN8AJRMMPgDhN/FEm5LmVmBsHyM8cgx9F5rYpMBdhteTMXryXoY5gMTxUPyAFxAh2i
+         /m3xjxAX19as/PK5ZnwujffpkmxY04XNlfWfqeVSnsvNIbo0m1d4VMgrf3/DIcGeotq0
+         HGcbO/Vtp/yZB9ROiEoH92UlPQ0ZT1YbOSd3AaHxJ7eVFN5hTrpn3qPF0k96HWdD9XEL
+         FcAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=p/NQn3x2dQrPgmua+MkXZ2CPgsicQ89yPGaFimgDCmY=;
-        b=RkAUglX94wQZxtkY3jtXkEL4Fu9no6z6uQMM5nYM8Z73hP6whIKDxXa9Uvm3YFjRL4
-         yD7nEiRkLHGkS4guXQBhC3x1w51GkQ77QajK1hNUrwoGUFdRgfhoLJLbzcIJxy7m1yHR
-         cjPFMZQeZiCjW8V4SfU8ChlrqWCwtsad1iNul1WZeewO+AItx7IffIA22WeotaNig5yK
-         SXOQNkNPiH9a0+fHyI1S6uMTKSdzfiK1nJ48KzaRsYX6qxKcx8jSKN87HhB+rekbqDOX
-         n4s7zU0eDTVRJfX3DBtgwL7ghZhZrysy+7bu3Yc18WK+fyS/Jb56Fz9zpruD8vRV52a1
-         Tj9g==
-X-Gm-Message-State: AGi0PuakD0WgyvAseNp2BsP3WUgzGT5zDyycv2aC2LBfYt5dyQzw6eP+
-        TcvaPdsbOaZnHoVSY752A+CtBwke3arSgGvY02b5fg==
-X-Google-Smtp-Source: APiQypIheC8zF+5u1sxqSHfIaGuYjJzSfh8tnXKmJeq8phNdy3w/AXb9wUOkMUHaVScHJYnzRhCpI5N5eo01eUkNqKU=
-X-Received: by 2002:ab0:2ea:: with SMTP id 97mr8516870uah.129.1587034782283;
- Thu, 16 Apr 2020 03:59:42 -0700 (PDT)
+        bh=XNpefsuCct6B4uZId4JS7PFlnG0t9azfDKQ0UhJ7Rz0=;
+        b=pL+wiDC+L03uJNx1brsbK+UEminPiXHPZAvo9/MkHiOszFc5ojdFO/fDgico6cHdpU
+         kLZST9fBBNdtKQE7ieYh9Pia7WiJmjDQdg1QBFZtT57TBg6DO6col/FX2RIHiXEHJQr+
+         iPXciy7is99dkUaz29zwkSUPGJgKPtMDGfsZ0CLb/KHNb5yVSLClfr5zpvLHZDgphQKm
+         zToYVwoIwkXFof9IEYyQyhfo2JRrR/h3jk0ViWykK9R5BPxLDm0WtABfgL7nAUXKn7oV
+         RCXKj7xkrM2JupQkZsvYiKS/fchRNSmo5ghq9odGKx+am1Z5gVc/ONR8eCOBJVcjIpYT
+         TFJw==
+X-Gm-Message-State: AGi0PuZ/9V5/xMtEgW6wAKt8+GzKpL9uagVzI6XlRwGKdfDjOzILugFm
+        K2cVP5rtBTMiGogDJIVPRNRsGQfoAN2/dMZQvGAj1A==
+X-Google-Smtp-Source: APiQypLcGn1fYqboLHcVfdnv/Lsv2p38zPGyTmjdkGNZzgb4SpztrL44PvzB1YPeh3KkNt/RYmmsPbYBqy7xc+E+v1c=
+X-Received: by 2002:a1f:d084:: with SMTP id h126mr21651387vkg.25.1587036414671;
+ Thu, 16 Apr 2020 04:26:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <1583886030-11339-1-git-send-email-skomatineni@nvidia.com> <CA+G9fYvreAv5HmZg0O4VvLvf_PYSvzD1rp08XONNQGExctgQ0Q@mail.gmail.com>
-In-Reply-To: <CA+G9fYvreAv5HmZg0O4VvLvf_PYSvzD1rp08XONNQGExctgQ0Q@mail.gmail.com>
+References: <20200410213043.1091851-1-martin.blumenstingl@googlemail.com>
+ <CAPDyKFpsTTUaTLy--DvOr0oAB71cTBdH1pfTV63LtcKOKOsnDw@mail.gmail.com> <CAFBinCAhfgEdT383x61mh9E0y3-3MLA-fUmZj-4C-_VUdGWtGQ@mail.gmail.com>
+In-Reply-To: <CAFBinCAhfgEdT383x61mh9E0y3-3MLA-fUmZj-4C-_VUdGWtGQ@mail.gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 16 Apr 2020 12:59:06 +0200
-Message-ID: <CAPDyKFpZEiqTdD6O-y6Sw7ifXF__MHAv0zKT=RFKs+Fmvr-K_Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] sdhci: tegra: Implement Tegra specific set_timeout callback
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Sowjanya Komatineni <skomatineni@nvidia.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        "(Exiting) Baolin Wang" <baolin.wang@linaro.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bradley Bolen <bradleybolen@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Aniruddha Tvs Rao <anrao@nvidia.com>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        linux- stable <stable@vger.kernel.org>
+Date:   Thu, 16 Apr 2020 13:26:18 +0200
+Message-ID: <CAPDyKFrj6jdHe8OSvtuT7=QdreZ1YzMt=791ABSZfos8yux71A@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mmc: meson-mx-sdio: Set MMC_CAP_WAIT_WHILE_BUSY
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 15 Apr 2020 at 19:55, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+On Wed, 15 Apr 2020 at 23:24, Martin Blumenstingl
+<martin.blumenstingl@googlemail.com> wrote:
 >
-> On Fri, 13 Mar 2020 at 06:41, Sowjanya Komatineni
-> <skomatineni@nvidia.com> wrote:
-> >
-> > Tegra host supports HW busy detection and timeouts based on the
-> > count programmed in SDHCI_TIMEOUT_CONTROL register and max busy
-> > timeout it supports is 11s in finite busy wait mode.
-> >
-> > Some operations like SLEEP_AWAKE, ERASE and flush cache through
-> > SWITCH commands take longer than 11s and Tegra host supports
-> > infinite HW busy wait mode where HW waits forever till the card
-> > is busy without HW timeout.
-> >
-> > This patch implements Tegra specific set_timeout sdhci_ops to allow
-> > switching between finite and infinite HW busy detection wait modes
-> > based on the device command expected operation time.
-> >
-> > Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
-> > ---
-> >  drivers/mmc/host/sdhci-tegra.c | 31 +++++++++++++++++++++++++++++++
-> >  1 file changed, 31 insertions(+)
-> >
-> > diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-> > index a25c3a4..fa8f6a4 100644
-> > --- a/drivers/mmc/host/sdhci-tegra.c
-> > +++ b/drivers/mmc/host/sdhci-tegra.c
-> > @@ -45,6 +45,7 @@
-> >  #define SDHCI_TEGRA_CAP_OVERRIDES_DQS_TRIM_SHIFT       8
-> >
-> >  #define SDHCI_TEGRA_VENDOR_MISC_CTRL                   0x120
-> > +#define SDHCI_MISC_CTRL_ERASE_TIMEOUT_LIMIT            BIT(0)
-> >  #define SDHCI_MISC_CTRL_ENABLE_SDR104                  0x8
+> Hi Ulf,
 >
-> >  #define SDHCI_MISC_CTRL_ENABLE_SDR50                   0x10
-> >  #define SDHCI_MISC_CTRL_ENABLE_SDHCI_SPEC_300          0x20
-> > @@ -1227,6 +1228,34 @@ static u32 sdhci_tegra_cqhci_irq(struct sdhci_host *host, u32 intmask)
-> >         return 0;
-> >  }
-> >
-> > +static void tegra_sdhci_set_timeout(struct sdhci_host *host,
-> > +                                   struct mmc_command *cmd)
-> > +{
-> > +       u32 val;
-> > +
-> > +       /*
-> > +        * HW busy detection timeout is based on programmed data timeout
-> > +        * counter and maximum supported timeout is 11s which may not be
-> > +        * enough for long operations like cache flush, sleep awake, erase.
-> > +        *
-> > +        * ERASE_TIMEOUT_LIMIT bit of VENDOR_MISC_CTRL register allows
-> > +        * host controller to wait for busy state until the card is busy
-> > +        * without HW timeout.
-> > +        *
-> > +        * So, use infinite busy wait mode for operations that may take
-> > +        * more than maximum HW busy timeout of 11s otherwise use finite
-> > +        * busy wait mode.
-> > +        */
-> > +       val = sdhci_readl(host, SDHCI_TEGRA_VENDOR_MISC_CTRL);
-> > +       if (cmd && cmd->busy_timeout >= 11 * HZ)
-> > +               val |= SDHCI_MISC_CTRL_ERASE_TIMEOUT_LIMIT;
-> > +       else
-> > +               val &= ~SDHCI_MISC_CTRL_ERASE_TIMEOUT_LIMIT;
-> > +       sdhci_writel(host, val, SDHCI_TEGRA_VENDOR_MISC_CTRL);
-> > +
-> > +       __sdhci_set_timeout(host, cmd);
+> thank you very much for taking the time to look into this!
 >
-> kernel build on arm and arm64 architecture failed on stable-rc 4.19
-> (arm), 5.4 (arm64) and 5.5 (arm64)
+> On Wed, Apr 15, 2020 at 2:57 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> [...]
+> > Thanks for sending this! I assume it's a regression and caused by one
+> > of my patches that went in for 5.7. Probably this one:
+> > 0d84c3e6a5b2 mmc: core: Convert to mmc_poll_for_busy() for erase/trim/discard
+> indeed, I only observed this with 5.7-rc1-ish, before everything was
+> working fine
 >
-> drivers/mmc/host/sdhci-tegra.c: In function 'tegra_sdhci_set_timeout':
-> drivers/mmc/host/sdhci-tegra.c:1256:2: error: implicit declaration of
-> function '__sdhci_set_timeout'; did you mean
-> 'tegra_sdhci_set_timeout'? [-Werror=implicit-function-declaration]
->   __sdhci_set_timeout(host, cmd);
->   ^~~~~~~~~~~~~~~~~~~
->   tegra_sdhci_set_timeout
+> > Now, even if enabling MMC_CAP_WAIT_WHILE_BUSY seems like the correct
+> > thing to do, I suggest we really try understand why it works, so we
+> > don't overlook some other issue that needs to be fixed.
+> great, that's why I'm seeking for help!
 >
-> Full build log,
-> https://ci.linaro.org/view/lkft/job/openembedded-lkft-linux-stable-rc-5.5/DISTRO=lkft,MACHINE=am57xx-evm,label=docker-lkft/83/consoleText
-> https://ci.linaro.org/view/lkft/job/openembedded-lkft-linux-stable-rc-5.4/DISTRO=lkft,MACHINE=juno,label=docker-lkft/158/consoleText
-> https://ci.linaro.org/view/lkft/job/openembedded-lkft-linux-stable-rc-4.19/DISTRO=lkft,MACHINE=am57xx-evm,label=docker-lkft/511/consoleText
+> > Would you be willing to try a few debug patches, according to the below?
+> sure
+> while reading your suggestions I went back to the vendor driver and
+> observed that they don't implement card_busy for this controller
+> Thus I added the following line to meson_mx_mmc_card_busy for all of
+> your tests to see what the controller sees in terms of our card busy
+> implementation:
+>   dev_info(mmc_dev(host->mmc), "%s read IRQC = 0x%08x\n",
+>                  __func__, irqc);
 >
-> - Naresh
+> > First, can you double check so the original polling with CMD13 is
+> > still okay, by trying the below minor change. The intent is to force
+> > polling with CMD13 for the erase/discard operation.
+> I have tried this one and it seems to work around the problem (before
+> I reverted my change and dropped MMC_CAP_WAIT_WHILE_BUSY from
+> mmc->caps)
+> also I did not see meson_mx_mmc_card_busy being invoked (not even
+> once, but I don't know if that's expected)
 
-Thanks for reporting! What a mess.
+For eMMC it should be used quite frequently, as CMD6 is sent quite
+often, during initialization for example (see mmc_switch() and
+__mmc_switch()).
 
-It turns out that the commit that was queued for stable that is
-causing the above errors, also requires another commit.
+For SD cards, it's being used for erase/trim/discard and while
+changing to UHS-I speed modes (1.8V I/O voltage, see
+mmc_set_uhs_voltage(). The latter also requires your host driver to
+implement the ->start_signal_voltage_switch() host ops, which isn't
+the case (yet!?)
 
-The commit that was queued:
-5e958e4aacf4 ("sdhci: tegra: Implement Tegra specific set_timeout callback")
+For SDIO cards it's being used in-between requests to make sure the
+SDIO card is ready for the next command (see __mmc_start_request())
 
-The additional commit needed (which was added in v5.6-rc1):
-7d76ed77cfbd ("mmc: sdhci: Refactor sdhci_set_timeout()")
+>
+> [...]
+> > Second, if the above works, it looks like the polling with
+> > ->card_busy() isn't really working for meson-mx-sdio.c, together with
+> > erase/discard. To narrow down that problem, I suggest to try with a
+> > longer erase/discard timeout in a retry fashion, while using
+> > ->card_busy(). Along the lines of the below:
+> I have tried this one as well (before I reverted the earlier CMD13
+> patch) and with MMC_CAP_WAIT_WHILE_BUSY unset in mmc->caps
+> This doesn't seem to work around the issue - kernel log extract attached.
+> Also I'm seeing that the the current meson_mx_mmc_card_busy
+> implementation returns that the card is busy.
+> example: 0x1f001f10 & 0x3c00 = 0x1c00. the busy logic in the driver
+> is: !!0x1c00 = 1
+>
+> My conclusion is:
+> - meson_mx_mmc_card_busy is not working and should be removed (because
+> I don't know how to make it work). it probably never worked but we
+> didn't notice until a recent change
 
-However, the above commit needs a manual backport (quite trivial, but
-still) for the relevant stable kernels, to allow it to solve the build
-problems.
+I see.
 
-Greg, Sasha - I suggest you to drop the offending commit from the
-stable kernels, for now. I think it's better to let Sowjanya deal with
-the backports, then send them in small series instead.
+Depending on what your driver plans to support for the future, see
+above, you may need to come back to this in future.
+
+> - set MMC_CAP_WAIT_WHILE_BUSY as per my initial patch
+> - use Fixes: ed80a13bb4c4c9 ("mmc: meson-mx-sdio: Add a driver for the
+> Amlogic Meson8 and Meson8b SoCs")
+>
+> Does this make sense?
+
+Yes, I think so.
+
+> Also please let me know if you want me to try something else
+
+I would also suggest adding a patch that removes the ->card_busy() ops
+from the meson driver - and that should probably also carry the same
+fixes tag as above. Just to make sure the callback doesn't get used in
+some other circumstances, when going forward.
 
 Kind regards
 Uffe
