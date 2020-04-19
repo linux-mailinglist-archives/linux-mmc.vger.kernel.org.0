@@ -2,110 +2,101 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18EAE1AF677
-	for <lists+linux-mmc@lfdr.de>; Sun, 19 Apr 2020 05:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68E4C1AF730
+	for <lists+linux-mmc@lfdr.de>; Sun, 19 Apr 2020 07:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725903AbgDSDlZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 18 Apr 2020 23:41:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39514 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725819AbgDSDlY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 18 Apr 2020 23:41:24 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0554C061A0C
-        for <linux-mmc@vger.kernel.org>; Sat, 18 Apr 2020 20:41:24 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id x77so616619pfc.0
-        for <linux-mmc@vger.kernel.org>; Sat, 18 Apr 2020 20:41:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=00v097EvSHq0jVqjE5hQdPwDPXL6yFSeyonx4J+TBPo=;
-        b=oNG04eKN3Lny47qQhYoHhqYwp1IdpvA9RY1zlCvmuZCna40N7taR2MwGa/QiYITETe
-         OmzwzwwrhLj0yxECI17IlfMqXx8ypVq58XwTGdcdy0Q6g68zrladJIOy4AnxKpPTHc8w
-         v6IGoFKqXrGye6UvR1VHj4p3TafaRnTsD1UrSESbdXDk0IGalou+yVpYj8C2hFOtmmzf
-         +kPnhlk48B/I1jHtqAVF6ly0lkdEImT93YrhqB+59D8pPZ+hbjIVtc5mKPev49ypGGcM
-         5laBxPlE4SMNiQIdGralDqNGt+sWo8qYROMzF5N7ETtQiD63yZN536sj2wIXpoduLFYL
-         DkNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=00v097EvSHq0jVqjE5hQdPwDPXL6yFSeyonx4J+TBPo=;
-        b=dvQ6Gpu7I6idzqZDfzak/ECwaqLpwICLQoJVUc9FWrOheWonYzOnXWN0a20hatYDSX
-         jMrg1rmJwmz33iA6VKmali8FtT2OosxTPEHHlcjuHuLkm0+jtwlfQaPSwcizd9lqcOGq
-         uAnnHSYCOF7MRsTuTc151MmjykaV2gxsUXogLiSlAsgc9h90UpKAnZlpmdCl/6kvQyNy
-         tiSrNkmP8TcVhkqB3w9r3H9VQj0P/vTf//HGMiVVAt4hhQOo/JiR+ULARS9jO359KvjZ
-         b6f+wmtMpv8GIsanp2dRXCkfgK7KkT0avihqRJTzwaGz116Wy7EvGTCILr1haEjb3h0l
-         Tnsw==
-X-Gm-Message-State: AGi0PubvIF45S1L6UeNNjMxuggEXuwz1j6wdBEIKTAI2UuOLusB0TGF/
-        m4Xyjo1SCO3pwQmJAxCHnbhuUPI/NCiUjVJvO5I=
-X-Google-Smtp-Source: APiQypK7PsiH1bXhSEHnBgX0DfsIUOnFiDzr5VLl0GpWnD4hHmalXetyJgyPtepwQSpnc2vTAzCuPMOuacijT3ISC5M=
-X-Received: by 2002:a63:6c83:: with SMTP id h125mr10956731pgc.168.1587267683944;
- Sat, 18 Apr 2020 20:41:23 -0700 (PDT)
+        id S1725939AbgDSFhx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 19 Apr 2020 01:37:53 -0400
+Received: from lists.nic.cz ([217.31.204.67]:37384 "EHLO mail.nic.cz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725446AbgDSFhx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 19 Apr 2020 01:37:53 -0400
+Received: from dellmb.labs.office.nic.cz (unknown [IPv6:2001:1488:fffe:6:cac7:3539:7f1f:463])
+        by mail.nic.cz (Postfix) with ESMTP id 44575140079;
+        Sun, 19 Apr 2020 07:37:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nic.cz; s=default;
+        t=1587274671; bh=zdZ5E6lSFk+r6arWOcn3KBR83L7Rdjb3OX60Z+CwHIU=;
+        h=From:To:Date;
+        b=DuPNGhMotHvxqZUGK2wDpRAJ3dLI4821ExzOHNC8PK6vm1PeYj2kjWm76NqlLT2xV
+         +psPBQjlDUMB8wqTwFuPVJmbLs48jDtF4oO0GkV/mIsYtS1SDPn+Yhn0wJK4UI9DC2
+         VRpRVYayWhaXJSYV8N+pQSd1hcO4HR5uFgB94cO4=
+From:   =?UTF-8?q?Marek=20Beh=C3=BAn?= <marek.behun@nic.cz>
+To:     linux-mmc@vger.kernel.org
+Cc:     =?UTF-8?q?Marek=20Beh=C3=BAn?= <marek.behun@nic.cz>,
+        Zhoujie Wu <zjwu@marvell.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Gregory CLEMENT <gregory.clement@free-electrons.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>
+Subject: [PATCH] mmc: sdhci-xenon: fix annoying 1.8V regulator warning
+Date:   Sun, 19 Apr 2020 07:37:46 +0200
+Message-Id: <20200419053746.22443-1-marek.behun@nic.cz>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Received: by 2002:a17:90a:191b:0:0:0:0 with HTTP; Sat, 18 Apr 2020 20:41:23
- -0700 (PDT)
-From:   "Gen. Caroline Edward" <mrs.carolineedward@gmail.com>
-Date:   Sun, 19 Apr 2020 03:41:23 +0000
-X-Google-Sender-Auth: qinardGp-KpQUinslvY0mTxqeyQ
-Message-ID: <CAA8KNg20XJs6+1oVaP3-QbNGUfFEgaTyn5pYbcfWF+vos=AiJQ@mail.gmail.com>
-Subject: Good day,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.nic.cz
+X-Spam-Status: No, score=0.00
+X-Spamd-Bar: /
+X-Virus-Scanned: clamav-milter 0.101.4 at mail
+X-Virus-Status: Clean
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Good day,
+For some reason the Host Control2 register of the Xenon SDHCI controller
+sometimes reports the bit representing 1.8V signaling as 0 when read
+after it was written as 1. Subsequent read reports 1.
 
-Am Caroline Edward, a staff General  in the US Army presently serving
-in Syria as a combat instructor, I sincerely apologize for intruding
-into your privacy, this might come as a surprise to you, but nothing
-is more distressing to me at this time as i find myself forced by
-events beyond my control, i have summoned courage to contact you. Am
-45 years old lady, am a widow and I had a son who is now 16 years of
-age.
+This causes the sdhci_start_signal_voltage_switch function to report
+  1.8V regulator output did not become stable
 
-Some money in various currencies where discovered in barrels at a farm
-house in the middle East during a rescue operation in Iraq War,and it
-was agreed by Staff Sergeant Kenneth Buff and myself that some part of
-these money be shared between both of us, I was given a total of ($5
-Million US Dollars) as my own share , I kept this money in a
-consignment for a long while with a security Company which i declared
-and deposit as my personal effects and it has been secured and
-protected for years now with the diplomatic Delivery Service.
+When CONFIG_PM is enabled, the host is suspended and resumend many
+times, and in each resume the switch to 1.8V is called, and so the
+kernel log reports this message annoyingly often.
 
-Now, the WAR in Iraq is over, and all possible problems that could
-have emanated from the shared money has been totally cleaned up and
-all file closed, all what was discovered in the Middle East is no more
-discussed, am now ready to retire from active services by the end of
-this month, but, i need a trustworthy person that can help me take
-possession of this funds and keep it safe while i work on my relief
-letters to join you so that we could discuss possible business
-partnership together with the money.
+Do an empty read of the Host Control2 register in Xenon's
+.voltage_switch method to circumvent this.
 
-But I tell you what! No compensation can make up for the risk we are
-taken with our lives.You can confirm the genuineness of the findings
-by clicking on this web site.
+Signed-off-by: Marek Behún <marek.behun@nic.cz>
+Cc: Zhoujie Wu <zjwu@marvell.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+---
+ drivers/mmc/host/sdhci-xenon.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-http://news.bbc.co.uk/2/hi/middle_east/2988455.stm
+diff --git a/drivers/mmc/host/sdhci-xenon.c b/drivers/mmc/host/sdhci-xenon.c
+index 1dea1ba66f7b..126ae723f8ab 100644
+--- a/drivers/mmc/host/sdhci-xenon.c
++++ b/drivers/mmc/host/sdhci-xenon.c
+@@ -235,6 +235,25 @@ static void xenon_voltage_switch(struct sdhci_host *host)
+ {
+ 	/* Wait for 5ms after set 1.8V signal enable bit */
+ 	usleep_range(5000, 5500);
++
++	/*
++	 * For some reason the controller's Host Control2 register reports
++	 * the bit representing 1.8V signaling as 0 when read after it was
++	 * written as 1. Subsequent read reports 1.
++	 *
++	 * This causes the sdhci_start_signal_voltage_switch function to
++	 * report
++	 *   "1.8V regulator output did not become stable"
++	 * in kernel log.
++	 *
++	 * When CONFIG_PM is enabled, the host is suspended and resumend many
++	 * times, and in each resume the switch to 1.8V is called, and so the
++	 * kernel log reports this message annoyingly often.
++	 *
++	 * Do an empty read of the Host Control2 register here to circumvent
++	 * this.
++	 */
++	sdhci_readw(host, SDHCI_HOST_CONTROL2);
+ }
+ 
+ static const struct sdhci_ops sdhci_xenon_ops = {
+-- 
+2.24.1
 
-I=E2=80=99m seeking your kind assistance to move the sum of US$5 Million
-Dollars to you as far as I can be assured that the money will be safe
-in your care until I complete my service here in (SYRIA) before the
-end of the month.
-
-The most important thing is; =E2=80=9CCan I Trust you=E2=80=9D?,As an offic=
-ers on
-ACTIVE DUTY am not allowed access to money, therefore, i have declared
-the content of the consignment as personal effect that i would like to
-be delivered to a friend. You will be rewarded with 30% of this funds
-for your help, all that i required is your trust between us till the
-money get to you.
-
-Sincerely,
-Gen.Caroline Edward.
-Email: mrs.carolineedward@gmail.com
