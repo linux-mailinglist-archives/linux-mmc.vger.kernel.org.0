@@ -2,107 +2,160 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C498F1B3EFA
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 Apr 2020 12:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B7AB1B41BD
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 Apr 2020 12:55:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730495AbgDVKdJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 22 Apr 2020 06:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37054 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731020AbgDVKdH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 Apr 2020 06:33:07 -0400
-Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6242AC03C1A8
-        for <linux-mmc@vger.kernel.org>; Wed, 22 Apr 2020 03:33:07 -0700 (PDT)
-Received: by mail-vk1-xa43.google.com with SMTP id n207so481279vkf.8
-        for <linux-mmc@vger.kernel.org>; Wed, 22 Apr 2020 03:33:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xM8Q7T6rdjH9e0uGDvlqHrRRLXPLFjytVZpcaXFHZdE=;
-        b=THhL3ijJQL1p3tRF1MmaLpAi1ocdrrVuBVCXvpYEJW+FqGjb6E+2801ObV4nYOi67o
-         0dDWVukcYXGc9Qx2rdh9HFLQgth/4J/j6ZM0mzV76SG3+DvrWMJmo+LEi/pGdjegRAp0
-         M0a//fmFE5hMHa2G0h+xh07camJ6b6Eco734bI8IJZbFcTqDvBcU3GOkSV6TziTkkDON
-         Wztb9c3dazycUTD7mDJqvrLtztRZv8O72MJue1/RTLrfyhyJBWumEWndLGi+SaRWA6Kd
-         jZM79N/bXRVY+r0ReX8uvMSVLDK5qSEnyBDe6E6R8YsDgoDYk+K7z8y9Dw2FDBo7TO1n
-         adkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xM8Q7T6rdjH9e0uGDvlqHrRRLXPLFjytVZpcaXFHZdE=;
-        b=L+4+yrJxq69xKWOxHJ4eThecGoWBhAuN5V/y9JmjZYLwSkD6B2OxGvXRvTicgCrkaG
-         Xpka+hjMwl4TY64NqomFcqJcPndM2ghu0Y+Y78IXUnCZEDUBQNgiHV1g9/W2sYOJDIn8
-         T8GGchfYyf6aRrPBYkh7SlfInrVzOmQGTFq+CC9kP1xAZmfxGb4A9UbgC6ysc40TeXTj
-         j5LaUqdMd2SpfR7FDg+8TlMEKh8l6+HqD0/9KuuhrUazcD8JkWKLmUXzMtOKPdP3Ply0
-         rpIH7QBLdV5OBMIPuzXd2XcVUuCly4k4m3kAMuuegaG0RCu2IBHYbcAD484e1+KAfNWf
-         VXRg==
-X-Gm-Message-State: AGi0PuZ6EttyrL0icO5DrTCn8UrdIm/oDEShkeahEKLP1LFHq/DnS/BQ
-        4Jw/KQC9GCx18hgZVkOxcr9f7ZAKO9hJqHCcjmc73A==
-X-Google-Smtp-Source: APiQypK4t+PF8tt/SGAM8xALAG/aAG8RF3dYqDnfYxjk7JSdykupBOiWh+ZYe+V26P1bNFYl7z37eN37H5JA/ap7zUw=
-X-Received: by 2002:a1f:ff11:: with SMTP id p17mr9338065vki.25.1587551586524;
- Wed, 22 Apr 2020 03:33:06 -0700 (PDT)
+        id S1731738AbgDVKzP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 Apr 2020 06:55:15 -0400
+Received: from conssluserg-04.nifty.com ([210.131.2.83]:63110 "EHLO
+        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728407AbgDVKzM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 Apr 2020 06:55:12 -0400
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46]) (authenticated)
+        by conssluserg-04.nifty.com with ESMTP id 03MAsqcF021330;
+        Wed, 22 Apr 2020 19:54:52 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 03MAsqcF021330
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1587552893;
+        bh=jfh1cK7HJOI325fUjanL8XPRkeokyI4Z/JTzo0Sr8Do=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=B80hubZ2FF2o4Lwg7A6dE55/FK55YkMbcV5VTqzDz1p5tgc6FqY7550SeasM8YlVa
+         UeFowE8sIQje/lY6KdTEL1qbZJ6owtDuynRDgUTmLz+d4w1aeNgSMq8ZZXaISqggo5
+         76YxmS3GHJ7zI7LZpGzd7hAludfGdAmPOK/TZgxECxYUZ9xphINa8ghnvHm4Ji+tXI
+         vmm3ypw23fGahpMLiilRKm7Sco+SvpNAR1XVibyiCVOm7NS/nrEbA1LTCAXLpgLSiJ
+         8OPgg8iLjg11vKjgS70d7Ma/IEwcl9kg7oZQuw3WKTrD5c6am6hmR3w8ufAedh3kYe
+         XXabkjRAbua7g==
+X-Nifty-SrcIP: [209.85.222.46]
+Received: by mail-ua1-f46.google.com with SMTP id i5so1124855uaq.1;
+        Wed, 22 Apr 2020 03:54:52 -0700 (PDT)
+X-Gm-Message-State: AGi0PuZ0gepQY6A1cigEwLM0luW2OXuwH/xYgbHJooo9YdYEPC/byT99
+        fUb2wf/357qIyeQFKKcsl9vFV2GOozZDt3xdMjQ=
+X-Google-Smtp-Source: APiQypL30Nui5tPzkrGBdvSXz/n6jOoR3K76pfkfTXG9nIPiej9yLCr1V7+RXT0AY8ax3rsoJqDfvRVZu7IF2lj0zKA=
+X-Received: by 2002:a67:6542:: with SMTP id z63mr19799049vsb.179.1587552891425;
+ Wed, 22 Apr 2020 03:54:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <408ebea1-725d-2f8e-7d26-a2cb4d7754d3@first-world.info> <20200422082836.GL25745@shell.armlinux.org.uk>
-In-Reply-To: <20200422082836.GL25745@shell.armlinux.org.uk>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 22 Apr 2020 12:32:30 +0200
-Message-ID: <CAPDyKFqCLN9-Wq8aYDRp4xYUQLa_1J1fMyiaE=CuANLbvDUYRw@mail.gmail.com>
-Subject: Re: 2 bug repport
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        alpha_one_x86 <alpha_one_x86@first-world.info>
-Cc:     Hu Ziji <huziji@marvell.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+References: <20200417145017.3932443d@canb.auug.org.au> <995a958c-15a1-cb05-e276-065c7f6e57fd@infradead.org>
+ <CAPDyKFqE7zfaKSbpBoBbrSCEnx+70dOrWs+=QG_x2G-Fpt6=ng@mail.gmail.com>
+ <ce11a0b5-22a6-dd18-f858-5d30f43e1128@intel.com> <CAK7LNARCT3YQEnVE0NMCphSuqvjLoG2EXdpdcAZuoEOD_mFyEw@mail.gmail.com>
+ <CAPDyKFqCnUzHQ9+FKH-w_VLRNQ_UvK4nmxw+hROwXkxucjzrUw@mail.gmail.com>
+In-Reply-To: <CAPDyKFqCnUzHQ9+FKH-w_VLRNQ_UvK4nmxw+hROwXkxucjzrUw@mail.gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Wed, 22 Apr 2020 19:54:15 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASpn++MWTdBCvFbiu3WgHbNVFhDSm+Ts1CmnbmYL_84GA@mail.gmail.com>
+Message-ID: <CAK7LNASpn++MWTdBCvFbiu3WgHbNVFhDSm+Ts1CmnbmYL_84GA@mail.gmail.com>
+Subject: Re: linux-next: Tree for Apr 17 (mmc/host/sdhci-of-at91.c)
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ludovic Desroches <ludovic.desroches@atmel.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 22 Apr 2020 at 10:29, Russell King - ARM Linux admin
-<linux@armlinux.org.uk> wrote:
+Hi Ulf,
+
+On Wed, Apr 22, 2020 at 7:15 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> On Wed, Apr 22, 2020 at 03:03:57AM -0400, alpha_one_x86 wrote:
-> > Hi,
+> On Mon, 20 Apr 2020 at 14:28, Masahiro Yamada <masahiroy@kernel.org> wrot=
+e:
 > >
-> > On mcbin platform I have uSD problem, repported but no reply on linux kernel
-> > bugzilla, https://bugzilla.kernel.org/show_bug.cgi?id=207083
+> > On Mon, Apr 20, 2020 at 7:28 PM Adrian Hunter <adrian.hunter@intel.com>=
+ wrote:
+> > >
+> > > On 20/04/20 12:12 pm, Ulf Hansson wrote:
+> > > > + Masahiro Yamada, Adrian Hunter
+> > > >
+> > > > On Fri, 17 Apr 2020 at 16:48, Randy Dunlap <rdunlap@infradead.org> =
+wrote:
+> > > >>
+> > > >> On 4/16/20 9:50 PM, Stephen Rothwell wrote:
+> > > >>> Hi all,
+> > > >>>
+> > > >>> Changes since 20200416:
+> > > >>>
+> > > >>
+> > > >> on i386:
+> > > >>
+> > > >>   CC      drivers/mmc/host/sdhci-of-at91.o
+> > > >> In file included from ../include/linux/build_bug.h:5:0,
+> > > >>                  from ../include/linux/bitfield.h:10,
+> > > >>                  from ../drivers/mmc/host/sdhci-of-at91.c:9:
+> > > >> ../drivers/mmc/host/sdhci-of-at91.c: In function =E2=80=98sdhci_at=
+91_set_clks_presets=E2=80=99:
+> > > >> ../include/linux/compiler.h:394:38: error: call to =E2=80=98__comp=
+iletime_assert_63=E2=80=99 declared with attribute error: FIELD_PREP: value=
+ too large for the field
+> > > >>   _compiletime_assert(condition, msg, __compiletime_assert_, __COU=
+NTER__)
+> > > >>                                       ^
+> > > >> ../include/linux/compiler.h:375:4: note: in definition of macro =
+=E2=80=98__compiletime_assert=E2=80=99
+> > > >>     prefix ## suffix();    \
+> > > >>     ^~~~~~
+> > > >> ../include/linux/compiler.h:394:2: note: in expansion of macro =E2=
+=80=98_compiletime_assert=E2=80=99
+> > > >>   _compiletime_assert(condition, msg, __compiletime_assert_, __COU=
+NTER__)
+> > > >>   ^~~~~~~~~~~~~~~~~~~
+> > > >> ../include/linux/build_bug.h:39:37: note: in expansion of macro =
+=E2=80=98compiletime_assert=E2=80=99
+> > > >>  #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), m=
+sg)
+> > > >>                                      ^~~~~~~~~~~~~~~~~~
+> > > >> ../include/linux/bitfield.h:49:3: note: in expansion of macro =E2=
+=80=98BUILD_BUG_ON_MSG=E2=80=99
+> > > >>    BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?  \
+> > > >>    ^~~~~~~~~~~~~~~~
+> > > >> ../include/linux/bitfield.h:94:3: note: in expansion of macro =E2=
+=80=98__BF_FIELD_CHECK=E2=80=99
+> > > >>    __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: "); \
+> > > >>    ^~~~~~~~~~~~~~~~
+> > > >> ../drivers/mmc/host/sdhci-of-at91.c:185:11: note: in expansion of =
+macro =E2=80=98FIELD_PREP=E2=80=99
+> > > >>   caps1 |=3D FIELD_PREP(SDHCI_CLOCK_MUL_MASK, clk_mul);
+> > >
+> > > My guess is the compiler has decided clk_mul is constant (probably (u=
+nsigned
+> > > int)-1) because there is no CONFIG_COMMON_CLK i.e. clk_get_rate() is =
+0
+> > >
+> > > So maybe add to config MMC_SDHCI_OF_AT91
+> > >
+> > >         depends on COMMON_CLK
+> > >
+> > > >>            ^~~~~~~~~~
 > >
-> > Any idea what patch try?
+> >
+> >
+> > I checked include/linux/clk.h
+> >
+> >
+> > clk_get_rate() is guarded by CONFIG_HAVE_CLK.
+> >
+> > I think
+> >
+> >     depends on HAVE_CLK
 >
-> I think that's a question for the MMC people.
->
-> If you go back to your working 4.20 kernel, does the problem go away?
-> If so, it sounds like a regression in the MMC subsystem.  If not, I
-> wonder if it could be the uSD card going bad.
->
-> However, I suspect the former.  I've seen one instance here where a
-> Clearfog GT8k (Armada 8040 based just like the mcbin) running 5.6 with
-> the rootfs on eMMC completely lost the ability to talk to the eMMC to
-> the point that the machine had to be power cycled to recover it -
-> merely rebooting did not.  I don't know the cause - the initial failure
-> had vanished from the kernel logs, and because the eMMC was no longer
-> accessible, the rsyslog files did not contain the details either.
-> I've since setup remote logging, and I'm currently waiting for it to
-> happen again.  I couldn't say if _that_ is a regression because I
-> haven't been using the GT8k until very recently, and I tend not to use
-> eMMC/uSD on the Macchiatobin that runs 24x7.
+> Do you have the possibility of sending a patch, asap. Otherwise I can
+> help to do it!?
 
-In v5.6 the following commits were introduced - and it has turned out
-that a few other sdhci controllers had issues with them (which we have
-fixed now).
 
-Perhaps you can try a v5.6 kernel and just revert them and see if that
-could help - as a start
+Sorry.
 
-533a6cfe08f9 ("mmc: core: Default to generic_cmd6_time as timeout in
-__mmc_switch()")
-ad91619aa9d7 ("mmc: block: Use generic_cmd6_time when modifying
-INAND_CMD38_ARG_EXT_CSD")
-24ed3bd01d6a ("mmc: core: Specify timeouts for BKOPS and CACHE_FLUSH for eMMC")
+I can send a patch if it is preferred.
 
-Kind regards
-Uffe
+Do you need a separate patch, or
+do you want to squash the fix-up
+to keep the bisectability?
+
+
+--=20
+Best Regards
+Masahiro Yamada
