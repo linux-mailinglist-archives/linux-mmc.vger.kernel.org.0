@@ -2,115 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73DD61B507D
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 Apr 2020 00:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E36F1B54CF
+	for <lists+linux-mmc@lfdr.de>; Thu, 23 Apr 2020 08:41:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726224AbgDVWqs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 22 Apr 2020 18:46:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38382 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725779AbgDVWqr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 Apr 2020 18:46:47 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FDCBC03C1AA
-        for <linux-mmc@vger.kernel.org>; Wed, 22 Apr 2020 15:46:46 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id t40so1622276pjb.3
-        for <linux-mmc@vger.kernel.org>; Wed, 22 Apr 2020 15:46:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=pLTuQArcwiFXcG9uc7P3/tOH2806IqFHASRaBcIcsEY=;
-        b=BSbkpzmsMrB61iVPWzBuW/+ZEnOUMyG61Cjfz/vz3GFTkoJosnfewYwwNytlJSg/r5
-         7urIvRN84RRm0goUbfxHHzHPdDP8mVksMX8xC3NIi85jZ0dxMD54ig+wXJWmGJ+PTddQ
-         Y/1YKuKZgP6vEwWbBfuWIfhMmf8ZfOiwR0UJs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=pLTuQArcwiFXcG9uc7P3/tOH2806IqFHASRaBcIcsEY=;
-        b=o4+4hEQ1eb5Qox0Sz1IObseU8YKL19Boqa+t/oaSRHRbtDKKz7QLRX70csSLduD+GB
-         rW/iSoH0jIVlRJyMzIufinKvJhnjfIUI2wbg8wO+y8XmBgce6KF9N+aZaZ5S9j5attMY
-         qVfgEErH63KaLOaggq6CjPiYya9P2I/u2TKS9VsWLNghGeeBWKTqmW7Wrh+pYety4Yy3
-         f6eecyz46pzeeolCd+0vNqNvmfaO9QmBAZfDm64YpGtx5I85QAIzZ0kT52J2/w4TaRmj
-         l9svF2KFUsSGqOmo+JoAToyR/dI9WF3tAJhwC5A3yh5UdKfiBLzfCpdXwY1vz8h4YBu9
-         GpIg==
-X-Gm-Message-State: AGi0PuZsPT/lEyg/ngKHyGrYqKnTSO7on9xh4yJuRFAKUsS3Pf0FAEz3
-        XSYRys0EYNz4p5yGY+iIlU5D0w==
-X-Google-Smtp-Source: APiQypKhDC0baxY/PgdACBGve8Req9KLYTUEXXH0x/85yLzgvD2k0uCeWYCvvSYzzEadi+NZNpZcBw==
-X-Received: by 2002:a17:90a:5aa7:: with SMTP id n36mr1056873pji.45.1587595606121;
-        Wed, 22 Apr 2020 15:46:46 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:4fff:7a6b:a335:8fde])
-        by smtp.gmail.com with ESMTPSA id h11sm539650pfo.120.2020.04.22.15.46.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Apr 2020 15:46:45 -0700 (PDT)
-Date:   Wed, 22 Apr 2020 15:46:43 -0700
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Yong Mao <yong.mao@mediatek.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        srv_heupstream@mediatek.com
-Subject: Re: [PATCH 3/3] mmc: core: fix mmc_sdio_reinit_card fail issue
-Message-ID: <20200422224643.GI199755@google.com>
-References: <1586835611-13857-1-git-send-email-yong.mao@mediatek.com>
- <1586835611-13857-4-git-send-email-yong.mao@mediatek.com>
+        id S1726032AbgDWGlU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 23 Apr 2020 02:41:20 -0400
+Received: from mga11.intel.com ([192.55.52.93]:42266 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725562AbgDWGlU (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 23 Apr 2020 02:41:20 -0400
+IronPort-SDR: 6jRoIPJAbcIrMJVXbgDd7zTpESDY2g/F2AEzq9TjlhZnysEjfDX9EW8zJkOSPSGlgCGXYjeQcP
+ T/ZDYFRCDplw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2020 23:41:19 -0700
+IronPort-SDR: 8PpPekKEOHoT+2vPHBXDsmC5DN9uBSNC5Jr88gOiRf/DzsJsNkrEdnZJGgTx6ra3YMfe7DJSwj
+ qWeHu4BovbVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,305,1583222400"; 
+   d="scan'208";a="255888898"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.157]) ([10.237.72.157])
+  by orsmga003.jf.intel.com with ESMTP; 22 Apr 2020 23:41:17 -0700
+Subject: Re: [PATCH -next] mmc: sdhci-pci-o2micro: Make some symbols static
+To:     Zou Wei <zou_wei@huawei.com>, ulf.hansson@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <1587624199-96926-1-git-send-email-zou_wei@huawei.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <6f04980f-6f0b-8028-82b5-860321508e69@intel.com>
+Date:   Thu, 23 Apr 2020 09:40:42 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <1587624199-96926-1-git-send-email-zou_wei@huawei.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1586835611-13857-4-git-send-email-yong.mao@mediatek.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Yong,
-
-On Tue, Apr 14, 2020 at 11:40:11AM +0800, Yong Mao wrote:
-> From: yong mao <yong.mao@mediatek.com>
+On 23/04/20 9:43 am, Zou Wei wrote:
+> Fix the following sparse warning:
 > 
-> If SDIO device is initialized by UHS mode, it will run with 1.8v power.
-> In this mode, mmc_go_idle may not make SDIO device go idle successfully
-> in some special SDIO device. And then it can't be re-initialized
-> successfully.
-> According to the logic in sdio_reset_comm and mmc_sdio_sw_reset,
-> invoking mmc_set_clock(host, host->f_min) before mmc_send_io_op_cond
-> can make this SDIO device back to right state.
->
+> drivers/mmc/host/sdhci-pci-o2micro.c:497:6: warning: symbol
+> 'sdhci_pci_o2_set_clock' was not declared. Should it be static?
+> drivers/mmc/host/sdhci-pci-o2micro.c:512:5: warning: symbol
+> 'sdhci_pci_o2_probe_slot' was not declared. Should it be static?
+> drivers/mmc/host/sdhci-pci-o2micro.c:581:5: warning: symbol
+> 'sdhci_pci_o2_probe' was not declared. Should it be static?
+> drivers/mmc/host/sdhci-pci-o2micro.c:786:5: warning: symbol
+> 'sdhci_pci_o2_resume' was not declared. Should it be static?
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Zou Wei <zou_wei@huawei.com>
 
-The commit message isn't very concise. Suggestion for a better
-structure:
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-mmc: core: reset clock to minimum speed during card reinit
-
-Some buggy (?) SDIO devices don't (consistently?) enter idle mode
-through mmc_go_idle() when running in UHS mode. [add rationale why
-setting the clock to minimum speed fixes this]
-
-
-Also the function sdio_reset_comm() mentioned in the commit message
-doesn't exist in recent kernels. And mmc_sdio_sw_reset() does not invoke
-mmc_send_io_op_cond(), as the commit message appears to claim.
-
-> Signed-off-by: Yong Mao <yong.mao@mediatek.com>
 > ---
->  drivers/mmc/core/sdio.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/mmc/host/sdhci-pci-o2micro.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-> index f173cad..dc4dc63 100644
-> --- a/drivers/mmc/core/sdio.c
-> +++ b/drivers/mmc/core/sdio.c
-> @@ -850,6 +850,7 @@ static int mmc_sdio_reinit_card(struct mmc_host *host)
+> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
+> index fa81050..e2a8468 100644
+> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
+> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+> @@ -494,7 +494,7 @@ static void sdhci_o2_enable_clk(struct sdhci_host *host, u16 clk)
+>  	}
+>  }
 >  
->  	sdio_reset(host);
->  	mmc_go_idle(host);
-> +	mmc_set_clock(host, host->f_min);
-
-mmc_sdio_sw_reset() - which is mentioned as reference in the commit
-message - sets the clock speed before sdio_reset(). Should this order
-be followed here too?
+> -void sdhci_pci_o2_set_clock(struct sdhci_host *host, unsigned int clock)
+> +static void sdhci_pci_o2_set_clock(struct sdhci_host *host, unsigned int clock)
+>  {
+>  	u16 clk;
+>  
+> @@ -509,7 +509,7 @@ void sdhci_pci_o2_set_clock(struct sdhci_host *host, unsigned int clock)
+>  	sdhci_o2_enable_clk(host, clk);
+>  }
+>  
+> -int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
+> +static int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
+>  {
+>  	struct sdhci_pci_chip *chip;
+>  	struct sdhci_host *host;
+> @@ -578,7 +578,7 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
+>  	return 0;
+>  }
+>  
+> -int sdhci_pci_o2_probe(struct sdhci_pci_chip *chip)
+> +static int sdhci_pci_o2_probe(struct sdhci_pci_chip *chip)
+>  {
+>  	int ret;
+>  	u8 scratch;
+> @@ -783,7 +783,7 @@ int sdhci_pci_o2_probe(struct sdhci_pci_chip *chip)
+>  }
+>  
+>  #ifdef CONFIG_PM_SLEEP
+> -int sdhci_pci_o2_resume(struct sdhci_pci_chip *chip)
+> +static int sdhci_pci_o2_resume(struct sdhci_pci_chip *chip)
+>  {
+>  	sdhci_pci_o2_probe(chip);
+>  	return sdhci_pci_resume_host(chip);
+> 
 
