@@ -2,71 +2,63 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07EAA1BF7F2
-	for <lists+linux-mmc@lfdr.de>; Thu, 30 Apr 2020 14:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6E751B8314
+	for <lists+linux-mmc@lfdr.de>; Sat, 25 Apr 2020 03:46:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726511AbgD3MKX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Thu, 30 Apr 2020 08:10:23 -0400
-Received: from [116.62.10.213] ([116.62.10.213]:54732 "EHLO mail.qdztrk.com"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S1725280AbgD3MKX (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 30 Apr 2020 08:10:23 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.qdztrk.com (Postfix) with ESMTP id 909C71E92CA
-        for <linux-mmc@vger.kernel.org>; Sat, 25 Apr 2020 08:21:52 +0800 (CST)
-Received: from mail.qdztrk.com ([127.0.0.1])
-        by localhost (mail.qdztrk.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 620PSubcW0gC for <linux-mmc@vger.kernel.org>;
-        Sat, 25 Apr 2020 08:21:51 +0800 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.qdztrk.com (Postfix) with ESMTP id 6F6E31C3DCC
-        for <linux-mmc@vger.kernel.org>; Sat, 25 Apr 2020 08:03:47 +0800 (CST)
-X-Virus-Scanned: amavisd-new at mail.qdztrk.com
-Received: from mail.qdztrk.com ([127.0.0.1])
-        by localhost (mail.qdztrk.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id hD8xoqMHR9n6 for <linux-mmc@vger.kernel.org>;
-        Sat, 25 Apr 2020 08:03:47 +0800 (CST)
-Received: from coris.com (unknown [103.207.36.17])
-        by mail.qdztrk.com (Postfix) with ESMTP id D2B3A24117F
-        for <linux-mmc@vger.kernel.org>; Sat, 25 Apr 2020 07:46:26 +0800 (CST)
-Reply-To: kentpace@sina.com
-From:   Kent Pace <kentpace@coris.com>
-To:     linux-mmc@vger.kernel.org
-Subject: URGENT!! PLEASE READ
-Date:   24 Apr 2020 16:46:23 -0700
-Message-ID: <20200424164622.1BBE9AED66E1E9F6@coris.com>
+        id S1726059AbgDYBp6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 24 Apr 2020 21:45:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43930 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726038AbgDYBp6 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 24 Apr 2020 21:45:58 -0400
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C8FC720776;
+        Sat, 25 Apr 2020 01:45:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587779158;
+        bh=Bsxnl2K3A5XAIn6prZzLDll+iJkvSiJDNO68VKWaOG0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=A6xJQGCHctBWbt0qg3tmipfzwSFl/LhY1h9HmPFtN+AURFrQ0SuKuJGoudCbVcPB2
+         +Lr7mG/FrKTLe528cp/UlqzbmYrrefFomy99fIorAT2Z8tkjQnXTuCbp5HLw/BfGmm
+         0XkxjTWUqVwn09sbQGA0wcCH/AsJDtbk1qt6NhMc=
+Date:   Fri, 24 Apr 2020 21:45:56 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Sowjanya Komatineni <skomatineni@nvidia.com>
+Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        baolin.wang@linaro.org, kstewart@linuxfoundation.org,
+        tglx@linutronix.de, bradleybolen@gmail.com,
+        gregkh@linuxfoundation.org, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, anrao@nvidia.com,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 5.4.33 0/2] Fix for long operation cmds busy detection
+Message-ID: <20200425014556.GD13035@sasha-vm>
+References: <1587758766-3274-1-git-send-email-skomatineni@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <1587758766-3274-1-git-send-email-skomatineni@nvidia.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dear Friend,
+On Fri, Apr 24, 2020 at 01:06:04PM -0700, Sowjanya Komatineni wrote:
+>This series is to backport the upstream patches that fixes busy detection
+>for long operation mmc commands by implementing Tegra specific timeout
+>callback to switch between finite and infinite HW busy detection wait
+>modes.
+>
+>
+>Sowjanya Komatineni (2):
+>  sdhci: tegra: Implement Tegra specific set_timeout callback
+>  sdhci: tegra: Enable MMC_CAP_WAIT_WHILE_BUSY host capability
 
+What regression do these patches fix?
 
-There is something very important I need to discuss with you.  I 
-am writing  this letter in tears and fear. In tears because I 
-will soon depart and in fear because I don't really know if you 
-will do this faithfully.
-
-I am COVID-19  patient and the doctor has already confirmed I may 
-not last for the next 7 days.
-
-I have substantial amount of money deposited in a security vault 
-around your country. It is in trunk boxes and once  I receive 
-your response and see your readiness to claim the money 
-immediately, I will forward the needed documents and the contact 
-of the security vault where the consignment is deposited,
-I am not asking you to give me anything but I want you to help 
-people that has been infected with this deadly virus with 60% of 
-the money and 40% should be for you and your family.
-
-I will disclose exact amount in the boxes as soon as I 
-receive your response.
-
-
-Regards.
-
+-- 
+Thanks,
+Sasha
