@@ -2,125 +2,62 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 618CC1BA131
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 Apr 2020 12:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B624B1BA2A1
+	for <lists+linux-mmc@lfdr.de>; Mon, 27 Apr 2020 13:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726507AbgD0Kar (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 Apr 2020 06:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53322 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726485AbgD0Kar (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Apr 2020 06:30:47 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6EE8C0610D5;
-        Mon, 27 Apr 2020 03:30:46 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id x2so5103022pfx.7;
-        Mon, 27 Apr 2020 03:30:46 -0700 (PDT)
+        id S1727090AbgD0Lli (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 Apr 2020 07:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727077AbgD0Llg (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Apr 2020 07:41:36 -0400
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3359BC0A5533
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
+Received: by mail-il1-x141.google.com with SMTP id b18so16332614ilf.2
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=q+MBCNDaLw3uQE6AgVXdsrI4+m1caWL4Ufysj/pafog=;
-        b=qqAgyWF/2DUdL2/CJEqRS+BbSa4hMbmdEt/4d762uqgEWxO95ANdX62WbFLqETkM+X
-         kpART+tYOYWahFR+HiWtkeIOBirkpF95mgczf0nsw3BywtSk70q18FfgV/XIflprJ4m4
-         sMuJh0p74w/uno3rz/uMy5ETltHy/1P4Llkl9pFGwL1x2Ljoy+Vh6mIsjZMTscIPb0eO
-         nCt5Halq9amuWpOAqBoVH2jKIxIJt4sLm5h/uSnFukWGQnu/7vWtjCuXXjtwEYU75qdx
-         F/y3gOeRgnAhId4RLNvGACHEK/SJxIuFQTshJfKmaQjF1On/huwYYvVTvMv2rreN73A0
-         OcAg==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=uI1U3pP4FazEZaTfkDGgaf1Qyb1hL6AlgZB9tozzlJtw0tc2p0xAeW9BNdbY4A2XuL
+         JYn8lE6gg3HqjBgRaTT8CTSOLDZ9E79yDyBM0EGnWldSdHyzrk+BT/7frJGn/PAhMIrE
+         VCZdq7yfljhgiOOYhIeLP2AIIFXvLFMREe3IREMgf/Wimn5okrCaqK4gkS0+n2Tqfq3c
+         EFYh4cYLyK3nIET0YOm2adzDe5W5QN3hsgSvwW72euh+PRPDs3oxC82+7cfg/ZGTOz8/
+         eTagf6SblJMWIJeJ59y/zg3//EVOq9RPByBfKkQCDUJB6vE62XJLcx9qUgZNIxoYrz8S
+         JAeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=q+MBCNDaLw3uQE6AgVXdsrI4+m1caWL4Ufysj/pafog=;
-        b=OOfoJO2lGV8DPOYvAni+EeIMnQxOstfvtOY/Sqz18WSZQ5aS+QJHD+IhkDAd0mti6y
-         7QiKKXr0GNcRwklc5MrKREcyukVvsESuOxUBl1wnVbZXHrG4+8w8n4DyanOEx6bBahxZ
-         rD2Ajzr8tn86A7iyb9XoKtt1S9MMYbIbw00vZY6gKkDYVzM/JntkPBPdIxLfBtar7jVG
-         zzpYFc8FNw6Ez7hCKJlL21z8thhiGTKK90ABuVqIvPjcDFamPwI4xytRgwyV511t4gab
-         VJdhsUhL3SGi0jh4lfC8dM3PnC7GbqX2rxJEkG5O8Ez3JbVfxq0VEOM4nCK98CKHOlEi
-         SYdw==
-X-Gm-Message-State: AGi0PubU1IyMeRG8s1a+nKW1/h0QGzYD+SzBZ4bYS/2kZzI2xFhpj35i
-        sowWolp9hMwMpB6xx1sUVtwTNd82
-X-Google-Smtp-Source: APiQypJCwFXeuNCVc8cCXhqFJneZXNnH0wpU89wvK1KdOiPMhS5qG94Fl7kFk0wqde+yngVJAvavGA==
-X-Received: by 2002:a63:ce17:: with SMTP id y23mr21384308pgf.194.1587983446412;
-        Mon, 27 Apr 2020 03:30:46 -0700 (PDT)
-Received: from gli-arch.genesyslogic.com.tw (60-251-58-169.HINET-IP.hinet.net. [60.251.58.169])
-        by smtp.gmail.com with ESMTPSA id i25sm11867975pfo.196.2020.04.27.03.30.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2020 03:30:46 -0700 (PDT)
-From:   Ben Chuang <benchuanggli@gmail.com>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ben.chuang@genesyslogic.com.tw, Renius.Chen@genesyslogic.com.tw,
-        vineethrp@gmail.com, dflogeras2@gmail.com,
-        Ben Chuang <benchuanggli@gmail.com>,
-        Renius Chen <renius.chen@genesyslogic.com.tw>
-Subject: [PATCH] mmc: sdhci-pci-gli: Fix no irq handler from suspend
-Date:   Mon, 27 Apr 2020 18:30:48 +0800
-Message-Id: <20200427103048.20785-1-benchuanggli@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=GWgvmloHZ/Urda5rVpgd3OizS0aYwt1KUlEZ3aBn5W6w/Lno433ukcUGxkqntTBzAP
+         TJ6MDCQWyfm2A3Geifo63hEnaQ70IqNnI/4cYp7d4jXUD7KHzJLboQY7xGeAIz6Qv7It
+         AUxVyZ11rl+SHBp+NaSbrKIlesB2EYUGGJ/hvbmHM7kDxnu3CwQi+PEn/eIq3azeD1JZ
+         oC6BCVoEwxGTnbAbhLatkDO6MsVZixgf7JcAcED9fluqnSudciOQ0pxF3ur4HCGkG7tx
+         SlPt2fiEV64uNpMwPiMGdsSCETSCDRXzkSrtxgEcmFdekA7NSpUitfHbE8ktSew34tzS
+         TBOw==
+X-Gm-Message-State: AGi0PuaYjdXEIaz1Eg49PWnowesRFEP5GLqCDQsPHzVw9SXdONm2vPht
+        uPEbCYhXozgYs8HYYhOD2BliZLRTRP8AqROKJS/ceJ8owaM=
+X-Google-Smtp-Source: APiQypJWdjzUZMbeRoAX94bUJV0IgwyoF5kUG7iPo3CBzKxW8lStFNsM/6tz3An/TyzRuH2Qw14DtavsVumw6JVLls0=
+X-Received: by 2002:a6b:7d4a:: with SMTP id d10mr4072296ioq.70.1587987694042;
+ Mon, 27 Apr 2020 04:41:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a5d:8f89:0:0:0:0:0 with HTTP; Mon, 27 Apr 2020 04:41:33
+ -0700 (PDT)
+Reply-To: convy0090@gmail.com
+From:   Ruben CONVY <andrewboccc@gmail.com>
+Date:   Mon, 27 Apr 2020 12:41:33 +0100
+Message-ID: <CAHVC0+Ag87TMCmfNNwWbxXOFxn5166q8GG5wEfPjwtixj9=EXQ@mail.gmail.com>
+Subject: Why continued silence 2
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-
-The kernel prints a message similar to
-"[   28.881959] do_IRQ: 5.36 No irq handler for vector"
-when GL975x resumes from suspend. Implement a resume callback to fix this.
-
-Fixes: 31e43f31890c ("mmc: sdhci-pci-gli: Enable MSI interrupt for GL975x")
-Co-developed-by: Renius Chen <renius.chen@genesyslogic.com.tw>
-Signed-off-by: Renius Chen <renius.chen@genesyslogic.com.tw>
-Tested-by: Dave Flogeras <dflogeras2@gmail.com>
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
----
- drivers/mmc/host/sdhci-pci-gli.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index ce15a05f23d4..7195dd33ac3d 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -334,6 +334,18 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
- 	return value;
- }
- 
-+#ifdef CONFIG_PM_SLEEP
-+int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
-+{
-+	struct sdhci_pci_slot *slot = chip->slots[0];
-+
-+	pci_free_irq_vectors(slot->chip->pdev);
-+	gli_pcie_enable_msi(slot);
-+
-+	return sdhci_pci_resume_host(chip);
-+}
-+#endif
-+
- static const struct sdhci_ops sdhci_gl9755_ops = {
- 	.set_clock		= sdhci_set_clock,
- 	.enable_dma		= sdhci_pci_enable_dma,
-@@ -348,6 +360,9 @@ const struct sdhci_pci_fixes sdhci_gl9755 = {
- 	.quirks2	= SDHCI_QUIRK2_BROKEN_DDR50,
- 	.probe_slot	= gli_probe_slot_gl9755,
- 	.ops            = &sdhci_gl9755_ops,
-+#ifdef CONFIG_PM_SLEEP
-+	.resume         = sdhci_pci_gli_resume,
-+#endif
- };
- 
- static const struct sdhci_ops sdhci_gl9750_ops = {
-@@ -366,4 +381,7 @@ const struct sdhci_pci_fixes sdhci_gl9750 = {
- 	.quirks2	= SDHCI_QUIRK2_BROKEN_DDR50,
- 	.probe_slot	= gli_probe_slot_gl9750,
- 	.ops            = &sdhci_gl9750_ops,
-+#ifdef CONFIG_PM_SLEEP
-+	.resume         = sdhci_pci_gli_resume,
-+#endif
- };
--- 
-2.26.2
-
+Did you receive my previous email regarding your family inheritance?
+Reply strictly through: convy0090@gmail.com
+Best Regards,
+Ruben CONVY
