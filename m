@@ -2,137 +2,100 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2371BAF1E
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 Apr 2020 22:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7641BB246
+	for <lists+linux-mmc@lfdr.de>; Tue, 28 Apr 2020 01:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726946AbgD0UN3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 Apr 2020 16:13:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60156 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726850AbgD0UMx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Apr 2020 16:12:53 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208BFC0610D5;
-        Mon, 27 Apr 2020 13:12:52 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id u127so341685wmg.1;
-        Mon, 27 Apr 2020 13:12:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=x1zonVb/BbRigHqP69T8VBwuU0bduWhkzmHUC7793dM=;
-        b=SrVJHLVxg21IVO23W2AGolBEV2fVOJXFbod/kjJ1H1wEPl5pEpJr/F/wRuYBSvaPWY
-         ebs82S2n+w7pEciImNGMDyjj8WMYy0aFXxC2/h9xMrFKDeDFD7y1GUgA+J7T65aZFtjk
-         xs+8LWL+QAjxaLOkJg9LLwL9VMN9sHcKKDqheNk8/Uv65WB4ddP3F8IGqQKJlx6szR0X
-         13rb5/Jl77mFcKUcs1VlFO8s+TDBcBnOUf+nvG3h0PwECAejKS6TUcY7YcuNV1S+a10p
-         JQO1hN/3SQkDv+hdIAHZMpeywFRqxk9wNr4gbu9Nh2EoW21Qa1Ef2IMIpI9ioWIklA9s
-         Nhlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=x1zonVb/BbRigHqP69T8VBwuU0bduWhkzmHUC7793dM=;
-        b=fLtling7ZjvO2p88wh2xhe2x628x3B2NonXUWZPEAWsYjDVrfzdJmxtOBFzzHxUxBe
-         QVfJewwkUFOxVqWbo+tW7KS6EJGgIciOPD3JevWTTMsp1GkjHDZBT/dgpFdI9vRSqaXE
-         9P2oBH5sy4aUrW2cp8fHYuJJ0B2++qWciFkfPVL6BZwL6TxppWhnXBXKQKWNDFfsLfrw
-         9vimFMiiGtOqBLkG9pI5BSFKB2W6HpWoeXBmgHNatzo8Z/namT3/QCT8N9VzvGD8hk3d
-         PUGHD/vYwDR4UnE+Pzeyuj/6BHP2tWivH+S4Z35iv817TKtGgOmWKWt460P3IuX2aKF0
-         8lSg==
-X-Gm-Message-State: AGi0PubVWnzbKPW2/56X23+atzO6ZylaKvMcJuFmSRJs82v7nscomvYP
-        MSlCbH187Tbwdx3rpxMP1I70V7GxZMKGzN/0oBI=
-X-Google-Smtp-Source: APiQypLiCFtjL1zFB7OdQgYbc9SVeTlF4OAYPBx3Gc5cNaKO/YffjNVwodyP+eWjvYbcJf5NrAaZUOvwpX6rrjojCTU=
-X-Received: by 2002:a7b:c74d:: with SMTP id w13mr436755wmk.36.1588018370739;
- Mon, 27 Apr 2020 13:12:50 -0700 (PDT)
+        id S1726478AbgD0X5S (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 Apr 2020 19:57:18 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:3807 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726355AbgD0X5S (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Apr 2020 19:57:18 -0400
+X-UUID: d81cef179746473c9e5ea4be07c45f40-20200428
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=aI88OR5SoOs9oP8eEG6yM2tCCWEGm3PDTnuHvBFnmpg=;
+        b=KE7SstV4bwvN+YCOdoKCXfKRyg7mhOAKILQa7nJERn3w3DCd+1JUkMPcoofMTKi98F5oqmBOoIif1PsMkCfmb3IxGowaBYbB/PD0C9ZDFF4kf1q019cZI2Oexh+T7qOhvA0+dZS+40Wz95rhs9jltandraGtcAaUkoxZiQVWR2k=;
+X-UUID: d81cef179746473c9e5ea4be07c45f40-20200428
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <chun-hung.wu@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1311210949; Tue, 28 Apr 2020 07:57:14 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 28 Apr 2020 07:57:08 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 28 Apr 2020 07:56:09 +0800
+From:   Chun-Hung Wu <chun-hung.wu@mediatek.com>
+To:     <mirq-linux@rere.qmqm.pl>, Jonathan Hunter <jonathanh@nvidia.com>,
+        Al Cooper <alcooperx@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Pan Bian <bianpan2016@163.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Mathieu Malaterre <malat@debian.org>,
+        Stanley Chu <stanley.chu@mediatek.com>,
+        Kuohong Wang <kuohong.wang@mediatek.com>,
+        Yong Mao <yong.mao@mediatek.com>
+CC:     <kernel-team@android.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <wsd_upstream@mediatek.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+        Chun-Hung Wu <chun-hung.wu@mediatek.com>
+Subject: [PATCH v5 0/5] mmc: mediatek: add mmc cqhci support
+Date:   Tue, 28 Apr 2020 07:56:03 +0800
+Message-ID: <1588031768-23677-1-git-send-email-chun-hung.wu@mediatek.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-References: <20200427103048.20785-1-benchuanggli@gmail.com>
-In-Reply-To: <20200427103048.20785-1-benchuanggli@gmail.com>
-From:   Vineeth Pillai <vineethrp@gmail.com>
-Date:   Mon, 27 Apr 2020 16:12:39 -0400
-Message-ID: <CAOBnfPi+ztJ7vtgQ9qcHhGKDB8QKW3F=_9MR2roQOBLfrtqbDg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-pci-gli: Fix no irq handler from suspend
-To:     Ben Chuang <benchuanggli@gmail.com>
-Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?B?QmVuQ2h1YW5nW+iOiuaZuumHj10=?= 
-        <ben.chuang@genesyslogic.com.tw>,
-        =?UTF-8?B?UmVuaXVzQ2hlblvpmbPlu7rlro9d?= 
-        <Renius.Chen@genesyslogic.com.tw>, dflogeras2@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Tested-by: Vineeth Pillai <vineethrp@gmail.com>
+VGhpcyBzZXJpZXMgcHJvdmlkZXMgTWVkaWFUZWsgY3FoY2kgaW1wbGVtZW50YXRpb25zIGFzIGJl
+bG93Og0KICAtIEV4dGVuZCBtbWNfb2ZfcGFyc2UoKSB0byBwYXJzZSBDUUUgYmluZGluZ3MNCiAg
+LSBSZW1vdmUgcmVkdW5kYW50IGhvc3QgQ1FFIGJpbmRpbmdzDQogIC0gUmVmaW5lIG1zZGMgdGlt
+ZW91dCBhcGkgdG8gcmVkdWNlIHJlZHVuZGFudCBjb2RlDQogIC0gTWVkaWFUZWsgY29tbWFuZCBx
+dWV1ZSBzdXBwb3J0DQogIC0gZHQtYmluZGluZ3MgZm9yIG10Njc3OQ0KDQp2MSAtPiB2MjoNCiAg
+LSBBZGQgbW9yZSBwYXRjaCBkZXRhaWxzIGluIGNvbW1pdCBtZXNzYWdlDQogIC0gU2VwYXJhdGUg
+bXNkYyB0aW1lb3V0IGFwaSByZWZpbmUgdG8gaW5kaXZpZHVhbCBwYXRjaA0KDQp2MiAtPiB2MzoN
+CiAgLSBSZW1vdmUgQ1ItSWQsIENoYW5nZS1JZCBhbmQgRmVhdHVyZSBpbiBwYXRjaGVzDQogIC0g
+QWRkIFNpZ25lZC1vZmYtYnkgaW4gcGF0Y2hlcw0KDQp2MyAtPiB2NDoNCiAgLSBSZWZpbmUgQ1FF
+IGJpbmRpbmdzIGluIG1tY19vZl9wYXJzZSAoVWxmIEhhbnNzb24pDQogIC0gUmVtb3ZlIHJlZHVu
+ZGFudCBob3N0IENRRSBiaW5kaW5ncyAoTGludXggV2FsbGVpaikNCg0KdjQgLT4gdjU6DQogIC0g
+QWRkIEFja2VkLWJ5IGFuZCBtb3JlIG1haW50YWluZXJzDQoNCkNodW4tSHVuZyBXdSAoNSk6DQog
+IFsxLzVdIG1tYzogY29yZTogRXh0ZW5kIG1tY19vZl9wYXJzZSgpIHRvIHBhcnNlIENRRSBiaW5k
+aW5ncw0KICBbMi81XSBtbWM6IGhvc3Q6IFJlbW92ZSByZWR1bmRhbnQgQ1FFIGJpbmRpbmdzDQog
+IFszLzVdIG1tYzogbWVkaWF0ZWs6IHJlZmluZSBtc2RjIHRpbWVvdXQgYXBpDQogIFs0LzVdIG1t
+YzogbWVkaWF0ZWs6IGNvbW1hbmQgcXVldWUgc3VwcG9ydA0KICBbNS81XSBkdC1iaW5kaW5nczog
+bW1jOiBtZWRpYXRlazogQWRkIGRvY3VtZW50IGZvciBtdDY3NzkNCg0KIERvY3VtZW50YXRpb24v
+ZGV2aWNldHJlZS9iaW5kaW5ncy9tbWMvbXRrLXNkLnR4dCB8ICAgMSArDQogZHJpdmVycy9tbWMv
+Y29yZS9ob3N0LmMgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA1ICsNCiBkcml2ZXJzL21t
+Yy9ob3N0L210ay1zZC5jICAgICAgICAgICAgICAgICAgICAgICAgfCAxNTEgKysrKysrKysrKysr
+KysrKysrKysrLS0NCiBkcml2ZXJzL21tYy9ob3N0L3NkaGNpLWJyY21zdGIuYyAgICAgICAgICAg
+ICAgICAgfCAgMTEgKy0NCiBkcml2ZXJzL21tYy9ob3N0L3NkaGNpLW1zbS5jICAgICAgICAgICAg
+ICAgICAgICAgfCAgIDMgKy0NCiBkcml2ZXJzL21tYy9ob3N0L3NkaGNpLW9mLWFyYXNhbi5jICAg
+ICAgICAgICAgICAgfCAgIDMgLQ0KIGRyaXZlcnMvbW1jL2hvc3Qvc2RoY2ktdGVncmEuYyAgICAg
+ICAgICAgICAgICAgICB8ICAgMiArLQ0KIDcgZmlsZXMgY2hhbmdlZCwgMTU1IGluc2VydGlvbnMo
+KyksIDIxIGRlbGV0aW9ucygtKQ0KDQotLSANCjIuNi40DQo=
 
-Thanks,
-Vineeth
-
-On Mon, Apr 27, 2020 at 6:30 AM Ben Chuang <benchuanggli@gmail.com> wrote:
->
-> From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
->
-> The kernel prints a message similar to
-> "[   28.881959] do_IRQ: 5.36 No irq handler for vector"
-> when GL975x resumes from suspend. Implement a resume callback to fix this.
->
-> Fixes: 31e43f31890c ("mmc: sdhci-pci-gli: Enable MSI interrupt for GL975x")
-> Co-developed-by: Renius Chen <renius.chen@genesyslogic.com.tw>
-> Signed-off-by: Renius Chen <renius.chen@genesyslogic.com.tw>
-> Tested-by: Dave Flogeras <dflogeras2@gmail.com>
-> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> ---
->  drivers/mmc/host/sdhci-pci-gli.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
->
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-> index ce15a05f23d4..7195dd33ac3d 100644
-> --- a/drivers/mmc/host/sdhci-pci-gli.c
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -334,6 +334,18 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
->         return value;
->  }
->
-> +#ifdef CONFIG_PM_SLEEP
-> +int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
-> +{
-> +       struct sdhci_pci_slot *slot = chip->slots[0];
-> +
-> +       pci_free_irq_vectors(slot->chip->pdev);
-> +       gli_pcie_enable_msi(slot);
-> +
-> +       return sdhci_pci_resume_host(chip);
-> +}
-> +#endif
-> +
->  static const struct sdhci_ops sdhci_gl9755_ops = {
->         .set_clock              = sdhci_set_clock,
->         .enable_dma             = sdhci_pci_enable_dma,
-> @@ -348,6 +360,9 @@ const struct sdhci_pci_fixes sdhci_gl9755 = {
->         .quirks2        = SDHCI_QUIRK2_BROKEN_DDR50,
->         .probe_slot     = gli_probe_slot_gl9755,
->         .ops            = &sdhci_gl9755_ops,
-> +#ifdef CONFIG_PM_SLEEP
-> +       .resume         = sdhci_pci_gli_resume,
-> +#endif
->  };
->
->  static const struct sdhci_ops sdhci_gl9750_ops = {
-> @@ -366,4 +381,7 @@ const struct sdhci_pci_fixes sdhci_gl9750 = {
->         .quirks2        = SDHCI_QUIRK2_BROKEN_DDR50,
->         .probe_slot     = gli_probe_slot_gl9750,
->         .ops            = &sdhci_gl9750_ops,
-> +#ifdef CONFIG_PM_SLEEP
-> +       .resume         = sdhci_pci_gli_resume,
-> +#endif
->  };
-> --
-> 2.26.2
->
-
-
--- 
-Cheers,
-~Vineeth
-
-## "Its not the load that breaks you, but the way u carry it!" ##
