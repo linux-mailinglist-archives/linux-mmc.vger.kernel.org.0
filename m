@@ -2,62 +2,127 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B624B1BA2A1
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 Apr 2020 13:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C47F11BA851
+	for <lists+linux-mmc@lfdr.de>; Mon, 27 Apr 2020 17:46:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727090AbgD0Lli (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 Apr 2020 07:41:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727077AbgD0Llg (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Apr 2020 07:41:36 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3359BC0A5533
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id b18so16332614ilf.2
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
-        b=uI1U3pP4FazEZaTfkDGgaf1Qyb1hL6AlgZB9tozzlJtw0tc2p0xAeW9BNdbY4A2XuL
-         JYn8lE6gg3HqjBgRaTT8CTSOLDZ9E79yDyBM0EGnWldSdHyzrk+BT/7frJGn/PAhMIrE
-         VCZdq7yfljhgiOOYhIeLP2AIIFXvLFMREe3IREMgf/Wimn5okrCaqK4gkS0+n2Tqfq3c
-         EFYh4cYLyK3nIET0YOm2adzDe5W5QN3hsgSvwW72euh+PRPDs3oxC82+7cfg/ZGTOz8/
-         eTagf6SblJMWIJeJ59y/zg3//EVOq9RPByBfKkQCDUJB6vE62XJLcx9qUgZNIxoYrz8S
-         JAeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
-        b=GWgvmloHZ/Urda5rVpgd3OizS0aYwt1KUlEZ3aBn5W6w/Lno433ukcUGxkqntTBzAP
-         TJ6MDCQWyfm2A3Geifo63hEnaQ70IqNnI/4cYp7d4jXUD7KHzJLboQY7xGeAIz6Qv7It
-         AUxVyZ11rl+SHBp+NaSbrKIlesB2EYUGGJ/hvbmHM7kDxnu3CwQi+PEn/eIq3azeD1JZ
-         oC6BCVoEwxGTnbAbhLatkDO6MsVZixgf7JcAcED9fluqnSudciOQ0pxF3ur4HCGkG7tx
-         SlPt2fiEV64uNpMwPiMGdsSCETSCDRXzkSrtxgEcmFdekA7NSpUitfHbE8ktSew34tzS
-         TBOw==
-X-Gm-Message-State: AGi0PuaYjdXEIaz1Eg49PWnowesRFEP5GLqCDQsPHzVw9SXdONm2vPht
-        uPEbCYhXozgYs8HYYhOD2BliZLRTRP8AqROKJS/ceJ8owaM=
-X-Google-Smtp-Source: APiQypJWdjzUZMbeRoAX94bUJV0IgwyoF5kUG7iPo3CBzKxW8lStFNsM/6tz3An/TyzRuH2Qw14DtavsVumw6JVLls0=
-X-Received: by 2002:a6b:7d4a:: with SMTP id d10mr4072296ioq.70.1587987694042;
- Mon, 27 Apr 2020 04:41:34 -0700 (PDT)
+        id S1728119AbgD0Pqy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 Apr 2020 11:46:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46320 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727077AbgD0Pqy (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Apr 2020 11:46:54 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6973AC0610D5;
+        Mon, 27 Apr 2020 08:46:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=WJhX0gy4PLhLVzhkqKlPTRBI4F1++Yw2mgGmpA3PmDk=; b=Rv9xl/0yJAvArM66lMVoxSWEMQ
+        3Qh/ze4bgZMsEwvC5UUATGsA9ndC2ScJuPNo9xuctTBXRJo5vw9hJsy620rzuA+6fG7N0rMSJ4Ldg
+        57nntPN3w9G49xjrPcPPxzMKCxNlEAe5dlw5t04X/s4HsA/6UOTAAMAeik+Qz2XZPrxeEtp82fUtt
+        Jr7x3NcjgEjOVQnZyTTB8P0XwdhKAspRZ7sD9Td1qDK8ZIHp/jaGQ8LcNHFsUPCbu+Gtxz6TKMbAK
+        Awqyk3g/bsIaq4woSAzA3r6HJ5HmKsRwiyhFjY3dYtVOjI2t6CgFPy+oSNkQmF0hMXalSzMCMHzK4
+        8GhNKZnw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jT5y1-0007q0-PV; Mon, 27 Apr 2020 15:46:45 +0000
+Date:   Mon, 27 Apr 2020 08:46:45 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Baolin Wang <baolin.wang7@gmail.com>
+Cc:     axboe@kernel.dk, ulf.hansson@linaro.org, adrian.hunter@intel.com,
+        arnd@arndb.de, linus.walleij@linaro.org, paolo.valente@linaro.org,
+        ming.lei@redhat.com, orsonzhai@gmail.com, zhang.lyra@gmail.com,
+        linux-mmc@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 1/7] block: Extand commit_rqs() to do batch
+ processing
+Message-ID: <20200427154645.GA1201@infradead.org>
+References: <cover.1587888520.git.baolin.wang7@gmail.com>
+ <c8bd9e5ba815a3f1bc9dac0a4bc2fbadadbc0a43.1587888520.git.baolin.wang7@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a5d:8f89:0:0:0:0:0 with HTTP; Mon, 27 Apr 2020 04:41:33
- -0700 (PDT)
-Reply-To: convy0090@gmail.com
-From:   Ruben CONVY <andrewboccc@gmail.com>
-Date:   Mon, 27 Apr 2020 12:41:33 +0100
-Message-ID: <CAHVC0+Ag87TMCmfNNwWbxXOFxn5166q8GG5wEfPjwtixj9=EXQ@mail.gmail.com>
-Subject: Why continued silence 2
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c8bd9e5ba815a3f1bc9dac0a4bc2fbadadbc0a43.1587888520.git.baolin.wang7@gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Did you receive my previous email regarding your family inheritance?
-Reply strictly through: convy0090@gmail.com
-Best Regards,
-Ruben CONVY
+extand in the subject really shpuld be 'extend'
+
+On Sun, Apr 26, 2020 at 05:38:54PM +0800, Baolin Wang wrote:
+> From: Ming Lei <ming.lei@redhat.com>
+> 
+> Now some SD/MMC host controllers can support packed command or packed request,
+> that means we can package several requests to host controller at one time
+> to improve performence.
+> 
+> But the blk-mq always takes one request from the scheduler and dispatch it to
+> the device, regardless of the driver or the scheduler, so there should only
+> ever be one request in the local list in blk_mq_dispatch_rq_list(), that means
+> the bd.last is always true and the driver can not use bd.last to decide if
+> there are requests are pending now in hardware queue to help to package
+> requests.
+> 
+> Thus this patch introduces a new 'BLK_MQ_F_FORCE_COMMIT_RQS' flag to call
+> .commit_rqs() to do batch processing if necessary.
+> 
+> Signed-off-by: Ming Lei <ming.lei@redhat.com>
+> Tested-by: Baolin Wang <baolin.wang7@gmail.com>
+> Signed-off-by: Baolin Wang <baolin.wang7@gmail.com>
+> ---
+>  block/blk-mq-sched.c   | 29 ++++++++++++++++++++---------
+>  block/blk-mq.c         | 15 ++++++++++-----
+>  include/linux/blk-mq.h |  1 +
+>  3 files changed, 31 insertions(+), 14 deletions(-)
+> 
+> diff --git a/block/blk-mq-sched.c b/block/blk-mq-sched.c
+> index 74cedea56034..3429a71a7364 100644
+> --- a/block/blk-mq-sched.c
+> +++ b/block/blk-mq-sched.c
+> @@ -85,11 +85,12 @@ void blk_mq_sched_restart(struct blk_mq_hw_ctx *hctx)
+>   * its queue by itself in its completion handler, so we don't need to
+>   * restart queue if .get_budget() returns BLK_STS_NO_RESOURCE.
+>   */
+> -static void blk_mq_do_dispatch_sched(struct blk_mq_hw_ctx *hctx)
+> +static bool blk_mq_do_dispatch_sched(struct blk_mq_hw_ctx *hctx)
+
+This function already returns an int in the current for-5.8/block tree.
+
+> +		if (!(hctx->flags & BLK_MQ_F_FORCE_COMMIT_RQS)) {
+> +			if (list_empty(list)) {
+> +				bd.last = true;
+> +			} else {
+> +				nxt = list_first_entry(list, struct request,
+> +						       queuelist);
+> +				bd.last = !blk_mq_get_driver_tag(nxt);
+> +			}
+> +		} else {
+> +			bd.last = false;
+>  		}
+
+This seems a little odd in terms of code flow.  Why not:
+
+		if (hctx->flags & BLK_MQ_F_FORCE_COMMIT_RQS) {
+			bd.last = false;
+		} else if (list_empty(list)) {
+			bd.last = true;
+		} else {
+			nxt = list_first_entry(list, struct request, queuelist);
+			bd.last = !blk_mq_get_driver_tag(nxt);
+		}
+
+> diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
+> index f389d7c724bd..6a20f8e8eb85 100644
+> --- a/include/linux/blk-mq.h
+> +++ b/include/linux/blk-mq.h
+> @@ -391,6 +391,7 @@ struct blk_mq_ops {
+>  enum {
+>  	BLK_MQ_F_SHOULD_MERGE	= 1 << 0,
+>  	BLK_MQ_F_TAG_SHARED	= 1 << 1,
+> +	BLK_MQ_F_FORCE_COMMIT_RQS = 1 << 3,
+
+Maybe BLK_MQ_F_ALWAYS_COMMIT might be a better name?  Also this
+flag (just like the existing ones..) could really use a comment
+explaining it.
