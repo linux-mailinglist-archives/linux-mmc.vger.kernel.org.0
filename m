@@ -2,1423 +2,161 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 061951BCE1B
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 Apr 2020 23:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8793E1BD70D
+	for <lists+linux-mmc@lfdr.de>; Wed, 29 Apr 2020 10:21:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726773AbgD1VCs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 28 Apr 2020 17:02:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39262 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726750AbgD1VCr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 Apr 2020 17:02:47 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59393C03C1AC;
-        Tue, 28 Apr 2020 14:02:46 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id k1so26391811wrx.4;
-        Tue, 28 Apr 2020 14:02:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=2cxBd1nD5CO1KcYXc4bQumlrLo8Qq615ilEdZkjePF4=;
-        b=SmFUaqkZBPoJWfZyYRho5iqtfC5dIVR91tP97KxxL6hCUPuvQWupkJlqoSf3cgCpU3
-         SEAW27TgBInrQclJlvWHhrAP/f4vfKekbyEFKwhLADABRNNacJY0PPEZm3lkMLYtFcQj
-         zftKFoKuscJDPbAKAxcxzLc0jy3V/6bdyTkBaisbBelC9MR+Axgl7NLAhvIi+w6ghGph
-         enhIVBBJdz27xetYDIfU8VEYtLvj1B586WBTGQr0uumr3hPAYXx6lOBvXdze35H0SGVK
-         ZtswabJb9/erTqAKPI+W7y5EBjXGCAZxQowbijX0oBMxgo/XBglXkykHN3/s6HvvDjo+
-         CinA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=2cxBd1nD5CO1KcYXc4bQumlrLo8Qq615ilEdZkjePF4=;
-        b=YNxKHY+M5wd0trgpKMG8yudhqf36qhXHhqs/QUc+A2stMxXSUopTTAIMpxSFAQOEmd
-         6NVLWYfuvBgLI6nFjAvp8hgBXW9n5H6C1N1le1I7vNwjijZn8479QRd3mqAAu731/BYh
-         McC7DXxOZsbtAB8DGLjrbAX5BJ1N6hRndCjGnfM1wWWy4It8QC+e9n6OJWGxLOnU24OP
-         iV4v/X6NJPVzNYdjU0qePASsoG6eVkW+19ACS11XymMDK4AKcLlQce9d1E0xEQhv7l9Q
-         q/h2E9SmmCevDXm37g59VcjzlwEjKxBWnHfCLkx6xvo6rBsWG5vnKbdtvdaGaddZqOHa
-         VTRQ==
-X-Gm-Message-State: AGi0PubkEwzW0CZ22QUpvgWDB6hBwL67D4N7KlxLyMPOzflTi+AffdoH
-        p+/fMyU92is78363YtIFD7s=
-X-Google-Smtp-Source: APiQypKH6eou9SQGtfoYevV2xmOClHRXA9bmQOPFvCgdek7M9cPkrnhAIDWf2418FvtL/XmfvA0UDA==
-X-Received: by 2002:a5d:634a:: with SMTP id b10mr35950805wrw.263.1588107763965;
-        Tue, 28 Apr 2020 14:02:43 -0700 (PDT)
-Received: from localhost.localdomain (p200300F137142E00428D5CFFFEB99DB8.dip0.t-ipconnect.de. [2003:f1:3714:2e00:428d:5cff:feb9:9db8])
-        by smtp.googlemail.com with ESMTPSA id x18sm4709243wmi.29.2020.04.28.14.02.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2020 14:02:43 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     linux-amlogic@lists.infradead.org, linux-mmc@vger.kernel.org,
-        ulf.hansson@linaro.org
-Cc:     devicetree@vger.kernel.org, robh+dt@kernel.org,
-        jianxin.pan@amlogic.com, linux-kernel@vger.kernel.org,
-        yinxin_1989@aliyun.com, linux-arm-kernel@lists.infradead.org,
-        lnykww@gmail.com, linux.amoon@gmail.com, jbrunet@baylibre.com,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH v6 2/2] mmc: host: meson-mx-sdhc: new driver for the Amlogic Meson SDHC host
-Date:   Tue, 28 Apr 2020 23:02:29 +0200
-Message-Id: <20200428210229.703309-3-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200428210229.703309-1-martin.blumenstingl@googlemail.com>
-References: <20200428210229.703309-1-martin.blumenstingl@googlemail.com>
+        id S1726430AbgD2IVW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 29 Apr 2020 04:21:22 -0400
+Received: from mailgw02.mediatek.com ([1.203.163.81]:22278 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726386AbgD2IVW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 29 Apr 2020 04:21:22 -0400
+X-UUID: 0fca8db431cc45a6b64e23d1b1db0205-20200429
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=lTlqFTrPf5IrpTbBnQKpE5jaipjUNN+C3YGiRSNSEWc=;
+        b=LV6yTAD3UDfkQnSDnLIBnej7cdePvbLY4vLSinZMKhcmAzpjIBp2XQlnaOucWe+eN3ayWnLezCcrUVEYI7Wy2tOqxLCV6VJzk/eB8Q5CjOQfP4DJMxZgn75px+NQJikDpYI9xWBO8FFqJnmoPn3tfGitm2uLjq45xbWlqeWQ8bg=;
+X-UUID: 0fca8db431cc45a6b64e23d1b1db0205-20200429
+Received: from mtkcas36.mediatek.inc [(172.27.4.253)] by mailgw02.mediatek.com
+        (envelope-from <yong.mao@mediatek.com>)
+        (mailgw01.mediatek.com ESMTP with TLS)
+        with ESMTP id 1525058838; Wed, 29 Apr 2020 16:21:09 +0800
+Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS31DR.mediatek.inc
+ (172.27.6.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 29 Apr
+ 2020 16:21:05 +0800
+Received: from [10.17.3.153] (10.17.3.153) by MTKCAS36.mediatek.inc
+ (172.27.4.170) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 29 Apr 2020 16:21:05 +0800
+Message-ID: <1588148417.10768.18.camel@mhfsdcap03>
+Subject: Re: [PATCH 1/3] mmc: core: need do mmc_power_cycle in
+ mmc_sdio_resend_if_cond
+From:   "yong.mao@mediatek.com" <yong.mao@mediatek.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Matthias Kaehlcke <mka@chromium.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        srv_heupstream <srv_heupstream@mediatek.com>
+Date:   Wed, 29 Apr 2020 16:20:17 +0800
+In-Reply-To: <CAPDyKFrBd0E2Qy89JgTE3YH0iiXB7due0JmnSVAhYL5aubSczA@mail.gmail.com>
+References: <1586835611-13857-1-git-send-email-yong.mao@mediatek.com>
+         <1586835611-13857-2-git-send-email-yong.mao@mediatek.com>
+         <CAPDyKFo40tBpowmWN3gxH8b=jMmCK8O5ALNQ7y6XZ5AosX=GUA@mail.gmail.com>
+         <1588066038.30914.28.camel@mhfsdcap03>
+         <CAPDyKFrBd0E2Qy89JgTE3YH0iiXB7due0JmnSVAhYL5aubSczA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-TM-SNTS-SMTP: A51CEC974ABE8E0E27E20E1F54AE553FB2971B2713AD31F285230F0E28E9CB742000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The SDHC MMC host controller on Amlogic SoCs provides an eMMC and MMC
-card interface with 1/4/8-bit bus width.
-It supports eMMC spec 4.4x/4.5x including HS200 (up to 100MHz clock).
-
-The public S805 datasheet [0] contains a short documentation about the
-registers. Unfortunately it does not describe how to use the registers
-to make the hardware work. Thus this driver is based on reading (and
-understanding) the Amlogic 3.10 GPL kernel code.
-
-Some hardware details are not easy to see. Jianxin Pan was kind enough
-to answer my questions:
-The hardware has built-in busy timeout support. The maximum timeout is
-30 seconds. This is only documented in Amlogic's internal
-documentation.
-
-The controller only works with very specific clock configurations. The
-details are not part of the public datasheet. In my own words the
-supported configurations are:
-- 399.812kHz:	clkin =  850MHz div = 2126 sd_rx_phase = 63
-- 1MHz:		clkin =  850MHz div = 850  sd_rx_phase = 55
-- 5.986MHz:	clkin =  850MHz div = 142  sd_rx_phase = 24
-- 25MHz:	clkin =  850MHz div = 34   sd_rx_phase = 15
-- 47.222MHz:	clkin =  850MHz div = 18   sd_rx_phase = 11/15 (SDR50/HS)
-- 53.125MHz:	clkin =  850MHz div = 16   sd_rx_phase = (tuning)
-- 70.833MHz:	clkin =  850MHz div = 12   sd_rx_phase = (tuning)
-- 85MHz:	clkin =  850MHz div = 10   sd_rx_phase = (tuning)
-- 94.44MHz:	clkin =  850MHz div = 9    sd_rx_phase = (tuning)
-- 106.25MHz:	clkin =  850MHz div = 8    sd_rx_phase = (tuning)
-- 127.5MHz:     clkin = 1275MHz div = 10   sd_rx_phase = (tuning)
-- 141.667MHz:   clkin =  850MHz div = 6    sd_rx_phase = (tuning)
-- 159.375MHz:	clkin = 1275MHz div = 8    sd_rx_phase = (tuning)
-- 212.5MHz:	clkin = 1275MHz div = 6    sd_rx_phase = (tuning)
-- (sd_tx_phase is always 1, 94.44MHz is not listed in the datasheet
-   but this is what the 3.10 BSP kernel on Odroid-C1 actually uses)
-
-NOTE: CMD23 support is disabled for now because it results in command
-timeouts and thus decreases read performance.
-
-Tested-by: Wei Wang <lnykww@gmail.com>
-Tested-by: Xin Yin <yinxin_1989@aliyun.com>
-Reviewed-by: Xin Yin <yinxin_1989@aliyun.com>
-Tested-by: Anand Moon <linux.amoon@gmail.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
----
- drivers/mmc/host/Kconfig              |  14 +
- drivers/mmc/host/Makefile             |   1 +
- drivers/mmc/host/meson-mx-sdhc-clkc.c | 188 ++++++
- drivers/mmc/host/meson-mx-sdhc.c      | 916 ++++++++++++++++++++++++++
- drivers/mmc/host/meson-mx-sdhc.h      | 138 ++++
- 5 files changed, 1257 insertions(+)
- create mode 100644 drivers/mmc/host/meson-mx-sdhc-clkc.c
- create mode 100644 drivers/mmc/host/meson-mx-sdhc.c
- create mode 100644 drivers/mmc/host/meson-mx-sdhc.h
-
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 462b5352fea7..df3fc572f842 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -405,6 +405,20 @@ config MMC_MESON_GX
- 
- 	  If you have a controller with this interface, say Y here.
- 
-+config MMC_MESON_MX_SDHC
-+	tristate "Amlogic Meson SDHC Host Controller support"
-+	depends on (ARM && ARCH_MESON) || COMPILE_TEST
-+	depends on COMMON_CLK
-+	depends on OF
-+	help
-+	  This selects support for the SDHC Host Controller on
-+	  Amlogic Meson6, Meson8, Meson8b and Meson8m2 SoCs.
-+	  The controller supports the SD/SDIO Spec 3.x and eMMC Spec 4.5x
-+	  with 1, 4, and 8 bit bus widths.
-+
-+	  If you have a controller with this interface, say Y or M here.
-+	  If unsure, say N.
-+
- config MMC_MESON_MX_SDIO
- 	tristate "Amlogic Meson6/Meson8/Meson8b SD/MMC Host Controller support"
- 	depends on ARCH_MESON || COMPILE_TEST
-diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
-index b929ef941208..8bcb420e071c 100644
---- a/drivers/mmc/host/Makefile
-+++ b/drivers/mmc/host/Makefile
-@@ -68,6 +68,7 @@ obj-$(CONFIG_MMC_VUB300)	+= vub300.o
- obj-$(CONFIG_MMC_USHC)		+= ushc.o
- obj-$(CONFIG_MMC_WMT)		+= wmt-sdmmc.o
- obj-$(CONFIG_MMC_MESON_GX)	+= meson-gx-mmc.o
-+obj-$(CONFIG_MMC_MESON_MX_SDHC)	+= meson-mx-sdhc-clkc.o meson-mx-sdhc.o
- obj-$(CONFIG_MMC_MESON_MX_SDIO)	+= meson-mx-sdio.o
- obj-$(CONFIG_MMC_MOXART)	+= moxart-mmc.o
- obj-$(CONFIG_MMC_SUNXI)		+= sunxi-mmc.o
-diff --git a/drivers/mmc/host/meson-mx-sdhc-clkc.c b/drivers/mmc/host/meson-mx-sdhc-clkc.c
-new file mode 100644
-index 000000000000..1e9dea94f9dc
---- /dev/null
-+++ b/drivers/mmc/host/meson-mx-sdhc-clkc.c
-@@ -0,0 +1,188 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Amlogic Meson SDHC clock controller
-+ *
-+ * Copyright (C) 2020 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-+ */
-+
-+#include <dt-bindings/clock/meson-mx-sdhc-clkc.h>
-+
-+#include <linux/clk-provider.h>
-+#include <linux/device.h>
-+#include <linux/platform_device.h>
-+
-+#include "meson-mx-sdhc.h"
-+
-+#define MESON_SDHC_NUM_BUILTIN_CLKS	6
-+
-+struct meson_mx_sdhc_clkc {
-+	struct clk_mux			src_sel;
-+	struct clk_divider		div;
-+	struct clk_gate			mod_clk_en;
-+	struct clk_gate			tx_clk_en;
-+	struct clk_gate			rx_clk_en;
-+	struct clk_gate			sd_clk_en;
-+	struct clk_hw_onecell_data	hw_onecell_data;
-+};
-+
-+static const struct clk_div_table meson_mx_sdhc_div_table[] = {
-+	{ .div = 6, .val = 5, },
-+	{ .div = 8, .val = 7, },
-+	{ .div = 9, .val = 8, },
-+	{ .div = 10, .val = 9, },
-+	{ .div = 12, .val = 11, },
-+	{ .div = 16, .val = 15, },
-+	{ .div = 18, .val = 17, },
-+	{ .div = 34, .val = 33, },
-+	{ .div = 142, .val = 141, },
-+	{ .div = 850, .val = 849, },
-+	{ .div = 2126, .val = 2125, },
-+	{ .div = 4096, .val = 4095, },
-+	{ /* sentinel */ }
-+};
-+
-+static const struct meson_mx_sdhc_clkc meson_mx_sdhc_clkc_data = {
-+	.src_sel = {
-+		.mask = 0x3,
-+		.shift = 16,
-+	},
-+	.div = {
-+		.shift = 0,
-+		.width = 12,
-+		.table = meson_mx_sdhc_div_table,
-+	},
-+	.mod_clk_en = {
-+		.bit_idx = 15,
-+	},
-+	.tx_clk_en = {
-+		.bit_idx = 14,
-+	},
-+	.rx_clk_en = {
-+		.bit_idx = 13,
-+	},
-+	.sd_clk_en = {
-+		.bit_idx = 12,
-+	},
-+};
-+
-+static const struct clk_init_data meson_mx_sdhc_clkc_init_data[] = {
-+	[SDHC_CLKID_SRC_SEL] = {
-+		.name = "sdhc_src_sel",
-+		.ops = &clk_mux_ops,
-+		.parent_data = (const struct clk_parent_data[]) {
-+			{ .fw_name = "clkin0" },
-+			{ .fw_name = "clkin1" },
-+			{ .fw_name = "clkin2" },
-+			{ .fw_name = "clkin3" },
-+		},
-+		.num_parents = 4,
-+	},
-+	[SDHC_CLKID_DIV] = {
-+		.name = "sdhc_div",
-+		.ops = &clk_divider_ops,
-+		.parent_hws = (const struct clk_hw *[]) {
-+			&meson_mx_sdhc_clkc_data.src_sel.hw,
-+		},
-+		.num_parents = 1,
-+		.flags = CLK_SET_RATE_PARENT,
-+	},
-+	[SDHC_CLKID_MOD_CLK] = {
-+		.name = "sdhc_mod_clk_on",
-+		.ops = &clk_gate_ops,
-+		.parent_hws = (const struct clk_hw *[]) {
-+			&meson_mx_sdhc_clkc_data.div.hw,
-+		},
-+		.num_parents = 1,
-+		.flags = CLK_SET_RATE_PARENT,
-+	},
-+	[SDHC_CLKID_SD_CLK] = {
-+		.name = "sdhc_tx_clk_on",
-+		.ops = &clk_gate_ops,
-+		.parent_hws = (const struct clk_hw *[]) {
-+			&meson_mx_sdhc_clkc_data.div.hw,
-+		},
-+		.num_parents = 1,
-+		.flags = CLK_SET_RATE_PARENT,
-+	},
-+	[SDHC_CLKID_TX_CLK] = {
-+		.name = "sdhc_rx_clk_on",
-+		.ops = &clk_gate_ops,
-+		.parent_hws = (const struct clk_hw *[]) {
-+			&meson_mx_sdhc_clkc_data.div.hw,
-+		},
-+		.num_parents = 1,
-+		.flags = CLK_SET_RATE_PARENT,
-+	},
-+	[SDHC_CLKID_RX_CLK] = {
-+		.name = "sdhc_sd_clk_on",
-+		.ops = &clk_gate_ops,
-+		.parent_hws = (const struct clk_hw *[]) {
-+			&meson_mx_sdhc_clkc_data.div.hw,
-+		},
-+		.num_parents = 1,
-+		.flags = CLK_SET_RATE_PARENT,
-+	},
-+};
-+
-+int meson_mx_sdhc_register_clkc(struct device *dev, void __iomem *base)
-+{
-+	const struct clk_hw *div_parents[1], *gate_parents[1];
-+	struct clk_hw_onecell_data *onecell_data;
-+	struct meson_mx_sdhc_clkc *clkc_data;
-+	struct clk_init_data init_data;
-+	int i, ret;
-+
-+	clkc_data = devm_kzalloc(dev, struct_size(clkc_data,
-+						  hw_onecell_data.hws,
-+						  MESON_SDHC_NUM_BUILTIN_CLKS),
-+				 GFP_KERNEL);
-+	if (!clkc_data)
-+		return -ENOMEM;
-+
-+	memcpy(clkc_data, &meson_mx_sdhc_clkc_data,
-+	       sizeof(meson_mx_sdhc_clkc_data));
-+
-+	div_parents[0] = &clkc_data->src_sel.hw;
-+	gate_parents[0] = &clkc_data->div.hw;
-+
-+	clkc_data->src_sel.reg = base + MESON_SDHC_CLKC;
-+	clkc_data->div.reg = base + MESON_SDHC_CLKC;
-+	clkc_data->mod_clk_en.reg = base + MESON_SDHC_CLKC;
-+	clkc_data->sd_clk_en.reg = base + MESON_SDHC_CLKC;
-+	clkc_data->tx_clk_en.reg = base + MESON_SDHC_CLKC;
-+	clkc_data->rx_clk_en.reg = base + MESON_SDHC_CLKC;
-+
-+	onecell_data = &clkc_data->hw_onecell_data;
-+	onecell_data->hws[SDHC_CLKID_SRC_SEL] = &clkc_data->src_sel.hw;
-+	onecell_data->hws[SDHC_CLKID_DIV] = &clkc_data->div.hw;
-+	onecell_data->hws[SDHC_CLKID_MOD_CLK] = &clkc_data->mod_clk_en.hw;
-+	onecell_data->hws[SDHC_CLKID_SD_CLK] = &clkc_data->sd_clk_en.hw;
-+	onecell_data->hws[SDHC_CLKID_TX_CLK] = &clkc_data->tx_clk_en.hw;
-+	onecell_data->hws[SDHC_CLKID_RX_CLK] = &clkc_data->rx_clk_en.hw;
-+
-+	for (i = 0; i < MESON_SDHC_NUM_BUILTIN_CLKS; i++) {
-+		init_data = meson_mx_sdhc_clkc_init_data[i];
-+
-+		if (i == SDHC_CLKID_SRC_SEL)
-+			/* uses clk_parent_data instead */
-+			init_data.parent_hws = NULL;
-+		else if (i == SDHC_CLKID_DIV)
-+			init_data.parent_hws = div_parents;
-+		else
-+			init_data.parent_hws = gate_parents;
-+
-+		onecell_data->hws[i]->init = &init_data;
-+
-+		ret = devm_clk_hw_register(dev, onecell_data->hws[i]);
-+		if (ret) {
-+			dev_err(dev, "Registration of SDHC clock %d failed\n",
-+				i);
-+			return ret;
-+		}
-+	}
-+
-+	onecell_data->num = MESON_SDHC_NUM_BUILTIN_CLKS;
-+
-+	return devm_of_clk_add_hw_provider(dev, of_clk_hw_onecell_get,
-+					   onecell_data);
-+}
-diff --git a/drivers/mmc/host/meson-mx-sdhc.c b/drivers/mmc/host/meson-mx-sdhc.c
-new file mode 100644
-index 000000000000..3c54d5f91fbc
---- /dev/null
-+++ b/drivers/mmc/host/meson-mx-sdhc.c
-@@ -0,0 +1,916 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Amlogic Meson6/Meson8/Meson8b/Meson8m2 SDHC MMC host controller driver.
-+ *
-+ * Copyright (C) 2020 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/device.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/interrupt.h>
-+#include <linux/iopoll.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/types.h>
-+
-+#include <linux/mmc/host.h>
-+#include <linux/mmc/mmc.h>
-+#include <linux/mmc/sdio.h>
-+#include <linux/mmc/slot-gpio.h>
-+
-+#include "meson-mx-sdhc.h"
-+
-+#define MESON_SDHC_NUM_BULK_CLKS				4
-+#define MESON_SDHC_MAX_BLK_SIZE					512
-+#define MESON_SDHC_NUM_TUNING_TRIES				10
-+
-+#define MESON_SDHC_WAIT_CMD_READY_SLEEP_US			1
-+#define MESON_SDHC_WAIT_CMD_READY_TIMEOUT_US			100000
-+#define MESON_SDHC_WAIT_BEFORE_SEND_SLEEP_US			1
-+#define MESON_SDHC_WAIT_BEFORE_SEND_TIMEOUT_US			200
-+
-+struct meson_mx_sdhc_data {
-+	void		(*init_hw)(struct mmc_host *mmc);
-+	void		(*set_pdma)(struct mmc_host *mmc);
-+	void		(*wait_before_send)(struct mmc_host *mmc);
-+	bool		hardware_flush_all_cmds;
-+};
-+
-+struct meson_mx_sdhc_host {
-+	struct mmc_host			*mmc;
-+
-+	struct mmc_request		*mrq;
-+	struct mmc_command		*cmd;
-+	int				error;
-+
-+	struct regmap			*regmap;
-+
-+	struct clk			*pclk;
-+	struct clk			*sd_clk;
-+	struct clk_bulk_data		bulk_clks[MESON_SDHC_NUM_BULK_CLKS];
-+	bool				bulk_clks_enabled;
-+
-+	const struct meson_mx_sdhc_data	*platform;
-+};
-+
-+static const struct regmap_config meson_mx_sdhc_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 32,
-+	.reg_stride = 4,
-+	.max_register = MESON_SDHC_CLK2,
-+};
-+
-+static void meson_mx_sdhc_hw_reset(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+
-+	regmap_write(host->regmap, MESON_SDHC_SRST, MESON_SDHC_SRST_MAIN_CTRL |
-+		     MESON_SDHC_SRST_RXFIFO | MESON_SDHC_SRST_TXFIFO |
-+		     MESON_SDHC_SRST_DPHY_RX | MESON_SDHC_SRST_DPHY_TX |
-+		     MESON_SDHC_SRST_DMA_IF);
-+	usleep_range(10, 100);
-+
-+	regmap_write(host->regmap, MESON_SDHC_SRST, 0);
-+	usleep_range(10, 100);
-+}
-+
-+static void meson_mx_sdhc_clear_fifo(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	u32 stat;
-+
-+	regmap_read(host->regmap, MESON_SDHC_STAT, &stat);
-+	if (!FIELD_GET(MESON_SDHC_STAT_RXFIFO_CNT, stat) &&
-+	    !FIELD_GET(MESON_SDHC_STAT_TXFIFO_CNT, stat))
-+		return;
-+
-+	regmap_write(host->regmap, MESON_SDHC_SRST, MESON_SDHC_SRST_RXFIFO |
-+		     MESON_SDHC_SRST_TXFIFO | MESON_SDHC_SRST_MAIN_CTRL);
-+	udelay(5);
-+
-+	regmap_read(host->regmap, MESON_SDHC_STAT, &stat);
-+	if (FIELD_GET(MESON_SDHC_STAT_RXFIFO_CNT, stat) ||
-+	    FIELD_GET(MESON_SDHC_STAT_TXFIFO_CNT, stat))
-+		dev_warn(mmc_dev(host->mmc),
-+			 "Failed to clear FIFOs, RX: %lu, TX: %lu\n",
-+			 FIELD_GET(MESON_SDHC_STAT_RXFIFO_CNT, stat),
-+			 FIELD_GET(MESON_SDHC_STAT_TXFIFO_CNT, stat));
-+}
-+
-+static void meson_mx_sdhc_wait_cmd_ready(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	u32 stat, esta;
-+	int ret;
-+
-+	ret = regmap_read_poll_timeout(host->regmap, MESON_SDHC_STAT, stat,
-+				       !(stat & MESON_SDHC_STAT_CMD_BUSY),
-+				       MESON_SDHC_WAIT_CMD_READY_SLEEP_US,
-+				       MESON_SDHC_WAIT_CMD_READY_TIMEOUT_US);
-+	if (ret) {
-+		dev_warn(mmc_dev(mmc),
-+			 "Failed to poll for CMD_BUSY while processing CMD%d\n",
-+			 host->cmd->opcode);
-+		meson_mx_sdhc_hw_reset(mmc);
-+	}
-+
-+	ret = regmap_read_poll_timeout(host->regmap, MESON_SDHC_ESTA, esta,
-+				       !(esta & MESON_SDHC_ESTA_11_13),
-+				       MESON_SDHC_WAIT_CMD_READY_SLEEP_US,
-+				       MESON_SDHC_WAIT_CMD_READY_TIMEOUT_US);
-+	if (ret) {
-+		dev_warn(mmc_dev(mmc),
-+			 "Failed to poll for ESTA[13:11] while processing CMD%d\n",
-+			 host->cmd->opcode);
-+		meson_mx_sdhc_hw_reset(mmc);
-+	}
-+}
-+
-+static void meson_mx_sdhc_start_cmd(struct mmc_host *mmc,
-+				    struct mmc_command *cmd)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	u32 ictl, send;
-+	int pack_len;
-+
-+	host->cmd = cmd;
-+
-+	ictl = MESON_SDHC_ICTL_DATA_TIMEOUT | MESON_SDHC_ICTL_DATA_ERR_CRC |
-+	       MESON_SDHC_ICTL_RXFIFO_FULL | MESON_SDHC_ICTL_TXFIFO_EMPTY |
-+	       MESON_SDHC_ICTL_RESP_TIMEOUT | MESON_SDHC_ICTL_RESP_ERR_CRC;
-+
-+	send = FIELD_PREP(MESON_SDHC_SEND_CMD_INDEX, cmd->opcode);
-+
-+	if (cmd->data) {
-+		send |= MESON_SDHC_SEND_CMD_HAS_DATA;
-+		send |= FIELD_PREP(MESON_SDHC_SEND_TOTAL_PACK,
-+				   cmd->data->blocks - 1);
-+
-+		if (cmd->data->blksz < MESON_SDHC_MAX_BLK_SIZE)
-+			pack_len = cmd->data->blksz;
-+		else
-+			pack_len = 0;
-+
-+		if (cmd->data->flags & MMC_DATA_WRITE)
-+			send |= MESON_SDHC_SEND_DATA_DIR;
-+
-+		/*
-+		 * If command with no data, just wait response done
-+		 * interrupt(int[0]), and if command with data transfer, just
-+		 * wait dma done interrupt(int[11]), don't need care about
-+		 * dat0 busy or not.
-+		 */
-+		if (host->platform->hardware_flush_all_cmds ||
-+		    cmd->data->flags & MMC_DATA_WRITE)
-+			/* hardware flush: */
-+			ictl |= MESON_SDHC_ICTL_DMA_DONE;
-+		else
-+			/* software flush: */
-+			ictl |= MESON_SDHC_ICTL_DATA_XFER_OK;
-+	} else {
-+		pack_len = 0;
-+
-+		ictl |= MESON_SDHC_ICTL_RESP_OK;
-+	}
-+
-+	if (cmd->opcode == MMC_STOP_TRANSMISSION)
-+		send |= MESON_SDHC_SEND_DATA_STOP;
-+
-+	if (cmd->flags & MMC_RSP_PRESENT)
-+		send |= MESON_SDHC_SEND_CMD_HAS_RESP;
-+
-+	if (cmd->flags & MMC_RSP_136) {
-+		send |= MESON_SDHC_SEND_RESP_LEN;
-+		send |= MESON_SDHC_SEND_RESP_NO_CRC;
-+	}
-+
-+	if (!(cmd->flags & MMC_RSP_CRC))
-+		send |= MESON_SDHC_SEND_RESP_NO_CRC;
-+
-+	if (cmd->flags & MMC_RSP_BUSY)
-+		send |= MESON_SDHC_SEND_R1B;
-+
-+	/* enable the new IRQs and mask all pending ones */
-+	regmap_write(host->regmap, MESON_SDHC_ICTL, ictl);
-+	regmap_write(host->regmap, MESON_SDHC_ISTA, MESON_SDHC_ISTA_ALL_IRQS);
-+
-+	regmap_write(host->regmap, MESON_SDHC_ARGU, cmd->arg);
-+
-+	regmap_update_bits(host->regmap, MESON_SDHC_CTRL,
-+			   MESON_SDHC_CTRL_PACK_LEN,
-+			   FIELD_PREP(MESON_SDHC_CTRL_PACK_LEN, pack_len));
-+
-+	if (cmd->data)
-+		regmap_write(host->regmap, MESON_SDHC_ADDR,
-+			     sg_dma_address(cmd->data->sg));
-+
-+	meson_mx_sdhc_wait_cmd_ready(mmc);
-+
-+	if (cmd->data)
-+		host->platform->set_pdma(mmc);
-+
-+	if (host->platform->wait_before_send)
-+		host->platform->wait_before_send(mmc);
-+
-+	regmap_write(host->regmap, MESON_SDHC_SEND, send);
-+}
-+
-+static void meson_mx_sdhc_disable_clks(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+
-+	if (!host->bulk_clks_enabled)
-+		return;
-+
-+	clk_bulk_disable_unprepare(MESON_SDHC_NUM_BULK_CLKS, host->bulk_clks);
-+
-+	host->bulk_clks_enabled = false;
-+}
-+
-+static int meson_mx_sdhc_enable_clks(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	int ret;
-+
-+	if (host->bulk_clks_enabled)
-+		return 0;
-+
-+	ret = clk_bulk_prepare_enable(MESON_SDHC_NUM_BULK_CLKS,
-+				      host->bulk_clks);
-+	if (ret)
-+		return ret;
-+
-+	host->bulk_clks_enabled = true;
-+
-+	return 0;
-+}
-+
-+static int meson_mx_sdhc_set_clk(struct mmc_host *mmc, struct mmc_ios *ios)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	u32 rx_clk_phase;
-+	int ret;
-+
-+	meson_mx_sdhc_disable_clks(mmc);
-+
-+	if (ios->clock) {
-+		ret = clk_set_rate(host->sd_clk, ios->clock);
-+		if (ret) {
-+			dev_warn(mmc_dev(mmc),
-+				 "Failed to set MMC clock to %uHz: %d\n",
-+				 ios->clock, host->error);
-+			return ret;
-+		}
-+
-+		ret = meson_mx_sdhc_enable_clks(mmc);
-+		if (ret)
-+			return ret;
-+
-+		mmc->actual_clock = clk_get_rate(host->sd_clk);
-+
-+		/*
-+		 * according to Amlogic the following latching points are
-+		 * selected with empirical values, there is no (known) formula
-+		 * to calculate these.
-+		 */
-+		if (mmc->actual_clock > 100000000) {
-+			rx_clk_phase = 1;
-+		} else if (mmc->actual_clock > 45000000) {
-+			if (ios->signal_voltage == MMC_SIGNAL_VOLTAGE_330)
-+				rx_clk_phase = 15;
-+			else
-+				rx_clk_phase = 11;
-+		} else if (mmc->actual_clock >= 25000000) {
-+			rx_clk_phase = 15;
-+		} else if (mmc->actual_clock > 5000000) {
-+			rx_clk_phase = 23;
-+		} else if (mmc->actual_clock > 1000000) {
-+			rx_clk_phase = 55;
-+		} else {
-+			rx_clk_phase = 1061;
-+		}
-+
-+		regmap_update_bits(host->regmap, MESON_SDHC_CLK2,
-+				   MESON_SDHC_CLK2_RX_CLK_PHASE,
-+				   FIELD_PREP(MESON_SDHC_CLK2_RX_CLK_PHASE,
-+					      rx_clk_phase));
-+	} else {
-+		mmc->actual_clock = 0;
-+	}
-+
-+	return 0;
-+}
-+
-+static void meson_mx_sdhc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	unsigned short vdd = ios->vdd;
-+
-+	switch (ios->power_mode) {
-+	case MMC_POWER_OFF:
-+		vdd = 0;
-+		fallthrough;
-+
-+	case MMC_POWER_UP:
-+		if (!IS_ERR(mmc->supply.vmmc)) {
-+			host->error = mmc_regulator_set_ocr(mmc,
-+							    mmc->supply.vmmc,
-+							    vdd);
-+			if (host->error)
-+				return;
-+		}
-+
-+		break;
-+
-+	case MMC_POWER_ON:
-+		break;
-+	}
-+
-+	host->error = meson_mx_sdhc_set_clk(mmc, ios);
-+	if (host->error)
-+		return;
-+
-+	switch (ios->bus_width) {
-+	case MMC_BUS_WIDTH_1:
-+		regmap_update_bits(host->regmap, MESON_SDHC_CTRL,
-+				   MESON_SDHC_CTRL_DAT_TYPE,
-+				   FIELD_PREP(MESON_SDHC_CTRL_DAT_TYPE, 0));
-+		break;
-+
-+	case MMC_BUS_WIDTH_4:
-+		regmap_update_bits(host->regmap, MESON_SDHC_CTRL,
-+				   MESON_SDHC_CTRL_DAT_TYPE,
-+				   FIELD_PREP(MESON_SDHC_CTRL_DAT_TYPE, 1));
-+		break;
-+
-+	case MMC_BUS_WIDTH_8:
-+		regmap_update_bits(host->regmap, MESON_SDHC_CTRL,
-+				   MESON_SDHC_CTRL_DAT_TYPE,
-+				   FIELD_PREP(MESON_SDHC_CTRL_DAT_TYPE, 2));
-+		break;
-+
-+	default:
-+		dev_err(mmc_dev(mmc), "unsupported bus width: %d\n",
-+			ios->bus_width);
-+		host->error = -EINVAL;
-+		return;
-+	}
-+}
-+
-+static int meson_mx_sdhc_map_dma(struct mmc_host *mmc, struct mmc_request *mrq)
-+{
-+	struct mmc_data *data = mrq->data;
-+	int dma_len;
-+
-+	if (!data)
-+		return 0;
-+
-+	dma_len = dma_map_sg(mmc_dev(mmc), data->sg, data->sg_len,
-+			     mmc_get_dma_dir(data));
-+	if (dma_len <= 0) {
-+		dev_err(mmc_dev(mmc), "dma_map_sg failed\n");
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+static void meson_mx_sdhc_request(struct mmc_host *mmc, struct mmc_request *mrq)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	struct mmc_command *cmd = mrq->cmd;
-+
-+	if (!host->error)
-+		host->error = meson_mx_sdhc_map_dma(mmc, mrq);
-+
-+	if (host->error) {
-+		cmd->error = host->error;
-+		mmc_request_done(mmc, mrq);
-+		return;
-+	}
-+
-+	host->mrq = mrq;
-+
-+	meson_mx_sdhc_start_cmd(mmc, mrq->cmd);
-+}
-+
-+static int meson_mx_sdhc_card_busy(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	u32 stat;
-+
-+	regmap_read(host->regmap, MESON_SDHC_STAT, &stat);
-+	return FIELD_GET(MESON_SDHC_STAT_DAT3_0, stat) == 0;
-+}
-+
-+static bool meson_mx_sdhc_tuning_point_matches(struct mmc_host *mmc,
-+					       u32 opcode)
-+{
-+	unsigned int i, num_matches = 0;
-+	int ret;
-+
-+	for (i = 0; i < MESON_SDHC_NUM_TUNING_TRIES; i++) {
-+		ret = mmc_send_tuning(mmc, opcode, NULL);
-+		if (!ret)
-+			num_matches++;
-+	}
-+
-+	return num_matches == MESON_SDHC_NUM_TUNING_TRIES;
-+}
-+
-+static int meson_mx_sdhc_execute_tuning(struct mmc_host *mmc, u32 opcode)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	int div, start, len, best_start, best_len;
-+	int curr_phase, old_phase, new_phase;
-+	u32 val;
-+
-+	len = 0;
-+	start = 0;
-+	best_len = 0;
-+
-+	regmap_read(host->regmap, MESON_SDHC_CLK2, &val);
-+	old_phase = FIELD_GET(MESON_SDHC_CLK2_RX_CLK_PHASE, val);
-+
-+	regmap_read(host->regmap, MESON_SDHC_CLKC, &val);
-+	div = FIELD_GET(MESON_SDHC_CLKC_CLK_DIV, val);
-+
-+	for (curr_phase = 0; curr_phase <= div; curr_phase++) {
-+		regmap_update_bits(host->regmap, MESON_SDHC_CLK2,
-+				   MESON_SDHC_CLK2_RX_CLK_PHASE,
-+				   FIELD_PREP(MESON_SDHC_CLK2_RX_CLK_PHASE,
-+					      curr_phase));
-+
-+		if (meson_mx_sdhc_tuning_point_matches(mmc, opcode)) {
-+			if (!len) {
-+				start = curr_phase;
-+
-+				dev_dbg(mmc_dev(mmc),
-+					"New RX phase window starts at %u\n",
-+					start);
-+			}
-+
-+			len++;
-+		} else {
-+			if (len > best_len) {
-+				best_start = start;
-+				best_len = len;
-+
-+				dev_dbg(mmc_dev(mmc),
-+					"New best RX phase window: %u - %u\n",
-+					best_start, best_start + best_len);
-+			}
-+
-+			/* reset the current window */
-+			len = 0;
-+		}
-+	}
-+
-+	if (len > best_len)
-+		/* the last window is the best (or possibly only) window */
-+		new_phase = start + (len / 2);
-+	else if (best_len)
-+		/* there was a better window than the last */
-+		new_phase = best_start + (best_len / 2);
-+	else
-+		/* no window was found at all, reset to the original phase */
-+		new_phase = old_phase;
-+
-+	regmap_update_bits(host->regmap, MESON_SDHC_CLK2,
-+			   MESON_SDHC_CLK2_RX_CLK_PHASE,
-+			   FIELD_PREP(MESON_SDHC_CLK2_RX_CLK_PHASE,
-+				      new_phase));
-+
-+	if (!len && !best_len)
-+		return -EIO;
-+
-+	dev_dbg(mmc_dev(mmc), "Tuned RX clock phase to %u\n", new_phase);
-+
-+	return 0;
-+}
-+
-+static const struct mmc_host_ops meson_mx_sdhc_ops = {
-+	.hw_reset			= meson_mx_sdhc_hw_reset,
-+	.request			= meson_mx_sdhc_request,
-+	.set_ios			= meson_mx_sdhc_set_ios,
-+	.card_busy			= meson_mx_sdhc_card_busy,
-+	.execute_tuning			= meson_mx_sdhc_execute_tuning,
-+	.get_cd				= mmc_gpio_get_cd,
-+	.get_ro				= mmc_gpio_get_ro,
-+};
-+
-+static void meson_mx_sdhc_request_done(struct meson_mx_sdhc_host *host)
-+{
-+	struct mmc_request *mrq = host->mrq;
-+	struct mmc_host *mmc = host->mmc;
-+
-+	/* disable interrupts and mask all pending ones */
-+	regmap_update_bits(host->regmap, MESON_SDHC_ICTL,
-+			   MESON_SDHC_ICTL_ALL_IRQS, 0);
-+	regmap_update_bits(host->regmap, MESON_SDHC_ISTA,
-+			   MESON_SDHC_ISTA_ALL_IRQS, MESON_SDHC_ISTA_ALL_IRQS);
-+
-+	host->mrq = NULL;
-+	host->cmd = NULL;
-+
-+	mmc_request_done(mmc, mrq);
-+}
-+
-+static u32 meson_mx_sdhc_read_response(struct meson_mx_sdhc_host *host, u8 idx)
-+{
-+	u32 val;
-+
-+	regmap_update_bits(host->regmap, MESON_SDHC_PDMA,
-+			   MESON_SDHC_PDMA_DMA_MODE, 0);
-+
-+	regmap_update_bits(host->regmap, MESON_SDHC_PDMA,
-+			   MESON_SDHC_PDMA_PIO_RDRESP,
-+			   FIELD_PREP(MESON_SDHC_PDMA_PIO_RDRESP, idx));
-+
-+	regmap_read(host->regmap, MESON_SDHC_ARGU, &val);
-+
-+	return val;
-+}
-+
-+static irqreturn_t meson_mx_sdhc_irq(int irq, void *data)
-+{
-+	struct meson_mx_sdhc_host *host = data;
-+	struct mmc_command *cmd = host->cmd;
-+	u32 ictl, ista;
-+
-+	regmap_read(host->regmap, MESON_SDHC_ICTL, &ictl);
-+	regmap_read(host->regmap, MESON_SDHC_ISTA, &ista);
-+
-+	if (!(ictl & ista))
-+		return IRQ_NONE;
-+
-+	if (ista & MESON_SDHC_ISTA_RXFIFO_FULL ||
-+	    ista & MESON_SDHC_ISTA_TXFIFO_EMPTY)
-+		cmd->error = -EIO;
-+	else if (ista & MESON_SDHC_ISTA_RESP_ERR_CRC)
-+		cmd->error = -EILSEQ;
-+	else if (ista & MESON_SDHC_ISTA_RESP_TIMEOUT)
-+		cmd->error = -ETIMEDOUT;
-+
-+	if (cmd->data) {
-+		if (ista & MESON_SDHC_ISTA_DATA_ERR_CRC)
-+			cmd->data->error = -EILSEQ;
-+		else if (ista & MESON_SDHC_ISTA_DATA_TIMEOUT)
-+			cmd->data->error = -ETIMEDOUT;
-+	}
-+
-+	if (cmd->error || (cmd->data && cmd->data->error))
-+		dev_dbg(mmc_dev(host->mmc), "CMD%d error, ISTA: 0x%08x\n",
-+			cmd->opcode, ista);
-+
-+	return IRQ_WAKE_THREAD;
-+}
-+
-+static irqreturn_t meson_mx_sdhc_irq_thread(int irq, void *irq_data)
-+{
-+	struct meson_mx_sdhc_host *host = irq_data;
-+	struct mmc_command *cmd;
-+	u32 val;
-+
-+	cmd = host->cmd;
-+	if (WARN_ON(!cmd))
-+		return IRQ_HANDLED;
-+
-+	if (cmd->data && !cmd->data->error) {
-+		if (!host->platform->hardware_flush_all_cmds &&
-+		    cmd->data->flags & MMC_DATA_READ) {
-+			meson_mx_sdhc_wait_cmd_ready(host->mmc);
-+
-+			val = FIELD_PREP(MESON_SDHC_PDMA_RXFIFO_MANUAL_FLUSH,
-+					 2);
-+			regmap_update_bits(host->regmap, MESON_SDHC_PDMA,
-+					   MESON_SDHC_PDMA_RXFIFO_MANUAL_FLUSH,
-+					   val);
-+		}
-+
-+		dma_unmap_sg(mmc_dev(host->mmc), cmd->data->sg,
-+			     cmd->data->sg_len, mmc_get_dma_dir(cmd->data));
-+
-+		cmd->data->bytes_xfered = cmd->data->blksz * cmd->data->blocks;
-+	}
-+
-+	meson_mx_sdhc_wait_cmd_ready(host->mmc);
-+
-+	if (cmd->flags & MMC_RSP_136) {
-+		cmd->resp[0] = meson_mx_sdhc_read_response(host, 4);
-+		cmd->resp[1] = meson_mx_sdhc_read_response(host, 3);
-+		cmd->resp[2] = meson_mx_sdhc_read_response(host, 2);
-+		cmd->resp[3] = meson_mx_sdhc_read_response(host, 1);
-+	} else {
-+		cmd->resp[0] = meson_mx_sdhc_read_response(host, 0);
-+	}
-+
-+	if (cmd->error == -EIO || cmd->error == -ETIMEDOUT)
-+		meson_mx_sdhc_hw_reset(host->mmc);
-+	else if (cmd->data)
-+		/*
-+		 * Clear the FIFOs after completing data transfers to prevent
-+		 * corrupting data on write access. It's not clear why this is
-+		 * needed (for reads and writes), but it mimics what the BSP
-+		 * kernel did.
-+		 */
-+		meson_mx_sdhc_clear_fifo(host->mmc);
-+
-+	meson_mx_sdhc_request_done(host);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static void meson_mx_sdhc_init_hw_meson8(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+
-+	regmap_write(host->regmap, MESON_SDHC_MISC,
-+		     FIELD_PREP(MESON_SDHC_MISC_TXSTART_THRES, 7) |
-+		     FIELD_PREP(MESON_SDHC_MISC_WCRC_ERR_PATT, 5) |
-+		     FIELD_PREP(MESON_SDHC_MISC_WCRC_OK_PATT, 2));
-+
-+	regmap_write(host->regmap, MESON_SDHC_ENHC,
-+		     FIELD_PREP(MESON_SDHC_ENHC_RXFIFO_TH, 63) |
-+		     MESON_SDHC_ENHC_MESON6_DMA_WR_RESP |
-+		     FIELD_PREP(MESON_SDHC_ENHC_MESON6_RX_TIMEOUT, 255) |
-+		     FIELD_PREP(MESON_SDHC_ENHC_SDIO_IRQ_PERIOD, 12));
-+};
-+
-+static void meson_mx_sdhc_set_pdma_meson8(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+
-+	if (host->cmd->data->flags & MMC_DATA_WRITE)
-+		regmap_update_bits(host->regmap, MESON_SDHC_PDMA,
-+				   MESON_SDHC_PDMA_DMA_MODE |
-+				   MESON_SDHC_PDMA_RD_BURST |
-+				   MESON_SDHC_PDMA_TXFIFO_FILL,
-+				   MESON_SDHC_PDMA_DMA_MODE |
-+				   FIELD_PREP(MESON_SDHC_PDMA_RD_BURST, 31) |
-+				   MESON_SDHC_PDMA_TXFIFO_FILL);
-+	else
-+		regmap_update_bits(host->regmap, MESON_SDHC_PDMA,
-+				   MESON_SDHC_PDMA_DMA_MODE |
-+				   MESON_SDHC_PDMA_RXFIFO_MANUAL_FLUSH,
-+				   MESON_SDHC_PDMA_DMA_MODE |
-+				   FIELD_PREP(MESON_SDHC_PDMA_RXFIFO_MANUAL_FLUSH,
-+					      1));
-+
-+	if (host->cmd->data->flags & MMC_DATA_WRITE)
-+		regmap_update_bits(host->regmap, MESON_SDHC_PDMA,
-+				   MESON_SDHC_PDMA_RD_BURST,
-+				   FIELD_PREP(MESON_SDHC_PDMA_RD_BURST, 15));
-+}
-+
-+static void meson_mx_sdhc_wait_before_send_meson8(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+	u32 val;
-+	int ret;
-+
-+	ret = regmap_read_poll_timeout(host->regmap, MESON_SDHC_ESTA, val,
-+				       val == 0,
-+				       MESON_SDHC_WAIT_BEFORE_SEND_SLEEP_US,
-+				       MESON_SDHC_WAIT_BEFORE_SEND_TIMEOUT_US);
-+	if (ret)
-+		dev_warn(mmc_dev(mmc),
-+			 "Failed to wait for ESTA to clear: 0x%08x\n", val);
-+
-+	if (host->cmd->data && host->cmd->data->flags & MMC_DATA_WRITE) {
-+		ret = regmap_read_poll_timeout(host->regmap, MESON_SDHC_STAT,
-+					val, val & MESON_SDHC_STAT_TXFIFO_CNT,
-+					MESON_SDHC_WAIT_BEFORE_SEND_SLEEP_US,
-+					MESON_SDHC_WAIT_BEFORE_SEND_TIMEOUT_US);
-+		if (ret)
-+			dev_warn(mmc_dev(mmc),
-+				 "Failed to wait for TX FIFO to fill\n");
-+	}
-+}
-+
-+static void meson_mx_sdhc_init_hw_meson8m2(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+
-+	regmap_write(host->regmap, MESON_SDHC_MISC,
-+		     FIELD_PREP(MESON_SDHC_MISC_TXSTART_THRES, 6) |
-+		     FIELD_PREP(MESON_SDHC_MISC_WCRC_ERR_PATT, 5) |
-+		     FIELD_PREP(MESON_SDHC_MISC_WCRC_OK_PATT, 2));
-+
-+	regmap_write(host->regmap, MESON_SDHC_ENHC,
-+		     FIELD_PREP(MESON_SDHC_ENHC_RXFIFO_TH, 64) |
-+		     FIELD_PREP(MESON_SDHC_ENHC_MESON8M2_DEBUG, 1) |
-+		     MESON_SDHC_ENHC_MESON8M2_WRRSP_MODE |
-+		     FIELD_PREP(MESON_SDHC_ENHC_SDIO_IRQ_PERIOD, 12));
-+}
-+
-+static void meson_mx_sdhc_set_pdma_meson8m2(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+
-+	regmap_update_bits(host->regmap, MESON_SDHC_PDMA,
-+			   MESON_SDHC_PDMA_DMA_MODE, MESON_SDHC_PDMA_DMA_MODE);
-+}
-+
-+static void meson_mx_sdhc_init_hw(struct mmc_host *mmc)
-+{
-+	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
-+
-+	meson_mx_sdhc_hw_reset(mmc);
-+
-+	regmap_write(host->regmap, MESON_SDHC_CTRL,
-+		     FIELD_PREP(MESON_SDHC_CTRL_RX_PERIOD, 0xf) |
-+		     FIELD_PREP(MESON_SDHC_CTRL_RX_TIMEOUT, 0x7f) |
-+		     FIELD_PREP(MESON_SDHC_CTRL_RX_ENDIAN, 0x7) |
-+		     FIELD_PREP(MESON_SDHC_CTRL_TX_ENDIAN, 0x7));
-+
-+	/*
-+	 * start with a valid divider and enable the memory (un-setting
-+	 * MESON_SDHC_CLKC_MEM_PWR_OFF).
-+	 */
-+	regmap_write(host->regmap, MESON_SDHC_CLKC, MESON_SDHC_CLKC_CLK_DIV);
-+
-+	regmap_write(host->regmap, MESON_SDHC_CLK2,
-+		     FIELD_PREP(MESON_SDHC_CLK2_SD_CLK_PHASE, 1));
-+
-+	regmap_write(host->regmap, MESON_SDHC_PDMA,
-+		     MESON_SDHC_PDMA_DMA_URGENT |
-+		     FIELD_PREP(MESON_SDHC_PDMA_WR_BURST, 7) |
-+		     FIELD_PREP(MESON_SDHC_PDMA_TXFIFO_TH, 49) |
-+		     FIELD_PREP(MESON_SDHC_PDMA_RD_BURST, 15) |
-+		     FIELD_PREP(MESON_SDHC_PDMA_RXFIFO_TH, 7));
-+
-+	/* some initialization bits depend on the SoC: */
-+	host->platform->init_hw(mmc);
-+
-+	/* disable and mask all interrupts: */
-+	regmap_write(host->regmap, MESON_SDHC_ICTL, 0);
-+	regmap_write(host->regmap, MESON_SDHC_ISTA, MESON_SDHC_ISTA_ALL_IRQS);
-+}
-+
-+static int meson_mx_sdhc_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct meson_mx_sdhc_host *host;
-+	struct mmc_host *mmc;
-+	void __iomem *base;
-+	int ret, irq;
-+
-+	mmc = mmc_alloc_host(sizeof(*host), dev);
-+	if (!mmc)
-+		return -ENOMEM;
-+
-+	ret = devm_add_action_or_reset(dev, (void(*)(void *))mmc_free_host,
-+				       mmc);
-+	if (ret) {
-+		dev_err(dev, "Failed to register mmc_free_host action\n");
-+		return ret;
-+	}
-+
-+	host = mmc_priv(mmc);
-+	host->mmc = mmc;
-+
-+	platform_set_drvdata(pdev, host);
-+
-+	host->platform = device_get_match_data(dev);
-+	if (!host->platform)
-+		return -EINVAL;
-+
-+	base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	host->regmap = devm_regmap_init_mmio(dev, base,
-+					     &meson_mx_sdhc_regmap_config);
-+	if (IS_ERR(host->regmap))
-+		return PTR_ERR(host->regmap);
-+
-+	host->pclk = devm_clk_get(dev, "pclk");
-+	if (IS_ERR(host->pclk))
-+		return PTR_ERR(host->pclk);
-+
-+	/* accessing any register requires the module clock to be enabled: */
-+	ret = clk_prepare_enable(host->pclk);
-+	if (ret) {
-+		dev_err(dev, "Failed to enable 'pclk' clock\n");
-+		return ret;
-+	}
-+
-+	meson_mx_sdhc_init_hw(mmc);
-+
-+	ret = meson_mx_sdhc_register_clkc(dev, base);
-+	if (ret)
-+		goto err_disable_pclk;
-+
-+	host->bulk_clks[0].id = "mod_clk";
-+	host->bulk_clks[1].id = "sd_clk";
-+	host->bulk_clks[2].id = "tx_clk";
-+	host->bulk_clks[3].id = "rx_clk";
-+	ret = devm_clk_bulk_get(dev, MESON_SDHC_NUM_BULK_CLKS,
-+				host->bulk_clks);
-+	if (ret)
-+		goto err_disable_pclk;
-+
-+	host->sd_clk = host->bulk_clks[1].clk;
-+
-+	/* Get regulators and the supported OCR mask */
-+	ret = mmc_regulator_get_supply(mmc);
-+	if (ret)
-+		goto err_disable_pclk;
-+
-+	mmc->max_req_size = SZ_128K;
-+	mmc->max_seg_size = mmc->max_req_size;
-+	mmc->max_blk_count = FIELD_GET(MESON_SDHC_SEND_TOTAL_PACK, ~0);
-+	mmc->max_blk_size = MESON_SDHC_MAX_BLK_SIZE;
-+	mmc->max_busy_timeout = 30 * MSEC_PER_SEC;
-+	mmc->f_min = clk_round_rate(host->sd_clk, 1);
-+	mmc->f_max = clk_round_rate(host->sd_clk, ULONG_MAX);
-+	mmc->max_current_180 = 300;
-+	mmc->max_current_330 = 300;
-+	mmc->caps |= MMC_CAP_ERASE | MMC_CAP_WAIT_WHILE_BUSY | MMC_CAP_HW_RESET;
-+	mmc->ops = &meson_mx_sdhc_ops;
-+
-+	ret = mmc_of_parse(mmc);
-+	if (ret)
-+		goto err_disable_pclk;
-+
-+	irq = platform_get_irq(pdev, 0);
-+	ret = devm_request_threaded_irq(dev, irq, meson_mx_sdhc_irq,
-+					meson_mx_sdhc_irq_thread, IRQF_ONESHOT,
-+					NULL, host);
-+	if (ret)
-+		goto err_disable_pclk;
-+
-+	ret = mmc_add_host(mmc);
-+	if (ret)
-+		goto err_disable_pclk;
-+
-+	return 0;
-+
-+err_disable_pclk:
-+	clk_disable_unprepare(host->pclk);
-+	return ret;
-+}
-+
-+static int meson_mx_sdhc_remove(struct platform_device *pdev)
-+{
-+	struct meson_mx_sdhc_host *host = platform_get_drvdata(pdev);
-+
-+	mmc_remove_host(host->mmc);
-+
-+	meson_mx_sdhc_disable_clks(host->mmc);
-+
-+	clk_disable_unprepare(host->pclk);
-+
-+	return 0;
-+}
-+
-+static const struct meson_mx_sdhc_data meson_mx_sdhc_data_meson8 = {
-+	.init_hw			= meson_mx_sdhc_init_hw_meson8,
-+	.set_pdma			= meson_mx_sdhc_set_pdma_meson8,
-+	.wait_before_send		= meson_mx_sdhc_wait_before_send_meson8,
-+	.hardware_flush_all_cmds	= false,
-+};
-+
-+static const struct meson_mx_sdhc_data meson_mx_sdhc_data_meson8m2 = {
-+	.init_hw			= meson_mx_sdhc_init_hw_meson8m2,
-+	.set_pdma			= meson_mx_sdhc_set_pdma_meson8m2,
-+	.hardware_flush_all_cmds	= true,
-+};
-+
-+static const struct of_device_id meson_mx_sdhc_of_match[] = {
-+	{
-+		.compatible = "amlogic,meson8-sdhc",
-+		.data = &meson_mx_sdhc_data_meson8
-+	},
-+	{
-+		.compatible = "amlogic,meson8b-sdhc",
-+		.data = &meson_mx_sdhc_data_meson8
-+	},
-+	{
-+		.compatible = "amlogic,meson8m2-sdhc",
-+		.data = &meson_mx_sdhc_data_meson8m2
-+	},
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, meson_mx_sdhc_of_match);
-+
-+static struct platform_driver meson_mx_sdhc_driver = {
-+	.probe   = meson_mx_sdhc_probe,
-+	.remove  = meson_mx_sdhc_remove,
-+	.driver  = {
-+		.name = "meson-mx-sdhc",
-+		.of_match_table = of_match_ptr(meson_mx_sdhc_of_match),
-+	},
-+};
-+
-+module_platform_driver(meson_mx_sdhc_driver);
-+
-+MODULE_DESCRIPTION("Meson6, Meson8, Meson8b and Meson8m2 SDHC Host Driver");
-+MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl@googlemail.com>");
-+MODULE_LICENSE("GPL v2");
-diff --git a/drivers/mmc/host/meson-mx-sdhc.h b/drivers/mmc/host/meson-mx-sdhc.h
-new file mode 100644
-index 000000000000..2aa1e4401173
---- /dev/null
-+++ b/drivers/mmc/host/meson-mx-sdhc.h
-@@ -0,0 +1,138 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright (C) 2020 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-+ */
-+
-+#ifndef _MESON_MX_SDHC_H_
-+#define _MESON_MX_SDHC_H_
-+
-+#include <linux/bitfield.h>
-+
-+#define MESON_SDHC_ARGU						0x00
-+
-+#define MESON_SDHC_SEND						0x04
-+	#define MESON_SDHC_SEND_CMD_INDEX			GENMASK(5, 0)
-+	#define MESON_SDHC_SEND_CMD_HAS_RESP			BIT(6)
-+	#define MESON_SDHC_SEND_CMD_HAS_DATA			BIT(7)
-+	#define MESON_SDHC_SEND_RESP_LEN			BIT(8)
-+	#define MESON_SDHC_SEND_RESP_NO_CRC			BIT(9)
-+	#define MESON_SDHC_SEND_DATA_DIR			BIT(10)
-+	#define MESON_SDHC_SEND_DATA_STOP			BIT(11)
-+	#define MESON_SDHC_SEND_R1B				BIT(12)
-+	#define MESON_SDHC_SEND_TOTAL_PACK			GENMASK(31, 16)
-+
-+#define MESON_SDHC_CTRL						0x08
-+	#define MESON_SDHC_CTRL_DAT_TYPE			GENMASK(1, 0)
-+	#define MESON_SDHC_CTRL_DDR_MODE			BIT(2)
-+	#define MESON_SDHC_CTRL_TX_CRC_NOCHECK			BIT(3)
-+	#define MESON_SDHC_CTRL_PACK_LEN			GENMASK(12, 4)
-+	#define MESON_SDHC_CTRL_RX_TIMEOUT			GENMASK(19, 13)
-+	#define MESON_SDHC_CTRL_RX_PERIOD			GENMASK(23, 20)
-+	#define MESON_SDHC_CTRL_RX_ENDIAN			GENMASK(26, 24)
-+	#define MESON_SDHC_CTRL_SDIO_IRQ_MODE			BIT(27)
-+	#define MESON_SDHC_CTRL_DAT0_IRQ_SEL			BIT(28)
-+	#define MESON_SDHC_CTRL_TX_ENDIAN			GENMASK(31, 29)
-+
-+#define MESON_SDHC_STAT						0x0c
-+	#define MESON_SDHC_STAT_CMD_BUSY			BIT(0)
-+	#define MESON_SDHC_STAT_DAT3_0				GENMASK(4, 1)
-+	#define MESON_SDHC_STAT_CMD				BIT(5)
-+	#define MESON_SDHC_STAT_RXFIFO_CNT			GENMASK(12, 6)
-+	#define MESON_SDHC_STAT_TXFIFO_CNT			GENMASK(19, 13)
-+	#define MESON_SDHC_STAT_DAT7_4				GENMASK(23, 20)
-+
-+#define MESON_SDHC_CLKC						0x10
-+	#define MESON_SDHC_CLKC_CLK_DIV				GENMASK(11, 0)
-+	#define MESON_SDHC_CLKC_CLK_JIC				BIT(24)
-+	#define MESON_SDHC_CLKC_MEM_PWR_OFF			GENMASK(26, 25)
-+
-+#define MESON_SDHC_ADDR						0x14
-+
-+#define MESON_SDHC_PDMA						0x18
-+	#define MESON_SDHC_PDMA_DMA_MODE			BIT(0)
-+	#define MESON_SDHC_PDMA_PIO_RDRESP			GENMASK(3, 1)
-+	#define MESON_SDHC_PDMA_DMA_URGENT			BIT(4)
-+	#define MESON_SDHC_PDMA_WR_BURST			GENMASK(9, 5)
-+	#define MESON_SDHC_PDMA_RD_BURST			GENMASK(14, 10)
-+	#define MESON_SDHC_PDMA_RXFIFO_TH			GENMASK(21, 15)
-+	#define MESON_SDHC_PDMA_TXFIFO_TH			GENMASK(28, 22)
-+	#define MESON_SDHC_PDMA_RXFIFO_MANUAL_FLUSH		GENMASK(30, 29)
-+	#define MESON_SDHC_PDMA_TXFIFO_FILL			BIT(31)
-+
-+#define MESON_SDHC_MISC						0x1c
-+	#define MESON_SDHC_MISC_WCRC_ERR_PATT			GENMASK(6, 4)
-+	#define MESON_SDHC_MISC_WCRC_OK_PATT			GENMASK(9, 7)
-+	#define MESON_SDHC_MISC_BURST_NUM			GENMASK(21, 16)
-+	#define MESON_SDHC_MISC_THREAD_ID			GENMASK(27, 22)
-+	#define MESON_SDHC_MISC_MANUAL_STOP			BIT(28)
-+	#define MESON_SDHC_MISC_TXSTART_THRES			GENMASK(31, 29)
-+
-+#define MESON_SDHC_DATA						0x20
-+
-+#define MESON_SDHC_ICTL						0x24
-+	#define MESON_SDHC_ICTL_RESP_OK				BIT(0)
-+	#define MESON_SDHC_ICTL_RESP_TIMEOUT			BIT(1)
-+	#define MESON_SDHC_ICTL_RESP_ERR_CRC			BIT(2)
-+	#define MESON_SDHC_ICTL_RESP_OK_NOCLEAR			BIT(3)
-+	#define MESON_SDHC_ICTL_DATA_1PACK_OK			BIT(4)
-+	#define MESON_SDHC_ICTL_DATA_TIMEOUT			BIT(5)
-+	#define MESON_SDHC_ICTL_DATA_ERR_CRC			BIT(6)
-+	#define MESON_SDHC_ICTL_DATA_XFER_OK			BIT(7)
-+	#define MESON_SDHC_ICTL_RX_HIGHER			BIT(8)
-+	#define MESON_SDHC_ICTL_RX_LOWER			BIT(9)
-+	#define MESON_SDHC_ICTL_DAT1_IRQ			BIT(10)
-+	#define MESON_SDHC_ICTL_DMA_DONE			BIT(11)
-+	#define MESON_SDHC_ICTL_RXFIFO_FULL			BIT(12)
-+	#define MESON_SDHC_ICTL_TXFIFO_EMPTY			BIT(13)
-+	#define MESON_SDHC_ICTL_ADDI_DAT1_IRQ			BIT(14)
-+	#define MESON_SDHC_ICTL_ALL_IRQS			GENMASK(14, 0)
-+	#define MESON_SDHC_ICTL_DAT1_IRQ_DELAY			GENMASK(17, 16)
-+
-+#define MESON_SDHC_ISTA						0x28
-+	#define MESON_SDHC_ISTA_RESP_OK				BIT(0)
-+	#define MESON_SDHC_ISTA_RESP_TIMEOUT			BIT(1)
-+	#define MESON_SDHC_ISTA_RESP_ERR_CRC			BIT(2)
-+	#define MESON_SDHC_ISTA_RESP_OK_NOCLEAR			BIT(3)
-+	#define MESON_SDHC_ISTA_DATA_1PACK_OK			BIT(4)
-+	#define MESON_SDHC_ISTA_DATA_TIMEOUT			BIT(5)
-+	#define MESON_SDHC_ISTA_DATA_ERR_CRC			BIT(6)
-+	#define MESON_SDHC_ISTA_DATA_XFER_OK			BIT(7)
-+	#define MESON_SDHC_ISTA_RX_HIGHER			BIT(8)
-+	#define MESON_SDHC_ISTA_RX_LOWER			BIT(9)
-+	#define MESON_SDHC_ISTA_DAT1_IRQ			BIT(10)
-+	#define MESON_SDHC_ISTA_DMA_DONE			BIT(11)
-+	#define MESON_SDHC_ISTA_RXFIFO_FULL			BIT(12)
-+	#define MESON_SDHC_ISTA_TXFIFO_EMPTY			BIT(13)
-+	#define MESON_SDHC_ISTA_ADDI_DAT1_IRQ			BIT(14)
-+	#define MESON_SDHC_ISTA_ALL_IRQS			GENMASK(14, 0)
-+
-+#define MESON_SDHC_SRST						0x2c
-+	#define MESON_SDHC_SRST_MAIN_CTRL			BIT(0)
-+	#define MESON_SDHC_SRST_RXFIFO				BIT(1)
-+	#define MESON_SDHC_SRST_TXFIFO				BIT(2)
-+	#define MESON_SDHC_SRST_DPHY_RX				BIT(3)
-+	#define MESON_SDHC_SRST_DPHY_TX				BIT(4)
-+	#define MESON_SDHC_SRST_DMA_IF				BIT(5)
-+
-+#define MESON_SDHC_ESTA						0x30
-+	#define MESON_SDHC_ESTA_11_13				GENMASK(13, 11)
-+
-+#define MESON_SDHC_ENHC						0x34
-+	#define MESON_SDHC_ENHC_MESON8M2_WRRSP_MODE		BIT(0)
-+	#define MESON_SDHC_ENHC_MESON8M2_CHK_WRRSP		BIT(1)
-+	#define MESON_SDHC_ENHC_MESON8M2_CHK_DMA		BIT(2)
-+	#define MESON_SDHC_ENHC_MESON8M2_DEBUG			GENMASK(5, 3)
-+	#define MESON_SDHC_ENHC_MESON6_RX_TIMEOUT		GENMASK(7, 0)
-+	#define MESON_SDHC_ENHC_MESON6_DMA_RD_RESP		BIT(16)
-+	#define MESON_SDHC_ENHC_MESON6_DMA_WR_RESP		BIT(17)
-+	#define MESON_SDHC_ENHC_SDIO_IRQ_PERIOD			GENMASK(15, 8)
-+	#define MESON_SDHC_ENHC_RXFIFO_TH			GENMASK(24, 18)
-+	#define MESON_SDHC_ENHC_TXFIFO_TH			GENMASK(31, 25)
-+
-+#define MESON_SDHC_CLK2						0x38
-+	#define MESON_SDHC_CLK2_RX_CLK_PHASE			GENMASK(11, 0)
-+	#define MESON_SDHC_CLK2_SD_CLK_PHASE			GENMASK(23, 12)
-+
-+int meson_mx_sdhc_register_clkc(struct device *dev, void __iomem *base);
-+
-+#endif /* _MESON_MX_SDHC_H_ */
--- 
-2.26.2
+T24gVHVlLCAyMDIwLTA0LTI4IGF0IDE0OjEzICswMjAwLCBVbGYgSGFuc3NvbiB3cm90ZToNCj4g
+T24gVHVlLCAyOCBBcHIgMjAyMCBhdCAxMToyOCwgeW9uZy5tYW9AbWVkaWF0ZWsuY29tDQo+IDx5
+b25nLm1hb0BtZWRpYXRlay5jb20+IHdyb3RlOg0KPiA+DQo+ID4NCj4gPiBPbiBGcmksIDIwMjAt
+MDQtMjQgYXQgMTI6MDkgKzAyMDAsIFVsZiBIYW5zc29uIHdyb3RlOg0KPiA+ID4gT24gVHVlLCAx
+NCBBcHIgMjAyMCBhdCAwNTo0MCwgWW9uZyBNYW8gPHlvbmcubWFvQG1lZGlhdGVrLmNvbT4gd3Jv
+dGU6DQo+ID4gPiA+DQo+ID4gPiA+IEZyb206IHlvbmcgbWFvIDx5b25nLm1hb0BtZWRpYXRlay5j
+b20+DQo+ID4gPiA+DQo+ID4gPiA+IFdoZW4gbW1jX3NkaW9fcmVzbmVkX2lmX2NvbmQgaXMgaW52
+b2tlZCwgaXQgaW5kaWNhdGVzIHRoZSBTRElPDQo+ID4gPiA+IGRldmljZSBpcyBub3QgaW4gdGhl
+IHJpZ2h0IHN0YXRlLiBJbiB0aGlzIGNvbmRpdGlvbiwgdGhlIHByZXZpb3VzDQo+ID4gPiA+IGlt
+cGxlbWVudGF0aW9uIG9mIG1tY19zZGlvX3Jlc2VuZF9pZl9jb25kIGNhbid0IG1ha2Ugc3VyZSBT
+RElPDQo+ID4gPiA+IGRldmljZSBiZSBiYWNrIHRvIGlkbGUgc3RhdGUuIG1tY19wb3dlcl9jeWNs
+ZSBjYW4gcmVzZXQgdGhlIFNESU8NCj4gPiA+ID4gZGV2aWNlIGJ5IEhXIGFuZCBhbHNvIG1ha2Ug
+c3VyZSBTRElPIGRldmljZSBlbnRlciB0byBpZGxlIHN0YXRlDQo+ID4gPiA+IGNvcnJlY3RseS4N
+Cj4gPiA+ID4NCj4gPiA+ID4gU2lnbmVkLW9mZi1ieTogWW9uZyBNYW8gPHlvbmcubWFvQG1lZGlh
+dGVrLmNvbT4NCj4gPiA+ID4gLS0tDQo+ID4gPiA+ICBkcml2ZXJzL21tYy9jb3JlL3NkaW8uYyB8
+IDEgKw0KPiA+ID4gPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspDQo+ID4gPiA+DQo+
+ID4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21tYy9jb3JlL3NkaW8uYyBiL2RyaXZlcnMvbW1j
+L2NvcmUvc2Rpby5jDQo+ID4gPiA+IGluZGV4IGViYjM4N2EuLmFkYTBhODAgMTAwNjQ0DQo+ID4g
+PiA+IC0tLSBhL2RyaXZlcnMvbW1jL2NvcmUvc2Rpby5jDQo+ID4gPiA+ICsrKyBiL2RyaXZlcnMv
+bW1jL2NvcmUvc2Rpby5jDQo+ID4gPiA+IEBAIC01NDYsNiArNTQ2LDcgQEAgc3RhdGljIGludCBt
+bWNfc2Rpb19pbml0X3Voc19jYXJkKHN0cnVjdCBtbWNfY2FyZCAqY2FyZCkNCj4gPiA+ID4gIHN0
+YXRpYyB2b2lkIG1tY19zZGlvX3Jlc2VuZF9pZl9jb25kKHN0cnVjdCBtbWNfaG9zdCAqaG9zdCwN
+Cj4gPiA+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RydWN0IG1tY19j
+YXJkICpjYXJkKQ0KPiA+ID4gPiAgew0KPiA+ID4gPiArICAgICAgIG1tY19wb3dlcl9jeWNsZSho
+b3N0LCBob3N0LT5jYXJkLT5vY3IpOw0KPiA+ID4NCj4gPiA+IFRoaXMgbG9va3Mgd3JvbmcgdG8g
+bWUuIG1tY19zZGlvX3Jlc2VuZF9pZl9jb25kKCkgaXMgY2FsbGVkIGZyb20gdHdvIHBsYWNlcy4N
+Cj4gPiA+DQo+ID4gPiAxLiBJbiB0aGUgY2FzZSB3aGVuIG1tY19zZXRfdWhzX3ZvbHRhZ2UoKSBm
+YWlscyBpbg0KPiA+ID4gbW1jX3NkaW9faW5pdF9jYXJkKCksIHdoaWNoIG1lYW5zIGEgY2FsbCB0
+byBtbWNfcG93ZXJfY3ljbGUoKSBoYXMNCj4gPiA+IGFscmVhZHkgYmVlbiBkb25lLg0KPiA+ID4N
+Cj4gPiAgIFRoYW5rcyBmb3IgeW91ciBjb21tZW50Lg0KPiA+ICAgWWVzLiBJdCBpcyByaWdodCB0
+aGF0IG1tY19wb3dlcl9jeWNsZSgpIGhhcyBhbHJlYWR5IGJlZW4gZG9uZSB3aGVuDQo+ID4gICBt
+bWNfc2Rpb19yZXNlbmRfaWZfY29uZCgpIGlzIGNhbGxlZC4gSW4gbm9ybWFsIHJlLWluaXRpYWxp
+emF0aW9uIGNhc2UsDQo+ID4gICB0aGlzIG1tY19wb3dlcl9jeWNsZSgpIChjdXJyZW50bHkgaW4g
+MS44diB2b2x0YWdlIGFuZCAyMDhNaHogY2xvY2spDQo+ID4gICBjYW4gbWFrZSBTRElPIGRldmlj
+ZSByZWFsbHkgYmFjayB0byBpZGxlIHN0YXRlLiBVbmZvcnR1bmF0ZWx5LCBpbiBzb21lDQo+ID4g
+ICBzcGVjaWFsIFNESU8gZGV2aWNlLCBpdCB3aWxsIGVudGVyIHRvIHVuc3RhYmxlIHN0YXRlLg0K
+PiA+DQo+ID4gICBBdCB0aGlzIHVuc3RhYmxlIHN0YXRlLCBkZXZpY2UgbWF5IGtlZXAgZGF0YTAg
+YWx3YXlzIGxvdyBhZnRlciByZWNlaXZpbmcgQ01EMTEuDQo+ID4gICBBbmQgdGhlbiBldmVyeSBv
+dGhlciBTRElPIENNRCBjYW4ndCBiZSBzZW50IHRvIGRldmljZSBhbnkgbW9yZSBkdWUgdG8gY2Fy
+ZA0KPiA+ICAgaXMgYnVzeShkYXRhMCBpcyBsb3cpLiBUaGVyZWZvcmUsIHByZXZpb3VzIGltcGxl
+bWVudGF0aW9uIGNhbid0IHNhdmUgdGhlDQo+ID4gICBkZXZpY2UuIEF0IHRoaXMgdGltZSwgbW1j
+X3Bvd2VyX2N5Y2xlKCkgbWF5IGJlIHRoZSBmaW5hbCBzb2x1dGlvbiB0byBtYWtlDQo+ID4gICBz
+dXJlIFNESU8gZGV2aWNlIGNhbiBiYWNrIHRvIGlkbGUgc3RhdGUgY29ycmVjdGx5Lg0KPiANCj4g
+V2VsbCwgdGhpcyBzdGlsbCBzb3VuZHMgYSBiaXQgdmFndWUgdG8gbWUuIEkgbmVlZCB0byB1bmRl
+cnN0YW5kIG1vcmUNCj4gZXhhY3RseSB1bmRlciB3aGF0IGNpcmN1bXN0YW5jZXMgdGhlIHByb2Js
+ZW0gb2NjdXJzLg0KPiANCj4gV2hhdCBwbGF0Zm9ybSBhcmUgeW91IHRlc3Rpbmcgd2l0aCBhbmQg
+d2hhdCBTRElPIGNhcmQgaXMgYmVpbmcgdXNlZD8NCiBUaGUgcGxhdGZvcm0gaW5mb3JtYXRpb24g
+aXMgbXQ4MTczICsgTWFydmVsbCBzZGlvIGRldmljZSArIGtlcm5lbC0zLjE4DQoNCj4gDQo+IElz
+IHRoZSBwcm9ibGVtIGhhcHBlbmluZyBkdXJpbmcgdGhlIHN5c3RlbSByZXN1bWUgcGhhc2U/DQog
+IFRoZSBwcm9ibGVtIGhhcHBlbiB3aGVuIG1tY19zZGlvX3J1bnRpbWVfcmVzdW1lIGlzIGludm9r
+ZWQuDQo+IA0KPiBBcmUgdGhlIFNESU8gZnVuYyBkcml2ZXIgdXNpbmcgcnVudGltZSBQTSBhbmQg
+dGhlbiBpcyB0aGUgaG9zdCBjYXBhYmxlDQo+IG9mIE1NQ19DQVBfUE9XRVJfT0ZGX0NBUkQ/DQo+
+IA0KICBZZXMuIFNESU8gZnVuYyBkcml2ZXIgdXNlcyBydW50aW1lIFBNIGFuZCBNTUNfQ0FQX1BP
+V0VSX09GRl9DQVJEIGlzDQplbmFibGVkLg0KDQo+IElzIGl0IGVhc3kgdG8gcmVwcm9kdWNlIHRo
+ZSBwcm9ibGVtIGZvciB5b3U/DQo+IA0KIFRoZXJlIGFyZSBvbmx5IHR3byB1bml0cyBvdXQgb2Yg
+bWFueSBwcm9kdWNlZCB1bml0cyB0aGF0IGNhbiBhbHdheXMNCnJlcHJvZHVjZSB0aGlzIGlzc3Vl
+Lg0KIA0KPiA+DQo+ID4gPiAyLiBXZW4gc2Rpb19yZWFkX2NjY3IoKSBmYWlscyBhbmQgd2hlbiB3
+ZSBkZWNpZGUgdG8gcmV0cnkgdGhlIFVIUy1JDQo+ID4gPiB2b2x0YWdlIHN3aXRjaC4gVGhlbiBw
+ZXJoYXBzIGl0IGNvdWxkIG1ha2Ugc2Vuc2UgdG8gcnVuIGEgcG93ZXIgY3ljbGUuDQo+ID4gPiBC
+dXQgaWYgc28sIHdlIGJldHRlciBkbyBpdCBvbmx5IGZvciB0aGF0IHBhdGguDQo+ID4gPg0KPiA+
+ID4gSSB3aWxsIGNvbnRpbnVlIHRvIGxvb2sgYSBiaXQsIGFzIEkgdGhpbmsgdGhlcmUgYXJlIHJl
+YWxseSBtb3JlIGlzc3Vlcw0KPiA+ID4gdGhhdCB3ZSBtYXkgd2FudCB0byBsb29rIGludG8gd2hp
+bGUgbG9va2luZyBhdCB0aGlzIHBpZWNlIG9mIGNvZGUuDQo+ID4gPiBIb3dldmVyLCBhbGxvdyBt
+ZSBzb21lIG1vcmUgdGltZSBiZWZvcmUgSSBjYW4gcHJvdmlkZSBzb21lIG1vcmUgaWRlYXMNCj4g
+PiA+IG9mIGhvdyB0byBtb3ZlIGZvcndhcmQuDQo+ID4gICBJbiB0aGUgYWN0dWFsIHByb2plY3Qs
+IHdlIGRvIGVuY291bnRlciBtYW55IHJlbGF0aXZlIGlzc3VlcyBhYm91dCByZS1pbml0aWFsaXpl
+ZCBjYXJkLg0KPiA+ICAgVGhlIGZvbGxvd2luZyB0d28gY2F0ZWdvcmllcyBhcmUgdGhlIG1vc3Qg
+Y29tbW9uIGlzc3VlIHdlIG1ldCBiZWZvcmUuDQo+ID4gICBBLiB0aGUgU0RJTyBjYXJkIGlzIGlu
+aXRpYWxpemVkIGJ5IFVIUy1JIG1vZGUgYXQgdGhlIGZpcnN0IHRpbWUsIGJ1dCB3aWxsIGJlDQo+
+ID4gICAgICByZS1pbml0aWFsaXplZCBieSBIaWdoIFNwZWVkIG1vZGUgYXQgdGhlIHNlY29uZCB0
+aW1lLg0KPiA+ICAgICAgPT0+IEFsbCB0aGlzIHR5cGUgb2YgaXNzdWVzIGlzIHJlbGF0aXZlIHdp
+dGggUzE4QSBpbiByZXNwb25zZSBvZiBDTUQ1Lg0KPiA+ICAgICAgICAgIEFuZCBtb3N0IG9mIHRo
+ZSBpc3N1ZXMgYXJlIHJlbGF0ZWQgdG8gdGhlIGludGVydmFsIGJldHdlZW4gcG93ZXJpbmcgb2Zm
+IGFuZA0KPiA+ICAgICAgICAgIHBvd2VyaW5nIG9uIGNhcmQuDQo+ID4gICBCLiBJZiB0aGVyZSBp
+cyBzb21ldGhpbmcgd3JvbmcgaW4gdGhlIGZsb3cgb2Ygdm9sdGFnZSBzd2l0Y2goYWZ0ZXIgQ01E
+MTEpLCBjYXJkIHdpbGwNCj4gPiAgICAgIGFsd2F5cyBrZWVwIGFsbCBkYXRhIHBpbnMgdG8gbG93
+LiBBbmQgdGhlbiBpdCBoYW5ncyB1cCBiZWNhdXNlIGRhdGEwIGlzIGFsd2F5cyBsb3cuDQo+ID4g
+ICBIb3BlIHRoaXMgaW5mb3JtYXRpb24gd2lsbCBiZSBoZWxwZnVsIGZvciB5b3UuDQo+IA0KPiBU
+aGFua3MgZm9yIHNoYXJpbmcgdGhlc2UgZGV0YWlscyEgSSB0aGluayB3ZSBuZWVkIHRvIGNvbnRp
+bnVlIHRvIGRlYnVnDQo+IHRoaXMgaXNzdWUsIHRvIGZ1bGx5IHVuZGVyc3RhbmQuDQo+IA0KPiBJ
+biBwcmluY2lwbGUsIGl0IHNvdW5kcyB0byBtZSB0aGF0IG1heWJlIG1tY19wb3dlcl9jeWNsZSgp
+LCBpc24ndA0KPiByZWFsbHkgc3VjY2Vzc2Z1bGx5IHBvd2VyLWN5Y2xpbmcgdGhlIFNESU8gY2Fy
+ZC4gUGVyaGFwcyBpbnNlcnQgYSBmZXcNCj4gZGVsYXlzIG9yIHNvIGluIHRoYXQgY29kZSB0byBz
+ZWUgaG93IHRoYXQgd291bGQgYWZmZWN0IHRoaW5ncz8NCj4gDQo+IEFueXdheSwgaG93IGlzIHRo
+ZSBwb3dlciB0byB0aGUgU0RJTyBjYXJkIGNvbnRyb2xsZWQgaW4gdGhpcyBjYXNlPyBBcmUNCj4g
+eW91IHVzaW5nIGEgbW1jLXB3cnNlcT8NCj4gDQogIHZtbWMgaXMgY29udHJvbGxlZCB0aHJvdWdo
+IEdQSU8gdG8gc3VwcGx5IDMuM3YgcG93ZXIuDQogIEFuZCB0aGUgdnFtbWMgaXMgc3VwcGxpZWQg
+ZnJvbSBQTUlDIHdoaWNoIGlzIGFsd2F5cyAxLjh2Lg0KICAoVGhlcmUgaXMgbm8gMy4zdiBoZXJl
+LiBQZXJoYXBzIHRoaXMgaXMgb25lIG9mIHRoZSByZWFzb25zIHRvIGhhcHBlbg0KdGhpcyBpc3N1
+ZXMpDQoNCj4gPg0KPiA+ICAgQW55d2F5LCB3ZSB3aWxsIHdhaXQgZm9yIHlvdXIgYWR2aXNlcy4N
+Cj4gPiA+DQo+ID4gPiA+ICAgICAgICAgc2Rpb19yZXNldChob3N0KTsNCj4gPiA+ID4gICAgICAg
+ICBtbWNfZ29faWRsZShob3N0KTsNCj4gPiA+ID4gICAgICAgICBtbWNfc2VuZF9pZl9jb25kKGhv
+c3QsIGhvc3QtPm9jcl9hdmFpbCk7DQo+ID4gPiA+IC0tDQo+ID4gPiA+IDEuOS4xDQo+ID4gPg0K
+PiA+ID4gS2luZCByZWdhcmRzDQo+ID4gPiBVZmZlDQo+IA0KPiBJIGhhdmUgYSBmZXcgcGF0Y2hl
+cyBpbiB0aGUgcGlwZSwgd2hpY2ggZml4ZXMgc29tZSBvdGhlciBwcm9ibGVtcyBpbg0KPiBtbWNf
+c2Rpb19pbml0X2NhcmQoKS4gUG9zc2libHkgdGhvc2UgY2FuIGJlIHJlbGF0ZWQsIGJ1dCBJIG5l
+ZWQgYSBkYXkNCj4gb3Igc28gdG8gcG9zdCB0aGVtLCBsZXQncyBzZWUuDQpUaGUgY29kZWJhc2Ug
+b2YgdGhpcyBwcm9qZWN0IGlzIGtlcm5lbC0zLjE4LiBNYXliZSBpdCBpcyBoYXJkIHRvIGFwcGx5
+IA0KdGhlc2UgbmV3IHBhdGNoZXMuIEFueXdheSwgV2Ugd2lsbCB0cnkgaXQgd2hlbiB3ZSBnZXQg
+dGhlIHBhdGNoZXMuDQpUaGFua3MuIA0KDQoNCj4gDQo+IEtpbmQgcmVnYXJkcw0KPiBVZmZlDQoN
+Cg==
 
