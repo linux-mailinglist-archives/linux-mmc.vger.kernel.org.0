@@ -2,112 +2,136 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EFE51C2FC1
-	for <lists+linux-mmc@lfdr.de>; Sun,  3 May 2020 23:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90B301C3001
+	for <lists+linux-mmc@lfdr.de>; Mon,  4 May 2020 00:28:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729322AbgECVrv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 3 May 2020 17:47:51 -0400
-Received: from relmlor1.renesas.com ([210.160.252.171]:12329 "EHLO
-        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729313AbgECVru (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 3 May 2020 17:47:50 -0400
-X-IronPort-AV: E=Sophos;i="5.73,349,1583161200"; 
-   d="scan'208";a="46232126"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 04 May 2020 06:47:49 +0900
-Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id C56914006DF9;
-        Mon,  4 May 2020 06:47:45 +0900 (JST)
-From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-serial@vger.kernel.org,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH v2 10/10] ARM: dts: r8a7742-iwg21d-q7: Add support for iWave G21D-Q7 board based on RZ/G1H
-Date:   Sun,  3 May 2020 22:46:54 +0100
-Message-Id: <1588542414-14826-11-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1588542414-14826-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <1588542414-14826-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        id S1729158AbgECW2U (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 3 May 2020 18:28:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44306 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729151AbgECW2U (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 3 May 2020 18:28:20 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1D3CC061A0E;
+        Sun,  3 May 2020 15:28:19 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id g13so18678983wrb.8;
+        Sun, 03 May 2020 15:28:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Y69lAmBUHqgE1AImwpWCVOk5aRft5ihzG6qW/7B3meA=;
+        b=g5CtopVisuuYHom2E36JzSmflZ8Vpts4weEltBoFA5PHeqZuw7xpF4tDEugEIDRJTT
+         TSB2h+14aRVNkj+RQbcbjhQQdnxc8Kq2mlRrdjUItjzh1V4liq3aYuRgmnadNQ8usjgA
+         YM7ogrF4rnFPdpKT6rijBFR9aemkr8yt7UJRt/Ke97sabnwNNB3HqBewu9sbrEh9QOR4
+         wCHVpKdtEzfjFb6Ji23FM4HfLGh/FdkDPnpPZWY8pk7HycjmCWAWf3xWDNvYGOVKQT8U
+         O7KmlKYW2V/+xzF56s5uTVYaBP3Fmx727jy1s/DXxOdh8wRJhR0IYipKQ8Jck434a0ic
+         Ttqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Y69lAmBUHqgE1AImwpWCVOk5aRft5ihzG6qW/7B3meA=;
+        b=hupEyenWXv84lhfeV9Fw9hUQvZUkLsU8Qh3q5Albj+hADYSJpMFUee5NlhhRNJZTGA
+         GFpF6E0bwCNlvtuU2IvPHx0mHshA/JiBlkYCp0gSVFL8bUrA2IvvP6Y2/UbNAWw9Xanw
+         o8Vs8X2QOpIF33imRaq9jbF4BPF1hD9M1FNteeLZJA4mY2ac/FKcIuQFqSjN5yy2KPSY
+         WT3sRVjBu5OQu8Vx/Ks9TAX0LL1qdQLBCZXrxN1T+iW/4+bMFKD2bxcDljf9LXH0jhs9
+         cnx1XIkLYGQbzxtmXeK+0icFYIDOMujZCET7CBBYu2RoiaAhLq4yYaMiRNnHQnRv3UM/
+         IFDQ==
+X-Gm-Message-State: AGi0PuYe167Q5ofEQqBbwo89Sfdv4KeRyX38SHVOLAIZ5rAXb3Ggho6J
+        XXG2C2ghOsRPDxh2un2J73o=
+X-Google-Smtp-Source: APiQypKTFvLpzJxWxC/mVKGKRYn8CTyLnoU9CuxJncu5LvibrivSYXR2dENDCWKJUUC+YmHk1ohmUw==
+X-Received: by 2002:adf:cd88:: with SMTP id q8mr13169106wrj.67.1588544898444;
+        Sun, 03 May 2020 15:28:18 -0700 (PDT)
+Received: from localhost.localdomain (p200300F137142E00428D5CFFFEB99DB8.dip0.t-ipconnect.de. [2003:f1:3714:2e00:428d:5cff:feb9:9db8])
+        by smtp.googlemail.com with ESMTPSA id i129sm11200081wmi.20.2020.05.03.15.28.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 May 2020 15:28:17 -0700 (PDT)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-amlogic@lists.infradead.org, linux-mmc@vger.kernel.org,
+        ulf.hansson@linaro.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH] mmc: meson-mx-sdio: trigger a soft reset after a timeout or CRC error
+Date:   Mon,  4 May 2020 00:28:05 +0200
+Message-Id: <20200503222805.2668941-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add support for iWave RainboW-G21D-Qseven board based on RZ/G1H.
+The vendor driver (from the 3.10 kernel) triggers a soft reset every
+time before starting a new command. While this fixes a problem where
+SDIO cards are not detected at all (because all commands simply
+timed out) this hurts SD card read performance a bit (in my tests
+between 10% to 20%).
 
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+Trigger a soft reset after we got a CRC error or if the previous command
+timed out (just like the vendor driver from the same 3.10 kernel for the
+newer SDHC controller IP does). This fixes detection of SDIO cards and
+doesn't hurt SD card read performance at the same time.
+
+With this patch the initialization of an RTL8723BS SDIO card looks like
+this:
+  req done (CMD52): -110: 00000000 00000000 00000000 00000000
+  clock 400000Hz busmode 2 powermode 2 cs 1 Vdd 21 width 1 timing 0
+  starting CMD0 arg 00000000 flags 000000c0
+  req done (CMD0): 0: 00000000 00000000 00000000 00000000
+  clock 400000Hz busmode 2 powermode 2 cs 0 Vdd 21 width 1 timing 0
+  starting CMD8 arg 000001aa flags 000002f5
+  req done (CMD8): -110: 00000000 00000000 00000000 00000000
+  starting CMD5 arg 00000000 flags 000002e1
+  req done (CMD5): 0: 90ff0000 00000000 00000000 00000000
+  starting CMD5 arg 00200000 flags 000002e1
+  req done (CMD5): 0: 90ff0000 00000000 00000000 00000000
+  starting CMD3 arg 00000000 flags 00000075
+  req done (CMD3): 0: 00010000 00000000 00000000 00000000
+  starting CMD7 arg 00010000 flags 00000015
+  req done (CMD7): 0: 00001e00 00000000 00000000 00000000
+  starting CMD52 arg 00000000 flags 00000195
+  req done (CMD52): 0: 00001032 00000000 00000000 00000000
+  [... more CMD52 omitted ...]
+  clock 400000Hz busmode 2 powermode 2 cs 0 Vdd 21 width 1 timing 2
+  clock 50000000Hz busmode 2 powermode 2 cs 0 Vdd 21 width 1 timing 2
+  starting CMD52 arg 00000e00 flags 00000195
+  req done (CMD52): 0: 00001000 00000000 00000000 00000000
+  starting CMD52 arg 80000e02 flags 00000195
+  req done (CMD52): 0: 00001002 00000000 00000000 00000000
+  clock 50000000Hz busmode 2 powermode 2 cs 0 Vdd 21 width 4 timing 2
+  starting CMD52 arg 00020000 flags 00000195
+  req done (CMD52): 0: 00001007 00000000 00000000 00000000
+  [... more CMD52 omitted ...]
+  new high speed SDIO card at address 0001
+
+Fixes: ed80a13bb4c4c9 ("mmc: meson-mx-sdio: Add a driver for the Amlogic Meson8 and Meson8b SoCs")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 ---
- arch/arm/boot/dts/Makefile              |  1 +
- arch/arm/boot/dts/r8a7742-iwg21d-q7.dts | 37 +++++++++++++++++++++++++
- 2 files changed, 38 insertions(+)
- create mode 100644 arch/arm/boot/dts/r8a7742-iwg21d-q7.dts
+Ulf, I consider this non-critical because as long as the meson-mx-sdhc
+driver is not merged we only have one MMC driver for these platforms.
+I don't know anybody to prefer SDIO wifi over SD card access, so this
+can go into -next (in my option at least).
 
-diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index e8dd99201397..ed3376cce638 100644
---- a/arch/arm/boot/dts/Makefile
-+++ b/arch/arm/boot/dts/Makefile
-@@ -917,6 +917,7 @@ dtb-$(CONFIG_ARCH_RENESAS) += \
- 	r7s9210-rza2mevb.dtb \
- 	r8a73a4-ape6evm.dtb \
- 	r8a7740-armadillo800eva.dtb \
-+	r8a7742-iwg21d-q7.dtb \
- 	r8a7743-iwg20d-q7.dtb \
- 	r8a7743-iwg20d-q7-dbcm-ca.dtb \
- 	r8a7743-sk-rzg1m.dtb \
-diff --git a/arch/arm/boot/dts/r8a7742-iwg21d-q7.dts b/arch/arm/boot/dts/r8a7742-iwg21d-q7.dts
-new file mode 100644
-index 000000000000..1f5c35c66d91
---- /dev/null
-+++ b/arch/arm/boot/dts/r8a7742-iwg21d-q7.dts
-@@ -0,0 +1,37 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Device Tree Source for the iWave-RZ/G1H Qseven board
-+ *
-+ * Copyright (C) 2020 Renesas Electronics Corp.
-+ */
+
+ drivers/mmc/host/meson-mx-sdio.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/mmc/host/meson-mx-sdio.c b/drivers/mmc/host/meson-mx-sdio.c
+index 2e58743d83bb..3813b544f571 100644
+--- a/drivers/mmc/host/meson-mx-sdio.c
++++ b/drivers/mmc/host/meson-mx-sdio.c
+@@ -246,6 +246,9 @@ static void meson_mx_mmc_request_done(struct meson_mx_mmc_host *host)
+ 
+ 	mrq = host->mrq;
+ 
++	if (host->cmd->error)
++		meson_mx_mmc_soft_reset(host);
 +
-+/dts-v1/;
-+#include "r8a7742-iwg21m.dtsi"
-+
-+/ {
-+	model = "iWave Systems RainboW-G21D-Qseven board based on RZ/G1H";
-+	compatible = "iwave,g21d", "iwave,g21m", "renesas,r8a7742";
-+
-+	aliases {
-+		serial2 = &scifa2;
-+	};
-+
-+	chosen {
-+		bootargs = "ignore_loglevel root=/dev/mmcblk0p1 rw rootwait";
-+		stdout-path = "serial2:115200n8";
-+	};
-+};
-+
-+&pfc {
-+	scifa2_pins: scifa2 {
-+		groups = "scifa2_data_c";
-+		function = "scifa2";
-+	};
-+};
-+
-+&scifa2 {
-+	pinctrl-0 = <&scifa2_pins>;
-+	pinctrl-names = "default";
-+
-+	status = "okay";
-+};
+ 	host->mrq = NULL;
+ 	host->cmd = NULL;
+ 
 -- 
-2.17.1
+2.26.2
 
