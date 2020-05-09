@@ -2,39 +2,41 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D12791CC14B
-	for <lists+linux-mmc@lfdr.de>; Sat,  9 May 2020 14:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B1931CC150
+	for <lists+linux-mmc@lfdr.de>; Sat,  9 May 2020 14:30:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728519AbgEIMax (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 9 May 2020 08:30:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60248 "EHLO mail.kernel.org"
+        id S1728556AbgEIMa4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 9 May 2020 08:30:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60354 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728388AbgEIMaw (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 9 May 2020 08:30:52 -0400
+        id S1726370AbgEIMaz (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 9 May 2020 08:30:55 -0400
 Received: from localhost (unknown [137.135.114.1])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6142521775;
-        Sat,  9 May 2020 12:30:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9C7E724956;
+        Sat,  9 May 2020 12:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589027452;
-        bh=seKJQxzEC9BDEm3+SirKDq/bgsaFHJesV2opJ9ejC1U=;
-        h=Date:From:To:To:To:To:Cc:Cc:Subject:In-Reply-To:References:From;
-        b=fsKNPdfTG+ts8xWAfIz8zsVV+/2EwcxkOhQBV5dYzu1ngXu43qbR3aJ+KciVKUCU2
-         v8Sy/YBXMkesNCALXdA6Ji0JRf7caOl6xxkJON7Ha+YrtQV1vjPMJwnWI095ViZaOC
-         1SxR4pdwZSOlPKxogl3II1y++2m6PB+7PtanGUIc=
-Date:   Sat, 09 May 2020 12:30:51 +0000
+        s=default; t=1589027454;
+        bh=0pINHCe149/hIGfHpl78LOiYhlqOZDIOygvNmvlot4E=;
+        h=Date:From:To:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:
+         From;
+        b=gpo1x5ID3Yx6RBtuEwYTVyiqWXm6zUv8S/DIZ4GI9F+shHkz+BgZUcFHDFOIPHOFO
+         Jf/P3L1EGU6nK04xuPAYt/yPeVnTmiT7O2gHx9uXLY8lyWtUiusKLew2eJJaMw/dJc
+         3A/uPLa7i6iBgeQI/qBKBZlTjP8Yz1Glep3YRn2k=
+Date:   Sat, 09 May 2020 12:30:53 +0000
 From:   Sasha Levin <sashal@kernel.org>
 To:     Sasha Levin <sashal@kernel.org>
 To:     Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
 To:     Sarthak Garg <sartgarg@codeaurora.org>
 To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
 Cc:     stummala@codeaurora.org, linux-mmc@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
 Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH V1 2/2] mmc: core: Fix recursive locking issue in CQE recovery path
-In-Reply-To: <1588775643-18037-3-git-send-email-vbadigan@codeaurora.org>
-References: <1588775643-18037-3-git-send-email-vbadigan@codeaurora.org>
-Message-Id: <20200509123052.6142521775@mail.kernel.org>
+Subject: Re: [PATCH V2] mmc: core: Fix recursive locking issue in CQE recovery path
+In-Reply-To: <1588868135-31783-1-git-send-email-vbadigan@codeaurora.org>
+References: <1588868135-31783-1-git-send-email-vbadigan@codeaurora.org>
+Message-Id: <20200509123054.9C7E724956@mail.kernel.org>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
@@ -44,8 +46,8 @@ Hi
 
 [This is an automated email]
 
-This commit has been processed because it contains a -stable tag.
-The stable tag indicates that it's relevant for the following trees: 4.19+
+This commit has been processed because it contains a "Fixes:" tag
+fixing commit: 1e8e55b67030 ("mmc: block: Add CQE support").
 
 The bot has tested the following trees: v5.6.11, v5.4.39, v4.19.121.
 
