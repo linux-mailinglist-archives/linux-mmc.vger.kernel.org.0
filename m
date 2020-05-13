@@ -2,224 +2,87 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B74281D14F4
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 May 2020 15:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 541D11D1BFC
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 May 2020 19:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387913AbgEMNbu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 May 2020 09:31:50 -0400
-Received: from esa5.microchip.iphmx.com ([216.71.150.166]:59452 "EHLO
-        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387897AbgEMNbp (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 May 2020 09:31:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1589376706; x=1620912706;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TCs5xQ14bvTR7/FIdlrnC54EzExnsRiTdR5p1t9z2r0=;
-  b=EGO9TAK+Zcr6qllgic/YO9gNO9kOKsNazoHGcDbIwWhBi2mg8Ml3I8lJ
-   VYXo+HF57wmS42FiVhx8CLODpmHR1GvHf4wbjzolgZY9Q2+ScvTVjJfbP
-   qb0X9DfrWU0WpYZlHY42u/fFEJHhF4nvFHKtJIchQIf5VqF9ab9ESN5Fe
-   bnRtbnJ8NvJ2Fdfb6tfk3BC+dx9NePJH9WfOKa9SYYnwDcCbKMIooFAD2
-   OM0a1VqJGIlgzBZoxwfWo0b4jLER2d0DvY5GeuCJnu703+sJ3TYMNOqdX
-   UZ7VAA/kFmSMfZYHanalzda/sWUadPgl9qV79i9KOHemLQS+H7IDoAoxf
-   w==;
-IronPort-SDR: BHbrpwrZHZL1tZv25WFNX/YakRXze4CAn171M37amxdxeMGb569HFFJv4+vzS5AJEXTx4yKU45
- 8FDBBFy6bpxmLaW72f7yd3GAn7KtUP3RXzDv0kkVB6LurlauUcO8gLkM6suxyqMVSqeTKqpztY
- Y7oYTeVyerrcMQCgiqjHwfPADHKmYRjqKcAWkdQ2WVvCLyXWCxYawJdUTRi9JirPk+Q0frrr7U
- yz2iuL38l6KBeSAsAD57PV7fVs9VFxI0bkEm8UniDi4W2jAuA3uG9kg6Gm41XtJR3IJ4rLwVSH
- TD8=
-X-IronPort-AV: E=Sophos;i="5.73,387,1583218800"; 
-   d="scan'208";a="75770681"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 May 2020 06:31:43 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 13 May 2020 06:31:43 -0700
-Received: from soft-dev15.microsemi.net (10.10.115.15) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.1713.5 via Frontend Transport; Wed, 13 May 2020 06:31:40 -0700
-From:   Lars Povlsen <lars.povlsen@microchip.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        SoC Team <soc@kernel.org>
-CC:     Lars Povlsen <lars.povlsen@microchip.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 3/3] arm64: dts: sparx5: Add Sparx5 eMMC support
-Date:   Wed, 13 May 2020 15:31:22 +0200
-Message-ID: <20200513133122.25121-4-lars.povlsen@microchip.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200513133122.25121-1-lars.povlsen@microchip.com>
-References: <20200513133122.25121-1-lars.povlsen@microchip.com>
+        id S2389830AbgEMRMR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 May 2020 13:12:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46090 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389826AbgEMRMR (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 13 May 2020 13:12:17 -0400
+Received: from localhost (p5486CF35.dip0.t-ipconnect.de [84.134.207.53])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3C351205ED;
+        Wed, 13 May 2020 17:12:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589389937;
+        bh=t+svHDI2LEgtKLTdSO4kWJrbAf71gAmoo+hkov3X/1o=;
+        h=From:To:Cc:Subject:Date:From;
+        b=0gSVQxP3wSUdmiBR9C1XXV0cigIVKqBg2kgpi3xhmO8lNDtxgAE1OmKOEmv/8Ufzh
+         Q5ZqKohzSQtvSIXG9RTukdgTfzJlkcxaRlwOJh7htAIcAd9gdeUDpC8UdAxzOlP8S6
+         715562B0EBjGqR9rSOThcwTzN3aLoBLhcCn9PX6E=
+From:   Wolfram Sang <wsa@kernel.org>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [RFC PATCH] mmc: tmio: properly balance RPM on remove
+Date:   Wed, 13 May 2020 19:12:06 +0200
+Message-Id: <20200513171206.6600-1-wsa@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This adds eMMC support to the applicable Sparx5 board configuration
-files.
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
+Because we enabled the device with _noresume, we should disable it with
+_noidle to match the ref counting of the clocks during remove().
+
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- arch/arm64/boot/dts/microchip/sparx5.dtsi     | 24 +++++++++++++++++++
- .../boot/dts/microchip/sparx5_pcb125.dts      | 23 ++++++++++++++++++
- .../boot/dts/microchip/sparx5_pcb134_emmc.dts | 23 ++++++++++++++++++
- .../boot/dts/microchip/sparx5_pcb135_emmc.dts | 23 ++++++++++++++++++
- 4 files changed, 93 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/microchip/sparx5.dtsi b/arch/arm64/boot/dts/microchip/sparx5.dtsi
-index 3e94ac9e7dd51..f09a49c41ce19 100644
---- a/arch/arm64/boot/dts/microchip/sparx5.dtsi
-+++ b/arch/arm64/boot/dts/microchip/sparx5.dtsi
-@@ -5,6 +5,7 @@
+I think this is the proper fix to the problem Geert reported [1]. I am
+not sure about a proper Fixes-tag, though. The corresponding _noidle
+call in the probe()-error-path was added with:
 
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include <dt-bindings/clock/microchip,sparx5.h>
+aa86f1a38875 ("mmc: tmio: Fixup runtime PM management during probe")
 
- / {
- 	compatible = "microchip,sparx5";
-@@ -151,6 +152,20 @@ timer1: timer@600105000 {
- 			interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
- 		};
+However, from my understanding this is more fitting?
 
-+		sdhci0: sdhci@600800000 {
-+			compatible = "microchip,dw-sparx5-sdhci";
-+			status = "disabled";
-+			reg = <0x6 0x00800000 0x1000>;
-+			pinctrl-0 = <&emmc_pins>;
-+			pinctrl-names = "default";
-+			clocks = <&clks CLK_ID_AUX1>;
-+			clock-names = "core";
-+			assigned-clocks = <&clks CLK_ID_AUX1>;
-+			assigned-clock-rates = <800000000>;
-+			interrupts = <GIC_SPI 4 IRQ_TYPE_LEVEL_HIGH>;
-+			bus-width = <8>;
-+		};
-+
- 		gpio: pinctrl@6110101e0 {
- 			compatible = "microchip,sparx5-pinctrl";
- 			reg = <0x6 0x110101e0 0x90>, <0x6 0x10508010 0x100>;
-@@ -180,6 +195,15 @@ i2c2_pins: i2c2-pins {
- 				pins = "GPIO_28", "GPIO_29";
- 				function = "twi2";
- 			};
-+
-+			emmc_pins: emmc-pins {
-+				pins = "GPIO_34", "GPIO_35", "GPIO_36",
-+					"GPIO_37", "GPIO_38", "GPIO_39",
-+					"GPIO_40", "GPIO_41", "GPIO_42",
-+					"GPIO_43", "GPIO_44", "GPIO_45",
-+					"GPIO_46", "GPIO_47";
-+				function = "emmc";
-+			};
- 		};
+1b32999e205b ("mmc: tmio: Avoid boilerplate code in ->runtime_suspend()")
 
- 		i2c0: i2c@600101000 {
-diff --git a/arch/arm64/boot/dts/microchip/sparx5_pcb125.dts b/arch/arm64/boot/dts/microchip/sparx5_pcb125.dts
-index 91ee5b6cfc37a..573309fe45823 100644
---- a/arch/arm64/boot/dts/microchip/sparx5_pcb125.dts
-+++ b/arch/arm64/boot/dts/microchip/sparx5_pcb125.dts
-@@ -16,6 +16,29 @@ memory@0 {
- 	};
- };
+But maybe my understanding of the situation is still not perfect and
+even the commit message is bogus? Ulf, since both mentioned commits are
+from you, could you have a look? Thanks in advance!
 
-+&gpio {
-+	emmc_pins: emmc-pins {
-+		/* NB: No "GPIO_35", "GPIO_36", "GPIO_37"
-+		 * (N/A: CARD_nDETECT, CARD_WP, CARD_LED)
-+		 */
-+		pins = "GPIO_34", "GPIO_38", "GPIO_39",
-+			"GPIO_40", "GPIO_41", "GPIO_42",
-+			"GPIO_43", "GPIO_44", "GPIO_45",
-+			"GPIO_46", "GPIO_47";
-+		drive-strength = <3>;
-+		function = "emmc";
-+	};
-+};
-+
-+&sdhci0 {
-+	status = "okay";
-+	bus-width = <8>;
-+	non-removable;
-+	pinctrl-0 = <&emmc_pins>;
-+	max-frequency = <8000000>;
-+	microchip,clock-delay = <10>;
-+};
-+
- &i2c1 {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/microchip/sparx5_pcb134_emmc.dts b/arch/arm64/boot/dts/microchip/sparx5_pcb134_emmc.dts
-index 10081a66961bb..bbb9852c1f151 100644
---- a/arch/arm64/boot/dts/microchip/sparx5_pcb134_emmc.dts
-+++ b/arch/arm64/boot/dts/microchip/sparx5_pcb134_emmc.dts
-@@ -15,3 +15,26 @@ memory@0 {
- 		reg = <0x00000000 0x00000000 0x10000000>;
- 	};
- };
-+
-+&gpio {
-+	emmc_pins: emmc-pins {
-+		/* NB: No "GPIO_35", "GPIO_36", "GPIO_37"
-+		 * (N/A: CARD_nDETECT, CARD_WP, CARD_LED)
-+		 */
-+		pins = "GPIO_34", "GPIO_38", "GPIO_39",
-+			"GPIO_40", "GPIO_41", "GPIO_42",
-+			"GPIO_43", "GPIO_44", "GPIO_45",
-+			"GPIO_46", "GPIO_47";
-+		drive-strength = <3>;
-+		function = "emmc";
-+	};
-+};
-+
-+&sdhci0 {
-+	status = "okay";
-+	pinctrl-0 = <&emmc_pins>;
-+	non-removable;
-+	max-frequency = <52000000>;
-+	bus-width = <8>;
-+	microchip,clock-delay = <10>;
-+};
-diff --git a/arch/arm64/boot/dts/microchip/sparx5_pcb135_emmc.dts b/arch/arm64/boot/dts/microchip/sparx5_pcb135_emmc.dts
-index 741f0e12260e5..f82266fe2ad49 100644
---- a/arch/arm64/boot/dts/microchip/sparx5_pcb135_emmc.dts
-+++ b/arch/arm64/boot/dts/microchip/sparx5_pcb135_emmc.dts
-@@ -15,3 +15,26 @@ memory@0 {
- 		reg = <0x00000000 0x00000000 0x10000000>;
- 	};
- };
-+
-+&gpio {
-+	emmc_pins: emmc-pins {
-+		/* NB: No "GPIO_35", "GPIO_36", "GPIO_37"
-+		 * (N/A: CARD_nDETECT, CARD_WP, CARD_LED)
-+		 */
-+		pins = "GPIO_34", "GPIO_38", "GPIO_39",
-+			"GPIO_40", "GPIO_41", "GPIO_42",
-+			"GPIO_43", "GPIO_44", "GPIO_45",
-+			"GPIO_46", "GPIO_47";
-+		drive-strength = <3>;
-+		function = "emmc";
-+	};
-+};
-+
-+&sdhci0 {
-+	status = "okay";
-+	pinctrl-0 = <&emmc_pins>;
-+	non-removable;
-+	max-frequency = <52000000>;
-+	bus-width = <8>;
-+	microchip,clock-delay = <10>;
-+};
---
-2.26.2
+   Wolfram
+
+[1] Message-ID: <alpine.DEB.2.21.2004291630090.4052@ramsan.of.borg>
+
+ drivers/mmc/host/tmio_mmc_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index 9520bd94cf43..9a4ae954553b 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -1235,7 +1235,7 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	if (host->native_hotplug)
+ 		pm_runtime_put_noidle(&pdev->dev);
+-	pm_runtime_put_sync(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ }
+ EXPORT_SYMBOL_GPL(tmio_mmc_host_remove);
+-- 
+2.20.1
+
