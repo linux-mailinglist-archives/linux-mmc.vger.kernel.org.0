@@ -2,95 +2,84 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 770421D3097
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 May 2020 15:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E4501D3948
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 May 2020 20:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726156AbgENNDz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 May 2020 09:03:55 -0400
-Received: from mail-oo1-f67.google.com ([209.85.161.67]:42094 "EHLO
-        mail-oo1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726056AbgENNDz (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 May 2020 09:03:55 -0400
-Received: by mail-oo1-f67.google.com with SMTP id a83so692284oob.9;
-        Thu, 14 May 2020 06:03:53 -0700 (PDT)
+        id S1726890AbgENSnK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 May 2020 14:43:10 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:34940 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726667AbgENSnJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 May 2020 14:43:09 -0400
+Received: by mail-ot1-f65.google.com with SMTP id k110so3227723otc.2;
+        Thu, 14 May 2020 11:43:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BQlGy1003OHhQDoA039YQUlM3pD9hZvmAohGgf3kvn4=;
-        b=O75EE9Wfl290v9u4EM0BOhEZvXnoj4BqbCOWWiOpxDMhftp5riVsr0v4/RsXdlzGPn
-         K54gU8sLhlAicSWafHUQshXGO3EQp3riJm8BcnnSmXuPthoymMfJ1N4r3q+RU7CpWv5P
-         /7Clu6YUIw2UXWKlAaKVkIVBl+9PXBxY7vpSC3AS+OTKA3UOK0C+GK2imxf9vc927OE+
-         8YtquOnaa8Mw9/ip9csNnVV+ia4WjusDLU1HLi4/JgKwAh9SAapRwdKCHQcBNzJRh0ew
-         FMKaD4nIc9KZFSpe0qRhdiWHHBVw6Q/lQRGerdbCeunouhAW1iw5Hq9aQ+VkYP73sz3S
-         1maw==
-X-Gm-Message-State: AOAM531sgT9EluGnyc4UUneHqClUdUTPd2aZf4NcKYdsqNwurBsTOTFx
-        LT+iOSX4nYURJ2zfuZXjOjiLFmw=
-X-Google-Smtp-Source: ABdhPJxYFBjlqFYAj1GqfM1gMHAmeTVKS1xzDLOHNBWjxWUb+onZgcIBtfAiY2GmmiFtwefYIt7M5A==
-X-Received: by 2002:a4a:1a42:: with SMTP id 63mr1040493oof.16.1589461432786;
-        Thu, 14 May 2020 06:03:52 -0700 (PDT)
+        bh=LGIrY8SDvuTjzejIhxpj+PL53sSxg728mdDpAEJQxe8=;
+        b=VjMLuS9LaTLFpJxYAiOTvbA77irUT3TzEmddQKQiW48weKq+0ztjMvoUGxDmSvGofA
+         5HVk9GHmSMrWwg2ZxR8R+AalcuzWy4Kxg4xGaqEgV/X1hyhS2cUKv6SxCj01SmOUOJeU
+         9DdM6OU8glQtxAg6TwTchBI0rllF+xjlhCAMo7iFeu5cKhS1Mff2OqxMmnnryAkpvIlc
+         YPnghLK5Lmj8nilC7eV9qodckZooxEMYJlvlc/o29EcK0R0FJ0UHHNCJ3iMvoKUptDUQ
+         FQYB23iCcXJwRgTy48tDNlfaiXeOSn2ISPXtHPsDlzg/KmpGpJWwmGEXOg4lUk/pcsBY
+         KPlQ==
+X-Gm-Message-State: AOAM531ZLX7uoEa7knaT7m/VyrRHC4SYyiEoy7qCAS5xA/RFxWMUhmTs
+        VIpXHmGdoT1u/LrCR2kHHQ==
+X-Google-Smtp-Source: ABdhPJx/47NNA/05up2GtjIFWDb9o6IjAicvuuijIfSOZFUWsZZdtOa4nLGqRlZMFhvFdlQEXu78YQ==
+X-Received: by 2002:a05:6830:2147:: with SMTP id r7mr4711948otd.325.1589481788330;
+        Thu, 14 May 2020 11:43:08 -0700 (PDT)
 Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id q68sm755657ooa.29.2020.05.14.06.03.51
+        by smtp.gmail.com with ESMTPSA id i7sm974717otr.80.2020.05.14.11.43.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2020 06:03:52 -0700 (PDT)
-Received: (nullmailer pid 18205 invoked by uid 1000);
-        Thu, 14 May 2020 13:03:51 -0000
-Date:   Thu, 14 May 2020 08:03:51 -0500
+        Thu, 14 May 2020 11:43:07 -0700 (PDT)
+Received: (nullmailer pid 8968 invoked by uid 1000);
+        Thu, 14 May 2020 18:43:06 -0000
+Date:   Thu, 14 May 2020 13:43:06 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Lars Povlsen <lars.povlsen@microchip.com>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org, SoC Team <soc@kernel.org>,
-        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-kernel@vger.kernel.org,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        devicetree@vger.kernel.org,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: mmc: Add Sparx5 SDHCI controller
- bindings
-Message-ID: <20200514130351.GA17797@bogus>
-References: <20200513133122.25121-1-lars.povlsen@microchip.com>
- <20200513133122.25121-2-lars.povlsen@microchip.com>
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Marc Zyngier <maz@kernel.org>, linux-mmc@vger.kernel.org,
+        linux-serial@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v2 2/9] dt-bindings: irqchip: renesas-irqc: Document
+ r8a7742 bindings
+Message-ID: <20200514184306.GA8929@bogus>
+References: <1588794695-27852-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <1588794695-27852-3-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200513133122.25121-2-lars.povlsen@microchip.com>
+In-Reply-To: <1588794695-27852-3-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 13 May 2020 15:31:20 +0200, Lars Povlsen wrote:
-> The Sparx5 SDHCI controller is based on the Designware controller IP.
+On Wed,  6 May 2020 20:51:28 +0100, Lad Prabhakar wrote:
+> Document SoC specific bindings for RZ/G1H (r8a7742) SoC.
 > 
-> Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 > ---
->  .../mmc/microchip,dw-sparx5-sdhci.yaml        | 57 +++++++++++++++++++
->  1 file changed, 57 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mmc/microchip,dw-sparx5-sdhci.yaml
+> v1->v2:
+> * No change
+> ---
+> 
+>  .../devicetree/bindings/interrupt-controller/renesas,irqc.yaml   | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 
-
-My bot found errors running 'make dt_binding_check' on your patch:
-
-Documentation/devicetree/bindings/mmc/microchip,dw-sparx5-sdhci.example.dts:20:18: fatal error: dt-bindings/clock/microchip,sparx5.h: No such file or directory
-         #include <dt-bindings/clock/microchip,sparx5.h>
-                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-scripts/Makefile.lib:312: recipe for target 'Documentation/devicetree/bindings/mmc/microchip,dw-sparx5-sdhci.example.dt.yaml' failed
-make[1]: *** [Documentation/devicetree/bindings/mmc/microchip,dw-sparx5-sdhci.example.dt.yaml] Error 1
-make[1]: *** Waiting for unfinished jobs....
-Makefile:1300: recipe for target 'dt_binding_check' failed
-make: *** [dt_binding_check] Error 2
-
-See https://patchwork.ozlabs.org/patch/1289290
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure dt-schema is up to date:
-
-pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
-
-Please check and re-submit.
-
+Acked-by: Rob Herring <robh@kernel.org>
