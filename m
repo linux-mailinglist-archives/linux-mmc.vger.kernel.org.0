@@ -2,133 +2,60 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CCE41D46C4
-	for <lists+linux-mmc@lfdr.de>; Fri, 15 May 2020 09:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F31C1D4735
+	for <lists+linux-mmc@lfdr.de>; Fri, 15 May 2020 09:38:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726980AbgEOHKL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 15 May 2020 03:10:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50546 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726863AbgEOHKJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 15 May 2020 03:10:09 -0400
-Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77BC8C05BD09
-        for <linux-mmc@vger.kernel.org>; Fri, 15 May 2020 00:10:09 -0700 (PDT)
-Received: by mail-vs1-xe44.google.com with SMTP id l25so636596vso.6
-        for <linux-mmc@vger.kernel.org>; Fri, 15 May 2020 00:10:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=myGyyZuzORGXEjWjyinqgW2ioJBRbKGcje8Lfk9tAJ4=;
-        b=V1iYdjiOBUzaZsw9VykUGi6O3id6OkuKqKwhHbS7Ia6GpcTJZHMx8pkdASMjcCODmr
-         x9qzM6Z+XeTcaiCtNUzNOE69Z3Ai4uwnSXHD6paK4pJBja1MfDlyIuoLErPxTJ2dQNzZ
-         BEIwKsUoRXtLfiEgDgOGgUY/C27XjDKycTr+wTsOJqgq8l/RLGEdHcnuJUHZ8Kwl2mK6
-         N/7PBniq8Gi/d7/Q1bL6mTsSZXL8S7npqAYqFix4H11vG0hS192A4jQdzPHL0GKVhlph
-         XOipgyMJVJ6zfeC4hIG578pr6Po4V9J8UNz3CJxyc+LHJANsVlqF3hJ4UkygWYmIN5yp
-         0+Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=myGyyZuzORGXEjWjyinqgW2ioJBRbKGcje8Lfk9tAJ4=;
-        b=ExSu7CRMbhTvyiaJPUAxbV+o0wmZTosITl/lM7mmuTr4BS3Q5Hwkj9mcyMHBLqkS6I
-         kdIaaEvpKQWzaENr5JM7gFh/vMRi8NzwBQBuJbh0y8cJQnPUNSSAA6eiLfo9nG7wHQoX
-         JIOjCRlwflFM1nt/lhfrltxBIMFZTXjuI3UsP2g68E2ubkLHQJxRtdYalh5Mwja/M8BL
-         gt17emgtAREZN7C7ktQL3m4SkyDmEifZe6ZIN2U7MwSXznidZGhXtOXD6DI4yYLmVb//
-         KVWeSuj2F5nvFc3r21GX56kHRX5NiFEBBdhETXbrFd/SfnGQ6PAeNfR2h60i9vOHDczz
-         W13w==
-X-Gm-Message-State: AOAM530MygTPXHiOxmWgAztJrqkvXaJozGapsbeLQ+dNw/dW8bMt/irY
-        zIxab9o0mCeZvn6WhXxe759Qo5zHUm6sHHoVO0RgRQ==
-X-Google-Smtp-Source: ABdhPJwWT9hZyFsNUs1oXPi53/yyClKjwQlDhz3XUttz3eZZvyWLoaaa83hLU9+m5NTVHoY6N8fZU3lwC03rOLFfkFQ=
-X-Received: by 2002:a05:6102:5d6:: with SMTP id v22mr99713vsf.191.1589526608698;
- Fri, 15 May 2020 00:10:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200513182602.3636a551@xhacker.debian>
-In-Reply-To: <20200513182602.3636a551@xhacker.debian>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 15 May 2020 09:09:31 +0200
-Message-ID: <CAPDyKFr90VZof91VBzLU6JWsna43c++QxL9Z3WREVC7NZTQ=QQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-of-dwcmshc: implement specific set_uhs_signaling
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726670AbgEOHiK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 15 May 2020 03:38:10 -0400
+Received: from inva021.nxp.com ([92.121.34.21]:40066 "EHLO inva021.nxp.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726623AbgEOHiK (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 15 May 2020 03:38:10 -0400
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id DC5C02006C8;
+        Fri, 15 May 2020 09:38:08 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 6EB982006B8;
+        Fri, 15 May 2020 09:38:05 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id CAE99402DF;
+        Fri, 15 May 2020 15:38:00 +0800 (SGT)
+From:   haibo.chen@nxp.com
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        shawnguo@kernel.org, s.hauer@pengutronix.de,
+        linux-mmc@vger.kernel.org
+Cc:     kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com
+Subject: [PATCH] mmc: sdhci-esdhc-imx: add HS400 support for i.MX6SLL
+Date:   Fri, 15 May 2020 15:28:23 +0800
+Message-Id: <1589527703-19108-1-git-send-email-haibo.chen@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 13 May 2020 at 12:26, Jisheng Zhang <Jisheng.Zhang@synaptics.com> wrote:
->
-> We need a different set_uhs_signaling implementation for
-> MMC_TIMING_MMC_HS and MMC_TIMING_MMC_HS400.
->
-> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-Applied for next, thanks!
+i.MX6SLL support MMC up to V5.0, which means support HS400 mode.
 
-Kind regards
-Uffe
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+---
+ drivers/mmc/host/sdhci-esdhc-imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index 38cd83118082..d770cb0bf78b 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -215,6 +215,7 @@ static const struct esdhc_soc_data usdhc_imx6sl_data = {
+ static const struct esdhc_soc_data usdhc_imx6sll_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
++			| ESDHC_FLAG_HS400
+ 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
+ };
+ 
+-- 
+2.17.1
 
-> ---
->  drivers/mmc/host/sdhci-of-dwcmshc.c | 31 ++++++++++++++++++++++++++++-
->  1 file changed, 30 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
-> index a5137845a1c7..a9ed0e006e06 100644
-> --- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-> +++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-> @@ -16,6 +16,9 @@
->
->  #include "sdhci-pltfm.h"
->
-> +/* DWCMSHC specific Mode Select value */
-> +#define DWCMSHC_CTRL_HS400             0x7
-> +
->  #define BOUNDARY_OK(addr, len) \
->         ((addr | (SZ_128M - 1)) == ((addr + len - 1) | (SZ_128M - 1)))
->
-> @@ -46,10 +49,36 @@ static void dwcmshc_adma_write_desc(struct sdhci_host *host, void **desc,
->         sdhci_adma_write_desc(host, desc, addr, len, cmd);
->  }
->
-> +static void dwcmshc_set_uhs_signaling(struct sdhci_host *host,
-> +                                     unsigned int timing)
-> +{
-> +       u16 ctrl_2;
-> +
-> +       ctrl_2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-> +       /* Select Bus Speed Mode for host */
-> +       ctrl_2 &= ~SDHCI_CTRL_UHS_MASK;
-> +       if ((timing == MMC_TIMING_MMC_HS200) ||
-> +           (timing == MMC_TIMING_UHS_SDR104))
-> +               ctrl_2 |= SDHCI_CTRL_UHS_SDR104;
-> +       else if (timing == MMC_TIMING_UHS_SDR12)
-> +               ctrl_2 |= SDHCI_CTRL_UHS_SDR12;
-> +       else if ((timing == MMC_TIMING_UHS_SDR25) ||
-> +                (timing == MMC_TIMING_MMC_HS))
-> +               ctrl_2 |= SDHCI_CTRL_UHS_SDR25;
-> +       else if (timing == MMC_TIMING_UHS_SDR50)
-> +               ctrl_2 |= SDHCI_CTRL_UHS_SDR50;
-> +       else if ((timing == MMC_TIMING_UHS_DDR50) ||
-> +                (timing == MMC_TIMING_MMC_DDR52))
-> +               ctrl_2 |= SDHCI_CTRL_UHS_DDR50;
-> +       else if (timing == MMC_TIMING_MMC_HS400)
-> +               ctrl_2 |= DWCMSHC_CTRL_HS400;
-> +       sdhci_writew(host, ctrl_2, SDHCI_HOST_CONTROL2);
-> +}
-> +
->  static const struct sdhci_ops sdhci_dwcmshc_ops = {
->         .set_clock              = sdhci_set_clock,
->         .set_bus_width          = sdhci_set_bus_width,
-> -       .set_uhs_signaling      = sdhci_set_uhs_signaling,
-> +       .set_uhs_signaling      = dwcmshc_set_uhs_signaling,
->         .get_max_clock          = sdhci_pltfm_clk_get_max_clock,
->         .reset                  = sdhci_reset,
->         .adma_write_desc        = dwcmshc_adma_write_desc,
-> --
-> 2.26.2
->
