@@ -2,271 +2,482 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E38A61D6531
-	for <lists+linux-mmc@lfdr.de>; Sun, 17 May 2020 04:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C9781D6803
+	for <lists+linux-mmc@lfdr.de>; Sun, 17 May 2020 14:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727033AbgEQCNc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 16 May 2020 22:13:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59094 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727008AbgEQCNa (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 16 May 2020 22:13:30 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B36FC05BD09;
-        Sat, 16 May 2020 19:13:30 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id x27so4877924lfg.9;
-        Sat, 16 May 2020 19:13:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=HQ8AmMMgiKGBwAmrHreN8EaXDjlamrkD+mKYrGRi3iw=;
-        b=QJN92KDqmDMu9pICqi5FVOzIFiqsy0DAQ+emMfOI9USC6MorK8JTXBhZm4cFeR6QUY
-         uibvdzmiObvXYEtggw+uNDS9lyihMPOWj6twVGHFBDJ2SCVIEGLCjWM87hqG+9INsBbS
-         2F3T3kdsYqFIU/kGkC1EH5XRcKUFIE/Em0gnEKq0/lazGvDHKm9APlChBGIs5rDoNbW2
-         HzeYJdNoZJfxanNeAI2qVq81qGGs076DjGz/M2eeTUybjxmz5N2f2JAj0ffoD5POn5so
-         46Optu5jqN7COF4LG3+j3ucWE7RwNzDnqPAsQLS3zU3x03xvxvZxqLbGRpLV8IjrWcjN
-         Y+nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HQ8AmMMgiKGBwAmrHreN8EaXDjlamrkD+mKYrGRi3iw=;
-        b=Q7JFaYausmYRbseAAK0Vj7rnf2Hx4a3IgGTaFkwS0HdP0O0x6IAuMvZCFD26f+Q3Qo
-         ITWpZNd7WEXm6u/3VClEAsr2xpe0cKpGzmfz8v7D5zQS71ww4CeTQIixQN5L3waA2MOA
-         Eb7gH7MzKYPcVAzut4BPt+D4QxbeUWsWzN0XipdOGKTAOvlznJO55wyMu2LkEtMvkHm4
-         g6GHYA25lNrbHcGeOw0Se9L5jBVXLa21fu2bBAza2g2hR3fgDuYaH6VS85ZCjNjTBHwC
-         VfvBZrPWjqtI+R7w/yIXc72XMd2isr+54LWlC7g5MEpQa0zCAW6HG1CoctwdiCiSIsij
-         YKNQ==
-X-Gm-Message-State: AOAM533npob3TFoYUioZJG2bXmzsx+B1fQUJi6U4vOnfHzxjIRhtzhod
-        K4Zp9+PVqfcn70FteENvTmU=
-X-Google-Smtp-Source: ABdhPJwNB+DOfPnfjMdMyEQfRn1OPT7cD2J2qFLU087KeTLdY3QWvvpd/hbdDF5K9kmTOS3RITjr7A==
-X-Received: by 2002:a19:ed07:: with SMTP id y7mr7157277lfy.31.1589681608595;
-        Sat, 16 May 2020 19:13:28 -0700 (PDT)
-Received: from localhost.localdomain (ppp91-78-208-152.pppoe.mtu-net.ru. [91.78.208.152])
-        by smtp.gmail.com with ESMTPSA id z5sm3463149lji.30.2020.05.16.19.13.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2020 19:13:28 -0700 (PDT)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Jens Axboe <axboe@kernel.dk>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        David Heidelberg <david@ixit.cz>,
-        Peter Geis <pgwipeout@gmail.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Nicolas Chauvet <kwizart@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Billy Laws <blaws05@gmail.com>,
-        =?UTF-8?q?Nils=20=C3=96stlund?= <nils@naltan.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
-        Andrey Danin <danindrey@mail.ru>,
-        Gilles Grandou <gilles@grandou.net>,
-        Ryan Grachek <ryan@edited.us>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Steve McIntyre <steve@einval.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: [PATCH v6 7/7] soc/tegra: Expose Boot Configuration Table via sysfs
-Date:   Sun, 17 May 2020 05:12:25 +0300
-Message-Id: <20200517021225.22890-8-digetx@gmail.com>
-X-Mailer: git-send-email 2.26.0
-In-Reply-To: <20200517021225.22890-1-digetx@gmail.com>
-References: <20200517021225.22890-1-digetx@gmail.com>
+        id S1727918AbgEQM6B (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 17 May 2020 08:58:01 -0400
+Received: from mga11.intel.com ([192.55.52.93]:3598 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727893AbgEQM6B (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 17 May 2020 08:58:01 -0400
+IronPort-SDR: ppRho+OKgccOrxInLYAR9/emLKik7dmlPtnrbhhxhBhVRGkjuycjwWY34U2CUYlwY1I/PROPBP
+ /OPVANB2pZOw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2020 05:57:52 -0700
+IronPort-SDR: Hh+8uW/Xtg1qIc8VxBUfgZuttHkGbq2gVU78iYZSt0kv6ZvyqhbatEdOW9zbROwIa1iked29Eo
+ HgUxHSRTa7Tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,403,1583222400"; 
+   d="scan'208";a="263685094"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.157]) ([10.237.72.157])
+  by orsmga003.jf.intel.com with ESMTP; 17 May 2020 05:57:49 -0700
+Subject: Re: [PATCH 2/3] sdhci: sparx5: Add Sparx5 SoC eMMC driver
+To:     Lars Povlsen <lars.povlsen@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, SoC Team <soc@kernel.org>
+Cc:     Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+References: <20200513133122.25121-1-lars.povlsen@microchip.com>
+ <20200513133122.25121-3-lars.povlsen@microchip.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <6398c7a6-ce5e-1df6-d5a6-08664a7fc123@intel.com>
+Date:   Sun, 17 May 2020 15:58:06 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200513133122.25121-3-lars.povlsen@microchip.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-It's quite useful to have unencrypted BCT exposed to userspace for
-debugging purposes, so let's expose it via sysfs.  The BCT data will be
-present in '/sys/tegra/boot_config_table' binary file if BCT is available.
+On 13/05/20 4:31 pm, Lars Povlsen wrote:
+> This adds the eMMC driver for the Sparx5 SoC. It is based upon the
+> designware IP, but requires some extra initialization and quirks.
+> 
+> Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
+> ---
+>  drivers/mmc/host/Kconfig           |  13 ++
+>  drivers/mmc/host/Makefile          |   1 +
+>  drivers/mmc/host/sdhci-of-sparx5.c | 348 +++++++++++++++++++++++++++++
+>  3 files changed, 362 insertions(+)
+>  create mode 100644 drivers/mmc/host/sdhci-of-sparx5.c
+> 
+> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> index 462b5352fea75..1e8396d09df75 100644
+> --- a/drivers/mmc/host/Kconfig
+> +++ b/drivers/mmc/host/Kconfig
+> @@ -213,6 +213,19 @@ config MMC_SDHCI_OF_DWCMSHC
+>  	  If you have a controller with this interface, say Y or M here.
+>  	  If unsure, say N.
+> 
+> +config MMC_SDHCI_OF_SPARX5
+> +	tristate "SDHCI OF support for the MCHP Sparx5 SoC"
+> +	depends on MMC_SDHCI_PLTFM
+> +	depends on ARCH_SPARX5
+> +	select MMC_SDHCI_IO_ACCESSORS
+> +	help
+> +	  This selects the Secure Digital Host Controller Interface (SDHCI)
+> +	  found in the MCHP Sparx5 SoC.
+> +
+> +	  If you have a Sparx5 SoC with this interface, say Y or M here.
+> +
+> +	  If unsure, say N.
+> +
+>  config MMC_SDHCI_CADENCE
+>  	tristate "SDHCI support for the Cadence SD/SDIO/eMMC controller"
+>  	depends on MMC_SDHCI_PLTFM
+> diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
+> index b929ef9412083..9f09b7ffaaa16 100644
+> --- a/drivers/mmc/host/Makefile
+> +++ b/drivers/mmc/host/Makefile
+> @@ -89,6 +89,7 @@ obj-$(CONFIG_MMC_SDHCI_OF_ARASAN)	+= sdhci-of-arasan.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_ASPEED)	+= sdhci-of-aspeed.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_AT91)		+= sdhci-of-at91.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_ESDHC)	+= sdhci-of-esdhc.o
+> +obj-$(CONFIG_MMC_SDHCI_OF_SPARX5)	+= sdhci-of-sparx5.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_HLWD)		+= sdhci-of-hlwd.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_DWCMSHC)	+= sdhci-of-dwcmshc.o
+>  obj-$(CONFIG_MMC_SDHCI_BCM_KONA)	+= sdhci-bcm-kona.o
+> diff --git a/drivers/mmc/host/sdhci-of-sparx5.c b/drivers/mmc/host/sdhci-of-sparx5.c
+> new file mode 100644
+> index 0000000000000..8253bf80e175a
+> --- /dev/null
+> +++ b/drivers/mmc/host/sdhci-of-sparx5.c
+> @@ -0,0 +1,348 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * drivers/mmc/host/sdhci-of-sparx5.c
+> + *
+> + * MCHP Sparx5 SoC Secure Digital Host Controller Interface.
+> + *
+> + * Copyright (c) 2019 Microchip Inc.
+> + *
+> + * Author: Lars Povlsen <lars.povlsen@microchip.com>
+> + */
+> +
+> +//#define DEBUG
+> +//#define TRACE_REGISTER
 
-Suggested-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- arch/arm/mach-tegra/tegra.c  |  4 +++
- drivers/soc/tegra/Makefile   |  1 +
- drivers/soc/tegra/bootdata.c | 51 ++++++++++++++++++++++++++++++++++++
- drivers/soc/tegra/common.c   | 17 ++++++++++++
- include/soc/tegra/bootdata.h |  2 ++
- include/soc/tegra/common.h   |  3 +++
- 6 files changed, 78 insertions(+)
- create mode 100644 drivers/soc/tegra/bootdata.c
+No commented out code please.
 
-diff --git a/arch/arm/mach-tegra/tegra.c b/arch/arm/mach-tegra/tegra.c
-index da6bcd85398b..5f40463f1b97 100644
---- a/arch/arm/mach-tegra/tegra.c
-+++ b/arch/arm/mach-tegra/tegra.c
-@@ -72,6 +72,7 @@ static void __init tegra_boot_config_table_init(void)
- 	u32 iram_end   = TEGRA_IRAM_BASE + TEGRA_IRAM_SIZE;
- 	u32 iram_start = TEGRA_IRAM_BASE;
- 	u32 pt_addr, pt_size, bct_size;
-+	void __iomem *bct_ptr;
- 
- 	t20_bit = IO_ADDRESS(TEGRA_IRAM_BASE);
- 
-@@ -90,6 +91,7 @@ static void __init tegra_boot_config_table_init(void)
- 
- 		pt_addr = t20_bct->partition_table_logical_sector_address;
- 		pt_size = t20_bct->partition_table_num_logical_sectors;
-+		bct_ptr = t20_bct;
- 
- 	} else if (of_machine_is_compatible("nvidia,tegra30")) {
- 		bct_size = sizeof(*t30_bct);
-@@ -106,12 +108,14 @@ static void __init tegra_boot_config_table_init(void)
- 
- 		pt_addr = t30_bct->partition_table_logical_sector_address;
- 		pt_size = t30_bct->partition_table_num_logical_sectors;
-+		bct_ptr = t30_bct;
- 	} else {
- 		return;
- 	}
- 
- 	pr_info("%s: BCT found in IRAM\n", __func__);
- 
-+	tegra_bootdata_bct_setup(bct_ptr, bct_size);
- 	tegra_partition_table_setup(pt_addr, pt_size);
- }
- 
-diff --git a/drivers/soc/tegra/Makefile b/drivers/soc/tegra/Makefile
-index 9c809c1814bd..8be2bfb4d95d 100644
---- a/drivers/soc/tegra/Makefile
-+++ b/drivers/soc/tegra/Makefile
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-y += fuse/
- 
-+obj-y += bootdata.o
- obj-y += common.o
- obj-$(CONFIG_SOC_TEGRA_FLOWCTRL) += flowctrl.o
- obj-$(CONFIG_SOC_TEGRA_PMC) += pmc.o
-diff --git a/drivers/soc/tegra/bootdata.c b/drivers/soc/tegra/bootdata.c
-new file mode 100644
-index 000000000000..3d028e0d343d
---- /dev/null
-+++ b/drivers/soc/tegra/bootdata.c
-@@ -0,0 +1,51 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/sizes.h>
-+#include <linux/slab.h>
-+#include <linux/sysfs.h>
-+#include <linux/types.h>
-+
-+#include <soc/tegra/bootdata.h>
-+#include <soc/tegra/common.h>
-+
-+/*
-+ * spare_bct[] will be released once kernel is booted, hence not wasting
-+ * kernel space if BCT is missing. The tegra_bct can't be allocated during
-+ * of BCT setting up because it's too early for the slab allocator.
-+ */
-+static u8 spare_bct[SZ_8K] __initdata;
-+static u8 *tegra_bct;
-+
-+static ssize_t boot_config_table_read(struct file *filp,
-+				      struct kobject *kobj,
-+				      struct bin_attribute *bin_attr,
-+				      char *buf, loff_t off, size_t count)
-+{
-+	memcpy(buf, tegra_bct + off, count);
-+	return count;
-+}
-+static BIN_ATTR_RO(boot_config_table, 0);
-+
-+static int __init tegra_bootdata_bct_sysfs_init(void)
-+{
-+	if (!bin_attr_boot_config_table.size)
-+		return 0;
-+
-+	tegra_bct = kmalloc(bin_attr_boot_config_table.size, GFP_KERNEL);
-+	if (!tegra_bct)
-+		return -ENOMEM;
-+
-+	memcpy(tegra_bct, spare_bct, bin_attr_boot_config_table.size);
-+
-+	return sysfs_create_bin_file(tegra_soc_kobj,
-+				     &bin_attr_boot_config_table);
-+}
-+late_initcall(tegra_bootdata_bct_sysfs_init)
-+
-+void __init tegra_bootdata_bct_setup(void __iomem *bct_ptr, size_t bct_size)
-+{
-+	memcpy_fromio(spare_bct, bct_ptr, bct_size);
-+	bin_attr_boot_config_table.size = bct_size;
-+}
-diff --git a/drivers/soc/tegra/common.c b/drivers/soc/tegra/common.c
-index 3dc54f59cafe..2b4b49eacb2e 100644
---- a/drivers/soc/tegra/common.c
-+++ b/drivers/soc/tegra/common.c
-@@ -3,10 +3,15 @@
-  * Copyright (C) 2014 NVIDIA CORPORATION.  All rights reserved.
-  */
- 
-+#include <linux/init.h>
-+#include <linux/kernel.h>
- #include <linux/of.h>
-+#include <linux/sysfs.h>
- 
- #include <soc/tegra/common.h>
- 
-+struct kobject *tegra_soc_kobj;
-+
- static const struct of_device_id tegra_machine_match[] = {
- 	{ .compatible = "nvidia,tegra20", },
- 	{ .compatible = "nvidia,tegra30", },
-@@ -31,3 +36,15 @@ bool soc_is_tegra(void)
- 
- 	return match != NULL;
- }
-+
-+static int __init tegra_soc_sysfs_init(void)
-+{
-+	if (!soc_is_tegra())
-+		return 0;
-+
-+	tegra_soc_kobj = kobject_create_and_add("tegra", NULL);
-+	WARN_ON(!tegra_soc_kobj);
-+
-+	return 0;
-+}
-+arch_initcall(tegra_soc_sysfs_init)
-diff --git a/include/soc/tegra/bootdata.h b/include/soc/tegra/bootdata.h
-index 7be207cb2519..d5c7a251517d 100644
---- a/include/soc/tegra/bootdata.h
-+++ b/include/soc/tegra/bootdata.h
-@@ -43,4 +43,6 @@ struct tegra30_boot_config_table {
- 	u32 unused_data[3];
- } __packed;
- 
-+void tegra_bootdata_bct_setup(void __iomem *bct_ptr, size_t bct_size);
-+
- #endif /* __SOC_TEGRA_BOOTDATA_H__ */
-diff --git a/include/soc/tegra/common.h b/include/soc/tegra/common.h
-index 744280ecab5f..0bc11b45c98e 100644
---- a/include/soc/tegra/common.h
-+++ b/include/soc/tegra/common.h
-@@ -7,8 +7,11 @@
- #define __SOC_TEGRA_COMMON_H__
- 
- #include <linux/types.h>
-+#include <linux/sysfs.h>
- 
- #ifdef CONFIG_ARCH_TEGRA
-+extern struct kobject *tegra_soc_kobj;
-+
- bool soc_is_tegra(void);
- #else
- static inline bool soc_is_tegra(void)
--- 
-2.26.0
+> +
+> +#include <linux/sizes.h>
+> +#include <linux/delay.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/of_device.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/dma-mapping.h>
+> +
+> +#include "sdhci-pltfm.h"
+> +
+> +#define CPU_REGS_GENERAL_CTRL	(0x22 * 4)
+> +#define  MSHC_DLY_CC_MASK	GENMASK(16, 13)
+> +#define  MSHC_DLY_CC_SHIFT	13
+> +#define  MSHC_DLY_CC_MAX	15
+> +
+> +#define CPU_REGS_PROC_CTRL	(0x2C * 4)
+> +#define  ACP_CACHE_FORCE_ENA	BIT(4)
+> +#define  ACP_AWCACHE		BIT(3)
+> +#define  ACP_ARCACHE		BIT(2)
+> +#define  ACP_CACHE_MASK		(ACP_CACHE_FORCE_ENA|ACP_AWCACHE|ACP_ARCACHE)
+> +
+> +#define MSHC2_VERSION			0x500	/* Off 0x140, reg 0x0 */
+> +#define MSHC2_TYPE			0x504	/* Off 0x140, reg 0x1 */
+> +#define MSHC2_EMMC_CTRL			0x52c	/* Off 0x140, reg 0xB */
+> +#define  MSHC2_EMMC_CTRL_EMMC_RST_N	BIT(2)
+> +#define  MSHC2_EMMC_CTRL_IS_EMMC	BIT(0)
+> +
+> +struct sdhci_sparx5_data {
+> +	struct sdhci_host *host;
+> +	struct regmap *cpu_ctrl;
+> +	int delay_clock;
+> +	struct device_attribute dev_delay_clock;
+> +};
+> +
+> +#define BOUNDARY_OK(addr, len) \
+> +	((addr | (SZ_128M - 1)) == ((addr + len - 1) | (SZ_128M - 1)))
+> +
+> +#if defined(TRACE_REGISTER)
+
+If you want this then add a Kconfig entry for it
+
+> +static void sdhci_sparx5_writel(struct sdhci_host *host, u32 val, int reg)
+> +{
+> +	pr_debug("$$$ writel(0x%08x, 0x%02x)\n", val, reg);
+> +	writel(val, host->ioaddr + reg);
+> +}
+> +
+> +static void sdhci_sparx5_writew(struct sdhci_host *host, u16 val, int reg)
+> +{
+> +	pr_debug("$$$ writew(0x%04x, 0x%02x)\n", val, reg);
+> +	writew(val, host->ioaddr + reg);
+> +}
+> +
+> +static void sdhci_sparx5_writeb(struct sdhci_host *host, u8 val, int reg)
+> +{
+> +	pr_debug("$$$ writeb(0x%02x, 0x%02x)\n", val, reg);
+> +	writeb(val, host->ioaddr + reg);
+> +}
+> +#endif
+> +
+> +/*
+> + * If DMA addr spans 128MB boundary, we split the DMA transfer into two
+> + * so that each DMA transfer doesn't exceed the boundary.
+> + */
+> +static void sdhci_sparx5_adma_write_desc(struct sdhci_host *host, void **desc,
+> +					  dma_addr_t addr, int len,
+> +					  unsigned int cmd)
+> +{
+> +	int tmplen, offset;
+> +
+> +	pr_debug("write_desc: cmd %02x: len %d, offset 0x%0llx\n",
+> +		 cmd, len, addr);
+
+Please prefix all kernel messages by either the mmc or device e.g.
+
+	pr_debug("%s: write_desc: cmd %02x: len %d, offset 0x%0llx\n",
+		 mmc_hostname(host->mmc), cmd, len, addr);
+> +
+> +	if (likely(!len || BOUNDARY_OK(addr, len))) {
+> +		sdhci_adma_write_desc(host, desc, addr, len, cmd);
+> +		return;
+> +	}
+> +
+> +	pr_debug("write_desc: splitting dma len %d, offset 0x%0llx\n",
+> +		 len, addr);
+> +
+> +	offset = addr & (SZ_128M - 1);
+> +	tmplen = SZ_128M - offset;
+> +	sdhci_adma_write_desc(host, desc, addr, tmplen, cmd);
+> +
+> +	addr += tmplen;
+> +	len -= tmplen;
+> +	sdhci_adma_write_desc(host, desc, addr, len, cmd);
+> +}
+> +
+> +static void sparx5_set_cacheable(struct sdhci_host *host, u32 value)
+> +{
+> +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +	struct sdhci_sparx5_data *sdhci_sparx5 = sdhci_pltfm_priv(pltfm_host);
+> +
+> +	pr_debug("%s: Set Cacheable = 0x%x\n", mmc_hostname(host->mmc), value);
+> +
+> +	/* Update ACP caching attributes in HW */
+> +	regmap_update_bits(sdhci_sparx5->cpu_ctrl,
+> +			   CPU_REGS_PROC_CTRL, ACP_CACHE_MASK, value);
+> +}
+> +
+> +static void sparx5_set_delay(struct sdhci_host *host, u8 value)
+> +{
+> +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +	struct sdhci_sparx5_data *sdhci_sparx5 = sdhci_pltfm_priv(pltfm_host);
+> +
+> +	pr_debug("%s: Set DLY_CC = %u\n", mmc_hostname(host->mmc), value);
+> +
+> +	/* Update DLY_CC in HW */
+> +	regmap_update_bits(sdhci_sparx5->cpu_ctrl,
+> +			   CPU_REGS_GENERAL_CTRL,
+> +			   MSHC_DLY_CC_MASK,
+> +			   (value << MSHC_DLY_CC_SHIFT));
+> +}
+> +
+> +static void sdhci_sparx5_set_emmc(struct sdhci_host *host)
+> +{
+> +	if (!mmc_card_is_removable(host->mmc)) {
+> +		u8 value;
+> +
+> +		value = sdhci_readb(host, MSHC2_EMMC_CTRL);
+> +		if (!(value & MSHC2_EMMC_CTRL_IS_EMMC)) {
+> +			pr_debug("Get EMMC_CTRL: 0x%08x\n", value);
+> +			value |= MSHC2_EMMC_CTRL_IS_EMMC;
+> +			pr_debug("Set EMMC_CTRL: 0x%08x\n", value);
+> +			sdhci_writeb(host, value, MSHC2_EMMC_CTRL);
+> +		}
+> +	}
+> +}
+> +
+> +static void sdhci_sparx5_reset_emmc(struct sdhci_host *host)
+> +{
+> +	u8 value;
+> +
+> +	pr_debug("Toggle EMMC_CTRL.EMMC_RST_N\n");
+> +	value = sdhci_readb(host, MSHC2_EMMC_CTRL) &
+> +		~MSHC2_EMMC_CTRL_EMMC_RST_N;
+> +	sdhci_writeb(host, value, MSHC2_EMMC_CTRL);
+> +	/* For eMMC, minimum is 1us but give it 10us for good measure */
+> +	udelay(10);
+> +	sdhci_writeb(host, value | MSHC2_EMMC_CTRL_EMMC_RST_N,
+> +		     MSHC2_EMMC_CTRL);
+> +	/* For eMMC, minimum is 200us but give it 300us for good measure */
+> +	udelay(300);
+
+usleep_range() is better here
+
+> +}
+> +
+> +static void sdhci_sparx5_reset(struct sdhci_host *host, u8 mask)
+> +{
+> +	pr_debug("*** RESET: mask %d\n", mask);
+> +
+> +	sdhci_reset(host, mask);
+> +
+> +	/* Be sure CARD_IS_EMMC stays set */
+> +	sdhci_sparx5_set_emmc(host);
+> +}
+> +
+> +static const struct sdhci_ops sdhci_sparx5_ops = {
+> +#if defined(TRACE_REGISTER)
+> +	.write_l		= sdhci_sparx5_writel,
+> +	.write_w		= sdhci_sparx5_writew,
+> +	.write_b		= sdhci_sparx5_writeb,
+> +#endif
+> +	.set_clock		= sdhci_set_clock,
+> +	.set_bus_width		= sdhci_set_bus_width,
+> +	.set_uhs_signaling	= sdhci_set_uhs_signaling,
+> +	.get_max_clock		= sdhci_pltfm_clk_get_max_clock,
+> +	.reset			= sdhci_sparx5_reset,
+> +	.adma_write_desc	= sdhci_sparx5_adma_write_desc,
+> +};
+> +
+> +static const struct sdhci_pltfm_data sdhci_sparx5_pdata = {
+> +	.quirks  = 0,
+> +	.quirks2 = SDHCI_QUIRK2_HOST_NO_CMD23 | /* Card quirk */
+
+If this is a card quirk then it should be in drivers/mmc/core/quirks.h not here.
+
+> +		   SDHCI_QUIRK2_NO_1_8_V, /* No sdr104, ddr50, etc */
+> +	.ops = &sdhci_sparx5_ops,
+> +};
+> +
+> +static ssize_t sparx5_delay_clock_show(struct device *dev,
+> +					struct device_attribute *attr,
+> +					char *buf)
+> +{
+> +	struct sdhci_sparx5_data *sdhci_sparx5;
+> +
+> +	sdhci_sparx5 = container_of(attr, struct sdhci_sparx5_data,
+> +				     dev_delay_clock);
+> +	return scnprintf(buf, PAGE_SIZE, "%d\n", sdhci_sparx5->delay_clock);
+> +}
+> +
+> +static ssize_t sparx5_delay_clock_store(struct device *dev,
+> +					 struct device_attribute *attr,
+> +					 const char *buf, size_t count)
+> +{
+> +	unsigned int delay_clock;
+> +	struct sdhci_sparx5_data *sdhci_sparx5;
+> +
+> +	sdhci_sparx5 = container_of(attr, struct sdhci_sparx5_data,
+> +				     dev_delay_clock);
+> +
+> +	if (kstrtoint(buf, 10, &delay_clock) ||
+> +	    delay_clock > MSHC_DLY_CC_MAX) {
+> +		dev_err(dev, "sdhci-of-sparx5: wrong parameter format.\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	sdhci_sparx5->delay_clock = delay_clock;
+> +	sparx5_set_delay(sdhci_sparx5->host, sdhci_sparx5->delay_clock);
+> +
+> +	return strlen(buf);
+> +}
+> +
+> +int sdhci_sparx5_probe(struct platform_device *pdev)
+> +{
+> +	int ret;
+> +	const char *syscon = "microchip,sparx5-cpu-syscon";
+> +	struct sdhci_host *host;
+> +	struct sdhci_pltfm_host *pltfm_host;
+> +	struct sdhci_sparx5_data *sdhci_sparx5;
+> +	struct device_node *np = pdev->dev.of_node;
+> +	u32 value;
+> +	u32 extra;
+> +
+> +	host = sdhci_pltfm_init(pdev, &sdhci_sparx5_pdata,
+> +				sizeof(*sdhci_sparx5));
+> +
+> +	if (IS_ERR(host))
+> +		return PTR_ERR(host);
+> +
+> +	/*
+> +	 * extra adma table cnt for cross 128M boundary handling.
+> +	 */
+> +	extra = DIV_ROUND_UP_ULL(dma_get_required_mask(&pdev->dev), SZ_128M);
+> +	if (extra > SDHCI_MAX_SEGS)
+> +		extra = SDHCI_MAX_SEGS;
+> +	host->adma_table_cnt += extra;
+> +
+> +	pltfm_host = sdhci_priv(host);
+> +	sdhci_sparx5 = sdhci_pltfm_priv(pltfm_host);
+> +	sdhci_sparx5->host = host;
+> +
+> +	pltfm_host->clk = devm_clk_get(&pdev->dev, "core");
+> +	if (IS_ERR(pltfm_host->clk)) {
+> +		ret = PTR_ERR(pltfm_host->clk);
+> +		dev_err(&pdev->dev, "failed to get core clk: %d\n", ret);
+> +		goto free_pltfm;
+> +	}
+> +	ret = clk_prepare_enable(pltfm_host->clk);
+> +	if (ret)
+> +		goto free_pltfm;
+> +
+> +	if (!of_property_read_u32(np, "microchip,clock-delay", &value) &&
+> +	    value <= MSHC_DLY_CC_MAX)
+> +		sdhci_sparx5->delay_clock = value;
+> +	else
+> +		sdhci_sparx5->delay_clock = -1; /* Autotune */
+> +
+> +	/* Sysfs delay_clock interface */
+> +	sdhci_sparx5->dev_delay_clock.show = sparx5_delay_clock_show;
+> +	sdhci_sparx5->dev_delay_clock.store = sparx5_delay_clock_store;
+> +	sysfs_attr_init(&sdhci_sparx5->dev_delay_clock.attr);
+> +	sdhci_sparx5->dev_delay_clock.attr.name = "delay_clock";
+> +	sdhci_sparx5->dev_delay_clock.attr.mode = 0644;
+> +	ret = device_create_file(&pdev->dev, &sdhci_sparx5->dev_delay_clock);
+
+Why is this needed?  It seems doubtful that user space knows what value to
+put here if neither the board information nor the driver have that information.
+
+> +	if (ret)
+> +		dev_err(&pdev->dev, "failure creating '%s' device file",
+> +			sdhci_sparx5->dev_delay_clock.attr.name);
+> +
+> +	sdhci_get_of_property(pdev);
+> +
+> +	ret = mmc_of_parse(host->mmc);
+> +	if (ret)
+> +		goto err_clk;
+> +
+> +	sdhci_sparx5->cpu_ctrl = syscon_regmap_lookup_by_compatible(syscon);
+> +	if (IS_ERR(sdhci_sparx5->cpu_ctrl)) {
+> +		dev_err(&pdev->dev, "No CPU syscon regmap !\n");
+> +		ret = PTR_ERR(sdhci_sparx5->cpu_ctrl);
+> +		goto err_clk;
+> +	}
+> +
+> +	if (sdhci_sparx5->delay_clock >= 0)
+> +		sparx5_set_delay(host, sdhci_sparx5->delay_clock);
+> +
+> +	if (!mmc_card_is_removable(host->mmc)) {
+> +		/* Do a HW reset of eMMC card */
+> +		sdhci_sparx5_reset_emmc(host);
+> +		/* Update EMMC_CTRL */
+> +		sdhci_sparx5_set_emmc(host);
+> +		/* If eMMC, disable SD and SDIO */
+> +		host->mmc->caps2 |= (MMC_CAP2_NO_SDIO|MMC_CAP2_NO_SD);
+> +	}
+> +
+> +	/* Enable v4 mode */
+> +	//sdhci_enable_v4_mode(host);
+
+No commented out code please.
+
+> +
+> +	ret = sdhci_add_host(host);
+> +	if (ret)
+> +		dev_err(&pdev->dev, "sdhci_add_host() failed (%d)\n", ret);
+> +
+> +	/* Set AXI bus master to use un-cached access (for DMA) */
+> +	if (host->flags & (SDHCI_USE_SDMA | SDHCI_USE_ADMA) &&
+> +	    IS_ENABLED(CONFIG_DMA_DECLARE_COHERENT))
+> +		sparx5_set_cacheable(host, ACP_CACHE_FORCE_ENA);
+> +
+> +	pr_debug("SDHC version: 0x%08x\n", sdhci_readl(host, MSHC2_VERSION));
+> +	pr_debug("SDHC type:    0x%08x\n", sdhci_readl(host, MSHC2_TYPE));
+> +
+> +	return ret;
+> +
+> +err_clk:
+> +	clk_disable_unprepare(pltfm_host->clk);
+> +free_pltfm:
+> +	sdhci_pltfm_free(pdev);
+> +	return ret;
+> +}
+> +
+> +static const struct of_device_id sdhci_sparx5_of_match[] = {
+> +	{ .compatible = "microchip,dw-sparx5-sdhci" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, sdhci_sparx5_of_match);
+> +
+> +static struct platform_driver sdhci_sparx5_driver = {
+> +	.driver = {
+> +		.name = "sdhci-sparx5",
+> +		.of_match_table = sdhci_sparx5_of_match,
+> +		.pm = &sdhci_pltfm_pmops,
+> +	},
+> +	.probe = sdhci_sparx5_probe,
+> +	.remove = sdhci_pltfm_unregister,
+> +};
+> +
+> +module_platform_driver(sdhci_sparx5_driver);
+> +
+> +MODULE_DESCRIPTION("Sparx5 SDHCI OF driver");
+> +MODULE_AUTHOR("Lars Povlsen <lars.povlsen@microchip.com>");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 2.26.2
+> 
 
