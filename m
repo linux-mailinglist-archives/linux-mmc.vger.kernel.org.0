@@ -2,93 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E43D61DCD1C
-	for <lists+linux-mmc@lfdr.de>; Thu, 21 May 2020 14:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92C6D1DD181
+	for <lists+linux-mmc@lfdr.de>; Thu, 21 May 2020 17:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729146AbgEUMkg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 21 May 2020 08:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37820 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728164AbgEUMkg (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 May 2020 08:40:36 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A46C061A0E;
-        Thu, 21 May 2020 05:40:34 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id z6so8023268ljm.13;
-        Thu, 21 May 2020 05:40:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Bz9kW9o/9YtdCQhvvB7QDx10N00o+JmEwpJejIQIQC4=;
-        b=sqbpbKXnnY6uMSFqSGEn3a6CxICrJyZqvk65oaAGSlYLP6esz/UkVdoJ2LsTojVQ/z
-         F3mY0HIvY/wzm+zDbYRIfXdktMFD9zXqXQXT4JfkeXUxe3W0Cs443CEmdR1MlnqbiLvz
-         sCwSMTuRvktY2ATbNsLmp0qgnnL71T6aWbCznAKMUaGT0ZuIp9j0NNQA7eoXEo/wH/Bp
-         WSq5daGmq8lRF07dPqfeOG8+ZRrgeVeHa1gmMJ3R0PNOMS2YbBpR/lIg9XaVJD2571uY
-         q7yLIPA6cKu6yujpOcFxI231bGWMTIxV2feb1uuBQheKSt43UleIlU2grjUVGqCzfa1I
-         RUog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Bz9kW9o/9YtdCQhvvB7QDx10N00o+JmEwpJejIQIQC4=;
-        b=nE1Ewlq/01ZOcvuf5vAGXTKCVzbEMdeRcparP8hYg1axXQ3Y2/FHRKekIan+/aAlPT
-         eP7TUeGMPDyL0Qwz0IfmjdUqgx30Yr0MHIga+A+KnOOO5G/WUHyEX78DFhwL2mQKjTtM
-         nMMG7p39UPqjl6R6LNCt681D3LZc16tLX5tnNsJgVSSfeRDNUWmATDPH7KvcjPo9LcuW
-         03MQk8gxNu/7Gqq6vjL1acd2sQ2v6dh+BPiYi8dupo8KA8oRQMY5X0nAU3R6NlmB132N
-         uFjseGKQmk5BiTyxW7mr/PqVdJ7gi0t6gF6Q/rsmEUpJGptXGAzedk/nKhMUK8/szdFP
-         72iA==
-X-Gm-Message-State: AOAM531OXszLU2W0YYy0HW1Jw7I/YHlkLZ/OZJ3tgG6jF/5iWyQsSt8F
-        snM4kTQD2e/rKDW2NUe9na0z1t2F
-X-Google-Smtp-Source: ABdhPJzNyDE6H412DCiAfBDPeBmNqbKsp22MrTsH+gzNfvHqt6hOaJDPP4B9eJy5cVKcOiRlz5Skqg==
-X-Received: by 2002:a2e:9743:: with SMTP id f3mr5151896ljj.205.1590064833179;
-        Thu, 21 May 2020 05:40:33 -0700 (PDT)
-Received: from [192.168.2.145] (ppp91-78-208-152.pppoe.mtu-net.ru. [91.78.208.152])
-        by smtp.googlemail.com with ESMTPSA id x8sm1700413ljh.97.2020.05.21.05.40.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 May 2020 05:40:32 -0700 (PDT)
-Subject: Re: [PATCH] sdhci: tegra: Avoid reading autocal timeout values when
- not applicable
-To:     Sowjanya Komatineni <skomatineni@nvidia.com>,
-        adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com
-Cc:     linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-References: <1590005337-1087-1-git-send-email-skomatineni@nvidia.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <45c290f9-e276-53be-a7a6-23bf81f50bc3@gmail.com>
-Date:   Thu, 21 May 2020 15:40:31 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <1590005337-1087-1-git-send-email-skomatineni@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S1730281AbgEUPYI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 21 May 2020 11:24:08 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:11922 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730236AbgEUPYH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 May 2020 11:24:07 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1590074647; h=References: In-Reply-To: Message-Id: Date:
+ Subject: Cc: To: From: Sender;
+ bh=naABoZqtWXQ2lg37iYvV0+bqGuL4VsftQdvTElt++Oc=; b=eaMvhhWuJ5hW8+Q4ax/ngUxIs9wvmOweiJW0+FW8bB1ScJdLux5gerfuC7Hto5Um99Dbz1z0
+ MawdXyfd71rqbDVrujLTigzpvTVo/lcopS/gfSequEHBzA71zcGBR7tyyZD9hq8eLL4WKHZH
+ 4+X6oRYRxdTJ2sUA1LVwhi0LrfU=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5ec69d088cd231c4035c06ad (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 21 May 2020 15:23:52
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id EB65EC433AD; Thu, 21 May 2020 15:23:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from vbadigan-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: vbadigan)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4863AC433CA;
+        Thu, 21 May 2020 15:23:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4863AC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vbadigan@codeaurora.org
+From:   Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        bjorn.andersson@linaro.org, robh+dt@kernel.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+Subject: [PATCH V2 0/3] Internal voltage control for qcom SDHC 
+Date:   Thu, 21 May 2020 20:53:32 +0530
+Message-Id: <1590074615-10787-1-git-send-email-vbadigan@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1589541535-8523-1-git-send-email-vbadigan@codeaurora.org>
+References: <1589541535-8523-1-git-send-email-vbadigan@codeaurora.org>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-20.05.2020 23:08, Sowjanya Komatineni пишет:
-> When auto calibration timeouts, calibration is disabled and fail-safe
-> drive strength values are programmed based on the signal voltage.
-> 
-> Different fail-safe drive strength values based on voltage are
-> applicable only for SoCs supporting 3V3 and 1V8 pad controls.
-> 
-> So, this patch avoids reading these properties from the device tree
-> for SoCs not using pad controls and the warning of missing properties
-> will not show up on these SoC platforms.
-> 
-> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
-> ---
->  drivers/mmc/host/sdhci-tegra.c | 57 ++++++++++++++++++++++++------------------
->  1 file changed, 33 insertions(+), 24 deletions(-)
+On qcom SD host controllers voltage switching be done after the HW
+is ready for it. The HW informs its readiness through power irq.
+The voltage switching should happen only then.
 
-Hello Sowjanya,
+So added support to register voltage regulators from the msm driver
+and use them.
 
-Thank you for the patch.
+This patchset was posted long back but not actively pursued
+https://lore.kernel.org/linux-arm-msm/1539004739-32060-1-git-send-email-vbadigan@codeaurora.org/
+So posting it as fresh patchset.  
 
-Tested-by: Dmitry Osipenko <digetx@gmail.com>
+Changes since V1:
+	- Removed setting load for Vmmc regulator while turning it on/off.
+	  Instead setting the active load once during probe.
+	- Simplified handlng of supplies for BUS_ON/OFF cases in shci_msm_handle_pwr_irq().
+	- Moved common code out of switch case in sdhci_msm_start_signal_voltage_switch().
+	- Updated variable name to sdhci_core_to_disable_vqmmc.
+	- Updated pr_err logs to dev_err logs.
+
+Veerabhadrarao Badiganti (1):
+  dt-bindings: mmc: Supply max load for mmc supplies
+  mmc: sdhci-msm: Use internal voltage control
+
+Vijay Viswanath (1):
+  mmc: sdhci: Allow platform controlled voltage switching
+
+ .../devicetree/bindings/mmc/mmc-controller.yaml    |  16 ++
+ drivers/mmc/host/sdhci-msm.c                       | 207 ++++++++++++++++++++-
+ drivers/mmc/host/sdhci.c                           |  32 ++--
+ drivers/mmc/host/sdhci.h                           |   1 +
+ 4 files changed, 234 insertions(+), 22 deletions(-)
+
+-- 
+Qualcomm India Private Limited, on behalf of Qualcomm Innovation Center, Inc., is a member of Code Aurora Forum, a Linux Foundation Collaborative Project
+
