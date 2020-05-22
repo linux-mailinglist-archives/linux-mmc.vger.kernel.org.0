@@ -2,148 +2,105 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28BED1DE95B
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 May 2020 16:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0341DE97B
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 May 2020 16:47:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730480AbgEVOqR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 22 May 2020 10:46:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48762 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730357AbgEVOqK (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 22 May 2020 10:46:10 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 10128204EF;
-        Fri, 22 May 2020 14:46:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590158770;
-        bh=xL0iNQA61zcd+Iy+CRhN4KujKqVvoopu6rrafJslSYk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=07CBE6yL8mB6BaiAGeIP8E7u9ppDj+LFMIN/lwK1oOqis9HVXDBWiw0o7lfNXmqHr
-         Mx2GhHNv2HSkmgoMWqwlC1uQjSC3ZDKZYHc3LoXCGV1sI14emQwsPiwa1cwjAM/rGf
-         j5NOZPFFqtZBYD1I2MUSa3Of1aRp/BZXdQ9CdSzE=
-Received: by pali.im (Postfix)
-        id 3863B51E; Fri, 22 May 2020 16:46:08 +0200 (CEST)
-From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
-        b43-dev@lists.infradead.org, brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, libertas-dev@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <marek.behun@nic.cz>
-Subject: [PATCH 11/11] mmc: sdio: Sort all SDIO IDs in common include file
-Date:   Fri, 22 May 2020 16:44:12 +0200
-Message-Id: <20200522144412.19712-12-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200522144412.19712-1-pali@kernel.org>
-References: <20200522144412.19712-1-pali@kernel.org>
+        id S1730012AbgEVOrL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 22 May 2020 10:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56524 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729903AbgEVOrL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 May 2020 10:47:11 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D17C061A0E;
+        Fri, 22 May 2020 07:47:11 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id l73so2297354pjb.1;
+        Fri, 22 May 2020 07:47:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=pyI8RXJv0A9qOfUOs7+t5xXq9tBCjrOPiOAhgZoNJGU=;
+        b=Ujuhda9sRCNvYqh00NglKq18LhbkIq8aE4BUcXG3v7wbWcu1ySHA8zIVb+5qyZ5cXW
+         UPnhYOx5gxzweUHjEMfamVI16WBTsGW/NWZNFpC9CEQgX161wxmC4s/WE5Nr6RTQeIaH
+         4b0YabqbO/sH76bBoye3TRdm6o763j0xliAkqVo4UvT1jBaZSTQ2HyKPHfXhhuaOEGov
+         OnPnEuh+Lz3gZcTkTSnw3jkWnBbRhfB3bq6nDxWHwRcrdf+dhjoA/2tWBwEyXr13fZGJ
+         fX40OFWM3EC8WYw3wOseIxV8YbmhcqwcoQNHcF/foWZpegvLrHtAdMB1s4r0DZIG6ixg
+         HPJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=pyI8RXJv0A9qOfUOs7+t5xXq9tBCjrOPiOAhgZoNJGU=;
+        b=O/hCP1V0NNJMQZUG+t9Bh5lxdUqVMSr3Qi+spR+8ouILsF45hzs17drHoHlshSpY4U
+         3mUc0WKdF2fu8kwlhsRdftUaJFrahz05moRmmNqv0O1u602gkT0lzGC3KUrsEwA0bay/
+         1wv0eEKLXcctPNITtDP9vcIH7iCzR1nWBaSzKfjdGZNAQYc0CEJamx6qcL4Gg5//PpBm
+         3QV7gGO7UtBHIRKl8UJJfDJ5n42mzywPS8t3rf9ZJx7o9QidtqCkb+c39l2+qA7xQoAD
+         QS4g/N4YwzI95zZBNYTKUUvBF+HWh/BPRHe1N7ebM51DkRl553jNi0vwEyNttL7qFDy5
+         bDow==
+X-Gm-Message-State: AOAM5302slwv5SbSva3ryBEGqn2pmj+qe/qzpqMMwdYBn7itrccZydCA
+        mymHwrCSXGrvwzS3lx2/a0k=
+X-Google-Smtp-Source: ABdhPJwEjkbC0ZRvqsKRNasE1thUYFAv46HEbfQoZ9/iqC+b34JBVlEVMv+91eqFvfq8/THk/tyv3A==
+X-Received: by 2002:a17:902:bd42:: with SMTP id b2mr14491950plx.219.1590158830652;
+        Fri, 22 May 2020 07:47:10 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id v127sm7113218pfb.91.2020.05.22.07.47.08
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 22 May 2020 07:47:08 -0700 (PDT)
+Date:   Fri, 22 May 2020 07:47:07 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jens Axboe <axboe@kernel.dk>, Rob Herring <robh+dt@kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        linux-ide@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>
+Subject: Re: [PATCH 16/17] dt-bindings: watchdog: renesas,wdt: Document
+ r8a7742 support
+Message-ID: <20200522144707.GA173101@roeck-us.net>
+References: <1589555337-5498-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <1589555337-5498-17-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1589555337-5498-17-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Fix ordering of SDIO IDs to conform to the comment above, which says vendor
-first, device next.
+On Fri, May 15, 2020 at 04:08:56PM +0100, Lad Prabhakar wrote:
+> RZ/G1H (R8A7742) watchdog implementation is compatible with R-Car Gen2,
+> therefore add relevant documentation.
+> 
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
----
- include/linux/mmc/sdio_ids.h | 43 ++++++++++++++++++------------------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
-diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-index b19200aea56a..15ed8ce9d394 100644
---- a/include/linux/mmc/sdio_ids.h
-+++ b/include/linux/mmc/sdio_ids.h
-@@ -25,9 +25,23 @@
-  * Vendors and devices.  Sort key: vendor first, device next.
-  */
- 
-+#define SDIO_VENDOR_ID_STE			0x0020
-+#define SDIO_DEVICE_ID_STE_CW1200		0x2280
-+
-+#define SDIO_VENDOR_ID_INTEL			0x0089
-+#define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX	0x1402
-+#define SDIO_DEVICE_ID_INTEL_IWMC3200WIFI	0x1403
-+#define SDIO_DEVICE_ID_INTEL_IWMC3200TOP	0x1404
-+#define SDIO_DEVICE_ID_INTEL_IWMC3200GPS	0x1405
-+#define SDIO_DEVICE_ID_INTEL_IWMC3200BT		0x1406
-+#define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX_2G5	0x1407
-+
- #define SDIO_VENDOR_ID_CGUYS			0x0092
- #define SDIO_DEVICE_ID_CGUYS_EW_CG1102GC	0x0004
- 
-+#define SDIO_VENDOR_ID_TI			0x0097
-+#define SDIO_DEVICE_ID_TI_WL1271		0x4076
-+
- #define SDIO_VENDOR_ID_ATHEROS			0x0271
- #define SDIO_DEVICE_ID_ATHEROS_AR6003_00	0x0300
- #define SDIO_DEVICE_ID_ATHEROS_AR6003_01	0x0301
-@@ -41,34 +55,26 @@
- 
- #define SDIO_VENDOR_ID_BROADCOM			0x02d0
- #define SDIO_DEVICE_ID_BROADCOM_NINTENDO_WII	0x044b
--#define SDIO_DEVICE_ID_BROADCOM_43143		0xa887
- #define SDIO_DEVICE_ID_BROADCOM_43241		0x4324
- #define SDIO_DEVICE_ID_BROADCOM_4329		0x4329
- #define SDIO_DEVICE_ID_BROADCOM_4330		0x4330
- #define SDIO_DEVICE_ID_BROADCOM_4334		0x4334
--#define SDIO_DEVICE_ID_BROADCOM_43340		0xa94c
--#define SDIO_DEVICE_ID_BROADCOM_43341		0xa94d
- #define SDIO_DEVICE_ID_BROADCOM_4335_4339	0x4335
- #define SDIO_DEVICE_ID_BROADCOM_4339		0x4339
--#define SDIO_DEVICE_ID_BROADCOM_43362		0xa962
--#define SDIO_DEVICE_ID_BROADCOM_43364		0xa9a4
--#define SDIO_DEVICE_ID_BROADCOM_43430		0xa9a6
- #define SDIO_DEVICE_ID_BROADCOM_4345		0x4345
--#define SDIO_DEVICE_ID_BROADCOM_43455		0xa9bf
- #define SDIO_DEVICE_ID_BROADCOM_4354		0x4354
-+#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_89359	0x4355
- #define SDIO_DEVICE_ID_BROADCOM_4356		0x4356
- #define SDIO_DEVICE_ID_BROADCOM_4359		0x4359
- #define SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373	0x4373
- #define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43012	0xa804
--#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_89359	0x4355
--
--#define SDIO_VENDOR_ID_INTEL			0x0089
--#define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX	0x1402
--#define SDIO_DEVICE_ID_INTEL_IWMC3200WIFI	0x1403
--#define SDIO_DEVICE_ID_INTEL_IWMC3200TOP	0x1404
--#define SDIO_DEVICE_ID_INTEL_IWMC3200GPS	0x1405
--#define SDIO_DEVICE_ID_INTEL_IWMC3200BT		0x1406
--#define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX_2G5	0x1407
-+#define SDIO_DEVICE_ID_BROADCOM_43143		0xa887
-+#define SDIO_DEVICE_ID_BROADCOM_43340		0xa94c
-+#define SDIO_DEVICE_ID_BROADCOM_43341		0xa94d
-+#define SDIO_DEVICE_ID_BROADCOM_43362		0xa962
-+#define SDIO_DEVICE_ID_BROADCOM_43364		0xa9a4
-+#define SDIO_DEVICE_ID_BROADCOM_43430		0xa9a6
-+#define SDIO_DEVICE_ID_BROADCOM_43455		0xa9bf
- 
- #define SDIO_VENDOR_ID_MARVELL			0x02df
- #define SDIO_DEVICE_ID_MARVELL_LIBERTAS		0x9103
-@@ -112,12 +118,7 @@
- #define SDIO_DEVICE_ID_SIANO_NOVA_A0		0x1100
- #define SDIO_DEVICE_ID_SIANO_STELLAR 		0x5347
- 
--#define SDIO_VENDOR_ID_TI			0x0097
--#define SDIO_DEVICE_ID_TI_WL1271		0x4076
- #define SDIO_VENDOR_ID_TI_WL1251		0x104c
- #define SDIO_DEVICE_ID_TI_WL1251		0x9066
- 
--#define SDIO_VENDOR_ID_STE			0x0020
--#define SDIO_DEVICE_ID_STE_CW1200		0x2280
--
- #endif /* LINUX_MMC_SDIO_IDS_H */
--- 
-2.20.1
-
+> ---
+>  Documentation/devicetree/bindings/watchdog/renesas,wdt.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt b/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt
+> index 79b3c62..e42fd30 100644
+> --- a/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt
+> +++ b/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt
+> @@ -5,6 +5,7 @@ Required properties:
+>  		fallback compatible string when compatible with the generic
+>  		version.
+>  	       Examples with soctypes are:
+> +		 - "renesas,r8a7742-wdt" (RZ/G1H)
+>  		 - "renesas,r8a7743-wdt" (RZ/G1M)
+>  		 - "renesas,r8a7744-wdt" (RZ/G1N)
+>  		 - "renesas,r8a7745-wdt" (RZ/G1E)
