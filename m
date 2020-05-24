@@ -2,65 +2,146 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5A5E1DF9F0
-	for <lists+linux-mmc@lfdr.de>; Sat, 23 May 2020 20:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0ACD1DFFDD
+	for <lists+linux-mmc@lfdr.de>; Sun, 24 May 2020 17:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728379AbgEWSAn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 23 May 2020 14:00:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55828 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388233AbgEWSAl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 23 May 2020 14:00:41 -0400
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF0DC08C5C8
-        for <linux-mmc@vger.kernel.org>; Sat, 23 May 2020 11:00:39 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id l1so10937894qtp.6
-        for <linux-mmc@vger.kernel.org>; Sat, 23 May 2020 11:00:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=vhvRG4iP0p/cCM0/gHqK0xx0MaMNF3/azTtn5P0fCT1b4XLjGRAoR85FXgvwYtowP6
-         J1ev3dPiedOMtPyOzUYmKFEqsj6BkIi2lR8s0YRNLylOZ8MbeWQpwNTWDXPX57LUrKeO
-         FLL54WToKnc9WyFCTQNZdn8yjuqVF61dsdwJrbIWn1f8+mXNgwQXd1Xox425XdFJLCTr
-         UNYtD5Mkr7J8HytQpl125rrGiBWdOVTtdeDic18s2v1Ex5H4EMrCDseWe8z8QJUA2DPl
-         pMcmWf9nM5lni1dYRbVMyTKtLHSFCzrJM5oRvB7Hp9K31CMWsqtaG47ZQbJG6ZEre6uU
-         kwNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=Z3xRJUKH82dSLxxxPWKBzzn1w3IVoIZljfTB+dNVTkI0uxQ/7sClnitFVgSNBmgVyr
-         Z6EPenrpiCYaFwGtxWrnAhv/kKtxHb/GeSFOjV5C5PFRvKKgeMNIcIjpidPI8vjSLnKZ
-         MhqHVSdFDvitekgysjglO0ujCRxkzaTbBfs+GZePIIqrdWCCTkUQPJDSMVo/z7BVU4SY
-         OzkrzjW6eL91MXQ/8bmJfnsQxjHc5Sl/ZyHaUdrlxcvYC6uJ5BJyw9Ux+cuYuYa0DSiX
-         yQgmfzP0o4L0+mbIax5VYZrcj6qrI+YW8tdgg4o+cnjwSofn9XfC/2rS2OqE8NOtNdyc
-         843A==
-X-Gm-Message-State: AOAM5303W43Uy+R3azqMCp/bnTanqf0BXNcWpbrOFv69+f1B8iwUwCyo
-        bTOkvfD/jB9QF0FcbvzfxoheAHPrlBP1vMhp4X0=
-X-Google-Smtp-Source: ABdhPJw4JSLl4s8hKmdikxPHOZTjp7LuShJQWo5DKJXfhdyHNpRWrWLXX1iWw/azZwGF2Nz0kU5bTrWvyq5YmK6naS0=
-X-Received: by 2002:ac8:1e16:: with SMTP id n22mr21502226qtl.78.1590256838401;
- Sat, 23 May 2020 11:00:38 -0700 (PDT)
+        id S2387453AbgEXPdG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 24 May 2020 11:33:06 -0400
+Received: from mga04.intel.com ([192.55.52.120]:4655 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728879AbgEXPdG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 24 May 2020 11:33:06 -0400
+IronPort-SDR: 3YwnvRi7lHSeMg/V31Qk3vZ37k7uZ9Npe3RNM16el3I4KrGcNXwmPILoea8GwC7HNhZZXzTgmq
+ xnWM1HJpms5A==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2020 08:33:06 -0700
+IronPort-SDR: QrK45m7zkqwMl8XRO5Mfaqz70ESsi8VKLD55T6xbt2A38ozJiTIaPwCWhwV2nvnjwQiK5lcLoI
+ A5UliBJzU+yA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,430,1583222400"; 
+   d="scan'208";a="413277405"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.157]) ([10.237.72.157])
+  by orsmga004.jf.intel.com with ESMTP; 24 May 2020 08:33:03 -0700
+Subject: Re: [PATCH] sdhci: tegra: Avoid reading autocal timeout values when
+ not applicable
+To:     Sowjanya Komatineni <skomatineni@nvidia.com>,
+        ulf.hansson@linaro.org, thierry.reding@gmail.com,
+        jonathanh@nvidia.com
+Cc:     digetx@gmail.com, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
+References: <1590005337-1087-1-git-send-email-skomatineni@nvidia.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <c29287da-a497-8b5e-7275-d2254ee4fb7e@intel.com>
+Date:   Sun, 24 May 2020 18:33:17 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Received: by 2002:a37:9fd3:0:0:0:0:0 with HTTP; Sat, 23 May 2020 11:00:37
- -0700 (PDT)
-Reply-To: mrs.chantala2055@gmail.com
-From:   mrs chantal <mrs.chantalas1@gmail.com>
-Date:   Sat, 23 May 2020 18:00:37 +0000
-Message-ID: <CAMdkyyDY_0O7YgysHCjgRTJ=8-B7XurK7o1razRHDVOjgr2V2g@mail.gmail.com>
-Subject: jjCompliment
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1590005337-1087-1-git-send-email-skomatineni@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-     Compliment of the day to you. I am Mrs.CHANTAL I am sending this brief
-    letter to solicit your partnership to transfer $13.5 Million US
-    Dollars.I shall send you more information and procedures when I receive
-    positive response From you. Please send me a message in My private
-    email address is ( mrschantal066@gmail.com  )
-    Best Regards
-    MrS.Chantal
+On 20/05/20 11:08 pm, Sowjanya Komatineni wrote:
+> When auto calibration timeouts, calibration is disabled and fail-safe
+> drive strength values are programmed based on the signal voltage.
+> 
+> Different fail-safe drive strength values based on voltage are
+> applicable only for SoCs supporting 3V3 and 1V8 pad controls.
+> 
+> So, this patch avoids reading these properties from the device tree
+> for SoCs not using pad controls and the warning of missing properties
+> will not show up on these SoC platforms.
+> 
+> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
+> ---
+>  drivers/mmc/host/sdhci-tegra.c | 57 ++++++++++++++++++++++++------------------
+>  1 file changed, 33 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+> index 3e2c510..141b49b 100644
+> --- a/drivers/mmc/host/sdhci-tegra.c
+> +++ b/drivers/mmc/host/sdhci-tegra.c
+> @@ -605,6 +605,39 @@ static void tegra_sdhci_parse_pad_autocal_dt(struct sdhci_host *host)
+>  		autocal->pull_down_1v8 = 0;
+>  
+>  	err = device_property_read_u32(host->mmc->parent,
+> +			"nvidia,pad-autocal-pull-up-offset-sdr104",
+> +			&autocal->pull_up_sdr104);
+> +	if (err)
+> +		autocal->pull_up_sdr104 = autocal->pull_up_1v8;
+> +
+> +	err = device_property_read_u32(host->mmc->parent,
+> +			"nvidia,pad-autocal-pull-down-offset-sdr104",
+> +			&autocal->pull_down_sdr104);
+> +	if (err)
+> +		autocal->pull_down_sdr104 = autocal->pull_down_1v8;
+> +
+> +	err = device_property_read_u32(host->mmc->parent,
+> +			"nvidia,pad-autocal-pull-up-offset-hs400",
+> +			&autocal->pull_up_hs400);
+> +	if (err)
+> +		autocal->pull_up_hs400 = autocal->pull_up_1v8;
+> +
+> +	err = device_property_read_u32(host->mmc->parent,
+> +			"nvidia,pad-autocal-pull-down-offset-hs400",
+> +			&autocal->pull_down_hs400);
+> +	if (err)
+> +		autocal->pull_down_hs400 = autocal->pull_down_1v8;
+> +
+> +	/*
+> +	 * Different fail-safe drive strength values based on the signaling
+> +	 * voltage are applicable for SoCs supporting 3V3 and 1V8 pad controls.
+> +	 * So, avoid reading below device tree properies for SoCs that don't
+> +	 * have NVQUIRK_NEEDS_PAD_CONTROL.
+> +	 */
+> +	if (!(tegra_host->soc_data->nvquirks & NVQUIRK_NEEDS_PAD_CONTROL))
+> +		return;
+> +
+> +	err = device_property_read_u32(host->mmc->parent,
+>  			"nvidia,pad-autocal-pull-up-offset-3v3-timeout",
+>  			&autocal->pull_up_3v3_timeout);
+>  	if (err) {
+> @@ -647,30 +680,6 @@ static void tegra_sdhci_parse_pad_autocal_dt(struct sdhci_host *host)
+>  				mmc_hostname(host->mmc));
+>  		autocal->pull_down_1v8_timeout = 0;
+>  	}
+> -
+> -	err = device_property_read_u32(host->mmc->parent,
+> -			"nvidia,pad-autocal-pull-up-offset-sdr104",
+> -			&autocal->pull_up_sdr104);
+> -	if (err)
+> -		autocal->pull_up_sdr104 = autocal->pull_up_1v8;
+> -
+> -	err = device_property_read_u32(host->mmc->parent,
+> -			"nvidia,pad-autocal-pull-down-offset-sdr104",
+> -			&autocal->pull_down_sdr104);
+> -	if (err)
+> -		autocal->pull_down_sdr104 = autocal->pull_down_1v8;
+> -
+> -	err = device_property_read_u32(host->mmc->parent,
+> -			"nvidia,pad-autocal-pull-up-offset-hs400",
+> -			&autocal->pull_up_hs400);
+> -	if (err)
+> -		autocal->pull_up_hs400 = autocal->pull_up_1v8;
+> -
+> -	err = device_property_read_u32(host->mmc->parent,
+> -			"nvidia,pad-autocal-pull-down-offset-hs400",
+> -			&autocal->pull_down_hs400);
+> -	if (err)
+> -		autocal->pull_down_hs400 = autocal->pull_down_1v8;
+>  }
+>  
+>  static void tegra_sdhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
+> 
+
