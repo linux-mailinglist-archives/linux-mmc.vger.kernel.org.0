@@ -2,103 +2,101 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF441E0932
-	for <lists+linux-mmc@lfdr.de>; Mon, 25 May 2020 10:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A81C01E09CD
+	for <lists+linux-mmc@lfdr.de>; Mon, 25 May 2020 11:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388786AbgEYIqG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 25 May 2020 04:46:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48842 "EHLO
+        id S2389236AbgEYJOk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 25 May 2020 05:14:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389083AbgEYIqE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 25 May 2020 04:46:04 -0400
-Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40F7FC05BD43
-        for <linux-mmc@vger.kernel.org>; Mon, 25 May 2020 01:46:04 -0700 (PDT)
-Received: by mail-vs1-xe44.google.com with SMTP id e7so9546792vsm.6
-        for <linux-mmc@vger.kernel.org>; Mon, 25 May 2020 01:46:04 -0700 (PDT)
+        with ESMTP id S2389165AbgEYJOj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 25 May 2020 05:14:39 -0400
+Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5800FC061A0E
+        for <linux-mmc@vger.kernel.org>; Mon, 25 May 2020 02:14:39 -0700 (PDT)
+Received: by mail-vk1-xa35.google.com with SMTP id j28so4099475vkn.8
+        for <linux-mmc@vger.kernel.org>; Mon, 25 May 2020 02:14:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20150623.gappssmtp.com; s=20150623;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=gdvbHZ/U0eSo/nSE6jZG36yYG5hVVzqJpLZgsZ5Atlk=;
-        b=A4sFV2hcMddZibVAH4cxdEwT2ipYq4DbCca452hKDfjeokN9RzgtZhnSPmFQQ0slQU
-         K/IuDehNmqbJ841UKfIzBdfkbh0umMQ5ElYDOmNj16ZYFEQ3xjqS9hCL7X2HQpy5S9Js
-         ryTVWdqQDs0EKGVvobQ4BM+8qCpud+e2B8YHV5qIXDsMb0Deaw89YE2NIm6YgT8PGRlZ
-         QiGWK7qll06Io0tcTz65dtPAP5ZJoJa4e2BzFujUNP7ETo5SrDHWHkS7zFeH17mGVbdr
-         KsEyg+6FyeFN7mvPZEt1LgpE55gDHcMtLuz6nQGTXePBbaJqTbdWfJcFxV6rSoqngz9W
-         Tx7Q==
+        bh=KXuwN3ZmRV2excJ3p2CN9NG8Qr8rioJgcoc6aldNCD8=;
+        b=u2tKtBViXH6AWKT3Mn2m0UzeHw0JqODyMKiID+MEZt8Z5kBzw8yPsSzMjDOEVeaAab
+         QwpdL2Zu3ahm/UO3jOafsr6irTlUnPzNpbMh/LGi5r8+tJCKDL5PYNrNqNO6/3dcS6KH
+         dourbb3n31h5TXTxH/nj+3o9KKjlOwK0t2BjFoFpo9EUVbMveik8QwOg55/PW9YjRIg1
+         OTfRK+zzXlgl4+RreEkb+O0L2W+dCw9zgLtXl87Dkk6uivRrB28msX5BVD2iHKNpzEMk
+         wO7CmlonEjJQcdXAX07R/R8qk1Ki5wbHp8/hsg6wi3iO2ykOBo2rdjxi97q3siQgPro1
+         dmJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=gdvbHZ/U0eSo/nSE6jZG36yYG5hVVzqJpLZgsZ5Atlk=;
-        b=YWAK6ORTITGGXEBsJlwveokRMY0H1XUN4W0Is2DaIqyzkkva30CEm8o7TjRqO9tavJ
-         /ZD0K6QHNvoFNl2OL8k+zJ/MVxJl69a8tUosH01ObfewS/2qJej29CnVZO3CL5rEYiqk
-         1vl+9i1KHObZ2KuHjuNGWWoHDNgsxCXWg9guzukp3XXDZ3RwCnFrkNr0kf3vtGe3Z7Pd
-         yONF4nOZaYJy0CO7hFzq8Y4gZOqtygXxY90zRvfuXtAN0oCsmxl8NVfr2bWsVL+NnPbu
-         BUBnUfo4jyPgv5DmnjRJ58lLGt0dG1omKrUAjXAVkZCRuN/ObODKxBOAZ9d8klk+YokC
-         jfBg==
-X-Gm-Message-State: AOAM530R1TcoAxlfv77BgL3A9gv0+V/VNOGbMeVN8DVvx1mzANlYxlTd
-        gzY4ccz2sTeQ04Lyz+e2Aay9Fm7S3Fk5vyHhinUf9w==
-X-Google-Smtp-Source: ABdhPJyserwYHX0S0X7xx4bNhPaJ66+YF2aJlyKso6boQW6YJWewEmZJ+ybPGjhTFf7v9yMbyIl9gIQNPEc4KhFZ15g=
-X-Received: by 2002:a67:310e:: with SMTP id x14mr17151480vsx.237.1590396363418;
- Mon, 25 May 2020 01:46:03 -0700 (PDT)
+        bh=KXuwN3ZmRV2excJ3p2CN9NG8Qr8rioJgcoc6aldNCD8=;
+        b=tK2E9A0P8iSCzXOd6AGOzMG5Lidqc+nl0pXwjtPZxDsDYMCrHKwL/OEbBm+23LHH+e
+         A+P04PZtNC0hSHqOc1NTWfVbBn3k2c66B1fcH7gL6XM7e4IN7EHdG868Y7l521OBW6eB
+         BsaNdKXogZaW2CQsbPPdmH48sWDmN+l2xOhMIH/ci+0MvDcM04qTtfUBwoX8rphD3ON/
+         yJQZpsBqq3AxwR7XnER00iF9qd+PfhlPKVFP1K5X3dj2igcpYn404OHFM7+o29dBOXLL
+         toMSKl2ry+17xnDa9n3SrL8feJOw8uxPgeJjswpaCZ/uUODPuRe1IZbZxlSilEiCJ0C7
+         xlTw==
+X-Gm-Message-State: AOAM530TBZFLioVR9swWZCwz/91F/j9QDuz+8oUnx6XB096agcSlbUvB
+        ShM4ayR+V/6nIfu7NCJZ5p5yLN3Pig9FAexKSCt1tQ==
+X-Google-Smtp-Source: ABdhPJyUrplC+1r41BytkTJiP8Iq/ghMHkizMPyE3irQHWuQvTdmtRtJghTTJybAI3GWbvgH4KnAvMG3hCnhVfe85h8=
+X-Received: by 2002:a1f:25d7:: with SMTP id l206mr18893350vkl.53.1590398078147;
+ Mon, 25 May 2020 02:14:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200518191742.1251440-1-angelo.dureghello@timesys.com> <fdfe557a-49fe-410a-cb05-5bff5e04fdd0@linux-m68k.org>
-In-Reply-To: <fdfe557a-49fe-410a-cb05-5bff5e04fdd0@linux-m68k.org>
-From:   Angelo Dureghello <angelo.dureghello@timesys.com>
-Date:   Mon, 25 May 2020 10:51:15 +0200
-Message-ID: <CALJHbkAsiFGUD3hWzgd1WqnoMekcC60i6Sn66SZS4nde4ksSdg@mail.gmail.com>
-Subject: Re: [PATCH v6 1/4] m68k: mcf5441x: add support for esdhc mmc controller
-To:     Greg Ungerer <gerg@linux-m68k.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-m68k@vger.kernel.org
+References: <491cfef4-4a97-b6e8-0f41-d44e1c73eea4@gmail.com>
+In-Reply-To: <491cfef4-4a97-b6e8-0f41-d44e1c73eea4@gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 25 May 2020 11:14:01 +0200
+Message-ID: <CAPDyKFqAWVPU=mJ=RzMyJsBiMTfSQqFTXw1oLqb=cZCM4e9ebw@mail.gmail.com>
+Subject: Re: sdhci_msm issues with cold-plugged SD cards
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     kernelnewbies@kernelnewbies.org,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Sarthak Garg <sartgarg@codeaurora.org>,
+        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Greg,
++ Bjorn, Sarthak, Veerabhadrarao
 
-On Mon, May 25, 2020 at 8:02 AM Greg Ungerer <gerg@linux-m68k.org> wrote:
+On Fri, 22 May 2020 at 17:51, Iskren Chernev <iskren.chernev@gmail.com> wrote:
 >
-> Hi Angelo,
 >
-> Have you seen this breakage being reported in linux-next?
+> Hello,
 >
->      arch/m68k/coldfire/clk.c:78:60: error: 'MCFSDHC_CLK' undeclared (first
->      use in this function); did you mean 'MCF_CLK'?
->      arch/m68k/coldfire/clk.c:83:61: error: 'MCFSDHC_CLK' undeclared (first
->      use in this function); did you mean 'MCF_CLK'?
->      make[2]: *** [scripts/Makefile.build:272: arch/m68k/coldfire/clk.o]
->      Error 1
->      make[1]: *** [Makefile:1736: arch/m68k/coldfire] Error 2
->      make: *** [Makefile:185: __sub-make] Error 2
+> I'm trying to add SD Card support to a smartphone (Samsung Galaxy S5). After
+> configuring the sdhci-msm driver through DT, it all seems to work fine except
+> the case when the phone boots with the SD card inserted. If the card is
+> re-inserted, or the driver is polling, or the probe code is forcefully executed
+> a second time the card is properly detected.
 >
-> This is when compiling for pretty much anything other than an mcf5441x
-> target.
+> I logged the SD interrupts, commands and responses, and it looks like the
+> hardware is returning Command Index Error and/or Command End Bit Error via the
+> Error Interrupt Status Register, which gets converted to -EILSEQ error. On
+> a second attempt (due to re-insertion, polling or re-execution) these errors
+> are missing, and the card behaves correctly.
+>
+> On the downstream kernel, these errors resulting in EILSEQ do not appear, so it
+> might be related to setup. Also I see that sdhci-msm driver has hardcoded
+> a SDHCI_QUIRK_BROKEN_CARD_DETECTION quirk, which might imply that polling
+> should be used (instead Card Detection GPIO), in which case this issue won't
+> manifest itself. But polling wastes power, and the Card Detect pin works well,
+> at least for this device, so I feel it can be made better.
+>
+> Any suggestions on how to track this down are appreciated!
 
+I think the device is intended to be used with GPIO card detection.
+Polling mode shouldn't be needed if there is GPIO.
 
->
->
-> MCFSDHC_CLK will not be defiend for anything other than mcf5441x targets.
->
-> This mechanism looks a little out of place here, given how specific
-> it is to the sdhc hardware module of the 5441x. Can you move this
-> to the m5441x specific code resolving this?
->
+Anyway, to me it sounds like the HW/controller isn't properly
+initialized during ->probe(), but I can't help you much more than
+that. I have looped in some of the recent active sdhci-msm developers
+to see if they have some ideas that we can try.
 
-i apologize. Couldn't catch that since building for this target.
-Fixing, re-testing and sending patch in short.
-
-
->
-> Regards
-> Greg
->
->
-
-Regards,
-Angelo
+Kind regards
+Uffe
