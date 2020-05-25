@@ -2,132 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41EBF1E094F
-	for <lists+linux-mmc@lfdr.de>; Mon, 25 May 2020 10:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADF441E0932
+	for <lists+linux-mmc@lfdr.de>; Mon, 25 May 2020 10:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388352AbgEYIsm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 25 May 2020 04:48:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49270 "EHLO
+        id S2388786AbgEYIqG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 25 May 2020 04:46:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388342AbgEYIsl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 25 May 2020 04:48:41 -0400
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A4F7C05BD43
-        for <linux-mmc@vger.kernel.org>; Mon, 25 May 2020 01:48:41 -0700 (PDT)
-Received: by mail-vs1-xe43.google.com with SMTP id u79so9549339vsu.4
-        for <linux-mmc@vger.kernel.org>; Mon, 25 May 2020 01:48:41 -0700 (PDT)
+        with ESMTP id S2389083AbgEYIqE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 25 May 2020 04:46:04 -0400
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40F7FC05BD43
+        for <linux-mmc@vger.kernel.org>; Mon, 25 May 2020 01:46:04 -0700 (PDT)
+Received: by mail-vs1-xe44.google.com with SMTP id e7so9546792vsm.6
+        for <linux-mmc@vger.kernel.org>; Mon, 25 May 2020 01:46:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=timesys-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=GeODa0YbiTjbooy9JHHC15ZmQa3mj5lyrBd83ZZUO4Y=;
-        b=h2w1oTn2afNYUAiEwaZkklboJKWXBctne83Cc9a9u+fdFQSeX+39nRiBV1k+paJgkg
-         OGpSXepJMqTiWYil+kmALPik7Qhs2kcryCnAHY/5u7nC8u8U2bG98H0wLoVZyWjOWQoR
-         ii6CgGNDtNG2SpInmFkEUL0ZpHiGrElshtenbPJA0izbisyK7lizeg7jwP3NgC5qP75U
-         vac7nz/vxymHuFoQtN+I5Yn9MDUCPClEn079BXVx83LomJXi5G8RlyF6ZjLtgIDq+MkP
-         aoQIykw/OQvXg9pgx6DJ0AjdYUyDyDUu/841HkIxdohjtDZj7+jgX2qxfybe5Hc1/aaL
-         RHDw==
+         :cc;
+        bh=gdvbHZ/U0eSo/nSE6jZG36yYG5hVVzqJpLZgsZ5Atlk=;
+        b=A4sFV2hcMddZibVAH4cxdEwT2ipYq4DbCca452hKDfjeokN9RzgtZhnSPmFQQ0slQU
+         K/IuDehNmqbJ841UKfIzBdfkbh0umMQ5ElYDOmNj16ZYFEQ3xjqS9hCL7X2HQpy5S9Js
+         ryTVWdqQDs0EKGVvobQ4BM+8qCpud+e2B8YHV5qIXDsMb0Deaw89YE2NIm6YgT8PGRlZ
+         QiGWK7qll06Io0tcTz65dtPAP5ZJoJa4e2BzFujUNP7ETo5SrDHWHkS7zFeH17mGVbdr
+         KsEyg+6FyeFN7mvPZEt1LgpE55gDHcMtLuz6nQGTXePBbaJqTbdWfJcFxV6rSoqngz9W
+         Tx7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=GeODa0YbiTjbooy9JHHC15ZmQa3mj5lyrBd83ZZUO4Y=;
-        b=UyLBISG0HOXVaGEP4i9RY9zkP1MLwYsC/mWD8qSdOr0t15DZgdWdm0m9M2CyABXR7h
-         t/OX7OkqhiDM3bmHsZ+94frwjsmVC2oBJK0g8SuFjgp3NCuErf3TChXWtnSFhZ7cCX3f
-         sV5lnjZgQJ3gvJncK9owxK7XLBGx3HxWEMno0sDLJvgMzSeru2s03Wj4TjxWNAvEVc20
-         Zz4oFd0NJIJ5pxFp0nIanAxPBPncE77EiJ6n70781wQgnf58C7u4YY8jW24m9/k9ZwM6
-         hpHDEgGieIb/tfVYVrGy18P6XJ9BCGOn+zJrMm2RomQ668m2E06b0Y8Sag+kOByzqdd2
-         tWCw==
-X-Gm-Message-State: AOAM532XWhbQYChtiBDHZf8YQAgUf2lJhjlDmi83U1GZREhnL8UHVxxf
-        h88KbmXhwMejEIZKVi1PuIENs9dluY5043vrqvWU35WEs1M=
-X-Google-Smtp-Source: ABdhPJwCcH4pYSZrf2SKmkEOCli6MSxdBz6f7xVXY4gZ5TdGNjJ0pX2ecAHPY0hqztpn3/kyrwxrYrPLPmlnUmgnX6Y=
-X-Received: by 2002:a67:2441:: with SMTP id k62mr3914343vsk.165.1590396520572;
- Mon, 25 May 2020 01:48:40 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=gdvbHZ/U0eSo/nSE6jZG36yYG5hVVzqJpLZgsZ5Atlk=;
+        b=YWAK6ORTITGGXEBsJlwveokRMY0H1XUN4W0Is2DaIqyzkkva30CEm8o7TjRqO9tavJ
+         /ZD0K6QHNvoFNl2OL8k+zJ/MVxJl69a8tUosH01ObfewS/2qJej29CnVZO3CL5rEYiqk
+         1vl+9i1KHObZ2KuHjuNGWWoHDNgsxCXWg9guzukp3XXDZ3RwCnFrkNr0kf3vtGe3Z7Pd
+         yONF4nOZaYJy0CO7hFzq8Y4gZOqtygXxY90zRvfuXtAN0oCsmxl8NVfr2bWsVL+NnPbu
+         BUBnUfo4jyPgv5DmnjRJ58lLGt0dG1omKrUAjXAVkZCRuN/ObODKxBOAZ9d8klk+YokC
+         jfBg==
+X-Gm-Message-State: AOAM530R1TcoAxlfv77BgL3A9gv0+V/VNOGbMeVN8DVvx1mzANlYxlTd
+        gzY4ccz2sTeQ04Lyz+e2Aay9Fm7S3Fk5vyHhinUf9w==
+X-Google-Smtp-Source: ABdhPJyserwYHX0S0X7xx4bNhPaJ66+YF2aJlyKso6boQW6YJWewEmZJ+ybPGjhTFf7v9yMbyIl9gIQNPEc4KhFZ15g=
+X-Received: by 2002:a67:310e:: with SMTP id x14mr17151480vsx.237.1590396363418;
+ Mon, 25 May 2020 01:46:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <HKAPR02MB429107D62F3E9F86E76AD550E0B40@HKAPR02MB4291.apcprd02.prod.outlook.com>
-In-Reply-To: <HKAPR02MB429107D62F3E9F86E76AD550E0B40@HKAPR02MB4291.apcprd02.prod.outlook.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 25 May 2020 10:48:04 +0200
-Message-ID: <CAPDyKFqDveZ0+eh3QeXGr6gvek5YTr1chvinZN1twPT5uu7=4w@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: fix use-after-free issue
-To:     =?UTF-8?B?5b2t5rWpKFJpY2hhcmQp?= <richard.peng@oppo.com>
-Cc:     "Markus.Elfring@web.de" <Markus.Elfring@web.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+References: <20200518191742.1251440-1-angelo.dureghello@timesys.com> <fdfe557a-49fe-410a-cb05-5bff5e04fdd0@linux-m68k.org>
+In-Reply-To: <fdfe557a-49fe-410a-cb05-5bff5e04fdd0@linux-m68k.org>
+From:   Angelo Dureghello <angelo.dureghello@timesys.com>
+Date:   Mon, 25 May 2020 10:51:15 +0200
+Message-ID: <CALJHbkAsiFGUD3hWzgd1WqnoMekcC60i6Sn66SZS4nde4ksSdg@mail.gmail.com>
+Subject: Re: [PATCH v6 1/4] m68k: mcf5441x: add support for esdhc mmc controller
+To:     Greg Ungerer <gerg@linux-m68k.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, linux-m68k@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 22 May 2020 at 11:29, =E5=BD=AD=E6=B5=A9(Richard) <richard.peng@opp=
-o.com> wrote:
+Hi Greg,
+
+On Mon, May 25, 2020 at 8:02 AM Greg Ungerer <gerg@linux-m68k.org> wrote:
 >
->  The data structure member =E2=80=9Crpmb->md=E2=80=9D was passed to a cal=
-l of
->  the function =E2=80=9Cmmc_blk_put=E2=80=9D after a call of the function =
-=E2=80=9Cput_device=E2=80=9D.
->  Reorder these function calls to keep the data accesses consistent.
+> Hi Angelo,
 >
-> Fixes: 1c87f7357849 ("mmc: block: Fix bug when removing RPMB chardev ")
-> Signed-off-by: Peng Hao <richard.peng@oppo.com>
-
-I downloaded the patch from patchwork, but it seems like it got
-mangled somehow. Perhaps you can try to download it from patchwork and
-run checkpatch on it to see if it works for you? Otherwise the problem
-may be at my side.
-
-In any case, I manually fixed it up this time. So, applied for fixes
-and by adding a stable tag, thanks!
-
-Kind regards
-Uffe
+> Have you seen this breakage being reported in linux-next?
+>
+>      arch/m68k/coldfire/clk.c:78:60: error: 'MCFSDHC_CLK' undeclared (first
+>      use in this function); did you mean 'MCF_CLK'?
+>      arch/m68k/coldfire/clk.c:83:61: error: 'MCFSDHC_CLK' undeclared (first
+>      use in this function); did you mean 'MCF_CLK'?
+>      make[2]: *** [scripts/Makefile.build:272: arch/m68k/coldfire/clk.o]
+>      Error 1
+>      make[1]: *** [Makefile:1736: arch/m68k/coldfire] Error 2
+>      make: *** [Makefile:185: __sub-make] Error 2
+>
+> This is when compiling for pretty much anything other than an mcf5441x
+> target.
 
 
+>
+>
+> MCFSDHC_CLK will not be defiend for anything other than mcf5441x targets.
+>
+> This mechanism looks a little out of place here, given how specific
+> it is to the sdhc hardware module of the 5441x. Can you move this
+> to the m5441x specific code resolving this?
+>
 
-> ---
->  drivers/mmc/core/block.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+i apologize. Couldn't catch that since building for this target.
+Fixing, re-testing and sending patch in short.
+
+
 >
-> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-> index 8499b56..e6e025c 100644
-> --- a/drivers/mmc/core/block.c
-> +++ b/drivers/mmc/core/block.c
-> @@ -2483,8 +2483,8 @@ static int mmc_rpmb_chrdev_release(struct inode *in=
-ode, struct file *filp)
->  struct mmc_rpmb_data *rpmb =3D container_of(inode->i_cdev,
->    struct mmc_rpmb_data, chrdev);
+> Regards
+> Greg
 >
-> -put_device(&rpmb->dev);
->  mmc_blk_put(rpmb->md);
-> +put_device(&rpmb->dev);
 >
->  return 0;
->  }
-> --
-> 2.7.4
-> ________________________________
-> OPPO
->
-> =E6=9C=AC=E7=94=B5=E5=AD=90=E9=82=AE=E4=BB=B6=E5=8F=8A=E5=85=B6=E9=99=84=
-=E4=BB=B6=E5=90=AB=E6=9C=89OPPO=E5=85=AC=E5=8F=B8=E7=9A=84=E4=BF=9D=E5=AF=
-=86=E4=BF=A1=E6=81=AF=EF=BC=8C=E4=BB=85=E9=99=90=E4=BA=8E=E9=82=AE=E4=BB=B6=
-=E6=8C=87=E6=98=8E=E7=9A=84=E6=94=B6=E4=BB=B6=E4=BA=BA=E4=BD=BF=E7=94=A8=EF=
-=BC=88=E5=8C=85=E5=90=AB=E4=B8=AA=E4=BA=BA=E5=8F=8A=E7=BE=A4=E7=BB=84=EF=BC=
-=89=E3=80=82=E7=A6=81=E6=AD=A2=E4=BB=BB=E4=BD=95=E4=BA=BA=E5=9C=A8=E6=9C=AA=
-=E7=BB=8F=E6=8E=88=E6=9D=83=E7=9A=84=E6=83=85=E5=86=B5=E4=B8=8B=E4=BB=A5=E4=
-=BB=BB=E4=BD=95=E5=BD=A2=E5=BC=8F=E4=BD=BF=E7=94=A8=E3=80=82=E5=A6=82=E6=9E=
-=9C=E6=82=A8=E9=94=99=E6=94=B6=E4=BA=86=E6=9C=AC=E9=82=AE=E4=BB=B6=EF=BC=8C=
-=E8=AF=B7=E7=AB=8B=E5=8D=B3=E4=BB=A5=E7=94=B5=E5=AD=90=E9=82=AE=E4=BB=B6=E9=
-=80=9A=E7=9F=A5=E5=8F=91=E4=BB=B6=E4=BA=BA=E5=B9=B6=E5=88=A0=E9=99=A4=E6=9C=
-=AC=E9=82=AE=E4=BB=B6=E5=8F=8A=E5=85=B6=E9=99=84=E4=BB=B6=E3=80=82
->
-> This e-mail and its attachments contain confidential information from OPP=
-O, which is intended only for the person or entity whose address is listed =
-above. Any use of the information contained herein in any way (including, b=
-ut not limited to, total or partial disclosure, reproduction, or disseminat=
-ion) by persons other than the intended recipient(s) is prohibited. If you =
-receive this e-mail in error, please notify the sender by phone or email im=
-mediately and delete it!
+
+Regards,
+Angelo
