@@ -2,54 +2,93 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C7761E44AF
-	for <lists+linux-mmc@lfdr.de>; Wed, 27 May 2020 15:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FB551E4623
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 May 2020 16:38:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389009AbgE0Nze (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 27 May 2020 09:55:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39094 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388991AbgE0Nzd (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 27 May 2020 09:55:33 -0400
-Received: from msa14.plala.or.jp (msa14.plala.or.jp [IPv6:2400:7800:0:502e::14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3D12BC08C5C2;
-        Wed, 27 May 2020 06:55:32 -0700 (PDT)
-Received: from mwebp13 ([172.23.13.133]) by msa14.plala.or.jp with ESMTP
-          id <20200527135531.WGVA3566.msa14.plala.or.jp@mwebp13>;
-          Wed, 27 May 2020 22:55:31 +0900
-Date:   Wed, 27 May 2020 22:55:31 +0900
-From:   "Mrs.Judith Rice" <hamurafujimi@tmail.plala.or.jp>
-Reply-To: jonesevansje@gmail.com
-Message-ID: <20200527225531.YQK7M.1012.root@mwebp13>
-Subject: Spende
+        id S2389355AbgE0OiV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 27 May 2020 10:38:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43468 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389341AbgE0OiV (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 27 May 2020 10:38:21 -0400
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8EBCF20C09;
+        Wed, 27 May 2020 14:38:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590590300;
+        bh=suJ353lRv1UQx7HSHjKB0euqpTIy3Nz0DHiPmdHpvHU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=dz0t6hwefzpF3FUmlaHc8XA8cVnWy5nxuMwqo6MyQfhb9xnuOh25xZ5iEUMLyIraK
+         +i2k40cRkMt3FPAIXWsizHEIFFw0WHp53r2Sktwd72HtGOBbqLdNz6flS5gYvS4s3H
+         E8c8qsLiDCajLBRwCnN3Lstkh4l0DvqpsjkGPKjY=
+Received: by mail-ot1-f45.google.com with SMTP id d26so19301394otc.7;
+        Wed, 27 May 2020 07:38:20 -0700 (PDT)
+X-Gm-Message-State: AOAM533afaxOT08GXEm65d7/tfSCsCn8wb3x2opy1uFC+7mqBU84kPx9
+        xgrj9T74bDEf/TT3JlUcqDi2pVsjR9f1GkQOSA==
+X-Google-Smtp-Source: ABdhPJyp+iNzxT9P6anI85WQIrsM8pRrlKHEOY9o2oN/zH/c34nmR9QO5xYjGblk5qKho8HgjNiUwGAutpyoqXPmJrk=
+X-Received: by 2002:a05:6830:3104:: with SMTP id b4mr4930496ots.192.1590590299856;
+ Wed, 27 May 2020 07:38:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-2022-jp
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-Sensitivity: Normal
-X-VirusScan: Outbound; mvir-ac14; Wed, 27 May 2020 22:55:31 +0900
-To:     unlisted-recipients:; (no To-header on input)
+References: <1589555337-5498-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <1589555337-5498-17-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20200527013136.GA838011@bogus> <CA+V-a8t6mXkTUac69V=T8_27r_sdN+=MktDTM1mmtbXRn8SSQQ@mail.gmail.com>
+In-Reply-To: <CA+V-a8t6mXkTUac69V=T8_27r_sdN+=MktDTM1mmtbXRn8SSQQ@mail.gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 27 May 2020 08:38:08 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJUn9iOy5FT6VRmsC-uAhSdN8_Sne0Vn_7Q1dHudbzopw@mail.gmail.com>
+Message-ID: <CAL_JsqJUn9iOy5FT6VRmsC-uAhSdN8_Sne0Vn_7Q1dHudbzopw@mail.gmail.com>
+Subject: Re: [PATCH 16/17] dt-bindings: watchdog: renesas,wdt: Document
+ r8a7742 support
+To:     "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jens Axboe <axboe@kernel.dk>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Linux Watchdog Mailing List <linux-watchdog@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Attn:
+On Wed, May 27, 2020 at 5:23 AM Lad, Prabhakar
+<prabhakar.csengg@gmail.com> wrote:
+>
+> Hi Rob,
+>
+> On Wed, May 27, 2020 at 2:31 AM Rob Herring <robh@kernel.org> wrote:
+> >
+> > On Fri, May 15, 2020 at 04:08:56PM +0100, Lad Prabhakar wrote:
+> > > RZ/G1H (R8A7742) watchdog implementation is compatible with R-Car Gen2,
+> > > therefore add relevant documentation.
+> > >
+> > > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > > Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+> > > ---
+> > >  Documentation/devicetree/bindings/watchdog/renesas,wdt.txt | 1 +
+> > >  1 file changed, 1 insertion(+)
+> >
+> > Meanwhile in the DT tree, converting this schema landed. Can you prepare
+> > a version based on the schema.
+> >
+> This was kindly taken care by Stephen during merge in linux-next [1].
 
-Es tut uns leid, dass wir Sie aufgrund eines Mismanagent of Beneficaries-Fonds von unseren ernannten Zonal Managern versp&#228;tet kontaktiert haben. Bitte beachten Sie, dass Sie qualifiziert sind, die Zahlung von 900.000,00 USD an der ATM-Karte mit neunhunderttausend Dollar zu erhalten.
+Yes, I'm aware of that. I was hoping for a better commit message which
+stands on its own (essentially the one here).
 
-Als Entsch&#228;digung von WORLD BANK / IWF (Internationaler W&#228;hrungsfonds) f&#252;r die automatisch &#252;ber einen E-Mail-Wahlautomaten gezogenen, die in der Vergangenheit noch nicht abgeschlossene Transaktionen hatten.
-
-F&#252;r weitere Informationen kontaktieren Sie bitte Rev.EVANS JONES ( jonesevansje@gmail.com )
-
-Bitte senden Sie ihm Ihre pers&#246;nlichen Daten wie:
-
-Vollst&#228;ndiger Name:
-Wohnanschrift:
-Telefonnummer:
-Herkunftsland:
-
-Gr&#252;&#223;e,
-Mrs. Judith Rice
-
-Spende
+Rob
