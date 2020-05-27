@@ -2,125 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE15A1E2604
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 May 2020 17:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0644B1E34C7
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 May 2020 03:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729897AbgEZPv0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 May 2020 11:51:26 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:25982 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728301AbgEZPvZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 May 2020 11:51:25 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04QFoWYl020753;
-        Tue, 26 May 2020 17:51:14 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type; s=STMicroelectronics;
- bh=+vt4wjn/3vceANeKrjrxUTiqAmA4dZtw1P85a9Xcyh0=;
- b=KK19vmH2WM0rXEUIpXEvfQFH0XT6Z+aqHO5LHrkuXMiLXQm1tp4UmeVf8PKAVJcsbXFD
- JXclkLlr92tANo9hlNYDRliAHRO3eedcELlTA3D6JkVoaGKG6GSrA4oZ5632cYjlVk5x
- G+/vjGAUe03PcNjHUoyFT8WXlWbn5aM08o0/P2yhsFbQ8Xgt3FB9t/5Wbn3wWvq74Qnt
- tH3gJSIi1sOWcHPCsIWA3fk1U6MNGGcQ1oeosEeBHj4XsS8+517pOWF5ACSx5ALPFWTg
- 8MG5oEqm6mxersBmHV2gcj76J0LG2x562pYQ9JMyJqzfJLHo+NSVG5y3qd3W4ZPMOrkR mw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 316skw8px6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 May 2020 17:51:14 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 263EA10002A;
-        Tue, 26 May 2020 17:51:14 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 0DA712C4B37;
-        Tue, 26 May 2020 17:51:14 +0200 (CEST)
-Received: from localhost (10.75.127.49) by SFHDAG6NODE1.st.com (10.75.127.16)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 26 May 2020 17:51:13
- +0200
-From:   Ludovic Barre <ludovic.barre@st.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Ludovic Barre <ludovic.barre@st.com>
-Subject: [PATCH 2/2] mmc: mmci_sdmmc: fix DMA API warning max segment size
-Date:   Tue, 26 May 2020 17:51:03 +0200
-Message-ID: <20200526155103.12514-3-ludovic.barre@st.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200526155103.12514-1-ludovic.barre@st.com>
-References: <20200526155103.12514-1-ludovic.barre@st.com>
+        id S1726083AbgE0Bbl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 May 2020 21:31:41 -0400
+Received: from mail-il1-f195.google.com ([209.85.166.195]:45314 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725287AbgE0Bbl (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 May 2020 21:31:41 -0400
+Received: by mail-il1-f195.google.com with SMTP id 9so3988807ilg.12;
+        Tue, 26 May 2020 18:31:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=k9Tih4XnsvyNY6esAFQ63eiV+bEtuajcRZUBRdAyvvc=;
+        b=ZrOYu8wV++Ea9KqNlQN7fknl4Pd81KfHqWRahHTkU+uZtDiN5F2qgGxWieHX/v1gLR
+         z/ydCWUG1XOnVF2yMEnD8Z41L0Lxn7WRP1UwsTo8lJP4v+vHQ21kNc8MWiP/sDwPqD1q
+         xozhOw0wFrlyhELIx0cw0cbzwQ+TgX2Dr9l4rjpZVcfJEGsRdCW/qkAUJ2W1SezquEPc
+         IIrjsWfcYpBCqjkdwN6Bd8VlgnulxCcfr4zJzrgTlLAS4mutxIyrsVPk5kVhO5bNXMOQ
+         cZ07Od+zN4Z5GWFO8gNDn8xymkbSCPAp0PaWMJpCi6rq0Rb0mICYXn4gqPGyzp+zHZq6
+         PaJQ==
+X-Gm-Message-State: AOAM5310M/pQEkV3OHnltFX4iS7RMtRj2NzDHP5sX3gY6Oi2s334PffO
+        1gUMpF476+X9A6jcV+dkOQ==
+X-Google-Smtp-Source: ABdhPJwJOyjslkUwLMUCa6L98wpsiVwI3A8D8vv1EsWHGsWdVRUWm3/bwvdmfxReZz4y9VPBwudgAA==
+X-Received: by 2002:a92:7e90:: with SMTP id q16mr13816ill.199.1590543098611;
+        Tue, 26 May 2020 18:31:38 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id j2sm615491ioo.8.2020.05.26.18.31.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2020 18:31:37 -0700 (PDT)
+Received: (nullmailer pid 843489 invoked by uid 1000);
+        Wed, 27 May 2020 01:31:36 -0000
+Date:   Tue, 26 May 2020 19:31:36 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jens Axboe <axboe@kernel.dk>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>, linux-ide@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-watchdog@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>
+Subject: Re: [PATCH 16/17] dt-bindings: watchdog: renesas,wdt: Document
+ r8a7742 support
+Message-ID: <20200527013136.GA838011@bogus>
+References: <1589555337-5498-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <1589555337-5498-17-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.49]
-X-ClientProxiedBy: SFHDAG8NODE3.st.com (10.75.127.24) To SFHDAG6NODE1.st.com
- (10.75.127.16)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-05-26_02:2020-05-26,2020-05-26 signatures=0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1589555337-5498-17-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Turning on CONFIG_DMA_API_DEBUG_SG results in the following warning:
-WARNING: CPU: 1 PID: 85 at kernel/dma/debug.c:1302 debug_dma_map_sg+0x2a0/0x3cc
-mmci-pl18x 58005000.sdmmc: DMA-API: mapping sg segment longer than device claims to support [len=126976] [max=65536]
+On Fri, May 15, 2020 at 04:08:56PM +0100, Lad Prabhakar wrote:
+> RZ/G1H (R8A7742) watchdog implementation is compatible with R-Car Gen2,
+> therefore add relevant documentation.
+> 
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+> ---
+>  Documentation/devicetree/bindings/watchdog/renesas,wdt.txt | 1 +
+>  1 file changed, 1 insertion(+)
 
-dma api debug checks and compares the segment size to
-dma_get_max_seg_size (dev->dma_parms->max_segment_size),
-the sdmmc variant has an internal DMA and should define
-its max_segment_size constraint to avoid this warning.
+Meanwhile in the DT tree, converting this schema landed. Can you prepare 
+a version based on the schema.
 
-This Patch defines the dev->dma_parms->max_segment_size
-with the constraint already set for mmc core
-(host->mmc->max_seg_size).
-
-Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
----
- drivers/mmc/host/mmci_stm32_sdmmc.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/mmc/host/mmci_stm32_sdmmc.c b/drivers/mmc/host/mmci_stm32_sdmmc.c
-index 2965b1c062e1..51db30acf4dc 100644
---- a/drivers/mmc/host/mmci_stm32_sdmmc.c
-+++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
-@@ -119,20 +119,19 @@ static void sdmmc_idma_unprep_data(struct mmci_host *host,
- static int sdmmc_idma_setup(struct mmci_host *host)
- {
- 	struct sdmmc_idma *idma;
-+	struct device *dev = mmc_dev(host->mmc);
- 
--	idma = devm_kzalloc(mmc_dev(host->mmc), sizeof(*idma), GFP_KERNEL);
-+	idma = devm_kzalloc(dev, sizeof(*idma), GFP_KERNEL);
- 	if (!idma)
- 		return -ENOMEM;
- 
- 	host->dma_priv = idma;
- 
- 	if (host->variant->dma_lli) {
--		idma->sg_cpu = dmam_alloc_coherent(mmc_dev(host->mmc),
--						   SDMMC_LLI_BUF_LEN,
-+		idma->sg_cpu = dmam_alloc_coherent(dev, SDMMC_LLI_BUF_LEN,
- 						   &idma->sg_dma, GFP_KERNEL);
- 		if (!idma->sg_cpu) {
--			dev_err(mmc_dev(host->mmc),
--				"Failed to alloc IDMA descriptor\n");
-+			dev_err(dev, "Failed to alloc IDMA descriptor\n");
- 			return -ENOMEM;
- 		}
- 		host->mmc->max_segs = SDMMC_LLI_BUF_LEN /
-@@ -143,7 +142,7 @@ static int sdmmc_idma_setup(struct mmci_host *host)
- 		host->mmc->max_seg_size = host->mmc->max_req_size;
- 	}
- 
--	return 0;
-+	return dma_set_max_seg_size(dev, host->mmc->max_seg_size);
- }
- 
- static int sdmmc_idma_start(struct mmci_host *host, unsigned int *datactrl)
--- 
-2.17.1
-
+Rob
