@@ -2,218 +2,93 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A8171E5CD9
-	for <lists+linux-mmc@lfdr.de>; Thu, 28 May 2020 12:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 478551E5F2E
+	for <lists+linux-mmc@lfdr.de>; Thu, 28 May 2020 14:00:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387806AbgE1KPh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 28 May 2020 06:15:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59004 "EHLO
+        id S2388908AbgE1L75 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 28 May 2020 07:59:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387788AbgE1KPa (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 May 2020 06:15:30 -0400
-Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAEC9C05BD1E
-        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:29 -0700 (PDT)
-Received: by mail-ua1-x943.google.com with SMTP id z12so9496600uap.6
-        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:29 -0700 (PDT)
+        with ESMTP id S2388696AbgE1L75 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 May 2020 07:59:57 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACA6BC05BD1E
+        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 04:59:56 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id q2so32982591ljm.10
+        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 04:59:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=BKEIjQJJ2XLguXGcY1rDMpRw0nRNveaRpquZJVMVnN0=;
-        b=VAV5oYZPbSfl1mtfwGLOgjRNNdmZXdqLTgn2STY1fmyoFIfKHwiaiNVNx95/Zu3pls
-         sv1wgi5AgbjUdWpr8QI0gQCI1FKJPR8UPqejSYWd1J+pjZRAfo+1ZVDVMvwNSpjN/9qL
-         2vqaTAf7fmlANLPG6iZyNEVAzs5HlGvn83BSddlMwe9jQ3dfzHP6PBJTOenuzYXv79HA
-         cqI/zBUtNNwq/3tCGjVUqjdWe4vfzTlpfzoFI/veMOT+ddmi5gZvtrI8cqR+quC3TGC1
-         vO/QkCWmQw54XLR8vsgwYURGI1jl7KhAFrpVZHy52zJCsoRXXILG4gC0PMxtlXJ6KulR
-         cLvg==
+         :cc;
+        bh=JmUDbRdWnFX3Rob4B0QvCGfA3VJF+c7F7awpUudj+ms=;
+        b=IqZ5RFtIvBjwnF1oMxfDsISc3/SF4HRrGWAVls6NFHl9jYWj5LhLFY+T+P/SLCDs/P
+         Kj/LUDgERqB5366gEneqW0blH5AzlNjmQXcGhmp7spRhFlumHJ4m0Esqlgvq4at9sUcH
+         eV92SEgJ7wyidXnCw9zbikM9VIDGIxDvAJDmqW+5ZTNxXDKrWBJ9NqeV1FhETBRDIiD5
+         EzVI/QKFOk+c8HoZDbuWlftmetLHYNIIakPAkN9beIBq4x3CWhLW71Sx7oXtU4cTXl//
+         JORy8FG5YOPaf3+0mhl9VRiQdUw/KITQNQvBpbziB03HaUtPlTJ8AvDecEgbfPc8uNuT
+         JboA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=BKEIjQJJ2XLguXGcY1rDMpRw0nRNveaRpquZJVMVnN0=;
-        b=F9qGnrCxkx6521yBGRgBinzuIARoyJTZAXCzTCV+f6xy9V6FgQ3L3GeI4Q3lPXPcuP
-         hLEgvRu7WUjGenEqdzl0fHkDczvum1013i0Fqg/qoayW4SoZ0EwsARif4nqvfEmSkfuw
-         dZ3ZB2VRw8X2DBWdccxJhCtIR3Gwmv0rmE/HVUKFe1gBjLdfbjHfg1T5G+VBmYUb0r1e
-         pB2LGcmoG+vQs5FSe8eQ6fU2ICPZpwdB0N2y/jxgjG4+fES+gdnH2R2ORmKjCOMLpn1l
-         bv9sicKcPhRQIt6791/esrvLxEh681SLtVdtIwKXasVWcmTPsyIMgpv5c/fHHZfjkJrj
-         bRAg==
-X-Gm-Message-State: AOAM530KTjT+efhThtArzv626XWDYNtW/E4yioKjl72ZBVdl8ZLb8C/R
-        wDmEceLfTJ7z/DFECrh8FXX6kIZpuWduKEcUVG4gqK0GWMw=
-X-Google-Smtp-Source: ABdhPJx8ruuWKsaOFlI5aHqXzRzJdm+MXa3lFs2gDbssBdgU8tMH2X9vljvFTY62HtS3+JpPq7vEx1jfxJxgtoYTohI=
-X-Received: by 2002:ab0:70c9:: with SMTP id r9mr1356601ual.15.1590660929116;
- Thu, 28 May 2020 03:15:29 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=JmUDbRdWnFX3Rob4B0QvCGfA3VJF+c7F7awpUudj+ms=;
+        b=D+xGazGVyAyecAHrGc0DADRtKsfJ+9P3lTA6b64qekOlAHGbIyppJjDDzoM3EKLqSj
+         U30/8j8EAxBJgRY0AXBDldiUhucEd+rSHky45D1RPi4lRJ25bI/UGcGyixb1mhQ4bQBj
+         GFyByCuUsVesmEfZpEN2w7mbmSM8xDyvxj+Pq9IYpSnbps4yIrNw5nqwtTEv9o6kRskL
+         CXZzSLW2Q7wn54u4MmfsB27//7jKQlzR/5j3Ey9kxmI8KDiLR/eQxSzwOF3onzTSIuW4
+         0W4/cLZsAiHhakstX84sxgjybrax9vZQ/cxPh2ohKjw1sz6Zw3AJ+QTMFDgTYoKEDhWH
+         9uhQ==
+X-Gm-Message-State: AOAM5306G/oZUEAKBtZmxbLTs5Z9Znceb8uW8NoAbPCQzDAbd+9l68g0
+        65/n0m1sclaGIyJjFQ6InTrv1OzWWBioRGK+iiVGQO/4
+X-Google-Smtp-Source: ABdhPJw8GtTv+/sAxbto1YqqIvEBT46TYNkrZQQEeMUqRroN1vTaBL4E2sPM8eYDKji+VyijdekgVQK1D3k+XjeoHAA=
+X-Received: by 2002:a2e:3818:: with SMTP id f24mr1244505lja.338.1590667195145;
+ Thu, 28 May 2020 04:59:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200526154334.21222-2-pali@kernel.org> <20200527110858.17504-1-pali@kernel.org>
- <20200527110858.17504-2-pali@kernel.org>
-In-Reply-To: <20200527110858.17504-2-pali@kernel.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 28 May 2020 12:14:51 +0200
-Message-ID: <CAPDyKFpgvfzgb4Td+57dRAu95y8fRSF01CBi-PBYNdpm_4-WWQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mmc: core: Export device/vendor ids from Common
- CIS for SDIO cards
-To:     =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        =?UTF-8?B?TWFyZWsgQmVow7pu?= <marek.behun@nic.cz>
+References: <20200528081003.238804-1-linus.walleij@linaro.org> <SN4PR0401MB359826C471B9D331DC79E4EE9B8E0@SN4PR0401MB3598.namprd04.prod.outlook.com>
+In-Reply-To: <SN4PR0401MB359826C471B9D331DC79E4EE9B8E0@SN4PR0401MB3598.namprd04.prod.outlook.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 28 May 2020 13:59:43 +0200
+Message-ID: <CACRpkdYXaq-JQ=buuSgFOT=DbqS7xsb0iXfc5aFYjg36hB2fTw@mail.gmail.com>
+Subject: Re: [PATCH] block: Flag elevators suitable for single queue
+To:     Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc:     "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        Johannes Thumshirn <jthumshirn@suse.de>,
+        Christoph Hellwig <hch@lst.de>, Ming Lei <ming.lei@redhat.com>,
+        Damien Le Moal <Damien.LeMoal@wdc.com>,
+        Paolo Valente <paolo.valente@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 27 May 2020 at 13:09, Pali Roh=C3=A1r <pali@kernel.org> wrote:
+On Thu, May 28, 2020 at 10:26 AM Johannes Thumshirn
+<Johannes.Thumshirn@wdc.com> wrote:
+> On 28/05/2020 10:12, Linus Walleij wrote:
+> > diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+> > index b490f47fd553..324047add271 100644
+> > --- a/block/mq-deadline.c
+> > +++ b/block/mq-deadline.c
+> > @@ -794,7 +794,8 @@ static struct elevator_type mq_deadline = {
+> >       .elevator_attrs = deadline_attrs,
+> >       .elevator_name = "mq-deadline",
+> >       .elevator_alias = "deadline",
+> > -     .elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE,
+> > +     .elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE |
+> > +     ELEVATOR_F_SINGLE_HW_QUEUE,
 >
-> Device/vendor ids from Common CIS (Card Information Structure) may be
-> different as device/vendor ids from CIS on particular SDIO function.
->
-> Kernel currently exports only device/vendor ids from SDIO functions and n=
-ot
-> "main" device/vendor ids from Common CIS.
->
-> This patch exports "main" device/vendor ids for SDIO and SD combo cards a=
-t
-> top level mmc device in sysfs hierarchy.
->
-> Userspace can use e.g. udev rules to correctly match whole SDIO card base=
-d
-> on Common CIS device/vendor id and not only one particular SDIO function.
-> Having this information in userspace also helps developers to debug whole
-> SDIO card as e.g. kernel mmc quirks use device/vendor ids from Common CIS
-> and not from particular SDIO function. Also it allows to write userspace
-> applications which list all connected SDIO cards based on CIS ids.
->
-> Signed-off-by: Pali Roh=C3=A1r <pali@kernel.org>
-> Reviewed-by: Marek Beh=C3=BAn <marek.behun@nic.cz>
+> That indentation looks a bit odd to me but for the general concept
 
-Applied for next, thanks!
+Yeah it's what the EMACS default "linux" indentation suggest if I
+put the flag on a new line, but I can adjust to whatever the block
+maintainers suggest.
 
-Kind regards
-Uffe
+> Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
+Thanks man!
 
->
-> ---
-> Changes in V2:
-> * Make sd_std_group static
-> * Put more information into commit message
-> ---
->  drivers/mmc/core/bus.c  |  7 +++++++
->  drivers/mmc/core/sd.c   | 26 +++++++++++++++++++++++++-
->  drivers/mmc/core/sdio.c | 20 +++++++++++++++++++-
->  3 files changed, 51 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c
-> index b1cb447da..70207f11a 100644
-> --- a/drivers/mmc/core/bus.c
-> +++ b/drivers/mmc/core/bus.c
-> @@ -93,6 +93,13 @@ mmc_bus_uevent(struct device *dev, struct kobj_uevent_=
-env *env)
->                         return retval;
->         }
->
-> +       if (card->type =3D=3D MMC_TYPE_SDIO || card->type =3D=3D MMC_TYPE=
-_SD_COMBO) {
-> +               retval =3D add_uevent_var(env, "SDIO_ID=3D%04X:%04X",
-> +                                       card->cis.vendor, card->cis.devic=
-e);
-> +               if (retval)
-> +                       return retval;
-> +       }
-> +
->         /*
->          * SDIO (non-combo) cards are not handled by mmc_block driver and=
- do not
->          * have accessible CID register which used by mmc_card_name() fun=
-ction.
-> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-> index 76c7add36..ee1a51ff6 100644
-> --- a/drivers/mmc/core/sd.c
-> +++ b/drivers/mmc/core/sd.c
-> @@ -707,7 +707,12 @@ static ssize_t mmc_dsr_show(struct device *dev,
->
->  static DEVICE_ATTR(dsr, S_IRUGO, mmc_dsr_show, NULL);
->
-> +MMC_DEV_ATTR(vendor, "0x%04x\n", card->cis.vendor);
-> +MMC_DEV_ATTR(device, "0x%04x\n", card->cis.device);
-> +
->  static struct attribute *sd_std_attrs[] =3D {
-> +       &dev_attr_vendor.attr,
-> +       &dev_attr_device.attr,
->         &dev_attr_cid.attr,
->         &dev_attr_csd.attr,
->         &dev_attr_scr.attr,
-> @@ -726,7 +731,26 @@ static struct attribute *sd_std_attrs[] =3D {
->         &dev_attr_dsr.attr,
->         NULL,
->  };
-> -ATTRIBUTE_GROUPS(sd_std);
-> +
-> +static umode_t sd_std_is_visible(struct kobject *kobj, struct attribute =
-*attr,
-> +                                int index)
-> +{
-> +       struct device *dev =3D container_of(kobj, struct device, kobj);
-> +       struct mmc_card *card =3D mmc_dev_to_card(dev);
-> +
-> +       /* CIS vendor and device ids are available only for Combo cards *=
-/
-> +       if ((attr =3D=3D &dev_attr_vendor.attr || attr =3D=3D &dev_attr_d=
-evice.attr) &&
-> +           card->type !=3D MMC_TYPE_SD_COMBO)
-> +               return 0;
-> +
-> +       return attr->mode;
-> +}
-> +
-> +static const struct attribute_group sd_std_group =3D {
-> +       .attrs =3D sd_std_attrs,
-> +       .is_visible =3D sd_std_is_visible,
-> +};
-> +__ATTRIBUTE_GROUPS(sd_std);
->
->  struct device_type sd_type =3D {
->         .groups =3D sd_std_groups,
-> diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-> index ebb387aa5..2d86a9db5 100644
-> --- a/drivers/mmc/core/sdio.c
-> +++ b/drivers/mmc/core/sdio.c
-> @@ -27,6 +27,24 @@
->  #include "sdio_ops.h"
->  #include "sdio_cis.h"
->
-> +MMC_DEV_ATTR(vendor, "0x%04x\n", card->cis.vendor);
-> +MMC_DEV_ATTR(device, "0x%04x\n", card->cis.device);
-> +MMC_DEV_ATTR(ocr, "0x%08x\n", card->ocr);
-> +MMC_DEV_ATTR(rca, "0x%04x\n", card->rca);
-> +
-> +static struct attribute *sdio_std_attrs[] =3D {
-> +       &dev_attr_vendor.attr,
-> +       &dev_attr_device.attr,
-> +       &dev_attr_ocr.attr,
-> +       &dev_attr_rca.attr,
-> +       NULL,
-> +};
-> +ATTRIBUTE_GROUPS(sdio_std);
-> +
-> +static struct device_type sdio_type =3D {
-> +       .groups =3D sdio_std_groups,
-> +};
-> +
->  static int sdio_read_fbr(struct sdio_func *func)
->  {
->         int ret;
-> @@ -598,7 +616,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, =
-u32 ocr,
->         /*
->          * Allocate card structure.
->          */
-> -       card =3D mmc_alloc_card(host, NULL);
-> +       card =3D mmc_alloc_card(host, &sdio_type);
->         if (IS_ERR(card)) {
->                 err =3D PTR_ERR(card);
->                 goto err;
-> --
-> 2.20.1
->
+Yours,
+Linus Walleij
