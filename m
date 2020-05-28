@@ -2,54 +2,55 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F32B71E5CE6
-	for <lists+linux-mmc@lfdr.de>; Thu, 28 May 2020 12:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34D171E5CD5
+	for <lists+linux-mmc@lfdr.de>; Thu, 28 May 2020 12:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387698AbgE1KQD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 28 May 2020 06:16:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58970 "EHLO
+        id S2387777AbgE1KP2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 28 May 2020 06:15:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387781AbgE1KPV (ORCPT
+        with ESMTP id S2387780AbgE1KPV (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 May 2020 06:15:21 -0400
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7EFBC08C5C5
-        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:13 -0700 (PDT)
-Received: by mail-vs1-xe43.google.com with SMTP id b28so13399942vsa.5
-        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:13 -0700 (PDT)
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A79C08C5D1
+        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:19 -0700 (PDT)
+Received: by mail-vk1-xa44.google.com with SMTP id m18so6608226vkk.9
+        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Rp6VELEot9Fh++h52iKmHeZNSHE0a8VpGXtPuU77ouA=;
-        b=XIS4CIHKq3AMwVi4GNpccYFQT9B38RwLHxe1YO+64hWrshFIyCUC2TkmMxHRtka9N5
-         yB6spHmkxSfvHdZOVh9W1XS69boECsGVmX9Rk1vOhTAK93AWS3fUsAy0Pzff7z+5BXLw
-         aYnew/VoVgnW+l3shObem+nG1JjlLsxxz5Ij5s7GfBZuVQ0d3dZL7Wfhgb5w6hdO+yDF
-         8OWopu7AH/N9Bzkks/FRMAKpfrWkVWBHqgctof2lzVZOaLM9ByjxDpAhIROdI89KGJ3U
-         KVoXUO192xqAM8wQdhd90J3Zc+wi3wSGwps4gOKLiB/KkGIOvTo1+8Vum87DZtSqjK00
-         WuVA==
+         :cc:content-transfer-encoding;
+        bh=k9E+YiCz7eYDmM11BkqW6Mr85TeDyC8/4dldyhTF8E8=;
+        b=YUVHiSIXPjOMZXRJSWOJ6cycwQMjyqcnxpdlF7flS/6dx25hW5vtgM8PMR4lN5I0h5
+         44cSX1wqIloWusdYYBHbP9wH7TisJ0f/gclugCoXjP9nByCIlB/jZj0RsMdeSzd8u0az
+         hq3SxrrjMy2z24sDYf9xlvwdqJy/vGO9DW6gSMYJLVbj4MJCUK78rRIVvuWMC5iM3flH
+         ECOjtf3BTFhfpCmzXQiYFDqQQLJKM1/xNsbfejruRPHC560F6zKIqVkJZZhkR2wfMsf9
+         ixYRG3mAdTZI2/Qc/c+/uGWeJ4gFVFIrAJGRsrEsqJPGzSRrq3rIat/QjLmlFinR4g8l
+         g4OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Rp6VELEot9Fh++h52iKmHeZNSHE0a8VpGXtPuU77ouA=;
-        b=ruDE7GDaMr2yQKLN3DHvuHOoVbCEO9/rdIWiwGyw+I7kuD3mImeCNADH1/donvuoSg
-         czrjaWBQBqc0gwk75HwsWkAe5Ozi8wTrYMlh81eycAUkhXoHkQe5zz+JJeBLbF2VWMvw
-         t3sJotxoyD+pwwXrz9NCWd0122x/NZ/9hqjliafDzdjlwHZDIC0kfXibYcFA3VxY04/N
-         82dcEDx4nzThQtXADQ3tq9EiL6Cdi15xZI8jNYrHzhN9Y9b79FX+g/hEFST03Od2hEi9
-         YXx8wwNnWZ6dE72u9joViSwZgFxj9F1XwmtIRI+J0PLE568QPZFqq3p4nhettACDA1Ix
-         ET5w==
-X-Gm-Message-State: AOAM5318nf/kiTW0Aa34HvB9Z4ZpGk0ADC/5Rwu1sfpHNDzn95xigApE
-        Q8h4iQGWJ8cMUD1mxcNBt2OSb5KxrZT0EeE4K3/Ujky6D/4=
-X-Google-Smtp-Source: ABdhPJz8Lyr0h+KpC1LgxKtbui1gTuJgkW0ioM2HznQIBM+b283Sbc9RHXn6MtlB4SpBUS8IsbhDgcSZyQYuK0uaWMo=
-X-Received: by 2002:a67:1486:: with SMTP id 128mr1266900vsu.191.1590660913116;
- Thu, 28 May 2020 03:15:13 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=k9E+YiCz7eYDmM11BkqW6Mr85TeDyC8/4dldyhTF8E8=;
+        b=Z26ZuHrmkyDUlausG9m3FdhB7lGdPAMMScuIKD70D93Bj3FAM1V1ZrjNgv0TYEd2Gb
+         AgDqbSS5UvlwZbfmySN3LJAl1B7E4oWc1T1cDMswxu5lZcOli05IIGyHMTBriImWSJUG
+         q+OS5GU7nyAmunQeLGhRBYTiEF3YIwNvABU1wEdAwZDeuwVN4mvXejR8+QU1ungcPFPf
+         ejjBQWIz3VjMiXcOGzIRIbz9DWB3kQBjjMjcIGOjBHC0th40KRr1Lecyf8Meu93qGaxq
+         MKtJod1N1yseixdRXMSLEzZ6Q9nFNq8pJTFWCBjEr9BZEZDbY99xhoEzF18LWH/yHfhu
+         BiTA==
+X-Gm-Message-State: AOAM532MqtooC+vEifxpbYBOBtplWwIuABqeu4yNglmbnh+S08sHLwKS
+        993Fv8SL34Uc91X8yxiQtx5upATkq7phGtGKeDAanytPt1k=
+X-Google-Smtp-Source: ABdhPJzq+Kx3OYL+6G1qhd2lkHQpjppzj1oPaVyPbutDkNuy2xuAXrFoC2t79djeyVLRUTgP3zWyrrJaCDTr4yv034k=
+X-Received: by 2002:a1f:fc06:: with SMTP id a6mr1443177vki.101.1590660918913;
+ Thu, 28 May 2020 03:15:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <1590488522-9292-1-git-send-email-haibo.chen@nxp.com>
-In-Reply-To: <1590488522-9292-1-git-send-email-haibo.chen@nxp.com>
+References: <1590488522-9292-1-git-send-email-haibo.chen@nxp.com> <1590488522-9292-2-git-send-email-haibo.chen@nxp.com>
+In-Reply-To: <1590488522-9292-2-git-send-email-haibo.chen@nxp.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 28 May 2020 12:14:36 +0200
-Message-ID: <CAPDyKFpg+buor=shmPPMAbEei3HpUo+epoM+0OwuveXjk0WXLQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: sdhci-esdhc-imx: fix the mask for tuning start point
+Date:   Thu, 28 May 2020 12:14:40 +0200
+Message-ID: <CAPDyKFoSSS0rh06Kso44J+ZFQC16K+Xttw6gQfUiganHKG5BXg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: sdhci-esdhc-imx: disable the CMD CRC check for
+ standard tuning
 To:     Haibo Chen <haibo.chen@nxp.com>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
@@ -61,6 +62,7 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Aisheng Dong <aisheng.dong@nxp.com>,
         Yangbo Lu <yangbo.lu@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
@@ -70,38 +72,92 @@ On Tue, 26 May 2020 at 12:32, <haibo.chen@nxp.com> wrote:
 >
 > From: Haibo Chen <haibo.chen@nxp.com>
 >
-> According the RM, the bit[6~0] of register ESDHC_TUNING_CTRL is
-> TUNING_START_TAP, bit[7] of this register is to disable the command
-> CRC check for standard tuning. So fix it here.
+> In current code, we add 1ms dealy after each tuning command for standard
+> tuning method. Adding this 1ms dealy is because USDHC default check the
+> CMD CRC and DATA line. If detect the CMD CRC, USDHC standard tuning
+> IC logic do not wait for the tuning data sending out by the card, trigger
+> the buffer read ready interrupt immediately, and step to next cycle. So
+> when next time the new tuning command send out by USDHC, card may still
+> not send out the tuning data of the upper command=EF=BC=8Cthen some eMMC =
+cards
+> may stuck, can't response to any command, block the whole tuning procedur=
+e.
 >
-> Fixes: d87fc9663688 ("mmc: sdhci-esdhc-imx: support setting tuning start point")
+> If do not check the CMD CRC for tuning, then do not has this issue. USDHC
+> will wait for the tuning data of each tuning command and check them. If t=
+he
+> tuning data pass the check, it also means the CMD line also okay for tuni=
+ng.
+>
+> So this patch disable the CMD CRC check for tuning, save some time for th=
+e
+> whole tuning procedure.
+>
 > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
 Applied for next, thanks!
-
-Should we add a stable tag or it doesn't matter?
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index 7af9d87d4245..2cf7fa59270e 100644
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
+esdhc-imx.c
+> index 2cf7fa59270e..b0ddf3db440f 100644
 > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -90,7 +90,7 @@
->  #define ESDHC_STD_TUNING_EN            (1 << 24)
+> @@ -91,6 +91,7 @@
 >  /* NOTE: the minimum valid tuning start tap for mx6sl is 1 */
 >  #define ESDHC_TUNING_START_TAP_DEFAULT 0x1
-> -#define ESDHC_TUNING_START_TAP_MASK    0xff
-> +#define ESDHC_TUNING_START_TAP_MASK    0x7f
+>  #define ESDHC_TUNING_START_TAP_MASK    0x7f
+> +#define ESDHC_TUNING_CMD_CRC_CHECK_DISABLE     (1 << 7)
 >  #define ESDHC_TUNING_STEP_MASK         0x00070000
 >  #define ESDHC_TUNING_STEP_SHIFT                16
 >
+> @@ -1316,6 +1317,18 @@ static void sdhci_esdhc_imx_hwinit(struct sdhci_ho=
+st *host)
+>                                 tmp |=3D imx_data->boarddata.tuning_step
+>                                         << ESDHC_TUNING_STEP_SHIFT;
+>                         }
+> +
+> +                       /* Disable the CMD CRC check for tuning, if not, =
+need to
+> +                        * add some delay after every tuning command, bec=
+ause
+> +                        * hardware standard tuning logic will directly g=
+o to next
+> +                        * step once it detect the CMD CRC error, will no=
+t wait for
+> +                        * the card side to finally send out the tuning d=
+ata, trigger
+> +                        * the buffer read ready interrupt immediately. I=
+f usdhc send
+> +                        * the next tuning command some eMMC card will st=
+uck, can't
+> +                        * response, block the tuning procedure or the fi=
+rst command
+> +                        * after the whole tuning procedure always can't =
+get any response.
+> +                        */
+> +                        tmp |=3D ESDHC_TUNING_CMD_CRC_CHECK_DISABLE;
+>                         writel(tmp, host->ioaddr + ESDHC_TUNING_CTRL);
+>                 } else if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNI=
+NG) {
+>                         /*
+> @@ -1661,8 +1674,6 @@ static int sdhci_esdhc_imx_probe(struct platform_de=
+vice *pdev)
+>         if (err)
+>                 goto disable_ahb_clk;
+>
+> -       host->tuning_delay =3D 1;
+> -
+>         sdhci_esdhc_imx_hwinit(host);
+>
+>         err =3D sdhci_add_host(host);
 > --
 > 2.17.1
 >
