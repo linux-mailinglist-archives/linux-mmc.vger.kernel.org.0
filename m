@@ -2,55 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A228F1E5CDF
-	for <lists+linux-mmc@lfdr.de>; Thu, 28 May 2020 12:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F32B71E5CE6
+	for <lists+linux-mmc@lfdr.de>; Thu, 28 May 2020 12:16:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387786AbgE1KP0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 28 May 2020 06:15:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58948 "EHLO
+        id S2387698AbgE1KQD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 28 May 2020 06:16:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387777AbgE1KPN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 May 2020 06:15:13 -0400
+        with ESMTP id S2387781AbgE1KPV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 May 2020 06:15:21 -0400
 Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AAA3C08C5CA
-        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:10 -0700 (PDT)
-Received: by mail-vs1-xe43.google.com with SMTP id a68so4586420vsd.8
-        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7EFBC08C5C5
+        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:13 -0700 (PDT)
+Received: by mail-vs1-xe43.google.com with SMTP id b28so13399942vsa.5
+        for <linux-mmc@vger.kernel.org>; Thu, 28 May 2020 03:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=wYvD4r1ulJrSPmdQw9SLGgFwZG+MxRo/QXyqHRDFej0=;
-        b=CNJPDqLTi/IuZgQRPBMg2yxNxoePxYEAJVmhhtvE8OlJJFcBDQUOzDfbOfCRdSnmBm
-         8uF8pKL4NTg9pkrglxDWZ43R5v8xOCf957HqPBm7Bhn60M/lvAwLr57p/Ec04gy7abhj
-         /4Wr/kJ4dMPeVI264fensIP3MSNHMEexAFLX3Fzf3Lqf4WhgcXpcxmCS/Y7xgUxfTSxt
-         jnKX1AM4ntK+UBYh2R3qgH0oZ8b7BSt6ccIfacVMJQzsWFM53tYNbs20i6aBM9XbeD/l
-         DzQTZ3GEGyBcv9KYZSRZ+eLQTQgn6dhHS78QePY5HrkiMK0pbfisPhLL747if5W6pPEN
-         SyxQ==
+        bh=Rp6VELEot9Fh++h52iKmHeZNSHE0a8VpGXtPuU77ouA=;
+        b=XIS4CIHKq3AMwVi4GNpccYFQT9B38RwLHxe1YO+64hWrshFIyCUC2TkmMxHRtka9N5
+         yB6spHmkxSfvHdZOVh9W1XS69boECsGVmX9Rk1vOhTAK93AWS3fUsAy0Pzff7z+5BXLw
+         aYnew/VoVgnW+l3shObem+nG1JjlLsxxz5Ij5s7GfBZuVQ0d3dZL7Wfhgb5w6hdO+yDF
+         8OWopu7AH/N9Bzkks/FRMAKpfrWkVWBHqgctof2lzVZOaLM9ByjxDpAhIROdI89KGJ3U
+         KVoXUO192xqAM8wQdhd90J3Zc+wi3wSGwps4gOKLiB/KkGIOvTo1+8Vum87DZtSqjK00
+         WuVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=wYvD4r1ulJrSPmdQw9SLGgFwZG+MxRo/QXyqHRDFej0=;
-        b=s/EHa15CRywAvHyqUWlF9LkqRFOi8JuyUIALm4WgwmKha/kRV9MvtwMzmgglHkAnZ6
-         TmVKGfbHe0zLpGp+xjqC9OCR6XMadhgFXiQQFtzGKnmeI4eX/K8Emo6mDX8IN9kRwicL
-         BJOWW7AUFsHJ2Lj/xC2SDh6gWvrAvYcMYKdRaiqdVMlx8fIBEFHP90srglADZNvgOIM1
-         GP9/BfUvLHIisNBHziVvqkWVCbXU/aezWA41BVS0d/FK9S5t4PJ2uYL5kivbQKeFsoqq
-         0rkLhGTYrAmfxln9xezvFNngOxDA1q8vYdjONVA5k9AcmOGjIfuiIasfj0zezeiCaRYN
-         QFnw==
-X-Gm-Message-State: AOAM531Q0fPkheX6186Yo1QAdRF4/92DjdlbJzO3ym+iGu+V2cv5Z4K5
-        43pb6+QpSeDlSSHTBKW+ZUnV78nYimK+wbffKpOD6QCzlmA=
-X-Google-Smtp-Source: ABdhPJxb2WnpVRS9U3plDTUUei62NNTnraVpSBNhYL/j1TslMciPD++P7b1aKtf45q8ShwLdi/3Vrx+gxW3AtR2NmzM=
-X-Received: by 2002:a67:be05:: with SMTP id x5mr1263018vsq.35.1590660909658;
- Thu, 28 May 2020 03:15:09 -0700 (PDT)
+        bh=Rp6VELEot9Fh++h52iKmHeZNSHE0a8VpGXtPuU77ouA=;
+        b=ruDE7GDaMr2yQKLN3DHvuHOoVbCEO9/rdIWiwGyw+I7kuD3mImeCNADH1/donvuoSg
+         czrjaWBQBqc0gwk75HwsWkAe5Ozi8wTrYMlh81eycAUkhXoHkQe5zz+JJeBLbF2VWMvw
+         t3sJotxoyD+pwwXrz9NCWd0122x/NZ/9hqjliafDzdjlwHZDIC0kfXibYcFA3VxY04/N
+         82dcEDx4nzThQtXADQ3tq9EiL6Cdi15xZI8jNYrHzhN9Y9b79FX+g/hEFST03Od2hEi9
+         YXx8wwNnWZ6dE72u9joViSwZgFxj9F1XwmtIRI+J0PLE568QPZFqq3p4nhettACDA1Ix
+         ET5w==
+X-Gm-Message-State: AOAM5318nf/kiTW0Aa34HvB9Z4ZpGk0ADC/5Rwu1sfpHNDzn95xigApE
+        Q8h4iQGWJ8cMUD1mxcNBt2OSb5KxrZT0EeE4K3/Ujky6D/4=
+X-Google-Smtp-Source: ABdhPJz8Lyr0h+KpC1LgxKtbui1gTuJgkW0ioM2HznQIBM+b283Sbc9RHXn6MtlB4SpBUS8IsbhDgcSZyQYuK0uaWMo=
+X-Received: by 2002:a67:1486:: with SMTP id 128mr1266900vsu.191.1590660913116;
+ Thu, 28 May 2020 03:15:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <1590547175-15070-1-git-send-email-haibo.chen@nxp.com>
-In-Reply-To: <1590547175-15070-1-git-send-email-haibo.chen@nxp.com>
+References: <1590488522-9292-1-git-send-email-haibo.chen@nxp.com>
+In-Reply-To: <1590488522-9292-1-git-send-email-haibo.chen@nxp.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 28 May 2020 12:14:33 +0200
-Message-ID: <CAPDyKFrJMcKA89t7wMa8knOz4DwJ=ZPUf=RCeGcJK==UHjNQvw@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: host: sdhci-esdhc-imx: add wakeup feature for
- GPIO CD pin
+Date:   Thu, 28 May 2020 12:14:36 +0200
+Message-ID: <CAPDyKFpg+buor=shmPPMAbEei3HpUo+epoM+0OwuveXjk0WXLQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: sdhci-esdhc-imx: fix the mask for tuning start point
 To:     Haibo Chen <haibo.chen@nxp.com>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
@@ -59,76 +58,50 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Sascha Hauer <kernel@pengutronix.de>,
         Fabio Estevam <festevam@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>
+        Aisheng Dong <aisheng.dong@nxp.com>,
+        Yangbo Lu <yangbo.lu@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 27 May 2020 at 04:50, <haibo.chen@nxp.com> wrote:
+On Tue, 26 May 2020 at 12:32, <haibo.chen@nxp.com> wrote:
 >
 > From: Haibo Chen <haibo.chen@nxp.com>
 >
-> When use the specific GPIO to detect the card insert/remove, we can
-> also add the GPIO as a wakeup source. When system suspend, insert or
-> remove the card can wakeup the system.
+> According the RM, the bit[6~0] of register ESDHC_TUNING_CTRL is
+> TUNING_START_TAP, bit[7] of this register is to disable the command
+> CRC check for standard tuning. So fix it here.
 >
+> Fixes: d87fc9663688 ("mmc: sdhci-esdhc-imx: support setting tuning start point")
 > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
 Applied for next, thanks!
+
+Should we add a stable tag or it doesn't matter?
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index 5398af4824c3..5a27511438c8 100644
+> index 7af9d87d4245..2cf7fa59270e 100644
 > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -1599,6 +1599,10 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
->         if (esdhc_is_usdhc(imx_data)) {
->                 host->quirks2 |= SDHCI_QUIRK2_PRESET_VALUE_BROKEN;
->                 host->mmc->caps |= MMC_CAP_1_8V_DDR | MMC_CAP_3_3V_DDR;
-> +
-> +               /* GPIO CD can be set as a wakeup source */
-> +               host->mmc->caps |= MMC_CAP_CD_WAKE;
-> +
->                 if (!(imx_data->socdata->flags & ESDHC_FLAG_HS200))
->                         host->quirks2 |= SDHCI_QUIRK2_BROKEN_HS200;
+> @@ -90,7 +90,7 @@
+>  #define ESDHC_STD_TUNING_EN            (1 << 24)
+>  /* NOTE: the minimum valid tuning start tap for mx6sl is 1 */
+>  #define ESDHC_TUNING_START_TAP_DEFAULT 0x1
+> -#define ESDHC_TUNING_START_TAP_MASK    0xff
+> +#define ESDHC_TUNING_START_TAP_MASK    0x7f
+>  #define ESDHC_TUNING_STEP_MASK         0x00070000
+>  #define ESDHC_TUNING_STEP_SHIFT                16
 >
-> @@ -1734,8 +1738,14 @@ static int sdhci_esdhc_suspend(struct device *dev)
->                 mmc_retune_needed(host->mmc);
->
->         ret = sdhci_suspend_host(host);
-> -       if (!ret)
-> -               return pinctrl_pm_select_sleep_state(dev);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = pinctrl_pm_select_sleep_state(dev);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = mmc_gpio_set_cd_wake(host->mmc, true);
->
->         return ret;
->  }
-> @@ -1759,6 +1769,9 @@ static int sdhci_esdhc_resume(struct device *dev)
->         if (host->mmc->caps2 & MMC_CAP2_CQE)
->                 ret = cqhci_resume(host->mmc);
->
-> +       if (!ret)
-> +               ret = mmc_gpio_set_cd_wake(host->mmc, false);
-> +
->         return ret;
->  }
->  #endif
 > --
 > 2.17.1
 >
