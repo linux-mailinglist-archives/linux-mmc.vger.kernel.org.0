@@ -2,80 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6E5D1EB855
-	for <lists+linux-mmc@lfdr.de>; Tue,  2 Jun 2020 11:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F4561EB9E0
+	for <lists+linux-mmc@lfdr.de>; Tue,  2 Jun 2020 12:51:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726817AbgFBJVF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Jun 2020 05:21:05 -0400
-Received: from mga12.intel.com ([192.55.52.136]:48061 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726569AbgFBJVF (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 2 Jun 2020 05:21:05 -0400
-IronPort-SDR: Frk2PmokzxL8nwVxDZn295NIeyEQ48MKlaWJLSmFElOzNdc4TIPZerynw7iXNbTPO61VyofNK5
- SusRgLvZ3JQQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2020 02:21:04 -0700
-IronPort-SDR: dI1R7AxQVaIHe+52H03VmHXLIDabd1tIz9q+sYebuudsp3jDoKZvrf9F9eDjzW0VfWfEHG30kP
- T2HqapICPBHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,463,1583222400"; 
-   d="scan'208";a="347347617"
-Received: from gklab-125-110.igk.intel.com ([10.91.125.110])
-  by orsmga001.jf.intel.com with ESMTP; 02 Jun 2020 02:21:02 -0700
-From:   Piotr Stankiewicz <piotr.stankiewicz@intel.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
+        id S1727013AbgFBKua (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Jun 2020 06:50:30 -0400
+Received: from alexa-out-blr-02.qualcomm.com ([103.229.18.198]:57579 "EHLO
+        alexa-out-blr-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726785AbgFBKu3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Jun 2020 06:50:29 -0400
+Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
+  by alexa-out-blr-02.qualcomm.com with ESMTP/TLS/AES256-SHA; 02 Jun 2020 16:20:20 +0530
+Received: from vbadigan-linux.qualcomm.com ([10.206.24.109])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 02 Jun 2020 16:20:06 +0530
+Received: by vbadigan-linux.qualcomm.com (Postfix, from userid 76677)
+        id 453F14BF9; Tue,  2 Jun 2020 16:20:05 +0530 (IST)
+From:   Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        bjorn.andersson@linaro.org, robh+dt@kernel.org
 Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Piotr Stankiewicz <piotr.stankiewicz@intel.com>
-Subject: [PATCH 11/15] mmc: sdhci: use PCI_IRQ_MSI_TYPES where appropriate
-Date:   Tue,  2 Jun 2020 11:20:59 +0200
-Message-Id: <20200602092059.32146-1-piotr.stankiewicz@intel.com>
-X-Mailer: git-send-email 2.17.2
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+Subject: [PATCH V3 0/3] Internal voltage control for qcom SDHC 
+Date:   Tue,  2 Jun 2020 16:17:53 +0530
+Message-Id: <1591094883-11674-1-git-send-email-vbadigan@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1589541535-8523-1-git-send-email-vbadigan@codeaurora.org>
+References: <1589541535-8523-1-git-send-email-vbadigan@codeaurora.org>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Seeing as there is shorthand available to use when asking for any type
-of interrupt, or any type of message signalled interrupt, leverage it.
+On qcom SD host controllers voltage switching be done after the HW
+is ready for it. The HW informs its readiness through power irq.
+The voltage switching should happen only then.
 
-Signed-off-by: Piotr Stankiewicz <piotr.stankiewicz@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
----
- drivers/mmc/host/sdhci-pci-gli.c     | 3 +--
- drivers/mmc/host/sdhci-pci-o2micro.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+So added support to register voltage regulators from the msm driver
+and use them.
 
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index fd76aa672e02..d14997f9cbf9 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -271,8 +271,7 @@ static void gli_pcie_enable_msi(struct sdhci_pci_slot *slot)
- {
- 	int ret;
- 
--	ret = pci_alloc_irq_vectors(slot->chip->pdev, 1, 1,
--				    PCI_IRQ_MSI | PCI_IRQ_MSIX);
-+	ret = pci_alloc_irq_vectors(slot->chip->pdev, 1, 1, PCI_IRQ_MSI_TYPES);
- 	if (ret < 0) {
- 		pr_warn("%s: enable PCI MSI failed, error=%d\n",
- 		       mmc_hostname(slot->host->mmc), ret);
-diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
-index fa8105087d68..498c51207bfb 100644
---- a/drivers/mmc/host/sdhci-pci-o2micro.c
-+++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-@@ -470,8 +470,7 @@ static void sdhci_pci_o2_enable_msi(struct sdhci_pci_chip *chip,
- 		return;
- 	}
- 
--	ret = pci_alloc_irq_vectors(chip->pdev, 1, 1,
--				    PCI_IRQ_MSI | PCI_IRQ_MSIX);
-+	ret = pci_alloc_irq_vectors(chip->pdev, 1, 1, PCI_IRQ_MSI_TYPES);
- 	if (ret < 0) {
- 		pr_err("%s: enable PCI MSI failed, err=%d\n",
- 		       mmc_hostname(host->mmc), ret);
+This patchset was posted long back but not actively pursued
+https://lore.kernel.org/linux-arm-msm/1539004739-32060-1-git-send-email-vbadigan@codeaurora.org/
+So posting it as fresh patchset.  
+
+Changes since V2:
+	- Removed redundant log from sdhci_msm_set_vmmc.
+	- Added the condition for skiping disabling of vqmmc for eMMC.
+	- Updated logic such that, setting load for vqmmc only if
+	  it is kept ON. 
+	- Retained ack by Adrian for second patch.
+	- Updated dt properties names as per Robs comments.
+
+Changes since V1:
+	- Removed setting load for Vmmc regulator while turning it on/off.
+	  Instead setting the active load once during probe.
+	- Simplified handlng of supplies for BUS_ON/OFF cases in shci_msm_handle_pwr_irq().
+	- Moved common code out of switch case in sdhci_msm_start_signal_voltage_switch().
+	- Updated variable name to sdhci_core_to_disable_vqmmc.
+	- Updated pr_err logs to dev_err logs.
+
+Veerabhadrarao Badiganti (2):
+  dt-bindings: mmc: Supply max load for mmc supplies
+  mmc: sdhci-msm: Use internal voltage control
+
+Vijay Viswanath (1):
+  mmc: sdhci: Allow platform controlled voltage switching
+
+ .../devicetree/bindings/mmc/mmc-controller.yaml    |   6 +
+ drivers/mmc/host/sdhci-msm.c                       | 235 ++++++++++++++++++++-
+ drivers/mmc/host/sdhci.c                           |  32 +--
+ drivers/mmc/host/sdhci.h                           |   1 +
+ 4 files changed, 252 insertions(+), 22 deletions(-)
+
 -- 
-2.17.2
+Qualcomm India Private Limited, on behalf of Qualcomm Innovation Center, Inc., is a member of Code Aurora Forum, a Linux Foundation Collaborative Project
 
