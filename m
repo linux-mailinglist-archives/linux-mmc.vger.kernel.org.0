@@ -2,88 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC7E71EE32A
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Jun 2020 13:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 566751EE34D
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Jun 2020 13:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726890AbgFDLQk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 4 Jun 2020 07:16:40 -0400
-Received: from alexa-out-blr-02.qualcomm.com ([103.229.18.198]:58876 "EHLO
-        alexa-out-blr-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726444AbgFDLQi (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 4 Jun 2020 07:16:38 -0400
-Received: from ironmsg02-blr.qualcomm.com ([10.86.208.131])
-  by alexa-out-blr-02.qualcomm.com with ESMTP/TLS/AES256-SHA; 04 Jun 2020 16:45:16 +0530
-Received: from c-ppvk-linux.qualcomm.com ([10.206.24.34])
-  by ironmsg02-blr.qualcomm.com with ESMTP; 04 Jun 2020 16:44:48 +0530
-Received: by c-ppvk-linux.qualcomm.com (Postfix, from userid 2304101)
-        id 9317B191B; Thu,  4 Jun 2020 16:44:47 +0530 (IST)
-From:   Pradeep P V K <ppvk@codeaurora.org>
-To:     bjorn.andersson@linaro.org, adrian.hunter@intel.com,
-        robh+dt@kernel.org, ulf.hansson@linaro.org,
-        vbadigan@codeaurora.org, sboyd@kernel.org,
-        georgi.djakov@linaro.org, mka@chromium.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mmc-owner@vger.kernel.org, rnayak@codeaurora.org,
-        sibis@codeaurora.org, matthias@chromium.org,
-        Pradeep P V K <ppvk@codeaurora.org>
-Subject: [PATCH V2 2/2] dt-bindings: mmc: sdhci-msm: Add interconnect BW scaling strings
-Date:   Thu,  4 Jun 2020 16:44:43 +0530
-Message-Id: <1591269283-24084-3-git-send-email-ppvk@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1591269283-24084-1-git-send-email-ppvk@codeaurora.org>
-References: <1591269283-24084-1-git-send-email-ppvk@codeaurora.org>
+        id S1726990AbgFDLUy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 4 Jun 2020 07:20:54 -0400
+Received: from www.zeus03.de ([194.117.254.33]:58154 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727041AbgFDLUx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 4 Jun 2020 07:20:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=qPyIgXO6fYmlepctzZg1Xnpmxe9
+        T2ol8nuKpMrVgVbo=; b=Nt4CqCc8VVJ0AbwyzOVw+FYs63/I6smkpFLJbFIqCp3
+        p22PtrNl09FHDbQ3kXwsipxFKdSoQCFRrcWm2DWmtmtx/QWYjwIp8mg4VGmQJivh
+        HdgGzKGh783ljXiArbVQ4TOLE0BnbzJJ4QjTBe2krhq4QeB2FpJkVQJPzSqpaoas
+        =
+Received: (qmail 1656118 invoked from network); 4 Jun 2020 13:20:50 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 4 Jun 2020 13:20:50 +0200
+X-UD-Smtp-Session: l3s3148p1@mRxIVkCnbuUgAwDPXw1XANux7yWtmp4Z
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 0/2] renesas_sdhi: fix hang when SCC loses its clock
+Date:   Thu,  4 Jun 2020 13:20:38 +0200
+Message-Id: <20200604112040.22144-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add interconnect bandwidth scaling supported strings for qcom-sdhci
-controller.
+This was a nasty one because it wasn't reproducible for a long time.
+Recent work on the manual calibration mechanism made it show up again
+for me, so I could finally tackle it. The reason is that there is more
+SCC handling now, so we are more likely to stumble again over the
+problem that it may have no clock at that time.
 
-Signed-off-by: Pradeep P V K <ppvk@codeaurora.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
----
- Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+There is a patch in the BSP handling this issue, too, but it didn't work
+for me on at least v5.6+ kernels. Also, I thought it is way simpler to
+keep the last working external frequency instead of defining a default
+one per SoC generation.
 
-diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-index b8e1d2b..3b602fd 100644
---- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-+++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-@@ -54,6 +54,21 @@ Required properties:
- - qcom,dll-config: Chipset and Platform specific value. Use this field to
- 	specify the DLL_CONFIG register value as per Hardware Programming Guide.
- 
-+Optional Properties:
-+* Following bus parameters are required for interconnect bandwidth scaling:
-+- interconnects: Pairs of phandles and interconnect provider specifier
-+		 to denote the edge source and destination ports of
-+		 the interconnect path.
-+
-+- interconnect-names: For sdhc, we have two main paths.
-+		1. Data path : sdhc to ddr
-+		2. Config path : cpu to sdhc
-+		For Data interconnect path the name supposed to be
-+		is "sdhc-ddr" and for config interconnect path it is
-+		"cpu-sdhc".
-+		Please refer to Documentation/devicetree/bindings/
-+		interconnect/ for more details.
-+
- Example:
- 
- 	sdhc_1: sdhci@f9824900 {
-@@ -71,6 +86,9 @@ Example:
- 
- 		clocks = <&gcc GCC_SDCC1_APPS_CLK>, <&gcc GCC_SDCC1_AHB_CLK>;
- 		clock-names = "core", "iface";
-+		interconnects = <&qnoc MASTER_SDCC_ID &qnoc SLAVE_DDR_ID>,
-+				<&qnoc MASTER_CPU_ID &qnoc SLAVE_SDCC_ID>;
-+		interconnect-names = "sdhc-ddr","cpu-sdhc";
- 
- 		qcom,dll-config = <0x000f642c>;
- 		qcom,ddr-config = <0x80040868>;
+Patches are based on mmc/next as of yesterday or so. You need the
+'manual calibration' patches for the issue to show up. They are not
+fully tested yet, so I will send them as RFC in a minute. Or just fetch
+this branch:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/sdhi/new_manual_calib
+
+With that branch, reading a file from eMMC works for me(tm). If you
+prevent 'keep_scc_freq' from being 'true', then reading a file should
+stall the machine. Happened here on a R-Car M3-N to me.
+
+Looking forward to comments and more tests.
+
+Thanks,
+
+   Wolfram
+
+Wolfram Sang (2):
+  mmc: core: when downgrading HS400, callback into drivers earlier
+  mmc: renesas_sdhi: keep SCC clock active when tuning
+
+ drivers/mmc/core/mmc.c               | 14 +++++++-------
+ drivers/mmc/host/renesas_sdhi.h      |  1 +
+ drivers/mmc/host/renesas_sdhi_core.c | 25 ++++++++++++++++++++++---
+ 3 files changed, 30 insertions(+), 10 deletions(-)
+
 -- 
-1.9.1
+2.20.1
 
