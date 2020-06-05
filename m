@@ -2,135 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF4391EF858
-	for <lists+linux-mmc@lfdr.de>; Fri,  5 Jun 2020 14:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0F3F1EF868
+	for <lists+linux-mmc@lfdr.de>; Fri,  5 Jun 2020 14:55:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726592AbgFEMwF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 5 Jun 2020 08:52:05 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:37986 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726553AbgFEMwE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 5 Jun 2020 08:52:04 -0400
-Received: by mail-oi1-f193.google.com with SMTP id c194so8108722oig.5;
-        Fri, 05 Jun 2020 05:52:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0l1qYzvXi/GO1NNvXjYET+2paPoc72Q4SdiakMSrAJE=;
-        b=NMiI0cxm3L5FK+XtkUqxfkfr16nI8LXlr6zv2XNGDXyMN5Rt1ttn0qhKXMEMtCpiIR
-         rvZZcqwQrQvaDVA2S1v2j1fvnG9+Qaxw40pcFFaFh/ERXgX5g9gOyw271xfoCNDQYy+l
-         CESBmJzj9C63rBx73CiXDS7QcW5TBOp4TFb274Byvj4DD01yLc6V3MVoGZa8Omgu4B86
-         Yv0lZ2KtbUceWzGjeq3vHYbw5kmV7pCNWrfPAw9UudKFtGSuqHarOOEC1EJMTTV+eJbf
-         GJefnoOypP8BsxzQWnWtC60fu9aVf4BXrD1EsfyPVjeosA2JNIYiqK1CzGf+bjeLVdPY
-         0Q0A==
-X-Gm-Message-State: AOAM530GlO5HQszfC6hPJUihsZSTy/zUCqltYggG3mFdx+k/oRH+8kEF
-        glM1aXIsqJrqs0swTMnhpGkt1Ab/sY9I3CoQZBgYok5Z
-X-Google-Smtp-Source: ABdhPJytYGDFbxN/XEq2VGE23sTUMKtd1U9+zTazCFQWHGPrv/2hO4eOc8uC8OCmgaeeBGlB90o3SnUqaReY8OrFTNk=
-X-Received: by 2002:aca:1a19:: with SMTP id a25mr1815274oia.54.1591361523495;
- Fri, 05 Jun 2020 05:52:03 -0700 (PDT)
+        id S1726553AbgFEMzx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 5 Jun 2020 08:55:53 -0400
+Received: from smtp2207-205.mail.aliyun.com ([121.197.207.205]:44396 "EHLO
+        smtp2207-205.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726409AbgFEMzw (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 5 Jun 2020 08:55:52 -0400
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.2249545|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00490445-0.00740592-0.98769;FP=0|0|0|0|0|-1|-1|-1;HT=e02c03267;MF=frank@allwinnertech.com;NM=1;PH=DS;RN=13;RT=13;SR=0;TI=SMTPD_---.Hib7hso_1591361738;
+Received: from allwinnertech.com(mailfrom:frank@allwinnertech.com fp:SMTPD_---.Hib7hso_1591361738)
+          by smtp.aliyun-inc.com(10.147.41.143);
+          Fri, 05 Jun 2020 20:55:44 +0800
+From:   Frank Lee <frank@allwinnertech.com>
+To:     chaotian.jing@mediatek.com, ulf.hansson@linaro.org,
+        matthias.bgg@gmail.com, mripard@kernel.org, wens@csie.org,
+        tiny.windzz@gmail.com, rmfrfs@gmail.com, frank@allwinnertech.com,
+        marex@denx.de, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] mmc: sunxi-mmc: do not hide address in sunxi_mmc_irq()
+Date:   Fri,  5 Jun 2020 20:55:44 +0800
+Message-Id: <20200605125545.31974-1-frank@allwinnertech.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <1588542414-14826-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <1588542414-14826-11-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <1588542414-14826-11-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 5 Jun 2020 14:51:52 +0200
-Message-ID: <CAMuHMdXgSWHd-w_vgv-2mrYwJ2trcdDNniKFGCDGbn3ts-CkjA@mail.gmail.com>
-Subject: Re: [PATCH v2 10/10] ARM: dts: r8a7742-iwg21d-q7: Add support for
- iWave G21D-Q7 board based on RZ/G1H
-To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc:     Magnus Damm <magnus.damm@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dmaengine <dmaengine@vger.kernel.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Prabhakar <prabhakar.csengg@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Prabhakar,
+From: Yangtao Li <tiny.windzz@gmail.com>
 
-On Sun, May 3, 2020 at 11:47 PM Lad Prabhakar
-<prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
-> Add support for iWave RainboW-G21D-Qseven board based on RZ/G1H.
->
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+Using %px to show the actual address in sunxi_mmc_irq()
+to help us to debug issue.
 
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/r8a7742-iwg21d-q7.dts
-> @@ -0,0 +1,37 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Device Tree Source for the iWave-RZ/G1H Qseven board
-> + *
-> + * Copyright (C) 2020 Renesas Electronics Corp.
-> + */
-> +
-> +/dts-v1/;
-> +#include "r8a7742-iwg21m.dtsi"
-> +
-> +/ {
-> +       model = "iWave Systems RainboW-G21D-Qseven board based on RZ/G1H";
-> +       compatible = "iwave,g21d", "iwave,g21m", "renesas,r8a7742";
-> +
-> +       aliases {
-> +               serial2 = &scifa2;
-> +       };
-> +
-> +       chosen {
-> +               bootargs = "ignore_loglevel root=/dev/mmcblk0p1 rw rootwait";
-> +               stdout-path = "serial2:115200n8";
-> +       };
-> +};
-> +
-> +&pfc {
-> +       scifa2_pins: scifa2 {
-> +               groups = "scifa2_data_c";
+Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
+Signed-off-by: Frank Lee <frank@allwinnertech.com>
+---
+ drivers/mmc/host/sunxi-mmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Upon second look, I think this group is wrong.  While labeled SCIFA2 in
-the SOM schematics, these signals seem to be connected to a debugging
-interface.
-
-The real UART2 seems to be present on the camera daughter board.  Those
-signals are labeled "SCIFA2" in the camera board schematics, but "SCIF2"
-in the SOM schematics.  This is OK, as "scif2_data" and "scifa2_data"
-share the same pins, so you can choose either SCIF2 or SCIFA2 to drive
-them.
-
-If I'm right, please change the group, and move all serial2 descriptions
-to the camera board DTS.
-
-> +               function = "scifa2";
-> +       };
-> +};
-> +
-> +&scifa2 {
-> +       pinctrl-0 = <&scifa2_pins>;
-> +       pinctrl-names = "default";
-> +
-> +       status = "okay";
-> +};
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+index 5e95bbc51644..dcd30c3e1fac 100644
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -574,7 +574,7 @@ static irqreturn_t sunxi_mmc_irq(int irq, void *dev_id)
+ 	idma_int  = mmc_readl(host, REG_IDST);
+ 	msk_int   = mmc_readl(host, REG_MISTA);
+ 
+-	dev_dbg(mmc_dev(host->mmc), "irq: rq %p mi %08x idi %08x\n",
++	dev_dbg(mmc_dev(host->mmc), "irq: rq %px mi %08x idi %08x\n",
+ 		host->mrq, msk_int, idma_int);
+ 
+ 	mrq = host->mrq;
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.24.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
