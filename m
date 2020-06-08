@@ -2,36 +2,37 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4371F2EF3
-	for <lists+linux-mmc@lfdr.de>; Tue,  9 Jun 2020 02:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40C9B1F30CD
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Jun 2020 03:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728338AbgFHXLn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Jun 2020 19:11:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58672 "EHLO mail.kernel.org"
+        id S1727997AbgFHXHr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Jun 2020 19:07:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52342 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728947AbgFHXLk (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:11:40 -0400
+        id S1727989AbgFHXHq (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:07:46 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 196C920CC7;
-        Mon,  8 Jun 2020 23:11:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2A72D20888;
+        Mon,  8 Jun 2020 23:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591657900;
-        bh=qok90Y6RRP2J8tbxAucBbgy2dtFP7l/geCBkoIHHl4Q=;
+        s=default; t=1591657666;
+        bh=OaiQKm1bB3NmMoGKTxrJngEVvq3569afw1osq8OEFZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iU6rdbZU84/Gd86RxLrvvOjpFdu/0y1Tx7qQInn7zKgWl0fvisoLrrRMxlFpc2gHT
-         l64ENTpVdZiO5t/eQaX46ltVdTil5ac+Vt21Pv8rMEoLqD5e+bDf3YsrDhBuiTBkHQ
-         8Jpc6dumfSdlx0eEixRUpjj9GygYiM6Zju7rry9E=
+        b=ruNEgV7kIJbhNz4ws/2nOm4I69roVOGO5ElZRJjJy1YAse6dtOl2ddZMuO47JEVtA
+         NxWBmcqdxafQeZOslHRM6LoSZr1GonP0MlqE/zGp+7TkZx0uXqG916fNIsPLe/DelL
+         GbOWSVnif37OrPMwI1Zi3Vr9Hva4tBGJgBBLuWQM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Haibo Chen <haibo.chen@nxp.com>,
+Cc:     Ludovic Barre <ludovic.barre@st.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.7 254/274] mmc: sdhci-esdhc-imx: fix the mask for tuning start point
-Date:   Mon,  8 Jun 2020 19:05:47 -0400
-Message-Id: <20200608230607.3361041-254-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.7 076/274] mmc: mmci_sdmmc: fix power on issue due to pwr_reg initialization
+Date:   Mon,  8 Jun 2020 19:02:49 -0400
+Message-Id: <20200608230607.3361041-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608230607.3361041-1-sashal@kernel.org>
 References: <20200608230607.3361041-1-sashal@kernel.org>
@@ -44,36 +45,51 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Ludovic Barre <ludovic.barre@st.com>
 
-[ Upstream commit 1194be8c949b8190b2882ad8335a5d98aa50c735 ]
+[ Upstream commit 33ba6fec0012e47f4e72bfab922b99327373f210 ]
 
-According the RM, the bit[6~0] of register ESDHC_TUNING_CTRL is
-TUNING_START_TAP, bit[7] of this register is to disable the command
-CRC check for standard tuning. So fix it here.
+This patch fix a power-on issue, and avoid to retry the power sequence.
 
-Fixes: d87fc9663688 ("mmc: sdhci-esdhc-imx: support setting tuning start point")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://lore.kernel.org/r/1590488522-9292-1-git-send-email-haibo.chen@nxp.com
+In power off sequence: sdmmc must set pwr_reg in "power-cycle" state
+(value 0x2), to prevent the card from being supplied through the signal
+lines (all the lines are driven low).
+
+In power on sequence: when the power is stable, sdmmc must set pwr_reg
+in "power-off" state (value 0x0) to drive all signal to high before to
+set "power-on".
+
+To avoid writing the same value to the power register several times, this
+register is cached by the pwr_reg variable. At probe pwr_reg is initialized
+to 0 by kzalloc of mmc_alloc_host.
+
+Like pwr_reg value is 0 at probing, the power on sequence fail because
+the "power-off" state is not writes (value 0x0) and the lines
+remain drive to low.
+
+This patch initializes "pwr_reg" variable with power register value.
+This it done in sdmmc variant init to not disturb default mmci behavior.
+
+Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
+Link: https://lore.kernel.org/r/20200420161831.5043-1-ludovic.barre@st.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/mmci_stm32_sdmmc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 5ec8e4bf1ac7..a514b9ea9460 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -89,7 +89,7 @@
- #define ESDHC_STD_TUNING_EN		(1 << 24)
- /* NOTE: the minimum valid tuning start tap for mx6sl is 1 */
- #define ESDHC_TUNING_START_TAP_DEFAULT	0x1
--#define ESDHC_TUNING_START_TAP_MASK	0xff
-+#define ESDHC_TUNING_START_TAP_MASK	0x7f
- #define ESDHC_TUNING_STEP_MASK		0x00070000
- #define ESDHC_TUNING_STEP_SHIFT		16
+diff --git a/drivers/mmc/host/mmci_stm32_sdmmc.c b/drivers/mmc/host/mmci_stm32_sdmmc.c
+index d33e62bd6153..14f99d8aa3f0 100644
+--- a/drivers/mmc/host/mmci_stm32_sdmmc.c
++++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
+@@ -519,6 +519,7 @@ void sdmmc_variant_init(struct mmci_host *host)
+ 	struct sdmmc_dlyb *dlyb;
  
+ 	host->ops = &sdmmc_variant_ops;
++	host->pwr_reg = readl_relaxed(host->base + MMCIPOWER);
+ 
+ 	base_dlyb = devm_of_iomap(mmc_dev(host->mmc), np, 1, NULL);
+ 	if (IS_ERR(base_dlyb))
 -- 
 2.25.1
 
