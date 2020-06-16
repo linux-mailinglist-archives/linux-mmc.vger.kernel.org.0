@@ -2,107 +2,87 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1596A1FAF4E
-	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jun 2020 13:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC371FB1B0
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jun 2020 15:08:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728333AbgFPLds (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jun 2020 07:33:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35190 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728707AbgFPLdo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jun 2020 07:33:44 -0400
-Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09791C08C5C5
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:44 -0700 (PDT)
-Received: by mail-vk1-xa41.google.com with SMTP id n22so4703752vkm.7
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=d3xurtsGxG5+pBj/Wd/EiagOHM+i8tFxNIlSk/FHDFA=;
-        b=VK0MaGVKyzGVAsortmOAkqQBfDxQ17xbC+E5ynMMCx+V6YoKoddQvXDG6GVU74fLDE
-         3AOFqiB9yyL/7Bx9YbSZLLalzmmfXNKl6UgP0RgUNX3H7O8go3qlIWEaicPbap/w/fXa
-         4Dhyg/QJIX3D4Sla8YWYe2UxMKRASkzm3vhhJ92d+92UAs26cKGtLdQHKIY+0/lLV17o
-         EXPHDXICY8O7sHOyRdGyfYzx8DP/K2SXD3XSK5Ng/Eqjth22KJy3v6SHvbp8TdknSgHv
-         DfOVaqgwFbXbUHUJLXtQCjdgXitPvvjeBqi3BmhG9GCsQleQY/b0GQ/ZXogtXQe8XA02
-         3SlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=d3xurtsGxG5+pBj/Wd/EiagOHM+i8tFxNIlSk/FHDFA=;
-        b=hPpAIQY/pvdVWZJA5mGo8N+vn+VjTecAMsB9VS3Q767j7MGY6EG4XLxjvJ+GjPnZXT
-         i4AG3zABtlY4NqWFP+L5CdtZMNLuFmQZX8bEvLoSRdsYUHSFV33w5/g98wyfTIVOhprq
-         k6EjSPdjzHO5kpDoM4k/YcXnYetXNzTQmuL5EJpcibXjBf0jVb5jtSGeCigYCrcUFdkd
-         dHZC2bKvOXODeeqL37d8Vrlp3OF2kociACfABNOhxzfzVlvxhlNtuvSXOQx1/TocpTVd
-         49e7k45FYkkoivXXYpQQ4q7G8HOyycRsnfiuPWj6iN5kQqIofARP8yYfP9NLXIWYFWuh
-         7a+w==
-X-Gm-Message-State: AOAM533q21LwQaPjfapU6eMJRK7N6+RLPfalw9FY3/xmBkLw/AZflyFm
-        FYmqAVi16WFq3P7CU65oaIicTPn/WG85VGVw4TbYTyiRKUs=
-X-Google-Smtp-Source: ABdhPJwISf1vfOjyjum1tJCBaNteiqD3S1uRqKWFGycL6f89hwszildCgajIP6J3PoKnXdvffL4CBueNZTWeqBkPb0Y=
-X-Received: by 2002:ac5:cc44:: with SMTP id l4mr1143248vkm.43.1592307223208;
- Tue, 16 Jun 2020 04:33:43 -0700 (PDT)
+        id S1728549AbgFPNIX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 16 Jun 2020 09:08:23 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:17772 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728553AbgFPNIW (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 16 Jun 2020 09:08:22 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1592312902; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=7mR9zhmqvMVQR1lHebGTjVpWrCEe0+8oz+tu8osL53w=;
+ b=PfhmTMandqfg/lEkyNv828OgXNafETnH0xB7Sl5JIAHkryYEbnHTI/bjCRuZh49VGRWiMo6H
+ q9TVb4+D01rNmPx1GwQWrBG4vklN1gCGq5hqdrSnXsqc1afB0Gxi/jX7KMCjLekLQ5sM3Iaw
+ PuDqUGoUs7Mf/yTNEVsQy1H1J6s=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5ee8c4295866879c767a51fb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Jun 2020 13:07:53
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B379BC43387; Tue, 16 Jun 2020 13:07:53 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: ppvk)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2EE61C433C8;
+        Tue, 16 Jun 2020 13:07:53 +0000 (UTC)
 MIME-Version: 1.0
-References: <20200611132839.4515-1-ludovic.barre@st.com>
-In-Reply-To: <20200611132839.4515-1-ludovic.barre@st.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 16 Jun 2020 13:33:06 +0200
-Message-ID: <CAPDyKFpeEdvFWj98LRHtckVRzzz1TaHcYR5AFJSMujuRCDoVgw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: mmci: add sdio datactrl mask for sdmmc revisions
-To:     Ludovic Barre <ludovic.barre@st.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 16 Jun 2020 18:37:53 +0530
+From:   ppvk@codeaurora.org
+To:     Matthias Kaehlcke <mka@chromium.org>
+Cc:     bjorn.andersson@linaro.org, adrian.hunter@intel.com,
+        robh+dt@kernel.org, ulf.hansson@linaro.org,
+        vbadigan@codeaurora.org, sboyd@kernel.org,
+        georgi.djakov@linaro.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-mmc-owner@vger.kernel.org,
+        rnayak@codeaurora.org, sibis@codeaurora.org, matthias@chromium.org
+Subject: Re: [PATCH V4 1/2] mmc: sdhci-msm: Add interconnect bandwidth scaling
+ support
+In-Reply-To: <20200615231207.GX4525@google.com>
+References: <1591691846-7578-1-git-send-email-ppvk@codeaurora.org>
+ <1591691846-7578-2-git-send-email-ppvk@codeaurora.org>
+ <20200615231207.GX4525@google.com>
+Message-ID: <3681c3e2a49b5c8b832d277873b6fa49@codeaurora.org>
+X-Sender: ppvk@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 11 Jun 2020 at 15:28, Ludovic Barre <ludovic.barre@st.com> wrote:
->
-> This patch adds datactrl_mask_sdio for sdmmc revisions.
-> sdmmc revisions used same bit of previous ST variant.
->
-> Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
+Hi Matthias,
 
-Applied for next, thanks!
+Thanks!
 
-Kind regards
-Uffe
+On 2020-06-16 04:42, Matthias Kaehlcke wrote:
+> On Tue, Jun 09, 2020 at 02:07:25PM +0530, Pradeep P V K wrote:
+>> Interconnect bandwidth scaling support is now added as a
+>> part of OPP. So, make sure interconnect driver is ready
+>> before handling interconnect scaling.
+>> 
+>> Signed-off-by: Pradeep P V K <ppvk@codeaurora.org>
+>> Reviewed-by: Sibi Sankar <sibis@codeaurora.org>
+> 
+> Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
+> 
+> Do you plan to send also patches that add the necessary DT entries?
+> I'm particularly interested in SC7180.
 
-
-> ---
->  drivers/mmc/host/mmci.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-> index a69d6a0c2e15..b5a41a7ce165 100644
-> --- a/drivers/mmc/host/mmci.c
-> +++ b/drivers/mmc/host/mmci.c
-> @@ -267,6 +267,7 @@ static struct variant_data variant_stm32_sdmmc = {
->         .datalength_bits        = 25,
->         .datactrl_blocksz       = 14,
->         .datactrl_any_blocksz   = true,
-> +       .datactrl_mask_sdio     = MCI_DPSM_ST_SDIOEN,
->         .stm32_idmabsize_mask   = GENMASK(12, 5),
->         .busy_timeout           = true,
->         .busy_detect            = true,
-> @@ -292,6 +293,7 @@ static struct variant_data variant_stm32_sdmmcv2 = {
->         .datalength_bits        = 25,
->         .datactrl_blocksz       = 14,
->         .datactrl_any_blocksz   = true,
-> +       .datactrl_mask_sdio     = MCI_DPSM_ST_SDIOEN,
->         .stm32_idmabsize_mask   = GENMASK(16, 5),
->         .dma_lli                = true,
->         .busy_timeout           = true,
-> --
-> 2.17.1
->
+Yes, we will send the DT entries soon.
