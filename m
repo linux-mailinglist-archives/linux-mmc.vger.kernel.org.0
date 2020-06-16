@@ -2,114 +2,139 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17CA81FAF37
+	by mail.lfdr.de (Postfix) with ESMTP id 9DDF81FAF3A
 	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jun 2020 13:33:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728596AbgFPLdP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jun 2020 07:33:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35012 "EHLO
+        id S1728625AbgFPLdT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 16 Jun 2020 07:33:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726606AbgFPLdO (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jun 2020 07:33:14 -0400
-Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B6A7C08C5C3
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:13 -0700 (PDT)
-Received: by mail-vk1-xa44.google.com with SMTP id i1so4712965vkp.8
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:13 -0700 (PDT)
+        with ESMTP id S1728617AbgFPLdS (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jun 2020 07:33:18 -0400
+Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53FCAC08C5C2
+        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:18 -0700 (PDT)
+Received: by mail-ua1-x943.google.com with SMTP id v25so6780446uau.4
+        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ZSg0muGbkwOyh6Ot3lTlpvo0Mmt4wgCAweHT5tRHxm0=;
-        b=VibwAZSD84LU+4hHmx7H20bVV8ZpftSbkJ7qeyM+fPSnWy5b52HMmY8uC6oN/TOJ3N
-         Ppd7MeLLzhu4lLdwL1u8+HFFzEJwEkIRbPl3l2liiO84a2tEXnOOLJLVeD2eQr2LEdo1
-         GuqKU5ksA+/+QuCtf656nkvB+l8BnzLR+CwMeWI8NMKjSG87T6hTFLog6RcU8uJ5b42y
-         lBqr6ENJXZQ31zwwwbbWm8fG8NZlpIVe4l6fg47KvRL/VkNsBi3g56UkQTQ64+dQKFpF
-         89zZO5b6w/YjOAiLDeGYGxLcR5EKhAFvvlLFVKqumAr2y0DtwWTd9++bWUxaqHYG4fEh
-         NmyQ==
+        bh=1ivK3dmsummt7EV44R6DFOrgPObNk1BU5eKIbWQwOGQ=;
+        b=r8/O5yIDKHeXpEfyfXSGx1Srt7tU5pjmgcIIs5OOvAG54o9KMk8uUA3FJ7m2xzAwbU
+         pXkYD3WLfibjfipMtAcbJbqi82z99GIsDRn4f7TchXpf5N8acm7SE6GprFxDkKAmluPn
+         EDLAV8wjgEssBZ3JAjkjo0A/ASNilJv0Hblc04HyLmFmTrrZNAvB5KZkH5SIqKbHhOIS
+         j/cLyeo73c86n6iK1LH+0aMVKbYC5P9Em8MQCXe8ydLhCNilNTvHNEpLhxrdGjWmveZG
+         +vEzo+ub5cdJeMCIbDh1oqn1fSYLObZOjJeRIjI8B4caizTfc3sEcqdpgRzaXf6+GMQA
+         SW8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ZSg0muGbkwOyh6Ot3lTlpvo0Mmt4wgCAweHT5tRHxm0=;
-        b=TWJ+pybH92uaJISftFbtlUOTz5EL2BMrQ1//GxVpSjG6Vd6DRurtwiP9W6F02i0gfP
-         2tQrGbKBgxDezs8uvHpSGbMykUXhVXPGpsSH74WSZhype2QFvpQyqkQJzDcBMOYZw9zW
-         emw1GsaG+D7w0k4DSqUdZwX809nl7MbJN/qRAoWGrMpE761AByQMRuIcVOcvTMEIzZLm
-         zswWoa3v2lCYxvib23HMl1NykEUjArSHrNPQ0bjLvg0B2u9mLGfzo4BC2+8YE5T4nHuZ
-         op79Px4qJU4CRMt1hPgJNXYc8sbzWKGaL0LxGZf1WNcrhV/z2QYYbNd1mRQ64RLkDxfF
-         lzbQ==
-X-Gm-Message-State: AOAM533jSD2OBTA/ckimQ5VF5yPraub/25xt2zcz7HzbNW2Efe9UGT+O
-        jfdsfJLZyu8ROvl1PZ0fJQTBe83RRbEEH9Xyt0bF9A==
-X-Google-Smtp-Source: ABdhPJznqqxzYSq4IwrFjXL5kmjhHPScZNDOA7H32xZbM7qlqeiuriVkd5OOYnJKbb8oO4Q4Ov7r07YvZL4Xn1v7YjE=
-X-Received: by 2002:a1f:2145:: with SMTP id h66mr1118293vkh.53.1592307192362;
- Tue, 16 Jun 2020 04:33:12 -0700 (PDT)
+        bh=1ivK3dmsummt7EV44R6DFOrgPObNk1BU5eKIbWQwOGQ=;
+        b=eqLl4DMIKqTECLdOB7pWXp8p0CFqZBjV3pueB8CoIydsunjOuingnrGY4Ig+dyYW3L
+         Cw0oWrgPAGaB85J89/MFHSRVt8J4TvqWQ4ZxG6kNjO1ZXjOr8fNjTFACJp9036mYOiza
+         HROwvC2/YpnxVqZ7q7M3anFLZYFyXA4eRZPNWxdS8jwTAHHXA5MvAszR+LpA9U+4CPHC
+         TyGrBhDYEQvPxSfETZw87q4LGuHN1cH23wS/PKPb054xlsiKHtD/+dXQFlxTuy80mrkU
+         20GBms0N9ptZGPqbe1ge+DQMkDbOceUpMTy9mkhgtXSDjdb64e4puvXX0VRLprkqoBQ9
+         3kMw==
+X-Gm-Message-State: AOAM532eZ0qi8h71+o5mAA5z0CcRc2mLGgOyJobd9ftC38mdypjdUweg
+        ywx3NNNWkfWbV/oc2OSnBcpuHPfdNZxSlf8Bnf4x2g==
+X-Google-Smtp-Source: ABdhPJznasSiUlG9LYRhwTB+cV5iX3RICv2A1ILynnKhE2BsFTmsoSvlDX2QwGaHJnNN8r0ztFAssa0sdRO9z2Aldi4=
+X-Received: by 2002:a9f:22e1:: with SMTP id 88mr1406026uan.19.1592307197568;
+ Tue, 16 Jun 2020 04:33:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200608084458.32014-1-narmstrong@baylibre.com>
-In-Reply-To: <20200608084458.32014-1-narmstrong@baylibre.com>
+References: <20200608103009.5000-1-zbestahu@gmail.com>
+In-Reply-To: <20200608103009.5000-1-zbestahu@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 16 Jun 2020 13:32:36 +0200
-Message-ID: <CAPDyKFo7VA-wbOZUxExUpPoc+u446KecFARX0KNCakaubowpXg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: meson-gx: limit segments to 1 when dram-access-quirk
- is needed
-To:     Neil Armstrong <narmstrong@baylibre.com>
-Cc:     "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+Date:   Tue, 16 Jun 2020 13:32:41 +0200
+Message-ID: <CAPDyKFqoD0WoszEPHnr7MdibXuy6OXGUXZePX1OaJGBT=Hr8zQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdio: Enable SDIO 4-bit bus if not support
+ SD_SCR_BUS_WIDTH_4 for SD combo card
+To:     Yue Hu <zbestahu@gmail.com>
+Cc:     Doug Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Art Nikpal <art@khadas.com>,
-        Christian Hewitt <christianshewitt@gmail.com>
+        huyue2@yulong.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 8 Jun 2020 at 10:45, Neil Armstrong <narmstrong@baylibre.com> wrote:
+On Mon, 8 Jun 2020 at 12:30, Yue Hu <zbestahu@gmail.com> wrote:
 >
-> The actual max_segs computation leads to failure while using the broadcom
-> sdio brcmfmac/bcmsdh driver, since the driver tries to make usage of scatter
-> gather.
+> From: Yue Hu <huyue2@yulong.com>
 >
-> But with the dram-access-quirk we use a 1,5K SRAM bounce buffer, and the
-> max_segs current value of 3 leads to max transfers to 4,5k, which doesn't work.
+> If the card type is SD combo(MMC_TYPE_SD_COMBO) and the memory part does
+> not support wider bus(SD_SCR_BUS_WIDTH_4), nothing will be done except
+> return 0. However, we should check whether IO part support wider bus or
+> not. We should use available IO ability if supported.
 >
-> This patch sets max_segs to 1 to better describe the hardware limitation,
-> and fix the SDIO functionnality with the brcmfmac/bcmsdh driver on Amlogic
-> G12A/G12B SoCs on boards like SEI510 or Khadas VIM3.
+> In addition, there's a duplicated check to MMC_CAP_4_BIT_DATA since
+> sdio_enable_wide() will include that check. And we can also save one
+> call site to sdio_enable_wide() after this change.
 >
-> Reported-by: Art Nikpal <art@khadas.com>
-> Reported-by: Christian Hewitt <christianshewitt@gmail.com>
-> Fixes: acdc8e71d9bb ("mmc: meson-gx: add dram-access-quirk")
-> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+> Change-Id: Iaeb31fba4050ec9d248c415bef6696d38332afe6
 
-Applied for fixes and by adding a stable tag, thanks!
+Dropping this.
+
+> Signed-off-by: Yue Hu <huyue2@yulong.com>
+
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/meson-gx-mmc.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> v2: commit message changed.
 >
-> diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
-> index 35400cf2a2e4..cfaf8e7e22ec 100644
-> --- a/drivers/mmc/host/meson-gx-mmc.c
-> +++ b/drivers/mmc/host/meson-gx-mmc.c
-> @@ -1143,9 +1143,11 @@ static int meson_mmc_probe(struct platform_device *pdev)
+>  drivers/mmc/core/sdio.c | 26 ++++++++++++--------------
+>  1 file changed, 12 insertions(+), 14 deletions(-)
 >
->         mmc->caps |= MMC_CAP_CMD23;
->         if (host->dram_access_quirk) {
-> +               /* Limit segments to 1 due to low available sram memory */
-> +               mmc->max_segs = 1;
->                 /* Limit to the available sram memory */
-> -               mmc->max_segs = SD_EMMC_SRAM_DATA_BUF_LEN / mmc->max_blk_size;
-> -               mmc->max_blk_count = mmc->max_segs;
-> +               mmc->max_blk_count = SD_EMMC_SRAM_DATA_BUF_LEN /
-> +                                    mmc->max_blk_size;
->         } else {
->                 mmc->max_blk_count = CMD_CFG_LENGTH_MASK;
->                 mmc->max_segs = SD_EMMC_DESC_BUF_LEN /
+> diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+> index 1e42c6b..59f197d 100644
+> --- a/drivers/mmc/core/sdio.c
+> +++ b/drivers/mmc/core/sdio.c
+> @@ -367,25 +367,23 @@ static int sdio_enable_4bit_bus(struct mmc_card *card)
+>  {
+>         int err;
+>
+> +       err = sdio_enable_wide(card);
+> +       if (err <= 0)
+> +               return err;
+>         if (card->type == MMC_TYPE_SDIO)
+> -               err = sdio_enable_wide(card);
+> -       else if ((card->host->caps & MMC_CAP_4_BIT_DATA) &&
+> -                (card->scr.bus_widths & SD_SCR_BUS_WIDTH_4)) {
+> +               goto out;
+> +
+> +       if (card->scr.bus_widths & SD_SCR_BUS_WIDTH_4) {
+>                 err = mmc_app_set_bus_width(card, MMC_BUS_WIDTH_4);
+> -               if (err)
+> +               if (err) {
+> +                       sdio_disable_wide(card);
+>                         return err;
+> -               err = sdio_enable_wide(card);
+> -               if (err <= 0)
+> -                       mmc_app_set_bus_width(card, MMC_BUS_WIDTH_1);
+> -       } else
+> -               return 0;
+> -
+> -       if (err > 0) {
+> -               mmc_set_bus_width(card->host, MMC_BUS_WIDTH_4);
+> -               err = 0;
+> +               }
+>         }
+> +out:
+> +       mmc_set_bus_width(card->host, MMC_BUS_WIDTH_4);
+>
+> -       return err;
+> +       return 0;
+>  }
+>
+>
 > --
-> 2.22.0
+> 1.9.1
 >
