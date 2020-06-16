@@ -2,72 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80FA21FAF39
+	by mail.lfdr.de (Postfix) with ESMTP id 2641C1FAF38
 	for <lists+linux-mmc@lfdr.de>; Tue, 16 Jun 2020 13:33:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728598AbgFPLdR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 16 Jun 2020 07:33:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35024 "EHLO
+        id S1728576AbgFPLdP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 16 Jun 2020 07:33:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728511AbgFPLdI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jun 2020 07:33:08 -0400
+        with ESMTP id S1728445AbgFPLdM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 16 Jun 2020 07:33:12 -0400
 Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E282FC08C5CB
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:05 -0700 (PDT)
-Received: by mail-vk1-xa42.google.com with SMTP id n188so4704252vkc.11
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4A99C08C5C2
+        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:10 -0700 (PDT)
+Received: by mail-vk1-xa42.google.com with SMTP id y23so1623771vkd.13
+        for <linux-mmc@vger.kernel.org>; Tue, 16 Jun 2020 04:33:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=yS/6e/WCxZenWj9cO6UlgV0ZueHyZ1C28NWHU0JWvMY=;
-        b=zSO1xWCI7V3fwY5yJE/kKH0xluZrLvP7XojSc1tZbMaxWYatHTVYF3xmiua7boWXoQ
-         /wmEZPVlEr/tPhzegCZ5DxYQ7kTp0NxPET9S0BJS6uPYFScnVoisZn5YVXpfZFNAUPVe
-         E261x3yvjxDsM3DozkKtKAak3Ps0rPg1kks78JL+0S7dkM7+huylVU2hj1k7RYrYSn0W
-         aLqmQtxDiwlmZQ9aUreicXQd0w1ft5kij+p7/1U9CLhZTpwtFdp8Xue8d5zuYsvjQZgW
-         VEmTchuBWyxG7IoGARTHIREuPFp1i3Nysx26MqL1+I/CnPrCjVpGumurwyKDfNzn1F4K
-         DByg==
+        bh=aGK4YbhCcwirb0SVPCE+lFgJzM9gI3w/a7Njq3MvGOM=;
+        b=iUYZE6Ijc6WacIvt9ZuRdg7PWXdzmLnFzOx6tDATh5LsyftfqAIaOqVzK8ZvQSccDv
+         +M/h0lJdFifa8aPECvrC14s0tSjKcPBej/+LK4vzMSspSA6cz3hbpvMQAlWvjji8NfMX
+         4Sfy4RX33xH8TNb2zZ5tTqp/qSY/bnRqxP668LuNqVz9MjlU4E7nGW6NVW5M9/a2LG7N
+         tUp6oEI53+t9qQU/NmResf+EuwbcAFdJprdJrfGo0jkPDTcfwYXgKJH+GINXEeY99M94
+         s2t4gv6SlTCpxJzhOH46K9Td84u3P8ogUEPIHa/eBES8QaqZCsMyjzz+DiuegOT1hD6s
+         ggaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=yS/6e/WCxZenWj9cO6UlgV0ZueHyZ1C28NWHU0JWvMY=;
-        b=Cyp8h1qE7AbzeRHFIYmxp/UsAUCbTAVfHC6p/rSOgx2D2Duzf3bB/9Ny1pK02UKxyC
-         AkjsjRLMYCdb60oE0Wuk6onmEhlBcwCt8dKkwufHRJw5/+IF7qrV0QJGQKhhSNqgRbYk
-         +1kwwplM+Q4B06/jXQqJUcvR7WaqK/Xwv+ENe/HvM7evWpOL/LfIqH/yfploIsTRmqvn
-         V4Xw1uHcJC3ajwzUrms5Qqd2gsKBzIcCbRI40o3wkOq0aqjNK8KgeTYgDuLIgpN7657i
-         kiFgPrVLKo3vBD8+/qOnmRh1ziYbdOW8VXrvuBlRIDKWjbg9l37b1tsVoYWSeksVh+rl
-         lU2g==
-X-Gm-Message-State: AOAM530C1RvVyb6Z87aYIH44cfodxm31bnAWZNOIgN+jV/+ElhSFF7oW
-        HsOW1wTllMO3iAX68oSlXWQhTH65CIrv38yWwGXM6Q==
-X-Google-Smtp-Source: ABdhPJyjMOjyUc4A/bFC2IEyahD8R1FiPDEbgPyOZ0ntp/23TwR+c4zzqMGiaNpEh5hEfDmfBPnYKmBSY9C6UP9z80A=
-X-Received: by 2002:a1f:9511:: with SMTP id x17mr1128044vkd.101.1592307185187;
- Tue, 16 Jun 2020 04:33:05 -0700 (PDT)
+        bh=aGK4YbhCcwirb0SVPCE+lFgJzM9gI3w/a7Njq3MvGOM=;
+        b=H0+YDYeFqWP2KV5EUCY3mXv8h7hXlCrOxQ8jPtD/kie6GQZZFhio7iBSI8mHAtiplT
+         ywkpjzVJ3vjSono+7sguljJWZWJEYjiF91FmWAGJYEiqH23a4a84OqfjtvSYZMfLuv3E
+         zNWq0zNIKC1/7XytfhBSxdLvVXz5Cg5hb1AfTf8IXtGrS2OOcHEgw/9FkiVFpLkSmrk5
+         R7VfBoxr5MJmQSIJb8hN6KBoQVa1gWT4dyH072GqMfIRCm0GRPXagv8BJsDaI0e419Tm
+         UR2eLq5/LPpDluKA27B1iNoINGdMHcokcC/qpnu2lDWy8VYgJCo+F3FPUokxVuvLUga6
+         0Isg==
+X-Gm-Message-State: AOAM53325VlfAIrvzCRIkMvxUG8m/LrAL+MknafOT6F3nNPPFffn9spk
+        LB43yrLKnwVgzFjdFCSiLS7vaIAG/EdejtSUpXUDyw==
+X-Google-Smtp-Source: ABdhPJwUYh4G25X8uNlyJV1JSiV/4TO05WKTdEB/kI9t/hbTUt46H5QKVf9ZIf+q00IIYmJ6Rwm9ORXK40d0MeOZDmo=
+X-Received: by 2002:a1f:5e51:: with SMTP id s78mr1151790vkb.59.1592307190187;
+ Tue, 16 Jun 2020 04:33:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <1591326240-28928-1-git-send-email-skomatineni@nvidia.com>
-In-Reply-To: <1591326240-28928-1-git-send-email-skomatineni@nvidia.com>
+References: <20200604100102.13572-1-zbestahu@gmail.com>
+In-Reply-To: <20200604100102.13572-1-zbestahu@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 16 Jun 2020 13:32:27 +0200
-Message-ID: <CAPDyKFpscyQXYF+WQ98_sRvonCL+ZbddX+ctw3umQ8HLAqvxmA@mail.gmail.com>
-Subject: Re: [PATCH] sdhci: tegra: Add comment for PADCALIB and PAD_CONTROL NVQUIRKS
-To:     Sowjanya Komatineni <skomatineni@nvidia.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Date:   Tue, 16 Jun 2020 13:32:32 +0200
+Message-ID: <CAPDyKFq6bGtBm94f_5G1_p2LW40hLet_kMtPbpX9BfxNsLfhuQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdio: Return ret if sdio_disable_func() fails
+To:     Yue Hu <zbestahu@gmail.com>
+Cc:     Doug Anderson <dianders@chromium.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        huyue2@yulong.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 5 Jun 2020 at 05:04, Sowjanya Komatineni <skomatineni@nvidia.com> wrote:
+On Thu, 4 Jun 2020 at 12:01, Yue Hu <zbestahu@gmail.com> wrote:
 >
-> This patch adds comments about NVQUIRKS HAS_PADCALIB and NEEDS_PAD_CONTROL.
+> From: Yue Hu <huyue2@yulong.com>
 >
-> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+> We should return any possible error returned by mmc_io_rw_direct()
+> rather than only -EIO in sdio_disable_func() failure path.
+>
+> Signed-off-by: Yue Hu <huyue2@yulong.com>
 
 Applied for next, thanks!
 
@@ -76,30 +76,22 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-tegra.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  drivers/mmc/core/sdio_io.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-> index 3a372ab..0a3f9d0 100644
-> --- a/drivers/mmc/host/sdhci-tegra.c
-> +++ b/drivers/mmc/host/sdhci-tegra.c
-> @@ -96,7 +96,16 @@
->  #define NVQUIRK_ENABLE_SDR50                           BIT(3)
->  #define NVQUIRK_ENABLE_SDR104                          BIT(4)
->  #define NVQUIRK_ENABLE_DDR50                           BIT(5)
-> +/*
-> + * HAS_PADCALIB NVQUIRK is for SoC's supporting auto calibration of pads
-> + * drive strength.
-> + */
->  #define NVQUIRK_HAS_PADCALIB                           BIT(6)
-> +/*
-> + * NEEDS_PAD_CONTROL NVQUIRK is for SoC's having separate 3V3 and 1V8 pads.
-> + * 3V3/1V8 pad selection happens through pinctrl state selection depending
-> + * on the signaling mode.
-> + */
->  #define NVQUIRK_NEEDS_PAD_CONTROL                      BIT(7)
->  #define NVQUIRK_DIS_CARD_CLK_CONFIG_TAP                        BIT(8)
->  #define NVQUIRK_CQHCI_DCMD_R1B_CMD_TIMING              BIT(9)
+> diff --git a/drivers/mmc/core/sdio_io.c b/drivers/mmc/core/sdio_io.c
+> index 2ba00ac..cba54df 100644
+> --- a/drivers/mmc/core/sdio_io.c
+> +++ b/drivers/mmc/core/sdio_io.c
+> @@ -133,7 +133,7 @@ int sdio_disable_func(struct sdio_func *func)
+>
+>  err:
+>         pr_debug("SDIO: Failed to disable device %s\n", sdio_func_id(func));
+> -       return -EIO;
+> +       return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(sdio_disable_func);
+>
 > --
-> 2.7.4
+> 1.9.1
 >
