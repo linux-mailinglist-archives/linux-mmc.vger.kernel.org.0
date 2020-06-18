@@ -2,73 +2,79 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE261FE97E
-	for <lists+linux-mmc@lfdr.de>; Thu, 18 Jun 2020 05:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FC641FEB0F
+	for <lists+linux-mmc@lfdr.de>; Thu, 18 Jun 2020 07:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727023AbgFRDeW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 17 Jun 2020 23:34:22 -0400
-Received: from inva021.nxp.com ([92.121.34.21]:42306 "EHLO inva021.nxp.com"
+        id S1726982AbgFRFjr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 18 Jun 2020 01:39:47 -0400
+Received: from www.zeus03.de ([194.117.254.33]:34432 "EHLO mail.zeus03.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727070AbgFRDeS (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 17 Jun 2020 23:34:18 -0400
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9D33D200039;
-        Thu, 18 Jun 2020 05:34:15 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 523A9200015;
-        Thu, 18 Jun 2020 05:34:09 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 4A063402B0;
-        Thu, 18 Jun 2020 11:34:01 +0800 (SGT)
-From:   Anson Huang <Anson.Huang@nxp.com>
-To:     mturquette@baylibre.com, sboyd@kernel.org, robh+dt@kernel.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, ulf.hansson@linaro.org,
-        s.trumtrar@pengutronix.de, aisheng.dong@nxp.com,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-Cc:     Linux-imx@nxp.com
-Subject: [PATCH V4 3/3] dt-bindings: clock: Correct example in i.MX8QXP LPCG binding
-Date:   Thu, 18 Jun 2020 11:22:58 +0800
-Message-Id: <1592450578-30140-3-git-send-email-Anson.Huang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1592450578-30140-1-git-send-email-Anson.Huang@nxp.com>
-References: <1592450578-30140-1-git-send-email-Anson.Huang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+        id S1726959AbgFRFjr (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 18 Jun 2020 01:39:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=k1; bh=iC83Ym0C/HcbMWo3LBEpygjGUIdB
+        H1z0NWt2TnOqP/s=; b=3ed8SRquexMZOZiguMZtrKLFd2qQ4W6z1oZR7ho7MbBU
+        0REIXH999WFxMCYDqC2X0zf7+itqLl/Uh9VwqdLP3737aSPMkYUI2iDa+iyk98pO
+        1+SSNwenlHKU0Han7+1NRiyetm9eWZZ5saFDJoImYZ92zBavzuxgp1RlNprOlyk=
+Received: (qmail 2040142 invoked from network); 18 Jun 2020 07:39:44 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Jun 2020 07:39:44 +0200
+X-UD-Smtp-Session: l3s3148p1@wVcyNFWojswgAwDPXwquAEh09UUtPuGD
+Date:   Thu, 18 Jun 2020 07:39:44 +0200
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: Re: [PATCH 0/2] mmc: renesas_sdhi: support manual calibration
+Message-ID: <20200618053944.GA1121@ninjato>
+References: <20200605101222.10783-1-wsa+renesas@sang-engineering.com>
+ <CAPDyKFrZHYeUa9ryen_F0uyrvvEDr_W+Q5xyOKt_YwyiaM+6cQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="SLDf9lqlvOQaIe6s"
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFrZHYeUa9ryen_F0uyrvvEDr_W+Q5xyOKt_YwyiaM+6cQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-In i.MX8QXP LPCG binding's example, "fsl,imx7d-usdhc" as fallback
-compatible is incorrect, remove it to avoid below build error:
 
-Documentation/devicetree/bindings/clock/imx8qxp-lpcg.example.dt.yaml:
-mmc@5b010000: compatible: Additional items are not allowed ('fsl,imx7d-usdhc' was unexpected)
-Documentation/devicetree/bindings/clock/imx8qxp-lpcg.example.dt.yaml:
-mmc@5b010000: compatible: ['fsl,imx8qxp-usdhc', 'fsl,imx7d-usdhc'] is too long
+--SLDf9lqlvOQaIe6s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
----
-New patch, to fix build error when patch #1 is added.
----
- Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+=09
+> I tried applying this, but got some conflict. I guess you have based
+> this on some of the other series that's in the pipe. Maybe you can
+> give me some advice about the order or how to apply things?
 
-diff --git a/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml b/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml
-index 33f3010..1d5e9bc 100644
---- a/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml
-+++ b/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml
-@@ -62,7 +62,7 @@ examples:
-     };
- 
-     mmc@5b010000 {
--        compatible = "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
-+        compatible = "fsl,imx8qxp-usdhc";
-         interrupts = <GIC_SPI 232 IRQ_TYPE_LEVEL_HIGH>;
-         reg = <0x5b010000 0x10000>;
-         clocks = <&conn_lpcg IMX_CONN_LPCG_SDHC0_IPG_CLK>,
--- 
-2.7.4
+Sorry, this depends on the stalled SCC patchset and I need to send a
+second version of that (hopefully next week). Should have mentioned it
+here, mea culpa! So, this needs to wait a little.
 
+
+--SLDf9lqlvOQaIe6s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl7q/hwACgkQFA3kzBSg
+KbZ/Iw/+NBjnWSJurj0Qbr0KXH3/l3uIKDXIwiV0SBvDuTZNCiQx9wmiQBea6zux
+CcpBUCTagJPDTlUebxe67QWibEwToFuU4IGKhuw4I+qqmNBiKKl1AH5Mf+l7RFZ6
+tWnn1Um2IPw9NsoHuN1+Qe3UTbbODVM58G9jVqN4XvPdCpgvFUXb7Qsf5055DFSD
+iXgE5y6bGIjfucjIU4fXnHtYGCl4P4sYLRUuB8kX6nB8LhOo6Q9rf6jbXGHAKP//
+NR1OtQavJNAtpnF7k8BCvRZyLJDVnpu2aP4RJSSDJF4WDgr4HbNvSFPhm5J3cpT4
+t5rsLyThdvaxwrpL0hQL4TJopSy3kFb93SP4w6QyDLs3JVHcKdaSiO2iMdnv1ZKq
+3DgIPNhTJ91D3qVtQOOaVvHFtZvJhOYzNK8lMwS+L4RhWnKzef+wsyD2cUJpizLN
+B8nrWLnzmhUsDJhG2xzx5ELTzvIcOS/Lg8x8YKeA7wL2FHSz4HdONL89V+pu+4GQ
+ApaWJO8zYIGD6cPlpDZ4qqrXdLCnWWAHs12tJk/Iru47FenZBhfXhUKtUSWYTZO5
++PLup9UC+IwV4ALTtE7p1Qob30zOJJzPUBTt1ld/g+yy5xVdyGplQXSCU4X8+tMx
+GuGwl1c1tXEusE4044wBBIeNpPSb9Fzu2T6CtqXwMgg7Xm0UOnM=
+=W5kf
+-----END PGP SIGNATURE-----
+
+--SLDf9lqlvOQaIe6s--
