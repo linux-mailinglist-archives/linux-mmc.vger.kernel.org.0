@@ -2,113 +2,73 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A881FF08A
-	for <lists+linux-mmc@lfdr.de>; Thu, 18 Jun 2020 13:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 483EF1FF3F8
+	for <lists+linux-mmc@lfdr.de>; Thu, 18 Jun 2020 15:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726909AbgFRLdg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 18 Jun 2020 07:33:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56106 "EHLO
+        id S1726001AbgFRNy7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 18 Jun 2020 09:54:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727825AbgFRLdc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 18 Jun 2020 07:33:32 -0400
-Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8192AC0613ED
-        for <linux-mmc@vger.kernel.org>; Thu, 18 Jun 2020 04:33:31 -0700 (PDT)
-Received: by mail-vk1-xa44.google.com with SMTP id q10so1340214vka.4
-        for <linux-mmc@vger.kernel.org>; Thu, 18 Jun 2020 04:33:31 -0700 (PDT)
+        with ESMTP id S1725987AbgFRNy6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 18 Jun 2020 09:54:58 -0400
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB63C06174E
+        for <linux-mmc@vger.kernel.org>; Thu, 18 Jun 2020 06:54:57 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id a3so5140878oid.4
+        for <linux-mmc@vger.kernel.org>; Thu, 18 Jun 2020 06:54:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wcyaUt9jsFKoDrB0iHqT52BIOcGZ2PhDMAyP/GQazFU=;
-        b=dIy/fFM5111uF/2yacq3RUFi3A66/nmGqYGnv9q0gVfnFgF65iI4FoxjLo8vvCpShj
-         MIClFCqbQvIYjZlmcmwtrWYt37ginZcMB0FuuxAOGocZBE5xBEQaSRqkWriM7z/3sFq8
-         hNoD4qxlab0LYWvi9A9t0rO8CBUvr76jTTyoN5xnOFeg8Lwh75Ga2XSzjN9xAG8LGWLa
-         QgBJPyzMbxO9ZVw7VD2NCErJLkqPG1faROjJshcT5EYpQt3E2lOkRocFR8JF53ZsqFbT
-         3j9cWYJiQzg/qxSh+sXQgDUa4VEsXpafXr2cJ0lh1UwFUcjB+bBQI3qwzIHNcnuV3CUK
-         qJxA==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=zAmulNj+dP+CuKOglsOh5E/QLElr+8XYTkXRGJoJH/o=;
+        b=SQKZFpXBrAPmkZVFcdim8bVubQ+1vsC1L9/KtJ2m2uBwGy95XEkeFoMl5mvH0stijJ
+         1tH9qS3W/M6LIK8ToFon8hpBi4e4F+SduTml4KPrWhy4QGiSC41px+//9w/kpK319pYi
+         vdLlXpxGhvo4bbRievNeCiZV8cK/uxedFhiItAPPXf1qC+7Y26sOPX8zip6J2tgOu8Ne
+         JSL/IEMhkAfG0jI3LIlYiyARW8QmKksvjTZ655eTprdquSCXJeCVAiX3B0zYATVZJ3YP
+         3fnXEkkruY5m97MJ4OTQKBUZpXB3YAwLy5WSVPp/rJc3pAvAGkOqfACQj6m0iydvS8Wr
+         hGgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wcyaUt9jsFKoDrB0iHqT52BIOcGZ2PhDMAyP/GQazFU=;
-        b=DItLDMOPmZJOxW8QQFpKLqO423psgTT72K8fMCTEUyuSLhAZ79z9p1bvevTPt5jUZq
-         yN7XyH+84NHPHFHVJesZ4r1kRN2LGCfgE9qjUNcfN62g2tSVChZWAtnNiPWpYqBMoOTU
-         sk5MZMG34lm9FEvT6MsFa1L2WDm3tyP1VQ9S3iANZ3Oqq+eYqR0R0+XMsYCti2L24FU7
-         EuDLeDMAYcTzOvuXblq5UbYnguu2J+w+l5R0TSZt+VQHYcwbkhnFPrPhTukcxdvNObhh
-         WKR/HXsOoMaxpCgpUBSnhX0nhW2+mo7nlDpcE2UcWz2LjJ/IARrpACw9Trmfpp5ZzUre
-         IK6g==
-X-Gm-Message-State: AOAM531QeLaunq6iSrRmepBV0TjRfB+kGgmtDczrIIC2Nw9EVD1XLIJv
-        vIusE0kzR/yyOB0mQoZtVPmO/c505cbHDg73hF2VHw38ib0=
-X-Google-Smtp-Source: ABdhPJwHP4F41MKOPOId687NKciLjzCjDFQ33iXwCp0DAOdYUNLays2paZeOw0n8+eT5/dio4m3s6XBXf+J6iIKTrzE=
-X-Received: by 2002:a1f:c103:: with SMTP id r3mr2738693vkf.25.1592480010666;
- Thu, 18 Jun 2020 04:33:30 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=zAmulNj+dP+CuKOglsOh5E/QLElr+8XYTkXRGJoJH/o=;
+        b=H5xN7cSrYI3Cvl14jdB62zSXTUqg2toT5yNzYPUNSQIdoBO0AxhATuKJddZ86w/FU7
+         12i6fGm40RfDjCcq39ir+ySYjBB1f3aiXkCKRhs59yJiVgXyPFgTEKtGJSySsRQlbvmt
+         +/Xf8w+Lx6i/eqthNx4u0IyNXK+p5gQdebvymyJejUD0ZhwKQ2K8lmA/wqyA+jieR6wk
+         wmWFXJLuusToWJQ/p7SPvF+uWr8pHdgFe9HC3Gv8VeqFb44X8Q0mmy9iptG8QJdXc9JG
+         mqw1M0/9TOYuWvpDjmYfFtGQgRvAk2mch/AbcmAejFL+R+Jm6e/FsEkZ8nEKFhh/rW2s
+         2oKA==
+X-Gm-Message-State: AOAM533IYuL1qwwEfJcvKY+7GL7QGwXey7gbliew2rBRGxZtJgW5hZbt
+        iQeTZ8rXyBrNDnrwOZ985aMyIMR7TShZ2/2zMRs=
+X-Google-Smtp-Source: ABdhPJw/918Olzz5jmIAD5HXz2JYEHYnclyB4KeL1MNzGeew+H3QrMzML32EP6J5LyNM+xGqgP0/tOJppo3xyzXMU08=
+X-Received: by 2002:aca:c414:: with SMTP id u20mr2770141oif.123.1592488496983;
+ Thu, 18 Jun 2020 06:54:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200618165207.512dc59f@xhacker.debian>
-In-Reply-To: <20200618165207.512dc59f@xhacker.debian>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 18 Jun 2020 13:32:54 +0200
-Message-ID: <CAPDyKFpGB2-hOJ=Y=1y9N1CnkPPpoArHM-1K+9Wk9C2uMuRwOg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: mmc: pwrseq: Fix syntax errors in device
- tree examples
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Reply-To: dennisskosi01@gmail.com
+Received: by 2002:a8a:7c4:0:0:0:0:0 with HTTP; Thu, 18 Jun 2020 06:54:56 -0700 (PDT)
+From:   Dennis Kosi <dennisskosi01@gmail.com>
+Date:   Thu, 18 Jun 2020 13:54:56 +0000
+X-Google-Sender-Auth: iYBMYLumwVgMTP9UvAS1jAlGWVo
+Message-ID: <CAL2Y=YCwNRw1721B-XJHhzxnGLm_GxsssrGqn_rYBE3-Yhnctg@mail.gmail.com>
+Subject: Greetings
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 18 Jun 2020 at 10:52, Jisheng Zhang <Jisheng.Zhang@synaptics.com> wrote:
->
-> A ";" is missing in the pwrseq dt examples, fix them.
+I am Mr.Dennis,i work as an accountant in a bank.I am contacting you
+independently of my investigation in my bank,i need your urgent
+assistance in transferring the sum of $11.6million dollars to your
+private bank account,the fund belongs to one of our foreign customer
+who died a longtime with his supposed next of kin since July 22,
+2003.The money has been here in our Bank lying dormant for years now
+without anybody coming for the claim of it.
 
-Rather than fixing old docs, how about converting them to the yaml format?
-
-Kind regards
-Uffe
-
->
-> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-> ---
->  Documentation/devicetree/bindings/mmc/mmc-pwrseq-emmc.txt   | 2 +-
->  Documentation/devicetree/bindings/mmc/mmc-pwrseq-sd8787.txt | 2 +-
->  Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.txt | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/mmc-pwrseq-emmc.txt b/Documentation/devicetree/bindings/mmc/mmc-pwrseq-emmc.txt
-> index 3d965d57e00b..c4fb06bf0bc2 100644
-> --- a/Documentation/devicetree/bindings/mmc/mmc-pwrseq-emmc.txt
-> +++ b/Documentation/devicetree/bindings/mmc/mmc-pwrseq-emmc.txt
-> @@ -22,4 +22,4 @@ Example:
->         sdhci0_pwrseq {
->                 compatible = "mmc-pwrseq-emmc";
->                 reset-gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
-> -       }
-> +       };
-> diff --git a/Documentation/devicetree/bindings/mmc/mmc-pwrseq-sd8787.txt b/Documentation/devicetree/bindings/mmc/mmc-pwrseq-sd8787.txt
-> index 22e9340e4ba2..8204374546e1 100644
-> --- a/Documentation/devicetree/bindings/mmc/mmc-pwrseq-sd8787.txt
-> +++ b/Documentation/devicetree/bindings/mmc/mmc-pwrseq-sd8787.txt
-> @@ -13,4 +13,4 @@ Example:
->                 compatible = "mmc-pwrseq-sd8787";
->                 powerdown-gpios = <&twl_gpio 0 GPIO_ACTIVE_LOW>;
->                 reset-gpios = <&twl_gpio 1 GPIO_ACTIVE_LOW>;
-> -       }
-> +       };
-> diff --git a/Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.txt b/Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.txt
-> index 9029b45b8a22..bcbe8e947459 100644
-> --- a/Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.txt
-> +++ b/Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.txt
-> @@ -28,4 +28,4 @@ Example:
->                 reset-gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
->                 clocks = <&clk_32768_ck>;
->                 clock-names = "ext_clock";
-> -       }
-> +       };
-> --
-> 2.27.0
->
+I want the bank to release the money to you as the relative and the
+next of kin to our deceased customer,the Banking laws here does not
+allow such money to stay more than 19years,because the money will be
+recalled to the Bank treasury account as unclaimed fund.I am ready to
+share with you 40% for you and 60% will be kept for me, by indicating
+your interest i will send you the full details on how the business
+will be executed.
