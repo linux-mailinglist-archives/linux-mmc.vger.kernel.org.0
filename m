@@ -2,73 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D52201711
-	for <lists+linux-mmc@lfdr.de>; Fri, 19 Jun 2020 18:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0F30202365
+	for <lists+linux-mmc@lfdr.de>; Sat, 20 Jun 2020 13:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389740AbgFSQde (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 19 Jun 2020 12:33:34 -0400
-Received: from mail-oo1-f67.google.com ([209.85.161.67]:42374 "EHLO
-        mail-oo1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389460AbgFSOvb (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Jun 2020 10:51:31 -0400
-Received: by mail-oo1-f67.google.com with SMTP id 127so1934876ooc.9;
-        Fri, 19 Jun 2020 07:51:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bJFYbFCrsPdWe/xZfbajjRe6GBurn8Q+z5Rl0GsivUE=;
-        b=g3NhBsWh4zoVQBO5xwmi2X/35gY9D6LekWf/YecliIycznBUWWOeTJsQ4xXIithriP
-         YTxo6PaksL+5VWas48eJ1XJj1BIOFRG1wlFBqqx7FwmJh3KbUVR8pSEb+BGJRw6rLOLr
-         JLZTM4kuhtWLo4vE5dwi0ihcAqIEMk84EMpX8TO9QsrMA82H44DqSBdhHg44DYrMpBfz
-         98MniPCUUUnLziGVaixuBb8/WODJzzVdxXRGTc6jaReVJs8P0luh9NBgl/SxDxtQkc52
-         OoG4GB6+fOykyZ3E0wL7cNttSlIJEOhhszXIAjtabtizouDm0kvH12JiMD1Eu0ldmyrJ
-         Af2A==
-X-Gm-Message-State: AOAM5331BS30TsRRMV8P1vBypXs6xxjewp7kUY5bn9u88M575ypTdZ0T
-        918uOPt395hbdIjprXFvecFRfDOR5CN2RwOVECuOQWXr
-X-Google-Smtp-Source: ABdhPJy0Coxpt/4fMimNdZDRdevNU75GhwFunAubdWuwkhWCZUVekNYh1JkaUavS8wVGdcv22mB77tagVxninzhIG6E=
-X-Received: by 2002:a4a:5744:: with SMTP id u65mr3565759ooa.1.1592578291406;
- Fri, 19 Jun 2020 07:51:31 -0700 (PDT)
+        id S1728056AbgFTLo2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 20 Jun 2020 07:44:28 -0400
+Received: from rdslmr.btconnect.com ([62.239.164.79]:50937 "EHLO
+        mail.btconnect.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728046AbgFTLo1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 20 Jun 2020 07:44:27 -0400
+X-Greylist: delayed 449 seconds by postgrey-1.27 at vger.kernel.org; Sat, 20 Jun 2020 07:44:14 EDT
+Received: from mail.btconnect.com (rd11780omr11.iuser.iroot.adidom.com [10.187.89.172])
+        by rd11780slr11.dci.bt.com (MOS 4.4.8-GA)
+        with ESMTP id ARU41794;
+        Sat, 20 Jun 2020 12:36:02 +0100
+Received: (from localhost [127.0.0.1])
+        by rd11780omr11.dci.bt.com (MOS 4.4.8-GA)
+        id OQZ44616;
+        Sat, 20 Jun 2020 12:36:02 +0100 (BST)
+Received: from 156.96.58.242 (EHLO User) ([156.96.58.242])
+        by rd11780omr11.dci.bt.com
+        with ESMTP id OQZ44291 (AUTH IAN.ACFGROUP);
+        Sat, 20 Jun 2020 12:35:59 +0100 (BST)
+Reply-To: <mariaforlife2@gmail.com>
+From:   "Mrs Maria Talley" <IAN.ACFGROUP@btconnect.com>
+Subject: May the Peace of the Lord be with you
+Date:   Sat, 20 Jun 2020 07:35:56 -0400
 MIME-Version: 1.0
-References: <1592566143-4546-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-In-Reply-To: <1592566143-4546-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 19 Jun 2020 16:51:20 +0200
-Message-ID: <CAMuHMdUEahv3bPNfOmzA5fdkJdkmx4nEqPqWKMYt2O=ZRJOiTA@mail.gmail.com>
-Subject: Re: [PATCH/RFC v2 0/2] treewide: fix _mmc_suspend() on PSCI
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <202006201135.OQZ44291@rd11780omr11.dci.bt.com>
+X-Mirapoint-IP-Reputation: reputation=Bad-1,
+        source=Queried,
+        refid=tid=0001.0A782F92.5EEDF402.0007,
+        actions=TAG
+X-Junkmail: UCE(50)
+X-Junkmail-Status: score=50/50, host=rd11780omr11.dci.bt.com
+X-Junkmail-Signature-Raw: score=bulk(0),
+        refid=str=0001.0A782F23.5EEDF289.001F,ss=3,sh,re=0.000,recu=0.000,reip=0.000,cl=3,cld=1,fgs=0,
+        ip=156.96.58.242,
+        so=2016-11-06 16:00:04,
+        dmn=2013-03-21 17:37:32,
+        mode=multiengine
+X-Junkmail-IWF: false
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Shimoda-san,
+May the Peace of the Lord be with you!
 
-On Fri, Jun 19, 2020 at 2:42 PM Yoshihiro Shimoda
-<yoshihiro.shimoda.uh@renesas.com> wrote:
-> We can detect whether the system is going to suspend by using
-> pm_suspend_via_firmware() API. So, this patch series update
-> both PSCI and MMC driver for my environment (r8a77951-salvator-xs).
+Please this is an urgent solicitation for assistance, I'm Mrs Maria Talley from United States of America, but I lived in London for many years. I am 54 years old. I was diagnosed of cancer for about 2 years ago. This letter comes from a devastated, sorrowful and emotional laden soul that needs compassion from a kind and conscience driven person. I need someone who has a sincere compassionate heart of international humanitarian charity. There is some properties left by my late husband, which I sold, because the doctor had diagnosed me that I am in my last days, that I can not live anymore longer, so I have to sale all those properties that was left by my late husband.
 
-Cool, didn't know about pm_set_.*_via_firmware().
+I have deposited the sum of $9.5 Million in a Bank in United States of America, which I sold from my properties and deposited it in New York City Bank in America. I want you to help me use this funds to help the less privilege, the motherless baby homes and hospitals in your country before I die. I want you to take 40 percent of the total money for your personal use, while 60% of the money will go to charity. I will appreciate your utmost confidentiality and trust in this matter to accomplish my heart desire, as I don't want anything that will jeopardize my last wish. If you are a good and honest person write back to me for more.
 
-Looks like this can be used in the clock and pin control drivers, too.
-Currently they're checking for !psci_ops.cpu_suspend.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks and God bless you,
+Mrs Maria Talley
