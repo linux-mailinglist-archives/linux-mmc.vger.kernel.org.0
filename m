@@ -2,120 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C430D204899
-	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jun 2020 06:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36A0520508A
+	for <lists+linux-mmc@lfdr.de>; Tue, 23 Jun 2020 13:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728809AbgFWESc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 23 Jun 2020 00:18:32 -0400
-Received: from inva021.nxp.com ([92.121.34.21]:55466 "EHLO inva021.nxp.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728386AbgFWESc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 23 Jun 2020 00:18:32 -0400
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A55BE200015;
-        Tue, 23 Jun 2020 06:18:29 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 634B520002C;
-        Tue, 23 Jun 2020 06:18:25 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id ED23B4029C;
-        Tue, 23 Jun 2020 12:18:19 +0800 (SGT)
-From:   haibo.chen@nxp.com
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, jh80.chung@samsung.com,
-        kgene@kernel.org, krzk@kernel.org, michal.simek@xilinx.com,
-        linux-samsung-soc@vger.kernel.org
-Cc:     linux-imx@nxp.com, haibo.chen@nxp.com
-Subject: [PATCH] mmc: host: dereference null return value
-Date:   Tue, 23 Jun 2020 12:06:49 +0800
-Message-Id: <1592885209-25839-1-git-send-email-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+        id S1732294AbgFWLRc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 23 Jun 2020 07:17:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52816 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732516AbgFWLQw (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 23 Jun 2020 07:16:52 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E39C061755
+        for <linux-mmc@vger.kernel.org>; Tue, 23 Jun 2020 04:16:51 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id a6so18130808wrm.4
+        for <linux-mmc@vger.kernel.org>; Tue, 23 Jun 2020 04:16:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=E6E/hlNpiM6PnoAOVZ+7voPc9wpxPmWA12rEiYoj/bAUsYe0AJbyTzI9pZwPUUDdPP
+         2sshPYcb9oIsA99JTikTl0u76qfHNPIW2jIbz6C+DLselDK71HuKa++SqaGTSZ4p4+te
+         gTQ9UTEVmk4+r2eFXVbrvBf8ptXVBuknudxlYS3vrFAv18ZetPr28ECYav3lG+E2L5JM
+         St9yzES6OGBMLQpZbQAQLmSOp9Akg+wflxGB71dvTLo/TJoexQV6LE+g+JoBlfC2QAg7
+         b+ja973yyVQOwbfrTF90BaaIQGUXchEhek4sdIUmlBpL8Ak1D79EOMoTbcuGCplWvTHT
+         W4hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=eXdCrdla2FDhBmDOYk0d/OpmSUt9IzHfA0dqRmi64lKsD1/O5xyOLUSTIzJNg4Sorm
+         /9yZzeUSIoESTJ157yLgbprwO+eRaRAEkfr0+LBpcnlXGl0IXYeXalcA3uGXxBOAw1gG
+         eRkapjQWcfLrkFi8Z+tFdNL1zOG/s24KOozwVBP5mzszzA9h5mAl+A7pc/BoyT7bsUgv
+         zdxDf7gfyffeHfCJ+pnU8bqA/vTHhmkWSf/lxWcPmQlkm/o80zSX2hTS7nOMLRYn+mHi
+         KTVyOlhVUYk2upYrjfGTc6DxfAcQf7yY0FBOFhINwWIpQaifHzLA0M6hhNyYKy3G1eE2
+         VLWQ==
+X-Gm-Message-State: AOAM530mM/LrHjAiPlk7fZD5mGW5wcyIe1BZe+SlPeACLHzOzScXRdJD
+        6bk5Jn6vXfBpUOAlUCpMSOTgPy389hvPHFMYO9M=
+X-Google-Smtp-Source: ABdhPJzZ1QWBbLEVEJDiR8ozgNL3BKht/bHhiiCQZFbEUfR5i8VLBKqhwlX7a4NXmF6FqxDOEk5UW9nntOQTLpvDlps=
+X-Received: by 2002:a5d:62d1:: with SMTP id o17mr24071305wrv.162.1592911009833;
+ Tue, 23 Jun 2020 04:16:49 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a1c:f002:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:16:49
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <paulwiliam782@gmail.com>
+Date:   Tue, 23 Jun 2020 12:16:49 +0100
+Message-ID: <CAHqcnY16ZzcoYpU31SEco0sXeb2W5Dq2VVpzQr8ZENW9eKiFTA@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Haibo Chen <haibo.chen@nxp.com>
+Greetings From Mrs. Sarah Koffi
 
-of_match_node() has the opportunity to return NULL, so need to
-dereference null return value.
-This is reported by Coverity.
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
----
- drivers/mmc/host/dw_mmc-exynos.c   | 5 +++--
- drivers/mmc/host/dw_mmc-k3.c       | 5 +++--
- drivers/mmc/host/dw_mmc-pltfm.c    | 3 ++-
- drivers/mmc/host/sdhci-of-arasan.c | 2 ++
- 4 files changed, 10 insertions(+), 5 deletions(-)
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
 
-diff --git a/drivers/mmc/host/dw_mmc-exynos.c b/drivers/mmc/host/dw_mmc-exynos.c
-index 5e3d95b63676..27ab55abb03f 100644
---- a/drivers/mmc/host/dw_mmc-exynos.c
-+++ b/drivers/mmc/host/dw_mmc-exynos.c
-@@ -545,12 +545,13 @@ MODULE_DEVICE_TABLE(of, dw_mci_exynos_match);
- 
- static int dw_mci_exynos_probe(struct platform_device *pdev)
- {
--	const struct dw_mci_drv_data *drv_data;
-+	const struct dw_mci_drv_data *drv_data = NULL;
- 	const struct of_device_id *match;
- 	int ret;
- 
- 	match = of_match_node(dw_mci_exynos_match, pdev->dev.of_node);
--	drv_data = match->data;
-+	if (match)
-+		drv_data = match->data;
- 
- 	pm_runtime_get_noresume(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
-diff --git a/drivers/mmc/host/dw_mmc-k3.c b/drivers/mmc/host/dw_mmc-k3.c
-index 50977ff18074..e8a148c306b3 100644
---- a/drivers/mmc/host/dw_mmc-k3.c
-+++ b/drivers/mmc/host/dw_mmc-k3.c
-@@ -451,11 +451,12 @@ MODULE_DEVICE_TABLE(of, dw_mci_k3_match);
- 
- static int dw_mci_k3_probe(struct platform_device *pdev)
- {
--	const struct dw_mci_drv_data *drv_data;
-+	const struct dw_mci_drv_data *drv_data = NULL;
- 	const struct of_device_id *match;
- 
- 	match = of_match_node(dw_mci_k3_match, pdev->dev.of_node);
--	drv_data = match->data;
-+	if (match)
-+		drv_data = match->data;
- 
- 	return dw_mci_pltfm_register(pdev, drv_data);
- }
-diff --git a/drivers/mmc/host/dw_mmc-pltfm.c b/drivers/mmc/host/dw_mmc-pltfm.c
-index 7de37f524a96..d3dcb96efd13 100644
---- a/drivers/mmc/host/dw_mmc-pltfm.c
-+++ b/drivers/mmc/host/dw_mmc-pltfm.c
-@@ -78,7 +78,8 @@ static int dw_mci_pltfm_probe(struct platform_device *pdev)
- 
- 	if (pdev->dev.of_node) {
- 		match = of_match_node(dw_mci_pltfm_match, pdev->dev.of_node);
--		drv_data = match->data;
-+		if (match)
-+			drv_data = match->data;
- 	}
- 
- 	return dw_mci_pltfm_register(pdev, drv_data);
-diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-index fb26e743e1fd..f2090f944a0e 100644
---- a/drivers/mmc/host/sdhci-of-arasan.c
-+++ b/drivers/mmc/host/sdhci-of-arasan.c
-@@ -1520,6 +1520,8 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
- 	const struct sdhci_arasan_of_data *data;
- 
- 	match = of_match_node(sdhci_arasan_of_match, pdev->dev.of_node);
-+	if (match == NULL)
-+		return -ENOPARAM;
- 	data = match->data;
- 	host = sdhci_pltfm_init(pdev, data->pdata, sizeof(*sdhci_arasan));
- 
--- 
-2.17.1
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
 
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
+
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi
