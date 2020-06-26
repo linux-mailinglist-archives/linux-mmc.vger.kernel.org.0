@@ -2,134 +2,92 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A867209BE1
-	for <lists+linux-mmc@lfdr.de>; Thu, 25 Jun 2020 11:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1260B20AF0C
+	for <lists+linux-mmc@lfdr.de>; Fri, 26 Jun 2020 11:32:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390071AbgFYJ00 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Thu, 25 Jun 2020 05:26:26 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:41444 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726149AbgFYJ00 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Jun 2020 05:26:26 -0400
-Received: by mail-oi1-f195.google.com with SMTP id a21so4365338oic.8;
-        Thu, 25 Jun 2020 02:26:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=yjzuDu5iqeNsu8xsS5EjF8Gr+ffGuq2vYXMsQZ3k7jM=;
-        b=t5r1W+kC9nS+TaTm1T6GoKesiKPG6wHWBa3urlMP2Wk5ej3xwKueRPVpEvMznSE1C8
-         1dj2ne/+ypF24KAPqm05ZX+caR+PNr2FLFuPXmE0RSqF589iHjzCr6YsjeMgxm8QGyyx
-         S0NLHObNlI54stIVoGyuT+mKt7NxCYXPwmIXZqtUEv1o+u6GxNyE45W9+ocMWsAD9esq
-         j7d3qgTnn7oaMK/XV6/h3qxYmUsBma5GA0QZKibtwm8KiOUthLpR5ZFZYOTcltlDpfg5
-         BWGHA315ckMAkqSINUp9By5e1MUOJsvvyIzeT4hImlp9PCw1XVa5kW8UkVRTK8ikAx/D
-         uIDQ==
-X-Gm-Message-State: AOAM530sP7mjd//Ylw9yurtMjjquLVT90WIhi29S6GeSxUkGJfoHM4n6
-        V1fwXuNCXpJjtNM+u3crtis2qkpFObyz43NfQPs=
-X-Google-Smtp-Source: ABdhPJwsgOEyHOyhQZQfhnuYyoD/aYDE50iovKEbQsMjIg8T4WNNLfeSIQT55JpX+5PPkCNy8BmSIizKd1H9+owNtRU=
-X-Received: by 2002:a54:4006:: with SMTP id x6mr1352366oie.148.1593077185115;
- Thu, 25 Jun 2020 02:26:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <1592792699-24638-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <1592792699-24638-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <CAPDyKFq-dEPaU094hrk2xg18VpJAsbnf8enieFmcMhKiB1bW1A@mail.gmail.com>
- <CAMuHMdXjU7N4oG89YsozGijMpjgKGN6ezw2qm6FeGX=JyRhsvg@mail.gmail.com> <TY2PR01MB36921A71A493ABD624A28C42D8920@TY2PR01MB3692.jpnprd01.prod.outlook.com>
-In-Reply-To: <TY2PR01MB36921A71A493ABD624A28C42D8920@TY2PR01MB3692.jpnprd01.prod.outlook.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 25 Jun 2020 11:26:14 +0200
-Message-ID: <CAMuHMdWLWBvZmHNqPFk2GW6XLnBx-sqfCo6d=B4iei88ONWX=w@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] mmc: core: Call mmc_poweroff_nofity() if pm_suspend_via_firmware()
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+        id S1726364AbgFZJca (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 26 Jun 2020 05:32:30 -0400
+Received: from relmlor2.renesas.com ([210.160.252.172]:24970 "EHLO
+        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725280AbgFZJc3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 26 Jun 2020 05:32:29 -0400
+X-IronPort-AV: E=Sophos;i="5.75,283,1589209200"; 
+   d="scan'208";a="50446466"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 26 Jun 2020 18:32:28 +0900
+Received: from localhost.localdomain (unknown [10.166.252.89])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 45998420330E;
+        Fri, 26 Jun 2020 18:32:28 +0900 (JST)
+From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To:     ulf.hansson@linaro.org, lgirdwood@gmail.com, broonie@kernel.org,
+        geert+renesas@glider.be, magnus.damm@gmail.com
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: [PATCH/RFC v4 0/4] treewide: add regulator condition on _mmc_suspend()
+Date:   Fri, 26 Jun 2020 18:32:18 +0900
+Message-Id: <1593163942-5087-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Shimoda-san,
+The regulator-fixed driver is possible to be off by firmware
+like PSCI while the system is suspended. If a consumer could get
+such a condition from regulator_is_enabled(), it's useful by
+consumers.
 
-CC broonie
+The patch series alllows MMC subsystem to get the disabled condition
+and then eMMC device condition of my environment (r8a77951-salvator-xs)
+will be better than before.
+ before:
+  - enter sleep mode and then turn the vmmc and vqmmc off without
+    any Power Off Notification.
+ after:
+  - call mmc_poweroff_nofity() and then turn the vmmc and vqmmc off.
 
-On Thu, Jun 25, 2020 at 8:31 AM Yoshihiro Shimoda
-<yoshihiro.shimoda.uh@renesas.com> wrote:
-> > From: Geert Uytterhoeven, Sent: Wednesday, June 24, 2020 8:13 PM
-> > On Wed, Jun 24, 2020 at 12:06 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > > On Mon, 22 Jun 2020 at 04:25, Yoshihiro Shimoda
-> > > <yoshihiro.shimoda.uh@renesas.com> wrote:
-> > > > If pm_suspend_via_firmware() returns true, the system will be able
-> > > > to cut both vcc and vccq in the suspend. So, call
-> > > > mmc_poweroff_nofity() if pm_suspend_via_firmware() returns true.
-> > > >
-> > > > Note that we should not update the MMC_CAP2_FULL_PWR_CYCLE caps
-> > > > because the mmc_select_voltage() checks the caps when attaches
-> > > > a mmc/sd.
-> >
-> > > > --- a/drivers/mmc/core/mmc.c
-> > > > +++ b/drivers/mmc/core/mmc.c
-> > > > @@ -2038,7 +2039,8 @@ static int _mmc_suspend(struct mmc_host *host, bool is_suspend)
-> > > >                 goto out;
-> > > >
-> > > >         if (mmc_can_poweroff_notify(host->card) &&
-> > > > -               ((host->caps2 & MMC_CAP2_FULL_PWR_CYCLE) || !is_suspend))
-> > > > +           ((host->caps2 & MMC_CAP2_FULL_PWR_CYCLE) || !is_suspend ||
-> > > > +            pm_suspend_via_firmware()))
-> > >
-> > > Sorry, but this doesn't work.
-> > >
-> > > Even if PSCI is a generic FW interface, it doesn't mean that all PSCI
-> > > implementations will cut the vcc and vccq for the MMC card at system
-> > > suspend.
-> >
-> > Indeed, there's nothing guaranteed here.  Nor documented how it should
-> > behave.  Basically the firmware is free to power off the SoC. Or not do that.
-> > "If firmware is involved, all odds are off".
->
-> I thought we could be guaranteed. But, I understood we could not be guaranteed...
->
-> > > Instead, you need to decide this based on some specific DT property.
-> > > Perhaps in conjunction with using pm_suspend_via_firmware().
-> >
-> > Last time I was involved in a discussion about this, the PSCI people
-> > didn't want to add any properties describing particular PSCI behavior...
-> > "If firmware is involved, all odds are off".
-> >
-> > So the only safe thing to do is to expect the worst, and prepare for it...
->
-> A headache point is an eMMC device consumes much power if that the system
-> doesn't cut the vcc and vccq and doesn’t enter the sleep mode.
-> In other words, in power consumption point of view, this patch will
-> cause a regression in such a case...
+We can apply each patch to each subsystem without any dependency.
 
-Indeed.
+Note that v5.8-rc2 with r8a77951-salvator-xs seems to cause panic from
+PCI driver when the system is suspended. So, I disabled the PCI
+devices when I tested this patch series.
 
-> By the way, about adding specific DT property, the regulator can have
-> regulator-off-in-suspend property in regulator-state-mem subnode.
-> For now, we doesn't seem to get the property from a regulator consumer though.
-> So, I'll try to add an API of regulator for it.
+Changes from v3:
+ - Modify regulator subsytem and regulator/fixed driver.
+ - Use regulator_is_enabled() instead of firmware API.
+ - Update R-Car Gen3 related dts files for the reference.
+   But, I have only tested on r8a779{5,61}-salvaltor-xs.dts.
+ https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=306281
 
-Oh right, the eMMC is described in DT as being connected to two
-regulators.
-Note that the semantics of regulator-off-in-suspend are that the
-regulator should be disabled (by the regulator core) during suspend, not
-that the regulator is disabled during suspend by a third party.
-No idea if that will work with a fixed-regulator without GPIO control,
-but of course you can try.
+Changes from v2:
+ - Fix typo of function name in patch2.
+ - Remove RFC.
+ https://patchwork.kernel.org/project/linux-renesas-soc/list/?series=305523
 
-Gr{oetje,eeting}s,
+Changes from v1:
+ - Use pm_suspend_via_firmware() API instead of pm_suspend_target_state.
+ - Modify the psci driver to call pm_set_suspend_via_firmware.
+ https://patchwork.kernel.org/patch/11557505/
 
-                        Geert
+Yoshihiro Shimoda (4):
+  regulator: core: add prepare and resume_early
+  regulator: fixed: add regulator_ops members for suspend/resume
+  mmc: core: Call mmc_poweroff_nofity() if regulators are disabled
+  arm64: dts: renesas: add regulator-off-in-suspend property for eMMC
+
+ arch/arm64/boot/dts/renesas/r8a77970-v3msk.dts   | 10 ++++--
+ arch/arm64/boot/dts/renesas/r8a77980-condor.dts  | 10 ++++--
+ arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts   | 10 ++++--
+ arch/arm64/boot/dts/renesas/r8a77995-draak.dts   |  9 ++++-
+ arch/arm64/boot/dts/renesas/salvator-common.dtsi | 10 ++++--
+ arch/arm64/boot/dts/renesas/ulcb.dtsi            | 10 ++++--
+ drivers/mmc/core/mmc.c                           | 16 ++++++++-
+ drivers/regulator/core.c                         | 42 ++++++++++++++++++++++++
+ drivers/regulator/fixed.c                        | 29 ++++++++++++++++
+ include/linux/regulator/driver.h                 |  6 ++++
+ 10 files changed, 140 insertions(+), 12 deletions(-)
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.7.4
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
