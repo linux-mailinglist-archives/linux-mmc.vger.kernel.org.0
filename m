@@ -2,227 +2,171 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBC9320AF0A
-	for <lists+linux-mmc@lfdr.de>; Fri, 26 Jun 2020 11:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79C0220B02C
+	for <lists+linux-mmc@lfdr.de>; Fri, 26 Jun 2020 13:03:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726678AbgFZJcn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 26 Jun 2020 05:32:43 -0400
-Received: from relmlor1.renesas.com ([210.160.252.171]:59362 "EHLO
-        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725280AbgFZJca (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 26 Jun 2020 05:32:30 -0400
-X-IronPort-AV: E=Sophos;i="5.75,283,1589209200"; 
-   d="scan'208";a="50657266"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie5.idc.renesas.com with ESMTP; 26 Jun 2020 18:32:28 +0900
-Received: from localhost.localdomain (unknown [10.166.252.89])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 91A02420330E;
-        Fri, 26 Jun 2020 18:32:28 +0900 (JST)
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     ulf.hansson@linaro.org, lgirdwood@gmail.com, broonie@kernel.org,
-        geert+renesas@glider.be, magnus.damm@gmail.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH/RFC v4 4/4] arm64: dts: renesas: add regulator-off-in-suspend property for eMMC
-Date:   Fri, 26 Jun 2020 18:32:22 +0900
-Message-Id: <1593163942-5087-5-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1593163942-5087-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-References: <1593163942-5087-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S1728306AbgFZLD4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 26 Jun 2020 07:03:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39866 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728232AbgFZLD4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 26 Jun 2020 07:03:56 -0400
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 470F7C08C5C1
+        for <linux-mmc@vger.kernel.org>; Fri, 26 Jun 2020 04:03:56 -0700 (PDT)
+Received: by mail-vs1-xe43.google.com with SMTP id v1so5253953vsb.10
+        for <linux-mmc@vger.kernel.org>; Fri, 26 Jun 2020 04:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=pEzsuEd/aCvcZyu1S5Yn11Om7ZgSkL9Q9ICeH90WCD0=;
+        b=YgzFPq42CDSJqG+7tbfP7dKxmJCMMyhnTVdP451IYkwUznSwujwJcjXa2C2cAXPJTl
+         pe7lM9GtVkqrCEk2UhPOAeiCwGbeBj/AxqsixmDqVjkitFIUkBKl0Z7x/wenE14rl12a
+         YYIETi+4mmBcFMwBp6IcCokuMtS/DVIjqSbR466EYytkoUHjkt6Tj68sgtYAassQn7Nk
+         QAL/q0CFCROZTKXDqR5FUVbTgIi8fAP3+BivSQ52rz5b3ZAMJDk+Pbf5QVcQwabpguGo
+         bWfRn3prB/pFDLJkYqiTYCn2zqfBgAR9CatFimW++ARNm/6jZzC+RtUWf3ho2udgOReQ
+         Kc4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=pEzsuEd/aCvcZyu1S5Yn11Om7ZgSkL9Q9ICeH90WCD0=;
+        b=eRlHsoXUQ2GdUhreILWKtXp+ESsr0+SpobUvmtB6p9Vw/10XFSZrshBw73fHxbz3nj
+         Fc+svjiJlvLDVwxGXPr2naL8hz7/NOLmw5mw93vG2pgIFo3OzzgKRBSpq1S24n1H47nB
+         x5qoVxh6Dm5BBIzkwtAneNfWMO12Mg/uYEjXg57yy489I7aScRmMYs6JxR2wZreLTLO8
+         col2MAy8ScXj/A/zW9a0Ua6toE5AWVNNQdmAt24FYYDR+KFr+ADfSfFhd4x3wp/Vpruw
+         90JGASQqDjvglCktSY1fZmfxcSBvxJrpFk3RXH0DmdzUAfZdlPyAcpLoihnXx0eEUgLr
+         HC4Q==
+X-Gm-Message-State: AOAM532c8TLTSbEWGt5W3knvbOKeErEea3u4QCMZL8z7nZVG0udF649G
+        7wqaxGubRkU2q60wvUSgrCqGolApMDChVzRTt/rmxDOzB74JLA==
+X-Google-Smtp-Source: ABdhPJwQgp+LNgbMVdLT4VTwXdt8Qyr2taE7VIICnj75uGBC73I2WDL2Eek6hrilrThKi50H76GYoNNtn5F2Wlb2N1Y=
+X-Received: by 2002:a67:db88:: with SMTP id f8mr1892578vsk.165.1593169435316;
+ Fri, 26 Jun 2020 04:03:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <1592792699-24638-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <1592792699-24638-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <CAPDyKFq-dEPaU094hrk2xg18VpJAsbnf8enieFmcMhKiB1bW1A@mail.gmail.com>
+ <CAMuHMdXjU7N4oG89YsozGijMpjgKGN6ezw2qm6FeGX=JyRhsvg@mail.gmail.com>
+ <TY2PR01MB36921A71A493ABD624A28C42D8920@TY2PR01MB3692.jpnprd01.prod.outlook.com>
+ <CAMuHMdWLWBvZmHNqPFk2GW6XLnBx-sqfCo6d=B4iei88ONWX=w@mail.gmail.com>
+In-Reply-To: <CAMuHMdWLWBvZmHNqPFk2GW6XLnBx-sqfCo6d=B4iei88ONWX=w@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 26 Jun 2020 13:03:19 +0200
+Message-ID: <CAPDyKFpiBU1D+a7zb+Ggm0_HZ+YR4=LXJZ5MPytXtT=uBEdjPA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mmc: core: Call mmc_poweroff_nofity() if pm_suspend_via_firmware()
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add regulator-off-in-suspend property into eMMC related regulator-fixed
-nodes because PSCI on the boards will turn the regulators off in suspend.
++ Rob
 
-By this property, the regulator's status will be disabled in suspend.
-MMC subsystem can get the condition and then eMMC condition will
-be better than before.
- before:
-  - enter sleep mode and then turn the vmmc and vqmmc off.
- after:
-  - call mmc_poweroff_nofity() and then turn the vmmc and vqmmc off.
+On Thu, 25 Jun 2020 at 11:26, Geert Uytterhoeven <geert@linux-m68k.org> wro=
+te:
+>
+> Hi Shimoda-san,
+>
+> CC broonie
+>
+> On Thu, Jun 25, 2020 at 8:31 AM Yoshihiro Shimoda
+> <yoshihiro.shimoda.uh@renesas.com> wrote:
+> > > From: Geert Uytterhoeven, Sent: Wednesday, June 24, 2020 8:13 PM
+> > > On Wed, Jun 24, 2020 at 12:06 PM Ulf Hansson <ulf.hansson@linaro.org>=
+ wrote:
+> > > > On Mon, 22 Jun 2020 at 04:25, Yoshihiro Shimoda
+> > > > <yoshihiro.shimoda.uh@renesas.com> wrote:
+> > > > > If pm_suspend_via_firmware() returns true, the system will be abl=
+e
+> > > > > to cut both vcc and vccq in the suspend. So, call
+> > > > > mmc_poweroff_nofity() if pm_suspend_via_firmware() returns true.
+> > > > >
+> > > > > Note that we should not update the MMC_CAP2_FULL_PWR_CYCLE caps
+> > > > > because the mmc_select_voltage() checks the caps when attaches
+> > > > > a mmc/sd.
+> > >
+> > > > > --- a/drivers/mmc/core/mmc.c
+> > > > > +++ b/drivers/mmc/core/mmc.c
+> > > > > @@ -2038,7 +2039,8 @@ static int _mmc_suspend(struct mmc_host *ho=
+st, bool is_suspend)
+> > > > >                 goto out;
+> > > > >
+> > > > >         if (mmc_can_poweroff_notify(host->card) &&
+> > > > > -               ((host->caps2 & MMC_CAP2_FULL_PWR_CYCLE) || !is_s=
+uspend))
+> > > > > +           ((host->caps2 & MMC_CAP2_FULL_PWR_CYCLE) || !is_suspe=
+nd ||
+> > > > > +            pm_suspend_via_firmware()))
+> > > >
+> > > > Sorry, but this doesn't work.
+> > > >
+> > > > Even if PSCI is a generic FW interface, it doesn't mean that all PS=
+CI
+> > > > implementations will cut the vcc and vccq for the MMC card at syste=
+m
+> > > > suspend.
+> > >
+> > > Indeed, there's nothing guaranteed here.  Nor documented how it shoul=
+d
+> > > behave.  Basically the firmware is free to power off the SoC. Or not =
+do that.
+> > > "If firmware is involved, all odds are off".
+> >
+> > I thought we could be guaranteed. But, I understood we could not be gua=
+ranteed...
+> >
+> > > > Instead, you need to decide this based on some specific DT property=
+.
+> > > > Perhaps in conjunction with using pm_suspend_via_firmware().
+> > >
+> > > Last time I was involved in a discussion about this, the PSCI people
+> > > didn't want to add any properties describing particular PSCI behavior=
+...
+> > > "If firmware is involved, all odds are off".
+> > >
+> > > So the only safe thing to do is to expect the worst, and prepare for =
+it...
+> >
+> > A headache point is an eMMC device consumes much power if that the syst=
+em
+> > doesn't cut the vcc and vccq and doesn=E2=80=99t enter the sleep mode.
+> > In other words, in power consumption point of view, this patch will
+> > cause a regression in such a case...
+>
+> Indeed.
+>
+> > By the way, about adding specific DT property, the regulator can have
+> > regulator-off-in-suspend property in regulator-state-mem subnode.
+> > For now, we doesn't seem to get the property from a regulator consumer =
+though.
+> > So, I'll try to add an API of regulator for it.
+>
+> Oh right, the eMMC is described in DT as being connected to two
+> regulators.
+> Note that the semantics of regulator-off-in-suspend are that the
+> regulator should be disabled (by the regulator core) during suspend, not
+> that the regulator is disabled during suspend by a third party.
+> No idea if that will work with a fixed-regulator without GPIO control,
+> but of course you can try.
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
----
- arch/arm64/boot/dts/renesas/r8a77970-v3msk.dts   | 10 ++++++++--
- arch/arm64/boot/dts/renesas/r8a77980-condor.dts  | 10 ++++++++--
- arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts   | 10 ++++++++--
- arch/arm64/boot/dts/renesas/r8a77995-draak.dts   |  9 ++++++++-
- arch/arm64/boot/dts/renesas/salvator-common.dtsi | 10 ++++++++--
- arch/arm64/boot/dts/renesas/ulcb.dtsi            | 10 ++++++++--
- 6 files changed, 48 insertions(+), 11 deletions(-)
+For mmc we already have a DT property, "full-pwr-cycle". Which tells
+whether the host is able to completely power-cycle the card (some
+host's manage power internally).
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a77970-v3msk.dts b/arch/arm64/boot/dts/renesas/r8a77970-v3msk.dts
-index 01c4ba0..9fe634a 100644
---- a/arch/arm64/boot/dts/renesas/r8a77970-v3msk.dts
-+++ b/arch/arm64/boot/dts/renesas/r8a77970-v3msk.dts
-@@ -74,7 +74,10 @@
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <1800000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	vcc_d3_3v: regulator-1 {
-@@ -83,7 +86,10 @@
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	vcc_vddq_vin0: regulator-2 {
-diff --git a/arch/arm64/boot/dts/renesas/r8a77980-condor.dts b/arch/arm64/boot/dts/renesas/r8a77980-condor.dts
-index ef8350a..5898c7f 100644
---- a/arch/arm64/boot/dts/renesas/r8a77980-condor.dts
-+++ b/arch/arm64/boot/dts/renesas/r8a77980-condor.dts
-@@ -37,7 +37,10 @@
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	hdmi-out {
-@@ -87,7 +90,10 @@
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <1800000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	x1_clk: x1-clock {
-diff --git a/arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts b/arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts
-index dc24cec4..80736f8 100644
---- a/arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts
-+++ b/arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts
-@@ -113,7 +113,10 @@
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <1800000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	reg_3p3v: regulator1 {
-@@ -122,7 +125,10 @@
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	reg_12p0v: regulator2 {
-diff --git a/arch/arm64/boot/dts/renesas/r8a77995-draak.dts b/arch/arm64/boot/dts/renesas/r8a77995-draak.dts
-index 79c73a9..9ac5361 100644
---- a/arch/arm64/boot/dts/renesas/r8a77995-draak.dts
-+++ b/arch/arm64/boot/dts/renesas/r8a77995-draak.dts
-@@ -103,7 +103,10 @@
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <1800000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	reg_3p3v: regulator-3p3v {
-@@ -113,6 +116,10 @@
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
- 		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	reg_12p0v: regulator-12p0v {
-diff --git a/arch/arm64/boot/dts/renesas/salvator-common.dtsi b/arch/arm64/boot/dts/renesas/salvator-common.dtsi
-index 98bbcaf..fa8c45f 100644
---- a/arch/arm64/boot/dts/renesas/salvator-common.dtsi
-+++ b/arch/arm64/boot/dts/renesas/salvator-common.dtsi
-@@ -172,7 +172,10 @@
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <1800000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	reg_3p3v: regulator1 {
-@@ -181,7 +184,10 @@
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	reg_12v: regulator2 {
-diff --git a/arch/arm64/boot/dts/renesas/ulcb.dtsi b/arch/arm64/boot/dts/renesas/ulcb.dtsi
-index ff88af8..7c5bccc 100644
---- a/arch/arm64/boot/dts/renesas/ulcb.dtsi
-+++ b/arch/arm64/boot/dts/renesas/ulcb.dtsi
-@@ -79,7 +79,10 @@
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <1800000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	reg_3p3v: regulator1 {
-@@ -88,7 +91,10 @@
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
--		regulator-always-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
- 	};
- 
- 	sound_card: sound {
--- 
-2.7.4
+However, maybe the proper thing here would be to add a property of
+regulator instead. If that doesn't make sense, I am also open to add a
+new MMC property, "full-pwr-cycle-in-suspend".
 
+Kind regards
+Uffe
