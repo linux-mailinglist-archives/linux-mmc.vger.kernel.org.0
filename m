@@ -2,110 +2,123 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5CDA20E5AC
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jun 2020 00:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D9AE20E541
+	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jun 2020 00:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727052AbgF2Vkb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Jun 2020 17:40:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60594 "EHLO mail.kernel.org"
+        id S1728544AbgF2Vez (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Jun 2020 17:34:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60654 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726818AbgF2Sk1 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 29 Jun 2020 14:40:27 -0400
-Received: from pali.im (pali.im [31.31.79.79])
+        id S1728566AbgF2Skz (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 29 Jun 2020 14:40:55 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 17ECB206E2;
-        Mon, 29 Jun 2020 08:03:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 51FD823D25;
+        Mon, 29 Jun 2020 12:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593417790;
-        bh=t6v5DZt1l1daNu/bUPS5nyAIjtuuXbZlqsHTaDwr+nM=;
+        s=default; t=1593435478;
+        bh=bcyRH8SrIJRpWOCioAE7dQk1Zwno7fu5lbGQHD57n+M=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0M9Maneao5FvAVD0BmAOoIxq7d6OuBmjWSWAKjDQM+J0/8XN5KzRFqh+90I/UyfL8
-         +jKxBhB5WxBjt4qsg4gGdLiJyoRjivO57nxPIMmqRU2kUKAh6EwYKsRIbnvQ8tw64V
-         8npSKbq+Guk1jcRBXhg00ia8tVkekCzqeMa/1b7A=
-Received: by pali.im (Postfix)
-        id 3078B81F; Mon, 29 Jun 2020 10:03:08 +0200 (CEST)
-Date:   Mon, 29 Jun 2020 10:03:08 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     haibo.chen@nxp.com
-Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, linux-imx@nxp.com, fugang.duan@nxp.com,
-        dianders@chromium.org, huyue2@yulong.com, mka@chromium.org
-Subject: Re: [PATCH] mmc: sdio: fix clock rate setting for SDR12/SDR25 mode
-Message-ID: <20200629080308.2763brhbflqwauad@pali>
-References: <1592813959-5914-1-git-send-email-haibo.chen@nxp.com>
+        b=aSSuD7UPU9scWauVRzNqe8ZN1yN6QlsyN7rZk8VrNsWYDgD/+hATBOQzmvBCe2E+t
+         D3Xh+qBwPFvd/SS8ZHrwu7i6dNvNqobYG+MXCWb6C9721v0VwWQxe/CzBuVBy5sWdE
+         YIMT3SzvxnbDL+UZ6JEuxwTiUHnlnblRL/az3+KA=
+Date:   Mon, 29 Jun 2020 13:57:56 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "geert+renesas@glider.be" <geert+renesas@glider.be>,
+        "magnus.damm@gmail.com" <magnus.damm@gmail.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH/RFC v4 2/4] regulator: fixed: add regulator_ops members
+ for suspend/resume
+Message-ID: <20200629125756.GC5499@sirena.org.uk>
+References: <1593163942-5087-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <1593163942-5087-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <20200626143914.GE5289@sirena.org.uk>
+ <TY2PR01MB3692A3B12CEF7F9708A8A59CD86E0@TY2PR01MB3692.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="vOmOzSkFvhd7u8Ms"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1592813959-5914-1-git-send-email-haibo.chen@nxp.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <TY2PR01MB3692A3B12CEF7F9708A8A59CD86E0@TY2PR01MB3692.jpnprd01.prod.outlook.com>
+X-Cookie: Real programs don't eat cache.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Monday 22 June 2020 16:19:19 haibo.chen@nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> In current code logic, when work in SDR12/SDR25 mode, the final clock
-> rate is incorrect, just the legancy 400KHz, because the
-> card->sw_caps.sd3_bus_mode do not has the flag SD_MODE_UHS_SDR12 or
-> SD_MODE_UHS_SDR25. Besides, SDIO_SPEED_SDR12 is actually value 0, and
-> every mode need to config the timing and clock rate, so remove the
-> ‘if’ operator.
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-Hello! I do not know what should be the correct behavior according to
-sdio standards, but I tested this patch with DDR50 card and behavior of
-that card was not changed, it is working as before.
+--vOmOzSkFvhd7u8Ms
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Pali Rohár <pali@kernel.org>
+On Mon, Jun 29, 2020 at 02:42:26AM +0000, Yoshihiro Shimoda wrote:
+> > From: Mark Brown, Sent: Friday, June 26, 2020 11:39 PM
 
-> ---
->  drivers/mmc/core/sdio.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-> index 0e32ca7b9488..7b40553d3934 100644
-> --- a/drivers/mmc/core/sdio.c
-> +++ b/drivers/mmc/core/sdio.c
-> @@ -176,15 +176,18 @@ static int sdio_read_cccr(struct mmc_card *card, u32 ocr)
->  			if (mmc_host_uhs(card->host)) {
->  				if (data & SDIO_UHS_DDR50)
->  					card->sw_caps.sd3_bus_mode
-> -						|= SD_MODE_UHS_DDR50;
-> +						|= SD_MODE_UHS_DDR50 | SD_MODE_UHS_SDR50
-> +							| SD_MODE_UHS_SDR25 | SD_MODE_UHS_SDR12;
->  
->  				if (data & SDIO_UHS_SDR50)
->  					card->sw_caps.sd3_bus_mode
-> -						|= SD_MODE_UHS_SDR50;
-> +						|= SD_MODE_UHS_SDR50 | SD_MODE_UHS_SDR25
-> +							| SD_MODE_UHS_SDR12;
->  
->  				if (data & SDIO_UHS_SDR104)
->  					card->sw_caps.sd3_bus_mode
-> -						|= SD_MODE_UHS_SDR104;
-> +						|= SD_MODE_UHS_SDR104 | SD_MODE_UHS_SDR50
-> +							| SD_MODE_UHS_SDR25 | SD_MODE_UHS_SDR12;
->  			}
->  
->  			ret = mmc_io_rw_direct(card, 0, 0,
-> @@ -537,10 +540,8 @@ static int sdio_set_bus_speed_mode(struct mmc_card *card)
->  	max_rate = min_not_zero(card->quirk_max_rate,
->  				card->sw_caps.uhs_max_dtr);
->  
-> -	if (bus_speed) {
-> -		mmc_set_timing(card->host, timing);
-> -		mmc_set_clock(card->host, max_rate);
-> -	}
-> +	mmc_set_timing(card->host, timing);
-> +	mmc_set_clock(card->host, max_rate);
->  
->  	return 0;
->  }
-> -- 
-> 2.17.1
-> 
+Copying in Sudeep for the feedback on firmware interfaces.
+
+> > According to the changelog this is all about reflecting changes in the
+> > system state done by firmware but there's no interaction with firmware
+> > here which means this will be at best fragile.  If we need to reflect
+> > changes in firmware configuration I'd expect there to be some
+> > interaction with firmware about how it is configured, or at least that
+> > the configuration would come from the same source.
+
+> I should have described background of previous patch series though,
+> according to previous discussion [1] the firmware side (like PSCI) is
+> also fragile unfortunately... So, I thought using regulator-off-in-suspend
+> in a regulator was better.
+
+> On other hand, Ulf is talking about either adding a property (perhaps like
+> regulator-off-in-suspend) into a regulator or just adding a new property
+> into MMC [2]. What do you think about Ulf' comment? I'm thinking
+> adding a new property "full-pwr-cycle-in-suspend" is the best solution.
+> This is because using a regulator property and reflecting a state of regu=
+lator without
+> firmware is fragile, as you said.
+
+TBH I worry about a property drifting out of sync with the firmware on
+systems where the firmware can be updated.  Personally my default
+assumption would always be that we're going to loose power for anything
+except the RAM and whatever is needed for wake sources during suspend so
+I find the discussion a bit surprising but in any case that seems like a
+better option than trying to shoehorn things in the way the series here
+did.  Like I said in my earlier replies if this is done through the
+regulator API I'd expect it to be via the suspend interface.
+
+> [1]
+> https://lore.kernel.org/linux-renesas-soc/CAMuHMdXjU7N4oG89YsozGijMpjgKGN=
+6ezw2qm6FeGX=3DJyRhsvg@mail.gmail.com/
+>=20
+> [2]
+> https://lore.kernel.org/linux-renesas-soc/CAPDyKFpiBU1D+a7zb+Ggm0_HZ+YR4=
+=3DLXJZ5MPytXtT=3DuBEdjPA@mail.gmail.com/
+>=20
+> Best regards,
+> Yoshihiro Shimoda
+>=20
+
+--vOmOzSkFvhd7u8Ms
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl755VMACgkQJNaLcl1U
+h9BCWAf/alYjM1GUf8o0xC1cfZB+/ZQDJlP1ynAY3yBAz6znDVqyB0+0YHESvJeZ
+H9rCGXZ4YyH+CRLnd3TzJrAYfJ9wedaSQiabb5GE7hUKuC/SYPgLHX/3201Kgwl+
++MNM6w0kvzjyU/0OzvYI0SXBFu5g21LAZLR5FSaYcReUfqOJah+OtilSFdO+z86h
+YsX6CMecRYl+4gwHkKlr1mQ7ZvrdtFkYynwxr3CZaD/ZsxZQ5DFL/p4h46D/ewKJ
+qYoD8RX0S5QnWLxNBWmy10XtW67Rznftmh5lSBV9UkG2zxIIYL8878fmVecdLsiI
+ZeLVxrKgg+Jq0Jzcy+7yux7aucvd+A==
+=ENZF
+-----END PGP SIGNATURE-----
+
+--vOmOzSkFvhd7u8Ms--
