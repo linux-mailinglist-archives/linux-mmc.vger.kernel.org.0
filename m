@@ -2,143 +2,89 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEB1520E307
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jun 2020 00:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68D6C20E685
+	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jun 2020 00:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731137AbgF2VK4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Jun 2020 17:10:56 -0400
-Received: from www.zeus03.de ([194.117.254.33]:59300 "EHLO mail.zeus03.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390351AbgF2VKg (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 29 Jun 2020 17:10:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=k1; bh=1R5VbfyjnCD0CmpFWZBQGlSYfWm+
-        NoLCMYa6SRuHNZI=; b=DuUNS0rIyBlqryiO1lADl4AQ5JfcuOPcJDV2IVFGM+pG
-        BxMC/hkT5dkyCGF6Q1HTk4aJwCOLxenQqr8CAwZ8iWxCG9hxIYJYDosJU+dNoPJO
-        Wze1Y9QWn06Sop7cYVo1anfQUotBy+ag5oUFAmqaYsB6C/ClU4FdFIxQ5eTRYoo=
-Received: (qmail 2172219 invoked from network); 29 Jun 2020 23:10:30 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 29 Jun 2020 23:10:30 +0200
-X-UD-Smtp-Session: l3s3148p1@IvsbfT+pqsMgAwDPXwOPAI5mQFP60fXe
-Date:   Mon, 29 Jun 2020 23:10:27 +0200
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Cc:     corbet@lwn.net, aaro.koskinen@iki.fi, tony@atomide.com,
-        linux@armlinux.org.uk, daniel@zonque.org, haojian.zhuang@gmail.com,
-        robert.jarzmik@free.fr, kgene@kernel.org, krzk@kernel.org,
-        dmitry.torokhov@gmail.com, lee.jones@linaro.org,
-        ulf.hansson@linaro.org, davem@davemloft.net, kuba@kernel.org,
-        b.zolnierkie@samsung.com, j.neuschaefer@gmx.net,
-        mchehab+samsung@kernel.org, gustavo@embeddedor.com,
-        gregkh@linuxfoundation.org, yanaijie@huawei.com,
-        daniel.vetter@ffwll.ch, rafael.j.wysocki@intel.com,
-        Julia.Lawall@inria.fr, linus.walleij@linaro.org,
-        viresh.kumar@linaro.org, arnd@arndb.de, jani.nikula@intel.com,
-        yuehaibing@huawei.com, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] Remove handhelds.org links and email addresses
-Message-ID: <20200629211027.GA1481@kunai>
-References: <20200629203121.7892-1-grandmaster@al2klimov.de>
+        id S2404270AbgF2VsT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Jun 2020 17:48:19 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:38672 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404255AbgF2VsJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Jun 2020 17:48:09 -0400
+Received: by mail-io1-f68.google.com with SMTP id f6so3231010ioj.5;
+        Mon, 29 Jun 2020 14:48:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=wGWmyGXfNATJETlByWIEZ13t4eNzYwD3JHETLNfxb54=;
+        b=LSTQHAqoIoV/qaZ7TayTtaGHtNbbU7i50/njuRYKApJYi5gEpkVGwdXkB8vXP2xdsk
+         ysyi5ajs/I2ER9KBGj8+FdLPeUk8NJJgtiU2kYrYe8LvmeJZVEegydgAFgSmUidGI5WE
+         XRSdYwZpFaVKH9pNYAuiBhl4LeC0cjIdybvKY0LCYUMqPuHFiCci7zW8rPSRUHfyHuvy
+         H/wxaPx+sjuP4DW/i4PbZTOq8/BgZvYCxkrQq9+BHaNs1n2gpQcaogkhoQvBW95ajTAK
+         lcIRPfmdOKKvOR8GTecazz47RjfNvCGq1WXPpHwSQ4GAS/yciphyChc6sEuD6dZ1XKTl
+         K5qQ==
+X-Gm-Message-State: AOAM531m6d+RoibLzHPJ5tXG+6acAXaykD8ExqP0U9wwrSS/kSIyu9wP
+        oLPMdakqjKQrvQRXi7jXsA==
+X-Google-Smtp-Source: ABdhPJwEfRn6dYm/O5ro6RnMRhK1qWiklysncseXKlDL5Wp1cyeVC6ap1ygyNz6c3jdV70Ag3tnIxg==
+X-Received: by 2002:a6b:1496:: with SMTP id 144mr18920446iou.6.1593467288379;
+        Mon, 29 Jun 2020 14:48:08 -0700 (PDT)
+Received: from xps15 ([64.188.179.255])
+        by smtp.gmail.com with ESMTPSA id k3sm601299ils.8.2020.06.29.14.48.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2020 14:48:07 -0700 (PDT)
+Received: (nullmailer pid 2985144 invoked by uid 1000);
+        Mon, 29 Jun 2020 21:48:05 -0000
+Date:   Mon, 29 Jun 2020 15:48:05 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Anson Huang <Anson.Huang@nxp.com>
+Cc:     mturquette@baylibre.com, ulf.hansson@linaro.org, sboyd@kernel.org,
+        aisheng.dong@nxp.com, linux-clk@vger.kernel.org,
+        festevam@gmail.com, s.hauer@pengutronix.de, robh+dt@kernel.org,
+        s.trumtrar@pengutronix.de, devicetree@vger.kernel.org,
+        shawnguo@kernel.org, linux-arm-kernel@lists.infradead.org,
+        kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Linux-imx@nxp.com
+Subject: Re: [PATCH V4 1/3] dt-bindings: mmc: Convert imx esdhc to json-schema
+Message-ID: <20200629214805.GA2983242@bogus>
+References: <1592450578-30140-1-git-send-email-Anson.Huang@nxp.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="G4iJoqBmSsgzjUCe"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200629203121.7892-1-grandmaster@al2klimov.de>
+In-Reply-To: <1592450578-30140-1-git-send-email-Anson.Huang@nxp.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-
---G4iJoqBmSsgzjUCe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Hi Alexander,
-
-thanks for trying to fix this, yet I have some doubts.
-
-On Mon, Jun 29, 2020 at 10:31:21PM +0200, Alexander A. Klimov wrote:
-> Rationale:
-> https://lore.kernel.org/linux-doc/20200626110706.7b5d4a38@lwn.net/
-
-I think we need some text here. Clicking on a link to understand what a
-patch is about is not comfortable. You can add the link with a Link: tag
-for additional information.
-
-Removing stale email addresses may have some value, but removing...
-
->  Compaq's Bootldr + John Dorsey's patch for Assabet support
-> -(http://www.handhelds.org/Compaq/bootldr.html)
-
-... information like this is not good. 'Wayback machine' still has
-copies in case someone wants to look at where the infos came from.
-
-> - * Copyright 2004-2005  Phil Blundell <pb@handhelds.org>
-> + * Copyright 2004-2005  Phil Blundell
-
-This is an OK case in my book...
+On Thu, 18 Jun 2020 11:22:56 +0800, Anson Huang wrote:
+> Convert the i.MX ESDHC binding to DT schema format using json-schema
+> 
+> Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
+> ---
+> No change.
+> ---
+>  .../devicetree/bindings/mmc/fsl-imx-esdhc.txt      |  67 -----------
+>  .../devicetree/bindings/mmc/fsl-imx-esdhc.yaml     | 124 +++++++++++++++++++++
+>  2 files changed, 124 insertions(+), 67 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
+>  create mode 100644 Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> 
 
 
-> -MODULE_AUTHOR("Phil Blundell <pb@handhelds.org>");
-> +MODULE_AUTHOR("Phil Blundell");
+My bot found errors running 'make dt_binding_check' on your patch:
 
-... same here ...
-
-> @@ -435,7 +435,6 @@
->                             case a PCI bridge (DEC chip 21152). The value of
->                             'pb' is now only initialized if a de4x5 chip is
->                             present.
-> -                           <france@handhelds.org>
-
-This is kind of a signature and should be kept IMO.
-
->   * 2001/07/23: <rmk@arm.linux.org.uk>
-> - *	- Hand merge version from handhelds.org CVS tree.  See patch
-> + *	- Hand merge version from CVS tree.  See patch
-
-That information may be useful.
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.example.dt.yaml: mmc@5b010000: compatible: Additional items are not allowed ('fsl,imx7d-usdhc' was unexpected)
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.example.dt.yaml: mmc@5b010000: compatible: ['fsl,imx8qxp-usdhc', 'fsl,imx7d-usdhc'] is too long
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/imx35-clock.example.dt.yaml: esdhc@53fb4000: $nodename:0: 'esdhc@53fb4000' does not match '^mmc(@.*)?$'
 
 
->  /* SPDX-License-Identifier: GPL-2.0-only */
->  /* -*- linux-c -*-
-> - *
-> - * (C) 2003 zecke@handhelds.org
+See https://patchwork.ozlabs.org/patch/1311722
 
-Removing copyright is a bad idea.
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure dt-schema is up to date:
 
-Probably some comment blocks are cruft meanwhile and can be removed as a
-whole. That can be discussed. But removing only the handhelds.org part
-makes most parts worse IMHO.
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
 
-Thanks and happy hacking,
+Please check and re-submit.
 
-   Wolfram
-
-
---G4iJoqBmSsgzjUCe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl76WMAACgkQFA3kzBSg
-KbZgWA/+IxRkb15JXVvwYM1c4ReuUiEUrJ0KOI0M0XELe0YWelDrhgcOtSC0ozRT
-lTt8uizNNBK4bsRpoo+ghjZvNELOeMx+4VsVtMM+IoXXxIKha1jSJ1hqFDsBcCP0
-urAvhdaNyC+TWmEM2H98eb5JfdSxKxrzjIMs4tTBlZOBnu+wAoiDZv4mPf/y1bGv
-L33lwlFG6tkWpVX2veVNoTg04TG0LupAtXUyiI+Hnxt7srbugymQs0iwtd5sCt2R
-AG+BmuN5zmUS5cISCL6p1uXSxVRrs3FI02dwU7m5yvBfvHHSGVsx+f9wPpnpqNc8
-1I3oAR+Ct2K3lvu3uLBY2xDL4WbTmPobmzGLXbwB8ksPC/B1TV5LC/+TI2F+c+gk
-ROaTdQqzt4H0wfzNFOzYT8zGyZOoiPFro7jxCcH9CZjbkeDi19sJt7TQ6I1B0I9+
-bSTAb7s3yWhzUypFHzdR0PT97e8zeiK/xJUTbPkvv+JsDZZvPht423X7CYEUjaCo
-sPQ5UuDSfS4xT25PBabjhNeunmODzCE/+DrtbOSuM5AV63TOoVMB8zWBoJH17emH
-mRgD29xeEITWlq/fBWcPWIjgFDVanjDPYIW2/jnGqm7RLTaw703ajQSbD/7ELOAB
-84gr1NpIeJuhMnRnB11nHCJsUWnRqvl2rt7lretb/tFUB8LhGFE=
-=FQ9k
------END PGP SIGNATURE-----
-
---G4iJoqBmSsgzjUCe--
