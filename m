@@ -2,72 +2,108 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BADD20D56C
-	for <lists+linux-mmc@lfdr.de>; Mon, 29 Jun 2020 21:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D25120D88B
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Jun 2020 22:09:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731884AbgF2TQb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Jun 2020 15:16:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44030 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731911AbgF2TQF (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Jun 2020 15:16:05 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 844C0C08E81E
-        for <linux-mmc@vger.kernel.org>; Mon, 29 Jun 2020 12:16:02 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id f6so2782087ioj.5
-        for <linux-mmc@vger.kernel.org>; Mon, 29 Jun 2020 12:16:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
-        b=E57soH+fAZU9oM/uuDn4bCNx2wALmvA7rwFsDeo/VdmyR4hSt+vRDMPW0qpAcJ9V/h
-         UbYJ9fIR9BUAZrS+1TfrEzBoFSxbLFUBB/IIzj7rfy4Y1SyxPmM/cs9fEremwVWV5m5u
-         b9v38myIgTBJNjasjLIOUO/K2CJS7vPJsURIlWBEC7RA0ax+vZbkexDjvFbqaAUgNm/w
-         yj4NkgHNxXLdKOO4AZsIv5vnXx8YMl4s3e1fTXh2Hp6rhwVI9k4nzVvvlc/OSvXrfpbl
-         +6DOlsrKa8IKCRxKxdcbetpm2uz+ZUKJBnziwlMhGJ11qW6bGQPIDGjYXF06+gry04Zz
-         3NGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
-        b=SzJacx5eZiiF1maR2UmXeFb/yyoNGvMXmctPw9R7aG8Z12Sn4hGvDMyTemE1feoQpg
-         MKXK4/Aku0qncC4ogYpd3OlrxGe7TJzNu5jitutrJzY6nFLRgPASzDPJmVw7obbARbPO
-         AeJ81GuunbPqr87PSQHKeKB8Zj/GMOyPiprAOuJCDwUm2Mscz0xwncyqc0RXaut7PcU8
-         8WdOtSiMAAasejPmCP4TWO0gfSbteV6nlvFQAXbGNq60jhJUfZGL0bAiKe8gctIHgQSp
-         giL9jGm+8pamcEf9Ka88QylsoIOeWbSgkBqAzCwogTpn336K31yrvVtuIE0tsibDfUDc
-         l9tA==
-X-Gm-Message-State: AOAM532xFL0kN++12cS/Zgr49sDje5rNs2D/z6cIUM1RjzHLCl72JHVt
-        GpV/rNy0ctrktSFm3EVVJxhzunrKuY0qaLwFRvk=
-X-Google-Smtp-Source: ABdhPJyNR5zXZ8o09DSJzsSA3OSccnAxM/c9AxKQjYYOZlXvOMCiHs1YW/1gQi1Sa70TQ2VOPtabshfviWRkV7+ICnM=
-X-Received: by 2002:a6b:db17:: with SMTP id t23mr18236117ioc.4.1593458159284;
- Mon, 29 Jun 2020 12:15:59 -0700 (PDT)
+        id S1733114AbgF2TkB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Jun 2020 15:40:01 -0400
+Received: from foss.arm.com ([217.140.110.172]:41800 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731818AbgF2Tjz (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 29 Jun 2020 15:39:55 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2974A1509;
+        Mon, 29 Jun 2020 06:40:57 -0700 (PDT)
+Received: from bogus (unknown [10.37.12.57])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AA0C43F73C;
+        Mon, 29 Jun 2020 06:40:54 -0700 (PDT)
+Date:   Mon, 29 Jun 2020 14:40:47 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "geert+renesas@glider.be" <geert+renesas@glider.be>,
+        "magnus.damm@gmail.com" <magnus.damm@gmail.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH/RFC v4 2/4] regulator: fixed: add regulator_ops members
+ for suspend/resume
+Message-ID: <20200629134011.GA23284@bogus>
+References: <1593163942-5087-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <1593163942-5087-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+ <20200626143914.GE5289@sirena.org.uk>
+ <TY2PR01MB3692A3B12CEF7F9708A8A59CD86E0@TY2PR01MB3692.jpnprd01.prod.outlook.com>
+ <20200629125756.GC5499@sirena.org.uk>
 MIME-Version: 1.0
-Received: by 2002:a05:6602:1588:0:0:0:0 with HTTP; Mon, 29 Jun 2020 12:15:58
- -0700 (PDT)
-Reply-To: mrs.victoria.alexander2@gmail.com
-From:   "mrs.victoria alexander" <markalexandermilley321@gmail.com>
-Date:   Mon, 29 Jun 2020 12:15:58 -0700
-Message-ID: <CAP7XNCwEGQ+-Q==u4yk4yvJdk1X+gsfSU6pUV_hROjmF=p-DHw@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200629125756.GC5499@sirena.org.uk>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dear friend,
+On Mon, Jun 29, 2020 at 01:57:56PM +0100, Mark Brown wrote:
+> On Mon, Jun 29, 2020 at 02:42:26AM +0000, Yoshihiro Shimoda wrote:
+> > > From: Mark Brown, Sent: Friday, June 26, 2020 11:39 PM
+>
+> Copying in Sudeep for the feedback on firmware interfaces.
+>
 
+Thanks Mark.
 
-I have a business container transaction what that some of( $13million dollars)
+> > > According to the changelog this is all about reflecting changes in the
+> > > system state done by firmware but there's no interaction with firmware
+> > > here which means this will be at best fragile.  If we need to reflect
+> > > changes in firmware configuration I'd expect there to be some
+> > > interaction with firmware about how it is configured, or at least that
+> > > the configuration would come from the same source.
+>
 
- I would like to discuss with you. If you are interested, please
-contact my email
+I agree.
 
-address (mrs.victoria.alexander2@gmail.com)
+> > I should have described background of previous patch series though,
+> > according to previous discussion [1] the firmware side (like PSCI) is
+> > also fragile unfortunately... So, I thought using regulator-off-in-suspend
+> > in a regulator was better.
+>
 
-My WhatsApp number but only message (+19293737780)
+Please fix the firmware. You might have bigger problem than this if the
+PSCI firmware is fragile as you state. Better to disable power management
+on the platform if the firmware can't be fixed.
 
-Please do not reply if you are not ready
-Thanks
+> > On other hand, Ulf is talking about either adding a property (perhaps like
+> > regulator-off-in-suspend) into a regulator or just adding a new property
+> > into MMC [2]. What do you think about Ulf' comment? I'm thinking
+> > adding a new property "full-pwr-cycle-in-suspend" is the best solution.
+> > This is because using a regulator property and reflecting a state of regulator without
+> > firmware is fragile, as you said.
+
+I haven't followed all the threads, but if it related to the policy you
+want in the Linux, then may be use DT property or something. I don't know.
+But if this is to indicate something based on firmware runtime/configuration,
+then NACK for any approaches unconditionally.
+
+>
+> TBH I worry about a property drifting out of sync with the firmware on
+> systems where the firmware can be updated.  Personally my default
+> assumption would always be that we're going to loose power for anything
+> except the RAM and whatever is needed for wake sources during suspend so
+> I find the discussion a bit surprising but in any case that seems like a
+> better option than trying to shoehorn things in the way the series here
+> did.  Like I said in my earlier replies if this is done through the
+> regulator API I'd expect it to be via the suspend interface.
+>
+
++1. If this platform needs Linux to keep some state on for users in the
+firmware or anything outside Linux, it must resume back in the same state
+as we entered the suspend state from the kernel.
+
+--
+Regards,
+Sudeep
