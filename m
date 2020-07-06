@@ -2,141 +2,153 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F30B2159F1
-	for <lists+linux-mmc@lfdr.de>; Mon,  6 Jul 2020 16:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E659F2159F0
+	for <lists+linux-mmc@lfdr.de>; Mon,  6 Jul 2020 16:50:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729432AbgGFOtr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 6 Jul 2020 10:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59100 "EHLO
+        id S1729455AbgGFOtq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 6 Jul 2020 10:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729424AbgGFOtm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Jul 2020 10:49:42 -0400
+        with ESMTP id S1729432AbgGFOtq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Jul 2020 10:49:46 -0400
 Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1113C061755
-        for <linux-mmc@vger.kernel.org>; Mon,  6 Jul 2020 07:49:41 -0700 (PDT)
-Received: by mail-ua1-x941.google.com with SMTP id h18so6163609uao.6
-        for <linux-mmc@vger.kernel.org>; Mon, 06 Jul 2020 07:49:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF817C061755
+        for <linux-mmc@vger.kernel.org>; Mon,  6 Jul 2020 07:49:45 -0700 (PDT)
+Received: by mail-ua1-x941.google.com with SMTP id q15so11966568uap.4
+        for <linux-mmc@vger.kernel.org>; Mon, 06 Jul 2020 07:49:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=wpTg6y7XPvuv4TwyqZ4SFhbawANaMUSH8IVFuijkNXA=;
-        b=PRNfggp49kSU50tHvcwTjKRkpbm8FZpDizi6CBsO+Zdf6h8sUW3gHJWJfB9kVttebR
-         jpbHocobnab1HVKS1w+JarNzomf8jlZDNkl325Yj4QepUHPM2NfxxlOFmTv/uOs9DwLu
-         Vy2snofrIDdfN3/I0P5OKaXjGMHKxezmaYzb7kD3PYbcKSVTMJOaBAnzAqfElkKk8I5K
-         3v3636g93lmj8z72c9T+Zr2M1DCAAlzfMlmd9rKxYDHRwkr0YXSVIIWnPOedQ24fKdnd
-         g+373DjK7GiyA5ClktkLGcYUpSsJiBzjkhFR4qKvyyoJe1Rt1HqCV5hQpvG2u6tn9D6R
-         MmbQ==
+         :cc;
+        bh=RlwlWb/UfP78qwcjII/qv8pEpVUy1fPzrWtMfafx0Oc=;
+        b=G4ob+a4XNBO85mbUP20flf9o6X0dY1Lgei1+5vICDnCEiYp4WkIbFO4tO1Lr15O0b0
+         Fl+iLUdh2sFSx/vTkDH9TsANNmTkkY7PKYtxP+K76YLdRRG79VxMyZ6SOVQXAsZjeyUK
+         sony2dGSEBFL/Jxd42E957wY7ApgaHbXe8gkqJ0tybp0x6vttdIr4C8wIeEHHiawlgjf
+         OteXblkFn1VwkGr681tiI41BLiSKP7wvtsn+pVAwQ9MktGtjy0OzS7KuQFqIGCgmKNhF
+         BjpVna2Xylsck0mXM4F++QO9O0DpsIJab0eQVwVtXlD1CHEH/P/qnnGD60gQ3+UdK5B2
+         J/1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=wpTg6y7XPvuv4TwyqZ4SFhbawANaMUSH8IVFuijkNXA=;
-        b=RyH7lMGS36dPcdaiDOS6HhS3mMw+5x1hYoPeW72Dp6DSNdF/93PR5Y5sGmn+PBbUQw
-         XKYl5s1Sp/zGqTZWWgHDE7mP84ujLMKUiDwAuCtshxYdFBF/hHFyVSV2ikDoJ6GpoDZR
-         sbuWKA4dJrSdiOkQsZ6i5kJ4Ya6YJgUAYFRmR0DPtc7HWCI7dP3QdRwqBSliEipZAsag
-         zJdToyS1FvsJnK2mnQ7+ijVCW0AHF7Uo/cDItxt6qi3pEn/QNYlpVNDZFQeUEb+aEyMG
-         yL2MfUdzGkKoLdBN/3piUwPiFPSKaS8mIY2mrZIMorYkIV2+3cmZ0dzUv+mMfvjpV5Ol
-         oU3Q==
-X-Gm-Message-State: AOAM531TZC6fGKINX5hOUO6ZzUsir0pWdu/Pbiey8kvJQUdqo50EbocZ
-        6hzqzYprQLFhlHjTsKD9Ugbl/vqyDe/V9nejWnaxTw==
-X-Google-Smtp-Source: ABdhPJxBsjYchuuczn4QYYgrBFsVWRmvH+lVKRMUYHQvLuUgMBp/z//bn1pjDLM1A4mvKJg4nX5uqapZQKsQ+K38a5U=
-X-Received: by 2002:a9f:2338:: with SMTP id 53mr33202592uae.129.1594046981028;
- Mon, 06 Jul 2020 07:49:41 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=RlwlWb/UfP78qwcjII/qv8pEpVUy1fPzrWtMfafx0Oc=;
+        b=NzP7zkZKRAlJVGazKHShbMw71tXRpMPC4rSNZ/Wap6x5OMnJpNi6y8yHksIJToKkTn
+         15+G61AVZoc5Tuw02l8YLKIWMpsU4rGD9FF+WqwutYTfsu5wBmhJkvpsvVI+QL1ZaWHb
+         oAUE3t/mjwDko2eExnZW0lrhP93x96kDvILZOeZrxJg6hhUMevgHOKBN6+k3DVHieYhD
+         gWDr2wxoEiI6ihIekNOWuYFy2LmTAGOtYlrbpFD9nrZ64oNI1/64EWQoqn1rzYtBChnh
+         ggsTk1aBInzsyvKKRAMvmFKX7JsdThXjMllxmjGLy6F+6TW9nMvKQbGSNDiFj2773s8P
+         eU3g==
+X-Gm-Message-State: AOAM530/HHbHjQELQ8Pnl7Zw1qLW0kSYAZB176Wdq16vhJghBHNAj8FJ
+        kff1BSgHa8v6xA+buUnZFB8uTxzN3SxWX/zHGaQttw==
+X-Google-Smtp-Source: ABdhPJwZ0BIW49aETEkPlOXU/Q3egJ4SaouR53jzPrWzw4D3JDugGK9LB5NI6aj2kYuY1HjrPyphXue8Ol/obQFzEOM=
+X-Received: by 2002:ab0:6f0a:: with SMTP id r10mr41113467uah.100.1594046985173;
+ Mon, 06 Jul 2020 07:49:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <1592813959-5914-1-git-send-email-haibo.chen@nxp.com>
-In-Reply-To: <1592813959-5914-1-git-send-email-haibo.chen@nxp.com>
+References: <1592985830-13038-1-git-send-email-haibo.chen@nxp.com>
+In-Reply-To: <1592985830-13038-1-git-send-email-haibo.chen@nxp.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 6 Jul 2020 16:49:04 +0200
-Message-ID: <CAPDyKFphkPAgcOEd=j8EUoFyAz7Oj8DEXbgK=k7R15rizWWcTw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdio: fix clock rate setting for SDR12/SDR25 mode
+Date:   Mon, 6 Jul 2020 16:49:08 +0200
+Message-ID: <CAPDyKFrO0Ddz+pFeu7bhn-j7Qg_rjgX0C_eAzbphP8qS8OAK+w@mail.gmail.com>
+Subject: Re: [PATCH] mmc: host: sdhci-esdhc-imx: dump internal IC debug status
+ during error
 To:     Haibo Chen <haibo.chen@nxp.com>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>, fugang.duan@nxp.com,
-        Doug Anderson <dianders@chromium.org>, huyue2@yulong.com,
-        Matthias Kaehlcke <mka@chromium.org>
+        dl-linux-imx <linux-imx@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 22 Jun 2020 at 10:30, <haibo.chen@nxp.com> wrote:
+On Wed, 24 Jun 2020 at 10:15, <haibo.chen@nxp.com> wrote:
 >
 > From: Haibo Chen <haibo.chen@nxp.com>
 >
-> In current code logic, when work in SDR12/SDR25 mode, the final clock
-> rate is incorrect, just the legancy 400KHz, because the
-> card->sw_caps.sd3_bus_mode do not has the flag SD_MODE_UHS_SDR12 or
-> SD_MODE_UHS_SDR25. Besides, SDIO_SPEED_SDR12 is actually value 0, and
-> every mode need to config the timing and clock rate, so remove the
-> =E2=80=98if=E2=80=99 operator.
+> USDHC of i.MX has internal IC debug register, which record the IC
+> logical status. So dump these logical status in error condition,
+> this can help analyzing issue.
 >
 > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-This looks like a rather serious error, should we tag this for stable?
-
-In the meantime, I have applied this for next to get it tested, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
-
 > ---
->  drivers/mmc/core/sdio.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 39 ++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
 >
-> diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-> index 0e32ca7b9488..7b40553d3934 100644
-> --- a/drivers/mmc/core/sdio.c
-> +++ b/drivers/mmc/core/sdio.c
-> @@ -176,15 +176,18 @@ static int sdio_read_cccr(struct mmc_card *card, u3=
-2 ocr)
->                         if (mmc_host_uhs(card->host)) {
->                                 if (data & SDIO_UHS_DDR50)
->                                         card->sw_caps.sd3_bus_mode
-> -                                               |=3D SD_MODE_UHS_DDR50;
-> +                                               |=3D SD_MODE_UHS_DDR50 | =
-SD_MODE_UHS_SDR50
-> +                                                       | SD_MODE_UHS_SDR=
-25 | SD_MODE_UHS_SDR12;
->
->                                 if (data & SDIO_UHS_SDR50)
->                                         card->sw_caps.sd3_bus_mode
-> -                                               |=3D SD_MODE_UHS_SDR50;
-> +                                               |=3D SD_MODE_UHS_SDR50 | =
-SD_MODE_UHS_SDR25
-> +                                                       | SD_MODE_UHS_SDR=
-12;
->
->                                 if (data & SDIO_UHS_SDR104)
->                                         card->sw_caps.sd3_bus_mode
-> -                                               |=3D SD_MODE_UHS_SDR104;
-> +                                               |=3D SD_MODE_UHS_SDR104 |=
- SD_MODE_UHS_SDR50
-> +                                                       | SD_MODE_UHS_SDR=
-25 | SD_MODE_UHS_SDR12;
->                         }
->
->                         ret =3D mmc_io_rw_direct(card, 0, 0,
-> @@ -537,10 +540,8 @@ static int sdio_set_bus_speed_mode(struct mmc_card *=
-card)
->         max_rate =3D min_not_zero(card->quirk_max_rate,
->                                 card->sw_caps.uhs_max_dtr);
->
-> -       if (bus_speed) {
-> -               mmc_set_timing(card->host, timing);
-> -               mmc_set_clock(card->host, max_rate);
-> -       }
-> +       mmc_set_timing(card->host, timing);
-> +       mmc_set_clock(card->host, max_rate);
->
->         return 0;
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 1d7f84b23a22..a76b4513fbec 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -38,6 +38,16 @@
+>  #define  ESDHC_VENDOR_SPEC_SDIO_QUIRK  (1 << 1)
+>  #define  ESDHC_VENDOR_SPEC_VSELECT     (1 << 1)
+>  #define  ESDHC_VENDOR_SPEC_FRC_SDCLK_ON        (1 << 8)
+> +#define ESDHC_DEBUG_SEL_AND_STATUS_REG         0xc2
+> +#define ESDHC_DEBUG_SEL_REG                    0xc3
+> +#define ESDHC_DEBUG_SEL_MASK                   0xf
+> +#define ESDHC_DEBUG_SEL_CMD_STATE              1
+> +#define ESDHC_DEBUG_SEL_DATA_STATE             2
+> +#define ESDHC_DEBUG_SEL_TRANS_STATE            3
+> +#define ESDHC_DEBUG_SEL_DMA_STATE              4
+> +#define ESDHC_DEBUG_SEL_ADMA_STATE             5
+> +#define ESDHC_DEBUG_SEL_FIFO_STATE             6
+> +#define ESDHC_DEBUG_SEL_ASYNC_FIFO_STATE       7
+>  #define ESDHC_WTMK_LVL                 0x44
+>  #define  ESDHC_WTMK_DEFAULT_VAL                0x10401040
+>  #define  ESDHC_WTMK_LVL_RD_WML_MASK    0x000000FF
+> @@ -348,6 +358,34 @@ static inline void esdhc_clrset_le(struct sdhci_host *host, u32 mask, u32 val, i
+>         writel(((readl(base) & ~(mask << shift)) | (val << shift)), base);
 >  }
+>
+> +#define DRIVER_NAME "sdhci-esdhc-imx"
+> +#define ESDHC_IMX_DUMP(f, x...) \
+> +       pr_err("%s: " DRIVER_NAME ": " f, mmc_hostname(host->mmc), ## x)
+> +static void esdhc_dump_debug_regs(struct sdhci_host *host)
+> +{
+> +       int i;
+> +       char *debug_status[7] = {
+> +                                "cmd debug status",
+> +                                "data debug status",
+> +                                "trans debug status",
+> +                                "dma debug status",
+> +                                "adma debug status",
+> +                                "fifo debug status",
+> +                                "async fifo debug status"
+> +       };
+> +
+> +       ESDHC_IMX_DUMP("========= ESDHC IMX DEBUG STATUS DUMP =========\n");
+> +       for (i = 0; i < 7; i++) {
+> +               esdhc_clrset_le(host, ESDHC_DEBUG_SEL_MASK,
+> +                       ESDHC_DEBUG_SEL_CMD_STATE + i, ESDHC_DEBUG_SEL_REG);
+> +               ESDHC_IMX_DUMP("%s:  0x%04x\n", debug_status[i],
+> +                       readw(host->ioaddr + ESDHC_DEBUG_SEL_AND_STATUS_REG));
+> +       }
+> +
+> +       esdhc_clrset_le(host, ESDHC_DEBUG_SEL_MASK, 0, ESDHC_DEBUG_SEL_REG);
+> +
+> +}
+> +
+>  static inline void esdhc_wait_for_card_clock_gate_off(struct sdhci_host *host)
+>  {
+>         u32 present_state;
+> @@ -1237,6 +1275,7 @@ static struct sdhci_ops sdhci_esdhc_ops = {
+>         .set_uhs_signaling = esdhc_set_uhs_signaling,
+>         .reset = esdhc_reset,
+>         .irq = esdhc_cqhci_irq,
+> +       .dump_vendor_regs = esdhc_dump_debug_regs,
+>  };
+>
+>  static const struct sdhci_pltfm_data sdhci_esdhc_imx_pdata = {
 > --
 > 2.17.1
 >
