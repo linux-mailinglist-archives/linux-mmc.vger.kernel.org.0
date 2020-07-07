@@ -2,97 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1677216C65
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 Jul 2020 13:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25DA8216D0D
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 Jul 2020 14:45:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726745AbgGGL7J (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 Jul 2020 07:59:09 -0400
-Received: from relmlor2.renesas.com ([210.160.252.172]:54798 "EHLO
-        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727827AbgGGL7I (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Jul 2020 07:59:08 -0400
-X-IronPort-AV: E=Sophos;i="5.75,323,1589209200"; 
-   d="scan'208";a="51316743"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 07 Jul 2020 20:59:06 +0900
-Received: from localhost.localdomain (unknown [10.166.252.89])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 820F642325F3;
-        Tue,  7 Jul 2020 20:59:06 +0900 (JST)
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     ulf.hansson@linaro.org, robh+dt@kernel.org
-Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH v5 2/2] mmc: core: Add MMC_CAP2_FULL_PWR_CYCLE_IN_SUSPEND
-Date:   Tue,  7 Jul 2020 20:58:42 +0900
-Message-Id: <1594123122-13156-3-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1594123122-13156-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-References: <1594123122-13156-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+        id S1726757AbgGGMpA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 Jul 2020 08:45:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36130 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725944AbgGGMo7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Jul 2020 08:44:59 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D9D6C061755
+        for <linux-mmc@vger.kernel.org>; Tue,  7 Jul 2020 05:44:59 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id u25so24651201lfm.1
+        for <linux-mmc@vger.kernel.org>; Tue, 07 Jul 2020 05:44:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XoAI4QLYoTXCLy1fapT0ahtDuiwoiIQSeb+22mAXJW0=;
+        b=KxjoivZwJem0wMt8SdVJy95ATPbfBGIx7UVPlN221PDOpav8AeX6CAL5FfUKTbyL/o
+         S7fLUlmhcJU+odY0+QtJ3IinR6mfCiPtQD8JpJI1bdtaKNnu2emBHw3a0AZbtrrj6KCg
+         /+7uAe4Y7j7DlRAHm75zDQ5ElERAqnld/SxJ9we1i8Rw3drajnFZpz9gXwpYUG9o/hMF
+         2cxmX9xwIJFSz/ifoifDlQab7FZz6b3XzYUapw0obDqv0xrqlv8ss2su+UJnrx9NHiFk
+         bsprW2RIHT5l1QCExKUmr/e2gH/pSp6zdd+b3VBccdB4TbKDb0ZvtM3a1T4h7IY3wjoi
+         ud4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XoAI4QLYoTXCLy1fapT0ahtDuiwoiIQSeb+22mAXJW0=;
+        b=kJRd+QL9ZEgvm9xWZ0Evv9T/YqXYrXZASnqvMOLYUh2N2AOQIbiQqZV9+nSinDimjr
+         PDPhbcVyukKG0klFKUvFCbt1Qwq1gGzcOZ8eTALrgPckJzaqw5YSaoV44yH+ovitdkew
+         gt2rA1KxucnoQ1egtXGqJ7O3Yxoi24zG/xjMn22PJzDI6oTGDZ3Mjwy+tXyuBwBcjjzc
+         AnCufAHb37VPklSxVJjEREyoiewTWGI4hw+rImLPVxBZFgVt0vWj1BBcpJOHKRBbgMjb
+         rIhuaccMgg6jZ1dDQ57U/sjOTc7e77157xSDuiStwKCJHDQdklV5i9iIyXigbRxGmIMp
+         vwqA==
+X-Gm-Message-State: AOAM531ll6/sTYhiGhWcAlLiCqLsB/AAj8Z+16S6Z/TrDfJyxnaqEo6x
+        3mvCsr7N8++AK2Pc9TyVPjaNIg/jTY6DAvmKn1w=
+X-Google-Smtp-Source: ABdhPJyrP6NtyDCwuy4BqWui+dyDFwBH/e2UQ5b1gu83ejGn6nh54f4rQm3RFu1GuGBca/5Mro2LoW92kkj+RkpSsNY=
+X-Received: by 2002:a19:14e:: with SMTP id 75mr33148401lfb.7.1594125897594;
+ Tue, 07 Jul 2020 05:44:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAOMZO5DMMCZPfwNbTaG8_iQhWg2K1XeO719nSA0Gsf2ywHy4jQ@mail.gmail.com>
+ <20200205092653.GB2737@bogon.m.sigxcpu.org> <CAOMZO5AAzK0QprHpKHaFOANjspJKd_4YaoMqAoGYG4KftcyiYw@mail.gmail.com>
+ <VI1PR04MB5040A046E5D93265AE636B29901C0@VI1PR04MB5040.eurprd04.prod.outlook.com>
+ <VI1PR04MB504091C7991353F6092A8D91901A0@VI1PR04MB5040.eurprd04.prod.outlook.com>
+ <CAOMZO5CkSSidzLUSBUvJNAio3SnmU-fisTbDCiLN9v1EjS+HHQ@mail.gmail.com> <5ad361195f2e191484c8a231be0f5a07@akkea.ca>
+In-Reply-To: <5ad361195f2e191484c8a231be0f5a07@akkea.ca>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Tue, 7 Jul 2020 09:44:45 -0300
+Message-ID: <CAOMZO5BarV1=6rx9L_hkJJLUQSicwPNUO4HFKWAXSQ6n0N+Kzg@mail.gmail.com>
+Subject: Re: sdhci timeout on imx8mq
+To:     Angus Ainslie <angus@akkea.ca>
+Cc:     BOUGH CHEN <haibo.chen@nxp.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The commit 5a36d6bcdf23 ("mmc: core: Add DT-bindings for
-MMC_CAP2_FULL_PWR_CYCLE") added the "full-pwr-cycle" property which
-is possible to perform a full power cycle of the card at any time.
+Hi Angus,
 
-However, some environment (like r8a77951-salvator-xs) is possible
-to perform a full power cycle of the card in suspend via firmware
-(PSCI on arm-trusted-firmware). So, in worst case, since we are
-not doing a graceful shutdown of the eMMC device (just cut VCCQ
-while the eMMC is "sleeping") in suspend, it could lead to internal
-data corruptions. So, add MMC_CAP2_FULL_PWR_CYCLE_IN_SUSPEND
-to do a graceful shutdown which issues Power Off notification
-before entering system suspend.
+On Tue, Jun 30, 2020 at 4:39 PM Angus Ainslie <angus@akkea.ca> wrote:
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
----
- drivers/mmc/core/host.c  | 2 ++
- drivers/mmc/core/mmc.c   | 3 ++-
- include/linux/mmc/host.h | 1 +
- 3 files changed, 5 insertions(+), 1 deletion(-)
+> Has there been any progress with this. I'm getting this on about 50% of
 
-diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
-index 6141a85..7f87f44 100644
---- a/drivers/mmc/core/host.c
-+++ b/drivers/mmc/core/host.c
-@@ -277,6 +277,8 @@ int mmc_of_parse(struct mmc_host *host)
- 		host->caps |= MMC_CAP_SDIO_IRQ;
- 	if (device_property_read_bool(dev, "full-pwr-cycle"))
- 		host->caps2 |= MMC_CAP2_FULL_PWR_CYCLE;
-+	if (device_property_read_bool(dev, "full-pwr-cycle-in-suspend"))
-+		host->caps2 |= MMC_CAP2_FULL_PWR_CYCLE_IN_SUSPEND;
- 	if (device_property_read_bool(dev, "keep-power-in-suspend"))
- 		host->pm_caps |= MMC_PM_KEEP_POWER;
- 	if (device_property_read_bool(dev, "wakeup-source") ||
-diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-index 4203303..b3fa193 100644
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -2038,7 +2038,8 @@ static int _mmc_suspend(struct mmc_host *host, bool is_suspend)
- 		goto out;
- 
- 	if (mmc_can_poweroff_notify(host->card) &&
--		((host->caps2 & MMC_CAP2_FULL_PWR_CYCLE) || !is_suspend))
-+	    ((host->caps2 & MMC_CAP2_FULL_PWR_CYCLE) || !is_suspend ||
-+	     (host->caps2 & MMC_CAP2_FULL_PWR_CYCLE_IN_SUSPEND)))
- 		err = mmc_poweroff_notify(host->card, notify_type);
- 	else if (mmc_can_sleep(host->card))
- 		err = mmc_sleep(host);
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index 1fa4fa1..c5b6e97 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -352,6 +352,7 @@ struct mmc_host {
- 
- #define MMC_CAP2_BOOTPART_NOACC	(1 << 0)	/* Boot partition no access */
- #define MMC_CAP2_FULL_PWR_CYCLE	(1 << 2)	/* Can do full power cycle */
-+#define MMC_CAP2_FULL_PWR_CYCLE_IN_SUSPEND (1 << 3) /* Can do full power cycle in suspend */
- #define MMC_CAP2_HS200_1_8V_SDR	(1 << 5)        /* can support */
- #define MMC_CAP2_HS200_1_2V_SDR	(1 << 6)        /* can support */
- #define MMC_CAP2_HS200		(MMC_CAP2_HS200_1_8V_SDR | \
--- 
-2.7.4
+Not from my side, sorry.
 
+Bough,
+
+Do you know why this problem affects the imx8mq-evk versions that are
+populated with the Micron eMMC and not the ones with Sandisk eMMC?
+
+Thanks
