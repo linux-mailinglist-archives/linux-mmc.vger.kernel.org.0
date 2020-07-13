@@ -2,41 +2,41 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFB5E21D4F2
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 Jul 2020 13:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0337E21D5D7
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 Jul 2020 14:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729543AbgGML2P (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 Jul 2020 07:28:15 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:38668 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728714AbgGML2P (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Jul 2020 07:28:15 -0400
-Received: by mail-ot1-f65.google.com with SMTP id t18so9232561otq.5;
-        Mon, 13 Jul 2020 04:28:14 -0700 (PDT)
+        id S1729722AbgGMMY5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 Jul 2020 08:24:57 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:40792 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728714AbgGMMY4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Jul 2020 08:24:56 -0400
+Received: by mail-ot1-f66.google.com with SMTP id c25so9343712otf.7;
+        Mon, 13 Jul 2020 05:24:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=VmnKT8NempII3Hl6CSCL6SevjCL0TxGwM55hoFOSL6w=;
-        b=ijwSZrezftp9qiGvFtUXn2p2heic3ZTiiOAt9gFJ2ikEyH8XsC1lh4nFom+Cizq++w
-         Sh+WrL5pbGAlIb8eW7mBKWVoiqIq9UoFpJQ0woGNKtplXr3tLuftJ4Mr1LiJ1KqcX8kL
-         GNigjDIIYoZrdj8Gl5dJavVnyy7PXRsxe++6DZ71zOZX4i1IGWTHgXsrRM3BqlCs+2D/
-         srdsgT17nZdoUxoE90UtLCjyroKH5DYdWJplVhU9VdbirodGJJjySyl4lHX0I+BPBE0z
-         WzkyAyKsWmPkFYbWfONZzKKLTN9gtx3hh/ha6Cu6s5EtxrI8ObeGJQKloMhGSNaOrS1H
-         Qz4A==
-X-Gm-Message-State: AOAM532oppO0oxEQDhBEwg7TF8Ms5wyreyfu1+2N6PeHVYqL21D6F9Sm
-        KGr3kBYRP0e3pAAfUwTSKb6VHNJRzT2P9aJjaMY=
-X-Google-Smtp-Source: ABdhPJwv4h+C8McCqHPa2Ma5j3n5B0iRYxepvun9IsQB2dq8KH6i5EsEEc/F6rTu4L3Gfc2JnGupkQa9YqmL6akFntg=
-X-Received: by 2002:a9d:2646:: with SMTP id a64mr65107444otb.107.1594639694020;
- Mon, 13 Jul 2020 04:28:14 -0700 (PDT)
+        bh=NKzDJKlpDpfQR0XqsgcICeQR3a964ULdFkGju83hPh4=;
+        b=PZ8YhE6GE31idexlhmfb3Jirg1fmIzWelFz3bJoSnqo+EVZ4vFFRokFm0JrlHU+Wjt
+         8qYOpYcBQUmBcVX0OUjBRQkoBWsjFeCRcJbcXh8eDr7pEzceDVZB5EIZvviFDvUnaZ8x
+         uljKNjdd66Zog078sR8ZVwZsMp9ZKUAApgab5j0b11Zc2PNDmQStQJzTp3cxWTcd/e9O
+         Lbm/sK+7BLfprg7I1F6n1rLcPnhCqP7HeRblQ4MNtq9JdVXNSQZD/RWpRa9BvsTHvFGv
+         D5v7NmezD//lb4mE/NwB/84RY9jCWGE0vK7uOYm9nLO/N5m6KKkON4NwebacF8WQ8ozX
+         Qtog==
+X-Gm-Message-State: AOAM530+jeSYYKO7B1XtwgyItnWIIqrhIk0rckd9yaUI4yVg/Hu/M8ka
+        dH4zr6CDpZg/PtRo7TCQyrFQXkQoI+Qjn3B3lIw=
+X-Google-Smtp-Source: ABdhPJxFpWOlCjGDSPwtxen5jRbE20ZbTRROeQPrTNlSL/t1mKoQeo8W3SZGj1ef99nPDdRUJYfaYSbuaSZRFBz1XuE=
+X-Received: by 2002:a05:6830:1451:: with SMTP id w17mr57240483otp.250.1594643094760;
+ Mon, 13 Jul 2020 05:24:54 -0700 (PDT)
 MIME-Version: 1.0
 References: <1594230511-24790-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <1594230511-24790-6-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <1594230511-24790-6-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <1594230511-24790-7-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <1594230511-24790-7-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 13 Jul 2020 13:28:03 +0200
-Message-ID: <CAMuHMdWDyxypASwxxjfyYw7tOxkwWXTjC=NeHZj9B8kaYjO9WQ@mail.gmail.com>
-Subject: Re: [PATCH 5/8] arm64: defconfig: Enable R8A774E1 SoC
+Date:   Mon, 13 Jul 2020 14:24:43 +0200
+Message-ID: <CAMuHMdWBLrPQJJzs=K7fHzu4UJsKyj29Yu9KZK4vf9QQNLQF+Q@mail.gmail.com>
+Subject: Re: [PATCH 6/8] arm64: dts: renesas: Initial r8a774e1 SoC device tree
 To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Cc:     Magnus Damm <magnus.damm@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -61,23 +61,59 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Jul 8, 2020 at 7:48 PM Lad Prabhakar
+Hi Prabhakar,
+
+On Wed, Jul 8, 2020 at 7:49 PM Lad Prabhakar
 <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
 > From: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
 >
-> Enable the Renesas RZ/G2H (R8A774E1) SoC in the ARM64 defconfig.
+> Basic support for the RZ/G2H SoC.
 >
 > Signed-off-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
 > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
+Thanks for your patch!
+
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/renesas/r8a774e1.dtsi
+
+> +               avb: ethernet@e6800000 {
+> +                       reg = <0 0xe6800000 0 0x800>, <0 0xe6a00000 0 0x10000>;
+
+According to Rev. 1.00 of the Hardware User's Manual, RZ/G2H does not
+have the Stream Buffer for EtherAVB-IF, so the second register block
+should be dropped.
+
+> +                       #address-cells = <1>;
+> +                       #size-cells = <0>;
+> +                       status = "disabled";
+> +
+> +                       /* placeholder */
+> +               };
+
+> +               gic: interrupt-controller@f1010000 {
+> +                       compatible = "arm,gic-400";
+> +                       #interrupt-cells = <3>;
+> +                       #address-cells = <0>;
+> +                       interrupt-controller;
+> +                       reg = <0x0 0xf1010000 0 0x1000>,
+> +                             <0x0 0xf1020000 0 0x20000>,
+> +                             <0x0 0xf1040000 0 0x20000>,
+> +                             <0x0 0xf1060000 0 0x20000>;
+> +                       interrupts = <GIC_PPI 9
+> +                                       (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_LEVEL_HIGH)>;
+
+Like Marc already pointed out, GIC_CPU_MASK_SIMPLE(8).
+
+With the above fixed:
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in renesas-devel for v5.9.
+Will queue in renesas-devel for v5.9, after fixing the above.
 
 Gr{oetje,eeting}s,
 
                         Geert
 
--- 
+--
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
