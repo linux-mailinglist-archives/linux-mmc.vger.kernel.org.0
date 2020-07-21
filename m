@@ -2,162 +2,87 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D011228B13
-	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jul 2020 23:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89191228B43
+	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jul 2020 23:28:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731269AbgGUVYH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 21 Jul 2020 17:24:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42896 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731217AbgGUVYG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 21 Jul 2020 17:24:06 -0400
-Received: from localhost (mobile-166-175-191-139.mycingular.net [166.175.191.139])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9A8DE2072E;
-        Tue, 21 Jul 2020 21:24:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595366646;
-        bh=mjbCzfQUyreChEBi1wQcXinwxAO9wpEShodrHsLYVfw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DKzgEVzYhCOd1k4J65eVRWxOQcNG1ASmYxJ5Z/mXS7fZ8KU0CLQE3rxbK+141d2GZ
-         NzU6oB8UGRcoVccm7+ZKhx9J2Ir/djD03nzv0Qt2EUR5A/lLTHpt3dGvmsOkaIiUP8
-         9sl+5pCSCMhsCCfRejjAW2Xbelo1ADGpGtFe6EjA=
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Ricky Wu <ricky_wu@realtek.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
+        id S1731101AbgGUV2v (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 21 Jul 2020 17:28:51 -0400
+Received: from mout.kundenserver.de ([217.72.192.73]:57091 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730214AbgGUV2u (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jul 2020 17:28:50 -0400
+Received: from mail-qt1-f174.google.com ([209.85.160.174]) by
+ mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1Mc0Er-1kXaox3bKx-00dUij; Tue, 21 Jul 2020 23:28:49 +0200
+Received: by mail-qt1-f174.google.com with SMTP id e12so286991qtr.9;
+        Tue, 21 Jul 2020 14:28:48 -0700 (PDT)
+X-Gm-Message-State: AOAM532p9c3ushlnXnWNzO3TZkd19rn8dGWVMilr+mXoAk7QatC3u3/i
+        iPBp6vsQOzhi9+cLu0TOQTDoqiva4cStJT5bINM=
+X-Google-Smtp-Source: ABdhPJyHziGF4HFhHNTWIdmNTeJezHXP51PejxqSdbTC7t3xHTxw8+J9ZAPV/mtYZnOeTdBLEx83edOMw3nAuOM7JGo=
+X-Received: by 2002:ac8:6743:: with SMTP id n3mr7804927qtp.7.1595366927645;
+ Tue, 21 Jul 2020 14:28:47 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200721212336.1159079-1-helgaas@kernel.org>
+In-Reply-To: <20200721212336.1159079-1-helgaas@kernel.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 21 Jul 2020 23:28:31 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0aqus-7Z-qSc9J+gOsSCX5Ad570F-3a_HB1MHfJor7Bg@mail.gmail.com>
+Message-ID: <CAK8P3a0aqus-7Z-qSc9J+gOsSCX5Ad570F-3a_HB1MHfJor7Bg@mail.gmail.com>
+Subject: Re: [PATCH 0/5] minor rtsx cleanups
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Ricky Wu <ricky_wu@realtek.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Rui Feng <rui_feng@realsil.com.cn>, Klaus Doth <kdlnx@doth.eu>,
         Linus Walleij <linus.walleij@linaro.org>,
         Rui Miguel Silva <rmfrfs@gmail.com>,
         Puranjay Mohan <puranjay12@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5/5] misc: rtsx: Use standard PCI definitions
-Date:   Tue, 21 Jul 2020 16:23:36 -0500
-Message-Id: <20200721212336.1159079-6-helgaas@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200721212336.1159079-1-helgaas@kernel.org>
-References: <20200721212336.1159079-1-helgaas@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:4apkgCuGVwjG1fSFYMnNcVMn9c3IUfp7i++rQEf43fS+6FmRjAS
+ dtGTaktKo1OIWhPbCGs5C7mJwWR5HNQ7duGQ17fp8QKv5LRtMfCL5I5L0TIv3MGqGbn884s
+ 1Mtgltm+HQ3Phw4vOLlW9otq/PWFtfgPmhnkvoq2ML9/c/fIaXg5JBWJnSCcNWUTBke01Od
+ lYLc+7+Iqt6XmBdJEi20w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lQeZ/MSEWbY=:VS08gaRT2ZIlKcK0IstbK3
+ Ig5t417b4+pidSjhEJJFq4NucELDUcbiBEGFHHUyu8yp/tDK6SPMPKe1XGeqzU0Qb+rhqpy9f
+ pvh4T7764pVTSZZkwTknXdrfQ/BQMAS4Y39OaSTWKRwj1PN36ZSwYwTJ+sHgYjpPemKlE0RJy
+ L1R0bJb/Ykpt2nn7s1hjNetUUP3ivQzR9H/WWRL9qVkzJmsQBY5joLEbY633wDFymlJnUluqt
+ 02+/HDb/fBuURn8BdSfu7yxOmgY2u+WAwlqV0W3J7Bn+145HqWG6MA1r0pF2f+V5PuCEj69qQ
+ 60vNWJIRa/gXJMZiTFT5At6y39eZ6SbfxzhQK+7UxQM2P5aBBrGGhv/sYNaMor/pmW4wzlSPA
+ 1m7F3fKrSboyPqSHFwTFl3JBZHufIcFQyFJ9mYM8mFiX09wnoPZ4IPpguPj8MagyedOsTs2Yl
+ ZwORXmqCvrU3ku/M3hp5UsrCoY6zcllRjyJjOBTnZhruidJYsQD00i0mVmdCQJHJNm2A+1vhV
+ IFBvkpVIaFrWkZ61/Z6eoJHfjyzSLAkgh6iDGmdEl5LUiiYnphaGvZhaSpccwr3wnu7qgCAtr
+ eJwvoSPMp5N9BCQ7Gzfhaux+4svoTQYTENJ9GYHzI/9AkVO4Aed/GJAenWpyR6BfmV1FcT9Vh
+ +mA8kcgDstx4lmx3adkvR7ZhTusMDkQjefH9MsSnYe+GyD+euVRdNRcHIwdhYEJTaxHqfN4hL
+ IcIB3sItee0avUyDAI5PdIPgRZlUITjeCShndduMyCaTqwHyopi1K4haDsU5vTa9U20sbZn+z
+ utTHi9steOuEb0RjLI15xcXZyjxyLnTczuhWt2KTo2eH34izpciCVXUrgu8F8UOKpklO9FWG0
+ ekLQFmUrEDEf7kJ3O1agRLUTxw+KywgF0z8odcwwEljskcXsgzkUXvsKtiNRsVepQcoZEBc/7
+ /SQimvQ+8XAAXLpICAYd58X4kED1yXpFebv8mUHa7SCmZUfIXyH/T
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+On Tue, Jul 21, 2020 at 11:23 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> From: Bjorn Helgaas <bhelgaas@google.com>
+>
+> Clean up some needlessly device-specific stuff in the Realtek card reader
+> drivers.
+>
+> This implements some of my suggestions from
+> https://lore.kernel.org/r/20200720220651.GA1035857@bjorn-Precision-5520
+>
+> This will conflict with Ricky's post here:
+> https://lore.kernel.org/r/20200706070259.32565-1-ricky_wu@realtek.com
+>
+> I'll be happy to update this on top of Ricky's patch after it's applied, or
+> Ricky could pick up these patches and base his on top.
 
-When reading registers defined by the PCIe spec, use the names already
-defined by the PCI core.  This makes maintenance of the PCI core and
-drivers easier.  No functional change intended.
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
----
- drivers/misc/cardreader/rts5249.c | 8 ++++----
- drivers/misc/cardreader/rts5260.c | 8 ++++----
- drivers/misc/cardreader/rts5261.c | 8 ++++----
- include/linux/rtsx_pci.h          | 5 -----
- 4 files changed, 12 insertions(+), 17 deletions(-)
+Looks all good to me,
 
-diff --git a/drivers/misc/cardreader/rts5249.c b/drivers/misc/cardreader/rts5249.c
-index 1b8149e806c1..941b3d77f1e9 100644
---- a/drivers/misc/cardreader/rts5249.c
-+++ b/drivers/misc/cardreader/rts5249.c
-@@ -105,16 +105,16 @@ static void rts5249_init_from_cfg(struct rtsx_pcr *pcr)
- 
- 	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
- 
--	if (lval & ASPM_L1_1_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
- 		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
- 
--	if (lval & ASPM_L1_2_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
- 		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
- 
--	if (lval & PM_L1_1_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
- 		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
- 
--	if (lval & PM_L1_2_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
- 		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
- 
- 	if (option->ltr_en) {
-diff --git a/drivers/misc/cardreader/rts5260.c b/drivers/misc/cardreader/rts5260.c
-index ebf77643cc90..b9f66b1384a6 100644
---- a/drivers/misc/cardreader/rts5260.c
-+++ b/drivers/misc/cardreader/rts5260.c
-@@ -508,16 +508,16 @@ static void rts5260_init_from_cfg(struct rtsx_pcr *pcr)
- 
- 	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
- 
--	if (lval & ASPM_L1_1_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
- 		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
- 
--	if (lval & ASPM_L1_2_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
- 		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
- 
--	if (lval & PM_L1_1_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
- 		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
- 
--	if (lval & PM_L1_2_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
- 		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
- 
- 	rts5260_pwr_saving_setting(pcr);
-diff --git a/drivers/misc/cardreader/rts5261.c b/drivers/misc/cardreader/rts5261.c
-index 4b6e3fe4a007..471961487ff8 100644
---- a/drivers/misc/cardreader/rts5261.c
-+++ b/drivers/misc/cardreader/rts5261.c
-@@ -423,22 +423,22 @@ static void rts5261_init_from_cfg(struct rtsx_pcr *pcr)
- 
- 	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
- 
--	if (lval & ASPM_L1_1_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
- 		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
- 	else
- 		rtsx_clear_dev_flag(pcr, ASPM_L1_1_EN);
- 
--	if (lval & ASPM_L1_2_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
- 		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
- 	else
- 		rtsx_clear_dev_flag(pcr, ASPM_L1_2_EN);
- 
--	if (lval & PM_L1_1_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
- 		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
- 	else
- 		rtsx_clear_dev_flag(pcr, PM_L1_1_EN);
- 
--	if (lval & PM_L1_2_EN_MASK)
-+	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
- 		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
- 	else
- 		rtsx_clear_dev_flag(pcr, PM_L1_2_EN);
-diff --git a/include/linux/rtsx_pci.h b/include/linux/rtsx_pci.h
-index f1e27b858972..9f70cdedb124 100644
---- a/include/linux/rtsx_pci.h
-+++ b/include/linux/rtsx_pci.h
-@@ -1075,11 +1075,6 @@ struct pcr_ops {
- 
- enum PDEV_STAT  {PDEV_STAT_IDLE, PDEV_STAT_RUN};
- 
--#define ASPM_L1_1_EN_MASK		BIT(3)
--#define ASPM_L1_2_EN_MASK		BIT(2)
--#define PM_L1_1_EN_MASK		BIT(1)
--#define PM_L1_2_EN_MASK		BIT(0)
--
- #define ASPM_L1_1_EN			BIT(0)
- #define ASPM_L1_2_EN			BIT(1)
- #define PM_L1_1_EN				BIT(2)
--- 
-2.25.1
-
+Acked-by: Arnd Bergmann <arnd@arndb.de>
