@@ -2,87 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89191228B43
-	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jul 2020 23:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38094228E62
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 Jul 2020 05:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731101AbgGUV2v (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 21 Jul 2020 17:28:51 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:57091 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730214AbgGUV2u (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jul 2020 17:28:50 -0400
-Received: from mail-qt1-f174.google.com ([209.85.160.174]) by
- mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1Mc0Er-1kXaox3bKx-00dUij; Tue, 21 Jul 2020 23:28:49 +0200
-Received: by mail-qt1-f174.google.com with SMTP id e12so286991qtr.9;
-        Tue, 21 Jul 2020 14:28:48 -0700 (PDT)
-X-Gm-Message-State: AOAM532p9c3ushlnXnWNzO3TZkd19rn8dGWVMilr+mXoAk7QatC3u3/i
-        iPBp6vsQOzhi9+cLu0TOQTDoqiva4cStJT5bINM=
-X-Google-Smtp-Source: ABdhPJyHziGF4HFhHNTWIdmNTeJezHXP51PejxqSdbTC7t3xHTxw8+J9ZAPV/mtYZnOeTdBLEx83edOMw3nAuOM7JGo=
-X-Received: by 2002:ac8:6743:: with SMTP id n3mr7804927qtp.7.1595366927645;
- Tue, 21 Jul 2020 14:28:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200721212336.1159079-1-helgaas@kernel.org>
-In-Reply-To: <20200721212336.1159079-1-helgaas@kernel.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 21 Jul 2020 23:28:31 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0aqus-7Z-qSc9J+gOsSCX5Ad570F-3a_HB1MHfJor7Bg@mail.gmail.com>
-Message-ID: <CAK8P3a0aqus-7Z-qSc9J+gOsSCX5Ad570F-3a_HB1MHfJor7Bg@mail.gmail.com>
-Subject: Re: [PATCH 0/5] minor rtsx cleanups
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Ricky Wu <ricky_wu@realtek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1731860AbgGVDF4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 21 Jul 2020 23:05:56 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:35800 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731837AbgGVDF4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jul 2020 23:05:56 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06M2kTjo191446;
+        Wed, 22 Jul 2020 02:55:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=01BXubBTTggiGme5bAGTUB+IF85y9Gt5mJRvOB950ac=;
+ b=Ert4ww4qHWKQEvayACm71Ls9WksxesZoOaQuXn1rooMPeky0Jrb3Txsjhfab7151opH+
+ +ba9k2HaDjO+952t0cWNI9dQ5WIUYlfWf21ewpsJhWYjcp3N0pcTJv58VOOiL/rw4ZJ6
+ iz8Tt3rOrUGPL774E+aOOMdpr1AJ4rPAQVYkJ8tuwulHR8WsPhlqGNhCTMtVwJGZI8Su
+ HIBl9tQrmPPnenq/MvlY3LRHb4yzdgqsGtAjLjY176yMEaePZyb/9GiUf2AUdZxzL18+
+ SsUZlrUq97Om51YkiNCIV1uh+Ie3EhzxivvOSUhEO/vIHZqNevq4QRm6YstexeMtuoCD CA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 32brgrgmt4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 22 Jul 2020 02:55:24 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06M2m6rK048369;
+        Wed, 22 Jul 2020 02:55:24 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 32e9usdjva-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 22 Jul 2020 02:55:23 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06M2tDDp005896;
+        Wed, 22 Jul 2020 02:55:13 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 22 Jul 2020 02:55:13 +0000
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Maxim Levitsky <mlevitsk@redhat.com>, linux-kernel@vger.kernel.org,
+        Keith Busch <kbusch@kernel.org>,
+        Josef Bacik <josef@toxicpanda.com>,
+        "open list:BLOCK LAYER" <linux-block@vger.kernel.org>,
+        Sagi Grimberg <sagi@grimberg.me>, Jens Axboe <axboe@kernel.dk>,
+        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
+        "open list:SCSI CDROM DRIVER" <linux-scsi@vger.kernel.org>,
+        Tejun Heo <tj@kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Rui Feng <rui_feng@realsil.com.cn>, Klaus Doth <kdlnx@doth.eu>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:4apkgCuGVwjG1fSFYMnNcVMn9c3IUfp7i++rQEf43fS+6FmRjAS
- dtGTaktKo1OIWhPbCGs5C7mJwWR5HNQ7duGQ17fp8QKv5LRtMfCL5I5L0TIv3MGqGbn884s
- 1Mtgltm+HQ3Phw4vOLlW9otq/PWFtfgPmhnkvoq2ML9/c/fIaXg5JBWJnSCcNWUTBke01Od
- lYLc+7+Iqt6XmBdJEi20w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lQeZ/MSEWbY=:VS08gaRT2ZIlKcK0IstbK3
- Ig5t417b4+pidSjhEJJFq4NucELDUcbiBEGFHHUyu8yp/tDK6SPMPKe1XGeqzU0Qb+rhqpy9f
- pvh4T7764pVTSZZkwTknXdrfQ/BQMAS4Y39OaSTWKRwj1PN36ZSwYwTJ+sHgYjpPemKlE0RJy
- L1R0bJb/Ykpt2nn7s1hjNetUUP3ivQzR9H/WWRL9qVkzJmsQBY5joLEbY633wDFymlJnUluqt
- 02+/HDb/fBuURn8BdSfu7yxOmgY2u+WAwlqV0W3J7Bn+145HqWG6MA1r0pF2f+V5PuCEj69qQ
- 60vNWJIRa/gXJMZiTFT5At6y39eZ6SbfxzhQK+7UxQM2P5aBBrGGhv/sYNaMor/pmW4wzlSPA
- 1m7F3fKrSboyPqSHFwTFl3JBZHufIcFQyFJ9mYM8mFiX09wnoPZ4IPpguPj8MagyedOsTs2Yl
- ZwORXmqCvrU3ku/M3hp5UsrCoY6zcllRjyJjOBTnZhruidJYsQD00i0mVmdCQJHJNm2A+1vhV
- IFBvkpVIaFrWkZ61/Z6eoJHfjyzSLAkgh6iDGmdEl5LUiiYnphaGvZhaSpccwr3wnu7qgCAtr
- eJwvoSPMp5N9BCQ7Gzfhaux+4svoTQYTENJ9GYHzI/9AkVO4Aed/GJAenWpyR6BfmV1FcT9Vh
- +mA8kcgDstx4lmx3adkvR7ZhTusMDkQjefH9MsSnYe+GyD+euVRdNRcHIwdhYEJTaxHqfN4hL
- IcIB3sItee0avUyDAI5PdIPgRZlUITjeCShndduMyCaTqwHyopi1K4haDsU5vTa9U20sbZn+z
- utTHi9steOuEb0RjLI15xcXZyjxyLnTczuhWt2KTo2eH34izpciCVXUrgu8F8UOKpklO9FWG0
- ekLQFmUrEDEf7kJ3O1agRLUTxw+KywgF0z8odcwwEljskcXsgzkUXvsKtiNRsVepQcoZEBc/7
- /SQimvQ+8XAAXLpICAYd58X4kED1yXpFebv8mUHa7SCmZUfIXyH/T
+        Ajay Joshi <ajay.joshi@wdc.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        "open list:SONY MEMORYSTICK SUBSYSTEM" <linux-mmc@vger.kernel.org>,
+        Satya Tangirala <satyat@google.com>,
+        "open list:NETWORK BLOCK DEVICE (NBD)" <nbd@other.debian.org>,
+        Hou Tao <houtao1@huawei.com>, Jens Axboe <axboe@fb.com>,
+        "open list:VIRTIO CORE AND NET DRIVERS" 
+        <virtualization@lists.linux-foundation.org>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Alex Dubov <oakad@yahoo.com>
+Subject: Re: [PATCH 02/10] block: virtio-blk: check logical block size
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1zh7sfedj.fsf@ca-mkp.ca.oracle.com>
+References: <20200721105239.8270-1-mlevitsk@redhat.com>
+        <20200721105239.8270-3-mlevitsk@redhat.com>
+        <20200721151437.GB10620@lst.de>
+Date:   Tue, 21 Jul 2020 22:55:07 -0400
+In-Reply-To: <20200721151437.GB10620@lst.de> (Christoph Hellwig's message of
+        "Tue, 21 Jul 2020 17:14:37 +0200")
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9689 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 malwarescore=0 suspectscore=1 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007220017
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9689 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 spamscore=0
+ impostorscore=0 suspectscore=1 adultscore=0 clxscore=1011 mlxlogscore=999
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007220017
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Jul 21, 2020 at 11:23 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> From: Bjorn Helgaas <bhelgaas@google.com>
->
-> Clean up some needlessly device-specific stuff in the Realtek card reader
-> drivers.
->
-> This implements some of my suggestions from
-> https://lore.kernel.org/r/20200720220651.GA1035857@bjorn-Precision-5520
->
-> This will conflict with Ricky's post here:
-> https://lore.kernel.org/r/20200706070259.32565-1-ricky_wu@realtek.com
->
-> I'll be happy to update this on top of Ricky's patch after it's applied, or
-> Ricky could pick up these patches and base his on top.
 
+Christoph,
 
-Looks all good to me,
+> Hmm, I wonder if we should simply add the check and warning to
+> blk_queue_logical_block_size and add an error in that case.  Then
+> drivers only have to check the error return, which might add a lot
+> less boiler plate code.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Yep, I agree.
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
