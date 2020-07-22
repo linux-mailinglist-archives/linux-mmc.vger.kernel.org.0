@@ -2,51 +2,118 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4925C228FF8
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 Jul 2020 07:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9CF2293F8
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 Jul 2020 10:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728103AbgGVFmE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 22 Jul 2020 01:42:04 -0400
-Received: from smtp.utu.edu.uy ([190.0.150.6]:49256 "EHLO delta45.utu.edu.uy"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726696AbgGVFmD (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 22 Jul 2020 01:42:03 -0400
-X-Greylist: delayed 481 seconds by postgrey-1.27 at vger.kernel.org; Wed, 22 Jul 2020 01:41:53 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by delta45.utu.edu.uy (Postfix) with ESMTP id A0FDF1D0EF10;
-        Wed, 22 Jul 2020 02:32:12 -0300 (GMT+3)
-Received: from delta45.utu.edu.uy ([127.0.0.1])
-        by localhost (delta45.utu.edu.uy [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id j-d5-xIHkuKF; Wed, 22 Jul 2020 02:32:12 -0300 (GMT+3)
-Received: from localhost (localhost [127.0.0.1])
-        by delta45.utu.edu.uy (Postfix) with ESMTP id DC7E81D0EF09;
-        Wed, 22 Jul 2020 02:32:11 -0300 (GMT+3)
-X-Virus-Scanned: amavisd-new at delta45.utu.edu.uy
-Received: from delta45.utu.edu.uy ([127.0.0.1])
-        by localhost (delta45.utu.edu.uy [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id z5KYbxFuF39p; Wed, 22 Jul 2020 02:32:11 -0300 (GMT+3)
-Received: from delta45.utu.edu.uy (delta45 [172.17.1.45])
-        by delta45.utu.edu.uy (Postfix) with ESMTP id 7FB051D0EEFB;
-        Wed, 22 Jul 2020 02:32:10 -0300 (GMT+3)
-Date:   Wed, 22 Jul 2020 02:32:10 -0300 (GMT-03:00)
-From:   Darlehen Bedienung <aemartinez@utu.edu.uy>
-Reply-To: info_innoxcapitalservicesolution@aol.com
-Message-ID: <754360867.138094.1595395930510.JavaMail.zimbra@utu.edu.uy>
-Subject: 
+        id S1731052AbgGVIuw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 Jul 2020 04:50:52 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:59350 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1731035AbgGVIuv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 Jul 2020 04:50:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1595407849;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=H24R8qVAxwYFcsepHzRqkh8E1U4cEvx3I96Wl9ElKtQ=;
+        b=BsMkqFMF+ubQ7wV8IQwb1R24ZoiXLlH0MF5Kemojim66VCmvvZqO2LQ/BTeZQyWw0/lzDv
+        nKO82olnWP0W53eCBitVLNer4S5V2ilxmcgU1IVgsBxxvCN29c4dKXoefDYaHblosSrbco
+        gOLutvD6Bw2HAfToUzdf6TVC03FuY/8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-293-M4qKbPESN9G2w4ycP9uygQ-1; Wed, 22 Jul 2020 04:50:46 -0400
+X-MC-Unique: M4qKbPESN9G2w4ycP9uygQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 13A376C2F3;
+        Wed, 22 Jul 2020 08:50:34 +0000 (UTC)
+Received: from fedora-32-enviroment (unknown [10.35.206.213])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3615969317;
+        Wed, 22 Jul 2020 08:50:27 +0000 (UTC)
+Message-ID: <c9124b5487ed51e02dc9264fa8c87b93313fa68f.camel@redhat.com>
+Subject: Re: [PATCH 01/10] block: introduce blk_is_valid_logical_block_size
+From:   Maxim Levitsky <mlevitsk@redhat.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     linux-kernel@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+        Josef Bacik <josef@toxicpanda.com>,
+        "open list:BLOCK LAYER" <linux-block@vger.kernel.org>,
+        Sagi Grimberg <sagi@grimberg.me>, Jens Axboe <axboe@kernel.dk>,
+        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
+        "open list:SCSI CDROM DRIVER" <linux-scsi@vger.kernel.org>,
+        Tejun Heo <tj@kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Ajay Joshi <ajay.joshi@wdc.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        "open list:SONY MEMORYSTICK SUBSYSTEM" <linux-mmc@vger.kernel.org>,
+        Satya Tangirala <satyat@google.com>,
+        "open list:NETWORK BLOCK DEVICE (NBD)" <nbd@other.debian.org>,
+        Hou Tao <houtao1@huawei.com>, Jens Axboe <axboe@fb.com>,
+        "open list:VIRTIO CORE AND NET DRIVERS" 
+        <virtualization@lists.linux-foundation.org>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Alex Dubov <oakad@yahoo.com>
+Date:   Wed, 22 Jul 2020 11:50:26 +0300
+In-Reply-To: <20200721151313.GA10620@lst.de>
+References: <20200721105239.8270-1-mlevitsk@redhat.com>
+         <20200721105239.8270-2-mlevitsk@redhat.com> <20200721151313.GA10620@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [172.17.1.45]
-X-Mailer: Zimbra 8.8.12_GA_3866 (zclient/8.8.12_GA_3866)
-X-Authenticated-User: aemartinez@utu.edu.uy
-Thread-Index: sHxyVNlBzwToKpIuoIGp0++CnI1oLA==
-Thread-Topic: 
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Tue, 2020-07-21 at 17:13 +0200, Christoph Hellwig wrote:
+> > +/**
+> > + * blk_check_logical_block_size - check if logical block size is
+> > supported
+> > + * by the kernel
+> > + * @size:  the logical block size, in bytes
+> > + *
+> > + * Description:
+> > + *   This function checks if the block layers supports given block
+> > size
+> > + **/
+> > +bool blk_is_valid_logical_block_size(unsigned int size)
+> > +{
+> > +	return size >= SECTOR_SIZE && size <= PAGE_SIZE &&
+> > !is_power_of_2(size);
+> 
+> Shouldn't this be a ... && is_power_of_2(size)?
+Yep. I noticed that few minutes after I sent the patches.
 
+> 
+> >  	if (q->limits.io_min < q->limits.physical_block_size)
+> >  		q->limits.io_min = q->limits.physical_block_size;
+> > +
+> >  }
+> 
+> This adds a pointless empty line.
+Will fix.
+> 
+> > +extern bool blk_is_valid_logical_block_size(unsigned int size);
+> 
+> No need for externs on function declarations.
+I also think so, but I followed the style of all existing function
+prototypes in this file. Most of them have 'extern'.
 
-Schönen Tag,Wir sind zuverlässige, vertrauenswürdige Kreditgeber, Wir bieten Darlehen an Unternehmen und Privatpersonen zu niedrigen und günstigen Zinssatz von 2%. Sind Sie auf der Suche nach einem Business-Darlehen, persönliche Darlehen, Schuldenkonsolidierung, unbesicherte Darlehen, Venture Capital. Kontaktieren Sie uns mit Name, Land, Darlehensbetrag, Dauer und Telefonnummer.GrüßeHerr DA COSTA DARREN FAY
+Thanks for the review!
+
+Best regards,
+	maxim Levitsky
+
