@@ -2,189 +2,106 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D2C622E611
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 Jul 2020 08:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF9A22E644
+	for <lists+linux-mmc@lfdr.de>; Mon, 27 Jul 2020 09:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726887AbgG0GvF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 Jul 2020 02:51:05 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:16363 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726278AbgG0GvE (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 27 Jul 2020 02:51:04 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1595832664; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=NZJVjYhVsFEASgD9T7lU7RM9AwnOeyEC5q0Uw50tNJ4=;
- b=JysotARB/reul7PGShxTLageak5DsuOj1NHaTavmRJ8OHR5II23t44vkiY5mMpCIATS0aLHZ
- s6FLMiBomuTGyO1NQH+NwOsfrQMBoOni2YmoLf8JxY4B5OHi5jW6ncRP0LbhfKWIG/RmnLk5
- ML67pOC6QNiK8TVQMN4FCZO8kvk=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n19.prod.us-east-1.postgun.com with SMTP id
- 5f1e7940a61bb9e3f52225ba (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 27 Jul 2020 06:50:40
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4E8AAC433C6; Mon, 27 Jul 2020 06:50:39 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: sbhanu)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7C5A3C433C9;
-        Mon, 27 Jul 2020 06:50:38 +0000 (UTC)
+        id S1726183AbgG0HQd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 Jul 2020 03:16:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55444 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726116AbgG0HQd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Jul 2020 03:16:33 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DAC5C0619D2
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Jul 2020 00:16:33 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id l2so3173320wrc.7
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Jul 2020 00:16:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=5mSqmXOzjDhWVi9ac6qJDpYRiKhmA/3B9Ie+LL65UlA=;
+        b=EGCV3QGKHoebnh+q7Kp08D1IDv28BjTwI2DthyGx/QmM9M2MNvFSAVxC8iVrEWd1/4
+         Q6t0zz0S+GG58SY8/cCqTYM+sf+rKjjd7Khim6RL/2y48h3KSLFMiyEn9lfG33AxBiIV
+         XYeFa1iyM2JpHOGeEPc53tDa2caxtIGERpQUNP8ffgl8MBTVDsiak4Ol+72EBRExpHTb
+         GXLSqz9kceUKb3pEM6v3Wh7H7qhqsSnRQYLhQcbqHwpiZ0Gm5yPIXO6D8Vurl4nhrZfp
+         GDdAoFgJYZr4X5qyLkCZdjaL8o6l+J5xvy0Po6BlCXlgXqCWp8R7cVudS6TdbsM6EZsb
+         rLVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=5mSqmXOzjDhWVi9ac6qJDpYRiKhmA/3B9Ie+LL65UlA=;
+        b=ffIk0z02Au1Q01E6dG47dNCnq+gdtIY8+Q8r+3pqetcTP/w/ygv66Mi8S07wnQhLmM
+         La89YNNgBOHZxyeVSxqyqCsifOC0ihgdxA6//6qzQs/FjroP3MpcFnX4TwJtYjJpRA21
+         8e1CW7PrUy1BHd1iTlVf9Jewd7HIpRw2x8eTYUcnvtfJ3a5AVba8Upmx0s8kTSPk56ae
+         YGU4+9Z4ntmFOQ3F4wkzMg+kYA1FiCKwZrPoklDPUWinrIeRNqY6Pf7+10ZH9bTxtgbH
+         pJLRCeFgnKkkpWQgw9V/NNTbzZuD8ikK1pPfuYGOUuGgxQa260T/pMAyfp3WHOKone6x
+         OnfQ==
+X-Gm-Message-State: AOAM5310cJAYgqWR/trmqSIjVPnKQoGpnyhfYNU+O7TB7PoemKdmVEoT
+        Zte31qUvFY9X0wBrIZVX0zsWpDBwg32AdJhRqKs=
+X-Google-Smtp-Source: ABdhPJyer4WbTWRn3yHkTbI1wuWquHk3FqSulrZy+VUcUxoyBC17oqz+UwcmvODnXrNQ1PblrVjIGezPjUk5DAtzhpI=
+X-Received: by 2002:adf:ef92:: with SMTP id d18mr20353550wro.71.1595834191792;
+ Mon, 27 Jul 2020 00:16:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 27 Jul 2020 12:20:38 +0530
-From:   sbhanu@codeaurora.org
-To:     Matthias Kaehlcke <mka@chromium.org>
-Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        robh+dt@kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, rnayak@codeaurora.org,
-        Pradeep P V K <ppvk@codeaurora.org>,
-        devicetree-owner@vger.kernel.org
-Subject: Re: [PATCH V2] arm64: dts: qcom: sc7180: Add bandwidth votes for eMMC
- and SDcard
-In-Reply-To: <20200724171018.GZ3191083@google.com>
-References: <1595328381-29552-1-git-send-email-sbhanu@codeaurora.org>
- <20200724171018.GZ3191083@google.com>
-Message-ID: <7ffcb56e9e6723f4bae687e0f491cb93@codeaurora.org>
-X-Sender: sbhanu@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Received: by 2002:a1c:3105:0:0:0:0:0 with HTTP; Mon, 27 Jul 2020 00:16:31
+ -0700 (PDT)
+Reply-To: mrs.vernitha.maynard@mail.bg
+From:   Vernitha Maynard <mrssarahw15@gmail.com>
+Date:   Mon, 27 Jul 2020 07:16:31 +0000
+Message-ID: <CAK+6cZm-rit0vu9aYe98XkTn2eYSGm1iOSrFg=6Mej8=KRE6iw@mail.gmail.com>
+Subject: Greeting,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 2020-07-24 22:40, Matthias Kaehlcke wrote:
-> Hi Shaik,
-> 
-> On Tue, Jul 21, 2020 at 04:16:21PM +0530, Shaik Sajida Bhanu wrote:
->> From: Pradeep P V K <ppvk@codeaurora.org>
->> 
->> Add the bandwidth domain supporting performance state and
->> the corresponding OPP tables for the sdhc device on sc7180.
->> 
->> Signed-off-by: Pradeep P V K <ppvk@codeaurora.org>
->> Signed-off-by: Shaik Sajida Bhanu <sbhanu@codeaurora.org>
->> ---
->> 
->> Changes since V1:
->> 	- Incorporated review comments by Bjorn Andersson.
->> ---
->>  arch/arm64/boot/dts/qcom/sc7180.dtsi | 15 +++++++++++++++
->>  1 file changed, 15 insertions(+)
->> 
->> diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi 
->> b/arch/arm64/boot/dts/qcom/sc7180.dtsi
->> index 68f9894..d78a066 100644
->> --- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
->> @@ -684,6 +684,9 @@
->>  			clocks = <&gcc GCC_SDCC1_APPS_CLK>,
->>  					<&gcc GCC_SDCC1_AHB_CLK>;
->>  			clock-names = "core", "iface";
->> +			interconnects = <&aggre1_noc MASTER_EMMC &mc_virt SLAVE_EBI1>,
->> +				<&gem_noc MASTER_APPSS_PROC &config_noc SLAVE_EMMC_CFG>;
->> +			interconnect-names = "sdhc-ddr","cpu-sdhc";
->>  			power-domains = <&rpmhpd SC7180_CX>;
->>  			operating-points-v2 = <&sdhc1_opp_table>;
->> 
->> @@ -704,11 +707,15 @@
->>  				opp-100000000 {
->>  					opp-hz = /bits/ 64 <100000000>;
->>  					required-opps = <&rpmhpd_opp_low_svs>;
->> +					opp-peak-kBps = <100000 100000>;
->> +					opp-avg-kBps = <100000 50000>;
->>  				};
->> 
->>  				opp-384000000 {
->>  					opp-hz = /bits/ 64 <384000000>;
->>  					required-opps = <&rpmhpd_opp_svs_l1>;
->> +					opp-peak-kBps = <600000 900000>;
->> +					opp-avg-kBps = <261438 300000>;
->>  				};
->>  			};
->>  		};
->> @@ -2476,6 +2483,10 @@
->>  			clocks = <&gcc GCC_SDCC2_APPS_CLK>,
->>  					<&gcc GCC_SDCC2_AHB_CLK>;
->>  			clock-names = "core", "iface";
->> +
->> +			interconnects = <&aggre1_noc MASTER_SDCC_2 &mc_virt SLAVE_EBI1>,
->> +				<&gem_noc MASTER_APPSS_PROC &config_noc	SLAVE_SDCC_2>;
->> +			interconnect-names = "sdhc-ddr","cpu-sdhc";
->>  			power-domains = <&rpmhpd SC7180_CX>;
->>  			operating-points-v2 = <&sdhc2_opp_table>;
->> 
->> @@ -2489,11 +2500,15 @@
->>  				opp-100000000 {
->>  					opp-hz = /bits/ 64 <100000000>;
->>  					required-opps = <&rpmhpd_opp_low_svs>;
->> +					opp-peak-kBps = <160000 100000>;
->> +					opp-avg-kBps = <80000 50000>;
->>  				};
->> 
->>  				opp-202000000 {
->>  					opp-hz = /bits/ 64 <202000000>;
->>  					required-opps = <&rpmhpd_opp_svs_l1>;
->> +					opp-peak-kBps = <200000	120000>;
->> +					opp-avg-kBps = <100000 60000>;
->>  				};
->>  			};
->>  		};
-> 
-> Does the sdhci-msm driver actually have BW scaling support at this 
-> point?
-> 
+My Dear,
 
-yes
+With warm heart I offer my friendship, and my greetings to you in the
+name of our lord, and I hope this letter meets you in good time, I
+Propose with my free mind and as a person of integrity from God, I
+know that this message will appear as a surprise to you that we barely
+Know but the grace of God directed me to you and I wish you read this
+message and be blessed in name of the Lord.
 
-> There is commit 4ece9795be56 ("mmc: sdhci-msm: Add interconnect
-> bandwidth scaling support"), whose commit message says "make sure
-> interconnect driver is ready before handling interconnect scaling.".
-> 
-> I haven't seen any patch adding the scaling support (supposedly by
-> adding dev_pm_opp_set_bw() calls?). Did I miss it? If not it seems
-> it would make sense to post it in a series together with this patch,
-> as far as I can tell this patch alone does nothing in practical terms.
-> 
-> grep sdhc /sys/kernel/debug/interconnect/interconnect_summary
->   8804000.sdhci                          0            0            0
->   7c4000.sdhci                           0            0            0
->   7c4000.sdhci                           0            0            0
->   8804000.sdhci                          0            0            0
->   ...
+I have a brain tumor; I suffer terribly at the moment. My doctor just
+informed me that my days are numbered because of my health therefore
+condemned to certain death. Currently, I have exhausted all my savings
+for my medical care.
 
-"mmc: sdhci-msm: Use OPP API to set clk/perf 
-state"(https://lkml.org/lkml/2020/4/8/425) and "mmc: sdhci-msm: Add 
-interconnect bandwidth scaling 
-support"(https://lkml.org/lkml/2020/3/12/60) with these two patches 
-scaling will be supported for sdhci-msm driver.
+But I do have some funds for my charity project; these funds are
+deposited with one of the Banks here In Cote D'Ivoire West Africa.
+Purposed for charitable foundation, my marital status is such that I'm
+single because I lost my Husband over 9 years now and unfortunately we
+have not had a child together, which I am no one to leave my legacy
+for. Therefore, to release my funds I would like to make a donation so
+that there is no stiff tax on my money.
 
-the values  in  grep sdhc 
-/sys/kernel/debug/interconnect/interconnect_summary will be zero during 
-device is in suspend state... and the values in  grep sdhc 
-/sys/kernel/debug/interconnect/interconnect_summary during device in 
-resume state will be like the following::
+To this I would be so graceful and in order to help the poor to give
+what amounts to said legacy worth four Million Euros (=E2=82=AC4,000,000.00
+Million Euros) to enable you establish a charitable foundation in my
+memory so that the grace of God be with me until my last home so I can
+receive an honorable place with the Lord our father.
 
-cicalhost / # cat /sys/kernel/debug/interconnect/interconnect_summary | 
-grep sdh
-   8804000.sdhci                          0        60000       120000
-   7c4000.sdhci                           0       300000       900000
-   7c4000.sdhci                           0       300000       900000
-   8804000.sdhci                          0        60000       120000
-   8804000.sdhci                          0       100000       200000
-   7c4000.sdhci                           0       261438       600000
-   8804000.sdhci                          0        60000       120000
+I have no fear because before contacted you, I have several nights
+prayed for the Lord to give me the contact of a trusted person of whom
+I can entrust this matter and I believe my contacts to you is divine.
 
+Know that you can keep 30% of the money for yourself and the rest will
+be used to create a charitable foundation in my memory and a
+federation in the fight against cancer and also build orphanages.
+
+I count on your goodwill and especially on the proper use of these
+funds have something I do not doubt because I have great confidence in
+you that God may guide me toward you. My email
+mrs.vernitha.maynard@mail.bg
+
+
+Awaiting your prompt reply, receive my cordial and fraternal greetings.
+
+Yours Sincerely,
+Mrs Vernitha Maynard
