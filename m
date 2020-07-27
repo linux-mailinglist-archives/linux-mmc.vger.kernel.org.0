@@ -2,106 +2,239 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF9A22E644
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 Jul 2020 09:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B592622E9E4
+	for <lists+linux-mmc@lfdr.de>; Mon, 27 Jul 2020 12:21:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726183AbgG0HQd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 Jul 2020 03:16:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55444 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726116AbgG0HQd (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Jul 2020 03:16:33 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DAC5C0619D2
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Jul 2020 00:16:33 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id l2so3173320wrc.7
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Jul 2020 00:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=5mSqmXOzjDhWVi9ac6qJDpYRiKhmA/3B9Ie+LL65UlA=;
-        b=EGCV3QGKHoebnh+q7Kp08D1IDv28BjTwI2DthyGx/QmM9M2MNvFSAVxC8iVrEWd1/4
-         Q6t0zz0S+GG58SY8/cCqTYM+sf+rKjjd7Khim6RL/2y48h3KSLFMiyEn9lfG33AxBiIV
-         XYeFa1iyM2JpHOGeEPc53tDa2caxtIGERpQUNP8ffgl8MBTVDsiak4Ol+72EBRExpHTb
-         GXLSqz9kceUKb3pEM6v3Wh7H7qhqsSnRQYLhQcbqHwpiZ0Gm5yPIXO6D8Vurl4nhrZfp
-         GDdAoFgJYZr4X5qyLkCZdjaL8o6l+J5xvy0Po6BlCXlgXqCWp8R7cVudS6TdbsM6EZsb
-         rLVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=5mSqmXOzjDhWVi9ac6qJDpYRiKhmA/3B9Ie+LL65UlA=;
-        b=ffIk0z02Au1Q01E6dG47dNCnq+gdtIY8+Q8r+3pqetcTP/w/ygv66Mi8S07wnQhLmM
-         La89YNNgBOHZxyeVSxqyqCsifOC0ihgdxA6//6qzQs/FjroP3MpcFnX4TwJtYjJpRA21
-         8e1CW7PrUy1BHd1iTlVf9Jewd7HIpRw2x8eTYUcnvtfJ3a5AVba8Upmx0s8kTSPk56ae
-         YGU4+9Z4ntmFOQ3F4wkzMg+kYA1FiCKwZrPoklDPUWinrIeRNqY6Pf7+10ZH9bTxtgbH
-         pJLRCeFgnKkkpWQgw9V/NNTbzZuD8ikK1pPfuYGOUuGgxQa260T/pMAyfp3WHOKone6x
-         OnfQ==
-X-Gm-Message-State: AOAM5310cJAYgqWR/trmqSIjVPnKQoGpnyhfYNU+O7TB7PoemKdmVEoT
-        Zte31qUvFY9X0wBrIZVX0zsWpDBwg32AdJhRqKs=
-X-Google-Smtp-Source: ABdhPJyer4WbTWRn3yHkTbI1wuWquHk3FqSulrZy+VUcUxoyBC17oqz+UwcmvODnXrNQ1PblrVjIGezPjUk5DAtzhpI=
-X-Received: by 2002:adf:ef92:: with SMTP id d18mr20353550wro.71.1595834191792;
- Mon, 27 Jul 2020 00:16:31 -0700 (PDT)
+        id S1727814AbgG0KVw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 Jul 2020 06:21:52 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:30030 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727783AbgG0KVw (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Jul 2020 06:21:52 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1595845310; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=3ICFc++bUE871suhrVMhUt05tELazLFLFEnQc5uUq3s=; b=COMRw359HtXU2MBBK7FWxvSD2PC7eHt1O3GiSjxl4XywA6NolKSsUcRpRfjMJGxD4lXqfihe
+ QotQl18mVDEVleTup8NYK8hdHq34pBhiwuovxZiTCeQlY8tX6EytFqMHA+xy1xnx2gRbOFdL
+ rYEo2RLNMoiTBfVcE8WUYfKkt/s=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
+ 5f1eaab1aa44a6db05abd0aa (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 27 Jul 2020 10:21:37
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E45C1C43395; Mon, 27 Jul 2020 10:21:36 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.8 required=2.0 tests=ALL_TRUSTED,NICE_REPLY_A,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from [192.168.0.103] (unknown [49.205.245.25])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: vbadigan)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AB14EC433C9;
+        Mon, 27 Jul 2020 10:21:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AB14EC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vbadigan@codeaurora.org
+Subject: Re: [PATCH V1] mmc: sdhci-msm: Set IO pins in low power state during
+ suspend
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Andy Gross <agross@kernel.org>
+References: <1594213888-2780-1-git-send-email-vbadigan@codeaurora.org>
+ <1594213888-2780-2-git-send-email-vbadigan@codeaurora.org>
+ <20200710005233.GN3191083@google.com>
+ <63323fe2-e3a3-030f-5275-01fa6b04e23b@codeaurora.org>
+ <20200711001948.GO3191083@google.com>
+ <2c322fe1-6a86-43c9-11f3-387b917836ed@codeaurora.org>
+ <406769f7-2282-d658-5573-3a510d256eee@codeaurora.org>
+ <CAPDyKFpLg0HnZ6p=x9Egv9w65hB5CtFw=gV1rpL8vbWcHYtCzg@mail.gmail.com>
+From:   Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+Message-ID: <5779057c-1639-6e86-a44e-5a3827a4fd75@codeaurora.org>
+Date:   Mon, 27 Jul 2020 15:51:19 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Received: by 2002:a1c:3105:0:0:0:0:0 with HTTP; Mon, 27 Jul 2020 00:16:31
- -0700 (PDT)
-Reply-To: mrs.vernitha.maynard@mail.bg
-From:   Vernitha Maynard <mrssarahw15@gmail.com>
-Date:   Mon, 27 Jul 2020 07:16:31 +0000
-Message-ID: <CAK+6cZm-rit0vu9aYe98XkTn2eYSGm1iOSrFg=6Mej8=KRE6iw@mail.gmail.com>
-Subject: Greeting,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAPDyKFpLg0HnZ6p=x9Egv9w65hB5CtFw=gV1rpL8vbWcHYtCzg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-My Dear,
 
-With warm heart I offer my friendship, and my greetings to you in the
-name of our lord, and I hope this letter meets you in good time, I
-Propose with my free mind and as a person of integrity from God, I
-know that this message will appear as a surprise to you that we barely
-Know but the grace of God directed me to you and I wish you read this
-message and be blessed in name of the Lord.
+On 7/24/2020 3:06 PM, Ulf Hansson wrote:
+> On Tue, 14 Jul 2020 at 16:12, Veerabhadrarao Badiganti
+> <vbadigan@codeaurora.org> wrote:
+>>
+>> On 7/13/2020 9:26 PM, Veerabhadrarao Badiganti wrote:
+>>> On 7/11/2020 5:49 AM, Matthias Kaehlcke wrote:
+>>>> Hi,
+>>>>
+>>>> On Fri, Jul 10, 2020 at 04:28:36PM +0530, Veerabhadrarao Badiganti
+>>>> wrote:
+>>>>> Hi Mathias,
+>>>>>
+>>>>> On 7/10/2020 6:22 AM, Matthias Kaehlcke wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> On Wed, Jul 08, 2020 at 06:41:20PM +0530, Veerabhadrarao Badiganti
+>>>>>> wrote:
+>>>>>>> Configure SDHC IO pins with low power configuration when the driver
+>>>>>>> is in suspend state.
+>>>>>>>
+>>>>>>> Signed-off-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+>>>>>>> ---
+>>>>>>>     drivers/mmc/host/sdhci-msm.c | 17 +++++++++++++++++
+>>>>>>>     1 file changed, 17 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/drivers/mmc/host/sdhci-msm.c
+>>>>>>> b/drivers/mmc/host/sdhci-msm.c
+>>>>>>> index 392d41d57a6e..efd2bae1430c 100644
+>>>>>>> --- a/drivers/mmc/host/sdhci-msm.c
+>>>>>>> +++ b/drivers/mmc/host/sdhci-msm.c
+>>>>>>> @@ -15,6 +15,7 @@
+>>>>>>>     #include <linux/iopoll.h>
+>>>>>>>     #include <linux/regulator/consumer.h>
+>>>>>>>     #include <linux/interconnect.h>
+>>>>>>> +#include <linux/pinctrl/consumer.h>
+>>>>>>>     #include "sdhci-pltfm.h"
+>>>>>>>     #include "cqhci.h"
+>>>>>>> @@ -1352,6 +1353,19 @@ static void
+>>>>>>> sdhci_msm_set_uhs_signaling(struct sdhci_host *host,
+>>>>>>>             sdhci_msm_hs400(host, &mmc->ios);
+>>>>>>>     }
+>>>>>>> +static int sdhci_msm_set_pincfg(struct sdhci_msm_host *msm_host,
+>>>>>>> bool level)
+>>>>>>> +{
+>>>>>>> +    struct platform_device *pdev = msm_host->pdev;
+>>>>>>> +    int ret;
+>>>>>>> +
+>>>>>>> +    if (level)
+>>>>>>> +        ret = pinctrl_pm_select_default_state(&pdev->dev);
+>>>>>>> +    else
+>>>>>>> +        ret = pinctrl_pm_select_sleep_state(&pdev->dev);
+>>>>>>> +
+>>>>>>> +    return ret;
+>>>>>>> +}
+>>>>>>> +
+>>>>>>>     static int sdhci_msm_set_vmmc(struct mmc_host *mmc)
+>>>>>>>     {
+>>>>>>>         if (IS_ERR(mmc->supply.vmmc))
+>>>>>>> @@ -1596,6 +1610,9 @@ static void sdhci_msm_handle_pwr_irq(struct
+>>>>>>> sdhci_host *host, int irq)
+>>>>>>>                 ret = sdhci_msm_set_vqmmc(msm_host, mmc,
+>>>>>>>                         pwr_state & REQ_BUS_ON);
+>>>>>>>             if (!ret)
+>>>>>>> +            ret = sdhci_msm_set_pincfg(msm_host,
+>>>>>>> +                    pwr_state & REQ_BUS_ON);
+>>>>>>> +        if (!ret)
+>>>>>>>                 irq_ack |= CORE_PWRCTL_BUS_SUCCESS;
+>>>>>>>             else
+>>>>>>>                 irq_ack |= CORE_PWRCTL_BUS_FAIL;
+>>>>>> I happened to have a debug patch in my tree which logs when regulators
+>>>>>> are enabled/disabled, with this patch I see the SD card regulator
+>>>>>> toggling constantly after returning from the first system suspend.
+>>>>>>
+>>>>>> I added more logs:
+>>>>>>
+>>>>>> [ 1156.085819] DBG: sdhci_msm_set_pincfg: level = 0 (ret: 0)
+>>>>>> [ 1156.248936] DBG: sdhci_msm_set_pincfg: level = 1 (ret: 0)
+>>>>>> [ 1156.301989] DBG: sdhci_msm_set_pincfg: level = 0 (ret: 0)
+>>>>>> [ 1156.462383] DBG: sdhci_msm_set_pincfg: level = 1 (ret: 0)
+>>>>>> [ 1156.525988] DBG: sdhci_msm_set_pincfg: level = 0 (ret: 0)
+>>>>>> [ 1156.670372] DBG: sdhci_msm_set_pincfg: level = 1 (ret: 0)
+>>>>>> [ 1156.717935] DBG: sdhci_msm_set_pincfg: level = 0 (ret: 0)
+>>>>>> [ 1156.878122] DBG: sdhci_msm_set_pincfg: level = 1 (ret: 0)
+>>>>>> [ 1156.928134] DBG: sdhci_msm_set_pincfg: level = 0 (ret: 0)
+>>>>>>
+>>>>>> This is on an SC7180 platform. It doesn't run an upstream kernel
+>>>>>> though,
+>>>>>> but v5.4 with plenty of upstream patches.
+>>>>> I have verified this on couple of sc7180 targets (on Chrome platform
+>>>>> with
+>>>>> Chrome kernel).
+>>>>> But didn't see any issue. Its working as expected.
+>>>> Did you test system suspend too? At least in the Chrome OS kernel
+>>>> tree system
+>>>> suspend is not supported yet in the main branch, you'd need a pile of
+>>>> 30+
+>>>> extra patches to get it to work. This is expected to change soon
+>>>> though :)
+>>> Yes. I have verified with system  suspend-resume scenario.
+>>> Sorry forgot to mention this point explicitly in last response.
+>>>
+>>> I believe all the needed patches were present on qcom internal tree.
+>>> Suspend-resume is working fine on sc7180 qcom chrome tree.
+>>>
+>> Thanks Matthias. I cloud reproduce the issue on device without SDcard.
+>>
+>> Without SDcard inserted, cd-gpio (SD card detect GPIO) is getting read
+>> as active HIGH
+>> (as if card is inserted) during system-resume, resulting SDcard probe/scan.
+>>
+>> After that its triggering interrupt again when pinctrl config is applied
+>> during SDcard
+>> power-up sequence (as part of probe/scan) which is again triggering
+>> sdcard scan.
+>>
+>> I will have to change SDcard cd-gpio sleep config to fix this issue like
+>> below:
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi
+>> b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+>> index e2230f47a17d..9266d514e163 100644
+>> --- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+>> @@ -2447,7 +2447,7 @@
+>>
+>>                                   pinconf-sd-cd {
+>>                                           pins = "gpio69";
+>> -                                       bias-disable;
+>> +                                       bias-pull-up;
+>>                                           drive-strength = <2>;
+>>
+>> I will check more on why its getting read as active HIGH during resume.
+>>
+>>
+>>>>> Let me know if you are observing this issue constantly on multiple
+>>>>> boards, I
+>>>>> will share you
+>>>>> a debug patch to check it further.
+>>>> I currently have only one board with the SD card slot populated, I might
+>>>> get another one next week.
+>>>>
+>>>> The toggling occurs only when no SD card is inserted.
+>> Thanks
+>>
+>> Veera
+>>
+> Thanks for testing and for looking into this. Perhaps I should drop
+> the $subject patch then?
+Hi Uffe,
 
-I have a brain tumor; I suffer terribly at the moment. My doctor just
-informed me that my days are numbered because of my health therefore
-condemned to certain death. Currently, I have exhausted all my savings
-for my medical care.
+No need to drop this. We could root-casue the issue. Its a board 
+specific issue.
+This particular platform/board doesn't have external pull-up on the 
+cd-gpio pin.
 
-But I do have some funds for my charity project; these funds are
-deposited with one of the Banks here In Cote D'Ivoire West Africa.
-Purposed for charitable foundation, my marital status is such that I'm
-single because I lost my Husband over 9 years now and unfortunately we
-have not had a child together, which I am no one to leave my legacy
-for. Therefore, to release my funds I would like to make a donation so
-that there is no stiff tax on my money.
+So internal pull-up config has to be applied on cd-gpio all the time.
+We posted this dt change to enable internal pull 
+https://patchwork.kernel.org/patch/11675347/
 
-To this I would be so graceful and in order to help the poor to give
-what amounts to said legacy worth four Million Euros (=E2=82=AC4,000,000.00
-Million Euros) to enable you establish a charitable foundation in my
-memory so that the grace of God be with me until my last home so I can
-receive an honorable place with the Lord our father.
+Thanks
+Veera
 
-I have no fear because before contacted you, I have several nights
-prayed for the Lord to give me the contact of a trusted person of whom
-I can entrust this matter and I believe my contacts to you is divine.
-
-Know that you can keep 30% of the money for yourself and the rest will
-be used to create a charitable foundation in my memory and a
-federation in the fight against cancer and also build orphanages.
-
-I count on your goodwill and especially on the proper use of these
-funds have something I do not doubt because I have great confidence in
-you that God may guide me toward you. My email
-mrs.vernitha.maynard@mail.bg
-
-
-Awaiting your prompt reply, receive my cordial and fraternal greetings.
-
-Yours Sincerely,
-Mrs Vernitha Maynard
+> Uffe
