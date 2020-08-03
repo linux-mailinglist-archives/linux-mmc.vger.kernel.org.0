@@ -2,99 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2905A23A047
-	for <lists+linux-mmc@lfdr.de>; Mon,  3 Aug 2020 09:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A62C23AD81
+	for <lists+linux-mmc@lfdr.de>; Mon,  3 Aug 2020 21:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725948AbgHCH3I (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 3 Aug 2020 03:29:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52890 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725840AbgHCH3I (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 3 Aug 2020 03:29:08 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EDDAC06174A;
-        Mon,  3 Aug 2020 00:29:08 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id o1so20286506plk.1;
-        Mon, 03 Aug 2020 00:29:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=tlFv8p7PrXE4U8lsxSb50hSc4sf1CRTi/2In4NKS0vI=;
-        b=M2aThiXpuOYXtob+rSfmzq8jLCsn9uVeQHWSRRKPyEHhOW1DmGNsbIJzr70VA9ZRuq
-         zoDvmdMFS8e1VWlw5ZaK9py20GqaMtKUmO3+yR7I9tDiD1Xbs3UwfNyN4dLtTVfT7Lsh
-         o/OVznuBrWxbxDgsVUkrOSttpuUFHwCnbvLE4WOdHoVSPKDzymFNhCSNJ19x3uyUw6qV
-         4h2+2mdYq8zAdzGvSf9vglWxzMR687h7fPoCHNNfK7rW2aqSYvAl5N2ycKgRumHaJUaX
-         LKIulzL9iZz/lRmMAcYIUqcIloUy6NUtLm0kAlbIMxqP+i+zYNwcihLjROjxHLh/8tm9
-         dTvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=tlFv8p7PrXE4U8lsxSb50hSc4sf1CRTi/2In4NKS0vI=;
-        b=d4IxYyxdhSR4OoiR/4tVfJkSGQoq6NhoMhxfzYKkXxbDXLbTkHUlt6IeTT1q2pc62l
-         T8Olpi16RRRivvDTiL3EvYex/EgFr2K8uRQKUU0DRPIBhv2LzyOjdJ7BhboAczBk18ia
-         kM6ZAfC5R5DiNe6cvGmtITsv+6Ry8Jl6VSYIsar+2TuC86XcYZlHxjHRX6lnbw/BU5Yx
-         kcZJLlZGTFf03IvhCld8m7r7yEcdMlCss+FL0ltklbODyGXdXujnm2WUQnvEVZK7lR1Z
-         QzkfDgW183MV8rqZvPgNeaQd67ka/eYM4v0syajMT+9Kpia7mQJR7LS6aGt+RAUuCZhn
-         zqBw==
-X-Gm-Message-State: AOAM533LX3w24iscVul2WAkitajcCgjNDhLCaEzB1DSJQhVhzEIYaszs
-        620LSAXfUbLgGktw87mBSA==
-X-Google-Smtp-Source: ABdhPJznIV42qbkS5es22IyLBLsXWeUm2B7eWGSnRwo9XZftv8lhKWnhi6HwLyb/GSfnQKoZfxeZVQ==
-X-Received: by 2002:a17:90a:a58d:: with SMTP id b13mr16997327pjq.55.1596439747998;
-        Mon, 03 Aug 2020 00:29:07 -0700 (PDT)
-Received: from localhost.localdomain ([2402:3a80:ce2:8573:b0b2:951:c50:ed47])
-        by smtp.gmail.com with ESMTPSA id o10sm16648105pjo.55.2020.08.03.00.29.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2020 00:29:07 -0700 (PDT)
-From:   madhuparnabhowmik10@gmail.com
-To:     brucechang@via.com.tw, HaraldWelte@viatech.com,
-        ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ldv-project@linuxtesting.org, andrianov@ispras.ru,
-        Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
-Subject: [PATCH] drivers: mmc: host: via-sdmmc: Fix data race bug
-Date:   Mon,  3 Aug 2020 12:58:57 +0530
-Message-Id: <20200803072857.8880-1-madhuparnabhowmik10@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1728604AbgHCToe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 3 Aug 2020 15:44:34 -0400
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:18156 "EHLO
+        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728539AbgHCTod (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 3 Aug 2020 15:44:33 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5f2868bf0000>; Mon, 03 Aug 2020 12:42:55 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Mon, 03 Aug 2020 12:44:32 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Mon, 03 Aug 2020 12:44:32 -0700
+Received: from HQMAIL111.nvidia.com (172.20.187.18) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 3 Aug
+ 2020 19:44:27 +0000
+Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+ Transport; Mon, 3 Aug 2020 19:44:27 +0000
+Received: from skomatineni-linux.nvidia.com (Not Verified[10.2.167.221]) by rnnvemgw01.nvidia.com with Trustwave SEG (v7,5,8,10121)
+        id <B5f28691a0001>; Mon, 03 Aug 2020 12:44:26 -0700
+From:   Sowjanya Komatineni <skomatineni@nvidia.com>
+To:     <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>,
+        <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
+        <robh+dt@kernel.org>
+CC:     <skomatineni@nvidia.com>, <devicetree@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>
+Subject: [PATCH v1 0/6] Fix timeout clock used by hardware data timeout
+Date:   Mon, 3 Aug 2020 12:44:17 -0700
+Message-ID: <1596483863-22153-1-git-send-email-skomatineni@nvidia.com>
+X-Mailer: git-send-email 2.7.4
+X-NVConfidentiality: public
+MIME-Version: 1.0
+Content-Type: text/plain
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1596483775; bh=DGWxMyHwN4Pwyxz1yo3QTWOM2FBrW8pQbRNaJBSqU7Y=;
+        h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+         X-NVConfidentiality:MIME-Version:Content-Type;
+        b=e6wSO29e4b3+ovgHvWaZGV/R83n0KjMEN+BhSduyfB04Ddiy/sg2ABUTed8ZMdO8N
+         wgpSwv+yEcvkXQAwT/V446KYrEyVrLEiw5/zqj8eAIMMV6jz0M3tf5sAFATgbr42QI
+         I0TpPDNpjNEoMmIc3753EvdF6atOwfv+B2G2PC/5RZ5ethhi0ifWJq2xMLJ0nGvCm3
+         ijcSotzcaktL5jj8QEg2XLLiWMqkvBOZQZgnaPB6hUVIPnPBiiw5TFxbzGBDwdq7kg
+         pyLvNZBi9XgoBfUbnH5IhHCfrANb27WW8VSRdU0X3Ex9NUVZxPzafkRmBh5cXYJiOd
+         /uxB8C1ja+yRw==
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
+Tegra210/Tegra186/Tegra194 has incorrectly enabled
+SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK from the beginning of their support.
 
-via_save_pcictrlreg() should be called with host->lock held
-as it writes to pm_pcictrl_reg, otherwise there can be a race
-condition between via_sd_suspend() and via_sdc_card_detect().
-The same pattern is used in the function via_reset_pcictrl()
-as well, where via_save_pcictrlreg() is called with host->lock
-held.
+Tegra210 and later SDMMC hardware default uses sdmmc_legacy_tm (TMCLK)
+all the time for hardware data timeout instead of SDCLK and this TMCLK
+need to be kept enabled by Tegra sdmmc driver.
 
-Found by Linux Driver Verification project (linuxtesting.org).
+This series includes patches to fix this for Tegra210/Tegra186/Tegra194.
 
-Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
----
- drivers/mmc/host/via-sdmmc.c | 3 +++
- 1 file changed, 3 insertions(+)
+These patches need to be manually backported for 4.9, 4.14, 4.19, 5.4
 
-diff --git a/drivers/mmc/host/via-sdmmc.c b/drivers/mmc/host/via-sdmmc.c
-index ef95bce50889..e4d8126cd4e5 100644
---- a/drivers/mmc/host/via-sdmmc.c
-+++ b/drivers/mmc/host/via-sdmmc.c
-@@ -1259,11 +1259,14 @@ static void via_init_sdc_pm(struct via_crdr_mmc_host *host)
- static int via_sd_suspend(struct pci_dev *pcidev, pm_message_t state)
- {
- 	struct via_crdr_mmc_host *host;
-+	unsigned long flags;
- 
- 	host = pci_get_drvdata(pcidev);
- 
-+	spin_lock_irqsave(&host->lock, flags);
- 	via_save_pcictrlreg(host);
- 	via_save_sdcreg(host);
-+	spin_unlock_irqrestore(&host->lock, flags);
- 
- 	pci_save_state(pcidev);
- 	pci_enable_wake(pcidev, pci_choose_state(pcidev, state), 0);
+Will send patches to backport separately once these patches are ack'd.
+
+Sowjanya Komatineni (6):
+  sdhci: tegra: Remove SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK for Tegra210
+  sdhci: tegra: Remove SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK for Tegra186
+  arm64: tegra: Add missing timeout clock to Tegra210 SDMMC
+  arm64: tegra: Add missing timeout clock to Tegra186 SDMMC nodes
+  arm64: tegra: Add missing timeout clock to Tegra194 SDMMC nodes
+  sdhci: tegra: Add missing TMCLK for data timeout
+
+ arch/arm64/boot/dts/nvidia/tegra186.dtsi | 20 +++++++++------
+ arch/arm64/boot/dts/nvidia/tegra194.dtsi | 15 ++++++-----
+ arch/arm64/boot/dts/nvidia/tegra210.dtsi | 20 +++++++++------
+ drivers/mmc/host/sdhci-tegra.c           | 43 ++++++++++++++++++++++++++++++--
+ 4 files changed, 74 insertions(+), 24 deletions(-)
+
 -- 
-2.17.1
+2.7.4
 
