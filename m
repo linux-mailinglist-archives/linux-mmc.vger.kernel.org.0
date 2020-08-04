@@ -2,156 +2,111 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 110D723B42A
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Aug 2020 06:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CD2E23B466
+	for <lists+linux-mmc@lfdr.de>; Tue,  4 Aug 2020 07:29:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729326AbgHDE3t (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Aug 2020 00:29:49 -0400
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:9710 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727999AbgHDE3b (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Aug 2020 00:29:31 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5f28e3c80001>; Mon, 03 Aug 2020 21:27:53 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Mon, 03 Aug 2020 21:29:30 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Mon, 03 Aug 2020 21:29:30 -0700
-Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 4 Aug
- 2020 04:29:29 +0000
-Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
- Transport; Tue, 4 Aug 2020 04:29:29 +0000
-Received: from skomatineni-linux.nvidia.com (Not Verified[10.2.167.221]) by hqnvemgw03.nvidia.com with Trustwave SEG (v7,5,8,10121)
-        id <B5f28e4280005>; Mon, 03 Aug 2020 21:29:29 -0700
-From:   Sowjanya Komatineni <skomatineni@nvidia.com>
-To:     <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>,
-        <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-        <robh+dt@kernel.org>
-CC:     <skomatineni@nvidia.com>, <devicetree@vger.kernel.org>,
-        <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>
-Subject: [PATCH v2 6/6] sdhci: tegra: Add missing TMCLK for data timeout
-Date:   Mon, 3 Aug 2020 21:29:23 -0700
-Message-ID: <1596515363-27235-7-git-send-email-skomatineni@nvidia.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1596515363-27235-1-git-send-email-skomatineni@nvidia.com>
-References: <1596515363-27235-1-git-send-email-skomatineni@nvidia.com>
-X-NVConfidentiality: public
+        id S1728715AbgHDF3a (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 4 Aug 2020 01:29:30 -0400
+Received: from mga05.intel.com ([192.55.52.43]:62694 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727035AbgHDF33 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 4 Aug 2020 01:29:29 -0400
+IronPort-SDR: wOoSP/RLVSVEWHG2BxbZcGETmWmpGlb/FXRmoZdH5ZHkH6KvUHtEuJ9ZyL3MoSLuFuOWO/oZuQ
+ gN6MPyslrtJA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9702"; a="237113084"
+X-IronPort-AV: E=Sophos;i="5.75,433,1589266800"; 
+   d="scan'208";a="237113084"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2020 22:29:28 -0700
+IronPort-SDR: Z8iqhYn++WufcKhSFIRurRKwOsdQH/yF+J5w7TlJp1oymsnYKRD5uGkMvu7j8j3vG0PTbUTF1e
+ xeIsCzEzBVCw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,433,1589266800"; 
+   d="scan'208";a="330486541"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.73]) ([10.237.72.73])
+  by FMSMGA003.fm.intel.com with ESMTP; 03 Aug 2020 22:29:27 -0700
+Subject: Re: [PATCH V1 1/2] mmc: sdhci-pci-o2micro: Bug fix for O2 host
+ controller Seabird1
+To:     "Shirley Her (SC)" <shirley.her@bayhubtech.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20200721011733.8416-1-shirley.her@bayhubtech.com>
+ <BY5PR16MB33196E3E0FB7C2143BE7D73F8B4D0@BY5PR16MB3319.namprd16.prod.outlook.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <fc572647-9a51-ee38-c1a7-71f62c1edad0@intel.com>
+Date:   Tue, 4 Aug 2020 08:29:03 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1596515273; bh=r6u0HMf6o4jPz5Nwr4/5GJuqlW/cC/VMT34/Nxbq+OY=;
-        h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-         In-Reply-To:References:X-NVConfidentiality:MIME-Version:
-         Content-Type;
-        b=qT3j1GngoQhOEm0eg8syrfDVFk+k2WTrcxtTBbfa16DrnWvS0VUuuYrsBNVqbOWcf
-         S2b5wueGc2EET20lSsiMDEdczbXiCQFQo/3jESjqtDiX/WwPHnehitnnzGZIm0We2r
-         qjq/byxS1Q0sNHCYa7nd4KthXM7Vik4JTTiliz7ZhbNCn+O2CPc6IU7+pmUv6FnPsP
-         VY8BLEuV70i1L1Ym+J6hkcgdYwbs/6fL2LAmoRFCKEOaSPlcMksW0+yoMq94BKDoLG
-         6ADLg+1Bopc2UgDHmYJvS4iBX8DifYnTVlfSU+XCPNnH3nLMujKrPFMCSo+iR4c8sM
-         cYmXzDzIFMRQg==
+In-Reply-To: <BY5PR16MB33196E3E0FB7C2143BE7D73F8B4D0@BY5PR16MB3319.namprd16.prod.outlook.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-commit b5a84ecf025a ("mmc: tegra: Add Tegra210 support")
+Sorry, I have been away for a while, but I will look at it shortly.
 
-Tegra210 and later has a separate sdmmc_legacy_tm (TMCLK) used by Tegra
-SDMMC hawdware for data timeout to achive better timeout than using
-SDCLK and using TMCLK is recommended.
-
-USE_TMCLK_FOR_DATA_TIMEOUT bit in Tegra SDMMC register
-SDHCI_TEGRA_VENDOR_SYS_SW_CTRL can be used to choose either TMCLK or
-SDCLK for data timeout.
-
-Default USE_TMCLK_FOR_DATA_TIMEOUT bit is set to 1 and TMCLK is used
-for data timeout by Tegra SDMMC hardware and having TMCLK not enabled
-is not recommended.
-
-So, this patch fixes it.
-
-Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
----
- drivers/mmc/host/sdhci-tegra.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
-
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index 31ed321..c0b9405 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -140,6 +140,7 @@ struct sdhci_tegra_autocal_offsets {
- struct sdhci_tegra {
- 	const struct sdhci_tegra_soc_data *soc_data;
- 	struct gpio_desc *power_gpio;
-+	struct clk *tmclk;
- 	bool ddr_signaling;
- 	bool pad_calib_required;
- 	bool pad_control_available;
-@@ -1611,6 +1612,44 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
- 		goto err_power_req;
- 	}
- 
-+	/*
-+	 * Tegra210 has a separate SDMMC_LEGACY_TM clock used for host
-+	 * timeout clock and SW can choose TMCLK or SDCLK for hardware
-+	 * data timeout through the bit USE_TMCLK_FOR_DATA_TIMEOUT of
-+	 * the register SDHCI_TEGRA_VENDOR_SYS_SW_CTRL.
-+	 *
-+	 * USE_TMCLK_FOR_DATA_TIMEOUT bit default is set to 1 and SDMMC uses
-+	 * 12Mhz TMCLK which is advertised in host capability register.
-+	 * With TMCLK of 12Mhz provides maximum data timeout period that can
-+	 * be achieved is 11s better than using SDCLK for data timeout.
-+	 *
-+	 * So, TMCLK is set to 12Mhz and kept enabled all the time on SoC's
-+	 * supporting SDR104 mode and when not using SDCLK for data timeout.
-+	 */
-+
-+	if ((soc_data->nvquirks & NVQUIRK_ENABLE_SDR104) &&
-+	    !(soc_data->pdata->quirks & SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK)) {
-+		clk = devm_clk_get(&pdev->dev, "tmclk");
-+		if (IS_ERR(clk)) {
-+			rc = PTR_ERR(clk);
-+			if (rc == -EPROBE_DEFER)
-+				goto err_power_req;
-+
-+			dev_warn(&pdev->dev, "failed to get tmclk: %d\n", rc);
-+			clk = NULL;
-+		}
-+
-+		clk_set_rate(clk, 12000000);
-+		rc = clk_prepare_enable(clk);
-+		if (rc) {
-+			dev_err(&pdev->dev,
-+				"failed to enable tmclk: %d\n", rc);
-+			goto err_power_req;
-+		}
-+
-+		tegra_host->tmclk = clk;
-+	}
-+
- 	clk = devm_clk_get(mmc_dev(host->mmc), NULL);
- 	if (IS_ERR(clk)) {
- 		rc = PTR_ERR(clk);
-@@ -1654,6 +1693,7 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
- err_rst_get:
- 	clk_disable_unprepare(pltfm_host->clk);
- err_clk_get:
-+	clk_disable_unprepare(tegra_host->tmclk);
- err_power_req:
- err_parse_dt:
- 	sdhci_pltfm_free(pdev);
-@@ -1671,6 +1711,7 @@ static int sdhci_tegra_remove(struct platform_device *pdev)
- 	reset_control_assert(tegra_host->rst);
- 	usleep_range(2000, 4000);
- 	clk_disable_unprepare(pltfm_host->clk);
-+	clk_disable_unprepare(tegra_host->tmclk);
- 
- 	sdhci_pltfm_free(pdev);
- 
--- 
-2.7.4
+On 3/08/20 10:23 pm, Shirley Her (SC) wrote:
+> Hi, Adrian:
+> 
+> Do you have chance to review the patched code?
+> 
+> Thanks,
+> Shirley
+> 
+> ----------------------------------------------------------------------------
+> *From:* Shirley Her (SC) <shirley.her@bayhubtech.com>
+> *Sent:* Monday, July 20, 2020 6:18 PM
+> *To:* adrian.hunter@intel.com <adrian.hunter@intel.com>;
+> ulf.hansson@linaro.org <ulf.hansson@linaro.org>; linux-mmc@vger.kernel.org
+> <linux-mmc@vger.kernel.org>; linux-kernel@vger.kernel.org
+> <linux-kernel@vger.kernel.org>
+> *Cc:* Shaper Liu (WH) <shaper.liu@bayhubtech.com>; Chevron Li (WH)
+> <chevron.li@bayhubtech.com>; Xiaoguang Yu (WH)
+> <xiaoguang.yu@bayhubtech.com>; Max Huang (SC) <max.huang@bayhubtech.com>;
+> Shirley Her (SC) <shirley.her@bayhubtech.com>
+> *Subject:* [PATCH V1 1/2] mmc: sdhci-pci-o2micro: Bug fix for O2 host
+> controller Seabird1
+>  
+> Add bug fix for O2 host controller Seabird1
+> 
+> Signed-off-by: Shirley Her <shirley.her@bayhubtech.com>
+> ---
+> change in V1:
+> 1. Add quriks2 and mmc->caps2 for Seabird1
+> 2. Add get_cd support for Seabird1
+> ---
+>  drivers/mmc/host/sdhci-pci-o2micro.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c
+> b/drivers/mmc/host/sdhci-pci-o2micro.c
+> index e2a846885902..ed3c605fcf0c 100644
+> --- a/drivers/mmc/host/sdhci-pci-o2micro.c
+> +++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+> @@ -561,6 +561,12 @@ static int sdhci_pci_o2_probe_slot(struct
+> sdhci_pci_slot *slot)
+>                          slot->host->mmc_host_ops.get_cd = sdhci_o2_get_cd;
+>                  }
+>  
+> +               if (chip->pdev->device == PCI_DEVICE_ID_O2_SEABIRD1) {
+> +                       slot->host->mmc_host_ops.get_cd = sdhci_o2_get_cd;
+> +                       host->mmc->caps2 |= MMC_CAP2_NO_SDIO;
+> +                       host->quirks2 |= SDHCI_QUIRK2_PRESET_VALUE_BROKEN;
+> +               }
+> +
+>                  host->mmc_host_ops.execute_tuning = sdhci_o2_execute_tuning;
+>  
+>                  if (chip->pdev->device != PCI_DEVICE_ID_O2_FUJIN2)
+> -- 
+> 2.25.1
+> 
 
