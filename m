@@ -2,639 +2,131 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3B3323E0A7
-	for <lists+linux-mmc@lfdr.de>; Thu,  6 Aug 2020 20:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4F623E598
+	for <lists+linux-mmc@lfdr.de>; Fri,  7 Aug 2020 03:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729337AbgHFShD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 6 Aug 2020 14:37:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58946 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729251AbgHFSf7 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 6 Aug 2020 14:35:59 -0400
-Received: from localhost.localdomain (unknown [194.230.155.117])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0E6C922DD6;
-        Thu,  6 Aug 2020 18:23:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596738231;
-        bh=Oy7r9SHyawUIvZetEuefKaXnpk2XP1ss1vO4dyMGx5U=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aKG9MdF37WfmDgSfif740tNptwyX3mCLsUQy+6qDKurjV+iNFlLYuzrKxfyXDb9hW
-         vaLaT6/ak9iT4vTxgtfOJ59K53OrtVW6L8bu48dhy1L9gXIDBzA03hS6PJ29N763fH
-         FwDdVeUrBnXBxhv9znjZohxH7bBOTi3BBp7G5bkY=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Ben Dooks <ben-linux@fluff.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org
-Subject: [PATCH v2 29/41] ARM: s3c24xx: move s3cmci pinctrl handling into board files
-Date:   Thu,  6 Aug 2020 20:20:46 +0200
-Message-Id: <20200806182059.2431-29-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200806181932.2253-1-krzk@kernel.org>
-References: <20200806181932.2253-1-krzk@kernel.org>
+        id S1726013AbgHGBuK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 6 Aug 2020 21:50:10 -0400
+Received: from mail-eopbgr70075.outbound.protection.outlook.com ([40.107.7.75]:32210
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725998AbgHGBuK (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 6 Aug 2020 21:50:10 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ku/Q+UV4kvbjtLnqUTDlB8a85uV3q5gNHRWvjHccvwvBNck2WHpZUI0WZv9tCdKxEnWXtpCT1+gU8XpyX/BBMbsa2sbqiZNmMGshofqp3x6PI6UL0TfC9xNBeZbGGeEag+qnRRT/F21BNgppryKz86oFjUb7ppEymlKfX0nRvlTaBTOy/rRGod1iHMUODQX/J0hu07cOLEHOb9wNz+auW9rYN5fEPk3BWwHAUXw90vG8LSgTifHUYFPZwJ+O4NBFYbwAkE92SYVEw8OoPVYyDOAW/uOYk8s9Df/ntGf7qg4WAtwhUd1duNk8hRHbYbH+8gIEe6mqf/VqOpGpLItvpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KmvtF8WrIEykvRYy+TdtXffYsxB6OdhD0t9Mtban92M=;
+ b=cxPShfZxebzRAy0dao+7kD1mbcg8ftKmx1lY+OlLoSKdpbPYodcueo2aIuFMu3NeLWDxMDZmRT+o6zrpmZEP3m9eD8JjdQt9PLjvxWih07P0XD1UY7++DWiHfLGMx6Jx090DbORiLppLValmCbfPI7JgioW95rOIsCD1rlkFn5GgLdRRLpE/2Ve7i+xCesfmvmMigb3qI+YMsubR9H1NAhA0/opFX4QL9aUh8EYzD/SHUYlT0Xme/BRu6ibDpuWuJQH1bo1u3retfT74/ntO8JllO0t2z2QGyq8iMqVStbhjDCMVTGPVe36bT5w5NJVq9MFC2+9DRLNCaMxzKdtO1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KmvtF8WrIEykvRYy+TdtXffYsxB6OdhD0t9Mtban92M=;
+ b=dZNcVb/qWKHk3WiHrlL6u8wZP0QqMDmREM/WK29uYuldVNszTMDkl1V1tG+YSdQMmnvwf2ZPTXTscsp2ei6QWgGDluscIYYevGuGt7qAw8Alpfrdn5DXRflDLvchGOJbRM79Y/h/4ZR99QsTUH0oxlMLinSJuTHpl2k49ra4Exo=
+Received: from VI1PR04MB5294.eurprd04.prod.outlook.com (2603:10a6:803:5a::22)
+ by VI1PR04MB5503.eurprd04.prod.outlook.com (2603:10a6:803:d1::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.15; Fri, 7 Aug
+ 2020 01:50:04 +0000
+Received: from VI1PR04MB5294.eurprd04.prod.outlook.com
+ ([fe80::6832:acd8:baa0:f094]) by VI1PR04MB5294.eurprd04.prod.outlook.com
+ ([fe80::6832:acd8:baa0:f094%7]) with mapi id 15.20.3261.019; Fri, 7 Aug 2020
+ 01:50:04 +0000
+From:   Bough Chen <haibo.chen@nxp.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+CC:     dl-linux-imx <linux-imx@nxp.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>
+Subject: RE: [PATCH] mmc: host: sdhci-esdhc-imx: reset usdhc before sending
+ tuning command for manual tuning method
+Thread-Topic: [PATCH] mmc: host: sdhci-esdhc-imx: reset usdhc before sending
+ tuning command for manual tuning method
+Thread-Index: AQHWa+grmES3Xq7XDU6TvTpO+ylxM6kq/YQAgADh0KA=
+Date:   Fri, 7 Aug 2020 01:50:03 +0000
+Message-ID: <VI1PR04MB52945822087D81437FA6CCC590490@VI1PR04MB5294.eurprd04.prod.outlook.com>
+References: <1596714504-16313-1-git-send-email-haibo.chen@nxp.com>
+ <d3e56b01-144b-17cf-d414-9e0d558b9bcc@intel.com>
+In-Reply-To: <d3e56b01-144b-17cf-d414-9e0d558b9bcc@intel.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: intel.com; dkim=none (message not signed)
+ header.d=none;intel.com; dmarc=none action=none header.from=nxp.com;
+x-originating-ip: [119.31.174.71]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 3712b4a2-a9d2-4147-0598-08d83a743460
+x-ms-traffictypediagnostic: VI1PR04MB5503:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VI1PR04MB550309E8CD377EE796CCFFE190490@VI1PR04MB5503.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: UCQyOS01JjNMYlLQQ4F61b43i0UEP/c+Wk1XY7HfhkJX8AF0/FRKBq4jB5X82Q/hM/TIGEGZAG85v07slufUoIKLcG5MtvEGoQd2KfglMQOnwGQcJ7NxxlMu6b6u4ED75pl4yjl2qtCL92NJMtvwup/2rMrlvfW75QayZdLNNdL857chMB019akwsOWQYnOqCXZZKnPk3qUpIol0YWYwLzVCvBy56QF6ODa3tne0hl7uGITAe6nlwGp47QJib8vRPzPwnyvbMC+g4KCQrc1Pii5jtiYswsL8MzCk/X0OwRgXXWpW39B/Kke2Kprm7QBQTPuIfs6bQFawpWTpTzSLaw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5294.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(396003)(39860400002)(376002)(346002)(136003)(66556008)(33656002)(55016002)(9686003)(76116006)(66446008)(66946007)(4326008)(52536014)(5660300002)(64756008)(66476007)(7696005)(6506007)(83380400001)(8676002)(71200400001)(86362001)(8936002)(54906003)(53546011)(2906002)(478600001)(110136005)(316002)(26005)(186003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: u1809CXOaQhVmHdILL1/WX2B4XRbJaQoCoe9dTqFSzoeRIFjaL5sRJvt+/THP6ki+yIg6CU1JDNRAYyfI/8S5huzAjBCJjU9bK2MVakRSqTybm+6I91QLhH9Zhjc6A5LgZ/TzccH/FOtH0K01Q8lncRZgZzgS0HDDZnbstBJKde58REf8/ZOI3Cephfz/gnFCpqoLGSLp85x9py7Wj/avsUUj3P3/olimp6BBvh9Zo4LPRFQeJSUe/6nhiZdUFZt0D5sXYKpol5TCOb+kDHzlANVEy7UoYzNZdmNG3LIm1PefZomVrZ6BQgRzvMnEpU0f+d+myvnQXAhlTd9dSenFNQnfRv2AJIxZ83Hrm/QLahqpo59Od4nH7vddm2nx1OThoCetqpmcuI+kGOQSF7+zzexD+scPmukQWZqWk2JwliHhAGerXU45Hvk2sKW8HZM9or+e8UViAs3GI79/5yfCbY8tpRFS7O60dzcN6GrPJpLKPWfypouFBpJsVpou6B6Kz6d5hFOCZ6m0KivCdtS4/Ja0aPDtnLRlOawiuQ+nbh2QtA5Jtk2dcpPnODN1Rgj9JUZXUuklbH+4CqACYnfZyBLlAkJmNOk6hfvC1B81LbpvCTMpJG0U2Me1/QbqT6rM7DplV1zrxdIBym+Frwzgw==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5294.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3712b4a2-a9d2-4147-0598-08d83a743460
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Aug 2020 01:50:04.0491
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: NWtZDgGVLF+tHnwMCZawvBPTz8ZcCw+uPkSXPYt1dYnbPiy0Y24NCudXAF4HORkhpSU34u2/5HHOXLHwI5ATDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5503
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
-
-Rather than call the internal s3c_gpio_cfgall_range() function
-through a platform header, move the code into the set_power
-callback that is already exported by the board, and add
-a default implementation.
-
-In DT mode, the code already does not set the pin config,
-so nothing changes there.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-[krzk: Rebase and correct set_power in mach-h1940.c]
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-
----
-
-Changes since v1:
-1. Minor whitespace changes,
-2. mach-h1940.c already had set_power.
----
- arch/arm/mach-s3c24xx/include/mach/pm-core.h |  1 +
- arch/arm/mach-s3c24xx/mach-amlm5900.c        | 15 +++++
- arch/arm/mach-s3c24xx/mach-at2440evb.c       | 10 ++-
- arch/arm/mach-s3c24xx/mach-gta02.c           | 15 +++++
- arch/arm/mach-s3c24xx/mach-h1940.c           |  9 +++
- arch/arm/mach-s3c24xx/mach-mini2440.c        |  9 ++-
- arch/arm/mach-s3c24xx/mach-n30.c             |  9 +++
- arch/arm/mach-s3c24xx/mach-qt2410.c          | 15 +++++
- arch/arm/mach-s3c24xx/mach-rx1950.c          |  9 +++
- arch/arm/mach-s3c24xx/mach-tct_hammer.c      | 15 +++++
- arch/arm/plat-samsung/devs.c                 | 29 ++++++++
- drivers/mmc/host/s3cmci.c                    | 71 +++++---------------
- include/linux/platform_data/mmc-s3cmci.h     |  2 +
- 13 files changed, 153 insertions(+), 56 deletions(-)
-
-diff --git a/arch/arm/mach-s3c24xx/include/mach/pm-core.h b/arch/arm/mach-s3c24xx/include/mach/pm-core.h
-index 8f87606c4cdc..a22b4a37ee57 100644
---- a/arch/arm/mach-s3c24xx/include/mach/pm-core.h
-+++ b/arch/arm/mach-s3c24xx/include/mach/pm-core.h
-@@ -12,6 +12,7 @@
- 
- #include "regs-clock.h"
- #include "regs-irq.h"
-+#include <mach/irqs.h>
- 
- static inline void s3c_pm_debug_init_uart(void)
- {
-diff --git a/arch/arm/mach-s3c24xx/mach-amlm5900.c b/arch/arm/mach-s3c24xx/mach-amlm5900.c
-index 6324e608dcda..1a2a9259b4b6 100644
---- a/arch/arm/mach-s3c24xx/mach-amlm5900.c
-+++ b/arch/arm/mach-s3c24xx/mach-amlm5900.c
-@@ -13,6 +13,7 @@
- #include <linux/list.h>
- #include <linux/timer.h>
- #include <linux/init.h>
-+#include <linux/gpio/machine.h>
- #include <linux/gpio.h>
- #include <linux/device.h>
- #include <linux/platform_device.h>
-@@ -121,6 +122,19 @@ static struct s3c2410_uartcfg amlm5900_uartcfgs[] = {
- 	}
- };
- 
-+static struct gpiod_lookup_table amlm5900_mmc_gpio_table = {
-+	.dev_id = "s3c2410-sdi",
-+	.table = {
-+		/* bus pins */
-+		GPIO_LOOKUP_IDX("GPIOE",  5, "bus", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  6, "bus", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  7, "bus", 2, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  8, "bus", 3, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  9, "bus", 4, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE", 10, "bus", 5, GPIO_ACTIVE_HIGH),
-+		{ },
-+	},
-+};
- 
- static struct platform_device *amlm5900_devices[] __initdata = {
- #ifdef CONFIG_FB_S3C2410
-@@ -216,6 +230,7 @@ static void __init amlm5900_init(void)
- 	s3c24xx_fb_set_platdata(&amlm5900_fb_info);
- #endif
- 	s3c_i2c0_set_platdata(NULL);
-+	gpiod_add_lookup_table(&amlm5900_mmc_gpio_table);
- 	platform_add_devices(amlm5900_devices, ARRAY_SIZE(amlm5900_devices));
- }
- 
-diff --git a/arch/arm/mach-s3c24xx/mach-at2440evb.c b/arch/arm/mach-s3c24xx/mach-at2440evb.c
-index fe8f9f1bdc0a..a2693246b3ca 100644
---- a/arch/arm/mach-s3c24xx/mach-at2440evb.c
-+++ b/arch/arm/mach-s3c24xx/mach-at2440evb.c
-@@ -134,7 +134,7 @@ static struct platform_device at2440evb_device_eth = {
- };
- 
- static struct s3c24xx_mci_pdata at2440evb_mci_pdata __initdata = {
--	/* Intentionally left blank */
-+	.set_power	= s3c24xx_mci_def_set_power,
- };
- 
- static struct gpiod_lookup_table at2440evb_mci_gpio_table = {
-@@ -142,10 +142,18 @@ static struct gpiod_lookup_table at2440evb_mci_gpio_table = {
- 	.table = {
- 		/* Card detect S3C2410_GPG(10) */
- 		GPIO_LOOKUP("GPIOG", 10, "cd", GPIO_ACTIVE_LOW),
-+		/* bus pins */
-+		GPIO_LOOKUP_IDX("GPIOE",  5, "bus", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  6, "bus", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  7, "bus", 2, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  8, "bus", 3, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  9, "bus", 4, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE", 10, "bus", 5, GPIO_ACTIVE_HIGH),
- 		{ },
- 	},
- };
- 
-+
- /* 7" LCD panel */
- 
- static struct s3c2410fb_display at2440evb_lcd_cfg __initdata = {
-diff --git a/arch/arm/mach-s3c24xx/mach-gta02.c b/arch/arm/mach-s3c24xx/mach-gta02.c
-index 3c7f2a3d00a5..c023e261a240 100644
---- a/arch/arm/mach-s3c24xx/mach-gta02.c
-+++ b/arch/arm/mach-s3c24xx/mach-gta02.c
-@@ -487,6 +487,20 @@ static struct platform_device gta02_audio = {
- 	.id = -1,
- };
- 
-+static struct gpiod_lookup_table gta02_mmc_gpio_table = {
-+	.dev_id = "s3c2410-sdi",
-+	.table = {
-+		/* bus pins */
-+		GPIO_LOOKUP_IDX("GPIOE",  5, "bus", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  6, "bus", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  7, "bus", 2, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  8, "bus", 3, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  9, "bus", 4, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE", 10, "bus", 5, GPIO_ACTIVE_HIGH),
-+		{ },
-+	},
-+};
-+
- static void __init gta02_map_io(void)
- {
- 	s3c24xx_init_io(gta02_iodesc, ARRAY_SIZE(gta02_iodesc));
-@@ -543,6 +557,7 @@ static void __init gta02_machine_init(void)
- 			      S3C_GPIO_PULL_NONE);
- 
- 	gpiod_add_lookup_table(&gta02_audio_gpio_table);
-+	gpiod_add_lookup_table(&gta02_mmc_gpio_table);
- 	platform_add_devices(gta02_devices, ARRAY_SIZE(gta02_devices));
- 	pm_power_off = gta02_poweroff;
- 
-diff --git a/arch/arm/mach-s3c24xx/mach-h1940.c b/arch/arm/mach-s3c24xx/mach-h1940.c
-index 1f18ac4e84b2..e9b3b048a96d 100644
---- a/arch/arm/mach-s3c24xx/mach-h1940.c
-+++ b/arch/arm/mach-s3c24xx/mach-h1940.c
-@@ -445,6 +445,8 @@ static struct platform_device h1940_device_bluetooth = {
- 
- static void h1940_set_mmc_power(unsigned char power_mode, unsigned short vdd)
- {
-+	s3c24xx_mci_def_set_power(power_mode, vdd);
-+
- 	switch (power_mode) {
- 	case MMC_POWER_OFF:
- 		gpio_set_value(H1940_LATCH_SD_POWER, 0);
-@@ -470,6 +472,13 @@ static struct gpiod_lookup_table h1940_mmc_gpio_table = {
- 		GPIO_LOOKUP("GPIOF", 5, "cd", GPIO_ACTIVE_LOW),
- 		/* Write protect S3C2410_GPH(8) */
- 		GPIO_LOOKUP("GPIOH", 8, "wp", GPIO_ACTIVE_LOW),
-+		/* bus pins */
-+		GPIO_LOOKUP_IDX("GPIOE",  5, "bus", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  6, "bus", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  7, "bus", 2, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  8, "bus", 3, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  9, "bus", 4, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE", 10, "bus", 5, GPIO_ACTIVE_HIGH),
- 		{ },
- 	},
- };
-diff --git a/arch/arm/mach-s3c24xx/mach-mini2440.c b/arch/arm/mach-s3c24xx/mach-mini2440.c
-index 0bd2746f19a6..d3cc0141f58c 100644
---- a/arch/arm/mach-s3c24xx/mach-mini2440.c
-+++ b/arch/arm/mach-s3c24xx/mach-mini2440.c
-@@ -234,7 +234,7 @@ static struct s3c2410fb_mach_info mini2440_fb_info __initdata = {
- 
- static struct s3c24xx_mci_pdata mini2440_mmc_cfg __initdata = {
- 	.wprotect_invert	= 1,
--	.set_power		= NULL,
-+	.set_power		= s3c24xx_mci_def_set_power,
- 	.ocr_avail		= MMC_VDD_32_33|MMC_VDD_33_34,
- };
- 
-@@ -245,6 +245,13 @@ static struct gpiod_lookup_table mini2440_mmc_gpio_table = {
- 		GPIO_LOOKUP("GPIOG", 8, "cd", GPIO_ACTIVE_LOW),
- 		/* Write protect S3C2410_GPH(8) */
- 		GPIO_LOOKUP("GPIOH", 8, "wp", GPIO_ACTIVE_HIGH),
-+		/* bus pins */
-+		GPIO_LOOKUP_IDX("GPIOE",  5, "bus", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  6, "bus", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  7, "bus", 2, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  8, "bus", 3, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  9, "bus", 4, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE", 10, "bus", 5, GPIO_ACTIVE_HIGH),
- 		{ },
- 	},
- };
-diff --git a/arch/arm/mach-s3c24xx/mach-n30.c b/arch/arm/mach-s3c24xx/mach-n30.c
-index 9410fcb82340..24e97646b068 100644
---- a/arch/arm/mach-s3c24xx/mach-n30.c
-+++ b/arch/arm/mach-s3c24xx/mach-n30.c
-@@ -368,6 +368,8 @@ static struct s3c2410fb_mach_info n30_fb_info __initdata = {
- 
- static void n30_sdi_set_power(unsigned char power_mode, unsigned short vdd)
- {
-+	s3c24xx_mci_def_set_power(power_mode, vdd);
-+
- 	switch (power_mode) {
- 	case MMC_POWER_ON:
- 	case MMC_POWER_UP:
-@@ -393,6 +395,13 @@ static struct gpiod_lookup_table n30_mci_gpio_table = {
- 		/* Write protect S3C2410_GPG(10) */
- 		GPIO_LOOKUP("GPIOG", 10, "wp", GPIO_ACTIVE_LOW),
- 		{ },
-+		/* bus pins */
-+		GPIO_LOOKUP_IDX("GPIOE",  5, "bus", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  6, "bus", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  7, "bus", 2, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  8, "bus", 3, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  9, "bus", 4, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE", 10, "bus", 5, GPIO_ACTIVE_HIGH),
- 	},
- };
- 
-diff --git a/arch/arm/mach-s3c24xx/mach-qt2410.c b/arch/arm/mach-s3c24xx/mach-qt2410.c
-index 5e33f3da629e..b21f7fbcadf9 100644
---- a/arch/arm/mach-s3c24xx/mach-qt2410.c
-+++ b/arch/arm/mach-s3c24xx/mach-qt2410.c
-@@ -223,6 +223,20 @@ static struct gpiod_lookup_table qt2410_spi_gpiod_table = {
- 	},
- };
- 
-+static struct gpiod_lookup_table qt2410_mmc_gpiod_table = {
-+	.dev_id = "s3c2410-sdi",
-+	.table = {
-+		/* bus pins */
-+		GPIO_LOOKUP_IDX("GPIOE",  5, "bus", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  6, "bus", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  7, "bus", 2, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  8, "bus", 3, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  9, "bus", 4, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE", 10, "bus", 5, GPIO_ACTIVE_HIGH),
-+		{ },
-+	},
-+};
-+
- /* Board devices */
- 
- static struct platform_device *qt2410_devices[] __initdata = {
-@@ -347,6 +361,7 @@ static void __init qt2410_machine_init(void)
- 	gpiod_add_lookup_table(&qt2410_spi_gpiod_table);
- 	s3c_gpio_setpull(S3C2410_GPB(0), S3C_GPIO_PULL_NONE);
- 	gpiod_add_lookup_table(&qt2410_led_gpio_table);
-+	gpiod_add_lookup_table(&qt2410_mmc_gpiod_table);
- 	platform_add_devices(qt2410_devices, ARRAY_SIZE(qt2410_devices));
- 	s3c_pm_init();
- }
-diff --git a/arch/arm/mach-s3c24xx/mach-rx1950.c b/arch/arm/mach-s3c24xx/mach-rx1950.c
-index 86d348f33972..aa91785a95b5 100644
---- a/arch/arm/mach-s3c24xx/mach-rx1950.c
-+++ b/arch/arm/mach-s3c24xx/mach-rx1950.c
-@@ -548,6 +548,8 @@ static struct platform_device rx1950_backlight = {
- 
- static void rx1950_set_mmc_power(unsigned char power_mode, unsigned short vdd)
- {
-+	s3c24xx_mci_def_set_power(power_mode, vdd);
-+
- 	switch (power_mode) {
- 	case MMC_POWER_OFF:
- 		gpio_direction_output(S3C2410_GPJ(1), 0);
-@@ -573,6 +575,13 @@ static struct gpiod_lookup_table rx1950_mmc_gpio_table = {
- 		GPIO_LOOKUP("GPIOF", 5, "cd", GPIO_ACTIVE_LOW),
- 		/* Write protect S3C2410_GPH(8) */
- 		GPIO_LOOKUP("GPIOH", 8, "wp", GPIO_ACTIVE_LOW),
-+		/* bus pins */
-+		GPIO_LOOKUP_IDX("GPIOE",  5, "bus", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  6, "bus", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  7, "bus", 2, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  8, "bus", 3, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  9, "bus", 4, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE", 10, "bus", 5, GPIO_ACTIVE_HIGH),
- 		{ },
- 	},
- };
-diff --git a/arch/arm/mach-s3c24xx/mach-tct_hammer.c b/arch/arm/mach-s3c24xx/mach-tct_hammer.c
-index fd51a098e443..8092be7b47db 100644
---- a/arch/arm/mach-s3c24xx/mach-tct_hammer.c
-+++ b/arch/arm/mach-s3c24xx/mach-tct_hammer.c
-@@ -7,6 +7,7 @@
- // derived from linux/arch/arm/mach-s3c2410/mach-bast.c, written by
- // Ben Dooks <ben@simtec.co.uk>
- 
-+#include <linux/gpio/machine.h>
- #include <linux/kernel.h>
- #include <linux/types.h>
- #include <linux/interrupt.h>
-@@ -101,6 +102,19 @@ static struct s3c2410_uartcfg tct_hammer_uartcfgs[] = {
- 	}
- };
- 
-+static struct gpiod_lookup_table tct_hammer_mmc_gpio_table = {
-+	.dev_id = "s3c2410-sdi",
-+	.table = {
-+		/* bus pins */
-+		GPIO_LOOKUP_IDX("GPIOE",  5, "bus", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  6, "bus", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  7, "bus", 2, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  8, "bus", 3, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE",  9, "bus", 4, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("GPIOE", 10, "bus", 5, GPIO_ACTIVE_HIGH),
-+		{ },
-+	},
-+};
- 
- static struct platform_device *tct_hammer_devices[] __initdata = {
- 	&s3c_device_adc,
-@@ -129,6 +143,7 @@ static void __init tct_hammer_init_time(void)
- static void __init tct_hammer_init(void)
- {
- 	s3c_i2c0_set_platdata(NULL);
-+	gpiod_add_lookup_table(&tct_hammer_mmc_gpio_table);
- 	platform_add_devices(tct_hammer_devices, ARRAY_SIZE(tct_hammer_devices));
- }
- 
-diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
-index c42e4a272cc7..b16be04c0169 100644
---- a/arch/arm/plat-samsung/devs.c
-+++ b/arch/arm/plat-samsung/devs.c
-@@ -5,6 +5,7 @@
- //
- // Base Samsung platform device definitions
- 
-+#include <linux/gpio.h>
- #include <linux/kernel.h>
- #include <linux/types.h>
- #include <linux/interrupt.h>
-@@ -39,6 +40,7 @@
- 
- #include <mach/irqs.h>
- #include <mach/map.h>
-+#include <mach/gpio-samsung.h>
- 
- #ifdef CONFIG_PLAT_S3C24XX
- #include <mach/regs-s3c2443-clock.h>
-@@ -46,6 +48,7 @@
- 
- #include <plat/cpu.h>
- #include <plat/devs.h>
-+#include <plat/gpio-cfg.h>
- #include <linux/soc/samsung/s3c-adc.h>
- #include <linux/platform_data/ata-samsung_cf.h>
- #include <plat/fb.h>
-@@ -835,16 +838,42 @@ struct platform_device s3c_device_rtc = {
- /* SDI */
- 
- #ifdef CONFIG_PLAT_S3C24XX
-+void s3c24xx_mci_def_set_power(unsigned char power_mode, unsigned short vdd)
-+{
-+	switch (power_mode) {
-+	case MMC_POWER_ON:
-+	case MMC_POWER_UP:
-+		/* Configure GPE5...GPE10 pins in SD mode */
-+		s3c_gpio_cfgall_range(S3C2410_GPE(5), 6, S3C_GPIO_SFN(2),
-+				      S3C_GPIO_PULL_NONE);
-+		break;
-+
-+	case MMC_POWER_OFF:
-+	default:
-+		gpio_direction_output(S3C2410_GPE(5), 0);
-+		break;
-+	}
-+}
-+
- static struct resource s3c_sdi_resource[] = {
- 	[0] = DEFINE_RES_MEM(S3C24XX_PA_SDI, S3C24XX_SZ_SDI),
- 	[1] = DEFINE_RES_IRQ(IRQ_SDI),
- };
- 
-+static struct s3c24xx_mci_pdata s3cmci_def_pdata = {
-+	/* This is currently here to avoid a number of if (host->pdata)
-+	 * checks. Any zero fields to ensure reasonable defaults are picked. */
-+	.no_wprotect = 1,
-+	.no_detect = 1,
-+	.set_power = s3c24xx_mci_def_set_power,
-+};
-+
- struct platform_device s3c_device_sdi = {
- 	.name		= "s3c2410-sdi",
- 	.id		= -1,
- 	.num_resources	= ARRAY_SIZE(s3c_sdi_resource),
- 	.resource	= s3c_sdi_resource,
-+	.dev.platform_data = &s3cmci_def_pdata,
- };
- 
- void __init s3c24xx_mci_set_platdata(struct s3c24xx_mci_pdata *pdata)
-diff --git a/drivers/mmc/host/s3cmci.c b/drivers/mmc/host/s3cmci.c
-index 60fc3fc30fb4..dcd458649338 100644
---- a/drivers/mmc/host/s3cmci.c
-+++ b/drivers/mmc/host/s3cmci.c
-@@ -24,10 +24,6 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/mmc/slot-gpio.h>
--
--#include <plat/gpio-cfg.h>
--#include <mach/gpio-samsung.h>
--
- #include <linux/platform_data/mmc-s3cmci.h>
- 
- #include "s3cmci.h"
-@@ -306,7 +302,8 @@ static inline void clear_imask(struct s3cmci_host *host)
- static void s3cmci_check_sdio_irq(struct s3cmci_host *host)
- {
- 	if (host->sdio_irqen) {
--		if (gpio_get_value(S3C2410_GPE(8)) == 0) {
-+		if (host->pdata->bus[3] &&
-+		    gpiod_get_value(host->pdata->bus[3]) == 0) {
- 			pr_debug("%s: signalling irq\n", __func__);
- 			mmc_signal_sdio_irq(host->mmc);
- 		}
-@@ -1202,33 +1199,20 @@ static void s3cmci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
- 	switch (ios->power_mode) {
- 	case MMC_POWER_ON:
- 	case MMC_POWER_UP:
--		/* Configure GPE5...GPE10 pins in SD mode */
--		if (!host->pdev->dev.of_node)
--			s3c_gpio_cfgall_range(S3C2410_GPE(5), 6, S3C_GPIO_SFN(2),
--					      S3C_GPIO_PULL_NONE);
--
--		if (host->pdata->set_power)
--			host->pdata->set_power(ios->power_mode, ios->vdd);
--
- 		if (!host->is2440)
- 			mci_con |= S3C2410_SDICON_FIFORESET;
--
- 		break;
- 
- 	case MMC_POWER_OFF:
- 	default:
--		if (!host->pdev->dev.of_node)
--			gpio_direction_output(S3C2410_GPE(5), 0);
--
- 		if (host->is2440)
- 			mci_con |= S3C2440_SDICON_SDRESET;
--
--		if (host->pdata->set_power)
--			host->pdata->set_power(ios->power_mode, ios->vdd);
--
- 		break;
- 	}
- 
-+	if (host->pdata->set_power)
-+		host->pdata->set_power(ios->power_mode, ios->vdd);
-+
- 	s3cmci_set_clk(host, ios);
- 
- 	/* Set CLOCK_ENABLE */
-@@ -1306,13 +1290,6 @@ static const struct mmc_host_ops s3cmci_ops = {
- 	.enable_sdio_irq = s3cmci_enable_sdio_irq,
- };
- 
--static struct s3c24xx_mci_pdata s3cmci_def_pdata = {
--	/* This is currently here to avoid a number of if (host->pdata)
--	 * checks. Any zero fields to ensure reasonable defaults are picked. */
--	 .no_wprotect = 1,
--	 .no_detect = 1,
--};
--
- #ifdef CONFIG_ARM_S3C24XX_CPUFREQ
- 
- static int s3cmci_cpufreq_transition(struct notifier_block *nb,
-@@ -1466,24 +1443,21 @@ static int s3cmci_probe_pdata(struct s3cmci_host *host)
- 	int i, ret;
- 
- 	host->is2440 = platform_get_device_id(pdev)->driver_data;
-+	pdata = pdev->dev.platform_data;
-+	if (!pdata) {
-+		dev_err(&pdev->dev, "need platform data");
-+		return -ENXIO;
-+	}
- 
--	for (i = S3C2410_GPE(5); i <= S3C2410_GPE(10); i++) {
--		ret = gpio_request(i, dev_name(&pdev->dev));
--		if (ret) {
-+	for (i = 0; i < 6; i++) {
-+		pdata->bus[i] = devm_gpiod_get_index(&pdev->dev, "bus", i,
-+						     GPIOD_OUT_LOW);
-+		if (IS_ERR(pdata->bus[i])) {
- 			dev_err(&pdev->dev, "failed to get gpio %d\n", i);
--
--			for (i--; i >= S3C2410_GPE(5); i--)
--				gpio_free(i);
--
--			return ret;
-+			return PTR_ERR(pdata->bus[i]);
- 		}
- 	}
- 
--	if (!pdev->dev.platform_data)
--		pdev->dev.platform_data = &s3cmci_def_pdata;
--
--	pdata = pdev->dev.platform_data;
--
- 	if (pdata->no_wprotect)
- 		mmc->caps2 |= MMC_CAP2_NO_WRITE_PROTECT;
- 
-@@ -1538,7 +1512,6 @@ static int s3cmci_probe(struct platform_device *pdev)
- 	struct s3cmci_host *host;
- 	struct mmc_host	*mmc;
- 	int ret;
--	int i;
- 
- 	mmc = mmc_alloc_host(sizeof(struct s3cmci_host), &pdev->dev);
- 	if (!mmc) {
-@@ -1582,7 +1555,7 @@ static int s3cmci_probe(struct platform_device *pdev)
- 			"failed to get io memory region resource.\n");
- 
- 		ret = -ENOENT;
--		goto probe_free_gpio;
-+		goto probe_free_host;
- 	}
- 
- 	host->mem = request_mem_region(host->mem->start,
-@@ -1591,7 +1564,7 @@ static int s3cmci_probe(struct platform_device *pdev)
- 	if (!host->mem) {
- 		dev_err(&pdev->dev, "failed to request io memory region.\n");
- 		ret = -ENOENT;
--		goto probe_free_gpio;
-+		goto probe_free_host;
- 	}
- 
- 	host->base = ioremap(host->mem->start, resource_size(host->mem));
-@@ -1715,11 +1688,6 @@ static int s3cmci_probe(struct platform_device *pdev)
-  probe_free_mem_region:
- 	release_mem_region(host->mem->start, resource_size(host->mem));
- 
-- probe_free_gpio:
--	if (!pdev->dev.of_node)
--		for (i = S3C2410_GPE(5); i <= S3C2410_GPE(10); i++)
--			gpio_free(i);
--
-  probe_free_host:
- 	mmc_free_host(mmc);
- 
-@@ -1745,7 +1713,6 @@ static int s3cmci_remove(struct platform_device *pdev)
- {
- 	struct mmc_host		*mmc  = platform_get_drvdata(pdev);
- 	struct s3cmci_host	*host = mmc_priv(mmc);
--	int i;
- 
- 	s3cmci_shutdown(pdev);
- 
-@@ -1758,10 +1725,6 @@ static int s3cmci_remove(struct platform_device *pdev)
- 
- 	free_irq(host->irq, host);
- 
--	if (!pdev->dev.of_node)
--		for (i = S3C2410_GPE(5); i <= S3C2410_GPE(10); i++)
--			gpio_free(i);
--
- 	iounmap(host->base);
- 	release_mem_region(host->mem->start, resource_size(host->mem));
- 
-diff --git a/include/linux/platform_data/mmc-s3cmci.h b/include/linux/platform_data/mmc-s3cmci.h
-index 33310b11cbdd..bacb86db3112 100644
---- a/include/linux/platform_data/mmc-s3cmci.h
-+++ b/include/linux/platform_data/mmc-s3cmci.h
-@@ -35,6 +35,7 @@ struct s3c24xx_mci_pdata {
- 	unsigned long	ocr_avail;
- 	void		(*set_power)(unsigned char power_mode,
- 				     unsigned short vdd);
-+	struct gpio_desc *bus[6];
- };
- 
- /**
-@@ -44,6 +45,7 @@ struct s3c24xx_mci_pdata {
-  * Copy the platform data supplied by @pdata so that this can be marked
-  * __initdata.
-  */
-+extern void s3c24xx_mci_def_set_power(unsigned char power_mode, unsigned short vdd);
- extern void s3c24xx_mci_set_platdata(struct s3c24xx_mci_pdata *pdata);
- 
- #endif /* _ARCH_NCI_H */
--- 
-2.17.1
-
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFkcmlhbiBIdW50ZXIgW21h
+aWx0bzphZHJpYW4uaHVudGVyQGludGVsLmNvbV0NCj4gU2VudDogMjAyMOW5tDjmnIg25pelIDIw
+OjExDQo+IFRvOiBCb3VnaCBDaGVuIDxoYWliby5jaGVuQG54cC5jb20+OyB1bGYuaGFuc3NvbkBs
+aW5hcm8ub3JnOw0KPiBsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnDQo+IENjOiBkbC1saW51eC1p
+bXggPGxpbnV4LWlteEBueHAuY29tPjsgc2hhd25ndW9Aa2VybmVsLm9yZzsNCj4gcy5oYXVlckBw
+ZW5ndXRyb25peC5kZTsga2VybmVsQHBlbmd1dHJvbml4LmRlOyBmZXN0ZXZhbUBnbWFpbC5jb20N
+Cj4gU3ViamVjdDogUmU6IFtQQVRDSF0gbW1jOiBob3N0OiBzZGhjaS1lc2RoYy1pbXg6IHJlc2V0
+IHVzZGhjIGJlZm9yZSBzZW5kaW5nDQo+IHR1bmluZyBjb21tYW5kIGZvciBtYW51YWwgdHVuaW5n
+IG1ldGhvZA0KPiANCj4gT24gNi8wOC8yMCAyOjQ4IHBtLCBoYWliby5jaGVuQG54cC5jb20gd3Jv
+dGU6DQo+ID4gRnJvbTogSGFpYm8gQ2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPg0KPiA+DQo+ID4g
+QWNjb3JkaW5nIHRvIElDIHN1Z2dlc3Rpb24sIGV2ZXJ5dGltZSBiZWZvcmUgc2VuZGluZyB0aGUg
+dHVuaW5nDQo+ID4gY29tbWFuZCwgbmVlZCB0byByZXNldCB0aGUgdXNkaGMsIHNvIHRvIHJlc2V0
+IHRoZSB0dW5pbmcgY2lyY3VpdCwgdG8NCj4gPiBsZXQgZXZlcnkgdHVuaW5nIGNvbW1hbmQgd29y
+ayB3ZWxsIGZvciB0aGUgbWFudWFsIHR1bmluZyBtZXRob2QuIEZvcg0KPiA+IHN0YW5kYXJkIHR1
+bmluZyBtZXRob2QsIElDIGFscmVhZHkgYWRkIHRoZSByZXNldCBvcGVyYXRpb24gaW4gdGhlIGxv
+Z2ljLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSGFpYm8gQ2hlbiA8aGFpYm8uY2hlbkBueHAu
+Y29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL21tYy9ob3N0L3NkaGNpLWVzZGhjLWlteC5jIHwg
+MSArDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPiA+DQo+ID4gZGlmZiAt
+LWdpdCBhL2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2ktZXNkaGMtaW14LmMNCj4gPiBiL2RyaXZlcnMv
+bW1jL2hvc3Qvc2RoY2ktZXNkaGMtaW14LmMNCj4gPiBpbmRleCBhNzZiNDUxM2ZiZWMuLmU0Njk0
+ZWIxYjkxNCAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL21tYy9ob3N0L3NkaGNpLWVzZGhjLWlt
+eC5jDQo+ID4gKysrIGIvZHJpdmVycy9tbWMvaG9zdC9zZGhjaS1lc2RoYy1pbXguYw0KPiA+IEBA
+IC05OTAsNiArOTkwLDcgQEAgc3RhdGljIHZvaWQgZXNkaGNfcHJlcGFyZV90dW5pbmcoc3RydWN0
+IHNkaGNpX2hvc3QNCj4gPiAqaG9zdCwgdTMyIHZhbCkNCj4gPg0KPiA+ICAJLyogRklYTUU6IGRl
+bGF5IGEgYml0IGZvciBjYXJkIHRvIGJlIHJlYWR5IGZvciBuZXh0IHR1bmluZyBkdWUgdG8gZXJy
+b3JzICovDQo+ID4gIAltZGVsYXkoMSk7DQo+ID4gKwlzZGhjaV9yZXNldChob3N0LCBTREhDSV9S
+RVNFVF9BTEwpOw0KPiANCj4gRG9lc24ndCB0aGF0IHJlc2V0IGFsbCByZWdpc3RlcnMgaS5lLiB0
+aGUgZW50aXJlIGlvcyBzdGF0ZT8NCj4gDQoNCkhpIEFkcmlhbiwNCkZvciBpLk1YIHVzZGhjLCBS
+RVNFVF9BTEwgb3BlcmF0aW9uIGRvIG5vdCBpbXBhY3QgYW55IHJlZ2lzdGVyIHZhbHVlLCBpdCBq
+dXN0IHJlc2V0IHRoZSBpbnRlcm5hbCBsb2dpYyBzZXR0aW5nLiBJIGFscmVhZHkgdmVyaWZpZWQg
+dGhhdC4NCkhlcmUgSSBqdXN0IHdhbnQgdG8gc2V0IHRoZSBTREhDSV9SRVNFVF9BTEwgYml0LCBi
+dXQgSSBub3RpY2UgdGhhdCB0aGUgQVBJIHNkaGNpX3Jlc2V0KCkgd2lsbCBhbHNvIHRvdWNoIHRo
+ZSBob3N0LT5jbG9jaywgc28gSSdtIG5vdCBzdXJlIHdoZXRoZXIgaXQgaXMgZ29vZCBlbm91Z2gg
+dG8gdXNlIHRoaXMgQVBJIGRpcmVjdGx5LiBBbnkgc3VnZ2VzdGlvbj8gQXQgbGVhc3QsIGN1cnJl
+bnQgcGF0Y2ggY2FuIGZpeCB0aGUgbWFudWFsIHR1bmluZyBpc3N1ZSBvbiBpbXg3ZC9pbXg4cXhw
+Lg0KDQo+ID4NCj4gPiAgCXJlZyA9IHJlYWRsKGhvc3QtPmlvYWRkciArIEVTREhDX01JWF9DVFJM
+KTsNCj4gPiAgCXJlZyB8PSBFU0RIQ19NSVhfQ1RSTF9FWEVfVFVORSB8IEVTREhDX01JWF9DVFJM
+X1NNUENMS19TRUwgfA0KPiA+DQoNCg==
