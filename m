@@ -2,56 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8561223F0B1
-	for <lists+linux-mmc@lfdr.de>; Fri,  7 Aug 2020 18:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 712C423F76B
+	for <lists+linux-mmc@lfdr.de>; Sat,  8 Aug 2020 13:46:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726826AbgHGQKy convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Fri, 7 Aug 2020 12:10:54 -0400
-Received: from mail.furshetcrimea.ru ([193.27.243.220]:40572 "EHLO
-        furshetcrimea.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726015AbgHGQKx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Aug 2020 12:10:53 -0400
-Received: from [154.118.61.214] (account info@furshetcrimea.ru HELO [192.168.8.100])
-  by furshetcrimea.ru (CommuniGate Pro SMTP 6.1.10)
-  with ESMTPA id 11168873; Fri, 07 Aug 2020 19:21:52 +0300
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Bei Interesse antworten.
-To:     Recipients <info@furshetcrimea.ru>
-From:   info@furshetcrimea.ru
-Date:   Fri, 07 Aug 2020 17:09:15 +0100
-Reply-To: mattiassjoborg751@gmail.com
-X-Antivirus: Avast (VPS 200807-2, 08/07/2020), Outbound message
-X-Antivirus-Status: Clean
-Message-ID: <auto-000011168873@furshetcrimea.ru>
+        id S1726195AbgHHLp5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 8 Aug 2020 07:45:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50892 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726076AbgHHLp4 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 8 Aug 2020 07:45:56 -0400
+Received: from localhost.localdomain (unknown [89.208.247.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 478422075D;
+        Sat,  8 Aug 2020 11:45:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596887156;
+        bh=6kFHne20m1V7qMn7k4pkplDI+VLBD8yYV1sJ/P6jx5I=;
+        h=From:To:Cc:Subject:Date:From;
+        b=N5jPpNJuvnUciRWqhpFaW4RJ2dovP6P2cIIdx+dLTZOp7MZ23rP2Ysd3vkxbSrHxY
+         sMcIz/Ifqb/2uxafs12EpZYM8Tei3qvwpp+ER9nKe7uIhpOUEj2TYpVNqBCA4g/nXq
+         blTXq/LV0osyKmw/FRcJGj/Dyv4rg2+kKwCd8RoI=
+From:   guoren@kernel.org
+To:     ulf.hansson@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-csky@vger.kernel.org, Guo Ren <guoren@linux.alibaba.com>
+Subject: [PATCH] mmc: Kconfig: Add RISCV and CSKY for MMC_DW
+Date:   Sat,  8 Aug 2020 11:45:02 +0000
+Message-Id: <1596887102-9743-1-git-send-email-guoren@kernel.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Schöne Grüße,
+From: Guo Ren <guoren@linux.alibaba.com>
 
-Mein Name ist MATTIAS SJOBORG, ich bin Schweizer Staatsbürger und (Vorsitzender des Vergütungs- und Nominierungsausschusses) von Tethys Petroleum, einem multinationalen Ölkonzern mit Sitz in London-England, Großbritannien. Ich bitte Sie um Ihre Hilfe, um die Summe von vierzig Millionen Dollar abzurufen, die aus zwei Sendungsboxen besteht.
+Synopsys DesignWare MMC controller could be used in RISC-V and
+C-SKY architectures.
 
-Dieses Geld wurde von der Firma erworben und von einem Diplomaten begleitet und korrekt in einer Sicherheitsfirma in Amerika hinterlegt. Mein Grund dafür ist, dass ich von der Firma zu lange um meine Ansprüche betrogen wurde, nur weil ich kein bin Britisch. Die Kontaktdaten des Diplomaten erhalten Sie, wenn Sie Ihr Interesse bekunden, mir zu helfen.
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+---
+ drivers/mmc/host/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Jede der Schachteln enthält 20 Mio. USD. Für Ihre Hilfe bin ich bereit, 40% an Sie freizugeben. Aus Sicherheitsgründen wurde die Sendung als VERTRAULICHE DIPLOMATISCHE DOKUMENTE registriert, und ich kann erklären, warum dies so erklärt wurde. Denken Sie daran, dass der Diplomat den Inhalt der Sendung nicht kennt. Er ist seit einem Monat dort, während ich nach einem zuverlässigen Partner suchen möchte. Ich werde das Land verlassen, sobald die Sendung für Sie an Sie geliefert wird Private Investitionen und ich haben geschworen, niemals nach London zurückzukehren. Bitte, ich brauche Ihre dringende Antwort, bevor meine Pläne, das Unternehmen zu verlassen, entdeckt werden.
-
-www.tethyspetroleum.com/tethys/static/EN_US/au_seniormanagement.html
-
-Im Moment ist die sicherste Form der Korrespondenz meine eigene E-Mail-Adresse. Bitte antworten Sie im Interesse der Vertraulichkeit nur über meine direkte E-Mail-Adresse. Antworten Sie zusammen mit Ihrer direkten Telefon- und Faxnummer, unter der ich Sie alternativ erreichen kann.
-
-Bitte, wenn Sie nicht bereit und interessiert sind, mir zu helfen, löschen Sie bitte diese E-Mail aus Ihrer E-Mail und tun Sie so, als hätten Sie sie nie erhalten.
-
-Freundliche Grüße,
-Mr.Mattias Sjoborg
-(Vorsitzender des Vergütungs- und Nominierungsausschusses)
-Tethys Petroleum.
-London, England
-
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index 3b706af..119adab 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -777,7 +777,7 @@ config MMC_CAVIUM_THUNDERX
+ 
+ config MMC_DW
+ 	tristate "Synopsys DesignWare Memory Card Interface"
+-	depends on ARC || ARM || ARM64 || MIPS || COMPILE_TEST
++	depends on ARC || ARM || ARM64 || MIPS || RISCV || CSKY || COMPILE_TEST
+ 	help
+ 	  This selects support for the Synopsys DesignWare Mobile Storage IP
+ 	  block, this provides host support for SD and MMC interfaces, in both
 -- 
-This email has been checked for viruses by Avast antivirus software.
-https://www.avast.com/antivirus
+2.7.4
 
