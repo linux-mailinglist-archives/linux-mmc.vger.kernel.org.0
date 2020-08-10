@@ -2,114 +2,234 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E67624055B
-	for <lists+linux-mmc@lfdr.de>; Mon, 10 Aug 2020 13:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7CEA241047
+	for <lists+linux-mmc@lfdr.de>; Mon, 10 Aug 2020 21:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726355AbgHJL0N (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 10 Aug 2020 07:26:13 -0400
-Received: from mga03.intel.com ([134.134.136.65]:38598 "EHLO mga03.intel.com"
+        id S1729073AbgHJT2u (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 10 Aug 2020 15:28:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38872 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726398AbgHJL0L (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 10 Aug 2020 07:26:11 -0400
-IronPort-SDR: EPptgsOLsYiTkojSj1IXyEMbQUD9QD0ZojNA3FjbEIPnvzkL7Gfd7HMYnXvDJqMWtHv4o7ob9P
- 2xJWX6+QIPFQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9708"; a="153479836"
-X-IronPort-AV: E=Sophos;i="5.75,457,1589266800"; 
-   d="scan'208";a="153479836"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2020 04:26:09 -0700
-IronPort-SDR: BtZ7UfB88jiyKyPbbrXmQMAp8RgGyXnwwp++9ClmKCah7JnU0SAkXTcEY/uy9Ioh7oNbwDiJ3f
- 4TWSs3FHfrBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,457,1589266800"; 
-   d="scan'208";a="290319794"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.73]) ([10.237.72.73])
-  by orsmga003.jf.intel.com with ESMTP; 10 Aug 2020 04:26:06 -0700
-Subject: Re: [PATCH] mmc: host: sdhci-esdhc-imx: reset usdhc before sending
- tuning command for manual tuning method
-To:     Bough Chen <haibo.chen@nxp.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Cc:     dl-linux-imx <linux-imx@nxp.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "festevam@gmail.com" <festevam@gmail.com>
-References: <1596714504-16313-1-git-send-email-haibo.chen@nxp.com>
- <d3e56b01-144b-17cf-d414-9e0d558b9bcc@intel.com>
- <VI1PR04MB52945822087D81437FA6CCC590490@VI1PR04MB5294.eurprd04.prod.outlook.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <35ec3920-2ddc-2880-49f8-8d0914c331b5@intel.com>
-Date:   Mon, 10 Aug 2020 14:25:40 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1729105AbgHJTK7 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 10 Aug 2020 15:10:59 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0C938221E2;
+        Mon, 10 Aug 2020 19:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597086658;
+        bh=hbh2onNfrYZWgzJOpBJ8qUnoyWuTiPcRne0L8EkdyiI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=h7CzJXkW6ItJsWxMI29pBB5SExDW6xE7uixl6nOYukiWJH1m2CNNrT7zoIL5j0cmx
+         +q11JSKc8vP+TUO3BfVpKqHMY7FY8vaYHi7qIb0FSM0lqKPs3W9vdm9/rbOIA0AijC
+         xQUWQd+8BCSm4IT1aYRY2zB9px3/6+XqLv5cmBXg=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.7 22/60] mmc: sdhci-cadence: do not use hardware tuning for SD mode
+Date:   Mon, 10 Aug 2020 15:09:50 -0400
+Message-Id: <20200810191028.3793884-22-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200810191028.3793884-1-sashal@kernel.org>
+References: <20200810191028.3793884-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <VI1PR04MB52945822087D81437FA6CCC590490@VI1PR04MB5294.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 7/08/20 4:50 am, Bough Chen wrote:
-> 
->> -----Original Message-----
->> From: Adrian Hunter [mailto:adrian.hunter@intel.com]
->> Sent: 2020年8月6日 20:11
->> To: Bough Chen <haibo.chen@nxp.com>; ulf.hansson@linaro.org;
->> linux-mmc@vger.kernel.org
->> Cc: dl-linux-imx <linux-imx@nxp.com>; shawnguo@kernel.org;
->> s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com
->> Subject: Re: [PATCH] mmc: host: sdhci-esdhc-imx: reset usdhc before sending
->> tuning command for manual tuning method
->>
->> On 6/08/20 2:48 pm, haibo.chen@nxp.com wrote:
->>> From: Haibo Chen <haibo.chen@nxp.com>
->>>
->>> According to IC suggestion, everytime before sending the tuning
->>> command, need to reset the usdhc, so to reset the tuning circuit, to
->>> let every tuning command work well for the manual tuning method. For
->>> standard tuning method, IC already add the reset operation in the logic.
->>>
->>> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
->>> ---
->>>  drivers/mmc/host/sdhci-esdhc-imx.c | 1 +
->>>  1 file changed, 1 insertion(+)
->>>
->>> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c
->>> b/drivers/mmc/host/sdhci-esdhc-imx.c
->>> index a76b4513fbec..e4694eb1b914 100644
->>> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
->>> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
->>> @@ -990,6 +990,7 @@ static void esdhc_prepare_tuning(struct sdhci_host
->>> *host, u32 val)
->>>
->>>  	/* FIXME: delay a bit for card to be ready for next tuning due to errors */
->>>  	mdelay(1);
->>> +	sdhci_reset(host, SDHCI_RESET_ALL);
->>
->> Doesn't that reset all registers i.e. the entire ios state?
->>
-> 
-> Hi Adrian,
-> For i.MX usdhc, RESET_ALL operation do not impact any register value, it just reset the internal logic setting. I already verified that.
-> Here I just want to set the SDHCI_RESET_ALL bit, but I notice that the API sdhci_reset() will also touch the host->clock, so I'm not sure whether it is good enough to use this API directly. Any suggestion? At least, current patch can fix the manual tuning issue on imx7d/imx8qxp.
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-It might be safer to write SDHCI_RESET_ALL directly because, for your case,
-it does not have exactly the same semantics as sdhci_reset().
+[ Upstream commit adc40a5179df30421a5537bfeb4545100ab97d5e ]
 
-It is up to you, but either way, it would be worth adding a comment.
+As commit ef6b75671b5f ("mmc: sdhci-cadence: send tune request twice to
+work around errata") stated, this IP has an errata. This commit applies
+the second workaround for the SD mode.
 
-> 
->>>
->>>  	reg = readl(host->ioaddr + ESDHC_MIX_CTRL);
->>>  	reg |= ESDHC_MIX_CTRL_EXE_TUNE | ESDHC_MIX_CTRL_SMPCLK_SEL |
->>>
-> 
+Due to the errata, it is not possible to use the hardware tuning provided
+by SDHCI_HOST_CONTROL2.
+
+Use the software-controlled tuning like the eMMC mode.
+
+Set sdhci_host_ops::platform_execute_tuning instead of overriding
+mmc_host_ops::execute_tuning.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Link: https://lore.kernel.org/r/20200720061141.172944-1-yamada.masahiro@socionext.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mmc/host/sdhci-cadence.c | 123 ++++++++++++++++---------------
+ 1 file changed, 62 insertions(+), 61 deletions(-)
+
+diff --git a/drivers/mmc/host/sdhci-cadence.c b/drivers/mmc/host/sdhci-cadence.c
+index 6da6d4fb5edd7..07a4cb989a68a 100644
+--- a/drivers/mmc/host/sdhci-cadence.c
++++ b/drivers/mmc/host/sdhci-cadence.c
+@@ -194,57 +194,6 @@ static u32 sdhci_cdns_get_emmc_mode(struct sdhci_cdns_priv *priv)
+ 	return FIELD_GET(SDHCI_CDNS_HRS06_MODE, tmp);
+ }
+ 
+-static void sdhci_cdns_set_uhs_signaling(struct sdhci_host *host,
+-					 unsigned int timing)
+-{
+-	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
+-	u32 mode;
+-
+-	switch (timing) {
+-	case MMC_TIMING_MMC_HS:
+-		mode = SDHCI_CDNS_HRS06_MODE_MMC_SDR;
+-		break;
+-	case MMC_TIMING_MMC_DDR52:
+-		mode = SDHCI_CDNS_HRS06_MODE_MMC_DDR;
+-		break;
+-	case MMC_TIMING_MMC_HS200:
+-		mode = SDHCI_CDNS_HRS06_MODE_MMC_HS200;
+-		break;
+-	case MMC_TIMING_MMC_HS400:
+-		if (priv->enhanced_strobe)
+-			mode = SDHCI_CDNS_HRS06_MODE_MMC_HS400ES;
+-		else
+-			mode = SDHCI_CDNS_HRS06_MODE_MMC_HS400;
+-		break;
+-	default:
+-		mode = SDHCI_CDNS_HRS06_MODE_SD;
+-		break;
+-	}
+-
+-	sdhci_cdns_set_emmc_mode(priv, mode);
+-
+-	/* For SD, fall back to the default handler */
+-	if (mode == SDHCI_CDNS_HRS06_MODE_SD)
+-		sdhci_set_uhs_signaling(host, timing);
+-}
+-
+-static const struct sdhci_ops sdhci_cdns_ops = {
+-	.set_clock = sdhci_set_clock,
+-	.get_timeout_clock = sdhci_cdns_get_timeout_clock,
+-	.set_bus_width = sdhci_set_bus_width,
+-	.reset = sdhci_reset,
+-	.set_uhs_signaling = sdhci_cdns_set_uhs_signaling,
+-};
+-
+-static const struct sdhci_pltfm_data sdhci_cdns_uniphier_pltfm_data = {
+-	.ops = &sdhci_cdns_ops,
+-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+-};
+-
+-static const struct sdhci_pltfm_data sdhci_cdns_pltfm_data = {
+-	.ops = &sdhci_cdns_ops,
+-};
+-
+ static int sdhci_cdns_set_tune_val(struct sdhci_host *host, unsigned int val)
+ {
+ 	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
+@@ -278,23 +227,24 @@ static int sdhci_cdns_set_tune_val(struct sdhci_host *host, unsigned int val)
+ 	return 0;
+ }
+ 
+-static int sdhci_cdns_execute_tuning(struct mmc_host *mmc, u32 opcode)
++/*
++ * In SD mode, software must not use the hardware tuning and instead perform
++ * an almost identical procedure to eMMC.
++ */
++static int sdhci_cdns_execute_tuning(struct sdhci_host *host, u32 opcode)
+ {
+-	struct sdhci_host *host = mmc_priv(mmc);
+ 	int cur_streak = 0;
+ 	int max_streak = 0;
+ 	int end_of_streak = 0;
+ 	int i;
+ 
+ 	/*
+-	 * This handler only implements the eMMC tuning that is specific to
+-	 * this controller.  Fall back to the standard method for SD timing.
++	 * Do not execute tuning for UHS_SDR50 or UHS_DDR50.
++	 * The delay is set by probe, based on the DT properties.
+ 	 */
+-	if (host->timing != MMC_TIMING_MMC_HS200)
+-		return sdhci_execute_tuning(mmc, opcode);
+-
+-	if (WARN_ON(opcode != MMC_SEND_TUNING_BLOCK_HS200))
+-		return -EINVAL;
++	if (host->timing != MMC_TIMING_MMC_HS200 &&
++	    host->timing != MMC_TIMING_UHS_SDR104)
++		return 0;
+ 
+ 	for (i = 0; i < SDHCI_CDNS_MAX_TUNING_LOOP; i++) {
+ 		if (sdhci_cdns_set_tune_val(host, i) ||
+@@ -317,6 +267,58 @@ static int sdhci_cdns_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 	return sdhci_cdns_set_tune_val(host, end_of_streak - max_streak / 2);
+ }
+ 
++static void sdhci_cdns_set_uhs_signaling(struct sdhci_host *host,
++					 unsigned int timing)
++{
++	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
++	u32 mode;
++
++	switch (timing) {
++	case MMC_TIMING_MMC_HS:
++		mode = SDHCI_CDNS_HRS06_MODE_MMC_SDR;
++		break;
++	case MMC_TIMING_MMC_DDR52:
++		mode = SDHCI_CDNS_HRS06_MODE_MMC_DDR;
++		break;
++	case MMC_TIMING_MMC_HS200:
++		mode = SDHCI_CDNS_HRS06_MODE_MMC_HS200;
++		break;
++	case MMC_TIMING_MMC_HS400:
++		if (priv->enhanced_strobe)
++			mode = SDHCI_CDNS_HRS06_MODE_MMC_HS400ES;
++		else
++			mode = SDHCI_CDNS_HRS06_MODE_MMC_HS400;
++		break;
++	default:
++		mode = SDHCI_CDNS_HRS06_MODE_SD;
++		break;
++	}
++
++	sdhci_cdns_set_emmc_mode(priv, mode);
++
++	/* For SD, fall back to the default handler */
++	if (mode == SDHCI_CDNS_HRS06_MODE_SD)
++		sdhci_set_uhs_signaling(host, timing);
++}
++
++static const struct sdhci_ops sdhci_cdns_ops = {
++	.set_clock = sdhci_set_clock,
++	.get_timeout_clock = sdhci_cdns_get_timeout_clock,
++	.set_bus_width = sdhci_set_bus_width,
++	.reset = sdhci_reset,
++	.platform_execute_tuning = sdhci_cdns_execute_tuning,
++	.set_uhs_signaling = sdhci_cdns_set_uhs_signaling,
++};
++
++static const struct sdhci_pltfm_data sdhci_cdns_uniphier_pltfm_data = {
++	.ops = &sdhci_cdns_ops,
++	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++};
++
++static const struct sdhci_pltfm_data sdhci_cdns_pltfm_data = {
++	.ops = &sdhci_cdns_ops,
++};
++
+ static void sdhci_cdns_hs400_enhanced_strobe(struct mmc_host *mmc,
+ 					     struct mmc_ios *ios)
+ {
+@@ -377,7 +379,6 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
+ 	priv->hrs_addr = host->ioaddr;
+ 	priv->enhanced_strobe = false;
+ 	host->ioaddr += SDHCI_CDNS_SRS_BASE;
+-	host->mmc_host_ops.execute_tuning = sdhci_cdns_execute_tuning;
+ 	host->mmc_host_ops.hs400_enhanced_strobe =
+ 				sdhci_cdns_hs400_enhanced_strobe;
+ 	sdhci_enable_v4_mode(host);
+-- 
+2.25.1
 
