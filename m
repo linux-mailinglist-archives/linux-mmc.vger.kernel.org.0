@@ -2,87 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 035212427BE
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Aug 2020 11:38:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3D424280B
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Aug 2020 12:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726942AbgHLJif (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 12 Aug 2020 05:38:35 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:26618 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727808AbgHLJie (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 12 Aug 2020 05:38:34 -0400
-X-UUID: cc2330fe2d444d0c914485b9a5d50b91-20200812
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=n8qTjuU/K0cDmRH8kbn9OnRMWaTi0JfPivM4HICkFOk=;
-        b=MBy7+yIrK00Juy+njlK/GuqyFo2Wz4/pImlPVYvMJWBqW7dMfSrJl77l0G7NZkw9z7nZ53LguO9CYEgiGylQK1p7gIkKu0YJFCYJbg55t/7ufx8eSh+C6ahv2sXpeHOixTRv/xWeuNN7Yc1JDh3vjdPvnUGprrSHQsV0BkxR35g=;
-X-UUID: cc2330fe2d444d0c914485b9a5d50b91-20200812
-Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw01.mediatek.com
-        (envelope-from <wenbin.mei@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 2102756466; Wed, 12 Aug 2020 17:38:29 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 12 Aug 2020 17:38:26 +0800
-Received: from localhost.localdomain (10.17.3.153) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 12 Aug 2020 17:38:26 +0800
-From:   Wenbin Mei <wenbin.mei@mediatek.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <srv_heupstream@mediatek.com>,
-        Wenbin Mei <wenbin.mei@mediatek.com>
-Subject: [PATCH 3/3] mmc: mediatek: add optional module reset property
-Date:   Wed, 12 Aug 2020 17:37:26 +0800
-Message-ID: <20200812093726.10123-4-wenbin.mei@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20200812093726.10123-1-wenbin.mei@mediatek.com>
-References: <20200812093726.10123-1-wenbin.mei@mediatek.com>
+        id S1726722AbgHLKI1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 12 Aug 2020 06:08:27 -0400
+Received: from mout.gmx.net ([212.227.17.21]:52737 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727066AbgHLKI1 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 12 Aug 2020 06:08:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1597226878;
+        bh=UkqjCxKKHV1HDyi41mZtq9yMhrKx967IftYVnHuBMGo=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=CVa57jyqOd+wAZ7HXJCaZTcWrbj9dKyv+WghkaTGAXpiP2JsIvR0EQYgZWjbrGYiO
+         lsBWgX1QG8ZF82HjYytXjIkoJrHZCMtWf3yQ1+ICaGkXnM6d6nfr+pmeun5MhEhTqE
+         zqpiozDA1NGXVxf3FFncbmNurNIBF6Kx6a5QKPTs=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [185.53.41.139] ([185.53.41.139]) by web-mail.gmx.net
+ (3c-app-gmx-bap56.server.lan [172.19.172.126]) (via HTTP); Wed, 12 Aug 2020
+ 12:07:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Message-ID: <trinity-5b810acf-eb8f-452e-b08a-30e1fe46226d-1597226878715@3c-app-gmx-bap56>
+From:   Frank Wunderlich <frank-w@public-files.de>
+To:     Wenbin Mei <wenbin.mei@mediatek.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Wenbin Mei <wenbin.mei@mediatek.com>,
+        srv_heupstream@mediatek.com, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        stable@vger.kernel.org
+Subject: Aw: [PATCH 3/3] mmc: mediatek: add optional module reset property
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 12 Aug 2020 12:07:58 +0200
+Importance: normal
+Sensitivity: Normal
+In-Reply-To: <20200812093726.10123-4-wenbin.mei@mediatek.com>
+References: <20200812093726.10123-1-wenbin.mei@mediatek.com>
+ <20200812093726.10123-4-wenbin.mei@mediatek.com>
+X-UI-Message-Type: mail
+X-Priority: 3
+X-Provags-ID: V03:K1:t+v+dbXvTKFePvkpJQAkYHe5HoNVIemuMfLD56cl7pscYB573WfuroyNnOcU3eKU+Ux0w
+ Bzr/Ckkf3ghFKTc0HwsL4hjb7JZpcAuLKIGlYRTDdvf/jlTHtulh0AIxWzbgZD0o/QUDiCzNjkkT
+ sO5kefkm7G1UW6cNByINedYydy1x5x1KSNZ4caJ/jgdEUkwBF3dN/4r2t4BJSmLaKk6FpWb6i+m/
+ LIO56ZvPG/DHOzaEApF96sk+MKAwEB1GS2joHA8xJDYDQNhmgLVskiKFp++wXff8gvYfNKazeZL8
+ Bo=
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1lebNj6ihXA=:yKrs1mlHJa1VH4DNmWf8T7
+ QJv04DKWPHCKukADg6WgoibuSsh8OqnB3RcbFU3Hime9w81JXHzcUKJZhuZcawE6T0x8wLLKD
+ JiDKf7eLoturt4bAUdUxm1LFnv2JmFegH1M35dhP0jeqQbe8FxWjYrS9hg53qbKvLsipJwhnN
+ 92goZdJzEhOQbDBdxP8Vtq2F62SWwzwnixojAUFr8ieyEdQAojALTxVrP6q5a8gxqhCIDeoV4
+ THzEuSaCf33VF+3EIRe59nHodktmpEc42dTqERD8uQWsd0cfPmh6Ieb5eSfhGbHDoScIK7EO6
+ w/ETHBOlzdCYaknwVuG9lGJu2/gdYUID21RXu0CJSmF04V/4aALKHIAu/mGfRd0ykYkIfF3Ht
+ pNwVjBCIqtZriHaxV+77szPbiiWBK2xEvReXULdqZwX5X0jZkYhtheoWT2z98SDx2hAiNEOUU
+ MfPblapX0RDVVZ4p0+02p4WfY2rW2t5fSwFD9AZD9vHdyBxM6LOe3k5B05lY+Ehlp/YZv7UH3
+ oBgrvgJ0On8H4UXi5FKrZ0xPqu9qxwDb+Yyre98Ot4FfxvMOUbCHGbQhW4tI71aH7TeLjWBvO
+ rLnf0guUcE+asNRp8rcfkVl0RIBrEgcoDSf7iW8OvwIFa4C9I8a0hWHQ9y51edL70I44SAAMB
+ zLSiW3Buc5mCvDUdGE+2uhCK5m2ifvaVV4mBafLf+nGumAfwR77CEoehMf1ob2y5Za+0=
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-VGhpcyBwYXRjaCBhZGRzIGEgb3B0aW9uYWwgcmVzZXQgbWFuYWdlbWVudCBmb3IgbXNkYy4NClNv
-bWV0aW1lcyB0aGUgYm9vdGxvYWRlciBkb2VzIG5vdCBicmluZyBtc2RjIHJlZ2lzdGVyDQp0byBk
-ZWZhdWx0IHN0YXRlLCBzbyBuZWVkIHJlc2V0IHRoZSBtc2RjIGNvbnRyb2xsZXIuDQoNClNpZ25l
-ZC1vZmYtYnk6IFdlbmJpbiBNZWkgPHdlbmJpbi5tZWlAbWVkaWF0ZWsuY29tPg0KLS0tDQogZHJp
-dmVycy9tbWMvaG9zdC9tdGstc2QuYyB8IDEzICsrKysrKysrKysrKysNCiAxIGZpbGUgY2hhbmdl
-ZCwgMTMgaW5zZXJ0aW9ucygrKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tbWMvaG9zdC9tdGst
-c2QuYyBiL2RyaXZlcnMvbW1jL2hvc3QvbXRrLXNkLmMNCmluZGV4IDM5ZTdmYzU0YzQzOC4uMmIy
-NDNjMDNjOWIyIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9tbWMvaG9zdC9tdGstc2QuYw0KKysrIGIv
-ZHJpdmVycy9tbWMvaG9zdC9tdGstc2QuYw0KQEAgLTIyLDYgKzIyLDcgQEANCiAjaW5jbHVkZSA8
-bGludXgvc2xhYi5oPg0KICNpbmNsdWRlIDxsaW51eC9zcGlubG9jay5oPg0KICNpbmNsdWRlIDxs
-aW51eC9pbnRlcnJ1cHQuaD4NCisjaW5jbHVkZSA8bGludXgvcmVzZXQuaD4NCiANCiAjaW5jbHVk
-ZSA8bGludXgvbW1jL2NhcmQuaD4NCiAjaW5jbHVkZSA8bGludXgvbW1jL2NvcmUuaD4NCkBAIC00
-MzQsNiArNDM1LDcgQEAgc3RydWN0IG1zZGNfaG9zdCB7DQogCXN0cnVjdCBtc2RjX3NhdmVfcGFy
-YSBzYXZlX3BhcmE7IC8qIHVzZWQgd2hlbiBnYXRlIEhDTEsgKi8NCiAJc3RydWN0IG1zZGNfdHVu
-ZV9wYXJhIGRlZl90dW5lX3BhcmE7IC8qIGRlZmF1bHQgdHVuZSBzZXR0aW5nICovDQogCXN0cnVj
-dCBtc2RjX3R1bmVfcGFyYSBzYXZlZF90dW5lX3BhcmE7IC8qIHR1bmUgcmVzdWx0IG9mIENNRDIx
-L0NNRDE5ICovDQorCXN0cnVjdCByZXNldF9jb250cm9sICpyZXNldDsNCiB9Ow0KIA0KIHN0YXRp
-YyBjb25zdCBzdHJ1Y3QgbXRrX21tY19jb21wYXRpYmxlIG10ODEzNV9jb21wYXQgPSB7DQpAQCAt
-MTUxNiw2ICsxNTE4LDEyIEBAIHN0YXRpYyB2b2lkIG1zZGNfaW5pdF9odyhzdHJ1Y3QgbXNkY19o
-b3N0ICpob3N0KQ0KIAl1MzIgdmFsOw0KIAl1MzIgdHVuZV9yZWcgPSBob3N0LT5kZXZfY29tcC0+
-cGFkX3R1bmVfcmVnOw0KIA0KKwlpZiAoIUlTX0VSUihob3N0LT5yZXNldCkpIHsNCisJCXJlc2V0
-X2NvbnRyb2xfYXNzZXJ0KGhvc3QtPnJlc2V0KTsNCisJCXVzbGVlcF9yYW5nZSgxMCwgNTApOw0K
-KwkJcmVzZXRfY29udHJvbF9kZWFzc2VydChob3N0LT5yZXNldCk7DQorCX0NCisNCiAJLyogQ29u
-ZmlndXJlIHRvIE1NQy9TRCBtb2RlLCBjbG9jayBmcmVlIHJ1bm5pbmcgKi8NCiAJc2RyX3NldF9i
-aXRzKGhvc3QtPmJhc2UgKyBNU0RDX0NGRywgTVNEQ19DRkdfTU9ERSB8IE1TRENfQ0ZHX0NLUERO
-KTsNCiANCkBAIC0yMjczLDYgKzIyODEsMTEgQEAgc3RhdGljIGludCBtc2RjX2Rydl9wcm9iZShz
-dHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KIAlpZiAoSVNfRVJSKGhvc3QtPnNyY19jbGtf
-Y2cpKQ0KIAkJaG9zdC0+c3JjX2Nsa19jZyA9IE5VTEw7DQogDQorCWhvc3QtPnJlc2V0ID0gZGV2
-bV9yZXNldF9jb250cm9sX2dldF9vcHRpb25hbF9leGNsdXNpdmUoJnBkZXYtPmRldiwNCisJCQkJ
-CQkJCSJocnN0Iik7DQorCWlmIChQVFJfRVJSKGhvc3QtPnJlc2V0KSA9PSAtRVBST0JFX0RFRkVS
-KQ0KKwkJcmV0dXJuIFBUUl9FUlIoaG9zdC0+cmVzZXQpOw0KKw0KIAlob3N0LT5pcnEgPSBwbGF0
-Zm9ybV9nZXRfaXJxKHBkZXYsIDApOw0KIAlpZiAoaG9zdC0+aXJxIDwgMCkgew0KIAkJcmV0ID0g
-LUVJTlZBTDsNCi0tIA0KMi4xOC4wDQo=
+> Gesendet: Mittwoch, 12. August 2020 um 11:37 Uhr
+> Von: "Wenbin Mei" <wenbin.mei@mediatek.com>
+> Betreff: [PATCH 3/3] mmc: mediatek: add optional module reset property
 
+> This patch adds a optional reset management for msdc.
+> Sometimes the bootloader does not bring msdc register
+> to default state, so need reset the msdc controller.
+>
+> Signed-off-by: Wenbin Mei <wenbin.mei@mediatek.com>
+
+Thanks for posting the fix to Mainline
+
+imho this should contain a fixes-Tag as it fixes eMMC-Access on mt7622/Bpi=
+-R64
+
+before we got these Errors on mounting eMMC ion R64:
+
+[   48.664925] blk_update_request: I/O error, dev mmcblk0, sector 204800 o=
+p 0x1:(WRITE) flags 0x800 phys_seg 1 prio class 0
+[   48.676019] Buffer I/O error on dev mmcblk0p1, logical block 0, lost sy=
+nc page write
+
+Fixes: 966580ad236e ("mmc: mediatek: add support for MT7622 SoC")
+Tested-By: Frank Wunderlich <frank-w@public-files.de>
+
+and it needs to be fixed at least for 5.4+, so adding stable-CC
+
+Cc: stable@vger.kernel.org
