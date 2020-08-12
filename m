@@ -2,133 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D747B242919
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Aug 2020 14:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A77152429F9
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Aug 2020 15:03:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726829AbgHLMIZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 12 Aug 2020 08:08:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52970 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726804AbgHLMIZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 12 Aug 2020 08:08:25 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA6D7C06174A
-        for <linux-mmc@vger.kernel.org>; Wed, 12 Aug 2020 05:08:24 -0700 (PDT)
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1k5pYK-0007Gt-NL; Wed, 12 Aug 2020 14:08:20 +0200
-Received: from pza by lupine with local (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1k5pYJ-00087Y-7J; Wed, 12 Aug 2020 14:08:19 +0200
-Message-ID: <f65aeebb6c372a7138e496a30ce39f879d4e24ed.camel@pengutronix.de>
-Subject: Re: [PATCH 3/3] mmc: mediatek: add optional module reset property
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Wenbin Mei <wenbin.mei@mediatek.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        id S1727959AbgHLNCj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 12 Aug 2020 09:02:39 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:18681 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727906AbgHLNCi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 12 Aug 2020 09:02:38 -0400
+X-UUID: 406736eff46c4b1880a72bdaefd7245d-20200812
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=xVTG3i3NZ+1cOXWR7yCUvveG4pS/BEjPy1kRWzM1V+Y=;
+        b=kddPrpoqCaWMbFRZer5U93e4t9/aHgAQSTy/LAmfyf0PlDi25nkl4fbGEHMuSRb6ilHQvhkj3cv/Rn4bdxGykFZRjTj2WDgsBsOkpC6a2Xq/rzQNW1H2oqzrGZXQiSigESzrKepQM5+ld4UHPCWL7AoZzKsyb2VLdn349I5DOx0=;
+X-UUID: 406736eff46c4b1880a72bdaefd7245d-20200812
+Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw01.mediatek.com
+        (envelope-from <wenbin.mei@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1908127229; Wed, 12 Aug 2020 21:02:33 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 12 Aug 2020 21:02:30 +0800
+Received: from localhost.localdomain (10.17.3.153) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 12 Aug 2020 21:02:30 +0800
+From:   Wenbin Mei <wenbin.mei@mediatek.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>
-Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
+CC:     Chaotian Jing <chaotian.jing@mediatek.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        srv_heupstream@mediatek.com
-Date:   Wed, 12 Aug 2020 14:08:19 +0200
-In-Reply-To: <20200812093726.10123-4-wenbin.mei@mediatek.com>
-References: <20200812093726.10123-1-wenbin.mei@mediatek.com>
-         <20200812093726.10123-4-wenbin.mei@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.30.5-1.1 
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        <srv_heupstream@mediatek.com>
+Subject: [v2,0/3] add optional reset property arm64: dts: mt7622: add reset node for mmc device  mmc: mediatek: add optional module reset property Documentation/devicetree/bindings/mmc/mtk-sd.txt |  2 ++ arch/arm64/boot/dts/mediatek/mt7622.dtsi         |  2 ++ drivers/mmc/host/mtk-sd.c                        | 13 +++++++++++++ 3 files changed, 17 insertions(+)
+Date:   Wed, 12 Aug 2020 21:01:26 +0800
+Message-ID: <20200812130129.13519-1-wenbin.mei@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 2020-08-12 at 17:37 +0800, Wenbin Mei wrote:
-> This patch adds a optional reset management for msdc.
-> Sometimes the bootloader does not bring msdc register
-> to default state, so need reset the msdc controller.
-> 
-> Signed-off-by: Wenbin Mei <wenbin.mei@mediatek.com>
-> ---
->  drivers/mmc/host/mtk-sd.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-> index 39e7fc54c438..2b243c03c9b2 100644
-> --- a/drivers/mmc/host/mtk-sd.c
-> +++ b/drivers/mmc/host/mtk-sd.c
-> @@ -22,6 +22,7 @@
->  #include <linux/slab.h>
->  #include <linux/spinlock.h>
->  #include <linux/interrupt.h>
-> +#include <linux/reset.h>
->  
->  #include <linux/mmc/card.h>
->  #include <linux/mmc/core.h>
-> @@ -434,6 +435,7 @@ struct msdc_host {
->  	struct msdc_save_para save_para; /* used when gate HCLK */
->  	struct msdc_tune_para def_tune_para; /* default tune setting */
->  	struct msdc_tune_para saved_tune_para; /* tune result of CMD21/CMD19 */
-> +	struct reset_control *reset;
->  };
->  
->  static const struct mtk_mmc_compatible mt8135_compat = {
-> @@ -1516,6 +1518,12 @@ static void msdc_init_hw(struct msdc_host *host)
->  	u32 val;
->  	u32 tune_reg = host->dev_comp->pad_tune_reg;
->  
-> +	if (!IS_ERR(host->reset)) {
-> +		reset_control_assert(host->reset);
-> +		usleep_range(10, 50);
-> +		reset_control_deassert(host->reset);
-> +	}
-> +
+LS0NCjIuMTguMA0K
 
-This should be:
-
-	if (host->reset) {
-		reset_control_assert(host->reset);
-		usleep_range(10, 50);
-		reset_control_deassert(host->reset);
-	}
-
->  	/* Configure to MMC/SD mode, clock free running */
->  	sdr_set_bits(host->base + MSDC_CFG, MSDC_CFG_MODE | MSDC_CFG_CKPDN);
->  
-> @@ -2273,6 +2281,11 @@ static int msdc_drv_probe(struct platform_device *pdev)
->  	if (IS_ERR(host->src_clk_cg))
->  		host->src_clk_cg = NULL;
->  
-> +	host->reset = devm_reset_control_get_optional_exclusive(&pdev->dev,
-> +								"hrst");
-> +	if (PTR_ERR(host->reset) == -EPROBE_DEFER)
-> +		return PTR_ERR(host->reset);
-> +
-
-This should be:
-
-	host->reset = devm_reset_control_get_optional_exclusive(&pdev->dev,
-								"hrst");
-	if (IS_ERR(host->reset))
-		return PTR_ERR(host->reset);
-
-If the reset is configured in DT then it should be used, even if the
-reset driver is loaded later.
-
-If the DT does not contain the reset-names = "hrst" property at all,
-devm_reset_control_get_optional_*() will return NULL.
-
-With these two changes,
-
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-
-regards
-Philipp
