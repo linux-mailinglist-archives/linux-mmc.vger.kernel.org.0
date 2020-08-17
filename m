@@ -2,96 +2,122 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2B3245804
-	for <lists+linux-mmc@lfdr.de>; Sun, 16 Aug 2020 16:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 396C8245C9E
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Aug 2020 08:41:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729588AbgHPObH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 16 Aug 2020 10:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726339AbgHPO3u (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 16 Aug 2020 10:29:50 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 723CAC061367
-        for <linux-mmc@vger.kernel.org>; Sun, 16 Aug 2020 07:28:36 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id g8so11268971wmk.3
-        for <linux-mmc@vger.kernel.org>; Sun, 16 Aug 2020 07:28:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
-        b=NAKDDu3zYGlp6/1rTFA3zLXzfLNUWElMFpld1DGXTqZ3f2C1G5vMMGgQBtzYdv61gR
-         j0gW2VjYzcAEQEK9JcrA+yGSHFEXNhE9RNkaz3uxkanP37gacJrIVytgT7/c7zGkA2Dy
-         XJB3L8ToVDoWAD9Rvm7U849RIrxncLk9xI9S/Uu5ZGT/cXsim2IUQmYeZsKFSBsv6kJT
-         3kDR9KLYjND6JPpx0YTAndrQaTelzP3558OkivI4ykhj79/nak1F6z80uX1/EQIXmTKV
-         I+kUa6Zt2XAbNuMItIuLndMdaWWyo32PYvWKoOywYCMLUV2UDlYdbpJ66arhF+MiPCa0
-         yMKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
-        b=lqlj6Tt6skeHqUDjuWTWWLILiIfAoUtcvIbisvUIFS1yGsbxzrG7riZ61i6/cX9VIC
-         Z/EgD7EOJ2STVsAj8PV3QmWf0Wz7w+dCyoXHy13zHGRoHcM8/Zh0hbtCP3SGCFY9qvhq
-         2OTGQv9Z9V5KP7ugq5/O7Uv4ct3TBHs9Xusp5o9lO+wOKhsO2XZy9ll4fD6XdOGX9oFY
-         GIzrW+/LaId7cfKDsA3pG2qs31IhTeknLTn4Ei3bJzt3b3TWVSEdByYVlt73h5FvaDZ3
-         73zvgvIcvpx9Eq2DKnWBrokCQTyjdP0PAvvRfLT6uAOnquoeVvPadmLxSzmNnbj+PDrz
-         9uPg==
-X-Gm-Message-State: AOAM530pk/8CBKNOlZ3A1hzhGl36wRN/mkh+0gRJvwCxgRN1Od4NFZGq
-        I+3CzLoEJwNz1yi8CihJ1Qk7+eip/O8c8sl1psLE0DkHaww=
-X-Google-Smtp-Source: ABdhPJydZZ8FQlFGmrB/EDLy0Z8gH5X03F6EFXypW4K1vf8iv94WhLhI3iwPKgeJEaRZZocHWED4lUmYPOBkTFPeX+4=
-X-Received: by 2002:a1c:a1c7:: with SMTP id k190mr10461870wme.1.1597588111746;
- Sun, 16 Aug 2020 07:28:31 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a5d:6cd3:0:0:0:0:0 with HTTP; Sun, 16 Aug 2020 07:28:30
- -0700 (PDT)
-Reply-To: sctnld11170@tlen.pl
-From:   "Mr. Scott Donald" <confianzayrentabilidad@gmail.com>
-Date:   Sun, 16 Aug 2020 07:28:30 -0700
-Message-ID: <CANrrfX7wwL97G=jb--8nb9jH8oRO8T90L6NGSfg1HfnzMyyHcw@mail.gmail.com>
-Subject: Hello, Please
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S1726265AbgHQGlj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Aug 2020 02:41:39 -0400
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:31915 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726151AbgHQGli (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Aug 2020 02:41:38 -0400
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 16 Aug 2020 23:41:38 -0700
+Received: from ironmsg02-blr.qualcomm.com ([10.86.208.131])
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 16 Aug 2020 23:41:36 -0700
+Received: from c-sbhanu-linux.qualcomm.com ([10.242.50.201])
+  by ironmsg02-blr.qualcomm.com with ESMTP; 17 Aug 2020 12:11:12 +0530
+Received: by c-sbhanu-linux.qualcomm.com (Postfix, from userid 2344807)
+        id 435CC40A2; Mon, 17 Aug 2020 12:11:11 +0530 (IST)
+From:   Shaik Sajida Bhanu <sbhanu@codeaurora.org>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        robh+dt@kernel.org, mka@chromium.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        agross@kernel.org, bjorn.andersson@linaro.org,
+        rnayak@codeaurora.org, Pradeep P V K <ppvk@codeaurora.org>,
+        Shaik Sajida Bhanu <sbhanu@codeaurora.org>
+Subject: [PATCH V3] arm64: dts: qcom: sc7180: Add bandwidth votes for eMMC and SDcard
+Date:   Mon, 17 Aug 2020 12:11:04 +0530
+Message-Id: <1597646464-1863-1-git-send-email-sbhanu@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
---=20
-Dear Friend,
+From: Pradeep P V K <ppvk@codeaurora.org>
 
-I'm Mr. Scott Donald a Successful businessMan dealing with
-Exportation, I got your mail contact through search to let you know my
-intension and my Ugly Situation Am a dying Man here in Los Angeles
-California Hospital Bed in (USA), I Lost my Wife and my only Daughter
-for Covid-19 and I also have a problem in my Health and I can die
-anytime I Know,
+Add the bandwidth domain supporting performance state and
+the corresponding OPP tables for the sdhc device on sc7180.
 
-I have a project that I am about to hand over to you. and I already
-instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
-of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
-able you
-to give 50% of this fund to Charitable Home in your State and take 50%
-don't think otherwise and why would anybody send someone you barely
-know to help you deliver a message, help me do this for the happiness
-of my soul and for God to mercy me and my Family and give Us a good
-place.
+Signed-off-by: Pradeep P V K <ppvk@codeaurora.org>
+Signed-off-by: Shaik Sajida Bhanu <sbhanu@codeaurora.org>
+---
 
-please, do as I said there was someone from your State that I deeply
-love so very very much and I miss her so badly I have no means to
-reach any Charitable Home there. that is why I go for a personal
-search of the Country and State and I got your mail contact through
-search to let you know my Bitterness and please, help me is getting
-Dark I ask my Doctor to help me keep you notice failure for me to
-reach you in person Your urgent Response, here is my Doctor Whats-app
-Number for urgent notice +13019692737
+This change is depends on the below patch series:
+https://lore.kernel.org/patchwork/patch/1278294/
 
-Hope To Hear From You. I'm sending this email to you for the second
-time yet no response from you.
+Change since V2:
+	- Included tag in the of innerconnect-cells for sdhc nodes in-tune with
+	  https://lore.kernel.org/patchwork/patch/1278294/
 
-My Regards.
+Changes since V1:
+	- Included Pradeep Pragalapati signoff.
+	- Removed dependency patch list as those patches already merged
+	  on linux-next.
+---
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Mr. Scott Donald
-CEO
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index 68f9894..e5a7d88 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -684,6 +684,9 @@
+ 			clocks = <&gcc GCC_SDCC1_APPS_CLK>,
+ 					<&gcc GCC_SDCC1_AHB_CLK>;
+ 			clock-names = "core", "iface";
++			interconnects = <&aggre1_noc MASTER_EMMC 0 &mc_virt SLAVE_EBI1 0>,
++				<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_EMMC_CFG 0>;
++			interconnect-names = "sdhc-ddr","cpu-sdhc";
+ 			power-domains = <&rpmhpd SC7180_CX>;
+ 			operating-points-v2 = <&sdhc1_opp_table>;
+ 
+@@ -704,11 +707,15 @@
+ 				opp-100000000 {
+ 					opp-hz = /bits/ 64 <100000000>;
+ 					required-opps = <&rpmhpd_opp_low_svs>;
++					opp-peak-kBps = <100000 100000>;
++					opp-avg-kBps = <100000 50000>;
+ 				};
+ 
+ 				opp-384000000 {
+ 					opp-hz = /bits/ 64 <384000000>;
+ 					required-opps = <&rpmhpd_opp_svs_l1>;
++					opp-peak-kBps = <600000 900000>;
++					opp-avg-kBps = <261438 300000>;
+ 				};
+ 			};
+ 		};
+@@ -2476,6 +2483,10 @@
+ 			clocks = <&gcc GCC_SDCC2_APPS_CLK>,
+ 					<&gcc GCC_SDCC2_AHB_CLK>;
+ 			clock-names = "core", "iface";
++
++			interconnects = <&aggre1_noc MASTER_SDCC_2 0 &mc_virt SLAVE_EBI1 0>,
++				<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_SDCC_2 0>;
++			interconnect-names = "sdhc-ddr","cpu-sdhc";
+ 			power-domains = <&rpmhpd SC7180_CX>;
+ 			operating-points-v2 = <&sdhc2_opp_table>;
+ 
+@@ -2489,11 +2500,15 @@
+ 				opp-100000000 {
+ 					opp-hz = /bits/ 64 <100000000>;
+ 					required-opps = <&rpmhpd_opp_low_svs>;
++					opp-peak-kBps = <160000 100000>;
++					opp-avg-kBps = <80000 50000>;
+ 				};
+ 
+ 				opp-202000000 {
+ 					opp-hz = /bits/ 64 <202000000>;
+ 					required-opps = <&rpmhpd_opp_svs_l1>;
++					opp-peak-kBps = <200000	120000>;
++					opp-avg-kBps = <100000 60000>;
+ 				};
+ 			};
+ 		};
+-- 
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member 
+of Code Aurora Forum, hosted by The Linux Foundation
+
