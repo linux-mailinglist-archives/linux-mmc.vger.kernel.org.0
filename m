@@ -2,195 +2,136 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E9E824A679
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Aug 2020 21:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0D1824A8A9
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Aug 2020 23:39:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727053AbgHSTAp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 19 Aug 2020 15:00:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35928 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727046AbgHSTA3 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 19 Aug 2020 15:00:29 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1B8C061757
-        for <linux-mmc@vger.kernel.org>; Wed, 19 Aug 2020 12:00:29 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id z6so25848229iow.6
-        for <linux-mmc@vger.kernel.org>; Wed, 19 Aug 2020 12:00:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Owe3WEEvN9p/SYMSQvZJkkHHqglCi0hIPyzh+2BeQeI=;
-        b=LPU/vpuKH6lF8j9fkQ+U37K1cxGX01IWf50Lm5BMckr6n2jcH6/IwaBluNUPB8u6A6
-         YmfOYuUQ+4qG/sIQzpSsU6k8/PPQeJOXepBq9YWizgTL7aOOxChObtay2nnFp8fBHqMa
-         LvpW2if8LPASDFMYEfhb27dlexQT60nn9d3dY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Owe3WEEvN9p/SYMSQvZJkkHHqglCi0hIPyzh+2BeQeI=;
-        b=eZ9zsDBS4CtCfaZ/lrBA8y6af0oRFFOKItoOJcyB+ySuUOfcpqTC+pgowWNpUZJ73Y
-         JlcDm2QvJs8eVYv9bmkWPgzOwdhhJFiUkuovJ95YP/CkBrQHPev4vTuBxydIDMerLlRx
-         r34Wy2QnLTpfzqFfnZLKfjcjVOpPR+JGO0pVzUM0c5cEgV9ZXjEz4Q3w3GoqFj4Vjz54
-         ULP01wP1MFlLYiAdzGcADnyu0BGTxWKk30J8cYDThmuf10Nj3vGWEQB9yUM1vs0ZQKie
-         xWvIqkmuLF9ahgSDQwQGXU+2EkGOjosblkv2RtPMx7hWc8OEYYjEYwgkOSdzQQFfaj2u
-         sTlg==
-X-Gm-Message-State: AOAM531c6X5i+xjwWa8jUWNCgPYdrczMotUYyXnFM4EzOw8zVLRsPifl
-        GwjSASapHZwonfUv6/Rfd6WjVw==
-X-Google-Smtp-Source: ABdhPJxlQIhqwdlp+5bS1sr/NWQ+A3RkYtMPqT6c/FrqOtmmG3vhCgjjUIAV1mW2KmDJKGmmY3bIZA==
-X-Received: by 2002:a05:6602:2183:: with SMTP id b3mr20596969iob.20.1597863628789;
-        Wed, 19 Aug 2020 12:00:28 -0700 (PDT)
-Received: from rrangel920.bld.corp.google.com (h184-60-195-141.arvdco.broadband.dynamic.tds.net. [184.60.195.141])
-        by smtp.gmail.com with ESMTPSA id e19sm13692266iow.33.2020.08.19.12.00.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2020 12:00:28 -0700 (PDT)
-From:   Raul E Rangel <rrangel@chromium.org>
-To:     adrian.hunter@intel.com
-Cc:     Akshu.Agrawal@amd.com, chris.wang@amd.com,
-        Nehal-bakulchandra.Shah@amd.com,
-        Raul E Rangel <rrangel@chromium.org>,
+        id S1726718AbgHSVjj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 19 Aug 2020 17:39:39 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:47048 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726482AbgHSVji (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 19 Aug 2020 17:39:38 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 770738EE1F3;
+        Wed, 19 Aug 2020 14:39:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1597873176;
+        bh=P5Nf0m7rIb0VsmSGOAvsuubsuKdLazFJ3PWgYJpOQYo=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=QZWzNY/RNv5GTOLC344QkDqvWPLVlJoIZZa/1SvyuRWg2n4Pm6sT1giNF3hS4dmal
+         2AgGeohtLxDuIx9MBYzKgKxS5vVGSeJVIhAssuqGCPXbCp5oJD0WlnV+VnG46ikJ5j
+         S3mk3MHG2hrcnsbyoMzE7CI3TS+/7QS3hnb2Remw=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id bHKZiEX-QbYl; Wed, 19 Aug 2020 14:39:36 -0700 (PDT)
+Received: from [153.66.254.174] (c-73-35-198-56.hsd1.wa.comcast.net [73.35.198.56])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 07F3F8EE0E9;
+        Wed, 19 Aug 2020 14:39:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1597873176;
+        bh=P5Nf0m7rIb0VsmSGOAvsuubsuKdLazFJ3PWgYJpOQYo=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=QZWzNY/RNv5GTOLC344QkDqvWPLVlJoIZZa/1SvyuRWg2n4Pm6sT1giNF3hS4dmal
+         2AgGeohtLxDuIx9MBYzKgKxS5vVGSeJVIhAssuqGCPXbCp5oJD0WlnV+VnG46ikJ5j
+         S3mk3MHG2hrcnsbyoMzE7CI3TS+/7QS3hnb2Remw=
+Message-ID: <1597873172.4030.2.camel@HansenPartnership.com>
+Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Allen <allen.lkml@gmail.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Kees Cook <keescook@chromium.org>,
+        Allen Pais <allen.cryptic@gmail.com>, jdike@addtoit.com,
+        richard@nod.at, anton.ivanov@cambridgegreys.com, 3chas3@gmail.com,
+        stefanr@s5r6.in-berlin.de, airlied@linux.ie,
+        Daniel Vetter <daniel@ffwll.ch>, sre@kernel.org,
+        kys@microsoft.com, deller@gmx.de, dmitry.torokhov@gmail.com,
+        jassisinghbrar@gmail.com, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, maximlevitsky@gmail.com, oakad@yahoo.com,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
-Subject: [PATCH v2] mmc: sdhci-acpi: Fix HS400 tuning for AMDI0040
-Date:   Wed, 19 Aug 2020 13:00:19 -0600
-Message-Id: <20200819125832.v2.1.Ie8f0689ec9f449203328b37409d1cf06b565f331@changeid>
-X-Mailer: git-send-email 2.28.0.220.ged08abb693-goog
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        mporter@kernel.crashing.org, alex.bou9@gmail.com,
+        broonie@kernel.org, martyn@welchs.me.uk, manohar.vanga@gmail.com,
+        mitch@sfgoth.com, David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-um@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux1394-devel@lists.sourceforge.net,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-hyperv@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-ntb@googlegroups.com, linux-s390@vger.kernel.org,
+        linux-spi@vger.kernel.org, devel@driverdev.osuosl.org,
+        Romain Perier <romain.perier@gmail.com>
+Date:   Wed, 19 Aug 2020 14:39:32 -0700
+In-Reply-To: <CAOMdWSJRR0BhjJK1FxD7UKxNd5sk4ycmEX6TYtJjRNR6UFAj6Q@mail.gmail.com>
+References: <20200817091617.28119-1-allen.cryptic@gmail.com>
+         <20200817091617.28119-2-allen.cryptic@gmail.com>
+         <b5508ca4-0641-7265-2939-5f03cbfab2e2@kernel.dk>
+         <202008171228.29E6B3BB@keescook>
+         <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
+         <202008171246.80287CDCA@keescook>
+         <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
+         <1597780833.3978.3.camel@HansenPartnership.com>
+         <f3312928-430c-25f3-7112-76f2754df080@kernel.dk>
+         <1597849185.3875.7.camel@HansenPartnership.com>
+         <CAOMdWSJRR0BhjJK1FxD7UKxNd5sk4ycmEX6TYtJjRNR6UFAj6Q@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The AMD eMMC Controller can only use the tuned clock while in HS200 and
-HS400 mode. If we switch to a different mode, we need to disable the
-tuned clock. If we have previously performed tuning and switch back to
-HS200 or HS400, we can re-enable the tuned clock.
+On Wed, 2020-08-19 at 21:54 +0530, Allen wrote:
+> > [...]
+> > > > Since both threads seem to have petered out, let me suggest in
+> > > > kernel.h:
+> > > > 
+> > > > #define cast_out(ptr, container, member) \
+> > > >     container_of(ptr, typeof(*container), member)
+> > > > 
+> > > > It does what you want, the argument order is the same as
+> > > > container_of with the only difference being you name the
+> > > > containing structure instead of having to specify its type.
+> > > 
+> > > Not to incessantly bike shed on the naming, but I don't like
+> > > cast_out, it's not very descriptive. And it has connotations of
+> > > getting rid of something, which isn't really true.
+> > 
+> > Um, I thought it was exactly descriptive: you're casting to the
+> > outer container.  I thought about following the C++ dynamic casting
+> > style, so out_cast(), but that seemed a bit pejorative.  What about
+> > outer_cast()?
+> > 
+> > > FWIW, I like the from_ part of the original naming, as it has
+> > > some clues as to what is being done here. Why not just
+> > > from_container()? That should immediately tell people what it
+> > > does without having to look up the implementation, even before
+> > > this becomes a part of the accepted coding norm.
+> > 
+> > I'm not opposed to container_from() but it seems a little less
+> > descriptive than outer_cast() but I don't really care.  I always
+> > have to look up container_of() when I'm using it so this would just
+> > be another macro of that type ...
+> > 
+> 
+>  So far we have a few which have been suggested as replacement
+> for from_tasklet()
+> 
+> - out_cast() or outer_cast()
+> - from_member().
+> - container_from() or from_container()
+> 
+> from_container() sounds fine, would trimming it a bit work? like
+> from_cont().
 
-Previously the tuned clock was not getting disabled when switching to
-DDR52 which is part of the HS400 tuning sequence.
+I'm fine with container_from().  It's the same form as container_of()
+and I think we need urgent agreement to not stall everything else so
+the most innocuous name is likely to get the widest acceptance.
 
-Fixes: 34597a3f60b1 ("mmc: sdhci-acpi: Add support for ACPI HID of AMD Controller with HS400")
-Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
----
-
-Changes in v2:
-- Added static to amd_sdhci_execute_tuning
-
- drivers/mmc/host/sdhci-acpi.c | 68 +++++++++++++++++++++++++++++------
- 1 file changed, 58 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index 48ecbd0b180d8..a832d917e2fe3 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -535,6 +535,11 @@ static const struct sdhci_acpi_slot sdhci_acpi_slot_qcom_sd = {
- 	.caps    = MMC_CAP_NONREMOVABLE,
- };
- 
-+struct amd_sdhci_host {
-+	bool	tuned_clock;
-+	bool	dll_enabled;
-+};
-+
- /* AMD sdhci reset dll register. */
- #define SDHCI_AMD_RESET_DLL_REGISTER    0x908
- 
-@@ -555,26 +560,67 @@ static void sdhci_acpi_amd_hs400_dll(struct sdhci_host *host)
- }
- 
- /*
-- * For AMD Platform it is required to disable the tuning
-- * bit first controller to bring to HS Mode from HS200
-- * mode, later enable to tune to HS400 mode.
-+ * The initialization sequence for HS400 is:
-+ *     HS->HS200->Perform Tuning->HS->HS400
-+ *
-+ * The re-tuning sequence is:
-+ *     HS400->DDR52->HS->HS200->Perform Tuning->HS->HS400
-+ *
-+ * The AMD eMMC Controller can only use the tuned clock while in HS200 and HS400
-+ * mode. If we switch to a different mode, we need to disable the tuned clock.
-+ * If we have previously performed tuning and switch back to HS200 or
-+ * HS400, we can re-enable the tuned clock.
-+ *
-  */
- static void amd_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
- {
- 	struct sdhci_host *host = mmc_priv(mmc);
-+	struct sdhci_acpi_host *acpi_host = sdhci_priv(host);
-+	struct amd_sdhci_host *amd_host = sdhci_acpi_priv(acpi_host);
- 	unsigned int old_timing = host->timing;
-+	u16 val;
- 
- 	sdhci_set_ios(mmc, ios);
--	if (old_timing == MMC_TIMING_MMC_HS200 &&
--	    ios->timing == MMC_TIMING_MMC_HS)
--		sdhci_writew(host, 0x9, SDHCI_HOST_CONTROL2);
--	if (old_timing != MMC_TIMING_MMC_HS400 &&
--	    ios->timing == MMC_TIMING_MMC_HS400) {
--		sdhci_writew(host, 0x80, SDHCI_HOST_CONTROL2);
--		sdhci_acpi_amd_hs400_dll(host);
-+
-+	if (old_timing != host->timing && amd_host->tuned_clock) {
-+		if (host->timing == MMC_TIMING_MMC_HS400 ||
-+		    host->timing == MMC_TIMING_MMC_HS200) {
-+			val = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+			val |= SDHCI_CTRL_TUNED_CLK;
-+			sdhci_writew(host, val, SDHCI_HOST_CONTROL2);
-+		} else {
-+			val = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+			val &= ~SDHCI_CTRL_TUNED_CLK;
-+			sdhci_writew(host, val, SDHCI_HOST_CONTROL2);
-+		}
-+
-+		/* DLL is only required for HS400 */
-+		if (host->timing == MMC_TIMING_MMC_HS400 &&
-+		    !amd_host->dll_enabled) {
-+			trace_printk("%s: Enabling DLL\n", __func__);
-+			sdhci_acpi_amd_hs400_dll(host);
-+			amd_host->dll_enabled = true;
-+		}
- 	}
- }
- 
-+static int amd_sdhci_execute_tuning(struct mmc_host *mmc, u32 opcode)
-+{
-+	int err;
-+	struct sdhci_host *host = mmc_priv(mmc);
-+	struct sdhci_acpi_host *acpi_host = sdhci_priv(host);
-+	struct amd_sdhci_host *amd_host = sdhci_acpi_priv(acpi_host);
-+
-+	amd_host->tuned_clock = false;
-+
-+	err = sdhci_execute_tuning(mmc, opcode);
-+
-+	if (!err && !host->tuning_err)
-+		amd_host->tuned_clock = true;
-+
-+	return err;
-+}
-+
- static const struct sdhci_ops sdhci_acpi_ops_amd = {
- 	.set_clock	= sdhci_set_clock,
- 	.set_bus_width	= sdhci_set_bus_width,
-@@ -602,6 +648,7 @@ static int sdhci_acpi_emmc_amd_probe_slot(struct platform_device *pdev,
- 
- 	host->mmc_host_ops.select_drive_strength = amd_select_drive_strength;
- 	host->mmc_host_ops.set_ios = amd_set_ios;
-+	host->mmc_host_ops.execute_tuning = amd_sdhci_execute_tuning;
- 	return 0;
- }
- 
-@@ -613,6 +660,7 @@ static const struct sdhci_acpi_slot sdhci_acpi_slot_amd_emmc = {
- 			  SDHCI_QUIRK_32BIT_ADMA_SIZE,
- 	.quirks2	= SDHCI_QUIRK2_BROKEN_64_BIT_DMA,
- 	.probe_slot     = sdhci_acpi_emmc_amd_probe_slot,
-+	.priv_size	= sizeof(struct amd_sdhci_host),
- };
- 
- struct sdhci_acpi_uid_slot {
--- 
-2.28.0.220.ged08abb693-goog
+James
 
