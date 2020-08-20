@@ -2,158 +2,127 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C38A724B196
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Aug 2020 10:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD95B24B712
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Aug 2020 12:47:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726734AbgHTI4T (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 20 Aug 2020 04:56:19 -0400
-Received: from mga04.intel.com ([192.55.52.120]:53887 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726738AbgHTI4S (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 20 Aug 2020 04:56:18 -0400
-IronPort-SDR: FgKbVFea8Ytpd3S4R4Rrf7MFyZku8IxhBIg/mTc7bX2Xz7SIahGsCyrd7MK3v4JLEL41xgYx3W
- rnl8RsdGnI4A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9718"; a="152675669"
-X-IronPort-AV: E=Sophos;i="5.76,332,1592895600"; 
-   d="scan'208";a="152675669"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2020 01:56:17 -0700
-IronPort-SDR: UF5iSQUJjAO3bb/1hARBlKXodHS9VbU2swzQZB9GpkKUANw9olTnwkNwH1NbBkGpCrrXkVjce0
- QEHb2yGN7Pnw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,332,1592895600"; 
-   d="scan'208";a="311044485"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.73]) ([10.237.72.73])
-  by orsmga002.jf.intel.com with ESMTP; 20 Aug 2020 01:56:13 -0700
-Subject: Re: HS400 tuning and presets
-To:     Raul Rangel <rrangel@chromium.org>, linux-mmc@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Daniel Kurtz <djkurtz@chromium.org>
-References: <CAHQZ30ApB3BEzgLv=EtzB_Kpnsfsr7-s+JcYmyzXN3j7OF80-w@mail.gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <671d418f-f411-ad94-4469-b2f0eb6cd693@intel.com>
-Date:   Thu, 20 Aug 2020 11:55:41 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1731429AbgHTKq4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 20 Aug 2020 06:46:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40196 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731886AbgHTKoU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Aug 2020 06:44:20 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57560C061342
+        for <linux-mmc@vger.kernel.org>; Thu, 20 Aug 2020 03:44:19 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id u128so825112pfb.6
+        for <linux-mmc@vger.kernel.org>; Thu, 20 Aug 2020 03:44:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3PXtPhgN15xkqptqDoOT+6OR5bz1DwLunRYJNev9KR4=;
+        b=zkaFZto0eMoTUXrhXnN5c215rPk2SI+mYKS6axiQrRCTTNkAxc+HQ1zvbE+9q8CdK3
+         ejrwiC5XvbU1VEVR0PkGPGG669EkRUf07na+UAjM95hQEAsG4rAcauD7W4QS/mQQK9Ji
+         aHAzBEJD8cb3YAopp2IN0BnKR0TfeOemTuipy2eA7MsVI9rqpSpfngZuJ3YGffGgvoOr
+         2qaNwaJ3BQvjLM/eOrXzy4yluttDslK9WrVaLBIAQGyCyGmcBfTPfVT8FfIY5a1ueI/3
+         qAMmm3cwSJncp0MSZc3c4f5Ucf1L5617fzuL31JE1OimTfSyQCLy69f4jWzzKMfRVtbY
+         sboA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3PXtPhgN15xkqptqDoOT+6OR5bz1DwLunRYJNev9KR4=;
+        b=Kdup2uMlZDNm6WFq83+uef+msCG/jIYkGeFK+ToNy7zQIupqt/rO6uQgkURZSs1/hL
+         ncwReRIdG37yezjsl21qG3UKqAJU+Mj+ei8kPrZp7fKj81gxmkVYEoR/nfwx6YL4G+vq
+         K0AzzM3CfxpR80zbhgg/zb5i5JzZ6og2UXNNUJZqowQsfXxXhvDh3tw6Ugry7X5+lFrF
+         CGPVvblAB90E8Crr8Y4DdVHaav41OKDlJpH+ZvVGYA+un6vifQBc1rqWaW6JhsDG65ox
+         31LGgp86n5L7RNUzyhDO0aWQDKjWaPdZ1DySRLrqdz+9R2FhVLP9N3wOZitIcVrDsAOM
+         +cFA==
+X-Gm-Message-State: AOAM532g6JJ+5uA8s/RLfoD1LVCa7+iJ+/UKA+uUJ1ABzC+U4A9Ubygk
+        QkTlXXhKw/+Xg7HWRSU6Zzc6eQ==
+X-Google-Smtp-Source: ABdhPJzGI4PMt2rxPglqL7BKdt2SWVVgHiE/GuL96GZfgXci06o5FRoVl3y2qYxeBmL8p5wYvmHOSw==
+X-Received: by 2002:a65:4808:: with SMTP id h8mr2045357pgs.113.1597920255960;
+        Thu, 20 Aug 2020 03:44:15 -0700 (PDT)
+Received: from localhost ([122.172.43.13])
+        by smtp.gmail.com with ESMTPSA id e8sm2352323pfd.34.2020.08.20.03.44.14
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 20 Aug 2020 03:44:15 -0700 (PDT)
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     rnayak@codeaurora.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Fabio Estevam <festevam@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Qiang Yu <yuq825@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rob Clark <robdclark@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Sean Paul <sean@poorly.run>, Shawn Guo <shawnguo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     linux-pm@vger.kernel.org,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        lima@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org
+Subject: [PATCH 0/8] opp: Unconditionally call dev_pm_opp_of_remove_table()
+Date:   Thu, 20 Aug 2020 16:13:49 +0530
+Message-Id: <cover.1597919647.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.25.0.rc1.19.g042ed3e048af
 MIME-Version: 1.0
-In-Reply-To: <CAHQZ30ApB3BEzgLv=EtzB_Kpnsfsr7-s+JcYmyzXN3j7OF80-w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 20/08/20 1:56 am, Raul Rangel wrote:
-> I noticed some odd things with the MMC/SDHCI code while debugging an
-> HS400 tuning issue.
-> 
-> 1) Is it expected that we never enable SDHCI_CTRL_PRESET_VAL_ENABLE
-> for an eMMC running at HS200 or HS400?
+Hello,
 
-Seems like an oversight.  eMMC transfer modes are not supported by the SDHCI
-specification, and many drivers use SDHCI_QUIRK2_PRESET_VALUE_BROKEN, so it
-looks like it has never been noticeable.
+This cleans up some of the user code around calls to
+dev_pm_opp_of_remove_table().
 
-> The flow for enabling HS400 is: Legacy -> HS200 -> Perform Tuning ->
-> HS -> HS400.
-> Looking at [sdhci_set_ios](https://source.chromium.org/chromiumos/chromiumos/codesearch/+/master:src/third_party/kernel/v5.4/drivers/mmc/host/sdhci.c;l=2019),
-> it looks like it's responsible for enabling presets.
-> 
->     if (!(host->quirks2 & SDHCI_QUIRK2_PRESET_VALUE_BROKEN) &&
->                     ((ios->timing == MMC_TIMING_UHS_SDR12) ||
->                      (ios->timing == MMC_TIMING_UHS_SDR25) ||
->                      (ios->timing == MMC_TIMING_UHS_SDR50) ||
->                      (ios->timing == MMC_TIMING_UHS_SDR104) ||
->                      (ios->timing == MMC_TIMING_UHS_DDR50) ||
->                      (ios->timing == MMC_TIMING_MMC_DDR52))) {
->             u16 preset;
-> 
->             sdhci_enable_preset_value(host, true);
->             preset = sdhci_get_preset_value(host);
->             ios->drv_type = (preset & SDHCI_PRESET_DRV_MASK)
->                     >> SDHCI_PRESET_DRV_SHIFT;
->     }
-> 
-> MMC_TIMING_MMC_HS200 and MMC_TIMING_MMC_HS400 are missing from the
-> conditions, so we never enable presets. This means that by default
-> (only 2 controllers provide select_drive_strength) we use drive
-> strength B for both the card and the controller.
-> 
->     int mmc_select_drive_strength(struct mmc_card *card, unsigned int max_dtr,
->                                   int card_drv_type, int *drv_type)
->     {
->             struct mmc_host *host = card->host;
->             int host_drv_type = SD_DRIVER_TYPE_B;
-> 
->             *drv_type = 0;
-> 
->             if (!host->ops->select_drive_strength)
->                     return 0;
->             ...
->     }
-> 
-> Here is a trace log showing HS400 initialization: https://0paste.com/79874
-> 
-> 2) When performing HS400 tuning we end up enabling presets.
-> The re-tuning sequence is: HS400->DDR52->HS->HS200->Perform Tuning->HS->HS400
-> 
-> So when we transition to DDR52 the code above enables presets. You can
-> see this happening in this trace log: https://0paste.com/79875. Look
-> at timestamp 1926.173800.
-> 
-> This means that the card and controller have the potential to have
-> mismatching drive strengths. This can be seen at timestamp
-> 1926.175813.The HS200 preset on my controller is configured to A, but
-> the card would be set up as B (if the controller didn't override
-> select_drive_strength).
-> 
-> Should we be enabling presets for HS200/HS400 (and potentially
-> MMC_HS), or should we remove MMC_DDR52 from the condition above?
+All the patches can be picked by respective maintainers directly except
+for the last patch, which needs the previous two to get merged first.
 
-The only things that matter are:
-1. don't break other drivers
-2. do make it work for your driver
+These are based for 5.9-rc1.
 
-So we can't universally enable presets for HS200 and HS400, nor remove
-MMC_DDR52, but we can do something to make it work for you.
+Rajendra, Since most of these changes are related to qcom stuff, it
+would be great if you can give them a try. I wasn't able to test them
+due to lack of hardware.
 
-> 
-> It looks like 0dafa60eb2506 ("mmc: sdhci: also get preset value and
-> driver type for MMC_DDR52") was the CL that added MMC_DDR52 to the
-> condition.
-> 
-> 3) How do we ensure that card drive strength and controller drive
-> strength stay in sync when presets are enabled?
+Viresh Kumar (8):
+  cpufreq: imx6q: Unconditionally call dev_pm_opp_of_remove_table()
+  drm/lima: Unconditionally call dev_pm_opp_of_remove_table()
+  drm/msm: Unconditionally call dev_pm_opp_of_remove_table()
+  mmc: sdhci-msm: Unconditionally call dev_pm_opp_of_remove_table()
+  spi: spi-geni-qcom: Unconditionally call dev_pm_opp_of_remove_table()
+  spi: spi-qcom-qspi: Unconditionally call dev_pm_opp_of_remove_table()
+  tty: serial: qcom_geni_serial: Unconditionally call
+    dev_pm_opp_of_remove_table()
+  qcom-geni-se: remove has_opp_table
 
-Is that your requirement? Which driver is it?
+ drivers/cpufreq/imx6q-cpufreq.c         | 10 ++--------
+ drivers/gpu/drm/lima/lima_devfreq.c     |  6 +-----
+ drivers/gpu/drm/lima/lima_devfreq.h     |  1 -
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c | 10 +++-------
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h |  1 -
+ drivers/gpu/drm/msm/dsi/dsi_host.c      |  8 ++------
+ drivers/mmc/host/sdhci-msm.c            | 11 +++--------
+ drivers/spi/spi-geni-qcom.c             | 10 +++-------
+ drivers/spi/spi-qcom-qspi.c             | 11 +++--------
+ drivers/tty/serial/qcom_geni_serial.c   | 10 +++-------
+ include/linux/qcom-geni-se.h            |  2 --
+ 11 files changed, 20 insertions(+), 60 deletions(-)
 
-> Right now mmc_select_driver_type is only called from
-> `mmc_select_hs400es` and `mmc_select_hs200`. `mmc_select_driver_type
-> doesn't currently take the timing into account when making a decision.
-> Only two devices currently provide the `select_drive_strength`
-> override, so we are setting the card to drive strength B for most
-> controllers.
-> 
-> Should we modify mmc_select_drive_strength to take in the target
-> timing so it can return the correct card drive strength. We could then
-> add an sdhci_select_drive_strength that queries the preset registers
-> (if enabled) and returns the target drive strength.
-> 
-> 4) Should we be calling `mmc_select_driver_type` from
-> `mmc_hs400_to_hs200` and `mmc_hs200_to_hs400` during the transitions?
+-- 
+2.25.0.rc1.19.g042ed3e048af
 
-The same driver strength continues to be used for HS200 and HS400 i.e.
-card->driver_strength
-
-> Or do we not care?
-> 
-> Sorry for the long email...
-> Once I get some guidance, I can send some patches.
-
-Generally people first want to know what problem you are trying to solve.
