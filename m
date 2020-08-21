@@ -2,73 +2,79 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17DDE24D5B6
-	for <lists+linux-mmc@lfdr.de>; Fri, 21 Aug 2020 15:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC6224D5B2
+	for <lists+linux-mmc@lfdr.de>; Fri, 21 Aug 2020 15:04:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728695AbgHUNEV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 21 Aug 2020 09:04:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59248 "EHLO
+        id S1728130AbgHUNES (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 21 Aug 2020 09:04:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727106AbgHUNEF (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 21 Aug 2020 09:04:05 -0400
-Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5106C061388
-        for <linux-mmc@vger.kernel.org>; Fri, 21 Aug 2020 06:04:04 -0700 (PDT)
-Received: by mail-vk1-xa42.google.com with SMTP id x142so396677vke.0
-        for <linux-mmc@vger.kernel.org>; Fri, 21 Aug 2020 06:04:04 -0700 (PDT)
+        with ESMTP id S1728678AbgHUNEJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 21 Aug 2020 09:04:09 -0400
+Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA9AC061387
+        for <linux-mmc@vger.kernel.org>; Fri, 21 Aug 2020 06:04:07 -0700 (PDT)
+Received: by mail-vk1-xa41.google.com with SMTP id j7so387593vkk.12
+        for <linux-mmc@vger.kernel.org>; Fri, 21 Aug 2020 06:04:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Of8B1JdNddjVmiolpjV5fIdtTFXK4mNZ1WJPME585rI=;
-        b=MsAQRhu3Yz/2CxCDMuK8lKA+6IRovanKanJ+xkv2q+6NkbAawmZpclkCicAmFD/GCn
-         LptyFlY1QNEZQQsXN+H9dDLRT4LBFDnWDJrOnwxLywkRMDS+y19GE8mt8p6MDEyHomi3
-         PFnKlUCyzg0eXSq7GzvqfoZXMFdHwEaMcn6/BoqVc/tZEQWIZMIrQZYAZpNpAoNWL5aY
-         uEMNLITtGGWZqH/4462D4EtFgtvMyRCanOIp3j+6P1azskPtkwwEgAeEiYnQyRUjuOro
-         zJOhRTVrnIiLVm7oWrK0GeYEDIzSDLV5oSxTEb1GfnRw/o4yqzjwpZJ2MntLh2eC175o
-         4rTg==
+        bh=ag9vhIrITQpJEm39f+7OC9szPXt04RbAHbvMxPWSdZU=;
+        b=Sx9MLkrA4coWxp/6zwxJU1Xob9ceBPQVinMuzOOanr+ml/ZBrbRiogTGboi8y1rtgo
+         3ajd9nhZjSIMyM8JKHjnQoV3Zr0ZleW/n6B7uYLq4sLyG+p9UOYxwmSgJ/b5RaKpix5I
+         TvwQOGBI8Zq+wJOy+8pFIwuw2/mixwL+MA+kLF4R2vlUyWmZYyMcgTm41ZKUnU9pVH/E
+         Euqdq5WOIGdKmRlRzX0kzRZiShfDwTPVXCDdaH2tpQJ+4BCc9TjVBzAAjNzBY4MfZ+zS
+         8QOJ1MfoqcTnQFoC0yr1WUkcbomtdVzXxAsvJ6a/yRmgSV6ss6FEXylUhCjeNMsOGa1L
+         bXug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Of8B1JdNddjVmiolpjV5fIdtTFXK4mNZ1WJPME585rI=;
-        b=VZgLNKYw6WoAvJAQ4Nb84n8LJzAI8wJsCF9wVqvnjorJE4k3o7aK9tsrfU4bg469Tr
-         Pw2Wgp0Z/tRV+tHx4rW9HZID9uxXCgjuDwBejssLRuk+oMxK3ZzFyS3uMN3OjMypdZCf
-         sKJh5nh+x/15SwbUe5Bk/xivpfoDLxuJMu2V/N0qhgllM9hjCO6+KZiyeLIRaaRZ7UJP
-         GPmspbDT0EotexEDqc4TOpJbcgZWg+LL+oWHW311+VP8yV5YTVbIJeY+CQNbu7/qRAfJ
-         0NfPzB8W/QGQF3hzXHKwUgPnHw1K3aCffr4uT7sL2b3sJz5db+bKJkCJWy6COrWQjE9a
-         4xeg==
-X-Gm-Message-State: AOAM533WI3BTfomRmHDdSBtJojTvyulau5qhZZaeIv0HnY5ybxevtPCO
-        sl7xL9/Ml0cp/D89Lt2Gmxk9tHRBB5XMOs0HtSCEKQ==
-X-Google-Smtp-Source: ABdhPJxexRNpnHIAvgnOO637NaC3Fo+35Ifzsik1b/A6iDZxGrmVTZ55K47fA64XUTB0JSJ5J9MQb/JS1o/wJWEBAJI=
-X-Received: by 2002:ac5:ccdb:: with SMTP id j27mr1509317vkn.43.1598015043981;
- Fri, 21 Aug 2020 06:04:03 -0700 (PDT)
+        bh=ag9vhIrITQpJEm39f+7OC9szPXt04RbAHbvMxPWSdZU=;
+        b=AtRA/OP135TSvVtvYGJV7QYNScGmuYbx+bKU8BL5DeoiSoy/P7KTYcWmCMT1SaobWg
+         ssUKAUnVhjc+aebtsQSU7fLHsPxgZH7CDxtHv52CWkK9r09qYoOBh+t2Dh1Yi189+jSd
+         6MbQoQPxZFEDL81ieYYfG3l0aue7X82FtJ5hzXmfh9xLAbmz2r/QtySsLY/Gg6CjtF48
+         QQbo4oLzUmnGwtqfDA9s1fnxFDuo2F+zZymJWSt9YkeEIgMijXq4Awh4UCRi7ah4MZ16
+         I3+tzWAveUF0raIeon51U8TDuNJlotPSF/TTx5u7IOXe9mGPrYW9K8s1PUhJk04CN25n
+         IYWg==
+X-Gm-Message-State: AOAM532LkPAdkQYRqutmI5BRnzPFRXrC7TUyqApF8zqeLo4Tx7yS6zWo
+        i5fIvRQkLBXFqsEmB5A09wSIZcNlq62yVEMOw/ECQg==
+X-Google-Smtp-Source: ABdhPJxKyZLQ8FSJ60agO2QvRppq9TDfuGiXVMqkDYSZ51SV1Ha7hGPPGCWgDSLcFz63E+E7JMjlx4MozuEZ9n30evM=
+X-Received: by 2002:a1f:9d85:: with SMTP id g127mr1496139vke.101.1598015047149;
+ Fri, 21 Aug 2020 06:04:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <1596887102-9743-1-git-send-email-guoren@kernel.org>
-In-Reply-To: <1596887102-9743-1-git-send-email-guoren@kernel.org>
+References: <20200809192001.19156-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20200809192001.19156-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 21 Aug 2020 15:03:27 +0200
-Message-ID: <CAPDyKFoAonef5daQy0rZFdQeUhKwryYDM0k-aiWXKZG8XBxQxw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: Kconfig: Add RISCV and CSKY for MMC_DW
-To:     guoren@kernel.org
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+Date:   Fri, 21 Aug 2020 15:03:30 +0200
+Message-ID: <CAPDyKFqKYVeva2XD6GX7n4jDQYwJrkLqGn9+zwMZLz7pFUCnXA@mail.gmail.com>
+Subject: Re: [PATCH v2] dt-bindings: mmc: renesas,sdhi: Add r8a774e1 support
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, Guo Ren <guoren@linux.alibaba.com>
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Prabhakar <prabhakar.csengg@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 8 Aug 2020 at 13:45, <guoren@kernel.org> wrote:
+On Sun, 9 Aug 2020 at 21:20, Lad Prabhakar
+<prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
 >
-> From: Guo Ren <guoren@linux.alibaba.com>
+> Document SDHI controller for RZ/G2H (R8A774E1) SoC, which is compatible
+> with R-Car Gen3 SoC family.
 >
-> Synopsys DesignWare MMC controller could be used in RISC-V and
-> C-SKY architectures.
->
-> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Acked-by: Rob Herring <robh@kernel.org>
 
 Applied for next, thanks!
 
@@ -77,22 +83,27 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v1->v2
+> * Rebased the patch on YAML binding conversion changes (this patch
+>   is part of series [1], reset of the patches have been picked up).
+> * I have restored the Ack's from v1
+>   [1] https://lkml.org/lkml/2020/7/8/1211
+> ---
+>  Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 3b706af..119adab 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -777,7 +777,7 @@ config MMC_CAVIUM_THUNDERX
->
->  config MMC_DW
->         tristate "Synopsys DesignWare Memory Card Interface"
-> -       depends on ARC || ARM || ARM64 || MIPS || COMPILE_TEST
-> +       depends on ARC || ARM || ARM64 || MIPS || RISCV || CSKY || COMPILE_TEST
->         help
->           This selects support for the Synopsys DesignWare Mobile Storage IP
->           block, this provides host support for SD and MMC interfaces, in both
+> diff --git a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> index e5dbc20456e5..04eb0d3c5fa4 100644
+> --- a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> @@ -50,6 +50,7 @@ properties:
+>                - renesas,sdhi-r8a774a1 # RZ/G2M
+>                - renesas,sdhi-r8a774b1 # RZ/G2N
+>                - renesas,sdhi-r8a774c0 # RZ/G2E
+> +              - renesas,sdhi-r8a774e1 # RZ/G2H
+>                - renesas,sdhi-r8a7795  # R-Car H3
+>                - renesas,sdhi-r8a7796  # R-Car M3-W
+>                - renesas,sdhi-r8a77961 # R-Car M3-W+
 > --
-> 2.7.4
+> 2.17.1
 >
