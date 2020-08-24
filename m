@@ -2,82 +2,108 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 145A024FEF6
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 Aug 2020 15:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF25D250094
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 Aug 2020 17:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725921AbgHXNdZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 Aug 2020 09:33:25 -0400
-Received: from mga01.intel.com ([192.55.52.88]:43488 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727797AbgHXNdO (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 24 Aug 2020 09:33:14 -0400
-IronPort-SDR: 2D4dXapw2Ok0EFldyAM5TYdg1eNdqTggsVoaaCE2xGrwK/wBMUd9/EWvEKpR7fhMQ9l6Q+ah5Y
- m3cqgTCrQl8w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9722"; a="173938302"
-X-IronPort-AV: E=Sophos;i="5.76,348,1592895600"; 
-   d="scan'208";a="173938302"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2020 06:33:13 -0700
-IronPort-SDR: 4Qfwc64MzVWdtwY0dPovl9VQ59BfNIp7eWEPhwngTQ9ZBWYH9N/ByT/fDjubetG787Rbtlf9g1
- sKsXdKwwpa9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,348,1592895600"; 
-   d="scan'208";a="298717171"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.73]) ([10.237.72.73])
-  by orsmga006.jf.intel.com with ESMTP; 24 Aug 2020 06:33:06 -0700
-Subject: Re: [PATCH] mmc: host: sdhci-esdhc-imx: remove unused code
-To:     haibo.chen@nxp.com, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org
-Cc:     linux-imx@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        kernel@pengutronix.de, festevam@gmail.com
-References: <1598265914-23606-1-git-send-email-haibo.chen@nxp.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <1909bee2-3080-1eef-67d4-a1ca6fbaffe0@intel.com>
-Date:   Mon, 24 Aug 2020 16:32:33 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727903AbgHXPLF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 Aug 2020 11:11:05 -0400
+Received: from esa1.microchip.iphmx.com ([68.232.147.91]:35255 "EHLO
+        esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726825AbgHXPKw (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Aug 2020 11:10:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1598281851; x=1629817851;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=t4cBW0KJQ9oAF55ARnk4BDNoEvlWUJYtIpys/EI51Sk=;
+  b=lE/eGTLPwFEif79xf1Z7tXMMpPgRo5Oi4BNWgrRdtledyr6S1Yt+Bg9t
+   kW0PK4HED5QTL0BJ/18Et9AmuoXXOCFNQ785uGfJx3RxAHfxflxxDygz6
+   nUCCFj/TMZSlWgRjCuEXBSmRWQzKeYejBfu9go1YaE8RafH22LGNzVxTF
+   qIulAf81X+nNHipU61IJKbRIrz+9RfY4J/BWJ7v55U9yZdeHG3Oop38MG
+   iPG0Uqm+CWca00XWvQZDgmT0Nu6QQoDaFnbaZ72MD4RguyOm8zjQbkCcs
+   M4RIZG79XbKgnKRIfdJNCMK1NADv8iySnLbVdjenWLP2ED+gTw1b2fUof
+   g==;
+IronPort-SDR: CmC1ij+6/53nmSXaamACFN8afuFA/IfnsSnlrU2LnWEc8NDuLI5yZndWLtG05i5hGusMZjmBVR
+ 4qNEhEfNNSVCZ3TT7lRgyeKwsZT18f0b9IH4YMrsX/5hP8tr3Uw39qoJcutJtr9KzXfxjFsFjQ
+ hdXRF7xYun1ohCnkKmGv/6Aod217wafBLHeU7z5mQTPzmvN5Jd99jUSxSvsu4FOBNcmH0AAtNC
+ m2APQ6MARLNgG54zTSGm3s4DrFrGoA1x5n3agrHpj9P5yoCq+a7JRvvjdSnjdIgUk2MfljIjVz
+ 9C0=
+X-IronPort-AV: E=Sophos;i="5.76,349,1592895600"; 
+   d="scan'208";a="92912510"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Aug 2020 08:10:46 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1979.3; Mon, 24 Aug 2020 08:10:10 -0700
+Received: from soft-dev15.microsemi.net (10.10.115.15) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.1979.3 via Frontend Transport; Mon, 24 Aug 2020 08:10:40 -0700
+From:   Lars Povlsen <lars.povlsen@microchip.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        SoC Team <soc@kernel.org>
+CC:     Lars Povlsen <lars.povlsen@microchip.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v4 0/3] mmc: Adding support for Microchip Sparx5 SoC
+Date:   Mon, 24 Aug 2020 17:10:32 +0200
+Message-ID: <20200824151035.31093-1-lars.povlsen@microchip.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <1598265914-23606-1-git-send-email-haibo.chen@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 24/08/20 1:45 pm, haibo.chen@nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> Value assigned to a variable(err) is never used, so remove it
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+(This is a resend of an identical patch set, sent at a time where
+Sparx5 support was not integrated yet. With the Sparx5 clock driver
+and associated header now in place in the v5.9rc series, the driver is
+now resubmitted for inclusion).
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+The patch adds eMMC support for Sparx5, by adding a driver for the SoC
+SDHCI controller, DT configuration and DT binding documentation.
 
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index 3d6eaf490d4a..3d2615eb7d56 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -1673,10 +1673,8 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
->  		goto disable_ipg_clk;
->  
->  	imx_data->pinctrl = devm_pinctrl_get(&pdev->dev);
-> -	if (IS_ERR(imx_data->pinctrl)) {
-> -		err = PTR_ERR(imx_data->pinctrl);
-> +	if (IS_ERR(imx_data->pinctrl))
->  		dev_warn(mmc_dev(host->mmc), "could not get pinctrl\n");
-> -	}
->  
->  	if (esdhc_is_usdhc(imx_data)) {
->  		host->quirks2 |= SDHCI_QUIRK2_PRESET_VALUE_BROKEN;
-> 
+Changes in v4:
+- Disable clock if sdhci_add_host() fails
+- Remove dev_err if sdhci_add_host() fails
 
+Changes in v3:
+- Add dt-bindings for property "microchip,clock-delay"
+- Enforce "microchip,clock-delay" valid range in driver
+- Removed a noisy pr_debug() in sdhci_sparx5_adma_write_desc()
+
+Changes in v2:
+- Changes in driver as per review comments
+ - Drop debug code
+ - Drop sysfs code
+ - use usleep_range()
+ - use mmc_hostname() in pr_debug()
+ - Remove deactivated code
+ - Minor cosmetics
+
+Lars Povlsen (3):
+  dt-bindings: mmc: Add Sparx5 SDHCI controller bindings
+  sdhci: sparx5: Add Sparx5 SoC eMMC driver
+  arm64: dts: sparx5: Add Sparx5 eMMC support
+
+ .../mmc/microchip,dw-sparx5-sdhci.yaml        |  65 +++++
+ arch/arm64/boot/dts/microchip/sparx5.dtsi     |  24 ++
+ .../boot/dts/microchip/sparx5_pcb125.dts      |  23 ++
+ .../boot/dts/microchip/sparx5_pcb134_emmc.dts |  23 ++
+ .../boot/dts/microchip/sparx5_pcb135_emmc.dts |  23 ++
+ drivers/mmc/host/Kconfig                      |  13 +
+ drivers/mmc/host/Makefile                     |   1 +
+ drivers/mmc/host/sdhci-of-sparx5.c            | 269 ++++++++++++++++++
+ 8 files changed, 441 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/microchip,dw-sparx5-sdhci.yaml
+ create mode 100644 drivers/mmc/host/sdhci-of-sparx5.c
+
+--
+2.27.0
