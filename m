@@ -2,27 +2,27 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF5BE25020A
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 Aug 2020 18:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 510AF250248
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 Aug 2020 18:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbgHXQ2Q (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 Aug 2020 12:28:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57434 "EHLO mail.kernel.org"
+        id S1728104AbgHXQ3B (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 Aug 2020 12:29:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58172 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727991AbgHXQ2J (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 24 Aug 2020 12:28:09 -0400
+        id S1728085AbgHXQ2t (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 24 Aug 2020 12:28:49 -0400
 Received: from kozik-lap.mshome.net (unknown [194.230.155.216])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D2A0120738;
-        Mon, 24 Aug 2020 16:28:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7115420738;
+        Mon, 24 Aug 2020 16:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598286488;
-        bh=NxgEI35oyykqhboGx/XN/M8uVZEQeFJp9m/hyO8Zrz8=;
+        s=default; t=1598286528;
+        bh=oGMgQUbt8WNzS5RCzjRyum21Cxzr14wZYyuSrHfBP2M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XTqczjKjHJ68aZnCriupqIDy8TROXvBw+2pPtLlrlOKEyMUyJywYCE7/2lYvNrxRw
-         ha7HID//r9sRGPIYqiLmmZ8JbiUpGlnqTZhe8cbr/CYB3VHatZuJ2JkhoKQBM2XoH/
-         Mwkr8XWX4EOf8VySp4knB+IW2IZIEeYqjHGpIxco=
+        b=SNtHfi1f78SmcdBGTBgoM3jOejs7NERNPLniDOZ0H5575eGcUlaZOep8EqmBUNqol
+         BE7Yaxey7A9qot+A3EXHg8WwA6MRwvzewtdD3KNSb2aMBuTvN+uKghNuNLfeZH6oN0
+         IYp/ElKvhyXZAMp5GMmiwbLwAQBn13+olpuwuipc=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -50,9 +50,9 @@ To:     Rob Herring <robh+dt@kernel.org>,
         linux-pwm@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-watchdog@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v2 08/19] dt-bindings: watchdog: fsl-imx-wdt: Add i.MX 8M compatibles
-Date:   Mon, 24 Aug 2020 18:26:41 +0200
-Message-Id: <20200824162652.21047-8-krzk@kernel.org>
+Subject: [PATCH v2 14/19] dt-bindings: arm: fsl: Fix Toradex Colibri i.MX 8 binding
+Date:   Mon, 24 Aug 2020 18:26:47 +0200
+Message-Id: <20200824162652.21047-14-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200824162652.21047-1-krzk@kernel.org>
 References: <20200824162652.21047-1-krzk@kernel.org>
@@ -61,46 +61,36 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-DTSes with new i.MX 8M SoCs introduce their own compatibles so add them
-to fix dtbs_check warnings like:
+The Toradex Colibri i.MX 8 Evaluation board has two Toradex compatibles
+so it needs separate entry.  This fixes dtbs_check warning:
 
-  arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dt.yaml: watchdog@30280000:
-    compatible:0: 'fsl,imx8mm-wdt' is not one of ['fsl,imx21-wdt']
-    From schema: Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
-
-  arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dt.yaml: watchdog@30280000:
-    compatible: ['fsl,imx8mm-wdt', 'fsl,imx21-wdt'] is too long
-
-  arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dt.yaml: watchdog@30280000:
-    compatible: Additional items are not allowed ('fsl,imx21-wdt' was unexpected)
+  arch/arm64/boot/dts/freescale/imx8qxp-colibri-eval-v3.dt.yaml: /:
+    compatible: ['toradex,colibri-imx8x-eval-v3', 'toradex,colibri-imx8x', 'fsl,imx8qxp'] is not valid under any of the given schemas (Possible causes of the failure):
+    arch/arm64/boot/dts/freescale/imx8qxp-colibri-eval-v3.dt.yaml: /: compatible: ['toradex,colibri-imx8x-eval-v3', 'toradex,colibri-imx8x', 'fsl,imx8qxp'] is too long
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- .../devicetree/bindings/watchdog/fsl-imx-wdt.yaml     | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
-index d96b93b11fad..991b4e33486e 100644
---- a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
-+++ b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
-@@ -14,8 +14,15 @@ allOf:
- 
- properties:
-   compatible:
--    enum:
--      - fsl,imx21-wdt
-+    oneOf:
-+      - const: fsl,imx21-wdt
-+      - items:
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 37592e7bfee9..377fc2a4c159 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -379,7 +379,13 @@ properties:
+               - einfochips,imx8qxp-ai_ml  # i.MX8QXP AI_ML Board
+               - fsl,imx8qxp-mek           # i.MX8QXP MEK Board
+               - toradex,colibri-imx8x         # Colibri iMX8X Module
++          - const: fsl,imx8qxp
++
++      - description: Toradex Colibri i.MX8 Evaluation Board
++        items:
 +          - enum:
-+              - fsl,imx8mm-wdt
-+              - fsl,imx8mn-wdt
-+              - fsl,imx8mp-wdt
-+              - fsl,imx8mq-wdt
-+          - const: fsl,imx21-wdt
+               - toradex,colibri-imx8x-eval-v3 # Colibri iMX8X Module on Colibri Evaluation Board V3
++          - const: toradex,colibri-imx8x
+           - const: fsl,imx8qxp
  
-   reg:
-     maxItems: 1
+       - description:
 -- 
 2.17.1
 
