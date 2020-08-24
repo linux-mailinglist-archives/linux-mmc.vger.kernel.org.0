@@ -2,106 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E290724F9FC
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 Aug 2020 11:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B691724FA02
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 Aug 2020 11:52:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729605AbgHXJvw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 Aug 2020 05:51:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46552 "EHLO
+        id S1728654AbgHXJv7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 Aug 2020 05:51:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728699AbgHXJvt (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Aug 2020 05:51:49 -0400
-Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14856C061755
-        for <linux-mmc@vger.kernel.org>; Mon, 24 Aug 2020 02:51:49 -0700 (PDT)
-Received: by mail-vs1-xe44.google.com with SMTP id b26so4091666vsa.13
-        for <linux-mmc@vger.kernel.org>; Mon, 24 Aug 2020 02:51:49 -0700 (PDT)
+        with ESMTP id S1728644AbgHXJvy (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Aug 2020 05:51:54 -0400
+Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7777CC061574
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Aug 2020 02:51:54 -0700 (PDT)
+Received: by mail-vk1-xa42.google.com with SMTP id k1so1828526vkb.7
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Aug 2020 02:51:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=B6IUrmPgUfQ6Qh2dE+GqJ4MoV6eg6EsbHN0PK195SwY=;
-        b=XUoDj3XoqQF/8HVWNEAVIRQQBuzE3esbdKnX7Tv6OYmOtw/Xf4CC/ZKb4uJ14gTrq5
-         eAZVYIS0QwNx/DHc5TMZXO1HQtC9hEqRoC7sKnG0JQagitTFgyZKi3XuZtOZA1tuN4l1
-         nCza6t/TBAZMs8PilIAnZ8s4JbhaaDuGlJQHdXLY4HM+A/F9vFSGM7Z73Hnk28QvFI4L
-         MpoIiXxYlU9rI0053Qhk0pigh/WrDoWrF7RBm+QijNPc3yCfRmikzkhCwjn7zYP78JsI
-         wgY8DY7aa8ZK3jhIIKnyGuHjr55IbTUH2+uYvk8v/67rdLeJN+hP0vq/S+wvr+NOYKkh
-         MKHw==
+        bh=2q1ajbiErRira53HKKXrYklVG3PnlJgLsr24GKSESBE=;
+        b=fW+0mduXAJo6I00usVYLd80593zek0anWPHqMWg2M/w3DLXpOueIhU9HKiJQoHH6CB
+         7RMHX9FGdi13UNc+JEJTIWt/J/udbr+B5Nt25R6/0Kf+mojenLe6j15NWCGTmxFJYJvq
+         q9F/aTh7r33Rn15GzhOXIOgW3oLefqKm0t9N1yNSe7hhHsaKdJYx2ob+sb0oBS49Zdvb
+         80WyA+2ttjZt0IDoqVYtfhGIFEC/+RUgkRpc4k+pz1vbXfto7qDZPAL2JziGVGw44F+Q
+         Yl7GgcXkvIKeQWWCC9OxELndNMl5N63p0PLHj6Eko+s9i8AS3wOL5LddhkyxYEgPRSYq
+         VEVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=B6IUrmPgUfQ6Qh2dE+GqJ4MoV6eg6EsbHN0PK195SwY=;
-        b=ata58T+8imNE9J13Wcw0V8q5cAgSH8HmfZ+O2Ugx/Mfl5SFnVlakkGU4m6A4Rf6Fm/
-         u/4djJSPa/6yPaoCcNvfOIt1cLcmtptxogerIgfq1hOUtOrpAEUIaNR1jcJnSlyhgUQL
-         ZlG+rb4Q7POtB7zql0XT9T5/SWnwIEctFtqbG/NUGT1HccUXFTdZJtvRktDjYIx4GkKl
-         55nd15vJHC2VikS3lTlY3iBo+1eM04sqNG/eNQ02m9fDCIwzi38dxCEYzHHVjd8smlzN
-         PEb/nKY9Hofvxjrjh8g9/F7pTao2VOIKiW46xMBQFEdjLWr7qLv3SZ+pTflvtRxTw1wp
-         5itQ==
-X-Gm-Message-State: AOAM530XHiPyfERx58LsuAORfM1eVaOmIM+ozzgPCltzUFFok9mSc9nb
-        /UgMbwTyBdUDvLOYHat7YFnH8dsssVKPv3qwvjlnCA==
-X-Google-Smtp-Source: ABdhPJyP+LtrFHIJTf3Sht0hrrBHK7GyA4d0BHVOWtJzqrvCtaOf8+s0y5mgW29W4/wc3GAmB9caJ98O6OPkaUaW9Tw=
-X-Received: by 2002:a67:e45:: with SMTP id 66mr1972191vso.191.1598262708304;
- Mon, 24 Aug 2020 02:51:48 -0700 (PDT)
+        bh=2q1ajbiErRira53HKKXrYklVG3PnlJgLsr24GKSESBE=;
+        b=CmdriruN8xytgd0ro1FtBw0JO22RXPmqlHl5+/H0F+upoRA1oC/6sBABkeRq3Xc9jw
+         TbOrJogQKMABiDHy6r18L9TvJEaVJc8lsSOpiaXisGSyDpHQ/l4n4Oj7tcR63v97o1k3
+         zs0MaaFd6rcIolVh7hn9OxawDZf32VKgMCuDT6ZRa2q0MVayUhbA53t/Cf3VCmR9lrdC
+         XUnCMSK3fxyiNoqTjBrLQaHZ92Sazn2yvfUhr8VtwxwC+5bjhk/1R6+m/DfhPg5ADqCJ
+         M/9jxsqItCrlnmN6I23udeveTAfxO6wxDE4YGqVVnT5K3eG9cSeIbKepyhd63W+J70Pm
+         9gjg==
+X-Gm-Message-State: AOAM531XUj0gTT3LNOAKIGqruJbKcQ4IEtj//2GuR9ATgajr6t7Ky5O2
+        2G4M8zjBzG8oyH3JrraLwOO9GIJIL+olM1q0CXCkNQ==
+X-Google-Smtp-Source: ABdhPJyroNBl9bu8cbvuTbtyDsOW3xnOs02H7+FfHBFmEDiB/7+UTI/z2QyyFgKHQXBMWQMkSGOzbbHpaTNuTkxV6Zw=
+X-Received: by 2002:a1f:7c45:: with SMTP id x66mr1996597vkc.53.1598262713413;
+ Mon, 24 Aug 2020 02:51:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200821063533.3771-1-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20200821063533.3771-1-wsa+renesas@sang-engineering.com>
+References: <20200822061528.7035-1-madhuparnabhowmik10@gmail.com>
+In-Reply-To: <20200822061528.7035-1-madhuparnabhowmik10@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 24 Aug 2020 11:51:12 +0200
-Message-ID: <CAPDyKFqc0u47JHgXyTh1qa98d3g=D6H_G+CD=3b+OnV6KpfKnQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: improve documentation of HW_RESET
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Date:   Mon, 24 Aug 2020 11:51:16 +0200
+Message-ID: <CAPDyKFqEtSuODBNSgt26gn9k=mHfnCcbN=LjR1BeCmgAM2SXwQ@mail.gmail.com>
+Subject: Re: [PATCH v2] drivers: mmc: host: via-sdmmc: Fix data race bug
+To:     madhuparnabhowmik10@gmail.com
+Cc:     Bruce Chang <brucechang@via.com.tw>,
+        Harald Welte <HaraldWelte@viatech.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        andrianov@ispras.ru, ldv-project@linuxtesting.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 21 Aug 2020 at 08:35, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
+On Sat, 22 Aug 2020 at 08:15, <madhuparnabhowmik10@gmail.com> wrote:
 >
-> HW_RESET means resetting the remote device, not the controller. Two
-> drivers got it wrong, so make it more clear.
+> From: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
 >
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> via_save_pcictrlreg() should be called with host->lock held
+> as it writes to pm_pcictrl_reg, otherwise there can be a race
+> condition between via_sd_suspend() and via_sdc_card_detect().
+> The same pattern is used in the function via_reset_pcictrl()
+> as well, where via_save_pcictrlreg() is called with host->lock
+> held.
+>
+> Found by Linux Driver Verification project (linuxtesting.org).
+>
+> Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
 
-Applied for next, with a few amendments, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
+> v2: Rebase v5.9-rc1
 >
-> I sent a series to fix the TMIO/SDHI driver. The other one is bcm2835,
-> but I want to get this patch approved, before I notify the maintainers.
+>  drivers/mmc/host/via-sdmmc.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >
->  include/linux/mmc/host.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> diff --git a/drivers/mmc/host/via-sdmmc.c b/drivers/mmc/host/via-sdmmc.c
+> index 49dab9f42b6d..9b755ea0fa03 100644
+> --- a/drivers/mmc/host/via-sdmmc.c
+> +++ b/drivers/mmc/host/via-sdmmc.c
+> @@ -1257,11 +1257,14 @@ static void __maybe_unused via_init_sdc_pm(struct via_crdr_mmc_host *host)
+>  static int __maybe_unused via_sd_suspend(struct device *dev)
+>  {
+>         struct via_crdr_mmc_host *host;
+> +       unsigned long flags;
 >
-> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-> index c5b6e97cb21a..cf04793ab4ea 100644
-> --- a/include/linux/mmc/host.h
-> +++ b/include/linux/mmc/host.h
-> @@ -163,6 +163,7 @@ struct mmc_host_ops {
->         int     (*select_drive_strength)(struct mmc_card *card,
->                                          unsigned int max_dtr, int host_drv,
->                                          int card_drv, int *drv_type);
-> +       /* Reset remote device via RST_n */
->         void    (*hw_reset)(struct mmc_host *host);
->         void    (*card_event)(struct mmc_host *host);
+>         host = dev_get_drvdata(dev);
 >
-> @@ -346,7 +347,7 @@ struct mmc_host {
->  #define MMC_CAP_CD_WAKE                (1 << 28)       /* Enable card detect wake */
->  #define MMC_CAP_CMD_DURING_TFR (1 << 29)       /* Commands during data transfer */
->  #define MMC_CAP_CMD23          (1 << 30)       /* CMD23 supported. */
-> -#define MMC_CAP_HW_RESET       (1 << 31)       /* Hardware reset */
-> +#define MMC_CAP_HW_RESET       (1 << 31)       /* supports device reset via RST_n */
+> +       spin_lock_irqsave(&host->lock, flags);
+>         via_save_pcictrlreg(host);
+>         via_save_sdcreg(host);
+> +       spin_unlock_irqrestore(&host->lock, flags);
 >
->         u32                     caps2;          /* More host capabilities */
+>         device_wakeup_enable(dev);
 >
 > --
-> 2.20.1
+> 2.17.1
 >
