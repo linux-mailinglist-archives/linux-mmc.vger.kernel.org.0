@@ -2,73 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1415524F9F7
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 Aug 2020 11:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B543B24FA00
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 Aug 2020 11:52:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728609AbgHXJvn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 Aug 2020 05:51:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46516 "EHLO
+        id S1728392AbgHXJv6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 Aug 2020 05:51:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729577AbgHXJvk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Aug 2020 05:51:40 -0400
-Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE0E6C061755
-        for <linux-mmc@vger.kernel.org>; Mon, 24 Aug 2020 02:51:39 -0700 (PDT)
-Received: by mail-ua1-x944.google.com with SMTP id h19so917999ual.10
-        for <linux-mmc@vger.kernel.org>; Mon, 24 Aug 2020 02:51:39 -0700 (PDT)
+        with ESMTP id S1729306AbgHXJvo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Aug 2020 05:51:44 -0400
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53C2EC061573
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Aug 2020 02:51:44 -0700 (PDT)
+Received: by mail-vs1-xe41.google.com with SMTP id a127so4102538vsd.1
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Aug 2020 02:51:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4eYdZU1Gx87Iz13IeS4zaDwk004o6teDI2plWr+DNQM=;
-        b=NZwP7bcEbZ6Wa7DKHj/1Ow5+/DR1K4A4wP2KAdUVHrcCLPivARHn0yPkduGnGgVcas
-         l6ZvCgPqcst0xOZjWfnhTRc4zdac1y/uhTD0yH7y+w9WAufMLn7wXt/KctQrviFIBmSe
-         PHsbsarbCJd9oy2Ln3kKctzQa00TvDJIStZ6QpcqspMlg0PuZZEMtrix/SEPKRzpeT01
-         uY41mB8Sjj5qHbtDaBOO82Pdx6e6elvbNrfNutxpPFfhQVUCNiqeDUqjVs2mqNIO1ZDY
-         uTSnNkPNm8Pc0y9W8vWV/o+J1iq5sZMD9EeMSO3iLcFUp4m8ZSldM9X2/gz4xS2XpFQt
-         nT4w==
+        bh=Ln8SN+7RLvf7fE2ywm+jg35Tyq/B4Xvx0WH4mCC+yU4=;
+        b=KcKirNkka0lXfE/G1WBoDbs+9xUm6m7RRxLyArxUXcL+MBqMttUxIXZhdzZWelj9Iu
+         RIgZPOet2uKIWEXK3Tlxykk+fNi0PJil1M+PImvo5F0X8/RATfwREkQbFkLLiw5p2k7c
+         t9iiul5OGNaFNW/S1V7pKehZycdtVOCpXmYmd8Am7Q0OfD0G+63tpvWkVv2f3ykk4yer
+         4Sq03SUehpTCjbB60/O66CIcZwzYttH8wREWhi4ah5J50SPfglsPpZPfu/APbYEigphG
+         cN6yB72HGAtq8Iz5ZvMYOEqV1tgKQDeARxw6lV1aiHLD2GrWPL+yIjWwWO5xROzTmYC/
+         bpgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4eYdZU1Gx87Iz13IeS4zaDwk004o6teDI2plWr+DNQM=;
-        b=CU4BQwC+9lV+TnsM66YNDuTDudwO6x4W3nvkG/j+jIdFhrt3Brn4s+iZq9q82ziRwM
-         vKF+hPE45b8CNQU9bKVL/R6KzE+WHHNXP4YZb9s8FJS1LXSkJ7/9xENFq7Y/s1ZwbVnr
-         PYreTh9sry2ZOQz+KOkVwCA7GljjdbpNi5AWEEKAK5FFsgjW+uvrgb7eQ/POduKJLH3L
-         OsmyBgyvOeqRkmb5KY8h9ZfRXsRLBKWi8JzvTplzEvQQOP98xp1DWQ/VSBf4g9ijP6k/
-         sDHWqJVJiKBbGzzwFKwArRc628oOXSVGWqKK1LFVhkNh1su/ZUjJ1BZZtDwSpZUP8/qD
-         s6CQ==
-X-Gm-Message-State: AOAM533+kdlNDW2kswVUKNyQ2imFsKJqOVfswrnIGTWB5pw4+fhQ7MpA
-        ixSbBRE4lHleswjFPg8IpJJJdgsc+FOlqyQ7V/vMEw==
-X-Google-Smtp-Source: ABdhPJwQ3FmaHpzdzoPOYyztuftvy3nyzV7PNgImWU/OVFERzw4JAxoUK6AGnxd6QLP8neYkxV2MyXLWUNqun9N8dzk=
-X-Received: by 2002:ab0:64c3:: with SMTP id j3mr1813967uaq.129.1598262698954;
- Mon, 24 Aug 2020 02:51:38 -0700 (PDT)
+        bh=Ln8SN+7RLvf7fE2ywm+jg35Tyq/B4Xvx0WH4mCC+yU4=;
+        b=bTrudt8SmOFHPZ392AJz7ieLio0vBWr8GfiFMxEt+AylnI8atHYDmUxpYa0TAIyg8e
+         XeSONh9R2k53r96XfymgAwfz+cTCyJTYnN6wFuNgc7tlM1UccobtqAha3sNfMJMRBpJS
+         ENlolu7MqIFexpLlLRae/qreYSG67ADPKMAX7ngfmgTnFGsUhuirHr+YvbRWeaKuNu87
+         W2poozj7lLlmsJD/WZ89dACCbnV7cnqgA489sYNT3ABzEOIxzOCCLCY2M6vUf1M6Rf1Z
+         TluaUKUsLarn0w93XoB+O8AbC0HiqAhh7gZ3mBV0MIiPOHRievbx0Joh4Mm13Ueddmm+
+         ezww==
+X-Gm-Message-State: AOAM532OrmhmebHClm5cSOCjc+2gKNVpTNmgfQ6ouZm81HraDSeeEqwP
+        KoS6UQiuWHchSv3XKrFRbiF/2tohlWPaNsBPUn4EqShRjhd0+w==
+X-Google-Smtp-Source: ABdhPJwd+jCqwoXcVEZBQ1HvErLYStyQ+OkTEJZDJuVbqozu9T2Ah5ho52VM3ZSTTAdEQ07d2iqF066sx8wJHfqQdWE=
+X-Received: by 2002:a67:8c06:: with SMTP id o6mr2038655vsd.200.1598262703392;
+ Mon, 24 Aug 2020 02:51:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200818104508.7149-1-adrian.hunter@intel.com>
-In-Reply-To: <20200818104508.7149-1-adrian.hunter@intel.com>
+References: <cover.1597919647.git.viresh.kumar@linaro.org> <e88128c48349723636b7c35e95289b50b27e235a.1597919647.git.viresh.kumar@linaro.org>
+In-Reply-To: <e88128c48349723636b7c35e95289b50b27e235a.1597919647.git.viresh.kumar@linaro.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 24 Aug 2020 11:51:02 +0200
-Message-ID: <CAPDyKFomnD_NsdicXD64ZqvBYAwe5PCNNB3aOzt58g4dQKm+5Q@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci: Add LTR support for some Intel BYT based controllers
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>
+Date:   Mon, 24 Aug 2020 11:51:07 +0200
+Message-ID: <CAPDyKFp58Sqvmq7CFmDkHXX3ohgyqt1VPELGdq0mtOSZq+uc2Q@mail.gmail.com>
+Subject: Re: [PATCH 4/8] mmc: sdhci-msm: Unconditionally call dev_pm_opp_of_remove_table()
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Rajendra Nayak <rnayak@codeaurora.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Rafael Wysocki <rjw@rjwysocki.net>,
+        Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 18 Aug 2020 at 12:45, Adrian Hunter <adrian.hunter@intel.com> wrote:
+On Thu, 20 Aug 2020 at 12:44, Viresh Kumar <viresh.kumar@linaro.org> wrote:
 >
-> Some Intel BYT based host controllers support the setting of latency
-> tolerance.  Accordingly, implement the PM QoS ->set_latency_tolerance()
-> callback.  The raw register values are also exposed via debugfs.
+> dev_pm_opp_of_remove_table() doesn't report any errors when it fails to
+> find the OPP table with error -ENODEV (i.e. OPP table not present for
+> the device). And we can call dev_pm_opp_of_remove_table()
+> unconditionally here.
 >
-> Intel EHL controllers require this support.
->
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-> Fixes: cb3a7d4a0aec4e ("mmc: sdhci-pci: Add support for Intel EHL")
-> Cc: stable@vger.kernel.org
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 
 Applied for next, thanks!
 
@@ -77,237 +84,52 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-pci-core.c | 154 ++++++++++++++++++++++++++++++
->  1 file changed, 154 insertions(+)
+>  drivers/mmc/host/sdhci-msm.c | 11 +++--------
+>  1 file changed, 3 insertions(+), 8 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-> index bb6802448b2f..c0e081e48d3f 100644
-> --- a/drivers/mmc/host/sdhci-pci-core.c
-> +++ b/drivers/mmc/host/sdhci-pci-core.c
-> @@ -24,6 +24,8 @@
->  #include <linux/iopoll.h>
->  #include <linux/gpio.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/pm_qos.h>
-> +#include <linux/debugfs.h>
->  #include <linux/mmc/slot-gpio.h>
->  #include <linux/mmc/sdhci-pci-data.h>
->  #include <linux/acpi.h>
-> @@ -508,6 +510,8 @@ struct intel_host {
->         bool    rpm_retune_ok;
->         u32     glk_rx_ctrl1;
->         u32     glk_tun_val;
-> +       u32     active_ltr;
-> +       u32     idle_ltr;
->  };
+> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+> index 5a33389037cd..b7e47107a31a 100644
+> --- a/drivers/mmc/host/sdhci-msm.c
+> +++ b/drivers/mmc/host/sdhci-msm.c
+> @@ -263,7 +263,6 @@ struct sdhci_msm_host {
+>         unsigned long clk_rate;
+>         struct mmc_host *mmc;
+>         struct opp_table *opp_table;
+> -       bool has_opp_table;
+>         bool use_14lpp_dll_reset;
+>         bool tuning_done;
+>         bool calibration_done;
+> @@ -2285,9 +2284,7 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 >
->  static const guid_t intel_dsm_guid =
-> @@ -752,6 +756,108 @@ static int intel_execute_tuning(struct mmc_host *mmc, u32 opcode)
->         return 0;
->  }
+>         /* OPP table is optional */
+>         ret = dev_pm_opp_of_add_table(&pdev->dev);
+> -       if (!ret) {
+> -               msm_host->has_opp_table = true;
+> -       } else if (ret != -ENODEV) {
+> +       if (ret != -ENODEV) {
+>                 dev_err(&pdev->dev, "Invalid OPP table in Device tree\n");
+>                 goto opp_cleanup;
+>         }
+> @@ -2453,8 +2450,7 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+>         clk_bulk_disable_unprepare(ARRAY_SIZE(msm_host->bulk_clks),
+>                                    msm_host->bulk_clks);
+>  opp_cleanup:
+> -       if (msm_host->has_opp_table)
+> -               dev_pm_opp_of_remove_table(&pdev->dev);
+> +       dev_pm_opp_of_remove_table(&pdev->dev);
+>         dev_pm_opp_put_clkname(msm_host->opp_table);
+>  bus_clk_disable:
+>         if (!IS_ERR(msm_host->bus_clk))
+> @@ -2474,8 +2470,7 @@ static int sdhci_msm_remove(struct platform_device *pdev)
 >
-> +#define INTEL_ACTIVELTR                0x804
-> +#define INTEL_IDLELTR          0x808
-> +
-> +#define INTEL_LTR_REQ          BIT(15)
-> +#define INTEL_LTR_SCALE_MASK   GENMASK(11, 10)
-> +#define INTEL_LTR_SCALE_1US    (2 << 10)
-> +#define INTEL_LTR_SCALE_32US   (3 << 10)
-> +#define INTEL_LTR_VALUE_MASK   GENMASK(9, 0)
-> +
-> +static void intel_cache_ltr(struct sdhci_pci_slot *slot)
-> +{
-> +       struct intel_host *intel_host = sdhci_pci_priv(slot);
-> +       struct sdhci_host *host = slot->host;
-> +
-> +       intel_host->active_ltr = readl(host->ioaddr + INTEL_ACTIVELTR);
-> +       intel_host->idle_ltr = readl(host->ioaddr + INTEL_IDLELTR);
-> +}
-> +
-> +static void intel_ltr_set(struct device *dev, s32 val)
-> +{
-> +       struct sdhci_pci_chip *chip = dev_get_drvdata(dev);
-> +       struct sdhci_pci_slot *slot = chip->slots[0];
-> +       struct intel_host *intel_host = sdhci_pci_priv(slot);
-> +       struct sdhci_host *host = slot->host;
-> +       u32 ltr;
-> +
-> +       pm_runtime_get_sync(dev);
-> +
-> +       /*
-> +        * Program latency tolerance (LTR) accordingly what has been asked
-> +        * by the PM QoS layer or disable it in case we were passed
-> +        * negative value or PM_QOS_LATENCY_ANY.
-> +        */
-> +       ltr = readl(host->ioaddr + INTEL_ACTIVELTR);
-> +
-> +       if (val == PM_QOS_LATENCY_ANY || val < 0) {
-> +               ltr &= ~INTEL_LTR_REQ;
-> +       } else {
-> +               ltr |= INTEL_LTR_REQ;
-> +               ltr &= ~INTEL_LTR_SCALE_MASK;
-> +               ltr &= ~INTEL_LTR_VALUE_MASK;
-> +
-> +               if (val > INTEL_LTR_VALUE_MASK) {
-> +                       val >>= 5;
-> +                       if (val > INTEL_LTR_VALUE_MASK)
-> +                               val = INTEL_LTR_VALUE_MASK;
-> +                       ltr |= INTEL_LTR_SCALE_32US | val;
-> +               } else {
-> +                       ltr |= INTEL_LTR_SCALE_1US | val;
-> +               }
-> +       }
-> +
-> +       if (ltr == intel_host->active_ltr)
-> +               goto out;
-> +
-> +       writel(ltr, host->ioaddr + INTEL_ACTIVELTR);
-> +       writel(ltr, host->ioaddr + INTEL_IDLELTR);
-> +
-> +       /* Cache the values into lpss structure */
-> +       intel_cache_ltr(slot);
-> +out:
-> +       pm_runtime_put_autosuspend(dev);
-> +}
-> +
-> +static bool intel_use_ltr(struct sdhci_pci_chip *chip)
-> +{
-> +       switch (chip->pdev->device) {
-> +       case PCI_DEVICE_ID_INTEL_BYT_EMMC:
-> +       case PCI_DEVICE_ID_INTEL_BYT_EMMC2:
-> +       case PCI_DEVICE_ID_INTEL_BYT_SDIO:
-> +       case PCI_DEVICE_ID_INTEL_BYT_SD:
-> +       case PCI_DEVICE_ID_INTEL_BSW_EMMC:
-> +       case PCI_DEVICE_ID_INTEL_BSW_SDIO:
-> +       case PCI_DEVICE_ID_INTEL_BSW_SD:
-> +               return false;
-> +       default:
-> +               return true;
-> +       }
-> +}
-> +
-> +static void intel_ltr_expose(struct sdhci_pci_chip *chip)
-> +{
-> +       struct device *dev = &chip->pdev->dev;
-> +
-> +       if (!intel_use_ltr(chip))
-> +               return;
-> +
-> +       dev->power.set_latency_tolerance = intel_ltr_set;
-> +       dev_pm_qos_expose_latency_tolerance(dev);
-> +}
-> +
-> +static void intel_ltr_hide(struct sdhci_pci_chip *chip)
-> +{
-> +       struct device *dev = &chip->pdev->dev;
-> +
-> +       if (!intel_use_ltr(chip))
-> +               return;
-> +
-> +       dev_pm_qos_hide_latency_tolerance(dev);
-> +       dev->power.set_latency_tolerance = NULL;
-> +}
-> +
->  static void byt_probe_slot(struct sdhci_pci_slot *slot)
->  {
->         struct mmc_host_ops *ops = &slot->host->mmc_host_ops;
-> @@ -766,6 +872,43 @@ static void byt_probe_slot(struct sdhci_pci_slot *slot)
->         ops->start_signal_voltage_switch = intel_start_signal_voltage_switch;
+>         sdhci_remove_host(host, dead);
 >
->         device_property_read_u32(dev, "max-frequency", &mmc->f_max);
-> +
-> +       if (!mmc->slotno) {
-> +               slot->chip->slots[mmc->slotno] = slot;
-> +               intel_ltr_expose(slot->chip);
-> +       }
-> +}
-> +
-> +static void byt_add_debugfs(struct sdhci_pci_slot *slot)
-> +{
-> +       struct intel_host *intel_host = sdhci_pci_priv(slot);
-> +       struct mmc_host *mmc = slot->host->mmc;
-> +       struct dentry *dir = mmc->debugfs_root;
-> +
-> +       if (!intel_use_ltr(slot->chip))
-> +               return;
-> +
-> +       debugfs_create_x32("active_ltr", 0444, dir, &intel_host->active_ltr);
-> +       debugfs_create_x32("idle_ltr", 0444, dir, &intel_host->idle_ltr);
-> +
-> +       intel_cache_ltr(slot);
-> +}
-> +
-> +static int byt_add_host(struct sdhci_pci_slot *slot)
-> +{
-> +       int ret = sdhci_add_host(slot->host);
-> +
-> +       if (!ret)
-> +               byt_add_debugfs(slot);
-> +       return ret;
-> +}
-> +
-> +static void byt_remove_slot(struct sdhci_pci_slot *slot, int dead)
-> +{
-> +       struct mmc_host *mmc = slot->host->mmc;
-> +
-> +       if (!mmc->slotno)
-> +               intel_ltr_hide(slot->chip);
->  }
->
->  static int byt_emmc_probe_slot(struct sdhci_pci_slot *slot)
-> @@ -846,6 +989,8 @@ static int glk_emmc_add_host(struct sdhci_pci_slot *slot)
->         if (ret)
->                 goto cleanup;
->
-> +       byt_add_debugfs(slot);
-> +
->         return 0;
->
->  cleanup:
-> @@ -1023,6 +1168,8 @@ static const struct sdhci_pci_fixes sdhci_intel_byt_emmc = {
->  #endif
->         .allow_runtime_pm = true,
->         .probe_slot     = byt_emmc_probe_slot,
-> +       .add_host       = byt_add_host,
-> +       .remove_slot    = byt_remove_slot,
->         .quirks         = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
->                           SDHCI_QUIRK_NO_LED,
->         .quirks2        = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-> @@ -1036,6 +1183,7 @@ static const struct sdhci_pci_fixes sdhci_intel_glk_emmc = {
->         .allow_runtime_pm       = true,
->         .probe_slot             = glk_emmc_probe_slot,
->         .add_host               = glk_emmc_add_host,
-> +       .remove_slot            = byt_remove_slot,
->  #ifdef CONFIG_PM_SLEEP
->         .suspend                = sdhci_cqhci_suspend,
->         .resume                 = sdhci_cqhci_resume,
-> @@ -1066,6 +1214,8 @@ static const struct sdhci_pci_fixes sdhci_ni_byt_sdio = {
->                           SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
->         .allow_runtime_pm = true,
->         .probe_slot     = ni_byt_sdio_probe_slot,
-> +       .add_host       = byt_add_host,
-> +       .remove_slot    = byt_remove_slot,
->         .ops            = &sdhci_intel_byt_ops,
->         .priv_size      = sizeof(struct intel_host),
->  };
-> @@ -1083,6 +1233,8 @@ static const struct sdhci_pci_fixes sdhci_intel_byt_sdio = {
->                         SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
->         .allow_runtime_pm = true,
->         .probe_slot     = byt_sdio_probe_slot,
-> +       .add_host       = byt_add_host,
-> +       .remove_slot    = byt_remove_slot,
->         .ops            = &sdhci_intel_byt_ops,
->         .priv_size      = sizeof(struct intel_host),
->  };
-> @@ -1102,6 +1254,8 @@ static const struct sdhci_pci_fixes sdhci_intel_byt_sd = {
->         .allow_runtime_pm = true,
->         .own_cd_for_runtime_pm = true,
->         .probe_slot     = byt_sd_probe_slot,
-> +       .add_host       = byt_add_host,
-> +       .remove_slot    = byt_remove_slot,
->         .ops            = &sdhci_intel_byt_ops,
->         .priv_size      = sizeof(struct intel_host),
->  };
+> -       if (msm_host->has_opp_table)
+> -               dev_pm_opp_of_remove_table(&pdev->dev);
+> +       dev_pm_opp_of_remove_table(&pdev->dev);
+>         dev_pm_opp_put_clkname(msm_host->opp_table);
+>         pm_runtime_get_sync(&pdev->dev);
+>         pm_runtime_disable(&pdev->dev);
 > --
-> 2.17.1
+> 2.25.0.rc1.19.g042ed3e048af
 >
