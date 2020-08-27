@@ -2,249 +2,100 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16E95253C37
-	for <lists+linux-mmc@lfdr.de>; Thu, 27 Aug 2020 05:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AA78253D77
+	for <lists+linux-mmc@lfdr.de>; Thu, 27 Aug 2020 08:07:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727783AbgH0Duh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 26 Aug 2020 23:50:37 -0400
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:18255 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727769AbgH0Dug (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 26 Aug 2020 23:50:36 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5f472d7e0000>; Wed, 26 Aug 2020 20:50:22 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Wed, 26 Aug 2020 20:50:36 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Wed, 26 Aug 2020 20:50:36 -0700
-Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL101.nvidia.com
- (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 27 Aug
- 2020 03:50:30 +0000
-Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
- Transport; Thu, 27 Aug 2020 03:50:30 +0000
-Received: from skomatineni-linux.nvidia.com (Not Verified[10.2.174.186]) by hqnvemgw03.nvidia.com with Trustwave SEG (v7,5,8,10121)
-        id <B5f472d860000>; Wed, 26 Aug 2020 20:50:30 -0700
-From:   Sowjanya Komatineni <skomatineni@nvidia.com>
-To:     <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>,
-        <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-        <robh+dt@kernel.org>
-CC:     <skomatineni@nvidia.com>, <linux-tegra@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH v6 7/7] sdhci: tegra: Add missing TMCLK for data timeout
-Date:   Wed, 26 Aug 2020 20:50:01 -0700
-Message-ID: <1598500201-5987-8-git-send-email-skomatineni@nvidia.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1598500201-5987-1-git-send-email-skomatineni@nvidia.com>
-References: <1598500201-5987-1-git-send-email-skomatineni@nvidia.com>
-X-NVConfidentiality: public
+        id S1726266AbgH0GHm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 27 Aug 2020 02:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35758 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726157AbgH0GHm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 27 Aug 2020 02:07:42 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F28C061249;
+        Wed, 26 Aug 2020 23:07:42 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id i14so2276528lfl.12;
+        Wed, 26 Aug 2020 23:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=hmc6+AVmLvdvLf4AWknXtDxmdplb2vMzVZzZc7Kg5z4=;
+        b=H2jA0oE+Ihn1WFLUhVm7op19MAw8Wy8UcsbgxCHfj8FbzYmDfURkbsShZwBuaeOu0p
+         KNl+J1XgJDeBSK4+JEPXMKRRkZf3U93brXbm01l1pNqh0/WbAJugp4jXJwozU5jFeHEd
+         UpBiRdTOjCH2v2IqC64BZVRiJbiyt0KKXUQSZFlzU81n9sJTnHpOFeVi5xVwIFY7lwlG
+         /fhOpMicIRxEmO6c9yW30olvvApi7ymwQk7nq0x9DU+zCIzzFkQWY6uJauyO0HlEivB4
+         p2i5XLxBkjg7w7eM++ccT0E4TkFQeq8Kv55XvqgHhTcFXMzbtXP3t4ExhCDc3R4zvIFa
+         S3MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=hmc6+AVmLvdvLf4AWknXtDxmdplb2vMzVZzZc7Kg5z4=;
+        b=lv8FRr6ZRiymq06nTwRhmjDBQLvZ3sXgzdUIHB3YWWgJs+yg5P1+N/BZNrYYDj+RlJ
+         bJF5pbuYp/+cpBytJtuZ1hJmCwyRxL0qUp83ehjW5Eyt+itA+NR1Lgknir9gGRpLEfZk
+         vV1igYZZILBlaL+rTUNMO6IwDk+D5gG98YYs5OfsoBBVpRaORgUFe6AAyYECLy9rCMQK
+         41hLxnzWoM46c57w5c42pNVdPmVUM03+DkLdsBogmQ9ynFCEe2Z4gImETub0cIxBlouJ
+         j2qEyqCXOIz08QQXs5oGdULiw1h2B+EdrLfXiN66dIieIHHvpR/8c+QLJqsUq6v4qKHp
+         tmbQ==
+X-Gm-Message-State: AOAM530N7ZwOKwg07LsTCjijaATH17kCLFSCyX5K6x0WyfLWRwsTQif7
+        XOYUaaVJYbOyARiMnX95buJ2goBKQ58=
+X-Google-Smtp-Source: ABdhPJxfP3/WeM+nNrONYy5RkpF1jXFUKZ0YL60JfgugUzDtPXTFWQ+3Ddys9O4LVjZ4wtKt5X7Rsw==
+X-Received: by 2002:a19:e07:: with SMTP id 7mr8964725lfo.6.1598508459278;
+        Wed, 26 Aug 2020 23:07:39 -0700 (PDT)
+Received: from [192.168.2.145] (109-252-170-211.dynamic.spd-mgts.ru. [109.252.170.211])
+        by smtp.googlemail.com with ESMTPSA id b29sm255876lfq.69.2020.08.26.23.07.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Aug 2020 23:07:38 -0700 (PDT)
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        brcm80211-dev-list@cypress.com,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Subject: Broadcom WiFi SDIO performance regression after commit "mmc: sdhci:
+ Remove finish_tasklet"
+Message-ID: <5cf1af89-6026-09ad-7f20-82e19ad49fa1@gmail.com>
+Date:   Thu, 27 Aug 2020 09:07:02 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1598500222; bh=fU0W0lQH6TUHqegrUenmFQDw6Q7G+5MGgzZQlaMJ8cQ=;
-        h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-         In-Reply-To:References:X-NVConfidentiality:MIME-Version:
-         Content-Type;
-        b=Ekxk9qz7fgTNb0Q4mkGAUCs7Pv9TrIfAhtcWx/P/eylz+5jroq+p0qt9hKgG08S88
-         ntQQhuUQxXRkBA9GRsHLhQHKoSu7oho3XgMF2WbJcRprXNBrWSF23UFHM11XCjpfKt
-         sdedBR8LkAuPhh5V0pyB1BcHA6Vnu4TnUiDGuh8eaZZa4uCa6i9y0w2K0tNceHqMRW
-         mpKzh+Fv2nY+R+BreDDS64GL+U10SUStM0QKuLu1kGI0+dJofFPVlznXYryHkurUZJ
-         1FKPbQdyFf1+ETgh808C0uccWw3KNs3fQFJJWjVcv8DtIuXsMKZYxH/l3y6UGtR4p4
-         hkk+QJOx2+QWQ==
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-commit b5a84ecf025a ("mmc: tegra: Add Tegra210 support")
+Hello!
 
-Tegra210 and later has a separate sdmmc_legacy_tm (TMCLK) used by Tegra
-SDMMC hawdware for data timeout to achive better timeout than using
-SDCLK and using TMCLK is recommended.
+I was debugging WiFi performance problems on Acer A500 tablet device
+that has BCM4329 WiFi chip which is connected to NVIDIA Terga20 SoC via
+SDIO and found that the following commit causes a solid 5-10 Mbit/s of
+WiFi throughput regression after 5.2 kernel:
 
-USE_TMCLK_FOR_DATA_TIMEOUT bit in Tegra SDMMC register
-SDHCI_TEGRA_VENDOR_SYS_SW_CTRL can be used to choose either TMCLK or
-SDCLK for data timeout.
+commit c07a48c2651965e84d35cf193dfc0e5f7892d612
+Author: Adrian Hunter <adrian.hunter@intel.com>
+Date:   Fri Apr 5 15:40:20 2019 +0300
 
-Default USE_TMCLK_FOR_DATA_TIMEOUT bit is set to 1 and TMCLK is used
-for data timeout by Tegra SDMMC hardware and having TMCLK not enabled
-is not recommended.
+    mmc: sdhci: Remove finish_tasklet
 
-So, this patch adds quirk NVQUIRK_HAS_TMCLK for SoC having separate
-timeout clock and keeps TMCLK enabled all the time.
+    Remove finish_tasklet. Requests that require DMA-unmapping or
+sdhci_reset
+    are completed either in the IRQ thread or a workqueue if the
+completion is
+    not initiated by the IRQ.
 
-Fixes: b5a84ecf025a ("mmc: tegra: Add Tegra210 support")
-Cc: stable <stable@vger.kernel.org> # 5.4
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
----
- drivers/mmc/host/sdhci-tegra.c | 90 ++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 82 insertions(+), 8 deletions(-)
+Reverting the offending commit on top of recent linux-next resolves the
+problem.
 
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index 31ed321..f69ca8d 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -13,6 +13,7 @@
- #include <linux/clk.h>
- #include <linux/io.h>
- #include <linux/of.h>
-+#include <linux/of_clk.h>
- #include <linux/of_device.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/regulator/consumer.h>
-@@ -110,6 +111,12 @@
- #define NVQUIRK_DIS_CARD_CLK_CONFIG_TAP			BIT(8)
- #define NVQUIRK_CQHCI_DCMD_R1B_CMD_TIMING		BIT(9)
- 
-+/*
-+ * NVQUIRK_HAS_TMCLK is for SoC's having separate timeout clock for Tegra
-+ * SDMMC hardware data timeout.
-+ */
-+#define NVQUIRK_HAS_TMCLK				BIT(10)
-+
- /* SDMMC CQE Base Address for Tegra Host Ver 4.1 and Higher */
- #define SDHCI_TEGRA_CQE_BASE_ADDR			0xF000
- 
-@@ -140,6 +147,7 @@ struct sdhci_tegra_autocal_offsets {
- struct sdhci_tegra {
- 	const struct sdhci_tegra_soc_data *soc_data;
- 	struct gpio_desc *power_gpio;
-+	struct clk *tmclk;
- 	bool ddr_signaling;
- 	bool pad_calib_required;
- 	bool pad_control_available;
-@@ -1433,7 +1441,8 @@ static const struct sdhci_tegra_soc_data soc_data_tegra210 = {
- 		    NVQUIRK_HAS_PADCALIB |
- 		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
- 		    NVQUIRK_ENABLE_SDR50 |
--		    NVQUIRK_ENABLE_SDR104,
-+		    NVQUIRK_ENABLE_SDR104 |
-+		    NVQUIRK_HAS_TMCLK,
- 	.min_tap_delay = 106,
- 	.max_tap_delay = 185,
- };
-@@ -1471,6 +1480,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra186 = {
- 		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
- 		    NVQUIRK_ENABLE_SDR50 |
- 		    NVQUIRK_ENABLE_SDR104 |
-+		    NVQUIRK_HAS_TMCLK |
- 		    NVQUIRK_CQHCI_DCMD_R1B_CMD_TIMING,
- 	.min_tap_delay = 84,
- 	.max_tap_delay = 136,
-@@ -1483,7 +1493,8 @@ static const struct sdhci_tegra_soc_data soc_data_tegra194 = {
- 		    NVQUIRK_HAS_PADCALIB |
- 		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
- 		    NVQUIRK_ENABLE_SDR50 |
--		    NVQUIRK_ENABLE_SDR104,
-+		    NVQUIRK_ENABLE_SDR104 |
-+		    NVQUIRK_HAS_TMCLK,
- 	.min_tap_delay = 96,
- 	.max_tap_delay = 139,
- };
-@@ -1611,15 +1622,76 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
- 		goto err_power_req;
- 	}
- 
--	clk = devm_clk_get(mmc_dev(host->mmc), NULL);
--	if (IS_ERR(clk)) {
--		rc = PTR_ERR(clk);
-+	/*
-+	 * Tegra210 and later has separate SDMMC_LEGACY_TM clock used for
-+	 * hardware data timeout clock and SW can choose TMCLK or SDCLK for
-+	 * hardware data timeout through the bit USE_TMCLK_FOR_DATA_TIMEOUT
-+	 * of the register SDHCI_TEGRA_VENDOR_SYS_SW_CTRL.
-+	 *
-+	 * USE_TMCLK_FOR_DATA_TIMEOUT bit default is set to 1 and SDMMC uses
-+	 * 12Mhz TMCLK which is advertised in host capability register.
-+	 * With TMCLK of 12Mhz provides maximum data timeout period that can
-+	 * be achieved is 11s better than using SDCLK for data timeout.
-+	 *
-+	 * So, TMCLK is set to 12Mhz and kept enabled all the time on SoC's
-+	 * supporting separate TMCLK.
-+	 *
-+	 * Old device tree has single sdhci clock. So with addition of TMCLK,
-+	 * retrieving sdhci clock by "sdhci" clock name based on number of
-+	 * clocks in sdhci device node.
-+	 */
-+
-+	if (of_clk_get_parent_count(pdev->dev.of_node) == 1) {
-+		if (soc_data->nvquirks & NVQUIRK_HAS_TMCLK)
-+			dev_warn(&pdev->dev,
-+				 "missing tmclk in the device tree\n");
-+
-+		clk = devm_clk_get(&pdev->dev, NULL);
-+		if (IS_ERR(clk)) {
-+			rc = PTR_ERR(clk);
- 
--		if (rc != -EPROBE_DEFER)
--			dev_err(&pdev->dev, "failed to get clock: %d\n", rc);
-+			if (rc != -EPROBE_DEFER)
-+				dev_err(&pdev->dev,
-+					"failed to get sdhci clock: %d\n", rc);
- 
--		goto err_clk_get;
-+			goto err_power_req;
-+		}
-+	} else {
-+		if (soc_data->nvquirks & NVQUIRK_HAS_TMCLK) {
-+			clk = devm_clk_get(&pdev->dev, "tmclk");
-+			if (IS_ERR(clk)) {
-+				rc = PTR_ERR(clk);
-+				if (rc == -EPROBE_DEFER)
-+					goto err_power_req;
-+
-+				dev_warn(&pdev->dev,
-+					 "failed to get tmclk: %d\n", rc);
-+				clk = NULL;
-+			}
-+
-+			clk_set_rate(clk, 12000000);
-+			rc = clk_prepare_enable(clk);
-+			if (rc) {
-+				dev_err(&pdev->dev,
-+					"failed to enable tmclk: %d\n", rc);
-+				goto err_power_req;
-+			}
-+
-+			tegra_host->tmclk = clk;
-+		}
-+
-+		clk = devm_clk_get(&pdev->dev, "sdhci");
-+		if (IS_ERR(clk)) {
-+			rc = PTR_ERR(clk);
-+
-+			if (rc != -EPROBE_DEFER)
-+				dev_err(&pdev->dev,
-+					"failed to get sdhci clock: %d\n", rc);
-+
-+			goto err_clk_get;
-+		}
- 	}
-+
- 	clk_prepare_enable(clk);
- 	pltfm_host->clk = clk;
- 
-@@ -1654,6 +1726,7 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
- err_rst_get:
- 	clk_disable_unprepare(pltfm_host->clk);
- err_clk_get:
-+	clk_disable_unprepare(tegra_host->tmclk);
- err_power_req:
- err_parse_dt:
- 	sdhci_pltfm_free(pdev);
-@@ -1671,6 +1744,7 @@ static int sdhci_tegra_remove(struct platform_device *pdev)
- 	reset_control_assert(tegra_host->rst);
- 	usleep_range(2000, 4000);
- 	clk_disable_unprepare(pltfm_host->clk);
-+	clk_disable_unprepare(tegra_host->tmclk);
- 
- 	sdhci_pltfm_free(pdev);
- 
--- 
-2.7.4
-
+Ulf / Adrian, do you have any ideas what could be done in regards to
+restoring the SDIO performance? Should we just revert the offending commit?
