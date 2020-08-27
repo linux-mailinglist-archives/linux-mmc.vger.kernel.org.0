@@ -2,93 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30EAC254941
-	for <lists+linux-mmc@lfdr.de>; Thu, 27 Aug 2020 17:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B3CC2548D9
+	for <lists+linux-mmc@lfdr.de>; Thu, 27 Aug 2020 17:15:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728641AbgH0Lao (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 27 Aug 2020 07:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57536 "EHLO
+        id S1727814AbgH0PPA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 27 Aug 2020 11:15:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728550AbgH0L37 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 27 Aug 2020 07:29:59 -0400
-Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C332C06123E;
-        Thu, 27 Aug 2020 04:08:34 -0700 (PDT)
-Received: by mail-yb1-xb42.google.com with SMTP id q16so2729576ybk.6;
-        Thu, 27 Aug 2020 04:08:34 -0700 (PDT)
+        with ESMTP id S1728761AbgH0Lia (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 27 Aug 2020 07:38:30 -0400
+Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E057EC061239
+        for <linux-mmc@vger.kernel.org>; Thu, 27 Aug 2020 04:36:52 -0700 (PDT)
+Received: by mail-vk1-xa42.google.com with SMTP id n193so149558vkf.12
+        for <linux-mmc@vger.kernel.org>; Thu, 27 Aug 2020 04:36:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4AC1iNQgWZrkBSCQYpKpySGolDqTh2HDf1hkAeZFNb4=;
-        b=T+RtF9WlK+QYlzaFRforZObowt16Z/icVvaSdm1jjwL0BDGUHQxVhiDeSCIDIn/cF4
-         +Jfk9BSyfhzclpoE+pdql83jioly+c2MdVx6NLOqCLqCWsfKn3Ao1cjYW7XGKcbi7b+U
-         lMPm9mwtitTgaESAs6c79YF6oXOk0GFbAjfy2CbREnXE5LP9HiOSzDqqm6SpSwKIwp78
-         jol6U5yB2v5SJpmbkCRsn9lIz1UpWha3gERsgWwwi0BiYzt2T8ctaMSbXxTOd937vCr6
-         +e/ereWKyJnAtDM99NFXloqA5EQ1i1oc8Q08QBJG2EdSdwUiYA2aTShsnaRZ5mV5pyJT
-         LM7A==
+        bh=6ooHzlcK9ygV09BpTK5pdlKAaPmSuGBA3cYk3HsnGhI=;
+        b=gyvCYGNTxFHy28eyjnJaOniu3Ngpdp7FgF/p36fg9mx0sA+iQINbuS4hvhSRgQZG4K
+         M+praVM2M8rDtJE7oKQfrwNOlajEgitaFZ8KpSeGAgp/KojD+cIX5zlMCVGzOsQKlQyt
+         pn9rgMBtz7Vo0inQZZ6f8dOZyO/B/86EIiCgW01LQI+LSfo0KB6Eup4DDxOEChXFXVYb
+         VPQ49zrePMz2XHowV2ZJ7YId4fRiik+AUkqioR5XowJ5khWUi/UZRIl/z//ErbCUw8i6
+         lqZNx4cuUfQYKlWVDbtoB7wzyjoQOA+zcQmP1fZC/iCVWRMKlOmZL3sMkZNfXFHyHKUi
+         qx4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4AC1iNQgWZrkBSCQYpKpySGolDqTh2HDf1hkAeZFNb4=;
-        b=r04hRvZH6rcwvRX+/cRGvUFv/2GkV3XgabSorz8yILWPdCehOTI2OO+ohm+29kz8H2
-         /IJFFb9afn0OBe4o/xBJnn9EeN012EA2Yb31d5oPwYacFBRxGKfFnwA+COBEFRgZrRON
-         y47z4xOva9+tJNnKIhrxOjlqB4494nnY0iOYi/pIT02T9X+TlLciJlT8YWhyZWoPUL/U
-         1yqG3SPPMWegXE0/M0UKPIepbIQiOK/M3GW1nJKr/6djtdwuB1RHSQEh+CgKl/LfwwZr
-         PztxWNgFgyeQI1EtM2ouNM+X2cIVoahXLkdOtRjRR9K7CqfSsQzx/fNzhyFz8pkYYijW
-         Lbww==
-X-Gm-Message-State: AOAM5307fAgGfz9DoT3BBnMCsuWPXrf4iuHC+A55rVifiBN0DL2MD9q/
-        8ZYokM/uCiAn6XVYB64uIid7qAKWbddK5RCXWaY=
-X-Google-Smtp-Source: ABdhPJxqcVtXp1n3gyHbu5k3vj5n974w3z1wdNTj6pVg7CQ0rfbSLCDrB4IgRwp3FjMCjoGv8C0ToybrrjeIiLUlXDE=
-X-Received: by 2002:a25:8149:: with SMTP id j9mr28989594ybm.214.1598526513604;
- Thu, 27 Aug 2020 04:08:33 -0700 (PDT)
+        bh=6ooHzlcK9ygV09BpTK5pdlKAaPmSuGBA3cYk3HsnGhI=;
+        b=cI2QqVKvd6FfV0KuMwO5bLJ5tlxWizM/CTS4TFp/5UaSyopdFcgVjj2N0Z0uTqsjFb
+         Zb9xgGv4tFyQdgtTEdlqEOz8quwqL89Y7kcWO2VdbBVNBuJW34viiKTHCc9aZhS3Evz0
+         X2VHWJ/9cE+nBzylLZ1Zm9pMrM/fFCAAE9NLnhr2xSezXr8Pys7/nlotBi6Zo3OPbOZG
+         AIz9ZGTfYjQ3ReS6h4xsuRRkPQGS5iPNas8ZQ1EFPCw5x6/ph0RcxAiNLJhSEBkict6y
+         jGSESyQN8PW8i6ZIuua2dpul859lwoRRJSflkHXdtAVko4o9ign6S5vB3erh1QqEOaiU
+         T+hA==
+X-Gm-Message-State: AOAM530zgW0VWTOjgOn6NdpIjXVAg0hWJQbm6bRPZPRzNd0X9i3LS/2n
+        izT0gP0IYtE/caM0MYSj7olq0Z8PxscVzPLoS3lp+w==
+X-Google-Smtp-Source: ABdhPJz2Kvyqr5m8SmXHIOwki3A50F7P9NH0AKIKPv9pKYpv2hoW0Imfg7W4iRAq/QvR+EZlcoBfEV1GThBF0OW1ank=
+X-Received: by 2002:a05:6122:5ad:: with SMTP id w13mr1188574vko.11.1598528210107;
+ Thu, 27 Aug 2020 04:36:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <1588542414-14826-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <1588542414-14826-6-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <1588542414-14826-6-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From:   "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date:   Thu, 27 Aug 2020 12:08:07 +0100
-Message-ID: <CA+V-a8v5CtxJQxjSWcvJrPtf9JyYKZeACdc3as_hjM710pk1AQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/10] dt-bindings: renesas,rcar-dmac: Document r8a7742 support
-To:     Vinod Koul <vkoul@kernel.org>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
+References: <CA+G9fYvUwH2FA9GOeA_7GYpLA31uOmEpg32VKnJ8-d5QSK4PdQ@mail.gmail.com>
+ <20200827090813.fjugeqbb47fachy7@vireshk-i7> <CAK8P3a2zxybiMDzHXkTsT=VpHJOLkwd1=YTtCNU04vuMjZLkxA@mail.gmail.com>
+ <20200827101231.smqrhqu5da6jlz6i@vireshk-i7>
+In-Reply-To: <20200827101231.smqrhqu5da6jlz6i@vireshk-i7>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 27 Aug 2020 17:06:38 +0530
+Message-ID: <CA+G9fYv=XLtsuD=tVR1HHotwpKLkbwZVyPr4UhY-jD+6-duTmw@mail.gmail.com>
+Subject: Re: Kernel panic : Unable to handle kernel paging request at virtual
+ address - dead address between user and kernel address ranges
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Linux-Next Mailing List <linux-next@vger.kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        lkft-triage@lists.linaro.org, John Stultz <john.stultz@linaro.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        dmaengine <dmaengine@vger.kernel.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Lars Povlsen <lars.povlsen@microchip.com>,
+        madhuparnabhowmik10@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Vinod,
+On Thu, 27 Aug 2020 at 15:42, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> On 27-08-20, 11:48, Arnd Bergmann wrote:
+> > > > [    3.680477]  dev_pm_opp_put_clkname+0x30/0x58
+> > > > [    3.683431]  sdhci_msm_probe+0x284/0x9a0
+> >
+> > dev_pm_opp_put_clkname() is part of the error handling in the
+> > probe function, so I would deduct there are two problems:
+> >
+> > - something failed during the probe and the driver is trying
+> >   to unwind
+> > - the error handling it self is buggy and tries to undo something
+> >   again that has already been undone.
+>
+> Right.
+>
+> > This points to Viresh's
+> > d05a7238fe1c mmc: sdhci-msm: Unconditionally call dev_pm_opp_of_remove_table()
+>
+> I completely forgot that Ulf already pushed this patch and I was
+> wondering on which of the OPP core changes I wrote have done this :(
+>
+> > Most likely this is not the entire problem but it uncovered a preexisting
+> > bug.
+>
+> I think this is.
+>
+> Naresh: Can you please test with this diff ?
 
-On Sun, May 3, 2020 at 10:47 PM Lad Prabhakar
-<prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
->
-> Renesas RZ/G SoC also have the R-Car gen2/3 compatible DMA controllers.
-> Document RZ/G1H (also known as R8A7742) SoC bindings.
->
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
->  Documentation/devicetree/bindings/dma/renesas,rcar-dmac.yaml | 1 +
->  1 file changed, 1 insertion(+)
->
-This patch is not present in linux-next yet, could you please take care of it.
+I have applied your patch and tested but still see the reported problem.
+Link to test job,
+https://lkft.validation.linaro.org/scheduler/job/1715677#L1886
 
-Cheers,
-Prabhakar
+- Naresh
