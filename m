@@ -2,144 +2,140 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88A712556BF
-	for <lists+linux-mmc@lfdr.de>; Fri, 28 Aug 2020 10:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EE882556C7
+	for <lists+linux-mmc@lfdr.de>; Fri, 28 Aug 2020 10:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728785AbgH1IpQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 28 Aug 2020 04:45:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58674 "EHLO
+        id S1728731AbgH1Ipd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 28 Aug 2020 04:45:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728556AbgH1Ior (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 28 Aug 2020 04:44:47 -0400
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3CCBC061232
-        for <linux-mmc@vger.kernel.org>; Fri, 28 Aug 2020 01:44:46 -0700 (PDT)
-Received: by mail-vs1-xe42.google.com with SMTP id a21so196351vsd.3
-        for <linux-mmc@vger.kernel.org>; Fri, 28 Aug 2020 01:44:46 -0700 (PDT)
+        with ESMTP id S1728751AbgH1Iow (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 28 Aug 2020 04:44:52 -0400
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F065C06123B
+        for <linux-mmc@vger.kernel.org>; Fri, 28 Aug 2020 01:44:51 -0700 (PDT)
+Received: by mail-vk1-xa44.google.com with SMTP id n193so77809vkf.12
+        for <linux-mmc@vger.kernel.org>; Fri, 28 Aug 2020 01:44:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=NSwGttpO58UNwtKWNF+HN930HSSYOnpc/+bKIQZS/m8=;
-        b=iMHU9AikMMYxn9wjsl5wJsIqBY9vBfVrFeLa6kGhKLJwY1KMy7nAhGcTPOfxcsnAQM
-         HOQLo8fuQIioyP4A/ZOKHzrbm/9Zc+NIXrrxNfF4my9wymu0SU/OdWqRChcsJYNQChBT
-         wi5V636btYgP1WD1SJ9+Rbi1UswjFK4NEiyz2heNMMOqece9ty2xGUlAP94uEEwapP9d
-         +ht/ZbC2N599ujNQ1IaY4zq7I9pwedKRVti/nT/qw2dB17psBky+3lhYpBwkFy2FQ88l
-         5bEqWtPgVw6g8gaWILC+NfdrpIP+56zBxXzzjZAqqapEkc1cClBgcX7KJCnm93qbjpeC
-         tWvQ==
+        bh=i68K1oVW//N2+LJY/Znt9A9GXSvc2knY+uF5OLZlW3E=;
+        b=T11C7mphpjdwy94FR3QiUCw/s5gZrgGyEYLzUcAk2VBMcgtTsIiASblHRXVOWjTR8f
+         fSKqXBAkgf1x0Aawx9GdU41IiybGpPpfdoZ24viRcWevKccV7/LcywLkUf39qPSUIgHM
+         gs3BKu6/VuSar3C7KsUUdC7YkhhrLIOQuBKubp2UruUbOs/EryrB50B+emHFGs2JTcpL
+         VnPJw8ECgwjn62NENrOKdNdJnG69PlgCedXkB67QgRMqh5EHp/8AIAUYzOyGUVsoAk4o
+         QKcK/gsJaQdig0KI4JuE1N5YPUHbqVZcGeOdMXpK93TV0Xm1DzaetY5de3wKBWnGDfMQ
+         EuFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=NSwGttpO58UNwtKWNF+HN930HSSYOnpc/+bKIQZS/m8=;
-        b=Yut+m2WjgWb0RFhy+r/yUn4TNwDsyaKecexhSiaaqyMsAlAd6xx8REwqzAho/vSCOJ
-         gbWf82ZmUiJxtD75NnNxOyeMAF//UZG3gAupub5ZDqXQmo6zQ5BU8WvfmqsfxLn3rDWT
-         6O/N3sIJ4ILn/gHHwVtYdXdpFUsV3VczDpwSaGcVs1ZH2YQTzVqvfaSjpOmMcYDHWJMQ
-         VMOLu7Kz3z2uArWa9fu0MIz/TnKrMt41XDlbySVJVmcESLc/YXkahZhXeklMbCQn4zRy
-         woKcTDbc+beRpo7vLLfg+DysGNsvYLljlAOX3QxQBPPZ0+cgxQjQWZJGmiMU8vBm+0je
-         uBKw==
-X-Gm-Message-State: AOAM532EpDykWT8UNYdqTl0ZT+b51fwgUzyiPhLsRTG04hdHVW5/Vu5x
-        4COqHGd9Z9grQSiPyiPrrqpfMq0r8f/FF1m5GDgtjA==
-X-Google-Smtp-Source: ABdhPJyMTa+YCR54kZRT2NcbU5tNIxtghSNNIBzuFrngPMB9n10lMo1q3cbFPdXVIPo59zok8Er6V4HJCsgKwouWK0A=
-X-Received: by 2002:a05:6102:1043:: with SMTP id h3mr66844vsq.60.1598604285942;
- Fri, 28 Aug 2020 01:44:45 -0700 (PDT)
+        bh=i68K1oVW//N2+LJY/Znt9A9GXSvc2knY+uF5OLZlW3E=;
+        b=qpwuxcr6xz9J1uf+iiROeJF/5BgNeI3Sn/2oCm1ocUpz+VP5n3BxuAv1MXzDTGCfVQ
+         OmZi0qrCj7GiXaMitzkIrH5NoktGTsnFnWRnpFWU7sE19fq+XYX/AmG0S+gw8IXsjEQo
+         HwEaYabxfrBt/lLW4G9PQrsDvKfFxTikBQhOL4t0+xh8GUl94e3ezT7hJBiYop9cjVBz
+         pMluIJtfkoqStMFnAingcA1Q1B+WhVOyedo+J95ha4ll+Ksf/am8/VqkyUjQTAi73mbA
+         KwyJSqzEbMHGmW3NxMt75bHI4hArCk8IiikbqFvE8woev1+qEB03WDI7OXExziqzEos1
+         hTeA==
+X-Gm-Message-State: AOAM53014W+Xz010Gs/ivps3IwWzm/7UQVuxsPefVwNP/U+wXdDSMnDy
+        lNyDydXKVEFSgTulZgdQfWEyBgcOV0JqSk6DNogpdA==
+X-Google-Smtp-Source: ABdhPJwyLUVJLFv8vKvkEYsSU7ILzcE5NWJavW5HwQPyZHyyUDM1gvnGVTI+2DM9xnyhEB7GbwL/uRVULNGsWzDFs6Y=
+X-Received: by 2002:a1f:2a48:: with SMTP id q69mr199169vkq.69.1598604290613;
+ Fri, 28 Aug 2020 01:44:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200825170015.32285-1-faiz_abbas@ti.com>
-In-Reply-To: <20200825170015.32285-1-faiz_abbas@ti.com>
+References: <1598548861-32373-1-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <1598548861-32373-1-git-send-email-skomatineni@nvidia.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 28 Aug 2020 10:44:09 +0200
-Message-ID: <CAPDyKFrvO1fQP0cVkL+UMjxsg5n02Q-ynph9T3yXn4nqY3GG+g@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: sdhci_am654: Add workaround for card detect
- debounce timer
-To:     Faiz Abbas <faiz_abbas@ti.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Fri, 28 Aug 2020 10:44:12 +0200
+Message-ID: <CAPDyKFo+1XzHaS55jV3KsjkGA5a6A_NovLFrBw66Vg3xzTNkRQ@mail.gmail.com>
+Subject: Re: [PATCH v7 0/7] Fix timeout clock used by hardware data timeout
+To:     Sowjanya Komatineni <skomatineni@nvidia.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
+        DTML <devicetree@vger.kernel.org>,
+        "# 4.0+" <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 25 Aug 2020 at 19:00, Faiz Abbas <faiz_abbas@ti.com> wrote:
+On Thu, 27 Aug 2020 at 19:21, Sowjanya Komatineni
+<skomatineni@nvidia.com> wrote:
 >
-> There is a one time delay because of a card detect debounce timer in the
-> controller IP. This timer runs as soon as power is applied to the module
-> regardless of whether a card is present or not and any writes to
-> SDHCI_POWER_ON will return 0 before it expires. This timeout has been
-> measured to be about 1 second in am654x and j721e.
+> Tegra210/Tegra186/Tegra194 has incorrectly enabled
+> SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK from the beginning of their support.
 >
-> Write-and-read-back in a loop on SDHCI_POWER_ON for a maximum of
-> 1.5 seconds to make sure that the controller actually powers on.
+> Tegra210 and later SDMMC hardware default uses sdmmc_legacy_tm (TMCLK)
+> all the time for hardware data timeout instead of SDCLK and this TMCLK
+> need to be kept enabled by Tegra sdmmc driver.
 >
-> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
+> This series includes patches to fix this for Tegra210/Tegra186/Tegra194.
+>
+> These patches need to be manually backported to 4.19.
+>
+> Will send patches for 4.19 backport separately.
+>
+> Delta between patch versions:
+> [v7]:   v7 has below change
+>         - v6 has implementation for retrieving tmclk irrespective of
+>           clocks order. But based in internal discussion with Thierry
+>           this is not required as typically order specified in DT
+>           bindings is the order validator want to see in DT.
+>
+> [v6]:   v5 is sent out mistakenly with incorrect patches.
+>         v6 includes proper patches addressing v4 feedback
+>         - updated dt-binding doc to be more clear
+>         - updated Tegra sdhci driver to retrieve sdhci and tmclk clocks
+>           based on no. of clocks in sdhci device node as old device trees
+>           do not use sdhci clock name and this allows proper clock retrival
+>           irrespective of sdhci and tmclk clocks order in device tree.
+>         - Added separate quirk for identifying SoC's supporting separate
+>           timeout clock to be more clear.
+>
+> [v5]:   Include below changes based on v4 feedback
+>         - updated dt-binding doc to be more clear
+>         - updated Tegra sdhci driver to retrieve sdhci and tmclk clocks
+>           based on no. of clocks in sdhci device node as old device trees
+>           do not use sdhci clock name and this allows proper clock retrival
+>           irrespective of sdhci and tmclk clocks order in device tree.
+>         - Added separate quirk for identifying SoC's supporting separate
+>           timeout clock to be more clear.
+>
+> [v4]:   Include additional dt-binding patch
+>
+> [v3]:   Same as v2 with fixes tag
+>
+> [v2]:   Includes minor fix
+>         - Patch-0006: parentheses around operand of '!'
+>
+> Sowjanya Komatineni (7):
+>   sdhci: tegra: Remove SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK for Tegra210
+>   sdhci: tegra: Remove SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK for Tegra186
+>   dt-bindings: mmc: tegra: Add tmclk for Tegra210 and later
+>   arm64: tegra: Add missing timeout clock to Tegra210 SDMMC
+>   arm64: tegra: Add missing timeout clock to Tegra186 SDMMC nodes
+>   arm64: tegra: Add missing timeout clock to Tegra194 SDMMC nodes
+>   sdhci: tegra: Add missing TMCLK for data timeout
+>
+>  .../bindings/mmc/nvidia,tegra20-sdhci.txt          | 32 +++++++++++--
+>  arch/arm64/boot/dts/nvidia/tegra186.dtsi           | 20 ++++----
+>  arch/arm64/boot/dts/nvidia/tegra194.dtsi           | 15 +++---
+>  arch/arm64/boot/dts/nvidia/tegra210.dtsi           | 20 ++++----
+>  drivers/mmc/host/sdhci-tegra.c                     | 55 ++++++++++++++++++++--
+>  5 files changed, 113 insertions(+), 29 deletions(-)
+>
+> --
+> 2.7.4
+>
 
-Applied for next, thanks!
+Applied for fixes, thanks!
 
 Kind regards
 Uffe
-
-
-> ---
->
-> v2: Use read_poll_timeout() standard macro
->
->  drivers/mmc/host/sdhci_am654.c | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->
-> diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-> index f9d24af12396..9a048c80dad4 100644
-> --- a/drivers/mmc/host/sdhci_am654.c
-> +++ b/drivers/mmc/host/sdhci_am654.c
-> @@ -6,6 +6,7 @@
->   *
->   */
->  #include <linux/clk.h>
-> +#include <linux/iopoll.h>
->  #include <linux/of.h>
->  #include <linux/module.h>
->  #include <linux/pm_runtime.h>
-> @@ -272,9 +273,19 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
->         sdhci_set_clock(host, clock);
->  }
->
-> +static u8 sdhci_am654_write_power_on(struct sdhci_host *host, u8 val, int reg)
-> +{
-> +       writeb(val, host->ioaddr + reg);
-> +       usleep_range(1000, 10000);
-> +       return readb(host->ioaddr + reg);
-> +}
-> +
-> +#define MAX_POWER_ON_TIMEOUT   1500000 /* us */
->  static void sdhci_am654_write_b(struct sdhci_host *host, u8 val, int reg)
->  {
->         unsigned char timing = host->mmc->ios.timing;
-> +       u8 pwr;
-> +       int ret;
->
->         if (reg == SDHCI_HOST_CONTROL) {
->                 switch (timing) {
-> @@ -291,6 +302,19 @@ static void sdhci_am654_write_b(struct sdhci_host *host, u8 val, int reg)
->         }
->
->         writeb(val, host->ioaddr + reg);
-> +       if (reg == SDHCI_POWER_CONTROL && (val & SDHCI_POWER_ON)) {
-> +               /*
-> +                * Power on will not happen until the card detect debounce
-> +                * timer expires. Wait at least 1.5 seconds for the power on
-> +                * bit to be set
-> +                */
-> +               ret = read_poll_timeout(sdhci_am654_write_power_on, pwr,
-> +                                       pwr & SDHCI_POWER_ON, 0,
-> +                                       MAX_POWER_ON_TIMEOUT, false, host, val,
-> +                                       reg);
-> +               if (ret)
-> +                       dev_warn(mmc_dev(host->mmc), "Power on failed\n");
-> +       }
->  }
->
->  static int sdhci_am654_execute_tuning(struct mmc_host *mmc, u32 opcode)
-> --
-> 2.17.1
->
