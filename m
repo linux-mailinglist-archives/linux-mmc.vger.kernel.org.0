@@ -2,118 +2,166 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5C432556C4
-	for <lists+linux-mmc@lfdr.de>; Fri, 28 Aug 2020 10:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E6772556CB
+	for <lists+linux-mmc@lfdr.de>; Fri, 28 Aug 2020 10:46:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728804AbgH1Ipa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 28 Aug 2020 04:45:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58706 "EHLO
+        id S1728810AbgH1IqZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 28 Aug 2020 04:46:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728756AbgH1Iox (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 28 Aug 2020 04:44:53 -0400
-Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7778BC06123E
-        for <linux-mmc@vger.kernel.org>; Fri, 28 Aug 2020 01:44:53 -0700 (PDT)
-Received: by mail-ua1-x944.google.com with SMTP id y15so138095uan.9
-        for <linux-mmc@vger.kernel.org>; Fri, 28 Aug 2020 01:44:53 -0700 (PDT)
+        with ESMTP id S1728727AbgH1IqS (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 28 Aug 2020 04:46:18 -0400
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA749C061264
+        for <linux-mmc@vger.kernel.org>; Fri, 28 Aug 2020 01:46:17 -0700 (PDT)
+Received: by mail-vs1-xe44.google.com with SMTP id b16so195214vsl.6
+        for <linux-mmc@vger.kernel.org>; Fri, 28 Aug 2020 01:46:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Quf84xjwBR0SIp0JM3phsyARD/Gfky6X+jIDmOR839I=;
-        b=CCY/Qq7Tu2UjIqPLl4JGJ/HCM/DQgdfgIS7SXvbHELcDB78CuqM9aUVeznrBHpUB+y
-         AQEGsivwFhk2xS70nVgaHgovEOnkV478x2KFdfHn7wEuQp5Q1PS24dSC/KuT/WZ4NRVw
-         RsBUt2gpRSaS8a8nvaZwiBd8AEjPwvwZahy1m6UYZ2CMrDPAjnyDaCa/1q809c3jWKB7
-         2P0mnf2riBaV4ifBhYkTSHIWc+6SSH0YVvv+U6S1oR+BJJLWcAGulhzzj2nrEEcFfGY3
-         +mTiLOZf7EQIBhufgFAf7ddHIvHoD7D8xmMwfRb7gkMk3Bi/qw5vXzT74xIEOgB2nPyh
-         WsiA==
+        bh=189lzAWfQfsXqTmFG0edsCDCtQB53S1O0XCFYRVJy0M=;
+        b=aIm4qyEymVO5ohXmss62q8J7ZsU21OeX87DHri44FY+MtB8kKPRTRN8fC2fuIy9zvX
+         Z9GTB09WEFGr+7TVAWibwyGyVwol+ajGdpcyUuC4mEf8pIP20ndS3jHWcXKurf5SVAhY
+         V+KCtnocv+7SjPRR+/YrhNgmkynyreSovR2OBYvRS0xkDojpgFoNajirehBgyh2Hrzif
+         0zPrbgW8qQ+iLRDMParVC4EFTYOfC0SYgcE9hKp/OLDf4Z3U/WxlgJJAx8ImgeFHI7Ms
+         K2rPmiftA1He8wyBKNzMVDF2IAg9gwh+r+motN/9SM691+1Dlb6EM3f2CTGjxwoc2hSk
+         YCSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Quf84xjwBR0SIp0JM3phsyARD/Gfky6X+jIDmOR839I=;
-        b=hDiim1ExbQk4TKtP6O1FCygwqH5lS2f5A0OxdGtpip3VJn2UH9bc5cAKSE8m2TMik4
-         pnqpiCN2OwoUO8hOtowzHxQMOrHZzI0Ku1C3B/FwChJ2dNSkkdoTLkOEAntUQ5UjvdCu
-         DSRMcvofNhHDIQAIUJdEy+YjBbCIgV+2DxMBVxl6DuQEYX0FnxoX599yz3OOj52AK1k8
-         W4Yz4EzzXxLjywNgWF8cxJ6+RSgAtTC8XZA1z+Ds1oaZqfnSMwokQ8MivsqocQ5cYBrD
-         aa7XqVhNSl8PIFKl08/OrLksYmX5WeNFXUxQejS3Ny5rJ3xryO568tudsgRM8LNton1L
-         lIMw==
-X-Gm-Message-State: AOAM532i/KNZ2If4RiPAJfuhq+qyEzg/ECW9QJxNek7mN++6FIoLtBb8
-        oTZnuiNd750OahaPhoT2uOEihc9J02dDo2HakG9wer6+iSm3BQ==
-X-Google-Smtp-Source: ABdhPJww9T+Y1GJDKFWNV6wqWl3WsYvjaR+msz3E5sOWpkmAOodhk9M8sWdW7GIaD+/Q50JIC2iLqDgMNRlghqLBEW8=
-X-Received: by 2002:ab0:3114:: with SMTP id e20mr306915ual.104.1598604292732;
- Fri, 28 Aug 2020 01:44:52 -0700 (PDT)
+        bh=189lzAWfQfsXqTmFG0edsCDCtQB53S1O0XCFYRVJy0M=;
+        b=DY9Zh9WQo3pE1m7BEyPEtxEu/l/GPNg+ZIAIt8Du6eAc7epdWKFK2CkEMjlonXhupV
+         bBDUVRbemS11zpmOqnWcXWlEvEeWnQ8t1KhCtzf7SJBfVRgduX/7EGXTChoMdTXj4veo
+         1nGH1zf141hMHxIgzHwaZ16RMl3J65sgnOlZA+rK1nHcmruPujCA7iqttaR3qZcJmtPj
+         JTfGJ9kQlVpoUE5uoGDfYBg6YeYQtsS+aROjUXhgDiEUJxG5o6/+pB5zjsqNw9twj3D7
+         jXt6poo/QSIooKdNQpy9S38nX5dPeqda4k2BhuMqFEtctXLWX/Gi80FxvwEvdbHEkpxN
+         gACA==
+X-Gm-Message-State: AOAM532NEsD6LMOwydeLKFGMsOU4ggUVyvcJb5gXIjjKrUKi7jFLI8WG
+        CHy0QzHCJ/JHhufWL1M4/QCFbk/26qv+F6+++x5sVA==
+X-Google-Smtp-Source: ABdhPJwdM//IK26BNKLGQTKBrolM5NysJSl2j+QUGwsOTG7KyqNDjalKpnYeND/9ptvlwZBlFInKLZnPBJM5EgFzpWg=
+X-Received: by 2002:a67:f8ce:: with SMTP id c14mr189781vsp.14.1598604376960;
+ Fri, 28 Aug 2020 01:46:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200820132538.24758-1-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20200820132538.24758-1-wsa+renesas@sang-engineering.com>
+References: <20200825193536.7332-1-krzk@kernel.org> <20200825193536.7332-13-krzk@kernel.org>
+In-Reply-To: <20200825193536.7332-13-krzk@kernel.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 28 Aug 2020 10:44:16 +0200
-Message-ID: <CAPDyKFppvVoox2q1c03gVYO-WSZc+AZ3H8ggVHE6g6YpUEvj5w@mail.gmail.com>
-Subject: Re: [RFT 0/6] mmc: refactor reset callbacks
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Masahiro Yamada <masahiroy@kernel.org>
+Date:   Fri, 28 Aug 2020 10:45:40 +0200
+Message-ID: <CAPDyKFp9m6xBJMGn2TgwD8VEUZ0JwzgowU32qUbL1qgEPua-GA@mail.gmail.com>
+Subject: Re: [PATCH v3 12/19] dt-bindings: mmc: fsl-imx-esdhc: Fix i.MX 8
+ compatible matching
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Anson Huang <Anson.Huang@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>, Han Xu <han.xu@nxp.com>,
+        Frank Li <frank.li@nxp.com>, Fugang Duan <fugang.duan@nxp.com>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-mtd@lists.infradead.org, linux-pwm@vger.kernel.org,
+        linux-serial@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 20 Aug 2020 at 15:26, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
+On Tue, 25 Aug 2020 at 21:37, Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
-> While debugging something else, I noticed that the SDHI driver
-> doesn't use the 'hw_reset' callback as intended. It was used to reset
-> the tuning block but not the remote card via RSTn.
+> The i.MX 8 DTSes use two compatibles so update the binding to fix
+> dtbs_check warnings like:
 >
-> So, this patch series fixes it by moving stuff to the reset callback. In
-> addition, calls within the TMIO core are converted to 'reset' and the
-> 'hw_reset' callback is only used by the MMC core now.
+>   arch/arm64/boot/dts/freescale/imx8mn-evk.dt.yaml: mmc@30b40000:
+>     compatible: ['fsl,imx8mn-usdhc', 'fsl,imx7d-usdhc'] is too long
+>     From schema: Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
 >
-> This allow for further cleanups which make the code a tad smaller and
-> much more readable.
+>   arch/arm64/boot/dts/freescale/imx8mn-evk.dt.yaml: mmc@30b40000:
+>     compatible: Additional items are not allowed ('fsl,imx7d-usdhc' was unexpected)
 >
-> I did some testing here, and tuning etc... still works, no regressions,
-> both with eMMC and SDXC. I send this out as RFT because I want to give
-> our BSP team also a chance to test more advanced cases. Also, I will be
-> thinking of more ways to verify this all is correct. A branch for
-> testing can be found here:
+>   arch/arm64/boot/dts/freescale/imx8mn-ddr4-evk.dt.yaml: mmc@30b40000:
+>     compatible: ['fsl,imx8mn-usdhc', 'fsl,imx7d-usdhc'] is too long
 >
-> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/sdhi/refactor_hw_reset
->
-> The branch is based on top of v5.9-rc1.
->
-> Looking forward to comments!
->
-> Happy hacking,
->
->    Wolfram
->
->
-> Wolfram Sang (6):
->   mmc: renesas_sdhi: move wrong 'hw_reset' to 'reset'
->   Revert "mmc: tmio: fix reset operation"
->   mmc: tmio: remove indirection of 'hw_reset' callback
->   mmc: tmio: factor out common parts of the reset routine
->   mmc: tmio: don't reset whole IP core when tuning fails
->   mmc: tmio: remove indirection of 'execute_tuning' callback
->
->  drivers/mmc/host/renesas_sdhi_core.c | 58 ++++++++++++++--------------
->  drivers/mmc/host/tmio_mmc.c          |  8 ----
->  drivers/mmc/host/tmio_mmc.h          |  7 ----
->  drivers/mmc/host/tmio_mmc_core.c     | 45 ++++-----------------
->  drivers/mmc/host/uniphier-sd.c       |  5 ++-
->  5 files changed, 39 insertions(+), 84 deletions(-)
->
-> --
-> 2.20.1
->
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Applied for next, also adding the tested-by tag from Shimoda-san to
-all the patches, thanks!
+Rob, Krzysztof - do you want me to pick this one?
 
 Kind regards
 Uffe
+
+>
+> ---
+>
+> Changes since v2:
+> 1. Remove moved compatibles.
+>
+> Changes since v1:
+> 1. Handle also fsl,imx8mm-usdhc and fsl,imx8qxp-usdhc
+> ---
+>  .../bindings/mmc/fsl-imx-esdhc.yaml           | 37 ++++++++++---------
+>  1 file changed, 20 insertions(+), 17 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> index 10b45966f1b8..e71d13c2d109 100644
+> --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> @@ -21,23 +21,26 @@ description: |
+>
+>  properties:
+>    compatible:
+> -    enum:
+> -      - fsl,imx25-esdhc
+> -      - fsl,imx35-esdhc
+> -      - fsl,imx51-esdhc
+> -      - fsl,imx53-esdhc
+> -      - fsl,imx6q-usdhc
+> -      - fsl,imx6sl-usdhc
+> -      - fsl,imx6sx-usdhc
+> -      - fsl,imx6ull-usdhc
+> -      - fsl,imx7d-usdhc
+> -      - fsl,imx7ulp-usdhc
+> -      - fsl,imx8mq-usdhc
+> -      - fsl,imx8mm-usdhc
+> -      - fsl,imx8mn-usdhc
+> -      - fsl,imx8mp-usdhc
+> -      - fsl,imx8qm-usdhc
+> -      - fsl,imx8qxp-usdhc
+> +    oneOf:
+> +      - enum:
+> +          - fsl,imx25-esdhc
+> +          - fsl,imx35-esdhc
+> +          - fsl,imx51-esdhc
+> +          - fsl,imx53-esdhc
+> +          - fsl,imx6q-usdhc
+> +          - fsl,imx6sl-usdhc
+> +          - fsl,imx6sx-usdhc
+> +          - fsl,imx6ull-usdhc
+> +          - fsl,imx7d-usdhc
+> +          - fsl,imx7ulp-usdhc
+> +      - items:
+> +          - enum:
+> +              - fsl,imx8mm-usdhc
+> +              - fsl,imx8mn-usdhc
+> +              - fsl,imx8mp-usdhc
+> +              - fsl,imx8mq-usdhc
+> +              - fsl,imx8qxp-usdhc
+> +          - const: fsl,imx7d-usdhc
+>
+>    reg:
+>      maxItems: 1
+> --
+> 2.17.1
+>
