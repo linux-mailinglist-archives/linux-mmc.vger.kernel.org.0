@@ -2,75 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A45258F8D
-	for <lists+linux-mmc@lfdr.de>; Tue,  1 Sep 2020 15:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF46B259032
+	for <lists+linux-mmc@lfdr.de>; Tue,  1 Sep 2020 16:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728276AbgIANyv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 1 Sep 2020 09:54:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45914 "EHLO mail.kernel.org"
+        id S1726946AbgIAOUe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 1 Sep 2020 10:20:34 -0400
+Received: from www.zeus03.de ([194.117.254.33]:60670 "EHLO mail.zeus03.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728267AbgIANyq (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 1 Sep 2020 09:54:46 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 21121206EF;
-        Tue,  1 Sep 2020 13:54:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598968485;
-        bh=fgdQbvNKfrT9RQxxwbrS+G3c51w2CaurFPEVweTkSFs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=foEI5kCGhAdHd4Lc751iDhiFVCWbPPfNcIr92QxDyn3UHDswkD+id1vtNBkV1y7Cy
-         WfRn3Dz3pzF+lfzQ60RdprxObBsaeOpcqgut597Zbdm26EejvLtQh58icB6LxAWsau
-         sUd7M0EMs0QUirzh+WA6y4pe1Yl9VE4Du6yiE8+k=
-Date:   Tue, 1 Sep 2020 15:55:13 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Sowjanya Komatineni <skomatineni@nvidia.com>
-Cc:     Sasha Levin <sashal@kernel.org>, adrian.hunter@intel.com,
-        ulf.hansson@linaro.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, robh+dt@kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 4.19 1/7] sdhci: tegra: Remove
- SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK for Tegra210
-Message-ID: <20200901135513.GA397411@kroah.com>
-References: <1598653517-13658-1-git-send-email-skomatineni@nvidia.com>
- <1598653517-13658-2-git-send-email-skomatineni@nvidia.com>
- <20200828231536.GU8670@sasha-vm>
- <dc6bfd08-baaf-e1ad-6b3f-77ff82d110bb@nvidia.com>
+        id S1728067AbgIAOTj (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 1 Sep 2020 10:19:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=VPrLFKONLizrTcy8SwQKaluVrDN
+        G6FFHnaccsuoDN5c=; b=3D10v/wjr2O4p9lGD7AoEc6tM4/fzYTNxcSnQCdayh0
+        p7sAHVLWwyn0jg3uXPshHy70d9kNy93Si55dbO85pZWv56sQF98KP4HVWcB1064P
+        dAYvcnY4tMfMyaCVakndgndmUlWQXuJP5G1fPm9LnBHSifL2a7BU5KcYokDC46Ks
+        =
+Received: (qmail 2543495 invoked from network); 1 Sep 2020 16:19:37 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 1 Sep 2020 16:19:37 +0200
+X-UD-Smtp-Session: l3s3148p1@YJyDNUGuLowgAwDPXxBIAL7SzoTwUEK2
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH] mmc: core: simplify an expression
+Date:   Tue,  1 Sep 2020 16:19:31 +0200
+Message-Id: <20200901141931.25357-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dc6bfd08-baaf-e1ad-6b3f-77ff82d110bb@nvidia.com>
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Aug 28, 2020 at 04:23:48PM -0700, Sowjanya Komatineni wrote:
-> 
-> On 8/28/20 4:15 PM, Sasha Levin wrote:
-> > On Fri, Aug 28, 2020 at 03:25:11PM -0700, Sowjanya Komatineni wrote:
-> > > commit b5a84ecf025a ("mmc: tegra: Add Tegra210 support")
-> > 
-> > What does this line above represent?
-> > 
-> SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK is set incorrectly in above commit
-> 
-> when Tegra210 support was added.
+We already have 'host' as a variable, so use it.
 
-Odd, that's a new format to send to us to apply :)
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+ drivers/mmc/core/mmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Can you please provide the git commit id of the original commit in
-Linus's tree, as per the documentation, so we know what this is, and can
-document that?
+diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+index 6b3056437b37..6794eb142f05 100644
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -1173,7 +1173,7 @@ static int mmc_select_hs400(struct mmc_card *card)
+ 		host->ops->hs400_downgrade(host);
+ 
+ 	/* Set host controller to HS timing */
+-	mmc_set_timing(card->host, MMC_TIMING_MMC_HS);
++	mmc_set_timing(host, MMC_TIMING_MMC_HS);
+ 
+ 	/* Reduce frequency to HS frequency */
+ 	max_dtr = card->ext_csd.hs_max_dtr;
+-- 
+2.20.1
 
-Look at all of the commits in the stable trees for examples of how to do
-this.
-
-Can y ou fix that up and resend this whole series?
-
-thanks,
-
-greg k-h
