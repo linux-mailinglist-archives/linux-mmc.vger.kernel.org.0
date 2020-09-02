@@ -2,89 +2,91 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1422F25A84E
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Sep 2020 11:04:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CFA325A83A
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Sep 2020 11:03:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727025AbgIBJEd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 2 Sep 2020 05:04:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47060 "EHLO
+        id S1726669AbgIBJD5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Sep 2020 05:03:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726654AbgIBJDn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Sep 2020 05:03:43 -0400
-Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10141C061245
-        for <linux-mmc@vger.kernel.org>; Wed,  2 Sep 2020 02:03:43 -0700 (PDT)
-Received: by mail-vk1-xa44.google.com with SMTP id e5so1051187vkm.2
-        for <linux-mmc@vger.kernel.org>; Wed, 02 Sep 2020 02:03:43 -0700 (PDT)
+        with ESMTP id S1726674AbgIBJDr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Sep 2020 05:03:47 -0400
+Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E62CC061258
+        for <linux-mmc@vger.kernel.org>; Wed,  2 Sep 2020 02:03:47 -0700 (PDT)
+Received: by mail-ua1-x943.google.com with SMTP id g11so1338975ual.2
+        for <linux-mmc@vger.kernel.org>; Wed, 02 Sep 2020 02:03:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=9P3wsxqoze0W6a0mrHELuT43xJEcIHDEYNF+C7OQKQI=;
-        b=z1kMa/o0lJ6db7VFFIgX3zwfAI3PmRBK61copltiv3/W6UyGC0jBl0o+igdv9c8GkH
-         UYk+TgkbK+5vVE8zuHUoCye4snKHrvvPIjR58Ic/SbcepnSePDacs1cnh8rcWwXCq+Nz
-         XEfXUiZGZujy7lMtuoZ5GTuTH61E1HGGzcBO4AQ7Ff2nc7HKbIiVB4pD744A3stRBPEi
-         UcDCz0ghGSxSSOkK2GsP8dK6M6dQ9rvqO7I354sQXM3JuuJ+Q/BKF0B+gC+dd93rU/ef
-         3OKlMbQuxQlvb7lLssullWsaVdxEnqynj76LNwQ1IGdl9i03TMatIb/iy16J61LvlmaX
-         2qAQ==
+        bh=G7z93t1Etv3+Y7YRGqoitCZfELcgVcpVmZuSYiiuAMc=;
+        b=ZNr7dTiMyg6AJhHsdVCwXw5CQaH02wnOnH42Zr5wVBHqxb0354fDvNOiMNx6Lmc0hE
+         QvUDEGEWKwtU63Sv5gfBy3asdk4Xo6wqAh6SE5d/9t3h1Fxsg32wfjXT/7xiodD5G5pZ
+         0EKEDKEi/A7o5IvEbPeol4SFl6PQFNNTja+vjlcRop0AWOnZ6JXzH6BbUGiJylF0O1Lx
+         PgOOwKbmHa4RJS0q13zHAf5qCeEB1iseAEndTs3QjRUXhEGIRfelydA6FGU1BnRoV/bw
+         KjsQoPeNLOw3BNLzdxNjYZpjA3Mq+Ou8H87Ud5PLEAhDNMXtemEaevQudQWIQhnvouuq
+         3ypg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9P3wsxqoze0W6a0mrHELuT43xJEcIHDEYNF+C7OQKQI=;
-        b=R6HP8oKMW1L7oitcXHVTnBnhT00/jDD8ZNCgaX1Ggr2UfNIC7VVFC5B51BmYWh4qYQ
-         HvKidJ1WFKFLE/Gd+rUKqsTgCbOhzpGAXq9laxcFVNfAV4KeHBwyE4i/88tRY7TtbdYo
-         3unOAl7czuCg1tsnOz4Aj2ZQ8Ixjzdpjm0OmkuDj6Gwh9iiCqno/Y5iuDPHLmtrW33vW
-         U0dXSBkgFZtIsBMloz3M84JZyAP+rbpfXIoa1e4NlmHFnNThG0rjf8HJYc1huk2apL/4
-         01HomCQtYRCH/KrW+e84l/LWMQ3nKG8g07+iMyO0zAlfTtNq611uzv1sMkdaves0PGeB
-         VV2Q==
-X-Gm-Message-State: AOAM533uMRJDFsDy+FQa289lfOkX3Jt+xC+PPrQlnIWJhsMBzlthYlWm
-        hQkF4h1RT+lh1OfQzORlagi1ev6lMlYyeyfEPD1bMQ==
-X-Google-Smtp-Source: ABdhPJxhX7kHXjegHwdXoUHpCkNbNv05kzwJYOYliiMwlfVGeUdqGLLERRCiX7ZP53djUoDsW4aIcGPFyOzxlmc6Gj4=
-X-Received: by 2002:a1f:16d1:: with SMTP id 200mr4453490vkw.31.1599037422215;
- Wed, 02 Sep 2020 02:03:42 -0700 (PDT)
+        bh=G7z93t1Etv3+Y7YRGqoitCZfELcgVcpVmZuSYiiuAMc=;
+        b=bmWCrWvLEGNvC8wxCSG9AMIEHG+Yy+Yljw4L0gL/jqxZ5JTj16CkatEJzJNib/AvAe
+         2wrOXRA1uvOOn2tCOTkT6ZXRfg8DWX6WSpCluwVSoaMMpc8dY+Cnpg48CzQATHb1cxLn
+         FNX7b+A/UdKI54sAXovH0NHL8BJY2iEQZUM1O2zUD9gfYSg8B7bp/ZzKIa9m7JAoJI3Y
+         /waqW/lFOOiCuhkv6kwVlfjQl403EZviJZom8TMcZt4yjlJn6jKrB1RrZZy4WYLy5cB8
+         qvOtiDLa0DAkEF+1peZ4zKjOYXJI6tHwBcDbXpxJHb0YAu8PIwQ1QxlOwnbY85PBpnMf
+         B+Rg==
+X-Gm-Message-State: AOAM531isvL2gTvTN8SYmTv31MPHs6JuEHtEFvOhXKpCzQt02xaJsQ/N
+        kxq9zIwuvjAuHq+J0tqxQx/rqxaAXW1AUa/jd9+u0A==
+X-Google-Smtp-Source: ABdhPJyTJjkE0DbQ9blDWav98w+X2eEv5Ao+aqHbo6v8vW6kAJ3iH1xM8Vn6niOHiZAqARCskMhgKTsCoqH+TsHxDac=
+X-Received: by 2002:a9f:2722:: with SMTP id a31mr4520715uaa.100.1599037426432;
+ Wed, 02 Sep 2020 02:03:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <1598651234-29826-1-git-send-email-stefan.wahren@i2se.com>
-In-Reply-To: <1598651234-29826-1-git-send-email-stefan.wahren@i2se.com>
+References: <20200829062505.4642-1-krzk@kernel.org>
+In-Reply-To: <20200829062505.4642-1-krzk@kernel.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 2 Sep 2020 11:03:06 +0200
-Message-ID: <CAPDyKFq35cgC5Cp3=kFnBaghz9r6Sjkzb8CDaCB8395avMnYKw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-iproc: Enable eMMC DDR 3.3V support for bcm2711
-To:     Stefan Wahren <stefan.wahren@i2se.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Matthias Brugger <mbrugger@suse.com>,
-        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Date:   Wed, 2 Sep 2020 11:03:09 +0200
+Message-ID: <CAPDyKFrVLZUXEV6pCa6aPJFtFsZ4xv9mtcycUQ1-XHyGOqKi+A@mail.gmail.com>
+Subject: Re: [PATCH v4] dt-bindings: mmc: fsl-imx-esdhc: Fix i.MX 8 compatible matching
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Aisheng Dong <aisheng.dong@nxp.com>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 28 Aug 2020 at 23:48, Stefan Wahren <stefan.wahren@i2se.com> wrote:
+On Sat, 29 Aug 2020 at 08:25, Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
-> The emmc2 interface on the bcm2711 supports DDR modes for eMMC devices
-> running at 3.3V. This allows to run eMMC module with 3.3V signaling voltage
-> at DDR52 mode on the Raspberry Pi 4 using a SD adapter:
+> The i.MX 8 DTSes use two compatibles so update the binding to fix
+> dtbs_check warnings like:
 >
->   clock: 52000000 Hz
->   actual clock: 50000000 Hz
->   vdd: 21 (3.3 ~ 3.4 V)
->   bus mode: 2 (push-pull)
->   chip select: 0 (don't care)
->   power mode: 2 (on)
->   bus width: 2 (4 bits)
->   timing spec: 8 (mmc DDR52)
->   signal voltage: 0 (3.30 V)
->   driver type: 0 (driver type B)
+>   arch/arm64/boot/dts/freescale/imx8mn-evk.dt.yaml: mmc@30b40000:
+>     compatible: ['fsl,imx8mn-usdhc', 'fsl,imx7d-usdhc'] is too long
+>     From schema: Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
 >
-> Link: https://github.com/raspberrypi/linux/issues/3802
-> Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+>   arch/arm64/boot/dts/freescale/imx8mn-evk.dt.yaml: mmc@30b40000:
+>     compatible: Additional items are not allowed ('fsl,imx7d-usdhc' was unexpected)
+>
+>   arch/arm64/boot/dts/freescale/imx8mn-ddr4-evk.dt.yaml: mmc@30b40000:
+>     compatible: ['fsl,imx8mn-usdhc', 'fsl,imx7d-usdhc'] is too long
+>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
 Applied for next, thanks!
 
@@ -92,22 +94,83 @@ Kind regards
 Uffe
 
 
+>
 > ---
->  drivers/mmc/host/sdhci-iproc.c | 1 +
->  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
-> index e2d8dfe..b540aa6 100644
-> --- a/drivers/mmc/host/sdhci-iproc.c
-> +++ b/drivers/mmc/host/sdhci-iproc.c
-> @@ -283,6 +283,7 @@ static const struct sdhci_pltfm_data sdhci_bcm2711_pltfm_data = {
+> Changes since v3:
+> 1. Fix also example in Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml
 >
->  static const struct sdhci_iproc_data bcm2711_data = {
->         .pdata = &sdhci_bcm2711_pltfm_data,
-> +       .mmc_caps = MMC_CAP_3_3V_DDR,
->  };
+> Changes since v2:
+> 1. Remove moved compatibles.
 >
->  static const struct of_device_id sdhci_iproc_of_match[] = {
+> Changes since v1:
+> 1. Handle also fsl,imx8mm-usdhc and fsl,imx8qxp-usdhc
+> ---
+>  .../bindings/clock/imx8qxp-lpcg.yaml          |  2 +-
+>  .../bindings/mmc/fsl-imx-esdhc.yaml           | 37 ++++++++++---------
+>  2 files changed, 21 insertions(+), 18 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml b/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml
+> index 1d5e9bcce4c8..33f3010f48c3 100644
+> --- a/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml
+> +++ b/Documentation/devicetree/bindings/clock/imx8qxp-lpcg.yaml
+> @@ -62,7 +62,7 @@ examples:
+>      };
+>
+>      mmc@5b010000 {
+> -        compatible = "fsl,imx8qxp-usdhc";
+> +        compatible = "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
+>          interrupts = <GIC_SPI 232 IRQ_TYPE_LEVEL_HIGH>;
+>          reg = <0x5b010000 0x10000>;
+>          clocks = <&conn_lpcg IMX_CONN_LPCG_SDHC0_IPG_CLK>,
+> diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> index 10b45966f1b8..e71d13c2d109 100644
+> --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> @@ -21,23 +21,26 @@ description: |
+>
+>  properties:
+>    compatible:
+> -    enum:
+> -      - fsl,imx25-esdhc
+> -      - fsl,imx35-esdhc
+> -      - fsl,imx51-esdhc
+> -      - fsl,imx53-esdhc
+> -      - fsl,imx6q-usdhc
+> -      - fsl,imx6sl-usdhc
+> -      - fsl,imx6sx-usdhc
+> -      - fsl,imx6ull-usdhc
+> -      - fsl,imx7d-usdhc
+> -      - fsl,imx7ulp-usdhc
+> -      - fsl,imx8mq-usdhc
+> -      - fsl,imx8mm-usdhc
+> -      - fsl,imx8mn-usdhc
+> -      - fsl,imx8mp-usdhc
+> -      - fsl,imx8qm-usdhc
+> -      - fsl,imx8qxp-usdhc
+> +    oneOf:
+> +      - enum:
+> +          - fsl,imx25-esdhc
+> +          - fsl,imx35-esdhc
+> +          - fsl,imx51-esdhc
+> +          - fsl,imx53-esdhc
+> +          - fsl,imx6q-usdhc
+> +          - fsl,imx6sl-usdhc
+> +          - fsl,imx6sx-usdhc
+> +          - fsl,imx6ull-usdhc
+> +          - fsl,imx7d-usdhc
+> +          - fsl,imx7ulp-usdhc
+> +      - items:
+> +          - enum:
+> +              - fsl,imx8mm-usdhc
+> +              - fsl,imx8mn-usdhc
+> +              - fsl,imx8mp-usdhc
+> +              - fsl,imx8mq-usdhc
+> +              - fsl,imx8qxp-usdhc
+> +          - const: fsl,imx7d-usdhc
+>
+>    reg:
+>      maxItems: 1
 > --
-> 2.7.4
+> 2.17.1
 >
