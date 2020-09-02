@@ -2,107 +2,100 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBABD25A849
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Sep 2020 11:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2A2625A83D
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Sep 2020 11:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727020AbgIBJEc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 2 Sep 2020 05:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47048 "EHLO
+        id S1726892AbgIBJEE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Sep 2020 05:04:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726686AbgIBJDt (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Sep 2020 05:03:49 -0400
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81F93C06125C
-        for <linux-mmc@vger.kernel.org>; Wed,  2 Sep 2020 02:03:49 -0700 (PDT)
-Received: by mail-vs1-xe42.google.com with SMTP id s62so317761vsc.7
-        for <linux-mmc@vger.kernel.org>; Wed, 02 Sep 2020 02:03:49 -0700 (PDT)
+        with ESMTP id S1726762AbgIBJDy (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Sep 2020 05:03:54 -0400
+Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC350C061244
+        for <linux-mmc@vger.kernel.org>; Wed,  2 Sep 2020 02:03:53 -0700 (PDT)
+Received: by mail-ua1-x943.google.com with SMTP id r13so1333864uah.10
+        for <linux-mmc@vger.kernel.org>; Wed, 02 Sep 2020 02:03:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Ew8uPftzd7rZEwyKmHbAQ1uIc01gvs5Er2gSjYfu7W8=;
-        b=wOfT6RjWKK9Cg08Nc5h2tPkm+jRI7/v3eKlCGASt8OfijrkTGiscXmoX8NyAqTFy2x
-         t8mxemk7NUQGcOapBDBtIwgX+s7T+aMA7Isp1w44mxKk6ATRf3yvQn0EXwJpxb4wkiRY
-         Zeh+pnFgy1Hlpxau2tEjagoxu23SnPstE5T+wd9RiN1dSuAWlyyLZPcBhVsJKNJFHIsh
-         9DbTFjdf5ZE3a++HkXY9hQRc6g9tWl6fKc8giGuYZwKs9tOi+OBd7WvS9N7IZ21R0HfL
-         M4euvKPWeZeSVeBlExbHJB09fiU6fWabTVlxt4CbIbW7hfxqfjDIA3cmCY9M9abnRu6y
-         KcrA==
+        bh=HJzUeSF+5rfhIEqW5Y3fudwXDrc2+BNzuQkwiBNzFL4=;
+        b=WQ+kQwXpmiMbmM++3SGStKdu8DfotRMOpqrwA5q4bHtdJy9QMoEuJc5j/DKPN9esfh
+         TQnNtWcPdvtjlOGXk6lMbGAWO97Q/B3oTIbShRS2KU7mN9bF8pwNxjqtEEOpNgKeeSoF
+         5vPV4E1GH8dyf6dZN4nLeM4NYT2aVDd9zvoKiIUgsLohC+8JbQ22SJbx9wnjSbkj7xL8
+         JsM/O3Q//97AjUOmNmXAzlIbuCSjbi/qQVWHYr3mood8wfSt8Zo60+0PYH3nWBUC9yct
+         FTmh/ZE20RiJD40hlQlzblmlJbQWUdiyrAwwuV/0mkrVPnqhO7ph2zS10dQORe/iAwGQ
+         yyxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Ew8uPftzd7rZEwyKmHbAQ1uIc01gvs5Er2gSjYfu7W8=;
-        b=ZQPu3//USnDgJl1Xo6CX9KyQlz7KoHKV/NAJQpuiGqdFyRFE3got9nDBguJKcED0CX
-         gm8pTdHgH6zTfga7T/ZFpLveSbAtox0V4vLlWzb5f89H/USbel+HliAnxoyvdVPgQYr7
-         qViJPUsNKqZvKZAyEYJErHWK1i6AFfva9tkw2PRW4R2J0MDEPtdeVdomDLAkYKQFpeyU
-         AQyS4ArhG6GTYJsdgIl328E+qmSiS5wd0MBd2dMuBWaH5nWFVHmRYRCT30Sxv5zqcN6b
-         cbF6BQSDDKUu6I2Ec6lsMuCyAkExF7HvxNNd6dD4MvJ93ZelhDheQQv+5OqM5SDeSRhM
-         nbEw==
-X-Gm-Message-State: AOAM532Uk9pWUg3OAJv4hUImOGDdIuh0/ij3hkutGLh1+Vj1aF/aqwkw
-        tqisDfuGbqJmO0ln1WRWduRlAtaFJFjFPShKNaPYMQ==
-X-Google-Smtp-Source: ABdhPJypfiJBpPKqO5parBohEkYTMjyGzwzAwZxO6TYjuaHX2IfAFD06OB4IGnxO8uyCU9sql8Or1PQuWxYknwgZ2nk=
-X-Received: by 2002:a05:6102:5a:: with SMTP id k26mr4959457vsp.52.1599037428764;
- Wed, 02 Sep 2020 02:03:48 -0700 (PDT)
+        bh=HJzUeSF+5rfhIEqW5Y3fudwXDrc2+BNzuQkwiBNzFL4=;
+        b=TQzCgYNVPTvzPiZs48WoRjRP+utVS3TsqGPlozK1TVwJrT1wXhmbKHOA5jbzOIk/4+
+         Bu2c8hn9NckgibCbaxmyWaHNtmEEyBRhoe9xsFfcQPRjObHFN4wrtIYvQ1nxxQrpv4fq
+         DEtZRB5ckPoFqyvosMdkVPAR8IqhQjWcoodBOs/oX7DXxqipwdBD3KlWRRAKtc+Ny9U/
+         BVEbRkAd/nnPoy5vO7QvPAvKgmz3x+JrYx1LlBeJrFWq6EVFgzUTncUBauVhcSP/zqa9
+         8I+SeiABKmwfzUSuP5DrEDenb+IVFPO7Zci/KIalqPbNhY8Qg5CXPMrwsgzU91sOLfMr
+         5lcw==
+X-Gm-Message-State: AOAM530+cBHn8Y5a+vVg3uyhe6zvsRdY7ijk0fvPAA/je51QGRZZi0fO
+        fTtccbdjrqzykTVYt9vgIB1sO6mmtE046n2GB+ku7w==
+X-Google-Smtp-Source: ABdhPJyhJYTVm/R+GBYtGPEgC6V5+EOBdX93qBkeA616egxMMvQgh3s57gjKKHh0bsOtxZckjPPEU7gVSF32drfco5E=
+X-Received: by 2002:ab0:2848:: with SMTP id c8mr4291207uaq.15.1599037433179;
+ Wed, 02 Sep 2020 02:03:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200831161147.13515-1-krzk@kernel.org> <20200831161147.13515-2-krzk@kernel.org>
-In-Reply-To: <20200831161147.13515-2-krzk@kernel.org>
+References: <20200831102324.12566-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20200831102324.12566-1-wsa+renesas@sang-engineering.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 2 Sep 2020 11:03:12 +0200
-Message-ID: <CAPDyKFrwABSPKq9w9Mm=6COsFPuf18MYbuC_KffSgWyMJa+AWA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: mmc: mmc-pwreq-simple: Accept more than
- one reset GPIO
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Sylwester Nawrocki <snawrocki@kernel.org>
+Date:   Wed, 2 Sep 2020 11:03:16 +0200
+Message-ID: <CAPDyKFpmfjuGcLTxCDdCvp5j_yaJzySENBEcgC_w1tvkK1Gz4g@mail.gmail.com>
+Subject: Re: [PATCH] mmc: meson-gx: use wrapper to avoid accessing internal vars
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 31 Aug 2020 at 18:11, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Mon, 31 Aug 2020 at 12:23, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 >
-> There might be multiple reset GPIOs but dtschema has trouble parsing it
-> if there are no maxItems:
->
->   arch/arm/boot/dts/exynos5250-snow.dt.yaml: mmc3_pwrseq: reset-gpios: [[20, 2, 1], [20, 1, 1]] is too long
->     From schema: Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.yaml
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> ---
->  Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.yaml | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.yaml b/Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.yaml
-> index 449215444723..8d625f903856 100644
-> --- a/Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.yaml
-> @@ -20,6 +20,8 @@ properties:
->
->    reset-gpios:
->      minItems: 1
-> +    # Put some limit to avoid false warnings
-> +    maxItems: 32
-
-Not sure what number to pick. I guess two should be enough, but on the
-other hand it doesn't really matter.
-
->      description:
->        contains a list of GPIO specifiers. The reset GPIOs are asserted
->        at initialization and prior we start the power up procedure of the card.
-> --
-> 2.17.1
->
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>
+> Only buildtested. Found while analyzing retune-handling in the core.
+>
+>  drivers/mmc/host/meson-gx-mmc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+> index 08a3b1c05acb..a1db8685e30e 100644
+> --- a/drivers/mmc/host/meson-gx-mmc.c
+> +++ b/drivers/mmc/host/meson-gx-mmc.c
+> @@ -521,7 +521,7 @@ static int meson_mmc_resampling_tuning(struct mmc_host *mmc, u32 opcode)
+>         val |= ADJUST_ADJ_EN;
+>         writel(val, host->regs + host->data->adjust);
+>
+> -       if (mmc->doing_retune)
+> +       if (mmc_doing_retune(mmc))
+>                 dly = FIELD_GET(ADJUST_ADJ_DELAY_MASK, val) + 1;
+>         else
+>                 dly = 0;
+> --
+> 2.20.1
+>
