@@ -2,129 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C95E625B287
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Sep 2020 19:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 031BA25B4A6
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Sep 2020 21:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728754AbgIBRBI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 2 Sep 2020 13:01:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57736 "EHLO mail.kernel.org"
+        id S1726323AbgIBTp2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Sep 2020 15:45:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53528 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728748AbgIBRBG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 2 Sep 2020 13:01:06 -0400
-Received: from paulmck-ThinkPad-P72.home (unknown [50.45.173.55])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726140AbgIBTp1 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 2 Sep 2020 15:45:27 -0400
+Received: from kozik-lap.mshome.net (unknown [194.230.155.106])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 71B9C20FC3;
-        Wed,  2 Sep 2020 17:01:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0C98D20773;
+        Wed,  2 Sep 2020 19:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599066065;
-        bh=FQd94FvZ+0JdxlW8IVu9M2KpS2tWUoV7vHlAMnmzdWY=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=wlYKdcu0obZwlYv+H6EbdZJKE5vxKFLmOpmp/5RLKAuBOQ7qKJShXu9cEB9VCf1SA
-         feB3YbI33Ooa5MwRF+jRUAgGC4NCV2ogRP+pAoPJQDnXq4JgRfgGs3RxIcNWEEPThl
-         R4aukeTc3M/xQi8/SRIwEWVy2W8Y7+yztClKxxrY=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 489FD352157A; Wed,  2 Sep 2020 10:01:05 -0700 (PDT)
-Date:   Wed, 2 Sep 2020 10:01:05 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Saravana Kannan <saravanak@google.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        lkft-triage@lists.linaro.org, rcu@vger.kernel.org,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
+        s=default; t=1599075435;
+        bh=+D+HnNz+VrpzF30cgOx0/44g3rIEaRFahWzOaAq0owE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=1SQS24JOeFsx1iasRvSrQ65PxPvLq6dmxeYcepsSK8GUZGbyMelZlNIuhySqBfDi1
+         bZnWylzcAirhjbBZDld4bG3srPaamgSu01Z9UN63UVkQ+oyD8xxZqDnIHmEKgpQ6sm
+         zRt4WFNvhEsJP72JojS+Lha8JOjX4CQ66Zr6jp9Y=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Al Cooper <alcooperx@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Michal Simek <michal.simek@xilinx.com>,
         Lars Povlsen <lars.povlsen@microchip.com>,
-        madhuparnabhowmik10@gmail.com,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        peterz@infrdead.org, Lina Iyer <ilina@codeaurora.org>
-Subject: Re: WARNING: suspicious RCU usage - sdhci-pltfm: SDHCI platform and
- OF driver helper
-Message-ID: <20200902170105.GJ29330@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <CA+G9fYuiJwN1ad955Xw4ShamX2=373r+56KsbpeverEs+i_NAg@mail.gmail.com>
- <20200831194402.GD2855@paulmck-ThinkPad-P72>
- <CAPDyKFq7KWo=4VmPhgrt7vEEQ_P6NdVgQp+MO_1cg1dtoVR_Fw@mail.gmail.com>
- <20200901150047.GB29330@paulmck-ThinkPad-P72>
- <CAPDyKFptZK-OqnAuJYGnpfPbZ1qw-iSd4t5SuE7SmWic=ms48Q@mail.gmail.com>
- <20200902135202.GG29330@paulmck-ThinkPad-P72>
- <CAPDyKFqAAjCDSSJ56V+cdy6t0F01sXj_AkNxdXRtAKegf8DDsQ@mail.gmail.com>
+        Steen Hegelund <Steen.Hegelund@microchip.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-tegra@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 00/11] mmc: Minor cleanups and compile test
+Date:   Wed,  2 Sep 2020 21:36:47 +0200
+Message-Id: <20200902193658.20539-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFqAAjCDSSJ56V+cdy6t0F01sXj_AkNxdXRtAKegf8DDsQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Sep 02, 2020 at 06:07:05PM +0200, Ulf Hansson wrote:
-> On Wed, 2 Sep 2020 at 15:52, Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > On Wed, Sep 02, 2020 at 08:49:11AM +0200, Ulf Hansson wrote:
-> > > On Tue, 1 Sep 2020 at 17:00, Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > [ . . . ]
-> >
-> > > > Here is the list, though it is early in the morning here:
-> > > >
-> > > > 1.      RCU_NONIDLE().
-> > > >
-> > > > 2.      Peter's patch, if it turns out to hoist your code out of what
-> > > >         RCU considers to be the idle loop.
-> > > >
-> > > > 3.      If the problem is trace events, use the _rcuidle() variant of the
-> > > >         trace event.  Instead of trace_blah(), use trace_blah_rcuidle().
-> > > >
-> > > > 4.      Switch from RCU (as in rcu_read_lock()) to SRCU (as in
-> > > >         srcu_read_lock()).
-> > > >
-> > > > 5.      Take Peter's patch a step further, moving the rcu_idle_enter()
-> > > >         and rcu_idle_exit() calls as needed.  But please keep in mind
-> > > >         that these two functions require that irqs be disabled by their
-> > > >         callers.
-> > > >
-> > > > 6.      If RCU_NONIDLE() in inconvenient due to early exits and such,
-> > > >         you could use the rcu_irq_enter_irqson() and rcu_irq_exit_irqson()
-> > > >         functions that it calls.
-> > > >
-> > > > Do any of those help?
-> > >
-> > > Yes, they will, in one way or the other. Thanks for providing me with
-> > > all the available options.
-> > >
-> > > BTW, I still don't get what good rcu_idle_enter|exit() does, but I am
-> > > assuming those need to be called at some point before the CPU goes to
-> > > sleep.
-> >
-> > These functions allow RCU to leave idle CPUs undisturbed.  If they
-> > were not invoked, RCU would periodically IPI idle CPUs to verify that
-> > there were no RCU readers running on them.  This would be quite bad for
-> > battery lifetime, among other things.  So the call to rcu_idle_enter()
-> > tells RCU that it may safely completely ignore this CPU until its next
-> > call to rcu_idle_exit().
-> 
-> Alright, thanks for explaining this, much appreciated.
-> 
-> So in one way, we would also like to call rcu_idle_enter(), as soon as
-> we know there is no need for the RCU to be active. To prevent
-> unnecessary IPIs I mean. :-)
+Hi,
 
-Well, the IPIs don't happen until the better part of a second into
-the grace period.  So delaying an rcu_idle_enter() a few microseconds,
-as Peter Zijlstra is proposing, is absolutely no problem whatsoever.
-And once the rcu_idle_enter() happens, the RCU grace-period kthread's next
-scan of the CPUs will see that this CPU needs to be ignored, so no more
-IPIs for it until it does the next rcu_idle_exit(), rcu_irq_enter(),
-or any of a number of other things that cause RCU to once again pay
-attention to that CPU.
+Set of minor cleanups.  Patches requiring more attention:
+ - 6/11: Testing and review would be appreciated,
+ - 11/11: I build tested multiple architectures but not all and
+   definitely no all possible configs. This one could sit on the lists
+   for few days so 0-day would try it.
 
-							Thanx, Paul
+Best regards,
+Krzysztof
+
+Krzysztof Kozlowski (11):
+  mmc: bcm2835: Simplify with dev_err_probe()
+  mmc: davinci: Simplify with dev_err_probe()
+  mmc: dw_mmc-zx: Simplify with dev_err_probe()
+  mmc: jz4740: Simplify with dev_err_probe()
+  mmc: meson: Simplify with dev_err_probe()
+  mmc: sdhci-brcmstb: Simplify with optional clock and dev_err_probe()
+  mmc: sdhci-of-arasan: Simplify with dev_err_probe()
+  mmc: sdhci-tegra: Simplify with dev_err_probe()
+  mmc: dw_mmc: Simplify with dev_err_probe()
+  mmc: sdhci-of-sparx5: Use proper printk format for dma_addr_t
+  mmc: host: Enable compile testing of multiple drivers
+
+ drivers/mmc/host/Kconfig           | 42 ++++++++++++++++--------------
+ drivers/mmc/host/bcm2835.c         |  4 +--
+ drivers/mmc/host/davinci_mmc.c     |  5 ++--
+ drivers/mmc/host/dw_mmc-zx.c       | 11 +++-----
+ drivers/mmc/host/dw_mmc.c          |  9 +++----
+ drivers/mmc/host/jz4740_mmc.c      |  5 ++--
+ drivers/mmc/host/meson-gx-mmc.c    | 16 ++++--------
+ drivers/mmc/host/sdhci-brcmstb.c   | 12 ++++-----
+ drivers/mmc/host/sdhci-of-arasan.c |  7 +++--
+ drivers/mmc/host/sdhci-of-sparx5.c |  4 +--
+ drivers/mmc/host/sdhci-tegra.c     |  7 ++---
+ 11 files changed, 51 insertions(+), 71 deletions(-)
+
+-- 
+2.17.1
+
