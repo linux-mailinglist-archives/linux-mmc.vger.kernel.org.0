@@ -2,95 +2,107 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8921E25B5E3
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Sep 2020 23:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF0DE25B766
+	for <lists+linux-mmc@lfdr.de>; Thu,  3 Sep 2020 01:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726594AbgIBVcj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 2 Sep 2020 17:32:39 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:38076 "EHLO rere.qmqm.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726226AbgIBVcf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 2 Sep 2020 17:32:35 -0400
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 4Bhcbd1b8Vz98;
-        Wed,  2 Sep 2020 23:32:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1599082353; bh=GDacUcTntXycW3HLTxPt24O1o6lCFXAi5egUm6GCp7I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rHYnDWANlv95qPZreUCEccYzoc77bbn+WHcWLJBhy6sn2k0K4siHC9hoVsg+/+rOT
-         zpJN1ArAy6bRh8O8FYxl6b/YXBF/SfufJWDOIjWLCmRkcKf6/Q198a+VlFWD/9SIEt
-         s2A8OY2emLgL0NZ0+IO9zWHcTD2D3VMSd8/XI8WiPTH9wx3s/Ox7PMcYFv7OoKe22G
-         CWJfP93yPUm3WmdRyzoWFdXNAQYiefjsgD9XqWJgJpRDrTYgw7/+C1dlKP7E7+IAYp
-         QXUAyzBTUSibrhBWvSWkJpT/Y6kx5cNKggPC19kRufrVfbMXvq8l3UrS2OKWbIV5mH
-         osyOa4JHgkY6Q==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.102.4 at mail
-Date:   Wed, 2 Sep 2020 23:32:27 +0200
-From:   =?iso-8859-2?B?TWljaGGzoE1pcm9zs2F3?= <mirq-linux@rere.qmqm.pl>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Al Cooper <alcooperx@gmail.com>,
+        id S1726853AbgIBXnc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Sep 2020 19:43:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41364 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726742AbgIBXn2 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Sep 2020 19:43:28 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96BDBC061246
+        for <linux-mmc@vger.kernel.org>; Wed,  2 Sep 2020 16:43:27 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id u13so581807pgh.1
+        for <linux-mmc@vger.kernel.org>; Wed, 02 Sep 2020 16:43:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5PQLZP1Qz8JxBBrCvH3ODAjxLepZmxXcyVpXcrB89bk=;
+        b=Si7LqGmssihn3d3s2I9Mo4GuAzBWNq77GAdmQUcK+JZNwW1IUQBFf3DntrMWGys0DA
+         EJRmR/3bJ6BI5hyFGpR1ebZu6+Bqo+GgQEwf2kPNfGD7RJa+rshcYDBmXSUNL+9W9DX/
+         w05LDlIC+77MlkeTr0iT2NnOzP9cQdv2T2+Ms=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5PQLZP1Qz8JxBBrCvH3ODAjxLepZmxXcyVpXcrB89bk=;
+        b=rV4yAGvFohaq9VUkdTePM4Alqcza+XgKvv7dkGVGYwbw/RLoq89cNBaQ6xsKpskIQn
+         JKNI2lKMWSd5QbPx45UoTOtfIi0uU99Sz9k0iYDxsVMYctluwYjGE2XnHT4Y/GelloOE
+         oXzplxGF8/BP4E8KT996wOSsGFBRqQ5TmtLy6fzD++fPT8ex8ScGw5K9yDVstMKtdJZq
+         pd5smp+84oWZLDZ7RpiO8K0LlnvcoUSNlsjR+TMVMQOGL00uMuH2Sv9lZ3GF9YzN4ZVf
+         OB409lGRwe+c9Z53rGtdUDr6NMi6RNls4n/aEyDQjWE4F8lwghkFaNOvBk/slo636tar
+         rW8w==
+X-Gm-Message-State: AOAM530nK0xDe4+zY+c5YJ3ugIxjkXtSeSbbnorDJOW4slw2/p1L/igl
+        XVx6oAAeKUJRe7GZmXseCWQHzw==
+X-Google-Smtp-Source: ABdhPJyB+KmcwqeuAkYJZdNtmNa+iUiP8ezkepEkp25WOfYRYpBfVNpPZLgP0MZ78ERRcgKely0bxQ==
+X-Received: by 2002:a62:cdc2:: with SMTP id o185mr809740pfg.170.1599090205522;
+        Wed, 02 Sep 2020 16:43:25 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
+        by smtp.gmail.com with ESMTPSA id q2sm426284pgh.48.2020.09.02.16.43.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2020 16:43:24 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     vbadigan@codeaurora.org, Douglas Anderson <dianders@chromium.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Lars Povlsen <lars.povlsen@microchip.com>,
-        Steen Hegelund <Steen.Hegelund@microchip.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 11/11] mmc: host: Enable compile testing of multiple
- drivers
-Message-ID: <20200902213227.GE1624@qmqm.qmqm.pl>
-References: <20200902193658.20539-1-krzk@kernel.org>
- <20200902193658.20539-12-krzk@kernel.org>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org
+Subject: [PATCH] mmc: sdhci-msm: Prefer asynchronous probe
+Date:   Wed,  2 Sep 2020 16:43:15 -0700
+Message-Id: <20200902164303.1.I5e598a25222b4534c0083b61dbfa4e0e76f66171@changeid>
+X-Mailer: git-send-email 2.28.0.402.g5ffc5be6b7-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200902193658.20539-12-krzk@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Sep 02, 2020 at 09:36:58PM +0200, Krzysztof Kozlowski wrote:
-> Multiple MMC host controller driver can be compile tested as they do not
-> depend on architecture specific headers.
-[...]
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -178,7 +178,7 @@ config MMC_SDHCI_OF_AT91
-[...]
->  config MMC_MESON_GX
->  	tristate "Amlogic S905/GX*/AXG SD/MMC Host Controller support"
-> -	depends on ARCH_MESON && MMC
-> +	depends on MMC
-> +	depends on ARCH_MESON|| COMPILE_TEST
-[...]
->  config MMC_MOXART
->  	tristate "MOXART SD/MMC Host Controller support"
-> -	depends on ARCH_MOXART && MMC
-> +	depends on MMC
-> +	depends on ARCH_MOXART || COMPILE_TEST
-[...]
+Turning on initcall debug on one system showed this:
+  initcall sdhci_msm_driver_init+0x0/0x28 returned 0 after 34782 usecs
 
-You can drop 'MMC' from depends as the whole tree is under 'if MMC' already.
+The lion's share of this time (~33 ms) was in mmc_power_up().  This
+shouldn't be terribly surprising since there are a few calls to delay
+based on "power_delay_ms" and the default delay there is 10 ms.
 
-Best Regards,
-Micha³ Miros³aw
+Because we haven't specified that we'd prefer asynchronous probe for
+this driver then we'll wait for this driver to finish before we start
+probes for more drivers.  While 33 ms doesn't sound like tons, every
+little bit counts.
+
+There should be little problem with turning on asynchronous probe for
+this driver.  It's already possible that previous drivers may have
+turned on asynchronous probe so we might already have other things
+(that probed before us) probing at the same time we are anyway.  This
+driver isn't really providing resources (clocks, regulators, etc) that
+other drivers need to probe and even if it was they should be handling
+-EPROBE_DEFER.
+
+Let's turn this on and get a bit of boot speed back.
+
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
+
+ drivers/mmc/host/sdhci-msm.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index d4c02884cca8..9dd0dbb65382 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -2542,6 +2542,7 @@ static struct platform_driver sdhci_msm_driver = {
+ 		   .name = "sdhci_msm",
+ 		   .of_match_table = sdhci_msm_dt_match,
+ 		   .pm = &sdhci_msm_pm_ops,
++		   .probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 	},
+ };
+ 
+-- 
+2.28.0.402.g5ffc5be6b7-goog
+
