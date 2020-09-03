@@ -2,58 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D6BD25BC82
-	for <lists+linux-mmc@lfdr.de>; Thu,  3 Sep 2020 10:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AC1825BC7C
+	for <lists+linux-mmc@lfdr.de>; Thu,  3 Sep 2020 10:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728061AbgICIMB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 3 Sep 2020 04:12:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34082 "EHLO
+        id S1728927AbgICILh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 3 Sep 2020 04:11:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728867AbgICIK2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Sep 2020 04:10:28 -0400
+        with ESMTP id S1728865AbgICIKd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Sep 2020 04:10:33 -0400
 Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 262FAC061245
-        for <linux-mmc@vger.kernel.org>; Thu,  3 Sep 2020 01:10:27 -0700 (PDT)
-Received: by mail-ua1-x941.google.com with SMTP id z46so609673uac.13
-        for <linux-mmc@vger.kernel.org>; Thu, 03 Sep 2020 01:10:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B34CC061249
+        for <linux-mmc@vger.kernel.org>; Thu,  3 Sep 2020 01:10:32 -0700 (PDT)
+Received: by mail-ua1-x941.google.com with SMTP id g16so624766uan.5
+        for <linux-mmc@vger.kernel.org>; Thu, 03 Sep 2020 01:10:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LrOjlA1x52Sx3PNdexN+2X/ozkPpzSng8Vccaxs54Zw=;
-        b=LNj9s0VDa9drWeLKU2VtX/B9wbQgZmQkc6JpKMfK3e9C+15ObehWeink4X7oCMDirp
-         WPafqIvq9t4fj1FDRMiaapi9ohjzXf41O7a5YaafCVZPvVQ9M2pyoTOBkhB2a+84EXOK
-         AiANcRalw5n97ufIUIOei9DTEGLrtbKe/WatzVK99QTXRF7K/qYw86pIst4ltUDzOJQd
-         Gn04+W0cxdaZGW5nD0qXPij/7pKctDdjpM60SGN4pobi5xXjPsFhZ71Edv4qO8JPESdz
-         B5NaqGd/yzgyFw8wRa5dCrYP9Mm74fIRm4/AmfvKAjITRKgEyNhX9nL3RBTyIQ0ByLE0
-         bmzw==
+        bh=t0hPUkXrts5hGV+gelozsNVJL831/qNHHpNikRUOxRI=;
+        b=KvJqMahNGmcwZQvnzuao4zxMTJwrZ0aVd7RcYrE6hPpss6ABBzXgZfiKyN0Dc1xt3w
+         d3AvbT3tUsr7G6i3EtAwWd+0XJ5MPlSy7K4kK/NeDlm6/Oo+WgIIiY7uz1D6RIs5kRTl
+         dKWixy9q/3zuVRU3M/njOSPnnFTjXipSJ87wGBJtH7eiTaBcdN5ZUFQbWqAfd7QPVhU4
+         FWG6f+ssqAmxHxYlswVTrkTyEBATxmqcTZ+YR/6XiBmCPeZOcSHKQUO12y6KiBnU5dUR
+         2oEVUql1QDK9sCgoP2ChziQt2N+GXUK0rLFjOpZPxVz+l1LqejH6ftYDaJh35vQI3K+P
+         LMJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LrOjlA1x52Sx3PNdexN+2X/ozkPpzSng8Vccaxs54Zw=;
-        b=V+nsZubKec81yNlX3Cu2f/7AllFV0W73RJ6+0T/CpuR4fD32T3AlFXCPmgwhpMco7w
-         +/YuN34tjeTBMK8nWaOOWYIcztI3PyI9b+QriQuUh2av14gC9D6LOM1cHtc8WObMyhy7
-         p4uGmglS4fvr9gStR1kY7Ct7j3UYYmlYIadzUcUYTNWPsT15j9WX5VL4Lw8QmOPtAcfJ
-         5CpXQMfGgFb22vZsrHH6ShqEmIqc5pt8dJd+rGqRmjG2Q5tojU9rIntAtqtyrFtSPKKq
-         OjKW1MizNtKnVAmQgilhzYlcSNpNKGtL1VK9DNhIQU7F2HFs90plAkv7uoWZUhTNhcTK
-         XHlQ==
-X-Gm-Message-State: AOAM531oUqJeAGi9CPLic1VIULR7pgkKqrbQti/hOQGyoK/07gNKPgy6
-        Yx20IZh6sYmZAYu3HkcF6bUDeoGgMnM7YmwZvbc4Ig==
-X-Google-Smtp-Source: ABdhPJw7qVTiuZksAFcWPUutKJ0zYg2tpTJGwRa2BumR3h5BzwPXYQoKG7VAuSHc8ImsX3M25x7A+yZZGSSWhcaYqhE=
-X-Received: by 2002:ab0:6f91:: with SMTP id f17mr357139uav.129.1599120626145;
- Thu, 03 Sep 2020 01:10:26 -0700 (PDT)
+        bh=t0hPUkXrts5hGV+gelozsNVJL831/qNHHpNikRUOxRI=;
+        b=VZpPOcr41i7WRt+xFmNI25xp8FLf8xPpfhsvQTlh3R4E6XO+Po2NwbECwymJPa187E
+         ls8UdCoaRcmKQwfQCJX5ndd4pjXgXxwfHdeP4lEJm8apb0mVETWA/mQ37K0I7fTzVxeF
+         qqkUwxOyjsXv0MVAE7zNn67A+o2HTJizmNWYRI9vwrfr/tq5mXj95s4izLHXGo0rIOsZ
+         7h2RD5M/oH5e7Ng2ulIMYSFv32UMq+H4KnuuF+Kqxi2UfUPenKVYAGQC7rE8o+9wyBqC
+         dR8w5tH7CS9pX3YAyyJlshEcgc10jQA2NjVZEO54Saz9QdJHJyptLwtOrsPunVIDIwaZ
+         RYog==
+X-Gm-Message-State: AOAM530byAo4x/vriI2MRzhg8cdQwjSHV76R3iVseDBN5makbSZ2j1ik
+        3CGcZ7FQiFMMFW2RzD2LfoMXa8yV9sO3v7yoKyWAdg==
+X-Google-Smtp-Source: ABdhPJyGFXf2GrcMm01qExZWSJ7jPtSw9m1PN/7SAvsSK9s1ZS20v0pF9sjrlhSxNVUE5hh22/OySMNemS1iIc0OoDQ=
+X-Received: by 2002:a9f:2722:: with SMTP id a31mr381930uaa.100.1599120631644;
+ Thu, 03 Sep 2020 01:10:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200902193658.20539-1-krzk@kernel.org>
-In-Reply-To: <20200902193658.20539-1-krzk@kernel.org>
+References: <20200902193658.20539-1-krzk@kernel.org> <20200902193658.20539-7-krzk@kernel.org>
+ <d98f6b67-c0d0-f701-af24-b01f61c4580d@gmail.com>
+In-Reply-To: <d98f6b67-c0d0-f701-af24-b01f61c4580d@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 3 Sep 2020 10:09:49 +0200
-Message-ID: <CAPDyKFqBS-ws6fkirDQL8EEqh9At88K2vrG5fc8K5_JiXsmfyg@mail.gmail.com>
-Subject: Re: [PATCH 00/11] mmc: Minor cleanups and compile test
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
+Date:   Thu, 3 Sep 2020 10:09:53 +0200
+Message-ID: <CAPDyKFrp3GLLTjdSroyB9_QOcGM=JkFcsv3Chfgu2FSfATxGqg@mail.gmail.com>
+Subject: Re: [RFT 06/11] mmc: sdhci-brcmstb: Simplify with optional clock and dev_err_probe()
+To:     Florian Fainelli <f.fainelli@gmail.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
         BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
         Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
         Jaehoon Chung <jh80.chung@samsung.com>,
@@ -84,50 +84,34 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 2 Sep 2020 at 21:37, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Wed, 2 Sep 2020 at 21:58, Florian Fainelli <f.fainelli@gmail.com> wrote:
 >
-> Hi,
 >
-> Set of minor cleanups.  Patches requiring more attention:
->  - 6/11: Testing and review would be appreciated,
->  - 11/11: I build tested multiple architectures but not all and
->    definitely no all possible configs. This one could sit on the lists
->    for few days so 0-day would try it.
 >
-> Best regards,
-> Krzysztof
+> On 9/2/2020 12:36 PM, Krzysztof Kozlowski wrote:
+> > Only -ENOENT from devm_clk_get() means that clock is not present in
+> > device tree.  Other errors have their own meaning and should not be
+> > ignored.
+> >
+> > Simplify getting the clock which is in fact optional and also use
+> > dev_err_probe() for handling deferred.
+> >
+> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 >
-> Krzysztof Kozlowski (11):
->   mmc: bcm2835: Simplify with dev_err_probe()
->   mmc: davinci: Simplify with dev_err_probe()
->   mmc: dw_mmc-zx: Simplify with dev_err_probe()
->   mmc: jz4740: Simplify with dev_err_probe()
->   mmc: meson: Simplify with dev_err_probe()
->   mmc: sdhci-brcmstb: Simplify with optional clock and dev_err_probe()
->   mmc: sdhci-of-arasan: Simplify with dev_err_probe()
->   mmc: sdhci-tegra: Simplify with dev_err_probe()
->   mmc: dw_mmc: Simplify with dev_err_probe()
->   mmc: sdhci-of-sparx5: Use proper printk format for dma_addr_t
->   mmc: host: Enable compile testing of multiple drivers
->
->  drivers/mmc/host/Kconfig           | 42 ++++++++++++++++--------------
->  drivers/mmc/host/bcm2835.c         |  4 +--
->  drivers/mmc/host/davinci_mmc.c     |  5 ++--
->  drivers/mmc/host/dw_mmc-zx.c       | 11 +++-----
->  drivers/mmc/host/dw_mmc.c          |  9 +++----
->  drivers/mmc/host/jz4740_mmc.c      |  5 ++--
->  drivers/mmc/host/meson-gx-mmc.c    | 16 ++++--------
->  drivers/mmc/host/sdhci-brcmstb.c   | 12 ++++-----
->  drivers/mmc/host/sdhci-of-arasan.c |  7 +++--
->  drivers/mmc/host/sdhci-of-sparx5.c |  4 +--
->  drivers/mmc/host/sdhci-tegra.c     |  7 ++---
->  11 files changed, 51 insertions(+), 71 deletions(-)
->
-> --
-> 2.17.1
->
+> This is actually an open coded version of devm_clk_get_optional(), so
+> this is fine:
 
-Series applied for next, except 11, thanks!
+devm_clk_get_optional() treats -ENOENT specifically, so it's not an
+exact open coded version. I think that's why Krzysztof prefered to get
+it tested on HW.
+
+>
+> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+
+Thanks!
+
+I am queuing this up for next, without waiting for explicit tests .
+There is time to get that from testing in linux-next anyway.
 
 Kind regards
 Uffe
