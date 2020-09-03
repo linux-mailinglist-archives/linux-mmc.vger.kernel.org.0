@@ -2,81 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D061625BA93
-	for <lists+linux-mmc@lfdr.de>; Thu,  3 Sep 2020 07:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 022C625BB6A
+	for <lists+linux-mmc@lfdr.de>; Thu,  3 Sep 2020 09:12:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726047AbgICFnm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 3 Sep 2020 01:43:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50288 "EHLO mail.kernel.org"
+        id S1726054AbgICHM0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 3 Sep 2020 03:12:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47716 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725986AbgICFnl (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 3 Sep 2020 01:43:41 -0400
-Received: from kozik-lap.mshome.net (unknown [194.230.155.106])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1725919AbgICHMY (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 3 Sep 2020 03:12:24 -0400
+Received: from localhost (unknown [122.171.179.172])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BB8AF2071B;
-        Thu,  3 Sep 2020 05:43:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8CD0F2071B;
+        Thu,  3 Sep 2020 07:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599111821;
-        bh=bVGHzeaQ+zZ2rlm9O/+KZJBG/FaDbOPzPAd0MPbfmhY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=sEglWioFqagWCPvGthokN5gicayXpn8RQmnujvYNxeYwh66BODsXrI1N+657nwPCG
-         NZ0UPaNrAqRwQRAokUsdxkJHVKHrVb7QihDiee01s0qq9PZdyuFPmTOrfbNax4RzG+
-         ldUGAj1r71Y2pABIL/HdntnAAjoqmXhZ6nw6hbQU=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Ben Dooks <ben-linux@fluff.org>,
+        s=default; t=1599117144;
+        bh=rPR2h65NIq58EsscVdBt569FU+eXj+sgSo+2rsPr7Xo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xFCu1WKxCw5FoYN5y1JnlmwiLnwQc+1eNLpBVmxWTe+nJAWAVvjqlGJiLuCDfvy0r
+         vM4t4hrvNyJqR//KT5KQlVH54S1lRrLCdtV1n5QRl1Y+M4u9cDRF7q+AyArIzuCP3Y
+         uMkofjLWZiFPmRB3lL/Z7CPk7Q69SrsotAiJeBho=
+Date:   Thu, 3 Sep 2020 12:42:20 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] mmc: s3cmci: Drop unused variables in dbg_dumpregs
-Date:   Thu,  3 Sep 2020 07:43:33 +0200
-Message-Id: <20200903054333.18331-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        Linus Walleij <linus.walleij@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        dmaengine <dmaengine@vger.kernel.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>
+Subject: Re: [PATCH v2 05/10] dt-bindings: renesas,rcar-dmac: Document
+ r8a7742 support
+Message-ID: <20200903071220.GK2639@vkoul-mobl>
+References: <1588542414-14826-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <1588542414-14826-6-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <CA+V-a8v5CtxJQxjSWcvJrPtf9JyYKZeACdc3as_hjM710pk1AQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+V-a8v5CtxJQxjSWcvJrPtf9JyYKZeACdc3as_hjM710pk1AQ@mail.gmail.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The 'imask' and 'bsize' are not used in dbg_dumpregs:
+On 27-08-20, 12:08, Lad, Prabhakar wrote:
+> Hi Vinod,
+> 
+> On Sun, May 3, 2020 at 10:47 PM Lad Prabhakar
+> <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
+> >
+> > Renesas RZ/G SoC also have the R-Car gen2/3 compatible DMA controllers.
+> > Document RZ/G1H (also known as R8A7742) SoC bindings.
+> >
+> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+> > Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > ---
+> >  Documentation/devicetree/bindings/dma/renesas,rcar-dmac.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> This patch is not present in linux-next yet, could you please take care of it.
 
-  drivers/mmc/host/s3cmci.c:149:36: warning: variable 'imask' set but not used [-Wunused-but-set-variable]
-  drivers/mmc/host/s3cmci.c:148:63: warning: variable 'bsize' set but not used [-Wunused-but-set-variable]
+Can you please resend
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- drivers/mmc/host/s3cmci.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/host/s3cmci.c b/drivers/mmc/host/s3cmci.c
-index ac94f926624d..40329aeacfdf 100644
---- a/drivers/mmc/host/s3cmci.c
-+++ b/drivers/mmc/host/s3cmci.c
-@@ -145,8 +145,8 @@ static void s3cmci_reset(struct s3cmci_host *host);
- 
- static void dbg_dumpregs(struct s3cmci_host *host, char *prefix)
- {
--	u32 con, pre, cmdarg, cmdcon, cmdsta, r0, r1, r2, r3, timer, bsize;
--	u32 datcon, datcnt, datsta, fsta, imask;
-+	u32 con, pre, cmdarg, cmdcon, cmdsta, r0, r1, r2, r3, timer;
-+	u32 datcon, datcnt, datsta, fsta;
- 
- 	con 	= readl(host->base + S3C2410_SDICON);
- 	pre 	= readl(host->base + S3C2410_SDIPRE);
-@@ -158,12 +158,10 @@ static void dbg_dumpregs(struct s3cmci_host *host, char *prefix)
- 	r2 	= readl(host->base + S3C2410_SDIRSP2);
- 	r3 	= readl(host->base + S3C2410_SDIRSP3);
- 	timer 	= readl(host->base + S3C2410_SDITIMER);
--	bsize 	= readl(host->base + S3C2410_SDIBSIZE);
- 	datcon 	= readl(host->base + S3C2410_SDIDCON);
- 	datcnt 	= readl(host->base + S3C2410_SDIDCNT);
- 	datsta 	= readl(host->base + S3C2410_SDIDSTA);
- 	fsta 	= readl(host->base + S3C2410_SDIFSTA);
--	imask   = readl(host->base + host->sdiimsk);
- 
- 	dbg(host, dbg_debug, "%s  CON:[%08x]  PRE:[%08x]  TMR:[%08x]\n",
- 				prefix, con, pre, timer);
 -- 
-2.17.1
-
+~Vinod
