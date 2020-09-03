@@ -2,132 +2,124 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D31325BC76
-	for <lists+linux-mmc@lfdr.de>; Thu,  3 Sep 2020 10:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 673C725BC6F
+	for <lists+linux-mmc@lfdr.de>; Thu,  3 Sep 2020 10:11:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728421AbgICILh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 3 Sep 2020 04:11:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34174 "EHLO
+        id S1728647AbgICIL2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 3 Sep 2020 04:11:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728255AbgICIKx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Sep 2020 04:10:53 -0400
-Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AD22C061249
-        for <linux-mmc@vger.kernel.org>; Thu,  3 Sep 2020 01:10:52 -0700 (PDT)
-Received: by mail-vk1-xa43.google.com with SMTP id q124so581358vkb.8
-        for <linux-mmc@vger.kernel.org>; Thu, 03 Sep 2020 01:10:52 -0700 (PDT)
+        with ESMTP id S1728892AbgICILG (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 3 Sep 2020 04:11:06 -0400
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10243C06125C
+        for <linux-mmc@vger.kernel.org>; Thu,  3 Sep 2020 01:10:55 -0700 (PDT)
+Received: by mail-vs1-xe41.google.com with SMTP id j188so1259486vsd.2
+        for <linux-mmc@vger.kernel.org>; Thu, 03 Sep 2020 01:10:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=zIKaB5S0qzt1j0qrP3RfGo4Ng5m6tD5YBvW+p6cBWpo=;
-        b=VSkCGrMZk9uqiovnuB3gCxlXpkc7tTawunYl4GuvwlwGaTWeRnkpX7DC8IgCu+aIK7
-         quL7hVQZ0FJ8ccYYng/AUAgBPBeJulmZg6wiq2nLWIXRbeTiOMfIkPtNOiu+UPUYehnl
-         wM4L/kWPhjBjy/2lgY5aYsl/LVJWPLHBzOYqb3V6l2AcG27k5Ho9tDPCZsCXLCR3NyhV
-         YV1llI8naBDHt585QE2OFKGdyi6zmOwfUcyYKTKRZyywRMHXca2hUUZ8RqP+XicOaD83
-         Gj3GPCHq0iXlVm4H9pappL+i2GtA3oo11nLBC7Rq+Fa2OJQ/TUIzy0FYmmmKkyStXTil
-         Mnlw==
+        bh=2vKxy+BrmTM4erbpnPuK1egVjffH6omXH5GzoO/2vE8=;
+        b=BGahHi6rbzLUYAczxpoLOJeX76V5ePq6YWfzkIwa5saJL7xUSVSICFCjkHep3epSJu
+         rj+jUuLnHYK32M8oSkW8+gX+3ldm76XAHBm8ucUvrdnKGglYNa8HHMNqFlbogIUcaI5C
+         Z6mB9DQo/5HjX8TIrJ2syEftgA4yQiLeMWsrlVPiSP5j/0WyJ8PymoCJ9t4j6+cIPlZa
+         3WUJJDOAAlQlq/jZGMpLJM7nkpB29yPtyG5zqbB9yGNGQp3bHkZbUs9sosiPXKECiMiv
+         qf9fXJiTMt+Pk0ox4OVvfUoSGijk9thIg1ULv6G0vF1x9q5e3mhfcikygDNoODWOpTxC
+         sEHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=zIKaB5S0qzt1j0qrP3RfGo4Ng5m6tD5YBvW+p6cBWpo=;
-        b=fEK5DWWZnY1PAR/Qxx7LSVEZFcOtVOYaevYlTQxNOXJ8uSlwUluQ7uGT9LgPZeJ2kg
-         G/9VkOPdwJbmhZcEmg+0PnQbBOej1uxfaGZmQXmQZfwnh+YqSwycTTFQH6QAyKQX5M2J
-         gL3r0MsRD1MR5Jsp0MEuaS7f+2T11i2EZwepWf8MEBK5aHlaRrRy4DzqQodmC9N7Ujmt
-         Eh4LjlsSWdl/EKy+3kNcMWSLnA6dnbBgYXcJnhaiQGv73GsNC5k0wQPJpVCO8tKL0elo
-         RKXS8eYJ6z8W7lK5ALhTOGtl7fLvVMQAu+KAwMaszrme4kP2H+uw9dydC6TBNQ2J4C6B
-         wEWg==
-X-Gm-Message-State: AOAM533dR4jha+dKovMCegpGLVSESNTnnFxLY7FcYbMEJwQzaV7j2l8J
-        3Az/xzF/tPIEBDLOgODDFIAYlw1zWQrKEbf0em6T1Q==
-X-Google-Smtp-Source: ABdhPJxfAPAkxGsAxNbyrIBprTd99bTvdjLzQF9t7lNgAVPgtFBvQhAsLzJxujDDxAJ7NOa99qGNjuKVubA2UYhu8rE=
-X-Received: by 2002:a05:6122:10ca:: with SMTP id l10mr868318vko.15.1599120651296;
- Thu, 03 Sep 2020 01:10:51 -0700 (PDT)
+        bh=2vKxy+BrmTM4erbpnPuK1egVjffH6omXH5GzoO/2vE8=;
+        b=GtX7xUOByvsbCV/wczFQCCZj6cFGVUlxO8FYbWpFaJz5DZwnqZWDB3CvXEylao0Izj
+         UyqtGx0uutRGDbw7fbUZi9F+Ig1tVsLT9VpGufy8RT5BpvYp7nOLlW7XvsRGFzBjJfcx
+         Tn/LwltELErrDP2vsOC1TYAwmICsyIgbVIClTniiBaUmBcCmIiIEFHQVoZ97U69jpgjk
+         mvPR3mMzVWhg8glOtJDdLz1w/VwTvKrqZgWauKPl4tKJajf/M4pifQzKnA0QeX0vILfo
+         xLxoRlRvvDrbmAtPVNe7E8J+gu6yBYO7Msz2ymmWdGo7ZwwqBrP5nGWQywM7EvpEg7mx
+         aXGA==
+X-Gm-Message-State: AOAM531qWDJWo+2YpbG53a5QkPl1DTBiFpuqAw9E4cwNa1lDGV8YmKcI
+        fSvlU0NEEpZ5PiE5AVv3vQ8HIT3wpkJfCwwS7DDW7g==
+X-Google-Smtp-Source: ABdhPJxfYTnSYJGxu7eCAxgLLa9ss8++NvwiXEVkjxbE5o6nKhbHft/MCQxM3aY3B+PhB/1QvL5Twv2LkkutkBBczpQ=
+X-Received: by 2002:a67:f947:: with SMTP id u7mr841916vsq.135.1599120654486;
+ Thu, 03 Sep 2020 01:10:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200903012029.25673-1-chris.packham@alliedtelesis.co.nz>
-In-Reply-To: <20200903012029.25673-1-chris.packham@alliedtelesis.co.nz>
+References: <20200902164303.1.I5e598a25222b4534c0083b61dbfa4e0e76f66171@changeid>
+In-Reply-To: <20200902164303.1.I5e598a25222b4534c0083b61dbfa4e0e76f66171@changeid>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 3 Sep 2020 10:10:13 +0200
-Message-ID: <CAPDyKFpMOKs9t4O73XWZiZhb+6wNh=BL5t-jhej7nxCocbq7NA@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: sdhci-of-esdhc: Don't walk device-tree on every interrupt
-To:     Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        "yinbo.zhu" <yinbo.zhu@nxp.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Thu, 3 Sep 2020 10:10:17 +0200
+Message-ID: <CAPDyKFoyKjKhwKGtLMtEyDSeSiBU6wasc=jt6c=sHnhN8jqqjg@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-msm: Prefer asynchronous probe
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 3 Sep 2020 at 03:20, Chris Packham
-<chris.packham@alliedtelesis.co.nz> wrote:
+On Thu, 3 Sep 2020 at 01:43, Douglas Anderson <dianders@chromium.org> wrote:
 >
-> Commit b214fe592ab7 ("mmc: sdhci-of-esdhc: add erratum eSDHC7 support")
-> added code to check for a specific compatible string in the device-tree
-> on every esdhc interrupat. Instead of doing this record the quirk in
-> struct sdhci_esdhc and lookup the struct in esdhc_irq.
+> Turning on initcall debug on one system showed this:
+>   initcall sdhci_msm_driver_init+0x0/0x28 returned 0 after 34782 usecs
 >
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+> The lion's share of this time (~33 ms) was in mmc_power_up().  This
+> shouldn't be terribly surprising since there are a few calls to delay
+> based on "power_delay_ms" and the default delay there is 10 ms.
+>
+> Because we haven't specified that we'd prefer asynchronous probe for
+> this driver then we'll wait for this driver to finish before we start
+> probes for more drivers.  While 33 ms doesn't sound like tons, every
+> little bit counts.
+>
+> There should be little problem with turning on asynchronous probe for
+> this driver.  It's already possible that previous drivers may have
+> turned on asynchronous probe so we might already have other things
+> (that probed before us) probing at the same time we are anyway.  This
+> driver isn't really providing resources (clocks, regulators, etc) that
+> other drivers need to probe and even if it was they should be handling
+> -EPROBE_DEFER.
+>
+> Let's turn this on and get a bit of boot speed back.
 
-Applied for fixes, and by adding a stable tag, thanks!
+Thanks for a very well written commit message!
+
+Indeed, I am sure many mmc host drivers could benefit from a similar
+change. At least regular platform drivers and amba drivers are pretty
+sure to work, but who knows.
+
+>
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
-> I found this in passing while trying to track down another issue using ftrace.
-> I found it odd that I was seeing a lot of calls to __of_device_is_compatible()
-> coming from esdhc_irq() (the fact that this interrupt is going off on my board
-> is also odd, but that's a different story).
 >
-> Changes in v2:
-> - add quirk_trans_complete_erratum to struct sdhci_esdhc so all the dt handling
->   is taken care of in esdhc_init.
+>  drivers/mmc/host/sdhci-msm.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
->  drivers/mmc/host/sdhci-of-esdhc.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+> index d4c02884cca8..9dd0dbb65382 100644
+> --- a/drivers/mmc/host/sdhci-msm.c
+> +++ b/drivers/mmc/host/sdhci-msm.c
+> @@ -2542,6 +2542,7 @@ static struct platform_driver sdhci_msm_driver = {
+>                    .name = "sdhci_msm",
+>                    .of_match_table = sdhci_msm_dt_match,
+>                    .pm = &sdhci_msm_pm_ops,
+> +                  .probe_type = PROBE_PREFER_ASYNCHRONOUS,
+>         },
+>  };
 >
-> diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-> index 7c73d243dc6c..45881b309956 100644
-> --- a/drivers/mmc/host/sdhci-of-esdhc.c
-> +++ b/drivers/mmc/host/sdhci-of-esdhc.c
-> @@ -81,6 +81,7 @@ struct sdhci_esdhc {
->         bool quirk_tuning_erratum_type2;
->         bool quirk_ignore_data_inhibit;
->         bool quirk_delay_before_data_reset;
-> +       bool quirk_trans_complete_erratum;
->         bool in_sw_tuning;
->         unsigned int peripheral_clock;
->         const struct esdhc_clk_fixup *clk_fixup;
-> @@ -1177,10 +1178,11 @@ static void esdhc_set_uhs_signaling(struct sdhci_host *host,
->
->  static u32 esdhc_irq(struct sdhci_host *host, u32 intmask)
->  {
-> +       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-> +       struct sdhci_esdhc *esdhc = sdhci_pltfm_priv(pltfm_host);
->         u32 command;
->
-> -       if (of_find_compatible_node(NULL, NULL,
-> -                               "fsl,p2020-esdhc")) {
-> +       if (esdhc->quirk_trans_complete_erratum) {
->                 command = SDHCI_GET_CMD(sdhci_readw(host,
->                                         SDHCI_COMMAND));
->                 if (command == MMC_WRITE_MULTIPLE_BLOCK &&
-> @@ -1334,8 +1336,10 @@ static void esdhc_init(struct platform_device *pdev, struct sdhci_host *host)
->                 esdhc->clk_fixup = match->data;
->         np = pdev->dev.of_node;
->
-> -       if (of_device_is_compatible(np, "fsl,p2020-esdhc"))
-> +       if (of_device_is_compatible(np, "fsl,p2020-esdhc")) {
->                 esdhc->quirk_delay_before_data_reset = true;
-> +               esdhc->quirk_trans_complete_erratum = true;
-> +       }
->
->         clk = of_clk_get(np, 0);
->         if (!IS_ERR(clk)) {
 > --
-> 2.28.0
+> 2.28.0.402.g5ffc5be6b7-goog
 >
