@@ -2,61 +2,90 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE1A261302
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Sep 2020 16:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A09E261510
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Sep 2020 18:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729969AbgIHOwy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Sep 2020 10:52:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41856 "EHLO mail.kernel.org"
+        id S1731932AbgIHQgn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Sep 2020 12:36:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33880 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729784AbgIHO0G (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 8 Sep 2020 10:26:06 -0400
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+        id S1732019AbgIHQbi (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 8 Sep 2020 12:31:38 -0400
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A12E5222E9
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Sep 2020 14:17:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 33DBE22CA1;
+        Tue,  8 Sep 2020 13:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599574647;
-        bh=Brp8TIcbZOawirkNxDlzWLx4FB0DE1MXhPLvIYt2XC4=;
+        s=default; t=1599573425;
+        bh=Nlb6PMQ+/rxBZwsrcxH1F/mJAmYV/dDxE1otVQrU4fY=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=gcnsEAQmSakMGw/tuYx8DMCd4kqhO4oSvTv8rC4aQPjEllWBeW1eiF+fLbvhBMrkP
-         4aPBlm3i0fEjYmyAacGgVkOGVEC75NVX9ja2jXWGTzWKT+Mmv8D0Co5SiAeD9jdhWr
-         9rKrlNXdkzsL8aSPBLAunxm6iNSh+4Yj/UmRCfHE=
-Received: by mail-ej1-f54.google.com with SMTP id z22so22766324ejl.7
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Sep 2020 07:17:27 -0700 (PDT)
-X-Gm-Message-State: AOAM532WxfsDUExIkdCmdi3cNexHC3Sjp3KSygMI9O7eWAhLmlIV/a7A
-        0d/Uqsud1QtB8vXje3ZAo9gvmkEFfbjC8Cjsmjo=
-X-Google-Smtp-Source: ABdhPJzNRFm7vd8VzBIGLZ4OYJhc1FtXr06Ekn8rVcSP6+KUcbTILEMbBxJEooCtwuuJMTwVhi2JhbHvlIbU4UWQVlU=
-X-Received: by 2002:a17:906:82d1:: with SMTP id a17mr25667769ejy.385.1599574646240;
- Tue, 08 Sep 2020 07:17:26 -0700 (PDT)
+        b=ysKrBTL0aVtHER0C6nREvCT5i7bCJNKHt5vIDFQa/AXN/GkdMPbQCRt+CQMpGVhy7
+         pcNR/ll6hCNdA+6fIO0QWqFi4PAH7uGFv03RXgTvMBxBHDBb9aONpD0qMZjIqHFnDR
+         U44LpeiJKNPRcjLukNI0vWll/S/plDkC4wuoqVGM=
+Received: by mail-ej1-f42.google.com with SMTP id i22so22665206eja.5;
+        Tue, 08 Sep 2020 06:57:05 -0700 (PDT)
+X-Gm-Message-State: AOAM533nTNSMB3oaPlh9q/j+1ETOTbklqnLStP4EJ0S4uXFs8+ZGxTET
+        PWd8H4NbuK2KWPCwc6+y/nLh+gTlINihhUS55v4=
+X-Google-Smtp-Source: ABdhPJxw+CVnvHvS0mxWVnK6lDtq/Q+r0QWlwGxtDfUXEv06P0SO8wK83EymMr8l5SGfDRCjuUgniQlH27jDHyXS5c4=
+X-Received: by 2002:a17:906:8401:: with SMTP id n1mr25369176ejx.215.1599573423778;
+ Tue, 08 Sep 2020 06:57:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200908140242.743234-1-ulf.hansson@linaro.org>
-In-Reply-To: <20200908140242.743234-1-ulf.hansson@linaro.org>
+References: <20200907105254.31097-1-krzk@kernel.org> <CAPDyKFowS-psoJqVUChU35Xp92nrvH5r5eY=_8bMKU0SVBxLcw@mail.gmail.com>
+In-Reply-To: <CAPDyKFowS-psoJqVUChU35Xp92nrvH5r5eY=_8bMKU0SVBxLcw@mail.gmail.com>
 From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Tue, 8 Sep 2020 16:17:12 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPfKh0VZKyEgJ0xvwA-1yTuvCS8TuasR1rzWmpb2ZQHBwA@mail.gmail.com>
-Message-ID: <CAJKOXPfKh0VZKyEgJ0xvwA-1yTuvCS8TuasR1rzWmpb2ZQHBwA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: Drop COMPILE_TEST Kconfig option for MMC_S3C
+Date:   Tue, 8 Sep 2020 15:56:51 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPdX7UOkTNMVS_uLi7sG_h0bHCs_b6R0uL2B241y_+niqg@mail.gmail.com>
+Message-ID: <CAJKOXPdX7UOkTNMVS_uLi7sG_h0bHCs_b6R0uL2B241y_+niqg@mail.gmail.com>
+Subject: Re: [PATCH v3] mmc: host: Enable compile testing of multiple drivers
 To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 8 Sep 2020 at 16:02, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+On Tue, 8 Sep 2020 at 15:54, Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> MMC_S3C isn't ready yet to be built with COMPILE_TEST, hence drop it.
+> + Arnd
 >
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> ---
->  drivers/mmc/host/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> On Mon, 7 Sep 2020 at 12:53, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >
+> > Multiple MMC host controller driver can be compile tested as they do not
+> > depend on architecture specific headers.
+> >
+> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 >
+> It seems like this is causing build errors for my next branch when
+> running allmod config [1].
+>
+> [...]
+>
+> >
+> >  config MMC_S3C
+> >         tristate "Samsung S3C SD/MMC Card Interface support"
+> > -       depends on ARCH_S3C24XX
+> > +       depends on ARCH_S3C24XX || COMPILE_TEST
+> >         depends on S3C24XX_DMAC
+> >         help
+> >           This selects a driver for the MCI interface found in
+>
+> [...]
+>
+> The problem doesn't exist in linux-next, since it has the
+> corresponding cleanup/rework patches for MMC_S3C from Arnd.
+>
+> To fix the problem, we should probably remove COMPILE_TEST for
+> MMC_S3C, for now. Then we can add it again and send it as a fix for
+> v5.10-rc1.
+>
+> What do you think?
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Yes, better to remove it otherwise it will pop up when Linus merges
+your tree. Do you want a patch for this or you fix it up by yourself?
 
 Best regards,
 Krzysztof
