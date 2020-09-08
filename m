@@ -2,54 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C8152614EA
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Sep 2020 18:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BE462617D5
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Sep 2020 19:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731933AbgIHQkk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Sep 2020 12:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60582 "EHLO
+        id S1731497AbgIHRn5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Sep 2020 13:43:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732063AbgIHQhZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Sep 2020 12:37:25 -0400
-Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DBCDC061A15
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Sep 2020 07:05:13 -0700 (PDT)
-Received: by mail-vk1-xa41.google.com with SMTP id q124so4077484vkb.8
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Sep 2020 07:05:13 -0700 (PDT)
+        with ESMTP id S1731656AbgIHQOE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Sep 2020 12:14:04 -0400
+Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63CBAC0619D0
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Sep 2020 06:53:58 -0700 (PDT)
+Received: by mail-vk1-xa42.google.com with SMTP id q124so4066964vkb.8
+        for <linux-mmc@vger.kernel.org>; Tue, 08 Sep 2020 06:53:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=2HixXsh/i4wRCywM25LOVRxdnOWqFN3Kihr7kBnUMtY=;
-        b=Umg5s4XGDLznycAi8eh3KtIX3m/oKtp6PBGSTVFjm7nPG0PzyocKEQjfQbViNtgt6I
-         QxIgERNOf1BRZ8Pzy7dKqTR1mxD0PRsaQDxt/Lskbs2XBnMH6CrW44ckTiUeQ8ahPWp5
-         usSKEXBHPMB6fQqY2bE8e846MfWT9ORMjPy1y9xwzPLOmUNEPTxH00oHYyN8o3ErzJ7J
-         xfXs3/5LsOsSwHOprzXBbuQvP8wVowP4r6Rrh+qyH7YYWGHpJieJ6HcTHC0PN0tbUfmp
-         qNxRnDpqEytvs0irOFVodOaDL1davKeln4mFmPEnK3FGsbdyi6Bu8FURjTOf6iBSePHJ
-         /h/Q==
+        bh=6+RHY61MbwHUN+JTzO3lIufg7DScFPibKdsAs2vpPFs=;
+        b=OMZXE0ELFn/5UeXE5Sdyi+rvYzQOT2CKk2y0rX/WgCjXlf2C20yNbQQVRIFfPLSDcM
+         Pw94LjX2xcoFi+vqpTAYDBBXcDW16UAM+bj9pWPL9VKZeZeOo938fNgbVpK9cpSOmA4/
+         5LehJqqiksA6xb7P1tZNMtiWsNskWYBd/7MeKhpF3qTyRpPteIq5LwsiIQ69qb6tFzo1
+         yk3VS0JKYpPjBrPiSIlWhin6wJmffPTsrwehlOxvcBP1IvdH5unTOrZEgOcvBl4mq2NC
+         VG0mPKMzsPillvGRZXhkpyjMZtpMpKawTuXnAIGDd4JuM/892WGzcHTL2mVwz7LrsXx1
+         SFwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=2HixXsh/i4wRCywM25LOVRxdnOWqFN3Kihr7kBnUMtY=;
-        b=l04nBe/tBLjbSmZlY8pJwNW6ocQSAh8gVHqpkdrSxu/tBgAwvYgCylFecGGuWhNYAq
-         W6yrvczBQN+imSPGvNXYxP8I4lDA5qzVyx9TxVCjxXsBf6Mau7ba//6YfsxCYAjaY9CU
-         3w9pqVnphjMiNJmW0dOJr/ekl6+sMZ4JIJzJAxSuyEKhpNhvKlsnVYSrAT6xY5oudE5y
-         sTap6G79VsCJPvtrXQfLw+PO1pFwOn/+xgRrwbWCokYSzR+2wlzmW0b6p0hcLkw6yNJH
-         SZKkOOt30dhHsFcLtEmDpF5oYuQJw5TzkM/y7G3WfRV0m1IQMYcKlAi1xpv7G7R1ABb3
-         fTTQ==
-X-Gm-Message-State: AOAM5311wLiQesGKA1VinemxmDOJbAQ4MO+8t81z489LJig8IkdJBCef
-        9+ZJuQUhSXVok6UR3EAZrr36g+1pXsVk/Dwg2wy8nw==
-X-Google-Smtp-Source: ABdhPJzHAWTtWKl8RajuaXPJ34COnitX9tlxj7uZpYUFpoCPWWh1/3+3qdqIQRa4D9eojHDxNa4cEAC0yvvWGVjYPS8=
-X-Received: by 2002:a1f:a596:: with SMTP id o144mr15011532vke.39.1599573911839;
- Tue, 08 Sep 2020 07:05:11 -0700 (PDT)
+        bh=6+RHY61MbwHUN+JTzO3lIufg7DScFPibKdsAs2vpPFs=;
+        b=NOUFzOhZxZeR7+4sx4PeTZa4soqtOKxwy20+h3Utj+apVKoetz4TkMT4nkkX/VR+DF
+         z+LxQMlgEkjPcVDMyaOt++NlQyjv651cseq/LMreGGnxXoqdHkDL9JBN83cXMVfRHT7Q
+         3JMy39YP88wBtJuFQOR3KUyvUUso6AuOt3+ELM64Pl1Ok6GrQGe49vO+4TQnbRzEeSLS
+         BCpxwYLkZoNidLnuDdDpIWm0JXqKj55HPadx+0wB2h8PhhO/CEYVGJXdwU1Bq5MXuAKA
+         tR13vEdf6kY8suZtN3WMDioqWmNHcB3yv1kgYoQ63OF2qy8LIH8ls8PNzFXm6Oz6rDQ7
+         698A==
+X-Gm-Message-State: AOAM533GskqrlpSV3pfpgG76CT54MNwZBCx8wJjdM+eyFwKhfn3upC0s
+        dC8QkSBVjR986FIkLy8a4hJf+kX3obu8nwgZZDS28LXZPltzKojj
+X-Google-Smtp-Source: ABdhPJznQRp0A+wqCEqrqZaEDdoP2cDcKRmw10gXIH0FlDFfEfIEzvFyZJnfs4mTgdX4ERfy6dNeuBEXVvmpgROoMdQ=
+X-Received: by 2002:a1f:16d1:: with SMTP id 200mr15128572vkw.31.1599573237594;
+ Tue, 08 Sep 2020 06:53:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200907105254.31097-1-krzk@kernel.org> <CAPDyKFowS-psoJqVUChU35Xp92nrvH5r5eY=_8bMKU0SVBxLcw@mail.gmail.com>
- <CAJKOXPdX7UOkTNMVS_uLi7sG_h0bHCs_b6R0uL2B241y_+niqg@mail.gmail.com>
-In-Reply-To: <CAJKOXPdX7UOkTNMVS_uLi7sG_h0bHCs_b6R0uL2B241y_+niqg@mail.gmail.com>
+References: <20200907105254.31097-1-krzk@kernel.org>
+In-Reply-To: <20200907105254.31097-1-krzk@kernel.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 8 Sep 2020 16:04:35 +0200
-Message-ID: <CAPDyKFoytD2mgQD3qPeDL2zRuOPMrS9TaGGu8R=j+z=zcYKNnw@mail.gmail.com>
+Date:   Tue, 8 Sep 2020 15:53:21 +0200
+Message-ID: <CAPDyKFowS-psoJqVUChU35Xp92nrvH5r5eY=_8bMKU0SVBxLcw@mail.gmail.com>
 Subject: Re: [PATCH v3] mmc: host: Enable compile testing of multiple drivers
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
@@ -61,48 +60,42 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 8 Sep 2020 at 15:57, Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> On Tue, 8 Sep 2020 at 15:54, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > + Arnd
-> >
-> > On Mon, 7 Sep 2020 at 12:53, Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > >
-> > > Multiple MMC host controller driver can be compile tested as they do not
-> > > depend on architecture specific headers.
-> > >
-> > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> >
-> > It seems like this is causing build errors for my next branch when
-> > running allmod config [1].
-> >
-> > [...]
-> >
-> > >
-> > >  config MMC_S3C
-> > >         tristate "Samsung S3C SD/MMC Card Interface support"
-> > > -       depends on ARCH_S3C24XX
-> > > +       depends on ARCH_S3C24XX || COMPILE_TEST
-> > >         depends on S3C24XX_DMAC
-> > >         help
-> > >           This selects a driver for the MCI interface found in
-> >
-> > [...]
-> >
-> > The problem doesn't exist in linux-next, since it has the
-> > corresponding cleanup/rework patches for MMC_S3C from Arnd.
-> >
-> > To fix the problem, we should probably remove COMPILE_TEST for
-> > MMC_S3C, for now. Then we can add it again and send it as a fix for
-> > v5.10-rc1.
-> >
-> > What do you think?
->
-> Yes, better to remove it otherwise it will pop up when Linus merges
-> your tree. Do you want a patch for this or you fix it up by yourself?
++ Arnd
 
-I posted a patch, applying it on top. No worries.
+On Mon, 7 Sep 2020 at 12:53, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>
+> Multiple MMC host controller driver can be compile tested as they do not
+> depend on architecture specific headers.
+>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+
+It seems like this is causing build errors for my next branch when
+running allmod config [1].
+
+[...]
+
+>
+>  config MMC_S3C
+>         tristate "Samsung S3C SD/MMC Card Interface support"
+> -       depends on ARCH_S3C24XX
+> +       depends on ARCH_S3C24XX || COMPILE_TEST
+>         depends on S3C24XX_DMAC
+>         help
+>           This selects a driver for the MCI interface found in
+
+[...]
+
+The problem doesn't exist in linux-next, since it has the
+corresponding cleanup/rework patches for MMC_S3C from Arnd.
+
+To fix the problem, we should probably remove COMPILE_TEST for
+MMC_S3C, for now. Then we can add it again and send it as a fix for
+v5.10-rc1.
+
+What do you think?
 
 Kind regards
 Uffe
+
+[1]
+https://kernelci.org/build/id/5f57413db10918c9bad353a5/logs/
