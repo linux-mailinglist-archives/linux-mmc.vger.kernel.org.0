@@ -2,123 +2,135 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A972D262FC3
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Sep 2020 16:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F7CA2632A3
+	for <lists+linux-mmc@lfdr.de>; Wed,  9 Sep 2020 18:48:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730280AbgIIO1E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Sep 2020 10:27:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51824 "EHLO
+        id S1730469AbgIIQsg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 9 Sep 2020 12:48:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730259AbgIIM5d (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Sep 2020 08:57:33 -0400
-Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1941C06179F
-        for <linux-mmc@vger.kernel.org>; Wed,  9 Sep 2020 05:48:41 -0700 (PDT)
-Received: by mail-ua1-x944.google.com with SMTP id v24so814725uaj.7
-        for <linux-mmc@vger.kernel.org>; Wed, 09 Sep 2020 05:48:41 -0700 (PDT)
+        with ESMTP id S1730891AbgIIQHj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Sep 2020 12:07:39 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09F49C061368
+        for <linux-mmc@vger.kernel.org>; Wed,  9 Sep 2020 07:12:04 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id s65so1096098pgb.0
+        for <linux-mmc@vger.kernel.org>; Wed, 09 Sep 2020 07:12:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Q9M1Vskts4JRHY9FBKuy5Sl90Ew3XMdMRCLYYCvUArU=;
-        b=Ir+Aia3k1phkbjo07kIy3KryziEAUctzOrRfSX0hHbEaIIaFzvCIHoB6CfDuJY7T2n
-         cNbGu0p3qDNT60dSu4TPUyPjir0s+gOl2VwwnvNVL9Nnq0x8pLYNyTwysa54ofQ6hZTr
-         S/V2zmAsJ4IhxygFVxkZGwF/fH7EQg3/OHK8NrhRGWuRxvT96z/OJur4wjDewVY5+UeM
-         7tpi51C47+E2EM9oPhzZlPDDk/j3TM96dqWItzfBKv6Oq5cVYioygMpGXrHyKJ5la7QU
-         7+YQMJKbvbjIkezmrtAgpGKLnP0PHEHbeINRKBjlOHjNJpuiaEnpcBLb3SXm9k/4bNV4
-         wi/Q==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QEpsLMY/SzXPuKyd94ggDGQBM1KAJawGy/J+J7m+TbM=;
+        b=x5/6z0oMFgBrDNTOE56l/HJqO2aTwjfjoshWHmkKERda91T4n+E4jltXDNGvp39j5m
+         rhZJBpvky0khJwsP9tjvtfns5MaCTeqq//9eqwJ65H+KOW5edNOfJejeAmd0nbkPosam
+         EGXc3U3xvAlN+UrjDnqy2CWOfK83GxFuXrLwsUyU/Du7Bjz0usbzz+PGvFjMumqUz44O
+         3HqD2u2pM/vQ6gSW4R2b1XFoC3raAOYcQpqu5zvXgHSQY3/v+D42dFAeTgYZEH0N52Uq
+         vvltyYvWZTOWzqaMHWPmST62gS5CurJ9d4o44UL+npL5lJBdyuqD6mMYdn41nBbVKbtF
+         zuag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Q9M1Vskts4JRHY9FBKuy5Sl90Ew3XMdMRCLYYCvUArU=;
-        b=WbihT++QK87H2WLPzZntX9fUMrI14zcAq1DKJMV0GAXIJEepia4qMMu6XzhIFNkOiS
-         oZdblL6zgvcMOsdA+eFVerNcWR2RXxqUSC3AhJ3LCen+yXK/nZMw/ZPqRbgNoTfpjQxx
-         ilmE6oOPdcNNsPv8pZRjkyYEeFqR9Mdmy3/hI1IUbs0ROv9mn/kXTvGOsYvZabvuf7fy
-         t/XpCyWXwe0nkSBANWj5quvqhGvRvWt/IMMj+k6SJuFR9lMVZAFBxgcPgydR4noPIIkR
-         DRwiQNFLoiRIM6K1jQhEREurKy4tdW0k+zjT76SohEwbW4uRa5RYEHHsy8cNl9FfGAoO
-         rvng==
-X-Gm-Message-State: AOAM530P5jgkl0xBURmhIKCObocH8rDQEQ1QMd3HHTKAi2lcXhwN1LJy
-        JBqRRM309u7h5oEyXMoeWP3h8kBHaYyUccLgO2u/fw==
-X-Google-Smtp-Source: ABdhPJwdE+navQ2r6yXbpY92vwAATdTQhd3CubjjUMOOk3FM3FdxGXP5NUGBX80ycQbG1aS7lVhw7lyGqD/GlOFmbG0=
-X-Received: by 2002:ab0:2ea1:: with SMTP id y1mr368999uay.104.1599655720008;
- Wed, 09 Sep 2020 05:48:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1598594714.git.viresh.kumar@linaro.org> <1d7c97524b9e1fbc60271d9c246c5461ca8a106c.1598594714.git.viresh.kumar@linaro.org>
- <CAPDyKFpdZhzXQv3hpTzf3UkJDhFqBhgMXCqVfAfE6PejLCxvfg@mail.gmail.com>
- <20200831104453.ux5fb5bpt57tj5am@vireshk-i7> <CAPDyKFp1fCE3bBKngcia1LBKHEkQRoVzUwZYE6+Y++Hu=6aJfw@mail.gmail.com>
- <20200909110707.jv2beta5rdr3wux3@vireshk-i7>
-In-Reply-To: <20200909110707.jv2beta5rdr3wux3@vireshk-i7>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 9 Sep 2020 14:48:03 +0200
-Message-ID: <CAPDyKFr-u31Z=uqJj1q8BK0Xi7paWaKdXyU_G7tA5G=wpS+AXg@mail.gmail.com>
-Subject: Re: [PATCH V2 4/8] mmc: sdhci-msm: Unconditionally call dev_pm_opp_of_remove_table()
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Rajendra Nayak <rnayak@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QEpsLMY/SzXPuKyd94ggDGQBM1KAJawGy/J+J7m+TbM=;
+        b=ksr+2fy6shak1Xl6g+vnIQt1NQRaKHOVYE5M4wKwRLAnfNq2pHYM6HH+piBVeWqZrf
+         cIB/ZeV8wkUkAvn9MPhYF+0x1Io0wcBTMUlc6jT7cHK7z3ZtBeMBA6dHpwLxFt7XpdGm
+         EkwSnSUFoQygZLXe1Cp8A96/ahOezqZu148zD6srUTyh6RjQ1mvW1I6DL3/r9IgrFWX0
+         3q6zrtzWgeQIQTMrGUwbpwE8Ig4u0niiEu1UdZhH8ObFFCtmANckYdfaF7y9hHjQ+MB9
+         Cok+fBsVGz+kOGkQ28BpDoVdR2g1N17KlqoqDTtibDqT16j8DyhsU8ix6LHQBL8zW6Y2
+         YW8A==
+X-Gm-Message-State: AOAM5316SD+xXtrWPp6yTF+7n2h/F2xt1KfMFUrMoPOi0d+dKxubAHd6
+        8iq9tAFZB1yZ81q+eXovMEmx+w==
+X-Google-Smtp-Source: ABdhPJzO5eLyiP0IbrquTJ2zVRcTiM/Yj6JzZ0urfYY4aED3CS9F/9RjcGXeqX0eB5yE1hS7Ikupgg==
+X-Received: by 2002:a63:64c2:: with SMTP id y185mr764751pgb.125.1599660723422;
+        Wed, 09 Sep 2020 07:12:03 -0700 (PDT)
+Received: from localhost ([122.181.54.133])
+        by smtp.gmail.com with ESMTPSA id s20sm3003970pfu.112.2020.09.09.07.12.01
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 09 Sep 2020 07:12:02 -0700 (PDT)
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
         Vincent Guittot <vincent.guittot@linaro.org>,
-        Rafael Wysocki <rjw@rjwysocki.net>,
-        Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        naresh.kamboju@linaro.org, anders.roxell@linaro.org,
+        linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH V2 resend] mmc: sdhci-msm: Unconditionally call dev_pm_opp_of_remove_table()
+Date:   Wed,  9 Sep 2020 19:41:53 +0530
+Message-Id: <890ae5601594fca5de104695a682f4b6efbc631b.1599660554.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.25.0.rc1.19.g042ed3e048af
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 9 Sep 2020 at 13:07, Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
-> On 31-08-20, 12:57, Ulf Hansson wrote:
-> > On Mon, 31 Aug 2020 at 12:45, Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> > >
-> > > On 28-08-20, 10:43, Ulf Hansson wrote:
-> > > > On Fri, 28 Aug 2020 at 08:08, Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> > > > >
-> > > > > dev_pm_opp_of_remove_table() doesn't report any errors when it fails to
-> > > > > find the OPP table with error -ENODEV (i.e. OPP table not present for
-> > > > > the device). And we can call dev_pm_opp_of_remove_table()
-> > > > > unconditionally here.
-> > > > >
-> > > > > Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> > > >
-> > > > Replaced v1 with v2 on my next branch, thanks!
-> > > >
-> > > > Just to be sure, this patch doesn't depend on any changes for the opp
-> > > > core that are queued for v5.10?
-> > >
-> > > The recent crashes reported by Anders and Naresh were related to a OPP
-> > > core bug, for which I have just sent the fix here:
-> > >
-> > > https://lore.kernel.org/lkml/922ff0759a16299e24cacfc981ac07914d8f1826.1598865786.git.viresh.kumar@linaro.org/
-> > >
-> > > This is already tested by Naresh now and finally everything works as
-> > > expected.
-> > >
-> > > I am going to get this fix merged in 5.9-rc4, but we do have a
-> > > dependency now with that fix.
-> > >
-> > > What's the best way to handle this stuff now ? The easiest IMO would
-> > > be for me to send these patches through the OPP tree, otherwise people
-> > > need to carry this and the OPP fix (for which I can provide the
-> > > branch/tag).
-> >
-> > No need for a tag/branch to be shared. Instead I am simply going to
-> > defer to pick up any related changes for mmc, until I can rebase my
-> > tree on an rc[n] that contains your fix.
-> >
-> > When that is possible, please re-post the mmc patches.
->
-> The dependency patch got merged in 5.9-rc4. Do you still want me to
-> resend this patch or you can apply it directly from here ?
+dev_pm_opp_of_remove_table() doesn't report any errors when it fails to
+find the OPP table with error -ENODEV (i.e. OPP table not present for
+the device). And we can call dev_pm_opp_of_remove_table()
+unconditionally here.
 
-Please re-submit, then I will pick it from the patchtracker.
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-Kind regards
-Uffe
+---
+V2:
+- Compare with -ENODEV only for failures.
+- Create new label to put clkname.
+- Based on 5.9-rc4
+---
+ drivers/mmc/host/sdhci-msm.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 5a33389037cd..f7beaec6412e 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -263,7 +263,6 @@ struct sdhci_msm_host {
+ 	unsigned long clk_rate;
+ 	struct mmc_host *mmc;
+ 	struct opp_table *opp_table;
+-	bool has_opp_table;
+ 	bool use_14lpp_dll_reset;
+ 	bool tuning_done;
+ 	bool calibration_done;
+@@ -2285,11 +2284,9 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+ 
+ 	/* OPP table is optional */
+ 	ret = dev_pm_opp_of_add_table(&pdev->dev);
+-	if (!ret) {
+-		msm_host->has_opp_table = true;
+-	} else if (ret != -ENODEV) {
++	if (ret && ret != -ENODEV) {
+ 		dev_err(&pdev->dev, "Invalid OPP table in Device tree\n");
+-		goto opp_cleanup;
++		goto opp_put_clkname;
+ 	}
+ 
+ 	/* Vote for maximum clock rate for maximum performance */
+@@ -2453,8 +2450,8 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+ 	clk_bulk_disable_unprepare(ARRAY_SIZE(msm_host->bulk_clks),
+ 				   msm_host->bulk_clks);
+ opp_cleanup:
+-	if (msm_host->has_opp_table)
+-		dev_pm_opp_of_remove_table(&pdev->dev);
++	dev_pm_opp_of_remove_table(&pdev->dev);
++opp_put_clkname:
+ 	dev_pm_opp_put_clkname(msm_host->opp_table);
+ bus_clk_disable:
+ 	if (!IS_ERR(msm_host->bus_clk))
+@@ -2474,8 +2471,7 @@ static int sdhci_msm_remove(struct platform_device *pdev)
+ 
+ 	sdhci_remove_host(host, dead);
+ 
+-	if (msm_host->has_opp_table)
+-		dev_pm_opp_of_remove_table(&pdev->dev);
++	dev_pm_opp_of_remove_table(&pdev->dev);
+ 	dev_pm_opp_put_clkname(msm_host->opp_table);
+ 	pm_runtime_get_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-- 
+2.25.0.rc1.19.g042ed3e048af
+
