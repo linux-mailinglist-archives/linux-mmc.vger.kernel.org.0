@@ -2,113 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F01C9262E13
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Sep 2020 13:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B64B6262FCE
+	for <lists+linux-mmc@lfdr.de>; Wed,  9 Sep 2020 16:30:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730077AbgIILob (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Sep 2020 07:44:31 -0400
-Received: from www.zeus03.de ([194.117.254.33]:55834 "EHLO mail.zeus03.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730022AbgIILo3 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 9 Sep 2020 07:44:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=k1; bh=tM7cWgnJUQTZ+8zw0k6ph15lgunQ
-        9GxTudYwUe71iHc=; b=R/HBDZ8OmO6QIUJhgdqM6c8SrnR6HTXT0y+7YucZrOJu
-        IAjwHmv9NQ0F4Odfr/e8jeitJtjlOVVyZuqxH3V6fjqnTTrpaDCdLKi/Krn1um23
-        wobk3sSKVnrV77pAL91SA5JX65WF6hp66mtO7mx2iiezHSfI6HP2M67LMjodOFw=
-Received: (qmail 284838 invoked from network); 9 Sep 2020 13:37:46 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 9 Sep 2020 13:37:46 +0200
-X-UD-Smtp-Session: l3s3148p1@nFxm4d+uTIUgAwDPXwesAAPl1NpCEY8B
-Date:   Wed, 9 Sep 2020 13:37:45 +0200
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
+        id S1730243AbgIIOaa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 9 Sep 2020 10:30:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51832 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730255AbgIIM5S (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Sep 2020 08:57:18 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AEF4C061796
+        for <linux-mmc@vger.kernel.org>; Wed,  9 Sep 2020 05:46:18 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id q67so1249889vsd.5
+        for <linux-mmc@vger.kernel.org>; Wed, 09 Sep 2020 05:46:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rOOi9G5yd8K6h51VynUxd0PypjiCWrC4mFiMS8Wcf+A=;
+        b=lHchZD9e8fVEUhyyPmD9ZJ5Q8Vqz/Zd824nUhUxMWUHzUWjAJLOMctBVLiW3+1sVC0
+         Yp1GsT5V6zooiNvTkpbisdw642L+0MduASirosMlkPCSf2ZieRRwJ8LCyvbxwMAFunVB
+         Mjz3oc2a84q7EibTEBsbVNAvJKfSi3dyeiOf7ZyrrcT1Lra5OoIP6RYOLLz7xrhLZeuv
+         zYHh6OR2Jjq7lj9BFvu1ebf8ckecIzB/a9rCd/sdSelzlLhv1wp7Fpd1uB2XCwiBfljU
+         +IuRzNszzcYBUs3aV886PUPJ78WN563gkzmK68jjia/g0DNRrTydCy8rkaI+KIS5s0hl
+         zQoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rOOi9G5yd8K6h51VynUxd0PypjiCWrC4mFiMS8Wcf+A=;
+        b=TkDTFa7HLOihEMU4njuL5IdPa2ofqYBHkveyyH2xCDNgjLKRmhSBF5MPT+jmF4c1Au
+         O4k7mwso8ughOpAckt4EqWJx2L5gB8g3ibVyxxtsVcfOb2QqlfVEpix5dn5TnEQIT+UA
+         qYuLrHo3w3Yi2CYnY1Yta222o2gS8LwDBlpcKr1JYSJw51ZKLa6kVS8Qnu49TVJaUp/L
+         9ehGUrOL0XaaR4u70yhUPBUzYCCK7goVtgI35uhbRa8wlCs4MhxnhoV9TreLP9mRccs/
+         VG101CHqOsAoSatc2EyOym/PVDm4nCiQujD80UTtbp4rcE4nxhBauY8OWLQ5/nBjLEnp
+         nZ/w==
+X-Gm-Message-State: AOAM530R0HRkW/xFyhM8EtY30v9jHPFvCzu5p+M+Rzeic2KuGV9Bgo7P
+        iQ8XHBYLCBoox4xBFwuNYvHJ9rwaFDhQHioGvSbs1g==
+X-Google-Smtp-Source: ABdhPJxF7W+9PErnGC/FzGCmAOLlQJ4/XLqKXXwqmlAzX1SeA1LY4T96oPXXL2PnGOHOWmEQbQfy5NuQIo/Ewdvyowk=
+X-Received: by 2002:a67:2d48:: with SMTP id t69mr415544vst.27.1599655577190;
+ Wed, 09 Sep 2020 05:46:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200821081654.28280-1-wsa+renesas@sang-engineering.com>
+ <CAPDyKFp7rsHDY2vREakrR+PFJLs0n8JBR+URV1vCu5bydEhHuA@mail.gmail.com>
+ <20200830130357.GA2194@kunai> <CAPDyKFr24YxoJ3m5r1C_4-UAdtJQp_MK0+wwZjsQXzrs5dxLjw@mail.gmail.com>
+ <20200909113745.GK2272@ninjato>
+In-Reply-To: <20200909113745.GK2272@ninjato>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 9 Sep 2020 14:45:40 +0200
+Message-ID: <CAPDyKFoPn_x_NDp7pXpf9q8Kvf_fVA+xwJSfm4g-oLubmU9nyQ@mail.gmail.com>
+Subject: Re: [RFT] mmc: tmio: reset device on timeout, too
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
 Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
         Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: Re: [RFT] mmc: tmio: reset device on timeout, too
-Message-ID: <20200909113745.GK2272@ninjato>
-References: <20200821081654.28280-1-wsa+renesas@sang-engineering.com>
- <CAPDyKFp7rsHDY2vREakrR+PFJLs0n8JBR+URV1vCu5bydEhHuA@mail.gmail.com>
- <20200830130357.GA2194@kunai>
- <CAPDyKFr24YxoJ3m5r1C_4-UAdtJQp_MK0+wwZjsQXzrs5dxLjw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tKtFalx5NIx0HZ72"
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFr24YxoJ3m5r1C_4-UAdtJQp_MK0+wwZjsQXzrs5dxLjw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-
---tKtFalx5NIx0HZ72
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Ulf,
-
-> > Hmm, there are some wireless drivers using it as well. I am confused, is
-> > this considered "upper layer"?
+On Wed, 9 Sep 2020 at 13:37, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+>
+> Hi Ulf,
+>
+> > > Hmm, there are some wireless drivers using it as well. I am confused, is
+> > > this considered "upper layer"?
+> > >
+> > > drivers/net/wireless/ath/ath10k/sdio.c: ret = mmc_hw_reset(ar_sdio->func->card->host);
+> > > drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c:        mmc_hw_reset(sdiodev->func1->card->host);
+> > > drivers/net/wireless/marvell/mwifiex/sdio.c:    ret = mmc_hw_reset(func->card->host);
+> > > drivers/net/wireless/ti/wlcore/sdio.c:  mmc_hw_reset(card->host);
 > >
-> > drivers/net/wireless/ath/ath10k/sdio.c: ret =3D mmc_hw_reset(ar_sdio->f=
-unc->card->host);
-> > drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c:        mmc_hw_=
-reset(sdiodev->func1->card->host);
-> > drivers/net/wireless/marvell/mwifiex/sdio.c:    ret =3D mmc_hw_reset(fu=
-nc->card->host);
-> > drivers/net/wireless/ti/wlcore/sdio.c:  mmc_hw_reset(card->host);
->=20
-> Correct, these are "upper layers". The same applies for the mmc block
-> device driver.
->=20
-> In this way there is a guarantee that the struct mmc_card is still presen=
-t.
+> > Correct, these are "upper layers". The same applies for the mmc block
+> > device driver.
+> >
+> > In this way there is a guarantee that the struct mmc_card is still present.
+>
+> Ah, now I get it. "upper layers" as in consumers. And because consumers
+> sit on a card, this guarantees that mmc_card is still there. Correct?
 
-Ah, now I get it. "upper layers" as in consumers. And because consumers
-sit on a card, this guarantees that mmc_card is still there. Correct?
+Yes.
 
-> That would be great. I appreciate all kinds of improvements on the doc pa=
-rts.
+>
+> > That would be great. I appreciate all kinds of improvements on the doc parts.
+>
+> You are welcome!
+>
+> > Perhaps a better option is to return a specific error code for the
+> > last request, that makes the core run mmc_hw_reset(). Or potentially,
+> > add a host cap and let the core treat some error code, specifically
+> > for hosts like tmio.
+>
+> A specific errno could work. I don't see the advantage of a CAP (besides
+> it is rather a quirk than a cap). We could also have
+> 'mmc_controller_card_reset()' or something which ensures mmc_card is
+> present and let that controllers call when they see fit. Or?
 
-You are welcome!
+Maybe something like "mmc_controller_card_reset" could work, but it's
+not going to be that straight forward. In the end, we depend on the
+context for when the host driver would call such a function. In some
+cases it must call mmc_claim_host() while in others it shouldn't.
 
-> Perhaps a better option is to return a specific error code for the
-> last request, that makes the core run mmc_hw_reset(). Or potentially,
-> add a host cap and let the core treat some error code, specifically
-> for hosts like tmio.
+BTW, I see that tmio_mmc_reset() is called at
+tmio_mmc_host_runtime_resume(). This seems to work fine without having
+to make a full reset of the card. Why can't you do something similar
+to that instead?
 
-A specific errno could work. I don't see the advantage of a CAP (besides
-it is rather a quirk than a cap). We could also have
-'mmc_controller_card_reset()' or something which ensures mmc_card is
-present and let that controllers call when they see fit. Or?
-
-Thanks for your help,
-
-   Wolfram
-
-
---tKtFalx5NIx0HZ72
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl9YvokACgkQFA3kzBSg
-KbZfmA//azKjz4Gk7mPb7bDj5wnUWB/Vo6zpR/nlqO8njiKu5635jNow9XZLMEgT
-CgPLPAnLyNj1/yBKHLmTdu3CU/3eg6Grelp+QrghWRdxkXiQyN/nNKZxbMYwGCg7
-Bdl+qbCLJ/99LcHfF7w9TZeMRh0hrFHR/Ch2WKV/w1YwINDqe/FUi3DLjOlYdMsl
-tbfTRiTIgNGtIbOMtJA6c3cauoIwO4v4bOMDGMr28gGW7VyTWauQ9hDkUZQ0pSdE
-nOnI/7i6gcdTIA8cWEoXfHKKzwFXm+8mj/wsetE7YnqHxW8vNdOaFaIrsgaDFlXO
-hY3MF2Onv7/KGrB8c2x5A3DZJDQIZpnWMPdFMFTZL6NMoPAdyM7SF7bDANQxU+0Q
-K/s2c9WW3XcNCEMRreHMka/WzQdzBdM79X28Yw42pPKBt1IvPzJVBuld4aVga7eX
-fA3ys2j7DDVjosSLH0xeAC1t/MjTmYc/SNVgLt7lcoaUuOpVTUpqZna8IQWXFFS7
-Bfh6P3EeH2Ns6k1HirO5D6JzCzl/B64sD/ABrXQColY1Ls2YJ312bjtUvNb05zdN
-jpALQYhjm/t02u9oPwRExGI6f5+UkV1gOJ6134S2sfgaHNVCNOIuEhlTnlh64n22
-kXheME4ISdeZ+MdcxF7mlMmF4Bc3A13UcOvA8+huMFsXiWLWasU=
-=J+pI
------END PGP SIGNATURE-----
-
---tKtFalx5NIx0HZ72--
+Kind regards
+Uffe
