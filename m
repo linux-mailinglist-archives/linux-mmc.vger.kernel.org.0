@@ -2,135 +2,169 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F7CA2632A3
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Sep 2020 18:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5A7C263467
+	for <lists+linux-mmc@lfdr.de>; Wed,  9 Sep 2020 19:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730469AbgIIQsg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Sep 2020 12:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53176 "EHLO
+        id S1730268AbgIIRUI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 9 Sep 2020 13:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730891AbgIIQHj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Sep 2020 12:07:39 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09F49C061368
-        for <linux-mmc@vger.kernel.org>; Wed,  9 Sep 2020 07:12:04 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id s65so1096098pgb.0
-        for <linux-mmc@vger.kernel.org>; Wed, 09 Sep 2020 07:12:03 -0700 (PDT)
+        with ESMTP id S1729781AbgIIP0h (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Sep 2020 11:26:37 -0400
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A509AC061756
+        for <linux-mmc@vger.kernel.org>; Wed,  9 Sep 2020 04:11:02 -0700 (PDT)
+Received: by mail-vs1-xe44.google.com with SMTP id x203so1080299vsc.11
+        for <linux-mmc@vger.kernel.org>; Wed, 09 Sep 2020 04:11:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=QEpsLMY/SzXPuKyd94ggDGQBM1KAJawGy/J+J7m+TbM=;
-        b=x5/6z0oMFgBrDNTOE56l/HJqO2aTwjfjoshWHmkKERda91T4n+E4jltXDNGvp39j5m
-         rhZJBpvky0khJwsP9tjvtfns5MaCTeqq//9eqwJ65H+KOW5edNOfJejeAmd0nbkPosam
-         EGXc3U3xvAlN+UrjDnqy2CWOfK83GxFuXrLwsUyU/Du7Bjz0usbzz+PGvFjMumqUz44O
-         3HqD2u2pM/vQ6gSW4R2b1XFoC3raAOYcQpqu5zvXgHSQY3/v+D42dFAeTgYZEH0N52Uq
-         vvltyYvWZTOWzqaMHWPmST62gS5CurJ9d4o44UL+npL5lJBdyuqD6mMYdn41nBbVKbtF
-         zuag==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=khWyhAe+lN07SqtNkMSWgvbuoeZTuOj4AYam/mxcJqA=;
+        b=VDxiHWdoA6M16HlkWBnXofA9gCh5u4mUs3a4g7d3yx3bXnwWeVnhEbXVxfNOJ2jsWI
+         uZA6+5fKK7Wyj/Va++px8gtMcgyBMzUXpSQNPXFXZoueO33i291qK/z2eKBpKr1mchb6
+         e6n8SewJ4hFBL6xSc7xSUF4yHAb2r9JosEIGXan6ZOo61vc8lvHt6bA1IEC/WfNjFdcs
+         Kr7VLRW4ih/5x974ps3zfEJuQiSfzL6vMkLq617OQhkXn3yvy3PN6PhgF6W+6+s8Ni0+
+         p1+FZHQqiwk1Dac+xzQf5H/1Gn2022/S8eQFdX7jRVHQyldLJc0Qszr8GfxwgOLcUllm
+         5llw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=QEpsLMY/SzXPuKyd94ggDGQBM1KAJawGy/J+J7m+TbM=;
-        b=ksr+2fy6shak1Xl6g+vnIQt1NQRaKHOVYE5M4wKwRLAnfNq2pHYM6HH+piBVeWqZrf
-         cIB/ZeV8wkUkAvn9MPhYF+0x1Io0wcBTMUlc6jT7cHK7z3ZtBeMBA6dHpwLxFt7XpdGm
-         EkwSnSUFoQygZLXe1Cp8A96/ahOezqZu148zD6srUTyh6RjQ1mvW1I6DL3/r9IgrFWX0
-         3q6zrtzWgeQIQTMrGUwbpwE8Ig4u0niiEu1UdZhH8ObFFCtmANckYdfaF7y9hHjQ+MB9
-         Cok+fBsVGz+kOGkQ28BpDoVdR2g1N17KlqoqDTtibDqT16j8DyhsU8ix6LHQBL8zW6Y2
-         YW8A==
-X-Gm-Message-State: AOAM5316SD+xXtrWPp6yTF+7n2h/F2xt1KfMFUrMoPOi0d+dKxubAHd6
-        8iq9tAFZB1yZ81q+eXovMEmx+w==
-X-Google-Smtp-Source: ABdhPJzO5eLyiP0IbrquTJ2zVRcTiM/Yj6JzZ0urfYY4aED3CS9F/9RjcGXeqX0eB5yE1hS7Ikupgg==
-X-Received: by 2002:a63:64c2:: with SMTP id y185mr764751pgb.125.1599660723422;
-        Wed, 09 Sep 2020 07:12:03 -0700 (PDT)
-Received: from localhost ([122.181.54.133])
-        by smtp.gmail.com with ESMTPSA id s20sm3003970pfu.112.2020.09.09.07.12.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 09 Sep 2020 07:12:02 -0700 (PDT)
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        naresh.kamboju@linaro.org, anders.roxell@linaro.org,
-        linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH V2 resend] mmc: sdhci-msm: Unconditionally call dev_pm_opp_of_remove_table()
-Date:   Wed,  9 Sep 2020 19:41:53 +0530
-Message-Id: <890ae5601594fca5de104695a682f4b6efbc631b.1599660554.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.25.0.rc1.19.g042ed3e048af
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=khWyhAe+lN07SqtNkMSWgvbuoeZTuOj4AYam/mxcJqA=;
+        b=szhe3l30+8bdQj8at24+8WHh5gE6r3FStM9I0eyOXmbFEkd/i7u+maGbtDkf+QxTW3
+         wgled2K96QCzC/OPJK8SYt4DRQn5jWJ74TjONDipvsPxsMtlpdVUvZCndmg6oT4FPi7V
+         cF9sUrM3dL1PssEsvABmovX9kh2zNMMzXDjkov9p4SFGM4dYEjEWji6CpmfM199ItGRt
+         7/bCWAVcgihWsvtjm4lm1zo28sYNeqrU4r+EO0w9u4bZEBBy3sQBpOlCk1srK78QUxXL
+         7XDzRdn6UVL03AilBqZbnWteFlFlilFFm6Hbga6lCc0sllDMw4YKHr8WGlywm34gmIOI
+         BIbA==
+X-Gm-Message-State: AOAM533v88kSOmQBISTool8yMllDZrDZKlUXQjbRlrt0ooFQlwkO9+NQ
+        eo/J4IUNE9nD8B3LAByqPx7DkrRW/Ra5WhIQHClN8g==
+X-Google-Smtp-Source: ABdhPJyrhzUCjcXsxzlSgTTgLnzBPVGFjXoK2d+f6coDVgjEfNWL7TMizPQxlX5earJnYx3MmYEBFJXkH/Ia4T3/tI0=
+X-Received: by 2002:a67:e355:: with SMTP id s21mr123357vsm.50.1599649861771;
+ Wed, 09 Sep 2020 04:11:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200902081812.1591-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20200902081812.1591-1-wsa+renesas@sang-engineering.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 9 Sep 2020 13:10:25 +0200
+Message-ID: <CAPDyKFq6NiK1dopS=mBd2r8Eq3TwbT8ZfRG7ujWbYEKeAbDokg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mmc: renesas_sdhi: support manual calibration
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-dev_pm_opp_of_remove_table() doesn't report any errors when it fails to
-find the OPP table with error -ENODEV (i.e. OPP table not present for
-the device). And we can call dev_pm_opp_of_remove_table()
-unconditionally here.
+On Wed, 2 Sep 2020 at 10:18, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+>
+> Some R-Car Gen3 SoCs need corrections after they tuned to HS400. This
+> series implements that. Please have a look at the patch descriptions for
+> details. The origins were patches in the BSP from Takeshi Saito.
+>
+> Changes since v1:
+>         * correction is now enabled after tuning is complete not when it
+>           is initiated
+>         * rebased to new version of "fix stalled SCC series" which is a
+>           dependency for this
+>
+> There is a branch for testing here (with the debug patch on top):
+>
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/sdhi/new_manual_calib-for-5.10
+>
+> Current test results (little different to v1):
+> ----------------------------------------------
+>
+> An SDHI instance with a HS400 capable eMMC connected (R-Car M3-N):
+>
+> When preparing HS400 tuning, a calib table is found. So, (potential) old
+> HS400 tuning gets reset and the manual adjustment gets disabled. Unlike
+> previous series, the runtime flag is not enabled yet.
+>
+>      kworker/1:2-139   [001] ....     4.160517: renesas_sdhi_reset_hs400_mode: ee140000.mmc: calib table ffff800010bc15f8
+>      kworker/1:2-139   [001] ....     4.160522: renesas_sdhi_reset_hs400_mode: ee140000.mmc: adjustment disabled
+>
+> Lots of tuning CMDs, runtime flag still disabled:
+>
+>      kworker/0:1-21    [000] ....     4.160630: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.160725: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.160831: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.160936: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161024: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161122: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161214: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161305: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161407: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161496: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161579: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161669: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161762: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161845: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.161927: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.162011: renesas_sdhi_fixup_request: ee140000.mmc: opcode 21, flag 0
+>      kworker/0:1-21    [000] ....     4.162074: renesas_sdhi_fixup_request: ee140000.mmc: opcode 6, flag 0
+>      kworker/0:1-21    [000] ....     4.162612: renesas_sdhi_fixup_request: ee140000.mmc: opcode 13, flag 0
+>      kworker/0:1-21    [000] ....     4.162671: renesas_sdhi_fixup_request: ee140000.mmc: opcode 6, flag 0
+>      kworker/0:1-21    [000] ....     4.162722: renesas_sdhi_fixup_request: ee140000.mmc: opcode 13, flag 0
+>      kworker/0:1-21    [000] ....     4.162778: renesas_sdhi_fixup_request: ee140000.mmc: opcode 6, flag 0
+>
+> Tuning was successful, now the runtime flag gets enabled:
+>
+>      kworker/1:2-139   [001] ....     4.163274: renesas_sdhi_hs400_complete: ee140000.mmc: flag enabled
+>
+> First CMD13 after successful tuning, enable adjustment, clear runtime
+> flag, show replacement value. The replacement value is now also around
+> 16 which is what Shimoda-san said to be an expected value at room
+> temerature. It used to be 31 in v1 of the series.
+>
+>      kworker/0:1-21    [000] ....     4.163416: renesas_sdhi_fixup_request: ee140000.mmc: opcode 13, flag 1
+>      kworker/0:1-21    [000] ....     4.163421: renesas_sdhi_fixup_request: ee140000.mmc: adjustment enabled, flag disabled
+>      kworker/0:1-21    [000] ....     4.163422: renesas_sdhi_fixup_request: code 17 replacement 18
+>
+> Normal operation continues. Some switching and block reads:
+>
+>      kworker/0:1-21    [000] ....     4.163592: renesas_sdhi_fixup_request: ee140000.mmc: opcode 6, flag 0
+>      kworker/0:1-21    [000] ....     4.163645: renesas_sdhi_fixup_request: ee140000.mmc: opcode 13, flag 0
+>      kworker/0:1-21    [000] ....     4.163700: renesas_sdhi_fixup_request: ee140000.mmc: opcode 6, flag 0
+>      kworker/0:1-21    [000] ....     4.163747: renesas_sdhi_fixup_request: ee140000.mmc: opcode 13, flag 0
+>      kworker/0:1-21    [000] ....     4.217134: renesas_sdhi_fixup_request: ee140000.mmc: opcode 17, flag 0
+>      kworker/0:1-21    [000] ....     4.217357: renesas_sdhi_fixup_request: ee140000.mmc: opcode 17, flag 0
+>         ...
+>
+> And then checksumming a large file works without performance
+> regressions. Unlike the previous version, retunes do not happen
+> occasionally, so the new replacement value is indeed better.
+>
+> So, again a lot of text but I want interested parties to verify results.
+>
+> Looking forward to comments, although I won't complain if this is the
+> final version ;)
+>
+> Thanks and kind regards,
+>
+>    Wolfram
+>
+>
+> Wolfram Sang (2):
+>   mmc: tmio: add generic hook to fixup after a completed request
+>   mmc: renesas_sdhi: support manual calibration
+>
+>  drivers/mmc/host/renesas_sdhi.h      |   5 +
+>  drivers/mmc/host/renesas_sdhi_core.c | 152 ++++++++++++++++++++++++++-
+>  drivers/mmc/host/tmio_mmc.h          |   1 +
+>  drivers/mmc/host/tmio_mmc_core.c     |   3 +
+>  4 files changed, 159 insertions(+), 2 deletions(-)
+>
+> --
+> 2.20.1
+>
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Applied for next, thanks!
 
----
-V2:
-- Compare with -ENODEV only for failures.
-- Create new label to put clkname.
-- Based on 5.9-rc4
----
- drivers/mmc/host/sdhci-msm.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 5a33389037cd..f7beaec6412e 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -263,7 +263,6 @@ struct sdhci_msm_host {
- 	unsigned long clk_rate;
- 	struct mmc_host *mmc;
- 	struct opp_table *opp_table;
--	bool has_opp_table;
- 	bool use_14lpp_dll_reset;
- 	bool tuning_done;
- 	bool calibration_done;
-@@ -2285,11 +2284,9 @@ static int sdhci_msm_probe(struct platform_device *pdev)
- 
- 	/* OPP table is optional */
- 	ret = dev_pm_opp_of_add_table(&pdev->dev);
--	if (!ret) {
--		msm_host->has_opp_table = true;
--	} else if (ret != -ENODEV) {
-+	if (ret && ret != -ENODEV) {
- 		dev_err(&pdev->dev, "Invalid OPP table in Device tree\n");
--		goto opp_cleanup;
-+		goto opp_put_clkname;
- 	}
- 
- 	/* Vote for maximum clock rate for maximum performance */
-@@ -2453,8 +2450,8 @@ static int sdhci_msm_probe(struct platform_device *pdev)
- 	clk_bulk_disable_unprepare(ARRAY_SIZE(msm_host->bulk_clks),
- 				   msm_host->bulk_clks);
- opp_cleanup:
--	if (msm_host->has_opp_table)
--		dev_pm_opp_of_remove_table(&pdev->dev);
-+	dev_pm_opp_of_remove_table(&pdev->dev);
-+opp_put_clkname:
- 	dev_pm_opp_put_clkname(msm_host->opp_table);
- bus_clk_disable:
- 	if (!IS_ERR(msm_host->bus_clk))
-@@ -2474,8 +2471,7 @@ static int sdhci_msm_remove(struct platform_device *pdev)
- 
- 	sdhci_remove_host(host, dead);
- 
--	if (msm_host->has_opp_table)
--		dev_pm_opp_of_remove_table(&pdev->dev);
-+	dev_pm_opp_of_remove_table(&pdev->dev);
- 	dev_pm_opp_put_clkname(msm_host->opp_table);
- 	pm_runtime_get_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
--- 
-2.25.0.rc1.19.g042ed3e048af
-
+Kind regards
+Uffe
