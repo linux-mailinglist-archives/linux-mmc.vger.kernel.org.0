@@ -2,76 +2,47 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27F39268A11
-	for <lists+linux-mmc@lfdr.de>; Mon, 14 Sep 2020 13:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6DEF268A2B
+	for <lists+linux-mmc@lfdr.de>; Mon, 14 Sep 2020 13:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726057AbgINL3o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 14 Sep 2020 07:29:44 -0400
-Received: from www.zeus03.de ([194.117.254.33]:53754 "EHLO mail.zeus03.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726098AbgINL3a (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 14 Sep 2020 07:29:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding; s=k1; bh=XPrUpzZcI6zAUwBIMzTlj+kRvbi
-        IVarVQu3FWwEnimY=; b=M/+hanlCVbp3fOaRQQuOHLaYuJNUEcYDjCPR9d5V0Qq
-        Hw17Fgml2yfQYkoyNOLpINGhjbfJDa4uODFGVOllvMd2NPichnfKKNt4XYJaOeCf
-        8xxMd+Ws3mNciSGZezOljP04vmkD7Ab13C4ydNEu4sbbhDoELLX5mYb/coklntIw
-        =
-Received: (qmail 1841945 invoked from network); 14 Sep 2020 13:28:49 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Sep 2020 13:28:49 +0200
-X-UD-Smtp-Session: l3s3148p1@psSjVkSv8uIgAwDPXwXYAPlEQEA0NVnc
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH] mmc: core: clear 'doing_init_tune' also after failures
-Date:   Mon, 14 Sep 2020 13:28:45 +0200
-Message-Id: <20200914112845.21855-1-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726087AbgINLhL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Mon, 14 Sep 2020 07:37:11 -0400
+Received: from mail.bnv.gob.ve ([201.249.200.115]:51134 "EHLO
+        correo.bnv.gob.ve" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726119AbgINLfD (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 14 Sep 2020 07:35:03 -0400
+Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
+        by correo.bnv.gob.ve (Postfix) with ESMTP id 7B37A34C5B6C;
+        Sun, 13 Sep 2020 20:22:39 -0400 (-04)
+Received: from correo.bnv.gob.ve ([127.0.0.1])
+        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id Q9tvpOxfqqHR; Sun, 13 Sep 2020 20:22:39 -0400 (-04)
+Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
+        by correo.bnv.gob.ve (Postfix) with ESMTP id AFB8B336834C;
+        Sun, 13 Sep 2020 20:04:16 -0400 (-04)
+X-Virus-Scanned: amavisd-new at bnv.gob.ve
+Received: from correo.bnv.gob.ve ([127.0.0.1])
+        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id O6u-4vhBQGAQ; Sun, 13 Sep 2020 20:04:16 -0400 (-04)
+Received: from [192.168.8.101] (8ta-229-1-199.telkomadsl.co.za [197.229.1.199])
+        by correo.bnv.gob.ve (Postfix) with ESMTPSA id CB7A134A4850;
+        Sun, 13 Sep 2020 19:14:30 -0400 (-04)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Spende von 2.000.000,00 Euro.
+To:     Recipients <manuelfranco@info.com>
+From:   "manuel franco" <manuelfranco@info.com>
+Date:   Mon, 14 Sep 2020 01:14:20 +0200
+Reply-To: manuelfrancospende11@gmail.com
+Message-Id: <20200913231430.CB7A134A4850@correo.bnv.gob.ve>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Reorganize the code, so that the flag is always cleared independently of
-a good or bad case.
+ Sie haben eine Spende von 2.000.000,00 Euro.
 
-Fixes: 97a7d87e96b0 ("mmc: core: add a 'doing_init_tune' flag and a 'mmc_doing_tune' helper")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
-
-Sorry for overlooking this :(
-
- drivers/mmc/core/mmc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-index 67e95eba0e82..ff3063ce2acd 100644
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -1766,14 +1766,14 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
- 		host->doing_init_tune = 1;
- 
- 		err = mmc_hs200_tuning(card);
--		if (err)
--			goto free_card;
-+		if (!err)
-+			err = mmc_select_hs400(card);
-+
-+		host->doing_init_tune = 0;
- 
--		err = mmc_select_hs400(card);
- 		if (err)
- 			goto free_card;
- 
--		host->doing_init_tune = 0;
- 	} else if (!mmc_card_hs400es(card)) {
- 		/* Select the desired bus width optionally */
- 		err = mmc_select_bus_width(card);
--- 
-2.20.1
-
+Mein Name ist Manuel Franco aus den USA.
+Ich habe die America-Lotterie im Wert von 768 Millionen US-Dollar gewonnen und spende einen Teil davon an nur 5 glückliche Menschen und einige Waisenhäuser als Wohlwollen für die Menschheit.
