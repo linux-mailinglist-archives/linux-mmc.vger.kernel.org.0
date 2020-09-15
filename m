@@ -2,127 +2,161 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 933D4269E46
-	for <lists+linux-mmc@lfdr.de>; Tue, 15 Sep 2020 08:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2BA8269E69
+	for <lists+linux-mmc@lfdr.de>; Tue, 15 Sep 2020 08:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726235AbgIOGNo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 15 Sep 2020 02:13:44 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:21793 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726198AbgIOGN1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 15 Sep 2020 02:13:27 -0400
-X-UUID: 61ed0938819e4c93ba98968d9b663810-20200915
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=XLnueKG77zqgGlKTvOF9hBmcnot7DeiZK4sccS5sVaQ=;
-        b=iArR4DRX2NGk8hjLmvgJS2foaEw8LHLUScw723dW1VhaszHVMZVeoG1r+7QAtUDSMWIKFJ5BVMKY9Kd6sxsFlsFC+1YRXhm7L76maxJFJea5+sHWOuZdtQ9UBpg/zUOhncjk0MC281MN6fNwlJtd/9Jpb0Gin8mz6oh8EuqUx10=;
-X-UUID: 61ed0938819e4c93ba98968d9b663810-20200915
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
-        (envelope-from <wenbin.mei@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 109680203; Tue, 15 Sep 2020 14:13:23 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 15 Sep 2020 14:13:21 +0800
-Received: from localhost.localdomain (10.17.3.153) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 15 Sep 2020 14:13:21 +0800
-From:   Wenbin Mei <wenbin.mei@mediatek.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <srv_heupstream@mediatek.com>,
-        Wenbin Mei <wenbin.mei@mediatek.com>
-Subject: [RESEND 3/3] mmc: mediatek: Add subsys clock control for MT8192 msdc
-Date:   Tue, 15 Sep 2020 14:11:10 +0800
-Message-ID: <20200915061110.25833-4-wenbin.mei@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20200915061110.25833-1-wenbin.mei@mediatek.com>
-References: <20200915061110.25833-1-wenbin.mei@mediatek.com>
+        id S1726119AbgIOGYx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 15 Sep 2020 02:24:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43936 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726114AbgIOGYu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 15 Sep 2020 02:24:50 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94A75C06174A
+        for <linux-mmc@vger.kernel.org>; Mon, 14 Sep 2020 23:24:48 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id fa1so1239355pjb.0
+        for <linux-mmc@vger.kernel.org>; Mon, 14 Sep 2020 23:24:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Xx+DYmtyTSIZhYxsfIQQOAzj1/r5KgCbyv8qCw38bIE=;
+        b=PK+B+js0SAYlHkir6fYgYnsY8/HuWG6ClReeFPeFGM/qS21JvE81YVsgpy8LuMdQpn
+         g4XvUcsbmRH53GvXDa7/wNCQtDLOAyMylWi7WwvM0WDJH2NKBjp+oLCqdAtvG8MAIcfH
+         qcdxYOYZBkim2lCl6jUSAynoZkw4vdZJLfXB3IoYp7Ur+oDTpcMupsyPBLu3YVItKzai
+         GVSUW1G+/EGKUeibZgMRKEAzP9hEUlYJe1EFJyCFbpzW+Jjsgpz+SAhand42eY44chRr
+         kPGYD4uAEK7v/F7L7TKp+ooi9XtQ2AmN6If80sbiFdIVA0juijyMvUM3gSq2XMgqQ8lg
+         bbuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=Xx+DYmtyTSIZhYxsfIQQOAzj1/r5KgCbyv8qCw38bIE=;
+        b=cDohmTw+QXvN8C62Xc9F37ypNHe+eGJ6PK62Wxad/xjwaCXvMdHfeWgCI4AYJHy9Kr
+         eVoq9IqduNHeHip6RR9RGPTj1AMC79mAiSTvlsIv4bVXpaASxpjcoCswh2febFMqA3D9
+         2y0SJU46apfZ+3oS1pP6HoP6fJ5LcnwPLrpBb57I2IBLlFSAqqg69XS8CLVDYwyrp2TZ
+         mwFW1RrExZKHAZgURUiXM5QrYwRGFoRElhbTcekqDuD7xzIquE26E3y7KG8XK4NCUPKL
+         nLyk1lnfEGkeVX0NrCxmPM8eCB0NgwY3U0CaBO7NRLeVMlt6KoyqUSaPINlPYTUzznoM
+         QQ5Q==
+X-Gm-Message-State: AOAM530vU8Fow1R8rZqd9NuoHq3/v8TNWDWZektr5j9xE/tqgMgT2OW1
+        FlveQRtNEhKOMLl8RByTcUfAHCkSfZoLGD1y
+X-Google-Smtp-Source: ABdhPJyuVOS+QvY4sGm8R0WodlQtWrH1Znn9mdCe02LHy5dWveJlde6o2kiw14HFY/wvW3HohOTQ3g==
+X-Received: by 2002:a17:902:7614:b029:d1:e603:1bf2 with SMTP id k20-20020a1709027614b02900d1e6031bf2mr149740pll.71.1600151088036;
+        Mon, 14 Sep 2020 23:24:48 -0700 (PDT)
+Received: from laputa (p784a66b9.tkyea130.ap.so-net.ne.jp. [120.74.102.185])
+        by smtp.gmail.com with ESMTPSA id u14sm12315778pfm.80.2020.09.14.23.24.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2020 23:24:47 -0700 (PDT)
+Date:   Tue, 15 Sep 2020 15:24:43 +0900
+From:   AKASHI Takahiro <takahiro.akashi@linaro.org>
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Ben Chuang <benchuanggli@gmail.com>, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ben.chuang@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw
+Subject: Re: [RFC PATCH V3 15/21] mmc: sdhci: UHS-II support, modify
+ set_power() to handle vdd2
+Message-ID: <20200915062443.GB2860208@laputa>
+Mail-Followup-To: AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ben Chuang <benchuanggli@gmail.com>, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ben.chuang@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw
+References: <20200710111140.29725-1-benchuanggli@gmail.com>
+ <97c43596-a18f-4c7a-c226-5209772d91d1@intel.com>
+ <20200914054537.GA2738017@laputa>
+ <f0ff6c0a-4029-72a9-559c-8930ef0ea8bb@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f0ff6c0a-4029-72a9-559c-8930ef0ea8bb@intel.com>
 Sender: linux-mmc-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-TVQ4MTkyIG1zZGMgaXMgYW4gaW5kZXBlbmRlbnQgc3ViIHN5c3RlbSwgd2UgbmVlZCBjb250cm9s
-IG1vcmUgYnVzDQpjbG9ja3MgZm9yIGl0Lg0KQWRkIHN1cHBvcnQgZm9yIHRoZSBhZGRpdGlvbmFs
-IHN1YnN5cyBjbG9ja3MgdG8gYWxsb3cgaXQgdG8gYmUNCmNvbmZpZ3VyZWQgYXBwcm9wcmlhdGVs
-eS4NCg0KU2lnbmVkLW9mZi1ieTogV2VuYmluIE1laSA8d2VuYmluLm1laUBtZWRpYXRlay5jb20+
-DQotLS0NCiBkcml2ZXJzL21tYy9ob3N0L210ay1zZC5jIHwgNzcgKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrLS0tLS0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDU5IGluc2VydGlvbnMoKyks
-IDE4IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tbWMvaG9zdC9tdGstc2Qu
-YyBiL2RyaXZlcnMvbW1jL2hvc3QvbXRrLXNkLmMNCmluZGV4IGVkMmIyNDY5MWI0Zi4uZjMxMTE5
-MmM4ZDA1IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9tbWMvaG9zdC9tdGstc2QuYw0KKysrIGIvZHJp
-dmVycy9tbWMvaG9zdC9tdGstc2QuYw0KQEAgLTQyNiw2ICs0MjYsOCBAQCBzdHJ1Y3QgbXNkY19o
-b3N0IHsNCiAJc3RydWN0IGNsayAqaF9jbGs7ICAgICAgLyogbXNkYyBoX2NsayAqLw0KIAlzdHJ1
-Y3QgY2xrICpidXNfY2xrOwkvKiBidXMgY2xvY2sgd2hpY2ggdXNlZCB0byBhY2Nlc3MgcmVnaXN0
-ZXIgKi8NCiAJc3RydWN0IGNsayAqc3JjX2Nsa19jZzsgLyogbXNkYyBzb3VyY2UgY2xvY2sgY29u
-dHJvbCBnYXRlICovDQorCXN0cnVjdCBjbGsgKnN5c19jbGtfY2c7CS8qIG1zZGMgc3Vic3lzIGNs
-b2NrIGNvbnRyb2wgZ2F0ZSAqLw0KKwlzdHJ1Y3QgY2xrX2J1bGtfZGF0YSBidWxrX2Nsa3NbM107
-CS8qIHBjbGssIGF4aSwgYWhiIGNsb2NrIGNvbnRyb2wgZ2F0ZSAqLw0KIAl1MzIgbWNsazsJCS8q
-IG1tYyBzdWJzeXN0ZW0gY2xvY2sgZnJlcXVlbmN5ICovDQogCXUzMiBzcmNfY2xrX2ZyZXE7CS8q
-IHNvdXJjZSBjbG9jayBmcmVxdWVuY3kgKi8NCiAJdW5zaWduZWQgY2hhciB0aW1pbmc7DQpAQCAt
-Nzg0LDYgKzc4Niw4IEBAIHN0YXRpYyB2b2lkIG1zZGNfc2V0X2J1c3lfdGltZW91dChzdHJ1Y3Qg
-bXNkY19ob3N0ICpob3N0LCB1NjQgbnMsIHU2NCBjbGtzKQ0KIA0KIHN0YXRpYyB2b2lkIG1zZGNf
-Z2F0ZV9jbG9jayhzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0KIHsNCisJY2xrX2J1bGtfZGlzYWJs
-ZV91bnByZXBhcmUoQVJSQVlfU0laRShob3N0LT5idWxrX2Nsa3MpLA0KKwkJCQkgICBob3N0LT5i
-dWxrX2Nsa3MpOw0KIAljbGtfZGlzYWJsZV91bnByZXBhcmUoaG9zdC0+c3JjX2Nsa19jZyk7DQog
-CWNsa19kaXNhYmxlX3VucHJlcGFyZShob3N0LT5zcmNfY2xrKTsNCiAJY2xrX2Rpc2FibGVfdW5w
-cmVwYXJlKGhvc3QtPmJ1c19jbGspOw0KQEAgLTc5MiwxMCArNzk2LDE3IEBAIHN0YXRpYyB2b2lk
-IG1zZGNfZ2F0ZV9jbG9jayhzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0KIA0KIHN0YXRpYyB2b2lk
-IG1zZGNfdW5nYXRlX2Nsb2NrKHN0cnVjdCBtc2RjX2hvc3QgKmhvc3QpDQogew0KKwlpbnQgcmV0
-Ow0KKw0KIAljbGtfcHJlcGFyZV9lbmFibGUoaG9zdC0+aF9jbGspOw0KIAljbGtfcHJlcGFyZV9l
-bmFibGUoaG9zdC0+YnVzX2Nsayk7DQogCWNsa19wcmVwYXJlX2VuYWJsZShob3N0LT5zcmNfY2xr
-KTsNCiAJY2xrX3ByZXBhcmVfZW5hYmxlKGhvc3QtPnNyY19jbGtfY2cpOw0KKwlyZXQgPSBjbGtf
-YnVsa19wcmVwYXJlX2VuYWJsZShBUlJBWV9TSVpFKGhvc3QtPmJ1bGtfY2xrcyksDQorCQkJCSAg
-ICAgIGhvc3QtPmJ1bGtfY2xrcyk7DQorCWlmIChyZXQpDQorCQlkZXZfZGJnKGhvc3QtPmRldiwg
-ImVuYWJsZSBjbGtzIGZhaWxlZCFcbiIpOw0KKw0KIAl3aGlsZSAoIShyZWFkbChob3N0LT5iYXNl
-ICsgTVNEQ19DRkcpICYgTVNEQ19DRkdfQ0tTVEIpKQ0KIAkJY3B1X3JlbGF4KCk7DQogfQ0KQEAg
-LTIzNjEsNiArMjM3Miw1MiBAQCBzdGF0aWMgdm9pZCBtc2RjX29mX3Byb3BlcnR5X3BhcnNlKHN0
-cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYsDQogCQlob3N0LT5jcWhjaSA9IGZhbHNlOw0KIH0N
-CiANCitzdGF0aWMgaW50IG1zZGNfb2ZfY2xvY2tfcGFyc2Uoc3RydWN0IHBsYXRmb3JtX2Rldmlj
-ZSAqcGRldiwNCisJCQkgICAgICAgc3RydWN0IG1zZGNfaG9zdCAqaG9zdCkNCit7DQorCXN0cnVj
-dCBjbGsgKmNsazsNCisNCisJaG9zdC0+c3JjX2NsayA9IGRldm1fY2xrX2dldCgmcGRldi0+ZGV2
-LCAic291cmNlIik7DQorCWlmIChJU19FUlIoaG9zdC0+c3JjX2NsaykpDQorCQlyZXR1cm4gUFRS
-X0VSUihob3N0LT5zcmNfY2xrKTsNCisNCisJaG9zdC0+aF9jbGsgPSBkZXZtX2Nsa19nZXQoJnBk
-ZXYtPmRldiwgImhjbGsiKTsNCisJaWYgKElTX0VSUihob3N0LT5oX2NsaykpDQorCQlyZXR1cm4g
-UFRSX0VSUihob3N0LT5oX2Nsayk7DQorDQorCWhvc3QtPmJ1c19jbGsgPSBkZXZtX2Nsa19nZXQo
-JnBkZXYtPmRldiwgImJ1c19jbGsiKTsNCisJaWYgKElTX0VSUihob3N0LT5idXNfY2xrKSkNCisJ
-CWhvc3QtPmJ1c19jbGsgPSBOVUxMOw0KKw0KKwkvKnNvdXJjZSBjbG9jayBjb250cm9sIGdhdGUg
-aXMgb3B0aW9uYWwgY2xvY2sqLw0KKwlob3N0LT5zcmNfY2xrX2NnID0gZGV2bV9jbGtfZ2V0KCZw
-ZGV2LT5kZXYsICJzb3VyY2VfY2ciKTsNCisJaWYgKElTX0VSUihob3N0LT5zcmNfY2xrX2NnKSkN
-CisJCWhvc3QtPnNyY19jbGtfY2cgPSBOVUxMOw0KKw0KKwlob3N0LT5zeXNfY2xrX2NnID0gZGV2
-bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJzeXNfY2ciKTsNCisJaWYgKElTX0VSUihob3N0LT5zeXNf
-Y2xrX2NnKSkNCisJCWhvc3QtPnN5c19jbGtfY2cgPSBOVUxMOw0KKwllbHNlDQorCQljbGtfcHJl
-cGFyZV9lbmFibGUoaG9zdC0+c3lzX2Nsa19jZyk7DQorDQorCWNsayA9IGRldm1fY2xrX2dldCgm
-cGRldi0+ZGV2LCAicGNsa19jZyIpOw0KKwlpZiAoSVNfRVJSKGNsaykpDQorCQljbGsgPSBOVUxM
-Ow0KKwlob3N0LT5idWxrX2Nsa3NbMF0uY2xrID0gY2xrOw0KKw0KKwljbGsgPSBkZXZtX2Nsa19n
-ZXQoJnBkZXYtPmRldiwgImF4aV9jZyIpOw0KKwlpZiAoSVNfRVJSKGNsaykpDQorCQljbGsgPSBO
-VUxMOw0KKwlob3N0LT5idWxrX2Nsa3NbMV0uY2xrID0gY2xrOw0KKw0KKwljbGsgPSBkZXZtX2Ns
-a19nZXQoJnBkZXYtPmRldiwgImFoYl9jZyIpOw0KKwlpZiAoSVNfRVJSKGNsaykpDQorCQljbGsg
-PSBOVUxMOw0KKwlob3N0LT5idWxrX2Nsa3NbMl0uY2xrID0gY2xrOw0KKw0KKwlyZXR1cm4gMDsN
-Cit9DQorDQogc3RhdGljIGludCBtc2RjX2Rydl9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNl
-ICpwZGV2KQ0KIHsNCiAJc3RydWN0IG1tY19ob3N0ICptbWM7DQpAQCAtMjQwMCwyNSArMjQ1Nyw5
-IEBAIHN0YXRpYyBpbnQgbXNkY19kcnZfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRl
-dikNCiAJaWYgKHJldCkNCiAJCWdvdG8gaG9zdF9mcmVlOw0KIA0KLQlob3N0LT5zcmNfY2xrID0g
-ZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJzb3VyY2UiKTsNCi0JaWYgKElTX0VSUihob3N0LT5z
-cmNfY2xrKSkgew0KLQkJcmV0ID0gUFRSX0VSUihob3N0LT5zcmNfY2xrKTsNCi0JCWdvdG8gaG9z
-dF9mcmVlOw0KLQl9DQotDQotCWhvc3QtPmhfY2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYs
-ICJoY2xrIik7DQotCWlmIChJU19FUlIoaG9zdC0+aF9jbGspKSB7DQotCQlyZXQgPSBQVFJfRVJS
-KGhvc3QtPmhfY2xrKTsNCisJcmV0ID0gbXNkY19vZl9jbG9ja19wYXJzZShwZGV2LCBob3N0KTsN
-CisJaWYgKHJldCkNCiAJCWdvdG8gaG9zdF9mcmVlOw0KLQl9DQotDQotCWhvc3QtPmJ1c19jbGsg
-PSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRldiwgImJ1c19jbGsiKTsNCi0JaWYgKElTX0VSUihob3N0
-LT5idXNfY2xrKSkNCi0JCWhvc3QtPmJ1c19jbGsgPSBOVUxMOw0KLQkvKnNvdXJjZSBjbG9jayBj
-b250cm9sIGdhdGUgaXMgb3B0aW9uYWwgY2xvY2sqLw0KLQlob3N0LT5zcmNfY2xrX2NnID0gZGV2
-bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJzb3VyY2VfY2ciKTsNCi0JaWYgKElTX0VSUihob3N0LT5z
-cmNfY2xrX2NnKSkNCi0JCWhvc3QtPnNyY19jbGtfY2cgPSBOVUxMOw0KIA0KIAlob3N0LT5yZXNl
-dCA9IGRldm1fcmVzZXRfY29udHJvbF9nZXRfb3B0aW9uYWxfZXhjbHVzaXZlKCZwZGV2LT5kZXYs
-DQogCQkJCQkJCQkiaHJzdCIpOw0KLS0gDQoyLjE4LjANCg==
+Adrain,
 
+On Mon, Sep 14, 2020 at 09:36:02AM +0300, Adrian Hunter wrote:
+> On 14/09/20 8:45 am, AKASHI Takahiro wrote:
+> > Adrian,
+> > 
+> > On Fri, Aug 21, 2020 at 05:11:18PM +0300, Adrian Hunter wrote:
+> >> On 10/07/20 2:11 pm, Ben Chuang wrote:
+> >>> From: AKASHI Takahiro <takahiro.akashi@linaro.org>
+> >>>
+> >>> VDD2 is used for powering UHS-II interface.
+> >>> Modify sdhci_set_power_and_bus_voltage(), sdhci_set_power_noreg()
+> >>> and sdhci_set_power_noreg() to handle VDD2.
+> >>
+> >> vdd2 is always 1.8 V and I suspect there may never be support for anything
+> >> else, so we should start with 1.8 V only.
+> > 
+> > What do you mean here?
+> > You don't want to add an extra argument, vdd2, to sdhci_set_power().
+> > Correct?
+> 
+> Yes
+> 
+> > 
+> >> Also can we create uhs2_set_power_reg() and uhs2_set_power_noreg() and use
+> >> the existing ->set_power() callback
+> > 
+> > Again what do you expect here?
+> > 
+> > Do you want to see any platform-specific mmc driver who supports UHS-II
+> > to implement its own call back like:
+> 
+> Not exactly.  I expect there to be a common implementation in sdhci-uhs2.c
+> called sdhci_uhs2_set_power() for example, that drivers can use by setting
+> their .set_power = sdhci_uhs2_set_power.  If they need platform-specific
+> code as well then their platform-specific code can call
+> sdhci_uhs2_set_power() if desired.
+> 
+> > 
+> > void sdhci_foo_set_power(struct sdhci_host *host, unsigned char mode,
+> >                                   unsigned short vdd)
+> > {
+> >         sdhci_set_power(host, mode,vdd);
+> > 
+> >         /* in case that sdhci_uhs2 module is not inserted */
+> >         if (!(mmc->caps & MMC_CAP_UHS2))
+> >                 return;
+> > 
+> >         /* vdd2 specific operation */
+> >         if (IS_ERR_OR_NULL(host->mmc->supply.vmmc2))
+> >                 sdhci_uhs2_set_power_noreg(host, mode);
+> >         else
+> >                 sdhci_uhs2_set_power_reg(host, mode);
+> > 
+> >         /* maybe more platform-specific initialization */
+> > }
+> > 
+> > struct sdhci_ops sdhci_foo_ops = {
+> >         .set_power = sdhci_foo_set_power,
+> >         ...
+> > }
+
+What do you think about this logic in general?
+(If necessary, read it replacing "foo" to "uhs2".)
+
+What I'm concerned about is SDHCI_POWER_CONTROL register.
+Vdd and vdd2 are controlled with corresponding bits in this register.
+It seems to be "natural" to me that vdd and vdd2 are enabled
+in a single function rather than putting them in separate ones.
+
+In particular, in the case of sdhci_set_power_noreg(), there exist a couple
+of "quirks" around writing the bits to SDHCI_POWER_CONTROL register.
+I don't know how we should handle them if we have a separate function,
+say, sdhci_uhs2_set_power_noreg().
+Do you want to see a copy of the same logic in sdhci_uhs2_set_power_noreg()? 
+
+-Takahiro Akashi
+
+
+> > 
+> > Is this what you mean?
+> > (I'm not quite sure yet that sdhci_ush2_set_power_noreg() can be split off
+> > from sdhci_set_power_noreg().)
+> > 
+> > -Takahiro Akashi
