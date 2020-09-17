@@ -2,209 +2,295 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57EA226D9A6
-	for <lists+linux-mmc@lfdr.de>; Thu, 17 Sep 2020 12:55:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5460D26E6A7
+	for <lists+linux-mmc@lfdr.de>; Thu, 17 Sep 2020 22:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726628AbgIQKxf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 17 Sep 2020 06:53:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53496 "EHLO
+        id S1726361AbgIQUXA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 17 Sep 2020 16:23:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726760AbgIQKxN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 17 Sep 2020 06:53:13 -0400
-Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6027FC06174A;
-        Thu, 17 Sep 2020 03:53:13 -0700 (PDT)
-Received: by mail-yb1-xb42.google.com with SMTP id e11so1383614ybk.1;
-        Thu, 17 Sep 2020 03:53:13 -0700 (PDT)
+        with ESMTP id S1726470AbgIQUXA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 17 Sep 2020 16:23:00 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A440AC061353
+        for <linux-mmc@vger.kernel.org>; Thu, 17 Sep 2020 12:27:02 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id f2so1952171pgd.3
+        for <linux-mmc@vger.kernel.org>; Thu, 17 Sep 2020 12:27:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=cEy8jD8XgDhPYwD7J6FmRJ/r3QAXwba1bwQPnxK0O9s=;
-        b=sUsEVoPi9I52xMLwJ2LHIJsiNmDrm2IVTvBBEmSHapNSZOaII41q6Mi3MU1nstQo6B
-         XuuMM/ejPpCy7n12TWFWxYCg8/f2VFG0/jV83TO4e80aO1tSmUxKF6Dcs7MOeoK/YD8G
-         duLW68p9hfjaezOg6EJbE9AU6GyUcxnJGn7YLGy61yxjhP3mQqe3ozjgEjGYJFlJ2icE
-         ttyQXFP1/BRDCOY2g8W1Ml2gXJlBcpUFtaiDIMrYrpAo8G0v3FkbgsWwqieoq1iW326x
-         48WooDqwn4ajhULjOCHEdiQLmg933/7TiubDE0QyrYUBhn3/G1G/hZE28R/kNw1bGfnK
-         clVg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wMjlazRpMsZhzq/NuhjNFXsrfTbseduYpzw80nNSiCI=;
+        b=JC0pE3H0Kzs9q859k0jJ88xxXiFjmBD8WocnPLk0mvHxEAojh0KcnaJl0/e+E8w/sX
+         lY9xgI63Ltiv5HT3SO/bQP6EMl1k2Lt/lyybC7dPbLkEcKY+pUA2T6rLna3mjL2hpixu
+         gLQQLKgBEu5dwJpjY+QBifGtjlg6NUK07sfG8+M5D41sinoHa5ASnUQYuHNJHAE33SHQ
+         LOb+p2WABqJu0lMSSXyGHLWI36JBUyqjPdQiYPnO+qbjX/GSReXNlvwQxek7bOgj680k
+         LIMiESapt1Cmfq9kKN1LdHwSQ4k7UIvQeYlWvfZpPD+AcIGrKQHmFQBuN4fgdSps8Px3
+         mVbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=cEy8jD8XgDhPYwD7J6FmRJ/r3QAXwba1bwQPnxK0O9s=;
-        b=XpAaUhSzElaTTfSN8zYLIrsIK2HlCeDkl9keatnjhmV7+9q8DxcNokEvWJKOaQtsgj
-         e0B5glGU9Vm0ikMJk44NxICrG0S5BQULs4g36XLJv3ma8wt5frICbiW+ZCdy++uq5mmW
-         /yuNyzNeXSiVPf5y5AclLSo6f6Bj0KnbjR7Oor5JsRn8Ba1xkyP2uv0f5IDLf5imf28B
-         nY/z3OOPABElBBiw7zys3sQbr9LhOig4ONA9alzsBI7fIEm8O7ZZzUHs4CojRggD7yBn
-         OMep94XUykXUum3IxOSlFGG/sqMjyq1BZLYKoQFI4e09tNdXmwa/90YZCc6K6qgtzWmS
-         +O+g==
-X-Gm-Message-State: AOAM5307ktZNY5+YWhjI8SUU1ntC4AdlYElQZ0oQcaggBkdZQJKf+k2X
-        iS2mSs/7cpFQ6bnBMLR0WpRIBiABtKWNEz4dPZk=
-X-Google-Smtp-Source: ABdhPJwIV5+5UgYr24gbevMWxEVGkZK9YcV0MnXrTj1LUBGqw6dUjxASiHbKFJ35D6oXovkU8Up7cC6x1VnZ/pnlo9c=
-X-Received: by 2002:a25:44:: with SMTP id 65mr1604753yba.6.1600339989574; Thu,
- 17 Sep 2020 03:53:09 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wMjlazRpMsZhzq/NuhjNFXsrfTbseduYpzw80nNSiCI=;
+        b=tZSCmX8/rkl+Sy3D78Pl2ryoRrblUU/mbh2TgWcQY/TSlP5O4Me5bGpYanVnRc24tx
+         TFcrbIIJ0hqI7jsAJhuTMMA/TXPSNPO1LdDZ4I1KgzD8csX6qrfLfoVK0fJYYdhaNmLp
+         F4DkU38KmR8Jh+MQcz5cAEFe7TNoOeNE3lCmRrzfQHVlQwGLFQl0B4LSpazeDNrQtNFG
+         2ow7idKuRer4I68t7phm6g4jkWzSNazNzng04hBGpQuBHrQ/7u55lTJBIorewvMrx61I
+         hEXGPOYGNwEtDxJyCi5vrrjZBYp0NB447+ji7T/CbY9mgnYrINSsIdJEqhZzedGEONz/
+         LxRw==
+X-Gm-Message-State: AOAM533SgrdbyfXPygihIqpkcPuv1s9fvQpsTZ9hyoP95mTrRqOJRjd8
+        L8sqJOLvFYgjFKXASOSIcN1CQVt7OoM=
+X-Google-Smtp-Source: ABdhPJwvQG6PfLgD9WqIduCeH6uJAUSOuDMGYVltpuIdmSt5uNlbth0ri/WAJLAnee5EbCZScC2BGg==
+X-Received: by 2002:aa7:989c:0:b029:142:2501:3973 with SMTP id r28-20020aa7989c0000b029014225013973mr12960696pfl.56.1600370822186;
+        Thu, 17 Sep 2020 12:27:02 -0700 (PDT)
+Received: from localhost.localdomain ([103.248.31.177])
+        by smtp.googlemail.com with ESMTPSA id x20sm388190pfr.190.2020.09.17.12.26.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2020 12:27:01 -0700 (PDT)
+From:   Amey Narkhede <ameynarkhede03@gmail.com>
+To:     chaotian.jing@mediatek.com
+Cc:     ulf.hansson@linaro.org, matthias.bgg@gmail.com,
+        p.zabel@pengutronix.de, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, ameynarkhede03@gmail.com
+Subject: [PATCH] mmc: mediatek: Drop pointer to mmc_host from msdc_host
+Date:   Fri, 18 Sep 2020 00:56:25 +0530
+Message-Id: <20200917192624.548720-1-ameynarkhede03@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-References: <20200710111104.29616-1-benchuanggli@gmail.com>
- <9ab64a9d-cd78-785c-b48f-561048cfe2ed@intel.com> <20200914064001.GA2743583@laputa>
- <a0000661-a0e1-8813-0672-c0eb73184079@intel.com> <20200915060306.GA2860208@laputa>
- <CACT4zj-sZaKxyPGL=wm28Bdwq5G7R8-XfDnd=U7=vrNXnXAQVA@mail.gmail.com>
- <20200916005213.GA2942982@laputa> <CACT4zj8QH2wPRL8=zDTWyAvzCRtqqqSQp4X-b83COxY6yB4bXg@mail.gmail.com>
- <20200917005605.GA3071249@laputa>
-In-Reply-To: <20200917005605.GA3071249@laputa>
-From:   Ben Chuang <benchuanggli@gmail.com>
-Date:   Thu, 17 Sep 2020 18:52:58 +0800
-Message-ID: <CACT4zj_1-mmmm4kzQqFD0i+7K5iAm0OhT04GOtFa-o5WEC+RBQ@mail.gmail.com>
-Subject: Re: [RFC PATCH V3 13/21] mmc: sdhci: UHS-II support, skip signal_voltage_switch()
-To:     AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        Ben Chuang <benchuanggli@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-        greg.tu@genesyslogic.com.tw
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Sep 17, 2020 at 8:56 AM AKASHI Takahiro
-<takahiro.akashi@linaro.org> wrote:
->
-> Ben,
->
-> On Wed, Sep 16, 2020 at 05:42:07PM +0800, Ben Chuang wrote:
-> > On Wed, Sep 16, 2020 at 8:52 AM AKASHI Takahiro
-> > <takahiro.akashi@linaro.org> wrote:
-> > >
-> > > On Tue, Sep 15, 2020 at 07:36:14PM +0800, Ben Chuang wrote:
-> > > > Hi Takahiro,
-> > > >
-> > > > On Tue, Sep 15, 2020 at 2:03 PM AKASHI Takahiro
-> > > > <takahiro.akashi@linaro.org> wrote:
-> > > > >
-> > > > > Ben, Adrian,
-> > > > >
-> > > > > On Mon, Sep 14, 2020 at 11:08:14AM +0300, Adrian Hunter wrote:
-> > > > > > On 14/09/20 9:40 am, AKASHI Takahiro wrote:
-> > > > > > > Adrian,
-> > > > > > >
-> > > > > > > On Fri, Aug 21, 2020 at 05:09:01PM +0300, Adrian Hunter wrote:
-> > > > > > >> On 10/07/20 2:11 pm, Ben Chuang wrote:
-> > > > > > >>> From: AKASHI Takahiro <takahiro.akashi@linaro.org>
-> > > > > > >>>
-> > > > > > >>> sdhci_start_signal_voltage_switch() should be called only in UHS-I mode,
-> > > > > > >>> and not for UHS-II mode.
-> > > > > > >>>
-> > > > > > >>> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> > > > > > >>> Signed-off-by: AKASHI Takahiro <takahiro.akashi@linaro.org>
-> > > > > > >>> ---
-> > > > > > >>>  drivers/mmc/host/sdhci.c | 7 ++++++-
-> > > > > > >>>  1 file changed, 6 insertions(+), 1 deletion(-)
-> > > > > > >>>
-> > > > > > >>> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> > > > > > >>> index 5511649946b9..7f2537648a08 100644
-> > > > > > >>> --- a/drivers/mmc/host/sdhci.c
-> > > > > > >>> +++ b/drivers/mmc/host/sdhci.c
-> > > > > > >>> @@ -2623,8 +2623,13 @@ int sdhci_start_signal_voltage_switch(struct mmc_host *mmc,
-> > > > > > >>>   /*
-> > > > > > >>>    * Signal Voltage Switching is only applicable for Host Controllers
-> > > > > > >>>    * v3.00 and above.
-> > > > > > >>> +  * But for UHS2, the signal voltage is supplied by vdd2 which is
-> > > > > > >>> +  * already 1.8v so no voltage switch required.
-> > > > >
-> > > > > I have been confused with this comment.
-> > > > > (I know it came from the original Intel code, not from Ben.)
-> > > > >
-> > > > > If this comment is true,
-> > > > >
-> > > > > > >>>    */
-> > > > > > >>> - if (host->version < SDHCI_SPEC_300)
-> > > > > > >>> + if (host->version < SDHCI_SPEC_300 ||
-> > > > > > >>> +     (IS_ENABLED(CONFIG_MMC_SDHCI_UHS2) &&
-> > > > > > >>> +      host->version >= SDHCI_SPEC_400 &&
-> > > > > > >>> +      host->mmc->flags & MMC_UHS2_SUPPORT))
-> > > > >
-> > > > > the condition above must be wrong since 'flags & MMC_UHS2_SUPPORT'
-> > > > > is one of capabilities for a host controller, not a card
-> > > > > while the selection of voltage depends on a card type.
-> > > >
-> > > > The flag MMC_UHS2_SUPPORT is set at the beginning of mmc_uhs2_rescan_try_freq().
-> > > > In UHS-II flow, it stays set.
-> > > > If the attempt to UHS-II fails finally, it will be unset.
-> > >
-> > > Right, but MMC_UHS2_SUPPORT is also set, at least initially,
-> > > in sdhci_uhs2_add_host(). It is confusing, isn't it?
-> >
-> > I think it can be removed from sdhci_uhs2_add_host() to avoid making confusion.
->
-> Okay,
->
-> > >
-> > > As we discussed before, any card-specific properties, like UHS-II mode,
-> > > should be placed in a card structure, not a host structure.
->
-> Do you have any idea on this?
-> I remember that Ulf also made a similar comment on the "core" side.
+The MediaTek MMC driver uses  pointer to get from private
+msdc_host structure to the generic mmc_host structure.
+However mmc_host always precedes msdc_host in memory so compute
+its address with a subtraction (which is cheaper than a dereference)
+using mmc_from_priv() and drop the extra pointer.
 
-We may list those properties to do first. i.e. MMC_UHS2_INITIALIZED.
+Signed-off-by: Amey Narkhede <ameynarkhede03@gmail.com>
+---
+ drivers/mmc/host/mtk-sd.c | 45 ++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
->
-> -Takahiro Akashi
->
-> > >
-> > > > >
-> > > > > So I wonder why this code still works.
-> > > > > I guess that it is because set_signal_voltage(), or other variant functions,
-> > > > > will never be called for UHS-II cards under the current implementation.
-> > > > >
-> > > > > Looking at mmc_sd_init_card(), we have added some hack:
-> > > > > mmc_sd_init_card()
-> > > > > {
-> > > > >         ...
-> > > > >         /* For UHS2, skip the UHS-I initialization. */
-> > > > >         if ((host->flags & MMC_UHS2_SUPPORT) &&
-> > > > >             (host->flags & MMC_UHS2_INITIALIZED))
-> > > > >                 goto done;
-> > > > >         ...
-> > > > >                 if (mmc_sd_card_using_v18(card)) {
-> > > > >                         if (mmc_host_set_uhs_voltage(host) ||
-> > > > >                             mmc_sd_init_uhs_card(card)) {
-> > > > >                 ...
-> > > > > }
-> > > > >
-> > > > > Ben, can you confirm this?
-> > > > > (There is another callsite of mmc_host_set_uhs_voltage() though.)
-> > > >
-> > > > UHS-II cards use differential signals and don't need to signal voltage switch.
-> > > > But the main task is to set the parameters of UHS-II card interface.
-> > >
-> > > Whoever sets MMC_UHS2_SUPPORT (and MMC_UHS2_INITIALIZED), my assertion above
-> > > (mmc_host_set_uhs_voltage, and hence [sdhci_]start_signal_voltage_switch(), is
-> > > never called for UHS-II cards) will be valid, isn't it?
-> > >
-> > > -Takahiro Akashi
-> > >
-> > > > >
-> > > > > > >> Please look at hooking ->start_signal_voltage_switch() instead
-> > > > > > >
-> > > > > > > Do you mean that you want every platform driver who wants to support UHS-II
-> > > > > > > to set NULL to start_signal_voltage_switch hook even if this hack is
-> > > > > > > platform agnostic?
-> > > > > >
-> > > > > > No, I see UHS-II as a separate layer i.e.
-> > > > > >
-> > > > > >  UHS-II host controller driver
-> > > > > >   |   |
-> > > > > >   |   v
-> > > > > >   |   sdhci-uhs2 e.g. sdhci_uhs2_start_signal_voltage_switch
-> > > > > >   |   |
-> > > > > >   v   v
-> > > > > >   sdhci e.g. sdhci_start_signal_voltage_switch
-> > > > > >
-> > > > > > Most things should go through sdhci-uhs2 but not nessarily everything.
-> > > > >
-> > > > > What I meant by my previous comment is that we don't have to
-> > > > > call any function, sdhci_uhs2_start_signal_voltage_switch in above example,
-> > > > > for UHS-II cards in any case since it is always simply empty.
-> > > > >
-> > > > > -Takahiro Akashi
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index b0c27944db7f..bbd9064e3e4a 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -397,7 +397,6 @@ struct msdc_delay_phase {
+ struct msdc_host {
+ 	struct device *dev;
+ 	const struct mtk_mmc_compatible *dev_comp;
+-	struct mmc_host *mmc;	/* mmc structure */
+ 	int cmd_rsp;
+
+ 	spinlock_t lock;
+@@ -734,14 +733,15 @@ static void msdc_unprepare_data(struct msdc_host *host, struct mmc_request *mrq)
+
+ static u64 msdc_timeout_cal(struct msdc_host *host, u64 ns, u64 clks)
+ {
++	struct mmc_host *mmc = mmc_from_priv(host);
+ 	u64 timeout, clk_ns;
+ 	u32 mode = 0;
+
+-	if (host->mmc->actual_clock == 0) {
++	if (mmc->actual_clock == 0) {
+ 		timeout = 0;
+ 	} else {
+ 		clk_ns  = 1000000000ULL;
+-		do_div(clk_ns, host->mmc->actual_clock);
++		do_div(clk_ns, mmc->actual_clock);
+ 		timeout = ns + clk_ns - 1;
+ 		do_div(timeout, clk_ns);
+ 		timeout += clks;
+@@ -802,6 +802,7 @@ static void msdc_ungate_clock(struct msdc_host *host)
+
+ static void msdc_set_mclk(struct msdc_host *host, unsigned char timing, u32 hz)
+ {
++	struct mmc_host *mmc = mmc_from_priv(host);
+ 	u32 mode;
+ 	u32 flags;
+ 	u32 div;
+@@ -811,7 +812,7 @@ static void msdc_set_mclk(struct msdc_host *host, unsigned char timing, u32 hz)
+ 	if (!hz) {
+ 		dev_dbg(host->dev, "set mclk to 0\n");
+ 		host->mclk = 0;
+-		host->mmc->actual_clock = 0;
++		mmc->actual_clock = 0;
+ 		sdr_clr_bits(host->base + MSDC_CFG, MSDC_CFG_CKPDN);
+ 		return;
+ 	}
+@@ -890,7 +891,7 @@ static void msdc_set_mclk(struct msdc_host *host, unsigned char timing, u32 hz)
+ 	while (!(readl(host->base + MSDC_CFG) & MSDC_CFG_CKSTB))
+ 		cpu_relax();
+ 	sdr_set_bits(host->base + MSDC_CFG, MSDC_CFG_CKPDN);
+-	host->mmc->actual_clock = sclk;
++	mmc->actual_clock = sclk;
+ 	host->mclk = hz;
+ 	host->timing = timing;
+ 	/* need because clk changed. */
+@@ -901,7 +902,7 @@ static void msdc_set_mclk(struct msdc_host *host, unsigned char timing, u32 hz)
+ 	 * mmc_select_hs400() will drop to 50Mhz and High speed mode,
+ 	 * tune result of hs200/200Mhz is not suitable for 50Mhz
+ 	 */
+-	if (host->mmc->actual_clock <= 52000000) {
++	if (mmc->actual_clock <= 52000000) {
+ 		writel(host->def_tune_para.iocon, host->base + MSDC_IOCON);
+ 		if (host->top_base) {
+ 			writel(host->def_tune_para.emmc_top_control,
+@@ -932,7 +933,7 @@ static void msdc_set_mclk(struct msdc_host *host, unsigned char timing, u32 hz)
+ 		sdr_set_field(host->base + tune_reg,
+ 			      MSDC_PAD_TUNE_CMDRRDLY,
+ 			      host->hs400_cmd_int_delay);
+-	dev_dbg(host->dev, "sclk: %d, timing: %d\n", host->mmc->actual_clock,
++	dev_dbg(host->dev, "sclk: %d, timing: %d\n", mmc->actual_clock,
+ 		timing);
+ }
+
+@@ -967,6 +968,7 @@ static inline u32 msdc_cmd_find_resp(struct msdc_host *host,
+ static inline u32 msdc_cmd_prepare_raw_cmd(struct msdc_host *host,
+ 		struct mmc_request *mrq, struct mmc_command *cmd)
+ {
++	struct mmc_host *mmc = mmc_from_priv(host);
+ 	/* rawcmd :
+ 	 * vol_swt << 30 | auto_cmd << 28 | blklen << 16 | go_irq << 15 |
+ 	 * stop << 14 | rw << 13 | dtype << 11 | rsptyp << 7 | brk << 6 | opcode
+@@ -993,7 +995,7 @@ static inline u32 msdc_cmd_prepare_raw_cmd(struct msdc_host *host,
+ 		struct mmc_data *data = cmd->data;
+
+ 		if (mmc_op_multi(opcode)) {
+-			if (mmc_card_mmc(host->mmc->card) && mrq->sbc &&
++			if (mmc_card_mmc(mmc->card) && mrq->sbc &&
+ 			    !(mrq->sbc->arg & 0xFFFF0000))
+ 				rawcmd |= 0x2 << 28; /* AutoCMD23 */
+ 		}
+@@ -1070,9 +1072,10 @@ static int msdc_auto_cmd_done(struct msdc_host *host, int events,
+  */
+ static void msdc_recheck_sdio_irq(struct msdc_host *host)
+ {
++	struct mmc_host *mmc = mmc_from_priv(host);
+ 	u32 reg_int, reg_inten, reg_ps;
+
+-	if (host->mmc->caps & MMC_CAP_SDIO_IRQ) {
++	if (mmc->caps & MMC_CAP_SDIO_IRQ) {
+ 		reg_inten = readl(host->base + MSDC_INTEN);
+ 		if (reg_inten & MSDC_INTEN_SDIOIRQ) {
+ 			reg_int = readl(host->base + MSDC_INT);
+@@ -1080,7 +1083,7 @@ static void msdc_recheck_sdio_irq(struct msdc_host *host)
+ 			if (!(reg_int & MSDC_INT_SDIOIRQ ||
+ 			      reg_ps & MSDC_PS_DATA1)) {
+ 				__msdc_enable_sdio_irq(host, 0);
+-				sdio_signal_irq(host->mmc);
++				sdio_signal_irq(mmc);
+ 			}
+ 		}
+ 	}
+@@ -1113,7 +1116,7 @@ static void msdc_request_done(struct msdc_host *host, struct mmc_request *mrq)
+ 		msdc_unprepare_data(host, mrq);
+ 	if (host->error)
+ 		msdc_reset_hw(host);
+-	mmc_request_done(host->mmc, mrq);
++	mmc_request_done(mmc_from_priv(host), mrq);
+ 	if (host->dev_comp->recheck_sdio_irq)
+ 		msdc_recheck_sdio_irq(host);
+ }
+@@ -1500,6 +1503,7 @@ static void msdc_enable_sdio_irq(struct mmc_host *mmc, int enb)
+
+ static irqreturn_t msdc_cmdq_irq(struct msdc_host *host, u32 intsts)
+ {
++	struct mmc_host *mmc = mmc_from_priv(host);
+ 	int cmd_err = 0, dat_err = 0;
+
+ 	if (intsts & MSDC_INT_RSPCRCERR) {
+@@ -1523,12 +1527,13 @@ static irqreturn_t msdc_cmdq_irq(struct msdc_host *host, u32 intsts)
+ 			cmd_err, dat_err, intsts);
+ 	}
+
+-	return cqhci_irq(host->mmc, 0, cmd_err, dat_err);
++	return cqhci_irq(mmc, 0, cmd_err, dat_err);
+ }
+
+ static irqreturn_t msdc_irq(int irq, void *dev_id)
+ {
+ 	struct msdc_host *host = (struct msdc_host *) dev_id;
++	struct mmc_host *mmc = mmc_from_priv(host);
+
+ 	while (true) {
+ 		unsigned long flags;
+@@ -1551,18 +1556,18 @@ static irqreturn_t msdc_irq(int irq, void *dev_id)
+ 		spin_unlock_irqrestore(&host->lock, flags);
+
+ 		if ((events & event_mask) & MSDC_INT_SDIOIRQ)
+-			sdio_signal_irq(host->mmc);
++			sdio_signal_irq(mmc);
+
+ 		if ((events & event_mask) & MSDC_INT_CDSC) {
+ 			if (host->internal_cd)
+-				mmc_detect_change(host->mmc, msecs_to_jiffies(20));
++				mmc_detect_change(mmc, msecs_to_jiffies(20));
+ 			events &= ~MSDC_INT_CDSC;
+ 		}
+
+ 		if (!(events & (event_mask & ~MSDC_INT_SDIOIRQ)))
+ 			break;
+
+-		if ((host->mmc->caps2 & MMC_CAP2_CQE) &&
++		if ((mmc->caps2 & MMC_CAP2_CQE) &&
+ 		    (events & MSDC_INT_CMDQ)) {
+ 			msdc_cmdq_irq(host, events);
+ 			/* clear interrupts */
+@@ -2434,7 +2439,6 @@ static int msdc_drv_probe(struct platform_device *pdev)
+
+ 	host->dev = &pdev->dev;
+ 	host->dev_comp = of_device_get_match_data(&pdev->dev);
+-	host->mmc = mmc;
+ 	host->src_clk_freq = clk_get_rate(host->src_clk);
+ 	/* Set host parameters to mmc */
+ 	mmc->ops = &mt_msdc_ops;
+@@ -2475,7 +2479,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 	mmc_dev(mmc)->dma_mask = &host->dma_mask;
+
+ 	if (mmc->caps2 & MMC_CAP2_CQE) {
+-		host->cq_host = devm_kzalloc(host->mmc->parent,
++		host->cq_host = devm_kzalloc(mmc->parent,
+ 					     sizeof(*host->cq_host),
+ 					     GFP_KERNEL);
+ 		if (!host->cq_host) {
+@@ -2560,7 +2564,7 @@ static int msdc_drv_remove(struct platform_device *pdev)
+ 	pm_runtime_get_sync(host->dev);
+
+ 	platform_set_drvdata(pdev, NULL);
+-	mmc_remove_host(host->mmc);
++	mmc_remove_host(mmc);
+ 	msdc_deinit_hw(host);
+ 	msdc_gate_clock(host);
+
+@@ -2572,7 +2576,7 @@ static int msdc_drv_remove(struct platform_device *pdev)
+ 	dma_free_coherent(&pdev->dev, MAX_BD_NUM * sizeof(struct mt_bdma_desc),
+ 			host->dma.bd, host->dma.bd_addr);
+
+-	mmc_free_host(host->mmc);
++	mmc_free_host(mmc);
+
+ 	return 0;
+ }
+@@ -2607,6 +2611,7 @@ static void msdc_save_reg(struct msdc_host *host)
+
+ static void msdc_restore_reg(struct msdc_host *host)
+ {
++	struct mmc_host *mmc = mmc_from_priv(host);
+ 	u32 tune_reg = host->dev_comp->pad_tune_reg;
+
+ 	writel(host->save_para.msdc_cfg, host->base + MSDC_CFG);
+@@ -2631,7 +2636,7 @@ static void msdc_restore_reg(struct msdc_host *host)
+ 		writel(host->save_para.pad_tune, host->base + tune_reg);
+ 	}
+
+-	if (sdio_irq_claimed(host->mmc))
++	if (sdio_irq_claimed(mmc))
+ 		__msdc_enable_sdio_irq(host, 1);
+ }
+
+--
+2.28.0
