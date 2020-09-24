@@ -2,95 +2,120 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4758F27716F
-	for <lists+linux-mmc@lfdr.de>; Thu, 24 Sep 2020 14:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CBD1277187
+	for <lists+linux-mmc@lfdr.de>; Thu, 24 Sep 2020 14:50:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727782AbgIXMrh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 24 Sep 2020 08:47:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42140 "EHLO
+        id S1727897AbgIXMuE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 24 Sep 2020 08:50:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727906AbgIXMrf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Sep 2020 08:47:35 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 591BCC0613D3
-        for <linux-mmc@vger.kernel.org>; Thu, 24 Sep 2020 05:47:35 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id x69so3786896lff.3
-        for <linux-mmc@vger.kernel.org>; Thu, 24 Sep 2020 05:47:35 -0700 (PDT)
+        with ESMTP id S1727891AbgIXMuC (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Sep 2020 08:50:02 -0400
+Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3112AC0613D4
+        for <linux-mmc@vger.kernel.org>; Thu, 24 Sep 2020 05:50:02 -0700 (PDT)
+Received: by mail-vk1-xa43.google.com with SMTP id c63so859475vkb.7
+        for <linux-mmc@vger.kernel.org>; Thu, 24 Sep 2020 05:50:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=f64eNyMDkqF7rIi7j77YU8cPPeMMAflX6gkGTptc5So=;
-        b=Rn1HUOVP3l5gnsRPSNDD7NZAxQV9ErudqZMf3H4VdybEViMJEh77HqHX6MPIQHbQsu
-         F9wUQ89FoF316lIFCrQ8cR+5O81fHQBgWWcAp6SdJiz6HlBJ+pu6icUT++LXvDvuzx9e
-         rYq2gMs6YxmZhVwj6WAh7lw9QGMO2dT31NZ8S6YTCue6jWhA3XElI/PiraIjq5RNTos8
-         Z8ndHndXfk6IvtADuciH2BRqYAqFhwGHQhfZS9+5ESiw5kFrFRFxuD5hll/yIaQ0cZU3
-         lJJiL/zlJnXGyOdVEt/kD6rpsZ8gE3EXyOczPqRjTxQkb6s+ioXwW/kw338uSCp7qLFU
-         Mo4Q==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KaaVSqIcUUBv4jvMI8tMeec1SHmQSUxYkPa73n8pOFs=;
+        b=LYpjW38Lm7yYMUQARmzvP4jZII2YOPICEWNqxpkg/j/+CiIyRuZbhZc44cfVyIMpG0
+         QknnZM1f28fIp21NKvF72ieUOW/cKIUxkzUZMeBjoUdHc0eYdAS13YmTZzLeLiJ7SSDI
+         NFoPIkMUOUjltzmHnW62ey04HZkaVL1xAI3Yt+EorwTnfWGkIHvOD0VN2+i4Y+np2TyE
+         g4glGPmSU7vPxqvwVjQnMyTU4yNOHJMP3F52kAhg2++QyunlrnZ9l5JcL1y/wu5oYoAh
+         aQLyBUU2ZKNYfGmd0MxMTQ33qKSur5pc26h3GH1Obwr57cgzeDcJ48rUejH8X8CjFYRh
+         qnAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=f64eNyMDkqF7rIi7j77YU8cPPeMMAflX6gkGTptc5So=;
-        b=LtPAdPOaPqVmK0M/BTNouND+lYotWVll/B0dhPEVxNbC7j5z/89BONXahCN1yVrJ/E
-         jgwgtk9kymdIIu0613ykBH4AW91tRg/Lhk4/oGNlgMwALtwPaWa2+tChSJ6aBJh9tQ0f
-         qwLIqKkpgCPnHrW+KSrjK4SMcoJaAV5/bGMhtjCQ7Gq32C48sSh71TaYctAByMIdGN7L
-         41gey+VE371ElpOzv7Zy0XTXtWqJnKGHz0CdfnYDeYr1DRggZOUhZedhTl5gb+cWc/1o
-         PcE5ZQKEpqSdr0L4Fzp+G/EUOKY5s5uUcxw+P/mVqKh1pEGerrNfqZDkpe+PVmY46HhI
-         efUA==
-X-Gm-Message-State: AOAM533dzGTK/Rg5tXQuuCkncCkqtsbCvBiQdnDYjK/fFQs6eIKUfL6Z
-        BGDjUBOulpZ0gTqcd+Nnv+BvGA==
-X-Google-Smtp-Source: ABdhPJz8yfmG1UfkLIR+fdyUJOJEKNire/MxEsT/iywsIjS57CnNXoOtn4Kfd92XGfUX8Kg/mYGK+w==
-X-Received: by 2002:a19:f245:: with SMTP id d5mr225857lfk.97.1600951652216;
-        Thu, 24 Sep 2020 05:47:32 -0700 (PDT)
-Received: from localhost.localdomain (h-155-4-133-169.NA.cust.bahnhof.se. [155.4.133.169])
-        by smtp.gmail.com with ESMTPSA id o128sm1959187lfa.126.2020.09.24.05.47.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2020 05:47:31 -0700 (PDT)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC fixes for v5.9-rc7
-Date:   Thu, 24 Sep 2020 14:47:30 +0200
-Message-Id: <20200924124730.331517-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KaaVSqIcUUBv4jvMI8tMeec1SHmQSUxYkPa73n8pOFs=;
+        b=UdP5mu3hV3pb7GZOKymM0cn22KB5ur7BMyNjvrVb4/gKD36VIrgdt+LxuKJHap+1vc
+         SXXfRTbIFC8E6CUkMIBvwItuTG1AV4gp2kpbxtY4piJcQcDKhlDDYsuaFG2m3ocom4e7
+         ww0SWpFTXvraBj/CJrCCvX3FyYHivrCt203708Il5/XLDy0ET9oK1Sm08yrZIir5/pMK
+         U0bPf+MrEo36n5mTH4DtO20+kU2I+cAvYo4QSGZsNFSCrQN0HZ3ULqelCJWuLEMHNfMt
+         LcPE0Hskk3HjBj6RM8TdDQU1MBl4cpDuXnnylfoSFugfO0ahYDP+KqjBpZemgV8Z55eM
+         Acig==
+X-Gm-Message-State: AOAM533xfeU5qRSDjEjq1AihDtalC9VD318tg+aWQItglmNCP9NUFn/C
+        U1Yss6QDWcOdIW/HgiOMdK8tOKqd8lqENZENiqbxTowzNoiaSg==
+X-Google-Smtp-Source: ABdhPJy1LDyctw9RvbkrcO1XdBDR5rhMeMLQfTrM0BkDMB80+y0l94D8B42YO9htgFE4ZBZaFx7srVi76jbfPMyiNok=
+X-Received: by 2002:a1f:964c:: with SMTP id y73mr3613270vkd.8.1600951801042;
+ Thu, 24 Sep 2020 05:50:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1595180527-11320-9-git-send-email-amittomer25@gmail.com> <1599801849-6071-1-git-send-email-amittomer25@gmail.com>
+In-Reply-To: <1599801849-6071-1-git-send-email-amittomer25@gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 24 Sep 2020 14:49:23 +0200
+Message-ID: <CAPDyKFoCRJrABJ=Ciki4E7Rr0eaE9wCRne3G8AtEdG8o-AmsBA@mail.gmail.com>
+Subject: Re: [PATCH v7 08/10] dt-bindings: mmc: owl: add compatible string actions,s700-mmc
+To:     Amit Singh Tomar <amittomer25@gmail.com>
+Cc:     Andre Przywara <andre.przywara@arm.com>,
+        =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        cristian.ciocaltea@gmail.com,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-actions@lists.infradead.org,
+        DTML <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+On Fri, 11 Sep 2020 at 07:24, Amit Singh Tomar <amittomer25@gmail.com> wrote:
+>
+> The commit adds a new SoC specific compatible string "actions,s700-mmc"
+> in combination with more generic string "actions,owl-mmc".
+>
+> Placement order of these strings should abide by the principle of
+> "from most specific to most general".
+>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Amit Singh Tomar <amittomer25@gmail.com>
 
-Here's a PR with an MMC fix intended for v5.9-rc7. Details about the highlights
-are as usual found in the signed tag.
-
-Please pull this in!
+Applied for next, thanks!
 
 Kind regards
-Ulf Hansson
+Uffe
 
 
-The following changes since commit f0c393e2104e48c8a881719a8bd37996f71b0aee:
-
-  mmc: sdio: Use mmc_pre_req() / mmc_post_req() (2020-09-07 08:57:44 +0200)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.9-rc4-2
-
-for you to fetch changes up to 14801c624066a55139c2c57963eb1b859d0a316a:
-
-  mmc: mmc_spi: Fix mmc_spi_dma_alloc() return type for !HAS_DMA (2020-09-14 11:46:16 +0200)
-
-----------------------------------------------------------------
-MMC host:
- - mmc_spi: Fix build warning when CONFIG_HAS_DMA is unset
-
-----------------------------------------------------------------
-Geert Uytterhoeven (1):
-      mmc: mmc_spi: Fix mmc_spi_dma_alloc() return type for !HAS_DMA
-
- drivers/mmc/host/mmc_spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> ---
+> Changes since v6:
+>         * No change.
+> Changes since v5:
+>         * Added Mani's Reviewed-by: tag.
+> Changes since v4:
+>         * No change.
+> Changes since v3:
+>         * No change.
+> Changes since v2:
+>         * Added Rob's Reviewed-by tag
+> ---
+>  Documentation/devicetree/bindings/mmc/owl-mmc.yaml | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/owl-mmc.yaml b/Documentation/devicetree/bindings/mmc/owl-mmc.yaml
+> index 1380501fb8f0..5eab25ccf7ae 100644
+> --- a/Documentation/devicetree/bindings/mmc/owl-mmc.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/owl-mmc.yaml
+> @@ -14,7 +14,11 @@ maintainers:
+>
+>  properties:
+>    compatible:
+> -    const: actions,owl-mmc
+> +    oneOf:
+> +      - const: actions,owl-mmc
+> +      - items:
+> +          - const: actions,s700-mmc
+> +          - const: actions,owl-mmc
+>
+>    reg:
+>      maxItems: 1
+> --
+> 2.7.4
+>
