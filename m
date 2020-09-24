@@ -2,105 +2,115 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC8E6277185
-	for <lists+linux-mmc@lfdr.de>; Thu, 24 Sep 2020 14:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA6D4277188
+	for <lists+linux-mmc@lfdr.de>; Thu, 24 Sep 2020 14:50:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727890AbgIXMuP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 24 Sep 2020 08:50:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42554 "EHLO
+        id S1727952AbgIXMuX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 24 Sep 2020 08:50:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727879AbgIXMuO (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Sep 2020 08:50:14 -0400
+        with ESMTP id S1727798AbgIXMuR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Sep 2020 08:50:17 -0400
 Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B776C0613CE
-        for <linux-mmc@vger.kernel.org>; Thu, 24 Sep 2020 05:50:14 -0700 (PDT)
-Received: by mail-vs1-xe43.google.com with SMTP id y194so2043540vsc.4
-        for <linux-mmc@vger.kernel.org>; Thu, 24 Sep 2020 05:50:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2ABC0613CE
+        for <linux-mmc@vger.kernel.org>; Thu, 24 Sep 2020 05:50:17 -0700 (PDT)
+Received: by mail-vs1-xe43.google.com with SMTP id p24so2030319vsf.8
+        for <linux-mmc@vger.kernel.org>; Thu, 24 Sep 2020 05:50:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OcB75CatxSBC6Q8DXJ3S92Eqm9+H7JpB8Tl4CEWfRhk=;
-        b=KddwqHQxghpVSslYiIx32YQQApT0cpHmLyGtc8IV84lvik+RyS6CCe/IN0LjSYbuKX
-         37HNL0Bmy3JErrMxQa8DjS+/7RImTFCgNOh7UiSbMa9UqEv6BK/UfcsSHOFvVbJxH9YS
-         HKeTmHBnfRo4oFyGZNZVppV3jrS058nAfVRkFaHWL5gvKRR8ybDGXUeQfZmshHDQWy4Z
-         2p6I99+ZVgANZ1Q+vBTgkv5E6QXHG03OuD04PctJLwgG+8COIjBw8DA6kDJ7mKxTOZZn
-         L0hyZ6XQCsdp6ZYZM+2cf+EYI+LqyiYIRdVxmlm0wwIdbBbiSM264kGC0J1WdVF+qTbP
-         J58w==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=Y5Ppu2JDn7zFg6xlFdfb3UOtdIGvgOWwdbFNFP5tnu4=;
+        b=Yu4vRTmG1jPlvfBDq79ZztbfRzbktyevZvLxIv0IM9L73mP3E4NsCKzbmzBWTek5st
+         llYkBsH1PM3JmDesX9U9ClzIQMCxSe9buzQUJ8SURPVXa4oXjnFUw93ptWB1GazF3YhD
+         zuvSdgBi+4pjuGTDumHwUg48PwgKuobB27ASMnulPfjLWO/dCZD7WcuXbLkGq8E3pZ0A
+         ylmJIpkAljVF2FJmzMlgUlTniJE+lY7hsZ8JtQWsKaksNkOuM6lhlmzx+EEeNjn54AT0
+         FSNm8tJPeZPOBhcpixv9caVIJ8V7jsuBp1aCpcnrUBycRTVjE6tYMNU532zKdYNTtlbu
+         mXvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OcB75CatxSBC6Q8DXJ3S92Eqm9+H7JpB8Tl4CEWfRhk=;
-        b=oG+INTk75ZXNgCYqumXnnpx9sRUiY0yU/w2FxchAA2K1Mvn/Q3gEgxrC7EhqPthKA0
-         RlBcrRP8x/49fcumtIMxdsQIXAmRaCmLhhgFjj6YaQp4nbnZ9F7W4n9F+KpfrYNnII7/
-         MeO2TkQ2YAykRjhe+UOMwYNfxzMa+N5SSnSAkMUZCAJ4/NQYmea47x9cEsRcb1przYUA
-         GGCpQa9OCA8sp/IEEBwUH/7tre3cdF6UdHSlZ1Q46UfC65v4gdkbbCQArCdK2Xl0i4jF
-         I062/C0wqQqlmZuyU4YrZaBR/j7LrAmEZCWN0Wsg1cVg0j85EWcloxH6hxleoCVo87Lt
-         0ztg==
-X-Gm-Message-State: AOAM530aBQc06nAy8UqxVZ+6KnFcTGSiz+2940ZntDaC8NWlGVR4rgqo
-        Y+ybI4ug467yHhzO8aVrCyOOAFzOV0XPg3WPf878iVZ+kY7buw==
-X-Google-Smtp-Source: ABdhPJy/VMNbUhEgnpsD3rP5lBsuTs7RvAdeWEDJ1kVpaQ8aGNjOrrQ3/nctlWDNLjW7VWKEv+odaJxdERo87iDQAZM=
-X-Received: by 2002:a67:ec9a:: with SMTP id h26mr3598723vsp.34.1600951813551;
- Thu, 24 Sep 2020 05:50:13 -0700 (PDT)
+         :message-id:subject:to;
+        bh=Y5Ppu2JDn7zFg6xlFdfb3UOtdIGvgOWwdbFNFP5tnu4=;
+        b=ZWMac6KBkXIEQ062kbpubvUwtSiTkSzFD0ZwhzjjLRabAG2UAAQ26ST602g6G7oT+J
+         hdCDHQQKvVk8BKnEG5iMb+OsjtNPQpT+u7NI5qKynp0DwzAVUKUxdyIGYZ6QEwUEEZTl
+         XPeShF2N1fAQYDYwo5FhEF+V/+yKb2BivqLzD9ia5/HjrKclIJF8q6zEWBDqAHLaGbC+
+         1kWPzV7c0HH1pbss4cLy5gOeHgIK07Akx53zeOF4Hlccb3h68F87f4opgIWb7TJ++7/7
+         vDkm/Fsti1joCAPIb4BzfPhL6yLYylvzhZlL5tTr4LG9FTllBGhCM3/06ld4owbqMoeV
+         GQ+w==
+X-Gm-Message-State: AOAM531nZlDV4YE2oReqvtozFEyUO8XHKGWUvkd084CFuY5AkpU4PqrQ
+        Ze55GmA0NPQ/h00r0sxiK8ycHqLlNHbwyDsW3uwjQWTRVEpFHg==
+X-Google-Smtp-Source: ABdhPJy5nlulxWuM+Jo+bmpJ8LIGX/KrKnkL/IfjnXTnHwt9FSCQfeiQ0rEV2vyyC4xSOL1iFQBJ5klwacfan+B8gmg=
+X-Received: by 2002:a67:d011:: with SMTP id r17mr3791446vsi.48.1600951816895;
+ Thu, 24 Sep 2020 05:50:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200918215446.65654-1-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20200918215446.65654-1-wsa+renesas@sang-engineering.com>
+References: <20200916090121.2350-1-wsa+renesas@sang-engineering.com>
+ <CAPDyKFoUw=xkPbCORSJ2io7Gs34dbbXQaGXdTsuzUqd+WEdR=A@mail.gmail.com> <20200918214759.GA65185@kunai>
+In-Reply-To: <20200918214759.GA65185@kunai>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 24 Sep 2020 14:49:35 +0200
-Message-ID: <CAPDyKFoSvXrgZubey7On7fC65kpGXQ9zsRUq5CWoL5tuHYq1OQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: core: document mmc_hw_reset()
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Date:   Thu, 24 Sep 2020 14:49:38 +0200
+Message-ID: <CAPDyKFqaA3rdFMYSfmuDB39mtY-bcwUUBfE_OHrOvbibWL6KgQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: core: document mmc_hw_reset
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 18 Sep 2020 at 23:54, Wolfram Sang
+On Fri, 18 Sep 2020 at 23:48, Wolfram Sang
 <wsa+renesas@sang-engineering.com> wrote:
 >
-> Add documentation for mmc_hw_reset to make sure the intended use case is
-> clear.
+> On Wed, Sep 16, 2020 at 11:47:10AM +0200, Ulf Hansson wrote:
+> > On Wed, 16 Sep 2020 at 11:01, Wolfram Sang
+> > <wsa+renesas@sang-engineering.com> wrote:
+> > >
+> > > Add documentation for mmc_hw_reset to make sure the intended use case is
+> > > clear.
+> > >
+> > > Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> > > ---
+> > >
+> > > While working on this, I get the feeling this function should be renamed
+> > > to 'mmc_card_reset' or something similar. 'hw' is still confusing
+> > > because it could easily be the host controller, too. I volunteer to
+> > > prepare a patch if we can agree on a better name.
+> >
+> > You have a point. Although we also have mmc_sw_reset().
 >
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Ah, I didn't know that. Though, mmc_card_{hw|sw}_reset() sounds still
+> way better to me.
 
-Applied for next, thanks!
+I fully agree.
+
+>
+> > Another thing that I would like to change is to make both of these
+> > functions take a struct mmc_card* as in-parameter, rather than the
+> > current struct mmc_host*.
+> >
+> > Not sure that it would completely solve the confusion, but at least it
+> > would be a little more clear.
+>
+> Maybe if we do both, it will be really clear? :)
+
+Makes perfect sense to me.
+
+>
+> > > +/**
+> > > + * mmc_hw_reset - reset the card
+> > > + * @host: MMC host to which the card is attached
+> > > + *
+> > > + * Reset the remote card. This function is only for upper layers, like the
+> >
+> > Perhaps make it clear that it's a full (or hw) reset, not just a reset
+> > (as it could also be a soft reset). Moreover, I think you can skip
+> > "remote".
+>
+> OK, will send V2 in a minute.
+>
+
+I have applied that one. Let's deal with potential additional
+improvements on top.
 
 Kind regards
 Uffe
-
-
-> ---
->
-> Changes since v1:
-> * make clear it is a full reset
-> * don't say "remote card"
->
->  drivers/mmc/core/core.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-> index 8ccae6452b9c..d42037f0f10d 100644
-> --- a/drivers/mmc/core/core.c
-> +++ b/drivers/mmc/core/core.c
-> @@ -2063,6 +2063,16 @@ static void mmc_hw_reset_for_init(struct mmc_host *host)
->         host->ops->hw_reset(host);
->  }
->
-> +/**
-> + * mmc_hw_reset - reset the card in hardware
-> + * @host: MMC host to which the card is attached
-> + *
-> + * Hard reset the card. This function is only for upper layers, like the
-> + * block layer or card drivers. You cannot use it in host drivers (struct
-> + * mmc_card might be gone then).
-> + *
-> + * Return: 0 on success, -errno on failure
-> + */
->  int mmc_hw_reset(struct mmc_host *host)
->  {
->         int ret;
-> --
-> 2.28.0
->
