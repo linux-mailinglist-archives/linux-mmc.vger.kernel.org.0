@@ -2,44 +2,123 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFEB427F059
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Sep 2020 19:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECF6A27F036
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Sep 2020 19:23:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731560AbgI3RYR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Sep 2020 13:24:17 -0400
-Received: from [110.74.151.213] ([110.74.151.213]:21524 "EHLO
-        mail.bless.gov.my" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725872AbgI3RYP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Sep 2020 13:24:15 -0400
-Received: from User (unknown [172.20.84.1])
-        by mail.bless.gov.my (Postfix) with SMTP id D0DC968525AD;
-        Wed, 30 Sep 2020 18:45:53 +0800 (MYT)
-Reply-To: <iinfo446@gmail.com>
-From:   "Mrs. Susan Carter" <test@mail.bless.gov.my>
-Subject: Good day,    
-Date:   Wed, 30 Sep 2020 11:46:14 +0100
+        id S1731437AbgI3RX5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Sep 2020 13:23:57 -0400
+Received: from mga02.intel.com ([134.134.136.20]:38534 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725837AbgI3RX4 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 30 Sep 2020 13:23:56 -0400
+IronPort-SDR: PAuC9TzZNqSxdIWFpc4DYuc8i63cdVGdB1gZ/FsnMVCYAqFhd0YTRlDaQsqrxAY36mCLOf4wAs
+ ZAJQ2N60/nPg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9760"; a="150157847"
+X-IronPort-AV: E=Sophos;i="5.77,322,1596524400"; 
+   d="scan'208";a="150157847"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2020 10:23:56 -0700
+IronPort-SDR: i/Wr/vMjVXkZ5qogz7WZNWTib8KiEGRz3nH8oSSMXjiat3fjS8SP+4r76rLDlC36IzFZqUs5N6
+ 0O98strF7WMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,322,1596524400"; 
+   d="scan'208";a="457741574"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.190]) ([10.237.72.190])
+  by orsmga004.jf.intel.com with ESMTP; 30 Sep 2020 10:23:52 -0700
+Subject: Re: [PATCH] mmc: core: don't set limits.discard_granularity as 0
+To:     Coly Li <colyli@suse.de>, linux-mmc@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+        Vicente Bergas <vicencb@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+References: <20200930160854.65710-1-colyli@suse.de>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <5178b9e0-6b95-45ef-80f1-862de554e625@intel.com>
+Date:   Wed, 30 Sep 2020 20:23:19 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
+In-Reply-To: <20200930160854.65710-1-colyli@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20200930104553.D0DC968525AD@mail.bless.gov.my>
-To:     undisclosed-recipients:;
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Good day,
+On 30/09/20 7:08 pm, Coly Li wrote:
+> In mmc_queue_setup_discard() the mmc driver queue's discard_granularity
+> might be set as 0 (when card->pref_erase > max_discard) while the mmc
+> device still declares to support discard operation. This is buggy and
+> triggered the following kernel warning message,
+> 
+> WARNING: CPU: 0 PID: 135 at __blkdev_issue_discard+0x200/0x294
+> CPU: 0 PID: 135 Comm: f2fs_discard-17 Not tainted 5.9.0-rc6 #1
+> Hardware name: Google Kevin (DT)
+> pstate: 00000005 (nzcv daif -PAN -UAO BTYPE=--)
+> pc : __blkdev_issue_discard+0x200/0x294
+> lr : __blkdev_issue_discard+0x54/0x294
+> sp : ffff800011dd3b10
+> x29: ffff800011dd3b10 x28: 0000000000000000 x27: ffff800011dd3cc4 x26: ffff800011dd3e18 x25: 000000000004e69b x24: 0000000000000c40 x23: ffff0000f1deaaf0 x22: ffff0000f2849200 x21: 00000000002734d8 x20: 0000000000000008 x19: 0000000000000000 x18: 0000000000000000 x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000 x14: 0000000000000394 x13: 0000000000000000 x12: 0000000000000000 x11: 0000000000000000 x10: 00000000000008b0 x9 : ffff800011dd3cb0 x8 : 000000000004e69b x7 : 0000000000000000 x6 : ffff0000f1926400 x5 : ffff0000f1940800 x4 : 0000000000000000 x3 : 0000000000000c40 x2 : 0000000000000008 x1 : 00000000002734d8 x0 : 0000000000000000 Call trace:
+> __blkdev_issue_discard+0x200/0x294
+> __submit_discard_cmd+0x128/0x374
+> __issue_discard_cmd_orderly+0x188/0x244
+> __issue_discard_cmd+0x2e8/0x33c
+> issue_discard_thread+0xe8/0x2f0
+> kthread+0x11c/0x120
+> ret_from_fork+0x10/0x1c
+> ---[ end trace e4c8023d33dfe77a ]---
+> 
+> This patch fixes the issue by setting discard_granularity as SECTOR_SIZE
+> instead of 0 when (card->pref_erase > max_discard) is true. Now no more
+> complain from __blkdev_issue_discard() for the improper value of discard
+> granularity.
+> 
+> Fixes: commit e056a1b5b67b ("mmc: queue: let host controllers specify maximum discard timeout")
 
-My name are Mrs. Susan Carter an America but a United Kingdom Citizen, I???m 57 years old, widow, married to late Eng Martins Carter who is a British, who until his death worked with Dutch Filtration for Twenty-Six years before he died in the year 2015 after a brief illness that lasted only five days.
+That "Fixes" tag is a bit misleading.  For some time, the block layer had
+no problem with discard_granularity of zero, and blk_bio_discard_split()
+still doesn't (see below).
 
-When my late husband was alive he deposited the sum of US$50 Million in bank USA through his Financial Lawyer in the United State of America and we all agreed as a couple to donate all of that to charity. Following my health (Lung Cancer), my Doctor told me that I may not live longer than required due to my health condition.
+static struct bio *blk_bio_discard_split(struct request_queue *q,
+					 struct bio *bio,
+					 struct bio_set *bs,
+					 unsigned *nsegs)
+{
+	unsigned int max_discard_sectors, granularity;
+	int alignment;
+	sector_t tmp;
+	unsigned split_sectors;
 
-Looking forward to seeing someone who can use the money for charitable work.
+	*nsegs = 1;
 
-Best Regards
-Yours sincerely
-Mrs. Susan Carter
+	/* Zero-sector (unknown) and one-sector granularities are the same.  */
+	granularity = max(q->limits.discard_granularity >> 9, 1U);
+
+
+> Reported-by: Vicente Bergas <vicencb@gmail.com>
+> Signed-off-by: Coly Li <colyli@suse.de>
+> Cc: Adrian Hunter <adrian.hunter@intel.com>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> ---
+>  drivers/mmc/core/queue.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
+> index 6c022ef0f84d..350d0cc4ee62 100644
+> --- a/drivers/mmc/core/queue.c
+> +++ b/drivers/mmc/core/queue.c
+> @@ -190,7 +190,7 @@ static void mmc_queue_setup_discard(struct request_queue *q,
+>  	q->limits.discard_granularity = card->pref_erase << 9;
+>  	/* granularity must not be greater than max. discard */
+>  	if (card->pref_erase > max_discard)
+> -		q->limits.discard_granularity = 0;
+> +		q->limits.discard_granularity = SECTOR_SIZE;
+>  	if (mmc_can_secure_erase_trim(card))
+>  		blk_queue_flag_set(QUEUE_FLAG_SECERASE, q);
+>  }
+> 
+
