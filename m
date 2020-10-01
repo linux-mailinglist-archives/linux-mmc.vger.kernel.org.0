@@ -2,237 +2,185 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4210C280134
-	for <lists+linux-mmc@lfdr.de>; Thu,  1 Oct 2020 16:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C10A82802D6
+	for <lists+linux-mmc@lfdr.de>; Thu,  1 Oct 2020 17:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732495AbgJAOZM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 1 Oct 2020 10:25:12 -0400
-Received: from mga14.intel.com ([192.55.52.115]:5353 "EHLO mga14.intel.com"
+        id S1732429AbgJAPfg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 1 Oct 2020 11:35:36 -0400
+Received: from foss.arm.com ([217.140.110.172]:37880 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732298AbgJAOZG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 1 Oct 2020 10:25:06 -0400
-IronPort-SDR: 2zexqBrLr11c8GKZPj6kfW6VhNBiRRyilsz7Qvw6SWnA6za1UJNjhygrVpOiBVXl9nRePjd4XR
- zOyUbHaF+Nbw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9760"; a="161975973"
-X-IronPort-AV: E=Sophos;i="5.77,323,1596524400"; 
-   d="scan'208";a="161975973"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2020 07:25:02 -0700
-IronPort-SDR: d1RdrHM6/Deez09SqKaThnoyRd0FMP+vs/mOyPHo7zAOD6oVijwEcY9C1/IrjeE6v/8HaYUpnP
- ACIeInAbs1ag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,323,1596524400"; 
-   d="scan'208";a="294992537"
-Received: from zulkifl3-ilbpg0.png.intel.com ([10.88.229.114])
-  by fmsmga008.fm.intel.com with ESMTP; 01 Oct 2020 07:24:59 -0700
-From:   muhammad.husaini.zulkifli@intel.com
-To:     adrian.hunter@intel.com, michal.simek@xilinx.com,
+        id S1731885AbgJAPfc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 1 Oct 2020 11:35:32 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B187D6E;
+        Thu,  1 Oct 2020 08:35:31 -0700 (PDT)
+Received: from bogus (unknown [10.57.52.244])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6B14B3F70D;
+        Thu,  1 Oct 2020 08:35:29 -0700 (PDT)
+Date:   Thu, 1 Oct 2020 16:35:26 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     muhammad.husaini.zulkifli@intel.com
+Cc:     adrian.hunter@intel.com, michal.simek@xilinx.com,
         ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     lakshmi.bai.raja.subramanian@intel.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        lakshmi.bai.raja.subramanian@intel.com, arnd@arndb.de,
         wan.ahmad.zainie.wan.mohamad@intel.com,
-        muhammad.husaini.zulkifli@intel.com, arnd@arndb.de
-Subject: [PATCH v2 3/3] mmc: sdhci-of-arasan: Enable UHS-1 support for Keem Bay SOC
-Date:   Thu,  1 Oct 2020 22:21:49 +0800
-Message-Id: <20201001142149.23445-4-muhammad.husaini.zulkifli@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201001142149.23445-1-muhammad.husaini.zulkifli@intel.com>
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v2 2/3] firmware: Keem Bay: Add support for Arm Trusted
+ Firmware Service call
+Message-ID: <20201001153526.GD906@bogus>
 References: <20201001142149.23445-1-muhammad.husaini.zulkifli@intel.com>
+ <20201001142149.23445-3-muhammad.husaini.zulkifli@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201001142149.23445-3-muhammad.husaini.zulkifli@intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+On Thu, Oct 01, 2020 at 10:21:48PM +0800, muhammad.husaini.zulkifli@intel.com wrote:
+> From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+> 
+> Add generic firmware driver for Keem Bay SOC to support
+> Arm Trusted Firmware Services call.
+> 
+> Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+> ---
+>  drivers/firmware/Kconfig                   |   1 +
+>  drivers/firmware/Makefile                  |   1 +
+>  drivers/firmware/intel/Kconfig             |  14 +++
+>  drivers/firmware/intel/Makefile            |   4 +
+>  drivers/firmware/intel/keembay_smc.c       | 119 +++++++++++++++++++++
+>  include/linux/firmware/intel/keembay_smc.h |  27 +++++
+>  6 files changed, 166 insertions(+)
+>  create mode 100644 drivers/firmware/intel/Kconfig
+>  create mode 100644 drivers/firmware/intel/Makefile
+>  create mode 100644 drivers/firmware/intel/keembay_smc.c
+>  create mode 100644 include/linux/firmware/intel/keembay_smc.h
+> 
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> index fbd785dd0513..41de77d2720e 100644
+> --- a/drivers/firmware/Kconfig
+> +++ b/drivers/firmware/Kconfig
+> @@ -305,5 +305,6 @@ source "drivers/firmware/psci/Kconfig"
+>  source "drivers/firmware/smccc/Kconfig"
+>  source "drivers/firmware/tegra/Kconfig"
+>  source "drivers/firmware/xilinx/Kconfig"
+> +source "drivers/firmware/intel/Kconfig"
+>  
+>  endmenu
+> diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+> index 99510be9f5ed..00f295ab9860 100644
+> --- a/drivers/firmware/Makefile
+> +++ b/drivers/firmware/Makefile
+> @@ -33,3 +33,4 @@ obj-y				+= psci/
+>  obj-y				+= smccc/
+>  obj-y				+= tegra/
+>  obj-y				+= xilinx/
+> +obj-y				+= intel/
+> diff --git a/drivers/firmware/intel/Kconfig b/drivers/firmware/intel/Kconfig
+> new file mode 100644
+> index 000000000000..b2b7a4e5410b
+> --- /dev/null
+> +++ b/drivers/firmware/intel/Kconfig
+> @@ -0,0 +1,14 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +menu "Intel Firmware Drivers"
+> +
+> +config KEEMBAY_FIRMWARE
+> +	bool "Enable Keem Bay firmware interface support"
+> +	depends on HAVE_ARM_SMCCC
 
-Voltage switching sequence is needed to support UHS-1 interface.
-There are 2 places to control the voltage.
-1) By setting the AON register using firmware driver calling
-system-level platform management layer (SMC) to set the register.
-2) By controlling the GPIO expander value to drive either 1.8V or 3.3V
-for power mux input.
+What is the version of SMCCC implemented ?
+If SMCCC v1.1+, use HAVE_ARM_SMCCC_DISCOVERY
 
-Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
----
- drivers/mmc/host/sdhci-of-arasan.c | 127 +++++++++++++++++++++++++++++
- 1 file changed, 127 insertions(+)
+> +	default n
+> +	help
+> +	  Firmware interface driver is used by device drivers
+> +	  to communicate with the arm-trusted-firmware
+> +	  for platform management services.
+> +	  If in doubt, say "N".
+> +
+> +endmenu
+> diff --git a/drivers/firmware/intel/Makefile b/drivers/firmware/intel/Makefile
+> new file mode 100644
+> index 000000000000..e6d2e1ea69a7
+> --- /dev/null
+> +++ b/drivers/firmware/intel/Makefile
+> @@ -0,0 +1,4 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +# Makefile for Intel firmwares
+> +
+> +obj-$(CONFIG_KEEMBAY_FIRMWARE) = keembay_smc.o
+> diff --git a/drivers/firmware/intel/keembay_smc.c b/drivers/firmware/intel/keembay_smc.c
+> new file mode 100644
+> index 000000000000..24013cd1f5da
+> --- /dev/null
+> +++ b/drivers/firmware/intel/keembay_smc.c
+> @@ -0,0 +1,119 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + *  Copyright (C) 2020-2021, Intel Corporation
+> + */
+> +
+> +#include <linux/arm-smccc.h>
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/of_platform.h>
+> +
+> +#include <linux/firmware/intel/keembay_smc.h>
+> +
+> +static noinline int do_fw_call_fail(u64 arg0, u64 arg1)
+> +{
+> +	return -ENODEV;
+> +}
+> +
+> +/**
+> + * Simple wrapper functions to be able to use a function pointer
+> + * Invoke do_fw_call_smc or others in future, depending on the configuration
+> + */
+> +static int (*do_fw_call)(u64, u64) = do_fw_call_fail;
+> +
+> +/**
+> + * do_fw_call_smc() - Call system-level platform management layer (SMC)
+> + * @arg0:		Argument 0 to SMC call
+> + * @arg1:		Argument 1 to SMC call
+> + *
+> + * Invoke platform management function via SMC call.
+> + *
+> + * Return: Returns status, either success or error
+> + */
+> +static noinline int do_fw_call_smc(u64 arg0, u64 arg1)
+> +{
+> +	struct arm_smccc_res res;
+> +
+> +	arm_smccc_smc(arg0, arg1, 0, 0, 0, 0, 0, 0, &res);
+> +
+> +	return res.a0;
+> +}
+> +
+> +/**
+> + * keembay_sd_voltage_selection() - Set the IO Pad voltage
+> + * @volt: voltage selection either 1.8V or 3.3V
+> + *
+> + * This function is used to set the IO Line Voltage
+> + *
+> + * Return: 0 for success, Invalid for failure
+> + */
+> +int keembay_sd_voltage_selection(int volt)
+> +{
+> +	return do_fw_call(KEEMBAY_SIP_FUNC_ID, volt);
 
-diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-index f186fbd016b1..73941418eaa7 100644
---- a/drivers/mmc/host/sdhci-of-arasan.c
-+++ b/drivers/mmc/host/sdhci-of-arasan.c
-@@ -16,6 +16,7 @@
-  */
- 
- #include <linux/clk-provider.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
- #include <linux/of_device.h>
-@@ -23,6 +24,7 @@
- #include <linux/regmap.h>
- #include <linux/of.h>
- #include <linux/firmware/xlnx-zynqmp.h>
-+#include <linux/firmware/intel/keembay_smc.h>
- 
- #include "cqhci.h"
- #include "sdhci-pltfm.h"
-@@ -150,6 +152,7 @@ struct sdhci_arasan_data {
- 	struct regmap	*soc_ctl_base;
- 	const struct sdhci_arasan_soc_ctl_map *soc_ctl_map;
- 	unsigned int	quirks;
-+	struct gpio_desc *uhs_gpio;
- 
- /* Controller does not have CD wired and will not function normally without */
- #define SDHCI_ARASAN_QUIRK_FORCE_CDTEST	BIT(0)
-@@ -361,6 +364,113 @@ static int sdhci_arasan_voltage_switch(struct mmc_host *mmc,
- 	return -EINVAL;
- }
- 
-+static int sdhci_arasan_keembay_voltage_switch(struct mmc_host *mmc,
-+				       struct mmc_ios *ios)
-+{
-+	struct sdhci_host *host = mmc_priv(mmc);
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_arasan_data *sdhci_arasan = sdhci_pltfm_priv(pltfm_host);
-+	u16 ctrl_2;
-+	u16 clk;
-+	int ret;
-+
-+	switch (ios->signal_voltage) {
-+	case MMC_SIGNAL_VOLTAGE_180:
-+		clk  = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+		clk &= ~SDHCI_CLOCK_CARD_EN;
-+		sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
-+
-+		clk  = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+		if (clk & SDHCI_CLOCK_CARD_EN)
-+			return -EAGAIN;
-+
-+		sdhci_writeb(host, SDHCI_POWER_ON | SDHCI_POWER_180,
-+				   SDHCI_POWER_CONTROL);
-+
-+		/*
-+		 * Set VDDIO_B voltage to Low for 1.8V
-+		 * which is controlling by GPIO Expander.
-+		 */
-+		gpiod_set_value_cansleep(sdhci_arasan->uhs_gpio, 0);
-+
-+		/*
-+		 * This is like final gatekeeper. Need to ensure changed voltage
-+		 * is settled before and after turn on this bit.
-+		 */
-+		usleep_range(1000, 1100);
-+
-+		ret = keembay_sd_voltage_selection(KEEMBAY_SET_1V8_VOLT);
-+		if (ret)
-+			return ret;
-+
-+		usleep_range(1000, 1100);
-+
-+		ctrl_2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+		ctrl_2 |= SDHCI_CTRL_VDD_180;
-+		sdhci_writew(host, ctrl_2, SDHCI_HOST_CONTROL2);
-+
-+		/* Sleep for 5ms to stabilize 1.8V regulator */
-+		usleep_range(5000, 5500);
-+
-+		/* 1.8V regulator output should be stable within 5 ms */
-+		ctrl_2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+		if (!(ctrl_2 & SDHCI_CTRL_VDD_180))
-+			return -EAGAIN;
-+
-+		clk  = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+		clk |= SDHCI_CLOCK_CARD_EN;
-+		sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
-+		break;
-+	case MMC_SIGNAL_VOLTAGE_330:
-+		/*
-+		 * Set VDDIO_B voltage to High for 3.3V
-+		 * which is controlling by GPIO Expander.
-+		 */
-+		gpiod_set_value_cansleep(sdhci_arasan->uhs_gpio, 1);
-+
-+		/*
-+		 * This is like final gatekeeper. Need to ensure changed voltage
-+		 * is settled before and after turn on this bit.
-+		 */
-+		usleep_range(1000, 1100);
-+
-+		ret = keembay_sd_voltage_selection(KEEMBAY_SET_3V3_VOLT);
-+		if (ret)
-+			return ret;
-+
-+		usleep_range(1000, 1100);
-+
-+		/* Set 1.8V Signal Enable in the Host Control2 register to 0 */
-+		ctrl_2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+		ctrl_2 &= ~SDHCI_CTRL_VDD_180;
-+		sdhci_writew(host, ctrl_2, SDHCI_HOST_CONTROL2);
-+
-+		/* Sleep for 5ms to stabilize 3.3V regulator */
-+		usleep_range(5000, 5500);
-+
-+		/* 3.3V regulator output should be stable within 5 ms */
-+		ctrl_2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+		if (ctrl_2 & SDHCI_CTRL_VDD_180)
-+			return -EAGAIN;
-+
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int sdhci_arasan_keembay_select_drive_strength(struct mmc_card *card,
-+					unsigned int max_dtr, int host_drv,
-+					int card_drv, int *drv_type)
-+{
-+	if (card->host->ios.signal_voltage == MMC_SIGNAL_VOLTAGE_180)
-+		*drv_type = MMC_SET_DRIVER_TYPE_C;
-+
-+	return 0;
-+}
-+
- static const struct sdhci_ops sdhci_arasan_ops = {
- 	.set_clock = sdhci_arasan_set_clock,
- 	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
-@@ -1521,6 +1631,7 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
- 	struct sdhci_pltfm_host *pltfm_host;
- 	struct sdhci_arasan_data *sdhci_arasan;
- 	struct device_node *np = pdev->dev.of_node;
-+	struct device *dev = &pdev->dev;
- 	const struct sdhci_arasan_of_data *data;
- 
- 	match = of_match_node(sdhci_arasan_of_match, pdev->dev.of_node);
-@@ -1600,6 +1711,22 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
- 		host->mmc->caps |= MMC_CAP_WAIT_WHILE_BUSY;
- 	}
- 
-+	if (of_device_is_compatible(np, "intel,keembay-sdhci-5.1-sd")) {
-+		struct gpio_desc *uhs;
-+
-+		uhs = devm_gpiod_get_optional(dev, "uhs", GPIOD_OUT_HIGH);
-+		if (IS_ERR(uhs))
-+			return dev_err_probe(dev, PTR_ERR(uhs), "can't get uhs gpio\n");
-+
-+		sdhci_arasan->uhs_gpio = uhs;
-+
-+		host->mmc_host_ops.start_signal_voltage_switch =
-+			sdhci_arasan_keembay_voltage_switch;
-+
-+		host->mmc_host_ops.select_drive_strength =
-+			sdhci_arasan_keembay_select_drive_strength;
-+	}
-+
- 	sdhci_arasan_update_baseclkfreq(host);
- 
- 	ret = sdhci_arasan_register_sdclk(sdhci_arasan, clk_xin, &pdev->dev);
+
+What are the other uses of this KEEMBAY_SIP_* ?
+For now I tend to move this to the driver making use of it using
+arm_smccc_1_1_invoke directly if possible. I don't see the need for this
+to be separate driver. But do let us know the features implemented in the
+firmware. If it is not v1.1+, reasons for not upgrading as you need v1.1
+for some CPU errata implementation.
+
 -- 
-2.17.1
-
+Regards,
+Sudeep
