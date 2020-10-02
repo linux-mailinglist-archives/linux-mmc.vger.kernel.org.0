@@ -2,51 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BEB12818EA
-	for <lists+linux-mmc@lfdr.de>; Fri,  2 Oct 2020 19:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EFEC281B9C
+	for <lists+linux-mmc@lfdr.de>; Fri,  2 Oct 2020 21:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387789AbgJBRPP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 2 Oct 2020 13:15:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60648 "EHLO mail.kernel.org"
+        id S2388419AbgJBTWP convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Fri, 2 Oct 2020 15:22:15 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:50644 "EHLO mx.metalurgs.lv"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725991AbgJBRPP (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 2 Oct 2020 13:15:15 -0400
-Subject: Re: [GIT PULL] MMC/MEMSTICK fixes for v5.9-rc8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601658914;
-        bh=CPa7mnHhiax78ShmzvGMp54G7tJtrbpYTsGY1+eRZ6w=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=P1u6k5sl68EaJXOUCb8WaLGjsdUcOFHXW2/ROR5tzJPuJP6EHX7pdX/SdwIErQuzM
-         UEdb6969ICjKUpXQZP8kvXTrgzTALSJpZlOxTPePqT9XoQ+kGVigHskaWR7QEO4/8i
-         WyAvaALqa1MxZtctqw3+/6obg57NwmF7p7FME9VA=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20201002075502.130199-1-ulf.hansson@linaro.org>
-References: <20201002075502.130199-1-ulf.hansson@linaro.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20201002075502.130199-1-ulf.hansson@linaro.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.9-rc4-3
-X-PR-Tracked-Commit-Id: afd7f30886b0b445a4240a99020458a9772f2b89
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 2270b890bc295c6de2f4e4e3a770025b76657699
-Message-Id: <160165891490.31225.16184233335075494974.pr-tracker-bot@kernel.org>
-Date:   Fri, 02 Oct 2020 17:15:14 +0000
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+        id S2388440AbgJBTWO (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 2 Oct 2020 15:22:14 -0400
+X-Greylist: delayed 394 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:22:14 EDT
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id B756B628D1
+        for <linux-mmc@vger.kernel.org>; Fri,  2 Oct 2020 22:15:37 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 6C13262B87
+        for <linux-mmc@vger.kernel.org>; Fri,  2 Oct 2020 22:15:37 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id 55AFF62A08; Fri,  2 Oct 2020 22:15:35 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.50])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id C8B7262005;
+        Fri,  2 Oct 2020 22:15:28 +0300 (EEST)
+MIME-Version: 1.0
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Fri, 02 Oct 2020 16:15:21 -0300
+Reply-To: binmurrah@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201002191535.55AFF62A08@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan.
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201002 notchecked
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The pull request you sent on Fri,  2 Oct 2020 09:55:02 +0200:
+Hello Dear,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.9-rc4-3
+We are Investment Company offering Corporate and Personal
+Loan at 3% Interest Rate for a duration of 10Years.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/2270b890bc295c6de2f4e4e3a770025b76657699
+We also pay 1% commission to brokers, who introduce project
+owners for finance or other opportunities.
 
-Thank you!
+Please get back to me if you are interested for more
+details.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Yours faithfully,
+Hashim Bin 
