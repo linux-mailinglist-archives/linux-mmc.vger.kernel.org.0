@@ -2,45 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DD0B2822D4
-	for <lists+linux-mmc@lfdr.de>; Sat,  3 Oct 2020 11:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D83A2826FC
+	for <lists+linux-mmc@lfdr.de>; Sun,  4 Oct 2020 00:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725778AbgJCJCT convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Sat, 3 Oct 2020 05:02:19 -0400
-Received: from [5.8.93.113] ([5.8.93.113]:39020 "EHLO mail.huclangia.tk"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S1725681AbgJCJCT (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sat, 3 Oct 2020 05:02:19 -0400
-X-Greylist: delayed 1108 seconds by postgrey-1.27 at vger.kernel.org; Sat, 03 Oct 2020 05:02:19 EDT
-Received: from huclangia.tk (unknown [139.64.247.249])
-        by mail.huclangia.tk (Postfix) with ESMTPA id A019ECF77C3
-        for <linux-mmc@vger.kernel.org>; Sat,  3 Oct 2020 08:36:22 +0000 (UTC)
-Reply-To: mariabdullah101@taxrag.com
-From:   Mrs Maria Abdullah <admin@huclangia.tk>
-To:     linux-mmc@vger.kernel.org
-Subject: Hello!
-Date:   3 Oct 2020 04:36:17 -0400
-Message-ID: <20201003043617.9ACF27B8FAB177E1@huclangia.tk>
+        id S1725917AbgJCWBP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 3 Oct 2020 18:01:15 -0400
+Received: from 70-252-206-104.staticrdns.eonix.net ([104.206.252.70]:56408
+        "EHLO 70-252-206-104.staticrdns.eonix.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725913AbgJCWBP (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 3 Oct 2020 18:01:15 -0400
+X-Greylist: delayed 27929 seconds by postgrey-1.27 at vger.kernel.org; Sat, 03 Oct 2020 18:01:14 EDT
+Received: from User (localhost [IPv6:::1])
+        by 70-252-206-104.staticrdns.eonix.net (Postfix) with SMTP id 9470755CEBD;
+        Sat,  3 Oct 2020 06:49:42 -0400 (EDT)
+Reply-To: <stewart.macdonald58@rockhopperexplorationplc.co.uk>
+From:   "MacDonald" <stewart.macdonald58@rockhopperexplorationplc.co.uk>
+Subject: Please Check this out and reply urgently
+Date:   Sat, 3 Oct 2020 03:49:46 -0700
 MIME-Version: 1.0
 Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201003104942.9470755CEBD@70-252-206-104.staticrdns.eonix.net>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+Attention please!
 
-My Name is Mrs.Maria Abdullah from Wales United Kingdom,
+I am the Chief Financial Officer of Rockhopper and Gas company London UK, and by the virtue, as the Chief Financial Officer. I got your contact through a directory search and decided to propose this business. I am seeking your assistance in remitting of some funds,  Ninety five million  to your account for private investment purpose, hence my request for your assistance.
+ 
+  
+ SOURCE OF THE FUND:
 
-I would like to work with you to carry out a promise i made to 
-God by willing all that i have to the charity because i am very 
-sick now (Covid-19 Virus Infection)
+The fund to be transferred into your account is accrued from an over-invoiced contract amount awarded for the completion of the last phase of our refinery, valves and depot for storage of product all over our branches here in the UK which include laying of  distribution pipelines. The contract which was originally valued for One Hundred and Twenty Seven Million was manipulated to read, Two Hundred and Twenty Two Million.  The extra, Ninety Five Million, is what I want to move to your account, the original contractors who executed the job has been paid all their contract bills remaining this Ninety Five Million.
+  
+ DISBURSEMENT:
 
-Get back to me for more details via my private email.
+I have resolved that you take Forty percent  of the total amount for your assistance. that is, fronting you as a sub contractor to claim the remaining balance of Ninety Five Million  which is left now in our bank from the over invoice contract because it is impossible for me to claim the over invoiced amount without your assistance as a Foreign Contractor. In addition Ten percent has been mapped out for any miscellaneous expenses that   might be incurred by both of us during this business while Fifty percent  will be my own share.
 
-Email: mariabdullah101@taxrag.com
+SECURITY:
 
-Thanks and God bless you.
+All modalities to effect the payment and subsequent transfer of this money has been worked out, so this transaction is Hundred percent risk free, though you are required to treat it with strictest confidence, on our acceptance please send to me your personal details and your direct mobile phone number for speedy correspondence.
+  
+I am looking forward to doing business with you. Your prompt reply will be highly appreciated. Do kindly furnish me with your contact details if you are interested in partnering with me on this transaction.
+ 
+  
+Yours Faithfully,
 
-Maria
+Stewart MacDonald
+Chief Financial Officer
+Rockhopper Exploration PLC
