@@ -2,175 +2,324 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E4A289FE5
-	for <lists+linux-mmc@lfdr.de>; Sat, 10 Oct 2020 12:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5B5A28A364
+	for <lists+linux-mmc@lfdr.de>; Sun, 11 Oct 2020 01:08:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726461AbgJJKFn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 10 Oct 2020 06:05:43 -0400
-Received: from Mailgw01.mediatek.com ([1.203.163.78]:31154 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726720AbgJJJva (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 10 Oct 2020 05:51:30 -0400
-X-UUID: 57ab3f1bf93346f1a6dffb2710ec11ac-20201010
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=H+ln7qIH6WhzfS8WeSevzwzddMMkN7urwrkqmKBrJkk=;
-        b=TMP0Xzqg0/AlemBSuJbg5oKE+XfYCJoLmsNfSo+jgOzTpRQQwdADzJwvVzI5vUU/BNmlkuMmT2Zov6Z/thCmhCmCm1cafqEZktorabDhtHuC80/Kd3+yFTAigynxbwcztn+ZgEcSOUDxCG+bx4AiOHgZj6wuoG34NGZZ37sON3k=;
-X-UUID: 57ab3f1bf93346f1a6dffb2710ec11ac-20201010
-Received: from mtkcas35.mediatek.inc [(172.27.4.253)] by mailgw01.mediatek.com
-        (envelope-from <wenbin.mei@mediatek.com>)
-        (mailgw01.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1974926838; Sat, 10 Oct 2020 17:18:20 +0800
-Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS31N2.mediatek.inc
- (172.27.4.87) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Sat, 10 Oct
- 2020 17:18:18 +0800
-Received: from [10.17.3.153] (10.17.3.153) by MTKCAS36.mediatek.inc
- (172.27.4.170) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 10 Oct 2020 17:18:18 +0800
-Message-ID: <1602321500.11947.6.camel@mhfsdcap03>
-Subject: Re: [PATCH v3 4/4] mmc: mediatek: Add subsys clock control for
- MT8192 msdc
-From:   Wenbin Mei <wenbin.mei@mediatek.com>
-To:     Nicolas Boichat <drinkcat@chromium.org>
-CC:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <linux-mmc@vger.kernel.org>,
-        Devicetree List <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        srv_heupstream <srv_heupstream@mediatek.com>
-Date:   Sat, 10 Oct 2020 17:18:20 +0800
-In-Reply-To: <CANMq1KCQ9x1kgME3dAQmGzjUoqkNLuWGS4dG07qhNKQ3N=o_dw@mail.gmail.com>
-References: <20200930083120.11971-1-wenbin.mei@mediatek.com>
-         <20200930083120.11971-5-wenbin.mei@mediatek.com>
-         <CANMq1KCQ9x1kgME3dAQmGzjUoqkNLuWGS4dG07qhNKQ3N=o_dw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
+        id S2390399AbgJJW5K (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 10 Oct 2020 18:57:10 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:14860 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731409AbgJJTTi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 10 Oct 2020 15:19:38 -0400
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09ABX6Vd140369
+        for <linux-mmc@vger.kernel.org>; Sat, 10 Oct 2020 07:36:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=in-reply-to : subject :
+ from : to : cc : date : mime-version : references :
+ content-transfer-encoding : content-type : message-id; s=pp1;
+ bh=NiDLo4pOxkTOHNh379y2lMt59tGJeK9BGhibE+AHe30=;
+ b=fFl+sWZ60CJNW5vj7Uw0QdIFBZaJLDIK+TmFY7+uXdPQEExbAUVKU05YhKg5dS5u6J9M
+ gRTcbWK1ehAiHgiW0QiEErv4vh+5MOV1iJMmz3AgZqVrCWi+Nh1nNGlGLl5qNxYu9TT3
+ rsErWvzJTnT/TvD/yGmIkQ5cIJnW2dxyfP5KEerqQF50430xLTdRCdzrzGOBj/IVBjpb
+ ZIGntFQpbgC01amsKXwfy1cB65UwCiqnbdgLT6Z6Qd+CSe7yV4n3BXy+qSd8xdiYdQTK
+ an7SA2yY6csjDSnstIEkYdPhg6mYvKJGwGGY1NoLkcuzdqKyvDxx/5UGYpv3tzPn6Oq9 ZA== 
+Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [192.155.248.91])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 343bp0gnk3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mmc@vger.kernel.org>; Sat, 10 Oct 2020 07:36:56 -0400
+Received: from localhost
+        by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
+        for <linux-mmc@vger.kernel.org> from <BMT@zurich.ibm.com>;
+        Sat, 10 Oct 2020 11:36:55 -0000
+Received: from us1a3-smtp05.a3.dal06.isc4sb.com (10.146.71.159)
+        by smtp.notes.na.collabserv.com (10.106.227.143) with smtp.notes.na.collabserv.com ESMTP;
+        Sat, 10 Oct 2020 11:36:50 -0000
+Received: from us1a3-mail162.a3.dal06.isc4sb.com ([10.146.71.4])
+          by us1a3-smtp05.a3.dal06.isc4sb.com
+          with ESMTP id 2020101011364991-175970 ;
+          Sat, 10 Oct 2020 11:36:49 +0000 
+In-Reply-To: <20201009195033.3208459-11-ira.weiny@intel.com>
+Subject: Re: [PATCH RFC PKS/PMEM 10/58] drivers/rdma: Utilize new kmap_thread()
+From:   "Bernard Metzler" <BMT@zurich.ibm.com>
+To:     ira.weiny@intel.com
+Cc:     "Andrew Morton" <akpm@linux-foundation.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        "Andy Lutomirski" <luto@kernel.org>,
+        "Peter Zijlstra" <peterz@infradead.org>,
+        "Mike Marciniszyn" <mike.marciniszyn@intel.com>,
+        "Dennis Dalessandro" <dennis.dalessandro@intel.com>,
+        "Doug Ledford" <dledford@redhat.com>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>,
+        "Faisal Latif" <faisal.latif@intel.com>,
+        "Shiraz Saleem" <shiraz.saleem@intel.com>, x86@kernel.org,
+        "Dave Hansen" <dave.hansen@linux.intel.com>,
+        "Dan Williams" <dan.j.williams@intel.com>,
+        "Fenghua Yu" <fenghua.yu@intel.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+        kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
+        linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
+        linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-aio@kvack.org,
+        io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+        linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
+        reiserfs-devel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-nilfs@vger.kernel.org, cluster-devel@redhat.com,
+        ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org,
+        linux-rdma@vger.kernel.org, amd-gfx@lists.freed.esktop.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        drbd-dev@tron.linbit.com, linux-block@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-cachefs@redhat.com,
+        samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
+Date:   Sat, 10 Oct 2020 11:36:49 +0000
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: 28E61ED4929A78886AAEC66E902D7BDF49F75B5965520A77CC1E21997464EA852000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Sensitivity: 
+Importance: Normal
+X-Priority: 3 (Normal)
+References: <20201009195033.3208459-11-ira.weiny@intel.com>,<20201009195033.3208459-1-ira.weiny@intel.com>
+X-Mailer: IBM iNotes ($HaikuForm 1054.1) | IBM Domino Build
+ SCN1812108_20180501T0841_FP65 April 15, 2020 at 09:48
+X-LLNOutbound: False
+X-Disclaimed: 59823
+X-TNEFEvaluated: 1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+x-cbid: 20101011-2475-0000-0000-0000044A0339
+X-IBM-SpamModules-Scores: BY=0.233045; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
+ SC=0.421684; ST=0; TS=0; UL=0; ISC=; MB=0.000000
+X-IBM-SpamModules-Versions: BY=3.00013982; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000295; SDB=6.01447073; UDB=6.00777937; IPR=6.01229775;
+ MB=3.00034472; MTD=3.00000008; XFM=3.00000015; UTC=2020-10-10 11:36:54
+X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
+X-IBM-AV-VERSION: SAVI=2020-10-10 06:57:40 - 6.00011937
+x-cbparentid: 20101011-2476-0000-0000-0000DAA5035B
+Message-Id: <OF849D92D8.F4735ECA-ON002585FD.003F5F27-002585FD.003FCBD6@notes.na.collabserv.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-10-10_07:2020-10-09,2020-10-10 signatures=0
+X-Proofpoint-Spam-Reason: orgsafe
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-T24gVGh1LCAyMDIwLTEwLTAxIGF0IDE0OjE0ICswODAwLCBOaWNvbGFzIEJvaWNoYXQgd3JvdGU6
-DQo+IE9uIFdlZCwgU2VwIDMwLCAyMDIwIGF0IDQ6MzEgUE0gV2VuYmluIE1laSA8d2VuYmluLm1l
-aUBtZWRpYXRlay5jb20+IHdyb3RlOg0KPiA+DQo+ID4gTVQ4MTkyIG1zZGMgaXMgYW4gaW5kZXBl
-bmRlbnQgc3ViIHN5c3RlbSwgd2UgbmVlZCBjb250cm9sIG1vcmUgYnVzDQo+ID4gY2xvY2tzIGZv
-ciBpdC4NCj4gPiBBZGQgc3VwcG9ydCBmb3IgdGhlIGFkZGl0aW9uYWwgc3Vic3lzIGNsb2NrcyB0
-byBhbGxvdyBpdCB0byBiZQ0KPiA+IGNvbmZpZ3VyZWQgYXBwcm9wcmlhdGVseS4NCj4gPg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IFdlbmJpbiBNZWkgPHdlbmJpbi5tZWlAbWVkaWF0ZWsuY29tPg0KPiA+
-IC0tLQ0KPiA+ICBkcml2ZXJzL21tYy9ob3N0L210ay1zZC5jIHwgNzcgKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrLS0tLS0tLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA1OSBpbnNlcnRp
-b25zKCspLCAxOCBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21t
-Yy9ob3N0L210ay1zZC5jIGIvZHJpdmVycy9tbWMvaG9zdC9tdGstc2QuYw0KPiA+IGluZGV4IGE3
-MDQ3NDVlNTg4Mi4uOWExNDIyOTU1NTkzIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbW1jL2hv
-c3QvbXRrLXNkLmMNCj4gPiArKysgYi9kcml2ZXJzL21tYy9ob3N0L210ay1zZC5jDQo+ID4gQEAg
-LTQyNSw2ICs0MjUsOCBAQCBzdHJ1Y3QgbXNkY19ob3N0IHsNCj4gPiAgICAgICAgIHN0cnVjdCBj
-bGsgKmhfY2xrOyAgICAgIC8qIG1zZGMgaF9jbGsgKi8NCj4gPiAgICAgICAgIHN0cnVjdCBjbGsg
-KmJ1c19jbGs7ICAgIC8qIGJ1cyBjbG9jayB3aGljaCB1c2VkIHRvIGFjY2VzcyByZWdpc3RlciAq
-Lw0KPiA+ICAgICAgICAgc3RydWN0IGNsayAqc3JjX2Nsa19jZzsgLyogbXNkYyBzb3VyY2UgY2xv
-Y2sgY29udHJvbCBnYXRlICovDQo+ID4gKyAgICAgICBzdHJ1Y3QgY2xrICpzeXNfY2xrX2NnOyAv
-KiBtc2RjIHN1YnN5cyBjbG9jayBjb250cm9sIGdhdGUgKi8NCj4gPiArICAgICAgIHN0cnVjdCBj
-bGtfYnVsa19kYXRhIGJ1bGtfY2xrc1szXTsgICAgICAvKiBwY2xrLCBheGksIGFoYiBjbG9jayBj
-b250cm9sIGdhdGUgKi8NCj4gPiAgICAgICAgIHUzMiBtY2xrOyAgICAgICAgICAgICAgIC8qIG1t
-YyBzdWJzeXN0ZW0gY2xvY2sgZnJlcXVlbmN5ICovDQo+ID4gICAgICAgICB1MzIgc3JjX2Nsa19m
-cmVxOyAgICAgICAvKiBzb3VyY2UgY2xvY2sgZnJlcXVlbmN5ICovDQo+ID4gICAgICAgICB1bnNp
-Z25lZCBjaGFyIHRpbWluZzsNCj4gPiBAQCAtNzg0LDYgKzc4Niw4IEBAIHN0YXRpYyB2b2lkIG1z
-ZGNfc2V0X2J1c3lfdGltZW91dChzdHJ1Y3QgbXNkY19ob3N0ICpob3N0LCB1NjQgbnMsIHU2NCBj
-bGtzKQ0KPiA+DQo+ID4gIHN0YXRpYyB2b2lkIG1zZGNfZ2F0ZV9jbG9jayhzdHJ1Y3QgbXNkY19o
-b3N0ICpob3N0KQ0KPiA+ICB7DQo+ID4gKyAgICAgICBjbGtfYnVsa19kaXNhYmxlX3VucHJlcGFy
-ZShBUlJBWV9TSVpFKGhvc3QtPmJ1bGtfY2xrcyksDQo+ID4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBob3N0LT5idWxrX2Nsa3MpOw0KPiA+ICAgICAgICAgY2xrX2Rpc2FibGVf
-dW5wcmVwYXJlKGhvc3QtPnNyY19jbGtfY2cpOw0KPiA+ICAgICAgICAgY2xrX2Rpc2FibGVfdW5w
-cmVwYXJlKGhvc3QtPnNyY19jbGspOw0KPiA+ICAgICAgICAgY2xrX2Rpc2FibGVfdW5wcmVwYXJl
-KGhvc3QtPmJ1c19jbGspOw0KPiA+IEBAIC03OTIsMTAgKzc5NiwxNyBAQCBzdGF0aWMgdm9pZCBt
-c2RjX2dhdGVfY2xvY2soc3RydWN0IG1zZGNfaG9zdCAqaG9zdCkNCj4gPg0KPiA+ICBzdGF0aWMg
-dm9pZCBtc2RjX3VuZ2F0ZV9jbG9jayhzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0KPiA+ICB7DQo+
-ID4gKyAgICAgICBpbnQgcmV0Ow0KPiA+ICsNCj4gPiAgICAgICAgIGNsa19wcmVwYXJlX2VuYWJs
-ZShob3N0LT5oX2Nsayk7DQo+ID4gICAgICAgICBjbGtfcHJlcGFyZV9lbmFibGUoaG9zdC0+YnVz
-X2Nsayk7DQo+ID4gICAgICAgICBjbGtfcHJlcGFyZV9lbmFibGUoaG9zdC0+c3JjX2Nsayk7DQo+
-ID4gICAgICAgICBjbGtfcHJlcGFyZV9lbmFibGUoaG9zdC0+c3JjX2Nsa19jZyk7DQo+ID4gKyAg
-ICAgICByZXQgPSBjbGtfYnVsa19wcmVwYXJlX2VuYWJsZShBUlJBWV9TSVpFKGhvc3QtPmJ1bGtf
-Y2xrcyksDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBob3N0LT5i
-dWxrX2Nsa3MpOw0KPiA+ICsgICAgICAgaWYgKHJldCkNCj4gPiArICAgICAgICAgICAgICAgZGV2
-X2RiZyhob3N0LT5kZXYsICJlbmFibGUgY2xrcyBmYWlsZWQhXG4iKTsNCj4gDQo+IGRldl9lcnIg
-bG9va3MgYSBsb3QgbW9yZSBhcHByb3ByaWF0ZS4gQWxzbywgZG9uJ3QgeW91IHdhbnQgdG8gZXhp
-dCB0aGUNCj4gZnVuY3Rpb24gaW4gdGhhdCBjYXNlLCByYXRoZXIgdGhhbiBnb2luZyB0byB0aGUg
-d2hpbGUgbG9vcCBiZWxvdyB3aGVyZQ0KPiB5b3UgbWF5IGdldCBzdHVjaz8NCj4gDQpJIHdpbGwg
-Y2hhbmdlIGl0IGluIHRoZSBuZXh0IHZlcnNpb24uDQo+ID4gKw0KPiA+ICAgICAgICAgd2hpbGUg
-KCEocmVhZGwoaG9zdC0+YmFzZSArIE1TRENfQ0ZHKSAmIE1TRENfQ0ZHX0NLU1RCKSkNCj4gPiAg
-ICAgICAgICAgICAgICAgY3B1X3JlbGF4KCk7DQo+ID4gIH0NCj4gPiBAQCAtMjM2Niw2ICsyMzc3
-LDUyIEBAIHN0YXRpYyB2b2lkIG1zZGNfb2ZfcHJvcGVydHlfcGFyc2Uoc3RydWN0IHBsYXRmb3Jt
-X2RldmljZSAqcGRldiwNCj4gPiAgICAgICAgICAgICAgICAgaG9zdC0+Y3FoY2kgPSBmYWxzZTsN
-Cj4gPiAgfQ0KPiA+DQo+ID4gK3N0YXRpYyBpbnQgbXNkY19vZl9jbG9ja19wYXJzZShzdHJ1Y3Qg
-cGxhdGZvcm1fZGV2aWNlICpwZGV2LA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0KPiA+ICt7DQo+ID4gKyAgICAgICBzdHJ1Y3QgY2xr
-ICpjbGs7DQo+ID4gKw0KPiA+ICsgICAgICAgaG9zdC0+c3JjX2NsayA9IGRldm1fY2xrX2dldCgm
-cGRldi0+ZGV2LCAic291cmNlIik7DQo+ID4gKyAgICAgICBpZiAoSVNfRVJSKGhvc3QtPnNyY19j
-bGspKQ0KPiA+ICsgICAgICAgICAgICAgICByZXR1cm4gUFRSX0VSUihob3N0LT5zcmNfY2xrKTsN
-Cj4gPiArDQo+ID4gKyAgICAgICBob3N0LT5oX2NsayA9IGRldm1fY2xrX2dldCgmcGRldi0+ZGV2
-LCAiaGNsayIpOw0KPiA+ICsgICAgICAgaWYgKElTX0VSUihob3N0LT5oX2NsaykpDQo+ID4gKyAg
-ICAgICAgICAgICAgIHJldHVybiBQVFJfRVJSKGhvc3QtPmhfY2xrKTsNCj4gPiArDQo+ID4gKyAg
-ICAgICBob3N0LT5idXNfY2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJidXNfY2xrIik7
-DQo+ID4gKyAgICAgICBpZiAoSVNfRVJSKGhvc3QtPmJ1c19jbGspKQ0KPiA+ICsgICAgICAgICAg
-ICAgICBob3N0LT5idXNfY2xrID0gTlVMTDsNCj4gDQo+IFVzZSBkZXZtX2Nsa19nZXRfb3B0aW9u
-YWwgaW5zdGVhZCAoZGl0dG8gZm9yIHRoZSBuZXh0IDIpLg0KPiANCj4gPiArDQo+ID4gKyAgICAg
-ICAvKnNvdXJjZSBjbG9jayBjb250cm9sIGdhdGUgaXMgb3B0aW9uYWwgY2xvY2sqLw0KPiA+ICsg
-ICAgICAgaG9zdC0+c3JjX2Nsa19jZyA9IGRldm1fY2xrX2dldCgmcGRldi0+ZGV2LCAic291cmNl
-X2NnIik7DQo+ID4gKyAgICAgICBpZiAoSVNfRVJSKGhvc3QtPnNyY19jbGtfY2cpKQ0KPiA+ICsg
-ICAgICAgICAgICAgICBob3N0LT5zcmNfY2xrX2NnID0gTlVMTDsNCj4gPiArDQo+ID4gKyAgICAg
-ICBob3N0LT5zeXNfY2xrX2NnID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJzeXNfY2ciKTsN
-Cj4gPiArICAgICAgIGlmIChJU19FUlIoaG9zdC0+c3lzX2Nsa19jZykpDQo+ID4gKyAgICAgICAg
-ICAgICAgIGhvc3QtPnN5c19jbGtfY2cgPSBOVUxMOw0KPiA+ICsgICAgICAgZWxzZQ0KPiA+ICsg
-ICAgICAgICAgICAgICBjbGtfcHJlcGFyZV9lbmFibGUoaG9zdC0+c3lzX2Nsa19jZyk7DQo+IA0K
-PiBUaGlzIGRvZXNuJ3QgbmVlZCB0byBiZSBpbiBhbiBlbHNlIGJyYW5jaCwgY2FsbGluZyBjbGtf
-cHJlcGFyZV9lbmFibGUNCj4gb24gYSBOVUxMIGNsb2NrIGlzIGZpbmUuDQpJIHdpbGwgY2hhbmdl
-IGl0IGluIHRoZSBuZXh0IHZlcnNpb24uDQo+IA0KPiBIb3dldmVyLCBpcyBpdCBleHBlY3RlZCB0
-aGF0IHRoaXMgY2xvY2sgaXMgdHVybmVkIG9uIGZvcmV2ZXIgYWZ0ZXINCj4gcHJvYmU/ISBBdCB0
-aGUgdmVyeSBsZWFzdCwgdGhlIGNsb2NrIHNob3VsZCBiZSBkaXNhYmxlZCBpbg0KPiBtc2RjX2Ry
-dl9yZW1vdmUsIGJ1dCwgcmVhbGx5LCBJIHRoaW5rIGl0IHNob3VsZCBiZSBlbmFibGVkIGFzIG5l
-ZWRlZCwNCj4gbGlrZSB0aGUgb3RoZXIgY2xvY2tzLCBpbiBtc2RjX2dhdGVfY2xvY2s/DQo+IA0K
-VGhpcyBjbG9jayBnYXRlIGNhbiBub3QgYmUgY2xvc2VkLCBpZiBpdCBpcyBjbG9zZWQsIGl0IGNh
-biBub3QgYmUNCmFjY2Vzc2VkIGFuZCBjYW4gbm90IGJlIG9wZW5lZCBhZ2Fpbi4NClNvIGl0IGlz
-IGV4cGVjdGVkIHRoYXQgdGhpcyBjbG9jayBpcyB0dXJuZWQgb24gZm9yZXZlciBhZnRlciBwcm9i
-ZS4NCj4gPiArDQo+ID4gKyAgICAgICBjbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRldiwgInBj
-bGtfY2ciKTsNCj4gPiArICAgICAgIGlmIChJU19FUlIoY2xrKSkNCj4gPiArICAgICAgICAgICAg
-ICAgY2xrID0gTlVMTDsNCj4gPiArICAgICAgIGhvc3QtPmJ1bGtfY2xrc1swXS5jbGsgPSBjbGs7
-DQo+ID4gKw0KPiA+ICsgICAgICAgY2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJheGlf
-Y2ciKTsNCj4gPiArICAgICAgIGlmIChJU19FUlIoY2xrKSkNCj4gPiArICAgICAgICAgICAgICAg
-Y2xrID0gTlVMTDsNCj4gPiArICAgICAgIGhvc3QtPmJ1bGtfY2xrc1sxXS5jbGsgPSBjbGs7DQo+
-ID4gKw0KPiA+ICsgICAgICAgY2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJhaGJfY2ci
-KTsNCj4gPiArICAgICAgIGlmIChJU19FUlIoY2xrKSkNCj4gPiArICAgICAgICAgICAgICAgY2xr
-ID0gTlVMTDsNCj4gPiArICAgICAgIGhvc3QtPmJ1bGtfY2xrc1syXS5jbGsgPSBjbGs7DQo+IA0K
-PiBVc2UgZGV2bV9jbGtfYnVsa19nZXRfb3B0aW9uYWwgZm9yIHRoZXNlIDMuDQo+IA0KSSB3aWxs
-IGNoYW5nZSBpdCBpbiB0aGUgbmV4dCB2ZXJzaW9uLg0KPiA+ICsNCj4gPiArICAgICAgIHJldHVy
-biAwOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICBzdGF0aWMgaW50IG1zZGNfZHJ2X3Byb2JlKHN0cnVj
-dCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpDQo+ID4gIHsNCj4gPiAgICAgICAgIHN0cnVjdCBtbWNf
-aG9zdCAqbW1jOw0KPiA+IEBAIC0yNDA1LDI1ICsyNDYyLDkgQEAgc3RhdGljIGludCBtc2RjX2Ry
-dl9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KPiA+ICAgICAgICAgaWYgKHJl
-dCkNCj4gPiAgICAgICAgICAgICAgICAgZ290byBob3N0X2ZyZWU7DQo+ID4NCj4gPiAtICAgICAg
-IGhvc3QtPnNyY19jbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRldiwgInNvdXJjZSIpOw0KPiA+
-IC0gICAgICAgaWYgKElTX0VSUihob3N0LT5zcmNfY2xrKSkgew0KPiA+IC0gICAgICAgICAgICAg
-ICByZXQgPSBQVFJfRVJSKGhvc3QtPnNyY19jbGspOw0KPiA+IC0gICAgICAgICAgICAgICBnb3Rv
-IGhvc3RfZnJlZTsNCj4gPiAtICAgICAgIH0NCj4gPiAtDQo+ID4gLSAgICAgICBob3N0LT5oX2Ns
-ayA9IGRldm1fY2xrX2dldCgmcGRldi0+ZGV2LCAiaGNsayIpOw0KPiA+IC0gICAgICAgaWYgKElT
-X0VSUihob3N0LT5oX2NsaykpIHsNCj4gPiAtICAgICAgICAgICAgICAgcmV0ID0gUFRSX0VSUiho
-b3N0LT5oX2Nsayk7DQo+ID4gKyAgICAgICByZXQgPSBtc2RjX29mX2Nsb2NrX3BhcnNlKHBkZXYs
-IGhvc3QpOw0KPiA+ICsgICAgICAgaWYgKHJldCkNCj4gPiAgICAgICAgICAgICAgICAgZ290byBo
-b3N0X2ZyZWU7DQo+ID4gLSAgICAgICB9DQo+ID4gLQ0KPiA+IC0gICAgICAgaG9zdC0+YnVzX2Ns
-ayA9IGRldm1fY2xrX2dldCgmcGRldi0+ZGV2LCAiYnVzX2NsayIpOw0KPiA+IC0gICAgICAgaWYg
-KElTX0VSUihob3N0LT5idXNfY2xrKSkNCj4gPiAtICAgICAgICAgICAgICAgaG9zdC0+YnVzX2Ns
-ayA9IE5VTEw7DQo+ID4gLSAgICAgICAvKnNvdXJjZSBjbG9jayBjb250cm9sIGdhdGUgaXMgb3B0
-aW9uYWwgY2xvY2sqLw0KPiA+IC0gICAgICAgaG9zdC0+c3JjX2Nsa19jZyA9IGRldm1fY2xrX2dl
-dCgmcGRldi0+ZGV2LCAic291cmNlX2NnIik7DQo+ID4gLSAgICAgICBpZiAoSVNfRVJSKGhvc3Qt
-PnNyY19jbGtfY2cpKQ0KPiA+IC0gICAgICAgICAgICAgICBob3N0LT5zcmNfY2xrX2NnID0gTlVM
-TDsNCj4gPg0KPiA+ICAgICAgICAgaG9zdC0+cmVzZXQgPSBkZXZtX3Jlc2V0X2NvbnRyb2xfZ2V0
-X29wdGlvbmFsX2V4Y2x1c2l2ZSgmcGRldi0+ZGV2LA0KPiA+ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiaHJzdCIpOw0KPiA+
-IC0tDQo+ID4gMi4xOC4wDQoNCg==
+-----ira.weiny@intel.com wrote: -----
+
+>To: "Andrew Morton" <akpm@linux-foundation.org>, "Thomas Gleixner"
+><tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+>Petkov" <bp@alien8.de>, "Andy Lutomirski" <luto@kernel.org>, "Peter
+>Zijlstra" <peterz@infradead.org>
+>From: ira.weiny@intel.com
+>Date: 10/09/2020 09:52PM
+>Cc: "Ira Weiny" <ira.weiny@intel.com>, "Mike Marciniszyn"
+><mike.marciniszyn@intel.com>, "Dennis Dalessandro"
+><dennis.dalessandro@intel.com>, "Doug Ledford" <dledford@redhat.com>,
+>"Jason Gunthorpe" <jgg@ziepe.ca>, "Faisal Latif"
+><faisal.latif@intel.com>, "Shiraz Saleem" <shiraz.saleem@intel.com>,
+>"Bernard Metzler" <bmt@zurich.ibm.com>, x86@kernel.org, "Dave Hansen"
+><dave.hansen@linux.intel.com>, "Dan Williams"
+><dan.j.williams@intel.com>, "Fenghua Yu" <fenghua.yu@intel.com>,
+>linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+>linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org,
+>linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+>linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+>netdev@vger.kernel.org, bpf@vger.kernel.org,
+>kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
+>linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
+>linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
+>linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+>linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+>linux-ext4@vger.kernel.org, linux-aio@kvack.org,
+>io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+>linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
+>reiserfs-devel@vger.kernel.org,
+>linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
+>cluster-devel@redhat.com, ecryptfs@vger.kernel.org,
+>linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org,
+>linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org,
+>amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+>intel-gfx@lists.freedesktop.org, drbd-dev@tron.linbit.com,
+>linux-block@vger.kernel.org, xen-devel@lists.xenproject.org,
+>linux-cachefs@redhat.com, samba-technical@lists.samba.org,
+>intel-wired-lan@lists.osuosl.org
+>Subject: [EXTERNAL] [PATCH RFC PKS/PMEM 10/58] drivers/rdma: Utilize
+>new kmap=5Fthread()
+>
+>From: Ira Weiny <ira.weiny@intel.com>
+>
+>The kmap() calls in these drivers are localized to a single thread.
+>To
+>avoid the over head of global PKRS updates use the new kmap=5Fthread()
+>call.
+>
+>Cc: Mike Marciniszyn <mike.marciniszyn@intel.com>
+>Cc: Dennis Dalessandro <dennis.dalessandro@intel.com>
+>Cc: Doug Ledford <dledford@redhat.com>
+>Cc: Jason Gunthorpe <jgg@ziepe.ca>
+>Cc: Faisal Latif <faisal.latif@intel.com>
+>Cc: Shiraz Saleem <shiraz.saleem@intel.com>
+>Cc: Bernard Metzler <bmt@zurich.ibm.com>
+>Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+>---
+> drivers/infiniband/hw/hfi1/sdma.c      |  4 ++--
+> drivers/infiniband/hw/i40iw/i40iw=5Fcm.c | 10 +++++-----
+> drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c  | 14 +++++++-------
+> 3 files changed, 14 insertions(+), 14 deletions(-)
+>
+>diff --git a/drivers/infiniband/hw/hfi1/sdma.c
+>b/drivers/infiniband/hw/hfi1/sdma.c
+>index 04575c9afd61..09d206e3229a 100644
+>--- a/drivers/infiniband/hw/hfi1/sdma.c
+>+++ b/drivers/infiniband/hw/hfi1/sdma.c
+>@@ -3130,7 +3130,7 @@ int ext=5Fcoal=5Fsdma=5Ftx=5Fdescs(struct hfi1=5Fdev=
+data
+>*dd, struct sdma=5Ftxreq *tx,
+> 		}
+>=20
+> 		if (type =3D=3D SDMA=5FMAP=5FPAGE) {
+>-			kvaddr =3D kmap(page);
+>+			kvaddr =3D kmap=5Fthread(page);
+> 			kvaddr +=3D offset;
+> 		} else if (WARN=5FON(!kvaddr)) {
+> 			=5F=5Fsdma=5Ftxclean(dd, tx);
+>@@ -3140,7 +3140,7 @@ int ext=5Fcoal=5Fsdma=5Ftx=5Fdescs(struct hfi1=5Fdev=
+data
+>*dd, struct sdma=5Ftxreq *tx,
+> 		memcpy(tx->coalesce=5Fbuf + tx->coalesce=5Fidx, kvaddr, len);
+> 		tx->coalesce=5Fidx +=3D len;
+> 		if (type =3D=3D SDMA=5FMAP=5FPAGE)
+>-			kunmap(page);
+>+			kunmap=5Fthread(page);
+>=20
+> 		/* If there is more data, return */
+> 		if (tx->tlen - tx->coalesce=5Fidx)
+>diff --git a/drivers/infiniband/hw/i40iw/i40iw=5Fcm.c
+>b/drivers/infiniband/hw/i40iw/i40iw=5Fcm.c
+>index a3b95805c154..122d7a5642a1 100644
+>--- a/drivers/infiniband/hw/i40iw/i40iw=5Fcm.c
+>+++ b/drivers/infiniband/hw/i40iw/i40iw=5Fcm.c
+>@@ -3721,7 +3721,7 @@ int i40iw=5Faccept(struct iw=5Fcm=5Fid *cm=5Fid, str=
+uct
+>iw=5Fcm=5Fconn=5Fparam *conn=5Fparam)
+> 		ibmr->device =3D iwpd->ibpd.device;
+> 		iwqp->lsmm=5Fmr =3D ibmr;
+> 		if (iwqp->page)
+>-			iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap(iwqp->page);
+>+			iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap=5Fthread(iwqp->page);
+> 		dev->iw=5Fpriv=5Fqp=5Fops->qp=5Fsend=5Flsmm(&iwqp->sc=5Fqp,
+> 							iwqp->ietf=5Fmem.va,
+> 							(accept.size + conn=5Fparam->private=5Fdata=5Flen),
+>@@ -3729,12 +3729,12 @@ int i40iw=5Faccept(struct iw=5Fcm=5Fid *cm=5Fid,
+>struct iw=5Fcm=5Fconn=5Fparam *conn=5Fparam)
+>=20
+> 	} else {
+> 		if (iwqp->page)
+>-			iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap(iwqp->page);
+>+			iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap=5Fthread(iwqp->page);
+> 		dev->iw=5Fpriv=5Fqp=5Fops->qp=5Fsend=5Flsmm(&iwqp->sc=5Fqp, NULL, 0, 0);
+> 	}
+>=20
+> 	if (iwqp->page)
+>-		kunmap(iwqp->page);
+>+		kunmap=5Fthread(iwqp->page);
+>=20
+> 	iwqp->cm=5Fid =3D cm=5Fid;
+> 	cm=5Fnode->cm=5Fid =3D cm=5Fid;
+>@@ -4102,10 +4102,10 @@ static void i40iw=5Fcm=5Fevent=5Fconnected(struct
+>i40iw=5Fcm=5Fevent *event)
+> 	i40iw=5Fcm=5Finit=5Ftsa=5Fconn(iwqp, cm=5Fnode);
+> 	read0 =3D (cm=5Fnode->send=5Frdma0=5Fop =3D=3D SEND=5FRDMA=5FREAD=5FZERO=
+);
+> 	if (iwqp->page)
+>-		iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap(iwqp->page);
+>+		iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap=5Fthread(iwqp->page);
+> 	dev->iw=5Fpriv=5Fqp=5Fops->qp=5Fsend=5Frtt(&iwqp->sc=5Fqp, read0);
+> 	if (iwqp->page)
+>-		kunmap(iwqp->page);
+>+		kunmap=5Fthread(iwqp->page);
+>=20
+> 	memset(&attr, 0, sizeof(attr));
+> 	attr.qp=5Fstate =3D IB=5FQPS=5FRTS;
+>diff --git a/drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c
+>b/drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c
+>index d19d8325588b..4ed37c328d02 100644
+>--- a/drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c
+>+++ b/drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c
+>@@ -76,7 +76,7 @@ static int siw=5Ftry=5F1seg(struct siw=5Fiwarp=5Ftx *c=
+=5Ftx,
+>void *paddr)
+> 			if (unlikely(!p))
+> 				return -EFAULT;
+>=20
+>-			buffer =3D kmap(p);
+>+			buffer =3D kmap=5Fthread(p);
+>=20
+> 			if (likely(PAGE=5FSIZE - off >=3D bytes)) {
+> 				memcpy(paddr, buffer + off, bytes);
+>@@ -84,7 +84,7 @@ static int siw=5Ftry=5F1seg(struct siw=5Fiwarp=5Ftx *c=
+=5Ftx,
+>void *paddr)
+> 				unsigned long part =3D bytes - (PAGE=5FSIZE - off);
+>=20
+> 				memcpy(paddr, buffer + off, part);
+>-				kunmap(p);
+>+				kunmap=5Fthread(p);
+>=20
+> 				if (!mem->is=5Fpbl)
+> 					p =3D siw=5Fget=5Fupage(mem->umem,
+>@@ -96,10 +96,10 @@ static int siw=5Ftry=5F1seg(struct siw=5Fiwarp=5Ftx
+>*c=5Ftx, void *paddr)
+> 				if (unlikely(!p))
+> 					return -EFAULT;
+>=20
+>-				buffer =3D kmap(p);
+>+				buffer =3D kmap=5Fthread(p);
+> 				memcpy(paddr + part, buffer, bytes - part);
+> 			}
+>-			kunmap(p);
+>+			kunmap=5Fthread(p);
+> 		}
+> 	}
+> 	return (int)bytes;
+>@@ -505,7 +505,7 @@ static int siw=5Ftx=5Fhdt(struct siw=5Fiwarp=5Ftx *c=
+=5Ftx,
+>struct socket *s)
+> 				page=5Farray[seg] =3D p;
+>=20
+> 				if (!c=5Ftx->use=5Fsendpage) {
+>-					iov[seg].iov=5Fbase =3D kmap(p) + fp=5Foff;
+>+					iov[seg].iov=5Fbase =3D kmap=5Fthread(p) + fp=5Foff;
+
+This misses a corresponding kunmap=5Fthread() in siw=5Funmap=5Fpages()
+(pls change line 403 in siw=5Fqp=5Ftx.c as well)
+
+Thanks,
+Bernard.
+
+> 					iov[seg].iov=5Flen =3D plen;
+>=20
+> 					/* Remember for later kunmap() */
+>@@ -518,9 +518,9 @@ static int siw=5Ftx=5Fhdt(struct siw=5Fiwarp=5Ftx *c=
+=5Ftx,
+>struct socket *s)
+> 							plen);
+> 				} else if (do=5Fcrc) {
+> 					crypto=5Fshash=5Fupdate(c=5Ftx->mpa=5Fcrc=5Fhd,
+>-							    kmap(p) + fp=5Foff,
+>+							    kmap=5Fthread(p) + fp=5Foff,
+> 							    plen);
+>-					kunmap(p);
+>+					kunmap=5Fthread(p);
+> 				}
+> 			} else {
+> 				u64 va =3D sge->laddr + sge=5Foff;
+>--=20
+>2.28.0.rc0.12.gb6a658bd00c9
+>
+>
 
