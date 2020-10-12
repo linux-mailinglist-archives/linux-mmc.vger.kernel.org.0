@@ -2,131 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09E1D28B4DC
-	for <lists+linux-mmc@lfdr.de>; Mon, 12 Oct 2020 14:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1602428BD76
+	for <lists+linux-mmc@lfdr.de>; Mon, 12 Oct 2020 18:19:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729763AbgJLMqC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 12 Oct 2020 08:46:02 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:46519 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729701AbgJLMqA (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Oct 2020 08:46:00 -0400
-X-UUID: 6ac210b394314070bef31344bcb4cf19-20201012
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=fX8ByFn/yQTAJ8dBMdeWDIfLG8p3QqLiCAE8ZcVQ75s=;
-        b=IwLSev0SI1ha1/JcGMAhFh53gtNSjDN5c8OOw3NBIL/snYxwmD1jxaFAamfT+f3ff218926sNtzs0RqF3WywR4ZLSSXC812a6/ZwIoKTKYmWNgrLQhiSXghNrc/sipGLKMg8UHBYKC8sZPN4tfPYoEBibCoDHoGSt53nwu9tGdg=;
-X-UUID: 6ac210b394314070bef31344bcb4cf19-20201012
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <wenbin.mei@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1702155387; Mon, 12 Oct 2020 20:45:54 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 12 Oct 2020 20:45:51 +0800
-Received: from localhost.localdomain (10.17.3.153) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 12 Oct 2020 20:45:51 +0800
-From:   Wenbin Mei <wenbin.mei@mediatek.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <srv_heupstream@mediatek.com>,
-        Wenbin Mei <wenbin.mei@mediatek.com>
-Subject: [PATCH v6 4/4] mmc: mediatek: Add subsys clock control for MT8192 msdc
-Date:   Mon, 12 Oct 2020 20:45:47 +0800
-Message-ID: <20201012124547.16649-5-wenbin.mei@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20201012124547.16649-1-wenbin.mei@mediatek.com>
-References: <20201012124547.16649-1-wenbin.mei@mediatek.com>
+        id S2390705AbgJLQTw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 12 Oct 2020 12:19:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59212 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390043AbgJLQTu (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 12 Oct 2020 12:19:50 -0400
+Received: from sol.localdomain (172-10-235-113.lightspeed.sntcca.sbcglobal.net [172.10.235.113])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 22B302080A;
+        Mon, 12 Oct 2020 16:19:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602519589;
+        bh=FXrMfe87r7In01hy1fZxNUDLVXbtP/5TJ3+XTzWq1o4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=V7DSrccLr5b4UIwMLihtwG0wHPpEpEeCdL4DEsryZDNbDbBe/031RRLLs/mkasjte
+         GkozOXCGlriE75ewyNE/y/+1/YN0mvEXF3Fx+zkSk5bqABC19TCsH57zxXZt4yoDfc
+         Gd/Q7Kn6Oc4wJMc886CZx9bFLur2svNEjPDcQyvk=
+Date:   Mon, 12 Oct 2020 09:19:46 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Ira Weiny <ira.weiny@intel.com>
+Cc:     Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, linux-aio@kvack.org,
+        linux-efi@vger.kernel.org, kvm@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-mmc@vger.kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+        target-devel@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-kselftest@vger.kernel.org, samba-technical@lists.samba.org,
+        ceph-devel@vger.kernel.org, drbd-dev@lists.linbit.com,
+        devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+        linux-nilfs@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+        x86@kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-afs@lists.infradead.org, cluster-devel@redhat.com,
+        linux-cachefs@redhat.com, intel-wired-lan@lists.osuosl.org,
+        xen-devel@lists.xenproject.org, linux-ext4@vger.kernel.org,
+        Fenghua Yu <fenghua.yu@intel.com>, ecryptfs@vger.kernel.org,
+        linux-um@lists.infradead.org, intel-gfx@lists.freedesktop.org,
+        linux-erofs@lists.ozlabs.org, reiserfs-devel@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        io-uring@vger.kernel.org, linux-nfs@vger.kernel.org,
+        linux-ntfs-dev@lists.sourceforge.net, netdev@vger.kernel.org,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH RFC PKS/PMEM 22/58] fs/f2fs: Utilize new kmap_thread()
+Message-ID: <20201012161946.GA858@sol.localdomain>
+References: <20201009195033.3208459-1-ira.weiny@intel.com>
+ <20201009195033.3208459-23-ira.weiny@intel.com>
+ <20201009213434.GA839@sol.localdomain>
+ <20201010003954.GW20115@casper.infradead.org>
+ <20201010013036.GD1122@sol.localdomain>
+ <20201012065635.GB2046448@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201012065635.GB2046448@iweiny-DESK2.sc.intel.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-TVQ4MTkyIG1zZGMgaXMgYW4gaW5kZXBlbmRlbnQgc3ViIHN5c3RlbSwgd2UgbmVlZCBjb250cm9s
-IG1vcmUgYnVzDQpjbG9ja3MgZm9yIGl0Lg0KQWRkIHN1cHBvcnQgZm9yIHRoZSBhZGRpdGlvbmFs
-IHN1YnN5cyBjbG9ja3MgdG8gYWxsb3cgaXQgdG8gYmUNCmNvbmZpZ3VyZWQgYXBwcm9wcmlhdGVs
-eS4NCg0KU2lnbmVkLW9mZi1ieTogV2VuYmluIE1laSA8d2VuYmluLm1laUBtZWRpYXRlay5jb20+
-DQotLS0NCiBkcml2ZXJzL21tYy9ob3N0L210ay1zZC5jIHwgNzQgKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKystLS0tLS0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDU2IGluc2VydGlvbnMoKyks
-IDE4IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tbWMvaG9zdC9tdGstc2Qu
-YyBiL2RyaXZlcnMvbW1jL2hvc3QvbXRrLXNkLmMNCmluZGV4IGE3MDQ3NDVlNTg4Mi4uYzdkZjc1
-MTBmMTIwIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9tbWMvaG9zdC9tdGstc2QuYw0KKysrIGIvZHJp
-dmVycy9tbWMvaG9zdC9tdGstc2QuYw0KQEAgLTM1LDYgKzM1LDcgQEANCiAjaW5jbHVkZSAiY3Fo
-Y2kuaCINCiANCiAjZGVmaW5lIE1BWF9CRF9OVU0gICAgICAgICAgMTAyNA0KKyNkZWZpbmUgTVNE
-Q19OUl9DTE9DS1MgICAgICAzDQogDQogLyotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSovDQogLyogQ29tbW9u
-IERlZmluaXRpb24gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICovDQpAQCAtNDI1LDYgKzQyNiw4IEBAIHN0cnVjdCBtc2RjX2hvc3Qgew0KIAlz
-dHJ1Y3QgY2xrICpoX2NsazsgICAgICAvKiBtc2RjIGhfY2xrICovDQogCXN0cnVjdCBjbGsgKmJ1
-c19jbGs7CS8qIGJ1cyBjbG9jayB3aGljaCB1c2VkIHRvIGFjY2VzcyByZWdpc3RlciAqLw0KIAlz
-dHJ1Y3QgY2xrICpzcmNfY2xrX2NnOyAvKiBtc2RjIHNvdXJjZSBjbG9jayBjb250cm9sIGdhdGUg
-Ki8NCisJc3RydWN0IGNsayAqc3lzX2Nsa19jZzsJLyogbXNkYyBzdWJzeXMgY2xvY2sgY29udHJv
-bCBnYXRlICovDQorCXN0cnVjdCBjbGtfYnVsa19kYXRhIGJ1bGtfY2xrc1tNU0RDX05SX0NMT0NL
-U107DQogCXUzMiBtY2xrOwkJLyogbW1jIHN1YnN5c3RlbSBjbG9jayBmcmVxdWVuY3kgKi8NCiAJ
-dTMyIHNyY19jbGtfZnJlcTsJLyogc291cmNlIGNsb2NrIGZyZXF1ZW5jeSAqLw0KIAl1bnNpZ25l
-ZCBjaGFyIHRpbWluZzsNCkBAIC03ODQsNiArNzg3LDcgQEAgc3RhdGljIHZvaWQgbXNkY19zZXRf
-YnVzeV90aW1lb3V0KHN0cnVjdCBtc2RjX2hvc3QgKmhvc3QsIHU2NCBucywgdTY0IGNsa3MpDQog
-DQogc3RhdGljIHZvaWQgbXNkY19nYXRlX2Nsb2NrKHN0cnVjdCBtc2RjX2hvc3QgKmhvc3QpDQog
-ew0KKwljbGtfYnVsa19kaXNhYmxlX3VucHJlcGFyZShNU0RDX05SX0NMT0NLUywgaG9zdC0+YnVs
-a19jbGtzKTsNCiAJY2xrX2Rpc2FibGVfdW5wcmVwYXJlKGhvc3QtPnNyY19jbGtfY2cpOw0KIAlj
-bGtfZGlzYWJsZV91bnByZXBhcmUoaG9zdC0+c3JjX2Nsayk7DQogCWNsa19kaXNhYmxlX3VucHJl
-cGFyZShob3N0LT5idXNfY2xrKTsNCkBAIC03OTIsMTAgKzc5NiwxOCBAQCBzdGF0aWMgdm9pZCBt
-c2RjX2dhdGVfY2xvY2soc3RydWN0IG1zZGNfaG9zdCAqaG9zdCkNCiANCiBzdGF0aWMgdm9pZCBt
-c2RjX3VuZ2F0ZV9jbG9jayhzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0KIHsNCisJaW50IHJldDsN
-CisNCiAJY2xrX3ByZXBhcmVfZW5hYmxlKGhvc3QtPmhfY2xrKTsNCiAJY2xrX3ByZXBhcmVfZW5h
-YmxlKGhvc3QtPmJ1c19jbGspOw0KIAljbGtfcHJlcGFyZV9lbmFibGUoaG9zdC0+c3JjX2Nsayk7
-DQogCWNsa19wcmVwYXJlX2VuYWJsZShob3N0LT5zcmNfY2xrX2NnKTsNCisJcmV0ID0gY2xrX2J1
-bGtfcHJlcGFyZV9lbmFibGUoTVNEQ19OUl9DTE9DS1MsIGhvc3QtPmJ1bGtfY2xrcyk7DQorCWlm
-IChyZXQpIHsNCisJCWRldl9lcnIoaG9zdC0+ZGV2LCAiQ2Fubm90IGVuYWJsZSBwY2xrL2F4aS9h
-aGIgY2xvY2sgZ2F0ZXNcbiIpOw0KKwkJcmV0dXJuOw0KKwl9DQorDQogCXdoaWxlICghKHJlYWRs
-KGhvc3QtPmJhc2UgKyBNU0RDX0NGRykgJiBNU0RDX0NGR19DS1NUQikpDQogCQljcHVfcmVsYXgo
-KTsNCiB9DQpAQCAtMjM2Niw2ICsyMzc4LDQ4IEBAIHN0YXRpYyB2b2lkIG1zZGNfb2ZfcHJvcGVy
-dHlfcGFyc2Uoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldiwNCiAJCWhvc3QtPmNxaGNpID0g
-ZmFsc2U7DQogfQ0KIA0KK3N0YXRpYyBpbnQgbXNkY19vZl9jbG9ja19wYXJzZShzdHJ1Y3QgcGxh
-dGZvcm1fZGV2aWNlICpwZGV2LA0KKwkJCSAgICAgICBzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0K
-K3sNCisJaW50IHJldDsNCisNCisJaG9zdC0+c3JjX2NsayA9IGRldm1fY2xrX2dldCgmcGRldi0+
-ZGV2LCAic291cmNlIik7DQorCWlmIChJU19FUlIoaG9zdC0+c3JjX2NsaykpDQorCQlyZXR1cm4g
-UFRSX0VSUihob3N0LT5zcmNfY2xrKTsNCisNCisJaG9zdC0+aF9jbGsgPSBkZXZtX2Nsa19nZXQo
-JnBkZXYtPmRldiwgImhjbGsiKTsNCisJaWYgKElTX0VSUihob3N0LT5oX2NsaykpDQorCQlyZXR1
-cm4gUFRSX0VSUihob3N0LT5oX2Nsayk7DQorDQorCWhvc3QtPmJ1c19jbGsgPSBkZXZtX2Nsa19n
-ZXRfb3B0aW9uYWwoJnBkZXYtPmRldiwgImJ1c19jbGsiKTsNCisJaWYgKElTX0VSUihob3N0LT5i
-dXNfY2xrKSkNCisJCWhvc3QtPmJ1c19jbGsgPSBOVUxMOw0KKw0KKwkvKnNvdXJjZSBjbG9jayBj
-b250cm9sIGdhdGUgaXMgb3B0aW9uYWwgY2xvY2sqLw0KKwlob3N0LT5zcmNfY2xrX2NnID0gZGV2
-bV9jbGtfZ2V0X29wdGlvbmFsKCZwZGV2LT5kZXYsICJzb3VyY2VfY2ciKTsNCisJaWYgKElTX0VS
-Uihob3N0LT5zcmNfY2xrX2NnKSkNCisJCWhvc3QtPnNyY19jbGtfY2cgPSBOVUxMOw0KKw0KKwlo
-b3N0LT5zeXNfY2xrX2NnID0gZGV2bV9jbGtfZ2V0X29wdGlvbmFsKCZwZGV2LT5kZXYsICJzeXNf
-Y2ciKTsNCisJaWYgKElTX0VSUihob3N0LT5zeXNfY2xrX2NnKSkNCisJCWhvc3QtPnN5c19jbGtf
-Y2cgPSBOVUxMOw0KKw0KKwkvKiBJZiBwcmVzZW50LCBhbHdheXMgZW5hYmxlIGZvciB0aGlzIGNs
-b2NrIGdhdGUgKi8NCisJY2xrX3ByZXBhcmVfZW5hYmxlKGhvc3QtPnN5c19jbGtfY2cpOw0KKw0K
-Kwlob3N0LT5idWxrX2Nsa3NbMF0uaWQgPSAicGNsa19jZyI7DQorCWhvc3QtPmJ1bGtfY2xrc1sx
-XS5pZCA9ICJheGlfY2ciOw0KKwlob3N0LT5idWxrX2Nsa3NbMl0uaWQgPSAiYWhiX2NnIjsNCisJ
-cmV0ID0gZGV2bV9jbGtfYnVsa19nZXRfb3B0aW9uYWwoJnBkZXYtPmRldiwgTVNEQ19OUl9DTE9D
-S1MsDQorCQkJCQkgaG9zdC0+YnVsa19jbGtzKTsNCisJaWYgKHJldCkgew0KKwkJZGV2X2Vycigm
-cGRldi0+ZGV2LCAiQ2Fubm90IGdldCBwY2xrL2F4aS9haGIgY2xvY2sgZ2F0ZXNcbiIpOw0KKwkJ
-cmV0dXJuIHJldDsNCisJfQ0KKw0KKwlyZXR1cm4gMDsNCit9DQorDQogc3RhdGljIGludCBtc2Rj
-X2Rydl9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KIHsNCiAJc3RydWN0IG1t
-Y19ob3N0ICptbWM7DQpAQCAtMjQwNSwyNSArMjQ1OSw5IEBAIHN0YXRpYyBpbnQgbXNkY19kcnZf
-cHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikNCiAJaWYgKHJldCkNCiAJCWdvdG8g
-aG9zdF9mcmVlOw0KIA0KLQlob3N0LT5zcmNfY2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYs
-ICJzb3VyY2UiKTsNCi0JaWYgKElTX0VSUihob3N0LT5zcmNfY2xrKSkgew0KLQkJcmV0ID0gUFRS
-X0VSUihob3N0LT5zcmNfY2xrKTsNCi0JCWdvdG8gaG9zdF9mcmVlOw0KLQl9DQotDQotCWhvc3Qt
-PmhfY2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJoY2xrIik7DQotCWlmIChJU19FUlIo
-aG9zdC0+aF9jbGspKSB7DQotCQlyZXQgPSBQVFJfRVJSKGhvc3QtPmhfY2xrKTsNCisJcmV0ID0g
-bXNkY19vZl9jbG9ja19wYXJzZShwZGV2LCBob3N0KTsNCisJaWYgKHJldCkNCiAJCWdvdG8gaG9z
-dF9mcmVlOw0KLQl9DQotDQotCWhvc3QtPmJ1c19jbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRl
-diwgImJ1c19jbGsiKTsNCi0JaWYgKElTX0VSUihob3N0LT5idXNfY2xrKSkNCi0JCWhvc3QtPmJ1
-c19jbGsgPSBOVUxMOw0KLQkvKnNvdXJjZSBjbG9jayBjb250cm9sIGdhdGUgaXMgb3B0aW9uYWwg
-Y2xvY2sqLw0KLQlob3N0LT5zcmNfY2xrX2NnID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJz
-b3VyY2VfY2ciKTsNCi0JaWYgKElTX0VSUihob3N0LT5zcmNfY2xrX2NnKSkNCi0JCWhvc3QtPnNy
-Y19jbGtfY2cgPSBOVUxMOw0KIA0KIAlob3N0LT5yZXNldCA9IGRldm1fcmVzZXRfY29udHJvbF9n
-ZXRfb3B0aW9uYWxfZXhjbHVzaXZlKCZwZGV2LT5kZXYsDQogCQkJCQkJCQkiaHJzdCIpOw0KLS0g
-DQoyLjE4LjANCg==
+On Sun, Oct 11, 2020 at 11:56:35PM -0700, Ira Weiny wrote:
+> > 
+> > And I still don't really understand.  After this patchset, there is still code
+> > nearly identical to the above (doing a temporary mapping just for a memcpy) that
+> > would still be using kmap_atomic().
+> 
+> I don't understand.  You mean there would be other call sites calling:
+> 
+> kmap_atomic()
+> memcpy()
+> kunmap_atomic()
 
+Yes, there are tons of places that do this.  Try 'git grep -A6 kmap_atomic'
+and look for memcpy().
+
+Hence why I'm asking what will be the "recommended" way to do this...
+kunmap_thread() or kmap_atomic()?
+
+> And since I don't know the call site details if there are kmap_thread() calls
+> which are better off as kmap_atomic() calls I think it is worth converting
+> them.  But I made the assumption that kmap users would already be calling
+> kmap_atomic() if they could (because it is more efficient).
+
+Not necessarily.  In cases where either one is correct, people might not have
+put much thought into which of kmap() and kmap_atomic() they are using.
+
+- Eric
