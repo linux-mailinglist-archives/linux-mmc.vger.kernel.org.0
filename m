@@ -2,129 +2,220 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0B8C28A688
-	for <lists+linux-mmc@lfdr.de>; Sun, 11 Oct 2020 11:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2072128AB46
+	for <lists+linux-mmc@lfdr.de>; Mon, 12 Oct 2020 02:59:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729552AbgJKJKs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 11 Oct 2020 05:10:48 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:36151 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729501AbgJKJKk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 11 Oct 2020 05:10:40 -0400
-X-UUID: 2d867613a92e4017b69f507552c7cdda-20201011
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=GoereX3z4yLccDhPMr3wMI58d0RbqsyXBZGN1gaGVb0=;
-        b=cQ+zX7uYW2ROUQNrFlKspwBntJrwfdP97dV9IsTz5NDxcJIwkI4fd2TN4qo+rd2OkqOX2Dbo3GmGRlDeqcvM8/GRdVGak6H++PHqAQ6TQneGBlsGMyn8TlMyBuCvIcb20DRNXaiKlIPoiyqKOvPCRsBXLuZ3SRjjGry0tQWDyqo=;
-X-UUID: 2d867613a92e4017b69f507552c7cdda-20201011
-Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw02.mediatek.com
-        (envelope-from <wenbin.mei@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 325027978; Sun, 11 Oct 2020 17:10:37 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sun, 11 Oct 2020 17:10:35 +0800
-Received: from localhost.localdomain (10.17.3.153) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 11 Oct 2020 17:10:35 +0800
-From:   Wenbin Mei <wenbin.mei@mediatek.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <srv_heupstream@mediatek.com>,
-        Wenbin Mei <wenbin.mei@mediatek.com>
-Subject: [PATCH v4 4/4] mmc: mediatek: Add subsys clock control for MT8192 msdc
-Date:   Sun, 11 Oct 2020 17:10:30 +0800
-Message-ID: <20201011091030.28547-5-wenbin.mei@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20201011091030.28547-1-wenbin.mei@mediatek.com>
-References: <20201011091030.28547-1-wenbin.mei@mediatek.com>
+        id S1727196AbgJLA7E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 11 Oct 2020 20:59:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54688 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727132AbgJLA7D (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 11 Oct 2020 20:59:03 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEB2BC0613CE
+        for <linux-mmc@vger.kernel.org>; Sun, 11 Oct 2020 17:59:01 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id v23so5669588vsp.6
+        for <linux-mmc@vger.kernel.org>; Sun, 11 Oct 2020 17:59:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pKuO3QKcuUe/F0t0uUwfDC3OUqDsOLuOv/YQ0PPKJlA=;
+        b=ZG/7AljIIxkb5kzG7HUfhx+PenrEEBEfXe2u+72K/l+ASYNVw1bzTK8HkNYSwNlsXK
+         bwSJVF9pjjshsq0EMj7KGo7mcBMXwlnURFfVNlOtH6C34LV6twpBsGEVtA+Eqk+Z/wLn
+         ENLu//cmWsl73fMUH9ggHyTUOLybFWK8/vrMs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pKuO3QKcuUe/F0t0uUwfDC3OUqDsOLuOv/YQ0PPKJlA=;
+        b=n0TfdgIplPqdoQKQfOaCvYJZOc3FkbVyKPlHwnghfrmcXRZrsmEttBYuy1TOynNnDG
+         GKNWKRP9aWvnWxh5BQbMkXJ1cNq6h2zt4rA2Wklg+W4xSZWd8bgO+i8V2AxHKOaUY8WS
+         jh8GL9VBCOJt4hRIEwhK4VJTeyQUtozXz1xHs8+vbsssChZsTJT4RPAj0mI8R3FxkwJW
+         S8eIhZGwPhLRGAnXZQEfTntuReJM7kGqfqKTE0uIhwCsDk/IVEPa+IOej35br0H+6Zq1
+         exP9Q+ZJor+kGF5I1SpQU78frYFbJvLcAzzzqTIe++uej8VWj9eJ7fGa0EKSV582IVsy
+         1aNg==
+X-Gm-Message-State: AOAM533YbtPbBAp6ss1uedWy8rgdzlneOtGecYgl5WL27tzCM1V6lhD4
+        bzhgnIsjxjwuzbE6q9PtEQhnp8ncsyJhfO4r457e9A==
+X-Google-Smtp-Source: ABdhPJzbMq6z0XxcHIW6V+QcP9xfb/3LB2U9g8w72z9oVPeF9M6hCzMfU7wevdjFzc2rwF7rScRjmqmEOTel5s5bRLY=
+X-Received: by 2002:a67:3344:: with SMTP id z65mr13370348vsz.47.1602464340859;
+ Sun, 11 Oct 2020 17:59:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+References: <20201011091030.28547-1-wenbin.mei@mediatek.com> <20201011091030.28547-5-wenbin.mei@mediatek.com>
+In-Reply-To: <20201011091030.28547-5-wenbin.mei@mediatek.com>
+From:   Nicolas Boichat <drinkcat@chromium.org>
+Date:   Mon, 12 Oct 2020 08:58:49 +0800
+Message-ID: <CANMq1KDSw6gTL=5oicK5h_Q5rLhYUcANXw1M7RT=xRyT2PzUrA@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] mmc: mediatek: Add subsys clock control for MT8192 msdc
+To:     Wenbin Mei <wenbin.mei@mediatek.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-mmc@vger.kernel.org,
+        Devicetree List <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        srv_heupstream <srv_heupstream@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-TVQ4MTkyIG1zZGMgaXMgYW4gaW5kZXBlbmRlbnQgc3ViIHN5c3RlbSwgd2UgbmVlZCBjb250cm9s
-IG1vcmUgYnVzDQpjbG9ja3MgZm9yIGl0Lg0KQWRkIHN1cHBvcnQgZm9yIHRoZSBhZGRpdGlvbmFs
-IHN1YnN5cyBjbG9ja3MgdG8gYWxsb3cgaXQgdG8gYmUNCmNvbmZpZ3VyZWQgYXBwcm9wcmlhdGVs
-eS4NCg0KU2lnbmVkLW9mZi1ieTogV2VuYmluIE1laSA8d2VuYmluLm1laUBtZWRpYXRlay5jb20+
-DQpSZXZpZXdlZC1ieTogTmljb2xhcyBCb2ljaGF0IDxkcmlua2NhdEBjaHJvbWl1bS5vcmc+DQot
-LS0NCiBkcml2ZXJzL21tYy9ob3N0L210ay1zZC5jIHwgODAgKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrLS0tLS0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDYyIGluc2VydGlvbnMoKyksIDE4
-IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tbWMvaG9zdC9tdGstc2QuYyBi
-L2RyaXZlcnMvbW1jL2hvc3QvbXRrLXNkLmMNCmluZGV4IGE3MDQ3NDVlNTg4Mi4uMzUwZTQ1NDMy
-ZTIxIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9tbWMvaG9zdC9tdGstc2QuYw0KKysrIGIvZHJpdmVy
-cy9tbWMvaG9zdC9tdGstc2QuYw0KQEAgLTQyNSw2ICs0MjUsOCBAQCBzdHJ1Y3QgbXNkY19ob3N0
-IHsNCiAJc3RydWN0IGNsayAqaF9jbGs7ICAgICAgLyogbXNkYyBoX2NsayAqLw0KIAlzdHJ1Y3Qg
-Y2xrICpidXNfY2xrOwkvKiBidXMgY2xvY2sgd2hpY2ggdXNlZCB0byBhY2Nlc3MgcmVnaXN0ZXIg
-Ki8NCiAJc3RydWN0IGNsayAqc3JjX2Nsa19jZzsgLyogbXNkYyBzb3VyY2UgY2xvY2sgY29udHJv
-bCBnYXRlICovDQorCXN0cnVjdCBjbGsgKnN5c19jbGtfY2c7CS8qIG1zZGMgc3Vic3lzIGNsb2Nr
-IGNvbnRyb2wgZ2F0ZSAqLw0KKwlzdHJ1Y3QgY2xrX2J1bGtfZGF0YSBidWxrX2Nsa3NbM107CS8q
-IHBjbGssIGF4aSwgYWhiIGNsb2NrIGNvbnRyb2wgZ2F0ZSAqLw0KIAl1MzIgbWNsazsJCS8qIG1t
-YyBzdWJzeXN0ZW0gY2xvY2sgZnJlcXVlbmN5ICovDQogCXUzMiBzcmNfY2xrX2ZyZXE7CS8qIHNv
-dXJjZSBjbG9jayBmcmVxdWVuY3kgKi8NCiAJdW5zaWduZWQgY2hhciB0aW1pbmc7DQpAQCAtNzg0
-LDYgKzc4Niw4IEBAIHN0YXRpYyB2b2lkIG1zZGNfc2V0X2J1c3lfdGltZW91dChzdHJ1Y3QgbXNk
-Y19ob3N0ICpob3N0LCB1NjQgbnMsIHU2NCBjbGtzKQ0KIA0KIHN0YXRpYyB2b2lkIG1zZGNfZ2F0
-ZV9jbG9jayhzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0KIHsNCisJY2xrX2J1bGtfZGlzYWJsZV91
-bnByZXBhcmUoQVJSQVlfU0laRShob3N0LT5idWxrX2Nsa3MpLA0KKwkJCQkgICBob3N0LT5idWxr
-X2Nsa3MpOw0KIAljbGtfZGlzYWJsZV91bnByZXBhcmUoaG9zdC0+c3JjX2Nsa19jZyk7DQogCWNs
-a19kaXNhYmxlX3VucHJlcGFyZShob3N0LT5zcmNfY2xrKTsNCiAJY2xrX2Rpc2FibGVfdW5wcmVw
-YXJlKGhvc3QtPmJ1c19jbGspOw0KQEAgLTc5MiwxMCArNzk2LDE5IEBAIHN0YXRpYyB2b2lkIG1z
-ZGNfZ2F0ZV9jbG9jayhzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0KIA0KIHN0YXRpYyB2b2lkIG1z
-ZGNfdW5nYXRlX2Nsb2NrKHN0cnVjdCBtc2RjX2hvc3QgKmhvc3QpDQogew0KKwlpbnQgcmV0Ow0K
-Kw0KIAljbGtfcHJlcGFyZV9lbmFibGUoaG9zdC0+aF9jbGspOw0KIAljbGtfcHJlcGFyZV9lbmFi
-bGUoaG9zdC0+YnVzX2Nsayk7DQogCWNsa19wcmVwYXJlX2VuYWJsZShob3N0LT5zcmNfY2xrKTsN
-CiAJY2xrX3ByZXBhcmVfZW5hYmxlKGhvc3QtPnNyY19jbGtfY2cpOw0KKwlyZXQgPSBjbGtfYnVs
-a19wcmVwYXJlX2VuYWJsZShBUlJBWV9TSVpFKGhvc3QtPmJ1bGtfY2xrcyksDQorCQkJCSAgICAg
-IGhvc3QtPmJ1bGtfY2xrcyk7DQorCWlmIChyZXQpIHsNCisJCWRldl9lcnIoaG9zdC0+ZGV2LCAi
-ZW5hYmxlIGNsa3MgZmFpbGVkIVxuIik7DQorCQlyZXR1cm47DQorCX0NCisNCiAJd2hpbGUgKCEo
-cmVhZGwoaG9zdC0+YmFzZSArIE1TRENfQ0ZHKSAmIE1TRENfQ0ZHX0NLU1RCKSkNCiAJCWNwdV9y
-ZWxheCgpOw0KIH0NCkBAIC0yMzY2LDYgKzIzNzksNTMgQEAgc3RhdGljIHZvaWQgbXNkY19vZl9w
-cm9wZXJ0eV9wYXJzZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2LA0KIAkJaG9zdC0+Y3Fo
-Y2kgPSBmYWxzZTsNCiB9DQogDQorc3RhdGljIGludCBtc2RjX29mX2Nsb2NrX3BhcnNlKHN0cnVj
-dCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYsDQorCQkJICAgICAgIHN0cnVjdCBtc2RjX2hvc3QgKmhv
-c3QpDQorew0KKwlzdHJ1Y3QgY2xrICpjbGs7DQorDQorCWhvc3QtPnNyY19jbGsgPSBkZXZtX2Ns
-a19nZXRfb3B0aW9uYWwoJnBkZXYtPmRldiwgInNvdXJjZSIpOw0KKwlpZiAoSVNfRVJSKGhvc3Qt
-PnNyY19jbGspKQ0KKwkJcmV0dXJuIFBUUl9FUlIoaG9zdC0+c3JjX2Nsayk7DQorDQorCWhvc3Qt
-PmhfY2xrID0gZGV2bV9jbGtfZ2V0X29wdGlvbmFsKCZwZGV2LT5kZXYsICJoY2xrIik7DQorCWlm
-IChJU19FUlIoaG9zdC0+aF9jbGspKQ0KKwkJcmV0dXJuIFBUUl9FUlIoaG9zdC0+aF9jbGspOw0K
-Kw0KKwlob3N0LT5idXNfY2xrID0gZGV2bV9jbGtfZ2V0X29wdGlvbmFsKCZwZGV2LT5kZXYsICJi
-dXNfY2xrIik7DQorCWlmIChJU19FUlIoaG9zdC0+YnVzX2NsaykpDQorCQlob3N0LT5idXNfY2xr
-ID0gTlVMTDsNCisNCisJLypzb3VyY2UgY2xvY2sgY29udHJvbCBnYXRlIGlzIG9wdGlvbmFsIGNs
-b2NrKi8NCisJaG9zdC0+c3JjX2Nsa19jZyA9IGRldm1fY2xrX2dldF9vcHRpb25hbCgmcGRldi0+
-ZGV2LCAic291cmNlX2NnIik7DQorCWlmIChJU19FUlIoaG9zdC0+c3JjX2Nsa19jZykpDQorCQlo
-b3N0LT5zcmNfY2xrX2NnID0gTlVMTDsNCisNCisJaG9zdC0+c3lzX2Nsa19jZyA9IGRldm1fY2xr
-X2dldF9vcHRpb25hbCgmcGRldi0+ZGV2LCAic3lzX2NnIik7DQorCWlmIChJU19FUlIoaG9zdC0+
-c3lzX2Nsa19jZykpDQorCQlob3N0LT5zeXNfY2xrX2NnID0gTlVMTDsNCisNCisJLyogSWYgcHJl
-c2VudCwgYWx3YXlzIGVuYWJsZSBmb3IgdGhpcyBjbG9jayBnYXRlICovDQorCWNsa19wcmVwYXJl
-X2VuYWJsZShob3N0LT5zeXNfY2xrX2NnKTsNCisNCisJY2xrID0gZGV2bV9jbGtfZ2V0X29wdGlv
-bmFsKCZwZGV2LT5kZXYsICJwY2xrX2NnIik7DQorCWlmIChJU19FUlIoY2xrKSkNCisJCWNsayA9
-IE5VTEw7DQorCWhvc3QtPmJ1bGtfY2xrc1swXS5jbGsgPSBjbGs7DQorDQorCWNsayA9IGRldm1f
-Y2xrX2dldF9vcHRpb25hbCgmcGRldi0+ZGV2LCAiYXhpX2NnIik7DQorCWlmIChJU19FUlIoY2xr
-KSkNCisJCWNsayA9IE5VTEw7DQorCWhvc3QtPmJ1bGtfY2xrc1sxXS5jbGsgPSBjbGs7DQorDQor
-CWNsayA9IGRldm1fY2xrX2dldF9vcHRpb25hbCgmcGRldi0+ZGV2LCAiYWhiX2NnIik7DQorCWlm
-IChJU19FUlIoY2xrKSkNCisJCWNsayA9IE5VTEw7DQorCWhvc3QtPmJ1bGtfY2xrc1syXS5jbGsg
-PSBjbGs7DQorDQorCXJldHVybiAwOw0KK30NCisNCiBzdGF0aWMgaW50IG1zZGNfZHJ2X3Byb2Jl
-KHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpDQogew0KIAlzdHJ1Y3QgbW1jX2hvc3QgKm1t
-YzsNCkBAIC0yNDA1LDI1ICsyNDY1LDkgQEAgc3RhdGljIGludCBtc2RjX2Rydl9wcm9iZShzdHJ1
-Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KIAlpZiAocmV0KQ0KIAkJZ290byBob3N0X2ZyZWU7
-DQogDQotCWhvc3QtPnNyY19jbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRldiwgInNvdXJjZSIp
-Ow0KLQlpZiAoSVNfRVJSKGhvc3QtPnNyY19jbGspKSB7DQotCQlyZXQgPSBQVFJfRVJSKGhvc3Qt
-PnNyY19jbGspOw0KLQkJZ290byBob3N0X2ZyZWU7DQotCX0NCi0NCi0JaG9zdC0+aF9jbGsgPSBk
-ZXZtX2Nsa19nZXQoJnBkZXYtPmRldiwgImhjbGsiKTsNCi0JaWYgKElTX0VSUihob3N0LT5oX2Ns
-aykpIHsNCi0JCXJldCA9IFBUUl9FUlIoaG9zdC0+aF9jbGspOw0KKwlyZXQgPSBtc2RjX29mX2Ns
-b2NrX3BhcnNlKHBkZXYsIGhvc3QpOw0KKwlpZiAocmV0KQ0KIAkJZ290byBob3N0X2ZyZWU7DQot
-CX0NCi0NCi0JaG9zdC0+YnVzX2NsayA9IGRldm1fY2xrX2dldCgmcGRldi0+ZGV2LCAiYnVzX2Ns
-ayIpOw0KLQlpZiAoSVNfRVJSKGhvc3QtPmJ1c19jbGspKQ0KLQkJaG9zdC0+YnVzX2NsayA9IE5V
-TEw7DQotCS8qc291cmNlIGNsb2NrIGNvbnRyb2wgZ2F0ZSBpcyBvcHRpb25hbCBjbG9jayovDQot
-CWhvc3QtPnNyY19jbGtfY2cgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRldiwgInNvdXJjZV9jZyIp
-Ow0KLQlpZiAoSVNfRVJSKGhvc3QtPnNyY19jbGtfY2cpKQ0KLQkJaG9zdC0+c3JjX2Nsa19jZyA9
-IE5VTEw7DQogDQogCWhvc3QtPnJlc2V0ID0gZGV2bV9yZXNldF9jb250cm9sX2dldF9vcHRpb25h
-bF9leGNsdXNpdmUoJnBkZXYtPmRldiwNCiAJCQkJCQkJCSJocnN0Iik7DQotLSANCjIuMTguMA0K
+On Sun, Oct 11, 2020 at 5:10 PM Wenbin Mei <wenbin.mei@mediatek.com> wrote:
+>
+> MT8192 msdc is an independent sub system, we need control more bus
+> clocks for it.
+> Add support for the additional subsys clocks to allow it to be
+> configured appropriately.
+>
+> Signed-off-by: Wenbin Mei <wenbin.mei@mediatek.com>
+> Reviewed-by: Nicolas Boichat <drinkcat@chromium.org>
 
+Err, you must not add R-by tag unless I explicitly say so (yes, I
+reviewed v3, but I didn't add my R-by tag).
+
+> ---
+>  drivers/mmc/host/mtk-sd.c | 80 ++++++++++++++++++++++++++++++---------
+>  1 file changed, 62 insertions(+), 18 deletions(-)
+>
+> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+> index a704745e5882..350e45432e21 100644
+> --- a/drivers/mmc/host/mtk-sd.c
+> +++ b/drivers/mmc/host/mtk-sd.c
+> @@ -425,6 +425,8 @@ struct msdc_host {
+>         struct clk *h_clk;      /* msdc h_clk */
+>         struct clk *bus_clk;    /* bus clock which used to access register */
+>         struct clk *src_clk_cg; /* msdc source clock control gate */
+> +       struct clk *sys_clk_cg; /* msdc subsys clock control gate */
+> +       struct clk_bulk_data bulk_clks[3];      /* pclk, axi, ahb clock control gate */
+>         u32 mclk;               /* mmc subsystem clock frequency */
+>         u32 src_clk_freq;       /* source clock frequency */
+>         unsigned char timing;
+> @@ -784,6 +786,8 @@ static void msdc_set_busy_timeout(struct msdc_host *host, u64 ns, u64 clks)
+>
+>  static void msdc_gate_clock(struct msdc_host *host)
+>  {
+> +       clk_bulk_disable_unprepare(ARRAY_SIZE(host->bulk_clks),
+> +                                  host->bulk_clks);
+>         clk_disable_unprepare(host->src_clk_cg);
+>         clk_disable_unprepare(host->src_clk);
+>         clk_disable_unprepare(host->bus_clk);
+> @@ -792,10 +796,19 @@ static void msdc_gate_clock(struct msdc_host *host)
+>
+>  static void msdc_ungate_clock(struct msdc_host *host)
+>  {
+> +       int ret;
+> +
+>         clk_prepare_enable(host->h_clk);
+>         clk_prepare_enable(host->bus_clk);
+>         clk_prepare_enable(host->src_clk);
+>         clk_prepare_enable(host->src_clk_cg);
+> +       ret = clk_bulk_prepare_enable(ARRAY_SIZE(host->bulk_clks),
+> +                                     host->bulk_clks);
+> +       if (ret) {
+> +               dev_err(host->dev, "enable clks failed!\n");
+> +               return;
+> +       }
+> +
+>         while (!(readl(host->base + MSDC_CFG) & MSDC_CFG_CKSTB))
+>                 cpu_relax();
+>  }
+> @@ -2366,6 +2379,53 @@ static void msdc_of_property_parse(struct platform_device *pdev,
+>                 host->cqhci = false;
+>  }
+>
+> +static int msdc_of_clock_parse(struct platform_device *pdev,
+> +                              struct msdc_host *host)
+> +{
+> +       struct clk *clk;
+> +
+> +       host->src_clk = devm_clk_get_optional(&pdev->dev, "source");
+> +       if (IS_ERR(host->src_clk))
+> +               return PTR_ERR(host->src_clk);
+> +
+> +       host->h_clk = devm_clk_get_optional(&pdev->dev, "hclk");
+> +       if (IS_ERR(host->h_clk))
+> +               return PTR_ERR(host->h_clk);
+> +
+> +       host->bus_clk = devm_clk_get_optional(&pdev->dev, "bus_clk");
+> +       if (IS_ERR(host->bus_clk))
+> +               host->bus_clk = NULL;
+> +
+> +       /*source clock control gate is optional clock*/
+> +       host->src_clk_cg = devm_clk_get_optional(&pdev->dev, "source_cg");
+> +       if (IS_ERR(host->src_clk_cg))
+> +               host->src_clk_cg = NULL;
+> +
+> +       host->sys_clk_cg = devm_clk_get_optional(&pdev->dev, "sys_cg");
+> +       if (IS_ERR(host->sys_clk_cg))
+> +               host->sys_clk_cg = NULL;
+> +
+> +       /* If present, always enable for this clock gate */
+> +       clk_prepare_enable(host->sys_clk_cg);
+
+Understand your reply on v3 (this clock gate cannot be disabled --
+https://patchwork.kernel.org/patch/11808433/#23678227), but I'm still
+unsure if this is the right thing to do to enable it at probe time.
+I'll let others comment.
+
+> +
+> +       clk = devm_clk_get_optional(&pdev->dev, "pclk_cg");
+> +       if (IS_ERR(clk))
+> +               clk = NULL;
+> +       host->bulk_clks[0].clk = clk;
+> +
+> +       clk = devm_clk_get_optional(&pdev->dev, "axi_cg");
+> +       if (IS_ERR(clk))
+> +               clk = NULL;
+> +       host->bulk_clks[1].clk = clk;
+> +
+> +       clk = devm_clk_get_optional(&pdev->dev, "ahb_cg");
+> +       if (IS_ERR(clk))
+> +               clk = NULL;
+> +       host->bulk_clks[2].clk = clk;
+
+Put the clock names in host->bulk_clks[x].id, then call
+devm_clk_bulk_get_optional.
+
+Example here: https://elixir.bootlin.com/linux/latest/source/drivers/gpio/gpio-dwapb.c#L675
+
+> +
+> +       return 0;
+> +}
+> +
+>  static int msdc_drv_probe(struct platform_device *pdev)
+>  {
+>         struct mmc_host *mmc;
+> @@ -2405,25 +2465,9 @@ static int msdc_drv_probe(struct platform_device *pdev)
+>         if (ret)
+>                 goto host_free;
+>
+> -       host->src_clk = devm_clk_get(&pdev->dev, "source");
+> -       if (IS_ERR(host->src_clk)) {
+> -               ret = PTR_ERR(host->src_clk);
+> -               goto host_free;
+> -       }
+> -
+> -       host->h_clk = devm_clk_get(&pdev->dev, "hclk");
+> -       if (IS_ERR(host->h_clk)) {
+> -               ret = PTR_ERR(host->h_clk);
+> +       ret = msdc_of_clock_parse(pdev, host);
+> +       if (ret)
+>                 goto host_free;
+> -       }
+> -
+> -       host->bus_clk = devm_clk_get(&pdev->dev, "bus_clk");
+> -       if (IS_ERR(host->bus_clk))
+> -               host->bus_clk = NULL;
+> -       /*source clock control gate is optional clock*/
+> -       host->src_clk_cg = devm_clk_get(&pdev->dev, "source_cg");
+> -       if (IS_ERR(host->src_clk_cg))
+> -               host->src_clk_cg = NULL;
+>
+>         host->reset = devm_reset_control_get_optional_exclusive(&pdev->dev,
+>                                                                 "hrst");
+> --
+> 2.18.0
