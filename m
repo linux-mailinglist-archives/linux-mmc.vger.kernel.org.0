@@ -2,132 +2,158 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1EBE28D8E7
-	for <lists+linux-mmc@lfdr.de>; Wed, 14 Oct 2020 05:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 044D128DB2E
+	for <lists+linux-mmc@lfdr.de>; Wed, 14 Oct 2020 10:25:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729451AbgJNDJw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 13 Oct 2020 23:09:52 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:41053 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726049AbgJNDJw (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 13 Oct 2020 23:09:52 -0400
-X-UUID: ebca25e1420f410ebd1de631ff12b6d9-20201014
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=8TGwcbxTFH3HJEaSJa1xM5BQ/ArhorBGt3HRCC6d8QM=;
-        b=gGqZRKrPBITdw7wt0Ay/hMtUa261QACqbT7PNO0Ksqn1H9LqysPCMeKxNAZ27+Y8lNSNWwXn9N26RMKQ/ApG06jqB3VoNif2bswPR5cxtGGqMAU0V+qxEXLp8dKjk9EWfLfIgr8izItUAlRaw5ak/I/gol1jthwUxWzUHn/sJWk=;
-X-UUID: ebca25e1420f410ebd1de631ff12b6d9-20201014
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <wenbin.mei@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1301275765; Wed, 14 Oct 2020 11:09:44 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 14 Oct 2020 11:08:50 +0800
-Received: from localhost.localdomain (10.17.3.153) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 14 Oct 2020 11:08:51 +0800
-From:   Wenbin Mei <wenbin.mei@mediatek.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <srv_heupstream@mediatek.com>,
+        id S1728707AbgJNIY4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 14 Oct 2020 04:24:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59464 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728701AbgJNIYd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 14 Oct 2020 04:24:33 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0DBC051121;
+        Wed, 14 Oct 2020 00:44:41 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id d3so1511100wma.4;
+        Wed, 14 Oct 2020 00:44:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=SYv6LV+tqsOI+IfXR5MUkRZoCxqVk7n+cV4mcuQRLfc=;
+        b=uy5SmFQT3YT48WJaJQg5nXxh6v9v8OMfyrWwyr2p5aEMvrmrmmOXUv1HfBS7BiZf67
+         +3JFurLP7Nr/+3weJAil8/WlfAoC8YxJLRf7GZFovqoTjE13L0Fy3/PsKji5TZYaqioS
+         5k+MGVkZfOlWcPveeVZO2NU+QoMumqIBCkEu8nM/dsF9HzwYT4um5Abw+Lrtkizj2GKu
+         PsYJfQzCkJw097GmQVPnA74/DonU4YPRmXS7YnepV6BxHp3cuAKBf3+uW1XsGq2IRM2a
+         n88MlOA6arljnOQrNGvVPAR6i/J8PqgccXwiYR+epE8yOYNMifVQyJO1Q5fThgUveF+v
+         d8zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=SYv6LV+tqsOI+IfXR5MUkRZoCxqVk7n+cV4mcuQRLfc=;
+        b=kXmi/BkIoFbTXaGBfZABYCA8QhqXaEZ52ArdVSBtpzb9bNEDY6QriSFJfziPOzhsR9
+         bH10+9uYYHHstBXgBhsTHWGTzz7k5JQrIU0+GOdsjD3ZD4rIuJAUIhydd8Xv5O8IfZTj
+         5k8UhsKoB4VIb7DsA4w4S896vtap7BHWO4pgf76M3Z9fOCjavpbodIHK8R3AVv8sLhdt
+         BCL6Hhr61Gb7XQSV3AZYlDqXwRK1eZYRhRhAfKQWVUn9+qZQIAThAvjL5fayLbL/Jym1
+         jFoZxx6Gazex/ozlkVM3iA+SMl+LzPjHIPSuAOyB2vJn356maC0sSeFaIV6vlrGXtEFN
+         kLIw==
+X-Gm-Message-State: AOAM532Mx1d1ewyGlBpnZQ59OHHJwbBqaAqIfEfH2h3yom7bhxtJW1eT
+        oz1k+8ckiAeQ9Veg4OHgdNU=
+X-Google-Smtp-Source: ABdhPJyGeC6r5z4QmxGH1+GnYnKUJXfFMobiolTqz/z3GvRgTv2ghl9aA8gv/v5l/I04dIwk9SALng==
+X-Received: by 2002:a1c:4c13:: with SMTP id z19mr2038352wmf.121.1602661479907;
+        Wed, 14 Oct 2020 00:44:39 -0700 (PDT)
+Received: from ziggy.stardust ([213.195.119.110])
+        by smtp.gmail.com with ESMTPSA id b63sm2649805wme.9.2020.10.14.00.44.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Oct 2020 00:44:39 -0700 (PDT)
+Subject: Re: [PATCH v6 4/4] mmc: mediatek: Add subsys clock control for MT8192
+ msdc
+To:     Nicolas Boichat <drinkcat@chromium.org>,
         Wenbin Mei <wenbin.mei@mediatek.com>
-Subject: [PATCH v7 4/4] mmc: mediatek: Add subsys clock control for MT8192 msdc
-Date:   Wed, 14 Oct 2020 11:08:46 +0800
-Message-ID: <20201014030846.12428-5-wenbin.mei@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20201014030846.12428-1-wenbin.mei@mediatek.com>
-References: <20201014030846.12428-1-wenbin.mei@mediatek.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        linux-mmc@vger.kernel.org,
+        Devicetree List <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        srv_heupstream <srv_heupstream@mediatek.com>
+References: <20201012124547.16649-1-wenbin.mei@mediatek.com>
+ <20201012124547.16649-5-wenbin.mei@mediatek.com>
+ <72ae1d89-fe31-4f50-15c0-29119d662ea1@gmail.com>
+ <1602642530.11864.3.camel@mhfsdcap03>
+ <CANMq1KBe9u25yDxg8UtmOX4vhr8De=5-pJyMRkSBF4O=FpBN9A@mail.gmail.com>
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+Message-ID: <8bcc800b-fa1a-a42c-9fb7-a7546e889694@gmail.com>
+Date:   Wed, 14 Oct 2020 09:44:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+In-Reply-To: <CANMq1KBe9u25yDxg8UtmOX4vhr8De=5-pJyMRkSBF4O=FpBN9A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-TVQ4MTkyIG1zZGMgaXMgYW4gaW5kZXBlbmRlbnQgc3ViIHN5c3RlbSwgd2UgbmVlZCBjb250cm9s
-IG1vcmUgYnVzDQpjbG9ja3MgZm9yIGl0Lg0KQWRkIHN1cHBvcnQgZm9yIHRoZSBhZGRpdGlvbmFs
-IHN1YnN5cyBjbG9ja3MgdG8gYWxsb3cgaXQgdG8gYmUNCmNvbmZpZ3VyZWQgYXBwcm9wcmlhdGVs
-eS4NCg0KU2lnbmVkLW9mZi1ieTogV2VuYmluIE1laSA8d2VuYmluLm1laUBtZWRpYXRlay5jb20+
-DQpSZXZpZXdlZC1ieTogTmljb2xhcyBCb2ljaGF0IDxkcmlua2NhdEBjaHJvbWl1bS5vcmc+DQot
-LS0NCiBkcml2ZXJzL21tYy9ob3N0L210ay1zZC5jIHwgNzQgKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKystLS0tLS0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDU2IGluc2VydGlvbnMoKyksIDE4
-IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tbWMvaG9zdC9tdGstc2QuYyBi
-L2RyaXZlcnMvbW1jL2hvc3QvbXRrLXNkLmMNCmluZGV4IGE3MDQ3NDVlNTg4Mi4uYzdkZjc1MTBm
-MTIwIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9tbWMvaG9zdC9tdGstc2QuYw0KKysrIGIvZHJpdmVy
-cy9tbWMvaG9zdC9tdGstc2QuYw0KQEAgLTM1LDYgKzM1LDcgQEANCiAjaW5jbHVkZSAiY3FoY2ku
-aCINCiANCiAjZGVmaW5lIE1BWF9CRF9OVU0gICAgICAgICAgMTAyNA0KKyNkZWZpbmUgTVNEQ19O
-Ul9DTE9DS1MgICAgICAzDQogDQogLyotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSovDQogLyogQ29tbW9uIERl
-ZmluaXRpb24gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICovDQpAQCAtNDI1LDYgKzQyNiw4IEBAIHN0cnVjdCBtc2RjX2hvc3Qgew0KIAlzdHJ1
-Y3QgY2xrICpoX2NsazsgICAgICAvKiBtc2RjIGhfY2xrICovDQogCXN0cnVjdCBjbGsgKmJ1c19j
-bGs7CS8qIGJ1cyBjbG9jayB3aGljaCB1c2VkIHRvIGFjY2VzcyByZWdpc3RlciAqLw0KIAlzdHJ1
-Y3QgY2xrICpzcmNfY2xrX2NnOyAvKiBtc2RjIHNvdXJjZSBjbG9jayBjb250cm9sIGdhdGUgKi8N
-CisJc3RydWN0IGNsayAqc3lzX2Nsa19jZzsJLyogbXNkYyBzdWJzeXMgY2xvY2sgY29udHJvbCBn
-YXRlICovDQorCXN0cnVjdCBjbGtfYnVsa19kYXRhIGJ1bGtfY2xrc1tNU0RDX05SX0NMT0NLU107
-DQogCXUzMiBtY2xrOwkJLyogbW1jIHN1YnN5c3RlbSBjbG9jayBmcmVxdWVuY3kgKi8NCiAJdTMy
-IHNyY19jbGtfZnJlcTsJLyogc291cmNlIGNsb2NrIGZyZXF1ZW5jeSAqLw0KIAl1bnNpZ25lZCBj
-aGFyIHRpbWluZzsNCkBAIC03ODQsNiArNzg3LDcgQEAgc3RhdGljIHZvaWQgbXNkY19zZXRfYnVz
-eV90aW1lb3V0KHN0cnVjdCBtc2RjX2hvc3QgKmhvc3QsIHU2NCBucywgdTY0IGNsa3MpDQogDQog
-c3RhdGljIHZvaWQgbXNkY19nYXRlX2Nsb2NrKHN0cnVjdCBtc2RjX2hvc3QgKmhvc3QpDQogew0K
-KwljbGtfYnVsa19kaXNhYmxlX3VucHJlcGFyZShNU0RDX05SX0NMT0NLUywgaG9zdC0+YnVsa19j
-bGtzKTsNCiAJY2xrX2Rpc2FibGVfdW5wcmVwYXJlKGhvc3QtPnNyY19jbGtfY2cpOw0KIAljbGtf
-ZGlzYWJsZV91bnByZXBhcmUoaG9zdC0+c3JjX2Nsayk7DQogCWNsa19kaXNhYmxlX3VucHJlcGFy
-ZShob3N0LT5idXNfY2xrKTsNCkBAIC03OTIsMTAgKzc5NiwxOCBAQCBzdGF0aWMgdm9pZCBtc2Rj
-X2dhdGVfY2xvY2soc3RydWN0IG1zZGNfaG9zdCAqaG9zdCkNCiANCiBzdGF0aWMgdm9pZCBtc2Rj
-X3VuZ2F0ZV9jbG9jayhzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0KIHsNCisJaW50IHJldDsNCisN
-CiAJY2xrX3ByZXBhcmVfZW5hYmxlKGhvc3QtPmhfY2xrKTsNCiAJY2xrX3ByZXBhcmVfZW5hYmxl
-KGhvc3QtPmJ1c19jbGspOw0KIAljbGtfcHJlcGFyZV9lbmFibGUoaG9zdC0+c3JjX2Nsayk7DQog
-CWNsa19wcmVwYXJlX2VuYWJsZShob3N0LT5zcmNfY2xrX2NnKTsNCisJcmV0ID0gY2xrX2J1bGtf
-cHJlcGFyZV9lbmFibGUoTVNEQ19OUl9DTE9DS1MsIGhvc3QtPmJ1bGtfY2xrcyk7DQorCWlmIChy
-ZXQpIHsNCisJCWRldl9lcnIoaG9zdC0+ZGV2LCAiQ2Fubm90IGVuYWJsZSBwY2xrL2F4aS9haGIg
-Y2xvY2sgZ2F0ZXNcbiIpOw0KKwkJcmV0dXJuOw0KKwl9DQorDQogCXdoaWxlICghKHJlYWRsKGhv
-c3QtPmJhc2UgKyBNU0RDX0NGRykgJiBNU0RDX0NGR19DS1NUQikpDQogCQljcHVfcmVsYXgoKTsN
-CiB9DQpAQCAtMjM2Niw2ICsyMzc4LDQ4IEBAIHN0YXRpYyB2b2lkIG1zZGNfb2ZfcHJvcGVydHlf
-cGFyc2Uoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldiwNCiAJCWhvc3QtPmNxaGNpID0gZmFs
-c2U7DQogfQ0KIA0KK3N0YXRpYyBpbnQgbXNkY19vZl9jbG9ja19wYXJzZShzdHJ1Y3QgcGxhdGZv
-cm1fZGV2aWNlICpwZGV2LA0KKwkJCSAgICAgICBzdHJ1Y3QgbXNkY19ob3N0ICpob3N0KQ0KK3sN
-CisJaW50IHJldDsNCisNCisJaG9zdC0+c3JjX2NsayA9IGRldm1fY2xrX2dldCgmcGRldi0+ZGV2
-LCAic291cmNlIik7DQorCWlmIChJU19FUlIoaG9zdC0+c3JjX2NsaykpDQorCQlyZXR1cm4gUFRS
-X0VSUihob3N0LT5zcmNfY2xrKTsNCisNCisJaG9zdC0+aF9jbGsgPSBkZXZtX2Nsa19nZXQoJnBk
-ZXYtPmRldiwgImhjbGsiKTsNCisJaWYgKElTX0VSUihob3N0LT5oX2NsaykpDQorCQlyZXR1cm4g
-UFRSX0VSUihob3N0LT5oX2Nsayk7DQorDQorCWhvc3QtPmJ1c19jbGsgPSBkZXZtX2Nsa19nZXRf
-b3B0aW9uYWwoJnBkZXYtPmRldiwgImJ1c19jbGsiKTsNCisJaWYgKElTX0VSUihob3N0LT5idXNf
-Y2xrKSkNCisJCWhvc3QtPmJ1c19jbGsgPSBOVUxMOw0KKw0KKwkvKnNvdXJjZSBjbG9jayBjb250
-cm9sIGdhdGUgaXMgb3B0aW9uYWwgY2xvY2sqLw0KKwlob3N0LT5zcmNfY2xrX2NnID0gZGV2bV9j
-bGtfZ2V0X29wdGlvbmFsKCZwZGV2LT5kZXYsICJzb3VyY2VfY2ciKTsNCisJaWYgKElTX0VSUiho
-b3N0LT5zcmNfY2xrX2NnKSkNCisJCWhvc3QtPnNyY19jbGtfY2cgPSBOVUxMOw0KKw0KKwlob3N0
-LT5zeXNfY2xrX2NnID0gZGV2bV9jbGtfZ2V0X29wdGlvbmFsKCZwZGV2LT5kZXYsICJzeXNfY2ci
-KTsNCisJaWYgKElTX0VSUihob3N0LT5zeXNfY2xrX2NnKSkNCisJCWhvc3QtPnN5c19jbGtfY2cg
-PSBOVUxMOw0KKw0KKwkvKiBJZiBwcmVzZW50LCBhbHdheXMgZW5hYmxlIGZvciB0aGlzIGNsb2Nr
-IGdhdGUgKi8NCisJY2xrX3ByZXBhcmVfZW5hYmxlKGhvc3QtPnN5c19jbGtfY2cpOw0KKw0KKwlo
-b3N0LT5idWxrX2Nsa3NbMF0uaWQgPSAicGNsa19jZyI7DQorCWhvc3QtPmJ1bGtfY2xrc1sxXS5p
-ZCA9ICJheGlfY2ciOw0KKwlob3N0LT5idWxrX2Nsa3NbMl0uaWQgPSAiYWhiX2NnIjsNCisJcmV0
-ID0gZGV2bV9jbGtfYnVsa19nZXRfb3B0aW9uYWwoJnBkZXYtPmRldiwgTVNEQ19OUl9DTE9DS1Ms
-DQorCQkJCQkgaG9zdC0+YnVsa19jbGtzKTsNCisJaWYgKHJldCkgew0KKwkJZGV2X2VycigmcGRl
-di0+ZGV2LCAiQ2Fubm90IGdldCBwY2xrL2F4aS9haGIgY2xvY2sgZ2F0ZXNcbiIpOw0KKwkJcmV0
-dXJuIHJldDsNCisJfQ0KKw0KKwlyZXR1cm4gMDsNCit9DQorDQogc3RhdGljIGludCBtc2RjX2Ry
-dl9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KIHsNCiAJc3RydWN0IG1tY19o
-b3N0ICptbWM7DQpAQCAtMjQwNSwyNSArMjQ1OSw5IEBAIHN0YXRpYyBpbnQgbXNkY19kcnZfcHJv
-YmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikNCiAJaWYgKHJldCkNCiAJCWdvdG8gaG9z
-dF9mcmVlOw0KIA0KLQlob3N0LT5zcmNfY2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJz
-b3VyY2UiKTsNCi0JaWYgKElTX0VSUihob3N0LT5zcmNfY2xrKSkgew0KLQkJcmV0ID0gUFRSX0VS
-Uihob3N0LT5zcmNfY2xrKTsNCi0JCWdvdG8gaG9zdF9mcmVlOw0KLQl9DQotDQotCWhvc3QtPmhf
-Y2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJoY2xrIik7DQotCWlmIChJU19FUlIoaG9z
-dC0+aF9jbGspKSB7DQotCQlyZXQgPSBQVFJfRVJSKGhvc3QtPmhfY2xrKTsNCisJcmV0ID0gbXNk
-Y19vZl9jbG9ja19wYXJzZShwZGV2LCBob3N0KTsNCisJaWYgKHJldCkNCiAJCWdvdG8gaG9zdF9m
-cmVlOw0KLQl9DQotDQotCWhvc3QtPmJ1c19jbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRldiwg
-ImJ1c19jbGsiKTsNCi0JaWYgKElTX0VSUihob3N0LT5idXNfY2xrKSkNCi0JCWhvc3QtPmJ1c19j
-bGsgPSBOVUxMOw0KLQkvKnNvdXJjZSBjbG9jayBjb250cm9sIGdhdGUgaXMgb3B0aW9uYWwgY2xv
-Y2sqLw0KLQlob3N0LT5zcmNfY2xrX2NnID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJzb3Vy
-Y2VfY2ciKTsNCi0JaWYgKElTX0VSUihob3N0LT5zcmNfY2xrX2NnKSkNCi0JCWhvc3QtPnNyY19j
-bGtfY2cgPSBOVUxMOw0KIA0KIAlob3N0LT5yZXNldCA9IGRldm1fcmVzZXRfY29udHJvbF9nZXRf
-b3B0aW9uYWxfZXhjbHVzaXZlKCZwZGV2LT5kZXYsDQogCQkJCQkJCQkiaHJzdCIpOw0KLS0gDQoy
-LjE4LjANCg==
 
+
+On 14/10/2020 05:06, Nicolas Boichat wrote:
+> On Wed, Oct 14, 2020 at 10:29 AM Wenbin Mei <wenbin.mei@mediatek.com> wrote:
+>>
+>> On Tue, 2020-10-13 at 17:10 +0200, Matthias Brugger wrote:
+>>>
+>>> On 12/10/2020 14:45, Wenbin Mei wrote:
+>>>> MT8192 msdc is an independent sub system, we need control more bus
+>>>> clocks for it.
+>>>> Add support for the additional subsys clocks to allow it to be
+>>>> configured appropriately.
+>>>>
+>>>> Signed-off-by: Wenbin Mei <wenbin.mei@mediatek.com>
+>>>> ---
+>>>>    drivers/mmc/host/mtk-sd.c | 74 +++++++++++++++++++++++++++++----------
+>>>>    1 file changed, 56 insertions(+), 18 deletions(-)
+>>>>
+>>>> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+>>>> index a704745e5882..c7df7510f120 100644
+>>>> --- a/drivers/mmc/host/mtk-sd.c
+>>>> +++ b/drivers/mmc/host/mtk-sd.c
+>>> [...]
+>>>> +static int msdc_of_clock_parse(struct platform_device *pdev,
+>>>> +                          struct msdc_host *host)
+>>>> +{
+>>>> +   int ret;
+>>>> +
+>>>> +   host->src_clk = devm_clk_get(&pdev->dev, "source");
+>>>> +   if (IS_ERR(host->src_clk))
+>>>> +           return PTR_ERR(host->src_clk);
+>>>> +
+>>>> +   host->h_clk = devm_clk_get(&pdev->dev, "hclk");
+>>>> +   if (IS_ERR(host->h_clk))
+>>>> +           return PTR_ERR(host->h_clk);
+>>>> +
+>>>> +   host->bus_clk = devm_clk_get_optional(&pdev->dev, "bus_clk");
+>>>> +   if (IS_ERR(host->bus_clk))
+>>>> +           host->bus_clk = NULL;
+>>>> +
+>>>> +   /*source clock control gate is optional clock*/
+>>>> +   host->src_clk_cg = devm_clk_get_optional(&pdev->dev, "source_cg");
+>>>> +   if (IS_ERR(host->src_clk_cg))
+>>>> +           host->src_clk_cg = NULL;
+>>>> +
+>>>> +   host->sys_clk_cg = devm_clk_get_optional(&pdev->dev, "sys_cg");
+>>>> +   if (IS_ERR(host->sys_clk_cg))
+>>>> +           host->sys_clk_cg = NULL;
+>>>> +
+>>>> +   /* If present, always enable for this clock gate */
+>>>> +   clk_prepare_enable(host->sys_clk_cg);
+>>>> +
+>>>> +   host->bulk_clks[0].id = "pclk_cg";
+>>>> +   host->bulk_clks[1].id = "axi_cg";
+>>>> +   host->bulk_clks[2].id = "ahb_cg";
+>>>
+>>> That looks at least suspicious. The pointers of id point to some strings defined
+>>> in the function. Aren't they out of scope once msdc_of_clock_parse() has returned?
+>>>
+>> These constants are not in stack range, so they will not be lost.
+>> And I have confirmed it after msdc_of_clock_parse() has returned, these
+>> ids still exist.
+> 
+> Yes I guess the constants end up in .rodata (or similar section), but
+> I'm not sure if this is absolutely guaranteed.
+> 
+> In any case, this is a commonly used pattern, so I'd hope it's fine
+> (just a sample, there are more):
+> https://elixir.bootlin.com/linux/latest/source/drivers/pci/controller/dwc/pcie-qcom.c#L266
+> https://elixir.bootlin.com/linux/latest/source/sound/soc/codecs/wm8994.c#L4638
+> https://elixir.bootlin.com/linux/latest/source/drivers/mfd/madera-core.c#L467
+> https://elixir.bootlin.com/linux/latest/source/drivers/gpio/gpio-dwapb.c#L675
+> 
+
+Alright, then this looks good, sorry for the noise!
+Matthias
