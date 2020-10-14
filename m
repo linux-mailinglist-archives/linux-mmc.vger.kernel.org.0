@@ -2,94 +2,141 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E26B28D879
-	for <lists+linux-mmc@lfdr.de>; Wed, 14 Oct 2020 04:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 046F428DCB4
+	for <lists+linux-mmc@lfdr.de>; Wed, 14 Oct 2020 11:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727859AbgJNC3G (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 13 Oct 2020 22:29:06 -0400
-Received: from mailgw02.mediatek.com ([1.203.163.81]:61302 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726120AbgJNC3G (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 13 Oct 2020 22:29:06 -0400
-X-UUID: f8b928caf53c4b9f816c5b72a857c7ee-20201014
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=86OsRMMbYlWcUWN23W9NddA6ngFDdGK9EuPCIrIysn8=;
-        b=XshiTFUN3XBYADa3ihYOxO4edxF77hPRWlu0DNiPapZ+I51vZHI0pkvsVOGXHiCY/dg9DZgZ47pDSBYByDZiFAJ4KCbTRlUvkeK4TEXsukCZroXr78ERNzqmUe7tAYEv+i5lBeOcWvFln6taEKUuJWfGDw2VTla0Rdw7KMLe3bk=;
-X-UUID: f8b928caf53c4b9f816c5b72a857c7ee-20201014
-Received: from mtkcas36.mediatek.inc [(172.27.4.253)] by mailgw02.mediatek.com
-        (envelope-from <wenbin.mei@mediatek.com>)
-        (mailgw01.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1418329566; Wed, 14 Oct 2020 10:28:52 +0800
-Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS31N2.mediatek.inc
- (172.27.4.87) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 14 Oct
- 2020 10:28:50 +0800
-Received: from [10.17.3.153] (10.17.3.153) by MTKCAS36.mediatek.inc
- (172.27.4.170) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 14 Oct 2020 10:28:50 +0800
-Message-ID: <1602642530.11864.3.camel@mhfsdcap03>
-Subject: Re: [PATCH v6 4/4] mmc: mediatek: Add subsys clock control for
- MT8192 msdc
-From:   Wenbin Mei <wenbin.mei@mediatek.com>
-To:     Matthias Brugger <matthias.bgg@gmail.com>
-CC:     Ulf Hansson <ulf.hansson@linaro.org>,
+        id S1730460AbgJNJTk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 14 Oct 2020 05:19:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729696AbgJNJTi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 14 Oct 2020 05:19:38 -0400
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2342C041E43
+        for <linux-mmc@vger.kernel.org>; Tue, 13 Oct 2020 20:07:09 -0700 (PDT)
+Received: by mail-vs1-xe41.google.com with SMTP id d19so1238028vso.10
+        for <linux-mmc@vger.kernel.org>; Tue, 13 Oct 2020 20:07:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/VspsiIK9WGEgWmx3VPfOzr6gUq8707awunHZRI7g+Q=;
+        b=cvLyi1IV3Yd9Ab6BBpPkihXFqFVcxMH10kXKIYL/8WgURQfV6FuTUqvOyVq8LvP2ei
+         NqZq13IkcKyUv3YwI7baIBlVpRlaL4yKy3oFzDF3l0ehrcc6hhotR2w4/BWR8mr4tGnu
+         TZToqAlyMre5CFErC+95FpvEhQJUuG75l9qUY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/VspsiIK9WGEgWmx3VPfOzr6gUq8707awunHZRI7g+Q=;
+        b=AGNX6E6daEKvqqrzWemuD8uzXvNl22oSa/7Mnp5+0KTgrNzULq7GfseozkuPKodUnD
+         pQhatLxzyp/ZTActdmP6WWSK+6oEuqzlOzqkh5bEkAjajGTGZuG4tXaNN+Mq1wyXE/Js
+         LvkPq/C5N0zoylbCJdjNOlJr/kKDoKfS+pP6qrwyFK1NUdf6qAVIJaA0xMFvOHextm7q
+         ElPgXuzjx2yJJXKUsJ6nxkXptXrSLVhygpagwbeESn/5TX/nlkqlAjYfePy59QyIW2RP
+         OFEUS5iKw4OQZlGTT72eGwlnnboDNaQQx1PFfjh9wavhwQy8y4smAZe0tYIBSlx361mR
+         s9mg==
+X-Gm-Message-State: AOAM533f3A8lnbG1kxw6pXtisSifYsljTwCukaQUCblFjWET+Q595a97
+        npMedJ9fIdotISocmZwSCA1hm2/V/9926CnjQjltjA==
+X-Google-Smtp-Source: ABdhPJyeztC0cKlxpxJbcdpKGnjLokQ5Hbk3yut4wnAn+KbU58QE/bDjZToy72mqLJB3xoj//4U1Nx1Wmu2jQvyz1Ho=
+X-Received: by 2002:a67:2f81:: with SMTP id v123mr2278664vsv.16.1602644828982;
+ Tue, 13 Oct 2020 20:07:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <20201012124547.16649-1-wenbin.mei@mediatek.com>
+ <20201012124547.16649-5-wenbin.mei@mediatek.com> <72ae1d89-fe31-4f50-15c0-29119d662ea1@gmail.com>
+ <1602642530.11864.3.camel@mhfsdcap03>
+In-Reply-To: <1602642530.11864.3.camel@mhfsdcap03>
+From:   Nicolas Boichat <drinkcat@chromium.org>
+Date:   Wed, 14 Oct 2020 11:06:58 +0800
+Message-ID: <CANMq1KBe9u25yDxg8UtmOX4vhr8De=5-pJyMRkSBF4O=FpBN9A@mail.gmail.com>
+Subject: Re: [PATCH v6 4/4] mmc: mediatek: Add subsys clock control for MT8192 msdc
+To:     Wenbin Mei <wenbin.mei@mediatek.com>
+Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Chaotian Jing <chaotian.jing@mediatek.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
+        linux-mmc@vger.kernel.org,
+        Devicetree List <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
         <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <srv_heupstream@mediatek.com>
-Date:   Wed, 14 Oct 2020 10:28:50 +0800
-In-Reply-To: <72ae1d89-fe31-4f50-15c0-29119d662ea1@gmail.com>
-References: <20201012124547.16649-1-wenbin.mei@mediatek.com>
-         <20201012124547.16649-5-wenbin.mei@mediatek.com>
-         <72ae1d89-fe31-4f50-15c0-29119d662ea1@gmail.com>
+        lkml <linux-kernel@vger.kernel.org>,
+        srv_heupstream <srv_heupstream@mediatek.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
-MIME-Version: 1.0
-X-TM-SNTS-SMTP: EA5C87158EF05DF46265A81A6E9FE3CD459D96D9A1D5B523820C9EA2686636C02000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-T24gVHVlLCAyMDIwLTEwLTEzIGF0IDE3OjEwICswMjAwLCBNYXR0aGlhcyBCcnVnZ2VyIHdyb3Rl
-Og0KPiANCj4gT24gMTIvMTAvMjAyMCAxNDo0NSwgV2VuYmluIE1laSB3cm90ZToNCj4gPiBNVDgx
-OTIgbXNkYyBpcyBhbiBpbmRlcGVuZGVudCBzdWIgc3lzdGVtLCB3ZSBuZWVkIGNvbnRyb2wgbW9y
-ZSBidXMNCj4gPiBjbG9ja3MgZm9yIGl0Lg0KPiA+IEFkZCBzdXBwb3J0IGZvciB0aGUgYWRkaXRp
-b25hbCBzdWJzeXMgY2xvY2tzIHRvIGFsbG93IGl0IHRvIGJlDQo+ID4gY29uZmlndXJlZCBhcHBy
-b3ByaWF0ZWx5Lg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IFdlbmJpbiBNZWkgPHdlbmJpbi5t
-ZWlAbWVkaWF0ZWsuY29tPg0KPiA+IC0tLQ0KPiA+ICAgZHJpdmVycy9tbWMvaG9zdC9tdGstc2Qu
-YyB8IDc0ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLQ0KPiA+ICAgMSBm
-aWxlIGNoYW5nZWQsIDU2IGluc2VydGlvbnMoKyksIDE4IGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+
-IGRpZmYgLS1naXQgYS9kcml2ZXJzL21tYy9ob3N0L210ay1zZC5jIGIvZHJpdmVycy9tbWMvaG9z
-dC9tdGstc2QuYw0KPiA+IGluZGV4IGE3MDQ3NDVlNTg4Mi4uYzdkZjc1MTBmMTIwIDEwMDY0NA0K
-PiA+IC0tLSBhL2RyaXZlcnMvbW1jL2hvc3QvbXRrLXNkLmMNCj4gPiArKysgYi9kcml2ZXJzL21t
-Yy9ob3N0L210ay1zZC5jDQo+IFsuLi5dDQo+ID4gK3N0YXRpYyBpbnQgbXNkY19vZl9jbG9ja19w
-YXJzZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2LA0KPiA+ICsJCQkgICAgICAgc3RydWN0
-IG1zZGNfaG9zdCAqaG9zdCkNCj4gPiArew0KPiA+ICsJaW50IHJldDsNCj4gPiArDQo+ID4gKwlo
-b3N0LT5zcmNfY2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJzb3VyY2UiKTsNCj4gPiAr
-CWlmIChJU19FUlIoaG9zdC0+c3JjX2NsaykpDQo+ID4gKwkJcmV0dXJuIFBUUl9FUlIoaG9zdC0+
-c3JjX2Nsayk7DQo+ID4gKw0KPiA+ICsJaG9zdC0+aF9jbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYt
-PmRldiwgImhjbGsiKTsNCj4gPiArCWlmIChJU19FUlIoaG9zdC0+aF9jbGspKQ0KPiA+ICsJCXJl
-dHVybiBQVFJfRVJSKGhvc3QtPmhfY2xrKTsNCj4gPiArDQo+ID4gKwlob3N0LT5idXNfY2xrID0g
-ZGV2bV9jbGtfZ2V0X29wdGlvbmFsKCZwZGV2LT5kZXYsICJidXNfY2xrIik7DQo+ID4gKwlpZiAo
-SVNfRVJSKGhvc3QtPmJ1c19jbGspKQ0KPiA+ICsJCWhvc3QtPmJ1c19jbGsgPSBOVUxMOw0KPiA+
-ICsNCj4gPiArCS8qc291cmNlIGNsb2NrIGNvbnRyb2wgZ2F0ZSBpcyBvcHRpb25hbCBjbG9jayov
-DQo+ID4gKwlob3N0LT5zcmNfY2xrX2NnID0gZGV2bV9jbGtfZ2V0X29wdGlvbmFsKCZwZGV2LT5k
-ZXYsICJzb3VyY2VfY2ciKTsNCj4gPiArCWlmIChJU19FUlIoaG9zdC0+c3JjX2Nsa19jZykpDQo+
-ID4gKwkJaG9zdC0+c3JjX2Nsa19jZyA9IE5VTEw7DQo+ID4gKw0KPiA+ICsJaG9zdC0+c3lzX2Ns
-a19jZyA9IGRldm1fY2xrX2dldF9vcHRpb25hbCgmcGRldi0+ZGV2LCAic3lzX2NnIik7DQo+ID4g
-KwlpZiAoSVNfRVJSKGhvc3QtPnN5c19jbGtfY2cpKQ0KPiA+ICsJCWhvc3QtPnN5c19jbGtfY2cg
-PSBOVUxMOw0KPiA+ICsNCj4gPiArCS8qIElmIHByZXNlbnQsIGFsd2F5cyBlbmFibGUgZm9yIHRo
-aXMgY2xvY2sgZ2F0ZSAqLw0KPiA+ICsJY2xrX3ByZXBhcmVfZW5hYmxlKGhvc3QtPnN5c19jbGtf
-Y2cpOw0KPiA+ICsNCj4gPiArCWhvc3QtPmJ1bGtfY2xrc1swXS5pZCA9ICJwY2xrX2NnIjsNCj4g
-PiArCWhvc3QtPmJ1bGtfY2xrc1sxXS5pZCA9ICJheGlfY2ciOw0KPiA+ICsJaG9zdC0+YnVsa19j
-bGtzWzJdLmlkID0gImFoYl9jZyI7DQo+IA0KPiBUaGF0IGxvb2tzIGF0IGxlYXN0IHN1c3BpY2lv
-dXMuIFRoZSBwb2ludGVycyBvZiBpZCBwb2ludCB0byBzb21lIHN0cmluZ3MgZGVmaW5lZCANCj4g
-aW4gdGhlIGZ1bmN0aW9uLiBBcmVuJ3QgdGhleSBvdXQgb2Ygc2NvcGUgb25jZSBtc2RjX29mX2Ns
-b2NrX3BhcnNlKCkgaGFzIHJldHVybmVkPw0KPiANClRoZXNlIGNvbnN0YW50cyBhcmUgbm90IGlu
-IHN0YWNrIHJhbmdlLCBzbyB0aGV5IHdpbGwgbm90IGJlIGxvc3QuDQpBbmQgSSBoYXZlIGNvbmZp
-cm1lZCBpdCBhZnRlciBtc2RjX29mX2Nsb2NrX3BhcnNlKCkgaGFzIHJldHVybmVkLCB0aGVzZQ0K
-aWRzIHN0aWxsIGV4aXN0Lg0KDQo+IFJlZ2FyZHMsDQo+IE1hdHRoaWFzDQoNCg==
+On Wed, Oct 14, 2020 at 10:29 AM Wenbin Mei <wenbin.mei@mediatek.com> wrote:
+>
+> On Tue, 2020-10-13 at 17:10 +0200, Matthias Brugger wrote:
+> >
+> > On 12/10/2020 14:45, Wenbin Mei wrote:
+> > > MT8192 msdc is an independent sub system, we need control more bus
+> > > clocks for it.
+> > > Add support for the additional subsys clocks to allow it to be
+> > > configured appropriately.
+> > >
+> > > Signed-off-by: Wenbin Mei <wenbin.mei@mediatek.com>
+> > > ---
+> > >   drivers/mmc/host/mtk-sd.c | 74 +++++++++++++++++++++++++++++----------
+> > >   1 file changed, 56 insertions(+), 18 deletions(-)
+> > >
+> > > diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+> > > index a704745e5882..c7df7510f120 100644
+> > > --- a/drivers/mmc/host/mtk-sd.c
+> > > +++ b/drivers/mmc/host/mtk-sd.c
+> > [...]
+> > > +static int msdc_of_clock_parse(struct platform_device *pdev,
+> > > +                          struct msdc_host *host)
+> > > +{
+> > > +   int ret;
+> > > +
+> > > +   host->src_clk = devm_clk_get(&pdev->dev, "source");
+> > > +   if (IS_ERR(host->src_clk))
+> > > +           return PTR_ERR(host->src_clk);
+> > > +
+> > > +   host->h_clk = devm_clk_get(&pdev->dev, "hclk");
+> > > +   if (IS_ERR(host->h_clk))
+> > > +           return PTR_ERR(host->h_clk);
+> > > +
+> > > +   host->bus_clk = devm_clk_get_optional(&pdev->dev, "bus_clk");
+> > > +   if (IS_ERR(host->bus_clk))
+> > > +           host->bus_clk = NULL;
+> > > +
+> > > +   /*source clock control gate is optional clock*/
+> > > +   host->src_clk_cg = devm_clk_get_optional(&pdev->dev, "source_cg");
+> > > +   if (IS_ERR(host->src_clk_cg))
+> > > +           host->src_clk_cg = NULL;
+> > > +
+> > > +   host->sys_clk_cg = devm_clk_get_optional(&pdev->dev, "sys_cg");
+> > > +   if (IS_ERR(host->sys_clk_cg))
+> > > +           host->sys_clk_cg = NULL;
+> > > +
+> > > +   /* If present, always enable for this clock gate */
+> > > +   clk_prepare_enable(host->sys_clk_cg);
+> > > +
+> > > +   host->bulk_clks[0].id = "pclk_cg";
+> > > +   host->bulk_clks[1].id = "axi_cg";
+> > > +   host->bulk_clks[2].id = "ahb_cg";
+> >
+> > That looks at least suspicious. The pointers of id point to some strings defined
+> > in the function. Aren't they out of scope once msdc_of_clock_parse() has returned?
+> >
+> These constants are not in stack range, so they will not be lost.
+> And I have confirmed it after msdc_of_clock_parse() has returned, these
+> ids still exist.
 
+Yes I guess the constants end up in .rodata (or similar section), but
+I'm not sure if this is absolutely guaranteed.
+
+In any case, this is a commonly used pattern, so I'd hope it's fine
+(just a sample, there are more):
+https://elixir.bootlin.com/linux/latest/source/drivers/pci/controller/dwc/pcie-qcom.c#L266
+https://elixir.bootlin.com/linux/latest/source/sound/soc/codecs/wm8994.c#L4638
+https://elixir.bootlin.com/linux/latest/source/drivers/mfd/madera-core.c#L467
+https://elixir.bootlin.com/linux/latest/source/drivers/gpio/gpio-dwapb.c#L675
+
+>
+> > Regards,
+> > Matthias
+>
