@@ -2,38 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2471B291CAA
-	for <lists+linux-mmc@lfdr.de>; Sun, 18 Oct 2020 21:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 177E9291BE7
+	for <lists+linux-mmc@lfdr.de>; Sun, 18 Oct 2020 21:35:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732959AbgJRTj3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 18 Oct 2020 15:39:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38726 "EHLO mail.kernel.org"
+        id S1731436AbgJRTZv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 18 Oct 2020 15:25:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40720 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730868AbgJRTYk (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 18 Oct 2020 15:24:40 -0400
+        id S1731422AbgJRTZv (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 18 Oct 2020 15:25:51 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 34872222E7;
-        Sun, 18 Oct 2020 19:24:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E44A02137B;
+        Sun, 18 Oct 2020 19:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603049079;
+        s=default; t=1603049150;
         bh=JQh2fpdPo7hQptUNAeVejo7y6ygRohzYnpAbQwiUe4w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZXAxbecg9W8bB32oHqLWxXKRT2t6wxn6oFhzZky8EAJQw2dctRu9Nc0Qw7MwfA2YL
-         oTWFhYpsMEW1pGJLRpzen5YmtRyWeqRZ0jrNNqOsn8B0bMrpCSRC4jQ0pzzNd007Sm
-         v9xGtsMgRWSmTQw91npEkr3qmkdPF5AdqIcwvyeo=
+        b=PN/Ixu03Xt5oRgcmdHaGs7cPMk9M3ynNPuNZxduMfL0HQ5yA+DR0tEGoh6BbAUVJX
+         VCHTdv24YcGQMcaZTKRiQzaz6SPjuvOEgLifPNuTvScsIRQgfX5WUXs0bzGyGT4PIG
+         dF0CcTv6fpyR3THsNCs/B1IRSlmMmqjAMg7jxWd0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 17/56] mmc: sdio: Check for CISTPL_VERS_1 buffer size
-Date:   Sun, 18 Oct 2020 15:23:38 -0400
-Message-Id: <20201018192417.4055228-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 16/52] mmc: sdio: Check for CISTPL_VERS_1 buffer size
+Date:   Sun, 18 Oct 2020 15:24:53 -0400
+Message-Id: <20201018192530.4055730-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201018192417.4055228-1-sashal@kernel.org>
-References: <20201018192417.4055228-1-sashal@kernel.org>
+In-Reply-To: <20201018192530.4055730-1-sashal@kernel.org>
+References: <20201018192530.4055730-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
