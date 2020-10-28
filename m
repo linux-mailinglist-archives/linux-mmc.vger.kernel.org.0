@@ -2,109 +2,159 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2AF629DABA
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Oct 2020 00:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62E3229DB2E
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Oct 2020 00:44:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390461AbgJ1X26 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 28 Oct 2020 19:28:58 -0400
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:4913 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390331AbgJ1X1G (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Oct 2020 19:27:06 -0400
-Received: from ironmsg07-lv.qualcomm.com (HELO ironmsg07-lv.qulacomm.com) ([10.47.202.151])
-  by alexa-out.qualcomm.com with ESMTP; 28 Oct 2020 04:20:46 -0700
-X-QCInternal: smtphost
-Received: from ironmsg02-blr.qualcomm.com ([10.86.208.131])
-  by ironmsg07-lv.qulacomm.com with ESMTP/TLS/AES256-SHA; 28 Oct 2020 04:20:44 -0700
-X-QCInternal: smtphost
-Received: from vbadigan1-linux.qualcomm.com ([10.206.25.77])
-  by ironmsg02-blr.qualcomm.com with ESMTP; 28 Oct 2020 16:50:23 +0530
-Received: by vbadigan1-linux.qualcomm.com (Postfix, from userid 76677)
-        id 9FEE9213D0; Wed, 28 Oct 2020 16:50:22 +0530 (IST)
-From:   Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        Baolin Wang <baolin.wang@linaro.org>,
+        id S2387758AbgJ1XoL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 28 Oct 2020 19:44:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39740 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389649AbgJ1XoK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 28 Oct 2020 19:44:10 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0946C0613CF
+        for <linux-mmc@vger.kernel.org>; Wed, 28 Oct 2020 16:44:10 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id p17so393980pli.13
+        for <linux-mmc@vger.kernel.org>; Wed, 28 Oct 2020 16:44:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tmTfdAqJelGk4mThvToPB+vvFy/o2Riv909vC5Pwsvc=;
+        b=PvnCwIef6PZCTFzgkQOE6JXpb70433VKOlFqHWLlBDtiPS9mCm8oVghA+eXAC6KxjB
+         j5R3n3VjyjW4vD3eVLDjTBVf1/lCrGPrAwyAGG8NFmzunydB3WwepFlnjhYNpJc4cvdl
+         WK6xIrldFzHeKcCCMKPLPErRCYpr4qMwZmjQVpYAlw/P2+XKWk4oM88xJLIx07qmVhlG
+         vVP4MBcP9wvJpKuwvN31PU+45Fh8W0+q9tF9hEWpvDZfxjq57UcwOkRZru/5mR7uwm8B
+         UGpPz2KxfASR16wNtW1LoSLgnwJiuykxEaWXRcZeji/OlQGhQMqWXSK5n5+ayycZGeN8
+         EX+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tmTfdAqJelGk4mThvToPB+vvFy/o2Riv909vC5Pwsvc=;
+        b=kYedbEzriOK3RTY3s254plDJDrlBnczdmkuCw0+hXDZLL53IZggauAIcH8r7JM3icO
+         QxoDe4iNE1UCcjX+CvAXJcRccg1ehuDD3e14VB736/KKUsF3IDpNkT38ypGlLDRCS4L2
+         qetWHe93sxhdl+wUVOo01Y/2AAyaR/fOl87IfaRJVdxfbVP/xnLT2yq2SQi3GtB/oTP/
+         +WoIZ7Yrbv+69kpW8lBP07xrsRq5fGVgyi1J/sihrC1Fq+Kv7fvMVhbdhUBv2NTyXAm5
+         EjMIcz5cpVds96SZiRk2UxrtnfrQAWkImxOXZfUPwyoiv5ej8wMRTWSsNQ/m8OQQVzEn
+         0PAw==
+X-Gm-Message-State: AOAM530uVcdyEvfoLO3KBPQbjI/+QH/lrqwVvocqaAa8mDAZjGJXq1DV
+        ong3RkR7ezjlNUUI9IowFJxFwQGj7+kcu72i6GShILWuth1I6i0e
+X-Google-Smtp-Source: ABdhPJxA6mva6c9AuQcMDkfN09APtSH2RneKpFr1NrXpPaeWepLTqSsiRntY8LrK5rP3qon0g31a7FFbXKcv2+GSxOA=
+X-Received: by 2002:a05:6122:10eb:: with SMTP id m11mr4439593vko.8.1603878079032;
+ Wed, 28 Oct 2020 02:41:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20201023122950.60903-1-fparent@baylibre.com> <CAPDyKFrMwLeuQoFDgXYo_-T_e2AzfqM-rgp3-SgeuC6Qn6rxMA@mail.gmail.com>
+ <87wnzbg7on.fsf@baylibre.com> <1603869682.6198.23.camel@mhfsdcap03>
+In-Reply-To: <1603869682.6198.23.camel@mhfsdcap03>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 28 Oct 2020 10:40:42 +0100
+Message-ID: <CAPDyKFrjov40BxHRrG6WoUVLaVbPbvPPf_ot2xybVEfGerST9g@mail.gmail.com>
+Subject: Re: [PATCH] mmc: host: mtk-sd: enable recheck_sdio_irq for MT8516 SoC
+To:     "yong.mao@mediatek.com" <yong.mao@mediatek.com>
+Cc:     Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+        Fabien Parent <fparent@baylibre.com>,
         Chaotian Jing <chaotian.jing@mediatek.com>,
-        Peng Hao <richard.peng@oppo.com>
-Subject: [PATCH] mmc: block: Prevent new req entering queue while freeing up the queue
-Date:   Wed, 28 Oct 2020 16:49:42 +0530
-Message-Id: <1603883984-24333-1-git-send-email-vbadigan@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The commit bbdc74dc19e0 ("mmc: block: Prevent new req entering queue
-after its cleanup") has introduced this change but it got moved after
-del_gendisk() with commit 57678e5a3d51 ("mmc: block: Delete gendisk
-before cleaning up the request queue").
+On Wed, 28 Oct 2020 at 08:22, yong.mao@mediatek.com
+<yong.mao@mediatek.com> wrote:
+>
+> On Tue, 2020-10-27 at 13:44 +0100, Mattijs Korpershoek wrote:
+> > Hi Ulf,
+> >
+> > Ulf Hansson <ulf.hansson@linaro.org> writes:
+> >
+> > > + Yong Mao, Chaotian Jing
+> > >
+> > > On Fri, 23 Oct 2020 at 14:29, Fabien Parent <fparent@baylibre.com> wrote:
+> > >>
+> > >> MT8516 SoC suffers from sometimes losing SDIO IRQs, this makes SDIO
+> > >> devices sometimes unstable. Make use of the new property
+> > >> recheck_sdio_irq to fix the SDIO stability issues on MT8516.
+> > >>
+> > >> Signed-off-by: Fabien Parent <fparent@baylibre.com>
+> > >
+> > > Maybe this is a common problem, thus I am thinking that potentially we
+> > > should enable the workaround for all variants?
+> > Not sure if this is of any help, but: we use the btmtksdio driver on a
+> > MT8183 soc with an Android kernel based on upstream.
+> >
+> > With that kernel, we did not to apply this work-around in order to
+> > have a stable bluetooth experience (pairing with a remote controller)
+> >
+> > However, on the MT8516 SoC, it's impossible for us to use btmtksdio
+> > without Fabien's fix.
+> >
+> Yes. For mt8516 SoC,recheck_sdio_irq should be set to true for avoiding
+> SDIO dat1 irq lost issue. But for mt8183 SoC, it does not need recheck
+> sdio irq mechanism.
 
-It is blocking reboot with below Call stack().
+Okay, thanks for confirming.
 
-INFO: task reboot:3086 blocked for more than 122 seconds.
-     __schedule
-     schedule
-     schedule_timeout
-     io_schedule_timeout
-     do_wait_for_common
-     wait_for_completion_io
-     submit_bio_wait
-     blkdev_issue_flush
-     ext4_sync_fs
-     __sync_filesystem
-     sync_filesystem
-     fsync_bdev
-     invalidate_partition
-     del_gendisk
-     mmc_blk_remove_req
-     mmc_blk_remove
-     mmc_bus_remove
-     device_release_driver_internal
-     device_release_driver
-     bus_remove_device
-     device_del
-     mmc_remove_card
-     mmc_remove
-     mmc_stop_host
-     mmc_remove_host
-     sdhci_remove_host
-     sdhci_msm_remove
-     sdhci_msm_shutdown
-     platform_drv_shutdown
-     device_shutdown
-     kernel_restart_prepare
-     kernel_restart
+>
+> > >
+> > > I have looped in Yong Mao (who invented the workaround) and Chaotian
+> > > Jing, to see if they can advise us how to proceed.
+> > >
+> > > In any case, I think we should add a stable tag and a fixes tag.
+> > >
+> > > Kind regards
+> > > Uffe
+>
+> Hi Ulf,
+> Sorry. On the patch "mmc:mediatek:fix SDIO irq issue", I only consider
+> fixing the issue on mt8173 SoC.But for the whole MTK upstream SoC,
+> mt8183, mt2712, mt6779 and mt8192 does not need this mechanism,
+> but the other upstream Soc such as mt8135, mt8173, mt2701, mt7622,
+> mt8516 and mt7620 need this recheck mechanism. And all future SoC of our
+> company does not need this mechanism.
+> If it's convenient for you, please help me to revise it.
+> Or I will submit a new patch to correct the value of setting.
+> Thanks.
 
-So bringing this change back.
+Please submit a new patch to enable the "recheck_sdio_irq" flag for
+those variants that need it.
 
-Signed-off-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
----
+I would also add a fixes+stable tag and add reported-by tags from
+Fabien and Mattijs.
 
-I'm observing this issue 100% of the time with shutdown callback added to sdhci-msm driver.
-I'm trying on 5.4 kernel with ChromeOS.
+Kind regards
+Uffe
 
-Please let me know if this can be fixed in a better way.
----
-
- drivers/mmc/core/block.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 8d3df0be0355..76dbb2b8a13b 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -2627,6 +2627,7 @@ static void mmc_blk_remove_req(struct mmc_blk_data *md)
- 		 * from being accepted.
- 		 */
- 		card = md->queue.card;
-+		blk_set_queue_dying(md->queue.queue);
- 		if (md->disk->flags & GENHD_FL_UP) {
- 			device_remove_file(disk_to_dev(md->disk), &md->force_ro);
- 			if ((md->area_type & MMC_BLK_DATA_AREA_BOOT) &&
--- 
-Qualcomm India Private Limited, on behalf of Qualcomm Innovation Center, Inc., is a member of Code Aurora Forum, a Linux Foundation Collaborative Project
-
+> > >
+> > >> ---
+> > >>  drivers/mmc/host/mtk-sd.c | 2 +-
+> > >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >>
+> > >> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+> > >> index a704745e5882..3dc102eefe49 100644
+> > >> --- a/drivers/mmc/host/mtk-sd.c
+> > >> +++ b/drivers/mmc/host/mtk-sd.c
+> > >> @@ -524,7 +524,7 @@ static const struct mtk_mmc_compatible mt7622_compat = {
+> > >>
+> > >>  static const struct mtk_mmc_compatible mt8516_compat = {
+> > >>         .clk_div_bits = 12,
+> > >> -       .recheck_sdio_irq = false,
+> > >> +       .recheck_sdio_irq = true,
+> > >>         .hs400_tune = false,
+> > >>         .pad_tune_reg = MSDC_PAD_TUNE0,
+> > >>         .async_fifo = true,
+> > >> --
+> > >> 2.28.0
+> > >>
+> > >
+> > > _______________________________________________
+> > > Linux-mediatek mailing list
+> > > Linux-mediatek@lists.infradead.org
+> > > http://lists.infradead.org/mailman/listinfo/linux-mediatek
+>
