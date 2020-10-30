@@ -2,95 +2,82 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 203ED2A0827
-	for <lists+linux-mmc@lfdr.de>; Fri, 30 Oct 2020 15:41:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E3F82A08B9
+	for <lists+linux-mmc@lfdr.de>; Fri, 30 Oct 2020 16:00:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726307AbgJ3OlU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 30 Oct 2020 10:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36392 "EHLO
+        id S1727009AbgJ3PAc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 30 Oct 2020 11:00:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725975AbgJ3OlU (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 30 Oct 2020 10:41:20 -0400
-Received: from mail-ua1-x929.google.com (mail-ua1-x929.google.com [IPv6:2607:f8b0:4864:20::929])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A35FC0613CF
-        for <linux-mmc@vger.kernel.org>; Fri, 30 Oct 2020 07:41:19 -0700 (PDT)
-Received: by mail-ua1-x929.google.com with SMTP id q20so1783794uar.7
-        for <linux-mmc@vger.kernel.org>; Fri, 30 Oct 2020 07:41:19 -0700 (PDT)
+        with ESMTP id S1726806AbgJ3PAb (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 30 Oct 2020 11:00:31 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD579C0613B0
+        for <linux-mmc@vger.kernel.org>; Fri, 30 Oct 2020 07:59:36 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id i2so7222709ljg.4
+        for <linux-mmc@vger.kernel.org>; Fri, 30 Oct 2020 07:59:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=72WYhmHhRIUV7VxzEgGJ4A6OwqvnvgelCtR0uWkddiY=;
-        b=iWB5OC0LnRRLwty1Km5QQriQoOHJ3pYb3ZVR+sAdW8IayhXLPGMDO+04BcWlQ2NSNa
-         u1K1H9cLDj8aLljJzpGLoaOJMHohXRTMPkho+c1Hlqh6Fp+QXe9dN8DnfATK3pHw9vmv
-         XPe0L/RolpCVdUwQKDeuGdcec2gziQ+L3ynn7up+v8+FTkYI3guPm9dVcNvrUwkuZkY8
-         PGJWUcY5WEDofxPTj5BZ1rOxwXwoUHi2540hU5saRwgaqnYbpKS+ZLeLIrWfjIpifp73
-         xJmJff0tJ2EOF0tN9636y7nkr/4msjJjCFJw9mIOgZg7SypDMYz9PHaQ6PuM0T3vLsXv
-         sA0A==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=TjZDjTDUyG5IOPAjtKhDz6bJNm6DqwPh3GYjQnJOtk58Qe+VS+LrjG9D+UJTL89L5a
+         hPszd6YttBU2gVDN4Hgd0nVvKmUsgBGa0RfR9y4dU1VG6wqrOSeXXlqa/jT4b2a91QjD
+         sT+ma7QKBtdbME0ZKxl0kc6DEI2BSZsRxuMkNkQsvOWxO6URWAKkh65L3Tk879AJ4LqG
+         Bj9eXYFDUcjXqha9S32esb82rsLCjf9rEdFYrDoZfWxC18Um3HNxqbzetSufrWkdrmWB
+         Hgfuw2XlX0g8ZkLr3paRT5DvZbKL3ccSJq24BaLzNsiQWn1tArC4uUyPSHMQ3hVqPZo6
+         Sb9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=72WYhmHhRIUV7VxzEgGJ4A6OwqvnvgelCtR0uWkddiY=;
-        b=BKEDgnJJXXpP9hjZzPhM1TC3S3aqorAW+AOmVqKskiFoLnmLkeNOkkoNMlMr47YvYb
-         k+69QizLrLPUlnyo5izsa4PtrC96BBJNRXQAWm6BJBwc0i7gn8BTBu/038IB7jUcH7Lg
-         +ODjnE3dVk4S5yU5KoJP03X+rnX8W2H3xJrFeE9aS9IhN5f9kGAh1svbv6qVjNcGoq77
-         qiyJ014rob87gs7gzXOShGwW7jxpgOMGgwNGe5eaqZWQbVADIsa+wdiu34i4qvu7y6Zz
-         NKj6AO5zhK2/YVrIPZmnm4pKfAfbO9yhmfq9yhIeRCfQWt8ShRkus9n3qM8D9FTUoSmk
-         GWWg==
-X-Gm-Message-State: AOAM531rQGGe3xVj0902IzdVBD4oWWKI4fFa97ZqAxwd7qKd9z1uMrTT
-        4VyF2ThJdYw6W0q87huTVfMI7Zy2sk9Wzqjye52uxQ==
-X-Google-Smtp-Source: ABdhPJwxe9C7rytQC1jfTIUBghGvjFItUZsLZn+oUlGSeWhSxxP9UPZSyvqyaaFYLux6B1upb8uRKC+oOgnA1kSuDjE=
-X-Received: by 2002:ab0:140e:: with SMTP id b14mr1668835uae.100.1604068878220;
- Fri, 30 Oct 2020 07:41:18 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=txihGI1AWkyRv6T04kSP2nwKmUEzwMeXAkq4JOxe4Px4kcKa2+szeQI3cn5u2wEqq+
+         p31mbZ7CGZw6tw18hBre4mxmA+1zxC/oNDNoldCn6oTpkOonrMb9MmXAs74reRfnf05F
+         DYLGCUz2okqlCf5JPmMAHBiBrx7RmoIE7Bsn51tzBtXmm9OljG6Ue4FB7P+BgRWyJjjf
+         SftLVn1RSaJGbX5zVLlaTsKj4Jn7OnXgAA9W3V89CwTT4MG7WjE8DLorrOGti7BmlBPU
+         DvFLLkRk2Mo5NFcmvPS0Qa4H45uebzS3AvlgJCa1HkG7wtXZfIupn4x/oY/OJUHr9pk7
+         8cAQ==
+X-Gm-Message-State: AOAM5322+ut+DPi8xy8D0bjzrlUDx4xbRs3MEKqycvUQqnJpoEi8fVFR
+        SCV4C3hLlX8Kemvm50/us4vYiLabgJbHbZEWb0dYewWDNQ==
+X-Google-Smtp-Source: ABdhPJz0XXuJnPS5g3+lbBiW+XXmkDUqYoNBDu76t3os6QvlPQSI6Onyl30CWs+Md1o+E0r28qs03HXLpOQosKz8YWo=
+X-Received: by 2002:a50:f307:: with SMTP id p7mr2761574edm.235.1604069974505;
+ Fri, 30 Oct 2020 07:59:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <1602581312-23607-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <TY2PR01MB3692EB14470C517E771746E0D8150@TY2PR01MB3692.jpnprd01.prod.outlook.com>
-In-Reply-To: <TY2PR01MB3692EB14470C517E771746E0D8150@TY2PR01MB3692.jpnprd01.prod.outlook.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 30 Oct 2020 15:40:41 +0100
-Message-ID: <CAPDyKFoSd6+i9Od1tmodNjPVG_4GU2YAnyLMs9a7C36SBzn+rQ@mail.gmail.com>
-Subject: Re: [PATCH/RFC] mmc: core: disable power off notification when host
- is removed
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
+Received: by 2002:a50:f14c:0:0:0:0:0 with HTTP; Fri, 30 Oct 2020 07:59:34
+ -0700 (PDT)
+Reply-To: li.anable85@gmail.com
+From:   Liliane Abel <k.griest04@gmail.com>
+Date:   Fri, 30 Oct 2020 15:59:34 +0100
+Message-ID: <CABAZL7=b-NWks3DKb=fdDjnu_xt_-CcJCqf-F5s0yQCFVH73-A@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 30 Oct 2020 at 14:02, Yoshihiro Shimoda
-<yoshihiro.shimoda.uh@renesas.com> wrote:
->
-> Hi Ulf,
->
-> > From: Yoshihiro Shimoda, Sent: Tuesday, October 13, 2020 6:29 PM
-> >
-> > User is possible to turn the power off after a host was removed.
-> > So, disable the power off notification when a host is removed.
-> >
-> > Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> > ---
-> >  This topic was discussed in a few month ago [1], and now I could make
-> >  a patch for unbinding the mmc host. I'm not sure this is a correct way
-> >  so that I marked RFC.
->
-> I would like to drop this patch because my colleague found an issue after
-> he applied this patch. The issue is the following timeout happened if
-> we unbind a host controller right after system suspend because
-> the _mmc_resume() was not called.
+Dearest
 
-In principle we would like to run the similar operations at "remove"
-as during "system suspend".
+Greeting my dear, I am Liliane Abel by name, The only daughter of late
+Mr.Benson Abel. My father is one of the top Politician in our country
+and my mother is a farmers and cocoa merchant when they were both
+alive. After the death of my mother, long ago, my father was
+controlling their business until he was poisoned by his business
+associates which he suffered and died.
 
->
->         mmc0: Power Off Notification timed out, 100
->
-> I'll make v2 patch in next week.
-
-I will have a closer look at your v2, apologies for the delay in review.
-
-Kind regards
-Uffe
+Before the death of my father, He told me about (two million five
+hundred thousand united states dollars) which he deposited in the bank
+in Lome-Togo, It was the money he intended to transfer overseas for
+investment before he was poisoned. He also instructed me that I should
+seek for foreign partners in any country of my choice who will assist
+me transfer this money in overseas account where the money will be
+wisely invested.
+I am seeking for your kind assistance in the following ways:  (1) to
+provide a safe bank account into where the money will be transferred
+for investment. (2) To serve as a guardian of this fund since I am a
+girl of 19 years old. (3) To make arrangement for me to come over to
+your country to further my education. This is my reason for writing to
+you. Please if you are willing to assist me I will offer you 25% of
+the total money. Reply if  you are interested
+Best regards.
+Liliane Abel.
