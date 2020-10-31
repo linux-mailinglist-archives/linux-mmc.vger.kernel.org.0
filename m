@@ -2,86 +2,151 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 668292A12E9
-	for <lists+linux-mmc@lfdr.de>; Sat, 31 Oct 2020 03:39:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37DDE2A177E
+	for <lists+linux-mmc@lfdr.de>; Sat, 31 Oct 2020 13:54:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726258AbgJaCjM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 30 Oct 2020 22:39:12 -0400
-Received: from server.msgroupspa.com ([185.149.113.111]:35286 "EHLO
-        server.msgroupspa.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725536AbgJaCjI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 30 Oct 2020 22:39:08 -0400
-X-Greylist: delayed 66465 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 22:38:58 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=msgroupspa.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gOeEglh1DIJatPKqyvOsPs4e0Zw8Lzg9wwjnNfQdiM8=; b=nK3IDYT+DT+afspoRk1vnh030x
-        JBANriWCpwGFqkJTHXsxgXz4zPu7XOm+ROYW+1LhSp6Xws1Wm9Gxv0Soi++3fpbt9358vEM1Vilpv
-        5xlCNIs/Y8Yak5vs3SvhE9OTE/TC6Vf04ze0iphAaRgUliWRhAsWS8s68bwFyUv4tdChHxOH/JwR2
-        Vv+jWIv637j1UH3aZ6QLvXZrjdEmRucUTVxZtH4VnCDjrc4XZi9EwE5rzVsYDmyiNG+eYB+1QY+/8
-        bPWWeacOm9DyYRD9g3bLyiVv0uincEH4/sdJ6fuUSabQfGsi095GX6rsmNCONVo4/rhE4INecsjOZ
-        9QdrBN4A==;
-Received: from [::1] (port=55352 helo=server.msgroupspa.com)
-        by server.msgroupspa.com with esmtpa (Exim 4.93)
-        (envelope-from <no-reply@msgroupspa.com>)
-        id 1kYPRU-0006Ky-OT; Fri, 30 Oct 2020 16:07:24 +0800
+        id S1727174AbgJaMy1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 31 Oct 2020 08:54:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44172 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726738AbgJaMyY (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 31 Oct 2020 08:54:24 -0400
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F26CC0613D5
+        for <linux-mmc@vger.kernel.org>; Sat, 31 Oct 2020 05:54:23 -0700 (PDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id w5so4031848qvn.12
+        for <linux-mmc@vger.kernel.org>; Sat, 31 Oct 2020 05:54:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=wfRnw3+anh8z7qTIE5rseWZ3U0MEKeF5bcJGz/o6FBc=;
+        b=CMe3HzoAEvMeb26eBacITneeFip3MxxJz3UxdZvWzNiafYmh1/y3dgSD0BOdrOYCyc
+         b/giDNDYL79xvDO4GuRgQ3ojkh/S0zvRpi3FLRq53EMq163W1d4/kxWqI2dnEJ5N3wIM
+         rTNYMHOGLxxm46oX1NAYeaAWm/afpZ1aYSxfM648Hde071Q3q9+dh2KeZFcd/VEb6g12
+         ecyRQ5OTm745X4ABTSJooxc336xx32h/IGxz8GiSx1TBvZccNsubkMTo8PzBVwwwF+ZB
+         tILpM5z9Xm9GP8Phw+5IOn95PP9MgvCUgg0Htajk/YfBceZUleW31IyrATGuTWPIHuGV
+         wZ6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=wfRnw3+anh8z7qTIE5rseWZ3U0MEKeF5bcJGz/o6FBc=;
+        b=dgszsk9+0J73hkgPYVUbfZdLzb3JorlKy7tLtATAhG6gsLLqoSUN2ehbcSR/Y8Pi/N
+         R6g3+Pa9CKNT9nyV5DGcZWxCSJfdH2XdQPYtThgERCDGa1SVm/GLAFBRkNWPLBywPxz2
+         xJeKE76taelGzk4PTzn7lRwuS+Ts+Q0HqvA/dh5G1O9k54HFBHzZNg1YxgxsTW0CKRwb
+         WFJ0e8U2Qt/jXFPbRAUgOKrj6XnJQ4aBrzXAt1bz4qa/ma9r67HRFbHgrvjCadbMbpL/
+         utI8vKIv41HLwIX/afgMuTKbzcKBr19EhuHeiXMhIz7BpUU9GoptwTQ6XPrPKdKnDUC1
+         md7g==
+X-Gm-Message-State: AOAM532/CdozH2DcSW/TQsfVbDydwir6SSkHImHvQ+8SsB4IkgGciJm5
+        PYqHzRhTDltZicm7ZDIeLWitNDEaJAJ3IA==
+X-Google-Smtp-Source: ABdhPJy7PB22FYhIMN3ZhffO52nMlRDhYfAhBF4yEswfqgQKkdW//QIi+v35LkJaXAW/KbG/q9kkxQ==
+X-Received: by 2002:a05:6214:153:: with SMTP id x19mr14193773qvs.50.1604148862155;
+        Sat, 31 Oct 2020 05:54:22 -0700 (PDT)
+Received: from ?IPv6:2601:153:900:7730:b0d5:ad61:dfc0:1d2b? ([2601:153:900:7730:b0d5:ad61:dfc0:1d2b])
+        by smtp.gmail.com with ESMTPSA id x6sm4143832qti.77.2020.10.31.05.54.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 31 Oct 2020 05:54:21 -0700 (PDT)
+From:   Peter Geis <pgwipeout@gmail.com>
+Subject: [BUG] cqe unable to handle buggy cards
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        nuumiofi@gmail.com
+Message-ID: <fa7f3fc5-c37a-ac49-e14a-45a1d2e0a942@gmail.com>
+Date:   Sat, 31 Oct 2020 08:54:20 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.2.2
 MIME-Version: 1.0
-Date:   Fri, 30 Oct 2020 16:07:24 +0800
-From:   "Mr. John Galvan" <no-reply@msgroupspa.com>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Reply-To: galvan.johnny@outlook.com
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <8970d4ac30f8022b0ae628d9b69a2d43@msgroupspa.com>
-X-Sender: no-reply@msgroupspa.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.msgroupspa.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - msgroupspa.com
-X-Get-Message-Sender-Via: server.msgroupspa.com: authenticated_id: no-reply@msgroupspa.com
-X-Authenticated-Sender: server.msgroupspa.com: no-reply@msgroupspa.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Good Morning,
+
+We are seeing an issue on the rk3399 with certain Foresee emmc modules 
+where the module reports it supports command queuing but fails in actual 
+implementation.
+
+Unfortunately there doesn't seem to be any method for the mmc core code 
+to detect this situation and disable command queue automatically.
+There also appears to be no way to disable it at runtime.
+
+Certain modified kernels have added a patch to enable runtime disable of 
+command queue entirely, but this will affect mmc core as a whole and not 
+just the buggy card.
+
+Does anyone have any insight into this issue?
+Thank you for your time.
+
+Very Respectfully,
+Peter Geis
+
+[   64.472882] mmc2: cqhci: timeout for tag 2
+[   64.473349] mmc2: cqhci: ============ CQHCI REGISTER DUMP ===========
+[   64.474057] mmc2: cqhci: Caps:      0x00000000 | Version:  0x00000510
+[   64.474763] mmc2: cqhci: Config:    0x00000000 | Control:  0x00000000
+[   64.475468] mmc2: cqhci: Int stat:  0x00000000 | Int enab: 0x00000000
+[   64.476172] mmc2: cqhci: Int sig:   0x00000000 | Int Coal: 0x00000000
+[   64.476875] mmc2: cqhci: TDL base:  0x00000000 | TDL up32: 0x00000000
+[   64.477578] mmc2: cqhci: Doorbell:  0x00000000 | TCN:      0x00000000
+[   64.478281] mmc2: cqhci: Dev queue: 0x00000000 | Dev Pend: 0x00000000
+[   64.478984] mmc2: cqhci: Task clr:  0x00000000 | SSC1:     0x00011000
+[   64.479687] mmc2: cqhci: SSC2:      0x00000000 | DCMD rsp: 0x00000000
+[   64.489785] mmc2: cqhci: RED mask:  0xfdf9a080 | TERRI:    0x00000000
+[   64.499774] mmc2: cqhci: Resp idx:  0x00000000 | Resp arg: 0x00000000
+[   64.509687] mmc2: sdhci: ============ SDHCI REGISTER DUMP ===========
+[   64.519597] mmc2: sdhci: Sys addr:  0x00000000 | Version:  0x00001002
+[   64.529521] mmc2: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000
+[   64.539440] mmc2: sdhci: Argument:  0x00010000 | Trn mode: 0x00000010
+[   64.549352] mmc2: sdhci: Present:   0x1fff0000 | Host ctl: 0x00000034
+[   64.559277] mmc2: sdhci: Power:     0x0000000b | Blk gap:  0x00000080
+[   64.569214] mmc2: sdhci: Wake-up:   0x00000000 | Clock:    0x00000007
+[   64.579061] mmc2: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[   64.588842] mmc2: sdhci: Int enab:  0x02ff4000 | Sig enab: 0x02ff4000
+[   64.598671] mmc2: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[   64.608446] mmc2: sdhci: Caps:      0x44edc880 | Caps_1:   0x800020f7
+[   64.618161] mmc2: sdhci: Cmd:       0x00000d1a | Max curr: 0x00000000
+[   64.627801] mmc2: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x642017d7
+[   64.637376] mmc2: sdhci: Resp[2]:   0x4e436172 | Resp[3]:  0x00880103
+[   64.646855] mmc2: sdhci: Host ctl2: 0x00000083
+[   64.656080] mmc2: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0xf0628208
+[   64.665445] mmc2: sdhci: ============================================
+[   64.674998] mmc2: running CQE recovery
+
+[  125.912941] mmc2: cqhci: timeout for tag 3
+[  125.921978] mmc2: cqhci: ============ CQHCI REGISTER DUMP ===========
+[  125.931200] mmc2: cqhci: Caps:      0x00000000 | Version:  0x00000510
+[  125.940389] mmc2: cqhci: Config:    0x00000001 | Control:  0x00000000
+[  125.949499] mmc2: cqhci: Int stat:  0x00000000 | Int enab: 0x00000006
+[  125.958527] mmc2: cqhci: Int sig:   0x00000006 | Int Coal: 0x00000000
+[  125.967486] mmc2: cqhci: TDL base:  0x00000000 | TDL up32: 0x00000000
+[  125.976260] mmc2: cqhci: Doorbell:  0x00000000 | TCN:      0x00000000
+[  125.985065] mmc2: cqhci: Dev queue: 0x00000000 | Dev Pend: 0x00000000
+[  125.993698] mmc2: cqhci: Task clr:  0x00000000 | SSC1:     0x00011000
+[  126.002244] mmc2: cqhci: SSC2:      0x00000000 | DCMD rsp: 0x00000000
+[  126.010716] mmc2: cqhci: RED mask:  0xfdf9a080 | TERRI:    0x00000000
+[  126.019159] mmc2: cqhci: Resp idx:  0x00000000 | Resp arg: 0x00000000
+[  126.027525] mmc2: sdhci: ============ SDHCI REGISTER DUMP ===========
+[  126.035955] mmc2: sdhci: Sys addr:  0x00000000 | Version:  0x00001002
+[  126.044258] mmc2: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000
+[  126.052396] mmc2: sdhci: Argument:  0x00000001 | Trn mode: 0x00000010
+[  126.060370] mmc2: sdhci: Present:   0x1fff0000 | Host ctl: 0x00000034
+[  126.068241] mmc2: sdhci: Power:     0x0000000b | Blk gap:  0x00000080
+[  126.075978] mmc2: sdhci: Wake-up:   0x00000000 | Clock:    0x00000007
+[  126.083552] mmc2: sdhci: Timeout:   0x0000000e | Int stat: 0x00000000
+[  126.090937] mmc2: sdhci: Int enab:  0x02ff4000 | Sig enab: 0x02ff4000
+[  126.098219] mmc2: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[  126.105403] mmc2: sdhci: Caps:      0x44edc880 | Caps_1:   0x800020f7
+[  126.112649] mmc2: sdhci: Cmd:       0x00003013 | Max curr: 0x00000000
+[  126.119700] mmc2: sdhci: Resp[0]:   0x00400800 | Resp[1]:  0x642017d7
+[  126.126594] mmc2: sdhci: Resp[2]:   0x4e436172 | Resp[3]:  0x00880103
+[  126.133334] mmc2: sdhci: Host ctl2: 0x00000083
+[  126.139652] mmc2: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0xf0628208
+[  126.146008] mmc2: sdhci: ============================================
+[  126.152361] mmc2: running CQE recovery
 
 
--- 
-Sir/Madam,
-
-I have access to very vital information that can be used to move a huge 
-amount of money. I have done my homework very well and I have the 
-machineries in place to get it done since I am still in active service. 
-If it was possible for me to do it alone I would not have bothered 
-contacting you. Ultimately I need an honest foreigner to play an 
-important role in the completion of this business transaction. Send 
-responds to this email: galvan.johnny@outlook.com
-
-Regards,
-John Galvan
-
----------------------------------------------------------------
-
-Sir / Madam,
-
-Ich habe Zugang zu sehr wichtigen Informationen, mit denen ich eine 
-große Menge Geld bewegen kann. Ich habe meine Hausaufgaben sehr gut 
-gemacht und ich habe die Maschinen, um sie zu erledigen, da ich immer 
-noch im aktiven Dienst bin. Wenn es mir möglich gewesen wäre, es alleine 
-zu tun, hätte ich mich nicht darum gekümmert, Sie zu kontaktieren. 
-Letztendlich brauche ich einen ehrlichen Ausländer, der eine wichtige 
-Rolle beim Abschluss dieses Geschäftsvorgangs spielt. Senden Sie 
-Antworten auf diese E-Mail: galvan.johnny@outlook.com
-
-Grüße,
-John Galvan
