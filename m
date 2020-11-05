@@ -2,170 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11DDA2A7F5D
+	by mail.lfdr.de (Postfix) with ESMTP id 8D48A2A7F5E
 	for <lists+linux-mmc@lfdr.de>; Thu,  5 Nov 2020 14:00:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731124AbgKENAC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Nov 2020 08:00:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58650 "EHLO
+        id S1730721AbgKENAF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Nov 2020 08:00:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731085AbgKEM75 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Nov 2020 07:59:57 -0500
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A6FC0613D2
-        for <linux-mmc@vger.kernel.org>; Thu,  5 Nov 2020 04:59:56 -0800 (PST)
-Received: by mail-vs1-xe43.google.com with SMTP id u7so695637vsq.11
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Nov 2020 04:59:56 -0800 (PST)
+        with ESMTP id S1731038AbgKENAB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Nov 2020 08:00:01 -0500
+Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B561AC0613D2
+        for <linux-mmc@vger.kernel.org>; Thu,  5 Nov 2020 05:00:00 -0800 (PST)
+Received: by mail-ua1-x943.google.com with SMTP id y1so472054uac.13
+        for <linux-mmc@vger.kernel.org>; Thu, 05 Nov 2020 05:00:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=G6PP6WiZhXC9WViPxlbziqm6I6Gyzrz5WTViUQZxV/M=;
-        b=Nf6wpifIEeaAnkDmCBDNfmLONk65c37blngt2b2UHWA9r4vtV/7l+uofhkJfdGVUwQ
-         pl1U4b9cTm/kile0e80PnSGAc9+POy4Ql8pvsrHmULVb7YHOD646yWkZQdftyIM7oAXM
-         p+yw1i391J/KWaLwu/LzlOplcNH9l0T+yx0+BLPq9AHQiUUKNzzqiHF+lKxKgtZhdch5
-         EBwUOo4WSr6HcfhVW+xLTd97e4q8w1Q8FOYD1tJas2YIfmPy2M3pP2CD66Z7VzTLYtpP
-         gCTvUHNcscILqy9+auVJiRnnbY4IDmxe1X3u8M5x4PS00sIS95M7arLTMlNfFkDzqc7W
-         Hcaw==
+         :cc:content-transfer-encoding;
+        bh=7NcZx/oSdkYK9nn1pweWIk2stuxNmZW+6aZ8xIAheSA=;
+        b=a2qltg2ZO2ve892U8tNPLNFReFupQUvEd+42PcGc3wyyE0rdCVDXLJo9Xy/NM2UgdR
+         ybjgg1ik4ekokumzQ72UxxZe7zFZ4w0oT+4UE1zbNjuHtlu5VCsMqr/pHtBiKwV5RH8G
+         C5cSPkBF9YdLpJEHAwja99I/V12g38cHvCqrt7KQ9js9BB++8nvgMHfbKm3I9tGEngtG
+         HIKMBU2X+K+yG6NNTbA0XGSVNJT7pGwCGp+ActTQQRLCHOI9GufpGbI7Z2mNbQbDOBgU
+         WWpC8cdMqHtMUDN7Z60ELLJAWumg8aMcA+Ql6y3HhlkLih3K+iGVPalHjboalGGbNRxy
+         45fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=G6PP6WiZhXC9WViPxlbziqm6I6Gyzrz5WTViUQZxV/M=;
-        b=ZE041hmOlFUxJst5KvYJm3n3FevtBRu7qnuG7x0Ow0v5Rh8tq7jEFZmemtak2PNgMf
-         6HYkiKEH+OqFmcslDe3qsBttr/Tzo1FUIbk4Pdn9P2WsMU6mHmLQPjr8SxhpRElh2noH
-         KJvHQkYQKVgXjr9ACMow1ybmPPVMnrlJ0RvKGMcoTiTuBNGlPEHz/lQ6HEToeLZDAx82
-         gSf/KntvXRJQGQHP9IkhuwZCsKKmlarU2+JSq6S966ds3rFmZls6bskTKh12GlLFJ67C
-         OqxN9houw6x7RALQP9b1jPx+zC7b3szKQx4NPan4lbVs0i7xoD9ySUaMBjIFGQyBCyPm
-         H0hA==
-X-Gm-Message-State: AOAM533XBKSIeguY9s0KdaRTCcRV13DdfbMRTHIa9aFqikY7WO6KEirC
-        XM6/69O0umyyXKvH+b+BXrLabcg07D0VRrsgQyySKHfLSro=
-X-Google-Smtp-Source: ABdhPJyoNiM/ag+LidwccpVnOIb07kGVjO1/kpG8K++Dkey70N0aK3bODr2qSZZ2AqMAhkLvQw82DMn4uur4yVyXpAc=
-X-Received: by 2002:a67:f417:: with SMTP id p23mr989475vsn.42.1604581195545;
- Thu, 05 Nov 2020 04:59:55 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=7NcZx/oSdkYK9nn1pweWIk2stuxNmZW+6aZ8xIAheSA=;
+        b=rk4Rj1dApXKsf+0URgkWg71ITnf18fBUiO/K36NWdNOlNpw77bH5ie30JEb9U8XWhY
+         m1vqjIi7PKbh6VyUU4vBRe56SQGBP6WLOqwKhL4OX6dUTxL3eJ0coqGOZdrnTKh9PeEx
+         y1YqYf7hcr84/BQTqW/aKWMFzyj42I3wDOrU7CQlx6b0YkjdVToGA3tTrrC1PuB5YU4s
+         XK+pWRHtNDrBCVEprgvDOCmr0TRUXB8Jw3zFLEw79qM3nU4qHcF6yDZmnSDMm+ePuxLR
+         5ZI4SyAQ6Tt5okQH3YSaGcXqgEw/Gxx46034A8v0mfYAfgAHYARBstgU0OvMZxJnzTNO
+         0wcw==
+X-Gm-Message-State: AOAM5334BUUYKGlOc7sRHIPFlWbtEAZ4XwrM0tm5yG4dDGp+XNPklX7V
+        slF87rAnJqRX1iBTSm63i8cbd4mnIo/tFdjf5ht60g==
+X-Google-Smtp-Source: ABdhPJyKvAtWA3o6fvZdEP1FXq5fTD1wQx5C/9iCOEtWf1JxjYK3WnwXGODCRXocBQ36+Iib8od5AOXX7f8O8Jguzrw=
+X-Received: by 2002:ab0:140e:: with SMTP id b14mr886025uae.100.1604581199978;
+ Thu, 05 Nov 2020 04:59:59 -0800 (PST)
 MIME-Version: 1.0
-References: <1604397269-2780-1-git-send-email-rui_feng@realsil.com.cn>
-In-Reply-To: <1604397269-2780-1-git-send-email-rui_feng@realsil.com.cn>
+References: <20201103163046.14336-1-krzk@kernel.org>
+In-Reply-To: <20201103163046.14336-1-krzk@kernel.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 5 Nov 2020 13:59:18 +0100
-Message-ID: <CAPDyKFqQeWGBXJBdyCVXOtfPWC6g4ZTG5yqsyRPkrWBf5ZQX5Q@mail.gmail.com>
-Subject: Re: [PATCH 1/8] mmc: rtsx: Add test mode for RTS5261
-To:     Rui Feng <rui_feng@realsil.com.cn>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Date:   Thu, 5 Nov 2020 13:59:21 +0100
+Message-ID: <CAPDyKFoKt9pwu=GC0hE7ogVJv=h6NPUjSvk7uNVmnf=FDPWh5A@mail.gmail.com>
+Subject: Re: [PATCH] mmc: meson-gx: drop of_match_ptr from of_device_id table
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+        kernel test robot <lkp@intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 3 Nov 2020 at 10:54, <rui_feng@realsil.com.cn> wrote:
+On Tue, 3 Nov 2020 at 17:30, Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
-> From: Rui Feng <rui_feng@realsil.com.cn>
+> The driver can match only via the DT table so the table should be always
+> used and the of_match_ptr does not have any sense (this also allows ACPI
+> matching via PRP0001, even though it is not relevant here).  This fixes
+> compile warning (!CONFIG_OF && !CONFIG_MODULES):
 >
-> This patch add test mode for RTS5261.
-> If test mode is set, reader will switch to SD Express mode
-> mandatorily, and this mode is used by factory testing only.
+>     drivers/mmc/host/meson-gx-mmc.c:1252:34: warning:
+>         =E2=80=98meson_mmc_of_match=E2=80=99 defined but not used [-Wunus=
+ed-const-variable=3D]
 >
-> Signed-off-by: Rui Feng <rui_feng@realsil.com.cn>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-The series applied for next, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/misc/cardreader/rts5261.h |  5 -----
->  drivers/mmc/host/rtsx_pci_sdmmc.c | 19 ++++++++++++++++---
->  include/linux/rtsx_pci.h          |  4 ++++
->  3 files changed, 20 insertions(+), 8 deletions(-)
+>  drivers/mmc/host/meson-gx-mmc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/misc/cardreader/rts5261.h b/drivers/misc/cardreader/rts5261.h
-> index 8d80f0d5d5d6..80179353bc46 100644
-> --- a/drivers/misc/cardreader/rts5261.h
-> +++ b/drivers/misc/cardreader/rts5261.h
-> @@ -60,11 +60,6 @@
->  /* DMACTL 0xFE2C */
->  #define RTS5261_DMA_PACK_SIZE_MASK     0xF0
->
-> -/* FW config info register */
-> -#define RTS5261_FW_CFG_INFO0           0xFF50
-> -#define RTS5261_FW_EXPRESS_TEST_MASK   (0x01<<0)
-> -#define RTS5261_FW_EA_MODE_MASK                (0x01<<5)
-> -
->  /* FW status register */
->  #define RTS5261_FW_STATUS              0xFF56
->  #define RTS5261_EXPRESS_LINK_FAIL_MASK (0x01<<7)
-> diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> index c453ad403aa8..26be11a096cb 100644
-> --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-> +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> @@ -47,6 +47,8 @@ struct realtek_pci_sdmmc {
->         bool                    using_cookie;
+> diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-=
+mmc.c
+> index 4ec41579940a..13f6a2c0ed04 100644
+> --- a/drivers/mmc/host/meson-gx-mmc.c
+> +++ b/drivers/mmc/host/meson-gx-mmc.c
+> @@ -1265,7 +1265,7 @@ static struct platform_driver meson_mmc_driver =3D =
+{
+>         .driver         =3D {
+>                 .name =3D DRIVER_NAME,
+>                 .probe_type =3D PROBE_PREFER_ASYNCHRONOUS,
+> -               .of_match_table =3D of_match_ptr(meson_mmc_of_match),
+> +               .of_match_table =3D meson_mmc_of_match,
+>         },
 >  };
 >
-> +static int sdmmc_init_sd_express(struct mmc_host *mmc, struct mmc_ios *ios);
-> +
->  static inline struct device *sdmmc_dev(struct realtek_pci_sdmmc *host)
->  {
->         return &(host->pdev->dev);
-> @@ -898,6 +900,7 @@ static int sd_power_on(struct realtek_pci_sdmmc *host)
->         struct mmc_host *mmc = host->mmc;
->         int err;
->         u32 val;
-> +       u8 test_mode;
->
->         if (host->power_state == SDMMC_POWER_ON)
->                 return 0;
-> @@ -925,6 +928,15 @@ static int sd_power_on(struct realtek_pci_sdmmc *host)
->                 return err;
->
->         if (PCI_PID(pcr) == PID_5261) {
-> +               /*
-> +                * If test mode is set switch to SD Express mandatorily,
-> +                * this is only for factory testing.
-> +                */
-> +               rtsx_pci_read_register(pcr, RTS5261_FW_CFG_INFO0, &test_mode);
-> +               if (test_mode & RTS5261_FW_EXPRESS_TEST_MASK) {
-> +                       sdmmc_init_sd_express(mmc, NULL);
-> +                       return 0;
-> +               }
->                 if (pcr->extra_caps & EXTRA_CAPS_SD_EXPRESS)
->                         mmc->caps2 |= MMC_CAP2_SD_EXP | MMC_CAP2_SD_EXP_1_2V;
->                 /*
-> @@ -1354,11 +1366,12 @@ static int sdmmc_init_sd_express(struct mmc_host *mmc, struct mmc_ios *ios)
->                 RTS5261_AUX_CLK_16M_EN, RTS5261_AUX_CLK_16M_EN);
->         rtsx_pci_write_register(pcr, RTS5261_FW_CFG0,
->                 RTS5261_FW_ENTER_EXPRESS, RTS5261_FW_ENTER_EXPRESS);
-> +       rtsx_pci_write_register(pcr, RTS5261_FW_CFG1,
-> +               RTS5261_MCU_CLOCK_GATING, RTS5261_MCU_CLOCK_GATING);
->         rtsx_pci_write_register(pcr, RTS5261_FW_CFG1,
->                 RTS5261_MCU_BUS_SEL_MASK | RTS5261_MCU_CLOCK_SEL_MASK
-> -               | RTS5261_MCU_CLOCK_GATING | RTS5261_DRIVER_ENABLE_FW,
-> -               RTS5261_MCU_CLOCK_SEL_16M | RTS5261_MCU_CLOCK_GATING
-> -               | RTS5261_DRIVER_ENABLE_FW);
-> +               | RTS5261_DRIVER_ENABLE_FW,
-> +               RTS5261_MCU_CLOCK_SEL_16M | RTS5261_DRIVER_ENABLE_FW);
->         host->eject = true;
->         return 0;
->  }
-> diff --git a/include/linux/rtsx_pci.h b/include/linux/rtsx_pci.h
-> index b47959f48ccd..db249e8707f3 100644
-> --- a/include/linux/rtsx_pci.h
-> +++ b/include/linux/rtsx_pci.h
-> @@ -658,6 +658,10 @@
->  #define   PM_WAKE_EN                   0x01
->  #define PM_CTRL4                       0xFF47
->
-> +/* FW config info register */
-> +#define RTS5261_FW_CFG_INFO0           0xFF50
-> +#define   RTS5261_FW_EXPRESS_TEST_MASK (0x01 << 0)
-> +#define   RTS5261_FW_EA_MODE_MASK      (0x01 << 5)
->  #define RTS5261_FW_CFG0                        0xFF54
->  #define   RTS5261_FW_ENTER_EXPRESS     (0x01 << 0)
->
 > --
-> 2.17.1
+> 2.25.1
 >
