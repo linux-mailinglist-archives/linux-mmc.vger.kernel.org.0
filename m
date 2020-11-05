@@ -2,60 +2,57 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 276BB2A7F52
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Nov 2020 14:00:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B3972A7F54
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 Nov 2020 14:00:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730871AbgKEM7k (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Nov 2020 07:59:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58592 "EHLO
+        id S1730917AbgKEM7o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Nov 2020 07:59:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730745AbgKEM7k (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Nov 2020 07:59:40 -0500
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9D8BC0613D2
-        for <linux-mmc@vger.kernel.org>; Thu,  5 Nov 2020 04:59:39 -0800 (PST)
-Received: by mail-vs1-xe43.google.com with SMTP id f7so693612vsh.10
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Nov 2020 04:59:39 -0800 (PST)
+        with ESMTP id S1730853AbgKEM7n (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Nov 2020 07:59:43 -0500
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E049BC0613CF
+        for <linux-mmc@vger.kernel.org>; Thu,  5 Nov 2020 04:59:42 -0800 (PST)
+Received: by mail-vs1-xe44.google.com with SMTP id f7so693687vsh.10
+        for <linux-mmc@vger.kernel.org>; Thu, 05 Nov 2020 04:59:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=rcYVD8LEqXgQj8+4xZ30P3SoEK5SbThnfnXSJjWjj9U=;
-        b=q3c0CcJWW3Yp5+fRoMt39iQyOeS16ql9LOwD6JST77IzqGimB6hDkQmKyGf9q07dTg
-         Hiv+5YhxhzPXf5zPBDdkaM98jkridKcrZVGRWsHcSEG8cAA9nnrzQpuMWQCIhURAkpv5
-         SyeiQ8ROkWtj1hNvnIhruS6z7NQS2PLw5lhj/eQr49u4UzlIlknlMdbbTgxd82qksol4
-         kUU4EEH9npzfO5NN6gZYdvCvxFt73b3ETOwxUFtcsWRu5zWFjf8W2psR8TcD/t/FU213
-         sEt7c6kLwi/agHhLjDtqM6LUD0OOyvK4flWQoFDxHV0e8ZJ5Yl9EaD6Df+kltIk6Ux1Q
-         K2Aw==
+        bh=Cf6Reenkulcvx1M++5Ft3F89n+TgucGRfAJUzamClvg=;
+        b=ws10/iKJk8CyhNwGYsbllaueWggHLsmbWy/ERx4LGC0DAmcxw0jWh5ojrVT+bMKqZ0
+         2t3zBnI+FOp4xyiV3Suo3dlXpWLz6bWG7dDiRmoN27iynEgt3w0KGhzyQ3SocRgnsJxC
+         s+8zZOJ6WHouDntrP2XqjDagS1cHFcCoRSf86TVyQ7Qv5o3+98iPzshUfMjM+pR0ebU1
+         d4ETkZS7VEYG65XgYW7I2yWAROGPP0iReuBeGSa/UgF4leKJ7LhZwIZvMILhOmosnMwq
+         ISxh5HWnBGxNQzIoCtrWCt3CmmEr7SKu5+DV8gaquYvhstk2bk3jXu8vBgQwCwv+rexs
+         NAQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=rcYVD8LEqXgQj8+4xZ30P3SoEK5SbThnfnXSJjWjj9U=;
-        b=nNVMc3ySAfWCcllb3/CJvtvajszLS/w/0mzh2Psla6rKvzBZZcXVylxpowUnHkVBdS
-         psIdZnFP3qOFZ+YhU2WDuBTOv9AlWe8kic8XTMqqXxmxqlX0GzvffySF9hlCtIHwWskT
-         btgFWxRAQWURiNRCz2zUjdKGkfHMG/42oPZG8yh5Xl791P0VZjTVY/4TrUJY6kjyFR1b
-         3rPI2t7r8MD/7OWOTKHxs0TybtrQxDU2ZKdpG0b+mdVv3kA+iB9YCgtLM8X+c3HpsOJ1
-         qnC3PjERNrs8kEonQwQgbDsJlVIHNo8dZqsKA9uA/DjvAdHaKzl7bxJl/2OvnhIOOBrM
-         vwgw==
-X-Gm-Message-State: AOAM532yEzmXPdGc1amFB/PlN8jx5jGcouxRqZ4uxXa9WutJMcKUYJnV
-        mbXHEJysRPQzNBlJLpYoBcgSRiLjs6v7UvE/vvrNbQ==
-X-Google-Smtp-Source: ABdhPJyCXPYThdRo5a7gJehCWV1WQyzo/STXalTghHHdtLgldG1yVsd5Ox8OKcIRoIGYwJGamQ0szslq9j9NbWuiT5Y=
-X-Received: by 2002:a67:310d:: with SMTP id x13mr1036122vsx.19.1604581179098;
- Thu, 05 Nov 2020 04:59:39 -0800 (PST)
+        bh=Cf6Reenkulcvx1M++5Ft3F89n+TgucGRfAJUzamClvg=;
+        b=Q3H4RpdmFpf2eJtJyvY5f77lX4kBkkebtt+K+gVLrMkfamZel+Lih3QSvoVQOv3eOU
+         6n+ezXxE36feY6WQCwgxATiUJoEmcqXn0uNMpeyB3mHUL/rRG7lqk28BMrWqh/KFNVF3
+         LfOxGSaeU5715/E4TD3SBHdWl7RFll+h6A1EJFs0p0lj/tkfeRA6SGyNTsw/bbUdU5k5
+         92SzX1fuDtmNzxTFi+By4IUp3kkzqQI8MKDz1L+fOm3XlCaEfYKuSmWA4B1Hv5H1Tcjo
+         LR73x59253sZ6OyIAIFmwvloiDJoP3MGqSWaOAlh1qZSChOpdC7NN95CqvuPpexPaU6J
+         zk9Q==
+X-Gm-Message-State: AOAM5308w7nkWiYVnMMt/ENtEUt1swN8j68IL+FCJk5Jbz4nLkSmBzWr
+        NMvwVIV1zUsdevBAnoLFSR5KDdbhOuPmAgy+Y/D9Yg==
+X-Google-Smtp-Source: ABdhPJyALjYk4dc+ZE9nrx+tFiQQuxVnGKZVVOwn967qwn5WyQmkB9fFCK6Gknms9k31ZhzVwlUZP9EveWxT15FLCmA=
+X-Received: by 2002:a67:ec9a:: with SMTP id h26mr1011201vsp.34.1604581182187;
+ Thu, 05 Nov 2020 04:59:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20201031152708.2146690-1-trix@redhat.com>
-In-Reply-To: <20201031152708.2146690-1-trix@redhat.com>
+References: <20201031142756.2140029-1-trix@redhat.com>
+In-Reply-To: <20201031142756.2140029-1-trix@redhat.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 5 Nov 2020 13:59:02 +0100
-Message-ID: <CAPDyKFphxHnrWmdG3DoTEX9MpS+23ZwjKK3xny4_UWdpTbUzDQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: davinci: remove unneeded semicolon
+Date:   Thu, 5 Nov 2020 13:59:06 +0100
+Message-ID: <CAPDyKFpgUAoXSptorC-WqRFUHvuuM6=xUSQwBAXwVSMXPn1PzQ@mail.gmail.com>
+Subject: Re: [PATCH] memstick: tifm: remove unneeded semicolon
 To:     trix@redhat.com
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Doug Anderson <dianders@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+Cc:     Alex Dubov <oakad@yahoo.com>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -63,7 +60,7 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 31 Oct 2020 at 16:27, <trix@redhat.com> wrote:
+On Sat, 31 Oct 2020 at 15:28, <trix@redhat.com> wrote:
 >
 > From: Tom Rix <trix@redhat.com>
 >
@@ -78,22 +75,22 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/davinci_mmc.c | 2 +-
+>  drivers/memstick/host/tifm_ms.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
-> index 90cd179625fc..2a757c88f9d2 100644
-> --- a/drivers/mmc/host/davinci_mmc.c
-> +++ b/drivers/mmc/host/davinci_mmc.c
-> @@ -290,7 +290,7 @@ static void mmc_davinci_start_command(struct mmc_davinci_host *host,
->                 default:
->                         s = ", (R? response)";
->                         break;
-> -               }; s; }));
-> +               } s; }));
->         host->cmd = cmd;
+> diff --git a/drivers/memstick/host/tifm_ms.c b/drivers/memstick/host/tifm_ms.c
+> index 786e46798da2..57145374f6ac 100644
+> --- a/drivers/memstick/host/tifm_ms.c
+> +++ b/drivers/memstick/host/tifm_ms.c
+> @@ -528,7 +528,7 @@ static int tifm_ms_set_param(struct memstick_host *msh,
+>                 } else
+>                         return -EINVAL;
+>                 break;
+> -       };
+> +       }
 >
->         switch (mmc_resp_type(cmd)) {
+>         return 0;
+>  }
 > --
 > 2.18.1
 >
