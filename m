@@ -2,461 +2,201 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 927962A8CF0
-	for <lists+linux-mmc@lfdr.de>; Fri,  6 Nov 2020 03:30:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A3CA2A8D7D
+	for <lists+linux-mmc@lfdr.de>; Fri,  6 Nov 2020 04:25:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726426AbgKFC31 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Nov 2020 21:29:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44348 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726376AbgKFC3U (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Nov 2020 21:29:20 -0500
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B09C0613CF
-        for <linux-mmc@vger.kernel.org>; Thu,  5 Nov 2020 18:29:20 -0800 (PST)
-Received: by mail-pf1-x443.google.com with SMTP id 13so2944003pfy.4
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Nov 2020 18:29:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=WXCTXFjjZnRJUysIJUBPWCSr6Kxo2wcIq4NFvtLiDlA=;
-        b=iRJVsWeXwkn5KWa9BCurbZdw5JELlAN7jA3zFt2Xp7n43jGSQJqvo0YOjYorCnvHoC
-         DAVlVrpupkSfcmCGXVZUa3ip9HkWTwo5LM3DKqH7cNmqKoQkJydOgbiLwRPOog8lCFOn
-         AkSIwL8hNTKeAKWPpwvTXhq252P9qx7TFOyhYXR4c7JIafbPcNZUpUVTE0/CuHAVqI7s
-         uYltS/0/mA9KODc5YzAsj35YNGDPactl5XVP1S3O9HZBCIYv2MuJ1QhyRLQpfekJVn43
-         xvekHcb/RP7Pq5NGWJe3VoH0i1DDlqO+Q9b0u/RcB4N1/IWuExdS13Om2eQ+yvQYsZqR
-         h5Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=WXCTXFjjZnRJUysIJUBPWCSr6Kxo2wcIq4NFvtLiDlA=;
-        b=E6W72qBDX3mxcuoQMvqmz0gOIjclWZEnGek5uKVokRwV0za0Lt8RpWfg4xFpG5maFU
-         Pz+uW4TVOumxz9fPvCUD+R5fzpiVU21XIzwa2y21ec7x2HxNmuvNnOyMxLc3MLvH7h+h
-         15qVIZa4C6aQS/ZBwbK5xMfigzHn71vsbf+2ieSUgaPK17ArLrK1H6cQKHb3kyNaxHRL
-         qdftJgNsHKKfFXEUFCTfNMvhS49JBBOCPyQQkoTIFAIIXuK88GCiU15nvWIjCBtXaSTf
-         EMclQRl9TsR3JmPwuGWGRbAc4+O6i9gCF1Wkxwdy57XULBw22ul40GgX9ixr70HaWphb
-         kqQA==
-X-Gm-Message-State: AOAM533BLA3R1uO60MlbqqY0fYFZ/EFXt0bSRqdrEWaaXgC6pePeKCG1
-        WDha5KZYaz+wks8j9U4dKL79Sg==
-X-Google-Smtp-Source: ABdhPJzFiuYOCu/FlsPxEFPgvsm/lAz9nK2Ujnyicrbqm4+iYkH7LcAe2Pm9lR3FeOS+jze/DBpIuw==
-X-Received: by 2002:a63:2342:: with SMTP id u2mr5002339pgm.50.1604629760205;
-        Thu, 05 Nov 2020 18:29:20 -0800 (PST)
-Received: from localhost.localdomain (p784a66b9.tkyea130.ap.so-net.ne.jp. [120.74.102.185])
-        by smtp.gmail.com with ESMTPSA id m13sm3703040pjr.30.2020.11.05.18.29.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2020 18:29:19 -0800 (PST)
-From:   AKASHI Takahiro <takahiro.akashi@linaro.org>
-To:     ulf.hansson@linaro.org, adrian.hunter@intel.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ben.chuang@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw,
-        AKASHI Takahiro <takahiro.akashi@linaro.org>
-Subject: [RFC PATCH v3.1 27/27] mmc: sdhci-pci-gli: enable UHS-II mode for GL9755
-Date:   Fri,  6 Nov 2020 11:27:26 +0900
-Message-Id: <20201106022726.19831-28-takahiro.akashi@linaro.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201106022726.19831-1-takahiro.akashi@linaro.org>
-References: <20201106022726.19831-1-takahiro.akashi@linaro.org>
+        id S1725830AbgKFDZt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 Nov 2020 22:25:49 -0500
+Received: from mailout4.samsung.com ([203.254.224.34]:56684 "EHLO
+        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725616AbgKFDZs (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Nov 2020 22:25:48 -0500
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20201106032543epoutp0481ca5b0da2900db40efe32e200a9e6e6~EzVeRiO5V3220632206epoutp04a
+        for <linux-mmc@vger.kernel.org>; Fri,  6 Nov 2020 03:25:43 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20201106032543epoutp0481ca5b0da2900db40efe32e200a9e6e6~EzVeRiO5V3220632206epoutp04a
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1604633143;
+        bh=oYJZ1byBP0HsPhl5XHQlUp6p7zDlyIlOAgoP1oZkrwY=;
+        h=Subject:To:From:Date:In-Reply-To:References:From;
+        b=q827mlB9Sid4iX3Ggxg9oG8jNdR+OK7LwZ2Y8y5w4gL2ParGtEa5sedQStdhvREsG
+         a+b+rHPXu7oUzi+v7+ntJE+TQPxEExRclHvwnCuDGvCHTn9ZJjGz2elGpEyW4ZuHgJ
+         +2G8iZ7OMvcJRdqaDI8S6OKeC0y7GV0zIT7PTcyw=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20201106032542epcas1p1adf3ee1780b9a7928afda4e1c816441c~EzVd1ol1z2550525505epcas1p1V;
+        Fri,  6 Nov 2020 03:25:42 +0000 (GMT)
+Received: from epsmges1p2.samsung.com (unknown [182.195.40.156]) by
+        epsnrtp3.localdomain (Postfix) with ESMTP id 4CS5Pc1zBxzMqYkh; Fri,  6 Nov
+        2020 03:25:40 +0000 (GMT)
+Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
+        epsmges1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        FD.3D.63458.432C4AF5; Fri,  6 Nov 2020 12:25:40 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20201106032539epcas1p11d27b089073568c330042ae3d0df71b6~EzVa_Envw1497314973epcas1p1r;
+        Fri,  6 Nov 2020 03:25:39 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20201106032539epsmtrp1ee35f3d9cdac267429206f737332091d~EzVa9bHrS0303703037epsmtrp1h;
+        Fri,  6 Nov 2020 03:25:39 +0000 (GMT)
+X-AuditID: b6c32a36-6c9ff7000000f7e2-3d-5fa4c234acf7
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        79.98.13470.332C4AF5; Fri,  6 Nov 2020 12:25:39 +0900 (KST)
+Received: from [10.113.113.235] (unknown [10.113.113.235]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20201106032539epsmtip14485729d07d59eabf6d73f42a7183176~EzVatBNmw1937619376epsmtip1Y;
+        Fri,  6 Nov 2020 03:25:39 +0000 (GMT)
+Subject: Re: [PATCH] mmc: dw_mmc: replace spin_lock_irqsave by spin_lock in
+ hard IRQ
+To:     Tian Tao <tiantao6@hisilicon.com>, ulf.hansson@linaro.org,
+        p.zabel@pengutronix.de, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Jaehoon Chung <jh80.chung@samsung.com>
+Message-ID: <f40de7cc-83da-9147-fb84-f3ab474a16f7@samsung.com>
+Date:   Fri, 6 Nov 2020 12:26:00 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+        Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1604627813-59785-1-git-send-email-tiantao6@hisilicon.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupgk+LIzCtJLcpLzFFi42LZdlhTT9fk0JJ4g0+neCwu75rDZnHkfz+j
+        xd17J1gsVr/ex25xfG24A6vH47kb2T3uXNvD5tH/18Dj8ya5AJaobJuM1MSU1CKF1Lzk/JTM
+        vHRbJe/geOd4UzMDQ11DSwtzJYW8xNxUWyUXnwBdt8wcoK1KCmWJOaVAoYDE4mIlfTubovzS
+        klSFjPziElul1IKUnALLAr3ixNzi0rx0veT8XCtDAwMjU6DChOyMWX1zWAt2S1R8u/qTrYFx
+        l3AXIyeHhICJxNPF/SxdjFwcQgI7GCXeL+1lh3A+MUp0nd7JCOF8Y5Q4f+wEG0zLj2OtUFV7
+        GSXe7roG1f+eUeLckresIFXCAmESE3Z+A6sSEZjEKDF153UWkASbgI7E9m/HmUBsXgE7icdX
+        JjN3MXJwsAioSKx4aQgSFhWIlNj59CU7RImgxMmZT1hASjgF3CV291mBhJkFxCVuPZnPBGHL
+        S2x/O4cZZJWEwEt2iYNdfcwQl7pIdPz/BnW1sMSr41vYIWwpiZf9bVB2tcSu5jNQzR2MEre2
+        NTFBJIwl9i+dzASymFlAU2L9Ln2IsKLEzt9zGSEW80m8+9rDClIiIcAr0dEmBFGiInHp9Usm
+        mFV3n/xnhbA9JNZ9f88KCatZjBKd7x6zTWBUmIXkzVlIfpuF5LdZCFcsYGRZxSiWWlCcm55a
+        bFhghBzdmxjBSVLLbAfjpLcf9A4xMnEwHmKU4GBWEuG94LcoXog3JbGyKrUoP76oNCe1+BCj
+        KTDcJzJLiSbnA9N0Xkm8oamRsbGxhYmhmamhoZI47x/tjnghgfTEktTs1NSC1CKYPiYOTqkG
+        JruG4NR6h61nH19KkMs5vHbx1saZGzMEHz1ROmK1Pu2Hhb1rpOCq86knXCXXMokoz55lqifr
+        eGZiXdDXZxNFVJuOz/S1bS0Ouyu8XWD6qXfhcebvo/cvnbd31iF3x7hDE7LKNR5/Yfx6dL7a
+        4X0iPL/k823rutw7ekw/Cd7xLPlrJjdz16l1h3iDkqz6l/0UlbWaNOFg02Mx7eeL/k4zv2i8
+        7niAkNcS309Ptd+3hugcTVJ5+UuvY9nG9a7Pj5xvOLVb/J/3hLQva/TM353u8xNaysiT+VF2
+        3tSwaKdHv3p1aqcyeD//8rL4+7aQBye3BD6Mkl2+qTEhttni9bOLL27JrLhyqe9J1i0Vph1S
+        WtuVWIozEg21mIuKEwErZjP8GwQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrOLMWRmVeSWpSXmKPExsWy7bCSnK7xoSXxBo9aFS0u75rDZnHkfz+j
+        xd17J1gsVr/ex25xfG24A6vH47kb2T3uXNvD5tH/18Dj8ya5AJYoLpuU1JzMstQifbsEroxZ
+        fXNYC3ZLVHy7+pOtgXGXcBcjJ4eEgInEj2Ot7F2MXBxCArsZJSbf2c0CkZCS+Px0KlsXIweQ
+        LSxx+HAxRM1bRoneiX/ZQWqEBcIkJuz8BmaLCExilGi+WgtRNItRYuaRZ2wgCTYBHYnt344z
+        gdi8AnYSj69MZgYZyiKgIrHipSGIKSoQKbFzhyVEhaDEyZlPWEDCnALuErv7rEDCzALqEn/m
+        XWKGsMUlbj2ZzwRhy0tsfzuHeQKj4Cwk3bOQtMxC0jILScsCRpZVjJKpBcW56bnFhgWGeanl
+        esWJucWleel6yfm5mxjBYa+luYNx+6oPeocYmTgYDzFKcDArifBe8FsUL8SbklhZlVqUH19U
+        mpNafIhRmoNFSZz3RuHCOCGB9MSS1OzU1ILUIpgsEwenVANTc2NIQOJ847ZDXkIFjuVWpwS5
+        brKe5l7gZnlzXs29lG+Wk3+4y4YvUdl9pF+2f3Kev3dGi7bnHffjq3/vmrHq3Jo+O77j6c/U
+        NrpoGU7P3X53NdsrNSPvfQx9fdP537xokkxQ1zOWPJi35K5BY+NzA+eb+WtuKHTV7bhp9N9a
+        4uuTI01e+85E+N+7zGhSHjZVzP3nrmNVfguOHX6XV7962b72mDguB5XOu9q2Uzfp/vT7ahbx
+        fvMUeZlej1ehxWIfD5S/+aXFH833MoM9sGjLO9snuWfuPeRN3bK6K7Z4hor1pGUuHR2XY902
+        Rc1fUcGq8OeQ3dS0S3J/u9R5J7y7vI6v7nbYWaVdGcyro6yVWIozEg21mIuKEwFB9Yh/6gIA
+        AA==
+X-CMS-MailID: 20201106032539epcas1p11d27b089073568c330042ae3d0df71b6
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20201106015629epcas1p1e017132d77d8b20e7aa6706a6d471adf
+References: <CGME20201106015629epcas1p1e017132d77d8b20e7aa6706a6d471adf@epcas1p1.samsung.com>
+        <1604627813-59785-1-git-send-email-tiantao6@hisilicon.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Changes are:
-* Disable GL9755 overcurrent interrupt when power on/off on UHS-II.
-* Enable the internal clock when do reset on UHS-II mode.
-* Set ZC to 0x0 for Sandisk cards and set ZC to 0xB for others.
-* Increase timeout value before detecting UHS-II interface.
-* Add vendor settings fro UHS-II mode.
+Dear Tian,
 
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Signed-off-by: AKASHI Takahiro <takahiro.akashi@linaro.org>
----
- drivers/mmc/host/Kconfig         |   1 +
- drivers/mmc/host/sdhci-pci-gli.c | 318 ++++++++++++++++++++++++++++++-
- 2 files changed, 318 insertions(+), 1 deletion(-)
+On 11/6/20 10:56 AM, Tian Tao wrote:
+> The code has been in a irq-disabled context since it is hard IRQ. There
+> is no necessity to do it 
+Even though I don't remember, there is a reason to use spin_lock_irqsave()..
+I will check it. If there is no reason, i will reply.
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 5ca9ac03db40..cef033dd02ce 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -102,6 +102,7 @@ config MMC_SDHCI_PCI
- 	tristate "SDHCI support on PCI bus"
- 	depends on MMC_SDHCI && PCI
- 	select MMC_CQHCI
-+	select MMC_SDHCI_UHS2
- 	select IOSF_MBI if X86
- 	select MMC_SDHCI_IO_ACCESSORS
- 	help
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index 9887485a4134..dad465800446 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -14,6 +14,7 @@
- #include <linux/delay.h>
- #include "sdhci.h"
- #include "sdhci-pci.h"
-+#include "sdhci-uhs2.h"
- #include "cqhci.h"
- 
- /*  Genesys Logic extra registers */
-@@ -72,6 +73,42 @@
- #define   SDHCI_GLI_9750_TUNING_PARAMETERS_RX_DLY    GENMASK(2, 0)
- #define   GLI_9750_TUNING_PARAMETERS_RX_DLY_VALUE    0x1
- 
-+#define PCI_GLI_9755_WT       0x800
-+#define   PCI_GLI_9755_WT_EN    BIT(0)
-+#define   GLI_9755_WT_EN_ON	0x1
-+#define   GLI_9755_WT_EN_OFF    0x0
-+
-+#define PCI_GLI_9755_PLLSSC                 0x68
-+#define   PCI_GLI_9755_PLLSSC_RTL             BIT(24)
-+#define   GLI_9755_PLLSSC_RTL_VALUE           0x1
-+#define   PCI_GLI_9755_PLLSSC_TRANS_PASS      BIT(27)
-+#define   GLI_9755_PLLSSC_TRANS_PASS_VALUE    0x1
-+#define   PCI_GLI_9755_PLLSSC_RECV            GENMASK(29, 28)
-+#define   GLI_9755_PLLSSC_RECV_VALUE          0x3
-+#define   PCI_GLI_9755_PLLSSC_TRAN            GENMASK(31, 30)
-+#define   GLI_9755_PLLSSC_TRAN_VALUE          0x3
-+
-+#define PCI_GLI_9755_UHS2_PLL            0x6C
-+#define   PCI_GLI_9755_UHS2_PLL_SSC        GENMASK(9, 8)
-+#define   GLI_9755_UHS2_PLL_SSC_VALUE      0x0
-+#define   PCI_GLI_9755_UHS2_PLL_DELAY      BIT(18)
-+#define   GLI_9755_UHS2_PLL_DELAY_VALUE    0x1
-+#define   PCI_GLI_9755_UHS2_PLL_PDRST      BIT(27)
-+#define   GLI_9755_UHS2_PLL_PDRST_VALUE    0x1
-+
-+#define PCI_GLI_9755_UHS2_SERDES	    0x70
-+#define   PCI_GLI_9755_UHS2_SERDES_INTR       GENMASK(2, 0)
-+#define   GLI_9755_UHS2_SERDES_INTR_VALUE     0x3
-+#define   PCI_GLI_9755_UHS2_SERDES_ZC1        BIT(3)
-+#define   GLI_9755_UHS2_SERDES_ZC1_VALUE      0x0
-+#define   PCI_GLI_9755_UHS2_SERDES_ZC2        GENMASK(7, 4)
-+#define   GLI_9755_UHS2_SERDES_ZC2_DEFAULT    0xB
-+#define   GLI_9755_UHS2_SERDES_ZC2_SANDISK    0x0
-+#define   PCI_GLI_9755_UHS2_SERDES_TRAN       GENMASK(27, 24)
-+#define   GLI_9755_UHS2_SERDES_TRAN_VALUE     0xC
-+#define   PCI_GLI_9755_UHS2_SERDES_RECV       GENMASK(31, 28)
-+#define   GLI_9755_UHS2_SERDES_RECV_VALUE     0xF
-+
- #define SDHCI_GLI_9763E_CTRL_HS400  0x7
- 
- #define SDHCI_GLI_9763E_HS400_ES_REG      0x52C
-@@ -519,6 +556,276 @@ static void sdhci_gl9755_set_clock(struct sdhci_host *host, unsigned int clock)
- 	sdhci_enable_clk(host, clk);
- }
- 
-+static void gl9755_vendor_init(struct sdhci_host *host)
-+{
-+	struct sdhci_pci_slot *slot = sdhci_priv(host);
-+	struct pci_dev *pdev = slot->chip->pdev;
-+	u32 serdes;
-+	u32 pllssc;
-+	u32 uhs2_pll;
-+
-+	gl9755_wt_on(pdev);
-+
-+	pci_read_config_dword(pdev, PCI_GLI_9755_UHS2_SERDES, &serdes);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_TRAN;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_TRAN,
-+			     GLI_9755_UHS2_SERDES_TRAN_VALUE);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_RECV;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_RECV,
-+			     GLI_9755_UHS2_SERDES_RECV_VALUE);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_INTR;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_INTR,
-+			     GLI_9755_UHS2_SERDES_INTR_VALUE);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_ZC1;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_ZC1,
-+			     GLI_9755_UHS2_SERDES_ZC1_VALUE);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_ZC2;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_ZC2,
-+			     GLI_9755_UHS2_SERDES_ZC2_DEFAULT);
-+	pci_write_config_dword(pdev, PCI_GLI_9755_UHS2_SERDES, serdes);
-+
-+	pci_read_config_dword(pdev, PCI_GLI_9755_UHS2_PLL, &uhs2_pll);
-+	uhs2_pll &= ~PCI_GLI_9755_UHS2_PLL_SSC;
-+	uhs2_pll |= FIELD_PREP(PCI_GLI_9755_UHS2_PLL_SSC,
-+			  GLI_9755_UHS2_PLL_SSC_VALUE);
-+	uhs2_pll &= ~PCI_GLI_9755_UHS2_PLL_DELAY;
-+	uhs2_pll |= FIELD_PREP(PCI_GLI_9755_UHS2_PLL_DELAY,
-+			  GLI_9755_UHS2_PLL_DELAY_VALUE);
-+	uhs2_pll &= ~PCI_GLI_9755_UHS2_PLL_PDRST;
-+	uhs2_pll |= FIELD_PREP(PCI_GLI_9755_UHS2_PLL_PDRST,
-+			  GLI_9755_UHS2_PLL_PDRST_VALUE);
-+	pci_write_config_dword(pdev, PCI_GLI_9755_UHS2_PLL, uhs2_pll);
-+
-+	pci_read_config_dword(pdev, PCI_GLI_9755_PLLSSC, &pllssc);
-+	pllssc &= ~PCI_GLI_9755_PLLSSC_RTL;
-+	pllssc |= FIELD_PREP(PCI_GLI_9755_PLLSSC_RTL,
-+			  GLI_9755_PLLSSC_RTL_VALUE);
-+	pllssc &= ~PCI_GLI_9755_PLLSSC_TRANS_PASS;
-+	pllssc |= FIELD_PREP(PCI_GLI_9755_PLLSSC_TRANS_PASS,
-+			  GLI_9755_PLLSSC_TRANS_PASS_VALUE);
-+	pllssc &= ~PCI_GLI_9755_PLLSSC_RECV;
-+	pllssc |= FIELD_PREP(PCI_GLI_9755_PLLSSC_RECV,
-+			  GLI_9755_PLLSSC_RECV_VALUE);
-+	pllssc &= ~PCI_GLI_9755_PLLSSC_TRAN;
-+	pllssc |= FIELD_PREP(PCI_GLI_9755_PLLSSC_TRAN,
-+			  GLI_9755_PLLSSC_TRAN_VALUE);
-+	pci_write_config_dword(pdev, PCI_GLI_9755_PLLSSC, pllssc);
-+
-+	gl9755_wt_off(pdev);
-+}
-+
-+static void gl9755_pre_detect_init(struct sdhci_host *host)
-+{
-+	/* GL9755 need more time on UHS2 detect flow */
-+	sdhci_writeb(host, 0xA7, SDHCI_UHS2_TIMER_CTRL);
-+}
-+
-+static void gl9755_post_attach_sd(struct sdhci_host *host)
-+{
-+	struct pci_dev *pdev;
-+	struct sdhci_pci_chip *chip;
-+	struct sdhci_pci_slot *slot;
-+	u32 serdes;
-+
-+	slot = sdhci_priv(host);
-+	chip = slot->chip;
-+	pdev = chip->pdev;
-+
-+	gl9755_wt_on(pdev);
-+
-+	pci_read_config_dword(pdev, PCI_GLI_9755_UHS2_SERDES, &serdes);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_ZC1;
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_ZC2;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_ZC1,
-+			     GLI_9755_UHS2_SERDES_ZC1_VALUE);
-+
-+	/* the manfid of sandisk card is 0x3 */
-+	if (host->mmc->card->cid.manfid == 0x3)
-+		serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_ZC2,
-+				     GLI_9755_UHS2_SERDES_ZC2_SANDISK);
-+	else
-+		serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_ZC2,
-+				     GLI_9755_UHS2_SERDES_ZC2_DEFAULT);
-+
-+	pci_write_config_dword(pdev, PCI_GLI_9755_UHS2_SERDES, serdes);
-+
-+	gl9755_wt_off(pdev);
-+}
-+
-+static void gl9755_overcurrent_event_enable(struct sdhci_host *host,
-+					    bool enable)
-+{
-+	u32 mask;
-+
-+	mask = sdhci_readl(host, SDHCI_SIGNAL_ENABLE);
-+	if (enable)
-+		mask |= SDHCI_INT_BUS_POWER;
-+	else
-+		mask &= ~SDHCI_INT_BUS_POWER;
-+
-+	sdhci_writel(host, mask, SDHCI_SIGNAL_ENABLE);
-+
-+	mask = sdhci_readl(host, SDHCI_INT_ENABLE);
-+	if (enable)
-+		mask |= SDHCI_INT_BUS_POWER;
-+	else
-+		mask &= ~SDHCI_INT_BUS_POWER;
-+
-+	sdhci_writel(host, mask, SDHCI_INT_ENABLE);
-+}
-+
-+static void gl9755_set_power(struct sdhci_host *host, unsigned char mode,
-+			     unsigned short vdd)
-+{
-+	u8 pwr = 0;
-+
-+	if (mode != MMC_POWER_OFF) {
-+		switch (1 << vdd) {
-+		case MMC_VDD_165_195:
-+		/*
-+		 * Without a regulator, SDHCI does not support 2.0v
-+		 * so we only get here if the driver deliberately
-+		 * added the 2.0v range to ocr_avail. Map it to 1.8v
-+		 * for the purpose of turning on the power.
-+		 */
-+		case MMC_VDD_20_21:
-+			pwr = SDHCI_POWER_180;
-+			break;
-+		case MMC_VDD_29_30:
-+		case MMC_VDD_30_31:
-+			pwr = SDHCI_POWER_300;
-+			break;
-+		case MMC_VDD_32_33:
-+		case MMC_VDD_33_34:
-+			pwr = SDHCI_POWER_330;
-+			break;
-+		default:
-+			WARN(1, "%s: Invalid vdd %#x\n",
-+			     mmc_hostname(host->mmc), vdd);
-+			break;
-+		}
-+
-+		pwr |= SDHCI_VDD2_POWER_180;
-+	}
-+
-+	if (host->pwr == pwr)
-+		return;
-+
-+	host->pwr = pwr;
-+
-+	if (pwr == 0) {
-+		gl9755_overcurrent_event_enable(host, false);
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+	} else {
-+		gl9755_overcurrent_event_enable(host, false);
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+
-+		pwr |= (SDHCI_POWER_ON | SDHCI_VDD2_POWER_ON);
-+
-+		sdhci_writeb(host, pwr & 0xf, SDHCI_POWER_CONTROL);
-+		/* wait stable */
-+		mdelay(5);
-+		sdhci_writeb(host, pwr, SDHCI_POWER_CONTROL);
-+		/* wait stable */
-+		mdelay(5);
-+		gl9755_overcurrent_event_enable(host, true);
-+	}
-+}
-+
-+static bool sdhci_wait_clock_stable(struct sdhci_host *host)
-+{
-+	u16 clk = 0;
-+	ktime_t timeout;
-+
-+	/* Wait max 20 ms */
-+	timeout = ktime_add_ms(ktime_get(), 20);
-+	while (1) {
-+		bool timedout = ktime_after(ktime_get(), timeout);
-+
-+		clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+		if (clk & SDHCI_CLOCK_INT_STABLE)
-+			break;
-+		if (timedout) {
-+			pr_err("%s: Internal clock never stabilised.\n",
-+			       mmc_hostname(host->mmc));
-+			sdhci_dumpregs(host);
-+			return false;
-+		}
-+		udelay(10);
-+	}
-+	return true;
-+}
-+
-+static void gl9755_uhs2_reset_sd_tran(struct sdhci_host *host)
-+{
-+	/* do this on UHS2 mode */
-+	if (host->mmc->flags & MMC_UHS2_INITIALIZED) {
-+		sdhci_uhs2_reset(host, SDHCI_UHS2_SW_RESET_SD);
-+		sdhci_writel(host, host->ier, SDHCI_INT_ENABLE);
-+		sdhci_writel(host, host->ier, SDHCI_SIGNAL_ENABLE);
-+		sdhci_uhs2_clear_set_irqs(host,
-+					  SDHCI_INT_ALL_MASK,
-+					  SDHCI_UHS2_ERR_INT_STATUS_MASK);
-+	}
-+}
-+
-+static void sdhci_gl9755_reset(struct sdhci_host *host, u8 mask)
-+{
-+	ktime_t timeout;
-+	u16 ctrl2;
-+	u16 clk_ctrl;
-+
-+	/* need internal clock */
-+	if (mask & SDHCI_RESET_ALL) {
-+		ctrl2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+		clk_ctrl = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+
-+		if ((ctrl2 & SDHCI_CTRL_V4_MODE) &&
-+		    (ctrl2 & SDHCI_CTRL_UHS2_INTERFACE_EN)) {
-+			sdhci_writew(host,
-+				     SDHCI_CLOCK_INT_EN,
-+				     SDHCI_CLOCK_CONTROL);
-+		} else {
-+			sdhci_writew(host,
-+				     SDHCI_CLOCK_INT_EN,
-+				     SDHCI_CLOCK_CONTROL);
-+			sdhci_wait_clock_stable(host);
-+			sdhci_writew(host,
-+				     SDHCI_CTRL_V4_MODE,
-+				     SDHCI_HOST_CONTROL2);
-+		}
-+	}
-+
-+	sdhci_writeb(host, mask, SDHCI_SOFTWARE_RESET);
-+
-+	/* reset sd-tran on UHS2 mode if need to reset cmd/data */
-+	if ((mask & SDHCI_RESET_CMD) | (mask & SDHCI_RESET_DATA))
-+		gl9755_uhs2_reset_sd_tran(host);
-+
-+	if (mask & SDHCI_RESET_ALL)
-+		host->clock = 0;
-+
-+	/* Wait max 100 ms */
-+	timeout = ktime_add_ms(ktime_get(), 100);
-+
-+	/* hw clears the bit when it's done */
-+	while (1) {
-+		bool timedout = ktime_after(ktime_get(), timeout);
-+
-+		if (!(sdhci_readb(host, SDHCI_SOFTWARE_RESET) & mask))
-+			break;
-+		if (timedout) {
-+			pr_err("%s: Reset 0x%x never completed.\n",
-+			       mmc_hostname(host->mmc), (int)mask);
-+			sdhci_dumpregs(host);
-+			/* manual clear */
-+			sdhci_writeb(host, 0, SDHCI_SOFTWARE_RESET);
-+			return;
-+		}
-+		udelay(10);
-+	}
-+}
-+
- static int gli_probe_slot_gl9750(struct sdhci_pci_slot *slot)
- {
- 	struct sdhci_host *host = slot->host;
-@@ -537,6 +844,7 @@ static int gli_probe_slot_gl9755(struct sdhci_pci_slot *slot)
- 	gli_pcie_enable_msi(slot);
- 	slot->host->mmc->caps2 |= MMC_CAP2_NO_SDIO;
- 	sdhci_enable_v4_mode(host);
-+	gl9755_vendor_init(host);
- 
- 	return 0;
- }
-@@ -800,17 +1108,25 @@ static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
- 
- static const struct sdhci_ops sdhci_gl9755_ops = {
- 	.set_clock		= sdhci_gl9755_set_clock,
-+	.set_power              = gl9755_set_power,
- 	.enable_dma		= sdhci_pci_enable_dma,
- 	.set_bus_width		= sdhci_set_bus_width,
--	.reset			= sdhci_reset,
-+	.reset			= sdhci_gl9755_reset,
- 	.set_uhs_signaling	= sdhci_set_uhs_signaling,
- 	.voltage_switch		= sdhci_gli_voltage_switch,
-+	.dump_uhs2_regs		= sdhci_uhs2_dump_regs,
-+	.set_timeout		= sdhci_uhs2_set_timeout,
-+	.irq			= sdhci_uhs2_irq,
-+	.uhs2_pre_detect_init    = gl9755_pre_detect_init,
-+	.uhs2_post_attach_sd    = gl9755_post_attach_sd,
- };
- 
- const struct sdhci_pci_fixes sdhci_gl9755 = {
- 	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC,
- 	.quirks2	= SDHCI_QUIRK2_BROKEN_DDR50,
- 	.probe_slot	= gli_probe_slot_gl9755,
-+	.add_host	= sdhci_pci_uhs2_add_host,
-+	.remove_host	= sdhci_pci_uhs2_remove_host,
- 	.ops            = &sdhci_gl9755_ops,
- #ifdef CONFIG_PM_SLEEP
- 	.resume         = sdhci_pci_gli_resume,
--- 
-2.28.0
+Best Regards,
+Jaehoon Chung
+
+> 
+> Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+> ---
+>  drivers/mmc/host/dw_mmc.c | 17 ++++++++---------
+>  1 file changed, 8 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+> index 43c5795..a524443 100644
+> --- a/drivers/mmc/host/dw_mmc.c
+> +++ b/drivers/mmc/host/dw_mmc.c
+> @@ -2617,7 +2617,6 @@ static irqreturn_t dw_mci_interrupt(int irq, void *dev_id)
+>  	struct dw_mci *host = dev_id;
+>  	u32 pending;
+>  	struct dw_mci_slot *slot = host->slot;
+> -	unsigned long irqflags;
+>  
+>  	pending = mci_readl(host, MINTSTS); /* read-only mask reg */
+>  
+> @@ -2632,15 +2631,15 @@ static irqreturn_t dw_mci_interrupt(int irq, void *dev_id)
+>  			 * Hold the lock; we know cmd11_timer can't be kicked
+>  			 * off after the lock is released, so safe to delete.
+>  			 */
+> -			spin_lock_irqsave(&host->irq_lock, irqflags);
+> +			spin_lock(&host->irq_lock);
+>  			dw_mci_cmd_interrupt(host, pending);
+> -			spin_unlock_irqrestore(&host->irq_lock, irqflags);
+> +			spin_unlock(&host->irq_lock);
+>  
+>  			del_timer(&host->cmd11_timer);
+>  		}
+>  
+>  		if (pending & DW_MCI_CMD_ERROR_FLAGS) {
+> -			spin_lock_irqsave(&host->irq_lock, irqflags);
+> +			spin_lock(&host->irq_lock);
+>  
+>  			del_timer(&host->cto_timer);
+>  			mci_writel(host, RINTSTS, DW_MCI_CMD_ERROR_FLAGS);
+> @@ -2648,7 +2647,7 @@ static irqreturn_t dw_mci_interrupt(int irq, void *dev_id)
+>  			smp_wmb(); /* drain writebuffer */
+>  			set_bit(EVENT_CMD_COMPLETE, &host->pending_events);
+>  
+> -			spin_unlock_irqrestore(&host->irq_lock, irqflags);
+> +			spin_unlock(&host->irq_lock);
+>  		}
+>  
+>  		if (pending & DW_MCI_DATA_ERROR_FLAGS) {
+> @@ -2661,7 +2660,7 @@ static irqreturn_t dw_mci_interrupt(int irq, void *dev_id)
+>  		}
+>  
+>  		if (pending & SDMMC_INT_DATA_OVER) {
+> -			spin_lock_irqsave(&host->irq_lock, irqflags);
+> +			spin_lock(&host->irq_lock);
+>  
+>  			del_timer(&host->dto_timer);
+>  
+> @@ -2676,7 +2675,7 @@ static irqreturn_t dw_mci_interrupt(int irq, void *dev_id)
+>  			set_bit(EVENT_DATA_COMPLETE, &host->pending_events);
+>  			tasklet_schedule(&host->tasklet);
+>  
+> -			spin_unlock_irqrestore(&host->irq_lock, irqflags);
+> +			spin_unlock(&host->irq_lock);
+>  		}
+>  
+>  		if (pending & SDMMC_INT_RXDR) {
+> @@ -2692,12 +2691,12 @@ static irqreturn_t dw_mci_interrupt(int irq, void *dev_id)
+>  		}
+>  
+>  		if (pending & SDMMC_INT_CMD_DONE) {
+> -			spin_lock_irqsave(&host->irq_lock, irqflags);
+> +			spin_lock(&host->irq_lock);
+>  
+>  			mci_writel(host, RINTSTS, SDMMC_INT_CMD_DONE);
+>  			dw_mci_cmd_interrupt(host, pending);
+>  
+> -			spin_unlock_irqrestore(&host->irq_lock, irqflags);
+> +			spin_unlock(&host->irq_lock);
+>  		}
+>  
+>  		if (pending & SDMMC_INT_CD) {
+> 
 
