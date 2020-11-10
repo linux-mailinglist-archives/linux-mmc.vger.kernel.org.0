@@ -2,118 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8392B2ACFF2
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Nov 2020 07:46:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D96F82AD05D
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Nov 2020 08:22:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729564AbgKJGqn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 10 Nov 2020 01:46:43 -0500
-Received: from smtp2207-205.mail.aliyun.com ([121.197.207.205]:53195 "EHLO
-        smtp2207-205.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726010AbgKJGqm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Nov 2020 01:46:42 -0500
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.09124708|-1;CH=blue;DM=|OVERLOAD|false|;DS=CONTINUE|ham_system_inform|0.0186312-0.000150051-0.981219;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047201;MF=frank@allwinnertech.com;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.IuoOt.3_1604990794;
-Received: from allwinnertech.com(mailfrom:frank@allwinnertech.com fp:SMTPD_---.IuoOt.3_1604990794)
-          by smtp.aliyun-inc.com(10.147.40.7);
-          Tue, 10 Nov 2020 14:46:38 +0800
-From:   Frank Lee <frank@allwinnertech.com>
-To:     tiny.windzz@gmail.com
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Yangtao Li <frank@allwinnertech.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>, Marek Vasut <marex@denx.de>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Douglas Anderson <dianders@chromium.org>
-Subject: [RESEND PATCH 17/19] mmc: sunxi: add support for A100 mmc controller
-Date:   Tue, 10 Nov 2020 14:46:31 +0800
-Message-Id: <de4c37ee3a0f1734c4ae035c37b8a2c34b9641ca.1604988979.git.frank@allwinnertech.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <cover.1604988979.git.frank@allwinnertech.com>
-References: <cover.1604988979.git.frank@allwinnertech.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1731404AbgKJHWz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 Nov 2020 02:22:55 -0500
+Received: from inva020.nxp.com ([92.121.34.13]:59466 "EHLO inva020.nxp.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726307AbgKJHWz (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 10 Nov 2020 02:22:55 -0500
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 19C551A0277;
+        Tue, 10 Nov 2020 08:22:54 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0F44A1A00E9;
+        Tue, 10 Nov 2020 08:22:52 +0100 (CET)
+Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id EACF7402B7;
+        Tue, 10 Nov 2020 08:22:48 +0100 (CET)
+From:   Yangbo Lu <yangbo.lu@nxp.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     Yangbo Lu <yangbo.lu@nxp.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH] mmc: sdhci-of-esdhc: handle pulse width detection erratum for more SoCs
+Date:   Tue, 10 Nov 2020 15:13:14 +0800
+Message-Id: <20201110071314.3868-1-yangbo.lu@nxp.com>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Yangtao Li <frank@allwinnertech.com>
+Apply erratum workaround of unreliable pulse width detection to
+more affected platforms (LX2160A Rev2.0 and LS1028A Rev1.0).
 
-This patch adds support for A100 MMC controller, which use word address
-for internal dma.
-
-Signed-off-by: Yangtao Li <frank@allwinnertech.com>
+Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 ---
- drivers/mmc/host/sunxi-mmc.c | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-of-esdhc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
-index fc62773602ec..1518b64112b7 100644
---- a/drivers/mmc/host/sunxi-mmc.c
-+++ b/drivers/mmc/host/sunxi-mmc.c
-@@ -244,6 +244,7 @@ struct sunxi_idma_des {
+diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
+index bb09445..ab5ab96 100644
+--- a/drivers/mmc/host/sdhci-of-esdhc.c
++++ b/drivers/mmc/host/sdhci-of-esdhc.c
+@@ -1324,6 +1324,8 @@ static struct soc_device_attribute soc_fixup_sdhc_clkdivs[] = {
  
- struct sunxi_mmc_cfg {
- 	u32 idma_des_size_bits;
-+	u32 idma_des_shift;
- 	const struct sunxi_mmc_clk_delay *clk_delays;
- 
- 	/* does the IP block support autocalibration? */
-@@ -343,7 +344,7 @@ static int sunxi_mmc_init_host(struct sunxi_mmc_host *host)
- 	/* Enable CEATA support */
- 	mmc_writel(host, REG_FUNS, SDXC_CEATA_ON);
- 	/* Set DMA descriptor list base address */
--	mmc_writel(host, REG_DLBA, host->sg_dma);
-+	mmc_writel(host, REG_DLBA, host->sg_dma >> host->cfg->idma_des_shift);
- 
- 	rval = mmc_readl(host, REG_GCTRL);
- 	rval |= SDXC_INTERRUPT_ENABLE_BIT;
-@@ -373,8 +374,10 @@ static void sunxi_mmc_init_idma_des(struct sunxi_mmc_host *host,
- 
- 		next_desc += sizeof(struct sunxi_idma_des);
- 		pdes[i].buf_addr_ptr1 =
--			cpu_to_le32(sg_dma_address(&data->sg[i]));
--		pdes[i].buf_addr_ptr2 = cpu_to_le32((u32)next_desc);
-+			cpu_to_le32(sg_dma_address(&data->sg[i]) >>
-+				    host->cfg->idma_des_shift);
-+		pdes[i].buf_addr_ptr2 = cpu_to_le32((u32)next_desc >>
-+						    host->cfg->idma_des_shift);
- 	}
- 
- 	pdes[0].config |= cpu_to_le32(SDXC_IDMAC_DES0_FD);
-@@ -1178,6 +1181,23 @@ static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
- 	.needs_new_timings = true,
+ static struct soc_device_attribute soc_unreliable_pulse_detection[] = {
+ 	{ .family = "QorIQ LX2160A", .revision = "1.0", },
++	{ .family = "QorIQ LX2160A", .revision = "2.0", },
++	{ .family = "QorIQ LS1028A", .revision = "1.0", },
+ 	{ },
  };
  
-+static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
-+	.idma_des_size_bits = 16,
-+	.idma_des_shift = 2,
-+	.clk_delays = NULL,
-+	.can_calibrate = true,
-+	.mask_data0 = true,
-+	.needs_new_timings = true,
-+};
-+
-+static const struct sunxi_mmc_cfg sun50i_a100_emmc_cfg = {
-+	.idma_des_size_bits = 13,
-+	.idma_des_shift = 2,
-+	.clk_delays = NULL,
-+	.can_calibrate = true,
-+	.needs_new_timings = true,
-+};
-+
- static const struct of_device_id sunxi_mmc_of_match[] = {
- 	{ .compatible = "allwinner,sun4i-a10-mmc", .data = &sun4i_a10_cfg },
- 	{ .compatible = "allwinner,sun5i-a13-mmc", .data = &sun5i_a13_cfg },
-@@ -1186,6 +1206,8 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
- 	{ .compatible = "allwinner,sun9i-a80-mmc", .data = &sun9i_a80_cfg },
- 	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
- 	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
-+	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
-+	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
 -- 
-2.28.0
+2.7.4
 
