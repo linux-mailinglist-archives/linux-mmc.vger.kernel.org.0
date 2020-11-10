@@ -2,85 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BECC2ACB6D
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Nov 2020 04:00:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE6E72ACE1F
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Nov 2020 05:07:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729648AbgKJDAw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 Nov 2020 22:00:52 -0500
-Received: from smtprelay0240.hostedemail.com ([216.40.44.240]:39336 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729243AbgKJDAv (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Nov 2020 22:00:51 -0500
-X-Greylist: delayed 517 seconds by postgrey-1.27 at vger.kernel.org; Mon, 09 Nov 2020 22:00:51 EST
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave06.hostedemail.com (Postfix) with ESMTP id E3D6C812416B;
-        Tue, 10 Nov 2020 02:52:18 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id F008012CB;
-        Tue, 10 Nov 2020 02:52:13 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:982:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2559:2562:2693:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:4321:4605:5007:6117:6119:6742:6743:7652:7875:7903:8660:10004:10400:10848:11232:11658:11783:11914:12043:12048:12297:12679:12740:12895:13019:13069:13148:13230:13311:13357:13439:13894:14181:14659:14721:21080:21451:21627:21939:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: ink22_1714ef1272f1
-X-Filterd-Recvd-Size: 2439
-Received: from [192.168.0.160] (cpe-72-134-80-165.natsow.res.rr.com [72.134.80.165])
-        (Authenticated sender: joe@perches.com)
-        by omf07.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 10 Nov 2020 02:52:09 +0000 (UTC)
-Message-ID: <3c39c363690d0b46069afddc3ad09213011e5cd4.camel@perches.com>
-Subject: Re: Subject: [RFC] clang tooling cleanups
-From:   Joe Perches <joe@perches.com>
-To:     trix@redhat.com, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com, cocci <cocci@systeme.lip6.fr>
-Cc:     linux-pm@vger.kernel.org, linux-crypto@vger.kernel.org,
-        qat-linux@intel.com, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-rtc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org,
-        linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org
-Date:   Mon, 09 Nov 2020 18:52:08 -0800
-In-Reply-To: <20201027164255.1573301-1-trix@redhat.com>
-References: <20201027164255.1573301-1-trix@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        id S1733196AbgKJEGP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 9 Nov 2020 23:06:15 -0500
+Received: from smtp2207-205.mail.aliyun.com ([121.197.207.205]:40664 "EHLO
+        smtp2207-205.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728403AbgKJEGM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 Nov 2020 23:06:12 -0500
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.1739784|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0582695-0.00106321-0.940667;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047199;MF=frank@allwinnertech.com;NM=1;PH=DS;RN=28;RT=28;SR=0;TI=SMTPD_---.IulFdj5_1604981159;
+Received: from allwinnertech.com(mailfrom:frank@allwinnertech.com fp:SMTPD_---.IulFdj5_1604981159)
+          by smtp.aliyun-inc.com(10.147.42.135);
+          Tue, 10 Nov 2020 12:06:04 +0800
+From:   Frank Lee <frank@allwinnertech.com>
+To:     vkoul@kernel.org, robh+dt@kernel.org, mripard@kernel.org,
+        wens@csie.org, ulf.hansson@linaro.org, kishon@ti.com,
+        wim@linux-watchdog.org, linux@roeck-us.net,
+        dan.j.williams@intel.com, linus.walleij@linaro.org,
+        wsa+renesas@sang-engineering.com, dianders@chromium.org,
+        marex@denx.de, colin.king@canonical.com, rdunlap@infradead.org,
+        krzk@kernel.org, gregkh@linuxfoundation.org, megous@megous.com,
+        rikard.falkeborn@gmail.com, dmaengine@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-gpio@vger.kernel.org,
+        tiny.windzz@gmail.com
+Cc:     Frank Lee <frank@allwinnertech.com>
+Subject: [PATCH 00/19] Second step support for A100
+Date:   Tue, 10 Nov 2020 12:05:34 +0800
+Message-Id: <20201110040553.1381-1-frank@allwinnertech.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 2020-10-27 at 09:42 -0700, trix@redhat.com wrote:
-> This rfc will describe
-> An upcoming treewide cleanup.
-> How clang tooling was used to programatically do the clean up.
-> Solicit opinions on how to generally use clang tooling.
-> 
-> The clang warning -Wextra-semi-stmt produces about 10k warnings.
-> Reviewing these, a subset of semicolon after a switch looks safe to
-> fix all the time.  An example problem
-> 
-> void foo(int a) {
->      switch(a) {
->      	       case 1:
-> 	       ...
->      }; <--- extra semicolon
-> }
-> 
-> Treewide, there are about 100 problems in 50 files for x86_64 allyesconfig.
-> These fixes will be the upcoming cleanup.
+Hi,
 
-coccinelle already does some of these.
+Let's add watchdog, arm-pmu, dma, usb, mmc..... support for allwinner
+a100 soc.
 
-For instance: scripts/coccinelle/misc/semicolon.cocci
+Yangtao Li (19):
+  pinctrl: sunxi: fix irq bank map for the Allwinner A100 pin controller
+  pinctrl: sunxi: Mark the irq bank not found in
+    sunxi_pinctrl_irq_handler() with WARN_ON
+  pinctrl: sunxi: Always call chained_irq_{enter, exit} in
+    sunxi_pinctrl_irq_handler
+  dt-bindings: dma: allwinner,sun50i-a64-dma: Add A100 compatible
+  dmaengine: sun6i: Add support for A100 DMA
+  arm64: allwinner: a100: Add device node for DMA controller
+  arm64: dts: allwinner: A100: Add PMU mode
+  phy: sun4i-usb: remove enable_pmu_unk1 from sun50i_h6_cfg
+  phy: allwinner: Convert to devm_platform_ioremap_* API
+  dt-bindings: watchdog: sun4i: Add A100 compatible
+  arm64: dts: allwinner: a100: add watchdog node
+  dt-bindings: Add bindings for USB phy on Allwinner A100
+  phy: sun4i-usb: add support for A100 USB PHY
+  arm64: dts: allwinner: a100: add usb related nodes
+  arm64: allwinner: A100: enable EHCI, OHCI and USB PHY nodes in Perf1
+  dt-bindings: mmc: sunxi: Add A100 compatibles
+  mmc: sunxi: add support for A100 mmc controller
+  arm64: allwinner: a100: Add MMC related nodes
+  arm64: dts: allwinner: a100: perf1: Add eMMC and MMC node
 
-Perhaps some tool coordination can be done here as
-coccinelle/checkpatch/clang/Lindent call all be used
-to do some facet or another of these cleanup issues.
+ .../dma/allwinner,sun50i-a64-dma.yaml         |   5 +-
+ .../bindings/mmc/allwinner,sun4i-a10-mmc.yaml |   2 +
+ .../phy/allwinner,sun50i-a100-usb-phy.yaml    | 105 ++++++++++
+ .../watchdog/allwinner,sun4i-a10-wdt.yaml     |   3 +
+ .../allwinner/sun50i-a100-allwinner-perf1.dts |  54 +++++
+ .../arm64/boot/dts/allwinner/sun50i-a100.dtsi | 197 +++++++++++++++++-
+ drivers/dma/sun6i-dma.c                       |  25 +++
+ drivers/mmc/host/sunxi-mmc.c                  |  28 ++-
+ drivers/phy/allwinner/phy-sun4i-usb.c         |  29 ++-
+ drivers/phy/allwinner/phy-sun50i-usb3.c       |   4 +-
+ drivers/phy/allwinner/phy-sun6i-mipi-dphy.c   |   4 +-
+ drivers/phy/allwinner/phy-sun9i-usb.c         |   4 +-
+ drivers/pinctrl/sunxi/pinctrl-sun50i-a100.c   |   2 +-
+ drivers/pinctrl/sunxi/pinctrl-sunxi.c         |   9 +-
+ 14 files changed, 443 insertions(+), 28 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/phy/allwinner,sun50i-a100-usb-phy.yaml
 
-
+-- 
+2.28.0
 
