@@ -2,123 +2,69 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88F3D2AFC13
-	for <lists+linux-mmc@lfdr.de>; Thu, 12 Nov 2020 02:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BEC72AFD24
+	for <lists+linux-mmc@lfdr.de>; Thu, 12 Nov 2020 02:51:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728293AbgKLBcI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 11 Nov 2020 20:32:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54630 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726276AbgKKWpe (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Nov 2020 17:45:34 -0500
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88A38C061A4E
-        for <linux-mmc@vger.kernel.org>; Wed, 11 Nov 2020 14:45:31 -0800 (PST)
-Received: by mail-lj1-x241.google.com with SMTP id l10so3904032lji.4
-        for <linux-mmc@vger.kernel.org>; Wed, 11 Nov 2020 14:45:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ragnatech-se.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=9qtMsgKiVIFryrruwz2wXWM8Ya/YcSkqnLASynZmkWg=;
-        b=WgB49Zx+TEOouEUA8Srdham4PkuH9g5OoWTXT0mH1OXhi9buel8NRoPb0Qwy/ct2NF
-         DUa/8eijWxUsTW6AkKnLo/Edj5GvEBaxxxNKTO4MK+1AicXautKYt8Nxj1b52M0BW1oe
-         oijwUeltf7WG+rB922JIv0NBkmyFuvx3/3RnE0bZIBGaE1aAclNgW0xJSRXqYakwwh88
-         UEMFuMX+FyPRDV/CcBnDWbaHLRTft+qJrp/UQ7tweWESFPnFHkvBYP1Nh5/tu5ZNocbO
-         1NqGmiPC9ejOIwPlqXYLGVhWorWGHYGpZrZV5IWf7QJRyIsunWb1GTLPT2Plfdl6ssa3
-         hSUg==
+        id S1726276AbgKLBcJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 11 Nov 2020 20:32:09 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:42972 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727252AbgKKWvJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Nov 2020 17:51:09 -0500
+Received: by mail-oi1-f194.google.com with SMTP id w145so4086588oie.9;
+        Wed, 11 Nov 2020 14:51:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=9qtMsgKiVIFryrruwz2wXWM8Ya/YcSkqnLASynZmkWg=;
-        b=N3A1bmM9/Y1dH/18WCFCDAj1sScboVg1Tmg2uo+u8efrIzS21NhWRoBUxSka25XQqJ
-         NW068wX1RwJpgPTgQQgLQ+ahOJ1rgOTdrmA5SbM/zsUO2KoAXoGkbYpHzWS4CAcJf/Gr
-         URAM5GHXj0wlWGtIbcVKLJx6TpxRAdCGzto00Pmx2n/Db3wOxBJFtgsozVzn1sKkXQRD
-         BPriWjTJlfS1Hk0i7FO8LQeZzEE750k5YXFYU3ZquYhcT3j5Rk7t8Nm0KjGXZm6dKyRX
-         WMG7bQ2aGIPRQNkrfJ88k77p6jCS5n3TOnXpNUHmxR6pyvP7Z9uJGaD8Kave/GQufKZ6
-         cMTA==
-X-Gm-Message-State: AOAM5332SF4AhKIiKc358Bcu9LrrgxdTc8bK1xLIBs9S1fVVDl0JNwtt
-        oAe8ut5O0BP4oFF5SBhwfFCnLlzh8UjrCQ==
-X-Google-Smtp-Source: ABdhPJzGiIzAeCeHMmS1cDfSLB1dJNwrQqbkrZY8BzPeAAbVIzxLAkeSln8xuECElQdQbCR7iKFELQ==
-X-Received: by 2002:a2e:a375:: with SMTP id i21mr9000678ljn.421.1605134729941;
-        Wed, 11 Nov 2020 14:45:29 -0800 (PST)
-Received: from localhost (h-209-203.A463.priv.bahnhof.se. [155.4.209.203])
-        by smtp.gmail.com with ESMTPSA id j2sm353275lfe.23.2020.11.11.14.45.28
+         :mime-version:content-disposition:in-reply-to;
+        bh=J4gO6y2+FXbWp6kk6yQSxbYzLSmr490RK8fybVbeec4=;
+        b=FUEwiwe/HUGJLEJ7jidNj4e7p8PKULcg/pIKwiWi4pBE6z25wJW/Ba9xC4LOwYcGeQ
+         Glga+rEXzBR3b8c24O2osl4UoMkSMko0Igno8q0v0ZyNcGcJ0GtdAp6uk+BTLyu+kz3Z
+         JbNKnCjv8bEzQ/59kMNVyvCYVnARKU9B7jCYYQt/DOc7qVfBTHGHtz6L4v6BBBHYZXd4
+         p22RnNCtCVNeL5P6GFoVRviaIIyI5l+hrVj3PyZuWPiRumc5rhogjZ7AJApK5jHI3+lj
+         7JjpyBq/6xGjD0RFgnMgA7HitWBZz4sCS1Y5ljpf7X1V2CBOydxIvNtdvLOaodtSzT3U
+         vnTA==
+X-Gm-Message-State: AOAM531xpdAQgVpEaYIhW+9geudsyrqn0XiKGgEHo2rb0sGesk8pqXUY
+        6flmJDm5PobZYd4pj4MJQZI3vKyjxA==
+X-Google-Smtp-Source: ABdhPJxLE6Xc450qW/K5XRNneTiy41ELWNn8+7Dq1V98fWKkYaZKkDGwc6LQwGMIK0127+2/O+r9Pw==
+X-Received: by 2002:aca:4ccc:: with SMTP id z195mr3489679oia.124.1605135067210;
+        Wed, 11 Nov 2020 14:51:07 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id m15sm837189oou.11.2020.11.11.14.51.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2020 14:45:29 -0800 (PST)
-Date:   Wed, 11 Nov 2020 23:45:28 +0100
-From:   Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: Re: [RFC PATCH 3/4] mmc: renesas_sdhi: populate SCC pointer at the
- proper place
-Message-ID: <20201111224528.GB1263071@oden.dyn.berto.se>
-References: <20201110142058.36393-1-wsa+renesas@sang-engineering.com>
- <20201110142058.36393-4-wsa+renesas@sang-engineering.com>
+        Wed, 11 Nov 2020 14:51:06 -0800 (PST)
+Received: (nullmailer pid 2191616 invoked by uid 1000);
+        Wed, 11 Nov 2020 22:51:05 -0000
+Date:   Wed, 11 Nov 2020 16:51:05 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Frank Lee <frank@allwinnertech.com>
+Cc:     Chen-Yu Tsai <wens@csie.org>, Rob Herring <robh+dt@kernel.org>,
+        linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
+        linux-mmc@vger.kernel.org, tiny.windzz@gmail.com,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [RESEND PATCH 16/19] dt-bindings: mmc: sunxi: Add A100
+ compatibles
+Message-ID: <20201111225105.GA2191562@bogus>
+References: <cover.1604988979.git.frank@allwinnertech.com>
+ <1e6af41ce01eafd0d366257e5be9a0aa90bb97c8.1604988979.git.frank@allwinnertech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201110142058.36393-4-wsa+renesas@sang-engineering.com>
+In-Reply-To: <1e6af41ce01eafd0d366257e5be9a0aa90bb97c8.1604988979.git.frank@allwinnertech.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Wolfram,
-
-Thanks for your patch.
-
-On 2020-11-10 15:20:57 +0100, Wolfram Sang wrote:
-> The SCC pointer is currently filled whenever the SoC is Gen2+. This is
-> wrong because there is a Gen2-variant without SCC (SDHI_VER_GEN2_SDR50).
-> We have been lucky because the writes to unintended registers have not
-> caused problems so far. But further refactoring work exposed the
-> problem. So, move the pointer initialization to the place where we know
-> that the SDHI instance supports tuning. And also populate the 'reset'
-> pointer unconditionally to make sure the interrupt enable register is
-> always properly set for Gen2+.
+On Tue, 10 Nov 2020 14:45:16 +0800, Frank Lee wrote:
+> From: Yangtao Li <frank@allwinnertech.com>
 > 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-
+> Add binding for A100's mmc and emmc controller.
+> 
+> Signed-off-by: Yangtao Li <frank@allwinnertech.com>
 > ---
->  drivers/mmc/host/renesas_sdhi_core.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-> index 17ebaa324ca1..4a1ed5bf216c 100644
-> --- a/drivers/mmc/host/renesas_sdhi_core.c
-> +++ b/drivers/mmc/host/renesas_sdhi_core.c
-> @@ -1007,11 +1007,7 @@ int renesas_sdhi_probe(struct platform_device *pdev,
->  		host->ops.start_signal_voltage_switch =
->  			renesas_sdhi_start_signal_voltage_switch;
->  		host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
-> -
-> -		if (of_data && of_data->scc_offset) {
-> -			priv->scc_ctl = host->ctl + of_data->scc_offset;
-> -			host->reset = renesas_sdhi_reset;
-> -		}
-> +		host->reset = renesas_sdhi_reset;
->  	}
->  
->  	/* Orginally registers were 16 bit apart, could be 32 or 64 nowadays */
-> @@ -1091,6 +1087,7 @@ int renesas_sdhi_probe(struct platform_device *pdev,
->  		if (!hit)
->  			dev_warn(&host->pdev->dev, "Unknown clock rate for tuning\n");
->  
-> +		priv->scc_ctl = host->ctl + of_data->scc_offset;
->  		host->check_retune = renesas_sdhi_check_scc_error;
->  		host->ops.execute_tuning = renesas_sdhi_execute_tuning;
->  		host->ops.prepare_hs400_tuning = renesas_sdhi_prepare_hs400_tuning;
-> -- 
-> 2.28.0
+>  .../devicetree/bindings/mmc/allwinner,sun4i-a10-mmc.yaml        | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 
--- 
-Regards,
-Niklas Söderlund
+Acked-by: Rob Herring <robh@kernel.org>
