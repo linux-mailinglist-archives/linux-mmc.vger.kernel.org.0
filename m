@@ -2,115 +2,140 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F32B32AFC15
-	for <lists+linux-mmc@lfdr.de>; Thu, 12 Nov 2020 02:32:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCD652AFF83
+	for <lists+linux-mmc@lfdr.de>; Thu, 12 Nov 2020 06:59:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728297AbgKLBcJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 11 Nov 2020 20:32:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37296 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727993AbgKKX4T (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 Nov 2020 18:56:19 -0500
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D88C0613D4
-        for <linux-mmc@vger.kernel.org>; Wed, 11 Nov 2020 15:56:19 -0800 (PST)
-Received: by mail-lj1-x243.google.com with SMTP id y16so4080779ljh.0
-        for <linux-mmc@vger.kernel.org>; Wed, 11 Nov 2020 15:56:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ragnatech-se.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=yZBInjEhqGJoQNzhkaJOLMFbqjSqBvR/K7kmtW5Xg1E=;
-        b=NBhlVTDtw5GtpKvQgUL1lnCappyhHsYiRieriM+llP2UueqvCoxFQshv9Qxq6SXgks
-         w9WcFO+AHzN+zLIMk3xNvLmdlhguwXpPOKzBhw66wydE5vdBcK5n/CpeaQXj4TUoMMpB
-         xDJ5zVeK8jTqXHBc4/ZO4WROjOlv6/tnM+Nt48CBQIFpbDxGcgm1dU/BSEeqrgW9z/s/
-         RqfkAQvX/bDXEcczJBk4ezpUp93aHwXo3YXN/qAvqh+8liD0Kfn5un3OO+a5bzu4Pc64
-         n1ds6A2RBSz+uOTApo5129NzLbCjmr8j4tUBkYCiGFd8T6nWwSNr5vNV4TSfkELshFk2
-         tklg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=yZBInjEhqGJoQNzhkaJOLMFbqjSqBvR/K7kmtW5Xg1E=;
-        b=L/xmn9VN49Ay7Oz54hAFh8I9oYcrc1UP98mHcOZqx+ucSUV5HFzmqXK2xJPbma9S0D
-         /I9h+Jb7gdcifG1n3ktbVU2SUcJlqZYMCzKo3JK7PgEQhmGcExKR5c84zylXparcdWEu
-         DktznOljIwyZy1TIF6KmVSnmsxJPNESaTEl1nA4CB9KTsE9mWyj0rfvW1AhEac7j2w9X
-         NKBeX6zbq4/d3vGEyxj2BHIwCEyD7Z4m7sEHWTN1HyUgwhZhVmbuWbshX+0bEvXKNPrH
-         vRFzUjHgRZIPVt/XOXOuQM/izGE9kAWXZDKpL2FFPZy9xUE9RTunfSqOfr/6FOgYByI4
-         SLgQ==
-X-Gm-Message-State: AOAM530L06tE3zFT4VIrybTbDtp7jDXl2lOFrI0W47VmnAnA+CU2N7IL
-        6Pq8AVmz4KT7bynR9yITo9UB0A==
-X-Google-Smtp-Source: ABdhPJxJbswP/LoSLpqOlKmpJS7kGci5xukGqAeg9hHP+pHsHjG5+76/XAqdhfg5wS6CwL0dwCHtWw==
-X-Received: by 2002:a2e:8098:: with SMTP id i24mr6111469ljg.152.1605138977138;
-        Wed, 11 Nov 2020 15:56:17 -0800 (PST)
-Received: from localhost (h-209-203.A463.priv.bahnhof.se. [155.4.209.203])
-        by smtp.gmail.com with ESMTPSA id s5sm366513lfd.58.2020.11.11.15.56.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2020 15:56:16 -0800 (PST)
-Date:   Thu, 12 Nov 2020 00:56:15 +0100
-From:   Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: Re: [RFC PATCH 4/4] mmc: renesas_sdhi: simplify reset routine a
- little
-Message-ID: <20201111235615.GC1263071@oden.dyn.berto.se>
-References: <20201110142058.36393-1-wsa+renesas@sang-engineering.com>
- <20201110142058.36393-5-wsa+renesas@sang-engineering.com>
+        id S1725959AbgKLF7u (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 12 Nov 2020 00:59:50 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:19411 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725884AbgKLF7u (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 12 Nov 2020 00:59:50 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1605160789; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=zwaMc+SVpS1C+Zz1mB49ILbAPgIJNx3GhVUbj+IZG0w=; b=cM2Xz82IcC4lEoKBjXy6erThlMTiYu3WiledFZmapOLnPzwTcPq9/f/1IlHHTa77gqJ9U178
+ tnC1G9AodtF0oi3SPp2ykQZMg3lKi0wgvkd/oF++56HWCuABmKjfnRe96dCeyhvc8n0OiaUh
+ e5WSNfn+fdF8rkinHwo3qbDS/ug=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
+ 5faccf5437ede2253bc4ab19 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 12 Nov 2020 05:59:48
+ GMT
+Sender: vbadigan=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 98B11C433C8; Thu, 12 Nov 2020 05:59:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        NICE_REPLY_A,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from [192.168.0.105] (unknown [49.205.245.25])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: vbadigan)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5F6C4C433C6;
+        Thu, 12 Nov 2020 05:59:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5F6C4C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=vbadigan@codeaurora.org
+Subject: Re: [PATCH] mmc: sdhci-msm: detect if tassadar_dll is used by using
+ core version
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org
+References: <20201111220122.2392823-1-dmitry.baryshkov@linaro.org>
+From:   Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
+Message-ID: <b1cd32a4-64ea-2322-985a-219083671e4b@codeaurora.org>
+Date:   Thu, 12 Nov 2020 11:29:42 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201110142058.36393-5-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20201111220122.2392823-1-dmitry.baryshkov@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Wolfram,
 
-Thanks for your work.
-
-On 2020-11-10 15:20:58 +0100, Wolfram Sang wrote:
-> The 'reset' pointer is only populated for Gen2+. So, we don't need to
-> check for that flag inside the routine.
-> 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-
+On 11/12/2020 3:31 AM, Dmitry Baryshkov wrote:
+> Detect if tassadar_dll is required by using core version rather than
+> just specifying it in the sdhci_msm_variant_info.
+>
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Cc: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
 > ---
->  drivers/mmc/host/renesas_sdhi_core.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-> index 4a1ed5bf216c..1fabf8c5773c 100644
-> --- a/drivers/mmc/host/renesas_sdhi_core.c
-> +++ b/drivers/mmc/host/renesas_sdhi_core.c
-> @@ -552,6 +552,7 @@ static int renesas_sdhi_prepare_hs400_tuning(struct mmc_host *mmc, struct mmc_io
->  	return 0;
->  }
->  
-> +/* only populated for TMIO_MMC_MIN_RCAR2 */
->  static void renesas_sdhi_reset(struct tmio_mmc_host *host)
->  {
->  	struct renesas_sdhi *priv = host_to_priv(host);
-> @@ -569,9 +570,7 @@ static void renesas_sdhi_reset(struct tmio_mmc_host *host)
->  			       sd_scc_read32(host, priv, SH_MOBILE_SDHI_SCC_RVSCNTL));
->  	}
->  
-> -	if (host->pdata->flags & TMIO_MMC_MIN_RCAR2)
-> -		sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK,
-> -					     TMIO_MASK_INIT_RCAR2);
-> +	sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK, TMIO_MASK_INIT_RCAR2);
->  }
->  
->  #define SH_MOBILE_SDHI_MIN_TAP_ROW 3
-> -- 
-> 2.28.0
-> 
+>   drivers/mmc/host/sdhci-msm.c | 15 +++++----------
+>   1 file changed, 5 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+> index 3451eb325513..dd67acab1660 100644
+> --- a/drivers/mmc/host/sdhci-msm.c
+> +++ b/drivers/mmc/host/sdhci-msm.c
+> @@ -248,7 +248,6 @@ struct sdhci_msm_variant_ops {
+>   struct sdhci_msm_variant_info {
+>   	bool mci_removed;
+>   	bool restore_dll_config;
+> -	bool uses_tassadar_dll;
+>   	const struct sdhci_msm_variant_ops *var_ops;
+>   	const struct sdhci_msm_offset *offset;
+>   };
+> @@ -2154,18 +2153,11 @@ static const struct sdhci_msm_variant_info sdm845_sdhci_var = {
+>   	.offset = &sdhci_msm_v5_offset,
+>   };
+>   
+> -static const struct sdhci_msm_variant_info sm8250_sdhci_var = {
+> -	.mci_removed = true,
+> -	.uses_tassadar_dll = true,
+> -	.var_ops = &v5_var_ops,
+> -	.offset = &sdhci_msm_v5_offset,
+> -};
+> -
+>   static const struct of_device_id sdhci_msm_dt_match[] = {
+>   	{.compatible = "qcom,sdhci-msm-v4", .data = &sdhci_msm_mci_var},
+>   	{.compatible = "qcom,sdhci-msm-v5", .data = &sdhci_msm_v5_var},
+>   	{.compatible = "qcom,sdm845-sdhci", .data = &sdm845_sdhci_var},
+> -	{.compatible = "qcom,sm8250-sdhci", .data = &sm8250_sdhci_var},
+> +	{.compatible = "qcom,sm8250-sdhci", .data = &sdm845_sdhci_var},
+Since you have made it 'uses_tassadar_dll' check generic,
+SM8250 should work with default compatible string (qcom,sdhci-msm-v5).
+We can drop the entry to SM8250 from this table.
 
--- 
-Regards,
-Niklas Söderlund
+>   	{.compatible = "qcom,sc7180-sdhci", .data = &sdm845_sdhci_var},
+>   	{},
+>   };
+> @@ -2249,7 +2241,6 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+>   	msm_host->restore_dll_config = var_info->restore_dll_config;
+>   	msm_host->var_ops = var_info->var_ops;
+>   	msm_host->offset = var_info->offset;
+> -	msm_host->uses_tassadar_dll = var_info->uses_tassadar_dll;
+>   
+>   	msm_offset = msm_host->offset;
+>   
+> @@ -2396,6 +2387,10 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+>   	if (core_major == 1 && core_minor >= 0x49)
+>   		msm_host->updated_ddr_cfg = true;
+>   
+> +	if (core_major == 1 &&
+> +	    (core_minor == 0x6e || core_minor == 0x71 || core_minor == 0x72))
+> +		msm_host->uses_tassadar_dll = true;
+> +
+This new registers that got introduced for supporting this new DLL are 
+present on all versions > 0x71
+So we can update check as core_minor >= 0x71.
+
+And i dont find any target with SDCC controller minor version 0x6e.So we 
+can remove check for version 0x6e.
+
+>   	ret = sdhci_msm_register_vreg(msm_host);
+>   	if (ret)
+>   		goto clk_disable;
