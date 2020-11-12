@@ -2,437 +2,226 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 814762B0E59
-	for <lists+linux-mmc@lfdr.de>; Thu, 12 Nov 2020 20:41:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72C5B2B0E9E
+	for <lists+linux-mmc@lfdr.de>; Thu, 12 Nov 2020 20:57:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726962AbgKLTlX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 12 Nov 2020 14:41:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41272 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726913AbgKLTlV (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 12 Nov 2020 14:41:21 -0500
-Received: from sol.attlocal.net (172-10-235-113.lightspeed.sntcca.sbcglobal.net [172.10.235.113])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8AE3E22259;
-        Thu, 12 Nov 2020 19:41:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605210080;
-        bh=HsqB3z98VDFubh4z7g1ugDDkyHIJBbWDwJejOLIpg4s=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bteZ1TwACHM0PZlWOLTWUXtUjoHyZrlqD5OMaotOAovBjwZK3hFKt0pMhXPDQHcLb
-         Nyk/oqcl0Ia/rPAY2KsJJGttlIbgmtjW1g12BUb1Ly/SmamaphB9m5gR4yclOfA7cV
-         KK/Re6ts+kDVK0i8QRvTJR5tntjQUBrnw3OxWX6s=
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, Satya Tangirala <satyat@google.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        id S1726925AbgKLT5c (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 12 Nov 2020 14:57:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53750 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726702AbgKLT5b (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 12 Nov 2020 14:57:31 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEB4FC0613D1;
+        Thu, 12 Nov 2020 11:57:30 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id w142so10250668lff.8;
+        Thu, 12 Nov 2020 11:57:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=l+LuZmtMkfC1n7/lE6H/SI0Mh1Ao1np2jN9R6QXqrls=;
+        b=Vfp4HTDvElJiGNz7xUATaYIB0Kf/mwtOmML2qqUG/J50tlFR5tGxj0224JRQCzivCv
+         ulm772+iaJuiLtROs/b8uk5/vQA3IPRSNmbCaHG7e/zwzGgzfdDFCXQVjOsz/2OzAj98
+         wmtD3ZpVrIRFkQm2ZyuBjOqILQ5VwslfmsUFgz95ERTTn5y+YasJEGAErk2Y0c/QB/90
+         oGc0l00u8obJBUXZzPwCdZ9MBc11lwToP3XEUiaHH2/TanhPrzbdU+D21A5vJmd77mmF
+         2U5W+k52Fs6mvPbZhFOLsrhNNLeCiVwZv2Tntv4g1m5P6jS8Tx3WHcMnsPh3Id7qYned
+         6kOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=l+LuZmtMkfC1n7/lE6H/SI0Mh1Ao1np2jN9R6QXqrls=;
+        b=jceJCqVvYf7QggBYep1PGWP8zDBeehHtNkPHvonZPDMuz4d4W0S0bCsVZGVkIWDDkV
+         JgzvmCTcN5cQM03BZOcOmzlVVxY2/L/QbYRYTPoyVoJP2MD20JxSh/i/7ZAwRPsbEh1v
+         wkKk4/AT8FPVadrWyYfWZo18xKflnN+DP24SZlCmbGLQ77vwhnrMdrOKD5OM7996O1Ux
+         Ay/TRsDFK82qt7p2y+UF/IwPjZwGzWlzp26t8GMR1kKxyWoDG6P0qBM3OQCPF+FIG4zQ
+         /QDheHnzrgPo/+2IAo0tYb5m4Oc9BX9rjDDPkoX+hbGdw7pFeeHmTtPdZm+W+cmy1sue
+         w8gw==
+X-Gm-Message-State: AOAM532ljgPUl1qUCYq5XRwq24k/RzvuSwqiQC9K/7yekUUJW1fcpxx9
+        zqJ6vWqulmOO5EtDyWrg/FEQf7ppkZI=
+X-Google-Smtp-Source: ABdhPJwLlfap7vVw06tsOwrbyXWtHxJypoIY/5r/AmEyZ8iOyfm8iKxwmR6HX9kZNQ7Nvd0sVyxhmg==
+X-Received: by 2002:a19:7d8:: with SMTP id 207mr432803lfh.376.1605211049107;
+        Thu, 12 Nov 2020 11:57:29 -0800 (PST)
+Received: from [192.168.2.145] (109-252-193-159.dynamic.spd-mgts.ru. [109.252.193.159])
+        by smtp.googlemail.com with ESMTPSA id q27sm845579lfd.261.2020.11.12.11.57.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2020 11:57:28 -0800 (PST)
+Subject: Re: [PATCH v1 00/30] Introduce core voltage scaling for NVIDIA
+ Tegra20/30 SoCs
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>
+Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Peter Chen <Peter.Chen@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Ritesh Harjani <riteshh@codeaurora.org>,
-        Asutosh Das <asutoshd@codeaurora.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Neeraj Soni <neersoni@codeaurora.org>,
-        Barani Muthukumaran <bmuthuku@codeaurora.org>,
-        Peng Zhou <peng.zhou@mediatek.com>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        Konrad Dybcio <konradybcio@gmail.com>
-Subject: [PATCH 8/8] mmc: sdhci-msm: add Inline Crypto Engine support
-Date:   Thu, 12 Nov 2020 11:40:11 -0800
-Message-Id: <20201112194011.103774-9-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201112194011.103774-1-ebiggers@kernel.org>
-References: <20201112194011.103774-1-ebiggers@kernel.org>
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Peter Geis <pgwipeout@gmail.com>,
+        Nicolas Chauvet <kwizart@gmail.com>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        driverdevel <devel@driverdev.osuosl.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        linux-pwm@vger.kernel.org,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+References: <20201104234427.26477-1-digetx@gmail.com>
+ <CAPDyKFr7qTU2RPhA_ZrbCayoTTNUEno1zdmvmv+8HBe-Owrfeg@mail.gmail.com>
+ <cd147ab0-1304-a491-7a56-ee6199c02d32@gmail.com>
+ <2716c195-083a-112f-f1e5-2f6b7152a4b5@gmail.com>
+ <CAPDyKFqUMsH9dCZ=OYqfdLt==+-8NjK9n=S5jGGNXZu6Y9q=2w@mail.gmail.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <1f7e90c4-6134-2e2b-4869-5afbda18ead3@gmail.com>
+Date:   Thu, 12 Nov 2020 22:57:27 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.2
 MIME-Version: 1.0
+In-Reply-To: <CAPDyKFqUMsH9dCZ=OYqfdLt==+-8NjK9n=S5jGGNXZu6Y9q=2w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+11.11.2020 14:38, Ulf Hansson пишет:
+> On Sun, 8 Nov 2020 at 13:19, Dmitry Osipenko <digetx@gmail.com> wrote:
+>>
+>> 05.11.2020 18:22, Dmitry Osipenko пишет:
+>>> 05.11.2020 12:45, Ulf Hansson пишет:
+>>> ...
+>>>> I need some more time to review this, but just a quick check found a
+>>>> few potential issues...
+>>>
+>>> Thank you for starting the review! I'm pretty sure it will take a couple
+>>> revisions until all the questions will be resolved :)
+>>>
+>>>> The "core-supply", that you specify as a regulator for each
+>>>> controller's device node, is not the way we describe power domains.
+>>>> Instead, it seems like you should register a power-domain provider
+>>>> (with the help of genpd) and implement the ->set_performance_state()
+>>>> callback for it. Each device node should then be hooked up to this
+>>>> power-domain, rather than to a "core-supply". For DT bindings, please
+>>>> have a look at Documentation/devicetree/bindings/power/power-domain.yaml
+>>>> and Documentation/devicetree/bindings/power/power_domain.txt.
+>>>>
+>>>> In regards to the "sync state" problem (preventing to change
+>>>> performance states until all consumers have been attached), this can
+>>>> then be managed by the genpd provider driver instead.
+>>>
+>>> I'll need to take a closer look at GENPD, thank you for the suggestion.
+>>>
+>>> Sounds like a software GENPD driver which manages clocks and voltages
+>>> could be a good idea, but it also could be an unnecessary
+>>> over-engineering. Let's see..
+>>>
+>>
+>> Hello Ulf and all,
+>>
+>> I took a detailed look at the GENPD and tried to implement it. Here is
+>> what was found:
+>>
+>> 1. GENPD framework doesn't aggregate performance requests from the
+>> attached devices. This means that if deviceA requests performance state
+>> 10 and then deviceB requests state 3, then framework will set domain's
+>> state to 3 instead of 10.
+>>
+>> https://elixir.bootlin.com/linux/v5.10-rc2/source/drivers/base/power/domain.c#L376
+> 
+> As Viresh also stated, genpd does aggregate the votes. It even
+> performs aggregation hierarchy (a genpd is allowed to have parent(s)
+> to model a topology).
 
-Add support for Qualcomm Inline Crypto Engine (ICE) to sdhci-msm.
+Yes, I already found and fixed the bug which confused me previously and
+it's working well now.
 
-The standard-compliant parts, such as querying the crypto capabilities
-and enabling crypto for individual MMC requests, are already handled by
-cqhci-crypto.c, which itself is wired into the blk-crypto framework.
-However, ICE requires vendor-specific init, enable, and resume logic,
-and it requires that keys be programmed and evicted by vendor-specific
-SMC calls.  Make the sdhci-msm driver handle these details.
+>> 2. GENPD framework has a sync() callback in the genpd.domain structure,
+>> but this callback isn't allowed to be used by the GENPD implementation.
+>> The GENPD framework always overrides that callback for its own needs.
+>> Hence GENPD doesn't allow to solve the bootstrapping
+>> state-synchronization problem in a nice way.
+>>
+>> https://elixir.bootlin.com/linux/v5.10-rc2/source/drivers/base/power/domain.c#L2606
+> 
+> That ->sync() callback isn't the callback you are looking for, it's a
+> PM domain specific callback - and has other purposes.
+> 
+> To solve the problem you refer to, your genpd provider driver (a
+> platform driver) should assign its ->sync_state() callback. The
+> ->sync_state() callback will be invoked, when all consumer devices
+> have been attached (and probed) to their corresponding provider.
+> 
+> You may have a look at drivers/cpuidle/cpuidle-psci-domain.c, to see
+> an example of how this works. If there is anything unclear, just tell
+> me and I will try to help.
 
-This is heavily inspired by the similar changes made for UFS, since the
-UFS and eMMC ICE instances are very similar.  See commit df4ec2fa7a4d
-("scsi: ufs-qcom: Add Inline Crypto Engine support").
+Indeed, thank you for the clarification. This variant works well.
 
-I tested this on a Sony Xperia 10, which uses the Snapdragon 630 SoC,
-which has basic upstream support.  Mainly, I used android-xfstests
-(https://github.com/tytso/xfstests-bld/blob/master/Documentation/android-xfstests.md)
-to run the ext4 and f2fs encryption tests in a Debian chroot:
+>> 3. Tegra doesn't have a dedicated hardware power-controller for the core
+>> domain, instead there is only an external voltage regulator. Hence we
+>> will need to create a phony device-tree node for the virtual power
+>> domain, which is probably a wrong thing to do.
+> 
+> No, this is absolutely the correct thing to do.
+> 
+> This isn't a virtual power domain, it's a real power domain. You only
+> happen to model the control of it as a regulator, as it fits nicely
+> with that for *this* SoC. Don't get me wrong, that's fine as long as
+> the supply is specified only in the power-domain provider node.
+> 
+> On another SoC, you might have a different FW interface for the power
+> domain provider that doesn't fit well with the regulator. When that
+> happens, all you need to do is to implement a new power domain
+> provider and potentially re-define the power domain topology. More
+> importantly, you don't need to re-invent yet another slew of device
+> specific bindings - for each SoC.
+> 
+>>
+>> ===
+>>
+>> Perhaps it should be possible to create some hacks to work around
+>> bullets 2 and 3 in order to achieve what we need for DVFS on Tegra, but
+>> bullet 1 isn't solvable without changing how the GENPD core works.
+>>
+>> Altogether, the GENPD in its current form is a wrong abstraction for a
+>> system-wide DVFS in a case where multiple devices share power domain and
+>> this domain is a voltage regulator. The regulator framework is the
+>> correct abstraction in this case for today.
+> 
+> Well, I admit it's a bit complex. But it solves the problem in a
+> nicely abstracted way that should work for everybody, at least in my
+> opinion.
 
-	android-xfstests -c ext4,f2fs -g encrypt -m inlinecrypt
+The OPP framework supports both voltage regulator and power domain,
+hiding the implementation details from drivers. This means that OPP API
+usage will be the same regardless of what approach (regulator or power
+domain) is used for a particular SoC.
 
-These tests included tests which verify that the on-disk ciphertext is
-identical to that produced by a software implementation.  I also
-verified that ICE was actually being used.
+> Although, let's not exclude that there are pieces missing in genpd or
+> the opp layer, as this DVFS feature is rather new - but then we should
+> just extend/fix it.
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- drivers/mmc/host/Kconfig     |   1 +
- drivers/mmc/host/sdhci-msm.c | 270 ++++++++++++++++++++++++++++++++++-
- 2 files changed, 267 insertions(+), 4 deletions(-)
+Will be nice to have a per-device GENPD performance stats.
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 31481c9fcc2ec..2ede2c86f173b 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -544,6 +544,7 @@ config MMC_SDHCI_MSM
- 	depends on MMC_SDHCI_PLTFM
- 	select MMC_SDHCI_IO_ACCESSORS
- 	select MMC_CQHCI
-+	select QCOM_SCM if MMC_CRYPTO
- 	help
- 	  This selects the Secure Digital Host Controller Interface (SDHCI)
- 	  support present in Qualcomm SOCs. The controller supports
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 3451eb3255135..6ce21414d5104 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -13,6 +13,7 @@
- #include <linux/pm_opp.h>
- #include <linux/slab.h>
- #include <linux/iopoll.h>
-+#include <linux/qcom_scm.h>
- #include <linux/regulator/consumer.h>
- #include <linux/interconnect.h>
- #include <linux/pinctrl/consumer.h>
-@@ -256,10 +257,12 @@ struct sdhci_msm_variant_info {
- struct sdhci_msm_host {
- 	struct platform_device *pdev;
- 	void __iomem *core_mem;	/* MSM SDCC mapped address */
-+	void __iomem *ice_mem;	/* MSM ICE mapped address (if available) */
- 	int pwr_irq;		/* power irq */
- 	struct clk *bus_clk;	/* SDHC bus voter clock */
- 	struct clk *xo_clk;	/* TCXO clk needed for FLL feature of cm_dll*/
--	struct clk_bulk_data bulk_clks[4]; /* core, iface, cal, sleep clocks */
-+	/* core, iface, cal, sleep, and ice clocks */
-+	struct clk_bulk_data bulk_clks[5];
- 	unsigned long clk_rate;
- 	struct mmc_host *mmc;
- 	struct opp_table *opp_table;
-@@ -1785,6 +1788,240 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
- 	__sdhci_msm_set_clock(host, clock);
- }
- 
-+/*****************************************************************************\
-+ *                                                                           *
-+ * Inline Crypto Engine (ICE) support                                        *
-+ *                                                                           *
-+\*****************************************************************************/
-+
-+#ifdef CONFIG_MMC_CRYPTO
-+
-+#define AES_256_XTS_KEY_SIZE			64
-+
-+/* QCOM ICE registers */
-+
-+#define QCOM_ICE_REG_VERSION			0x0008
-+
-+#define QCOM_ICE_REG_FUSE_SETTING		0x0010
-+#define QCOM_ICE_FUSE_SETTING_MASK		0x1
-+#define QCOM_ICE_FORCE_HW_KEY0_SETTING_MASK	0x2
-+#define QCOM_ICE_FORCE_HW_KEY1_SETTING_MASK	0x4
-+
-+#define QCOM_ICE_REG_BIST_STATUS		0x0070
-+#define QCOM_ICE_BIST_STATUS_MASK		0xF0000000
-+
-+#define QCOM_ICE_REG_ADVANCED_CONTROL		0x1000
-+
-+#define sdhci_msm_ice_writel(host, val, reg)	\
-+	writel((val), (host)->ice_mem + (reg))
-+#define sdhci_msm_ice_readl(host, reg)	\
-+	readl((host)->ice_mem + (reg))
-+
-+static bool sdhci_msm_ice_supported(struct sdhci_msm_host *msm_host)
-+{
-+	struct device *dev = mmc_dev(msm_host->mmc);
-+	u32 regval = sdhci_msm_ice_readl(msm_host, QCOM_ICE_REG_VERSION);
-+	int major = regval >> 24;
-+	int minor = (regval >> 16) & 0xFF;
-+	int step = regval & 0xFFFF;
-+
-+	/* For now this driver only supports ICE version 3. */
-+	if (major != 3) {
-+		dev_warn(dev, "Unsupported ICE version: v%d.%d.%d\n",
-+			 major, minor, step);
-+		return false;
-+	}
-+
-+	dev_info(dev, "Found QC Inline Crypto Engine (ICE) v%d.%d.%d\n",
-+		 major, minor, step);
-+
-+	/* If fuses are blown, ICE might not work in the standard way. */
-+	regval = sdhci_msm_ice_readl(msm_host, QCOM_ICE_REG_FUSE_SETTING);
-+	if (regval & (QCOM_ICE_FUSE_SETTING_MASK |
-+		      QCOM_ICE_FORCE_HW_KEY0_SETTING_MASK |
-+		      QCOM_ICE_FORCE_HW_KEY1_SETTING_MASK)) {
-+		dev_warn(dev, "Fuses are blown; ICE is unusable!\n");
-+		return false;
-+	}
-+	return true;
-+}
-+
-+static inline struct clk *sdhci_msm_ice_get_clk(struct device *dev)
-+{
-+	return devm_clk_get(dev, "ice");
-+}
-+
-+static int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
-+			      struct cqhci_host *cq_host)
-+{
-+	struct mmc_host *mmc = msm_host->mmc;
-+	struct device *dev = mmc_dev(mmc);
-+	struct resource *res;
-+	int err;
-+
-+	if (!(cqhci_readl(cq_host, CQHCI_CAP) & CQHCI_CAP_CS))
-+		return 0;
-+
-+	res = platform_get_resource_byname(msm_host->pdev, IORESOURCE_MEM,
-+					   "ice");
-+	if (!res) {
-+		dev_warn(dev, "ICE registers not found\n");
-+		goto disable;
-+	}
-+
-+	if (!qcom_scm_ice_available()) {
-+		dev_warn(dev, "ICE SCM interface not found\n");
-+		goto disable;
-+	}
-+
-+	msm_host->ice_mem = devm_ioremap_resource(dev, res);
-+	if (IS_ERR(msm_host->ice_mem)) {
-+		err = PTR_ERR(msm_host->ice_mem);
-+		dev_err(dev, "Failed to map ICE registers; err=%d\n", err);
-+		return err;
-+	}
-+
-+	if (!sdhci_msm_ice_supported(msm_host))
-+		goto disable;
-+
-+	mmc->caps2 |= MMC_CAP2_CRYPTO;
-+	return 0;
-+
-+disable:
-+	dev_warn(dev, "Disabling inline encryption support\n");
-+	return 0;
-+}
-+
-+static void sdhci_msm_ice_low_power_mode_enable(struct sdhci_msm_host *msm_host)
-+{
-+	u32 regval;
-+
-+	regval = sdhci_msm_ice_readl(msm_host, QCOM_ICE_REG_ADVANCED_CONTROL);
-+	/*
-+	 * Enable low power mode sequence
-+	 * [0]-0, [1]-0, [2]-0, [3]-E, [4]-0, [5]-0, [6]-0, [7]-0
-+	 */
-+	regval |= 0x7000;
-+	sdhci_msm_ice_writel(msm_host, regval, QCOM_ICE_REG_ADVANCED_CONTROL);
-+}
-+
-+static void sdhci_msm_ice_optimization_enable(struct sdhci_msm_host *msm_host)
-+{
-+	u32 regval;
-+
-+	/* ICE Optimizations Enable Sequence */
-+	regval = sdhci_msm_ice_readl(msm_host, QCOM_ICE_REG_ADVANCED_CONTROL);
-+	regval |= 0xD807100;
-+	/* ICE HPG requires delay before writing */
-+	udelay(5);
-+	sdhci_msm_ice_writel(msm_host, regval, QCOM_ICE_REG_ADVANCED_CONTROL);
-+	udelay(5);
-+}
-+
-+/* Poll until all BIST (built-in self test) bits are reset */
-+static int sdhci_msm_ice_wait_bist_status(struct sdhci_msm_host *msm_host)
-+{
-+	int count;
-+	u32 reg;
-+
-+	for (count = 0; count < 100; count++) {
-+		reg = sdhci_msm_ice_readl(msm_host, QCOM_ICE_REG_BIST_STATUS);
-+		if (!(reg & QCOM_ICE_BIST_STATUS_MASK))
-+			break;
-+		udelay(50);
-+	}
-+	if (reg) {
-+		dev_err(mmc_dev(msm_host->mmc),
-+			"Timed out waiting for ICE self-test to complete\n");
-+		return -ETIMEDOUT;
-+	}
-+	return 0;
-+}
-+
-+static void sdhci_msm_ice_enable(struct sdhci_msm_host *msm_host)
-+{
-+	if (!(msm_host->mmc->caps2 & MMC_CAP2_CRYPTO))
-+		return;
-+	sdhci_msm_ice_low_power_mode_enable(msm_host);
-+	sdhci_msm_ice_optimization_enable(msm_host);
-+	sdhci_msm_ice_wait_bist_status(msm_host);
-+}
-+
-+static int __maybe_unused sdhci_msm_ice_resume(struct sdhci_msm_host *msm_host)
-+{
-+	if (!(msm_host->mmc->caps2 & MMC_CAP2_CRYPTO))
-+		return 0;
-+	return sdhci_msm_ice_wait_bist_status(msm_host);
-+}
-+
-+/*
-+ * Program a key into a QC ICE keyslot, or evict a keyslot.  QC ICE requires
-+ * vendor-specific SCM calls for this; it doesn't support the standard way.
-+ */
-+static int sdhci_msm_program_key(struct cqhci_host *cq_host,
-+				 const union cqhci_crypto_cfg_entry *cfg,
-+				 int slot)
-+{
-+	struct device *dev = mmc_dev(cq_host->mmc);
-+	union cqhci_crypto_cap_entry cap;
-+	union {
-+		u8 bytes[AES_256_XTS_KEY_SIZE];
-+		u32 words[AES_256_XTS_KEY_SIZE / sizeof(u32)];
-+	} key;
-+	int i;
-+	int err;
-+
-+	if (!(cfg->config_enable & CQHCI_CRYPTO_CONFIGURATION_ENABLE))
-+		return qcom_scm_ice_invalidate_key(slot);
-+
-+	/* Only AES-256-XTS has been tested so far. */
-+	cap = cq_host->crypto_cap_array[cfg->crypto_cap_idx];
-+	if (cap.algorithm_id != CQHCI_CRYPTO_ALG_AES_XTS ||
-+	    cap.key_size != CQHCI_CRYPTO_KEY_SIZE_256) {
-+		dev_err_ratelimited(dev,
-+				    "Unhandled crypto capability; algorithm_id=%d, key_size=%d\n",
-+				    cap.algorithm_id, cap.key_size);
-+		return -EINVAL;
-+	}
-+
-+	memcpy(key.bytes, cfg->crypto_key, AES_256_XTS_KEY_SIZE);
-+
-+	/*
-+	 * The SCM call byte-swaps the 32-bit words of the key.  So we have to
-+	 * do the same, in order for the final key be correct.
-+	 */
-+	for (i = 0; i < ARRAY_SIZE(key.words); i++)
-+		__cpu_to_be32s(&key.words[i]);
-+
-+	err = qcom_scm_ice_set_key(slot, key.bytes, AES_256_XTS_KEY_SIZE,
-+				   QCOM_SCM_ICE_CIPHER_AES_256_XTS,
-+				   cfg->data_unit_size);
-+	memzero_explicit(&key, sizeof(key));
-+	return err;
-+}
-+#else /* CONFIG_MMC_CRYPTO */
-+static inline struct clk *sdhci_msm_ice_get_clk(struct device *dev)
-+{
-+	return NULL;
-+}
-+
-+static inline int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
-+				     struct cqhci_host *cq_host)
-+{
-+	return 0;
-+}
-+
-+static inline void sdhci_msm_ice_enable(struct sdhci_msm_host *msm_host)
-+{
-+}
-+
-+static inline int __maybe_unused
-+sdhci_msm_ice_resume(struct sdhci_msm_host *msm_host)
-+{
-+	return 0;
-+}
-+#endif /* !CONFIG_MMC_CRYPTO */
-+
- /*****************************************************************************\
-  *                                                                           *
-  * MSM Command Queue Engine (CQE)                                            *
-@@ -1803,6 +2040,16 @@ static u32 sdhci_msm_cqe_irq(struct sdhci_host *host, u32 intmask)
- 	return 0;
- }
- 
-+static void sdhci_msm_cqe_enable(struct mmc_host *mmc)
-+{
-+	struct sdhci_host *host = mmc_priv(mmc);
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+
-+	sdhci_cqe_enable(mmc);
-+	sdhci_msm_ice_enable(msm_host);
-+}
-+
- static void sdhci_msm_cqe_disable(struct mmc_host *mmc, bool recovery)
- {
- 	struct sdhci_host *host = mmc_priv(mmc);
-@@ -1835,8 +2082,11 @@ static void sdhci_msm_cqe_disable(struct mmc_host *mmc, bool recovery)
- }
- 
- static const struct cqhci_host_ops sdhci_msm_cqhci_ops = {
--	.enable		= sdhci_cqe_enable,
-+	.enable		= sdhci_msm_cqe_enable,
- 	.disable	= sdhci_msm_cqe_disable,
-+#ifdef CONFIG_MMC_CRYPTO
-+	.program_key	= sdhci_msm_program_key,
-+#endif
- };
- 
- static int sdhci_msm_cqe_add_host(struct sdhci_host *host,
-@@ -1872,6 +2122,10 @@ static int sdhci_msm_cqe_add_host(struct sdhci_host *host,
- 
- 	dma64 = host->flags & SDHCI_USE_64_BIT_DMA;
- 
-+	ret = sdhci_msm_ice_init(msm_host, cq_host);
-+	if (ret)
-+		goto cleanup;
-+
- 	ret = cqhci_init(cq_host, host->mmc, dma64);
- 	if (ret) {
- 		dev_err(&pdev->dev, "%s: CQE init: failed (%d)\n",
-@@ -2321,6 +2575,11 @@ static int sdhci_msm_probe(struct platform_device *pdev)
- 		clk = NULL;
- 	msm_host->bulk_clks[3].clk = clk;
- 
-+	clk = sdhci_msm_ice_get_clk(&pdev->dev);
-+	if (IS_ERR(clk))
-+		clk = NULL;
-+	msm_host->bulk_clks[4].clk = clk;
-+
- 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
- 				      msm_host->bulk_clks);
- 	if (ret)
-@@ -2531,12 +2790,15 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
- 	 * Whenever core-clock is gated dynamically, it's needed to
- 	 * restore the SDR DLL settings when the clock is ungated.
- 	 */
--	if (msm_host->restore_dll_config && msm_host->clk_rate)
-+	if (msm_host->restore_dll_config && msm_host->clk_rate) {
- 		ret = sdhci_msm_restore_sdr_dll_config(host);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
- 
--	return ret;
-+	return sdhci_msm_ice_resume(msm_host);
- }
- 
- static const struct dev_pm_ops sdhci_msm_pm_ops = {
--- 
-2.29.2
+Thierry, could you please let me know what do you think about replacing
+regulator with the power domain? Do you think it's a worthwhile change?
 
+The difference in comparison to using voltage regulator directly is
+minimal, basically the core-supply phandle is replaced is replaced with
+a power-domain phandle in a device tree.
+
+The only thing which makes me feel a bit uncomfortable is that there is
+no real hardware node for the power domain node in a device-tree.
