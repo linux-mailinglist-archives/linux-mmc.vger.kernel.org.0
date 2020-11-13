@@ -2,113 +2,56 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9A902B8A41
-	for <lists+linux-mmc@lfdr.de>; Thu, 19 Nov 2020 04:03:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 130432B8EA5
+	for <lists+linux-mmc@lfdr.de>; Thu, 19 Nov 2020 10:24:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726332AbgKSDDE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 18 Nov 2020 22:03:04 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:44872 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726077AbgKSDDE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Nov 2020 22:03:04 -0500
-X-UUID: 0f511bbd3f45460f84e17550318a7a90-20201119
-X-UUID: 0f511bbd3f45460f84e17550318a7a90-20201119
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <yong.mao@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 589672973; Thu, 19 Nov 2020 11:02:57 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 19 Nov 2020 11:02:55 +0800
-Received: from localhost.localdomain (10.17.3.153) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 19 Nov 2020 11:02:55 +0800
-From:   Yong Mao <yong.mao@mediatek.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <srv_heupstream@mediatek.com>,
-        yong mao <yong.mao@mediatek.com>
-Subject: [PATCH V1] mmc: mediatek: correct the setting of recheck_sdio_irq
-Date:   Thu, 19 Nov 2020 11:02:37 +0800
-Message-ID: <20201119030237.9414-1-yong.mao@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S1726485AbgKSJVU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Thu, 19 Nov 2020 04:21:20 -0500
+Received: from tigeramira.ro ([88.158.78.30]:46815 "EHLO mail.tigeramira.ro"
+        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S1725888AbgKSJVT (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 19 Nov 2020 04:21:19 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 6B8EBC7E639
+        for <linux-mmc@vger.kernel.org>; Mon, 16 Nov 2020 09:51:45 +0200 (EET)
+Received: from mail.tigeramira.ro ([127.0.0.1])
+        by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id MTIxuebX7NZQ for <linux-mmc@vger.kernel.org>;
+        Mon, 16 Nov 2020 09:51:42 +0200 (EET)
+Received: from mail.tigeramira.ro (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id DBE6DC44444
+        for <linux-mmc@vger.kernel.org>; Sun, 15 Nov 2020 13:25:44 +0200 (EET)
+Received: from [156.96.44.214] (unknown [192.168.12.254])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 05CD7998D4B
+        for <linux-mmc@vger.kernel.org>; Fri, 13 Nov 2020 19:08:09 +0200 (EET)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Corporate and Personal Loan::,
+To:     linux-mmc@vger.kernel.org
+From:   "Investment  Corporate" <financialcapability6@gmail.com>
+Date:   Fri, 13 Nov 2020 08:08:22 -0800
+Reply-To: hmurrah39@gmail.com
+Message-Id: <20201113170811.05CD7998D4B@mail.tigeramira.ro>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: yong mao <yong.mao@mediatek.com>
+Hello linux-mmc@vger.kernel.org
 
-correct the setting of recheck_sdio_irq for each mediatek SoC.
 
-Signed-off-by: Yong Mao <yong.mao@mediatek.com>
----
- drivers/mmc/host/mtk-sd.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index fc5ee5df91ad..d49e5ccfca9e 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -463,7 +463,7 @@ struct msdc_host {
- 
- static const struct mtk_mmc_compatible mt8135_compat = {
- 	.clk_div_bits = 8,
--	.recheck_sdio_irq = false,
-+	.recheck_sdio_irq = true,
- 	.hs400_tune = false,
- 	.pad_tune_reg = MSDC_PAD_TUNE,
- 	.async_fifo = false,
-@@ -502,7 +502,7 @@ static const struct mtk_mmc_compatible mt8183_compat = {
- 
- static const struct mtk_mmc_compatible mt2701_compat = {
- 	.clk_div_bits = 12,
--	.recheck_sdio_irq = false,
-+	.recheck_sdio_irq = true,
- 	.hs400_tune = false,
- 	.pad_tune_reg = MSDC_PAD_TUNE0,
- 	.async_fifo = true,
-@@ -528,7 +528,7 @@ static const struct mtk_mmc_compatible mt2712_compat = {
- 
- static const struct mtk_mmc_compatible mt7622_compat = {
- 	.clk_div_bits = 12,
--	.recheck_sdio_irq = false,
-+	.recheck_sdio_irq = true,
- 	.hs400_tune = false,
- 	.pad_tune_reg = MSDC_PAD_TUNE0,
- 	.async_fifo = true,
-@@ -541,7 +541,7 @@ static const struct mtk_mmc_compatible mt7622_compat = {
- 
- static const struct mtk_mmc_compatible mt8516_compat = {
- 	.clk_div_bits = 12,
--	.recheck_sdio_irq = false,
-+	.recheck_sdio_irq = true,
- 	.hs400_tune = false,
- 	.pad_tune_reg = MSDC_PAD_TUNE0,
- 	.async_fifo = true,
-@@ -552,7 +552,7 @@ static const struct mtk_mmc_compatible mt8516_compat = {
- 
- static const struct mtk_mmc_compatible mt7620_compat = {
- 	.clk_div_bits = 8,
--	.recheck_sdio_irq = false,
-+	.recheck_sdio_irq = true,
- 	.hs400_tune = false,
- 	.pad_tune_reg = MSDC_PAD_TUNE,
- 	.async_fifo = false,
-@@ -565,6 +565,7 @@ static const struct mtk_mmc_compatible mt7620_compat = {
- 
- static const struct mtk_mmc_compatible mt6779_compat = {
- 	.clk_div_bits = 12,
-+	.recheck_sdio_irq = false,
- 	.hs400_tune = false,
- 	.pad_tune_reg = MSDC_PAD_TUNE0,
- 	.async_fifo = true,
--- 
-2.18.0
 
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+
+
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
