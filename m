@@ -2,114 +2,62 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A5B2BA120
-	for <lists+linux-mmc@lfdr.de>; Fri, 20 Nov 2020 04:28:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE6A22BA3B1
+	for <lists+linux-mmc@lfdr.de>; Fri, 20 Nov 2020 08:45:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727349AbgKTD1K (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 19 Nov 2020 22:27:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42724 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727300AbgKTD1K (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Nov 2020 22:27:10 -0500
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A2FC0613CF
-        for <linux-mmc@vger.kernel.org>; Thu, 19 Nov 2020 19:27:08 -0800 (PST)
-Received: by mail-lj1-x242.google.com with SMTP id b17so8529567ljf.12
-        for <linux-mmc@vger.kernel.org>; Thu, 19 Nov 2020 19:27:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Fqn08+QfMXXA0wyLDJZny72GR+5yc4I41ZsdzMIQxEI=;
-        b=QSQT9GTqnDt2d59Jscrlg1jfUicDIQxu4P6sOB+YstjUJsDDTUv5VQQYJA8QRKjt3+
-         n5hOOzT2w6WoMNH2yPji10UInHviBo1xSK5yux/QosPm40BRVa+4dkJ6PI8WHcAEIBHy
-         g6vYjx3r+5SW8QoH9SrmY2YwgSmrgXnXXPB6rgDYk6hIvCfvI/fUKspLwKfhCV0lOb8B
-         /Z52P+fDY0RvamChMgho3pc3xL0OwpdWodl4vgN0wT+ANxfsrTsZSnlfZV+RUYdVHFTv
-         BnoqfY/bkCnc/74/iWjI7QnzSXY0OqLS5H7GTLLmQXso1TzqEUj01t7L6nrS2/YZ24Nd
-         9RSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Fqn08+QfMXXA0wyLDJZny72GR+5yc4I41ZsdzMIQxEI=;
-        b=j1I17rnZZgKqJ1xRoMFundFMVJ92In7D/tcHbXil1jxFFky6R+eEkN5vPp1k1INIFL
-         mB1wn2hk5a+gbXLKEzQsqhJTaf6cmSmgIe+FGyCwTL2A5KZKvNVgnbCauNMwnuHmdrYw
-         ykwpx9zfgOpR07OIHqg5YyOmokXWgBIhfpCR8RwzEkqPscLNDrHEqnAPlfp5h7PVHapg
-         q5YS1TU3UNP4fR4ydYTRAhAEZylTM7dhZBN1oTBatfRTioeDyp50blOqCAdTPE4qVCCh
-         Vx39vhIchHlZuD/nVs4wPghjJTpL3RQ3/HXGviPQGJ2tKtOx4rq6xsZAfj1NOE+mKh1j
-         ReOA==
-X-Gm-Message-State: AOAM5332+GkvrH10FW4nRTXNR79ZHSUdnmoKukK9xFZ7gkoHpolyNsNZ
-        HnSUkCxhgSrmaAecOfJgI0I1CJNSHg57FPx+
-X-Google-Smtp-Source: ABdhPJxTs4t98C90I5qm0dbb3G80E/eQ8N7BnPM3lQeJgjr6k+T3T8OBpKGGm5LGmYH/us7HDgRRPw==
-X-Received: by 2002:a2e:b0c4:: with SMTP id g4mr7327273ljl.20.1605842826727;
-        Thu, 19 Nov 2020 19:27:06 -0800 (PST)
-Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
-        by smtp.gmail.com with ESMTPSA id s26sm153647lji.31.2020.11.19.19.27.05
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 19 Nov 2020 19:27:06 -0800 (PST)
-From:   Marcin Wojtas <mw@semihalf.com>
-To:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
-Cc:     ulf.hansson@linaro.org, huziji@marvell.com,
-        adrian.hunter@intel.com, jaz@semihalf.com, tn@semihalf.com,
-        ard.biesheuvel@arm.com, kostap@marvell.com,
-        Marcin Wojtas <mw@semihalf.com>
-Subject: [PATCH v2 4/4] mmc: sdhci-xenon: introduce ACPI support
-Date:   Fri, 20 Nov 2020 04:26:39 +0100
-Message-Id: <20201120032639.24386-5-mw@semihalf.com>
-X-Mailer: git-send-email 2.29.0
-In-Reply-To: <20201120032639.24386-1-mw@semihalf.com>
-References: <20201120032639.24386-1-mw@semihalf.com>
+        id S1726618AbgKTHoV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 20 Nov 2020 02:44:21 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8010 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725919AbgKTHoT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 20 Nov 2020 02:44:19 -0500
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CcpTC0ZjNzhdbq;
+        Fri, 20 Nov 2020 15:43:59 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.487.0; Fri, 20 Nov 2020 15:44:06 +0800
+From:   Qinglang Miao <miaoqinglang@huawei.com>
+To:     Maxim Levitsky <maximlevitsky@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+CC:     <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Qinglang Miao <miaoqinglang@huawei.com>
+Subject: [PATCH] memstick: fix a double-free bug in memstick_check
+Date:   Fri, 20 Nov 2020 15:48:46 +0800
+Message-ID: <20201120074846.31322-1-miaoqinglang@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Previous patches dropped the strict dependency on the OF_*
-in the sdhci-xenon driver. As a result the ACPI support
-can be introduced (except for the XENON_A3700 variant)
-by adding the necessary ID's in the acpi_match_table.
+kfree(host->card) has been called in put_device so that
+another kfree would raise cause a double-free bug.
 
-Signed-off-by: Marcin Wojtas <mw@semihalf.com>
+Fixes: 0193383a5833 ("memstick: core: fix device_register() error handling")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
 ---
- drivers/mmc/host/sdhci-xenon.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/memstick/core/memstick.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-xenon.c b/drivers/mmc/host/sdhci-xenon.c
-index dfc3b5f62a6d..6d4f588d4c11 100644
---- a/drivers/mmc/host/sdhci-xenon.c
-+++ b/drivers/mmc/host/sdhci-xenon.c
-@@ -11,6 +11,7 @@
-  * Special thanks to Video BG4 project team.
-  */
- 
-+#include <linux/acpi.h>
- #include <linux/delay.h>
- #include <linux/ktime.h>
- #include <linux/module.h>
-@@ -698,11 +699,22 @@ static const struct of_device_id sdhci_xenon_dt_ids[] = {
- };
- MODULE_DEVICE_TABLE(of, sdhci_xenon_dt_ids);
- 
-+#ifdef CONFIG_ACPI
-+static const struct acpi_device_id sdhci_xenon_acpi_ids[] = {
-+	{ .id = "MRVL0002", XENON_AP806},
-+	{ .id = "MRVL0003", XENON_AP807},
-+	{ .id = "MRVL0004", XENON_CP110},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(acpi, sdhci_xenon_acpi_ids);
-+#endif
-+
- static struct platform_driver sdhci_xenon_driver = {
- 	.driver	= {
- 		.name	= "xenon-sdhci",
- 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
- 		.of_match_table = sdhci_xenon_dt_ids,
-+		.acpi_match_table = ACPI_PTR(sdhci_xenon_acpi_ids),
- 		.pm = &sdhci_xenon_dev_pm_ops,
- 	},
- 	.probe	= xenon_probe,
+diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
+index ef03d6faf..12bc3f5a6 100644
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -468,7 +468,6 @@ static void memstick_check(struct work_struct *work)
+ 			host->card = card;
+ 			if (device_register(&card->dev)) {
+ 				put_device(&card->dev);
+-				kfree(host->card);
+ 				host->card = NULL;
+ 			}
+ 		} else
 -- 
-2.29.0
+2.23.0
 
