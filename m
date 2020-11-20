@@ -2,104 +2,76 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98D102BACEC
-	for <lists+linux-mmc@lfdr.de>; Fri, 20 Nov 2020 16:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E890E2BB077
+	for <lists+linux-mmc@lfdr.de>; Fri, 20 Nov 2020 17:28:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728785AbgKTPG7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 20 Nov 2020 10:06:59 -0500
-Received: from www.zeus03.de ([194.117.254.33]:43458 "EHLO mail.zeus03.de"
+        id S1729704AbgKTQXv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 20 Nov 2020 11:23:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42400 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728771AbgKTPG4 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 20 Nov 2020 10:06:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=k1; bh=US1jiov3Q39Q8O
-        HNdgriM3I4d/ngv0XuinAIEULvBe8=; b=O1jzibQ4MJATu6NSPuZrYQEnLNIeG7
-        if8WaG4dBwguqtPkCBWDQ0tn/2KlXGey3rBcvSKVIsENX70EDbnfw6V3xMYEazu3
-        6sXEZA0Fad+DnNteTHyiiuAxwdFJFZwykGYhPwEqQFIK1mliAsiD3l1ZuNSFQxLB
-        +PahJJSFqmkis=
-Received: (qmail 1520255 invoked from network); 20 Nov 2020 16:06:54 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 20 Nov 2020 16:06:54 +0100
-X-UD-Smtp-Session: l3s3148p1@DU3pMYu0Ft0gAwDPXwi7AEBAgYxIRHZX
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH RFT v2 3/3] mmc: renesas_sdhi: enable WAIT_WHILE_BUSY
-Date:   Fri, 20 Nov 2020 16:06:47 +0100
-Message-Id: <20201120150647.123237-4-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201120150647.123237-1-wsa+renesas@sang-engineering.com>
-References: <20201120150647.123237-1-wsa+renesas@sang-engineering.com>
+        id S1729539AbgKTQXv (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 20 Nov 2020 11:23:51 -0500
+Received: from localhost.localdomain (adsl-84-226-167-205.adslplus.ch [84.226.167.205])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E556B22269;
+        Fri, 20 Nov 2020 16:23:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605889431;
+        bh=aSF6SATY94f3SCCfihTWZ93+pWsbZlyve0AT/9JM6Z0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qTqQL3vbAEjG8Kws/X5afIQvgWuOZxzorslh51q/1/MPxbh9/brWBGMP/G1CaSbY/
+         0f5FdgV2lvlNj/3/R1Ei0KBEj9K47VjsFMMALHjq4qZr8wYDuSMnFcbNetVUk7Y+9f
+         Xb/7kFppSxglRNaRkTYyM6iLsrxggW3vWtuZRonc=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH 1/2] mmc: sdhci-sprd: drop of_match_ptr from of_device_id table
+Date:   Fri, 20 Nov 2020 17:23:43 +0100
+Message-Id: <20201120162344.485921-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Now that we got the timeout handling in the driver correct, we can use
-this capability to avoid polling via the MMC core.
+The driver can match only via the DT table so the table should be always
+used and the of_match_ptr does not have any sense (this also allows ACPI
+matching via PRP0001, even though it is not relevant here).  This fixes
+compile warning (!CONFIG_OF on x86_64):
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+    drivers/mmc/host/sdhci-sprd.c:723:34: warning:
+        ‘sdhci_sprd_of_match’ defined but not used [-Wunused-const-variable=]
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/mmc/host/renesas_sdhi_internal_dmac.c | 4 ++--
- drivers/mmc/host/renesas_sdhi_sys_dmac.c      | 7 ++++---
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/mmc/host/sdhci-sprd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-index fe13e1ea22dc..d8b811c46628 100644
---- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-+++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-@@ -88,7 +88,7 @@ static struct renesas_sdhi_scc rcar_gen3_scc_taps[] = {
- 
- static const struct renesas_sdhi_of_data of_rza2_compatible = {
- 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
--			  TMIO_MMC_HAVE_CBSY,
-+			  TMIO_MMC_HAVE_CBSY | MMC_CAP_WAIT_WHILE_BUSY,
- 	.tmio_ocr_mask	= MMC_VDD_32_33,
- 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
- 			  MMC_CAP_CMD23,
-@@ -105,7 +105,7 @@ static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
- 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
- 			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2,
- 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
--			  MMC_CAP_CMD23,
-+			  MMC_CAP_CMD23 | MMC_CAP_WAIT_WHILE_BUSY,
- 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT | MMC_CAP2_MERGE_CAPABLE,
- 	.bus_shift	= 2,
- 	.scc_offset	= 0x1000,
-diff --git a/drivers/mmc/host/renesas_sdhi_sys_dmac.c b/drivers/mmc/host/renesas_sdhi_sys_dmac.c
-index c5f789675302..0a3494fcc5e8 100644
---- a/drivers/mmc/host/renesas_sdhi_sys_dmac.c
-+++ b/drivers/mmc/host/renesas_sdhi_sys_dmac.c
-@@ -31,13 +31,14 @@ static const struct renesas_sdhi_of_data of_default_cfg = {
- 
- static const struct renesas_sdhi_of_data of_rz_compatible = {
- 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_32BIT_DATA_PORT |
--			  TMIO_MMC_HAVE_CBSY,
-+			  TMIO_MMC_HAVE_CBSY | MMC_CAP_WAIT_WHILE_BUSY,
- 	.tmio_ocr_mask	= MMC_VDD_32_33,
- 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ,
+diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+index 58109c5b53e2..f85171edabeb 100644
+--- a/drivers/mmc/host/sdhci-sprd.c
++++ b/drivers/mmc/host/sdhci-sprd.c
+@@ -788,7 +788,7 @@ static struct platform_driver sdhci_sprd_driver = {
+ 	.driver = {
+ 		.name = "sdhci_sprd_r11",
+ 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+-		.of_match_table = of_match_ptr(sdhci_sprd_of_match),
++		.of_match_table = sdhci_sprd_of_match,
+ 		.pm = &sdhci_sprd_pm_ops,
+ 	},
  };
- 
- static const struct renesas_sdhi_of_data of_rcar_gen1_compatible = {
--	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL,
-+	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
-+			  MMC_CAP_WAIT_WHILE_BUSY,
- 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ,
- 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
- };
-@@ -58,7 +59,7 @@ static const struct renesas_sdhi_of_data of_rcar_gen2_compatible = {
- 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
- 			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2,
- 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
--			  MMC_CAP_CMD23,
-+			  MMC_CAP_CMD23 | MMC_CAP_WAIT_WHILE_BUSY,
- 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
- 	.dma_buswidth	= DMA_SLAVE_BUSWIDTH_4_BYTES,
- 	.dma_rx_offset	= 0x2000,
 -- 
-2.28.0
+2.25.1
 
