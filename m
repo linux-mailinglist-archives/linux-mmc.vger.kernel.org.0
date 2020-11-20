@@ -2,95 +2,160 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAE8C2BA119
-	for <lists+linux-mmc@lfdr.de>; Fri, 20 Nov 2020 04:28:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9082D2BA11B
+	for <lists+linux-mmc@lfdr.de>; Fri, 20 Nov 2020 04:28:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727095AbgKTD1F (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 19 Nov 2020 22:27:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42716 "EHLO
+        id S1727186AbgKTD1G (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 19 Nov 2020 22:27:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727083AbgKTD1F (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Nov 2020 22:27:05 -0500
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6EE9C0613CF
-        for <linux-mmc@vger.kernel.org>; Thu, 19 Nov 2020 19:27:03 -0800 (PST)
-Received: by mail-lj1-x22f.google.com with SMTP id 11so8584657ljf.2
-        for <linux-mmc@vger.kernel.org>; Thu, 19 Nov 2020 19:27:03 -0800 (PST)
+        with ESMTP id S1726385AbgKTD1G (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Nov 2020 22:27:06 -0500
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F810C061A04
+        for <linux-mmc@vger.kernel.org>; Thu, 19 Nov 2020 19:27:04 -0800 (PST)
+Received: by mail-lj1-x243.google.com with SMTP id 11so8584675ljf.2
+        for <linux-mmc@vger.kernel.org>; Thu, 19 Nov 2020 19:27:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=semihalf-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=P9yk9CQBv+wHVI+u3khuln/FnkAkgCRh1kbuFM32wYo=;
-        b=HScsIqszCe4ZeQN7agASe0mHYVTAAsmRlik/QecWIfQ7ENPlG9DvXMFMMm6Fi1Jg/E
-         vQiHWZRnEsl9X/K7wdfIsSH9uTdutyzbtQzsql708OAM2pNnOnOf5QZSCu2ztHymLDWj
-         ssVN2kECw79wU/VrU5muycbjsBoXNc8rfHNnba0JT9XlKTjA9pbykEQWAEjIgHR7MPkl
-         xNKIfSE8Xe4UupU44IZVa0Q6rgIK24quNEGewMp++YHzRcwCi4aVp6K+8Ot2do5EXS+q
-         HxflTZPg5rIU2MxgYDT3XegXKmSYswaphvf6BeAc0Ew+GbXe1g68z7lVt5juGOQj6lGn
-         qpxg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=XrHwQaCMJh08ONMTBH+6V1+tkj13F2Y4HGn4qByhl4o=;
+        b=Dw6QGdv1TxRcj9yj9vdmXtAeUrBVvjYfYF3eN9OkYR7IXJIVwxjf/2f6FBtM2fafbp
+         1m+r3p2mFUML7g3LrECuTYf6KHE+qer0o5CpfPZUXUNicCVMCmnNxQ063MWV6dULykDs
+         Ip7g/ke9/U2pwaWFd0pa+6dmNluwFFFSTF8rueZj30CVl0g1+y4KsgXS9Oe66D6Mnglr
+         iPv1x5JwnVQO5q2mYmewFvFmhDeFXmgKA7iJOhpJLbEnmrpp9EFF4+vVqeTOQ7YPIVUp
+         nYSyVJITLGb6MKrcvYFgZ7wjpO+mhvMWYc48pAUE2Jdykkk3qPOTvbOEqilKARw9dJjj
+         ijgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=P9yk9CQBv+wHVI+u3khuln/FnkAkgCRh1kbuFM32wYo=;
-        b=B0fBcKqcO/8XchhdGq1xDiVca6HrGAbGGd1uLI//eROnoFzRZ9MbyFWWe5R3RZnbPz
-         UoBY82HKhUQ3tlrkTLLzzU5KJmktoKgU0nENYLMvC3PvurFNcQk+PdYsnnoTGHkJHiCE
-         7PDzns9zFGkzElrUVwfE8f6dLws7AT4oGxphwxoOvFeQBcFiFGGOGG2NNbJrBVHwbR9g
-         MYntx37L3LqLjvOkS9ZIYeh70+raqMfcgtpPxiXy6BclvReAJYqPxKuuylVDGvX0lTuL
-         vczhbdTf/j1xA+iAZTc70yEysZ4WCVUEFkzp3p6gOhbuDOSLJa4b+/9RJ3/FP2kWQKSb
-         qupQ==
-X-Gm-Message-State: AOAM532rEbh/ffYWjRfllmsM9W5cNKhuF4qOhG8gpR5uYGTXz1R7Jvyd
-        nPK6t3nbCyQuiyhnEGAti1x8NvhN3r4gmWko
-X-Google-Smtp-Source: ABdhPJw/xASpUOgSh8LBQvQ2MraAR2lQubQ5Vtuk4iIgbG9734HMINhrlkWn+g0fljbxEVKi23Zh4w==
-X-Received: by 2002:a2e:8846:: with SMTP id z6mr7270703ljj.311.1605842821629;
-        Thu, 19 Nov 2020 19:27:01 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=XrHwQaCMJh08ONMTBH+6V1+tkj13F2Y4HGn4qByhl4o=;
+        b=j0x9OWby5VvBfeoqQjAjWZE1fr+bVKzPuX8Cm/Ch8TkMybQ7yMCAGCS6ZFSYLp5Y5H
+         G6SwIc5ZSJn1m7WnVH0RtKRdrx08+brsGge7FNL42apQdpxPc/sj9CLrIYUN6Eb5BHzh
+         ixiT0w7zrdqrBZrB/v1puhC8t/dszhHsvN3BKmJMrqcWwJNMKh8UcKehAb/MHGf6L0vJ
+         AwNEG8sMrYr7qkkJHMccDOxQQJQtum3G8q5HjHLluvMN81bSZtk2WXqQe1UXrTYHe3kR
+         tr2DsoS7b1HsdmlSzmdmwXcsSDJcUGqxpciXykQwGzhG9g1QuOzB0DyrnDpohfJgOWDW
+         MaDg==
+X-Gm-Message-State: AOAM530/Mco6aDCxi9PoslmeaIhxJ0EYh1I+XQPkk86y6vkAAH7dn2X7
+        y3t2P1VyvCwS1uSCsx2P6/tD5Q==
+X-Google-Smtp-Source: ABdhPJwSyP09EmgyW4eJinnn1yMoCmTQN5FucXntVXk0ESXiz61GfqqYhD3PLBO/doujPjtJLmVGww==
+X-Received: by 2002:a2e:854a:: with SMTP id u10mr7541204ljj.443.1605842822844;
+        Thu, 19 Nov 2020 19:27:02 -0800 (PST)
 Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
-        by smtp.gmail.com with ESMTPSA id s26sm153647lji.31.2020.11.19.19.27.00
+        by smtp.gmail.com with ESMTPSA id s26sm153647lji.31.2020.11.19.19.27.01
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 19 Nov 2020 19:27:00 -0800 (PST)
+        Thu, 19 Nov 2020 19:27:02 -0800 (PST)
 From:   Marcin Wojtas <mw@semihalf.com>
 To:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
 Cc:     ulf.hansson@linaro.org, huziji@marvell.com,
         adrian.hunter@intel.com, jaz@semihalf.com, tn@semihalf.com,
         ard.biesheuvel@arm.com, kostap@marvell.com,
         Marcin Wojtas <mw@semihalf.com>
-Subject: [PATCH v2 0/4] sdhci-xenon ACPI support
-Date:   Fri, 20 Nov 2020 04:26:35 +0100
-Message-Id: <20201120032639.24386-1-mw@semihalf.com>
+Subject: [PATCH v2 1/4] mmc: sdhci-xenon: use match data for controllers variants
+Date:   Fri, 20 Nov 2020 04:26:36 +0100
+Message-Id: <20201120032639.24386-2-mw@semihalf.com>
 X-Mailer: git-send-email 2.29.0
+In-Reply-To: <20201120032639.24386-1-mw@semihalf.com>
+References: <20201120032639.24386-1-mw@semihalf.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+As a part of the ACPI support preparation resign from checking
+compatible strings in the driver. Instead of that use a new
+enum and assign the values to match data accordingly.
 
-The second version of the sdhci-xenon ACPI support
-is now split into 4 patches instead of a single one.
-There are minor functional differencse - match_data
-introduction and using dedicated ACPI ID per
-controller variant.
+Signed-off-by: Marcin Wojtas <mw@semihalf.com>
+---
+ drivers/mmc/host/sdhci-xenon.h     |  8 ++++++++
+ drivers/mmc/host/sdhci-xenon-phy.c |  4 +++-
+ drivers/mmc/host/sdhci-xenon.c     | 10 ++++++----
+ 3 files changed, 17 insertions(+), 5 deletions(-)
 
-The MacchiatoBin firmware for testing can be obtained from:
-https://drive.google.com/file/d/1Y8BhyaCrksQgT_GPfpqqiYHpQ41kP8Kp
-
-Changelog:
-v1->v2
-  * Split single commit to 4
-  * Use device_match_data and dedicated ACPI ID's per controller
-    variant
-
-Marcin Wojtas (4):
-  mmc: sdhci-xenon: use match data for controllers variants
-  mmc: sdhci-xenon: switch to device_* API
-  mmc: sdhci-xenon: use clk only with DT
-  mmc: sdhci-xenon: introduce ACPI support
-
- drivers/mmc/host/sdhci-xenon.h     |  12 +-
- drivers/mmc/host/sdhci-xenon-phy.c |  40 ++++---
- drivers/mmc/host/sdhci-xenon.c     | 120 +++++++++++++-------
- 3 files changed, 110 insertions(+), 62 deletions(-)
-
+diff --git a/drivers/mmc/host/sdhci-xenon.h b/drivers/mmc/host/sdhci-xenon.h
+index 593b82d7b68a..39e898605937 100644
+--- a/drivers/mmc/host/sdhci-xenon.h
++++ b/drivers/mmc/host/sdhci-xenon.h
+@@ -53,6 +53,13 @@
+ #define XENON_CTRL_HS200			0x5
+ #define XENON_CTRL_HS400			0x6
+ 
++enum xenon_variant {
++	XENON_A3700,
++	XENON_AP806,
++	XENON_AP807,
++	XENON_CP110
++};
++
+ struct xenon_priv {
+ 	unsigned char	tuning_count;
+ 	/* idx of SDHC */
+@@ -90,6 +97,7 @@ struct xenon_priv {
+ 	void		*phy_params;
+ 	struct xenon_emmc_phy_regs *emmc_phy_regs;
+ 	bool restore_needed;
++	enum xenon_variant hw_version;
+ };
+ 
+ int xenon_phy_adj(struct sdhci_host *host, struct mmc_ios *ios);
+diff --git a/drivers/mmc/host/sdhci-xenon-phy.c b/drivers/mmc/host/sdhci-xenon-phy.c
+index 03ce57ef4585..c33e0cddc81a 100644
+--- a/drivers/mmc/host/sdhci-xenon-phy.c
++++ b/drivers/mmc/host/sdhci-xenon-phy.c
+@@ -651,11 +651,13 @@ static int get_dt_pad_ctrl_data(struct sdhci_host *host,
+ 				struct device_node *np,
+ 				struct xenon_emmc_phy_params *params)
+ {
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct xenon_priv *priv = sdhci_pltfm_priv(pltfm_host);
+ 	int ret = 0;
+ 	const char *name;
+ 	struct resource iomem;
+ 
+-	if (of_device_is_compatible(np, "marvell,armada-3700-sdhci"))
++	if (priv->hw_version == XENON_A3700)
+ 		params->pad_ctrl.set_soc_pad = armada_3700_soc_pad_voltage_set;
+ 	else
+ 		return 0;
+diff --git a/drivers/mmc/host/sdhci-xenon.c b/drivers/mmc/host/sdhci-xenon.c
+index 24c978de2a3f..1e7ce9b1a143 100644
+--- a/drivers/mmc/host/sdhci-xenon.c
++++ b/drivers/mmc/host/sdhci-xenon.c
+@@ -418,7 +418,7 @@ static int xenon_probe_dt(struct platform_device *pdev)
+ 	u32 tuning_count;
+ 
+ 	/* Disable HS200 on Armada AP806 */
+-	if (of_device_is_compatible(np, "marvell,armada-ap806-sdhci"))
++	if (priv->hw_version == XENON_AP806)
+ 		host->quirks2 |= SDHCI_QUIRK2_BROKEN_HS200;
+ 
+ 	sdhc_id = 0x0;
+@@ -495,6 +495,8 @@ static int xenon_probe(struct platform_device *pdev)
+ 	pltfm_host = sdhci_priv(host);
+ 	priv = sdhci_pltfm_priv(pltfm_host);
+ 
++	priv->hw_version = (unsigned long)device_get_match_data(&pdev->dev);
++
+ 	/*
+ 	 * Link Xenon specific mmc_host_ops function,
+ 	 * to replace standard ones in sdhci_ops.
+@@ -667,9 +669,9 @@ static const struct dev_pm_ops sdhci_xenon_dev_pm_ops = {
+ };
+ 
+ static const struct of_device_id sdhci_xenon_dt_ids[] = {
+-	{ .compatible = "marvell,armada-ap806-sdhci",},
+-	{ .compatible = "marvell,armada-cp110-sdhci",},
+-	{ .compatible = "marvell,armada-3700-sdhci",},
++	{ .compatible = "marvell,armada-ap806-sdhci", .data = (void *)XENON_AP806},
++	{ .compatible = "marvell,armada-cp110-sdhci", .data =  (void *)XENON_CP110},
++	{ .compatible = "marvell,armada-3700-sdhci", .data =  (void *)XENON_A3700},
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, sdhci_xenon_dt_ids);
 -- 
 2.29.0
 
