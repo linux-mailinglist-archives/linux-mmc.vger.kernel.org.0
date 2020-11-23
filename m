@@ -2,95 +2,154 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A40B32C0FD3
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 Nov 2020 17:13:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B98F22C1041
+	for <lists+linux-mmc@lfdr.de>; Mon, 23 Nov 2020 17:28:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389910AbgKWQHx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 23 Nov 2020 11:07:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33168 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389907AbgKWQHx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Nov 2020 11:07:53 -0500
-Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0EA4C0613CF
-        for <linux-mmc@vger.kernel.org>; Mon, 23 Nov 2020 08:07:52 -0800 (PST)
-Received: by mail-vk1-xa42.google.com with SMTP id e127so1586585vkb.5
-        for <linux-mmc@vger.kernel.org>; Mon, 23 Nov 2020 08:07:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=THkIK27BZf78hxdnE1IQKA4fD1WbWFcexMw8JNVMB+U=;
-        b=Mq3/zrmuE0QTaYQrurBP5tIVw/v7Czw4g8COZlpPyu0SbgUqnf3cFJ977ctpwBj940
-         mlmuBJaSthMdE0j+Ltk2gWI+SyeAV7awrxrYGd3/2my8NYS2ZnWTbtNf5tcBagAexGok
-         lSnpnsSNAUkRFwoZQUD+tH+m/AgQDNdV3hDjAO/uQn3i1CzwDOY08m4dgBCInwEJI6KC
-         wNsTVBpnx+pd4cBvKKYSXcFJ0wW1wp/iYTeERUEynIDxVTP0JtpBovlBz73hCdSH0aNB
-         xOH8ib8Tcx2vwh+qz8wH1qyW7lkwYcvhcnDOqol2wj9270UOvptyuND1mxh2Os+zyotx
-         kcTA==
+        id S2389941AbgKWQZM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 23 Nov 2020 11:25:12 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:46696 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730953AbgKWQZG (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Nov 2020 11:25:06 -0500
+Received: by mail-ot1-f66.google.com with SMTP id g19so16405027otp.13;
+        Mon, 23 Nov 2020 08:25:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=THkIK27BZf78hxdnE1IQKA4fD1WbWFcexMw8JNVMB+U=;
-        b=R9KqdQzt2An05t2uTJKfHQdIwrkLOBoT7K5xJbh1GUa9xPMkGRq/WrO3It0b+aGlT+
-         PEMpQptPbnylLGMlAAHncntVgiipyTRbnJkkWffMiD+WHPGvV9c3Ws0VHwCNON8dbBtB
-         LvHxsohRcs6sKPJXq6dcZku5PX6U0pYhb/1tQiTm5t8Vw21f65g4k+rAlgURzmoRkhUJ
-         dd/DYVIK2Qi7F2pVhqJGdXb5aKJaIgOndV3+E3DicPdT6mJ53BsWCzgrKDpB8eN7bW1O
-         ajuUsEzgsky83o6OFu+4W+VnOZTsWvnEkgAHapHSWotyIAOLp++1zZGcvPggiqcUYEpb
-         5otQ==
-X-Gm-Message-State: AOAM530F0TlBJkmNnib/O5A5YVt3tPTzv6SXxpCYmQ7WioDOweTKNhtH
-        x3cmwFriIo0r9SipcOWUQxydycj1VcQGuzyfPLgZfg==
-X-Google-Smtp-Source: ABdhPJwoFa1ahODSdW+Pnsfz1C2W1aBbG8Aw+Fo43/+tE+Yo9G/GC3ZD0XghWPAGQxyXD//X+RjsmVovghxAVd/UyTI=
-X-Received: by 2002:a1f:5e0b:: with SMTP id s11mr533043vkb.8.1606147672185;
- Mon, 23 Nov 2020 08:07:52 -0800 (PST)
+        bh=SWzdE85KMSmQ5K6aYMgWVQjn8/tst2VI3dLUnv/55SM=;
+        b=tt87NnnAO5VGtl3XI4J4ai62RjtWg2YZ7uCoDHeJuRIVwzPzXDnEZRCOqttT2DdQ4t
+         egb3NYfE/CJdb59O38AVWWufklBxs9mdhTQAJQlXY3UDIzdp9Z4Dud/At/9hDKnvLIVc
+         ESs5CmJr2JscwRtUymU4vNeYYKwuvo+9wiq7nnIUnWUds+gB+FKLigO6FH/qkW1dlKBT
+         lAxZMSl+gk0L5eb9wfCTMvLHjcNioUhoGntJjTOGk/F2iZjlHy/jDUqF0wiJg1+Vi4Ma
+         53gNnAYdtU+gEJdw7C0x5o3zl+CpmYJ+EiWLxBvL+58CzGP/7SAAgpN+vn8HCjRubbjT
+         my3Q==
+X-Gm-Message-State: AOAM531fkC8Xvk2qw3PULaWa9M0XKIlDezforErFLqtVJUBmOJiA+1Sn
+        rVaEZPsNS/s7cmPiuzbl3rq70WUkqrCPpad71gQ=
+X-Google-Smtp-Source: ABdhPJxW9u67TbnPp8ObIChv5a6F+ncd8SoV+BFvs894Bl4MJzyAX0TVAjkpawJr+z1OvIzzPyEcIsCefAg0WelXSFg=
+X-Received: by 2002:a9d:16f:: with SMTP id 102mr68959otu.206.1606148702991;
+ Mon, 23 Nov 2020 08:25:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20201120074846.31322-1-miaoqinglang@huawei.com>
-In-Reply-To: <20201120074846.31322-1-miaoqinglang@huawei.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 23 Nov 2020 17:07:15 +0100
-Message-ID: <CAPDyKFqnram9LrgtLP8k-HncBYXKR3HRprfMZPyxqrpZKztTSA@mail.gmail.com>
-Subject: Re: [PATCH] memstick: fix a double-free bug in memstick_check
-To:     Qinglang Miao <miaoqinglang@huawei.com>
-Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
-        Alex Dubov <oakad@yahoo.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
+ <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com>
+ <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
+ <CANiq72m22Jb5_+62NnwX8xds2iUdWDMAqD8PZw9cuxdHd95W0A@mail.gmail.com> <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
+In-Reply-To: <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 23 Nov 2020 17:24:51 +0100
+Message-ID: <CAJZ5v0jJ6GFm4LFCR2V3qvD9rZrVw=pXyXSjSWPYtQudg-F3xg@mail.gmail.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
+        cluster-devel@redhat.com, coreteam@netfilter.org,
+        devel@driverdev.osuosl.org, dm-devel@redhat.com,
+        drbd-dev@lists.linbit.com,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-afs@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-decnet-user@lists.sourceforge.net,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i3c@lists.infradead.org,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>, linux-iio@vger.kernel.org,
+        linux-input <linux-input@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        "moderated list:ARM/Mediatek SoC..." 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>, linux-mtd@lists.infradead.org,
+        linux-nfs@vger.kernel.org, linux-rdma@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:TARGET SUBSYSTEM" <linux-scsi@vger.kernel.org>,
+        linux-sctp@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>, linux-watchdog@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org,
+        nouveau <nouveau@lists.freedesktop.org>,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 20 Nov 2020 at 08:44, Qinglang Miao <miaoqinglang@huawei.com> wrote:
+On Mon, Nov 23, 2020 at 4:58 PM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
 >
-> kfree(host->card) has been called in put_device so that
-> another kfree would raise cause a double-free bug.
+> On Mon, 2020-11-23 at 15:19 +0100, Miguel Ojeda wrote:
+> > On Sun, Nov 22, 2020 at 11:36 PM James Bottomley
+> > <James.Bottomley@hansenpartnership.com> wrote:
+
+[cut]
+
+> >
+> > Maintainers routinely review 1-line trivial patches, not to mention
+> > internal API changes, etc.
 >
-> Fixes: 0193383a5833 ("memstick: core: fix device_register() error handling")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
-
-Applied for next, thanks!
-
-Kind regards
-Uffe
-
-
-> ---
->  drivers/memstick/core/memstick.c | 1 -
->  1 file changed, 1 deletion(-)
+> We're also complaining about the inability to recruit maintainers:
 >
-> diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
-> index ef03d6faf..12bc3f5a6 100644
-> --- a/drivers/memstick/core/memstick.c
-> +++ b/drivers/memstick/core/memstick.c
-> @@ -468,7 +468,6 @@ static void memstick_check(struct work_struct *work)
->                         host->card = card;
->                         if (device_register(&card->dev)) {
->                                 put_device(&card->dev);
-> -                               kfree(host->card);
->                                 host->card = NULL;
->                         }
->                 } else
-> --
-> 2.23.0
+> https://www.theregister.com/2020/06/30/hard_to_find_linux_maintainers_says_torvalds/
 >
+> And burn out:
+>
+> http://antirez.com/news/129
+
+Right.
+
+> The whole crux of your argument seems to be maintainers' time isn't
+> important so we should accept all trivial patches ... I'm pushing back
+> on that assumption in two places, firstly the valulessness of the time
+> and secondly that all trivial patches are valuable.
+>
+> > If some company does not want to pay for that, that's fine, but they
+> > don't get to be maintainers and claim `Supported`.
+>
+> What I'm actually trying to articulate is a way of measuring value of
+> the patch vs cost ... it has nothing really to do with who foots the
+> actual bill.
+>
+> One thesis I'm actually starting to formulate is that this continual
+> devaluing of maintainers is why we have so much difficulty keeping and
+> recruiting them.
+
+Absolutely.
+
+This is just one of the factors involved, but a significant one IMV.
