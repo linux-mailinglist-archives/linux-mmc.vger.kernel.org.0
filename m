@@ -2,68 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2272A2C48A3
-	for <lists+linux-mmc@lfdr.de>; Wed, 25 Nov 2020 20:42:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 633242C4955
+	for <lists+linux-mmc@lfdr.de>; Wed, 25 Nov 2020 21:52:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728118AbgKYTmW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 25 Nov 2020 14:42:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60768 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727251AbgKYTmV (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 Nov 2020 14:42:21 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82FDAC0613D4;
-        Wed, 25 Nov 2020 11:42:21 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id x22so3006279wmc.5;
-        Wed, 25 Nov 2020 11:42:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
-        b=VH5V0MQ2fScdhVhE9LMw+iU6JqoL+rzrFeYO8D8kov8TnusDRfmr5lDJYL0NRwrUoQ
-         +CRyehMisvsHhfDQ7K0kBQEH9wPUWElZvEuGPDq7JpgdLIP7LizYpVzjLvmv9il32boo
-         ClLv8OUiVOI1FH3t3xA2Yb/19QhLPt9Up5NGNS0W6aUIImDjduSLVGoxo89Y01rE8AZi
-         40F/x4CKH1DzitoarWa9mI6pjbNAT4zAikIMtmAD7W5Ys7YpCrjtlOxGE0WTqZN0yhHf
-         9AoIA2wNaxCbIW6Gz8vEXhhczY82dvBslZHmfDhNIC9M+7n/TqYHGIEv4cfxzBXwnDa+
-         lGdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
-        b=R4i3Q7udjw0qdEsmJqrugvaJfbvS7N1+n/L97b/ckUWhYZUnDjuUvPh5YZ4wIWbpzO
-         kJZVFbmaw2b86L6u5RFcIMnrvIc1T+SLt1q1fE4vEYRJOmd5pyWsxmz9khqcRs7u8QLX
-         FhITE4OOibmXvag2JZnflSuy68ZZX1QmiwAHU9mAzauaGdkzX4t5j4/BbJ4mY8cOh5mz
-         4RtsI/Nt14eZzlVqnBnHVrsfUmU0cZGoJ1/UdUZs2xgPPeEJsaIvK9FuKxkM8HBxL/XB
-         bZHW9sIdjv5sgv3KUGkEtyqM4G78c9ZkXjXmS65tCi/js559nk+Vf/JRkjNIxf1Ni0AE
-         2/oQ==
-X-Gm-Message-State: AOAM531RVLVw1GWD1qBw79Q7TsbAXHxvjGQpNGZM9O3cqEGddvGSn3qC
-        Z49dLHu69fhHuI7RJyTMLvs=
-X-Google-Smtp-Source: ABdhPJxC5R4xUGDLraLPgPTRfuGTQqJQCM5emAOrjuG65jf9ZNXn+lLXPTyqihoz6bedrOj9mebfUQ==
-X-Received: by 2002:a1c:3c8a:: with SMTP id j132mr5620286wma.75.1606333340371;
-        Wed, 25 Nov 2020 11:42:20 -0800 (PST)
-Received: from [192.168.1.152] ([102.64.149.89])
-        by smtp.gmail.com with ESMTPSA id u129sm5090970wme.9.2020.11.25.11.42.15
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Wed, 25 Nov 2020 11:42:19 -0800 (PST)
-Message-ID: <5fbeb39b.1c69fb81.a9b8d.bcc9@mx.google.com>
-From:   "Dailborh R." <ritundailb333@gmail.com>
-X-Google-Original-From: Dailborh R.
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1730477AbgKYUuK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 25 Nov 2020 15:50:10 -0500
+Received: from www.zeus03.de ([194.117.254.33]:38604 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730384AbgKYUuK (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 25 Nov 2020 15:50:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=WM6neK/9XhvhdQtc0CGjtDZWub4
+        s7ZwL8dvi/3S+mmc=; b=JS+TClP8E4OBpTJ0735+k88JlDtl2040c/ph9+BpkWY
+        zhM98PW415XsVbZckWmyPDxFIku+jRliIyZQR7oVGdsO62eCCgTmZ63OUZkiGia4
+        KQfdqc6VDvjVwEVftXc6wBSY5GuiZSluacDTSRO6fNo5gVGgf88D6MSvX0NCXBVo
+        =
+Received: (qmail 3433286 invoked from network); 25 Nov 2020 21:50:06 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 25 Nov 2020 21:50:06 +0100
+X-UD-Smtp-Session: l3s3148p1@0K7ykfS0Eo0gAwDPXwZjAFYQ5uAAs3hj
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH] mmc: tmio: improve bringing HW to a sane state with MMC_POWER_OFF
+Date:   Wed, 25 Nov 2020 21:49:53 +0100
+Message-Id: <20201125204953.3344-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Please reply to me
-To:     Recipients <Dailborh@vger.kernel.org>
-Date:   Wed, 25 Nov 2020 19:42:03 +0000
-Reply-To: dailrrob.83@gmail.com
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-I'm Dailborh R. from US. I picked interest in you and I would like to know
-more about you and establish relationship with you. i will wait for
-your response. thank you.
+Further testing of error cases revealed that downgrade is not enough, so
+we need to reset the SCC which is done by calling the custom reset
+function. This reset function can distinguish between the various SDHI
+variants, so protecting the call with MIN_RCAR2 is enough here.
+
+Fixes: 24ce2d7b8bea ("mmc: tmio: bring tuning HW to a sane state with MMC_POWER_OFF")
+Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+
+I was also evaluating if tmio_mmc_reset() would be better than
+host->reset. I finally decided against it. This is the minimal change
+that we need and which fixes an actual issue. I can't see why we would
+want to terminate DMA because either everything went smooth and DMA
+completed or the DMA error has already been handled. I think. Please
+speak up if you disagree.
+
+ drivers/mmc/host/tmio_mmc_core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index 7f4a28125010..a89547f5d733 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -929,9 +929,9 @@ static void tmio_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ 	switch (ios->power_mode) {
+ 	case MMC_POWER_OFF:
+ 		tmio_mmc_power_off(host);
+-		/* Downgrade ensures a sane state for tuning HW (e.g. SCC) */
+-		if (host->mmc->ops->hs400_downgrade)
+-			host->mmc->ops->hs400_downgrade(host->mmc);
++		/* For R-Car Gen2+, we need to reset SDHI specific SCC */
++		if (host->pdata->flags & TMIO_MMC_MIN_RCAR2)
++			host->reset(host);
+ 		host->set_clock(host, 0);
+ 		break;
+ 	case MMC_POWER_UP:
+-- 
+2.28.0
 
