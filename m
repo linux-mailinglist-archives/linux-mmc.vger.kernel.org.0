@@ -2,136 +2,130 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD6C22C605F
-	for <lists+linux-mmc@lfdr.de>; Fri, 27 Nov 2020 08:13:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A3352C7215
+	for <lists+linux-mmc@lfdr.de>; Sat, 28 Nov 2020 23:05:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392686AbgK0HMd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 27 Nov 2020 02:12:33 -0500
-Received: from mail-co1nam11on2089.outbound.protection.outlook.com ([40.107.220.89]:5472
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730898AbgK0HMc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 27 Nov 2020 02:12:32 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R10wp5vRfF3Mt6Qg24GxKgfQCsYJYnMSUumSYFT3gvVIw5Ap+D1+c45Kv3Glal+Z7P25xyFIjH2QmdK+7srn7XdtYRja8xnxt8uX/wbhAs7C/g5eo1IIihF1xixlgB56oLpmOKkhQKArrrS7rYg7LSViUNt2WdHpB+dgIJfAkH6jAL0g2+wXJFTbkPNcmKfAOpKoa5jFRB3/nyPgGjqh6ceFkz7UzMxUw/JroV0XXhdlOp9lmIMfV1QRo+o5/JmGF3RtVOEuw8qIBYRrRenLntpgpECCZjmfxdSon+SSZIcrwpZymsbPKpTF2tg5QmtsLdsJHTM5yA/I9krelmF6Pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4BTUJml5kghztAk3D5KYz1DBk66bQ5bghfq0rkmPaCU=;
- b=fijgP50gNvswX+EkWtWT+mwqcUYgk3hGjxM7eVyRFr5CR3RQNYE3mDImxTb9lgrGB4xgUo35XEv0B2vkKFYp+F3dy0XgJ/CVi/M2VcH1T6+a31l7lmUddlaS7ZL592RQXOtKk17KGuWD2BZWTMBWO+cNfn8MzB7OlTLBbwSH6aM2IGhU+PgM1qgSC3BQfnhSR6jg3+RvOBs6wmwTujeFLmEwwM98Cxl+SyjOlbitjAT2MWvFR9QRIcy/jzcDixMzIFu/UNBMdExh+dHXTOnkgpYDrJxEDYMg219ff/H/sVuv7VV07ooMd/dKtjLJY5oND1cj6POjDu0ZwDwXrBhn9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.62.198) smtp.rcpttodomain=linaro.org smtp.mailfrom=xilinx.com;
- dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
- not signed); arc=none
+        id S2387769AbgK1Vun (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 28 Nov 2020 16:50:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43508 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732694AbgK1TCf (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 28 Nov 2020 14:02:35 -0500
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8DD4C094273
+        for <linux-mmc@vger.kernel.org>; Fri, 27 Nov 2020 23:33:40 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id s63so6033599pgc.8
+        for <linux-mmc@vger.kernel.org>; Fri, 27 Nov 2020 23:33:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4BTUJml5kghztAk3D5KYz1DBk66bQ5bghfq0rkmPaCU=;
- b=ezEUj0pUeZtssxUQ+PFXcMG4RisszlRVPEVVXs5M6tuG5uIynf7MnicuCc8j6crqxYB9TzoIC/eAcPummJ5/iAem9uYzvWeEGsgqxuO0zxgg2DQ8kR/LHvZ/ZMtVjnI262eUOVrba1rtBXYGIVUIG4JTY4t5h3y6R0lvWFSGS2o=
-Received: from MN2PR15CA0060.namprd15.prod.outlook.com (2603:10b6:208:237::29)
- by DM6PR02MB6396.namprd02.prod.outlook.com (2603:10b6:5:1fc::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3611.23; Fri, 27 Nov
- 2020 07:12:28 +0000
-Received: from BL2NAM02FT025.eop-nam02.prod.protection.outlook.com
- (2603:10b6:208:237:cafe::58) by MN2PR15CA0060.outlook.office365.com
- (2603:10b6:208:237::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3611.20 via Frontend
- Transport; Fri, 27 Nov 2020 07:12:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.62.198)
- smtp.mailfrom=xilinx.com; linaro.org; dkim=none (message not signed)
- header.d=none;linaro.org; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.62.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.62.198; helo=xsj-pvapexch01.xlnx.xilinx.com;
-Received: from xsj-pvapexch01.xlnx.xilinx.com (149.199.62.198) by
- BL2NAM02FT025.mail.protection.outlook.com (10.152.77.151) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.3589.20 via Frontend Transport; Fri, 27 Nov 2020 07:12:27 +0000
-Received: from xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) by
- xsj-pvapexch01.xlnx.xilinx.com (172.19.86.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Thu, 26 Nov 2020 23:12:12 -0800
-Received: from smtp.xilinx.com (172.19.127.95) by
- xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server id
- 15.1.1913.5 via Frontend Transport; Thu, 26 Nov 2020 23:12:12 -0800
-Envelope-to: git@xilinx.com,
- michal.simek@xilinx.com,
- ulf.hansson@linaro.org,
- adrian.hunter@intel.com,
- linux-mmc@vger.kernel.org,
- pthomas8589@gmail.com
-Received: from [172.30.17.109] (port=54868)
-        by smtp.xilinx.com with esmtp (Exim 4.90)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1kiXvP-0005ku-9d; Thu, 26 Nov 2020 23:12:11 -0800
-Subject: Re: mmc: sdhci-of-arasan: Issue DLL reset explicitly
-To:     Paul Thomas <pthomas8589@gmail.com>, <linux-mmc@vger.kernel.org>,
-        "Michal Simek" <michal.simek@xilinx.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>
-References: <CAD56B7cpMcuu_+9bxQ0zCsr489J9Te268aOeQTC32rOeF1hG+A@mail.gmail.com>
-CC:     git <git@xilinx.com>
-From:   Michal Simek <michal.simek@xilinx.com>
-Message-ID: <9e5da13d-cb0d-3190-11d1-556d05178966@xilinx.com>
-Date:   Fri, 27 Nov 2020 08:12:08 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=ihnYKrMMjwZQ5ASx933HV2MFt/S1a3530wjA+saFMm0=;
+        b=OSMvJBUy3HqGbGUcMWKHNiGOHQCRFhjr9OZqhIL9Q+v1V34yiTWKsqln8Pasel3c/d
+         Q9sTQaRWEmzF6YrupGPB4OG1K5jrJRppLT6Qqtk+O4reM2QBiO6BZL7aCsJy9D5zUfHc
+         2FTA67D0bnp6TOzBuMzfy0XdYn3bdl/wpMuw/9Me/Hlg7iSZd/uVXt8hK/sjZucF5NXg
+         FVwQlgghzrSRKe+np5c46nW7xdWDz1pWpV5PA0V+isL7Sq7iOlBLL0fzkJxRnSv6dqT/
+         nd/r3rcmoHaWoz2PTu75OcW7xcxXeMgyogFasR0G3PdBVU3AoHJzINAMCYpGxBLyA2vU
+         +stw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ihnYKrMMjwZQ5ASx933HV2MFt/S1a3530wjA+saFMm0=;
+        b=hGNN9yyg8mwtxT6qjJLCrNS20fVG5T3tsphfq3EsDERdot5m+nTVgGOKIqv2pxTzfl
+         xlvXw+4ntPyif2+lTUMETZdxXPfnQtI1EkgknNyUcTGYt+ysUdx0hs+gK73m4ecMJROy
+         lMjnVYlQLARN6Zvy7Tvi2Yu7RrC/Km62FLoMlRJmtnaxc+FcCb5eRNaoKkCFOyBmCjmY
+         RA2T6uT+3kSCreQuwWVYYUtzMnXssEAo5TEwsTEnJxcvrwnFUJa0s/1NkTY9HWHJO0ZN
+         uyJMaKtMipX028eI9jCe2jhXFDNzWDQI1P5OcOSF7VpzRFZNXGjYkWbwLCbaEgqjHRPp
+         Nn6A==
+X-Gm-Message-State: AOAM530TVEev5ZhawW18m9qPAonACi9ySX36HH7Yr68LV2sVbvyWFAOv
+        WeITJ0/qv25dgWXlWf++ARvZ
+X-Google-Smtp-Source: ABdhPJwbCDP8/+7G0x1dmJbEc8cAeBrMhbVdDjg8CH1Fq8Dda8QmWvqbYV1Epr/Z0CyuZA4fKt5ChA==
+X-Received: by 2002:a17:90a:ec08:: with SMTP id l8mr14275331pjy.115.1606548820114;
+        Fri, 27 Nov 2020 23:33:40 -0800 (PST)
+Received: from thinkpad ([2409:4072:15:c612:48ab:f1cc:6b16:2820])
+        by smtp.gmail.com with ESMTPSA id f5sm9194473pgg.74.2020.11.27.23.33.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2020 23:33:39 -0800 (PST)
+Date:   Sat, 28 Nov 2020 13:03:31 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Cristian Ciocaltea <cristian.ciocaltea@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-actions@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org
+Subject: Re: [PATCH v2 09/18] arm: dts: owl-s500: Add MMC support
+Message-ID: <20201128073331.GX3077@thinkpad>
+References: <cover.1605823502.git.cristian.ciocaltea@gmail.com>
+ <0556399f1ce8b1255d1f7961f04fcb95c96ab928.1605823502.git.cristian.ciocaltea@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAD56B7cpMcuu_+9bxQ0zCsr489J9Te268aOeQTC32rOeF1hG+A@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ad3916ad-c132-410a-f1dd-08d892a3cc78
-X-MS-TrafficTypeDiagnostic: DM6PR02MB6396:
-X-Microsoft-Antispam-PRVS: <DM6PR02MB63967D6D12A56749B9D568B0C6F80@DM6PR02MB6396.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Lv9D46M4NyKtHuK+tVcItJtdkJv1Yogl4jejWET2WxgDYxdOrNiJziCMR0QewvORWentmSRSFG+dRjJZfOhQKNZMdwk9guq27pFCIHM0GaNX8OcqKVfqQWY+Nia4QHccW2ESRNdCVs40QvxDHAuvzFPIeqRx0c1slO1nLQJ1Z8sXFF+4LthCnc08u9ybQ/VJPmDEqLlNoHf+rzNkuWE2Wbkl8OtC8I0NBowLvRbcftbVtV9/lk9xkTa50CCifQ5RdhjFiHczO/7rPXir2ZOa4KGaHur5m3SohsVIxRv46O3zRoGMMMsVjHY4dmflb5W0HxsEawiBgn4ddCeXYhCsbjXryMvq85GTKKadwGAEeg6W8yjY7aMRWv1wrXTb2Gaw6Wn9pz0BzZYgZIL4gv923ksMHcMftfSyB3ABi0BTF9Kv5YyvIaSHNv4piXKnu3WxxdLvwrJTvQmzqncMgjOLDncttc21vuBiDx3dW5Ha63Yul5TNvrcGUmuVRerHGSjf38M+HvxjsPMfDyLrkbixYg==
-X-Forefront-Antispam-Report: CIP:149.199.62.198;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapexch01.xlnx.xilinx.com;PTR:unknown-62-198.xilinx.com;CAT:NONE;SFS:(4636009)(136003)(39860400002)(396003)(376002)(346002)(46966005)(70206006)(8676002)(70586007)(31696002)(8936002)(107886003)(47076004)(44832011)(6666004)(5660300002)(7636003)(316002)(356005)(83380400001)(36906005)(110136005)(26005)(336012)(82740400003)(4744005)(31686004)(966005)(2616005)(2906002)(9786002)(186003)(478600001)(426003)(82310400003)(4326008)(36756003)(50156003)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2020 07:12:27.9308
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad3916ad-c132-410a-f1dd-08d892a3cc78
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.62.198];Helo=[xsj-pvapexch01.xlnx.xilinx.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL2NAM02FT025.eop-nam02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6396
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0556399f1ce8b1255d1f7961f04fcb95c96ab928.1605823502.git.cristian.ciocaltea@gmail.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Paul, +Manish
+On Fri, Nov 20, 2020 at 01:56:03AM +0200, Cristian Ciocaltea wrote:
+> Add MMC controller nodes for Actions Semi S500 SoC, in order to
+> facilitate access to SD/EMMC/SDIO cards.
+> 
+> Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@gmail.com>
 
-On 27. 11. 20 4:49, Paul Thomas wrote:
-> Hi Everyone,
-> 
-> The recent commit d06d60d5 'mmc: sdhci-of-arasan: Issue DLL reset
-> explicitly' seems to break the eMMC on our zynqmp boards, we get
-> messages like this:
-> mmc0: error -110 whilst initialising MMC card
-> We're using the XCZU2EG-1SFVC784I parts [1]. I see that this is moving
-> the DLL reset out of ATF. So part of the issue might be that we're
-> using the 2019.1 ATF version.
-> 
-> thanks,
-> Paul
-> 
-> [1] Enclustra modules:
-> https://www.enclustra.com/en/products/system-on-chip-modules/mercury-xu5/
-> 
-
-Can you please try any latest version if that fix your problem?
-
-Manish: Please take look at this issue and try to replicate it.
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
 Thanks,
-Michal
+Mani
+
+> ---
+>  arch/arm/boot/dts/owl-s500.dtsi | 33 +++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/owl-s500.dtsi b/arch/arm/boot/dts/owl-s500.dtsi
+> index b16172615db0..7af7c9e1119d 100644
+> --- a/arch/arm/boot/dts/owl-s500.dtsi
+> +++ b/arch/arm/boot/dts/owl-s500.dtsi
+> @@ -241,5 +241,38 @@ dma: dma-controller@b0260000 {
+>  			clocks = <&cmu CLK_DMAC>;
+>  			power-domains = <&sps S500_PD_DMA>;
+>  		};
+> +
+> +		mmc0: mmc@b0230000 {
+> +			compatible = "actions,s500-mmc", "actions,owl-mmc";
+> +			reg = <0xb0230000 0x38>;
+> +			interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&cmu CLK_SD0>;
+> +			resets = <&cmu RESET_SD0>;
+> +			dmas = <&dma 2>;
+> +			dma-names = "mmc";
+> +			status = "disabled";
+> +		};
+> +
+> +		mmc1: mmc@b0234000 {
+> +			compatible = "actions,s500-mmc", "actions,owl-mmc";
+> +			reg = <0xb0234000 0x38>;
+> +			interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&cmu CLK_SD1>;
+> +			resets = <&cmu RESET_SD1>;
+> +			dmas = <&dma 3>;
+> +			dma-names = "mmc";
+> +			status = "disabled";
+> +		};
+> +
+> +		mmc2: mmc@b0238000 {
+> +			compatible = "actions,s500-mmc", "actions,owl-mmc";
+> +			reg = <0xb0238000 0x38>;
+> +			interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&cmu CLK_SD2>;
+> +			resets = <&cmu RESET_SD2>;
+> +			dmas = <&dma 4>;
+> +			dma-names = "mmc";
+> +			status = "disabled";
+> +		};
+>  	};
+>  };
+> -- 
+> 2.29.2
+> 
