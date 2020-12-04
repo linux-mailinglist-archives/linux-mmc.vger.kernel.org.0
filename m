@@ -2,102 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2AB62CEFD2
-	for <lists+linux-mmc@lfdr.de>; Fri,  4 Dec 2020 15:40:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 615C12CEFDA
+	for <lists+linux-mmc@lfdr.de>; Fri,  4 Dec 2020 15:40:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726366AbgLDOj5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 4 Dec 2020 09:39:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
+        id S2387766AbgLDOkH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 4 Dec 2020 09:40:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730320AbgLDOj5 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Dec 2020 09:39:57 -0500
-Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFD2DC08C5F2
-        for <linux-mmc@vger.kernel.org>; Fri,  4 Dec 2020 06:38:50 -0800 (PST)
-Received: by mail-vk1-xa44.google.com with SMTP id h133so299572vka.6
-        for <linux-mmc@vger.kernel.org>; Fri, 04 Dec 2020 06:38:50 -0800 (PST)
+        with ESMTP id S2387597AbgLDOkH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Dec 2020 09:40:07 -0500
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C84BC08E860
+        for <linux-mmc@vger.kernel.org>; Fri,  4 Dec 2020 06:38:55 -0800 (PST)
+Received: by mail-vs1-xe43.google.com with SMTP id w18so3333506vsk.12
+        for <linux-mmc@vger.kernel.org>; Fri, 04 Dec 2020 06:38:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=n+PnrcoVAdtN8GPBxsVpfIuQzUembcvR9XiK1uQx4OM=;
-        b=cClF9W26HI1jeodnLahFAEF1AOV+L5iFQiL5QKpY/tZv0WYk7CZow4UPGxXcFknKPX
-         wJr3jS/KmrZ9Yel1YiQcJZJ7lxgTCb9Jv4th0tfQlG2tn2AaaOARvtEaYGAinM8kpW12
-         WB7Kr0wqHEuXSGo2qn8m/TeB8/+ck89rVsu6GXf3X2ZIyXoPG1gDA5z7p4zIyxzHVjvD
-         rGciDKMzC5GA05C169RWfnaL9TEDwTYXmOTgUV/udnEVtZ9cTHdyz3DkvYbB0I3NnYW/
-         4wAMVKfsWfguE828RODTsibaGsSZK/l9agfuyC855e6dWP/gTQz10aRDEzxiC+pSAuvj
-         Pnkg==
+        bh=GV+kKzzENTLM81eJGjHI5vXFYGkDKepyqPMdHRVRsqM=;
+        b=nlpic3k+eRJKdSyxMwep0JNGCTo4BhJQfBExsSrFBkjK7krEYgYqjrlcCNfASJJcwX
+         9Vgf1wU4wsoPfmiay0B800n7nkptbI/Qnn256zlqsNtZeh+ISe3I7gNy9d3ulxoI8BJS
+         YOHs7FLJOBd/YCczyV4QHslhd9NFyRiz6MbY4ipqOZkduqJUq9HFzx2ynPbkUwiCE7WA
+         1t4ayQyJ50YpJgERxQ/QJ8Z0W9Z8hAykeK0NAC8YW5iRWK8s5Xo/4eJ72Er2bdZZ2J1K
+         tblBEqGKVFHTzeyN82/MfE8gLwwAHzT2vpfrY/CdIHVFl69xiAkusWTxcGD9sn4Yvu88
+         ymqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=n+PnrcoVAdtN8GPBxsVpfIuQzUembcvR9XiK1uQx4OM=;
-        b=RfGV6NHLoGLA8IOs5AQA0G21YhKYIU2mdOk/Qr9LwoFfZcm8hKhHYlqr3g/aU+T6uk
-         dWy71aSUi6X9TzhHcpSsWcR+LTnaA75pcRlcgpdeU5erSk/+JT38gZojka2OqJxNhToK
-         j8TcMUTQrMe7MwZ+LUtTTbSh+B2k4snK/3RgVyb7CiBWbemipxQIl0mTsQkk/+FuL61V
-         afoitwzhQv+zhOTCCQRO2R2JRFb8RTVAinxiuZ4cZNlPAQg6gGGiY2Y1FAAtqkSjSIS8
-         q5nFEMxiu5/1IxtpXOmWim+ldptRekVwoIuefT52xnoesemPLpRqjllLGvGv8wtnGbuH
-         xPlw==
-X-Gm-Message-State: AOAM5304JnAh39K01QdTql3vPf5lyjDVuVD6JcFZnSV8m+b/HvEPthe5
-        b3MliJ9CkZ0Vr8G3LWyDvMgchJcmEO344S8Q/Bu51A==
-X-Google-Smtp-Source: ABdhPJyikXHr7pn6pcbkVo8ISm8xKwkpzaeqRFQ5SQp7nae2EYK2Zb4KjBUBCUKi3Vp+0e1Z6ybSvyDvSywx7kp6V1o=
-X-Received: by 2002:a1f:1357:: with SMTP id 84mr3813030vkt.6.1607092730187;
- Fri, 04 Dec 2020 06:38:50 -0800 (PST)
+        bh=GV+kKzzENTLM81eJGjHI5vXFYGkDKepyqPMdHRVRsqM=;
+        b=tQmbz87gu/W95KmCjdPrJvumlVgEECkkJV0ckAW3byYPr4r8Qvh08jCc5zoVj7qFtD
+         8/z52bNbG5fnGPlZhiSLVH4pIKJbcE62k5ixfL35G0wQG4n1vtFJQt4g+j5VduV6yL9r
+         hAXt4qW66GesGxtGODTPIb6TBOBp37oe9+yqkBQKXMKqzSobJN2nOmf891GvAIp4XCv4
+         JpIzSU03+qtRDEWmdC8RKSY+9flLYRHXf6g3RK1z9WfeMuWB6KOkJYrpYGLT+6vV2Rpy
+         ZjMyYtJ8FPCg36U9TkIgmSd0tMytYWMzspvZz13qXxK9hqOQE9/I8bOulx158+Swxhxw
+         QaRg==
+X-Gm-Message-State: AOAM532D8+I55Si2ZEJ8YVNj1MC96Tsspgtdr1Z5qZlBjH1GPbXtXyIb
+        rdjdKLvDAkF2ZIW+/7NBQc0k71Gq4l3O/NvjfrDeJQ==
+X-Google-Smtp-Source: ABdhPJxcEhwvF6bfH3CXkhhxoYBwkL+UeuLiVzx6UiZL4XPyY728h8req9rj4UgHGJNlF8DW/PtA063oqMx6K7c5y7s=
+X-Received: by 2002:a67:8c44:: with SMTP id o65mr3185882vsd.55.1607092734320;
+ Fri, 04 Dec 2020 06:38:54 -0800 (PST)
 MIME-Version: 1.0
-References: <20201126105900.26658-1-aisheng.dong@nxp.com> <20201126105900.26658-2-aisheng.dong@nxp.com>
-In-Reply-To: <20201126105900.26658-2-aisheng.dong@nxp.com>
+References: <20201125213001.15003-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20201125213001.15003-1-wsa+renesas@sang-engineering.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 4 Dec 2020 15:38:11 +0100
-Message-ID: <CAPDyKFqJb4Pj6hwMM_qGQo_DnF2cE_C0u9yQYdMwV0scnsRPPw@mail.gmail.com>
-Subject: Re: [PATCH RESEND v4 01/18] dt-bindings: mmc: imx: fix the wrongly
- dropped imx8qm compatible string
-To:     Dong Aisheng <aisheng.dong@nxp.com>
-Cc:     DTML <devicetree@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Fri, 4 Dec 2020 15:38:14 +0100
+Message-ID: <CAPDyKFp3gt9AJkOMBDT_OsJ9QfPCS-Q3Bx7RBq6QWS-QP-mx4g@mail.gmail.com>
+Subject: Re: [PATCH 0/3] tmio: set max_busy_timeout
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 26 Nov 2020 at 12:16, Dong Aisheng <aisheng.dong@nxp.com> wrote:
+On Wed, 25 Nov 2020 at 22:30, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 >
-> The compatible string "fsl,imx8qm-usdhc" was wrongly dropped in patch:
-> commit 80fd350b9590 ("dt-bindings: mmc: fsl-imx-esdhc: Fix i.MX 8 compatible matching")
-> Add it back.
+> This is a follow-up to the series "mmc: tmio: honor busy timeouts
+> properly" which I sent out a few days ago. One of the patches there
+> needs more discussion, so I regrouped the series with another one, and
+> this is the first outcome. It is solely about max_busy_timeout:
 >
-> Cc: Haibo Chen <haibo.chen@nxp.com>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Fixes: 80fd350b9590 ("dt-bindings: mmc: fsl-imx-esdhc: Fix i.MX 8 compatible matching")
-> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+> Patch 1 is from the previous series (with the comment from Shimoda-san
+> addressed) and sets max_busy_timeout with what TMIO always did. Patch 2
+> introduces a hook and a default fallback for extended timeout ranges.
+> Patch 3 uses the hook for the extended range of R-Car Gen3 SDHIs.
+>
+> It has been tested that the applied values make sense. I have not
+> measured if the MMC core really sends R1 instead of R1B when the desired
+> timeout value is exceeded. All on a Salvator-XS with R-Car M3N.
+>
+> The patches are based on mmc/next as of today. The branch is here:
+>
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/sdhi/extop
+>
+> Looking forward to comments!
+>
+> Happy hacking,
+>
+>    Wolfram
+>
+>
+> Wolfram Sang (3):
+>   mmc: tmio: set max_busy_timeout
+>   mmc: tmio: add hook for custom busy_wait calculation
+>   mmc: renesas_sdhi: populate hook for longer busy_wait
+>
+>  drivers/mmc/host/renesas_sdhi_core.c | 23 +++++++++++++++++++++++
+>  drivers/mmc/host/tmio_mmc.h          |  5 +++++
+>  drivers/mmc/host/tmio_mmc_core.c     | 22 ++++++++++++++++++++++
+>  drivers/mmc/host/uniphier-sd.c       |  1 +
+>  include/linux/mfd/tmio.h             |  7 ++++++-
+>  5 files changed, 57 insertions(+), 1 deletion(-)
+>
+> --
+> 2.28.0
+>
 
-Applied for next and by amending the commit message according to
-Krzysztof's comment, thanks!
+Applied for next, by amending "from" to "Wolfram Sang
+<wsa+renesas@sang-engineering.com>", thanks!
 
 Kind regards
 Uffe
-
-
-> ---
->  Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> index e71d13c2d109..802c9df23752 100644
-> --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> @@ -39,6 +39,7 @@ properties:
->                - fsl,imx8mn-usdhc
->                - fsl,imx8mp-usdhc
->                - fsl,imx8mq-usdhc
-> +              - fsl,imx8qm-usdhc
->                - fsl,imx8qxp-usdhc
->            - const: fsl,imx7d-usdhc
->
-> --
-> 2.23.0
->
