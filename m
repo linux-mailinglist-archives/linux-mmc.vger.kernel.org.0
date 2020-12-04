@@ -2,110 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90C922CEFD6
-	for <lists+linux-mmc@lfdr.de>; Fri,  4 Dec 2020 15:40:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7FD2CEFD1
+	for <lists+linux-mmc@lfdr.de>; Fri,  4 Dec 2020 15:40:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730320AbgLDOkC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 4 Dec 2020 09:40:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38946 "EHLO
+        id S1726923AbgLDOj5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 4 Dec 2020 09:39:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725973AbgLDOkC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Dec 2020 09:40:02 -0500
-Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83B77C061A54
-        for <linux-mmc@vger.kernel.org>; Fri,  4 Dec 2020 06:38:43 -0800 (PST)
-Received: by mail-ua1-x943.google.com with SMTP id x4so1902840uac.11
-        for <linux-mmc@vger.kernel.org>; Fri, 04 Dec 2020 06:38:43 -0800 (PST)
+        with ESMTP id S1726366AbgLDOj4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Dec 2020 09:39:56 -0500
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79CEC061A55
+        for <linux-mmc@vger.kernel.org>; Fri,  4 Dec 2020 06:38:46 -0800 (PST)
+Received: by mail-vs1-xe43.google.com with SMTP id 128so3330928vsw.10
+        for <linux-mmc@vger.kernel.org>; Fri, 04 Dec 2020 06:38:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vwpuxaaZbL1aUgf+1bfZQEaatrFcmPToO36aqopJneA=;
-        b=V0/ZJW1pimWXHb5XHK92onAUgt5du6OUKqfD2kvZ4I6vLZAh/oD4cWmR2aQUdUozGm
-         BFw4K0Jr/Dte3vzRwP0a+qYRGbHGniiTs0I7D0ZV3wwG0nmizWRi6ps/ghOXAQzVbdmp
-         +q3fWU+OtVKd4IS92/mn4mZmZDLJ2WQhSlnkF/YowL6HNPY4C7a+3ZgF1V894wRjKGWg
-         OH4FllR62z/9BRG6zmmLWRycDiXFQtvUApmWBask4Kt6gb6BkMIp6OjDEb9+BKUX7yve
-         dUi/mscp6gKqu6JrDggWFjrlY3n1vkXGZ/MaK7Se9PWoDUS6O+TEh0y+U+XNoDwl1yWN
-         a+pA==
+        bh=ld4dnKet0Aan3wmVGmDEhQALDjT+lE0nQJqWzbzD/MU=;
+        b=WGi2/QVB6Oc9twB4+3YrCN1dvhzPGACKxJQDwiWbWnuxVZS/YBx0Xu9ZGpa1aROHis
+         ACv1JU6LKXb4c1ioBtMatYMuZVUAMqwGdq2kvLf2lQOtp15G0ofgcTLCMusmUFs38U5S
+         PO2yuL3Uk5rZjzjhi19dZfhV6CPA9Pgxy5RnvN80UUK5815AFbrEMRyAQAiU+AM8BWre
+         GHIyzIMZLbf7TwE+jU2MX5ZSIIz+NpCe5/HqUyWcIyV/pEMOoI5E66tR8QTC2ISnSSlz
+         fxsC54LSXJTOMli8IOh38i88xhyQ5vyBXDdcLhpji4OGJLHGt6cM7jgudLPftdlqY+8r
+         6UMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vwpuxaaZbL1aUgf+1bfZQEaatrFcmPToO36aqopJneA=;
-        b=iEwNVkQqnOjjBaQJL/BtGtdZgrn1f4PxMjfG3BD5RIjIpj1pUiwmdl3rX4c0alARTn
-         lt1QKyAba9apQyGNDhk7i8r2lc1kQ9Iubaq8BRQJLrYm9j6nDtw2lODU+p8BpaULjjU7
-         51Zed5ZWkSZbJdsCaL+9dm9eiZNZPr/2akOOTGt8xfh7wuX4nuQAsmK0zswtXdULANCu
-         CrxxF85rlFTAOlhK3eRt/DDfQQAdY40snR8ZAIXUsyyatbVQg568IghJNcc8N+4OTvFx
-         aOb8DGy+B2a2eNK1LL821J3zmDcrsnX4crUmhUsF0lH3fHQn7v6MhHgqeO9P/v19paMi
-         Zrkw==
-X-Gm-Message-State: AOAM532jSR8Bf6VaD0ocuiBpiaKAS/XqqzR/+DNNNfhnPT2Xc+lfm2mm
-        lwwRuNeQVvDg0qBsFvxIeu6lQw8C7UW3ekt8G9aFPg==
-X-Google-Smtp-Source: ABdhPJzRn9F4pmIEZTb+X83QUxDi1ljME12Y/RmmipMsNVsDfDtmIvA4x3ulGS73cdI+/Aq6lQmwjmX/e6zQsbxPgno=
-X-Received: by 2002:a9f:3e4b:: with SMTP id c11mr3325774uaj.19.1607092722711;
- Fri, 04 Dec 2020 06:38:42 -0800 (PST)
+        bh=ld4dnKet0Aan3wmVGmDEhQALDjT+lE0nQJqWzbzD/MU=;
+        b=onPAeNiNv3Wvsbo+ysZMftoQtsk+L9kxvr4EjJZc0w1xC+GeukI6g7azHgE/HGJ86c
+         BIT70lfC5Q+sngpcZtMRzlimS93TvYsHPDj/54Zh93YMTxqmiiExQzTRnGaBzD6LCjyV
+         BH21V8cB2HcsVgKg2MInI03VJgh6XlzWC9LgqhCfs+7aim0Bb8+PSZl0iySozhCRS3sw
+         y84xwF3VXoLKCxSaQuZPzAHyTMArghBYnJckjNF6+IHzhN0XwH1mU79NLjEfIGt8/XYA
+         ckSLZu+TWFWSq3+hjnRdPFTUeQhxwcTN+uq/fUdkgJuEIB59qlEa6QwqJbdMSoy1A7Fm
+         GQ7Q==
+X-Gm-Message-State: AOAM5318+84jbMNoh288iwLzzHKuPTbkBZe0+F/S0YSKFo4ldBQ/mmCE
+        IIPLe4qpyJdvxvWI1RNU5NhjR9gh3HuV7bq7b+HDfA==
+X-Google-Smtp-Source: ABdhPJwnvZhvZ0ukN6hOxsx1tx/Kh8k9pUNeBGVL+JSvwrWUS+Wh6nHS35cqQnwEo0d/eQvVWwcIyBZNIcuskbt/+C8=
+X-Received: by 2002:a67:e286:: with SMTP id g6mr3935119vsf.42.1607092726109;
+ Fri, 04 Dec 2020 06:38:46 -0800 (PST)
 MIME-Version: 1.0
-References: <20201125110145.2824-1-benchuanggli@gmail.com>
-In-Reply-To: <20201125110145.2824-1-benchuanggli@gmail.com>
+References: <20201125204953.3344-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20201125204953.3344-1-wsa+renesas@sang-engineering.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 4 Dec 2020 15:38:06 +0100
-Message-ID: <CAPDyKFpCJrHpb0gzDY5Tpg=7YnKpYr80q7m3KaQqBLnNgRPLmw@mail.gmail.com>
-Subject: Re: [PATCH,v2] mmc: sdhci-pci-gli: Disable slow mode in HS400 mode
- for GL9763E
-To:     Ben Chuang <benchuanggli@gmail.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-        greg.tu@genesyslogic.com.tw
+Date:   Fri, 4 Dec 2020 15:38:08 +0100
+Message-ID: <CAPDyKFrEAVNukL=EUN=QO3h-RC-wAY=b+vQooEqQ54EXhGwtjQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: tmio: improve bringing HW to a sane state with MMC_POWER_OFF
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 25 Nov 2020 at 12:01, Ben Chuang <benchuanggli@gmail.com> wrote:
+On Wed, 25 Nov 2020 at 21:51, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 >
-> From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+> Further testing of error cases revealed that downgrade is not enough, so
+> we need to reset the SCC which is done by calling the custom reset
+> function. This reset function can distinguish between the various SDHI
+> variants, so protecting the call with MIN_RCAR2 is enough here.
 >
-> The GL9763E uses 150Mhz (slow mode) by default in HS400 mode. In order
-> to make HS400 mode run at 200Mhz, the slow mode needs to be turned off.
->
-> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+> Fixes: 24ce2d7b8bea ("mmc: tmio: bring tuning HW to a sane state with MMC_POWER_OFF")
+> Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Applied for next, thanks!
+Applied for fixes, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-pci-gli.c | 7 +++++++
->  1 file changed, 7 insertions(+)
 >
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-> index 9887485a4134..d45d7e529150 100644
-> --- a/drivers/mmc/host/sdhci-pci-gli.c
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -87,6 +87,9 @@
->  #define PCIE_GLI_9763E_SCR      0x8E0
->  #define   GLI_9763E_SCR_AXI_REQ           BIT(9)
+> I was also evaluating if tmio_mmc_reset() would be better than
+> host->reset. I finally decided against it. This is the minimal change
+> that we need and which fixes an actual issue. I can't see why we would
+> want to terminate DMA because either everything went smooth and DMA
+> completed or the DMA error has already been handled. I think. Please
+> speak up if you disagree.
 >
-> +#define PCIE_GLI_9763E_MMC_CTRL  0x960
-> +#define   GLI_9763E_HS400_SLOW     BIT(3)
-> +
->  #define SDHCI_GLI_9763E_CQE_BASE_ADDR   0x200
->  #define GLI_9763E_CQE_TRNS_MODE           (SDHCI_TRNS_MULTI | \
->                                     SDHCI_TRNS_BLK_CNT_EN | \
-> @@ -764,6 +767,10 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
->         value |= GLI_9763E_SCR_AXI_REQ;
->         pci_write_config_dword(pdev, PCIE_GLI_9763E_SCR, value);
+>  drivers/mmc/host/tmio_mmc_core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> +       pci_read_config_dword(pdev, PCIE_GLI_9763E_MMC_CTRL, &value);
-> +       value &= ~GLI_9763E_HS400_SLOW;
-> +       pci_write_config_dword(pdev, PCIE_GLI_9763E_MMC_CTRL, value);
-> +
->         pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
->         value &= ~GLI_9763E_VHS_REV;
->         value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
+> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+> index 7f4a28125010..a89547f5d733 100644
+> --- a/drivers/mmc/host/tmio_mmc_core.c
+> +++ b/drivers/mmc/host/tmio_mmc_core.c
+> @@ -929,9 +929,9 @@ static void tmio_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+>         switch (ios->power_mode) {
+>         case MMC_POWER_OFF:
+>                 tmio_mmc_power_off(host);
+> -               /* Downgrade ensures a sane state for tuning HW (e.g. SCC) */
+> -               if (host->mmc->ops->hs400_downgrade)
+> -                       host->mmc->ops->hs400_downgrade(host->mmc);
+> +               /* For R-Car Gen2+, we need to reset SDHI specific SCC */
+> +               if (host->pdata->flags & TMIO_MMC_MIN_RCAR2)
+> +                       host->reset(host);
+>                 host->set_clock(host, 0);
+>                 break;
+>         case MMC_POWER_UP:
 > --
-> 2.29.2
+> 2.28.0
 >
