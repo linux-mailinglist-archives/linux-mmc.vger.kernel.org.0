@@ -2,56 +2,40 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5F782CEFDD
-	for <lists+linux-mmc@lfdr.de>; Fri,  4 Dec 2020 15:40:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFD822CF014
+	for <lists+linux-mmc@lfdr.de>; Fri,  4 Dec 2020 15:56:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387597AbgLDOkU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 4 Dec 2020 09:40:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387808AbgLDOkS (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Dec 2020 09:40:18 -0500
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE751C061A4F
-        for <linux-mmc@vger.kernel.org>; Fri,  4 Dec 2020 06:39:30 -0800 (PST)
-Received: by mail-lj1-x241.google.com with SMTP id a1so5546243ljq.3
-        for <linux-mmc@vger.kernel.org>; Fri, 04 Dec 2020 06:39:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6sWIE6MSVnFN2Z1SFZ8QW/N7guFxVpjF1mW79UulhJs=;
-        b=RfcUNAfKbPRmMKo7OcV+vcKhf8gkhXXWbgOjRQECyb79B5Kr8J55uu34UsLfxxUPom
-         7NEJDhsiYI7XXFxNqQi/41lLal9d1LYqnr2vQSWhl3ZGT+woctsjPXr9Xr09HeUYzwTH
-         4sYKrvzexNplNWsyr+AQys2/4I7jeyHKWANdgJPA6jBiijImp0602h+mSteHCWlDfmdQ
-         YXwBsfYJFRRA/jFkwq66l0qkO33EWCS+8WPE3EkBo2bnFfj2+Uqy0cJgUfub/OsjLexQ
-         u9GN3Y0hEQuLeV1vRg2wJQtiSAp8QqgrVOF0XuFxzBGyVyWGORmIgknoFXE6kB3bnUWZ
-         7dZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6sWIE6MSVnFN2Z1SFZ8QW/N7guFxVpjF1mW79UulhJs=;
-        b=H/YIZ/fHRLGvTT4COnDmj7y2qFCBz3H2O4RwMj6NwWj0LZtDp3GBsph1dwyea6sB1K
-         xKv12K4fBh7Bx6EKshWYAr/OuRQV+Cwz8zMk/DsoQn2b78dpb4DSpG0HdXLThe6+fPqm
-         RI1uHY6pki+oW8hFxBlwDLuKfJkIgOod/YHPt+aFC51aI5xvuKEk22X3x1ix/TbV87sk
-         qn2baCqeHdmGzhZY/O2h/CEabVic8mO6Th6icxse4Bd6Jk+pfIpQ+G5fyA42XO3grE55
-         eNEhBnajytf7YTGDTEcb/bTvPvMubdSf6xo32724D4cDkUScinlOXtnctJGEEVizjSDT
-         /yuw==
-X-Gm-Message-State: AOAM532Jl/oIjM4p53qhqSIMYmbO3KZ9daWdseneIgy9Uv9UE/hlirg3
-        IdOiHp4TuV83Bu5f2LzUeVY+IytfsNctT6PHC7ZEww==
-X-Google-Smtp-Source: ABdhPJyskVYAzDS48JDvWbmfiXfOC8BuBYtUHBD5BXTQ5EFVNcQqiqycMB0UDj7GVEp894YzQizdbfY9OTD5WfpyvaY=
-X-Received: by 2002:a2e:3608:: with SMTP id d8mr3697375lja.68.1607092769314;
- Fri, 04 Dec 2020 06:39:29 -0800 (PST)
+        id S1726395AbgLDO4D (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 4 Dec 2020 09:56:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58992 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725923AbgLDO4C (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 4 Dec 2020 09:56:02 -0500
+X-Gm-Message-State: AOAM530fRn+jG/7r2aRwor6yNl0aC7xpKh32Lk+SxC1yClFqyW4T9d5Y
+        QXB84mYxxHZNm9tCj1VuO8vk8i8SHgKJ3SQohPk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607093722;
+        bh=qGUZ+1dL4G4WyrQWUkYKJEc8DutOEdYhYFuupUNzlyk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=A1dP7j+7Iu93950O3626NFqdsC0LKQdwiXFyBli4wzqASDhZy9+IXMpZKsGuDoDY6
+         mdzabAv0QxoMk3lQd/Kwn15V3G6aUqUQ+a+nlhaaoEzJktP5+fAT/niQkLYKj9mvqF
+         y7QCZohJuHfZGZAPXwTpFp+D35yCRj5VljQR3TqjvqguAswaxNTHoz1EKBl6CqGe60
+         JjUi4oH8kYsK9kdntbO0cceE1FjdR3eKtkyF8AE3YvARoSANS6brW6ignZ9LPHNhtb
+         fcVAm05ZwauaDLTXgD0vn2kXvF5KzlSqE6QPtvt5aC2DcH3NfFnSokytxYGRGL0zeg
+         x3GricqBEeyug==
+X-Google-Smtp-Source: ABdhPJxosiEcP3n8aXD6Ztpyp2agBQbOVGOw9SFaLMj/+6lrSftY4Ms6n1Z/TqYNWm3jQWaDwMiFp86WazgYRXqrNXQ=
+X-Received: by 2002:a05:6808:9a9:: with SMTP id e9mr3493815oig.4.1607093721297;
+ Fri, 04 Dec 2020 06:55:21 -0800 (PST)
 MIME-Version: 1.0
 References: <20201203222922.1067522-1-arnd@kernel.org> <CAPDyKFqtFYqc8i_fVzOUnuZGJjtwjVLqE-vebtOKuYJ-4PrDBg@mail.gmail.com>
- <CAK8P3a3srmTdY69j+g-wazMkrTL8_Grsw=vCMyizyA_7oOC4tg@mail.gmail.com>
-In-Reply-To: <CAK8P3a3srmTdY69j+g-wazMkrTL8_Grsw=vCMyizyA_7oOC4tg@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 4 Dec 2020 15:38:49 +0100
-Message-ID: <CAPDyKFqS5touMvORyovCS-QQrHZg+0LGob9DtS1m61quvXYezw@mail.gmail.com>
+ <CAK8P3a3srmTdY69j+g-wazMkrTL8_Grsw=vCMyizyA_7oOC4tg@mail.gmail.com> <CAPDyKFqS5touMvORyovCS-QQrHZg+0LGob9DtS1m61quvXYezw@mail.gmail.com>
+In-Reply-To: <CAPDyKFqS5touMvORyovCS-QQrHZg+0LGob9DtS1m61quvXYezw@mail.gmail.com>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Fri, 4 Dec 2020 15:55:05 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0PvxT3B+4WYmbarLPY_uHbKL_z5Jd7WU=PZ79QXjtwOw@mail.gmail.com>
+Message-ID: <CAK8P3a0PvxT3B+4WYmbarLPY_uHbKL_z5Jd7WU=PZ79QXjtwOw@mail.gmail.com>
 Subject: Re: [PATCH] mmc: mediatek: mark PM functions as __maybe_unused
-To:     Arnd Bergmann <arnd@kernel.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Wenbin Mei <wenbin.mei@mediatek.com>,
@@ -72,58 +56,89 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 4 Dec 2020 at 15:14, Arnd Bergmann <arnd@kernel.org> wrote:
->
-> On Fri, Dec 4, 2020 at 11:02 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > On Thu, 3 Dec 2020 at 23:29, Arnd Bergmann <arnd@kernel.org> wrote:
->
-> > > -#ifdef CONFIG_PM
-> > >  static void msdc_save_reg(struct msdc_host *host)
+On Fri, Dec 4, 2020 at 3:38 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+.
 > >
-> > Shouldn't msdc_save|restore_reg() be turned into "__maybe_unused" as well?
->
-> There is no need since the compiler can figure that out already when there
-> is a reference to the function from dead code.
-
-Alright, thanks for clarifying.
-
->
-> > >
-> > > -static int msdc_resume(struct device *dev)
-> > > +static int __maybe_unused msdc_resume(struct device *dev)
-> > >  {
-> > >         return pm_runtime_force_resume(dev);
-> > >  }
-> > > -#endif
-> > >
-> > >  static const struct dev_pm_ops msdc_dev_pm_ops = {
+> > I don't see a lot of other instances of that yet, and it's fairly new.
+> > Maybe we should fix it before it gets propagated further.
 > >
-> > You may also change this to a __maybe_unused, as long as you also
-> > assign the .pm pointer in the mt_msdc_driver with
-> > pm_ptr(&msdc_dev_pm_ops).
+> > I would suggest we redefine pm_ptr like
 > >
-> > Ideally the compiler should drop these functions/datas entirely then.
+> > #define pm_ptr(_ptr) (IS_ENABLED(CONFIG_PM) ? (_ptr) : NULL)
 >
-> I don't see a lot of other instances of that yet, and it's fairly new.
-> Maybe we should fix it before it gets propagated further.
+> Why is this better than the original definition?
+
+It tells the compiler that the _ptr is referenced from here, so it does
+not warn about an unused symbol, but at the same time it still
+knows that it can discard it along with the functions referenced by
+it and should not emit any of that output.
+
+> > and remove the __maybe_unused annotations on those that we
+> > already have. This also has the effect of dropping the unused
+> > data from the object, but without having to an an #ifdef or
+> > __maybe_unused.
 >
-> I would suggest we redefine pm_ptr like
->
-> #define pm_ptr(_ptr) (IS_ENABLED(CONFIG_PM) ? (_ptr) : NULL)
+> I didn't quite get this (sorry it's Friday afternoon... getting
+> tired), can you perhaps give a concrete example?
 
-Why is this better than the original definition?
+These work:
 
->
-> and remove the __maybe_unused annotations on those that we
-> already have. This also has the effect of dropping the unused
-> data from the object, but without having to an an #ifdef or
-> __maybe_unused.
+a)
+static const struct dev_pm_ops __maybe_unused ops = { ... };
+...
+      .ops = &ops,
+...
 
-I didn't quite get this (sorry it's Friday afternoon... getting
-tired), can you perhaps give a concrete example?
+b)
+static const struct dev_pm_ops ops = { ... };
+...
+      .ops = &ops,
+...
 
-That said, I have applied your patch for fixes, but let's try to sort
-out the above to make sure we are all on the same page.
+c)
+#ifdef CONFIG_PM
+static const struct dev_pm_ops ops = { ... };
+#endif
+...
+#ifdef CONFIG_PM
+     .ops = ops,
+#endif
+...
 
-Kind regards
-Uffe
+d)
+static const struct dev_pm_ops __maybe_unused ops = { ... };
+...
+#ifdef CONFIG_PM
+     .ops = ops,
+#endif
+...
+
+e)
+static const struct dev_pm_ops ops = { ... };
+...
+     .ops = IS_ENABLED(CONFIG_PM) ? ops : NULL,
+...
+
+But these do not work:
+
+f)
+#ifdef CONFIG_PM
+static const struct dev_pm_ops ops = { ... };
+#endif
+...
+/* error: missing declaration for ops */
+     .ops = IS_ENABLED(CONFIG_PM) ? ops : NULL,
+...
+
+g)
+static struct dev_pm_ops ops = { ... };
+...
+/* warning: unused variable */
+#ifndef CONFIG_PM
+     .ops = NULL,
+#else
+    .ops = ops,
+#endif
+...
+
+       Arnd
