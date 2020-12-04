@@ -2,111 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24E9F2CF542
-	for <lists+linux-mmc@lfdr.de>; Fri,  4 Dec 2020 21:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 129522CF846
+	for <lists+linux-mmc@lfdr.de>; Sat,  5 Dec 2020 01:48:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbgLDUHC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 4 Dec 2020 15:07:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33406 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726021AbgLDUHC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Dec 2020 15:07:02 -0500
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16921C0613D1;
-        Fri,  4 Dec 2020 12:06:22 -0800 (PST)
-Received: by mail-ej1-x643.google.com with SMTP id x16so10429472ejj.7;
-        Fri, 04 Dec 2020 12:06:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Qs8bczzvvcOwQEvENjn4URGTN3wUu8Qwy1O5EPHsTig=;
-        b=ZW/eWHESkxaXaG9FG2ERuWlrJJ2EoQMuQe1ap/t4Zug2xHTKyUvLAe0LSma4Hr4D/2
-         sSMiCQ1AuK2IgAeuycOb5uINCa3XpZunE/MtvasipMDxT4x9h0dBXrW5ZSnsgrea6Quu
-         oE+TKrBVdYlJ60LcYxbjCzHutv1LLN1GYFlPb/guIJxnxiFNKmOEAIGVzc+3dINf0y2U
-         WMvf1vz+bq3a8zx96TxY3YgVrYLl7G3F6xV4fXFq5qaRSGXZ2escXPdnH/c9EEvY/7gt
-         +xxDEd7L/SCwFRzp1bqlM5Pq0vWXHeILgrYhM+zGSha4PEPdAoyyF/YOerl7Dy8QWhmz
-         QOaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Qs8bczzvvcOwQEvENjn4URGTN3wUu8Qwy1O5EPHsTig=;
-        b=J6EaSr7WxdepE9I4get/d+QbhBrLf2MuLK82tB8c+jGVyI4gDxAgD0uaFltbXQzMaY
-         etDSSM9suNGvZ1MmBbsvfcLiz3gJdrYBIcJwnvoxUE7bUxtdCYLX+sOb2Je62iYdBtK2
-         Vx7wOJfPg44vliz1jkf7OUCEVEBxZ/OXqk844MV6dL/SE/GBuT0IPeQpfxnqntfzPeFi
-         35ozp1Cy9MwWI4GCGk9Q/o6v5ovS2fRhJUp0ymvucnlvR/7lY+ACeOSZDS55FDMFsGFw
-         2sb08d8nQ5qSTu9jHby1BKgsxEiM7eFj0LRxCwC60Gvpv+6Zpul1Nv4WqChVKDbHhvSx
-         3ZJQ==
-X-Gm-Message-State: AOAM532iGOxAX2mUI6An7OgQm2IP6PbUqQa0FjIy06FVFPf6zg8dyJgg
-        wqjn3QSOePLg9fMiI9GKhuHjxasT8TDsFTllGHo0gz/s
-X-Google-Smtp-Source: ABdhPJy8bqY9rTcK9UXixUcvuanWn9pcDguoM2gGjlVFhJsXrNeS0S/ACFdsGzvK97Sho3oM8Zmu3as25niNqcfU0q8=
-X-Received: by 2002:a17:906:2ec3:: with SMTP id s3mr8450543eji.133.1607112380662;
- Fri, 04 Dec 2020 12:06:20 -0800 (PST)
+        id S1731062AbgLEArD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 4 Dec 2020 19:47:03 -0500
+Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:49526 "EHLO
+        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726485AbgLEAq5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Dec 2020 19:46:57 -0500
+X-Greylist: delayed 14573 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 19:46:41 EST
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
+        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id 274A31A5589;
+        Sat,  5 Dec 2020 04:44:55 +0900 (JST)
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id E5C39838858;
+        Sat,  5 Dec 2020 04:44:54 +0900 (JST)
+Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
+        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id B84F6838260;
+        Sat,  5 Dec 2020 04:44:54 +0900 (JST)
 MIME-Version: 1.0
-References: <20201129203116.11987-1-adrien.grassein@gmail.com> <CAPDyKFp0U5=s_AJh4-QAn=WCodkYUaFE9BuLjpJB80z23J7JkA@mail.gmail.com>
-In-Reply-To: <CAPDyKFp0U5=s_AJh4-QAn=WCodkYUaFE9BuLjpJB80z23J7JkA@mail.gmail.com>
-From:   Adrien Grassein <adrien.grassein@gmail.com>
-Date:   Fri, 4 Dec 2020 21:06:09 +0100
-Message-ID: <CABkfQAEnVqOikmEBy2XhzSUM1zzvTSLJvMEP8M_k_EfpRuDw5w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: mmc: add an option to disable HS400 for fsl
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <20201204194454.00002B21.0147@hyogo-dai.ac.jp>
+Date:   Sat, 05 Dec 2020 04:44:54 +0900
+From:   "Dr.Raymond" <tabata@hyogo-dai.ac.jp>
+To:     <infocarferr1@aim.com>
+Reply-To: <infocarfer@aim.com>
+Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
+         Kuo Fung I have Important Matter to Discuss with you concerning
+         my late client. Died without a NEXT OF KIN. Send me your private
+         email for full details information. 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MAILER: Active! mail
+X-TM-AS-MML: disable
+X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
+X-TM-AS-Result: No--4.326-5.0-31-10
+X-imss-scan-details: No--4.326-5.0-31-10
+X-TM-AS-User-Approved-Sender: No
+X-TMASE-MatchedRID: +T4Z3mpR0x5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce/bj
+        Enpjm61/Gf23dqZJjE4Erxo5p8V1/E1+zyfzlN7y/sToY2qzpx7w5nZ/qYg41XEWw1TkKAjcYff
+        qdBtG2ocgOkCKsW/kbuunGEBqPil++coAzulIP8gMTyJMXCOBhj9BWL7GG0LsKrauXd3MZDUZaR
+        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
+        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+infocarfer@aim.com
 
-Thanks, it's working with your suggestion.
 
-You can delete/abandon these patches.
 
-Thanks a lot,
-Regards,
-Adrien
-
-Le ven. 4 d=C3=A9c. 2020 =C3=A0 14:18, Ulf Hansson <ulf.hansson@linaro.org>=
- a =C3=A9crit :
->
-> On Sun, 29 Nov 2020 at 21:31, Adrien Grassein <adrien.grassein@gmail.com>=
- wrote:
-> >
-> > Add an option to disable the hs400 support in the fsl esdhc
-> > driver.
-> >
-> > Signed-off-by: Adrien Grassein <adrien.grassein@gmail.com>
-> > ---
-> >  Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml b=
-/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> > index e71d13c2d109..070b40ae8c44 100644
-> > --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> > +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> > @@ -101,6 +101,10 @@ properties:
-> >        If not use this property, driver default set the delay target to=
- value 7.
-> >        Only eMMC HS400 mode need to take care of this property.
-> >      default: 0
-> > +  fsl,no-mmc-hs400:
-> > +    description: |
-> > +      boolean, if present, indicate to disable mmc-hs400 support.
-> > +    type: boolean
->
-> You need to disable hs400, because the sdhci capability register
-> wrongly claims it to be supported, right?
->
-> May I suggest using the DT property "sdhci-caps-mask" instead?
->
-> Kind regards
-> Uffe
