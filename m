@@ -2,73 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D558A2D1E04
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Dec 2020 00:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E15F12D1F86
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Dec 2020 01:52:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728017AbgLGXBo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 7 Dec 2020 18:01:44 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:44446 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727550AbgLGXBo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Dec 2020 18:01:44 -0500
-Received: by mail-ot1-f65.google.com with SMTP id f16so14149503otl.11;
-        Mon, 07 Dec 2020 15:01:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Yl8EdReeQNPvvWTCsgwnxMYnKdzktt93AM6rTiMbYOg=;
-        b=Ehq5UaAFy4kQXLv0OkwYpVUZF+H+2msmvSe15RaKBWXOUFeqcyaOc6A59+G9dq5MXP
-         Kn7aGWVrp/fBkuwZjPznGMbUjFLuG2Yt1KvBj+Mk7yZ/2rgF8pcPu8ynxAuyUbqOWl5o
-         zMbMTUSp5vWVqQI7HIBFSlxiYrdldbzYryZbqr826rxy5jOtlOoKtzC6KMMvIes0B4Bs
-         QdeV06jPzjl5QvzsWWYPeczMnxCGDinjDlJjT+J42gKKD+qlKLAfOZ2JXk64V3fD/RVi
-         5cQLtcq2SH1eTxp1T26JL2twL/AA8JLjXVMDLPt04Ox5ud4oaw4zQGLw/0x4UoPMGdRL
-         UINg==
-X-Gm-Message-State: AOAM531N2bALuq2akjc3PzZ8DiUv1Ar48TpnKoh/ZG9x8iRzNeO9ThFQ
-        ogzyoTnZw0xXDpIIJ4x8bA==
-X-Google-Smtp-Source: ABdhPJy4o+KKt2VsZ8/Ja1T2ELpm7ZEgXBUA9XH7X4kKGoAM+PzLDIBf1VLVvm2YaJvvjKBoOgHo3w==
-X-Received: by 2002:a9d:6c96:: with SMTP id c22mr12740600otr.196.1607382062820;
-        Mon, 07 Dec 2020 15:01:02 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id v123sm3264882oie.20.2020.12.07.15.01.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Dec 2020 15:01:02 -0800 (PST)
-Received: (nullmailer pid 1008235 invoked by uid 1000);
-        Mon, 07 Dec 2020 23:01:01 -0000
-Date:   Mon, 7 Dec 2020 17:01:01 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Zhen Lei <thunder.leizhen@huawei.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: mmc: eliminate yamllint warnings
-Message-ID: <20201207230101.GA1008158@robh.at.kernel.org>
-References: <20201207032626.1445-1-thunder.leizhen@huawei.com>
- <20201207032626.1445-2-thunder.leizhen@huawei.com>
+        id S1728878AbgLHAvl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 7 Dec 2020 19:51:41 -0500
+Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:35013 "EHLO
+        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728234AbgLHAvk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Dec 2020 19:51:40 -0500
+X-Greylist: delayed 16991 seconds by postgrey-1.27 at vger.kernel.org; Mon, 07 Dec 2020 19:51:35 EST
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
+        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id DE24F1A606F;
+        Tue,  8 Dec 2020 04:09:26 +0900 (JST)
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id BC3D8382029;
+        Tue,  8 Dec 2020 04:09:26 +0900 (JST)
+Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
+        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id 426EA83825B;
+        Tue,  8 Dec 2020 04:09:26 +0900 (JST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201207032626.1445-2-thunder.leizhen@huawei.com>
+Message-ID: <20201207190926.000057A2.0664@hyogo-dai.ac.jp>
+Date:   Tue, 08 Dec 2020 04:09:26 +0900
+From:   "Raymond " <hozumi@hyogo-dai.ac.jp>
+To:     <infocarferw1@aim.com>
+Reply-To: <infocarfer@aim.com>
+Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
+         Kuo Fung I have Important Matter to Discuss with you concerning
+         my late client. Died without a NEXT OF KIN. Send me your private
+         email for full details information.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MAILER: Active! mail
+X-TM-AS-MML: disable
+X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
+X-TM-AS-Result: No--2.951-5.0-31-10
+X-imss-scan-details: No--2.951-5.0-31-10
+X-TM-AS-User-Approved-Sender: No
+X-TMASE-MatchedRID: X41QhRrT5f5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce6P0
+        clhHAFPyJA6GJqxAEzL554DD9nXlqqPFjJEFr+olfeZdJ1XsoriOub3SYcq1hJf7eAx/Ae/AbQo
+        eraIcZBRw7u01FqNA2K1Ia4IbeAdLm9ukrtqhno/rIUidklntLAP5zT0d393cymsk/wUE4hoZaR
+        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
+        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 07 Dec 2020 11:26:26 +0800, Zhen Lei wrote:
-> Eliminate the following yamllint warnings:
-> ./Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> :20:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
-> :30:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
-> :33:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
-> 
-> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-> ---
->  Documentation/devicetree/bindings/mmc/mtk-sd.yaml | 26 +++++++++++------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
-> 
+email:kraymond75@aol.com
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+
+
