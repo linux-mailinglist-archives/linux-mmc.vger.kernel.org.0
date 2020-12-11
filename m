@@ -2,113 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 441952D7701
-	for <lists+linux-mmc@lfdr.de>; Fri, 11 Dec 2020 14:55:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6CFF2D77A5
+	for <lists+linux-mmc@lfdr.de>; Fri, 11 Dec 2020 15:20:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390622AbgLKNys (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 11 Dec 2020 08:54:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39166 "EHLO
+        id S2405926AbgLKOSR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 11 Dec 2020 09:18:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390535AbgLKNy1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 11 Dec 2020 08:54:27 -0500
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CF84C061793
-        for <linux-mmc@vger.kernel.org>; Fri, 11 Dec 2020 05:53:47 -0800 (PST)
-Received: by mail-qk1-x742.google.com with SMTP id 143so8397537qke.10
-        for <linux-mmc@vger.kernel.org>; Fri, 11 Dec 2020 05:53:47 -0800 (PST)
+        with ESMTP id S2405930AbgLKOSK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 11 Dec 2020 09:18:10 -0500
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D588C0613CF
+        for <linux-mmc@vger.kernel.org>; Fri, 11 Dec 2020 06:17:29 -0800 (PST)
+Received: by mail-lf1-x144.google.com with SMTP id 23so13525672lfg.10
+        for <linux-mmc@vger.kernel.org>; Fri, 11 Dec 2020 06:17:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=semihalf-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=am+2yk9rlqtbVhZwrF/QYG0TW4go4+v58RaDE0YJVkg=;
-        b=sjiP97iCb6jEqk6pJZ3bNHdcNGmg/71IMWS9q4+NTagiACQCiHxHikgrxKMxKBHUhC
-         sV6bN4wVP2WDjLSNk9zKtsoGacAjiZ0mSjtvtwpQyM9+rDgEKIpZCckS7BiQSyBfvkS8
-         U9AKLvJr4jVOcuhwkZrWcZH7Rf28UJWFv4UdYT/tuvlR2qV4vDhmnnTKgX99RQrjAO9Y
-         6rfoPEy1zuxvJ/YHMs0dANUbT2B2Va7pO1k18Mp8QG6jzkmDBY9r1X1YbCL93hX8ZFaU
-         MnBISumAB6jg2oU/yTFzEELFnh3Uh/4qimiPRR6Dunf2OcZJsnPZ6IV3qdFQhJ0RzDHL
-         O+fA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=11tRxXmcRL83hT4n8MDtkMiTQdUv9JJoYgN481wECQI=;
+        b=k0kUp77H54YOwO3WS2omVR2voAv6qo8ArgdgCMds49n1YSaD7GuIp8Kp7JYvox+ClU
+         DR2B+zlfdwqMuJbwVnlT3UYxRTQVPbCT/1IudphcxguNGX0XfRvxUGX+lJHHqRxxWvve
+         VhfKecBaBaOFnzng8IdpkNxVTUzQn2gOfzl8QF0ntIlEZ/Eqj0DujouJUjbXEizlXkrM
+         LrHOaJroY+22897sBE3zIQk/FuAhf3rUjjUc65Byd7Ss3LciH+mxsh3O5ikkk9hmSzyK
+         VjEBpqF8er+25VhF6ZJJ1i7cder4kvsywh+1ihQLjaekPzWFoBFaDtM5CA/ea1XLGoIS
+         yGCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=am+2yk9rlqtbVhZwrF/QYG0TW4go4+v58RaDE0YJVkg=;
-        b=ULkVIOSV5Oe4/saZNvaefbd/u0VJaJt7qG/IVOzAhPB5sE6YTP/u5OA2a9pIRixXdp
-         tO871uFeJqrOcxfME3nbBKcNQvrwxbRgfRkgmVGmx8C/9IS2Ccdqm3f1fm4arjIB8beh
-         r1iEDoRXTactHElG0RUmKLJ9P35gkj31pW6kybh3Nm7A3hUCOEpULop4qvYSOYIEu2zo
-         CPaLaSKPaqRDVj3kTEwuGYwE145N0O3UvQNytfDRc8UsvbrPP68dxRkjHTFVrwncZ7QS
-         z8A/Brisw30s51e/et37KGNGV91I0bX3/ceCz837S+zLyCmvDxpaThyZANe0IOKq31Ko
-         Z93w==
-X-Gm-Message-State: AOAM530/vw7c0JfVZ6y1PsbN3JRvUlXyv6F+StjqlE4orgdf6oSzg4TJ
-        xlpNkYK9hZh9BeEhG4/8SmtRPb7E+YccYHROijMuTA==
-X-Google-Smtp-Source: ABdhPJyYWBakyT3hEXmuJsjvfwnz/oJCdb47wQHHewrJcLM78CiAQFbOrOyMziUWC7me0hhSdrQwgJD2iEBZ93bw08w=
-X-Received: by 2002:a37:2cc4:: with SMTP id s187mr15797755qkh.385.1607694826325;
- Fri, 11 Dec 2020 05:53:46 -0800 (PST)
-MIME-Version: 1.0
-References: <20201204171626.10935-1-mw@semihalf.com> <CAPDyKFooRuitBjVr7FoMbty3rmM3eOsLKqwF5=ZQ=Aj6r29h+A@mail.gmail.com>
-In-Reply-To: <CAPDyKFooRuitBjVr7FoMbty3rmM3eOsLKqwF5=ZQ=Aj6r29h+A@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=11tRxXmcRL83hT4n8MDtkMiTQdUv9JJoYgN481wECQI=;
+        b=VFut3oTnlJeWonUhwWxkUM7i/5K7drVdKJf5efRJnNuqv5S1dlr07yLW3YDfNoMR4Y
+         262wqOhDMi0aFS/FZoSt6PIWa9r1f0x4yluDkMwSbN5tz7fUgRd6J4LVb+8EMmi5+Df7
+         dHnWc0gbA4qVInJGoIcO/s8Wf46wFL6F1sMMjQsMI/RYLZ5XF0yhcg563KPOtkM8gTbO
+         mUYM9AXTxtpbfbcmrykhA+8vaG9R9VemIe2AFT09Cm3V+TeZk0egkznfssYSbJoNyk5P
+         AHsV9HaO5Vd3RhOS597DTMegyIVwKnTFS7VTZLu2n0GX/0MLXYG5G0CPzvfSui1UhNN9
+         w6DA==
+X-Gm-Message-State: AOAM533EbzUO5jByeyM5OmGHhSoOyhDKJHjSb4TqN2uSxD5VvgTyIU5R
+        ydNTDc1HD8KTYw7UVYZ37eh9aA==
+X-Google-Smtp-Source: ABdhPJwtKCFc4Mm8+N3WHfMuoJAo+6NALou7GDnjewzGye7r3r4uJGEcXCbgK6gp0u5VMiYIWQ+l4w==
+X-Received: by 2002:ac2:48b2:: with SMTP id u18mr4917512lfg.313.1607696248053;
+        Fri, 11 Dec 2020 06:17:28 -0800 (PST)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id q16sm903019lfb.8.2020.12.11.06.17.26
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 11 Dec 2020 06:17:27 -0800 (PST)
 From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Fri, 11 Dec 2020 14:53:35 +0100
-Message-ID: <CAPv3WKevssDOq72xF+ciLdCGC5EZNpnSCb4Sw3PiEfnqb-ZG5Q@mail.gmail.com>
-Subject: Re: [PATCH v4 0/4] sdhci-xenon ACPI support
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Ziji Hu <huziji@marvell.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Grzegorz Jaszczyk <jaz@semihalf.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Ard Biesheuvel <ard.biesheuvel@arm.com>,
-        Kostya Porotchkin <kostap@marvell.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
+Cc:     ulf.hansson@linaro.org, huziji@marvell.com,
+        adrian.hunter@intel.com, jaz@semihalf.com, tn@semihalf.com,
+        kostap@marvell.com, Alex Leibovich <alexl@marvell.com>,
+        Marcin Wojtas <mw@semihalf.com>, stable@vger.kernel.org
+Subject: [PATCH] mmc: sdhci-xenon: fix 1.8v regulator stabilization
+Date:   Fri, 11 Dec 2020 15:16:56 +0100
+Message-Id: <20201211141656.24915-1-mw@semihalf.com>
+X-Mailer: git-send-email 2.29.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-pt., 11 gru 2020 o 14:47 Ulf Hansson <ulf.hansson@linaro.org> napisa=C5=82(=
-a):
->
-> On Fri, 4 Dec 2020 at 18:17, Marcin Wojtas <mw@semihalf.com> wrote:
-> >
-> > Hi,
-> >
-> > The fourth version of the sdhci-xenon ACPI support
-> > addresses a comment regarding clk handling in xenon_runtime_resume.
-> >
-> > The MacchiatoBin firmware for testing can be obtained from:
-> > https://drive.google.com/file/d/1Y8BhyaCrksQgT_GPfpqqiYHpQ41kP8Kp
-> >
-> > Changelog:
-> > v3->v4
-> >   * [3/4] Call clk_prepare_enable unconditionally in xenon_runtime_resu=
-me.
-> >   * Add Adrian's Acked-by to all patches.
-> >
-> > v2->v3
-> >   * [3/4] Call clk_disable_unprepare unconditionally.
-> >   * Add Adrian's Acked-by to all patches.
-> >
-> > v1->v2
-> >   * Split single commit to 4
-> >   * Use device_match_data and dedicated ACPI ID's per controller
-> >     variant
-> >
-> > Marcin Wojtas (4):
-> >   mmc: sdhci-xenon: use match data for controllers variants
-> >   mmc: sdhci-xenon: switch to device_* API
-> >   mmc: sdhci-xenon: use clk only with DT
-> >   mmc: sdhci-xenon: introduce ACPI support
-> >
-> >  drivers/mmc/host/sdhci-xenon.h     | 12 ++-
-> >  drivers/mmc/host/sdhci-xenon-phy.c | 40 +++++----
-> >  drivers/mmc/host/sdhci-xenon.c     | 91 +++++++++++++-------
-> >  3 files changed, 91 insertions(+), 52 deletions(-)
-> >
->
-> Applied for next, thanks!
->
+From: Alex Leibovich <alexl@marvell.com>
 
-Thanks a lot!
+Automatic Clock Gating is a feature used for the power
+consumption optimisation. It turned out that
+during early init phase it may prevent the stable voltage
+switch to 1.8V - due to that on some platfroms an endless
+printout in dmesg can be observed:
+"mmc1: 1.8V regulator output did not became stable"
+Fix the problem by disabling the ACG at very beginning
+of the sdhci_init and let that be enabled later.
 
-Best regards,
-Marcin
+Fixes: 3a3748dba881 ("mmc: sdhci-xenon: Add Marvell Xenon SDHC core functionality")
+Signed-off-by: Alex Leibovich <alexl@marvell.com>
+Signed-off-by: Marcin Wojtas <mw@semihalf.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/mmc/host/sdhci-xenon.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/sdhci-xenon.c b/drivers/mmc/host/sdhci-xenon.c
+index c67611fdaa8a..4b05f6fdefb4 100644
+--- a/drivers/mmc/host/sdhci-xenon.c
++++ b/drivers/mmc/host/sdhci-xenon.c
+@@ -168,7 +168,12 @@ static void xenon_reset_exit(struct sdhci_host *host,
+ 	/* Disable tuning request and auto-retuning again */
+ 	xenon_retune_setup(host);
+ 
+-	xenon_set_acg(host, true);
++	/*
++	 * The ACG should be turned off at the early init time, in order
++	 * to solve a possile issues with the 1.8V regulator stabilization.
++	 * The feature is enabled in later stage.
++	 */
++	xenon_set_acg(host, false);
+ 
+ 	xenon_set_sdclk_off_idle(host, sdhc_id, false);
+ 
+-- 
+2.29.0
+
