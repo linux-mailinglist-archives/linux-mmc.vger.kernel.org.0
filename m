@@ -2,136 +2,121 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD5122D6B17
-	for <lists+linux-mmc@lfdr.de>; Fri, 11 Dec 2020 00:38:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27E352D6D64
+	for <lists+linux-mmc@lfdr.de>; Fri, 11 Dec 2020 02:24:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394193AbgLJWbY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 10 Dec 2020 17:31:24 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:32831 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405124AbgLJWZQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 10 Dec 2020 17:25:16 -0500
-Received: by mail-oi1-f193.google.com with SMTP id d27so7599282oic.0
-        for <linux-mmc@vger.kernel.org>; Thu, 10 Dec 2020 14:25:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=SOuAnc72Sn7TZykeZYnfbLOqNMLPEGEBuVRgnJuNUHU=;
-        b=Y1E0caM2MrEJIrcC6goyBRqXU3NareIzJLW/bqAaZTMx4B+XNRmbe2MeoHCy0vQ4HB
-         9TPee98s3p9rWX2Em7ccZFOsteWqQf1JMCR/2uLQEWQ9l+NIfa7XhRjkYFY3m+cUc3X0
-         MvsXQKf/3pYkKoZpmcJ3MXZyWyqKRwLJt9jtx/xn7qmDpghk3zcXw/QMtG13jd/orak3
-         fhkDp3F9JWJDrsHg6wIzIr/fRI84+qb/pJOga9pJ1391GQElc3ag4QqPScUbrNjYOPhO
-         OECU5rHqYs0tteGbo5F5I4b7b/SNgUO3+oy0c3yQb0Tc8KPuFbtSfSDj6BUJwuGyNjKM
-         ys4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SOuAnc72Sn7TZykeZYnfbLOqNMLPEGEBuVRgnJuNUHU=;
-        b=PgZPvZR/wP2eax9cA0fI2s3SLI58SbAJlusidGmW4S6kJoA/V2ANCc2+Lm+Q8NuYpD
-         7XL+3Yg9+a+Qck79wCS9hG1jLrnLqeRXE8+pfzHBonKLCimeUatWjbNAEhBB8nbiV9gV
-         4Y5m511/7hLPQoLBXqAdwWCoo/vlVB7GDfsfj5MBwuLee20X842TUrB2pffr6hgRWCkB
-         YU+J1ICAqOSob2fVjiO74vJ45ogPpRltOSf0yKp8/pqoC2J9y2GWvtbgrWmd8a70mbJf
-         DuxSwp/R0VV41aaSX4BANm+U68SpxFhLs3o2n30DS12pORaBBO3V18GGZeMBXFRVrt67
-         zq9w==
-X-Gm-Message-State: AOAM532NsuLobeuj5cybtlW4KjYiZ3v/+TJE2zn7YMno9feay7xnHjXP
-        0yfkvmyIlMa7PGLI4QKRcv3y7q2whbeSpw==
-X-Google-Smtp-Source: ABdhPJy2pfrs1djxuegYy/7NozmqFhBderusUSEjO6fWI+c41iGCQs4pZPUO9/TDszSeI+3W+JMWxA==
-X-Received: by 2002:aca:568f:: with SMTP id k137mr7114086oib.138.1607639014184;
-        Thu, 10 Dec 2020 14:23:34 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id h2sm1394492otn.15.2020.12.10.14.23.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Dec 2020 14:23:33 -0800 (PST)
-Date:   Thu, 10 Dec 2020 16:23:31 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Stephen Boyd <swboyd@chromium.org>, vbadigan@codeaurora.org,
-        Taniya Das <tdas@codeaurora.org>,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
-Subject: Re: [PATCH v3] mmc: sdhci-msm: Warn about overclocking SD/MMC
-Message-ID: <X9Kf40VhaMTZjy9Q@builder.lan>
-References: <20201210132745.v3.1.Iec3430c7d3c2a29262695edef7b82a14aaa567e5@changeid>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201210132745.v3.1.Iec3430c7d3c2a29262695edef7b82a14aaa567e5@changeid>
+        id S2394908AbgLKBXM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 10 Dec 2020 20:23:12 -0500
+Received: from foss.arm.com ([217.140.110.172]:49798 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2394746AbgLKBVf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 10 Dec 2020 20:21:35 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 029861478;
+        Thu, 10 Dec 2020 17:20:16 -0800 (PST)
+Received: from localhost.localdomain (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE55A3F66B;
+        Thu, 10 Dec 2020 17:20:13 -0800 (PST)
+From:   Andre Przywara <andre.przywara@arm.com>
+To:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@siol.net>
+Cc:     Icenowy Zheng <icenowy@aosc.xyz>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        =?UTF-8?q?Cl=C3=A9ment=20P=C3=A9ron?= <peron.clem@gmail.com>,
+        Shuosheng Huang <huangshuosheng@allwinnertech.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-sunxi@googlegroups.com, Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org
+Subject: [PATCH v2 09/21] mmc: sunxi: add support for A100 mmc controller
+Date:   Fri, 11 Dec 2020 01:19:22 +0000
+Message-Id: <20201211011934.6171-10-andre.przywara@arm.com>
+X-Mailer: git-send-email 2.14.1
+In-Reply-To: <20201211011934.6171-1-andre.przywara@arm.com>
+References: <20201211011934.6171-1-andre.przywara@arm.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu 10 Dec 15:27 CST 2020, Douglas Anderson wrote:
+From: Yangtao Li <frank@allwinnertech.com>
 
-> As talked about in commit 5e4b7e82d497 ("clk: qcom: gcc-sdm845: Use
-> floor ops for sdcc clks"), most clocks handled by the Qualcomm clock
-> drivers are rounded _up_ by default instead of down.  We should make
-> sure SD/MMC clocks are always rounded down in the clock drivers.
-> Let's add a warning in the Qualcomm SDHCI driver to help catch the
-> problem.
-> 
-> This would have saved a bunch of time [1].
-> 
-> [1] http://lore.kernel.org/r/20201210102234.1.I096779f219625148900fc984dd0084ed1ba87c7f@changeid
-> 
-> Suggested-by: Stephen Boyd <swboyd@chromium.org>
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+This patch adds support for A100 MMC controller, which use word address
+for internal dma.
 
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Signed-off-by: Yangtao Li <frank@allwinnertech.com>
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+---
+ drivers/mmc/host/sunxi-mmc.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-Regards,
-Bjorn
+diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+index fc62773602ec..1518b64112b7 100644
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -244,6 +244,7 @@ struct sunxi_idma_des {
+ 
+ struct sunxi_mmc_cfg {
+ 	u32 idma_des_size_bits;
++	u32 idma_des_shift;
+ 	const struct sunxi_mmc_clk_delay *clk_delays;
+ 
+ 	/* does the IP block support autocalibration? */
+@@ -343,7 +344,7 @@ static int sunxi_mmc_init_host(struct sunxi_mmc_host *host)
+ 	/* Enable CEATA support */
+ 	mmc_writel(host, REG_FUNS, SDXC_CEATA_ON);
+ 	/* Set DMA descriptor list base address */
+-	mmc_writel(host, REG_DLBA, host->sg_dma);
++	mmc_writel(host, REG_DLBA, host->sg_dma >> host->cfg->idma_des_shift);
+ 
+ 	rval = mmc_readl(host, REG_GCTRL);
+ 	rval |= SDXC_INTERRUPT_ENABLE_BIT;
+@@ -373,8 +374,10 @@ static void sunxi_mmc_init_idma_des(struct sunxi_mmc_host *host,
+ 
+ 		next_desc += sizeof(struct sunxi_idma_des);
+ 		pdes[i].buf_addr_ptr1 =
+-			cpu_to_le32(sg_dma_address(&data->sg[i]));
+-		pdes[i].buf_addr_ptr2 = cpu_to_le32((u32)next_desc);
++			cpu_to_le32(sg_dma_address(&data->sg[i]) >>
++				    host->cfg->idma_des_shift);
++		pdes[i].buf_addr_ptr2 = cpu_to_le32((u32)next_desc >>
++						    host->cfg->idma_des_shift);
+ 	}
+ 
+ 	pdes[0].config |= cpu_to_le32(SDXC_IDMAC_DES0_FD);
+@@ -1178,6 +1181,23 @@ static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
+ 	.needs_new_timings = true,
+ };
+ 
++static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
++	.idma_des_size_bits = 16,
++	.idma_des_shift = 2,
++	.clk_delays = NULL,
++	.can_calibrate = true,
++	.mask_data0 = true,
++	.needs_new_timings = true,
++};
++
++static const struct sunxi_mmc_cfg sun50i_a100_emmc_cfg = {
++	.idma_des_size_bits = 13,
++	.idma_des_shift = 2,
++	.clk_delays = NULL,
++	.can_calibrate = true,
++	.needs_new_timings = true,
++};
++
+ static const struct of_device_id sunxi_mmc_of_match[] = {
+ 	{ .compatible = "allwinner,sun4i-a10-mmc", .data = &sun4i_a10_cfg },
+ 	{ .compatible = "allwinner,sun5i-a13-mmc", .data = &sun5i_a13_cfg },
+@@ -1186,6 +1206,8 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
+ 	{ .compatible = "allwinner,sun9i-a80-mmc", .data = &sun9i_a80_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
++	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
++	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
+-- 
+2.17.5
 
-> ---
-> 
-> Changes in v3:
-> - Proper printf format code.
-> 
-> Changes in v2:
-> - Store rate in unsigned long, not unsigned int.
-> - Reuse the clk_get_rate() in the later print.
-> 
->  drivers/mmc/host/sdhci-msm.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-> index 3451eb325513..50beb407dbe9 100644
-> --- a/drivers/mmc/host/sdhci-msm.c
-> +++ b/drivers/mmc/host/sdhci-msm.c
-> @@ -353,6 +353,7 @@ static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
->  	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
->  	struct mmc_ios curr_ios = host->mmc->ios;
->  	struct clk *core_clk = msm_host->bulk_clks[0].clk;
-> +	unsigned long achieved_rate;
->  	int rc;
->  
->  	clock = msm_get_clock_rate_for_bus_mode(host, clock);
-> @@ -363,10 +364,20 @@ static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
->  		       curr_ios.timing);
->  		return;
->  	}
-> +
-> +	/*
-> +	 * Qualcomm clock drivers by default round clock _up_ if they can't
-> +	 * make the requested rate.  This is not good for SD.  Yell if we
-> +	 * encounter it.
-> +	 */
-> +	achieved_rate = clk_get_rate(core_clk);
-> +	if (achieved_rate > clock)
-> +		pr_warn("%s: Card appears overclocked; req %u Hz, actual %lu Hz\n",
-> +			mmc_hostname(host->mmc), clock, achieved_rate);
-> +
->  	msm_host->clk_rate = clock;
->  	pr_debug("%s: Setting clock at rate %lu at timing %d\n",
-> -		 mmc_hostname(host->mmc), clk_get_rate(core_clk),
-> -		 curr_ios.timing);
-> +		 mmc_hostname(host->mmc), achieved_rate, curr_ios.timing);
->  }
->  
->  /* Platform specific tuning */
-> -- 
-> 2.29.2.576.ga3fc446d84-goog
-> 
