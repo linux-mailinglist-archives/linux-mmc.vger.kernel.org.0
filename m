@@ -2,104 +2,136 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6CFF2D77A5
-	for <lists+linux-mmc@lfdr.de>; Fri, 11 Dec 2020 15:20:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A7722D7C94
+	for <lists+linux-mmc@lfdr.de>; Fri, 11 Dec 2020 18:16:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405926AbgLKOSR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 11 Dec 2020 09:18:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42834 "EHLO
+        id S2391373AbgLKRPx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 11 Dec 2020 12:15:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405930AbgLKOSK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 11 Dec 2020 09:18:10 -0500
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D588C0613CF
-        for <linux-mmc@vger.kernel.org>; Fri, 11 Dec 2020 06:17:29 -0800 (PST)
-Received: by mail-lf1-x144.google.com with SMTP id 23so13525672lfg.10
-        for <linux-mmc@vger.kernel.org>; Fri, 11 Dec 2020 06:17:29 -0800 (PST)
+        with ESMTP id S2393817AbgLKRPS (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 11 Dec 2020 12:15:18 -0500
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D4B4C0613D6
+        for <linux-mmc@vger.kernel.org>; Fri, 11 Dec 2020 09:14:38 -0800 (PST)
+Received: by mail-pj1-x1041.google.com with SMTP id hk16so2679065pjb.4
+        for <linux-mmc@vger.kernel.org>; Fri, 11 Dec 2020 09:14:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf-com.20150623.gappssmtp.com; s=20150623;
+        d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=11tRxXmcRL83hT4n8MDtkMiTQdUv9JJoYgN481wECQI=;
-        b=k0kUp77H54YOwO3WS2omVR2voAv6qo8ArgdgCMds49n1YSaD7GuIp8Kp7JYvox+ClU
-         DR2B+zlfdwqMuJbwVnlT3UYxRTQVPbCT/1IudphcxguNGX0XfRvxUGX+lJHHqRxxWvve
-         VhfKecBaBaOFnzng8IdpkNxVTUzQn2gOfzl8QF0ntIlEZ/Eqj0DujouJUjbXEizlXkrM
-         LrHOaJroY+22897sBE3zIQk/FuAhf3rUjjUc65Byd7Ss3LciH+mxsh3O5ikkk9hmSzyK
-         VjEBpqF8er+25VhF6ZJJ1i7cder4kvsywh+1ihQLjaekPzWFoBFaDtM5CA/ea1XLGoIS
-         yGCA==
+        bh=uR0YjgXtKu52Ys9ozO8PBjvLYurXhASyqCjNQPfwTb4=;
+        b=Brgm7LZVxVwcvbkIFXrexDB2orSaCca8av4L297rkICYUdeanX03+8l9Mrm3UGRRhF
+         agAFyXef7Ta5qY/u1+sGco5pZDn8MXcQIZjtQxRMkv5HjHuK/cwTb3AdSyEhACPPNTDB
+         07nT1YBEgOekA4MVZx8E8Y+FigG1drsDsRXZk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=11tRxXmcRL83hT4n8MDtkMiTQdUv9JJoYgN481wECQI=;
-        b=VFut3oTnlJeWonUhwWxkUM7i/5K7drVdKJf5efRJnNuqv5S1dlr07yLW3YDfNoMR4Y
-         262wqOhDMi0aFS/FZoSt6PIWa9r1f0x4yluDkMwSbN5tz7fUgRd6J4LVb+8EMmi5+Df7
-         dHnWc0gbA4qVInJGoIcO/s8Wf46wFL6F1sMMjQsMI/RYLZ5XF0yhcg563KPOtkM8gTbO
-         mUYM9AXTxtpbfbcmrykhA+8vaG9R9VemIe2AFT09Cm3V+TeZk0egkznfssYSbJoNyk5P
-         AHsV9HaO5Vd3RhOS597DTMegyIVwKnTFS7VTZLu2n0GX/0MLXYG5G0CPzvfSui1UhNN9
-         w6DA==
-X-Gm-Message-State: AOAM533EbzUO5jByeyM5OmGHhSoOyhDKJHjSb4TqN2uSxD5VvgTyIU5R
-        ydNTDc1HD8KTYw7UVYZ37eh9aA==
-X-Google-Smtp-Source: ABdhPJwtKCFc4Mm8+N3WHfMuoJAo+6NALou7GDnjewzGye7r3r4uJGEcXCbgK6gp0u5VMiYIWQ+l4w==
-X-Received: by 2002:ac2:48b2:: with SMTP id u18mr4917512lfg.313.1607696248053;
-        Fri, 11 Dec 2020 06:17:28 -0800 (PST)
-Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
-        by smtp.gmail.com with ESMTPSA id q16sm903019lfb.8.2020.12.11.06.17.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 11 Dec 2020 06:17:27 -0800 (PST)
-From:   Marcin Wojtas <mw@semihalf.com>
-To:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
-Cc:     ulf.hansson@linaro.org, huziji@marvell.com,
-        adrian.hunter@intel.com, jaz@semihalf.com, tn@semihalf.com,
-        kostap@marvell.com, Alex Leibovich <alexl@marvell.com>,
-        Marcin Wojtas <mw@semihalf.com>, stable@vger.kernel.org
-Subject: [PATCH] mmc: sdhci-xenon: fix 1.8v regulator stabilization
-Date:   Fri, 11 Dec 2020 15:16:56 +0100
-Message-Id: <20201211141656.24915-1-mw@semihalf.com>
-X-Mailer: git-send-email 2.29.0
+        bh=uR0YjgXtKu52Ys9ozO8PBjvLYurXhASyqCjNQPfwTb4=;
+        b=WeQGlb8pn6hgDZev9lh/Hw3nYk4Y7Fy70wJNvmqyHg+2z9pk1xcjVAT0GCdoPlZjuj
+         IueG2cepUCCWUY9JANYFdF8UBEglrBdU19WyfXkshNYg1I5LqIiQk0LmV2VOWds5v/WO
+         6RN8VtSRRi7Ie1bqstfHyEtDSmVwEGWOKKPNwhNhQfxkggIUEgC36XN4mgoTSFwEnapc
+         CNO3lI4pFmeulTAfVPbS/z0OxlakFh1DamjFPfbA6DmxAmEIXVR3/2/faeFOlg0NdpJ1
+         gmB3ZalEa6l63tSnEcONvmB5d7XmKYqYXhjJxa11cz841OqnJpEX3DGGOPlc3IrU+1a6
+         1IaQ==
+X-Gm-Message-State: AOAM533aajM6L0V0H2dVKZR24+OL0eQIyQ+zBD16sBjLqV1VP7SatYju
+        kGDg0q/ijpjkXmylbGAlP7MiJw==
+X-Google-Smtp-Source: ABdhPJyLmeMdzeZUCXeg52OqxkzlZcrmD5D5c2OFcExkilP+LqBoMxGKs3kJmHS0cxy79jbY6XVycA==
+X-Received: by 2002:a17:90b:1087:: with SMTP id gj7mr9882865pjb.41.1607706877348;
+        Fri, 11 Dec 2020 09:14:37 -0800 (PST)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
+        by smtp.gmail.com with ESMTPSA id w70sm11149737pfd.65.2020.12.11.09.14.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Dec 2020 09:14:36 -0800 (PST)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Stephen Boyd <swboyd@chromium.org>,
+        Taniya Das <tdas@codeaurora.org>, vbadigan@codeaurora.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
+Subject: [PATCH v4 1/2] mmc: sdhci-msm: Warn about overclocking SD/MMC
+Date:   Fri, 11 Dec 2020 09:12:32 -0800
+Message-Id: <20201211091150.v4.1.Iec3430c7d3c2a29262695edef7b82a14aaa567e5@changeid>
+X-Mailer: git-send-email 2.29.2.576.ga3fc446d84-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Alex Leibovich <alexl@marvell.com>
+As talked about in commit 5e4b7e82d497 ("clk: qcom: gcc-sdm845: Use
+floor ops for sdcc clks"), most clocks handled by the Qualcomm clock
+drivers are rounded _up_ by default instead of down.  We should make
+sure SD/MMC clocks are always rounded down in the clock drivers.
+Let's add a warning in the Qualcomm SDHCI driver to help catch the
+problem.
 
-Automatic Clock Gating is a feature used for the power
-consumption optimisation. It turned out that
-during early init phase it may prevent the stable voltage
-switch to 1.8V - due to that on some platfroms an endless
-printout in dmesg can be observed:
-"mmc1: 1.8V regulator output did not became stable"
-Fix the problem by disabling the ACG at very beginning
-of the sdhci_init and let that be enabled later.
+This would have saved a bunch of time [1].
 
-Fixes: 3a3748dba881 ("mmc: sdhci-xenon: Add Marvell Xenon SDHC core functionality")
-Signed-off-by: Alex Leibovich <alexl@marvell.com>
-Signed-off-by: Marcin Wojtas <mw@semihalf.com>
-Cc: stable@vger.kernel.org
+NOTE: this doesn't actually fix any problems, it just makes it obvious
+to devs that there is a problem and that should be an indication to
+fix the clock driver.
+
+[1] http://lore.kernel.org/r/20201210102234.1.I096779f219625148900fc984dd0084ed1ba87c7f@changeid
+
+Suggested-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 ---
- drivers/mmc/host/sdhci-xenon.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-xenon.c b/drivers/mmc/host/sdhci-xenon.c
-index c67611fdaa8a..4b05f6fdefb4 100644
---- a/drivers/mmc/host/sdhci-xenon.c
-+++ b/drivers/mmc/host/sdhci-xenon.c
-@@ -168,7 +168,12 @@ static void xenon_reset_exit(struct sdhci_host *host,
- 	/* Disable tuning request and auto-retuning again */
- 	xenon_retune_setup(host);
+Changes in v4:
+- Emphasize in the commit message that this itself doesn't fix anything.
+
+Changes in v3:
+- Proper printf format code.
+
+Changes in v2:
+- Store rate in unsigned long, not unsigned int.
+- Reuse the clk_get_rate() in the later print.
+
+ drivers/mmc/host/sdhci-msm.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 3451eb325513..50beb407dbe9 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -353,6 +353,7 @@ static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
+ 	struct mmc_ios curr_ios = host->mmc->ios;
+ 	struct clk *core_clk = msm_host->bulk_clks[0].clk;
++	unsigned long achieved_rate;
+ 	int rc;
  
--	xenon_set_acg(host, true);
+ 	clock = msm_get_clock_rate_for_bus_mode(host, clock);
+@@ -363,10 +364,20 @@ static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
+ 		       curr_ios.timing);
+ 		return;
+ 	}
++
 +	/*
-+	 * The ACG should be turned off at the early init time, in order
-+	 * to solve a possile issues with the 1.8V regulator stabilization.
-+	 * The feature is enabled in later stage.
++	 * Qualcomm clock drivers by default round clock _up_ if they can't
++	 * make the requested rate.  This is not good for SD.  Yell if we
++	 * encounter it.
 +	 */
-+	xenon_set_acg(host, false);
++	achieved_rate = clk_get_rate(core_clk);
++	if (achieved_rate > clock)
++		pr_warn("%s: Card appears overclocked; req %u Hz, actual %lu Hz\n",
++			mmc_hostname(host->mmc), clock, achieved_rate);
++
+ 	msm_host->clk_rate = clock;
+ 	pr_debug("%s: Setting clock at rate %lu at timing %d\n",
+-		 mmc_hostname(host->mmc), clk_get_rate(core_clk),
+-		 curr_ios.timing);
++		 mmc_hostname(host->mmc), achieved_rate, curr_ios.timing);
+ }
  
- 	xenon_set_sdclk_off_idle(host, sdhc_id, false);
- 
+ /* Platform specific tuning */
 -- 
-2.29.0
+2.29.2.576.ga3fc446d84-goog
 
