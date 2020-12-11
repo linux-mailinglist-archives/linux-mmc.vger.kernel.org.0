@@ -2,51 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27A962D8096
-	for <lists+linux-mmc@lfdr.de>; Fri, 11 Dec 2020 22:14:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E76702D822F
+	for <lists+linux-mmc@lfdr.de>; Fri, 11 Dec 2020 23:37:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392998AbgLKVNH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 11 Dec 2020 16:13:07 -0500
-Received: from server.kenspensetc.com ([185.148.128.76]:60744 "EHLO
-        server.kenspensetc.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2395162AbgLKVMY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 11 Dec 2020 16:12:24 -0500
-Received: from localhost ([127.0.0.1]:48514 helo=server.kenspensetc.com)
-        by server.kenspensetc.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <sender@ridecals.com>)
-        id 1knLnA-0002CX-4B; Thu, 10 Dec 2020 08:15:32 -0500
-Received: from [70.32.0.46] ([70.32.0.46]) by ridecals.com (Horde Framework)
- with HTTPS; Thu, 10 Dec 2020 08:15:32 -0500
-Date:   Thu, 10 Dec 2020 08:15:32 -0500
-Message-ID: <20201210081532.Horde.8qYOU3VVNsL5wjy1lylWpdy@ridecals.com>
-From:   Russell Branting <sender@ridecals.com>
-Subject: Vital
-Reply-to: Goodagent01@gmail.com
-User-Agent: Horde Application Framework 5
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
-MIME-Version: 1.0
-Content-Disposition: inline
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.kenspensetc.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - ridecals.com
-X-Get-Message-Sender-Via: server.kenspensetc.com: authenticated_id: sender9@ridecals.com
-X-Authenticated-Sender: server.kenspensetc.com: sender9@ridecals.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-To:     unlisted-recipients:; (no To-header on input)
+        id S2436615AbgLKWgD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 11 Dec 2020 17:36:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55650 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2436617AbgLKWfv (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 11 Dec 2020 17:35:51 -0500
+Subject: Re: [GIT PULL] MMC fixes for v5.10-rc8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607726110;
+        bh=I+b6H3ztr/C7QIZ76TJNdcmY0i4oLSsod3bA1QMJ4uw=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=oCYefyOT5glWBgtHSgA8Ig0ckvYe75ZIUF2nsQ9aKWP/WQoB68WC8dedM3r74FjD5
+         Bhf0BFU0bq00G7FkoIS0E3LoQRVCQbzvjzj5ggFpjUdlNtRJY9d+qaDNpmGXLO9/tk
+         3m2QsC+7PALy3YAoAif9FLNDYmZX27rnBCGlilzKrZsgU+uAo8bexay/+DowDSqgp+
+         UbuOKkcvTEc0g15ozvZdKOYFUGN7KjW2y7A0tj6M7DTbkvMxTIpuqGmP+knbYrZkC3
+         bqXkhZniwrU+Sm/j7r4xNPo4MnqI7YJ9qegt08+cP6s8qAB8o3gfXkGhqa2Kd+NPBu
+         1fCNH+FRXFPPA==
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20201211085640.234657-1-ulf.hansson@linaro.org>
+References: <20201211085640.234657-1-ulf.hansson@linaro.org>
+X-PR-Tracked-List-Id: <linux-mmc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20201211085640.234657-1-ulf.hansson@linaro.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.10-rc4-2
+X-PR-Tracked-Commit-Id: c0d638a03bc5dfdb08fb95d0a79ecada25f40da8
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 1de5d12b769017f7354e7151ce1c26eb1d9ba2e4
+Message-Id: <160772611051.9549.6561815923583066128.pr-tracker-bot@kernel.org>
+Date:   Fri, 11 Dec 2020 22:35:10 +0000
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+The pull request you sent on Fri, 11 Dec 2020 09:56:40 +0100:
 
-I am instructed to inform you of your appointment as the next of kin  
-to your deceased relative estate. Kindly indicate your acceptance by  
-reconfirming your Full Name, Address & Phone Number for immediate  
-processing of the funds release to your control OR the deceased  
-deposited funds will be declared unclaimed.
+> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.10-rc4-2
 
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/1de5d12b769017f7354e7151ce1c26eb1d9ba2e4
 
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
