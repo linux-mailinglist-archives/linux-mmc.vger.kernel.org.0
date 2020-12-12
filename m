@@ -2,54 +2,71 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E76702D822F
-	for <lists+linux-mmc@lfdr.de>; Fri, 11 Dec 2020 23:37:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11A8D2D83B2
+	for <lists+linux-mmc@lfdr.de>; Sat, 12 Dec 2020 02:03:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436615AbgLKWgD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 11 Dec 2020 17:36:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55650 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2436617AbgLKWfv (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 11 Dec 2020 17:35:51 -0500
-Subject: Re: [GIT PULL] MMC fixes for v5.10-rc8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607726110;
-        bh=I+b6H3ztr/C7QIZ76TJNdcmY0i4oLSsod3bA1QMJ4uw=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=oCYefyOT5glWBgtHSgA8Ig0ckvYe75ZIUF2nsQ9aKWP/WQoB68WC8dedM3r74FjD5
-         Bhf0BFU0bq00G7FkoIS0E3LoQRVCQbzvjzj5ggFpjUdlNtRJY9d+qaDNpmGXLO9/tk
-         3m2QsC+7PALy3YAoAif9FLNDYmZX27rnBCGlilzKrZsgU+uAo8bexay/+DowDSqgp+
-         UbuOKkcvTEc0g15ozvZdKOYFUGN7KjW2y7A0tj6M7DTbkvMxTIpuqGmP+knbYrZkC3
-         bqXkhZniwrU+Sm/j7r4xNPo4MnqI7YJ9qegt08+cP6s8qAB8o3gfXkGhqa2Kd+NPBu
-         1fCNH+FRXFPPA==
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20201211085640.234657-1-ulf.hansson@linaro.org>
-References: <20201211085640.234657-1-ulf.hansson@linaro.org>
-X-PR-Tracked-List-Id: <linux-mmc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20201211085640.234657-1-ulf.hansson@linaro.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.10-rc4-2
-X-PR-Tracked-Commit-Id: c0d638a03bc5dfdb08fb95d0a79ecada25f40da8
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 1de5d12b769017f7354e7151ce1c26eb1d9ba2e4
-Message-Id: <160772611051.9549.6561815923583066128.pr-tracker-bot@kernel.org>
-Date:   Fri, 11 Dec 2020 22:35:10 +0000
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+        id S2394938AbgLLBC0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 11 Dec 2020 20:02:26 -0500
+Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:40240 "EHLO
+        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
+        with ESMTP id S1726723AbgLLBCN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 11 Dec 2020 20:02:13 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.gtsys.com.hk (Postfix) with ESMTP id A9C6D20139B9;
+        Sat, 12 Dec 2020 09:01:10 +0800 (HKT)
+X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
+Received: from mail.gtsys.com.hk ([127.0.0.1])
+        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id fkzVN13TR3aC; Sat, 12 Dec 2020 09:01:10 +0800 (HKT)
+Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
+        by mail.gtsys.com.hk (Postfix) with ESMTP id 85A3420139AC;
+        Sat, 12 Dec 2020 09:01:10 +0800 (HKT)
+Received: from [10.128.2.32] (unknown [124.217.189.105])
+        by s01.gtsys.com.hk (Postfix) with ESMTPSA id C4B18C01FB5;
+        Sat, 12 Dec 2020 09:01:08 +0800 (HKT)
+Subject: Re: [PATCH 0/6] mmc: core: hs400(es) fix probe/init
+To:     linux-mmc@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Ludovic Barre <ludovic.barre@st.com>,
+        Krishna Konda <kkonda@codeaurora.org>,
+        linux-kernel@vger.kernel.org, Jack <jack.lo@gtsys.com.hk>
+References: <20201208061839.21163-1-chris.ruehl@gtsys.com.hk>
+From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Message-ID: <20f13970-4a9a-82c9-0765-7aa2cf95ce77@gtsys.com.hk>
+Date:   Sat, 12 Dec 2020 09:01:07 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
+MIME-Version: 1.0
+In-Reply-To: <20201208061839.21163-1-chris.ruehl@gtsys.com.hk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The pull request you sent on Fri, 11 Dec 2020 09:56:40 +0100:
+No Comments ?
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.10-rc4-2
+Chris
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/1de5d12b769017f7354e7151ce1c26eb1d9ba2e4
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+On 8/12/2020 2:18 pm, Chris Ruehl wrote:
+> Fix the probe if hs400-1_8v / hs400-1_2v is used in the
+> dts and mmc-hs400-enhanced-strobe isn't set.
+> That was the first attemped, but it turns out that some
+> more cleanups and simplifications can be done.
+> 
+> * move mmc_select_hs400() in between hs200 & hs400es (preparation)
+> * make mmc_select_hs400() independent and move it out
+>    of the hs200. Run hs400 tuning inside mmc_select_hs400();
+> * merge hs400 with hs400es function
+> * remove mmc_select_hs400es function
+> * remove mmc_hs200_tuning()
+> * cleanup host->caps2 for hs400-1_8(2)v
+> 
+> 
+> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
+> ---
+> Replace patch set [PATCH 0/3] mmc: core: hs400 fix probe
+> 
