@@ -2,157 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33B242DF2B6
-	for <lists+linux-mmc@lfdr.de>; Sun, 20 Dec 2020 03:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D65982E0768
+	for <lists+linux-mmc@lfdr.de>; Tue, 22 Dec 2020 09:49:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726902AbgLTCGD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 19 Dec 2020 21:06:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47516 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726732AbgLTCGD (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 19 Dec 2020 21:06:03 -0500
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CCEC0613CF;
-        Sat, 19 Dec 2020 18:05:21 -0800 (PST)
-Received: by mail-pj1-x1030.google.com with SMTP id j13so4079099pjz.3;
-        Sat, 19 Dec 2020 18:05:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=8vAJhtcnlmR0zuqlLalCyJpLf4qWM/qYJIE1uR2kv+o=;
-        b=lgJsdSHkqmPd+lGQpOuxo/BQACNoudnJUUT8uihKs5KlWVeAkWzu1SPoqXEdcOkRcp
-         M8/jeh7IPRNlFOz47a/5vyyTUSBKQuVv1BVkGX8OU+e0x4nS4RCkCFp356zXIbquOyJ1
-         kUG/FgxcvTm/rWzd5bohBc+dOP5JMqnj6Jziq3FWt95B3QJBR7n9QhTvQqrjSUiaRcyJ
-         UGmPmIxao0b7VAsXrxMwoi0B//tKCRENHto02WttC+HDcn4j8ZikECh0eU/Ies6VnWfG
-         fBcukb4h/tmnH7xVfTAXMb76pw7a1AH+rq914z5yGu7w8M1BtN5QBxsiSU5/LjPoOGhc
-         smpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=8vAJhtcnlmR0zuqlLalCyJpLf4qWM/qYJIE1uR2kv+o=;
-        b=S3ZsPVM6V8B/8d4bs9J84XoUUI2F3J3Li5G5eHXqaSuos3vycgtSmDFVW5OmxxBLCo
-         337n0+zpMC67vn8pATlrGcsfDwCBCNl1JrugjBrWYxMxq5DOxqSbGIcXZp8gAABl2yQP
-         9FCdB8vF+4+pKipSEgVHQfWzFvRQVmEogPN3TwojqZnOCIkQMp9VnLWBLAT5ga+ri9oH
-         2Ig9cdGI4kEHLRLExHnoYUXdzOqb+mHeDcuIG6z1a76koyBZAnr1HcdlbnnC9EuCZ4oM
-         cuue3PP3YaVM/Yjh90PbVQcIWID3Hz+QvDGfqnR6yB0frz2tZrZn6b06m6xdE1ugKMdD
-         UwqA==
-X-Gm-Message-State: AOAM532C61A5nHd1p6QRSShzvMPPzx+aLt9faijPtCqxeYVrSyG6mLfW
-        XmKjYZ3de0xfsWc4RveU0PqBvnT08ymFUaCMSgs=
-X-Google-Smtp-Source: ABdhPJyF9aZl56KQrxBRg+MgfI6zjzpndBr8sunPbj3G0qErvkYhSIkwJ02z5edLdH1F4Oqy5VDfPrluGQmGrMXAy/I=
-X-Received: by 2002:a17:902:7d84:b029:db:feae:425e with SMTP id
- a4-20020a1709027d84b02900dbfeae425emr10900360plm.43.1608429921087; Sat, 19
- Dec 2020 18:05:21 -0800 (PST)
-MIME-Version: 1.0
-References: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
- <CA+H2tpGkv0sPQ2e6OfUVuW2xFx-KSpZy_vYY3TG_9JBWvFZxAA@mail.gmail.com> <83712f89-deb7-b266-8e8a-99f0df4c6782@wanadoo.fr>
-In-Reply-To: <83712f89-deb7-b266-8e8a-99f0df4c6782@wanadoo.fr>
-From:   Orson Zhai <orsonzhai@gmail.com>
-Date:   Sun, 20 Dec 2020 10:05:09 +0800
-Message-ID: <CA+H2tpHQvnmv_rCby0CUP3nnFXFg75fVEVQYRHJTW9Ebpfc7Gg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-sprd: Fix some resource leaks in the remove function
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     adrian.hunter@intel.com, Ulf Hansson <ulf.hansson@linaro.org>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Lyra Zhang <zhang.lyra@gmail.com>, linux-mmc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, billows.wu@unisoc.com,
-        Wu Hongtao <wuht06@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S1726016AbgLVIti (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 22 Dec 2020 03:49:38 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:45532 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725300AbgLVIth (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Dec 2020 03:49:37 -0500
+Received: from ironmsg07-lv.qualcomm.com (HELO ironmsg07-lv.qulacomm.com) ([10.47.202.151])
+  by alexa-out.qualcomm.com with ESMTP; 22 Dec 2020 00:48:56 -0800
+X-QCInternal: smtphost
+Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
+  by ironmsg07-lv.qulacomm.com with ESMTP/TLS/AES256-SHA; 22 Dec 2020 00:48:55 -0800
+X-QCInternal: smtphost
+Received: from mdalam-linux.qualcomm.com ([10.201.2.71])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 22 Dec 2020 14:18:38 +0530
+Received: by mdalam-linux.qualcomm.com (Postfix, from userid 466583)
+        id 3E7A421BA0; Tue, 22 Dec 2020 14:18:37 +0530 (IST)
+From:   Md Sadre Alam <mdalam@codeaurora.org>
+To:     bjorn.andersson@linaro.org, adrian.hunter@intel.com,
+        ulf.hansson@linaro.org, linux-arm-msm@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     mdalam@codeaurora.org, sricharan@codeaurora.org
+Subject: [PATCH] mmc: sdhci-msm: Fix possible NULL pointer exception
+Date:   Tue, 22 Dec 2020 14:18:33 +0530
+Message-Id: <1608626913-16675-1-git-send-email-mdalam@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 9:46 PM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
-> Le 17/12/2020 =C3=A0 23:55, Orson Zhai a =C3=A9crit :
-> > + cc: Billows
-> >
-> > Hi Christophe,
-> > On Fri, Dec 18, 2020 at 4:50 AM Christophe JAILLET
-> > <christophe.jaillet@wanadoo.fr> wrote:
-> >>
-> >> 'sdhci_remove_host()' and 'sdhci_pltfm_free()' should be used in place=
- of
-> >> 'mmc_remove_host()' and 'mmc_free_host()'.
-> >>
-> >> This avoids some resource leaks, is more in line with the error handli=
-ng
-> >> path of the probe function, and is more consistent with other drivers.
-> >>
-> >> Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host c=
-ontroller")
-> >> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> >> ---
-> >> Other adjustment may be needed.
-> >> I'm not sure at all of the 0 passed to 'sdhci_remove_host()'. Some dri=
-vers
-> >> pass 0, some have some more complicated computation.
-> >> ---
-> >>   drivers/mmc/host/sdhci-sprd.c | 6 +++---
-> >>   1 file changed, 3 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sp=
-rd.c
-> >> index f85171edabeb..5dc36efff47f 100644
-> >> --- a/drivers/mmc/host/sdhci-sprd.c
-> >> +++ b/drivers/mmc/host/sdhci-sprd.c
-> >> @@ -708,14 +708,14 @@ static int sdhci_sprd_remove(struct platform_dev=
-ice *pdev)
-> >>   {
-> >>          struct sdhci_host *host =3D platform_get_drvdata(pdev);
-> >>          struct sdhci_sprd_host *sprd_host =3D TO_SPRD_HOST(host);
-> >> -       struct mmc_host *mmc =3D host->mmc;
-> >>
-> >> -       mmc_remove_host(mmc);
-> >> +       sdhci_remove_host(host, 0);
-> >> +
-> >>          clk_disable_unprepare(sprd_host->clk_sdio);
-> >>          clk_disable_unprepare(sprd_host->clk_enable);
-> >>          clk_disable_unprepare(sprd_host->clk_2x_enable);
-> >>
-> >> -       mmc_free_host(mmc);
-> >> +       sdhci_pltfm_free(pdev);
-> >
-> > I saw a lot of drivers also use mmc_free_host().
-> > Do you have patches elsewhere to clean them?
-> >
->
-> As far as I can see, all drivers that use 'mmc_free_host' also use
-> 'mmc_alloc_host'. (based on 5.10.1 and unless error)
->
-> The only exception is 'sdhci-sprd.c'.
->
-> So no, I don't plan any other clean-up.
->
->
->
-> To spot it, I run one of my own cocci script which compare functions
-> called in the remove function and in the error handling path of the probe=
-.
->
-> So I caught this one because 'mmc_free_host' is used in the porbe and
-> 'sdhci_pltfm_free' in the remove function.
+of_device_get_match_data returns NULL when no match.
+So add the NULL pointer check to avoid dereference.
 
-Thanks for the clarification.
+Signed-off-by: Md Sadre Alam <mdalam@codeaurora.org>
+---
+ drivers/mmc/host/sdhci-msm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Acked-by: Orson Zhai <orson.zhai@gmail.com>
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 9c7927b..f20e424 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -2235,6 +2235,8 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+ 	 * the data associated with the version info.
+ 	 */
+ 	var_info = of_device_get_match_data(&pdev->dev);
++	if (!var_info)
++		goto pltfm_free;
+ 
+ 	msm_host->mci_removed = var_info->mci_removed;
+ 	msm_host->restore_dll_config = var_info->restore_dll_config;
+-- 
+2.7.4
 
->
->
-> CJ
->
-> > Thanks,
-> > -Orson
-> >
-> >>
-> >>          return 0;
-> >>   }
-> >> --
-> >> 2.27.0
-> >>
-> >
->
