@@ -2,27 +2,27 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 224392E147B
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Dec 2020 03:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17F6C2E1345
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Dec 2020 03:36:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730679AbgLWCjo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 22 Dec 2020 21:39:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52102 "EHLO mail.kernel.org"
+        id S1728932AbgLWCZW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 22 Dec 2020 21:25:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55734 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730062AbgLWCXm (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:23:42 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 45263225AA;
-        Wed, 23 Dec 2020 02:23:26 +0000 (UTC)
+        id S1730466AbgLWCZV (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:25:21 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4D734225AA;
+        Wed, 23 Dec 2020 02:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608690207;
-        bh=K+bioDO4Ah8YGIttvteziuXMngBp1zEMtnN2NnFVgUU=;
+        s=k20201202; t=1608690281;
+        bh=ElZFJenPwKmFJZjW+9jfyQVKLCCfNn+lzwvk7yJZRsY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iNlSmq4SOvFwvfGXd5ljoOKdmKCC+BD7bZ3h0nK/IA+KRBBjzXZyIoKfhlQxW+fE2
-         WKcTDbRd4xWBbTldiaDD+rtqWc0irahz2ndgaYOC9hli1obm7iy33aHIkntfCynbtQ
-         GVcRcgXXq7q9nKKxrpayOJKi0PxPf2FL6TA2I6SpRkG8a0FBvL5iFOEhNGUjDNEjsp
-         xjsTH1hTMJzkcQFxieKHN4DpUrukYI651LOwPhEiSYrbajGyFcbGkKBOSe66sFivbU
-         vN7kCG8JMXA6hOqQLrMGDrW5e/xHDdWZHJ3wQGFrOZUGl67ukXueKFFIWNkOoFIVXF
-         dsp6D6mv9pLqQ==
+        b=Nh6cGKYJfKQR69+2PzE56TDD9RbLKAm72pqxakXa4+VZrq5Sipm1BhQDv+UUyyF14
+         Lw//T0UfrP/9fhV9COSD1ldjc7w+0BBZPnuVR0vvC9ogwtJ6Q4focQ8vN8XSqy4Oad
+         CFh+knGBR4ThyHBv8fHa7Ooj8esCful8aIwsBHlygZkPXKwtWgX9dAIhtcQF09FGQ4
+         n8jwqBq+1uDQob6lztiNpHabGyipl/SJ6QbBh9s/7GUPhXZyiPxLc/W4blSlUzxLOO
+         Mn6XZ6C1DwuF7ZvRo0MDyZ3j5LjPzG1VhV7oDIG31xippr+jtBtDJAHkWzDI/n7wQl
+         BsswhE9OjhcVg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
@@ -30,12 +30,12 @@ Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
         Dan Carpenter <dan.carpenter@oracle.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 27/66] mmc: tmio: do not print real IOMEM pointer
-Date:   Tue, 22 Dec 2020 21:22:13 -0500
-Message-Id: <20201223022253.2793452-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 20/48] mmc: tmio: do not print real IOMEM pointer
+Date:   Tue, 22 Dec 2020 21:23:48 -0500
+Message-Id: <20201223022417.2794032-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201223022253.2793452-1-sashal@kernel.org>
-References: <20201223022253.2793452-1-sashal@kernel.org>
+In-Reply-To: <20201223022417.2794032-1-sashal@kernel.org>
+References: <20201223022417.2794032-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -64,7 +64,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/mmc/host/tmio_mmc.c b/drivers/mmc/host/tmio_mmc.c
-index 64b7e9f18361d..3b96c9cebbafa 100644
+index e897e7fc3b14c..052093db7d159 100644
 --- a/drivers/mmc/host/tmio_mmc.c
 +++ b/drivers/mmc/host/tmio_mmc.c
 @@ -109,8 +109,7 @@ static int tmio_mmc_probe(struct platform_device *pdev)
