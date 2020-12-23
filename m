@@ -2,33 +2,34 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A5382E1A6E
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Dec 2020 10:14:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D85C2E1A5F
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Dec 2020 10:09:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728092AbgLWJNz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Dec 2020 04:13:55 -0500
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.25]:11778 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728075AbgLWJNz (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Dec 2020 04:13:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1608714603;
+        id S1728308AbgLWJH7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Dec 2020 04:07:59 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:36012 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728307AbgLWJH6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Dec 2020 04:07:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1608714306;
         s=strato-dkim-0002; d=goldelico.com;
-        h=Message-Id:Date:Subject:Cc:To:From:From:Subject:Sender;
-        bh=/7waLQuVIPjLSu88Jl0tYw8XTevZYh4mXe3kIEp/qeY=;
-        b=HBc1lk5pp/Gj9qkGz74XkJZBSw08C+GHw1RsC8KBfsiaHgmRWC6rBiyjZ+pZPBq1vy
-        OcCiGWBDK0P3Y4ZDM3GnqJgKR5tMFlhJDPE4i2hI9iUY4erKp4TikO4dQdXWp/kQMPkm
-        kJygucm0CVOjgeauzffiHaVb2x7WlyouZXANeJEUoXPvSM5YNR9EvAW9ZKBmCSHuYxE6
-        tlVg++j0HXIHaHwS+IIR5Lrx1BUaGkQ+iijLBb5XO6tyFi1aws/ojnMLizitvnNi0Txs
-        c5Bl8wUovEE7y3+1xhAtSYlK5KyuOaABvVjrXe//HMRzHy0FLTHshoq8ZRjfpR3z8X2q
-        cjQw==
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:From:
+        Subject:Sender;
+        bh=ckSdKgJk3+oy3TeIeqOqAQsl5E4t5wchiiXSlOiigPI=;
+        b=Iddma3lVm/ApaXBg5LOPmaqsLlriokrzh/3UIx6y2EpC6a63BFlZe+GWDC7LtY3cqa
+        vBul3SpUTEIv0Y1htwxO65rYWFU5Ohm4meurJFeWaCjKAQyteoN7TX6vcwaF71y0Bt5K
+        5Mv/nselQ6Xn5gjVy2+NTjY8/Kl48AKur54NVT+y7bJ+3OweGSe2mx/y1FhPTV3aIBMl
+        ieLRYiJpP0lEVpRXTtC3RYPwvgxKoDqXuKt6nQH2af+E0Yt38/7eaF0hy/LZNyJC5W2w
+        GZZM6KhJWIVqY4xO+dYxjKd+o+iBHCz5t9iMV1E8X0Dx1Ml5rqsA3NNuHSoM6RTBKfXX
+        52rA==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXH7FjJ5/fxd"
 X-RZG-CLASS-ID: mo00
 Received: from iMac.fritz.box
         by smtp.strato.de (RZmta 47.10.6 DYNA|AUTH)
-        with ESMTPSA id U05a81wBN91p1Lt
+        with ESMTPSA id U05a81wBN91q1Lu
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-        Wed, 23 Dec 2020 10:01:51 +0100 (CET)
+        Wed, 23 Dec 2020 10:01:52 +0100 (CET)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
 To:     Paul Cercueil <paul@crapouillou.net>,
         Ulf Hansson <ulf.hansson@linaro.org>,
@@ -37,27 +38,37 @@ To:     Paul Cercueil <paul@crapouillou.net>,
         "H. Nikolaus Schaller" <hns@goldelico.com>
 Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         letux-kernel@openphoenux.org
-Subject: [PATCH 0/2] mmc: remove unused struct component card_detect_irq
-Date:   Wed, 23 Dec 2020 10:01:49 +0100
-Message-Id: <cover.1608714110.git.hns@goldelico.com>
+Subject: [PATCH 1/2] mmc: jz4740: remove unused struct component card_detect_irq
+Date:   Wed, 23 Dec 2020 10:01:50 +0100
+Message-Id: <415ea1cb85eedc12f0c2f70da9a1ae3885bdd091.1608714110.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1608714110.git.hns@goldelico.com>
+References: <cover.1608714110.git.hns@goldelico.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-card_detect_irq is not used anymore since v4.1.
-Remove it.
+I have not found any user for this struct component.
 
-H. Nikolaus Schaller (2):
-  mmc: jz4740: remove unused struct component card_detect_irq
-  mmc: omap: remove unused struct component card_detect_irq
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+---
+ drivers/mmc/host/jz4740_mmc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
- drivers/mmc/host/jz4740_mmc.c          | 1 -
- include/linux/platform_data/mmc-omap.h | 3 +--
- 2 files changed, 1 insertion(+), 3 deletions(-)
-
+diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
+index a1f92fed2a55b7..b3c636edbb4610 100644
+--- a/drivers/mmc/host/jz4740_mmc.c
++++ b/drivers/mmc/host/jz4740_mmc.c
+@@ -152,7 +152,6 @@ struct jz4740_mmc_host {
+ 	enum jz4740_mmc_version version;
+ 
+ 	int irq;
+-	int card_detect_irq;
+ 
+ 	void __iomem *base;
+ 	struct resource *mem_res;
 -- 
 2.26.2
 
