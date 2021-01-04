@@ -2,170 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 303F42E9277
-	for <lists+linux-mmc@lfdr.de>; Mon,  4 Jan 2021 10:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 812D72E92DA
+	for <lists+linux-mmc@lfdr.de>; Mon,  4 Jan 2021 10:52:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726722AbhADJT5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 4 Jan 2021 04:19:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39672 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726189AbhADJT4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 4 Jan 2021 04:19:56 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27C9AC061574
-        for <linux-mmc@vger.kernel.org>; Mon,  4 Jan 2021 01:19:16 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id t16so6332329ejf.13
-        for <linux-mmc@vger.kernel.org>; Mon, 04 Jan 2021 01:19:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=references:user-agent:from:to:cc:subject:in-reply-to:message-id
-         :date:mime-version;
-        bh=DueC5htyr1VhszUpmTm/tUVLrShThCg3h0/N3NarSwU=;
-        b=A61zspJyVrET5bTumm0JSaxaUCSMDw0g8u6TZ1yADrWhPPWSaJ/nVlpBnHERM1nizQ
-         hOYhIy51OyR2Vj6Um/wAlqOHnt2n2/ET2pdwf/0ovKJ0OXz+BLsoDYZYoQqUHFJDbqWF
-         UmL+PUhQIT/qnQ7L2ye3fRa57+ajmccN3wqO+sXE71HGXN+nrpaYlEpazLl1svL4qSXd
-         wAhOL8V9HQA7piUP2IJLwG1yGrQsP7M+RjwQ3BOy2mg+Nxj575ms9e9kSBdL4lZx8J7w
-         FAfuFlVs+kQVe5VPkMaEyBa1APIvRpooat7UCOWO3juQsCRovne1wVwMsQqRBID4ss5z
-         qi0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:references:user-agent:from:to:cc:subject
-         :in-reply-to:message-id:date:mime-version;
-        bh=DueC5htyr1VhszUpmTm/tUVLrShThCg3h0/N3NarSwU=;
-        b=YvZ191ZydNKsvi3BBgCm6d6+Q+cL1LvX3XwIJO5JgYsxJjbJCzVYDXLGPUncA/guyN
-         E6Qeg9RKd56asBEXBuYOYz6DOCJc9vH2LY4kSixSgeOJ7pqkQZ/8SdVwlCJC777EEsoS
-         M4zN4f7ZrXk7u0S04O/9QhJNI19ZykSzDm3bT5FMTLXHD0BDxJ9OwAKPMRbsXOUy2dzS
-         +yzdBz5H9J1eO7qYVKZaThjk/IM6H1jjoLSz6TNCuU1cR//nrfeiBZ1uzD5tMRp8YAhf
-         3o0lCqWM9o8IlXKrUuJfU3l5VPVvEzWrrsNKPg7Q6l8ZL98Mer8452rchRUY0n3VeC2H
-         dfQw==
-X-Gm-Message-State: AOAM531m1BJKaI4ZEeQMTEg6s3iANXt3aynLEgp0C2KP+p7ZwClTfG85
-        dBXs2A87Tp7cahMUswKUwiXk3Q==
-X-Google-Smtp-Source: ABdhPJxqFryCMELbN8WJJJjZ5a7Uk1KXymyUk57FkCsFhIM+ZX2JhMxlKrqs3m4qRgYb1qqMpb7ogA==
-X-Received: by 2002:a17:906:56ca:: with SMTP id an10mr66060606ejc.498.1609751954834;
-        Mon, 04 Jan 2021 01:19:14 -0800 (PST)
-Received: from localhost (82-65-169-74.subs.proxad.net. [82.65.169.74])
-        by smtp.gmail.com with ESMTPSA id e21sm43094575edv.96.2021.01.04.01.19.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Jan 2021 01:19:14 -0800 (PST)
-References: <20201218075312.67338-1-lebed.dmitry@gmail.com>
- <b52f9e34-5170-59a0-fede-96cf2f999600@gmail.com>
-User-agent: mu4e 1.4.10; emacs 27.1
-From:   Jerome Brunet <jbrunet@baylibre.com>
-To:     Heiner Kallweit <hkallweit1@gmail.com>,
-        Dmitry Lebed <lebed.dmitry@gmail.com>,
-        linux-amlogic@lists.infradead.org
-Cc:     martin.blumenstingl@googlemail.com, linux-mmc@vger.kernel.org
-Subject: Re: [PATCH] mmc: meson-gx: check for scatterlist size alignment in
- block mode
-In-reply-to: <b52f9e34-5170-59a0-fede-96cf2f999600@gmail.com>
-Message-ID: <1j8s99xdny.fsf@starbuckisacylon.baylibre.com>
-Date:   Mon, 04 Jan 2021 10:19:13 +0100
+        id S1726586AbhADJv1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Mon, 4 Jan 2021 04:51:27 -0500
+Received: from post.dks.ru ([194.226.89.161]:53176 "EHLO post.dks.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725468AbhADJv0 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 4 Jan 2021 04:51:26 -0500
+X-Greylist: delayed 1608 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 Jan 2021 04:51:24 EST
+Received: from ksmg.dks.lan (unknown [172.17.112.11])
+        by post.dks.ru (Postfix) with ESMTP id 94328270863;
+        Mon,  4 Jan 2021 12:21:42 +0300 (MSK)
+Received: from [192.168.88.237] (unknown [212.154.23.124])
+        (Authenticated sender: zapros@dks.ru)
+        by post.dks.ru (Postfix) with ESMTP id 955CF26F446;
+        Mon,  4 Jan 2021 12:21:36 +0300 (MSK)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: YOUR URGENT RESPONSE !!!!
+To:     Recipients <zapros@dks.ru>
+From:   "Mr. Kim Leang" <zapros@dks.ru>
+Date:   Mon, 04 Jan 2021 01:22:02 -0800
+Reply-To: kimleang575@yahoo.com
+Message-Id: <20210104092136.955CF26F446@post.dks.ru>
+X-KLMS-Rule-ID: 7
+X-KLMS-Message-Action: clean
+X-KLMS-AntiSpam-Status: not scanned, disabled by settings
+X-KLMS-AntiSpam-Interceptor-Info: not scanned
+X-KLMS-AntiPhishing: Clean, bases: 2021/01/04 08:40:00
+X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2021/01/04 05:34:00 #16008269
+X-KLMS-AntiVirus-Status: Clean, skipped
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Greeting!
 
-On Fri 18 Dec 2020 at 10:08, Heiner Kallweit <hkallweit1@gmail.com> wrote:
+I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
 
-> Am 18.12.2020 um 08:53 schrieb Dmitry Lebed:
->> Enable SGDMA support for SD_IO_RW_EXTENDED and add proper check
->> for scatterlist size alignment in block mode.
->> 
->> According to documentation, in SDIO block mode meson-gx DMA could
->> only handle buffers with sizes that are multiples of SDIO block size.
->> 
->> Some SDIO drivers like brcmfmac use scatterlist API, but do not enforce
->> proper scatterlist buffer size alignemnt, this looks like a root cause
->> of non-working CMD53.
->> 
-> It's been too long ago that I worked on this to provide real feedback.
-> Just one comment: Your commit description sounds like there's a problem
-> in drivers like brcmfmac. Wouldn't it be better then to first fix these
-> drivers?
+I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
 
-While this may be true, I think the proposed change is better than the
-device/command specific work around we had so far.
+The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
 
->
->> Some minor style fixes.
->> 
->> Signed-off-by: Dmitry Lebed <lebed.dmitry@gmail.com>
+Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
 
-Thx.
-
-Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
-
->> ---
->>  drivers/mmc/host/meson-gx-mmc.c | 37 ++++++++++++++++++++-------------
->>  1 file changed, 22 insertions(+), 15 deletions(-)
->> 
->> diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
->> index 13f6a2c0ed04..eb6c02bc4a02 100644
->> --- a/drivers/mmc/host/meson-gx-mmc.c
->> +++ b/drivers/mmc/host/meson-gx-mmc.c
->> @@ -227,7 +227,6 @@ static void meson_mmc_get_transfer_mode(struct mmc_host *mmc,
->>  	struct mmc_data *data = mrq->data;
->>  	struct scatterlist *sg;
->>  	int i;
->> -	bool use_desc_chain_mode = true;
->>  
->>  	/*
->>  	 * When Controller DMA cannot directly access DDR memory, disable
->> @@ -237,25 +236,33 @@ static void meson_mmc_get_transfer_mode(struct mmc_host *mmc,
->>  	if (host->dram_access_quirk)
->>  		return;
->>  
->> -	/*
->> -	 * Broken SDIO with AP6255-based WiFi on Khadas VIM Pro has been
->> -	 * reported. For some strange reason this occurs in descriptor
->> -	 * chain mode only. So let's fall back to bounce buffer mode
->> -	 * for command SD_IO_RW_EXTENDED.
->> -	 */
->> -	if (mrq->cmd->opcode == SD_IO_RW_EXTENDED)
->> -		return;
->> +	if (data->blocks > 1) {
->> +		/*
->> +		 * In block mode DMA descriptor format, "length" field indicates
->> +		 * number of blocks and there is no way to pass DMA size that
->> +		 * is not multiple of SDIO block size, making it impossible to
->> +		 * tie more than one memory buffer with single SDIO block.
->> +		 * Block mode sg buffer size should be aligned with SDIO block
->> +		 * size, otherwise chain mode could not be used.
->> +		 */
->> +		for_each_sg(data->sg, sg, data->sg_len, i) {
->> +			if (sg->length % data->blksz) {
->> +				WARN_ONCE(1, "unaligned sg len %u blksize %u\n",
->> +					  sg->length, data->blksz);
->> +				return;
->> +			}
->> +		}
->> +	}
->>  
->> -	for_each_sg(data->sg, sg, data->sg_len, i)
->> +	for_each_sg(data->sg, sg, data->sg_len, i) {
->>  		/* check for 8 byte alignment */
->> -		if (sg->offset & 7) {
->> +		if (sg->offset % 8) {
->>  			WARN_ONCE(1, "unaligned scatterlist buffer\n");
->> -			use_desc_chain_mode = false;
->> -			break;
->> +			return;
->>  		}
->> +	}
->>  
->> -	if (use_desc_chain_mode)
->> -		data->host_cookie |= SD_EMMC_DESC_CHAIN_MODE;
->> +	data->host_cookie |= SD_EMMC_DESC_CHAIN_MODE;
->>  }
->>  
->>  static inline bool meson_mmc_desc_chain_mode(const struct mmc_data *data)
->> 
->
->
-> _______________________________________________
-> linux-amlogic mailing list
-> linux-amlogic@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-amlogic
-
+Thanks and have a nice day,
+Mr. Kim Leang
