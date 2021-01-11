@@ -2,72 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A823D2F1A21
-	for <lists+linux-mmc@lfdr.de>; Mon, 11 Jan 2021 16:53:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5C562F1C57
+	for <lists+linux-mmc@lfdr.de>; Mon, 11 Jan 2021 18:29:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388227AbhAKPwK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Jan 2021 10:52:10 -0500
-Received: from mga17.intel.com ([192.55.52.151]:23997 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731466AbhAKPwJ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 11 Jan 2021 10:52:09 -0500
-IronPort-SDR: okogNNFDjef2Tg6suwu/QxcK564K52C2sXl5BmfKoqcnMqbSOD+yuM9bamq8Fm4hK3Lbw9y4Ew
- 9vxJiz69zy+A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9860"; a="157661823"
-X-IronPort-AV: E=Sophos;i="5.79,338,1602572400"; 
-   d="scan'208";a="157661823"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 07:51:29 -0800
-IronPort-SDR: DILJyjPplbo5AgKrMCFvYkVOWnMtMGib8BhiefjKjcFb58AtybpMdq7egI+to/MDv4ZCNyBWy8
- /Ct8PB53698w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,338,1602572400"; 
-   d="scan'208";a="404152377"
-Received: from zulkifl3-ilbpg0.png.intel.com ([10.88.229.114])
-  by FMSMGA003.fm.intel.com with ESMTP; 11 Jan 2021 07:51:27 -0800
-From:   Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-To:     ulf.hansson@linaro.org, michal.simek@xilinx.com,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Cc:     adrian.hunter@intel.com, andriy.shevchenko@intel.com,
-        muhammad.husaini.zulkifli@intel.com
-Subject: [PATCH v1 2/2] mmc: sdhci-of-arasan: Change code style of mapping the syscon field
-Date:   Mon, 11 Jan 2021 23:50:01 +0800
-Message-Id: <20210111155001.12307-3-muhammad.husaini.zulkifli@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210111155001.12307-1-muhammad.husaini.zulkifli@intel.com>
-References: <20210111155001.12307-1-muhammad.husaini.zulkifli@intel.com>
+        id S1729459AbhAKR2z (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Jan 2021 12:28:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728844AbhAKR2y (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Jan 2021 12:28:54 -0500
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75BDFC06179F
+        for <linux-mmc@vger.kernel.org>; Mon, 11 Jan 2021 09:28:14 -0800 (PST)
+Received: by mail-vs1-xe32.google.com with SMTP id x26so5407vsq.1
+        for <linux-mmc@vger.kernel.org>; Mon, 11 Jan 2021 09:28:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lxtrHWxEn5bUMT1YsS4xJak6WZ3LC5ZFwiKlIgL1omo=;
+        b=A71gURFG+JAwMFNI6I5WAK9XANDMhNAWr4POn2AUQlEdvkwsJ7/VSQdCGErjKXV5qp
+         EmUM6zK1BBwo6veYfGpPSqqo8zWMMowJtouUY3jLZ/8FVVIvSj3LBrPXgnlUzB9iiHe2
+         2AUn5ipC81UQWtVh+TFCI7pmd07qDT4WA7aEQNs5BtHA73qiXbLa6xjQY87y5lei+SYZ
+         puM8Qvp00Ji6ClScOOEEDrYOAYlUKReoQiH4b3cLcQd9QQAV4RoZUi6okPhkewzDQKTg
+         899Nq5C5sbZ4i5ff81RuGlf7MytTl3rGk25Y50E1/dbbKmvmAahiBzlVW548zn3X6Q4u
+         kFkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lxtrHWxEn5bUMT1YsS4xJak6WZ3LC5ZFwiKlIgL1omo=;
+        b=cSIcAewzxbmJh2CJlS/NHGEIXXZiJzJe/42CgUL2UXGRbtpwNm+MacmElhqn9TtcJR
+         sLhlyshCQogj0iXyt3YZAro72pKrpWP3fMsy9o7KWYSpKmNOSHK0QighD08kLizdMUUn
+         4WoTZRomsnWpanecPR1kP1r889TPxqikDLxOo56Pn6Pn7bwfHBwDP4lwyiutuxiLOtIu
+         P2uw08pLAPiWYvUPW4YEmyxf+Y0EyWocH5eGKrlxtJqryE8PpMUJSQc2zRJDkkRMM6Od
+         4J/FFDvv5UdfL4AobA20WAu+Z0AT/ny3ZVLEJsuXdltN4PodvewlOlOh8nsxMak55gUh
+         7S0A==
+X-Gm-Message-State: AOAM532X3QaKTpe2xIFsRDAvYIHXIP1QzCf9AU6iBhzjKVGtFLR+GfgN
+        B65kk3g3cyx/Pkxw8eQq9l+XyZ2hyx51KHwzHEkjxQ==
+X-Google-Smtp-Source: ABdhPJz2PaUNjWqohTtK5NDP9MmebHCZkDl6ea631hbTIeDalI6uPANY7p3HgAiMRq0UZvgsY4mymk0qA+XIS/26kfQ=
+X-Received: by 2002:a67:fe85:: with SMTP id b5mr648394vsr.19.1610386093673;
+ Mon, 11 Jan 2021 09:28:13 -0800 (PST)
+MIME-Version: 1.0
+References: <20201216074540.30616-1-kostap@marvell.com> <20201216074540.30616-3-kostap@marvell.com>
+In-Reply-To: <20201216074540.30616-3-kostap@marvell.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 11 Jan 2021 18:27:37 +0100
+Message-ID: <CAPDyKFqDRFoNVKc2e_GYb67dZRUyBu67hOdK_q6Ln3PUAJufqg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mmc: xenon: add AP807 compatible string
+To:     Kostya Porotchkin <kostap@marvell.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Marcin Wojtas <mw@semihalf.com>, jaz@semihalf.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Change code style of mapping the syscon in sdhci_arasan_update_support64b()
-for readability and consistency.
+On Wed, 16 Dec 2020 at 08:46, <kostap@marvell.com> wrote:
+>
+> From: Marcin Wojtas <mw@semihalf.com>
+>
+> This patch adds new compatible string to differentiate
+> between the controllers versions included in the AP807
+> north bridge. Thanks to this change, the SoCs which use
+> AP807 will not run unintentionally in the 'slow mode'
+> with disabled UHS modes.
+>
+> Signed-off-by: Marcin Wojtas <mw@semihalf.com>
+> ---
+>  arch/arm64/boot/dts/marvell/armada-ap807.dtsi | 4 ++++
+>  drivers/mmc/host/sdhci-xenon.c                | 1 +
 
-Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Acked-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
----
- drivers/mmc/host/sdhci-of-arasan.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Please split this patch, one for arm64 (for SoC maintainers) and one
+for mmc (which I will pick).
 
-diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-index 643313687b5e..8a406b62c6ad 100644
---- a/drivers/mmc/host/sdhci-of-arasan.c
-+++ b/drivers/mmc/host/sdhci-of-arasan.c
-@@ -1395,10 +1395,10 @@ static void sdhci_arasan_update_support64b(struct sdhci_host *host, u32 value)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_arasan_data *sdhci_arasan = sdhci_pltfm_priv(pltfm_host);
--	const struct sdhci_arasan_soc_ctl_map *soc_ctl_map =
--		sdhci_arasan->soc_ctl_map;
-+	const struct sdhci_arasan_soc_ctl_map *soc_ctl_map;
- 
- 	/* Having a map is optional */
-+	soc_ctl_map = sdhci_arasan->soc_ctl_map;
- 	if (!soc_ctl_map)
- 		return;
- 
--- 
-2.17.1
+Kind regards
+Uffe
 
+
+>  2 files changed, 5 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/marvell/armada-ap807.dtsi b/arch/arm64/boot/dts/marvell/armada-ap807.dtsi
+> index 623010f3ca89..e9a740ec22cb 100644
+> --- a/arch/arm64/boot/dts/marvell/armada-ap807.dtsi
+> +++ b/arch/arm64/boot/dts/marvell/armada-ap807.dtsi
+> @@ -27,3 +27,7 @@
+>                 #clock-cells = <1>;
+>         };
+>  };
+> +
+> +&ap_sdhci0 {
+> +       compatible = "marvell,armada-ap807-sdhci";
+> +};
+> diff --git a/drivers/mmc/host/sdhci-xenon.c b/drivers/mmc/host/sdhci-xenon.c
+> index c67611fdaa8a..add1b4dcd5e5 100644
+> --- a/drivers/mmc/host/sdhci-xenon.c
+> +++ b/drivers/mmc/host/sdhci-xenon.c
+> @@ -684,6 +684,7 @@ static const struct dev_pm_ops sdhci_xenon_dev_pm_ops = {
+>
+>  static const struct of_device_id sdhci_xenon_dt_ids[] = {
+>         { .compatible = "marvell,armada-ap806-sdhci", .data = (void *)XENON_AP806},
+> +       { .compatible = "marvell,armada-ap807-sdhci", .data = (void *)XENON_AP807},
+>         { .compatible = "marvell,armada-cp110-sdhci", .data =  (void *)XENON_CP110},
+>         { .compatible = "marvell,armada-3700-sdhci", .data =  (void *)XENON_A3700},
+>         {}
+> --
+> 2.17.1
+>
