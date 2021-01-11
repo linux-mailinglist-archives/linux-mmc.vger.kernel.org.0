@@ -2,199 +2,145 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12C422F1D94
-	for <lists+linux-mmc@lfdr.de>; Mon, 11 Jan 2021 19:09:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 739DE2F2212
+	for <lists+linux-mmc@lfdr.de>; Mon, 11 Jan 2021 22:45:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390219AbhAKSIO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Jan 2021 13:08:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56528 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390254AbhAKSIM (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Jan 2021 13:08:12 -0500
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A10EC061384
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Jan 2021 10:07:11 -0800 (PST)
-Received: by mail-vs1-xe2a.google.com with SMTP id h18so51965vsg.8
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Jan 2021 10:07:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fp1ONf4QArPbxZI1vhdw6hOF0tsfuNvhAr7FVEUu824=;
-        b=vNKdZYGkiv3WMCTOIJA/PNn7ufn0uRUrC4bhsSbPN0hV6zaaWvopeMIf48dVjJ+RDs
-         gRS06gjzlkIzIIqFIWK5imHWlYS0BAoSfXuhZOBZ2skrSggEpSMNmdmD18d20uR2WtOH
-         fjrYWnu3bAy/ItpwJeqzf6VqCUgrYh5X9dh9nZ1qFAlymw4uLC2ly5KfdS4o2j0TE0Fu
-         HtNKw0G+hWnXi/KQDv4zOI2j6PD9HTLB+LwCUoWYWzSW9afmXTqcNd6GM1UbnE1aSWeQ
-         dXycwgqpHPuFVwCderbKFfX+Sr76E+fNhLecnJgCvXB/7DkY6CK/W2yuydbXSOUxcq/v
-         DIRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fp1ONf4QArPbxZI1vhdw6hOF0tsfuNvhAr7FVEUu824=;
-        b=GRRthwT76hMFJkDfzuqv7+PxN3VbIpfH0sha1/el+yqujWvfy8n2AUshINKhzTAvSa
-         OybKqdVaBID1+Wn1cIQR2FF9hyarOj1I2tkqBVzCOBu/B7Wu4b6hJ5m7sa1VHizUUkqw
-         On3D4qFF2UMBQXljSA056kqVobiEA/Ycq/yoKgpkNjCCNCMQXq/SZ3ncY3fO7tXD4yvs
-         jAz5IgN+RqxYXhkvfexHJ9gJ4Yh/9d/YSX/TcX2RdtpS57JcXd/e9H3im3zFPewz2KyV
-         /BaHFZHXlTEVcNqTipopFIcodNFPZyHOhOgJSK1lmOgQbuFgSoNrsOIZvWI8+B+yTubO
-         g1fw==
-X-Gm-Message-State: AOAM5323LwaXrOypWIfveF0s78iC0ZbRNnvK7McJWG7ubzAsik5wNNSq
-        JECl9t+b61ziIqCxcBKr7ySzer9WdU1qnmN9gJVq/Q==
-X-Google-Smtp-Source: ABdhPJyaQOm5HWNk7sC/NrdkhA37LoQBNZMiKVA0PT2X3cAnwyuwYzecECYQL9sV7E4yw4QHUW4GgKfZMYSoah+yX0k=
-X-Received: by 2002:a67:e286:: with SMTP id g6mr875424vsf.42.1610388430511;
- Mon, 11 Jan 2021 10:07:10 -0800 (PST)
+        id S1730091AbhAKVom (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Jan 2021 16:44:42 -0500
+Received: from foss.arm.com ([217.140.110.172]:36576 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729635AbhAKVol (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 11 Jan 2021 16:44:41 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B6DEE101E;
+        Mon, 11 Jan 2021 13:43:55 -0800 (PST)
+Received: from [192.168.122.166] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 451C53F66E;
+        Mon, 11 Jan 2021 13:43:55 -0800 (PST)
+Subject: Re: [PATCH] mmc: sdhci-iproc: Add ACPI bindings for the rpi4
+To:     Stefan Wahren <stefan.wahren@i2se.com>, linux-mmc@vger.kernel.org,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc:     ulf.hansson@linaro.org, f.fainelli@gmail.com,
+        sbranden@broadcom.com, rjui@broadcom.com, adrian.hunter@intel.com,
+        linux-kernel@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-arm-kernel@lists.infradead.org
+References: <20210108211339.1724769-1-jeremy.linton@arm.com>
+ <ab3b5788-1148-636a-751f-0a31c87dda33@i2se.com>
+ <cd7c5d78-af92-84b9-8bbf-f480f63005e0@arm.com>
+ <2d92e093-a6f2-ac2c-d7e3-2d0172e1047c@i2se.com>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+Message-ID: <be996d25-7421-a5d3-0861-18b9e6502382@arm.com>
+Date:   Mon, 11 Jan 2021 15:43:54 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-References: <20201214092048.v5.1.Iec3430c7d3c2a29262695edef7b82a14aaa567e5@changeid>
- <20201214092048.v5.2.I7564620993acd4baa63fa0e3925ca879a86d3ee3@changeid>
-In-Reply-To: <20201214092048.v5.2.I7564620993acd4baa63fa0e3925ca879a86d3ee3@changeid>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 11 Jan 2021 19:06:31 +0100
-Message-ID: <CAPDyKFqMARrkX2R=f=dzAh9BjVHUgc9QQZpd1YVWX-Pz5C=Y9A@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] mmc: sdhci-msm: Actually set the actual clock
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Taniya Das <tdas@codeaurora.org>,
-        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <2d92e093-a6f2-ac2c-d7e3-2d0172e1047c@i2se.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 14 Dec 2020 at 18:23, Douglas Anderson <dianders@chromium.org> wrote:
->
-> The MSM SDHCI driver always set the "actual_clock" field to 0.  It had
-> a comment about it not being needed because we weren't using the
-> standard SDHCI divider mechanism and we'd just fallback to
-> "host->clock".  However, it's still better to provide the actual
-> clock.  Why?
->
-> 1. It will make timeout calculations slightly better.  On one system I
->    have, the eMMC requets 200 MHz (for HS400-ES) but actually gets 192
->    MHz.  These are close, but why not get the more accurate one.
->
-> 2. If things are seriously off in the clock driver and it's missing
->    rates or picking the wrong rate (maybe it's rounding up instead of
->    down), this will make it much more obvious what's going on.
->
-> NOTE: we have to be a little careful here because the "actual_clock"
-> field shouldn't include the multiplier that sdhci-msm needs
-> internally.
->
-> Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Hi,
 
-Applied for next, thanks!
+On 1/11/21 6:23 AM, Stefan Wahren wrote:
+> Hi,
+> 
+> Am 11.01.21 um 04:39 schrieb Jeremy Linton:
+>> Hi,
+>>
+>> On 1/9/21 5:07 AM, Stefan Wahren wrote:
+>>> Hi Jeremy,
+>>>
+>>> +add Nicolas
+>>>
+>>> Am 08.01.21 um 22:13 schrieb Jeremy Linton:
+>>>> The rpi4 has a Arasan controller it carries over
+>>>> from the rpi3, and a newer eMMC2 controller.
+>>>> Because of a couple "quirks" it seems wiser to bind
+>>>> these controllers to the same driver that DT is using
+>>>> on this platform rather than the generic sdhci_acpi
+>>>> driver with PNP0D40.
+>>>>
+>>>> So, we use BCM2847 for the older Arasan and BRCME88C
+>>>> for the newer eMMC2.
+>>>>
+>>>> With this change linux is capable of utilizing the
+>>>> SD card slot, and the wifi on this platform
+>>>> with linux.
+>>>>
+>>>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+>>>> ---
+>>>>    drivers/mmc/host/sdhci-iproc.c | 14 ++++++++++++++
+>>>>    1 file changed, 14 insertions(+)
+>>>>
+>>>> diff --git a/drivers/mmc/host/sdhci-iproc.c
+>>>> b/drivers/mmc/host/sdhci-iproc.c
+>>>> index c9434b461aab..f79d97b41805 100644
+>>>> --- a/drivers/mmc/host/sdhci-iproc.c
+>>>> +++ b/drivers/mmc/host/sdhci-iproc.c
+>>>> @@ -250,6 +250,14 @@ static const struct sdhci_pltfm_data
+>>>> sdhci_bcm2835_pltfm_data = {
+>>>>        .ops = &sdhci_iproc_32only_ops,
+>>>>    };
+>>>>    +static const struct sdhci_pltfm_data sdhci_bcm_arasan_data = {
+>>>> +    .quirks = SDHCI_QUIRK_BROKEN_CARD_DETECTION |
+>>>> +          SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
+>>>> +          SDHCI_QUIRK_NO_HISPD_BIT,
+>>>> +    .quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+>>>> +    .ops = &sdhci_iproc_32only_ops,
+>>>> +};
+>>
+>> First, thanks for taking a look at this!
+>>
+>>
+>>> Why do we need an almost exact copy of bcm2835_data which works fine for
+>>> all Raspberry Pi boards?
+>>
+>> The short answer to the remainder of this email is that i'm trying to
+>> continue supporting existing OSs (windows) using the ACPI tables on
+>> the rpi3/rpi4 while adding rpi4+Linux support.
+>>
+>> An even shorter answer is they don't work because ACPI doesn't provide
+>> the same clock/attributes/etc controls that exist with DT.
+>>
+>> So, what happened here is that I got this controller "working" with
+>> the generic PNP0D40 sdhci_acpi driver. I managed this only by
+>> controlling the sdhci_caps/masks in the firmware. In theory this
+>> minimizes the amount of work needed on the other OS which are booting
+>> on the same ACPI tables (*bsds). They should only need to quirk the
+>> bcm/arasan specific functionality, rather than some of the quirking
+>> which change the caps behavior. But because we don't know which if any
+>> of the older rpi/arasan quirks are still needed the safest solution is
+>> to use the _iproc driver and just drop the quirk flags known to be
+>> worked around by the firmware caps override.
+> 
+> okay, thanks for the explanation. I was also confused by bcm_arasan,
+> because there is already an Arasan specific sdhci driver. But now it's
+> clear to me.
+> 
+> Could you please add a short comment (above sdhci_bcm_arasan_data) why
+> we cannot use bcm2835_data?
 
-Kind regards
-Uffe
+Sure.
+
+> 
+> Btw the subject isn't complete. The patch is also related to the rpi3.
+
+Only via the historical ACPI tables. There isn't any attempt to get 
+ACPI+Linux working on the rpi3. Its to far away from BSA. For starters 
+it doesn't have a GIC. So while one could bind this driver on the rpi3, 
+that would require being able to boot Linux on the rpi3 in ACPI mode.
+
+Thanks again!
 
 
-> ---
->
-> Changes in v5:
-> - Remove unused clock parameter.
-> - Add a comment that we're stashing the requested rate.
->
-> Changes in v4:
-> - ("mmc: sdhci-msm: Actually set the actual clock") new for v4.
->
->  drivers/mmc/host/sdhci-msm.c | 35 ++++++++++++++++-------------------
->  1 file changed, 16 insertions(+), 19 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-> index 50beb407dbe9..f5669dc858d0 100644
-> --- a/drivers/mmc/host/sdhci-msm.c
-> +++ b/drivers/mmc/host/sdhci-msm.c
-> @@ -328,8 +328,7 @@ static void sdhci_msm_v5_variant_writel_relaxed(u32 val,
->         writel_relaxed(val, host->ioaddr + offset);
->  }
->
-> -static unsigned int msm_get_clock_rate_for_bus_mode(struct sdhci_host *host,
-> -                                                   unsigned int clock)
-> +static unsigned int msm_get_clock_mult_for_bus_mode(struct sdhci_host *host)
->  {
->         struct mmc_ios ios = host->mmc->ios;
->         /*
-> @@ -342,8 +341,8 @@ static unsigned int msm_get_clock_rate_for_bus_mode(struct sdhci_host *host,
->             ios.timing == MMC_TIMING_MMC_DDR52 ||
->             ios.timing == MMC_TIMING_MMC_HS400 ||
->             host->flags & SDHCI_HS400_TUNING)
-> -               clock *= 2;
-> -       return clock;
-> +               return 2;
-> +       return 1;
->  }
->
->  static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
-> @@ -354,14 +353,16 @@ static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
->         struct mmc_ios curr_ios = host->mmc->ios;
->         struct clk *core_clk = msm_host->bulk_clks[0].clk;
->         unsigned long achieved_rate;
-> +       unsigned int desired_rate;
-> +       unsigned int mult;
->         int rc;
->
-> -       clock = msm_get_clock_rate_for_bus_mode(host, clock);
-> -       rc = dev_pm_opp_set_rate(mmc_dev(host->mmc), clock);
-> +       mult = msm_get_clock_mult_for_bus_mode(host);
-> +       desired_rate = clock * mult;
-> +       rc = dev_pm_opp_set_rate(mmc_dev(host->mmc), desired_rate);
->         if (rc) {
->                 pr_err("%s: Failed to set clock at rate %u at timing %d\n",
-> -                      mmc_hostname(host->mmc), clock,
-> -                      curr_ios.timing);
-> +                      mmc_hostname(host->mmc), desired_rate, curr_ios.timing);
->                 return;
->         }
->
-> @@ -371,11 +372,14 @@ static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
->          * encounter it.
->          */
->         achieved_rate = clk_get_rate(core_clk);
-> -       if (achieved_rate > clock)
-> +       if (achieved_rate > desired_rate)
->                 pr_warn("%s: Card appears overclocked; req %u Hz, actual %lu Hz\n",
-> -                       mmc_hostname(host->mmc), clock, achieved_rate);
-> +                       mmc_hostname(host->mmc), desired_rate, achieved_rate);
-> +       host->mmc->actual_clock = achieved_rate / mult;
-> +
-> +       /* Stash the rate we requested to use in sdhci_msm_runtime_resume() */
-> +       msm_host->clk_rate = desired_rate;
->
-> -       msm_host->clk_rate = clock;
->         pr_debug("%s: Setting clock at rate %lu at timing %d\n",
->                  mmc_hostname(host->mmc), achieved_rate, curr_ios.timing);
->  }
-> @@ -1756,13 +1760,6 @@ static unsigned int sdhci_msm_get_min_clock(struct sdhci_host *host)
->  static void __sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
->  {
->         u16 clk;
-> -       /*
-> -        * Keep actual_clock as zero -
-> -        * - since there is no divider used so no need of having actual_clock.
-> -        * - MSM controller uses SDCLK for data timeout calculation. If
-> -        *   actual_clock is zero, host->clock is taken for calculation.
-> -        */
-> -       host->mmc->actual_clock = 0;
->
->         sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
->
-> @@ -1785,7 +1782,7 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
->         struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
->
->         if (!clock) {
-> -               msm_host->clk_rate = clock;
-> +               host->mmc->actual_clock = msm_host->clk_rate = 0;
->                 goto out;
->         }
->
-> --
-> 2.29.2.576.ga3fc446d84-goog
->
+
+> 
+> Best regards
+> Stefan
+> 
+> 
+
