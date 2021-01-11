@@ -2,144 +2,159 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D42152F1D85
-	for <lists+linux-mmc@lfdr.de>; Mon, 11 Jan 2021 19:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 828EA2F1D95
+	for <lists+linux-mmc@lfdr.de>; Mon, 11 Jan 2021 19:09:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727030AbhAKSHo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Jan 2021 13:07:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56344 "EHLO
+        id S2389320AbhAKSIV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Jan 2021 13:08:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389299AbhAKSHo (ORCPT
+        with ESMTP id S2390108AbhAKSHo (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Jan 2021 13:07:44 -0500
-Received: from mail-ua1-x929.google.com (mail-ua1-x929.google.com [IPv6:2607:f8b0:4864:20::929])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DAF0C0617B1
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Jan 2021 10:06:49 -0800 (PST)
-Received: by mail-ua1-x929.google.com with SMTP id a31so116894uae.11
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Jan 2021 10:06:49 -0800 (PST)
+Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21DEAC0617B9
+        for <linux-mmc@vger.kernel.org>; Mon, 11 Jan 2021 10:06:56 -0800 (PST)
+Received: by mail-vs1-xe34.google.com with SMTP id s85so17171vsc.3
+        for <linux-mmc@vger.kernel.org>; Mon, 11 Jan 2021 10:06:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=XWiH05HuaGWdRbA9U5L//orrI8G7vM7uoQMJxI3AypY=;
-        b=UYbp94mGeQYkBROkU3bvrAvpFFf4nVlbW5Vhlat17xqFjsNegXtz30bz3EI9akwZmg
-         qZs7MPAYdHs7UmBcBbJStXA9ahnnX88PLO62wS0rXjaWrbbtZUy8uht8h8Ukjq7SR80T
-         D5BCnKGKZ4Ewf/GlqkOpdlHEecDqwFG6MkKZfAnM+DZfgDe6b1B9bFwMEXYfFeZ4xPYw
-         4aaQ9hohj0w16piLZryWdDnnifPJ1uqeRDPWjdOES2tAFaGVZnSCTuMCPitzxu5LmHlU
-         Y1sP0qBdAwNWKaGm22sif3vwaHmpl61avubzrlqLaHRFW288o9RHh4Klag5TnR2rLTGK
-         8XCw==
+        bh=MfaOulU+Mc40b45/hjM/TjLBGSkN+SyhGctwM6EuRRA=;
+        b=WskRhGFRleQ1ieZKijVafVEHRb4c8bzCFMA7RalCB2nRv2UwUR984nG6uHHsyYPGQu
+         gqcvhtctdQFLp29fBJa0Qv5azxQvFQhjK+fl0EzzQJGN82UmIBn2hWXQMB33jvU4nxdS
+         3WWd4onzEFI3JaAGrYrWSRz3u5oJIiVqZAKjHH73V1jE4j2ZM5RezxCOAGsY8XOxvpGy
+         3aetwzYuCMQPsxRyH2QbvpQrfvZK71Veszma/z2LXDngU7APnO4M8OovambVXuqSD0rx
+         uZEXpSELqk5LiOOZzWye3u4yjbg9sVUppGi6AlhHKUsVKABph0UD/fPrpEqNL9JbpmH8
+         mGmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=XWiH05HuaGWdRbA9U5L//orrI8G7vM7uoQMJxI3AypY=;
-        b=kpsbPUcXfU5hpuEzzjQ2+q96p5WRlMf4B3c8R8xTcdpDl+0tIoWd0OJ5R1d8l0PM/a
-         WdrxGkYBxo5oq9avt5bORjw4elJSFxC3I8qay6mZ0m80oDRW37k8dZ41dUGpfO4nJ+zf
-         9V6B/yAwTppfva4HGo1FfkRzmoIBf6CwU2keYxvGKNwkTqUvJ8HZpw6FwoEQomDj29nQ
-         OJE1JPHQWotd3a/e+71rTYgOzgqPWFn84/O/jecP2EoMMAqc5sqO5rJbD499wyaoJHQ9
-         E8dopjxRn4oeSfI/AaJH6PAc8VQkLR5CI3evkd8G/xEUSiIFT5zSGadZfjESPSKNx1Mw
-         lkXg==
-X-Gm-Message-State: AOAM530JuVoqnG4RX3uZa619l2DgFdGzEWBB9xP+Q/0TG1oWESL2c6WO
-        WK1hPdf5FjlzfY1HFkqiuUcnH/uLGvVlk3Lknln2lQ==
-X-Google-Smtp-Source: ABdhPJy6k5BPXea4aijRSzb9FWxF8qw7DLALO/1gvHOZKC29+FYABLx5yMtCIB55CBVS1dmY1otNdJYl8fuFMcHN8wM=
-X-Received: by 2002:a9f:204e:: with SMTP id 72mr659337uam.19.1610388408471;
- Mon, 11 Jan 2021 10:06:48 -0800 (PST)
+        bh=MfaOulU+Mc40b45/hjM/TjLBGSkN+SyhGctwM6EuRRA=;
+        b=fC+j5xofc3fXHqrv79gPCGBv31MHHM//D08Ik6btIpFIopG/BJE3GRlLHNLWOxA13A
+         APqDnv2HHtxw5LmLnx6e1d6SpxydLjkHIMCyNsuv3Hrp4gTx26JtnqmFuz70fpEG4dYO
+         RP04JN5w9Evd8IMioZY8DxLVjpTUJiX9WFwuGYDwtOed1Hb/QQRbWyXgby7fyJn2EGz+
+         bnJkkZ9DDjzRDuM7ukdN6NYgfYEBlLn27qkBYRFd4cXPXLcMoVPxjdmlkjfMoMQnPkcc
+         Nzk8J9Uk0abYfsTomQs/cyd8TAuI8u3u6QAf7q9g2dvSajhBCywjFnoX6MHl0Q9SIJaf
+         Lr0Q==
+X-Gm-Message-State: AOAM532aibmgWg5sb95RyKpJCeyFi3odMHnlf8w14o1Cp2W4jbfUOksF
+        9QwhmOGXTpywD4vm+l2St2THdDCniGMxPMQfcJdO5w==
+X-Google-Smtp-Source: ABdhPJx1ve7hy46qo6dBg52+Hu667fG5dJSCb1YZ8cLvLpos6eZ79TYA80NOZQUo7CA+yNqluCztw1TSX5BzJU2+EbQ=
+X-Received: by 2002:a67:fe85:: with SMTP id b5mr797102vsr.19.1610388415324;
+ Mon, 11 Jan 2021 10:06:55 -0800 (PST)
 MIME-Version: 1.0
-References: <20201229161625.38255233@xhacker.debian>
-In-Reply-To: <20201229161625.38255233@xhacker.debian>
+References: <20201211011934.6171-1-andre.przywara@arm.com> <20201211011934.6171-10-andre.przywara@arm.com>
+In-Reply-To: <20201211011934.6171-10-andre.przywara@arm.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 11 Jan 2021 19:06:05 +0100
-Message-ID: <CAPDyKFqWMFpe=y5dO1pguTFnffDTp-b_9yF=+Ev5PhDbYSKUMA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-of-dwcmshc: fix rpmb access
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Mon, 11 Jan 2021 19:06:17 +0100
+Message-ID: <CAPDyKFokNt1megz9MHcn8rSgYki=c_s=UeNk8cBLUaHVVKrQ6A@mail.gmail.com>
+Subject: Re: [PATCH v2 09/21] mmc: sunxi: add support for A100 mmc controller
+To:     Andre Przywara <andre.przywara@arm.com>
+Cc:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Icenowy Zheng <icenowy@aosc.xyz>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        =?UTF-8?B?Q2zDqW1lbnQgUMOpcm9u?= <peron.clem@gmail.com>,
+        Shuosheng Huang <huangshuosheng@allwinnertech.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-sunxi <linux-sunxi@googlegroups.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 29 Dec 2020 at 09:19, Jisheng Zhang <Jisheng.Zhang@synaptics.com> wrote:
+On Fri, 11 Dec 2020 at 02:20, Andre Przywara <andre.przywara@arm.com> wrote:
 >
-> Commit a44f7cb93732 ("mmc: core: use mrq->sbc when sending CMD23 for
-> RPMB") began to use ACMD23 for RPMB if the host supports ACMD23. In
-> RPMB ACM23 case, we need to set bit 31 to CMD23 argument, otherwise
-> RPMB write operation will return general fail.
+> From: Yangtao Li <frank@allwinnertech.com>
 >
-> However, no matter V4 is enabled or not, the dwcmshc's ARGUMENT2
-> register is 32-bit block count register which doesn't support stuff
-> bits of CMD23 argument. So let's handle this specific ACMD23 case.
+> This patch adds support for A100 MMC controller, which use word address
+> for internal dma.
 >
-> From another side, this patch also prepare for future v4 enabling
-> for dwcmshc, because from the 4.10 spec, the ARGUMENT2 register is
-> redefined as 32bit block count which doesn't support stuff bits of
-> CMD23 argument.
->
-> Fixes: a44f7cb93732 ("mmc: core: use mrq->sbc when sending CMD23 for RPMB")
-> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+> Signed-off-by: Yangtao Li <frank@allwinnertech.com>
+> Signed-off-by: Andre Przywara <andre.przywara@arm.com>
 
-Applied for fixes and by adding a stable tag, thanks!
+Applied for next to my mmc tree, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-of-dwcmshc.c | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
+>  drivers/mmc/host/sunxi-mmc.c | 28 +++++++++++++++++++++++++---
+>  1 file changed, 25 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
-> index 4b673792b5a4..d90020ed3622 100644
-> --- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-> +++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-> @@ -16,6 +16,8 @@
+> diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+> index fc62773602ec..1518b64112b7 100644
+> --- a/drivers/mmc/host/sunxi-mmc.c
+> +++ b/drivers/mmc/host/sunxi-mmc.c
+> @@ -244,6 +244,7 @@ struct sunxi_idma_des {
 >
->  #include "sdhci-pltfm.h"
+>  struct sunxi_mmc_cfg {
+>         u32 idma_des_size_bits;
+> +       u32 idma_des_shift;
+>         const struct sunxi_mmc_clk_delay *clk_delays;
 >
-> +#define SDHCI_DWCMSHC_ARG2_STUFF       GENMASK(31, 16)
+>         /* does the IP block support autocalibration? */
+> @@ -343,7 +344,7 @@ static int sunxi_mmc_init_host(struct sunxi_mmc_host *host)
+>         /* Enable CEATA support */
+>         mmc_writel(host, REG_FUNS, SDXC_CEATA_ON);
+>         /* Set DMA descriptor list base address */
+> -       mmc_writel(host, REG_DLBA, host->sg_dma);
+> +       mmc_writel(host, REG_DLBA, host->sg_dma >> host->cfg->idma_des_shift);
+>
+>         rval = mmc_readl(host, REG_GCTRL);
+>         rval |= SDXC_INTERRUPT_ENABLE_BIT;
+> @@ -373,8 +374,10 @@ static void sunxi_mmc_init_idma_des(struct sunxi_mmc_host *host,
+>
+>                 next_desc += sizeof(struct sunxi_idma_des);
+>                 pdes[i].buf_addr_ptr1 =
+> -                       cpu_to_le32(sg_dma_address(&data->sg[i]));
+> -               pdes[i].buf_addr_ptr2 = cpu_to_le32((u32)next_desc);
+> +                       cpu_to_le32(sg_dma_address(&data->sg[i]) >>
+> +                                   host->cfg->idma_des_shift);
+> +               pdes[i].buf_addr_ptr2 = cpu_to_le32((u32)next_desc >>
+> +                                                   host->cfg->idma_des_shift);
+>         }
+>
+>         pdes[0].config |= cpu_to_le32(SDXC_IDMAC_DES0_FD);
+> @@ -1178,6 +1181,23 @@ static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
+>         .needs_new_timings = true,
+>  };
+>
+> +static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
+> +       .idma_des_size_bits = 16,
+> +       .idma_des_shift = 2,
+> +       .clk_delays = NULL,
+> +       .can_calibrate = true,
+> +       .mask_data0 = true,
+> +       .needs_new_timings = true,
+> +};
 > +
->  /* DWCMSHC specific Mode Select value */
->  #define DWCMSHC_CTRL_HS400             0x7
->
-> @@ -49,6 +51,29 @@ static void dwcmshc_adma_write_desc(struct sdhci_host *host, void **desc,
->         sdhci_adma_write_desc(host, desc, addr, len, cmd);
->  }
->
-> +static void dwcmshc_check_auto_cmd23(struct mmc_host *mmc,
-> +                                    struct mmc_request *mrq)
-> +{
-> +       struct sdhci_host *host = mmc_priv(mmc);
+> +static const struct sunxi_mmc_cfg sun50i_a100_emmc_cfg = {
+> +       .idma_des_size_bits = 13,
+> +       .idma_des_shift = 2,
+> +       .clk_delays = NULL,
+> +       .can_calibrate = true,
+> +       .needs_new_timings = true,
+> +};
 > +
-> +       /*
-> +        * No matter V4 is enabled or not, ARGUMENT2 register is 32-bit
-> +        * block count register which doesn't support stuff bits of
-> +        * CMD23 argument on dwcmsch host controller.
-> +        */
-> +       if (mrq->sbc && (mrq->sbc->arg & SDHCI_DWCMSHC_ARG2_STUFF))
-> +               host->flags &= ~SDHCI_AUTO_CMD23;
-> +       else
-> +               host->flags |= SDHCI_AUTO_CMD23;
-> +}
-> +
-> +static void dwcmshc_request(struct mmc_host *mmc, struct mmc_request *mrq)
-> +{
-> +       dwcmshc_check_auto_cmd23(mmc, mrq);
-> +
-> +       sdhci_request(mmc, mrq);
-> +}
-> +
->  static void dwcmshc_set_uhs_signaling(struct sdhci_host *host,
->                                       unsigned int timing)
->  {
-> @@ -133,6 +158,8 @@ static int dwcmshc_probe(struct platform_device *pdev)
->
->         sdhci_get_of_property(pdev);
->
-> +       host->mmc_host_ops.request = dwcmshc_request;
-> +
->         err = sdhci_add_host(host);
->         if (err)
->                 goto err_clk;
+>  static const struct of_device_id sunxi_mmc_of_match[] = {
+>         { .compatible = "allwinner,sun4i-a10-mmc", .data = &sun4i_a10_cfg },
+>         { .compatible = "allwinner,sun5i-a13-mmc", .data = &sun5i_a13_cfg },
+> @@ -1186,6 +1206,8 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
+>         { .compatible = "allwinner,sun9i-a80-mmc", .data = &sun9i_a80_cfg },
+>         { .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
+>         { .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
+> +       { .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
+> +       { .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
+>         { /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
 > --
-> 2.30.0.rc2
+> 2.17.5
 >
