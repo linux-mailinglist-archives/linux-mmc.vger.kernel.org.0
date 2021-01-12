@@ -2,39 +2,39 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBDFE2F2B9F
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Jan 2021 10:48:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DBF62F2BA5
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Jan 2021 10:48:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731426AbhALJsK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Jan 2021 04:48:10 -0500
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:63018 "EHLO
+        id S1732653AbhALJsM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Jan 2021 04:48:12 -0500
+Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:60622 "EHLO
         mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1733191AbhALJsK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Jan 2021 04:48:10 -0500
+        by vger.kernel.org with ESMTP id S2388625AbhALJsM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Jan 2021 04:48:12 -0500
 Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-        by mx0a-0016f401.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10C9VVcD001139;
-        Tue, 12 Jan 2021 01:47:19 -0800
+        by mx0a-0016f401.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10C9VVcE001139;
+        Tue, 12 Jan 2021 01:47:23 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=pfpt0220; bh=cz+Y/+9/bFRzc1mDAifQJOPexc4rONAcpnzVZzqZ8wk=;
- b=dgeD/tuhgrNETc/gI2jut/Q4mGQea+wQMdPpFsZXiLhqqkilja7+E+sS+82z9aYR343n
- XT3Yipd5IPm37g7wvJKgkXc7bBlyQfAOzTniTeLXTcE2Lh3CKkGlLjfRnDtzMzI9URYq
- gXniMd4y6D+x2Dj6oOaq9BoCqLZQctuabbIgV0bql7hbdnP8xl2DONHmdJuRjWV++6Ym
- t+mZJN4sxIfdyPanr5QFEIyw7+/HNnvjJTg15GVdcLq0ewxWakfIgqrokZfzU/mklhlf
- kMq8JvhlHtPTuLGJlvc+fk3hU9djM8e9U6rTjIaQo1ixTzd/GEO4G05Xb0rVuqUvXH4S 2A== 
-Received: from dc5-exch01.marvell.com ([199.233.59.181])
-        by mx0a-0016f401.pphosted.com with ESMTP id 35yaqsqmps-1
+ content-type; s=pfpt0220; bh=dUeX9ZdPNHuFVeAWTAORQVIXK2VRGllOze1tz03uvY4=;
+ b=i/vyYv6ycGAt2vemgVMzOgglvicg2dYYzdG4PTwytK5fPeQYO5W3WTESSNusoRhljodT
+ pAefK3Fks3maEPBc9+IxALXAaxyA7QEeqkefmels4Rabsc48AEE1rLIY4msdqYqkhyAp
+ HTPLGqgleERQFVssSrUSk9vtcqEHqbwg3e4V13P+0fDWduWij+S+0Q/OmffTnqZNoHzK
+ AqhPis16bZaSlhK44rrFCIMgcIGhSVYvKAGel/P4dP+UeeT2LQ55nywGaqma73fFwdhh
+ 7qbHg6KLfj4JkgFkNQwYPp+0yQc0GlgW5uJ2oqBS8ASYNwvPoQpyVkr5+2Ql6Cn6ETHy WA== 
+Received: from dc5-exch02.marvell.com ([199.233.59.182])
+        by mx0a-0016f401.pphosted.com with ESMTP id 35yaqsqmq1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Tue, 12 Jan 2021 01:47:19 -0800
-Received: from DC5-EXCH01.marvell.com (10.69.176.38) by DC5-EXCH01.marvell.com
- (10.69.176.38) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 12 Jan
- 2021 01:47:18 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH01.marvell.com
- (10.69.176.38) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 12 Jan 2021 01:47:18 -0800
+        Tue, 12 Jan 2021 01:47:23 -0800
+Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 12 Jan
+ 2021 01:47:22 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 12 Jan 2021 01:47:22 -0800
 Received: from octopus.marvell.com (octopus.marvell.com [10.5.24.3])
-        by maili.marvell.com (Postfix) with ESMTP id CD5E43F7040;
-        Tue, 12 Jan 2021 01:47:14 -0800 (PST)
+        by maili.marvell.com (Postfix) with ESMTP id 9A7A03F7043;
+        Tue, 12 Jan 2021 01:47:18 -0800 (PST)
 From:   <kostap@marvell.com>
 To:     <linux-mmc@vger.kernel.org>
 CC:     <ulf.hansson@linaro.org>, <robh+dt@kernel.org>, <andrew@lunn.ch>,
@@ -43,9 +43,9 @@ CC:     <ulf.hansson@linaro.org>, <robh+dt@kernel.org>, <andrew@lunn.ch>,
         <linux-arm-kernel@lists.infradead.org>, <mw@semihalf.com>,
         <jaz@semihalf.com>, <nadavh@marvell.com>, <bpeled@marvell.com>,
         <stefanc@marvell.com>, Konstantin Porotchkin <kostap@marvell.com>
-Subject: [PATCH v3 3/4] arm64: dts: change AP807 SDHCI compatibility string
-Date:   Tue, 12 Jan 2021 11:46:54 +0200
-Message-ID: <20210112094655.12274-4-kostap@marvell.com>
+Subject: [PATCH v3 4/4] arm64: dts: cn913x-db: enable MMC HS400
+Date:   Tue, 12 Jan 2021 11:46:55 +0200
+Message-ID: <20210112094655.12274-5-kostap@marvell.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210112094655.12274-1-kostap@marvell.com>
 References: <20210112094655.12274-1-kostap@marvell.com>
@@ -57,30 +57,31 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Konstantin Porotchkin <kostap@marvell.com>
+From: Marcin Wojtas <mw@semihalf.com>
 
-This patch adds new compatible string to AP807 DTSI to avoid
-its SDHCI controller to run in "slow mode" with disabled UHS.
+This patch adds necessary flags in the device tree
+which enable HS400 mode on AP807 MMC controller
+on the CN913x-DB board.
 
 Signed-off-by: Marcin Wojtas <mw@semihalf.com>
 Signed-off-by: Konstantin Porotchkin <kostap@marvell.com>
 ---
- arch/arm64/boot/dts/marvell/armada-ap807.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/marvell/cn9130-db.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/marvell/armada-ap807.dtsi b/arch/arm64/boot/dts/marvell/armada-ap807.dtsi
-index 623010f3ca89..d9bbbfa4b4eb 100644
---- a/arch/arm64/boot/dts/marvell/armada-ap807.dtsi
-+++ b/arch/arm64/boot/dts/marvell/armada-ap807.dtsi
-@@ -27,3 +27,8 @@
- 		#clock-cells = <1>;
- 	};
+diff --git a/arch/arm64/boot/dts/marvell/cn9130-db.dts b/arch/arm64/boot/dts/marvell/cn9130-db.dts
+index ce49a70d88a0..79020e6d2792 100644
+--- a/arch/arm64/boot/dts/marvell/cn9130-db.dts
++++ b/arch/arm64/boot/dts/marvell/cn9130-db.dts
+@@ -113,6 +113,8 @@
+ &ap_sdhci0 {
+ 	pinctrl-names = "default";
+ 	bus-width = <8>;
++	mmc-ddr-1_8v;
++	mmc-hs400-1_8v;
+ 	vqmmc-supply = <&ap0_reg_sd_vccq>;
+ 	status = "okay";
  };
-+
-+&ap_sdhci0 {
-+	compatible = "marvell,armada-ap807-sdhci";
-+};
-+
 -- 
 2.17.1
 
