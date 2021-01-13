@@ -2,94 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CE432F4A0E
+	by mail.lfdr.de (Postfix) with ESMTP id D9BED2F4A0F
 	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jan 2021 12:29:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728286AbhAML0w (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        id S1728279AbhAML0w (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
         Wed, 13 Jan 2021 06:26:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54140 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728265AbhAML0w (ORCPT
+        with ESMTP id S1726982AbhAML0w (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Jan 2021 06:26:52 -0500
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57CD1C0617A4
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:25:42 -0800 (PST)
-Received: by mail-vs1-xe36.google.com with SMTP id x26so920215vsq.1
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:25:42 -0800 (PST)
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97243C0617A5
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:25:44 -0800 (PST)
+Received: by mail-vs1-xe35.google.com with SMTP id k30so909220vsp.6
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:25:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=hbijAPIh7wUd9rih0Pfd0xER1/kaObwyFAEUGZbA5yM=;
-        b=ApmP4kmAyOFCccOnoIKag8QSTMl1PYvCqUFnbJPgqRFs4/mTtoCoIY8IvRwGgqxIl9
-         j2TimUVO6mUPr08mFW7fNES7xxZ1oGMN4KITlG5hBGVX64k0eU79NcJ60nlK0UfrHmcH
-         RV9chFFh6XSyfIUU8Y9oSFTBRO189YWkwIPIgO5mLnZ+P8REtHQ0Doa/+updnJfzcQMf
-         CATzMP5y9jq2fWWq7zFzm17Vlult50m2UTzs+q1/pJYh1JFsleCAQ/naGDZySfa+dlhH
-         0kt1/S1Aj4FVdCs6pV4uTIBNuia1SHYNZ7Fdtp6Y/c/jGf1yABH1XMuoGVYyEZR1kv3E
-         aQsA==
+        bh=+6c0jaVgiPZUTWx3FWeCKRMV7GRdUXOup2JSIVMvzG8=;
+        b=gNXTPYsFPMysLFn3dCllIUoARg68sve0A5NvDm0LecEB74K0w3aX0o3Oy8RftNHLmM
+         0UHhr2JZv1DbNSXaaFzvQchVhJZ+PU7RnaDayZiD0UTU05stT6yagTaGsCprysBvazRt
+         PuZFGBKck3t/OL500aa3m+GgiD84sDgRi4I9wDnmGo93HA8W01dE5Qbg8B6hDWkpCjU7
+         hDBKO9XW6xxvcQdQoNjZ4T4H/fV0j0TXXOjJLPvWM7uq6CJ9SU2bnyzw1oQSrR3GyeTD
+         EWIFnQGAWZIrYQRt9NCWN/sOSLoaIFhLsHba1ehQPuHjSBRLZT+pSzfdqpTEe079ZS/d
+         UYvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=hbijAPIh7wUd9rih0Pfd0xER1/kaObwyFAEUGZbA5yM=;
-        b=EjwP7Nku0tjnqYHfRnv/3h67sCxLF85Sjy/yo9DtF37WUwAlU2q0qSHFP4EgCLpFUL
-         tMGVksi3NRZ0+ZpoJ/QU+BOcJVrnY6RRkfrrZtBfnW3JSTaFCrAw29uXQPuk0GORUKiw
-         M0wl83ObRctsEiRPeTU8NaPWiq4orA87X/NLDfDgOJKYivWWd/MKvF8B7P9pAOPV85WH
-         67S5Bb4Z0MOGaNiPyxUTPhZKjqA4t5mjtZdh5xgsmXW+S/ZmyJZ14OotTPY0ncbJJzj6
-         y8uzwudJjL+vCGcDrLL/dsFooKc0W7jmL8f+ZpQ117ebwXcsTJJKn3GchIC1SUYNiSIs
-         23Qw==
-X-Gm-Message-State: AOAM531zTkoGQOjipzuU7pg3LLI9wA7pz8QTlAFdyUcvVNci6/R5O/kW
-        q0hZpno19cu8kVXuYf3+pZXX9sJlw4G56DNFG1wC3Boz9RN0XQ==
-X-Google-Smtp-Source: ABdhPJwkWIk8f4E6qjFwt0NDTDGUbLNLUXJu0ZcGdugcXBkZ23N6CGZgdhA/olfnRsJWRTL4YRWQ7sx0+5AGBL+OERk=
-X-Received: by 2002:a67:70c6:: with SMTP id l189mr1444580vsc.34.1610537141487;
- Wed, 13 Jan 2021 03:25:41 -0800 (PST)
+        bh=+6c0jaVgiPZUTWx3FWeCKRMV7GRdUXOup2JSIVMvzG8=;
+        b=Ti8s5ioGOe6W1hJkCN+Ln6z5soNFVOZnGYaYagLmv8SS8XKcvGmVdzjqzPuDuoSxGO
+         4CWp907Mvc+0gVoIF2hg6eEvWUVrY45QNHYQIYVHscR6uCCpNCQtH4me12DpvEeId6+U
+         Sai8BxrSiVG/NZQ0xUJ85/xW8J3mIrjIr84gHKLeQQrDuXPjWGaitVqgZ4BxU6UylNMw
+         sZb0WAE72tceF5KHdzpHRRx+HCKiK9WAw2OwxITUS4tCxUpXdy6kNcgjp/1w31j5WnXw
+         5PWffpfwZuVn48FNTJgUvpBEuAwR8d0x5QHJ35KImKbxfZa+/Zgo9hFpb4EYfHwLvZwD
+         ptWQ==
+X-Gm-Message-State: AOAM5318TJPhisMY3Vp0ECfYbBtjQmos8Bgozc4YOyVIdIK28R2/QA5X
+        hQbX8a7oz4YE7MLPB0ZQOjOfGRfZoehomcRy5avq4Ed8MfKBIw==
+X-Google-Smtp-Source: ABdhPJzBZUATGCHxXNENn1oOCawpmSFAUuZxF8+zv4IBBiT0lha9aGQM7yiT0C4pte1egzsVpJXEtDvM8ee8/7wmcJE=
+X-Received: by 2002:a05:6102:2127:: with SMTP id f7mr1456131vsg.48.1610537143857;
+ Wed, 13 Jan 2021 03:25:43 -0800 (PST)
 MIME-Version: 1.0
-References: <1608708622-29668-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
-In-Reply-To: <1608708622-29668-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
+References: <cover.1608714110.git.hns@goldelico.com> <415ea1cb85eedc12f0c2f70da9a1ae3885bdd091.1608714110.git.hns@goldelico.com>
+In-Reply-To: <415ea1cb85eedc12f0c2f70da9a1ae3885bdd091.1608714110.git.hns@goldelico.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 13 Jan 2021 12:25:04 +0100
-Message-ID: <CAPDyKFojeah1a-DjCacv5R=hxXUTQOqbKtKd2n51ZaHfQ6P3Mw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] mmc: host: tmio/renesas_sdhi: Add data timeout error detection
-To:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+Date:   Wed, 13 Jan 2021 12:25:07 +0100
+Message-ID: <CAPDyKFqfUrOy7dKTHE7O4RFpJa9OsPh2XTb3c7b_ukbN55e3cQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: jz4740: remove unused struct component card_detect_irq
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Lee Jones <lee.jones@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 23 Dec 2020 at 08:30, Yoshihiro Shimoda
-<yoshihiro.shimoda.uh@renesas.com> wrote:
+On Wed, 23 Dec 2020 at 10:05, H. Nikolaus Schaller <hns@goldelico.com> wrote:
 >
-> This patch series is based on the mmc.git / next branch. The patch 1/2
-> is a updated patch from Wolfram-san submitted [1]. And, I talked
-> him locally, I can write this Reviewed-by and Tested-by instead of
-> SoB. The patch 2/2 is a new patch for retuning a card when
-> the host controller detects cmd/data timeout. And, I got Wolfram-san's
-> Reviewed-by locally.
+> I have not found any user for this struct component.
 >
-> Note that I don't include Hayakawa-san's email account which is
-> the author of the patch 1/2 in To/CC because he left from Renesas
-> now.
->
-> [1]
-> https://lore.kernel.org/linux-mmc/20201120150647.123237-3-wsa+renesas@sang-engineering.com/
->
-> Masaharu Hayakawa (1):
->   mmc: tmio: Add data timeout error detection
->
-> Yoshihiro Shimoda (1):
->   mmc: host: renesas_sdhi: Add a condition of cmd/data timeout for
->     retune
->
->  drivers/mmc/host/renesas_sdhi_core.c | 16 +++++++++++++---
->  drivers/mmc/host/tmio_mmc.h          |  2 +-
->  drivers/mmc/host/tmio_mmc_core.c     |  8 +++++---
->  3 files changed, 19 insertions(+), 7 deletions(-)
->
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/host/jz4740_mmc.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
+> index a1f92fed2a55b7..b3c636edbb4610 100644
+> --- a/drivers/mmc/host/jz4740_mmc.c
+> +++ b/drivers/mmc/host/jz4740_mmc.c
+> @@ -152,7 +152,6 @@ struct jz4740_mmc_host {
+>         enum jz4740_mmc_version version;
+>
+>         int irq;
+> -       int card_detect_irq;
+>
+>         void __iomem *base;
+>         struct resource *mem_res;
+> --
+> 2.26.2
+>
