@@ -2,104 +2,92 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 547672F4A19
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jan 2021 12:29:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F9D02F4A27
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jan 2021 12:29:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725910AbhAML1L (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 Jan 2021 06:27:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54144 "EHLO
+        id S1728405AbhAML3E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Jan 2021 06:29:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726893AbhAML1H (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Jan 2021 06:27:07 -0500
-Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0D4C061384
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:26:11 -0800 (PST)
-Received: by mail-vs1-xe2c.google.com with SMTP id x4so906501vsp.7
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:26:11 -0800 (PST)
+        with ESMTP id S1728389AbhAML3D (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Jan 2021 06:29:03 -0500
+Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C754C061795
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:28:23 -0800 (PST)
+Received: by mail-vk1-xa2f.google.com with SMTP id q66so432608vke.0
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:28:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=j1lIKrnf+0plD+PksatIFoCdGuK2fSd0EGescQqhyGs=;
-        b=K3MxamXk3tXzqcNFwUcVLufV8kmsNO7yKLcMzrGQiJJ898xQADWOveJFZLejNRWuU4
-         rFoGNgdXUGGnerKSqjGuH2v/TtYb46Q4VuIURia+qMI2VhzD41JluLTFIl8/LXOClymb
-         8vqQXCwjbsBWHul/XGcJJ6SPVH1qAZewUQ3Tf5YwaU4innDDAsOZMxt61PeO/ByIV5hx
-         QVuaRB7G61AwHtK9Bgrpt43IIASOsHJ9ms6JgJs3AXTI1CJRpAMLyYE69FWxvC+cVHdM
-         l6VnSi+LZaf4s+xZ9Qukzl/WJMmWPK0x3VuMgjLGMWRB3+CYBiTml4v1ymGjT+tr/VQt
-         ksXw==
+        bh=SBYo6W/p5JZvDAn/qFQUoh+980h8QORlUqiOC9iDQIw=;
+        b=F97GImsPv7LovRmqDSB0+LmGy8/qg5nuYKbrVVbTOmKjLBVlJGr3xHiQSy9dZwiiZx
+         8z1ClPYmkK1R4FwWocCAqAAhSENQi1nIc26a+wYqXyHEqpXaRCvCRO2RlW54PJD2oJS8
+         ECv1DAX9E+eseL8/HfGTI1fAksoGC6WF/8HmdefH3Ebkc/+GWiHmiPT8SRnUE82F8r5O
+         ybP9j1AzOPFVUxYeXcnhFlxOXe3hNtQMNKA00ljGsHKM+C7b5/l/6pGNcUxc9QdJgXlE
+         GBMsawzmK/eNTp9K0KNcvBZk9YC6kK3GKWPG+v/uhTjckwsLEdc/FudCd1V23omgWwQl
+         kXYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=j1lIKrnf+0plD+PksatIFoCdGuK2fSd0EGescQqhyGs=;
-        b=iqcc2ET5S1CUlLqqgyiA3RHzkWya5fjEY8qWPC4glMEEBpfJz0X1uj1LKJja4so6ev
-         lsFxzHeu7L3gJypPk1imRn/EcNBgg9CmiaJmroIfGv4cSCizAGjqCpS+SBSliCIzqrbG
-         23Ot2zXzmyEVtZoObz24SQP/clIXlGTEhK959ufiF1FNn+5PYVGH5e+aS6YutEN3m22O
-         +dsMBjPYjCJDVpKtm1CnDWLaka1x/1kAibbNomhuHl9rvmWPJaCbGnmty2ZO+zSVqFOM
-         gdLRbkpp847buxlOMJfy4L1n0UVfvECFMfyWjLoOoiotS+pMtpXTM5JCg+ga/0jWf22T
-         9c2Q==
-X-Gm-Message-State: AOAM531ImrfB+Y0i+vZhLfLdfTMeHS9ewExABqs4TWo6tmvHhtG+L+h+
-        t6wKl/mOoQIcAIe53SE3MXVL8Ua4O0j34Jgnn2Nf2w==
-X-Google-Smtp-Source: ABdhPJwD5OrgvzjHkCxm0gBesiPBt9PDPQTF1neqV4QbmdB9EPgSBSGUxrfZy1KlCQPJmiAEnct4G18QUQihnQRWe2I=
-X-Received: by 2002:a67:70c6:: with SMTP id l189mr1445632vsc.34.1610537170340;
- Wed, 13 Jan 2021 03:26:10 -0800 (PST)
+        bh=SBYo6W/p5JZvDAn/qFQUoh+980h8QORlUqiOC9iDQIw=;
+        b=b6sTLTD1lPlO2WckNl0e78QcrWl/XEVnP540khEgQhhJhv/7ELhvok/26VTQG/li5f
+         hthMTT03G07DSWELhxUREzAvXMblV4r43mw3j6XhePK/90HDi5t6KBae5TRxIxnY7MZD
+         wjUkZDvRzBtaW1c51RnSK2VHIbqIFBM3Fikm7chuykIvZs4WWNw4yb6a4T04saXkUVD4
+         5/iHVFVHdGes7ggOnggpRiPHwXerd+hcsjNa8uYcwU039f9T5gdbWD3eHuuv6ZFJWgdE
+         29g8HR8U0bz04eepxoxt09VcILb9AGBe7a5BEDq0secdK4cm4n5bPqNVHSuzpfXli7HY
+         ZGaw==
+X-Gm-Message-State: AOAM533ZZqyFN4J0+ef5XDPUinUnRU/uzkYWmQuLkePRtRBSn1YiCJmn
+        SKXI4RIZMXmgvRvzX22bvp3C7pU+NtK4KsnjDePV3XXdx/Nn5Q==
+X-Google-Smtp-Source: ABdhPJybCIKTJASUutX1qGCq7mRxFP1jaeKd4zmFJeMiCkz2FmVuxo081IaEVXn0JDNL1EvE8aRX8tzZuazzfVsTeZI=
+X-Received: by 2002:a1f:4582:: with SMTP id s124mr1483220vka.7.1610537302692;
+ Wed, 13 Jan 2021 03:28:22 -0800 (PST)
 MIME-Version: 1.0
-References: <20210112094655.12274-1-kostap@marvell.com>
-In-Reply-To: <20210112094655.12274-1-kostap@marvell.com>
+References: <20210107055457.14948-1-a-govindraju@ti.com> <CAPDyKFp89zPwr-SS9wgR6C5RM+KhSLWbkXivxAttRqTxtiVGDQ@mail.gmail.com>
+ <9ad5f3a3-2175-8f43-2481-7bef17828ce2@ti.com>
+In-Reply-To: <9ad5f3a3-2175-8f43-2481-7bef17828ce2@ti.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 13 Jan 2021 12:25:33 +0100
-Message-ID: <CAPDyKFr+4kbFsEJ6p77bP+4M+1g9Z49awqMUZLdG0WEBQ4AccA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] update xenon controller properties in CN913X
-To:     Kostya Porotchkin <kostap@marvell.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+Date:   Wed, 13 Jan 2021 12:27:45 +0100
+Message-ID: <CAPDyKFpTSME=NTZdDUq3+tLpKNdzoBKFZ-B_WDyWzLqNOsx0EQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: mmc: sdhci-am654: Add compatible string for
+ AM64 SoC
+To:     Aswath Govindraju <a-govindraju@ti.com>
+Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         DTML <devicetree@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Marcin Wojtas <mw@semihalf.com>, jaz@semihalf.com,
-        Nadav Haklai <nadavh@marvell.com>, bpeled@marvell.com,
-        stefanc@marvell.com
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 12 Jan 2021 at 10:47, <kostap@marvell.com> wrote:
+On Wed, 13 Jan 2021 at 12:20, Aswath Govindraju <a-govindraju@ti.com> wrote:
 >
-> From: Konstantin Porotchkin <kostap@marvell.com>
+> Hi Uffe,
 >
-> The following patches series updates Xenon SDHCI controller properties
-> for usage with Marvell Armada CN913X SoC family.
+> On 13/01/21 4:26 pm, Ulf Hansson wrote:
+> > On Thu, 7 Jan 2021 at 06:55, Aswath Govindraju <a-govindraju@ti.com> wrote:
+> >>
+> >> Add compatible string for AM64 SoC in device tree binding of AM654 SDHCI
+> >> module as the same IP is used.
+> >>
+> >> Signed-off-by: Aswath Govindraju <a-govindraju@ti.com>
+> >
+> > Do you have a corresponding patch for the driver as well? I would like
+> > to apply them together.
+> >
 >
-> - v2:
-> * rebase on top of "next" branch of linux/kernel/git/ulfh/mmc.git
->
-> - v3:
-> * separate between driver and DTSI changes for new compatibility
->    string
-> * add my signed-off-by entry to all patches
->
-> Konstantin Porotchkin (1):
->   arm64: dts: change AP807 SDHCI compatibility string
->
-> Marcin Wojtas (3):
->   dt-bindings: mmc: xenon: add AP807 compatible string
->   mmc: xenon: add AP807 compatible string
->   arm64: dts: cn913x-db: enable MMC HS400
->
->  .../devicetree/bindings/mmc/marvell,xenon-sdhci.txt          | 1 +
->  arch/arm64/boot/dts/marvell/armada-ap807.dtsi                | 5 +++++
->  arch/arm64/boot/dts/marvell/cn9130-db.dts                    | 2 ++
->  drivers/mmc/host/sdhci-xenon.c                               | 1 +
->  4 files changed, 9 insertions(+)
->
-> --
-> 2.17.1
->
+> Yes, I do. Here is the link to the patch,
+> https://lore.kernel.org/patchwork/patch/1364589/
 
-Patch1 and patch 2 applied for next (I leave the other for arm soc), thanks!
+Great. Can you please re-submit them together to the linux-mmc list,
+then I can pick them up.
+
+[...]
 
 Kind regards
 Uffe
