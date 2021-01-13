@@ -2,127 +2,101 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B05BB2F4AD8
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jan 2021 13:02:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E50572F4AF0
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jan 2021 13:08:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727108AbhAMMAO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 Jan 2021 07:00:14 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:39740 "EHLO
+        id S1726459AbhAMMER (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Jan 2021 07:04:17 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:40774 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726923AbhAMMAO (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Jan 2021 07:00:14 -0500
+        with ESMTP id S1726668AbhAMMEQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Jan 2021 07:04:16 -0500
 Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10DBxU34045945;
-        Wed, 13 Jan 2021 05:59:30 -0600
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10DC2dTr047329;
+        Wed, 13 Jan 2021 06:02:39 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1610539170;
-        bh=GUonOkkIARDwv50MiC0wedALt3iHo3HDOz+ceuFKS6k=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Dfwmwo1tUF+rV59CjRE9NXeX0YriplT+NTt1wCnet0BpHyozkQ7XNbH0Rry9X1Tw1
-         6CFQ1hYaQYBg9jahsmDsiIS0ge7KveWxgn8Qq/N63+jpvL4HodQf9D7sbTK6wMYdq7
-         eT+Fn3hTSNtAUcscVC/Y+zn6O/6ieGkCtRfrbbg4=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10DBxUHi030325
+        s=ti-com-17Q1; t=1610539359;
+        bh=UG/0FCP3bvZ9LVXtXp/X6IX8QqQLReO5AkQgPMAX7A8=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=I3OPsduoLukd2nMEdMOmQkwu6iSkauTl4H49ipAdztDXUBzYY0e9TP1AEI1PgRWy2
+         GKgdhu5fwEiNeFs7rKILlnGpa1oAQcR+/6cVjsCMTDw9RoEIa8Knv1qXBTidAvMu9X
+         CB1HkGl7aulabZBheawGRfKSajBnX7E09NQ5/ofg=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10DC2dPK034932
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 13 Jan 2021 05:59:30 -0600
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 13 Jan 2021 06:02:39 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 13
- Jan 2021 05:59:30 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ Jan 2021 06:02:39 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 13 Jan 2021 05:59:30 -0600
-Received: from gsaswath-HP-ProBook-640-G5.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10DBxDdl041723;
-        Wed, 13 Jan 2021 05:59:26 -0600
-From:   Aswath Govindraju <a-govindraju@ti.com>
-CC:     Sekhar Nori <nsekhar@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
+ Frontend Transport; Wed, 13 Jan 2021 06:02:38 -0600
+Received: from [10.250.232.169] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10DC2ZOQ009966;
+        Wed, 13 Jan 2021 06:02:36 -0600
+Subject: Re: [PATCH] dt-bindings: mmc: sdhci-am654: Add compatible string for
+ AM64 SoC
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Sekhar Nori <nsekhar@ti.com>,
         Kishon Vijay Abraham I <kishon@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/2] mmc: sdhci_am654: Add Support for TI's AM64 SoC
-Date:   Wed, 13 Jan 2021 17:29:08 +0530
-Message-ID: <20210113115908.3882-3-a-govindraju@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210113115908.3882-1-a-govindraju@ti.com>
-References: <20210113115908.3882-1-a-govindraju@ti.com>
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20210107055457.14948-1-a-govindraju@ti.com>
+ <CAPDyKFp89zPwr-SS9wgR6C5RM+KhSLWbkXivxAttRqTxtiVGDQ@mail.gmail.com>
+ <9ad5f3a3-2175-8f43-2481-7bef17828ce2@ti.com>
+ <CAPDyKFpTSME=NTZdDUq3+tLpKNdzoBKFZ-B_WDyWzLqNOsx0EQ@mail.gmail.com>
+From:   Aswath Govindraju <a-govindraju@ti.com>
+Message-ID: <b79954dd-b1d0-d2ab-0223-8f48d64f0cd7@ti.com>
+Date:   Wed, 13 Jan 2021 17:32:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <CAPDyKFpTSME=NTZdDUq3+tLpKNdzoBKFZ-B_WDyWzLqNOsx0EQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Faiz Abbas <faiz_abbas@ti.com>
+Hi Uffe,
 
-Add support for the controller present on the AM64x SoC.
+On 13/01/21 4:57 pm, Ulf Hansson wrote:
+> On Wed, 13 Jan 2021 at 12:20, Aswath Govindraju <a-govindraju@ti.com> wrote:
+>>
+>> Hi Uffe,
+>>
+>> On 13/01/21 4:26 pm, Ulf Hansson wrote:
+>>> On Thu, 7 Jan 2021 at 06:55, Aswath Govindraju <a-govindraju@ti.com> wrote:
+>>>>
+>>>> Add compatible string for AM64 SoC in device tree binding of AM654 SDHCI
+>>>> module as the same IP is used.
+>>>>
+>>>> Signed-off-by: Aswath Govindraju <a-govindraju@ti.com>
+>>>
+>>> Do you have a corresponding patch for the driver as well? I would like
+>>> to apply them together.
+>>>
+>>
+>> Yes, I do. Here is the link to the patch,
+>> https://lore.kernel.org/patchwork/patch/1364589/
+> 
+> Great. Can you please re-submit them together to the linux-mmc list,
+> then I can pick them up.
+>
 
-There are instances:
-sdhci0: 8bit bus width, max 400 MBps
-sdhci1: 4bit bus width, max 100 MBps
+Sent the patches. Here is a link to the series,
+https://lore.kernel.org/patchwork/project/lkml/list/?series=479980
 
-Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-Signed-off-by: Aswath Govindraju <a-govindraju@ti.com>
----
- drivers/mmc/host/sdhci_am654.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+> [...]
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index a64ea143d185..7a34649b0754 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -514,6 +514,26 @@ static const struct sdhci_am654_driver_data sdhci_j721e_4bit_drvdata = {
- 	.flags = IOMUX_PRESENT,
- };
- 
-+static const struct sdhci_pltfm_data sdhci_am64_8bit_pdata = {
-+	.ops = &sdhci_j721e_8bit_ops,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+};
-+
-+static const struct sdhci_am654_driver_data sdhci_am64_8bit_drvdata = {
-+	.pdata = &sdhci_am64_8bit_pdata,
-+	.flags = DLL_PRESENT | DLL_CALIB,
-+};
-+
-+static const struct sdhci_pltfm_data sdhci_am64_4bit_pdata = {
-+	.ops = &sdhci_j721e_4bit_ops,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+};
-+
-+static const struct sdhci_am654_driver_data sdhci_am64_4bit_drvdata = {
-+	.pdata = &sdhci_am64_4bit_pdata,
-+	.flags = IOMUX_PRESENT,
-+};
-+
- static const struct soc_device_attribute sdhci_am654_devices[] = {
- 	{ .family = "AM65X",
- 	  .revision = "SR1.0",
-@@ -737,6 +757,14 @@ static const struct of_device_id sdhci_am654_of_match[] = {
- 		.compatible = "ti,j721e-sdhci-4bit",
- 		.data = &sdhci_j721e_4bit_drvdata,
- 	},
-+	{
-+		.compatible = "ti,am64-sdhci-8bit",
-+		.data = &sdhci_am64_8bit_drvdata,
-+	},
-+	{
-+		.compatible = "ti,am64-sdhci-4bit",
-+		.data = &sdhci_am64_4bit_drvdata,
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sdhci_am654_of_match);
--- 
-2.17.1
+Thanks,
+Aswath
+
 
