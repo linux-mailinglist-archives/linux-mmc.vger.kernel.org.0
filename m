@@ -2,94 +2,82 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF6D22F4AC0
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jan 2021 12:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C072F4AD9
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jan 2021 13:02:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726754AbhAMLyU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 Jan 2021 06:54:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60002 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726692AbhAMLyT (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Jan 2021 06:54:19 -0500
-Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40917C061575
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:53:24 -0800 (PST)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4DG5R31QNXz1s8vN;
-        Wed, 13 Jan 2021 12:52:31 +0100 (CET)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 4DG5R30ctsz1tSQB;
-        Wed, 13 Jan 2021 12:52:31 +0100 (CET)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id WdqOKE_5sjir; Wed, 13 Jan 2021 12:52:29 +0100 (CET)
-X-Auth-Info: +dZY/g2E08KBBiW1kSe0TgijeYyITzju1CFoH6PC2Bc=
-Received: from [IPv6:::1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Wed, 13 Jan 2021 12:52:29 +0100 (CET)
-Subject: Re: [PATCH] [RFC] mmc: mmci: Add support for probing bus voltage
- level translator
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Ludovic Barre <ludovic.barre@st.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Linus Walleij <linus.walleij@linaro.org>
-References: <20210105140718.122752-1-marex@denx.de>
- <CAPDyKFoQfm2ZtPdsZSZtOCDH-FJqNzihYqZny-vUdK4Q4tWTzQ@mail.gmail.com>
- <b83c1112-010b-a40f-319f-84c755424b0f@denx.de>
- <CAPDyKFo5Sqxj31owrnmz1sTZqgW_PtZM2H=pDPBz+9hc0W0hHA@mail.gmail.com>
-From:   Marek Vasut <marex@denx.de>
-Message-ID: <77dd612b-23f0-1f77-797a-9cde512926e3@denx.de>
-Date:   Wed, 13 Jan 2021 12:52:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1727347AbhAMMA6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Jan 2021 07:00:58 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:39694 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727255AbhAMMA5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Jan 2021 07:00:57 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10DBxJhg045928;
+        Wed, 13 Jan 2021 05:59:19 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1610539159;
+        bh=eUEK69G1k6sHVdIpkBoaIy/oX8qUmyR0wXBF3xfwgGU=;
+        h=From:To:CC:Subject:Date;
+        b=ah9LYVOIPVahH1kmbYZpSMqKO9pgBmwHK9lrxkb3If98jPdZ0xBSoBUg9qldDGQuq
+         Tx0lCakKs4/4d3AwRSTfqOvd9O5GTzI0UJ5b8X6oxeE5jBwmbmXm3N0xD73nytZIYi
+         40J0NXvI8X3Q5NS3SKvU86uSHzM976pjodf53FXs=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10DBxJMT030241
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 13 Jan 2021 05:59:19 -0600
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 13
+ Jan 2021 05:59:19 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 13 Jan 2021 05:59:18 -0600
+Received: from gsaswath-HP-ProBook-640-G5.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10DBxDdj041723;
+        Wed, 13 Jan 2021 05:59:14 -0600
+From:   Aswath Govindraju <a-govindraju@ti.com>
+CC:     Sekhar Nori <nsekhar@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Aswath Govindraju <a-govindraju@ti.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 0/2] mmc: AM64: Add new compatible string and driver support
+Date:   Wed, 13 Jan 2021 17:29:06 +0530
+Message-ID: <20210113115908.3882-1-a-govindraju@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFo5Sqxj31owrnmz1sTZqgW_PtZM2H=pDPBz+9hc0W0hHA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 1/13/21 12:38 PM, Ulf Hansson wrote:
-[...]
->>>>    static int mmci_of_parse(struct device_node *np, struct mmc_host *mmc)
->>>>    {
->>>>           struct mmci_host *host = mmc_priv(mmc);
->>>> @@ -1913,7 +1973,7 @@ static int mmci_of_parse(struct device_node *np, struct mmc_host *mmc)
->>>>           if (of_get_property(np, "st,neg-edge", NULL))
->>>>                   host->clk_reg_add |= MCI_STM32_CLK_NEGEDGE;
->>>>           if (of_get_property(np, "st,use-ckin", NULL))
->>>> -               host->clk_reg_add |= MCI_STM32_CLK_SELCKIN;
->>>> +               mmci_probe_level_translator(mmc);
->>>
->>> I think you can make this change bit less invasive. Rather than having
->>> to shuffle code around in ->probe(), I suggest you call
->>> mmci_probe_level_translator() outside and after mmci_of_parse() has
->>> been called.
->>>
->>> In this way, you can also provide mmci_probe_level_translator() with a
->>> struct mmci_host *, rather than having to pick it up from
->>> mmc_priv(mmc), if you see what I mean.
->>>
->>> Of course, this also means in mmci_probe_level_translator() you will
->>> have to check if MCI_STM32_CLK_SELCKIN has been set, and if not then
->>> do an early return.
->>
->> Testing the translator presence when checking whether its enabled in DT
->> seems like the right place, but that's really just an implementation detail.
->>
->> I am more interested in knowing whether adding
->> mmci_probe_level_translator() is even acceptable in the first place. Is it ?
-> 
-> Honestly, I don't know.
-> 
-> I think I need to defer that question to Linus Walleij. And of course,
-> it would be nice to get the opinion from Ludovic as well.
+The following series of patches,
+- Adds new compatible string for AM64 SoC
+- Adds support for AM64 SoC in sdhci_am654 driver
 
-Good, that's what I was hoping for too.
+This patch series is a combination of the patches [1] and [2].
+
+[1] - https://lore.kernel.org/patchwork/patch/1361560/
+[2] - https://lore.kernel.org/patchwork/patch/1364589/
+
+Aswath Govindraju (1):
+  dt-bindings: mmc: sdhci-am654: Add compatible string for AM64 SoC
+
+Faiz Abbas (1):
+  mmc: sdhci_am654: Add Support for TI's AM64 SoC
+
+ .../devicetree/bindings/mmc/sdhci-am654.yaml  |  2 ++
+ drivers/mmc/host/sdhci_am654.c                | 28 +++++++++++++++++++
+ 2 files changed, 30 insertions(+)
+
+-- 
+2.17.1
+
