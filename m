@@ -2,107 +2,91 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC77E2F4A18
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jan 2021 12:29:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 351002F4A24
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jan 2021 12:29:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727098AbhAML1I (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 13 Jan 2021 06:27:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54138 "EHLO
+        id S1727660AbhAML1o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 13 Jan 2021 06:27:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726925AbhAML1H (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Jan 2021 06:27:07 -0500
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BA39C0617BF
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:26:04 -0800 (PST)
-Received: by mail-ua1-x931.google.com with SMTP id j59so572179uad.5
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:26:04 -0800 (PST)
+        with ESMTP id S1728406AbhAML1c (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 13 Jan 2021 06:27:32 -0500
+Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D50C061383
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:26:07 -0800 (PST)
+Received: by mail-vs1-xe2b.google.com with SMTP id k30so909683vsp.6
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Jan 2021 03:26:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=G9uUX9S3OVX4rZ6wYRdgXrk3nCogppGF0MA8GEuY/Eo=;
-        b=bU6xDgHDA03VljnUMmlniVSQL+0j8c8khXIY8SYSejm5jZmEf0DMR8cvviAekgjnpg
-         8nsfnWMQcbaMrUs6k6GasTAoOuia5YOZ1iyDVWb20Cqi5YaaoCAdB7Q7lXZqdISTwRGh
-         +yAr/OYyF0dQrcO6WmmvQIoSz8GX20sRUEmAqiudqFDuZ+p/kdb4XooeioD69ncGaCXK
-         AGr8JTbslgrkhZikNO1rwt+OwdITR9V+it/fgPMUZhQ6Oen58zOiI4eGiAJQ/XaIlgZ0
-         YHPQcCMcTH++qBKGkUpd1PYsOE9NdlPGM4QKgWk2VEWIGvkqkcnki/Xd6QQohcTIZ2fI
-         fQ5A==
+        bh=J8jnevPejbGnXuRE1eNboLtO8z7zKZhz6Hgll9JoqIU=;
+        b=XWSAUiVl6lGR7286jXBaM0GJdDCLgq6VJ1wRJAskOKaSoppFAT7jpkgJLupWkCdKfZ
+         4OCU8lHhUHQruIBti0gbNY+NyUbKK52OIc6BPl+wqtmcux9JKT+cyJ37RX8tJlWl1EMs
+         uJlL7uBqswk8jQTTgVhoOCp5UAECFvUD7MsYlAU9aJ7IJFmdLMmHR0lQP0wW3NVb0BLH
+         Tjo9wSbdfAo80iCjE1QwZonmqTZPdyDR7aYhva8RHmMuKdj//riosEAqS7iOPUbLc7yb
+         kpSqD6DuE5HsWz9LJS/DUdtDEWQddLlUXgQXwMZ5foMdYz21D0QiKaNGp28PHvR+nRP6
+         HyWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=G9uUX9S3OVX4rZ6wYRdgXrk3nCogppGF0MA8GEuY/Eo=;
-        b=N4VaT3gyflzsyVS3U0eUubl8Hx+sxCvwGlNY+sQTbMqs8yYG8HinMKzQd3Lffu1GlZ
-         sG/NHqnbJel48JwOY/zXiHX7+7kmQHGLZy8tgeglFS8Q3oYMv8PgDhWYHEd7ahiQSv0f
-         FksavVFy0oTCJ9d7WnCPqDin+0AydYA+OPwIFEHZf2Qvpo3LLb/p3UYBcRnj+1FWNQoQ
-         YRlMfu7T8jhj+IsatpIbMRklafQQ016k2KDS7LXYtAhw+1HzafiHX16ROyG/QZ6Qg5o1
-         oWq3Te/TrnzQPiYsAnF44ul84iJCGuc36oGAw5yKC/MFwML1lGUn3dE6cPo1rKKKujvP
-         7jcg==
-X-Gm-Message-State: AOAM53311RXZW13r68IxV9BCy6KMG3TN6MZ6ksMMl6VIxBzKkzqnJBpH
-        qLcDTVKza4JUipGBAD7ALRxN/7S6H0zJeX9/H5P/kg==
-X-Google-Smtp-Source: ABdhPJzuX/Dmv6UrnVgDqjPg9laCYydPT3+Ow26Mww6AgWCZnluKMLLz+2aCvtQkShl3qtjiA+tyznGcQJytP8JGG+o=
-X-Received: by 2002:ab0:4597:: with SMTP id u23mr1353390uau.100.1610537163831;
- Wed, 13 Jan 2021 03:26:03 -0800 (PST)
+        bh=J8jnevPejbGnXuRE1eNboLtO8z7zKZhz6Hgll9JoqIU=;
+        b=FA0r5PyDS89yQNWrYsyW/fxmFaiimOTefWVn4ANKykeq1PHHLFNQpH2hGIUXymVOHt
+         ipyrQYeFTOtHXXtEfqZR4n1nmTz4ck9wtSjeZbekyMikZSrH8ddUGnS5jJDxu2karbwo
+         pRXn4nC8ynqAZiIKNsHOXpw19fQgArwzkC4oHBQrJpaNYMVy/NLfF94xwIQzR9Wj8Nfi
+         2UL5DVWwgc5oYzyWWWVfZNgsVz31i2QNBfq/xMfTN7YrAAxw5214hg6WBh9COsZ8VF/3
+         VMUpcCv//Vib1tyvVJb3whxQQ7JHeC6NOoOr9oa1zZXCorDq7A0hOB2konaTpdm436/E
+         3wUg==
+X-Gm-Message-State: AOAM530bNpaoQ7osuqMddrGiOU8FyqFSObWppg4mysPuxgxNYw5RKTR8
+        lLHBeMP8iWCrSFb3y/dfppAVertXRyq8rymbrazR6w==
+X-Google-Smtp-Source: ABdhPJzfrPTWrOSLWP09mVB/1TJ84tDQudEsx/cZCljfINMeLiuZZP5UnGxMGp6TAmFAKwKOodVhuHFUYtxQyLmU+D8=
+X-Received: by 2002:a67:fe85:: with SMTP id b5mr1189707vsr.19.1610537166735;
+ Wed, 13 Jan 2021 03:26:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20210107221509.6597-1-alcooperx@gmail.com>
-In-Reply-To: <20210107221509.6597-1-alcooperx@gmail.com>
+References: <20210111155001.12307-1-muhammad.husaini.zulkifli@intel.com>
+In-Reply-To: <20210111155001.12307-1-muhammad.husaini.zulkifli@intel.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 13 Jan 2021 12:25:27 +0100
-Message-ID: <CAPDyKFqK-b7B6jfhfFAwey0rs3uP=W2P9Gwt-yc0820UmypwPA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-brcmstb: Fix mmc timeout errors on S5 suspend
-To:     Al Cooper <alcooperx@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+Date:   Wed, 13 Jan 2021 12:25:30 +0100
+Message-ID: <CAPDyKFrx3ZhHk_k7OOEUWVuW-+wwq-x47-ZCteEB1gDJEFDoWQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] mmc: sdhci-of-arasan: Fixed kernel-doc format warning
+To:     Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+Cc:     Michal Simek <michal.simek@xilinx.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 7 Jan 2021 at 23:15, Al Cooper <alcooperx@gmail.com> wrote:
+On Mon, 11 Jan 2021 at 16:51, Muhammad Husaini Zulkifli
+<muhammad.husaini.zulkifli@intel.com> wrote:
 >
-> Commit e7b5d63a82fe ("mmc: sdhci-brcmstb: Add shutdown callback")
-> that added a shutdown callback to the diver, is causing "mmc timeout"
-> errors on S5 suspend. The problem was that the "remove" was queuing
-> additional MMC commands after the "shutdown" and these caused
-> timeouts as the MMC queues were cleaned up for "remove". The
-> shutdown callback will be changed to calling sdhci-pltfm_suspend
-> which should get better power savings because the clocks will be
-> shutdown.
+> Hi,
 >
-> Fixes: e7b5d63a82fe ("mmc: sdhci-brcmstb: Add shutdown callback")
-> Signed-off-by: Al Cooper <alcooperx@gmail.com>
-
-Applied for fixes and by adding a stable tag, thanks!
-
-Kind regards
-Uffe
-
-
-> ---
->  drivers/mmc/host/sdhci-brcmstb.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
+> This patch series are to fix the kernel-doc format warning when using kernel-doc
+> script tool and to change code style of mapping the syscon field for readability
+> and consistency.
 >
-> diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-> index bbf3496f4495..f9780c65ebe9 100644
-> --- a/drivers/mmc/host/sdhci-brcmstb.c
-> +++ b/drivers/mmc/host/sdhci-brcmstb.c
-> @@ -314,11 +314,7 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
+> Kindly help to review this patch set.
 >
->  static void sdhci_brcmstb_shutdown(struct platform_device *pdev)
->  {
-> -       int ret;
-> -
-> -       ret = sdhci_pltfm_unregister(pdev);
-> -       if (ret)
-> -               dev_err(&pdev->dev, "failed to shutdown\n");
-> +       sdhci_pltfm_suspend(&pdev->dev);
->  }
+> Thanks.
 >
->  MODULE_DEVICE_TABLE(of, sdhci_brcm_of_match);
+> Muhammad Husaini Zulkifli (2):
+>   mmc: sdhci-of-arasan: Fixed kernel-doc format warning
+>   mmc: sdhci-of-arasan: Change code style of mapping the syscon field
+>
+>  drivers/mmc/host/sdhci-of-arasan.c | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
+>
 > --
 > 2.17.1
 >
+
+Applied for next, thanks!
+
+Kind regards
+Uffe
