@@ -2,111 +2,123 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0CC2FBDF0
-	for <lists+linux-mmc@lfdr.de>; Tue, 19 Jan 2021 18:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 446BE2FBDF1
+	for <lists+linux-mmc@lfdr.de>; Tue, 19 Jan 2021 18:44:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387746AbhASOsz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 19 Jan 2021 09:48:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41730 "EHLO
+        id S2389648AbhASOtZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 19 Jan 2021 09:49:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389648AbhASNjG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Jan 2021 08:39:06 -0500
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B47FEC061574
-        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:38:25 -0800 (PST)
-Received: by mail-ua1-x92f.google.com with SMTP id a16so347769uad.9
-        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:38:25 -0800 (PST)
+        with ESMTP id S2387946AbhASNoN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Jan 2021 08:44:13 -0500
+Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23623C061757
+        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:43:29 -0800 (PST)
+Received: by mail-ua1-x936.google.com with SMTP id a16so352633uad.9
+        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:43:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=3X3PmZf5ZFX5QGwBhsXHXX/D7L5F3b1vb/uCDlLe9wI=;
-        b=jNWlkaIxY6NoZOqCqC5pGF+o4jvbMn/xb8jtfR0/d/FEbfV4idHAVkLtrjB52Lpwam
-         93L5kDYFuV+AVyiP7ti//mNLviydWK75z8+6hvuL/V/fixMPB/eDGEJ535CCzoEeU4Gx
-         q5Szg3zoK1wtu7FO/YDNqkh/a42G3vVViXgCXkOJI0Xl8DEbVWRQo9Aue2rwOm/3Sghq
-         W0jCEH3mmwUnRbkTqM1K87HAZobs6XlCaKJJ4BcpUnrW4PBBvGLIqi5OS2uVH3NoysF9
-         O/ZsUryG5wesVqgQAC7G5tIC4c9ntDxaVBaesjG/oltixMaZufVeyAqAXJCnalixm0G8
-         pjDg==
+        bh=iN6LdNddtCPvRlGXitGPbToLS1CEl0fCsvQKN0BpriY=;
+        b=m785Q8QxruIQgi3wqou/VxiBLJ/MVprrsoEl26S11OjFrdkVNeBiBSQzbWq5wc3Bnk
+         WebjUhGaBZup0HmRhG1iHJWgPSiFnLZyBzGWNI20XYsn0k5hKcZiKhImt7Ma53urQp36
+         Ks0JtGiJq+9ofbOLlSzc0kEaziHNjCAEr7Sz5mI5NogFbrmG7T7P87zGcBBsxFuKgqRL
+         UkP3EvyYE72XCvWqmms377Treyd3hnNcDperSD7wzNJ6RWRciyYfh7wdpACYJEJSpEs9
+         Xt1aHHTKD5GTRaT1mnwWEyAqr2PoRhM3/wJJgFlU3SZldkU0vszqgdYfJurQCU0hPcoJ
+         2VRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3X3PmZf5ZFX5QGwBhsXHXX/D7L5F3b1vb/uCDlLe9wI=;
-        b=scKvwfl2CuzaO5zgStSJR0BFTKxbnw+WpdVWxOx2PMnPfTTITbNpjQHJ3nNaVgGgTD
-         LG54vnc42Wv+7Vp0DFkCP6/mst0kOLXY++WvMU9sWoKBG9Ekkh8ZA0BFjBrd4mhw2LQt
-         PgsLPcM7xlCI6BAbzo720DWFhb2neMa6Ahk0lc7p8i8P1dTN42kV/uHqvx1hmK1r7t92
-         E/MOcRc9d+CmyhHhbZld6pApKb+j/hRro9qxAqFKCE39MWSGjV+zfar5wsyHVVf2sjxt
-         xswhcmsl6KezVzC8Wz/4DsMo3AT/Yvk8p50pQzccztIdcb/1tefgNp0jt5bm1zgAwTqY
-         SXBA==
-X-Gm-Message-State: AOAM530zH4i9LovAvBlwF4MwYF/gUSNbAu0sHRGbw+Pnydq5Hz1GT67v
-        yHZyWGUp3rfTyXvJM3twGGWL8yl447kkO6br1x2s9g==
-X-Google-Smtp-Source: ABdhPJw5Geqvr9FjKwnfUyEHlqjInTcQwC1+sWVIZ1SYOgY3Qb8NqNpKBWOWTA3PrYyyeNrvlFstj6HKTroeAi4t7fM=
-X-Received: by 2002:ab0:768:: with SMTP id h95mr2255398uah.104.1611063504953;
- Tue, 19 Jan 2021 05:38:24 -0800 (PST)
+        bh=iN6LdNddtCPvRlGXitGPbToLS1CEl0fCsvQKN0BpriY=;
+        b=dGqg2nL+SkT3LahdiBszWKPgd8rGRW3QVyMJkusuZ8zZW2rFO8DoGFE3rgtmbY5VuN
+         gn32Q0qJQjwmNEYXNKySQjJ/YOHAfC0ho9JdJGu7Netct5HkF6SL/4xpRlT8Pza9AypX
+         i2XusANi8n0lgDIMqNSXRch8SiM39619LScZIG/lfhmw/QN/gpr863u/v0aRdSkgZ4BN
+         XBWMOMA68E/BfBfM8C2gbxl+zYPcFKKl1XaWx2mK8RWA+nrscz4oUCGM2+cpqwVqfDmc
+         Ab2HgVA/+h53VHcWDia7ZGVu14u2hU2UGTVyv00iNtL7pdAvZNCfX0tCScdQl2pnq7Kw
+         FNfA==
+X-Gm-Message-State: AOAM530PA9o5KJd3G3gv7JpagXlWMm3VNBDZjL7/U+AxBl9bmUIAebA4
+        3CmQgmbKtYzE6/0YVb/jmGYn8plH4+Kp3RxmQMG8JA==
+X-Google-Smtp-Source: ABdhPJy8YfW3TY12bJa5OWZwiU4SCjJkJNpC1EcV4z3zof+egZ29HsMFioSINO1T9lcPwSbYO0VGk61l1zVyHuRcmlQ=
+X-Received: by 2002:a9f:204e:: with SMTP id 72mr2102277uam.19.1611063808290;
+ Tue, 19 Jan 2021 05:43:28 -0800 (PST)
 MIME-Version: 1.0
-References: <20210115032423.15108-1-peng.fan@oss.nxp.com>
-In-Reply-To: <20210115032423.15108-1-peng.fan@oss.nxp.com>
+References: <20210114152700.21916-1-muhammad.husaini.zulkifli@intel.com>
+In-Reply-To: <20210114152700.21916-1-muhammad.husaini.zulkifli@intel.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 19 Jan 2021 14:37:48 +0100
-Message-ID: <CAPDyKFr9Xan+FxgC4vz4KX2UfD15Eo7+TfCjD191YVC2Hv0wdw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: validate pinctrl before use it
-To:     "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
+Date:   Tue, 19 Jan 2021 14:42:52 +0100
+Message-ID: <CAPDyKFrzg-mXTEQUd2oZiiSvbn29O+AGDC0VVDjbSQo6YOji8A@mail.gmail.com>
+Subject: Re: [PATCH v1 0/9] mmc: sdhci-of-arasan: Add UHS-1 support for Keem
+ Bay SOC
+To:     Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Michal Simek <michal.simek@xilinx.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Peng Fan <peng.fan@nxp.com>, Bough Chen <haobo.chen@nxp.com>,
-        Alice Guo <alice.guo@nxp.com>
+        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
+        Rashmi.A@intel.com, mahesh.r.vaidya@intel.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 15 Jan 2021 at 03:55, Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
+On Thu, 14 Jan 2021 at 16:28, Muhammad Husaini Zulkifli
+<muhammad.husaini.zulkifli@intel.com> wrote:
 >
-> From: Peng Fan <peng.fan@nxp.com>
+> Hi,
 >
-> When imx_data->pinctrl is not a valid pointer, pinctrl_lookup_state
-> will trigger kernel panic.
+> This patch series adds Ultra High Speed(UHS-1) Bus Speed Mode Support for Keem Bay SoC SD Card.
+> Summary of each patches as per below:
 >
-> When we boot Dual OS on Jailhouse hypervisor, we let the 1st Linux to
-> configure pinmux ready for the 2nd OS, so the 2nd OS not have pinctrl
-> settings.
+> Patch 1: Use of_device_get_match_data() helper to get the match-data.
+> Patch 2: Convert to use np pointer instead of using pdev->dev.of_node.
+> Patch 3: Add struct device *dev in probe func(), so that dev pointer can be widely use in probe to make code more readable.
+> Patch 4: Change from dev_err to dev_err_probe() to avoid spamming logs when probe is deferred.
+> Patch 5: Export function to be use by device driver to configure i/o voltage rail output which communicate with Trusted Firmware.
+> Patch 6: Update phy and regulator supply for Keem Bay SoC.
+> Patch 7: Add DT Binding for Keem Bay SoC SD Regulator.
+> Patch 8: Add SD Regulator driver to support Keem Bay SoC. This is to model using standard regulator abstraction during voltage operation
+> as for Keem Bay SoC, i/o voltage rail need to be configure by setting specific bit in the AON_CFG1 Register.
+> AON_CFG1 Register is a secure register. Direct access to AON_CFG1 register will cause firewall violation in secure system.
+> Patch 9: Add Ultra High Speed (UHS-1) Support for Keem Bay SOC. For Keem Bay hardware, two regulators are been used to change the I/O bus line voltage which are "vqmmc-supply" and "sdvrail-supply".
 >
-> Similar to this commit b62eee9f804e ("mmc: sdhci-esdhc-imx: no fail when no pinctrl available").
+> All of these patches was tested with Keem Bay evaluation module board.
 >
-> Reviewed-by: Bough Chen <haobo.chen@nxp.com>
-> Reviewed-by: Alice Guo <alice.guo@nxp.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-
-Looks like the documentation of DT bindings doesn't specify pinctrls
-at all. Please add it and explain when they should be used.
-
-Kind regards
-Uffe
-
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Kindly help to review this patch set.
 >
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index 16ed19f47939..11d3a2244b36 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -1488,7 +1488,7 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
+> Muhammad Husaini Zulkifli (9):
+>   mmc: sdhci-of-arasan: use of_device_get_match_data()
+>   mmc: sdhci-of-arasan: Convert to use np instead of pdev->dev.of_node
+>   mmc: sdhci-of-arasan: Add structure device pointer in probe function
+>   mmc: sdhci-of-arasan: Use dev_err_probe() to avoid spamming logs
+>   firmware: keembay: Add support for Trusted Firmware Service call
+>   dt-bindings: mmc: Update phy and regulator supply for Keem Bay SOC
+>   dt-bindings: regulator: keembay: Add DT binding documentation
+>   regulator: keembay: Add regulator for Keem Bay SoC
+>   mmc: sdhci-of-arasan: Add UHS-1 support for Keem Bay SOC
 >
->         mmc_of_parse_voltage(np, &host->ocr_mask);
+>  .../devicetree/bindings/mmc/arasan,sdhci.yaml |   7 +-
+>  .../bindings/regulator/keembay-regulator.yaml |  36 ++
+>  drivers/mmc/host/sdhci-of-arasan.c            | 313 ++++++++++++++++--
+>  drivers/regulator/Kconfig                     |  10 +
+>  drivers/regulator/Makefile                    |   1 +
+>  drivers/regulator/keembay-sd-regulator.c      | 112 +++++++
+>  include/linux/firmware/intel/keembay.h        |  82 +++++
+>  7 files changed, 532 insertions(+), 29 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/regulator/keembay-regulator.yaml
+>  create mode 100644 drivers/regulator/keembay-sd-regulator.c
+>  create mode 100644 include/linux/firmware/intel/keembay.h
 >
-> -       if (esdhc_is_usdhc(imx_data)) {
-> +       if (esdhc_is_usdhc(imx_data) && !IS_ERR(imx_data->pinctrl)) {
->                 imx_data->pins_100mhz = pinctrl_lookup_state(imx_data->pinctrl,
->                                                 ESDHC_PINCTRL_STATE_100MHZ);
->                 imx_data->pins_200mhz = pinctrl_lookup_state(imx_data->pinctrl,
 > --
-> 2.28.0
+> 2.17.1
 >
+
+Applied patch 1 to patch 4. I assume you will be respinning the rest?
+
+Thanks and kind regards
+Uffe
