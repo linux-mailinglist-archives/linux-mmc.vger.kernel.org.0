@@ -2,123 +2,160 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 446BE2FBDF1
+	by mail.lfdr.de (Postfix) with ESMTP id B0D9B2FBDF2
 	for <lists+linux-mmc@lfdr.de>; Tue, 19 Jan 2021 18:44:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389648AbhASOtZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 19 Jan 2021 09:49:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42816 "EHLO
+        id S2387946AbhASOts (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 19 Jan 2021 09:49:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387946AbhASNoN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Jan 2021 08:44:13 -0500
-Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23623C061757
-        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:43:29 -0800 (PST)
-Received: by mail-ua1-x936.google.com with SMTP id a16so352633uad.9
-        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:43:29 -0800 (PST)
+        with ESMTP id S2392546AbhASNpz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Jan 2021 08:45:55 -0500
+Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C006C061795
+        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:43:40 -0800 (PST)
+Received: by mail-ua1-x932.google.com with SMTP id v23so2388322uam.8
+        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:43:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=iN6LdNddtCPvRlGXitGPbToLS1CEl0fCsvQKN0BpriY=;
-        b=m785Q8QxruIQgi3wqou/VxiBLJ/MVprrsoEl26S11OjFrdkVNeBiBSQzbWq5wc3Bnk
-         WebjUhGaBZup0HmRhG1iHJWgPSiFnLZyBzGWNI20XYsn0k5hKcZiKhImt7Ma53urQp36
-         Ks0JtGiJq+9ofbOLlSzc0kEaziHNjCAEr7Sz5mI5NogFbrmG7T7P87zGcBBsxFuKgqRL
-         UkP3EvyYE72XCvWqmms377Treyd3hnNcDperSD7wzNJ6RWRciyYfh7wdpACYJEJSpEs9
-         Xt1aHHTKD5GTRaT1mnwWEyAqr2PoRhM3/wJJgFlU3SZldkU0vszqgdYfJurQCU0hPcoJ
-         2VRQ==
+        bh=tNvEq5am+ikTvDsBrW7I06pSqyQwukR3vU3Lj1BRMZY=;
+        b=SphubxSJTVl0TE0jAYvw8W8A2f9P9Mi5GZALEkVjbxipuCEaJJO53riF85DbU3rdL9
+         LpNZQrLAsNSuebeng43zG7UM1hic6+NQ9gU+MTOYYARS80T+KdOjdIFIBjE8VE0zCEua
+         bW2Pvf0Fa+Mo2mZMiMuHPCE6udwFMqiwjLf62PqwWVElt3ZNkYSND4twFP4dLdEUriAH
+         Z4rRhq67ev1ZkcXUNYVfems6a109dchqMDFU3eejhu5xqhDNLIcU2uNhtkTV5pFotmrf
+         aNQ7rhBiFMLAmc1cHEi+ITYc5WUw7A5fS7tmwdK1Dg7bLkvEkBtu6AKUzdlbt3yDtCnj
+         HEGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iN6LdNddtCPvRlGXitGPbToLS1CEl0fCsvQKN0BpriY=;
-        b=dGqg2nL+SkT3LahdiBszWKPgd8rGRW3QVyMJkusuZ8zZW2rFO8DoGFE3rgtmbY5VuN
-         gn32Q0qJQjwmNEYXNKySQjJ/YOHAfC0ho9JdJGu7Netct5HkF6SL/4xpRlT8Pza9AypX
-         i2XusANi8n0lgDIMqNSXRch8SiM39619LScZIG/lfhmw/QN/gpr863u/v0aRdSkgZ4BN
-         XBWMOMA68E/BfBfM8C2gbxl+zYPcFKKl1XaWx2mK8RWA+nrscz4oUCGM2+cpqwVqfDmc
-         Ab2HgVA/+h53VHcWDia7ZGVu14u2hU2UGTVyv00iNtL7pdAvZNCfX0tCScdQl2pnq7Kw
-         FNfA==
-X-Gm-Message-State: AOAM530PA9o5KJd3G3gv7JpagXlWMm3VNBDZjL7/U+AxBl9bmUIAebA4
-        3CmQgmbKtYzE6/0YVb/jmGYn8plH4+Kp3RxmQMG8JA==
-X-Google-Smtp-Source: ABdhPJy8YfW3TY12bJa5OWZwiU4SCjJkJNpC1EcV4z3zof+egZ29HsMFioSINO1T9lcPwSbYO0VGk61l1zVyHuRcmlQ=
-X-Received: by 2002:a9f:204e:: with SMTP id 72mr2102277uam.19.1611063808290;
- Tue, 19 Jan 2021 05:43:28 -0800 (PST)
+        bh=tNvEq5am+ikTvDsBrW7I06pSqyQwukR3vU3Lj1BRMZY=;
+        b=XIrwjwyu5jx7vvFEqRM6WG97903LoBifOHJ47RXUTLhyo4sGLOTWFhITprEIJOPg3n
+         8qsRr2v75+TD1oziNkERFmzs2Q14WvcfS5w8wPuXoXduu7AL2kLcq91+0O1nMp8liv1R
+         5Nzt23W2nlF95YQBaNFv3keXoFovI7Z3LU88sriQaEZjeG92hOtAvFhHUmE4Cqqx/s6Q
+         1nWVmF0CRGD0ugTLMjCcGoL+FKLJwCQoSwRm1DRDshdL/DkY+8mt7dq5RVH7zWS+bLrn
+         K2Gh1Pyb3eY3Ajl6a2rhfBqugzd7+3qhwVhEKPLiyLwtTuK0S2zBfQ9CFZOg8y5ZKzhk
+         9qIQ==
+X-Gm-Message-State: AOAM533bDYpiSQanQPs7miNw7SoVe/Jehsh0AZjy2/7cNNcym0EdYrsZ
+        ARP/4yMCxz2TL7xaECEgTW+INUm7Ht+cr2zXmDTu6w==
+X-Google-Smtp-Source: ABdhPJx1sJ4xEgc4HsCtvWM79eqIKYNMrMBIhqmEXfnsfu1Ih9nGPi9MRPZTKWZwDPPcFTUk4CrGjvf2AzBXz2uxEvU=
+X-Received: by 2002:ab0:768:: with SMTP id h95mr2267466uah.104.1611063819438;
+ Tue, 19 Jan 2021 05:43:39 -0800 (PST)
 MIME-Version: 1.0
-References: <20210114152700.21916-1-muhammad.husaini.zulkifli@intel.com>
-In-Reply-To: <20210114152700.21916-1-muhammad.husaini.zulkifli@intel.com>
+References: <1610704281-11036-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+In-Reply-To: <1610704281-11036-1-git-send-email-abaci-bugfix@linux.alibaba.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 19 Jan 2021 14:42:52 +0100
-Message-ID: <CAPDyKFrzg-mXTEQUd2oZiiSvbn29O+AGDC0VVDjbSQo6YOji8A@mail.gmail.com>
-Subject: Re: [PATCH v1 0/9] mmc: sdhci-of-arasan: Add UHS-1 support for Keem
- Bay SOC
-To:     Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Michal Simek <michal.simek@xilinx.com>,
+Date:   Tue, 19 Jan 2021 14:43:03 +0100
+Message-ID: <CAPDyKFpwF6gX3YhKGMF=YUGP1UQD=JSuNgvSxuJHG+Ochzv5Bg@mail.gmail.com>
+Subject: Re: [PATCH v2] host: omap_hsmmc: style: Simplify bool comparison and conversion
+To:     Yang Li <abaci-bugfix@linux.alibaba.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
-        Rashmi.A@intel.com, mahesh.r.vaidya@intel.com
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 14 Jan 2021 at 16:28, Muhammad Husaini Zulkifli
-<muhammad.husaini.zulkifli@intel.com> wrote:
+On Fri, 15 Jan 2021 at 10:51, Yang Li <abaci-bugfix@linux.alibaba.com> wrote:
 >
-> Hi,
+> Fix the following coccicheck warning:
+> ./drivers/mmc/host/omap_hsmmc.c:297:6-25: WARNING: Comparison of 0/1 to
+> bool variable
 >
-> This patch series adds Ultra High Speed(UHS-1) Bus Speed Mode Support for Keem Bay SoC SD Card.
-> Summary of each patches as per below:
+> According to the context, vqmmc_enabled is more suitable for bool
+> type.
 >
-> Patch 1: Use of_device_get_match_data() helper to get the match-data.
-> Patch 2: Convert to use np pointer instead of using pdev->dev.of_node.
-> Patch 3: Add struct device *dev in probe func(), so that dev pointer can be widely use in probe to make code more readable.
-> Patch 4: Change from dev_err to dev_err_probe() to avoid spamming logs when probe is deferred.
-> Patch 5: Export function to be use by device driver to configure i/o voltage rail output which communicate with Trusted Firmware.
-> Patch 6: Update phy and regulator supply for Keem Bay SoC.
-> Patch 7: Add DT Binding for Keem Bay SoC SD Regulator.
-> Patch 8: Add SD Regulator driver to support Keem Bay SoC. This is to model using standard regulator abstraction during voltage operation
-> as for Keem Bay SoC, i/o voltage rail need to be configure by setting specific bit in the AON_CFG1 Register.
-> AON_CFG1 Register is a secure register. Direct access to AON_CFG1 register will cause firewall violation in secure system.
-> Patch 9: Add Ultra High Speed (UHS-1) Support for Keem Bay SOC. For Keem Bay hardware, two regulators are been used to change the I/O bus line voltage which are "vqmmc-supply" and "sdvrail-supply".
+> Reported-by: Abaci Robot<abaci@linux.alibaba.com>
+> Signed-off-by: Yang Li <abaci-bugfix@linux.alibaba.com>
+
+Applied for next, thanks!
+
+Kind regards
+Uffe
+
+
+> ---
+> Changes in v2:
+>  -clean up all use of "pbias_enabled", and do the same clean up for
+> "vqmmc_enabled".
 >
-> All of these patches was tested with Keem Bay evaluation module board.
+>  drivers/mmc/host/omap_hsmmc.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 >
-> Kindly help to review this patch set.
+> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+> index aa9cc49..2f8038d 100644
+> --- a/drivers/mmc/host/omap_hsmmc.c
+> +++ b/drivers/mmc/host/omap_hsmmc.c
+> @@ -177,7 +177,7 @@ struct omap_hsmmc_host {
+>         struct  regulator       *pbias;
+>         bool                    pbias_enabled;
+>         void    __iomem         *base;
+> -       int                     vqmmc_enabled;
+> +       bool                    vqmmc_enabled;
+>         resource_size_t         mapbase;
+>         spinlock_t              irq_lock; /* Prevent races with irq handler */
+>         unsigned int            dma_len;
+> @@ -232,7 +232,7 @@ static int omap_hsmmc_enable_supply(struct mmc_host *mmc)
+>                         dev_err(mmc_dev(mmc), "vmmc_aux reg enable failed\n");
+>                         goto err_vqmmc;
+>                 }
+> -               host->vqmmc_enabled = 1;
+> +               host->vqmmc_enabled = true;
+>         }
 >
-> Muhammad Husaini Zulkifli (9):
->   mmc: sdhci-of-arasan: use of_device_get_match_data()
->   mmc: sdhci-of-arasan: Convert to use np instead of pdev->dev.of_node
->   mmc: sdhci-of-arasan: Add structure device pointer in probe function
->   mmc: sdhci-of-arasan: Use dev_err_probe() to avoid spamming logs
->   firmware: keembay: Add support for Trusted Firmware Service call
->   dt-bindings: mmc: Update phy and regulator supply for Keem Bay SOC
->   dt-bindings: regulator: keembay: Add DT binding documentation
->   regulator: keembay: Add regulator for Keem Bay SoC
->   mmc: sdhci-of-arasan: Add UHS-1 support for Keem Bay SOC
+>         return 0;
+> @@ -256,7 +256,7 @@ static int omap_hsmmc_disable_supply(struct mmc_host *mmc)
+>                         dev_err(mmc_dev(mmc), "vmmc_aux reg disable failed\n");
+>                         return ret;
+>                 }
+> -               host->vqmmc_enabled = 0;
+> +               host->vqmmc_enabled = false;
+>         }
 >
->  .../devicetree/bindings/mmc/arasan,sdhci.yaml |   7 +-
->  .../bindings/regulator/keembay-regulator.yaml |  36 ++
->  drivers/mmc/host/sdhci-of-arasan.c            | 313 ++++++++++++++++--
->  drivers/regulator/Kconfig                     |  10 +
->  drivers/regulator/Makefile                    |   1 +
->  drivers/regulator/keembay-sd-regulator.c      | 112 +++++++
->  include/linux/firmware/intel/keembay.h        |  82 +++++
->  7 files changed, 532 insertions(+), 29 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/regulator/keembay-regulator.yaml
->  create mode 100644 drivers/regulator/keembay-sd-regulator.c
->  create mode 100644 include/linux/firmware/intel/keembay.h
+>         if (!IS_ERR(mmc->supply.vmmc)) {
+> @@ -285,22 +285,22 @@ static int omap_hsmmc_set_pbias(struct omap_hsmmc_host *host, bool power_on)
+>                 return 0;
+>
+>         if (power_on) {
+> -               if (host->pbias_enabled == 0) {
+> +               if (!host->pbias_enabled) {
+>                         ret = regulator_enable(host->pbias);
+>                         if (ret) {
+>                                 dev_err(host->dev, "pbias reg enable fail\n");
+>                                 return ret;
+>                         }
+> -                       host->pbias_enabled = 1;
+> +                       host->pbias_enabled = true;
+>                 }
+>         } else {
+> -               if (host->pbias_enabled == 1) {
+> +               if (host->pbias_enabled) {
+>                         ret = regulator_disable(host->pbias);
+>                         if (ret) {
+>                                 dev_err(host->dev, "pbias reg disable fail\n");
+>                                 return ret;
+>                         }
+> -                       host->pbias_enabled = 0;
+> +                       host->pbias_enabled = false;
+>                 }
+>         }
+>
+> @@ -1861,8 +1861,8 @@ static int omap_hsmmc_probe(struct platform_device *pdev)
+>         host->base      = base + pdata->reg_offset;
+>         host->power_mode = MMC_POWER_OFF;
+>         host->next_data.cookie = 1;
+> -       host->pbias_enabled = 0;
+> -       host->vqmmc_enabled = 0;
+> +       host->pbias_enabled = false;
+> +       host->vqmmc_enabled = false;
+>
+>         platform_set_drvdata(pdev, host);
 >
 > --
-> 2.17.1
+> 1.8.3.1
 >
-
-Applied patch 1 to patch 4. I assume you will be respinning the rest?
-
-Thanks and kind regards
-Uffe
