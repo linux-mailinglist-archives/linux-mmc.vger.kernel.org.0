@@ -2,83 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 831972FBD72
-	for <lists+linux-mmc@lfdr.de>; Tue, 19 Jan 2021 18:23:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E052FBDED
+	for <lists+linux-mmc@lfdr.de>; Tue, 19 Jan 2021 18:44:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389866AbhASRWk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 19 Jan 2021 12:22:40 -0500
-Received: from foss.arm.com ([217.140.110.172]:41292 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390373AbhASRVb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 19 Jan 2021 12:21:31 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4745111D4;
-        Tue, 19 Jan 2021 09:20:33 -0800 (PST)
-Received: from bogus (unknown [10.57.35.27])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 918BD3F66E;
-        Tue, 19 Jan 2021 09:20:30 -0800 (PST)
-Date:   Tue, 19 Jan 2021 17:20:28 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     "Zulkifli, Muhammad Husaini" <muhammad.husaini.zulkifli@intel.com>
-Cc:     Cristian Marussi <cristian.marussi@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "Hunter, Adrian" <adrian.hunter@intel.com>,
-        "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
-        "A, Rashmi" <rashmi.a@intel.com>,
-        "Vaidya, Mahesh R" <mahesh.r.vaidya@intel.com>
-Subject: Re: [PATCH v1 5/9] firmware: keembay: Add support for Trusted
- Firmware Service call
-Message-ID: <20210119172028.577x72bxv2khmg76@bogus>
-References: <20210118120132.GC25035@e120937-lin>
- <DM6PR11MB2876FCA96049D398A899A930B8A30@DM6PR11MB2876.namprd11.prod.outlook.com>
+        id S1728865AbhASOsH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 19 Jan 2021 09:48:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54634 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389414AbhASM3E (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Jan 2021 07:29:04 -0500
+Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B164C061573;
+        Tue, 19 Jan 2021 04:27:25 -0800 (PST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 4DKnvV0tDBz1s8Mv;
+        Tue, 19 Jan 2021 13:26:30 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 4DKnvT6kxlz1qrPm;
+        Tue, 19 Jan 2021 13:26:29 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id TG6wQP6Q9FkO; Tue, 19 Jan 2021 13:26:28 +0100 (CET)
+X-Auth-Info: gfwXCj6ioGLcMlG5xwuDcWczg+YKs/KDYJt3xm6T8Gw=
+Received: from [IPv6:::1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Tue, 19 Jan 2021 13:26:28 +0100 (CET)
+Subject: Re: [PATCH v3] mmc: mmci: Convert bindings to DT schema
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     devicetree@vger.kernel.org
+References: <20210119100655.2755164-1-linus.walleij@linaro.org>
+From:   Marek Vasut <marex@denx.de>
+Message-ID: <5e2d5f9c-15f9-248a-9ef2-335ad0118e2b@denx.de>
+Date:   Tue, 19 Jan 2021 13:26:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM6PR11MB2876FCA96049D398A899A930B8A30@DM6PR11MB2876.namprd11.prod.outlook.com>
-User-Agent: NeoMutt/20171215
+In-Reply-To: <20210119100655.2755164-1-linus.walleij@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Jan 19, 2021 at 02:38:32AM +0000, Zulkifli, Muhammad Husaini wrote:
-
-[...]
-
+On 1/19/21 11:06 AM, Linus Walleij wrote:
+> This converts the MMCI bindings from simple text to a proper
+> schema.
 > 
-> I try to hook up the DT last night. Seems like the SCMI Protocol 17 is not
-> implemented at ATF side.
+> Cc: devicetree@vger.kernel.org
+> Cc: Marek Vasut <marex@denx.de>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-I had guessed that.
+Tested-by: Marek Vasut <marex@denx.de>
 
-> Double check with ATF Team, currently we don't have SCMI voltage domain
-> control in ARM Trusted Firmware yet as of now, that is why even if I map the
-> function to scmi, my call will be fail.
-
-Correct, but if you already have this custom SMCCC for voltage already
-implemented in TF-A, I don't see it is a big deal to support voltage
-protocol there.
-
-> 
-> [    2.648989] arm-scmi firmware:scmi: SCMI Notifications - Core Enabled.
-> [    2.656157] arm-scmi firmware:scmi: SCMI Protocol v1.0 'INTEL:KMB' Firmware version 0x1
-> [    2.664513] arm-scmi firmware:scmi: SCMI protocol 23 not implemented
-> [    2.675898] arm-scmi firmware:scmi: SCMI protocol 17 not implemented
-> 
-> Any possibilities that for UHS patch we go with my current regulator driver
-> implementation?
-
-Sorry absolutely no. If this platform was not using SCMI, I wouldn't have
-pushed back hard on this custom SMCCC. Please update TF-A to add this support.
-There is no point in having custom interface just for this when everything
-else is already using SCMI on this platform.
-
--- 
-Regards,
-Sudeep
+Thanks
