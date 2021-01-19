@@ -2,128 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D632FBDF6
-	for <lists+linux-mmc@lfdr.de>; Tue, 19 Jan 2021 18:44:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73C212FC00B
+	for <lists+linux-mmc@lfdr.de>; Tue, 19 Jan 2021 20:34:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390933AbhASOtz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 19 Jan 2021 09:49:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43100 "EHLO
+        id S1728790AbhASTbv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 19 Jan 2021 14:31:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392680AbhASNqB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Jan 2021 08:46:01 -0500
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0FBAC061798
-        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:43:43 -0800 (PST)
-Received: by mail-vs1-xe33.google.com with SMTP id p20so3791245vsq.7
-        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:43:43 -0800 (PST)
+        with ESMTP id S2391782AbhASTbX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Jan 2021 14:31:23 -0500
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DD41C061574
+        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 11:30:43 -0800 (PST)
+Received: by mail-pg1-x52e.google.com with SMTP id n7so13607587pgg.2
+        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 11:30:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZwifCSX45KhsvY2iJTL0WhKEp/VAHjvt7PynTrJUsDk=;
-        b=gXiQ9xYsNg2rnEMj13umiSHP/tkUj27IExlmJW/qZx9JksExVXRsHUCGfoxnZWGyJJ
-         SKWAYjFK9DPjcoXXlgUEs9WTuRdGa/03tT/483PmfSPDxQJ6dbN225oN1DNdAsKB4uVH
-         /k4QpdhAfSSJQD8AYQSXb4pAQ5AY/AttZgTO5QjFveSHjxZ/B5NE8/kqGaMUNJuhjUso
-         UVVEF6SGqB27rWUHyjL+go4wPes6yO13Jlix6AX3TxAcQZ1ygsyq8wN3TPS6FHceaYle
-         pc4Kou13auHkqOan07St4EEvFaNXTJ0vIIPjfYz00ZFryUzmj1jtISPyqDlyxslZdlVU
-         SQSg==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=2a+AJpXRCTfZyczQuEB9u8BkJxf/cNBjjXi4k4TlSWw=;
+        b=e1M94iUqOKU+aAyCpeYRdv6GdAW8k4BKNsScVlx4Vdhw7LYfoIN7biO6tmrLfIIdvD
+         0EGUqvCdo36mugVbNLgC8uuoCkz9bugEBDAC05tTf8br6QRIEOG00zQI1LHzQClGOJNl
+         LBFd5gRfieCIjLr8Be6aMd6pRuGd8ont4Rhd4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZwifCSX45KhsvY2iJTL0WhKEp/VAHjvt7PynTrJUsDk=;
-        b=Z/8bN+lmBYRbZqNuwxz9C9Cx5l09J4r42gPgdWVMSYmIbyB05T2ppm1rz5RkxwAfyx
-         IG1R0EGbWxfRVLNsRbcX2xNnsaBb5L+Mud2jy1X202YMj/e4s7t+8KGaAwTWFxSZMQm1
-         bq5fgKsS6y3YKFVNbapnLBdy3EyAjrn51IKmjfg9GrrgLWkwde8QNB5yhAKqkoMMdm9C
-         S2ckfuHTfv27WWKAeg+qxX/oYXhiu78NQpZGyp3yZxylQ+zC6KZfeKWxGUwS/0Mtix0a
-         3SCQ19C1vg73rCuQhWcv/MX5jbTSmfSZqyFHrPZtk+zBkCznpCbYNOdTsUl4BNUusxCI
-         ReMw==
-X-Gm-Message-State: AOAM530cujlFyaIvjmMFnX0CXVtD0p23P9Cyt0HplKP55boo0AgoPaUX
-        NNVC1Rkzmm1AFHJiv0tcO6xAvaRxJmUdX3qkybV6+Q==
-X-Google-Smtp-Source: ABdhPJyNZwiCneblhx3D9rnVa5WXxr7vgezCM4SQABvJl8PA3qInPMT4IDEoPvGCeZB1In3tRQZbqkcIIA+453oN+aY=
-X-Received: by 2002:a67:f997:: with SMTP id b23mr2484759vsq.34.1611063823059;
- Tue, 19 Jan 2021 05:43:43 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=2a+AJpXRCTfZyczQuEB9u8BkJxf/cNBjjXi4k4TlSWw=;
+        b=chLHzvhcK45BMunxQ4KLTnzE0qpVXwuBIWPfvGkYk08CNXRWocaIX0aatzjdnntFNg
+         SxUUrz5PCWEnb5BXvP11LJ7u8RO2vn9EfKO33oSheEnw7KfzRhXkFgwrr3EaBVH+r/DA
+         oHLTKth8XBSGbbjo2DuzngOwUjCH6ks+AjqQuSv1CbH1JXPyi6JjJckHUlSrWBQ2Lfjt
+         tv+stBGesw0TYZb4yWIZ9CDH5EuSTWloX7bQBcxnCWVvRlOR0HacHenszKCW1qzz2OB9
+         nRC4guQeyN8V/gt+ZXOZ9KyOuitWla8uClfSXUAdyQ6ohpG6YkLCd3qvpiAkgd4Gs5+t
+         pDTQ==
+X-Gm-Message-State: AOAM532Nmrmxc0SRucxtbOY+p44TNAOLDLflwNNu9mRKUBxv0F3FXFNH
+        1rnbTug59qczzZ7lB4+LL2V8MA==
+X-Google-Smtp-Source: ABdhPJyUvkfLSXjqHOEq8OgTC+xZiHsy62DRudN423jP+qTtj/pWPVamzTtU3XbQzUKSYlRFrfZXew==
+X-Received: by 2002:a62:65c7:0:b029:1b8:5c05:820b with SMTP id z190-20020a6265c70000b02901b85c05820bmr5673986pfb.48.1611084642828;
+        Tue, 19 Jan 2021 11:30:42 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id a18sm19634412pfg.107.2021.01.19.11.30.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Jan 2021 11:30:42 -0800 (PST)
+Date:   Tue, 19 Jan 2021 11:30:41 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Bhaskara Budiredla <bbudiredla@marvell.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [EXT] Re: [PATCH v4 1/2] mmc: Support kmsg dumper based on
+ pstore/blk
+Message-ID: <202101191130.4A8EC5F9@keescook>
+References: <20201223144033.32571-1-bbudiredla@marvell.com>
+ <20201223144033.32571-2-bbudiredla@marvell.com>
+ <CAPDyKFq41CQ8JbyAS0+k26=Cyf=KcOpdeD+VmY1AZxbh4D6f9w@mail.gmail.com>
+ <CY4PR1801MB207022E70C53D0DA87EB3F22DEA31@CY4PR1801MB2070.namprd18.prod.outlook.com>
 MIME-Version: 1.0
-References: <20210115193218.5809-1-grygorii.strashko@ti.com>
-In-Reply-To: <20210115193218.5809-1-grygorii.strashko@ti.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 19 Jan 2021 14:43:06 +0100
-Message-ID: <CAPDyKFp3K7G_36vB5BrMjhLgCD99xi4tL9sHGaunTGm+AqYeNw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: mmc: sdhci-am654: fix compatible for j7200
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Faiz Abbas <faiz_abbas@ti.com>, Nishanth Menon <nm@ti.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CY4PR1801MB207022E70C53D0DA87EB3F22DEA31@CY4PR1801MB2070.namprd18.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 15 Jan 2021 at 20:32, Grygorii Strashko
-<grygorii.strashko@ti.com> wrote:
->
-> On TI J7200 SoC the SDHCI controller compatible defined as
->  "ti,j7200-sdhci-8bit", "ti,j721e-sdhci-8bit"
->  or
->  "ti,j7200-sdhci-4bit", "ti,j721e-sdhci-4bit"
-> which causes dtbs_check warnings:
-> mmc@4f80000: compatible: ['ti,j7200-sdhci-8bit', 'ti,j721e-sdhci-8bit'] is too long
-> mmc@4f80000: compatible: Additional items are not allowed ('ti,j721e-sdhci-8bit' was unexpected)
-> mmc@4fb0000: compatible:0: 'ti,j7200-sdhci-4bit' is not one of ['ti,am654-sdhci-5.1', 'ti,j721e-sdhci-8bit',
->  'ti,j721e-sdhci-4bit', 'ti,j7200-sdhci-8bit', 'ti,j721e-sdhci-4bit', 'ti,am64-sdhci-8bit', 'ti,am64-sdhci-4bit']
-> mmc@4fb0000: compatible: ['ti,j7200-sdhci-4bit', 'ti,j721e-sdhci-4bit'] is too long
-> mmc@4fb0000: compatible: Additional items are not allowed ('ti,j721e-sdhci-4bit' was unexpected)
->
-> Fix it by adding missing compatible strings and their combinations.
->
-> Fixes: 407d0c2cdd12 ("dt-bindings: mmc: sdhci-am654: Convert sdhci-am654 controller documentation to json schema")
-> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+On Tue, Jan 19, 2021 at 04:11:31AM +0000, Bhaskara Budiredla wrote:
+> Do you see any issues to ACK this if the mmc pstore
+> registration is through register_pstore_blk()?
+> As Uffe said, eMMC would need to go through
+> psblk_generic_blk_read()/write() instead of
+> mmcpstore_read()/write().
 
-Applied for next, thanks!
+I would be fine with that; yes.
 
-Kind regards
-Uffe
-
-
-> ---
->  .../devicetree/bindings/mmc/sdhci-am654.yaml  | 21 ++++++++++++-------
->  1 file changed, 13 insertions(+), 8 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml b/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
-> index 34e53db29428..3a79e39253d2 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
-> @@ -15,14 +15,19 @@ allOf:
->
->  properties:
->    compatible:
-> -    enum:
-> -      - ti,am654-sdhci-5.1
-> -      - ti,j721e-sdhci-8bit
-> -      - ti,j721e-sdhci-4bit
-> -      - ti,j7200-sdhci-8bit
-> -      - ti,j721e-sdhci-4bit
-> -      - ti,am64-sdhci-8bit
-> -      - ti,am64-sdhci-4bit
-> +    oneOf:
-> +      - const: ti,am654-sdhci-5.1
-> +      - const: ti,j721e-sdhci-8bit
-> +      - const: ti,j721e-sdhci-4bit
-> +      - const: ti,j721e-sdhci-4bit
-> +      - const: ti,am64-sdhci-8bit
-> +      - const: ti,am64-sdhci-4bit
-> +      - items:
-> +          - const: ti,j7200-sdhci-8bit
-> +          - const: ti,j721e-sdhci-8bit
-> +      - items:
-> +          - const: ti,j7200-sdhci-4bit
-> +          - const: ti,j721e-sdhci-4bit
->
->    reg:
->      maxItems: 2
-> --
-> 2.17.1
->
+-- 
+Kees Cook
