@@ -2,112 +2,83 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E4012FBA3E
-	for <lists+linux-mmc@lfdr.de>; Tue, 19 Jan 2021 15:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 831972FBD72
+	for <lists+linux-mmc@lfdr.de>; Tue, 19 Jan 2021 18:23:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389426AbhASOsl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 19 Jan 2021 09:48:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387746AbhASNYk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Jan 2021 08:24:40 -0500
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13884C061574
-        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:23:54 -0800 (PST)
-Received: by mail-ua1-x92f.google.com with SMTP id d3so4150511uap.4
-        for <linux-mmc@vger.kernel.org>; Tue, 19 Jan 2021 05:23:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ILw/qF7TdwrNklRAXcaeusociLizcCnnQ8u/QLIywg4=;
-        b=FjML5doNoJ4DXnisvfUP6oGcL6UAd9gJmPklavYNzbOvo34D/b3MCwN05tXLr3txiP
-         1DeCL1/EyWrUU52yj6qJpN9ukP0rHothhu4Ef47wUFdQO6J2wNQQVm5zGf9fyaqbB6oh
-         EVhxzlo7iPvxSOX6OV3BU26yD/HkruslcyFCyT504jUKzaIcdSYJ0UyVVW89Wwz9W63t
-         jbaqRCEZztz/iXYh/KvhkmNWa/OcUDPjN9VSGtDEZutij8X4tLeGdAve0Ycv3k7D7os8
-         HXeJbU90+JD1EAETpLYDyA3YLr9PsrOehnJ+U3Rpno9hrdEruPRxY9NUXf0oeUdh1EVj
-         Tacg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ILw/qF7TdwrNklRAXcaeusociLizcCnnQ8u/QLIywg4=;
-        b=bVgzaJpokfGvwm4i0k/BUUs6cSCPpbAwsG6Cxf3M4kEe9OZaNstpxg+jRBZLXYX0cF
-         HYjgb+PP00YiL/0NGkWi8qmza7KYDRdXTE161bYzenjOCpnxZLfakIEJreCJut0imx36
-         VYaG3LRBpnEDeGloivC17/yWGYcylx1RGAj18kj24pG70jAK+VcMBtn5+szJsv6Zh7wP
-         fJ0ilHHjexwjXobYsIULz6BtdsotKcC3plRa70Nq3QMgF5pBcVGya/BSiF7f3fy1kWG6
-         lCTw1QTOQ5PRnsT3PeCtoLPo2oNye4H83W+397e+PDLFowa2DRU88yZ8v/s+OYk2LAf4
-         Kd7A==
-X-Gm-Message-State: AOAM533xSOF25+IS8vvMfuUxPyQR9/HV+Hu4Y+3qOiJ67+zY3Itep0CY
-        vj+sOtUVV4Vg73QojygFB2WaeCzzK4G+wn5jNCXmsQ==
-X-Google-Smtp-Source: ABdhPJx5Lv2FXPGPnZs7Sl4lSF8XEJWk4UFMIcwq5sOFzftyYVlxhOL5xtGfGG+rw0aT/4OB6QOznxNjpYWkeH8WxtA=
-X-Received: by 2002:a9f:2271:: with SMTP id 104mr2176025uad.15.1611062633277;
- Tue, 19 Jan 2021 05:23:53 -0800 (PST)
+        id S2389866AbhASRWk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 19 Jan 2021 12:22:40 -0500
+Received: from foss.arm.com ([217.140.110.172]:41292 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390373AbhASRVb (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 19 Jan 2021 12:21:31 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4745111D4;
+        Tue, 19 Jan 2021 09:20:33 -0800 (PST)
+Received: from bogus (unknown [10.57.35.27])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 918BD3F66E;
+        Tue, 19 Jan 2021 09:20:30 -0800 (PST)
+Date:   Tue, 19 Jan 2021 17:20:28 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     "Zulkifli, Muhammad Husaini" <muhammad.husaini.zulkifli@intel.com>
+Cc:     Cristian Marussi <cristian.marussi@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "Hunter, Adrian" <adrian.hunter@intel.com>,
+        "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
+        "A, Rashmi" <rashmi.a@intel.com>,
+        "Vaidya, Mahesh R" <mahesh.r.vaidya@intel.com>
+Subject: Re: [PATCH v1 5/9] firmware: keembay: Add support for Trusted
+ Firmware Service call
+Message-ID: <20210119172028.577x72bxv2khmg76@bogus>
+References: <20210118120132.GC25035@e120937-lin>
+ <DM6PR11MB2876FCA96049D398A899A930B8A30@DM6PR11MB2876.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-References: <20210112141754.76539-1-fengnanchang@gmail.com>
-In-Reply-To: <20210112141754.76539-1-fengnanchang@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 19 Jan 2021 14:23:17 +0100
-Message-ID: <CAPDyKFpxGCu9JMxvkrdLz8YmzUk89PnRaNiWpoBGRA0uAcEGJw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: limit the number of retries when analyse tuples failed
-To:     Fengnan Chang <fengnanchang@gmail.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM6PR11MB2876FCA96049D398A899A930B8A30@DM6PR11MB2876.namprd11.prod.outlook.com>
+User-Agent: NeoMutt/20171215
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 12 Jan 2021 at 15:18, Fengnan Chang <fengnanchang@gmail.com> wrote:
->
-> when analyse tuples failed, may enter an endless loop=EF=BC=8Cso limit th=
-e number of retries.
->
-> Signed-off-by: Fengnan Chang <fengnanchang@gmail.com>
-> ---
->  drivers/mmc/core/sdio_cis.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/mmc/core/sdio_cis.c b/drivers/mmc/core/sdio_cis.c
-> index dcb3dee59fa5..a3f0c3cc0c2c 100644
-> --- a/drivers/mmc/core/sdio_cis.c
-> +++ b/drivers/mmc/core/sdio_cis.c
-> @@ -266,6 +266,7 @@ static int sdio_read_cis(struct mmc_card *card, struc=
-t sdio_func *func)
->
->         do {
->                 unsigned char tpl_code, tpl_link;
-> +               int  tries =3D 100;
->
+On Tue, Jan 19, 2021 at 02:38:32AM +0000, Zulkifli, Muhammad Husaini wrote:
 
-From a general point of view I agree, we should set a limit to avoid
-looping forever. Although, I am wondering why exactly is 100 a good
-value for retries?
+[...]
 
-Did you encounter this problem and tried to limit the loop to 100 to
-fix the problem - or is the fix done based on pure code analysis?
+> 
+> I try to hook up the DT last night. Seems like the SCMI Protocol 17 is not
+> implemented at ATF side.
 
-An option to limit the loop with retries is to bail out when a timer
-elapses. Perhaps that is better suited for this case or what do you
-think?
+I had guessed that.
 
->                 ret =3D mmc_io_rw_direct(card, 0, 0, ptr++, 0, &tpl_code)=
-;
->                 if (ret)
-> @@ -318,6 +319,9 @@ static int sdio_read_cis(struct mmc_card *card, struc=
-t sdio_func *func)
->                         prev =3D &this->next;
->
->                         if (ret =3D=3D -ENOENT) {
-> +                               tries--;
-> +                               if (!tries)
-> +                                       break;
->                                 /* warn about unknown tuples */
->                                 pr_warn_ratelimited("%s: queuing unknown"
->                                        " CIS tuple 0x%02x (%u bytes)\n",
-> --
-> 2.25.1
->
+> Double check with ATF Team, currently we don't have SCMI voltage domain
+> control in ARM Trusted Firmware yet as of now, that is why even if I map the
+> function to scmi, my call will be fail.
 
-Kind regards
-Uffe
+Correct, but if you already have this custom SMCCC for voltage already
+implemented in TF-A, I don't see it is a big deal to support voltage
+protocol there.
+
+> 
+> [    2.648989] arm-scmi firmware:scmi: SCMI Notifications - Core Enabled.
+> [    2.656157] arm-scmi firmware:scmi: SCMI Protocol v1.0 'INTEL:KMB' Firmware version 0x1
+> [    2.664513] arm-scmi firmware:scmi: SCMI protocol 23 not implemented
+> [    2.675898] arm-scmi firmware:scmi: SCMI protocol 17 not implemented
+> 
+> Any possibilities that for UHS patch we go with my current regulator driver
+> implementation?
+
+Sorry absolutely no. If this platform was not using SCMI, I wouldn't have
+pushed back hard on this custom SMCCC. Please update TF-A to add this support.
+There is no point in having custom interface just for this when everything
+else is already using SCMI on this platform.
+
+-- 
+Regards,
+Sudeep
