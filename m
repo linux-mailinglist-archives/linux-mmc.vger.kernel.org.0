@@ -2,204 +2,134 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB0C62FD19B
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 14:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47D092FD32F
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 15:54:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725956AbhATM7C (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Jan 2021 07:59:02 -0500
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:19420 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2389296AbhATMLx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jan 2021 07:11:53 -0500
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-        by mx0a-0016f401.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10KCBAJh029335;
-        Wed, 20 Jan 2021 04:11:10 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=pfpt0220; bh=3TXqj1IKWDJvWf7QNtGMDFnQ22mG8KVQZxTTv7BIfm4=;
- b=J7yeyhgorShzjUofXAQGeFaOrPafSjqoSbT2HxVvwFYKOmLB2xhnSR2MgIfuOdtH5+I7
- 8PZEqydpteBrmckHnRHNr1ucT3Kv+MP85i6XsVwgKsVtTOObjpXTlLbAqsXinS0N+9Kb
- hji7yXLN3o1jKlhFXo8yjPQl7eLZzOoWfjQ1akfVmK8o8yThy6E8LzBEnIasbg6gf/b4
- uFBSxApWdPzL71wDTHOCOB2FTqGGNQ2/FHdO8AJLBjsNoMohL7KSAcfJ6KDNbKluPjwj
- 9mKDWtmTM/WioenBf66sUUq/JY9CR5nylOTgSVDv6R6vuhNfMGfze52vDhrHBvJWY9YK Wg== 
-Received: from dc5-exch02.marvell.com ([199.233.59.182])
-        by mx0a-0016f401.pphosted.com with ESMTP id 3668p2t35r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Wed, 20 Jan 2021 04:11:10 -0800
-Received: from SC-EXCH03.marvell.com (10.93.176.83) by DC5-EXCH02.marvell.com
- (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 20 Jan
- 2021 04:11:08 -0800
-Received: from DC5-EXCH01.marvell.com (10.69.176.38) by SC-EXCH03.marvell.com
- (10.93.176.83) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 20 Jan
- 2021 04:11:07 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH01.marvell.com
- (10.69.176.38) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 20 Jan 2021 04:11:07 -0800
-Received: from hyd1soter3.marvell.com (unknown [10.29.37.12])
-        by maili.marvell.com (Postfix) with ESMTP id 1234E3F7040;
-        Wed, 20 Jan 2021 04:11:04 -0800 (PST)
-From:   Bhaskara Budiredla <bbudiredla@marvell.com>
-To:     <ulf.hansson@linaro.org>, <keescook@chromium.org>,
-        <ccross@android.com>, <tony.luck@intel.com>, <sgoutham@marvell.com>
-CC:     <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Bhaskara Budiredla" <bbudiredla@marvell.com>
-Subject: [PATCH v5 2/2] mmc: cavium: Add MMC polling method to support kmsg panic/oops write
-Date:   Wed, 20 Jan 2021 17:40:47 +0530
-Message-ID: <20210120121047.2601-3-bbudiredla@marvell.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210120121047.2601-1-bbudiredla@marvell.com>
-References: <20210120121047.2601-1-bbudiredla@marvell.com>
+        id S2387984AbhATOv4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Jan 2021 09:51:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49144 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390190AbhATOLo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jan 2021 09:11:44 -0500
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0098BC061795
+        for <linux-mmc@vger.kernel.org>; Wed, 20 Jan 2021 06:08:38 -0800 (PST)
+Received: by mail-ua1-x92f.google.com with SMTP id a31so7892650uae.11
+        for <linux-mmc@vger.kernel.org>; Wed, 20 Jan 2021 06:08:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eQpo2/GqCSrtTmISxWObvMSxde4cEDeccm8J4/mCD54=;
+        b=lTIxJju2eS/rp0QjBo4fvpCZUn4yw9e3W7e0ZyLUR9HmfbqeoouDNTuc4S3WdM9dGk
+         y1epOqS0EEgxV+4dffWYitfyyo3DRt6F0LdBcOGXEAa6KPC3FU/VbXM7ME275IYEXGgp
+         XdTzWDnLZsx68Aqq+Sarh4vFxSrArQN0uH4vOkI9uyerMbKmsCQwGwPv6+2G4i8S8f16
+         LFg2dHEsu57WQIyD8lLsptAPB9K8nn/c16E0BHU0AH6uweA3IU2xJ1V0SjSQx0ey2NnB
+         gEExCq6JPX1VlHGX64YOtDk2esWYs3V5dtFirm3JdRq5xVdkffWCmMSTq5Awf78lkNLw
+         nYKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eQpo2/GqCSrtTmISxWObvMSxde4cEDeccm8J4/mCD54=;
+        b=AEl0NI0Otslm7DJynhyGbNh8o4R6WpAaVtUPYVlpDlg3/1dRnhD6Bt6lbUqDoG4dls
+         cg/qHdNep/XHxYexCdS1374ak5Pcs1i9rhVb0+2hhkuGZyXKGsvrAKhPURfaFPOKVFGd
+         IxWJo2OT2ECpwzpMOK3wHeJW9UcfSvfhV2635xvrMTrIF8Egx8zobqdDONNCNX4J/bIy
+         3VpY1o3P25+XJX5YzSFUfG6r8nA9j+XM2iIyvdriJ+QsZHaBtw1dThXXlH4syXhvkPNH
+         /NX4rmSXPLCMj5U5B2FDT8SpB3z+nUzODAdDEiaV6NvEmwB5shtgxigSoti5f3byUgR3
+         z21A==
+X-Gm-Message-State: AOAM533lCiWQpt7Zbat47A0LgTOvgscY1taE/vN0zIHdDLIq8XTpNWgT
+        6MsxXD4yMDpI/6OUebE98VeOXa/1qIRQPaUMtGrTJAEtcc6AiQ==
+X-Google-Smtp-Source: ABdhPJybCoOrEGS0XDMKG7uX6jLpbNIxEZ8jIL0POQxHlhWHccui2ZyndJkGmmB+OOhQGKOprR2gBnmX9oDRFoa4/bQ=
+X-Received: by 2002:a9f:2271:: with SMTP id 104mr6172058uad.15.1611151718095;
+ Wed, 20 Jan 2021 06:08:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2021-01-20_05:2021-01-20,2021-01-20 signatures=0
+References: <20210120000406.1843400-1-jeremy.linton@arm.com> <20210120000406.1843400-2-jeremy.linton@arm.com>
+In-Reply-To: <20210120000406.1843400-2-jeremy.linton@arm.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 20 Jan 2021 15:08:00 +0100
+Message-ID: <CAPDyKFpLpMU3ec7eV_q8w88oywazLrSo5wyVFZkVrzRqn3bhSQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhci-iproc: Add ACPI bindings for the rpi
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        ardb@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-To enable the writing of panic and oops logs, a cavium specific MMC
-polling method is defined and thereby ensure the functioning of mmcpstore.
+On Wed, 20 Jan 2021 at 01:04, Jeremy Linton <jeremy.linton@arm.com> wrote:
+>
+> The RPi4 has an Arasan controller it carries over
+> from the RPi3 and a newer eMMC2 controller.
+> Because of a couple of quirks, it seems wiser to bind
+> these controllers to the same driver that DT is using
+> on this platform rather than the generic sdhci_acpi
+> driver with PNP0D40.
+>
+> So, BCM2847 describes the older Arasan and
+> BRCME88C describes the newer eMMC2. The older
+> Arasan is reusing an existing ACPI _HID used
+> by other OSs booting these tables on the RPi.
+>
+> With this change, Linux is capable of utilizing the
+> SD card slot, and the wifi when booted with
+> UEFI+ACPI on the rpi4.
+>
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
 
-Signed-off-by: Bhaskara Budiredla <bbudiredla@marvell.com>
----
- drivers/mmc/host/cavium-thunderx.c | 10 +++++
- drivers/mmc/host/cavium.c          | 67 ++++++++++++++++++++++++++++++
- drivers/mmc/host/cavium.h          |  3 ++
- 3 files changed, 80 insertions(+)
+Applied for next (and by updating the commit message according to the
+nitpick comment from Florian), thanks!
 
-diff --git a/drivers/mmc/host/cavium-thunderx.c b/drivers/mmc/host/cavium-thunderx.c
-index 76013bbbcff3..83f25dd6820a 100644
---- a/drivers/mmc/host/cavium-thunderx.c
-+++ b/drivers/mmc/host/cavium-thunderx.c
-@@ -19,12 +19,22 @@
- 
- static void thunder_mmc_acquire_bus(struct cvm_mmc_host *host)
- {
-+#if IS_ENABLED(CONFIG_MMC_PSTORE)
-+	if (!host->pstore)
-+		down(&host->mmc_serializer);
-+#else
- 	down(&host->mmc_serializer);
-+#endif
- }
- 
- static void thunder_mmc_release_bus(struct cvm_mmc_host *host)
- {
-+#if IS_ENABLED(CONFIG_MMC_PSTORE)
-+	if (!host->pstore)
-+		up(&host->mmc_serializer);
-+#else
- 	up(&host->mmc_serializer);
-+#endif
- }
- 
- static void thunder_mmc_int_enable(struct cvm_mmc_host *host, u64 val)
-diff --git a/drivers/mmc/host/cavium.c b/drivers/mmc/host/cavium.c
-index c5da3aaee334..708bec9d0345 100644
---- a/drivers/mmc/host/cavium.c
-+++ b/drivers/mmc/host/cavium.c
-@@ -510,6 +510,66 @@ irqreturn_t cvm_mmc_interrupt(int irq, void *dev_id)
- 	return IRQ_RETVAL(emm_int != 0);
- }
- 
-+#if IS_ENABLED(CONFIG_MMC_PSTORE)
-+static int cvm_req_completion_poll(struct mmc_host *host, unsigned long msecs)
-+{
-+	struct cvm_mmc_slot *slot = mmc_priv(host);
-+	struct cvm_mmc_host *cvm_host = slot->host;
-+	u64 emm_int;
-+
-+	while (msecs) {
-+		emm_int = readq(cvm_host->base + MIO_EMM_INT(cvm_host));
-+
-+		if (emm_int & MIO_EMM_INT_DMA_DONE)
-+			return 0;
-+		else if (emm_int & MIO_EMM_INT_DMA_ERR)
-+			return -EIO;
-+		mdelay(1);
-+		msecs--;
-+	}
-+
-+	return -ETIMEDOUT;
-+}
-+
-+static void cvm_req_cleanup_pending(struct mmc_host *host)
-+{
-+	struct cvm_mmc_slot *slot = mmc_priv(host);
-+	struct cvm_mmc_host *cvm_host = slot->host;
-+	u64 fifo_cfg;
-+	u64 dma_cfg;
-+	u64 emm_int;
-+
-+	cvm_host->pstore = 1;
-+
-+	/* Clear pending DMA FIFO queue */
-+	fifo_cfg = readq(cvm_host->dma_base + MIO_EMM_DMA_FIFO_CFG(cvm_host));
-+	if (FIELD_GET(MIO_EMM_DMA_FIFO_CFG_COUNT, fifo_cfg))
-+		writeq(MIO_EMM_DMA_FIFO_CFG_CLR,
-+			cvm_host->dma_base + MIO_EMM_DMA_FIFO_CFG(cvm_host));
-+
-+	/* Clear ongoing DMA, if there is any */
-+	dma_cfg = readq(cvm_host->dma_base + MIO_EMM_DMA_CFG(cvm_host));
-+	if (dma_cfg & MIO_EMM_DMA_CFG_EN) {
-+		dma_cfg |= MIO_EMM_DMA_CFG_CLR;
-+		writeq(dma_cfg, cvm_host->dma_base +
-+				MIO_EMM_DMA_CFG(cvm_host));
-+		do {
-+			dma_cfg = readq(cvm_host->dma_base +
-+					MIO_EMM_DMA_CFG(cvm_host));
-+		} while (dma_cfg & MIO_EMM_DMA_CFG_EN);
-+	}
-+
-+	/* Clear pending DMA interrupts */
-+	emm_int = readq(cvm_host->base + MIO_EMM_INT(cvm_host));
-+	if (emm_int)
-+		writeq(emm_int, cvm_host->base + MIO_EMM_INT(cvm_host));
-+
-+	/* Clear prepared and yet to be fired DMA requests */
-+	cvm_host->current_req = NULL;
-+	cvm_host->dma_active = false;
-+}
-+#endif
-+
- /*
-  * Program DMA_CFG and if needed DMA_ADR.
-  * Returns 0 on error, DMA address otherwise.
-@@ -901,6 +961,10 @@ static const struct mmc_host_ops cvm_mmc_ops = {
- 	.set_ios        = cvm_mmc_set_ios,
- 	.get_ro		= mmc_gpio_get_ro,
- 	.get_cd		= mmc_gpio_get_cd,
-+#if IS_ENABLED(CONFIG_MMC_PSTORE)
-+	.req_cleanup_pending = cvm_req_cleanup_pending,
-+	.req_completion_poll = cvm_req_completion_poll,
-+#endif
- };
- 
- static void cvm_mmc_set_clock(struct cvm_mmc_slot *slot, unsigned int clock)
-@@ -1058,6 +1122,9 @@ int cvm_mmc_of_slot_probe(struct device *dev, struct cvm_mmc_host *host)
- 	slot->bus_id = id;
- 	slot->cached_rca = 1;
- 
-+#if IS_ENABLED(CONFIG_MMC_PSTORE)
-+	host->pstore = 0;
-+#endif
- 	host->acquire_bus(host);
- 	host->slot[id] = slot;
- 	cvm_mmc_switch_to(slot);
-diff --git a/drivers/mmc/host/cavium.h b/drivers/mmc/host/cavium.h
-index f3eea5eaa678..248a5a6e3522 100644
---- a/drivers/mmc/host/cavium.h
-+++ b/drivers/mmc/host/cavium.h
-@@ -75,6 +75,9 @@ struct cvm_mmc_host {
- 	spinlock_t irq_handler_lock;
- 	struct semaphore mmc_serializer;
- 
-+#if IS_ENABLED(CONFIG_MMC_PSTORE)
-+	bool pstore;
-+#endif
- 	struct gpio_desc *global_pwr_gpiod;
- 	atomic_t shared_power_users;
- 
--- 
-2.17.1
+Kind regards
+Uffe
 
+
+> ---
+>  drivers/mmc/host/sdhci-iproc.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+>
+> diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
+> index c9434b461aab..ddeaf8e1f72f 100644
+> --- a/drivers/mmc/host/sdhci-iproc.c
+> +++ b/drivers/mmc/host/sdhci-iproc.c
+> @@ -296,9 +296,27 @@ static const struct of_device_id sdhci_iproc_of_match[] = {
+>  MODULE_DEVICE_TABLE(of, sdhci_iproc_of_match);
+>
+>  #ifdef CONFIG_ACPI
+> +/*
+> + * This is a duplicate of bcm2835_(pltfrm_)data without caps quirks
+> + * which are provided by the ACPI table.
+> + */
+> +static const struct sdhci_pltfm_data sdhci_bcm_arasan_data = {
+> +       .quirks = SDHCI_QUIRK_BROKEN_CARD_DETECTION |
+> +                 SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
+> +                 SDHCI_QUIRK_NO_HISPD_BIT,
+> +       .quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+> +       .ops = &sdhci_iproc_32only_ops,
+> +};
+> +
+> +static const struct sdhci_iproc_data bcm_arasan_data = {
+> +       .pdata = &sdhci_bcm_arasan_data,
+> +};
+> +
+>  static const struct acpi_device_id sdhci_iproc_acpi_ids[] = {
+>         { .id = "BRCM5871", .driver_data = (kernel_ulong_t)&iproc_cygnus_data },
+>         { .id = "BRCM5872", .driver_data = (kernel_ulong_t)&iproc_data },
+> +       { .id = "BCM2847",  .driver_data = (kernel_ulong_t)&bcm_arasan_data },
+> +       { .id = "BRCME88C", .driver_data = (kernel_ulong_t)&bcm2711_data },
+>         { /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(acpi, sdhci_iproc_acpi_ids);
+> --
+> 2.26.2
+>
