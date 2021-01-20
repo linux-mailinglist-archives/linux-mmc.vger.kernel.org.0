@@ -2,118 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 989202FD40E
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 16:33:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 935252FD552
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 17:22:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731468AbhATPb5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Jan 2021 10:31:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37820 "EHLO
+        id S2390963AbhATPyL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Jan 2021 10:54:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390936AbhATPaB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jan 2021 10:30:01 -0500
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F544C061575
-        for <linux-mmc@vger.kernel.org>; Wed, 20 Jan 2021 07:29:16 -0800 (PST)
-Received: by mail-vs1-xe33.google.com with SMTP id o19so13257640vsn.3
-        for <linux-mmc@vger.kernel.org>; Wed, 20 Jan 2021 07:29:16 -0800 (PST)
+        with ESMTP id S2390562AbhATPx3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jan 2021 10:53:29 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38FE4C061575;
+        Wed, 20 Jan 2021 07:52:49 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id o17so34757590lfg.4;
+        Wed, 20 Jan 2021 07:52:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=zLmHjLoKfrJ/VBSSx0rkewFsbPHiVymRHs4Dil2S1qw=;
-        b=D5DtkxVlUQUJtSIXXbF9T1C9/CYmrRxf6Dy1p+I7wDwynL+M0KgcqOkYPCeVO8JIZo
-         RjKnI3es1ltCI2ykobw7XlFqe9g2hRWF4ctZGIw1g5vnXR7Ht+1/aitHi8M+NmKWbru+
-         /0Z+DM+HC5fZMaLHy9lW2ythfM9YYQwl8QQiFTnbRW0uHdFquIr4xp2rN88klDN4jktf
-         AGhBJNuPo4F//LtvstMhBORfPYNKGnIXDtWVd0hMHsAVlL8YKU+ZOAb5wAxjjYXuxHar
-         pM0HvrunL2pU7a8u0Eu0I4UD+2D2s9Tllp4RcabkUUr6B22bm13U1Ma8iwEAaDN1en41
-         /jeg==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=/KIgJpukkTUseLKOL+nfTNs+iHfOcLiaf/sA4jMSc7o=;
+        b=b2NLVokQPZCUuJAyv3kiWNUb/D7/YvKoWfUJcCHR1heKGaiZjLpcSwBstX7Q3YX8MD
+         0VSL3nGarP20z1Z7t1EQA7XA2H4vpXyhlGms2qwFGmlN5vFPCkNOEwhXvgcl2dX2OHl0
+         Fk8lwe7s8eUZ2wwS5RMH6/mUWuXSRNmTjNvQCAwK5Dd3NdzmkpZHt4llHrw8Ni5khkmn
+         myMjJRhAiEUeq/sHdT1yh60NnMmGAROPatvIjJ8mP6HQeV19cvk6YGXY87IpFAtncwaV
+         v00shKKr9e/yxCXAB3jbsK18rnr4dn0SL3OuJ8SyDsoqZnywmH2zxXJFRB0YEqFQqi04
+         OP8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=zLmHjLoKfrJ/VBSSx0rkewFsbPHiVymRHs4Dil2S1qw=;
-        b=ApW3iYuSJ37NsTgl2mNtYujNLylA+5oJT5M02wV3rI636sR3mkEUVAmObYj5X4biEt
-         00f40la1iigrI9Xiu0K6PlVsZz3/qvC+DYHVD6MpWlbnWBGTSSNJjHOJ5WkHfAQunnly
-         XNmQ21tCYa34LJTGssapLCTIoYHdkxmpoRmlrqBcW+Vre85XxIo4VTFIyX+ISqiXOQen
-         Inm27/uW/FaB356cbYGD4Tjx5Btl6d0celxQtV/ztjE5yLA2mtuKbP+zZermSWK3EzJm
-         OTDqD7A4iC2HBAKdiM3K0k7xSj051Uu6uoOD2niW5QtpHqvSc1dV/bdho872OEaMK/RV
-         F2Hw==
-X-Gm-Message-State: AOAM532Z7y1kK3seHmFtRL6u3UKNb2kZdarAZ+zlH1k2Qbfb/YOoEQrE
-        ywzVFWPGbyov0oudWPoLCKG0D5r9iqA2uW4fiC8vK2yigV9YNbN6
-X-Google-Smtp-Source: ABdhPJykIJvgJNTjwtICR72Ml0lxuEuM/YumO2tX9boFGXE1ENmsNtFReuuUKbIyJ4x7SULzY/15lb6UgY+am40NDa8=
-X-Received: by 2002:a67:c787:: with SMTP id t7mr7524554vsk.48.1611156555321;
- Wed, 20 Jan 2021 07:29:15 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=/KIgJpukkTUseLKOL+nfTNs+iHfOcLiaf/sA4jMSc7o=;
+        b=nbGUUFMp2tvkeX6XBsXTytoIiQPoz2eDIbHMmu4obTt01NoNLbaj2f9zx3wVyrCp4j
+         XIEjmjHhN6R1F1fnjSKUn9LIH2fe1HWXJOARadqqsVIByKni7NkJOPdLj+5chmh06SoZ
+         6TH9b14hriqgE1+ThonVV1NND8L1OGT9qf8dXWsrbFRjvgVWZ0Hv2ANhdQP7Pp0rUInH
+         DdyJhS2vnOcnkWMdS4WMk+TAwt6OmI0ezULfIAVj4iUL3FbjIeIkwceqBm8ZxGEFnVmy
+         1k1exhCfw1zlHcU/HC6vF73fyQJL7udqR/YCzWTZyBsWL6xCKgckEZ+apslDjtXdNUTt
+         jDZQ==
+X-Gm-Message-State: AOAM5338hi7aA1pHPOm9dFhgTGZXp4CKCcQIfKiU3dvNwEKhL+T6Bgjo
+        K/NSxyBc5oPD2aA5LNiSlbJh8+WQmjY=
+X-Google-Smtp-Source: ABdhPJz54jp4p6N7ro9OB4UGTlGLwMbj9w9A1NhmVFwuW25RiB7kgYemoqd4C3nN1Esa+ddCNU5GUA==
+X-Received: by 2002:a19:ac45:: with SMTP id r5mr4942869lfc.305.1611157967504;
+        Wed, 20 Jan 2021 07:52:47 -0800 (PST)
+Received: from [192.168.2.145] (109-252-192-57.dynamic.spd-mgts.ru. [109.252.192.57])
+        by smtp.googlemail.com with ESMTPSA id b4sm74228ljp.53.2021.01.20.07.52.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Jan 2021 07:52:46 -0800 (PST)
+Subject: Re: [PATCH 02/31] opp: Add devres wrapper for
+ dev_pm_opp_set_regulators and dev_pm_opp_put_regulators
+To:     Yangtao Li <tiny.windzz@gmail.com>, myungjoo.ham@samsung.com,
+        kyungmin.park@samsung.com, cw00.choi@samsung.com, krzk@kernel.org,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, yuq825@gmail.com, airlied@linux.ie,
+        daniel@ffwll.ch, robdclark@gmail.com, sean@poorly.run,
+        robh@kernel.org, tomeu.vizoso@collabora.com, steven.price@arm.com,
+        alyssa.rosenzweig@collabora.com, stanimir.varbanov@linaro.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, mchehab@kernel.org,
+        lukasz.luba@arm.com, adrian.hunter@intel.com,
+        ulf.hansson@linaro.org, vireshk@kernel.org, nm@ti.com,
+        sboyd@kernel.org, broonie@kernel.org, gregkh@linuxfoundation.org,
+        jirislaby@kernel.org, rjw@rjwysocki.net, jcrouse@codeaurora.org,
+        hoegsberg@google.com, eric@anholt.net, tzimmermann@suse.de,
+        marijn.suijten@somainline.org, gustavoars@kernel.org,
+        emil.velikov@collabora.com, jonathan@marek.ca,
+        akhilpo@codeaurora.org, smasetty@codeaurora.org,
+        airlied@redhat.com, masneyb@onstation.org, kalyan_t@codeaurora.org,
+        tanmay@codeaurora.org, ddavenport@chromium.org,
+        jsanka@codeaurora.org, rnayak@codeaurora.org,
+        tongtiangen@huawei.com, miaoqinglang@huawei.com,
+        khsieh@codeaurora.org, abhinavk@codeaurora.org,
+        chandanu@codeaurora.org, groeck@chromium.org, varar@codeaurora.org,
+        mka@chromium.org, harigovi@codeaurora.org,
+        rikard.falkeborn@gmail.com, natechancellor@gmail.com,
+        georgi.djakov@linaro.org, akashast@codeaurora.org,
+        parashar@codeaurora.org, dianders@chromium.org
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, lima@lists.freedesktop.org,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
+References: <20210101165507.19486-1-tiny.windzz@gmail.com>
+ <20210101165507.19486-3-tiny.windzz@gmail.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <43c251a2-430a-040c-4152-94cf10c884e0@gmail.com>
+Date:   Wed, 20 Jan 2021 18:52:43 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.2
 MIME-Version: 1.0
-References: <20210120144550.697303-1-fengnanchang@gmail.com>
-In-Reply-To: <20210120144550.697303-1-fengnanchang@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 20 Jan 2021 16:28:39 +0100
-Message-ID: <CAPDyKFqQ1C4vuyzwTV82q7ty=s5w6-4HX06gFqhhfjtzDbFA-A@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: limit the time of retries when analyse tuples failed
-To:     Fengnan Chang <fengnanchang@gmail.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210101165507.19486-3-tiny.windzz@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 20 Jan 2021 at 15:47, Fengnan Chang <fengnanchang@gmail.com> wrote:
->
-> when analyse tuples failed, may enter an endless loop=EF=BC=8Cso limit th=
-e time of retries.
-
-Since this is fixing a real bug for you, it looks like we should tag
-this for stable kernels as well, right?
-
->
-> Signed-off-by: Fengnan Chang <fengnanchang@gmail.com>
+01.01.2021 19:54, Yangtao Li пишет:
+> Add devres wrapper for dev_pm_opp_set_regulators()
+> dev_pm_opp_put_regulators () to simplify driver code.
+> 
+> Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
 > ---
->  drivers/mmc/core/sdio_cis.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/mmc/core/sdio_cis.c b/drivers/mmc/core/sdio_cis.c
-> index dcb3dee59fa5..47423a6d13fb 100644
-> --- a/drivers/mmc/core/sdio_cis.c
-> +++ b/drivers/mmc/core/sdio_cis.c
-> @@ -266,6 +266,7 @@ static int sdio_read_cis(struct mmc_card *card, struc=
-t sdio_func *func)
->
->         do {
->                 unsigned char tpl_code, tpl_link;
-> +               u64 timeout =3D get_jiffies_64() + 10 * HZ;
+>  drivers/opp/core.c     | 50 ++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/pm_opp.h |  9 ++++++++
+>  2 files changed, 59 insertions(+)
 
-To be consistent with how we do time based polling (see
-__mmc_poll_for_busy() in mmc_ops.c for example) I would prefer if you
-use a define for the timeout, rather than a magic value as here.
-
-#define SDIO_READ_CIS_TIMEOUT_MS  (10 * 1000) /* 10s */
-
-Additionally, regular jiffies should be sufficient I think. Thus I
-prefer if you could specify the timeout along the lines like the
-below:
-timeout =3D jiffies + msecs_to_jiffies(SDIO_READ_CIS_TIMEOUT_MS);
-
->
->                 ret =3D mmc_io_rw_direct(card, 0, 0, ptr++, 0, &tpl_code)=
-;
->                 if (ret)
-> @@ -318,6 +319,8 @@ static int sdio_read_cis(struct mmc_card *card, struc=
-t sdio_func *func)
->                         prev =3D &this->next;
->
->                         if (ret =3D=3D -ENOENT) {
-> +                               if (time_after64(get_jiffies_64(), timeou=
-t))
-> +                                       break;
->                                 /* warn about unknown tuples */
->                                 pr_warn_ratelimited("%s: queuing unknown"
->                                        " CIS tuple 0x%02x (%u bytes)\n",
-> --
-> 2.25.1
->
-
-Other than that, this looks okay to me.
-
-Kind regards
-Uffe
+Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
+Tested-by: Dmitry Osipenko <digetx@gmail.com>
