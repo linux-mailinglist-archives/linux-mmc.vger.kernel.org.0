@@ -2,134 +2,67 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47D092FD32F
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 15:54:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D33652FD2AE
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 15:33:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387984AbhATOv4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Jan 2021 09:51:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390190AbhATOLo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jan 2021 09:11:44 -0500
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0098BC061795
-        for <linux-mmc@vger.kernel.org>; Wed, 20 Jan 2021 06:08:38 -0800 (PST)
-Received: by mail-ua1-x92f.google.com with SMTP id a31so7892650uae.11
-        for <linux-mmc@vger.kernel.org>; Wed, 20 Jan 2021 06:08:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eQpo2/GqCSrtTmISxWObvMSxde4cEDeccm8J4/mCD54=;
-        b=lTIxJju2eS/rp0QjBo4fvpCZUn4yw9e3W7e0ZyLUR9HmfbqeoouDNTuc4S3WdM9dGk
-         y1epOqS0EEgxV+4dffWYitfyyo3DRt6F0LdBcOGXEAa6KPC3FU/VbXM7ME275IYEXGgp
-         XdTzWDnLZsx68Aqq+Sarh4vFxSrArQN0uH4vOkI9uyerMbKmsCQwGwPv6+2G4i8S8f16
-         LFg2dHEsu57WQIyD8lLsptAPB9K8nn/c16E0BHU0AH6uweA3IU2xJ1V0SjSQx0ey2NnB
-         gEExCq6JPX1VlHGX64YOtDk2esWYs3V5dtFirm3JdRq5xVdkffWCmMSTq5Awf78lkNLw
-         nYKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eQpo2/GqCSrtTmISxWObvMSxde4cEDeccm8J4/mCD54=;
-        b=AEl0NI0Otslm7DJynhyGbNh8o4R6WpAaVtUPYVlpDlg3/1dRnhD6Bt6lbUqDoG4dls
-         cg/qHdNep/XHxYexCdS1374ak5Pcs1i9rhVb0+2hhkuGZyXKGsvrAKhPURfaFPOKVFGd
-         IxWJo2OT2ECpwzpMOK3wHeJW9UcfSvfhV2635xvrMTrIF8Egx8zobqdDONNCNX4J/bIy
-         3VpY1o3P25+XJX5YzSFUfG6r8nA9j+XM2iIyvdriJ+QsZHaBtw1dThXXlH4syXhvkPNH
-         /NX4rmSXPLCMj5U5B2FDT8SpB3z+nUzODAdDEiaV6NvEmwB5shtgxigSoti5f3byUgR3
-         z21A==
-X-Gm-Message-State: AOAM533lCiWQpt7Zbat47A0LgTOvgscY1taE/vN0zIHdDLIq8XTpNWgT
-        6MsxXD4yMDpI/6OUebE98VeOXa/1qIRQPaUMtGrTJAEtcc6AiQ==
-X-Google-Smtp-Source: ABdhPJybCoOrEGS0XDMKG7uX6jLpbNIxEZ8jIL0POQxHlhWHccui2ZyndJkGmmB+OOhQGKOprR2gBnmX9oDRFoa4/bQ=
-X-Received: by 2002:a9f:2271:: with SMTP id 104mr6172058uad.15.1611151718095;
- Wed, 20 Jan 2021 06:08:38 -0800 (PST)
+        id S2389352AbhATO3P (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Jan 2021 09:29:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40172 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388915AbhATO2q (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 20 Jan 2021 09:28:46 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DB63723380;
+        Wed, 20 Jan 2021 14:28:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611152886;
+        bh=zudMpjzae87hvmHg+zOy2DSdD7J4U324/qUR1LjfDPQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kQ2iMVHtIc/QSdvt6bFHJWc/JcJxnSIhrmMzmfMl36KVD53fwhFnAJ4CKxD+p+Xic
+         gIMMWkWb7sOMXjpRAGhEkZA3dETg00B1TVwYk5hOP387n11S+pPOZl4CryZth3Zcuq
+         0kQfC9dPN6WR78Gc+ZZMR7hc5govqJovNdkcLBSvEoJFxQRTtozQVOc0GImdjc82FG
+         LYDkgUMkmaLh5HFHrqRzpcFlYA2YT2mq/m0ypRIpemthl6lZ1AMOfeJDIWjzBdHfu9
+         Y54TLRT1yV1oes1czsNhxoiBXHuwqVHX/zNpSa2Kwgwt1sMzw4QvROQCPU//conELO
+         koEqmCjked24A==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 0/2] mmc: remove obsolete drivers
+Date:   Wed, 20 Jan 2021 15:27:59 +0100
+Message-Id: <20210120142801.334550-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <20210120000406.1843400-1-jeremy.linton@arm.com> <20210120000406.1843400-2-jeremy.linton@arm.com>
-In-Reply-To: <20210120000406.1843400-2-jeremy.linton@arm.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 20 Jan 2021 15:08:00 +0100
-Message-ID: <CAPDyKFpLpMU3ec7eV_q8w88oywazLrSo5wyVFZkVrzRqn3bhSQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: sdhci-iproc: Add ACPI bindings for the rpi
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        ardb@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 20 Jan 2021 at 01:04, Jeremy Linton <jeremy.linton@arm.com> wrote:
->
-> The RPi4 has an Arasan controller it carries over
-> from the RPi3 and a newer eMMC2 controller.
-> Because of a couple of quirks, it seems wiser to bind
-> these controllers to the same driver that DT is using
-> on this platform rather than the generic sdhci_acpi
-> driver with PNP0D40.
->
-> So, BCM2847 describes the older Arasan and
-> BRCME88C describes the newer eMMC2. The older
-> Arasan is reusing an existing ACPI _HID used
-> by other OSs booting these tables on the RPi.
->
-> With this change, Linux is capable of utilizing the
-> SD card slot, and the wifi when booted with
-> UEFI+ACPI on the rpi4.
->
-> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-Applied for next (and by updating the commit message according to the
-nitpick comment from Florian), thanks!
+A few Arm platforms are getting removed in v5.12, this removes
+the corresponding mmc drivers.
 
-Kind regards
-Uffe
+Link: https://lore.kernel.org/linux-arm-kernel/20210120124812.2800027-1-arnd@kernel.org/T/
 
 
-> ---
->  drivers/mmc/host/sdhci-iproc.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
->
-> diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
-> index c9434b461aab..ddeaf8e1f72f 100644
-> --- a/drivers/mmc/host/sdhci-iproc.c
-> +++ b/drivers/mmc/host/sdhci-iproc.c
-> @@ -296,9 +296,27 @@ static const struct of_device_id sdhci_iproc_of_match[] = {
->  MODULE_DEVICE_TABLE(of, sdhci_iproc_of_match);
->
->  #ifdef CONFIG_ACPI
-> +/*
-> + * This is a duplicate of bcm2835_(pltfrm_)data without caps quirks
-> + * which are provided by the ACPI table.
-> + */
-> +static const struct sdhci_pltfm_data sdhci_bcm_arasan_data = {
-> +       .quirks = SDHCI_QUIRK_BROKEN_CARD_DETECTION |
-> +                 SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
-> +                 SDHCI_QUIRK_NO_HISPD_BIT,
-> +       .quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-> +       .ops = &sdhci_iproc_32only_ops,
-> +};
-> +
-> +static const struct sdhci_iproc_data bcm_arasan_data = {
-> +       .pdata = &sdhci_bcm_arasan_data,
-> +};
-> +
->  static const struct acpi_device_id sdhci_iproc_acpi_ids[] = {
->         { .id = "BRCM5871", .driver_data = (kernel_ulong_t)&iproc_cygnus_data },
->         { .id = "BRCM5872", .driver_data = (kernel_ulong_t)&iproc_data },
-> +       { .id = "BCM2847",  .driver_data = (kernel_ulong_t)&bcm_arasan_data },
-> +       { .id = "BRCME88C", .driver_data = (kernel_ulong_t)&bcm2711_data },
->         { /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(acpi, sdhci_iproc_acpi_ids);
-> --
-> 2.26.2
->
+Arnd Bergmann (2):
+  mmc: remove dw_mmc-zx driver
+  mmc: remove sirf prima/atlas driver
+
+ .../devicetree/bindings/mmc/sdhci-sirf.txt    |  18 --
+ .../devicetree/bindings/mmc/zx-dw-mshc.txt    |  31 ---
+ drivers/mmc/host/Kconfig                      |  21 --
+ drivers/mmc/host/Makefile                     |   2 -
+ drivers/mmc/host/dw_mmc-zx.c                  | 234 -----------------
+ drivers/mmc/host/dw_mmc-zx.h                  |  32 ---
+ drivers/mmc/host/sdhci-sirf.c                 | 235 ------------------
+ 7 files changed, 573 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/mmc/sdhci-sirf.txt
+ delete mode 100644 Documentation/devicetree/bindings/mmc/zx-dw-mshc.txt
+ delete mode 100644 drivers/mmc/host/dw_mmc-zx.c
+ delete mode 100644 drivers/mmc/host/dw_mmc-zx.h
+ delete mode 100644 drivers/mmc/host/sdhci-sirf.c
+
+-- 
+2.29.2
+
