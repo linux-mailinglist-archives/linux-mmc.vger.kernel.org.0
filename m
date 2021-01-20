@@ -2,162 +2,529 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9F272FD0EA
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 14:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E342FD19C
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 14:54:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388846AbhATM70 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Jan 2021 07:59:26 -0500
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:13980 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2389360AbhATMO7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jan 2021 07:14:59 -0500
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-        by mx0a-0016f401.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10KCBDV9029367;
-        Wed, 20 Jan 2021 04:14:09 -0800
+        id S2388824AbhATM7J (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Jan 2021 07:59:09 -0500
+Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:45498 "EHLO
+        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2389287AbhATMLx (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jan 2021 07:11:53 -0500
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+        by mx0b-0016f401.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 10KCB7rN009131;
+        Wed, 20 Jan 2021 04:11:07 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt0220;
- bh=jt2Mi8z/ljPMxr02vEZ3xlxRbjUPZNyOa0Fng5Snoo0=;
- b=bdBhPzYZotBFctPsSUTw4s5U8iSWb0b317ePVxB10PhFzsUwBVzH0Yhk8bdmizd8W5gl
- WIhe8rcyAy+BLtAOoUsH8FOTgAADP+aCLtnkyvCivG8RL1xOd/X2E8fIvbPINZatroR7
- cnleGF7xBye2wsk70OS++WgRtKAotY7RBfw1t+XUj8P8Mj6P2mNPeVu4dWZN+Y62n70I
- /VIFUw/5iM29xgGgxbglWGmKdp2yWV2fTwLTUJ5cs3V6/JleWCEVc59W8LRjjnLZWdAZ
- VOPBW8Cpv75X96stRTL8svc6Ralc6iReB29Qe4A+RkG1EtzZMB9Udb5q6yLBe0c89EET Ww== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=pfpt0220; bh=7rQcgcFOLF/2qtkEeErkcXGbtpIioxnTdrggX0o13p4=;
+ b=BU5b6VSO1CEwnFcjU74HlBZhfUW99TwdPS/gfK6/0EPolNXdPPKPFhkMBqsu9a20rM5F
+ 9mAuZjWO19L6VdtdyHtHyQd0f+K+YK3scGXnhm00TCgr+pGCZXrygN4KU99Aly8RapJr
+ /xZnlARG9OD6zGMXRLUlcpV98+1enzVnsdFGrkKtJfrtERy1whQonseKvHZ8xXwv790Y
+ 7mAs6hgb6kigmW/NplM4Z+b3oNrK2f8JN75VwK2IofCmmEzQxRtcoTphZ42lIUZaoKE2
+ Z2xLNDqyVg0sGFwWOmo7Fil+m1UrQ9kQa7er88FWzqDTBXyMYSj0YtZGAKjHhAtwjTIe KQ== 
 Received: from dc5-exch01.marvell.com ([199.233.59.181])
-        by mx0a-0016f401.pphosted.com with ESMTP id 3668p2t3c4-1
+        by mx0b-0016f401.pphosted.com with ESMTP id 3668p7j27c-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Wed, 20 Jan 2021 04:14:09 -0800
-Received: from DC5-EXCH01.marvell.com (10.69.176.38) by DC5-EXCH01.marvell.com
+        Wed, 20 Jan 2021 04:11:06 -0800
+Received: from SC-EXCH01.marvell.com (10.93.176.81) by DC5-EXCH01.marvell.com
  (10.69.176.38) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 20 Jan
- 2021 04:14:08 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.105)
- by DC5-EXCH01.marvell.com (10.69.176.38) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2 via Frontend Transport; Wed, 20 Jan 2021 04:14:07 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IxafqsYYVouGmDqiPuf3vwVbKT3WFxgpzPdwWv5Yz0+PUxCmnN+VjD0Z9SgGz4tjIqYiqCIcLjuH15IxqhVQb56zW4Wt/wZ5Mbc3YkDN7IHL6TdMlsQdduaTIcKh0j//IAUoymrPpRXOvmC+OdNknPQRo8xPKMZqOIV0hGDrVPZWrpb1d3KudT4ZN8c2hSWqKjP8/SVnoh/gnsCUx86K9kkkyzWbTFxpWIZeK2uy+rFsiluLc5UMcKUSiGXKDXn1zAGKwcjSLf1WMbO4V2LQJfT6AMOK4nxDxrnX+zFBNcoHs1M5wPieMTssktVQCVcAolo4IuQp8svjvPTk+YFPaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jt2Mi8z/ljPMxr02vEZ3xlxRbjUPZNyOa0Fng5Snoo0=;
- b=VJnoflS1PAloyCWT93BqCxg8nuPIP6k6aE5KNmQQVEaVHF1VCGV9H70BeRJCotZ8VJg0ngX5NTnX99UU23+nVYvp56eCJlHrPmDLD6ZypptfglTFJFwXrVVF+bAisaVVvDmdFoHvZK94eoXshRDr4BrgsMEX0OhPnjqmmeMlNYez6XiT2oayfvYUEtGjqBB48Z7GsG6h1NvS2zCNW/XPPrBdsk/lDKXDpugwOWcgl+C3Q0B4CFnP8zNPvO6UQg8N4uySEzTCP7sT9/QVAtqdWa+7QE7ufOIxAXADtMhYVZDowz0/VmXjW2hTMl/a8Nc+okeeJbQvfmTVlGLtAKstPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=marvell.onmicrosoft.com; s=selector1-marvell-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jt2Mi8z/ljPMxr02vEZ3xlxRbjUPZNyOa0Fng5Snoo0=;
- b=DTJ/+Rvg5dk+UNSnnv5qUMH0SCLqbo7LsQ09NKArk0dR7YcBuPGPcqGqZ2R05y1wjE080hQtbjtn3r3RxZmXlvsHEhR1kMUtU6zINRLfstXt5OQ7CHpLhFpgltbzXdmYrtjZ/eQR0IYVvEKEO0o8ONYUvP3/2tI7knRhsN/omYs=
-Received: from CY4PR1801MB2070.namprd18.prod.outlook.com
- (2603:10b6:910:7e::28) by CY4PR1801MB1960.namprd18.prod.outlook.com
- (2603:10b6:910:76::26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.13; Wed, 20 Jan
- 2021 12:14:07 +0000
-Received: from CY4PR1801MB2070.namprd18.prod.outlook.com
- ([fe80::bcae:7eef:6788:7770]) by CY4PR1801MB2070.namprd18.prod.outlook.com
- ([fe80::bcae:7eef:6788:7770%5]) with mapi id 15.20.3763.014; Wed, 20 Jan 2021
- 12:14:07 +0000
+ 2021 04:11:04 -0800
+Received: from DC5-EXCH02.marvell.com (10.69.176.39) by SC-EXCH01.marvell.com
+ (10.93.176.81) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 20 Jan
+ 2021 04:11:04 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 20 Jan 2021 04:11:04 -0800
+Received: from hyd1soter3.marvell.com (unknown [10.29.37.12])
+        by maili.marvell.com (Postfix) with ESMTP id 22C6F3F7041;
+        Wed, 20 Jan 2021 04:11:01 -0800 (PST)
 From:   Bhaskara Budiredla <bbudiredla@marvell.com>
-To:     Kees Cook <keescook@chromium.org>
-CC:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: RE: [EXT] Re: [PATCH v4 1/2] mmc: Support kmsg dumper based on
- pstore/blk
-Thread-Topic: [EXT] Re: [PATCH v4 1/2] mmc: Support kmsg dumper based on
- pstore/blk
-Thread-Index: AQHW2TmcIyGVE2SPBEu1nOxnH2/TxKolkOIAgAjrZ+CAAQRogIABF8Wg
-Date:   Wed, 20 Jan 2021 12:14:07 +0000
-Message-ID: <CY4PR1801MB20705C1FDAEBD736274BA404DEA21@CY4PR1801MB2070.namprd18.prod.outlook.com>
-References: <20201223144033.32571-1-bbudiredla@marvell.com>
- <20201223144033.32571-2-bbudiredla@marvell.com>
- <CAPDyKFq41CQ8JbyAS0+k26=Cyf=KcOpdeD+VmY1AZxbh4D6f9w@mail.gmail.com>
- <CY4PR1801MB207022E70C53D0DA87EB3F22DEA31@CY4PR1801MB2070.namprd18.prod.outlook.com>
- <202101191130.4A8EC5F9@keescook>
-In-Reply-To: <202101191130.4A8EC5F9@keescook>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: chromium.org; dkim=none (message not signed)
- header.d=none;chromium.org; dmarc=none action=none header.from=marvell.com;
-x-originating-ip: [183.83.39.121]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: fde82b93-1a8b-454a-1b0d-08d8bd3ce2c3
-x-ms-traffictypediagnostic: CY4PR1801MB1960:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CY4PR1801MB1960818ED3638F239AC89367DEA21@CY4PR1801MB1960.namprd18.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: SoozwpeofjlT0HDZW3s4gpoC5BXYTvC4A+TFYC/LqrPcnKu4yryO8tl7vvS1BL7KSKMhisp0ZEAW05mJOu4vfepsdjGmheCLWdmQaEBXCJFmRxKMPd1kwHMOhD8Cg7r3yDMhBKt7h4ivVizNR3kvIH971WZ03t/Rx8PdRiaTfc8ZaYPlv04cHrCaknZJrlVtUZo8FChg1AgBRrtSjL99P93J2Gt2WacVIHn9migXc2jDsT6Yh+6T7lKBMDeXMvuOFXe9W5WBn38VpVG/qP75/HFJIF4C3GaqQk/P2CKR8GQe1wV8HBHSEwrU8EeTvhi+FrhEKz1zdKN6NT/YURqkh3tJYT9OyTprMTIaX0/kEWMZKG4Pb+XGDdQsMhrP8LMAOko+fUpP+3ODkILx79XThg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR1801MB2070.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39860400002)(366004)(376002)(346002)(136003)(54906003)(2906002)(4326008)(9686003)(26005)(52536014)(186003)(55016002)(64756008)(66556008)(7696005)(66446008)(6506007)(5660300002)(66476007)(316002)(4744005)(76116006)(83380400001)(86362001)(33656002)(71200400001)(478600001)(8936002)(8676002)(66946007)(6916009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?PAfCk/aHHBSeSDUBozCaX9MPoSTzlwiM3fmKffYW80qjPUCPNf9p5rpuddTS?=
- =?us-ascii?Q?YIHtphkcJ9Yu7+w3AjYJagA7Gon7/2g6GgpL8OBbGyWBYRiQuE5dSufJEtHV?=
- =?us-ascii?Q?MKUwpwRJo2cSeytqrx/UH/R6ytp0Zs4JMi2FeWuzTsfbRNXbZzgQbiKxmm4L?=
- =?us-ascii?Q?FHjuxzM+kZxPVTGkvymGZ+bYg9ZnOHa3Zkomfz0kliCbDYfIfPgTbjH/wIGy?=
- =?us-ascii?Q?E7ZxXSrZsFDnaFZNro7VcYbmtjenl8CkShXJfnRCS7nv7q/3yv9OA2fUP21o?=
- =?us-ascii?Q?7PPWuYLE1ADbckvusSBYiusA7YkR0Bx7eBwSjv0TCASUTWVBEZuKaSLfgBET?=
- =?us-ascii?Q?kFVa9ruqmlJTDUgxw9BLY7U2cW6NDeTl6MJUzclEj14+mUZ+q4UDP/5Bj9fg?=
- =?us-ascii?Q?W+4JSzqrwcJxYRIGQzJxSYtF4s5dHjOFsc6tJGcogcyePVWOjduXUcWNHF9j?=
- =?us-ascii?Q?ak0peKXwA/qL1G9YM4JUr2vOsZuogL9qLbDtHsHVlGiW73xDy2tU60MxmRXz?=
- =?us-ascii?Q?PSuiz77ldGBj1yP/jJIl6yigmPQ6svPFYNr7A5/SQSJS9yaQEneyck8OI72l?=
- =?us-ascii?Q?YC0olArh4Wu17X2wynY2/XbwTdQ2v7B2jj7HWn1VZPBbI08taDSpqpD3Lh3i?=
- =?us-ascii?Q?9ZAtXwfIXIEJZ8Gzy38ui6yzhOm9oST6RWnIIc338TUdTyQSuSbCvoXlJ0FD?=
- =?us-ascii?Q?/gkvEpFlIBGimcwXsXcNxD0PoVf5i/1Uc4yu01Z5tukrywsIxCBJv7vocpg1?=
- =?us-ascii?Q?P4kvrba9IngBNgkaY9Cga4WwA4+PDv3S/lc5T5zJIQZQANBJyqgRBQEUPGdG?=
- =?us-ascii?Q?Z4WaWI2ZpJpLqpZCstsZCAVeHeC+SV73cPzWf0QbBlKdTIwka9s/Ih8fEb5R?=
- =?us-ascii?Q?h5DgmkBLUSnW9aPI2/eQxJ20eMLplq5PXKUed+K4Zn3r2p02f9ZMEqyD43Cw?=
- =?us-ascii?Q?mKDZ4IRWcGd6bjn3tq58LcfZW7sW0bMBH3MzB1NCYIXIjw2XUIG5kL92Xswh?=
- =?us-ascii?Q?/E+CB09NwyuHD3XCaqVGSaXhYEBd/1XHWG3vRXKDfgWM6L/+nbu0w3FG2Bit?=
- =?us-ascii?Q?ITudCbMI?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To:     <ulf.hansson@linaro.org>, <keescook@chromium.org>,
+        <ccross@android.com>, <tony.luck@intel.com>, <sgoutham@marvell.com>
+CC:     <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Bhaskara Budiredla" <bbudiredla@marvell.com>
+Subject: [PATCH v5 1/2] mmc: Support kmsg dumper based on pstore/blk
+Date:   Wed, 20 Jan 2021 17:40:46 +0530
+Message-ID: <20210120121047.2601-2-bbudiredla@marvell.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210120121047.2601-1-bbudiredla@marvell.com>
+References: <20210120121047.2601-1-bbudiredla@marvell.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR1801MB2070.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fde82b93-1a8b-454a-1b0d-08d8bd3ce2c3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2021 12:14:07.2220
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: n3bET6KWVzhscrfK50jKmnhOp4KFgjVC6WWBlHDbdnoJNwB4QpSqEbO6r8qA5CMg5ycajrD2Nfd7/kyKL21DVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1801MB1960
-X-OriginatorOrg: marvell.com
+Content-Type: text/plain
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
  definitions=2021-01-20_05:2021-01-20,2021-01-20 signatures=0
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Thanks Kees for the quick response.
-Just I have submitted those changes through patch v5.
+This patch introduces to mmcpstore. The functioning of mmcpstore
+is similar to mtdpstore. mmcpstore works on FTL based flash devices
+whereas mtdpstore works on raw flash devices. When the system crashes,
+mmcpstore stores the kmsg panic and oops logs to a user specified
+MMC device.
 
-- Bhaskara
+It collects the details about the host MMC device through pstore/blk
+"blkdev" parameter. The user can specify the MMC device in many ways
+by checking in Documentation/admin-guide/pstore-blk.rst.
 
+The individual mmc host drivers have to define suitable polling and
+cleanup subroutines to write kmsg panic/oops logs through mmcpstore.
+These new host operations are needed as pstore panic write runs with
+interrupts disabled.
 
->-----Original Message-----
->From: Kees Cook <keescook@chromium.org>
->Sent: Wednesday, January 20, 2021 1:01 AM
->To: Bhaskara Budiredla <bbudiredla@marvell.com>
->Cc: Ulf Hansson <ulf.hansson@linaro.org>; Colin Cross
-><ccross@android.com>; Tony Luck <tony.luck@intel.com>; Sunil Kovvuri
->Goutham <sgoutham@marvell.com>; linux-mmc@vger.kernel.org; Linux
->Kernel Mailing List <linux-kernel@vger.kernel.org>
->Subject: Re: [EXT] Re: [PATCH v4 1/2] mmc: Support kmsg dumper based on
->pstore/blk
->
->On Tue, Jan 19, 2021 at 04:11:31AM +0000, Bhaskara Budiredla wrote:
->> Do you see any issues to ACK this if the mmc pstore registration is
->> through register_pstore_blk()?
->> As Uffe said, eMMC would need to go through
->> psblk_generic_blk_read()/write() instead of mmcpstore_read()/write().
->
->I would be fine with that; yes.
->
->--
->Kees Cook
+Signed-off-by: Bhaskara Budiredla <bbudiredla@marvell.com>
+---
+ drivers/mmc/core/Kconfig     |  14 ++-
+ drivers/mmc/core/Makefile    |   1 +
+ drivers/mmc/core/block.c     |  19 +++
+ drivers/mmc/core/block.h     |   9 ++
+ drivers/mmc/core/core.c      |  44 +++++++
+ drivers/mmc/core/mmcpstore.c | 227 +++++++++++++++++++++++++++++++++++
+ include/linux/mmc/core.h     |   5 +
+ include/linux/mmc/host.h     |  12 ++
+ 8 files changed, 330 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/mmc/core/mmcpstore.c
+
+diff --git a/drivers/mmc/core/Kconfig b/drivers/mmc/core/Kconfig
+index c12fe13e4b14..4c651da4f2d2 100644
+--- a/drivers/mmc/core/Kconfig
++++ b/drivers/mmc/core/Kconfig
+@@ -34,9 +34,22 @@ config PWRSEQ_SIMPLE
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called pwrseq_simple.
+ 
++config MMC_PSTORE_BACKEND
++	bool "Log panic/oops to a MMC buffer"
++	depends on MMC_BLOCK
++	help
++	  This option will let you create platform backend to store kmsg
++	  crash dumps to a user specified MMC device. This is primarily
++	  based on pstore/blk.
++
++config MMC_PSTORE
++	tristate
++	select PSTORE_BLK
++
+ config MMC_BLOCK
+ 	tristate "MMC block device driver"
+ 	depends on BLOCK
++	select MMC_PSTORE if MMC_PSTORE_BACKEND=y
+ 	default y
+ 	help
+ 	  Say Y here to enable the MMC block device driver support.
+@@ -80,4 +93,3 @@ config MMC_TEST
+ 
+ 	  This driver is only of interest to those developing or
+ 	  testing a host driver. Most people should say N here.
+-
+diff --git a/drivers/mmc/core/Makefile b/drivers/mmc/core/Makefile
+index 95ffe008ebdf..7cb9a3af4827 100644
+--- a/drivers/mmc/core/Makefile
++++ b/drivers/mmc/core/Makefile
+@@ -16,5 +16,6 @@ obj-$(CONFIG_PWRSEQ_EMMC)	+= pwrseq_emmc.o
+ mmc_core-$(CONFIG_DEBUG_FS)	+= debugfs.o
+ obj-$(CONFIG_MMC_BLOCK)		+= mmc_block.o
+ mmc_block-objs			:= block.o queue.o
++mmc_block-$(CONFIG_MMC_PSTORE)	+= mmcpstore.o
+ obj-$(CONFIG_MMC_TEST)		+= mmc_test.o
+ obj-$(CONFIG_SDIO_UART)		+= sdio_uart.o
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 42e27a298218..6592722cd7b2 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -2870,6 +2870,21 @@ static void mmc_blk_remove_debugfs(struct mmc_card *card,
+ 
+ #endif /* CONFIG_DEBUG_FS */
+ 
++#if IS_ENABLED(CONFIG_MMC_PSTORE)
++sector_t mmc_blk_get_part(struct mmc_card *card, int part_num, sector_t *size)
++{
++	struct mmc_blk_data *md = dev_get_drvdata(&card->dev);
++	struct gendisk *disk = md->disk;
++	struct disk_part_tbl *part_tbl = disk->part_tbl;
++
++	if (part_num < 0 || part_num >= part_tbl->len)
++		return 0;
++
++	*size = part_tbl->part[part_num]->nr_sects << SECTOR_SHIFT;
++	return part_tbl->part[part_num]->start_sect;
++}
++#endif
++
+ static int mmc_blk_probe(struct mmc_card *card)
+ {
+ 	struct mmc_blk_data *md, *part_md;
+@@ -2913,6 +2928,9 @@ static int mmc_blk_probe(struct mmc_card *card)
+ 			goto out;
+ 	}
+ 
++	if (mmc_card_mmc(card) || mmc_card_sd(card))
++		mmcpstore_card_set(card, md->disk->disk_name);
++
+ 	/* Add two debugfs entries */
+ 	mmc_blk_add_debugfs(card, md);
+ 
+@@ -3060,6 +3078,7 @@ static void __exit mmc_blk_exit(void)
+ 	unregister_blkdev(MMC_BLOCK_MAJOR, "mmc");
+ 	unregister_chrdev_region(mmc_rpmb_devt, MAX_DEVICES);
+ 	bus_unregister(&mmc_rpmb_bus_type);
++	unregister_mmcpstore();
+ }
+ 
+ module_init(mmc_blk_init);
+diff --git a/drivers/mmc/core/block.h b/drivers/mmc/core/block.h
+index 31153f656f41..2a4ee5568194 100644
+--- a/drivers/mmc/core/block.h
++++ b/drivers/mmc/core/block.h
+@@ -16,5 +16,14 @@ void mmc_blk_mq_recovery(struct mmc_queue *mq);
+ struct work_struct;
+ 
+ void mmc_blk_mq_complete_work(struct work_struct *work);
++#if IS_ENABLED(CONFIG_MMC_PSTORE)
++sector_t mmc_blk_get_part(struct mmc_card *card, int part_num, sector_t *size);
++void mmcpstore_card_set(struct mmc_card *card, const char *disk_name);
++void unregister_mmcpstore(void);
++#else
++static inline void mmcpstore_card_set(struct mmc_card *card,
++					const char *disk_name) {}
++static inline void unregister_mmcpstore(void) {}
++#endif
+ 
+ #endif
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index 19f1ee57fb34..7ad7ff1cab8c 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -569,6 +569,30 @@ int mmc_cqe_recovery(struct mmc_host *host)
+ }
+ EXPORT_SYMBOL(mmc_cqe_recovery);
+ 
++#if IS_ENABLED(CONFIG_MMC_PSTORE)
++/**
++ *	mmc_wait_for_pstore_req - initiate a blocking mmc request
++ *	@host: MMC host to start command
++ *	@mrq: MMC request to start
++ *
++ *	Start a blocking MMC request for a host and wait for the request
++ *	to complete that is based on polling and timeout.
++ */
++void mmc_wait_for_pstore_req(struct mmc_host *host, struct mmc_request *mrq)
++{
++	unsigned int timeout;
++
++	host->ops->req_cleanup_pending(host);
++	mmc_start_request(host, mrq);
++
++	if (mrq->data) {
++		timeout = mrq->data->timeout_ns / NSEC_PER_MSEC;
++		host->ops->req_completion_poll(host, timeout);
++	}
++}
++EXPORT_SYMBOL(mmc_wait_for_pstore_req);
++#endif
++
+ /**
+  *	mmc_is_req_done - Determine if a 'cap_cmd_during_tfr' request is done
+  *	@host: MMC host
+@@ -817,6 +841,26 @@ int __mmc_claim_host(struct mmc_host *host, struct mmc_ctx *ctx,
+ }
+ EXPORT_SYMBOL(__mmc_claim_host);
+ 
++#if IS_ENABLED(CONFIG_MMC_PSTORE)
++/**
++ *	mmc_claim_host_async - claim host in atomic context
++ *	@host: mmc host to claim
++ *
++ *	This routine may be called in panic/oops scenarios.
++ *	Return zero with host claim success, else busy status.
++ */
++int mmc_claim_host_async(struct mmc_host *host)
++{
++	if (!host->claimed && pm_runtime_active(mmc_dev(host))) {
++		host->claimed = 1;
++		return 0;
++	}
++
++	return -EBUSY;
++}
++EXPORT_SYMBOL(mmc_claim_host_async);
++#endif
++
+ /**
+  *	mmc_release_host - release a host
+  *	@host: mmc host to release
+diff --git a/drivers/mmc/core/mmcpstore.c b/drivers/mmc/core/mmcpstore.c
+new file mode 100644
+index 000000000000..f783ea215f18
+--- /dev/null
++++ b/drivers/mmc/core/mmcpstore.c
+@@ -0,0 +1,227 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * MMC pstore support based on pstore/blk
++ *
++ * Copyright (c) 2020 Marvell.
++ * Author: Bhaskara Budiredla <bbudiredla@marvell.com>
++ */
++
++#define pr_fmt(fmt) "mmcpstore: " fmt
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/pstore_blk.h>
++#include <linux/blkdev.h>
++#include <linux/mount.h>
++#include <linux/slab.h>
++#include <linux/mmc/mmc.h>
++#include <linux/mmc/host.h>
++#include <linux/mmc/card.h>
++#include <linux/scatterlist.h>
++#include "block.h"
++#include "card.h"
++#include "core.h"
++
++static struct mmcpstore_context {
++	char dev_name[BDEVNAME_SIZE];
++	int partno;
++	sector_t start_sect;
++	sector_t size;
++	struct pstore_blk_config conf;
++	struct pstore_blk_info info;
++
++	struct mmc_card	*card;
++	struct mmc_request *mrq;
++} oops_cxt;
++
++static void mmc_prep_req(struct mmc_request *mrq,
++		unsigned int sect_offset, unsigned int nsects,
++		struct scatterlist *sg, u32 opcode, unsigned int flags)
++{
++	mrq->cmd->opcode = opcode;
++	mrq->cmd->arg = sect_offset;
++	mrq->cmd->flags = MMC_RSP_R1 | MMC_CMD_ADTC;
++
++	if (nsects == 1) {
++		mrq->stop = NULL;
++	} else {
++		mrq->stop->opcode = MMC_STOP_TRANSMISSION;
++		mrq->stop->arg = 0;
++		mrq->stop->flags = MMC_RSP_R1B | MMC_CMD_AC;
++	}
++
++	mrq->data->blksz = SECTOR_SIZE;
++	mrq->data->blocks = nsects;
++	mrq->data->flags = flags;
++	mrq->data->sg = sg;
++	mrq->data->sg_len = 1;
++}
++
++static int mmcpstore_panic_write_req(const char *buf,
++		unsigned int nsects, unsigned int sect_offset)
++{
++	struct mmcpstore_context *cxt = &oops_cxt;
++	struct mmc_request *mrq = cxt->mrq;
++	struct mmc_card *card = cxt->card;
++	struct mmc_host *host = card->host;
++	struct scatterlist sg;
++	u32 opcode;
++	int ret;
++
++	opcode = (nsects > 1) ? MMC_WRITE_MULTIPLE_BLOCK : MMC_WRITE_BLOCK;
++	mmc_prep_req(mrq, sect_offset, nsects, &sg, opcode, MMC_DATA_WRITE);
++	sg_init_one(&sg, buf, (nsects << SECTOR_SHIFT));
++	mmc_set_data_timeout(mrq->data, cxt->card);
++
++	ret = mmc_claim_host_async(host);
++	if (ret)
++		return ret;
++
++	mmc_wait_for_pstore_req(host, mrq);
++	return 0;
++}
++
++static int mmcpstore_panic_write(const char *buf, sector_t off, sector_t sects)
++{
++	struct mmcpstore_context *cxt = &oops_cxt;
++	int ret;
++
++	ret = mmcpstore_panic_write_req(buf, sects, cxt->start_sect + off);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static struct block_device *mmcpstore_open_backend(const char *device)
++{
++	struct block_device *bdev;
++	dev_t devt;
++
++	bdev = blkdev_get_by_path(device, FMODE_READ, NULL);
++	if (IS_ERR(bdev)) {
++		devt = name_to_dev_t(device);
++		if (devt == 0)
++			return ERR_PTR(-ENODEV);
++
++		bdev = blkdev_get_by_dev(devt, FMODE_READ, NULL);
++		if (IS_ERR(bdev))
++			return bdev;
++	}
++
++	return bdev;
++}
++
++static void mmcpstore_close_backend(struct block_device *bdev)
++{
++	if (!bdev)
++		return;
++	blkdev_put(bdev, FMODE_READ);
++}
++
++void mmcpstore_card_set(struct mmc_card *card, const char *disk_name)
++{
++	struct mmcpstore_context *cxt = &oops_cxt;
++	struct pstore_blk_config *conf = &cxt->conf;
++	struct pstore_blk_info *info = &cxt->info;
++	struct block_device *bdev;
++	struct mmc_command *stop;
++	struct mmc_command *cmd;
++	struct mmc_request *mrq;
++	struct mmc_data *data;
++	int ret;
++
++	ret = pstore_blk_get_config(conf);
++	if (!conf->device[0]) {
++		pr_debug("psblk backend is empty\n");
++		return;
++	}
++
++	/* Multiple backend devices not allowed */
++	if (cxt->dev_name[0])
++		return;
++
++	bdev =  mmcpstore_open_backend(conf->device);
++	if (IS_ERR(bdev)) {
++		pr_err("%s failed to open with %ld\n",
++				conf->device, PTR_ERR(bdev));
++		return;
++	}
++
++	bdevname(bdev, cxt->dev_name);
++	cxt->partno = bdev->bd_part->partno;
++	mmcpstore_close_backend(bdev);
++
++	if (strncmp(cxt->dev_name, disk_name, strlen(disk_name)))
++		return;
++
++	cxt->start_sect = mmc_blk_get_part(card, cxt->partno, &cxt->size);
++	if (!cxt->start_sect) {
++		pr_err("Non-existent partition %d selected\n", cxt->partno);
++		return;
++	}
++
++	/* Check for host mmc panic write polling function definitions */
++	if (!card->host->ops->req_cleanup_pending ||
++			!card->host->ops->req_completion_poll)
++		return;
++
++	cxt->card = card;
++
++	mrq = kzalloc(sizeof(struct mmc_request), GFP_KERNEL);
++	if (!mrq)
++		goto out;
++
++	cmd = kzalloc(sizeof(struct mmc_command), GFP_KERNEL);
++	if (!cmd)
++		goto free_mrq;
++
++	stop = kzalloc(sizeof(struct mmc_command), GFP_KERNEL);
++	if (!stop)
++		goto free_cmd;
++
++	data = kzalloc(sizeof(struct mmc_data), GFP_KERNEL);
++	if (!data)
++		goto free_stop;
++
++	mrq->cmd = cmd;
++	mrq->data = data;
++	mrq->stop = stop;
++	cxt->mrq = mrq;
++
++	info->major = MMC_BLOCK_MAJOR;
++	info->flags = PSTORE_FLAGS_DMESG;
++	info->panic_write = mmcpstore_panic_write;
++	ret = register_pstore_blk(info);
++	if (ret) {
++		pr_err("%s registering with psblk failed (%d)\n",
++				cxt->dev_name, ret);
++		goto free_data;
++	}
++
++	pr_info("%s registered as psblk backend\n", cxt->dev_name);
++	return;
++
++free_data:
++	kfree(data);
++free_stop:
++	kfree(stop);
++free_cmd:
++	kfree(cmd);
++free_mrq:
++	kfree(mrq);
++out:
++	return;
++}
++
++void unregister_mmcpstore(void)
++{
++	struct mmcpstore_context *cxt = &oops_cxt;
++
++	unregister_pstore_blk(MMC_BLOCK_MAJOR);
++	kfree(cxt->mrq->data);
++	kfree(cxt->mrq->stop);
++	kfree(cxt->mrq->cmd);
++	kfree(cxt->mrq);
++	cxt->card = NULL;
++}
+diff --git a/include/linux/mmc/core.h b/include/linux/mmc/core.h
+index 29aa50711626..53840a361b5a 100644
+--- a/include/linux/mmc/core.h
++++ b/include/linux/mmc/core.h
+@@ -166,6 +166,11 @@ struct mmc_request {
+ 
+ struct mmc_card;
+ 
++#if IS_ENABLED(CONFIG_MMC_PSTORE)
++void mmc_wait_for_pstore_req(struct mmc_host *host, struct mmc_request *mrq);
++int mmc_claim_host_async(struct mmc_host *host);
++#endif
++
+ void mmc_wait_for_req(struct mmc_host *host, struct mmc_request *mrq);
+ int mmc_wait_for_cmd(struct mmc_host *host, struct mmc_command *cmd,
+ 		int retries);
+diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+index 01bba36545c5..ba9001498e03 100644
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -178,6 +178,18 @@ struct mmc_host_ops {
+ 
+ 	/* Initialize an SD express card, mandatory for MMC_CAP2_SD_EXP. */
+ 	int	(*init_sd_express)(struct mmc_host *host, struct mmc_ios *ios);
++
++#if IS_ENABLED(CONFIG_MMC_PSTORE)
++	/*
++	 * The following two APIs are introduced to support mmcpstore
++	 * functionality. Cleanup API to terminate the ongoing and
++	 * pending requests before a panic write post, and polling API
++	 * to ensure that write succeeds before the Kernel dies.
++	 */
++	void	(*req_cleanup_pending)(struct mmc_host *host);
++	int	(*req_completion_poll)(struct mmc_host *host,
++				       unsigned long timeout);
++#endif
+ };
+ 
+ struct mmc_cqe_ops {
+-- 
+2.17.1
+
