@@ -2,359 +2,579 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F2032FD30F
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 15:53:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E1532FD3E9
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jan 2021 16:28:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389628AbhATOaS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Jan 2021 09:30:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40270 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389112AbhATO3H (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 20 Jan 2021 09:29:07 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2ABBD23384;
-        Wed, 20 Jan 2021 14:28:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611152889;
-        bh=srvIxMd3/CJ+0aeMyWaVLG54T56qZNEfkg2XSq/7Md4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o1RmJwHNuffsarP9vtdXBSI+h7VyvBQt5GI2K9ZiPZs3lqqqwcrc7fbEPO/eF5RB7
-         5c9D5AX+d0MS5gyJDAmJoaUCsRWjsCuKFM6Fpcb6wm/NMqn49QaUzoI0n8n57Kt4W3
-         0vythuSdruIMIbR68nhKzo+3dAKjOk/g5hJfPBswlCcHh8sG5rnq/5vsmRSb3g7WNe
-         mBf79EGB8r2nQqYYkmvLp9rQv5uQ16makPdeZ1kEcSGfIuqN9Hozd/O1cfdyeEvo0M
-         kba8dkFAWxU4qRb4COpE+MVZ9q4iXgRGnjm605YdEDHYG819pPjJtLeabPOE6Ntp3z
-         vJBp9tZJ13c+Q==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Barry Song <baohua@kernel.org>
-Subject: [PATCH 2/2] mmc: remove sirf prima/atlas driver
-Date:   Wed, 20 Jan 2021 15:28:01 +0100
-Message-Id: <20210120142801.334550-3-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210120142801.334550-1-arnd@kernel.org>
-References: <20210120142801.334550-1-arnd@kernel.org>
+        id S1729113AbhATPXf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Jan 2021 10:23:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33022 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391023AbhATPHk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jan 2021 10:07:40 -0500
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AFF0C0613D6
+        for <linux-mmc@vger.kernel.org>; Wed, 20 Jan 2021 07:06:51 -0800 (PST)
+Received: by mail-vs1-xe2c.google.com with SMTP id 187so9264177vsg.4
+        for <linux-mmc@vger.kernel.org>; Wed, 20 Jan 2021 07:06:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=etFse3w70ie3lr1cLnk3F36cA3MsGqSTTP463EZ/Y+4=;
+        b=nM83DKfcWRrsp8S5PfNczbpWc/nWiJp4rKJ416eMFp5nE3a33HhwBAzkxzfE05nlYy
+         K2lblq4E4xEVQnfwsn9eGmDjB1oF4CNXdCd9WQM4r9NbqGwyi43GOakOj0pRijfvnOqi
+         gqbCG1ga2KDB4kR9IDPzl7N64FOB99DD+7hzxZiAS3K72up9S6qp58T5IuEZtQHaXt9S
+         /jjX8bcTwJtlhSqC3ncktkJsFEFDAE2mu3qaQCIG1xXbXfi2mPeE/YD0AeqXfDLUNMHT
+         6nutMmjEqVGXel+6G3AAsOyFkZ70l8JDUWXsbpgAGknQ7SIk/oUWwih/2Gft6Xx9x5m6
+         mMsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=etFse3w70ie3lr1cLnk3F36cA3MsGqSTTP463EZ/Y+4=;
+        b=c1CFHylTn7pqN03zWMpnLrhRyPbmSKCigDNppb5bx1tnpd6P5YQ0n+HljeXcaT7Ucc
+         wQVRwPBedi8k6Mb1CXYlHyspaCPPRV0Fhg66442IJr8kY4BFR5qtRHt8d0z6lTL8eRks
+         6TDCptYSqjw/YqCTkldGRrmGokA7QL1yEbae1oX/CF2W32YB6o6+Xb5D3gL3mwqLyhBn
+         honXGf78JuqE5k9MiR15aXm0ce2jPJavV/pzMGYw92TMNqn5jmNBfHcWOUkkO1F6Uj4M
+         EQVPb/2EJQXm4OvmNTPIqoIsyAV9Z8gpDOkX0OMheNZ9hmsld5b42kBPvQoS+azxsgNb
+         RZyw==
+X-Gm-Message-State: AOAM530y2O329F3bKSpgoMRV7JGCtnF0wOW7lL36DVb5kR+gYt6L+wyT
+        4ngwN5+/LtTRw6VCkqsoXuCLDS8k2rVkKXK+QdH1mSv5wnxktz0B
+X-Google-Smtp-Source: ABdhPJz3r5WhASJ+dRp1kroCWCnCTfRsvCymMZ8xrs/qcrYy+YxxRkSQIy4gJpJkHOKOjRe6Gqw72a8BlJTjtjiKZ6c=
+X-Received: by 2002:a67:facb:: with SMTP id g11mr7073680vsq.19.1611155210410;
+ Wed, 20 Jan 2021 07:06:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210120121047.2601-1-bbudiredla@marvell.com> <20210120121047.2601-2-bbudiredla@marvell.com>
+In-Reply-To: <20210120121047.2601-2-bbudiredla@marvell.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 20 Jan 2021 16:06:13 +0100
+Message-ID: <CAPDyKFoF7jz-mbsY8kPUGca5civFKRRyPpHbRkj9P=xevRRfbA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] mmc: Support kmsg dumper based on pstore/blk
+To:     Bhaskara Budiredla <bbudiredla@marvell.com>,
+        Kees Cook <keescook@chromium.org>
+Cc:     Colin Cross <ccross@android.com>, Tony Luck <tony.luck@intel.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-block <linux-block@vger.kernel.org>,
+        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
++ linux-block, Jens, Christoph
 
-The CSR SiRF prima2/atlas platforms are getting removed, so this driver
-is no longer needed.
+On Wed, 20 Jan 2021 at 13:11, Bhaskara Budiredla <bbudiredla@marvell.com> wrote:
+>
+> This patch introduces to mmcpstore. The functioning of mmcpstore
+> is similar to mtdpstore. mmcpstore works on FTL based flash devices
+> whereas mtdpstore works on raw flash devices. When the system crashes,
+> mmcpstore stores the kmsg panic and oops logs to a user specified
+> MMC device.
+>
+> It collects the details about the host MMC device through pstore/blk
+> "blkdev" parameter. The user can specify the MMC device in many ways
+> by checking in Documentation/admin-guide/pstore-blk.rst.
+>
+> The individual mmc host drivers have to define suitable polling and
+> cleanup subroutines to write kmsg panic/oops logs through mmcpstore.
+> These new host operations are needed as pstore panic write runs with
+> interrupts disabled.
 
-Cc: Barry Song <baohua@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- .../devicetree/bindings/mmc/sdhci-sirf.txt    |  18 --
- drivers/mmc/host/Kconfig                      |  12 -
- drivers/mmc/host/Makefile                     |   1 -
- drivers/mmc/host/sdhci-sirf.c                 | 235 ------------------
- 4 files changed, 266 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mmc/sdhci-sirf.txt
- delete mode 100644 drivers/mmc/host/sdhci-sirf.c
+Okay, let me again try to clarify on how I see this to move this forward.
 
-diff --git a/Documentation/devicetree/bindings/mmc/sdhci-sirf.txt b/Documentation/devicetree/bindings/mmc/sdhci-sirf.txt
-deleted file mode 100644
-index dd6ed464bcb8..000000000000
---- a/Documentation/devicetree/bindings/mmc/sdhci-sirf.txt
-+++ /dev/null
-@@ -1,18 +0,0 @@
--* SiRFprimII/marco/atlas6 SDHCI Controller
--
--This file documents differences between the core properties in mmc.txt
--and the properties used by the sdhci-sirf driver.
--
--Required properties:
--- compatible: sirf,prima2-sdhc
--
--Optional properties:
--- cd-gpios: card detect gpio, with zero flags.
--
--Example:
--
--	sd0: sdhci@56000000 {
--		compatible = "sirf,prima2-sdhc";
--		reg = <0xcd000000 0x100000>;
--		cd-gpios = <&gpio 6 0>;
--	};
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 255d37e8bd3a..b67f6028b6f3 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -312,18 +312,6 @@ config MMC_SDHCI_S3C
- 
- 	  If unsure, say N.
- 
--config MMC_SDHCI_SIRF
--	tristate "SDHCI support on CSR SiRFprimaII and SiRFmarco SoCs"
--	depends on ARCH_SIRF || COMPILE_TEST
--	depends on MMC_SDHCI_PLTFM
--	select MMC_SDHCI_IO_ACCESSORS
--	help
--	  This selects the SDHCI support for SiRF System-on-Chip devices.
--
--	  If you have a controller with this interface, say Y or M here.
--
--	  If unsure, say N.
--
- config MMC_SDHCI_PXAV3
- 	tristate "Marvell MMP2 SD Host Controller support (PXAV3)"
- 	depends on CLKDEV_LOOKUP
-diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
-index 43136d382d5f..d2ec428cc808 100644
---- a/drivers/mmc/host/Makefile
-+++ b/drivers/mmc/host/Makefile
-@@ -19,7 +19,6 @@ obj-$(CONFIG_MMC_SDHCI_ACPI)	+= sdhci-acpi.o
- obj-$(CONFIG_MMC_SDHCI_PXAV3)	+= sdhci-pxav3.o
- obj-$(CONFIG_MMC_SDHCI_PXAV2)	+= sdhci-pxav2.o
- obj-$(CONFIG_MMC_SDHCI_S3C)	+= sdhci-s3c.o
--obj-$(CONFIG_MMC_SDHCI_SIRF)   	+= sdhci-sirf.o
- obj-$(CONFIG_MMC_SDHCI_F_SDH30)	+= sdhci_f_sdh30.o
- obj-$(CONFIG_MMC_SDHCI_MILBEAUT)	+= sdhci-milbeaut.o
- obj-$(CONFIG_MMC_SDHCI_SPEAR)	+= sdhci-spear.o
-diff --git a/drivers/mmc/host/sdhci-sirf.c b/drivers/mmc/host/sdhci-sirf.c
-deleted file mode 100644
-index e9b347b3af7e..000000000000
---- a/drivers/mmc/host/sdhci-sirf.c
-+++ /dev/null
-@@ -1,235 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * SDHCI support for SiRF primaII and marco SoCs
-- *
-- * Copyright (c) 2011 Cambridge Silicon Radio Limited, a CSR plc group company.
-- */
--
--#include <linux/delay.h>
--#include <linux/device.h>
--#include <linux/mmc/host.h>
--#include <linux/module.h>
--#include <linux/of.h>
--#include <linux/mmc/slot-gpio.h>
--#include "sdhci-pltfm.h"
--
--#define SDHCI_CLK_DELAY_SETTING 0x4C
--#define SDHCI_SIRF_8BITBUS BIT(3)
--#define SIRF_TUNING_COUNT 16384
--
--static void sdhci_sirf_set_bus_width(struct sdhci_host *host, int width)
--{
--	u8 ctrl;
--
--	ctrl = sdhci_readb(host, SDHCI_HOST_CONTROL);
--	ctrl &= ~(SDHCI_CTRL_4BITBUS | SDHCI_SIRF_8BITBUS);
--
--	/*
--	 * CSR atlas7 and prima2 SD host version is not 3.0
--	 * 8bit-width enable bit of CSR SD hosts is 3,
--	 * while stardard hosts use bit 5
--	 */
--	if (width == MMC_BUS_WIDTH_8)
--		ctrl |= SDHCI_SIRF_8BITBUS;
--	else if (width == MMC_BUS_WIDTH_4)
--		ctrl |= SDHCI_CTRL_4BITBUS;
--
--	sdhci_writeb(host, ctrl, SDHCI_HOST_CONTROL);
--}
--
--static u32 sdhci_sirf_readl_le(struct sdhci_host *host, int reg)
--{
--	u32 val = readl(host->ioaddr + reg);
--
--	if (unlikely((reg == SDHCI_CAPABILITIES_1) &&
--			(host->mmc->caps & MMC_CAP_UHS_SDR50))) {
--		/* fake CAP_1 register */
--		val = SDHCI_SUPPORT_DDR50 |
--			SDHCI_SUPPORT_SDR50 | SDHCI_USE_SDR50_TUNING;
--	}
--
--	if (unlikely(reg == SDHCI_SLOT_INT_STATUS)) {
--		u32 prss = val;
--		/* fake chips as V3.0 host conreoller */
--		prss &= ~(0xFF << 16);
--		val = prss | (SDHCI_SPEC_300 << 16);
--	}
--	return val;
--}
--
--static u16 sdhci_sirf_readw_le(struct sdhci_host *host, int reg)
--{
--	u16 ret = 0;
--
--	ret = readw(host->ioaddr + reg);
--
--	if (unlikely(reg == SDHCI_HOST_VERSION)) {
--		ret = readw(host->ioaddr + SDHCI_HOST_VERSION);
--		ret |= SDHCI_SPEC_300;
--	}
--
--	return ret;
--}
--
--static int sdhci_sirf_execute_tuning(struct sdhci_host *host, u32 opcode)
--{
--	int tuning_seq_cnt = 3;
--	int phase;
--	u8 tuned_phase_cnt = 0;
--	int rc = 0, longest_range = 0;
--	int start = -1, end = 0, tuning_value = -1, range = 0;
--	u16 clock_setting;
--	struct mmc_host *mmc = host->mmc;
--
--	clock_setting = sdhci_readw(host, SDHCI_CLK_DELAY_SETTING);
--	clock_setting &= ~0x3fff;
--
--retry:
--	phase = 0;
--	tuned_phase_cnt = 0;
--	do {
--		sdhci_writel(host,
--			clock_setting | phase,
--			SDHCI_CLK_DELAY_SETTING);
--
--		if (!mmc_send_tuning(mmc, opcode, NULL)) {
--			/* Tuning is successful at this tuning point */
--			tuned_phase_cnt++;
--			dev_dbg(mmc_dev(mmc), "%s: Found good phase = %d\n",
--				 mmc_hostname(mmc), phase);
--			if (start == -1)
--				start = phase;
--			end = phase;
--			range++;
--			if (phase == (SIRF_TUNING_COUNT - 1)
--				&& range > longest_range)
--				tuning_value = (start + end) / 2;
--		} else {
--			dev_dbg(mmc_dev(mmc), "%s: Found bad phase = %d\n",
--				 mmc_hostname(mmc), phase);
--			if (range > longest_range) {
--				tuning_value = (start + end) / 2;
--				longest_range = range;
--			}
--			start = -1;
--			end = range = 0;
--		}
--	} while (++phase < SIRF_TUNING_COUNT);
--
--	if (tuned_phase_cnt && tuning_value > 0) {
--		/*
--		 * Finally set the selected phase in delay
--		 * line hw block.
--		 */
--		phase = tuning_value;
--		sdhci_writel(host,
--			clock_setting | phase,
--			SDHCI_CLK_DELAY_SETTING);
--
--		dev_dbg(mmc_dev(mmc), "%s: Setting the tuning phase to %d\n",
--			 mmc_hostname(mmc), phase);
--	} else {
--		if (--tuning_seq_cnt)
--			goto retry;
--		/* Tuning failed */
--		dev_dbg(mmc_dev(mmc), "%s: No tuning point found\n",
--		       mmc_hostname(mmc));
--		rc = -EIO;
--	}
--
--	return rc;
--}
--
--static const struct sdhci_ops sdhci_sirf_ops = {
--	.read_l = sdhci_sirf_readl_le,
--	.read_w = sdhci_sirf_readw_le,
--	.platform_execute_tuning = sdhci_sirf_execute_tuning,
--	.set_clock = sdhci_set_clock,
--	.get_max_clock	= sdhci_pltfm_clk_get_max_clock,
--	.set_bus_width = sdhci_sirf_set_bus_width,
--	.reset = sdhci_reset,
--	.set_uhs_signaling = sdhci_set_uhs_signaling,
--};
--
--static const struct sdhci_pltfm_data sdhci_sirf_pdata = {
--	.ops = &sdhci_sirf_ops,
--	.quirks = SDHCI_QUIRK_BROKEN_TIMEOUT_VAL |
--		SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
--		SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
--		SDHCI_QUIRK_RESET_CMD_DATA_ON_IOS,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
--};
--
--static int sdhci_sirf_probe(struct platform_device *pdev)
--{
--	struct sdhci_host *host;
--	struct sdhci_pltfm_host *pltfm_host;
--	struct clk *clk;
--	int ret;
--
--	clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(clk)) {
--		dev_err(&pdev->dev, "unable to get clock");
--		return PTR_ERR(clk);
--	}
--
--	host = sdhci_pltfm_init(pdev, &sdhci_sirf_pdata, 0);
--	if (IS_ERR(host))
--		return PTR_ERR(host);
--
--	pltfm_host = sdhci_priv(host);
--	pltfm_host->clk = clk;
--
--	sdhci_get_of_property(pdev);
--
--	ret = clk_prepare_enable(pltfm_host->clk);
--	if (ret)
--		goto err_clk_prepare;
--
--	ret = sdhci_add_host(host);
--	if (ret)
--		goto err_sdhci_add;
--
--	/*
--	 * We must request the IRQ after sdhci_add_host(), as the tasklet only
--	 * gets setup in sdhci_add_host() and we oops.
--	 */
--	ret = mmc_gpiod_request_cd(host->mmc, "cd", 0, false, 0);
--	if (ret == -EPROBE_DEFER)
--		goto err_request_cd;
--	if (!ret)
--		mmc_gpiod_request_cd_irq(host->mmc);
--
--	return 0;
--
--err_request_cd:
--	sdhci_remove_host(host, 0);
--err_sdhci_add:
--	clk_disable_unprepare(pltfm_host->clk);
--err_clk_prepare:
--	sdhci_pltfm_free(pdev);
--	return ret;
--}
--
--static const struct of_device_id sdhci_sirf_of_match[] = {
--	{ .compatible = "sirf,prima2-sdhc" },
--	{ }
--};
--MODULE_DEVICE_TABLE(of, sdhci_sirf_of_match);
--
--static struct platform_driver sdhci_sirf_driver = {
--	.driver		= {
--		.name	= "sdhci-sirf",
--		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
--		.of_match_table = sdhci_sirf_of_match,
--		.pm	= &sdhci_pltfm_pmops,
--	},
--	.probe		= sdhci_sirf_probe,
--	.remove		= sdhci_pltfm_unregister,
--};
--
--module_platform_driver(sdhci_sirf_driver);
--
--MODULE_DESCRIPTION("SDHCI driver for SiRFprimaII/SiRFmarco");
--MODULE_AUTHOR("Barry Song <21cnbao@gmail.com>");
--MODULE_LICENSE("GPL v2");
--- 
-2.29.2
+1)
+In my opinion, pstore shouldn't be using callbacks for *regular* I/O
+read/writes. It's upside-down of how the storage stack is designed to
+work.
 
+Instead, pstore should be implemented as a regular filesystem, that
+can be mounted on top of a regular block device partition. In this
+way, the lower layer block device drivers (as mmc), don't need special
+support for pstore, the regular I/O block read/write path will just
+work as is.
+
+2)
+When it comes to supporting *panic* writes for pstore, things become a
+bit more complicated. For sure some adaptations are needed in each
+block device driver to support this.
+
+However, the current method means relying on the lower level block
+device driver to figure out the pstore partition. Based on that, it
+should then register itself for pstore support and hook up callbacks
+for the corresponding block device driver instance, at least that is
+what it looks like to me. Again, I think this is upside-down from the
+storage stack perspective. The partition to use for pstore, should be
+based upon its file system mount point.
+
+Furthermore, I think the responsibility for lower layer block device
+drivers should instead be to just "register/announce" themselves as
+capable of supporting "panic writes", if they can. Exactly how to best
+do this, probably needs to be discussed further with the block device
+people, I think. I have looped in Jens and Christoph, perhaps they can
+share their opinion in this.
+
+That said, it looks to me that pstore needs more work before it's
+ready to be adopted for generic support in block device drivers.
+
+Kind regards
+Uffe
+
+>
+> Signed-off-by: Bhaskara Budiredla <bbudiredla@marvell.com>
+> ---
+>  drivers/mmc/core/Kconfig     |  14 ++-
+>  drivers/mmc/core/Makefile    |   1 +
+>  drivers/mmc/core/block.c     |  19 +++
+>  drivers/mmc/core/block.h     |   9 ++
+>  drivers/mmc/core/core.c      |  44 +++++++
+>  drivers/mmc/core/mmcpstore.c | 227 +++++++++++++++++++++++++++++++++++
+>  include/linux/mmc/core.h     |   5 +
+>  include/linux/mmc/host.h     |  12 ++
+>  8 files changed, 330 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/mmc/core/mmcpstore.c
+>
+> diff --git a/drivers/mmc/core/Kconfig b/drivers/mmc/core/Kconfig
+> index c12fe13e4b14..4c651da4f2d2 100644
+> --- a/drivers/mmc/core/Kconfig
+> +++ b/drivers/mmc/core/Kconfig
+> @@ -34,9 +34,22 @@ config PWRSEQ_SIMPLE
+>           This driver can also be built as a module. If so, the module
+>           will be called pwrseq_simple.
+>
+> +config MMC_PSTORE_BACKEND
+> +       bool "Log panic/oops to a MMC buffer"
+> +       depends on MMC_BLOCK
+> +       help
+> +         This option will let you create platform backend to store kmsg
+> +         crash dumps to a user specified MMC device. This is primarily
+> +         based on pstore/blk.
+> +
+> +config MMC_PSTORE
+> +       tristate
+> +       select PSTORE_BLK
+> +
+>  config MMC_BLOCK
+>         tristate "MMC block device driver"
+>         depends on BLOCK
+> +       select MMC_PSTORE if MMC_PSTORE_BACKEND=y
+>         default y
+>         help
+>           Say Y here to enable the MMC block device driver support.
+> @@ -80,4 +93,3 @@ config MMC_TEST
+>
+>           This driver is only of interest to those developing or
+>           testing a host driver. Most people should say N here.
+> -
+> diff --git a/drivers/mmc/core/Makefile b/drivers/mmc/core/Makefile
+> index 95ffe008ebdf..7cb9a3af4827 100644
+> --- a/drivers/mmc/core/Makefile
+> +++ b/drivers/mmc/core/Makefile
+> @@ -16,5 +16,6 @@ obj-$(CONFIG_PWRSEQ_EMMC)     += pwrseq_emmc.o
+>  mmc_core-$(CONFIG_DEBUG_FS)    += debugfs.o
+>  obj-$(CONFIG_MMC_BLOCK)                += mmc_block.o
+>  mmc_block-objs                 := block.o queue.o
+> +mmc_block-$(CONFIG_MMC_PSTORE) += mmcpstore.o
+>  obj-$(CONFIG_MMC_TEST)         += mmc_test.o
+>  obj-$(CONFIG_SDIO_UART)                += sdio_uart.o
+> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+> index 42e27a298218..6592722cd7b2 100644
+> --- a/drivers/mmc/core/block.c
+> +++ b/drivers/mmc/core/block.c
+> @@ -2870,6 +2870,21 @@ static void mmc_blk_remove_debugfs(struct mmc_card *card,
+>
+>  #endif /* CONFIG_DEBUG_FS */
+>
+> +#if IS_ENABLED(CONFIG_MMC_PSTORE)
+> +sector_t mmc_blk_get_part(struct mmc_card *card, int part_num, sector_t *size)
+> +{
+> +       struct mmc_blk_data *md = dev_get_drvdata(&card->dev);
+> +       struct gendisk *disk = md->disk;
+> +       struct disk_part_tbl *part_tbl = disk->part_tbl;
+> +
+> +       if (part_num < 0 || part_num >= part_tbl->len)
+> +               return 0;
+> +
+> +       *size = part_tbl->part[part_num]->nr_sects << SECTOR_SHIFT;
+> +       return part_tbl->part[part_num]->start_sect;
+> +}
+> +#endif
+> +
+>  static int mmc_blk_probe(struct mmc_card *card)
+>  {
+>         struct mmc_blk_data *md, *part_md;
+> @@ -2913,6 +2928,9 @@ static int mmc_blk_probe(struct mmc_card *card)
+>                         goto out;
+>         }
+>
+> +       if (mmc_card_mmc(card) || mmc_card_sd(card))
+> +               mmcpstore_card_set(card, md->disk->disk_name);
+> +
+>         /* Add two debugfs entries */
+>         mmc_blk_add_debugfs(card, md);
+>
+> @@ -3060,6 +3078,7 @@ static void __exit mmc_blk_exit(void)
+>         unregister_blkdev(MMC_BLOCK_MAJOR, "mmc");
+>         unregister_chrdev_region(mmc_rpmb_devt, MAX_DEVICES);
+>         bus_unregister(&mmc_rpmb_bus_type);
+> +       unregister_mmcpstore();
+>  }
+>
+>  module_init(mmc_blk_init);
+> diff --git a/drivers/mmc/core/block.h b/drivers/mmc/core/block.h
+> index 31153f656f41..2a4ee5568194 100644
+> --- a/drivers/mmc/core/block.h
+> +++ b/drivers/mmc/core/block.h
+> @@ -16,5 +16,14 @@ void mmc_blk_mq_recovery(struct mmc_queue *mq);
+>  struct work_struct;
+>
+>  void mmc_blk_mq_complete_work(struct work_struct *work);
+> +#if IS_ENABLED(CONFIG_MMC_PSTORE)
+> +sector_t mmc_blk_get_part(struct mmc_card *card, int part_num, sector_t *size);
+> +void mmcpstore_card_set(struct mmc_card *card, const char *disk_name);
+> +void unregister_mmcpstore(void);
+> +#else
+> +static inline void mmcpstore_card_set(struct mmc_card *card,
+> +                                       const char *disk_name) {}
+> +static inline void unregister_mmcpstore(void) {}
+> +#endif
+>
+>  #endif
+> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+> index 19f1ee57fb34..7ad7ff1cab8c 100644
+> --- a/drivers/mmc/core/core.c
+> +++ b/drivers/mmc/core/core.c
+> @@ -569,6 +569,30 @@ int mmc_cqe_recovery(struct mmc_host *host)
+>  }
+>  EXPORT_SYMBOL(mmc_cqe_recovery);
+>
+> +#if IS_ENABLED(CONFIG_MMC_PSTORE)
+> +/**
+> + *     mmc_wait_for_pstore_req - initiate a blocking mmc request
+> + *     @host: MMC host to start command
+> + *     @mrq: MMC request to start
+> + *
+> + *     Start a blocking MMC request for a host and wait for the request
+> + *     to complete that is based on polling and timeout.
+> + */
+> +void mmc_wait_for_pstore_req(struct mmc_host *host, struct mmc_request *mrq)
+> +{
+> +       unsigned int timeout;
+> +
+> +       host->ops->req_cleanup_pending(host);
+> +       mmc_start_request(host, mrq);
+> +
+> +       if (mrq->data) {
+> +               timeout = mrq->data->timeout_ns / NSEC_PER_MSEC;
+> +               host->ops->req_completion_poll(host, timeout);
+> +       }
+> +}
+> +EXPORT_SYMBOL(mmc_wait_for_pstore_req);
+> +#endif
+> +
+>  /**
+>   *     mmc_is_req_done - Determine if a 'cap_cmd_during_tfr' request is done
+>   *     @host: MMC host
+> @@ -817,6 +841,26 @@ int __mmc_claim_host(struct mmc_host *host, struct mmc_ctx *ctx,
+>  }
+>  EXPORT_SYMBOL(__mmc_claim_host);
+>
+> +#if IS_ENABLED(CONFIG_MMC_PSTORE)
+> +/**
+> + *     mmc_claim_host_async - claim host in atomic context
+> + *     @host: mmc host to claim
+> + *
+> + *     This routine may be called in panic/oops scenarios.
+> + *     Return zero with host claim success, else busy status.
+> + */
+> +int mmc_claim_host_async(struct mmc_host *host)
+> +{
+> +       if (!host->claimed && pm_runtime_active(mmc_dev(host))) {
+> +               host->claimed = 1;
+> +               return 0;
+> +       }
+> +
+> +       return -EBUSY;
+> +}
+> +EXPORT_SYMBOL(mmc_claim_host_async);
+> +#endif
+> +
+>  /**
+>   *     mmc_release_host - release a host
+>   *     @host: mmc host to release
+> diff --git a/drivers/mmc/core/mmcpstore.c b/drivers/mmc/core/mmcpstore.c
+> new file mode 100644
+> index 000000000000..f783ea215f18
+> --- /dev/null
+> +++ b/drivers/mmc/core/mmcpstore.c
+> @@ -0,0 +1,227 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * MMC pstore support based on pstore/blk
+> + *
+> + * Copyright (c) 2020 Marvell.
+> + * Author: Bhaskara Budiredla <bbudiredla@marvell.com>
+> + */
+> +
+> +#define pr_fmt(fmt) "mmcpstore: " fmt
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/pstore_blk.h>
+> +#include <linux/blkdev.h>
+> +#include <linux/mount.h>
+> +#include <linux/slab.h>
+> +#include <linux/mmc/mmc.h>
+> +#include <linux/mmc/host.h>
+> +#include <linux/mmc/card.h>
+> +#include <linux/scatterlist.h>
+> +#include "block.h"
+> +#include "card.h"
+> +#include "core.h"
+> +
+> +static struct mmcpstore_context {
+> +       char dev_name[BDEVNAME_SIZE];
+> +       int partno;
+> +       sector_t start_sect;
+> +       sector_t size;
+> +       struct pstore_blk_config conf;
+> +       struct pstore_blk_info info;
+> +
+> +       struct mmc_card *card;
+> +       struct mmc_request *mrq;
+> +} oops_cxt;
+> +
+> +static void mmc_prep_req(struct mmc_request *mrq,
+> +               unsigned int sect_offset, unsigned int nsects,
+> +               struct scatterlist *sg, u32 opcode, unsigned int flags)
+> +{
+> +       mrq->cmd->opcode = opcode;
+> +       mrq->cmd->arg = sect_offset;
+> +       mrq->cmd->flags = MMC_RSP_R1 | MMC_CMD_ADTC;
+> +
+> +       if (nsects == 1) {
+> +               mrq->stop = NULL;
+> +       } else {
+> +               mrq->stop->opcode = MMC_STOP_TRANSMISSION;
+> +               mrq->stop->arg = 0;
+> +               mrq->stop->flags = MMC_RSP_R1B | MMC_CMD_AC;
+> +       }
+> +
+> +       mrq->data->blksz = SECTOR_SIZE;
+> +       mrq->data->blocks = nsects;
+> +       mrq->data->flags = flags;
+> +       mrq->data->sg = sg;
+> +       mrq->data->sg_len = 1;
+> +}
+> +
+> +static int mmcpstore_panic_write_req(const char *buf,
+> +               unsigned int nsects, unsigned int sect_offset)
+> +{
+> +       struct mmcpstore_context *cxt = &oops_cxt;
+> +       struct mmc_request *mrq = cxt->mrq;
+> +       struct mmc_card *card = cxt->card;
+> +       struct mmc_host *host = card->host;
+> +       struct scatterlist sg;
+> +       u32 opcode;
+> +       int ret;
+> +
+> +       opcode = (nsects > 1) ? MMC_WRITE_MULTIPLE_BLOCK : MMC_WRITE_BLOCK;
+> +       mmc_prep_req(mrq, sect_offset, nsects, &sg, opcode, MMC_DATA_WRITE);
+> +       sg_init_one(&sg, buf, (nsects << SECTOR_SHIFT));
+> +       mmc_set_data_timeout(mrq->data, cxt->card);
+> +
+> +       ret = mmc_claim_host_async(host);
+> +       if (ret)
+> +               return ret;
+> +
+> +       mmc_wait_for_pstore_req(host, mrq);
+> +       return 0;
+> +}
+> +
+> +static int mmcpstore_panic_write(const char *buf, sector_t off, sector_t sects)
+> +{
+> +       struct mmcpstore_context *cxt = &oops_cxt;
+> +       int ret;
+> +
+> +       ret = mmcpstore_panic_write_req(buf, sects, cxt->start_sect + off);
+> +       if (ret)
+> +               return ret;
+> +
+> +       return 0;
+> +}
+> +
+> +static struct block_device *mmcpstore_open_backend(const char *device)
+> +{
+> +       struct block_device *bdev;
+> +       dev_t devt;
+> +
+> +       bdev = blkdev_get_by_path(device, FMODE_READ, NULL);
+> +       if (IS_ERR(bdev)) {
+> +               devt = name_to_dev_t(device);
+> +               if (devt == 0)
+> +                       return ERR_PTR(-ENODEV);
+> +
+> +               bdev = blkdev_get_by_dev(devt, FMODE_READ, NULL);
+> +               if (IS_ERR(bdev))
+> +                       return bdev;
+> +       }
+> +
+> +       return bdev;
+> +}
+> +
+> +static void mmcpstore_close_backend(struct block_device *bdev)
+> +{
+> +       if (!bdev)
+> +               return;
+> +       blkdev_put(bdev, FMODE_READ);
+> +}
+> +
+> +void mmcpstore_card_set(struct mmc_card *card, const char *disk_name)
+> +{
+> +       struct mmcpstore_context *cxt = &oops_cxt;
+> +       struct pstore_blk_config *conf = &cxt->conf;
+> +       struct pstore_blk_info *info = &cxt->info;
+> +       struct block_device *bdev;
+> +       struct mmc_command *stop;
+> +       struct mmc_command *cmd;
+> +       struct mmc_request *mrq;
+> +       struct mmc_data *data;
+> +       int ret;
+> +
+> +       ret = pstore_blk_get_config(conf);
+> +       if (!conf->device[0]) {
+> +               pr_debug("psblk backend is empty\n");
+> +               return;
+> +       }
+> +
+> +       /* Multiple backend devices not allowed */
+> +       if (cxt->dev_name[0])
+> +               return;
+> +
+> +       bdev =  mmcpstore_open_backend(conf->device);
+> +       if (IS_ERR(bdev)) {
+> +               pr_err("%s failed to open with %ld\n",
+> +                               conf->device, PTR_ERR(bdev));
+> +               return;
+> +       }
+> +
+> +       bdevname(bdev, cxt->dev_name);
+> +       cxt->partno = bdev->bd_part->partno;
+> +       mmcpstore_close_backend(bdev);
+> +
+> +       if (strncmp(cxt->dev_name, disk_name, strlen(disk_name)))
+> +               return;
+> +
+> +       cxt->start_sect = mmc_blk_get_part(card, cxt->partno, &cxt->size);
+> +       if (!cxt->start_sect) {
+> +               pr_err("Non-existent partition %d selected\n", cxt->partno);
+> +               return;
+> +       }
+> +
+> +       /* Check for host mmc panic write polling function definitions */
+> +       if (!card->host->ops->req_cleanup_pending ||
+> +                       !card->host->ops->req_completion_poll)
+> +               return;
+> +
+> +       cxt->card = card;
+> +
+> +       mrq = kzalloc(sizeof(struct mmc_request), GFP_KERNEL);
+> +       if (!mrq)
+> +               goto out;
+> +
+> +       cmd = kzalloc(sizeof(struct mmc_command), GFP_KERNEL);
+> +       if (!cmd)
+> +               goto free_mrq;
+> +
+> +       stop = kzalloc(sizeof(struct mmc_command), GFP_KERNEL);
+> +       if (!stop)
+> +               goto free_cmd;
+> +
+> +       data = kzalloc(sizeof(struct mmc_data), GFP_KERNEL);
+> +       if (!data)
+> +               goto free_stop;
+> +
+> +       mrq->cmd = cmd;
+> +       mrq->data = data;
+> +       mrq->stop = stop;
+> +       cxt->mrq = mrq;
+> +
+> +       info->major = MMC_BLOCK_MAJOR;
+> +       info->flags = PSTORE_FLAGS_DMESG;
+> +       info->panic_write = mmcpstore_panic_write;
+> +       ret = register_pstore_blk(info);
+> +       if (ret) {
+> +               pr_err("%s registering with psblk failed (%d)\n",
+> +                               cxt->dev_name, ret);
+> +               goto free_data;
+> +       }
+> +
+> +       pr_info("%s registered as psblk backend\n", cxt->dev_name);
+> +       return;
+> +
+> +free_data:
+> +       kfree(data);
+> +free_stop:
+> +       kfree(stop);
+> +free_cmd:
+> +       kfree(cmd);
+> +free_mrq:
+> +       kfree(mrq);
+> +out:
+> +       return;
+> +}
+> +
+> +void unregister_mmcpstore(void)
+> +{
+> +       struct mmcpstore_context *cxt = &oops_cxt;
+> +
+> +       unregister_pstore_blk(MMC_BLOCK_MAJOR);
+> +       kfree(cxt->mrq->data);
+> +       kfree(cxt->mrq->stop);
+> +       kfree(cxt->mrq->cmd);
+> +       kfree(cxt->mrq);
+> +       cxt->card = NULL;
+> +}
+> diff --git a/include/linux/mmc/core.h b/include/linux/mmc/core.h
+> index 29aa50711626..53840a361b5a 100644
+> --- a/include/linux/mmc/core.h
+> +++ b/include/linux/mmc/core.h
+> @@ -166,6 +166,11 @@ struct mmc_request {
+>
+>  struct mmc_card;
+>
+> +#if IS_ENABLED(CONFIG_MMC_PSTORE)
+> +void mmc_wait_for_pstore_req(struct mmc_host *host, struct mmc_request *mrq);
+> +int mmc_claim_host_async(struct mmc_host *host);
+> +#endif
+> +
+>  void mmc_wait_for_req(struct mmc_host *host, struct mmc_request *mrq);
+>  int mmc_wait_for_cmd(struct mmc_host *host, struct mmc_command *cmd,
+>                 int retries);
+> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> index 01bba36545c5..ba9001498e03 100644
+> --- a/include/linux/mmc/host.h
+> +++ b/include/linux/mmc/host.h
+> @@ -178,6 +178,18 @@ struct mmc_host_ops {
+>
+>         /* Initialize an SD express card, mandatory for MMC_CAP2_SD_EXP. */
+>         int     (*init_sd_express)(struct mmc_host *host, struct mmc_ios *ios);
+> +
+> +#if IS_ENABLED(CONFIG_MMC_PSTORE)
+> +       /*
+> +        * The following two APIs are introduced to support mmcpstore
+> +        * functionality. Cleanup API to terminate the ongoing and
+> +        * pending requests before a panic write post, and polling API
+> +        * to ensure that write succeeds before the Kernel dies.
+> +        */
+> +       void    (*req_cleanup_pending)(struct mmc_host *host);
+> +       int     (*req_completion_poll)(struct mmc_host *host,
+> +                                      unsigned long timeout);
+> +#endif
+>  };
+>
+>  struct mmc_cqe_ops {
+> --
+> 2.17.1
+>
