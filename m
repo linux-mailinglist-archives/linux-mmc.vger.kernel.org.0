@@ -2,56 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80A6A2FF16D
-	for <lists+linux-mmc@lfdr.de>; Thu, 21 Jan 2021 18:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EE2B2FF31B
+	for <lists+linux-mmc@lfdr.de>; Thu, 21 Jan 2021 19:27:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729593AbhAURGg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 21 Jan 2021 12:06:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388405AbhAURGK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 Jan 2021 12:06:10 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E41C06178B;
-        Thu, 21 Jan 2021 09:04:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=WXp9P2+4ttOF7WOJ6N6+oYIjL/n1xFJfDmqOtrJBLpU=; b=gd4BKa4iFPPuT/lD2l4BSb7o3D
-        CcZwhIeTFXpXFqJD7zm1KvhSW779Tw+VeuicSpzqOYgmQKe4y9bE4q0XwrV2FsRd0k3PdBFb+bpW/
-        /RQs1TEqLYPidsbGr4wAwL0sHpKJEn9FCbbWRyhRHuoVk0i8QSB3Imxpsokzc9D3i8gabl7lj5xpS
-        le/fJd0Q0THs9DBKuCcPcXJ4dZYELr7B/+V5dHjXnOgJjAHd+4JqUCv/DNHbG0Ng2PVhcxqxNrhGg
-        e1ahOjpwMV0H6IKQqoBM0no7vfgQSDJsKHdBSL6kx7XXLhD8nhdOpQ3cL9dT1JDTT5SYOU8uSpxtx
-        fdX0PhQg==;
-Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-        id 1l2dNh-00HIE9-Vn; Thu, 21 Jan 2021 17:04:26 +0000
-Date:   Thu, 21 Jan 2021 17:04:25 +0000
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Guoqing Jiang <guoqing.jiang@cloud.ionos.com>
-Cc:     axboe@kernel.dk, linux-block@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-ide@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org
-Subject: Re: [PATCH 2/2] block: remove unnecessary argument from
- blk_execute_rq
-Message-ID: <20210121170425.GB4120717@infradead.org>
-References: <20210121142905.13089-1-guoqing.jiang@cloud.ionos.com>
- <20210121142905.13089-3-guoqing.jiang@cloud.ionos.com>
+        id S1726953AbhAUS0N (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 21 Jan 2021 13:26:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60030 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727457AbhAUSS2 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 21 Jan 2021 13:18:28 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9A83423A3A;
+        Thu, 21 Jan 2021 18:17:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611253054;
+        bh=K7MU5q7tdkr5vyIPyOgPh9VwES77OWz5XH2UBN04YNU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Gr1KnQqIE58OCbsdj+RYzLgiqTk2+MQv3Nt7Li3FKrHYGLN0p8GZieJHo68vXnuRf
+         Qycv1yW1F6e7dpkLF+MacJ4GqHUSFUE7aEDRkHhskBexkDX9Ix+Y+5+83iqGw7vlqj
+         grajGkIvNu4iPlxrqBR7NK/SjMbTKhAuMpymIjwXj39J9J8kKuL9/Tv90t7eC2PmkZ
+         grQFrwKosKzYFsf/G4fcbISkDSVUYprsXQlz+aDOm4EpfMcjcJElqYcgR1fzNjqhYw
+         ujNrVlQU6RRPlf9qNCGjCrCKx3flmJ31OplyBYCGUw+8RkQcirPFcV7Ad6UI+Vkcs0
+         OYQGmHGEO9MyQ==
+Date:   Thu, 21 Jan 2021 10:17:32 -0800
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>, linux-fscrypt@vger.kernel.org,
+        Satya Tangirala <satyat@google.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Asutosh Das <asutoshd@codeaurora.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Neeraj Soni <neersoni@codeaurora.org>,
+        Barani Muthukumaran <bmuthuku@codeaurora.org>,
+        Peng Zhou <peng.zhou@mediatek.com>,
+        Stanley Chu <stanley.chu@mediatek.com>,
+        Konrad Dybcio <konradybcio@gmail.com>
+Subject: Re: [PATCH v5 4/9] mmc: cqhci: add support for inline encryption
+Message-ID: <YAnFPC0f4vJsKbuL@sol.localdomain>
+References: <20210121090140.326380-1-ebiggers@kernel.org>
+ <20210121090140.326380-5-ebiggers@kernel.org>
+ <CAPDyKFqCz=N9R6RpEoMO+zoKhJbds1rbvgzHJ2z+6k2U2Wq6Yg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210121142905.13089-3-guoqing.jiang@cloud.ionos.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <CAPDyKFqCz=N9R6RpEoMO+zoKhJbds1rbvgzHJ2z+6k2U2Wq6Yg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Jan 21, 2021 at 03:29:05PM +0100, Guoqing Jiang wrote:
-> We can remove 'q' from blk_execute_rq as well after the previous change
-> in blk_execute_rq_nowait.
+On Thu, Jan 21, 2021 at 02:04:37PM +0100, Ulf Hansson wrote:
+> > +#else /* CONFIG_MMC_CRYPTO */
+> > +
+> > +static inline int cqhci_crypto_init(struct cqhci_host *host)
+> > +{
+> > +       return 0;
+> 
+> The host calling this function may have MMC_CAP2_CRYPTO set for it.
+> 
+> When CONFIG_MMC_CRYPTO is set, cqhci_crypto_init() may unset
+> MMC_CAP2_CRYPTO if initialization fails. It seems like we should unset
+> MMC_CAP2_CRYPTO in this stub function as well, right?
 
-Same trivial nits as for the other one.
+The code in sdhci-msm.c that sets MMC_CAP2_CRYPTO is conditional on
+CONFIG_MMC_CRYPTO.  So, MMC_CAP2_CRYPTO won't be set when !CONFIG_MMC_CRYPTO.
 
-Otherwise this looks good to me.
+I suppose we might as well do something to stop other drivers from accidentally
+getting that wrong, though.
+
+How about just defining the flag to 0 when !CONFIG_MMC_CRYPTO:
+
+#ifdef CONFIG_MMC_CRYPTO
+#define MMC_CAP2_CRYPTO         (1 << 27)       /* Host supports inline encryption */
+#else
+#define MMC_CAP2_CRYPTO         0
+#endif
+
+That would be more reliable than relying on the flag getting cleared by
+something.
+
+- Eric
