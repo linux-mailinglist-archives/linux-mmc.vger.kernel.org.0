@@ -2,81 +2,57 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E1BD300AED
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Jan 2021 19:19:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9ED2300F4E
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Jan 2021 22:54:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729143AbhAVSQ6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 22 Jan 2021 13:16:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33232 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729364AbhAVRYH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 Jan 2021 12:24:07 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59486C06174A;
-        Fri, 22 Jan 2021 09:23:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=/1OGUuSh8UTx2h39ipHbvJAcdb29iqtzaaFfOzJpWBw=; b=RO/x/RV5jTG78QmHWtQlBG20gp
-        ZqwEdo8lONzmuAiGidQusdA8sq3W+YGFl8SuNvBGH31iPg6tz/lerRjZopvE7zEuUqCN+Xe+DgUyP
-        Nr3v1wFNvah06wJtgmvEe2itJg5sdFOjSKvo2i4EpCY4Jrjp6/grhdTSV2PdYXYlmKLtFPv8Y+3mE
-        mNfzX+Q4rRBH0PfKacJf+ovfim35xemVvVAkr4FRE3sLqJdkv0UNcXoahP5r4xOgAo1PkufxRZJOF
-        pM9F/+gwhecuJt7fnNODh8MBfpH3orJfykRo3T/hPF0/XPh1T/x4zgcD7Sf+5RqDJ06jz8vF+dLHD
-        SXfIhUfg==;
-Received: from [2601:1c0:6280:3f0::9abc]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1l309X-00039n-GX; Fri, 22 Jan 2021 17:23:19 +0000
-Subject: Re: [PATCH v2] mmc: sdhci-of-aspeed: Fix kunit-related build error
-To:     Andrew Jeffery <andrew@aj.id.au>, linux-mmc@vger.kernel.org
-Cc:     adrian.hunter@intel.com, ulf.hansson@linaro.org, joel@jms.id.au,
-        linux-aspeed@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        brendanhiggins@google.com
-References: <20210122114852.3790565-1-andrew@aj.id.au>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <bef54bf0-7c9e-09ce-9f37-ab9498959ba1@infradead.org>
-Date:   Fri, 22 Jan 2021 09:23:10 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1730717AbhAVVwV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 22 Jan 2021 16:52:21 -0500
+Received: from mail.padangpariamankab.go.id ([103.94.3.123]:40924 "EHLO
+        mail.padangpariamankab.go.id" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730365AbhAVVv4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 Jan 2021 16:51:56 -0500
+X-Greylist: delayed 2959 seconds by postgrey-1.27 at vger.kernel.org; Fri, 22 Jan 2021 16:50:43 EST
+Received: from localhost (localhost [127.0.0.1])
+        by mail.padangpariamankab.go.id (Postfix) with ESMTP id 3E68F6E6C72;
+        Sat, 23 Jan 2021 03:48:10 +0700 (WIB)
+Received: from mail.padangpariamankab.go.id ([127.0.0.1])
+        by localhost (mail.padangpariamankab.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id kBGXOQypupm6; Sat, 23 Jan 2021 03:48:09 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.padangpariamankab.go.id (Postfix) with ESMTP id 294CB6E6C77;
+        Sat, 23 Jan 2021 03:48:09 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.padangpariamankab.go.id 294CB6E6C77
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=padangpariamankab.go.id; s=D2C6CDEC-3607-11EA-BC8A-EEDE4AB8B776;
+        t=1611348489; bh=4AhSoXRU63EAbbOwseUY/pxjidGey07DskAQ7pZ9AvE=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=HThFhYOADhRCtO5N541vi9Gyg7fJmmutk/OT2THWWyfJ95sWN76AgwUEgQZtSvKhP
+         x/LxSc8MhKoXFOnNTieirEJIp/EcM8e1Pjx1VBDwhPK07CSOtfO2YNC/YwcDHmyfyz
+         2Lf9drxpZNkkPji5hrUXs8+6FbGouclsglppsLR4=
+X-Virus-Scanned: amavisd-new at padangpariamankab.go.id
+Received: from mail.padangpariamankab.go.id ([127.0.0.1])
+        by localhost (mail.padangpariamankab.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id mxYAXxb3FYdJ; Sat, 23 Jan 2021 03:48:08 +0700 (WIB)
+Received: from mail.padangpariamankab.go.id (mail.padangpariamankab.go.id [103.94.3.123])
+        by mail.padangpariamankab.go.id (Postfix) with ESMTP id B15016E6C6F;
+        Sat, 23 Jan 2021 03:48:05 +0700 (WIB)
+Date:   Sat, 23 Jan 2021 03:48:05 +0700 (WIB)
+From:   GREENLIGHT <rsud@padangpariamankab.go.id>
+Reply-To: "Greenlight Financial Services " <greenlightservices@usa.com>
+Message-ID: <1668595482.19502.1611348485649.JavaMail.zimbra@padangpariamankab.go.id>
+Subject: Update
 MIME-Version: 1.0
-In-Reply-To: <20210122114852.3790565-1-andrew@aj.id.au>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [103.94.3.123]
+X-Mailer: Zimbra 8.8.15_GA_3895 (zclient/8.8.15_GA_3895)
+Thread-Index: YwDzoLjYr5wvIyGTK9ZPzksGXyGLMw==
+Thread-Topic: Update
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 1/22/21 3:48 AM, Andrew Jeffery wrote:
-> Randy found that with the following Kconfig settings we have duplicate
-> definitions (e.g. __inittest()) in sdhci-of-aspeed due to competing
-> module_init()/module_exit() calls from kunit and driver the itself.
-> 
-> ```
-> CONFIG_MMC_SDHCI_OF_ASPEED=m
-> CONFIG_MMC_SDHCI_OF_ASPEED_TEST=y
-> ```
-> 
-> Conditionally open-code the kunit initialisation to avoid the error.
-> 
-> Fixes: 7efa02a981d6 ("mmc: sdhci-of-aspeed: Add KUnit tests for phase calculations")
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> ---
-> 
-> v2:
-> * Collapse the #ifdef-ery
-> 
->  drivers/mmc/host/sdhci-of-aspeed-test.c |  9 +++++-
->  drivers/mmc/host/sdhci-of-aspeed.c      | 42 ++++++++++++++++++++++---
->  2 files changed, 45 insertions(+), 6 deletions(-)
-
-Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-
-Thanks.
 
 
--- 
-~Randy
-
+We offer Reliable/Low Interest Rate Financial Services to Companies & Individuals including; Start-Up Business, Loans & Mortgage ETC. Apply Now
