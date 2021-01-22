@@ -2,57 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9ED2300F4E
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Jan 2021 22:54:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D874F300FB3
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Jan 2021 23:15:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730717AbhAVVwV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 22 Jan 2021 16:52:21 -0500
-Received: from mail.padangpariamankab.go.id ([103.94.3.123]:40924 "EHLO
-        mail.padangpariamankab.go.id" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730365AbhAVVv4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 Jan 2021 16:51:56 -0500
-X-Greylist: delayed 2959 seconds by postgrey-1.27 at vger.kernel.org; Fri, 22 Jan 2021 16:50:43 EST
-Received: from localhost (localhost [127.0.0.1])
-        by mail.padangpariamankab.go.id (Postfix) with ESMTP id 3E68F6E6C72;
-        Sat, 23 Jan 2021 03:48:10 +0700 (WIB)
-Received: from mail.padangpariamankab.go.id ([127.0.0.1])
-        by localhost (mail.padangpariamankab.go.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id kBGXOQypupm6; Sat, 23 Jan 2021 03:48:09 +0700 (WIB)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.padangpariamankab.go.id (Postfix) with ESMTP id 294CB6E6C77;
-        Sat, 23 Jan 2021 03:48:09 +0700 (WIB)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.padangpariamankab.go.id 294CB6E6C77
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=padangpariamankab.go.id; s=D2C6CDEC-3607-11EA-BC8A-EEDE4AB8B776;
-        t=1611348489; bh=4AhSoXRU63EAbbOwseUY/pxjidGey07DskAQ7pZ9AvE=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=HThFhYOADhRCtO5N541vi9Gyg7fJmmutk/OT2THWWyfJ95sWN76AgwUEgQZtSvKhP
-         x/LxSc8MhKoXFOnNTieirEJIp/EcM8e1Pjx1VBDwhPK07CSOtfO2YNC/YwcDHmyfyz
-         2Lf9drxpZNkkPji5hrUXs8+6FbGouclsglppsLR4=
-X-Virus-Scanned: amavisd-new at padangpariamankab.go.id
-Received: from mail.padangpariamankab.go.id ([127.0.0.1])
-        by localhost (mail.padangpariamankab.go.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id mxYAXxb3FYdJ; Sat, 23 Jan 2021 03:48:08 +0700 (WIB)
-Received: from mail.padangpariamankab.go.id (mail.padangpariamankab.go.id [103.94.3.123])
-        by mail.padangpariamankab.go.id (Postfix) with ESMTP id B15016E6C6F;
-        Sat, 23 Jan 2021 03:48:05 +0700 (WIB)
-Date:   Sat, 23 Jan 2021 03:48:05 +0700 (WIB)
-From:   GREENLIGHT <rsud@padangpariamankab.go.id>
-Reply-To: "Greenlight Financial Services " <greenlightservices@usa.com>
-Message-ID: <1668595482.19502.1611348485649.JavaMail.zimbra@padangpariamankab.go.id>
-Subject: Update
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [103.94.3.123]
-X-Mailer: Zimbra 8.8.15_GA_3895 (zclient/8.8.15_GA_3895)
-Thread-Index: YwDzoLjYr5wvIyGTK9ZPzksGXyGLMw==
-Thread-Topic: Update
-To:     unlisted-recipients:; (no To-header on input)
+        id S1730922AbhAVWEb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 22 Jan 2021 17:04:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34140 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730574AbhAVWBT (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 22 Jan 2021 17:01:19 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 782E223B16;
+        Fri, 22 Jan 2021 22:00:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611352839;
+        bh=MshnZ3dkBkCc0RmQkUxUoPxMjKXTuXcPitlAd7tDwrY=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=k9UideLBL79JUA2khQbPWxQSwo0C3bl2DOvEnrAYKRctc/WwSat07wuem0lTJD4i1
+         1nVPDk3KOEwiGaQyrwhaXF9bW/6opvazyJLkCD5XitR/Z3ZS9JTTZIDSYeKj9RbGxi
+         rU/ykUGOSAedMwr8Jm+8BBaqmLs3L2xHCk9AC3dE2Jch3ELf0vFwvnQi+F2Jljx2UV
+         xQ8a0r/uPwUqFxRmEAPjWj1XBEXyzbd2SdpdfNYkOHNbanQ4WdtY7XeevYlDAbszvC
+         DyM8pVdJpG4yHEjwJd2rSwfbcpj9ej+/aOEe6jt4pUjYYJBXapTAP047eRO68T176E
+         0M0el57YADh7A==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 74DB3652D0;
+        Fri, 22 Jan 2021 22:00:39 +0000 (UTC)
+Subject: Re: [GIT PULL] MMC fixes for v5.11-rc5
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20210122094413.69488-1-ulf.hansson@linaro.org>
+References: <20210122094413.69488-1-ulf.hansson@linaro.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20210122094413.69488-1-ulf.hansson@linaro.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.11-rc3
+X-PR-Tracked-Commit-Id: b503087445ce7e45fabdee87ca9e460d5b5b5168
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 59a4560e855798f9764b77777aeab796de1a171d
+Message-Id: <161135283947.4174.16009474180707090842.pr-tracker-bot@kernel.org>
+Date:   Fri, 22 Jan 2021 22:00:39 +0000
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+The pull request you sent on Fri, 22 Jan 2021 10:44:13 +0100:
 
+> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.11-rc3
 
-We offer Reliable/Low Interest Rate Financial Services to Companies & Individuals including; Start-Up Business, Loans & Mortgage ETC. Apply Now
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/59a4560e855798f9764b77777aeab796de1a171d
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
