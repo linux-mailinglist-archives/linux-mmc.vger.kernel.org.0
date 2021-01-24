@@ -2,95 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B84AF301DCD
-	for <lists+linux-mmc@lfdr.de>; Sun, 24 Jan 2021 18:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB65D301F6F
+	for <lists+linux-mmc@lfdr.de>; Sun, 24 Jan 2021 23:52:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725837AbhAXREx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 24 Jan 2021 12:04:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52314 "EHLO
+        id S1726398AbhAXWwj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 24 Jan 2021 17:52:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725798AbhAXREx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 24 Jan 2021 12:04:53 -0500
-Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AD32C061573
-        for <linux-mmc@vger.kernel.org>; Sun, 24 Jan 2021 09:04:12 -0800 (PST)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4DNzpW60Qmz1rypD;
-        Sun, 24 Jan 2021 18:03:15 +0100 (CET)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 4DNzpW5mRcz1tYWh;
-        Sun, 24 Jan 2021 18:03:15 +0100 (CET)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id KuxJqv3bOtab; Sun, 24 Jan 2021 18:03:14 +0100 (CET)
-X-Auth-Info: MK1HaulPFt3pwc96jWmY+6TlkqmepZu6o30G7xYMpu8=
-Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Sun, 24 Jan 2021 18:03:14 +0100 (CET)
-From:   Marek Vasut <marex@denx.de>
-To:     linux-mmc@vger.kernel.org
-Cc:     Marek Vasut <marex@denx.de>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ludovic Barre <ludovic.barre@st.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH V2 4/4] ARM: dts: stm32: Enable voltage translator auto-detection on DHCOM
-Date:   Sun, 24 Jan 2021 18:02:58 +0100
-Message-Id: <20210124170258.32862-4-marex@denx.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210124170258.32862-1-marex@denx.de>
-References: <20210124170258.32862-1-marex@denx.de>
+        with ESMTP id S1726007AbhAXWwi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 24 Jan 2021 17:52:38 -0500
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD53C061573
+        for <linux-mmc@vger.kernel.org>; Sun, 24 Jan 2021 14:51:57 -0800 (PST)
+Received: by mail-lj1-x22e.google.com with SMTP id a25so11954927ljn.0
+        for <linux-mmc@vger.kernel.org>; Sun, 24 Jan 2021 14:51:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4HuGZS3FXmpI/CZ9WRJi1GTxY4eR6JlbnQlmIWJDvhs=;
+        b=NUPplP+vwWcGNZku67kF6v0Zc3+oX52TgC4UVnC9NbzphbJ7yOo3lZgx0NHXvAzi4/
+         xnRCAIHE0ruAJ8HvkZDbaiyl/5VEQFlcXHUyUOg5W0tXmw8xRR/9ZGxYRibTCKQd2Em3
+         JGzKjFrj8IqxAGlyzt9x8qfsWUU1NwCPVqpRz2nhXoRxd+1G7sHECm9fdWqcPoKOiUDE
+         xoPn9xr3ZkalTIBSogHq2aR3gkTcYeyYoFzZivXKeIY/XR4ENYkwdlJ7WamTamtbwtXi
+         hTYSsVxmsDFQD9NO4GyfrEW+6KtsLs3TFca+J5YdXQ+PCtX8ME9+98DFYwf/wy+DY0Rd
+         Gc0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4HuGZS3FXmpI/CZ9WRJi1GTxY4eR6JlbnQlmIWJDvhs=;
+        b=R37BBGAzrei2wrGj+AI/5ts1DtbrbGXOATnjtPOa/933RqIEAK7MPWTpBD/RsPdFWI
+         0Anatw84xFK7p+x+GBXKF5YYI1IdM3KXjfwSxDRsp/hAdWkwJQ1XjPF5sISI/zx1OqQJ
+         FdmGF44lGyiq277c7eyW/HfnpIWaE/9zqHVjjK7d5uoVFtxunuLmOhprzvPmj7TaKrsx
+         NZRYalGipFfs1yDfonkwiDFritEaOehWepPzJX9UjvQtv9cemWxdwFd13ZrgevULbMur
+         jNyfAbZfnaZkxAQO7hfB5Khd36JkqxC0RK+WVYSZWfDjDh2Z6zO16ZGqOVObR/jpHMxx
+         4W8w==
+X-Gm-Message-State: AOAM5323WARdrgSZu7N/VIKliP7xXd3wfNNqU0s5lK2YN3wPIw3DUpZy
+        89qNuAtCC84HEkTGlodOasz0ZwSkHJNlB4vCNLCSdw==
+X-Google-Smtp-Source: ABdhPJxQyfKzJabalN+bedwoS7NGWpYLLpd54boyq2sKBZ7lVn6U5490067UEc04d3r+vv3OMoYA394NyqYfuciT6KQ=
+X-Received: by 2002:a2e:9ec3:: with SMTP id h3mr120887ljk.200.1611528716487;
+ Sun, 24 Jan 2021 14:51:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210124170258.32862-1-marex@denx.de>
+In-Reply-To: <20210124170258.32862-1-marex@denx.de>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 24 Jan 2021 23:51:45 +0100
+Message-ID: <CACRpkdaLN_Q9rmMnuVhB8wuZJzMMzqdc+O54WOKfc4a2bgnUwQ@mail.gmail.com>
+Subject: Re: [PATCH V2 1/4] mmc: mmci: Add bindings to operate CMD, CK, CKIN
+ pins as GPIO
+To:     Marek Vasut <marex@denx.de>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Ludovic Barre <ludovic.barre@st.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The DHCOM SoM uSD slot has an optional voltage level translator, add
-DT bindings which permit the MMCI driver to detect the translator
-automatically.
+On Sun, Jan 24, 2021 at 6:03 PM Marek Vasut <marex@denx.de> wrote:
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Ludovic Barre <ludovic.barre@st.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: linux-stm32@st-md-mailman.stormreply.com
----
-V2: Rebase on next-20210122
----
- arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> Add DT bindings to describe GPIO line associated with CMD, CK, CKIN pins.
+>
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> Cc: Alexandre Torgue <alexandre.torgue@st.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Ludovic Barre <ludovic.barre@st.com>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: linux-stm32@st-md-mailman.stormreply.com
+> Cc: devicetree@vger.kernel.org
+> ---
+> V2: Rebase on next-20210122
 
-diff --git a/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi b/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
-index ff70bd03a017..661d8d071296 100644
---- a/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
-+++ b/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
-@@ -408,14 +408,19 @@ &rtc {
- };
- 
- &sdmmc1 {
--	pinctrl-names = "default", "opendrain", "sleep";
-+	pinctrl-names = "default", "opendrain", "sleep", "init";
- 	pinctrl-0 = <&sdmmc1_b4_pins_a &sdmmc1_dir_pins_a>;
- 	pinctrl-1 = <&sdmmc1_b4_od_pins_a &sdmmc1_dir_pins_a>;
- 	pinctrl-2 = <&sdmmc1_b4_sleep_pins_a &sdmmc1_dir_sleep_pins_a>;
-+	pinctrl-3 = <&sdmmc1_b4_init_pins_a &sdmmc1_dir_init_pins_a>;
- 	cd-gpios = <&gpiog 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
- 	disable-wp;
- 	st,sig-dir;
- 	st,neg-edge;
-+	st,use-ckin;
-+	st,cmd-gpios = <&gpiod 2 0>;
-+	st,ck-gpios = <&gpioc 12 0>;
-+	st,ckin-gpios = <&gpioe 4 0>;
- 	bus-width = <4>;
- 	vmmc-supply = <&vdd_sd>;
- 	status = "okay";
--- 
-2.29.2
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
+I would probably add an example as well, but that can be
+done separately and isn't super-important.
+
+Yours,
+Linus Walleij
