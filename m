@@ -2,121 +2,105 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 354623024CD
-	for <lists+linux-mmc@lfdr.de>; Mon, 25 Jan 2021 13:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3D0D302932
+	for <lists+linux-mmc@lfdr.de>; Mon, 25 Jan 2021 18:44:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727876AbhAYMPV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 25 Jan 2021 07:15:21 -0500
-Received: from ns.iliad.fr ([212.27.33.1]:43210 "EHLO ns.iliad.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727851AbhAYMO1 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 25 Jan 2021 07:14:27 -0500
-Received: from ns.iliad.fr (localhost [127.0.0.1])
-        by ns.iliad.fr (Postfix) with ESMTP id 696D2201B0;
-        Mon, 25 Jan 2021 12:42:55 +0100 (CET)
-Received: from [192.168.108.37] (freebox.vlq16.iliad.fr [213.36.7.13])
-        by ns.iliad.fr (Postfix) with ESMTP id 53799201AB;
-        Mon, 25 Jan 2021 12:42:55 +0100 (CET)
-Subject: Re: [PATCH] mmc: sdhci-brcmstb: Fix mmc timeout errors on S5 suspend
-To:     Al Cooper <alcooperx@gmail.com>, linux-kernel@vger.kernel.org
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        id S1731142AbhAYRm4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 25 Jan 2021 12:42:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58138 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731004AbhAYRlF (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 25 Jan 2021 12:41:05 -0500
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E1F9C06174A;
+        Mon, 25 Jan 2021 09:40:21 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id w14so8811508pfi.2;
+        Mon, 25 Jan 2021 09:40:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Ll5CPSA8oXAVF+ATpu54RVy1Dmm80vxtyP/rheTo5bY=;
+        b=TrPHo+IIlhYXEIUGZnvVvy0gZqdTpRW2zdvLckAXnziMr3wC+urBR+OmQS8W73nnb0
+         N0vxhZJ8/8h99P+aZTdkqPzGQoVGVnDTGGoAs2tnSGyPtQOQ6naUqLpCyfOQLDQ3U7/S
+         Afcy9kRlkwOaVGteCaBQ7XKmTp5sTPwkXkzaFu62CivM4nKEJN0l6aBwf+zzA3ZNkUxX
+         Wj6Gpi0KSHnPDgqDGdITrbPhONGqTLpaZO8ilrZnPxTaabHzp8ivl6w9laSqsNPyOLPz
+         1I5D0O+xlBEOlorR1+7UfVaAxC6ZZcvj2q+KhRGt5e1gU1O3zpdmsCceM7ob5Rn7rEub
+         0Zlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Ll5CPSA8oXAVF+ATpu54RVy1Dmm80vxtyP/rheTo5bY=;
+        b=lbw1AaCaB/A9IYv0HjLbXlDhBq4fcuOSqpUQbxNxTfa31RvZs5GtrpDraKMbvLCVIk
+         8BfVh6CgmvyIct0YTlV4/DfzEN5E3/NR+U8vugICNyQzk6HzI4e2myS+/bdr1xDvdv1n
+         ns5ybhchvwM0Kty0YNLKbChtf6AnbNHovUK12G7rZ8UNByY1EN9Rx3Nno6gGv1reig8f
+         kK9bU2hs+CNG+iT2GTZH49/U2DMPX0pevNvIQhRr5wknxt/lo0Y62C5qqk4TUsvDJgWI
+         ywbw8ECHrTiRoLfaonCQ80DQpGe26oCNIrSZZ4gaf/yRdxs35KMBfrCyHAAnJI++4HYt
+         hORg==
+X-Gm-Message-State: AOAM533HAEtlTU4YCRponjugJqfNSxsoB1g0ymvIx0dmMBGPaEkWkDwy
+        RXr1YBU/9lMmuKxwnRw3jWz9woEPJ60=
+X-Google-Smtp-Source: ABdhPJx/x1gICR2eqXW4n+pOoamjEIIYYGojiydYeWPyZhXE0r9WcMnr2TwUrRP7Nat2R+vlDUpYzg==
+X-Received: by 2002:a63:6d2:: with SMTP id 201mr1614834pgg.270.1611596420007;
+        Mon, 25 Jan 2021 09:40:20 -0800 (PST)
+Received: from [10.230.29.30] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id c5sm17764227pgt.73.2021.01.25.09.40.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Jan 2021 09:40:19 -0800 (PST)
+Subject: Re: [PATCH] mmc: brcmstb: Fix sdhci_pltfm_suspend link error
+To:     Arnd Bergmann <arnd@kernel.org>, Al Cooper <alcooperx@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>
-References: <20210107221509.6597-1-alcooperx@gmail.com>
-From:   Nicolas Schichan <nschichan@freebox.fr>
-Autocrypt: addr=nschichan@freebox.fr; prefer-encrypt=mutual; keydata=
- xsDiBEmTLz8RBADBY46VzpMBGf4or14ijXlvY0jzJsBfWiBtpAbEGmyAEwf9olyd5yMrEnE1
- qJk0NpcOMiXB/DMvOhJv4kxY6KT6r1y1UwmolkMJ782kt2zqyxaLpXsdSFBnLaN38XKgsvtW
- snnFCA6FT3bYNPNVgNMuog2UhUn2eKGVBVW0nuFbGwCg5WM290H0BLJE9+v+z6UBqC0MIhED
- /jENkiSXAhRzbFLc7cusXxmAUQlGO7kmWkZAShC+p2W/a/1BhCoefunkLKlMlJpSJJklbseQ
- RZxfyImKFuep1pRhHM6PDpXP49jfYF6WYbbq7Bx752uUkRD9D5XqHfgPRuFRUC79rDgxFZv9
- 2Umxuyacsg6gU0O3B8z2r0koXhffBACBymptu/4uHXO98HUuc92PwwswzqPyYXdZUQs37Fgc
- rMZxR4utRzWDnLy81bRn00yHVfK/FJ14Bxx06xlLnmFZC3fy3z+g2cRxKFZ5H9AI0OnNQD69
- eJTbARTNbKsgUvjqTvZTMg6TlesKSRI4kgCl9eejyrMuvOkSmeAnXwQHJM0nTmljb2xhcyBT
- Y2hpY2hhbiA8bnNjaGljaGFuQGZyZWVib3guZnI+wmAEExECACAFAkmTLz8CGwMGCwkIBwMC
- BBUCCAMEFgIDAQIeAQIXgAAKCRCL3CkFLvhg0PwDAKDQJXWNg9QyfYatePfw4W2k1oKOSwCg
- ldD3GhvlDaYUjIcgpTGsK+21OnXOwU0ESZMvSRAIAIau5WL6+zCIjb9WTTf6bX1ULD3gtWTB
- i/APtidAfIZJe87T7S7x3v7RRAPo5CAb787jgHZPzbZ2kRBbAPWB9ZF0d11m9Le3kmJPr6Lj
- tSPGX8FY+T1pvUIi2OIbhVgKC5QpLB0pq8ISAEk1N/9eBGo7QXOEyeHwhIQS6+kOj5HlyA5U
- sIw3M0bNTz9MWudHGphoad5ZF+gGVAXCN5s6TTSsKxWrejacaz0Y5r1nFjelK1fnqEWpiMD6
- sh4Bv1gawiMOowd1tgeHeyvabRiBF780yU5EeNpv5T1vTUCaphPfFbPdrnOjrleN+kNqN8kS
- 4b3G+WvEz+t9NRvFUiQgB+MAAwUH/3bx27p+GDxAwduC9rwvD2WbPkRYaMjTTcm7y+ssqCdL
- VosZGFuqWdjcoc7sYsY6cfciupLAmSaX0kIPtzS0VBmzgtQRpdJSiC2ZskdMBg9/5C5lYWx9
- T5Y8ys82LT8AmX3CzQbc1duk4bZ5bg5DrS79I2lE/2bzCS/HbIWNwCuunwk9s9A7KU8KhpXh
- Xo7LUwYRJVsYjrhOGJcgPtPMp4ReFHtHlp5AaXEmZbBq1gtYwotd3eNXgp+gClXNxzI/+vW5
- d/u1t7Og6qXSJlYGK8Xbc/zZyU3BfR9u17jlJlPp51lXNF3MkMHcdWa31fnmsmqRCcq8FF8j
- RDBuScP0gj7CSQQYEQIACQUCSZMvSQIbDAAKCRCL3CkFLvhg0OK6AJ4+05fuwuFFrGNahTwK
- 3SjvbE3HRwCgyuYgGcOqrIycpseHVTZlVuxF0Q8=
-Message-ID: <6ce58f44-050d-3716-791c-0e924b43d26a@freebox.fr>
-Date:   Mon, 25 Jan 2021 12:42:55 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Nicolas Schichan <nschichan@freebox.fr>
+Cc:     Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20210125125050.102605-1-arnd@kernel.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <f671f5d2-36c4-ded5-c4b9-93c5c57cc9f2@gmail.com>
+Date:   Mon, 25 Jan 2021 09:40:16 -0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.6.1
 MIME-Version: 1.0
-In-Reply-To: <20210107221509.6597-1-alcooperx@gmail.com>
+In-Reply-To: <20210125125050.102605-1-arnd@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Mon Jan 25 12:42:55 2021 +0100 (CET)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 07/01/2021 23:15, Al Cooper wrote:
-> Commit e7b5d63a82fe ("mmc: sdhci-brcmstb: Add shutdown callback")
-> that added a shutdown callback to the diver, is causing "mmc timeout"
-> errors on S5 suspend. The problem was that the "remove" was queuing
-> additional MMC commands after the "shutdown" and these caused
-> timeouts as the MMC queues were cleaned up for "remove". The
-> shutdown callback will be changed to calling sdhci-pltfm_suspend
-> which should get better power savings because the clocks will be
-> shutdown.
++Nicolas,
+
+On 1/25/2021 4:50 AM, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
+> sdhci_pltfm_suspend() is only available when CONFIG_PM_SLEEP
+> support is built into the kernel, which caused a regression
+> in a recent bugfix:
+> 
+> ld.lld: error: undefined symbol: sdhci_pltfm_suspend
+>>>> referenced by sdhci-brcmstb.c
+>>>>               mmc/host/sdhci-brcmstb.o:(sdhci_brcmstb_shutdown) in archive drivers/built-in.a
+> 
+> Making the call conditional on the symbol fixes the link
+> error.
+> 
+> Fixes: 5b191dcba719 ("mmc: sdhci-brcmstb: Fix mmc timeout errors on S5 suspend")
 > Fixes: e7b5d63a82fe ("mmc: sdhci-brcmstb: Add shutdown callback")
-> Signed-off-by: Al Cooper <alcooperx@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
->  drivers/mmc/host/sdhci-brcmstb.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-> index bbf3496f4495..f9780c65ebe9 100644
-> --- a/drivers/mmc/host/sdhci-brcmstb.c
-> +++ b/drivers/mmc/host/sdhci-brcmstb.c
-> @@ -314,11 +314,7 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
->  
->  static void sdhci_brcmstb_shutdown(struct platform_device *pdev)
->  {
-> -	int ret;
-> -
-> -	ret = sdhci_pltfm_unregister(pdev);
-> -	if (ret)
-> -		dev_err(&pdev->dev, "failed to shutdown\n");
-> +	sdhci_pltfm_suspend(&pdev->dev);
->  }
->  
->  MODULE_DEVICE_TABLE(of, sdhci_brcm_of_match);
-> 
+> It would be helpful if someone could test this to ensure that the
+> driver works correctly even when CONFIG_PM_SLEEP is disabled
 
-Good morning,
-
-Unfortunately this patch will cause link failures when CONFIG_PM_SLEEP is not
-set in the kernel config, as in sdhci-pltfm.c, the implementation of
-sdhci_pltfm_suspend() is in between #ifdef CONFIG_PM_SLEEP:
-
-/opt/toolchains/aarch64-musl-1.1.21-gcc-8.3.0-binutils-2.32-gdb-7.12.1-2/bin/aarch64-linux-musl-ld:
-drivers/mmc/host/sdhci-brcmstb.o: in function `sdhci_brcmstb_shutdown':
-sdhci-brcmstb.c:(.text+0x16c): undefined reference to `sdhci_pltfm_suspend'
-sdhci-brcmstb.c:(.text+0x16c): relocation truncated to fit: R_AARCH64_CALL26
-against undefined symbol `sdhci_pltfm_suspend'
-
-
-I'm not sure if definiting sdhci_pltfm_suspend() empty stubs in sdhci-pltfm.h
-when CONFIG_PM_SLEEP is not set would be prefered over adding #ifdef
-CONFIG_PM_SLEEP in sdhci-brcmstb.c, but I can send a patch for either solution.
-
-Regards,
-
+Why not create stubs for sdhci_pltfm_suspend() when CONFIG_PM_SLEEP=n? I
+don't think this is going to be a functional issue given that the
+purpose of having the .shutdown() function is to save power if we cannot
+that is fine, too.
 -- 
-Nicolas Schichan
-
+Florian
