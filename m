@@ -2,86 +2,349 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D8543035E8
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 06:57:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D05F3035EA
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 06:57:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388987AbhAZFzy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Jan 2021 00:55:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40190 "EHLO mail.kernel.org"
+        id S2388999AbhAZF4C (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Jan 2021 00:56:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57724 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728416AbhAYMvj (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 25 Jan 2021 07:51:39 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E3233222F9;
-        Mon, 25 Jan 2021 12:50:52 +0000 (UTC)
+        id S1727146AbhAYSlL (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 25 Jan 2021 13:41:11 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C87BE2067B;
+        Mon, 25 Jan 2021 18:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611579055;
-        bh=UjDoBeFYelZMuB+VxEwk6WDvkWvuefpCNK4nN0+uaes=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rDx1dBTsyoT3lVwZK41eQqKkTMWxKEM81hehefB75gPvh57ZdZ8X7SIxcgnPAH3n5
-         pPO/P7ND167R/ckDrI/UQ0ATv9qa4D8ice2NjybMMaU98IESGp/8BKom/v1Ak+6ffW
-         /I3FcvqJ1TW1ZmCmKTf+OdC3UXd2X4lARf7O9/Sz77cbDZcbKheL1xr+dQWV9bknCF
-         mfNuloCtfS4nkbK7t6x1c3anTzWdf+PHxzJdM76SII8Tf7zBK0Z9mNU3HX/DEYU/XM
-         Oroxs+yWaHieK8Su8qfEG8uqSDqyNueBkyj2I6hyW0sUGtlqea3sId9yhfZAAqqFED
-         7QenohHVP3owg==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Al Cooper <alcooperx@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+        s=k20201202; t=1611600030;
+        bh=R8sFfCHubgkOU0cGm4n8neybL2+MAy4yCvazMFWKA44=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=cROb1MxAnT7aYWfElG3bDQ0x7OYvctkn1KCepPCBge2qxsxW73g1aikMjNTYze4UY
+         jQ6xABO7ZyDLBIEWp0SHdPASaSw+Ioncv5b/is/WD/zcgBFCV6IbFTWSyGZwVfhFs3
+         f8iDtqYJ/z+cKQnCJfFh46x8h29lsXfUk8BxqPGtl2Tl2Y/KErVj90aNsdEqYw/4i9
+         LA9oAW+czD/T/b50VzXs1fZJ2RlRdp1FloKOPVoyFwqsqim4VbcBzff2oYrVsc+VU6
+         p4o8+3WGAdN9kSjqE7AyaoaZhie/mSJbEZ85mb1Xvo1ubmzqU/juRcgX577Tz6jwG6
+         UotaeY1TfxM1Q==
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, Satya Tangirala <satyat@google.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com
-Cc:     Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mmc: brcmstb: Fix sdhci_pltfm_suspend link error
-Date:   Mon, 25 Jan 2021 13:50:45 +0100
-Message-Id: <20210125125050.102605-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Asutosh Das <asutoshd@codeaurora.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Neeraj Soni <neersoni@codeaurora.org>,
+        Barani Muthukumaran <bmuthuku@codeaurora.org>,
+        Peng Zhou <peng.zhou@mediatek.com>,
+        Stanley Chu <stanley.chu@mediatek.com>,
+        Konrad Dybcio <konradybcio@gmail.com>
+Subject: [PATCH v6 1/9] mmc: add basic support for inline encryption
+Date:   Mon, 25 Jan 2021 10:38:02 -0800
+Message-Id: <20210125183810.198008-2-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210125183810.198008-1-ebiggers@kernel.org>
+References: <20210125183810.198008-1-ebiggers@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Biggers <ebiggers@google.com>
 
-sdhci_pltfm_suspend() is only available when CONFIG_PM_SLEEP
-support is built into the kernel, which caused a regression
-in a recent bugfix:
+In preparation for adding CQHCI crypto engine (inline encryption)
+support, add the code required to make mmc_core and mmc_block aware of
+inline encryption.  Specifically:
 
-ld.lld: error: undefined symbol: sdhci_pltfm_suspend
->>> referenced by sdhci-brcmstb.c
->>>               mmc/host/sdhci-brcmstb.o:(sdhci_brcmstb_shutdown) in archive drivers/built-in.a
+- Add a capability flag MMC_CAP2_CRYPTO to struct mmc_host.  Drivers
+  will set this if the host and driver support inline encryption.
 
-Making the call conditional on the symbol fixes the link
-error.
+- Embed a blk_keyslot_manager in struct mmc_host.  Drivers will
+  initialize this (as a device-managed resource) if the host and driver
+  support inline encryption.  mmc_block registers this keyslot manager
+  with the request_queue of any MMC card attached to the host.
 
-Fixes: 5b191dcba719 ("mmc: sdhci-brcmstb: Fix mmc timeout errors on S5 suspend")
-Fixes: e7b5d63a82fe ("mmc: sdhci-brcmstb: Add shutdown callback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+- Make mmc_block copy the crypto keyslot and crypto data unit number
+  from struct request to struct mmc_request, so that drivers will have
+  access to them.
+
+- If the MMC host is reset, reprogram all the keyslots to ensure that
+  the software state stays in sync with the hardware state.
+
+Co-developed-by: Satya Tangirala <satyat@google.com>
+Signed-off-by: Satya Tangirala <satyat@google.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Satya Tangirala <satyat@google.com>
+Reviewed-and-tested-by: Peng Zhou <peng.zhou@mediatek.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
-It would be helpful if someone could test this to ensure that the
-driver works correctly even when CONFIG_PM_SLEEP is disabled
----
- drivers/mmc/host/sdhci-brcmstb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/core/Kconfig  |  8 +++++++
+ drivers/mmc/core/Makefile |  1 +
+ drivers/mmc/core/block.c  |  3 +++
+ drivers/mmc/core/core.c   |  3 +++
+ drivers/mmc/core/crypto.c | 48 +++++++++++++++++++++++++++++++++++++++
+ drivers/mmc/core/crypto.h | 40 ++++++++++++++++++++++++++++++++
+ drivers/mmc/core/host.c   |  1 +
+ drivers/mmc/core/queue.c  |  3 +++
+ include/linux/mmc/core.h  |  6 +++++
+ include/linux/mmc/host.h  | 11 +++++++++
+ 10 files changed, 124 insertions(+)
+ create mode 100644 drivers/mmc/core/crypto.c
+ create mode 100644 drivers/mmc/core/crypto.h
 
-diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-index f9780c65ebe9..dc9280b149db 100644
---- a/drivers/mmc/host/sdhci-brcmstb.c
-+++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -314,7 +314,8 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
+diff --git a/drivers/mmc/core/Kconfig b/drivers/mmc/core/Kconfig
+index c12fe13e4b147..ae8b69aee6190 100644
+--- a/drivers/mmc/core/Kconfig
++++ b/drivers/mmc/core/Kconfig
+@@ -81,3 +81,11 @@ config MMC_TEST
+ 	  This driver is only of interest to those developing or
+ 	  testing a host driver. Most people should say N here.
  
- static void sdhci_brcmstb_shutdown(struct platform_device *pdev)
- {
--	sdhci_pltfm_suspend(&pdev->dev);
-+	if (IS_ENABLED(CONFIG_PM_SLEEP))
-+		sdhci_pltfm_suspend(&pdev->dev);
++config MMC_CRYPTO
++	bool "MMC Crypto Engine Support"
++	depends on BLK_INLINE_ENCRYPTION
++	help
++	  Enable Crypto Engine Support in MMC.
++	  Enabling this makes it possible for the kernel to use the crypto
++	  capabilities of the MMC device (if present) to perform crypto
++	  operations on data being transferred to/from the device.
+diff --git a/drivers/mmc/core/Makefile b/drivers/mmc/core/Makefile
+index 95ffe008ebdf8..6a907736cd7a5 100644
+--- a/drivers/mmc/core/Makefile
++++ b/drivers/mmc/core/Makefile
+@@ -18,3 +18,4 @@ obj-$(CONFIG_MMC_BLOCK)		+= mmc_block.o
+ mmc_block-objs			:= block.o queue.o
+ obj-$(CONFIG_MMC_TEST)		+= mmc_test.o
+ obj-$(CONFIG_SDIO_UART)		+= sdio_uart.o
++mmc_core-$(CONFIG_MMC_CRYPTO)	+= crypto.o
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 42e27a2982180..b877f62df3660 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -51,6 +51,7 @@
+ #include "block.h"
+ #include "core.h"
+ #include "card.h"
++#include "crypto.h"
+ #include "host.h"
+ #include "bus.h"
+ #include "mmc_ops.h"
+@@ -1247,6 +1248,8 @@ static void mmc_blk_data_prep(struct mmc_queue *mq, struct mmc_queue_req *mqrq,
+ 
+ 	memset(brq, 0, sizeof(struct mmc_blk_request));
+ 
++	mmc_crypto_prepare_req(mqrq);
++
+ 	brq->mrq.data = &brq->data;
+ 	brq->mrq.tag = req->tag;
+ 
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index 49d9117550afe..1136b859ddd86 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -37,6 +37,7 @@
+ 
+ #include "core.h"
+ #include "card.h"
++#include "crypto.h"
+ #include "bus.h"
+ #include "host.h"
+ #include "sdio_bus.h"
+@@ -992,6 +993,8 @@ void mmc_set_initial_state(struct mmc_host *host)
+ 		host->ops->hs400_enhanced_strobe(host, &host->ios);
+ 
+ 	mmc_set_ios(host);
++
++	mmc_crypto_set_initial_state(host);
  }
  
- MODULE_DEVICE_TABLE(of, sdhci_brcm_of_match);
+ /**
+diff --git a/drivers/mmc/core/crypto.c b/drivers/mmc/core/crypto.c
+new file mode 100644
+index 0000000000000..419a368f84029
+--- /dev/null
++++ b/drivers/mmc/core/crypto.c
+@@ -0,0 +1,48 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * MMC crypto engine (inline encryption) support
++ *
++ * Copyright 2020 Google LLC
++ */
++
++#include <linux/blk-crypto.h>
++#include <linux/mmc/host.h>
++
++#include "core.h"
++#include "crypto.h"
++#include "queue.h"
++
++void mmc_crypto_set_initial_state(struct mmc_host *host)
++{
++	/* Reset might clear all keys, so reprogram all the keys. */
++	if (host->caps2 & MMC_CAP2_CRYPTO)
++		blk_ksm_reprogram_all_keys(&host->ksm);
++}
++
++void mmc_crypto_setup_queue(struct request_queue *q, struct mmc_host *host)
++{
++	if (host->caps2 & MMC_CAP2_CRYPTO)
++		blk_ksm_register(&host->ksm, q);
++}
++EXPORT_SYMBOL_GPL(mmc_crypto_setup_queue);
++
++void mmc_crypto_prepare_req(struct mmc_queue_req *mqrq)
++{
++	struct request *req = mmc_queue_req_to_req(mqrq);
++	struct mmc_request *mrq = &mqrq->brq.mrq;
++
++	if (!req->crypt_keyslot)
++		return;
++
++	mrq->crypto_enabled = true;
++	mrq->crypto_key_slot = blk_ksm_get_slot_idx(req->crypt_keyslot);
++
++	/*
++	 * For now we assume that all MMC drivers set max_dun_bytes_supported=4,
++	 * which is the limit for CQHCI crypto.  So all DUNs should be 32-bit.
++	 */
++	WARN_ON_ONCE(req->crypt_ctx->bc_dun[0] > U32_MAX);
++
++	mrq->data_unit_num = req->crypt_ctx->bc_dun[0];
++}
++EXPORT_SYMBOL_GPL(mmc_crypto_prepare_req);
+diff --git a/drivers/mmc/core/crypto.h b/drivers/mmc/core/crypto.h
+new file mode 100644
+index 0000000000000..fbe9a520bf90d
+--- /dev/null
++++ b/drivers/mmc/core/crypto.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * MMC crypto engine (inline encryption) support
++ *
++ * Copyright 2020 Google LLC
++ */
++
++#ifndef _MMC_CORE_CRYPTO_H
++#define _MMC_CORE_CRYPTO_H
++
++struct mmc_host;
++struct mmc_queue_req;
++struct request_queue;
++
++#ifdef CONFIG_MMC_CRYPTO
++
++void mmc_crypto_set_initial_state(struct mmc_host *host);
++
++void mmc_crypto_setup_queue(struct request_queue *q, struct mmc_host *host);
++
++void mmc_crypto_prepare_req(struct mmc_queue_req *mqrq);
++
++#else /* CONFIG_MMC_CRYPTO */
++
++static inline void mmc_crypto_set_initial_state(struct mmc_host *host)
++{
++}
++
++static inline void mmc_crypto_setup_queue(struct request_queue *q,
++					  struct mmc_host *host)
++{
++}
++
++static inline void mmc_crypto_prepare_req(struct mmc_queue_req *mqrq)
++{
++}
++
++#endif /* !CONFIG_MMC_CRYPTO */
++
++#endif /* _MMC_CORE_CRYPTO_H */
+diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
+index 74e853bb69482..9b89a91b6b476 100644
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -25,6 +25,7 @@
+ #include <linux/mmc/slot-gpio.h>
+ 
+ #include "core.h"
++#include "crypto.h"
+ #include "host.h"
+ #include "slot-gpio.h"
+ #include "pwrseq.h"
+diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
+index 002426e3cf76c..33e7e65b6ddea 100644
+--- a/drivers/mmc/core/queue.c
++++ b/drivers/mmc/core/queue.c
+@@ -19,6 +19,7 @@
+ #include "block.h"
+ #include "core.h"
+ #include "card.h"
++#include "crypto.h"
+ #include "host.h"
+ 
+ #define MMC_DMA_MAP_MERGE_SEGMENTS	512
+@@ -407,6 +408,8 @@ static void mmc_setup_queue(struct mmc_queue *mq, struct mmc_card *card)
+ 	mutex_init(&mq->complete_lock);
+ 
+ 	init_waitqueue_head(&mq->wait);
++
++	mmc_crypto_setup_queue(mq->queue, host);
+ }
+ 
+ static inline bool mmc_merge_capable(struct mmc_host *host)
+diff --git a/include/linux/mmc/core.h b/include/linux/mmc/core.h
+index 29aa507116261..ab19245e99451 100644
+--- a/include/linux/mmc/core.h
++++ b/include/linux/mmc/core.h
+@@ -162,6 +162,12 @@ struct mmc_request {
+ 	bool			cap_cmd_during_tfr;
+ 
+ 	int			tag;
++
++#ifdef CONFIG_MMC_CRYPTO
++	bool			crypto_enabled;
++	int			crypto_key_slot;
++	u32			data_unit_num;
++#endif
+ };
+ 
+ struct mmc_card;
+diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+index 8cf686d98a68f..927ba75666176 100644
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -15,6 +15,7 @@
+ #include <linux/mmc/card.h>
+ #include <linux/mmc/pm.h>
+ #include <linux/dma-direction.h>
++#include <linux/keyslot-manager.h>
+ 
+ struct mmc_ios {
+ 	unsigned int	clock;			/* clock rate */
+@@ -395,6 +396,11 @@ struct mmc_host {
+ #define MMC_CAP2_CQE_DCMD	(1 << 24)	/* CQE can issue a direct command */
+ #define MMC_CAP2_AVOID_3_3V	(1 << 25)	/* Host must negotiate down from 3.3V */
+ #define MMC_CAP2_MERGE_CAPABLE	(1 << 26)	/* Host can merge a segment over the segment size */
++#ifdef CONFIG_MMC_CRYPTO
++#define MMC_CAP2_CRYPTO		(1 << 27)	/* Host supports inline encryption */
++#else
++#define MMC_CAP2_CRYPTO		0
++#endif
+ 
+ 	int			fixed_drv_type;	/* fixed driver type for non-removable media */
+ 
+@@ -489,6 +495,11 @@ struct mmc_host {
+ 	bool			cqe_enabled;
+ 	bool			cqe_on;
+ 
++	/* Inline encryption support */
++#ifdef CONFIG_MMC_CRYPTO
++	struct blk_keyslot_manager ksm;
++#endif
++
+ 	/* Host Software Queue support */
+ 	bool			hsq_enabled;
+ 
 -- 
-2.29.2
+2.30.0
 
