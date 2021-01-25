@@ -2,93 +2,121 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B39443035EF
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 06:57:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A713035E9
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 06:57:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726616AbhAZF4j (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Jan 2021 00:56:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58346 "EHLO mail.kernel.org"
+        id S1727026AbhAZFz6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Jan 2021 00:55:58 -0500
+Received: from ns.iliad.fr ([212.27.33.1]:52266 "EHLO ns.iliad.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726333AbhAYSmC (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 25 Jan 2021 13:42:02 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7BE2F20758;
-        Mon, 25 Jan 2021 18:40:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611600033;
-        bh=cX3hhlW1d9/YsB6hj6Qe4lavdDpm38z9XYx4ck60cDE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EPFhw0lNoxlrY49GsAZvAKUOpZK4XPzgwFXYyf9Rd+k8SQJZ5bb0vUMvSOXDc7mSz
-         hiCFTMXK2ywDnUr5Kxj6KYJPC88m6eLkDSDDx0MXHeblF5mz51tPmZGVwQx6PpvwdV
-         Olkqew5uV8eWaEhzUeOfXtJ+JaSUgnemaEQmVGL1dFHV19mBpx7xVJIywhWUFu2DB4
-         BJKL438zUQmalSA7Mr1L0MMtCt8pOvTkxySAwDZ89o6x3iEs5/AoPLuVQMKRzd0Ndk
-         rGJbqUqfVAnPCV2DvnFxuM1YHZgZfcguzNzJE+TYHhaCYg+qdV4teXI8WuqdoIcQPP
-         4QQDJ3u21P6KA==
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, Satya Tangirala <satyat@google.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        id S1727133AbhAYSkF (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 25 Jan 2021 13:40:05 -0500
+Received: from ns.iliad.fr (localhost [127.0.0.1])
+        by ns.iliad.fr (Postfix) with ESMTP id BE74220CD1;
+        Mon, 25 Jan 2021 19:39:08 +0100 (CET)
+Received: from [192.168.108.37] (freebox.vlq16.iliad.fr [213.36.7.13])
+        by ns.iliad.fr (Postfix) with ESMTP id 9D2001FF42;
+        Mon, 25 Jan 2021 19:39:06 +0100 (CET)
+Subject: Re: [PATCH] mmc: brcmstb: Fix sdhci_pltfm_suspend link error
+To:     Arnd Bergmann <arnd@kernel.org>, Al Cooper <alcooperx@gmail.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Asutosh Das <asutoshd@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Neeraj Soni <neersoni@codeaurora.org>,
-        Barani Muthukumaran <bmuthuku@codeaurora.org>,
-        Peng Zhou <peng.zhou@mediatek.com>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        Konrad Dybcio <konradybcio@gmail.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v6 7/9] dt-bindings: mmc: sdhci-msm: add ICE registers and clock
-Date:   Mon, 25 Jan 2021 10:38:08 -0800
-Message-Id: <20210125183810.198008-8-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210125183810.198008-1-ebiggers@kernel.org>
-References: <20210125183810.198008-1-ebiggers@kernel.org>
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-mmc@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+References: <20210125125050.102605-1-arnd@kernel.org>
+From:   Nicolas Schichan <nschichan@freebox.fr>
+Autocrypt: addr=nschichan@freebox.fr; prefer-encrypt=mutual; keydata=
+ xsDiBEmTLz8RBADBY46VzpMBGf4or14ijXlvY0jzJsBfWiBtpAbEGmyAEwf9olyd5yMrEnE1
+ qJk0NpcOMiXB/DMvOhJv4kxY6KT6r1y1UwmolkMJ782kt2zqyxaLpXsdSFBnLaN38XKgsvtW
+ snnFCA6FT3bYNPNVgNMuog2UhUn2eKGVBVW0nuFbGwCg5WM290H0BLJE9+v+z6UBqC0MIhED
+ /jENkiSXAhRzbFLc7cusXxmAUQlGO7kmWkZAShC+p2W/a/1BhCoefunkLKlMlJpSJJklbseQ
+ RZxfyImKFuep1pRhHM6PDpXP49jfYF6WYbbq7Bx752uUkRD9D5XqHfgPRuFRUC79rDgxFZv9
+ 2Umxuyacsg6gU0O3B8z2r0koXhffBACBymptu/4uHXO98HUuc92PwwswzqPyYXdZUQs37Fgc
+ rMZxR4utRzWDnLy81bRn00yHVfK/FJ14Bxx06xlLnmFZC3fy3z+g2cRxKFZ5H9AI0OnNQD69
+ eJTbARTNbKsgUvjqTvZTMg6TlesKSRI4kgCl9eejyrMuvOkSmeAnXwQHJM0nTmljb2xhcyBT
+ Y2hpY2hhbiA8bnNjaGljaGFuQGZyZWVib3guZnI+wmAEExECACAFAkmTLz8CGwMGCwkIBwMC
+ BBUCCAMEFgIDAQIeAQIXgAAKCRCL3CkFLvhg0PwDAKDQJXWNg9QyfYatePfw4W2k1oKOSwCg
+ ldD3GhvlDaYUjIcgpTGsK+21OnXOwU0ESZMvSRAIAIau5WL6+zCIjb9WTTf6bX1ULD3gtWTB
+ i/APtidAfIZJe87T7S7x3v7RRAPo5CAb787jgHZPzbZ2kRBbAPWB9ZF0d11m9Le3kmJPr6Lj
+ tSPGX8FY+T1pvUIi2OIbhVgKC5QpLB0pq8ISAEk1N/9eBGo7QXOEyeHwhIQS6+kOj5HlyA5U
+ sIw3M0bNTz9MWudHGphoad5ZF+gGVAXCN5s6TTSsKxWrejacaz0Y5r1nFjelK1fnqEWpiMD6
+ sh4Bv1gawiMOowd1tgeHeyvabRiBF780yU5EeNpv5T1vTUCaphPfFbPdrnOjrleN+kNqN8kS
+ 4b3G+WvEz+t9NRvFUiQgB+MAAwUH/3bx27p+GDxAwduC9rwvD2WbPkRYaMjTTcm7y+ssqCdL
+ VosZGFuqWdjcoc7sYsY6cfciupLAmSaX0kIPtzS0VBmzgtQRpdJSiC2ZskdMBg9/5C5lYWx9
+ T5Y8ys82LT8AmX3CzQbc1duk4bZ5bg5DrS79I2lE/2bzCS/HbIWNwCuunwk9s9A7KU8KhpXh
+ Xo7LUwYRJVsYjrhOGJcgPtPMp4ReFHtHlp5AaXEmZbBq1gtYwotd3eNXgp+gClXNxzI/+vW5
+ d/u1t7Og6qXSJlYGK8Xbc/zZyU3BfR9u17jlJlPp51lXNF3MkMHcdWa31fnmsmqRCcq8FF8j
+ RDBuScP0gj7CSQQYEQIACQUCSZMvSQIbDAAKCRCL3CkFLvhg0OK6AJ4+05fuwuFFrGNahTwK
+ 3SjvbE3HRwCgyuYgGcOqrIycpseHVTZlVuxF0Q8=
+Message-ID: <d5901e29-cbce-1c3e-15e6-15015c6e6be4@freebox.fr>
+Date:   Mon, 25 Jan 2021 19:39:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210125125050.102605-1-arnd@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Mon Jan 25 19:39:08 2021 +0100 (CET)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+On 25/01/2021 13:50, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> sdhci_pltfm_suspend() is only available when CONFIG_PM_SLEEP
+> support is built into the kernel, which caused a regression
+> in a recent bugfix:
+> 
+> ld.lld: error: undefined symbol: sdhci_pltfm_suspend
+>>>> referenced by sdhci-brcmstb.c
+>>>>               mmc/host/sdhci-brcmstb.o:(sdhci_brcmstb_shutdown) in archive drivers/built-in.a
+> 
+> Making the call conditional on the symbol fixes the link
+> error.
+> 
+> Fixes: 5b191dcba719 ("mmc: sdhci-brcmstb: Fix mmc timeout errors on S5 suspend")
+> Fixes: e7b5d63a82fe ("mmc: sdhci-brcmstb: Add shutdown callback")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> It would be helpful if someone could test this to ensure that the
+> driver works correctly even when CONFIG_PM_SLEEP is disabled
 
-Document the bindings for the registers and clock for the MMC instance
-of the Inline Crypto Engine (ICE) on Snapdragon SoCs.  These bindings
-are needed in order for sdhci-msm to support inline encryption.
+Good evening Arnd,
 
-Reviewed-by: Satya Tangirala <satyat@google.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 3 +++
- 1 file changed, 3 insertions(+)
+I have just given this patch a test, and the driver works fine on my side,
+afterwards.
 
-diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-index 9fa8a24fbc97d..4c7fa6a4ed15c 100644
---- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-+++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-@@ -31,10 +31,12 @@ Required properties:
- 	- SD Core register map (required for controllers earlier than msm-v5)
- 	- CQE register map (Optional, CQE support is present on SDHC instance meant
- 	                    for eMMC and version v4.2 and above)
-+	- Inline Crypto Engine register map (optional)
- - reg-names: When CQE register map is supplied, below reg-names are required
- 	- "hc" for Host controller register map
- 	- "core" for SD core register map
- 	- "cqhci" for CQE register map
-+	- "ice" for Inline Crypto Engine register map (optional)
- - interrupts: Should contain an interrupt-specifiers for the interrupts:
- 	- Host controller interrupt (required)
- - pinctrl-names: Should contain only one value - "default".
-@@ -47,6 +49,7 @@ Required properties:
- 	"xo"	- TCXO clock (optional)
- 	"cal"	- reference clock for RCLK delay calibration (optional)
- 	"sleep"	- sleep clock for RCLK delay calibration (optional)
-+	"ice" - clock for Inline Crypto Engine (optional)
- 
- - qcom,ddr-config: Certain chipsets and platforms require particular settings
- 	for the DDR_CONFIG register. Use this field to specify the register
+Tested-by: Nicolas Schichan <nschichan@freebox.fr>
+
+> ---
+>  drivers/mmc/host/sdhci-brcmstb.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
+> index f9780c65ebe9..dc9280b149db 100644
+> --- a/drivers/mmc/host/sdhci-brcmstb.c
+> +++ b/drivers/mmc/host/sdhci-brcmstb.c
+> @@ -314,7 +314,8 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
+>  
+>  static void sdhci_brcmstb_shutdown(struct platform_device *pdev)
+>  {
+> -	sdhci_pltfm_suspend(&pdev->dev);
+> +	if (IS_ENABLED(CONFIG_PM_SLEEP))
+> +		sdhci_pltfm_suspend(&pdev->dev);
+>  }
+>  
+>  MODULE_DEVICE_TABLE(of, sdhci_brcm_of_match);
+> 
+
+
 -- 
-2.30.0
-
+Nicolas Schichan
+Freebox SAS
