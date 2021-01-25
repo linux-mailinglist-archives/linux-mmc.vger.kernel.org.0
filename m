@@ -2,109 +2,178 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C5BD30406E
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 15:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7591F3047CF
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 20:13:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391840AbhAZNY4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Jan 2021 08:24:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42264 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391746AbhAZJ4Y (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Jan 2021 04:56:24 -0500
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 227F0C061573
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:55:44 -0800 (PST)
-Received: by mail-vs1-xe2e.google.com with SMTP id m13so3573803vsr.2
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:55:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=arxHqUjVCPMGGo+kdWhr5qA09DPzoA8oDcXRjdjMesU=;
-        b=EcShE3WriMxg/Eue+lluAhZy6XFdaiE7q/zIsBoYY7Ag15pVcIAPm2Rt5omAdELLCc
-         11mz6CsjnLhyj61t/GIlOHf/TvdxS3gxdXSFfStT0k870nQbJoQ9eSIIYNuucpdWD8/S
-         Sw/hzDKeBM6ISYAhYAe2Lw3q1xaBQtNpijQLFlW35bgeheAvsC77lBYtyV4oVcHveh1s
-         3mcs8sn6PHPe4ll+5zwuh/wDZZFvTa6fkB1RVZgsUwDAgARuLfkdcz9/RPCFOQ0/UuW7
-         /8XScZGzxB7cHdgTdkOiUb9Ll6WPzk2b+hSIWlPzYClk0yitUo36hYJGl2aqUGZPViDE
-         uldw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=arxHqUjVCPMGGo+kdWhr5qA09DPzoA8oDcXRjdjMesU=;
-        b=VR7RsWYoc7JHyc3o7luZ6xL70n5p9MDzRRQfNrYnB5eZmFBGUCRtBPFP1imfFLXZ3k
-         Ck6jLNWF9gbiZsU/ISWsCzVPWx1v3BNpek8FHc5MDxeHHWIO2awYdIUpuGVPq8bm6dmU
-         SAs5bpKARQ9pZPnCk0D/+A+cgUY26blvqxIXmwdAul3tzuPkNCkISlPDHGkkN+81j8no
-         f+3NPPGsB3FQ+yy/ujfTluSiUeFE4wxBkeAVojZ6tnxTTzO9/uqxeIFoeIXe1vTvtRjX
-         a6IZEMA1QoGoE+znxDaNYwnbxzu0qGaz+Hlojvqp404gdhACEAZo00rTm1DJPHuUNuLX
-         damg==
-X-Gm-Message-State: AOAM532R3a3h59KVgRrLrpWW3GB7EqHAvG9eSCM6PGMX/n9EhScci1Gw
-        g5ggninwf2pvFPShCk/gRttU82ZJ58AhU9qlj6cgEA==
-X-Google-Smtp-Source: ABdhPJz0yZvD2Kri9nEUdn+/MXiaY91SPbRIkAAb7URMZZAOXugfNTa0Bn9xEPlfbJnKhse7FqsZsh1vyYupSyURNt8=
-X-Received: by 2002:a05:6102:67b:: with SMTP id z27mr2242407vsf.19.1611654943282;
- Tue, 26 Jan 2021 01:55:43 -0800 (PST)
-MIME-Version: 1.0
-References: <20210125125050.102605-1-arnd@kernel.org> <f671f5d2-36c4-ded5-c4b9-93c5c57cc9f2@gmail.com>
-In-Reply-To: <f671f5d2-36c4-ded5-c4b9-93c5c57cc9f2@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 26 Jan 2021 10:55:07 +0100
-Message-ID: <CAPDyKFoGDHtE8JgLurwuN-W6CmmyBB3GP+7Z-bWqJiWw+TJEaQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: brcmstb: Fix sdhci_pltfm_suspend link error
-To:     Florian Fainelli <f.fainelli@gmail.com>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Nicolas Schichan <nschichan@freebox.fr>
-Cc:     Al Cooper <alcooperx@gmail.com>,
+        id S1732328AbhAZFzx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Jan 2021 00:55:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38422 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728178AbhAYMki (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 25 Jan 2021 07:40:38 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B967F2310C;
+        Mon, 25 Jan 2021 12:28:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611577688;
+        bh=zrGnvmXulEw+Ps4sGkdPh+BXUTzR8G54IaR9EQXhkXs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gXf/rN+F7ALFrI+/fFCV+sAuUgXj/71PUoThimfacmVwKjxGvT2oHlYXX6/EIZmw6
+         REPaggAnMj1+7Taq0ZdiktFiBmP0GEstg0K9ItrSb3Z4xe5BAq7JDl1RAr0JLa+LUO
+         zdIVcEdNZrEz1LDBc0Ta1DfbkYkii2R/4Vh3Nll2a49dzVDHdGPZWHk4P31Fwy0drj
+         SMg9yUwrxSj9MlzQL9/3+QgleFcf2Nxidi0LdUlkfSPERngc6ZJEg7muSLA+BEB90R
+         qMj0Wiq369B/gHNtYTwbsll5jH5DQqGugxuv7de6Akl5MED45Li4AY86SuH+Fues8r
+         FGIad8esWIPRQ==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "# 4.0+" <stable@vger.kernel.org>,
-        Douglas Anderson <dianders@chromium.org>,
+        Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
         Krzysztof Kozlowski <krzk@kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Baolin Wang <baolin.wang@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] mmc: aspeed: move kunit test into separate module
+Date:   Mon, 25 Jan 2021 13:27:27 +0100
+Message-Id: <20210125122802.982-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 25 Jan 2021 at 18:40, Florian Fainelli <f.fainelli@gmail.com> wrote:
->
-> +Nicolas,
->
-> On 1/25/2021 4:50 AM, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > sdhci_pltfm_suspend() is only available when CONFIG_PM_SLEEP
-> > support is built into the kernel, which caused a regression
-> > in a recent bugfix:
-> >
-> > ld.lld: error: undefined symbol: sdhci_pltfm_suspend
-> >>>> referenced by sdhci-brcmstb.c
-> >>>>               mmc/host/sdhci-brcmstb.o:(sdhci_brcmstb_shutdown) in archive drivers/built-in.a
-> >
-> > Making the call conditional on the symbol fixes the link
-> > error.
-> >
-> > Fixes: 5b191dcba719 ("mmc: sdhci-brcmstb: Fix mmc timeout errors on S5 suspend")
-> > Fixes: e7b5d63a82fe ("mmc: sdhci-brcmstb: Add shutdown callback")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> > It would be helpful if someone could test this to ensure that the
-> > driver works correctly even when CONFIG_PM_SLEEP is disabled
->
-> Why not create stubs for sdhci_pltfm_suspend() when CONFIG_PM_SLEEP=n? I
-> don't think this is going to be a functional issue given that the
-> purpose of having the .shutdown() function is to save power if we cannot
-> that is fine, too.
-> --
-> Florian
+From: Arnd Bergmann <arnd@arndb.de>
 
-I would prefer this approach - we shouldn't leave stub functions
-unimplemented, which is what looks to me.
+Having both the driver and the unit test in the same module
+leads to a link failure because of the extra init/exit functions:
 
-I just posted a new patch for this, please have a look and test it.
+drivers/mmc/host/sdhci-of-aspeed-test.c:98:1: error: redefinition of '__inittest'
+kunit_test_suite(aspeed_sdhci_test_suite);
 
-Kind regards
-Uffe
+Make it a separate module instead.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/mmc/host/Kconfig                |  2 +-
+ drivers/mmc/host/Makefile               |  1 +
+ drivers/mmc/host/sdhci-of-aspeed-test.c |  5 +++++
+ drivers/mmc/host/sdhci-of-aspeed.c      | 11 ++++-------
+ drivers/mmc/host/sdhci-of-aspeed.h      | 10 ++++++++++
+ 5 files changed, 21 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/mmc/host/sdhci-of-aspeed.h
+
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index d6f00d1d6251..a248f9f6be91 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -169,7 +169,7 @@ config MMC_SDHCI_OF_ASPEED
+ 	  If unsure, say N.
+ 
+ config MMC_SDHCI_OF_ASPEED_TEST
+-	bool "Tests for the ASPEED SDHCI driver"
++	tristate "Tests for the ASPEED SDHCI driver"
+ 	depends on MMC_SDHCI_OF_ASPEED && KUNIT=y
+ 	help
+ 	  Enable KUnit tests for the ASPEED SDHCI driver. Select this
+diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
+index 451c25fc2c69..5cc7e5f13587 100644
+--- a/drivers/mmc/host/Makefile
++++ b/drivers/mmc/host/Makefile
+@@ -90,6 +90,7 @@ obj-$(CONFIG_MMC_SDHCI_DOVE)		+= sdhci-dove.o
+ obj-$(CONFIG_MMC_SDHCI_TEGRA)		+= sdhci-tegra.o
+ obj-$(CONFIG_MMC_SDHCI_OF_ARASAN)	+= sdhci-of-arasan.o
+ obj-$(CONFIG_MMC_SDHCI_OF_ASPEED)	+= sdhci-of-aspeed.o
++obj-$(CONFIG_MMC_SDHCI_OF_ASPEED_TEST)  += sdhci-of-aspeed-test.o
+ obj-$(CONFIG_MMC_SDHCI_OF_AT91)		+= sdhci-of-at91.o
+ obj-$(CONFIG_MMC_SDHCI_OF_ESDHC)	+= sdhci-of-esdhc.o
+ obj-$(CONFIG_MMC_SDHCI_OF_HLWD)		+= sdhci-of-hlwd.o
+diff --git a/drivers/mmc/host/sdhci-of-aspeed-test.c b/drivers/mmc/host/sdhci-of-aspeed-test.c
+index 34070605b28b..e7e42991534a 100644
+--- a/drivers/mmc/host/sdhci-of-aspeed-test.c
++++ b/drivers/mmc/host/sdhci-of-aspeed-test.c
+@@ -2,6 +2,7 @@
+ /* Copyright (C) 2020 IBM Corp. */
+ 
+ #include <kunit/test.h>
++#include "sdhci-of-aspeed.h"
+ 
+ static void aspeed_sdhci_phase_ddr52(struct kunit *test)
+ {
+@@ -96,3 +97,7 @@ static struct kunit_suite aspeed_sdhci_test_suite = {
+ 	.test_cases = aspeed_sdhci_test_cases,
+ };
+ kunit_test_suite(aspeed_sdhci_test_suite);
++
++MODULE_DESCRIPTION("Unit test for the ASPEED SD/SDIO/SDHCI Controllers");
++MODULE_AUTHOR("Andrew Jeffery <andrew@aj.id.au>");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
+index 3b0d381e1215..dcc80099f528 100644
+--- a/drivers/mmc/host/sdhci-of-aspeed.c
++++ b/drivers/mmc/host/sdhci-of-aspeed.c
+@@ -15,6 +15,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/spinlock.h>
+ 
++#include "sdhci-of-aspeed.h"
+ #include "sdhci-pltfm.h"
+ 
+ #define ASPEED_SDC_INFO			0x00
+@@ -42,7 +43,6 @@ struct aspeed_sdc {
+ struct aspeed_sdhci_tap_param {
+ 	bool valid;
+ 
+-#define ASPEED_SDHCI_TAP_PARAM_INVERT_CLK	BIT(4)
+ 	u8 in;
+ 	u8 out;
+ };
+@@ -123,8 +123,8 @@ aspeed_sdc_set_phase_taps(struct aspeed_sdc *sdc,
+ #define ASPEED_SDHCI_NR_TAPS		15
+ /* Measured value with *handwave* environmentals and static loading */
+ #define ASPEED_SDHCI_MAX_TAP_DELAY_PS	1253
+-static int aspeed_sdhci_phase_to_tap(struct device *dev, unsigned long rate_hz,
+-				     int phase_deg)
++int aspeed_sdhci_phase_to_tap(struct device *dev, unsigned long rate_hz,
++			      int phase_deg)
+ {
+ 	u64 phase_period_ps;
+ 	u64 prop_delay_ps;
+@@ -158,6 +158,7 @@ static int aspeed_sdhci_phase_to_tap(struct device *dev, unsigned long rate_hz,
+ 
+ 	return inverted | tap;
+ }
++EXPORT_SYMBOL_GPL(aspeed_sdhci_phase_to_tap);
+ 
+ static void
+ aspeed_sdhci_phases_to_taps(struct device *dev, unsigned long rate,
+@@ -579,10 +580,6 @@ static void __exit aspeed_sdc_exit(void)
+ }
+ module_exit(aspeed_sdc_exit);
+ 
+-#if defined(CONFIG_MMC_SDHCI_OF_ASPEED_TEST)
+-#include "sdhci-of-aspeed-test.c"
+-#endif
+-
+ MODULE_DESCRIPTION("Driver for the ASPEED SD/SDIO/SDHCI Controllers");
+ MODULE_AUTHOR("Ryan Chen <ryan_chen@aspeedtech.com>");
+ MODULE_AUTHOR("Andrew Jeffery <andrew@aj.id.au>");
+diff --git a/drivers/mmc/host/sdhci-of-aspeed.h b/drivers/mmc/host/sdhci-of-aspeed.h
+new file mode 100644
+index 000000000000..931e70781d08
+--- /dev/null
++++ b/drivers/mmc/host/sdhci-of-aspeed.h
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++#ifndef _SDHCI_OF_ASPEED_H
++#define _SDHCI_OF_ASPEED_H
++
++struct device;
++int aspeed_sdhci_phase_to_tap(struct device *dev, unsigned long rate_hz,
++			      int phase_deg);
++#define ASPEED_SDHCI_TAP_PARAM_INVERT_CLK	BIT(4)
++
++#endif /* _SDHCI_OF_ASPEED_H */
+-- 
+2.29.2
+
