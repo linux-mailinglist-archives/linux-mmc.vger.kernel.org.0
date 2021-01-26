@@ -2,93 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B9683035F6
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 06:57:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BA3D303CFD
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 13:28:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731921AbhAZF5M (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Jan 2021 00:57:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37336 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729983AbhAZCGQ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 25 Jan 2021 21:06:16 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 51EB222D50;
-        Tue, 26 Jan 2021 00:15:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611620117;
-        bh=G16sIENRX9EMyT17x8UvaimcQGeqHoMJpMYb9LmaK3k=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iEufz0HdZJC1U8LIy/seQ34aF3gVSFXWEmeHUby/eUKsm5lI4Ci13ZXStoKWIUWik
-         poGDxnRQkvDK8XZK7nJCc7cSTyFwRAZkCEnId29adMDNCfd8RRfXcXuYj7aKAdWClK
-         FhOXpue4UMeZo4yaHpDc9XvNmcd3sUD4J7Sjy6fUxLVu3I8fZPTOVCuPV27CzzyC7m
-         iN8LJOnKZ5NYpwtnJqUD6H4YXmLToAQIJkwW9jaKZ0Qq6eQ3bBSOScbHUky4vBf+b4
-         SQiAPwaXbiGrBDLDfJVsmDVLyMeY5CqbmCchFRU752siOfKe9go46VcxbfouG5rr4b
-         J/KyEepdMXghg==
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, Satya Tangirala <satyat@google.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Asutosh Das <asutoshd@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Neeraj Soni <neersoni@codeaurora.org>,
-        Barani Muthukumaran <bmuthuku@codeaurora.org>,
-        Peng Zhou <peng.zhou@mediatek.com>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        Konrad Dybcio <konradybcio@gmail.com>
-Subject: [PATCH RESEND v6 9/9] arm64: dts: qcom: sdm630: add ICE registers and clocks
-Date:   Mon, 25 Jan 2021 16:14:56 -0800
-Message-Id: <20210126001456.382989-10-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210126001456.382989-1-ebiggers@kernel.org>
-References: <20210126001456.382989-1-ebiggers@kernel.org>
+        id S2404288AbhAZM2K (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Jan 2021 07:28:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46906 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404446AbhAZM2B (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Jan 2021 07:28:01 -0500
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E3F1C0611BD
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 04:27:20 -0800 (PST)
+Received: by mail-lj1-x22a.google.com with SMTP id a25so18175480ljn.0
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 04:27:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9v3KzGuGqK5MBcKhrYjClIynInTPzsS/HTqIFvp1/IQ=;
+        b=AhNeC2fz88Ilx7fr9U//EqOYLJZuP4afzoY1D9Y/bD2x0QTfkyd4mKOivKJxKrQ0Yf
+         6AvZnGWJ+8LIf9dqoKuCS6bVudx19xZbFELWI43p6MaiD6HlMHGZn9DB+SNCIrXee6Ab
+         eqMtMi4JDWBe5lQUk4xFFtxSmYZP0Ucw+Ov1Fp43HytHn3j1Ibi/PCf4/YuHN3aGeLvK
+         GUIFIvLGogG+pAvZxYHFZq704nBoKjv6IL+3GJnyh9QRAMF39P9lFY1Z9Cq9IZ6tDM+7
+         pK9wJQJCbRKYmOj3QsDHtWvQsugGdzgQ0HViEv2CgJEv2tfA7uECayDfXOPMkVaLxfHo
+         VpPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9v3KzGuGqK5MBcKhrYjClIynInTPzsS/HTqIFvp1/IQ=;
+        b=UQLtqFlenDvM54vPFInlIKV9OE1wbf2bBbw35h0L6QojZ4rrg/kBpig5B9A1/xV0bg
+         koqBMNIvKDcPu8EBuckGw0s9znGuEvUriqfhFHqbnc3+myOrrTJI4kgCMXT+0UKXBdBx
+         xYu17id6rXGy03bMYnzyy04+YWKN0EXUq8ngtMU89booueb8EbYrsEkT0dzCoSaYkSbx
+         JATTFscSqywA2JVejKBzGkAH0j18XM6RWALlTXEIMu6+gvU1OyBZsXifTK27J3Ikls0m
+         D5KRKbJauOHU+zWlQxLL+ZAbALqznmBeXaLSf0kIQK0482A+Tdpv8oLlosrz9glF8+UJ
+         ofSg==
+X-Gm-Message-State: AOAM531w8ZsKuOjjqVCYOy9voawAI8BE2eC2wDm7Dc8cJzLf9/Fopm9H
+        spuU9LyMfRXjNHDYHyzXEOU88tgQpxAChSRLN3dLDQ==
+X-Google-Smtp-Source: ABdhPJwQDPzt2pQJdG1h2shmSbkHRYF079XcqA/pvY3/oPEW206//2F908lHU7Mei6Id7APUc3gEXfQ+JgG0zDmUVa8=
+X-Received: by 2002:a2e:854d:: with SMTP id u13mr2614130ljj.439.1611664038883;
+ Tue, 26 Jan 2021 04:27:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210126095230.26580-1-ulf.hansson@linaro.org>
+In-Reply-To: <20210126095230.26580-1-ulf.hansson@linaro.org>
+From:   Nicolas Schichan <nschichan@freebox.fr>
+Date:   Tue, 26 Jan 2021 13:27:08 +0100
+Message-ID: <CAHNNwZCFrZvmiVD7A3Ys9rpxfb0AytJx1CFQDYkMWUkYTDuCsw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-pltfm: Fix linking err for sdhci-brcmstb
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+On Tue, Jan 26, 2021 at 10:52 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> The implementation of sdhci_pltfm_suspend() is only available when
+> CONFIG_PM_SLEEP is set, which triggers a linking error:
+>
+> "undefined symbol: sdhci_pltfm_suspend" when building sdhci-brcmstb.c.
+>
+> Fix this by implementing the missing stubs when CONFIG_PM_SLEEP is unset.
+>
+> Reported-by: Arnd Bergmann <arnd@arndb.de>
+> Suggested-by: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Nicolas Schichan <nschichan@freebox.fr>
+> Fixes: 5b191dcba719 ("mmc: sdhci-brcmstb: Fix mmc timeout errors on S5 suspend")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> ---
+>  drivers/mmc/host/sdhci-pltfm.h | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-pltfm.h b/drivers/mmc/host/sdhci-pltfm.h
+> index 6301b81cf573..9bd717ff784b 100644
+> --- a/drivers/mmc/host/sdhci-pltfm.h
+> +++ b/drivers/mmc/host/sdhci-pltfm.h
+> @@ -111,8 +111,13 @@ static inline void *sdhci_pltfm_priv(struct sdhci_pltfm_host *host)
+>         return host->private;
+>  }
+>
+> +extern const struct dev_pm_ops sdhci_pltfm_pmops;
+> +#ifdef CONFIG_PM_SLEEP
+>  int sdhci_pltfm_suspend(struct device *dev);
+>  int sdhci_pltfm_resume(struct device *dev);
+> -extern const struct dev_pm_ops sdhci_pltfm_pmops;
+> +#else
+> +static inline int sdhci_pltfm_suspend(struct device *dev) { return 0; }
+> +static inline int sdhci_pltfm_resume(struct device *dev) { return 0; }
+> +#endif
+>
+>  #endif /* _DRIVERS_MMC_SDHCI_PLTFM_H */
+> --
+> 2.25.1
+>
 
-Add the registers and clock for the Inline Crypto Engine (ICE) to the
-device tree node for the sdhci-msm host controller on sdm630.  This
-allows sdhci-msm to support inline encryption on sdm630.
+Hello,
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+I have just given this patch a test and no issues here, so:
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index 37d5cc32f6b62..afb3d20c31fa0 100644
---- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -808,8 +808,9 @@ spmi_bus: spmi@800f000 {
- 		sdhc_1: sdhci@c0c4000 {
- 			compatible = "qcom,sdm630-sdhci", "qcom,sdhci-msm-v5";
- 			reg = <0x0c0c4000 0x1000>,
--				<0x0c0c5000 0x1000>;
--			reg-names = "hc", "cqhci";
-+				<0x0c0c5000 0x1000>,
-+				<0x0c0c8000 0x8000>;
-+			reg-names = "hc", "cqhci", "ice";
- 
- 			interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
- 					<GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
-@@ -817,8 +818,9 @@ sdhc_1: sdhci@c0c4000 {
- 
- 			clocks = <&gcc GCC_SDCC1_APPS_CLK>,
- 					<&gcc GCC_SDCC1_AHB_CLK>,
--					<&xo_board>;
--			clock-names = "core", "iface", "xo";
-+					<&xo_board>,
-+					<&gcc GCC_SDCC1_ICE_CORE_CLK>;
-+			clock-names = "core", "iface", "xo", "ice";
- 
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&sdc1_clk_on &sdc1_cmd_on &sdc1_data_on &sdc1_rclk_on>;
--- 
-2.30.0
+Tested-By: Nicolas Schichan <nschichan@freeebox.fr>
 
+Regards,
+
+--
+Nicolas Schichan
