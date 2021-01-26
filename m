@@ -2,63 +2,62 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB1F2303D82
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 13:46:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3E2303D88
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 13:46:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391647AbhAZMqF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Jan 2021 07:46:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42510 "EHLO
+        id S2404137AbhAZMqJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Jan 2021 07:46:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391805AbhAZJ7j (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Jan 2021 04:59:39 -0500
-Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D9A8C061351
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:58:48 -0800 (PST)
-Received: by mail-vs1-xe2f.google.com with SMTP id w187so8710648vsw.5
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:58:48 -0800 (PST)
+        with ESMTP id S2391822AbhAZKAE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Jan 2021 05:00:04 -0500
+Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10946C061352
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:58:52 -0800 (PST)
+Received: by mail-vk1-xa29.google.com with SMTP id y8so1771106vky.4
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:58:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=l2QpuY8rM4toyVpou9vFx2TY09PAPQwcRntc7oTA0is=;
-        b=REheRH86QOMZ/fp5spJI+HYISUR+or1vKvxmyLai8utojsCRMMqRZNCOUCtr9iDzzT
-         XKCjgZykN3eQ+Yd4tWF8Nx84mDqCcPaAX51DnmV1EQb0s+BU7FQ4/dGwbq8Hjyx4lb8X
-         1bz23M3gWrmtbp0qNqGFhbDKnqcf/r4Nv8yHm996ztOvPdgDCz+F3cpsXgpcSvwX9/BB
-         5M1Ld2sSZPlcwZEZgnauow/fO1i+zZ2dRrWkLhVtJm6FyvYm7Mzu7FdKu0qA41KQHY+c
-         5mtgGQP6aqes5Uoo/O6YvxTu2aLRM9Al9fxuL8529+GWQY26Y2Za0GGLeltGrnjt6kff
-         l6Kg==
+        bh=OJ9v9Eswuw8AGGiIrKPTyPin8ZlyKUfcCAR1/7Zh/xM=;
+        b=cyDIRjpO4ZFnV9DET3FtMjX1D/Hxer5/id5g72v3adkfwmLW9gVcnnTXjc5RCcMLH7
+         doX76Bobh/BCQcD6YSmWuKwQJcEKNLMhjhdumwRK7lhyz25Oo9CtfOs6oM1orZ9Q713x
+         1hPeiBG1hTkxvTC+PrPd0ULC9K/wPIGUl/RbJmyvPy7/8K3xL2rDF4MthNFxMM9hVOOX
+         xYYrnAZJvBul/Cu/0OEyWtOHNEW1vC6MKQ9/Tc6TFpOr/py0SYAZP1IC4EcJfJgthd/K
+         wx9RPXFarfoUIEHSn0WnmHP0EYv0JDfXHesZMTyRN/DBa/058FPVpc4zfUTNwJoZSbd0
+         Copw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=l2QpuY8rM4toyVpou9vFx2TY09PAPQwcRntc7oTA0is=;
-        b=CwPuuvcPwg37aONrb6OWCxbJ6MsTyhaGYGyGRnBEfVU3ZSVTogtG9U2ZmtR/zxxfG1
-         2oSefLg62cyWVS4Hjsrb72oiP9adIExqnPIYrn9UCZifCDfSaDeIRZLRv5deg2Dj4rgJ
-         ZSPTJ8ftRyBcXyOzfcVcHWx0lGRsybH4QvyrWKlOTDfMUi3lBMQeB9tdXG3KkNikenWT
-         9SvhNeiRxzXOupgcCHv9xSh17gJBuRci0JKaB3/rlv8lSccEpaIrWBMvUl4oFJm6tzcq
-         aeupUuNcLdwDhB6ay8fRGYBFrgDhHB1YRpV+UXEdjbU9RIUfFRtWZsSZ1EzdFSgaqP15
-         erkQ==
-X-Gm-Message-State: AOAM530ofprgOldUvM8hymsqOXU4UvBk03m65QYLDK2pzTTovnMmkp/L
-        r0/bUON7APx9Wyaz00h458NoTZcx5OKWgyINHOvPmyU0aHcFVg==
-X-Google-Smtp-Source: ABdhPJyTySMXS2eZMh5eS03L32cNf15ToE5AvKZz7eICs1uJdhhGYno+oad4aRW7fF20tSBBSv54Xp63sFrSLCAF2oM=
-X-Received: by 2002:a67:f997:: with SMTP id b23mr3471696vsq.34.1611655127850;
- Tue, 26 Jan 2021 01:58:47 -0800 (PST)
+        bh=OJ9v9Eswuw8AGGiIrKPTyPin8ZlyKUfcCAR1/7Zh/xM=;
+        b=riec6a63kzajDosJ43O1K/b4SWGcaASR/cSHLhRZZgbNAmZRApvmvDmk/8+EfQ/BQq
+         d/EZF65IjUE29CcAVOUwBVb0Yvi/mez9nNNzUoDx72I6YDRfACqpVYA7t9uXP1fe/A4M
+         KOFayrhf2gLFmU541qZwfxlfnLxTDrm3Yo+N5hF9jhxWcxgWFYuWw5mGCMfit6psQcC+
+         kYEGg5YQZ5SQGmZaQhMQn1J1oNQEDwwuawe/c1iSZsWqAMi0alwq86u9r+vQCRAZ3Pqu
+         s02Z7Rwv5cHQLTe0/lsYZbkHVjamJnKqdF441B7uHW9x84KrUuYh/vYWfHMsqw5yePdv
+         VGMQ==
+X-Gm-Message-State: AOAM531pVwQwdl/AeyQ6Zgl2T/NkT8L+GqypILmtIKaoJKfSyh32hqga
+        PPYIn+RI+60+RhFQ5dx5NCdKqanwMPyb2bvWcbZFzA==
+X-Google-Smtp-Source: ABdhPJzC9akXFrbRt4Jm1DTTTS+O1MYoHbnyPrNkFvF2mxlHPqUwHojEqZvYDAxg5Ar2kbdE6A5vZRDISwvvG+EKCIM=
+X-Received: by 2002:a1f:2b58:: with SMTP id r85mr3612849vkr.6.1611655131305;
+ Tue, 26 Jan 2021 01:58:51 -0800 (PST)
 MIME-Version: 1.0
-References: <20210124170258.32862-1-marex@denx.de>
-In-Reply-To: <20210124170258.32862-1-marex@denx.de>
+References: <20210124170258.32862-1-marex@denx.de> <20210124170258.32862-2-marex@denx.de>
+In-Reply-To: <20210124170258.32862-2-marex@denx.de>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 26 Jan 2021 10:58:11 +0100
-Message-ID: <CAPDyKFrUnx4XSyxx=H8reDV=_vRORe7fE=6HQivC9T7OkHfyRg@mail.gmail.com>
-Subject: Re: [PATCH V2 1/4] mmc: mmci: Add bindings to operate CMD, CK, CKIN
- pins as GPIO
+Date:   Tue, 26 Jan 2021 10:58:14 +0100
+Message-ID: <CAPDyKFpn1PZWPnGTP-NdizVjwRgtdfPpw=Wf1g++Cf0y4dYxgA@mail.gmail.com>
+Subject: Re: [PATCH V2 2/4] mmc: mmci: Add support for probing bus voltage
+ level translator
 To:     =?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex@denx.de>
 Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
+        Yann Gautier <yann.gautier@foss.st.com>,
         Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
         Ludovic Barre <ludovic.barre@st.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        DTML <devicetree@vger.kernel.org>
+        linux-stm32@st-md-mailman.stormreply.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
@@ -66,16 +65,27 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 On Sun, 24 Jan 2021 at 18:03, Marek Vasut <marex@denx.de> wrote:
 >
-> Add DT bindings to describe GPIO line associated with CMD, CK, CKIN pins.
+> Add support for testing whether bus voltage level translator is present
+> and operational. This is useful on systems where the bus voltage level
+> translator is optional, as the translator can be auto-detected by the
+> driver and the feedback clock functionality can be disabled if it is
+> not present.
 >
+> This requires additional pinmux state, "init", where the CMD, CK, CKIN
+> lines are not configured, so they can be claimed as GPIOs early on in
+> probe(). The translator test sets CMD high to avoid interfering with a
+> card, and then verifies whether signal set on CK is detected on CKIN.
+> If the signal is detected, translator is present, otherwise the CKIN
+> feedback clock are disabled.
+>
+> Tested-by: Yann Gautier <yann.gautier@foss.st.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Marek Vasut <marex@denx.de>
 > Cc: Alexandre Torgue <alexandre.torgue@st.com>
 > Cc: Linus Walleij <linus.walleij@linaro.org>
 > Cc: Ludovic Barre <ludovic.barre@st.com>
-> Cc: Rob Herring <robh+dt@kernel.org>
 > Cc: Ulf Hansson <ulf.hansson@linaro.org>
 > Cc: linux-stm32@st-md-mailman.stormreply.com
-> Cc: devicetree@vger.kernel.org
 
 Applied for next, thanks!
 
@@ -84,42 +94,118 @@ Uffe
 
 
 > ---
-> V2: Rebase on next-20210122
+> V2: Rebase on next-20210122, add TB and RB
 > ---
->  .../devicetree/bindings/mmc/arm,pl18x.yaml    | 20 +++++++++++++++++++
->  1 file changed, 20 insertions(+)
+>  drivers/mmc/host/mmci.c | 70 ++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 65 insertions(+), 5 deletions(-)
 >
-> diff --git a/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml b/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml
-> index eddc1f6bdbe5..47595cb483be 100644
-> --- a/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml
-> @@ -127,6 +127,26 @@ properties:
->        driver to sample the receive data (for example with a voltage switch
->        transceiver).
+> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+> index b5a41a7ce165..1bc674577ff9 100644
+> --- a/drivers/mmc/host/mmci.c
+> +++ b/drivers/mmc/host/mmci.c
+> @@ -36,6 +36,7 @@
+>  #include <linux/types.h>
+>  #include <linux/pinctrl/consumer.h>
+>  #include <linux/reset.h>
+> +#include <linux/gpio/consumer.h>
 >
-> +  st,cmd-gpios:
-> +    maxItems: 1
-> +    description:
-> +      The GPIO matching the CMD pin.
-> +
-> +  st,ck-gpios:
-> +    maxItems: 1
-> +    description:
-> +      The GPIO matching the CK pin.
-> +
-> +  st,ckin-gpios:
-> +    maxItems: 1
-> +    description:
-> +      The GPIO matching the CKIN pin.
-> +
-> +dependencies:
-> +  st,cmd-gpios: [ "st,use-ckin" ]
-> +  st,ck-gpios: [ "st,use-ckin" ]
-> +  st,ckin-gpios: [ "st,use-ckin" ]
-> +
->  unevaluatedProperties: false
+>  #include <asm/div64.h>
+>  #include <asm/io.h>
+> @@ -1888,6 +1889,65 @@ static struct mmc_host_ops mmci_ops = {
+>         .start_signal_voltage_switch = mmci_sig_volt_switch,
+>  };
 >
->  required:
+> +static void mmci_probe_level_translator(struct mmc_host *mmc)
+> +{
+> +       struct device *dev = mmc_dev(mmc);
+> +       struct mmci_host *host = mmc_priv(mmc);
+> +       struct gpio_desc *cmd_gpio;
+> +       struct gpio_desc *ck_gpio;
+> +       struct gpio_desc *ckin_gpio;
+> +       int clk_hi, clk_lo;
+> +
+> +       /*
+> +        * Assume the level translator is present if st,use-ckin is set.
+> +        * This is to cater for DTs which do not implement this test.
+> +        */
+> +       host->clk_reg_add |= MCI_STM32_CLK_SELCKIN;
+> +
+> +       cmd_gpio = gpiod_get(dev, "st,cmd", GPIOD_OUT_HIGH);
+> +       if (IS_ERR(cmd_gpio))
+> +               goto exit_cmd;
+> +
+> +       ck_gpio = gpiod_get(dev, "st,ck", GPIOD_OUT_HIGH);
+> +       if (IS_ERR(ck_gpio))
+> +               goto exit_ck;
+> +
+> +       ckin_gpio = gpiod_get(dev, "st,ckin", GPIOD_IN);
+> +       if (IS_ERR(ckin_gpio))
+> +               goto exit_ckin;
+> +
+> +       /* All GPIOs are valid, test whether level translator works */
+> +
+> +       /* Sample CKIN */
+> +       clk_hi = !!gpiod_get_value(ckin_gpio);
+> +
+> +       /* Set CK low */
+> +       gpiod_set_value(ck_gpio, 0);
+> +
+> +       /* Sample CKIN */
+> +       clk_lo = !!gpiod_get_value(ckin_gpio);
+> +
+> +       /* Tristate all */
+> +       gpiod_direction_input(cmd_gpio);
+> +       gpiod_direction_input(ck_gpio);
+> +
+> +       /* Level translator is present if CK signal is propagated to CKIN */
+> +       if (!clk_hi || clk_lo) {
+> +               host->clk_reg_add &= ~MCI_STM32_CLK_SELCKIN;
+> +               dev_warn(dev,
+> +                        "Level translator inoperable, CK signal not detected on CKIN, disabling.\n");
+> +       }
+> +
+> +       gpiod_put(ckin_gpio);
+> +
+> +exit_ckin:
+> +       gpiod_put(ck_gpio);
+> +exit_ck:
+> +       gpiod_put(cmd_gpio);
+> +exit_cmd:
+> +       pinctrl_select_default_state(dev);
+> +}
+> +
+>  static int mmci_of_parse(struct device_node *np, struct mmc_host *mmc)
+>  {
+>         struct mmci_host *host = mmc_priv(mmc);
+> @@ -1913,7 +1973,7 @@ static int mmci_of_parse(struct device_node *np, struct mmc_host *mmc)
+>         if (of_get_property(np, "st,neg-edge", NULL))
+>                 host->clk_reg_add |= MCI_STM32_CLK_NEGEDGE;
+>         if (of_get_property(np, "st,use-ckin", NULL))
+> -               host->clk_reg_add |= MCI_STM32_CLK_SELCKIN;
+> +               mmci_probe_level_translator(mmc);
+>
+>         if (of_get_property(np, "mmc-cap-mmc-highspeed", NULL))
+>                 mmc->caps |= MMC_CAP_MMC_HIGHSPEED;
+> @@ -1949,15 +2009,15 @@ static int mmci_probe(struct amba_device *dev,
+>         if (!mmc)
+>                 return -ENOMEM;
+>
+> -       ret = mmci_of_parse(np, mmc);
+> -       if (ret)
+> -               goto host_free;
+> -
+>         host = mmc_priv(mmc);
+>         host->mmc = mmc;
+>         host->mmc_ops = &mmci_ops;
+>         mmc->ops = &mmci_ops;
+>
+> +       ret = mmci_of_parse(np, mmc);
+> +       if (ret)
+> +               goto host_free;
+> +
+>         /*
+>          * Some variant (STM32) doesn't have opendrain bit, nevertheless
+>          * pins can be set accordingly using pinctrl
 > --
 > 2.29.2
 >
