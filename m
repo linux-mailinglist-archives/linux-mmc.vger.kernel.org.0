@@ -2,69 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 786A9303FCB
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 15:12:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9F6304082
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 15:37:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392711AbhAZOLZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Jan 2021 09:11:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52092 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391192AbhAZOLM (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 26 Jan 2021 09:11:12 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5C36022DFB;
-        Tue, 26 Jan 2021 14:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611670212;
-        bh=GB4LM+e+KeQGmPPaLGcE23K9W8YeHZUp43KVm86dkoA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=i7uSImQguDH5lJDoFDoN2maBLvW1GpbbrufKZVE4cQBo8cXKNsyvoYJETsxfFNny0
-         X922heTn/Md9zsoDABajJXyvr3oYttOinUXgvYni4sKnWa49/3TrpWWS0dJ4a98h3x
-         6SqIA/VrVDzTsWeYU7cQb6e7Joe9fG07rKh+ablVnJmvMNBpNfpVkBL43mvugJU4G+
-         qtUewldsJ7XMQw350kaNvoJORSFL7VGwAFz7f9vxw8usB/bq/aJBqL4lgzdqu9XdQ4
-         U/MOJYK59W9rpH0qWAFLvW/xbpwe64lrKb1H3CFKRUlj+6Wsu2f4cmZzIUS9lv8GS9
-         votvddrUrAYhw==
-Received: by mail-ot1-f54.google.com with SMTP id s2so14075395otp.5;
-        Tue, 26 Jan 2021 06:10:12 -0800 (PST)
-X-Gm-Message-State: AOAM5337LYhsSfgI07pSjUk4sxKhsXs9MeFTi/naMUCfjMphlg7MgDgD
-        TN83QwCsUzGA1/Z3SlrCGxv+NO0XwgI6pFmulGo=
-X-Google-Smtp-Source: ABdhPJw7ommRj9+grbObZCNjDx1zbb9kddzZfzWL972a7v/ySOvAuA/pnVFKhfW2s+774OmbYvq4E5qfNtKYQWjbJ2g=
-X-Received: by 2002:a05:6830:139a:: with SMTP id d26mr4103374otq.305.1611670211771;
- Tue, 26 Jan 2021 06:10:11 -0800 (PST)
-MIME-Version: 1.0
-References: <20210126095230.26580-1-ulf.hansson@linaro.org>
-In-Reply-To: <20210126095230.26580-1-ulf.hansson@linaro.org>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Tue, 26 Jan 2021 15:09:55 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2MyPc81OdOsOryVgGqomum-UL=5vEDGjtdwNPUJKFFjw@mail.gmail.com>
-Message-ID: <CAK8P3a2MyPc81OdOsOryVgGqomum-UL=5vEDGjtdwNPUJKFFjw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-pltfm: Fix linking err for sdhci-brcmstb
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
+        id S2389287AbhAZOhN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Jan 2021 09:37:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41606 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391557AbhAZJxS (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Jan 2021 04:53:18 -0500
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33C6C06174A
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:52:37 -0800 (PST)
+Received: by mail-lj1-x232.google.com with SMTP id i17so18799981ljn.1
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:52:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Xl+szrNKltw4M9EkOt6Ku8phtfpsNC6B9vqlONxx0g4=;
+        b=ETXxVM2bLAeaCcj1UVibB+xzYWVDbEQPAGexw9B8RYRZue9PL7GzvgHmtFb1o0R7oT
+         mtB24aVlehH1AnDLZ0B/etqmD5yLUoEPaK18N3RlZhzBOOhPcEtq1BNGhUvCiUigkyT0
+         AWLbVzTPiW2ztrNE1OBGr3Zne1+sdlNWslLg5Pqxar6+9Cm5i4KqulWIwkRZRbKHHjKs
+         0x2GoyFNCwbphjOh0pcyzy1GSqn3Q18kYPBzvvq4RJ/p2qIn/3x8DdbDsRod07Kh5kPQ
+         +jHrsl4/rIh483QgCKofWC7ei83w4/JhFrmUbnl5RKwPFXF0oGeQvBdFBHpyLVt/zfe4
+         wUBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Xl+szrNKltw4M9EkOt6Ku8phtfpsNC6B9vqlONxx0g4=;
+        b=b5svXtamACdwwtI0lRNFITa5sSuEzu2e63u71j3A9sg0JP+Zk+j5J9nGiPDEFdxINF
+         kczDtxTzGuV5f7O+YlqtwVR/jDImNpYlPZDjlmFU1CmAjePySYEbpE6zI0LgsuBuSh8e
+         ehzPEzCocVPaww13C4e8CjLMi5GKSWjUKH4K3uq/N8o/pU+flRaBURwHkztHwQTD9S0b
+         eTkAMGttiDUvirv1a4//ADvMZEowuSr6GnccQ5tZAWf0vl1idcGDvugzI5WFMQjTQZ+N
+         YpdRE8fcAzZbYknfcYnm/9QjZ6oTEuMVXTApxfWfX5AVUbf2saRoGwT9lUSs9HxyhFBU
+         X0yA==
+X-Gm-Message-State: AOAM533hjcjBIKuDwgukRCXlIp6Zu8+1AyZFijB73T/ZpOjubYXjhH5v
+        S4QAcPSUKj69siS7ItTv5CK6CBQxvfNtfY+1
+X-Google-Smtp-Source: ABdhPJwe2hBaInwMyQJ6bm/S6REpkGRtWsL6YNFzyylZ3R0mgoyfmjcIrsAuAKVG67ByJ+1FBIUMlw==
+X-Received: by 2002:a2e:81d1:: with SMTP id s17mr2447074ljg.49.1611654755466;
+        Tue, 26 Jan 2021 01:52:35 -0800 (PST)
+Received: from localhost.localdomain (h-98-128-180-179.NA.cust.bahnhof.se. [98.128.180.179])
+        by smtp.gmail.com with ESMTPSA id x28sm2031841lfn.98.2021.01.26.01.52.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jan 2021 01:52:34 -0800 (PST)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Schichan <nschichan@freebox.fr>,
-        "# 3.4.x" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Nicolas Schichan <nschichan@freebox.fr>, stable@vger.kernel.org
+Subject: [PATCH] mmc: sdhci-pltfm: Fix linking err for sdhci-brcmstb
+Date:   Tue, 26 Jan 2021 10:52:30 +0100
+Message-Id: <20210126095230.26580-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 10:52 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> The implementation of sdhci_pltfm_suspend() is only available when
-> CONFIG_PM_SLEEP is set, which triggers a linking error:
->
-> "undefined symbol: sdhci_pltfm_suspend" when building sdhci-brcmstb.c.
->
-> Fix this by implementing the missing stubs when CONFIG_PM_SLEEP is unset.
->
-> Reported-by: Arnd Bergmann <arnd@arndb.de>
-> Suggested-by: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Nicolas Schichan <nschichan@freebox.fr>
-> Fixes: 5b191dcba719 ("mmc: sdhci-brcmstb: Fix mmc timeout errors on S5 suspend")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> ---
+The implementation of sdhci_pltfm_suspend() is only available when
+CONFIG_PM_SLEEP is set, which triggers a linking error:
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+"undefined symbol: sdhci_pltfm_suspend" when building sdhci-brcmstb.c.
+
+Fix this by implementing the missing stubs when CONFIG_PM_SLEEP is unset.
+
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Suggested-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Nicolas Schichan <nschichan@freebox.fr>
+Fixes: 5b191dcba719 ("mmc: sdhci-brcmstb: Fix mmc timeout errors on S5 suspend")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+---
+ drivers/mmc/host/sdhci-pltfm.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/sdhci-pltfm.h b/drivers/mmc/host/sdhci-pltfm.h
+index 6301b81cf573..9bd717ff784b 100644
+--- a/drivers/mmc/host/sdhci-pltfm.h
++++ b/drivers/mmc/host/sdhci-pltfm.h
+@@ -111,8 +111,13 @@ static inline void *sdhci_pltfm_priv(struct sdhci_pltfm_host *host)
+ 	return host->private;
+ }
+ 
++extern const struct dev_pm_ops sdhci_pltfm_pmops;
++#ifdef CONFIG_PM_SLEEP
+ int sdhci_pltfm_suspend(struct device *dev);
+ int sdhci_pltfm_resume(struct device *dev);
+-extern const struct dev_pm_ops sdhci_pltfm_pmops;
++#else
++static inline int sdhci_pltfm_suspend(struct device *dev) { return 0; }
++static inline int sdhci_pltfm_resume(struct device *dev) { return 0; }
++#endif
+ 
+ #endif /* _DRIVERS_MMC_SDHCI_PLTFM_H */
+-- 
+2.25.1
+
