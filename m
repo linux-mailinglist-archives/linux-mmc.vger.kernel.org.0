@@ -2,101 +2,215 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32DC1303D85
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 13:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55A9E303E9A
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jan 2021 14:25:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404006AbhAZMqI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Jan 2021 07:46:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42506 "EHLO
+        id S1731532AbhAZNZh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Jan 2021 08:25:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391808AbhAZJ7n (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Jan 2021 04:59:43 -0500
-Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87159C061353
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:58:55 -0800 (PST)
-Received: by mail-vs1-xe32.google.com with SMTP id o186so8722313vso.1
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:58:55 -0800 (PST)
+        with ESMTP id S2391743AbhAZJ7C (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Jan 2021 04:59:02 -0500
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0BE0C06174A
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:58:20 -0800 (PST)
+Received: by mail-vs1-xe2c.google.com with SMTP id m13so3576844vsr.2
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Jan 2021 01:58:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=pJCLQRxrq3qEZskHQDdRGHVs/g7GsIs44v+7gnvo2ls=;
-        b=FOFq8Rt4wj3ueoHnR83ehUcVd2jOut0bL1z0vDVXeQV2Rs3Vl4jGN3McmmUsSjU/ja
-         wamaDid3KnCaWtLk5G90d0nwdcQUc4BlfZr9SJFqdejzfVHGeCBc/cR5KQhUvKARusF1
-         ZPFskfWFCLWcp1uPPkQVOevDa63ZTw9U9oRCS0NZf9dZ/8bQWWmQCormdTj2fHKJz0Kt
-         uSapIEtaovuHMj5EW1FIropN2ShVEdx071K943vd2znRgeRaB3lkm34Z1pQ2LW+YbB6m
-         srbCbhRaXHf6YbJS0g8jFa2Adp3Yhfyn4zEZkLSssA2BzPFLsdpyfve88lfS+PLhUrxK
-         6mZQ==
+        bh=mLEfURoFvMMPicE7Sci98/F9GqRXhnpDvzTDrgr8tH4=;
+        b=JSZizunWnHFUkmtUHyAHOYnJD7wXa9KEiZveWMNJbTnIsq8DBDHrjQKEOAVIUnS48Z
+         B89LBx4/bpXA2X9q/59Ie5CSj3LKHJW8WBFd/ZiMU0nbvpV36l+1/kjI3XNyFgX2CJvQ
+         hMq5myY+0eEMn1T6cvm/zpTpATSRcY2hMgLA0YZ4BfwlqjcoTEu6WjHjqxpncT8ra3UL
+         R/Q89uXzi+GFTylz+4amrwKIDE71qCVeU/Ml8E0so8uucmBgKVDaIF6mW6GLmW/Vohrn
+         azwJ4PE5eJbhKEXypO4atxOccHGtZjJsh/Idz05fkAehRjL6+wzTRuW9nfGQGouv+fi/
+         8r0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=pJCLQRxrq3qEZskHQDdRGHVs/g7GsIs44v+7gnvo2ls=;
-        b=qyWv3rJ62VkNzWYD3wiDFcTfx32EYopP6f7wSIgZ0ZAjJoOsMq2UdYteMO9WukU1pb
-         1v+Mr4DYtHns1b9m9SaIzDhhLp+0elFKUJqoN9ICFNY2UkIptR940nONvT8shD8wP0pT
-         tnAkvT6rbh3QdNCeSlNh1uCw08ZTSpyaR6cytIbYry6r4Y/hnq5JOtN4A1ehM9yyMjfU
-         7nFqDM6g6Z0pNzGJiUbx3FfsaoHLF03A5qxFL/5RiccHI61Yc7VrtNeO6A/F9ZO18w6Q
-         aY8Av8cvfv4oSqdoEfY+9HIEekYnLj9Izv821pqPO9QIBu34bdGlI3RCnJYRKG2hRXZt
-         pg9A==
-X-Gm-Message-State: AOAM533Ne5+SuTpb97OFpJQizZhTFaoqzxiBY6w2tBx1k1aGOvpXN2Gc
-        pqyU8PjzNWQucAiOJbDCmyZk8sXk5aN/qtoUpNolFcVeaMelkQ==
-X-Google-Smtp-Source: ABdhPJxABc5UXW4in2s8UJsSPUcaq4oOAuUUuvd5smFLRDOyRYY5OppaOYrWw/Wc0F4v8snNQaOM8Rlku8cV1xHbXQ4=
-X-Received: by 2002:a67:c787:: with SMTP id t7mr3895407vsk.48.1611655134813;
- Tue, 26 Jan 2021 01:58:54 -0800 (PST)
+        bh=mLEfURoFvMMPicE7Sci98/F9GqRXhnpDvzTDrgr8tH4=;
+        b=OaGEPe2MWqLMI5gMVlaWZ5q3lBuJtkd1XbQPI45XVropZ37YM5ftLNS2GG6hZIHpwe
+         qeNJVamtR/N4P64qHJWXqKNF6PSwufXi4nNFq8jgv0r6ruhbjIj6ijgwloWQdh/VYVTz
+         rx/syhYee7AhUICZgmXMoLoxeAgs3XDVU96dKQOUIy5x3wVrmUt+ipNzvTTf2fBz3EAv
+         +HGKzGOCuzt03KdFrVmd8sNlFQRFuY77C69FpksMpRDjW0UVXvgRGpNWBXxDtP6t52pv
+         J0KDyb3VnD6aMN6CvtIIb2TiFkW0f3+pX1VOCbVWjpADPgoqg+fHuYRfEfltLnAGCNBH
+         8WTg==
+X-Gm-Message-State: AOAM533XE8+K2dOQVLxzsEyyYqTJtPu81inouKMicikLLNEk4qqWQgh5
+        mcMjyqMLjTMs+MnkdT5j8mfPIhgwM9O1k/wG2dnjpA==
+X-Google-Smtp-Source: ABdhPJyxGvvKaiWsvdAfgnpUMrYd5zV8ocbx1A6czDj8b/zotF18PP3KFNdesTQFGkoR6pzaz7PSef5aB7V6Asl73Ks=
+X-Received: by 2002:a67:f997:: with SMTP id b23mr3471044vsq.34.1611655100162;
+ Tue, 26 Jan 2021 01:58:20 -0800 (PST)
 MIME-Version: 1.0
-References: <CGME20210125064728epcas1p3c44396f8f733463d5e0add003cc2b7eb@epcas1p3.samsung.com>
- <20210125064355.28545-1-cw9316.lee@samsung.com>
-In-Reply-To: <20210125064355.28545-1-cw9316.lee@samsung.com>
+References: <20210125122802.982-1-arnd@kernel.org>
+In-Reply-To: <20210125122802.982-1-arnd@kernel.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 26 Jan 2021 10:58:17 +0100
-Message-ID: <CAPDyKFqM+PfzoP8aznomAncAVaFqUXN8SzCVf5rauqes+jGmPQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: queue: Exclude unnecessary header file
-To:     Chanwoo Lee <cw9316.lee@samsung.com>
+Date:   Tue, 26 Jan 2021 10:57:42 +0100
+Message-ID: <CAPDyKFqhHw6N=j5xLuDJEiOn+D98xzR=hUYmxY81_7cq3aitdQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: aspeed: move kunit test into separate module
+To:     Arnd Bergmann <arnd@kernel.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        "(Exiting) Baolin Wang" <baolin.wang@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Coly Li <colyli@suse.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sarthak Garg <sartgarg@codeaurora.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Joel Stanley <joel@jms.id.au>, Arnd Bergmann <arnd@arndb.de>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Baolin Wang <baolin.wang@linaro.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        grant.jung@samsung.com, jt77.jang@samsung.com,
-        dh0421.hwang@samsung.com, sh043.lee@samsung.com
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
+        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 25 Jan 2021 at 07:47, Chanwoo Lee <cw9316.lee@samsung.com> wrote:
+On Mon, 25 Jan 2021 at 13:28, Arnd Bergmann <arnd@kernel.org> wrote:
 >
-> From: ChanWoo Lee <cw9316.lee@samsung.com>
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> From the 4.19 kernel, thread related code has been removed in queue.c.
-> So we can exclude unnecessary header file.
+> Having both the driver and the unit test in the same module
+> leads to a link failure because of the extra init/exit functions:
 >
-> Signed-off-by: ChanWoo Lee <cw9316.lee@samsung.com>
+> drivers/mmc/host/sdhci-of-aspeed-test.c:98:1: error: redefinition of '__inittest'
+> kunit_test_suite(aspeed_sdhci_test_suite);
+>
+> Make it a separate module instead.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Applied for next, thanks!
+Arnd, thanks for the patch and for your help! However, this time
+Andrew already posted a similar patch [1] to fix the problem, which I
+have just applied.
+
+[1]
+https://patchwork.kernel.org/project/linux-mmc/patch/20210122114852.3790565-1-andrew@aj.id.au/
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/core/queue.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/mmc/host/Kconfig                |  2 +-
+>  drivers/mmc/host/Makefile               |  1 +
+>  drivers/mmc/host/sdhci-of-aspeed-test.c |  5 +++++
+>  drivers/mmc/host/sdhci-of-aspeed.c      | 11 ++++-------
+>  drivers/mmc/host/sdhci-of-aspeed.h      | 10 ++++++++++
+>  5 files changed, 21 insertions(+), 8 deletions(-)
+>  create mode 100644 drivers/mmc/host/sdhci-of-aspeed.h
 >
-> diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
-> index de7cb0369c30..c7218da6f17c 100644
-> --- a/drivers/mmc/core/queue.c
-> +++ b/drivers/mmc/core/queue.c
-> @@ -7,7 +7,6 @@
->  #include <linux/module.h>
->  #include <linux/blkdev.h>
->  #include <linux/freezer.h>
-> -#include <linux/kthread.h>
->  #include <linux/scatterlist.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/backing-dev.h>
+> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> index d6f00d1d6251..a248f9f6be91 100644
+> --- a/drivers/mmc/host/Kconfig
+> +++ b/drivers/mmc/host/Kconfig
+> @@ -169,7 +169,7 @@ config MMC_SDHCI_OF_ASPEED
+>           If unsure, say N.
+>
+>  config MMC_SDHCI_OF_ASPEED_TEST
+> -       bool "Tests for the ASPEED SDHCI driver"
+> +       tristate "Tests for the ASPEED SDHCI driver"
+>         depends on MMC_SDHCI_OF_ASPEED && KUNIT=y
+>         help
+>           Enable KUnit tests for the ASPEED SDHCI driver. Select this
+> diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
+> index 451c25fc2c69..5cc7e5f13587 100644
+> --- a/drivers/mmc/host/Makefile
+> +++ b/drivers/mmc/host/Makefile
+> @@ -90,6 +90,7 @@ obj-$(CONFIG_MMC_SDHCI_DOVE)          += sdhci-dove.o
+>  obj-$(CONFIG_MMC_SDHCI_TEGRA)          += sdhci-tegra.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_ARASAN)      += sdhci-of-arasan.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_ASPEED)      += sdhci-of-aspeed.o
+> +obj-$(CONFIG_MMC_SDHCI_OF_ASPEED_TEST)  += sdhci-of-aspeed-test.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_AT91)                += sdhci-of-at91.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_ESDHC)       += sdhci-of-esdhc.o
+>  obj-$(CONFIG_MMC_SDHCI_OF_HLWD)                += sdhci-of-hlwd.o
+> diff --git a/drivers/mmc/host/sdhci-of-aspeed-test.c b/drivers/mmc/host/sdhci-of-aspeed-test.c
+> index 34070605b28b..e7e42991534a 100644
+> --- a/drivers/mmc/host/sdhci-of-aspeed-test.c
+> +++ b/drivers/mmc/host/sdhci-of-aspeed-test.c
+> @@ -2,6 +2,7 @@
+>  /* Copyright (C) 2020 IBM Corp. */
+>
+>  #include <kunit/test.h>
+> +#include "sdhci-of-aspeed.h"
+>
+>  static void aspeed_sdhci_phase_ddr52(struct kunit *test)
+>  {
+> @@ -96,3 +97,7 @@ static struct kunit_suite aspeed_sdhci_test_suite = {
+>         .test_cases = aspeed_sdhci_test_cases,
+>  };
+>  kunit_test_suite(aspeed_sdhci_test_suite);
+> +
+> +MODULE_DESCRIPTION("Unit test for the ASPEED SD/SDIO/SDHCI Controllers");
+> +MODULE_AUTHOR("Andrew Jeffery <andrew@aj.id.au>");
+> +MODULE_LICENSE("GPL");
+> diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
+> index 3b0d381e1215..dcc80099f528 100644
+> --- a/drivers/mmc/host/sdhci-of-aspeed.c
+> +++ b/drivers/mmc/host/sdhci-of-aspeed.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/spinlock.h>
+>
+> +#include "sdhci-of-aspeed.h"
+>  #include "sdhci-pltfm.h"
+>
+>  #define ASPEED_SDC_INFO                        0x00
+> @@ -42,7 +43,6 @@ struct aspeed_sdc {
+>  struct aspeed_sdhci_tap_param {
+>         bool valid;
+>
+> -#define ASPEED_SDHCI_TAP_PARAM_INVERT_CLK      BIT(4)
+>         u8 in;
+>         u8 out;
+>  };
+> @@ -123,8 +123,8 @@ aspeed_sdc_set_phase_taps(struct aspeed_sdc *sdc,
+>  #define ASPEED_SDHCI_NR_TAPS           15
+>  /* Measured value with *handwave* environmentals and static loading */
+>  #define ASPEED_SDHCI_MAX_TAP_DELAY_PS  1253
+> -static int aspeed_sdhci_phase_to_tap(struct device *dev, unsigned long rate_hz,
+> -                                    int phase_deg)
+> +int aspeed_sdhci_phase_to_tap(struct device *dev, unsigned long rate_hz,
+> +                             int phase_deg)
+>  {
+>         u64 phase_period_ps;
+>         u64 prop_delay_ps;
+> @@ -158,6 +158,7 @@ static int aspeed_sdhci_phase_to_tap(struct device *dev, unsigned long rate_hz,
+>
+>         return inverted | tap;
+>  }
+> +EXPORT_SYMBOL_GPL(aspeed_sdhci_phase_to_tap);
+>
+>  static void
+>  aspeed_sdhci_phases_to_taps(struct device *dev, unsigned long rate,
+> @@ -579,10 +580,6 @@ static void __exit aspeed_sdc_exit(void)
+>  }
+>  module_exit(aspeed_sdc_exit);
+>
+> -#if defined(CONFIG_MMC_SDHCI_OF_ASPEED_TEST)
+> -#include "sdhci-of-aspeed-test.c"
+> -#endif
+> -
+>  MODULE_DESCRIPTION("Driver for the ASPEED SD/SDIO/SDHCI Controllers");
+>  MODULE_AUTHOR("Ryan Chen <ryan_chen@aspeedtech.com>");
+>  MODULE_AUTHOR("Andrew Jeffery <andrew@aj.id.au>");
+> diff --git a/drivers/mmc/host/sdhci-of-aspeed.h b/drivers/mmc/host/sdhci-of-aspeed.h
+> new file mode 100644
+> index 000000000000..931e70781d08
+> --- /dev/null
+> +++ b/drivers/mmc/host/sdhci-of-aspeed.h
+> @@ -0,0 +1,10 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +#ifndef _SDHCI_OF_ASPEED_H
+> +#define _SDHCI_OF_ASPEED_H
+> +
+> +struct device;
+> +int aspeed_sdhci_phase_to_tap(struct device *dev, unsigned long rate_hz,
+> +                             int phase_deg);
+> +#define ASPEED_SDHCI_TAP_PARAM_INVERT_CLK      BIT(4)
+> +
+> +#endif /* _SDHCI_OF_ASPEED_H */
 > --
-> 2.29.0
+> 2.29.2
 >
