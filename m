@@ -2,234 +2,100 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7E82307A16
-	for <lists+linux-mmc@lfdr.de>; Thu, 28 Jan 2021 16:55:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B7E2307F30
+	for <lists+linux-mmc@lfdr.de>; Thu, 28 Jan 2021 21:10:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231171AbhA1Pxf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 28 Jan 2021 10:53:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32792 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229908AbhA1Pxa (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 Jan 2021 10:53:30 -0500
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC1A2C061756
-        for <linux-mmc@vger.kernel.org>; Thu, 28 Jan 2021 07:52:49 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id g4so6503217ybf.16
-        for <linux-mmc@vger.kernel.org>; Thu, 28 Jan 2021 07:52:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:date:message-id:mime-version:subject:from:to:cc;
-        bh=bFlfFxExoP+T7uD5u0dP5DT6ACFMtzqiCrzF6r4rSzw=;
-        b=Ec94lJS+bCj3aaejQFC8FxQfhMx9FPQoE9aoIeYMmD8lpwJ2TYXNRYfvWRXREJXKGb
-         9DUiIjwKodL1rRPmgGG2bQBl9dL97cUCGZtfl67XkT60Nb8gCCsn4KYB9tro3NPpfWye
-         sTkajKmFUmZXY8+tIWaVJQvafFEV9n+mhoCFaDxO72djUzptYje/DjGpT90Y1yCZIgvM
-         qP96ZEHgMkSOXea7+yDtZiobKdP8qBNVUUr/KfwRXKy68f3QU/yLSTiurPo8a58EGyiv
-         /xVzwofhbrA24QGjeLqiPyULLXsl1K3Efn+WWdAeZkaNDvGLNQpsadRaIMBL7Vtzf+cd
-         pjNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:message-id:mime-version:subject:from
-         :to:cc;
-        bh=bFlfFxExoP+T7uD5u0dP5DT6ACFMtzqiCrzF6r4rSzw=;
-        b=ZOQZmmjYTIchYRPIdErVTNbJKElPgljGeEbKRSuDH0ex2FU6jkMNRcYHrq3R0ActTC
-         X6fkwjZ5IswayfYpsJyj87PvMxjDKUjvSoXpSR13yfX/Co36QHys3DUOQ5PW006RGxwN
-         bVeHuHqdUsF/ThzRcMuLrwIMlevhSQ59zWDnU2OwGBSVSRbeOgZuen6o1NWCQsMC55yN
-         1pTfd9Ycv+nbUR37Ka8o7CwHhgNhw6tJVgD+fCljgiP6LVYM6WWLTB2TdTKaDOt7gHlo
-         utw39IpQ5h4BQh2eSLovc/ccMS0IRjaKbTQTIT/G+oHz12WqR4jzSr6ojXO9oM1wFRK8
-         WDVw==
-X-Gm-Message-State: AOAM530tWgaZCzFmNY3eeYYve7A1X+L7OXec6n57EHjgbWAcEvZBjNTq
-        DZdVSd4n+tYHmUcZZFj8zpahITwptBSR88K9
-X-Google-Smtp-Source: ABdhPJy1hTEk/Mwopo0IgkxsLRQWHo/tNwR21dmvZx1FY3dDUfkStKEAAh4AHkF69Ltyk1Fxeq8pDctjdrOMrtV0
-Sender: "victording via sendgmr" <victording@victording.c.googlers.com>
-X-Received: from victording.c.googlers.com ([fda3:e722:ac3:10:24:72f4:c0a8:65c7])
- (user=victording job=sendgmr) by 2002:a25:d2c8:: with SMTP id
- j191mr23967268ybg.279.1611849168928; Thu, 28 Jan 2021 07:52:48 -0800 (PST)
-Date:   Thu, 28 Jan 2021 15:52:42 +0000
-Message-Id: <20210128155237.v2.1.I42c1001f8b0eaac973a99e1e5c2170788ee36c9c@changeid>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.30.0.280.ga3ce27912f-goog
-Subject: [PATCH v2] PCI/ASPM: Disable ASPM when save/restore PCI state
-From:   Victor Ding <victording@google.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Victor Ding <victording@google.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
-        Vidya Sagar <vidyas@nvidia.com>,
-        Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S231237AbhA1UJ5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 28 Jan 2021 15:09:57 -0500
+Received: from spe6-3.ucebox.co.za ([197.242.159.209]:33672 "EHLO
+        spe6-3.ucebox.co.za" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231351AbhA1UH4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 Jan 2021 15:07:56 -0500
+X-Greylist: delayed 6416 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Jan 2021 15:07:02 EST
+Received: from cornucopia.aserv.co.za ([154.0.175.203])
+        by spe4.ucebox.co.za with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <manornutgrovemanor@gmail.com>)
+        id 1l5Brs-0002Dc-Q5; Thu, 28 Jan 2021 20:18:43 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by cornucopia.aserv.co.za (Postfix) with ESMTPA id 37618C1250;
+        Thu, 28 Jan 2021 20:17:07 +0200 (SAST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 28 Jan 2021 20:17:07 +0200
+From:   Nut Grove Manor <manornutgrovemanor@gmail.com>
+To:     undisclosed-recipients:;
+Subject: Invitation To Quote
+User-Agent: Roundcube Webmail/1.4.1
+Message-ID: <b09951c581c69bcd4c3d48c21f6885b3@gmail.com>
+X-Sender: manornutgrovemanor@gmail.com
+X-Originating-IP: 154.0.175.203
+X-Afrihost-Domain: pesci.aserv.co.za
+X-Afrihost-Username: 154.0.175.203
+Authentication-Results: ucebox.co.za; auth=pass smtp.auth=154.0.175.203@pesci.aserv.co.za
+X-Afrihost-Outgoing-Class: unsure
+X-Afrihost-Outgoing-Evidence: Combined (0.71)
+X-Recommended-Action: accept
+X-Filter-ID: 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
+ F2m4bBx/YCvbzEWyHpfJdFJnGm+sTRDggxgVxQ==
+X-Report-Abuse-To: spam@spe1.ucebox.co.za
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Certain PCIe devices (e.g. GL9750) have high penalties (e.g. high Port
-T_POWER_ON) when exiting L1 but enter L1 aggressively. As a result,
-such devices enter and exit L1 frequently during pci_save_state and
-pci_restore_state; eventually causing poor suspend/resume performance.
+Good Day Sir
 
-Based on the observation that PCI accesses dominance pci_save_state/
-pci_restore_state plus these accesses are fairly close to each other, the
-actual time the device could stay in low power states is negligible.
-Therefore, the little power-saving benefit from ASPM during suspend/resume
-does not overweight the performance degradation caused by high L1 exit
-penalties.
+We are please to invite you/your company to quote the following item
+listed
+below:
 
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=211187
-Signed-off-by: Victor Ding <victording@google.com>
+Product/Model No: TM9653 PRESSURE REGULATOR
+Product Name:MEKO
+Qty. 30 units
 
----
+Compulsory,Kindly send your quotation
+for immediate approval.
 
-Changes in v2:
-- Updated commit message to remove unnecessary information
-- Fixed a bug reading wrong register in pcie_save_aspm_control
-- Updated to reuse existing pcie_config_aspm_dev where possible
-- Fixed goto label style
-
- drivers/pci/pci.c       | 18 +++++++++++++++---
- drivers/pci/pci.h       |  6 ++++++
- drivers/pci/pcie/aspm.c | 27 +++++++++++++++++++++++++++
- include/linux/pci.h     |  1 +
- 4 files changed, 49 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 32011b7b4c04..9ea88953f90b 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1542,6 +1542,10 @@ static void pci_restore_ltr_state(struct pci_dev *dev)
- int pci_save_state(struct pci_dev *dev)
- {
- 	int i;
-+
-+	pcie_save_aspm_control(dev);
-+	pcie_disable_aspm(dev);
-+
- 	/* XXX: 100% dword access ok here? */
- 	for (i = 0; i < 16; i++) {
- 		pci_read_config_dword(dev, i * 4, &dev->saved_config_space[i]);
-@@ -1552,18 +1556,22 @@ int pci_save_state(struct pci_dev *dev)
- 
- 	i = pci_save_pcie_state(dev);
- 	if (i != 0)
--		return i;
-+		goto exit;
- 
- 	i = pci_save_pcix_state(dev);
- 	if (i != 0)
--		return i;
-+		goto exit;
- 
- 	pci_save_ltr_state(dev);
- 	pci_save_aspm_l1ss_state(dev);
- 	pci_save_dpc_state(dev);
- 	pci_save_aer_state(dev);
- 	pci_save_ptm_state(dev);
--	return pci_save_vc_state(dev);
-+	i = pci_save_vc_state(dev);
-+
-+exit:
-+	pcie_restore_aspm_control(dev);
-+	return i;
- }
- EXPORT_SYMBOL(pci_save_state);
- 
-@@ -1661,6 +1669,8 @@ void pci_restore_state(struct pci_dev *dev)
- 	if (!dev->state_saved)
- 		return;
- 
-+	pcie_disable_aspm(dev);
-+
- 	/*
- 	 * Restore max latencies (in the LTR capability) before enabling
- 	 * LTR itself (in the PCIe capability).
-@@ -1689,6 +1699,8 @@ void pci_restore_state(struct pci_dev *dev)
- 	pci_enable_acs(dev);
- 	pci_restore_iov_state(dev);
- 
-+	pcie_restore_aspm_control(dev);
-+
- 	dev->state_saved = false;
- }
- EXPORT_SYMBOL(pci_restore_state);
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index a81459159f6d..e074a0cbe73c 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -584,6 +584,9 @@ void pcie_aspm_pm_state_change(struct pci_dev *pdev);
- void pcie_aspm_powersave_config_link(struct pci_dev *pdev);
- void pci_save_aspm_l1ss_state(struct pci_dev *dev);
- void pci_restore_aspm_l1ss_state(struct pci_dev *dev);
-+void pcie_save_aspm_control(struct pci_dev *dev);
-+void pcie_restore_aspm_control(struct pci_dev *dev);
-+void pcie_disable_aspm(struct pci_dev *pdev);
- #else
- static inline void pcie_aspm_init_link_state(struct pci_dev *pdev) { }
- static inline void pcie_aspm_exit_link_state(struct pci_dev *pdev) { }
-@@ -591,6 +594,9 @@ static inline void pcie_aspm_pm_state_change(struct pci_dev *pdev) { }
- static inline void pcie_aspm_powersave_config_link(struct pci_dev *pdev) { }
- static inline void pci_save_aspm_l1ss_state(struct pci_dev *dev) { }
- static inline void pci_restore_aspm_l1ss_state(struct pci_dev *dev) { }
-+static inline void pcie_save_aspm_control(struct pci_dev *dev) { }
-+static inline void pcie_restore_aspm_control(struct pci_dev *dev) { }
-+static inline void pcie_disable_aspm(struct pci_dev *pdev) { }
- #endif
- 
- #ifdef CONFIG_PCIE_ECRC
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index a08e7d6dc248..e1e97db32e8b 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -784,6 +784,33 @@ static void pcie_config_aspm_dev(struct pci_dev *pdev, u32 val)
- 					   PCI_EXP_LNKCTL_ASPMC, val);
- }
- 
-+void pcie_disable_aspm(struct pci_dev *pdev)
-+{
-+	if (!pci_is_pcie(pdev))
-+		return;
-+
-+	pcie_config_aspm_dev(pdev, 0);
-+}
-+
-+void pcie_save_aspm_control(struct pci_dev *pdev)
-+{
-+	u16 lnkctl;
-+
-+	if (!pci_is_pcie(pdev))
-+		return;
-+
-+	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &lnkctl);
-+	pdev->saved_aspm_ctl = lnkctl & PCI_EXP_LNKCTL_ASPMC;
-+}
-+
-+void pcie_restore_aspm_control(struct pci_dev *pdev)
-+{
-+	if (!pci_is_pcie(pdev))
-+		return;
-+
-+	pcie_config_aspm_dev(pdev, pdev->saved_aspm_ctl);
-+}
-+
- static void pcie_config_aspm_link(struct pcie_link_state *link, u32 state)
- {
- 	u32 upstream = 0, dwstream = 0;
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index b32126d26997..a21bfd6e3f89 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -387,6 +387,7 @@ struct pci_dev {
- 	unsigned int	ltr_path:1;	/* Latency Tolerance Reporting
- 					   supported from root to here */
- 	u16		l1ss;		/* L1SS Capability pointer */
-+	u16		saved_aspm_ctl; /* ASPM Control saved at suspend time */
- #endif
- 	unsigned int	eetlp_prefix_path:1;	/* End-to-End TLP Prefix */
- 
--- 
-2.30.0.280.ga3ce27912f-goog
-
+Kind Regards,
+Albert Bourla
+PFIZER B.V Supply Chain Manager
+Tel: +31(0)208080 880
+ADDRESS: Rivium Westlaan 142, 2909 LD
+Capelle aan den IJssel, Netherlands
