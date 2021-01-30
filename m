@@ -2,82 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75D27308CF5
-	for <lists+linux-mmc@lfdr.de>; Fri, 29 Jan 2021 20:05:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BEF630CEFC
+	for <lists+linux-mmc@lfdr.de>; Tue,  2 Feb 2021 23:36:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232803AbhA2TBN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 29 Jan 2021 14:01:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50084 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232895AbhA2TAx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 29 Jan 2021 14:00:53 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D295064E0A;
-        Fri, 29 Jan 2021 18:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611946793;
-        bh=kH+r5BM0XlyUqWsGOaJ5rHP31CbTjugp6JcE6uT5yog=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kuZZOhfq6e1MetpDMIMye9wWcM6ASdmDKZTexpyKkYB2Ny4gIWwaIMqzKEaF9lALt
-         Fwjx+bx6S4ibY8bzi2yVWYG/M9winktZ+Ju4UGL/2I+lO40kulHk4yTq5SiYniO2Rn
-         jzlLrSVniFYtsWC24C3UQJzfJr7ERS/eZj7/crMzx7HMNA8vTEu8mOeukAfuuE/7AQ
-         5OOUxSi3ED/yZuR25lVxA3iTriJtKhYnLzgDm8s1Yd6b4BXqoEY7jTs6xaDz9AM627
-         3XjWY6E7YAtd7S8KzlJIE6Yn/oHFzKWsMLX913iTPgptDV3mLHCOPlrGiGMNcZ7l2Z
-         ECTSp0jzYXloA==
-Date:   Fri, 29 Jan 2021 10:59:51 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Peng Zhou <peng.zhou@mediatek.com>
-Cc:     linux-mmc@vger.kernel.org,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Satya Tangirala <satyat@google.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Wulin Li <wulin.li@mediatek.com>,
-        Stanley Chu <stanley.chu@mediatek.com>
-Subject: Re: [PATCH v2 1/2] mmc: mediatek: add Inline Crypto Engine support
-Message-ID: <YBRbJ5sGt75ndmvG@sol.localdomain>
-References: <20210129070825.12304-1-peng.zhou@mediatek.com>
+        id S235843AbhBBWe3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Feb 2021 17:34:29 -0500
+Received: from [20.39.40.203] ([20.39.40.203]:61037 "EHLO optinix.in"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S230091AbhBBWeU (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 2 Feb 2021 17:34:20 -0500
+dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
+        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
+        b=Z/qoYR5e93G/1E5Uh8tLreepyziGYShILI7fcXozE97A3DqZKBadv9kcBZBcmHZnqAUcLkt0g+COxgI6WqJ5gdfKqksQSW540KJaAE4DNiZ+EZYtErJhsiZnZCgjfp9yI8W2dpgN2EsH5zUvgVY6Bl2MWU8ziaGqy1DCXSk4DXXi+2CTtkJX9uQrf2ohPvP7bhav6zr4dJxTQjQYoopWjV3h9j7RqQq/UIXqX3VBjVDZARoXQTZUB0KN0A
+        F7X8DeijiSCFEdYkkdQwasjHi3K0B6KloKBXegK0TgQ39PHt5t2MVnmtmeZadY0DbdImfujjk25mqjLTG700JJRoTl9A==
+Received: from User (Unknown [52.231.31.5])
+        by optinix.in with ESMTP
+        ; Sat, 30 Jan 2021 02:14:15 +0000
+Message-ID: <B0CC978E-0149-4652-A2D0-17DE1F49BCC1@optinix.in>
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <support@digitalsol.in>
+Subject: Re:read
+Date:   Sat, 30 Jan 2021 02:14:13 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210129070825.12304-1-peng.zhou@mediatek.com>
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Jan 29, 2021 at 03:08:25PM +0800, Peng Zhou wrote:
-> - add crypto clock control and ungate it before CQHCI init
-> - set MMC_CAP2_CRYPTO property of eMMC
-> 
-> Change-Id: I3a28eaa3718eee73259b4d60867cce25525f9bba
-> Signed-off-by: Peng Zhou <peng.zhou@mediatek.com>
+Hello,
 
-Please run scripts/checkpatch.pl on this patch (and the next one) and address
-the warnings and errors.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-> +	/* only eMMC has crypto property */
-> +	if ((mmc->caps2 & MMC_CAP2_NO_SD) && (mmc->caps2 & MMC_CAP2_NO_SDIO))
-> +		mmc->caps2 |= MMC_CAP2_CRYPTO;
-> +
-> +	if (mmc->caps2 & MMC_CAP2_CRYPTO) {
-> +		host->crypto_clk = devm_clk_get(&pdev->dev, "crypto_clk");
-> +		if (IS_ERR(host->crypto_clk))
-> +			host->crypto_clk = NULL;
-> +	}
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-Is this logic correct?  I'm wondering whether you want something more like:
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
-	/* only eMMC has crypto property */
-	if ((mmc->caps2 & MMC_CAP2_NO_SD) && (mmc->caps2 & MMC_CAP2_NO_SDIO))
-		host->crypto_clk = devm_clk_get(&pdev->dev, "crypto_clk");
-		if (IS_ERR(host->crypto_clk))
-			host->crypto_clk = NULL;
-		else
-			mmc->caps2 |= MMC_CAP2_CRYPTO;
-	}
+Regards,
+Ms. Reem.
 
-I.e., is crypto only supported when crypto_clk is present?  Or can crypto be
-supported without crypto_clk being present?
-
-- Eric
