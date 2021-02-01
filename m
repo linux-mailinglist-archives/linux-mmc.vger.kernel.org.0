@@ -2,86 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32CF7311045
-	for <lists+linux-mmc@lfdr.de>; Fri,  5 Feb 2021 19:48:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 296853111CF
+	for <lists+linux-mmc@lfdr.de>; Fri,  5 Feb 2021 21:06:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233521AbhBEREb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 5 Feb 2021 12:04:31 -0500
-Received: from mga03.intel.com ([134.134.136.65]:27726 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233719AbhBERB1 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 5 Feb 2021 12:01:27 -0500
-IronPort-SDR: w8Z0cBMJJDsKPS4DDWlRTXx9HTkKARRfghNcWDe2sMzeK8XXTvn/YB3U4TFfPLIVv+JjbDiqFf
- 6yGMmXiSBLlQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9886"; a="181537266"
-X-IronPort-AV: E=Sophos;i="5.81,155,1610438400"; 
-   d="scan'208";a="181537266"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2021 10:43:10 -0800
-IronPort-SDR: Q2LLkeL2CXHCPzqY8eW2S/QyhOm5+7Xw5DMsNzxHWO3d09gzEz58S0hIrUd+tF+OO3fRP/qX+A
- kFzp0btcoZDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,155,1610438400"; 
-   d="scan'208";a="583877176"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.149]) ([10.237.72.149])
-  by fmsmga005.fm.intel.com with ESMTP; 05 Feb 2021 10:43:08 -0800
-Subject: Re: [PATCH] sdhci: stop poking into swiotlb internals
-To:     Christoph Hellwig <hch@lst.de>, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
-References: <20210205162346.2847165-1-hch@lst.de>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <195d7168-3be0-91ea-1c5b-e850d5c12582@intel.com>
-Date:   Fri, 5 Feb 2021 20:43:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S233192AbhBESRd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 5 Feb 2021 13:17:33 -0500
+Received: from [20.39.40.203] ([20.39.40.203]:55697 "EHLO optinix.in"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S233183AbhBEPTk (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 5 Feb 2021 10:19:40 -0500
+dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
+        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
+        b=JFt3cjfr2gf0oZFNAIkKMxcz4dJD/YGkc0fGvOoSd3DydZ6om7JzTU837vBFVq1NIPU0D2QA5BLHZXE1+7cBmkJlbZjYCUFmJkkaBVbP88e4KHnDVRcctmBLIZ1pL5VerRqjcciKkL4DSuyXFJlGk3Z0CRoskvUoLBM7ZhpxLeqIU2BKsbHQXJZ1h2qHQhaHiD+VrGx+bGKjZzbhmRvwLDQIByq6jRcjht5MzYCcxpzOzp/k+Dev9dQj7B
+        WId68CyP4XonlI4wIMRo1xiGfUtKZ+P3cZo2ejPWBjr+ynq3dK3OxibTTEKfmOc5W1zmJFMAPQ+ZKxsa3M4d1PiYxHmg==
+Received: from User (Unknown [52.231.31.5])
+        by optinix.in with ESMTP
+        ; Mon, 1 Feb 2021 08:50:14 +0000
+Message-ID: <D474448D-A325-42CC-A881-8334C6C84BA7@optinix.in>
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <support@digitalsol.in>
+Subject: Re:read
+Date:   Mon, 1 Feb 2021 08:50:13 -0000
 MIME-Version: 1.0
-In-Reply-To: <20210205162346.2847165-1-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain;
+        charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-+ Jiri Slaby <jslaby@suse.cz>
+Hello,
 
-On 5/02/21 6:23 pm, Christoph Hellwig wrote:
-> Use the proper API to query the max mapping size instead of guessing
-> it based on swiotlb internals.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  drivers/mmc/host/sdhci.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index 646823ddd31715..2d73407ee52ec7 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -20,7 +20,6 @@
->  #include <linux/slab.h>
->  #include <linux/scatterlist.h>
->  #include <linux/sizes.h>
-> -#include <linux/swiotlb.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/of.h>
-> @@ -4582,12 +4581,8 @@ int sdhci_setup_host(struct sdhci_host *host)
->  		mmc->max_segs = SDHCI_MAX_SEGS;
->  	} else if (host->flags & SDHCI_USE_SDMA) {
->  		mmc->max_segs = 1;
-> -		if (swiotlb_max_segment()) {
-> -			unsigned int max_req_size = (1 << IO_TLB_SHIFT) *
-> -						IO_TLB_SEGSIZE;
-> -			mmc->max_req_size = min(mmc->max_req_size,
-> -						max_req_size);
-> -		}
-> +		mmc->max_req_size = min_t(size_t, mmc->max_req_size,
-> +					  dma_max_mapping_size(mmc_dev(mmc)));
->  	} else { /* PIO */
->  		mmc->max_segs = SDHCI_MAX_SEGS;
->  	}
-> 
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
+
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
+
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
 
