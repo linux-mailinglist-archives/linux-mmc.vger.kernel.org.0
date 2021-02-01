@@ -2,64 +2,105 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BEF630CEFC
-	for <lists+linux-mmc@lfdr.de>; Tue,  2 Feb 2021 23:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82ADC30A1BE
+	for <lists+linux-mmc@lfdr.de>; Mon,  1 Feb 2021 07:00:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235843AbhBBWe3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Feb 2021 17:34:29 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:61037 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S230091AbhBBWeU (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 2 Feb 2021 17:34:20 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=Z/qoYR5e93G/1E5Uh8tLreepyziGYShILI7fcXozE97A3DqZKBadv9kcBZBcmHZnqAUcLkt0g+COxgI6WqJ5gdfKqksQSW540KJaAE4DNiZ+EZYtErJhsiZnZCgjfp9yI8W2dpgN2EsH5zUvgVY6Bl2MWU8ziaGqy1DCXSk4DXXi+2CTtkJX9uQrf2ohPvP7bhav6zr4dJxTQjQYoopWjV3h9j7RqQq/UIXqX3VBjVDZARoXQTZUB0KN0A
-        F7X8DeijiSCFEdYkkdQwasjHi3K0B6KloKBXegK0TgQ39PHt5t2MVnmtmeZadY0DbdImfujjk25mqjLTG700JJRoTl9A==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Sat, 30 Jan 2021 02:14:15 +0000
-Message-ID: <B0CC978E-0149-4652-A2D0-17DE1F49BCC1@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Sat, 30 Jan 2021 02:14:13 -0000
+        id S231727AbhBAGAP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 1 Feb 2021 01:00:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59520 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231636AbhBAF5t (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 1 Feb 2021 00:57:49 -0500
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99321C0613D6;
+        Sun, 31 Jan 2021 21:57:09 -0800 (PST)
+Received: by mail-pj1-x102c.google.com with SMTP id a20so9647885pjs.1;
+        Sun, 31 Jan 2021 21:57:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zRs35J+9jM+mMBXrhR0hY7dunGBK3siVA/0rJv1BtSU=;
+        b=t9hHWfwLooMNi+qvk9J1pxvRmvzqq3igPQ7GJQwc5bwvUVLAruPSRLjrjY3gNhA4eu
+         pQjWogkhpdC01hXmO+BhCzevvzqUp0a79Ci2pxJHIgQRxCOu30l27uHPUouthN2M1+pF
+         BUmMhBVOzkFpJE/xkbxO7j1TFQeBf5BXTEKDWdsry0bxasJm9j2PexsSxM/5kU6ascw2
+         zGhjt0GEuXJAwhh7FM/iHXTHLIpF1N3bT4+h4mcVLPJZAOeCRsgUZ6vEggCKVAQ3OM2S
+         +GHmcF0d+3wA6xK/NDdoJPt1zXrTWML3Jb8KEy6TgImaX+6uXaVjeBPoxnv2pElpdZfM
+         FmkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zRs35J+9jM+mMBXrhR0hY7dunGBK3siVA/0rJv1BtSU=;
+        b=ZEkSZaBbdxy4mChTvYFCQmJjMCt7Nl3DD2Xc6Ceb+ZQPBHVTGgVdEoKSOSuaW7e+zE
+         wcOffiy3/Qv6DdHpVY9DsuvrcOjjn2bxjjRfTG+Pzq1HwtA7W2lijZyE/r8fZbQOkPnu
+         lbhkM6z5n/9tUNwSwnmXDO9m/iK7XRNQCot0nhNHR79dTIDusFH/ZYe0c0wOV0RQG/Yb
+         fRFI9KhdJW43m4ljmXBrqSFyGRFi8xb+WlSg9VjE7Z4x2sM5fmkOlH1wRKyeOSYI41m2
+         zZSNqE0DkoaPyd32hy17UIAD1IWgduO0HQKz5Md/zRIykMB6UyTI5YC7sn/0AO/v5Hv2
+         vUig==
+X-Gm-Message-State: AOAM531Gqb+TXdA0/cVPoBWFvIcBE+InI5HdIyRvVtK3DSwpQx8U5gOc
+        mV/cBUZgkBAPaUNkJd8+WLI=
+X-Google-Smtp-Source: ABdhPJzBOmZj5yUpp9460gkMGk7iG4gIAeVGl1jmc69B+H1YlctVewE/+lxTp4AX/X4pauYGCRYSdQ==
+X-Received: by 2002:a17:902:724b:b029:de:229a:47f1 with SMTP id c11-20020a170902724bb02900de229a47f1mr16508347pll.10.1612159029176;
+        Sun, 31 Jan 2021 21:57:09 -0800 (PST)
+Received: from tj.ccdomain.com ([103.220.76.197])
+        by smtp.gmail.com with ESMTPSA id e12sm16700820pga.13.2021.01.31.21.57.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Jan 2021 21:57:08 -0800 (PST)
+From:   Yue Hu <zbestahu@gmail.com>
+To:     ulf.hansson@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        huyue2@yulong.com, zhangwen@yulong.com, zbestahu@163.com
+Subject: [PATCH] mmc: core: Use host instead of card argument to mmc_spi_send_csd()
+Date:   Mon,  1 Feb 2021 13:55:07 +0800
+Message-Id: <20210201055507.542-1-zbestahu@gmail.com>
+X-Mailer: git-send-email 2.29.2.windows.3
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+From: Yue Hu <huyue2@yulong.com>
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Since mmc_send_cxd_data() does not care card if opcode is MMC_SEND_CSD.
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+Signed-off-by: Yue Hu <huyue2@yulong.com>
+---
+ drivers/mmc/core/mmc_ops.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
-
-Regards,
-Ms. Reem.
+diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
+index baa6314..265d95e 100644
+--- a/drivers/mmc/core/mmc_ops.c
++++ b/drivers/mmc/core/mmc_ops.c
+@@ -296,7 +296,7 @@ int mmc_set_relative_addr(struct mmc_card *card)
+ 	return 0;
+ }
+ 
+-static int mmc_spi_send_csd(struct mmc_card *card, u32 *csd)
++static int mmc_spi_send_csd(struct mmc_host *host, u32 *csd)
+ {
+ 	int ret, i;
+ 	__be32 *csd_tmp;
+@@ -305,7 +305,7 @@ static int mmc_spi_send_csd(struct mmc_card *card, u32 *csd)
+ 	if (!csd_tmp)
+ 		return -ENOMEM;
+ 
+-	ret = mmc_send_cxd_data(card, card->host, MMC_SEND_CSD, csd_tmp, 16);
++	ret = mmc_send_cxd_data(NULL, host, MMC_SEND_CSD, csd_tmp, 16);
+ 	if (ret)
+ 		goto err;
+ 
+@@ -320,7 +320,7 @@ static int mmc_spi_send_csd(struct mmc_card *card, u32 *csd)
+ int mmc_send_csd(struct mmc_card *card, u32 *csd)
+ {
+ 	if (mmc_host_is_spi(card->host))
+-		return mmc_spi_send_csd(card, csd);
++		return mmc_spi_send_csd(card->host, csd);
+ 
+ 	return mmc_send_cxd_native(card->host, card->rca << 16,	csd,
+ 				MMC_SEND_CSD);
+-- 
+1.9.1
 
