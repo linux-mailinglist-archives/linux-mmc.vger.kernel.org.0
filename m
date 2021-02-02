@@ -2,55 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DD2930AA22
-	for <lists+linux-mmc@lfdr.de>; Mon,  1 Feb 2021 15:45:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A2D730BBE7
+	for <lists+linux-mmc@lfdr.de>; Tue,  2 Feb 2021 11:18:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231418AbhBAOpC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Mon, 1 Feb 2021 09:45:02 -0500
-Received: from dyslmr.btconnect.com ([193.113.5.105]:3227 "EHLO
-        mail.btconnect.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231211AbhBAOn6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 1 Feb 2021 09:43:58 -0500
-X-Greylist: delayed 350 seconds by postgrey-1.27 at vger.kernel.org; Mon, 01 Feb 2021 09:43:54 EST
-Received: from mail.btconnect.com (dy11780omr11.iuser.iroot.adidom.com [10.35.83.172])
-        by dy11780slr11.dci.bt.com (MOS 4.4.8-GA)
-        with ESMTP id BDT25591;
-        Mon, 1 Feb 2021 14:37:09 GMT
-Received: (from localhost [127.0.0.1])
-        by dy11780omr11.dci.bt.com (MOS 4.4.8-GA)
-        id ZLE44678;
-        Mon,  1 Feb 2021 14:37:09 +0000 (GMT)
-Received: from 195-140-225-12.therecom.net (EHLO _192.168.0.100_) ([195.140.225.12])
-        by dy11780omr11.dci.bt.com
-        with ESMTP id ZLE44624 (AUTH inclusion@btconnect.com);
-        Mon, 01 Feb 2021 14:37:09 +0000 (GMT)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S229783AbhBBKRR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Feb 2021 05:17:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57970 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229631AbhBBKRQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Feb 2021 05:17:16 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2EB4C061573
+        for <linux-mmc@vger.kernel.org>; Tue,  2 Feb 2021 02:16:35 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id q12so27111646lfo.12
+        for <linux-mmc@vger.kernel.org>; Tue, 02 Feb 2021 02:16:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ekx47d27Ls5WQSFPSkQR0rp/GmQo/q7sleajQGZOu+g=;
+        b=X/1h2eCrVQF3IAcwLVLrbOY+c/gwmSzjKYh7YP+i/1ZmadXNpRB8t+gA0pHihwcStb
+         MXlzPThwaOlCSYXqwarliVCto9c74rkArEpoPpAvf8WOvMBIruRIcIIB8fyKM1gOnh9H
+         hHPw1/HPeA71DsPf/Ny3yzyNIatLXRZbaKBFMDfbYMKxsu28sOpOO0g08q9XoIA8utLz
+         CF+DdSKKKUj9aovZvCnKYp9JnWKHQHlQ2fhLbzhOZLI2RnVpWq79rxay4+zpsvtw8ZGu
+         d0cfvxIlaub55yvkLarDb1XG8h6sXHGTY/k4RAwtrTFnb34Y0FhJdPEVl9DYerzwOQEo
+         Llmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ekx47d27Ls5WQSFPSkQR0rp/GmQo/q7sleajQGZOu+g=;
+        b=jzti72o6RRbKlpI7NrVafgtEk51g9RJdHYnLqplYvaSeWdPOmi7PuU9gctDQ6dV/+U
+         Y07zz3DsfMixAl6sSO7GTRUBIeXB2vL+Au9ENe0auMQEx7AHFjhsDOmOI/snmsfV7r5o
+         z28OMeTybUiiPwElON/MlWcvo+j0/0WB5vhbRtyvKrTWjMZ7T4/mYYuaWA7gVtfOXhIe
+         dv1LMW7K0KtoEQ8e1VeWIRA/e9mYR878RL9t8JpHB+BcBRd0RQtmTLulw3kICMBFaKOy
+         75pqTdEdIDP5MSYFTgNe+fzxWZ5s8UIqvSE6YwmyscvpmPaiR/MHfSDQXog22FZwOADJ
+         E0fg==
+X-Gm-Message-State: AOAM532ew9O/jwOylt/IX4NlgmGoEkeKSutuTXFmyhu3GhAebqGj8UQT
+        pptN2mwTVqxbnSqyTH14xSoT+zzkDb3Hq3yJ
+X-Google-Smtp-Source: ABdhPJwV0B301+ZbwWpgSQsJi9Ans8tqOXAIME/s9Dq2VXqI4ltaIArlXDfJn2xm5NL+a0F0vacHQw==
+X-Received: by 2002:a05:6512:902:: with SMTP id e2mr10571882lft.492.1612260993569;
+        Tue, 02 Feb 2021 02:16:33 -0800 (PST)
+Received: from localhost.localdomain (h-98-128-180-179.NA.cust.bahnhof.se. [98.128.180.179])
+        by smtp.gmail.com with ESMTPSA id y3sm3241409lfg.208.2021.02.02.02.16.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Feb 2021 02:16:32 -0800 (PST)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     linux-mmc@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH] mmc: core: Drop redundant bouncesz from struct mmc_card
+Date:   Tue,  2 Feb 2021 11:16:26 +0100
+Message-Id: <20210202101626.64503-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Oferta darowizny
-To:     Recipients <inclusion@btconnect.com>
-From:   Neil Trotter <inclusion@btconnect.com>
-Date:   Mon, 01 Feb 2021 06:37:04 -0800
-Reply-To: neiltrotter560@gmail.com
-Message-Id: <202102011437.ZLE44624@dy11780omr11.dci.bt.com>
-X-Mirapoint-IP-Reputation: reputation=Poor-1,
-        source=Queried,
-        refid=tid=0001.0A782F93.6018120B.0035,
-        actions=TAG
-X-Junkmail: UCE(57)
-X-Junkmail-Status: score=57/50, host=dy11780omr11.dci.bt.com
-X-Junkmail-Signature-Raw: score=bulk(7),
-        refid=str=0001.0A782F26.60178F40.0013,ss=3,sh,re=0.000,recu=0.000,reip=0.000,cl=3,cld=1,fgs=0,
-        ip=195.140.225.12,
-        so=2016-11-06 16:00:04,
-        dmn=2013-03-21 17:37:32,
-        mode=multiengine
-X-Junkmail-IWF: false
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Witam, Nazywam sie Neil Trotter, zdobywca 107,9 miliona funtów brytyjskich na loterii Euro Million w 2014 roku. W imieniu mnie i mojej rodziny postanowilem przekazac Ci 500 000 tysiecy euro, które mozesz wykorzystac, aby pomóc sobie osobiscie. twoja rodzine, a nawet biednych i potrzebujacych ludzi wokól ciebie. Po prostu odpowiedz na tego e-maila, abym mógl przeslac Ci wiecej informacji na temat tego, w jaki sposób bedziesz mógl pomyslnie otrzymac te darowizne w ciagu najblizszych kilku dni.
-Niech cie Bóg blogoslawi
-Neil Trotter
+The commit de3ee99b097d ("mmc: Delete bounce buffer handling") removed the
+bounce buffer handling from the mmc core, but forgot to remove the bouncesz
+member from the struct mmc_card, let's fix it.
+
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+---
+ include/linux/mmc/card.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index 42df06c6b19c..f9ad35dd6012 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -311,7 +311,6 @@ struct mmc_card {
+ 	struct mmc_part	part[MMC_NUM_PHY_PARTITION]; /* physical partitions */
+ 	unsigned int    nr_parts;
+ 
+-	unsigned int		bouncesz;	/* Bounce buffer size */
+ 	struct workqueue_struct *complete_wq;	/* Private workqueue */
+ };
+ 
+-- 
+2.25.1
+
