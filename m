@@ -2,68 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 552F530DB27
-	for <lists+linux-mmc@lfdr.de>; Wed,  3 Feb 2021 14:27:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0199430D41F
+	for <lists+linux-mmc@lfdr.de>; Wed,  3 Feb 2021 08:39:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231793AbhBCN0o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 3 Feb 2021 08:26:44 -0500
-Received: from 198-20-226-115.unifiedlayer.com ([198.20.226.115]:49464 "EHLO
-        198-20-226-115.unifiedlayer.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S231587AbhBCN0j (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 3 Feb 2021 08:26:39 -0500
-X-Greylist: delayed 21638 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 08:26:07 EST
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=carnivalassure.com.bd; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=miRpAdBSO5eDo01VDX+EK9bqGCmqMjXHS3kO16T6iWw=; b=kpCxYUDs/Q6wFBgfe0+bmSS68M
-        zcRYWno/roH+XKBInhEBiKEf4sx8y5/VefxhpIs/9qNGv8WOvWRCUN26vxTSG7tj0WdQmOoQFUzGd
-        zFM6BBul3KRpIf0JTZbu6Gc0tILR3OADCzdq2jQpAr+iKaIbhn9Rm18NZ+GP5i3xtzfKEgr4eVlJ0
-        3dgYZqwo3IWhtiIKzeiK2Z56Y1fDICQvb9Zp0KBuIYmQ0tUoaRYeeoyaIyZf2v3dlk5hTiB2kGqOn
-        CMjmGpZsfobBwAkx8N1sOiSN6V0/cWmqmUGnX19FS5LdTSeXjM2y5OQ+CKiYPJhu4jYoICJGCThbx
-        uLC5ik7A==;
-Received: from [127.0.0.1] (port=46362 helo=dot.dotlines.com.sg)
-        by dot.dotlines.com.sg with esmtpa (Exim 4.93)
-        (envelope-from <noreply@carnivalassure.com.bd>)
-        id 1l7CVi-0005Z8-7H; Wed, 03 Feb 2021 01:23:34 -0600
+        id S231826AbhBCHhY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 3 Feb 2021 02:37:24 -0500
+Received: from mga17.intel.com ([192.55.52.151]:51600 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231834AbhBCHhW (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 3 Feb 2021 02:37:22 -0500
+IronPort-SDR: kDUqwn7elpv/X0bw4HIH+mskKF/d7c4jxWViRD8fThOpJSaS+rg6VVJkNYnl2BTtnjHmjcEIhV
+ XWnBiCqrXPkw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9883"; a="160760880"
+X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; 
+   d="scan'208";a="160760880"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 23:36:37 -0800
+IronPort-SDR: peD/CeSohs1xq+wtPJu0LOIU0QocDFx1r3nTgnm4Rhg86dkhLSi9EbjKWQyTaW5Kjw87BP5BJr
+ FVgvYz64HJKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; 
+   d="scan'208";a="372282320"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.149]) ([10.237.72.149])
+  by orsmga002.jf.intel.com with ESMTP; 02 Feb 2021 23:36:31 -0800
+Subject: Re: [PATCH] mmc: queue: Remove unused define
+To:     Chanwoo Lee <cw9316.lee@samsung.com>, ulf.hansson@linaro.org,
+        baolin.wang@linaro.org, arnd@arndb.de, colyli@suse.de,
+        lee.jones@linaro.org, sartgarg@codeaurora.org, pcc@google.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     grant.jung@samsung.com, jt77.jang@samsung.com,
+        dh0421.hwang@samsung.com, sh043.lee@samsung.com
+References: <CGME20210203072341epcas1p186cca2cf8177a31d04f1ede4bb5f1ec7@epcas1p1.samsung.com>
+ <20210203072014.30272-1-cw9316.lee@samsung.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <f7984520-8239-24ae-0142-811f4c6d9d9f@intel.com>
+Date:   Wed, 3 Feb 2021 09:36:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Date:   Wed, 03 Feb 2021 01:23:33 -0600
-From:   Francois Pinault <noreply@carnivalassure.com.bd>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Organization: Donation
-Reply-To: francoispinault1936@outlook.com
-Mail-Reply-To: francoispinault1936@outlook.com
-Message-ID: <da06bea50ecb79383d03c55bea3716bf@carnivalassure.com.bd>
-X-Sender: noreply@carnivalassure.com.bd
-User-Agent: Roundcube Webmail/1.3.15
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - dot.dotlines.com.sg
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - carnivalassure.com.bd
-X-Get-Message-Sender-Via: dot.dotlines.com.sg: authenticated_id: noreply@carnivalassure.com.bd
-X-Authenticated-Sender: dot.dotlines.com.sg: noreply@carnivalassure.com.bd
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+In-Reply-To: <20210203072014.30272-1-cw9316.lee@samsung.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On 3/02/21 9:20 am, Chanwoo Lee wrote:
+> From: ChanWoo Lee <cw9316.lee@samsung.com>
+> 
+> MMC_CQE_QUEUE_FULL is not set and is only cleared.
+> Therefore, define is unnecessary.
+> 
+> Signed-off-by: ChanWoo Lee <cw9316.lee@samsung.com>
 
+Looks like a pre blk-mq remanent.
 
--- 
-Hallo, ich bin Herr Francois Pinault, ich habe Ihnen gespendet. Sie 
-können mein Profil auf Wikipedia, Google oder Forbes überprüfen.
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Für Ihren Spendenanspruch und weitere Informationen kontaktieren Sie 
-mich umgehend unter francoispinault1936@outlook.com
+> ---
+>  drivers/mmc/core/queue.c | 2 --
+>  drivers/mmc/core/queue.h | 1 -
+>  2 files changed, 3 deletions(-)
+> 
+> diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
+> index 002426e3cf76..9f37a8b909e8 100644
+> --- a/drivers/mmc/core/queue.c
+> +++ b/drivers/mmc/core/queue.c
+> @@ -33,8 +33,6 @@ void mmc_cqe_check_busy(struct mmc_queue *mq)
+>  {
+>  	if ((mq->cqe_busy & MMC_CQE_DCMD_BUSY) && !mmc_cqe_dcmd_busy(mq))
+>  		mq->cqe_busy &= ~MMC_CQE_DCMD_BUSY;
+> -
+> -	mq->cqe_busy &= ~MMC_CQE_QUEUE_FULL;
+>  }
+>  
+>  static inline bool mmc_cqe_can_dcmd(struct mmc_host *host)
+> diff --git a/drivers/mmc/core/queue.h b/drivers/mmc/core/queue.h
+> index fd11491ced9f..57c59b6cb1b9 100644
+> --- a/drivers/mmc/core/queue.h
+> +++ b/drivers/mmc/core/queue.h
+> @@ -81,7 +81,6 @@ struct mmc_queue {
+>  	int			in_flight[MMC_ISSUE_MAX];
+>  	unsigned int		cqe_busy;
+>  #define MMC_CQE_DCMD_BUSY	BIT(0)
+> -#define MMC_CQE_QUEUE_FULL	BIT(1)
+>  	bool			busy;
+>  	bool			use_cqe;
+>  	bool			recovery_needed;
+> 
 
-Mit freundlichen Grüßen,
-Herr Francois Pinault
