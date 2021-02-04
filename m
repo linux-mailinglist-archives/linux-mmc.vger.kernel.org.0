@@ -2,86 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 382D030F2B4
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Feb 2021 12:52:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6911B30F2E3
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Feb 2021 13:11:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235687AbhBDLuT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 4 Feb 2021 06:50:19 -0500
-Received: from foss.arm.com ([217.140.110.172]:56926 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235683AbhBDLuS (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 4 Feb 2021 06:50:18 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E69ABD6E;
-        Thu,  4 Feb 2021 03:49:31 -0800 (PST)
-Received: from [10.57.49.26] (unknown [10.57.49.26])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C76A3F73B;
-        Thu,  4 Feb 2021 03:49:25 -0800 (PST)
-Subject: Re: [PATCH RFC v1 2/6] swiotlb: convert variables to arrays
-To:     Christoph Hellwig <hch@lst.de>,
-        Dongli Zhang <dongli.zhang@oracle.com>
-Cc:     dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        iommu@lists.linux-foundation.org, linux-mips@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-pci@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, nouveau@lists.freedesktop.org,
-        x86@kernel.org, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, adrian.hunter@intel.com,
-        akpm@linux-foundation.org, benh@kernel.crashing.org,
-        bskeggs@redhat.com, bhelgaas@google.com, bp@alien8.de,
-        boris.ostrovsky@oracle.com, chris@chris-wilson.co.uk,
-        daniel@ffwll.ch, airlied@linux.ie, hpa@zytor.com, mingo@kernel.org,
-        mingo@redhat.com, jani.nikula@linux.intel.com,
-        joonas.lahtinen@linux.intel.com, jgross@suse.com,
-        konrad.wilk@oracle.com, m.szyprowski@samsung.com,
-        matthew.auld@intel.com, mpe@ellerman.id.au, rppt@kernel.org,
-        paulus@samba.org, peterz@infradead.org, rodrigo.vivi@intel.com,
-        sstabellini@kernel.org, bauerman@linux.ibm.com,
-        tsbogend@alpha.franken.de, tglx@linutronix.de,
-        ulf.hansson@linaro.org, joe.jin@oracle.com,
-        thomas.lendacky@amd.com, Claire Chang <tientzu@chromium.org>
-References: <20210203233709.19819-1-dongli.zhang@oracle.com>
- <20210203233709.19819-3-dongli.zhang@oracle.com>
- <20210204072947.GA29812@lst.de>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <b46ddefe-d91a-fa6a-0e0d-cf1edc343c2e@arm.com>
-Date:   Thu, 4 Feb 2021 11:49:23 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        id S235850AbhBDMJY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 4 Feb 2021 07:09:24 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:26332 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S235635AbhBDMJW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 4 Feb 2021 07:09:22 -0500
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 114C6q3W029267;
+        Thu, 4 Feb 2021 13:08:21 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=selector1;
+ bh=JVizouHpERDxnp0Pvrg/BABCeBC1rdtimLXFBGntSH4=;
+ b=cqJ2wZpqzmrm085DrfRl8YQWjnmoZNnCv66PcRMAZProUYHXKluzhIfqMtRpJ/s8Pj71
+ hkFhqEeA6gqeWYNrpBs4ycF0TVHarf244M+2NS2tE5TPBG6VVR2oN62pS+5P8DDMptNR
+ jjifSs0lyZvB5ZTWaA+oTjPH38MXixduoKD2y1YackfYjTvMaBAp+dS+xm7WopWHB/i7
+ 86VwsxfOLnw1ZkgytNWKZA35hlx7E+HbZIObUGhQBS2+x0h3YZqgzmxKvgDb7T3XNtyh
+ U10HOe2dR/MfvskSgMvVrU28R6JxFNPVR2Pq+U7xlWlxfkA+2MJaQ5KbZcSXH5nx+ElU Bw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 36d0ns7x88-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 04 Feb 2021 13:08:21 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3AFDA10002A;
+        Thu,  4 Feb 2021 13:08:15 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 03C62244F9D;
+        Thu,  4 Feb 2021 13:08:15 +0100 (CET)
+Received: from localhost (10.75.127.48) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 4 Feb 2021 13:08:14
+ +0100
+From:   <yann.gautier@foss.st.com>
+To:     <ulf.hansson@linaro.org>
+CC:     <linux@armlinux.org.uk>, <linus.walleij@linaro.org>,
+        <ludovic.barre@foss.st.com>, <per.forlin@linaro.org>,
+        <huyue2@yulong.com>, <wsa+renesas@sang-engineering.com>,
+        <vbadigan@codeaurora.org>, <adrian.hunter@intel.com>,
+        <p.zabel@pengutronix.de>, <marex@denx.de>, <swboyd@chromium.org>,
+        <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <yann.gautier@foss.st.com>
+Subject: [PATCH 0/2] mmc: mmci/mmc_test: update mmc_erase management
+Date:   Thu, 4 Feb 2021 13:05:45 +0100
+Message-ID: <20210204120547.15381-1-yann.gautier@foss.st.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20210204072947.GA29812@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.48]
+X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG2NODE3.st.com
+ (10.75.127.6)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
+ definitions=2021-02-04_06:2021-02-04,2021-02-04 signatures=0
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 2021-02-04 07:29, Christoph Hellwig wrote:
-> On Wed, Feb 03, 2021 at 03:37:05PM -0800, Dongli Zhang wrote:
->> This patch converts several swiotlb related variables to arrays, in
->> order to maintain stat/status for different swiotlb buffers. Here are
->> variables involved:
->>
->> - io_tlb_start and io_tlb_end
->> - io_tlb_nslabs and io_tlb_used
->> - io_tlb_list
->> - io_tlb_index
->> - max_segment
->> - io_tlb_orig_addr
->> - no_iotlb_memory
->>
->> There is no functional change and this is to prepare to enable 64-bit
->> swiotlb.
-> 
-> Claire Chang (on Cc) already posted a patch like this a month ago,
-> which looks much better because it actually uses a struct instead
-> of all the random variables.
+From: Yann Gautier <yann.gautier@foss.st.com>
 
-Indeed, I skimmed the cover letter and immediately thought that this 
-whole thing is just the restricted DMA pool concept[1] again, only from 
-a slightly different angle.
+We are facing issues when testing STM32MP157C-EV1 board with latest MMC
+developments.
 
-Robin.
+The commands with R1B responses weren't correctly managed, needing
+MMC_CAP_NEED_RSP_BUSY.
+The Ux500 platforms have the same busy detection feature, so this
+flag is enabled for them too. But this change has only been tested
+on STM32MP1 boards, as I don't have ux500 hardware.
 
-[1] 
-https://lore.kernel.org/linux-iommu/20210106034124.30560-1-tientzu@chromium.org/
+The mmc_test should rely on the erase argument set in the framework,
+when using MMC_ERASE command.
+
+Yann Gautier (2):
+  mmc: mmci: enable MMC_CAP_NEED_RSP_BUSY
+  mmc: mmc_test: use erase_arg for mmc_erase command
+
+ drivers/mmc/core/mmc_test.c | 2 +-
+ drivers/mmc/host/mmci.c     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+-- 
+2.17.1
+
