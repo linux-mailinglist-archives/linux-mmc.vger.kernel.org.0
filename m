@@ -2,113 +2,106 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2835230F72D
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Feb 2021 17:08:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2594630F8A3
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Feb 2021 17:56:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237720AbhBDQD6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 4 Feb 2021 11:03:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36690 "EHLO
+        id S238227AbhBDQy1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 4 Feb 2021 11:54:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236966AbhBDPTy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 4 Feb 2021 10:19:54 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99B92C06178B;
-        Thu,  4 Feb 2021 07:19:14 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id t5so4531753eds.12;
-        Thu, 04 Feb 2021 07:19:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=MXxWaP3OMD24RnZ/OSVIIbiGQ1wOqMXQ3YDzBvlfZKc=;
-        b=Y9ukjEkFtjspHv5gHEuPAtYlxRPD5EcQz/cPxJRYXU/NRBX67UiJU5GQZr03n9ZZ6e
-         OR3+LT9H5tAY7svvli7sOSAIQttxbqbYnxgPNG4uXWN41N/2uzVwv0PRfk/eGdFT/iVV
-         Dhuyv/lB2naVSMm2OgKyCBEUzzlmPj/726yvckg6V7Yo2pB646XbBBQu1DUnSS6p/Nrx
-         CxgGIfCQ8zmqp0qBvlPf8nvIuzIoxmM9wEML2s5TtE30SW5tZVzuakVPAJF/ZO/irGzD
-         YaEVCAJ0HvEB3dRMmugCdgLSN+rsab8QoclToeqBkUQcEnv1Yko17CQRNZuN8KMklPZR
-         Rvqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=MXxWaP3OMD24RnZ/OSVIIbiGQ1wOqMXQ3YDzBvlfZKc=;
-        b=C4r84de4kvcZ1wD0aqAoEoyDSRzK/enHfObdeTub2ciEWiG5B7w+ZxD/UtTO9qcmpM
-         EXCVdXPysqfUA9T6p6t2TJDvSJjLQpT9RcVdaxSQJE1Z8kgiM0M7JWVF/1XadHN7c60V
-         1BB2A4xoYha3xOuEhtMUh66ZgfGgXhT+xviMuxCDZzPKUBGQfezkUOzkly2Ok9qpm/91
-         tBBsBrakXYQrEXNJRrOC+jcPuvUWAw3DzvSpOhBxIbkgTmkx3rgslaj4wUKhC9cDfv2w
-         cPJzK3hcs7t0AoKJw3sE7gzBDnKVWjq86Iv2oXU2Svly3n2VICiO4bkkh9wdn01PkXIY
-         Y3YQ==
-X-Gm-Message-State: AOAM532PEGMXny1TTVdelF/GCehL8u+u6vI5lK8SfNZY5ABwpgtMo/Ko
-        jdNN+AyQrtMyqZhKla48bLZlglnYNafdKoDX
-X-Google-Smtp-Source: ABdhPJyPq3p6MXw+NKWx1K05eqiXDRYZGsAJgrrr++6DtWr4V3jzMLDk8+xPLi3Fi+f7Z1ImdeULrA==
-X-Received: by 2002:a50:8466:: with SMTP id 93mr8342762edp.55.1612451951546;
-        Thu, 04 Feb 2021 07:19:11 -0800 (PST)
-Received: from stitch.. ([80.71.140.73])
-        by smtp.gmail.com with ESMTPSA id a6sm2600001ejs.79.2021.02.04.07.19.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Feb 2021 07:19:10 -0800 (PST)
-Sender: Emil Renner Berthing <emil.renner.berthing@gmail.com>
-From:   Emil Renner Berthing <kernel@esmil.dk>
-To:     linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org
-Cc:     Emil Renner Berthing <kernel@esmil.dk>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        with ESMTP id S238191AbhBDQxo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 4 Feb 2021 11:53:44 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD47C06178B;
+        Thu,  4 Feb 2021 08:52:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=rU7kGtAV6x4h9PYVWyoXz+PtjR1Ekd/aEUlrk7YawjA=; b=VTPukyRsHKDa6AiBC7g1A33pB
+        SwzVRoY12CgfihopuGU84sVuVRYsUfiv6b3Emwm8BDSGMl47NJ4gm0qIsiqAwyM3pSwTIf2l6vha2
+        cDzPmBjk1ljXfebW71uB6xJtMeptgxH+fOQ7FkYaFWun/B6T1rfINwGd+rlb8M/Klezy3l/ReCdrv
+        V0d4qDQKYRRMYic1iTAdlcZh5yvqjMKyuvjs8Wsy37fKFKVUMlPg8hW+P5sXiwO/tuao+vtETwe0A
+        yHWeGg7btn+Meuk+vfx/5ICUUCrM+vrThjyBDk8k7p21ma/Hklw+jYC+vHctVDNhR+i6P6uievpnI
+        PK8/XvaQg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39164)
+        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1l7hrw-0006on-3V; Thu, 04 Feb 2021 16:52:36 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1l7hrk-0005Ka-VR; Thu, 04 Feb 2021 16:52:24 +0000
+Date:   Thu, 4 Feb 2021 16:52:24 +0000
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        linux-fbdev@vger.kernel.org, kvm@vger.kernel.org,
+        alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig.org@pengutronix.de>, linux-i2c@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-input@vger.kernel.org, Mike Leach <mike.leach@linaro.org>,
+        linux-watchdog@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        kernel@pengutronix.de, Leo Yan <leo.yan@linaro.org>,
+        dmaengine@vger.kernel.org, Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Eric Anholt <eric@anholt.net>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alessandro Zummo <a.zummo@towertech.it>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Ben Dooks <ben-linux@fluff.org>, Alex Dubov <oakad@yahoo.com>,
-        Bruce Chang <brucechang@via.com.tw>,
-        Harald Welte <HaraldWelte@viatech.com>,
-        Pierre Ossman <pierre@ossman.eu>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/9] mmc: omap: Use new tasklet API
-Date:   Thu,  4 Feb 2021 16:18:42 +0100
-Message-Id: <20210204151847.91353-5-kernel@esmil.dk>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210204151847.91353-1-kernel@esmil.dk>
-References: <20210204151847.91353-1-kernel@esmil.dk>
+        Mark Brown <broonie@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Eric Auger <eric.auger@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Subject: Re: [GIT PULL] immutable branch for amba changes targeting v5.12-rc1
+Message-ID: <20210204165224.GA1463@shell.armlinux.org.uk>
+References: <20210126165835.687514-1-u.kleine-koenig@pengutronix.de>
+ <20210202135350.36nj3dmcoq3t7gcf@pengutronix.de>
+ <YBlcTXlxemmC2lgr@kroah.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YBlcTXlxemmC2lgr@kroah.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Sender: Russell King - ARM Linux admin <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This converts the driver to use the new tasklet API introduced in
-commit 12cc923f1ccc ("tasklet: Introduce new initialization API")
+On Tue, Feb 02, 2021 at 03:06:05PM +0100, Greg Kroah-Hartman wrote:
+> I'm glad to take this through my char/misc tree, as that's where the
+> other coresight changes flow through.  So if no one else objects, I will
+> do so...
 
-Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
----
- drivers/mmc/host/omap.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Greg, did you end up pulling this after all? If not, Uwe produced a v2.
+I haven't merged v2 yet as I don't know what you've done.
 
-diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
-index 6aa0537f1f84..5e5af34090f1 100644
---- a/drivers/mmc/host/omap.c
-+++ b/drivers/mmc/host/omap.c
-@@ -878,9 +878,9 @@ static void mmc_omap_cover_timer(struct timer_list *t)
- 	tasklet_schedule(&slot->cover_tasklet);
- }
- 
--static void mmc_omap_cover_handler(unsigned long param)
-+static void mmc_omap_cover_handler(struct tasklet_struct *t)
- {
--	struct mmc_omap_slot *slot = (struct mmc_omap_slot *)param;
-+	struct mmc_omap_slot *slot = from_tasklet(slot, t, cover_tasklet);
- 	int cover_open = mmc_omap_cover_is_open(slot);
- 
- 	mmc_detect_change(slot->mmc, 0);
-@@ -1269,8 +1269,7 @@ static int mmc_omap_new_slot(struct mmc_omap_host *host, int id)
- 
- 	if (slot->pdata->get_cover_state != NULL) {
- 		timer_setup(&slot->cover_timer, mmc_omap_cover_timer, 0);
--		tasklet_init(&slot->cover_tasklet, mmc_omap_cover_handler,
--			     (unsigned long)slot);
-+		tasklet_setup(&slot->cover_tasklet, mmc_omap_cover_handler);
- 	}
- 
- 	r = mmc_add_host(mmc);
+Thanks.
+
 -- 
-2.30.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
