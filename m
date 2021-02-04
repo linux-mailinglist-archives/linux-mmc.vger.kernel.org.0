@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CF9230F61F
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Feb 2021 16:23:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A6E30F70E
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Feb 2021 17:04:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237186AbhBDPWR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 4 Feb 2021 10:22:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36954 "EHLO
+        id S237163AbhBDPU3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 4 Feb 2021 10:20:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237198AbhBDPVH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 4 Feb 2021 10:21:07 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A450C0617A7;
-        Thu,  4 Feb 2021 07:19:21 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id p20so5939071ejb.6;
-        Thu, 04 Feb 2021 07:19:21 -0800 (PST)
+        with ESMTP id S237047AbhBDPTs (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 4 Feb 2021 10:19:48 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5FE9C061786;
+        Thu,  4 Feb 2021 07:19:08 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id bl23so5939410ejb.5;
+        Thu, 04 Feb 2021 07:19:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wQ9by59LAdcIL3bSIKYDI9kndSMy8tWgVlnC5RbynYs=;
-        b=opVvsoKs6fxs4JdWQRnvYzqXR7VEn8BznKZMz4nb66HF+eQR7Ad9vgFqOydnNcedv6
-         pmDir5TIfbNsZuIWs/PEKHgVU4ZF4737+NaCIJ20t5ET7qMvflHc+OpGISceSbALeGQj
-         tw+BTNebvCM1dABqMGvArUy2dJ5n36P2bl4xQlkjh0vCf0GvKvsxxzBHjIeayjLk5WoJ
-         HwulDd7chsaqDiAiFZEhooM/vZarpVT1MLXXv7yc4WYleKqonootEzO5VJWsqGPMDc2v
-         7W9FAtLOvEW+5JNaomEEHSpxde0rpF9gRtphZUnk1xom16izZCUzxlWXaFmUUsMOmQV/
-         cUgQ==
+        bh=M0B41tZ9BhfpLW130tpoMukMFanCubX5mUQuKs1xFi0=;
+        b=iYWnQw3hSsJEBErHWKDUIRMWHyND3VAfFPvB7gVkyB8D18b3eaWSt3iNjvjvrbHWQM
+         75Vdxp1oU1adk5KW22osTw+ituLWAmeQZ2m08qmG77wDsF0+nVY+IUxgrk9JjbLp6EM/
+         /Kf+nWKF1Bvd3a/oDHc2dxC+025HVLbw979OaCKqQpQUDOcbohLmO/PA/YqbcL8Jd33S
+         ubUuQ95FsYX8UhwW7TJSqjN4SbxPeKoDFJXIFxi6zEbW1jS+Em2KWNOCjy6whR7BhlEq
+         /QDuWCX6ldtTobr44tD7LVzn0l9ECAftuz5mpgLeUQkUUMFPrf9nPHpHp2toJ9qhwaVM
+         YNtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=wQ9by59LAdcIL3bSIKYDI9kndSMy8tWgVlnC5RbynYs=;
-        b=CvIK5z9i1xPm7XgBkeuSiGJQcl8KlFIwBqs/6Dk+TstdPbFR/R+oX+iI7AWEFqPMFe
-         m8xznWERN+4rJBHNGp2eLmndv9RFpfz7o+apDV82khOJDwB26vcm4fCExoyWM8f16L/A
-         C+oSbrNhOhV+MUTBx/atImL0WQVIIiIA71oOLH4A79Nh/96PhHc1EiFkKVPHTWkCY/xL
-         06bSugXIp/vDvf76Fgk7H3XUQeBBm8xNHgRjFKVl6GnV6Ztj7tf9Au1RH+ZpleiP8p4A
-         84sEXBg5QhevOwH70UDmnUreBFdmwdM/dyi9TCuEQBG7lJpRPQpS7nYt1bD+8aN5GGxS
-         XiUw==
-X-Gm-Message-State: AOAM531s1D+M6YJjBZMs54Ap7qTUwFpSxE74/m1fnhmO8DFQeKRTsOZn
-        uZJdgd1/Mr1Z+zAguMbmrAN99vo/qEOHWVzc
-X-Google-Smtp-Source: ABdhPJwFaB/JGlXT2+79VBkMVtisGqY3FGpuEbSmREXmKZgc98dtldXJpLHT6BqFvJKyHQjdOjcfTg==
-X-Received: by 2002:a17:906:2f07:: with SMTP id v7mr8391180eji.343.1612451960424;
-        Thu, 04 Feb 2021 07:19:20 -0800 (PST)
+        bh=M0B41tZ9BhfpLW130tpoMukMFanCubX5mUQuKs1xFi0=;
+        b=AvyRVf7/FwzhIq0jP6OOI3FH6xhxCEXclnCftNIpDg0E/liZ249MSPx1Srai8R4tKO
+         fAM+plP1fLvO7bp7i9ltP0aolzCLPghIkEXEwXQmvGdRgonguIt0V54LryFQsA/n7HN5
+         sQgoLr+T6kUPwA0P89KvZqhbmUlzAskqSZeAwUJLoglmLV/ESF5ZRxGHGLhoRE1CcrlU
+         98jJQfM4AWH1er1hE9vzmqedzksLRIj5rNbSgHDLF/70SQWT46Ej/29eCJTU6sD75aLB
+         u3DaYWOB1ASt9icWOrDkSOhFKDz4SHhRX/tAsHQlzHEiSKkYo7WtZdT8tBfQQbw/dXtL
+         WbBg==
+X-Gm-Message-State: AOAM5316jOaJbJViX0VkxFHON9pFVG+QuObfPO7YIXnmaIO2n0G9dsDs
+        0EkGfTkfFaKqOp6OM3XmrZdmJA83EVqObt43
+X-Google-Smtp-Source: ABdhPJyM0C+Whgrs7E27chcilpw2rTGgXyVbl/SoxO+o6Bj9uU3gr7yZUEbUSLYC1hmFrOCVw36NEg==
+X-Received: by 2002:a17:907:7289:: with SMTP id dt9mr8477022ejc.446.1612451947555;
+        Thu, 04 Feb 2021 07:19:07 -0800 (PST)
 Received: from stitch.. ([80.71.140.73])
-        by smtp.gmail.com with ESMTPSA id a6sm2600001ejs.79.2021.02.04.07.19.19
+        by smtp.gmail.com with ESMTPSA id a6sm2600001ejs.79.2021.02.04.07.19.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Feb 2021 07:19:19 -0800 (PST)
+        Thu, 04 Feb 2021 07:19:07 -0800 (PST)
 Sender: Emil Renner Berthing <emil.renner.berthing@gmail.com>
 From:   Emil Renner Berthing <kernel@esmil.dk>
 To:     linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org
@@ -63,9 +63,9 @@ Cc:     Emil Renner Berthing <kernel@esmil.dk>,
         Harald Welte <HaraldWelte@viatech.com>,
         Pierre Ossman <pierre@ossman.eu>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 9/9] mmc: wbsd: Use new tasklet API
-Date:   Thu,  4 Feb 2021 16:18:47 +0100
-Message-Id: <20210204151847.91353-10-kernel@esmil.dk>
+Subject: [PATCH 1/9] mmc: atmel-mci: Use new tasklet API
+Date:   Thu,  4 Feb 2021 16:18:39 +0100
+Message-Id: <20210204151847.91353-2-kernel@esmil.dk>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210204151847.91353-1-kernel@esmil.dk>
 References: <20210204151847.91353-1-kernel@esmil.dk>
@@ -80,95 +80,34 @@ commit 12cc923f1ccc ("tasklet: Introduce new initialization API")
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 ---
- drivers/mmc/host/wbsd.c | 35 +++++++++++++++--------------------
- 1 file changed, 15 insertions(+), 20 deletions(-)
+ drivers/mmc/host/atmel-mci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/wbsd.c b/drivers/mmc/host/wbsd.c
-index cd63ea865b77..67ecd342fe5f 100644
---- a/drivers/mmc/host/wbsd.c
-+++ b/drivers/mmc/host/wbsd.c
-@@ -987,9 +987,9 @@ static inline struct mmc_data *wbsd_get_data(struct wbsd_host *host)
- 	return host->mrq->cmd->data;
+diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
+index 632412066eda..807177c953f3 100644
+--- a/drivers/mmc/host/atmel-mci.c
++++ b/drivers/mmc/host/atmel-mci.c
+@@ -1719,9 +1719,9 @@ static void atmci_detect_change(struct timer_list *t)
+ 	}
  }
  
--static void wbsd_tasklet_card(unsigned long param)
-+static void wbsd_tasklet_card(struct tasklet_struct *t)
+-static void atmci_tasklet_func(unsigned long priv)
++static void atmci_tasklet_func(struct tasklet_struct *t)
  {
--	struct wbsd_host *host = (struct wbsd_host *)param;
-+	struct wbsd_host *host = from_tasklet(host, t, card_tasklet);
- 	u8 csr;
- 	int delay = -1;
+-	struct atmel_mci	*host = (struct atmel_mci *)priv;
++	struct atmel_mci        *host = from_tasklet(host, t, tasklet);
+ 	struct mmc_request	*mrq = host->mrq;
+ 	struct mmc_data		*data = host->data;
+ 	enum atmel_mci_state	state = host->state;
+@@ -2496,7 +2496,7 @@ static int atmci_probe(struct platform_device *pdev)
  
-@@ -1036,9 +1036,9 @@ static void wbsd_tasklet_card(unsigned long param)
- 		mmc_detect_change(host->mmc, msecs_to_jiffies(delay));
- }
+ 	host->mapbase = regs->start;
  
--static void wbsd_tasklet_fifo(unsigned long param)
-+static void wbsd_tasklet_fifo(struct tasklet_struct *t)
- {
--	struct wbsd_host *host = (struct wbsd_host *)param;
-+	struct wbsd_host *host = from_tasklet(host, t, fifo_tasklet);
- 	struct mmc_data *data;
+-	tasklet_init(&host->tasklet, atmci_tasklet_func, (unsigned long)host);
++	tasklet_setup(&host->tasklet, atmci_tasklet_func);
  
- 	spin_lock(&host->lock);
-@@ -1067,9 +1067,9 @@ static void wbsd_tasklet_fifo(unsigned long param)
- 	spin_unlock(&host->lock);
- }
- 
--static void wbsd_tasklet_crc(unsigned long param)
-+static void wbsd_tasklet_crc(struct tasklet_struct *t)
- {
--	struct wbsd_host *host = (struct wbsd_host *)param;
-+	struct wbsd_host *host = from_tasklet(host, t, crc_tasklet);
- 	struct mmc_data *data;
- 
- 	spin_lock(&host->lock);
-@@ -1091,9 +1091,9 @@ static void wbsd_tasklet_crc(unsigned long param)
- 	spin_unlock(&host->lock);
- }
- 
--static void wbsd_tasklet_timeout(unsigned long param)
-+static void wbsd_tasklet_timeout(struct tasklet_struct *t)
- {
--	struct wbsd_host *host = (struct wbsd_host *)param;
-+	struct wbsd_host *host = from_tasklet(host, t, timeout_tasklet);
- 	struct mmc_data *data;
- 
- 	spin_lock(&host->lock);
-@@ -1115,9 +1115,9 @@ static void wbsd_tasklet_timeout(unsigned long param)
- 	spin_unlock(&host->lock);
- }
- 
--static void wbsd_tasklet_finish(unsigned long param)
-+static void wbsd_tasklet_finish(struct tasklet_struct *t)
- {
--	struct wbsd_host *host = (struct wbsd_host *)param;
-+	struct wbsd_host *host = from_tasklet(host, t, finish_tasklet);
- 	struct mmc_data *data;
- 
- 	spin_lock(&host->lock);
-@@ -1449,16 +1449,11 @@ static int wbsd_request_irq(struct wbsd_host *host, int irq)
- 	/*
- 	 * Set up tasklets. Must be done before requesting interrupt.
- 	 */
--	tasklet_init(&host->card_tasklet, wbsd_tasklet_card,
--			(unsigned long)host);
--	tasklet_init(&host->fifo_tasklet, wbsd_tasklet_fifo,
--			(unsigned long)host);
--	tasklet_init(&host->crc_tasklet, wbsd_tasklet_crc,
--			(unsigned long)host);
--	tasklet_init(&host->timeout_tasklet, wbsd_tasklet_timeout,
--			(unsigned long)host);
--	tasklet_init(&host->finish_tasklet, wbsd_tasklet_finish,
--			(unsigned long)host);
-+	tasklet_setup(&host->card_tasklet, wbsd_tasklet_card);
-+	tasklet_setup(&host->fifo_tasklet, wbsd_tasklet_fifo);
-+	tasklet_setup(&host->crc_tasklet, wbsd_tasklet_crc);
-+	tasklet_setup(&host->timeout_tasklet, wbsd_tasklet_timeout);
-+	tasklet_setup(&host->finish_tasklet, wbsd_tasklet_finish);
- 
- 	/*
- 	 * Allocate interrupt.
+ 	ret = request_irq(irq, atmci_interrupt, 0, dev_name(&pdev->dev), host);
+ 	if (ret) {
 -- 
 2.30.0
 
