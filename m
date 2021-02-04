@@ -2,83 +2,155 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E09F630F3AB
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Feb 2021 14:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DBFE30F613
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Feb 2021 16:21:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236254AbhBDNIN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 4 Feb 2021 08:08:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36620 "EHLO
+        id S237165AbhBDPUd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 4 Feb 2021 10:20:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236258AbhBDNII (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 4 Feb 2021 08:08:08 -0500
-Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E215C0613D6;
-        Thu,  4 Feb 2021 05:07:28 -0800 (PST)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4DWf3J5MzLz1s46W;
-        Thu,  4 Feb 2021 14:07:22 +0100 (CET)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 4DWf3G5DpDz1t6pd;
-        Thu,  4 Feb 2021 14:07:22 +0100 (CET)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id rMuKl75E9QlS; Thu,  4 Feb 2021 14:07:20 +0100 (CET)
-X-Auth-Info: D0bG0TMQNvtHsjyTpMg0Mv2GMX5Ec5sREluid0wh+VU=
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Thu,  4 Feb 2021 14:07:20 +0100 (CET)
-Subject: Re: [PATCH 1/2] mmc: mmci: enable MMC_CAP_NEED_RSP_BUSY
-To:     Yann GAUTIER <yann.gautier@foss.st.com>, ulf.hansson@linaro.org
-Cc:     linux@armlinux.org.uk, linus.walleij@linaro.org,
-        ludovic.barre@foss.st.com, per.forlin@linaro.org,
-        huyue2@yulong.com, wsa+renesas@sang-engineering.com,
-        vbadigan@codeaurora.org, adrian.hunter@intel.com,
-        p.zabel@pengutronix.de, swboyd@chromium.org,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210204120547.15381-1-yann.gautier@foss.st.com>
- <20210204120547.15381-2-yann.gautier@foss.st.com>
- <0ac77e8d-9400-abc8-f963-943e9cba94db@denx.de>
- <9fbd2fca-e4f5-d28f-74de-d9906cc232bf@foss.st.com>
-From:   Marek Vasut <marex@denx.de>
-Message-ID: <50d92d9a-b42e-b313-a0c7-ff0848a3c673@denx.de>
-Date:   Thu, 4 Feb 2021 14:07:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        with ESMTP id S237018AbhBDPTr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 4 Feb 2021 10:19:47 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A64C0613D6;
+        Thu,  4 Feb 2021 07:19:07 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id sa23so6008346ejb.0;
+        Thu, 04 Feb 2021 07:19:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=f6iWFEAYRCiS0CjNBB4+1Bs58fQyu4Ujqibyp6Xzunk=;
+        b=g8JjPr8Og6MOjlid6yiCVvuvoywGwnt6hVt9ISTETXyI+cqnUNkwfKCWwunTCT9Iy+
+         k5U13HLU7smUIPdEYk6N2bBfLH4CgiHTN+jFupnKsldM+I5QaYaEVHwJjuCzJ/Uap6PI
+         AUp4wtfFJZCndMJC1DOrzn7NElv4g77c0ZuLLyAH8tvNfw184ZUl0ybtfylYbSyVMWBy
+         zb1BSAvAEB6xuRKDftnfiOF4LJ6z03NR7i+vu8dsx+zzHNxv4rHKBhtjn4mHrJa6qRc5
+         7TVvd3w0+q1zLYwPqui0FLPUCy3zjimIjBjI1pZPsuN78Mofy8kytbZ5Y2QuRexk0KIC
+         WoqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=f6iWFEAYRCiS0CjNBB4+1Bs58fQyu4Ujqibyp6Xzunk=;
+        b=oCgv3SFvwBujrcYL/9fdeuaYiJJ7Cgn40QSYTbcaJDOBh5fysYv8eS1fJJgvJmX8a7
+         t/qrUcp8BYZv7ix1kFirJXm46UHeebAqOcVU0XNQrIE8FypvPNcJ+HkTH5emJwiZOVOf
+         Yu59HW4cHw8ZtqOFeFoJeNRc04MFuSqOB93uB6cSTfWU0RkFucnJZIFmm9GCKsgiBT1U
+         bCIBPTcCZSoaMxbFmkjEUAHRjfEzS3MebHiSmQNZGi3L63bDZmMR+d2q6Sf7ydoLYfPU
+         CMzE5WetupUBm8fITKAtP3/wScnkA45WGBc5AHICWHqeNnOWvmqhBhmsAQwHd726/PsG
+         CWlQ==
+X-Gm-Message-State: AOAM531HO6ldk9+CxQhS/eR8BjGjDWby3wy0bJYuDpE17PbT8dFeLmNi
+        MFZ/a1hERh0hxk6fg4y5kB1OFKJp1sH+1VYE
+X-Google-Smtp-Source: ABdhPJz3Q4QIVCuc3EgJ+sTEXLy5VS0DEZI5CscTUcmPq9rkUY+3j7YXO3u+jmN1MedN4mHikAL2uw==
+X-Received: by 2002:a17:907:35ca:: with SMTP id ap10mr8479505ejc.451.1612451946279;
+        Thu, 04 Feb 2021 07:19:06 -0800 (PST)
+Received: from stitch.. ([80.71.140.73])
+        by smtp.gmail.com with ESMTPSA id a6sm2600001ejs.79.2021.02.04.07.19.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Feb 2021 07:19:05 -0800 (PST)
+Sender: Emil Renner Berthing <emil.renner.berthing@gmail.com>
+From:   Emil Renner Berthing <kernel@esmil.dk>
+To:     linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org
+Cc:     Emil Renner Berthing <kernel@esmil.dk>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Ben Dooks <ben-linux@fluff.org>, Alex Dubov <oakad@yahoo.com>,
+        Bruce Chang <brucechang@via.com.tw>,
+        Harald Welte <HaraldWelte@viatech.com>,
+        Pierre Ossman <pierre@ossman.eu>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/9] drivers: mmc: Update trivial tasklet_init() callers
+Date:   Thu,  4 Feb 2021 16:18:38 +0100
+Message-Id: <20210204151847.91353-1-kernel@esmil.dk>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-In-Reply-To: <9fbd2fca-e4f5-d28f-74de-d9906cc232bf@foss.st.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 2/4/21 1:54 PM, Yann GAUTIER wrote:
-> On 2/4/21 1:26 PM, Marek Vasut wrote:
->> On 2/4/21 1:05 PM, yann.gautier@foss.st.com wrote:
->>> From: Yann Gautier <yann.gautier@foss.st.com>
->>>
->>> To properly manage commands awaiting R1B responses, the capability
->>> MMC_CAP_NEED_RSP_BUSY is enabled in mmci driver, for variants that
->>> manage busy detection.
->>> This R1B management needs both the flags MMC_CAP_NEED_RSP_BUSY and
->>> MMC_CAP_WAIT_WHILE_BUSY to be enabled together.
->>>
->> Shouldn't this have Fixes: tag ?
-> 
-> Hi Marek,
-> 
-> There is no unique patch that brought the issue, but a combination of 
-> several things:
-> - The series that brought the MMC_CAP_NEED_RSP_BUSY flag [1]
-> - The series that enabled MMC_ERASE for all hosts [2] (removal of 
-> MMC_CAP_ERASE)
-> 
-> But you're right, this patch may go on v5.8.x kernel and newer versions.
+This updates callers of tasklet_init() in drivers/mmc to the new API
+in commit 12cc923f1ccc ("tasklet: Introduce new initialization API")
 
-I think there will be quite some interest in 5.10.y LTS on the MP1 from 
-the various industrial/embedded users, so it would be nice to have that 
-5.10.y well maintained with necessary backports / fixes :)
+All changes are made by coccinelle using the following semantic patch:
+
+@ match @
+type T;
+T *container;
+identifier tasklet;
+identifier callback;
+@@
+	tasklet_init(&container->tasklet, callback, (unsigned long)container);
+
+@ patch1 depends on match @
+type match.T;
+identifier match.tasklet;
+identifier match.callback;
+identifier data;
+identifier container;
+@@
+-void callback(unsigned long data)
++void callback(struct tasklet_struct *t)
+{
+	...
+-	T *container = \( (T *)data \| (void *)data \);
++	T *container = from_tasklet(container, t, tasklet);
+	...
+}
+
+@ patch2 depends on match @
+type match.T;
+identifier match.tasklet;
+identifier match.callback;
+identifier data;
+identifier container;
+@@
+-void callback(unsigned long data)
++void callback(struct tasklet_struct *t)
+{
+	...
+-	T *container;
++	T *container = from_tasklet(container, t, tasklet);
+	...
+-	container = \( (T *)data \| (void *)data \);
+	...
+}
+
+@ depends on (patch1 || patch2) @
+match.T *container;
+identifier match.tasklet;
+identifier match.callback;
+@@
+-	tasklet_init(&container->tasklet, callback, (unsigned long)container);
++	tasklet_setup(&container->tasklet, callback);
+
+
+Emil Renner Berthing (9):
+  mmc: atmel-mci: Use new tasklet API
+  mmc: au1xmmc: Use new tasklet API
+  mmc: dw_mmc: Use new tasklet API
+  mmc: omap: Use new tasklet API
+  mmc: s3cmci: Use new tasklet API
+  mmc: tifm_sd: Use new tasklet API
+  mmc: uniphier-sd: Use new tasklet API
+  mmc: via-sdmmc: Use new tasklet API
+  mmc: wbsd: Use new tasklet API
+
+ drivers/mmc/host/atmel-mci.c   |  6 +++---
+ drivers/mmc/host/au1xmmc.c     | 14 ++++++--------
+ drivers/mmc/host/dw_mmc.c      |  6 +++---
+ drivers/mmc/host/omap.c        |  7 +++----
+ drivers/mmc/host/s3cmci.c      |  6 +++---
+ drivers/mmc/host/tifm_sd.c     |  7 +++----
+ drivers/mmc/host/uniphier-sd.c | 14 ++++++--------
+ drivers/mmc/host/via-sdmmc.c   |  9 +++------
+ drivers/mmc/host/wbsd.c        | 35 +++++++++++++++-------------------
+ 9 files changed, 45 insertions(+), 59 deletions(-)
+
+-- 
+2.30.0
+
