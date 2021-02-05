@@ -2,64 +2,60 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 296853111CF
-	for <lists+linux-mmc@lfdr.de>; Fri,  5 Feb 2021 21:06:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D90A311419
+	for <lists+linux-mmc@lfdr.de>; Fri,  5 Feb 2021 23:00:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233192AbhBESRd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 5 Feb 2021 13:17:33 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:55697 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S233183AbhBEPTk (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 5 Feb 2021 10:19:40 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=JFt3cjfr2gf0oZFNAIkKMxcz4dJD/YGkc0fGvOoSd3DydZ6om7JzTU837vBFVq1NIPU0D2QA5BLHZXE1+7cBmkJlbZjYCUFmJkkaBVbP88e4KHnDVRcctmBLIZ1pL5VerRqjcciKkL4DSuyXFJlGk3Z0CRoskvUoLBM7ZhpxLeqIU2BKsbHQXJZ1h2qHQhaHiD+VrGx+bGKjZzbhmRvwLDQIByq6jRcjht5MzYCcxpzOzp/k+Dev9dQj7B
-        WId68CyP4XonlI4wIMRo1xiGfUtKZ+P3cZo2ejPWBjr+ynq3dK3OxibTTEKfmOc5W1zmJFMAPQ+ZKxsa3M4d1PiYxHmg==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Mon, 1 Feb 2021 08:50:14 +0000
-Message-ID: <D474448D-A325-42CC-A881-8334C6C84BA7@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Mon, 1 Feb 2021 08:50:13 -0000
+        id S232748AbhBEV7l (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 5 Feb 2021 16:59:41 -0500
+Received: from verein.lst.de ([213.95.11.211]:60923 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231749AbhBEO6J (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 5 Feb 2021 09:58:09 -0500
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 5255C67373; Fri,  5 Feb 2021 17:22:21 +0100 (CET)
+Date:   Fri, 5 Feb 2021 17:22:21 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Liu Xiang <liu.xiang@zlingsmart.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        liuxiang_1999@126.com, Christoph Hellwig <hch@lst.de>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Subject: Re: [PATCH] mmc: block: use REQ_HIPRI flag to complete request
+ directly in own complete workqueue
+Message-ID: <20210205162221.GA27114@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpOFRGdd0L4Sx9ynV3O_9YJvO=2VBxvWYTfBHjabiDaUg@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+On Fri, Feb 05, 2021 at 03:24:06PM +0100, Ulf Hansson wrote:
+> On Thu, 21 Jan 2021 at 09:13, Liu Xiang <liu.xiang@zlingsmart.com> wrote:
+> >
+> > After commit "40d09b53bfc557af7481b9d80f060a7ac9c7d314", request is
+> > completed in softirq. This may cause the system to suffer bad preemptoff
+> > time.
+> > The mmc driver has its own complete workqueue, but it can not work
+> > well now.
+> > The REQ_HIPRI flag can be used to complete request directly in its own
+> > complete workqueue and the preemptoff problem could be avoided.
+> 
+> I am trying to understand all of the problem, but I don't quite get
+> it, sorry. Would it be possible for you to extend the description in
+> the commit message a bit?
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Yes, the message sounds weird.  The mentioned commit should obviously
+not make any difference for drivers not using it.
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+> More exactly, what will happen if we tag a request with REQ_HIPRI
+> before completing it? Apologize for my ignorance, but I am currently a
+> bit overwhelmed with work, so I didn't have the time to really look it
+> up myself.
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
-
-Regards,
-Ms. Reem.
-
+Drivers must never set REQ_HIPRI!  This is a flag that is set by
+the submitter, and actually cleared for most drivers that don't support
+it by the block layer.
