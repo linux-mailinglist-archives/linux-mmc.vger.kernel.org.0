@@ -2,110 +2,156 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB12B3131D9
-	for <lists+linux-mmc@lfdr.de>; Mon,  8 Feb 2021 13:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D9F13131DD
+	for <lists+linux-mmc@lfdr.de>; Mon,  8 Feb 2021 13:12:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230244AbhBHMKi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Feb 2021 07:10:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40676 "EHLO
+        id S229878AbhBHMLi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Feb 2021 07:11:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233567AbhBHMIj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Feb 2021 07:08:39 -0500
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2361C061797
-        for <linux-mmc@vger.kernel.org>; Mon,  8 Feb 2021 04:07:33 -0800 (PST)
-Received: by mail-ua1-x92c.google.com with SMTP id f10so1406747uaa.8
-        for <linux-mmc@vger.kernel.org>; Mon, 08 Feb 2021 04:07:33 -0800 (PST)
+        with ESMTP id S229631AbhBHMJ5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Feb 2021 07:09:57 -0500
+Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36ED7C0617AB
+        for <linux-mmc@vger.kernel.org>; Mon,  8 Feb 2021 04:07:38 -0800 (PST)
+Received: by mail-vs1-xe2b.google.com with SMTP id x201so7402290vsc.0
+        for <linux-mmc@vger.kernel.org>; Mon, 08 Feb 2021 04:07:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=fnWP5XVMnr/gaD9t7Bquau7AE4TzVEi+aJ7kL2wNzyE=;
-        b=d87iCQfD/721FS7yUDY6GMFelkMdsrjVU3C1dvsQ7eL9rNN/Z+VtlXsbD5T6hjZZ95
-         30svbw3VkZTHxg9fk7Vq2B4no41+UyYARuwV5pkPBn8qevxMND7Dj+IZFZcZyOOCX7Kr
-         8I0/wbqhRz/pgd3IF/vg0MM868xPUNyV2uaH5MoXjxacOnhVUMeAK8BvmijrmVCsYpcF
-         HlCLX3AuC6kIUnZMMh8Q4rRaS2kK+TyqNw+j4hAmhvIx6nLbWneklQu9BXuSUsBO1siV
-         1KU336KL6TgAGczhyzaomH2zSgnQZzB45bqxK/OXhinQc+vTdLBx2604PzDDUGY4wFWG
-         65yw==
+        bh=Q+j5o1c0su2L6YdF71vWuSQLkAAyzmVika0Z7We4Rac=;
+        b=fGVWBffzUrOIaO3OE9oqhO2bDHkyUt6xA45dv+PjB3q6C2+dLEpXekxAyisHfGOK+K
+         ykgs+JcdTimpWykmP6LCmsZIUB8GrEmDWzU/hg7gooX8xJWFXUZMNORu/vPtadQUMdR4
+         1Om4gc4kgRhtpIllX9VLrQxhtdQKBd9LSk92ZhbA8B22mG00N9T+VjOIAKztk0/F57k1
+         ESTec0UJjqRtFNbSEWwqm6dJFxzWDjgrBfnRX9IS8A1tAtfWhjWG5Ocz9ProgoozNGHR
+         RN2ww2Ey2y0zLA7/edPES5Jf0PRSTh0lN0adOf5qc5lMY8M3+CFTgUVzIED9TKqP7TpX
+         +qUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=fnWP5XVMnr/gaD9t7Bquau7AE4TzVEi+aJ7kL2wNzyE=;
-        b=iWZcWJNamLqZF0BopMtH0geIBz2QrkxMn0PglljNUNqLo+xMri2E862so9xljIAP8A
-         mItoSwyoXaZHRYTUbFagyPAL0LYKeMS1sBSq+/DQm1Ev76Uv8rgwA7n0FINk62HBWoMV
-         zKLZ9hwAKjjAwLQBRJV7x5y/rbOG5PkRL/RLPngAaDw7W1yfj5XcLRgElO0gallMbvyO
-         oF9KSJLJ6dy9SJB1pT1yvspSf2xtytdHFCEI78McNhEJ7muj+r9iur+KUyOfNV39s3OD
-         4Yq8RtvyZ6UYuuPUfzKqcybZP8m04Wo9YU2VaFR/BRwg3C8CedUtFO1xhOb3qd8URsRa
-         IIJA==
-X-Gm-Message-State: AOAM5303PYRt17gEheSwBhVNhzPgTgJSaErMXRv6w21UF3MfpLNj4CUB
-        TnBYIYfTDRNrCYI35EATT1MM1eNpUH9+g7QIXOaLwg==
-X-Google-Smtp-Source: ABdhPJzUIgW4GliFuC/xzGpbGIv9yT3FBDhE3PrPHgTY5ajw6dmBq4oL6Y6tpVHfx6azRNRRclNqU7IqVevpWWzfu+E=
-X-Received: by 2002:ab0:2e8d:: with SMTP id f13mr9564324uaa.15.1612786053154;
- Mon, 08 Feb 2021 04:07:33 -0800 (PST)
+        bh=Q+j5o1c0su2L6YdF71vWuSQLkAAyzmVika0Z7We4Rac=;
+        b=ilaSuwsSCNCUNonIqFooN8DQ6iMYYlom1P5D5sV0l51L2zaFNCk473j3+xqMH64Oe4
+         D77iwcClNIQei1sQmbtoHW0VYHwLuMWfEK1ME/BTPDapvvaRUp1PAGrfW1F63YWBRVwy
+         4DStDgE2BYgyLgv6l1+DIqaGbCLYAFdauxZnBXJxibfmwqX68I28PqnQCYSPLUImarVX
+         Z3Cbe01T03JdvAGXc8e9v3E4/4HUIgzaMOAmDN6z83GQlbCubqgq78g+hBQzsKBe5Bc6
+         I86vfCwoMadB3DpK69K0NxDkjj8BAPzDT06wtMS2KKSavkofmEQMeXuLndl7Fs++jH0N
+         9FWQ==
+X-Gm-Message-State: AOAM530vjV6mFYnGd4dZI/vO6B0PRuk6HKNaQrvnNdO/7H99axkswla4
+        OEZQj+AQQPDoIfCsjog4TCyR0W0Abtcwp0R1XOiwcc2B4TGfVw==
+X-Google-Smtp-Source: ABdhPJzdeJt7cR2Lci0/u43eiwTMDXryQjeAQX7GjhkgnwIUBZrkUU985x0DMiJvS4aJ2y06E5DIneLyvogQpFyKpI4=
+X-Received: by 2002:a67:c787:: with SMTP id t7mr10392016vsk.48.1612786057397;
+ Mon, 08 Feb 2021 04:07:37 -0800 (PST)
 MIME-Version: 1.0
-References: <1612422438-32525-1-git-send-email-tanxiaofei@huawei.com>
-In-Reply-To: <1612422438-32525-1-git-send-email-tanxiaofei@huawei.com>
+References: <20210204151847.91353-1-kernel@esmil.dk>
+In-Reply-To: <20210204151847.91353-1-kernel@esmil.dk>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 8 Feb 2021 13:06:57 +0100
-Message-ID: <CAPDyKFpUSKJObVk49WSqDMkrcBp6s3bRpQR4kwntO0cFXue-Bw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: cavium: Replace spin_lock_irqsave with spin_lock in
- hard IRQ
-To:     Xiaofei Tan <tanxiaofei@huawei.com>
-Cc:     rric@kernel.org, Rui Miguel Silva <rmfrfs@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linuxarm@openeuler.org
+Date:   Mon, 8 Feb 2021 13:07:00 +0100
+Message-ID: <CAPDyKFrFPWu-mb+krWBYAC=DPpWDqYDseACRRFHyscKbG7yHaA@mail.gmail.com>
+Subject: Re: [PATCH 0/9] drivers: mmc: Update trivial tasklet_init() callers
+To:     Emil Renner Berthing <kernel@esmil.dk>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Ben Dooks <ben-linux@fluff.org>, Alex Dubov <oakad@yahoo.com>,
+        Bruce Chang <brucechang@via.com.tw>,
+        Harald Welte <HaraldWelte@viatech.com>,
+        Pierre Ossman <pierre@ossman.eu>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 4 Feb 2021 at 08:09, Xiaofei Tan <tanxiaofei@huawei.com> wrote:
+On Thu, 4 Feb 2021 at 16:19, Emil Renner Berthing <kernel@esmil.dk> wrote:
 >
-> It is redundant to do irqsave and irqrestore in hardIRQ context, where
-> it has been in a irq-disabled context.
+> This updates callers of tasklet_init() in drivers/mmc to the new API
+> in commit 12cc923f1ccc ("tasklet: Introduce new initialization API")
 >
-> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> All changes are made by coccinelle using the following semantic patch:
+>
+> @ match @
+> type T;
+> T *container;
+> identifier tasklet;
+> identifier callback;
+> @@
+>         tasklet_init(&container->tasklet, callback, (unsigned long)container);
+>
+> @ patch1 depends on match @
+> type match.T;
+> identifier match.tasklet;
+> identifier match.callback;
+> identifier data;
+> identifier container;
+> @@
+> -void callback(unsigned long data)
+> +void callback(struct tasklet_struct *t)
+> {
+>         ...
+> -       T *container = \( (T *)data \| (void *)data \);
+> +       T *container = from_tasklet(container, t, tasklet);
+>         ...
+> }
+>
+> @ patch2 depends on match @
+> type match.T;
+> identifier match.tasklet;
+> identifier match.callback;
+> identifier data;
+> identifier container;
+> @@
+> -void callback(unsigned long data)
+> +void callback(struct tasklet_struct *t)
+> {
+>         ...
+> -       T *container;
+> +       T *container = from_tasklet(container, t, tasklet);
+>         ...
+> -       container = \( (T *)data \| (void *)data \);
+>         ...
+> }
+>
+> @ depends on (patch1 || patch2) @
+> match.T *container;
+> identifier match.tasklet;
+> identifier match.callback;
+> @@
+> -       tasklet_init(&container->tasklet, callback, (unsigned long)container);
+> +       tasklet_setup(&container->tasklet, callback);
+>
+>
+> Emil Renner Berthing (9):
+>   mmc: atmel-mci: Use new tasklet API
+>   mmc: au1xmmc: Use new tasklet API
+>   mmc: dw_mmc: Use new tasklet API
+>   mmc: omap: Use new tasklet API
+>   mmc: s3cmci: Use new tasklet API
+>   mmc: tifm_sd: Use new tasklet API
+>   mmc: uniphier-sd: Use new tasklet API
+>   mmc: via-sdmmc: Use new tasklet API
+>   mmc: wbsd: Use new tasklet API
+>
+>  drivers/mmc/host/atmel-mci.c   |  6 +++---
+>  drivers/mmc/host/au1xmmc.c     | 14 ++++++--------
+>  drivers/mmc/host/dw_mmc.c      |  6 +++---
+>  drivers/mmc/host/omap.c        |  7 +++----
+>  drivers/mmc/host/s3cmci.c      |  6 +++---
+>  drivers/mmc/host/tifm_sd.c     |  7 +++----
+>  drivers/mmc/host/uniphier-sd.c | 14 ++++++--------
+>  drivers/mmc/host/via-sdmmc.c   |  9 +++------
+>  drivers/mmc/host/wbsd.c        | 35 +++++++++++++++-------------------
+>  9 files changed, 45 insertions(+), 59 deletions(-)
+>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
-
-
-> ---
->  drivers/mmc/host/cavium.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/mmc/host/cavium.c b/drivers/mmc/host/cavium.c
-> index c5da3aa..4bb8f28 100644
-> --- a/drivers/mmc/host/cavium.c
-> +++ b/drivers/mmc/host/cavium.c
-> @@ -436,12 +436,11 @@ irqreturn_t cvm_mmc_interrupt(int irq, void *dev_id)
->  {
->         struct cvm_mmc_host *host = dev_id;
->         struct mmc_request *req;
-> -       unsigned long flags = 0;
->         u64 emm_int, rsp_sts;
->         bool host_done;
->
->         if (host->need_irq_handler_lock)
-> -               spin_lock_irqsave(&host->irq_handler_lock, flags);
-> +               spin_lock(&host->irq_handler_lock);
->         else
->                 __acquire(&host->irq_handler_lock);
->
-> @@ -504,7 +503,7 @@ irqreturn_t cvm_mmc_interrupt(int irq, void *dev_id)
->                 host->release_bus(host);
->  out:
->         if (host->need_irq_handler_lock)
-> -               spin_unlock_irqrestore(&host->irq_handler_lock, flags);
-> +               spin_unlock(&host->irq_handler_lock);
->         else
->                 __release(&host->irq_handler_lock);
->         return IRQ_RETVAL(emm_int != 0);
-> --
-> 2.8.1
->
