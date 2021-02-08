@@ -2,109 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A04C93131D0
-	for <lists+linux-mmc@lfdr.de>; Mon,  8 Feb 2021 13:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 246323131DA
+	for <lists+linux-mmc@lfdr.de>; Mon,  8 Feb 2021 13:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233328AbhBHMIW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Feb 2021 07:08:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40202 "EHLO
+        id S229581AbhBHMKk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Feb 2021 07:10:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233567AbhBHMG2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Feb 2021 07:06:28 -0500
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 653D6C061756
-        for <linux-mmc@vger.kernel.org>; Mon,  8 Feb 2021 04:05:48 -0800 (PST)
-Received: by mail-ua1-x934.google.com with SMTP id d3so4586919uap.4
-        for <linux-mmc@vger.kernel.org>; Mon, 08 Feb 2021 04:05:48 -0800 (PST)
+        with ESMTP id S231699AbhBHMIj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Feb 2021 07:08:39 -0500
+Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53385C06178B
+        for <linux-mmc@vger.kernel.org>; Mon,  8 Feb 2021 04:07:26 -0800 (PST)
+Received: by mail-vs1-xe34.google.com with SMTP id l192so7376235vsd.5
+        for <linux-mmc@vger.kernel.org>; Mon, 08 Feb 2021 04:07:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=QZWBJIaZ/bsVP6p7XHOvoxdJcCLoPklYQ4/+m3orfc4=;
-        b=ZQCT0vdtAH18I54cmEsV7LzEgSzw9x7c4g7nvwzJL635j04pCobWhbKJOmCOiqN6r+
-         5IkXAW8bGhbfC93gnmBHVgGR87pJ6HRwAa1IDLcZKt1Yqdr58G+VWlMgcoevYFCQquBw
-         seer1lf9o+PtoGAZrIBT5QkB1awbktnaAuGJevTXBHBkyNvWitEHL8eSa5Vf8JJ1drVf
-         Mw+g6Hg+zfhAPvbAJKEFMJppA9Vz3NcLyLueIlCcKFVOU/RunduQQ8lj1XD8s7xnpiJT
-         r4l+03hhnI5FUihva78gdtAaat0pNPztOjdMYftJcbX6TtqwL1jrOz+spgRGcEzlPryj
-         /cng==
+        bh=ImspA1BSqvczZ+MWUWIRyfcIF1TY4t53ZG9PfWvHtxQ=;
+        b=AV4fYeCBmYOLfiveuetMK91m+CKQCbIxlcsrEIPQCA/hUQqSTxDqGXDoCivvhmyGRK
+         2rnBAi8pTtT3PmrhPm2jPFeTDjvMztmOBLwjNWKa2/prHJvTNuarzTrO4SRrDNGFODvp
+         F1RmtTiaqyIRXXAUJwGfHz6a3shk6EucHp98b84kHpi7mYaIs6O465KaUYg/7oE54dFD
+         7d0ioAKO0OJjOzcXb0m+kCzhxhgWB0HOP6xeoSvcXARVfzsw8g0Mk2QOZxjzQs4jVBpF
+         By3BMLPSRdeIFtH3LZJ/QpkxVUsUFIaKu2FH7it7M3H/+V76no3eKPTvQlybwOEwqeME
+         o0AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=QZWBJIaZ/bsVP6p7XHOvoxdJcCLoPklYQ4/+m3orfc4=;
-        b=ibgkHQcb7QSWMsACLHrJGLpAQthoLltIpK4lGE/9AFEZOveDzASsOtnKRRCBG/K0AH
-         aX8RTz5xXsvT3RLIqTd+ToZnm3dIgSE7IGqTW7n90uPj+xTUhl18J06v1a9oLCrO3Xva
-         LrfsqBfCULxR1VevZnTKyTjQPtXzEAzkrsvas/xJMxx/01qYK5QumItfK0N9twTvAKT1
-         rvZ821EIln81Fe0zJwV8r/iAoBXHSshegPE8SeRdNUT0Rqsf94VtSr5vczAKDomp42li
-         IEYWv0rn8LueSMm4xSfuX3dMUUhcydbXDaxMj7LSCVArrIO9bCtqLq7omutEKTy/lg8J
-         Rwvg==
-X-Gm-Message-State: AOAM532J4s/mjjCYdb9+3cY7GYDJTwKThxKUTvbmIeKiIXrjF2VDS4td
-        xKaWzAVevDA3QwAb+LZsq98Od4n+jccAQo5lX4qong==
-X-Google-Smtp-Source: ABdhPJwVrctWDibuLobFdPmbjaCLg1dsBCnjJJtNeM+WcG1vzq5+3yOxb/KoilqBgxHQtxtYVgdzhzPKRVER66jAF9Y=
-X-Received: by 2002:ab0:2e8d:: with SMTP id f13mr9556269uaa.15.1612785946923;
- Mon, 08 Feb 2021 04:05:46 -0800 (PST)
+        bh=ImspA1BSqvczZ+MWUWIRyfcIF1TY4t53ZG9PfWvHtxQ=;
+        b=XDUw9mq1k/erPkRgjNHMQ36hLK6zUHiA+06irQJeXs7DKlRei2hMP4B72oGPUhhg++
+         Ox3b/FZKg83VST7x/4bvShBpFpCpYbvNaDDBEDHIQBAU8VLoY296UBrSEFrH83/0ZMfu
+         pjiJtTFikDqLzmDi2dylUmjIhSedoCDdDb48PpyESjiCn3FJjjPsvFlo9tvzep3WUmrV
+         vxNY6MsyBZo7qQYfjjFEzr/ZjE1Ci2sOnmk+qoL8nnlVZ6xj/cdsfftod9tIviUBBIup
+         Oyo7MLOdF7H6rPC1WV+BZ/2i+azKSJLH/APP6DVbmDdWha79D+iZSx5tpMXCVuiS8A7z
+         fFug==
+X-Gm-Message-State: AOAM531FCpxYCIeVCZyIWfayAjzqK0PqWoC7JhEYTMVdU7y1BXiNdsLQ
+        mKiYJcs7IL3RmiI/K0n+1b/jxtENHoejjE5XnIswFg==
+X-Google-Smtp-Source: ABdhPJy0o73WHE0A3cv9ExV8w5v32lkjGY7HEi9/2UOqKDYqJj6nA6Rkora+iRan9kSlqrYhNslmxOIgTSZMmVFi/CA=
+X-Received: by 2002:a67:2c82:: with SMTP id s124mr9892311vss.34.1612786045588;
+ Mon, 08 Feb 2021 04:07:25 -0800 (PST)
 MIME-Version: 1.0
-References: <1611198593-16287-1-git-send-email-peng.fan@nxp.com> <DB6PR0402MB2760CA4A3D7DC4D5D6C3D81A88B09@DB6PR0402MB2760.eurprd04.prod.outlook.com>
-In-Reply-To: <DB6PR0402MB2760CA4A3D7DC4D5D6C3D81A88B09@DB6PR0402MB2760.eurprd04.prod.outlook.com>
+References: <20210201055507.542-1-zbestahu@gmail.com>
+In-Reply-To: <20210201055507.542-1-zbestahu@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 8 Feb 2021 13:05:10 +0100
-Message-ID: <CAPDyKFpWqVAzUwH_TEX7jyTFjZk3S4_9rBpSsdkghTfisSL7HA@mail.gmail.com>
-Subject: Re: [PATCH V2 0/4] imx esdhc dt/driver update
-To:     Peng Fan <peng.fan@nxp.com>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Mon, 8 Feb 2021 13:06:49 +0100
+Message-ID: <CAPDyKFooNGx7JRdiBv4gkMnKr-Q8u_RrAMOXQxE7tZ6C_DxDRw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: core: Use host instead of card argument to mmc_spi_send_csd()
+To:     Yue Hu <zbestahu@gmail.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Yue Hu <huyue2@yulong.com>, zhangwen@yulong.com,
+        zbestahu@163.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 7 Feb 2021 at 14:10, Peng Fan <peng.fan@nxp.com> wrote:
+On Mon, 1 Feb 2021 at 06:57, Yue Hu <zbestahu@gmail.com> wrote:
 >
-> > Subject: [PATCH V2 0/4] imx esdhc dt/driver update
+> From: Yue Hu <huyue2@yulong.com>
 >
-> Gentle ping..
+> Since mmc_send_cxd_data() does not care card if opcode is MMC_SEND_CSD.
+>
+> Signed-off-by: Yue Hu <huyue2@yulong.com>
 
-I was expecting a new version from you to address the comment on the
-DT bindings from Rob.
-
-Otherwise this looks good to me.
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
+
+> ---
+>  drivers/mmc/core/mmc_ops.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> Thanks,
-> Peng.
+> diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
+> index baa6314..265d95e 100644
+> --- a/drivers/mmc/core/mmc_ops.c
+> +++ b/drivers/mmc/core/mmc_ops.c
+> @@ -296,7 +296,7 @@ int mmc_set_relative_addr(struct mmc_card *card)
+>         return 0;
+>  }
 >
-> >
-> > From: Peng Fan <peng.fan@nxp.com>
-> >
-> > Patch V2:
-> >  patch 1, 2, 3 is new
-> >  patch 4 is not changed
-> >
-> > Peng Fan (4):
-> >   dt-bindings: mmc: fsl-imx-esdhc: add pinctrl bindings
-> >   dt-bindings: mmc: fsl-imx-esdhc: add clock bindings
-> >   arm64: dts: imx8qxp: correct usdhc clock-names sequence
-> >   mmc: sdhci-esdhc-imx: validate pinctrl before use it
-> >
-> >  .../bindings/mmc/fsl-imx-esdhc.yaml           | 36
-> > +++++++++++++++++++
-> >  arch/arm64/boot/dts/freescale/imx8qxp.dtsi    | 18 +++++-----
-> >  drivers/mmc/host/sdhci-esdhc-imx.c            |  2 +-
-> >  3 files changed, 46 insertions(+), 10 deletions(-)
-> >
-> > --
-> > 2.28.0
+> -static int mmc_spi_send_csd(struct mmc_card *card, u32 *csd)
+> +static int mmc_spi_send_csd(struct mmc_host *host, u32 *csd)
+>  {
+>         int ret, i;
+>         __be32 *csd_tmp;
+> @@ -305,7 +305,7 @@ static int mmc_spi_send_csd(struct mmc_card *card, u32 *csd)
+>         if (!csd_tmp)
+>                 return -ENOMEM;
+>
+> -       ret = mmc_send_cxd_data(card, card->host, MMC_SEND_CSD, csd_tmp, 16);
+> +       ret = mmc_send_cxd_data(NULL, host, MMC_SEND_CSD, csd_tmp, 16);
+>         if (ret)
+>                 goto err;
+>
+> @@ -320,7 +320,7 @@ static int mmc_spi_send_csd(struct mmc_card *card, u32 *csd)
+>  int mmc_send_csd(struct mmc_card *card, u32 *csd)
+>  {
+>         if (mmc_host_is_spi(card->host))
+> -               return mmc_spi_send_csd(card, csd);
+> +               return mmc_spi_send_csd(card->host, csd);
+>
+>         return mmc_send_cxd_native(card->host, card->rca << 16, csd,
+>                                 MMC_SEND_CSD);
+> --
+> 1.9.1
 >
