@@ -2,113 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 246323131DA
-	for <lists+linux-mmc@lfdr.de>; Mon,  8 Feb 2021 13:11:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49F573131D8
+	for <lists+linux-mmc@lfdr.de>; Mon,  8 Feb 2021 13:11:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbhBHMKk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Feb 2021 07:10:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
+        id S229503AbhBHMKe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Feb 2021 07:10:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231699AbhBHMIj (ORCPT
+        with ESMTP id S233560AbhBHMIj (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Feb 2021 07:08:39 -0500
-Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53385C06178B
-        for <linux-mmc@vger.kernel.org>; Mon,  8 Feb 2021 04:07:26 -0800 (PST)
-Received: by mail-vs1-xe34.google.com with SMTP id l192so7376235vsd.5
-        for <linux-mmc@vger.kernel.org>; Mon, 08 Feb 2021 04:07:26 -0800 (PST)
+Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1E42C061794
+        for <linux-mmc@vger.kernel.org>; Mon,  8 Feb 2021 04:07:29 -0800 (PST)
+Received: by mail-ua1-x92e.google.com with SMTP id o31so4594406uae.2
+        for <linux-mmc@vger.kernel.org>; Mon, 08 Feb 2021 04:07:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ImspA1BSqvczZ+MWUWIRyfcIF1TY4t53ZG9PfWvHtxQ=;
-        b=AV4fYeCBmYOLfiveuetMK91m+CKQCbIxlcsrEIPQCA/hUQqSTxDqGXDoCivvhmyGRK
-         2rnBAi8pTtT3PmrhPm2jPFeTDjvMztmOBLwjNWKa2/prHJvTNuarzTrO4SRrDNGFODvp
-         F1RmtTiaqyIRXXAUJwGfHz6a3shk6EucHp98b84kHpi7mYaIs6O465KaUYg/7oE54dFD
-         7d0ioAKO0OJjOzcXb0m+kCzhxhgWB0HOP6xeoSvcXARVfzsw8g0Mk2QOZxjzQs4jVBpF
-         By3BMLPSRdeIFtH3LZJ/QpkxVUsUFIaKu2FH7it7M3H/+V76no3eKPTvQlybwOEwqeME
-         o0AQ==
+        bh=nBfHlTUO8xcU/3J/1NVTL8ay5K7+Ykot5u7GvYL+7LM=;
+        b=NfLotLBwlQ8o4oLVojx5LDeUFs12Rx+9Btmx4abJJvR5jXzDirjfwJezEiHlU4O+lA
+         K9jv6KJrdOR8dU9H28wZWguJW6cLZ019h1jptg2lfhZEvIyb0d+1Cl2zo9H3TaKsLied
+         aHhJsVoAroheOrsHOfwMQmsnnroF4nHprJRZFzXc9aYZ5Q0j7EdlkSwrJ+++tZkK97NQ
+         PPunqpLLd+MaBspRTwC5j1Zrk/3vqRhudi1DQgDMgMSKtSeHezLNXW7gzt7ta6xgtuTZ
+         7CKd5lnUrNXd3U2AEnWQ39Li1C0p1Agurchyvogyf0oX8iEuEkXW4BXUQGDKchjk75u2
+         VQDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ImspA1BSqvczZ+MWUWIRyfcIF1TY4t53ZG9PfWvHtxQ=;
-        b=XDUw9mq1k/erPkRgjNHMQ36hLK6zUHiA+06irQJeXs7DKlRei2hMP4B72oGPUhhg++
-         Ox3b/FZKg83VST7x/4bvShBpFpCpYbvNaDDBEDHIQBAU8VLoY296UBrSEFrH83/0ZMfu
-         pjiJtTFikDqLzmDi2dylUmjIhSedoCDdDb48PpyESjiCn3FJjjPsvFlo9tvzep3WUmrV
-         vxNY6MsyBZo7qQYfjjFEzr/ZjE1Ci2sOnmk+qoL8nnlVZ6xj/cdsfftod9tIviUBBIup
-         Oyo7MLOdF7H6rPC1WV+BZ/2i+azKSJLH/APP6DVbmDdWha79D+iZSx5tpMXCVuiS8A7z
-         fFug==
-X-Gm-Message-State: AOAM531FCpxYCIeVCZyIWfayAjzqK0PqWoC7JhEYTMVdU7y1BXiNdsLQ
-        mKiYJcs7IL3RmiI/K0n+1b/jxtENHoejjE5XnIswFg==
-X-Google-Smtp-Source: ABdhPJy0o73WHE0A3cv9ExV8w5v32lkjGY7HEi9/2UOqKDYqJj6nA6Rkora+iRan9kSlqrYhNslmxOIgTSZMmVFi/CA=
-X-Received: by 2002:a67:2c82:: with SMTP id s124mr9892311vss.34.1612786045588;
- Mon, 08 Feb 2021 04:07:25 -0800 (PST)
+        bh=nBfHlTUO8xcU/3J/1NVTL8ay5K7+Ykot5u7GvYL+7LM=;
+        b=bDndYDEq9AcPeTA0X0TvIGPR049BPeHsQgou1fL+DQ3z60ETFcHiLk+1H7CJ4ma7/d
+         dkZ1UiaqszN0CU5cYgFDNqjfmIsjNAPcukXMHEr6JmkdKSfnatGMyv0+keZ6L/752FO0
+         1R6MapZ437yYPE4MBxuwBPV8zOLU9985cBaCW920QpuuEGV12lXvSk/f0Py+p1kMsMja
+         Ebkf4rRGvxkv3QbxwDYEZQSeOZhWohCOVnOies/cH186mo71V59hwO3mXnUxYENjRZV8
+         Mjou5VjRP/Z8dNegC7GtJ4lgvYoF0EXktwq2l3yFhlmHrdRGAAQ+v8QUCeOPl4UzO0AM
+         Xr7Q==
+X-Gm-Message-State: AOAM530Gd8Z48KwFgEo/L9ODGsm40kAZGl3kHsU3CIf3LmLF3iHhitEs
+        za142n3JCBbhRn05pXZdxhypQjHOULWf+AW3addXQv8VXYWhKQ==
+X-Google-Smtp-Source: ABdhPJyveAOXkWIY2Uy+xBZPmCcq2xl4pXwGqlI0/iGJwo+I347AbyooClMRtYeOqEyyV5RIb+XCebmp2TWWJI2gZCQ=
+X-Received: by 2002:ab0:3496:: with SMTP id c22mr10132241uar.100.1612786049005;
+ Mon, 08 Feb 2021 04:07:29 -0800 (PST)
 MIME-Version: 1.0
-References: <20210201055507.542-1-zbestahu@gmail.com>
-In-Reply-To: <20210201055507.542-1-zbestahu@gmail.com>
+References: <CGME20210203072341epcas1p186cca2cf8177a31d04f1ede4bb5f1ec7@epcas1p1.samsung.com>
+ <20210203072014.30272-1-cw9316.lee@samsung.com>
+In-Reply-To: <20210203072014.30272-1-cw9316.lee@samsung.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 8 Feb 2021 13:06:49 +0100
-Message-ID: <CAPDyKFooNGx7JRdiBv4gkMnKr-Q8u_RrAMOXQxE7tZ6C_DxDRw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: core: Use host instead of card argument to mmc_spi_send_csd()
-To:     Yue Hu <zbestahu@gmail.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+Date:   Mon, 8 Feb 2021 13:06:53 +0100
+Message-ID: <CAPDyKFqkCJE5uQAUop6QvnPbCE7yhWBLD1sNFhhP+8SnNmRwGw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: queue: Remove unused define
+To:     Chanwoo Lee <cw9316.lee@samsung.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Yue Hu <huyue2@yulong.com>, zhangwen@yulong.com,
-        zbestahu@163.com
+        grant.jung@samsung.com, jt77.jang@samsung.com,
+        dh0421.hwang@samsung.com, sh043.lee@samsung.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 1 Feb 2021 at 06:57, Yue Hu <zbestahu@gmail.com> wrote:
+On Wed, 3 Feb 2021 at 08:23, Chanwoo Lee <cw9316.lee@samsung.com> wrote:
 >
-> From: Yue Hu <huyue2@yulong.com>
+> From: ChanWoo Lee <cw9316.lee@samsung.com>
 >
-> Since mmc_send_cxd_data() does not care card if opcode is MMC_SEND_CSD.
+> MMC_CQE_QUEUE_FULL is not set and is only cleared.
+> Therefore, define is unnecessary.
 >
-> Signed-off-by: Yue Hu <huyue2@yulong.com>
+> Signed-off-by: ChanWoo Lee <cw9316.lee@samsung.com>
 
 Applied for next, thanks!
+
+As a next step, we should probably convert the mq->cqe_busy member
+into a bool rather than the unsigned int.
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/core/mmc_ops.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/mmc/core/queue.c | 2 --
+>  drivers/mmc/core/queue.h | 1 -
+>  2 files changed, 3 deletions(-)
 >
-> diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-> index baa6314..265d95e 100644
-> --- a/drivers/mmc/core/mmc_ops.c
-> +++ b/drivers/mmc/core/mmc_ops.c
-> @@ -296,7 +296,7 @@ int mmc_set_relative_addr(struct mmc_card *card)
->         return 0;
+> diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
+> index 002426e3cf76..9f37a8b909e8 100644
+> --- a/drivers/mmc/core/queue.c
+> +++ b/drivers/mmc/core/queue.c
+> @@ -33,8 +33,6 @@ void mmc_cqe_check_busy(struct mmc_queue *mq)
+>  {
+>         if ((mq->cqe_busy & MMC_CQE_DCMD_BUSY) && !mmc_cqe_dcmd_busy(mq))
+>                 mq->cqe_busy &= ~MMC_CQE_DCMD_BUSY;
+> -
+> -       mq->cqe_busy &= ~MMC_CQE_QUEUE_FULL;
 >  }
 >
-> -static int mmc_spi_send_csd(struct mmc_card *card, u32 *csd)
-> +static int mmc_spi_send_csd(struct mmc_host *host, u32 *csd)
->  {
->         int ret, i;
->         __be32 *csd_tmp;
-> @@ -305,7 +305,7 @@ static int mmc_spi_send_csd(struct mmc_card *card, u32 *csd)
->         if (!csd_tmp)
->                 return -ENOMEM;
->
-> -       ret = mmc_send_cxd_data(card, card->host, MMC_SEND_CSD, csd_tmp, 16);
-> +       ret = mmc_send_cxd_data(NULL, host, MMC_SEND_CSD, csd_tmp, 16);
->         if (ret)
->                 goto err;
->
-> @@ -320,7 +320,7 @@ static int mmc_spi_send_csd(struct mmc_card *card, u32 *csd)
->  int mmc_send_csd(struct mmc_card *card, u32 *csd)
->  {
->         if (mmc_host_is_spi(card->host))
-> -               return mmc_spi_send_csd(card, csd);
-> +               return mmc_spi_send_csd(card->host, csd);
->
->         return mmc_send_cxd_native(card->host, card->rca << 16, csd,
->                                 MMC_SEND_CSD);
+>  static inline bool mmc_cqe_can_dcmd(struct mmc_host *host)
+> diff --git a/drivers/mmc/core/queue.h b/drivers/mmc/core/queue.h
+> index fd11491ced9f..57c59b6cb1b9 100644
+> --- a/drivers/mmc/core/queue.h
+> +++ b/drivers/mmc/core/queue.h
+> @@ -81,7 +81,6 @@ struct mmc_queue {
+>         int                     in_flight[MMC_ISSUE_MAX];
+>         unsigned int            cqe_busy;
+>  #define MMC_CQE_DCMD_BUSY      BIT(0)
+> -#define MMC_CQE_QUEUE_FULL     BIT(1)
+>         bool                    busy;
+>         bool                    use_cqe;
+>         bool                    recovery_needed;
 > --
-> 1.9.1
+> 2.29.0
 >
