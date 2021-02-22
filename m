@@ -2,111 +2,116 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BED39321537
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Feb 2021 12:41:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A707B321597
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Feb 2021 12:59:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbhBVLkr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 22 Feb 2021 06:40:47 -0500
-Received: from www.zeus03.de ([194.117.254.33]:48288 "EHLO mail.zeus03.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230189AbhBVLkq (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 22 Feb 2021 06:40:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=k1; bh=hKOcOukzq0DpKJ
-        sSUNKkVBEiC3JIGvliRlA+tppvrsU=; b=jZ7hiKxtrQh9hj4dv0l78+2dVo2Tp0
-        XtGOYhUiqDhUW6hP9bUlKUT8X5+SufjdVhPuPy4uBkcZvnz0z8rmKZ3kvkRA9UYP
-        uO+zufNnNBcVGfa0S2EIcl3bM6LXrAye7DjGnPbYYO3o6D7J15RjvZFSjS77nLvl
-        4zvAT8Zv6Nb58=
-Received: (qmail 2216209 invoked from network); 22 Feb 2021 12:40:04 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 22 Feb 2021 12:40:04 +0100
-X-UD-Smtp-Session: l3s3148p1@g69RQ+u7RsAgARa4RXmUARZp+YIgYjUK
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [RFC PATCH v2 2/2] mmc: renesas_sdhi: do hard reset if possible
-Date:   Mon, 22 Feb 2021 12:39:55 +0100
-Message-Id: <20210222113955.7779-3-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210222113955.7779-1-wsa+renesas@sang-engineering.com>
-References: <20210222113955.7779-1-wsa+renesas@sang-engineering.com>
+        id S229518AbhBVL6P (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 22 Feb 2021 06:58:15 -0500
+Received: from condef-04.nifty.com ([202.248.20.69]:34118 "EHLO
+        condef-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230053AbhBVL6N (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Feb 2021 06:58:13 -0500
+Received: from conssluserg-03.nifty.com ([10.126.8.82])by condef-04.nifty.com with ESMTP id 11MBlQnn006597;
+        Mon, 22 Feb 2021 20:47:26 +0900
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177]) (authenticated)
+        by conssluserg-03.nifty.com with ESMTP id 11MBjmSq026019;
+        Mon, 22 Feb 2021 20:45:49 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 11MBjmSq026019
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1613994349;
+        bh=XycS92IGA3vLF6aa9ZEP5cx7aX8qlkuTZWFQ5Nsc3mo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=pxLlUel3rZgmGgieTAUcqXqa/u7C8LHYJkoHTmk304NKqB1CkTweK4oHRY/oilMdZ
+         eUKw1wRm6nRlqD7ar1SgKL5sChqh4tfLBIkCAu1zXimhpGnlpb6rVa7Q1T5MvBH6DW
+         4WNU7v819T+0p+75FntMyyqabBqwV5hr7FfQc6ZpJWTIQEKHCccjWMjobZqw1w2CxW
+         UHTMFZcfUnlNkCCj1B17LYJ9BLySwB5ZzWy91WErRlb9ZXqRh1cJ1wLsSn0sIHfb/n
+         0DYBiEL6hEor2ktacyyobbf3OekSV7rPzBOfsUyhkvOGAx1jXFfe1Cz9zP7HZNGYIa
+         oAfvbf3YJjH7g==
+X-Nifty-SrcIP: [209.85.210.177]
+Received: by mail-pf1-f177.google.com with SMTP id u26so464878pfn.6;
+        Mon, 22 Feb 2021 03:45:49 -0800 (PST)
+X-Gm-Message-State: AOAM532qhbcs2kMnz+FeHqiRJ3tsuPBPCEdodMG8zJ3YmF6EnmjqQ0R6
+        T4rWsAoi7LzA6e4xE8+Mc6gTnPApMM1BrbbmFwU=
+X-Google-Smtp-Source: ABdhPJzg8YvMz+G0Com1JcOMBvXR+cwLw21c4AEbMPt+R+k+o7Ro5o3jSTZdRWIQ5c+kyR2CNajAS4OJgpWf2Y56Mgc=
+X-Received: by 2002:a62:1412:0:b029:1ec:bc11:31fd with SMTP id
+ 18-20020a6214120000b02901ecbc1131fdmr21092690pfu.76.1613994348588; Mon, 22
+ Feb 2021 03:45:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210220142935.918554-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20210220142935.918554-1-christophe.jaillet@wanadoo.fr>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Mon, 22 Feb 2021 20:45:11 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATar8hf7B=HeaWO4D8DhmABXjNZ16H_+KQr=gEx+9Bgrg@mail.gmail.com>
+Message-ID: <CAK7LNATar8hf7B=HeaWO4D8DhmABXjNZ16H_+KQr=gEx+9Bgrg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: uniphier-sd: Fix an error handling path in uniphier_sd_probe()
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        kernel@esmil.dk, Douglas Anderson <dianders@chromium.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Some SDHI instances can be reset via the reset controller. If one is
-found, use it instead of the custom reset.
+On Sat, Feb 20, 2021 at 11:31 PM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> A 'uniphier_sd_clk_enable()' call should be balanced by a corresponding
+> 'uniphier_sd_clk_disable()' call.
+> This is done in the remove function, but not in the error handling path of
+> the probe.
+>
+> Add the missing call.
+>
+> Fixes: 3fd784f745dd ("mmc: uniphier-sd: add UniPhier SD/eMMC controller driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/mmc/host/renesas_sdhi.h      |  2 ++
- drivers/mmc/host/renesas_sdhi_core.c | 13 ++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+I no longer have access to this hardware, but
+by browsing the code, this seems correct.
 
-diff --git a/drivers/mmc/host/renesas_sdhi.h b/drivers/mmc/host/renesas_sdhi.h
-index cb962c7883dc..53eded81a53e 100644
---- a/drivers/mmc/host/renesas_sdhi.h
-+++ b/drivers/mmc/host/renesas_sdhi.h
-@@ -70,6 +70,8 @@ struct renesas_sdhi {
- 	DECLARE_BITMAP(smpcmp, BITS_PER_LONG);
- 	unsigned int tap_num;
- 	unsigned int tap_set;
-+
-+	struct reset_control *rstc;
- };
- 
- #define host_to_priv(host) \
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index 158c21e5a942..a1de5c431f07 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -20,6 +20,7 @@
- 
- #include <linux/clk.h>
- #include <linux/delay.h>
-+#include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/mfd/tmio.h>
- #include <linux/mmc/host.h>
-@@ -32,6 +33,7 @@
- #include <linux/platform_device.h>
- #include <linux/pm_domain.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/reset.h>
- #include <linux/sh_dma.h>
- #include <linux/slab.h>
- #include <linux/sys_soc.h>
-@@ -561,9 +563,16 @@ static int renesas_sdhi_prepare_hs400_tuning(struct mmc_host *mmc, struct mmc_io
- static void renesas_sdhi_reset(struct tmio_mmc_host *host)
- {
- 	struct renesas_sdhi *priv = host_to_priv(host);
-+	int ret;
- 	u16 val;
- 
--	if (priv->scc_ctl) {
-+	if (!IS_ERR(priv->rstc)) {
-+		reset_control_reset(priv->rstc);
-+		/* Unknown why but without polling reset status, it will hang */
-+		read_poll_timeout(reset_control_status, ret, ret == 0, 1, 100,
-+				  false, priv->rstc);
-+		priv->needs_adjust_hs400 = false;
-+	} else if (priv->scc_ctl) {
- 		renesas_sdhi_disable_scc(host->mmc);
- 		renesas_sdhi_reset_hs400_mode(host, priv);
- 		priv->needs_adjust_hs400 = false;
-@@ -1076,6 +1085,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
- 	if (ret)
- 		goto efree;
- 
-+	priv->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
-+
- 	ver = sd_ctrl_read16(host, CTL_VERSION);
- 	/* GEN2_SDR104 is first known SDHI to use 32bit block count */
- 	if (ver < SDHI_VER_GEN2_SDR104 && mmc_data->max_blk_count > U16_MAX)
--- 
-2.30.0
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
 
+
+
+
+
+
+>  drivers/mmc/host/uniphier-sd.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/uniphier-sd.c b/drivers/mmc/host/uniphier-sd.c
+> index 2413b6750cec..6f0f05466917 100644
+> --- a/drivers/mmc/host/uniphier-sd.c
+> +++ b/drivers/mmc/host/uniphier-sd.c
+> @@ -635,7 +635,7 @@ static int uniphier_sd_probe(struct platform_device *pdev)
+>
+>         ret = tmio_mmc_host_probe(host);
+>         if (ret)
+> -               goto free_host;
+> +               goto disable_clk;
+>
+>         ret = devm_request_irq(dev, irq, tmio_mmc_irq, IRQF_SHARED,
+>                                dev_name(dev), host);
+> @@ -646,6 +646,8 @@ static int uniphier_sd_probe(struct platform_device *pdev)
+>
+>  remove_host:
+>         tmio_mmc_host_remove(host);
+> +disable_clk:
+> +       uniphier_sd_clk_disable(host);
+>  free_host:
+>         tmio_mmc_host_free(host);
+>
+> --
+> 2.27.0
+>
+
+
+--
+Best Regards
+Masahiro Yamada
