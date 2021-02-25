@@ -2,144 +2,181 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73796324960
-	for <lists+linux-mmc@lfdr.de>; Thu, 25 Feb 2021 04:24:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF93324B20
+	for <lists+linux-mmc@lfdr.de>; Thu, 25 Feb 2021 08:20:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235918AbhBYDXu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 24 Feb 2021 22:23:50 -0500
-Received: from mail-eopbgr40063.outbound.protection.outlook.com ([40.107.4.63]:28622
-        "EHLO EUR03-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232723AbhBYDXu (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 24 Feb 2021 22:23:50 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FWu0i/zb40KEGYua7u6obAeZSTiBv8+YQmdILuZQQwGkao9aY2rDl9/UupRN3f5MZP3Uo8ihqGKBjp/leUV4KhkNft+0EsU/Vqpj/NRJ470+z5f/mRWGVZ1ej4EjxCYB/+7IkAIDlYQBfI/rE6XyhgkgcS0oIUHe/bhchXN13zfMi09xgbssMeu+AgSK8Cpvn1Ng5YTdomoogYLetDslFwcF4tisTF7oS2jpjbWmYLrJl8XI/wgC7vBHieOFYpzOngsDflLlBOzq37csinQ4OUe0nXH34Ik5A6Px9WWsg8b+3zzKeKtKYOLuqKbL+9BQuhEVXhfsYo0T1frjtDzVXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lck6ZS8A2U9T+PdekfnW8U8SUFXIjFDjy5TRKWl5XXM=;
- b=Nzx3oAP37m5yDM9ysjXNKZhHtCxA3ZZSex+xI0lFrwrO5D/rlCvtYh2a5LpgVc26ju5f2nM8agH/4iedG0LKIt5lPSZvdKSKCD6N59XEy6xOB/FwvMkCzNXWBLKASsXnSY9x5fcfHVgpiRNjr643jFe2Pan1Pe9juNX3JcHk6sD7MpoaPChZUQHouThM6Qa42Kr0zubh9bi3aioIiyr09EhhU3q7fpdpLsdvrf57WAwvCrb0V6c9Y6BIp0Fe85JYIDNq03jIZtLe30ou9OTjnqptp0qTsgX0tNtogCSscrm2LIfXMC1iYCI+95Yu8jf4/HQ1UA4FZQAwUNBGStAWDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lck6ZS8A2U9T+PdekfnW8U8SUFXIjFDjy5TRKWl5XXM=;
- b=Qi1BDqQY1ZozV6lnsm0giqNX6Map9psX3K/S2ZqwFTWZWYVgM7YzaVpHpgNmSiASoYVrSxWho34v9QOd6PlAUk7kKq13TPQ01QiGLvW1KRN5XtztaEJG+qRATVEErlupGAgsaZ762r1e/SIVwCp4pNDFcYENjffg03p3CE17NC0=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB6PR0402MB2760.eurprd04.prod.outlook.com (2603:10a6:4:a1::14)
- by DBAPR04MB7222.eurprd04.prod.outlook.com (2603:10a6:10:1af::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.20; Thu, 25 Feb
- 2021 03:22:59 +0000
-Received: from DB6PR0402MB2760.eurprd04.prod.outlook.com
- ([fe80::d58c:d479:d094:43d0]) by DB6PR0402MB2760.eurprd04.prod.outlook.com
- ([fe80::d58c:d479:d094:43d0%9]) with mapi id 15.20.3846.043; Thu, 25 Feb 2021
- 03:22:59 +0000
-From:   peng.fan@oss.nxp.com
-To:     sboyd@kernel.org, robh+dt@kernel.org, shawnguo@kernel.org,
-        s.hauer@pengutronix.de
-Cc:     kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        ulf.hansson@linaro.org, adrian.hunter@intel.com,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH V3 5/5] mmc: sdhci-esdhc-imx: validate pinctrl before use it
-Date:   Thu, 25 Feb 2021 11:10:04 +0800
-Message-Id: <1614222604-27066-6-git-send-email-peng.fan@oss.nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1614222604-27066-1-git-send-email-peng.fan@oss.nxp.com>
-References: <1614222604-27066-1-git-send-email-peng.fan@oss.nxp.com>
-Content-Type: text/plain
-X-Originating-IP: [119.31.174.66]
-X-ClientProxiedBy: SGAP274CA0007.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::19)
- To DB6PR0402MB2760.eurprd04.prod.outlook.com (2603:10a6:4:a1::14)
+        id S232164AbhBYHS3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 25 Feb 2021 02:18:29 -0500
+Received: from mailout2.samsung.com ([203.254.224.25]:53977 "EHLO
+        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229890AbhBYHS0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Feb 2021 02:18:26 -0500
+Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
+        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20210225071739epoutp023b03f9f9e8cf6bd509f129baef602bc4~m7GrHAov61954119541epoutp02p
+        for <linux-mmc@vger.kernel.org>; Thu, 25 Feb 2021 07:17:39 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20210225071739epoutp023b03f9f9e8cf6bd509f129baef602bc4~m7GrHAov61954119541epoutp02p
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1614237459;
+        bh=fJg0zRzkXEQMUG5OalYDqSfSccHgkY0ApL62phtZOXw=;
+        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+        b=qAMMJwvm0KbFxsoSRUjKv51r7gqhHDHF1URnD8Gwr20pmYXpVdEuBN4ETrhs5Y64K
+         VoMZ93N6mmIr/SCkCt6g0ffy32EtIhk+2bJbGBQExGwEeLMwelzBkBjmTCnb1Pcn0i
+         SMjMziRH2PhpQCj8ZpimWlQf5XWcLrzaILMRjK/M=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+        20210225071739epcas1p397c5d19066a6b70c60d586e40d7b9b4a~m7GqeigaH2786727867epcas1p3N;
+        Thu, 25 Feb 2021 07:17:39 +0000 (GMT)
+Received: from epsmges1p5.samsung.com (unknown [182.195.40.162]) by
+        epsnrtp2.localdomain (Postfix) with ESMTP id 4DmPJ20l6qz4x9Q9; Thu, 25 Feb
+        2021 07:17:38 +0000 (GMT)
+Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
+        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
+        89.C6.09577.11F47306; Thu, 25 Feb 2021 16:17:38 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
+        20210225071737epcas1p3c94d78490b86a86a21840a3105316ed7~m7Gox3XGo2981929819epcas1p3R;
+        Thu, 25 Feb 2021 07:17:37 +0000 (GMT)
+Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20210225071737epsmtrp2a9d45efbd7c991a5cb92eb4f5041a648~m7GoxAmTI1199311993epsmtrp2N;
+        Thu, 25 Feb 2021 07:17:37 +0000 (GMT)
+X-AuditID: b6c32a39-bfdff70000002569-e8-60374f11ba76
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        83.7A.08745.11F47306; Thu, 25 Feb 2021 16:17:37 +0900 (KST)
+Received: from sh043lee03 (unknown [10.253.101.72]) by epsmtip2.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20210225071737epsmtip283c5fbfe7937581864204a1a036a9f96~m7Gof6s5Q2589525895epsmtip2b;
+        Thu, 25 Feb 2021 07:17:36 +0000 (GMT)
+From:   =?utf-8?B?7J207Iq57Z2s?= <sh043.lee@samsung.com>
+To:     <ulf.hansson@linaro.org>, <pali@kernel.org>, <huyue2@yulong.com>,
+        <tiantao6@hisilicon.com>, <linux-mmc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Cc:     <grant.jung@samsung.com>, <jt77.jang@samsung.com>,
+        <dh0421.hwang@samsung.com>, <junwoo80.lee@samsung.com>,
+        <jangsub.yi@samsung.com>, <cw9316.lee@samsung.com>,
+        <sh8267.baek@samsung.com>, <wkon.kim@samsung.com>
+In-Reply-To: <20210222083156.19158-1-sh043.lee@samsung.com>
+Subject: RE: [PATCH] mmc: core: set read only with permanent write protect
+Date:   Thu, 25 Feb 2021 16:17:36 +0900
+Message-ID: <000001d70b46$4b55a800$e200f800$@samsung.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (119.31.174.66) by SGAP274CA0007.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3890.19 via Frontend Transport; Thu, 25 Feb 2021 03:22:55 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: f408410d-0c89-4925-92b8-08d8d93ca6cf
-X-MS-TrafficTypeDiagnostic: DBAPR04MB7222:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DBAPR04MB7222285E2EE003B18C9AB8A9C99E9@DBAPR04MB7222.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:546;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WNvVANhwfWvA3vTXVH/e9+IIOctca6BZ9rNhErMK1S8tq+XrweGG9Dc9nCqlJb73iNXHHK6fB0/jvjYtFmrmzlWa9Pwm/Bz3KUbcdOyNsrGjarDY8lB3vWWj/6gwxiXblmafGPaTWaJzw7cYgzR2UDksEtdTa0ux+NirVxq2t0DudXv0TVA8Mr1zOgg5sq0MD5zqVKu8e6t/bx0S0ZjUdbhYkT2CJhtG4NUDUaKokW7ljAy7uw9d+k5oZsqDdHmTCDO0DaYhNKVjh5uZmBwqMZXpd8z5gYTY4p/I2CMomPgy8SEAQGXXnn0DqRytceVMwYN2vjlGze2ZjC4mq7whkWqtmXsnH1tg3RRvT/dEGEnI10aOKgzA6Nkes4WfD7njm0USP3NcpkTgrtDBhN7R/kp/CGHezsYzPDIEHhW95K/vTaDfoF4OIhswIvbBPecIJ0+TqzmLLoDK59nYQA85UNMPC5WZEFjSaKW93lcTnFHATE6wmOnn9sSPvCpFD6CtnsINydHgDPPcprXTSbXuSCql7SY4fTdBkKExehuR4n7C75ubF9tseIj8WqB6serpbNRCQzde/76yyjRSOYWvhg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB6PR0402MB2760.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(136003)(376002)(39860400002)(366004)(396003)(26005)(6486002)(5660300002)(66556008)(66946007)(66476007)(478600001)(86362001)(7416002)(956004)(6506007)(2906002)(6512007)(2616005)(6666004)(9686003)(83380400001)(16526019)(8676002)(69590400012)(4326008)(316002)(186003)(52116002)(8936002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?SPGrzSHYtxpOYXFVSfTyy66FHRj2o6w1AckK8GddO5z9yrG6rmlPqGcUBLVL?=
- =?us-ascii?Q?ezlwdu4QQiKNGP897BsVZqH/Ed3+JLk+7HLRZYYEypP6kxcgxv7xSZRCF5FR?=
- =?us-ascii?Q?wrOY5knBcOKPlGbH2m55+jn2zhzC+9p6zSHv73JA622NGxM5EWr6dt/ibMVV?=
- =?us-ascii?Q?vRcIxHvulPu3Y6oww+LxwJ8TLA+1ygeEfey5Usdh1CMGrh/lDA3/THaDUblC?=
- =?us-ascii?Q?3iXJxpXM6n03p/C3Gn2Y+/moVvmbQ4YNWFU9XXOctaNb5sBhjnUFzUSn8/9o?=
- =?us-ascii?Q?mWZuB72YPzByQAk6krZnRkorrpng8zTOmKJUqFFagoma08PZCi+BiAXfIFiC?=
- =?us-ascii?Q?B4mqzzCr3lCBnXevDYVBaC+O/DxbRbqAWvSC14yMUcL2kcPapddeXoM/dC4M?=
- =?us-ascii?Q?Bl0oOgvZEoF/QiGR5MxBXq/CUWnJL6miCcdDYqtbLQxLWJ2PXlg96DigA1y3?=
- =?us-ascii?Q?WF90A8ooC5SzCiJ0gENyRNPUZxN7G+5VFXjsBFYxyedg9O4HyVEfHOapk8w1?=
- =?us-ascii?Q?TPnWS3Pa+yHP3RaqAkcI8mEGoVqYJoH7TegP3laaeVem3OBeMDZwDNDyb/Os?=
- =?us-ascii?Q?M+Ht7iDh2q5zgtikyZogYigLoCFy4p6zbSSbCmimRXFe7nn3YtgUQi5QqHE7?=
- =?us-ascii?Q?B5ugDOxhM3PZRDFHh2o5G78lSWCZMvkU8DI5Cpm2ELajC02NvjgkHv8Nvxk+?=
- =?us-ascii?Q?JSh/4gYmJhRXbfryOMf+pNn6Clpv5g5sqJ5K0E69k8mdlonaBtnchQq36dfM?=
- =?us-ascii?Q?Jbj6xUxwKjk4eded56FOTsaSL/l3uipU/xAB9b+TIPfydXxtHGyo8IaBh0p4?=
- =?us-ascii?Q?OEivjRbxIG+cRXuvK1Is6EXTFuLPrO/ifUc96/QIVpIn5ZqgfjsZ+neYDHw+?=
- =?us-ascii?Q?cDljirM0nOS5sbddehYrnFQaBrhx7triJiEJPTk1NqHVnU9iFeRnkPO/tCrh?=
- =?us-ascii?Q?HL25nrHjlvW1swCzxxsarpmrGnSqV2URJ87yPuZDxDmVLCkbUvDTlnrIeXgZ?=
- =?us-ascii?Q?RoKkX3WxdhClWJDYcVtaEistmvSQYUKDBlsFp2C53Qlv+p7F5uf5bXavtHeM?=
- =?us-ascii?Q?bkA5YfF3tPVzQ74s1aRsadHtVdlBGFZd69I5ID2hCF2OJxWxtbHRg+HTpwjN?=
- =?us-ascii?Q?CSdKAB1PJb5UU315qZR8KMqGLLfwSwvUF+0vfPwhB0OUFGDI5lDVOqVl8McO?=
- =?us-ascii?Q?YwMQyRs0XGM+JUY1KMSCA6MLf+nWH/YsaFfuj14Rm8DlpIoZDKxlJm0LHRCI?=
- =?us-ascii?Q?02zZoUvksZTHzf31zlbOJe7IHN+5AJNaW3WImdCCkIFuk4Ij8cbKDjOQtpmC?=
- =?us-ascii?Q?VZxRwQ+qNqfcWfDZcElAu7l4?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f408410d-0c89-4925-92b8-08d8d93ca6cf
-X-MS-Exchange-CrossTenant-AuthSource: DB6PR0402MB2760.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2021 03:22:59.6659
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: srLEI1leelfHm0DpJBd0oAWo12FUorhLW++ZzNpobwY4S6b4EYeM8YH/eozEZAQqMIQykXSVJXvq4HCkJdSptA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7222
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQLkAIFN/NEy3Z1t/BSdwJSVZvCFVQKLtnjLqDolyjA=
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrIJsWRmVeSWpSXmKPExsWy7bCmvq6Qv3mCwbxDjBYzTrWxWuy7dpLd
+        4tff9ewWe2bfZbbo2DqZyWLH8zPsFrv+NjNZXN41h83iyP9+RosFe06zWVw7c4LVYvXrfewW
+        x9eGW2y+9I3Fgc/j8dyN7B6bVnWyedy5tofNo2/LKkaPz5vkPLauWcwcwBaVY5ORmpiSWqSQ
+        mpecn5KZl26r5B0c7xxvamZgqGtoaWGupJCXmJtqq+TiE6DrlpkDdK2SQlliTilQKCCxuFhJ
+        386mKL+0JFUhI7+4xFYptSAlp8DQoECvODG3uDQvXS85P9fK0MDAyBSoMiEnY3HDXaaCl4IV
+        r6d+ZG5gPMzXxcjBISFgIvHlP38XIxeHkMAORom/u26zQjifGCXu3boI5XxmlLj/qI+9i5ET
+        rOPx3wtMEIldjBI7LsxkBkkICbxglGi9rg0ylk3ATOL5nSCQGhGB+YwSb+ffYQdxmAVuMUps
+        ar8HNolTwFqi79pZJhBbWMBLYsG0LhYQm0VAVWLqyrdgNbwClhIfp71lg7AFJU7OfAJWwywg
+        L7H97RxmiIsUJH4+XcYKYosIWEl8un+ICaJGRGJ2ZxszyGIJgSscEu9nPYFqcJH4PeUClC0s
+        8er4FqjXpCQ+v9vLBtHQzShx+OU7Vginh1Fi8+JTrBBVxhKfPn9mBPmTWUBTYv0ufYiwosTO
+        33MZITbzSbz72sMKCWFeiY42IYgSZYmXj5YxQdiSEkvabzFPYFSaheS3WUh+m4Xkh1kIyxYw
+        sqxiFEstKM5NTy02LDBFju5NjOC0rGW5g3H62w96hxiZOBgPMUpwMCuJ8G7+Z5ogxJuSWFmV
+        WpQfX1Sak1p8iNEUGNoTmaVEk/OBmSGvJN7Q1MjY2NjCxMzczNRYSZw3yeBBvJBAemJJanZq
+        akFqEUwfEwenVAMTc93Vz8LPrkZWtuzfGb21f4J6qfvGfvPexK1i85K555w97NKWIKsl9JZ3
+        5lV2xhXLU5S9u13fy8i35a6/vP9uwEHeZhZt9qfCty+3yL99YnOW71N+0d4pXXtDeP+5nTSS
+        iHK+VqMu3nVd0urjNDeJLZX5O/9Ovj859/Edt6lfzK2n3ea1Ffr7mP3WnUnTQhrqXmzsuWNz
+        9P7SpSdK/NodnHRPM689dI0hKyA01MNTxP/caea480mxDixyjloi6TI9K9VE3HimtQu/n+84
+        UXbW4ZO75uY48q97ZvDnS5eYluuSrknhvzuMOMP8+XSO1dSsTfLaIcErUNcd/lsinluBh3mN
+        SMyp2T1+Cy2v/FNiKc5INNRiLipOBACjSL/WVAQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrBIsWRmVeSWpSXmKPExsWy7bCSvK6gv3mCwcYWLosZp9pYLfZdO8lu
+        8evvenaLPbPvMlt0bJ3MZLHj+Rl2i11/m5ksLu+aw2Zx5H8/o8WCPafZLK6dOcFqsfr1PnaL
+        42vDLTZf+sbiwOfxeO5Gdo9NqzrZPO5c28Pm0bdlFaPH501yHlvXLGYOYIvisklJzcksSy3S
+        t0vgyljccJep4KVgxeupH5kbGA/zdTFyckgImEg8/nuBCcQWEtjBKHG2jx0iLimx+NFDti5G
+        DiBbWOLw4WKIkmeMEtueMIKE2QTMJJ7fCQIJiwgsZZTo2hraxcjFwSzwiFHi96IZLCCOkEAP
+        o8T8T3sZQao4Bawl+q6dBdslLOAlsWBaFwuIzSKgKjF15VuwvbwClhIfp71lg7AFJU7OfAJW
+        wyygLfH05lMoW15i+9s5zBB3Kkj8fLqMFeIKK4lP9w8xQdSISMzubGOewCg8C8moWUhGzUIy
+        ahaSlgWMLKsYJVMLinPTc4sNC4zyUsv1ihNzi0vz0vWS83M3MYIjU0trB+OeVR/0DjEycTAe
+        YpTgYFYS4d38zzRBiDclsbIqtSg/vqg0J7X4EKM0B4uSOO+FrpPxQgLpiSWp2ampBalFMFkm
+        Dk6pBqbYedmOKm8/L5X12n7spcGrBXOWfFyav7BGLDV5OePLnFml+/cGGuvlTZwmf0nxVeXe
+        r3o35jxcuefT5NnrPzOwH7QM2m7Q4yVzYIvj011cQldLRNyVpldWy4lNnL69MiZl0seNh60X
+        CYSwf3J/cmjVttMha0TtGzfvrOd/d/LE4yM7K//eWb999779T2bElX2dvN0jLXnaH+b36utu
+        xpk9qJMyf3R+xqt/nTomPx8XBwaFPU96MbFI+fzcFXcOHpvNp3zmQ3yOhaPUNeXD39Wscgsr
+        lz7X1WF87hX5KaYmPbeNRVd218uel9dVd+7kZvq3eulvpQvRQrwFLjxPxbo+Xel7YH4lIOj9
+        CXG5nAbXOUosxRmJhlrMRcWJAC0DaGw7AwAA
+X-CMS-MailID: 20210225071737epcas1p3c94d78490b86a86a21840a3105316ed7
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20210222081517epcas1p37fef998684dc9eae0bcd2764a3f82fb1
+References: <CGME20210222081517epcas1p37fef998684dc9eae0bcd2764a3f82fb1@epcas1p3.samsung.com>
+        <20210222083156.19158-1-sh043.lee@samsung.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Peng Fan <peng.fan@nxp.com>
+Dear Maintainer & commiters,
 
-When imx_data->pinctrl is not a valid pointer, pinctrl_lookup_state
-will trigger kernel panic.
+Please review the patch for updating.
+I'm not sure if it's reviewed or not.
 
-When we boot Dual OS on Jailhouse hypervisor, we let the 1st Linux to
-configure pinmux ready for the 2nd OS, so the 2nd OS not have pinctrl
-settings.
+As you know, there are lots of defect SD cards in the market.
+It's one of solution that reduces the system load.
+The CSD register shows that it's permanent write protected
+due to lifespan or internal problem.
 
-Similar to this commit b62eee9f804e ("mmc: sdhci-esdhc-imx: no fail when no pinctrl available").
+Once host sets read only field, the upper layer doesn't issue
+unnecessary write operation in it.
 
-Reviewed-by: Bough Chen <haobo.chen@nxp.com>
-Reviewed-by: Alice Guo <alice.guo@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks and regards,
+Seunghui Lee.
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index a20459744d21..94327988da91 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -1488,7 +1488,7 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
- 
- 	mmc_of_parse_voltage(np, &host->ocr_mask);
- 
--	if (esdhc_is_usdhc(imx_data)) {
-+	if (esdhc_is_usdhc(imx_data) && !IS_ERR(imx_data->pinctrl)) {
- 		imx_data->pins_100mhz = pinctrl_lookup_state(imx_data->pinctrl,
- 						ESDHC_PINCTRL_STATE_100MHZ);
- 		imx_data->pins_200mhz = pinctrl_lookup_state(imx_data->pinctrl,
--- 
-2.30.0
+> -----Original Message-----
+> From: Seunghui Lee <sh043.lee@samsung.com>
+> Sent: Monday, February 22, 2021 5:32 PM
+> To: ulf.hansson@linaro.org; pali@kernel.org; huyue2@yulong.com;
+> tiantao6@hisilicon.com; linux-mmc@vger.kernel.org; linux-
+> kernel@vger.kernel.org
+> Cc: grant.jung@samsung.com; jt77.jang@samsung.com;
+> dh0421.hwang@samsung.com; junwoo80.lee@samsung.com; jangsub.yi@samsung.com;
+> cw9316.lee@samsung.com; sh8267.baek@samsung.com; wkon.kim@samsung.com;
+> Seunghui Lee <sh043.lee@samsung.com>
+> Subject: [PATCH] mmc: core: set read only with permanent write protect
+> 
+> Some of SD cards sets permanent write protection due to lifespan or
+> internal problem.
+> Host can find out it's protected permanantly during initialization.
+> Once set read only during initialization, it could prevent unnecessary
+> write operation in it.
+> 
+> Signed-off-by: Seunghui Lee <sh043.lee@samsung.com>
+> ---
+>  drivers/mmc/core/sd.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c index
+> 6fa51a6ed058..2c48d6504101 100644
+> --- a/drivers/mmc/core/sd.c
+> +++ b/drivers/mmc/core/sd.c
+> @@ -135,6 +135,9 @@ static int mmc_decode_csd(struct mmc_card *card)
+>  			csd->erase_size = UNSTUFF_BITS(resp, 39, 7) + 1;
+>  			csd->erase_size <<= csd->write_blkbits - 9;
+>  		}
+> +
+> +		if (UNSTUFF_BITS(resp, 13, 1))
+> +			mmc_card_set_readonly(card);
+>  		break;
+>  	case 1:
+>  		/*
+> @@ -169,6 +172,9 @@ static int mmc_decode_csd(struct mmc_card *card)
+>  		csd->write_blkbits = 9;
+>  		csd->write_partial = 0;
+>  		csd->erase_size = 1;
+> +
+> +		if (UNSTUFF_BITS(resp, 13, 1))
+> +			mmc_card_set_readonly(card);
+>  		break;
+>  	default:
+>  		pr_err("%s: unrecognised CSD structure version %d\n",
+> --
+> 2.29.0
+
 
