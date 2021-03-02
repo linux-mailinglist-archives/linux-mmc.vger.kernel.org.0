@@ -2,73 +2,79 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CD4E32B0B1
-	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:44:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E18CC32B0CA
+	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:45:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237640AbhCCBoF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Mar 2021 20:44:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44886 "EHLO
+        id S235219AbhCCBo1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Mar 2021 20:44:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239099AbhCBKkN (ORCPT
+        with ESMTP id S239532AbhCBKkN (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 05:40:13 -0500
-Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8132C0617A9
-        for <linux-mmc@vger.kernel.org>; Tue,  2 Mar 2021 02:39:22 -0800 (PST)
-Received: by mail-ua1-x92b.google.com with SMTP id 101so143694uag.1
-        for <linux-mmc@vger.kernel.org>; Tue, 02 Mar 2021 02:39:22 -0800 (PST)
+Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D402C061356
+        for <linux-mmc@vger.kernel.org>; Tue,  2 Mar 2021 02:39:26 -0800 (PST)
+Received: by mail-vk1-xa2c.google.com with SMTP id e25so442577vkd.4
+        for <linux-mmc@vger.kernel.org>; Tue, 02 Mar 2021 02:39:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Umhvl4bq+upwhpgsDahvWiFLVfJYEzzIi8Pp8HB1UCU=;
-        b=OQG3lH5wODLrZdv+wguq1ZV0/ouPrqhe3yjBzS5zIDZ9Z3IP+ASIFxVf+INdGRUEKQ
-         2/twk8qhoUJem5qqPWeeh5b74/yj2selF5wiJ4HmR9mo8H0T50wrgDxAqWRrGVgfcvUV
-         VngPYDvdzNKKI71OQE1LDYEt9UQyRTASDZTYp6vXooGlDnbSU4rNy9sHsEX4eORftUHY
-         YnCyFFsI1E+85nKfV4oehVPQEgcBTOfUJzuXn+8QpCKNsJVsgjL+wAmq9XmN8LVmZQdq
-         Ke/iqI6p0/62buAnjIu5ZAAFafN8r/gikx0YnzlmndlYxofqONVdOr86VCFm4G998eQi
-         g2Rg==
+         :cc:content-transfer-encoding;
+        bh=Fn9cvqu3TWLlgd40wMpRR7rJKUFWNQl/gN+inkFY3Iw=;
+        b=plixZWctOODXy5NxmIV8w/uWlqbdvGEZOFPFB6yMYYdBZhVcqTScZA+f11NXp/0NS7
+         1p+suo5ak7KdNsexbGMzdFXPu2l1ltNxLsMBayWkHV1klbohzj+xNOL+kKRqktnNggDU
+         eDsCJjeKqJHk/GrC9RKrjki2WtuTopGX7d4X8FbMYBB8Fy7SztgWatp5pHwZRDLcR1Vo
+         lhT/C3yiben/8gsqKQHviCdCipFwQAPONgblK+YTbiMrQNaJuiENcToOQoIeIAe6SXjm
+         JgHPGnIqxN85iaV2jLLqYwQeDs6Krrc+u3+z3oTErFNAo8+hv+BqIgVQaQsOtrVytAxc
+         NtpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Umhvl4bq+upwhpgsDahvWiFLVfJYEzzIi8Pp8HB1UCU=;
-        b=SKll6NORtfKuNxuYxuGLXHi1Ijiwnj2p6ZzBK/WadxJqqIXVovd0QhqFES1k6BFkPv
-         02Krt6ms06PMugTW6BKq9EtzN0SgUOWzeQXjGrsYGm78SXIXaKF2UrjVfaCd0FaFH+px
-         g7MnYDm/AEX236uYuNR/10fejSus5ldytGrU+3PNV5vr1tu5H32gUEtqFDF4ye8TYg8N
-         wZ0daE9e9ZJakQHxNEZvXfGECHC1LtIUAOblbMK0jr/i4dexS8tn9lAKtph67LOHH9ml
-         8NwXmzzmlkLBTPhnNp0gy9BXj28E9Qe5bzpWz9qbrtNTJKQhgm7aZUuFRTxKcSOkAd3w
-         oRYw==
-X-Gm-Message-State: AOAM531i8MtuCGrWDZuk7kTCmZxW2DTSguB9P6OgJZFPKQop9UIGvvb4
-        0A2Rc2UnVFQI4UyggfzswN2XCH5j7zbvtLpkj+bGDQ==
-X-Google-Smtp-Source: ABdhPJzEyACksmZlApWoBwwWgL7AzKp9cesm9Vy9z6W3q1lFtagYm5gc2fmXlNs/auwZp9RnR9QdnP8r6zx/hInmD3k=
-X-Received: by 2002:ab0:6045:: with SMTP id o5mr10027474ual.100.1614681562074;
- Tue, 02 Mar 2021 02:39:22 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Fn9cvqu3TWLlgd40wMpRR7rJKUFWNQl/gN+inkFY3Iw=;
+        b=n7HnHNY9I0cA48RBzC+XsndVBosFcD8V9C0t5L3XvoTkDsvsk/cyIHboz7pHU8GTQH
+         y7olYfp3P58wmJDnH0oWNDuHE9G+jKnBL38YthVFi8K6SSz2FSyCcKiMC3KIArCSe5OU
+         z7nqRpxOscrdbm01SbLCv5yLVcGmIbwqMpxv5QJAKr9Ri3qAJm7Km1K1N4vOvrcWXP+T
+         xMskztTKtAEL/6CJK7DUHcSrmrEtOzcmBWZWFJko0l9ZKYxOfFRwDUBBrDS5aurwX+3q
+         U6zY5QUlrgLUjxDVg5wwFnsa+YbHhzsQxfkUfzhe22T6uvdkPoGy5cNw6pTuiYiS4e88
+         uKYQ==
+X-Gm-Message-State: AOAM531Ox1pkT0c/pCICDNBFgM61aA+O4MCmOBREOSeO+alUkrdrBo6f
+        wqma685L4UEnLqzap4UlXvYCaMM2bctA1mxphalzJA==
+X-Google-Smtp-Source: ABdhPJzuuI5yNZxyuV1AkZ/hXSTAnfd0WV4twuwbtnzSFXrTkZhCtXu268SmaM3/RvC8GbUqxkFtDPr6tUF9CP1xqlc=
+X-Received: by 2002:a1f:93d2:: with SMTP id v201mr1362089vkd.7.1614681565250;
+ Tue, 02 Mar 2021 02:39:25 -0800 (PST)
 MIME-Version: 1.0
-References: <20210215015116.1355-1-zbestahu@gmail.com>
-In-Reply-To: <20210215015116.1355-1-zbestahu@gmail.com>
+References: <20210218110224.6910-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20210218110224.6910-1-wsa+renesas@sang-engineering.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 2 Mar 2021 11:38:44 +0100
-Message-ID: <CAPDyKFrNBPUdU772EFhcodbu6Mnhv+KmfV6E1oNau1xOooNf8A@mail.gmail.com>
-Subject: Re: [PATCH] mmc: core: Reduce code duplication to mmc_spi_send_{csd|cid}
-To:     Yue Hu <zbestahu@gmail.com>
+Date:   Tue, 2 Mar 2021 11:38:48 +0100
+Message-ID: <CAPDyKFo0ArQ43kAxkZ1ueU8sYu=8fdYq6ZKTyPgEA3uQiPanXg@mail.gmail.com>
+Subject: Re: [PATCH] mmc: tmio: remove workaround for NON_REMOVABLE
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
 Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Yue Hu <huyue2@yulong.com>, zhangwen@yulong.com,
-        zbestahu@163.com
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 15 Feb 2021 at 02:51, Yue Hu <zbestahu@gmail.com> wrote:
+On Thu, 18 Feb 2021 at 13:01, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 >
-> From: Yue Hu <huyue2@yulong.com>
+> RPM handling has been improved twice since this comment, and also SCC
+> handling has been improved a lot. All the testing we did (Geert's and
+> Niklas' and Wolfram's board farms) with the workaround removed did not
+> lead to problems, so it is time to get rid of it to the best of our
+> knowledge.
 >
-> mmc_spi_send_{csd|cid} have similar function body. Let's remove the
-> duplicated part to simplify the code, just add opcode to distinguish
-> them in changed mmc_spi_send_cxd().
->
-> Signed-off-by: Yue Hu <huyue2@yulong.com>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Tested-by: Niklas S=C3=B6derlund <niklas.soderlund+renesas@ragnatech.se>
 
 Applied for next, thanks!
 
@@ -77,84 +83,36 @@ Uffe
 
 
 > ---
->  drivers/mmc/core/mmc_ops.c | 39 +++++++++------------------------------
->  1 file changed, 9 insertions(+), 30 deletions(-)
+>  drivers/mmc/host/tmio_mmc_core.c | 9 ---------
+>  1 file changed, 9 deletions(-)
 >
-> diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-> index 265d95e..f413474 100644
-> --- a/drivers/mmc/core/mmc_ops.c
-> +++ b/drivers/mmc/core/mmc_ops.c
-> @@ -296,61 +296,40 @@ int mmc_set_relative_addr(struct mmc_card *card)
->         return 0;
->  }
+> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc=
+_core.c
+> index 49c2d406c48e..2478a91e84b2 100644
+> --- a/drivers/mmc/host/tmio_mmc_core.c
+> +++ b/drivers/mmc/host/tmio_mmc_core.c
+> @@ -1160,15 +1160,6 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_hos=
+t)
+>                                   mmc->caps & MMC_CAP_NEEDS_POLL ||
+>                                   !mmc_card_is_removable(mmc));
 >
-> -static int mmc_spi_send_csd(struct mmc_host *host, u32 *csd)
-> +static int mmc_spi_send_cxd(struct mmc_host *host, u32 *cxd, u32 opcode)
->  {
->         int ret, i;
-> -       __be32 *csd_tmp;
-> +       __be32 *cxd_tmp;
->
-> -       csd_tmp = kzalloc(16, GFP_KERNEL);
-> -       if (!csd_tmp)
-> +       cxd_tmp = kzalloc(16, GFP_KERNEL);
-> +       if (!cxd_tmp)
->                 return -ENOMEM;
->
-> -       ret = mmc_send_cxd_data(NULL, host, MMC_SEND_CSD, csd_tmp, 16);
-> +       ret = mmc_send_cxd_data(NULL, host, opcode, cxd_tmp, 16);
->         if (ret)
->                 goto err;
->
->         for (i = 0; i < 4; i++)
-> -               csd[i] = be32_to_cpu(csd_tmp[i]);
-> +               cxd[i] = be32_to_cpu(cxd_tmp[i]);
->
->  err:
-> -       kfree(csd_tmp);
-> +       kfree(cxd_tmp);
->         return ret;
->  }
->
->  int mmc_send_csd(struct mmc_card *card, u32 *csd)
->  {
->         if (mmc_host_is_spi(card->host))
-> -               return mmc_spi_send_csd(card->host, csd);
-> +               return mmc_spi_send_cxd(card->host, csd, MMC_SEND_CSD);
->
->         return mmc_send_cxd_native(card->host, card->rca << 16, csd,
->                                 MMC_SEND_CSD);
->  }
->
-> -static int mmc_spi_send_cid(struct mmc_host *host, u32 *cid)
-> -{
-> -       int ret, i;
-> -       __be32 *cid_tmp;
+> -       /*
+> -        * On Gen2+, eMMC with NONREMOVABLE currently fails because nativ=
+e
+> -        * hotplug gets disabled. It seems RuntimePM related yet we need =
+further
+> -        * research. Since we are planning a PM overhaul anyway, let's en=
+force
+> -        * for now the device being active by enabling native hotplug alw=
+ays.
+> -        */
+> -       if (pdata->flags & TMIO_MMC_MIN_RCAR2)
+> -               _host->native_hotplug =3D true;
 > -
-> -       cid_tmp = kzalloc(16, GFP_KERNEL);
-> -       if (!cid_tmp)
-> -               return -ENOMEM;
-> -
-> -       ret = mmc_send_cxd_data(NULL, host, MMC_SEND_CID, cid_tmp, 16);
-> -       if (ret)
-> -               goto err;
-> -
-> -       for (i = 0; i < 4; i++)
-> -               cid[i] = be32_to_cpu(cid_tmp[i]);
-> -
-> -err:
-> -       kfree(cid_tmp);
-> -       return ret;
-> -}
-> -
->  int mmc_send_cid(struct mmc_host *host, u32 *cid)
->  {
->         if (mmc_host_is_spi(host))
-> -               return mmc_spi_send_cid(host, cid);
-> +               return mmc_spi_send_cxd(host, cid, MMC_SEND_CID);
->
->         return mmc_send_cxd_native(host, 0, cid, MMC_ALL_SEND_CID);
->  }
+>         /*
+>          * While using internal tmio hardware logic for card detection, w=
+e need
+>          * to ensure it stays powered for it to work.
 > --
-> 1.9.1
+> 2.30.0
 >
