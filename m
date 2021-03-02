@@ -2,115 +2,164 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDAAA32B147
-	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:46:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4794D32B15C
+	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:46:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242644AbhCCBr5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Mar 2021 20:47:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55672 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1447518AbhCBNl1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 08:41:27 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C0CC061756;
-        Tue,  2 Mar 2021 05:40:38 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id q25so11076955lfc.8;
-        Tue, 02 Mar 2021 05:40:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=sy2937whkD36NnxmnEnOHu/2WmMpJHhESVIp923Q2ms=;
-        b=WR417b2TXL4XluWU3Q62QUJQT2KHPwbcPUhvSl9ZQVrVxjti1bnY0rVY28lskvQOQ9
-         Wd4ONpWLQsrq2U9ZfDpZJ9FfQ0enFUDeq957Rh8PhHNklfHjRCfh4w3CGHcGpKedn3JL
-         JU325/yJb/LyWrSRbGakExDJSSgUVg+qczoU+PFZZ2dZHklZkgt4nYBqwUHa/sX6A7Vq
-         KcMVXJKg88SR6oBSveZT8yEuJBNqlxOaa9sbDxhpRkGsJXaBT3wgy8o8QOEuUJEnZHii
-         cNSLUqZnaK/Zmp1Gtp5hNnFenxB8+j+e6Auapc+QBS0WcKBPGyzm5C2dO3+rub2odxvy
-         Guzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=sy2937whkD36NnxmnEnOHu/2WmMpJHhESVIp923Q2ms=;
-        b=EhoMuAQ7DKnyEuzgvbgptxDcLLMmpunXnYHxlPxyQYlBX0OjfsollGtZPKjopFc4Lg
-         40uNKjaP3JVWNk8+DhBnFwh+LBgGeIjsGt1KOGWWPQ6QdlGquhp9IGcyncV8+zJ9+2f5
-         G8iTj7VRvZcK7Q2lH57ZD6t4xt7SuCdvGwj+LwntDW857ylrcIbL/0VPpgQHQjkEYJta
-         5Lo7y4tW9K19X3AOCHs7IMsOarZG9apGXTnCmJi+bn106t5rMpMZinFyvug+/mNeArqF
-         njguiz5NpnMpZqLrAVnYeMA/vQhlwJ7Ba2xQkbipd1eT1OAM52UoQc7J32a3skK9648c
-         92eQ==
-X-Gm-Message-State: AOAM531ECC0QCVft70Sjj/KRUzLAwuj20RwAe+0fj/VW89xsh5eOzvau
-        65n4IeFIMCeoXganNFUiRbwUBmbuuUo=
-X-Google-Smtp-Source: ABdhPJxRPWPVr1JuoC8bNRBtDqyUDprT1LYGiwQlldtoe/FBCoxaKt0EfpMAr+/aLHyNPv+Ih4vpaQ==
-X-Received: by 2002:ac2:4ecd:: with SMTP id p13mr5165188lfr.421.1614692436754;
-        Tue, 02 Mar 2021 05:40:36 -0800 (PST)
-Received: from [192.168.2.145] (109-252-193-52.dynamic.spd-mgts.ru. [109.252.193.52])
-        by smtp.googlemail.com with ESMTPSA id 192sm2462749ljj.95.2021.03.02.05.40.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Mar 2021 05:40:36 -0800 (PST)
-Subject: Re: [PATCH 00/31] Introduce devm_pm_opp_* API
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Yangtao Li <tiny.windzz@gmail.com>, myungjoo.ham@samsung.com,
-        kyungmin.park@samsung.com, cw00.choi@samsung.com, krzk@kernel.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, yuq825@gmail.com, airlied@linux.ie,
-        daniel@ffwll.ch, robdclark@gmail.com, sean@poorly.run,
-        robh@kernel.org, tomeu.vizoso@collabora.com, steven.price@arm.com,
-        alyssa.rosenzweig@collabora.com, stanimir.varbanov@linaro.org,
-        agross@kernel.org, bjorn.andersson@linaro.org, mchehab@kernel.org,
-        lukasz.luba@arm.com, adrian.hunter@intel.com,
-        ulf.hansson@linaro.org, vireshk@kernel.org, nm@ti.com,
-        sboyd@kernel.org, broonie@kernel.org, gregkh@linuxfoundation.org,
-        jirislaby@kernel.org, rjw@rjwysocki.net, jcrouse@codeaurora.org,
-        hoegsberg@google.com, eric@anholt.net, tzimmermann@suse.de,
-        marijn.suijten@somainline.org, gustavoars@kernel.org,
-        emil.velikov@collabora.com, jonathan@marek.ca,
-        akhilpo@codeaurora.org, smasetty@codeaurora.org,
-        airlied@redhat.com, masneyb@onstation.org, kalyan_t@codeaurora.org,
-        tanmay@codeaurora.org, ddavenport@chromium.org,
-        jsanka@codeaurora.org, rnayak@codeaurora.org,
-        tongtiangen@huawei.com, miaoqinglang@huawei.com,
-        khsieh@codeaurora.org, abhinavk@codeaurora.org,
-        chandanu@codeaurora.org, groeck@chromium.org, varar@codeaurora.org,
-        mka@chromium.org, harigovi@codeaurora.org,
-        rikard.falkeborn@gmail.com, natechancellor@gmail.com,
-        georgi.djakov@linaro.org, akashast@codeaurora.org,
-        parashar@codeaurora.org, dianders@chromium.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, lima@lists.freedesktop.org,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
-References: <20210101165507.19486-1-tiny.windzz@gmail.com>
- <6bd6730c-6f4e-df93-65cd-93fa4785a8d8@gmail.com>
-Message-ID: <c7a246a4-ab25-a193-f74a-98351780135e@gmail.com>
-Date:   Tue, 2 Mar 2021 16:40:34 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.2
+        id S243066AbhCCBsB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Mar 2021 20:48:01 -0500
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:49452 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1572986AbhCBOIV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 09:08:21 -0500
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 122E0rVV003184;
+        Tue, 2 Mar 2021 15:06:54 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=B/YQiWDteqAy1if94IzoLqwuQ5Yxhjv54jSJ587Pt5c=;
+ b=rrwW2S2e16/v+wy9LH7QS1EXJ13aPTwEtUvid3GPu7UE8T3l+XY3bZ7FTCM8Tb9C/cb/
+ IRQj/0PYDIeNsHQQ4o2Q4ZvqMToglbxMcx6HsmLTjyPtloykSXXAiMRas3VfDkpraHHc
+ bDvHWvlFnRfORTs9DoXmmYXlBu18LK7lznof/puoH31Q5L26DNBFYyIO18mySRcQQBZ8
+ pc8PBN7wZ9cAKb9kB3a923dq2U/58tknSBofszH3jUq9VH7GjI/0SAtRYGy6xsyIHLtg
+ oGOxmkyquZ8ijP+CAL7kra09+0wO7iHS8fYZeeNHWD7/6YRfLhK/ldLu79GeHkEikofh yA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 370xehqcv6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 02 Mar 2021 15:06:54 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id BAB51100034;
+        Tue,  2 Mar 2021 15:06:51 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9512923A2E1;
+        Tue,  2 Mar 2021 15:06:51 +0100 (CET)
+Received: from lmecxl0504.lme.st.com (10.75.127.49) by SFHDAG2NODE3.st.com
+ (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 2 Mar
+ 2021 15:06:50 +0100
+Subject: Re: [PATCH v2] mmc: mmci: manage MMC_CAP_NEED_RSP_BUSY for stm32
+ variant
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Russell King <linux@armlinux.org.uk>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Ludovic Barre <ludovic.barre@st.com>,
+        =?UTF-8?Q?Marek_Va=c5=a1ut?= <marex@denx.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+References: <20210225145454.12780-1-yann.gautier@foss.st.com>
+ <CAPDyKFo-98OWNg4QJ1cgY2QwYFB9d-6tVrMs0RYt6-=cU3-73w@mail.gmail.com>
+From:   Yann Gautier <yann.gautier@foss.st.com>
+Message-ID: <3c1f963c-e3bf-cedf-307c-dfbc96260e9c@foss.st.com>
+Date:   Tue, 2 Mar 2021 15:06:50 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <6bd6730c-6f4e-df93-65cd-93fa4785a8d8@gmail.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <CAPDyKFo-98OWNg4QJ1cgY2QwYFB9d-6tVrMs0RYt6-=cU3-73w@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.49]
+X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG2NODE3.st.com
+ (10.75.127.6)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-03-02_06:2021-03-01,2021-03-02 signatures=0
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-20.01.2021 19:01, Dmitry Osipenko пишет:
-> 01.01.2021 19:54, Yangtao Li пишет:
->> Hi,
+On 3/2/21 11:40 AM, Ulf Hansson wrote:
+> On Thu, 25 Feb 2021 at 15:55, Yann Gautier <yann.gautier@foss.st.com> wrote:
 >>
->> This patchset add devm_pm_opp_set_clkname, devm_pm_opp_put_clkname,
->> devm_pm_opp_set_regulators, devm_pm_opp_put_regulators,
->> devm_pm_opp_set_supported_hw, devm_pm_opp_of_add_table and
->> devm_pm_opp_register_notifier.
+>> To properly manage commands awaiting R1B responses, the capability
+>> MMC_CAP_NEED_RSP_BUSY is enabled in mmci driver, for stm32 variant.
+>> The issue was seen on STM32MP157C-EV1 board, with an erase command,
+>> with secure erase argument, letting the card stuck, possibly waiting
+>> for 4 hours before timeout.
+>>
+>> Fixes: 94fe2580a2f3 ("mmc: core: Enable erase/discard/trim support for all mmc hosts")
+>>
+>> Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
+>> ---
+>> This is somehow a v2 for patch [1].
+>> Changes:
+>> - Only apply MMC_CAP_NEED_RSP_BUSY to stm32 variant
+>> - Cap the used timeout written to MMCIDATATIMER (when using
+>> MMC_CAP_NEED_RSP_BUSY, cmd->busy_timeout may be greater than
+>> host->max_busy_timeout)
+>>
+>>   [1] https://patchwork.kernel.org/project/linux-mmc/patch/20210204120547.15381-2-yann.gautier@foss.st.com/
+>>
+>>   drivers/mmc/host/mmci.c             | 8 +++++++-
+>>   drivers/mmc/host/mmci_stm32_sdmmc.c | 1 +
+>>   2 files changed, 8 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+>> index 17dbc81c221e..89e0e9ccfb71 100644
+>> --- a/drivers/mmc/host/mmci.c
+>> +++ b/drivers/mmc/host/mmci.c
+>> @@ -1242,7 +1242,13 @@ mmci_start_command(struct mmci_host *host, struct mmc_command *cmd, u32 c)
+>>                  if (!cmd->busy_timeout)
+>>                          cmd->busy_timeout = 10 * MSEC_PER_SEC;
+>>
+>> -               clks = (unsigned long long)cmd->busy_timeout * host->cclk;
+>> +               if (host->mmc->caps & MMC_CAP_NEED_RSP_BUSY &&
+>> +                   host->mmc->max_busy_timeout &&
+>> +                   cmd->busy_timeout > host->mmc->max_busy_timeout)
 > 
-> Hello Yangtao,
+> We are already within "if (host->variant->busy_timeout ....", a few
+> lines above, which means this can be simplified into:
 > 
-> Thank you for your effort, looking forward to v2!
+> if (cmd->busy_timeout > host->mmc->max_busy_timeout)
+> 
+>> +                       clks = (unsigned long long)host->mmc->max_busy_timeout * host->cclk;
+>> +               else
+>> +                       clks = (unsigned long long)cmd->busy_timeout * host->cclk;
+>> +
+>>                  do_div(clks, MSEC_PER_SEC);
+>>                  writel_relaxed(clks, host->base + MMCIDATATIMER);
+>>          }
+>> diff --git a/drivers/mmc/host/mmci_stm32_sdmmc.c b/drivers/mmc/host/mmci_stm32_sdmmc.c
+>> index 51db30acf4dc..2ad577618324 100644
+>> --- a/drivers/mmc/host/mmci_stm32_sdmmc.c
+>> +++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
+>> @@ -522,6 +522,7 @@ void sdmmc_variant_init(struct mmci_host *host)
+>>
+>>          host->ops = &sdmmc_variant_ops;
+>>          host->pwr_reg = readl_relaxed(host->base + MMCIPOWER);
+>> +       host->mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
+> 
+> To make it more clear that this is for variants having the
+> ->busy_timeout flag set, I suggest to move this into mmci_probe().
+> 
+>>
+>>          base_dlyb = devm_of_iomap(mmc_dev(host->mmc), np, 1, NULL);
+>>          if (IS_ERR(base_dlyb))
+>> --
+>> 2.17.1
+>>
+> 
+> Well, I decided to help out a bit. I have amend the patch according to
+> the above and extended the commit message with some valuable
+> information, based upon our earlier discussions.
+> 
+> Patch is applied at my fixes branch with a stable tag, please have a
+> look, test and shout at me if there is something that looks wrong!
+> 
+> Thanks and kind regards
+> Uffe
+> 
 
-Yangtao, could you please let me know what is the status of this series?
-Will you be able to make a v2 anytime soon?
+Hi Ulf,
+
+Thanks a lot for the updated patch.
+I've tested it on STM32MP157C-EV1. The MMC_TEST full campaigns for both 
+SD-card and eMMC run OK.
+
+
+Best regards,
+Yann
