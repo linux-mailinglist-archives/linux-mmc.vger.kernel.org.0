@@ -2,81 +2,79 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17EEF32B0D0
-	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:45:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B40632B0EA
+	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238281AbhCCBoz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Mar 2021 20:44:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44354 "EHLO
+        id S234039AbhCCBp6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Mar 2021 20:45:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239321AbhCBKkN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 05:40:13 -0500
-Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2FCC061223
-        for <linux-mmc@vger.kernel.org>; Tue,  2 Mar 2021 02:39:36 -0800 (PST)
-Received: by mail-vs1-xe32.google.com with SMTP id p24so1282905vsj.13
-        for <linux-mmc@vger.kernel.org>; Tue, 02 Mar 2021 02:39:36 -0800 (PST)
+        with ESMTP id S1349582AbhCBKke (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 05:40:34 -0500
+Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48CDBC061224
+        for <linux-mmc@vger.kernel.org>; Tue,  2 Mar 2021 02:39:41 -0800 (PST)
+Received: by mail-vs1-xe29.google.com with SMTP id v123so6150759vsv.9
+        for <linux-mmc@vger.kernel.org>; Tue, 02 Mar 2021 02:39:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=9y/OLbMdtDESdX9cxpVBPkgzPGOeodSxawca/q+mpKk=;
-        b=lF7i96mD7IhEXlug+vEnfPbJSPNTmN975tD3fkSobYZjokRjMZLrk7stkm6jNfWpw2
-         9gSJ8D/tzPavPFvpWknhwzjiN+v7in2gbRvy50dxYRvBI0iTIOTmWVGy/XT2Reg1kzGx
-         xFf/Dglm+AZjuA2xp2bfwu+VrynvHw2e6nGoxSuQJ6MY4m/SrEOKsRCmcsnKwXrPG9Qs
-         +X14rJ6nPzVwAu3FyEu2E4RaAzVQ80Vu+pT2v31xTxuzPnoNtqnkM13xAh9Qnb6p5sec
-         xWsApc6FW3Qa3efI0r8tSTZw/QSQH8JQy2z2o4qENU6ECC/9Kw0cWK0IMYe/NM0BnlTH
-         0JvQ==
+        bh=jCb17pJqYLYOaPlH3RafC0Z7t2deRH5mcAjGJbewryc=;
+        b=qqeRzipCVUOWpEdfEdKar8PHGPfM1QIM1ZgyCxk1PnH7MQgJQ8C76Lsrrl3IzglLIU
+         B9bKtKJK+5OFt7868weyALgwInxoemwx+fneJUyYJ6cXGefqw9w97DCu2k4irL7W4wOa
+         KD2Tx2f1moChCfPiDGUSwYm64EItEL15YDot8KU/wiEWHluz7+b/EByswO71Pas0ANaH
+         Q9eTwD4y0RbcrgszHFgDZQOLbtC6R8tvUIVDeNNAmNgiCLiQUzUvwrErKA7Ud6x4w94/
+         5mYCMj4Pxs0dc9b1PsRSI9LtOKU2yB36qL5oIFs7kSGZnJCCDHhu8PobnTbRn8MKoZpH
+         tWew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9y/OLbMdtDESdX9cxpVBPkgzPGOeodSxawca/q+mpKk=;
-        b=hAh2qnVrUys6Jy+Aj6/onZaSpGSr+83ywcYF8PoGr7LfbGGqfv7nRsXgWZgh95dMc6
-         kARAGVhkDzFzvjqXehpDdnDe7aomPPy9oVqv7geuJETVE2tXhbCCMyX1IvnNMKNL7IpQ
-         ZMJu17Y2awMh3zkGXrUFV6hK3ISH9wJuJVyQQlo03HXizChtj5gjMnM6kmmQHyPVcuv6
-         JI0sQwPHAIeuTu60KuMJEhrH+a1gMI4Ol+rsTmOmpYvRoB66Rg3tuYIDZ1chbkZU+6Ug
-         gj/5OUpruztmSVqo0bsO4xgPwqEEeebLG+LHUOZsTflGdiFr42gbBp9I++/S3168Z5gr
-         QM6A==
-X-Gm-Message-State: AOAM5318W7uDl4hee1rSBSlSJnaIWNPQdAfLN2SHLGPw5wGJHKiWUIRu
-        wz47x5VB+VAzCdUvpSpkZeNCYhb37hFtiDyu9fOdVQ==
-X-Google-Smtp-Source: ABdhPJwX80Q9SU3s5pG9sH20LwYNls+0ukRvdY+lJRo0x+xCw/4R/wLkzDCaJrl8uxcmAJ4SIsXJfn/wHbxIkF1eJ/E=
-X-Received: by 2002:a67:ec7:: with SMTP id 190mr1803896vso.42.1614681576170;
- Tue, 02 Mar 2021 02:39:36 -0800 (PST)
+        bh=jCb17pJqYLYOaPlH3RafC0Z7t2deRH5mcAjGJbewryc=;
+        b=n7OQTQx4XIz4AkgM8Z7LOvvO8IlTKrsh6od6SYtj8UD2epsAuUprexrk1A6eYcTTpu
+         5Vrzls+T9kUliEI7u8IWTsjrH1zTh4Ci1duMMZ9LW9mPMtB9Br/EHOjWv6QkoAEqrteS
+         ohRCEgryzh/1CJlKDCqftdhmhI/PCRqW2arhL2F+C2knwWRNEv0z0KvBADZitrVctU0V
+         UWJq6PMUvLnYTblZHRF/GH+wcfo4fr6L4ca2mbLHStkjfP+E0AZC9BN6nlBlQGmTtDqL
+         /DRuCDmric8E4vG2t0Y4j1fvkFyS/7XaDecMb5bCiuLAg9CN/HDWFdzSM8nmeGgxK9PU
+         yOLQ==
+X-Gm-Message-State: AOAM533rQRB8bfgZK/SVF7aUj51LaCZYlt7/dsCGr4IUWGjNJxPBW/3M
+        a1GN9V4WDPCb8bmehZHq1ahovvSGPSVctBTFFHjAAQ==
+X-Google-Smtp-Source: ABdhPJyt7fGxKlN7AIitumSlgOzSjEEq6tP8RwG5BaWlh5w0HakijpiesHmhGiDz5MYNmAvWSbs58gyE0CHMa4a5K+U=
+X-Received: by 2002:a67:8c6:: with SMTP id 189mr1540600vsi.55.1614681580546;
+ Tue, 02 Mar 2021 02:39:40 -0800 (PST)
 MIME-Version: 1.0
-References: <20210220142953.918608-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20210220142953.918608-1-christophe.jaillet@wanadoo.fr>
+References: <CGME20210222081517epcas1p37fef998684dc9eae0bcd2764a3f82fb1@epcas1p3.samsung.com>
+ <20210222083156.19158-1-sh043.lee@samsung.com>
+In-Reply-To: <20210222083156.19158-1-sh043.lee@samsung.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 2 Mar 2021 11:38:59 +0100
-Message-ID: <CAPDyKFozVZ9PR1JeQ6F8Ua-YcdpK-rS9TLDe6BW71avpiF5f4w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mmc: uniphier-sd: Fix a resource leak in the remove function
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Doug Anderson <dianders@chromium.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+Date:   Tue, 2 Mar 2021 11:39:04 +0100
+Message-ID: <CAPDyKFqtB3WLD5A+5SesyOArbbVaZROdeu23FwFDy667h0M6eQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: core: set read only with permanent write protect
+To:     Seunghui Lee <sh043.lee@samsung.com>
+Cc:     =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+        Yue Hu <huyue2@yulong.com>, Tian Tao <tiantao6@hisilicon.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        grant.jung@samsung.com, jt77.jang@samsung.com,
+        DooHyun Hwang <dh0421.hwang@samsung.com>,
+        junwoo80.lee@samsung.com, jangsub.yi@samsung.com,
+        Chanwoo Lee <cw9316.lee@samsung.com>, sh8267.baek@samsung.com,
+        wkon.kim@samsung.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 20 Feb 2021 at 15:29, Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
+On Mon, 22 Feb 2021 at 09:15, Seunghui Lee <sh043.lee@samsung.com> wrote:
 >
-> A 'tmio_mmc_host_free()' call is missing in the remove function, in order
-> to balance a 'tmio_mmc_host_alloc()' call in the probe.
-> This is done in the error handling path of the probe, but not in the remove
-> function.
+> Some of SD cards sets permanent write protection
+> due to lifespan or internal problem.
+> Host can find out it's protected permanantly during initialization.
+> Once set read only during initialization,
+> it could prevent unnecessary write operation in it.
 >
-> Add the missing call.
->
-> Fixes: 3fd784f745dd ("mmc: uniphier-sd: add UniPhier SD/eMMC controller driver")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Seunghui Lee <sh043.lee@samsung.com>
 
 Applied for next and by adding a stable tag, thanks!
 
@@ -85,21 +83,33 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/uniphier-sd.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/mmc/core/sd.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> diff --git a/drivers/mmc/host/uniphier-sd.c b/drivers/mmc/host/uniphier-sd.c
-> index 6f0f05466917..ccbf9885a52b 100644
-> --- a/drivers/mmc/host/uniphier-sd.c
-> +++ b/drivers/mmc/host/uniphier-sd.c
-> @@ -660,6 +660,7 @@ static int uniphier_sd_remove(struct platform_device *pdev)
->
->         tmio_mmc_host_remove(host);
->         uniphier_sd_clk_disable(host);
-> +       tmio_mmc_host_free(host);
->
->         return 0;
->  }
+> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+> index 6fa51a6ed058..2c48d6504101 100644
+> --- a/drivers/mmc/core/sd.c
+> +++ b/drivers/mmc/core/sd.c
+> @@ -135,6 +135,9 @@ static int mmc_decode_csd(struct mmc_card *card)
+>                         csd->erase_size = UNSTUFF_BITS(resp, 39, 7) + 1;
+>                         csd->erase_size <<= csd->write_blkbits - 9;
+>                 }
+> +
+> +               if (UNSTUFF_BITS(resp, 13, 1))
+> +                       mmc_card_set_readonly(card);
+>                 break;
+>         case 1:
+>                 /*
+> @@ -169,6 +172,9 @@ static int mmc_decode_csd(struct mmc_card *card)
+>                 csd->write_blkbits = 9;
+>                 csd->write_partial = 0;
+>                 csd->erase_size = 1;
+> +
+> +               if (UNSTUFF_BITS(resp, 13, 1))
+> +                       mmc_card_set_readonly(card);
+>                 break;
+>         default:
+>                 pr_err("%s: unrecognised CSD structure version %d\n",
 > --
-> 2.27.0
+> 2.29.0
 >
