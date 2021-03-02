@@ -2,136 +2,115 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C96D632B159
-	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:46:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDAAA32B147
+	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:46:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242983AbhCCBsA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Mar 2021 20:48:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58990 "EHLO
+        id S242644AbhCCBr5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Mar 2021 20:47:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241871AbhCBN5P (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 08:57:15 -0500
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A23C0617AB
-        for <linux-mmc@vger.kernel.org>; Tue,  2 Mar 2021 04:55:24 -0800 (PST)
-Received: by mail-ua1-x934.google.com with SMTP id c44so6714389uad.12
-        for <linux-mmc@vger.kernel.org>; Tue, 02 Mar 2021 04:55:24 -0800 (PST)
+        with ESMTP id S1447518AbhCBNl1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 08:41:27 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C0CC061756;
+        Tue,  2 Mar 2021 05:40:38 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id q25so11076955lfc.8;
+        Tue, 02 Mar 2021 05:40:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3zrRjA7YBWfjokl2Xgay7jI8fNwkayDcVMdDOQenPBE=;
-        b=eB0H/6iRKCdIF+Oa3bn+ZIr4IQ+0wFbU1qS3HfP8pz0hVjFqxgyqUHE6GXT+S0dQYQ
-         KUC7VJFhqJGzsuMn3pz7EF4xYVXHnwv0zXIeYjyNGVLvzcm2PYGHQO2253NFdI2+/jMg
-         cwypZX8eAqKyas19vj9iRHtHue/nFY+WYPnJJx9dVYRWmhYWtHGUANcYOqCmUrYFi08j
-         f3uUh+3JRQvg6Ye1+9uyWO0+chtxFdvgDGaItIe7rju/hS+MO+8jb8kFsJw653BU4VIO
-         pnT359+ocyREYCvtJhdXNSfeY7dSedDZJkZIOHd1RsWjr+ald6dj6FNBxg4iOQv6aPGj
-         9ptw==
+        d=gmail.com; s=20161025;
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=sy2937whkD36NnxmnEnOHu/2WmMpJHhESVIp923Q2ms=;
+        b=WR417b2TXL4XluWU3Q62QUJQT2KHPwbcPUhvSl9ZQVrVxjti1bnY0rVY28lskvQOQ9
+         Wd4ONpWLQsrq2U9ZfDpZJ9FfQ0enFUDeq957Rh8PhHNklfHjRCfh4w3CGHcGpKedn3JL
+         JU325/yJb/LyWrSRbGakExDJSSgUVg+qczoU+PFZZ2dZHklZkgt4nYBqwUHa/sX6A7Vq
+         KcMVXJKg88SR6oBSveZT8yEuJBNqlxOaa9sbDxhpRkGsJXaBT3wgy8o8QOEuUJEnZHii
+         cNSLUqZnaK/Zmp1Gtp5hNnFenxB8+j+e6Auapc+QBS0WcKBPGyzm5C2dO3+rub2odxvy
+         Guzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3zrRjA7YBWfjokl2Xgay7jI8fNwkayDcVMdDOQenPBE=;
-        b=bF7wT+GMmWgGQErEihXqx1sA/QE8E0n1G/OW0GymetPnHliNS9lN4ZfqgUZ7z/YFYY
-         6pTflPkY7fIMYAhlBBv9qeE9Mp6YIyewUeqLPvMCoyyyGXqTsh8xGJnWj2YBbA02kfmm
-         XakacwIa+z2SCVTqfqSMJ5MMwbu5uNCbiI8ygYQYlDpJLR/r7qBBer5waTejhi678YNP
-         0zdq9wpQejSHqahFtXSGncYsQqhwgxr/PbEJUD+AWdV5L4mWjzfQskbKeZNE6ezFyEK6
-         sqHe5dz5FFldnL2Yx1FiCcHJvf56vmb7a3bR+Ed0/9Q4POtjtF9YdOy1Sza7zH2qEdFF
-         E2wg==
-X-Gm-Message-State: AOAM533vRxIBbqtqh6M+S/oj9ZrA8zqEklmOp/xVEFfIimPUNg4jBYnz
-        kymcC+AcK18X0i9YZAo/yD4HgGyMP4bBVufFv22x3Q==
-X-Google-Smtp-Source: ABdhPJxJWRqugaT2ktEGhfcjiMKDkDS0ihuhhne8GvhRwqY4O++ZmWQcUhqiqQ5Acd/8YKjOeH1rxim4P3Yrb7ekaM8=
-X-Received: by 2002:ab0:6045:: with SMTP id o5mr10321516ual.100.1614689724060;
- Tue, 02 Mar 2021 04:55:24 -0800 (PST)
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=sy2937whkD36NnxmnEnOHu/2WmMpJHhESVIp923Q2ms=;
+        b=EhoMuAQ7DKnyEuzgvbgptxDcLLMmpunXnYHxlPxyQYlBX0OjfsollGtZPKjopFc4Lg
+         40uNKjaP3JVWNk8+DhBnFwh+LBgGeIjsGt1KOGWWPQ6QdlGquhp9IGcyncV8+zJ9+2f5
+         G8iTj7VRvZcK7Q2lH57ZD6t4xt7SuCdvGwj+LwntDW857ylrcIbL/0VPpgQHQjkEYJta
+         5Lo7y4tW9K19X3AOCHs7IMsOarZG9apGXTnCmJi+bn106t5rMpMZinFyvug+/mNeArqF
+         njguiz5NpnMpZqLrAVnYeMA/vQhlwJ7Ba2xQkbipd1eT1OAM52UoQc7J32a3skK9648c
+         92eQ==
+X-Gm-Message-State: AOAM531ECC0QCVft70Sjj/KRUzLAwuj20RwAe+0fj/VW89xsh5eOzvau
+        65n4IeFIMCeoXganNFUiRbwUBmbuuUo=
+X-Google-Smtp-Source: ABdhPJxRPWPVr1JuoC8bNRBtDqyUDprT1LYGiwQlldtoe/FBCoxaKt0EfpMAr+/aLHyNPv+Ih4vpaQ==
+X-Received: by 2002:ac2:4ecd:: with SMTP id p13mr5165188lfr.421.1614692436754;
+        Tue, 02 Mar 2021 05:40:36 -0800 (PST)
+Received: from [192.168.2.145] (109-252-193-52.dynamic.spd-mgts.ru. [109.252.193.52])
+        by smtp.googlemail.com with ESMTPSA id 192sm2462749ljj.95.2021.03.02.05.40.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Mar 2021 05:40:36 -0800 (PST)
+Subject: Re: [PATCH 00/31] Introduce devm_pm_opp_* API
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Yangtao Li <tiny.windzz@gmail.com>, myungjoo.ham@samsung.com,
+        kyungmin.park@samsung.com, cw00.choi@samsung.com, krzk@kernel.org,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, yuq825@gmail.com, airlied@linux.ie,
+        daniel@ffwll.ch, robdclark@gmail.com, sean@poorly.run,
+        robh@kernel.org, tomeu.vizoso@collabora.com, steven.price@arm.com,
+        alyssa.rosenzweig@collabora.com, stanimir.varbanov@linaro.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, mchehab@kernel.org,
+        lukasz.luba@arm.com, adrian.hunter@intel.com,
+        ulf.hansson@linaro.org, vireshk@kernel.org, nm@ti.com,
+        sboyd@kernel.org, broonie@kernel.org, gregkh@linuxfoundation.org,
+        jirislaby@kernel.org, rjw@rjwysocki.net, jcrouse@codeaurora.org,
+        hoegsberg@google.com, eric@anholt.net, tzimmermann@suse.de,
+        marijn.suijten@somainline.org, gustavoars@kernel.org,
+        emil.velikov@collabora.com, jonathan@marek.ca,
+        akhilpo@codeaurora.org, smasetty@codeaurora.org,
+        airlied@redhat.com, masneyb@onstation.org, kalyan_t@codeaurora.org,
+        tanmay@codeaurora.org, ddavenport@chromium.org,
+        jsanka@codeaurora.org, rnayak@codeaurora.org,
+        tongtiangen@huawei.com, miaoqinglang@huawei.com,
+        khsieh@codeaurora.org, abhinavk@codeaurora.org,
+        chandanu@codeaurora.org, groeck@chromium.org, varar@codeaurora.org,
+        mka@chromium.org, harigovi@codeaurora.org,
+        rikard.falkeborn@gmail.com, natechancellor@gmail.com,
+        georgi.djakov@linaro.org, akashast@codeaurora.org,
+        parashar@codeaurora.org, dianders@chromium.org
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, lima@lists.freedesktop.org,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
+References: <20210101165507.19486-1-tiny.windzz@gmail.com>
+ <6bd6730c-6f4e-df93-65cd-93fa4785a8d8@gmail.com>
+Message-ID: <c7a246a4-ab25-a193-f74a-98351780135e@gmail.com>
+Date:   Tue, 2 Mar 2021 16:40:34 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.2
 MIME-Version: 1.0
-References: <1614671217-133008-1-git-send-email-shawn.lin@rock-chips.com>
-In-Reply-To: <1614671217-133008-1-git-send-email-shawn.lin@rock-chips.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 2 Mar 2021 13:54:47 +0100
-Message-ID: <CAPDyKFo4NkL5jqpRja6Ekmn1Hqww2fB8fehMBcan8OAPg4UVWw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-of-dwcmshc: add rockchip platform support
-To:     Shawn Lin <shawn.lin@rock-chips.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <6bd6730c-6f4e-df93-65cd-93fa4785a8d8@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 2 Mar 2021 at 08:48, Shawn Lin <shawn.lin@rock-chips.com> wrote:
->
-> sdhci based synopsys MMC IP is also used on some rockchip platforms,
-> so add a basic support here.
->
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-> ---
->
->  drivers/mmc/host/sdhci-of-dwcmshc.c | 220 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 213 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
-> index 59d8d96..959084c 100644
-> --- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-> +++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+20.01.2021 19:01, Dmitry Osipenko пишет:
+> 01.01.2021 19:54, Yangtao Li пишет:
+>> Hi,
+>>
+>> This patchset add devm_pm_opp_set_clkname, devm_pm_opp_put_clkname,
+>> devm_pm_opp_set_regulators, devm_pm_opp_put_regulators,
+>> devm_pm_opp_set_supported_hw, devm_pm_opp_of_add_table and
+>> devm_pm_opp_register_notifier.
+> 
+> Hello Yangtao,
+> 
+> Thank you for your effort, looking forward to v2!
 
-[...]
-
-> +static int rockchip_pltf_init(struct sdhci_host *host, struct dwcmshc_priv *priv)
-> +{
-> +       int err;
-> +
-> +       priv->rockchip_clks[0].id = "axi";
-> +       priv->rockchip_clks[1].id = "block";
-> +       priv->rockchip_clks[2].id = "timer";
-> +       err = devm_clk_bulk_get_optional(mmc_dev(host->mmc), ROCKCHIP_MAX_CLKS,
-> +                                        priv->rockchip_clks);
-
-These clocks need to be properly described in the DT docs.
-
-> +       if (err) {
-> +               dev_err(mmc_dev(host->mmc), "failed to get clocks %d\n", err);
-> +               return err;
-> +       }
-> +
-> +       err = clk_bulk_prepare_enable(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
-> +       if (err) {
-> +               dev_err(mmc_dev(host->mmc), "failed to enable clocks %d\n", err);
-> +               return err;
-> +       }
-> +
-> +       if (of_property_read_u32(mmc_dev(host->mmc)->of_node, "rockchip,txclk-tapnum",
-> +                                &priv->txclk_tapnum))
-> +               priv->txclk_tapnum = DLL_TXCLK_TAPNUM_DEFAULT;
-> +
-> +       /* Disable cmd conflict check */
-> +       sdhci_writel(host, 0x0, DWCMSHC_HOST_CTRL3);
-> +       /* Reset previous settings */
-> +       sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_TXCLK);
-> +       sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_STRBIN);
-> +
-> +       return 0;
-> +}
-> +
-> +static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
-> +       {
-> +               .compatible = "snps,dwcmshc-sdhci",
-> +               .data = &sdhci_dwcmshc_pdata,
-> +       },
-> +       {
-> +               .compatible = "rockchip,dwcmshc-sdhci",
-> +               .data = &sdhci_dwcmshc_rk_pdata,
-> +       },
-> +       {},
-> +};
-
-Speaking about DT docs. I have recently started to reject changes to
-existing txt based DT docs.
-
-Can you plese convert the existing DT bindings into the yaml formal -
-and then add the new compatible for the new Rockchip variant on top?
-
-[...]
-
-Kind regards
-Uffe
+Yangtao, could you please let me know what is the status of this series?
+Will you be able to make a v2 anytime soon?
