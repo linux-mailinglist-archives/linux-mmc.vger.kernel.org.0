@@ -2,209 +2,374 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA9832B08B
-	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0816832B092
+	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:43:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234771AbhCCBkw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Mar 2021 20:40:52 -0500
-Received: from mga03.intel.com ([134.134.136.65]:10203 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1836603AbhCBHEg (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 2 Mar 2021 02:04:36 -0500
-IronPort-SDR: yxhffZ72o/qL89tMRcB/+xSNbosCw9OUwYSKiudYAlai9W4kYsjQrTm8zIJL6O3Gtz2ycv6JhU
- bJhncZ1Pk5Qw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9910"; a="186771396"
-X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
-   d="scan'208";a="186771396"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2021 23:03:54 -0800
-IronPort-SDR: 7IzRiX8E44ofpMaGwotx0lKalu9xYiLpFVU1Q1E1mAI+eQeYkweZVB3EWtP5QkMe3OSeVHKg0j
- pKddNgteuoow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
-   d="scan'208";a="585794184"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.76]) ([10.237.72.76])
-  by orsmga005.jf.intel.com with ESMTP; 01 Mar 2021 23:03:52 -0800
-Subject: Re: [PATCH 1/1] mmc: cqhci: fix random crash when remove mmc module
-To:     Frank Li <lznuaa@gmail.com>, riteshh@codeaurora.org,
-        asutoshd@codeaurora.org, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        haibo.chen@nxp.com
-References: <20210301172151.281814-1-Frank.Li@nxp.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <0d135a2b-02d0-f05b-918b-c4253d67caf9@intel.com>
-Date:   Tue, 2 Mar 2021 09:04:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
-MIME-Version: 1.0
-In-Reply-To: <20210301172151.281814-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S235181AbhCCBlS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Mar 2021 20:41:18 -0500
+Received: from lucky1.263xmail.com ([211.157.147.131]:55236 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1376704AbhCBHuO (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 02:50:14 -0500
+Received: from localhost (unknown [192.168.167.70])
+        by lucky1.263xmail.com (Postfix) with ESMTP id 1E1C1B936D;
+        Tue,  2 Mar 2021 15:47:09 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-ANTISPAM-LEVEL: 2
+X-ABS-CHECKED: 0
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P31655T140708522473216S1614671227405312_;
+        Tue, 02 Mar 2021 15:47:08 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <23915da47d9d43c6971bb409d1616a33>
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-SENDER: lintao@rock-chips.com
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-FST-TO: ulf.hansson@linaro.org
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        linux-rockchip@lists.infradead.org,
+        Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH] mmc: sdhci-of-dwcmshc: add rockchip platform support
+Date:   Tue,  2 Mar 2021 15:46:57 +0800
+Message-Id: <1614671217-133008-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 1/03/21 7:21 pm, Frank Li wrote:
-> [ 6684.493350] Unable to handle kernel paging request at virtual address ffff800011c5b0f0
-> [ 6684.498531] mmc0: card 0001 removed
-> [ 6684.501556] Mem abort info:
-> [ 6684.509681]   ESR = 0x96000047
-> [ 6684.512786]   EC = 0x25: DABT (current EL), IL = 32 bits
-> [ 6684.518394]   SET = 0, FnV = 0
-> [ 6684.521707]   EA = 0, S1PTW = 0
-> [ 6684.524998] Data abort info:
-> [ 6684.528236]   ISV = 0, ISS = 0x00000047
-> [ 6684.532986]   CM = 0, WnR = 1
-> [ 6684.536129] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000081b22000
-> [ 6684.543923] [ffff800011c5b0f0] pgd=00000000bffff003, p4d=00000000bffff003, pud=00000000bfffe003, pmd=00000000900e1003, pte=0000000000000000
-> [ 6684.557915] Internal error: Oops: 96000047 [#1] PREEMPT SMP
-> [ 6684.564240] Modules linked in: sdhci_esdhc_imx(-) sdhci_pltfm sdhci cqhci mmc_block mmc_core fsl_jr_uio caam_jr caamkeyblob_desc caamhash_desc caamalg_desc crypto_engine rng_core authenc libdes crct10dif_ce flexcan can_dev caam error [last unloaded: mmc_core]
-> [ 6684.587281] CPU: 0 PID: 79138 Comm: kworker/0:3H Not tainted 5.10.9-01410-g3ba33182767b-dirty #10
-> [ 6684.596160] Hardware name: Freescale i.MX8DXL EVK (DT)
-> [ 6684.601320] Workqueue: kblockd blk_mq_run_work_fn
-> 
-> [ 6684.606094] pstate: 40000005 (nZcv daif -PAN -UAO -TCO BTYPE=--)
-> [ 6684.612286] pc : cqhci_request+0x148/0x4e8 [cqhci]
-> ^GMessage from syslogd@  at Thu Jan  1 01:51:24 1970 ...[ 6684.617085] lr : cqhci_request+0x314/0x4e8 [cqhci]
-> [ 6684.626734] sp : ffff80001243b9f0
-> [ 6684.630049] x29: ffff80001243b9f0 x28: ffff00002c3dd000
-> [ 6684.635367] x27: 0000000000000001 x26: 0000000000000001
-> [ 6684.640690] x25: ffff00002c451000 x24: 000000000000000f
-> [ 6684.646007] x23: ffff000017e71c80 x22: ffff00002c451000
-> [ 6684.651326] x21: ffff00002c0f3550 x20: ffff00002c0f3550
-> [ 6684.656651] x19: ffff000017d46880 x18: ffff00002cea1500
-> [ 6684.661977] x17: 0000000000000000 x16: 0000000000000000
-> [ 6684.667294] x15: 000001ee628e3ed1 x14: 0000000000000278
-> [ 6684.672610] x13: 0000000000000001 x12: 0000000000000001
-> [ 6684.677927] x11: 0000000000000000 x10: 0000000000000000
-> [ 6684.683243] x9 : 000000000000002b x8 : 0000000000001000
-> [ 6684.688560] x7 : 0000000000000010 x6 : ffff00002c0f3678
-> [ 6684.693886] x5 : 000000000000000f x4 : ffff800011c5b000
-> [ 6684.699211] x3 : 000000000002d988 x2 : 0000000000000008
-> [ 6684.704537] x1 : 00000000000000f0 x0 : 0002d9880008102f
-> [ 6684.709854] Call trace:
-> [ 6684.712313]  cqhci_request+0x148/0x4e8 [cqhci]
-> [ 6684.716803]  mmc_cqe_start_req+0x58/0x68 [mmc_core]
-> [ 6684.721698]  mmc_blk_mq_issue_rq+0x460/0x810 [mmc_block]
-> [ 6684.727018]  mmc_mq_queue_rq+0x118/0x2b0 [mmc_block]
-> 
-> cqhci_request was called after cqhci_disable.
-> 
-> cqhci_disable                                 cqhci_request
-> {                                             {
-> 	dmam_free_coherent();  (1) free
->                                                   if(!cq_host->enable)
->                                                        return
-> 				         (2) pass check here
-> 	cq_host->enable = false;
-> 
->                                                   task_desc= get_desc(cq_host,tag);
->                                                              ^^^^ crash here
->                                          (3) access memory which is already free
-> 
-> }                                             }
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/mmc/host/cqhci-core.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/cqhci-core.c b/drivers/mmc/host/cqhci-core.c
-> index 93b0432bb601..36d292261e50 100644
-> --- a/drivers/mmc/host/cqhci-core.c
-> +++ b/drivers/mmc/host/cqhci-core.c
-> @@ -389,6 +389,7 @@ static void cqhci_off(struct mmc_host *mmc)
->  static void cqhci_disable(struct mmc_host *mmc)
->  {
->  	struct cqhci_host *cq_host = mmc->cqe_private;
-> +	unsigned long flags;
->  
->  	if (!cq_host->enabled)
->  		return;
-> @@ -397,6 +398,11 @@ static void cqhci_disable(struct mmc_host *mmc)
->  
->  	__cqhci_disable(cq_host);
->  
-> +	/* need wait for cqhci_request finish before free memory */
-> +	spin_lock_irqsave(&cq_host->lock, flags);
-> +	cq_host->enabled = false;
-> +	spin_unlock_irqrestore(&cq_host->lock, flags);
-> +
->  	dmam_free_coherent(mmc_dev(mmc), cq_host->data_size,
->  			   cq_host->trans_desc_base,
->  			   cq_host->trans_desc_dma_base);
-> @@ -408,7 +414,6 @@ static void cqhci_disable(struct mmc_host *mmc)
->  	cq_host->trans_desc_base = NULL;
->  	cq_host->desc_base = NULL;
->  
-> -	cq_host->enabled = false;
->  }
->  
->  static void cqhci_prep_task_desc(struct mmc_request *mrq,
-> @@ -612,6 +617,13 @@ static int cqhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
->  			cq_host->ops->enable(mmc);
->  	}
->  
-> +	spin_lock_irqsave(&cq_host->lock, flags);
-> +	if (!cq_host->enabled) {
-> +		pr_err("%s: cqhci: not enabled\n", mmc_hostname(mmc));
-> +		err = -EINVAL;
-> +		goto out_unlock;
-> +	}
-> +
->  	if (mrq->data) {
->  		cqhci_prep_task_desc(mrq, cq_host, tag);
->  
-> @@ -619,14 +631,12 @@ static int cqhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
->  		if (err) {
->  			pr_err("%s: cqhci: failed to setup tx desc: %d\n",
->  			       mmc_hostname(mmc), err);
-> -			return err;
-> +			goto out_unlock;
->  		}
->  	} else {
->  		cqhci_prep_dcmd_desc(mmc, mrq);
->  	}
->  
-> -	spin_lock_irqsave(&cq_host->lock, flags);
-> -
->  	if (cq_host->recovery_halt) {
->  		err = -EBUSY;
->  		goto out_unlock;
-> 
+sdhci based synopsys MMC IP is also used on some rockchip platforms,
+so add a basic support here.
 
-Please try the following instead:
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+---
 
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 220 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 213 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c
-index c2e70b757dd1..dfc8d2877115 100644
---- a/drivers/mmc/core/bus.c
-+++ b/drivers/mmc/core/bus.c
-@@ -399,11 +399,6 @@ void mmc_remove_card(struct mmc_card *card)
- 	mmc_remove_card_debugfs(card);
- #endif
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index 59d8d96..959084c 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -9,9 +9,11 @@
  
--	if (host->cqe_enabled) {
--		host->cqe_ops->cqe_disable(host);
--		host->cqe_enabled = false;
--	}
--
- 	if (mmc_card_present(card)) {
- 		if (mmc_host_is_spi(card->host)) {
- 			pr_info("%s: SPI card removed\n",
-@@ -416,6 +411,11 @@ void mmc_remove_card(struct mmc_card *card)
- 		of_node_put(card->dev.of_node);
- 	}
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
++#include <linux/iopoll.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_device.h>
+ #include <linux/sizes.h>
  
-+	if (host->cqe_enabled) {
-+		host->cqe_ops->cqe_disable(host);
-+		host->cqe_enabled = false;
-+	}
+ #include "sdhci-pltfm.h"
+@@ -21,11 +23,43 @@
+ /* DWCMSHC specific Mode Select value */
+ #define DWCMSHC_CTRL_HS400		0x7
+ 
++/* Rockchip specific Registers */
++#define DWCMSHC_HOST_CTRL3		0x508
++#define DWCMSHC_EMMC_CONTROL		0x52c
++#define DWCMSHC_EMMC_ATCTRL		0x540
++#define DWCMSHC_EMMC_DLL_CTRL		0x800
++#define DWCMSHC_EMMC_DLL_RXCLK		0x804
++#define DWCMSHC_EMMC_DLL_TXCLK		0x808
++#define DWCMSHC_EMMC_DLL_STRBIN		0x80c
++#define DWCMSHC_EMMC_DLL_STATUS0	0x840
++#define DWCMSHC_EMMC_DLL_START		BIT(0)
++#define DWCMSHC_EMMC_DLL_RXCLK_SRCSEL	29
++#define DWCMSHC_EMMC_DLL_START_POINT	16
++#define DWCMSHC_EMMC_DLL_INC		8
++#define DWCMSHC_EMMC_DLL_DLYENA		BIT(27)
++#define DLL_TXCLK_TAPNUM_DEFAULT	0x8
++#define DLL_STRBIN_TAPNUM_DEFAULT	0x8
++#define DLL_TXCLK_TAPNUM_FROM_SW	BIT(24)
++#define DLL_STRBIN_TAPNUM_FROM_SW	BIT(24)
++#define DWCMSHC_EMMC_DLL_LOCKED		BIT(8)
++#define DWCMSHC_EMMC_DLL_TIMEOUT	BIT(9)
++#define DLL_RXCLK_NO_INVERTER		1
++#define DLL_RXCLK_INVERTER		0
++#define DWCMSHC_ENHANCED_STROBE		BIT(8)
++#define DLL_LOCK_WO_TMOUT(x) \
++	((((x) & DWCMSHC_EMMC_DLL_LOCKED) == DWCMSHC_EMMC_DLL_LOCKED) && \
++	(((x) & DWCMSHC_EMMC_DLL_TIMEOUT) == 0))
++#define ROCKCHIP_MAX_CLKS		3
 +
- 	put_device(&card->dev);
+ #define BOUNDARY_OK(addr, len) \
+ 	((addr | (SZ_128M - 1)) == ((addr + len - 1) | (SZ_128M - 1)))
+ 
+ struct dwcmshc_priv {
+ 	struct clk	*bus_clk;
++
++	/* Rockchip specified optional clocks */
++	struct clk_bulk_data rockchip_clks[ROCKCHIP_MAX_CLKS];
++	int txclk_tapnum;
+ };
+ 
+ /*
+@@ -100,6 +134,97 @@ static void dwcmshc_set_uhs_signaling(struct sdhci_host *host,
+ 	sdhci_writew(host, ctrl_2, SDHCI_HOST_CONTROL2);
  }
  
++static void dwcmshc_rk_hs400_enhanced_strobe(struct mmc_host *mmc,
++					     struct mmc_ios *ios)
++{
++	u32 vendor;
++	struct sdhci_host *host = mmc_priv(mmc);
++
++	vendor = sdhci_readl(host, DWCMSHC_EMMC_CONTROL);
++	if (ios->enhanced_strobe)
++		vendor |= DWCMSHC_ENHANCED_STROBE;
++	else
++		vendor &= ~DWCMSHC_ENHANCED_STROBE;
++
++	sdhci_writel(host, vendor, DWCMSHC_EMMC_CONTROL);
++}
++
++static void dwcmshc_rk_set_clock(struct sdhci_host *host, unsigned int clock)
++{
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
++	u32 txclk_tapnum = DLL_TXCLK_TAPNUM_DEFAULT, extra;
++	int err;
++
++	host->mmc->actual_clock = 0;
++
++	/* DO NOT TOUCH THIS SETTING */
++	extra = DWCMSHC_EMMC_DLL_DLYENA |
++		DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL;
++	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_RXCLK);
++
++	if (clock == 0)
++		return;
++
++	/* Rockchip platform only support 375KHz for identify mode */
++	if (clock <= 400000)
++		clock = 375000;
++
++	err = clk_set_rate(pltfm_host->clk, clock);
++	if (err)
++		dev_err(mmc_dev(host->mmc), "fail to set clock %d", clock);
++
++	sdhci_set_clock(host, clock);
++
++	/* Disable cmd conflict check */
++	extra = sdhci_readl(host, DWCMSHC_HOST_CTRL3);
++	extra &= ~BIT(0);
++	sdhci_writel(host, extra, DWCMSHC_HOST_CTRL3);
++
++	if (clock <= 400000) {
++		/* Disable DLL to reset sample clock */
++		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_CTRL);
++		return;
++	}
++
++	/* Reset DLL */
++	sdhci_writel(host, BIT(1), DWCMSHC_EMMC_DLL_CTRL);
++	udelay(1);
++	sdhci_writel(host, 0x0, DWCMSHC_EMMC_DLL_CTRL);
++
++	/* Init DLL settings */
++	extra = 0x5 << DWCMSHC_EMMC_DLL_START_POINT |
++		0x2 << DWCMSHC_EMMC_DLL_INC |
++		DWCMSHC_EMMC_DLL_START;
++	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_CTRL);
++	err = readl_poll_timeout(host->ioaddr + DWCMSHC_EMMC_DLL_STATUS0,
++				 extra, DLL_LOCK_WO_TMOUT(extra), 1,
++				 500 * USEC_PER_MSEC);
++	if (err) {
++		dev_err(mmc_dev(host->mmc), "DLL lock timeout!\n");
++		return;
++	}
++
++	extra = 0x1 << 16 | /* tune clock stop en */
++		0x2 << 17 | /* pre-change delay */
++		0x3 << 19;  /* post-change delay */
++	sdhci_writel(host, extra, DWCMSHC_EMMC_ATCTRL);
++
++	if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
++	    host->mmc->ios.timing == MMC_TIMING_MMC_HS400)
++		txclk_tapnum = priv->txclk_tapnum;
++
++	extra = DWCMSHC_EMMC_DLL_DLYENA |
++		DLL_TXCLK_TAPNUM_FROM_SW |
++		txclk_tapnum;
++	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_TXCLK);
++
++	extra = DWCMSHC_EMMC_DLL_DLYENA |
++		DLL_STRBIN_TAPNUM_DEFAULT |
++		DLL_STRBIN_TAPNUM_FROM_SW;
++	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
++}
++
+ static const struct sdhci_ops sdhci_dwcmshc_ops = {
+ 	.set_clock		= sdhci_set_clock,
+ 	.set_bus_width		= sdhci_set_bus_width,
+@@ -109,21 +234,91 @@ static const struct sdhci_ops sdhci_dwcmshc_ops = {
+ 	.adma_write_desc	= dwcmshc_adma_write_desc,
+ };
+ 
++static const struct sdhci_ops sdhci_dwcmshc_rk_ops = {
++	.set_clock		= dwcmshc_rk_set_clock,
++	.set_bus_width		= sdhci_set_bus_width,
++	.set_uhs_signaling	= dwcmshc_set_uhs_signaling,
++	.get_max_clock		= sdhci_pltfm_clk_get_max_clock,
++	.reset			= sdhci_reset,
++	.adma_write_desc	= dwcmshc_adma_write_desc,
++};
++
+ static const struct sdhci_pltfm_data sdhci_dwcmshc_pdata = {
+ 	.ops = &sdhci_dwcmshc_ops,
+ 	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
+ 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+ };
+ 
++static const struct sdhci_pltfm_data sdhci_dwcmshc_rk_pdata = {
++	.ops = &sdhci_dwcmshc_rk_ops,
++	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
++		  SDHCI_QUIRK_BROKEN_TIMEOUT_VAL,
++	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
++		   SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
++};
++
++static int rockchip_pltf_init(struct sdhci_host *host, struct dwcmshc_priv *priv)
++{
++	int err;
++
++	priv->rockchip_clks[0].id = "axi";
++	priv->rockchip_clks[1].id = "block";
++	priv->rockchip_clks[2].id = "timer";
++	err = devm_clk_bulk_get_optional(mmc_dev(host->mmc), ROCKCHIP_MAX_CLKS,
++					 priv->rockchip_clks);
++	if (err) {
++		dev_err(mmc_dev(host->mmc), "failed to get clocks %d\n", err);
++		return err;
++	}
++
++	err = clk_bulk_prepare_enable(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
++	if (err) {
++		dev_err(mmc_dev(host->mmc), "failed to enable clocks %d\n", err);
++		return err;
++	}
++
++	if (of_property_read_u32(mmc_dev(host->mmc)->of_node, "rockchip,txclk-tapnum",
++				 &priv->txclk_tapnum))
++		priv->txclk_tapnum = DLL_TXCLK_TAPNUM_DEFAULT;
++
++	/* Disable cmd conflict check */
++	sdhci_writel(host, 0x0, DWCMSHC_HOST_CTRL3);
++	/* Reset previous settings */
++	sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_TXCLK);
++	sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_STRBIN);
++
++	return 0;
++}
++
++static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
++	{
++		.compatible = "snps,dwcmshc-sdhci",
++		.data = &sdhci_dwcmshc_pdata,
++	},
++	{
++		.compatible = "rockchip,dwcmshc-sdhci",
++		.data = &sdhci_dwcmshc_rk_pdata,
++	},
++	{},
++};
++MODULE_DEVICE_TABLE(of, sdhci_dwcmshc_dt_ids);
++
+ static int dwcmshc_probe(struct platform_device *pdev)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host;
+ 	struct sdhci_host *host;
+ 	struct dwcmshc_priv *priv;
++	const struct sdhci_pltfm_data *pltfm_data;
+ 	int err;
+ 	u32 extra;
+ 
+-	host = sdhci_pltfm_init(pdev, &sdhci_dwcmshc_pdata,
++	pltfm_data = of_device_get_match_data(&pdev->dev);
++	if (!pltfm_data) {
++		dev_err(&pdev->dev, "Error: No device match data found\n");
++		return -ENODEV;
++	}
++
++	host = sdhci_pltfm_init(pdev, pltfm_data,
+ 				sizeof(struct dwcmshc_priv));
+ 	if (IS_ERR(host))
+ 		return PTR_ERR(host);
+@@ -161,6 +356,15 @@ static int dwcmshc_probe(struct platform_device *pdev)
+ 
+ 	host->mmc_host_ops.request = dwcmshc_request;
+ 
++	if (pltfm_data == &sdhci_dwcmshc_rk_pdata) {
++		host->mmc_host_ops.hs400_enhanced_strobe =
++			dwcmshc_rk_hs400_enhanced_strobe;
++
++		err = rockchip_pltf_init(host, priv);
++		if (err)
++			goto err_clk;
++	}
++
+ 	err = sdhci_add_host(host);
+ 	if (err)
+ 		goto err_clk;
+@@ -170,6 +374,7 @@ static int dwcmshc_probe(struct platform_device *pdev)
+ err_clk:
+ 	clk_disable_unprepare(pltfm_host->clk);
+ 	clk_disable_unprepare(priv->bus_clk);
++	clk_bulk_disable_unprepare(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
+ free_pltfm:
+ 	sdhci_pltfm_free(pdev);
+ 	return err;
+@@ -185,6 +390,7 @@ static int dwcmshc_remove(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(pltfm_host->clk);
+ 	clk_disable_unprepare(priv->bus_clk);
++	clk_bulk_disable_unprepare(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
+ 
+ 	sdhci_pltfm_free(pdev);
+ 
+@@ -207,6 +413,8 @@ static int dwcmshc_suspend(struct device *dev)
+ 	if (!IS_ERR(priv->bus_clk))
+ 		clk_disable_unprepare(priv->bus_clk);
+ 
++	clk_bulk_disable_unprepare(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
++
+ 	return ret;
+ }
+ 
+@@ -227,18 +435,16 @@ static int dwcmshc_resume(struct device *dev)
+ 			return ret;
+ 	}
+ 
++	ret = clk_bulk_prepare_enable(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
++	if (ret)
++		return ret;
++
+ 	return sdhci_resume_host(host);
+ }
+ #endif
+ 
+ static SIMPLE_DEV_PM_OPS(dwcmshc_pmops, dwcmshc_suspend, dwcmshc_resume);
+ 
+-static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
+-	{ .compatible = "snps,dwcmshc-sdhci" },
+-	{}
+-};
+-MODULE_DEVICE_TABLE(of, sdhci_dwcmshc_dt_ids);
+-
+ static struct platform_driver sdhci_dwcmshc_driver = {
+ 	.driver	= {
+ 		.name	= "sdhci-dwcmshc",
+-- 
+2.7.4
+
+
 
