@@ -2,130 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD93432B0ED
-	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BA4F32B0F0
+	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:46:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233624AbhCCBqN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Mar 2021 20:46:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44886 "EHLO
+        id S238513AbhCCBqX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 2 Mar 2021 20:46:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349593AbhCBKm2 (ORCPT
+        with ESMTP id S1349595AbhCBKm2 (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 05:42:28 -0500
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53391C0611C2
-        for <linux-mmc@vger.kernel.org>; Tue,  2 Mar 2021 02:39:48 -0800 (PST)
-Received: by mail-ua1-x92a.google.com with SMTP id o20so28225uaj.9
-        for <linux-mmc@vger.kernel.org>; Tue, 02 Mar 2021 02:39:48 -0800 (PST)
+Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25AB6C0611BC
+        for <linux-mmc@vger.kernel.org>; Tue,  2 Mar 2021 02:39:55 -0800 (PST)
+Received: by mail-ua1-x934.google.com with SMTP id t15so6604320ual.6
+        for <linux-mmc@vger.kernel.org>; Tue, 02 Mar 2021 02:39:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=uqD7e6snPAg+REOGnvL5UhMkN7faVoII5yYXfeiMIHw=;
-        b=iAImHneZGy76BnvMMrVFqGOfHaW5X5/iQ00pVhKUf/qeklkuG6qsOf9pMnhEOqMqW1
-         QlDL7SJ5JE7F/oK5yuLHndHQzeUGPJfKH7YXDhROi7F0EOqbj6s0j/cYc43c5wQMHi+b
-         nRxlGbIUCfY2CnkmRtGVugR5ovYg+UNjIG9mURXtDJhdyluYyLKAQha0ay/B0muoEfCZ
-         mkUvEjWmYveptFfDy9zwnD69AJ2NRc3xhAzuBMv0HqyiJuirZFEBmI8C8fM7mnvUkH5C
-         5SPSP4mVSz3H+L70q6qkI1nBK+RcK4MdVoKTkP2EV589vrpGfWLA8bdbzff8lLYdnaIR
-         c8bg==
+        bh=H0hmZCFeDNqAbXx5GUKcKo1fxTItQnWIdXjqLdnPSeQ=;
+        b=ImnDxZzQiN6+xQO0jDbYudZZ5bZAsbEITwar8lWZPd7fQ83yGWzCBnHvplZ0wWJ0ow
+         P25AE9GJP4NQvMp4y3IIKvqAn/tQAkoIN31eb42woz6/xzDWE2L1co7qfEYN95VwpD+9
+         n1EU4ETEtPCqhAH7MKBpDAXSsDYch2NkH6D959mXvnxfWVqsqe3mOcihO4BGcGIqAkc5
+         lR7Fzh3YY10hQo0Z2VbA3GZqewqkRDAINWI7MU64FHTbamGCHdfwqRx/PXeNK9zNPlMh
+         ygL953xVMYIz2asSrEiNZ75UNlZx3cjUi1iWP7o2oTGUGsTznPqLLjLUwMhqnffhYKd6
+         pctw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=uqD7e6snPAg+REOGnvL5UhMkN7faVoII5yYXfeiMIHw=;
-        b=MNP+gH0FGixxSJ4LUxkXvZq1duF5Cbh1DqyRdJ2AiwVnoqZKE8/Adx20mTWzzF1F7V
-         RKLj2jKTBxEofuX5rcZCUGkmBV5QSNkJGxcjbSQvnX01hWJQLxBn089RDE+ywixVGUpk
-         aEf23fCcLooE143pEAG1vO66pUFuxfyuawkhh0W0cXV6QqSu5VFWObld6X8qIYcWOixc
-         SfWghjTHSj99PZCvtRpboO1GKMuD74O0MJThbqMsl0XjmI5ve48u8NrHm7RZR2OR1a3E
-         Asj8WBd69bfiHo6yVwtRQBtVecbBhOsoIwmq88N4ushuYG+ZTEMmqbAZ3P90Da1Y/mT2
-         Ve0A==
-X-Gm-Message-State: AOAM53141jXaL2sxx/n1ajI31SP0b9F+RjgJoTvP93IJCHLOr4EQABlW
-        ucAyftJOyUbTtpDuHs56JdvUIYizkdDP5rhaaHNyxQ==
-X-Google-Smtp-Source: ABdhPJwuumk8VdmG6aZhUft9BtFUdPFYTvE0ulgyGtO2w5vys5dMZsUFjlKYiKQY/2Cxj9nRcmAYNQAaqHG1Ud/QtE4=
-X-Received: by 2002:ab0:6045:: with SMTP id o5mr10028156ual.100.1614681587573;
- Tue, 02 Mar 2021 02:39:47 -0800 (PST)
+        bh=H0hmZCFeDNqAbXx5GUKcKo1fxTItQnWIdXjqLdnPSeQ=;
+        b=hTnUtL39bVLxbFt4qQ1PbL572VEuW7vJFsORg4gy2yFUKeZh3ioZzyoVw2gxVvlu1Y
+         dOXkVvrUk/XyyPeQsdAKLkzyCtAtiBgc++hmNJ+5p4zcUOyBjXNPHo4XFlrJTZFtnNso
+         bAcMO5SbepVDTXzT9sPsQf0+b9Sac1Mx9MtlSRpZmmkL6JwLri12XoOaDuzeItu7bedO
+         do51wN3lG0kLA7GsqG3YNjQrdJ7qB6hPZ9axXUJrvy6y2yX0xtp2Sqexy0o0G9VSpVwF
+         CypqDk0xDGDIzx+CsiZRLWLl/gN8Tkwlp/5eXD44nklNaMA7ZRxaDGXosm1drSRsN8gq
+         MwaA==
+X-Gm-Message-State: AOAM532sh29sEWiRX2BNzcx3B0U0qttR3DtPCenN7snnkqH4Jex/XMVs
+        o/ECw8XuSi6DIxEnbafyRM4B/UmiNUpIgNBCAeX9Zg==
+X-Google-Smtp-Source: ABdhPJx5zWar9vzmGNaDwjkCHaFzZgByiXdLPVKbwNxLcirxr8ZsQUC7izpDBiTOw7BnhXrSEGYIkB5n9j8rL06nuYw=
+X-Received: by 2002:ab0:1581:: with SMTP id i1mr10807661uae.15.1614681594298;
+ Tue, 02 Mar 2021 02:39:54 -0800 (PST)
 MIME-Version: 1.0
-References: <20210223100830.25125-1-wsa+renesas@sang-engineering.com> <20210223100830.25125-2-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20210223100830.25125-2-wsa+renesas@sang-engineering.com>
+References: <1614222604-27066-1-git-send-email-peng.fan@oss.nxp.com>
+In-Reply-To: <1614222604-27066-1-git-send-email-peng.fan@oss.nxp.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 2 Mar 2021 11:39:11 +0100
-Message-ID: <CAPDyKFrdxYNBeV4Fy_NJ+1JdF9OtHaxXmSdnvyepAPH4cxUs2A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: tmio: support custom irq masks
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Date:   Tue, 2 Mar 2021 11:39:15 +0100
+Message-ID: <CAPDyKFq3J=Shzgxp8XsdZqdZcOZ-n5WJ+mWejXM1-Qp8PgjBNA@mail.gmail.com>
+Subject: Re: [PATCH V3 0/5] imx esdhc dt/driver update
+To:     "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc:     Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Peng Fan <peng.fan@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 23 Feb 2021 at 11:10, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
+On Thu, 25 Feb 2021 at 04:22, <peng.fan@oss.nxp.com> wrote:
 >
-> SDHI Gen2+ has a different value for TMIO_MASK_ALL, so add a member to
-> support that. If the member is not used, the previous default value is
-> applied.
+> From: Peng Fan <peng.fan@nxp.com>
 >
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-Applied for next, thanks!
-
-To be clear, I am awaiting a v2 of patch 2/2.
-
-Kind regards
-Uffe
-
-
-> ---
->  drivers/mmc/host/tmio_mmc.h      | 1 +
->  drivers/mmc/host/tmio_mmc_core.c | 8 +++++---
->  2 files changed, 6 insertions(+), 3 deletions(-)
+> V3:
+>  Patch 1, drop unneeded pinctrl-0/1/2
+>  Patch 2 is new to avoid break dt bindings check
+> V2:
+>  patch 1, 2, 3 is new
+>  patch 4 is not changed
+>  https://patchwork.kernel.org/project/linux-arm-kernel/cover/1611198593-16287-1-git-send-email-peng.fan@nxp.com/
 >
-> diff --git a/drivers/mmc/host/tmio_mmc.h b/drivers/mmc/host/tmio_mmc.h
-> index 2d1db9396d4a..7d5201d6a006 100644
-> --- a/drivers/mmc/host/tmio_mmc.h
-> +++ b/drivers/mmc/host/tmio_mmc.h
-> @@ -164,6 +164,7 @@ struct tmio_mmc_host {
->         u32                     sdio_irq_mask;
->         unsigned int            clk_cache;
->         u32                     sdcard_irq_setbit_mask;
-> +       u32                     sdcard_irq_mask_all;
+> Peng Fan (5):
+>   dt-bindings: mmc: fsl-imx-esdhc: add pinctrl bindings
+>   dt-bindings: clock: imx8qxp-lpcg: correct the example clock-names
+>   arm64: dts: imx8qxp: correct usdhc clock-names sequence
+>   dt-bindings: mmc: fsl-imx-esdhc: add clock bindings
+>   mmc: sdhci-esdhc-imx: validate pinctrl before use it
 >
->         spinlock_t              lock;           /* protect host private data */
->         unsigned long           last_req_ts;
-> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-> index 0e7a2faa5238..eca767dcabba 100644
-> --- a/drivers/mmc/host/tmio_mmc_core.c
-> +++ b/drivers/mmc/host/tmio_mmc_core.c
-> @@ -1175,7 +1175,9 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
->         tmio_mmc_reset(_host);
+>  .../bindings/clock/imx8qxp-lpcg.yaml          |  6 +++---
+>  .../bindings/mmc/fsl-imx-esdhc.yaml           | 20 +++++++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx8qxp.dtsi    | 18 ++++++++---------
+>  drivers/mmc/host/sdhci-esdhc-imx.c            |  2 +-
+>  4 files changed, 33 insertions(+), 13 deletions(-)
 >
->         _host->sdcard_irq_mask = sd_ctrl_read16_and_16_as_32(_host, CTL_IRQ_MASK);
-> -       tmio_mmc_disable_mmc_irqs(_host, TMIO_MASK_ALL);
-> +       if (!_host->sdcard_irq_mask_all)
-> +               _host->sdcard_irq_mask_all = TMIO_MASK_ALL;
-> +       tmio_mmc_disable_mmc_irqs(_host, _host->sdcard_irq_mask_all);
->
->         if (_host->native_hotplug)
->                 tmio_mmc_enable_mmc_irqs(_host,
-> @@ -1229,7 +1231,7 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
->         cancel_work_sync(&host->done);
->         cancel_delayed_work_sync(&host->delayed_reset_work);
->         tmio_mmc_release_dma(host);
-> -       tmio_mmc_disable_mmc_irqs(host, TMIO_MASK_ALL);
-> +       tmio_mmc_disable_mmc_irqs(host, host->sdcard_irq_mask_all);
->
->         if (host->native_hotplug)
->                 pm_runtime_put_noidle(&pdev->dev);
-> @@ -1259,7 +1261,7 @@ int tmio_mmc_host_runtime_suspend(struct device *dev)
->  {
->         struct tmio_mmc_host *host = dev_get_drvdata(dev);
->
-> -       tmio_mmc_disable_mmc_irqs(host, TMIO_MASK_ALL);
-> +       tmio_mmc_disable_mmc_irqs(host, host->sdcard_irq_mask_all);
->
->         if (host->clk_cache)
->                 host->set_clock(host, 0);
 > --
 > 2.30.0
 >
+
+Applied patch 1, 4 and 5, thanks!
+
+Kind regards
+Uffe
