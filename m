@@ -2,319 +2,167 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B36CA32B169
-	for <lists+linux-mmc@lfdr.de>; Wed,  3 Mar 2021 04:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9757132C30E
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Mar 2021 01:07:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243101AbhCCBsI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 2 Mar 2021 20:48:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35780 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1581138AbhCBSkS (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 2 Mar 2021 13:40:18 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25135C06178C;
-        Tue,  2 Mar 2021 10:39:37 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id ci14so18201992ejc.7;
-        Tue, 02 Mar 2021 10:39:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=bDq+uSHy9qG8xIZZAYzUb7kIqDxntgb1pyeClvc6+Is=;
-        b=NIgJvP6WN7rb/ZCzL4ND19BrTSOt3f9LlsQC3OdBbQTF707PT/lZliBXugjzNCz6Gk
-         8zUxWJKwsHZE4A9mKe7jL2VAVJ5Dm0WoSi3r73mUeetQvT5lmI0QpG5Yj1ZTLpb4+Y23
-         QIulozFfe2r0ofj3DEkiuipr76690VPMI1keppf132Xt7I6p5gkiyVzaRy+4v0skn0iE
-         JDaRyY0GJ8qc2Pge3vvy+9FU0PRSIo73oeyA21o4pzHUvhr7kho82g7KHVSk2FW0oi/w
-         4ctdMWidQhCT8p35HA4mKibksdXJojVhZbgS54iOr08SlYYH2DoS6+jb7Bgbu05fRvDr
-         TbZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=bDq+uSHy9qG8xIZZAYzUb7kIqDxntgb1pyeClvc6+Is=;
-        b=CzdJu+PWe86jqOJjIcX9o3jUbd185r9O+WJuz04xHHjyUx+64xVufHOhMJ+B6QiMyx
-         UB9a3oadS1iZOkBiNGP3qkMSEtCfPWrSrmSywhTGhHYy0Yz7EatCUOqI2+4pFxJ0J+/X
-         QQP/5/SVow3tbOd1opoV4YLAXRXMjEz8MT83ekD2AqKo/FVbBD61XSRq74TSux7ugU+e
-         iDt50ZgHtbAl3Q1IOZ15BTEawukYgoemy5a+3IAmcqq/4P6CpDlCGqi2zZIcEeHirBGs
-         Cm5/4Qe9R4XD6c26qynPJOQPZsuvigH7qcnm9PG+Eup7XiI2o6HBzQHXBLhhX+one6Ul
-         6Bag==
-X-Gm-Message-State: AOAM532grZFcQulrXMalbLT50PuzQFDmZ3LonsK97D3HkX63xb/S3bPJ
-        9dcLOq7V64yaCYv6cZ8WiIiZU1XJ4vvsXLCjii8=
-X-Google-Smtp-Source: ABdhPJxX8omMoV3lUfJBkGpOWtbJJX+BlKCUswyygUARGLIs7afYswojj3J5T417q4McmSweFqYAhp/c1VbqI8nFzJ4=
-X-Received: by 2002:a17:906:2dda:: with SMTP id h26mr15603384eji.163.1614710375143;
- Tue, 02 Mar 2021 10:39:35 -0800 (PST)
-MIME-Version: 1.0
-References: <20210301172151.281814-1-Frank.Li@nxp.com> <0d135a2b-02d0-f05b-918b-c4253d67caf9@intel.com>
- <CAHrpEqQrB5rb-cbV19LQ-EDeCjSw+6O7D3wbsRYWWcDwTYBU=Q@mail.gmail.com> <42a468dd-24e0-355e-c3b9-a12ddee8dd3a@intel.com>
-In-Reply-To: <42a468dd-24e0-355e-c3b9-a12ddee8dd3a@intel.com>
-From:   Zhi Li <lznuaa@gmail.com>
-Date:   Tue, 2 Mar 2021 12:39:23 -0600
-Message-ID: <CAHrpEqQNvAxUhsU89P2ArAZiNxLMqTkf5ez+8RZPqkfSx9FRiA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mmc: cqhci: fix random crash when remove mmc module
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     riteshh@codeaurora.org, asutoshd@codeaurora.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org,
-        kernel list <linux-kernel@vger.kernel.org>, haibo.chen@nxp.com
-Content-Type: text/plain; charset="UTF-8"
+        id S1345395AbhCDAAH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 3 Mar 2021 19:00:07 -0500
+Received: from mail-eopbgr00062.outbound.protection.outlook.com ([40.107.0.62]:34213
+        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S242601AbhCCDCn (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 2 Mar 2021 22:02:43 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RDI8bSjbDaAuNI67aHa15UYxwTCbbSDy/0UkBgwJftwVVJDGwAfD0w+zc8kJFmYx5HBE3WHSjRNgHELRBAabkZ6QPraUs6r5lCgIBJ7CZ2eoVMDEhCecsP4y5Yd3wUh0YVqQiuEh+r41HSQYmLk+Zz2pLKe9nkUohKxoJkYISClRyy73NcZYl7g7IjKvw5LD2QSBTtOyfEHVgr4QVtlAWjNZ70Nn4SsQGpS792rHvDXftbKCvVrj/R49T1inn0lOnzswmeq4YF8yBo6arIMXC0iAfaWeEmSvTjoToi6ag5UFTKn2TBfmf1qNOanytYwUg+pj2smmheHIBlHUoy936g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FfwoaYlGMCrzQrrWzC7GSuMgBWF8ARGBLiuKv32r4fc=;
+ b=abSSKdrLJCVUJFG/oujX8aEDEqeUnZxpLlDnBnnS0S4kFEj7rrFeK++14O+lvfcwC1cis3GLsuzFPipW+cU1c6IBNdKFUgDDuFdiaq7yOzvWkBDFnp3nE9kOz4u3Po+mFPwIBbdF9HnQbYL4RUQrsLJVBWeC5Xgle6u59fh6CGq9+pP/UcaE3R3WzIZGaJdr79MoAXYpdEVterhiQYdbcOKtVdodeRJV3VmKPni8bMXaets4OgWWyJK7i9i8yxUDIRnxAif52Khv5OXWtewWwBDJBXYL7DiFR0UxplrkLTzEM9SKEiK1OBOixljZk5I2nP6GQakfJ9IxXnZKTy5UCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FfwoaYlGMCrzQrrWzC7GSuMgBWF8ARGBLiuKv32r4fc=;
+ b=OCliViimKwZhY/ZYbmLSW3cpFlyOoQlKAURw315e/F5t5bi4EC+wvg7szluwz8mdz3Y4m3j+bXe7OKoVHF9VuipZa49uqTSEsK365iGmji05uDxR1Ga7wfhYogXf5r+FKT2JOlzyvxlcXXRUIlHf+8H8+SHj6MPvYEjGIf4nLno=
+Received: from DB6PR0402MB2760.eurprd04.prod.outlook.com (2603:10a6:4:a1::14)
+ by DB7PR04MB4235.eurprd04.prod.outlook.com (2603:10a6:5:22::25) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.19; Wed, 3 Mar
+ 2021 03:00:57 +0000
+Received: from DB6PR0402MB2760.eurprd04.prod.outlook.com
+ ([fe80::d58c:d479:d094:43d0]) by DB6PR0402MB2760.eurprd04.prod.outlook.com
+ ([fe80::d58c:d479:d094:43d0%9]) with mapi id 15.20.3846.049; Wed, 3 Mar 2021
+ 03:00:57 +0000
+From:   "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>
+CC:     Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Subject: RE: [PATCH V3 0/5] imx esdhc dt/driver update
+Thread-Topic: [PATCH V3 0/5] imx esdhc dt/driver update
+Thread-Index: AQHXCyVy1qUEZ6f+hUuvzL/oNvoo36pwikmAgAER0OA=
+Date:   Wed, 3 Mar 2021 03:00:57 +0000
+Message-ID: <DB6PR0402MB276016438D7D39579A05D08A88989@DB6PR0402MB2760.eurprd04.prod.outlook.com>
+References: <1614222604-27066-1-git-send-email-peng.fan@oss.nxp.com>
+ <CAPDyKFq3J=Shzgxp8XsdZqdZcOZ-n5WJ+mWejXM1-Qp8PgjBNA@mail.gmail.com>
+In-Reply-To: <CAPDyKFq3J=Shzgxp8XsdZqdZcOZ-n5WJ+mWejXM1-Qp8PgjBNA@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: linaro.org; dkim=none (message not signed)
+ header.d=none;linaro.org; dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [119.31.174.71]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 68a7a97e-ed6b-420c-c724-08d8ddf091a3
+x-ms-traffictypediagnostic: DB7PR04MB4235:
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DB7PR04MB42355688DF4754A783B8B634C9989@DB7PR04MB4235.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6430;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: u4V7xujgf2BAIYTs/zMy/WzMZ5sjrf7nMjtCuGh5YpGrf3c9lv6io0iRYnwXpSGZQ+5a+fbrTJjp9JoRjkaFqytPfnCEw8XEESM4EVNupdODVIUqFfyqh00T5WwlV9TiTy7gtngSD6ECjvBx39X1b3wuxs48iUSw5Cp9InbTzBnJ0D6p5+CvXBvJ/Di4CdyS9R60gOr/5UlCe8a8myLsw6cpx+VHHTQS63pnXiuIOmfd5GRQK16AA/HqmGm7gsRWUDNZqLaKzMlAmtBSd9ED3Y6NBw6zznelSUuNOEHALVhcbP5ofDEGdDo7evmGYm7+0zQ2nIu5MRJsdSzd63EEzG1LoEb6nPtxPa9seYD04A6gt+UblkwVspHVetKkULl8410O79stk1sUx633hMWvW3rZRLMTy4IZO142KaCjgqWXEIf4hYJHzoCgQj/wVl++k/CDKJajm0MSkF1b7tZjv5fmThBO2n7/CV+Us4TDuvFnO5T5jTapTqMo0hnE2VGQuRvUeIGIlIbPrH0jUwqYTQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB6PR0402MB2760.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(376002)(396003)(346002)(136003)(39860400002)(6506007)(4326008)(55016002)(110136005)(86362001)(9686003)(54906003)(478600001)(316002)(83380400001)(7696005)(5660300002)(15650500001)(2906002)(186003)(52536014)(8676002)(66946007)(7416002)(76116006)(66556008)(64756008)(66476007)(66446008)(8936002)(26005)(33656002)(71200400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: =?us-ascii?Q?3mvjNOXZRiQATWom4aDhzp7Dk2G9n9ztEMNOrIAWRecrWm1MqK7d5j5uOrhK?=
+ =?us-ascii?Q?0zSwoguhPfl9TXXuN7wgfX+ZZgIsZLYGtUvljCA440Z7XkZrLzo2ZwuOFSwG?=
+ =?us-ascii?Q?sRoZL9CMgIbMOoDDDHVeT7sRsvixcmFJVsMVKroJ39xtUYGgg3/vOGb/Z/uD?=
+ =?us-ascii?Q?jNf+hRYMeicOLuyN0YQNLyS0It7+UM9stPPkT0zRiNcs5K4ff9XnnH6iORwn?=
+ =?us-ascii?Q?aKOQ5M9xqQNW8BQTeHJxqeSDTgOdQ3cRsE4YmKHZ9rA/+GK900c2YCNVe8p8?=
+ =?us-ascii?Q?+56/6dUlZ9MSf0y3R8p1gGdcoWQPvHJic9hdzFcu7cOfRG2AQ55783VOG27f?=
+ =?us-ascii?Q?V3a7LVTLJwSblzqvVDrfNP9X6+TiABsMcpBtxuw4uIVVjbsU/NhK3UL2foC4?=
+ =?us-ascii?Q?bxrbY93s67CSs9f30APup0nIyPG5nREUjbSslaA/wHil/Un2E3oOWBbVxNY5?=
+ =?us-ascii?Q?HcedkyBlb80PPm0dCArVUExbB7JZwHFAuWMUbNR0yUQPDwKQ1OsjSFB8YAtK?=
+ =?us-ascii?Q?m1d9b9rTaQ7lLNnARz/ajB1TqZrxKLd3dnGpspxzmjdTM9uJMwaMXKApeHBR?=
+ =?us-ascii?Q?aFHv6IGNLfRYKN90xfTqjbqdP04g2Z2MAkxkvo5ru+jCJaP9QWDKzjVo5BOu?=
+ =?us-ascii?Q?YuKX43Ii3xna7XNRir/BNOVsDzCeJAsWwpVn6u8/nHb6bA3GZ48qmxbH8YTT?=
+ =?us-ascii?Q?h6KQuVqXfNIbHCliI1sfd+Gm2DNk5Zf2awzw5r2LCUCfk4Zp+NRq5PzRFr5m?=
+ =?us-ascii?Q?XPrz5zdRvEQMDAdwSXVIXnGbqg3/eF94iJvXodEK+/C8EeJLip0CCNBDny+k?=
+ =?us-ascii?Q?ez9qRqZaE+HT/HA5vWCM4YN8cMlGDOhGs+uTSlLELkGQ1/sXdBh5APYe7C1Q?=
+ =?us-ascii?Q?kTDdEWo4L21pCViQwZfDn4WiRDdkQZlB7lEirmbo2GTHiQbSug1nOROWiQ/e?=
+ =?us-ascii?Q?9Nb3KD+luD21vEs5dGwNvN4Kxyx294y0juFtZWbplH/cBwztUgxyEk2SKQJN?=
+ =?us-ascii?Q?nm8tnlaOwPM03s+8qDc49BQIZEC4IMGAekUInvM1jcsiVmqhNrz1flx73doA?=
+ =?us-ascii?Q?str95oMYyYZPj4fKXqbxBF8T0qWiYZF1IvADTvY4jM/StHpsNe4Af/WIdeYb?=
+ =?us-ascii?Q?4eqFp+DlHHaCVMT2edkDKEx1qKr2UVgVcH/tQil4ZF35msnHZxP8QJsS+jmN?=
+ =?us-ascii?Q?x+mzOXkg0ma+4xxGzUfJB9xC6dVNCcpANJiFHt4vXFYPZ/MVp00OR5LEaVU1?=
+ =?us-ascii?Q?1QPQwhgU8tAFC0HwZtWvIRFS5rKHUPsNNmQUB+2wXzWcWKtwAYdlTEmArsRZ?=
+ =?us-ascii?Q?Z8Px7DD8hKotj4a7YC3lZM3v?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB6PR0402MB2760.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68a7a97e-ed6b-420c-c724-08d8ddf091a3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Mar 2021 03:00:57.7704
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kgfCNGxWdHHAR0RLk9om4L3/F+bKufARwSurGZT4QY6szCHqjwmuzUIJzkopGzVsCrZBKOSqxOUxH/jYXIqs9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB4235
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Mar 2, 2021 at 10:25 AM Adrian Hunter <adrian.hunter@intel.com> wro=
-te:
->
-> On 2/03/21 5:12 pm, Zhi Li wrote:
-> >
-> >
-> > On Tue, Mar 2, 2021 at 1:03 AM Adrian Hunter <adrian.hunter@intel.com <=
-mailto:adrian.hunter@intel.com>> wrote:
-> >
-> >     On 1/03/21 7:21 pm, Frank Li wrote:
-> >     > [ 6684.493350] Unable to handle kernel paging request at virtual =
-address ffff800011c5b0f0
-> >     > [ 6684.498531] mmc0: card 0001 removed
-> >     > [ 6684.501556] Mem abort info:
-> >     > [ 6684.509681]   ESR =3D 0x96000047
-> >     > [ 6684.512786]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-> >     > [ 6684.518394]   SET =3D 0, FnV =3D 0
-> >     > [ 6684.521707]   EA =3D 0, S1PTW =3D 0
-> >     > [ 6684.524998] Data abort info:
-> >     > [ 6684.528236]   ISV =3D 0, ISS =3D 0x00000047
-> >     > [ 6684.532986]   CM =3D 0, WnR =3D 1
-> >     > [ 6684.536129] swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D0000=
-000081b22000
-> >     > [ 6684.543923] [ffff800011c5b0f0] pgd=3D00000000bffff003, p4d=3D0=
-0000000bffff003, pud=3D00000000bfffe003, pmd=3D00000000900e1003, pte=3D0000=
-000000000000
-> >     > [ 6684.557915] Internal error: Oops: 96000047 [#1] PREEMPT SMP
-> >     > [ 6684.564240] Modules linked in: sdhci_esdhc_imx(-) sdhci_pltfm =
-sdhci cqhci mmc_block mmc_core fsl_jr_uio caam_jr caamkeyblob_desc caamhash=
-_desc caamalg_desc crypto_engine rng_core authenc libdes crct10dif_ce flexc=
-an can_dev caam error [last unloaded: mmc_core]
-> >     > [ 6684.587281] CPU: 0 PID: 79138 Comm: kworker/0:3H Not tainted 5=
-.10.9-01410-g3ba33182767b-dirty #10
-> >     > [ 6684.596160] Hardware name: Freescale i.MX8DXL EVK (DT)
-> >     > [ 6684.601320] Workqueue: kblockd blk_mq_run_work_fn
-> >     >
-> >     > [ 6684.606094] pstate: 40000005 (nZcv daif -PAN -UAO -TCO BTYPE=
-=3D--)
-> >     > [ 6684.612286] pc : cqhci_request+0x148/0x4e8 [cqhci]
-> >     > ^GMessage from syslogd@  at Thu Jan  1 01:51:24 1970 ...[ 6684.61=
-7085] lr : cqhci_request+0x314/0x4e8 [cqhci]
-> >     > [ 6684.626734] sp : ffff80001243b9f0
-> >     > [ 6684.630049] x29: ffff80001243b9f0 x28: ffff00002c3dd000
-> >     > [ 6684.635367] x27: 0000000000000001 x26: 0000000000000001
-> >     > [ 6684.640690] x25: ffff00002c451000 x24: 000000000000000f
-> >     > [ 6684.646007] x23: ffff000017e71c80 x22: ffff00002c451000
-> >     > [ 6684.651326] x21: ffff00002c0f3550 x20: ffff00002c0f3550
-> >     > [ 6684.656651] x19: ffff000017d46880 x18: ffff00002cea1500
-> >     > [ 6684.661977] x17: 0000000000000000 x16: 0000000000000000
-> >     > [ 6684.667294] x15: 000001ee628e3ed1 x14: 0000000000000278
-> >     > [ 6684.672610] x13: 0000000000000001 x12: 0000000000000001
-> >     > [ 6684.677927] x11: 0000000000000000 x10: 0000000000000000
-> >     > [ 6684.683243] x9 : 000000000000002b x8 : 0000000000001000
-> >     > [ 6684.688560] x7 : 0000000000000010 x6 : ffff00002c0f3678
-> >     > [ 6684.693886] x5 : 000000000000000f x4 : ffff800011c5b000
-> >     > [ 6684.699211] x3 : 000000000002d988 x2 : 0000000000000008
-> >     > [ 6684.704537] x1 : 00000000000000f0 x0 : 0002d9880008102f
-> >     > [ 6684.709854] Call trace:
-> >     > [ 6684.712313]  cqhci_request+0x148/0x4e8 [cqhci]
-> >     > [ 6684.716803]  mmc_cqe_start_req+0x58/0x68 [mmc_core]
-> >     > [ 6684.721698]  mmc_blk_mq_issue_rq+0x460/0x810 [mmc_block]
-> >     > [ 6684.727018]  mmc_mq_queue_rq+0x118/0x2b0 [mmc_block]
-> >     >
-> >     > cqhci_request was called after cqhci_disable.
-> >     >
-> >     > cqhci_disable                                 cqhci_request
-> >     > {                                             {
-> >     >       dmam_free_coherent();  (1) free
-> >     >                                                   if(!cq_host->en=
-able)
-> >     >                                                        return
-> >     >                                        (2) pass check here
-> >     >       cq_host->enable =3D false;
-> >     >
-> >     >                                                   task_desc=3D ge=
-t_desc(cq_host,tag);
-> >     >                                                              ^^^^=
- crash here
-> >     >                                          (3) access memory which =
-is already free
-> >     >
-> >     > }                                             }
-> >     >
-> >     > Signed-off-by: Frank Li <Frank.Li@nxp.com <mailto:Frank.Li@nxp.co=
-m>>
-> >     > ---
-> >     >  drivers/mmc/host/cqhci-core.c | 18 ++++++++++++++----
-> >     >  1 file changed, 14 insertions(+), 4 deletions(-)
-> >     >
-> >     > diff --git a/drivers/mmc/host/cqhci-core.c b/drivers/mmc/host/cqh=
-ci-core.c
-> >     > index 93b0432bb601..36d292261e50 100644
-> >     > --- a/drivers/mmc/host/cqhci-core.c
-> >     > +++ b/drivers/mmc/host/cqhci-core.c
-> >     > @@ -389,6 +389,7 @@ static void cqhci_off(struct mmc_host *mmc)
-> >     >  static void cqhci_disable(struct mmc_host *mmc)
-> >     >  {
-> >     >       struct cqhci_host *cq_host =3D mmc->cqe_private;
-> >     > +     unsigned long flags;
-> >     >
-> >     >       if (!cq_host->enabled)
-> >     >               return;
-> >     > @@ -397,6 +398,11 @@ static void cqhci_disable(struct mmc_host *m=
-mc)
-> >     >
-> >     >       __cqhci_disable(cq_host);
-> >     >
-> >     > +     /* need wait for cqhci_request finish before free memory */
-> >     > +     spin_lock_irqsave(&cq_host->lock, flags);
-> >     > +     cq_host->enabled =3D false;
-> >     > +     spin_unlock_irqrestore(&cq_host->lock, flags);
-> >     > +
-> >     >       dmam_free_coherent(mmc_dev(mmc), cq_host->data_size,
-> >     >                          cq_host->trans_desc_base,
-> >     >                          cq_host->trans_desc_dma_base);
-> >     > @@ -408,7 +414,6 @@ static void cqhci_disable(struct mmc_host *mm=
-c)
-> >     >       cq_host->trans_desc_base =3D NULL;
-> >     >       cq_host->desc_base =3D NULL;
-> >     >
-> >     > -     cq_host->enabled =3D false;
-> >     >  }
-> >     >
-> >     >  static void cqhci_prep_task_desc(struct mmc_request *mrq,
-> >     > @@ -612,6 +617,13 @@ static int cqhci_request(struct mmc_host *mm=
-c, struct mmc_request *mrq)
-> >     >                       cq_host->ops->enable(mmc);
-> >     >       }
-> >     >
-> >     > +     spin_lock_irqsave(&cq_host->lock, flags);
-> >     > +     if (!cq_host->enabled) {
-> >     > +             pr_err("%s: cqhci: not enabled\n", mmc_hostname(mmc=
-));
-> >     > +             err =3D -EINVAL;
-> >     > +             goto out_unlock;
-> >     > +     }
-> >     > +
-> >     >       if (mrq->data) {
-> >     >               cqhci_prep_task_desc(mrq, cq_host, tag);
-> >     >
-> >     > @@ -619,14 +631,12 @@ static int cqhci_request(struct mmc_host *m=
-mc, struct mmc_request *mrq)
-> >     >               if (err) {
-> >     >                       pr_err("%s: cqhci: failed to setup tx desc:=
- %d\n",
-> >     >                              mmc_hostname(mmc), err);
-> >     > -                     return err;
-> >     > +                     goto out_unlock;
-> >     >               }
-> >     >       } else {
-> >     >               cqhci_prep_dcmd_desc(mmc, mrq);
-> >     >       }
-> >     >
-> >     > -     spin_lock_irqsave(&cq_host->lock, flags);
-> >     > -
-> >     >       if (cq_host->recovery_halt) {
-> >     >               err =3D -EBUSY;
-> >     >               goto out_unlock;
-> >     >
-> >
-> >     Please try the following instead:
-> >
-> >
-> >     diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c
-> >     index c2e70b757dd1..dfc8d2877115 100644
-> >     --- a/drivers/mmc/core/bus.c
-> >     +++ b/drivers/mmc/core/bus.c
-> >     @@ -399,11 +399,6 @@ void mmc_remove_card(struct mmc_card *card)
-> >             mmc_remove_card_debugfs(card);
-> >      #endif
-> >
-> >     -       if (host->cqe_enabled) {
-> >     -               host->cqe_ops->cqe_disable(host);
-> >     -               host->cqe_enabled =3D false;
-> >     -       }
-> >     -
-> >             if (mmc_card_present(card)) {
-> >                     if (mmc_host_is_spi(card->host)) {
-> >                             pr_info("%s: SPI card removed\n",
-> >     @@ -416,6 +411,11 @@ void mmc_remove_card(struct mmc_card *card)
-> >                     of_node_put(card->dev.of_node);
-> >             }
-> >
-> >     +       if (host->cqe_enabled) {
-> >     +               host->cqe_ops->cqe_disable(host);
-> >     +               host->cqe_enabled =3D false;
-> >     +       }
-> >     +
-> >             put_device(&card->dev);
-> >      }
-> >
-> >
-> > Actually this is my first solution,  it can't resolve issues 100% and j=
-ust reduce possibility.
-> >
-> > One core run                                                           =
-               The another core run
-> > mmc_remove_card                                                        =
-        mmc_mq_queue_rq
-> > {                                                                      =
-                        {
-> >
-> >                                                                        =
-                                      if (mmc_card_removed(mq->card)) {
-> >                                                                        =
-                                                       req->rq_flags |=3D R=
-QF_QUIET;
-> >                                                                        =
-                                                        return BLK_STS_IOER=
-R;
-> >                                                                        =
-                                       }
-> >                                                                        =
-                                       //pass check here
-> >         device_del(&card->dev);
->
-> Deleting the card device removes it from the block driver
-> (i.e. mmc_blk_remove()), which cleans up the request queues,
-> so the scenario you describe here should never happen.
->
-> Can you determine if mmc_blk_remove() is called and whether
-> it cleans up blk queues?
->
+Hi Shawn,
 
-yes, mmc_blk_remove is called.
-Let me run my test case. It takes at least 24 hours.
+> Subject: Re: [PATCH V3 0/5] imx esdhc dt/driver update
+>=20
+> On Thu, 25 Feb 2021 at 04:22, <peng.fan@oss.nxp.com> wrote:
+> >
+> > From: Peng Fan <peng.fan@nxp.com>
+> >
+> > V3:
+> >  Patch 1, drop unneeded pinctrl-0/1/2
+> >  Patch 2 is new to avoid break dt bindings check
+> > V2:
+> >  patch 1, 2, 3 is new
+> >  patch 4 is not changed
+> >
+> >
+> > Peng Fan (5):
+> >   dt-bindings: mmc: fsl-imx-esdhc: add pinctrl bindings
+> >   dt-bindings: clock: imx8qxp-lpcg: correct the example clock-names
+> >   arm64: dts: imx8qxp: correct usdhc clock-names sequence
+> >   dt-bindings: mmc: fsl-imx-esdhc: add clock bindings
+> >   mmc: sdhci-esdhc-imx: validate pinctrl before use it
+> >
+> >  .../bindings/clock/imx8qxp-lpcg.yaml          |  6 +++---
+> >  .../bindings/mmc/fsl-imx-esdhc.yaml           | 20
+> +++++++++++++++++++
+> >  arch/arm64/boot/dts/freescale/imx8qxp.dtsi    | 18 ++++++++---------
+> >  drivers/mmc/host/sdhci-esdhc-imx.c            |  2 +-
+> >  4 files changed, 33 insertions(+), 13 deletions(-)
+> >
+> > --
+> > 2.30.0
+> >
+>=20
+> Applied patch 1, 4 and 5, thanks!
 
->
->
-> >         //free resource here
-> >         host->cqe_ops->cqe_disable(host);
-> >
-> >                                                                        =
-                                       call  cqhci_request
-> >                                                                        =
-                                         //kernel dump here to access memor=
-y that is already free.
-> >
-> > }                                                                      =
-                         }
-> >
-> > There is one fundamental problem that there is NOT read lock when check=
-ing mmc_card_removed, and write lock for updating md->card.
-> > The risk conditions always exist between queue request and card remove.
-> >
-> > There are no issues for non-command queue host controllers, it just cau=
-ses a redundant cmd sent by host,  cmd will be timeout.  Just an expected I=
-O error
-> > happened. Maybe just errors code is different.
-> >
-> > But Cmd queue is different,  cmd queue disabled  function free memory r=
-esources. if risk conditions happen, there are kernel dump.
-> >
-> >
-> >
->
+
+Would you pick patch 2,3?
+
+Thanks,
+Peng.
+
+>=20
+> Kind regards
+> Uffe
