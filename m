@@ -2,140 +2,179 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01C3532C26B
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Mar 2021 01:04:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E42132C272
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Mar 2021 01:04:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237714AbhCDAA0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 3 Mar 2021 19:00:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35490 "EHLO
+        id S1348978AbhCDAAc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 3 Mar 2021 19:00:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377537AbhCCMWj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 3 Mar 2021 07:22:39 -0500
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF7CFC0617AB
-        for <linux-mmc@vger.kernel.org>; Wed,  3 Mar 2021 04:21:00 -0800 (PST)
-Received: by mail-lf1-x131.google.com with SMTP id q25so16526632lfc.8
-        for <linux-mmc@vger.kernel.org>; Wed, 03 Mar 2021 04:21:00 -0800 (PST)
+        with ESMTP id S1348510AbhCCN4R (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 3 Mar 2021 08:56:17 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4AB7C061794
+        for <linux-mmc@vger.kernel.org>; Wed,  3 Mar 2021 05:55:03 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id b18so17291866wrn.6
+        for <linux-mmc@vger.kernel.org>; Wed, 03 Mar 2021 05:55:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=lD9APgZ2jhcnYCgOIeOpXqVPb3v1Goo0x0OpO8dXVPQ=;
-        b=esW4B307jxAwSGPOl0hNyuol71pvJKogmDuDaPA54yUJHJrM3nvwlFIuL76Nlwalq/
-         JWvdwuMpCdt6kJxkcvncGDud3z4yWyIU7w7upwmK2SfZ8BzGT4KxzUKEwDLGDK4NgMBD
-         Dyg1n8aN5Bf+NI2Gdd8qNo7LLBPs+v6oYG77/Md9QOtMh0VmEoXipcjlg9v1keeTWI46
-         XvKBEgV5v/mm1zCgpyBcHhed7kEXdyNW3s2Jv8amuGzPWPI8sZgu6I/H3mVejToMTd4Y
-         egFkwDlKjBvoQ9mGdiauhpLF9mOAnYEL69HP+kh6FlQivqEqHerwiqVP3RpLgece0tU8
-         1M+Q==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5YOg5zpUZn68sgiB7/CmxizbcXg6Inaa7h+fkuHr+NU=;
+        b=Q++B4VWZxWtKiqGZOTBh7Q0d/9A0phGVBtZ6Tcdb4OivrfT3V4n0KsvoOItbwPg22B
+         eZTQxcobUCkgxxpQhiOnUPwwsQn5nBwRoE+k3WqfxZVKFY9QUzku8hGKZrGRskpwzURk
+         E5Ounzx8YiqKubHadqCT9jr9p3ukzspXgv7PzPpS4UDG8X4gIV+KbXQ9KHcg9IXAJw63
+         UCL5onsn8O1KAKUci0VzlWmxEzyBpCh0XxHnmS8yB8ldQUD1vrBPT733kTGT2Lhnk9Rg
+         /IJLSGZaMvFGuHZpxikQ11dPtZqZQ2/uP5/kW5517eYdIOTW/PX+bPcsXFZvVm7dQK3p
+         9//w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=lD9APgZ2jhcnYCgOIeOpXqVPb3v1Goo0x0OpO8dXVPQ=;
-        b=I7CnEmfRIOHwuJA1WAhQl2OGOpo/1gap8K/XTKWSBoFOhZRi1Eoh76eN5FI1+90LTS
-         oudp+DyO/fOowtJrZjzVF7chBIDDOFp1db7bUI+Xy27TILrBhAxmsKX1K8rdDBnkGUK8
-         sKkMj5rccydB6BXNKo18DY9RcQ6fnWASi+KAkih3y0A72W4hfmxk2IKD/difRniw1S2T
-         WfX5sX4U/qOzlloVZzjrm9xXTcODrXYNsWEK+pQkY4ubuIGtZue55MSKhZOpWujU8wbv
-         IkyYa/U6PpVsiqPRlN2uPfkSSICx4mN4znaK7tbRpIlcaEKtSF6ITcrIb1IODDFVq1mc
-         OI8g==
-X-Gm-Message-State: AOAM533Q+hotj5zsl+j/o/aVybzHpQ3AQXZRtnY9Eq5z76RL3R/ruz2Z
-        tBERz2Z/hH6g6GPinlWlY5O1VP/HNkUTlQ==
-X-Google-Smtp-Source: ABdhPJz3ZN1+8FheWJZpyLBpnGV/RnMW3VOVx9DzzJOy9r0WPzdCqF3RuL4kdnjCbeNNFO44GRKE7w==
-X-Received: by 2002:a05:6512:3055:: with SMTP id b21mr14618790lfb.356.1614774058409;
-        Wed, 03 Mar 2021 04:20:58 -0800 (PST)
-Received: from localhost.localdomain (h-155-4-129-234.NA.cust.bahnhof.se. [155.4.129.234])
-        by smtp.gmail.com with ESMTPSA id d3sm811519lfq.249.2021.03.03.04.20.56
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5YOg5zpUZn68sgiB7/CmxizbcXg6Inaa7h+fkuHr+NU=;
+        b=ebfVuT9yyei3v5zSib4a+7z3WZdAEPm0S1w+bHFCl0Au1+GpD+/nGs55l+ujPwVRKb
+         mQSV4rE/F+G/z0TzfuS2vGJfOoInL/v9ChEInttoUupYxRiokxYYxCvtde4pT7c9VBgV
+         QrPtOkZrY4h3lrcpN+95BYz4zwjIy3AXrRoTp7dVD7qQYB7nMd3VWzGh8hG2dHzXPB91
+         qDqkkdK/ztYFf4LctnFVHtcR9v1xz3oWWtB6DEsEVwQrwX7C0V6JOIx/YYbM7mrm1Ced
+         VBPiJWbQA/u/z4r8dOKPHaC3FeG6hpCTJSMuUM0977n6fD+Hyw5KnAWP6hk+IIerdn7p
+         fQAA==
+X-Gm-Message-State: AOAM530hfnQLtanEG3JLgOAmRLDYyX4PwTxIDj87r8S14MeLJcVoZZyn
+        llRibZ1t3P/H+fEupOWqF18ayQ==
+X-Google-Smtp-Source: ABdhPJx91tE7QNaiOg4lhJlGoG68rNj5C29IKjGEmIu6HFCWZYgTHkJqWzctCL1kV5mftTGxfwRG5A==
+X-Received: by 2002:adf:c752:: with SMTP id b18mr4774484wrh.233.1614779702514;
+        Wed, 03 Mar 2021 05:55:02 -0800 (PST)
+Received: from zen.linaroharston ([51.148.130.216])
+        by smtp.gmail.com with ESMTPSA id p10sm18581441wrw.33.2021.03.03.05.55.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Mar 2021 04:20:57 -0800 (PST)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] mmc: block: Fix error path in mmc_blk_probe()
-Date:   Wed,  3 Mar 2021 13:20:49 +0100
-Message-Id: <20210303122049.151986-4-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210303122049.151986-1-ulf.hansson@linaro.org>
-References: <20210303122049.151986-1-ulf.hansson@linaro.org>
+        Wed, 03 Mar 2021 05:55:01 -0800 (PST)
+Received: from zen.lan (localhost [127.0.0.1])
+        by zen.linaroharston (Postfix) with ESMTP id 901401FF7E;
+        Wed,  3 Mar 2021 13:55:00 +0000 (GMT)
+From:   =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     maxim.uvarov@linaro.org, joakim.bech@linaro.org,
+        ilias.apalodimas@linaro.org, arnd@linaro.org,
+        ruchika.gupta@linaro.org, tomas.winkler@intel.com,
+        yang.huang@intel.com, bing.zhu@intel.com,
+        Matti.Moell@opensynergy.com, hmo@opensynergy.com,
+        linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-nvme@vger.kernel.org,
+        =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [RFC PATCH  0/5] RPMB internal and user-space API + WIP virtio-rpmb frontend
+Date:   Wed,  3 Mar 2021 13:54:55 +0000
+Message-Id: <20210303135500.24673-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Returning zero to indicate success, when we actually have failed to probe
-is wrong. As a matter of fact, it leads to that mmc_blk_remove() gets
-called at a card removal and then triggers "NULL pointer dereference"
-splats. This is because mmc_blk_remove() relies on data structures and
-pointers to be setup from mmc_blk_probe(), of course.
+Hi,
 
-There have been no errors reported about this, which is most likely because
-mmc_blk_probe() never fails like this. Nevertheless, let's fix the code by
-propagating the error codes correctly and prevent us from leaking memory by
-calling also destroy_workqueue() in the error path.
+This is a follow-up to the email I sent last month:
 
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
----
- drivers/mmc/core/block.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+  Subject: RPMB user space ABI
+  Date: Thu, 11 Feb 2021 14:07:00 +0000
+  Message-ID: <87mtwashi4.fsf@linaro.org>
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 39308b35a1fb..02b656305042 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -2876,6 +2876,7 @@ static void mmc_blk_remove_debugfs(struct mmc_card *card,
- static int mmc_blk_probe(struct mmc_card *card)
- {
- 	struct mmc_blk_data *md, *part_md;
-+	int ret = 0;
- 
- 	/*
- 	 * Check that the card supports the command class(es) we need.
-@@ -2893,19 +2894,24 @@ static int mmc_blk_probe(struct mmc_card *card)
- 	}
- 
- 	md = mmc_blk_alloc(card);
--	if (IS_ERR(md))
--		return PTR_ERR(md);
-+	if (IS_ERR(md)) {
-+		ret = PTR_ERR(md);
-+		goto out_free;
-+	}
- 
--	if (mmc_blk_alloc_parts(card, md))
-+	ret = mmc_blk_alloc_parts(card, md);
-+	if (ret)
- 		goto out;
- 
- 	dev_set_drvdata(&card->dev, md);
- 
--	if (mmc_add_disk(md))
-+	ret = mmc_add_disk(md);
-+	if (ret)
- 		goto out;
- 
- 	list_for_each_entry(part_md, &md->part, part) {
--		if (mmc_add_disk(part_md))
-+		ret = mmc_add_disk(part_md);
-+		if (ret)
- 			goto out;
- 	}
- 
-@@ -2926,10 +2932,12 @@ static int mmc_blk_probe(struct mmc_card *card)
- 
- 	return 0;
- 
-- out:
-+out:
- 	mmc_blk_remove_parts(card, md);
- 	mmc_blk_remove_req(md);
--	return 0;
-+out_free:
-+	destroy_workqueue(card->complete_wq);
-+	return ret;
- }
- 
- static void mmc_blk_remove(struct mmc_card *card)
+which attempts to put some concrete flesh on the bones of the proposal
+for a new internal kernel API for dealing with RPMB partitions and the
+resultant exposed user-space character device API.
+
+It became apparent while implementing a virtio-rpmb backend that the
+initial proposed API didn't sit well with a device like virtio-rpmb
+which isn't part of a greater device (like eMMC or UFS). It also
+exposed the gritty details of the frame format to userspace leaving it
+to deal with the complications of creating JDEC frames and calculating
+MACs.
+
+The series is based on Thomas' last posting with a bunch of
+functionality dropped:
+
+  - no FS/RPMB integration
+  - dropped the simulator
+  - dropped the sysfs patches
+
+There is a start of a WIP virtio-rpmb front-end however as the initial
+discussion should be focused on the proposed APIs I thought it would
+be worth posting as an RFC before getting too deep into the weeds of
+implementation. The principle changes to the original proposal:
+
+  - frame construction left to device driver
+
+  The differences between UFS/JEDEC/VirtioRPMB are left for the driver
+  itself to deal with. This means things like MAC calculation and
+  validation also remain the preserve of the low level implementation
+  details. This doesn't mean there can't be shared code where
+  implementation details are common across several device types.
+
+  - key management uses keyctl()
+
+  This means in theory userspace could interact with the RPMB device
+  without having to manage the key itself. This also means you don't
+  need to pass as much data about as the kernel internals can just use
+  the keyring id with the API to fetch the key when required.
+
+  - user-space interface split across several ioctls
+
+  Now we no longer have multiple command frames going back and forth
+  we can have a single structure per ioctl which just contains what is
+  needed for the operation in question.
+
+So what do people think? Is it worth pursuing this approach?
+
+I'm certainly intended to complete the virtio-rpmb driver and test it
+with my QEMU based vhost-user backend. However I've no direct interest
+in implementing the interfaces to real hardware. I leave that to
+people who have access to such things and are willing to take up the
+maintainer burden if this is merged.
+
+
+Alex Bennée (5):
+  rpmb: add Replay Protected Memory Block (RPMB) subsystem
+  char: rpmb: provide a user space interface
+  tools rpmb: add RPBM access tool
+  rpmb: create virtio rpmb frontend driver [WIP]
+  tools/rpmb: simple test sequence
+
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ MAINTAINERS                                   |   9 +
+ drivers/char/Kconfig                          |   2 +
+ drivers/char/Makefile                         |   1 +
+ drivers/char/rpmb/Kconfig                     |  28 +
+ drivers/char/rpmb/Makefile                    |   9 +
+ drivers/char/rpmb/cdev.c                      | 246 +++++++
+ drivers/char/rpmb/core.c                      | 431 ++++++++++++
+ drivers/char/rpmb/rpmb-cdev.h                 |  17 +
+ drivers/char/rpmb/virtio_rpmb.c               | 366 ++++++++++
+ include/linux/rpmb.h                          | 173 +++++
+ include/uapi/linux/rpmb.h                     |  68 ++
+ include/uapi/linux/virtio_ids.h               |   1 +
+ include/uapi/linux/virtio_rpmb.h              |  54 ++
+ tools/Makefile                                |  14 +-
+ tools/rpmb/.gitignore                         |   2 +
+ tools/rpmb/Makefile                           |  41 ++
+ tools/rpmb/key                                |   1 +
+ tools/rpmb/rpmb.c                             | 649 ++++++++++++++++++
+ tools/rpmb/test.sh                            |  13 +
+ 20 files changed, 2121 insertions(+), 5 deletions(-)
+ create mode 100644 drivers/char/rpmb/Kconfig
+ create mode 100644 drivers/char/rpmb/Makefile
+ create mode 100644 drivers/char/rpmb/cdev.c
+ create mode 100644 drivers/char/rpmb/core.c
+ create mode 100644 drivers/char/rpmb/rpmb-cdev.h
+ create mode 100644 drivers/char/rpmb/virtio_rpmb.c
+ create mode 100644 include/linux/rpmb.h
+ create mode 100644 include/uapi/linux/rpmb.h
+ create mode 100644 include/uapi/linux/virtio_rpmb.h
+ create mode 100644 tools/rpmb/.gitignore
+ create mode 100644 tools/rpmb/Makefile
+ create mode 100644 tools/rpmb/key
+ create mode 100644 tools/rpmb/rpmb.c
+ create mode 100755 tools/rpmb/test.sh
+
 -- 
-2.25.1
+2.20.1
 
