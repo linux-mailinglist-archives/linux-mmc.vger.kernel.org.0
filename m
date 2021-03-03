@@ -2,377 +2,126 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B76332C2E1
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Mar 2021 01:07:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9321332C2DD
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Mar 2021 01:07:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbhCDAAK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 3 Mar 2021 19:00:10 -0500
-Received: from lucky1.263xmail.com ([211.157.147.132]:40972 "EHLO
-        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1582356AbhCCIC4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 3 Mar 2021 03:02:56 -0500
-Received: from localhost (unknown [192.168.167.235])
-        by lucky1.263xmail.com (Postfix) with ESMTP id C4D4CF19F3;
-        Wed,  3 Mar 2021 15:48:58 +0800 (CST)
-X-MAIL-GRAY: 0
-X-MAIL-DELIVERY: 1
-X-ADDR-CHECKED4: 1
-X-ANTISPAM-LEVEL: 2
-X-ABS-CHECKED: 0
-Received: from localhost.localdomain (unknown [58.22.7.114])
-        by smtp.263.net (postfix) whith ESMTP id P19729T140185384916736S1614757734881043_;
-        Wed, 03 Mar 2021 15:48:58 +0800 (CST)
-X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <9a0803e127dd50988e9ecd91592f8ddd>
-X-RL-SENDER: shawn.lin@rock-chips.com
-X-SENDER: lintao@rock-chips.com
-X-LOGIN-NAME: shawn.lin@rock-chips.com
-X-FST-TO: robh+dt@kernel.org
-X-SENDER-IP: 58.22.7.114
-X-ATTACHMENT-NUM: 0
-X-System-Flag: 0
-From:   Shawn Lin <shawn.lin@rock-chips.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
-        devicetree@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 3/3] mmc: sdhci-of-dwcmshc: add rockchip platform support
-Date:   Wed,  3 Mar 2021 15:48:43 +0800
-Message-Id: <1614757723-225262-3-git-send-email-shawn.lin@rock-chips.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1614757723-225262-1-git-send-email-shawn.lin@rock-chips.com>
-References: <1614757723-225262-1-git-send-email-shawn.lin@rock-chips.com>
+        id S233355AbhCDAAN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 3 Mar 2021 19:00:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1843004AbhCCKXq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 3 Mar 2021 05:23:46 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69C8DC06121E;
+        Wed,  3 Mar 2021 00:31:43 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id v9so17989081lfa.1;
+        Wed, 03 Mar 2021 00:31:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=dA8KKHZiMQ0M1dMyQ+8WM+bKH9WXXF3VYD9qxoBSYVM=;
+        b=Q2BL7+lc+ylMlu+ydH2KPz1PqTODp5OqgVZiHR9jqO4OZm50aqIxSjjmz78JiiooFH
+         i7YC35lXSOUX9yg/ckanbCMcDnIlEnFIWaLOgdtj+UDXrH5hO9M8tW0d4lY0F73Zgtv0
+         EP4JLr8ALm6ZBEyiThejlCrrfIVjY9pIOHj19FhIOTMenDf39h9gGiIWXvyNDLGkM5mo
+         m/2nGyP009dWktprR8h6cgF5Vdo4NdkfBfb3BDPwDqJkwoi523txy9Y1R+1aHRYDxFMU
+         pbUa9veKiX8fC3Qy7J68bxgQZFZPn42rhUh6PUmrP6NqhAMjEwXXM5pQ+2lI5jRGc3fG
+         Miaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=dA8KKHZiMQ0M1dMyQ+8WM+bKH9WXXF3VYD9qxoBSYVM=;
+        b=f6ZSIMX8nAv5AFjL21Ejo5Bv3NJ3Rp8ijmSTbsKlQYt6Ekl94iKE9TQIHIFyeDf+eT
+         4U32HV13v5mTABQ3WNlZOivEzWGS1py9zHDoZZ6zFdY3g3+sfbqcspgY/f8SK3sTER5N
+         09uXG0t5uD2JUyWzIs0kA838rkFolPnrW+qjLsRR4EdvOGDZQ5dt0oiXEWGDRqNCc1vf
+         6YIgnCjMyKJCssoimM7iGriqww+KbKAaP3idu40E9el3QnDkQ7mdUdKnvVq+pDFA2i35
+         6uVUiZofGRHsrGdBUzcyXf31pXUoMJCHfRBq9hRRhjNCuNChYx9NHWqj2Ba6DxCP+7Ix
+         0Bww==
+X-Gm-Message-State: AOAM530n4Tohk0m88Dm8GcAfvRhgv+oALZsuZxkYrxBffq71r+aHyhk5
+        D6rUONzoAxuMVY/19AH/6iXMbEuXb0s=
+X-Google-Smtp-Source: ABdhPJyVYXtuCpQJixD14PrCS9E2RYkwzmpI6ancOTzzhejj1erUKOBHDXNJht8WUd/TI7wGU6pDCw==
+X-Received: by 2002:a05:6512:110b:: with SMTP id l11mr15110220lfg.468.1614760301712;
+        Wed, 03 Mar 2021 00:31:41 -0800 (PST)
+Received: from [192.168.2.145] (109-252-193-52.dynamic.spd-mgts.ru. [109.252.193.52])
+        by smtp.googlemail.com with ESMTPSA id 192sm2767251ljj.95.2021.03.03.00.31.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Mar 2021 00:31:41 -0800 (PST)
+Subject: Re: [PATCH 00/31] Introduce devm_pm_opp_* API
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Yangtao Li <tiny.windzz@gmail.com>, myungjoo.ham@samsung.com,
+        kyungmin.park@samsung.com, cw00.choi@samsung.com, krzk@kernel.org,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, yuq825@gmail.com, airlied@linux.ie,
+        daniel@ffwll.ch, robdclark@gmail.com, sean@poorly.run,
+        robh@kernel.org, tomeu.vizoso@collabora.com, steven.price@arm.com,
+        alyssa.rosenzweig@collabora.com, stanimir.varbanov@linaro.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, mchehab@kernel.org,
+        lukasz.luba@arm.com, adrian.hunter@intel.com,
+        ulf.hansson@linaro.org, vireshk@kernel.org, nm@ti.com,
+        sboyd@kernel.org, broonie@kernel.org, gregkh@linuxfoundation.org,
+        jirislaby@kernel.org, rjw@rjwysocki.net, jcrouse@codeaurora.org,
+        hoegsberg@google.com, eric@anholt.net, tzimmermann@suse.de,
+        marijn.suijten@somainline.org, gustavoars@kernel.org,
+        emil.velikov@collabora.com, jonathan@marek.ca,
+        akhilpo@codeaurora.org, smasetty@codeaurora.org,
+        airlied@redhat.com, masneyb@onstation.org, kalyan_t@codeaurora.org,
+        tanmay@codeaurora.org, ddavenport@chromium.org,
+        jsanka@codeaurora.org, rnayak@codeaurora.org,
+        tongtiangen@huawei.com, miaoqinglang@huawei.com,
+        khsieh@codeaurora.org, abhinavk@codeaurora.org,
+        chandanu@codeaurora.org, groeck@chromium.org, varar@codeaurora.org,
+        mka@chromium.org, harigovi@codeaurora.org,
+        rikard.falkeborn@gmail.com, natechancellor@gmail.com,
+        georgi.djakov@linaro.org, akashast@codeaurora.org,
+        parashar@codeaurora.org, dianders@chromium.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, lima@lists.freedesktop.org,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
+References: <20210101165507.19486-1-tiny.windzz@gmail.com>
+ <6bd6730c-6f4e-df93-65cd-93fa4785a8d8@gmail.com>
+ <c7a246a4-ab25-a193-f74a-98351780135e@gmail.com>
+ <20210303040119.hpeybankxph4fyuj@vireshk-i7>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <9e5edc16-abfa-632b-97e9-1367c24ef8bc@gmail.com>
+Date:   Wed, 3 Mar 2021 11:31:37 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.2
+MIME-Version: 1.0
+In-Reply-To: <20210303040119.hpeybankxph4fyuj@vireshk-i7>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-sdhci based synopsys MMC IP is also used on some rockchip platforms,
-so add a basic support here.
+03.03.2021 07:01, Viresh Kumar пишет:
+> On 02-03-21, 16:40, Dmitry Osipenko wrote:
+>> 20.01.2021 19:01, Dmitry Osipenko пишет:
+>>> 01.01.2021 19:54, Yangtao Li пишет:
+>>>> Hi,
+>>>>
+>>>> This patchset add devm_pm_opp_set_clkname, devm_pm_opp_put_clkname,
+>>>> devm_pm_opp_set_regulators, devm_pm_opp_put_regulators,
+>>>> devm_pm_opp_set_supported_hw, devm_pm_opp_of_add_table and
+>>>> devm_pm_opp_register_notifier.
+>>>
+>>> Hello Yangtao,
+>>>
+>>> Thank you for your effort, looking forward to v2!
+>>
+>> Yangtao, could you please let me know what is the status of this series?
+>> Will you be able to make a v2 anytime soon?
+> 
+> Dmitry, if Yangtao doesn't reply back this week with a proposal, please go ahead
+> and respin the patches yourself. Thanks.
+> 
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
----
-
- drivers/mmc/host/sdhci-of-dwcmshc.c | 220 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 213 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
-index 59d8d96..959084c 100644
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -9,9 +9,11 @@
- 
- #include <linux/clk.h>
- #include <linux/dma-mapping.h>
-+#include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_device.h>
- #include <linux/sizes.h>
- 
- #include "sdhci-pltfm.h"
-@@ -21,11 +23,43 @@
- /* DWCMSHC specific Mode Select value */
- #define DWCMSHC_CTRL_HS400		0x7
- 
-+/* Rockchip specific Registers */
-+#define DWCMSHC_HOST_CTRL3		0x508
-+#define DWCMSHC_EMMC_CONTROL		0x52c
-+#define DWCMSHC_EMMC_ATCTRL		0x540
-+#define DWCMSHC_EMMC_DLL_CTRL		0x800
-+#define DWCMSHC_EMMC_DLL_RXCLK		0x804
-+#define DWCMSHC_EMMC_DLL_TXCLK		0x808
-+#define DWCMSHC_EMMC_DLL_STRBIN		0x80c
-+#define DWCMSHC_EMMC_DLL_STATUS0	0x840
-+#define DWCMSHC_EMMC_DLL_START		BIT(0)
-+#define DWCMSHC_EMMC_DLL_RXCLK_SRCSEL	29
-+#define DWCMSHC_EMMC_DLL_START_POINT	16
-+#define DWCMSHC_EMMC_DLL_INC		8
-+#define DWCMSHC_EMMC_DLL_DLYENA		BIT(27)
-+#define DLL_TXCLK_TAPNUM_DEFAULT	0x8
-+#define DLL_STRBIN_TAPNUM_DEFAULT	0x8
-+#define DLL_TXCLK_TAPNUM_FROM_SW	BIT(24)
-+#define DLL_STRBIN_TAPNUM_FROM_SW	BIT(24)
-+#define DWCMSHC_EMMC_DLL_LOCKED		BIT(8)
-+#define DWCMSHC_EMMC_DLL_TIMEOUT	BIT(9)
-+#define DLL_RXCLK_NO_INVERTER		1
-+#define DLL_RXCLK_INVERTER		0
-+#define DWCMSHC_ENHANCED_STROBE		BIT(8)
-+#define DLL_LOCK_WO_TMOUT(x) \
-+	((((x) & DWCMSHC_EMMC_DLL_LOCKED) == DWCMSHC_EMMC_DLL_LOCKED) && \
-+	(((x) & DWCMSHC_EMMC_DLL_TIMEOUT) == 0))
-+#define ROCKCHIP_MAX_CLKS		3
-+
- #define BOUNDARY_OK(addr, len) \
- 	((addr | (SZ_128M - 1)) == ((addr + len - 1) | (SZ_128M - 1)))
- 
- struct dwcmshc_priv {
- 	struct clk	*bus_clk;
-+
-+	/* Rockchip specified optional clocks */
-+	struct clk_bulk_data rockchip_clks[ROCKCHIP_MAX_CLKS];
-+	int txclk_tapnum;
- };
- 
- /*
-@@ -100,6 +134,97 @@ static void dwcmshc_set_uhs_signaling(struct sdhci_host *host,
- 	sdhci_writew(host, ctrl_2, SDHCI_HOST_CONTROL2);
- }
- 
-+static void dwcmshc_rk_hs400_enhanced_strobe(struct mmc_host *mmc,
-+					     struct mmc_ios *ios)
-+{
-+	u32 vendor;
-+	struct sdhci_host *host = mmc_priv(mmc);
-+
-+	vendor = sdhci_readl(host, DWCMSHC_EMMC_CONTROL);
-+	if (ios->enhanced_strobe)
-+		vendor |= DWCMSHC_ENHANCED_STROBE;
-+	else
-+		vendor &= ~DWCMSHC_ENHANCED_STROBE;
-+
-+	sdhci_writel(host, vendor, DWCMSHC_EMMC_CONTROL);
-+}
-+
-+static void dwcmshc_rk_set_clock(struct sdhci_host *host, unsigned int clock)
-+{
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
-+	u32 txclk_tapnum = DLL_TXCLK_TAPNUM_DEFAULT, extra;
-+	int err;
-+
-+	host->mmc->actual_clock = 0;
-+
-+	/* DO NOT TOUCH THIS SETTING */
-+	extra = DWCMSHC_EMMC_DLL_DLYENA |
-+		DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL;
-+	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_RXCLK);
-+
-+	if (clock == 0)
-+		return;
-+
-+	/* Rockchip platform only support 375KHz for identify mode */
-+	if (clock <= 400000)
-+		clock = 375000;
-+
-+	err = clk_set_rate(pltfm_host->clk, clock);
-+	if (err)
-+		dev_err(mmc_dev(host->mmc), "fail to set clock %d", clock);
-+
-+	sdhci_set_clock(host, clock);
-+
-+	/* Disable cmd conflict check */
-+	extra = sdhci_readl(host, DWCMSHC_HOST_CTRL3);
-+	extra &= ~BIT(0);
-+	sdhci_writel(host, extra, DWCMSHC_HOST_CTRL3);
-+
-+	if (clock <= 400000) {
-+		/* Disable DLL to reset sample clock */
-+		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_CTRL);
-+		return;
-+	}
-+
-+	/* Reset DLL */
-+	sdhci_writel(host, BIT(1), DWCMSHC_EMMC_DLL_CTRL);
-+	udelay(1);
-+	sdhci_writel(host, 0x0, DWCMSHC_EMMC_DLL_CTRL);
-+
-+	/* Init DLL settings */
-+	extra = 0x5 << DWCMSHC_EMMC_DLL_START_POINT |
-+		0x2 << DWCMSHC_EMMC_DLL_INC |
-+		DWCMSHC_EMMC_DLL_START;
-+	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_CTRL);
-+	err = readl_poll_timeout(host->ioaddr + DWCMSHC_EMMC_DLL_STATUS0,
-+				 extra, DLL_LOCK_WO_TMOUT(extra), 1,
-+				 500 * USEC_PER_MSEC);
-+	if (err) {
-+		dev_err(mmc_dev(host->mmc), "DLL lock timeout!\n");
-+		return;
-+	}
-+
-+	extra = 0x1 << 16 | /* tune clock stop en */
-+		0x2 << 17 | /* pre-change delay */
-+		0x3 << 19;  /* post-change delay */
-+	sdhci_writel(host, extra, DWCMSHC_EMMC_ATCTRL);
-+
-+	if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
-+	    host->mmc->ios.timing == MMC_TIMING_MMC_HS400)
-+		txclk_tapnum = priv->txclk_tapnum;
-+
-+	extra = DWCMSHC_EMMC_DLL_DLYENA |
-+		DLL_TXCLK_TAPNUM_FROM_SW |
-+		txclk_tapnum;
-+	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_TXCLK);
-+
-+	extra = DWCMSHC_EMMC_DLL_DLYENA |
-+		DLL_STRBIN_TAPNUM_DEFAULT |
-+		DLL_STRBIN_TAPNUM_FROM_SW;
-+	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
-+}
-+
- static const struct sdhci_ops sdhci_dwcmshc_ops = {
- 	.set_clock		= sdhci_set_clock,
- 	.set_bus_width		= sdhci_set_bus_width,
-@@ -109,21 +234,91 @@ static const struct sdhci_ops sdhci_dwcmshc_ops = {
- 	.adma_write_desc	= dwcmshc_adma_write_desc,
- };
- 
-+static const struct sdhci_ops sdhci_dwcmshc_rk_ops = {
-+	.set_clock		= dwcmshc_rk_set_clock,
-+	.set_bus_width		= sdhci_set_bus_width,
-+	.set_uhs_signaling	= dwcmshc_set_uhs_signaling,
-+	.get_max_clock		= sdhci_pltfm_clk_get_max_clock,
-+	.reset			= sdhci_reset,
-+	.adma_write_desc	= dwcmshc_adma_write_desc,
-+};
-+
- static const struct sdhci_pltfm_data sdhci_dwcmshc_pdata = {
- 	.ops = &sdhci_dwcmshc_ops,
- 	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
- 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
- };
- 
-+static const struct sdhci_pltfm_data sdhci_dwcmshc_rk_pdata = {
-+	.ops = &sdhci_dwcmshc_rk_ops,
-+	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
-+		  SDHCI_QUIRK_BROKEN_TIMEOUT_VAL,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-+		   SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
-+};
-+
-+static int rockchip_pltf_init(struct sdhci_host *host, struct dwcmshc_priv *priv)
-+{
-+	int err;
-+
-+	priv->rockchip_clks[0].id = "axi";
-+	priv->rockchip_clks[1].id = "block";
-+	priv->rockchip_clks[2].id = "timer";
-+	err = devm_clk_bulk_get_optional(mmc_dev(host->mmc), ROCKCHIP_MAX_CLKS,
-+					 priv->rockchip_clks);
-+	if (err) {
-+		dev_err(mmc_dev(host->mmc), "failed to get clocks %d\n", err);
-+		return err;
-+	}
-+
-+	err = clk_bulk_prepare_enable(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
-+	if (err) {
-+		dev_err(mmc_dev(host->mmc), "failed to enable clocks %d\n", err);
-+		return err;
-+	}
-+
-+	if (of_property_read_u32(mmc_dev(host->mmc)->of_node, "rockchip,txclk-tapnum",
-+				 &priv->txclk_tapnum))
-+		priv->txclk_tapnum = DLL_TXCLK_TAPNUM_DEFAULT;
-+
-+	/* Disable cmd conflict check */
-+	sdhci_writel(host, 0x0, DWCMSHC_HOST_CTRL3);
-+	/* Reset previous settings */
-+	sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_TXCLK);
-+	sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_STRBIN);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
-+	{
-+		.compatible = "snps,dwcmshc-sdhci",
-+		.data = &sdhci_dwcmshc_pdata,
-+	},
-+	{
-+		.compatible = "rockchip,dwcmshc-sdhci",
-+		.data = &sdhci_dwcmshc_rk_pdata,
-+	},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, sdhci_dwcmshc_dt_ids);
-+
- static int dwcmshc_probe(struct platform_device *pdev)
- {
- 	struct sdhci_pltfm_host *pltfm_host;
- 	struct sdhci_host *host;
- 	struct dwcmshc_priv *priv;
-+	const struct sdhci_pltfm_data *pltfm_data;
- 	int err;
- 	u32 extra;
- 
--	host = sdhci_pltfm_init(pdev, &sdhci_dwcmshc_pdata,
-+	pltfm_data = of_device_get_match_data(&pdev->dev);
-+	if (!pltfm_data) {
-+		dev_err(&pdev->dev, "Error: No device match data found\n");
-+		return -ENODEV;
-+	}
-+
-+	host = sdhci_pltfm_init(pdev, pltfm_data,
- 				sizeof(struct dwcmshc_priv));
- 	if (IS_ERR(host))
- 		return PTR_ERR(host);
-@@ -161,6 +356,15 @@ static int dwcmshc_probe(struct platform_device *pdev)
- 
- 	host->mmc_host_ops.request = dwcmshc_request;
- 
-+	if (pltfm_data == &sdhci_dwcmshc_rk_pdata) {
-+		host->mmc_host_ops.hs400_enhanced_strobe =
-+			dwcmshc_rk_hs400_enhanced_strobe;
-+
-+		err = rockchip_pltf_init(host, priv);
-+		if (err)
-+			goto err_clk;
-+	}
-+
- 	err = sdhci_add_host(host);
- 	if (err)
- 		goto err_clk;
-@@ -170,6 +374,7 @@ static int dwcmshc_probe(struct platform_device *pdev)
- err_clk:
- 	clk_disable_unprepare(pltfm_host->clk);
- 	clk_disable_unprepare(priv->bus_clk);
-+	clk_bulk_disable_unprepare(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
- free_pltfm:
- 	sdhci_pltfm_free(pdev);
- 	return err;
-@@ -185,6 +390,7 @@ static int dwcmshc_remove(struct platform_device *pdev)
- 
- 	clk_disable_unprepare(pltfm_host->clk);
- 	clk_disable_unprepare(priv->bus_clk);
-+	clk_bulk_disable_unprepare(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
- 
- 	sdhci_pltfm_free(pdev);
- 
-@@ -207,6 +413,8 @@ static int dwcmshc_suspend(struct device *dev)
- 	if (!IS_ERR(priv->bus_clk))
- 		clk_disable_unprepare(priv->bus_clk);
- 
-+	clk_bulk_disable_unprepare(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
-+
- 	return ret;
- }
- 
-@@ -227,18 +435,16 @@ static int dwcmshc_resume(struct device *dev)
- 			return ret;
- 	}
- 
-+	ret = clk_bulk_prepare_enable(ROCKCHIP_MAX_CLKS, priv->rockchip_clks);
-+	if (ret)
-+		return ret;
-+
- 	return sdhci_resume_host(host);
- }
- #endif
- 
- static SIMPLE_DEV_PM_OPS(dwcmshc_pmops, dwcmshc_suspend, dwcmshc_resume);
- 
--static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
--	{ .compatible = "snps,dwcmshc-sdhci" },
--	{}
--};
--MODULE_DEVICE_TABLE(of, sdhci_dwcmshc_dt_ids);
--
- static struct platform_driver sdhci_dwcmshc_driver = {
- 	.driver	= {
- 		.name	= "sdhci-dwcmshc",
--- 
-2.7.4
-
-
-
+Alright!
