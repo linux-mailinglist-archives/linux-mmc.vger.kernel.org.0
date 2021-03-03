@@ -2,152 +2,126 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 511E032C2C1
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Mar 2021 01:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D555132C2BE
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Mar 2021 01:05:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237412AbhCDAAS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 3 Mar 2021 19:00:18 -0500
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:64266 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232268AbhCCL2i (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 3 Mar 2021 06:28:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1614770913; x=1646306913;
-  h=from:to:cc:subject:date:message-id;
-  bh=YhmKslpzi+cHH3vU8pK14563hq3M1o4bf8szMh+VDvE=;
-  b=cJ0SlEuGThFCyfhmB2G6RzPWRIjYX3DrfVgsbM0snkVatNHu9ytss6ss
-   M6rrgN4Uv4hnTlF9vvFkvTqeEkiLHOEppU1BdqxdUvu5y1UVGDbGE/grt
-   XCkqRtkc3boKkdHx6hQQuB7KwyaqRF4t0cyKqwRc0Aq5VLlKeXDzcasSY
-   A=;
-Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
-  by alexa-out.qualcomm.com with ESMTP; 03 Mar 2021 00:32:40 -0800
-X-QCInternal: smtphost
-Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
-  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/AES256-SHA; 03 Mar 2021 00:32:38 -0800
-X-QCInternal: smtphost
-Received: from hydcbspbld03.qualcomm.com ([10.242.221.48])
-  by ironmsg01-blr.qualcomm.com with ESMTP; 03 Mar 2021 14:02:15 +0530
-Received: by hydcbspbld03.qualcomm.com (Postfix, from userid 2304101)
-        id 4ED122147B; Wed,  3 Mar 2021 14:02:14 +0530 (IST)
-From:   Pradeep P V K <pragalla@qti.qualcomm.com>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
-Cc:     asutoshd@codeaurora.org, stummala@codeaurora.org,
-        rampraka@codeaurora.org, vbadigan@codeaurora.org,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pradeep P V K <pragalla@codeaurora.org>
-Subject: [PATCH V2] mmc: sdhci: Check for reset prior to DMA address unmap
-Date:   Wed,  3 Mar 2021 14:02:11 +0530
-Message-Id: <1614760331-43499-1-git-send-email-pragalla@qti.qualcomm.com>
-X-Mailer: git-send-email 2.7.4
+        id S237483AbhCDAAU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 3 Mar 2021 19:00:20 -0500
+Received: from mailout4.samsung.com ([203.254.224.34]:37017 "EHLO
+        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244351AbhCCLtB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 3 Mar 2021 06:49:01 -0500
+Received: from epcas2p4.samsung.com (unknown [182.195.41.56])
+        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20210303092224epoutp045e2d18b6224b7a3d1fff278c574c6b26~oyrTOEJsF0273902739epoutp04V
+        for <linux-mmc@vger.kernel.org>; Wed,  3 Mar 2021 09:22:24 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20210303092224epoutp045e2d18b6224b7a3d1fff278c574c6b26~oyrTOEJsF0273902739epoutp04V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1614763344;
+        bh=DaETncI2WkGpIZPO84QI4EYoYPo0z0TkLlv7iwzyrzA=;
+        h=From:To:Subject:Date:References:From;
+        b=aOGFkF+zZbZdYO1dU1m88x47jmemN7d4sQJuSY7BH0FcRKIlZnKEyrtUq66AuHf4J
+         Pp17plG5+1REDcN58+s1u45cpREpWb6kk2di6KxsOelMUkxw5guqjXqLSrxJaZ91nj
+         fq9Pt+J2RVJZzqqKFh/JlNUV8XG2LcO5UnbtPIc8=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+        epcas2p4.samsung.com (KnoxPortal) with ESMTP id
+        20210303092224epcas2p42cb867dec594a1f454ac4215463f6f70~oyrS8SNxp1054810548epcas2p4h;
+        Wed,  3 Mar 2021 09:22:24 +0000 (GMT)
+Received: from epsmges2p4.samsung.com (unknown [182.195.40.185]) by
+        epsnrtp1.localdomain (Postfix) with ESMTP id 4Dr7nB6Gfhz4x9Q3; Wed,  3 Mar
+        2021 09:22:22 +0000 (GMT)
+Received: from epcas2p1.samsung.com ( [182.195.41.53]) by
+        epsmges2p4.samsung.com (Symantec Messaging Gateway) with SMTP id
+        05.E4.52511.E455F306; Wed,  3 Mar 2021 18:22:22 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas2p1.samsung.com (KnoxPortal) with ESMTPA id
+        20210303092222epcas2p11fbb2697a53b54dbc138d741893c9f07~oyrRRzFNj0245702457epcas2p1P;
+        Wed,  3 Mar 2021 09:22:22 +0000 (GMT)
+Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20210303092222epsmtrp1cb8a362f34f7ba5f9e230c99366f8dbb~oyrROasYc1961519615epsmtrp1x;
+        Wed,  3 Mar 2021 09:22:22 +0000 (GMT)
+X-AuditID: b6c32a48-50fff7000000cd1f-29-603f554e9ebf
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        13.AE.08745.E455F306; Wed,  3 Mar 2021 18:22:22 +0900 (KST)
+Received: from KORCO011456 (unknown [12.36.185.54]) by epsmtip2.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20210303092221epsmtip2145ee0fc3f51cc9502f327b243054839~oyrRCSI6e2440724407epsmtip2D;
+        Wed,  3 Mar 2021 09:22:21 +0000 (GMT)
+From:   "Kiwoong Kim" <kwmad.kim@samsung.com>
+To:     <linux-mmc@vger.kernel.org>, <ulf.hansson@linaro.org>
+Subject: About SD initialization at resume time
+Date:   Wed, 3 Mar 2021 18:22:21 +0900
+Message-ID: <000001d7100e$b7380f50$25a82df0$@samsung.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AdcQDiu8DmibM2nsTySDHbARn+3GAA==
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrDKsWRmVeSWpSXmKPExsWy7bCmqa5fqH2CQfM6dYsj//sZLY6vDXdg
+        8rhzbQ+bx+dNcgFMUTk2GamJKalFCql5yfkpmXnptkrewfHO8aZmBoa6hpYW5koKeYm5qbZK
+        Lj4Bum6ZOUDTlRTKEnNKgUIBicXFSvp2NkX5pSWpChn5xSW2SqkFKTkFhoYFesWJucWleel6
+        yfm5VoYGBkamQJUJORmtu/cxFvxjrbj0aRJrA+Mdli5GTg4JAROJjxfPM3YxcnEICexglPj+
+        oY8RJCEk8IlR4tZREYjEZ0aJV02T2WE6rl/bC9Wxi1Gio2sDE4TzglHi4afHbCBVbALaEtMe
+        7mYFsUUELCUuXTkM1MHBISygL7GsxxAkzCKgIvHozF2wM3iBSs51fGaDsAUlTs58AhZnBhqz
+        bOFrZojFChI/ny5jBRkjIqAnsbDLE6JERGJ2ZxszyAkSAqvYJR6s2swKUe8iMW36LUYIW1ji
+        1fEtUA9ISbzsb4Oy6yX2TW1ghWjuYZR4uu8fVIOxxKxn7WA3MwtoSqzfpQ9iSggoSxy5BXUa
+        n0TH4b/sEGFeiY42IYhGZYlfkyZDDZGUmHnzDtQmD4nFr86DlQsJxEo8mSg8gVFhFpJ/ZyH5
+        dxaSx2YhnLCAkWUVo1hqQXFuemqxUYEJckxvYgQnOy2PHYyz337QO8TIxMF4iFGCg1lJhFf8
+        pW2CEG9KYmVValF+fFFpTmrxIUZTYAxMZJYSTc4Hptu8knhDUyMzMwNLUwtTMyMLJXHeIoMH
+        8UIC6YklqdmpqQWpRTB9TBycUg1M24J/G5bd/ZjDfViDoW6isnxLhNrBS0udAgQMP17lfHRl
+        8zbn/5v6bh+8ZLdo76RCvr1H9lZKntz/z/tmwfyNLw9PCKj56hscVK5zoamq9pHJ+vN7p3ny
+        HJu5Zf3fdYFvXE1d+Ku4L+3IP5uV3jerwvdn/pbHcxKSfV3DpZwvPj+Xe3zR9d2fIs89fSu1
+        Umrq+f67N/vFDnQe/7FK8uSu99Hi/GIq7vbnve3U48+Unf0UV/jL93oYw/Xes8Vq7u0ruoJX
+        FNy4NaF9ovWrtFyFmhg17Shb3Rq2NMXQzPhCo8UT++aosVnp/5qjkNeQath/WWN9ya2JL8KY
+        LhyTTmD7pHktR3xzldK9uw/4f2b5KbEUZyQaajEXFScCACj6iFn/AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrELMWRmVeSWpSXmKPExsWy7bCSvK5fqH2CwbTTbBZH/vczWhxfG+7A
+        5HHn2h42j8+b5AKYorhsUlJzMstSi/TtErgydr3Yw1jwj7Vi9/vDbA2Md1i6GDk5JARMJK5f
+        28sIYgsJ7GCUWDk/BCIuKXFi53NGCFtY4n7LEVaImmeMEkdvOYLYbALaEtMe7gaLiwhYS2zY
+        PY+pi5GDQ1hAX2JZjyFImEVAReLRmbtgq3gFLCXOdXxmg7AFJU7OfAIWZwYa8/TmUzh72cLX
+        zBBrFSR+Pl3GCjJSREBPYmGXJ0SJiMTszjbmCYwCs5BMmoVk0iwkk2YhaVnAyLKKUTK1oDg3
+        PbfYsMAoL7Vcrzgxt7g0L10vOT93EyM4WLW0djDuWfVB7xAjEwfjIUYJDmYlEV7xl7YJQrwp
+        iZVVqUX58UWlOanFhxilOViUxHkvdJ2MFxJITyxJzU5NLUgtgskycXBKNTCpvfry+0zpzo/l
+        wlEz31mvm74sod29Sbz1kP4b1SgDp01sZ7eJrNVS27q3Ncl38tdJpQqpL52tLaxS2kt/ZMw3
+        bHFtlPrmVMesXvFVZJuwor2VKKfHDP5OwdklX69f7j+d9Mr5fZkH+8wl9m2+zL+MG87u25z7
+        bc+DZJXu61qPbT7vONLLqKo0YbU/S8HiH3fYdJN/KizcF57j4s0QzuWbyyDQ73J+X3LUuQtB
+        ifvndazeELbzXtaHKW80/a7qiDzLuLqM/WxOBHdi+8pv0dN3XL3/yHtdisurQ4tlEh8fjmDd
+        YRD2yc2wudSg7uz7A4pGsxy/nalfGXzRYbb9xXmWE/yl1s9ffOBN8RbH5nglluKMREMt5qLi
+        RACq/CnpxQIAAA==
+X-CMS-MailID: 20210303092222epcas2p11fbb2697a53b54dbc138d741893c9f07
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20210303092222epcas2p11fbb2697a53b54dbc138d741893c9f07
+References: <CGME20210303092222epcas2p11fbb2697a53b54dbc138d741893c9f07@epcas2p1.samsung.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Pradeep P V K <pragalla@codeaurora.org>
+Dear all
 
-For data read commands, SDHC may initiate data transfers even before it
-completely process the command response. In case command itself fails,
-driver un-maps the memory associated with data transfer but this memory
-can still be accessed by SDHC for the already initiated data transfer.
-This scenario can lead to un-mapped memory access error.
+I hope opinions from you guys.
 
-To avoid this scenario, reset SDHC (when command fails) prior to
-un-mapping memory. Resetting SDHC ensures that all in-flight data
-transfers are either aborted or completed. So we don't run into this
-scenario.
+For many users of mobile device, there is a possibility that issuing no IO =
+request to
+a SD card is rare during much of the device's lifetime.
+Obviously the symptom would happen frequently among system suspend times, t=
+oo.
+In this situation, doing SD initialization at every system resume leads to =
+long latency
+and can make the users feel it, even when there is no IO request during the=
+ period,
+when a hardware architecture requires re-initialization at resume time.
+This is what had actually happened and was fixed with some code in commerci=
+al products.
 
-Swap the reset, un-map steps sequence in sdhci_request_done().
+Is there any way to avoid that symptom w/o any code change?
+With no way, I hope to make soemthing to improve it.
 
-Changes since V1:
-- Added an empty line and fixed the comment style.
-- Retained the Acked-by signoff.
+Thanks.
+Kiwoong Kim
 
-Suggested-by: Veerabhadrarao Badiganti <vbadigan@codeaurora.org>
-Signed-off-by: Pradeep P V K <pragalla@codeaurora.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
----
- drivers/mmc/host/sdhci.c | 60 +++++++++++++++++++++++++-----------------------
- 1 file changed, 31 insertions(+), 29 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index 646823d..130fd2d 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2998,6 +2998,37 @@ static bool sdhci_request_done(struct sdhci_host *host)
- 	}
- 
- 	/*
-+	 * The controller needs a reset of internal state machines
-+	 * upon error conditions.
-+	 */
-+	if (sdhci_needs_reset(host, mrq)) {
-+		/*
-+		 * Do not finish until command and data lines are available for
-+		 * reset. Note there can only be one other mrq, so it cannot
-+		 * also be in mrqs_done, otherwise host->cmd and host->data_cmd
-+		 * would both be null.
-+		 */
-+		if (host->cmd || host->data_cmd) {
-+			spin_unlock_irqrestore(&host->lock, flags);
-+			return true;
-+		}
-+
-+		/* Some controllers need this kick or reset won't work here */
-+		if (host->quirks & SDHCI_QUIRK_CLOCK_BEFORE_RESET)
-+			/* This is to force an update */
-+			host->ops->set_clock(host, host->clock);
-+
-+		/*
-+		 * Spec says we should do both at the same time, but Ricoh
-+		 * controllers do not like that.
-+		 */
-+		sdhci_do_reset(host, SDHCI_RESET_CMD);
-+		sdhci_do_reset(host, SDHCI_RESET_DATA);
-+
-+		host->pending_reset = false;
-+	}
-+
-+	/*
- 	 * Always unmap the data buffers if they were mapped by
- 	 * sdhci_prepare_data() whenever we finish with a request.
- 	 * This avoids leaking DMA mappings on error.
-@@ -3060,35 +3091,6 @@ static bool sdhci_request_done(struct sdhci_host *host)
- 		}
- 	}
- 
--	/*
--	 * The controller needs a reset of internal state machines
--	 * upon error conditions.
--	 */
--	if (sdhci_needs_reset(host, mrq)) {
--		/*
--		 * Do not finish until command and data lines are available for
--		 * reset. Note there can only be one other mrq, so it cannot
--		 * also be in mrqs_done, otherwise host->cmd and host->data_cmd
--		 * would both be null.
--		 */
--		if (host->cmd || host->data_cmd) {
--			spin_unlock_irqrestore(&host->lock, flags);
--			return true;
--		}
--
--		/* Some controllers need this kick or reset won't work here */
--		if (host->quirks & SDHCI_QUIRK_CLOCK_BEFORE_RESET)
--			/* This is to force an update */
--			host->ops->set_clock(host, host->clock);
--
--		/* Spec says we should do both at the same time, but Ricoh
--		   controllers do not like that. */
--		sdhci_do_reset(host, SDHCI_RESET_CMD);
--		sdhci_do_reset(host, SDHCI_RESET_DATA);
--
--		host->pending_reset = false;
--	}
--
- 	host->mrqs_done[i] = NULL;
- 
- 	spin_unlock_irqrestore(&host->lock, flags);
--- 
-2.7.4
 
