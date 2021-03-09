@@ -2,73 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37F33332184
+	by mail.lfdr.de (Postfix) with ESMTP id 77890332185
 	for <lists+linux-mmc@lfdr.de>; Tue,  9 Mar 2021 10:03:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229854AbhCIJDA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 9 Mar 2021 04:03:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44112 "EHLO
+        id S229924AbhCIJDB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 9 Mar 2021 04:03:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229837AbhCIJC2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 9 Mar 2021 04:02:28 -0500
-Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED6DDC06175F
-        for <linux-mmc@vger.kernel.org>; Tue,  9 Mar 2021 01:02:27 -0800 (PST)
-Received: by mail-ua1-x92e.google.com with SMTP id s7so4281966uag.7
-        for <linux-mmc@vger.kernel.org>; Tue, 09 Mar 2021 01:02:27 -0800 (PST)
+        with ESMTP id S229520AbhCIJCd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 9 Mar 2021 04:02:33 -0500
+Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28E67C06174A
+        for <linux-mmc@vger.kernel.org>; Tue,  9 Mar 2021 01:02:32 -0800 (PST)
+Received: by mail-ua1-x932.google.com with SMTP id 101so4303565uag.1
+        for <linux-mmc@vger.kernel.org>; Tue, 09 Mar 2021 01:02:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=sssySl0JVi+jBXZFxuWDq2kypNNSm148y4r47Euw4YM=;
-        b=AsGzH1MMqc8CDZt9a0Do3IMClW3xqLU2GevRxpPuYfzRD8JJr+9FaKOBoKrcsXZBSU
-         RKIC7PzMiuHKzEKhCt/9WRlgLEtkYs/34OxLOBHj8+n19oJfZX8Nnn2gvSdW7s6SlkAK
-         XMwV1lGClGFC80zICWXoblreQ1aYelNiih6Gx/0FlJuhplVsbBP2Po9Uhu0mJelH3NjA
-         EHgdq9SRJuCcY3nyPYtt5FODNxiYPa19tR9l1QeuCSesjAOkcydr05vQl3aAl7fEZIbM
-         iLyLrbQ0DMtDmcByRBlEtxlEt+1yEF2lDxDm0AgakOIENPpE+IjovZnqBkYxXgayZ4Wo
-         O7JA==
+        bh=r0xnm0+GPRG6xm7UmnAIp8FML6si7jNaq0GBV1Vgnz4=;
+        b=KfhH7Ad/IWsNt5oMg8fzCkmW8ltKpC/YCMD9deToYJRMrwTuKt/rCOauW6AVHdJcxH
+         ZmVmq0D6Yzbvg9iegOaRf1iwW+a2Vz8A1666noloVpp1CE6aq1eR7ugOtZwPTl8R3AEj
+         YjTg/wmeM9g/MMUSfVHEuE2Wr/0Ak44JPxUGDwMNQ+MzfQamqeDYtizrvLfIv/jADnIi
+         UaJrl3asxSpy1bewCxtrcdv9Z5ZBd/waT9Ug3mjptBjZ90Xo8W0/mZV8/Mj/zxaDHEqG
+         /Wt9+xLTzkDVu5ikt04peK8DLZfVlJce7ctRaW5I5IkkD7BnZw+eKiydPK2tOV20Tasd
+         v+6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sssySl0JVi+jBXZFxuWDq2kypNNSm148y4r47Euw4YM=;
-        b=BvMF/krRofsDq5ugtTO5Z9cJlcNtRSqC5u8mLYKWJ5hXi0DDFf+nGrwE0H3BtAvGkR
-         m3nNkikOMG5BcdVz8V1CUTi8HGQfhVTyMksDEwXVc0fcKUtZTZZPI+1CSiTMUK5F/GDt
-         zWYKdy79K1hRbT7ClFnBCn43zuImQMGiF9ZHsyFIQHEQrfz6nW2GxyUqzGocEFcf3LmR
-         Uj2EhavObvzsv7SQhilqAptUgIP4Qgc0LnzHlfnYR42Sh4na+deX0xJYl5UhBdjrhlFY
-         ftuGZkTu2QaR3nEk6mIOhe5xWwuN7N5dYnCjvby22D/V9vsrXFhAueUoW/WfUJK1giGl
-         l/Mg==
-X-Gm-Message-State: AOAM531nc862IaN9taA/QKhwOqJ4f1K+OLEK3sGYtCmYa7hVGeRZKNbJ
-        hdgw2jijnpTSezRSH2oiIyiAWNh5rxvIqbx50Ynrtg==
-X-Google-Smtp-Source: ABdhPJwKHqIif2rFtWqqp7PjT4VBd442T+0y6eF98qpBCyS8psQLLgDYTXZcYTAAXYKCfsUcSd2rEGYzGxTczr/wDVI=
-X-Received: by 2002:ab0:7a68:: with SMTP id c8mr4714930uat.104.1615280546955;
- Tue, 09 Mar 2021 01:02:26 -0800 (PST)
+        bh=r0xnm0+GPRG6xm7UmnAIp8FML6si7jNaq0GBV1Vgnz4=;
+        b=ZO1GMvTKmN1gBh5xzJKcPGZpU/82Ru4ZlQE8gqXdJe+MxsbMZC4hzt2ylrIY5QLDOe
+         68InZeNnEEcKFVWx7kc5taYwgZpS9vQSGGLo+3ssu43wY/mNei5XIv+uAU2VgRw5F2fR
+         mIQipMWA4Dd5QcSEIFHLiGfs4ywZJrHt/2pVPP1qh+6EWWged+ltTzXCGI3UmzuqRdHi
+         T7e24JXaFaeQfui36S95BaJ6OcpQNLM25/4RDfH426C7on/7h/GIv2OapJn1SBEivT3s
+         wWY0F5SzG60/oLrDoRoq/V27ORxDLltPMbg6JLuw7/y2ouLzMIU4w6KMLx6ZNBPXxofA
+         oqzg==
+X-Gm-Message-State: AOAM532OiN4HdKbuHdUJE/vvO3KPxBbIuSNXMPp7HqT6+/QVAkHpS/y0
+        R/pyPXjxCTkUhUNuOJ5/swKSYVaM36X3GCJoXupaRQ==
+X-Google-Smtp-Source: ABdhPJz46+awTIhV0y9pKZODPaQva2bWW6X1xuqUKvN1EGJ2TgDxjB7ETkLR97+NB+2nY3ccumucJR7PAxORHXNjOx8=
+X-Received: by 2002:a9f:3546:: with SMTP id o64mr16115394uao.129.1615280551400;
+ Tue, 09 Mar 2021 01:02:31 -0800 (PST)
 MIME-Version: 1.0
-References: <20210305021445.3435-1-baijiaju1990@gmail.com>
-In-Reply-To: <20210305021445.3435-1-baijiaju1990@gmail.com>
+References: <20210305090827.19124-1-p.zabel@pengutronix.de>
+In-Reply-To: <20210305090827.19124-1-p.zabel@pengutronix.de>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 9 Mar 2021 10:01:50 +0100
-Message-ID: <CAPDyKFpqrjfinrM3a=-p+OxzCzKsWNDS4GpaF7E0Pbb5uiTL=w@mail.gmail.com>
-Subject: Re: [PATCH] memstick: core: fix error return code of mspro_block_resume()
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>
-Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
-        Alex Dubov <oakad@yahoo.com>, trix@redhat.com,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Tue, 9 Mar 2021 10:01:54 +0100
+Message-ID: <CAPDyKFp7d5cfgMdyVXZt2HkZkttBpB89b9cZqU=hcwakjPhCKA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-st: simplify optional reset handling
+To:     Philipp Zabel <p.zabel@pengutronix.de>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Patrice Chotard <patrice.chotard@st.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 5 Mar 2021 at 03:14, Jia-Ju Bai <baijiaju1990@gmail.com> wrote:
+On Fri, 5 Mar 2021 at 10:08, Philipp Zabel <p.zabel@pengutronix.de> wrote:
 >
-> When mspro_block_init_card() fails, no error return code of
-> mspro_block_resume() is assigned.
-> To fix this bug, rc is assigned with the return value of
-> mspro_block_init_card(), and then rc is checked.
+> As of commit bb475230b8e5 ("reset: make optional functions really
+> optional"), the reset framework API calls use NULL pointers to describe
+> optional, non-present reset controls.
 >
-> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+> This allows to return errors from devm_reset_control_get_optional and to
+> call reset_control_(de)assert unconditionally.
+>
+> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 
 Applied for next, thanks!
 
@@ -77,23 +76,68 @@ Uffe
 
 
 > ---
->  drivers/memstick/core/mspro_block.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/mmc/host/sdhci-st.c | 19 +++++++------------
+>  1 file changed, 7 insertions(+), 12 deletions(-)
 >
-> diff --git a/drivers/memstick/core/mspro_block.c b/drivers/memstick/core/mspro_block.c
-> index afb892e7ffc6..cf7fe0d58ee7 100644
-> --- a/drivers/memstick/core/mspro_block.c
-> +++ b/drivers/memstick/core/mspro_block.c
-> @@ -1382,7 +1382,8 @@ static int mspro_block_resume(struct memstick_dev *card)
+> diff --git a/drivers/mmc/host/sdhci-st.c b/drivers/mmc/host/sdhci-st.c
+> index 962872aec164..78941ac3a1d6 100644
+> --- a/drivers/mmc/host/sdhci-st.c
+> +++ b/drivers/mmc/host/sdhci-st.c
+> @@ -362,11 +362,10 @@ static int sdhci_st_probe(struct platform_device *pdev)
+>         if (IS_ERR(icnclk))
+>                 icnclk = NULL;
 >
->         new_msb->card = card;
->         memstick_set_drvdata(card, new_msb);
-> -       if (mspro_block_init_card(card))
-> +       rc = mspro_block_init_card(card);
-> +       if (rc)
->                 goto out_free;
+> -       rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+> +       rstc = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
+>         if (IS_ERR(rstc))
+> -               rstc = NULL;
+> -       else
+> -               reset_control_deassert(rstc);
+> +               return PTR_ERR(rstc);
+> +       reset_control_deassert(rstc);
 >
->         for (cnt = 0; new_msb->attr_group.attrs[cnt]
+>         host = sdhci_pltfm_init(pdev, &sdhci_st_pdata, sizeof(*pdata));
+>         if (IS_ERR(host)) {
+> @@ -432,8 +431,7 @@ static int sdhci_st_probe(struct platform_device *pdev)
+>  err_of:
+>         sdhci_pltfm_free(pdev);
+>  err_pltfm_init:
+> -       if (rstc)
+> -               reset_control_assert(rstc);
+> +       reset_control_assert(rstc);
+>
+>         return ret;
+>  }
+> @@ -450,8 +448,7 @@ static int sdhci_st_remove(struct platform_device *pdev)
+>
+>         clk_disable_unprepare(pdata->icnclk);
+>
+> -       if (rstc)
+> -               reset_control_assert(rstc);
+> +       reset_control_assert(rstc);
+>
+>         return ret;
+>  }
+> @@ -471,8 +468,7 @@ static int sdhci_st_suspend(struct device *dev)
+>         if (ret)
+>                 goto out;
+>
+> -       if (pdata->rstc)
+> -               reset_control_assert(pdata->rstc);
+> +       reset_control_assert(pdata->rstc);
+>
+>         clk_disable_unprepare(pdata->icnclk);
+>         clk_disable_unprepare(pltfm_host->clk);
+> @@ -498,8 +494,7 @@ static int sdhci_st_resume(struct device *dev)
+>                 return ret;
+>         }
+>
+> -       if (pdata->rstc)
+> -               reset_control_deassert(pdata->rstc);
+> +       reset_control_deassert(pdata->rstc);
+>
+>         st_mmcss_cconfig(np, host);
+>
 > --
-> 2.17.1
+> 2.29.2
 >
