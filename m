@@ -2,67 +2,161 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EC97331CB0
-	for <lists+linux-mmc@lfdr.de>; Tue,  9 Mar 2021 03:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17896331CA2
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Mar 2021 02:58:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230214AbhCICAR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Mar 2021 21:00:17 -0500
-Received: from Mailgw01.mediatek.com ([1.203.163.78]:20675 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230127AbhCIB7t (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Mar 2021 20:59:49 -0500
-X-UUID: 98a9888fc1eb44a68a4d1795eebdce54-20210309
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=voKB3JTtp23roJcLmppifE/2eVEe8ZJYpXa+eKJCcHU=;
-        b=VG/wgq5rGW9ON/VQkr5ELeGw7quJEyKXAkFTGOMZdE4Zpkjftk0qIZTgdUEs3mzk8MzYxvFRPckrGsaxGfXX4Sb2ZCQvXTBWZls9NGOiYVBHXKmkR2FBeHnO1fetu9z3F1tIJI9UvXU9do6KcVZQmHurdoHEZwm7SV6w5jKrDTE=;
-X-UUID: 98a9888fc1eb44a68a4d1795eebdce54-20210309
-Received: from mtkcas36.mediatek.inc [(172.27.4.253)] by mailgw01.mediatek.com
-        (envelope-from <peng.zhou@mediatek.com>)
-        (mailgw01.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1874155827; Tue, 09 Mar 2021 09:59:44 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- MTKMBS31N2.mediatek.inc (172.27.4.87) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 9 Mar 2021 09:59:39 +0800
-Received: from localhost.localdomain (10.15.20.246) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 9 Mar 2021 09:59:39 +0800
-From:   Peng Zhou <peng.zhou@mediatek.com>
-To:     Eric Biggers <ebiggers@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        <linux-mmc@vger.kernel.org>
-CC:     <devicetree@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Satya Tangirala <satyat@google.com>,
-        Wulin Li <wulin.li@mediatek.com>,
-        Peng Zhou <peng.zhou@mediatek.com>,
-        Peng Zhou <Peng.Zhou@mediatek.com>
-Subject: [PATCH v2 0/4] MediaTek eMMC inline encryption support 
-Date:   Tue, 9 Mar 2021 09:53:32 +0800
-Message-ID: <20210309015331.10457-1-peng.zhou@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: D2C565463BD08AAB9A21D43E5F22A286DBA322E6FB1527A90110E54108D30B7E2000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+        id S229688AbhCIB5V (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Mar 2021 20:57:21 -0500
+Received: from lucky1.263xmail.com ([211.157.147.132]:35586 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229611AbhCIB4x (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Mar 2021 20:56:53 -0500
+Received: from localhost (unknown [192.168.167.223])
+        by lucky1.263xmail.com (Postfix) with ESMTP id B297FF2DFF;
+        Tue,  9 Mar 2021 09:56:38 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-ANTISPAM-LEVEL: 2
+X-ABS-CHECKED: 0
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P23505T140626794366720S1615254997318814_;
+        Tue, 09 Mar 2021 09:56:38 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <99b35143d881a883b8cbf2167576181f>
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-SENDER: lintao@rock-chips.com
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-FST-TO: robh+dt@kernel.org
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        devicetree@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH v3 1/3] dt-bindings: mmc: sdhci-of-dwcmhsc: Convert to yaml file
+Date:   Tue,  9 Mar 2021 09:56:28 +0800
+Message-Id: <1615254990-192784-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-RnJvbTogUGVuZyBaaG91IDxQZW5nLlpob3VAbWVkaWF0ZWsuY29tPg0KDQpIZWxsbywNCg0KTWVk
-aWF0ZWsgZU1NQyBoYXJkd2FyZSBJUCBoYXMgSW5saW5lIENyeXB0byBFbmdpbmUgKElDRSksDQp3
-ZSBzdXBwb3J0IGlubGluZSBlbmNyeXB0aW9uIG5vdy4NCg0KRm9yIElubGluZSBDcnlwdG8gRW5n
-aW5lIChJQ0UpLCBzZWU6DQotIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LWFybS1tc20v
-MjAyMTAxMjYwMDE0NTYuMzgyOTg5LTItZWJpZ2dlcnNAa2VybmVsLm9yZy9ULw0KDQpDaGFuZ2Vk
-IGluIHYyOg0KLSBmaXggZW1haWwgZm9ybWF0DQotIGNoYW5nZSBzb21lIGRlc2NyaXB0aW9uDQoN
-ClBlbmcgWmhvdSAoNCk6DQogIG1tYzogTWVkaWF0ZWs6IGFkZCBJbmxpbmUgQ3J5cHRvIEVuZ2lu
-ZSBzdXBwb3J0DQogIG1tYzogTWVkaWF0ZWs6IGVuYWJsZSBjcnlwdG8gaGFyZHdhcmUgZW5naW5l
-DQogIGFybTY0OiBkdHM6IE1lZGlhdGVrOiBNVDY3Nzk6IGFkZCBtbWMgbm9kZSB3aXRoIElDRSBz
-ZXR0aW5nDQogIGR0LWJpbmdkaW5nczogbW1jOiBNZWRpYXRlazogYWRkIElDRSBjbG9jaw0KDQog
-Li4uL2RldmljZXRyZWUvYmluZGluZ3MvbW1jL210ay1zZC55YW1sICAgICAgIHwgIDYgKystDQog
-YXJjaC9hcm02NC9ib290L2R0cy9tZWRpYXRlay9tdDY3NzkuZHRzaSAgICAgIHwgMTQgKysrKysr
-Kw0KIGRyaXZlcnMvbW1jL2hvc3QvbXRrLXNkLmMgICAgICAgICAgICAgICAgICAgICB8IDQyICsr
-KysrKysrKysrKysrKysrKy0NCiAzIGZpbGVzIGNoYW5nZWQsIDU5IGluc2VydGlvbnMoKyksIDMg
-ZGVsZXRpb25zKC0pDQoNCi0tIA0KMi4xOC4wDQo=
+This patch converts sdhci-of-dwcmshc.txt to sdhci-of-dwcmshc.yaml
+
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+
+---
+
+Changes in v3:
+- fix filename and other improvments suggested by Rob
+
+ .../devicetree/bindings/mmc/sdhci-of-dwcmshc.txt   | 20 -------
+ .../bindings/mmc/snps,dwcmshc-sdhci.yaml           | 63 ++++++++++++++++++++++
+ 2 files changed, 63 insertions(+), 20 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/mmc/sdhci-of-dwcmshc.txt
+ create mode 100644 Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml
+
+diff --git a/Documentation/devicetree/bindings/mmc/sdhci-of-dwcmshc.txt b/Documentation/devicetree/bindings/mmc/sdhci-of-dwcmshc.txt
+deleted file mode 100644
+index ee4253b..0000000
+--- a/Documentation/devicetree/bindings/mmc/sdhci-of-dwcmshc.txt
++++ /dev/null
+@@ -1,20 +0,0 @@
+-* Synopsys DesignWare Cores Mobile Storage Host Controller
+-
+-Required properties:
+-- compatible: should be one of the following:
+-    "snps,dwcmshc-sdhci"
+-- reg: offset and length of the register set for the device.
+-- interrupts: a single interrupt specifier.
+-- clocks: Array of clocks required for SDHCI; requires at least one for
+-    core clock.
+-- clock-names: Array of names corresponding to clocks property; shall be
+-    "core" for core clock and "bus" for optional bus clock.
+-
+-Example:
+-	sdhci2: sdhci@aa0000 {
+-		compatible = "snps,dwcmshc-sdhci";
+-		reg = <0xaa0000 0x1000>;
+-		interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
+-		clocks = <&emmcclk>;
+-		bus-width = <8>;
+-	}
+diff --git a/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml b/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml
+new file mode 100644
+index 0000000..f99fb9f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml
+@@ -0,0 +1,63 @@
++# SPDX-License-Identifier: GPL-2.0-only
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mmc/snps,dwcmshc-sdhci.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Synopsys Designware Mobile Storage Host Controller Binding
++
++maintainers:
++  - Ulf Hansson <ulf.hansson@linaro.org>
++  - Jisheng Zhang <Jisheng.Zhang@synaptics.com>
++
++allOf:
++  - $ref: mmc-controller.yaml#
++
++properties:
++  compatible:
++    enum:
++      - snps,dwcmshc-sdhci
++
++  reg:
++    minItems: 1
++    items:
++      - description: Offset and length of the register set for the device
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    minItems: 1
++    items:
++      - description: core clock
++      - description: bus clock for optional
++
++  clock-names:
++    minItems: 1
++    items:
++      - const: core
++      - const: bus
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    mmc@aa0000 {
++      compatible = "snps,dwcmshc-sdhci";
++      reg = <0xaa000 0x1000>;
++      interrupts = <0 25 0x4>;
++      clocks = <&cru 17>, <&cru 18>;
++      clock-names = "core", "bus";
++      bus-width = <8>;
++      #address-cells = <1>;
++      #size-cells = <0>;
++    };
++
++...
+-- 
+2.7.4
+
+
 
