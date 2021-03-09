@@ -2,74 +2,67 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A85D331AAC
-	for <lists+linux-mmc@lfdr.de>; Tue,  9 Mar 2021 00:03:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EC97331CB0
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Mar 2021 03:00:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229528AbhCHXCm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 8 Mar 2021 18:02:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33818 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231408AbhCHXCV (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 8 Mar 2021 18:02:21 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0CF5E6529E;
-        Mon,  8 Mar 2021 23:02:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615244541;
-        bh=baOfkGpu04qh/09ctPJ2h4EovLtbYGc6HVKRrEA1EC8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IsjfBJEeCqmzkLIIjbMDZ6tar87u3mo3hAujfL4D6TBwUl4LpoMf+eKOdTqk8yVP5
-         h1dlnSx4opy/Bt5ebV5y14X2gG9nGZ5dbGA6Ceyc6od5tACUzvYmz8iKMVWEu5CpWr
-         mUeoaJRki8SKo7Rp14vp+9vhTS7GJJmZdQ5bds7sfZaVgquv3/qvaj+JUFJmo/Rvk6
-         rmYEIKs5xflov9S7o05TA5mJtZJbCyEuE8dtd95O9boclphVtjMdXBJLOkk3qJ96dU
-         rumSibJ+l6kxlQ6aELYmkvUfgGqjEp6/tJWJyQdXTpR7rsPz/ZdOXwIbKPno5+yLjX
-         o8NyOLq4D6W5A==
-Date:   Mon, 8 Mar 2021 15:02:19 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Peng Zhou <peng.zhou@mediatek.com>
-Cc:     linux-mmc@vger.kernel.org,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
+        id S230214AbhCICAR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Mar 2021 21:00:17 -0500
+Received: from Mailgw01.mediatek.com ([1.203.163.78]:20675 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230127AbhCIB7t (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Mar 2021 20:59:49 -0500
+X-UUID: 98a9888fc1eb44a68a4d1795eebdce54-20210309
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=voKB3JTtp23roJcLmppifE/2eVEe8ZJYpXa+eKJCcHU=;
+        b=VG/wgq5rGW9ON/VQkr5ELeGw7quJEyKXAkFTGOMZdE4Zpkjftk0qIZTgdUEs3mzk8MzYxvFRPckrGsaxGfXX4Sb2ZCQvXTBWZls9NGOiYVBHXKmkR2FBeHnO1fetu9z3F1tIJI9UvXU9do6KcVZQmHurdoHEZwm7SV6w5jKrDTE=;
+X-UUID: 98a9888fc1eb44a68a4d1795eebdce54-20210309
+Received: from mtkcas36.mediatek.inc [(172.27.4.253)] by mailgw01.mediatek.com
+        (envelope-from <peng.zhou@mediatek.com>)
+        (mailgw01.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1874155827; Tue, 09 Mar 2021 09:59:44 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ MTKMBS31N2.mediatek.inc (172.27.4.87) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 9 Mar 2021 09:59:39 +0800
+Received: from localhost.localdomain (10.15.20.246) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 9 Mar 2021 09:59:39 +0800
+From:   Peng Zhou <peng.zhou@mediatek.com>
+To:     Eric Biggers <ebiggers@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Satya Tangirala <satyat@google.com>,
-        devicetree@vger.kernel.org,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        <linux-mmc@vger.kernel.org>
+CC:     <devicetree@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
+        Satya Tangirala <satyat@google.com>,
         Wulin Li <wulin.li@mediatek.com>,
-        Mason Zhang <mason.zhang@mediatek.com>
-Subject: Re: [PATCH v2 0/4] MediaTek eMMC inline encryption support
-Message-ID: <YEas+9mY5zdJh6mX@gmail.com>
-References: <20210308080855.30459-1-peng.zhou@mediatek.com>
+        Peng Zhou <peng.zhou@mediatek.com>,
+        Peng Zhou <Peng.Zhou@mediatek.com>
+Subject: [PATCH v2 0/4] MediaTek eMMC inline encryption support 
+Date:   Tue, 9 Mar 2021 09:53:32 +0800
+Message-ID: <20210309015331.10457-1-peng.zhou@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210308080855.30459-1-peng.zhou@mediatek.com>
+Content-Type: text/plain
+X-TM-SNTS-SMTP: D2C565463BD08AAB9A21D43E5F22A286DBA322E6FB1527A90110E54108D30B7E2000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Mar 08, 2021 at 04:08:56PM +0800, Peng Zhou wrote:
-> Hello,
-> 
-> Mediatek eMMC hardware IP has Inline Crypto Engine (ICE),
-> we support inline encryption now.
-> 
-> For Inline Crypto Engine (ICE), see:
-> - https://lore.kernel.org/linux-arm-msm/20210126001456.382989-2-ebiggers@kernel.org/T/
-> 
-> Changed in v2:
-> - fix email format
-> - change some description
-> 
-> Peng Zhou (4):
->   mmc: Mediatek: add Inline Crypto Engine support
->   mmc: Mediatek: enable crypto hardware engine
->   arm64: dts: Mediatek: MT6779: add mmc node with ICE setting
->   dt-bingdings: mmc: Mediatek: add ICE clock
-> 
->  .../devicetree/bindings/mmc/mtk-sd.yaml       |  6 ++-
->  arch/arm64/boot/dts/mediatek/mt6779.dtsi      | 14 +++++++
->  drivers/mmc/host/mtk-sd.c                     | 42 ++++++++++++++++++-
->  3 files changed, 59 insertions(+), 3 deletions(-)
+RnJvbTogUGVuZyBaaG91IDxQZW5nLlpob3VAbWVkaWF0ZWsuY29tPg0KDQpIZWxsbywNCg0KTWVk
+aWF0ZWsgZU1NQyBoYXJkd2FyZSBJUCBoYXMgSW5saW5lIENyeXB0byBFbmdpbmUgKElDRSksDQp3
+ZSBzdXBwb3J0IGlubGluZSBlbmNyeXB0aW9uIG5vdy4NCg0KRm9yIElubGluZSBDcnlwdG8gRW5n
+aW5lIChJQ0UpLCBzZWU6DQotIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LWFybS1tc20v
+MjAyMTAxMjYwMDE0NTYuMzgyOTg5LTItZWJpZ2dlcnNAa2VybmVsLm9yZy9ULw0KDQpDaGFuZ2Vk
+IGluIHYyOg0KLSBmaXggZW1haWwgZm9ybWF0DQotIGNoYW5nZSBzb21lIGRlc2NyaXB0aW9uDQoN
+ClBlbmcgWmhvdSAoNCk6DQogIG1tYzogTWVkaWF0ZWs6IGFkZCBJbmxpbmUgQ3J5cHRvIEVuZ2lu
+ZSBzdXBwb3J0DQogIG1tYzogTWVkaWF0ZWs6IGVuYWJsZSBjcnlwdG8gaGFyZHdhcmUgZW5naW5l
+DQogIGFybTY0OiBkdHM6IE1lZGlhdGVrOiBNVDY3Nzk6IGFkZCBtbWMgbm9kZSB3aXRoIElDRSBz
+ZXR0aW5nDQogIGR0LWJpbmdkaW5nczogbW1jOiBNZWRpYXRlazogYWRkIElDRSBjbG9jaw0KDQog
+Li4uL2RldmljZXRyZWUvYmluZGluZ3MvbW1jL210ay1zZC55YW1sICAgICAgIHwgIDYgKystDQog
+YXJjaC9hcm02NC9ib290L2R0cy9tZWRpYXRlay9tdDY3NzkuZHRzaSAgICAgIHwgMTQgKysrKysr
+Kw0KIGRyaXZlcnMvbW1jL2hvc3QvbXRrLXNkLmMgICAgICAgICAgICAgICAgICAgICB8IDQyICsr
+KysrKysrKysrKysrKysrKy0NCiAzIGZpbGVzIGNoYW5nZWQsIDU5IGluc2VydGlvbnMoKyksIDMg
+ZGVsZXRpb25zKC0pDQoNCi0tIA0KMi4xOC4wDQo=
 
-Now I received this cover letter 5 more times, but none of the other patches.
-How are you sending this out?
-
-- Eric
