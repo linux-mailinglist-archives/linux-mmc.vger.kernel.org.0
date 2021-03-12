@@ -2,185 +2,178 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFBC433883C
-	for <lists+linux-mmc@lfdr.de>; Fri, 12 Mar 2021 10:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 792AB338883
+	for <lists+linux-mmc@lfdr.de>; Fri, 12 Mar 2021 10:23:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232499AbhCLJGh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 12 Mar 2021 04:06:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45526 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232444AbhCLJG3 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 12 Mar 2021 04:06:29 -0500
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C04FC061761
-        for <linux-mmc@vger.kernel.org>; Fri, 12 Mar 2021 01:06:29 -0800 (PST)
-Received: by mail-vs1-xe36.google.com with SMTP id j12so9886402vsm.2
-        for <linux-mmc@vger.kernel.org>; Fri, 12 Mar 2021 01:06:28 -0800 (PST)
+        id S232840AbhCLJXA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 12 Mar 2021 04:23:00 -0500
+Received: from mail-co1nam11on2089.outbound.protection.outlook.com ([40.107.220.89]:12640
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S232833AbhCLJWn (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Fri, 12 Mar 2021 04:22:43 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mlDmGREfFU6g5cb2l5r/1RiRti583peZnUKbASBO0A+3hPs9C47UWQEzmw7tFj2XZz0+6wJh7fazvuqiP/8IIciDWOWSXiXu3etKeoPbjjHXHwoXbjGQtBAPBETuRUfG7oEzGxmdoDZPhLsZ6LHmitk9lXjY5NHd6hDxW2d4rFsHNJ5niVX6YEIp0bBIjCg1VxJ5ErVoe05ou7yHZcRydtvYr4EaAhCSiZbAqtSYV1Xn+5xza9wQKddZxDD9jnsFLsFdorgZ7Bo8C73Blj8uZhhTdXVm+jEukFq6JD3h3yGzBXAfaXzHWpUX/Q2CW/572DNfRPHAvsXHKBHACoSiFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WOwpCyxP9SZOWLK0dwZTL1FpqWTNVuqC98KQMnt21/g=;
+ b=le30Sk1DEB2Pgu34q7/am0gjm+iScksOYEg35lB5GfzQNW4w0inzzMAYAKMku9oPxqWipIztzS2pOsjkJkleAx2+tjzt9WVCkBEW6oQMRsisswBAUqAO2Eca4uA49gX5J5wumAZ53F5LH/3DW6pYJ+ySi5J/LLdld3UtZ0h8IY/4HEgZmygZxjFioRKsBAKohhoiOzqlABHPUMjjH5+fct5FI4oBxHLKab/sbfm0hNFhUebYGedXFUOockNeSjm9wsRWlTUmp9R5skl4ED2eMPfQr+ZTEqHOOkqFnXp6Z/Fz//d/OOhYdCm3taL9rTXgbaDG5K/cuvrnEh+Wb88+aA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=synaptics.com; dmarc=pass action=none
+ header.from=synaptics.com; dkim=pass header.d=synaptics.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=oKUgWAnyYxdaXxA4WcJUs92ZAvj1xyLLHDtMDJLSkd0=;
-        b=dSIdoTd+DHa3b3s48bp7fWShXcqwUQyj8Si1t00CGfGaSzaSMROEDdIubHnYI158gD
-         i2BxrzOy8RBKKsC5aBuoA9cXJJV6ZJEOUEaDq+s5uMd/eXgp3A8TYfiw+Gm7sXUx+loY
-         mk327FO4u+eTnbNJTCvbnmJRWl+KiepfjPmv3fgh+ghY93pJUzEwBoemHPkEFxhpBj6s
-         ksk4NMJ0pCF7Fs7tsm8IcUVWoyI+EamxsmT5Yd1HFCqk7qvfsFg2135ZU+h1Lv6AHb2q
-         KH8RZp6E8wEmSBAMR3XTZtRD9L6qgxNaXng1t40dsPYMr4Unp+d4l2WWlT82O62ovF5t
-         WJdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oKUgWAnyYxdaXxA4WcJUs92ZAvj1xyLLHDtMDJLSkd0=;
-        b=uTF7tGYO4kykqshjoeoCk6thfp+l03yFBdIdEXJwVyetf1FM0oL9YHRAOkd8+KQ6RZ
-         07kRk3a0CWApJs64Zlnd8i2H6n/2eFPWBkeXr4JeabETYwJwS6MTM3015Cbp28SKR5+d
-         yJRtlmqyLrrqaGbG/A0J0wlpOgS8wqnEUKdzKuHbw4Q2axyh9dPQjv+s8uMO5TRFk5mv
-         +usgHsPI4URKJu5HCH1XZpBT7UMRqOodQWDdp38/0+HICbiDAZPVujF4yd6sytLjlE5e
-         HggdnFLWkfpeG2fHzbCDlKp5/u003fmiVq4aU1q4GruERQwXtW1cIf+9dv39sWaS8EGr
-         cSqg==
-X-Gm-Message-State: AOAM5328AoGdAxT7mBGYLDPUIZF6aY8jAZZYesHkQshxeXdiXvS0moKp
-        l/TcpaOo/I+Vot5sNmKr2xp0x08bhZcSI0Zb7SWcDQ==
-X-Google-Smtp-Source: ABdhPJywyg+TZqWkv+eOIIeDvlTZhsk1W2Rf0tP+aSqF6848Pp5TOH0dcsimKnhzzavXvrnzQsoNF1mgevMYfZ9lPxA=
-X-Received: by 2002:a67:6942:: with SMTP id e63mr8074907vsc.48.1615539988056;
- Fri, 12 Mar 2021 01:06:28 -0800 (PST)
+ d=Synaptics.onmicrosoft.com; s=selector2-Synaptics-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WOwpCyxP9SZOWLK0dwZTL1FpqWTNVuqC98KQMnt21/g=;
+ b=QQSF5uU+Q5EWZrGRFbwSO93qLNYRSU0PGPufQVx1JqVg7Ix5JxoSlZUvANLjWQJ/EHRPoHIZTpW5E+YWxlcqYLOc2qoOE4q/CVvd5QI9jly0QgsERL3fm0dJWNk5qAhps8HVre9UIcCIn4a8bI+HVZf305Wc6LlbIRsSQvzoZDw=
+Authentication-Results: rock-chips.com; dkim=none (message not signed)
+ header.d=none;rock-chips.com; dmarc=none action=none
+ header.from=synaptics.com;
+Received: from BN3PR03MB2307.namprd03.prod.outlook.com
+ (2a01:111:e400:7bb1::16) by BN6PR03MB2900.namprd03.prod.outlook.com
+ (2603:10b6:404:10e::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17; Fri, 12 Mar
+ 2021 09:22:36 +0000
+Received: from BN3PR03MB2307.namprd03.prod.outlook.com
+ ([fe80::246d:2f3d:93bf:ee56]) by BN3PR03MB2307.namprd03.prod.outlook.com
+ ([fe80::246d:2f3d:93bf:ee56%4]) with mapi id 15.20.3912.031; Fri, 12 Mar 2021
+ 09:22:36 +0000
+Date:   Fri, 12 Mar 2021 17:22:23 +0800
+From:   Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+To:     Shawn Lin <shawn.lin@rock-chips.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        devicetree@vger.kernel.org, linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v4 3/3] mmc: sdhci-of-dwcmshc: add rockchip platform
+ support
+Message-ID: <20210312172223.05c537d8@xhacker.debian>
+In-Reply-To: <9b7106e4-8817-6b49-e400-daa7b33a96ca@rock-chips.com>
+References: <1615443684-198078-1-git-send-email-shawn.lin@rock-chips.com>
+        <1615443684-198078-3-git-send-email-shawn.lin@rock-chips.com>
+        <20210311145924.498c690a@xhacker.debian>
+        <9b7106e4-8817-6b49-e400-daa7b33a96ca@rock-chips.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.147.44.204]
+X-ClientProxiedBy: BYAPR21CA0008.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::18) To BN3PR03MB2307.namprd03.prod.outlook.com
+ (2a01:111:e400:7bb1::16)
 MIME-Version: 1.0
-References: <20210309015750.6283-1-peng.zhou@mediatek.com> <CACRpkdYTkW7b9SFEY6Ubq4NicgR_5ewQMjE2zHvGbgxYadhHQQ@mail.gmail.com>
- <YEpqkAq6wOZ+TpR9@gmail.com>
-In-Reply-To: <YEpqkAq6wOZ+TpR9@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 12 Mar 2021 10:05:51 +0100
-Message-ID: <CAPDyKFoWg7HYHAbxYJRbOad5kqm+rzVLVQ0O3g76ROO5Z+MF3Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] mmc: Mediatek: enable crypto hardware engine
-To:     Eric Biggers <ebiggers@kernel.org>,
-        Peng Zhou <peng.zhou@mediatek.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Satya Tangirala <satyat@google.com>,
-        Wulin Li <wulin.li@mediatek.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from xhacker.debian (192.147.44.204) by BYAPR21CA0008.namprd21.prod.outlook.com (2603:10b6:a03:114::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.3 via Frontend Transport; Fri, 12 Mar 2021 09:22:33 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4b7b70e0-714a-45d4-b7ca-08d8e5385fb4
+X-MS-TrafficTypeDiagnostic: BN6PR03MB2900:
+X-Microsoft-Antispam-PRVS: <BN6PR03MB2900108206E83E974F3461D8ED6F9@BN6PR03MB2900.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: D0Mjrch3+FueE++xYqkRC3XX9o0ksHIfLxtvCZVoH7g2D1QwUSGVTXjydlOH16yHIUR1LhI1KAc/0zTwken6TJ7UYlaUOVzoZm/i/jxIVFzRLQQ5BMBAjyPYTx2RdgEn+eXdPh1X8e8FMtVaEV1lh3kJ94WJzkeIwU/+jeWJH6Xm5o5jK9P8mx+2Uvf3d017hEVupNW24Ji6ySSLCH0QSxguxs7P4INlh0Yy8UQdtbKWZqlQtdBDu0WtNiaRyYPhBjwwkXx0pRfnvYXlGwgk2/sPVj8iZlFfJ4iodgW4UBE3VWt4nF/T6Rc2wKDQHuuGbErjXSVSbleGP00fNYO7ttDGebK5dSj9UO++fOg7esQjYdaVqp4ciY5JMB6vXx8L/D55XKdEP3hRjCsrVtqYXhygQSHJF2tJ8GtgXk3BIsbJurLXNouh6+gXCZu1m5n0owqoH1DHpSXaYOtnY6zm42k6sJwCnDJWG1YxbVZaUAV7MwVO4912Lfj6puhusbFEpiRcI9kkn9u+hKZONYkotp1/p2WDIFJLVNWRq2+NwFyrOfgO2BwO/uGlRD5IyCpK2QJysF5+/fo60DlPmzxjQWccSbbok9aH4zcCwplE2D8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN3PR03MB2307.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(39850400004)(366004)(346002)(376002)(136003)(83380400001)(186003)(53546011)(6506007)(16526019)(956004)(6666004)(55016002)(26005)(9686003)(316002)(5660300002)(66556008)(54906003)(66946007)(2906002)(66476007)(8676002)(1076003)(478600001)(8936002)(7696005)(86362001)(52116002)(4326008)(6916009)(133343001)(473944003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?MpYSan+zmpiw5vxzQl0KjEXHoOJ5jTKqN2vkxeQYpSqt6DlAnUXOE3Kahg5k?=
+ =?us-ascii?Q?m9/yNgaDUJfRCY4pWhVZRVwmKb2xhMJE1q5bTmKPUPuNfbhfKijYnckyJO8z?=
+ =?us-ascii?Q?UrxG2VL3V/kFGCjhmP24+NMpVX8lbezLrSjofMUlUOcfm/Y87YRQMUY3N5Nv?=
+ =?us-ascii?Q?1takc3GJXpC9B3eG7jlD7aYp6/YwHwrLRRCU1SG7kank3jjqOBg7ovdW2sun?=
+ =?us-ascii?Q?qx1+xZwQjQibe+ncCfmYmQX1xlxyttRdR89AlkPiXVjflPH5gUq1TixFJs5n?=
+ =?us-ascii?Q?ILMdSlYOapOQAJ6D0JUslMWRULNpFCiyYDvknpgFA2cWJgd/nBCBnAIbd7SM?=
+ =?us-ascii?Q?MJ4mBf8wZywA9RwmdFwnkpPoRMy3PU8AwN1U+4vibnk6Nuk8hEBFzbtpuYlZ?=
+ =?us-ascii?Q?pimoV9wu4TheVLP0l58E/cOZzC6AqRv+5r6OLaDaBvSsC177i3lR7U5cG6O4?=
+ =?us-ascii?Q?f1fzRSODPX1+EPkB+/9vuZbWrbazDp6aXR7WWP1EEDa/PHgbIEVxRv9B+D3y?=
+ =?us-ascii?Q?/Td9Bu7YFAe4DkgNnWSerKNSRTgcp3mecw8+md6nEJqVSPUg3C/qoPECN0QJ?=
+ =?us-ascii?Q?tiqlp/l3E41sOflHYYi3bTfqSUZ1JM2lX3UdW158VkmBtZwr55f1c03ekKVu?=
+ =?us-ascii?Q?mrP3GSznij6RraSuZVlURn43j74EiAxrtyL3G2CkEc/hPaKG9Q2yWdig8+wV?=
+ =?us-ascii?Q?BAgAUwHfjOhqQIK47ABsYGmBOw55cArIaNxbCeLI+cFF9KEBSaGMeOg4GrLk?=
+ =?us-ascii?Q?LmaEjDZ8VaqCiXGrhF6ibwEaBcTvDjHzv5g2ODkbZJPy+dQOgLSTXLIukK/q?=
+ =?us-ascii?Q?Ol4ExfEzymCPZ2i8qQ9/lbsAnkiRds3S6wcPku+TCZocQiVlfzFmatLKKiOA?=
+ =?us-ascii?Q?dYF+F3kd6C2RvYBWDG5sJMFgHU26Z8QZgcUE0oXAl24vQn0YM9fn5tnOuJ+l?=
+ =?us-ascii?Q?seydSL/Kmw5KShF7i1KLB+WNrziOiCmXuQOIVgcupyA/emf/GNK29pofhrmM?=
+ =?us-ascii?Q?CHQV9lIQPWC6S9eiSuEHkFi8EMuk2EUfiPKlnIE3IYK3FKCsqjuwx9rOeV1Q?=
+ =?us-ascii?Q?eToMX3GWFpLr4FTYdkkGrj2alzJB3vKkp+mp9ctNWTu0B89Wlac4CVrfortu?=
+ =?us-ascii?Q?bi7sQqB67z1Yw8/OH1WGbSJ/7oe1FfWWYG9AdkNvgIkXPuEsw9ShWk2SjPPT?=
+ =?us-ascii?Q?6OpIk1p6QSV66tJMeHOw4Wxo6kn15fL1+261s4OCtjM3laUVQ6YoRXn2omfG?=
+ =?us-ascii?Q?x5K5yX8V0HxBy/AXUtD3ioAB4ustUOau9UtDpTJ3FjbJKvn2YuNWkxOb9fdI?=
+ =?us-ascii?Q?LcZUJGbEDgloY/O7vQC6kKhp?=
+X-OriginatorOrg: synaptics.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b7b70e0-714a-45d4-b7ca-08d8e5385fb4
+X-MS-Exchange-CrossTenant-AuthSource: BN3PR03MB2307.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2021 09:22:36.1692
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335d1fbc-2124-4173-9863-17e7051a2a0e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WHyC0bJnIt/ewrgZV8LAnH5qFeQ6WszA+PxeUS3MI2oaTh0rB+wt+PtPjMqe44RsdBWheV6smNpFWCpyRnvd2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR03MB2900
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-+ Arnd, Sudeep
+Hi
 
-On Thu, 11 Mar 2021 at 20:08, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> On Thu, Mar 11, 2021 at 02:48:23PM +0100, Linus Walleij wrote:
-> > Hi Peng,
-> >
-> > thanks for your patch!
-> >
-> > On Tue, Mar 9, 2021 at 3:06 AM Peng Zhou <peng.zhou@mediatek.com> wrote:
-> >
-> > > Use SMC call enable hardware crypto engine
-> > > due to it only be changed in ATF(EL3).
-> > >
-> > > Signed-off-by: Peng Zhou <peng.zhou@mediatek.com>
-> >
-> > Unfortunately this commit message is way to short to
-> > understand what is going on, and has a lot of assumed
-> > previous knowledge.
-> >
-> > Can you expand the commit message so that anyone
-> > who just know MMC and some SoC basics can understand
-> > what an SMC call and and what ATF(EL3) means?
-> >
-> > I assume this some kind of inline encryption?
-> >
-> > I think maybe linux-block mailing list need to be involved
-> > because there is certain a Linux standard way of setting
-> > up inline encryption for the block layer.
-> >
-> > For example: how is the key to be used derived?
-> > How is the device unlocked in the first place?
-> >
-> > If I insert a LUKS encrypted harddrive in a Linux machine
-> > the whole system is pretty much aware of how this should
-> > be handled and everything "just works", I enter a pass
-> > phrase and off it goes. I can use symmetric keys as well.
-> > How is this stuff done for this hardware?
-> >
-> > > +       /*
-> > > +        * 1: MSDC_AES_CTL_INIT
-> > > +        * 4: cap_id, no-meaning now
-> > > +        * 1: cfg_id, we choose the second cfg group
-> > > +        */
-> > > +       if (mmc->caps2 & MMC_CAP2_CRYPTO)
-> > > +               arm_smccc_smc(MTK_SIP_MMC_CONTROL,
-> > > +                             1, 4, 1, 0, 0, 0, 0, &smccc_res);
-> >
-> > The same as above: these comments assume that everyone
-> > already knows what is going on.
-> >
-> > AES encryption requires a key and I don't see the driver
-> > setting up any key. How is the code in this file:
-> > drivers/mmc/core/crypto.c
-> > interacting with your driver?
-> > drivers/mmc/host/cqhci-crypto.c
-> > is used by SDHCI and is quite readable and I see what is going on.
-> > For example it contains functions like:
-> > cqhci_crypto_program_key()
-> > cqhci_crypto_keyslot_program()
-> > cqhci_crypto_clear_keyslot()
-> > cqhci_crypto_keyslot_evict()
-> > cqhci_find_blk_crypto_mode()
-> >
-> > MMC_CAP2_CRYPTO is used as a sign that the driver
-> > can do inline encryption, then devm_blk_ksm_init() is called
-> > to initialize a block encryption abstraction with the block layer.
-> > Ops are registered using
-> > struct blk_ksm_ll_ops cqhci_ksm_ops.
-> >
-> > This is very straight forward.
-> >
-> > But where does all the above happen for this driver?
-> >
->
-> It happens in the same place, cqhci-crypto.c.  Mediatek's eMMC inline encryption
-> hardware follows the eMMC standard fairly closely, so Peng's patch series just
-> sets MMC_CAP2_CRYPTO to make it use the standard cqhci crypto code, and does a
-> couple extra things to actually enable the hardware's crypto support on Mediatek
-> platforms since it isn't enabled by default.  (*Why* it requires an SMC call to
-> enable instead of just working as expected, I don't know though.)
+On Thu, 11 Mar 2021 15:08:03 +0800
+Shawn Lin <shawn.lin@rock-chips.com> wrote:
 
-As I have probably indicated earlier, I am starting to become more and
-more annoyed with these arm_smccc_smc() calls in generic drivers.
 
-As a matter of fact, I think the situation is about to explode. Just
-do a "git grep arm_smccc_smc" and you will find that it's not only SoC
-specific drivers that call them. In general we want to keep drivers
-portable and this is clearly moving in the wrong direction. Or maybe
-it's just me being grumpy and having a bad day. :-)
+> 
+> Hi Jisheng
+> 
+> On 2021/3/11 14:59, Jisheng Zhang wrote:
+> > Hi Shawn,
+> >
+> > On Thu, 11 Mar 2021 14:21:24 +0800 Shawn Lin <shawn.lin@rock-chips.com> wrote:
+> >  
+> >>
+> >> sdhci based synopsys MMC IP is also used on some rockchip platforms,
+> >> so add a basic support here.
+> >>
+> >> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+> >> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> >> ---
+> >>
+> >> Changes in v4:
+> >> - add comments for disabling rx invert
+> >> - add tag from Adrian
+> >>
+> >>   drivers/mmc/host/sdhci-of-dwcmshc.c | 225 ++++++++++++++++++++++++++++++++++--
+> >>   1 file changed, 218 insertions(+), 7 deletions(-)
+> >>
+> >> diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+> >> index 59d8d96..dabc1ec 100644
+> >> --- a/drivers/mmc/host/sdhci-of-dwcmshc.c
+> >> +++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+> >> @@ -9,9 +9,11 @@
+> >>
+> >>   #include <linux/clk.h>
+> >>   #include <linux/dma-mapping.h>
+> >> +#include <linux/iopoll.h>
+> >>   #include <linux/kernel.h>
+> >>   #include <linux/module.h>
+> >>   #include <linux/of.h>
+> >> +#include <linux/of_device.h>
+> >>   #include <linux/sizes.h>
+> >>
+> >>   #include "sdhci-pltfm.h"
+> >> @@ -21,11 +23,43 @@
+> >>   /* DWCMSHC specific Mode Select value */
+> >>   #define DWCMSHC_CTRL_HS400             0x7
+> >>
+> >> +/* Rockchip specific Registers */
+> >> +#define DWCMSHC_HOST_CTRL3             0x508  
+> >
+> > Maybe 0x500 can be read from VENDOR_PTR_R while 0x8 is the offset?  
+> 
+> It should be but we didn't add this info for this IP so we have
+> to hardcode the register offset.
 
-In the Qcom mmc case (drivers/mmc/host/sdhci-msm.c) for eMMC inline
-encryption, the arm_smccc_smc() call is slightly better handled as
-it's abstracted behind a Qcom specific firmware API. So, sdhci-msm.c
-calls qcom_scm_ice_set_key() (implemented in
-drivers/firmware/qcom_scm.c) to program a key. I guess we don't have
-an abstraction layer that would fit for this case, right?
+Per my understanding, this register always exists, so mind to double check
+whether you can access the register and read out 0x500. If the vendor offset
+can't be read out on your side, mind to add var such as vendor_ptr etc. then
+configure it as 0x500 for RK? I believe HS400 ES support code is common
+to this IP, the only difference maybe the vendor offset can be dynamically
+read out while RK may need to hardcode the offset as you said.
 
-My point is, when there is no proper abstraction layer to use for the
-relevant arm_smccc_smc() call, the Qcom way is fine to me.
+Thanks
 
-In this Mediatek case, it looks slightly different. To me it looks
-more like a resource that needs to be turned on/off to enable/disable
-the "inline encryption engine". Could it be modeled as phy,
-power-rail, clock, pinctrl or perhaps behind a PM domain (where SoC
-specific calls makes perfect sense).
-
-Peng can you please elaborate on what goes on behind the
-arm_smccc_smc() call, as that would help us to understand what
-abstraction layer to pick?
-
-[...]
-
-Kind regards
-Uffe
