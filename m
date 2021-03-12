@@ -2,170 +2,120 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DD2D337F5B
-	for <lists+linux-mmc@lfdr.de>; Thu, 11 Mar 2021 22:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC0F23384A7
+	for <lists+linux-mmc@lfdr.de>; Fri, 12 Mar 2021 05:31:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230453AbhCKVIl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 11 Mar 2021 16:08:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60934 "EHLO
+        id S232168AbhCLEbO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 11 Mar 2021 23:31:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229809AbhCKVIK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 11 Mar 2021 16:08:10 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D60F9C061574
-        for <linux-mmc@vger.kernel.org>; Thu, 11 Mar 2021 13:08:09 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id u4so4909528edv.9
-        for <linux-mmc@vger.kernel.org>; Thu, 11 Mar 2021 13:08:09 -0800 (PST)
+        with ESMTP id S232149AbhCLEbC (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 11 Mar 2021 23:31:02 -0500
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA396C061761
+        for <linux-mmc@vger.kernel.org>; Thu, 11 Mar 2021 20:31:01 -0800 (PST)
+Received: by mail-yb1-xb30.google.com with SMTP id 133so24057609ybd.5
+        for <linux-mmc@vger.kernel.org>; Thu, 11 Mar 2021 20:31:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=references:user-agent:from:to:cc:subject:date:in-reply-to
-         :message-id:mime-version:content-transfer-encoding;
-        bh=WprC7wQ8pjk4v3rRNQRsNnfM+sFohsfztPY3hS+tZkY=;
-        b=dqHaE7uAtCtfTturKUgGaMRMcA5A6xT5Sf8lWsZrZvnIOXfijL+712llEvyyGGggiF
-         wBWpjvliIAbOJwKVKtia5E8gK+FEXGp883lN5XdlpTcUthISPjGAzEDaQzMjNHqIAyOS
-         gQxFTfquWRQsSAYvti2QLI1048+HoB/47fTF6sUFrKPoXb2cwjYenOd15JYOR4ifTgKP
-         Y/aP63Q2Vv9xef4NdGHljiTVumdtsFEIsGT/+DcDiRDvrywW83Y9ZV/VMTxOfTmODQul
-         6JA203LPm32+ADaE3s3VxsP3fZrJNfIzDdNhjPisiCu+P05s6e6Z3rOo4A6pucodFt3d
-         MOWQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=VOTAsqudKrdJEt/NHo+GDkYcgaJTdlqeUy9CVdMpYbU=;
+        b=LjQlZL8XFkG77eQ/HXhA3UoO5orC+I+Lp0T+8N+H4HhwpiqqOEenbGS18WsSEf+T3Y
+         8AslWlcFre7bJRkflgQWS8t2DY9255RleAHPNBL7al4H2NiwFBzq9fRz2NadWxJUp8Ea
+         CigILJu1O/I/GH2vB9UODBhkaCg8f21iR4lSC39l3tfkBJnpZ4KfGMX7903XpVqxtJso
+         Ie4Q9QZ4A9zvLUVV/nl3cpUOEs8m/FLtKGvkCeLxfHdPYdcaBS5TkzerYZB5EM9KGYkv
+         k3Q5YPqYymOqeO/Uu+uLR5dtewUdCGibe6TvTqW5CYpVORhp4GdsTtML1OTdWRKNEkoM
+         GwIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:references:user-agent:from:to:cc:subject:date
-         :in-reply-to:message-id:mime-version:content-transfer-encoding;
-        bh=WprC7wQ8pjk4v3rRNQRsNnfM+sFohsfztPY3hS+tZkY=;
-        b=AHLVtQPZWIkSW2uxH/enXh2C8P7qiScZyTzH/c5S9+nFmZvYpmtv0PCFfSbsau06wn
-         Hu6dMurhLJChIRXZMSoguDWCgSBAG6quI5kMm7odMnwRDo/38qvHaBWcPua+jDs8nJ+k
-         VaMayCoDGP0fLPl+4Ryj2P29cOn+BKMs5F5xWFd3RKsCbX6BLKoSghPiM9F5ZZnxjOfd
-         akCJso+6uVPH875zkyRZit7vDQ4zU5IBkJbrTlIKU4Nr8p70ASEyHLDeEu5nJAs22dtO
-         FbEpgcmJWT6KNm6zKUKV2mP0Uayf9haAI69BemHN62Qmb+BLOY1wc/p8DxmTI96nQtXC
-         kRtA==
-X-Gm-Message-State: AOAM530MP3CfKgQsqxSQJeX8rfAxGkFvWstOXTMPSWibJmGHQj6XzbpH
-        Pdj+0UENqXOeDB6rHJjLBvYn9Q==
-X-Google-Smtp-Source: ABdhPJwAmSWpyfZATg+lLALZWFEJgeSck6q627M8RqFqEoi+++wgypQpRJHtQ7KuVGQHjPuTtFTqTQ==
-X-Received: by 2002:a05:6402:3075:: with SMTP id bs21mr10586641edb.274.1615496888399;
-        Thu, 11 Mar 2021 13:08:08 -0800 (PST)
-Received: from zen.linaroharston ([51.148.130.216])
-        by smtp.gmail.com with ESMTPSA id r17sm1875032ejz.109.2021.03.11.13.08.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Mar 2021 13:08:07 -0800 (PST)
-Received: from zen (localhost [127.0.0.1])
-        by zen.linaroharston (Postfix) with ESMTP id 85CC91FF7E;
-        Thu, 11 Mar 2021 21:08:06 +0000 (GMT)
-References: <20210303135500.24673-1-alex.bennee@linaro.org>
- <20210303135500.24673-2-alex.bennee@linaro.org>
- <CAK8P3a0W5X8Mvq0tDrz7d67SfQA=PqthpnGDhn8w1Xhwa030-A@mail.gmail.com>
- <20210305075131.GA15940@goby>
- <CAK8P3a0qtByN4Fnutr1yetdVZkPJn87yK+w+_DAUXOMif-13aA@mail.gmail.com>
- <CACRpkdb4RkQvDBgTMW_+7yYBsHNRyJZiT5bn04uQJgk7tKGDOA@mail.gmail.com>
- <6c542548-cc16-af68-c755-df52bd13b209@marcan.st>
- <CAFA6WYOYmTgguVDwpyjnt3gLssqW48qzAkRD_nyPYg0nNhxT2A@mail.gmail.com>
- <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st>
- <CAFA6WYMSJxK2CjmoLJ6mdNNEfOQOMVXZPbbFRfah7KLeZNfguw@mail.gmail.com>
- <CACRpkdZb5UMyq5qSJE==3ZnH-7fh92q_t4AnE8mPm0oFEJxqpQ@mail.gmail.com>
- <e5d3f4b5-748e-0700-b897-393187b2bb1a@marcan.st>
- <CACRpkdYxMGN3N-jFt1Uw4AkBR-x=dRj6HEvDp6g+2ku7+qCLwg@mail.gmail.com>
- <02d035ca-697d-1634-a434-a43b9c01f4a9@marcan.st>
-User-agent: mu4e 1.5.8; emacs 28.0.50
-From:   Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Arnd Bergmann <arnd@linaro.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Joakim Bech <joakim.bech@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Ruchika Gupta <ruchika.gupta@linaro.org>,
-        "Winkler, Tomas" <tomas.winkler@intel.com>, yang.huang@intel.com,
-        bing.zhu@intel.com, Matti.Moell@opensynergy.com,
-        hmo@opensynergy.com, linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Arnd Bergmann <arnd.bergmann@linaro.org>
-Subject: Re: [RFC PATCH 1/5] rpmb: add Replay Protected Memory Block (RPMB)
- subsystem
-Date:   Thu, 11 Mar 2021 20:57:50 +0000
-In-reply-to: <02d035ca-697d-1634-a434-a43b9c01f4a9@marcan.st>
-Message-ID: <87k0qd7615.fsf@linaro.org>
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=VOTAsqudKrdJEt/NHo+GDkYcgaJTdlqeUy9CVdMpYbU=;
+        b=NwlyPQsr7HndjbezfN9ouTxbbbBWAHs3ZzoFUmcOIzIa3F0b4oVReFe0RrjqM6Nja6
+         g8cn9OuMo7UTNXTyNmoUpgZ6OWptDbb7Dc/AXIk9Mvm61YDvNq/C+Zefh7tknZTqwbxS
+         TB13GknfTWECyJzenpPhePnOPFHjuqPkVWlLt/laaldWpX9YPktNcxYAf3rED7yeCvg2
+         k8A/BYAxa0si4KY2f5soIz6XLADMiEW0ln2czUZch1G9X8JQHgsxbqL5zL2037FfpcCI
+         hBlxSo8k70aBD55bs+I2xLx2uIt6fMe8EZxXu3xdrqZTbysbGRkxq0nHwkpbjZXg5EFh
+         OXZw==
+X-Gm-Message-State: AOAM531dkMTLaR7O8Uux9gH6QY5gjAU4BcSIOMWUH2od/TuJlbyUYcYL
+        TmJI+/Pasl7ijioLCvaEwfK68sEKKoQl+2YR3WA=
+X-Google-Smtp-Source: ABdhPJyh7nQhw0OBWCsjGBz+99DOU9gXgbNi1WAeTlAvneFcifjkvex/XUytAD+yM8DCqu+rwTJWOV/jEnW0V3bYlS4=
+X-Received: by 2002:a25:d7c5:: with SMTP id o188mr15775598ybg.15.1615523461068;
+ Thu, 11 Mar 2021 20:31:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Sender: mrs.kimhongyeoh56@gmail.com
+Received: by 2002:a05:7108:3445:0:0:0:0 with HTTP; Thu, 11 Mar 2021 20:31:00
+ -0800 (PST)
+From:   Mrs Nadia Emaan <mrsnadiaemaan50@gmail.com>
+Date:   Fri, 12 Mar 2021 04:31:00 +0000
+X-Google-Sender-Auth: qZzlcfK6RzKPxPtOVkhsoO7eLMA
+Message-ID: <CADCBRF-Ts-oqYJe3=TdLvQPRWMU=KQNjc8hHCUfiiVgrBp41xw@mail.gmail.com>
+Subject: MAY THE PEACE OF GOD BE WITH YOU:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+May God Bless you,
 
-Hector Martin <marcan@marcan.st> writes:
+I am contacting you through this means because I need your urgent
+assistance and also help me to carry a charity project in your
+country. I found your email address as a true child of God for past
+few days now that I have been praying to know if you are really the
+chosen one for this great charity project, according to God's
+direction, after all prayers I am convinced, and I have decided to
+contact you. Please, i want you use the funds for the Lord's work,
+with confidence, read and respond now.
 
-> On 11/03/2021 23.31, Linus Walleij wrote:
->> I understand your argument, is your position such that the nature
->> of the hardware is such that community should leave this hardware
->> alone and not try to make use of RPMB  for say ordinary (self-installed)
->> Linux distributions?
->
-> It's not really that the community should leave this hardware alone, so=20
-> much that I think there is a very small subset of users who will be able=
-=20
-> to benefit from it, and that subset will be happy with a usable=20
-> kernel/userspace interface and some userspace tooling for this purpose,=20
-> including provisioning and such.
->
-> Consider the prerequisites for using RPMB usefully here:
->
-> * You need (user-controlled) secureboot
-> * You need secret key storage - so either some kind of CPU-fused key, or=
-=20
-> one protected by a TPM paired with the secureboot (key sealed to PCR=20
-> values and such)
-> * But if you have a TPM, that can handle secure counters for you already=
-=20
-> AIUI, so you don't need RPMB
-> * So this means you must be running a non-TPM secureboot system
->
-> And so we're back to embedded platforms like Android phones and other=20
-> SoC stuff... user-controlled secureboot is already somewhat rare here,=20
-> and even rarer are the cases where the user controls the whole chain=20
-> including the TEE if any (otherwise it'll be using RPMB already); this=20
-> pretty much excludes all production Android phones except for a few=20
-> designed as completely open systems; we're left with those and a subset=20
-> of dev boards (e.g. the Jetson TX1 I did fuse experiments on). In the=20
-> end, those systems will probably end up with fairly bespoke set-ups for=20
-> any given device or SoC family, for using RPMB.
->
-> But then again, if you have a full secureboot system where you control=20
-> the TEE level, wouldn't you want to put the RPMB shenanigans there and=20
-> get some semblance of secure TPM/keystore/attempt throttling=20
-> functionality that is robust against Linux exploits and has a smaller=20
-> attack surface? Systems without EL3 are rare (Apple M1 :-)) so it makes=20
-> more sense to do this on those that do have it. If you're paranoid=20
-> enough to be getting into building your own secure system with=20
-> anti-rollback for retry counters, you should be heading in that directly=
-=20
-> anyway.
->
-> And now Linux's RPMB code is useless because you're running the stack in=
-=20
-> the secure monitor instead :-)
 
-Well quiet - the principle use-case of virtio-rpmb is to provide a RPMB
-like device emulation for things like OPTEE when running under QEMU's
-full-system emulation. However when it came to testing it out I went for
-Thomas' patches because that was the only virtio FE implementation
-available.
+My name is Mrs. Nadia  Emaan a widow, but currently based in West
+Africa since my life with my late husband, who was a businessman in
+this country before dying some years ago. We were married to many
+years without a child. He died after a brief illness that lasted only
+six days and I myself have been suffering from an ovarian cancer
+disease. At this moment I am about to finish the race in this way
+because the disease has reached a very bad stage, without any family
+member and without children. I hope you do not expose or betray this
+trust and I am sure that I am about to trust you for the mutual
+benefit of orphans and the less privileged. I have some funds that I
+inherited from my late husband, the total sum of ($ 12,500,000.00)
+deposited at a bank here in Burkina Faso. After knowing my current
+state of health, I decided to trust you with this fund, believing that
+you will use it in the way I will instruct here.
 
-When I finished the implementation and Ilias started on the uBoot
-front-end for virtio-rpmb. uBoot being firmware could very well be
-running in the secure world so would have a valid use case accessing an
-RPMB device. We ran into API dissonance because uboot's driver model is
-roughly modelled on the kernel so expects to be talking to eMMC devices
-which lead to requirements to fake something up to keep the driver
-stacks happy.
 
-I guess what we are saying is that real secure monitors should come up
-with their own common API for interfacing with RPMB devices without
-looking to the Linux kernel for inspiration?
+you will use this $12.5 Million for public benefit as follows;
 
---=20
-Alex Benn=C3=A9e
+1. Establish An Orphanage Home To Help The Orphanages Children.
+2. Build A Hospital To Help The Poor.
+3. Build A Nursing Home For Elderly People Need Care & Meal.
+
+You will named them after my late husband.Therefore, I need you to
+help me and claim this money and use it for charities, for orphanages
+and provide justice and help to the poor, needy and to promote the
+words of God and the effort to maintain the house of God, according to
+the bible in the book of. Jeremiah 22: 15-16, without minding our
+different religions.
+
+It will be a pleasure to compensate with 40% percent of the total
+money for your effort in handling the transaction, while 60% of the
+money will go to charity project.
+
+All I need from you is sincerity and ability to complete the task of
+God without any failure. It will be my pleasure to see that the bank
+has finally released and transferred the fund to your bank account in
+the country, even before I die here in the hospital, due to my current
+state of health, everything must be processed as soon as possible.
+
+I am waiting for your immediate response, if you are only interested
+in obtaining more details about the transaction and execution of this
+humanitarian project for the glory and honor of God.
+
+Sorry if you received this letter in your spam, is due to recent
+connection/network error here in the country.
+
+Please I am waiting for your urgent reply now.
+
+May God Bless you,
+Mrs. Nadia  Emaan.
