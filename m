@@ -2,95 +2,182 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E5DE33C363
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Mar 2021 18:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA21133C6B6
+	for <lists+linux-mmc@lfdr.de>; Mon, 15 Mar 2021 20:20:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234730AbhCORHO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 15 Mar 2021 13:07:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57546 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235230AbhCORG7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 15 Mar 2021 13:06:59 -0400
-Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46972C0613D9
-        for <linux-mmc@vger.kernel.org>; Mon, 15 Mar 2021 10:06:59 -0700 (PDT)
-Received: by mail-ua1-x942.google.com with SMTP id j4so4414369uan.1
-        for <linux-mmc@vger.kernel.org>; Mon, 15 Mar 2021 10:06:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
-        b=IeztSHzwFXmZolftCfjFRG56pGeDsims74ZNrOy69DoxsYWGoDOf8BTYU1oihzpMjs
-         /UI0k2L0Qw3uMk8fxnCnza7S4kxuw+JHz2cJfu6pTZ0sITqTYvWJGTtVh2KwWkmjRaJy
-         oTsqALi8i98UbsZJ68pP2yxOMTP8DzeoQ8F9tJSRTRKzr7Z/qLAW+V3UqNTj4H1X6nI/
-         PmV4gS2F9+luv8LVHd613zQz/YI0VKn4OQSm+awZ9Ty028cbDK+a/CGJDynN7FOkoDYO
-         LOVsaPRK7onH069em311RQlabQWfJu0IClqpKWhZmgRyNcuRh2wyGe9w6vsdywtZEkI6
-         +lwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
-        b=p27g962TPtsdxzRCUHqqQXBTYwrkvlMMN+M52IZhVJv39D4Z+0kZ/59I/l1twllhAR
-         g7WNqMDTscOxQCXGbs1EoqMs6CMXKWSVxH2dpgKM/tCpWJfGbze605iIMfJs1gos80Df
-         RxA9TNL7f8Ys22isQ7qSlHQ7XlOcCifMoNzs9GQWFQA++hPO/3KlQR7ugpXZQF6DJXdw
-         Ov9UwLpd5XD3GLJgcVvBEpKN+WUW/krjL3p8AX/k/PVjLn0kG1vQKBXx1flK5ngKWmfI
-         wqKZXLJiSwwTXtoS8J6U2FF0Is+0u1qU9+Iv9Js977mVlbnbx3V5rsZfAc69w8jCG0p+
-         FEyA==
-X-Gm-Message-State: AOAM5335lUNB+h+66UOS8EaHEZRitonIcy/op2GvrF4wpWv2ZqWG2TYU
-        EthLYFIz5I3igzF8K2WCLJpQfZqn9Txyz0lKE+8=
-X-Google-Smtp-Source: ABdhPJwEfkQ2Vj8T+Ow2okUm+JjAfQUJvyZL+X+WzN8tH7luDQmnBYiNeC3HSx9EJovMuQf3n7FVpZyzmlmraCcCLv0=
-X-Received: by 2002:ab0:32cf:: with SMTP id f15mr5321130uao.68.1615828018158;
- Mon, 15 Mar 2021 10:06:58 -0700 (PDT)
+        id S231547AbhCOTUZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 15 Mar 2021 15:20:25 -0400
+Received: from mga01.intel.com ([192.55.52.88]:6919 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231734AbhCOTUI (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 15 Mar 2021 15:20:08 -0400
+IronPort-SDR: 1B2f4NggYTcV+t0LRF1itrIntFCM4jcApNif2xB5Jdri6VGsBBXbNdZBsfJ/RvjUC2DkBT8qAR
+ WhrXAzynIVcg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9924"; a="209057080"
+X-IronPort-AV: E=Sophos;i="5.81,251,1610438400"; 
+   d="scan'208";a="209057080"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2021 12:20:07 -0700
+IronPort-SDR: u6WrTe8ExYVixIoManbVCeSyjSYTxQnaX1ZO3MGp0EIBJbdToGCUPSln8qrCvpbZSJJCtrNBCG
+ Xj6vbfqXbkpw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,251,1610438400"; 
+   d="scan'208";a="410755769"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.76]) ([10.237.72.76])
+  by orsmga007.jf.intel.com with ESMTP; 15 Mar 2021 12:20:05 -0700
+Subject: Re: [PATCH v1 1/1] mmc: sdhci-acpi: Add support for NVIDIA
+ BlueField-3 SoC
+To:     Liming Sun <limings@nvidia.com>,
+        Khalil Blaiech <kblaiech@nvidia.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <b62a68d1f8488e7f95befc6723ba5c20d6781628.1615487235.git.limings@nvidia.com>
+ <8236f89c-720e-f8bd-86d0-9654175de659@intel.com>
+ <MN2PR12MB361668C9AC2463E1E89478E0AB6C9@MN2PR12MB3616.namprd12.prod.outlook.com>
+ <BN8PR12MB35561363D36DA2E37DBA5461D36C9@BN8PR12MB3556.namprd12.prod.outlook.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <040a6307-9fba-0185-f913-a81816f1da62@intel.com>
+Date:   Mon, 15 Mar 2021 21:20:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Received: by 2002:ab0:2e8f:0:0:0:0:0 with HTTP; Mon, 15 Mar 2021 10:06:57
- -0700 (PDT)
-Reply-To: ezbtg22@gmail.com
-From:   "Mrs.E.Glenn" <mrganuserge654@gmail.com>
-Date:   Mon, 15 Mar 2021 10:06:57 -0700
-Message-ID: <CAH16wSN_QM_RAUGGsZ7LC8VTEKhCu3+VnJoNqqTumu2QA95yEg@mail.gmail.com>
-Subject: From Mrs.Glenn
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <BN8PR12MB35561363D36DA2E37DBA5461D36C9@BN8PR12MB3556.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
--- 
-Dear Beloved,
+On 15/03/21 7:00 pm, Liming Sun wrote:
+> Thanks Adrian. Yes, I did consider adding this ACPI support into sdhci-of-dwcmshc.c, but not sure which one is the preferred way.
+> Is this (sdhci-of-dwcmshc.c) what you recommend? I'll post the revised changes in patch v2.
 
-I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
-in a hospital bed in Israel. I am 59 years and childless; my husband
-is dead. I was diagnosed with terminal cancer. And my doctor just
-predicted that I have but very limited time to live due to damages in
-my system and as a result of that I decided to dispose my 10.5 million
-US dollars to a God-fearing one for the continuation of charitable
-work. This is why I located you.
+Yes, that is generally preferred I think.
 
-My guess about you may not be accurate because I came across your
-contact at the humanitarian calendar event of the year but I believe
-in God who divinely directed me to you for this solemn proposal of
-charitable work.
+> 
+>> -----Original Message-----
+>> From: Adrian Hunter <adrian.hunter@intel.com>
+>> Sent: Monday, March 15, 2021 4:34 AM
+>> To: Liming Sun <limings@nvidia.com>; Ulf Hansson <ulf.hansson@linaro.org>;
+>> Khalil Blaiech <kblaiech@nvidia.com>
+>> Cc: linux-mmc@vger.kernel.org; linux-kernel@vger.kernel.org
+>> Subject: Re: [PATCH v1 1/1] mmc: sdhci-acpi: Add support for NVIDIA
+>> BlueField-3 SoC
+>>
+>> On 12/03/21 3:48 pm, Liming Sun wrote:
+>>> This commit adds ACPI support for the BlueField-3 SoC which uses
+>>> the DWC_mshc eMMC controller. The boundary check logic in static
+>>> function dwcmshc_adma_write_desc() comes from sdhci-of-dwcmshc.c.
+>>
+>> Did you consider adding ACPI support to sdhci-of-dwcmshc.c ?
+>> Other drivers have taken that approach, see sdhci-xenon.c or sdhci-iproc.c
+>>
+>>>
+>>> Signed-off-by: Liming Sun <limings@nvidia.com>
+>>> Reviewed-by: Khalil Blaiech <kblaiech@nvidia.com>
+>>> ---
+>>>  drivers/mmc/host/sdhci-acpi.c | 64
+>> +++++++++++++++++++++++++++++++++++++++++++
+>>>  1 file changed, 64 insertions(+)
+>>>
+>>> diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
+>>> index 54205e3..6448e94e 100644
+>>> --- a/drivers/mmc/host/sdhci-acpi.c
+>>> +++ b/drivers/mmc/host/sdhci-acpi.c
+>>> @@ -716,6 +716,68 @@ static int sdhci_acpi_emmc_amd_probe_slot(struct
+>> platform_device *pdev,
+>>>  	.priv_size	= sizeof(struct amd_sdhci_host),
+>>>  };
+>>>
+>>> +/* Check DMA address/length boundary. */
+>>> +static inline bool dwcmshc_adma_boundary_ok(dma_addr_t addr, int len)
+>>> +{
+>>> +	return (addr | (SZ_128M - 1)) == ((addr + len - 1) | (SZ_128M - 1));
+>>> +}
+>>> +
+>>> +/*
+>>> + * If DMA addr spans 128MB boundary, we split the DMA transfer into two
+>>> + * so that each DMA transfer doesn't exceed the boundary.
+>>> + */
+>>> +static void dwcmshc_adma_write_desc(struct sdhci_host *host, void
+>> **desc,
+>>> +				    dma_addr_t addr, int len, unsigned int cmd)
+>>> +{
+>>> +	int tmplen, offset;
+>>> +
+>>> +	if (likely(!len || dwcmshc_adma_boundary_ok(addr, len))) {
+>>> +		sdhci_adma_write_desc(host, desc, addr, len, cmd);
+>>> +		return;
+>>> +	}
+>>> +
+>>> +	offset = addr & (SZ_128M - 1);
+>>> +	tmplen = SZ_128M - offset;
+>>> +	sdhci_adma_write_desc(host, desc, addr, tmplen, cmd);
+>>> +
+>>> +	addr += tmplen;
+>>> +	len -= tmplen;
+>>> +	sdhci_adma_write_desc(host, desc, addr, len, cmd);
+>>> +}
+>>> +
+>>> +static int sdhci_acpi_emmc_nvda_bf_probe_slot(struct platform_device
+>> *pdev,
+>>> +					      struct acpi_device *adev)
+>>> +{
+>>> +	struct sdhci_acpi_host *c = platform_get_drvdata(pdev);
+>>> +	struct sdhci_host *host = c->host;
+>>> +	u32 extra;
+>>> +
+>>> +	/* Extra adma table cnt for cross 128M boundary handling. */
+>>> +	extra = DIV_ROUND_UP_ULL(dma_get_required_mask(&pdev->dev),
+>> SZ_128M);
+>>> +	extra = min(extra, (u32)SDHCI_MAX_SEGS);
+>>> +	host->adma_table_cnt += extra;
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>> +static const struct sdhci_ops sdhci_acpi_ops_nvda_bf = {
+>>> +	.set_clock		= sdhci_set_clock,
+>>> +	.set_bus_width		= sdhci_set_bus_width,
+>>> +	.set_uhs_signaling	= sdhci_set_uhs_signaling,
+>>> +	.reset			= sdhci_reset,
+>>> +	.adma_write_desc	= dwcmshc_adma_write_desc,
+>>> +};
+>>> +
+>>> +static const struct sdhci_acpi_chip sdhci_acpi_chip_nvda_bf = {
+>>> +	.ops = &sdhci_acpi_ops_nvda_bf,
+>>> +};
+>>> +
+>>> +static const struct sdhci_acpi_slot sdhci_acpi_slot_nvda_bf_emmc = {
+>>> +	.chip		= &sdhci_acpi_chip_nvda_bf,
+>>> +	.caps		= MMC_CAP_8_BIT_DATA |
+>> MMC_CAP_NONREMOVABLE,
+>>> +	.probe_slot	= sdhci_acpi_emmc_nvda_bf_probe_slot,
+>>> +};
+>>> +
+>>>  struct sdhci_acpi_uid_slot {
+>>>  	const char *hid;
+>>>  	const char *uid;
+>>> @@ -740,6 +802,7 @@ struct sdhci_acpi_uid_slot {
+>>>  	{ "QCOM8051", NULL, &sdhci_acpi_slot_qcom_sd_3v },
+>>>  	{ "QCOM8052", NULL, &sdhci_acpi_slot_qcom_sd },
+>>>  	{ "AMDI0040", NULL, &sdhci_acpi_slot_amd_emmc },
+>>> +	{ "MLNXBF30", NULL, &sdhci_acpi_slot_nvda_bf_emmc },
+>>>  	{ },
+>>>  };
+>>>
+>>> @@ -757,6 +820,7 @@ struct sdhci_acpi_uid_slot {
+>>>  	{ "QCOM8051" },
+>>>  	{ "QCOM8052" },
+>>>  	{ "AMDI0040" },
+>>> +	{ "MLNXBF30" },
+>>>  	{ },
+>>>  };
+>>>  MODULE_DEVICE_TABLE(acpi, sdhci_acpi_ids);
+>>>
+> 
 
-Therefore I wholeheartedly wish to bequeath my fortune to you as a
-God-fearing person for the continuation of charitable work anywhere
-around the world.
-
-I shall be going in for a surgery operations soonest and desire this
-money to be transferred to you as I do not wish to leave this money in
-the bank because bankers might misuse it for their own interest after
-my death.
-
-As soon as I receive your quick reply assuring me that you will
-utilize the money as I instructed you for the benefit of the less
-privilege, I shall give you more details and also instruct my bank to
-release the money to you for the charity project. I hope you receive
-this mail in good health.
-
-Please contact me on this E-mail (ezbtg22@gmail.com) because I don t
-know what will be my situation in next minute,
-
-I am waiting for your reply.
-
-Yours sincerely,
-Mrs Elizabet Glenn.
