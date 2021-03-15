@@ -2,89 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C271933C83B
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Mar 2021 22:10:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5B3F33C992
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Mar 2021 00:02:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232688AbhCOVKY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 15 Mar 2021 17:10:24 -0400
-Received: from mga06.intel.com ([134.134.136.31]:11014 "EHLO mga06.intel.com"
+        id S232550AbhCOXC0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 15 Mar 2021 19:02:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46310 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234094AbhCOVJy (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 15 Mar 2021 17:09:54 -0400
-IronPort-SDR: fXsgOweZYP95NAO+zFJR/ZlHkZZwV8OeAeCZJ862URrHJAufW7idKaSYpDHO4fJprjS/liQXOe
- KObCPPVjNPqA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9924"; a="250521755"
-X-IronPort-AV: E=Sophos;i="5.81,251,1610438400"; 
-   d="scan'208";a="250521755"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2021 14:09:51 -0700
-IronPort-SDR: QqoGwGyIM0SWmD7Q9R5vG3zx01mNrOXrhviDksM4WCW0VuB8g8mlBMbiH48KGyKc4ek6oMVHt9
- 3YUhURq5KwEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,251,1610438400"; 
-   d="scan'208";a="601571804"
-Received: from lkp-server02.sh.intel.com (HELO 1dc5e1a854f4) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 15 Mar 2021 14:09:48 -0700
-Received: from kbuild by 1dc5e1a854f4 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lLuTE-0000eY-AL; Mon, 15 Mar 2021 21:09:48 +0000
-Date:   Tue, 16 Mar 2021 05:09:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org
-Subject: [PATCH] wfx: fix irqf_oneshot.cocci warnings
-Message-ID: <20210315210920.GA43634@d108da9836c5>
-References: <20210315132501.441681-25-Jerome.Pouiller@silabs.com>
+        id S232528AbhCOXCZ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 15 Mar 2021 19:02:25 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3246D64E07;
+        Mon, 15 Mar 2021 23:02:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615849344;
+        bh=MvgmTF9JP1Pl0WIL7tXvPjN/6QezXqYVNnpCd3cjBLk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LuFHU+DtNHYVNvoF998/ITpQCiVyqtetr3Zm8/GkiQuV9RHDMyekwDh/mR1gLMOdJ
+         B/S6KrjQ8KOoSZokAIAJf1QaZY+L0btPXlb4ddDA5+kgL4Z/D7H3HBMPQzwHYJ7A2R
+         0ZLWY3ENYrulrsOnudlc883i7sAwIxpJ11S6b5EehAF2VGx7XZ3hWiQLv0GRCzUf6w
+         ZieSHwcqEgYkGfN0e/IhffK3AaJTCGFO/HWG0BuHuBZZEYU7KAsQRcl99Ru20DYVlM
+         I5DOn6oseslpOiVqGNjNR9m0wtgh9OFBmh/G5w+DdUMDDa8IDVdkaTCmR8tS8dF2Gg
+         HGWjP0E3KestQ==
+Date:   Mon, 15 Mar 2021 16:02:22 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Peng Zhou <peng.zhou@mediatek.com>,
+        linux-block <linux-block@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Satya Tangirala <satyat@google.com>,
+        Wulin Li <wulin.li@mediatek.com>
+Subject: Re: [PATCH v2 2/4] mmc: Mediatek: enable crypto hardware engine
+Message-ID: <YE/nfu8vRETYN9dO@gmail.com>
+References: <20210309015750.6283-1-peng.zhou@mediatek.com>
+ <CACRpkdYTkW7b9SFEY6Ubq4NicgR_5ewQMjE2zHvGbgxYadhHQQ@mail.gmail.com>
+ <YEpqkAq6wOZ+TpR9@gmail.com>
+ <CACRpkdb7vmFgH0XTG3Z6OzFv0CfPsBguKqVAZt=PZ+ms2-0WjA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210315132501.441681-25-Jerome.Pouiller@silabs.com>
-X-Patchwork-Hint: ignore
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CACRpkdb7vmFgH0XTG3Z6OzFv0CfPsBguKqVAZt=PZ+ms2-0WjA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: kernel test robot <lkp@intel.com>
+On Mon, Mar 15, 2021 at 02:41:58PM +0100, Linus Walleij wrote:
+> Hi Eric,
+> 
+> thanks for stepping in and clarifying! I get it better now, I though
+> this was some other encryption scheme "on the side".
+> 
+> There is one worrying thing in the patch still:
+> 
+> On Thu, Mar 11, 2021 at 8:08 PM Eric Biggers <ebiggers@kernel.org> wrote:
+> > On Thu, Mar 11, 2021 at 02:48:23PM +0100, Linus Walleij wrote:
+> > > On Tue, Mar 9, 2021 at 3:06 AM Peng Zhou <peng.zhou@mediatek.com> wrote:
+> 
+> > > > +       /*
+> > > > +        * 1: MSDC_AES_CTL_INIT
+> > > > +        * 4: cap_id, no-meaning now
+> > > > +        * 1: cfg_id, we choose the second cfg group
+> > > > +        */
+> > > > +       if (mmc->caps2 & MMC_CAP2_CRYPTO)
+> > > > +               arm_smccc_smc(MTK_SIP_MMC_CONTROL,
+> > > > +                             1, 4, 1, 0, 0, 0, 0, &smccc_res);
+> 
+> So MSDC_AES_CTL_INIT. Assumes we are using AES and AES
+> only I suppose?
+> 
+> > It happens in the same place, cqhci-crypto.c.  Mediatek's eMMC inline encryption
+> > hardware follows the eMMC standard fairly closely, so Peng's patch series just
+> > sets MMC_CAP2_CRYPTO to make it use the standard cqhci crypto code, and does a
+> > couple extra things to actually enable the hardware's crypto support on Mediatek
+> > platforms since it isn't enabled by default.  (*Why* it requires an SMC call to
+> > enable instead of just working as expected, I don't know though.)
+> 
+> Now I don't know the limitations of cqhci crypto. Clearly it only supports
+> AES today.
+> 
+> However would the cqhci crypto grow support for any other crypto
+> like 2Fish or DES and the user request this, then I suppose there is
+> no way for the MTK driver to announce "uh no I don't do that"?
+> 
+> Or will this cqhci hardware only ever support AES?
 
-drivers/net/wireless/silabs/wfx/bus_sdio.c:134:8-33: ERROR: Threaded IRQ with no primary handler requested without IRQF_ONESHOT
+The standard specifies the encryption algorithms that may be supported, and it
+specifies that host controllers have a set of crypto capability registers that
+list the subset of those algorithms that the hardware actually supports.  See
+cqhci_crypto_init() which reads these registers.
 
- Since commit 1c6c69525b40 ("genirq: Reject bogus threaded irq requests")
- threaded IRQs without a primary handler need to be requested with
- IRQF_ONESHOT, otherwise the request will fail.
+If new algorithms get added, the hardware won't declare support for them.
+So what you describe won't be a problem.
 
- So pass the IRQF_ONESHOT flag in this case.
+If, nevertheless, there is broken hardware that declares support for algorithms
+it doesn't support, we could work around it using a method in cqhci_host_ops.
+That isn't necessary now though.
 
-Generated by: scripts/coccinelle/misc/irqf_oneshot.cocci
-
-CC: Jérôme Pouiller <jerome.pouiller@silabs.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: kernel test robot <lkp@intel.com>
----
-
-url:    https://github.com/0day-ci/linux/commits/Jerome-Pouiller/wfx-get-out-from-the-staging-area/20210315-212855
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging.git b828324bba8f575fde487a91fec07303789dda8a
-
- bus_sdio.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/drivers/net/wireless/silabs/wfx/bus_sdio.c
-+++ b/drivers/net/wireless/silabs/wfx/bus_sdio.c
-@@ -132,7 +132,8 @@ static int wfx_sdio_irq_subscribe(void *
- 		flags = IRQF_TRIGGER_HIGH;
- 	flags |= IRQF_ONESHOT;
- 	return devm_request_threaded_irq(&bus->func->dev, bus->of_irq, NULL,
--					 wfx_sdio_irq_handler_ext, flags,
-+					 wfx_sdio_irq_handler_ext,
-+					 flags | IRQF_ONESHOT,
- 					 "wfx", bus);
- }
- 
+- Eric
