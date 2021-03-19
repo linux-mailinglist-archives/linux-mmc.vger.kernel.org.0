@@ -2,97 +2,115 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C29E9341F20
-	for <lists+linux-mmc@lfdr.de>; Fri, 19 Mar 2021 15:14:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F29134211D
+	for <lists+linux-mmc@lfdr.de>; Fri, 19 Mar 2021 16:43:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230160AbhCSONd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 19 Mar 2021 10:13:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51718 "EHLO
+        id S229875AbhCSPnP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 19 Mar 2021 11:43:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230009AbhCSONU (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Mar 2021 10:13:20 -0400
-Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6B9FC06174A
-        for <linux-mmc@vger.kernel.org>; Fri, 19 Mar 2021 07:13:20 -0700 (PDT)
-Received: by mail-vk1-xa2f.google.com with SMTP id o85so2130118vko.8
-        for <linux-mmc@vger.kernel.org>; Fri, 19 Mar 2021 07:13:20 -0700 (PDT)
+        with ESMTP id S229914AbhCSPmq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Mar 2021 11:42:46 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95107C06174A;
+        Fri, 19 Mar 2021 08:42:45 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id b9so10456097ejc.11;
+        Fri, 19 Mar 2021 08:42:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jxm+/pPcm1XVG4+mY+cSz5OGxQEii57vbnoHpCbdW98=;
-        b=oJ3/MhJce5u9An6ttjIoHlmAsPixMOYiHetFbmJFYfotGoZdr9fskv4V4RimusY92P
-         4V1keHZZwZ2TGJ1xHxYKlHLCZqNcVw5dXVfyGKVdGy3EvaIj9RV5yuDURurnCKpki4Xg
-         TcpON6cB+yzQnTUN89jR+g5p+9P9tvABzK58Lcnc8BQFxhXwiJp+WPzDlxnvvKbebVvu
-         lbk06ohMWGQfZZxyjuqjUowAArE+iFx7r1AsZJWuoto6k/RxK/e0eY1nh+ykuD5GiVne
-         X6zlnINyPqpUxzO2H5DTIWXUM6l0BeXRk3HuDaIe+HrjceZg6TlYWxaOlwtxua8TZeTR
-         5s0g==
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=AosAsdPYu9Ufpf4Wk/dfAmNbL8dSXdLyf4cxfVtJsJs=;
+        b=lyiABF6FyD5T6JqaesOU6h9kIR+cKrn1Sh7bTfLrms514h0BC0oBI8qKQ5kFm8M212
+         UH2rhod/YmnMU1/eLyFO1c2a+E+vdnNN1kPXazbx1W+g0MpCjxaFCzmHJlXQmAIrwaPU
+         U2ReVax7N3j2SopCQcveKL9Yi83d2Xyn888ybrDJdvbFcCVPGLa8edUQ5RVIyzAsvL1a
+         mfR4ba5Hss1Ze48Z/zR1LQ2HUTG5JqoZ9IDxfjoCTY7fQo7/UglYIhJUv5mnDkpGRO44
+         zPrxTmF8BixYWaA/YUdRu80+XpSHYlvrzqAhSPI399dUn5hUksURO5SnvohjEALl0ZBf
+         iosg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jxm+/pPcm1XVG4+mY+cSz5OGxQEii57vbnoHpCbdW98=;
-        b=alnpHP7DoPsiJajKwya49CAXQvelhcJ6QqdyXogGhcMrc0IL+LydAs+BEKILlojc/K
-         LsXUyJRTojQlYxrenwJwgvOSbDoZGYYzoMmS3i4hrB+Q8XvLlSQuwicONqZGWtyk5oUk
-         ZxTLP8oEBcG2obEU186PMa7K9WLdkY8EbBZQreRW7/htJKThxqZCiNb8q7z67SJ+/tJg
-         5dNTYjnGqGxQF8Js8RhvTPR3kaOwgy8uFYAS3jTIhqPnB3viMmeXRz26gIXYF66aE5f7
-         IKPCVwUt5SGKg+Yr1vXYNLvTIPjMSrvNT7N8TGeAmWQNJAsXtzLR6gJW/g389qZAsRLO
-         zlUg==
-X-Gm-Message-State: AOAM532sfxXuOr8esqCRI/7thy6qMy1eCuqF3JN4jjO12u0TJgrdHQeu
-        UAsRv3lZ7cp5vyu9YfoQmRZ5fb52aqmIMLUFTYCkdA==
-X-Google-Smtp-Source: ABdhPJx2+SzVQl8imKo0EQ3B+5dXnijhV7xS6mcteSNG7VLsSVEp39ebWCZcfEIb2iQ9RP8ErpC2Xasvz+xL8WNGjiY=
-X-Received: by 2002:a1f:5504:: with SMTP id j4mr2765495vkb.7.1616163199593;
- Fri, 19 Mar 2021 07:13:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210319121357.255176-1-huobean@gmail.com> <20210319121357.255176-2-huobean@gmail.com>
-In-Reply-To: <20210319121357.255176-2-huobean@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 19 Mar 2021 15:12:42 +0100
-Message-ID: <CAPDyKFp4Y-MS_tsNpCS9M8pqm2RoTmMG7=4MYyxZ7ZsnVKKeQw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] mmc: cavium: Use '"%s...", __func__' to print
- function name
-To:     Bean Huo <huobean@gmail.com>
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=AosAsdPYu9Ufpf4Wk/dfAmNbL8dSXdLyf4cxfVtJsJs=;
+        b=EAGmXnK8SMk2wIYa80RVs1pu0iQpTn7wiNbhx8KcqF9JggHBYP60FsJZPqdyinQLte
+         HNSGezeiw610qZRanP+AnURa81BkmmCuPENNPufYV0kqKxAfGDxHaUkd4/MtQvrRhcTf
+         up2AJg4IlEja4lF5f5uNVHsSRK92P/K/h8K4RcRgCoqD85dH6bg8z122MmOGaMbh8Cb1
+         ao4jxZPDkjGBvH5EP5u9upG666zjNeKKStV1BvXWYPOkeISXnuenKipD8cDUdJg0bjFn
+         qBixz2dLG/xMzGfVbMLaka7zfHKXcc1HKENz7xRD8AS918JS0oa2gezd8oyzkN2mWHLZ
+         ZrAw==
+X-Gm-Message-State: AOAM533WMiKY3e1B2uYIQ7YtXZG3O2Ai0llmlE1fZsFWsCoWuBZYWbHP
+        /vVO37lp8Iax1xE+0jr08Rs=
+X-Google-Smtp-Source: ABdhPJzXUYXeQXqLVlM1MCjV0Leex/cYqKuZRVk8YjMdykP6fA1NLo4fwo9IQpog+vz9sgkmkV03cQ==
+X-Received: by 2002:a17:907:2d24:: with SMTP id gs36mr5152295ejc.344.1616168558515;
+        Fri, 19 Mar 2021 08:42:38 -0700 (PDT)
+Received: from ubuntu-laptop (ip5f5bec5d.dynamic.kabel-deutschland.de. [95.91.236.93])
+        by smtp.googlemail.com with ESMTPSA id r17sm4203287edt.70.2021.03.19.08.42.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Mar 2021 08:42:38 -0700 (PDT)
+Message-ID: <79ec60974875d4ac17589ea4575e36ec1204f881.camel@gmail.com>
+Subject: Re: [PATCH v1 2/2] mmc: cavium: Remove redundant if-statement
+ checkup
+From:   Bean Huo <huobean@gmail.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     rric@kernel.org, Linus Walleij <linus.walleij@linaro.org>,
         linux-mmc <linux-mmc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Bean Huo (beanhuo)" <beanhuo@micron.com>
+        "Bean Huo (beanhuo)" <beanhuo@micron.com>,
+        "# 4.0+" <stable@vger.kernel.org>
+Date:   Fri, 19 Mar 2021 16:42:37 +0100
+In-Reply-To: <CAPDyKFrU591aeH5GyuuQW8tPeNc9wav=t8wqF1EdTBbCc9xheg@mail.gmail.com>
+References: <20210319121357.255176-1-huobean@gmail.com>
+         <20210319121357.255176-3-huobean@gmail.com>
+         <CAPDyKFrU591aeH5GyuuQW8tPeNc9wav=t8wqF1EdTBbCc9xheg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4-0ubuntu1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 19 Mar 2021 at 13:14, Bean Huo <huobean@gmail.com> wrote:
->
-> From: Bean Huo <beanhuo@micron.com>
->
-> Use preferred way '"%s...", __func__' to print function name.
->
-> Signed-off-by: Bean Huo <beanhuo@micron.com>
+On Fri, 2021-03-19 at 15:09 +0100, Ulf Hansson wrote:
+> On Fri, 19 Mar 2021 at 13:14, Bean Huo <huobean@gmail.com> wrote:
+> 
+> > From: Bean Huo <beanhuo@micron.com>
+> > Currently, we have two ways to issue multiple-block read/write the
+> > command to the eMMC. One is by normal IO request path fs->block-
+> > >mmc.
+> > Another one is that we can issue multiple-block read/write through
+> > MMC ioctl interface. For the first path, mrq->stop, and mrq->stop-
+> > >opcode
+> > will be initialized in mmc_blk_data_prep(). However, for the second
+> > IO
+> > path, mrq->stop is not initialized since it is a pre-defined
+> > multiple
+> > blocks read/write.
+> 
+> 
+> As a matter of fact this way is also supported for the regular block
+> 
+> I/O path. To make the mmc block driver to use it, mmc host drivers
+> 
+> need to announce that it's supported by setting MMC_CAP_CMD23.
+> 
+> 
+> 
+> It looks like that is what your patch should be targeted towards, can
+> 
+> you have a look at this instead?
+> 
+> 
 
-Applied for next, thanks!
+Hi Ulf,
+Thanks for your comments. I will look at that as your suggestion.
+The patch [1/2] is accepted, so I will just update this patch to
+the next version.
 
-Kind regards
-Uffe
+Kind regards,
+Bean
 
+> 
+> Kind regards
+> 
+> Uffe
 
-> ---
->  drivers/mmc/host/cavium.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/drivers/mmc/host/cavium.c b/drivers/mmc/host/cavium.c
-> index 4bb8f2800a2b..95a41983c6c0 100644
-> --- a/drivers/mmc/host/cavium.c
-> +++ b/drivers/mmc/host/cavium.c
-> @@ -656,8 +656,7 @@ static void cvm_mmc_dma_request(struct mmc_host *mmc,
->
->         if (!mrq->data || !mrq->data->sg || !mrq->data->sg_len ||
->             !mrq->stop || mrq->stop->opcode != MMC_STOP_TRANSMISSION) {
-> -               dev_err(&mmc->card->dev,
-> -                       "Error: cmv_mmc_dma_request no data\n");
-> +               dev_err(&mmc->card->dev, "Error: %s no data\n", __func__);
->                 goto error;
->         }
->
-> --
-> 2.25.1
->
