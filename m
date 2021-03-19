@@ -2,116 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52F42341F07
-	for <lists+linux-mmc@lfdr.de>; Fri, 19 Mar 2021 15:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E2E341F11
+	for <lists+linux-mmc@lfdr.de>; Fri, 19 Mar 2021 15:13:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230008AbhCSOKs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 19 Mar 2021 10:10:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51056 "EHLO
+        id S229974AbhCSOM4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 19 Mar 2021 10:12:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbhCSOKd (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Mar 2021 10:10:33 -0400
-Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A37C06174A
-        for <linux-mmc@vger.kernel.org>; Fri, 19 Mar 2021 07:10:33 -0700 (PDT)
-Received: by mail-vk1-xa33.google.com with SMTP id b10so2141276vkl.0
-        for <linux-mmc@vger.kernel.org>; Fri, 19 Mar 2021 07:10:33 -0700 (PDT)
+        with ESMTP id S230025AbhCSOMr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Mar 2021 10:12:47 -0400
+Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2823C06174A
+        for <linux-mmc@vger.kernel.org>; Fri, 19 Mar 2021 07:12:46 -0700 (PDT)
+Received: by mail-vs1-xe2b.google.com with SMTP id h25so3545592vso.2
+        for <linux-mmc@vger.kernel.org>; Fri, 19 Mar 2021 07:12:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=R+2pClJKNrDjC0jJNOAgxtn3SS7+pbCOoKqmxQWs/Zg=;
-        b=F1TVWoNN0IFWz9G5oqbkL0k5aGfTPkdeVBxEYg4MnZjKcTYVkWmGPxlDKx9QFMbd/a
-         W29zPnHyeumYQPQI3m86w1ZOmKeD6VVmjjbnEvtwM5Zyendc8vVAWys2D3Oo2vp69N67
-         ZkBJVHlQW8GI//oqDQE4BWvyuz1DkfvBiL7X1ygRaCQudOKCcrUfGBCVczd20hNbPctD
-         rYzkmYJR1R/J/cTB+UilIg9bj7TAC3MZ+gtEDz1Puiv320HLCnr2vag06E9w2KV5AEoV
-         +RzucoSt2YZedRFNVGDClg9sgmJiTGs5KnzIT5dqrRYUHBeFVPNVK0WH26Nofq+9jHpR
-         Nvzg==
+        bh=xd+o2cB05izgGbUYHaDQXSmqMhYbVE3vcae+Q3WXMyQ=;
+        b=kpGO0TVYSQG0ZNsk7F8bAPPdntChgP86YButxxu2dqZ1QlkQ7+0sS6KosI4r3gTg3B
+         cNHNWK4QhVVLqffq2pfkwceqqcNhi8N9wKcoTOgCLM6EO2xQDYZHnXn+4s7J6Y9em5bN
+         J5ACNX2QpOkvzZjVlkjjcN8V7eCOR1ts+YfTZovNenGrHYSEmafaNsb8kBDNsUpmDjkG
+         IJFaXHLaxD8A7PS0INmv8u5qoUUZrA1DBpZWkkpJk+rsRPvZaMjrxXlM1sQWJE09c5HI
+         c1nDJ/Tn3WpcHJUp4uJ18xSrYw0dk1lGLzBTtGrlJv2SKu01PJNfCwTFiLqzYji6X7Kq
+         frcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=R+2pClJKNrDjC0jJNOAgxtn3SS7+pbCOoKqmxQWs/Zg=;
-        b=OuZmpeGekgo7Db/YP1Iatw3flUn8AChRv53Zw2Uh25YPWk4GTzR+xhhqS6qDgMXtuc
-         hfdNT5PCJiKZK/sLBq3haxwRWn9yp/FlDdS62TcIJzoXc5RKdlv1iOrCC8tAv4zkcEXU
-         IKop1Ikj3PKAbWlc4OacRevAQd2VY1ZhSGap7tV1VwIMuLz2K7AQoAIj3nfl78IzXxwb
-         U18dVo4hQ70ivkAF6pzsSBZwtoHgAlXEmoT8DXTBlIvbxlCNoJ2lSxMe/Cn+2OmWlJzY
-         ndCb32rJwZshHQNp6iMkNNXsmR9ZU+POeuQE1pUTgkIX4mUccfhgf8RO/C6szX8UeC4E
-         OMPQ==
-X-Gm-Message-State: AOAM532dbjorVDhjryVWuJQzyNBqo3W9sWgpd5zdIH9Vep0FWtj2Lhmc
-        m6iQuOEYB1IxjiCTCLSOyNmKR5uZZYx4wlA8St7AVg==
-X-Google-Smtp-Source: ABdhPJya1hVWD+5DJP5ed50sVNI7Btnb6+n4XM9kubcFDzzapxLfg1ql04vWdxhGFQKqYert8HlYu3HUGuo2gDnOUI0=
-X-Received: by 2002:a05:6122:11a6:: with SMTP id y6mr2699063vkn.6.1616163032596;
- Fri, 19 Mar 2021 07:10:32 -0700 (PDT)
+        bh=xd+o2cB05izgGbUYHaDQXSmqMhYbVE3vcae+Q3WXMyQ=;
+        b=sQQJ5MPjn0Czyq+u0NRkBJcLUJSlAa9Z5TUZWIBK3kOTsG0Hnez0sI64fvIhWn/LfH
+         Dkwv8OmBDjSdmNhAprTjCm/xeSUgBsBOWk018yoq9FP2eoAYYVRBtcs0idomIq76OnMw
+         erGA0DMWQ0waIJMHBez7e9oozm5vheUbfFmnTDxpZKCayNh4VMvLp1Th/fZR9S7JnCwZ
+         8RTK62ePvtBgqUBYjWMo3jv1boIBU1y+jPMcxlgK90CBHJY3psKEVx7VBlUM0XThXAvJ
+         QqGY1ZIS1aS2Xj65B/7ETPgoP+Sx/FO6BAJAk/uCHCgLarC/WZIgCtR849WN+ekD1Vax
+         sTlw==
+X-Gm-Message-State: AOAM530C891+TK9/dw3A0TqMBGfO0WZaQ+dP+lp1CtT8m84kf3suGG0v
+        mQunRCtl2ESh2U9f4s0S3e+gcdqGG3WkHrrm0xQaAA==
+X-Google-Smtp-Source: ABdhPJwh0705p300VaubaGlgTs/06J1aHU2eB30nqw3thSbqZtKHL12+/YbCTi5Cwd9OFQbdyNEw5wBRs7yzhoq7taI=
+X-Received: by 2002:a05:6102:7b0:: with SMTP id x16mr2730894vsg.34.1616163165989;
+ Fri, 19 Mar 2021 07:12:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210319121357.255176-1-huobean@gmail.com> <20210319121357.255176-3-huobean@gmail.com>
-In-Reply-To: <20210319121357.255176-3-huobean@gmail.com>
+References: <20210313173740.GA580681@joeylaptop>
+In-Reply-To: <20210313173740.GA580681@joeylaptop>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 19 Mar 2021 15:09:55 +0100
-Message-ID: <CAPDyKFrU591aeH5GyuuQW8tPeNc9wav=t8wqF1EdTBbCc9xheg@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] mmc: cavium: Remove redundant if-statement checkup
-To:     Bean Huo <huobean@gmail.com>
-Cc:     rric@kernel.org, Linus Walleij <linus.walleij@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Bean Huo (beanhuo)" <beanhuo@micron.com>,
-        "# 4.0+" <stable@vger.kernel.org>
+Date:   Fri, 19 Mar 2021 15:12:07 +0100
+Message-ID: <CAPDyKFom3UZyX+mcgte4sOedEoMAXKnsVm_8g44WqgZm30td6A@mail.gmail.com>
+Subject: Re: [PATCH] memstick: Remove useless else branch
+To:     Joey Pabalan <jpabalanb@gmail.com>
+Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 19 Mar 2021 at 13:14, Bean Huo <huobean@gmail.com> wrote:
+On Sat, 13 Mar 2021 at 18:38, Joey Pabalan <jpabalanb@gmail.com> wrote:
 >
-> From: Bean Huo <beanhuo@micron.com>
+> Remove else branch on line 334 of memstick.c, after the return of the
+> previous branch. Found by checkpatch.
 >
-> Currently, we have two ways to issue multiple-block read/write the
-> command to the eMMC. One is by normal IO request path fs->block->mmc.
-> Another one is that we can issue multiple-block read/write through
-> MMC ioctl interface. For the first path, mrq->stop, and mrq->stop->opcode
-> will be initialized in mmc_blk_data_prep(). However, for the second IO
-> path, mrq->stop is not initialized since it is a pre-defined multiple
-> blocks read/write.
+> Signed-off-by: Joey Pabalan <jpabalanb@gmail.com>
 
-As a matter of fact this way is also supported for the regular block
-I/O path. To make the mmc block driver to use it, mmc host drivers
-need to announce that it's supported by setting MMC_CAP_CMD23.
-
-It looks like that is what your patch should be targeted towards, can
-you have a look at this instead?
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
->
-> Meanwhile, if it is open-ended multiple block read/write command,
-> STOP_TRANSMISSION CMD12 will be issued later in mmc_blk_issue_drv_op(),
-> since it is MMC_IOC_MULTI_CMD.
->
-> So, delete these if-statement checkups, let these kinds of multiple-block
-> read/write request go.
->
-> Fixes 'ba3869ff32e4 ("mmc: cavium: Add core MMC driver for Cavium SOCs")'
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bean Huo <beanhuo@micron.com>
+
 > ---
->  drivers/mmc/host/cavium.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/memstick/core/memstick.c | 21 ++++++++++-----------
+>  1 file changed, 10 insertions(+), 11 deletions(-)
 >
-> diff --git a/drivers/mmc/host/cavium.c b/drivers/mmc/host/cavium.c
-> index 95a41983c6c0..8fb7cbcf62ad 100644
-> --- a/drivers/mmc/host/cavium.c
-> +++ b/drivers/mmc/host/cavium.c
-> @@ -654,8 +654,7 @@ static void cvm_mmc_dma_request(struct mmc_host *mmc,
->         struct mmc_data *data;
->         u64 emm_dma, addr;
->
-> -       if (!mrq->data || !mrq->data->sg || !mrq->data->sg_len ||
-> -           !mrq->stop || mrq->stop->opcode != MMC_STOP_TRANSMISSION) {
-> +       if (!mrq->data || !mrq->data->sg || !mrq->data->sg_len) {
->                 dev_err(&mmc->card->dev, "Error: %s no data\n", __func__);
->                 goto error;
+> diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
+> index 12bc3f5a6cbb..bb1065990aeb 100644
+> --- a/drivers/memstick/core/memstick.c
+> +++ b/drivers/memstick/core/memstick.c
+> @@ -331,18 +331,17 @@ static int h_memstick_read_dev_id(struct memstick_dev *card,
+>                                   sizeof(struct ms_id_register));
+>                 *mrq = &card->current_mrq;
+>                 return 0;
+> -       } else {
+> -               if (!(*mrq)->error) {
+> -                       memcpy(&id_reg, (*mrq)->data, sizeof(id_reg));
+> -                       card->id.match_flags = MEMSTICK_MATCH_ALL;
+> -                       card->id.type = id_reg.type;
+> -                       card->id.category = id_reg.category;
+> -                       card->id.class = id_reg.class;
+> -                       dev_dbg(&card->dev, "if_mode = %02x\n", id_reg.if_mode);
+> -               }
+> -               complete(&card->mrq_complete);
+> -               return -EAGAIN;
 >         }
+> +       if (!(*mrq)->error) {
+> +               memcpy(&id_reg, (*mrq)->data, sizeof(id_reg));
+> +               card->id.match_flags = MEMSTICK_MATCH_ALL;
+> +               card->id.type = id_reg.type;
+> +               card->id.category = id_reg.category;
+> +               card->id.class = id_reg.class;
+> +               dev_dbg(&card->dev, "if_mode = %02x\n", id_reg.if_mode);
+> +       }
+> +       complete(&card->mrq_complete);
+> +       return -EAGAIN;
+>  }
+>
+>  static int h_memstick_set_rw_addr(struct memstick_dev *card,
 > --
-> 2.25.1
+> 2.27.0
 >
