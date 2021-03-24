@@ -2,388 +2,226 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CEC73475DE
-	for <lists+linux-mmc@lfdr.de>; Wed, 24 Mar 2021 11:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A67347BE8
+	for <lists+linux-mmc@lfdr.de>; Wed, 24 Mar 2021 16:17:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230247AbhCXKVz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 24 Mar 2021 06:21:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52388 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235695AbhCXKVh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 24 Mar 2021 06:21:37 -0400
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F15E9C061763
-        for <linux-mmc@vger.kernel.org>; Wed, 24 Mar 2021 03:21:36 -0700 (PDT)
-Received: by mail-ua1-x92f.google.com with SMTP id c2so7688853uaj.3
-        for <linux-mmc@vger.kernel.org>; Wed, 24 Mar 2021 03:21:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7apWozlOt2FqRFycW0Hur3TIoMg6mDhSrYsqHBdsqD4=;
-        b=hGdgJIzrda8kSnAFgL4/2AUpL5DTF8JT9DcD9XJSSpJprxaISt3xgyXRR3jSTS8hG5
-         uL4YqQ/0t1Wc4rlLCIuHzW2N0vlvtZQcUqKEXndQDVU8y9ab7HORaN2ubRe0VbcnfiF7
-         SWAF2+YXtocGRkfGZPFjC88QArPPOgUXpu5lNHGECtxP/9a6i8uiLSTQh/ldr9aO6OU6
-         Z8x+8pP+FbqFtXh2Lr1o9Z2lpL8IjqMDs/Dyk351DYp+IgUrv9G6/kEQV6+BsfmBMqYm
-         NhKE8+zdjIas5GNlgwbqdTrMbWauhdm9//jvwQXb4FC9hqIXfrtUfXnrSw4lqBzQUiRW
-         ySYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7apWozlOt2FqRFycW0Hur3TIoMg6mDhSrYsqHBdsqD4=;
-        b=sPkBswwsdO8un7nf8EqSsmUOIpBmZoOjKGHHT3mTmAkOkunJEfS+3XuEjXUI4JaGXJ
-         658CiOMy1lH0/KLX9Wb8arHv7erjNwfYNwbnewbeEva0JmhNLz/KF9j4NdFE/MCV2A6B
-         5oV791p+q7jlXc8u6I0fGfdnucwNUTQDcrWC8OmJMRucRKNR+XdsTR7t6yBWavXLIfNR
-         NuUbaxKY6IUoc0RxVTd5SYMWT3+1rgPDGqXicxpKRd0qDdQMmL7bAmehsp+vnTXFrlVq
-         frz4e8puKXwprAYOUtf8alC8FCyw9mFj4YKNEFp0mCdmIgn8mS8jiduOJCyf+Ct5VZzu
-         kz2g==
-X-Gm-Message-State: AOAM531RDv4p1wmf+bTA5BMrqrdgKTrXA3xxLS3OszMTbSNDSOyz/Uwc
-        FfOki++EUqgFJ74O+mf2/ZV0ghVAbiVzjoXNuyFtIg==
-X-Google-Smtp-Source: ABdhPJx11OsxN0jvvUTrVF43kL0pyJRkssrUH5DhNuWjNKYwMbxeLZCTPogRmz6xHOov1pAOQN7zV2LeS3TnJLPKDIA=
-X-Received: by 2002:a9f:2843:: with SMTP id c61mr952901uac.129.1616581295909;
- Wed, 24 Mar 2021 03:21:35 -0700 (PDT)
+        id S236420AbhCXPQ1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 24 Mar 2021 11:16:27 -0400
+Received: from mout.kundenserver.de ([212.227.126.133]:59381 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236516AbhCXPQR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 24 Mar 2021 11:16:17 -0400
+Received: from [192.168.1.167] ([37.4.249.89]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1Mzydy-1lcsSd3NZO-00x6y6; Wed, 24 Mar 2021 16:16:01 +0100
+Subject: Re: [PATCH 4/4] ARM: dts: Fix-up EMMC2 controller's frequency
+To:     Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+        linux-rpi-kernel@lists.infradead.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc:     f.fainelli@gmail.com, phil@raspberrypi.com,
+        tim.gover@raspberrypi.com, adrian.hunter@intel.com,
+        sbranden@broadcom.com, alcooperx@gmail.com,
+        linux-kernel@vger.kernel.org, ulf.hansson@linaro.org
+References: <20210322185816.27582-1-nsaenz@kernel.org>
+ <20210322185816.27582-5-nsaenz@kernel.org>
+From:   Stefan Wahren <stefan.wahren@i2se.com>
+Autocrypt: addr=stefan.wahren@i2se.com; keydata=
+ LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tClZlcnNpb246IEdudVBHIHYy
+ CgptUUlOQkZ0NmdCTUJFQUN1Yi9wQmV2SHhidkplZnlaRzMySklObW4yYnNFUFgyNVY2ZmVq
+ bXlZd21DR0tqRnRMCi9Eb1VNRVZIRHhDSjQ3Qk1YbzM0NGZIVjFDM0FudWRnTjFCZWhMb0J0
+ TEh4bW5lQ3pnSDNLY1B0V1c3cHRqNEcKdEp2OUNRRFp5MjdTS29FUHh5YUk4Q0YweWdSeEpj
+ NzJNOUk5d21zUFo1YlVIc0x1WVdNcVE3SmNSbVBzNkQ4ZwpCa2srOC95bmdFeU5FeHd4SnBS
+ MXlsajVianhXREh5WVF2dUo1THpaS3VPOUxCM2xYVnNjNGJxWEVqYzZWRnVaCkZDQ2svc3lp
+ by9ZaHNlOE4rUXN4N01RYWd6NHdLVWtRUWJmWGcxVnFrVG5BaXZYczQyVm5Ja211NWd6SXcv
+ MHQKUkp2NTBGUmhIaHhweUtBSThCOG5oTjhRdng3TVZrUGM1dkRmZDN1R1lXNDdKUGhWUUJj
+ VXdKd05rLzQ5RjllQQp2ZzJtdE1QRm5GT1JrV1VSdlArRzZGSmZtNitDdk92N1lmUDF1ZXdB
+ aTRsbitKTzFnK2dqVklXbC9XSnB5MG5UCmlwZGZlSDlkSGtnU2lmUXVuWWN1Y2lzTXlvUmJG
+ OTU1dENna0VZOUVNRWRZMXQ4aUdEaUNnWDZzNTBMSGJpM2sKNDUzdWFjcHhmUVhTYUF3UGtz
+ bDhNa0NPc3YyZUVyNElOQ0hZUUR5WmljbEJ1dUNnOEVOYlI2QUdWdFpTUGNRYgplbnpTektS
+ Wm9POUNhcUlEK2ZhdkxpQi9kaHptSEErOWJnSWhtWGZ2WFJMRFp6ZThwbzFkeXQzRTFzaFhp
+ ZGRaClBBOE51SlZ6RUl0MmxtSTZWOHBaRHBuMjIxcmZLaml2UlFpYW9zNTRUZ1pqak1ZSTdu
+ bko3ZTZ4endBUkFRQUIKdENCVGRHVm1ZVzRnVjJGb2NtVnVJRHgzWVdoeVpXNXpkRUJuYlhn
+ dWJtVjBQb2tDTndRVEFRZ0FJUVVDWElkYwo0Z0liQXdVTENRZ0hBZ1lWQ0FrS0N3SUVGZ0lE
+ QVFJZUFRSVhnQUFLQ1JDVWdld1BFWkR5MjFPVEQvOUdpWkxkCnRSWWNteVJKZ2x0aVFRekFp
+ UWRjSUQ3OGxHb1dwL3grci92Y1U2YjZqdVl1ZVR3Z1Iwclc3djdsMklSQnlEN24KSEp4YSt0
+ SVNvUVpCZ2hvbE1JZmI5TXRoR09KTENZNzdrL1FoQWhuMzJOR1prZWp3OXR6a3MvNDBtclpT
+ VVQ4NApaeWJzUVhyTE0vSFI2VElJL0RlUEIwbktEM0ppcHBzMlVIUUQ5cUQySWpFd1NRUGxI
+ akNPckVaaDQ1UFo3bTkrClo5M0x6aVRlc1dabFlRdUxpSndzNHJLcHRIVzFkL3dSZWxzaG1t
+ NlFxY0wybDRDL2U0MGVEQjlncTRkU1poOVgKUEVZbGxpeU5RaDdhMkxTZHVtRTFyK2NTd0lq
+ RS91ZHRSdmRPOWFLb0psT2JVSzVkTmpTUEg3d0tUYndkWGRZRApHUHdEaFhkNThOQXdyK1BY
+ QmxQajB0STFMQ3ErTEJ4ZUt6aFdYK0dWcTlEb2pWanlVREV4Rk5Ga1h1b0M3ZzhtClY5VDB0
+ ZUJpdVpSbm91WEt3VjJGcHRaT0hIN0JVRVd0a0t0aGgxZXRmT1dwaWdCemtVN2JQc2ZJWVQr
+ cnk5dGIKMW9KK3Y0MVBOYXFaRW1QVXBKeHZmek5UN3Ayd01lRDdaajlmMHJ1YlJQdExBSjJR
+ R2pyRkhzdVh3QU9xcHl6ZQoxOEVidHNZazBOMHp1SEVoY2orUEJJQmZoMFlJWWQ1MW9mNkdJ
+ aU95UjlxMFhYdHBsVUo3VDIvSDF1UXFrWGxwCitnVzRWa2lmc2NJckl1eWZueFpXMTJlSXZq
+ NnlicVdMN2FZS0dZbVQ2aUxDUGJIWXlZY2F5bDRFa0ZjckNGN0UKZTBXVC9zY1ZNaE8vNVgv
+ SGFOQTVIQngvcjUycGdMY3Y0aTlNeExRbVUzUmxabUZ1SUZkaGFISmxiaUE4YzNSbApabUZ1
+ TG5kaGFISmxia0JwTW5ObExtTnZiVDZKQWpnRUV3RUNBQ0lGQWx0NmdCTUNHd01HQ3drSUJ3
+ TUNCaFVJCkFna0tDd1FXQWdNQkFoNEJBaGVBQUFvSkVKU0I3QThSa1BMYmpic1AvamdqYVNz
+ NUh0bGtBSXZXUytGcm15N2MKaG5jT0F4TFRWL0Q2UkV3SU95R0poRkt3d29pck55UTJnOXZV
+ YTNZQ1lDZjFmSjh3RWhhS09COWQwTHBNUm5MNApkRVQ4ZDgyMzhFL3BLK0hxTktpSXNKaHM2
+ SnNLOFpnalZRR3JtbWZua0dyWisxdjBIQnV4ZGljZ0duUC9XdHVBClVsOGw2Mi9BTGJheXlq
+ KzYxQ2xyc0V0UklhcU82N0xJWXdQaVBEUkkrWGlNek5pR3pIRi8xUTZHUjAyUkg2YTMKRjg5
+ ejhhUHhjSGkxWnZDdDJ5a3o2VUVjaHpQMHI1Z3FGSisvTC9VcHU4ME1YaVk0djVlSWFCNTJn
+ VlBnaXlNQQpsTDJkRHMxbUladm5yUkxSWTJ0YjNtQVlOa1Y1QjVJRFQzcGtXeTZrS281T0Nn
+ SytZZFlPUjhGTloyb04ydDhPCnJLK1ZudGFLN01NU0tIbG1ZL3NPd3RSbEVoMU9CbXJjQ3dH
+ d21wLzA1R2tSNDZmL0lzaFJWZUZPUmF3K0dBcXQKUDIrQ0ZhMkNOQS9JSG5aTm95aWtsRHpQ
+ UUhVVUdzck5wcERyaFg5Sm1oQm1nMXYyeXdIMU5YdTFpRGZQMUJBdwpLZ29rdDVmNVVhUkY5
+ c0FBNTN2V0V2YlVVTjllZXNGR0x6UFdkSkdRNWhwZC9WSDVJUXk5U0JyaC93SWNla3E1Cm4w
+ a042cGJUSHhHRTUyU2kvTVZJa05UdURaM2FwbjJqbERaNHBPdHBCWEkydlAzYlBPK05pcUJa
+ anNVM3R4TGkKV2R2MkZqeXp6NlhMUndlV1JZVkw1SGE2TER0eG9yMnZ1NlVQMDdwOXh6MXhS
+ WmFPRFczb1lsSEZ6WXBhNFc1ZwpMSGIybEVrSXVVZlNjaWNHYmpqQXRDbFRkR1ZtWVc0Z1Yy
+ Rm9jbVZ1SUR4emRHVm1ZVzR1ZDJGb2NtVnVRR2x1CkxYUmxZMmd1WTI5dFBva0NOd1FUQVFn
+ QUlRVUNYSWRlaHdJYkF3VUxDUWdIQWdZVkNBa0tDd0lFRmdJREFRSWUKQVFJWGdBQUtDUkNV
+ Z2V3UEVaRHkyeUhURC85VUY3UWxEa0d4elE3QWFDSTZOOTVpUWY4LzFvU1VhRE51Mlk2SQpL
+ K0R6UXBiMVRiVE9yM1ZKd3dZOGEzT1d6NU5MU09MTVdlVnh0K29zTW1sUUlHdWJEM09EWko4
+ aXpQbEcvSnJOCnQ1elNkbU41SUE1ZjNlc1dXUVZLdmdoWkFnVERxZHB2K1pIVzJFbXhuQUox
+ dUxGWFhlUWQzVVpjQzVyMy9nL3YKU2FNbzl4ZWszSjVtTnVEbTcxbEVXc0FzL0JBY0ZjK3lu
+ TGh4d0JXQld3c3Z3UjhiSHRKNURPTVd2YUt1RHNrcApJR0ZVZS9LYjJCK2pyYXZRM1RuNnMv
+ SHFKTTBjZXhTSHo1cGUrMHNHdlArdDlKNzIzNEJGUXdlRkV4cmlleThVCkl4T3I0WEFiYWFi
+ U3J5WW5VL3pWSDlVMWkyQUlRWk1XSkFldkN2VmdRL1UrTmVSaFh1ZGU5WVVtRE1EbzJzQjIK
+ VkFGRUFxaUYyUVVIUEEybThhN0VPM3lmTDRyTWswaUh6TElLdmg2L3JIOFFDWThpM1h4VE5M
+ OWlDTHpCV3UvTgpPbkNBYlMremx2TFphaVNNaDVFZnV4VHR2NFBsVmRFamY2MlArWkhJRDE2
+ Z1VEd0VtYXpMQU1yeDY2NmpINWt1ClVDVFZ5bWJMMFR2Qis2TDZBUmw4QU55TTRBRG1rV2tw
+ eU0yMmtDdUlTWUFFZlFSM3VXWFo5WWd4YVBNcWJWK3cKQnJoSmc0SGFONkM2eFRxR3YzcjRC
+ MmFxYjc3L0NWb1JKMVo5Y3BIQ3dpT3pJYUFtdnl6UFU2TXhDRFhaOEZnWQpsVDR2MjNHNWlt
+ SlAyemdYNXMrRjZBQ1VKOVVRUEQwdVRmK0o5RGEycitza2gvc1dPbloreWNvSE5CUXZvY1pF
+ Ck5BSFFmN2tDRFFSYmVvQVRBUkFBMkhkMGZzRFZLNzJSTFNESGJ5ME9oZ0RjRGxWQk0yTSto
+ WVlwTzNmWDFyKysKc2hpcVBLQ0hWQXNRNWJ4ZTdIbUppbUhhNEtLWXMya3YvbWx0L0NhdUNK
+ Ly9wbWN5Y0JNN0d2d25Lem11WHp1QQpHbVZUWkM2V1I1TGtha0ZydEhPelZtc0VHcE52NVJj
+ OWw2SFlGcExrYlNrVmk1U1BRWkp5K0VNZ01DRmdqclpmClZGNnlvdHdFMWFmN0hOdE1oTlBh
+ TEROMW9VS0Y1aitSeVJnNWl3SnVDRGtuSGp3QlFWNHBndzIvNXZTOEE3WlEKdjJNYlcvVExF
+ eXBLWGlmNzhJaGdBelh0RTJYck0xbi9vNlpINzFvUkZGS096NDJsRmR6ZHJTWDBZc3FYZ0hD
+ WAo1Z0l0TGZxemoxcHNNYTlvMWVpTlRFbTFkVlFyVHFueXMwbDE4b2FsUk5zd1lsUW1uWUJ3
+ cHdDa2FUSExNSHdLCmZHQmJvNWRMUEVzaHRWb3dJNm5zZ3FMVHlRSG1xSFlxVVpZSXBpZ21t
+ QzNTd0JXWTFWNmZmVUVta3FwQUFDRW4KTDQvZ1Vnbjd5US81ZDBzZXFuQXEycFNCSE1VVW9D
+ Y1R6RVFVV1ZraUR2M1JrN2hURm1oVHNNcTc4eHYyWFJzWApNUjZ5UWhTVFBGWkNZRFVFeEVs
+ RXNTbzlGV0hXcjZ6SHlZY2M4cURMRnZHOUZQaG1RdVQyczlCbHg2Z0kzMjNHCm5FcTFsd1dQ
+ SlZ6UDRqUWtKS0lBWHdGcHYrVzhDV0xxekRXT3ZkbHJEYVRhVk1zY0ZUZUg1VzZVcHJsNjVq
+ cUYKUUdNcGNSR0NzOEdDVVcxM0gwSXlPdFF0d1dYQTRueStTTDgxcHZpQW1hU1hVOGxhS2FS
+ dTkxVk9WYUY5ZjRzQQpFUUVBQVlrQ0h3UVlBUUlBQ1FVQ1czcUFFd0liREFBS0NSQ1VnZXdQ
+ RVpEeTIrb1hELzljSEhSa0JaT2ZrbVNxCjE0U3Z4MDYyUHRVMEtWNDcwVFNucC9qV29ZSm5L
+ SXczRzBtWElSZ3J0SDJkUHdwSWdWanNZeVJTVk1LbVNwdDUKWnJEZjlOdFRiTldnazhWb0xl
+ WnpZRW8rSjNvUHFGclRNczNhWVl2N2U0K0pLNjk1WW5tUSttT0Q5bmlhOTE1dApyNUFaajk1
+ VWZTVGx5VW15aWMxZDhvdnNmMWZQN1hDVVZSRmNSamZOZkRGMW9ML3BEZ01QNUdaMk93YVRl
+ am15CkN1SGpNOElSMUNpYXZCcFlEbUJuVFlrN1B0aHk2YXRXdllsMGZ5L0NxYWpUS3N4Nytw
+ OXh6aXU4WmZWWCtpS0IKQ2MrSGUrRURFZEdJRGh2TlovSVFIZk9CMlBVWFdHUytzOUZOVHhy
+ L0E2bkxHWG5BOVk2dzkzaVBkWUl3eFM3SwpYTG9LSmVlMTBEamx6c1lzUmZsRk9XMFpPaVNp
+ aElDWGlRVjF1cU02dHpGRzlndFJjaXVzNVVBdGhXYU8xT3dVClNDUW1mQ09tNGZ2TUlKSUE5
+ cnh0b1M2T3FSUWNpRjNjcm1vMHJKQ3ROMmF3WmZnaThYRWlmN2Q2aGp2MEVLTTkKWFpvaUFa
+ WVpEKy9pTG01VGFLV042b0dJdGkwVmpKdjhaWk9aT2ZDYjZ2cUZJa0pXK2FPdTRvclRMRk16
+ MjhhbwpVM1F5V3BOQzhGRm1kWXNWdWE4czZnTjFOSWE2eTNxYS9aQjhiQS9pa3k1OUFFejRp
+ RElScmdVek1FZzhBazdUCmZtMUtpWWVpVHRCRENvMjVCdlhqYnFzeXhrUUQxbmtSbTZGQVZ6
+ RXVPUEllOEp1cVcyeEQ5aXhHWXZqVTVoa1IKZ0pwM2dQNWIrY25HM0xQcXF1UTJFNmdvS1VN
+ TEFia0NEUVJiZmw5REFSQUFzRExjYStMbFAydm5mdEVHaHBjQQpCR1ZOUUVGbkdQckNhdVU2
+ SGhOODA1V3RQVHRtc1JPdUp6cWdVVDBtcHFXSWZacTZzTXd5dkhLOVRzL0tIM0paClVWYlJD
+ M3oyaDNLZmhIL0RhZjk1cGQ2bVBjL2g5dkYvT3kzK2VUV2hnR25QNmNBNWtsUitmTzFXaEc4
+ VnJpWHYKck5lUkcyMHN6emplSG9jblNJY1Q1WHVaUjB1REhPaUd4T2l6MXNNUkZUR3h6R095
+ MTlSOXJ2dTYzdGlJM2Q3dgpnYzc1T0NBZGtlQi9TZUNFbGFSdzBUZjdMWmJQampzRjI2M0JZ
+ bk1mNGtrTkVLdnFXY1UyaWNNcCtxZXpqeW5CCnB2ZXVlMHJDVFFCWUFRbG9GQ1ZUR0hyV1dB
+ NkQ0VzVPMkFmSWRJYzF1MUpDWnAyZjVMV1ZvVUZUVklyUW5RUVUKU0hDaWZyOU1aeExUdFBK
+ ZFU1Mm9TUHczZGs0aExQOGlKSUx1dnYvYXZhakNzUVlIRXR3WXNiZUZaeGl1TGdscApBN1lj
+ Sk5ObXBnQ3BNRDR3VWh2bEN0QUtOQlFXeXIyOTc2OThFUVRuNDZlQmVVNkttMkNpaFhrZ3dD
+ eWY4ZXlLCkxFM3NYZXdhcTVrZ1pXdk5xNml1NXFZSVJCOXl3K2NYYzYwZE9aRE9scTkzWDVT
+ QVJZemFvZXBrSHo0cmtMa1AKUG8rdENIeUhRUHNHblBYYzlXVDgwREM5Tm5KR2R2VWx5NXJk
+ TUk0eHBaeWdlb2tqd293VlFsUFV1Y1M2TXluNwpmOHc4Y2dmQjdDMklBSWNEeDJwUC9IendY
+ dmtDT1FOQTdtVjFsTTA4bitnVmtUcnpweGlwNURicTRDSW9ZeDJNCkpaVDhiR1JINlhqY1VE
+ S2EwOVFoeVpzQUVRRUFBWWtFUkFRWUFRZ0FEd1VDVzM1ZlF3SWJBZ1VKQThKbkFBSXAKQ1JD
+ VWdld1BFWkR5MjhGZElBUVpBUWdBQmdVQ1czNWZRd0FLQ1JCVnhETFBjVk1NamNkc0QvMFJo
+ QXN1UVlPeQpyMTNCbDNOaFhrWUFaR3AyWkZER3VrZTdPU2tWOG9qT09UZFR5ei9jT1JHQ2J5
+ ZEQrRGd2cUZ5VmRuT1hLZ08wCmxKbUd3ckdlTGRnZ0F2aDBpaHJwNU8wWVVKOWJCU1htR01t
+ UVRZSC9BbUxUR2FkYnVqQ1dqNWZGVWtDeXd4aW0KSHV5MFBiMjRwelR2UzUwR1k1WStxSDBG
+ SE5haWdka2tpV04zcnVnN0haRXUvQ3lsUFpqT1h6K0QxUVBNckV4dwo3ZC9NS2FiVis5YU5i
+ UVlabGRJajk4UXd2VUYxS1N6YThqbFVJdnBoUnEyN0FUOGZER1lHUGZERU1nMmNCT2FlCkty
+ N29uUXM0YjdhV082aWZEbHhRVHB6c3pvK0FuODA3Tk1TdFZFRmYrczNBaFZEM2U3bmY4SkJh
+ dmJWckFlMGsKb20yNm96elBubnh6K2xxVlZ0dzZVazRYTUl6dGl4L0h3SFl3dUNuY1VYWndL
+ MEkzeUFKd2pZd29vck9DaEozUwpFVWJKUVB0R3NneFJERXhWQkZlNk5MUC82MnhQOU82dGFj
+ d09kYjBNbVAxYjM5cFJBVEM3YmdkMWxkVUxpNzVaCmxKckowL1NpVkVyb3FOWXk3OXRmbWdB
+ WjJVeFptczlTckV5Nm85UVNmc24xYVh2K01QTDlKYUNHbWtQNnpiTFEKTm5kajBKY2FRbmtD
+ MHZneWRPMUJtNk11OTZQOXVmbEtaY0FTNndtTE01SWRIT3lqTDg4d0h3anVjakFPQnRjdwpw
+ MG9HVG5WT25Sc05ZU084VzhZWi9LZGJ1Nzg1ZGF6TXFKMmlOakFEdUJiZG02TjRqNUVkTW5r
+ TG4wQklmUEpwCmRnbTR2bDJVcExqd1JHci9NM3dtbTVwdnMrNnVCN2hrL0ZKaUQvNGxsRU5Q
+ NGVNMWg3U200aitWcTZOMSt6VEIKSVhKQWViSXFhc0RwNXlaUzdYcnk0STM2bjg1WEVZZkcw
+ MWx0QXlob05WMkRPOFNJUlFwdWkydHErOVJQM1JLMQpKREJ4eEVKWTJFTzVKWjhNeGFQSFEw
+ RFQwNWxSRmpLMkFsaGRFSXRqTGpwSjNmVW05c3FMeE1XeHpQNlV6M2lpCjJ1YTR1bnJ0Nk9D
+ VHFRd2lqRi8zYlRXaXd2VkFBSG5NRlVpb1hzaEhhb2hWRGNWZm5lSU1mVjBiUUNYWWkzTnAK
+ WTB2MFp3Y2lGSCtnU0M3cUQ2WE51aHBWR1NMNElpbGlGeS9TemNhSkV6QUhlTERTaFpQMkNX
+ ZG5DNHZnbDM3dApocHg4aDU1WWhKbjZIU3VVelBnaGFLdFZCMmsrajdaZXlaK1NGeHA3SXVi
+ SEN3TEhsUWhUNzVSd1EzaUF4S242CjBxajUxY1lUbnF4ZFpYVzZmSDNQa3VNellVNUdwcVIv
+ MU9sNWMvd2ZJNmc2QW04eUtXLzBFVUx0K0tuNExGc1MKbTdZM201SDV2MTJVNkpCWXZWK3Ix
+ M2paaW9zNEVFREU5M0Q1c05IMk1JeVJ6Q0RxMXpkZHQ0WHV5S0ZqUEtXMQo5aWJaRGZGVjdL
+ dUNzdnVMMjNzQmMxc0NNb3ArRTFtVC9ReE9JQTZvRFQxTVFzdHdPVnVReURDdi9PdktTZ2Z6
+ CjhGWEdMNkFQY2xqQ3FqOEFKaHhReXN4ZG9pUVA4bS92dStialdHR3Z4dzVzMWxncGlSRFRS
+ VVBnY0pKTmFHWTIKVklEclpRaTROU2lOUTBOSWkrZGp1NGZOTW1DcFFxZzh0YkMzY0FhNnl3
+ bTZvUUIxU0JobURYMmUxMWdSbGx1SQpPblRHUEUwSFRvM2w3MmxoYmc9PQo9cVpNVgotLS0t
+ LUVORCBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCg==
+Message-ID: <401100ea-90ad-57b1-50da-967118a090da@i2se.com>
+Date:   Wed, 24 Mar 2021 16:16:00 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210324155013.1e5faa3c@xhacker.debian>
-In-Reply-To: <20210324155013.1e5faa3c@xhacker.debian>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 24 Mar 2021 11:20:59 +0100
-Message-ID: <CAPDyKFpau=FRCupREsgZiwFv-XRhH04si1wKiEPwM4K2+fct1w@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci: replace mmc->parent with mmc_dev() for consistency
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-Cc:     Angelo Dureghello <angelo.dureghello@timesys.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Joel Stanley <joel@jms.id.au>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210322185816.27582-5-nsaenz@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Content-Language: en-US
+X-Provags-ID: V03:K1:b5NZDqd3dNV68e+PbFf8/8KNAduRYehhRaYHaIfujRCkev6X+xZ
+ ASGj3Wy0a1AmjTWtEV4XOvYYPYmR69OumwWujjFLC59BBgX7zce/tk2eZ8K6b7yw7JI6EJ/
+ +9Eyi7+JxJHaP0zY4DnQ9BtQpGXUqOrKrHVzhiFY6q6z6pXrEyNbgJr1XP56UCF2o/RXv4b
+ iMGHsflGCLS9SHU1hKLVQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:bjHoi/rQ80U=:9rvA9Dcqb3AcZyZfGdfG07
+ En3sW50zoNG+/uKhBeZ2HeNcqkbczxjdKLIYsqjpmt5ebfWXUm0t5mvulOvl6XcPxuj2uaYM+
+ z+QrVHq8lJEQpVv3yw9XWdduvyMN2ezvHmlUQZ7mfe4JiY7fyYtjzcONpS+xn9Os80NDhloic
+ R52cNUMxozDUQFFJAKZc4NMob4Jj9/NxH8KpymMEOOv1fwDOXtb1SZd5Xa5CqTFC9V65Bm0mI
+ /uLJuMVWlRVwmwm48XUb+wMmdMbv6DY4MTRekfz2F3tNWWm5oYuouSAQgo7f3zU167syHEAzh
+ z+rMaHuRFojhk4HCqi4vycDEVkK/X/FmbRyTj+ljE9Raq4TiUjkpcy23Ah7FLCIlx4HStJ3EN
+ C1h5GRRRMhD653Xa0iZcGlX1zwxY0h5N7wD1y5JcyQGxfctDdgT0HiwbppndtiKojV1xqzTB9
+ Gg5xsUz16g==
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 24 Mar 2021 at 08:50, Jisheng Zhang <Jisheng.Zhang@synaptics.com> wrote:
+Hi Nicolas,
+
+Am 22.03.21 um 19:58 schrieb Nicolas Saenz Julienne:
+> From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 >
-> As pointed out by Ulf, "both "mmc->parent" and mmc_dev(mmc) are being
-> used in the entire c-file". Convert all the mmc->parent usage in all
-> sdhci host driver to mmc_dev() for consistency.
+> Force emmc2's frequency to 150MHz as the default 100MHz (set by FW)
+> seems to interfere with the VPU clock when setup at frequencies bigger
+> than 500MHz (a pretty common case). This ends up causing unwarranted
+> SDHCI CMD hangs  when no SD card is present.
 >
-> Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-
-Applied for next, thanks!
-
-Kind regards
-Uffe
-
-
+> Signed-off-by: Nicolas Saenz Julienne <nsaenz@kernel.org>
 > ---
->  drivers/mmc/host/sdhci-esdhc-mcf.c |  8 +++----
->  drivers/mmc/host/sdhci-of-aspeed.c |  2 +-
->  drivers/mmc/host/sdhci-tegra.c     | 34 +++++++++++++++---------------
->  drivers/mmc/host/sdhci.c           | 24 ++++++++++-----------
->  drivers/mmc/host/sdhci_am654.c     |  2 +-
->  5 files changed, 35 insertions(+), 35 deletions(-)
+>  arch/arm/boot/dts/bcm2711-rpi-4-b.dts | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> diff --git a/drivers/mmc/host/sdhci-esdhc-mcf.c b/drivers/mmc/host/sdhci-esdhc-mcf.c
-> index ca7a1690b2a8..05926bf5ecf9 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-mcf.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-mcf.c
-> @@ -367,14 +367,14 @@ static int esdhc_mcf_plat_init(struct sdhci_host *host,
->                                struct pltfm_mcf_data *mcf_data)
->  {
->         struct mcf_esdhc_platform_data *plat_data;
-> +       struct device *dev = mmc_dev(host->mmc);
->
-> -       if (!host->mmc->parent->platform_data) {
-> -               dev_err(mmc_dev(host->mmc), "no platform data!\n");
-> +       if (!dev->platform_data) {
-> +               dev_err(dev, "no platform data!\n");
->                 return -EINVAL;
->         }
->
-> -       plat_data = (struct mcf_esdhc_platform_data *)
-> -                       host->mmc->parent->platform_data;
-> +       plat_data = (struct mcf_esdhc_platform_data *)dev->platform_data;
->
->         /* Card_detect */
->         switch (plat_data->cd_type) {
-> diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
-> index 7d8692e90996..d001c51074a0 100644
-> --- a/drivers/mmc/host/sdhci-of-aspeed.c
-> +++ b/drivers/mmc/host/sdhci-of-aspeed.c
-> @@ -181,7 +181,7 @@ aspeed_sdhci_configure_phase(struct sdhci_host *host, unsigned long rate)
->         struct aspeed_sdhci *sdhci;
->         struct device *dev;
->
-> -       dev = host->mmc->parent;
-> +       dev = mmc_dev(host->mmc);
->         sdhci = sdhci_pltfm_priv(sdhci_priv(host));
->
->         if (!sdhci->phase_desc)
-> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-> index 41d193fa77bb..c61f797a853f 100644
-> --- a/drivers/mmc/host/sdhci-tegra.c
-> +++ b/drivers/mmc/host/sdhci-tegra.c
-> @@ -596,49 +596,49 @@ static void tegra_sdhci_parse_pad_autocal_dt(struct sdhci_host *host)
->                         &tegra_host->autocal_offsets;
->         int err;
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-up-offset-3v3",
->                         &autocal->pull_up_3v3);
->         if (err)
->                 autocal->pull_up_3v3 = 0;
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-down-offset-3v3",
->                         &autocal->pull_down_3v3);
->         if (err)
->                 autocal->pull_down_3v3 = 0;
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-up-offset-1v8",
->                         &autocal->pull_up_1v8);
->         if (err)
->                 autocal->pull_up_1v8 = 0;
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-down-offset-1v8",
->                         &autocal->pull_down_1v8);
->         if (err)
->                 autocal->pull_down_1v8 = 0;
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-up-offset-sdr104",
->                         &autocal->pull_up_sdr104);
->         if (err)
->                 autocal->pull_up_sdr104 = autocal->pull_up_1v8;
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-down-offset-sdr104",
->                         &autocal->pull_down_sdr104);
->         if (err)
->                 autocal->pull_down_sdr104 = autocal->pull_down_1v8;
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-up-offset-hs400",
->                         &autocal->pull_up_hs400);
->         if (err)
->                 autocal->pull_up_hs400 = autocal->pull_up_1v8;
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-down-offset-hs400",
->                         &autocal->pull_down_hs400);
->         if (err)
-> @@ -653,7 +653,7 @@ static void tegra_sdhci_parse_pad_autocal_dt(struct sdhci_host *host)
->         if (!(tegra_host->soc_data->nvquirks & NVQUIRK_NEEDS_PAD_CONTROL))
->                 return;
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-up-offset-3v3-timeout",
->                         &autocal->pull_up_3v3_timeout);
->         if (err) {
-> @@ -664,7 +664,7 @@ static void tegra_sdhci_parse_pad_autocal_dt(struct sdhci_host *host)
->                 autocal->pull_up_3v3_timeout = 0;
->         }
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-down-offset-3v3-timeout",
->                         &autocal->pull_down_3v3_timeout);
->         if (err) {
-> @@ -675,7 +675,7 @@ static void tegra_sdhci_parse_pad_autocal_dt(struct sdhci_host *host)
->                 autocal->pull_down_3v3_timeout = 0;
->         }
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-up-offset-1v8-timeout",
->                         &autocal->pull_up_1v8_timeout);
->         if (err) {
-> @@ -686,7 +686,7 @@ static void tegra_sdhci_parse_pad_autocal_dt(struct sdhci_host *host)
->                 autocal->pull_up_1v8_timeout = 0;
->         }
->
-> -       err = device_property_read_u32(host->mmc->parent,
-> +       err = device_property_read_u32(mmc_dev(host->mmc),
->                         "nvidia,pad-autocal-pull-down-offset-1v8-timeout",
->                         &autocal->pull_down_1v8_timeout);
->         if (err) {
-> @@ -720,17 +720,17 @@ static void tegra_sdhci_parse_tap_and_trim(struct sdhci_host *host)
->         struct sdhci_tegra *tegra_host = sdhci_pltfm_priv(pltfm_host);
->         int err;
->
-> -       err = device_property_read_u32(host->mmc->parent, "nvidia,default-tap",
-> +       err = device_property_read_u32(mmc_dev(host->mmc), "nvidia,default-tap",
->                                        &tegra_host->default_tap);
->         if (err)
->                 tegra_host->default_tap = 0;
->
-> -       err = device_property_read_u32(host->mmc->parent, "nvidia,default-trim",
-> +       err = device_property_read_u32(mmc_dev(host->mmc), "nvidia,default-trim",
->                                        &tegra_host->default_trim);
->         if (err)
->                 tegra_host->default_trim = 0;
->
-> -       err = device_property_read_u32(host->mmc->parent, "nvidia,dqs-trim",
-> +       err = device_property_read_u32(mmc_dev(host->mmc), "nvidia,dqs-trim",
->                                        &tegra_host->dqs_trim);
->         if (err)
->                 tegra_host->dqs_trim = 0x11;
-> @@ -741,7 +741,7 @@ static void tegra_sdhci_parse_dt(struct sdhci_host *host)
->         struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
->         struct sdhci_tegra *tegra_host = sdhci_pltfm_priv(pltfm_host);
->
-> -       if (device_property_read_bool(host->mmc->parent, "supports-cqe"))
-> +       if (device_property_read_bool(mmc_dev(host->mmc), "supports-cqe"))
->                 tegra_host->enable_hwcq = true;
->         else
->                 tegra_host->enable_hwcq = false;
-> @@ -1529,7 +1529,7 @@ static int sdhci_tegra_add_host(struct sdhci_host *host)
->
->         host->mmc->caps2 |= MMC_CAP2_CQE | MMC_CAP2_CQE_DCMD;
->
-> -       cq_host = devm_kzalloc(host->mmc->parent,
-> +       cq_host = devm_kzalloc(mmc_dev(host->mmc),
->                                 sizeof(*cq_host), GFP_KERNEL);
->         if (!cq_host) {
->                 ret = -ENOMEM;
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index aefd0441658c..bf238ade1602 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -188,7 +188,7 @@ static void sdhci_runtime_pm_bus_on(struct sdhci_host *host)
->         if (host->bus_on)
->                 return;
->         host->bus_on = true;
-> -       pm_runtime_get_noresume(host->mmc->parent);
-> +       pm_runtime_get_noresume(mmc_dev(host->mmc));
->  }
->
->  static void sdhci_runtime_pm_bus_off(struct sdhci_host *host)
-> @@ -196,7 +196,7 @@ static void sdhci_runtime_pm_bus_off(struct sdhci_host *host)
->         if (!host->bus_on)
->                 return;
->         host->bus_on = false;
-> -       pm_runtime_put_noidle(host->mmc->parent);
-> +       pm_runtime_put_noidle(mmc_dev(host->mmc));
->  }
->
->  void sdhci_reset(struct sdhci_host *host, u8 mask)
-> @@ -648,7 +648,7 @@ static int sdhci_pre_dma_transfer(struct sdhci_host *host,
->                         }
->                 }
->                 /* Switch ownership to the DMA */
-> -               dma_sync_single_for_device(host->mmc->parent,
-> +               dma_sync_single_for_device(mmc_dev(host->mmc),
->                                            host->bounce_addr,
->                                            host->bounce_buffer_size,
->                                            mmc_get_dma_dir(data));
-> @@ -1176,7 +1176,7 @@ static int sdhci_external_dma_init(struct sdhci_host *host)
->         int ret = 0;
->         struct mmc_host *mmc = host->mmc;
->
-> -       host->tx_chan = dma_request_chan(mmc->parent, "tx");
-> +       host->tx_chan = dma_request_chan(mmc_dev(mmc), "tx");
->         if (IS_ERR(host->tx_chan)) {
->                 ret = PTR_ERR(host->tx_chan);
->                 if (ret != -EPROBE_DEFER)
-> @@ -1185,7 +1185,7 @@ static int sdhci_external_dma_init(struct sdhci_host *host)
->                 return ret;
->         }
->
-> -       host->rx_chan = dma_request_chan(mmc->parent, "rx");
-> +       host->rx_chan = dma_request_chan(mmc_dev(mmc), "rx");
->         if (IS_ERR(host->rx_chan)) {
->                 if (host->tx_chan) {
->                         dma_release_channel(host->tx_chan);
-> @@ -2489,14 +2489,14 @@ void sdhci_enable_sdio_irq(struct mmc_host *mmc, int enable)
->         unsigned long flags;
->
->         if (enable)
-> -               pm_runtime_get_noresume(mmc->parent);
-> +               pm_runtime_get_noresume(mmc_dev(mmc));
->
->         spin_lock_irqsave(&host->lock, flags);
->         sdhci_enable_sdio_irq_nolock(host, enable);
->         spin_unlock_irqrestore(&host->lock, flags);
->
->         if (!enable)
-> -               pm_runtime_put_noidle(mmc->parent);
-> +               pm_runtime_put_noidle(mmc_dev(mmc));
->  }
->  EXPORT_SYMBOL_GPL(sdhci_enable_sdio_irq);
->
-> @@ -3063,7 +3063,7 @@ static bool sdhci_request_done(struct sdhci_host *host)
->                                                 length = host->bounce_buffer_size;
->                                         }
->                                         dma_sync_single_for_cpu(
-> -                                               host->mmc->parent,
-> +                                               mmc_dev(host->mmc),
->                                                 host->bounce_addr,
->                                                 host->bounce_buffer_size,
->                                                 DMA_FROM_DEVICE);
-> @@ -3074,7 +3074,7 @@ static bool sdhci_request_done(struct sdhci_host *host)
->                                 } else {
->                                         /* No copying, just switch ownership */
->                                         dma_sync_single_for_cpu(
-> -                                               host->mmc->parent,
-> +                                               mmc_dev(host->mmc),
->                                                 host->bounce_addr,
->                                                 host->bounce_buffer_size,
->                                                 mmc_get_dma_dir(data));
-> @@ -4053,7 +4053,7 @@ static void sdhci_allocate_bounce_buffer(struct sdhci_host *host)
->          * speedups by the help of a bounce buffer to group scattered
->          * reads/writes together.
->          */
-> -       host->bounce_buffer = devm_kmalloc(mmc->parent,
-> +       host->bounce_buffer = devm_kmalloc(mmc_dev(mmc),
->                                            bounce_size,
->                                            GFP_KERNEL);
->         if (!host->bounce_buffer) {
-> @@ -4067,11 +4067,11 @@ static void sdhci_allocate_bounce_buffer(struct sdhci_host *host)
->                 return;
->         }
->
-> -       host->bounce_addr = dma_map_single(mmc->parent,
-> +       host->bounce_addr = dma_map_single(mmc_dev(mmc),
->                                            host->bounce_buffer,
->                                            bounce_size,
->                                            DMA_BIDIRECTIONAL);
-> -       ret = dma_mapping_error(mmc->parent, host->bounce_addr);
-> +       ret = dma_mapping_error(mmc_dev(mmc), host->bounce_addr);
->         if (ret)
->                 /* Again fall back to max_segs == 1 */
->                 return;
-> diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-> index 7a34649b0754..1fad6e442688 100644
-> --- a/drivers/mmc/host/sdhci_am654.c
-> +++ b/drivers/mmc/host/sdhci_am654.c
-> @@ -558,7 +558,7 @@ static int sdhci_am654_cqe_add_host(struct sdhci_host *host)
->         struct cqhci_host *cq_host;
->         int ret;
->
-> -       cq_host = devm_kzalloc(host->mmc->parent, sizeof(struct cqhci_host),
-> +       cq_host = devm_kzalloc(mmc_dev(host->mmc), sizeof(struct cqhci_host),
->                                GFP_KERNEL);
->         if (!cq_host)
->                 return -ENOMEM;
-> --
-> 2.31.0
->
+> diff --git a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
+> index 3b4ab947492a..9aa8408d9960 100644
+> --- a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
+> +++ b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
+> @@ -257,6 +257,12 @@ &emmc2 {
+>  	vqmmc-supply = <&sd_io_1v8_reg>;
+>  	vmmc-supply = <&sd_vcc_reg>;
+>  	broken-cd;
+> +	/*
+> +	 * Force the frequency to 150MHz as the default 100MHz seems to
+> +	 * interfere with the VPU clock when setup at frequencies bigger than
+> +	 * 500MHz, causing unwarranted CMD hangs.
+> +	 */
+> +	clock-frequency = <150000000>;
+
+i don't want to bike-shed here, but is there any chance to solve this in
+clk-bcm2835 in a less hacky way?
+
+Anyway thank for taking care of this.
+
+Best regards
+
+>  	status = "okay";
+>  };
+>  
+
