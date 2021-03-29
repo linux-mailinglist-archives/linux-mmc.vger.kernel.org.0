@@ -2,62 +2,87 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A63AF34BE0C
-	for <lists+linux-mmc@lfdr.de>; Sun, 28 Mar 2021 20:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B98334C0BB
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Mar 2021 02:55:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231527AbhC1SHe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 28 Mar 2021 14:07:34 -0400
-Received: from mail.hanoi.gov.vn ([113.160.32.33]:31610 "EHLO
-        mx01.hanoi.gov.vn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229647AbhC1SHR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 28 Mar 2021 14:07:17 -0400
-X-Greylist: delayed 474 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Mar 2021 14:07:01 EDT
-Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 30259EC3D8;
-        Mon, 29 Mar 2021 00:57:51 +0700 (+07)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hanoi.gov.vn;
-        s=default; t=1616954272;
-        bh=FuW10Z6fSdeNlf/0u/BQ1jcwkjYBw0uHUPQgn0LGo7I=; h=Date:From:To;
-        b=R9blPfqJCHUsZAyZxsyyryS61fl4krmBjYKWM6eGGwB8ZdbTBVPL1mmKOmZXMqNlA
-         7CEqA0MXgUAy+X4oK/wthh4vC9Xoov1Ce8tjf/qJvnL7KGsGNVg9ic0krGeHrdNzGM
-         5cIEKsz0emmHL/izbEfCtadst3HYllOJWdonlm5o=
-X-IMSS-DKIM-Authentication-Result: mx01.hanoi.gov.vn; sigcount=0
-Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 50FCBEC3DD;
-        Mon, 29 Mar 2021 00:57:49 +0700 (+07)
-Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
-        by mx01.hanoi.gov.vn (Postfix) with ESMTPS;
-        Mon, 29 Mar 2021 00:57:49 +0700 (+07)
-Received: from mail.hanoi.gov.vn (localhost [127.0.0.1])
-        by mail.hanoi.gov.vn (Postfix) with ESMTPS id 02AFC7F41B42;
-        Mon, 29 Mar 2021 00:57:44 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hanoi.gov.vn (Postfix) with ESMTP id 08FE47F41B5D;
-        Mon, 29 Mar 2021 00:57:41 +0700 (+07)
-Received: from mail.hanoi.gov.vn ([127.0.0.1])
-        by localhost (mail.hanoi.gov.vn [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 1D3oZsOAVsx3; Mon, 29 Mar 2021 00:57:36 +0700 (+07)
-Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
-        by mail.hanoi.gov.vn (Postfix) with ESMTP id 478CE7F41B59;
-        Mon, 29 Mar 2021 00:57:33 +0700 (+07)
-Date:   Mon, 29 Mar 2021 00:57:33 +0700 (ICT)
-From:   Mackenzie Scott <ttptqd_thanhoai@hanoi.gov.vn>
-Reply-To: Mackenzie Scott <propack@propck.net>
-Message-ID: <354204758.25920932.1616954253215.JavaMail.zimbra@hanoi.gov.vn>
-Subject: Congratulations ($ 100,800,000.00)
+        id S231641AbhC2AzJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 28 Mar 2021 20:55:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37378 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230167AbhC2Ay7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 28 Mar 2021 20:54:59 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665BBC061762
+        for <linux-mmc@vger.kernel.org>; Sun, 28 Mar 2021 17:54:59 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id x21so12385139eds.4
+        for <linux-mmc@vger.kernel.org>; Sun, 28 Mar 2021 17:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pensando.io; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yVAc9b+mBnGmiPe0hQUBS5bq7gPTXTsIqeLgC0QKuYo=;
+        b=NoS1GIebv3iSWHAId4v66ODhmcXKQ/qQgeX+r/F705yNSzRoWkVkukYHE2U4SXzj7l
+         3idkz2/42j4ZbHW78CX53X7tItXmV94qnWB5OdZOyQnbEsoGPsYkSWpOSMDnWm16M77n
+         hxLk9rcJsK2WKGOofwpCR6fzZNHzRZZeic4Bas0Ki4nLhez/wE3QZpZS5gvML/zDm3gi
+         g9leOVIkOl3WZlwloo/rXhtFJIOSID1WTvNwZfezLQYLQIB7EwNVLn3S61HwpAQcPDRX
+         zaOUJcL6r/q364sBH0DBnzDGmlTYrO8r0TFMDJUmBAMxfPzwh2rVjOLSrojRZRucPjUH
+         TVZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yVAc9b+mBnGmiPe0hQUBS5bq7gPTXTsIqeLgC0QKuYo=;
+        b=sxiz2JKl1oMt1sSTteBegUpxnBn3ZEWuS1G2HQiATq3HcfHU1VbFFQyK/1Hop9Dahu
+         A2U6fFTaLy4s9MxRXc4VGmYDO378lXP6oVOicMc8vWq3fv7j5rn5yLBaz38EYcYUP6kN
+         OIAYuwmG4cJ2jBm/uyb3+Mav6I1Of+/23N9LAVOUJNGVjmaMrXbngLJpQijH/9fPzdbt
+         R13h5Uyc4+fJaYZaKlicuCFQNflU5SWwLjjHrC8nEI0ws0ddQ95q1+Z3l9DIlAGPc3Fj
+         7klmS6ktRVxe7Z86o/5ePiq681lT4nuHUd4LfCg4K1ovOMuGtgk4ayMFs0Mr0YHhRgr2
+         5aaA==
+X-Gm-Message-State: AOAM530n7CzwkbbOFvVI+7xBi6GBx1OQG/3YijxD5c+cbuihAG1hGjMh
+        UEDM12px5JfJJzAum2M2SDpQfqx0S2inCAJAC4xv1A==
+X-Google-Smtp-Source: ABdhPJx+4A/Txkzyq838knHsu1E43Gon6mva2bR+kHkuk+1ju7bFnu+zuJhSeTQ6qkrvnEusq0RO4FBMrBSodVEvcoE=
+X-Received: by 2002:a05:6402:10c9:: with SMTP id p9mr26382778edu.268.1616979297849;
+ Sun, 28 Mar 2021 17:54:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [185.107.80.217]
-X-Mailer: Zimbra 8.8.15_GA_3894 (zclient/8.8.15_GA_3894)
-Thread-Index: ao/APhyKX+JH1nE2Rn/kAmnh2LEgkw==
-Thread-Topic: Congratulations ($ 100,800,000.00)
-To:     undisclosed-recipients:;
-X-TM-AS-GCONF: 00
+References: <20210304034141.7062-1-brad@pensando.io> <20210304034141.7062-8-brad@pensando.io>
+ <CACRpkdZr8qrQ+b15z_zRP3wAntQeW7T0Z515sUv6e2gL9GzDyg@mail.gmail.com>
+In-Reply-To: <CACRpkdZr8qrQ+b15z_zRP3wAntQeW7T0Z515sUv6e2gL9GzDyg@mail.gmail.com>
+From:   Brad Larson <brad@pensando.io>
+Date:   Sun, 28 Mar 2021 17:54:47 -0700
+Message-ID: <CAK9rFnw6cM9UsNoD1-37JfM0n2h6fATSTZYqAP0DBhwwigqBzA@mail.gmail.com>
+Subject: Re: [PATCH 7/8] arm64: dts: Add Pensando Elba SoC support
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Olof Johansson <olof@lixom.net>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Thu, Mar 4, 2021 at 12:52 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> On Thu, Mar 4, 2021 at 4:42 AM Brad Larson <brad@pensando.io> wrote:
+>
+> > Add Pensando common and Elba SoC specific device nodes
+> > and corresponding binding documentation.
+> >
+> > Signed-off-by: Brad Larson <brad@pensando.io>
+> (...)
+> >  .../bindings/gpio/pensando,elba-spics.txt     |  24 ++
+>
+> Please use YAML schema for this.
 
-
-Hello,i&#39;m Mackenzie Scott,Ex-wife of Amazon founder i&#39;m donating $4 billion to charities,individuals,universities across the Globe from my divorce funds,i&#39;m donating part of it to provide immediate support to people suffering economically during the COVID-19 pandemic,i have a donation worth $100,800,000.00 Dollars for you,you can contact me for more information if you&#39;re interested.
+In patchset v2 changed to YAML schema and passed dt_binding_check and
+dtbs_check.
