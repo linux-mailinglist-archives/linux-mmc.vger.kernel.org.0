@@ -2,123 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5B9A34FD93
-	for <lists+linux-mmc@lfdr.de>; Wed, 31 Mar 2021 11:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C2C834FE1C
+	for <lists+linux-mmc@lfdr.de>; Wed, 31 Mar 2021 12:35:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234764AbhCaJ6H (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 31 Mar 2021 05:58:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43614 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234832AbhCaJ5z (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 31 Mar 2021 05:57:55 -0400
-Received: from mail-ua1-x929.google.com (mail-ua1-x929.google.com [IPv6:2607:f8b0:4864:20::929])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC2CC061574
-        for <linux-mmc@vger.kernel.org>; Wed, 31 Mar 2021 02:57:55 -0700 (PDT)
-Received: by mail-ua1-x929.google.com with SMTP id h34so5955272uah.5
-        for <linux-mmc@vger.kernel.org>; Wed, 31 Mar 2021 02:57:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=j/4w0xGXQr4V8hv1TMOj1rdT2uYQ2Zn3yahGktko5LI=;
-        b=vD3f51suI/hibKgnCzDplaC1Wvjkiv5pk95Q9OkjBAaHm6iC+YfDF75mnhUauRatMQ
-         WCjT8JWpjTeJnFmVWCVWsP473ipIJesrrJsJkdfasTxn9LelBGG7oCxQ+nx0ZD4frr1J
-         8zJ2PYVfPc9xnj6iLip+AzAifdgxJek0WZTAvZ9/4bwhF0GAl1qE4UXCcxssTkqepRa4
-         eNK9EZOrUqoOrvqL3h65gpcbthp1NrH+jXAa3hkcF/rNCEvdFhWPf4BxCWectRABbEVg
-         kUf06pB489TJ7WbwvtQGdXt32+n05V7CDyVsK60RMpFJtvyWE4xFJZDgatbsJ+Ul4sGo
-         igmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=j/4w0xGXQr4V8hv1TMOj1rdT2uYQ2Zn3yahGktko5LI=;
-        b=XsohtNkEyHljMGVpBBgOHuj4OG3F3XDo+nUc4iD51IDM9qR+tTW1iLLMDLaBVZrzn4
-         yWRguSvYejtSUdGZ3SZd63N/U9eL2ZCca8A/tlp7GOLamVF9LhR1CIeL77Umzw7gZsEi
-         1crxi7J/1XfcPJ3eqMiqNobnL+mjFdO2XbglTz/th4rHzJTpOBatTxFPiOWrD79jWHTd
-         LFYbA+e5slqzkEPMkTD2mNjHabxqMx3KGi7Yecf3MWbY7REMVuoTWpoIE4Y54ZY1AuW7
-         U7Eqzgu9dAszJdfIkn8SeDl2+k97rCSz85jJT3q69jw7cOjSBBQC/YOndQ9kxhrcy05G
-         9iEw==
-X-Gm-Message-State: AOAM531pMCSJItpnPNTsa7IHEixrMACwvqTXzEq3uaon8+6B1QL2dbkh
-        +FWbE0MxS/04WbQmY4XLoDlX5GXjGYMNhxcKRwmD9A==
-X-Google-Smtp-Source: ABdhPJw8gZ+V1rBvQ6SEQxKGUiFOg2MD21AiJcNu0AmvI9RthPJOKf7uTIaGd0U0J2P909HggPn33jJHoaA5yNa+r3k=
-X-Received: by 2002:ab0:2c16:: with SMTP id l22mr832849uar.100.1617184674669;
- Wed, 31 Mar 2021 02:57:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210225170352.76872-1-ulf.hansson@linaro.org>
-In-Reply-To: <20210225170352.76872-1-ulf.hansson@linaro.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 31 Mar 2021 11:57:18 +0200
-Message-ID: <CAPDyKFp0+jBDcJnxbvdkZWo6jmSa-CdT6RNbH2hmrWnXEqU0=w@mail.gmail.com>
-Subject: Re: [PATCH 0/4] mmc: core: Preparations to support SD UHS-II cards
-To:     Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-        Renius Chen <reniuschengl@gmail.com>
-Cc:     AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        greg.tu@genesyslogic.com.tw,
-        Masami Hiramatsu <masami.hiramatsu@linaro.org>,
+        id S234956AbhCaKfC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 31 Mar 2021 06:35:02 -0400
+Received: from gli-ex.genesyslogic.com.tw ([60.251.58.171]:50696 "EHLO
+        gli-ex.genesyslogic.com.tw" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234855AbhCaKeo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 31 Mar 2021 06:34:44 -0400
+X-Greylist: delayed 330 seconds by postgrey-1.27 at vger.kernel.org; Wed, 31 Mar 2021 06:34:43 EDT
+Received: from GLI-MBX02.genesyslogic.com.tw ([fe80::a40e:dfe0:3e41:3fd8]) by
+ Gli-CASHT02.genesyslogic.com.tw ([fe80::ad9a:493d:feca:6cb7%10]) with mapi id
+ 14.02.0387.000; Wed, 31 Mar 2021 18:26:57 +0800
+From:   =?utf-8?B?UmVuaXVzQ2hlblvpmbPlu7rlro9d?= 
+        <Renius.Chen@genesyslogic.com.tw>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        =?utf-8?B?R3JlZ1R1W+adnOWVn+i7kl0=?= <Greg.Tu@genesyslogic.com.tw>,
+        "Masami Hiramatsu" <masami.hiramatsu@linaro.org>,
         Takao Orito <orito.takao@socionext.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        =?utf-8?B?QmVuQ2h1YW5nW+iOiuaZuumHj10=?= 
+        <Ben.Chuang@genesyslogic.com.tw>,
+        Renius Chen <reniuschengl@gmail.com>
+Subject: RE: [PATCH 0/4] mmc: core: Preparations to support SD UHS-II cards
+Thread-Topic: [PATCH 0/4] mmc: core: Preparations to support SD UHS-II cards
+Thread-Index: AQHXC5hCBaLnPEhAx02zG+hoO5yy16qdiysAgACJIJA=
+Date:   Wed, 31 Mar 2021 10:26:55 +0000
+Message-ID: <FDA815A8963C6B43ABF06E8A34984F99F9B709BB@Gli-MBX02.genesyslogic.com.tw>
+References: <20210225170352.76872-1-ulf.hansson@linaro.org>
+ <CAPDyKFp0+jBDcJnxbvdkZWo6jmSa-CdT6RNbH2hmrWnXEqU0=w@mail.gmail.com>
+In-Reply-To: <CAPDyKFp0+jBDcJnxbvdkZWo6jmSa-CdT6RNbH2hmrWnXEqU0=w@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.17.107.84]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Ben, Renius,
-
-On Thu, 25 Feb 2021 at 18:04, Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> A series [1] that has been collaborative worked upon by Takahiro Akashi
-> (Linaro) and Ben Chuang (Genesys Logic) is targeting to add SD UHS-II support
-> to the mmc subsystem.
->
-> Throughout the reviews, we realized that the changes affecting the mmc core to
-> support the UHS-II interface/protocol might not be entirely straightforward to
-> implement. Especially, I expressed some concerns about the code that manages
-> power on/off, initialization and power management of a SD UHS-II card.
->
-> Therefore, I have posted this small series to try to help to put some of the
-> foundation in the mmc core in place. Hopefully this can provide some guidance
-> and an overall structure, of how I think the code could evolve.
->
-> More details are available in the commit messages and through comments in the
-> code, for each path.
->
-> Kind regards
-> Uffe
-
-I just wanted to get an update from your side. Did $subject series
-help to move things forward?
-
-If there is anything else I can help with, then please ping me.
-
-Kind regards
-Uffe
-
->
-> [1]
-> https://lkml.org/lkml/2020/11/5/1472
->
->
-> Ulf Hansson (4):
->   mmc: core: Cleanup printing of speed mode at card insertion
->   mmc: core: Prepare to support SD UHS-II cards
->   mmc: core: Announce successful insertion of an SD UHS-II card
->   mmc: core: Extend support for mmc regulators with a vqmmc2
->
->  drivers/mmc/core/Makefile    |   2 +-
->  drivers/mmc/core/bus.c       |  38 +++--
->  drivers/mmc/core/core.c      |  17 ++-
->  drivers/mmc/core/core.h      |   1 +
->  drivers/mmc/core/host.h      |   5 +
->  drivers/mmc/core/regulator.c |  34 +++++
->  drivers/mmc/core/sd_uhs2.c   | 289 +++++++++++++++++++++++++++++++++++
->  include/linux/mmc/card.h     |   6 +
->  include/linux/mmc/host.h     |  30 ++++
->  9 files changed, 404 insertions(+), 18 deletions(-)
->  create mode 100644 drivers/mmc/core/sd_uhs2.c
->
-> --
-> 2.25.1
->
+SGkgVWxmLA0KDQoNCkknbSBjdXJyZW50bHkgdHJ5aW5nIHRvIHRha2Ugb3ZlciBhbmQgcmVmYWN0
+b3IgdGhlIHRhc2sgcmVmZXIgdG8geW91ciBzZXJpZXMuDQpBbmQgdGhlcmUgaGFzbid0IGJlZW4g
+bXVjaCBwcm9ncmVzcyByZWNlbnRseSBiZWNhdXNlIEknbSBidXN5IHdpdGggb3RoZXIgd29yay4N
+Cg0KDQpSZWdhcmRzLA0KDQpSZW5pdXMNCg0KPi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+
+RnJvbTogVWxmIEhhbnNzb24gW21haWx0bzp1bGYuaGFuc3NvbkBsaW5hcm8ub3JnXQ0KPlNlbnQ6
+IFdlZG5lc2RheSwgTWFyY2ggMzEsIDIwMjEgNTo1NyBQTQ0KPlRvOiBCZW5DaHVhbmdb6I6K5pm6
+6YePXTsgUmVuaXVzIENoZW4NCj5DYzogQUtBU0hJIFRha2FoaXJvOyBHcmVnVHVb5p2c5ZWf6LuS
+XTsgTWFzYW1pIEhpcmFtYXRzdTsgVGFrYW8gT3JpdG87IExpbnV4DQo+S2VybmVsIE1haWxpbmcg
+TGlzdDsgVWxmIEhhbnNzb247IEFkcmlhbiBIdW50ZXI7IGxpbnV4LW1tYw0KPlN1YmplY3Q6IFJl
+OiBbUEFUQ0ggMC80XSBtbWM6IGNvcmU6IFByZXBhcmF0aW9ucyB0byBzdXBwb3J0IFNEIFVIUy1J
+SSBjYXJkcw0KPg0KPkhpIEJlbiwgUmVuaXVzLA0KPg0KPk9uIFRodSwgMjUgRmViIDIwMjEgYXQg
+MTg6MDQsIFVsZiBIYW5zc29uIDx1bGYuaGFuc3NvbkBsaW5hcm8ub3JnPiB3cm90ZToNCj4+DQo+
+PiBBIHNlcmllcyBbMV0gdGhhdCBoYXMgYmVlbiBjb2xsYWJvcmF0aXZlIHdvcmtlZCB1cG9uIGJ5
+IFRha2FoaXJvIEFrYXNoaQ0KPj4gKExpbmFybykgYW5kIEJlbiBDaHVhbmcgKEdlbmVzeXMgTG9n
+aWMpIGlzIHRhcmdldGluZyB0byBhZGQgU0QgVUhTLUlJIHN1cHBvcnQNCj4+IHRvIHRoZSBtbWMg
+c3Vic3lzdGVtLg0KPj4NCj4+IFRocm91Z2hvdXQgdGhlIHJldmlld3MsIHdlIHJlYWxpemVkIHRo
+YXQgdGhlIGNoYW5nZXMgYWZmZWN0aW5nIHRoZSBtbWMgY29yZQ0KPnRvDQo+PiBzdXBwb3J0IHRo
+ZSBVSFMtSUkgaW50ZXJmYWNlL3Byb3RvY29sIG1pZ2h0IG5vdCBiZSBlbnRpcmVseSBzdHJhaWdo
+dGZvcndhcmQgdG8NCj4+IGltcGxlbWVudC4gRXNwZWNpYWxseSwgSSBleHByZXNzZWQgc29tZSBj
+b25jZXJucyBhYm91dCB0aGUgY29kZSB0aGF0DQo+bWFuYWdlcw0KPj4gcG93ZXIgb24vb2ZmLCBp
+bml0aWFsaXphdGlvbiBhbmQgcG93ZXIgbWFuYWdlbWVudCBvZiBhIFNEIFVIUy1JSSBjYXJkLg0K
+Pj4NCj4+IFRoZXJlZm9yZSwgSSBoYXZlIHBvc3RlZCB0aGlzIHNtYWxsIHNlcmllcyB0byB0cnkg
+dG8gaGVscCB0byBwdXQgc29tZSBvZiB0aGUNCj4+IGZvdW5kYXRpb24gaW4gdGhlIG1tYyBjb3Jl
+IGluIHBsYWNlLiBIb3BlZnVsbHkgdGhpcyBjYW4gcHJvdmlkZSBzb21lDQo+Z3VpZGFuY2UNCj4+
+IGFuZCBhbiBvdmVyYWxsIHN0cnVjdHVyZSwgb2YgaG93IEkgdGhpbmsgdGhlIGNvZGUgY291bGQg
+ZXZvbHZlLg0KPj4NCj4+IE1vcmUgZGV0YWlscyBhcmUgYXZhaWxhYmxlIGluIHRoZSBjb21taXQg
+bWVzc2FnZXMgYW5kIHRocm91Z2ggY29tbWVudHMgaW4NCj50aGUNCj4+IGNvZGUsIGZvciBlYWNo
+IHBhdGguDQo+Pg0KPj4gS2luZCByZWdhcmRzDQo+PiBVZmZlDQo+DQo+SSBqdXN0IHdhbnRlZCB0
+byBnZXQgYW4gdXBkYXRlIGZyb20geW91ciBzaWRlLiBEaWQgJHN1YmplY3Qgc2VyaWVzDQo+aGVs
+cCB0byBtb3ZlIHRoaW5ncyBmb3J3YXJkPw0KPg0KPklmIHRoZXJlIGlzIGFueXRoaW5nIGVsc2Ug
+SSBjYW4gaGVscCB3aXRoLCB0aGVuIHBsZWFzZSBwaW5nIG1lLg0KPg0KPktpbmQgcmVnYXJkcw0K
+PlVmZmUNCj4NCj4+DQo+PiBbMV0NCj4+IGh0dHBzOi8vbGttbC5vcmcvbGttbC8yMDIwLzExLzUv
+MTQ3Mg0KPj4NCj4+DQo+PiBVbGYgSGFuc3NvbiAoNCk6DQo+PiAgIG1tYzogY29yZTogQ2xlYW51
+cCBwcmludGluZyBvZiBzcGVlZCBtb2RlIGF0IGNhcmQgaW5zZXJ0aW9uDQo+PiAgIG1tYzogY29y
+ZTogUHJlcGFyZSB0byBzdXBwb3J0IFNEIFVIUy1JSSBjYXJkcw0KPj4gICBtbWM6IGNvcmU6IEFu
+bm91bmNlIHN1Y2Nlc3NmdWwgaW5zZXJ0aW9uIG9mIGFuIFNEIFVIUy1JSSBjYXJkDQo+PiAgIG1t
+YzogY29yZTogRXh0ZW5kIHN1cHBvcnQgZm9yIG1tYyByZWd1bGF0b3JzIHdpdGggYSB2cW1tYzIN
+Cj4+DQo+PiAgZHJpdmVycy9tbWMvY29yZS9NYWtlZmlsZSAgICB8ICAgMiArLQ0KPj4gIGRyaXZl
+cnMvbW1jL2NvcmUvYnVzLmMgICAgICAgfCAgMzggKysrLS0NCj4+ICBkcml2ZXJzL21tYy9jb3Jl
+L2NvcmUuYyAgICAgIHwgIDE3ICsrLQ0KPj4gIGRyaXZlcnMvbW1jL2NvcmUvY29yZS5oICAgICAg
+fCAgIDEgKw0KPj4gIGRyaXZlcnMvbW1jL2NvcmUvaG9zdC5oICAgICAgfCAgIDUgKw0KPj4gIGRy
+aXZlcnMvbW1jL2NvcmUvcmVndWxhdG9yLmMgfCAgMzQgKysrKysNCj4+ICBkcml2ZXJzL21tYy9j
+b3JlL3NkX3VoczIuYyAgIHwgMjg5DQo+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysNCj4+ICBpbmNsdWRlL2xpbnV4L21tYy9jYXJkLmggICAgIHwgICA2ICsNCj4+ICBpbmNsdWRl
+L2xpbnV4L21tYy9ob3N0LmggICAgIHwgIDMwICsrKysNCj4+ICA5IGZpbGVzIGNoYW5nZWQsIDQw
+NCBpbnNlcnRpb25zKCspLCAxOCBkZWxldGlvbnMoLSkNCj4+ICBjcmVhdGUgbW9kZSAxMDA2NDQg
+ZHJpdmVycy9tbWMvY29yZS9zZF91aHMyLmMNCj4+DQo+PiAtLQ0KPj4gMi4yNS4xDQo+Pg0KX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KR2VuZXN5cyBMb2dpYyBFbWFpbCBDb25m
+aWRlbnRpYWxpdHkgTm90aWNlOg0KVGhpcyBtYWlsIGFuZCBhbnkgYXR0YWNobWVudHMgbWF5IGNv
+bnRhaW4gaW5mb3JtYXRpb24gdGhhdCBpcyBjb25maWRlbnRpYWwsIHByb3ByaWV0YXJ5LCBwcml2
+aWxlZ2VkIG9yIG90aGVyd2lzZSBwcm90ZWN0ZWQgYnkgbGF3LiBUaGUgbWFpbCBpcyBpbnRlbmRl
+ZCBzb2xlbHkgZm9yIHRoZSBuYW1lZCBhZGRyZXNzZWUgKG9yIGEgcGVyc29uIHJlc3BvbnNpYmxl
+IGZvciBkZWxpdmVyaW5nIGl0IHRvIHRoZSBhZGRyZXNzZWUpLiBJZiB5b3UgYXJlIG5vdCB0aGUg
+aW50ZW5kZWQgcmVjaXBpZW50IG9mIHRoaXMgbWFpbCwgeW91IGFyZSBub3QgYXV0aG9yaXplZCB0
+byByZWFkLCBwcmludCwgY29weSBvciBkaXNzZW1pbmF0ZSB0aGlzIG1haWwuDQoNCklmIHlvdSBo
+YXZlIHJlY2VpdmVkIHRoaXMgZW1haWwgaW4gZXJyb3IsIHBsZWFzZSBub3RpZnkgdXMgaW1tZWRp
+YXRlbHkgYnkgcmVwbHkgZW1haWwgYW5kIGltbWVkaWF0ZWx5IGRlbGV0ZSB0aGlzIG1lc3NhZ2Ug
+YW5kIGFueSBhdHRhY2htZW50cyBmcm9tIHlvdXIgc3lzdGVtLiBQbGVhc2UgYmUgbm90ZWQgdGhh
+dCBhbnkgdW5hdXRob3JpemVkIHVzZSwgZGlzc2VtaW5hdGlvbiwgZGlzdHJpYnV0aW9uIG9yIGNv
+cHlpbmcgb2YgdGhpcyBlbWFpbCBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLg0KX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18NCg==
