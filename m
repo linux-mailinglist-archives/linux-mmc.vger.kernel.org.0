@@ -2,390 +2,106 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F5DA357A52
-	for <lists+linux-mmc@lfdr.de>; Thu,  8 Apr 2021 04:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26C143584CF
+	for <lists+linux-mmc@lfdr.de>; Thu,  8 Apr 2021 15:34:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230366AbhDHCYM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 7 Apr 2021 22:24:12 -0400
-Received: from twspam01.aspeedtech.com ([211.20.114.71]:27593 "EHLO
-        twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230020AbhDHCYL (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 7 Apr 2021 22:24:11 -0400
-Received: from twspam01.aspeedtech.com (localhost [127.0.0.2] (may be forged))
-        by twspam01.aspeedtech.com with ESMTP id 1381hddl042164;
-        Thu, 8 Apr 2021 09:43:39 +0800 (GMT-8)
-        (envelope-from steven_lee@aspeedtech.com)
-Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 1381gJ1i042079;
-        Thu, 8 Apr 2021 09:42:19 +0800 (GMT-8)
-        (envelope-from steven_lee@aspeedtech.com)
-Received: from localhost.localdomain (192.168.100.253) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 8 Apr
- 2021 09:52:24 +0800
-From:   Steven Lee <steven_lee@aspeedtech.com>
-To:     Andrew Jeffery <andrew@aj.id.au>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Joel Stanley <joel@jms.id.au>,
-        "Adrian Hunter" <adrian.hunter@intel.com>,
-        Ryan Chen <ryanchen.aspeed@gmail.com>,
-        "moderated list:ASPEED SD/MMC DRIVER" <linux-aspeed@lists.ozlabs.org>,
-        "moderated list:ASPEED SD/MMC DRIVER" <openbmc@lists.ozlabs.org>,
-        "open list:ASPEED SD/MMC DRIVER" <linux-mmc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "moderated list:ARM/ASPEED MACHINE SUPPORT" 
-        <linux-arm-kernel@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>
-CC:     <ryan_chen@aspeedtech.com>, <chin-ting_kuo@aspeedtech.com>
-Subject: [PATCH v1 2/2] mmc: sdhci-of-aspeed: Support toggling SD bus signal voltage by GPIO
-Date:   Thu, 8 Apr 2021 09:52:18 +0800
-Message-ID: <20210408015218.20560-3-steven_lee@aspeedtech.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210408015218.20560-1-steven_lee@aspeedtech.com>
-References: <20210408015218.20560-1-steven_lee@aspeedtech.com>
+        id S231639AbhDHNel (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 8 Apr 2021 09:34:41 -0400
+Received: from www.zeus03.de ([194.117.254.33]:60412 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231574AbhDHNek (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 8 Apr 2021 09:34:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=qsUM8aHVC6jMIaBfNvZ4978IO4A
+        5cA/CP2ef/UoBhQs=; b=oCQzl+zVa3SDuyDmhtFu1mawlePUFRmMoCcyKzPgsvy
+        SWBVYLQ2qoDrX8dI/BbH+q/GmTkIwp+hD8J9FGjtxs1eHeaDtfiM3TG9c1Eaw1p7
+        8X23X69c0ZaTTWGgjAcKX2Mobw1sHRqfMHAlHtOcCx3cNaYpzlwYKhc+NDDkPvto
+        =
+Received: (qmail 3410878 invoked from network); 8 Apr 2021 15:34:28 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 8 Apr 2021 15:34:28 +0200
+X-UD-Smtp-Session: l3s3148p1@oqQTG3a//OMgARa4RezXAVMsXvUl9i/q
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH RFT] mmc: renesas_sdhi: enable WAIT_WHILE_BUSY
+Date:   Thu,  8 Apr 2021 15:34:20 +0200
+Message-Id: <20210408133420.2900-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.100.253]
-X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
- (192.168.0.24)
-X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 1381gJ1i042079
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-AST2600-A2 EVB provides reference design to support toggling signal
-voltage between 3.3v and 1.8v by power-switch-gpio pin that defined in
-the device tree. It also supporting enabling/disabling SD bus power by
-power-gpio.
+Now that we got the timeout handling in the driver correct, we can use
+this capability to avoid polling via the MMC core.
 
-In the reference design, GPIOV0 of AST2600-A2 EVB is connected to power
-load switch that providing 3.3v to SD1 bus vdd. GPIOV1 is connected to
-a 1.8v and a 3.3v power load switch that providing signal voltage to
-SD1 bus.
-If GPIOV0 is active high, SD1 bus is enabled. Otherwise, SD1 bus is
-disabled.
-If GPIOV1 is active high, 3.3v power load switch is enabled, SD1 signal
-voltage is 3.3v, otherwise, 1.8v power load switch will be enabled, SD1
-signal voltage becomes 1.8v.
-
-AST2600-A2 EVB also support toggling signal voltage for SD2 bus.
-The design is the same as SD1 bus. It uses GPIOV2 as power-gpio and
-GPIOV3 as power-switch-gpio.
-
-Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/mmc/host/sdhci-of-aspeed.c | 155 +++++++++++++++++++++++++----
- 1 file changed, 137 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
-index 7d8692e90996..a74a03d37915 100644
---- a/drivers/mmc/host/sdhci-of-aspeed.c
-+++ b/drivers/mmc/host/sdhci-of-aspeed.c
-@@ -5,6 +5,7 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/io.h>
- #include <linux/math64.h>
- #include <linux/mmc/host.h>
-@@ -30,6 +31,7 @@
- #define   ASPEED_SDC_S0_PHASE_IN_EN	BIT(2)
- #define   ASPEED_SDC_S0_PHASE_OUT_EN	GENMASK(1, 0)
- #define   ASPEED_SDC_PHASE_MAX		31
-+#define ASPEED_CLOCK_PHASE 0xf4
+I had this patch applied while developing all the other patches for
+TMIO/SDHI for 5.13 and had no regressions. Further testing is
+appreciated, but I am optimistic that we can enable this finally.
+
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c | 4 ++--
+ drivers/mmc/host/renesas_sdhi_sys_dmac.c      | 7 ++++---
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+index ff97f15e317c..47c795e79c21 100644
+--- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
++++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+@@ -94,7 +94,7 @@ static struct renesas_sdhi_scc rcar_gen3_scc_taps[] = {
  
- struct aspeed_sdc {
- 	struct clk *clk;
-@@ -58,18 +60,21 @@ struct aspeed_sdhci_phase_desc {
- 	struct aspeed_sdhci_tap_desc out;
+ static const struct renesas_sdhi_of_data of_rza2_compatible = {
+ 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
+-			  TMIO_MMC_HAVE_CBSY,
++			  TMIO_MMC_HAVE_CBSY | MMC_CAP_WAIT_WHILE_BUSY,
+ 	.tmio_ocr_mask	= MMC_VDD_32_33,
+ 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
+ 			  MMC_CAP_CMD23,
+@@ -111,7 +111,7 @@ static const struct renesas_sdhi_of_data of_rcar_gen3_compatible = {
+ 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
+ 			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2,
+ 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
+-			  MMC_CAP_CMD23,
++			  MMC_CAP_CMD23 | MMC_CAP_WAIT_WHILE_BUSY,
+ 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT | MMC_CAP2_MERGE_CAPABLE,
+ 	.bus_shift	= 2,
+ 	.scc_offset	= 0x1000,
+diff --git a/drivers/mmc/host/renesas_sdhi_sys_dmac.c b/drivers/mmc/host/renesas_sdhi_sys_dmac.c
+index c5f789675302..0a3494fcc5e8 100644
+--- a/drivers/mmc/host/renesas_sdhi_sys_dmac.c
++++ b/drivers/mmc/host/renesas_sdhi_sys_dmac.c
+@@ -31,13 +31,14 @@ static const struct renesas_sdhi_of_data of_default_cfg = {
+ 
+ static const struct renesas_sdhi_of_data of_rz_compatible = {
+ 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_32BIT_DATA_PORT |
+-			  TMIO_MMC_HAVE_CBSY,
++			  TMIO_MMC_HAVE_CBSY | MMC_CAP_WAIT_WHILE_BUSY,
+ 	.tmio_ocr_mask	= MMC_VDD_32_33,
+ 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ,
  };
  
--struct aspeed_sdhci_pdata {
-+struct aspeed_sdhci_data {
- 	unsigned int clk_div_start;
- 	const struct aspeed_sdhci_phase_desc *phase_desc;
- 	size_t nr_phase_descs;
-+	const struct sdhci_pltfm_data *pdata;
+ static const struct renesas_sdhi_of_data of_rcar_gen1_compatible = {
+-	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL,
++	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
++			  MMC_CAP_WAIT_WHILE_BUSY,
+ 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ,
+ 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
  };
- 
- struct aspeed_sdhci {
--	const struct aspeed_sdhci_pdata *pdata;
-+	const struct aspeed_sdhci_data *data;
- 	struct aspeed_sdc *parent;
- 	u32 width_mask;
- 	struct mmc_clk_phase_map phase_map;
- 	const struct aspeed_sdhci_phase_desc *phase_desc;
-+	struct gpio_desc *pwr_pin;
-+	struct gpio_desc *pwr_sw_pin;
- };
- 
- static void aspeed_sdc_configure_8bit_mode(struct aspeed_sdc *sdc,
-@@ -209,7 +214,6 @@ static void aspeed_sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
- 	sdhci = sdhci_pltfm_priv(pltfm_host);
- 
- 	parent = clk_get_rate(pltfm_host->clk);
--
- 	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
- 
- 	if (clock == 0)
-@@ -234,14 +238,13 @@ static void aspeed_sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
- 	 * supporting the value 0 in (EMMC12C[7:6], EMMC12C[15:8]), and capture
- 	 * the 0-value capability in clk_div_start.
- 	 */
--	for (div = sdhci->pdata->clk_div_start; div < 256; div *= 2) {
-+	for (div = sdhci->data->clk_div_start; div < 256; div *= 2) {
- 		bus = parent / div;
- 		if (bus <= clock)
- 			break;
- 	}
- 
- 	div >>= 1;
--
- 	clk = div << SDHCI_DIVIDER_SHIFT;
- 
- 	aspeed_sdhci_configure_phase(host, bus);
-@@ -292,8 +295,78 @@ static u32 aspeed_sdhci_readl(struct sdhci_host *host, int reg)
- 	return val;
- }
- 
-+static void sdhci_aspeed_set_power(struct sdhci_host *host, unsigned char mode,
-+				   unsigned short vdd)
-+{
-+	struct sdhci_pltfm_host *pltfm_priv = sdhci_priv(host);
-+	struct aspeed_sdhci *dev = sdhci_pltfm_priv(pltfm_priv);
-+	u8 pwr = 0;
-+
-+	if (!dev->pwr_pin)
-+		return sdhci_set_power(host, mode, vdd);
-+
-+	if (mode != MMC_POWER_OFF) {
-+		switch (1 << vdd) {
-+		case MMC_VDD_165_195:
-+		/*
-+		 * Without a regulator, SDHCI does not support 2.0v
-+		 * so we only get here if the driver deliberately
-+		 * added the 2.0v range to ocr_avail. Map it to 1.8v
-+		 * for the purpose of turning on the power.
-+		 */
-+		case MMC_VDD_20_21:
-+				pwr = SDHCI_POWER_180;
-+				break;
-+		case MMC_VDD_29_30:
-+		case MMC_VDD_30_31:
-+				pwr = SDHCI_POWER_300;
-+				break;
-+		case MMC_VDD_32_33:
-+		case MMC_VDD_33_34:
-+				pwr = SDHCI_POWER_330;
-+				break;
-+		default:
-+				WARN(1, "%s: Invalid vdd %#x\n",
-+				     mmc_hostname(host->mmc), vdd);
-+				break;
-+		}
-+	}
-+
-+	if (host->pwr == pwr)
-+		return;
-+
-+	host->pwr = pwr;
-+
-+	if (pwr == 0) {
-+		gpiod_set_value(dev->pwr_pin, 0);
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+	} else {
-+		gpiod_set_value(dev->pwr_pin, 1);
-+
-+		if (dev->pwr_sw_pin) {
-+			if (pwr & SDHCI_POWER_330)
-+				gpiod_set_value(dev->pwr_sw_pin, 1);
-+			else if (pwr & SDHCI_POWER_180)
-+				gpiod_set_value(dev->pwr_sw_pin, 0);
-+		}
-+		pwr |= SDHCI_POWER_ON;
-+		sdhci_writeb(host, pwr, SDHCI_POWER_CONTROL);
-+	}
-+}
-+
-+static void aspeed_sdhci_voltage_switch(struct sdhci_host *host)
-+{
-+	struct sdhci_pltfm_host *pltfm_priv = sdhci_priv(host);
-+	struct aspeed_sdhci *dev = sdhci_pltfm_priv(pltfm_priv);
-+
-+	if (dev->pwr_sw_pin)
-+		gpiod_set_value(dev->pwr_sw_pin, 0);
-+}
-+
- static const struct sdhci_ops aspeed_sdhci_ops = {
- 	.read_l = aspeed_sdhci_readl,
-+	.set_power = sdhci_aspeed_set_power,
-+	.voltage_switch = aspeed_sdhci_voltage_switch,
- 	.set_clock = aspeed_sdhci_set_clock,
- 	.get_max_clock = aspeed_sdhci_get_max_clock,
- 	.set_bus_width = aspeed_sdhci_set_bus_width,
-@@ -302,9 +375,14 @@ static const struct sdhci_ops aspeed_sdhci_ops = {
- 	.set_uhs_signaling = sdhci_set_uhs_signaling,
- };
- 
--static const struct sdhci_pltfm_data aspeed_sdhci_pdata = {
-+static const struct sdhci_pltfm_data ast2400_sdhci_pdata = {
- 	.ops = &aspeed_sdhci_ops,
- 	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
-+	.quirks2 = SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN | SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+};
-+
-+static const struct sdhci_pltfm_data ast2600_sdhci_pdata = {
-+	.ops = &aspeed_sdhci_ops,
- };
- 
- static inline int aspeed_sdhci_calculate_slot(struct aspeed_sdhci *dev,
-@@ -327,27 +405,28 @@ static inline int aspeed_sdhci_calculate_slot(struct aspeed_sdhci *dev,
- 
- static int aspeed_sdhci_probe(struct platform_device *pdev)
- {
--	const struct aspeed_sdhci_pdata *aspeed_pdata;
-+	const struct aspeed_sdhci_data *aspeed_data;
- 	struct sdhci_pltfm_host *pltfm_host;
- 	struct aspeed_sdhci *dev;
- 	struct sdhci_host *host;
- 	struct resource *res;
-+	u32 reg_val;
- 	int slot;
- 	int ret;
- 
--	aspeed_pdata = of_device_get_match_data(&pdev->dev);
--	if (!aspeed_pdata) {
-+	aspeed_data = of_device_get_match_data(&pdev->dev);
-+	if (!aspeed_data) {
- 		dev_err(&pdev->dev, "Missing platform configuration data\n");
- 		return -EINVAL;
- 	}
- 
--	host = sdhci_pltfm_init(pdev, &aspeed_sdhci_pdata, sizeof(*dev));
-+	host = sdhci_pltfm_init(pdev, aspeed_data->pdata, sizeof(*dev));
- 	if (IS_ERR(host))
- 		return PTR_ERR(host);
- 
- 	pltfm_host = sdhci_priv(host);
- 	dev = sdhci_pltfm_priv(pltfm_host);
--	dev->pdata = aspeed_pdata;
-+	dev->data = aspeed_data;
- 	dev->parent = dev_get_drvdata(pdev->dev.parent);
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -358,8 +437,8 @@ static int aspeed_sdhci_probe(struct platform_device *pdev)
- 	else if (slot >= 2)
- 		return -EINVAL;
- 
--	if (slot < dev->pdata->nr_phase_descs) {
--		dev->phase_desc = &dev->pdata->phase_desc[slot];
-+	if (slot < dev->data->nr_phase_descs) {
-+		dev->phase_desc = &dev->data->phase_desc[slot];
- 	} else {
- 		dev_info(&pdev->dev,
- 			 "Phase control not supported for slot %d\n", slot);
-@@ -372,6 +451,23 @@ static int aspeed_sdhci_probe(struct platform_device *pdev)
- 
- 	sdhci_get_of_property(pdev);
- 
-+	if (of_property_read_bool(pdev->dev.parent->of_node, "mmc-hs200-1_8v") ||
-+	    of_property_read_bool(pdev->dev.parent->of_node, "sd-uhs-sdr104")) {
-+		reg_val = readl(host->ioaddr + 0x40);
-+		/* support 1.8V */
-+		reg_val |= BIT(26);
-+		/* write to sdhci140 or sdhci240 mirror register */
-+		writel(reg_val, dev->parent->regs + (0x10 * (slot + 1)));
-+	}
-+
-+	if (of_property_read_bool(pdev->dev.parent->of_node, "sd-uhs-sdr104")) {
-+		reg_val = readl(host->ioaddr + 0x44);
-+		/* SDR104 */
-+		reg_val |= BIT(1);
-+		/* write to sdhci144 or sdhci244 mirror register */
-+		writel(reg_val, dev->parent->regs + (0x04 + (slot + 1) * 0x10));
-+	}
-+
- 	pltfm_host->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(pltfm_host->clk))
- 		return PTR_ERR(pltfm_host->clk);
-@@ -389,6 +485,22 @@ static int aspeed_sdhci_probe(struct platform_device *pdev)
- 	if (dev->phase_desc)
- 		mmc_of_parse_clk_phase(host->mmc, &dev->phase_map);
- 
-+	dev->pwr_pin = devm_gpiod_get(&pdev->dev, "power", GPIOD_OUT_HIGH);
-+	if (!IS_ERR(dev->pwr_pin)) {
-+		gpiod_set_consumer_name(dev->pwr_pin, "mmc_pwr");
-+		gpiod_direction_output(dev->pwr_pin, 1);
-+	} else {
-+		dev->pwr_pin = NULL;
-+	}
-+
-+	dev->pwr_sw_pin = devm_gpiod_get(&pdev->dev, "power-switch", GPIOD_OUT_HIGH);
-+	if (!IS_ERR(dev->pwr_sw_pin)) {
-+		gpiod_set_consumer_name(dev->pwr_sw_pin, "mmc_pwr_sw");
-+		gpiod_direction_output(dev->pwr_sw_pin, 0);
-+	} else {
-+		dev->pwr_sw_pin = NULL;
-+	}
-+
- 	ret = sdhci_add_host(host);
- 	if (ret)
- 		goto err_sdhci_add;
-@@ -420,8 +532,9 @@ static int aspeed_sdhci_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
--static const struct aspeed_sdhci_pdata ast2400_sdhci_pdata = {
-+static const struct aspeed_sdhci_data ast2400_sdhci_data = {
- 	.clk_div_start = 2,
-+	.pdata = &ast2400_sdhci_pdata,
- };
- 
- static const struct aspeed_sdhci_phase_desc ast2600_sdhci_phase[] = {
-@@ -453,16 +566,17 @@ static const struct aspeed_sdhci_phase_desc ast2600_sdhci_phase[] = {
- 	},
- };
- 
--static const struct aspeed_sdhci_pdata ast2600_sdhci_pdata = {
-+static const struct aspeed_sdhci_data ast2600_sdhci_data = {
- 	.clk_div_start = 1,
- 	.phase_desc = ast2600_sdhci_phase,
- 	.nr_phase_descs = ARRAY_SIZE(ast2600_sdhci_phase),
-+	.pdata = &ast2600_sdhci_pdata,
- };
- 
- static const struct of_device_id aspeed_sdhci_of_match[] = {
--	{ .compatible = "aspeed,ast2400-sdhci", .data = &ast2400_sdhci_pdata, },
--	{ .compatible = "aspeed,ast2500-sdhci", .data = &ast2400_sdhci_pdata, },
--	{ .compatible = "aspeed,ast2600-sdhci", .data = &ast2600_sdhci_pdata, },
-+	{ .compatible = "aspeed,ast2400-sdhci", .data = &ast2400_sdhci_data, },
-+	{ .compatible = "aspeed,ast2500-sdhci", .data = &ast2400_sdhci_data, },
-+	{ .compatible = "aspeed,ast2600-sdhci", .data = &ast2600_sdhci_data, },
- 	{ }
- };
- 
-@@ -482,6 +596,7 @@ static int aspeed_sdc_probe(struct platform_device *pdev)
- 	struct device_node *parent, *child;
- 	struct aspeed_sdc *sdc;
- 	int ret;
-+	u32 timing_phase;
- 
- 	sdc = devm_kzalloc(&pdev->dev, sizeof(*sdc), GFP_KERNEL);
- 	if (!sdc)
-@@ -506,6 +621,10 @@ static int aspeed_sdc_probe(struct platform_device *pdev)
- 		goto err_clk;
- 	}
- 
-+	if (!of_property_read_u32(pdev->dev.of_node,
-+				  "timing-phase", &timing_phase))
-+		writel(timing_phase, sdc->regs + ASPEED_CLOCK_PHASE);
-+
- 	dev_set_drvdata(&pdev->dev, sdc);
- 
- 	parent = pdev->dev.of_node;
+@@ -58,7 +59,7 @@ static const struct renesas_sdhi_of_data of_rcar_gen2_compatible = {
+ 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT | TMIO_MMC_CLK_ACTUAL |
+ 			  TMIO_MMC_HAVE_CBSY | TMIO_MMC_MIN_RCAR2,
+ 	.capabilities	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
+-			  MMC_CAP_CMD23,
++			  MMC_CAP_CMD23 | MMC_CAP_WAIT_WHILE_BUSY,
+ 	.capabilities2	= MMC_CAP2_NO_WRITE_PROTECT,
+ 	.dma_buswidth	= DMA_SLAVE_BUSWIDTH_4_BYTES,
+ 	.dma_rx_offset	= 0x2000,
 -- 
-2.17.1
+2.30.0
 
