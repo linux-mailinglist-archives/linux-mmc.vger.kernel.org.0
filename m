@@ -2,97 +2,67 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 305D635FD3A
-	for <lists+linux-mmc@lfdr.de>; Wed, 14 Apr 2021 23:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5173735FD51
+	for <lists+linux-mmc@lfdr.de>; Wed, 14 Apr 2021 23:31:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232710AbhDNVXQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 14 Apr 2021 17:23:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40248 "EHLO
+        id S233142AbhDNVb1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 14 Apr 2021 17:31:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232559AbhDNVXQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 14 Apr 2021 17:23:16 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FF8DC061761;
-        Wed, 14 Apr 2021 14:22:52 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id x4so25466630edd.2;
-        Wed, 14 Apr 2021 14:22:52 -0700 (PDT)
+        with ESMTP id S232302AbhDNVb0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 14 Apr 2021 17:31:26 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F11C061574;
+        Wed, 14 Apr 2021 14:31:04 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id w4so17485695wrt.5;
+        Wed, 14 Apr 2021 14:31:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Jb2njQFqh1J5ySivjLPwo4s6Cj9FjUtmZEwE7V7CR88=;
-        b=a8uCBdhRzHnkjLZ5iCuIGdQ1dD6Zak7cm+An6QzdWX6YKJeHoGyDKqjJZshI/6ezlQ
-         V+hFWU7MjzgRajmdmzxa2RhZK0fLmOqwErcVU8RQsVDSFk3rqdacvLMtYH/YWmtD2Pvq
-         xwS0t0SmojfCFbzD6T+aVYh4196e2vJlQXAR+Q2I/KAZXPfI1KFTbG0dcyDAYXAqQ+3u
-         kGNR7jnASChXRfg8JE53/YbXd8ZhG8XMfZ3oWphKEN3HBj42WRcOrSbwNvE0X+0lMigc
-         u7NpL5jhMyd13ac2wPnxBuYViLvJYpYV1LWZvELlY0ZztefDjfZoTm3MrThqAnedH6N8
-         B2IA==
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=FB9ffVgv9MGEJSSW+p7l1641ZpAhJ8oP7yeu0DFe398=;
+        b=oLTFFeE2B+4cs0o0T7wNzs0XK9AkbAHwkcpBVbqfGL7VCT5OEves+B1KKdqI9Lcht8
+         N3bzjvJ5Zb8mazv25rJyCKBmp4CsVHwLCIFwGACf4Mcs2f1ByXXBQj0uoLPRoVHpp1wp
+         xXNDzLoae+eJxfslrjbE8FV/VxwRuhWs1BZravQcVusKeG7QpQLKDY7TZSWs5s1QxbQS
+         3GH+gRYIa0JuQnZliADSoAaT57RpI7XkpSnI8rSyrP1y1dtrDUM5A+V9J7waIwzmggPG
+         w4XnSoiD0FFFOxhRhTW9zmggKmD+QeKMaHqNgvNCXBG1mrWposXnNqm0HSzb4hngS/1c
+         73qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Jb2njQFqh1J5ySivjLPwo4s6Cj9FjUtmZEwE7V7CR88=;
-        b=bqJrM5z1WAR1badyZNala95hK+KnK6CL3MFpSdpxgSTCSHtgOu7W4LEeXlbia7nFXw
-         ffXn8ZOB24u2wRybFW9hg+q6U0hQXnccEkmHcXZlwNDhswVqeDD46JA2i/qN9z5sGZUA
-         4rICju33o6rqsD5Sws9DNClwH7A9k0XIBaDbCw4NhdFToM+inVQwt+79PVPHAH9TiZlj
-         3LATZaHoX3NyrX873ULMgxHoSBCEHDFzMq5QLFrMEcPPsQCqO4dc2aZ9JC8sNg7YSSJf
-         d06Qymw1LeaKuXdirRMnJxOLxlwBnAUpKjrSe7KV1tAa4mwQ4jHJOfX542GAfye2CkiQ
-         B3Mg==
-X-Gm-Message-State: AOAM530ZC1SVvDYVO58P0w08i4bE+N92RSbMun72zF+jmrgExU6GbKO+
-        GDX8JsCiM20VqMGqIApGTNQ2flPokw+6hIZ2
-X-Google-Smtp-Source: ABdhPJzopybsU5t9L35TApEQhlKL6BV3DHt+PoFmes+lTWIt3hsCmfp+AaX1Dh75q8VbiitKwJ7hWw==
-X-Received: by 2002:a05:6402:354b:: with SMTP id f11mr221195edd.361.1618435371392;
-        Wed, 14 Apr 2021 14:22:51 -0700 (PDT)
-Received: from localhost.localdomain (ip5f5bec5d.dynamic.kabel-deutschland.de. [95.91.236.93])
-        by smtp.gmail.com with ESMTPSA id t7sm586187edq.42.2021.04.14.14.22.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Apr 2021 14:22:51 -0700 (PDT)
-From:   Bean Huo <huobean@gmail.com>
-To:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
-        adrian.hunter@intel.com, yoshihiro.shimoda.uh@renesas.com
-Cc:     beanhuo@micron.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] mmc: core: Let sanitize not retry in case of timeout/failure
-Date:   Wed, 14 Apr 2021 23:22:36 +0200
-Message-Id: <20210414212236.346813-3-huobean@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210414212236.346813-1-huobean@gmail.com>
-References: <20210414212236.346813-1-huobean@gmail.com>
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=FB9ffVgv9MGEJSSW+p7l1641ZpAhJ8oP7yeu0DFe398=;
+        b=Wl0+aakb4HQkSKh1TwdVkzR30opxkt3hX6JlmQQQiA+pn9AXwL79bObImYGyDviqUD
+         3UOLzyatR8usTrNPcly/zZ9Dp4y3EnkxrXCIeSIl8/PHLXK57HCpaIF2VkgYBfDIufj5
+         hBAOCuP0i2+xgXH3LWsYpwKR0/1EghZ0prfvocYdGjNO5jvLfKnUoj7fDuH+IDb6Vq+6
+         wpHl5w24+v47fUi5BXg0N5KTpPsfLQRs+324HBiHzL7qDWm/xUw1M0yBiZPAECWqrQ8E
+         r2eM0zhLNur7/3LuwZS78ahb2lsCX1ddElEyRE9CxBsqnzRMJ+HlAzLuKv+Zp6qtjeTN
+         Dz6Q==
+X-Gm-Message-State: AOAM530P7SFk/CVC+oBDgYBnzwSNCD0T3HllriqFTYAfV7hr89z+BIQI
+        CWiR1jHi5RxoHCN/k0r+hEE=
+X-Google-Smtp-Source: ABdhPJydMp4GcwUQSFIuWXh0BIKZY9If8hAWgj12z+xcNKuqKWew02Q573ghD4kfPaLmoHuXm42/pg==
+X-Received: by 2002:a05:6000:1acb:: with SMTP id i11mr44925575wry.68.1618435863611;
+        Wed, 14 Apr 2021 14:31:03 -0700 (PDT)
+Received: from [192.168.1.152] ([102.64.194.225])
+        by smtp.gmail.com with ESMTPSA id h1sm465062wml.38.2021.04.14.14.31.00
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Wed, 14 Apr 2021 14:31:03 -0700 (PDT)
+Message-ID: <60775f17.1c69fb81.c4346.1d53@mx.google.com>
+From:   Vanina curt <internetdtogocel444@gmail.com>
+X-Google-Original-From: Vanina curt
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Please reply to me
+To:     Recipients <Vanina@vger.kernel.org>
+Date:   Wed, 14 Apr 2021 21:30:51 +0000
+Reply-To: curtisvani9008@gmail.com
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Bean Huo <beanhuo@micron.com>
-
-Not any commands need to retry in case of timeout/failure.
-Currently, the sanitize command is issued by the IOCTL interface,
-and once its timeouts, the user normally decides to retry or not .
-Just blindly retry three times sanitize in the driver, it doesn't
-help sanitize retry succeed in the end, on the contrary, it only
-makes the user feel sanitize timeouts after 12 minutes.
-
-Signed-off-by: Bean Huo <beanhuo@micron.com>
----
- drivers/mmc/core/mmc_ops.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-index 1ca0c89081be..cdf02d88fe92 100644
---- a/drivers/mmc/core/mmc_ops.c
-+++ b/drivers/mmc/core/mmc_ops.c
-@@ -1028,8 +1028,8 @@ int mmc_sanitize(struct mmc_card *card, unsigned int timeout_ms)
- 
- 	mmc_retune_hold(host);
- 
--	err = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL, EXT_CSD_SANITIZE_START,
--			 1, timeout_ms);
-+	err = __mmc_switch(card, EXT_CSD_CMD_SET_NORMAL, EXT_CSD_SANITIZE_START,
-+			   1, timeout_ms, 0, true, false, 0);
- 	if (err)
- 		pr_err("%s: Sanitize failed err=%d\n", mmc_hostname(host), err);
- 
--- 
-2.25.1
-
+How are you? I'm Vanina C. I picked interest in you and I would like to kno=
+w more about you and establish relationship with you. i will wait for your =
+response. thank you.
