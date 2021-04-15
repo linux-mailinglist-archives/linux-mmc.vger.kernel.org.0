@@ -2,81 +2,138 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31D093608B8
-	for <lists+linux-mmc@lfdr.de>; Thu, 15 Apr 2021 14:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D8243608BC
+	for <lists+linux-mmc@lfdr.de>; Thu, 15 Apr 2021 14:03:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232253AbhDOMDk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 15 Apr 2021 08:03:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34412 "EHLO
+        id S232648AbhDOMDp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 15 Apr 2021 08:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232513AbhDOMDi (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 15 Apr 2021 08:03:38 -0400
+        with ESMTP id S232655AbhDOMDm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 15 Apr 2021 08:03:42 -0400
 Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AD24C061574
-        for <linux-mmc@vger.kernel.org>; Thu, 15 Apr 2021 05:03:15 -0700 (PDT)
-Received: by mail-vs1-xe2d.google.com with SMTP id d6so5788528vsm.8
-        for <linux-mmc@vger.kernel.org>; Thu, 15 Apr 2021 05:03:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA717C061756
+        for <linux-mmc@vger.kernel.org>; Thu, 15 Apr 2021 05:03:18 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id 66so12018571vsk.9
+        for <linux-mmc@vger.kernel.org>; Thu, 15 Apr 2021 05:03:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=YkwjroPlHbqcNmJWRDqs861V15DKJFOnOt0FvUZN0wc=;
-        b=U0byq/pvP64Pqt3eY0jYvQBkaMTMgBSMupiajU8dPcQc1So5sbX+Pb5PpszOHrnB6a
-         FpDQEQxa+9amemH3bnvooAj6atRVX4rZytzxD9V6pp20rdvNTVTyULNgl21JsfKcsN4b
-         TOHx4i3UsOaOj4xROEzIUpcNDSUuFNjeosU1OcUiHkdI2Kiachpb69NFSMSHSr61L7RH
-         EVPaKnymfjNVGKityRj7FOSWcm4mTNfM9vqXqBbv/RnmM2F65NIPNX2Cd0WzQuvQMTU7
-         WJmDBVy0ppt/lMMzN+FupoDywfpkY62hCCIPq0u/Ji1KWiwc6XVH4FZ7JgxgWNKWmmYX
-         1DAg==
+        bh=a7FyRm6KTh0gv7RS+KVljQwTi9U7GSgFTjsqKhiSYho=;
+        b=u4BXlDTSkhAFUxP6lywlt+Uph749BIKvbHzo77NvGE+HtpqEVITziZuryPkXUP7e9r
+         i+vJKSWlIvpOkxGq0UqYnd918+P40lzahM3ar2jAADB3TxoGrcJCqCh+ailKsrAWBDAj
+         ZToQJ6Z/8U1Gc2cjgMpZ4j0K/GmbeSo8m0e3oQIqbtbIIZaYUKILNniMUadUHBCgxZIo
+         fFslpguYYMxci6UDmUkz1U+9nsFS7e+ml2puaj1C0ghZTYeupN4McX4mAVjUVogV8TCL
+         LSxQJdpKu0h2Uti+LvsRpK7rl1oqylMCiiyDeasP/TSk8up630cHGf3tq0c3EZkbkasg
+         SkfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YkwjroPlHbqcNmJWRDqs861V15DKJFOnOt0FvUZN0wc=;
-        b=E13UEkmoKtMpxYBunzzkHSNmQ8Dp+qmo+dC8/7Bq978TYm4u10zkT1LKAV7EuZmmkX
-         cUn5RjYNOAkfpY8jB6As7QcpMq/zUHXWvHOyz3eZ2NitLzuEoYLdqYzAflckkRh4x2yn
-         hPCM9ZLrf3OB6v7gGGjOAHrjwIPQfr8M/xWtrPIQLbb43hb+KVuskkWWaqr6Jhk9eXZu
-         9WT5emlWq2Yn0cLzkq5UpGcl7zPdlEL75pkzX11bgvdXP0WeA41cSEGYJ1zlUYPExqUG
-         GSo+3R6Cd6+SjNZP3Oo+E9cD7gVyOt86qLrEuX0T8b/Eoaw3oLnZLIFkZMNddUiayfiT
-         uxtg==
-X-Gm-Message-State: AOAM532Mb8Pm7LKPKzxrin+i1E1nQ0i2BMAd3D7cfWgi0F1pe4q/OCU9
-        Rw9JqrofXQ4pG+cJepfMtf9YxFR91ySJ+xcFCV3Fcw==
-X-Google-Smtp-Source: ABdhPJwiiPVdVZQgBlAWNpX73X2uQob6NdxDRuQSUywpkfNNJzX805N8Lqi4CF4gIaCgqpMAB2z934KH8DoUDzCfML4=
-X-Received: by 2002:a67:cf41:: with SMTP id f1mr1713476vsm.42.1618488194599;
- Thu, 15 Apr 2021 05:03:14 -0700 (PDT)
+        bh=a7FyRm6KTh0gv7RS+KVljQwTi9U7GSgFTjsqKhiSYho=;
+        b=YvIZ0c5klc90vAhYayEmVwFNJdfockhROsHDPrIG0sD8yaL+5nyE9KUW4+MS1pPWaq
+         1QV/Pm2suolLY/uZDkh/dJGP7OERhzIz70RQqM6oYp/CsnFCSYmnA4mKRdBKPyMwkPaL
+         CvIEOL4ytXhs9AQ9lVbiExAylu85gsClKaaAgGz7Hx3rbwIDpa1FROrnhfjHn1rtSdt0
+         fUXvmaqZWPCi0MkhT//YCHTq75a8x1+wSQKTzI0VFwnK3QVFqnfNLwyYFD9q3VFSsxMW
+         dJvXffAUmIM4bBCrtTu082Rt0+FGGTJHuiGhVYNQrCS1q5xmOzZPlhCQdECNhDS7omYq
+         6vUg==
+X-Gm-Message-State: AOAM531pA9gKshkO+htVMK3ez86n/0BLeVl/eOToAB82rV1WwShWoG8f
+        MxGwSpIXjcB/vGnzcEijH3zPKdT4xML8RLc1BS2wTCkcpa8Zeg==
+X-Google-Smtp-Source: ABdhPJyNBl0/0s9Rk+OtPg0hzWn0atudTxxXg+zYQy29wV6Vs9TraG28QbEcxP+4avcC7bb2ETD9emPAZJoPBJ9fPgw=
+X-Received: by 2002:a67:fd48:: with SMTP id g8mr1539289vsr.55.1618488197944;
+ Thu, 15 Apr 2021 05:03:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210414212236.346813-1-huobean@gmail.com>
-In-Reply-To: <20210414212236.346813-1-huobean@gmail.com>
+References: <20210413083137.11171-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20210413083137.11171-1-wsa+renesas@sang-engineering.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 15 Apr 2021 14:02:37 +0200
-Message-ID: <CAPDyKFqeCW9NOO1sqhOAUoLwS12AL_NAWeE5ukDenJLG2Dec3A@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] Let sanitize not retry in case of timeout/failure
-To:     Bean Huo <huobean@gmail.com>
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>,
-        "Bean Huo (beanhuo)" <beanhuo@micron.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Thu, 15 Apr 2021 14:02:40 +0200
+Message-ID: <CAPDyKFqZtg+hPf74_oQ0ugEsS3yRzbAQbpnirsVr4jOKMXo2gg@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: tmio: always restore irq register
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 14 Apr 2021 at 23:22, Bean Huo <huobean@gmail.com> wrote:
+On Tue, 13 Apr 2021 at 10:31, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 >
-> From: Bean Huo <beanhuo@micron.com>
+> Currently, only SDHI on R-Car Gen2+ reinitializes the irq register
+> during reset but it should be done on all instances. We can move it from
+> the SDHI driver to the TMIO core, because we now have the
+> 'sd_irq_mask_all' variable which carries the proper value to use. That
+> also means we can remove the initialization from tmio_mmc_probe()
+> because it calls tmio_mmc_reset(), too. We only move that
+> tmio_mmc_reset() call there a little to ensure 'sd_irq_mask_all' is
+> properly set.
 >
->
-> Bean Huo (2):
->   mmc: core: Add a retries parameter to __mmc_switch function
->   mmc: core: Let sanitize not retry in case of timeout/failure
->
->  drivers/mmc/core/mmc.c     | 22 +++++++++++-----------
->  drivers/mmc/core/mmc_ops.c | 11 ++++++-----
->  drivers/mmc/core/mmc_ops.h |  2 +-
->  3 files changed, 18 insertions(+), 17 deletions(-)
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>
+> Changes since v1:
+>
+> * use direct register write to initialize irq register instead of
+>   masking bits. Also initialize the cache variable directly.
+>
+>  drivers/mmc/host/renesas_sdhi_core.c |  2 --
+>  drivers/mmc/host/tmio_mmc_core.c     | 11 ++++++-----
+>  2 files changed, 6 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+> index d36181b6f687..635bf31a6735 100644
+> --- a/drivers/mmc/host/renesas_sdhi_core.c
+> +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> @@ -588,8 +588,6 @@ static void renesas_sdhi_reset(struct tmio_mmc_host *host)
+>                 renesas_sdhi_scc_reset(host, priv);
+>         }
+>
+> -       sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK, TMIO_MASK_ALL_RCAR2);
+> -
+>         if (sd_ctrl_read16(host, CTL_VERSION) >= SDHI_VER_GEN3_SD) {
+>                 val = sd_ctrl_read16(host, CTL_SD_MEM_CARD_OPT);
+>                 val |= CARD_OPT_EXTOP;
+> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+> index 0c474d78b186..7dfc26f48c18 100644
+> --- a/drivers/mmc/host/tmio_mmc_core.c
+> +++ b/drivers/mmc/host/tmio_mmc_core.c
+> @@ -192,6 +192,9 @@ static void tmio_mmc_reset(struct tmio_mmc_host *host)
+>         if (host->reset)
+>                 host->reset(host);
+>
+> +       sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK, host->sdcard_irq_mask_all);
+> +       host->sdcard_irq_mask = host->sdcard_irq_mask_all;
+> +
+>         tmio_mmc_set_bus_width(host, host->mmc->ios.bus_width);
+>
+>         if (host->pdata->flags & TMIO_MMC_SDIO_IRQ) {
+> @@ -1176,13 +1179,11 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
+>         if (pdata->flags & TMIO_MMC_SDIO_IRQ)
+>                 _host->sdio_irq_mask = TMIO_SDIO_MASK_ALL;
+>
+> -       _host->set_clock(_host, 0);
+> -       tmio_mmc_reset(_host);
+> -
+> -       _host->sdcard_irq_mask = sd_ctrl_read16_and_16_as_32(_host, CTL_IRQ_MASK);
+>         if (!_host->sdcard_irq_mask_all)
+>                 _host->sdcard_irq_mask_all = TMIO_MASK_ALL;
+> -       tmio_mmc_disable_mmc_irqs(_host, _host->sdcard_irq_mask_all);
+> +
+> +       _host->set_clock(_host, 0);
+> +       tmio_mmc_reset(_host);
+>
+>         if (_host->native_hotplug)
+>                 tmio_mmc_enable_mmc_irqs(_host,
+> --
+> 2.30.0
+>
