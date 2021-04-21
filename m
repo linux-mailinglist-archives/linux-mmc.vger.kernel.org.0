@@ -2,184 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48D503660B7
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Apr 2021 22:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECBC13665D8
+	for <lists+linux-mmc@lfdr.de>; Wed, 21 Apr 2021 09:00:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233750AbhDTUPE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 20 Apr 2021 16:15:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43564 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233769AbhDTUPD (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 20 Apr 2021 16:15:03 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68D50C06138C
-        for <linux-mmc@vger.kernel.org>; Tue, 20 Apr 2021 13:14:31 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id p3so23860155ybk.0
-        for <linux-mmc@vger.kernel.org>; Tue, 20 Apr 2021 13:14:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mWvsYx7IzA9GfPTPmUcRLPUp1HCGUIZAXpCS/2LWJYw=;
-        b=qRBop6uajhYMowB9AXqHDztVfTiCiqT++oepEeiC48vFhRAcU5LSIRHcwfYT6NYauq
-         LTwmT9uX5LEJ/sJwDNDCgBTtMSRNIeAdCxKUfDl/tQRqwAZC0ztbLPpJgheyJt+NZ9so
-         +NqTrcoSEYR3RWqmNdcs4IHrQLyBJuYWcI+WKxRtbhBPetjcm41tow/4HHlnC2qy061z
-         XTmsi6VYo655p4rYUVymlsZ6Eq8LfT5DzWbIqMzJIGjssJz5zlondDt8xlRv1TsHgDbc
-         0aPaVXj8asBjnjgaoKee+PmnjH9kHWHSsvLrHjAbDJA7gToKPadE0h3GLfpOizcsUUp0
-         ZTBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mWvsYx7IzA9GfPTPmUcRLPUp1HCGUIZAXpCS/2LWJYw=;
-        b=naqEQ9OjXSVY1jHAYpAy8OPrUvCDIbd3XS7xxTPF0kAsHceUBs+6tuHSueImsiQWZJ
-         CvuRFpBMH6SWMekLJwVwXgKdvrBJ8ma4Io32rGHa5J9HEXD0zcyf0fcWPfqY0UxbrmDh
-         i5PgipgiLX/x1f/rXnPuHlTB0SZxk+Vnmc3u6Y4Me4v4IFYwsVGeQy/8Q7SR1VExbb6a
-         hhzh5zWBWmtu4+5Xfp/2J3YvDOek7bJKuGZ4Vf9sWbIWzeNrhYIqtzxr9FfMslj2tgea
-         AaQLzrlufyT+lcCQVnLuhien37BbmDm9RJEFBA502YQOFgSe1KxYocN0m+daBZMsSIfj
-         e79g==
-X-Gm-Message-State: AOAM530suSL+1dTB5yUrRpVmCQuv8TWQL5u+bXBAxQ6HVA4WxnqCkXS/
-        +I2bJz05+KYb08qCQCIX05Kmf0bKgZqRbEapr8MB3A==
-X-Google-Smtp-Source: ABdhPJw2vBj+tqkve0bKkIOUuRE5iUgwXY9JWUju+TRFeedSda5f9+5dA+C4VDJ10Q85wMvBXqE9SaTQ4sCau98cfEU=
-X-Received: by 2002:a25:aac3:: with SMTP id t61mr26366634ybi.405.1618949670166;
- Tue, 20 Apr 2021 13:14:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <1616264220-25825-1-git-send-email-sbhanu@codeaurora.org>
- <CAD=FV=WLZCSd6D5VFyD+1KBp5n1qyszER2EVaEMwYjQfPSSDnA@mail.gmail.com>
- <b77f207b-2d90-3c8b-857f-625bd3867ed1@codeaurora.org> <6fdf704c4716f5873d413229ca8adc57@codeaurora.org>
- <CAD=FV=Wa4fT5wZgd0==8kLy_tzTLgdZ-HwdfOEAM9pMeMjjFyg@mail.gmail.com>
- <8126e130e5c0ea1e7ea867414f0510c0@codeaurora.org> <CAD=FV=XavWbf_b7-=JT6V5_RNA8CjdK4oRu7H719AaPDJ5tsqQ@mail.gmail.com>
- <32096a375966e1fcc149016df012c445@codeaurora.org>
-In-Reply-To: <32096a375966e1fcc149016df012c445@codeaurora.org>
-From:   Doug Anderson <dianders@google.com>
-Date:   Tue, 20 Apr 2021 13:14:18 -0700
-Message-ID: <CAD=FV=U0zEDi1Xn3OmVFA3h3maVWS_o2FXOW9qDEzTf1Moja=A@mail.gmail.com>
-Subject: Re: [PATCH V2] arm64: dts: qcom: sc7280: Add nodes for eMMC and SD card
-To:     Shaik Sajida Bhanu <sbhanu@codeaurora.org>
-Cc:     Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Asutosh Das <asutoshd@codeaurora.org>,
-        Sahitya Tummala <stummala@codeaurora.org>,
-        Ram Prakash Gupta <rampraka@codeaurora.org>,
-        Sayali Lokhande <sayalil@codeaurora.org>,
-        sartgarg@codeaurora.org, Rajendra Nayak <rnayak@codeaurora.org>,
-        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
-        Sibi Sankar <sibis@codeaurora.org>, cang@codeaurora.org,
-        pragalla@codeaurora.org, nitirawa@codeaurora.org,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Evan Green <evgreen@chromium.org>,
-        Georgi Djakov <georgi.djakov@linaro.org>,
-        Odelu Kukatla <okukatla@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S236520AbhDUHA2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 21 Apr 2021 03:00:28 -0400
+Received: from lucky1.263xmail.com ([211.157.147.133]:44698 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236406AbhDUHAZ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 21 Apr 2021 03:00:25 -0400
+Received: from localhost (unknown [192.168.167.235])
+        by lucky1.263xmail.com (Postfix) with ESMTP id B1BC8CD6C2;
+        Wed, 21 Apr 2021 14:59:29 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-ANTISPAM-LEVEL: 2
+X-ABS-CHECKED: 0
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P2750T140649152108288S1618988366606986_;
+        Wed, 21 Apr 2021 14:59:29 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <92c2736a293fc828a169398c6256a2cc>
+X-RL-SENDER: cl@rock-chips.com
+X-SENDER: cl@rock-chips.com
+X-LOGIN-NAME: cl@rock-chips.com
+X-FST-TO: heiko@sntech.de
+X-RCPT-COUNT: 25
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+From:   <cl@rock-chips.com>
+To:     heiko@sntech.de
+Cc:     robh+dt@kernel.org, jagan@amarulasolutions.com, wens@csie.org,
+        uwe@kleine-koenig.org, mail@david-bauer.net, jbx6244@gmail.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        jensenhuang@friendlyarm.com, michael@amarulasolutions.com,
+        cnsztl@gmail.com, devicetree@vger.kernel.org,
+        ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
+        gregkh@linuxfoundation.org, linux-serial@vger.kernel.org,
+        linux-i2c@vger.kernel.org, jay.xu@rock-chips.com,
+        shawn.lin@rock-chips.com, david.wu@rock-chips.com,
+        zhangqing@rock-chips.com, huangtao@rock-chips.com,
+        cl@rock-chips.com
+Subject: [PATCH v1 0/5] arm64: dts: rockchip: add basic dtsi/dts files for RK3568 SoC
+Date:   Wed, 21 Apr 2021 14:59:16 +0800
+Message-Id: <20210421065921.23917-1-cl@rock-chips.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+From: Liang Chen <cl@rock-chips.com>
 
-On Tue, Apr 20, 2021 at 10:21 AM <sbhanu@codeaurora.org> wrote:
->
-> On 2021-04-15 01:55, Doug Anderson wrote:
-> > Hi,
-> >
-> > On Tue, Apr 13, 2021 at 3:59 AM <sbhanu@codeaurora.org> wrote:
-> >>
-> >> >> >>> +                                       required-opps =
-> >> >> >>> <&rpmhpd_opp_low_svs>;
-> >> >> >>> +                                       opp-peak-kBps = <1200000
-> >> >> >>> 76000>;
-> >> >> >>> +                                       opp-avg-kBps = <1200000
-> >> >> >>> 50000>;
-> >> >> >> Why are the kBps numbers so vastly different than the ones on sc7180
-> >> >> >> for the same OPP point. That implies:
-> >> >> >>
-> >> >> >> a) sc7180 is wrong.
-> >> >> >>
-> >> >> >> b) This patch is wrong.
-> >> >> >>
-> >> >> >> c) The numbers are essentially random and don't really matter.
-> >> >> >>
-> >> >> >> Can you identify which of a), b), or c) is correct, or propose an
-> >> >> >> alternate explanation of the difference?
-> >> >> >>
-> >> >>
-> >> >> We calculated bus votes values for both sc7180 and sc7280 with ICB
-> >> >> tool,
-> >> >> above mentioned values we got for sc7280.
-> >> >
-> >> > I don't know what an ICB tool is. Please clarify.
-> >> >
-> >> > Also: just because a tool spits out numbers that doesn't mean it's
-> >> > correct. Presumably the tool could be wrong or incorrectly configured.
-> >> > We need to understand why these numbers are different.
-> >> >
-> >> we checked with ICB tool team on this they conformed as Rennell &
-> >> Kodiak
-> >> are different chipsets,
-> >> we might see delta in ib/ab values due to delta in scaling factors.
-> >
-> > ...but these numbers are in kbps, aren't they? As I understand it
-> > these aren't supposed to be random numbers spit out by a tool but are
-> > supposed to be understandable by how much bandwidth an IP block (like
-> > MMC) needs from the busses it's connected to. Since the MMC IP block
-> > on sc7180 and sc7280 is roughly the same there shouldn't be a big
-> > difference in numbers.
-> >
-> > Something smells wrong.
-> >
-> > Adding a few people who understand interconnects better than I do,
-> > though.
-> >
->
-> ICB team has re-checked the Rennell ICB tool and they confirmed that
-> some configs were wrong in Rennell ICB tool and they corrected it.With
-> the new updated Rennell ICB tool below are the values :
->
->
-> Rennell LC:(Sc7180)
->
-> opp-384000000 {
->               opp-hz = /bits/ 64 <384000000>;
->               required-opps = <&rpmhpd_opp_nom>;
->               opp-peak-kBps = <5400000 490000>;
->               opp-avg-kBps = <6600000 300000>;
-> };
->
->
-> And now, these values are near to Kodaik LC values:
->
-> Kodaik LC:(SC7280)
->
-> opp-384000000 {
->             opp-hz = /bits/ 64 <384000000>;
->             required-opps = <&rpmhpd_opp_nom>;
->             opp-peak-kBps = <5400000 399000>;
->             opp-avg-kBps = <6000000 300000>;
-> };
+1. add some dt-bindings for RK3568 devices.
+2. add core dtsi for RK3568 SoC.
+3. add basic dts for RK3568 EVB
 
-This still isn't making sense to me.
+Liang Chen (5):
+  dt-bindings: i2c: i2c-rk3x: add description for rk3568
+  dt-bindings: serial: snps-dw-apb-uart: add description for rk3568
+  dt-bindings: mmc: rockchip-dw-mshc: add description for rk3568
+  arm64: dts: rockchip: add core dtsi for RK3568 SoC
+  arm64: dts: rockchip: add basic dts for RK3568 EVB
 
-* sc7180 and sc7280 are running at the same speed. I'm glad the
-numbers are closer now, but I would have thought they'd be exactly the
-same.
+ .../devicetree/bindings/arm/rockchip.yaml     |    5 +
+ .../devicetree/bindings/i2c/i2c-rk3x.yaml     |    1 +
+ .../bindings/mmc/rockchip-dw-mshc.yaml        |    4 +
+ .../bindings/serial/snps-dw-apb-uart.yaml     |    1 +
+ arch/arm64/boot/dts/rockchip/Makefile         |    1 +
+ .../boot/dts/rockchip/rk3568-evb1-v10.dts     |  382 +++
+ .../boot/dts/rockchip/rk3568-pinctrl.dtsi     | 2789 +++++++++++++++++
+ arch/arm64/boot/dts/rockchip/rk3568.dtsi      |  795 +++++
+ .../boot/dts/rockchip/rockchip-pinconf.dtsi   |  346 ++
+ 9 files changed, 4324 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3568-pinctrl.dtsi
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3568.dtsi
+ create mode 100644 arch/arm64/boot/dts/rockchip/rockchip-pinconf.dtsi
 
-* Aren't these supposed to be sensible? This is eMMC that does max
-transfer rates of 400 megabytes / second to the external device. You
-have bandwidths listed here of 5,400,000 kBps = 5,400,000 kilobytes /
-second = 5400 megabytes / second. I can imagine there being some
-overhead where an internal bus might need to be faster but that seems
-excessive. This is 13.5x!
+-- 
+2.17.1
 
-* I can't see how it can make sense that "average" values are higher
-than "peak" values.
 
-It still feels like there's a misconfiguration somewhere.
 
--Doug
