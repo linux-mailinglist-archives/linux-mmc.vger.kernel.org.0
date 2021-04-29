@@ -2,186 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73D4236E6E6
-	for <lists+linux-mmc@lfdr.de>; Thu, 29 Apr 2021 10:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A678336EAB0
+	for <lists+linux-mmc@lfdr.de>; Thu, 29 Apr 2021 14:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240148AbhD2IPA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 29 Apr 2021 04:15:00 -0400
-Received: from lucky1.263xmail.com ([211.157.147.135]:56822 "EHLO
-        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240071AbhD2IOw (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Apr 2021 04:14:52 -0400
-Received: from localhost (unknown [192.168.167.235])
-        by lucky1.263xmail.com (Postfix) with ESMTP id 2D3FBAB07F;
-        Thu, 29 Apr 2021 16:14:03 +0800 (CST)
-X-MAIL-GRAY: 0
-X-MAIL-DELIVERY: 1
-X-ADDR-CHECKED4: 1
-X-ANTISPAM-LEVEL: 2
-X-ABS-CHECKED: 0
-Received: from localhost.localdomain (unknown [58.22.7.114])
-        by smtp.263.net (postfix) whith ESMTP id P2750T140649173088000S1619684039890516_;
-        Thu, 29 Apr 2021 16:14:02 +0800 (CST)
-X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <8be1fc234b6a271c6098fd643acf5a13>
-X-RL-SENDER: cl@rock-chips.com
-X-SENDER: cl@rock-chips.com
-X-LOGIN-NAME: cl@rock-chips.com
-X-FST-TO: heiko@sntech.de
-X-RCPT-COUNT: 30
-X-SENDER-IP: 58.22.7.114
-X-ATTACHMENT-NUM: 0
-X-System-Flag: 0
-From:   <cl@rock-chips.com>
-To:     heiko@sntech.de
-Cc:     robh+dt@kernel.org, jagan@amarulasolutions.com, wens@csie.org,
-        uwe@kleine-koenig.org, mail@david-bauer.net, jbx6244@gmail.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        jensenhuang@friendlyarm.com, michael@amarulasolutions.com,
-        cnsztl@gmail.com, devicetree@vger.kernel.org,
-        ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
-        gregkh@linuxfoundation.org, linux-serial@vger.kernel.org,
-        linux-i2c@vger.kernel.org, jay.xu@rock-chips.com,
-        shawn.lin@rock-chips.com, david.wu@rock-chips.com,
-        zhangqing@rock-chips.com, huangtao@rock-chips.com,
-        cl@rock-chips.com, wim@linux-watchdog.org, linux@roeck-us.net,
-        jamie@jamieiles.com, linux-watchdog@vger.kernel.org, maz@kernel.org
-Subject: [PATCH v4 10/10] arm64: dts: rockchip: add basic dts for RK3568 EVB
-Date:   Thu, 29 Apr 2021 16:13:58 +0800
-Message-Id: <20210429081358.18057-1-cl@rock-chips.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210429081151.17558-1-cl@rock-chips.com>
-References: <20210429081151.17558-1-cl@rock-chips.com>
+        id S231490AbhD2Mma (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 29 Apr 2021 08:42:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44624 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231343AbhD2Mm3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 29 Apr 2021 08:42:29 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F748C06138B;
+        Thu, 29 Apr 2021 05:41:41 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id e7so78275395edu.10;
+        Thu, 29 Apr 2021 05:41:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=KpoRY41AF/OOHS14vTdGwor5lyD+2aObyNv/uzMvDE8=;
+        b=sKp/ST+iN+nr0XPCl51JGFgXE4DiE6w2Jl9pYOqKgAZ+FQpH0QUnBXAjrciOLY7MJS
+         upkT1d0iGjdYMKrY0lca4e0AVZlif+jlQ3qVHyxO+/51cPrFHBL9EwCd/b/K4gw5s4Dz
+         NxlsdAsbShzS9g5Acpz5r07hkacmqQJLch+WLaXyFSRNlvJ8uRgAF2rDWveEXbGK4hjn
+         jb+R1N0UdxzUlFomYtL/finyC0xLdUD4imtQl9FsRWJ0hg+eLxK1zh7lzsQ1usl0AUMc
+         yfPjWenw8mcnPl4g3KP5UHpivcF4Z5LSsiK+XtEpmo5ycXGa5gsaMMKb3Mkgbizg48mv
+         zPmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=KpoRY41AF/OOHS14vTdGwor5lyD+2aObyNv/uzMvDE8=;
+        b=Q65rIaTqJRG8jtkKDG590xDLdVCi5W0t87QRcHGrxQ/QhjbNTa5Gr2yrz1m11x8Ybb
+         IG2QpiuNoUMDL8XYJMN4ISUlrHkAL0QmEn9RDhdLiS2NuLZeChmqX/No5aTJbA6NftdE
+         CXttHi70z2jJZcRLPgi4unXylnnNwhMVWq5j0EDX5EpGgJW1hrYs8E9IGT/zUa0CjBtQ
+         NBTWieqvwInuecFJj2dFLlWikUakRoSV2hDiOhVTEVT9ValcFaL3Wnpd7r+wkxBnfg7d
+         IjjraRebTV2tJ/6HuHAOllckPVIrhwcS7WGevu7KoEo285NhKLVv6dZou4/O0Mo94pBk
+         P30g==
+X-Gm-Message-State: AOAM533c4ZMh+VZfg8f0HpyPq4wufko0TXEbAh+2HJFH5/C/zT5ysi/4
+        njKJxAKaS2l4hd/ptEQGUjE=
+X-Google-Smtp-Source: ABdhPJw8t2bxvS6sMwo8sHjmzTfLvVJSst9VeriEMMM+BRKRUTegQIOdsokxh332+2CTkV4Y4Yx07Q==
+X-Received: by 2002:aa7:c454:: with SMTP id n20mr18387352edr.138.1619700100185;
+        Thu, 29 Apr 2021 05:41:40 -0700 (PDT)
+Received: from ubuntu-laptop (ip5f5bec5d.dynamic.kabel-deutschland.de. [95.91.236.93])
+        by smtp.googlemail.com with ESMTPSA id d15sm2283510edu.86.2021.04.29.05.41.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Apr 2021 05:41:39 -0700 (PDT)
+Message-ID: <b14312f5e6c2bcf711397a7c26782710b7a4707b.camel@gmail.com>
+Subject: Re: [PATCH RESEND v3] mmc-utils: Add eMMC erase command support
+From:   Bean Huo <huobean@gmail.com>
+To:     Avri Altman <Avri.Altman@wdc.com>,
+        "luserhker@gmail.com" <luserhker@gmail.com>,
+        "beanhuo@micron.com" <beanhuo@micron.com>,
+        "kenny.gibbons@oracle.com" <kenny.gibbons@oracle.com>,
+        "kimito.sakata@oracle.com" <kimito.sakata@oracle.com>,
+        "rkamdar@micron.com" <rkamdar@micron.com>,
+        "chris@printf.net" <chris@printf.net>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Thu, 29 Apr 2021 14:41:34 +0200
+In-Reply-To: <DM6PR04MB657542B3CB77F6D894B1EA84FC409@DM6PR04MB6575.namprd04.prod.outlook.com>
+References: <20210427195157.26568-1-luserhker@gmail.com>
+         <DM6PR04MB657542B3CB77F6D894B1EA84FC409@DM6PR04MB6575.namprd04.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4-0ubuntu1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Liang Chen <cl@rock-chips.com>
-
-This patch add rk3568-evb1-v10.dts for RK3568 evaluation board.
-add uart/emmc/i2c/rk809 node for basic function.
-
-Signed-off-by: Liang Chen <cl@rock-chips.com>
----
- .../devicetree/bindings/arm/rockchip.yaml     |  5 ++
- arch/arm64/boot/dts/rockchip/Makefile         |  1 +
- .../boot/dts/rockchip/rk3568-evb1-v10.dts     | 79 +++++++++++++++++++
- 3 files changed, 85 insertions(+)
- create mode 100644 arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-
-diff --git a/Documentation/devicetree/bindings/arm/rockchip.yaml b/Documentation/devicetree/bindings/arm/rockchip.yaml
-index 4a6f772c1043..6546b015fc62 100644
---- a/Documentation/devicetree/bindings/arm/rockchip.yaml
-+++ b/Documentation/devicetree/bindings/arm/rockchip.yaml
-@@ -600,6 +600,11 @@ properties:
-           - const: zkmagic,a95x-z2
-           - const: rockchip,rk3318
- 
-+      - description: Rockchip RK3568 Evaluation board
-+        items:
-+          - const: rockchip,rk3568-evb1-v10
-+          - const: rockchip,rk3568
-+
- additionalProperties: true
- 
- ...
-diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
-index c3e00c0e2db7..7fdb41de01ec 100644
---- a/arch/arm64/boot/dts/rockchip/Makefile
-+++ b/arch/arm64/boot/dts/rockchip/Makefile
-@@ -51,3 +51,4 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3399-rockpro64.dtb
- dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3399-sapphire.dtb
- dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3399-sapphire-excavator.dtb
- dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3399pro-rock-pi-n10.dtb
-+dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3568-evb1-v10.dtb
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-new file mode 100644
-index 000000000000..69786557093d
---- /dev/null
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-@@ -0,0 +1,79 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
-+ *
-+ */
-+
-+/dts-v1/;
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/pinctrl/rockchip.h>
-+#include "rk3568.dtsi"
-+
-+/ {
-+	model = "Rockchip RK3568 EVB1 DDR4 V10 Board";
-+	compatible = "rockchip,rk3568-evb1-v10", "rockchip,rk3568";
-+
-+	chosen: chosen {
-+		stdout-path = "serial2:1500000n8";
-+	};
-+
-+	dc_12v: dc-12v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "dc_12v";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <12000000>;
-+		regulator-max-microvolt = <12000000>;
-+	};
-+
-+	vcc3v3_sys: vcc3v3-sys {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc3v3_sys";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&dc_12v>;
-+	};
-+
-+	vcc5v0_sys: vcc5v0-sys {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc5v0_sys";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&dc_12v>;
-+	};
-+
-+	vcc3v3_lcd0_n: vcc3v3-lcd0-n {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc3v3_lcd0_n";
-+		regulator-boot-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
-+	};
-+
-+	vcc3v3_lcd1_n: vcc3v3-lcd1-n {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc3v3_lcd1_n";
-+		regulator-boot-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
-+	};
-+};
-+
-+&sdhci {
-+	bus-width = <8>;
-+	max-frequency = <200000000>;
-+	non-removable;
-+	status = "okay";
-+};
-+
-+&uart2 {
-+	status = "okay";
-+};
--- 
-2.17.1
+On Wed, 2021-04-28 at 05:57 +0000, Avri Altman wrote:
+> > We need to send 3 MMC commands and it is important that they
+> > stay in sequence. Therefore we are using MMC_IOC_MULTI_CMD.
+> 
+> 
+> You might also want to indicate on which platform it was tested.
 
 
+I tested on HP laptop PC X86 based and xilinx Zedboard ARM based.
+
+thanks,
+Bean
 
