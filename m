@@ -2,41 +2,40 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7089371A81
-	for <lists+linux-mmc@lfdr.de>; Mon,  3 May 2021 18:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 270A3371B61
+	for <lists+linux-mmc@lfdr.de>; Mon,  3 May 2021 18:45:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232268AbhECQj4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 3 May 2021 12:39:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38260 "EHLO mail.kernel.org"
+        id S231659AbhECQpo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 3 May 2021 12:45:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50734 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231393AbhECQif (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 3 May 2021 12:38:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 63B85613BC;
-        Mon,  3 May 2021 16:36:54 +0000 (UTC)
+        id S232777AbhECQmn (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 3 May 2021 12:42:43 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E1CD8601FC;
+        Mon,  3 May 2021 16:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620059815;
-        bh=gXiOxhMbUGRqAdnAYW3ioYWMt2JDeB0OfgFadacRKuM=;
+        s=k20201202; t=1620059902;
+        bh=fh8NTrcVEp7XEynMX0wepwrZy+rJKZt3MliX/P9XDEE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tq+Vcy8DyqMjXH8Y9bvPI0MDFCG1hf/c//r+AuFdB6A8OVore1q2EI2IwBjNHS7Yv
-         AmuwJ/QmOFHX2FMYlD21GqCFTWN1kv8KxaEpO1Jf5Ti1LVWu8tkBcJ5NyB1l0yyVYl
-         I/mtceg6mTl+P+Jvf/MG8yu6RjVHzZR2SWpyotgyrEgQPQB6intcX8eBJCL+Jt27Af
-         in82qEbVKRfJtDDCwLS231GDDRmrNUGo3zZWgwid9N5q7IyoLCpkW1+FvyLHcwh0z4
-         +uX1lT2hGcGiRzDQEYCicd04Z1VLZ3ZOczHUZH6Y9FvOKm51cu1Dpq4Oegb9CWBI3k
-         fBbIgTKzsNLqw==
+        b=H4TLQnjtqjraRYrQniMl/CLekNzEAnp3yKpTTeuL7+v0jNXrLNntNaX4o/iARAaoG
+         X1aCWlj2//4LPg/xq7Le6yMwbhf6cjksElincKCnAki33SORvrjimwD143vZrnKZzP
+         lQkKKqLTNjP2qdFkPYoJce/yd+5tCLjGvEpDOcXsGoRT2LwuuUjDzYCCahoB97BktA
+         dW/ID6uIooBBFzN4oFXE4bNVZ1hSKzwPJYYRuQK4I0NBGZgvqhspY7pQ7KHbKfhDU6
+         F+UuJcApkjzksmDgP0JnMNINAmq5aqHfSJp4aDYLQFXf/a4Zht/80O8PRzhGQM/Gw/
+         Yc1fEBpyBrb/g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Al Cooper <alcooperx@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+Cc:     Peng Fan <peng.fan@nxp.com>, Bough Chen <haobo.chen@nxp.com>,
+        Alice Guo <alice.guo@nxp.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.12 065/134] mmc: sdhci-brcmstb: Remove CQE quirk
-Date:   Mon,  3 May 2021 12:34:04 -0400
-Message-Id: <20210503163513.2851510-65-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.11 053/115] mmc: sdhci-esdhc-imx: validate pinctrl before use it
+Date:   Mon,  3 May 2021 12:35:57 -0400
+Message-Id: <20210503163700.2852194-53-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210503163513.2851510-1-sashal@kernel.org>
-References: <20210503163513.2851510-1-sashal@kernel.org>
+In-Reply-To: <20210503163700.2852194-1-sashal@kernel.org>
+References: <20210503163700.2852194-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -45,35 +44,42 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Al Cooper <alcooperx@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit f0bdf98fab058efe7bf49732f70a0f26d1143154 ]
+[ Upstream commit f410ee0aa2df050a9505f5c261953e9b18e21206 ]
 
-Remove the CQHCI_QUIRK_SHORT_TXFR_DESC_SZ quirk because the
-latest chips have this fixed and earlier chips have other
-CQE problems that prevent the feature from being enabled.
+When imx_data->pinctrl is not a valid pointer, pinctrl_lookup_state
+will trigger kernel panic.
 
-Signed-off-by: Al Cooper <alcooperx@gmail.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://lore.kernel.org/r/20210325192834.42955-1-alcooperx@gmail.com
+When we boot Dual OS on Jailhouse hypervisor, we let the 1st Linux to
+configure pinmux ready for the 2nd OS, so the 2nd OS not have pinctrl
+settings.
+
+Similar to this commit b62eee9f804e ("mmc: sdhci-esdhc-imx: no fail when no pinctrl available").
+
+Reviewed-by: Bough Chen <haobo.chen@nxp.com>
+Reviewed-by: Alice Guo <alice.guo@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/1614222604-27066-6-git-send-email-peng.fan@oss.nxp.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-brcmstb.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-index f9780c65ebe9..f24623aac2db 100644
---- a/drivers/mmc/host/sdhci-brcmstb.c
-+++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -199,7 +199,6 @@ static int sdhci_brcmstb_add_host(struct sdhci_host *host,
- 	if (dma64) {
- 		dev_dbg(mmc_dev(host->mmc), "Using 64 bit DMA\n");
- 		cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
--		cq_host->quirks |= CQHCI_QUIRK_SHORT_TXFR_DESC_SZ;
- 	}
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index a20459744d21..94327988da91 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1488,7 +1488,7 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
  
- 	ret = cqhci_init(cq_host, host->mmc, dma64);
+ 	mmc_of_parse_voltage(np, &host->ocr_mask);
+ 
+-	if (esdhc_is_usdhc(imx_data)) {
++	if (esdhc_is_usdhc(imx_data) && !IS_ERR(imx_data->pinctrl)) {
+ 		imx_data->pins_100mhz = pinctrl_lookup_state(imx_data->pinctrl,
+ 						ESDHC_PINCTRL_STATE_100MHZ);
+ 		imx_data->pins_200mhz = pinctrl_lookup_state(imx_data->pinctrl,
 -- 
 2.30.2
 
