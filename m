@@ -2,67 +2,68 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3183376E5D
-	for <lists+linux-mmc@lfdr.de>; Sat,  8 May 2021 04:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8EC137741F
+	for <lists+linux-mmc@lfdr.de>; Sat,  8 May 2021 23:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbhEHCFd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 7 May 2021 22:05:33 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:18792 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229775AbhEHCFc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 May 2021 22:05:32 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FcVtS4gN8zCqwT;
-        Sat,  8 May 2021 10:01:52 +0800 (CST)
-Received: from thunder-town.china.huawei.com (10.174.177.72) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.498.0; Sat, 8 May 2021 10:03:37 +0800
-From:   Zhen Lei <thunder.leizhen@huawei.com>
-To:     Jesper Nilsson <jesper.nilsson@axis.com>,
-        Lars Persson <lars.persson@axis.com>,
+        id S229522AbhEHVHl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 8 May 2021 17:07:41 -0400
+Received: from ns.lynxeye.de ([87.118.118.114]:40619 "EHLO lynxeye.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229559AbhEHVHk (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 8 May 2021 17:07:40 -0400
+Received: by lynxeye.de (Postfix, from userid 501)
+        id 0DA46E7425C; Sat,  8 May 2021 22:57:03 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on lynxeye.de
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=3.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham version=3.3.1
+Received: from astat.fritz.box (a89-183-71-68.net-htp.de [89.183.71.68])
+        by lynxeye.de (Postfix) with ESMTPA id B0865E74214;
+        Sat,  8 May 2021 22:57:02 +0200 (CEST)
+From:   Lucas Stach <dev@lynxeye.de>
+To:     Rob Herring <robh+dt@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        "Guennadi Liakhovetski" <g.liakhovetski@gmx.de>,
-        Chris Ball <chris@printf.net>,
-        linux-arm-kernel <linux-arm-kernel@axis.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH 1/1] mmc: usdhi6rol0: fix error return code in usdhi6_probe()
-Date:   Sat, 8 May 2021 10:03:21 +0800
-Message-ID: <20210508020321.1677-1-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
+        Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 1/2] dt-bindings: mmc: add no-mmc-hs400 flag
+Date:   Sat,  8 May 2021 22:56:57 +0200
+Message-Id: <20210508205658.91105-1-dev@lynxeye.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.177.72]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Fix to return a negative error code from the error handling case instead
-of 0, as done elsewhere in this function.
+HS400 requires a data strobe line in addition to the other MMC signal
+lines, so if a board design neglects to wire up this signal, HS400 mode
+is no available, even if both the controller and the eMMC are claiming
+to support this mode. Add a DT flag to allow boards to disable the
+HS400 support in this case.
 
-Fixes: 75fa9ea6e3c0 ("mmc: add a driver for the Renesas usdhi6rol0 SD/SDIO host controller")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mmc/host/usdhi6rol0.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
-index 615f3d008af1..b9b79b1089a0 100644
---- a/drivers/mmc/host/usdhi6rol0.c
-+++ b/drivers/mmc/host/usdhi6rol0.c
-@@ -1801,6 +1801,7 @@ static int usdhi6_probe(struct platform_device *pdev)
+diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+index e141330c1114..ac80d09df3a9 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
++++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+@@ -220,6 +220,11 @@ properties:
+     description:
+       eMMC HS400 enhanced strobe mode is supported
  
- 	version = usdhi6_read(host, USDHI6_VERSION);
- 	if ((version & 0xfff) != 0xa0d) {
-+		ret = -EPERM;
- 		dev_err(dev, "Version not recognized %x\n", version);
- 		goto e_clk_off;
- 	}
++  no-mmc-hs400:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      All eMMC HS400 modes are not supported.
++
+   dsr:
+     description:
+       Value the card Driver Stage Register (DSR) should be programmed
 -- 
-2.25.1
-
+2.31.1
 
