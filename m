@@ -2,71 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B14437938C
-	for <lists+linux-mmc@lfdr.de>; Mon, 10 May 2021 18:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8514F379778
+	for <lists+linux-mmc@lfdr.de>; Mon, 10 May 2021 21:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231476AbhEJQR7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 10 May 2021 12:17:59 -0400
-Received: from mail-ot1-f49.google.com ([209.85.210.49]:44674 "EHLO
-        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231463AbhEJQRx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 10 May 2021 12:17:53 -0400
-Received: by mail-ot1-f49.google.com with SMTP id r26-20020a056830121ab02902a5ff1c9b81so14907056otp.11;
-        Mon, 10 May 2021 09:16:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nrcqbsyKBAhq77Sm8CjIWowkf8WymhxPZxoEz43q6O8=;
-        b=ZxgYbaj4ieRZrzO2t0VkA9o8+2gc0VW8ZEbiqWmn3Ij2jVMJa8L0ewTPh8hG4e8lsl
-         EIXxZW7bucyB9fr21/vpxUpOyvnzSjKGMCs74MOAbyDg30IOBrkG98QmgZGDfNSkTLRV
-         kgdzBRoszFdDdpNNQ7JV0QrQLd/k94rNdSuQrpvyKIELGNGoahixsa3+9HEASQDDSEKz
-         ZOAeFMmnFtR2rVed9Ix4DtBzt3keAQYvd8C/GHo0qES73OlgJUAFKd6IC7hL0iAHVE7T
-         deMJyryW5IsFxpL8zCw6TON8alefWZQNX53gQDvNM+2CH91daNtwaPACezJVo/48nWm0
-         Amdw==
-X-Gm-Message-State: AOAM531drauM8wyyv4wrZNm4Ygp1ymv6AvX7XBHZLosx7fnUhWeu+8sZ
-        fDHuO8rEXzx7flfjfurnHg==
-X-Google-Smtp-Source: ABdhPJzso8melaggO++aFIWeh86OeFUvHG+pnNX61c2NBBnz3Lalt8pOb7JM8tRhjBofqZZEeF5KbQ==
-X-Received: by 2002:a9d:754a:: with SMTP id b10mr22341197otl.359.1620663408529;
-        Mon, 10 May 2021 09:16:48 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id i130sm2724994oif.49.2021.05.10.09.16.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 May 2021 09:16:47 -0700 (PDT)
-Received: (nullmailer pid 222668 invoked by uid 1000);
-        Mon, 10 May 2021 16:16:46 -0000
-Date:   Mon, 10 May 2021 11:16:46 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Lucas Stach <dev@lynxeye.de>
-Cc:     Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
+        id S231463AbhEJTMu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 10 May 2021 15:12:50 -0400
+Received: from ns.lynxeye.de ([87.118.118.114]:56430 "EHLO lynxeye.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231474AbhEJTMt (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 10 May 2021 15:12:49 -0400
+Received: by lynxeye.de (Postfix, from userid 501)
+        id EF290E74268; Mon, 10 May 2021 21:04:04 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on lynxeye.de
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=3.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham version=3.3.1
+Received: from astat.fritz.box (a89-183-115-43.net-htp.de [89.183.115.43])
+        by lynxeye.de (Postfix) with ESMTPA id BEA98E74268;
+        Mon, 10 May 2021 21:04:03 +0200 (CEST)
+From:   Lucas Stach <l.stach@pengutronix.de>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH 1/2] dt-bindings: mmc: add no-mmc-hs400 flag
-Message-ID: <20210510161646.GA222624@robh.at.kernel.org>
-References: <20210508205658.91105-1-dev@lynxeye.de>
+        Haibo Chen <haibo.chen@nxp.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>, kernel@pengutronix.de,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 1/3] dt-bindings: mmc: add no-mmc-hs400 flag
+Date:   Mon, 10 May 2021 21:03:58 +0200
+Message-Id: <20210510190400.105162-1-l.stach@pengutronix.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210508205658.91105-1-dev@lynxeye.de>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 08 May 2021 22:56:57 +0200, Lucas Stach wrote:
-> HS400 requires a data strobe line in addition to the other MMC signal
-> lines, so if a board design neglects to wire up this signal, HS400 mode
-> is no available, even if both the controller and the eMMC are claiming
-> to support this mode. Add a DT flag to allow boards to disable the
-> HS400 support in this case.
-> 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+From: Lucas Stach <dev@lynxeye.de>
 
+HS400 requires a data strobe line in addition to the usual MMC signal
+lines. If a board design neglects to wire up this signal, HS400 mode is
+not available, even if both the controller and the eMMC are claiming to
+support this mode. Add a DT flag to allow boards to disable the HS400
+support in this case.
+
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 Acked-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+index e141330c1114..ac80d09df3a9 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
++++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+@@ -220,6 +220,11 @@ properties:
+     description:
+       eMMC HS400 enhanced strobe mode is supported
+ 
++  no-mmc-hs400:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      All eMMC HS400 modes are not supported.
++
+   dsr:
+     description:
+       Value the card Driver Stage Register (DSR) should be programmed
+-- 
+2.31.1
+
