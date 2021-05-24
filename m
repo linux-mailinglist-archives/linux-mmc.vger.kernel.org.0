@@ -2,100 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FBA638E86C
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 May 2021 16:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F0B738E871
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 May 2021 16:12:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233016AbhEXONX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 May 2021 10:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57080 "EHLO
+        id S233079AbhEXON2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 May 2021 10:13:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233065AbhEXONK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 May 2021 10:13:10 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F89AC061348
-        for <linux-mmc@vger.kernel.org>; Mon, 24 May 2021 07:11:40 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id e11so33723916ljn.13
-        for <linux-mmc@vger.kernel.org>; Mon, 24 May 2021 07:11:40 -0700 (PDT)
+        with ESMTP id S233023AbhEXONO (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 May 2021 10:13:14 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33E08C06138D
+        for <linux-mmc@vger.kernel.org>; Mon, 24 May 2021 07:11:46 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id a2so40837129lfc.9
+        for <linux-mmc@vger.kernel.org>; Mon, 24 May 2021 07:11:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=PxFVfCbuSBreuDO3mJ9eqEuh3taUoOdaPE1ozDP14J0=;
-        b=yFb9lCsRcwNUEwCnHxdHHbAwBCHX9AFWkTVDra9cpGbysaCf4lD0N0v1KI9YmXnmkc
-         UL1b/E0rJbeMUg+cBLsm2sO/o1sP/fPhlhY0QUKcGymY5lUiWBGstJbfz/HRk3r0NvKp
-         7f/SL0rEv7h7X3Gr1DZPKANbWkyzBM5l4rZ3ps9LXF54Hqc4DNsuQQfmIjPRin/l1RJI
-         hK9+WeRKiu1a74CYuhPZV6QeUjd+VyLoEDUolO4nyT6nLBWDwLpxilJXFmttGANtgl14
-         3dfEu/zakO0G/T186pE5NfTFWsovOlnVfMlDnlfCJ/DPNbbYqi1CNsy4b+aMCsWCnW9M
-         FtCg==
+        bh=m9TQta/QWmtE8jsxsWMQFJ3ws/ti47t8fXgwLG9HD/I=;
+        b=yaSVC5r2H4+Jb6XAZ22WZsyVh4uCJhRTrZ7FoI6hDuzWt7hyzIBOUwehOgCl+U9FK4
+         VkT3o7ew3hxO5p6dEGNnjHCnzwlKkLYLVTgZ1BCvrgdWy+/zc7Q4nYPWHZ76qOR1gH5A
+         RA3sK1LhHcXkPDeYih+aWQaleJq+kbE0uxVYburpXmboR216E8C/lIJTNIEbJKAB0nD8
+         QXGEYzJcU+4AnI8nGq2pegagUjRPyR2sK81G1dCnuTXrnRA2V7cnnaafAfoAfwCiPbi1
+         5UqddMcOpiKZVlOU6fv9K9VIieiNVCPK2y57EMc5CuHMOuwqW5NFoSHnmooEAnhAZCvr
+         RMlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=PxFVfCbuSBreuDO3mJ9eqEuh3taUoOdaPE1ozDP14J0=;
-        b=BvNfhbR9rLveD/9LRlYxOfyy5tNG9KEjQHUZ8g/3x7ZQeWtUiX324gQWyfdFQHCnw5
-         fuGk5kCoeD4RgWaXFVHnBTgXIS+uwQwMlqoK4sTSqzMAMav1qATFqr9QcB6p/K8/zqTe
-         Uh7Rm+mHlCq56TKPbrfANTLILBVveSbbirBwCi7UykcASPnLw2C5n1rP2IjqwT+rYdq8
-         VDQdxYllnkmGJzw8FzYSQl08QvGG7l6v1SV8B0hwyWkEvJEU+BBFVcuTga9N8HCelbsj
-         KzmSII/W4w+mEmYkwM05pCJJACxIvT91WwN7+JmcmeT7XWpVild/TYIMjLligbO0gOdz
-         C2Ow==
-X-Gm-Message-State: AOAM533UY6Fhm5EyOpQZ2ay2jkV+QKoLgZJFV2VFFffl8PG2edZiBW62
-        MRuCAXPZ2i3eWnaPi0s3C8EXe0r3bE7O0PxziTq7Cw==
-X-Google-Smtp-Source: ABdhPJxkYrdw0tkQ65uF7FdwPLjrWDJyTMHDLIz8rx7KUQwRWOSy8sPwddeleLL4Jr0PCmVZUsojIIK/8+iy0FNksL0=
-X-Received: by 2002:a05:651c:14c:: with SMTP id c12mr11360162ljd.72.1621865498847;
- Mon, 24 May 2021 07:11:38 -0700 (PDT)
+        bh=m9TQta/QWmtE8jsxsWMQFJ3ws/ti47t8fXgwLG9HD/I=;
+        b=oc3Z6Zq78QFVp3euYz50ztkQ8PtDbd9JXxFv/j7glADiXwacDfPlclI98PsumAr/UH
+         k4g6p1sFu35TpRIJmmqeMd2kVexsvfnoCNGaIk1zrKgOo0LIjlEdPPzX51UCI9wEMhf1
+         iM1FjOX4JmJ8bkBAP4Pwz1UDEF62aFA4UAf4I4/+1ZV8pT2mqh95AUlYaYOQsXCek4py
+         ghqtrUFfIKKX5cbRzUP0f+MT/OSrPK9G4j4U4TdFklSHUU7SZT0tUwqhXrYpiB6pTqpX
+         QsAui0qPXLLxNz8JzOhz+waZ8ad/AdzIdRHi3FntLF51XGEagqjOrR73cb4efHyyJoEm
+         C3NA==
+X-Gm-Message-State: AOAM532DVmecynCqa4c5wkJnSNNaO9rby9CNphWN11mFE7wga8vCbNK9
+        yi3FsuDfUXnLZ+TD4ajCv0agpLEgPaOGVcIL8OU1MQ==
+X-Google-Smtp-Source: ABdhPJyca77dNeXLxWCBq81HpNkv55TNmbVC6ws5IelbcnzJpm29Yn+XRdC2MhiwEYc933RD4U6pMLpP1o2D+yaSPbg=
+X-Received: by 2002:a05:6512:1150:: with SMTP id m16mr10577037lfg.486.1621865504561;
+ Mon, 24 May 2021 07:11:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210521133026.17296-1-johan@kernel.org>
-In-Reply-To: <20210521133026.17296-1-johan@kernel.org>
+References: <20210523155914.5200-1-shiv14112001@gmail.com>
+In-Reply-To: <20210523155914.5200-1-shiv14112001@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 24 May 2021 16:11:00 +0200
-Message-ID: <CAPDyKFpw-ydfWXM0+Lz3KHq2X3f2S_47XA-43Rw4e6ZgOrobWw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: vub3000: fix control-request direction
-To:     Johan Hovold <johan@kernel.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux USB List <linux-usb@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "# 4.0+" <stable@vger.kernel.org>
+Date:   Mon, 24 May 2021 16:11:05 +0200
+Message-ID: <CAPDyKFptp7cJ1zq8nHCWoY5D+AJ8uzs2MiqnUGdT8d8eq3Rw_Q@mail.gmail.com>
+Subject: Re: [PATCH] This commit fixes the Error or Warning about missing or
+ incorrect SPDX license headers.
+To:     Aviral Gupta <shiv14112001@gmail.com>
+Cc:     Jens Axboe <axboe@kernel.dk>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Zhan Liu <zliua@micron.com>, Avri Altman <avri.altman@wdc.com>,
+        "Bean Huo (beanhuo)" <beanhuo@micron.com>,
+        Luca Porzio <porzio@gmail.com>,
+        Eric Biggers <ebiggers@google.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 21 May 2021 at 15:30, Johan Hovold <johan@kernel.org> wrote:
+On Sun, 23 May 2021 at 18:00, Aviral Gupta <shiv14112001@gmail.com> wrote:
 >
-> The direction of the pipe argument must match the request-type direction
-> bit or control requests may fail depending on the host-controller-driver
-> implementation.
+> By adding missing SPDX-License-Identifier tag line in drivers/mmc/core/block.c this issue is fixed.
 >
-> Fix the SET_ROM_WAIT_STATES request which erroneously used
-> usb_rcvctrlpipe().
 >
-> Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
-> Cc: stable@vger.kernel.org      # 3.0
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Aviral Gupta <shiv14112001@gmail.com>
 
-Applied for next, thanks!
+Applied for next, by amending the patch prefix, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/vub300.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/mmc/core/block.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/mmc/host/vub300.c b/drivers/mmc/host/vub300.c
-> index 739cf63ef6e2..4950d10d3a19 100644
-> --- a/drivers/mmc/host/vub300.c
-> +++ b/drivers/mmc/host/vub300.c
-> @@ -2279,7 +2279,7 @@ static int vub300_probe(struct usb_interface *interface,
->         if (retval < 0)
->                 goto error5;
->         retval =
-> -               usb_control_msg(vub300->udev, usb_rcvctrlpipe(vub300->udev, 0),
-> +               usb_control_msg(vub300->udev, usb_sndctrlpipe(vub300->udev, 0),
->                                 SET_ROM_WAIT_STATES,
->                                 USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
->                                 firmware_rom_wait_states, 0x0000, NULL, 0, HZ);
+> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+> index 689eb9afeeed..266d62f9dbc8 100644
+> --- a/drivers/mmc/core/block.c
+> +++ b/drivers/mmc/core/block.c
+> @@ -1,3 +1,4 @@
+> +// SPDX-License-Identifier: GPL-2.0
+>  /*
+>   * Block driver for media (i.e., flash cards)
+>   *
 > --
-> 2.26.3
+> 2.25.1
 >
