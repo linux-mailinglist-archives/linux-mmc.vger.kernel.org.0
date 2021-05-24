@@ -2,64 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE19E38E86B
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 May 2021 16:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11AF338E86D
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 May 2021 16:11:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233046AbhEXONS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 May 2021 10:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57058 "EHLO
+        id S233058AbhEXONX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 May 2021 10:13:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233052AbhEXOND (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 May 2021 10:13:03 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9295DC061347
-        for <linux-mmc@vger.kernel.org>; Mon, 24 May 2021 07:11:35 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 131so33774756ljj.3
-        for <linux-mmc@vger.kernel.org>; Mon, 24 May 2021 07:11:35 -0700 (PDT)
+        with ESMTP id S233068AbhEXONK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 May 2021 10:13:10 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DCCDC061344
+        for <linux-mmc@vger.kernel.org>; Mon, 24 May 2021 07:11:38 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id w33so32919132lfu.7
+        for <linux-mmc@vger.kernel.org>; Mon, 24 May 2021 07:11:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=2oVkqiUNC05WGekjk5abJeJoD4B7Y5rec3Y08fM9/NU=;
-        b=XXbvJx2PdKqEf9U/G/+w//9RJ4JJ9aBe6lybA6mrteKFL+FuDmTsAuzuDfyL4SvPAJ
-         Vsi2O+Q8v/NGr0oKiZD/deoilFeOlW8SQuhoEee4ao7Cvubda/z+KDc24DsCML53OcIe
-         TcwALIkjuABdJYvw7BfU6NSUdNKai0HTFkrpzVsYZ4ime38MX2PMayGzeHnmOm19J3fi
-         MUUWmcLKMLLfqaTStMRifdfGH7PStCiVk81GC3pmkFtw16pYtMvFHU8Kv9aaSvFecaAU
-         9yhS1s2Mkd2DPA8Na9KML3Y3oXQ96xGTzXAsCYGwdRAK0jm4ey1mkucRlE6xL156dY0m
-         cAHQ==
+        bh=2XYL8Bw8Ui8YkIQlQTJti/dfc11C12H26WrALkHSRnk=;
+        b=kWENuBc8oPZ53edo17M+ZVof9HHcIEWVKvnCiXHth2S9UHktJzHyZKHLxXtyRo3WCx
+         Cqghvv2YS98jkjNt+Vt3mAdX17jmrim46fBq6DReBVkjEl67gKpkuYcSvPpvAuTLlE+z
+         nHOkcFWNwzQEsc30a0krrllHQ/FVSntXWwQmWXO9fZEnrwK4Y+xvUZptb93q1fQXLuPm
+         8U4xWFUMBTxzLrZ8ppMUqG5fem8Vk2R0D3Dm1OGT4N5Xu/SYJerwMnOQVNPaR7XaFCUw
+         4OROTwamAmqugpqfIX3UIuvZ4or4Gs4cQy3CNuIYkFghXt39uABaJpk99IQjKhl4OXaG
+         B4IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=2oVkqiUNC05WGekjk5abJeJoD4B7Y5rec3Y08fM9/NU=;
-        b=WdKRr12MCMrSlhv4Ydz/utSbSZx2wiYNPOaJ5QYio20AErY3/1muf7tUg+fBqOBgWg
-         Cu9dQhpFEm06GmKIEUtfhWrccnTO/6XAeNDHv5FXjkYeBEMz6J6QI1DwdIxw2v6QmAdu
-         cUlw1VL2uiU+c/XRIc4H4cFI67L4kyt0t0dGPvBabsAOBb3xZI2N8C2wME9bP4wz0zlg
-         khtORD2YTWUgTjVE6GUJyMnrWBogQkFIbErG4OmHjIhfByZ4z8cWyWC0w8L7jDW3EvVX
-         1kmuz1ssk2Eo7CyBQWpV3nSFxJIJtfpNg7mH/YpA2QWMiq6kNynzlYGvOOXmOE8x5ltI
-         UOAA==
-X-Gm-Message-State: AOAM532LY8x3RnCEJVVk5XvxFpHdfZZV0vmGfXqz3PP1LClDxX7twzQ4
-        DWe+9eeQf6qDgdzgs/hNq4OQel5xBxyIvCBcnV0gmhHu1enxRA==
-X-Google-Smtp-Source: ABdhPJxv/j1I6P+9y/Q+b7xa/Pmg5EMIaVn+FNdnivOWqiYRZYNBeUJXTdfJbhoq/+mZhwEtIOa5VSYStG0brOaI7/A=
-X-Received: by 2002:a2e:b819:: with SMTP id u25mr16749270ljo.182.1621865493304;
- Mon, 24 May 2021 07:11:33 -0700 (PDT)
+        bh=2XYL8Bw8Ui8YkIQlQTJti/dfc11C12H26WrALkHSRnk=;
+        b=LgiDw5cd3LSq36EU2Muclybg596fQt5X4r4amFv9QqJ/yRgcWNW9wMMyRwYZnHkx2y
+         YrdvWggp+9jBW8JPpBf6O0zM3ngP4kddsbZ0bQ7NsysRBUdbxc7kwLQrf5uMR1/4YmPq
+         HBCUYJRu2lzPV4Yj/RJEziQFGXc4xxXP/FbYEAkpNclRrBQi27279+ziX/nv7ULxDXp1
+         IH9xF8yhrgh2zDGTFhA1t/m9p7AzYukBLFEklWTnsFZHwhIuOfWSxO1P76QxUM48zZw+
+         JTfaHY0gpmMn++PTS50IE6OnQ+yuKFv1Kwt4PrWGHbjoI8PeiWskLp9CvQ3XRAU7SblO
+         GqkA==
+X-Gm-Message-State: AOAM533rV9rPiGXAb+eNghYwvtID4VyHIjTBU072C2Xenz7uQnbXaa/S
+        0bDZk0gniH3AOqM9s4rJvTziSMinkuKsDvgOi87jUtpyw4gnXw==
+X-Google-Smtp-Source: ABdhPJxrkPyvodEQM2Koiqen+FWoeN/4o0wqkp6rZVF4idauvZzMjLFIzXWJRrFuNvh/SStEjCN65FxO7pYk/wP9Jr8=
+X-Received: by 2002:ac2:592a:: with SMTP id v10mr10704278lfi.400.1621865496563;
+ Mon, 24 May 2021 07:11:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <1621558775-31185-1-git-send-email-tiantao6@hisilicon.com>
-In-Reply-To: <1621558775-31185-1-git-send-email-tiantao6@hisilicon.com>
+References: <1621558965-34077-1-git-send-email-tiantao6@hisilicon.com>
+In-Reply-To: <1621558965-34077-1-git-send-email-tiantao6@hisilicon.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 24 May 2021 16:10:54 +0200
-Message-ID: <CAPDyKFr+qo35FgBufCWhAgefyREhFgxMdzwCxDg1FAJHOLv0Tw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci_am654: Use pm_runtime_resume_and_get() to
+Date:   Mon, 24 May 2021 16:10:57 +0200
+Message-ID: <CAPDyKFq9_em1+3LBQp7TMJwzZk07sX9WSsbvhxVaR2eA0LoakQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-omap: Use pm_runtime_resume_and_get() to
  replace open coding
 To:     Tian Tao <tiantao6@hisilicon.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+Cc:     Kishon <kishon@ti.com>, Adrian Hunter <adrian.hunter@intel.com>,
         linux-mmc <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 21 May 2021 at 02:59, Tian Tao <tiantao6@hisilicon.com> wrote:
+On Fri, 21 May 2021 at 03:02, Tian Tao <tiantao6@hisilicon.com> wrote:
 >
 > use pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
 > pm_runtime_put_noidle. this change is just to simplify the code, no
@@ -74,27 +74,26 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci_am654.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  drivers/mmc/host/sdhci-omap.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-> index 1fad6e4..f654afb 100644
-> --- a/drivers/mmc/host/sdhci_am654.c
-> +++ b/drivers/mmc/host/sdhci_am654.c
-> @@ -809,11 +809,9 @@ static int sdhci_am654_probe(struct platform_device *pdev)
->
->         /* Clocks are enabled using pm_runtime */
+> diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
+> index 7893fd3..8f4d1f0 100644
+> --- a/drivers/mmc/host/sdhci-omap.c
+> +++ b/drivers/mmc/host/sdhci-omap.c
+> @@ -1173,10 +1173,9 @@ static int sdhci_omap_probe(struct platform_device *pdev)
+>          * as part of pm_runtime_get_sync.
+>          */
 >         pm_runtime_enable(dev);
 > -       ret = pm_runtime_get_sync(dev);
 > -       if (ret < 0) {
-> -               pm_runtime_put_noidle(dev);
 > +       ret = pm_runtime_resume_and_get(dev);
-> +       if (ret)
->                 goto pm_runtime_disable;
-> -       }
+> +       if (ret) {
+>                 dev_err(dev, "pm_runtime_get_sync failed\n");
+> -               pm_runtime_put_noidle(dev);
+>                 goto err_rpm_disable;
+>         }
 >
->         base = devm_platform_ioremap_resource(pdev, 1);
->         if (IS_ERR(base)) {
 > --
 > 2.7.4
 >
