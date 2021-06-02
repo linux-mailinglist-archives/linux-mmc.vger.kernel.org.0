@@ -2,186 +2,120 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A0AE3988EC
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jun 2021 14:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AE17398F2F
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jun 2021 17:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229938AbhFBMGk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 2 Jun 2021 08:06:40 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:16118 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229844AbhFBMGi (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Jun 2021 08:06:38 -0400
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 152C2cPO189409;
-        Wed, 2 Jun 2021 08:03:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=7wC8Y59HiMIthB9xfz5dL+I0HD65zOwRPB4cvu5JQYY=;
- b=QRLGyPounpLaRIZgsSUK1LazhFSMWWWVFIpjfvUyvXqdSXI7p94FVQMtSFG3bMtHNL86
- rLVrJ3SvpT994x2pe7o0yL3iXXDeNBst8Q4A8KEa89vx85ZQSTDkkYsEjLQaMo+eb8VZ
- +GFr8IfErHwDLNlYl+L0v9/qNIinOxFcyNlMJhpRMjSZcskv/o9bM0Y0jNVwjZETIKG0
- IXpmjsLB5CkqOhxt84ImzKiTyn/t0QZlZGbbzTco4+M0nPgqtd7mDQbl31t9d+7DOxJc
- iYhombbX7dZq4eRMaB6F1ITduKcVH4H0X0f5lSV3QvlOH2CDPoe61GoP3QIOjHTOkYh/ DA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 38x7kr3h5n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Jun 2021 08:03:00 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 152C2cNZ189527;
-        Wed, 2 Jun 2021 08:02:59 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 38x7kr3h4k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Jun 2021 08:02:59 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-        by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 152BwHfr023191;
-        Wed, 2 Jun 2021 12:02:57 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by ppma05fra.de.ibm.com with ESMTP id 38ud87s9cx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Jun 2021 12:02:56 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 152C2r4H26280248
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 2 Jun 2021 12:02:53 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A0364A405F;
-        Wed,  2 Jun 2021 12:02:53 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 479C3A4040;
-        Wed,  2 Jun 2021 12:02:52 +0000 (GMT)
-Received: from sig-9-145-17-43.uk.ibm.com (unknown [9.145.17.43])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed,  2 Jun 2021 12:02:52 +0000 (GMT)
-Message-ID: <e4891689c7651611020bdf3b4db9895819da345a.camel@linux.ibm.com>
-Subject: Re: [PATCH 27/30] scm_blk: use blk_mq_alloc_disk and
- blk_cleanup_disk
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-To:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Cc:     Justin Sanders <justin@coraid.com>,
-        Denis Efremov <efremov@linux.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Tim Waugh <tim@cyberelk.net>,
-        Geoff Levand <geoff@infradead.org>,
-        Ilya Dryomov <idryomov@gmail.com>,
-        "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Roger Pau =?ISO-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
-        Mike Snitzer <snitzer@redhat.com>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Alex Dubov <oakad@yahoo.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        dm-devel@redhat.com, linux-block@vger.kernel.org,
-        nbd@other.debian.org, linuxppc-dev@lists.ozlabs.org,
-        ceph-devel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-s390@vger.kernel.org
-Date:   Wed, 02 Jun 2021 14:02:51 +0200
-In-Reply-To: <20210602065345.355274-28-hch@lst.de>
-References: <20210602065345.355274-1-hch@lst.de>
-         <20210602065345.355274-28-hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
-Mime-Version: 1.0
+        id S231204AbhFBPr7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Jun 2021 11:47:59 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.22]:19593 "EHLO
+        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231837AbhFBPr6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Jun 2021 11:47:58 -0400
+X-Greylist: delayed 356 seconds by postgrey-1.27 at vger.kernel.org; Wed, 02 Jun 2021 11:47:58 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1622648414; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=MOeEg3PdjT7RW5v2yDR5IZhxOchWfZW+M6fkOrZo+qm1bQa5Jqm4iwhxSl0SCy4QNT
+    MXJBuTBvaw7e4olKfBVYsv375UP0C+wk44hAaJJ9XgDkxsA4WH9xBhgqgwQeYnppErAd
+    9Y2+/PiMCQu5xQVf9fG0fkcsCTCXWPGoiKev85FpvguQEwpAEYdkHAtFzQ8xHIsUlVYd
+    dva/0MNjtj/Ur85gV6rtYEDDsSxNUeC20TCH28cALeucLcGGOqYLC2E+Vy9x/F9IeUsE
+    o8lL4jX5sc6jZV7vWwyUVO8CAZ/5MdzHSlorjMI/iM4gHP+2BrsSz//R57ZxZiRY/p+b
+    MIGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1622648414;
+    s=strato-dkim-0002; d=strato.com;
+    h=Subject:References:In-Reply-To:Message-ID:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=T4QFjJdjTOLIaLLvxn3bSUlN+BqUHhpZL0mv+OCU+tA=;
+    b=SgKckdaj8BMTHedAfNfdeQNtu6kak4D5nheH9oEvY6HKyTRNqT1xphU+3kD/ftDOE2
+    7I21A4QmR2y0bFa+iK4KPaLt6V+MCpjptkh0HL7grQxkWoBW0U2FdMQ6pehuM0ztlfjf
+    muUzmuLWlcdjG+oyyv1u5phzKCb9wrfOVdZX52zlLqPE9h/TRDMBo2ygC6dpb/bBEh0Q
+    3Mx6dtSx5Rdbv8Td/4j0D6drINkOSJAmyn3RnZyD5la/OscJSjPUISC0+aOIif+15mcR
+    3/8QEryo+DKgitEzR4wSTzHtgrGO234EbLo6fZeI1uWIdY8/wIjVVAGTQctZNmT5H2Oa
+    VhQA==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1622648414;
+    s=strato-dkim-0002; d=fpond.eu;
+    h=Subject:References:In-Reply-To:Message-ID:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=T4QFjJdjTOLIaLLvxn3bSUlN+BqUHhpZL0mv+OCU+tA=;
+    b=EP2sfYBaJEVUqBw0x0FpFA4d6Iu9VUynV2QUoLWby8Hl7oWxzO4TtloqA+cBd5Qyfl
+    FEFD2fF52wlgjQAm7/ooG63zRlBukzvNRgB0cJZFF7668pT2QTyuVVgOodwRVyp8L+8m
+    I7Vj+k0qKT0m7CjWfXTggytC8+qMy5/K0MajyAYUY3qohXwMM8PO4duWOZ9o6vFbnBZE
+    AIeYsj/ArS0p21WtnFlya+GQy8kAY7G611q1h3DjLmMZsYyXFJIxo8IDBouE0gpUrykV
+    PDjG5vYiR5gzSJODOZJxUHkzEqHF675D3TSkrh45F4S2JqG3jiRwdr+bBTFESwEp+BcH
+    1XrQ==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":OWANVUa4dPFUgKR/3dpvnYP0Np73amq+g13rqGzvv3qxio1R8fCt/7B6PNk="
+X-RZG-CLASS-ID: mo00
+Received: from oxapp04-01.back.ox.d0m.de
+    by smtp-ox.front (RZmta 47.27.2 AUTH)
+    with ESMTPSA id j09f72x52FeE44n
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Wed, 2 Jun 2021 17:40:14 +0200 (CEST)
+Date:   Wed, 2 Jun 2021 17:40:14 +0200 (CEST)
+From:   Ulrich Hecht <uli@fpond.eu>
+To:     Wolfram Sang <wsa@kernel.org>, Ulrich Hecht <uli+renesas@fpond.eu>
+Cc:     linux-renesas-soc@vger.kernel.org, linux-mmc@vger.kernel.org,
+        ulf.hansson@linaro.org
+Message-ID: <461686971.488794.1622648414815@webmail.strato.com>
+In-Reply-To: <YKUf9TVcKetApd1J@ninjato>
+References: <20210514155318.16812-1-uli+renesas@fpond.eu>
+ <YKUf9TVcKetApd1J@ninjato>
+Subject: Re: [PATCH] mmc: renesas_sdhi: increase suspend/resume latency
+ limit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9Pi9MTQ_S8CJ1ewvOnGa4xYgtn5KH1ib
-X-Proofpoint-ORIG-GUID: -LAzjZA1VGIxMM3aVX5RPubiT3GLOjUz
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-06-02_06:2021-06-02,2021-06-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 bulkscore=0
- mlxlogscore=999 spamscore=0 clxscore=1011 suspectscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106020078
+X-Priority: 3
+Importance: Normal
+X-Mailer: Open-Xchange Mailer v7.10.4-Rev24
+X-Originating-Client: open-xchange-appsuite
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 2021-06-02 at 09:53 +0300, Christoph Hellwig wrote:
-> Use blk_mq_alloc_disk and blk_cleanup_disk to simplify the gendisk and
-> request_queue allocation.
+
+> On 05/19/2021 4:25 PM Wolfram Sang <wsa@kernel.org> wrote:
+> On Fri, May 14, 2021 at 05:53:18PM +0200, Ulrich Hecht wrote:
+> > The TMIO core sets a very low latency limit (100 us), but when using R-Car
+> > SDHI hosts with SD cards, I have observed typical latencies of around 20-30
+> > ms. This prevents runtime PM from working properly, and the devices remain
+> > on continuously.
+> > 
+> > This patch sets the default latency limit to 100 ms to avoid that.
+> > 
+> > Signed-off-by: Ulrich Hecht <uli+renesas@fpond.eu>
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  drivers/s390/block/scm_blk.c | 21 ++++++---------------
->  1 file changed, 6 insertions(+), 15 deletions(-)
+> Well, yes, I can confirm that this helps wrt the "always-enabled" clock.
+> However, when removing UHS cards, I now see this regression:
 > 
-> diff --git a/drivers/s390/block/scm_blk.c b/drivers/s390/block/scm_blk.c
-> index a4f6f2e62b1d..88cba6212ee2 100644
-> --- a/drivers/s390/block/scm_blk.c
-> +++ b/drivers/s390/block/scm_blk.c
-> @@ -462,12 +462,12 @@ int scm_blk_dev_setup(struct scm_blk_dev *bdev, struct scm_device *scmdev)
->  	if (ret)
->  		goto out;
->  
-> -	rq = blk_mq_init_queue(&bdev->tag_set);
-> -	if (IS_ERR(rq)) {
-> -		ret = PTR_ERR(rq);
-> +	bdev->gendisk = blk_mq_alloc_disk(&bdev->tag_set, scmdev);
-> +	if (IS_ERR(bdev->gendisk)) {
-> +		ret = PTR_ERR(bdev->gendisk);
->  		goto out_tag;
->  	}
-> -	bdev->rq = rq;
-> +	rq = bdev->rq = bdev->gendisk->queue;
->  	nr_max_blk = min(scmdev->nr_max_block,
->  			 (unsigned int) (PAGE_SIZE / sizeof(struct aidaw)));
->  
-> @@ -477,17 +477,11 @@ int scm_blk_dev_setup(struct scm_blk_dev *bdev, struct scm_device *scmdev)
->  	blk_queue_flag_set(QUEUE_FLAG_NONROT, rq);
->  	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, rq);
->  
-> -	bdev->gendisk = alloc_disk(SCM_NR_PARTS);
-> -	if (!bdev->gendisk) {
-> -		ret = -ENOMEM;
-> -		goto out_queue;
-> -	}
-> -	rq->queuedata = scmdev;
->  	bdev->gendisk->private_data = scmdev;
->  	bdev->gendisk->fops = &scm_blk_devops;
-> -	bdev->gendisk->queue = rq;
->  	bdev->gendisk->major = scm_major;
->  	bdev->gendisk->first_minor = devindex * SCM_NR_PARTS;
-> +	bdev->gendisk->minors = SCM_NR_PARTS;
->  
->  	len = snprintf(bdev->gendisk->disk_name, DISK_NAME_LEN, "scm");
->  	if (devindex > 25) {
-> @@ -504,8 +498,6 @@ int scm_blk_dev_setup(struct scm_blk_dev *bdev, struct scm_device *scmdev)
->  	device_add_disk(&scmdev->dev, bdev->gendisk, NULL);
->  	return 0;
->  
-> -out_queue:
-> -	blk_cleanup_queue(rq);
->  out_tag:
->  	blk_mq_free_tag_set(&bdev->tag_set);
->  out:
-> @@ -516,9 +508,8 @@ int scm_blk_dev_setup(struct scm_blk_dev *bdev, struct scm_device *scmdev)
->  void scm_blk_dev_cleanup(struct scm_blk_dev *bdev)
->  {
->  	del_gendisk(bdev->gendisk);
-> -	blk_cleanup_queue(bdev->gendisk->queue);
-> +	blk_cleanup_disk(bdev->gendisk);
->  	blk_mq_free_tag_set(&bdev->tag_set);
-> -	put_disk(bdev->gendisk);
->  }
->  
->  void scm_blk_set_available(struct scm_blk_dev *bdev)
+> [    8.659916] mmcblk2: mmc2:0001 00000 29.8 GiB 
+> [    8.677304]  mmcblk2: p1
+> [    9.622918] mmc2: tuning execution failed: -5
+> [    9.627385] mmc2: card 0001 removed
+> 
+> It is interesting to see the "execution failed" error when *removing*
+> the card. Before removing, access to the card seems fine. I haven't
+> checked further, so I can't say yet if this is a related or seperate but
+> now undiscovered issue.
 
-Not an expert on SCM or this code but I gave this a quick test and it
-seems to work fine.
+I have traced this, and it seems to be triggered by mmc_sd_detect(), which is called by mmc_rescan() and does this:
 
-Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
+[...]
+        /*
+         * Just check if our card has been removed.
+         */
+        err = _mmc_detect_card_removed(host);
 
+        mmc_put_card(host->card, NULL);
 
+        if (err) {
+                mmc_sd_remove(host);
+[...]
 
+_mmc_detect_card_removed() calls mmc_sd_alive(), which tries to send a command to the SD card to see if it's still there, which in turn triggers the retune. IOW, this is expected to fail, and the error message is misleading.
+
+CU
+Uli
