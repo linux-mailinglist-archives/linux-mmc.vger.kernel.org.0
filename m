@@ -2,158 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 602C9398F01
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jun 2021 17:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CE6839937F
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jun 2021 21:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232054AbhFBPpQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 2 Jun 2021 11:45:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46810 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232363AbhFBPpG (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 2 Jun 2021 11:45:06 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 749A96140A;
-        Wed,  2 Jun 2021 15:43:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622648602;
-        bh=j4vbbGMmkpw6vv8LF4aIg9gX2V7O+Y4hZhiS1MaxEmc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AB7FT6nD0+rEQCgHBe5Cc5z4DRLD3icjFOBiw6oUwpll2X2vUmNqYYA86Mis0nQok
-         GUVdVQnl5wZ5UdKS1IFtwJmMOJbRm/TuUiIAkVHY4l1NYVVQAn1lpXU4WDZAJjZiIt
-         Zj3vPyUaPqYduitPsdm0HQRG0b4aNL/BErsSx7TEcKpEaV42FMxSH3GWTMWGTilfOy
-         EIHbJD4Wjmd3Kx44o49Q3rESdin3UZo0Het2NItM/PG8dKGKjyvqsS87KI7Dshih5t
-         LrRX46kAZV/zWvGzK5YQGEZTeNLdZD56yEF4sDICfrD6yFi4PlcnBGdp103t4oyP/V
-         easJ3WNVtDkDA==
-Received: by mail.kernel.org with local (Exim 4.94.2)
-        (envelope-from <mchehab@kernel.org>)
-        id 1loT1b-006Xbn-D0; Wed, 02 Jun 2021 17:43:19 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Jakub Kicinski <kuba@kernel.org>, Keerthy <j-keerthy@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Mark Brown <broonie@kernel.org>, Nishanth Menon <nm@ti.com>,
-        Rob Herring <robh+dt@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <kristo@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-can@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH 04/12] dt-bindings: clock: update ti,sci-clk.yaml references
-Date:   Wed,  2 Jun 2021 17:43:10 +0200
-Message-Id: <0fae687366c09dfb510425b3c88316a727b27d6d.1622648507.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1622648507.git.mchehab+huawei@kernel.org>
-References: <cover.1622648507.git.mchehab+huawei@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
+        id S229468AbhFBTbA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Jun 2021 15:31:00 -0400
+Received: from mail-pg1-f178.google.com ([209.85.215.178]:39933 "EHLO
+        mail-pg1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229467AbhFBTbA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Jun 2021 15:31:00 -0400
+Received: by mail-pg1-f178.google.com with SMTP id v14so3097600pgi.6;
+        Wed, 02 Jun 2021 12:29:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=E8vUWtDMqWild8A9bhDL+wLNKgyTVijec3O63TtaCeQ=;
+        b=lcRYqtVJnUHY3XGJzUhTrAMt6+htMorMfKLDgtbv7gFDaE7UOR0A6F8Sz+rkj/9cXz
+         ZI8Qy6ex+BX4njn7BcGKpkZ6x0R/Huf9zI3SHHVp6EXb/fbcswxLdAIi+qXe5CMad45E
+         IopNMdAERvpF750LZjepnuERSqxZf//Ax+yzy0idgWsxfN6HHezYIHbQXWw38N3SBiB9
+         adpyA0hdbU1B1zlvEsx662kQhnYkNteAL6HnNZozpxeeMVzXe4EQ+btrJe0Zr7G5+BYb
+         FnN1YFaJhhn7m9Y8tgfDdFfiqGpNX3Pvu041VcJHCOI1AU6BRBkpN5TC9PT9g+1O5RP9
+         Ferg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=E8vUWtDMqWild8A9bhDL+wLNKgyTVijec3O63TtaCeQ=;
+        b=jrPFeLaUeP8EMMwN1yE/amRKptMLcz0IpAULrtoFCMtdqNb/aSseXXAgFDhqbUZmJP
+         qetCmQVKZzLKdovUdTeamT8vrbASZXLolvjwP7yInoOLYp71D8FD5fWdUHUeSfdWilbn
+         1Ntd5dz8WtRfZ32DbU/fgF0SC5X1c34vBgMfeG85t1SytNiI6W+D8wG2gnjz5TO9Gg3w
+         fduGZrLeue1BKNem9a4Out/d7LnHHCdcsX2UIlPlDow+mxzbdTE9YmD7gJ03AFzcljuW
+         TcJJLLi3a0ZaygkmsFw6pkub72Alj4sHPeTMOxgbUQ/a7hOMq0vRRF0CgV8a1N1Sfzp4
+         jRPA==
+X-Gm-Message-State: AOAM533k0gKNXE+6JHFo7pb9R5hCS9BvZvkzvNPAF7kOukG0R7H/98kO
+        rbA5WdIGrdZtpAjvzswrrcT5hphM6pVHczU3
+X-Google-Smtp-Source: ABdhPJxO+sxxmX4+zcVnKW/MU9yYAqFYdqQpz1Hm8ni98EnuVHOsLm3TI2xojKihsfJklMHX3tYQJQ==
+X-Received: by 2002:a65:60da:: with SMTP id r26mr35519014pgv.133.1622662096547;
+        Wed, 02 Jun 2021 12:28:16 -0700 (PDT)
+Received: from stbsrv-and-01.and.broadcom.net ([192.19.231.250])
+        by smtp.gmail.com with ESMTPSA id m134sm349882pfd.148.2021.06.02.12.28.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jun 2021 12:28:15 -0700 (PDT)
+From:   Al Cooper <alcooperx@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Al Cooper <alcooperx@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        bcm-kernel-feedback-list@broadcom.com, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Ray Jui <rjui@broadcom.com>, Rob Herring <robh+dt@kernel.org>,
+        Scott Branden <sbranden@broadcom.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 1/2] dt-bindings: mmc: sdhci-iproc: Add brcm,bcm7211a0-sdhci
+Date:   Wed,  2 Jun 2021 15:27:57 -0400
+Message-Id: <20210602192758.38735-1-alcooperx@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Changeset a7dbfa6f3877 ("dt-bindings: clock: Convert ti,sci-clk to json schema")
-renamed: Documentation/devicetree/bindings/clock/ti,sci-clk.txt
-to: Documentation/devicetree/bindings/clock/ti,sci-clk.yaml.
+Add new compatible string for the legacy sdhci controller on the
+BCM7211 family of SoC's.
 
-Update the cross-references accordingly.
-
-Fixes: a7dbfa6f3877 ("dt-bindings: clock: Convert ti,sci-clk to json schema")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Al Cooper <alcooperx@gmail.com>
 ---
- Documentation/devicetree/bindings/gpio/gpio-davinci.txt | 2 +-
- Documentation/devicetree/bindings/i2c/i2c-davinci.txt   | 2 +-
- Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt | 2 +-
- Documentation/devicetree/bindings/net/can/c_can.txt     | 2 +-
- Documentation/devicetree/bindings/spi/spi-davinci.txt   | 2 +-
- MAINTAINERS                                             | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/mmc/brcm,iproc-sdhci.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/gpio/gpio-davinci.txt b/Documentation/devicetree/bindings/gpio/gpio-davinci.txt
-index 696ea46227d1..8ad4fd9aaffd 100644
---- a/Documentation/devicetree/bindings/gpio/gpio-davinci.txt
-+++ b/Documentation/devicetree/bindings/gpio/gpio-davinci.txt
-@@ -32,7 +32,7 @@ Required Properties:
-           Documentation/devicetree/bindings/clock/keystone-gate.txt
-                             for 66AK2HK/66AK2L/66AK2E SoCs or,
+diff --git a/Documentation/devicetree/bindings/mmc/brcm,iproc-sdhci.yaml b/Documentation/devicetree/bindings/mmc/brcm,iproc-sdhci.yaml
+index 6f569fbfa134..2f63f2cdeb71 100644
+--- a/Documentation/devicetree/bindings/mmc/brcm,iproc-sdhci.yaml
++++ b/Documentation/devicetree/bindings/mmc/brcm,iproc-sdhci.yaml
+@@ -21,6 +21,7 @@ properties:
+       - brcm,bcm2711-emmc2
+       - brcm,sdhci-iproc-cygnus
+       - brcm,sdhci-iproc
++      - brcm,bcm7211a0-sdhci
  
--          Documentation/devicetree/bindings/clock/ti,sci-clk.txt
-+          Documentation/devicetree/bindings/clock/ti,sci-clk.yaml
-                             for 66AK2G SoCs
- 
- - clock-names: Name should be "gpio";
-diff --git a/Documentation/devicetree/bindings/i2c/i2c-davinci.txt b/Documentation/devicetree/bindings/i2c/i2c-davinci.txt
-index b35ad748ed68..6590501c53d4 100644
---- a/Documentation/devicetree/bindings/i2c/i2c-davinci.txt
-+++ b/Documentation/devicetree/bindings/i2c/i2c-davinci.txt
-@@ -8,7 +8,7 @@ Required properties:
- - reg : Offset and length of the register set for the device
- - clocks: I2C functional clock phandle.
- 	  For 66AK2G this property should be set per binding,
--	  Documentation/devicetree/bindings/clock/ti,sci-clk.txt
-+	  Documentation/devicetree/bindings/clock/ti,sci-clk.yaml
- 
- SoC-specific Required Properties:
- 
-diff --git a/Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt b/Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt
-index 0663e7648ef9..57d077c0b7c1 100644
---- a/Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt
-+++ b/Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt
-@@ -28,7 +28,7 @@ The following are mandatory properties for 66AK2G SoCs only:
- 		Documentation/devicetree/bindings/soc/ti/sci-pm-domain.yaml
- - clocks:	Must contain an entry for each entry in clock-names. Should
- 		be defined as per the he appropriate clock bindings consumer
--		usage in Documentation/devicetree/bindings/clock/ti,sci-clk.txt
-+		usage in Documentation/devicetree/bindings/clock/ti,sci-clk.yaml
- - clock-names:	Shall be "fck" for the functional clock,
- 		and "mmchsdb_fck" for the debounce clock.
- 
-diff --git a/Documentation/devicetree/bindings/net/can/c_can.txt b/Documentation/devicetree/bindings/net/can/c_can.txt
-index febd2cc1ca14..366479806acb 100644
---- a/Documentation/devicetree/bindings/net/can/c_can.txt
-+++ b/Documentation/devicetree/bindings/net/can/c_can.txt
-@@ -22,7 +22,7 @@ The following are mandatory properties for Keystone 2 66AK2G SoCs only:
- 			  Documentation/devicetree/bindings/soc/ti/sci-pm-domain.yaml
- - clocks		: CAN functional clock phandle. This property is as per the
- 			  binding,
--			  Documentation/devicetree/bindings/clock/ti,sci-clk.txt
-+			  Documentation/devicetree/bindings/clock/ti,sci-clk.yaml
- 
- Optional properties:
- - syscon-raminit	: Handle to system control region that contains the
-diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-index e2198a389484..200c7fc7b089 100644
---- a/Documentation/devicetree/bindings/spi/spi-davinci.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-@@ -25,7 +25,7 @@ Required properties:
- - interrupts: interrupt number mapped to CPU.
- - clocks: spi clk phandle
-           For 66AK2G this property should be set per binding,
--          Documentation/devicetree/bindings/clock/ti,sci-clk.txt
-+          Documentation/devicetree/bindings/clock/ti,sci-clk.yaml
- 
- SoC-specific Required Properties:
- 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0f0a01b54c1b..790eff88b53e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18193,7 +18193,7 @@ L:	linux-arm-kernel@lists.infradead.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/arm/keystone/ti,k3-sci-common.yaml
- F:	Documentation/devicetree/bindings/arm/keystone/ti,sci.txt
--F:	Documentation/devicetree/bindings/clock/ti,sci-clk.txt
-+F:	Documentation/devicetree/bindings/clock/ti,sci-clk.yaml
- F:	Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml
- F:	Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml
- F:	Documentation/devicetree/bindings/reset/ti,sci-reset.txt
+   reg:
+     minItems: 1
+
+base-commit: 97e5bf604b7a0d6e1b3e00fe31d5fd4b9bffeaae
 -- 
-2.31.1
+2.17.1
 
