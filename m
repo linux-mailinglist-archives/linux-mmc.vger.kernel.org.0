@@ -2,117 +2,82 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54000398239
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jun 2021 08:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9734D39830F
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jun 2021 09:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231589AbhFBG6f (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 2 Jun 2021 02:58:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47850 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229913AbhFBG6L (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Jun 2021 02:58:11 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B229C061763;
-        Tue,  1 Jun 2021 23:56:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=ZrMEf0Ls9F+Osx12fthB6jYFp7YA2RuOfcMRudkR5eo=; b=RmhbmeEgAua7D4yc0CN6m+daMw
-        ggu55W3yOtqsYbnSz5c1dfLFQJ9ncvb9hc3nNvkXY6f0gcSGMOhLStwUwb0UQrJ1aG7h0ZSUng/WX
-        es/ejunr+apwEHWPUWRQDfPQvgeX1hrHlUl4NOb5oItwm7czJQwirbV+FChfRP7dM0qxLnCRqVmgI
-        bA1/+LYF3tWUOd/53KL9zns/VStS5lpZkIiq55Ah7xS6m/8ryTxd0+2JtSdNyv1ovCOilXcKoWuJr
-        8KfLwtubqhZXD6/OkB2mdwrFmz8NTFBmkmZB+9B1+iGvFIgntGiUljL/AChzeEhq1iCnrHX8J/lkd
-        xKgRqjOg==;
-Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1loKnR-0026ec-A8; Wed, 02 Jun 2021 06:56:10 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Justin Sanders <justin@coraid.com>,
-        Denis Efremov <efremov@linux.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Tim Waugh <tim@cyberelk.net>,
-        Geoff Levand <geoff@infradead.org>,
-        Ilya Dryomov <idryomov@gmail.com>,
-        "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-        Mike Snitzer <snitzer@redhat.com>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Alex Dubov <oakad@yahoo.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        dm-devel@redhat.com, linux-block@vger.kernel.org,
-        nbd@other.debian.org, linuxppc-dev@lists.ozlabs.org,
-        ceph-devel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-s390@vger.kernel.org
-Subject: [PATCH 30/30] z2ram: use blk_mq_alloc_disk and blk_cleanup_disk
-Date:   Wed,  2 Jun 2021 09:53:45 +0300
-Message-Id: <20210602065345.355274-31-hch@lst.de>
+        id S231614AbhFBHgY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Jun 2021 03:36:24 -0400
+Received: from www.zeus03.de ([194.117.254.33]:36372 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230228AbhFBHgY (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 2 Jun 2021 03:36:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=unNYibepvut6tLpKDUESbTSD11S
+        J/DCM/TpYf8hSBq4=; b=LFCc5FW1XI0Kjxw09UIoxZrlfcf2PA9rRindPHAoFFk
+        isbOLkJVkX3p9q13Hl5rRydwxJNllk+/pCY8nUO+9JxYauwolUG1g8xPogXUBnce
+        ZXgRgGnYvWxDLeioZPNGEwY3fiPERyFQv/yQCSaGMdBs7yNEXnU2L47AhSMEQWPY
+        =
+Received: (qmail 594059 invoked from network); 2 Jun 2021 09:34:40 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 2 Jun 2021 09:34:40 +0200
+X-UD-Smtp-Session: l3s3148p1@Hl7OfcPDCIcgARa4RcfgAY/i/QRA3j/I
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH] mmc: renesas_sdhi: abort tuning when timeout detected
+Date:   Wed,  2 Jun 2021 09:34:35 +0200
+Message-Id: <20210602073435.5955-1-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210602065345.355274-1-hch@lst.de>
-References: <20210602065345.355274-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Use blk_mq_alloc_disk and blk_cleanup_disk to simplify the gendisk and
-request_queue allocation.
+We have to bring the eMMC from sending-data state back to transfer state
+once we detected a CRC error (timeout) during tuning. So, send a stop
+command via mmc_abort_tuning().
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 4f11997773b6 ("mmc: tmio: Add tuning support")
+Reported-by Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/block/z2ram.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/block/z2ram.c b/drivers/block/z2ram.c
-index c1d20818e649..a8968d9e759b 100644
---- a/drivers/block/z2ram.c
-+++ b/drivers/block/z2ram.c
-@@ -323,27 +323,20 @@ static const struct blk_mq_ops z2_mq_ops = {
+Ulf, I'd think that mmc_abort_tuning() should be named
+mmc_abort_tuning_cmd() instead. Because we don't actually abort the
+tuning as a whole in this function. What do you think? I can prepare a
+patch if you agree.
+
+ drivers/mmc/host/renesas_sdhi_core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+index 635bf31a6735..9029308c4a0f 100644
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -692,14 +692,19 @@ static int renesas_sdhi_execute_tuning(struct mmc_host *mmc, u32 opcode)
  
- static int z2ram_register_disk(int minor)
- {
--	struct request_queue *q;
- 	struct gendisk *disk;
+ 	/* Issue CMD19 twice for each tap */
+ 	for (i = 0; i < 2 * priv->tap_num; i++) {
++		int cmd_error;
++
+ 		/* Set sampling clock position */
+ 		sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TAPSET, i % priv->tap_num);
  
--	disk = alloc_disk(1);
--	if (!disk)
--		return -ENOMEM;
--
--	q = blk_mq_init_queue(&tag_set);
--	if (IS_ERR(q)) {
--		put_disk(disk);
--		return PTR_ERR(q);
--	}
-+	disk = blk_mq_alloc_disk(&tag_set, NULL);
-+	if (IS_ERR(disk))
-+		return PTR_ERR(disk);
+-		if (mmc_send_tuning(mmc, opcode, NULL) == 0)
++		if (mmc_send_tuning(mmc, opcode, &cmd_error) == 0)
+ 			set_bit(i, priv->taps);
  
- 	disk->major = Z2RAM_MAJOR;
- 	disk->first_minor = minor;
-+	disk->minors = 1;
- 	disk->fops = &z2_fops;
- 	if (minor)
- 		sprintf(disk->disk_name, "z2ram%d", minor);
- 	else
- 		sprintf(disk->disk_name, "z2ram");
--	disk->queue = q;
+ 		if (sd_scc_read32(host, priv, SH_MOBILE_SDHI_SCC_SMPCMP) == 0)
+ 			set_bit(i, priv->smpcmp);
++
++		if (cmd_error)
++			mmc_abort_tuning(mmc, opcode);
+ 	}
  
- 	z2ram_gendisk[minor] = disk;
- 	add_disk(disk);
+ 	ret = renesas_sdhi_select_tuning(host);
 -- 
 2.30.2
 
