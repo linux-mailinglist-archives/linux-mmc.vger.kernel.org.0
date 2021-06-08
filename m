@@ -2,173 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B46A39F77E
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Jun 2021 15:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 552F239F788
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Jun 2021 15:18:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232870AbhFHNS7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Jun 2021 09:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43518 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232854AbhFHNS6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Jun 2021 09:18:58 -0400
-Received: from mail-ua1-x935.google.com (mail-ua1-x935.google.com [IPv6:2607:f8b0:4864:20::935])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52D3CC061789
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Jun 2021 06:16:55 -0700 (PDT)
-Received: by mail-ua1-x935.google.com with SMTP id p1so11536696uam.13
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Jun 2021 06:16:55 -0700 (PDT)
+        id S232910AbhFHNTv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Jun 2021 09:19:51 -0400
+Received: from mail-ua1-f44.google.com ([209.85.222.44]:34639 "EHLO
+        mail-ua1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232903AbhFHNTu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Jun 2021 09:19:50 -0400
+Received: by mail-ua1-f44.google.com with SMTP id c17so11576488uao.1
+        for <linux-mmc@vger.kernel.org>; Tue, 08 Jun 2021 06:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ZQ/ATmiafM2AOuVLREKT0J3takvQ3ch2OmYWGk2+jHo=;
-        b=rGvXACqlDsC8zcp5ai7euTTTNJA+QN7dKd8x9tlHprGxkmgNacK8kCIoqb2qabYwYJ
-         3eNihUXqkYtjlPhtB6oVdxSt++iN66IxefGBkVRlLRPfVMr0nQnstrBLv/VG5Nn7SBON
-         kEfuKcnJOXE4sQ0Hbykpt2gazPtuhuyTxvF57iCQmdbNi1hAnbXSkgeSWsjneva1ztoP
-         ow9bf6x618QyK6nH7vu7xsAGNrrwlkBzwV9Th1suYgGiEttJALyVIz8C4uLjEyYquPlQ
-         dl2cMltWFOBqQ3HJqU/KN6m91hHFhbwJXAST4bO8868VbK6GgEyY8PwbyxVzXQp79zWM
-         RB1w==
+        bh=O/G9l7SZvoUdCJxEXjuBblAs730rAEGTbJM8qPA6QnU=;
+        b=VgUbGyWA5w4WVmAe9n8s36mYEbTWqRLHWDBYfnzcrwv7u8Q13KXHzmh8sVX93mWvIB
+         pDw3LNkobVwjNadgKKbR9ciXt9GJdirirQT3tKqeg3SGMlx74RbbrKY8/gvILsY83QoF
+         WIsfKE8y2EWlPIYIYolXxZE4LapDijyU3xDhsE0WwDYN0M8H1W1DeRF3GDgANY6jO1eJ
+         emwiO0I8sSUoqmLQdL1sd8aXa1Xw0XxpARyWm1EdzGk+XsIspjT1QnYdE+ob2ulc+tRn
+         McoKCBRtA7C2v4JRCnYjPZtOpOhKe/KUm1Zf8k4pL71gd2zYxqYue5fs+LYVSqc2h7Hl
+         uXow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ZQ/ATmiafM2AOuVLREKT0J3takvQ3ch2OmYWGk2+jHo=;
-        b=afLGzVUdhKQQ4rp5KZPyqwWqzkWP1Qfps6k5a9zHpSOYe7ppofItfUW+VmyI3DIC9r
-         ynRkuXc45awWPy0ILqkBC83NwfYv9nck8g38z4DIuWOtabF+d2mMnYfbChGDH0ThHvp8
-         dvbw5XL2klQE4Fn4fPRbnmLG49mtxqXd9gykQljX+SS8GiCqwPZ5iycRZz466nM713kU
-         k8uo747UH7LGKPnIOGnCN1gGWHm+CsVhNOnX0P/2ntYO87zTATlOJitNUAFF1UNaPOFL
-         dClEe1DqNqy4hOvLG7YEp3fculQvP07UfYsdW9z1ONTtndK4DQPT/YYLRH/aZ6EmmJZE
-         uR3w==
-X-Gm-Message-State: AOAM530N2/v6YVsLN57h6DjiQi1Qf1qdCofvgD11BUPe6OnqjgOrO6Fk
-        kJowI3iqZDpsKHH3Y1f8bldd32KePHFtr/lLmn9EXg==
-X-Google-Smtp-Source: ABdhPJxZkRLrb5Tb4NykxE3MziqTfgEwtLXnEqR+UpWSaxxPVMxMdU7auKZ2p8ChK5vUhHaGrnpp1hqOwogBBu0ah9I=
-X-Received: by 2002:a9f:35b3:: with SMTP id t48mr12290837uad.129.1623158214455;
- Tue, 08 Jun 2021 06:16:54 -0700 (PDT)
+        bh=O/G9l7SZvoUdCJxEXjuBblAs730rAEGTbJM8qPA6QnU=;
+        b=Me9399qpmsbC1sFQ0VfqipZM4BGwFDmwlqjlBe3X/LPdLE0Tkk4B8CDUM4mHNVg29Q
+         yNDmEWYxgyShV6BI3r59cBUdPyHJs68HMN6Gld3wTZW2SBvMT+82uIVR3mSXjGoY4xim
+         Q3fxNRGsX6F1nDbg6KNZ6FgsJTzALO0BKFjmS9z5niyC3HRCgEKTTicIwWMU0TDlCdta
+         1wIFg4pUDGXF+FI8oRFXO4Y8In+FPOSkidejZ71im8bptZSujatyNTrUG6/QVOTmCC+1
+         fz129ApY32HdpOPIqnXYLzoQNOBiG6PWUSUy656Hrd1LwjWyLiz6nPJ2uxEMNh5FMaUr
+         PDPQ==
+X-Gm-Message-State: AOAM531wQ2p5fSvSqS/Wa4W+YQHTBy2qo7lJeASpAEi9fEgtn0+Ps2PM
+        b0nkFbv2/W69NoVh7KIkKGCQDoyfhgQ86/6I3hd2vw==
+X-Google-Smtp-Source: ABdhPJw6Z7tEwu1v/VB/4p+MORZ0ZMJRvQwsN15C2gwVElhiBFHlbN9EVF81SFiKHxUf9+L9SMq/DikLEI/mGwTxoBc=
+X-Received: by 2002:ab0:484b:: with SMTP id c11mr3218881uad.100.1623158216958;
+ Tue, 08 Jun 2021 06:16:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <1622727200-15808-1-git-send-email-zheyuma97@gmail.com>
-In-Reply-To: <1622727200-15808-1-git-send-email-zheyuma97@gmail.com>
+References: <20210604104459.7574-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20210604104459.7574-1-wsa+renesas@sang-engineering.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 8 Jun 2021 15:16:17 +0200
-Message-ID: <CAPDyKFrpJUmyFWwqy=t3FsMRPwodj+m-91sFZ1BmMgjvg=ne9w@mail.gmail.com>
-Subject: Re: [PATCH] mmc: via-sdmmc: add a check against NULL pointer dereference
-To:     Zheyu Ma <zheyuma97@gmail.com>
-Cc:     Bruce Chang <brucechang@via.com.tw>,
-        Harald Welte <HaraldWelte@viatech.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Tue, 8 Jun 2021 15:16:20 +0200
+Message-ID: <CAPDyKFpX+n1R4fuiS-sVjXyiA392roRjL0th_fpvv3sGGF7h9g@mail.gmail.com>
+Subject: Re: [PATCH] mmc: debugfs: add description for module parameter
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 3 Jun 2021 at 15:33, Zheyu Ma <zheyuma97@gmail.com> wrote:
+On Fri, 4 Jun 2021 at 12:45, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 >
-> Before referencing 'host->data', the driver needs to check whether it is
-> null pointer, otherwise it will cause a null pointer reference.
+> Make it obvious what this is for.
 >
-> This log reveals it:
->
-> [   29.355199] BUG: kernel NULL pointer dereference, address:
-> 0000000000000014
-> [   29.357323] #PF: supervisor write access in kernel mode
-> [   29.357706] #PF: error_code(0x0002) - not-present page
-> [   29.358088] PGD 0 P4D 0
-> [   29.358280] Oops: 0002 [#1] PREEMPT SMP PTI
-> [   29.358595] CPU: 2 PID: 0 Comm: swapper/2 Not tainted 5.12.4-
-> g70e7f0549188-dirty #102
-> [   29.359164] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-> BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-> [   29.359978] RIP: 0010:via_sdc_isr+0x21f/0x410
-> [   29.360314] Code: ff ff e8 84 aa d0 fd 66 45 89 7e 28 66 41 f7 c4 00
-> 10 75 56 e8 72 aa d0 fd 66 41 f7 c4 00 c0 74 10 e8 65 aa d0 fd 48 8b 43
-> 18 <c7> 40 14 ac ff ff ff e8 55 aa d0 fd 48 89 df e8 ad fb ff ff e9 77
-> [   29.361661] RSP: 0018:ffffc90000118e98 EFLAGS: 00010046
-> [   29.362042] RAX: 0000000000000000 RBX: ffff888107d77880
-> RCX: 0000000000000000
-> [   29.362564] RDX: 0000000000000000 RSI: ffffffff835d20bb
-> RDI: 00000000ffffffff
-> [   29.363085] RBP: ffffc90000118ed8 R08: 0000000000000001
-> R09: 0000000000000001
-> [   29.363604] R10: 0000000000000000 R11: 0000000000000001
-> R12: 0000000000008600
-> [   29.364128] R13: ffff888107d779c8 R14: ffffc90009c00200
-> R15: 0000000000008000
-> [   29.364651] FS:  0000000000000000(0000) GS:ffff88817bc80000(0000)
-> knlGS:0000000000000000
-> [   29.365235] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   29.365655] CR2: 0000000000000014 CR3: 0000000005a2e000
-> CR4: 00000000000006e0
-> [   29.366170] DR0: 0000000000000000 DR1: 0000000000000000
-> DR2: 0000000000000000
-> [   29.366683] DR3: 0000000000000000 DR6: 00000000fffe0ff0
-> DR7: 0000000000000400
-> [   29.367197] Call Trace:
-> [   29.367381]  <IRQ>
-> [   29.367537]  __handle_irq_event_percpu+0x53/0x3e0
-> [   29.367916]  handle_irq_event_percpu+0x35/0x90
-> [   29.368247]  handle_irq_event+0x39/0x60
-> [   29.368632]  handle_fasteoi_irq+0xc2/0x1d0
-> [   29.368950]  __common_interrupt+0x7f/0x150
-> [   29.369254]  common_interrupt+0xb4/0xd0
-> [   29.369547]  </IRQ>
-> [   29.369708]  asm_common_interrupt+0x1e/0x40
-> [   29.370016] RIP: 0010:native_safe_halt+0x17/0x20
-> [   29.370360] Code: 07 0f 00 2d db 80 43 00 f4 5d c3 0f 1f 84 00 00 00
-> 00 00 8b 05 c2 37 e5 01 55 48 89 e5 85 c0 7e 07 0f 00 2d bb 80 43 00 fb
-> f4 <5d> c3 cc cc cc cc cc cc cc 55 48 89 e5 e8 67 53 ff ff 8b 0d f9 91
-> [   29.371696] RSP: 0018:ffffc9000008fe90 EFLAGS: 00000246
-> [   29.372079] RAX: 0000000000000000 RBX: 0000000000000002
-> RCX: 0000000000000000
-> [   29.372595] RDX: 0000000000000000 RSI: ffffffff854f67a4
-> RDI: ffffffff85403406
-> [   29.373122] RBP: ffffc9000008fe90 R08: 0000000000000001
-> R09: 0000000000000001
-> [   29.373646] R10: 0000000000000000 R11: 0000000000000001
-> R12: ffffffff86009188
-> [   29.374160] R13: 0000000000000000 R14: 0000000000000000
-> R15: ffff888100258000
-> [   29.374690]  default_idle+0x9/0x10
-> [   29.374944]  arch_cpu_idle+0xa/0x10
-> [   29.375198]  default_idle_call+0x6e/0x250
-> [   29.375491]  do_idle+0x1f0/0x2d0
-> [   29.375740]  cpu_startup_entry+0x18/0x20
-> [   29.376034]  start_secondary+0x11f/0x160
-> [   29.376328]  secondary_startup_64_no_verify+0xb0/0xbb
-> [   29.376705] Modules linked in:
-> [   29.376939] Dumping ftrace buffer:
-> [   29.377187]    (ftrace buffer empty)
-> [   29.377460] CR2: 0000000000000014
-> [   29.377712] ---[ end trace 51a473dffb618c47 ]---
-> [   29.378056] RIP: 0010:via_sdc_isr+0x21f/0x410
-> [   29.378380] Code: ff ff e8 84 aa d0 fd 66 45 89 7e 28 66 41 f7 c4 00
-> 10 75 56 e8 72 aa d0 fd 66 41 f7 c4 00 c0 74 10 e8 65 aa d0 fd 48 8b 43
-> 18 <c7> 40 14 ac ff ff ff e8 55 aa d0 fd 48 89 df e8 ad fb ff ff e9 77
-> [   29.379714] RSP: 0018:ffffc90000118e98 EFLAGS: 00010046
-> [   29.380098] RAX: 0000000000000000 RBX: ffff888107d77880
-> RCX: 0000000000000000
-> [   29.380614] RDX: 0000000000000000 RSI: ffffffff835d20bb
-> RDI: 00000000ffffffff
-> [   29.381134] RBP: ffffc90000118ed8 R08: 0000000000000001
-> R09: 0000000000000001
-> [   29.381653] R10: 0000000000000000 R11: 0000000000000001
-> R12: 0000000000008600
-> [   29.382176] R13: ffff888107d779c8 R14: ffffc90009c00200
-> R15: 0000000000008000
-> [   29.382697] FS:  0000000000000000(0000) GS:ffff88817bc80000(0000)
-> knlGS:0000000000000000
-> [   29.383277] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   29.383697] CR2: 0000000000000014 CR3: 0000000005a2e000
-> CR4: 00000000000006e0
-> [   29.384223] DR0: 0000000000000000 DR1: 0000000000000000
-> DR2: 0000000000000000
-> [   29.384736] DR3: 0000000000000000 DR6: 00000000fffe0ff0
-> DR7: 0000000000000400
-> [   29.385260] Kernel panic - not syncing: Fatal exception in interrupt
-> [   29.385882] Dumping ftrace buffer:
-> [   29.386135]    (ftrace buffer empty)
-> [   29.386401] Kernel Offset: disabled
-> [   29.386656] Rebooting in 1 seconds..
->
-> Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
 Applied for next, thanks!
 
@@ -177,23 +69,21 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/via-sdmmc.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  drivers/mmc/core/debugfs.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/mmc/host/via-sdmmc.c b/drivers/mmc/host/via-sdmmc.c
-> index a1d098560099..c32df5530b94 100644
-> --- a/drivers/mmc/host/via-sdmmc.c
-> +++ b/drivers/mmc/host/via-sdmmc.c
-> @@ -857,6 +857,9 @@ static void via_sdc_data_isr(struct via_crdr_mmc_host *host, u16 intmask)
->  {
->         BUG_ON(intmask == 0);
+> diff --git a/drivers/mmc/core/debugfs.c b/drivers/mmc/core/debugfs.c
+> index 9ec84c86c46a..3fdbc801e64a 100644
+> --- a/drivers/mmc/core/debugfs.c
+> +++ b/drivers/mmc/core/debugfs.c
+> @@ -26,6 +26,7 @@
+>  static DECLARE_FAULT_ATTR(fail_default_attr);
+>  static char *fail_request;
+>  module_param(fail_request, charp, 0);
+> +MODULE_PARM_DESC(fail_request, "default fault injection attributes");
 >
-> +       if (!host->data)
-> +               return;
-> +
->         if (intmask & VIA_CRDR_SDSTS_DT)
->                 host->data->error = -ETIMEDOUT;
->         else if (intmask & (VIA_CRDR_SDSTS_RC | VIA_CRDR_SDSTS_WC))
+>  #endif /* CONFIG_FAIL_MMC_REQUEST */
+>
 > --
-> 2.17.6
+> 2.30.2
 >
