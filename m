@@ -2,55 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A143AB093
-	for <lists+linux-mmc@lfdr.de>; Thu, 17 Jun 2021 11:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAE923AB06E
+	for <lists+linux-mmc@lfdr.de>; Thu, 17 Jun 2021 11:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232110AbhFQJ76 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 17 Jun 2021 05:59:58 -0400
-Received: from [103.120.28.226] ([103.120.28.226]:17747 "EHLO
-        UPCDCDAMX02.upcl.org" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S231132AbhFQJ75 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 17 Jun 2021 05:59:57 -0400
-X-Greylist: delayed 509 seconds by postgrey-1.27 at vger.kernel.org; Thu, 17 Jun 2021 05:59:47 EDT
-Received: from UPCDCDAMX02.upcl.org (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CE69E8B12E;
-        Thu, 17 Jun 2021 13:26:35 +0530 (IST)
-Received: from UPCDCDAMX02.upcl.org (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 715804AFEC;
-        Thu, 17 Jun 2021 12:50:14 +0530 (IST)
-Received: from User (unknown [210.212.82.37])
-        by UPCDCDAMX02.upcl.org (Postfix) with SMTP;
-        Thu, 17 Jun 2021 12:50:14 +0530 (IST)
-Reply-To: <marielthiago102@gmail.com>
-From:   "Mariel Thiago" <info@infotools.in>
-Subject: Re:: Please contact me it's very urgent.
-Date:   Thu, 17 Jun 2021 07:20:41 -0000
+        id S232023AbhFQJ5x (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 17 Jun 2021 05:57:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59034 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232010AbhFQJ5u (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 17 Jun 2021 05:57:50 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327B4C06175F
+        for <linux-mmc@vger.kernel.org>; Thu, 17 Jun 2021 02:55:42 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id z7so2660464vso.3
+        for <linux-mmc@vger.kernel.org>; Thu, 17 Jun 2021 02:55:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TGF2wYERrKpdFRDmug3cW8EmOuReCFMS75jXByEbcSg=;
+        b=RniFwgPZ3+AzveGFKOKCa5Pz7LGq+lxF6fNkMASZWilj9ugmn6Xk9eFRKKviSpBMZj
+         2LoGvJmxJcT2c/pyB0AkJNWYeiRooIG67XbSCiCG1SdmUJTVoPc1j56dNeNolJvwoCMk
+         2j9F/tvbzrnLC2n52qQ/O6yCTl2cVoP3JNTN0hV26HxXximnGysyQZzWA5UVvlfA0q7Q
+         xVbECCJNj5mxgu8Mmm90qfAiSj1ZgaLwuJ1KiEfXdIVr+l71rXWcfyz5kJaU+K3TE+ut
+         2wE3xZIJ0k6Wu1DXkIaKAUVTtiBPKgHk0RdGriLItwtD3sJorOMy0gq5MqT0uYKScTj+
+         w+tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TGF2wYERrKpdFRDmug3cW8EmOuReCFMS75jXByEbcSg=;
+        b=QWTvFhuTjXS/WNFPYIljrLx15PWguNSi6hIHdr27AB/aWlO5zmXBOI2wHhC031tDl7
+         ucyqbQnvDs0ry0NXiC3ekdlYtnSe8e6M9bjqzfo67w6MoZMgXrSNDKZ7pFu2LZAD4DoR
+         jXBF7aezZHK5+m8kjrDZtuwFDWjo9mUTGuaEtAzEfGzgOjWXEBWK/7eA/fvTJWBpgtys
+         b0LvFGeO8nahM/+v6W8iguIrhcYfSGJJEop1DBUUY5abJdU4pso9jx7Ov9FYEDHs5hWy
+         SRHlsxmzUqPs0Y9hsy90ft5Qj/Zb7JqWSOlZIw2nSOk4cPJJKhvQqjVWwvcHyASWmKER
+         Jfrg==
+X-Gm-Message-State: AOAM530DBZkncwE+1m3Rz/RUenVcjSe97m/Q/AhMYnf5S22j6MCJC1JE
+        3mJBGkdhHuELw6jgj9vTEvyrcE9Q/ZPnrkMQLbMYO5wV6BYbTQ==
+X-Google-Smtp-Source: ABdhPJw+VvM8QTil6PXyie0e7li3RDVzR5PyTH9Db0r0ri9Eftr0UXB/pubv1EBQuuRPig7Bfrauy2oE80wrpmL4Hqw=
+X-Received: by 2002:a05:6102:2159:: with SMTP id h25mr3411673vsg.19.1623923741317;
+ Thu, 17 Jun 2021 02:55:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20210617072014.715804AFEC@UPCDCDAMX02.upcl.org>
-To:     undisclosed-recipients:;
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSVA-9.1.0.1960-8.6.0.1013-26224.006
-X-TM-AS-Result: No-2.497-5.0-31-10
-X-imss-scan-details: No-2.497-5.0-31-10
-X-TMASE-Version: IMSVA-9.1.0.1960-8.6.1013-26224.006
-X-TMASE-Result: 10-2.496900-10.000000
-X-TMASE-MatchedRID: PEpoWB/n4wPoJ7ZHxnJI6/6CJzEkJBKDVOXpHWpii+ddyparHcc9UIhu
-        TvsiBEc/JfjcKHKDDk8K4MBRf7I7puawzjZNF/+9gM4D72plZiep43A0ENmZJqRrhpwKFLjUkZO
-        l7WKIImpu9tOD27u7FNTHX+rg7MGt505jRA97RdWRSAi45KhHyaxczqyf2GA9LHdIgRft8S1QSp
-        LfxZGQcl8vMu11r33KXPP583vQDYF3yrRBFBiPVS2s/H4x5wHg3QfwsVk0UbuGrPnef/I+ej6N5
-        5/6MNSnpdDo0PaPyGFHwD2XNKdI8sVZh7bvPcyg0m3qDro1rgcxP1evyC/00KVBBtW+D6/IR7CD
-        JBvMFOms6dZMAot5Yg==
-X-IMSS-DKIM-White-List: No
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-12:0,22:0,33:0,34:0-0
+References: <20210616053934.880951-1-hch@lst.de> <20210616053934.880951-2-hch@lst.de>
+In-Reply-To: <20210616053934.880951-2-hch@lst.de>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 17 Jun 2021 11:55:04 +0200
+Message-ID: <CAPDyKFpkaPXu_Nxm-_p_8r5eh9V3XMhXkci1wurdJmGqvbdD-w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: remove an extra blk_{get,put}_queue pair
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-block <linux-block@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
- I think I have something huge you might be interested in.
+On Wed, 16 Jun 2021 at 07:40, Christoph Hellwig <hch@lst.de> wrote:
+>
+> The gendisk already acquires a reference to the queue when add_disk
+> is called, which dropped on put_disk.  So remove the superflous
+> extra refcounting.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+
+Nice cleanup!
+
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Kind regards
+Uffe
+
+
+> ---
+>  drivers/mmc/core/block.c | 14 +-------------
+>  1 file changed, 1 insertion(+), 13 deletions(-)
+>
+> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+> index 689eb9afeeed..947624e76c33 100644
+> --- a/drivers/mmc/core/block.c
+> +++ b/drivers/mmc/core/block.c
+> @@ -201,7 +201,7 @@ static void mmc_blk_put(struct mmc_blk_data *md)
+>         md->usage--;
+>         if (md->usage == 0) {
+>                 int devidx = mmc_get_devidx(md->disk);
+> -               blk_put_queue(md->queue.queue);
+> +
+>                 ida_simple_remove(&mmc_blk_ida, devidx);
+>                 put_disk(md->disk);
+>                 kfree(md);
+> @@ -2326,18 +2326,6 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
+>
+>         md->queue.blkdata = md;
+>
+> -       /*
+> -        * Keep an extra reference to the queue so that we can shutdown the
+> -        * queue (i.e. call blk_cleanup_queue()) while there are still
+> -        * references to the 'md'. The corresponding blk_put_queue() is in
+> -        * mmc_blk_put().
+> -        */
+> -       if (!blk_get_queue(md->queue.queue)) {
+> -               mmc_cleanup_queue(&md->queue);
+> -               ret = -ENODEV;
+> -               goto err_putdisk;
+> -       }
+> -
+>         md->disk->major = MMC_BLOCK_MAJOR;
+>         md->disk->first_minor = devidx * perdev_minors;
+>         md->disk->fops = &mmc_bdops;
+> --
+> 2.30.2
+>
