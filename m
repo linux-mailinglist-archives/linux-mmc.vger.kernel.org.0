@@ -2,95 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 569B33ADC05
-	for <lists+linux-mmc@lfdr.de>; Sun, 20 Jun 2021 00:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EA0C3ADD9C
+	for <lists+linux-mmc@lfdr.de>; Sun, 20 Jun 2021 10:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbhFSW4X (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 19 Jun 2021 18:56:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48458 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229683AbhFSW4U (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 19 Jun 2021 18:56:20 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A63C061756
-        for <linux-mmc@vger.kernel.org>; Sat, 19 Jun 2021 15:54:08 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id m21so23206445lfg.13
-        for <linux-mmc@vger.kernel.org>; Sat, 19 Jun 2021 15:54:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=J4O/PSg42XQGCFuaHFKksTpyRyVdPtGQ1Rdj/uH+UqA=;
-        b=nnYlDJV7lF+OmF4cNajdGrn/NgWZCzgPHuiMJ6lnF9trRrHXMMVKH3Oz5wxIAQ4wtL
-         yWDMKhycSDwRyaXkkqMbWfBNO8gx2Xb10I3oJj2DXSEfc4Savwni3KUB7Canea7IIxyV
-         GHzv/DnGmUTzfnEQQ+mktoaFSHMlikRuhnTYXhRAwFoQ+Fkjfuk/WIK6LQ263lLa9gB4
-         9IRJgsWJEh7YDr5C0W1QAXr9m/vcKluRI+zDHzXpo+lF+q+6abBuygU88yFGxUcbcmM+
-         qqxzA5BGaNVXOOhyVd+xQvd3JB6oIDmlxOcbtdJDczSa4Qhq9DKBGO2zYWBqTred8cdO
-         wxmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=J4O/PSg42XQGCFuaHFKksTpyRyVdPtGQ1Rdj/uH+UqA=;
-        b=CD7dSJ7kkCpohzv0grRzbAbCqmPqDsknu2hkR3RnWfQG+XKU1AnmRatuLMKXEbNF23
-         Cwykw+s3xYv5QL1GWmE+Mwr+NnArZWwX9e/llHXNNrEh3CqKmxUWhPHMGJREE9Z4TtdY
-         ZWJ1GYdIZiLlBvfDZ37hkHMFqnYGd8lQ8rpqOfqtls2l7Mzp05rOaUKsriksRMrn/RHq
-         /jYDqS1hjaZmthe/4Egj/AvogmMdMKNWQ2bYHVO6Bir8lWJtT4AH4vTkSXOpiOn1XApE
-         DiMFdWvYLztriZRDANlBdt6JEmV0PNuAoJ+Ilo+soX1R2vEQXVWUpDPRsrSuxB5mHbmw
-         v/tg==
-X-Gm-Message-State: AOAM531aOKUhkKXZ+OHUaB3TR++25tVpfi442GN71jeJDhv6yqxQrPqE
-        IGjTWk9yEy2Ue80kaDWeBIqDwhvzcNN2Ug==
-X-Google-Smtp-Source: ABdhPJx/8BYkA1itRd9EkHdffaoBBmdv1/7DP9nf3fN3rbiSuIN5DO6SRDSexBhDEhX5N68VZ7w6+g==
-X-Received: by 2002:a19:c753:: with SMTP id x80mr6935805lff.200.1624143247150;
-        Sat, 19 Jun 2021 15:54:07 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id y5sm1345349lfa.148.2021.06.19.15.54.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Jun 2021 15:54:06 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Yann Gautier <yann.gautier@foss.st.com>,
-        Ludovic Barre <ludovic.barre@st.com>
-Subject: [PATCH 3/3] mmc: mmci: Add small comment about reset thread
-Date:   Sun, 20 Jun 2021 00:51:18 +0200
-Message-Id: <20210619225118.1862634-3-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210619225118.1862634-1-linus.walleij@linaro.org>
-References: <20210619225118.1862634-1-linus.walleij@linaro.org>
+        id S229694AbhFTIIA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Sun, 20 Jun 2021 04:08:00 -0400
+Received: from 6-200-5-45.rpnnetprovedor.com.br ([45.5.200.6]:59349 "EHLO
+        srv01.rpnnetprovedor.com.br" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229691AbhFTIHu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 20 Jun 2021 04:07:50 -0400
+Received: from [84.38.130.143] (helo=IP-130-143.dataclub.eu)
+        by srv01.rpnnetprovedor.com.br with esmtpa (Exim 4.92.2)
+        (envelope-from <robertnellsona@citromail.hu>)
+        id 1lusSS-0005ze-N7
+        for linux-mmc@vger.kernel.org; Sun, 20 Jun 2021 05:05:33 -0300
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: CAN YOU INVEST WITH ME?...6
+To:     linux-mmc@vger.kernel.org
+From:   "Mr.  Robert" <robertnellsona@citromail.hu>
+Date:   Sun, 20 Jun 2021 11:05:31 +0300
+Reply-To: robertnellsona@citromail.hu
+Message-Id: <E1lusSS-0005ze-N7@srv01.rpnnetprovedor.com.br>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Put a small comment before assigning IRQ_WAKE_THREAD
-telling us what is going on.
 
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Yann Gautier <yann.gautier@foss.st.com>
-Cc: Ludovic Barre <ludovic.barre@st.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/mmc/host/mmci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ATTENTION; linux-mmc@vger.kernel.org,
 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 97fa5e67ca0c..b646ba7f4e10 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -1394,6 +1394,10 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
- 	} else if (host->variant->busy_timeout && busy_resp &&
- 		   status & MCI_DATATIMEOUT) {
- 		cmd->error = -ETIMEDOUT;
-+		/*
-+		 * This will wake up mmci_irq_thread() which will issue
-+		 * a hardware reset of the MMCI block.
-+		 */
- 		host->irq_action = IRQ_WAKE_THREAD;
- 	} else {
- 		cmd->resp[0] = readl(base + MMCIRESPONSE0);
--- 
-2.31.1
+IMPORTANT INVESTMENT INFORMATION
 
+We have a good investment program going on now.
+We have $95m USD for Investment in your Country.
+We use this opportunity to invest you to join the investment program and you will never regret it.
+Please kindly invest with us and you will be receiving monthly income/return/profit every month.
+We can also give you Loan, 
+
+We have: 
+
+1. Short Term Loan, 
+
+2. Medium Term Loan 
+
+3. and Long Term Loan, 
+
+There is no need of collateral security. We will use our company to sign agreement and guarantee on your behalf and our Lawyer will sign on your behalf.
+
+Reply for more detail.
+
+Thank you Sir.
+
+Robert Nellson.
+INVESTMENT MANAGER.
