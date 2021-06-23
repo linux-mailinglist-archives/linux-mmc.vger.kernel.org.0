@@ -2,98 +2,75 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E35E3B1795
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Jun 2021 12:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 953773B17A3
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Jun 2021 12:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231158AbhFWKCN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Jun 2021 06:02:13 -0400
-Received: from www.zeus03.de ([194.117.254.33]:51012 "EHLO mail.zeus03.de"
+        id S230174AbhFWKEd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Jun 2021 06:04:33 -0400
+Received: from www.zeus03.de ([194.117.254.33]:51980 "EHLO mail.zeus03.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230496AbhFWKCL (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 23 Jun 2021 06:02:11 -0400
+        id S230123AbhFWKEc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 23 Jun 2021 06:04:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=k1; bh=I33H4EByZc0csK
-        pE0fENe7nleEwl4e+vhGhP/UxIkFY=; b=gx/YfhBRyET/K1MN1Fh7AYxfBYv76Z
-        qayK8Mo+Uppd4RT2VwUXDvg11Z422h25sCsEqvqubc/IW8CYlrlybm6XOzALgfjq
-        WP8TMKw4yMOmVVxn08y4MxAUgvuEZ8YC71FyRXQLc1QTq+rbLQLTOZM15cQ1C/ta
-        t1mfISKUzig9o=
-Received: (qmail 2552157 invoked from network); 23 Jun 2021 11:59:47 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 23 Jun 2021 11:59:47 +0200
-X-UD-Smtp-Session: l3s3148p1@HQRw92vFHqogARa4RfhaAavnjlTTqzSz
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=k1; bh=Iof+5ukudeJ8nvqBtjFn6xtru8Vq
+        gj9i+l+FNi+E998=; b=rHg43FtItaUE3c2Er7AVceT0h7RVMippz7zwNXSIDauu
+        7qTZHInMPsLkztc5kzANzLfXm3OHCP5GUlPxCj84DKGnSS8oz00sS1TbccVctQ4p
+        3U21+1tGhSMySPU3g9XDP7aPuXSIO4DDpk1qAV+VU/Ch1xZc8u1MdtTMmtew1N8=
+Received: (qmail 2553404 invoked from network); 23 Jun 2021 12:02:14 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 23 Jun 2021 12:02:14 +0200
+X-UD-Smtp-Session: l3s3148p1@DHU5AGzFIKogARa4RfhaAavnjlTTqzSz
+Date:   Wed, 23 Jun 2021 12:02:14 +0200
 From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
 To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-        Alain Volmat <alain.volmat@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-i2c@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] i2c: stm32f7: : use proper DMAENGINE API for termination
-Date:   Wed, 23 Jun 2021 11:59:41 +0200
-Message-Id: <20210623095942.3325-8-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210623095942.3325-1-wsa+renesas@sang-engineering.com>
-References: <20210623095942.3325-1-wsa+renesas@sang-engineering.com>
+Cc:     linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+Subject: Re: [PATCH 0/2] spi: use proper DMAENGINE API for termination
+Message-ID: <YNMGpoYe/ZukgbTA@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+References: <20210623095843.3228-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5tBgKQb4BWhfIpR8"
+Content-Disposition: inline
+In-Reply-To: <20210623095843.3228-1-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-dmaengine_terminate_all() is deprecated in favor of explicitly saying if
-it should be sync or async. Here, we want dmaengine_terminate_sync()
-because there is no other synchronization code in the driver to handle
-an async case.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/i2c/busses/i2c-stm32f7.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+--5tBgKQb4BWhfIpR8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/i2c/busses/i2c-stm32f7.c b/drivers/i2c/busses/i2c-stm32f7.c
-index 0138317ea600..9ea074a7ced6 100644
---- a/drivers/i2c/busses/i2c-stm32f7.c
-+++ b/drivers/i2c/busses/i2c-stm32f7.c
-@@ -1567,7 +1567,7 @@ static irqreturn_t stm32f7_i2c_isr_event_thread(int irq, void *data)
- 	if (!ret) {
- 		dev_dbg(i2c_dev->dev, "<%s>: Timed out\n", __func__);
- 		stm32f7_i2c_disable_dma_req(i2c_dev);
--		dmaengine_terminate_all(dma->chan_using);
-+		dmaengine_terminate_sync(dma->chan_using);
- 		f7_msg->result = -ETIMEDOUT;
- 	}
- 
-@@ -1637,7 +1637,7 @@ static irqreturn_t stm32f7_i2c_isr_error(int irq, void *data)
- 	/* Disable dma */
- 	if (i2c_dev->use_dma) {
- 		stm32f7_i2c_disable_dma_req(i2c_dev);
--		dmaengine_terminate_all(dma->chan_using);
-+		dmaengine_terminate_sync(dma->chan_using);
- 	}
- 
- 	i2c_dev->master_mode = false;
-@@ -1678,7 +1678,7 @@ static int stm32f7_i2c_xfer(struct i2c_adapter *i2c_adap,
- 		dev_dbg(i2c_dev->dev, "Access to slave 0x%x timed out\n",
- 			i2c_dev->msg->addr);
- 		if (i2c_dev->use_dma)
--			dmaengine_terminate_all(dma->chan_using);
-+			dmaengine_terminate_sync(dma->chan_using);
- 		ret = -ETIMEDOUT;
- 	}
- 
-@@ -1727,7 +1727,7 @@ static int stm32f7_i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
- 	if (!timeout) {
- 		dev_dbg(dev, "Access to slave 0x%x timed out\n", f7_msg->addr);
- 		if (i2c_dev->use_dma)
--			dmaengine_terminate_all(dma->chan_using);
-+			dmaengine_terminate_sync(dma->chan_using);
- 		ret = -ETIMEDOUT;
- 		goto pm_free;
- 	}
--- 
-2.30.2
+On Wed, Jun 23, 2021 at 11:58:41AM +0200, Wolfram Sang wrote:
+> dmaengine_terminate_all() is deprecated in favor of explicitly saying if
+> it should be sync or async. Update the drivers I audited.
 
+I am very sorry to have sent the SPI and I2C patches to the MMC list as
+well :(
+
+
+--5tBgKQb4BWhfIpR8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmDTBqIACgkQFA3kzBSg
+KbYIFQ//S/LPK7TnYp2F8J7ZrJsCwcrA4chCf5KNcprrPkuoqEjC82HxkrNy9/N5
+PTFc9VB7lsLXEcijlI6mXY9NDgDL/LoEWVBBjXbFBMLKBjG8zmmXUlmrliLUd5u+
+bCvcROWNrVGtiyLd9gysrh5WpdIhOUtozvUIwSrOSh6tJ7tyXDc33u2PdE22iupY
+gn3vHHXfK1LRCVZy32naF9euxREy+TPMvvleKv9Fhu7r6+oSQgqKaS/rdHeZmszF
+TvRxXNObm0IbmoO5zh3cBpJ8cRW/MzWjZHbyMqI6nvJ0QwOmzH8rTKTGwZ9zgX1n
+V2A/MnHkIeyM3O7GMbA10gecUiTEavk7YGAnX4MVMEJmpbhQI5mCh9f4GUrtM8a4
+U4lQFb8UbT7FPct3TtVmy8kEIvLb0VV42OpRMuwt6xq41McVM8aVWVY5G7qoNucd
+gkJ4Z3d42hPlw7UBSx27zRDGKNul9l/DhNuNroueFX2345EKZDGILzpkwgfwLPde
+qzYcxS1ihhNSvXqx1NLOOI2r+S4HzyBtEpGg4OX4Sp7mUbaFxLXfcpK0af3LjyZH
+9gdpvOuVUY+TfWfvBbR66UcpjrBO2QvJT5xYTHuyd5oPRrM58FK0Yw3hXGvIgWIE
+/7bMvjqOriFUMKKVC+YCoFgNaIKbcssyveK8DhJWlZIhBmMcRYI=
+=bsfP
+-----END PGP SIGNATURE-----
+
+--5tBgKQb4BWhfIpR8--
