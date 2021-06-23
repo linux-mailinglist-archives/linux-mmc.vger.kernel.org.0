@@ -2,149 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBDC93B151D
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Jun 2021 09:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCBED3B1757
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Jun 2021 11:57:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229902AbhFWHw0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Jun 2021 03:52:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229916AbhFWHwY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Jun 2021 03:52:24 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D5FEC061766
-        for <linux-mmc@vger.kernel.org>; Wed, 23 Jun 2021 00:50:06 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id l11so1022078pji.5
-        for <linux-mmc@vger.kernel.org>; Wed, 23 Jun 2021 00:50:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=HuYPNFU9txTdGRZcF3YYQjjppc8t8coDcpnBFcAfxz8=;
-        b=WxIKpIeM/n71gmq2xOQcm1GF+FSNoewHweAI8u9tn1ilb6Z4bnF0XUuGd8/t7/LeRZ
-         a7QCcHayYtJ4ZTvA5afmJow0pijZ3nCmVl7d3jTmBIyM2nlIgWgPcrUzcNX9KQ8lOpl+
-         UpAtQziMA6de4V3+DaNfb1kLzzRXFC4vO6YsE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HuYPNFU9txTdGRZcF3YYQjjppc8t8coDcpnBFcAfxz8=;
-        b=uOn9DQ8QrBhC7gAaVLtMnCMrpFamfvGMD+8VFSd+OsAY1JB+Q7hifa4gf5BnPQF7vk
-         CE1OybGltzOGeKr9gbQ7sDHpgFDUpF6lOw37YdUrIhVh+XpES2BNWYDyAbkKS5iSsyQz
-         /DdIli3DJMJOIzqoB7oh/wdWwhvAg0gN0iJpiF5T3g/0KmqELbxCdPw52jBWKOE7KfWM
-         MS0i73dgenWrZ6+lYI0SO74jCQgZf1LjIIihYnYgJQnC/2lo9+xDYRbckYliPCYqFokO
-         CIYuBnp8BfE04mjhoGnJOWa0C4NlnLJfW/y0LANu0GWlfH+8JqkMvSKwIK1reyMOF/K7
-         hVLg==
-X-Gm-Message-State: AOAM533c8ecua2xSOsktVR1Q6xPuOzWwOk0LyUJnXlGuJWqs11G3LSEA
-        JI6LUCvHcrsYS4twF1vgWmnjpA==
-X-Google-Smtp-Source: ABdhPJzvs3ehbQT0RpLi7yefESHKpy37OOY0wZMYgzfaBPIITGk+1DZCKxPotLH6v3EW1BBIcWQ5TA==
-X-Received: by 2002:a17:902:222:b029:11b:9cea:eea9 with SMTP id 31-20020a1709020222b029011b9ceaeea9mr25923383plc.11.1624434606079;
-        Wed, 23 Jun 2021 00:50:06 -0700 (PDT)
-Received: from smtp.gmail.com ([2620:15c:202:201:afc8:33fb:90fb:4110])
-        by smtp.gmail.com with ESMTPSA id m4sm4352625pjv.41.2021.06.23.00.50.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jun 2021 00:50:05 -0700 (PDT)
-From:   Stephen Boyd <swboyd@chromium.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Sujit Kautkar <sujitka@chromium.org>,
-        Zubin Mithra <zsm@chromium.org>
-Subject: [PATCH 2/2] mmc: core: Don't allocate IDA for OF aliases
-Date:   Wed, 23 Jun 2021 00:50:02 -0700
-Message-Id: <20210623075002.1746924-3-swboyd@chromium.org>
-X-Mailer: git-send-email 2.32.0.288.g62a8d224e6-goog
-In-Reply-To: <20210623075002.1746924-1-swboyd@chromium.org>
-References: <20210623075002.1746924-1-swboyd@chromium.org>
+        id S230302AbhFWJ7y (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Jun 2021 05:59:54 -0400
+Received: from www.zeus03.de ([194.117.254.33]:49986 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229987AbhFWJ7y (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 23 Jun 2021 05:59:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=02UNocivhtrF2+BH+l95xHvH0H6
+        H0HOTl8Xq8QQAay0=; b=veJTUSdUIqJlnqRDAVLu+W5Jt9Zr1Sji7ctdHKHL89t
+        3rWAo0Ffhg+Xj3DYxgKyLqHA/8qtYy6e6W257buJL9nIMbR352cgGX2iXGNKu/HB
+        NekjcQNZlgMYrsvtq5ypLZ7kNO6WqvcIC2kcCLoNw1kMQXKEMaw7AckjtzL/igfE
+        =
+Received: (qmail 2550951 invoked from network); 23 Jun 2021 11:57:34 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 23 Jun 2021 11:57:34 +0200
+X-UD-Smtp-Session: l3s3148p1@u1SH72vFAKogARa4RfhaAavnjlTTqzSz
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-arm-kernel@axis.com, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] mmc: use proper DMAENGINE API for termination
+Date:   Wed, 23 Jun 2021 11:57:30 +0200
+Message-Id: <20210623095734.3046-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-There's a chance that the IDA allocated in mmc_alloc_host() is not freed
-for some time because it's freed as part of a class' release function
-(see mmc_host_classdev_release() where the IDA is freed). If another
-thread is holding a reference to the class, then only once all balancing
-device_put() calls (in turn calling kobject_put()) have been made will
-the IDA be released and usable again.
+dmaengine_terminate_all() is deprecated in favor of explicitly saying if
+it should be sync or async. Update the drivers I audited.
 
-Normally this isn't a problem because the kobject is released before
-anything else that may want to use the same number tries to again, but
-with CONFIG_DEBUG_KOBJECT_RELEASE=y and OF aliases it becomes pretty
-easy to try to allocate an alias from the IDA twice while the first time
-it was allocated is still pending a call to ida_simple_remove(). It's
-also possible to trigger it by using CONFIG_DEBUG_KOBJECT_RELEASE and
-probe defering a driver at boot that calls mmc_alloc_host() before
-trying to get resources that may defer likes clks or regulators.
 
-Instead of allocating from the IDA in this scenario, let's just skip it
-if we know this is an OF alias. The number is already "claimed" and
-devices that aren't using OF aliases won't try to use the claimed
-numbers anyway (see mmc_first_nonreserved_index()). This should avoid
-any issues with mmc_alloc_host() returning failures from the
-ida_simple_get() in the case that we're using an OF alias.
+Wolfram Sang (3):
+  mmc: renesas_sdhi_sys_dmac: : use proper DMAENGINE API for termination
+  mmc: sh_mmcif: : use proper DMAENGINE API for termination
+  mmc: usdhi6rol0: : use proper DMAENGINE API for termination
 
-Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Cc: Sujit Kautkar <sujitka@chromium.org>
-Reported-by: Zubin Mithra <zsm@chromium.org>
-Fixes: fa2d0aa96941 ("mmc: core: Allow setting slot index via device tree alias")
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
----
- drivers/mmc/core/host.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/mmc/host/renesas_sdhi_sys_dmac.c | 4 ++--
+ drivers/mmc/host/sh_mmcif.c              | 4 ++--
+ drivers/mmc/host/usdhi6rol0.c            | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
-index 0b0577990ddc..8375d4381d47 100644
---- a/drivers/mmc/core/host.c
-+++ b/drivers/mmc/core/host.c
-@@ -75,7 +75,8 @@ static void mmc_host_classdev_release(struct device *dev)
- {
- 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
- 	wakeup_source_unregister(host->ws);
--	ida_simple_remove(&mmc_host_ida, host->index);
-+	if (of_alias_get_id(host->parent->of_node, "mmc") < 0)
-+		ida_simple_remove(&mmc_host_ida, host->index);
- 	kfree(host);
- }
- 
-@@ -499,7 +500,7 @@ static int mmc_first_nonreserved_index(void)
-  */
- struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
- {
--	int err;
-+	int index;
- 	struct mmc_host *host;
- 	int alias_id, min_idx, max_idx;
- 
-@@ -512,20 +513,19 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
- 
- 	alias_id = of_alias_get_id(dev->of_node, "mmc");
- 	if (alias_id >= 0) {
--		min_idx = alias_id;
--		max_idx = alias_id + 1;
-+		index = alias_id;
- 	} else {
- 		min_idx = mmc_first_nonreserved_index();
- 		max_idx = 0;
--	}
- 
--	err = ida_simple_get(&mmc_host_ida, min_idx, max_idx, GFP_KERNEL);
--	if (err < 0) {
--		kfree(host);
--		return NULL;
-+		index = ida_simple_get(&mmc_host_ida, min_idx, max_idx, GFP_KERNEL);
-+		if (index < 0) {
-+			kfree(host);
-+			return NULL;
-+		}
- 	}
- 
--	host->index = err;
-+	host->index = index;
- 
- 	dev_set_name(&host->class_dev, "mmc%d", host->index);
- 	host->ws = wakeup_source_register(NULL, dev_name(&host->class_dev));
 -- 
-https://chromeos.dev
+2.30.2
 
