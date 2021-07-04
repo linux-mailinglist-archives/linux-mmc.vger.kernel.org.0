@@ -2,38 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 493B43BB364
+	by mail.lfdr.de (Postfix) with ESMTP id D8F193BB366
 	for <lists+linux-mmc@lfdr.de>; Mon,  5 Jul 2021 01:16:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230398AbhGDXSC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        id S232699AbhGDXSC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
         Sun, 4 Jul 2021 19:18:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50590 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:55624 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234110AbhGDXOy (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 4 Jul 2021 19:14:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 015F9619AB;
-        Sun,  4 Jul 2021 23:11:09 +0000 (UTC)
+        id S234236AbhGDXO6 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 4 Jul 2021 19:14:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 022466196A;
+        Sun,  4 Jul 2021 23:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625440270;
-        bh=hkzqlV5oZ95Av3yljlVIFOCkMlNkdqLYxrK2HFVFBXo=;
+        s=k20201202; t=1625440305;
+        bh=hRFKIK6k3TvBRNhZs6G6KD7/pPjulXOjkSzZ6JsNB/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=khiKOO3uTwOjkldA36DUBgUhTTKFNJV/anUhsCKZLvHWOAyMMUFfxPO5cjaJUcFPE
-         mWkS8VUKwvW/cm+lo+E2oLs6XmmEwgBN/D+zR7e6Ss2a23xU++DWVEgwk63jMQ+CQG
-         A1depFsdJwWn3XGOUirf+7gENhCGL0Re1kDw0e6tti2FKNaURKAZ5C6EYvt0sM7htB
-         vR0NtheUAd2xkX5v+vHq5LVLJ1kepHj2DZoaFPxVMyIjiGedxHOvZcQA4DlEOhT9Gy
-         +lAU/wCiiE17VC/VpFnWyVpp5M6MCCUe/QLlIVnxLZ5fvOulDGMsH70j35aRlG+Oep
-         eehRpUu4QY93g==
+        b=VuFvURpDjpCPOErzYNQ/OGD8fbF9UgN/pPgOFuCvMviRbFnycYomwjLeZYjosruid
+         IMbKq9cY1y5gMtxffJAIkRfmZJR0lZUD4biB2P5j152mDz5UM3wjjgwM6slMl+2tmT
+         oyQ1x2U/xp4cEPM4qUbedhLbH6EtYHd3DZpzoRB+vm6Bk9zaT2Q4MjRjGjx6/Q3aXf
+         3U76HWTTV3xBvj14v8/E0pvl+CBBOzsPcmTvfxQm8X3nPCRwq2QJDuWjgM3xafFZef
+         K/A7nzGv47O9gSw+3dG07CbpXZxNrFSVdzIzy3499SxvxQrxMsbrlec3jkd6IAoSQO
+         U4dtr+EebevPQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Zheyu Ma <zheyuma97@gmail.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 21/31] mmc: via-sdmmc: add a check against NULL pointer dereference
-Date:   Sun,  4 Jul 2021 19:10:33 -0400
-Message-Id: <20210704231043.1491209-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 17/25] mmc: via-sdmmc: add a check against NULL pointer dereference
+Date:   Sun,  4 Jul 2021 19:11:15 -0400
+Message-Id: <20210704231123.1491517-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210704231043.1491209-1-sashal@kernel.org>
-References: <20210704231043.1491209-1-sashal@kernel.org>
+In-Reply-To: <20210704231123.1491517-1-sashal@kernel.org>
+References: <20210704231123.1491517-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -161,7 +161,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/mmc/host/via-sdmmc.c b/drivers/mmc/host/via-sdmmc.c
-index 9fdb92729c28..1b66466d2ed4 100644
+index 8c0e348c6053..4e5043657ee2 100644
 --- a/drivers/mmc/host/via-sdmmc.c
 +++ b/drivers/mmc/host/via-sdmmc.c
 @@ -865,6 +865,9 @@ static void via_sdc_data_isr(struct via_crdr_mmc_host *host, u16 intmask)
