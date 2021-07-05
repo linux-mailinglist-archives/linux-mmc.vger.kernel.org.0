@@ -2,178 +2,127 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BFE13BB36C
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Jul 2021 01:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6241F3BB488
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Jul 2021 02:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232805AbhGDXSG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 4 Jul 2021 19:18:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50862 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234511AbhGDXPM (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 4 Jul 2021 19:15:12 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3C87261283;
-        Sun,  4 Jul 2021 23:12:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625440355;
-        bh=MizJOt40eSFT2KNYAkVlwfO4pJmJMkjVesUYdvsuoxc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E9LpsBpZ9QVkK/bOcMwS6XiMT6hHviW2Un/Ycq8Ib5I0+fope1HZIBERhGzvkyS/F
-         bRhE/n4vbdgjo1x/0oJLuVQ6WV6TCL+mPU6X0GUQ5aoAb6hBx7YZkd1fmjE6zLIGvX
-         seVvSkzP4P8RxdpYzXJ2gaUW75pNEso6O35iPukHFX3wB1lC6sglPOhgg1g4yT3l3e
-         5oGkeTp/qrtRlabqiDMKT9Q5cXd1rmEOxmgrjEYQsnOi7tOXACIZsMNr+txfRZrNs1
-         ckTYJCBap4u8PosmzkZ8fZSn9KcaQYX1JUjpv309AHh0H+dYrHODcR8A9CwgmTRqvC
-         GR3Sw+QPLj3QA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zheyu Ma <zheyuma97@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 10/15] mmc: via-sdmmc: add a check against NULL pointer dereference
-Date:   Sun,  4 Jul 2021 19:12:16 -0400
-Message-Id: <20210704231222.1492037-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210704231222.1492037-1-sashal@kernel.org>
-References: <20210704231222.1492037-1-sashal@kernel.org>
+        id S229689AbhGEAsV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 4 Jul 2021 20:48:21 -0400
+Received: from lucky1.263xmail.com ([211.157.147.132]:44924 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229549AbhGEAsU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 4 Jul 2021 20:48:20 -0400
+Received: from localhost (unknown [192.168.167.69])
+        by lucky1.263xmail.com (Postfix) with ESMTP id 708BCFACD7
+        for <linux-mmc@vger.kernel.org>; Mon,  5 Jul 2021 08:45:39 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-SKE-CHECKED: 0
+X-SPAM-CHECKED: 5
+X-ANTISPAM-LEVEL: 2
+X-ABS-CHECKED: 0
+Received: from [172.16.12.64] (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P12341T139824038135552S1625445938503354_;
+        Mon, 05 Jul 2021 08:45:38 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <c2e69bcdf5161228ff0bdd1ad01c1673>
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-SENDER: lintao@rock-chips.com
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-FST-TO: ulf.hansson@linaro.org
+X-RCPT-COUNT: 3
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+Message-ID: <4d5b1836-e0f2-3a83-78f9-1a62d92d3873@rock-chips.com>
+Date:   Mon, 5 Jul 2021 08:45:39 +0800
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101
+ Thunderbird/90.0
+Cc:     shawn.lin@rock-chips.com, linux-mmc <linux-mmc@vger.kernel.org>
+Subject: Re: [PATCH v2] mmc: block: Use .card_busy() to detect busy state in
+ card_busy_detect
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+References: <1623134576-212150-1-git-send-email-shawn.lin@rock-chips.com>
+ <CAPDyKFru-h=ypz2WN1Qoz0_XEa6ym6HD0OhEm6nx64C_Chef2Q@mail.gmail.com>
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+In-Reply-To: <CAPDyKFru-h=ypz2WN1Qoz0_XEa6ym6HD0OhEm6nx64C_Chef2Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Zheyu Ma <zheyuma97@gmail.com>
+On 2021/7/2 23:00, Ulf Hansson wrote:
+> On Tue, 8 Jun 2021 at 08:43, Shawn Lin <shawn.lin@rock-chips.com> wrote:
+>>
+>> No need to send CMD13 if host driver supports .card_busy().
+>>
+>> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+> 
+> Shawn, I just sent a small series that moves the mmc block layer into
+> using the common mmc_poll_for_busy() code. I think $subject patch is
+> better to be discussed as an improvement on top in that series.
+> 
+> I already have some thoughts about it, but I will be awaiting to
+> provide you with some comment around it, until there is a new version
+> from you.
 
-[ Upstream commit 45c8ddd06c4b729c56a6083ab311bfbd9643f4a6 ]
+Sure, I will take a close look at your patch-set.
 
-Before referencing 'host->data', the driver needs to check whether it is
-null pointer, otherwise it will cause a null pointer reference.
+Thanks.
 
-This log reveals it:
+> 
+> Kind regards
+> Uffe
+> 
+>>
+>> ---
+>>
+>> Changes in v2:
+>> - fix build issue
+>>
+>>   drivers/mmc/core/block.c | 9 ++++++++-
+>>   1 file changed, 8 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+>> index 88f4c215..379614a9 100644
+>> --- a/drivers/mmc/core/block.c
+>> +++ b/drivers/mmc/core/block.c
+>> @@ -417,10 +417,17 @@ static int card_busy_detect(struct mmc_card *card, unsigned int timeout_ms,
+>>          unsigned long timeout = jiffies + msecs_to_jiffies(timeout_ms);
+>>          int err = 0;
+>>          u32 status;
+>> +       bool busy;
+>>
+>>          do {
+>>                  bool done = time_after(jiffies, timeout);
+>>
+>> +               if (card->host->ops->card_busy) {
+>> +                       busy = card->host->ops->card_busy(card->host);
+>> +                       status = busy ? 0 : R1_READY_FOR_DATA | R1_STATE_TRAN << 9;
+>> +                       goto cb;
+>> +               }
+>> +
+>>                  err = __mmc_send_status(card, &status, 5);
+>>                  if (err) {
+>>                          dev_err(mmc_dev(card->host),
+>> @@ -431,7 +438,7 @@ static int card_busy_detect(struct mmc_card *card, unsigned int timeout_ms,
+>>                  /* Accumulate any response error bits seen */
+>>                  if (resp_errs)
+>>                          *resp_errs |= status;
+>> -
+>> +cb:
+>>                  /*
+>>                   * Timeout if the device never becomes ready for data and never
+>>                   * leaves the program state.
+>> --
+>> 2.7.4
+>>
+>>
+>>
+> 
+> 
+> 
 
-[   29.355199] BUG: kernel NULL pointer dereference, address:
-0000000000000014
-[   29.357323] #PF: supervisor write access in kernel mode
-[   29.357706] #PF: error_code(0x0002) - not-present page
-[   29.358088] PGD 0 P4D 0
-[   29.358280] Oops: 0002 [#1] PREEMPT SMP PTI
-[   29.358595] CPU: 2 PID: 0 Comm: swapper/2 Not tainted 5.12.4-
-g70e7f0549188-dirty #102
-[   29.359164] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-[   29.359978] RIP: 0010:via_sdc_isr+0x21f/0x410
-[   29.360314] Code: ff ff e8 84 aa d0 fd 66 45 89 7e 28 66 41 f7 c4 00
-10 75 56 e8 72 aa d0 fd 66 41 f7 c4 00 c0 74 10 e8 65 aa d0 fd 48 8b 43
-18 <c7> 40 14 ac ff ff ff e8 55 aa d0 fd 48 89 df e8 ad fb ff ff e9 77
-[   29.361661] RSP: 0018:ffffc90000118e98 EFLAGS: 00010046
-[   29.362042] RAX: 0000000000000000 RBX: ffff888107d77880
-RCX: 0000000000000000
-[   29.362564] RDX: 0000000000000000 RSI: ffffffff835d20bb
-RDI: 00000000ffffffff
-[   29.363085] RBP: ffffc90000118ed8 R08: 0000000000000001
-R09: 0000000000000001
-[   29.363604] R10: 0000000000000000 R11: 0000000000000001
-R12: 0000000000008600
-[   29.364128] R13: ffff888107d779c8 R14: ffffc90009c00200
-R15: 0000000000008000
-[   29.364651] FS:  0000000000000000(0000) GS:ffff88817bc80000(0000)
-knlGS:0000000000000000
-[   29.365235] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   29.365655] CR2: 0000000000000014 CR3: 0000000005a2e000
-CR4: 00000000000006e0
-[   29.366170] DR0: 0000000000000000 DR1: 0000000000000000
-DR2: 0000000000000000
-[   29.366683] DR3: 0000000000000000 DR6: 00000000fffe0ff0
-DR7: 0000000000000400
-[   29.367197] Call Trace:
-[   29.367381]  <IRQ>
-[   29.367537]  __handle_irq_event_percpu+0x53/0x3e0
-[   29.367916]  handle_irq_event_percpu+0x35/0x90
-[   29.368247]  handle_irq_event+0x39/0x60
-[   29.368632]  handle_fasteoi_irq+0xc2/0x1d0
-[   29.368950]  __common_interrupt+0x7f/0x150
-[   29.369254]  common_interrupt+0xb4/0xd0
-[   29.369547]  </IRQ>
-[   29.369708]  asm_common_interrupt+0x1e/0x40
-[   29.370016] RIP: 0010:native_safe_halt+0x17/0x20
-[   29.370360] Code: 07 0f 00 2d db 80 43 00 f4 5d c3 0f 1f 84 00 00 00
-00 00 8b 05 c2 37 e5 01 55 48 89 e5 85 c0 7e 07 0f 00 2d bb 80 43 00 fb
-f4 <5d> c3 cc cc cc cc cc cc cc 55 48 89 e5 e8 67 53 ff ff 8b 0d f9 91
-[   29.371696] RSP: 0018:ffffc9000008fe90 EFLAGS: 00000246
-[   29.372079] RAX: 0000000000000000 RBX: 0000000000000002
-RCX: 0000000000000000
-[   29.372595] RDX: 0000000000000000 RSI: ffffffff854f67a4
-RDI: ffffffff85403406
-[   29.373122] RBP: ffffc9000008fe90 R08: 0000000000000001
-R09: 0000000000000001
-[   29.373646] R10: 0000000000000000 R11: 0000000000000001
-R12: ffffffff86009188
-[   29.374160] R13: 0000000000000000 R14: 0000000000000000
-R15: ffff888100258000
-[   29.374690]  default_idle+0x9/0x10
-[   29.374944]  arch_cpu_idle+0xa/0x10
-[   29.375198]  default_idle_call+0x6e/0x250
-[   29.375491]  do_idle+0x1f0/0x2d0
-[   29.375740]  cpu_startup_entry+0x18/0x20
-[   29.376034]  start_secondary+0x11f/0x160
-[   29.376328]  secondary_startup_64_no_verify+0xb0/0xbb
-[   29.376705] Modules linked in:
-[   29.376939] Dumping ftrace buffer:
-[   29.377187]    (ftrace buffer empty)
-[   29.377460] CR2: 0000000000000014
-[   29.377712] ---[ end trace 51a473dffb618c47 ]---
-[   29.378056] RIP: 0010:via_sdc_isr+0x21f/0x410
-[   29.378380] Code: ff ff e8 84 aa d0 fd 66 45 89 7e 28 66 41 f7 c4 00
-10 75 56 e8 72 aa d0 fd 66 41 f7 c4 00 c0 74 10 e8 65 aa d0 fd 48 8b 43
-18 <c7> 40 14 ac ff ff ff e8 55 aa d0 fd 48 89 df e8 ad fb ff ff e9 77
-[   29.379714] RSP: 0018:ffffc90000118e98 EFLAGS: 00010046
-[   29.380098] RAX: 0000000000000000 RBX: ffff888107d77880
-RCX: 0000000000000000
-[   29.380614] RDX: 0000000000000000 RSI: ffffffff835d20bb
-RDI: 00000000ffffffff
-[   29.381134] RBP: ffffc90000118ed8 R08: 0000000000000001
-R09: 0000000000000001
-[   29.381653] R10: 0000000000000000 R11: 0000000000000001
-R12: 0000000000008600
-[   29.382176] R13: ffff888107d779c8 R14: ffffc90009c00200
-R15: 0000000000008000
-[   29.382697] FS:  0000000000000000(0000) GS:ffff88817bc80000(0000)
-knlGS:0000000000000000
-[   29.383277] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   29.383697] CR2: 0000000000000014 CR3: 0000000005a2e000
-CR4: 00000000000006e0
-[   29.384223] DR0: 0000000000000000 DR1: 0000000000000000
-DR2: 0000000000000000
-[   29.384736] DR3: 0000000000000000 DR6: 00000000fffe0ff0
-DR7: 0000000000000400
-[   29.385260] Kernel panic - not syncing: Fatal exception in interrupt
-[   29.385882] Dumping ftrace buffer:
-[   29.386135]    (ftrace buffer empty)
-[   29.386401] Kernel Offset: disabled
-[   29.386656] Rebooting in 1 seconds..
-
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-Link: https://lore.kernel.org/r/1622727200-15808-1-git-send-email-zheyuma97@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/mmc/host/via-sdmmc.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/mmc/host/via-sdmmc.c b/drivers/mmc/host/via-sdmmc.c
-index b455e9cf95af..a3472127bea3 100644
---- a/drivers/mmc/host/via-sdmmc.c
-+++ b/drivers/mmc/host/via-sdmmc.c
-@@ -859,6 +859,9 @@ static void via_sdc_data_isr(struct via_crdr_mmc_host *host, u16 intmask)
- {
- 	BUG_ON(intmask == 0);
- 
-+	if (!host->data)
-+		return;
-+
- 	if (intmask & VIA_CRDR_SDSTS_DT)
- 		host->data->error = -ETIMEDOUT;
- 	else if (intmask & (VIA_CRDR_SDSTS_RC | VIA_CRDR_SDSTS_WC))
--- 
-2.30.2
 
