@@ -2,46 +2,73 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D8303C1489
-	for <lists+linux-mmc@lfdr.de>; Thu,  8 Jul 2021 15:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 351943C14E4
+	for <lists+linux-mmc@lfdr.de>; Thu,  8 Jul 2021 16:11:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbhGHNpV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 8 Jul 2021 09:45:21 -0400
-Received: from mx-n01.wc2.phx1.stabletransit.com ([207.246.242.247]:45354 "HELO
-        mx-n01.wc2.phx1.stabletransit.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with SMTP id S231828AbhGHNpV (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Jul 2021 09:45:21 -0400
-X-Greylist: delayed 597 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Jul 2021 09:45:11 EDT
-Received: by mx-n01.wc2.phx1.stabletransit.com (Postfix, from userid 114)
-        id 0CB3A6256C; Thu,  8 Jul 2021 08:32:31 -0500 (CDT)
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
-        mx-n01.wc2.phx1.stabletransit.com
-X-Spam-Level: **
-X-Spam-Status: No, score=2.6 required=6.0 tests=BAYES_50,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SUBJ_ALL_CAPS,
-        T_FILL_THIS_FORM_SHORT,UNPARSEABLE_RELAY autolearn=no
-        autolearn_force=no version=3.4.2
-X-Spam-Virus: No
-Received: from php-v027.wc2.phx1.stabletransit.com (unknown [10.40.206.156])
-        by mx-n01.wc2.phx1.stabletransit.com (Postfix) with ESMTP id 6C5CF61E9C
-        for <linux-mmc@vger.kernel.org>; Thu,  8 Jul 2021 08:32:30 -0500 (CDT)
-Received: from digilu (uid 2914979)
-        (envelope-from mabeljohnson@citromail.hu)
-        id 20156
-        by php-v027.wc2.phx1.stabletransit.com (DragonFly Mail Agent v0.11);
-        Thu, 08 Jul 2021 08:32:30 -0500
-To:     linux-mmc@vger.kernel.org
-Subject: WORK OF GOD.
-X-PHP-Originating-Script: 2914979:class.engine.php(12) : runtime-created function
-Date:   Thu, 8 Jul 2021 08:32:30 -0500
-From:   MARY JOHNSON <mabeljohnson@citromail.hu>
-Reply-To: mj224294@gmail.com
-Message-ID: <ae6c6633baad568cb30ac424a83aa5c4@jackieleestudio.com>
+        id S231441AbhGHOOA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 8 Jul 2021 10:14:00 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28]:60440 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229592AbhGHOOA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 8 Jul 2021 10:14:00 -0400
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id DEBC922277;
+        Thu,  8 Jul 2021 14:11:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1625753477; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type;
+        bh=1N/reUsLeZKLGDwD3Bs0QRIIYMaSHgj6eG6/MqcnweM=;
+        b=i91DsQb7krT0Mx0l9l2Gp5oZ9tFtUnzffqsqjyeLmkJQGtfKFCMxsTio3D6Rh++LWOSKxa
+        9q5/2opOK6R4QJJAh4vdkHARhUwxfRT9hTzbtphnRQ2jDoxBUJmsu7MPPVcCwQT6swszuj
+        fyw60zr/S7VjuvbT82+Ww6DEOFfmJyo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1625753477;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type;
+        bh=1N/reUsLeZKLGDwD3Bs0QRIIYMaSHgj6eG6/MqcnweM=;
+        b=uZPgZ4SO/ByQQdux5ClIRcxgll97WoKY/o1GqyV3hg9unpzwpoOAn9rA9IZ/6pr8eLa25o
+        zkqqcAR6wIqeZVBw==
+Received: from hawking.suse.de (hawking.suse.de [10.160.4.0])
+        by relay2.suse.de (Postfix) with ESMTP id D7D25A3B87;
+        Thu,  8 Jul 2021 14:11:17 +0000 (UTC)
+Received: by hawking.suse.de (Postfix, from userid 17005)
+        id BFC4D446184; Thu,  8 Jul 2021 16:11:17 +0200 (CEST)
+From:   Andreas Schwab <schwab@suse.de>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH] mmc: mmc_spi: add spi:mmc-spi-slot alias
+CC:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Yow:  Has everybody got HALVAH spread all over their ANKLES??...
+ Now, it's time to ``HAVE A NAGEELA''!!
+Date:   Thu, 08 Jul 2021 16:11:17 +0200
+Message-ID: <mvm4kd499q2.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-I am Mrs. Mary Johnson,78years,an aging widow suffering from cancer, I am on admission at a hospital.I would like to willfully entrust the rest of my monetary assets to you, Kindly reply back with your full Name, cellphone, address, to enable me to send you a letter of authorization to contact my bank first inland bank nigeria plc so that they can transfer my funds to your account for the purpose of helping the poor as indicated on my WILL.
+This allows the driver to be auto loaded.
 
+Signed-off-by: Andreas Schwab <schwab@suse.de>
+---
+ drivers/mmc/host/mmc_spi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+index 9776a03a10f5..a5f318b70057 100644
+--- a/drivers/mmc/host/mmc_spi.c
++++ b/drivers/mmc/host/mmc_spi.c
+@@ -1544,3 +1544,4 @@ MODULE_AUTHOR("Mike Lavender, David Brownell, Hans-Peter Nilsson, Jan Nikitenko"
+ MODULE_DESCRIPTION("SPI SD/MMC host driver");
+ MODULE_LICENSE("GPL");
+ MODULE_ALIAS("spi:mmc_spi");
++MODULE_ALIAS("spi:mmc-spi-slot");
+-- 
+2.32.0
+
+
+-- 
+Andreas Schwab, SUSE Labs, schwab@suse.de
+GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
+"And now for something completely different."
