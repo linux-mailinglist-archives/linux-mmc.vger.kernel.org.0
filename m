@@ -2,86 +2,100 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC7D3C3E7F
-	for <lists+linux-mmc@lfdr.de>; Sun, 11 Jul 2021 19:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ACE73C43EC
+	for <lists+linux-mmc@lfdr.de>; Mon, 12 Jul 2021 08:11:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232817AbhGKRra convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Sun, 11 Jul 2021 13:47:30 -0400
-Received: from gloria.sntech.de ([185.11.138.130]:53612 "EHLO gloria.sntech.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230353AbhGKRra (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 11 Jul 2021 13:47:30 -0400
-Received: from ip5f5aa64a.dynamic.kabel-deutschland.de ([95.90.166.74] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <heiko@sntech.de>)
-        id 1m2dV2-0008H7-WF; Sun, 11 Jul 2021 19:44:17 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Uwe =?ISO-8859-1?Q?Kleine=2DK=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     cl@rock-chips.com, thierry.reding@gmail.com, robh+dt@kernel.org,
-        jagan@amarulasolutions.com, wens@csie.org, uwe@kleine-koenig.org,
-        mail@david-bauer.net, jbx6244@gmail.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        jensenhuang@friendlyarm.com, michael@amarulasolutions.com,
-        cnsztl@gmail.com, devicetree@vger.kernel.org,
-        ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
-        gregkh@linuxfoundation.org, linux-serial@vger.kernel.org,
-        linux-i2c@vger.kernel.org, jay.xu@rock-chips.com,
-        shawn.lin@rock-chips.com, david.wu@rock-chips.com,
-        zhangqing@rock-chips.com, huangtao@rock-chips.com,
-        wim@linux-watchdog.org, linux@roeck-us.net, jamie@jamieiles.com,
-        linux-watchdog@vger.kernel.org, maz@kernel.org,
-        linux-pwm@vger.kernel.org
-Subject: Re: [RESEND PATCH v5 1/4] dt-bindings: pwm: rockchip: add description for rk3568
-Date:   Sun, 11 Jul 2021 19:44:12 +0200
-Message-ID: <5069193.2yuIWEeYC1@diego>
-In-Reply-To: <20210705074405.uj62h4evd6htftf3@pengutronix.de>
-References: <20210622020517.13100-1-cl@rock-chips.com> <YOK1+pMy+N64eR75@dell> <20210705074405.uj62h4evd6htftf3@pengutronix.de>
+        id S231898AbhGLGNx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 12 Jul 2021 02:13:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52192 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231351AbhGLGNx (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Jul 2021 02:13:53 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98353C0613DD;
+        Sun, 11 Jul 2021 23:11:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=1YkOQcBdgxi62ZhLA0NtO1y6SKPDgvnlI06PbOB4DUw=; b=cj+KTjXg8AMbD8rtYBj+8r7Cxt
+        BIPIRTp20D9LAr4qWIr6U0JC/xVHlXyiIcTpi382wli87gwzL3Ky+H3KogILv29OKGQofxk4HKyqR
+        AiEUkF3fz0flDZ/xb4lpGW1WDvCD6qxQc+HkKDLMWs17uNkI25ouMldR4GbfUgdqhRyD1eO7ejeUK
+        aRa9JYOKdeAzKqSD8RqQQWjuHagl0GUOGEO14F0eiDyAnchuvTZcMJ5utjbxVMfjBg0n7t7VaNAiA
+        Q5H0LUAnMpixjTv1WRiUcuxUg02RkZHPFt7pajAXdDqcjOppur2vp3jUMn2VfXHojK49J5ypV42jW
+        60ew9ukQ==;
+Received: from [2001:4bb8:184:8b7c:bd9:61b8:39ba:d78a] (helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1m2p8D-00GwBl-3g; Mon, 12 Jul 2021 06:09:34 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc:     Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Geoff Levand <geoff@infradead.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alex Shi <alexs@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-mm@kvack.org,
+        linux-doc@vger.kernel.org
+Subject: flush_kernel_dcache_page fixes and removal
+Date:   Mon, 12 Jul 2021 08:09:22 +0200
+Message-Id: <20210712060928.4161649-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Am Montag, 5. Juli 2021, 09:44:05 CEST schrieb Uwe Kleine-König:
-> Hello Lee,
-> 
-> On Mon, Jul 05, 2021 at 08:34:18AM +0100, Lee Jones wrote:
-> > On Mon, 05 Jul 2021, Uwe Kleine-König wrote:
-> > > On Wed, Jun 23, 2021 at 10:13:03AM +0800, cl@rock-chips.com wrote:
-> > > > From: Liang Chen <cl@rock-chips.com>
-> > > > 
-> > > > add "rockchip,rk3568-pwm", "rockchip,rk3328-pwm" for pwm nodes on
-> > > > a rk3568 platform to pwm-rockchip.yaml.
-> > > 
-> > > [...]
-> > > 
-> > > Who is supposed to apply this patch? Does this need blessing by Rob?
-> > 
-> > There is no standard. [...]
-> 
-> I'm aware of that. That's why I asked to prevent that everybody thinks
-> some other maintainer will care for it.
+Hi all,
 
-I suppose Thierry would be the one responsible?
+while looking to convert the block layer away from kmap_atomic towards
+kmap_local_page and prefeably the helpers that abstract it away I noticed
+that a few block drivers directly or implicitly call
+flush_kernel_dcache_page before kunmapping a page that has been written
+to.  flush_kernel_dcache_page is documented to to be used in such cases,
+but flush_dcache_page is actually required when the page could be in
+the page cache and mapped to userspace, which is pretty much always the
+case when kmapping an arbitrary page.  Unfortunately the documentation
+doesn't exactly make that clear, which lead to this misused.  And it turns
+out that only the copy_strings / copy_string_kernel in the exec code
+were actually correct users of flush_kernel_dcache_page, which is why
+I think we should just remove it and eat the very minor overhead in
+exec rather than confusing poor driver writers.
 
-I.e. bindings normally go through the subsystem tree and
-	$ scripts/get_maintainer.pl drivers/pwm
-returns:
-
-Thierry Reding <thierry.reding@gmail.com> (maintainer:PWM SUBSYSTEM)
-"Uwe Kleine-König" <u.kleine-koenig@pengutronix.de> (reviewer:PWM SUBSYSTEM)
-Lee Jones <lee.jones@linaro.org> (maintainer:PWM SUBSYSTEM)
-linux-pwm@vger.kernel.org (open list:PWM SUBSYSTEM)
-linux-kernel@vger.kernel.org (open list)
-
-
-See my reply to the original pwm binding patch from 2021-06-21.
-
-Heiko
-
-
+Diffstat:
+ Documentation/core-api/cachetlb.rst                    |   86 +++++++----------
+ Documentation/translations/zh_CN/core-api/cachetlb.rst |    9 -
+ arch/arm/include/asm/cacheflush.h                      |    4 
+ arch/arm/mm/flush.c                                    |   33 ------
+ arch/arm/mm/nommu.c                                    |    6 -
+ arch/csky/abiv1/cacheflush.c                           |   11 --
+ arch/csky/abiv1/inc/abi/cacheflush.h                   |    4 
+ arch/mips/include/asm/cacheflush.h                     |    8 -
+ arch/nds32/include/asm/cacheflush.h                    |    3 
+ arch/nds32/mm/cacheflush.c                             |    9 -
+ arch/parisc/include/asm/cacheflush.h                   |    8 -
+ arch/parisc/kernel/cache.c                             |    3 
+ arch/sh/include/asm/cacheflush.h                       |    8 -
+ block/blk-map.c                                        |    2 
+ drivers/block/ps3disk.c                                |    2 
+ drivers/mmc/host/jz4740_mmc.c                          |    4 
+ drivers/mmc/host/mmc_spi.c                             |    2 
+ drivers/scsi/aacraid/aachba.c                          |    1 
+ fs/exec.c                                              |    6 -
+ include/linux/highmem.h                                |    5 
+ lib/scatterlist.c                                      |    5 
+ tools/testing/scatterlist/linux/mm.h                   |    1 
+ 22 files changed, 55 insertions(+), 165 deletions(-)
