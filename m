@@ -2,76 +2,201 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7C263CA437
-	for <lists+linux-mmc@lfdr.de>; Thu, 15 Jul 2021 19:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BF683CB252
+	for <lists+linux-mmc@lfdr.de>; Fri, 16 Jul 2021 08:18:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235378AbhGOR2h (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 15 Jul 2021 13:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235345AbhGOR2g (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 15 Jul 2021 13:28:36 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AC9DC0613DE
-        for <linux-mmc@vger.kernel.org>; Thu, 15 Jul 2021 10:25:42 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id n10so3772215plk.1
-        for <linux-mmc@vger.kernel.org>; Thu, 15 Jul 2021 10:25:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
-        b=A07qw47jpyx7/pJf1ZS9aQv4pD7PiHBZWlsl9UoiurRqqc+7ZndQI51YdaaD0nkecu
-         Qd4i+G02coH8O2I/r6ZupOF8oYSIAoIwVq4zkuCtuhDJYsbynWGQdegcG7aq+QxGg/bp
-         poyp2DbaibSeABlojQr/pIAqMWExNaHg4RIE+IQzBlXdCiQq16Yp/UqkBXwITYu4DgIP
-         XTs1gXkC7Br62pPmJXs/2nF+jRhXCAs3iAxTxuy51YthTghMWE/kONdSGZKCG8sWM+Ev
-         WU1ATEDaIH5W63c7UQCvZTdM21+mq9I9FOl7BCTb650pCRFEJMZ521zklByg85zlNwmj
-         7b/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
-        b=OKq7QhUgAVtqLQZakvB4Of/mal1qMX9R+WXeKo394Osh3r9wHv7ROuKVKcxZ1BQulC
-         KPDFDm1RHIafQtxhDdJytwn2sIlvxf2fAU7zpxb+IvIsbCejk8gJV1jyBBay4hrijDOp
-         W2juGUOCoDNMgPmZWzoMbHrTFjtdmow3nK06hIQoNlV7db9RVUAtPqFjZHvIdNyRkdHs
-         ZkDX7woQN2upLlPVJS0H0wViQhB4mZZWoQ8kZ05EYVQz5uChvf0O956L4JMo/ccKE66c
-         g5qI+mo+A0TYsp9z0J2MVzKVpBJLi/6ZK8QxfMnUldgAz7EHtwMT/LXOmbWv2d5f7j5a
-         k2yQ==
-X-Gm-Message-State: AOAM530FPj/NrO4f53Sf4JtxkNzl2bmDceqjPngzNkMUE0bwVGBvpeh9
-        n1R7UbwKEQKz+WrntepGqwCbnqgQ0/GjoTHirwQ=
-X-Google-Smtp-Source: ABdhPJyZMrq1Z7I3pjjmyAtUHW3ABh0oEghTe77F5dAxRk/llsByjQhtZ30eIUOoh7sIooPsLTy5+nPJ1BCNgIavtsM=
-X-Received: by 2002:a17:90b:d8f:: with SMTP id bg15mr10963237pjb.152.1626369941880;
- Thu, 15 Jul 2021 10:25:41 -0700 (PDT)
+        id S234606AbhGPGVL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 16 Jul 2021 02:21:11 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:23060 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234418AbhGPGVL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 16 Jul 2021 02:21:11 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1626416297; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=Sfg0cVqIzSwv9BXqL0UTlti+Cw93dhT2sJWRxV5rklM=;
+ b=clbpIonns9rtwjFc8KOv9Fmabaix/ATEuF1EaM5EUJuFXvn1MvtnhC6/62YkGrO/6pKEv8Hm
+ l7wATeUYi4Ow1+jg0bhb+6Nx85nc+dCqoyGXdwbeA/tVnIh/MVJfHZQ7JldaP3AhAmKLbYUa
+ Lt7KXeZh/1qBI9YcE5beU3mAVXM=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 60f124a8c923fb7e09d5ef39 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 16 Jul 2021 06:18:16
+ GMT
+Sender: sbhanu=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 9A4EEC433D3; Fri, 16 Jul 2021 06:18:15 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: sbhanu)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5E4CAC4338A;
+        Fri, 16 Jul 2021 06:18:14 +0000 (UTC)
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:fc85:0:0:0:0 with HTTP; Thu, 15 Jul 2021 10:25:41
- -0700 (PDT)
-Reply-To: faty.muhamad@gmail.com
-From:   Ms Fatima Muhammad <general.infofederalreserve@gmail.com>
-Date:   Thu, 15 Jul 2021 17:25:41 +0000
-Message-ID: <CAJzJz_Dwu6rUxmnqq1QV9qD4hugxutFJZuENGUwx7RamXm5txA@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 16 Jul 2021 11:48:14 +0530
+From:   sbhanu@codeaurora.org
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     ulf.hansson@linaro.org, asutoshd@codeaurora.org,
+        stummala@codeaurora.org, vbadigan@codeaurora.org,
+        rampraka@codeaurora.org, sayalil@codeaurora.org,
+        sartgarg@codeaurora.org, rnayak@codeaurora.org,
+        cang@codeaurora.org, pragalla@codeaurora.org,
+        nitirawa@codeaurora.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, robh+dt@kernel.org
+Subject: Re: [PATCH V3] mmc: sdhci-msm: Update the software timeout value for
+ sdhc
+In-Reply-To: <7bd56312-96ab-debe-0f80-112af994b233@intel.com>
+References: <1625500253-12815-1-git-send-email-sbhanu@codeaurora.org>
+ <7bd56312-96ab-debe-0f80-112af994b233@intel.com>
+Message-ID: <a27b8f689dca92f5bfd4b7a5976d14e6@codeaurora.org>
+X-Sender: sbhanu@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello Dear,
-
-My name is Ms.Fatima Muhammad., Please forgive me for stressing you
-with my predicaments and I sorry to approach you through this media
-because is serves the fastest means of  my communication right now,
-
-I came across your Email from my personal search and I decided to
-contact you believing you will be honest to fulfill my business
-proposal which I believe that will be a very good opportunity for both
-of us. Please it is my pleasure to contact you today for a business
-partnership investments projects worth $4.6 million USD which I intend
-to establish in your country..
-
-Pls If this business proposal offends your moral and ethic values do
-accept my apology. therefore kindly contact me immediately if you are
-interested for more details.
-
-Thank you for your wiliness to help me
-Yours Sincerely Fatima Muhammad
+On 2021-07-15 10:59, Adrian Hunter wrote:
+> On 5/07/21 6:50 pm, Shaik Sajida Bhanu wrote:
+>> Whenever SDHC run at clock rate 50MHZ or below, the hardware data
+>> timeout value will be 21.47secs, which is approx. 22secs and we have
+>> a current software timeout value as 10secs. We have to set software
+>> timeout value more than the hardware data timeout value to avioid 
+>> seeing
+>> the below register dumps.
+>> 
+>> [  332.953670] mmc2: Timeout waiting for hardware interrupt.
+>> [  332.959608] mmc2: sdhci: ============ SDHCI REGISTER DUMP 
+>> ===========
+>> [  332.966450] mmc2: sdhci: Sys addr:  0x00000000 | Version:  
+>> 0x00007202
+>> [  332.973256] mmc2: sdhci: Blk size:  0x00000200 | Blk cnt:  
+>> 0x00000001
+>> [  332.980054] mmc2: sdhci: Argument:  0x00000000 | Trn mode: 
+>> 0x00000027
+>> [  332.986864] mmc2: sdhci: Present:   0x01f801f6 | Host ctl: 
+>> 0x0000001f
+>> [  332.993671] mmc2: sdhci: Power:     0x00000001 | Blk gap:  
+>> 0x00000000
+>> [  333.000583] mmc2: sdhci: Wake-up:   0x00000000 | Clock:    
+>> 0x00000007
+>> [  333.007386] mmc2: sdhci: Timeout:   0x0000000e | Int stat: 
+>> 0x00000000
+>> [  333.014182] mmc2: sdhci: Int enab:  0x03ff100b | Sig enab: 
+>> 0x03ff100b
+>> [  333.020976] mmc2: sdhci: ACmd stat: 0x00000000 | Slot int: 
+>> 0x00000000
+>> [  333.027771] mmc2: sdhci: Caps:      0x322dc8b2 | Caps_1:   
+>> 0x0000808f
+>> [  333.034561] mmc2: sdhci: Cmd:       0x0000183a | Max curr: 
+>> 0x00000000
+>> [  333.041359] mmc2: sdhci: Resp[0]:   0x00000900 | Resp[1]:  
+>> 0x00000000
+>> [  333.048157] mmc2: sdhci: Resp[2]:   0x00000000 | Resp[3]:  
+>> 0x00000000
+>> [  333.054945] mmc2: sdhci: Host ctl2: 0x00000000
+>> [  333.059657] mmc2: sdhci: ADMA Err:  0x00000000 | ADMA Ptr:
+>> 0x0000000ffffff218
+>> [  333.067178] mmc2: sdhci_msm: ----------- VENDOR REGISTER DUMP
+>> -----------
+>> [  333.074343] mmc2: sdhci_msm: DLL sts: 0x00000000 | DLL cfg:
+>> 0x6000642c | DLL cfg2: 0x0020a000
+>> [  333.083417] mmc2: sdhci_msm: DLL cfg3: 0x00000000 | DLL usr ctl:
+>> 0x00000000 | DDR cfg: 0x80040873
+>> [  333.092850] mmc2: sdhci_msm: Vndr func: 0x00008a9c | Vndr func2 :
+>> 0xf88218a8 Vndr func3: 0x02626040
+>> [  333.102371] mmc2: sdhci: 
+>> ============================================
+>> 
+>> So, set software timeout value more than hardware timeout value.
+>> 
+>> Signed-off-by: Shaik Sajida Bhanu <sbhanu@codeaurora.org>
+> 
+> A couple of minor nitpicks below.  Fix those and you can add:
+> 
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> 
+>> ---
+>> 
+>> Changes since V2:
+>> 	- Updated 22 with 22LL to avoid compiler warning as suggested by
+>> 	  Adrian Hunter.
+>> 	- Added a check to update software data timeout value if its value is
+>> 	  less than the calculated hardware data timeout value as suggested
+>> 	  by Veerabhadrarao Badiganti.
+>> 
+>> Changes since V1:
+>> 	- Moved software data timeout update part to qcom specific file
+>> 	  as suggested by Veerabhadrarao Badiganti.
+>> ---
+>>  drivers/mmc/host/sdhci-msm.c | 18 ++++++++++++++++++
+>>  1 file changed, 18 insertions(+)
+>> 
+>> diff --git a/drivers/mmc/host/sdhci-msm.c 
+>> b/drivers/mmc/host/sdhci-msm.c
+>> index e44b7a6..64fb85e 100644
+>> --- a/drivers/mmc/host/sdhci-msm.c
+>> +++ b/drivers/mmc/host/sdhci-msm.c
+>> @@ -2089,6 +2089,23 @@ static void sdhci_msm_cqe_disable(struct 
+>> mmc_host *mmc, bool recovery)
+>>  	sdhci_cqe_disable(mmc, recovery);
+>>  }
+>> 
+>> +static void sdhci_msm_set_timeout(struct sdhci_host *host, struct 
+>> mmc_command *cmd)
+>> +{
+>> +
+> 
+> Unnecessary blank line.
+Sure i will address this in my next patch set , Thanks for the review.
+> 
+>> +	u32 count, start = 15;
+>> +
+>> +	__sdhci_set_timeout(host, cmd);
+>> +	count = sdhci_readb(host, SDHCI_TIMEOUT_CONTROL);
+>> +	/*
+>> +	 * Update software timeout value if its value is less than hardware 
+>> data
+>> +	 * timeout value. Qcom SoC hardware data timeout value was 
+>> calculated
+>> +	 * using 4 * MCLK * 2^(count + 13). where MCLK = 1 / host->clock.
+>> +	 */
+>> +	if (cmd && cmd->data && host->clock > 400000 && host->clock <= 
+>> 50000000
+>> +			&& ((1 << (count + start)) > (10 * host->clock)))
+> 
+> '&&' is better at the end of the previous line
+> 
+> Also fewer parenthesis is more readable e.g.
+> 
+> 	if (cmd && cmd->data && host->clock > 400000 &&
+> 	    host->clock <= 50000000 &&
+> 	    (1 << (count + start)) > (10 * host->clock))
+> 
+Sure i will address this in my next patch set , Thanks for the review.
+>> +		host->data_timeout = 22LL * NSEC_PER_SEC;
+>> +}
+>> +
+>>  static const struct cqhci_host_ops sdhci_msm_cqhci_ops = {
+>>  	.enable		= sdhci_msm_cqe_enable,
+>>  	.disable	= sdhci_msm_cqe_disable,
+>> @@ -2438,6 +2455,7 @@ static const struct sdhci_ops sdhci_msm_ops = {
+>>  	.irq	= sdhci_msm_cqe_irq,
+>>  	.dump_vendor_regs = sdhci_msm_dump_vendor_regs,
+>>  	.set_power = sdhci_set_power_noreg,
+>> +	.set_timeout = sdhci_msm_set_timeout,
+>>  };
+>> 
+>>  static const struct sdhci_pltfm_data sdhci_msm_pdata = {
+>> 
