@@ -2,598 +2,308 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8FBC3CF8FE
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jul 2021 13:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 799A53CFD2D
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jul 2021 17:14:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236396AbhGTLCH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 20 Jul 2021 07:02:07 -0400
-Received: from mga09.intel.com ([134.134.136.24]:57875 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236462AbhGTLCA (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 20 Jul 2021 07:02:00 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10050"; a="211218089"
-X-IronPort-AV: E=Sophos;i="5.84,254,1620716400"; 
-   d="scan'208";a="211218089"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2021 04:41:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,254,1620716400"; 
-   d="scan'208";a="510723756"
-Received: from coresw01.iind.intel.com ([10.223.252.64])
-  by fmsmga002.fm.intel.com with ESMTP; 20 Jul 2021 04:41:49 -0700
-From:   rashmi.a@intel.com
-To:     linux-drivers-review-request@eclists.intel.com,
-        michal.simek@xilinx.com, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kishon@ti.com, vkoul@kernel.org,
-        andriy.shevchenko@linux.intel.com, linux-phy@lists.infradead.org
-Cc:     mgross@linux.intel.com, kris.pan@linux.intel.com,
-        furong.zhou@intel.com, mallikarjunappa.sangannavar@intel.com,
-        adrian.hunter@intel.com, mahesh.r.vaidya@intel.com,
-        nandhini.srikandan@intel.com, kenchappa.demakkanavar@intel.com,
-        rashmi.a@intel.com
-Subject: =?utf-8?q?=5B=E2=80=9CPATCH=E2=80=9D=203/3=5D=20phy=3A=20intel=3A=20Add=20Thunder=20Bay=20eMMC=20PHY=20support?=
-Date:   Tue, 20 Jul 2021 17:11:33 +0530
-Message-Id: <20210720114133.8936-4-rashmi.a@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210720114133.8936-1-rashmi.a@intel.com>
-References: <20210720114133.8936-1-rashmi.a@intel.com>
+        id S239092AbhGTOdK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 20 Jul 2021 10:33:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46762 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238818AbhGTOLY (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 20 Jul 2021 10:11:24 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A093C05BD1A
+        for <linux-mmc@vger.kernel.org>; Tue, 20 Jul 2021 07:43:22 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id f30so29587891lfv.10
+        for <linux-mmc@vger.kernel.org>; Tue, 20 Jul 2021 07:43:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hbN53T14Om4XknjkJRRVEnLWblLyHxtME7moXS4dvr8=;
+        b=tlOG8c948eVNBqB5DFbLF1JTo1JHNM+WESED4vAIJ0j9Tr9Kn+rfZa/ImxE4Zldh7e
+         8izJwYmxskV71iIv8NJSH6ZvcBLSYCwbdyZG9qw32PCu/z+XMVPYe93voY1/lHu3nHQP
+         sgriZwFWtZvAAy49neXdcLaPqzB+Fbx2zuFmYgBDpq8IPyW8G7ZwNgQAqS9rsPfNjMJx
+         D2gLslwsyfrPkPf3pZWFFZ8mU267MOw/t7UEcMfaeTa0i5G5IeeTsgxCadu4X3idVVMf
+         xN0mVgSENErsiijghiUBl+Va0Mibjo8dLQNXWmCe2coM3PVCdBPBVIReSszb6FtU/+J3
+         joxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hbN53T14Om4XknjkJRRVEnLWblLyHxtME7moXS4dvr8=;
+        b=V5JH66GN+CHIYr58xUGraVal3I0pMzKgL61FNHbm9TqRbs31Nf0wB/bW0D6PAwbzT9
+         7wArygD/KzXw130CECukB7ID8PxDuDHBYoewL30mx152+lGMRPCTG6/FuAR3li4NwAXk
+         f0kLZLRZZcBDhWGArLsjOEcnYUOk7o6a+fbKly8A1A0CDROcfJ4tmCqU+DblE6OzpUpX
+         cHeGKwcDoGyiAt4ocNbKS4vKSXtHXJbT1VWEvPGpWb4cwIv/qtBHbfdpa/jGa4hImrly
+         MXJW9wcw+lf6g19NlSKn8pd50zoXAXHuUdestfgg71/Q1mciy2tr8pkYzLIbu+qMrs/+
+         JGMg==
+X-Gm-Message-State: AOAM533BL5fjrbviNOvnywRFbGAKqP6tp6pFTgiRtGiEE69Xs5VoZeih
+        cQcJ6UHd2+gMu4MURsTStBXuxdlIpFVD6A==
+X-Google-Smtp-Source: ABdhPJzy9iOAFQqSn9ImdQm0c07+kEoyTOFN9XM67N75/kdIayCJfde4b2bt+IHSdnu5AkeS+yaYeA==
+X-Received: by 2002:a05:6512:92d:: with SMTP id f13mr21954565lft.186.1626792200415;
+        Tue, 20 Jul 2021 07:43:20 -0700 (PDT)
+Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+        by smtp.gmail.com with ESMTPSA id g14sm1536550lfv.213.2021.07.20.07.43.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jul 2021 07:43:20 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>, stable@vger.kernel.org,
+        phone-devel@vger.kernel.org, Ludovic Barre <ludovic.barre@st.com>,
+        Stephan Gerhold <stephan@gerhold.net>, newbyte@disroot.org
+Subject: [PATCH v3] mmc: core: Add a card quirk for non-hw busy detection
+Date:   Tue, 20 Jul 2021 16:41:15 +0200
+Message-Id: <20210720144115.1525257-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Rashmi A <rashmi.a@intel.com>
+Some boot partitions on the Samsung 4GB KLM4G1YE4C "4YMD1R" and "M4G1YC"
+cards appear broken when accessed randomly. CMD6 to switch back to the main
+partition randomly stalls after CMD18 access to the boot partition 1, and
+the card never comes back online. The accesses to the boot partitions work
+several times before this happens, but eventually the card access hangs
+while initializing the card.
 
-Add support for eMMC PHY  on Intel Thunder Bay SoC,
-uses the Arasan eMMC phy
+Some problematic eMMC cards are found in the Samsung GT-S7710 (Skomer)
+and SGH-I407 (Kyle) mobile phones.
 
-Signed-off-by: Rashmi A <rashmi.a@intel.com>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+I tried using only single blocks with CMD17 on the boot partitions with the
+result that it crashed even faster.
+
+After a bit of root cause analysis it turns out that these old eMMC cards
+probably cannot do hardware busy detection (monitoring DAT0) properly.
+
+The card survives on older kernels, but this is because recent kernels have
+added busy detection handling for the SoC used in these phones, exposing
+the issue.
+
+Construct a quirk that makes the MMC cord avoid using the ->card_busy()
+callback if the card is listed with MMC_QUIRK_BROKEN_HW_BUSY_DETECT and
+register the known problematic cards. The core changes are pretty
+straight-forward with a helper inline to check of we can use hardware
+busy detection.
+
+On the MMCI host we have to counter the fact that if the host was able to
+use busy detect, it would be used unsolicited in the command IRQ callback.
+Rewrite this so that MMCI will not attempt to use hardware busy detection
+in the command IRQ until:
+- A card is attached to the host and
+- We know that the card can handle this busy detection
+
+I have glanced over the ->card_busy() callbacks on some other hosts and
+they seem to mostly read a register reflecting the value of DAT0 for this
+which works fine with the quirk in this patch. However if the error appear
+on other hosts they might need additional fixes.
+
+After applying this patch, the main partition can be accessed and mounted
+without problems on Samsung GT-S7710 and SGH-I407.
+
+Fixes: cb0335b778c7 ("mmc: mmci: add busy_complete callback")
+Cc: stable@vger.kernel.org
+Cc: phone-devel@vger.kernel.org
+Cc: Ludovic Barre <ludovic.barre@st.com>
+Cc: Stephan Gerhold <stephan@gerhold.net>
+Reported-by: newbyte@disroot.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/phy/intel/Kconfig                     |  10 +
- drivers/phy/intel/Makefile                    |   1 +
- drivers/phy/intel/phy-intel-thunderbay-emmc.c | 500 ++++++++++++++++++
- 3 files changed, 511 insertions(+)
- create mode 100644 drivers/phy/intel/phy-intel-thunderbay-emmc.c
+ChangeLog v2->v3:
+- Rebase on v5.14-rc1
+- Reword the commit message slightly.
+ChangeLog v1->v2:
+- Rewrite to reflect the actual problem of broken busy detection.
+---
+ drivers/mmc/core/core.c    |  8 ++++----
+ drivers/mmc/core/core.h    | 17 +++++++++++++++++
+ drivers/mmc/core/mmc_ops.c |  4 ++--
+ drivers/mmc/core/quirks.h  | 21 +++++++++++++++++++++
+ drivers/mmc/host/mmci.c    | 22 ++++++++++++++++++++--
+ include/linux/mmc/card.h   |  1 +
+ 6 files changed, 65 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/phy/intel/Kconfig b/drivers/phy/intel/Kconfig
-index ac42bb2fb394..18a3cc5b98c0 100644
---- a/drivers/phy/intel/Kconfig
-+++ b/drivers/phy/intel/Kconfig
-@@ -46,3 +46,13 @@ config PHY_INTEL_LGM_EMMC
- 	select GENERIC_PHY
- 	help
- 	  Enable this to support the Intel EMMC PHY
-+
-+config PHY_INTEL_THUNDERBAY_EMMC
-+        tristate "Intel Thunder Bay eMMC PHY driver"
-+        depends on OF && (ARCH_THUNDERBAY || COMPILE_TEST)
-+        select GENERIC_PHY
-+        help
-+	  This option enables support for Intel Thunder Bay SoC eMMC PHY.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called phy-intel-thunderbay-emmc.ko.
-diff --git a/drivers/phy/intel/Makefile b/drivers/phy/intel/Makefile
-index 14550981a707..6a4db3ee7393 100644
---- a/drivers/phy/intel/Makefile
-+++ b/drivers/phy/intel/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_PHY_INTEL_KEEMBAY_EMMC)	+= phy-intel-keembay-emmc.o
-+obj-$(CONFIG_PHY_INTEL_THUNDERBAY_EMMC)	+= phy-intel-thunderbay-emmc.o
- obj-$(CONFIG_PHY_INTEL_KEEMBAY_USB)	+= phy-intel-keembay-usb.o
- obj-$(CONFIG_PHY_INTEL_LGM_COMBO)	+= phy-intel-lgm-combo.o
- obj-$(CONFIG_PHY_INTEL_LGM_EMMC)	+= phy-intel-lgm-emmc.o
-diff --git a/drivers/phy/intel/phy-intel-thunderbay-emmc.c b/drivers/phy/intel/phy-intel-thunderbay-emmc.c
-new file mode 100644
-index 000000000000..6fa3308a2aea
---- /dev/null
-+++ b/drivers/phy/intel/phy-intel-thunderbay-emmc.c
-@@ -0,0 +1,500 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Intel ThunderBay eMMC PHY driver
-+ *
-+ * Copyright (C) 2021 Intel Corporation
-+ *
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index 95fedcf56e4a..e08dd9ea3d46 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -232,7 +232,7 @@ static void __mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
+ 	 * And bypass I/O abort, reset and bus suspend operations.
+ 	 */
+ 	if (sdio_is_io_busy(mrq->cmd->opcode, mrq->cmd->arg) &&
+-	    host->ops->card_busy) {
++	    mmc_hw_busy_detect(host)) {
+ 		int tries = 500; /* Wait aprox 500ms at maximum */
+ 
+ 		while (host->ops->card_busy(host) && --tries)
+@@ -1200,7 +1200,7 @@ int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr)
+ 	 */
+ 	if (!host->ops->start_signal_voltage_switch)
+ 		return -EPERM;
+-	if (!host->ops->card_busy)
++	if (!mmc_hw_busy_detect(host))
+ 		pr_warn("%s: cannot verify signal voltage switch\n",
+ 			mmc_hostname(host));
+ 
+@@ -1220,7 +1220,7 @@ int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr)
+ 	 * after the response of cmd11, but wait 1 ms to be sure
+ 	 */
+ 	mmc_delay(1);
+-	if (host->ops->card_busy && !host->ops->card_busy(host)) {
++	if (mmc_hw_busy_detect(host) && !host->ops->card_busy(host)) {
+ 		err = -EAGAIN;
+ 		goto power_cycle;
+ 	}
+@@ -1241,7 +1241,7 @@ int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr)
+ 	 * Failure to switch is indicated by the card holding
+ 	 * dat[0:3] low
+ 	 */
+-	if (host->ops->card_busy && host->ops->card_busy(host))
++	if (mmc_hw_busy_detect(host) && host->ops->card_busy(host))
+ 		err = -EAGAIN;
+ 
+ power_cycle:
+diff --git a/drivers/mmc/core/core.h b/drivers/mmc/core/core.h
+index 0c4de2030b3f..6a5619eed4a6 100644
+--- a/drivers/mmc/core/core.h
++++ b/drivers/mmc/core/core.h
+@@ -181,4 +181,21 @@ static inline int mmc_flush_cache(struct mmc_host *host)
+ 	return 0;
+ }
+ 
++/**
++ * mmc_hw_busy_detect() - Can we use hw busy detection?
++ * @host: the host in question
 + */
-+
-+#include <linux/clk.h>
-+#include <linux/delay.h>
-+#include <linux/io.h>
-+#include <linux/iopoll.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/phy/phy.h>
-+#include <linux/platform_device.h>
-+
-+/* eMMC/SD/SDIO core/phy configuration registers */
-+#define CTRL_CFG_0	0x00
-+#define CTRL_CFG_1	0x04
-+#define CTRL_PRESET_0	0x08
-+#define CTRL_PRESET_1	0x0c
-+#define CTRL_PRESET_2	0x10
-+#define CTRL_PRESET_3	0x14
-+#define CTRL_PRESET_4	0x18
-+#define CTRL_CFG_2	0x1c
-+#define CTRL_CFG_3	0x20
-+#define PHY_CFG_0	0x24
-+#define PHY_CFG_1	0x28
-+#define PHY_CFG_2	0x2c
-+#define PHYBIST_CTRL	0x30
-+#define SDHC_STAT3	0x34
-+#define PHY_STAT	0x38
-+#define PHYBIST_STAT_0	0x3c
-+#define PHYBIST_STAT_1	0x40
-+#define EMMC_AXI        0x44
-+
-+/* CTRL_PRESET_3 */
-+#define CTRL_PRESET3_MASK	GENMASK(31, 0)
-+#define CTRL_PRESET3_SHIFT	0
-+
-+/* CTRL_CFG_0 bit fields */
-+#define SUPPORT_HS_MASK		BIT(26)
-+#define SUPPORT_HS_SHIFT	26
-+
-+#define SUPPORT_8B_MASK		BIT(24)
-+#define SUPPORT_8B_SHIFT	24
-+
-+/* CTRL_CFG_1 bit fields */
-+#define SUPPORT_SDR50_MASK	BIT(28)
-+#define SUPPORT_SDR50_SHIFT	28
-+#define SLOT_TYPE_MASK		GENMASK(27, 26)
-+#define SLOT_TYPE_OFFSET	26
-+#define SUPPORT_64B_MASK	BIT(24)
-+#define SUPPORT_64B_SHIFT	24
-+#define SUPPORT_HS400_MASK	BIT(2)
-+#define SUPPORT_HS400_SHIFT	2
-+#define SUPPORT_DDR50_MASK	BIT(1)
-+#define SUPPORT_DDR50_SHIFT	1
-+#define SUPPORT_SDR104_MASK	BIT(0)
-+#define SUPPORT_SDR104_SHIFT	0
-+
-+/* PHY_CFG_0 bit fields */
-+#define SEL_DLY_TXCLK_MASK      BIT(29)
-+#define SEL_DLY_TXCLK_SHIFT	29
-+#define SEL_DLY_RXCLK_MASK      BIT(28)
-+#define SEL_DLY_RXCLK_SHIFT	28
-+
-+#define OTAP_DLY_ENA_MASK	BIT(27)
-+#define OTAP_DLY_ENA_SHIFT	27
-+#define OTAP_DLY_SEL_MASK	GENMASK(26, 23)
-+#define OTAP_DLY_SEL_SHIFT	23
-+#define ITAP_CHG_WIN_MASK	BIT(22)
-+#define ITAP_CHG_WIN_SHIFT	22
-+#define ITAP_DLY_ENA_MASK	BIT(21)
-+#define ITAP_DLY_ENA_SHIFT	21
-+#define ITAP_DLY_SEL_MASK	GENMASK(20, 16)
-+#define ITAP_DLY_SEL_SHIFT	16
-+#define RET_ENB_MASK		BIT(15)
-+#define RET_ENB_SHIFT		15
-+#define RET_EN_MASK		BIT(14)
-+#define RET_EN_SHIFT		14
-+#define DLL_IFF_MASK		GENMASK(13, 11)
-+#define DLL_IFF_SHIFT		11
-+#define DLL_EN_MASK		BIT(10)
-+#define DLL_EN_SHIFT		10
-+#define DLL_TRIM_ICP_MASK	GENMASK(9, 6)
-+#define DLL_TRIM_ICP_SHIFT	6
-+#define RETRIM_EN_MASK		BIT(5)
-+#define RETRIM_EN_SHIFT		5
-+#define RETRIM_MASK		BIT(4)
-+#define RETRIM_SHIFT		4
-+#define DR_TY_MASK		GENMASK(3, 1)
-+#define DR_TY_SHIFT		1
-+#define PWR_DOWN_MASK		BIT(0)
-+#define PWR_DOWN_SHIFT		0
-+
-+/* PHY_CFG_1 bit fields */
-+#define REN_DAT_MASK		GENMASK(19, 12)
-+#define REN_DAT_SHIFT		12
-+#define REN_CMD_MASK		BIT(11)
-+#define REN_CMD_SHIFT		11
-+#define REN_STRB_MASK		BIT(10)
-+#define REN_STRB_SHIFT		10
-+#define PU_STRB_MASK		BIT(20)
-+#define PU_STRB_SHIFT		20
-+
-+/* PHY_CFG_2 bit fields */
-+#define CLKBUF_MASK		GENMASK(24, 21)
-+#define CLKBUF_SHIFT		21
-+#define SEL_STRB_MASK		GENMASK(20, 13)
-+#define SEL_STRB_SHIFT		13
-+#define SEL_FREQ_MASK		GENMASK(12, 10)
-+#define SEL_FREQ_SHIFT		10
-+
-+/* PHY_STAT bit fields */
-+#define CAL_DONE		BIT(6)
-+#define DLL_RDY			BIT(5)
-+
-+#define OTAP_DLY		0x0
-+#define ITAP_DLY		0x0
-+#define STRB			0x33
-+
-+/* From ACS_eMMC51_16nFFC_RO1100_Userguide_v1p0.pdf p17 */
-+#define FREQSEL_200M_170M	0x0
-+#define FREQSEL_170M_140M	0x1
-+#define FREQSEL_140M_110M	0x2
-+#define FREQSEL_110M_80M	0x3
-+#define FREQSEL_80M_50M		0x4
-+#define FREQSEL_275M_250M	0x5
-+#define FREQSEL_250M_225M	0x6
-+#define FREQSEL_225M_200M	0x7
-+
-+/* Phy power status */
-+#define PHY_UNINITIALIZED	0
-+#define PHY_INITIALIZED		1
-+
-+/*
-+ * During init(400KHz) phy_settings will be called with 200MHZ clock
-+ * To avoid incorrectly setting the phy for init(400KHZ) "phy_power_sts" is used.
-+ * When actual clock is set always phy is powered off once and then powered on.
-+ * (sdhci_arasan_set_clock). That feature will be used to identify whether the
-+ * settings are for init phy_power_on or actual clock phy_power_on
-+ * 0 --> init settings
-+ * 1 --> actual settings
-+ */
-+
-+struct thunderbay_emmc_phy {
-+	void __iomem    *reg_base;
-+	struct clk      *emmcclk;
-+	int phy_power_sts;
-+};
-+
-+static inline void update_reg(struct thunderbay_emmc_phy *tbh_phy, u32 offset,
-+			      u32 mask, u32 shift, u32 val)
++static inline bool mmc_hw_busy_detect(struct mmc_host *host)
 +{
-+	u32 tmp;
++	struct mmc_card *card = host->card;
++	bool has_ops;
++	bool able = true;
 +
-+	tmp = readl(tbh_phy->reg_base + offset);
-+	tmp &= ~mask;
-+	tmp |= val << shift;
-+	writel(tmp, tbh_phy->reg_base + offset);
++	has_ops = (host->ops->card_busy != NULL);
++	if (card)
++		able = !(card->quirks & MMC_QUIRK_BROKEN_HW_BUSY_DETECT);
++
++	return (has_ops && able);
 +}
 +
-+static int thunderbay_emmc_phy_power(struct phy *phy, bool power_on)
+ #endif
+diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
+index 973756ed4016..546fc799a8e5 100644
+--- a/drivers/mmc/core/mmc_ops.c
++++ b/drivers/mmc/core/mmc_ops.c
+@@ -435,7 +435,7 @@ static int mmc_busy_cb(void *cb_data, bool *busy)
+ 	u32 status = 0;
+ 	int err;
+ 
+-	if (host->ops->card_busy) {
++	if (mmc_hw_busy_detect(host)) {
+ 		*busy = host->ops->card_busy(host);
+ 		return 0;
+ 	}
+@@ -597,7 +597,7 @@ int __mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
+ 	 * when it's not allowed to poll by using CMD13, then we need to rely on
+ 	 * waiting the stated timeout to be sufficient.
+ 	 */
+-	if (!send_status && !host->ops->card_busy) {
++	if (!send_status && !mmc_hw_busy_detect(host)) {
+ 		mmc_delay(timeout_ms);
+ 		goto out_tim;
+ 	}
+diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+index d68e6e513a4f..8da6526f0eb0 100644
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -99,6 +99,27 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+ 	MMC_FIXUP("V10016", CID_MANFID_KINGSTON, CID_OEMID_ANY, add_quirk_mmc,
+ 		  MMC_QUIRK_TRIM_BROKEN),
+ 
++	/*
++	 * Some older Samsung eMMCs have broken hardware busy detection.
++	 * Enabling this feature in the host controller can make the card
++	 * accesses lock up completely.
++	 */
++	MMC_FIXUP("4YMD1R", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	/* Samsung KLMxGxxE4x eMMCs from 2012: 4, 8, 16, 32 and 64 GB */
++	MMC_FIXUP("M4G1YC", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("M8G1WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("MAG2WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("MBG4WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("MAG2WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("MCG8WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++
+ 	END_FIXUP
+ };
+ 
+diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+index 984d35055156..3046917b2b67 100644
+--- a/drivers/mmc/host/mmci.c
++++ b/drivers/mmc/host/mmci.c
+@@ -347,6 +347,24 @@ static int mmci_card_busy(struct mmc_host *mmc)
+ 	return busy;
+ }
+ 
++/* Use this if the MMCI variant AND the card supports it */
++static bool mmci_use_busy_detect(struct mmci_host *host)
 +{
-+	struct thunderbay_emmc_phy *tbh_phy = phy_get_drvdata(phy);
-+	unsigned int freqsel = FREQSEL_200M_170M;
-+	unsigned long rate;
-+	static int lock;
-+	u32 val;
-+	int ret;
++	struct mmc_card *card = host->mmc->card;
 +
-+	/* Disable DLL */
-+	rate = clk_get_rate(tbh_phy->emmcclk);
-+	switch (rate) {
-+	case 200000000:
-+	/* lock dll only when it is used, i.e only if SEL_DLY_TXCLK/RXCLK are 0 */
-+		update_reg(tbh_phy, PHY_CFG_0, DLL_EN_MASK, DLL_EN_SHIFT, 0x0);
-+		break;
-+	/* dll lock not required for other frequencies */
-+	case 50000000 ... 52000000:
-+	case 400000:
-+	default:
-+		break;
-+	}
++	if (!host->variant->busy_detect)
++		return false;
 +
-+	if (!power_on)
-+		return 0;
++	/* We don't allow this until we know that the card can handle it */
++	if (!card)
++		return false;
 +
-+	rate = clk_get_rate(tbh_phy->emmcclk);
-+	switch (rate) {
-+	case 170000001 ... 200000000:
-+		freqsel = FREQSEL_200M_170M;
-+		break;
-+	case 140000001 ... 170000000:
-+		freqsel = FREQSEL_170M_140M;
-+		break;
-+	case 110000001 ... 140000000:
-+		freqsel = FREQSEL_140M_110M;
-+		break;
-+	case 80000001 ... 110000000:
-+		freqsel = FREQSEL_110M_80M;
-+		break;
-+	case 50000000 ... 80000000:
-+		freqsel = FREQSEL_80M_50M;
-+		break;
-+	case 250000001 ... 275000000:
-+		freqsel = FREQSEL_275M_250M;
-+		break;
-+	case 225000001 ... 250000000:
-+		freqsel = FREQSEL_250M_225M;
-+		break;
-+	case 200000001 ... 225000000:
-+		freqsel = FREQSEL_225M_200M;
-+		break;
-+	default:
-+		break;
-+	}
++	if (card->quirks & MMC_QUIRK_BROKEN_HW_BUSY_DETECT)
++		return false;
 +
-+	if (rate > 200000000)
-+	/* only the upper limit is considered as the clock rate may fall low during init */
-+		dev_warn(&phy->dev, "Unsupported rate: %lu\n", rate);
-+
-+	udelay(5);
-+
-+	if (lock == 0) {
-+		/* PDB will be done only once per boot */
-+		update_reg(tbh_phy, PHY_CFG_0, PWR_DOWN_MASK,
-+			   PWR_DOWN_SHIFT, 0x1);
-+		lock = 1;
-+		/*
-+		 * According to the user manual, it asks driver to wait 5us for
-+		 * calpad busy trimming. However it is documented that this value is
-+		 * PVT(A.K.A. process, voltage and temperature) relevant, so some
-+		 * failure cases are found which indicates we should be more tolerant
-+		 * to calpad busy trimming.
-+		 */
-+		ret = readl_poll_timeout(tbh_phy->reg_base + PHY_STAT,
-+					 val, (val & CAL_DONE), 10, 50);
-+		if (ret) {
-+			dev_err(&phy->dev, "caldone failed, ret=%d\n", ret);
-+			return ret;
-+		}
-+	}
-+	rate = clk_get_rate(tbh_phy->emmcclk);
-+	switch (rate) {
-+	case 200000000:
-+		/* Set frequency of the DLL operation */
-+		update_reg(tbh_phy, PHY_CFG_2, SEL_FREQ_MASK, SEL_FREQ_SHIFT, freqsel);
-+
-+		/* Enable DLL */
-+		update_reg(tbh_phy, PHY_CFG_0, DLL_EN_MASK, DLL_EN_SHIFT, 0x1);
-+
-+		/*
-+		 * After enabling analog DLL circuits docs say that we need 10.2 us if
-+		 * our source clock is at 50 MHz and that lock time scales linearly
-+		 * with clock speed. If we are powering on the PHY and the card clock
-+		 * is super slow (like 100kHz) this could take as long as 5.1 ms as
-+		 * per the math: 10.2 us * (50000000 Hz / 100000 Hz) => 5.1 ms
-+		 * hopefully we won't be running at 100 kHz, but we should still make
-+		 * sure we wait long enough.
-+		 *
-+		 * NOTE: There appear to be corner cases where the DLL seems to take
-+		 * extra long to lock for reasons that aren't understood. In some
-+		 * extreme cases we've seen it take up to over 10ms (!). We'll be
-+		 * generous and give it 50ms.
-+		 */
-+		ret = readl_poll_timeout(tbh_phy->reg_base + PHY_STAT,
-+					 val, (val & DLL_RDY), 10, 50 * USEC_PER_MSEC);
-+		if (ret) {
-+			dev_err(&phy->dev, "dllrdy failed, ret=%d\n", ret);
-+			return ret;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+	return 0;
++	return true;
 +}
 +
-+static int thunderbay_emmc_phy_init(struct phy *phy)
-+{
-+	struct thunderbay_emmc_phy *tbh_phy = phy_get_drvdata(phy);
-+
-+	tbh_phy->emmcclk = clk_get(&phy->dev, "emmcclk");
-+
-+	return PTR_ERR_OR_ZERO(tbh_phy->emmcclk);
-+}
-+
-+static int thunderbay_emmc_phy_exit(struct phy *phy)
-+{
-+	struct thunderbay_emmc_phy *tbh_phy = phy_get_drvdata(phy);
-+
-+	clk_put(tbh_phy->emmcclk);
-+
-+	return 0;
-+}
-+
-+static int thunderbay_emmc_phy_power_on(struct phy *phy)
-+{
-+	struct thunderbay_emmc_phy *tbh_phy = phy_get_drvdata(phy);
-+	unsigned long rate;
-+
-+	/* Overwrite capability bits configurable in bootloader */
-+	update_reg(tbh_phy, CTRL_CFG_0,
-+		   SUPPORT_HS_MASK, SUPPORT_HS_SHIFT, 0x1);
-+	update_reg(tbh_phy, CTRL_CFG_0,
-+		   SUPPORT_8B_MASK, SUPPORT_8B_SHIFT, 0x1);
-+	update_reg(tbh_phy, CTRL_CFG_1,
-+		   SUPPORT_SDR50_MASK, SUPPORT_SDR50_SHIFT, 0x1);
-+	update_reg(tbh_phy, CTRL_CFG_1,
-+		   SUPPORT_DDR50_MASK, SUPPORT_DDR50_SHIFT, 0x1);
-+	update_reg(tbh_phy, CTRL_CFG_1,
-+		   SUPPORT_SDR104_MASK, SUPPORT_SDR104_SHIFT, 0x1);
-+	update_reg(tbh_phy, CTRL_CFG_1,
-+		   SUPPORT_HS400_MASK, SUPPORT_HS400_SHIFT, 0x1);
-+	update_reg(tbh_phy, CTRL_CFG_1,
-+		   SUPPORT_64B_MASK, SUPPORT_64B_SHIFT, 0x1);
-+
-+	if (tbh_phy->phy_power_sts == PHY_UNINITIALIZED) {
-+	/* Indicates initialization, so settings to be done for init , same as 400KHZ setting */
-+		update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_TXCLK_MASK, SEL_DLY_TXCLK_SHIFT, 0x1);
-+		update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_RXCLK_MASK, SEL_DLY_RXCLK_SHIFT, 0x1);
-+		update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_ENA_MASK, ITAP_DLY_ENA_SHIFT, 0x0);
-+		update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_SEL_MASK, ITAP_DLY_SEL_SHIFT, 0x0);
-+		update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_ENA_MASK, OTAP_DLY_ENA_SHIFT, 0x0);
-+		update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_SEL_MASK, OTAP_DLY_SEL_SHIFT, 0);
-+		update_reg(tbh_phy, PHY_CFG_0, DLL_TRIM_ICP_MASK, DLL_TRIM_ICP_SHIFT, 0);
-+		update_reg(tbh_phy, PHY_CFG_0, DR_TY_MASK, DR_TY_SHIFT, 0x1);
-+
-+	} else if (tbh_phy->phy_power_sts == PHY_INITIALIZED) {
-+		/* Indicates actual clock setting */
-+		rate = clk_get_rate(tbh_phy->emmcclk);
-+		switch (rate) {
-+		case 200000000:
-+			update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_TXCLK_MASK,
-+				   SEL_DLY_TXCLK_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_RXCLK_MASK,
-+				   SEL_DLY_RXCLK_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_ENA_MASK,
-+				   ITAP_DLY_ENA_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_SEL_MASK,
-+				   ITAP_DLY_SEL_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_ENA_MASK,
-+				   OTAP_DLY_ENA_SHIFT, 0x1);
-+			update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_SEL_MASK,
-+				   OTAP_DLY_SEL_SHIFT, 2);
-+			update_reg(tbh_phy, PHY_CFG_0, DLL_TRIM_ICP_MASK,
-+				   DLL_TRIM_ICP_SHIFT, 0x8);
-+			update_reg(tbh_phy, PHY_CFG_0, DR_TY_MASK,
-+				   DR_TY_SHIFT, 0x1);
-+			/* For HS400 only */
-+			update_reg(tbh_phy, PHY_CFG_2, SEL_STRB_MASK,
-+				   SEL_STRB_SHIFT, STRB);
-+			break;
-+		case 50000000 ... 52000000:
-+			/* For both HS and DDR52 this setting works */
-+			update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_TXCLK_MASK,
-+				   SEL_DLY_TXCLK_SHIFT, 0x1);
-+			update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_RXCLK_MASK,
-+				   SEL_DLY_RXCLK_SHIFT, 0x1);
-+			update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_ENA_MASK,
-+				   ITAP_DLY_ENA_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_SEL_MASK,
-+				   ITAP_DLY_SEL_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_ENA_MASK,
-+				   OTAP_DLY_ENA_SHIFT, 0x1);
-+			update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_SEL_MASK,
-+				   OTAP_DLY_SEL_SHIFT, 4);
-+			update_reg(tbh_phy, PHY_CFG_0, DLL_TRIM_ICP_MASK,
-+				   DLL_TRIM_ICP_SHIFT, 0x8);
-+			update_reg(tbh_phy, PHY_CFG_0,
-+				   DR_TY_MASK, DR_TY_SHIFT, 0x1);
-+			break;
-+		case 400000:
-+			update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_TXCLK_MASK,
-+				   SEL_DLY_TXCLK_SHIFT, 0x1);
-+			update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_RXCLK_MASK,
-+				   SEL_DLY_RXCLK_SHIFT, 0x1);
-+			update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_ENA_MASK,
-+				   ITAP_DLY_ENA_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_SEL_MASK,
-+				   ITAP_DLY_SEL_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_ENA_MASK,
-+				   OTAP_DLY_ENA_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_SEL_MASK,
-+				   OTAP_DLY_SEL_SHIFT, 0);
-+			update_reg(tbh_phy, PHY_CFG_0, DLL_TRIM_ICP_MASK,
-+				   DLL_TRIM_ICP_SHIFT, 0);
-+			update_reg(tbh_phy, PHY_CFG_0, DR_TY_MASK, DR_TY_SHIFT, 0x1);
-+			break;
-+		default:
-+			update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_TXCLK_MASK,
-+				   SEL_DLY_TXCLK_SHIFT, 0x1);
-+			update_reg(tbh_phy, PHY_CFG_0, SEL_DLY_RXCLK_MASK,
-+				   SEL_DLY_RXCLK_SHIFT, 0x1);
-+			update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_ENA_MASK,
-+				   ITAP_DLY_ENA_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, ITAP_DLY_SEL_MASK,
-+				   ITAP_DLY_SEL_SHIFT, 0x0);
-+			update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_ENA_MASK,
-+				   OTAP_DLY_ENA_SHIFT, 0x1);
-+			update_reg(tbh_phy, PHY_CFG_0, OTAP_DLY_SEL_MASK,
-+				   OTAP_DLY_SEL_SHIFT, 2);
-+			update_reg(tbh_phy, PHY_CFG_0, DLL_TRIM_ICP_MASK,
-+				   DLL_TRIM_ICP_SHIFT, 0x8);
-+			update_reg(tbh_phy, PHY_CFG_0, DR_TY_MASK,
-+				   DR_TY_SHIFT, 0x1);
-+			break;
-+		}
-+	/* Reset, init seq will be called without phy_power_off, so this indicates init seq */
-+		tbh_phy->phy_power_sts = PHY_UNINITIALIZED;
-+	}
-+
-+	update_reg(tbh_phy, PHY_CFG_0, RETRIM_EN_MASK, RETRIM_EN_SHIFT, 0x1);
-+	update_reg(tbh_phy, PHY_CFG_0, RETRIM_MASK, RETRIM_SHIFT, 0x0);
-+
-+	return thunderbay_emmc_phy_power(phy, 1);
-+}
-+
-+static int thunderbay_emmc_phy_power_off(struct phy *phy)
-+{
-+	struct thunderbay_emmc_phy *tbh_phy = phy_get_drvdata(phy);
-+
-+	tbh_phy->phy_power_sts = PHY_INITIALIZED;
-+
-+	return thunderbay_emmc_phy_power(phy, 0);
-+}
-+
-+static const struct phy_ops thunderbay_emmc_phy_ops = {
-+	.init		= thunderbay_emmc_phy_init,
-+	.exit		= thunderbay_emmc_phy_exit,
-+	.power_on	= thunderbay_emmc_phy_power_on,
-+	.power_off	= thunderbay_emmc_phy_power_off,
-+	.owner		= THIS_MODULE,
-+};
-+
-+static const struct of_device_id thunderbay_emmc_phy_of_match[] = {
-+	{ .compatible = "intel,thunderbay-emmc-phy",
-+		(void *)&thunderbay_emmc_phy_ops },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, thunderbay_emmc_phy_of_match);
-+
-+static int thunderbay_emmc_phy_probe(struct platform_device *pdev)
-+{
-+	struct thunderbay_emmc_phy *tbh_phy;
-+	struct phy_provider *phy_provider;
-+	struct device *dev = &pdev->dev;
-+	const struct of_device_id *id;
-+	struct phy *generic_phy;
-+	struct resource *res;
-+
-+	if (!dev->of_node)
-+		return -ENODEV;
-+
-+	tbh_phy = devm_kzalloc(dev, sizeof(*tbh_phy), GFP_KERNEL);
-+	if (!tbh_phy)
-+		return -ENOMEM;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	tbh_phy->reg_base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(tbh_phy->reg_base)) {
-+		dev_err(&pdev->dev, "region map failed\n");
-+		return PTR_ERR(tbh_phy->reg_base);
-+	}
-+
-+	tbh_phy->phy_power_sts = PHY_UNINITIALIZED;
-+	id = of_match_node(thunderbay_emmc_phy_of_match, pdev->dev.of_node);
-+	if (!id) {
-+		dev_err(dev, "failed to get match_node\n");
-+		return -EINVAL;
-+	}
-+
-+	generic_phy = devm_phy_create(dev, dev->of_node, id->data);
-+	if (IS_ERR(generic_phy)) {
-+		dev_err(dev, "failed to create PHY\n");
-+		return PTR_ERR(generic_phy);
-+	}
-+
-+	phy_set_drvdata(generic_phy, tbh_phy);
-+	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
-+
-+	return PTR_ERR_OR_ZERO(phy_provider);
-+}
-+
-+static struct platform_driver thunderbay_emmc_phy_driver = {
-+	.probe		 = thunderbay_emmc_phy_probe,
-+	.driver		 = {
-+		.name	 = "thunderbay-emmc-phy",
-+		.of_match_table = thunderbay_emmc_phy_of_match,
-+	},
-+};
-+module_platform_driver(thunderbay_emmc_phy_driver);
-+
-+MODULE_AUTHOR("Nandhini S <nandhini.srikandan@intel.com>");
-+MODULE_AUTHOR("Rashmi A <rashmi.a@intel.com>");
-+MODULE_DESCRIPTION("Intel Thunder Bay eMMC PHY driver");
-+MODULE_LICENSE("GPL v2");
+ static void mmci_reg_delay(struct mmci_host *host)
+ {
+ 	/*
+@@ -1381,7 +1399,7 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+ 		return;
+ 
+ 	/* Handle busy detection on DAT0 if the variant supports it. */
+-	if (busy_resp && host->variant->busy_detect)
++	if (busy_resp && mmci_use_busy_detect(host))
+ 		if (!host->ops->busy_complete(host, status, err_msk))
+ 			return;
+ 
+@@ -1725,7 +1743,7 @@ static void mmci_set_max_busy_timeout(struct mmc_host *mmc)
+ 	struct mmci_host *host = mmc_priv(mmc);
+ 	u32 max_busy_timeout = 0;
+ 
+-	if (!host->variant->busy_detect)
++	if (!mmci_use_busy_detect(host))
+ 		return;
+ 
+ 	if (host->variant->busy_timeout && mmc->actual_clock)
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index 74e6c0624d27..525a39951c6d 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -280,6 +280,7 @@ struct mmc_card {
+ 						/* for byte mode */
+ #define MMC_QUIRK_NONSTD_SDIO	(1<<2)		/* non-standard SDIO card attached */
+ 						/* (missing CIA registers) */
++#define MMC_QUIRK_BROKEN_HW_BUSY_DETECT (1<<3)	/* Disable hardware busy detection on DAT0 */
+ #define MMC_QUIRK_NONSTD_FUNC_IF (1<<4)		/* SDIO card has nonstd function interfaces */
+ #define MMC_QUIRK_DISABLE_CD	(1<<5)		/* disconnect CD/DAT[3] resistor */
+ #define MMC_QUIRK_INAND_CMD38	(1<<6)		/* iNAND devices have broken CMD38 */
 -- 
-2.17.1
+2.31.1
 
