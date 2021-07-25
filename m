@@ -2,33 +2,36 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E3453D4CD7
-	for <lists+linux-mmc@lfdr.de>; Sun, 25 Jul 2021 11:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45B673D4CD9
+	for <lists+linux-mmc@lfdr.de>; Sun, 25 Jul 2021 11:20:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230326AbhGYIkS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 25 Jul 2021 04:40:18 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:8332 "EHLO rere.qmqm.pl"
+        id S230421AbhGYIkU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 25 Jul 2021 04:40:20 -0400
+Received: from rere.qmqm.pl ([91.227.64.183]:54030 "EHLO rere.qmqm.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230256AbhGYIkS (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 25 Jul 2021 04:40:18 -0400
+        id S230310AbhGYIkT (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 25 Jul 2021 04:40:19 -0400
 Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 4GXcwt6CCbz83;
-        Sun, 25 Jul 2021 11:20:46 +0200 (CEST)
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 4GXcww0VFmzQ4;
+        Sun, 25 Jul 2021 11:20:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1627204847; bh=AZX4jQMPp4itNQAWYqyQgf8lZ107duacDRUb5dMUrFw=;
-        h=Date:From:Subject:To:Cc:From;
-        b=BvdF8oeBa5T0aLU2PcJSjnAFd5MxV/hEStSw/3T85G4JMeuvv1wSS9e1h5AnHqtGw
-         M0+9vBMmceTjAyYDf4V3kxcokH6dakNRzk/dIek5r0nFqGLiUoc6+zhJD2FLLmGWtJ
-         hh3Ykw58by65pz/u9ZUEJOzt/gbuxAD3mWQErlIElv/pq2E5lBcovpZjm9J4Xa9a58
-         7AQUvVovOSfxdH/c7aCxWDyHolA5NOSr9YURmeeecqDLTkn7f1Krdrqm7KDurBnx6B
-         XE8Y3XyTP/juoVbDztVep6w6RKWKjNNHMu7Be2HeKLftcVjkri6D6IleSomfXOWMx1
-         8KLNQd64gVpnA==
+        t=1627204848; bh=3RQA0YY2zxTg+Xk+cZmLedNuKzlo21ajTA3ny9uoqwg=;
+        h=Date:In-Reply-To:References:From:Subject:To:Cc:From;
+        b=JlRwUCBxOPs1wQ4kZ09ylNVEBwqIPSJv8NMyDUldc39/eUapyWDNN8RRH4GIPtWUl
+         kTbDscrcaki5bMe5llfarNT1223EZeQekzUu+5Q8Nb0ZrWjvHt4K3GwT39lbNfANpy
+         RmMOIh3HFzHLs2tVrnj9596Ik31NJ83dKpJ/wfff32R0o1zcqHOIQTwpIhG5WKF+3J
+         oiFPcN+lh3bMbehx+rBKmBBorg+QtQokNWwkWD4azrctgfQoFNKUqLBSL5wvAAD98d
+         JoMhivNbQXPOIQL5jp7SHocou8jx0/j/uDcqWYnVxibXCjdzHEK9F4DmMODyfc4L2Z
+         Wsmlz3liloXGg==
 X-Virus-Status: Clean
 X-Virus-Scanned: clamav-milter 0.103.2 at mail
-Date:   Sun, 25 Jul 2021 11:20:45 +0200
-Message-Id: <cover.1627204633.git.mirq-linux@rere.qmqm.pl>
+Date:   Sun, 25 Jul 2021 11:20:47 +0200
+Message-Id: <e65dc96eb24caf8baa5431a51fe694b969e2d51f.1627204633.git.mirq-linux@rere.qmqm.pl>
+In-Reply-To: <cover.1627204633.git.mirq-linux@rere.qmqm.pl>
+References: <cover.1627204633.git.mirq-linux@rere.qmqm.pl>
 From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Subject: [PATCH v4 0/5] SDHCI clock handling fixes and cleanups
+Subject: [PATCH v4 2/5] mmc: sdhci: always obey programmable clock config in
+ preset value
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -36,30 +39,48 @@ To:     Kevin Liu <kliu5@marvell.com>,
         Michal Simek <michal.simek@xilinx.com>,
         Suneel Garapati <suneel.garapati@xilinx.com>,
         Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Al Cooper <alcooperx@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org
+Cc:     Adrian Hunter <adrian.hunter@intel.com>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Al Cooper <alcooperx@gmail.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This patch set combines a few of code improvements for SDHCI clock
-handling. First three are small fixes to the code, next two make
-the clock calculation code simpler.
+When host controller uses programmable clock presets but doesn't
+advertise programmable clock support, we can only guess what frequency
+it generates. Let's at least return correct SDHCI_PROG_CLOCK_MODE bit
+value in this case.
 
-Michał Mirosław (5):
-  mmc: sdhci: fix base clock usage in preset value
-  mmc: sdhci: always obey programmable clock config in preset value
-  mmc: sdhci: fix SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN
-  mmc: sdhci: move SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN frequency limit
-  mmc: sdhci: simplify v2/v3+ clock calculation
+Fixes: 52983382c74f ("mmc: sdhci: enhance preset value function")
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+---
+v4: no changes
+v3: added a comment for this case
+v2: no changes
+---
+ drivers/mmc/host/sdhci.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
- drivers/mmc/host/sdhci-of-arasan.c  |  11 +--
- drivers/mmc/host/sdhci-of-dwcmshc.c |   8 +-
- drivers/mmc/host/sdhci.c            | 123 +++++++++++++---------------
- drivers/mmc/host/sdhci.h            |   4 +-
- 4 files changed, 67 insertions(+), 79 deletions(-)
-
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index c7438dd13e3e..3ab60e7f936b 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -1859,11 +1859,14 @@ u16 sdhci_calc_clk(struct sdhci_host *host, unsigned int clock,
+ 
+ 			pre_val = sdhci_get_preset_value(host);
+ 			div = FIELD_GET(SDHCI_PRESET_SDCLK_FREQ_MASK, pre_val);
+-			if (host->clk_mul &&
+-				(pre_val & SDHCI_PRESET_CLKGEN_SEL)) {
++			if (pre_val & SDHCI_PRESET_CLKGEN_SEL) {
+ 				clk = SDHCI_PROG_CLOCK_MODE;
+ 				real_div = div + 1;
+ 				clk_mul = host->clk_mul;
++				if (!clk_mul) {
++					/* The clock frequency is unknown. Assume undivided base. */
++					clk_mul = 1;
++				}
+ 			} else {
+ 				real_div = max_t(int, 1, div << 1);
+ 			}
 -- 
 2.30.2
 
