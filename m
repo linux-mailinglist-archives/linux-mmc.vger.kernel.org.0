@@ -2,164 +2,74 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 771433DCB70
-	for <lists+linux-mmc@lfdr.de>; Sun,  1 Aug 2021 13:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 369AF3DCF64
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Aug 2021 06:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231577AbhHALqh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 1 Aug 2021 07:46:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58874 "EHLO
+        id S232128AbhHBEY1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 2 Aug 2021 00:24:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231461AbhHALqh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 1 Aug 2021 07:46:37 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC6A8C06175F;
-        Sun,  1 Aug 2021 04:46:29 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id z3so15130999plg.8;
-        Sun, 01 Aug 2021 04:46:29 -0700 (PDT)
+        with ESMTP id S232138AbhHBEYV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 2 Aug 2021 00:24:21 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C33C0617B1
+        for <linux-mmc@vger.kernel.org>; Sun,  1 Aug 2021 21:24:10 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id g21so3404708edb.4
+        for <linux-mmc@vger.kernel.org>; Sun, 01 Aug 2021 21:24:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xuasN2nPmOUeEGVnE4hDkJbU9sMt+zlOyYRMH9VVQ9M=;
-        b=uCnxAHyo6xWVruF772lNLh3pkfyraHyfWYIWJ1xrbQIqbq1FkuCS7BWORfLQWdrcEk
-         x8FSWNFRzzgFfPtddpwsX0hR2YwbLJoePCUgktwpUaG9TM5EWFB3JQI+DZSqV4rTFC7g
-         XOB3acBmrTFusOLND7hqY4bmO5avmVnOqBj5mwzjRy9KoEWxA6zVEsBH1uRebTU7lZu9
-         Fn4A1EkUNXfaL+gPzwZWpRE2AS54dg94EIdilnpTJEHaqQFWyiXuc74I0hIpBh4frXNC
-         nT2W+y4jGrVlNhuaVe3/OG0Nz3HXVCWlQr9/iwd8SofgAaYY5HmWV+OsYezUAvfCQIAJ
-         cjeg==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=FtyL1jenxhHoD0FEqr0JzEzar9WxjQ0aFEwPIjOui/KxHqjdRIaWw+qc9fVrqT7/Dn
+         Pnh35Va41LybAL6U8YkeIBgROe6j/64zDWESXr3a3yRfbQQPGRB9fNiPFd+zLtRJzUIN
+         QuzzTY5SkBKHMhw3aNm828s4szNx+qezVfjbXBb1AnLosRqM3hZLsmXFs11UFe9XwQd0
+         8wSmR+hXWoecdn7C1dRJ3raMOO2OzRp8To/v4OIIenhLUR2Xi2bEwQKHQsPiMZ9RJ/f/
+         /P5G34L+RYG0gvY4mQKUVcv9jgYngramQoP+XViWVUuAojxufRmPTkFAnPt7xVda61k1
+         G8fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xuasN2nPmOUeEGVnE4hDkJbU9sMt+zlOyYRMH9VVQ9M=;
-        b=RplyRFg2sQrZlRt65MtiyxFvQW1YhYjuik4mP8yYQgD3KrbOxAbhayZj5qT8RYkkV+
-         ItWEW45r7+NpHH7DvZS1pwWaOHuM6/Yisg+Z1lSYdVhaMap94LD+W6rDVfszIo+R99CN
-         2fUjymRLj3ROG6+8yU6JA7ODHH3QKoY1zhpScWCKpEPxyRVunfKZuOAHZu9UHvDCt5oZ
-         Uva3U4XzCQ6TXU9h6bp5gx7qnkv4IhcwcQvGyx8QNLPgIuevdscpGSjDlb7IvI2aNvh5
-         PQbgJRwhbIlvBTBVw/fcSkKGPtd8hmWBAbzJRtiVrR/VF50s3jC+h3/Q9UxCHkKDaKBQ
-         DEAw==
-X-Gm-Message-State: AOAM531WJqcY8eBNkvRPijx0TvjWkj7vTiv39jqliccwlhnCSQbJpqyE
-        0wA7KzsqmAg36Q2eH3zUNGDEkN7x3vyT+w==
-X-Google-Smtp-Source: ABdhPJxjFvXAZHqStljrXRzsijyuHNFgBKDcZojlXpv7c/Rez7YvBrAPxRiO93hx2hWv0pTTnnU3ew==
-X-Received: by 2002:a65:6108:: with SMTP id z8mr1354883pgu.179.1627818389051;
-        Sun, 01 Aug 2021 04:46:29 -0700 (PDT)
-Received: from glados.. ([2601:647:6480:2358:feaa:14ff:fe71:bf70])
-        by smtp.gmail.com with ESMTPSA id b8sm856736pjo.51.2021.08.01.04.46.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Aug 2021 04:46:28 -0700 (PDT)
-From:   Thomas Hebb <tommyhebb@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Thomas Hebb <tommyhebb@gmail.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ricky Wu <ricky_wu@realtek.com>,
-        Rui Feng <rui_feng@realsil.com.cn>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-mmc@vger.kernel.org
-Subject: [PATCH] mmc: rtsx: fix long reads when clock is prescaled
-Date:   Sun,  1 Aug 2021 04:46:14 -0700
-Message-Id: <2fef280d8409ab0100c26c6ac7050227defd098d.1627818365.git.tommyhebb@gmail.com>
-X-Mailer: git-send-email 2.32.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=T62E1oAjjYM0BkbANBCNtOobUoSSXmVhUtTr/UVaZfCvaCcukDMTOTAmgnQjsrv8PH
+         AUm/xVYa1QgHh17DnECNH6qAoSQo/OLbgQRD/sR9CYoBd2T1mGOJM/bqxhQ3kS5Nnhfm
+         BdrZCIvj6UOmclkLxo+AQOIrehCy5Zb+JCr59saUFiSCD7bTNHjNru0PLoRTcR45QpF0
+         b4QdELteugf8FZQRrE4Qz4UpbOMJyxnFXJFIgPWr+mFnu+kJipD2wJFn6YJjMvPxTeYa
+         KJDch0YvBzDslTogVERjoh+pJanVVVrKUOm5DIKdtuHJsjvIYQHND5SYjpb0VajeyXOx
+         7PEQ==
+X-Gm-Message-State: AOAM531szK9PpIb/rEVANgoewu+UiETkwWjr/Yja6A/8byUlxXb6eivM
+        pAe0Ya/9CDbmxmWIT8CqVxNeTuMYY04092FNUpU=
+X-Google-Smtp-Source: ABdhPJzys5yCwXnLOHH4NsCIcKA9f726GMnAOsN9NLlhSmyZNb7UhzU0IEwJ6FYKksyg3UeOKVwrbLA6pAJm2hMlOV0=
+X-Received: by 2002:aa7:c0d1:: with SMTP id j17mr16890014edp.217.1627878249276;
+ Sun, 01 Aug 2021 21:24:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:24:08
+ -0700 (PDT)
+Reply-To: ablahikazabl67@gmail.com
+From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
+Date:   Mon, 2 Aug 2021 05:24:08 +0100
+Message-ID: <CAKwBCXuzDf40zPCct3xg8L9LubxzXWgC230fQ80GXrmg_Yuttw@mail.gmail.com>
+Subject: More Authentic Information
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-For unexplained reasons, the prescaler register for this device needs to
-be cleared (set to 1) while performing a data read or else the command
-will hang. This does not appear to affect the real clock rate sent out
-on the bus, so I assume it's purely to work around a hardware bug.
-
-During normal operation, the prescaler is already set to 1, so nothing
-needs to be done. However, in "initial mode" (which is used for sub-MHz
-clock speeds, like the core sets while enumerating cards), it's set to
-128 and so we need to reset it during data reads. We currently fail to
-do this for long reads.
-
-This has no functional affect on the driver's operation currently
-written, as the MMC core always sets a clock above 1MHz before
-attempting any long reads. However, the core could conceivably set any
-clock speed at any time and the driver should still work, so I think
-this fix is worthwhile.
-
-I personally encountered this issue while performing data recovery on an
-external chip. My connections had poor signal integrity, so I modified
-the core code to reduce the clock speed. Without this change, I saw the
-card enumerate but was unable to actually read any data.
-
-Writes don't seem to work in the situation described above even with
-this change (and even if the workaround is extended to encompass data
-write commands). I was not able to find a way to get them working.
-
-Signed-off-by: Thomas Hebb <tommyhebb@gmail.com>
-
----
-
- drivers/mmc/host/rtsx_pci_sdmmc.c | 36 ++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
-index 4ca937415734..58cfaffa3c2d 100644
---- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-@@ -542,9 +542,22 @@ static int sd_write_long_data(struct realtek_pci_sdmmc *host,
- 	return 0;
- }
- 
-+static inline void sd_enable_initial_mode(struct realtek_pci_sdmmc *host)
-+{
-+	rtsx_pci_write_register(host->pcr, SD_CFG1,
-+			SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_128);
-+}
-+
-+static inline void sd_disable_initial_mode(struct realtek_pci_sdmmc *host)
-+{
-+	rtsx_pci_write_register(host->pcr, SD_CFG1,
-+			SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_0);
-+}
-+
- static int sd_rw_multi(struct realtek_pci_sdmmc *host, struct mmc_request *mrq)
- {
- 	struct mmc_data *data = mrq->data;
-+	int err;
- 
- 	if (host->sg_count < 0) {
- 		data->error = host->sg_count;
-@@ -553,22 +566,19 @@ static int sd_rw_multi(struct realtek_pci_sdmmc *host, struct mmc_request *mrq)
- 		return data->error;
- 	}
- 
--	if (data->flags & MMC_DATA_READ)
--		return sd_read_long_data(host, mrq);
-+	if (data->flags & MMC_DATA_READ) {
-+		if (host->initial_mode)
-+			sd_disable_initial_mode(host);
- 
--	return sd_write_long_data(host, mrq);
--}
-+		err = sd_read_long_data(host, mrq);
- 
--static inline void sd_enable_initial_mode(struct realtek_pci_sdmmc *host)
--{
--	rtsx_pci_write_register(host->pcr, SD_CFG1,
--			SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_128);
--}
-+		if (host->initial_mode)
-+			sd_enable_initial_mode(host);
- 
--static inline void sd_disable_initial_mode(struct realtek_pci_sdmmc *host)
--{
--	rtsx_pci_write_register(host->pcr, SD_CFG1,
--			SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_0);
-+		return err;
-+	}
-+
-+	return sd_write_long_data(host, mrq);
- }
- 
- static void sd_normal_rw(struct realtek_pci_sdmmc *host,
 -- 
-2.32.0
+Dear Partner,
 
+I am soliciting your partnership to relocate $12.5 Million to your
+country for investment on my behalf and you will be entitled to 30% of
+the sum once the transaction is successful made.
+
+Please indicate your genuine interest if you are capable so that i
+will send you the authentic details and documents of the transaction
+in awareness with some of my fellow Directors in the bank.
+
+If you are interested, here is my private Email address:
+(ablahikazabl67@gmail.com)
+For more authentic and legit information.
+
+
+Regards :  Abdoulahi Kazim
