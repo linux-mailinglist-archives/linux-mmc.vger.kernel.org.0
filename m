@@ -2,18 +2,18 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C56C63E3516
-	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5EA3E351E
+	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbhHGLHq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 7 Aug 2021 07:07:46 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:46425 "EHLO
+        id S232049AbhHGLHw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 7 Aug 2021 07:07:52 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:59711 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231922AbhHGLHp (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Aug 2021 07:07:45 -0400
+        with ESMTP id S232081AbhHGLHr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Aug 2021 07:07:47 -0400
 Received: from localhost.localdomain ([37.4.249.97]) by
  mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1Mr8vG-1mxCNC1BZO-00oIwV; Sat, 07 Aug 2021 13:07:12 +0200
+ id 1MmUcL-1muhOb3R9V-00iWJw; Sat, 07 Aug 2021 13:07:12 +0200
 From:   Stefan Wahren <stefan.wahren@i2se.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Nicolas Saenz Julienne <nsaenz@kernel.org>,
@@ -26,170 +26,203 @@ Cc:     Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
         devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
         linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Stefan Wahren <stefan.wahren@i2se.com>
-Subject: [PATCH V2 08/10] ARM: dts: Add Raspberry Pi Compute Module 4
-Date:   Sat,  7 Aug 2021 13:06:39 +0200
-Message-Id: <1628334401-6577-9-git-send-email-stefan.wahren@i2se.com>
+Subject: [PATCH V2 09/10] ARM: dts: Add Raspberry Pi Compute Module 4 IO Board
+Date:   Sat,  7 Aug 2021 13:06:40 +0200
+Message-Id: <1628334401-6577-10-git-send-email-stefan.wahren@i2se.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
 References: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
-X-Provags-ID: V03:K1:z1mZouUGj1KSLt6JG7gJ6hCAzcPRyIuKEXT/vaWCB1Y2RqyjMSe
- nCkZq6aoa+rVcFvYWAG4Bd+653W4gmCMxr0YdOa1P3qyJFd2Lin192aiaJSRDP2trBnovur
- OyMU4ZT/4cxazGwzR/7pc+sRq/PDOft3DAT6eOu3TF8GEVGJiOaOFb4mR5oyI1cBLtmZrts
- lhX2Z8CJj7+f6IzjMEN9w==
+X-Provags-ID: V03:K1:SuvEoVp7435W5whLYgSE5HM9ejCZP6s+gICbnJcaKFi3dtoja+N
+ HrgFmDdjoUj8XUEQOLvOnMRYo5CbaAkexgZxceu4zKH5VOVY0PqD+jGVCIvvJU82U/C4Qcf
+ niH9NlOvy6MB8znFyhFxD2Q3LeDljyravZYT8vdDXzV5FC8f+4iQqHzac/6pjYrbYXth7c8
+ 1QWoy+waSSV7rKQBYdbnQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:PeNqOCBnRQk=:95qt8Y95AMUofADrOZlbdz
- wdIi9Y9WY3OMKbU57QWzJrxaOV54mAnH4yeV8Cqd+SI6amQl7FC/s+lqRUehopNZD7PT8sGbd
- EmeHfL0+/s4kuMEkXPvm+5uWpmtq3whDAUB+RIeDu7M4phnou4bNiWODx+V2iVcZOUq3yG0sg
- /0vsfXfQuAis684xJ4tGs5UzzkEkKqTRsP7PNXlW5EJtJWTbSdk52MZI9lVuUOR4/KJ5zHtXc
- mJ4BkAaeVUu5fgtUImR9Ls1P54rTpYF2//qYALjD5vvido8KVJTC0ANxpgGNqMxkl7WE/vjNi
- e5VlvcI564JmO6Z5BoDT8UGpi6zlyHnPqXHTpMrNl4Kl+KO/mwVSHaVyerEmg9sMt5eBJo/Bz
- YdFSxAAtNbQ2XPKNAgrv4bZU187/y/Cw6vf0XioSi3thAUnSFzuexcxJIt+UH9cvWLwmM+osp
- z/VYE1KJGW6Z3TM1rCnkgxOeFhR/EhVtriyUpcwap68SRkLN9uvzHPRS6SG7DdcRfZIYc5qsX
- qj7NDnYArxvSXlxbQhfD7U5Iw4na/m2aSecNTIWpyxE4W3KWLfT3t11jb6HEs1jSOkElWhECC
- 7d6csQqhbIkmnuMRcQAOolUBpONcOZaqgICri7p4u8/TPNLaDieXVRGlSNSxE4KkNVbwzZgIB
- gqJh/am9G+i/E/Qe8XiVzwcpQhOlyFYRZuuwW1QLjBhDCFhUmRS0wioY5WLXlXSM1mm046rXT
- 8V56tVheJfVfNVSwyHxyNBrWCoGp0Per+KX3d9hlgMKQcwjhfxXqAg9qk9PjCQYP+BpgHAJyF
- KWN48ns7E3KZWGsViPo3uJeRXQhV+j499awR7CXEEgAoXMeVCAAYBO0qWduTFOAtPqtMxH8xQ
- pnBTgE/99uoNHg8RyU4Q==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:HiXX+88sNd0=:I8sSy+XlbU2In3PgpwfFlc
+ Q2CnwXP4aG8Xw0oNbhtNDkhdR5O03M8JIJJa0px7XxOuikaMoEupcUv+JEYDIWHxQxOutyWVp
+ LxsAifjMDD+6WGze+bAIR5tF/RwaZHzhC6GBNfMC6eATQ9PP3WJYfyjPnOkPBbb+kV7AKb9ya
+ zPFqwQv+JFkehTDlZxJEStV9299uC2bzjVZ0+dN4fG95hVrUO+/vr4NrMsC3NcZarvUW3/EaV
+ nrKRxohfdniBXs9CYuvtLuJF2urdDlfn7viPpVrxIMgqcR2zaLhXaj0N06MNYE70XOdqrtVfY
+ 4O59ozLH9i7CX1FhZbKzZX8wykgZ5lyg167quXGHPUYYfxCHJqsPpV1hWo5R/AgfuKg4SsdTq
+ VKsfJZdtmVrQh2RF8K2qHqU9zXGR+xb0BI5abqTjYvsaQFgn2Jxz9TQIe1CzJbsRbrxE1vxur
+ +3UMY/Qpae5/MPHn5MFkCalTVhizuSPAKlU06vdunt5yhS8FuuT6wl7+YpDEmExmWPb4Nk5Sd
+ IgkPz6jsSDvqmM0ifwpRP2OWF1IgnLF4Fj4kt+8YVfidDWBGkJTOJps08+jY3/AyYGY9mC0F5
+ /ZhuYzAI8CCGIbA9xRjBP5eTxqtZBBPfFVy9d30wGgxHMynSw6qcZZvVYHKGkN+XMDzf9IFVL
+ u8Vx3/nq2m2zm9RWYM75SyEfPhjt5H3fFrXpZhAArUGdwwhL+AgNsNdqCllSoZTpjYXkckPld
+ ifOoqUTTtdo2d985Kmq1lYTRusxCY5Y+Wp2WvmKX5SrFwYrKbAKWFXEQQ29PWJDvVWs/qPNTn
+ GSUHiYoLhfT3WJYHC1nctkXlIlfl1EgwUQ74UzZw7n+yXxBEKT4RKQntV1TEncMqoEgLPY8AL
+ sf/V7iqtkDfM6M5M4fBw==
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The Raspberry Pi Compute Module 4 (CM4) are SoMs which contain the
-following:
-  * BCM2711 quad core processor
-  * up to 8 GB RAM
-  * up to 32 GB eMMC
-  * a GPIO expander
-  * Gigabit PHY BCM54210PE
-  * Wifi/BT module with internal and external antenna
-
-The eMMC and the Wifi/BT module are optional.
+This adds the matching carrier for Raspberry Pi Compute Module 4.
+Instead of xHCI USB host controller there is just a USB 2.0 interface
+connected to the DWC2 controller from the BCM2711. As a result
+there is a free PCIe Gen 2 socket. Also there are 2 full-size HDMI 2.0
+connectors.
 
 Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
 ---
- arch/arm/boot/dts/bcm2711-rpi-cm4.dtsi | 113 +++++++++++++++++++++++++++++++++
- 1 file changed, 113 insertions(+)
- create mode 100644 arch/arm/boot/dts/bcm2711-rpi-cm4.dtsi
+ arch/arm/boot/dts/Makefile               |   1 +
+ arch/arm/boot/dts/bcm2711-rpi-cm4-io.dts | 138 +++++++++++++++++++++++++++++++
+ 2 files changed, 139 insertions(+)
+ create mode 100644 arch/arm/boot/dts/bcm2711-rpi-cm4-io.dts
 
-diff --git a/arch/arm/boot/dts/bcm2711-rpi-cm4.dtsi b/arch/arm/boot/dts/bcm2711-rpi-cm4.dtsi
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index 863347b..d3f25b9 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -90,6 +90,7 @@ dtb-$(CONFIG_ARCH_BCM2835) += \
+ 	bcm2837-rpi-cm3-io3.dtb \
+ 	bcm2711-rpi-400.dtb \
+ 	bcm2711-rpi-4-b.dtb \
++	bcm2711-rpi-cm4-io.dtb \
+ 	bcm2835-rpi-zero.dtb \
+ 	bcm2835-rpi-zero-w.dtb
+ dtb-$(CONFIG_ARCH_BCM_5301X) += \
+diff --git a/arch/arm/boot/dts/bcm2711-rpi-cm4-io.dts b/arch/arm/boot/dts/bcm2711-rpi-cm4-io.dts
 new file mode 100644
-index 0000000..a2954d4
+index 0000000..19600b6
 --- /dev/null
-+++ b/arch/arm/boot/dts/bcm2711-rpi-cm4.dtsi
-@@ -0,0 +1,113 @@
++++ b/arch/arm/boot/dts/bcm2711-rpi-cm4-io.dts
+@@ -0,0 +1,138 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/dts-v1/;
-+#include "bcm2711.dtsi"
-+#include "bcm2711-rpi.dtsi"
-+#include "bcm283x-rpi-wifi-bt.dtsi"
++#include "bcm2711-rpi-cm4.dtsi"
++#include "bcm283x-rpi-usb-host.dtsi"
 +
 +/ {
-+	compatible = "raspberrypi,4-compute-module", "brcm,bcm2711";
++	model = "Raspberry Pi Compute Module 4 IO Board";
 +
-+	chosen {
-+		/* 8250 auxiliary UART instead of pl011 */
-+		stdout-path = "serial1:115200n8";
-+	};
++	leds {
++		led-act {
++			gpios = <&gpio 42 GPIO_ACTIVE_HIGH>;
++		};
 +
-+	sd_io_1v8_reg: sd_io_1v8_reg {
-+		compatible = "regulator-gpio";
-+		regulator-name = "vdd-sd-io";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-boot-on;
-+		regulator-always-on;
-+		regulator-settling-time-us = <5000>;
-+		gpios = <&expgpio 4 GPIO_ACTIVE_HIGH>;
-+		states = <1800000 0x1>,
-+			 <3300000 0x0>;
-+		status = "okay";
-+	};
-+
-+	sd_vcc_reg: sd_vcc_reg {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc-sd";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-boot-on;
-+		enable-active-high;
-+		gpio = <&expgpio 6 GPIO_ACTIVE_HIGH>;
++		led-pwr {
++			label = "PWR";
++			gpios = <&expgpio 2 GPIO_ACTIVE_LOW>;
++			default-state = "keep";
++			linux,default-trigger = "default-on";
++		};
 +	};
 +};
 +
-+&bt {
-+	shutdown-gpios = <&expgpio 0 GPIO_ACTIVE_HIGH>;
-+};
-+
-+/* EMMC2 is used to drive the eMMC */
-+&emmc2 {
-+	bus-width = <8>;
-+	vqmmc-supply = <&sd_io_1v8_reg>;
-+	vmmc-supply = <&sd_vcc_reg>;
-+	broken-cd;
-+	/* Even the IP block is limited to 100 MHz
-+	 * this provides a throughput gain
-+	 */
-+	mmc-hs200-1_8v;
++&ddc0 {
 +	status = "okay";
 +};
 +
-+&expgpio {
-+	gpio-line-names = "BT_ON",
-+			  "WL_ON",
-+			  "PWR_LED_OFF",
-+			  "ANT1",
-+			  "VDD_SD_IO_SEL",
-+			  "CAM_GPIO",
-+			  "SD_PWR_ON",
-+			  "ANT2";
++&ddc1 {
++	status = "okay";
++};
 +
-+	ant1: ant1-hog {
-+		gpio-hog;
-+		gpios = <3 GPIO_ACTIVE_HIGH>;
-+		/* internal antenna enabled */
-+		output-high;
-+		line-name = "ant1";
-+	};
++&gpio {
++	/*
++	 * Parts taken from rpi_SCH_4b_4p0_reduced.pdf and
++	 * the official GPU firmware DT blob.
++	 *
++	 * Legend:
++	 * "FOO" = GPIO line named "FOO" on the schematic
++	 * "FOO_N" = GPIO line named "FOO" on schematic, active low
++	 */
++	gpio-line-names = "ID_SDA",
++			  "ID_SCL",
++			  "SDA1",
++			  "SCL1",
++			  "GPIO_GCLK",
++			  "GPIO5",
++			  "GPIO6",
++			  "SPI_CE1_N",
++			  "SPI_CE0_N",
++			  "SPI_MISO",
++			  "SPI_MOSI",
++			  "SPI_SCLK",
++			  "GPIO12",
++			  "GPIO13",
++			  /* Serial port */
++			  "TXD1",
++			  "RXD1",
++			  "GPIO16",
++			  "GPIO17",
++			  "GPIO18",
++			  "GPIO19",
++			  "GPIO20",
++			  "GPIO21",
++			  "GPIO22",
++			  "GPIO23",
++			  "GPIO24",
++			  "GPIO25",
++			  "GPIO26",
++			  "GPIO27",
++			  "RGMII_MDIO",
++			  "RGMIO_MDC",
++			  /* Used by BT module */
++			  "CTS0",
++			  "RTS0",
++			  "TXD0",
++			  "RXD0",
++			  /* Used by Wifi */
++			  "SD1_CLK",
++			  "SD1_CMD",
++			  "SD1_DATA0",
++			  "SD1_DATA1",
++			  "SD1_DATA2",
++			  "SD1_DATA3",
++			  /* Shared with SPI flash */
++			  "PWM0_MISO",
++			  "PWM1_MOSI",
++			  "STATUS_LED_G_CLK",
++			  "SPIFLASH_CE_N",
++			  "SDA0",
++			  "SCL0",
++			  "RGMII_RXCLK",
++			  "RGMII_RXCTL",
++			  "RGMII_RXD0",
++			  "RGMII_RXD1",
++			  "RGMII_RXD2",
++			  "RGMII_RXD3",
++			  "RGMII_TXCLK",
++			  "RGMII_TXCTL",
++			  "RGMII_TXD0",
++			  "RGMII_TXD1",
++			  "RGMII_TXD2",
++			  "RGMII_TXD3";
++};
 +
-+	ant2: ant2-hog {
-+		gpio-hog;
-+		gpios = <7 GPIO_ACTIVE_HIGH>;
-+		/* external antenna disabled */
-+		output-low;
-+		line-name = "ant2";
-+	};
++&hdmi0 {
++	status = "okay";
++};
++
++&hdmi1 {
++	status = "okay";
 +};
 +
 +&genet {
-+	phy-handle = <&phy1>;
-+	phy-mode = "rgmii-rxid";
 +	status = "okay";
 +};
 +
-+&genet_mdio {
-+	phy1: ethernet-phy@0 {
-+		/* No PHY interrupt */
-+		reg = <0x0>;
-+	};
-+};
-+
-+/* uart0 communicates with the BT module */
-+&uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_ctsrts_gpio30 &uart0_gpio32>;
-+	uart-has-rtscts;
-+};
-+
-+/* uart1 is mapped to the pin header */
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart1_gpio14>;
++&pixelvalve0 {
 +	status = "okay";
 +};
 +
-+&wifi_pwrseq {
-+	reset-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
++&pixelvalve1 {
++	status = "okay";
++};
++
++&pixelvalve2 {
++	status = "okay";
++};
++
++&pixelvalve4 {
++	status = "okay";
++};
++
++&vc4 {
++	status = "okay";
++};
++
++&vec {
++	status = "disabled";
 +};
 -- 
 2.7.4
