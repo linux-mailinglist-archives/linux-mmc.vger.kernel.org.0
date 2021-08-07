@@ -2,18 +2,18 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B73723E350F
-	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 629BA3E351C
+	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232036AbhHGLHo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 7 Aug 2021 07:07:44 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:59681 "EHLO
+        id S232163AbhHGLHt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 7 Aug 2021 07:07:49 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:56861 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231953AbhHGLHn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Aug 2021 07:07:43 -0400
+        with ESMTP id S231972AbhHGLHq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Aug 2021 07:07:46 -0400
 Received: from localhost.localdomain ([37.4.249.97]) by
  mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MCKSA-1mKXe80AjK-009SLv; Sat, 07 Aug 2021 13:07:10 +0200
+ id 1MAOeB-1mIbhd344x-00BwOU; Sat, 07 Aug 2021 13:07:10 +0200
 From:   Stefan Wahren <stefan.wahren@i2se.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Nicolas Saenz Julienne <nsaenz@kernel.org>,
@@ -26,94 +26,62 @@ Cc:     Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
         devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
         linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Stefan Wahren <stefan.wahren@i2se.com>
-Subject: [PATCH V2 04/10] mmc: sdhci-iproc: Cap min clock frequency on BCM2711
-Date:   Sat,  7 Aug 2021 13:06:35 +0200
-Message-Id: <1628334401-6577-5-git-send-email-stefan.wahren@i2se.com>
+Subject: [PATCH V2 05/10] mmc: sdhci-iproc: Set SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN on BCM2711
+Date:   Sat,  7 Aug 2021 13:06:36 +0200
+Message-Id: <1628334401-6577-6-git-send-email-stefan.wahren@i2se.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
 References: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
-X-Provags-ID: V03:K1:gfEVCU1kBksYlVlI36+xhO7/PrdkmSafmJw2daC3ONkAk/TcvWc
- QbA5BiTWasSzGIKdzbgsBw83id/EB7tV261L3lcQZ+24eD5YKqNY/BD1odPeEO9UOGMi274
- h8jSBFBwXDRP6dP8cNRty4Hx2F+sLZDFilRGqArfRr+vX/sBPPCBUmp03laUbXzkVrbEDGI
- R9eKOXXrm5BHsK2uM+1tQ==
+X-Provags-ID: V03:K1:u0dsEv9jFM+tW+Sg1Dp3uVwEizVQrVB28BJ35SkprIsS+lWZL+/
+ QbkH8H57xvdZE34nPO+nJwt9cJP21qQUWf9Lc/tTJyZPLiu0U5Hukyps95nBDkhPrzIZeAD
+ RLy8p9Be0C2k5HMQCDa50/mnBxZJFR4bYKQvrc/EIslGjFMfPrnOVXAl6n+2MIjTffERJt/
+ /81T3awZ6H1FhMaL8Ielw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/1+GcGykBLo=:R3f+HlLl9XrJ2GPs6Itt1N
- WzI7gF2Yc037Lc4d5MYtmwbhbUlIprhpHAAC7r3JIF1+mbhx2f68nDfoCQmRtrfNuMKB42kIf
- 8engvX2fX2mFzLvtt871yHwPDiB5e8LUi5Ojdi02klTIvpwY22FDlLn0cawZAyIITTETLsRz8
- iT5Ql0FdlQzM+RTdi4/WpB4b7qZeGGciY467DyS+xA81eKF/iNyLhix4rjcju6Aeq66y08WwN
- ZJc753VqLIYsBypE/UKQiBkI+7lb4jLaY5ZJHelfx5unkkin86ZeYVJUHoTOHM9OpcjHhjl1l
- +7eNboTtlJu/DygrpDoleSC8OxJd15kvm/hA8ySKgJeIHnhUDNQFU4dyQxu81HuxpQHlHtS0f
- +Cf+0wvdYEWRvGuqvJmvUjKm7Mg7692yLTifZCSqplee4xIgUy1or5SSB1494Dilvht3TdLAq
- /6PlHERi5sAtJgu5EUhvsO7N2kj5+Ee3n3AdCNi2vs6xB3oT3N8yH/TSzZKnczuDkp+NPsVIt
- yLy97gwFDWwH+TJ+OjiKR8mOEOFeV0wvkgUhdeqBYsZQlyS2OEJb8DPEpY44SpFpWHe+LPF5f
- wP5f2X5r9fuJgao/fGtFxVQHHkaSahFViAANQSvTIf9oP8oSD1oNKkmdfBT2ncyEHLi1xGWTW
- uzHlpNWL70UJ/O4T9oBqPd6POwEZkqkHoPQkmDnHCtSYTzBZtQJv+tUaqCwlPIWhPdTRIq0i7
- XNU8aFXhle8mf7aC85TlcBwH/nVtR+ec6tQr9mhNVuN24mPnVdLp0aBsMZHytK74UucWqdZcU
- u9XuqFW98sxRmsZSojG4cPBXSohlrYo/j3FyDr9OjN8Qu0BrodXQEUsenlSLHLupFBAUHhz28
- oO7ARG1ZVhAwofbfKo8Q==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SKENu3phtEQ=:9NLKQGVRYLgrZ3PQ8+QXiy
+ kfotEGl1sQEcA3qstF0HDGvz3Wdkc+xOaxVgyLenGayUnzVh/Scm+nn07evH5988ZmRJzMrzc
+ GgLawXLjDa37UvDL5NcG7enhWwA29GDPZWLyk3aiKNR/B5cASF41lZCWfCPisJOuTWhv+CDoi
+ 2nxkMgPiF9WtSTyZip/xWUQUoa36py3KFHDkY2OJfw9tmuZNHtxXieUv8olRsOZycRUdHp3g8
+ FK5wLXjCFgyOq/IX5cdUmAhDHXwUwxOLALJX/QeE5Ccw2nBdpUb/6feyLk4cm81rpai9TOM/s
+ UyjiPwmuh5WzIM/dSerG7nsZR1Xd2aN/TMAqkWKRx5rNdSMxO//HsV05m0/FA8EFtxIIBARtN
+ VrkXSbn0FcBRag01meD6ntB2GQi6jO+7VIErMw2BQRy72oDLJw5GvI3jPVvvyt5q9kkM63JdO
+ IU1M3RPe8adcz8Kn2EFfs8dVX8oLiYokEk9uy+lm6ykaPnjPplkrZtu9Po3SSdBE9rtJ3nejU
+ AlahHNZxlqR+kuHLj8zl+oxyd0uXbgbahksm4m0Pv7xwiQ40QR7QZnZ405+CfAECBmNwI+68H
+ tlxC8XTICgN2XeMmwmKdJ96msjrBX6etIzGwWTJECGj+wmrJ1G6J26FKMTKh3itOuYQw+WJVL
+ /kJFCEseOjgRvMlj/W0/09w/ciH9uYj2+cm7p/Fvnyp1RvrYEqEEgZjBpCdyz1kmlFo5rNeXa
+ MoiW6Sz25svrklg6KcYn2m5eazlT+rjXiC8cfjQGdU5sKAPQJWqGU7nVkFO8y4kKVvqneoSK2
+ OhduJAS/F3qbNhaBhv6cZsrvNOlrrzgtnIdCn3SlLKpaEbHBN9geLB9ZyMB77KFSp061oieKT
+ nkyWRCOt8rziBz6VtvUQ==
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Nicolas Saenz Julienne <nsaenz@kernel.org>
 
-There is a known bug on BCM2711's SDHCI core integration where the
-controller will hang when the difference between the core clock and the
-bus clock is too great. Specifically this can be reproduced under the
-following conditions:
-
-- No SD card plugged in, polling thread is running, probing cards at
-  100 kHz.
-- BCM2711's core clock configured at 500MHz or more.
-
-So set 200 kHz as the minimum clock frequency available for that board.
-
-For more information on the issue see this:
-https://lore.kernel.org/linux-mmc/20210322185816.27582-1-nsaenz@kernel.org/T/#m11f2783a09b581da6b8a15f302625b43a6ecdeca
+The controller doesn't seem to pick-up on clock changes, so set the
+SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN flag to query the clock frequency
+directly from the clock.
 
 Fixes: f84e411c85be ("mmc: sdhci-iproc: Add support for emmc2 of the BCM2711")
 Signed-off-by: Nicolas Saenz Julienne <nsaenz@kernel.org>
 Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
 ---
- drivers/mmc/host/sdhci-iproc.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/mmc/host/sdhci-iproc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
-index cce390f..032bf85 100644
+index 032bf85..e7565c6 100644
 --- a/drivers/mmc/host/sdhci-iproc.c
 +++ b/drivers/mmc/host/sdhci-iproc.c
-@@ -173,6 +173,23 @@ static unsigned int sdhci_iproc_get_max_clock(struct sdhci_host *host)
- 		return pltfm_host->clock;
- }
+@@ -295,7 +295,8 @@ static const struct sdhci_ops sdhci_iproc_bcm2711_ops = {
+ };
  
-+/*
-+ * There is a known bug on BCM2711's SDHCI core integration where the
-+ * controller will hang when the difference between the core clock and the bus
-+ * clock is too great. Specifically this can be reproduced under the following
-+ * conditions:
-+ *
-+ *  - No SD card plugged in, polling thread is running, probing cards at
-+ *    100 kHz.
-+ *  - BCM2711's core clock configured at 500MHz or more
-+ *
-+ * So we set 200kHz as the minimum clock frequency available for that SoC.
-+ */
-+static unsigned int sdhci_iproc_bcm2711_get_min_clock(struct sdhci_host *host)
-+{
-+	return 200000;
-+}
-+
- static const struct sdhci_ops sdhci_iproc_ops = {
- 	.set_clock = sdhci_set_clock,
- 	.get_max_clock = sdhci_iproc_get_max_clock,
-@@ -271,6 +288,7 @@ static const struct sdhci_ops sdhci_iproc_bcm2711_ops = {
- 	.set_clock = sdhci_set_clock,
- 	.set_power = sdhci_set_power_and_bus_voltage,
- 	.get_max_clock = sdhci_iproc_get_max_clock,
-+	.get_min_clock = sdhci_iproc_bcm2711_get_min_clock,
- 	.set_bus_width = sdhci_set_bus_width,
- 	.reset = sdhci_reset,
- 	.set_uhs_signaling = sdhci_set_uhs_signaling,
+ static const struct sdhci_pltfm_data sdhci_bcm2711_pltfm_data = {
+-	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
++	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12 |
++		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
+ 	.ops = &sdhci_iproc_bcm2711_ops,
+ };
+ 
 -- 
 2.7.4
 
