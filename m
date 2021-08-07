@@ -2,18 +2,18 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27C883E3518
-	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 889A73E3513
+	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232113AbhHGLHr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 7 Aug 2021 07:07:47 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:58473 "EHLO
+        id S232076AbhHGLHq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 7 Aug 2021 07:07:46 -0400
+Received: from mout.kundenserver.de ([212.227.126.133]:33471 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231953AbhHGLHp (ORCPT
+        with ESMTP id S232025AbhHGLHp (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Aug 2021 07:07:45 -0400
 Received: from localhost.localdomain ([37.4.249.97]) by
  mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MhUQ7-1mpnqe10N9-00eeQQ; Sat, 07 Aug 2021 13:07:11 +0200
+ id 1N5FxN-1nB8Kg3CeT-01196G; Sat, 07 Aug 2021 13:07:11 +0200
 From:   Stefan Wahren <stefan.wahren@i2se.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Nicolas Saenz Julienne <nsaenz@kernel.org>,
@@ -26,450 +26,55 @@ Cc:     Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
         devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
         linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Stefan Wahren <stefan.wahren@i2se.com>
-Subject: [PATCH V2 06/10] ARM: dts: bcm283x-rpi: Move Wifi/BT into separate dtsi
-Date:   Sat,  7 Aug 2021 13:06:37 +0200
-Message-Id: <1628334401-6577-7-git-send-email-stefan.wahren@i2se.com>
+Subject: [PATCH V2 07/10] dt-bindings: arm: bcm2835: Add Raspberry Pi Compute Module 4
+Date:   Sat,  7 Aug 2021 13:06:38 +0200
+Message-Id: <1628334401-6577-8-git-send-email-stefan.wahren@i2se.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
 References: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
-X-Provags-ID: V03:K1:QmjLhRlmSvymuTwXZC2Fma9HjVesmN+wkmjc/fvETI6wB+MsCTW
- Yiqq6XGCBkypDc74pPhM6wM6gj1QqQ1T+sqq86GozDW4pCpQ/PLnS60fpcxQY699chlA1a+
- Hz3Q7EUk1jnkeqaHar+r0K94Tuhgiozxqn7UtrsC0EkZDyHqJJZT9mus/wonjlhV41T5rFW
- WmbStwCGU+huPk/ABzXWQ==
+X-Provags-ID: V03:K1:cpT888lEhfDA5tu7NBafHh9QaEcmTrj4OEGSxUnl0wGK9NNEDvt
+ VhxRJINhtPwXZk/1Kmo6ppb+5G6oWHJnDoMFjMN5+LJxeEXbKA77Sq1Xh4UShemIWXsaS+G
+ H2IH+Ak+qjVCpGUTzU8mCm3RGbvGNv0GjLWj7sc4jqwfAHpNsDTiPZx9GLfCgNMi8rcYbAq
+ f0GSAKbQVrArRK3Wt6WTA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:usvl7TM8DkQ=:FbuLfKL4eZgnYN/6DODpAY
- n2mS2duxtMGfzH2X8cOCldlA81fx1wGqna4EPEF5o9jjtOef3gmfqtwVeZMcN1oADKIVEREl6
- yzoLV89cYLx4z8nx7rwWsZyIeWtm+dN9CsO9H/GqqsjmwQ7TkgeDiNVG6KBWLAUE3oMyuCIXm
- gBN8TG9iFRKfmifbfHmRWmIzkfuX+qUAN0wL2U1+mbkKmka97nB5vb2NuYqyvxSMy81wZZ5pR
- 6MC264gIiEEGNcoCkIRQxCczIe2ycuLjOszou2OWrzG5Ys9xJOC158eBJf4aSGioDzs3nBE3L
- ldEg+nDxxeINobYuZfJDtozAkBzoDkazfGGe9TzxvCpB5R7gvzjLJgBOS1SYt/X/09Gj5HGwA
- mhBzfXezB3pBbnMrvApmpOmN1H3WlH3dWkehUwXN1R6VAxii6w1arYqkqiSBSgxtwCvwI5SiN
- egsGLRdHMSzoMLmQn57yR2SKMOcUekfkPScrnwztCupHi23e0c2Ta3m8zt/DyTfpH5TmNgcur
- UkBw4ILbphkKo+859v9v5Agy6KEkXFbtQtJQBLQ5Dqu9dEYM4a4X8NAmsJVl7YtB+d2bAJQnn
- 1uO3bUBLcMD1NPKDI4mCpq2qYsGebVKJ+17mCaQl97U0AtwTKfsNG1c6r1JUpyjvNRIWOXU4E
- tRYEYYg3De2oAHSqCaMMDO1YjQ9onkunhaqUf0AoNnHnEXI3KsNlWcD8mYqvxQQrmrGDEIaxn
- oIv2ZY1hCFOCNxI8qwTDF+ChGzeNTlYrLJDrkfXMkcc+aTg9jd4igzt1tpVOmqMlhT3uF+/JL
- SZVYvDraN/gvyXO0n0EJIE5FciaF+bmRnYD1pZ4FmL9+woyNKSDnEZaY5+7ILFJFqqk915Sp+
- WD3Y/AU92HAA+02k9fvA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:BiNKgemfDKg=:OU8IGaX1tnIOAXVP96H0CI
+ YHmE+EYajk2IGMXF554em+izGCW0ChDDEIzLHwbR0WDgHUv5U2X8oCaHBk1WD+hzwzOxn7PBe
+ bdLpvR3USR4ejATZh25qN0U1zJ99oQUkQNjXrIZ2LAvekUNxr6ohkF+3RnDe8qrRuPBfz9pRD
+ xSXu4yXSZuVVDNIIcsKBSTUJyGz1gC1yyC9zufPfBChuLkMP4INUnabOpnVaJg4TtkuJFOB7y
+ FeHWDBbU5zEPD3MZ5oyVY5ec+meoLu4ydh0P73oYpsPo3Ym7NcXUysWKf8gtXRmpRPpaQuQzm
+ q1akbwbesRtyXcJUY1F8A0cjWo6g5i5FZFR/iHyDqMtpCKq66bYNciRBn4/h/s7R45MIoMDW8
+ Ocim7n5MBnaWk7CJDIqnmg+a53tt9iHflXBvB5yDPEQ/zGkoGRFg8GL/PD0N111sknjwj03qQ
+ HvCvcoyxKqLumTQmR0jCAT6HYEthnGXfUShW0zLPcL4ZTOb5jTe9nMDbyv4bIAWrK1MwXxQVG
+ CgF7rTaHBmIiGJ3bJmqfOIGnHRtnwmqiH3O3WryJtvQCgmH9qqAx4rB0E37C6TXh/CKcQ5l/i
+ mGPJnH1pA1C6iY80QYE8+Qe0lMBkMMeVJ5x0ttjlscoox9NfTT24E0A5G7Tc1sa9pf+TVapww
+ AsoIFohalMmljQQDUWyJFqM2SPBX0Jx+DTMa9HDkWuks4WNZnABg1aygy5V/vu1kg4nzw0AB3
+ fHLQ4u//Y5zzrXJO00b+18UvVco0JWVGfkScu9g3F0dgRXZJTLv2/2CUC5k6/HRG8j3iHVaiU
+ 3C7qFCVc6gCMOS/zAh/b02LffcjZpsQWFBXzLcYBfQRj5Rd6jufJR7XQo7hAQrhS2+g8++Oub
+ 7TeF2cr68HpM/y3n7BlA==
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-A Wifi/BT chip is quite common for the Raspberry Pi boards. So move those
-definitions into a separate dtsi in order to avoid copy & paste. This
-change was inspired by a vendor tree patch from Phil Elwell.
+Add the Raspberry Pi Compute Module 4 to DT schema.
 
 Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+Acked-by: Rob Herring <robh@kernel.org>
 ---
- arch/arm/boot/dts/bcm2711-rpi-4-b.dts      | 38 +++++++-----------------------
- arch/arm/boot/dts/bcm2835-rpi-zero-w.dts   | 31 +++++++-----------------
- arch/arm/boot/dts/bcm2837-rpi-3-a-plus.dts | 36 ++++++----------------------
- arch/arm/boot/dts/bcm2837-rpi-3-b-plus.dts | 36 +++++++---------------------
- arch/arm/boot/dts/bcm2837-rpi-3-b.dts      | 36 +++++++---------------------
- arch/arm/boot/dts/bcm283x-rpi-wifi-bt.dtsi | 34 ++++++++++++++++++++++++++
- 6 files changed, 74 insertions(+), 137 deletions(-)
- create mode 100644 arch/arm/boot/dts/bcm283x-rpi-wifi-bt.dtsi
+ Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
-index abf8298..c54ba5cf 100644
---- a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
-+++ b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
-@@ -3,6 +3,7 @@
- #include "bcm2711.dtsi"
- #include "bcm2711-rpi.dtsi"
- #include "bcm283x-rpi-usb-peripheral.dtsi"
-+#include "bcm283x-rpi-wifi-bt.dtsi"
+diff --git a/Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml b/Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml
+index 230b80d..5dc4824 100644
+--- a/Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml
++++ b/Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml
+@@ -19,6 +19,7 @@ properties:
+         items:
+           - enum:
+               - raspberrypi,400
++              - raspberrypi,4-compute-module
+               - raspberrypi,4-model-b
+           - const: brcm,bcm2711
  
- / {
- 	compatible = "raspberrypi,4-model-b", "brcm,bcm2711";
-@@ -26,11 +27,6 @@
- 		};
- 	};
- 
--	wifi_pwrseq: wifi-pwrseq {
--		compatible = "mmc-pwrseq-simple";
--		reset-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
--	};
--
- 	sd_io_1v8_reg: sd_io_1v8_reg {
- 		compatible = "regulator-gpio";
- 		regulator-name = "vdd-sd-io";
-@@ -56,6 +52,10 @@
- 	};
- };
- 
-+&bt {
-+	shutdown-gpios = <&expgpio 0 GPIO_ACTIVE_HIGH>;
-+};
-+
- &ddc0 {
- 	status = "okay";
- };
-@@ -178,23 +178,6 @@
- 	status = "okay";
- };
- 
--/* SDHCI is used to control the SDIO for wireless */
--&sdhci {
--	#address-cells = <1>;
--	#size-cells = <0>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&emmc_gpio34>;
--	bus-width = <4>;
--	non-removable;
--	mmc-pwrseq = <&wifi_pwrseq>;
--	status = "okay";
--
--	brcmf: wifi@1 {
--		reg = <1>;
--		compatible = "brcm,bcm4329-fmac";
--	};
--};
--
- /* EMMC2 is used to drive the SD card */
- &emmc2 {
- 	vqmmc-supply = <&sd_io_1v8_reg>;
-@@ -236,13 +219,6 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0_ctsrts_gpio30 &uart0_gpio32>;
- 	uart-has-rtscts;
--	status = "okay";
--
--	bluetooth {
--		compatible = "brcm,bcm43438-bt";
--		max-speed = <2000000>;
--		shutdown-gpios = <&expgpio 0 GPIO_ACTIVE_HIGH>;
--	};
- };
- 
- /* uart1 is mapped to the pin header */
-@@ -259,3 +235,7 @@
- &vec {
- 	status = "disabled";
- };
-+
-+&wifi_pwrseq {
-+	reset-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
-+};
-diff --git a/arch/arm/boot/dts/bcm2835-rpi-zero-w.dts b/arch/arm/boot/dts/bcm2835-rpi-zero-w.dts
-index 33b2b77..243236b 100644
---- a/arch/arm/boot/dts/bcm2835-rpi-zero-w.dts
-+++ b/arch/arm/boot/dts/bcm2835-rpi-zero-w.dts
-@@ -7,6 +7,7 @@
- #include "bcm2835.dtsi"
- #include "bcm2835-rpi.dtsi"
- #include "bcm283x-rpi-usb-otg.dtsi"
-+#include "bcm283x-rpi-wifi-bt.dtsi"
- 
- / {
- 	compatible = "raspberrypi,model-zero-w", "brcm,bcm2835";
-@@ -27,11 +28,10 @@
- 			gpios = <&gpio 47 GPIO_ACTIVE_LOW>;
- 		};
- 	};
-+};
- 
--	wifi_pwrseq: wifi-pwrseq {
--		compatible = "mmc-pwrseq-simple";
--		reset-gpios = <&gpio 41 GPIO_ACTIVE_LOW>;
--	};
-+&bt {
-+	shutdown-gpios = <&gpio 45 GPIO_ACTIVE_HIGH>;
- };
- 
- &gpio {
-@@ -110,19 +110,7 @@
- };
- 
- &sdhci {
--	#address-cells = <1>;
--	#size-cells = <0>;
--	pinctrl-names = "default";
- 	pinctrl-0 = <&emmc_gpio34 &gpclk2_gpio43>;
--	bus-width = <4>;
--	mmc-pwrseq = <&wifi_pwrseq>;
--	non-removable;
--	status = "okay";
--
--	brcmf: wifi@1 {
--		reg = <1>;
--		compatible = "brcm,bcm4329-fmac";
--	};
- };
- 
- &sdhost {
-@@ -135,13 +123,6 @@
- &uart0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0_gpio32 &uart0_ctsrts_gpio30>;
--	status = "okay";
--
--	bluetooth {
--		compatible = "brcm,bcm43438-bt";
--		max-speed = <2000000>;
--		shutdown-gpios = <&gpio 45 GPIO_ACTIVE_HIGH>;
--	};
- };
- 
- &uart1 {
-@@ -149,3 +130,7 @@
- 	pinctrl-0 = <&uart1_gpio14>;
- 	status = "okay";
- };
-+
-+&wifi_pwrseq {
-+	reset-gpios = <&gpio 41 GPIO_ACTIVE_LOW>;
-+};
-diff --git a/arch/arm/boot/dts/bcm2837-rpi-3-a-plus.dts b/arch/arm/boot/dts/bcm2837-rpi-3-a-plus.dts
-index 77099a7..d73daf5 100644
---- a/arch/arm/boot/dts/bcm2837-rpi-3-a-plus.dts
-+++ b/arch/arm/boot/dts/bcm2837-rpi-3-a-plus.dts
-@@ -3,6 +3,7 @@
- #include "bcm2837.dtsi"
- #include "bcm2836-rpi.dtsi"
- #include "bcm283x-rpi-usb-host.dtsi"
-+#include "bcm283x-rpi-wifi-bt.dtsi"
- 
- / {
- 	compatible = "raspberrypi,3-model-a-plus", "brcm,bcm2837";
-@@ -130,28 +131,6 @@
- 	status = "okay";
- };
- 
--/*
-- * SDHCI is used to control the SDIO for wireless
-- *
-- * WL_REG_ON and BT_REG_ON of the CYW43455 Wifi/BT module are driven
-- * by a single GPIO. We can't give GPIO control to one of the drivers,
-- * otherwise the other part would get unexpectedly disturbed.
-- */
--&sdhci {
--	#address-cells = <1>;
--	#size-cells = <0>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&emmc_gpio34>;
--	status = "okay";
--	bus-width = <4>;
--	non-removable;
--
--	brcmf: wifi@1 {
--		reg = <1>;
--		compatible = "brcm,bcm4329-fmac";
--	};
--};
--
- /* SDHOST is used to drive the SD card */
- &sdhost {
- 	pinctrl-names = "default";
-@@ -160,16 +139,15 @@
- 	bus-width = <4>;
- };
- 
--/* uart0 communicates with the BT module */
-+/* uart0 communicates with the BT module
-+ *
-+ * WL_REG_ON and BT_REG_ON of the CYW43455 Wifi/BT module are driven
-+ * by a single GPIO. We can't give GPIO control to one of the drivers,
-+ * otherwise the other part would get unexpectedly disturbed.
-+ */
- &uart0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0_ctsrts_gpio30 &uart0_gpio32 &gpclk2_gpio43>;
--	status = "okay";
--
--	bluetooth {
--		compatible = "brcm,bcm43438-bt";
--		max-speed = <2000000>;
--	};
- };
- 
- /* uart1 is mapped to the pin header */
-diff --git a/arch/arm/boot/dts/bcm2837-rpi-3-b-plus.dts b/arch/arm/boot/dts/bcm2837-rpi-3-b-plus.dts
-index 6101026..e12938b 100644
---- a/arch/arm/boot/dts/bcm2837-rpi-3-b-plus.dts
-+++ b/arch/arm/boot/dts/bcm2837-rpi-3-b-plus.dts
-@@ -4,6 +4,7 @@
- #include "bcm2836-rpi.dtsi"
- #include "bcm283x-rpi-lan7515.dtsi"
- #include "bcm283x-rpi-usb-host.dtsi"
-+#include "bcm283x-rpi-wifi-bt.dtsi"
- 
- / {
- 	compatible = "raspberrypi,3-model-b-plus", "brcm,bcm2837";
-@@ -31,11 +32,10 @@
- 			linux,default-trigger = "default-on";
- 		};
- 	};
-+};
- 
--	wifi_pwrseq: wifi-pwrseq {
--		compatible = "mmc-pwrseq-simple";
--		reset-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
--	};
-+&bt {
-+	shutdown-gpios = <&expgpio 0 GPIO_ACTIVE_HIGH>;
- };
- 
- &firmware {
-@@ -137,23 +137,6 @@
- 	status = "okay";
- };
- 
--/* SDHCI is used to control the SDIO for wireless */
--&sdhci {
--	#address-cells = <1>;
--	#size-cells = <0>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&emmc_gpio34>;
--	status = "okay";
--	bus-width = <4>;
--	non-removable;
--	mmc-pwrseq = <&wifi_pwrseq>;
--
--	brcmf: wifi@1 {
--		reg = <1>;
--		compatible = "brcm,bcm4329-fmac";
--	};
--};
--
- /* SDHOST is used to drive the SD card */
- &sdhost {
- 	pinctrl-names = "default";
-@@ -166,13 +149,6 @@
- &uart0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0_ctsrts_gpio30 &uart0_gpio32 &gpclk2_gpio43>;
--	status = "okay";
--
--	bluetooth {
--		compatible = "brcm,bcm43438-bt";
--		max-speed = <2000000>;
--		shutdown-gpios = <&expgpio 0 GPIO_ACTIVE_HIGH>;
--	};
- };
- 
- /* uart1 is mapped to the pin header */
-@@ -181,3 +157,7 @@
- 	pinctrl-0 = <&uart1_gpio14>;
- 	status = "okay";
- };
-+
-+&wifi_pwrseq {
-+	reset-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
-+};
-diff --git a/arch/arm/boot/dts/bcm2837-rpi-3-b.dts b/arch/arm/boot/dts/bcm2837-rpi-3-b.dts
-index dd4a486..42b5383 100644
---- a/arch/arm/boot/dts/bcm2837-rpi-3-b.dts
-+++ b/arch/arm/boot/dts/bcm2837-rpi-3-b.dts
-@@ -4,6 +4,7 @@
- #include "bcm2836-rpi.dtsi"
- #include "bcm283x-rpi-smsc9514.dtsi"
- #include "bcm283x-rpi-usb-host.dtsi"
-+#include "bcm283x-rpi-wifi-bt.dtsi"
- 
- / {
- 	compatible = "raspberrypi,3-model-b", "brcm,bcm2837";
-@@ -24,11 +25,10 @@
- 			gpios = <&expgpio 2 GPIO_ACTIVE_HIGH>;
- 		};
- 	};
-+};
- 
--	wifi_pwrseq: wifi-pwrseq {
--		compatible = "mmc-pwrseq-simple";
--		reset-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
--	};
-+&bt {
-+	shutdown-gpios = <&expgpio 0 GPIO_ACTIVE_HIGH>;
- };
- 
- &firmware {
-@@ -134,13 +134,6 @@
- &uart0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0_gpio32 &gpclk2_gpio43>;
--	status = "okay";
--
--	bluetooth {
--		compatible = "brcm,bcm43438-bt";
--		max-speed = <2000000>;
--		shutdown-gpios = <&expgpio 0 GPIO_ACTIVE_HIGH>;
--	};
- };
- 
- /* uart1 is mapped to the pin header */
-@@ -150,23 +143,6 @@
- 	status = "okay";
- };
- 
--/* SDHCI is used to control the SDIO for wireless */
--&sdhci {
--	#address-cells = <1>;
--	#size-cells = <0>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&emmc_gpio34>;
--	status = "okay";
--	bus-width = <4>;
--	non-removable;
--	mmc-pwrseq = <&wifi_pwrseq>;
--
--	brcmf: wifi@1 {
--		reg = <1>;
--		compatible = "brcm,bcm4329-fmac";
--	};
--};
--
- /* SDHOST is used to drive the SD card */
- &sdhost {
- 	pinctrl-names = "default";
-@@ -174,3 +150,7 @@
- 	status = "okay";
- 	bus-width = <4>;
- };
-+
-+&wifi_pwrseq {
-+	reset-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
-+};
-diff --git a/arch/arm/boot/dts/bcm283x-rpi-wifi-bt.dtsi b/arch/arm/boot/dts/bcm283x-rpi-wifi-bt.dtsi
-new file mode 100644
-index 0000000..0b64cc1
---- /dev/null
-+++ b/arch/arm/boot/dts/bcm283x-rpi-wifi-bt.dtsi
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/ {
-+	wifi_pwrseq: wifi-pwrseq {
-+		compatible = "mmc-pwrseq-simple";
-+	};
-+};
-+
-+/* SDHCI is used to control the SDIO for wireless */
-+&sdhci {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&emmc_gpio34>;
-+	bus-width = <4>;
-+	non-removable;
-+	mmc-pwrseq = <&wifi_pwrseq>;
-+	status = "okay";
-+
-+	brcmf: wifi@1 {
-+		reg = <1>;
-+		compatible = "brcm,bcm4329-fmac";
-+	};
-+};
-+
-+/* uart0 communicates with the BT module */
-+&uart0 {
-+	status = "okay";
-+
-+	bt: bluetooth {
-+		compatible = "brcm,bcm43438-bt";
-+		max-speed = <2000000>;
-+	};
-+};
 -- 
 2.7.4
 
