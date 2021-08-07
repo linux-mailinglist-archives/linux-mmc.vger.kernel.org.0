@@ -2,18 +2,18 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 689673E351A
-	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E3C3E350C
+	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232139AbhHGLHs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 7 Aug 2021 07:07:48 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:51577 "EHLO
+        id S231995AbhHGLHo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 7 Aug 2021 07:07:44 -0400
+Received: from mout.kundenserver.de ([212.227.126.130]:46171 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232049AbhHGLHq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Aug 2021 07:07:46 -0400
+        with ESMTP id S231922AbhHGLHn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Aug 2021 07:07:43 -0400
 Received: from localhost.localdomain ([37.4.249.97]) by
  mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1M4ahC-1mAgH43mUQ-001iZn; Sat, 07 Aug 2021 13:07:09 +0200
+ id 1MZCvh-1mhJHw20lV-00V8CK; Sat, 07 Aug 2021 13:07:09 +0200
 From:   Stefan Wahren <stefan.wahren@i2se.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Nicolas Saenz Julienne <nsaenz@kernel.org>,
@@ -26,63 +26,106 @@ Cc:     Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
         devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
         linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Stefan Wahren <stefan.wahren@i2se.com>
-Subject: [PATCH V2 02/10] ARM: dts: bcm2711-rpi-4-b: fix sd_io_1v8_reg regulator states
-Date:   Sat,  7 Aug 2021 13:06:33 +0200
-Message-Id: <1628334401-6577-3-git-send-email-stefan.wahren@i2se.com>
+Subject: [PATCH V2 03/10] dt-bindings: display: bcm2835: add optional property power-domains
+Date:   Sat,  7 Aug 2021 13:06:34 +0200
+Message-Id: <1628334401-6577-4-git-send-email-stefan.wahren@i2se.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
 References: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
-X-Provags-ID: V03:K1:rxN6Du+6J5W11kdd5uwIM540sM0r6PGy0faROvYut9l4wc13GTU
- JKIChKg5mSuHWl95yTzni4qvhvBA3XlHscPFKy4N84MyFbeU9CUdmV6huLHf1UFk9yaZvyN
- 9GP6iM9jO9nzM+eR82tjGPwe7yf7dN/ErQYpw0F/8xP7VPmsJic1xFySomChY66JycjyENy
- KFasKnyF0brdlqMSrgsBA==
+X-Provags-ID: V03:K1:fdAi0eW6lkNHxUUv9MAiUpmpsqcYqunqRorRROAxKZe1jnLq6Xo
+ AVsERlC42LCsx/Qg5DYKB+dY5EZaNISK8AITwiW/47yAoNQXU5QxIoexcqhXlEnfnbOHbwr
+ Uo60f8eUPfoglTt/PTRpHqYTNAANIXfgqzRIHE9ajdhMgI0FoKi239KAeJ9dKrvHgVwMw+U
+ DcddPDSfUqSNpFgGDOqpw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:F0HkEPxV324=:LEj0M33wAhbZDwM2sVUHBp
- bcg2Nbd4mHaBYuuU4vSH8S9t64XxMXzRA4G3XA8LJKvd34uKLrgE80f07WyJ3c1v5XRN5EeUb
- cQmlWPhPMZ8d98YFj/DmysH6YcD4T6LMIlvjUMEtBM+LQFL/TLFJ0a8LxlmRZBpUKm0hat1MI
- lkv/yZSCAPwl3D4RFdJdG9ZD7vc3R7/M7N5IDMScKGlpi+6MAGG1CY2MGcN2I51CFxk7nG/DB
- l025Ed7OcSSuhL2AcDySNXeFuKx/tYYhW8vYrP4JNqJMn0JpEXqYfxpmm7iSdenRNXO2R1KVR
- CIN601wmfcd6XX3i5DIQvytG3WIILNXZwa9u1AKy794jsuF7F+fWcy7/wOnGyFtJv6Dl4LPKs
- fTCWBBvmNMxXrp7BmJyqJvwBZu0fM0GWvWd7xCSLLgZmyYxmMFAIhVWYd36dUDJsqUZ7Y12Rb
- sa6Yr/sGqJNtao70kh/VJotzlRl8/m0Rl2b/SG732YJ8oHjXUDXumYvsYqL08y1fqTqM1y1kG
- OKqjXrR1Mflm781wnZDOAWesiBLrPUWCU83jNJallcEPIU/MFKJ16z87h8Tr7PGqnBxAmfVmH
- BSU1fY0QW2y/pmiBzRnOpqF3cReCVXhpPoqYyKK7Bm2Ns1W38bXKZADYSjlSYbxV8LpigxmaW
- MozVRnHuDi5C+emyXqGcN6Xcex9vJ37+MlHxvvGrlxGq5jFXzoyzTj7mw+U1IiXE5gXNR3ASy
- nU6NKYkehUrJmUFmORGTM1BBtgJHGbe1Z1GAUN/8A4HbMGQXi1W7fAnbFlAybwEdDF3Jkaklo
- UadAXTl1SwW24y7t9bl2l9fusTzxsbU6D01FmW/m6S6mjAY/NN83QacLZpk8Z57A9rr0HbXPS
- XUYUDfDXRzbi9kKZOG/Q==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4qg6qOIprYg=:rXv5yT/7zrwTlvSl44ePry
+ BgfAvIS7vckyq4GQMCq2Gee5zYApbvmbLpeTgZ02nnD+TucCfvmgtpmc/C+uWMRvZueBmXSY3
+ CbAY58AvHSefspDsSquzm+uefL5crB1x7YscP81Mmo2lf4WSMPh+7OuAdN14Bn7BqMnLKfvVi
+ BHEr4606kKjKq4obhIfYuzx5FNVVX4e0VZHnJHhyl0RMlH7dZXmV1lY2y9mlouprfOrFyPzfC
+ 8dV9yqYqT0TLht3WeE+PlKuAWvql4NjhjVf2XvxUvDyMtYv2sCEgJRllT/Q0c0LAL/3C7iz6U
+ 8+q65z3MrGzLw0PkYz7GCMzklf+puFYPc72I2bCJVY1xa2izOWjGMdSnMGMy5yo3StxZVcbOf
+ qEVMxPR11mUbLgLCyh2lEBK8eWU7hlrQPqcSdilTBVCfwN9HajBUaR3UueL/+3T/6TN2lCoGm
+ f5aQdJlIk9ufqvzMm5P/MYfmx3FylgoTSvUOC92Do4Uel6E3bY1nv847igpd6NmylpHhvWMnW
+ 2UcG9xxfXy78sp62vzFlk5OSwCp9efI0pZWSGJKO833lczFZYS1dlYmckHJR0LDlMrr8KHw4O
+ maFjb90n+NGsk6eY1S+mvBgekvAWvO1/SPWAaxsu500sn+zrwri6rILpymJXiYAn9Ylqkl7Ka
+ EMVyVAfIXENQFlW5txgPztnUahIoMoKYGG8bF8qgWDDL8l0ItjMusVSjp8ROcvfK0lFnUqQP4
+ ELYPv3+54GAQYqIwFclt1fztgkGmxyRDD4T+GwUKShEwodOvVOEF14YUJbw4zADaB254kz1dH
+ 1K63epFBNoXogHqBILhbT6VQa2YzrP4sUexqf1P2QkVJb0gHEjznVF3teg+2LZZpS2ryZJidf
+ BUxjeCiSClHPrcy2ZjGw==
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-DT schema check complains at sd_io_1v8_reg about the following:
+The Raspberry Pi boards with BCM283x needs control of the power domains
+to get display components running. DT schema warns us that it's used, but not
+documented as a optional property:
 
- [1800000, 1, 3300000, 0] is too long
- Additional items are not allowed (3300000, 0 were unexpected)
+hdmi@7e902000: 'power-domains' does not match any of the regexes: ...
 
-So fix the states definition.
-
-Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
 Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+Acked-by: Rob Herring <robh@kernel.org>
 ---
- arch/arm/boot/dts/bcm2711-rpi-4-b.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/display/brcm,bcm2835-dsi0.yaml | 3 +++
+ Documentation/devicetree/bindings/display/brcm,bcm2835-hdmi.yaml | 3 +++
+ Documentation/devicetree/bindings/display/brcm,bcm2835-v3d.yaml  | 3 +++
+ Documentation/devicetree/bindings/display/brcm,bcm2835-vec.yaml  | 3 +++
+ 4 files changed, 12 insertions(+)
 
-diff --git a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
-index f24bdd0..abf8298 100644
---- a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
-+++ b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
-@@ -40,8 +40,8 @@
- 		regulator-always-on;
- 		regulator-settling-time-us = <5000>;
- 		gpios = <&expgpio 4 GPIO_ACTIVE_HIGH>;
--		states = <1800000 0x1
--			  3300000 0x0>;
-+		states = <1800000 0x1>,
-+			 <3300000 0x0>;
- 		status = "okay";
- 	};
+diff --git a/Documentation/devicetree/bindings/display/brcm,bcm2835-dsi0.yaml b/Documentation/devicetree/bindings/display/brcm,bcm2835-dsi0.yaml
+index 3260857..c8b2459 100644
+--- a/Documentation/devicetree/bindings/display/brcm,bcm2835-dsi0.yaml
++++ b/Documentation/devicetree/bindings/display/brcm,bcm2835-dsi0.yaml
+@@ -47,6 +47,9 @@ properties:
+   interrupts:
+     maxItems: 1
  
++  power-domains:
++    maxItems: 1
++
+ required:
+   - "#clock-cells"
+   - compatible
+diff --git a/Documentation/devicetree/bindings/display/brcm,bcm2835-hdmi.yaml b/Documentation/devicetree/bindings/display/brcm,bcm2835-hdmi.yaml
+index 031e35e..48c8cad 100644
+--- a/Documentation/devicetree/bindings/display/brcm,bcm2835-hdmi.yaml
++++ b/Documentation/devicetree/bindings/display/brcm,bcm2835-hdmi.yaml
+@@ -51,6 +51,9 @@ properties:
+   dma-names:
+     const: audio-rx
+ 
++  power-domains:
++    maxItems: 1
++
+ required:
+   - compatible
+   - reg
+diff --git a/Documentation/devicetree/bindings/display/brcm,bcm2835-v3d.yaml b/Documentation/devicetree/bindings/display/brcm,bcm2835-v3d.yaml
+index 8a73780..c55a821 100644
+--- a/Documentation/devicetree/bindings/display/brcm,bcm2835-v3d.yaml
++++ b/Documentation/devicetree/bindings/display/brcm,bcm2835-v3d.yaml
+@@ -24,6 +24,9 @@ properties:
+   interrupts:
+     maxItems: 1
+ 
++  power-domains:
++    maxItems: 1
++
+ required:
+   - compatible
+   - reg
+diff --git a/Documentation/devicetree/bindings/display/brcm,bcm2835-vec.yaml b/Documentation/devicetree/bindings/display/brcm,bcm2835-vec.yaml
+index 9b24081..5d921e3 100644
+--- a/Documentation/devicetree/bindings/display/brcm,bcm2835-vec.yaml
++++ b/Documentation/devicetree/bindings/display/brcm,bcm2835-vec.yaml
+@@ -24,6 +24,9 @@ properties:
+   interrupts:
+     maxItems: 1
+ 
++  power-domains:
++    maxItems: 1
++
+ required:
+   - compatible
+   - reg
 -- 
 2.7.4
 
