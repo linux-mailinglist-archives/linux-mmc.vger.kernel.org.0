@@ -2,18 +2,18 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 883AF3E3511
-	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 689673E351A
+	for <lists+linux-mmc@lfdr.de>; Sat,  7 Aug 2021 13:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232057AbhHGLHp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 7 Aug 2021 07:07:45 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:57967 "EHLO
+        id S232139AbhHGLHs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 7 Aug 2021 07:07:48 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:51577 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231972AbhHGLHo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Aug 2021 07:07:44 -0400
+        with ESMTP id S232049AbhHGLHq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 7 Aug 2021 07:07:46 -0400
 Received: from localhost.localdomain ([37.4.249.97]) by
  mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MUpCz-1mctRd1GTZ-00QiM0; Sat, 07 Aug 2021 13:07:08 +0200
+ id 1M4ahC-1mAgH43mUQ-001iZn; Sat, 07 Aug 2021 13:07:09 +0200
 From:   Stefan Wahren <stefan.wahren@i2se.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Nicolas Saenz Julienne <nsaenz@kernel.org>,
@@ -26,62 +26,63 @@ Cc:     Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
         devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
         linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Stefan Wahren <stefan.wahren@i2se.com>
-Subject: [PATCH V2 01/10] ARM: dts: bcm2711: fix MDIO #address- and #size-cells
-Date:   Sat,  7 Aug 2021 13:06:32 +0200
-Message-Id: <1628334401-6577-2-git-send-email-stefan.wahren@i2se.com>
+Subject: [PATCH V2 02/10] ARM: dts: bcm2711-rpi-4-b: fix sd_io_1v8_reg regulator states
+Date:   Sat,  7 Aug 2021 13:06:33 +0200
+Message-Id: <1628334401-6577-3-git-send-email-stefan.wahren@i2se.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
 References: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com>
-X-Provags-ID: V03:K1:tqfvKtEzoZCEh33YB92Q1m9qtHEymKKXGP3LyZ4mP61zKuOfW+X
- B60puBofk7GAfiLTncd/XFZQVwvGNwWzXfR4NnmE0C2f8hLNydKcVoAa0wi3m+2SBw+ZoYj
- PS/nggas2vA/5NgzpdOTrfUduIo/rqII9AxAfQ5gpquBVpdK7Q5PqIhwJnXiqyZijUydFTy
- 3EqKxewFa9htrjd2F3w9Q==
+X-Provags-ID: V03:K1:rxN6Du+6J5W11kdd5uwIM540sM0r6PGy0faROvYut9l4wc13GTU
+ JKIChKg5mSuHWl95yTzni4qvhvBA3XlHscPFKy4N84MyFbeU9CUdmV6huLHf1UFk9yaZvyN
+ 9GP6iM9jO9nzM+eR82tjGPwe7yf7dN/ErQYpw0F/8xP7VPmsJic1xFySomChY66JycjyENy
+ KFasKnyF0brdlqMSrgsBA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:l3vbtDbD13M=:IQbF7pqSLIQFux3euKUThn
- ZnbXABZGeJD2J8AB0VCNbF/vsKtPRPmej7EvraZDLmYBfDWK96j2m2pdIVtViGMS05CRmzyZm
- vNRpQd0948CjW9DHgocq1V5g51AvmEBJ4Wld44W3Q5iscbgUggpvpNOY0Vq91Cm2MhSUKTKjW
- rnVuxfXB9JO4B98bvMJ8CURlUbCb9eBspiMesJ9qZ+Kt48ZbdCy5o50o19sW0Ed2dPNbicEmc
- cRCPElKLXQ8EQQP9BCggWF/n+TGfdW948bUWBUTfLJg5pixFzu77F10Z2CnYb3YxE7SLpi8yn
- LeYzsoDAjEZd7S0scWxp1GF+YtliCommSob/xKefgQuhEhTrfBKI3+7fffJ3IuY7WEeNtZ9n+
- pYkLZbAbZVsZXSQchGFUUHKtUkqYXDMh9HPJiFpkBR5iBkaTUkNKKQJRBYRkOxHe2A4DHXfGw
- 9Buxm0CNEar9JCaG1ebZ7MnH2ZHaohbMsxS2YQlOHbtyNuKC3KPwb6xo+xPg7FOmr6sf0xqcJ
- JwmfJkVTAvEFuPn09ybcyXKhvdsW/5z8IKGo98Rf3wxPCqVPXe7ONOb0vslnmUxXHsX1qBLWo
- ViPFfxVDShxd1qMeUsuYn9s5x6nmb3Bvl/25fvdj4b7Etw7j16T43sDGYLWvK9RDC7rpTqyQV
- gyHg42mGdvcWk7UqzqA8sfapgzvGagx82f2ES2TUG98PZrRD94dAuYdQqcdTC5ziXGwDAnZ0l
- At0HvNjQy2IN1PVyzFOXSp9r/uiR/JIjphhAeUcoznIme7BzXNIBapwMRLL3FBpWv1dP319w8
- w4vGm81Z2Q3ga03e/KfOcTJHrWCIRBAzSoDDybbZC/6BHrO2CuLiLxeAigJuQyFdNWrU++5x9
- bccT3qK6+Z5+zAS1ufHQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:F0HkEPxV324=:LEj0M33wAhbZDwM2sVUHBp
+ bcg2Nbd4mHaBYuuU4vSH8S9t64XxMXzRA4G3XA8LJKvd34uKLrgE80f07WyJ3c1v5XRN5EeUb
+ cQmlWPhPMZ8d98YFj/DmysH6YcD4T6LMIlvjUMEtBM+LQFL/TLFJ0a8LxlmRZBpUKm0hat1MI
+ lkv/yZSCAPwl3D4RFdJdG9ZD7vc3R7/M7N5IDMScKGlpi+6MAGG1CY2MGcN2I51CFxk7nG/DB
+ l025Ed7OcSSuhL2AcDySNXeFuKx/tYYhW8vYrP4JNqJMn0JpEXqYfxpmm7iSdenRNXO2R1KVR
+ CIN601wmfcd6XX3i5DIQvytG3WIILNXZwa9u1AKy794jsuF7F+fWcy7/wOnGyFtJv6Dl4LPKs
+ fTCWBBvmNMxXrp7BmJyqJvwBZu0fM0GWvWd7xCSLLgZmyYxmMFAIhVWYd36dUDJsqUZ7Y12Rb
+ sa6Yr/sGqJNtao70kh/VJotzlRl8/m0Rl2b/SG732YJ8oHjXUDXumYvsYqL08y1fqTqM1y1kG
+ OKqjXrR1Mflm781wnZDOAWesiBLrPUWCU83jNJallcEPIU/MFKJ16z87h8Tr7PGqnBxAmfVmH
+ BSU1fY0QW2y/pmiBzRnOpqF3cReCVXhpPoqYyKK7Bm2Ns1W38bXKZADYSjlSYbxV8LpigxmaW
+ MozVRnHuDi5C+emyXqGcN6Xcex9vJ37+MlHxvvGrlxGq5jFXzoyzTj7mw+U1IiXE5gXNR3ASy
+ nU6NKYkehUrJmUFmORGTM1BBtgJHGbe1Z1GAUN/8A4HbMGQXi1W7fAnbFlAybwEdDF3Jkaklo
+ UadAXTl1SwW24y7t9bl2l9fusTzxsbU6D01FmW/m6S6mjAY/NN83QacLZpk8Z57A9rr0HbXPS
+ XUYUDfDXRzbi9kKZOG/Q==
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The values of #address-cells and #size-cells are swapped. Fix this
-and avoid the following DT schema warnings for mdio@e14:
+DT schema check complains at sd_io_1v8_reg about the following:
 
- #address-cells:0:0: 1 was expected
- #size-cells:0:0: 0 was expected
+ [1800000, 1, 3300000, 0] is too long
+ Additional items are not allowed (3300000, 0 were unexpected)
 
-Fixes: be8af7a9e3cc ("ARM: dts: bcm2711-rpi-4: Enable GENET support")
+So fix the states definition.
+
+Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
 Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
 ---
- arch/arm/boot/dts/bcm2711.dtsi | 4 ++--
+ arch/arm/boot/dts/bcm2711-rpi-4-b.dts | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm2711.dtsi b/arch/arm/boot/dts/bcm2711.dtsi
-index b8a4096..a0db9b0 100644
---- a/arch/arm/boot/dts/bcm2711.dtsi
-+++ b/arch/arm/boot/dts/bcm2711.dtsi
-@@ -532,8 +532,8 @@
- 				compatible = "brcm,genet-mdio-v5";
- 				reg = <0xe14 0x8>;
- 				reg-names = "mdio";
--				#address-cells = <0x0>;
--				#size-cells = <0x1>;
-+				#address-cells = <0x1>;
-+				#size-cells = <0x0>;
- 			};
- 		};
+diff --git a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
+index f24bdd0..abf8298 100644
+--- a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
++++ b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
+@@ -40,8 +40,8 @@
+ 		regulator-always-on;
+ 		regulator-settling-time-us = <5000>;
+ 		gpios = <&expgpio 4 GPIO_ACTIVE_HIGH>;
+-		states = <1800000 0x1
+-			  3300000 0x0>;
++		states = <1800000 0x1>,
++			 <3300000 0x0>;
+ 		status = "okay";
  	};
+ 
 -- 
 2.7.4
 
