@@ -2,69 +2,67 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEBE13E7F27
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Aug 2021 19:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 293FA3E82C2
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Aug 2021 20:17:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234636AbhHJRhi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 10 Aug 2021 13:37:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50554 "EHLO
+        id S239379AbhHJSRi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 Aug 2021 14:17:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233946AbhHJRgC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Aug 2021 13:36:02 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1F7CC061799
-        for <linux-mmc@vger.kernel.org>; Tue, 10 Aug 2021 10:33:36 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id m9so30310896ljp.7
-        for <linux-mmc@vger.kernel.org>; Tue, 10 Aug 2021 10:33:36 -0700 (PDT)
+        with ESMTP id S239618AbhHJSPX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 Aug 2021 14:15:23 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCFBCC043CD8;
+        Tue, 10 Aug 2021 10:50:46 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id k5-20020a05600c1c85b02902e699a4d20cso117091wms.2;
+        Tue, 10 Aug 2021 10:50:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=BggyEzSIpVznrhWTl8MIRAYEe15KlTxcMGseAQSFa7RDeDzVHxU4eSoETbmExnaLIE
-         zuq8OYsbcAC4TRTZpDVHuqOpZQ9IWzoDnFG9KE9Hgoh5GHNRpLrX7GaTa2Rlpi17Sa+7
-         wynv7o5vGtXcABH0YLjEMHBgYbVN4gwCCmMbmqM96vylTsH+XuSJQxB2T0aZ0px1WpyQ
-         RfAqEbEJWHwau3sZBSpHTPqcKq0lEWF+TZfP6Hoo/gEZtnmpQsbvRYpoOVsYPdrPzr7x
-         t3j+1ErMjanfyKX6UgQnU/AAqtfTm/Qksyzzn7HfgMwEBK6s4oZtKRsuVtciK72GKLQ3
-         6YUg==
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
+        b=WPQ8Xd+v/UiCQEbH6guN+7BxF7Dfpfx+R+23si5tgpQmkiVeEFv4uL/coNRl94KPxr
+         UCDa+6AMe3Jg5SlADLUQXHfD35rZ2lsJ3zo8Cjz5TXyBTZkk8lwe23xIRbV1k810S3tP
+         XQaGl/A0U93GXy6J+FtKEuYe3j6ppg8RnBr0e0DHmS/jBzdaA5Gl01GrkeE/vbu+Jw4B
+         FYHKaj8SFezZkQmMvsCGXVO221ZRdo07aK9py/RkSzMRxy6kkdPpfwiU9bNVV00vpjK0
+         /T7SbfEO2jhepBfqrNU5SQ+cl561i1AcuTmhEJBkV5nvyQhirbxPKXdoYAUu37jbbRFK
+         RRNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=XqHUAe/d2T/62cn+R13oEFPPgLpmX4RsQQbb389NoXzXRPbjtRzy8iBkV0TZxFdsI1
-         0HmXZKrVMa+hBDKiuFb4jTtfPCHvggPY9rQdRtM773OZbfOIACNXC5C6k8T7qcBZr7vu
-         rtTcRo6tfYGUz3cY8pFXvXCX3OxKAeiI6/C/kO726yIFKek916M/gpGfJgJr8paiMg9X
-         gBC1WUu7oAA9mAJXyJ31ximYXiqb8ctk7JUvxFNV1r8saRKByNdVE3G0iauZ8+cbaZT9
-         Su+s5UXzYMOW5+hN4pAgpzCsKICR72zCcFZ1Gg+qBidvmhCDORl3qKsnxvf23DpHtpOh
-         RVPQ==
-X-Gm-Message-State: AOAM531kP5Mw2yk0jezlxm/uVo230MtzeIqit0vlGDzcp+gsJI9v1hsd
-        i35a7VR+jrcQnRItBO3ONvZw3h2SxT8bBpgi9Hg=
-X-Google-Smtp-Source: ABdhPJxJzT1Kb5atT5yD66iaERNxaunOV6XJPdXL1z2OXUo9BKjwXZsRFKaZJQfJZWzQJ7vPYlv2A2MhcLNWOaJIEsQ=
-X-Received: by 2002:a2e:b61c:: with SMTP id r28mr13615658ljn.274.1628616814996;
- Tue, 10 Aug 2021 10:33:34 -0700 (PDT)
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
+        b=MzqJIgpggquwLf6MJjWU6Y/cosJW2kbnfukHDV3Y86DxgpHn8PuaGQldtRwJNoCUYz
+         PtJLrZ/85IwZU6NOMdleru+pwhJAKXsfTp2A6aGcSaoVFV8VnJvL7MS6e3GJenesU1mF
+         kNftZd21JorX3Et3kSNMw158rLujPSZ6zjce7vKVB6zogMe6grGS8BTe6d0G4XUAu6Ia
+         guheX7S1kSvZLvygIEIxo6v/PD9eT9evlkQ1Gy2nKA28JCUOx1JsEarGVkzd0zQWjW2e
+         1kFkG/BUe6mU7fneX9FmCSzuB+rWecSj6kRdTb9BNrE3qqorOG1by19eaB/JHU9gNmC8
+         /iEQ==
+X-Gm-Message-State: AOAM5316EdufDznq6IwUw0tgCy846JhfL/OL7tAInRsw4K0y8Q8Hbgxk
+        uEYAs0MkmZB9UZmMYZWNCS0=
+X-Google-Smtp-Source: ABdhPJz49YrZM//ggKf8bHTUEyX+i7wk+TCUvpNQfTNMPz75O6HiUZd5KZj6KpNiK4lrR01Ue4t1JQ==
+X-Received: by 2002:a05:600c:213:: with SMTP id 19mr5962581wmi.2.1628617845538;
+        Tue, 10 Aug 2021 10:50:45 -0700 (PDT)
+Received: from [192.168.1.70] ([102.64.220.234])
+        by smtp.gmail.com with ESMTPSA id k17sm4419042wmj.0.2021.08.10.10.50.40
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Tue, 10 Aug 2021 10:50:44 -0700 (PDT)
+Message-ID: <6112bc74.1c69fb81.b576d.9fe6@mx.google.com>
+From:   Vanina curth <curtisvani0031@gmail.com>
+X-Google-Original-From: Vanina  curth
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Received: by 2002:ac2:5d2e:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:33:33
- -0700 (PDT)
-Reply-To: majidmuzaffar8@gmail.com
-From:   Majid Muzaffar <ing.abdullabin.rishid.me@gmail.com>
-Date:   Tue, 10 Aug 2021 20:33:33 +0300
-Message-ID: <CAFsu49W_3bbJbgEKV5RQo3TBRgLduTA-4EwS7hHkwcfSHSRrcg@mail.gmail.com>
-Subject: Proposal
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Dear
+To:     Recipients <Vanina@vger.kernel.org>
+Date:   Tue, 10 Aug 2021 17:50:34 +0000
+Reply-To: curtisvani9008@gmail.com
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Salam alaikum,
-
-I am the investment officer of UAE based investment company who are
-ready to fund projects outside UAE, in the form of debt finance. We
-grant loan to both Corporate and private entities at a low interest
-rate of 3% ROI per annum. The terms are very flexible and interesting.
-Kindly revert back if you have projects that needs funding for further
-discussion and negotiation.
-
-Thanks
-
-investment officer
+How are you? I'm Vanina. I'm interested to know you and I would like to kno=
+w more about you and establish relationship with you. i will wait for your =
+response. thank you.
