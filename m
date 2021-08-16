@@ -2,150 +2,73 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC0823ED3E8
-	for <lists+linux-mmc@lfdr.de>; Mon, 16 Aug 2021 14:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 069F73ED46E
+	for <lists+linux-mmc@lfdr.de>; Mon, 16 Aug 2021 15:00:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232496AbhHPM1U (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 16 Aug 2021 08:27:20 -0400
-Received: from smtp2.axis.com ([195.60.68.18]:53498 "EHLO smtp2.axis.com"
+        id S231244AbhHPNAy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 16 Aug 2021 09:00:54 -0400
+Received: from inva021.nxp.com ([92.121.34.21]:58256 "EHLO inva021.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231420AbhHPM1U (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 16 Aug 2021 08:27:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1629116809;
-  x=1660652809;
-  h=date:to:cc:subject:message-id:references:mime-version:
-   content-transfer-encoding:in-reply-to:from;
-  bh=OhV0BsQqlrqeJOpMV5tM7Pow/ETvx11850wh0NgLiqw=;
-  b=gRFdlLinsAXru6/Ek42Rns27no8DcpZ/l90zkOIAjPTcoYU+bMweVGj6
-   0XJBGgmovgcWS7mTUGfRQSlC+gEXm2LUqoCooWTaAmk56vYsUpV/Xv9Cv
-   2nOmUUgH1BCkurO1ZQvZcw5xfBhsxzRdHtWkGZbIg3wZ8fk5oVoW9ceMy
-   RyXnDPeiOxM/vkmWYY2S09I89ggOPF0HysCYmmLEkM04Xr1a+s3JTjXpl
-   8bQybidkTgAYM4re0FFztZ+y3EdnFLClhMT8C0h/njcIKBY0DsyDKsQ4E
-   jSPZhAYdsCzR0+bsBx85Ca4yERI08VHhak8zmqANdXsXNyH7plB0tEii3
-   Q==;
-Date:   Mon, 16 Aug 2021 14:26:47 +0200
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     =?iso-8859-1?Q?M=E5rten?= Lindahl <Marten.Lindahl@axis.com>,
-        "Jesper Nilsson" <Jesper.Nilsson@axis.com>,
-        Lars Persson <Lars.Persson@axis.com>, kernel <kernel@axis.com>,
-        linux-arm-kernel <linux-arm-kernel@axis.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>
-Subject: Re: [PATCH] mmc: usdhi6rol0: Implement card_busy function
-Message-ID: <20210816122645.GA7881@axis.com>
-References: <20210812145056.11916-1-marten.lindahl@axis.com>
- <CAPDyKFqp=savCgoUTRYbMG106zSkGshX9OiwAXMxb4VsPKUXsg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPDyKFqp=savCgoUTRYbMG106zSkGshX9OiwAXMxb4VsPKUXsg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From:   Marten Lindahl <martenli@axis.com>
+        id S229593AbhHPNAx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 16 Aug 2021 09:00:53 -0400
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 937D52027D2;
+        Mon, 16 Aug 2021 15:00:20 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5B5A02027C4;
+        Mon, 16 Aug 2021 15:00:20 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+        by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id C6650183AC8B;
+        Mon, 16 Aug 2021 21:00:18 +0800 (+08)
+From:   haibo.chen@nxp.com
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de
+Cc:     kernel@pengutronix.de, festevam@gmail.com,
+        linux-mmc@vger.kernel.org, linux-imx@nxp.com, haibo.chen@nxp.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 1/6] mmc: sdhci-esdhc-imx: remove redundant code for manual tuning
+Date:   Mon, 16 Aug 2021 20:38:23 +0800
+Message-Id: <1629117508-4886-1-git-send-email-haibo.chen@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Ulf!
+From: Haibo Chen <haibo.chen@nxp.com>
 
-Thank you for your comments! I will update the patch.
+For manual tuning method, already call esdhc_prepare_tuning()
+config the necessary registers, so remove the redundant code
+in esdhc_writew_le() for SDHCI_HOST_CONTROL2.
 
-On Fri, Aug 13, 2021 at 11:25:35AM +0200, Ulf Hansson wrote:
-> On Thu, 12 Aug 2021 at 16:51, Mårten Lindahl <marten.lindahl@axis.com> wrote:
-> >
-> > When switching card voltage to UHS voltage the mmc framework tries to
-> > check that the card is driving pins CMD, and DAT[0-3] low before the
-> > switch is made. Drivers that does not implement the card_busy function
-> > will manage to do the switch anyway, but the framework will print a
-> > warning about not being able to verify the voltage signal.
-> >
-> > Implement card_busy function. Renesas host interface only exposes pins
-> > DAT[0] and DAT[3] for reading the busy state, which is why only these
-> > two pins are checked.
-> >
-> > Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-> > ---
-> >  drivers/mmc/host/usdhi6rol0.c | 17 +++++++++++++++++
-> >  1 file changed, 17 insertions(+)
-> >
-> > diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
-> > index b9b79b1089a0..e400a646e675 100644
-> > --- a/drivers/mmc/host/usdhi6rol0.c
-> > +++ b/drivers/mmc/host/usdhi6rol0.c
-> > @@ -77,6 +77,7 @@
-> >  #define USDHI6_SD_INFO1_WP             BIT(7)
-> >  #define USDHI6_SD_INFO1_D3_CARD_OUT    BIT(8)
-> >  #define USDHI6_SD_INFO1_D3_CARD_IN     BIT(9)
-> > +#define USDHI6_SD_INFO1_SDDAT3         BIT(10)
-> >
-> >  #define USDHI6_SD_INFO2_CMD_ERR                BIT(0)
-> >  #define USDHI6_SD_INFO2_CRC_ERR                BIT(1)
-> > @@ -1186,6 +1187,21 @@ static int usdhi6_sig_volt_switch(struct mmc_host *mmc, struct mmc_ios *ios)
-> >         return ret;
-> >  }
-> >
-> > +static int usdhi6_card_busy(struct mmc_host *mmc)
-> > +{
-> > +       struct usdhi6_host *host = mmc_priv(mmc);
-> > +       u32 info1 = usdhi6_read(host, USDHI6_SD_INFO1);
-> > +       u32 info2 = usdhi6_read(host, USDHI6_SD_INFO2);
-> > +
-> > +       /* Check if the SD bus is processing a command */
-> 
-> Hmm, this sounds a bit confusing to me. Don't you want to say
-> something like "the clock logic is enabled".
-> 
-> The point is, from the mmc core point of view, ->card_busy() is called
-> to poll for busy completion *after* a command has been processed.
-> 
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+---
+ drivers/mmc/host/sdhci-esdhc-imx.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-Thanks. After reading the SD specification my understanding is that it
-should be enough to solely check DAT0 in this case. I will remove the
-check for SCLKDIVEN.
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index 57b19ca1ad6d..a49fac719fca 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -628,17 +628,7 @@ static void esdhc_writew_le(struct sdhci_host *host, u16 val, int reg)
+ 		else
+ 			new_val &= ~ESDHC_VENDOR_SPEC_VSELECT;
+ 		writel(new_val, host->ioaddr + ESDHC_VENDOR_SPEC);
+-		if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING) {
+-			new_val = readl(host->ioaddr + ESDHC_MIX_CTRL);
+-			if (val & SDHCI_CTRL_TUNED_CLK) {
+-				new_val |= ESDHC_MIX_CTRL_SMPCLK_SEL;
+-				new_val |= ESDHC_MIX_CTRL_AUTO_TUNE_EN;
+-			} else {
+-				new_val &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
+-				new_val &= ~ESDHC_MIX_CTRL_AUTO_TUNE_EN;
+-			}
+-			writel(new_val , host->ioaddr + ESDHC_MIX_CTRL);
+-		} else if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
++		if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
+ 			u32 v = readl(host->ioaddr + SDHCI_AUTO_CMD_STATUS);
+ 			u32 m = readl(host->ioaddr + ESDHC_MIX_CTRL);
+ 			if (val & SDHCI_CTRL_TUNED_CLK) {
+-- 
+2.17.1
 
-> > +       if (!(info2 & USDHI6_SD_INFO2_SCLKDIVEN))
-> > +               return 0;
-> > +
-> > +       /* Card is busy if it is pulling dat[0] & dat[3] low */
-> > +       return !(info2 & USDHI6_SD_INFO2_SDDAT0 ||
-> > +                info1 & USDHI6_SD_INFO1_SDDAT3);
-> 
-> In fact, it's sufficient to monitor any one of the DATA lines to check
-> for busy for the UHS-I switch, according to the SD spec.
-> 
-> However, since we are using ->card_busy() to monitor also other busy
-> signal scenarios, like for some commands with R1B responses that
-> assert only DAT0 to signal busy (at least according to specs), I think
-> it's better to monitor solely DAT0 here.
-> 
-
-I will remove the check for DAT3.
-
-> I realize that the comment for the ->card_busy() callback in
-> include/linux/mmc/host.h needs to be updated to clarify this as well.
-> 
-
-I will update the card_busy callback comment to DAT0 only.
-
-Kind regards
-Mårten
-
-> > +}
-> > +
-> >  static const struct mmc_host_ops usdhi6_ops = {
-> >         .request        = usdhi6_request,
-> >         .set_ios        = usdhi6_set_ios,
-> > @@ -1193,6 +1209,7 @@ static const struct mmc_host_ops usdhi6_ops = {
-> >         .get_ro         = usdhi6_get_ro,
-> >         .enable_sdio_irq = usdhi6_enable_sdio_irq,
-> >         .start_signal_voltage_switch = usdhi6_sig_volt_switch,
-> > +       .card_busy = usdhi6_card_busy,
-> >  };
-> >
-> >  /*                     State machine handlers                          */
-> > --
-> > 2.20.1
-> >
-> 
-> Kind regards
-> Uffe
