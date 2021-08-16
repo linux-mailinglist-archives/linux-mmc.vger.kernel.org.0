@@ -2,169 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D43363ED842
-	for <lists+linux-mmc@lfdr.de>; Mon, 16 Aug 2021 16:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5916E3ED858
+	for <lists+linux-mmc@lfdr.de>; Mon, 16 Aug 2021 16:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231354AbhHPOAs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 16 Aug 2021 10:00:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57520 "EHLO
+        id S231982AbhHPOBE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 16 Aug 2021 10:01:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231829AbhHPOAX (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Aug 2021 10:00:23 -0400
-Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE8DC0612A7
-        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 06:59:36 -0700 (PDT)
-Received: by mail-vs1-xe2b.google.com with SMTP id e9so11003974vst.6
-        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 06:59:36 -0700 (PDT)
+        with ESMTP id S231910AbhHPOAh (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Aug 2021 10:00:37 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 138F8C0612AF
+        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 06:59:39 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id g1so10995030vsq.7
+        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 06:59:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=QrII97R9ADzSkpz5bm6tsH8fcBbWSF/zk08tsiVqE3g=;
-        b=qsJ8Ou9oVBxPwrXLQY0RRC7ivFXF3gnatanqcUcKV8RSdE/kQnZ65vI9NxlvZFyUKT
-         YALl4pBaf0W3xBC2bWl+M95bVlfBMIW7DUzBn6kiI5JksNr5tXYSuKzMdwlf8j0BCoPo
-         fgW/J7ym0NzCOYeFrbBXSFGvNkhw44DQ3JkJisPshO8hE5iIMS4oVi02KZZYHOPrnPOI
-         dIwis+hIE8IIY60q7LJaYR6tCBm3sE/YRh2mv5fYXocF17GD2hkotspKGQIwGcxnVZ+B
-         6JAkzB1+joJoHVAIjIxK5FTuEEKoTN6fdYMr0GOo9iNuRTY7oZfUlUWIzpwGbh4H5uli
-         oyEQ==
+        bh=nVKCYDMJormPExhpOghf50YWCKd/5uetFN/Swg1y9AE=;
+        b=AyTHo3XictXYsNapssdIBh0yZzQanYstNQtAKZWNMZr6nzJYpiDcoZSWw3QJ6phR3B
+         LCsQ5XarDg6jvY9Qca0DNKeAT/JoUVIymOTzBxla4hvWsZHUGoqoEPwkAoH7p9HqqwkD
+         K2Z4njb+9ewyQjAcb83/noLlRAKiQMVTox4dNTjTppAALsBvMMv+QYvwvwl0s3FNsh3j
+         qAEs37ER1l8+Rdr6EgVhQraNEuCKy0G2qU20p1Bk1kk8bGl5G75h0iGqVPx+7dCaxdT0
+         97KEmeEn5ht68tETNjQovt5F/BPHifZuUaBs8V8Bpt+LJY4r7GMecWQRnGkmNCAnnwZq
+         h0Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=QrII97R9ADzSkpz5bm6tsH8fcBbWSF/zk08tsiVqE3g=;
-        b=nYsXuBiIUyeOB1k7m4MOYggjWsVL3z1nuyM/79Pal3IF+BIs4LdZ1sgIRLdBDm7+ln
-         n0pf34bEg/gYhdBCmQzQhO09oOnGs7279zhqy057v63gqxAeufoW7bWroUXiF4BC7NNK
-         K2XF83MxrIezj5YRWMbQx9SylK3RIrXcAarU7p8HCYfo9n0uJAxYMEj09kOfq4iFidxO
-         Tc6ObeyJnhh0o43F7OUR1SFtReM/PGzDmO0ocdyvmfsXEn70DYpprXOHN+xLFeF8cl/O
-         wb7hYyj1P8nELoE4TOUrdyh4VzOu2nBCSgDD1UuCmBdv0h4sxYbYXTHyMI2hm6zxH2xa
-         zdeg==
-X-Gm-Message-State: AOAM5332R6//pSWedhEkaYyoPafT26LfLGEHITKDx90b7bJKCxiFTe7Q
-        CygbDsvP9fpBS4N/fuL1qabNWrK9yiTZ0jAzb1LIEA==
-X-Google-Smtp-Source: ABdhPJwokJtd5yc9yJUou2gAS8aHmlXPKBVY+W8VtEDj9mdLwmXmFeHQYZSmwY2vonD7cu7RrYdco4+ENtJDgoZ43mM=
-X-Received: by 2002:a67:7949:: with SMTP id u70mr1602635vsc.55.1629122376058;
- Mon, 16 Aug 2021 06:59:36 -0700 (PDT)
+        bh=nVKCYDMJormPExhpOghf50YWCKd/5uetFN/Swg1y9AE=;
+        b=WGe8J9sqTNWQKxGdLL2hSBWVyJoMtp/ZQf6rqx36HKOIVY0ABfgGRXI7gz6CJR9Tp6
+         Ywr+1pfZGYFXO3sR9t9CRjgC83jqkq5rqkRfqi582dFpXSyHMHB01iyeuy2NDtMsOVWA
+         fbabY0c7PBmYiJAsm6zU2qKFcDOXjXWTyfanxUOdPRzkxqV97Lkoj+X1psfPOHf+niuP
+         BnVzkRWNwqjNP5eszrHJ8AtxQBsYfMf+8oC8ZtIfkSk+51pNrFZOqV6oKFq3eBTNfTwF
+         fR1sy8uhcybvr7BiLatgSmCAtji3vgby6AXfOlloSnUAbVQcTetEuYjZwC37LjhwO9L+
+         0ARw==
+X-Gm-Message-State: AOAM532TgzJrX12sMlC9ledHy6u27+gC91FTzf4+2N8jJ+6njnCdex7u
+        neIouajKJ/N7rHPmNTIsmUyCHrobtnFTrVuPEaNXhQ==
+X-Google-Smtp-Source: ABdhPJxH03LCvwF3n7FLPSRhMFmFSVUxkYQal+sImI6ahGhwHnNg4T2E1pse6fPH6Zhe8c/gCWm9o+F4tyfzci6Gr/w=
+X-Received: by 2002:a67:3212:: with SMTP id y18mr9746202vsy.19.1629122378196;
+ Mon, 16 Aug 2021 06:59:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <2fef280d8409ab0100c26c6ac7050227defd098d.1627818365.git.tommyhebb@gmail.com>
-In-Reply-To: <2fef280d8409ab0100c26c6ac7050227defd098d.1627818365.git.tommyhebb@gmail.com>
+References: <1627534001-17256-2-git-send-email-sartgarg@codeaurora.org> <1628232901-30897-1-git-send-email-sartgarg@codeaurora.org>
+In-Reply-To: <1628232901-30897-1-git-send-email-sartgarg@codeaurora.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 16 Aug 2021 15:58:58 +0200
-Message-ID: <CAPDyKFr7QAsDbE8TrZtTcUL1hKAw2_dMZRU5QngzT3VwUTktfg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: rtsx: fix long reads when clock is prescaled
-To:     Thomas Hebb <tommyhebb@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ricky Wu <ricky_wu@realtek.com>,
-        Rui Feng <rui_feng@realsil.com.cn>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>
+Date:   Mon, 16 Aug 2021 15:59:02 +0200
+Message-ID: <CAPDyKFoxCuKcOtS=J2adqpuXK6ucx5CqYvi5RbAKNr-CjFkcYA@mail.gmail.com>
+Subject: Re: [PATCH V3 0/2] Introduce max_timeout_count in sdhci_host for
+ vendor needs
+To:     Sarthak Garg <sartgarg@codeaurora.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
+        Sahitya Tummala <stummala@codeaurora.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 1 Aug 2021 at 13:46, Thomas Hebb <tommyhebb@gmail.com> wrote:
+On Fri, 6 Aug 2021 at 08:55, Sarthak Garg <sartgarg@codeaurora.org> wrote:
 >
-> For unexplained reasons, the prescaler register for this device needs to
-> be cleared (set to 1) while performing a data read or else the command
-> will hang. This does not appear to affect the real clock rate sent out
-> on the bus, so I assume it's purely to work around a hardware bug.
+> Introduce max_timeout_count in sdhci_host_struct to let vendor's modify
+> the max timeout value as per their needs.
 >
-> During normal operation, the prescaler is already set to 1, so nothing
-> needs to be done. However, in "initial mode" (which is used for sub-MHz
-> clock speeds, like the core sets while enumerating cards), it's set to
-> 128 and so we need to reset it during data reads. We currently fail to
-> do this for long reads.
+> Sahitya Tummala (1):
+>   mmc: sdhci-msm: Use maximum possible data timeout value
 >
-> This has no functional affect on the driver's operation currently
-> written, as the MMC core always sets a clock above 1MHz before
-> attempting any long reads. However, the core could conceivably set any
-> clock speed at any time and the driver should still work, so I think
-> this fix is worthwhile.
+> Sarthak Garg (1):
+>   mmc: sdhci: Introduce max_timeout_count variable in sdhci_host
 >
-> I personally encountered this issue while performing data recovery on an
-> external chip. My connections had poor signal integrity, so I modified
-> the core code to reduce the clock speed. Without this change, I saw the
-> card enumerate but was unable to actually read any data.
+>  drivers/mmc/host/sdhci-msm.c |  3 +++
+>  drivers/mmc/host/sdhci.c     | 16 +++++++++-------
+>  drivers/mmc/host/sdhci.h     |  1 +
+>  3 files changed, 13 insertions(+), 7 deletions(-)
 >
-> Writes don't seem to work in the situation described above even with
-> this change (and even if the workaround is extended to encompass data
-> write commands). I was not able to find a way to get them working.
+> --
+> 2.7.4
 >
-> Signed-off-by: Thomas Hebb <tommyhebb@gmail.com>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
-
-
->
-> ---
->
->  drivers/mmc/host/rtsx_pci_sdmmc.c | 36 ++++++++++++++++++++-----------
->  1 file changed, 23 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> index 4ca937415734..58cfaffa3c2d 100644
-> --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-> +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> @@ -542,9 +542,22 @@ static int sd_write_long_data(struct realtek_pci_sdmmc *host,
->         return 0;
->  }
->
-> +static inline void sd_enable_initial_mode(struct realtek_pci_sdmmc *host)
-> +{
-> +       rtsx_pci_write_register(host->pcr, SD_CFG1,
-> +                       SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_128);
-> +}
-> +
-> +static inline void sd_disable_initial_mode(struct realtek_pci_sdmmc *host)
-> +{
-> +       rtsx_pci_write_register(host->pcr, SD_CFG1,
-> +                       SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_0);
-> +}
-> +
->  static int sd_rw_multi(struct realtek_pci_sdmmc *host, struct mmc_request *mrq)
->  {
->         struct mmc_data *data = mrq->data;
-> +       int err;
->
->         if (host->sg_count < 0) {
->                 data->error = host->sg_count;
-> @@ -553,22 +566,19 @@ static int sd_rw_multi(struct realtek_pci_sdmmc *host, struct mmc_request *mrq)
->                 return data->error;
->         }
->
-> -       if (data->flags & MMC_DATA_READ)
-> -               return sd_read_long_data(host, mrq);
-> +       if (data->flags & MMC_DATA_READ) {
-> +               if (host->initial_mode)
-> +                       sd_disable_initial_mode(host);
->
-> -       return sd_write_long_data(host, mrq);
-> -}
-> +               err = sd_read_long_data(host, mrq);
->
-> -static inline void sd_enable_initial_mode(struct realtek_pci_sdmmc *host)
-> -{
-> -       rtsx_pci_write_register(host->pcr, SD_CFG1,
-> -                       SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_128);
-> -}
-> +               if (host->initial_mode)
-> +                       sd_enable_initial_mode(host);
->
-> -static inline void sd_disable_initial_mode(struct realtek_pci_sdmmc *host)
-> -{
-> -       rtsx_pci_write_register(host->pcr, SD_CFG1,
-> -                       SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_0);
-> +               return err;
-> +       }
-> +
-> +       return sd_write_long_data(host, mrq);
->  }
->
->  static void sd_normal_rw(struct realtek_pci_sdmmc *host,
-> --
-> 2.32.0
->
