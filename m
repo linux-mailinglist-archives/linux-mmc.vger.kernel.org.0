@@ -2,134 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1FD53ED478
-	for <lists+linux-mmc@lfdr.de>; Mon, 16 Aug 2021 15:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFAA33ED457
+	for <lists+linux-mmc@lfdr.de>; Mon, 16 Aug 2021 14:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235747AbhHPNA7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 16 Aug 2021 09:00:59 -0400
-Received: from inva020.nxp.com ([92.121.34.13]:58256 "EHLO inva020.nxp.com"
+        id S229806AbhHPMyD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 16 Aug 2021 08:54:03 -0400
+Received: from smtp2.axis.com ([195.60.68.18]:48222 "EHLO smtp2.axis.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229917AbhHPNA6 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 16 Aug 2021 09:00:58 -0400
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id E21151A2898;
-        Mon, 16 Aug 2021 15:00:25 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A9DF71A2887;
-        Mon, 16 Aug 2021 15:00:25 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 25C5C183AD05;
-        Mon, 16 Aug 2021 21:00:24 +0800 (+08)
-From:   haibo.chen@nxp.com
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de
-Cc:     kernel@pengutronix.de, festevam@gmail.com,
-        linux-mmc@vger.kernel.org, linux-imx@nxp.com, haibo.chen@nxp.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 6/6] arm64: dts: imx8mn-evk: add sdio wifi support
-Date:   Mon, 16 Aug 2021 20:38:28 +0800
-Message-Id: <1629117508-4886-6-git-send-email-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1629117508-4886-1-git-send-email-haibo.chen@nxp.com>
-References: <1629117508-4886-1-git-send-email-haibo.chen@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+        id S229593AbhHPMyC (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 16 Aug 2021 08:54:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1629118411;
+  x=1660654411;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gVAAKtYSg3GpDX6mczebbC5P31/HSllfnGGcOBiVtPE=;
+  b=cTZnX8LB8fv5J2Oh6xW8k+5DKiyD5V329mtfNutZq8nwgcIKQlP0FMQ3
+   VktXA+sCv+Jf3ETd4z6avhOebngE9QnYuJym0hhz8zSb8XXWY3MsZVoSo
+   jjhkW3OuS7Q43pY9LGCsP0x8LKdlhq/r3PQ/csCYcLbcjNkQYOuvohGDd
+   EYwtX2mVYgyKF62Q0+rsDSDPsFtPpo22GbP4puaXjzO/2pT0hGpd55mMP
+   cEGHuj9pKGqCPiKvzQhDV2q1em8S3mcOoQOEQdqs9UwbL3KxhH4nJZ7kV
+   KgbS1FtXoAIHRHXYfJ2E0CYJiUWzSaSOjK1GMSn10kUVCc06JFLRT6+LJ
+   Q==;
+From:   =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
+To:     Jesper Nilsson <jesper.nilsson@axis.com>,
+        Lars Persson <lars.persson@axis.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+CC:     <kernel@axis.com>, <linux-arm-kernel@axis.com>,
+        <linux-mmc@vger.kernel.org>,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
+Subject: [PATCH v2] mmc: usdhi6rol0: Implement card_busy function
+Date:   Mon, 16 Aug 2021 14:52:43 +0200
+Message-ID: <20210816125243.11623-1-marten.lindahl@axis.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Haibo Chen <haibo.chen@nxp.com>
+When switching card voltage to UHS voltage the mmc framework tries to
+check the card busy signal, meaning the card pulling DAT0 line low,
+before the switch is made. Drivers that does not implement the card_busy
+function will manage to do the switch anyway, but the framework will
+print a warning about not being able to verify the voltage signal.
 
-Add sdio wifi support on imx8mn-evk board.
+Implement card_busy function.
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi | 59 +++++++++++++++++++
- 1 file changed, 59 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
-index 85e65f8719ea..00064f198423 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
-@@ -28,6 +28,13 @@
- 		reg = <0x0 0x40000000 0 0x80000000>;
- 	};
+v2:
+ - Update commit message, since interface limitation for checking DAT
+   lines is not valid for this fix.
+ - Skip check of SCLKDIVEN bit, and skip check of DAT3 line since SD
+   specification only points out checking DAT0 for busy signal.
+ - Update comment about card_busy callback.
+
+ drivers/mmc/host/usdhi6rol0.c | 10 ++++++++++
+ include/linux/mmc/host.h      |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
+index b9b79b1089a0..b5ab133e9add 100644
+--- a/drivers/mmc/host/usdhi6rol0.c
++++ b/drivers/mmc/host/usdhi6rol0.c
+@@ -1186,6 +1186,15 @@ static int usdhi6_sig_volt_switch(struct mmc_host *mmc, struct mmc_ios *ios)
+ 	return ret;
+ }
  
-+	usdhc1_pwrseq: usdhc1_pwrseq {
-+		compatible = "mmc-pwrseq-simple";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_usdhc1_gpio>;
-+		reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
-+	};
++static int usdhi6_card_busy(struct mmc_host *mmc)
++{
++	struct usdhi6_host *host = mmc_priv(mmc);
++	u32 tmp = usdhi6_read(host, USDHI6_SD_INFO2);
 +
- 	reg_usdhc2_vmmc: regulator-usdhc2 {
- 		compatible = "regulator-fixed";
- 		pinctrl-names = "default";
-@@ -205,6 +212,19 @@
- 	};
++	/* Card is busy if it is pulling dat[0] low */
++	return !(tmp & USDHI6_SD_INFO2_SDDAT0);
++}
++
+ static const struct mmc_host_ops usdhi6_ops = {
+ 	.request	= usdhi6_request,
+ 	.set_ios	= usdhi6_set_ios,
+@@ -1193,6 +1202,7 @@ static const struct mmc_host_ops usdhi6_ops = {
+ 	.get_ro		= usdhi6_get_ro,
+ 	.enable_sdio_irq = usdhi6_enable_sdio_irq,
+ 	.start_signal_voltage_switch = usdhi6_sig_volt_switch,
++	.card_busy = usdhi6_card_busy,
  };
  
-+&usdhc1 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc1>;
-+	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
-+	bus-width = <4>;
-+	keep-power-in-suspend;
-+	non-removable;
-+	mmc-pwrseq = <&usdhc1_pwrseq>;
-+	fsl,sdio-async-interrupt-enabled;
-+	status = "okay";
-+};
-+
- &usdhc2 {
- 	assigned-clocks = <&clk IMX8MN_CLK_USDHC2>;
- 	assigned-clock-rates = <200000000>;
-@@ -303,6 +323,45 @@
- 		>;
- 	};
+ /*			State machine handlers				*/
+diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+index 0abd47e9ef9b..ff1a251bb0bc 100644
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -153,7 +153,7 @@ struct mmc_host_ops {
  
-+	pinctrl_usdhc1_gpio: usdhc1grpgpio {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_RESET_B_GPIO2_IO10	0x41
-+		>;
-+	};
-+
-+	pinctrl_usdhc1: usdhc1grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_CLK_USDHC1_CLK		0x190
-+			MX8MN_IOMUXC_SD1_CMD_USDHC1_CMD		0x1d0
-+			MX8MN_IOMUXC_SD1_DATA0_USDHC1_DATA0	0x1d0
-+			MX8MN_IOMUXC_SD1_DATA1_USDHC1_DATA1	0x1d0
-+			MX8MN_IOMUXC_SD1_DATA2_USDHC1_DATA2	0x1d0
-+			MX8MN_IOMUXC_SD1_DATA3_USDHC1_DATA3	0x1d0
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_CLK_USDHC1_CLK		0x194
-+			MX8MN_IOMUXC_SD1_CMD_USDHC1_CMD		0x1d4
-+			MX8MN_IOMUXC_SD1_DATA0_USDHC1_DATA0	0x1d4
-+			MX8MN_IOMUXC_SD1_DATA1_USDHC1_DATA1	0x1d4
-+			MX8MN_IOMUXC_SD1_DATA2_USDHC1_DATA2	0x1d4
-+			MX8MN_IOMUXC_SD1_DATA3_USDHC1_DATA3	0x1d4
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_CLK_USDHC1_CLK		0x196
-+			MX8MN_IOMUXC_SD1_CMD_USDHC1_CMD		0x1d6
-+			MX8MN_IOMUXC_SD1_DATA0_USDHC1_DATA0	0x1d6
-+			MX8MN_IOMUXC_SD1_DATA1_USDHC1_DATA1	0x1d6
-+			MX8MN_IOMUXC_SD1_DATA2_USDHC1_DATA2	0x1d6
-+			MX8MN_IOMUXC_SD1_DATA3_USDHC1_DATA3	0x1d6
-+		>;
-+	};
-+
- 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
- 		fsl,pins = <
- 			MX8MN_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
+ 	int	(*start_signal_voltage_switch)(struct mmc_host *host, struct mmc_ios *ios);
+ 
+-	/* Check if the card is pulling dat[0:3] low */
++	/* Check if the card is pulling dat[0] low */
+ 	int	(*card_busy)(struct mmc_host *host);
+ 
+ 	/* The tuning command opcode value is different for SD and eMMC cards */
 -- 
-2.17.1
+2.20.1
 
