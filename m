@@ -2,54 +2,55 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FFF53ED857
-	for <lists+linux-mmc@lfdr.de>; Mon, 16 Aug 2021 16:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA1723ED84F
+	for <lists+linux-mmc@lfdr.de>; Mon, 16 Aug 2021 16:00:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231777AbhHPOBD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 16 Aug 2021 10:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57492 "EHLO
+        id S230426AbhHPOAy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 16 Aug 2021 10:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231940AbhHPOAh (ORCPT
+        with ESMTP id S231924AbhHPOAh (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Aug 2021 10:00:37 -0400
-Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02CDDC06124C
-        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 06:59:43 -0700 (PDT)
-Received: by mail-vk1-xa31.google.com with SMTP id k124so4461949vke.5
-        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 06:59:42 -0700 (PDT)
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7CF3C061224
+        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 06:59:45 -0700 (PDT)
+Received: by mail-vs1-xe36.google.com with SMTP id g1so10995217vsq.7
+        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 06:59:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=FdgGtEcfAftNEDhyiW7J0wv4uiUYCUUhbtGTkeqqBj0=;
-        b=lXKpKdwU/nxzKYQu0JVky+cOTbWt+XOYcwQewi4hNmjyGw32W8JHdNNw5R06zrZX8f
-         kqNJOtrzz+qdGHVlmuofDwd6Cg4iYaEDYF3/SCa2bCbZCdE1lF3fLJ3JBp3hACPglTJT
-         A93yJ6+i4J53clV+LyQqSs0HxAHMSlOjhfXtSHbSiJqq+n1F5onPinGmdkSPMFD8JKVz
-         Fo9/1bsOeqLTzS2/r3eTliVo3Nq/B+ZEbbNfeXBc459bnWFw6IikOjymXWlGVSFJ7nNy
-         4CZLQ2UNZUIspK7G6UzZNB4hA66/S4sbFaHvlo3FMh6zLXGpAj1xuwPQEk5mEJXIu+l4
-         tAQQ==
+        bh=H8F8ofHktK0D6sC8E2U990HPOVe8nFGr8wbj2x9k2ig=;
+        b=CnxxuQatXNI1WrxxXkVztpJnkCXfS1HGlWNDPMm0pH8dx+OefH0jqta5U6iJ+ZD/KM
+         5qB2kKOHo9wadf1Cxc/8Yk9emSVY61rr/I5GM/maMaSg5ADs7+DYV+rLdoHjooSRMto6
+         uYmFBz2qSk9HCCKZ5ENc/iX4JwbbMxwt+DDp4zjEagoc8S/qLjIH5Z2Y4A0mIpQqBJMW
+         Yi3P2H/BE5qjbp/4YQv86W8fFOtEwe3O3ECTs4AZpS908vIxDlr94PEzDa2X/ySE+2rG
+         wEY1nazzTb8NqK3/JfUuMMMfPN6v7PVuIH8BthO2DwIZoAgdsJLMQFBcUP7CESg1NR3N
+         ktDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FdgGtEcfAftNEDhyiW7J0wv4uiUYCUUhbtGTkeqqBj0=;
-        b=CUHZuyeMMSqVMI64rKF2UidaGay3pHEMcWxq/187QswWJGTw1qFUhrbLJg113akBUn
-         DcUn++8JD82le6CVKVX9oNPvMRBti4itQpkbQf0iImyeGKx4NsFQ1NCCiiMD/ropbgsL
-         P6FlqrEP9CQnedISPhm+osxtZyDWnKPqgTrPhB5b7L1e336T/JeY2B09cjB2X4TvWifF
-         mICVYoqM1bxP2JjUZBvC5Bi2LmgjvSDMpNIGMVCVLW5cXmlYQT/vr/bN15o3TnOACwDT
-         oOI4RjY5GzBk/VtPZ1QqqQ697kwp3TNjBrxPqPoKeixvIHvWvNNZakj5CwfzZtM0Fs/g
-         oKkg==
-X-Gm-Message-State: AOAM532iUyetz2fV/fgf3CvuCQD6VTrWWDZeR+UVwkjT1gbkOeI41ucJ
-        KXGKwz2B9CQkVYSmxQ0b3F7+/vAQFjrrKMIN2jLpVw==
-X-Google-Smtp-Source: ABdhPJzBDfAgbW3pX7xmLsi5xJsPnYsejXMV3ITpbiRQm364lNRmYgHbWPp2xsFr8ZkGvwB2htEA73RIlio9ZyQA8vI=
-X-Received: by 2002:a1f:a301:: with SMTP id m1mr8844692vke.6.1629122382002;
- Mon, 16 Aug 2021 06:59:42 -0700 (PDT)
+        bh=H8F8ofHktK0D6sC8E2U990HPOVe8nFGr8wbj2x9k2ig=;
+        b=IjJJgvkTy4ou6Q7mJfiGQFXdffCmv17ZTJbIkTGe2JS4UFjSx179VPiqK9YJR3AHTk
+         x6CgIc/5wzejOXowlHSCFkku29TJDpyAZUM2xMTXqC3afUew6B86inpM2IF4BoiYSuKD
+         VzUBV3uyC9D0tUy5Y8GaAaDZUF3/QBq9L45YVBFurxTf7RLOsw8xst1OeD9d9ixJQTcQ
+         f0scWzqPXk9FAhl7+04u2cHoj/pvY9rE38QqJy5/O3QnxRNAIjSi57pRkhwzlY40jZ8p
+         jQDPygOc2n4e2MWZpklV72JzdfSVCYMZMfgiAhZZGWoJa6TaaFxB73wB8qFOOJos0YUK
+         /WdA==
+X-Gm-Message-State: AOAM530uOuKNYdbVbZRFU2Rv4CaqGdraPP3U4ZL5N0eAj18r4thB5N74
+        gCr/9Rir8oa3+s21nJC3zOhx4ZxvIdbZ3ayrRpbsgw==
+X-Google-Smtp-Source: ABdhPJyLhhY45yfFMWWubkJb/mweV4RrpZDMAc2LgnFag61Ctnu7Ktgvv3hHnmLdqcSXOBDgIoGmKtJ6y9lqdBE8c3k=
+X-Received: by 2002:a05:6102:5f4:: with SMTP id w20mr3935366vsf.34.1629122385129;
+ Mon, 16 Aug 2021 06:59:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com> <1628334401-6577-5-git-send-email-stefan.wahren@i2se.com>
-In-Reply-To: <1628334401-6577-5-git-send-email-stefan.wahren@i2se.com>
+References: <1628334401-6577-1-git-send-email-stefan.wahren@i2se.com> <1628334401-6577-6-git-send-email-stefan.wahren@i2se.com>
+In-Reply-To: <1628334401-6577-6-git-send-email-stefan.wahren@i2se.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 16 Aug 2021 15:59:05 +0200
-Message-ID: <CAPDyKFoAGx-1nQh81P3OPiAkR5cq1wGaioQ8Mxo4JCZsZC6NVQ@mail.gmail.com>
-Subject: Re: [PATCH V2 04/10] mmc: sdhci-iproc: Cap min clock frequency on BCM2711
+Date:   Mon, 16 Aug 2021 15:59:09 +0200
+Message-ID: <CAPDyKFr9UEO4TdieTYoR+UXgp70d4Axy7F2nYJc_qNb1dPho7A@mail.gmail.com>
+Subject: Re: [PATCH V2 05/10] mmc: sdhci-iproc: Set SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN
+ on BCM2711
 To:     Stefan Wahren <stefan.wahren@i2se.com>
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Nicolas Saenz Julienne <nsaenz@kernel.org>,
@@ -73,19 +74,9 @@ On Sat, 7 Aug 2021 at 13:07, Stefan Wahren <stefan.wahren@i2se.com> wrote:
 >
 > From: Nicolas Saenz Julienne <nsaenz@kernel.org>
 >
-> There is a known bug on BCM2711's SDHCI core integration where the
-> controller will hang when the difference between the core clock and the
-> bus clock is too great. Specifically this can be reproduced under the
-> following conditions:
->
-> - No SD card plugged in, polling thread is running, probing cards at
->   100 kHz.
-> - BCM2711's core clock configured at 500MHz or more.
->
-> So set 200 kHz as the minimum clock frequency available for that board.
->
-> For more information on the issue see this:
-> https://lore.kernel.org/linux-mmc/20210322185816.27582-1-nsaenz@kernel.org/T/#m11f2783a09b581da6b8a15f302625b43a6ecdeca
+> The controller doesn't seem to pick-up on clock changes, so set the
+> SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN flag to query the clock frequency
+> directly from the clock.
 >
 > Fixes: f84e411c85be ("mmc: sdhci-iproc: Add support for emmc2 of the BCM2711")
 > Signed-off-by: Nicolas Saenz Julienne <nsaenz@kernel.org>
@@ -98,45 +89,23 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-iproc.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>  drivers/mmc/host/sdhci-iproc.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
 > diff --git a/drivers/mmc/host/sdhci-iproc.c b/drivers/mmc/host/sdhci-iproc.c
-> index cce390f..032bf85 100644
+> index 032bf85..e7565c6 100644
 > --- a/drivers/mmc/host/sdhci-iproc.c
 > +++ b/drivers/mmc/host/sdhci-iproc.c
-> @@ -173,6 +173,23 @@ static unsigned int sdhci_iproc_get_max_clock(struct sdhci_host *host)
->                 return pltfm_host->clock;
->  }
+> @@ -295,7 +295,8 @@ static const struct sdhci_ops sdhci_iproc_bcm2711_ops = {
+>  };
 >
-> +/*
-> + * There is a known bug on BCM2711's SDHCI core integration where the
-> + * controller will hang when the difference between the core clock and the bus
-> + * clock is too great. Specifically this can be reproduced under the following
-> + * conditions:
-> + *
-> + *  - No SD card plugged in, polling thread is running, probing cards at
-> + *    100 kHz.
-> + *  - BCM2711's core clock configured at 500MHz or more
-> + *
-> + * So we set 200kHz as the minimum clock frequency available for that SoC.
-> + */
-> +static unsigned int sdhci_iproc_bcm2711_get_min_clock(struct sdhci_host *host)
-> +{
-> +       return 200000;
-> +}
-> +
->  static const struct sdhci_ops sdhci_iproc_ops = {
->         .set_clock = sdhci_set_clock,
->         .get_max_clock = sdhci_iproc_get_max_clock,
-> @@ -271,6 +288,7 @@ static const struct sdhci_ops sdhci_iproc_bcm2711_ops = {
->         .set_clock = sdhci_set_clock,
->         .set_power = sdhci_set_power_and_bus_voltage,
->         .get_max_clock = sdhci_iproc_get_max_clock,
-> +       .get_min_clock = sdhci_iproc_bcm2711_get_min_clock,
->         .set_bus_width = sdhci_set_bus_width,
->         .reset = sdhci_reset,
->         .set_uhs_signaling = sdhci_set_uhs_signaling,
+>  static const struct sdhci_pltfm_data sdhci_bcm2711_pltfm_data = {
+> -       .quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
+> +       .quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12 |
+> +                 SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
+>         .ops = &sdhci_iproc_bcm2711_ops,
+>  };
+>
 > --
 > 2.7.4
 >
