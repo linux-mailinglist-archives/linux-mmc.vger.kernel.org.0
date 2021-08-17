@@ -2,95 +2,76 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A88533EE1A9
-	for <lists+linux-mmc@lfdr.de>; Tue, 17 Aug 2021 02:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71F9F3EE222
+	for <lists+linux-mmc@lfdr.de>; Tue, 17 Aug 2021 03:25:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237184AbhHQA4U (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 16 Aug 2021 20:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40090 "EHLO
+        id S235650AbhHQB0W (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 16 Aug 2021 21:26:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237031AbhHQA4O (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Aug 2021 20:56:14 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A424DC061147
-        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 17:55:26 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id z2so38112799lft.1
-        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 17:55:26 -0700 (PDT)
+        with ESMTP id S235890AbhHQB0V (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 16 Aug 2021 21:26:21 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B69C06129D
+        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 18:25:48 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id z128so36396596ybc.10
+        for <linux-mmc@vger.kernel.org>; Mon, 16 Aug 2021 18:25:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Pgxc5wTtAPJJ0DGyppg9xAOqF0AZtpwhIIHZ/fU+CFw=;
-        b=HwDbiofct0TMB65omGXGchoWcB9pqFmXgylYFqrV+IPCkhhIk+Lc+xUFVyK+iwexVh
-         BaN/elu+aEntGCLUZUMK9LwbqVepb8vBqq3+KkGl5eq8ph6kQo8uBRg3iNbL9p8MQDRk
-         AGUcbP/cOzbyQR0fSHRxKQKuYlF8U3Tqb0kDQ0693qSsC1JRhX7XsgaFSljyZZND0yDD
-         daJBvqi3qdAEnp9q9MoUaMSI4eshxddlIFStgVVccRzTIoWvtzhSNPzZkYDrQNyIV1sk
-         5uteB81rUcjsgWOQpQlN8qjpaUmFXIbrjX4RVsaLWEcCoZJ7LnZpbhjwzWkAm3w2ipSa
-         fPnA==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=iELgCLbQqv5tFsHgMTPz+ef0nc8wwD8GBHZ8BVFl4tE=;
+        b=PPWE12a+tIHVgCAaRkZ+BDhW5jkCA1NX7R8gL+wZdXYFuknkdIHIsM/MccOm+LyS2b
+         oX7EO2ddOAdOyb6jM4D49Rtcbps1iY6wnDxaERT5UmoOvuAH1zmoEGfuQmUMxrnlxLnm
+         tM+ZmUxM7CBZW30GSNyVnfl/CWhB9DMGTDQ+cOkNujBgKmc94HGsHsRvOBVn6spZFL7W
+         /G84NivGGvJ4F3o+3jai9Rep1CCrRjbG95Zt4KDEboJs6jp89MJkcfU/oSvFSKkP9eP9
+         yZyHdbgOj8jRqOfDjTwUI+u/W87LQjPs2iQ8lILXidw/oCX4pSclXNDGaSLSlz/cQET5
+         WEMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Pgxc5wTtAPJJ0DGyppg9xAOqF0AZtpwhIIHZ/fU+CFw=;
-        b=A+QTgNjicYfUI4WIUrI32su6cRU4QD+56L7lCgZ6UAH0jq5JOWHDqJOriSSqn3CLO0
-         dedBsuP0DmKBOuaTX7xhz+TL7a3aof4/jrgWYSG89RQNcL4M/TCAMFSc1hriLbMCfZlI
-         LLBFijpkTidJJIydBtf6uA1EODCQeb0ze/kQuYYjUGWcl+6mdQsGf8uyoVjLajI2Uq+B
-         LRCdoBOrk29ioiFSgY/KmD8WwtVj4GuTpQkxGwJOqfwP69Po1rbSXBnwo+v5EjCUkRvf
-         OE/mSA42d6HP9BrjNGQeEzStPEFGBAY+AXaGymThJ/enlp4HFfeQdag4JVVMWO4hGZ2J
-         WuwA==
-X-Gm-Message-State: AOAM533UP6LjAIkFk89NOnK2W5FTrIyK89+CzGKSayTSwLesVJ0927lM
-        2zTrQJgu6Jn6NVnO9dW7oRFljg==
-X-Google-Smtp-Source: ABdhPJxyuF7Jousa0ekVBo+HPfYk8A5Rq4PfYVTtE7a4QI12mfqo2ijMQkjYqeBcThS28ycqDu/ONA==
-X-Received: by 2002:a05:6512:3a83:: with SMTP id q3mr420518lfu.28.1629161725069;
-        Mon, 16 Aug 2021 17:55:25 -0700 (PDT)
-Received: from eriador.lan ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id z6sm40719lfb.251.2021.08.16.17.55.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Aug 2021 17:55:24 -0700 (PDT)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [RFC PATCH 15/15] WIP: arm64: dts: qcom: qrb5165-rb5: add bus-pwrseq property to pcie0
-Date:   Tue, 17 Aug 2021 03:55:07 +0300
-Message-Id: <20210817005507.1507580-16-dmitry.baryshkov@linaro.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210817005507.1507580-1-dmitry.baryshkov@linaro.org>
-References: <20210817005507.1507580-1-dmitry.baryshkov@linaro.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=iELgCLbQqv5tFsHgMTPz+ef0nc8wwD8GBHZ8BVFl4tE=;
+        b=HxAdaWocIaaqsRkwqBTp3Ik7pkCJkMS3LiWDzTnvssuN1Dt79sbNlpabAaLgPR7Ovg
+         ZuHts3ewDMOdZdKSbKzwgQ0QJ4fUEszeApakC2ZQLTN8/27fjApntR5XLgie2vDYGfsm
+         vsnNwnkQ6prznkPDhGurbW1XfThoEZN76iPVmotdws8vjXISzm0kywA6mVnkQo5JAVrj
+         QpKhqjYhqf/RFMax0C7ui6CYugLFBarbqht7Dz55Q6Lse3IEYrkM/K7Az4Mj13MnxYyW
+         QFZ2gJR26QGGuupb14FXpFcZENKQy+6VkA4pV3sEoQvqmSUzwHuJJq8gr23pdK0ycOKu
+         39yQ==
+X-Gm-Message-State: AOAM5310wZQOOedftXoycyDLm7qLorv2+RTknPQa4YjBYog/zQr/SrOT
+        o/ajrcne7W6qU4DkGaH8h6+u4yPY+p4DmGPhOYs=
+X-Google-Smtp-Source: ABdhPJzGw6/+cLFQsN5Q15Z+3GpIxc0OFdZrRDPZpItgTYyIGDDeq2baWAk3rlhlc/76dCF6w+MP8pYq+AomhBoCoGM=
+X-Received: by 2002:a25:ab45:: with SMTP id u63mr1174083ybi.500.1629163547936;
+ Mon, 16 Aug 2021 18:25:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:7000:5e1b:0:0:0:0 with HTTP; Mon, 16 Aug 2021 18:25:47
+ -0700 (PDT)
+Reply-To: charleswjacksonjr94@outlook.com
+From:   "Charles w.jackson" <powellilluminati666@gmail.com>
+Date:   Mon, 16 Aug 2021 18:25:47 -0700
+Message-ID: <CAC=uWm6Ei7qZvc_=9a-2oGVDtPoBGxucnyOLz5Cf4EcE58fi_g@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 1 +
- 1 file changed, 1 insertion(+)
+--=20
+Hallo lieber Beg=C3=BCnstigter
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-index 326330f528fc..0c347cb6f8e0 100644
---- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-@@ -689,6 +689,7 @@ wifi-therm@1 {
- 
- &pcie0 {
- 	status = "okay";
-+	bus-pwrseq = <&qca_pwrseq 0>;
- };
- 
- &pcie0_phy {
--- 
-2.30.2
+Eine Million zweihunderttausend Dollar (1.200.000.000,00 USD) wurden gespen=
+det
+Charles.w.jackson mit einem Power Ball-Jackpot von 344,6 Millionen
+US-Dollar, den er
+in den USA gewonnen. Gehen Sie zur=C3=BCck, um weitere Informationen zu
+Anspr=C3=BCchen zu erhalten:
+charleswjacksonjr94@outlook.com.
 
+    Es wurde festgestellt, dass, wenn Sie diese E-Mail in Ihrem Spam
+finden, es bitte wissen
+Es wird durch ein schwaches Netzwerk verursacht, das auf Ihre Antwort warte=
+t
+
+Herr Charles.w.jackson.
