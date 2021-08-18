@@ -2,108 +2,68 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D68A3F0A31
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Aug 2021 19:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36C243F0A90
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Aug 2021 19:52:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230116AbhHRRYl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 18 Aug 2021 13:24:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34996 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229661AbhHRRYk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Aug 2021 13:24:40 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE1EC061764;
-        Wed, 18 Aug 2021 10:24:05 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id y34so6154737lfa.8;
-        Wed, 18 Aug 2021 10:24:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=GAv6SuF4eSj8Jq3W6VuB4wY+Y7DhAYK2C8cvnt48BwA=;
-        b=OfKnmZ3T9Qb8HI5W7GPWXDlieZS0O8KzL+vFnG3wV003wkNIM7zLIcbMPaZV9yYF1Y
-         cMOjm0MheLL2CRrIs8DC2K9N1eVCWCaDsVSSikNKN2DkxTSyD7OhYYBAImKT9/HMCkap
-         Gr9Y+wK7NSOmC8NjxIznaaozosxtoumPvLwtjwYFV2WhONfGechAcboi0jMsRkdmWexs
-         dJkGtU3UNsZlMMt0vkVQBATO80wkY01UPa7V13WGnrzYHtoeNT3GK6eR7oqd5xSSYvpt
-         UbvMRFNwmdAjvxcYwYj5Bn415TPmyl/Gw0zEoqGhTt7a1uBUd5w/QJWfR+p+qExVRY3y
-         fwYQ==
+        id S230009AbhHRRwi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 18 Aug 2021 13:52:38 -0400
+Received: from mail-oi1-f175.google.com ([209.85.167.175]:43992 "EHLO
+        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230021AbhHRRwf (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Aug 2021 13:52:35 -0400
+Received: by mail-oi1-f175.google.com with SMTP id bf25so4460180oib.10;
+        Wed, 18 Aug 2021 10:52:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=GAv6SuF4eSj8Jq3W6VuB4wY+Y7DhAYK2C8cvnt48BwA=;
-        b=EQnigRajDLSJu7faMMPZCLt6fD4Tl6/k0yPKZ6Vh0HBFc49XrCTTVHRdppWZZyxBz0
-         ojk2IHKAQUe0Rt2aMQ09/po6MKUZVXiCYm1O2zQSCTbjXJ/0LUx4hNRLoRrMfuAERC8v
-         2v92bIwmufPjbC9ps3FdFC7cvb1yHg2EhqmZvjFmpkgfefXHhy/IjCixbPSUI4gmkAeU
-         G0ap3/D1XMo+UYTf11FXHTydWs5fTJOUc+7+7+9SE93Q36qR1SU81ioFufRAMfGvwrYW
-         cK0MZuYmOKsx0kEIefulTd40ONkpcvc0JyVAXVbReXxaUSaHKXNAqmxAfzYpCcLeeMOG
-         jyag==
-X-Gm-Message-State: AOAM532MsgNXqOevSVwYEfi0KoLu+BC8wxkY2czvtFI101SVLLadbTy5
-        inbvDFi8JSf0pOL6T6n3hkQKK6BWJJI=
-X-Google-Smtp-Source: ABdhPJz2totLY2glZaQrN56jcVR6UJ865rvHiBaSqRD7LPq8+CU52UR+LaQb1/rmqGyWq/hbRnECbg==
-X-Received: by 2002:a05:6512:21d1:: with SMTP id d17mr7501000lft.588.1629307443410;
-        Wed, 18 Aug 2021 10:24:03 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
-        by smtp.googlemail.com with ESMTPSA id 3sm47300ljq.136.2021.08.18.10.24.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Aug 2021 10:24:03 -0700 (PDT)
-Subject: Re: [PATCH v8 11/34] gpu: host1x: Add runtime PM and OPP support
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>
-Cc:     Jonathan Hunter <jonathanh@nvidia.com>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Peter Chen <peter.chen@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lucas Stach <dev@lynxeye.de>, Stefan Agner <stefan@agner.ch>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux USB List <linux-usb@vger.kernel.org>,
-        linux-staging@lists.linux.dev, linux-spi@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        DTML <devicetree@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>
-References: <20210817012754.8710-1-digetx@gmail.com>
- <20210817012754.8710-12-digetx@gmail.com>
- <CAPDyKFrax-EYtO03W5QWM2tcWLWeMM8hHZCRYFcsenuiP2zObQ@mail.gmail.com>
- <YRvBkyfFCqthBIBV@orome.fritz.box>
- <CAPDyKFp+9Bv3EVSnV683ixNXzukJtmG_QrS5C1ZQqLxv9QJ-bQ@mail.gmail.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <e2ab73d3-c543-5c5d-5b51-6ff42446907c@gmail.com>
-Date:   Wed, 18 Aug 2021 20:24:01 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=8zGXh/RAPuDf810DfB04607FGfrFXnv4n4alUZkuGjw=;
+        b=nOg5H3xrX4cL57uE58GpFKyinQDSss5KHKZLY/dYFfj2juwvvTf47+f6zJox47s3zD
+         jATK+IKOYrwgia/Ne+fYR52mKh+SRKFtPUTysNyuNLFFuJ8kRgzWdvRozul65+Oxk1HB
+         t1fDFRN+Fp2rOuR7+kAyNnXXoP9BEMEptW72aqOmHY7+nO8hRHinxEvvTX8rCX4YEzzz
+         g/rF4se+rtq06bFd00qsUQHafmsHW+2DJ9STpFDiGf62/cg6XdfUOjqpXpH8grA5EUQf
+         bUKkyphP6aa60886N7Lt6uFALUSltaHbEFjDKfdviofDGiqzVyeLUe5cQDJ6XB8dqcRZ
+         iSaA==
+X-Gm-Message-State: AOAM53049lhkbxeyLBnKdU4luWSvFzAS/HJ7mos+mW5+64cUKMI01aJC
+        mwwuCw9PARGrII8DX/SeCQ==
+X-Google-Smtp-Source: ABdhPJxPZtmQIq+VmHFY1s0tpe+o/ow+qx6GwRkzGSWaX1ozZCDegAIlFNe7xXC0FYxjfF4ek5fMlw==
+X-Received: by 2002:a05:6808:286:: with SMTP id z6mr8136803oic.48.1629309120619;
+        Wed, 18 Aug 2021 10:52:00 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id p64sm166549oib.4.2021.08.18.10.51.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Aug 2021 10:51:59 -0700 (PDT)
+Received: (nullmailer pid 2824526 invoked by uid 1000);
+        Wed, 18 Aug 2021 17:51:58 -0000
+Date:   Wed, 18 Aug 2021 12:51:58 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     haibo.chen@nxp.com
+Cc:     ulf.hansson@linaro.org, aisheng.dong@nxp.com, shawnguo@kernel.org,
+        festevam@gmail.com, linux-mmc@vger.kernel.org, robh+dt@kernel.org,
+        kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+        s.hauer@pengutronix.de, linux-imx@nxp.com,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: mmc: fsl-imx-esdhc: add a new compatible
+ string
+Message-ID: <YR1IvutH4RNxiivs@robh.at.kernel.org>
+References: <1629278277-7313-1-git-send-email-haibo.chen@nxp.com>
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFp+9Bv3EVSnV683ixNXzukJtmG_QrS5C1ZQqLxv9QJ-bQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1629278277-7313-1-git-send-email-haibo.chen@nxp.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-18.08.2021 11:35, Ulf Hansson пишет:
-> Thanks for clarifying! As I said, feel free to ignore my comments then.
+On Wed, 18 Aug 2021 17:17:57 +0800, haibo.chen@nxp.com wrote:
+> From: Haibo Chen <haibo.chen@nxp.com>
 > 
-> For this and the other patches in the series, I assume you only need
-> to care about whether the driver is a cross SoC driver and used on
-> other platforms than Tegra then.
+> Lack a compatible string "fsl,imx6sll-usdhc", so add it here.
+> 
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-Yes, and all drivers touched by this series are Tegra-only drivers.
+Acked-by: Rob Herring <robh@kernel.org>
