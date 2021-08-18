@@ -2,97 +2,145 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAB913F0084
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Aug 2021 11:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D03A23F00C6
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Aug 2021 11:42:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232123AbhHRJc3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 18 Aug 2021 05:32:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36714 "EHLO
+        id S232580AbhHRJmk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 18 Aug 2021 05:42:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233640AbhHRJcQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Aug 2021 05:32:16 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D6B0C06179A
-        for <linux-mmc@vger.kernel.org>; Wed, 18 Aug 2021 02:31:32 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id d4so3255953lfk.9
-        for <linux-mmc@vger.kernel.org>; Wed, 18 Aug 2021 02:31:32 -0700 (PDT)
+        with ESMTP id S232280AbhHRJmi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 Aug 2021 05:42:38 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE920C061796
+        for <linux-mmc@vger.kernel.org>; Wed, 18 Aug 2021 02:42:03 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id b5so1389585vsq.2
+        for <linux-mmc@vger.kernel.org>; Wed, 18 Aug 2021 02:42:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=9wmQN792uFgFwDPkYKICfghT+PGaqiPbjvKiK6teih0=;
-        b=J3ffQfSz815Sl/K2kVpavtqXUgSJMbtn45l+4vReQpa373AEvxxu60Wtzj9pA5pXnL
-         qHzgSA5qXvtbXpJPbLkgZ1VWB5CrlI87UYCrXvuQHkitf2JT27wLHrZkrJvrbcnyuels
-         dHrA/3gkXXMLard7viT9yVXv5qV9iZPXAFne66qnjV0mtSz8HMeDmUg6y9oBtDtucKHJ
-         vpPdYPQ9OSBtIgTta7Hecmzhf+0/6iTZxBfNXuBleAnSZVC39D9ZsbeOh4Q6HBw8qsrf
-         8g5IaE2yNRQ6sj4bQPjRAqM3hS8z7eM6BauqazauNEwiRG8y2dOAc/yM13vIG0whE8om
-         uDoQ==
+        bh=kbdSCU3Rw09uivyYf1YKzhrdNkwTtywFq3z2eNcAoHU=;
+        b=kqUWzgUl/yiaXMoS2k9dhVzmvWVdRfo7Fo2KXwGPP2K5ZKcbfq4mKKs9fLOs8fk96x
+         ptk/PW2l+MORjgDTGKf9YKJffdNc1pkzifnQ3yMMmSj3Id6or6s1mOH4RD5LiDbhWJRI
+         ol1Z3YbHIv6bhJb7wFU0bti68QvEuV9zCxn5x80BVxIEcknLkLqXu0njTtyUvhPQ0gSW
+         KzGkOvTBoLGzarTvJDvnT+M4FVW2tzG1L1lXroB9VMemhLKPlypoT4WgQlmDdyLEkHoL
+         avQ5B2EbRBekdWSQILEJHijb8G0nZOKWFmqrMWiR04qbuKkEn8DBAAYOVrTAxrrtgcGi
+         fUDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9wmQN792uFgFwDPkYKICfghT+PGaqiPbjvKiK6teih0=;
-        b=ehzWVDWsfJ6A9ujqiBnwFMRHQAMnAamqVEKvmKGK6+gt1Sc41pWV3WWwN4kM9VSV/o
-         fliH1smL4xEQBn/uSll8Zp4+sL4MOPvhCjQxB0+cTNcAV5JSq4I7e9z8tIRBV0Xd9iDO
-         Dc701+KYv0CXgJc0Fcm7iHzVjlTdwNGIyhOJyYCB+h68qVTQHfMgXGPlcL0fwS15kr4I
-         LTPRTCOFDPa40I6QgfEb+CKMRkTsLy1xOhoYPoq31AJdECSN82YgChqJYduNCiAh9Fyp
-         XI7xjtX6AeXUzvDb3/ftOHYFj1NT/7+mcmmgOA9/iOng/BpE9P3bw6bhgdkZ2nrNVTBC
-         Dbzg==
-X-Gm-Message-State: AOAM533zrGwuTRJCb0GZEL1yYrrbQClwMlaCjbJtDBpk730sFwSwoq+B
-        O967n4DB6CjL77Z0d28+IQtSbZ3EhkBSBEQRw2U=
-X-Google-Smtp-Source: ABdhPJyikDtMGvKyVnc45taFTfJj1oEPhPKdNlXutYXnPrZDkPCod8zxHsvhQuvl010X7S2A7Ny7lB+Yx5D9xnVNkmg=
-X-Received: by 2002:ac2:4143:: with SMTP id c3mr3056876lfi.295.1629279090855;
- Wed, 18 Aug 2021 02:31:30 -0700 (PDT)
+        bh=kbdSCU3Rw09uivyYf1YKzhrdNkwTtywFq3z2eNcAoHU=;
+        b=TFHy+dfLn0HCSoGmopsyOba+79yOdp6BzeU1z7HqEDarfAv3jVcFqL2Ckxtt+RUzIS
+         Qs83Qor7vKmx2QlTqxkNLtkEp4Vk4x5MjD0rqTSlzE/UammOCwunXH1b8sDNIaHXeQ50
+         ZxMjcbSAwpBUmatv6+vhtdtQkC9z6aXxh1VZwBKwAHGB0/tqfcYt01cI/jdi4YXLcNHZ
+         ghj5Ac32Mhp3pUGqzaFRUx7bQfUfpAGO65uSeJvw1frbMECGq2ebUCJF5M9p3Lv6EJVL
+         PnbsLw8vFt/CfBKIai61Y92d8WC3DvLKx1Qx1ahxOlwCT+lG72krMR+jLUZ/YuY8Jzc/
+         FAdw==
+X-Gm-Message-State: AOAM530GN4ME+1hvoK+WVNEPHKVTbpqAg/SBddhSLx9dqqSLzwW08qAf
+        iTWG8pTXzdu1gHSMldmmdnrOMCF2y/HWV5T2UtnRTA==
+X-Google-Smtp-Source: ABdhPJz8iEC0DtBNEl/b/C36HfmefejpZ6mYBF4J4rSAfO4RoK/etFf85MFbc+601w1EL4Uj4rk9xHbR9GbyCxpBsGg=
+X-Received: by 2002:a67:f6d8:: with SMTP id v24mr6581141vso.48.1629279723051;
+ Wed, 18 Aug 2021 02:42:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAOMZO5DEAMMKHwDkXxqWxg6uj_GQjBUQ5jV+4AzxAr2DCrgTVg@mail.gmail.com>
- <20210818051128.GA8550@lst.de>
-In-Reply-To: <20210818051128.GA8550@lst.de>
-From:   Fabio Estevam <festevam@gmail.com>
-Date:   Wed, 18 Aug 2021 06:31:19 -0300
-Message-ID: <CAOMZO5APotsBKPkN6tFDNnK0C7w7pzJ8zTWKUx6P=Rhd9_81mQ@mail.gmail.com>
-Subject: Re: imx7: dev->coherent_dma_mask NULL warning
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, ath10k@lists.infradead.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Bough Chen <haibo.chen@nxp.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>
+References: <20210818035533.ieqkexltfvvf2p4n@vireshk-i7> <5b2a80c1-9743-e633-6257-ede94c8a274c@gmail.com>
+ <20210818043131.7klajx6drvvkftoc@vireshk-i7> <a2a3c41f-c5e4-ee7e-7d48-03af8bac8863@gmail.com>
+ <20210818045307.4brb6cafkh3adjth@vireshk-i7> <080469b3-612b-3a34-86e5-7037a64de2fe@gmail.com>
+ <20210818055849.ybfajzu75ecpdrbn@vireshk-i7> <f1c76f23-086d-ef36-54ea-0511b0ebe0e1@gmail.com>
+ <20210818062723.dqamssfkf7lf7cf7@vireshk-i7> <CAPDyKFrZqWtZOp4MwDN6fShoLLbw5NM039bpE3-shB+fCEZOog@mail.gmail.com>
+ <20210818091417.dvlnsxlgybdsn76x@vireshk-i7>
+In-Reply-To: <20210818091417.dvlnsxlgybdsn76x@vireshk-i7>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 18 Aug 2021 11:41:26 +0200
+Message-ID: <CAPDyKFrVxhrWGr2pKduehshpLFd_db2NTPGuD7fSqvuHeyzT4w@mail.gmail.com>
+Subject: Re: [PATCH v8 01/34] opp: Add dev_pm_opp_sync() helper
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Dmitry Osipenko <digetx@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        Peter Chen <peter.chen@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Richard Weinberger <richard@nod.at>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Lucas Stach <dev@lynxeye.de>, Stefan Agner <stefan@agner.ch>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        linux-staging@lists.linux.dev, linux-spi@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        DTML <devicetree@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Christoph,
-
-On Wed, Aug 18, 2021 at 2:11 AM Christoph Hellwig <hch@lst.de> wrote:
+On Wed, 18 Aug 2021 at 11:14, Viresh Kumar <viresh.kumar@linaro.org> wrote:
 >
-> On Tue, Aug 17, 2021 at 09:23:26PM -0300, Fabio Estevam wrote:
+> On 18-08-21, 10:29, Ulf Hansson wrote:
+> > Me and Dmitry discussed adding a new genpd callback for this. I agreed
+> > that it seems like a reasonable thing to add, if he insists.
 > >
-> > void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
-> > ....
-> > WARN_ON_ONCE(!dev->coherent_dma_mask);
+> > The intent was to invoke the new callback from __genpd_dev_pm_attach()
+> > when the device has been attached to its genpd. This allows the
+> > callback, to invoke clk_get_rate() and then dev_pm_opp_set_rate(), to
+> > update the vote according to the current state of the HW.
+>
+> I wouldn't call dev_pm_opp_set_rate() from there, since it means
+> configure and enable (both) for different resources, clk, regulator,
+> genpd, etc..
+
+Right, good point!
+
+dev_pm_opp_set_rate() is best called from consumer drivers, as they
+need to be in control.
+
+>
+> What we need here is just configure. So something like this then:
+>
+> - genpd->get_performance_state()
+>   -> dev_pm_opp_get_current_opp() //New API
+>   -> dev_pm_genpd_set_performance_state(dev, current_opp->pstate);
+>
+> This can be done just once from probe() then.
+
+How would dev_pm_opp_get_current_opp() work? Do you have a suggestion?
+
+>
+> > I am not sure if/why that approach seemed insufficient?
 > >
-> > Where should the coherent_dma_mask be set to avoid this problem?
+> > Another option to solve the problem, I think, is simply to patch
+> > drivers to let them call dev_pm_opp_set_rate() during ->probe(), this
+> > should synchronize the HW state too.
 >
-> Looking at the ath10k code ar->dev is set by ath10k_core_create, which
-> has multiple callers.
+> Dmitry already mentioned that this will make the device start
+> consuming power, and he doesn't want that, else we need an explicit
+> disble call as well.
+
+I am sure I understand the problem. When a device is getting probed,
+it needs to consume power, how else can the corresponding driver
+successfully probe it?
+
 >
-> For ath10k_pci_probe it is a pci_dev, whoch should always have a
-> dma_mask.
-> For ath10k_ahb_probe is is a device tree probed platform_device,
-> which should have a dma mask.
-> For ath10k_sdio_probe it is a sdio_func, which from my understanding is
-> a virtual device can't do DMA itself.
-> For ath10k_snoc_probe it is a platform device wit an explicit
-> dma_set_mask_and_coherent and above so the dma_mask is set.
-> For ath10k_usb_probe it is an usb device which can't do USB
->
-> So unless I misred the driver you're using the SDIO or USB variant,
-> and those are not allowed to just call dma_* functions on their
-> respective devices.
+> --
+> viresh
 
-Correct, on i.MX7 the ath10k Wifi chip connects via SDIO.
-
-Is there a way to avoid the WARN_ON_ONCE(!dev->coherent_dma_mask)
-to happen in this case?
-
-Thanks
+Kind regards
+Uffe
