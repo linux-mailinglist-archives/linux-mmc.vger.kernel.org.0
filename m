@@ -2,179 +2,109 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 868DE3EF5E0
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Aug 2021 00:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85A8F3EF6D2
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Aug 2021 02:23:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236413AbhHQWn0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 Aug 2021 18:43:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57288 "EHLO
+        id S234754AbhHRAYN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 Aug 2021 20:24:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236375AbhHQWnZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Aug 2021 18:43:25 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 101F6C061764;
-        Tue, 17 Aug 2021 15:42:51 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id u16so400105wrn.5;
-        Tue, 17 Aug 2021 15:42:50 -0700 (PDT)
+        with ESMTP id S234302AbhHRAYM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Aug 2021 20:24:12 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9CD9C061764
+        for <linux-mmc@vger.kernel.org>; Tue, 17 Aug 2021 17:23:38 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id h11so1742861ljo.12
+        for <linux-mmc@vger.kernel.org>; Tue, 17 Aug 2021 17:23:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Ffflbpl+4vtDALct8DDSj0ySXf+/wPRBLjk61pGOG1w=;
-        b=Ngvmipbl4OXygdD1yplC0sSm51ZAMsBofymYRUIPI2R5/G56v7rAZxIlQqxaM1QUSb
-         KeutvoaEJSimT+0h49TYh2CLmJGYeC3wwERvMdNpaT31Xy7VZ9qTbVLBP+VT101XCzA+
-         ifPzbEGGiq3jqn7AoFLQVSYACS/qdAsooibXevuNS4JqvpzwLg6N4x7NrG8q2m0znw/s
-         OpzzVDvPTizPq0R9Wo/CfmFcHVGBkeYkCXMtfdqS5BlClHwtPAQfvzz4dNa1xn1ZBmPk
-         FEFPATFwPn3xUeAYRANhcIFhTq8Y/f4UXQU50Oh8oPB2J0mciiDg5SwN/nXsWSm8Jiyk
-         8jcQ==
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=Wj7ZYl1WoMaaA1oaw8rVm+2w7aPP8H9UvMYaCDtbsQE=;
+        b=Gk1864OUM428zVHNihF4AqEnIOUcy+1NSIzauz5TxGEg12H6IWI0K73NKzlsWLnLWN
+         U1+Igg+O4O3VGZbJGnkR00GU9vI8VE3iasEMHktKubRejZEnfOVsaeFfa0d6uOXDj81T
+         5ITIkIaefZS7EUxUOsJMiahXPXPSPSDFRYDebVwYLXBT8Iigi5VrqNKA/jA85w9VvgM+
+         VynZe4v1pdz94k4ACcGHnatWcEw5mL4wvyRZ1dRa+XJQ66e97wE6pcr71DSzky8rGJsf
+         gBKy5jH2ODdVlhhBAF+LStFKlCgDWDmLLhsRCmRjqzcoGR3o2lo97DjS6703JOOswAyQ
+         6ZYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Ffflbpl+4vtDALct8DDSj0ySXf+/wPRBLjk61pGOG1w=;
-        b=S2YPee99Ym7YLxrx9Ejvj5Cx4GcE5ajyPDla/7+FdYEzH77mcy+8yD6LjLV912thLk
-         9rtPn+1iYNPh2NXi1WdC7Rza8AOM086nDXsj96Gz+aClLmoiZBhrTTRfz/DNWzM0Mr9n
-         JUloDstuLZMV5l/ajn7qo8bvZkqYjXkYhfnxhrjRJDbstR1k0lCYK29tOieazF7O6wAK
-         4XQJaiUARdSaj/VLZxCSomBbwHbN6oZKs8ATwjfmzlmnNiHdyjDaVHvPNAMTILzFi+lx
-         Lu77Xv3JIyQ6gPUOSlGYC49bsyQUugSoBw3hymrHvjN2mLTTFXcN8qPeKImGXb7SPBRU
-         A11w==
-X-Gm-Message-State: AOAM531InXt3nF4dZaYc1UyYIGDsFWzx/qAVUasDxQnRD8DIx6F+5mDG
-        hqFarev2NSBUxIyv/4YtZho=
-X-Google-Smtp-Source: ABdhPJymxKM0HD6Y5FZpwLInrie03xLslp+zG0y0kBWFiQUF1syuqhv40A8fK0dtFAibk5Y8AsvAAw==
-X-Received: by 2002:adf:c681:: with SMTP id j1mr6682332wrg.119.1629240169686;
-        Tue, 17 Aug 2021 15:42:49 -0700 (PDT)
-Received: from localhost.localdomain (ip5f5bec31.dynamic.kabel-deutschland.de. [95.91.236.49])
-        by smtp.gmail.com with ESMTPSA id a3sm3976850wrx.38.2021.08.17.15.42.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Aug 2021 15:42:49 -0700 (PDT)
-From:   Bean Huo <huobean@gmail.com>
-To:     ulf.hansson@linaro.org, adrian.hunter@intel.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bean Huo <beanhuo@micron.com>
-Subject: [PATCH v1 2/2] mmc: core: Let BKOPS timeout readable/writable via sysfs
-Date:   Wed, 18 Aug 2021 00:42:08 +0200
-Message-Id: <20210817224208.153652-3-huobean@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210817224208.153652-1-huobean@gmail.com>
-References: <20210817224208.153652-1-huobean@gmail.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=Wj7ZYl1WoMaaA1oaw8rVm+2w7aPP8H9UvMYaCDtbsQE=;
+        b=Oll2i5RaX2SuYNV21IWywK7AimaNXGJ/nyz5HoS4owltix94qULdWdmK2Scby65prT
+         DzV6cPWniytUsiDL/c6qB6kCSJkrtP/TicGC+slyHrEG1H6tNdYs87C/g2hXENN0sdVT
+         0h/THLgJhIwYKH9kdBoB3yE6urZo/+GuW9QTsiC6KG2fCFauRpBis3Y0xgnu7Cj1+WXn
+         4VVH1to2lgghEk7IGpbxaKF7gye5CRe1Bcc1lH0VDcUUIkRQJjrECQbIek2M9TyDjlBE
+         VeWdBcqfppSKbG2/caTd9NBUmfBEGJBp0ERh3701UZzylN/ghwpEirhzLgeAfTdIoAgo
+         zgvQ==
+X-Gm-Message-State: AOAM531ipNwkKr0pkeYbfgv4NlqiKsu08abBixm6KZnUVgjhoRgIWhtt
+        7wzi8oirq/w/uwJLjAQcaTeU6Izfo8Lc9AQv9ag=
+X-Google-Smtp-Source: ABdhPJz9/MVuNT4Q8zJcJCaVC+5ltwIfLIIqxpjCUl7tU3h72qBjSHQb6WPWxjTGTWlNrwG61VYCmq//YlVOOKQ1aNA=
+X-Received: by 2002:a2e:8816:: with SMTP id x22mr5399473ljh.264.1629246217149;
+ Tue, 17 Aug 2021 17:23:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Tue, 17 Aug 2021 21:23:26 -0300
+Message-ID: <CAOMZO5DEAMMKHwDkXxqWxg6uj_GQjBUQ5jV+4AzxAr2DCrgTVg@mail.gmail.com>
+Subject: imx7: dev->coherent_dma_mask NULL warning
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Bough Chen <haibo.chen@nxp.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Bean Huo <beanhuo@micron.com>
+Hi,
 
-For special cases, the application in the userspace wants to change
-BKOPS operation timeout value, also, wants eMMC back to R1_STATE_TRAN
-after BKOPS timeouts. A fixed BKOPS timeout value(120s) is no longer
-feasible, therefore, it is better to let the user controls its timeout
-value.
+Launching the hostapd application on an imx7d based board with an
+ath10k Wifi chip leads to the following warning:
 
-Signed-off-by: Bean Huo <beanhuo@micron.com>
----
- drivers/mmc/core/mmc.c     | 32 ++++++++++++++++++++++++++++++++
- drivers/mmc/core/mmc_ops.c |  3 +--
- include/linux/mmc/card.h   |  1 +
- 3 files changed, 34 insertions(+), 2 deletions(-)
+ ------------[ cut here ]------------
+ WARNING: CPU: 0 PID: 489 at kernel/dma/mapping.c:427 dma_alloc_attrs+0xd0/0x114
+ Modules linked in: ath10k_sdio ath10k_core ath
+ CPU: 0 PID: 489 Comm: hostapd Not tainted 5.10.48-stable-standard #1
+ Hardware name: Freescale i.MX7 Dual (Device Tree)
+ [<c0111378>] (unwind_backtrace) from [<c010bc04>] (show_stack+0x10/0x14)
+ [<c010bc04>] (show_stack) from [<c0e26094>] (dump_stack+0xdc/0x104)
+ [<c0e26094>] (dump_stack) from [<c0125574>] (__warn+0xd8/0x114)
+ [<c0125574>] (__warn) from [<c0e20ecc>] (warn_slowpath_fmt+0x60/0xbc)
+ [<c0e20ecc>] (warn_slowpath_fmt) from [<c01b9eac>] (dma_alloc_attrs+0xd0/0x114)
+ [<c01b9eac>] (dma_alloc_attrs) from [<bf01373c>]
+(ath10k_add_interface+0x2f0/0x1094 [ath10k_core])
+ [<bf01373c>] (ath10k_add_interface [ath10k_core]) from [<c0d94470>]
+(drv_add_interface+0x88/0x2fc)
+ [<c0d94470>] (drv_add_interface) from [<c0db6c58>]
+(ieee80211_do_open+0x4c8/0xc70)
+ [<c0db6c58>] (ieee80211_do_open) from [<c0b12b7c>] (__dev_open+0xf0/0x170)
+ [<c0b12b7c>] (__dev_open) from [<c0b12f40>] (__dev_change_flags+0x164/0x1d0)
+ [<c0b12f40>] (__dev_change_flags) from [<c0b12fc4>]
+(dev_change_flags+0x18/0x48)
+ [<c0b12fc4>] (dev_change_flags) from [<c0bcf968>] (devinet_ioctl+0x6d4/0x868)
+ [<c0bcf968>] (devinet_ioctl) from [<c0bd2684>] (inet_ioctl+0x210/0x3b0)
+ [<c0bd2684>] (inet_ioctl) from [<c0ae44d4>] (sock_ioctl+0x56c/0x718)
+ [<c0ae44d4>] (sock_ioctl) from [<c02ccfb8>] (sys_ioctl+0xf0/0xbf0)
+ [<c02ccfb8>] (sys_ioctl) from [<c0100080>] (ret_fast_syscall+0x0/0x28)
+ Exception stack(0xc3293fa8 to 0xc3293ff0)
+ 3fa0:                   bea0190c 00000000 00000008 00008914 bea0190c 00001003
+ 3fc0: bea0190c 00000000 00000008 00000036 00eeef10 00eeedb8 00000000 000186a0
+ 3fe0: 0051dbcc bea018fc 004ba26d b6c49fb8
+ irq event stamp: 145521
+ hardirqs last  enabled at (145531): [<c01949f4>] console_unlock+0x434/0x654
+ hardirqs last disabled at (145540): [<c01949ec>] console_unlock+0x42c/0x654
+ softirqs last  enabled at (145472): [<c0101604>] __do_softirq+0x324/0x5c4
+ softirqs last disabled at (145415): [<c012e1bc>] irq_exit+0x17c/0x1dc
+ ---[ end trace 37715f05492d4493 ]---
 
-diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-index 838726b68ff3..617ff18b5b0e 100644
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -29,6 +29,7 @@
- #define DEFAULT_CMD6_TIMEOUT_MS	500
- #define MIN_CACHE_EN_TIMEOUT_MS 1600
- #define CACHE_FLUSH_TIMEOUT_MS 30000 /* 30s */
-+#define MMC_BKOPS_TIMEOUT_MS	(120 * 1000) /* 120s */
- 
- static const unsigned int tran_exp[] = {
- 	10000,		100000,		1000000,	10000000,
-@@ -836,6 +837,35 @@ static ssize_t mmc_dsr_show(struct device *dev,
- 
- static DEVICE_ATTR(dsr, S_IRUGO, mmc_dsr_show, NULL);
- 
-+static ssize_t bkops_timeout_ms_show(struct device *dev,
-+				     struct device_attribute *attr, char *buf)
-+{
-+	struct mmc_card *card = mmc_dev_to_card(dev);
-+	return sysfs_emit(buf, "%d\n", card->bkops_timeout_ms);
-+}
-+
-+static ssize_t bkops_timeout_ms_store(struct device *dev,
-+				      struct device_attribute *attr,
-+				      const char *buf, size_t len)
-+{
-+	struct mmc_card *card = mmc_dev_to_card(dev);
-+	unsigned int new;
-+	int ret;
-+
-+	ret = kstrtouint(buf, 0, &new);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (new == 0)
-+		return -EINVAL;
-+
-+	card->bkops_timeout_ms = new;
-+
-+	return len;
-+}
-+
-+static DEVICE_ATTR_RW(bkops_timeout_ms);
-+
- static struct attribute *mmc_std_attrs[] = {
- 	&dev_attr_cid.attr,
- 	&dev_attr_csd.attr,
-@@ -862,6 +892,7 @@ static struct attribute *mmc_std_attrs[] = {
- 	&dev_attr_rca.attr,
- 	&dev_attr_dsr.attr,
- 	&dev_attr_cmdq_en.attr,
-+	&dev_attr_bkops_timeout_ms.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(mmc_std);
-@@ -1624,6 +1655,7 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
- 		card->ocr = ocr;
- 		card->type = MMC_TYPE_MMC;
- 		card->rca = 1;
-+		card->bkops_timeout_ms = MMC_BKOPS_TIMEOUT_MS;
- 		memcpy(card->raw_cid, cid, sizeof(card->raw_cid));
- 	}
- 
-diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-index 0c54858e89c0..9af5e4671de2 100644
---- a/drivers/mmc/core/mmc_ops.c
-+++ b/drivers/mmc/core/mmc_ops.c
-@@ -19,7 +19,6 @@
- #include "host.h"
- #include "mmc_ops.h"
- 
--#define MMC_BKOPS_TIMEOUT_MS		(120 * 1000) /* 120s */
- #define MMC_SANITIZE_TIMEOUT_MS		(240 * 1000) /* 240s */
- 
- static const u8 tuning_blk_pattern_4bit[] = {
-@@ -958,7 +957,7 @@ void mmc_run_bkops(struct mmc_card *card)
- 	 * urgent levels by using an asynchronous background task, when idle.
- 	 */
- 	err = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL,
--			 EXT_CSD_BKOPS_START, 1, MMC_BKOPS_TIMEOUT_MS);
-+			 EXT_CSD_BKOPS_START, 1, card->bkops_timeout_ms);
- 	/*
- 	 * If the BKOPS timed out, the card is probably still busy in the
- 	 * R1_STATE_PRG. Rather than continue to wait, let's try to abort
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index 74e6c0624d27..9e038d212067 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -294,6 +294,7 @@ struct mmc_card {
- 
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
- 
-+	unsigned int            bkops_timeout_ms;
- 	unsigned int		erase_size;	/* erase size in sectors */
-  	unsigned int		erase_shift;	/* if erase unit is power 2 */
-  	unsigned int		pref_erase;	/* in sectors */
--- 
-2.25.1
+which comes from:
 
+void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
+....
+WARN_ON_ONCE(!dev->coherent_dma_mask);
+
+Where should the coherent_dma_mask be set to avoid this problem?
+
+Thanks,
+
+Fabio Estevam
