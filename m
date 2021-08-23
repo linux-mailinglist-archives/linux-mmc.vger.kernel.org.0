@@ -2,163 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52AFC3F51FC
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 Aug 2021 22:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09A8B3F5225
+	for <lists+linux-mmc@lfdr.de>; Mon, 23 Aug 2021 22:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232152AbhHWUYu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 23 Aug 2021 16:24:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55894 "EHLO
+        id S232698AbhHWUa7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 23 Aug 2021 16:30:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbhHWUYt (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Aug 2021 16:24:49 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D14C061575;
-        Mon, 23 Aug 2021 13:24:06 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id l18so26085801lji.12;
-        Mon, 23 Aug 2021 13:24:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=J41x529VlTspZMrpThFHJLBr2g65jbs1WO5P40LCen4=;
-        b=okYdM6r/OEM+GpVMmndUDSUnFuATe7k+UqV9Xd6SnEB6FCQnedxeMEPVsABonqs4N4
-         bW0CUVBYgP/wVgNhvKRjjJZHkQWqjAfdAXHaWOprlSkmDVUGTjWH0QHqHe/JDzPhBYMW
-         VS78dI9TbqWyfxbPdEd9M68PCp/85z5U4mMqUTiCNVQcQnpHeloJ5A8DDCAgG+UndNk2
-         4AMRro0QimKicKoXkXK7fx6Xlty7DPO0Rz/T7e7AYrMNjr1lsW8oLXtit6l5wdRItw9Y
-         0sCrelfgm2KgdesCrJhygLOJ6k4XDHAPdBtXpSk4O9XXGH416S+WsJAn5UMZlTogyo6e
-         LVmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=J41x529VlTspZMrpThFHJLBr2g65jbs1WO5P40LCen4=;
-        b=c+Ki09WAWpKNHn30pEOohRcuBryKZ0oCZWnRlMYsf/BXv1d1PQ7vY5h1oBC5GOEkx1
-         +LcEp8GxfNVQvcGut3e77LMHJE703NvsNAc7n7308uonXnsMrGbcsyp+GVVDjoumUtzJ
-         UeBb12Zviuj0fEt1oY9K635IndZgO/Alj/sfjZ+ogj4P5koJvkfFttQT1SN2/ppjU2lB
-         i9fJz1FrDzvxU3FxVE5V0imh8JlsFHX24toC2WdyeHg/mGPDn+XuKkeEe79B+CIf5cKI
-         OypbQ7a6cyk5mNg/8e0NueNILDiJVq0f2S46SuwL/Tr5qKWScbeKvG7D7uJdFH/YWPiw
-         ZwCA==
-X-Gm-Message-State: AOAM532YQShkJEaZg1Jyr68J2f0ggt4AyDAnUDX7sD222MIs27Y8LN4S
-        EXWB12X/GIhvyqCFa1uXdmNNgp+ym84=
-X-Google-Smtp-Source: ABdhPJwqnW4H12JkFByYZki5F25wX7CFl/4OxdrLQBKSJLK7Hp+HrjfGNLOpxwFObeZey6c6a7G84A==
-X-Received: by 2002:a2e:a4db:: with SMTP id p27mr29314648ljm.161.1629750244353;
-        Mon, 23 Aug 2021 13:24:04 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-120-72.dynamic.spd-mgts.ru. [46.138.120.72])
-        by smtp.googlemail.com with ESMTPSA id r2sm854722ljj.14.2021.08.23.13.24.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Aug 2021 13:24:03 -0700 (PDT)
-Subject: Re: [PATCH v8 01/34] opp: Add dev_pm_opp_sync() helper
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Peter Chen <peter.chen@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lucas Stach <dev@lynxeye.de>, Stefan Agner <stefan@agner.ch>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux USB List <linux-usb@vger.kernel.org>,
-        linux-staging@lists.linux.dev, linux-spi@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        DTML <devicetree@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>
-References: <080469b3-612b-3a34-86e5-7037a64de2fe@gmail.com>
- <20210818055849.ybfajzu75ecpdrbn@vireshk-i7>
- <f1c76f23-086d-ef36-54ea-0511b0ebe0e1@gmail.com>
- <20210818062723.dqamssfkf7lf7cf7@vireshk-i7>
- <CAPDyKFrZqWtZOp4MwDN6fShoLLbw5NM039bpE3-shB+fCEZOog@mail.gmail.com>
- <20210818091417.dvlnsxlgybdsn76x@vireshk-i7>
- <CAPDyKFrVxhrWGr2pKduehshpLFd_db2NTPGuD7fSqvuHeyzT4w@mail.gmail.com>
- <f1314a47-9e8b-58e1-7c3f-0afb1ec8e70a@gmail.com>
- <20210819061617.r4kuqxafjstrv3kt@vireshk-i7>
- <CAPDyKFpg8ixT4AEjzVLTwQR7Nn9CctjnLCDS5GwkOrAERquyxw@mail.gmail.com>
- <20210820051843.5mueqpnjbqt3zdzc@vireshk-i7>
- <CAPDyKFo0rzHT4AhueWjyz9k2ZqUy8N6Od5pbr8sL_m0Jf2AwUg@mail.gmail.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <085d1a2e-57b0-222e-c569-12f3c6bc8161@gmail.com>
-Date:   Mon, 23 Aug 2021 23:24:02 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        with ESMTP id S232640AbhHWUay (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 Aug 2021 16:30:54 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD6F6C0613C1;
+        Mon, 23 Aug 2021 13:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=DLM7OpK51Ado9gYy0YDGfAm3WTAIQ8qg7keZCnkOFqQ=; b=pRpfRJCMOVjVB5eST79I8dMXE1
+        zN5tckeOQn7ug/UrNoFMIKzi0Wrgtkg7mqqFV9OIZrv3pmKW95KV2KXSeHaGa/rcbd8XK4R29J35k
+        zuiCzr7Ohb1tTLFNpqCR47b99W475xMg+yAP4bJle7LaySnSnnYLFOy5ScLyF8qBEbEPZWuXiKFfP
+        oqvsd9CTIw4thJcNF1rbGsQ/p3PD7QOh+4NdOMP027mWG3r1TH+f9dweZky5gKtWS7AdpV7FzxLjL
+        NSvXe59oS/fquoUNNEbR3CbCPaF+Y22CUZLNjZClT6k9Cchdi6zeMUr3QI7cI202gCJmAHEhpAyRz
+        DGAuplhQ==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mIGZZ-000ZjI-Ty; Mon, 23 Aug 2021 20:29:33 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     axboe@kernel.dk, martin.petersen@oracle.com, jejb@linux.ibm.com,
+        kbusch@kernel.org, sagi@grimberg.me, adrian.hunter@intel.com,
+        beanhuo@micron.com, ulf.hansson@linaro.org, avri.altman@wdc.com,
+        swboyd@chromium.org, agk@redhat.com, snitzer@redhat.com,
+        josef@toxicpanda.com
+Cc:     hch@infradead.org, hare@suse.de, bvanassche@acm.org,
+        ming.lei@redhat.com, linux-scsi@vger.kernel.org,
+        linux-nvme@lists.infradead.org, linux-mmc@vger.kernel.org,
+        dm-devel@redhat.com, nbd@other.debian.org,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 00/10] block: first batch of add_disk() error handling conversions
+Date:   Mon, 23 Aug 2021 13:29:20 -0700
+Message-Id: <20210823202930.137278-1-mcgrof@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFo0rzHT4AhueWjyz9k2ZqUy8N6Od5pbr8sL_m0Jf2AwUg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-20.08.2021 15:57, Ulf Hansson пишет:
-...
->> We already have similar APIs, so that won't be a problem. We also have
->> a mechanism inside the OPP core, frequency based, which is used to
->> guess the current OPP. Maybe we can enhance and use that directly
->> here.
-> 
-> After reading the last reply from Dmitry, I am starting to think that
-> the problem he is facing can be described and solved in a much easier
-> way.
-> 
-> If I am correct, it looks like we don't need to add APIs to get OPPs
-> for a clock rate or set initial performance state values according to
-> the HW in genpd.
-> 
-> See my other response to Dmitry, let's see where that leads us.
+There's a total of 70 pending patches in my queue which transform
+drivers over to use the new add_disk() error handling. Now that
+Jens has merged the core components what is left are all the other
+driver conversions. A bit of these changes are helpers to make that
+easier to do.
 
-I'm going to start preparing v9 with GENPD performance state syncing moved into driver's probe where appropriate.
+I'm going to split the driver conversions into batches, and
+this first batch are drivers which should be of high priority
+to consider.
 
-It's not clear to me whether it will be okay to add a generic OPP syncing by clock rate or should it be a Tegra-specific helper. Viresh, what do you think about this generic OPP helper:
+Should this get merged, I'll chug on with the next batch, and
+so on with batches of 10 each, until we tackle last the wonderful
+world of floppy drivers.
 
-/**
- * dev_pm_opp_sync_with_clk_rate() - Sync OPP state with clock rate
- * @dev:	device for which we do this operation
- *
- * Sync OPP table state with the current clock rate of device.
- *
- * Return: 0 on success or a negative error value.
- */
-int dev_pm_opp_sync_with_clk_rate(struct device *dev)
-{
-	struct opp_table *opp_table;
-	int ret = 0;
+I've put together a git tree based on Jen's for-5.15/block branch
+which holds all of my pending changes, in case anyone wants to
+take a peak.
 
-	/* Device may not have OPP table */
-	opp_table = _find_opp_table(dev);
-	if (IS_ERR(opp_table))
-		return 0;
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux-next.git/log/?h=20210823-for-axboe-add-disk-error-handling-next
 
-	/* Device may not use clock */
-	if (IS_ERR(opp_table->clk))
-		goto put_table;
+Luis Chamberlain (10):
+  scsi/sd: use blk_cleanup_queue() insted of put_disk()
+  scsi/sd: add error handling support for add_disk()
+  scsi/sr: use blk_cleanup_disk() instead of put_disk()
+  scsi/sr: add error handling support for add_disk()
+  nvme: add error handling support for add_disk()
+  mmc/core/block: add error handling support for add_disk()
+  md: add error handling support for add_disk()
+  dm: add add_disk() error handling
+  loop: add error handling support for add_disk()
+  nbd: add error handling support for add_disk()
 
-	/* Device may have empty OPP table */
-	if (!_get_opp_count(opp_table))
-		goto put_table;
+ drivers/block/loop.c     |  9 ++++++++-
+ drivers/block/nbd.c      |  6 +++++-
+ drivers/md/dm.c          | 16 +++++++++++-----
+ drivers/md/md.c          |  7 ++++++-
+ drivers/mmc/core/block.c |  4 +++-
+ drivers/nvme/host/core.c | 10 +++++++++-
+ drivers/scsi/sd.c        |  8 ++++++--
+ drivers/scsi/sr.c        |  7 +++++--
+ 8 files changed, 53 insertions(+), 14 deletions(-)
 
-	ret = dev_pm_opp_set_rate(dev, clk_get_rate(opp_table->clk));
-put_table:
-	/* Drop reference taken by _find_opp_table() */
-	dev_pm_opp_put_opp_table(opp_table);
+-- 
+2.30.2
 
-	return ret;
-}
-EXPORT_SYMBOL_GPL(dev_pm_opp_sync_with_clk_rate);
