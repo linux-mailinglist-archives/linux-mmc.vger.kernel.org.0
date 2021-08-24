@@ -2,78 +2,111 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 699B23F6079
-	for <lists+linux-mmc@lfdr.de>; Tue, 24 Aug 2021 16:34:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 843103F610F
+	for <lists+linux-mmc@lfdr.de>; Tue, 24 Aug 2021 16:56:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237722AbhHXOfI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 24 Aug 2021 10:35:08 -0400
-Received: from mail-ot1-f48.google.com ([209.85.210.48]:44649 "EHLO
-        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232840AbhHXOfH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 24 Aug 2021 10:35:07 -0400
-Received: by mail-ot1-f48.google.com with SMTP id g66-20020a9d12c8000000b0051aeba607f1so38084960otg.11;
-        Tue, 24 Aug 2021 07:34:23 -0700 (PDT)
+        id S237821AbhHXO5i (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 24 Aug 2021 10:57:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56022 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237731AbhHXO5h (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 24 Aug 2021 10:57:37 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 591F3C061757
+        for <linux-mmc@vger.kernel.org>; Tue, 24 Aug 2021 07:56:53 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id k5so46159333lfu.4
+        for <linux-mmc@vger.kernel.org>; Tue, 24 Aug 2021 07:56:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=94zQuF2zFbo2BHHLAgrhRLqgGBQ5k3ytOtZHfIF63W0=;
+        b=W8Rag8ItQYE4QWC5Txq0wlwX2p+wPiWKoa02oBFerpiN/mYC01UTDMpgkzON3t4aCE
+         2IbbGHgA4LSX4LFQ9Xq/rWEcfwGwfCiDB7lAoRo6q4za1K9XrNAqWiDzifKbNTBpV0fx
+         lRkfw3lKeq2o7xjTFEnYdoaIpq97abYjok6+jQ7xmLu0y5Jk7Qzor59tFgyYnHifPfcI
+         0Ohin542I9fvqfemyddJ8KSK4MyUpXI4YZur1RTiN5XIbwdiN6HEpTbpEGyNC/FEkxmT
+         xehNbADUpUC66/jJy7Ct/pUUUJdQ0Qh70grYaPq81IKtya+pjY/vdSklopmbhsdHo6i3
+         oKyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=cjxpAdrXRiBgSjXIV19OMMUSDjglkcpFQ3o1vBWTrBQ=;
-        b=VFBvHm6DZgAEZ5CNLfR7mgX0Yg13NnNdUww9d0p58+3TjrpM9QULkuQ/VHzHlxxvsT
-         JPlr/yUdaOgHUDwTjKziRZUwX/6MXHG8ohnpYrrBo+z8cM2loqgwae2mzutdyUlYlw//
-         XRQtbIIxzQLNO972ly0fRW5c/dpKXIjq4n4DndrBVbMQea3Y+axbAt0Dwbp4I5MclOPs
-         QV+RnbB4G5tHRPIMLDMyGZeJ7TInAiGHb/YA2L/RPMtkkHj9bamS/CjiSQVpGfVZDSYl
-         fRvreD4UfQdcAnXNMDmT51xG964HahnmC6iXKo0yHHnPEMyA9q0aPrMIMMNlboL9bVQI
-         mP4A==
-X-Gm-Message-State: AOAM532TMwgxesJsXEXEErKDU3UJ4wz+3BzdFTgAIKyNvMvgFs6s12WH
-        YYjBUobaf+4miT0lrQNsMA==
-X-Google-Smtp-Source: ABdhPJwuUeEoin7xC064PUAkjPR/fiPbTso7HebfqesbrtSbFz0E3l8nUkrDJS0xNkjYJOC0E639+Q==
-X-Received: by 2002:a9d:7a4e:: with SMTP id z14mr18304739otm.366.1629815663246;
-        Tue, 24 Aug 2021 07:34:23 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id bd27sm1361645oib.43.2021.08.24.07.34.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 07:34:22 -0700 (PDT)
-Received: (nullmailer pid 399601 invoked by uid 1000);
-        Tue, 24 Aug 2021 14:34:21 -0000
-Date:   Tue, 24 Aug 2021 09:34:21 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>, devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Piotr Sroka <piotrs@cadence.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Yash Shah <yash.shah@sifive.com>, linux-mmc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, Rob Herring <robh+dt@kernel.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-kernel@vger.kernel.org, Atish Patra <atish.patra@wdc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>
-Subject: Re: [PATCH 1/6] dt-bindings: riscv: correct e51 and u54-mc CPU
- bindings
-Message-ID: <YSUDbcN3EsMvZOct@robh.at.kernel.org>
-References: <20210819154436.117798-1-krzysztof.kozlowski@canonical.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=94zQuF2zFbo2BHHLAgrhRLqgGBQ5k3ytOtZHfIF63W0=;
+        b=m8n0QzqoD0Hqi8fqg96DFWXFXdZoaliML1sMcSgudRr9PqLWBxhtgOTmRWViZdo7Q/
+         8qx/6WLU3MFMkrS8/EjTkLsyYUmFda10xGsBozEmr3sIZUBoi2bRVRIz2xhpoaryOJ27
+         Lia2pn0l8iai3WaQmqRsoPPMaPp/yu/e6QPs0hv6yv69FORo4oJs7J+75yqcKfjaOLoj
+         Y7cQ7ARlSTq/U3oiyHliGq1Nc7BMvQZT6Qvvuzy+npdqp8319NuOEpyFMdRjEzvdHQOe
+         GgsSx18jUidGeRACH4IZ/j5RwefwLCBUwYgMpuoYDbzPDCsnkhTLkD8ZG903vLIBDZvK
+         IGDw==
+X-Gm-Message-State: AOAM533GIwakC1lBQiSi6qGCgRpRpvv/HaB5zI2cY/Z0oUoWTU0XVVNg
+        GNE4pPwkVn2QAvyDicXb9XBublxQM6dJ6WZ7BeLG8Q==
+X-Google-Smtp-Source: ABdhPJy9adBlM/F3xTZc5XgxXjD/A8wxGhhiHzElK6wV5vIGuoCVJ+aO9KF86RlQ7oTjrrkLEr5A/+p4ouQQOzz5G+Y=
+X-Received: by 2002:a05:6512:318e:: with SMTP id i14mr29772880lfe.113.1629817011695;
+ Tue, 24 Aug 2021 07:56:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210819154436.117798-1-krzysztof.kozlowski@canonical.com>
+References: <1628858041-1911-1-git-send-email-haibo.chen@nxp.com>
+In-Reply-To: <1628858041-1911-1-git-send-email-haibo.chen@nxp.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 24 Aug 2021 16:56:14 +0200
+Message-ID: <CAPDyKFqL2-37L6sKDC1T_cf_Kr8gR7v41C8VfYPyJSALj_zSug@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci: correct the tuning command handle for PIO mode
+To:     Haibo Chen <haibo.chen@nxp.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 19 Aug 2021 17:44:31 +0200, Krzysztof Kozlowski wrote:
-> All existing boards with sifive,e51 and sifive,u54-mc use it on top of
-> sifive,rocket0 compatible:
-> 
->   arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dt.yaml: cpu@0: compatible: 'oneOf' conditional failed, one must be fixed:
->     ['sifive,e51', 'sifive,rocket0', 'riscv'] is too long
->     Additional items are not allowed ('riscv' was unexpected)
->     Additional items are not allowed ('sifive,rocket0', 'riscv' were unexpected)
->     'riscv' was expected
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> ---
->  Documentation/devicetree/bindings/riscv/cpus.yaml | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
+On Fri, 13 Aug 2021 at 14:55, <haibo.chen@nxp.com> wrote:
+>
+> From: Haibo Chen <haibo.chen@nxp.com>
+>
+> If sdhci use PIO mode, and use mmc_send_tuning() to send the
+> tuning command, system will stuck because of the storm irq
+> of sdhci. For PIO mode, use mmc_send_tuning(), it will trigger
+> buffer_read_ready interrupt and data transfer complete interrupt.
+> In current code logic, it will directly return in sdhci_data_irq,
+> can not call the sdhci_transfer_pio(). So the buffer_read_ready
+> interrupt storm happen. So for standard tuning method, need to
+> excluse this case.
+>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-Acked-by: Rob Herring <robh@kernel.org>
+Applied for next (and by dropping parenthesis according to the comment
+from Adrian), thanks!
+
+Kind regards
+Uffe
+
+
+
+> ---
+>  drivers/mmc/host/sdhci.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index aba6e10b8605..acee54b368b0 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -3278,8 +3278,14 @@ static void sdhci_data_irq(struct sdhci_host *host, u32 intmask)
+>  {
+>         u32 command;
+>
+> -       /* CMD19 generates _only_ Buffer Read Ready interrupt */
+> -       if (intmask & SDHCI_INT_DATA_AVAIL) {
+> +       /*
+> +        * CMD19 generates _only_ Buffer Read Ready interrupt if
+> +        * use sdhci_send_tuning.
+> +        * Need to exclude this case: PIO mode and use mmc_send_tuning,
+> +        * If not, sdhci_transfer_pio will never be called, make the
+> +        * SDHCI_INT_DATA_AVAIL always there, stuck in irq storm.
+> +        */
+> +       if ((intmask & SDHCI_INT_DATA_AVAIL) && (!host->data)) {
+>                 command = SDHCI_GET_CMD(sdhci_readw(host, SDHCI_COMMAND));
+>                 if (command == MMC_SEND_TUNING_BLOCK ||
+>                     command == MMC_SEND_TUNING_BLOCK_HS200) {
+> --
+> 2.17.1
+>
