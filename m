@@ -2,164 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B379A3F9000
-	for <lists+linux-mmc@lfdr.de>; Thu, 26 Aug 2021 23:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A28FB3F926B
+	for <lists+linux-mmc@lfdr.de>; Fri, 27 Aug 2021 04:42:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243620AbhHZVKr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 26 Aug 2021 17:10:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39658 "EHLO
+        id S233556AbhH0CmL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 26 Aug 2021 22:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243577AbhHZVKq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 26 Aug 2021 17:10:46 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97356C061757;
-        Thu, 26 Aug 2021 14:09:58 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id 22so5027623qkg.2;
-        Thu, 26 Aug 2021 14:09:58 -0700 (PDT)
+        with ESMTP id S242967AbhH0CmK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 26 Aug 2021 22:42:10 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8155BC0617A8
+        for <linux-mmc@vger.kernel.org>; Thu, 26 Aug 2021 19:41:22 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id q3so6623306iot.3
+        for <linux-mmc@vger.kernel.org>; Thu, 26 Aug 2021 19:41:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ndtmO1/QxMT8WfX0l7kvhRXiSBeQRVJld2PoPckI1O0=;
-        b=rXkpoN+AxZC8JOkn4R8K9c+mS84OMQ1t83JbZhfjYcI75ANkLuquiypDrnp6s06y4I
-         NPluMkYca+r77CJWNzrc6f9U4ud4kyXphYA+f1Z5i3sj5A67I2KVW7XMYbANrSrvNeug
-         AXEO1RvjRD9vlxYBKA66P+G1lIN48rj840wiRhKemSqTzWsckMEASoZJXD1f/rAaSq+q
-         4EwzIgRtp08+jezv5v4uFoI2T4EFS19SAExLi8M3OLwn0bNz8oPOwq/p73iAAEyEo2/9
-         NFstchfvGDpACwhniUvMd14JxputDzfRaHh8vadNNfyRCFm09A2zMbDHXzY48P6KZLGQ
-         euLA==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
+        b=hePZR6l3xkStPPzaZuEEI5aAsDiq5dQtzNWNyjWzrepGL3zDg5RRM5jmzv3hA8Qe8s
+         U5eUSbP2BQ7A45zN3gKzMQbxc2I7TBQ+WGjJw07Ca+N4SD7OgsCT4ZKEmx6x2fsD6OqX
+         sDvMxBGlSNKZbvz0OZuVA0WFxvTs+J+u862pdllDKBdFdGgib9ZiPj9FP+K5yMejz9W4
+         OuAlWF0fiIbSrR3GjuzqKB/+JO2AcrVVCdco4KgUAztF/I1ojRBAGLgKYgf3zRYK3mCq
+         atYBVOANeHK8VXipDb5RywYKh0b5pA6B9IAIIuUon7ytDHQT/+sb7hMNDgkjIhtqobzS
+         9yGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ndtmO1/QxMT8WfX0l7kvhRXiSBeQRVJld2PoPckI1O0=;
-        b=HMbCouOVtu2xaoA5Zhl/F7PHiJjgy0S0Ut4CFVm+qVWZySI4o1OY4w2sj1oaWvcU9o
-         VjjdDD5MaCB1Y+VDzw4JRgzp7DMi5bDP36ALVL1FBWRhBWMLy1EFw4/27UNlglEr15gB
-         2z7K06LAGUDEB8z7wyna0HbAPRqDC3tvn54ylwJYTfFtHM/A0XkWgEsXZcwL6qULrdQB
-         y2pHAa0Bew3JfLcqVMFJNep1ZAYZIiI0fxbT3b5yCt/Jv6eNgueyt4KUGKl+l1u/mGeG
-         qMcRRGoEAU7GZ2WV1eoS2s2qlRhKrkqdTV1OPv1vfdUPUK8Q8ZAO6WzltvO4xkegmDQr
-         9RBA==
-X-Gm-Message-State: AOAM530Rpjl3s7ehPbdfR8LW+nhDcIIu0aiWxaaxEcfKRc6OTvX2GWMp
-        YmOd5WngB+RdM+LzhI9ngmM=
-X-Google-Smtp-Source: ABdhPJyNBmR/3pzA2dXFXq9JJ0G8eGCHjShTKLd/3ctVIJ403sMS9vArXoGYUj4XusUtSX1cbXxkww==
-X-Received: by 2002:a37:de15:: with SMTP id h21mr5971229qkj.124.1630012197581;
-        Thu, 26 Aug 2021 14:09:57 -0700 (PDT)
-Received: from localhost ([12.28.44.171])
-        by smtp.gmail.com with ESMTPSA id r128sm3373281qke.98.2021.08.26.14.09.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Aug 2021 14:09:56 -0700 (PDT)
-Date:   Thu, 26 Aug 2021 14:09:55 -0700
-From:   Yury Norov <yury.norov@gmail.com>
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        kvm@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Alexander Lobakin <alobakin@pm.me>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexey Klimov <aklimov@redhat.com>,
-        Andrea Merello <andrea.merello@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>, Ben Gardon <bgardon@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Brian Cain <bcain@codeaurora.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christoph Lameter <cl@linux.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Dennis Zhou <dennis@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>, Jiri Olsa <jolsa@redhat.com>,
-        Joe Perches <joe@perches.com>, Jonas Bonn <jonas@southpole.se>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Peter Xu <peterx@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Rich Felker <dalias@libc.org>,
-        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Shuah Khan <shuah@kernel.org>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Tejun Heo <tj@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH 11/17] find: micro-optimize for_each_{set,clear}_bit()
-Message-ID: <YSgDI9NpC51GhB/2@yury-ThinkPad>
-References: <20210814211713.180533-1-yury.norov@gmail.com>
- <20210814211713.180533-12-yury.norov@gmail.com>
- <YSeduU41Ef568xhS@alley>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
+        b=bUcRLJaBV79Xgs3Io9uDbmENRqWvvKnj6obyd0X7JBmWxjosq7ksteM1RZ/TjyPkGp
+         cR/5PzYQsZV6bpEvJEswT8MxlaJw77ggOpOGxbWSqD8WodS3mrNp4XpA0eUwyLSkUh0i
+         cWgqufDRKrG7BGLGbGSWtzODISNFeRu6NRXWWbe5hZrkEWhbEjkrCFQWpyCViPjRlejr
+         Pct6yIdOkFu1OnNbLCJUPR7WuirlMpBoHDrkKEKpxEtrUaci9dFCj8nwa7SDyjEoKCya
+         Gyu2Dij2nNPBzw+jgRjnha9aXApOusTpRaDjZ4uRb0SXIU7XtsdJUqNJ6BqQBCTWUOFx
+         3hKQ==
+X-Gm-Message-State: AOAM532zKevSybFyotnGlBhW23rl2TAao509g5uzxb+XifZJzXRXQNEE
+        0F9pQ6aglPjVBjTLXEEHTSLN8zx6p6NYC2KVuuo=
+X-Google-Smtp-Source: ABdhPJy2KvQ1y9lDWFCt4tUkVLyCqygzMboFgevi6gaXvHUugKzDyPWXP8Dr7Y84OXabbw7jN7/E9JfzCpuZS4GffJY=
+X-Received: by 2002:a05:6602:26cb:: with SMTP id g11mr5610199ioo.110.1630032081852;
+ Thu, 26 Aug 2021 19:41:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YSeduU41Ef568xhS@alley>
+Received: by 2002:a02:c6bc:0:0:0:0:0 with HTTP; Thu, 26 Aug 2021 19:41:21
+ -0700 (PDT)
+From:   john williams <jw626521@gmail.com>
+Date:   Thu, 26 Aug 2021 14:41:21 -1200
+Message-ID: <CAA3cKDMLeZp=ywZ5d2MXfHebbUuYzsTJ67QeWGpBio58+vGPUA@mail.gmail.com>
+Subject: CONFIRM YOUR DETAILS TO ENABLE US START,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Aug 26, 2021 at 03:57:13PM +0200, Petr Mladek wrote:
-> On Sat 2021-08-14 14:17:07, Yury Norov wrote:
-> > The macros iterate thru all set/clear bits in a bitmap. They search a
-> > first bit using find_first_bit(), and the rest bits using find_next_bit().
-> > 
-> > Since find_next_bit() is called shortly after find_first_bit(), we can
-> > save few lines of I-cache by not using find_first_bit().
-> 
-> Is this only a speculation or does it fix a real performance problem?
-> 
-> The macro is used like:
-> 
-> 	for_each_set_bit(bit, addr, size) {
-> 		fn(bit);
-> 	}
-> 
-> IMHO, the micro-opimization does not help when fn() is non-trivial.
- 
-The effect is measurable:
+Dear Beneficiary,
 
-Start testing for_each_bit()
-for_each_set_bit:                15296 ns,   1000 iterations
-for_each_set_bit_from:           15225 ns,   1000 iterations
+Following your pending fund for years and the delay you imposed in
+receiving it,We have called back your fund to this office as directed
+by the Finance Office and we will be paying you directly through the
+BANK OF AMERICA.(BOA) NEW YORK BRANCH AND ALL YOU NEED NOW IS TO
+RE-CONFIRM YOUR BANKING DETAILS FOR THE TRANSFER IMMEDIATELY WITHOUT
+ANY FURTHER DELAY.
 
-Start testing for_each_bit() with cash flushing
-for_each_set_bit:               547626 ns,   1000 iterations
-for_each_set_bit_from:          497899 ns,   1000 iterations
+NOTE THAT WE WILL PAY ALL THE EXPENSES INVOLVED FOR YOU TO RECEIVE
+THIS FUND AND ALL WE NEED FROM YOU IS YOUR CO-OPERATION.
 
-Refer this:
+Send your full details with Banking details to enable us commence the
+transfer process immediately through the BOA BANK IN NEW YORK,USA OR
+DO YOU WANT TO RECEIVE THIS FUND VIA ATM CARD ????????.
 
-https://www.mail-archive.com/dri-devel@lists.freedesktop.org/msg356151.html
-
-Thanks,
-Yury
- 
-> > --- a/include/linux/find.h
-> > +++ b/include/linux/find.h
-> > @@ -280,7 +280,7 @@ unsigned long find_next_bit_le(const void *addr, unsigned
-> >  #endif
-> >  
-> >  #define for_each_set_bit(bit, addr, size) \
-> > -	for ((bit) = find_first_bit((addr), (size));		\
-> > +	for ((bit) = find_next_bit((addr), (size), 0);		\
-> >  	     (bit) < (size);					\
-> >  	     (bit) = find_next_bit((addr), (size), (bit) + 1))
-> >  
-> 
-> It is not a big deal. I just think that the original code is slightly
-> more self-explaining.
-> 
-> Best Regards,
-> Petr
+John O.Williams.
