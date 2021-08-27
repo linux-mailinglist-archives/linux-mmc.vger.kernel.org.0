@@ -2,59 +2,68 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2857C3F9D1F
-	for <lists+linux-mmc@lfdr.de>; Fri, 27 Aug 2021 18:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E71383F9EC8
+	for <lists+linux-mmc@lfdr.de>; Fri, 27 Aug 2021 20:28:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235979AbhH0Q5t (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 27 Aug 2021 12:57:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41762 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232971AbhH0Q5s (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 27 Aug 2021 12:57:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 91C3660EE5;
-        Fri, 27 Aug 2021 16:56:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630083419;
-        bh=Q8zwkwLqtXiNvZunBJnRbGrIJomhuTUqV5oBqM87gYw=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=jDfGmeDU3+jbAvAwXSZJ/n+ZLsVqBjuxnsuwjhAbXtT/RmPxbc3LFa+b/cd8tqTmR
-         O+T1Bw1aOyxepLlsL70i5yS/kUbbqX7ZbBselR5AC1A4u8ykVSls8/Q2oBdtemh1KW
-         lK6xM1auqht5CvlvqoZoaD0z9foOKGyecovN8cjdVVJhK8QaG4cx3F3V9tWbLce4+c
-         OMOiNGfbHiVtbHy4WgYc39P7P5VTn+Ehnm8onPbzkfv6zgSMUBgiEHg3YEXr6HELJ6
-         1hMvAZr+5Fyodk/WvFJD/TYaWYZFtifOFGkMgLYmeQjwNEZRq7cUWNF8mUizTacTdi
-         kwnZqwGZgrOmQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 8569F60A14;
-        Fri, 27 Aug 2021 16:56:59 +0000 (UTC)
-Subject: Re: [GIT PULL] MMC fixes for v5.14-rc8
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20210827144404.504978-1-ulf.hansson@linaro.org>
-References: <20210827144404.504978-1-ulf.hansson@linaro.org>
-X-PR-Tracked-List-Id: <linux-mmc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20210827144404.504978-1-ulf.hansson@linaro.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.14-rc7
-X-PR-Tracked-Commit-Id: 885814a97f5a1a2daf66bde5f2076f0bf632c174
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 1a6436f375129a96adcc492013a466b934fcad79
-Message-Id: <163008341948.31998.9462933030834600351.pr-tracker-bot@kernel.org>
-Date:   Fri, 27 Aug 2021 16:56:59 +0000
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+        id S230053AbhH0S3A (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 27 Aug 2021 14:29:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47734 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229811AbhH0S27 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 27 Aug 2021 14:28:59 -0400
+Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59F26C061757;
+        Fri, 27 Aug 2021 11:28:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=BN0I/ZosD09UMyhqSQvfPnbE77N00K2k+NcNSHrUius=; b=TcPcmN3wc/8PA7Nk30ZO5ftqJr
+        /xteMD4uOLnJEPdP2ueY6hcOIuFgkJ2aJgGL8IPl8F9Cf2ahyW8TUqblrtrTIYvXpxjuWgpZBkYkI
+        PcMWKPqkSObWHMr7dNi/RHNsOKkWmQFcXaugakKBJol1uVpNCt+HSMVvuQp8VcJEaqkKoViMnyiXM
+        YEHr73NdkFCPIOEGTWxjmrUScRMhsQSGFYzqGOobsQbfIi6K7IOuDo4A38X2QXajvW/tvEGg8KiC6
+        MBFsjMDtxmN44QKfvur4kL21VGLQ1TJokwsrrEWKoXaCcNwN82Sd1RSH4M+QtHHXETCf6iCQ5vkAj
+        Qa9atobg==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mJgZk-00Cx8z-5d; Fri, 27 Aug 2021 18:27:36 +0000
+Date:   Fri, 27 Aug 2021 11:27:36 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     axboe@kernel.dk, martin.petersen@oracle.com, jejb@linux.ibm.com,
+        kbusch@kernel.org, sagi@grimberg.me, adrian.hunter@intel.com,
+        beanhuo@micron.com, ulf.hansson@linaro.org, avri.altman@wdc.com,
+        swboyd@chromium.org, agk@redhat.com, snitzer@redhat.com,
+        josef@toxicpanda.com, hare@suse.de, bvanassche@acm.org,
+        ming.lei@redhat.com, linux-scsi@vger.kernel.org,
+        linux-nvme@lists.infradead.org, linux-mmc@vger.kernel.org,
+        dm-devel@redhat.com, nbd@other.debian.org,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/10] scsi/sd: use blk_cleanup_queue() insted of
+ put_disk()
+Message-ID: <YSkumJBTztoYdzC7@bombadil.infradead.org>
+References: <20210823202930.137278-1-mcgrof@kernel.org>
+ <20210823202930.137278-2-mcgrof@kernel.org>
+ <YSSJNTxyLHu/LsNJ@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YSSJNTxyLHu/LsNJ@infradead.org>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The pull request you sent on Fri, 27 Aug 2021 16:44:04 +0200:
+On Tue, Aug 24, 2021 at 06:52:53AM +0100, Christoph Hellwig wrote:
+> On Mon, Aug 23, 2021 at 01:29:21PM -0700, Luis Chamberlain wrote:
+> > The single put_disk() is useful if you know you're not doing
+> > a cleanup after add_disk(), but since we want to add support
+> > for that, just use the normal form of blk_cleanup_disk() to
+> > cleanup the queue and put the disk.
+> 
+> Hmm, I don't think this is correct.  The request_queue is owned by the
+> core SCSI code.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.14-rc7
+Alright, I'll drop this one. For the life of me I can't find the respective
+probe call on the scsi layer.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/1a6436f375129a96adcc492013a466b934fcad79
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+  Luis
