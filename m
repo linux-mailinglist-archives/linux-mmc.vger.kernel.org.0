@@ -2,95 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 844E13FABAC
-	for <lists+linux-mmc@lfdr.de>; Sun, 29 Aug 2021 15:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E25A3FADB1
+	for <lists+linux-mmc@lfdr.de>; Sun, 29 Aug 2021 20:24:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235620AbhH2NOX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 29 Aug 2021 09:14:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47036 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235575AbhH2NOO (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 29 Aug 2021 09:14:14 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E8CC0612A4
-        for <linux-mmc@vger.kernel.org>; Sun, 29 Aug 2021 06:13:21 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id m4so20683490ljq.8
-        for <linux-mmc@vger.kernel.org>; Sun, 29 Aug 2021 06:13:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=DZOpdA3eYjpudg4OpQFFkH8jLHw3BxsNdxzTMff7kgw=;
-        b=JYgvhRh/XMbWSmh2hHQ6low2HT/EK5Db15j4xEn196MVYAmhicQUPTkqK33Ygf5yJV
-         rIzHsKI+Z3ckWJRnIUe8dzDewGj8MNiCcN3JIyjVk8xGm0jTD/fexByf4nfLDCRojILy
-         /oSMgUZwtgSQTDfCyHKl3j2WvWHGMsledNkCtgxqqMzm9IvPQvg4CFrG2Jlfglgj36iX
-         PooxcxfGHTuPO6c6gyEHfNmzBVsimJZLJTGHu6co+MuRlWDTVLxi4vVmD0a2oxg5N+8h
-         2NOSABtA1NVG0Xv+u7omjq/8kK4obaak3LZh0U+Pdzi6pCOqwezV15LMpV08KYXIqDFE
-         T49A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=DZOpdA3eYjpudg4OpQFFkH8jLHw3BxsNdxzTMff7kgw=;
-        b=ZTenmZZVXFxBbuLNEJwOJh3AYAULL121ICNJkurjo4MBqHHL8B1lu6Sk9Qunri0VR4
-         Dx+C6faqQ+EQDB9fA5wn8ZFaFlwdZnT6SaB5Bd0bwbP03p3t0zThegnuuFndPAjZWUuo
-         XIxp33o1Gg+xzp+Wnl/rY9qstjcCMyY7TyWrv7ZN/9ShVQW02WDvMfiVBFok4kPUKQ3q
-         7gcnV+nnemRbyM0EYmflVhgMDT3pMZ1bX11AY8nr7LC4049n1aNOvn/r8j9PquqQhglD
-         C5LSpdZ4/Jz/cxV+Lkj9Xu6ZsGyaldkT9AymcDYIB3Aa2MuyNVoui9dp5MhkyjvUyVYw
-         MTHw==
-X-Gm-Message-State: AOAM5323Vgc25El14ahTW2UA0VsYINcj35yJhIe80WrJpaw0OZimQzYc
-        lyyEVQO2zkUGN91WrYCVyoTcag==
-X-Google-Smtp-Source: ABdhPJwN0RnHneAiBvwIuepF2POuNFYC+7soqzPBkiEXgB5t1sLpCiFezga+nEjbYoWJ71ExIPe4Iw==
-X-Received: by 2002:a2e:b605:: with SMTP id r5mr16548450ljn.283.1630242800140;
-        Sun, 29 Aug 2021 06:13:20 -0700 (PDT)
-Received: from eriador.lan ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id x13sm712503lfq.262.2021.08.29.06.13.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Aug 2021 06:13:19 -0700 (PDT)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [RFC v2 13/13] WIP: arm64: dts: qcom: qrb5165-rb5: add bus-pwrseq property to pcie0
-Date:   Sun, 29 Aug 2021 16:13:05 +0300
-Message-Id: <20210829131305.534417-14-dmitry.baryshkov@linaro.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
-References: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S231919AbhH2SZo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 29 Aug 2021 14:25:44 -0400
+Received: from mga12.intel.com ([192.55.52.136]:63344 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230010AbhH2SZn (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 29 Aug 2021 14:25:43 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10091"; a="197736737"
+X-IronPort-AV: E=Sophos;i="5.84,361,1620716400"; 
+   d="scan'208";a="197736737"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2021 11:24:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,361,1620716400"; 
+   d="scan'208";a="445519073"
+Received: from coresw01.iind.intel.com ([10.106.46.194])
+  by orsmga002.jf.intel.com with ESMTP; 29 Aug 2021 11:24:44 -0700
+From:   rashmi.a@intel.com
+To:     michal.simek@xilinx.com, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kishon@ti.com, vkoul@kernel.org,
+        andriy.shevchenko@linux.intel.com, linux-phy@lists.infradead.org
+Cc:     mgross@linux.intel.com, kris.pan@linux.intel.com,
+        furong.zhou@intel.com, mallikarjunappa.sangannavar@intel.com,
+        adrian.hunter@intel.com, mahesh.r.vaidya@intel.com,
+        nandhini.srikandan@intel.com, rashmi.a@intel.com
+Subject: [PATCH v2 0/4] Add support of eMMC PHY for Intel Thunder Bay
+Date:   Sun, 29 Aug 2021 23:54:39 +0530
+Message-Id: <20210829182443.30802-1-rashmi.a@intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 1 +
- 1 file changed, 1 insertion(+)
+From: Rashmi A <rashmi.a@intel.com>
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-index 326330f528fc..0c347cb6f8e0 100644
---- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-@@ -689,6 +689,7 @@ wifi-therm@1 {
+This patch set enables the support for eMMC PHY on the Intel Thunder 
+Bay SoC. eMMC PHY is based on arasan phy.
  
- &pcie0 {
- 	status = "okay";
-+	bus-pwrseq = <&qca_pwrseq 0>;
- };
- 
- &pcie0_phy {
+Patch 1 Adds arasan sdhci support for eMMC in Intel Thunder Bay.
+Patch 2 Adds arasan sdhci dt bindings.
+Patch 3 Holds the device tree binding documentation for eMMC PHY
+	and listings of new files in MAINTAINERS file.
+Patch 4 Holds the eMMC PHY driver.
+
+
+Rashmi A (4):
+  mmc: sdhci-of-arasan: Add intel Thunder Bay SOC support to the arasan
+    eMMC driver
+  dt-bindings: mmc: Add bindings for Intel Thunder Bay SoC
+  dt-bindings: phy: intel: Add Thunder Bay eMMC PHY bindings
+  phy: intel: Add Thunder Bay eMMC PHY support
+
+ .../devicetree/bindings/mmc/arasan,sdhci.yaml |  25 +
+ .../phy/intel,phy-thunderbay-emmc.yaml        |  46 ++
+ MAINTAINERS                                   |   7 +
+ drivers/mmc/host/sdhci-of-arasan.c            |  29 +-
+ drivers/phy/intel/Kconfig                     |  10 +
+ drivers/phy/intel/Makefile                    |   1 +
+ drivers/phy/intel/phy-intel-thunderbay-emmc.c | 512 ++++++++++++++++++
+ 7 files changed, 629 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/phy/intel,phy-thunderbay-emmc.yaml
+ create mode 100644 drivers/phy/intel/phy-intel-thunderbay-emmc.c
+
 -- 
-2.33.0
+2.17.1
 
