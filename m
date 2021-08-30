@@ -2,113 +2,44 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E424D3FB727
-	for <lists+linux-mmc@lfdr.de>; Mon, 30 Aug 2021 15:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BE53FB865
+	for <lists+linux-mmc@lfdr.de>; Mon, 30 Aug 2021 16:42:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236839AbhH3NpK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 30 Aug 2021 09:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37996 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231669AbhH3NpK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 Aug 2021 09:45:10 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328FCC061575
-        for <linux-mmc@vger.kernel.org>; Mon, 30 Aug 2021 06:44:16 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id f2so26042819ljn.1
-        for <linux-mmc@vger.kernel.org>; Mon, 30 Aug 2021 06:44:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kOYXhGaqQ6MRJEfF+E0ER+xBLRcBgZV7cWZXRVeFtj4=;
-        b=oSzgQNH2PwxCqBTmQ00Scj9XVNl4PjTfZ++xtN2IEitrBIFKHRNOL0Nw67BOqqLDXc
-         ActdqjZTwLU+LZHafZglw2/Ka0Otxu1mSTzy+f7Iy3+t336Rl1FhjMz2TVigE0AiEfMe
-         sJwAOqAQwp9MrtcdCua2tE/O2fbPeJIJfuZ5yIh6gTpYFU8ZYLHM96NUBCjy6ffwMpVb
-         uT2td0pEGA0MAXd9lc/rMbDlvrPemi+GAcO1VH4u67DOlWf4posmy4rjN9xZEewHg12T
-         9cfnXrYjqrFceBAQli3kRcG6SJrpB64dhbVykWoa0BUH1uuNw3Xod+WsHj2D6vQZ4dTs
-         W+jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kOYXhGaqQ6MRJEfF+E0ER+xBLRcBgZV7cWZXRVeFtj4=;
-        b=LpxN6tYuVvOzj7QiMo708YBLxCNOuP+1mQZ8Xr2mZuLYLnHfFFxJxUQjD3EgcZoRqS
-         QKz4V2/bUC8+a+DLN6YZT/AfLv98yRsCeXP5CaDzFT362fyWirt8366Z1vqxFmwAU790
-         LhswZOpFJ3TBtPKAKvsrhWa1bOhJl6qD3g0vOLAJhjy2dEbsyuGqG8fZkFtpH+I/hN1s
-         kUFIq+QJ+abLyQK6KNsDCoBdz4Ll3uUb/sLVGzJ6wZ4Z9n4LxRf3zrf90s5v76m7kR4/
-         eVa3vIEZwuqGU2g0heSKnUjYCpBEXqfQu8DdOuB3/piel6HCUljmAW4dsx6MYetlvj85
-         wlRg==
-X-Gm-Message-State: AOAM532S2Ma55vS9K+xJvFDYF0dUtIkTdlaHAHEnwDp/NS22nosLiVPd
-        gk8r/jYpHgpG3InbkdTCp95ZWzDAq+UszbgmOPOT0w==
-X-Google-Smtp-Source: ABdhPJzSbjrfR6nWoj1MvF5PjDjLKW0SfuR+5h1BG6O5DQ4hi8nvSRGwK/6dSx4oy0x4iF+t9nGT3L28hehyyLhGsjQ=
-X-Received: by 2002:a2e:bd09:: with SMTP id n9mr20595594ljq.76.1630331054549;
- Mon, 30 Aug 2021 06:44:14 -0700 (PDT)
+        id S237205AbhH3OnU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 30 Aug 2021 10:43:20 -0400
+Received: from bizcloud-loan.com ([157.245.61.63]:46764 "EHLO
+        send0.clietdirectoryclietdirectory.xyz" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S237156AbhH3OnU (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 Aug 2021 10:43:20 -0400
+X-Greylist: delayed 601 seconds by postgrey-1.27 at vger.kernel.org; Mon, 30 Aug 2021 10:43:19 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default;
+ d=clietdirectoryclietdirectory.xyz;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:
+ Content-Transfer-Encoding; i=admin@clietdirectoryclietdirectory.xyz;
+ bh=MrUK3t9jpLCHO4+TmBIOqq/9OrU5JvuL6PY58Bi602A=;
+ b=GhIGve/yEk5ydJcXwL3x6tc+RsNMyJlwVInMhVG6ZjM4BAsG++p9EzvSemVldc3L8J1Y5qsh22U5
+   N49VQmatxw/zy4v6kAnxE5eazxX2WQFHDU/4CLz/Q1yMNRV6wGFQpnmS1wtYRDsClbtG+D8qYpVO
+   OJPuiXmGMEBAuaaEfsY=
+Reply-To: enquiries@mercuryglobalholdings.com
+From:   Leonard Fluxman Loans <admin@clietdirectoryclietdirectory.xyz>
+To:     linux-mmc@vger.kernel.org
+Subject: Anticipating your urgent response (loans)
+Date:   30 Aug 2021 15:32:20 +0800
+Message-ID: <20210830153219.C5C568A2BF4747FD@clietdirectoryclietdirectory.xyz>
 MIME-Version: 1.0
-References: <ccb2dad1-c8c1-9f19-92c4-7faf2b787e6d@foss.st.com>
-In-Reply-To: <ccb2dad1-c8c1-9f19-92c4-7faf2b787e6d@foss.st.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 30 Aug 2021 15:43:38 +0200
-Message-ID: <CAPDyKFqMJmJRLNYF=gWvAEH8wtJzrxrZ9KLz62t4XNsD84vr=Q@mail.gmail.com>
-Subject: Re: Question about MMC_PM_KEEP_POWER in MMCI driver
-To:     Yann Gautier <yann.gautier@foss.st.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Rob Herring <robh+dt@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 25 Aug 2021 at 16:34, Yann Gautier <yann.gautier@foss.st.com> wrote:
->
-> Hi,
->
-> In drivers/mmc/host/mmci.c, MMC_PM_KEEP_POWER is unconditionally enabled.
-> This prevents correct low-power sequence on STM32MP157C-DK2 board which
-> embeds a Wifi chip brcm,bcm4329-fmac (this wifi part has not yet been
-> sent upstream).
+Hi ,
+Don=E2=80=99t forget to take advantage of historically low rates .
+I will like to introduce our loan company to you, we are based in=20
+USA< Europe and Asia. We provide the following services. Business=20
+loans, secure and unsecured loans, real estate loans and Personal
+Loans .
+Interested? Let's Talk About Next Steps
 
-Exactly why doesn't this work with the STM32MP157C-DK2 board?
-
->
-> This MMC_PM_KEEP_POWER can be taken from DT with the property
-> keep-power-in-suspend. This is what is done for other MMC drivers.
-
-The DT property is what should have been used for mmci as well.
-
->
-> I wonder what should be the best solution for this.
->
-> 1) Remove MMC_PM_KEEP_POWER from the driver, and modify all SoC device
-> tree files embedding a arm,pl18x with adding keep-power-in-suspend;
-> property (except stm32mp151.dtsi file).
-> This can be easy to do (~10 files to modify). But that could be more
-> board dependent, if an SDIO chip is plugged on this MMC IP.
-> And the name keep-power-in-suspend can be misleading as it only applies
-> to SDIO.
->
-> 2) Remove MMC_PM_KEEP_POWER from the driver, and modify board DT files
-> with the property. This could be a difficult task to find all those
-> boards. And this should be applied only for SDIO configs.
->
-> 3) Just modify the driver to apply this capability for all MMCI chips
-> but STM32. This could be done in the dedicated file, in
-> sdmmc_variant_init() function. But some boards based on STM32MP15 chip
-> might want to keep this capability.
-
-I would suggest option 3).
-
-As a matter of fact, we also allow MMC_PM_KEEP_POWER to become set
-when parsing the DTB via calling mmc_of_parse(). So just changing the
-default value (don't set MMC_PM_KEEP_POWER) for the stm32 variant,
-would do the trick I think.
-
-Kind regards
-Uffe
+Leonard Fluxman
