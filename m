@@ -2,104 +2,76 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ED57401D10
-	for <lists+linux-mmc@lfdr.de>; Mon,  6 Sep 2021 16:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34C8C401E83
+	for <lists+linux-mmc@lfdr.de>; Mon,  6 Sep 2021 18:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243432AbhIFOhB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 6 Sep 2021 10:37:01 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:65104 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S243421AbhIFOhB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Sep 2021 10:37:01 -0400
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 186EYWcw092852;
-        Mon, 6 Sep 2021 10:35:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=t5OR0eUDklpD1WGcingITtl2OO+Tv7Am9adn1Pg8ob8=;
- b=Fg5yauhmATD6QI5Na7k8vSPW5iTgGoMSjYH5iBmL2WQAHem/LLdTfeyfvHKh/Ta5fuOu
- u2cQFR2ixl8pEwImQgKY5qk2q1bNRqY9w/LCTSNtkKdE+6Di68i3mKZeeMTw7cDsBCjN
- lP3qqMU/HCRWZfFaKElSULlrf9L12xixT63jXCC1HqoV/R7ujHNzZA+iZYezwPDaxgWO
- 6hVLfY/TJwmcDZAL8wwEBkKOA/UDBAImf38T7LQNH6fqBbdQqRvYpVb6U4uRZoKY9rZG
- 4qk9cTJEO6YzOC8M7BxWdldZdzFnFH5EuchBQLQrG4J0UMabuxBnaQcAS2KvX+VSviXW Tg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3awh9cwbev-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Sep 2021 10:35:18 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 186EZImE100053;
-        Mon, 6 Sep 2021 10:35:18 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3awh9cwbdx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Sep 2021 10:35:17 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-        by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 186EXUwh023137;
-        Mon, 6 Sep 2021 14:35:15 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-        by ppma06fra.de.ibm.com with ESMTP id 3av02j4kq3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Sep 2021 14:35:15 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 186EZBZp46072230
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 6 Sep 2021 14:35:11 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 722F8AE065;
-        Mon,  6 Sep 2021 14:35:11 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6C4D9AE055;
-        Mon,  6 Sep 2021 14:35:10 +0000 (GMT)
-Received: from osiris (unknown [9.145.3.161])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Mon,  6 Sep 2021 14:35:10 +0000 (GMT)
-Date:   Mon, 6 Sep 2021 16:35:09 +0200
-From:   Heiko Carstens <hca@linux.ibm.com>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Luis Chamberlain <mcgrof@kernel.org>, axboe@kernel.dk,
-        gregkh@linuxfoundation.org, chaitanya.kulkarni@wdc.com,
-        atulgopinathan@gmail.com, hare@suse.de, maximlevitsky@gmail.com,
-        oakad@yahoo.com, ulf.hansson@linaro.org, colin.king@canonical.com,
-        shubhankarvk@gmail.com, baijiaju1990@gmail.com, trix@redhat.com,
-        dongsheng.yang@easystack.cn, ceph-devel@vger.kernel.org,
-        miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-        sth@linux.ibm.com, hoeppner@linux.ibm.com, gor@linux.ibm.com,
-        borntraeger@de.ibm.com, oberpar@linux.ibm.com, tj@kernel.org,
-        linux-s390@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 9/9] s390/block/xpram: add error handling support for
- add_disk()
-Message-ID: <YTYnHUYSfB6YElnh@osiris>
-References: <20210902174105.2418771-1-mcgrof@kernel.org>
- <20210902174105.2418771-10-mcgrof@kernel.org>
- <YTIr1w/qPvgioUfL@osiris>
- <YTXcPBph323n2WJ8@infradead.org>
+        id S244246AbhIFQeI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 6 Sep 2021 12:34:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60756 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244236AbhIFQeE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Sep 2021 12:34:04 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 389A0C0612A5
+        for <linux-mmc@vger.kernel.org>; Mon,  6 Sep 2021 09:32:54 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id n34so2650825pfv.7
+        for <linux-mmc@vger.kernel.org>; Mon, 06 Sep 2021 09:32:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Hi0ERA05Hh6q+34+Ou3AtyiRWoG/jVLdZcB+Ekv+M3g=;
+        b=AQXQzDCQYveoXX8TzTwuiAk/FEyR3wCuvC9VFUOgylxIOdg1EFZyjuPsYQnAcX6J45
+         hGQ/TLw/xoIRE4dR4duos/11L9nUC9pcUBl/RXv6WkJZOj9GF3K+dFgRBHNvOmD3hg/2
+         8aWexR+OCBkLd9FzUsmw6Mf2hXMKPJJYu5JOjAjvp1WIk7xCdh9mnYnLj+26R+tY7rgo
+         HJPLbs6wPd+nl87UvFskxFfDoXbe22pxgW1zf9L/3TdM0lyau7vB+LmM0EAyEmYoeoMO
+         ZhwZDLJwTAD2meT4nF7FnViJ3hJIW4496YAschcWJBrRRFI5yQJjoNMRwEQgQiqRwsUz
+         E0sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Hi0ERA05Hh6q+34+Ou3AtyiRWoG/jVLdZcB+Ekv+M3g=;
+        b=pJuS7ca14/6k6eTnvp4+OoBO6N3fN/kwCKDpQ1BHxamQu8q2sO8p0UhebNOOHkoebr
+         sLhW8bltm6rmRkSaMEokYuR2QXk26aWeZWTzLisk/isyYs9NYykijY8Ll2ypdkuSfJMb
+         AVOFvd7+KFkGxJMe7eI8IGKeGjxpbUjM08trBPDPlqcjSJHYtn/S/XrhsTMr9duAujp5
+         ga786yZatEPcewf6cIP/LNLDZ2gWkHk2v9NUweW0E99Ue3KY9f2KwTMrDeSEBR9/CJOH
+         0QYt29Dkwm1MGcN+6wRcS8nYtMKN0rPhGq7RBjOhFVNiHLPD0qvCY+lL8mn5HB11VKtF
+         uQsg==
+X-Gm-Message-State: AOAM533UwIWNnQKEjbxOCS9MEa4+ZDXaphW8o6Diq8SHBXgBRjQE4sUY
+        NJvb90kByaJ+cMg870VEJXdHsn9Wg8EfJIvs5uyFaXux2/k=
+X-Google-Smtp-Source: ABdhPJyNYLbPp58BcQ7mI7j8eL1xi4DRM/CVSKmP+XLlKZnpaM0c4B2zxnkjBdrMYYyKOgNolLHbsclwr0lft4or1UU=
+X-Received: by 2002:a05:6e02:1ca6:: with SMTP id x6mr8854675ill.86.1630945961991;
+ Mon, 06 Sep 2021 09:32:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YTXcPBph323n2WJ8@infradead.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: hBKOiASlRVgdP6m0ZVyfrL0h5Yz4Ft1A
-X-Proofpoint-ORIG-GUID: sRBTe9g0KJq9hO82J9XVDCM7Uj8j1L5y
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-09-06_06:2021-09-03,2021-09-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1015 spamscore=0
- phishscore=0 impostorscore=0 mlxscore=0 adultscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2108310000 definitions=main-2109060092
+Received: by 2002:a05:6e02:1d86:0:0:0:0 with HTTP; Mon, 6 Sep 2021 09:32:41
+ -0700 (PDT)
+Reply-To: suzara.wans2021@gmail.com
+From:   Mrs Suzara Maling Wan <mr.brueshands4world@gmail.com>
+Date:   Mon, 6 Sep 2021 09:32:41 -0700
+Message-ID: <CABvx5tpkSnzTGw2hd3awtMaYZ6SrrR=GwA3X22LN=2t5+bDtOw@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, Sep 06, 2021 at 10:15:40AM +0100, Christoph Hellwig wrote:
-> On Fri, Sep 03, 2021 at 04:06:15PM +0200, Heiko Carstens wrote:
-> > Hmm, this is a more or less dead device driver, and I'm wondering if
-> > we shouldn't remove it instead. But anyway, your patch is not correct:
-> 
-> I'm all for removing it.  I think we need to do a little more spring
-> cleaning on unmaintained and likely to be unused block drivers.
+-- 
+My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
+of the Philippine presently base in West Africa B/F, dealing with
+exportation of Gold, I was diagnose of blood Causal decease, and my
+doctor have announce to me that I have few days to leave due to the
+condition of my sickness.
 
-Yes, we'll remove it. I'll schedule it even for this merge
-window. Should be away with -rc1.
+I have a desire to build an orphanage home in your country of which i
+cannot execute the project myself due to my present health condition,
+I am willing to hand over the project under your care for you to help
+me fulfill my dreams and desire of building an orphanage home in your
+country.
+
+Reply in you are will to help so that I can direct you to my bank for
+the urgent transfer of the fund/money require for the project to your
+account as I have already made the fund/money available.
+
+With kind regards
+Mrs Suzara Maling Wan
