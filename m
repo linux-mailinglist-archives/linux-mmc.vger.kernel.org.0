@@ -2,94 +2,46 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4629A40165B
-	for <lists+linux-mmc@lfdr.de>; Mon,  6 Sep 2021 08:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D8F401791
+	for <lists+linux-mmc@lfdr.de>; Mon,  6 Sep 2021 10:09:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239458AbhIFGVI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 6 Sep 2021 02:21:08 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29]:52496 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231271AbhIFGVH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Sep 2021 02:21:07 -0400
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id E9D1220081;
-        Mon,  6 Sep 2021 06:20:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1630909201; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WnsfEm24FiY97oUuBVkQpzIL/MgLM8SuyHc8JYLAsNY=;
-        b=G6amEv4Aay3hAY1inpj2Md8h3+uttQfDibLAnOOGzrFy7lJFDkhx0sztzAGTNR4GVkCW3K
-        F+pHfwSAtaz0uYFnubD+DSFHs9IZ0gkxYd+inQcBdPn4wIAycTdrdrccikfoGrKbpQwYZZ
-        LJHWr1hWGeoIjmdFG8aMhkRuEhvPVkA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1630909201;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WnsfEm24FiY97oUuBVkQpzIL/MgLM8SuyHc8JYLAsNY=;
-        b=oO5/PbjMxF/qs8tYulSXPGwu3sVi3uFKYQ3zil56qMsvk3vDb3FfUXHhz6Js3n0SXvqvlr
-        rHuRJBcLLrpd09Ag==
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id 1A4BB13299;
-        Mon,  6 Sep 2021 06:20:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap1.suse-dmz.suse.de with ESMTPSA
-        id u9eHAxGzNWHKTwAAGKfGzw
-        (envelope-from <hare@suse.de>); Mon, 06 Sep 2021 06:20:01 +0000
-Subject: Re: [PATCH v3 8/8] nbd: add error handling support for add_disk()
-To:     Luis Chamberlain <mcgrof@kernel.org>, axboe@kernel.dk,
+        id S240523AbhIFIKT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 6 Sep 2021 04:10:19 -0400
+Received: from verein.lst.de ([213.95.11.211]:60533 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240406AbhIFIKS (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 6 Sep 2021 04:10:18 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id E18B767373; Mon,  6 Sep 2021 10:09:08 +0200 (CEST)
+Date:   Mon, 6 Sep 2021 10:09:08 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Hannes Reinecke <hare@suse.de>
+Cc:     Luis Chamberlain <mcgrof@kernel.org>, axboe@kernel.dk,
         martin.petersen@oracle.com, jejb@linux.ibm.com, kbusch@kernel.org,
         sagi@grimberg.me, adrian.hunter@intel.com, beanhuo@micron.com,
         ulf.hansson@linaro.org, avri.altman@wdc.com, swboyd@chromium.org,
-        agk@redhat.com, snitzer@redhat.com, josef@toxicpanda.com
-Cc:     hch@infradead.org, bvanassche@acm.org, ming.lei@redhat.com,
+        agk@redhat.com, snitzer@redhat.com, josef@toxicpanda.com,
+        hch@infradead.org, bvanassche@acm.org, ming.lei@redhat.com,
         linux-scsi@vger.kernel.org, linux-nvme@lists.infradead.org,
         linux-mmc@vger.kernel.org, dm-devel@redhat.com,
         nbd@other.debian.org, linux-block@vger.kernel.org,
         linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-References: <20210830212538.148729-1-mcgrof@kernel.org>
- <20210830212538.148729-9-mcgrof@kernel.org>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <bd2ed860-89c5-36d8-3bf6-29c677d70c40@suse.de>
-Date:   Mon, 6 Sep 2021 08:20:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+Subject: Re: [PATCH v3 3/8] nvme: add error handling support for add_disk()
+Message-ID: <20210906080908.GA25575@lst.de>
+References: <20210830212538.148729-1-mcgrof@kernel.org> <20210830212538.148729-4-mcgrof@kernel.org> <677ca876-b003-d3b5-9e2e-d50ebef82cce@suse.de>
 MIME-Version: 1.0
-In-Reply-To: <20210830212538.148729-9-mcgrof@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <677ca876-b003-d3b5-9e2e-d50ebef82cce@suse.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 8/30/21 11:25 PM, Luis Chamberlain wrote:
-> We never checked for errors on add_disk() as this function
-> returned void. Now that this is fixed, use the shiny new
-> error handling.
-> 
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-> ---
->   drivers/block/nbd.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+On Mon, Sep 06, 2021 at 08:16:35AM +0200, Hannes Reinecke wrote:
+> I would rather turn this around, and call 'nvme_put_ctrl()' after removing 
+> the namespace from the list. But it's probably more a style issue, come to 
+> think of it.
 
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+The order in the patch is the inverse of the order before the failure,
+which generally is the right thing to do.
