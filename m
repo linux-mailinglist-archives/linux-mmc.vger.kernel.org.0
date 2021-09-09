@@ -2,144 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB3A9405608
-	for <lists+linux-mmc@lfdr.de>; Thu,  9 Sep 2021 15:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD2884057A1
+	for <lists+linux-mmc@lfdr.de>; Thu,  9 Sep 2021 15:42:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354087AbhIINRQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 9 Sep 2021 09:17:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35406 "EHLO mail.kernel.org"
+        id S1354314AbhIINiw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 9 Sep 2021 09:38:52 -0400
+Received: from www.zeus03.de ([194.117.254.33]:38714 "EHLO mail.zeus03.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1355365AbhIINNS (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 9 Sep 2021 09:13:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 35BAE632D8;
-        Thu,  9 Sep 2021 12:01:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188913;
-        bh=3aoe/YoOU1sRjQ8Os9P9/b5GuVMlXzYaF6tz5eVLXz4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A8MJFPZPAhEwqvODqoi1oMQjvwbG+WOOJm/xuJgdJqoQHEo9A5oHCTOxvbPSo1QAm
-         5Arzti8Hn3a3cgkF0MMMMl54pYE4FgimzrKhuqi2h+MgcS45z5wRYGt82QK+XzFarh
-         fqQuTHfhG+lzNJ47h9vVPlLof9GQfOZVV1JECsAr0tW8HLHFyVsSGzNrgsRU0JqtMB
-         y2xebOdIal1FbNPd4A6K7VvGjIdLOyVn+vWfMzaUPaHOYuseKbAT66zqdYFXe5VH8N
-         Tck3/cwB1UtDJzN7e51arqAHIlnHSfqjvOO9EH4zlsqBb9L1iX2SpeJGNzmEX/TBJ6
-         Waq21jSESt6YA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Thomas Hebb <tommyhebb@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 30/35] mmc: rtsx_pci: Fix long reads when clock is prescaled
-Date:   Thu,  9 Sep 2021 08:01:11 -0400
-Message-Id: <20210909120116.150912-30-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909120116.150912-1-sashal@kernel.org>
-References: <20210909120116.150912-1-sashal@kernel.org>
+        id S1353511AbhIIM4d (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 9 Sep 2021 08:56:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=k1; bh=XqAtNsBZ4C4DiXhT9Zk6+YP3jU9K
+        i13XAZDm4rf8Go0=; b=c/+UU55eCtaagTybWycgcVSuTsFl7N/ZsFJ05Aw9C/KZ
+        oJ/+ur41e2w8+WVVstzqgWO2QMSs1qlW3SHtVAEHHnIczIsUBKA0ltihmJ++4N+e
+        tNaXbnE0aGuHSFPe8Ao/wU1P303NKnUzBkxta8OA0N1yCgTYYC8Ox+N1qJVCMg0=
+Received: (qmail 1570580 invoked from network); 9 Sep 2021 14:55:21 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 9 Sep 2021 14:55:21 +0200
+X-UD-Smtp-Session: l3s3148p1@Zf7Sgo/L5skgARa4Rc+IAenyySDM4eeF
+Date:   Thu, 9 Sep 2021 14:55:18 +0200
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi: fix regression with hard reset on old
+ SDHIs
+Message-ID: <YToENjbbb2cJFJnF@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+References: <20210826082107.47299-1-wsa+renesas@sang-engineering.com>
+ <CAMuHMdUXc0oSCXJ-5QmPJz0VkX1Aib+ZAv8K2LN_fT1+5mocqw@mail.gmail.com>
+ <CAMuHMdUuqQe6cM-Zt1GWq6xgydv1po8FOOW9qWe+5hK=ZRqE+w@mail.gmail.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Z/PAnSo1uqyldHPW"
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUuqQe6cM-Zt1GWq6xgydv1po8FOOW9qWe+5hK=ZRqE+w@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Thomas Hebb <tommyhebb@gmail.com>
 
-[ Upstream commit 3ac5e45291f3f0d699a721357380d4593bc2dcb3 ]
+--Z/PAnSo1uqyldHPW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-For unexplained reasons, the prescaler register for this device needs to
-be cleared (set to 1) while performing a data read or else the command
-will hang. This does not appear to affect the real clock rate sent out
-on the bus, so I assume it's purely to work around a hardware bug.
+Hi Geert,
 
-During normal operation, the prescaler is already set to 1, so nothing
-needs to be done. However, in "initial mode" (which is used for sub-MHz
-clock speeds, like the core sets while enumerating cards), it's set to
-128 and so we need to reset it during data reads. We currently fail to
-do this for long reads.
+> From my limited collection of logs of booting on these boards, ee100000.mmc on
+>   - gose worked in v4.15, and is broken since at least v4.17,
 
-This has no functional affect on the driver's operation currently
-written, as the MMC core always sets a clock above 1MHz before
-attempting any long reads. However, the core could conceivably set any
-clock speed at any time and the driver should still work, so I think
-this fix is worthwhile.
+Okay, so this is clearly not related to b4d86f37eacb. I don't have a
+Gose but there might be one in a remote lab. I will test when time
+permits.
 
-I personally encountered this issue while performing data recovery on an
-external chip. My connections had poor signal integrity, so I modified
-the core code to reduce the clock speed. Without this change, I saw the
-card enumerate but was unable to actually read any data.
+>   - alt worked in v5.1-rc6, and is broken now.
 
-Writes don't seem to work in the situation described above even with
-this change (and even if the workaround is extended to encompass data
-write commands). I was not able to find a way to get them working.
+So, this is also not related to b4d86f37eacb. I have an Alt board here
+and will double check. IIRC it worked for me(tm).
 
-Signed-off-by: Thomas Hebb <tommyhebb@gmail.com>
-Link: https://lore.kernel.org/r/2fef280d8409ab0100c26c6ac7050227defd098d.1627818365.git.tommyhebb@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/mmc/host/rtsx_pci_sdmmc.c | 36 ++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+> SD cards might have been changed in the meantime, though.
 
-diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
-index 93137483ecde..10ec88833889 100644
---- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-@@ -553,9 +553,22 @@ static int sd_write_long_data(struct realtek_pci_sdmmc *host,
- 	return 0;
- }
- 
-+static inline void sd_enable_initial_mode(struct realtek_pci_sdmmc *host)
-+{
-+	rtsx_pci_write_register(host->pcr, SD_CFG1,
-+			SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_128);
-+}
-+
-+static inline void sd_disable_initial_mode(struct realtek_pci_sdmmc *host)
-+{
-+	rtsx_pci_write_register(host->pcr, SD_CFG1,
-+			SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_0);
-+}
-+
- static int sd_rw_multi(struct realtek_pci_sdmmc *host, struct mmc_request *mrq)
- {
- 	struct mmc_data *data = mrq->data;
-+	int err;
- 
- 	if (host->sg_count < 0) {
- 		data->error = host->sg_count;
-@@ -564,22 +577,19 @@ static int sd_rw_multi(struct realtek_pci_sdmmc *host, struct mmc_request *mrq)
- 		return data->error;
- 	}
- 
--	if (data->flags & MMC_DATA_READ)
--		return sd_read_long_data(host, mrq);
-+	if (data->flags & MMC_DATA_READ) {
-+		if (host->initial_mode)
-+			sd_disable_initial_mode(host);
- 
--	return sd_write_long_data(host, mrq);
--}
-+		err = sd_read_long_data(host, mrq);
- 
--static inline void sd_enable_initial_mode(struct realtek_pci_sdmmc *host)
--{
--	rtsx_pci_write_register(host->pcr, SD_CFG1,
--			SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_128);
--}
-+		if (host->initial_mode)
-+			sd_enable_initial_mode(host);
- 
--static inline void sd_disable_initial_mode(struct realtek_pci_sdmmc *host)
--{
--	rtsx_pci_write_register(host->pcr, SD_CFG1,
--			SD_CLK_DIVIDE_MASK, SD_CLK_DIVIDE_0);
-+		return err;
-+	}
-+
-+	return sd_write_long_data(host, mrq);
- }
- 
- static void sd_normal_rw(struct realtek_pci_sdmmc *host,
--- 
-2.30.2
+Hmm, that might make a difference.
 
+Thanks for the report. Still, the patch Ulf applied is good to have.
+
+Happy hacking,
+
+   Wolfram
+
+
+--Z/PAnSo1uqyldHPW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmE6BDIACgkQFA3kzBSg
+KbY0Ig/9Hgok3GkkeW7zUzHztYu8Y/m7eYkuqlPDQ4rpMQBh31H1F9xOqM6P0a7s
+oXFUWy4+eDZOyLjtlUozhV3lpcBnzIuEQkb0lS43hlnmX4PMjcrBexhPhxWPzNRq
+tCtxiRf8uslqkFdaPe2fiF+ZHQ5khl4T6FYzS1yQbqh6AlU0U2NiGpm40WGd/X1D
+rqcbFhA92RNuSlwB/D/az7V6JEvki+NmgkZxvEr/YRLJ3cHvp5IScOQuE+jR2WbD
+/bdkMK0mlW10I9o/ZF1gCwgxrXo+1YdRqIvQv1HHhlt6ypVr5Fp3s6Zx7TSj4el2
+qAswNntfQpVmUaJmnE3IMvSEy96Z6d5d8HJXm5vHNOsxFLEH2hASBM3MIh4ZIyut
+j2nNbaPNaP6qROmleZtDtCAEi/X/6gog+e6KXWWAI49pvGATejS7tw97uwJwgdf4
+50Bt7ZM7YG/Py5jvkvYU0ZNe9fwGCWMR7rhMXRcCdM5pMSfoe+B9VfzW/w32KTjv
+toLZKctobu8YQJmcRcNk1DJ92Hsa3VIVtWdG9vU+3kzyaBO5HK1pKnAHa/juNNM1
+IXRjy1bv8o6sfHstaLGo9RkFcgGMQ8ZRP/7AiSzvMllo0hIwpw8pShCBoYv0OJz1
+ZgjszTelhACm9wIpVx5KtIurEYZvSyINd0Xx9CiDsIK9LGGfdl8=
+=Ln7H
+-----END PGP SIGNATURE-----
+
+--Z/PAnSo1uqyldHPW--
