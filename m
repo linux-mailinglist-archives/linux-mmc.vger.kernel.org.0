@@ -2,38 +2,38 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE73A405602
-	for <lists+linux-mmc@lfdr.de>; Thu,  9 Sep 2021 15:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF82405606
+	for <lists+linux-mmc@lfdr.de>; Thu,  9 Sep 2021 15:36:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359366AbhIINRD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 9 Sep 2021 09:17:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43764 "EHLO mail.kernel.org"
+        id S1354704AbhIINRN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 9 Sep 2021 09:17:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53472 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1353891AbhIINDp (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 9 Sep 2021 09:03:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7B4BF61131;
-        Thu,  9 Sep 2021 11:59:57 +0000 (UTC)
+        id S1358655AbhIINJN (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 9 Sep 2021 09:09:13 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 11165632BA;
+        Thu,  9 Sep 2021 12:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188798;
-        bh=nzco7+nN3UwAkaqyTAYo5UQxy7SiTvjLXdyDf5gg0BQ=;
+        s=k20201202; t=1631188865;
+        bh=DDKw6eXX6/jUoop7J/yyf2zQ+aVc75RaP/tP26YJafg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uapg2HJHeg1Lhih3dhd7fpCTqAlvEe+I94TAi7rtu13lSOZxKFvMHr3wIuUYEe9Dm
-         spVoYZvqaUXO+f4HoTtKvCIzYeQx7NNspkS/7sAdp0qjLrAmfm8tr+x+SZkV/H+PlO
-         ifZ6BbuSPUd3sK90m4kfRQZCngB5glG9hC0J7/8wxY6RRkAARrbgi9/VPlOyB1DWbx
-         MJs69P2DXNEgbuhO6GZnZKUw9qTfOGWufgBpJic4v8PYk8yth8nSchu8ifY6x0fHpu
-         MXWZcaQcjrpwnnHUHWNMYgTYPhAxFPRYq2Y5okiQVdwlisB2OVzJGYEk0oY1g280xf
-         V2jpuEtCOxvSw==
+        b=t8ywQyuudTz+RopV97WOozAnL+0t76Yse10t+uEEw0M+cztjPy9xFAXc77PHuCyTi
+         tErGz5jIbI+p6XwMWXbaNnfLkLPkVV0ixkPoMOkKAfvgHU2SyjwF+wVwM8XBP9g1IG
+         9H0Q/iQX36iHwW62+0uc0VySCTfD0DHS3WsL9zMCOS4z9eQuzDyeolj+qhBdAJRBnS
+         czKwuXnbhb+WuhYuUcSgHD+OvppQQND14hEk+PjFnd0GYHk/wXspjp1oGSgcYEzNWP
+         gcp1OoxX5fm9MkVNrUwmSk9uW9cZEe/oqpwJgueaiwKBKvZctlxw2691UwQfXw+SkD
+         iBy4qMRO1bvJg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Thomas Hebb <tommyhebb@gmail.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 46/59] mmc: rtsx_pci: Fix long reads when clock is prescaled
-Date:   Thu,  9 Sep 2021 07:58:47 -0400
-Message-Id: <20210909115900.149795-46-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 40/48] mmc: rtsx_pci: Fix long reads when clock is prescaled
+Date:   Thu,  9 Sep 2021 08:00:07 -0400
+Message-Id: <20210909120015.150411-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909115900.149795-1-sashal@kernel.org>
-References: <20210909115900.149795-1-sashal@kernel.org>
+In-Reply-To: <20210909120015.150411-1-sashal@kernel.org>
+References: <20210909120015.150411-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -81,10 +81,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 23 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
-index 41b57713b620..9de6a32f0c9f 100644
+index 3ccaa1415f33..efd995e3cb0b 100644
 --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
 +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-@@ -551,9 +551,22 @@ static int sd_write_long_data(struct realtek_pci_sdmmc *host,
+@@ -552,9 +552,22 @@ static int sd_write_long_data(struct realtek_pci_sdmmc *host,
  	return 0;
  }
  
@@ -107,7 +107,7 @@ index 41b57713b620..9de6a32f0c9f 100644
  
  	if (host->sg_count < 0) {
  		data->error = host->sg_count;
-@@ -562,22 +575,19 @@ static int sd_rw_multi(struct realtek_pci_sdmmc *host, struct mmc_request *mrq)
+@@ -563,22 +576,19 @@ static int sd_rw_multi(struct realtek_pci_sdmmc *host, struct mmc_request *mrq)
  		return data->error;
  	}
  
