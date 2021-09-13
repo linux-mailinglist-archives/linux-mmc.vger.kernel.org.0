@@ -2,533 +2,173 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 476334082A1
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 Sep 2021 03:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 012D540860E
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 Sep 2021 10:05:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236877AbhIMBgp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 12 Sep 2021 21:36:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48368 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236864AbhIMBgn (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Sun, 12 Sep 2021 21:36:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 26636610A6;
-        Mon, 13 Sep 2021 01:35:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631496928;
-        bh=FwZafmHcZx28uqR1Rl75pEELYYCdA+urPQv46TxNnPg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bLa/PWKC6SLDl82sZJIhClQqtRc01UDFwZHzm+cJU8OjQCfe2pHwpEccEauuyRLJJ
-         X8vS7OgmjNatyX7uyIU1rr1eMpWwzwbeX9tgLjcrlAUWB9xU52DHofNKXMXTYXA6wN
-         H3QBOoEUmfaD24WNQoCveeV0d1p7ZFLgTGlN/szVrtv0wCstIq+kSlAHL78FNiGmng
-         t40aOPdZO7ClGoGKQ8nlBnDbkuT0PqD8T/ESndNNijimsHBGDCzj35x3bUoTR5dGlH
-         9wEQ/Ep7kNTYy/QeKsN7XOKrhs1yIWuLul4gxus7UXGcZ7O4PIiMelvyTfkinmq54D
-         G0CX639Y47i7g==
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     linux-block@vger.kernel.org
-Cc:     linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        dm-devel@redhat.com, Satya Tangirala <satyaprateek2357@gmail.com>
-Subject: [PATCH 5/5] blk-crypto: update inline encryption documentation
-Date:   Sun, 12 Sep 2021 18:31:35 -0700
-Message-Id: <20210913013135.102404-6-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210913013135.102404-1-ebiggers@kernel.org>
-References: <20210913013135.102404-1-ebiggers@kernel.org>
+        id S237796AbhIMIGX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 Sep 2021 04:06:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41954 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234684AbhIMIGW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Sep 2021 04:06:22 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B4C6C061574
+        for <linux-mmc@vger.kernel.org>; Mon, 13 Sep 2021 01:05:07 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id q11so13190366wrr.9
+        for <linux-mmc@vger.kernel.org>; Mon, 13 Sep 2021 01:05:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RXY1tPoSEl+8M4X5lxSarpt4hpv0pzy83yCKr/zoENA=;
+        b=rNr+O/67esY0hgWf0Yp7SJb5ajXLS1aQHjGismtobxw0LiOLBEVEoJRv5cEIfZYgDQ
+         6h3WJ6pJU/LRWfyvBVRDh6kwM+0INwPbDiCVGz/y5UZMzuve7jAR36220/VugQRGD1nr
+         ta5WennfAkM39TwlyoZNRoBFtRZpkNbHxUtIUdCqRFWaDGF/tApqq3TE1uYKc+p9ot7G
+         0AZr5MM+/74kX+WRU7sCoqNWWLJ7NuaPycXiQOSweuwEMwqlW4y6OXa3aBV71jKHSm0k
+         TxNxptBp+ZbYwtPLELx8bd12b3u39FPvRltoMjB4M+tRtqMFFrI5Z1fG9+bZQx17hhB0
+         Kywg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RXY1tPoSEl+8M4X5lxSarpt4hpv0pzy83yCKr/zoENA=;
+        b=JueyQK5aJrR9dQr5Jd967Z8UnBusn2pyMH9Zkg2zR4vdG1CZaiMGG4U74BfOpml6pY
+         YrPVwJ98arhHpqQP+CaEetRXcLvoBOnT+xTGzQbRVajiwTcPGIO20F71yr21kiH5FyOr
+         BR4t+eE9peJZQIzD4g5FoJawGYCAmQmlTBVddf+sSGuzBOBe1LMyJaO+8IfrmzKNB2jc
+         3fVWWUaircY+5F5N2QCmEx5HhLE0BudXuuDx7Xc7rHRmJJKNgsEq88NzL2LAmZQj3917
+         +1b2WokZ0YlNX7DQY7km3ACsyDAx84P7mJodJZFaMloOIjz5d4FBNwNy+LumqqPn8beg
+         6+ig==
+X-Gm-Message-State: AOAM530ylqBSSYsXVj32ZT6TDNKXC5AubnyE1j1WhN6hS6ak4aOBqo0Y
+        D0+oE5587ttD0Qehl5Xym13xnYIfrfmpcvjn
+X-Google-Smtp-Source: ABdhPJyLCvPRKQ03gErPB5bBmXZHp2i4sRtxA8fP3GXkRBSqQAEjYgMydM9st3NvlemeyZCZpyLwyw==
+X-Received: by 2002:a5d:63d2:: with SMTP id c18mr10689307wrw.311.1631520305736;
+        Mon, 13 Sep 2021 01:05:05 -0700 (PDT)
+Received: from localhost.localdomain ([2001:861:44c0:66c0:9ebe:26f1:5acc:c894])
+        by smtp.gmail.com with ESMTPSA id a10sm6770449wrd.51.2021.09.13.01.05.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Sep 2021 01:05:05 -0700 (PDT)
+From:   Neil Armstrong <narmstrong@baylibre.com>
+To:     ulf.hansson@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Christian Hewitt <christianshewitt@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH] mmc: meson-gx: do not use memcpy_to/fromio for dram-access-quirk
+Date:   Mon, 13 Sep 2021 10:05:04 +0200
+Message-Id: <20210913080504.832521-1-narmstrong@baylibre.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+The memory at the end of the controller only accepts 32bit read/write
+accesses, but the arm64 memcpy_to/fromio implementation only uses 64bit
+(which will be split into two 32bit access) and 8bit leading to incomplete
+copies to/from this memory when the buffer is not multiple of 8bytes.
 
-Rework most of inline-encryption.rst to be easier to follow, to correct
-some information, to add some important details and remove some
-unimportant details, and to take into account the renaming from
-blk_keyslot_manager to blk_crypto_profile.
+Add a local copy using writel/readl accesses to make sure we use the right
+memory access width.
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+The switch to memcpy_to/fromio was done because of 285133040e6c
+("arm64: Import latest memcpy()/memmove() implementation"), but using memcpy
+worked before since it mainly used 32bit memory acceses.
+
+Fixes: 103a5348c22c ("mmc: meson-gx: use memcpy_to/fromio for dram-access-quirk")
+Reported-by: Christian Hewitt <christianshewitt@gmail.com>
+Suggested-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
 ---
- Documentation/block/inline-encryption.rst | 439 ++++++++++++----------
- 1 file changed, 236 insertions(+), 203 deletions(-)
+ drivers/mmc/host/meson-gx-mmc.c | 49 +++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/block/inline-encryption.rst b/Documentation/block/inline-encryption.rst
-index 7f9b40d6b416b..2af53915654a9 100644
---- a/Documentation/block/inline-encryption.rst
-+++ b/Documentation/block/inline-encryption.rst
-@@ -8,229 +8,262 @@ Background
- ==========
+diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+index 3f28eb4d17fe..08c0ff0bfa8b 100644
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -746,7 +746,7 @@ static void meson_mmc_desc_chain_transfer(struct mmc_host *mmc, u32 cmd_cfg)
+ 	writel(start, host->regs + SD_EMMC_START);
+ }
  
- Inline encryption hardware sits logically between memory and the disk, and can
--en/decrypt data as it goes in/out of the disk. Inline encryption hardware has a
--fixed number of "keyslots" - slots into which encryption contexts (i.e. the
--encryption key, encryption algorithm, data unit size) can be programmed by the
--kernel at any time. Each request sent to the disk can be tagged with the index
--of a keyslot (and also a data unit number to act as an encryption tweak), and
--the inline encryption hardware will en/decrypt the data in the request with the
--encryption context programmed into that keyslot. This is very different from
--full disk encryption solutions like self encrypting drives/TCG OPAL/ATA
--Security standards, since with inline encryption, any block on disk could be
--encrypted with any encryption context the kernel chooses.
--
-+en/decrypt data as it goes in/out of the disk.  For each I/O request, software
-+can control exactly how the inline encryption hardware will en/decrypt the data
-+in terms of key, algorithm, data unit size (the granularity of en/decryption),
-+and data unit number (a value that determines the initialization vector(s)).
-+
-+Some inline encryption hardware accepts the key, algorithm, and data unit size
-+directly in I/O requests.  However, most inline encryption hardware instead has
-+a fixed number of "keyslots" and requires that the key, algorithm, and data unit
-+size first be programmed into a keyslot.  I/O requests then just reference
-+keyslot indices.
-+
-+Note that inline encryption hardware is very different from "self-encrypting
-+drives", such as those based on the TCG Opal or ATA Security standards.
-+Self-encrypting drives don't provide fine-grained software control of encryption
-+and provide no way to verify the correctness of the resulting ciphertext.  In
-+contrast, inline encryption hardware provides fine-grained control of
-+encryption, including the choice of key and initialization vector for each
-+sector, and can be tested for correctness.
+-/* local sg copy to buffer version with _to/fromio usage for dram_access_quirk */
++/* local sg copy for dram_access_quirk */
+ static void meson_mmc_copy_buffer(struct meson_host *host, struct mmc_data *data,
+ 				  size_t buflen, bool to_buffer)
+ {
+@@ -764,21 +764,34 @@ static void meson_mmc_copy_buffer(struct meson_host *host, struct mmc_data *data
+ 	sg_miter_start(&miter, sgl, nents, sg_flags);
  
- Objective
- =========
+ 	while ((offset < buflen) && sg_miter_next(&miter)) {
+-		unsigned int len;
++		unsigned int buf_offset = 0;
++		unsigned int len, left;
++		u32 *buf = miter.addr;
++
++		if (((unsigned long int)miter.addr % 4))
++			dev_err(host->dev, "non word aligned sg");
  
--We want to support inline encryption (IE) in the kernel.
--To allow for testing, we also want a crypto API fallback when actual
--IE hardware is absent. We also want IE to work with layered devices
--like dm and loopback (i.e. we want to be able to use the IE hardware
--of the underlying devices if present, or else fall back to crypto API
--en/decryption).
--
-+We want to support inline encryption in the kernel.  To make testing easier, we
-+also want support for falling back to the kernel crypto API when actual inline
-+encryption hardware is absent.  We also want inline encryption to work with
-+layered devices like device-mapper and loopback (i.e. we want to be able to use
-+the inline encryption hardware of the underlying devices if present, or else
-+fall back to crypto API en/decryption).
+ 		len = min(miter.length, buflen - offset);
  
- Constraints and notes
- =====================
+-		/* When dram_access_quirk, the bounce buffer is a iomem mapping */
+-		if (host->dram_access_quirk) {
+-			if (to_buffer)
+-				memcpy_toio(host->bounce_iomem_buf + offset, miter.addr, len);
+-			else
+-				memcpy_fromio(miter.addr, host->bounce_iomem_buf + offset, len);
++		if ((len % 4))
++			dev_err(host->dev, "non word multiple sg");
++
++		left = len;
++
++		if (to_buffer) {
++			do {
++				writel(*buf++, host->bounce_iomem_buf + offset + buf_offset);
++
++				buf_offset += 4;
++				left -= 4;
++			} while (left);
+ 		} else {
+-			if (to_buffer)
+-				memcpy(host->bounce_buf + offset, miter.addr, len);
+-			else
+-				memcpy(miter.addr, host->bounce_buf + offset, len);
++			do {
++				*buf++ = readl(host->bounce_iomem_buf + offset + buf_offset);
++
++				buf_offset += 4;
++				left -= 4;
++			} while (left);
+ 		}
  
--- IE hardware has a limited number of "keyslots" that can be programmed
--  with an encryption context (key, algorithm, data unit size, etc.) at any time.
--  One can specify a keyslot in a data request made to the device, and the
--  device will en/decrypt the data using the encryption context programmed into
--  that specified keyslot. When possible, we want to make multiple requests with
--  the same encryption context share the same keyslot.
--
--- We need a way for upper layers like filesystems to specify an encryption
--  context to use for en/decrypting a struct bio, and a device driver (like UFS)
--  needs to be able to use that encryption context when it processes the bio.
--
--- We need a way for device drivers to expose their inline encryption
--  capabilities in a unified way to the upper layers.
--
--
--Design
--======
--
--We add a struct bio_crypt_ctx to struct bio that can
--represent an encryption context, because we need to be able to pass this
--encryption context from the upper layers (like the fs layer) to the
--device driver to act upon.
--
--While IE hardware works on the notion of keyslots, the FS layer has no
--knowledge of keyslots - it simply wants to specify an encryption context to
--use while en/decrypting a bio.
--
--We introduce a keyslot manager (KSM) that handles the translation from
--encryption contexts specified by the FS to keyslots on the IE hardware.
--This KSM also serves as the way IE hardware can expose its capabilities to
--upper layers. The generic mode of operation is: each device driver that wants
--to support IE will construct a KSM and set it up in its struct request_queue.
--Upper layers that want to use IE on this device can then use this KSM in
--the device's struct request_queue to translate an encryption context into
--a keyslot. The presence of the KSM in the request queue shall be used to mean
--that the device supports IE.
--
--The KSM uses refcounts to track which keyslots are idle (either they have no
--encryption context programmed, or there are no in-flight struct bios
--referencing that keyslot). When a new encryption context needs a keyslot, it
--tries to find a keyslot that has already been programmed with the same
--encryption context, and if there is no such keyslot, it evicts the least
--recently used idle keyslot and programs the new encryption context into that
--one. If no idle keyslots are available, then the caller will sleep until there
--is at least one.
--
--
--blk-mq changes, other block layer changes and blk-crypto-fallback
--=================================================================
--
--We add a pointer to a ``bi_crypt_context`` and ``keyslot`` to
--struct request. These will be referred to as the ``crypto fields``
--for the request. This ``keyslot`` is the keyslot into which the
--``bi_crypt_context`` has been programmed in the KSM of the ``request_queue``
--that this request is being sent to.
--
--We introduce ``block/blk-crypto-fallback.c``, which allows upper layers to remain
--blissfully unaware of whether or not real inline encryption hardware is present
--underneath. When a bio is submitted with a target ``request_queue`` that doesn't
--support the encryption context specified with the bio, the block layer will
--en/decrypt the bio with the blk-crypto-fallback.
--
--If the bio is a ``WRITE`` bio, a bounce bio is allocated, and the data in the bio
--is encrypted stored in the bounce bio - blk-mq will then proceed to process the
--bounce bio as if it were not encrypted at all (except when blk-integrity is
--concerned). ``blk-crypto-fallback`` sets the bounce bio's ``bi_end_io`` to an
--internal function that cleans up the bounce bio and ends the original bio.
--
--If the bio is a ``READ`` bio, the bio's ``bi_end_io`` (and also ``bi_private``)
--is saved and overwritten by ``blk-crypto-fallback`` to
--``bio_crypto_fallback_decrypt_bio``.  The bio's ``bi_crypt_context`` is also
--overwritten with ``NULL``, so that to the rest of the stack, the bio looks
--as if it was a regular bio that never had an encryption context specified.
--``bio_crypto_fallback_decrypt_bio`` will decrypt the bio, restore the original
--``bi_end_io`` (and also ``bi_private``) and end the bio again.
--
--Regardless of whether real inline encryption hardware is used or the
-+- We need a way for upper layers (e.g. filesystems) to specify an encryption
-+  context to use for en/decrypting a bio, and device drivers (e.g. UFSHCD) need
-+  to be able to use that encryption context when they process the request.
-+  Encryption contexts also introduce constraints on bio merging; the block layer
-+  needs to be aware of these constraints.
-+
-+- Different inline encryption hardware has different supported algorithms,
-+  supported data unit sizes, maximum data unit numbers, etc.  We call these
-+  properties the "crypto capabilities".  We need a way for device drivers to
-+  advertise crypto capabilities to upper layers in a generic way.
-+
-+- Inline encryption hardware usually (but not always) requires that keys be
-+  programmed into keyslots before being used.  Since programming keyslots may be
-+  slow and there may not be very many keyslots, we shouldn't just program the
-+  key for every I/O request, but rather keep track of which keys are in the
-+  keyslots and reuse an already-programmed keyslot when possible.
-+
-+- Upper layers typically define a specific end-of-life for crypto keys, e.g.
-+  when an encrypted directory is locked or when a crypto mapping is torn down.
-+  At these times, keys are wiped from memory.  We must provide a way for upper
-+  layers to also evict keys from any keyslots they are present in.
-+
-+- When possible, device-mapper devices must be able to pass through the inline
-+  encryption support of their underlying devices.  However, it doesn't make
-+  sense for device-mapper devices to have keyslots themselves.
-+
-+Basic design
-+============
-+
-+We introduce ``struct blk_crypto_key`` to represent an inline encryption key and
-+how it will be used.  This includes the actual bytes of the key; the size of the
-+key; the algorithm and data unit size the key will be used with; and the number
-+of bytes needed to represent the maximum data unit number the key will be used
-+with.
-+
-+We introduce ``struct bio_crypt_ctx`` to represent an encryption context.  It
-+contains a data unit number and a pointer to a blk_crypto_key.  We add pointers
-+to a bio_crypt_ctx to ``struct bio`` and ``struct request``; this allows users
-+of the block layer (e.g. filesystems) to provide an encryption context when
-+creating a bio and have it be passed down the stack for processing by the block
-+layer and device drivers.  Note that the encryption context doesn't explicitly
-+say whether to encrypt or decrypt, as that is implicit from the direction of the
-+bio; WRITE means encrypt, and READ means decrypt.
-+
-+We also introduce ``struct blk_crypto_profile`` to contain all generic inline
-+encryption-related state for a particular inline encryption device.  The
-+blk_crypto_profile serves as the way that drivers for inline encryption hardware
-+advertise their crypto capabilities and provide certain functions (e.g.,
-+functions to program and evict keys) to upper layers.  Each device driver that
-+wants to support inline encryption will construct a blk_crypto_profile, then
-+associate it with the disk's request_queue.
-+
-+The blk_crypto_profile also manages the hardware's keyslots, when applicable.
-+This happens in the block layer, so that users of the block layer can just
-+specify encryption contexts and don't need to know about keyslots at all, nor do
-+device drivers need to care about most details of keyslot management.
-+
-+Specifically, for each keyslot, the block layer (via the blk_crypto_profile)
-+keeps track of which blk_crypto_key that keyslot contains (if any), and how many
-+in-flight I/O requests are using it.  When the block layer creates a ``struct
-+request`` for a bio that has an encryption context, it grabs a keyslot that
-+already contains the key if possible.  Otherwise it waits for an idle keyslot (a
-+keyslot that was either never used or one that isn't in-use by any I/O), then
-+programs the key into the least-recently-used idle keyslot using the function
-+the device driver provided.  In both cases, the resulting keyslot is stored in
-+the ``crypt_keyslot`` field of the request, where it is then accessible to
-+device drivers, and is released after the request completes.
-+
-+``struct request`` also contains a pointer to the original bio_crypt_ctx, in
-+addition to the keyslot.  Requests can be built from multiple bios, and the
-+block layer must take the encryption context into account when trying to merge
-+bios and requests.  For two bios/requests to be merged, they must have
-+compatible encryption contexts: both unencrypted, or both encrypted with the
-+same key and contiguous data unit numbers.  Only the encryption context for the
-+first bio in a request is retained, since the remaining bios have been verified
-+to be merge-compatible with the first bio.
-+
-+To make it possible for inline encryption to work with request_queue based
-+layered devices, when a request is cloned, its encryption context is cloned as
-+well.  When the cloned request is submitted, it is then processed as usual; this
-+includes getting a keyslot from the clone's target device if needed.
-+
-+blk-crypto-fallback
-+===================
-+
-+It is desirable for the inline encryption support of upper layers (e.g.
-+filesystems) to be testable without real inline encryption hardware, and
-+likewise for the block layer's keyslot management logic.  It is also desirable
-+to allow upper layers to just always use inline encryption rather than
-+implementing encryption in multiple ways.
-+
-+Therefore, we also introduce "blk-crypto-fallback", which is an implementation
-+of inline encryption using the kernel crypto API.  blk-crypto-fallback is built
-+into the block layer, so it works on any block device without any special setup.
-+Essentially, when a bio with an encryption context is submitted to a
-+request_queue that doesn't support that encryption context, the block layer will
-+handle en/decryption of the bio using blk-crypto-fallback.
-+
-+For encryption, the data cannot be encrypted in-place, as callers usually rely
-+on it being unmodified.  Instead, blk-crypto-fallback allocates bounce pages,
-+fills a new bio with those bounce pages, encrypts the data into those bounce
-+pages, and submits that "bounce" bio.  When the bounce bio completes,
-+blk-crypto-fallback completes the original bio.  If the original bio is too
-+large, multiple bounce bios may be required; see the code for details.
-+
-+For decryption, blk-crypto-fallback "wraps" the bio's completion callback
-+(``bi_complete``) and private data (``bi_private``) with its own, unsets the
-+bio's encryption context, then submits the bio.  If the read completes
-+successfully, blk-crypto-fallback restores the bio's original completion
-+callback and private data, then decrypts the bio's data in-place using the
-+kernel crypto API.  Decryption happens from a workqueue, as it may sleep.
-+Afterwards, blk-crypto-fallback completes the bio.
-+
-+In both cases, the bios that blk-crypto-fallback submits no longer have an
-+encryption context.  Therefore, lower layers only see standard unencrypted I/O.
-+
-+blk-crypto-fallback also defines its own blk_crypto_profile and has its own
-+"keyslots"; its keyslots contain ``struct crypto_skcipher`` objects.  The reason
-+for this is twofold.  First, it allows the keyslot management logic to be tested
-+without actual inline encryption hardware.  Second, similar to actual inline
-+encryption hardware, the crypto API doesn't accept keys directly in requests but
-+rather requires that they be set again of time, and setting keys can be
-+expensive; moreover, allocating a crypto_skcipher can't happen on the I/O path
-+at all due to the locks it takes.  Therefore, the concept of keyslots still
-+makes sense for blk-crypto-fallback.
-+
-+Note that regardless of whether real inline encryption hardware or
- blk-crypto-fallback is used, the ciphertext written to disk (and hence the
- on-disk format of data) will be the same (assuming the hardware's implementation
- of the algorithm being used adheres to spec and functions correctly).
+ 		offset += len;
+@@ -830,7 +843,11 @@ static void meson_mmc_start_cmd(struct mmc_host *mmc, struct mmc_command *cmd)
+ 		if (data->flags & MMC_DATA_WRITE) {
+ 			cmd_cfg |= CMD_CFG_DATA_WR;
+ 			WARN_ON(xfer_bytes > host->bounce_buf_size);
+-			meson_mmc_copy_buffer(host, data, xfer_bytes, true);
++			if (host->dram_access_quirk)
++				meson_mmc_copy_buffer(host, data, xfer_bytes, true);
++			else
++				sg_copy_to_buffer(data->sg, data->sg_len,
++						  host->bounce_buf, xfer_bytes);
+ 			dma_wmb();
+ 		}
  
--If a ``request queue``'s inline encryption hardware claimed to support the
--encryption context specified with a bio, then it will not be handled by the
--``blk-crypto-fallback``. We will eventually reach a point in blk-mq when a
--struct request needs to be allocated for that bio. At that point,
--blk-mq tries to program the encryption context into the ``request_queue``'s
--keyslot_manager, and obtain a keyslot, which it stores in its newly added
--``keyslot`` field. This keyslot is released when the request is completed.
--
--When the first bio is added to a request, ``blk_crypto_rq_bio_prep`` is called,
--which sets the request's ``crypt_ctx`` to a copy of the bio's
--``bi_crypt_context``. bio_crypt_do_front_merge is called whenever a subsequent
--bio is merged to the front of the request, which updates the ``crypt_ctx`` of
--the request so that it matches the newly merged bio's ``bi_crypt_context``. In particular, the request keeps a copy of the ``bi_crypt_context`` of the first
--bio in its bio-list (blk-mq needs to be careful to maintain this invariant
--during bio and request merges).
--
--To make it possible for inline encryption to work with request queue based
--layered devices, when a request is cloned, its ``crypto fields`` are cloned as
--well. When the cloned request is submitted, blk-mq programs the
--``bi_crypt_context`` of the request into the clone's request_queue's keyslot
--manager, and stores the returned keyslot in the clone's ``keyslot``.
--
-+blk-crypto-fallback is optional and is controlled by the
-+``CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK`` kernel configuration option.
+@@ -999,7 +1016,11 @@ static irqreturn_t meson_mmc_irq_thread(int irq, void *dev_id)
+ 	if (meson_mmc_bounce_buf_read(data)) {
+ 		xfer_bytes = data->blksz * data->blocks;
+ 		WARN_ON(xfer_bytes > host->bounce_buf_size);
+-		meson_mmc_copy_buffer(host, data, xfer_bytes, false);
++		if (host->dram_access_quirk)
++			meson_mmc_copy_buffer(host, data, xfer_bytes, false);
++		else
++			sg_copy_from_buffer(data->sg, data->sg_len,
++					    host->bounce_buf, xfer_bytes);
+ 	}
  
- API presented to users of the block layer
- =========================================
- 
--``struct blk_crypto_key`` represents a crypto key (the raw key, size of the
--key, the crypto algorithm to use, the data unit size to use, and the number of
--bytes required to represent data unit numbers that will be specified with the
--``bi_crypt_context``).
--
--``blk_crypto_init_key`` allows upper layers to initialize such a
--``blk_crypto_key``.
--
--``bio_crypt_set_ctx`` should be called on any bio that a user of
--the block layer wants en/decrypted via inline encryption (or the
--blk-crypto-fallback, if hardware support isn't available for the desired
--crypto configuration). This function takes the ``blk_crypto_key`` and the
--data unit number (DUN) to use when en/decrypting the bio.
--
--``blk_crypto_config_supported`` allows upper layers to query whether or not the
--an encryption context passed to request queue can be handled by blk-crypto
--(either by real inline encryption hardware, or by the blk-crypto-fallback).
--This is useful e.g. when blk-crypto-fallback is disabled, and the upper layer
--wants to use an algorithm that may not supported by hardware - this function
--lets the upper layer know ahead of time that the algorithm isn't supported,
--and the upper layer can fallback to something else if appropriate.
--
--``blk_crypto_start_using_key`` - Upper layers must call this function on
--``blk_crypto_key`` and a ``request_queue`` before using the key with any bio
--headed for that ``request_queue``. This function ensures that either the
--hardware supports the key's crypto settings, or the crypto API fallback has
--transforms for the needed mode allocated and ready to go. Note that this
--function may allocate an ``skcipher``, and must not be called from the data
--path, since allocating ``skciphers`` from the data path can deadlock.
--
--``blk_crypto_evict_key`` *must* be called by upper layers before a
--``blk_crypto_key`` is freed. Further, it *must* only be called only once
--there are no more in-flight requests that use that ``blk_crypto_key``.
--``blk_crypto_evict_key`` will ensure that a key is removed from any keyslots in
--inline encryption hardware that the key might have been programmed into (or the blk-crypto-fallback).
-+``blk_crypto_init_key()`` allows users to initialize a blk_crypto_key.
-+
-+``blk_crypto_config_supported()`` allows users to check ahead of time whether
-+inline encryption with particular crypto settings will work on a particular
-+request_queue -- either via hardware or via blk-crypto-fallback.  This function
-+takes in a ``struct blk_crypto_config`` which is like blk_crypto_key, but omits
-+the actual bytes of the key and instead just contains the algorithm, data unit
-+size, etc.  This function can be useful if blk-crypto-fallback is disabled.
-+
-+Users must call ``blk_crypto_start_using_key()`` before actually starting to use
-+a blk_crypto_key on a request_queue (even if ``blk_crypto_config_supported()``
-+was called earlier).  This is needed to initialize blk-crypto-fallback if it
-+will be needed.  This must not be called from the data path, as this may have to
-+allocate resources, which may deadlock in that case.
-+
-+Next, to attach an encryption context to a bio, users should call
-+``bio_crypt_set_ctx()``.  This function allocates a bio_crypt_ctx and attaches
-+it to a bio, given the blk_crypto_key and the data unit number that will be used
-+for en/decryption.  Users don't need to worry about freeing the bio_crypt_ctx
-+later, as that happens automatically when the bio is freed or reset.
-+
-+Finally, when done using inline encryption with a blk_crypto_key on a
-+request_queue, users must call ``blk_crypto_evict_key()``.  This ensures that
-+the key is evicted from all keyslots it may be programmed into, and unlinked
-+from any kernel data structures it may be linked into.
-+
-+In summary, for users of the block layer, the lifecycle of a blk_crypto_key is
-+as follows:
-+
-+1. ``blk_crypto_config_supported()`` (optional)
-+2. ``blk_crypto_init_key()``
-+3. ``blk_crypto_start_using_key()``
-+4. ``bio_crypt_set_ctx()`` (potentially many times)
-+5. ``blk_crypto_evict_key()`` (after all I/O has completed)
-+6. Zeroize the blk_crypto_key (this has no dedicated function)
-+
-+If a blk_crypto_key is being used on multiple request_queues, then
-+``blk_crypto_config_supported()`` (if used), ``blk_crypto_start_using_key()``,
-+and ``blk_crypto_evict_key()`` must be called on each request_queue.
- 
- API presented to device drivers
- ===============================
- 
--A :c:type:``struct blk_keyslot_manager`` should be set up by device drivers in
--the ``request_queue`` of the device. The device driver needs to call
--``blk_ksm_init`` (or its resource-managed variant ``devm_blk_ksm_init``) on the
--``blk_keyslot_manager``, while specifying the number of keyslots supported by
--the hardware.
--
--The device driver also needs to tell the KSM how to actually manipulate the
--IE hardware in the device to do things like programming the crypto key into
--the IE hardware into a particular keyslot. All this is achieved through the
--struct blk_ksm_ll_ops field in the KSM that the device driver
--must fill up after initing the ``blk_keyslot_manager``.
--
--The KSM also handles runtime power management for the device when applicable
--(e.g. when it wants to program a crypto key into the IE hardware, the device
--must be runtime powered on) - so the device driver must also set the ``dev``
--field in the ksm to point to the `struct device` for the KSM to use for runtime
--power management.
--
--``blk_ksm_reprogram_all_keys`` can be called by device drivers if the device
--needs each and every of its keyslots to be reprogrammed with the key it
--"should have" at the point in time when the function is called. This is useful
--e.g. if a device loses all its keys on runtime power down/up.
--
--If the driver used ``blk_ksm_init`` instead of ``devm_blk_ksm_init``, then
--``blk_ksm_destroy`` should be called to free up all resources used by a
--``blk_keyslot_manager`` once it is no longer needed.
-+A device driver that wants to support inline encryption must set up a
-+blk_crypto_profile in the request_queue of its device.  To do this, it first
-+must call ``blk_crypto_profile_init()`` (or its resource-managed variant
-+``devm_blk_crypto_profile_init()``), providing the number of keyslots.
-+
-+Next, it must advertise its crypto capabilities by setting fields in the
-+blk_crypto_profile, e.g. ``modes_supported`` and ``max_dun_bytes_supported``.
-+
-+It then must set function pointers in the ``ll_ops`` field of the
-+blk_crypto_profile to tell upper layers how to control the inline encryption
-+hardware, e.g. how to program and evict keyslots.  Most drivers will need to
-+implement ``keyslot_program`` and ``keyslot_evict``.  For details, see the
-+comments for ``struct blk_crypto_ll_ops``.
-+
-+Once the driver registers a blk_crypto_profile with a request_queue, I/O
-+requests the driver receives via that queue may have an encryption context.  All
-+encryption contexts will be compatible with the crypto capabilities declared in
-+the blk_crypto_profile, so drivers don't need to worry about handling
-+unsupported requests.  Also, if a nonzero number of keyslots was declared in the
-+blk_crypto_profile, then all I/O requests that have an encryption context will
-+also have a keyslot which was already programmed with the appropriate key.
-+
-+If the driver implements runtime suspend and its blk_crypto_ll_ops don't work
-+while the device is runtime-suspended, then the driver must also set the ``dev``
-+field of the blk_crypto_profile to point to the ``struct device`` that will be
-+resumed before any of the low-level operations are called.
-+
-+If there are situations where the inline encryption hardware loses the contents
-+of its keyslots, e.g. device resets, the driver must handle reprogramming the
-+keyslots.  To do this, the driver may call ``blk_crypto_reprogram_all_keys()``.
-+
-+Finally, if the driver used ``blk_crypto_profile_init()`` instead of
-+``devm_blk_crypto_profile_init()``, then it is responsible for calling
-+``blk_crypto_profile_destroy()`` when the crypto profile is no longer needed.
- 
- Layered Devices
- ===============
- 
--Request queue based layered devices like dm-rq that wish to support IE need to
--create their own keyslot manager for their request queue, and expose whatever
--functionality they choose. When a layered device wants to pass a clone of that
--request to another ``request_queue``, blk-crypto will initialize and prepare the
--clone as necessary - see ``blk_crypto_insert_cloned_request`` in
--``blk-crypto.c``.
--
--
--Future Optimizations for layered devices
--========================================
--
--Creating a keyslot manager for a layered device uses up memory for each
--keyslot, and in general, a layered device merely passes the request on to a
--"child" device, so the keyslots in the layered device itself are completely
--unused, and don't need any refcounting or keyslot programming. We can instead
--define a new type of KSM; the "passthrough KSM", that layered devices can use
--to advertise an unlimited number of keyslots, and support for any encryption
--algorithms they choose, while not actually using any memory for each keyslot.
--Another use case for the "passthrough KSM" is for IE devices that do not have a
--limited number of keyslots.
--
-+Request queue based layered devices like dm-rq that wish to support inline
-+encryption need to create their own blk_crypto_profile for their request_queue,
-+and expose whatever functionality they choose. When a layered device wants to
-+pass a clone of that request to another request_queue, blk-crypto will
-+initialize and prepare the clone as necessary; see
-+``blk_crypto_insert_cloned_request()``.
- 
- Interaction between inline encryption and blk integrity
- =======================================================
-@@ -257,7 +290,7 @@ Because there isn't any real hardware yet, it seems prudent to assume that
- hardware implementations might not implement both features together correctly,
- and disallow the combination for now. Whenever a device supports integrity, the
- kernel will pretend that the device does not support hardware inline encryption
--(by essentially setting the keyslot manager in the request_queue of the device
--to NULL). When the crypto API fallback is enabled, this means that all bios with
--and encryption context will use the fallback, and IO will complete as usual.
--When the fallback is disabled, a bio with an encryption context will be failed.
-+(by setting the blk_crypto_profile in the request_queue of the device to NULL).
-+When the crypto API fallback is enabled, this means that all bios with and
-+encryption context will use the fallback, and IO will complete as usual.  When
-+the fallback is disabled, a bio with an encryption context will be failed.
+ 	next_cmd = meson_mmc_get_next_command(cmd);
 -- 
-2.33.0
+2.25.1
 
