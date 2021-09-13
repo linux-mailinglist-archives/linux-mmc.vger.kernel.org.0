@@ -2,227 +2,118 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F5E40892A
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 Sep 2021 12:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABBE0408AD9
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 Sep 2021 14:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239180AbhIMKjL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 Sep 2021 06:39:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48942 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239033AbhIMKjK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Sep 2021 06:39:10 -0400
-Received: from lb2-smtp-cloud7.xs4all.net (lb2-smtp-cloud7.xs4all.net [IPv6:2001:888:0:108::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8310C061574;
-        Mon, 13 Sep 2021 03:37:52 -0700 (PDT)
-Received: from cust-b5b5937f ([IPv6:fc0c:c16d:66b8:757f:c639:739b:9d66:799d])
-        by smtp-cloud7.xs4all.net with ESMTPA
-        id PjLTmYAZ2pQdWPjLUm2WW1; Mon, 13 Sep 2021 12:37:52 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s2;
-        t=1631529472; bh=HwcwZOckR6uo2ELf6S9P6ET08CoHQZG30MzfynjPP1Y=;
-        h=Subject:To:From:Message-ID:Date:MIME-Version:Content-Type:From:
-         Subject;
-        b=MCo+PzmKRi0SRrGtOM416IzQJO6AITQ9txiJczYZUT2j1PLalRU5sK8brIPH68/BR
-         B3lcGsKHyhVPUUqtDzn17BIpuZKLYersfu6bK+ej4ovGjl5ezSmiN7ZRhCy46TAkJV
-         RKkBNmtqCBhL/53Xyhi6PBCAAw2Nx/ZNiPdnyCLll9Zce0gKMhDyxm4ktoP3m04jbC
-         03y6FOJQJwSWHwtax2zsZOz/Vft7XxEbjTc5n23eR13MHr7YH7kNrbK76lhbF8QW3p
-         9Xm4EWH0dpVZE6WlSc6DMQmOibPuklbGJ+jHvg+newaIYoFnFcJLSPOqfxVEnhkG9A
-         lvwHvL3X9CS1Q==
-Subject: Re: [PATCH v11 24/34] media: staging: tegra-vde: Support generic
- power domain
-To:     Dmitry Osipenko <digetx@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Peter Chen <peter.chen@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lucas Stach <dev@lynxeye.de>, Stefan Agner <stefan@agner.ch>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-spi@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-clk@vger.kernel.org
-References: <20210912200832.12312-1-digetx@gmail.com>
- <20210912200832.12312-25-digetx@gmail.com>
-From:   Hans Verkuil <hverkuil@xs4all.nl>
-Message-ID: <77d205ef-469d-cfa3-f742-b009b2b05992@xs4all.nl>
-Date:   Mon, 13 Sep 2021 12:37:51 +0200
+        id S239912AbhIMMRU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 Sep 2021 08:17:20 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:36940 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237090AbhIMMRT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Sep 2021 08:17:19 -0400
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.0.43) with SMTP id 18DBV4hl032581;
+        Mon, 13 Sep 2021 08:15:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=xlP+LwjYIwYnUxPeclWKOSgT6kSEuo++vPIF3XqB458=;
+ b=rrcn7jniYYZy39eRPyK6ld2RF6RXYYjp3m+EZpc22eHesKoWk23L4BoKxA4SQksWcGYE
+ Ar3unj5JZoMMsrGiYs1LKP1+NQuF8aJpFikukfssEF6yPnDdCGEysxjpOdeh7uZsTMZP
+ z/h/aoohVEO6w+GHghbFPMV2nJhjxpxwhWzA48ChHYB9o3BIW0GY35sYCvfWpvR5AmdE
+ 8oyIwBHBPBPvqEI7LQ06K1ADfEp7RdWWXFVFrzo6D73mrc33lIuhIeYP7NYGWWSW+IQQ
+ DLYOJwE6yyx8q1JuL9LVhJUBAEZDLt69tEOFR/zNkS9kEIG42K97UTkEAaR0L5IWh7vf 9w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3b23hvvd79-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Sep 2021 08:15:19 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18DBQ7Fb030676;
+        Mon, 13 Sep 2021 08:15:18 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3b23hvvd5v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Sep 2021 08:15:17 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18DCE4d8002394;
+        Mon, 13 Sep 2021 12:15:15 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by ppma03fra.de.ibm.com with ESMTP id 3b0m38yay8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Sep 2021 12:15:15 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 18DCFB3s45351186
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Sep 2021 12:15:11 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 636D711C0D5;
+        Mon, 13 Sep 2021 12:15:11 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5BFBA11C0B2;
+        Mon, 13 Sep 2021 12:15:10 +0000 (GMT)
+Received: from [9.145.51.25] (unknown [9.145.51.25])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon, 13 Sep 2021 12:15:10 +0000 (GMT)
+Subject: Re: [PATCH 6/9] s390/block/dasd_genhd: add error handling support for
+ add_disk()
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Luis Chamberlain <mcgrof@kernel.org>, axboe@kernel.dk,
+        gregkh@linuxfoundation.org, chaitanya.kulkarni@wdc.com,
+        atulgopinathan@gmail.com, hare@suse.de, maximlevitsky@gmail.com,
+        oakad@yahoo.com, ulf.hansson@linaro.org, colin.king@canonical.com,
+        shubhankarvk@gmail.com, baijiaju1990@gmail.com, trix@redhat.com,
+        dongsheng.yang@easystack.cn, ceph-devel@vger.kernel.org,
+        miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+        sth@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, oberpar@linux.ibm.com, tj@kernel.org,
+        linux-s390@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210902174105.2418771-1-mcgrof@kernel.org>
+ <20210902174105.2418771-7-mcgrof@kernel.org>
+ <d6140e40-a472-e732-9893-99e1839b717e@linux.ibm.com>
+ <YT8O/NL2pEGUjYj9@infradead.org>
+From:   =?UTF-8?Q?Jan_H=c3=b6ppner?= <hoeppner@linux.ibm.com>
+Message-ID: <93bfc4ce-62f1-e21c-5dca-82029b2fc388@linux.ibm.com>
+Date:   Mon, 13 Sep 2021 14:15:10 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210912200832.12312-25-digetx@gmail.com>
+In-Reply-To: <YT8O/NL2pEGUjYj9@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfC0UR8EPsGu9scFXo/XyGQ+zclz4oYZK7ebAu7LkFSvn1ZSZql+X7aMfNk2HSIv/6FmtrmYKiCEiTasQtOArrwJIB9K/cvmo41OrNVaccz9t4pz4xFSP
- j4RW9XR1UXUNkZjiB50fmOTEVHWZQEEL0LCboGmfgPr5tPA1jHo+Fuobmb+0K/MLvwhlRfiHLXPOigMyMug4DAUy9DCMyYAMmHUGJHv08xsy7IjWw38ZjMxo
- aw3wUIyWLem1d/zZmaf0LubaeQEZUwSFtGIFmi2F++I5O/GnY6GkKzmSCgXAmFtLzjbSwYUQcEkSadgl1N7ZZVdyjkKvJJ0aYYeoMQSEFJa2Ep+OIUZDntf6
- P0TpfOPh+oHT4OaPgd5wX0Ui1jmXaNQKW7aiar3zaCLkiYfmnX+F0vULqbIoZ6Ijdo2bKxDHce1DUd2BDXddvwEDjjcvmwNJfaoskXKVJRBqdLmaxUjUx/V/
- 09sbugSxdQhoVzwFzLT3DKHkZy+ewtdafWnzzxHv+4stixNxPyyAI2h9as2uXoPgPxclbWBSsYP7l1szZCwtKGYT00s5EQOcBeWGELKehjEPZU7UIzo4bx5t
- XspkFLAEM2gYpZFyIvFS0wY3UCtb68z5Upk6evtPpZgIKEGtBIR0GgSrn7PajKK7ZSa59x+FBQCKHR7D/w+1WFcdtzWbiWZOPpgBrSmqc5/wwoyS/xNwqSXF
- BHINYcJu8Lxzm6X6B3Wp4XpYRHwQpR9JFJbMR3ymDzApxAEXHL9uemBkl0o1h+BGgsC5F6aokDy9tX4L8IDLFBHNYT2Pwvd9HUCEeoNPS5jx3YXabGxXfyrQ
- 3lGRLo/HkRWNr7PLHtJZ77cSpQDrR1R8NmTfiJxEgg6UzcAvgVLxfI1g38BX4vUe9ce3WZipyz82IsYvAd0E8qEeYNBf9cQqiSeduAEs0J8jFmDQMF/bnM8z
- oWi6YfJ+OqDe8iZ4iXmiBCynBsD9Pj/M4Dr61pK7Za58Lls8qeutMD/e4s56bLQcns/C35b1daKF009MnInB6c47cKlaoofOh8sc48nwDtnjAt+BGY6mbExF
- IL2eHWyz5KtrWh9bHowFYh63JcVKotwFmpQvQS5tfc/TOmUHpsuFEof+PXhXy3lLgluHHHaxnVE4rlKDqdQrJ7o8l2UjrEt9sudgUNRzDBKqKaIFDZUhe1R9
- Vhd0WP8g6IGkYe28njn8Mx/bA9RWRZFruTXvFVTegHNR4Ei/fa7tFwYD0ocofy0eAHQz5WooS/WLrsh/CJH+pSHt5I98Ogi2Ahridm3lxQF/JsQi+G8N54Cd
- hQtFam3Yh78FeXR5vuY6rDO4iey1wjaobPOJepuclTuligKEfwZaFmsF1+QE5Dg/h7h6wtbe1VhmaUAmLnObMknumKX2VDfPdRJIBlr8yRolNNpw2M8qIZi9
- 0DND+x88qIRDteuXO11Vz6gw6Zo8nTyoyKWBuw==
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: i1DhJLKl-4vLh41BXihH3RVurh7Dcq6N
+X-Proofpoint-GUID: CgRXnBXQrEZYnagyiSXSmcuMePxFid_y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
+ definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ spamscore=0 mlxscore=0 priorityscore=1501 phishscore=0 clxscore=1011
+ lowpriorityscore=0 mlxlogscore=999 impostorscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109030001 definitions=main-2109130048
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 12/09/2021 22:08, Dmitry Osipenko wrote:
-> Currently driver supports legacy power domain API, this patch adds generic
-> power domain support. This allows us to utilize a modern GENPD API for
-> newer device-trees.
+On 13/09/2021 10:42, Christoph Hellwig wrote:
+> On Mon, Sep 13, 2021 at 10:17:48AM +0200, Jan H??ppner wrote:
+>> I think, just like with some of the other changes, there is some
+>> cleanup required before returning. I'll prepare a patch and
+>> come back to you.
 > 
-> Tested-by: Peter Geis <pgwipeout@gmail.com> # Ouya T30
-> Tested-by: Paul Fertser <fercerpav@gmail.com> # PAZ00 T20
-> Tested-by: Nicolas Chauvet <kwizart@gmail.com> # PAZ00 T20 and TK1 T124
-> Tested-by: Matt Merhar <mattmerhar@protonmail.com> # Ouya T30
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-
-Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-
-Regards,
-
-	Hans
-
-> ---
->  drivers/staging/media/tegra-vde/vde.c | 57 +++++++++++++++++++++------
->  1 file changed, 46 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/staging/media/tegra-vde/vde.c b/drivers/staging/media/tegra-vde/vde.c
-> index ed4c1250b303..bb3079a2c0b5 100644
-> --- a/drivers/staging/media/tegra-vde/vde.c
-> +++ b/drivers/staging/media/tegra-vde/vde.c
-> @@ -20,6 +20,7 @@
->  #include <linux/slab.h>
->  #include <linux/uaccess.h>
->  
-> +#include <soc/tegra/common.h>
->  #include <soc/tegra/pmc.h>
->  
->  #include "uapi.h"
-> @@ -920,13 +921,17 @@ static __maybe_unused int tegra_vde_runtime_suspend(struct device *dev)
->  	struct tegra_vde *vde = dev_get_drvdata(dev);
->  	int err;
->  
-> -	err = tegra_powergate_power_off(TEGRA_POWERGATE_VDEC);
-> -	if (err) {
-> -		dev_err(dev, "Failed to power down HW: %d\n", err);
-> -		return err;
-> +	if (!dev->pm_domain) {
-> +		err = tegra_powergate_power_off(TEGRA_POWERGATE_VDEC);
-> +		if (err) {
-> +			dev_err(dev, "Failed to power down HW: %d\n", err);
-> +			return err;
-> +		}
->  	}
->  
->  	clk_disable_unprepare(vde->clk);
-> +	reset_control_release(vde->rst);
-> +	reset_control_release(vde->rst_mc);
->  
->  	return 0;
->  }
-> @@ -936,14 +941,41 @@ static __maybe_unused int tegra_vde_runtime_resume(struct device *dev)
->  	struct tegra_vde *vde = dev_get_drvdata(dev);
->  	int err;
->  
-> -	err = tegra_powergate_sequence_power_up(TEGRA_POWERGATE_VDEC,
-> -						vde->clk, vde->rst);
-> +	err = reset_control_acquire(vde->rst_mc);
->  	if (err) {
-> -		dev_err(dev, "Failed to power up HW : %d\n", err);
-> +		dev_err(dev, "Failed to acquire mc reset: %d\n", err);
->  		return err;
->  	}
->  
-> +	err = reset_control_acquire(vde->rst);
-> +	if (err) {
-> +		dev_err(dev, "Failed to acquire reset: %d\n", err);
-> +		goto release_mc_reset;
-> +	}
-> +
-> +	if (!dev->pm_domain) {
-> +		err = tegra_powergate_sequence_power_up(TEGRA_POWERGATE_VDEC,
-> +							vde->clk, vde->rst);
-> +		if (err) {
-> +			dev_err(dev, "Failed to power up HW : %d\n", err);
-> +			goto release_reset;
-> +		}
-> +	}
-> +
-> +	err = clk_prepare_enable(vde->clk);
-> +	if (err) {
-> +		dev_err(dev, "Failed to enable clock: %d\n", err);
-> +		goto release_reset;
-> +	}
-> +
->  	return 0;
-> +
-> +release_reset:
-> +	reset_control_release(vde->rst);
-> +release_mc_reset:
-> +	reset_control_release(vde->rst_mc);
-> +
-> +	return err;
->  }
->  
->  static int tegra_vde_probe(struct platform_device *pdev)
-> @@ -1001,14 +1033,14 @@ static int tegra_vde_probe(struct platform_device *pdev)
->  		return err;
->  	}
->  
-> -	vde->rst = devm_reset_control_get(dev, NULL);
-> +	vde->rst = devm_reset_control_get_exclusive_released(dev, NULL);
->  	if (IS_ERR(vde->rst)) {
->  		err = PTR_ERR(vde->rst);
->  		dev_err(dev, "Could not get VDE reset %d\n", err);
->  		return err;
->  	}
->  
-> -	vde->rst_mc = devm_reset_control_get_optional(dev, "mc");
-> +	vde->rst_mc = devm_reset_control_get_optional_exclusive_released(dev, "mc");
->  	if (IS_ERR(vde->rst_mc)) {
->  		err = PTR_ERR(vde->rst_mc);
->  		dev_err(dev, "Could not get MC reset %d\n", err);
-> @@ -1066,6 +1098,10 @@ static int tegra_vde_probe(struct platform_device *pdev)
->  	pm_runtime_use_autosuspend(dev);
->  	pm_runtime_set_autosuspend_delay(dev, 300);
->  
-> +	err = devm_tegra_core_dev_init_opp_table_common(dev);
-> +	if (err)
-> +		goto err_pm_runtime;
-> +
->  	/*
->  	 * VDE partition may be left ON after bootloader, hence let's
->  	 * power-cycle it in order to put hardware into a predictable lower
-> @@ -1133,8 +1169,7 @@ static void tegra_vde_shutdown(struct platform_device *pdev)
->  	 * On some devices bootloader isn't ready to a power-gated VDE on
->  	 * a warm-reboot, machine will hang in that case.
->  	 */
-> -	if (pm_runtime_status_suspended(&pdev->dev))
-> -		tegra_vde_runtime_resume(&pdev->dev);
-> +	pm_runtime_get_sync(&pdev->dev);
->  }
->  
->  static __maybe_unused int tegra_vde_pm_suspend(struct device *dev)
+> If you are touching the dasd probe path anyway, can you look insto
+> switching to use blk_mq_alloc_disk as well?  Right now dasd allocates
+> the request_queue and gendisk separately in different stages of
+> initialization, but unlike SCSI which needs to probe using just the
+> request_queue I can't find a good reason for that.
 > 
 
+Thanks for the hint. We'll be working on it separately though, as
+it seems to require a bit more effort from a first glance.
+We'll send a separate patch (or patchset) soon.
+
+regards,
+Jan
