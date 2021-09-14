@@ -2,95 +2,66 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9982740AC59
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Sep 2021 13:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9A2040B6BA
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Sep 2021 20:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232156AbhINLZ5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Sep 2021 07:25:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50698 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232153AbhINLZ4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Sep 2021 07:25:56 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD7A7C061574
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Sep 2021 04:24:38 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id s12so23216605ljg.0
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Sep 2021 04:24:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MXbax/1bglMzgg6o47IyNakKQ88KE4K/hGwmlnc25Ko=;
-        b=N4100R/sVYI9xB+3RNF629B4s5ko7wLFiA6IUtn0oKfdFh4s/DVlj2FjWpH4EB0GWf
-         nSMDgFuOB1FxKtOSkpd4KpnVn64T9GkSKp0EvH+DldoiZ0rVEhMOPAJHkgb89JuegEgT
-         hVS0D/Osme/N8neVgiEaMNrlnQFqwSccnIyfqqQPfVokx/xmcLh3RCXL52xiIJzY6ZRq
-         uMDG6zYAqhpcYdy+xr46dMDyzOciUPXIix6C8+tsMUz/w5rI2L27oVpcTqN6+X0BNIqO
-         PTdm9tL+nnkFsidR6SB0wS361pbbavkKWyVqdsTpBqhCe/DQMVtEr1A3eR2VmWTrUc/4
-         +zLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MXbax/1bglMzgg6o47IyNakKQ88KE4K/hGwmlnc25Ko=;
-        b=JA3RjwYrO1FjJNGjuRZFmkVR3Q5cCK5ZWdtHySxbAC5ygNytdPefdbfr7aQpA5k6JZ
-         NMaQ0K/nSpbCUPJo3SOMDkp8xVkgZ1qyTno081hRzeC0f56kGU7BpCq51Go1ZpbFgP5A
-         ryE1m0nEESZQYAO689/KVEpf4cq7p69MDDlIr1sAA99s9/m0OXM7399zP+tAp/ba0DE/
-         oK8bk2uw+GQykALyQlqeFEJp7bvGEaYIcb6yGdWP15OTb4QjaTMLlfVFIUQDsZpJ0KUp
-         9mhZ9xhpVFPnkjXtHhSaqd9M2Njx5pc81J4GFi+xeA3Ki4lI44q4ZSELo0sdXAujwbTg
-         jWWQ==
-X-Gm-Message-State: AOAM532/MhWQGdBRBBKMe++BK+LzUQIW7K81IaqKb9ZpwkGmQcySUWKx
-        nYjzpqRrF34+VQJ8wF23rxftCqOXcXYje7QBPDZlzqYMI7I=
-X-Google-Smtp-Source: ABdhPJxNQjIx8LfDVzNm9Bxa8g8kduMXKBDzOD8rsarWhRJUMWWBpslN7FA28BAQA42mUmbJjsXpFhnu6cwrV9l1QHM=
-X-Received: by 2002:a2e:9b0b:: with SMTP id u11mr14793392lji.463.1631618677115;
- Tue, 14 Sep 2021 04:24:37 -0700 (PDT)
+        id S229937AbhINSWL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Sep 2021 14:22:11 -0400
+Received: from www.zeus03.de ([194.117.254.33]:56696 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231966AbhINSV5 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 14 Sep 2021 14:21:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=3c7mX5ionLNREfObThAMqjn6+P8
+        hA74BV4tKmmabYlI=; b=CrSrx5d6xyixJBFYnOAGyRWZ/83jNrsZSPm9N7kMi/g
+        gG75jB3xVPt3lNgbxF1nO7dRE8pxx2LbPcxQ5APHYwZB3QjDmbqGHw4om33ZJlII
+        PYXNA6+s0Aum+2QEFc7e5ojX8xKFwX3kgLDOC7gu29n7qs3wjNP9v2vG0xdSn1R4
+        =
+Received: (qmail 518116 invoked from network); 14 Sep 2021 20:20:34 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Sep 2021 20:20:34 +0200
+X-UD-Smtp-Session: l3s3148p1@Ddu/ovjLHpEgAwDPXxMyACCkRmvQydX8
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 0/3] mmc: also abort tuning with CMD12 for SD
+Date:   Tue, 14 Sep 2021 20:20:20 +0200
+Message-Id: <20210914182023.8103-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20210911232707.259615-1-luca@z3ntu.xyz> <20210911232707.259615-3-luca@z3ntu.xyz>
-In-Reply-To: <20210911232707.259615-3-luca@z3ntu.xyz>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 14 Sep 2021 13:24:00 +0200
-Message-ID: <CAPDyKFr9k2dO8FJf4=ZUKZ6=WpDS2mOJ+BZbtK1m_-OWx_ehmA@mail.gmail.com>
-Subject: Re: [PATCH 2/8] dt-bindings: mmc: sdhci-msm: Add compatible string
- for msm8226
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, bartosz.dudziak@snejp.pl,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 12 Sept 2021 at 01:28, Luca Weiss <luca@z3ntu.xyz> wrote:
->
-> Add msm8226 SoC specific compatible strings for qcom-sdhci controller.
->
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+After my hackish RFC patch, here is a small series implementing
+(hopefully) the solution we discussed. It will make
+mmc_send_abort_tuning() also send CMD12 for SD cards which makes more SD
+cards work for us. Details are in the patch descriptions.
 
-Applied for next, thanks!
+Please let me know what you think.
 
-Kind regards
-Uffe
+Thanks, and happy hacking!
 
 
-> ---
->  Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-> index 365c3fc122ea..50841e2843fc 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-> @@ -13,6 +13,7 @@ Required properties:
->                 string is added to support this change - "qcom,sdhci-msm-v5".
->         full compatible strings with SoC and version:
->                 "qcom,apq8084-sdhci", "qcom,sdhci-msm-v4"
-> +               "qcom,msm8226-sdhci", "qcom,sdhci-msm-v4"
->                 "qcom,msm8974-sdhci", "qcom,sdhci-msm-v4"
->                 "qcom,msm8916-sdhci", "qcom,sdhci-msm-v4"
->                 "qcom,msm8992-sdhci", "qcom,sdhci-msm-v4"
-> --
-> 2.33.0
->
+Wolfram Sang (3):
+  mmc: core: add helper to send STOP
+  mmc: core: also abort tuning with CMD12 for SD
+  mmc: core: remove obsolete parameter from mmc_send_abort_tuning
+
+ drivers/mmc/core/block.c             | 14 +-------------
+ drivers/mmc/core/core.h              |  1 +
+ drivers/mmc/core/mmc.c               |  6 ++++++
+ drivers/mmc/core/mmc_ops.c           | 23 ++++-------------------
+ drivers/mmc/core/mmc_ops.h           | 14 ++++++++++++++
+ drivers/mmc/core/sd.c                |  6 ++++++
+ drivers/mmc/host/renesas_sdhi_core.c |  2 +-
+ drivers/mmc/host/sdhci.c             |  2 +-
+ include/linux/mmc/host.h             |  2 +-
+ 9 files changed, 35 insertions(+), 35 deletions(-)
+
+-- 
+2.30.2
+
