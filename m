@@ -2,104 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DFCE40B6B8
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Sep 2021 20:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8257540BAC3
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Sep 2021 23:52:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231800AbhINSWJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Sep 2021 14:22:09 -0400
-Received: from www.zeus03.de ([194.117.254.33]:56732 "EHLO mail.zeus03.de"
+        id S234905AbhINVyL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Sep 2021 17:54:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48092 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232012AbhINSV5 (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Tue, 14 Sep 2021 14:21:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=k1; bh=g3Ydjt6/rs/V/i
-        wz5INUiD7GrceHhBFduaviPdKRHfI=; b=h1abPQcmUrW6U/2vUtmxIvyA9gQLJT
-        OPnS903OAxAiTseAbSd1FODBXdfK3c8unGdaNI08PkrrZIeeAZx5Et33FcB85vY0
-        K1tHj6gFrg80Nexavhfgx3ljP1mhoBiyIADxz82WJ3L63QKzCLCkTC1KfW+Qvxqp
-        QiXoeFIQdyDzY=
-Received: (qmail 518204 invoked from network); 14 Sep 2021 20:20:35 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Sep 2021 20:20:35 +0200
-X-UD-Smtp-Session: l3s3148p1@BTJKo/jLJJEgAwDPXxMyACCkRmvQydX8
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 3/3] mmc: core: remove obsolete parameter from mmc_send_abort_tuning
-Date:   Tue, 14 Sep 2021 20:20:23 +0200
-Message-Id: <20210914182023.8103-4-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210914182023.8103-1-wsa+renesas@sang-engineering.com>
-References: <20210914182023.8103-1-wsa+renesas@sang-engineering.com>
+        id S234724AbhINVyL (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 14 Sep 2021 17:54:11 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 415C660EE9;
+        Tue, 14 Sep 2021 21:52:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631656373;
+        bh=MT0QDti90yAUW615dduHxzBWKFdzxixlvP0VmxYG+5M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MXraGuY7oG56gKqqdzSNSN3Rh0Lt6tRcGPwELw0zzas5jF5Xrf5szv4PXaxJako62
+         eQXB4Xcq/kPUj4EWko8qH/DLG88oiFAFaSwQ9eVxZUq9u+4Ee6y5Lewy6w8h19z4uM
+         C1fMGEThU6YwoOmavENq+bBie2AOTrPkzHZvTyak/vhLRJrMLrjDsZ5nKomMKTQFje
+         FF/I30F9Qwjk62agNyhx5B9JhFURRgTyMHZt57J9bviYMv2P/BRa4vH4qTQs3z3E+A
+         pMFJLS360rM/tMjPfSF9x0jR+t80FcgbKH6X9GgOgEmGOLlHU/oWI5vgq3R2y8QD70
+         7FU+US8N4T8IQ==
+Date:   Tue, 14 Sep 2021 14:52:51 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     linux-block@vger.kernel.org
+Cc:     linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        dm-devel@redhat.com, Satya Tangirala <satyaprateek2357@gmail.com>
+Subject: Re: [PATCH 4/5] blk-crypto: rename blk_keyslot_manager to
+ blk_crypto_profile
+Message-ID: <YUEZs5/9Ao2/KhDw@sol.localdomain>
+References: <20210913013135.102404-1-ebiggers@kernel.org>
+ <20210913013135.102404-5-ebiggers@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210913013135.102404-5-ebiggers@kernel.org>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Due to refactoring, this is not needed anymore. Remove it from the core
-and from drivers.
+On Sun, Sep 12, 2021 at 06:31:34PM -0700, Eric Biggers wrote:
+> diff --git a/block/blk-integrity.c b/block/blk-integrity.c
+> index 69a12177dfb62..db656d12050f7 100644
+> --- a/block/blk-integrity.c
+> +++ b/block/blk-integrity.c
+> @@ -411,7 +411,7 @@ void blk_integrity_register(struct gendisk *disk, struct blk_integrity *template
+>  #ifdef CONFIG_BLK_INLINE_ENCRYPTION
+>  	if (disk->queue->ksm) {
+>  		pr_warn("blk-integrity: Integrity and hardware inline encryption are not supported together. Disabling hardware inline encryption.\n");
+> -		blk_ksm_unregister(disk->queue);
+> +		blk_crypto_unregister(disk->queue);
+>  	}
+>  #endif
+>  }
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/mmc/core/mmc_ops.c           | 2 +-
- drivers/mmc/host/renesas_sdhi_core.c | 2 +-
- drivers/mmc/host/sdhci.c             | 2 +-
- include/linux/mmc/host.h             | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+Note, there is a build error here when CONFIG_BLK_DEV_INTEGRITY=y, so I'll have
+to send a new version even if there are no other comments.
 
-diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-index bc794419d443..d60750d0f1b9 100644
---- a/drivers/mmc/core/mmc_ops.c
-+++ b/drivers/mmc/core/mmc_ops.c
-@@ -703,7 +703,7 @@ int mmc_send_tuning(struct mmc_host *host, u32 opcode, int *cmd_error)
- }
- EXPORT_SYMBOL_GPL(mmc_send_tuning);
- 
--int mmc_send_abort_tuning(struct mmc_host *host, u32 opcode)
-+int mmc_send_abort_tuning(struct mmc_host *host)
- {
- 	if (host->bus_ops->send_abort_tuning)
- 		return host->bus_ops->send_abort_tuning(host);
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index 6fc4cf3c9dce..8884ff392935 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -683,7 +683,7 @@ static int renesas_sdhi_execute_tuning(struct mmc_host *mmc, u32 opcode)
- 			set_bit(i, priv->smpcmp);
- 
- 		if (cmd_error)
--			mmc_send_abort_tuning(mmc, opcode);
-+			mmc_send_abort_tuning(mmc);
- 	}
- 
- 	ret = renesas_sdhi_select_tuning(host);
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index 8eefa7d5fe85..8efc029ee21b 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2685,7 +2685,7 @@ void sdhci_abort_tuning(struct sdhci_host *host, u32 opcode)
- 
- 	sdhci_end_tuning(host);
- 
--	mmc_send_abort_tuning(host->mmc, opcode);
-+	mmc_send_abort_tuning(host->mmc);
- }
- EXPORT_SYMBOL_GPL(sdhci_abort_tuning);
- 
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index 0c0c9a0fdf57..890dc5c5ffce 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -633,6 +633,6 @@ static inline enum dma_data_direction mmc_get_dma_dir(struct mmc_data *data)
- }
- 
- int mmc_send_tuning(struct mmc_host *host, u32 opcode, int *cmd_error);
--int mmc_send_abort_tuning(struct mmc_host *host, u32 opcode);
-+int mmc_send_abort_tuning(struct mmc_host *host);
- 
- #endif /* LINUX_MMC_HOST_H */
--- 
-2.30.2
-
+- Eric
