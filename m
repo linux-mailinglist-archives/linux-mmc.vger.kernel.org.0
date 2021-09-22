@@ -2,81 +2,71 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB4D414F5C
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 Sep 2021 19:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02844151E9
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 Sep 2021 22:55:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236706AbhIVRtW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 22 Sep 2021 13:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
+        id S237870AbhIVU4q (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 Sep 2021 16:56:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233552AbhIVRtW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 Sep 2021 13:49:22 -0400
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 298BBC061574
-        for <linux-mmc@vger.kernel.org>; Wed, 22 Sep 2021 10:47:52 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id t189so5632278oie.7
-        for <linux-mmc@vger.kernel.org>; Wed, 22 Sep 2021 10:47:52 -0700 (PDT)
+        with ESMTP id S237876AbhIVU4l (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 Sep 2021 16:56:41 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F5CDC0613DF
+        for <linux-mmc@vger.kernel.org>; Wed, 22 Sep 2021 13:55:07 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id i4so17172489lfv.4
+        for <linux-mmc@vger.kernel.org>; Wed, 22 Sep 2021 13:55:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=v7LJlSltaGEJUA4QcSw4axWM6tAbHHqLFLsNxJ1eSUg=;
-        b=aLtiIIZJzyibMfdJVE1sMoR3yGDncXHcVsBsgOuhCXPf5Hwg38h4IJJmG4GrQtvvMd
-         HPJ7th9Z9BkSxtWOzgNKmxxOF9dejSvBFycnZ/GNzb1JeCFBx4aZotX/R3fNJ1LQy5gR
-         TUbcwMjBsBlGa6v69bb++0THAi6crv7d6jMeHw8cMmyt2d5rXLIpjtWXUSS0C5HYpMI/
-         3MW9kcCK6SoVD7tRk83C5e8XUh203bWhLIwuBvf0EGtJfaKUq8AdHUi2xgy7qYqNc/7g
-         tqFi6vufQm7yWdw6ZYpNBLOm4EbMDjq9DZFnsjRKSS86ZgIM+1wX8MvEju6Jgp8P8o4i
-         hv0w==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
+        b=fr8lNb1tzuroNDnbJJtYWeXOCGZbssrkZvaRy8HVdYCeSSxS96vSwd3R2+r1vg3M6/
+         ex66FoD7Oi9BZ+eroN2ctcLno3UxJhL89X1t6yEsFayGc2q4Pz0zZQBaUGqcHr3s/S1+
+         lgIwwHuJ4O8SDnA5oR3zC/CFwa9fWO84703n6I2aQyNKP1VzeqgyNRTdZaVTG81gy6Vx
+         t6u58+esbUQxWBZY5IFD1w784RDrV2U7d72/V+RQAoF8LyHU+KHsqwJTuZK+RI9xoYHQ
+         hU/k+XKo5P60J+yjbN5r0LQMnBzU5qvJitpMdoh7dt6f9DChJ/lZbweVN/xESakomSrI
+         Tc/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=v7LJlSltaGEJUA4QcSw4axWM6tAbHHqLFLsNxJ1eSUg=;
-        b=P4Rez9RvVnGQDdzgKbIIeTONFq4hyN3VAHuSz1/tFU6kpxofeLPZ3FI2gy2LY8990l
-         GTPaL0ovtIrtMnJ16vw2lkmc50BSlTFEBQkQLoF7yufv+xSeCR4XR0V81KMvEi6maJR+
-         N19cy5IOzBjrZg5cxkOQ9xlabRaxEonIn1My5rLtteLcXtYYKi0Pr/l7/FubjYLxVf0Z
-         y/oD9foa1tSeuECLZxp7u8hRNcO8PHtNT1DGWTZWo6+hQ6mvkI8AYxpFQFfCzJzVwKyf
-         Y5/X2J0AKYQzxF+ATKtz8cA3cHUgZZwO/T4+T99nRbjUJLQLj498KH/2uFh6QH7/2vyS
-         mAGg==
-X-Gm-Message-State: AOAM530vlGkKVs1Vsd+pxpwIy0pRtt0fncGIXX0fsRVBTQSkHMWA+SRi
-        7VV45POXqZ0Fzu1qIl015VccUWFCv0RbFmprRXcDE1/bwaA=
-X-Google-Smtp-Source: ABdhPJwAn1bjRGz49R6RprxXYnkd8gQJ3dvFMVP0IlXgI71VzLT7FJnN4jytdhItJx1ompk/Q9b5o7T0YOsbWe0rn2s=
-X-Received: by 2002:a05:6808:64f:: with SMTP id z15mr5058831oih.65.1632332871575;
- Wed, 22 Sep 2021 10:47:51 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
+        b=7yVnXpjLo01xTLOGgjYUdFIKLKk7fHAu8j+uzPmaCS9lQzEcAMS8NVKHtWQ+oGakdj
+         SHwIRdOxx5nVr2rmOOSl3I9zluZscLuyGXd5rgDmsHv29JrWU15BrwApKtAL9SM6PTde
+         dVrvBW5Ytueps9tTUQ4tsD2lgfRXhBU8nyg8z0OPa4NwSEpRT2ClKNzjwe2uZExz06+9
+         cHbACQLzU0UMQZlWrpXPID18dU7rDNvRA1i86+9/DBn/j/SQyTywPwivldgyOhlQRfLd
+         LSWY0CY/ojBFdOBoqez4oQsjY3HJCo1Rfvacta5MbanwnNPj29rrqKLQsXcgxuY2/U2p
+         Y4Ng==
+X-Gm-Message-State: AOAM531t5TTC9/GBODUzHVH49SsZZpLUBqEnndSSa8ErdsLFzfLS20kj
+        tB2Lt4WKETT9F7C5lX+QGXwdMHDT7cgQ87wGF+iufOVSF40=
+X-Google-Smtp-Source: ABdhPJwYYn7ZwazUxB30/XTxKCOf4dlZaC6TfP1ljKsU4ZNb40cpLRsdAvw7sAb51nYQkeG7S6W5vU7Cgq+lC3FYxgE=
+X-Received: by 2002:a05:651c:1546:: with SMTP id y6mr1383813ljp.53.1632344095088;
+ Wed, 22 Sep 2021 13:54:55 -0700 (PDT)
 MIME-Version: 1.0
-From:   Kegl Rohit <keglrohit@gmail.com>
-Date:   Wed, 22 Sep 2021 19:47:41 +0200
-Message-ID: <CAMeyCbhTcwcksdNC-1r5487oX-rmfmcdGiBiVng6E338hWzbEA@mail.gmail.com>
-Subject: CM23: Reliable Write Request / Forced Programming Bits
-To:     linux-mmc@vger.kernel.org
+Sender: ratcliffijames58@gmail.com
+Received: by 2002:a05:6504:5067:0:0:0:0 with HTTP; Wed, 22 Sep 2021 13:54:54
+ -0700 (PDT)
+From:   Aisha Al-Qaddafi <aisha.gdaffi24@gmail.com>
+Date:   Wed, 22 Sep 2021 21:54:54 +0100
+X-Google-Sender-Auth: B3PIuwFz7UcaHNCffYC8akvbLEk
+Message-ID: <CAKVTYWSPSMf085dB7FkhkLr9XtoZHkjbvunoMard5qsSPn4ZOg@mail.gmail.com>
+Subject: My Dear Friend
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello!
-
-I have a question about the transfer of CM23 (SET_BLOCK_COUNT),
-before starting a multiple block write CMD25.
-I want to set some of this CMD23 bits:
-BIT(31) stands for Reliable Write Request
-BIT(24) stands for Forced Programming
-
-I could only see usage of the Reliable Write Request for some rpmb ioctl:
-https://github.com/torvalds/linux/blob/master/include/uapi/linux/mmc/ioctl.h#L13
-https://github.com/torvalds/linux/blob/master/drivers/mmc/core/block.c#L550
-sbc.arg = data.blocks | (idata->ic.write_flag & BIT(31));
-
-But there are also BITS MMC_DATA_REL_WR, MMC_DATA_FORCED_PRG
-https://github.com/torvalds/linux/blob/master/include/linux/mmc/core.h#L128
-Used here:
-https://github.com/torvalds/linux/blob/master/drivers/mmc/core/block.c#L1301
-Which confuses me.
-
-I am using the mmc_test code as example to execute a mmc block write.
-https://github.com/torvalds/linux/blob/master/drivers/mmc/core/mmc_test.c#L190
-So i set the BIT(24):
-mrq->sbc->arg = blocks | BIT(24);
-But then i realized that the sdhci mmc host uses SDHCI_AUTO_CMD23 and
-mmc_test_prepare_sbc simply returns doing nothing.
-
-What would be the correct way to set the BIT(24) with CMD23 in the
-mmc_test example with a host which does SDHCI_AUTO_CMD23?
+Assalamu alaikum,
+I came across your e-mail contact prior to a private search while in
+need of your assistance. I am Aisha Al-Qaddafi, the only biological,
+Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
+single Mother and a Widow with three Children. I have investment funds
+worth Twenty Seven Million Five Hundred Thousand United State Dollar
+($27.500.000.00 ) and i need a trusted  investment Manager/Partner
+because of my current refugee status, however, I am interested in you
+for investment project assistance in your country. If you are willing
+to handle this project on my behalf kindly reply urgently to enable me
+to provide you more information about the investment
+funds.
+Best Regards
