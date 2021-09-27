@@ -2,89 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41D244193CC
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 Sep 2021 14:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B497419495
+	for <lists+linux-mmc@lfdr.de>; Mon, 27 Sep 2021 14:50:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234198AbhI0ME0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 Sep 2021 08:04:26 -0400
-Received: from www.zeus03.de ([194.117.254.33]:48734 "EHLO mail.zeus03.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234115AbhI0MEZ (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Mon, 27 Sep 2021 08:04:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=k1; bh=87761o7VILD8UMZI4tzHiRt1yP7F
-        BtneFUwFcJdS7kY=; b=xAD6aVLSEf1w4KptB7BX7XEPN6CUFnII1qtBzY7sVPFV
-        H5+pMY/8S8kybQh8SGSYcV2XrrIy/RbDjum27gE4uRBZVaukpb1JAC3kxPayFXIk
-        gYbTZUKaTASqbNqkWVBXkE/h8BoIa26gFzJ/tmb6eD69B/VnkfVnTaUPmaAXVuQ=
-Received: (qmail 842639 invoked from network); 27 Sep 2021 14:02:46 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 27 Sep 2021 14:02:46 +0200
-X-UD-Smtp-Session: l3s3148p1@0DkH4PjM8sMgARa4RUvHAbZgIYagrKBM
-Date:   Mon, 27 Sep 2021 14:02:45 +0200
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: Re: [PATCH] mmc: renesas_sdhi: fix regression with hard reset on old
- SDHIs
-Message-ID: <YVGy5R89xycRoLP5@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        id S234463AbhI0Mwc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 Sep 2021 08:52:32 -0400
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:40302
+        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234438AbhI0Mw3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Sep 2021 08:52:29 -0400
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com [209.85.167.70])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id AF2D240268
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Sep 2021 12:50:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1632747050;
+        bh=jeMIEXiKB7wPBA3ymi6+lgomz3wpzPFtflbOU3+5glo=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=wE0XwH8WPXph9KdF2juApvUxO+UdLhcnPvuQqEi9W4T9w8WJZEtdC4iL6OHkt0X0G
+         rGQt3rAQ+1qFdsTHSTkaKmILUyFy1w3grGyxCCL12KUCw+BWOkElAalBtSnGkFgRDf
+         62BayEZqbQA7laTQUDgtrNJaUTCIXKHlo+g1zcDTL8gU9XEyVZCoEIDtFS1m+fgFS1
+         a8EkcCQeuQWv9baGN1MxqKBWKPCEogNfAiBX/0XMaW4Gw2DkpNgPDs9Xzm7BroxQth
+         pMsegAmg5UI6B0jg1tjruXLw8FMIHcoWlPlLiIY42UHPAaP92kH4RJEAwPB61QxSs0
+         5odx2S0nEyJ7A==
+Received: by mail-lf1-f70.google.com with SMTP id a28-20020a056512021c00b003f5883dcd4bso15726818lfo.1
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Sep 2021 05:50:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jeMIEXiKB7wPBA3ymi6+lgomz3wpzPFtflbOU3+5glo=;
+        b=fiYI+UE4mcSxVgLg8IuUQm2TigyaAyx0G7t13ei9x/c6ulOzijSNwAjF1zIlTo3gWT
+         1evfMI9S7sVBf+v+Nn4RB6jfgJiJU/eUn2QjTVzZGPcN/uhm4rD1aQ8befI32+GlE4DA
+         mgHsPZZc3IjPnlb6Ncvb11UPc2GDYCNoEb9yR2PLu5kk+tyK9n0A6tbU/Q5Pu4MW/65t
+         P9qEtxHVUPN7nWphJZUcbFtwMhCK9H6MdWJ/S67xSpazY9/EDm6Iwy/uMyrS3Eq4BrHC
+         +yGvrewxIY6UH1z1+oqMMCIhBN+xLzkPSFk1w73OBuIThxDw94dnqBes0SmmSnowX+tW
+         gR2Q==
+X-Gm-Message-State: AOAM532JOMFMxrluRTTiC/ISzCacWpEr8Py3Y11r5Shk/YHi2rnOiuGg
+        a2P45Tfalau/AsCl2mXONyI+Xmyr/6p+9GDrIlFlUcHlqwYgfUvB2a75UB64kicpOF/wIjAwHqv
+        n8rg2MSU7sjdM4XspeWLIkOec09oy3dPu10T0cw==
+X-Received: by 2002:a2e:140d:: with SMTP id u13mr17389342ljd.298.1632747048870;
+        Mon, 27 Sep 2021 05:50:48 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz4XgRv4NIfqOOqXINjjLOjy/LJUFeE0f5kcR1+muR49/z/9l4mGGfT5izyr31+Z/ahcTOfdA==
+X-Received: by 2002:a2e:140d:: with SMTP id u13mr17389319ljd.298.1632747048691;
+        Mon, 27 Sep 2021 05:50:48 -0700 (PDT)
+Received: from localhost.localdomain (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id v28sm1592102lfi.22.2021.09.27.05.50.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Sep 2021 05:50:48 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-References: <20210826082107.47299-1-wsa+renesas@sang-engineering.com>
- <CAMuHMdUXc0oSCXJ-5QmPJz0VkX1Aib+ZAv8K2LN_fT1+5mocqw@mail.gmail.com>
- <YSelsjPyswWCr7Nu@shikoro>
- <CAPDyKFp2Ut4UJoRXPD4t+k1+ZfmT-CQZ3obNA_iPF6OA-t+T7g@mail.gmail.com>
- <YVF5ZskkvlI40pkg@shikoro>
- <CAPDyKFqBWGgsVb8r_n-rR4WSStpEkpExVi_Lizds_S724zGiYw@mail.gmail.com>
+        Conor Dooley <conor.dooley@microchip.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Piotr Sroka <piotrs@cadence.com>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v4 1/6] dt-bindings: mmc: cdns: document Microchip MPFS MMC/SDHCI controller
+Date:   Mon, 27 Sep 2021 14:50:39 +0200
+Message-Id: <20210927125044.20046-1-krzysztof.kozlowski@canonical.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ZBNTQTtPRCz93PiT"
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFqBWGgsVb8r_n-rR4WSStpEkpExVi_Lizds_S724zGiYw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+The Microchip PolarFire SoC FPGA DTSI uses Cadence SD/SDIO/eMMC Host
+Controller without any additional vendor compatible:
 
---ZBNTQTtPRCz93PiT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dt.yaml: mmc@20008000: compatible:0: 'cdns,sd4hc' is not one of ['socionext,uniphier-sd4hc']
+  arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dt.yaml: mmc@20008000: compatible: ['cdns,sd4hc'] is too short
 
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Rob Herring <robh@kernel.org>
 
-> > Your 'fixes' branch is still in -next only. Could you send it to Linus,
-> > please?
->=20
-> Yes, it was busy last week. I will send a pull request later today/evenin=
-g.
+---
 
-Thanks, Ulf! Much appreciated.
+Changes since v3:
+1. Adjust commit msg.
+2. Add tags.
 
+Changes since v2:
+1. Document vendor compatible instead of dropping it.
+---
+ Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
---ZBNTQTtPRCz93PiT
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml b/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+index af7442f73881..4207fed62dfe 100644
+--- a/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
++++ b/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+@@ -17,6 +17,7 @@ properties:
+   compatible:
+     items:
+       - enum:
++          - microchip,mpfs-sd4hc
+           - socionext,uniphier-sd4hc
+       - const: cdns,sd4hc
+ 
+-- 
+2.30.2
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFRsuIACgkQFA3kzBSg
-Kbaz3hAAjB78E58n2UT8NpQEdk7SXzlIISnl7l05TbEqZQJ83GQnocED5s67me6Z
-lLW5tsglUo5D4ZcIZmO2avM7G/esUy96AYkvUYOLwYXnV/b475Ob9fIHU0zyp+j8
-7VZbC/ZE4cDE+iFHkb6AVhSnF63FXNscAKVUeq5gOYxcigPdBNODBY19SUHcOYcm
-P1yfgOb5Gp666YzS0KQZ3VT/zU17iN5t9UwtlulmEvQP53aUD20meebS7B5Lu5lz
-iuXSMO/sO/+sOKpYJWmeacXh7/UfNxGRnjntf8ie2QXXZ3tInP5Yqec8TY9P5GIw
-jdooLyhivd3FXEd4G2PPTir2QJcD0PwGd24Jg4YzISXz7uA7sD6FopqJst7PcZFv
-2f3qPJIBGn/hhJNwR5vuwX1lvilg0tX9XrvEAquj7/8fllBbP7AO4hVmBChTtwbR
-y+e0WKRXNnJvtyzK8ODZgrjaLZzOMx386NUKxbSim+8ug/AgOawgC4wzPUGMTn8w
-ySvVQAldXIXdb8pfer1JM7cGF7YAlaiKAy2i5A9pplugraZtenJzsPl91Ps2sEPt
-O0UQ1VQMnhqj9rHxg0OAl/NpN7stbReICFZNseaI+24Yx/+bQKWXmgJbLzDA/OlQ
-1HfMRDPB14lDtzOQTs8oWJ70pdO3/de3xAfcda7DVe0q/adGJLc=
-=mplP
------END PGP SIGNATURE-----
-
---ZBNTQTtPRCz93PiT--
