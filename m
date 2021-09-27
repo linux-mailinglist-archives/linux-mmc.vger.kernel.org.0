@@ -2,103 +2,89 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6513541A309
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 Sep 2021 00:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D82441A30B
+	for <lists+linux-mmc@lfdr.de>; Tue, 28 Sep 2021 00:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237882AbhI0WeE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 Sep 2021 18:34:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57986 "EHLO
+        id S237861AbhI0WeH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 Sep 2021 18:34:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237875AbhI0WeC (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Sep 2021 18:34:02 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE93DC06176E
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Sep 2021 15:32:21 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id i4so83801719lfv.4
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Sep 2021 15:32:21 -0700 (PDT)
+        with ESMTP id S237907AbhI0WeG (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Sep 2021 18:34:06 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AE82C06176C
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Sep 2021 15:32:28 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id m3so84286470lfu.2
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Sep 2021 15:32:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=DMB4uEvQ0xVrD8Va6J2iEK6E/SkN/sPqQLy12BaukGc=;
-        b=Ocvt4nNiCJOqVLkC9W3p356vc5csAvL5pLJ13h8XPW8trbNtFaIUVNv7mumrKE9Lta
-         gcCk7oDxWmM17/f/NKWtizEG59pXAjMXZQmltDRXTFj3dWjxCl9rTft57VO6li4yWr1B
-         AbgIH2WytDlNVw1rF+XJL3Nj8cLUzfBRtGy87wKrFtJ6Af1WqhVWn6eooD+BFppmLQ7b
-         TkN603eiWwcAInfD0bsL7XyJR9EUqpVbiZcyyrgOIfwOmlNDHUU57SzMeMZocmp8u3qw
-         2RACZ5DcBDyb6B4v2a2dkwGPSH9VyfLTowxSy/obkHqqfb7MxOKvt9jNXTEH4YRudCGS
-         mvXw==
+        bh=SAV2dI3X88ydfOMXbonZID2jQP48rETdyvNKxKLYNPg=;
+        b=iOQKOZoBWu6aAtqdhuJBCPRE0R9IxoWYPjReXHRRDRkl5u0y3z+S++TOtHmkW418HH
+         k+AXre6ePRj3ux1vuM+IBe/IHdZp31blTPXkVv00rYvqmvbSVz2Puuo6XN9q/SU0yJSP
+         U9AnY2+DFE+bV4bYhz5raBwMjZSqYV3kTXOscgQyeiH+MxKkNTk1/rSJdEQM5uRMNhrr
+         NFwkFu84W+kT5iiMt7st56R0oBbwGZ0lQd9/XVCy83d27KY7VCu3pheHI0PzUyhOcIPt
+         x3UhcbrX4yIJLF/u8CsrGeGbHhfBS4MXjrSNbyjuCAzqmOQZqbS4VqvYDx1a4f3rgLxj
+         jWOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=DMB4uEvQ0xVrD8Va6J2iEK6E/SkN/sPqQLy12BaukGc=;
-        b=kD6YUNkDwBOSsuRQWGgyf7hgBgM6BPwYHiRUE7yOxe/X0fm+Oin7VPKHSIE+A1ABas
-         FAHaSlqb6feB5M5o/BnQ7k18H5nbWAKneGCkFcVZoW3R5lspKYrGToKoFHM5cWUvQILx
-         wkveBq8Fynqmfmj6kCeZ5U9vn7V+mUO6WlTj+8Uso+Ni3sxRp1sIAtRSsVG8fui86ibF
-         JSO6cjQbQgk+AaazRbxdYIJJNXq+KrIvVTod5eYMcXRiDoD6xvFnWzxxHTaWgyKE2fI2
-         Hooda+uVIt9r9S58X3P1QZyglxC/naiGWguF+U9wXgwNbwl2idiWAtB9oJ8+vHIdBmqS
-         sU1w==
-X-Gm-Message-State: AOAM531QxO4DpSVo0MAfhtKSws+pNRoQTLghB0dghKJgkJ2+92WJQpaw
-        y0sl5EV6/uRHV5ZM9BIjSQi7m4OYjaqjJ5iPrWtaMQ==
-X-Google-Smtp-Source: ABdhPJy5S/UJseOoADDBSALYznDfpb/mX97baRse3NaikYI0hAJV3/+tDHz8WgddNqOPuo4UZWWx6twW/GK4Tjgi138=
-X-Received: by 2002:ac2:4157:: with SMTP id c23mr2148581lfi.184.1632781940116;
- Mon, 27 Sep 2021 15:32:20 -0700 (PDT)
+        bh=SAV2dI3X88ydfOMXbonZID2jQP48rETdyvNKxKLYNPg=;
+        b=cRsNHMT7TPlOArr9SMrRIzTHZofP5tCfMFs9LoRElwpwh+0qtNYmWlIDjWWeoEk6GG
+         F8INbwa3ayTPqGlUR6eVasPh8kSQycmSiJJI9O92NEEL5MugcNBY1+dngQU7Stm3EjcJ
+         lFwAhBR0JFHzjzmx+clNKgxfz/iGu3BsNQPBi0OtR6H61a4kj6r+a6n5P68XNfP/WS7l
+         r+Rrv0epfgjEzEpBZG7YE01WERUfcE6fRmsl7aefPSF42vxYBoGQw7ZXLUJu9zHqow2z
+         fR5Vw35sajJUz+jEfeUusi7G5HRgTpi4+f5jyHCLl8/5qrog+0JdcRr+vallXxSri1H5
+         /tgA==
+X-Gm-Message-State: AOAM531Wsu1aL4ZToGyYZxEDyO1C2m4hWG4fcZd+gJ3KD8z7Qdb7DFGC
+        YS03bj7JbGD1mIB67JiUwxlsOsOzIk7/VvYgZerZtQ==
+X-Google-Smtp-Source: ABdhPJxKf8OveAlrAasR+aFk/YGcU6+uIQU0IZmKf/y0+7GbA0Rb/fU7JxpeqlFoOuE6gM97daTIsD26XiHsH04vjDs=
+X-Received: by 2002:a05:651c:213:: with SMTP id y19mr2270930ljn.273.1632781946357;
+ Mon, 27 Sep 2021 15:32:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210924073441.7835-1-tony@atomide.com>
-In-Reply-To: <20210924073441.7835-1-tony@atomide.com>
+References: <20210924082851.2132068-1-claudiu.beznea@microchip.com>
+In-Reply-To: <20210924082851.2132068-1-claudiu.beznea@microchip.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 28 Sep 2021 00:31:44 +0200
-Message-ID: <CAPDyKFqnJw+D307X93TdLagtnratuMM7Fwi=qceedA9J=Cn9ww@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: sdhci-omap: Document ti,non-removable
- property as deprecated
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.chunyan@linaro.org>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
+Date:   Tue, 28 Sep 2021 00:31:50 +0200
+Message-ID: <CAPDyKFptb5infBgd1zEQC03kH3Z2sO8zvxV6LMO1fLtk5NZFkw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mmc: sdhci-of-at91: fix for shdci-of-at91
+To:     Claudiu Beznea <claudiu.beznea@microchip.com>
+Cc:     Eugen Hristev <eugen.hristev@microchip.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
         linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        DTML <devicetree@vger.kernel.org>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 24 Sept 2021 at 09:34, Tony Lindgren <tony@atomide.com> wrote:
+On Fri, 24 Sept 2021 at 10:29, Claudiu Beznea
+<claudiu.beznea@microchip.com> wrote:
 >
-> Nowadays the standard non-removable property should be used, but we
-> still need to parse the ti,non-removable too. Let's document it as a
-> deprecated property.
+> Hi,
 >
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> This series adds a fix for sdhci-of-at91 driver (patch 1/2). Along with
+> it patch 2/2 replaces a while loop + timeout with read_poll_timeout().
+>
+> Changes in v2:
+> - use read_poll_timeout() in patch 1/2
+> - add patch 2/2
+>
+> Claudiu Beznea (2):
+>   mmc: sdhci-of-at91: wait for calibration done before proceed
+>   mmc: sdhci-of-at91: replace while loop with read_poll_timeout
+>
+>  drivers/mmc/host/sdhci-of-at91.c | 22 +++++++++++-----------
+>  1 file changed, 11 insertions(+), 11 deletions(-)
+>
 
-Applied for next, thanks!
+Applied for fixes and by adding tags for stable, thanks!
 
 Kind regards
 Uffe
-
-
-> ---
->  Documentation/devicetree/bindings/mmc/sdhci-omap.txt | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt b/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
-> @@ -28,6 +28,9 @@ Optional properties:
->                 DMA specifiers listed in dmas. The string naming is to be "tx"
->                 and "rx" for TX and RX DMA requests, respectively.
->
-> +Deprecated properties:
-> +- ti,non-removable: Compatible with the generic non-removable property
-> +
->  Example:
->         mmc1: mmc@4809c000 {
->                 compatible = "ti,dra7-sdhci";
-> --
-> 2.33.0
