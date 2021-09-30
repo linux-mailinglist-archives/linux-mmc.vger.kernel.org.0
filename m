@@ -2,169 +2,76 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C11841DFB9
-	for <lists+linux-mmc@lfdr.de>; Thu, 30 Sep 2021 19:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADFE041E42A
+	for <lists+linux-mmc@lfdr.de>; Fri,  1 Oct 2021 00:57:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349265AbhI3RIc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 30 Sep 2021 13:08:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35150 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349021AbhI3RIc (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 30 Sep 2021 13:08:32 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 01C07617E6;
-        Thu, 30 Sep 2021 17:06:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633021609;
-        bh=qB28pyd3G9W1jKU1sJvEmXSTCB/fM9hWT/YO9coO46Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lD57I7buZC1D+E/nzOsGe0U6OnyD8kIUuCz9uhE3hVGiL5ivBjtmL2P/Nn7oFn8+A
-         VXrPZctdXHc0YQ1Tf3KPhhEsTj9EZhra5W8tNNXYZcYUC65XFTIFCR2Uz23fbx3wew
-         vW0IUupDXZrundBUHGdNgTD4y+nj69kh1XiadvJ+RF7V0qlKXy9p1qY5F/Boswqb9T
-         8TkWRFWlsqmJiH2FIGnVy30ojkH9FuZuK1q6/1GF9lRs0m2rDrskD8+arwKi/Tm9JS
-         IcZoholK/+5AHdWXzh16Ff5a7TEYZolj28BmojKYyw0oV3eB6hCkulag+JZD8mHy9X
-         9dBgrdTdFLtMA==
-Received: by pali.im (Postfix)
-        id A4204E79; Thu, 30 Sep 2021 19:06:46 +0200 (CEST)
-Date:   Thu, 30 Sep 2021 19:06:46 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>
-Subject: Re: [PATCH v7 08/24] wfx: add bus_sdio.c
-Message-ID: <20210930170646.cffsuytdpa72izbh@pali>
-References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
- <20210920161136.2398632-9-Jerome.Pouiller@silabs.com>
- <CAPDyKFp2_41mScO=-Ev+kvYD5xjShQdLugU_2FTTmvzgCxmEWA@mail.gmail.com>
- <19731906.ZuIkq4dnIL@pc-42>
+        id S1348711AbhI3W7R (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 30 Sep 2021 18:59:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40454 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348262AbhI3W7P (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 30 Sep 2021 18:59:15 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF84C061773
+        for <linux-mmc@vger.kernel.org>; Thu, 30 Sep 2021 15:57:31 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id b20so31787422lfv.3
+        for <linux-mmc@vger.kernel.org>; Thu, 30 Sep 2021 15:57:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
+        b=NbyMdHEZeBs3sGq/yDHhFme6/Fat2fIEs1FbuecL1VGVLNPFVKU5MMEzqqtmtv3lrT
+         LyW5uhTxAor2u02W/ObGaIVKkso13EmNkPeqEKWvp/MUMhviRWbZ8nckHCYJ556NudOp
+         CVsQD4dF9ZylhNVdYAbBqX0A0zUyE0K2pGMLE76ziizR4sORoxcFl/sLgtHo3wxalxgg
+         zVWop8qYFvchibQzEbMROBdDHjlzHZVZJ1FRfybhb6wrSwetzJb9THEFmdLn6gkHaAVz
+         dFyBj/yMHcUaz8lAQTBNC3OUOyaayX15aeEcmR3hIb43fnzJKw76ohBZCKh7LDPECDvY
+         Mt4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
+        b=aFkQ6Rmgxxt4qCG3PSJPWQE40V2V63kE0wfz2cWcwguhLLOYm3GDpar4JDMNbVey06
+         45Ro+hw9GNBCvAbYy+MC7MbF7gesPpzH49zjiiLDcdJAq4w9n5rZawodPRtK0CeXlfj1
+         0+TTxaRoyENrqR2ycafMVDCCfdXjKyGfSb9yDoKnZtUqm0LdAacziO816gNhmApraM97
+         2n+RtI++OFGXuVRJn4P37PYADLX2NzdJNP4dSb9Fh7SxRK0pwPP3SzFYTkLNwuvhFvkm
+         ykG/jzBNVQhLc5AZ7pfUdMK2zL/JwksPOXRbGuDBb/DVSQZgESGm6nODQasOisVjCMCe
+         jP0Q==
+X-Gm-Message-State: AOAM530D2SPQCSO5sYD5+aD4C/HXbALcLZebAkrKi/KRlgjicp4uREhZ
+        3khuamu8xp9qGvxdPeEbE+/zdv5umACBAyaXjp4=
+X-Google-Smtp-Source: ABdhPJwtAjakrk22PhsocMynsw1dcpQi8Yyjww/qtw286RJir5/Sf5h95h400OE8CslcguyIOaDpjCBWapvMI27/7k0=
+X-Received: by 2002:a2e:5705:: with SMTP id l5mr8854699ljb.456.1633042649694;
+ Thu, 30 Sep 2021 15:57:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <19731906.ZuIkq4dnIL@pc-42>
-User-Agent: NeoMutt/20180716
+Received: by 2002:a05:6512:5d8:0:0:0:0 with HTTP; Thu, 30 Sep 2021 15:57:29
+ -0700 (PDT)
+Reply-To: southwestloanco59@gmail.com
+From:   SOUTHWESTLOANCO <saniabdullahinng2020@gmail.com>
+Date:   Thu, 30 Sep 2021 15:57:29 -0700
+Message-ID: <CA+3X9TxSf18dxD51aJOg_UrukfudS2Vv1PZk=HxC5aHG_Y0JQg@mail.gmail.com>
+Subject: Dear owner,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thursday 30 September 2021 18:51:09 Jérôme Pouiller wrote:
-> Hello Ulf,
-> 
-> On Thursday 30 September 2021 12:07:55 CEST Ulf Hansson wrote:
-> > On Mon, 20 Sept 2021 at 18:12, Jerome Pouiller
-> > <Jerome.Pouiller@silabs.com> wrote:
-> > >
-> > > From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> > >
-> > > Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> > > ---
-> > >  drivers/net/wireless/silabs/wfx/bus_sdio.c | 261 +++++++++++++++++++++
-> > >  1 file changed, 261 insertions(+)
-> > >  create mode 100644 drivers/net/wireless/silabs/wfx/bus_sdio.c
-> > >
-> > > diff --git a/drivers/net/wireless/silabs/wfx/bus_sdio.c b/drivers/net/wireless/silabs/wfx/bus_sdio.c
-> > 
-> > [...]
-> > 
-> > > +
-> > > +static int wfx_sdio_probe(struct sdio_func *func,
-> > > +                         const struct sdio_device_id *id)
-> > > +{
-> > > +       struct device_node *np = func->dev.of_node;
-> > > +       struct wfx_sdio_priv *bus;
-> > > +       int ret;
-> > > +
-> > > +       if (func->num != 1) {
-> > > +               dev_err(&func->dev, "SDIO function number is %d while it should always be 1 (unsupported chip?)\n",
-> > > +                       func->num);
-> > > +               return -ENODEV;
-> > > +       }
-> > > +
-> > > +       bus = devm_kzalloc(&func->dev, sizeof(*bus), GFP_KERNEL);
-> > > +       if (!bus)
-> > > +               return -ENOMEM;
-> > > +
-> > > +       if (!np || !of_match_node(wfx_sdio_of_match, np)) {
-> > > +               dev_warn(&func->dev, "no compatible device found in DT\n");
-> > > +               return -ENODEV;
-> > > +       }
-> > > +
-> > > +       bus->func = func;
-> > > +       bus->of_irq = irq_of_parse_and_map(np, 0);
-> > > +       sdio_set_drvdata(func, bus);
-> > > +       func->card->quirks |= MMC_QUIRK_LENIENT_FN0 |
-> > > +                             MMC_QUIRK_BLKSZ_FOR_BYTE_MODE |
-> > > +                             MMC_QUIRK_BROKEN_BYTE_MODE_512;
-> > 
-> > I would rather see that you add an SDIO_FIXUP for the SDIO card, to
-> > the sdio_fixup_methods[], in drivers/mmc/core/quirks.h, instead of
-> > this.
-> 
-> In the current patch, these quirks are applied only if the device appears
-> in the device tree (see the condition above). If I implement them in
-> drivers/mmc/core/quirks.h they will be applied as soon as the device is
-> detected. Is it what we want?
-> 
-> Note: we already have had a discussion about the strange VID/PID declared
-> by this device:
->   https://www.spinics.net/lists/netdev/msg692577.html
+-- 
+Good day,
+          Do you need a loan ? We offer any kind of loan to repay in
+6months with just 2% interest
 
-Yes, vendor id 0x0000 is invalid per SDIO spec. So based on this vendor
-id, it is not possible to write any quirk in mmc/sdio generic code.
+Kindly Reply with below information
 
-Ulf, but maybe it could be possible to write quirk based on OF
-compatible string?
+NAME...............
+ADDRESS..........
+OCCUPATION....
+AGE...................
+PHONE..............
+AMOUNT NEEDED......
 
-Jérôme, could you please notify your hw departement that this sdio card
-does not comply with SDIO spec due to incorrect vendor id stored in hw,
-so they could fix this issue in next product, by proper allocation of
-vendor id number from USB-IF (*)? I know that for existing products it
-is not possible to fix, but it can be fixed in next generation of
-products based on used SDIO IP.
+Regards
 
-(*) - USB-IF really allocates SDIO vendor ids, see:
-https://lore.kernel.org/linux-mmc/20210607140216.64iuprp3siggslrk@pali/
+Contact  Mr Gary Edward +13182955380
 
-> 
-> [...]
-> > > +
-> > > +static const struct sdio_device_id wfx_sdio_ids[] = {
-> > > +       { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILABS_WF200) },
-> > > +       { },
-> > > +};
-> > > +MODULE_DEVICE_TABLE(sdio, wfx_sdio_ids);
-> > > +
-> > > +struct sdio_driver wfx_sdio_driver = {
-> > > +       .name = "wfx-sdio",
-> > > +       .id_table = wfx_sdio_ids,
-> > > +       .probe = wfx_sdio_probe,
-> > > +       .remove = wfx_sdio_remove,
-> > > +       .drv = {
-> > > +               .owner = THIS_MODULE,
-> > > +               .of_match_table = wfx_sdio_of_match,
-> > 
-> > Is there no power management? Or do you intend to add that on top?
-> 
-> It seems we already have had this discussion:
-> 
->   https://lore.kernel.org/netdev/CAPDyKFqJf=vUqpQg3suDCadKrFTkQWFTY_qp=+yDK=_Lu9gJGg@mail.gmail.com/#r
-> 
-> In this thread, Kalle said:
-> > Many mac80211 drivers do so that the device is powered off during
-> > interface down (ifconfig wlan0 down), and as mac80211 does interface
-> > down automatically during suspend, suspend then works without extra
-> > handlers.
-> 
-> 
-> -- 
-> Jérôme Pouiller
-> 
-> 
+Remittance Department southwestloanco59@gmail.com
