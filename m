@@ -2,121 +2,150 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1960D41DC04
-	for <lists+linux-mmc@lfdr.de>; Thu, 30 Sep 2021 16:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C85541DF39
+	for <lists+linux-mmc@lfdr.de>; Thu, 30 Sep 2021 18:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351761AbhI3OKl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 30 Sep 2021 10:10:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59456 "EHLO
+        id S1352180AbhI3QlV (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 30 Sep 2021 12:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240149AbhI3OKl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 30 Sep 2021 10:10:41 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1A0C06176A;
-        Thu, 30 Sep 2021 07:08:58 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id b15so25730137lfe.7;
-        Thu, 30 Sep 2021 07:08:58 -0700 (PDT)
+        with ESMTP id S1352186AbhI3QlV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 30 Sep 2021 12:41:21 -0400
+Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00854C061770
+        for <linux-mmc@vger.kernel.org>; Thu, 30 Sep 2021 09:39:37 -0700 (PDT)
+Received: by mail-ua1-x942.google.com with SMTP id t36so4698532uad.4
+        for <linux-mmc@vger.kernel.org>; Thu, 30 Sep 2021 09:39:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=FbYwtZf63HA1feBdReYPazjfCwECYf7J/LcnagkS5eU=;
-        b=qRQIo8RwUav2UmTra9oF6epGn59qVcbfkWvdDGVDc/I3VvWeddwr1dqwKGHN43kWcO
-         DaknpPTwDGNSY0qj/vuZMQ+EkFjjT/DDyA8yAVbb5t8+cbMVH3ESCPkcYm04Ck8YWr43
-         zrplPFlPo+zCWrz4Vd8LF+IXnAG5rtwSZu7cV47thKqF865BwfegPZ11umUl0wvxpi3u
-         69cI9QAnuHM4T4curizIUlc+msZ3JMRXmJ23U1OoUXyP/pCpqx5znnf8RaSyTf/Iij/X
-         R01C7FPFx014oNqZOzPeCr4tdIky5Bmc4sGwQxivsb0fd368heHcy8U6CVbuaHa44hXZ
-         JOrg==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=o3SZ3/8xgB3svMq+UXE3vgW9sKtG91px1UYnaI00T4dLP05ECFH5EVSAWUR78xdR5n
+         ebHrIeHXVPRJa791OB2s/aZJdtzWdPaX5sbadOL24EflkgZ6O2rEvsBWvojGxJeeST6T
+         eb+k8lxZZa/bWNfHNPwQHvNUM1YEFh4fUMO861Pe8Wc6pfqqL72s+8eCO53Msweav+mv
+         XfoVjVScWXWc0hGgmBVMNFkqROc3jDhXxKvwZxz1ZkBwNJLCRx7xYOcAqQ0tzz+Q5cSM
+         PuhaOVDUO2vb8ybQ6jSikOKS/AFhEN/8Lz75PuCS5qgomh+uSMNWQBtsXYMKNbf3IvW6
+         pZbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=FbYwtZf63HA1feBdReYPazjfCwECYf7J/LcnagkS5eU=;
-        b=6510RLwK4zaHnLALzQPRb0fZ+jorJGzDatK7CXwDY9b1RcOwBxjZs7DyYa1SW6hfvm
-         NEGOcBL7VqUM9q3PVlA1rIan8r1Rz2pMgzMrHDCiiyXTcMJMJWCJBZxdPGZFfkDvYTm4
-         0Pq0whB+bTFhUOtBg5t4ikc5S/y+DELxnDA2UlowqMU6ULT8E59xOOiVx5qJL5ahl7zz
-         wausMrfD/z/RPsEtitd5lETeRuNBCht6cmsWQeDppOtpkhKDShxuf3lG1IdpXvZ2Xw0j
-         /bns4RO6yly2xe/UlyBaPlhrXknmzgbU7tCKxcOXEj3x8hM+YJW4tZ7sSetfpvqnGa4Y
-         UO4A==
-X-Gm-Message-State: AOAM532RfvOoTB/pMV4xxJhBxRMAYcg5gRdF4lI6uYoL3/mCPi007YSY
-        dhxVHCcwRGgvtExMVPBmNbI=
-X-Google-Smtp-Source: ABdhPJw2MpyVxuwrGHjgPVIzNI4sHyolChi3D2RfJQLhexFRsDLjbr061I9VfMnIzN8pIMuESKq7Kw==
-X-Received: by 2002:a2e:5046:: with SMTP id v6mr6445920ljd.368.1633010931799;
-        Thu, 30 Sep 2021 07:08:51 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-80-108.dynamic.spd-mgts.ru. [46.138.80.108])
-        by smtp.googlemail.com with ESMTPSA id r22sm357824lji.5.2021.09.30.07.08.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Sep 2021 07:08:51 -0700 (PDT)
-Subject: Re: [PATCH v13 16/35] usb: chipidea: tegra: Add runtime PM and OPP
- support
-To:     Peter Chen <peter.chen@kernel.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Nishanth Menon <nm@ti.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-pwm@vger.kernel.org,
-        linux-mmc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lucas Stach <dev@lynxeye.de>, Stefan Agner <stefan@agner.ch>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        David Heidelberg <david@ixit.cz>
-References: <20210926224058.1252-1-digetx@gmail.com>
- <20210926224058.1252-17-digetx@gmail.com> <20210930140630.GA6697@Peter>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <e8eb0f29-2ffb-b1d8-34bf-7dff1e8ba1f8@gmail.com>
-Date:   Thu, 30 Sep 2021 17:08:50 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=5LyPI7HWx4biha1A8GCZolMBn6qKIrGZ88kssFlKu/K7jTX+IA9/RpZnXiaFYm7tM3
+         aEAYAUt4DS2WWzn6YVcpTnc5cI4tqEMvDoCBrU1pvYRunu1LqT1AHg7vKurSoM18Z+27
+         8z9uKnRPcp5u7Ib4nwFKjaIDNmF8BZIjKkY5bzLRfp18KeKUyY7pGZTwuSE6K3YhphtV
+         HcdRwycDorfuEOBZ+lCwgMzLSAMoB7e0f9LW3W4EaX0z6LIG3zu5mkD76DiS+GieUheN
+         WBekCvBxu8xPtgcdZFIioajNsyh+W1wDQILNisBstbe9lFy033pKyx781Kx3Z80IH41R
+         bt1Q==
+X-Gm-Message-State: AOAM531fCSrbxxJmA5aWlJ8IRjPlHu6kA/O6D5r+LI544LH15C+lJ6DH
+        6Mr83qkLYS+f21w9AXfxVyNory1EA+02H169llM=
+X-Google-Smtp-Source: ABdhPJx0AmgkV9cE7YZrAYTucsDxPOj7iGMkrooBstJ2APLp74YQnUFP0J0PcWONym4DRiNtFFvbKXZFoRlaXsy60JM=
+X-Received: by 2002:ab0:5602:: with SMTP id y2mr6724983uaa.120.1633019977032;
+ Thu, 30 Sep 2021 09:39:37 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210930140630.GA6697@Peter>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a59:ab2e:0:b0:22d:7f44:603a with HTTP; Thu, 30 Sep 2021
+ 09:39:36 -0700 (PDT)
+Reply-To: irenezakari24@gmail.com
+From:   Irene zakari <irenezakari88@gmail.com>
+Date:   Thu, 30 Sep 2021 09:39:36 -0700
+Message-ID: <CAFT8PFG_8981ivC4O1EnUpb=bxUAD3b8Ry0XqxnGDqbSoBpVzQ@mail.gmail.com>
+Subject: PLEASE I NEED YOUR HELP
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-30.09.2021 17:06, Peter Chen пишет:
-> On 21-09-27 01:40:39, Dmitry Osipenko wrote:
->> The Tegra USB controller belongs to the core power domain and we're going
->> to enable GENPD support for the core domain. Now USB controller must be
->> resumed using runtime PM API in order to initialize the USB power state.
->> We already support runtime PM for the CI device, but CI's PM is separated
->> from the RPM managed by tegra-usb driver. Add runtime PM and OPP support
->> to the driver.
->>
->> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
->> ---
->>  drivers/usb/chipidea/ci_hdrc_tegra.c | 53 ++++++++++++++++++++++++----
->>  1 file changed, 46 insertions(+), 7 deletions(-)
-...
-> 
-> I got below compile error if only compile this file, I think previous patches
-> should include the definition, if that, feel free to add my ack to this
-> patch.
-> 
-> Acked-by: Peter Chen <peter.chen@kernel.org>
-> 
-> drivers/usb/chipidea/ci_hdrc_tegra.c:308:8: error: implicit declaration of function ‘devm_tegra_core_dev_init_opp_table_common’;
-> did you mean ‘devm_tegra_core_dev_init_opp_table’? [-Werror=implicit-function-declaration]
->   308 |  err = devm_tegra_core_dev_init_opp_table_common(&pdev->dev);
->       |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->       |        devm_tegra_core_dev_init_opp_table
+Hello   ..
 
-That's correct, devm_tegra_core_dev_init_opp_table_common() is added by
-an earlier patch of this series. Thank you!
+How do you do over there? I hope you are doing well?
+
+My name is Irene. (24 years), i am single, from Gambia, the only child
+of late Eng. Bernard Bakary Zakaria. the Director of Bajam Enterprise
+(Building Construction Company in The Gambia) also the CEO of Bernard
+Import and Export (GAMBIA).
+
+As a matter of fact my mother died when i was barely 4 years old
+according to my late father and because of the type of love he had for
+my mother made him to remain UN-married till he left the ghost..
+
+So after the death of my father as a result of assassinate, his brother (My
+Uncle) who is the purchasing and marketing sale manager of my late
+fathers company named (Mr. James Tokunbo Oriade Zakaria) wanted to
+convert all the properties and resources of my late father into his
+which i quarreled with him and it made him to lay his anger on me to
+the extent of hiring an assassins to kill me but to God be the glory i
+succeeded by making a way to Burkina faso for my dear life.
+Honestly i do live a fearful life even here in Burkina faso because of
+those Assassins coming after me .
+
+I would want to live and study in your country for my better future.
+because my father same blood brother wanted to force me into undecided
+marriage, just for me to leave my father home and went and live with
+another man I never know as he want to occupied all my father home
+and maybe to sold it as my father no longer alive, I'm the only child
+daughter my father born, '' but he don't know that i am not
+interesting in any of my father properties or early marriage for now,
+because i still have future to think about and to focus on my studies
+first as i was doing my first year in the University before the death
+of my father.
+
+Actually what I want to discuss with you is about my personal issue
+concern funds my late father deposited in a bank outside my country,
+worth $4.5 million united state dollars. i need your assistance to
+receive and invest this funds in your country.
+
+Please help me, I am sincere to you and I want to be member of your
+family as well if you wouldn't mind to accept me and lead me to better
+future in your country.
+
+All the documents the bank issue to my father during time of deposit
+is with me now.
+I already notify the bank on phone about the death of my father and
+they are surprise for the news and accept that my father is their good
+customer.
+I will be happy if this money can be invested in any business of your
+choice and it will be under your control till i finished my education,
+also I'm assuring you good relationship and I am ready to discuss the
+amount of money to give you from this money for your help.
+
+Therefore, I shall give you the bank contact and other necessary
+information in my next email if you will only promise me that you will
+not/never betray and disclosed this matter to anybody, because, this
+money is the only hope i have for survival on earth since I have lost
+my parents.
+
+Moreover I have the FUND PLACEMENT CERTIFICATE and the DEATH
+CERTIFICATE here with me, but before I give you further information, i
+will like to know your full data
+
+1. Full Name: ........................
+2. Address: ..................
+3. Nationality: ........... Sex................
+4. Age:........... Date of Birth:................
+5. Occupation:...................
+.....
+6. Phone: ........... Fax:.........................
+7. State of Origin: .......Country:..............
+8. Occupation:...................
+................
+9. Marital status........... E-mail address's: ............
+10. Scan copy of your ID card or Driving License/Photo:............
+DECLARATION:
+
+so that i will be fully sure that i am not trusting the wrong person.
+and it will also give me the mind to send you the bank contact for you
+to communicate with them for more verification about this money. and
+to know you more better.
+
+Meanwhile, you can reach me through my pastor,his name is Pastor Paul
+any time you call, tell him that you want to speak with me because
+right now i am living in the church here in Burkina faso and i don't
+want to stay here any longer,
+send for me to speak with you his phone number is this(+226 75213646)
+
+I will stop here and i will be waiting for your reply and feel free
+ask any thing you want to know about me.
+Please help me, I would be highly appreciated
+Have nice day.
+From Irene
