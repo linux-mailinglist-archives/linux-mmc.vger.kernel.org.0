@@ -2,71 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E69F341EC37
-	for <lists+linux-mmc@lfdr.de>; Fri,  1 Oct 2021 13:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7551041EC6C
+	for <lists+linux-mmc@lfdr.de>; Fri,  1 Oct 2021 13:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354039AbhJALg7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 1 Oct 2021 07:36:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41312 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354021AbhJALg4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 1 Oct 2021 07:36:56 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 973F6C0613E2
-        for <linux-mmc@vger.kernel.org>; Fri,  1 Oct 2021 04:35:12 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id s17so32995616edd.8
-        for <linux-mmc@vger.kernel.org>; Fri, 01 Oct 2021 04:35:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=kb6MbLUy++O6PNHhKSFPx9v4fFtwpvxJeNblR4kji6+6qq2Lucl0Bos7Wr8pcLX+hO
-         tRyb9xiWVR8p706SNC+HizJNgSL5UH7etOYT4KJNUPAxZsx19kSXdlPSkzuaY1jTWaLY
-         4tzz18G2my1E8FkqDzcvEfU/fmLr7epbivZsMIbMD2QsJgHn219yKjZHacudF+1Otelk
-         Ps1x6eI3Y+KniUoXNyOSthjl8bPizc7o0PNNLM7mCUJWrsXs698IFJfmckZW2ZuwAS6o
-         Sx6QKffvmRb5RhKFnE364qOhRDY4B39bqiG8gRsgkqiSO/SRZOJpzUOpTrf/l9gFCHVc
-         XGiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=fwDJ5+EqwmLmh5l9jocMr18LErXEgiYEx3KWhZRS6hkQ5eemF5+ByCEm6nHUcx7+Px
-         E8Kge08wclnc/yNJZy83gahrVeqMw65s15cJ/cwJM1Z9MbyKb5UBg8wZ8VXdMsrNjy6K
-         8zBTatlmB7bv9d635qymtxeqiLuQgCk45eHB0BWM6UqMB8YSHdahkFvTXKpAnJ0TEVLS
-         3HfsWyuTrSwVW3fsJB8WS0EfEeKzkszbEsLd9hctDTn7LFMJ9wn4MqsMJTbFrRRzidNL
-         SXIbdKVTiVWhhcf9IvpK/o0RHCTt2nUOieyQDx5jEvsT885zGLDM9LVPBITbl8qeeCsx
-         JPWw==
-X-Gm-Message-State: AOAM531/fF0OiPYDsCVMB5hkzKy50O5qRS1lSybjyb9JkVwxFP1/nVB/
-        LLFfLKIzEs93q0/lVGh7ItnN67QCddfJKx52wAixcl+zNjcciQ==
-X-Google-Smtp-Source: ABdhPJxO5JZDMou4ZeNj31LReXKwuJbss5Bcqb0SVbR3DI9xevoj0I1eyLAyk/Sg0BjFpvAB7vI/ZitZ52WunSuQcUw=
-X-Received: by 2002:a17:906:3882:: with SMTP id q2mr5834865ejd.396.1633088100599;
- Fri, 01 Oct 2021 04:35:00 -0700 (PDT)
+        id S1354114AbhJALoQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 1 Oct 2021 07:44:16 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:33513 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354082AbhJALoN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 1 Oct 2021 07:44:13 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1633088549; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=dIrdlju3fVWX1YgwfatLNksAWCETMoXVhNoE8IO4bXc=; b=OkNdI7K6M4DWPGPOLUb0Gs3sIrCMqoFqWgsl3iCaZwFOlgXxWnuRA/HBsZLQIGXrk4Nzr6q9
+ BOikFxbbItjswa1Ov7AHHi7ru+Qjqa8NKA8TAh3PTl3SLlYzN5UMdJ+beyxgnCxJdGDgTTne
+ ZHLwwUrrSAtk39Izamf1wLMluxg=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyJiYTcxMiIsICJsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 6156f40a47d64efb6d324020 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 11:42:02
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 321FBC4360C; Fri,  1 Oct 2021 11:42:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A33EDC4338F;
+        Fri,  1 Oct 2021 11:41:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org A33EDC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org,
+        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v7 12/24] wfx: add hif_api_*.h
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
+        <20210920161136.2398632-13-Jerome.Pouiller@silabs.com>
+Date:   Fri, 01 Oct 2021 14:41:55 +0300
+In-Reply-To: <20210920161136.2398632-13-Jerome.Pouiller@silabs.com> (Jerome
+        Pouiller's message of "Mon, 20 Sep 2021 18:11:24 +0200")
+Message-ID: <875yuhkm4c.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a17:906:724a:0:0:0:0 with HTTP; Fri, 1 Oct 2021 04:34:58
- -0700 (PDT)
-Reply-To: joymat52@gmail.com
-From:   Joyce Thomas <tjoyc1234@gmail.com>
-Date:   Fri, 1 Oct 2021 04:34:58 -0700
-Message-ID: <CAF-RpUjEy3ZrsPpj7r5ZFKjGM=JQyOMzOcWwONVKJZrBckwU0Q@mail.gmail.com>
-Subject: ATTN:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello Dear
-My Name is Mr. Joyce Thomas. Contact me for more information on the
-transfer of ($7.9 million dollars) left by my late client from your
-Country. I want to present you as a business partner and next of kin
-of the fund. I will give you the details of this transaction, as soon
-as I hear from you. I need the information below:
-Full Name:
-Address:
-Occupation:
-Age:
-Personal Email:
-Personal Telephone:
-Best Regards,
-Mr.Joyce  Thomas
+Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
+
+> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>
+> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+
+[...]
+
+> --- /dev/null
+> +++ b/drivers/net/wireless/silabs/wfx/hif_api_cmd.h
+> @@ -0,0 +1,555 @@
+> +/* SPDX-License-Identifier: Apache-2.0 */
+
+I don't how I missed this earlier:
+
+hif_api_cmd.h:/* SPDX-License-Identifier: Apache-2.0 */
+hif_api_general.h:/* SPDX-License-Identifier: Apache-2.0 */
+hif_api_mib.h:/* SPDX-License-Identifier: Apache-2.0 */
+
+Apache-2.0 license is a blocker for me, see LICENSES/dual/Apache-2.0.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
