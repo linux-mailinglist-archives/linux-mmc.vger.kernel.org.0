@@ -2,129 +2,149 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 130F3426716
-	for <lists+linux-mmc@lfdr.de>; Fri,  8 Oct 2021 11:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2624426A7F
+	for <lists+linux-mmc@lfdr.de>; Fri,  8 Oct 2021 14:12:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238784AbhJHJrt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 8 Oct 2021 05:47:49 -0400
-Received: from mga06.intel.com ([134.134.136.31]:40097 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238853AbhJHJrs (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 8 Oct 2021 05:47:48 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10130"; a="287355769"
-X-IronPort-AV: E=Sophos;i="5.85,357,1624345200"; 
-   d="scan'208";a="287355769"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2021 02:45:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,357,1624345200"; 
-   d="scan'208";a="524978001"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.76]) ([10.237.72.76])
-  by fmsmga008.fm.intel.com with ESMTP; 08 Oct 2021 02:45:48 -0700
-Subject: Re: [PATCH v1 6/6] mmc: sdhci-pci: Remove dead code (rst_n_gpio et
- al)
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Eric Biggers <ebiggers@google.com>,
-        Raul E Rangel <rrangel@chromium.org>,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
-References: <20211005102430.63716-1-andriy.shevchenko@linux.intel.com>
- <20211005102430.63716-7-andriy.shevchenko@linux.intel.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <892a121b-dbfe-fdbc-f58d-08b9789ccaf8@intel.com>
-Date:   Fri, 8 Oct 2021 12:45:48 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.13.0
+        id S240715AbhJHMOo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 8 Oct 2021 08:14:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43768 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240374AbhJHMOn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 8 Oct 2021 08:14:43 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73126C061570
+        for <linux-mmc@vger.kernel.org>; Fri,  8 Oct 2021 05:12:48 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id u18so38236187lfd.12
+        for <linux-mmc@vger.kernel.org>; Fri, 08 Oct 2021 05:12:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=unTpf7x1Zh6JRpmWN02YBcJMyEDfP5RqTCFbqPM8fdM=;
+        b=fLHObyHwvExZ2uwtIURuHTokmgPMLOoI13yXgx7J2tO4djlc/TRcIOGWD2AkkStj1R
+         kidKUiPwAWCHaHUq20y5+gpwFYknlcdxNmRi0vpts9ewZxGw0iCuV5J3WJK94tCQoyCw
+         fIusWF7VSQ7fHLBaEou0EfT080Y+6nncMMLvoHRX5qyfCtcmxxP+AAsJJz5ZXccL4z6r
+         YX30n2a8ry6i39tzQXiSqGmoSe05IOWcOdup60gsUKum0WVr8VFdfvdUcM1m5GCO/Qqj
+         c7yZprUqDRYcRRhLcI06TxKeHJAEczWJDSLq7sqt/tsH0JvKno+lKxRG2TlviBjomxho
+         dy2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=unTpf7x1Zh6JRpmWN02YBcJMyEDfP5RqTCFbqPM8fdM=;
+        b=BulNRciFUf8zOYw4i+haMxyijkuwXcHvISHK/HTZqnaYO/XQ9HE4ShwW6uroWtpPyj
+         ND8jVXFStlQVmL2hba/CySwKWnJ2tsPeKJ744fCAMfA4PiKwn4Dt/tIjYw1JfQqKXQu8
+         7bO5zRhwm9cpjKb8hHs3XdrK+WwFAv0hO6CZKZFaWve814xB6TivEFQe7/cOlvEplUdi
+         qYqFG3QiyXoUGMK+uuk+EE0WzTnptvNI0P6HC5j9rvpNgti4X3NsckHfBaz22R5T47AB
+         chGkKiyxYH4qoLLv1tGlf4RBaJmKqjYNzR9J8YVcbRt7aFRHHoFVbO0Hr9Wp/46WlGi9
+         22XA==
+X-Gm-Message-State: AOAM532F8ShfUotEB3h6jixcYXN8OR1bMFRvQ4D88+oyYYcu79dRxLUa
+        BuDhZebcb020l5Du4wx23xZIKJra59aIuHGTVCTlGg==
+X-Google-Smtp-Source: ABdhPJxf19NU+QPvfRT/N467g3ccGQlt314KORg+0xxNxgDfSfY7SuyLB1ZmTmPxF4MrWRNgXgPbZVRhZQtJoZbOAtc=
+X-Received: by 2002:a05:651c:4c9:: with SMTP id e9mr3216170lji.229.1633695166786;
+ Fri, 08 Oct 2021 05:12:46 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20211005102430.63716-7-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20211004024935.15326-1-shawn.guo@linaro.org>
+In-Reply-To: <20211004024935.15326-1-shawn.guo@linaro.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 8 Oct 2021 14:12:10 +0200
+Message-ID: <CAPDyKFrNq4J9TsyqXhXnQuxCotUPQE=4qjUQWk2bpNGvS7Rm4Q@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci: Map more voltage level to SDHCI_POWER_330
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 05/10/2021 13:24, Andy Shevchenko wrote:
-> There is no user of this member. Remove the dead code for good.
+On Mon, 4 Oct 2021 at 04:49, Shawn Guo <shawn.guo@linaro.org> wrote:
+>
+> On Thundercomm TurboX CM2290, the eMMC OCR reports vdd = 23 (3.5 ~ 3.6 V),
+> which is being treated as an invalid value by sdhci_set_power_noreg().
+> And thus eMMC is totally broken on the platform.
+>
+> [    1.436599] ------------[ cut here ]------------
+> [    1.436606] mmc0: Invalid vdd 0x17
+> [    1.436640] WARNING: CPU: 2 PID: 69 at drivers/mmc/host/sdhci.c:2048 sdhci_set_power_noreg+0x168/0x2b4
+> [    1.436655] Modules linked in:
+> [    1.436662] CPU: 2 PID: 69 Comm: kworker/u8:1 Tainted: G        W         5.15.0-rc1+ #137
+> [    1.436669] Hardware name: Thundercomm TurboX CM2290 (DT)
+> [    1.436674] Workqueue: events_unbound async_run_entry_fn
+> [    1.436685] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [    1.436692] pc : sdhci_set_power_noreg+0x168/0x2b4
+> [    1.436698] lr : sdhci_set_power_noreg+0x168/0x2b4
+> [    1.436703] sp : ffff800010803a60
+> [    1.436705] x29: ffff800010803a60 x28: ffff6a9102465f00 x27: ffff6a9101720a70
+> [    1.436715] x26: ffff6a91014de1c0 x25: ffff6a91014de010 x24: ffff6a91016af280
+> [    1.436724] x23: ffffaf7b1b276640 x22: 0000000000000000 x21: ffff6a9101720000
+> [    1.436733] x20: ffff6a9101720370 x19: ffff6a9101720580 x18: 0000000000000020
+> [    1.436743] x17: 0000000000000000 x16: 0000000000000004 x15: ffffffffffffffff
+> [    1.436751] x14: 0000000000000000 x13: 00000000fffffffd x12: ffffaf7b1b84b0bc
+> [    1.436760] x11: ffffaf7b1b720d10 x10: 000000000000000a x9 : ffff800010803a60
+> [    1.436769] x8 : 000000000000000a x7 : 000000000000000f x6 : 00000000fffff159
+> [    1.436778] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000ffffffff
+> [    1.436787] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff6a9101718d80
+> [    1.436797] Call trace:
+> [    1.436800]  sdhci_set_power_noreg+0x168/0x2b4
+> [    1.436805]  sdhci_set_ios+0xa0/0x7fc
+> [    1.436811]  mmc_power_up.part.0+0xc4/0x164
+> [    1.436818]  mmc_start_host+0xa0/0xb0
+> [    1.436824]  mmc_add_host+0x60/0x90
+> [    1.436830]  __sdhci_add_host+0x174/0x330
+> [    1.436836]  sdhci_msm_probe+0x7c0/0x920
+> [    1.436842]  platform_probe+0x68/0xe0
+> [    1.436850]  really_probe.part.0+0x9c/0x31c
+> [    1.436857]  __driver_probe_device+0x98/0x144
+> [    1.436863]  driver_probe_device+0xc8/0x15c
+> [    1.436869]  __device_attach_driver+0xb4/0x120
+> [    1.436875]  bus_for_each_drv+0x78/0xd0
+> [    1.436881]  __device_attach_async_helper+0xac/0xd0
+> [    1.436888]  async_run_entry_fn+0x34/0x110
+> [    1.436895]  process_one_work+0x1d0/0x354
+> [    1.436903]  worker_thread+0x13c/0x470
+> [    1.436910]  kthread+0x150/0x160
+> [    1.436915]  ret_from_fork+0x10/0x20
+> [    1.436923] ---[ end trace fcfac44cb045c3a8 ]---
+>
+> Fix the issue by mapping MMC_VDD_35_36 (and MMC_VDD_34_35) to
+> SDHCI_POWER_330 as well.
+>
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
 
-So this is dependent on patch 5 i.e. that patch removed the
-references to the code being removed in this patch.  Please
-make a note of that in the commit message.
+Applied for fixes and by adding a stable tag, thanks!
+
+Kind regards
+Uffe
 
 
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  drivers/mmc/host/sdhci-pci-core.c | 27 ---------------------------
->  drivers/mmc/host/sdhci-pci.h      |  2 --
->  2 files changed, 29 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-> index a4279437bb5f..6c284e07675e 100644
-> --- a/drivers/mmc/host/sdhci-pci-core.c
-> +++ b/drivers/mmc/host/sdhci-pci-core.c
-> @@ -1900,21 +1900,6 @@ int sdhci_pci_enable_dma(struct sdhci_host *host)
->  	return 0;
->  }
->  
-> -static void sdhci_pci_gpio_hw_reset(struct sdhci_host *host)
-> -{
-> -	struct sdhci_pci_slot *slot = sdhci_priv(host);
-> -	int rst_n_gpio = slot->rst_n_gpio;
-> -
-> -	if (!gpio_is_valid(rst_n_gpio))
-> -		return;
-> -	gpio_set_value_cansleep(rst_n_gpio, 0);
-> -	/* For eMMC, minimum is 1us but give it 10us for good measure */
-> -	udelay(10);
-> -	gpio_set_value_cansleep(rst_n_gpio, 1);
-> -	/* For eMMC, minimum is 200us but give it 300us for good measure */
-> -	usleep_range(300, 1000);
-> -}
-> -
->  static void sdhci_pci_hw_reset(struct sdhci_host *host)
->  {
->  	struct sdhci_pci_slot *slot = sdhci_priv(host);
-> @@ -2045,7 +2030,6 @@ static struct sdhci_pci_slot *sdhci_pci_probe_slot(
->  
->  	slot->chip = chip;
->  	slot->host = host;
-> -	slot->rst_n_gpio = -EINVAL;
->  	slot->cd_idx = -1;
->  
->  	host->hw_name = "PCI";
-> @@ -2071,17 +2055,6 @@ static struct sdhci_pci_slot *sdhci_pci_probe_slot(
->  			goto cleanup;
->  	}
->  
-> -	if (gpio_is_valid(slot->rst_n_gpio)) {
-> -		if (!devm_gpio_request(&pdev->dev, slot->rst_n_gpio, "eMMC_reset")) {
-> -			gpio_direction_output(slot->rst_n_gpio, 1);
-> -			slot->host->mmc->caps |= MMC_CAP_HW_RESET;
-> -			slot->hw_reset = sdhci_pci_gpio_hw_reset;
-> -		} else {
-> -			dev_warn(&pdev->dev, "failed to request rst_n_gpio\n");
-> -			slot->rst_n_gpio = -EINVAL;
-> -		}
-> -	}
-> -
->  	host->mmc->pm_caps = MMC_PM_KEEP_POWER;
->  	host->mmc->slotno = slotno;
->  	host->mmc->caps2 |= MMC_CAP2_NO_PRESCAN_POWERUP;
-> diff --git a/drivers/mmc/host/sdhci-pci.h b/drivers/mmc/host/sdhci-pci.h
-> index 8bb3b9c78589..5e3193278ff9 100644
-> --- a/drivers/mmc/host/sdhci-pci.h
-> +++ b/drivers/mmc/host/sdhci-pci.h
-> @@ -157,8 +157,6 @@ struct sdhci_pci_slot {
->  	struct sdhci_pci_chip	*chip;
->  	struct sdhci_host	*host;
->  
-> -	int			rst_n_gpio;
-> -
->  	int			cd_idx;
->  	bool			cd_override_level;
->  
-> 
-
+> Changes since RFC:
+> - Add a comment for 3.4 ~ 3.6V voltage range.
+>
+>  drivers/mmc/host/sdhci.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 8eefa7d5fe85..2d80a04e11d8 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -2042,6 +2042,12 @@ void sdhci_set_power_noreg(struct sdhci_host *host, unsigned char mode,
+>                         break;
+>                 case MMC_VDD_32_33:
+>                 case MMC_VDD_33_34:
+> +               /*
+> +                * 3.4 ~ 3.6V are valid only for those platforms where it's
+> +                * known that the voltage range is supported by hardware.
+> +                */
+> +               case MMC_VDD_34_35:
+> +               case MMC_VDD_35_36:
+>                         pwr = SDHCI_POWER_330;
+>                         break;
+>                 default:
+> --
+> 2.17.1
+>
