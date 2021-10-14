@@ -2,110 +2,84 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E7F842D9E3
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Oct 2021 15:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1976A42DA4D
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Oct 2021 15:26:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230199AbhJNNOk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Oct 2021 09:14:40 -0400
-Received: from mga14.intel.com ([192.55.52.115]:47571 "EHLO mga14.intel.com"
+        id S230467AbhJNN2W (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Oct 2021 09:28:22 -0400
+Received: from mga02.intel.com ([134.134.136.20]:28810 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230094AbhJNNOg (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 14 Oct 2021 09:14:36 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10136"; a="227955794"
+        id S231267AbhJNN2T (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 14 Oct 2021 09:28:19 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10136"; a="214838151"
 X-IronPort-AV: E=Sophos;i="5.85,372,1624345200"; 
-   d="scan'208";a="227955794"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2021 06:12:31 -0700
+   d="scan'208";a="214838151"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2021 06:26:14 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.85,372,1624345200"; 
-   d="scan'208";a="571327891"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.76]) ([10.237.72.76])
-  by fmsmga002.fm.intel.com with ESMTP; 14 Oct 2021 06:12:28 -0700
-Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: clear the buffer_read_ready to
- reset standard tuning circuit
-To:     haibo.chen@nxp.com, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org
-Cc:     shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com
-References: <1634206268-5416-1-git-send-email-haibo.chen@nxp.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <541668c6-ea4f-afa3-8ef4-9727c46bb2c6@intel.com>
-Date:   Thu, 14 Oct 2021 16:12:28 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.13.0
+   d="scan'208";a="626798350"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 14 Oct 2021 06:26:12 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id D82AF361; Thu, 14 Oct 2021 16:26:19 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Eric Biggers <ebiggers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Raul E Rangel <rrangel@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
+Subject: [PATCH v3 0/5]  mmc: sdhci-pci: Remove dead code and deduplicate
+Date:   Thu, 14 Oct 2021 16:26:08 +0300
+Message-Id: <20211014132613.27861-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-In-Reply-To: <1634206268-5416-1-git-send-email-haibo.chen@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 14/10/2021 13:11, haibo.chen@nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> To reset standard tuning circuit completely, after clear ESDHC_MIX_CTRL_EXE_TUNE,
-> also need to clear bit buffer_read_ready, this operation will finally clear the
-> USDHC IP internal logic flag execute_tuning_with_clr_buf, make sure the following
-> normal data transfer will not be impacted by standard tuning logic used before.
-> 
-> Find this issue when do quick SD card insert/remove stress test. During standard
-> tuning prodedure, if remove SD card, USDHC standard tuning logic can't clear the
-> internal flag execute_tuning_with_clr_buf. Next time when insert SD card, all
-> data related commands can't get any data related interrupts, include data transfer
-> complete interrupt, data timeout interrupt, data CRC interrupt, data end bit interrupt.
-> Always trigger software timeout issue. Even reset the USDHC through bits in register
-> SYS_CTRL (0x2C, bit28 reset tuning, bit26 reset data, bit 25 reset command, bit 24
-> reset all) can't recover this. From the user's point of view, USDHC stuck, SD can't
-> be recognized any more.
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+It appears that one of the supported platform magically worked with
+the custom IRQ handler (any hints how?) while having two PCB designs
+with an opposite CD sense level. Quirking it out reveals the code
+duplication and dead code.
 
-Apart from the request for a fixes tag:
+Patch 1 is code deduplication to save few LOCs.
+Patch 2-5 are dead code removals.
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+In v3:
+- dropped the fix as it has been applied (Ulf)
+- added tag (Adrian)
+- elaborated commit IDs with their short descriptions in patch 3 (Adrian)
+- corrected dependency in patch 5 (Adrian)
 
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index f18d169bc8ff..e658f0174242 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -1187,6 +1187,7 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
->  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
->  	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
->  	u32 ctrl;
-> +	int ret;
->  
->  	/* Reset the tuning circuit */
->  	if (esdhc_is_usdhc(imx_data)) {
-> @@ -1199,7 +1200,22 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
->  		} else if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
->  			ctrl = readl(host->ioaddr + SDHCI_AUTO_CMD_STATUS);
->  			ctrl &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
-> +			ctrl &= ~ESDHC_MIX_CTRL_EXE_TUNE;
->  			writel(ctrl, host->ioaddr + SDHCI_AUTO_CMD_STATUS);
-> +			/* Make sure ESDHC_MIX_CTRL_EXE_TUNE cleared */
-> +			ret = readl_poll_timeout(host->ioaddr + SDHCI_AUTO_CMD_STATUS,
-> +				ctrl, !(ctrl & ESDHC_MIX_CTRL_EXE_TUNE), 1, 50);
-> +			if (ret == -ETIMEDOUT)
-> +				dev_warn(mmc_dev(host->mmc),
-> +				 "Warning! clear execute tuning bit failed\n");
-> +			/*
-> +			 * SDHCI_INT_DATA_AVAIL is W1C bit, set this bit will clear the
-> +			 * usdhc IP internal logic flag execute_tuning_with_clr_buf, which
-> +			 * will finally make sure the normal data transfer logic correct.
-> +			 */
-> +			ctrl = readl(host->ioaddr + SDHCI_INT_STATUS);
-> +			ctrl |= SDHCI_INT_DATA_AVAIL;
-> +			writel(ctrl, host->ioaddr + SDHCI_INT_STATUS);
->  		}
->  	}
->  }
-> 
+In v2:
+- redone fix to use ->get_cd() instead of quirks (Adrian)
+- due to above transformed previous clean up to the current patch 2
+- added a new patch, i.e. patch 3
+- added commit IDs to patch 4 (Adrian)
+- mentioned dependencies on previous patches in patch 5 and 6 (Adrian)
+
+Andy Shevchenko (5):
+  mmc: sdhci: Deduplicate sdhci_get_cd_nogpio()
+  mmc: sdhci: Remove unused prototype declaration in the header
+  mmc: sdhci-pci: Remove dead code (struct sdhci_pci_data et al)
+  mmc: sdhci-pci: Remove dead code (cd_gpio, cd_irq et al)
+  mmc: sdhci-pci: Remove dead code (rst_n_gpio et al)
+
+ drivers/mmc/host/Makefile          |   1 -
+ drivers/mmc/host/sdhci-acpi.c      |  14 +--
+ drivers/mmc/host/sdhci-pci-core.c  | 152 +----------------------------
+ drivers/mmc/host/sdhci-pci-data.c  |   6 --
+ drivers/mmc/host/sdhci-pci.h       |   5 -
+ drivers/mmc/host/sdhci.c           |  19 ++++
+ drivers/mmc/host/sdhci.h           |   2 +-
+ include/linux/mmc/sdhci-pci-data.h |  18 ----
+ 8 files changed, 26 insertions(+), 191 deletions(-)
+ delete mode 100644 drivers/mmc/host/sdhci-pci-data.c
+ delete mode 100644 include/linux/mmc/sdhci-pci-data.h
+
+-- 
+2.33.0
 
