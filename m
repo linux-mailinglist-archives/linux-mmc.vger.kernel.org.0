@@ -2,84 +2,171 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCE3E4371F2
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Oct 2021 08:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CAE543724C
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Oct 2021 08:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231667AbhJVGlz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 22 Oct 2021 02:41:55 -0400
-Received: from mga02.intel.com ([134.134.136.20]:15458 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230238AbhJVGlx (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Fri, 22 Oct 2021 02:41:53 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10144"; a="216404805"
-X-IronPort-AV: E=Sophos;i="5.87,171,1631602800"; 
-   d="scan'208";a="216404805"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2021 23:39:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,171,1631602800"; 
-   d="scan'208";a="445165146"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.76]) ([10.237.72.76])
-  by orsmga006.jf.intel.com with ESMTP; 21 Oct 2021 23:39:34 -0700
-Subject: Re: [PATCH] MAINTAINERS: drop obsolete file pattern in SDHCI DRIVER
- section
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20211022054740.25222-1-lukas.bulwahn@gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <c8de5772-eee6-8417-6880-9fd9d82d5040@intel.com>
-Date:   Fri, 22 Oct 2021 09:39:33 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.13.0
+        id S230428AbhJVGzm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 22 Oct 2021 02:55:42 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:46784 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229609AbhJVGzl (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 Oct 2021 02:55:41 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20211022065322euoutp02a39f851bb55600f9d93a8a65fb4a5f04~wR8s4bRlj1844818448euoutp023
+        for <linux-mmc@vger.kernel.org>; Fri, 22 Oct 2021 06:53:22 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20211022065322euoutp02a39f851bb55600f9d93a8a65fb4a5f04~wR8s4bRlj1844818448euoutp023
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1634885602;
+        bh=/WKuMZXmyN9g3NUoCm7JeLh9gsgC7GPgu9pjRaESrVs=;
+        h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+        b=IXzqAY0/P9JdPo3iOVPdA8JTMz9ZO4qJgV+M0efjFQtsW7usZp3TISprKwfj5I+k2
+         h7D5gzUPTBxcoIrwftkqwpW/g5+O1aiXnGJS99M8nrPQY/BFt1spL6SYxQgOMayIx7
+         dw0hShiI9dccq0IaQ4KWD+4PZkaXe3+iJlB5Dd0I=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20211022065322eucas1p2d1662fc50f2c475b77f812245d0a0081~wR8srIpOM0066500665eucas1p2C;
+        Fri, 22 Oct 2021 06:53:22 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 28.E8.42068.2EF52716; Fri, 22
+        Oct 2021 07:53:22 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20211022065322eucas1p2f974ab996cb85da62b38f8509f4722d8~wR8sWRYrp0904009040eucas1p2s;
+        Fri, 22 Oct 2021 06:53:22 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20211022065322eusmtrp2d84e4c664b45faf173f9fc3e4f310589~wR8sVoBLC0774607746eusmtrp2j;
+        Fri, 22 Oct 2021 06:53:22 +0000 (GMT)
+X-AuditID: cbfec7f4-c71ff7000002a454-b8-61725fe20243
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 76.EA.31287.2EF52716; Fri, 22
+        Oct 2021 07:53:22 +0100 (BST)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20211022065321eusmtip2654027f06bc38a2088114310e278d67c~wR8r22ofr3071930719eusmtip2w;
+        Fri, 22 Oct 2021 06:53:21 +0000 (GMT)
+Message-ID: <5d7d4a61-3652-85cc-6edb-e26ef8373c6e@samsung.com>
+Date:   Fri, 22 Oct 2021 08:53:21 +0200
 MIME-Version: 1.0
-In-Reply-To: <20211022054740.25222-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=utf-8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0)
+        Gecko/20100101 Thunderbird/91.2.0
+Subject: Re: [PATCH] mmc: dw_mmc: exynos: fix the finding clock sample value
 Content-Language: en-US
+To:     Jaehoon Chung <jh80.chung@samsung.com>, linux-mmc@vger.kernel.org
+Cc:     ulf.hansson@linaro.org, krzysztof.kozlowski@canonical.com,
+        christianshewitt@gmail.com, mihailescu2m@gmail.com
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20211022040041.23156-1-jh80.chung@samsung.com>
 Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Se0hTcRTut3t3dx3MblPzZGE0SSjSUhYsUlFImGCxklr0YF3zptKmtatp
+        T5ZW1Cgfs7KWsVWQYk2nLHu5UvPRc4ZCmShZSYG0bBXlfGw5r5b/fd93vvP7zjn8SEx8mR9C
+        ZmblMNosWi0hhHhDu7sz4qNKS6/63h8mG+otw2Q9o6f4sjrnCE/W6i1GstqLbr6sw6KMJ+RG
+        3TlCft/YL5D3vWkk5EW2aiT/WR+q4G8TxqQx6swDjHZl3C5hhq7VINg3QuU/+X0C6dAJkR75
+        kUBJ4VHNVVyPhKSYqkLwvtyOOPILwXjXDQFHfiJoNQ9jMy2GigcYV6hE8KW4aZq4ELi7PxM+
+        l4iKgy8Nb3EfxqmlUFdlm9bnwbPLg1N6EJUKpisDAh8OoJKhpMnJ92GMCobeQRPPhwOpRCit
+        NOOczoK5wTPlIago0Dv1U2/6UTEwYTs73bsY7jorpgYC6jUJZeebcW7sdVBlHRNwOACGOmzT
+        eBF47/vCfA2FCD44LAKOnEXQXXAJca610OcYnYwjJyOWQe2DlZycAFdL//B8MlD+0OOcxw3h
+        D4aGcoyTRXD6lJhzh4Oxo+ZfbPPrLqwESYyzzmKctb5x1jrG/7lmhFejYCaX1aQzbHQWkxfJ
+        0ho2Nys9cne2ph5N/p4Xno5f91DlkCuyBfFI1IKAxCSBoof52bRYlEYfPMRos1XaXDXDtqCF
+        JC4JFqXabqvEVDqdw+xlmH2MdqbKI/1CdDxr3EQe3zk/0bPisB8iLMvUtxSWoIinXnG3pjyD
+        WHdn/JLhkzTa4C2wr3ENRUVvXf/1bmqs1HPM5NSEpXxLvvnxR08bjZId9YrEkJdoTTzhCTXv
+        SDCaH+q1Y9fOtZmG2xyqrsJN1qS6J8kbvCl79bUt/uJoZTy7uV3U5yp/O1fy49348fZBV/P+
+        kfDgpKiEW7ItpzWBNa1B+3+nSctUw6/ath44ae1U2nsddrI9PzGg6GCM2b3zQ1jOHV3Kc9mZ
+        IF5nbFOs8EhzrEJ6XbF642b94/4ljtuNlhplUeDA2vjMbjZyR9mYVRWh7K91h14Y2ckrUm9f
+        MGePfaCvMfSoBGcz6KjlmJal/wI3mrvyrAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNIsWRmVeSWpSXmKPExsVy+t/xe7qP4osSDR718li8ujWZ2eLGrzZW
+        i41vfzBZHPnfz2ixftpPVovja8Md2DxmNfSyeeycdZfd4861PWwefVtWMXp83iQXwBqlZ1OU
+        X1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwea2VkqqRvZ5OSmpNZllqkb5egl9FwZBJ7wQ+B
+        isPfWhgbGFt4uxg5OSQETCQmzdnF3MXIxSEksJRRYur9z4wQCRmJk9MaWCFsYYk/17rYIIre
+        M0qsXfcULMErYCfxfNt1FhCbRUBVYuOKLWwQcUGJkzOfgMVFBZIkPm6YwQxiCwv4SEw48Bas
+        l1lAXOLWk/lMILaIgKvExOULWCDixRJd8+YxQSzrZ5Q4MGMP2EVsAoYSXW+7wBZwCthI/N3S
+        AzXITKJraxcjhC0vsf3tHOYJjEKzkNwxC8m+WUhaZiFpWcDIsopRJLW0ODc9t9hQrzgxt7g0
+        L10vOT93EyMw1rYd+7l5B+O8Vx/1DjEycTAeYpTgYFYS4d1dkZ8oxJuSWFmVWpQfX1Sak1p8
+        iNEUGBgTmaVEk/OB0Z5XEm9oZmBqaGJmaWBqaWasJM67de6aeCGB9MSS1OzU1ILUIpg+Jg5O
+        qQYmv42NmfLVRy9bGuwOCl9V+9lC5bKS0iFvv88bPORN/2k53f8haJ3Rz/nk8/nXrH+64+8r
+        XXzAHFK6XzXZ/PNEwQX5WjxSu499PpyzYWmfl5FRxl/PIwKu1t63ery/qLXXcUyy+F/l2/76
+        8hSpzwd+B9zIixH/7fH5kwhX9adP1yqjD90LlAhgnLF3a07Kdr/6Nd2nKvdKNnrc5t137UT4
+        HDmOnLOvJfYHXprRtc5tV7Rj1lrnXxmXT94ojnGZoXok7WSZU2LExBuGF9pSou87th/04NcN
+        yP2iP0tRR0M3UUVc0mM6/xsjwwJuC0Wjr3t8lv+/lCwetXLhztv3hKe6rWDYLKS5gFV7u0X2
+        CUslluKMREMt5qLiRAAWkyIKPgMAAA==
+X-CMS-MailID: 20211022065322eucas1p2f974ab996cb85da62b38f8509f4722d8
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20211022035959epcas1p40ccc67175d6a4a22943e5836609fb834
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20211022035959epcas1p40ccc67175d6a4a22943e5836609fb834
+References: <CGME20211022035959epcas1p40ccc67175d6a4a22943e5836609fb834@epcas1p4.samsung.com>
+        <20211022040041.23156-1-jh80.chung@samsung.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 22/10/2021 08:47, Lukas Bulwahn wrote:
-> Commit 5c67aa59bd8f ("mmc: sdhci-pci: Remove dead code (struct
-> sdhci_pci_data et al)") removes ./include/linux/mmc/sdhci-pci-data.h;
-> so, there is no further file that matches 'include/linux/mmc/sdhci*'.
-> 
-> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
-> 
->   warning: no file matches    F:    include/linux/mmc/sdhci*
-> 
-> Drop this obsolete file pattern in SECURE DIGITAL HOST CONTROLLER
-> INTERFACE (SDHCI) DRIVER.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+On 22.10.2021 06:00, Jaehoon Chung wrote:
+> Even though there are candiates value if can't find best value, it's
+> returned -EIO. It's not proper behavior.
+> If there is not best value, use a first candiate value to work eMMC.
+>
+> Signed-off-by: Jaehoon Chung <jh80.chung@samsung.com>
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+
+Works fine with all eMMC modules I have on my test systems.
 
 > ---
-> applies cleanly on next-20211021
-> 
-> Ulf, please pick this minor non-urgent cleanup patch on top of the
-> commit above.
-> 
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 44c590b762d1..c47ac3e938b7 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17024,7 +17024,6 @@ M:	Adrian Hunter <adrian.hunter@intel.com>
->  L:	linux-mmc@vger.kernel.org
->  S:	Maintained
->  F:	drivers/mmc/host/sdhci*
-> -F:	include/linux/mmc/sdhci*
->  
->  SECURE DIGITAL HOST CONTROLLER INTERFACE (SDHCI) MICROCHIP DRIVER
->  M:	Eugen Hristev <eugen.hristev@microchip.com>
-> 
+>   drivers/mmc/host/dw_mmc-exynos.c | 22 +++++++++++++++++++++-
+>   1 file changed, 21 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/dw_mmc-exynos.c b/drivers/mmc/host/dw_mmc-exynos.c
+> index 0c75810812a0..a475c249c430 100644
+> --- a/drivers/mmc/host/dw_mmc-exynos.c
+> +++ b/drivers/mmc/host/dw_mmc-exynos.c
+> @@ -431,6 +431,7 @@ static inline u8 dw_mci_exynos_move_next_clksmpl(struct dw_mci *host)
+>   		clksel = mci_readl(host, CLKSEL);
+>   
+>   	sample = (clksel + 1) & 0x7;
+> +
+>   	clksel = SDMMC_CLKSEL_UP_SAMPLE(clksel, sample);
+>   
+>   	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
+> @@ -464,6 +465,14 @@ static s8 dw_mci_exynos_get_best_clksmpl(u8 candiates)
+>   		}
+>   	}
+>   
+> +	/* Return a first candiates value, if there is some candiates */
+> +	for (i = 0; i < iter; i++) {
+> +		__c = ror8(candiates, i);
+> +		if ((__c & 0x1) == 0x1) {
+> +			loc = i;
+> +			goto out;
+> +		}
+> +	}
+>   out:
+>   	return loc;
+>   }
+> @@ -493,7 +502,18 @@ static int dw_mci_exynos_execute_tuning(struct dw_mci_slot *slot, u32 opcode)
+>   		dw_mci_exynos_set_clksmpl(host, found);
+>   		priv->tuned_sample = found;
+>   	} else {
+> -		ret = -EIO;
+> +		/*
+> +		 * If there is no cadiates value, then it needs to return -EIO.
+> +		 * If there are candiates values and don't find bset clk sample value,
+> +		 * then use a first candiates clock sample value.
+> +		 */
+> +		if (candiates == 0) {
+> +			ret = -EIO;
+> +			dev_warn(&mmc->class_dev,
+> +				"There is no candiates value about clksmpl!\n");
+> +		} else {
+> +			priv->tuned_sample = dw_mci_exynos_get_clksmpl(host);
+> +		}
+>   	}
+>   
+>   	return ret;
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
