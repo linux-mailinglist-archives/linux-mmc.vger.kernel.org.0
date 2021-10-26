@@ -2,66 +2,100 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ECD943AFA3
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Oct 2021 12:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F8B43B09E
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Oct 2021 12:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233152AbhJZKCy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Oct 2021 06:02:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231937AbhJZKCx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Oct 2021 06:02:53 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 608A3C061745
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Oct 2021 03:00:30 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id t184so13860132pfd.0
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Oct 2021 03:00:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8opajaR7TcnJb4XtZruja8G2FGU0Gw2ljWxMC6fElFw=;
-        b=jiJLAB7jolH+IGp+xlY223be/Iyk0NYMiymzZlILOLj0rJA5Vp5Vg7OJTj6PCHhbgT
-         pLgOEkeHTwDMjqw8s9wda3qy8SXHkjaukhutNnRBrCjWMrG7ax2eeWuAnWHXtUeI8lbe
-         Az9riHjf4befn8kc66n9mdNE2mjQ9/FzTKhYr28A/8uTSMzUs+YfzsUC6WnoeAy4EIZ3
-         8YHR62zjLJFUuC8FgtVU4HyKL1AbjFTiEYMwhO7BunJVQYSiZu8Le2lCwfQ6kKy3+gHJ
-         LHGZ6gRwH4EFol2OPoCm6qIgCB2ZuWaIqlvkWdlH1I2PVymOBXva8AxiUU1gUJgPI1uC
-         0Fsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8opajaR7TcnJb4XtZruja8G2FGU0Gw2ljWxMC6fElFw=;
-        b=ASxZdkLEEU/U9JmRLktZZljgGxtV6lTeFcd5dWXOU38Tww7O0b0ODdkwXWTuIMFF6b
-         BM0nUTGDvYJmW+PAV8od9NrqiBuHbtgJrWYmgUum7wJSd/77Cu4P8xrmCsIle+ek0Adz
-         jUQDZs0NRpU+UBNP8GJ74t5aursdw2eQHTDUf7woRWiqCPY/YWCjcBK1hf+Yy0lCfNMA
-         UPyf8J//BliZmS1KUHKY2g1SV1IWLMsxblvmu+8y+/qz9C8svWUkEzqculzOj8RCeT8k
-         ayxUpyyv+J8VVSa+PPmvJ3tNtcglggFzlyM2R17LbLLsAX0PlhsTtBWjbu0/o8SmS3c1
-         l8Qg==
-X-Gm-Message-State: AOAM533E1gLZYos0knJ3hMLM5UD/oRJp5wXyCRXbfjAD3r8B/PpsxFUu
-        40yo9M80flVAtuVvbEj1hFz0arKm7cdt8OzT2oY=
-X-Google-Smtp-Source: ABdhPJy3N6MHBFt2TRRzK1dED1w2pJvZOLI0bajedkgxhTLywVaHC1dcThmi8nkKTkdQb+yH0i/Ci/hI4HcuLjeBRYY=
-X-Received: by 2002:a63:7006:: with SMTP id l6mr12167993pgc.402.1635242429802;
- Tue, 26 Oct 2021 03:00:29 -0700 (PDT)
+        id S231536AbhJZK6n (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Oct 2021 06:58:43 -0400
+Received: from mga03.intel.com ([134.134.136.65]:8096 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234007AbhJZK6n (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Tue, 26 Oct 2021 06:58:43 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10148"; a="229823312"
+X-IronPort-AV: E=Sophos;i="5.87,182,1631602800"; 
+   d="scan'208";a="229823312"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2021 03:56:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,182,1631602800"; 
+   d="scan'208";a="724084101"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.76]) ([10.237.72.76])
+  by fmsmga005.fm.intel.com with ESMTP; 26 Oct 2021 03:56:15 -0700
+Subject: Re: [PATCH] mmc: cqhci: clear HALT state after CQE enable
+To:     Wenbin Mei <wenbin.mei@mediatek.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Ritesh Harjani <riteshh@codeaurora.org>,
+        Asutosh Das <asutoshd@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, srv_heupstream@mediatek.com,
+        stable@vger.kernel.org
+References: <20211026070812.9359-1-wenbin.mei@mediatek.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <8d096ff5-4266-815f-d050-1f3f0cddeba8@intel.com>
+Date:   Tue, 26 Oct 2021 13:56:14 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.13.0
 MIME-Version: 1.0
-Received: by 2002:a05:7300:3094:b0:40:8aeb:362d with HTTP; Tue, 26 Oct 2021
- 03:00:29 -0700 (PDT)
-Reply-To: lydiawright836@gmail.com
-From:   LYDIA WRIGHT <bryanwalker534@gmail.com>
-Date:   Tue, 26 Oct 2021 13:00:29 +0300
-Message-ID: <CAKxfBbSQ=txQe5kBLdfXqMWcrohy0u9RGPVXt=Ef_eo8ECap2w@mail.gmail.com>
-Subject: Greetings to You
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20211026070812.9359-1-wenbin.mei@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Greetings,
-I had no choice but to approach you via this method because I had
-information that will grab your interest and help both of us
-to our benefit.
-Please contact me here (lydiawright836@gmail.com), so that I may
-provide you with all of the necessary information.
-Thank you very much.
-Warm regards
-Mrs. Lydia A. Wright
+On 26/10/2021 10:08, Wenbin Mei wrote:
+> While mmc0 enter suspend state, we need halt CQE to send legacy cmd(flush
+> cache) and disable cqe, for resume back, we enable CQE and not clear HALT
+> state.
+> In this case MediaTek mmc host controller will keep the value for HALT
+> state after CQE disable/enable flow, so the next CQE transfer after resume
+> will be timeout due to CQE is in HALT state, the log as below:
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: timeout for tag 2
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: ============ CQHCI REGISTER DUMP ===========
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: Caps:      0x100020b6 | Version:  0x00000510
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: Config:    0x00001103 | Control:  0x00000001
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: Int stat:  0x00000000 | Int enab: 0x00000006
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: Int sig:   0x00000006 | Int Coal: 0x00000000
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: TDL base:  0xfd05f000 | TDL up32: 0x00000000
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: Doorbell:  0x8000203c | TCN:      0x00000000
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: Dev queue: 0x00000000 | Dev Pend: 0x00000000
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: Task clr:  0x00000000 | SSC1:     0x00001000
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: SSC2:      0x00000001 | DCMD rsp: 0x00000000
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: RED mask:  0xfdf9a080 | TERRI:    0x00000000
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: Resp idx:  0x00000000 | Resp arg: 0x00000000
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: CRNQP:     0x00000000 | CRNQDUN:  0x00000000
+> <4>.(4)[318:kworker/4:1H]mmc0: cqhci: CRNQIS:    0x00000000 | CRNQIE:   0x00000000
+> 
+> This change check HALT state after CQE enable, if CQE is in HALT state, we
+> will clear it.
+> 
+> Signed-off-by: Wenbin Mei <wenbin.mei@mediatek.com>
+> Cc: stable@vger.kernel.org
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
+> ---
+>  drivers/mmc/host/cqhci-core.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/mmc/host/cqhci-core.c b/drivers/mmc/host/cqhci-core.c
+> index ca8329d55f43..b0d30c35c390 100644
+> --- a/drivers/mmc/host/cqhci-core.c
+> +++ b/drivers/mmc/host/cqhci-core.c
+> @@ -282,6 +282,9 @@ static void __cqhci_enable(struct cqhci_host *cq_host)
+>  
+>  	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
+>  
+> +	if (cqhci_readl(cq_host, CQHCI_CTL) & CQHCI_HALT)
+> +		cqhci_writel(cq_host, 0, CQHCI_CTL);
+> +
+>  	mmc->cqe_on = true;
+>  
+>  	if (cq_host->ops->enable)
+> 
+
