@@ -2,80 +2,124 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9FE143E55F
-	for <lists+linux-mmc@lfdr.de>; Thu, 28 Oct 2021 17:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BABCF43E911
+	for <lists+linux-mmc@lfdr.de>; Thu, 28 Oct 2021 21:45:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230264AbhJ1Prm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 28 Oct 2021 11:47:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49384 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbhJ1Prm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 Oct 2021 11:47:42 -0400
-Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BEABC061745
-        for <linux-mmc@vger.kernel.org>; Thu, 28 Oct 2021 08:45:15 -0700 (PDT)
-Received: by mail-ot1-x331.google.com with SMTP id w12-20020a056830410c00b0054e7ceecd88so9222902ott.2
-        for <linux-mmc@vger.kernel.org>; Thu, 28 Oct 2021 08:45:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:cc;
-        bh=AT2vVSkbs5Z2AlPH3lVSxISBm4g33VFLgVGD3BjUf+w=;
-        b=YyJgDt1mEH4cO9L0C3eZ8WIzZkx77+uNkhgw/PckhjybYjvuvEF/e4Z9pSQZ3PvYxh
-         xgRXI47nDvdk0hwf5o1y3VZe59gjTo7x2ldbZmIwaSQqDRsK/Q31tby7qRD4YmSpo+/W
-         8JrV7HUbBueSRVJ4t/vLRF1kjYYP2sOK5ZQyLpsIf7ULUvK33CHsUL2ek/93tHmpcrNB
-         j9iIO08R3Bnj+lcTX1d7yuF5QPqlNrx4mVfsabehpKLh6c6lmuNonMGu0W8eABm2OZ4M
-         cNHuSlDbDNvbl7AUliHafBR+ZLXbFU/fNSktqW/xxdO92aSNXMYS5pSTX5P6ZbKtWLp9
-         l4yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
-         :from:date:message-id:subject:cc;
-        bh=AT2vVSkbs5Z2AlPH3lVSxISBm4g33VFLgVGD3BjUf+w=;
-        b=JhfphC0JBiCKBt9xeWdH2LwUr+XCrttFxcwcGVjdEy7BfZq79Xz+CR8MaW4mq2KGOK
-         CFV3IhoMgA28ygXJl3cRgEQPPgn8yDkNPYrbCq4JGcl+207ga/EHw5xdKr3JL+wrtFDW
-         U7UG83JKxSMjBS5Dc/vi9Gk5QF+JOw1G6tfxAw1OoDAbFjFSpJsVSblhTMBx0fjheFDw
-         bOQ7P3AW61vw8GydoCMzuRnv7ZS8p05ZcSvuKBy8qou31G8Iz37MM1MeEHM9r9Fnc7mw
-         uKFI7kzvxmSguEDHZzNUrnYZLen4xDQ7hrh0yg3dbAkTd2IGFEkFJaofksbN2bKc61VQ
-         7orA==
-X-Gm-Message-State: AOAM532yrEyPqlSr9rJrCPH7ptKPoXuEkdeoRwF7a++dfL9dQ4Z4uGoN
-        UwHuVJRgN3eX3Ys9ktBuOW4xsW/6KbkmF0YdYwM=
-X-Received: by 2002:a05:6830:10d1:: with SMTP id z17mt3487369oto.70.1635435914575;
- Thu, 28 Oct 2021 08:45:14 -0700 (PDT)
+        id S231221AbhJ1TsI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 28 Oct 2021 15:48:08 -0400
+Received: from www.zeus03.de ([194.117.254.33]:45706 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230104AbhJ1TsH (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 28 Oct 2021 15:48:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=k1; bh=wxlD5013LNiQQgL/tzZDr2AT9RRh
+        MDI50vtSZ0v/UHs=; b=gexUEuKOY4sHapxE4n8lS1vobMFQiSqoHJ6ascCKzybP
+        KBSiUgQIMPWXKUNVNPfHbr2+N5CIHbmtxpQDlqtYhZEhA+QPbMQEjVAzpXXtppf1
+        BvwoDW4TdXTkzU6no8YoTW4kmcZPESkyPIBwqkibq9cjN71jcK6/p4Bnl8UZqC8=
+Received: (qmail 1839090 invoked from network); 28 Oct 2021 21:45:38 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 28 Oct 2021 21:45:38 +0200
+X-UD-Smtp-Session: l3s3148p1@HrHK827PjsUgAwDPXw4yADGDI0jlsL8i
+Date:   Thu, 28 Oct 2021 21:45:26 +0200
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH] mmc: renesas_sdhi: Fix internal cd irq miss with hard
+ reset
+Message-ID: <YXr91sKve3pmY+yj@ninjato>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>
+References: <20211006171605.6861-1-biju.das.jz@bp.renesas.com>
+ <YXK7AfUYxuFWl3rl@ninjato>
+ <OS0PR01MB5922DC39B54A0B8D7AA8B3DC86809@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <OS0PR01MB592212E593522E4E72BEAFCA86809@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <OS0PR01MB592273BA2B117BE67B108BDF86819@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-Received: by 2002:a8a:c04:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 08:45:14 -0700 (PDT)
-Reply-To: israelbarney287@gmail.com
-In-Reply-To: <CAA4TxLAyeSCDcVZFoRpW7rgJWnBBciXLvyeaxiGhUf+-11-BYw@mail.gmail.com>
-References: <CAA4TxLAMbg3P_juOxMhMgRSf11ycHNowNK108Pgd=1tLLm-w+w@mail.gmail.com>
- <CAA4TxLCmxhnH0Hax3xtyboHQoDviKGMNZscHOn9f2F3atMsV_Q@mail.gmail.com>
- <CAA4TxLBdgbTi89SZqMnVjvd+xnKEnhj73r2vGghMo=kCHLTFOw@mail.gmail.com>
- <CAA4TxLBokA90f8YWm+XWCw9R_MapS2cHVn17RidhHEJn6YiXEg@mail.gmail.com>
- <CAA4TxLD=OOf8S05w2MdEb3BvQjw0nVqi5w4TABWVs8dA45TcvA@mail.gmail.com>
- <CAA4TxLDyitgj3tuuZd=yfy5irFunBGsiF8hAmKF4efiYQ7i2tQ@mail.gmail.com>
- <CAA4TxLCRNk8_OtCYq3Q8MB5jjqVtF3MMLZ+kp6JJ8AcXhFX_QQ@mail.gmail.com>
- <CAA4TxLBE3ag+PsMzf_jJZMJbJ+0hhBsJhm=kADmqCx-sAiMcJQ@mail.gmail.com>
- <CAA4TxLBn_13xcFsHb0Dj87RTqzc7dJMxOfYM6E=S8YPRRxpUmw@mail.gmail.com>
- <CAA4TxLAdOsBq+wuJu9RJYj+XQUJU=xRWAihFPLfUfMxF5WVpmw@mail.gmail.com>
- <CAA4TxLBPa5TkbFXy_DkC+AuMjmU+Mn3K-kYF=6rn9ecLXpvmGA@mail.gmail.com>
- <CAA4TxLDPg22VA+-wBbFgb9pFoYnomDP5X2qLLCXOpv-cN0HXFg@mail.gmail.com>
- <CAA4TxLDpqABNMK175BcVtuSJ+tdW0gxr=NK3VNutfjYTvj1EFg@mail.gmail.com>
- <CAA4TxLAY9PJrz3G16EoM3UkpiXMP08+PAubtukhA8Zt4FEyRRA@mail.gmail.com>
- <CAA4TxLDM6fDFRxMD7fMGk8ntyhuewotY3+o2AhDBQpDZT=3sJw@mail.gmail.com>
- <CAA4TxLDw7_BQ_VLkpXQcgOkgGPV4k+4RrrPoSwELNBeYO9cqKg@mail.gmail.com>
- <CAA4TxLA6a2eWHj2mAfw+Ucucw=FC7CguD8kyXCLh6MePKvSpVw@mail.gmail.com>
- <CAA4TxLDcpo7N-7wM1ZMWpLt8O-nVq7p=U_BXuCFfYaLJe21Dkw@mail.gmail.com>
- <CAA4TxLBS8Y1_RTBt+yUOi5m7QAkJaNCA4m-D33qcgLjsza5=hw@mail.gmail.com>
- <CAA4TxLDS=N7dtE3K2YBkiAeyYTRsKw841xQHgnLitd=6KVz30w@mail.gmail.com>
- <CAA4TxLAb0cuZq6ymVXs-+K9xU-t6zMqYCSjahaUo2ROrhQ1SjQ@mail.gmail.com> <CAA4TxLAyeSCDcVZFoRpW7rgJWnBBciXLvyeaxiGhUf+-11-BYw@mail.gmail.com>
-From:   israel barney <kristengriest098@gmail.com>
-Date:   Thu, 28 Oct 2021 16:45:14 +0100
-Message-ID: <CAA4TxLBHsZu3FneDQna2kqetvYCGqaJaJWEe0ge+gqb6d0hhZw@mail.gmail.com>
-Subject: Greetings
-Cc:     israelbarney287@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="iuKUPiXlsmQ10vsO"
+Content-Disposition: inline
+In-Reply-To: <OS0PR01MB592273BA2B117BE67B108BDF86819@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-do you receive my massage
+
+--iuKUPiXlsmQ10vsO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Biju,
+
+> Finally found the issue. There is one more patch for host->reset in tmio_=
+mmc_core.c. please see below.
+> If you add this code, then it works.
+
+Thanks for finding the culprit! To get this hopefully into v5.15 still,
+I will simply add this chunk like you suggested. However, I really
+wonder if we shouldn't just replace this:
+
+>                 /* For R-Car Gen2+, we need to reset SDHI specific SCC */
+>                 if (host->pdata->flags & TMIO_MMC_MIN_RCAR2)
+>                         host->reset(host);
+> =20
+>                 if (host->native_hotplug)
+>                         tmio_mmc_enable_mmc_irqs(host,
+>                                 TMIO_STAT_CARD_REMOVE | TMIO_STAT_CARD_IN=
+SERT);
+> =20
+
+with a simple call to
+
+	tmio_mmc_reset(host)
+
+(with tmio_mmc_reset() still updated to set the card interrupts, of
+course)? I have to admit I haven't checked all paths for side-effects
+yet, but maybe you can already test if this change also works (instead
+of adding the second chunk)? If so, we could change it incrementally for
+5.16.
+
+Anyhow, will send the patch for 5.15 in some minutes.
+
+Thanks and all the best,
+
+   Wolfram
+
+
+--iuKUPiXlsmQ10vsO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmF6/dIACgkQFA3kzBSg
+KbZBrBAAnaeiiizNoOrKqelxHX3gVsvl7snYr3dgntCL0Qaeu7qnRRZVXqXlA8AL
+GnCSyXmI8urj0ZNypaRqvruiH7bJv8oNfKlv9ihMGIjCPRL4x6ymzXnSYE0Zsyw1
+KSUTHZ/W3q/V0rf+RVhIVkNOgdkf32oDQoYi113LsGxz74hRC6L4+V4okyrGleuX
+0B/zI/A0F/nVCgErriyP2p2Y3C3GNBB8Z/LESZhQ0e70L7xasoGVW73kDAwEs7hC
+6bUnLB+BJ98bSK6xNNbgFiLs/pwuzG9QBzCqN/s0QJQM3gFi4qd6mjrPRiRKlN6d
+NkjxkY38iUHP/Y/eivG4s9fhnEZc56+vXZyzbmEM/oo9r2BwzphHAahGeFWKEjhO
+7d7vjOdPj2OIFxUGu6ByP1D274ixErgKggaoaJkC7Lqlb3DhhgCd91EvN75vUarb
+rQsGRJDFPO0peUMNtsoRr+EqcnUk1TkPyKCHEE8tivKq/OrPUOKXa7sC4pkwlmVh
+W83TAOxadsvTG4+KdRdot0NGOpaYHYgI2CP6BkXAnXf8zCHYkGXHCa755rhi3czG
+/qj6w506FaOmwiiHdmqJzDjTAp9Fn4KpgGhN8vRZVa6ymU5wONxxA4Y08/sIDQ2M
+Kahik9Pv7Xjuj5k3xGEYZ+DpZtPeklGbDqAgrRQLLLawlpscZbc=
+=3J98
+-----END PGP SIGNATURE-----
+
+--iuKUPiXlsmQ10vsO--
