@@ -2,123 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FCEA4476D4
-	for <lists+linux-mmc@lfdr.de>; Mon,  8 Nov 2021 01:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A9B0447B18
+	for <lists+linux-mmc@lfdr.de>; Mon,  8 Nov 2021 08:31:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236784AbhKHAYy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 7 Nov 2021 19:24:54 -0500
-Received: from new2-smtp.messagingengine.com ([66.111.4.224]:34063 "EHLO
-        new2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234291AbhKHAYy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 7 Nov 2021 19:24:54 -0500
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 08DD95803EE;
-        Sun,  7 Nov 2021 19:22:10 -0500 (EST)
-Received: from imap43 ([10.202.2.93])
-  by compute4.internal (MEProxy); Sun, 07 Nov 2021 19:22:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm1; bh=G+UTj3AnYA8ZP4iI6M9Sj8AQF+R2TPP
-        HefdgO8p+64c=; b=DH5pY0FSsMwGpnEmhsJQjDs5+cmjOwQWLhAQvbBGLs0a0cv
-        mvH/jrNMkqIBGr63FcxWAukxOx7Y1xbd9WVbJMSTmRiE/jtJQrHUKFdy6F5Z5oLp
-        EYnVAlFpySFfCFHWOr1EvvSYap8eiM1WalaF9SOJ+41uxPG7ZCCNhSNbwnXc4SOX
-        YZbOw4fCuxEulH6S5TugJUP6T3rdbd/PNgF5C0IWPmiYh+O3DTiqH1+N4MdJfmlU
-        vUBRyjGmC284GFHpWuewHG0BpEV+dCgndjYgwv0DlLqWML/lpxGVWTApmkYTI/GH
-        czRsGFmdIa7KkHqion/z3vE2qaAU4LHjngwdOeA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=G+UTj3
-        AnYA8ZP4iI6M9Sj8AQF+R2TPPHefdgO8p+64c=; b=a0M181+Us4nINoGWsTOddb
-        Nr2mH2QxHIKkVlSS2+Ub0kKadvvT+Z8DhMtiZ10GBqDDhSKML8Kr2Uh8/SqGkYY9
-        Q5dNHPksEGldk3TLhhAJM/BH1ma8Jmj87/WcfrzoqHT8dHRcDR0Z8d6S7u8/eixO
-        4Ut7AaJwE7nr2kT0lYGX11ukx7ogp9zvs3+8b3tya3hcAKNO7hBxac4CcO1FqZKD
-        PEiDikdX0z4Qdth70qXI6eszhy2jyZ7aJl/yi08W5SNjzA0xmx7rvok/5HGcDIfO
-        ua6UJo3HCrF1QLCq93/wSyrlrGYS3INatr3oXrC2QwAOBjgxQHf4cv6cP9dIplEQ
-        ==
-X-ME-Sender: <xms:sG2IYfOmGMRwDRHEKw7G2X-Q1qTZoreJSkxOEU2qle1m5Vi8geFhfQ>
-    <xme:sG2IYZ-Dd47EDJprU4ATIC6VUbN3VWPvf7wCV4cUVFknQqdGBgEJNQtaqJKj9AtOk
-    -NPpLsrK9cd7i2XLw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddruddugdduiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvufgtsehttdertderredtnecuhfhrohhmpedftehnughr
-    vgifucflvghffhgvrhihfdcuoegrnhgurhgvfiesrghjrdhiugdrrghuqeenucggtffrrg
-    htthgvrhhnpeehhfefkefgkeduveehffehieehudejfeejveejfedugfefuedtuedvhefh
-    veeuffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grnhgurhgvfiesrghjrdhiugdrrghu
-X-ME-Proxy: <xmx:sW2IYeQ8GDnxOnxEDbamLr9AinuScHhomTeRjEjypP8_XcwY1iWZBw>
-    <xmx:sW2IYTsxGjXExSohLnFLfrx5MAKpVfOHQ_EdsJ1Nh0HW-ESE6g7ctg>
-    <xmx:sW2IYXe8Ce1npBf6FZmtSjNgKSfMDKrln5v1luDUwXi2x0h0qPPOzw>
-    <xmx:sm2IYS-6aQHVxKhqTQwWrUDokHYs79zxyrcrrQ4pGhIltI3Adu9u1Q>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id E931FAC0DD1; Sun,  7 Nov 2021 19:22:08 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.5.0-alpha0-1369-gd055fb5e7c-fm-20211018.002-gd055fb5e
-Mime-Version: 1.0
-Message-Id: <c79e93c3-1678-412f-87c5-2b757d806574@www.fastmail.com>
-In-Reply-To: <HK0PR06MB27861518CA84A9DC8D204AC1B28F9@HK0PR06MB2786.apcprd06.prod.outlook.com>
-References: <20210922103116.30652-1-chin-ting_kuo@aspeedtech.com>
- <20210922103116.30652-5-chin-ting_kuo@aspeedtech.com>
- <5a235916-f250-48ac-b931-6ec2c5c2ea5d@www.fastmail.com>
- <HK0PR06MB27861518CA84A9DC8D204AC1B28F9@HK0PR06MB2786.apcprd06.prod.outlook.com>
-Date:   Mon, 08 Nov 2021 10:51:48 +1030
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Chin-Ting Kuo" <chin-ting_kuo@aspeedtech.com>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Joel Stanley" <joel@jms.id.au>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>
-Cc:     BMC-SW <BMC-SW@aspeedtech.com>,
-        "Steven Lee" <steven_lee@aspeedtech.com>,
-        "Michael Turquette" <mturquette@baylibre.com>,
-        "Stephen Boyd" <sboyd@kernel.org>,
-        "Adrian Hunter" <adrian.hunter@intel.com>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
-Subject: Re: [PATCH 04/10] mmc: Add invert flag for clock phase signedness
-Content-Type: text/plain
+        id S237919AbhKHHao (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 8 Nov 2021 02:30:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57746 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229506AbhKHHaT (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 8 Nov 2021 02:30:19 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B23CAC061225
+        for <linux-mmc@vger.kernel.org>; Sun,  7 Nov 2021 23:27:33 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id ee33so58844257edb.8
+        for <linux-mmc@vger.kernel.org>; Sun, 07 Nov 2021 23:27:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
+        b=lohGAXI96njXpZ5r6vgYlUkp2V68iRMzDV25uaLpmT1WmpX2h0YNNnPekuKOrJR7Hh
+         rCcmOUgGjsAkeHEvvQCkM6ux+TyqL0CqGbf0IPfL8V+eIKLF7r3X9QWFup/xVl2xV9qZ
+         NGc0LQ7JpvXhk+YTEHFaFd2QnuENE8mCWi0drmIQkANv1zf9DM6Bfjx/yF/A/b9RtJFU
+         CT2DuJeqJ7evq+rJKQgmUSCIg2GjkqvLZlnb0ekZ1/3u7apFf2k73Uqo2u8YZ8hKmOIw
+         ZGA3M8LZJFGSmW3P+nQyYMCLCtL13s+WCsnPOmCuuFd5xieMsN0vbLhindKIE3OfrP6U
+         BcYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
+        b=clVsU1wZbFC9YLtXr9tJoC0ErpB8ybHdT/4xjkVTTzqJ+YRYtx6Wpgx0UtFf/OmLna
+         X8UYYqHJvQrjvJCNG+QKceHpClE8iyXOghfaRDmNJsK3qTosMeep4WtWVEiiZz207NYn
+         dtBTuIpWiJ7k4HZt2vzu6YQXwJWgBDJ334ehnEOf3s0XNw5fUi5cVUfvDX/8+X4w9iW7
+         ygkq4EBg0UKTRtZI5rkkrLHEj0KpCtFTtklai56PkaBP+jXwqDU3IeaGuI3T1dDP7/G5
+         I6bM2aguBPKM5PqGpqVjJaQ2dMdIN2FCOLHnKvQs5qQQsa/RYqa5wKra1PJaBqkTvyAh
+         LQBw==
+X-Gm-Message-State: AOAM533ps7TSFaQbqc1x7ae4yvN3qae0xfj2z82tW36gc8UtL6ZXMz9t
+        9qxr7WoRWHguvtzVK78cht9O/JLlzKzVD3biG2rbX9Srhzg=
+X-Google-Smtp-Source: ABdhPJwiROS9SRRNMvDLES4YHo6uT5d60ZUwIiFmBNAm9OxEfLgMU9cee9PqVQWim0XNVifN/Rk5vWcyMQ7rvBndYNE=
+X-Received: by 2002:a05:6402:557:: with SMTP id i23mr66769092edx.176.1636356441798;
+ Sun, 07 Nov 2021 23:27:21 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a50:2501:0:0:0:0:0 with HTTP; Sun, 7 Nov 2021 23:27:21 -0800 (PST)
+Reply-To: mariaschaefler@gmx.com
+From:   Maria Schaefler <ziskoraa@gmail.com>
+Date:   Mon, 8 Nov 2021 07:27:21 +0000
+Message-ID: <CAJh0FjiFL7uihMBL6ckYO8FJ6tnzM+tBivU2c60yDbG14LZLeA@mail.gmail.com>
+Subject: MY HEART CHOOSE YOU.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 6 Nov 2021, at 20:32, Chin-Ting Kuo wrote:
-> Hi Andrew,
->>> > -	rc = device_property_read_u32_array(dev, prop, degrees, 2);
->> > +	rc = device_property_read_u32_array(dev, prop, degrees, 4);
->> >  	phase->valid = !rc;
->> >  	if (phase->valid) {
->> > -		phase->in_deg = degrees[0];
->> > -		phase->out_deg = degrees[1];
->> > +		phase->inv_in_deg = degrees[0] ? true : false;
->> > +		phase->in_deg = degrees[1];
->> > +		phase->inv_out_deg = degrees[2] ? true : false;
->> > +		phase->out_deg = degrees[3];
->> 
->> This fundamentally breaks any in-tree users. We can't do this.
->> 
->> In terms of the binding, if negative phase values are something we must do,
->> we can just extend the value range to include [-359, -1] right?
->
-> Yes, agree it and I tried it before. But, it seems that the device tree 
-> doesn't support
-> negative value with "-" prefixed and there is no device tree related 
-> API used to get
-> the negative value from .dts. Thus, I tried to add an additional flag 
-> to present
-> negative value.
->
-
-Hmm. Still, I don't think we can break the binding this way.
-
-Rob, Ulf, Adrian: What are your thoughts on handling phase offsets in 
-[-360, 360] in the binding? Do we append the flag field? Add a separate 
-property? I don't think interleaving the flags is desirable, though 
-interested in your thoughts.
-
-Andrew
+Given my current state of health, I have decided to donate what I
+inherited from my late husband to you to help the poor and needy. I am
+Mrs Maria Schaefler,a 57years old dying woman. I was diagnosed for
+cancer about 2 years ago and I have few months to live according to
+medical experts. Email me for my directives
