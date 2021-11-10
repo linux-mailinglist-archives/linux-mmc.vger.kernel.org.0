@@ -2,88 +2,136 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9392C44C5E9
-	for <lists+linux-mmc@lfdr.de>; Wed, 10 Nov 2021 18:20:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D113644C8B7
+	for <lists+linux-mmc@lfdr.de>; Wed, 10 Nov 2021 20:16:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231319AbhKJRXe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 10 Nov 2021 12:23:34 -0500
-Received: from mo4-p03-ob.smtp.rzone.de ([81.169.146.175]:12360 "EHLO
-        mo4-p03-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbhKJRXe (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 10 Nov 2021 12:23:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1636564813;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=FUXvSxOapEOXszxLHtIzwAEW82zU3mG7PzhVm47QW28=;
-    b=hOoo1qtZdqiqh0qncTFEqLXVBnCuQam5+StailPMtwLwGlJ99HwodaSgkIQnKeeKxY
-    dyIZG7QRcGyg8qs57kji2prd3ExawyjgCxHXdea2QSrrbl+Kz1uAXaEMk03AQWj3F6v8
-    Sd47QloDE8FAECS9t7YlA7zpZOKTuEMG1ILgtWAnV9Ke7LhRPomi51vkQ5bv67dEqyuS
-    /SOiqlDLzGPT6Q/KQBVVl6PU7zcBe4WejmhM1ATjmkfPKLjcnawOOH4CrVkQpRUhctKH
-    6Uwm4I1cFCwj7r0qAhU/RQqv0K4gK0AziQ9qrCo816FPi1MjvZnd0UP9a6twOUsI5OsH
-    z04g==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw47pgLk="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.34.5 DYNA|AUTH)
-    with ESMTPSA id Y02aa4xAAHKD521
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Wed, 10 Nov 2021 18:20:13 +0100 (CET)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: [PATCH v2 4/6] mmc: core: Fixup storing of OCR for
- MMC_QUIRK_NONSTD_SDIO
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <e7936cff7fc24d187ef2680d3b4edb0ade58f293.1636564631.git.hns@goldelico.com>
-Date:   Wed, 10 Nov 2021 18:20:12 +0100
-Cc:     =?utf-8?Q?Gra=C5=BEvydas_Ignotas?= <notasas@gmail.com>,
-        linux-mmc@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        =?utf-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Bean Huo <beanhuo@micron.com>,
-        Nikolaus Schaller <hns@goldelico.com>,
-        Kiwoong Kim <kwmad.kim@samsung.com>,
-        Tian Tao <tiantao6@hisilicon.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Yang Li <abaci-bugfix@linux.alibaba.com>
-Content-Transfer-Encoding: 7bit
-Message-Id: <857E13BF-020B-4184-801D-783ADBDC42A1@goldelico.com>
-References: <cover.1636564631.git.hns@goldelico.com>
- <e7936cff7fc24d187ef2680d3b4edb0ade58f293.1636564631.git.hns@goldelico.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-X-Mailer: Apple Mail (2.3445.104.21)
+        id S232767AbhKJTTK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 10 Nov 2021 14:19:10 -0500
+Received: from www.zeus03.de ([194.117.254.33]:54956 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229781AbhKJTTI (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Wed, 10 Nov 2021 14:19:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=MXUshFWRvrlja2L8855Tgb6xkmh
+        XDycqY2KDS/dFBnM=; b=qyim/NaxosoR5Rsok72nM+5Fgx5z+aMfuyGJT1sJhmd
+        KOelDPOHJlNjDqW0FdvwcuJXafTgklMxWFCAVbbn2fbP5tN82FEBXkQgPF0YT8nH
+        WM0G4+c4T4WZzbzbzZjeqhss012kJ/vzrKbRCbqQMrPdGsavfv6wLnZq0R2sTIDs
+        =
+Received: (qmail 722296 invoked from network); 10 Nov 2021 20:16:18 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 10 Nov 2021 20:16:18 +0100
+X-UD-Smtp-Session: l3s3148p1@NlhPD3TQzpogAwDPXwnKAAv7bcN/CGzA
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-renesas-soc@vger.kernel.org
+Cc:     linux-mmc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [RFC PATCH v2 00/21] clk/mmc: renesas_sdhi: refactor SDnH to be a separate clock
+Date:   Wed, 10 Nov 2021 20:15:49 +0100
+Message-Id: <20211110191610.5664-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-> Am 10.11.2021 um 18:17 schrieb H. Nikolaus Schaller <hns@goldelico.com>:
-> 
-> From: Ulf Hansson <ulf.hansson@linaro.org>
-> 
-> The mmc core takes a specific path to support initializing of a
-> non-standard SDIO card. This is triggered by looking for the card-quirk,
-> MMC_QUIRK_NONSTD_SDIO.
-> 
-> 	if (card->type == MMC_TYPE_SD_COMBO) {
-> -- 
-> 2.33.0
-> 
+Here is the second RFC to refactor SDHI clocks so that SDnH is a
+separate clock. The main advantage is that we can handle per-SoC quirks
+regarding the clocks now in the SDHI driver rather than the clock
+driver. This is where it belongs because only there we know which mode
+needs which tuning. Also, the code is way cleaner and more readable now.
 
-Sorry, I just recognised after pressing the send button that with "early"
-you probably meant this to be 1/6... Should I resubmit?
+Geert seemed basically okay with this approach, so I continued to work
+on it by addressing his comments and adding DT updates for all other
+involved SoCs. I also excluded V3M now because it has a different SDnH
+handling. It shouldn't be affected by this series. But it may be that we
+need to add V3M SDnH handling later because it may be missing since
+ever. If so, this series will make that additional task a lot easier.
 
-BR,
-Nikolaus
+The downside is that patch 4 looks messy. When switching from old to new
+handling in the clock driver, I see no alternative to switch the MMC
+driver in the same patch. clk_set_rate just has to work. However, the
+MMC part is small, so I hope we can deal with it as an exception this
+time. My suggestion is that Geert takes all the patches via his clk and
+renesas-dt trees wich MMC acks from Ulf. Is this okay for you, guys?
 
+These patches have been tested on R-Car H3 ES1.0, H3 ES2.0, M3-W ES1.0,
+M3N, E3, and V3U (remote only). On Gen2 a H2 has been tested. I tested
+SDR104, HS200, HS400, and regular modes. All observed values and
+relations in 'clk_summary' made perfect sense. Actually, this is the
+first time all quirks are correctly handled. HS200 with 4tap was broken
+before which was the initial reason for this patch series.
+
+Detailed changes are in the patch descriptions.
+
+A branch can be found here:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/sdhi/separate-sdhn-v2
+
+Looking forward to comments and testing.
+
+Thanks and happy hacking,
+
+   Wolfram
+
+Wolfram Sang (21):
+clk: renesas: rcar-gen3: add dummy SDnH clock
+clk: renesas: rcar-gen3: add SDnH clock
+clk: renesas: r8a779a0: add SDnH clock to V3U
+mmc: sdhi: internal_dmac: flag non-standard SDnH handling for V3M
+clk: renesas: rcar-gen3: switch to new SD clock handling
+clk: renesas: rcar-gen3: remove outdated SD_SKIP_FIRST
+dt-bindings: mmc: renesas,sdhi: add optional SDnH clock
+arm64: dts: reneas: r8a774a1: add SDnH clocks
+arm64: dts: reneas: r8a774b1: add SDnH clocks
+arm64: dts: reneas: r8a774c0: add SDnH clocks
+arm64: dts: reneas: r8a774e1: add SDnH clocks
+arm64: dts: reneas: r8a77951: add SDnH clocks
+arm64: dts: reneas: r8a77960: add SDnH clocks
+arm64: dts: reneas: r8a77961: add SDnH clocks
+arm64: dts: reneas: r8a77965: add SDnH clocks
+arm64: dts: reneas: r8a77980: add SDnH clocks
+arm64: dts: reneas: r8a77990: add SDnH clocks
+arm64: dts: reneas: r8a77995: add SDnH clocks
+mmc: sdhi: use dev_err_probe when getting clock fails
+mmc: sdhi: parse DT for SDnH
+arm64: dts: reneas: r8a779a0: add SDnH clocks
+
+.../devicetree/bindings/mmc/renesas,sdhi.yaml |  16 +-
+arch/arm64/boot/dts/renesas/r8a774a1.dtsi     |  12 +-
+arch/arm64/boot/dts/renesas/r8a774b1.dtsi     |  12 +-
+arch/arm64/boot/dts/renesas/r8a774c0.dtsi     |   9 +-
+arch/arm64/boot/dts/renesas/r8a774e1.dtsi     |  12 +-
+arch/arm64/boot/dts/renesas/r8a77951.dtsi     |  12 +-
+arch/arm64/boot/dts/renesas/r8a77960.dtsi     |  12 +-
+arch/arm64/boot/dts/renesas/r8a77961.dtsi     |  12 +-
+arch/arm64/boot/dts/renesas/r8a77965.dtsi     |  12 +-
+arch/arm64/boot/dts/renesas/r8a77980.dtsi     |   3 +-
+arch/arm64/boot/dts/renesas/r8a77990.dtsi     |   9 +-
+arch/arm64/boot/dts/renesas/r8a77995.dtsi     |   3 +-
+arch/arm64/boot/dts/renesas/r8a779a0.dtsi     |   3 +-
+drivers/clk/renesas/r8a774a1-cpg-mssr.c       |  12 +-
+drivers/clk/renesas/r8a774b1-cpg-mssr.c       |  12 +-
+drivers/clk/renesas/r8a774c0-cpg-mssr.c       |   9 +-
+drivers/clk/renesas/r8a774e1-cpg-mssr.c       |  12 +-
+drivers/clk/renesas/r8a7795-cpg-mssr.c        |  12 +-
+drivers/clk/renesas/r8a7796-cpg-mssr.c        |  12 +-
+drivers/clk/renesas/r8a77965-cpg-mssr.c       |  12 +-
+drivers/clk/renesas/r8a77980-cpg-mssr.c       |   3 +-
+drivers/clk/renesas/r8a77990-cpg-mssr.c       |   9 +-
+drivers/clk/renesas/r8a77995-cpg-mssr.c       |   3 +-
+drivers/clk/renesas/r8a779a0-cpg-mssr.c       |  17 +-
+drivers/clk/renesas/rcar-cpg-lib.c            | 211 +++---------------
+drivers/clk/renesas/rcar-cpg-lib.h            |   7 +-
+drivers/clk/renesas/rcar-gen3-cpg.c           |  24 +-
+drivers/clk/renesas/rcar-gen3-cpg.h           |   4 +
+drivers/mmc/host/renesas_sdhi.h               |   4 +
+drivers/mmc/host/renesas_sdhi_core.c          |  39 +++-
+drivers/mmc/host/renesas_sdhi_internal_dmac.c |  21 ++
+31 files changed, 261 insertions(+), 289 deletions(-)
+
+-- 
+2.30.2
 
