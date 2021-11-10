@@ -2,92 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71B1944C5BA
-	for <lists+linux-mmc@lfdr.de>; Wed, 10 Nov 2021 18:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7F6E44C5D5
+	for <lists+linux-mmc@lfdr.de>; Wed, 10 Nov 2021 18:17:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbhKJRMc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 10 Nov 2021 12:12:32 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.168]:18124 "EHLO
+        id S232481AbhKJRUI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 10 Nov 2021 12:20:08 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.83]:18396 "EHLO
         mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbhKJRMc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 10 Nov 2021 12:12:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1636564167;
+        with ESMTP id S231708AbhKJRUH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 10 Nov 2021 12:20:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1636564634;
     s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=VogIBdJ+pahIETg+bq9eGn8JF1e4igREsQzr4VmxO4I=;
-    b=cFAGJFtzKTtwUKaohFsiRrMmnxtlRRZoa0bYpY65bZT0DUKm7LuPt1zvUJJCqNaQdS
-    4h3b8bPh7mO2GL9sPxJRB8rgvJkgzQXdNa3R2V6koqaDu/+dtM6moO+dRnZ8sOXKu7ED
-    AByW7QPFeLEHGvGw5KBpXLX6+lEz3PoNSSaQGZbDmnwzEHFlB51WBQP4j82Ng92eRbh3
-    R9wWTAmtNn3hURdInJbwO6uutQle81qGZJH8imKCWKC8dfWd7YfYxklpy3h5wJy877o2
-    PtaqcqkY16G0jkGxkf62lazyIU2UNyu1sXH6L2Hua5B2mT+7lEI9xXRGM2vT1XMQMMDI
-    umCA==
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=BxSWWKTyTSpwkiKaplm50TkH80bkmR2Wjcw/iI6LETA=;
+    b=W1MsbpAXkKx5AmUCx8pXbql1Yjo6Iq/iYx2BXBpHYU9NKNLsDNMmPz0io1dZlUZvLE
+    ffXIv6JLhpcjALdyP6CnhHGONfhAtF1Jf41FLEV/3yvOFP4mYTQ4c9B37qn5C9esGrEJ
+    Z0kFf9GMWL1IxA6QDZvxwre6FzLFA+MXnwCY+KvftJ+FuzKo0DnA54uk11kKRQJr5OsY
+    TCMJaFySCNO8k3O0gQmMwNTMUcfsj/AsqAejXyuScuPu8wwgdFntY2msoMCj/bSs2O2k
+    XtA5BOEEo9Lksn1NsBK3EoViawITQ/PueHwdnGRIauu3Ont1ohCxGv/x9W2ibGj9RIto
+    cl1Q==
 Authentication-Results: strato.com;
     dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw47pgLk="
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lByOdfLlf0"
 X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
+Received: from iMac.fritz.box
     by smtp.strato.de (RZmta 47.34.5 DYNA|AUTH)
-    with ESMTPSA id Y02aa4xAAH9R50Y
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+    with ESMTPSA id Y02aa4xAAHHC51c
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Wed, 10 Nov 2021 18:09:27 +0100 (CET)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: [RFC v4 5/6] mmc: core: transplant ti,wl1251 quirks from to be
- retired omap_hsmmc
+    Wed, 10 Nov 2021 18:17:12 +0100 (CET)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <CAPDyKFqsBkWBajYvS2DXsHzO01-hgQp7YuzTs61N7vmLkZLgKg@mail.gmail.com>
-Date:   Wed, 10 Nov 2021 18:09:26 +0100
-Cc:     =?utf-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>,
-        Avri Altman <avri.altman@wdc.com>,
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>, Avri Altman <avri.altman@wdc.com>,
         Shawn Lin <shawn.lin@rock-chips.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Tony Lindgren <tony@atomide.com>,
         Bean Huo <beanhuo@micron.com>,
-        =?utf-8?Q?Gra=C5=BEvydas_Ignotas?= <notasas@gmail.com>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B7FC3305-7C27-4D17-9BBD-856CF6C542C8@goldelico.com>
-References: <cover.1636103151.git.hns@goldelico.com>
- <3ca9a3099d86d631235b6c03ae260bc581cc8d60.1636103151.git.hns@goldelico.com>
- <CAPDyKFrH8f80cs5dbh=3ugjyEzoUYXhStpHQyhUSd6b9wD78vw@mail.gmail.com>
- <C2F065E7-10C5-4701-A6F7-6B5A6198F0DF@goldelico.com>
- <CAPDyKFoz6b-+HQYdypYD7EUXxwj7th-=41MAK=ZTnKQWRmLArQ@mail.gmail.com>
- <B6ECEECF-EC1D-431E-B4E4-915B29E31AEE@goldelico.com>
- <CAPDyKFqsBkWBajYvS2DXsHzO01-hgQp7YuzTs61N7vmLkZLgKg@mail.gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-X-Mailer: Apple Mail (2.3445.104.21)
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        Tian Tao <tiantao6@hisilicon.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Yang Li <abaci-bugfix@linux.alibaba.com>
+Cc:     notasas@gmail.com, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
+Subject: [PATCH v2 0/6] mmc: core: extend mmc_fixup_device and transplant ti,wl1251 quirks from to be retired omap_hsmmc
+Date:   Wed, 10 Nov 2021 18:17:05 +0100
+Message-Id: <cover.1636564631.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.33.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+PATCH V2 2021-11-10 18:17:11:
+* remove setting card->ocr = 0x80 because it is no longer needed (by H. Nikolaus Schaller <hns@goldelico.com>)
+* include patch "mmc: core: Fixup storing of OCR for MMC_QUIRK_NONSTD_SDIO" by Ulf Hansson <ulf.hansson@linaro.org>
+
+PATCH V1 2021-11-09 11:59:08:
+* merge call of mmc_fixup_device for sdio into other commit (suggested by Ulf Hansson <ulf.hansson@linaro.org>)
+* do not call mmc_fixup_device(card, sdio_card_init_methods) for mmc and sd interfaces, just sdio (suggested by Ulf Hansson <ulf.hansson@linaro.org>)
+* do not use a matching list but a single string constant (suggested by Ulf Hansson <ulf.hansson@linaro.org>)
+* switched to "[PATCH v1]" (suggested by Ulf Hansson <ulf.hansson@linaro.org>)
+
+RFC V4 2021-11-05 10:05:51:
+* remove const from char *const * (Ulf Hansson <ulf.hansson@linaro.org>)
+* use for_each_child_of_node() to scan compatible children (Ulf Hansson <ulf.hansson@linaro.org>)
+(see: https://lore.kernel.org/lkml/CAPDyKFpr0kpRXoUACNNSwe8pL1S9wJPjnX+GFGS1PNezKCDYzQ@mail.gmail.com/)
+
+RFC V3 2021-11-03 14:00:13:
+* patches have been split into smaller ones a little further
+* propose a new macro for setup of device tree compatible quirks
+* directly include patches by jerome.pouiller@silabs.com
+  in this series
+
+RFC V2 2021-11-01 10:24:26:
+* reworked to not misuse mmc_select_card() but add a call to
+  mmc_fixup_device() right after where host->ops->init_card
+  was called before to apply the wl1251 specific quirks.
+  Device tree matching is done by a new table passed to mmc_fixup_device().
+  suggested by: ulf.hansson@linaro.org
+  based on patches by: jerome.pouiller@silabs.com
+
+RFC V1 2021-10-06 13:24:13:
 
 
-> Am 10.11.2021 um 18:03 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
->=20
-> On Wed, 10 Nov 2021 at 17:36, H. Nikolaus Schaller <hns@goldelico.com> =
-wrote:
->>=20
->>=20
->> Indeed we can. That is great.
->>=20
->> Now the question is how to handle the dependency on your patch.
->> Somehow we must ensure that it is merged before my $subject patch.
->> Even if someone decides to backport this to stable.
->=20
-> Yes, I can pick up my patch first. As it's not really fixing a
-> problem, but rather preparing for your series to work better, I don't
-> think we need to care about stable backports, at least for now.
->=20
-> If you re-submit before rc1, then just include my patch early in your =
-series.
+H. Nikolaus Schaller (3):
+  mmc: core: provide macro and table to match the device tree to apply
+    quirks
+  mmc: core: transplant ti,wl1251 quirks from to be retired omap_hsmmc
+  mmc: host: omap_hsmmc: revert special init for wl1251
 
-Ok, I'll submit a v2 asap (isn't much work since I have your patch =
-already in my test branch).
+Jérôme Pouiller (2):
+  mmc: core: rewrite mmc_fixup_device()
+  mmc: core: allow to match the device tree to apply quirks
 
-BR and thanks,
-Nikolaus
+Ulf Hansson (1):
+  mmc: core: Fixup storing of OCR for MMC_QUIRK_NONSTD_SDIO
+
+ drivers/mmc/core/card.h       | 36 ++++++++++++++++++++
+ drivers/mmc/core/quirks.h     | 64 +++++++++++++++++++++++++----------
+ drivers/mmc/core/sdio.c       |  5 ++-
+ drivers/mmc/host/omap_hsmmc.c | 36 --------------------
+ 4 files changed, 87 insertions(+), 54 deletions(-)
+
+-- 
+2.33.0
 
