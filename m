@@ -2,59 +2,96 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC2444D14D
-	for <lists+linux-mmc@lfdr.de>; Thu, 11 Nov 2021 06:07:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8393244D3F7
+	for <lists+linux-mmc@lfdr.de>; Thu, 11 Nov 2021 10:22:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233738AbhKKFKk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Thu, 11 Nov 2021 00:10:40 -0500
-Received: from host-200-90-157-143.netpc.ec ([200.90.157.143]:54108 "EHLO
-        mail.gruponetpc.com" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S233092AbhKKFKf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 11 Nov 2021 00:10:35 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by mail.gruponetpc.com (Postfix) with ESMTP id 97CF5E10856;
-        Wed, 10 Nov 2021 08:38:06 -0500 (-05)
-Received: from mail.gruponetpc.com ([127.0.0.1])
-        by localhost (mail.gruponetpc.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id vgJjYq1ZieFm; Wed, 10 Nov 2021 08:38:05 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.gruponetpc.com (Postfix) with ESMTP id C01A07EC489;
-        Tue,  9 Nov 2021 22:22:29 -0500 (-05)
-X-Virus-Scanned: amavisd-new at gruponetpc.com
-Received: from mail.gruponetpc.com ([127.0.0.1])
-        by localhost (mail.gruponetpc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id okpwN920NmIQ; Tue,  9 Nov 2021 22:22:29 -0500 (-05)
-Received: from [192.168.0.108] (unknown [93.182.105.113])
-        by mail.gruponetpc.com (Postfix) with ESMTPSA id 2D1A88A6238;
-        Tue,  9 Nov 2021 15:25:32 -0500 (-05)
-Content-Type: text/plain; charset="utf-8"
+        id S232067AbhKKJYs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 11 Nov 2021 04:24:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43056 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230021AbhKKJYr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 11 Nov 2021 04:24:47 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E106C061767
+        for <linux-mmc@vger.kernel.org>; Thu, 11 Nov 2021 01:21:58 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id bi37so7757397lfb.5
+        for <linux-mmc@vger.kernel.org>; Thu, 11 Nov 2021 01:21:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=upzcV63NGKfkcgiX0pF2jdWcUrYxKUE4MnPXAlmhZ24=;
+        b=xITzxxjhV5bA9MTZ9uG5YUE2S5tR5hlBgqhBgSx0uLF2Q9yNZovs+KT6z1In0PQJNh
+         0OyAKYXNaT1139a6RzIJ9T1IbxrrR7vAOQngnXWq7J232baYxeSQG8PKMYWR9xVLK+xa
+         BhUgCP9a9R4hNZLRj+KlDiwlj2q35fPONGGsLtkVHMa3pq/4QUmS+oVBF+CAeYaXrcjX
+         L4ln7EuawMiSAWgSda7TS9arDP6yB5uAzps91Pr9kVD7WQB3WqBuvjrQcBNU7P7hnVGv
+         0WfhqrsXGO640evD5yam0MQOsRn1S+AeAgnatB12p1jRtgeG5KqwqAwVDrSNWXNjJyyy
+         /Umw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=upzcV63NGKfkcgiX0pF2jdWcUrYxKUE4MnPXAlmhZ24=;
+        b=izHO7XlMGpWoWJ1c2uHooAhryXfpJbvagmU+YmrsNLqBp3tUcVwkoXV+tasCUrHcGo
+         D4+6HY5VgAxIVU4SAjVddq2d3of3LDX4g2PMW0v+5IDxsGUA42fgPWuuM/mJLYSex90s
+         ObYTNFvEbzDvxO07bdvAGVpcos+47icwIQnbw+DB8YW+lj9gSiFKbU9o5qnB3K/A+N5w
+         GFOQIhRUBb+R0jAuZcYR8nKFqaVrJVNUCamLp5KzM8aTLESNWf7sf1CX7zAvnkgsvMKz
+         F68/eZd2DhxVYX0TD1qz2YCUUtG6N+dA1CCsvUrShZ0+CebYNemyWyb7cNW+D4dct35r
+         ajJg==
+X-Gm-Message-State: AOAM531AQWMpXLbPJ9nv6TH47X3wmZ6Z2XUujouVUvjIqrJun2rMMs2M
+        G/BfM2aNeSeZ/Xzy5PrFCzVdrfB+g8OeyhwOphMz+g==
+X-Google-Smtp-Source: ABdhPJwltgmgxSoCafwjV++Ud4heliO80/2F+tNg3MhJJVkgjUldFy5JKooQdnOSvoRB1dfX8e9S2gCDAEl+Lj9sX4c=
+X-Received: by 2002:ac2:5a46:: with SMTP id r6mr5589070lfn.358.1636622516569;
+ Thu, 11 Nov 2021 01:21:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: donation
-To:     Recipients <ecouso@mail.gruponetpc.com>
-From:   ecouso@mail.gruponetpc.com
-Date:   Tue, 09 Nov 2021 20:25:02 +0000
-Reply-To: stefanopessina35@gmail.com
-Message-Id: <20211109202533.2D1A88A6238@mail.gruponetpc.com>
+References: <cover.1636564631.git.hns@goldelico.com> <e7936cff7fc24d187ef2680d3b4edb0ade58f293.1636564631.git.hns@goldelico.com>
+ <857E13BF-020B-4184-801D-783ADBDC42A1@goldelico.com>
+In-Reply-To: <857E13BF-020B-4184-801D-783ADBDC42A1@goldelico.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 11 Nov 2021 10:21:19 +0100
+Message-ID: <CAPDyKFqMm18GuTk9=v==iVxKa=SWLj2Xh6acoK=N6dVJJ6Xiaw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] mmc: core: Fixup storing of OCR for MMC_QUIRK_NONSTD_SDIO
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?UTF-8?Q?Gra=C5=BEvydas_Ignotas?= <notasas@gmail.com>,
+        linux-mmc@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Bean Huo <beanhuo@micron.com>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        Tian Tao <tiantao6@hisilicon.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Yang Li <abaci-bugfix@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Wed, 10 Nov 2021 at 18:20, H. Nikolaus Schaller <hns@goldelico.com> wrote:
+>
+> > Am 10.11.2021 um 18:17 schrieb H. Nikolaus Schaller <hns@goldelico.com>:
+> >
+> > From: Ulf Hansson <ulf.hansson@linaro.org>
+> >
+> > The mmc core takes a specific path to support initializing of a
+> > non-standard SDIO card. This is triggered by looking for the card-quirk,
+> > MMC_QUIRK_NONSTD_SDIO.
+> >
+> >       if (card->type == MMC_TYPE_SD_COMBO) {
+> > --
+> > 2.33.0
+> >
+>
+> Sorry, I just recognised after pressing the send button that with "early"
+> you probably meant this to be 1/6... Should I resubmit?
 
+No need to re-submit, this works fine!
 
-Hallo,
-
-Ich bin STEFANO PESSINA. Ich bin ein italienisch-monegassischer Milliardär und stellvertretender Vorsitzender, Chief Executive Officer (CEO) und größter Einzelaktionär der Walgreens Boots Alliance. Au   fgrund dieser aktuellen Situation (Corona-Virus), die sich auf der ganzen Welt ausbreitet, spenden ich selbst und andere 19 italienische Milliardäre mehr als 45 Millionen US-Dollar, um das Coronavirus in Italien zu bekämpfen. Ich habe auch zugesagt, 1.500.000,00 € an Einzelpersonen, Kirchen und Waisenhäuser usw. zu spenden. Ich habe mich entschieden, Ihnen 1.500.000,00 € zu spenden, da Ihre E-Mail-Adresse zu den glücklichen Gewinnern gehört. Wenn Sie an meiner Spende interessiert sind, kontaktieren Sie mich für weitere Informationen. Du kannst auch über den untenstehenden Link mehr über mich lesen
-
-https://en.wikipedia.org/wiki/Stefano_Pessina
-
-Herzlicher Gruss
-Stellvertretender Vorsitzender und Geschäftsführer,
-Walgreens Boots-Allianz.
-Stefano Pessina
-
-E-Mail: stefanopessina35@gmail.com
-
-
-
+Kind regards
+Uffe
