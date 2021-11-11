@@ -2,85 +2,57 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 978FE44D94B
-	for <lists+linux-mmc@lfdr.de>; Thu, 11 Nov 2021 16:40:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA1A744D9CC
+	for <lists+linux-mmc@lfdr.de>; Thu, 11 Nov 2021 17:05:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233891AbhKKPnO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 11 Nov 2021 10:43:14 -0500
-Received: from smtp2.axis.com ([195.60.68.18]:33747 "EHLO smtp2.axis.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233510AbhKKPnM (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 11 Nov 2021 10:43:12 -0500
+        id S232033AbhKKQHv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 11 Nov 2021 11:07:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50344 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232366AbhKKQHv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 11 Nov 2021 11:07:51 -0500
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F3C6C061766
+        for <linux-mmc@vger.kernel.org>; Thu, 11 Nov 2021 08:05:02 -0800 (PST)
+Received: by mail-qv1-xf31.google.com with SMTP id gu12so4326922qvb.6
+        for <linux-mmc@vger.kernel.org>; Thu, 11 Nov 2021 08:05:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1636645223;
-  x=1668181223;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=GoWQum+lKyDSPUD+h2RodiN3NAIKwAyslPa7sCdWChY=;
-  b=lJipoOUQeaUR7TI1qs4p1HyLL1AREOUb9lKypKvTE6dKEJlloZfrPDcS
-   wsAyGfRTRtoHqTE2yZx/7M3WHwRmTI5cN71siWCnRtEVDpup+oXb2Xr+c
-   BsUj5f/If7XO6V+mzpxUKCj4fKUQ7Z1xdIpIJmij4DXL1KdktQZpwd1K0
-   iUBde1ySgEyt7cynWaUzO6lwG6hHeahR+mY6TITbmRwoB3yhYNIZD/k5J
-   6i/Ix7HN4uWp50pi1htQXJB4otMLsN9p6J4Yntc/2sl0haRQi0sgoFzjz
-   nghyT8kfzzNkSZJcpaq/ninZ7Vmk9qSqLShhHZAWum+3sQ7AzIYD6x4oz
-   w==;
-Date:   Thu, 11 Nov 2021 16:40:20 +0100
-From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
-To:     =?iso-8859-1?Q?M=E5rten?= Lindahl <Marten.Lindahl@axis.com>
-CC:     Jaehoon Chung <jh80.chung@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        kernel <kernel@axis.com>, Doug Anderson <dianders@google.com>
-Subject: Re: [PATCH] mmc: dw_mmc: Avoid hung state if GEN_CMD transfer fails
-Message-ID: <20211111154020.GA21634@axis.com>
-References: <20211103182716.28419-1-marten.lindahl@axis.com>
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/Zo6D2QmdMLURHlFXa9LWpTbohN6ssdEVbpdn0vjtS4=;
+        b=Q2kY8lzRFOvwSoCz+zdwE7azUHrUSmsgNXgtUQAINuu6A5LN3qfLBiIT3zKN43AhOt
+         fR/4kTjc1NRw7Ji4L7IPeY7jzvy7oKJ2tGPDZ6r8y+c4K53gQZo5RoC9qRb6NdIjb1g7
+         iAFCLxZLLHE8u1g/jFQSspeskLI/0GcRmshxqxqHW3o3lKQtY/mk5cLOP/jpmNvrPfq+
+         2uFdmjEpKa9YJEBl5//03Cxj5BMVYuifoDhZ34SiqINEmBDAotegpjsiU7vVeyFMInud
+         N9vIEtxFeSWcu46iK8goqqeTnMMTJKqHSDiKFCcFNBINMR1mOwM2943hsrR3Z9OHYR0+
+         uDvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/Zo6D2QmdMLURHlFXa9LWpTbohN6ssdEVbpdn0vjtS4=;
+        b=VA9QqgkBSS2wT+9CJvstNWBz6Xw/kTOIxniMfu6XQE26+q0Czlh3IyZxkVThYoaOBm
+         37GRVdpNCkIIlRZVTFP2TLRi17sASeQ+WvsBD7WnDy/c9rQ6jgUBY0iR6fFFP8icvn6F
+         Ds0O1tigbXBDUm/1hQTo7OE1yZURHZ2LBngFmLXSrK7ixXVPbQmyAFkEst9QiKs3XXT/
+         hLOuse27P/XVno0PUxESAwjKF3YLsncyIIuDEP6fnYM57lrl/66lhdBklz/yBa0Nv9v7
+         h5qu933PxIK86IdqpTdYk0UmTySaw2SFcdgpxRrRuPGDiNRvX5MVUOK1Blp4UAW3glbS
+         1ASg==
+X-Gm-Message-State: AOAM531eRC+DVCLDta1bqtlE0L6W8Ot5S+Y/ahQf8h4cU7nIs8F/GA6X
+        yNk27Upy8MWnKTivHS9ArtF3E7zqCmuU82OUvMA=
+X-Google-Smtp-Source: ABdhPJwdPJ0B0suk/zMjOUrfWRahi2LMqos1l79NGVNidtrTalwKM583Z+rKqRrq/Sy/5bLA8BPTk+znV45sYVJVPGw=
+X-Received: by 2002:a05:6214:12d:: with SMTP id w13mr7699361qvs.39.1636646701543;
+ Thu, 11 Nov 2021 08:05:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211103182716.28419-1-marten.lindahl@axis.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:ac8:e44:0:0:0:0:0 with HTTP; Thu, 11 Nov 2021 08:05:01 -0800 (PST)
+Reply-To: helenraymond49@gmail.com
+From:   Helen Raymond <tazouparfaite@gmail.com>
+Date:   Thu, 11 Nov 2021 17:05:01 +0100
+Message-ID: <CAB1WKHJ6=OVDKTJomJSkrMPxLdRagNyGnX1_60Vp6Afi+4AtkA@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Nov 03, 2021 at 07:27:16PM +0100, Mårten Lindahl wrote:
-> If we get a data error during a block transfer command, a stop command
-> (CMD12) is normally initiated. But this does not work for the general
-> command (CMD56), but instead the action is ignored and an uninitialized
-> command struct is used for the stop action, with unexpected result.
-> 
-> Fix this by adding a check for GEN_CMD when preparing stop transmission.
-> 
-> Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-> ---
->  drivers/mmc/host/dw_mmc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-> index 6578cc64ae9e..988c32e93e03 100644
-> --- a/drivers/mmc/host/dw_mmc.c
-> +++ b/drivers/mmc/host/dw_mmc.c
-> @@ -335,7 +335,8 @@ static u32 dw_mci_prep_stop_abort(struct dw_mci *host, struct mmc_command *cmd)
->  	    cmdr == MMC_WRITE_BLOCK ||
->  	    cmdr == MMC_WRITE_MULTIPLE_BLOCK ||
->  	    cmdr == MMC_SEND_TUNING_BLOCK ||
-> -	    cmdr == MMC_SEND_TUNING_BLOCK_HS200) {
-> +	    cmdr == MMC_SEND_TUNING_BLOCK_HS200 ||
-> +	    cmdr == MMC_GEN_CMD) {
->  		stop->opcode = MMC_STOP_TRANSMISSION;
->  		stop->arg = 0;
->  		stop->flags = MMC_RSP_R1B | MMC_CMD_AC;
-
-While this fix looks correct for CMD56, the "Data transfer mode"
-sections of the eMMC and SD specifications list several more data
-commands, all of which can be aborted by CMD12, but which aren't handled
-in the if above.
-
-If I'm not mistaken, those will also result in an uninitialized stop
-command being sent in the case of an error, since the driver calls
-send_stop_abort() on any data error.
-
-Is there a reason why those other commands should not be in the list
-above, or should we fix this list so that CMD12 is initialized for all
-data commands except SD_IO_RW_EXTENDED?
+Please check your "spam" and  write me back ???
