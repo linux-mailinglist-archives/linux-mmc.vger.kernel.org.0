@@ -2,167 +2,81 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E15844FA83
-	for <lists+linux-mmc@lfdr.de>; Sun, 14 Nov 2021 20:37:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E75944FB9E
+	for <lists+linux-mmc@lfdr.de>; Sun, 14 Nov 2021 21:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236466AbhKNTj6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 14 Nov 2021 14:39:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57740 "EHLO
+        id S236256AbhKNUqi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 14 Nov 2021 15:46:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236396AbhKNTjf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 14 Nov 2021 14:39:35 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71F61C06120C;
-        Sun, 14 Nov 2021 11:36:35 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id p16so37617150lfa.2;
-        Sun, 14 Nov 2021 11:36:35 -0800 (PST)
+        with ESMTP id S234970AbhKNUqh (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 14 Nov 2021 15:46:37 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C4F5C061746;
+        Sun, 14 Nov 2021 12:43:43 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id y196so12157735wmc.3;
+        Sun, 14 Nov 2021 12:43:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=KUl5NgtppOXN7aMrj+VJMJxgtwwCvjbf2LUP4ZJTZHk=;
-        b=Yy/hKIPWSodlFNY6swmkyJRCh+WhikTA/dRazVz6AKJzSBnF2jYDK/5q6e3nxyFWIa
-         BNKlRQlFq22odK1W1PGiaNYP8D03qiUr5dz93d5GLxOtr3836lr+B2ybo1dUtxep2Q5+
-         wWY5SRlhPMbJUMk3k1giiLPXXqvyEReqHI+ZHyiZSKvPOHC0Ga7h5o34WdPeFT+cv6K4
-         gVaTwurnwjzCi/TiPwC6GXWYDCG5rtamz60rquUksOhMtMdy2enNd45c3fYBZFYZ0O1p
-         7g+Mb2mmw1/TyYCw9zZwDl30Sz2cX80v0eg6MGK7QD+3uXmOkcUD+W6luLzxZuzahx+8
-         PtUw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wrR3UPlCzUG7xn47afzQ6lXIB1wVcH1LZzlTZ62d7lU=;
+        b=PNedUQ/X9lQEwEB/R5eL6v59Ce0d49E8cqW/5dTgVDmZATKuwQwHEK+IrXgF7caE+T
+         ymfk/zSfAYKP1ZoEED/90bP2rRk5mUXnGREddTR8TLQ4ycKkAXE8YAzxiC9M0szGXES6
+         utWKiXIxcLPy2JSexQkmuzIbIY6Ndds+w5YfbH2L0+dqlYGbGymrsbk1LV1ilLacM7Fj
+         3XNBr1IU/FXWfesvLDAD4WXShK3CPmhnD7nDM1933KlA31JdKTz3SUCKBT1Os24g8JWb
+         Y/Oo6g4eqvlGtNEycWQ5sMoAkCPUgqGexP53NJGSsXDCiUpIaYJWjCNMgr9jo7VZ8yr+
+         xH+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=KUl5NgtppOXN7aMrj+VJMJxgtwwCvjbf2LUP4ZJTZHk=;
-        b=S8EJ7ykZI+7Qyz9FILpn+dMDyuoQM5nxqUZtzkbgkYU21OJ88ZFwTrTzVzcgCwjrjs
-         /qMmcrJ7uuYt/Mv+Wrepby+nDfhl5Ec17kg81XFXDBrTQH281kUT6QHkHCOa3a4mUmW6
-         BmqNaWVxRD8KHuB9yjOJ32msLvH1J428jjihW12theVM+hrU87ToZscbuZsxgLgv7AUa
-         +vY3q1EI1Sl6T052wx4Bi6dt7Z5SNDnWv9Kj2CZRRCIqGB3fIn6/v6gZ2onHPT51qiWu
-         o2Z5zXYBuni4pLNVxAP/nnK14rJaCcSOzl3/6++R39qgjhdeKjjn8rzcSjWNwqfiZRl+
-         2i9Q==
-X-Gm-Message-State: AOAM533B40TMYdK3+pJG5/RX9FDbVe/sm0tmxGTLUYURZCiZlWCxn45l
-        7uEFaVKIbrf8OuY9L+XSzz0=
-X-Google-Smtp-Source: ABdhPJwkl0EgJTGgwtb6u0tc69twYwIooQnj94EJ74B6thW9WYrExV03eJqhkxli+EYJLyHT25vMkQ==
-X-Received: by 2002:a05:6512:92d:: with SMTP id f13mr28203010lft.63.1636918593677;
-        Sun, 14 Nov 2021 11:36:33 -0800 (PST)
-Received: from localhost.localdomain (46-138-46-211.dynamic.spd-mgts.ru. [46.138.46.211])
-        by smtp.gmail.com with ESMTPSA id p18sm1191280lfu.127.2021.11.14.11.36.32
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wrR3UPlCzUG7xn47afzQ6lXIB1wVcH1LZzlTZ62d7lU=;
+        b=3q3HYw18AoGkbHxssbuiryoLGeCnn4D3cTKoikPQ8kN7gHQBGuLlm6sRdLEM8Ygupv
+         66PgwnRg3GwI+UGMI9y4AdMg21j9TNVyq8Peps6L8al2rjtJ/nGwPrcOwvTxsCo1tF6t
+         9kithKgBHkVnFM/jOCRyVqCtTHVX/09+fHtsf6uYY/ZvNBZVEZ2HtNuaMgw/9qN/+70K
+         RcWxifXNO/5p64w7zMPkYoSUFfpT/NqKvQGVumybC3LRsfVBgo4LyzBBWr/cw676Yax9
+         wOJ8cCRYDW874lt15t2hmYWskadYnk8wV273vIhWD20+LMoxpjXQ/0HNpHxViJm07kQg
+         FCtg==
+X-Gm-Message-State: AOAM531i0YpCklds6rLe14E/p30C7aiFtTiJHMCptERfyGwdzucJ3pWy
+        G0JXKj4j+9QU5weuPxnB3hU=
+X-Google-Smtp-Source: ABdhPJwH7L0kGHd7O8e0FNLfFky4paf91nfNiJSEtPSUkWQ6SIaqgI7nR353PGk2zjl9N8MpfuANIw==
+X-Received: by 2002:a05:600c:1c07:: with SMTP id j7mr56197441wms.12.1636922621776;
+        Sun, 14 Nov 2021 12:43:41 -0800 (PST)
+Received: from ubuntu-laptop.speedport.ip (p200300e94719c9aa03f58ab728c81581.dip0.t-ipconnect.de. [2003:e9:4719:c9aa:3f5:8ab7:28c8:1581])
+        by smtp.gmail.com with ESMTPSA id m14sm16673630wrp.28.2021.11.14.12.43.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Nov 2021 11:36:33 -0800 (PST)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Nishanth Menon <nm@ti.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Michael Turquette <mturquette@baylibre.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-mmc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-clk@vger.kernel.org, David Heidelberg <david@ixit.cz>
-Subject: [PATCH v15 39/39] ARM: tegra20/30: Disable unused host1x hardware
-Date:   Sun, 14 Nov 2021 22:34:35 +0300
-Message-Id: <20211114193435.7705-40-digetx@gmail.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211114193435.7705-1-digetx@gmail.com>
-References: <20211114193435.7705-1-digetx@gmail.com>
+        Sun, 14 Nov 2021 12:43:41 -0800 (PST)
+From:   Bean Huo <huobean@gmail.com>
+To:     ulf.hansson@linaro.org, adrian.hunter@intel.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     beanhuo@micron.com
+Subject: [PATCH v1 0/2] Two change for mmc-utils
+Date:   Sun, 14 Nov 2021 21:43:29 +0100
+Message-Id: <20211114204331.39555-1-huobean@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-MPE, VI, EPP and ISP were never used and we don't have drivers for them.
-Since these modules are enabled by default in a device-tree, a device is
-created for them, blocking voltage scaling because there is no driver to
-bind, and thus, state of PMC driver is never synced. Disable them.
+From: Bean Huo <beanhuo@micron.com>
 
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- arch/arm/boot/dts/tegra20.dtsi | 4 ++++
- arch/arm/boot/dts/tegra30.dtsi | 8 ++++++++
- 2 files changed, 12 insertions(+)
+Hi Uffe,
+   Two changes for mmc-utils, please have a take look at it.
 
-diff --git a/arch/arm/boot/dts/tegra20.dtsi b/arch/arm/boot/dts/tegra20.dtsi
-index 7b69ffc57abe..8010b40d7377 100644
---- a/arch/arm/boot/dts/tegra20.dtsi
-+++ b/arch/arm/boot/dts/tegra20.dtsi
-@@ -59,6 +59,7 @@ mpe@54040000 {
- 			reset-names = "mpe";
- 			power-domains = <&pd_mpe>;
- 			operating-points-v2 = <&mpe_dvfs_opp_table>;
-+			status = "disabled";
- 		};
- 
- 		vi@54080000 {
-@@ -70,6 +71,7 @@ vi@54080000 {
- 			reset-names = "vi";
- 			power-domains = <&pd_venc>;
- 			operating-points-v2 = <&vi_dvfs_opp_table>;
-+			status = "disabled";
- 		};
- 
- 		epp@540c0000 {
-@@ -81,6 +83,7 @@ epp@540c0000 {
- 			reset-names = "epp";
- 			power-domains = <&pd_core>;
- 			operating-points-v2 = <&epp_dvfs_opp_table>;
-+			status = "disabled";
- 		};
- 
- 		isp@54100000 {
-@@ -91,6 +94,7 @@ isp@54100000 {
- 			resets = <&tegra_car 23>;
- 			reset-names = "isp";
- 			power-domains = <&pd_venc>;
-+			status = "disabled";
- 		};
- 
- 		gr2d@54140000 {
-diff --git a/arch/arm/boot/dts/tegra30.dtsi b/arch/arm/boot/dts/tegra30.dtsi
-index c1be136aac7d..d961ce3761e6 100644
---- a/arch/arm/boot/dts/tegra30.dtsi
-+++ b/arch/arm/boot/dts/tegra30.dtsi
-@@ -145,6 +145,8 @@ mpe@54040000 {
- 			operating-points-v2 = <&mpe_dvfs_opp_table>;
- 
- 			iommus = <&mc TEGRA_SWGROUP_MPE>;
-+
-+			status = "disabled";
- 		};
- 
- 		vi@54080000 {
-@@ -158,6 +160,8 @@ vi@54080000 {
- 			operating-points-v2 = <&vi_dvfs_opp_table>;
- 
- 			iommus = <&mc TEGRA_SWGROUP_VI>;
-+
-+			status = "disabled";
- 		};
- 
- 		epp@540c0000 {
-@@ -171,6 +175,8 @@ epp@540c0000 {
- 			operating-points-v2 = <&epp_dvfs_opp_table>;
- 
- 			iommus = <&mc TEGRA_SWGROUP_EPP>;
-+
-+			status = "disabled";
- 		};
- 
- 		isp@54100000 {
-@@ -183,6 +189,8 @@ isp@54100000 {
- 			power-domains = <&pd_venc>;
- 
- 			iommus = <&mc TEGRA_SWGROUP_ISP>;
-+
-+			status = "disabled";
- 		};
- 
- 		gr2d@54140000 {
+Kind regards,
+Bean
+
+Bean Huo (2):
+  mmc-utils: Use memcpy instead of strncpy
+  mmc-utils: Add note for CMDQ_MODE_EN runtime value
+
+ mmc_cmds.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
 -- 
-2.33.1
+2.25.1
 
