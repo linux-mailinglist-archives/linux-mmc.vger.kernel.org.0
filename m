@@ -2,112 +2,91 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77459455016
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Nov 2021 23:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57563455077
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Nov 2021 23:29:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240833AbhKQWEv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 17 Nov 2021 17:04:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:22894 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S240763AbhKQWEo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 17 Nov 2021 17:04:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637186505;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gzRqfi9r2d6jzALCSB0C8plEtz9PToXoYBaSZUOHj50=;
-        b=CYQ1GTBXk7vl4xkQz78SlB3Ii67pNItNWgNcUzqm60zNufAa9PVn3Ffujs/8HokoUKBFCa
-        S9NeFUMF13mOYIuhzRzUFVuq+IMCbfcX9lSSCqb0Rq/g4DuRn+oQqBXqUzFv1ObsD4sxpQ
-        PRFAJuEZAnAXqPHcpXrmrvUyXKJYOqg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-557-hxFbEqMrPGWZPAMQ7FAlBQ-1; Wed, 17 Nov 2021 17:01:37 -0500
-X-MC-Unique: hxFbEqMrPGWZPAMQ7FAlBQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 43F4C15720;
-        Wed, 17 Nov 2021 22:01:36 +0000 (UTC)
-Received: from x1.localdomain.com (unknown [10.39.192.15])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C875F5D9DE;
-        Wed, 17 Nov 2021 22:01:34 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-mmc@vger.kernel.org
-Subject: [PATCH 5/5] mmc: sdhci-acpi: Use the new soc_intel_is_byt() helper
-Date:   Wed, 17 Nov 2021 23:01:18 +0100
-Message-Id: <20211117220118.408953-6-hdegoede@redhat.com>
-In-Reply-To: <20211117220118.408953-1-hdegoede@redhat.com>
-References: <20211117220118.408953-1-hdegoede@redhat.com>
+        id S241259AbhKQWcf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 17 Nov 2021 17:32:35 -0500
+Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:47192 "EHLO
+        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S241184AbhKQWcc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 17 Nov 2021 17:32:32 -0500
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+        by mx0b-0016f401.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AHJXBXP026889;
+        Wed, 17 Nov 2021 14:29:21 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=pfpt0220; bh=t4PWee8KaXYwU5JN+/qBheWEVVFEWJOWDj1bcZKdljg=;
+ b=RAG34UvhA+lvP4Zq6QIxTYSF0c6D2SNLhzHXkaCEAsURsKAaA1I29aISZ7ehIModkjg0
+ pwcGKK3oZC5jRQVIEsqZrWjUKthoXRNwIfyPXEXiEN0spOo6dM6bmzAUDNh/zwLax+i1
+ 77IJt+gXrKxJL4aZ0FqfRg1cA98c4TRirJSy4ZY71hw6W9dS69g6xVfT6AHC2R/NUnVe
+ o/4dTvmhFmVlEk2vz1darKuzRUP0H7YdQd6jq0LJOZKjvpJ5+LGCZ09G2Rj/c8lDe7wH
+ 7VYyMhirFzbxqfLGRZ6CKYWYM8le/xsmJ7FwT+thVPBA2cxYgEQNVEiyxIWpCixQWQft GA== 
+Received: from dc5-exch02.marvell.com ([199.233.59.182])
+        by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3cd8028mm3-5
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Wed, 17 Nov 2021 14:29:21 -0800
+Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 17 Nov
+ 2021 14:28:36 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.18 via Frontend
+ Transport; Wed, 17 Nov 2021 14:28:36 -0800
+Received: from localhost.localdomain (unknown [10.110.150.170])
+        by maili.marvell.com (Postfix) with ESMTP id 7AD075B694C;
+        Wed, 17 Nov 2021 14:28:36 -0800 (PST)
+From:   Wojciech Bartczak <wbartczak@marvell.com>
+To:     <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <beanhuo@micron.com>,
+        <tanxiaofei@huawei.com>, <robh+dt@kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <wbartczak@marvell.com>
+Subject: [PATCH 0/2] mmc: cavium: Fix MMC supply switching for cards
+Date:   Wed, 17 Nov 2021 14:27:59 -0800
+Message-ID: <cover.1637186803.git.wbartczak@marvell.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: DOWX3jR2RXP6AOZA8rJD7Yn5WLCw1shw
+X-Proofpoint-GUID: DOWX3jR2RXP6AOZA8rJD7Yn5WLCw1shw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-17_08,2021-11-17_01,2020-04-07_01
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Use the new soc_intel_is_byt() helper function from
-include/linux/platform_data/x86/soc.h .
+Following series of patches fix code related to switching
+voltage regulators used by multiple cards in Octeon/OcteonTX2
+systems.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/mmc/host/sdhci-acpi.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+Change is necessary to support cards with different voltages,
+which is common case in modern configuration where the mix of SD cards
+and MMC memory chips is used as main storage.
 
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index 1461aae13c19..c0350e9c03f3 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -31,8 +31,7 @@
- #include <linux/mmc/slot-gpio.h>
- 
- #ifdef CONFIG_X86
--#include <asm/cpu_device_id.h>
--#include <asm/intel-family.h>
-+#include <linux/platform_data/x86/soc.h>
- #include <asm/iosf_mbi.h>
- #endif
- 
-@@ -239,16 +238,6 @@ static const struct sdhci_acpi_chip sdhci_acpi_chip_int = {
- 
- #ifdef CONFIG_X86
- 
--static bool sdhci_acpi_byt(void)
--{
--	static const struct x86_cpu_id byt[] = {
--		X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT, NULL),
--		{}
--	};
--
--	return x86_match_cpu(byt);
--}
--
- #define BYT_IOSF_SCCEP			0x63
- #define BYT_IOSF_OCP_NETCTRL0		0x1078
- #define BYT_IOSF_OCP_TIMEOUT_BASE	GENMASK(10, 8)
-@@ -257,7 +246,7 @@ static void sdhci_acpi_byt_setting(struct device *dev)
- {
- 	u32 val = 0;
- 
--	if (!sdhci_acpi_byt())
-+	if (!soc_intel_is_byt())
- 		return;
- 
- 	if (iosf_mbi_read(BYT_IOSF_SCCEP, MBI_CR_READ, BYT_IOSF_OCP_NETCTRL0,
-@@ -282,7 +271,7 @@ static void sdhci_acpi_byt_setting(struct device *dev)
- 
- static bool sdhci_acpi_byt_defer(struct device *dev)
- {
--	if (!sdhci_acpi_byt())
-+	if (!soc_intel_is_byt())
- 		return false;
- 
- 	if (!iosf_mbi_available())
+Aside custom system, the change is required to support reference designs
+for CN96xx and CN98xx systems.
+
+First patch contains mid-size rework of do_switch() routine that
+includes:
+- separation of vmmc/vqmmc switch logic
+- separation of register accesses to functions for better readibility
+- forming do_switch() as high-level function that controls the flow of
+  switch operation.
+
+Second patch adds extended description of device-tree usage to
+enable code contained in former patch.
+
+Wojciech Bartczak (2):
+  mmc: cavium: Fix voltage reg. switching for card slots
+  dt-bindings: mmc: Add vmmc/vqmmc for Cavium driver
+
+ .../devicetree/bindings/mmc/cavium-mmc.txt    |  47 ++++-
+ drivers/mmc/host/cavium.c                     | 168 ++++++++++++++++--
+ drivers/mmc/host/cavium.h                     |   8 +-
+ 3 files changed, 202 insertions(+), 21 deletions(-)
+
 -- 
-2.31.1
+2.17.1
 
