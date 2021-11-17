@@ -2,162 +2,135 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B946455072
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Nov 2021 23:28:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B71B0455128
+	for <lists+linux-mmc@lfdr.de>; Thu, 18 Nov 2021 00:30:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241247AbhKQWbx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 17 Nov 2021 17:31:53 -0500
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:36370 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S241234AbhKQWbw (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 17 Nov 2021 17:31:52 -0500
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-        by mx0a-0016f401.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AHKt5Ko018539;
-        Wed, 17 Nov 2021 14:28:43 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
- subject : date : message-id : mime-version : in-reply-to : references :
- content-transfer-encoding : content-type; s=pfpt0220;
- bh=HLM8Yr+Co8RdV6Vxg07CVlRMlj5TEV3a+mUrbRF9ccs=;
- b=NxgBw4yWXvZddSKHZWbYUe6vY/nQ7HANrKWEXMBk6/qkrsBRNvsJEQahWi879Crrhp0r
- 5l/DRavKuX2+JkFQBk+N/Tp+hegZIjEcX2HvTKEI608QPANmWSCO3c1BimVE31ZK+EqT
- CSDCif1JbSO1WT1wh9LMK50zw36zbllU8eh8gAeVCHwFGcegD2It1dwI7cjOfuje2ymT
- tmBwqcGAlpeJyzoSkBVMeXrnOcfHJkIZX/eiEcmw26Mzf8QUWnX8OqbSzMFm3WDH86yy
- OxRk9Wp2JbVHjg85x20llI37z+vSg+MuD+CFcD4Vq+AARFoBSWVc916khiyRThuvvhUs Kg== 
-Received: from dc5-exch01.marvell.com ([199.233.59.181])
-        by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3cd34btexb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Wed, 17 Nov 2021 14:28:43 -0800
-Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH01.marvell.com
- (10.69.176.38) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 17 Nov
- 2021 14:28:41 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
- (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.18 via Frontend
- Transport; Wed, 17 Nov 2021 14:28:41 -0800
-Received: from localhost.localdomain (unknown [10.110.150.170])
-        by maili.marvell.com (Postfix) with ESMTP id 7F7055B694D;
-        Wed, 17 Nov 2021 14:28:41 -0800 (PST)
-From:   Wojciech Bartczak <wbartczak@marvell.com>
-To:     <linux-mmc@vger.kernel.org>
-CC:     <ulf.hansson@linaro.org>, <beanhuo@micron.com>,
-        <tanxiaofei@huawei.com>, <robh+dt@kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <wbartczak@marvell.com>
-Subject: [PATCH 2/2] dt-bindings: mmc: Add vmmc/vqmmc for Cavium driver
-Date:   Wed, 17 Nov 2021 14:28:01 -0800
-Message-ID: <f1aa09f05ea34c2970785a79c3d791626da9bc32.1637186803.git.wbartczak@marvell.com>
-X-Mailer: git-send-email 2.17.1
+        id S241607AbhKQXdE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 17 Nov 2021 18:33:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39324 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240122AbhKQXc7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 17 Nov 2021 18:32:59 -0500
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 444F8C061570
+        for <linux-mmc@vger.kernel.org>; Wed, 17 Nov 2021 15:29:59 -0800 (PST)
+Received: by mail-il1-x135.google.com with SMTP id a15so1501591ilj.8
+        for <linux-mmc@vger.kernel.org>; Wed, 17 Nov 2021 15:29:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=DtcDFCZbcERHHSxWFXRQr28Y3mh0GMhw13+aKbu47TA=;
+        b=Q+Ky95Jvj1lLrhhol1CQeQ6zUWp4cV/CHc3TOyLHj7DpUKwWNf5YgMJFvOy9y6pA/h
+         9twUuTw8MJGee8mNKAhZf+5AWfKWwNWjNrf/GiUZpWdcZnWMdkeOCP3HeOCURq4sqGLp
+         PlhdtCrt694GBBU2/4S7wiYeFKik3FfKEs2kS2YtlIhp33tQDZDiEdYLaJ/aYNTsnq6Q
+         4yE+vD7yttdQT1t7qoJ886FRPUaE0v1fhkLmLWJpj4i3Kv50NqurwLHwt39cgbmXDqx2
+         zDOb5mgMAAQYwBnHLR7dzQc641eyRnXE8JNqiIzXPlRNsxuIE/yGbl2SA4VzCARX5P+d
+         0QcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=DtcDFCZbcERHHSxWFXRQr28Y3mh0GMhw13+aKbu47TA=;
+        b=Tdu/JS8zA3ztr0LLqTObytPayLTukw6lTbPEniTlxPNtT/mWiu5V3XQ3nvFVWyDV3T
+         Bf4EtDQt9ywMqZqTV5UtSj+Wb70PPz2XTW5r4APw7l78blDMlNjYl8lKgHGbtwzfkCCS
+         cZfckG2SbGNZWUYujQXbR7ZfC8PnWFLYcymVl5LJY+Rat6oC6FeRPOXerjhvQVUrYKsb
+         5zIDBU04no+1OQZb+Hvqbuy7lSjFg4V1uHW8onArXNl2xS/7AFFZfn4LY6woXoBv5Uwq
+         xrNCM46qbaP8wzEljoNnmO6z94owhuL0Fb6LUDgj0tiVOt1sFCuPgpQWyJvSWlpSYqWB
+         QiGg==
+X-Gm-Message-State: AOAM532he972BTjWi+RjlruzpfG15jG/XLJI5UQSehBltVBPj111j+6Z
+        dxwOhoG/RTTFMeSdn2b5PGaN6O7kOy0Pqpbw4DT82Q==
+X-Google-Smtp-Source: ABdhPJxB9+Ujn/PXWi/o+VzfIRdn1miuwOUm35QJMKaLE4ytdmVY01EQf5RlEUgVUSR1nNbFEhP958jP3BvGW+xm8xQ=
+X-Received: by 2002:a05:6e02:1a67:: with SMTP id w7mr12368256ilv.165.1637191798270;
+ Wed, 17 Nov 2021 15:29:58 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <cover.1637186803.git.wbartczak@marvell.com>
-References: <cover.1637186803.git.wbartczak@marvell.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: Vo_x-LER69sAzH9KcjzKJRpvhpuD39Fz
-X-Proofpoint-GUID: Vo_x-LER69sAzH9KcjzKJRpvhpuD39Fz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-17_09,2021-11-17_01,2020-04-07_01
+References: <20211117160859.8732-1-marten.lindahl@axis.com>
+In-Reply-To: <20211117160859.8732-1-marten.lindahl@axis.com>
+From:   Doug Anderson <dianders@google.com>
+Date:   Wed, 17 Nov 2021 15:29:46 -0800
+Message-ID: <CAD=FV=WWF9W=cXQWkcvQAgXjGZjBzgvV3jB90nZ35JYdi8YA-w@mail.gmail.com>
+Subject: Re: [PATCH v4] mmc: dw_mmc: Allow lower TMOUT value than maximum
+To:     =?UTF-8?Q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
+Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, kernel@axis.com,
+        linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Octeon/OcteonTX MMC supports up to 3 card slots.
-Each slot can support SD or MMC cards with various speed.
-However, any level-shifting to accommodate different signal voltages
-for the cards is done by external hardware, under control of an optional
-vqmmc regulator object, typically controlled by gpio.
-The details of device-tree control of MMC signals via GPIO at reset
-is available in this file.
+Hi,
 
-If any mmc-slots have a vqmmc-supply property,
-take it as a warning that we must switch carefully between
-slots (unless they have the same vqmmc object), tri-stating
-MMC signals to avoid any transient states as level-shifters
-are enabled/disabled, by zeroing MIO_EMM_CFG[bus_id].
+On Wed, Nov 17, 2021 at 8:09 AM M=C3=A5rten Lindahl <marten.lindahl@axis.co=
+m> wrote:
+>
+> The TMOUT register is always set with a full value for every transfer,
+> which (with a 200MHz clock) will give a full DRTO of ~84 milliseconds.
+> This is normally good enough to complete the request, but setting a full
+> value makes it impossible to test shorter timeouts, when for example
+> testing data read times on different SD cards.
+>
+> Add a function to set any value smaller than the maximum of 0xFFFFFF.
+>
+> Signed-off-by: M=C3=A5rten Lindahl <marten.lindahl@axis.com>
+> ---
+>
+> v2:
+>  - Calculate new value before checking boundaries
+>  - Include CLKDIV register to get proper value
+>
+> v3:
+>  - Use 'if-else' instead of 'goto'
+>  - Don't touch response field when maximize data field
+>
+> v4:
+>  - Prevent 32bit divider overflow by splitting the operation
+>  - Changed %06x to %#08x as suggested by Doug
+>  - Rephrased commit msg as suggested by Doug
+>
+>  drivers/mmc/host/dw_mmc.c | 28 +++++++++++++++++++++++++++-
+>  1 file changed, 27 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+> index d977f34f6b55..8e9d33e1b96c 100644
+> --- a/drivers/mmc/host/dw_mmc.c
+> +++ b/drivers/mmc/host/dw_mmc.c
+> @@ -1283,6 +1283,32 @@ static void dw_mci_setup_bus(struct dw_mci_slot *s=
+lot, bool force_clkinit)
+>         mci_writel(host, CTYPE, (slot->ctype << slot->id));
+>  }
+>
+> +static void dw_mci_set_data_timeout(struct dw_mci *host,
+> +                                   unsigned int timeout_ns)
+> +{
+> +       unsigned int clk_div, tmp, tmout;
 
-There's no need to list vqmmc property if all the mmc-slots
-on a board run at same signal voltage, and have same width.
-In this case the old behavior, enabling all probed slots in
-MIO_EMM_CFG, allows faster slot-switching.
+didn't notice before, but nit that I usually make it a policy that
+things that represent cpu registers are the "sized" types. Thus I'd
+rather see these locals as u32 even though the parameter (which
+represents a logical value and not a CPU register) stays as "unsigned
+int").
 
-Signed-off-by: Wojciech Bartczak <wbartczak@marvell.com>
----
- .../devicetree/bindings/mmc/cavium-mmc.txt    | 47 ++++++++++++++++++-
- 1 file changed, 45 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mmc/cavium-mmc.txt b/Documentation/devicetree/bindings/mmc/cavium-mmc.txt
-index 1433e6201dff..d0b750e23332 100644
---- a/Documentation/devicetree/bindings/mmc/cavium-mmc.txt
-+++ b/Documentation/devicetree/bindings/mmc/cavium-mmc.txt
-@@ -28,6 +28,46 @@ Deprecated properties:
- - power-gpios : use vmmc-supply instead
- - cavium,octeon-6130-mmc-slot : use mmc-slot instead
- 
-+GPIO control via vmmc-supply & vqmmc-supply:
-+  Two types of regulator object can be specified as mmc properties,
-+  typically regulator-fixed controlled by GPIO pins.
-+
-+  Octeon/OcteonTX chips commonly use GPIO8 as an MMC-reset pin.
-+  In systems which may boot from MMC, it starts as input, and is gently
-+  pulled up/down by board logic to indicate the active sense of the
-+  signal. Chip reset then drives the signal in the opposite direction
-+  to effect a reset of target devices.
-+  Device tree should model this with a vmmc-supply regulator, gated by
-+  GPIO8, so GPIO8 is driven in the non-reset direction when MMC devices
-+  are probed, and held there until rmmod/shutdown/suspend.
-+  This allows a warm reboot to reset the MMC devices.
-+
-+  Octeon/OcteonTX MMC supports up to 3 mmc slots, but any
-+  level-shifting to accommodate different signal voltages is
-+  done by external hardware, under control of an optional
-+  vqmmc regulator object, typically controlled by GPIO.
-+
-+  If any mmc-slots have a vqmmc-supply property, it is taken as a warning
-+  that we must switch carefully between slots (unless they have the same
-+  vqmmc object), tri-stating MMC signals to avoid any transient states
-+  as level-shifters are enabled/disabled.
-+
-+  Even when so-called bi-directional level shifters are used,
-+  this technique should be employed when using different bus-widths
-+  on different slots, disabling level shifters to avoid presenting
-+  non-uniform impedance across DATA0-7 & CMD when non-selected
-+  4-wide slots are left enabled, while accessing 8-wide targets.
-+
-+  Note that it's not possible to specify multiple regulators
-+  controlled by same GPIO pin, but with different active state.
-+  If one GPIO line is require to switch voltage/routing between
-+  different mmc-slots, specify a vqmmc-supply on one slot, but
-+  not the other. The regulator_disable call on leaving that slot
-+  will implicitly switch the state to support the unmarked slot.
-+
-+  There's no need to list vqmmc-supply if all the mmc-slots on
-+  a board run at same voltage, and have same width.
-+
- Examples:
- 	mmc_1_4: mmc@1,4 {
- 		compatible = "cavium,thunder-8390-mmc";
-@@ -40,7 +80,8 @@ Examples:
- 			compatible = "mmc-slot";
- 			reg = <0>;
- 			vmmc-supply = <&mmc_supply_3v3>;
--			max-frequency = <42000000>;
-+			vqmmc-supply = <&vqmmc_3v3>;
-+			max-frequency = <52000000>;
- 			bus-width = <4>;
- 			cap-sd-highspeed;
- 		};
-@@ -49,9 +90,11 @@ Examples:
- 			compatible = "mmc-slot";
- 			reg = <1>;
- 			vmmc-supply = <&mmc_supply_3v3>;
--			max-frequency = <42000000>;
-+			vqmmc-supply = <&vqmmc_1v8>;
-+			max-frequency = <100000000>;
- 			bus-width = <8>;
- 			cap-mmc-highspeed;
- 			non-removable;
- 		};
- 	};
-+
--- 
-2.17.1
+> +       clk_div =3D (mci_readl(host, CLKDIV) & 0xFF) * 2;
+> +       if (clk_div =3D=3D 0)
+> +               clk_div =3D 1;
+> +
+> +       tmp =3D DIV_ROUND_UP_ULL((u64)timeout_ns * host->bus_hz, NSEC_PER=
+_SEC);
+> +       tmp =3D DIV_ROUND_UP(tmp, clk_div);
 
+I guess in some extreme cases you still have an overflow. Not sure how
+many people really use "div", but...
+
+The case I'm thinking of is if the timeout is 80 ms, the bus_hz is 200
+MHz, and clk_div is 20 (register contains 10). I think that would mean
+you're feeding the controller a 4GHz clock which it probably couldn't
+_really_ handle, so maybe this isn't super realistic. In any case, I
+think the first statement would be the equivalent of 80 * 200MHz =3D
+0x3b9aca000 and that blows out the 32-bit "tmp" variable.
+
+Why not just keep it as 64-bit until you're done dividing to be safe?
+
+-Doug
