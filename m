@@ -2,134 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88CB24559FA
-	for <lists+linux-mmc@lfdr.de>; Thu, 18 Nov 2021 12:17:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE51A455CDB
+	for <lists+linux-mmc@lfdr.de>; Thu, 18 Nov 2021 14:39:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343832AbhKRLUK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 18 Nov 2021 06:20:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:57114 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344092AbhKRLSc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 18 Nov 2021 06:18:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637234132;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tLL+SXRUQtHOYzxbBR3+E0gRNLnRI75C+gDiy6tjAt8=;
-        b=hrSgJCLKrJKdfBVPh4mUWlkwE118qWBtfaeZiFsRdLareT8eVkdXKXoTIsLbDd4IW1Ko1E
-        C8fyWATPqJzRMR3tfT7v98uwVtWzsDutQWKrOrk4u2Y30wRkjA3hYpzcuEGe5K2G6ehA/J
-        iBsv6YIbCuDrouJsKHGHdC9eX0NWyPw=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-100-JYb1e9HDNUu8vAejK1Wdbw-1; Thu, 18 Nov 2021 06:15:30 -0500
-X-MC-Unique: JYb1e9HDNUu8vAejK1Wdbw-1
-Received: by mail-ed1-f71.google.com with SMTP id i19-20020a05640242d300b003e7d13ebeedso4974873edc.7
-        for <linux-mmc@vger.kernel.org>; Thu, 18 Nov 2021 03:15:30 -0800 (PST)
+        id S231404AbhKRNmR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 18 Nov 2021 08:42:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60076 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230501AbhKRNmR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 18 Nov 2021 08:42:17 -0500
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2E0FC061570
+        for <linux-mmc@vger.kernel.org>; Thu, 18 Nov 2021 05:39:16 -0800 (PST)
+Received: by mail-qv1-xf2c.google.com with SMTP id s9so4549840qvk.12
+        for <linux-mmc@vger.kernel.org>; Thu, 18 Nov 2021 05:39:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=8jcb5ymp2rRPkE1XJdYPtIse71+NKKwoukzdR3UNdEg=;
+        b=ZzP9U9U05OHqAQQr54NiCYJeGnxdbZNyvGgdlbHDEMl2M01ueleh4qBzh4JRyz4wru
+         E18SJBoJU8yROom4sTWcqlv0rrleOwH/LyI36DJt/+jVjYxqHgT8apkoQTwiJpkvFoqe
+         P7Oz13sUGgBWU6t+mAeYqT716GmA/D+HZtt9FYWBauOOLkgtfl3fwJK3aXFCFITd/pa7
+         LpuZUbpRIqzOC82xzo5fwr/Pfr0t6JH2mQcnBecZoIgMfP4HVWuGTM/Ti9GHVedXNwdD
+         fIl6vxK47w5FZ3MUfQRIaMOyTlJg158dZq0x0te2LX945VLClaa7J1xpslTNx3CXaLUI
+         6iOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=tLL+SXRUQtHOYzxbBR3+E0gRNLnRI75C+gDiy6tjAt8=;
-        b=qPFPF4Y30sfo9lPdBZ1tHOYGNB/jxrC/K1ECIOtrcZBqFXpxq2OF+ss/RyMIDAo9C0
-         zS8TiQlMs05guGxxeHiWeQ38daXYqPu3l9hcghStkXYhQpe6hINQ8kRIYkJOEMSr43oX
-         zNMb5+dXyJ3m20cX2Ed4YzCW7l0U0RPJFriQFMnztISQLHGeCMts3MjiYpzgvcNNDp8l
-         fEF9yg5hkdNvPv/iRR78wDzfM5DgxsMNxp7I5sbsnEKZFLjpDzto6b3tZusvZMCijUhc
-         Or5h5LvqI0yP90eLdAV81VNSHizSxFSvWCjQcuSOiwibsCDhoaSADUvOz4i+oWeOXxJh
-         oU9w==
-X-Gm-Message-State: AOAM532SXedHfip5xgglZT69GOTMinnvgf13ypnE9wanx6EKY+KtspUA
-        X38MAveNPO04YfXcYqFQlj0pVO4ynQ04MoWXTHY/Otlosv+UzJoumBU2xz49RtuY+5QiTAVPpVc
-        /h1D2obIYhD82/nVcaqpL
-X-Received: by 2002:a05:6402:1e92:: with SMTP id f18mr9950645edf.153.1637234129760;
-        Thu, 18 Nov 2021 03:15:29 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJz5/BQkcvD/uZZZVRUuLcyQyQ3pCqJV0hnk93SdCb0dVL3YaH/L93PMB3108ej+wxX65snoNw==
-X-Received: by 2002:a05:6402:1e92:: with SMTP id f18mr9950618edf.153.1637234129565;
-        Thu, 18 Nov 2021 03:15:29 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id p10sm1378086edj.91.2021.11.18.03.15.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Nov 2021 03:15:29 -0800 (PST)
-Message-ID: <937cf1fd-0cb1-1a12-7745-8cc2a2e3405a@redhat.com>
-Date:   Thu, 18 Nov 2021 12:15:28 +0100
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=8jcb5ymp2rRPkE1XJdYPtIse71+NKKwoukzdR3UNdEg=;
+        b=jN8X+cE6PO3+kOERXq/IHJ0yjTd+6K3T294+M1yIvbjIxnEbJHHwWlAxaZ63n4C1ia
+         0KILv3abAqUR88Qb8RhOqtU0PUEg/iiEkJscGiajoJ+GQNSOMYtQVXZ2ar2TFYi6R09x
+         sc/sB1hCltfSuISWrfQgQ0xtJvn0yU7wWtUxHqANCC22YOcVBcg9WGIwktnVz9+TSXqV
+         FD9ozFLElyX+QFTRjc3QxSlV0S5sxzXo0bSqlC/YhYemKvw3iaYZFiIHK2O9mFVKsvJY
+         y7ld66IStkrXBU8cUwbUCx2sOFjdIuqqDfP/nMa1gtMx5X5gs8F7VRGSqU22ecd/5uVe
+         qKHA==
+X-Gm-Message-State: AOAM5339HpfNydu7xAKnWGlLYEtSOtchudRHM0ClxVK5z2zegB5gTWTS
+        Q7NMp/pVvzBQjFsV/Xjh2bCsbKKyJG/YhYIXjOg=
+X-Google-Smtp-Source: ABdhPJzNlhAnBQXZmiN2lVwVVs41lBJ67hq7DOFdG+VM1n05FSPdavdnX8d+sqoCLec1UDbl0eLHFIMoZpfrtg1Aiv0=
+X-Received: by 2002:a0c:e887:: with SMTP id b7mr64285310qvo.34.1637242756211;
+ Thu, 18 Nov 2021 05:39:16 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 5.16 regression fix 0/5] ACPI: scan: Skip turning off some
- unused objects during scan
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>
-References: <20211117220118.408953-1-hdegoede@redhat.com>
- <CAJZ5v0hDWN4cKh+ZcB__wrWHChm=FjhwvCShXzseECQOFotM6w@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0hDWN4cKh+ZcB__wrWHChm=FjhwvCShXzseECQOFotM6w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a0c:ea8d:0:0:0:0:0 with HTTP; Thu, 18 Nov 2021 05:39:15
+ -0800 (PST)
+Reply-To: thomasjoyec@yahoo.com
+From:   Joyec Thomas <missagathaumuamumam@gmail.com>
+Date:   Thu, 18 Nov 2021 05:39:15 -0800
+Message-ID: <CAJ=kts+cENuudh9DkiXEkvYztMxbRm1tJMRn5K3sWt9n82+TSQ@mail.gmail.com>
+Subject: Complement of the day
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
-
-On 11/18/21 12:08, Rafael J. Wysocki wrote:
-> On Wed, Nov 17, 2021 at 11:01 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi Rafael,
->>
->> Commit c10383e8ddf4 ("ACPI: scan: Release PM resources blocked by
->> unused objects") adds a:
->>
->>         bus_for_each_dev(&acpi_bus_type, NULL, NULL, acpi_dev_turn_off_if_unused);
->>
->> call to acpi_scan_init(). On some devices with buggy DSDTs calling
->> _PS3 for one device may result in it turning off another device.
-> 
-> Well, I'm going to revert this commit.  I'm sending a pull request
-> with the revert later today.
-> 
->> Specifically the DSDT of the GPD win and GPD pocket devices has a
->> "\\_SB_.PCI0.SDHB.BRC1" device for a non existing SDIO wifi module
->> which _PS3 method sets a GPIO causing the PCI wifi card to turn off.
->>
->> I've an earlier, in some ways simpler, fix for this here:
->> https://fedorapeople.org/~jwrdegoede/0001-ACPI-scan-Skip-turning-off-some-unused-objects-durin.patch
->>
->> But the sdhci-acpi.c MMC host code already has an older workaround
->> for it to not toggle power on this broken ACPI object; and this
->> simpler fix would require keeping that workaround. So then we would
->> have 2 workarounds for the same issue in the kernel.
->>
->> Thus instead I've come up with a slightly different approach which
->> IMHO has ended up pretty well.
->>
->> Patches 1-3 of this series are this different approach and assuming
->> they are considered ok must be merged into 5.16 to fix the regression
->> caused by commit c10383e8ddf4 on these devices.
-> 
-> So I'll have a look at these and if they look good, we can do that
-> instead of the problematic commit in 5.17.
-
-I'm a bit confused now, if the problematic commit is going to get
-reversed then technically we don't need this series anymore ?
-
-Or are you planning on re-introducing it in some form for 5.17 ?
-
-With that said getting this series merged would still be good,
-patch 1 + 2 make the existing always_present quirk code more generic
-which might be useful later. And then patch 3 (which is small)
-allows dropping some ugliness from the sdhci-acpi.c code since
-the DSDT bug we are hitting will now be solved by the
-new acpi-dev-status-override mechanism.
-
-Regards,
-
-Hans
-
+Hello Dearest one,
+Good morning to you today and how are you. Doing I hope all is well
+with you; please did you receive the mail I sent to you since three
+days ago?  Please can you be kindly get back to me  so that I will
+know if  you received the mail I sent to you or not.
+Best Regards,
+Joyce Thomas
