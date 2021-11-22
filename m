@@ -2,110 +2,115 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AF3545931E
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Nov 2021 17:34:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4118245939F
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Nov 2021 18:05:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238460AbhKVQhs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 22 Nov 2021 11:37:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230406AbhKVQhr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Nov 2021 11:37:47 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD44C061574;
-        Mon, 22 Nov 2021 08:34:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=kqBhSMWa3sOnZM39EObYBhGUKcC3oHWInrKZjV+i2aU=;
-        t=1637598880; x=1638808480; b=Vd8FhQmL61Y0EvCjXGWm8kG0KApfp/fZYqaIlYxLVXwe81z
-        ZOLVBFrXpjc1zjnQ42HuW4+1Y7vddCDBHaMVJ05M6a1Ho+movW3tYyrEZJL7Zx3GT0FQb+wxzt2OQ
-        zK51IhXzPgwLGlVQEiHPRU4p4CA2f54T6c/hpHY6H47T9awIhWE7f/wgBVviQUqN7kU7OX45CQJIA
-        hrQeaxvbmtUgFMam8WSqjMr5FcrDGAYMIh6JeLBOltFlknrN/3tgCamZn6QebQgzIcrzCL7p+F9Ph
-        PSqAhv0IcgdteNCDpYFCUbjDj2U/6dnqJiQEb6B/HOO1yFfv7eksixE/TsWih0PA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mpCFL-001MvE-3o;
-        Mon, 22 Nov 2021 17:32:47 +0100
-Message-ID: <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
-Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}()
- helpers
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Benoit Parrot <bparrot@ti.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        id S237431AbhKVRIv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 22 Nov 2021 12:08:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:55807 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237380AbhKVRIu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 22 Nov 2021 12:08:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1637600743;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=cUC//gCwremMSm6kwFEU5MzAvtEDPiJEZuACeWICpUI=;
+        b=B0nLya8zjIAW3WunmPq8MsCLi9lZI5fMOnKq8J9aZpBn2ZIbAM21OuTQxEKmqN4wuKdM8M
+        Lq4goNIL0TB8AxZv7OngcRKPpcZbzXPAqffayxfDXfuV0lx8cyzCHZ5SEBW8/RrtevkvNz
+        0h3PO57XSQ4/PQ3HL8bqgc7qS1hYPqU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-11-I4iIRD-3NjC1Z953HOZd7Q-1; Mon, 22 Nov 2021 12:05:40 -0500
+X-MC-Unique: I4iIRD-3NjC1Z953HOZd7Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 910341B18BCE;
+        Mon, 22 Nov 2021 17:05:38 +0000 (UTC)
+Received: from x1.localdomain (unknown [10.39.192.226])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2EB665D6D5;
+        Mon, 22 Nov 2021 17:05:36 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Date:   Mon, 22 Nov 2021 17:32:43 +0100
-In-Reply-To: <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
-References: <cover.1637592133.git.geert+renesas@glider.be>
-         <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-mmc@vger.kernel.org
+Subject: [PATCH v2 0/7] ACPI: acpi_device_override_status() changes
+Date:   Mon, 22 Nov 2021 18:05:29 +0100
+Message-Id: <20211122170536.7725-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 2021-11-22 at 16:53 +0100, Geert Uytterhoeven wrote:
-> The existing FIELD_{GET,PREP}() macros are limited to compile-time
-> constants.  However, it is very common to prepare or extract bitfield
-> elements where the bitfield mask is not a compile-time constant.
-> 
+Hi Rafael,
 
-I'm not sure it's really a good idea to add a third API here?
+As requested here is a v2 of my series previously titled:
+"ACPI: scan: Skip turning off some unused objects during scan"
 
-We have the upper-case (constant) versions, and already
-{u32,...}_get_bits()/etc.
+Which was a regression fix series for the commit c10383e8ddf4
+("ACPI: scan: Release PM resources blocked by unused objects")
+change, but that has been reverted now. So as requested here is
+a v2 changing the wording of various commit messages since these
+changes are still useful to have regardless.
 
-Also, you're using __ffs(), which doesn't work for 64-bit on 32-bit
-architectures (afaict), so that seems a bit awkward.
+Patch 1/7 is a v2/resend of the "ACPI / x86: Drop PWM2 device on
+Lenovo Yoga Book from always present table" patch. You requested
+changing the commit message of this one a bit to make it sound
+less like a regression fix (which it is not). But you already
+have the previous version of this patch in your bleeding-edge
+branch, with a "Cc: 5.1+ <stable@vger.kernel.org> # 5.1+"
+added ?  So depending on which version you want you can either
+skip this patch when applying this series, or replace it with
+the version from this series.
 
-Maybe we can make {u32,...}_get_bits() be doing compile-time only checks
-if it is indeed a constant? The __field_overflow() usage is already only
-done if __builtin_constant_p(v), so I guess we can do the same with
-__bad_mask()?
+Patches 2-4 are the main changes to make the always_present
+quirk handling more flexible, changing it into a status_override
+mechanism + adding a quirk for the GPD win and pocket to fix
+an issue with those in a more elegant matter then the current
+kludge in the sdhci-acpi code.
 
-johannes
+Patch 5 is an unrelated patch which touches the override-status
+quirk table, so it needed to be rebased and I decided to add it
+to this series to make it clear that its v2 needs to be applied
+on top of the other ACPI changes from this series.
+
+Patches 6+7 cleanup the sdhci-acpi code, removing the now no
+longer needed ugly kludge for the GPD win/pocket. These can
+be merged independently from patches 1-5, through the mmc
+tree, as long as they get send to Linus during the same
+kernel cycle as the ACPI bits.
+
+Regards,
+
+Hans
+
+
+Hans de Goede (7):
+  ACPI / x86: Drop PWM2 device on Lenovo Yoga Book from always present
+    table
+  ACPI: Change acpi_device_always_present() into
+    acpi_device_override_status()
+  ACPI / x86: Allow specifying acpi_device_override_status() quirks by
+    path
+  ACPI / x86: Add not-present quirk for the PCI0.SDHB.BRC1 device on the
+    GPD win
+  ACPI / x86: Add PWM2 on the Xiaomi Mi Pad 2 to the always_present list
+  mmc: sdhci-acpi: Remove special handling for GPD win/pocket devices
+  mmc: sdhci-acpi: Use the new soc_intel_is_byt() helper
+
+ drivers/acpi/bus.c            |   4 +-
+ drivers/acpi/x86/utils.c      | 122 +++++++++++++++++++++++-----------
+ drivers/mmc/host/sdhci-acpi.c |  78 ++--------------------
+ include/acpi/acpi_bus.h       |   5 +-
+ 4 files changed, 96 insertions(+), 113 deletions(-)
+
+-- 
+2.33.1
+
