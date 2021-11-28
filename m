@@ -2,108 +2,125 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D87E346106C
-	for <lists+linux-mmc@lfdr.de>; Mon, 29 Nov 2021 09:45:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60EDC4612EE
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Nov 2021 11:51:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244085AbhK2Isn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Nov 2021 03:48:43 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:58096 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349934AbhK2Iql (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Nov 2021 03:46:41 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D04B5B80DFF;
-        Mon, 29 Nov 2021 08:43:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFEDC004E1;
-        Mon, 29 Nov 2021 08:43:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638175400;
-        bh=OixLDAXpSBxsXxksHXG7qO5MHN4k5qolbw7dRTlvO6U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ox5RYRKJswmVjrm6oqkS0sNRRi/xiLhfXeHIViF+l+yylNI1L/Iavs+9S7BfiOU6S
-         Sp1/BEEbT2imRngMlMTbMVrmZcXX2yY6Ut/i2Vk6gywu9+ccQQqrz1ELWH6rkmaSzt
-         anqOT7HJqDGFVQ2r+WZNwYp/IrVYiz44wmtFD9KGNIkr0avPpt+iiSf/KriygNN5Fd
-         uJM5h579F8hidbkad4Bcw8TPt3p75R7bBQ7mkGha5RlrN4sSjtFczi3JmIyRqwNTzD
-         aW6VdapvsdSqVm4r1gwHG1GdTcjjQwqibi9yxA1XJBVE9IEOaTcLy3KYugOB7p1Yzl
-         kxBUm4r6X8niQ==
-Date:   Mon, 29 Nov 2021 09:43:17 +0100
-From:   Wolfram Sang <wsa@kernel.org>
-To:     "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc:     robh+dt@kernel.org, aisheng.dong@nxp.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, ulf.hansson@linaro.org, broonie@kernel.org,
-        linux@roeck-us.net, wim@linux-watchdog.org, linux@rempel-privat.de,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        daniel.lezcano@linaro.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, Jacky Bai <ping.bai@nxp.com>,
-        Rob Herring <robh@kernel.org>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH V6 1/7] dt-bindings: i2c: imx-lpi2c: Add imx8ulp
- compatible string
-Message-ID: <YaSSpd9yENnPyxzp@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, robh+dt@kernel.org,
-        aisheng.dong@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        ulf.hansson@linaro.org, broonie@kernel.org, linux@roeck-us.net,
-        wim@linux-watchdog.org, linux@rempel-privat.de,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        daniel.lezcano@linaro.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, Jacky Bai <ping.bai@nxp.com>,
-        Rob Herring <robh@kernel.org>, Peng Fan <peng.fan@nxp.com>
-References: <20211126074002.1535696-1-peng.fan@oss.nxp.com>
- <20211126074002.1535696-2-peng.fan@oss.nxp.com>
+        id S232885AbhK2KzQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Nov 2021 05:55:16 -0500
+Received: from smtpcmd14161.aruba.it ([62.149.156.161]:50774 "EHLO
+        smtpcmd14161.aruba.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1351015AbhK2KxP (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Nov 2021 05:53:15 -0500
+Received: from [192.168.50.18] ([146.241.138.59])
+        by Aruba Outgoing Smtp  with ESMTPSA
+        id rSUYmwZPnrIRlrSUZmkupp; Sun, 28 Nov 2021 23:17:54 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+        t=1638137874; bh=aXY7K66LArue7ekBfUqC+O3Vdu3DF45DOCQggVHhyRk=;
+        h=Subject:To:From:Date:MIME-Version:Content-Type;
+        b=UWFMkiSsKQ62KY+0ZURyD6NV1IdL1jjXBcAjrqYTEE7wNQN3tR/3plBoFRl5Ymo9R
+         XdqL6804DiwhYuUrxfCjxoLtDxrlexLUjPjMzPphMcHQvejZNlErXgIocjFwb5BveM
+         uKZRBszKtpbKIn99ZaSStwtUV0M4Vn7/SaGIDfbh5TJaEPIxhTOldS1rBY0FcN9jYk
+         vy4iDf7ox+ZK7PCY0a+RqgJi1gRitzGTPBUkS90y5rQ+4tBVARx/tXovG+j5B3l3nh
+         Fb2NKuGqmbVxEcmQN2J18zlZ4+0SGUgvN0BJF64Be+wfqVL8sOov9cVBJ7itP+l8av
+         J/EPoY0WuV66w==
+Subject: Re: [PATCH v3 07/13] clk: imx: Add initial support for i.MXRT clock
+ driver
+To:     Jesse Taube <mr.bossman075@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>
+Cc:     NXP Linux Team <linux-imx@nxp.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Dong Aisheng <aisheng.dong@nxp.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        soc@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Abel Vesa <abel.vesa@nxp.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-serial@vger.kernel.org
+References: <20211125211443.1150135-1-Mr.Bossman075@gmail.com>
+ <20211125211443.1150135-8-Mr.Bossman075@gmail.com>
+ <CAOMZO5Dqo6c=4nGCOakMKG8fn=V1HA7-O26t3GmwWtD-FbZiPg@mail.gmail.com>
+ <dae68360-456e-3db8-57ed-2287dc7cfd57@gmail.com>
+From:   Giulio Benetti <giulio.benetti@benettiengineering.com>
+Message-ID: <de705094-1b8c-3950-b7f5-f7150b525ea5@benettiengineering.com>
+Date:   Sun, 28 Nov 2021 23:17:50 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4iqRmJHmds4/+yS2"
-Content-Disposition: inline
-In-Reply-To: <20211126074002.1535696-2-peng.fan@oss.nxp.com>
+In-Reply-To: <dae68360-456e-3db8-57ed-2287dc7cfd57@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfC2+WimnYT4jDoL/5Qj39vMuFzShQz7FE/Z8sP1XkxBcrbdPos5MDmBJUX4HG5hh+ebK3KAL0how8VdRfqKsNrF/aWMVS2LsH/RZ6zyMVg9un5zPZZoN
+ XpWsgys9jMAvtyErhZCjCg6c2qhQ+1ryfHitGjvwSIq5/z+GPvn8Trh3JpwusaUYelmuQOw2GUitDYe0RYkp4D3mLVXw0OnHmiwx+4fe8w/7q5wJwvTomNpJ
+ RvxQo74zbj9Agg42zgej+InyJTDpxrNNx/mrojuEwwl4wApu4ST1yBYJnBnay9L9MUd2JBbfZbybNuev6n+VxbA0jqan6TpaUXOZMhe8s6zXc/u8Spgbevwh
+ 9ZrFmJjLHacRXAUklqpbukFqImaltYXulxze8paExwJkEn6GWfP8Ugsf9jQmusZmVhIEQd9+Ec99+fR1zFkK+QkYq6FVavA+WR9oUwBVQlDnMIAQHOZLJjvp
+ otERI3O0iDAgTl5EZdtf7dN4utkZsrZpvLi8k6HhcXHI+PQzJS4Aas31z6ZtCWB3H+IFlnoEXGhgwvOA2WaMwM4E6ftEDDfx4ugg6iQy40iiIU9wRElp/BN+
+ 1L2+DjRbjnQnZYFTnm6f5Bm+PYSmRi2LVrVvuLTLCRtX1gYD58LEPYbY6XKhdwVes39RaJNEhwK4dC0kSU3jWJF6qnrRDnvVPi5GYWDbzXQLqzhCD07w8Cyn
+ mgrkecLsHm8q471VM2FCy03c+/h6WDPublFMtL/ySznu61+FmUMDh4MrgwBY8EOLyvbI3tDnECr0J223wqwHMpLYKCTrvfsPDv5mhiWdg7JJycF0kukdo9WS
+ +d/fkpVfyZe6uh431ToarZWHxPmF3B9FAZdPXfouVHuOBzpV+Pdm/y66C7BACVeSJ7mkyNedf/uG8K5coWzFH6OSWlxKNBAiXqV1qfX6pXrwuhFO+VfyT1ph
+ tK6Xf/dA4Eq5QYjFtXbrPcZUCYJ5drhXeQTIE3Sqx1sFYqrVaI6OfdJKfri3Y/VQBRVuPxC5esevDY0AEBxqnXhbd/OHAy3lNN2ed2wC2Gi7NBglCsPvYTIj
+ wNSHJHBqkWZds8O5IqlT4MxLNfDNRUjkPEDCZTJ3wQ5sIsRQ6G5/LeofgvkQSHRXAcwrPTSqAiUIWl+k2ItjIeC/vfPHKzM0TR4=
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Hi Jesse, Fabio,
 
---4iqRmJHmds4/+yS2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 28/11/21 21:52, Jesse Taube wrote:
+> 
+> 
+> On 11/28/21 15:50, Fabio Estevam wrote:
+>> On Thu, Nov 25, 2021 at 6:14 PM Jesse Taube <mr.bossman075@gmail.com> wrote:
+>>>
+>>> From: Jesse Taube <mr.bossman075@gmail.com>
+>>>
+>>> This patch adds initial clock driver support for the i.MXRT series.
 
-On Fri, Nov 26, 2021 at 03:39:56PM +0800, Peng Fan (OSS) wrote:
-> From: Jacky Bai <ping.bai@nxp.com>
->=20
-> Add the compatible for i.MX8ULP.
->=20
-> Reviewed-by: Dong Aisheng <aisheng.dong@nxp.com>
-> Acked-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Also the commit log must be modified according(Summary+body).
 
-Applied to for-next, thanks!
+Thank you
+-- 
+Giulio Benetti
+Benetti Engineering sas
 
+>>> Signed-off-by: Jesse Taube <Mr.Bossman075@gmail.com>
+>>> Suggested-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
+>>> ---
+>>> V1->V2:
+>>> * Kconfig: Add new line
+>>> * clk-imxrt.c: Remove unused const
+>>> * clk-imxrt.c: Remove set parents
+>>> * clk-imxrt.c: Use fsl,imxrt-anatop for anatop base address
+>>> V2->V3:
+>>> * Remove unused ANATOP_BASE_ADDR
+>>> * Move to hw API
+>>> * Add GPT's own clock
+>>> * Add SEMC clocks to set muxing to CRITICAL
+>>> ---
+>>>    drivers/clk/imx/Kconfig     |   4 +
+>>>    drivers/clk/imx/Makefile    |   1 +
+>>>    drivers/clk/imx/clk-imxrt.c | 156 ++++++++++++++++++++++++++++++++++++
+>>
+>> Wouldn't it be better to name it clk-imxrt1050.c instead?
+> we can have multiple imxrt versions in there like the other IMX clk
+> drivers, is this okay?
+>>
 
---4iqRmJHmds4/+yS2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmGkkqUACgkQFA3kzBSg
-KbbT3RAAikYPcjsi+jX0pSwthDtUkz0JCgBtIprTRsoQxHHMn/3MmgtvC8q3HKCu
-5C+u6I2hIZ6Fvi0rt1rH9MCvQzsE8DqQkKI58XCrNO4AbjVhwZbZRSkEsYYCm0ID
-Pqj+rkhRKtRHB9XIuuIts7F1UbmztpvLdV0EKC4ItyBzIYSRNkrbRL3zbXKyXs5U
-+j6HhIL1PjmbRx1+iUX6yfa9Iz9hh41DCEYvHHIDik14VOjQiO7bUswR+mvOX97W
-k0kaulmMlQhok4sLgc2vltz2IucoWBS2jZv/OGXwXCW4X4N0Z3J3ML11JxWkY7pB
-3yhnvEnLrDoKMCMyNmXyCEtTDgDfspUX++eN/4vo3qcr7iFFUfTfOiokyJ/w/oPK
-SpdDo5IVToA8edoyDWN+NJsC0LjeGZkPVEr07xcsax9xlx5ARDGEZiYzX+Lq70Cp
-Ivq0IDQdEjEHgvvwAMUg7ZIozp9k1zB7gpqLBvF8p0liktIWVBKy5RI2fuuGlE5y
-ZREl2BW4GN3utcpER/2eB+pAdEicJMWFa80k2DJSSeWF8miB3qLMS2lM4Ms5gQix
-aowgCti5aF2oL5vvaCZoVxx3sqwKPEbAad+O2JbGpT3KH8Y+hKbx6257gA9gmEsc
-y2SJ8FbCcyY5InCbHvC8+TZ/LqORBgdaDnG/td7tYSuDoMW05JQ=
-=eonB
------END PGP SIGNATURE-----
-
---4iqRmJHmds4/+yS2--
