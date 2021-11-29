@@ -2,125 +2,167 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6521461FB2
-	for <lists+linux-mmc@lfdr.de>; Mon, 29 Nov 2021 19:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D8F346212F
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Nov 2021 20:57:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350514AbhK2S6k (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Nov 2021 13:58:40 -0500
-Received: from smtpcmd14161.aruba.it ([62.149.156.161]:43752 "EHLO
-        smtpcmd14161.aruba.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350511AbhK2S4j (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Nov 2021 13:56:39 -0500
-Received: from [192.168.50.18] ([146.241.138.59])
-        by Aruba Outgoing Smtp  with ESMTPSA
-        id rSUYmwZPnrIRlrSUZmkupp; Sun, 28 Nov 2021 23:17:54 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-        t=1638137874; bh=aXY7K66LArue7ekBfUqC+O3Vdu3DF45DOCQggVHhyRk=;
-        h=Subject:To:From:Date:MIME-Version:Content-Type;
-        b=UWFMkiSsKQ62KY+0ZURyD6NV1IdL1jjXBcAjrqYTEE7wNQN3tR/3plBoFRl5Ymo9R
-         XdqL6804DiwhYuUrxfCjxoLtDxrlexLUjPjMzPphMcHQvejZNlErXgIocjFwb5BveM
-         uKZRBszKtpbKIn99ZaSStwtUV0M4Vn7/SaGIDfbh5TJaEPIxhTOldS1rBY0FcN9jYk
-         vy4iDf7ox+ZK7PCY0a+RqgJi1gRitzGTPBUkS90y5rQ+4tBVARx/tXovG+j5B3l3nh
-         Fb2NKuGqmbVxEcmQN2J18zlZ4+0SGUgvN0BJF64Be+wfqVL8sOov9cVBJ7itP+l8av
-         J/EPoY0WuV66w==
-Subject: Re: [PATCH v3 07/13] clk: imx: Add initial support for i.MXRT clock
- driver
-To:     Jesse Taube <mr.bossman075@gmail.com>,
-        Fabio Estevam <festevam@gmail.com>
-Cc:     NXP Linux Team <linux-imx@nxp.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Dong Aisheng <aisheng.dong@nxp.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        soc@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Abel Vesa <abel.vesa@nxp.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-serial@vger.kernel.org
-References: <20211125211443.1150135-1-Mr.Bossman075@gmail.com>
- <20211125211443.1150135-8-Mr.Bossman075@gmail.com>
- <CAOMZO5Dqo6c=4nGCOakMKG8fn=V1HA7-O26t3GmwWtD-FbZiPg@mail.gmail.com>
- <dae68360-456e-3db8-57ed-2287dc7cfd57@gmail.com>
-From:   Giulio Benetti <giulio.benetti@benettiengineering.com>
-Message-ID: <de705094-1b8c-3950-b7f5-f7150b525ea5@benettiengineering.com>
-Date:   Sun, 28 Nov 2021 23:17:50 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S1379883AbhK2UBJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Nov 2021 15:01:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53742 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237213AbhK2T67 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Nov 2021 14:58:59 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8BDC07CA30;
+        Mon, 29 Nov 2021 08:30:08 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 905CB615A2;
+        Mon, 29 Nov 2021 16:30:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41E6C53FCD;
+        Mon, 29 Nov 2021 16:30:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638203408;
+        bh=0nM9Zmi/0tmh4ZVUo4rPDNni8qv7d4dpBNcM+KHsuro=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=CZ0zEE9TX/82bzK6mWwweNQckfEOej/XhUxQ8k0cme0RRBnP0QrDFWmFGE6+tsSTj
+         hCu7cflNmo5g95cbOp+ysjmY8Zh8RYIiQysAkja0ps2EvT5+F0dtYcCM6CxKfKf5aO
+         VNE+niu+eEgcGdSVmQEV5z6vk2m5EWUxAogMuL+JZL0jGsO7mIPkroJ0rFVGvkyZPt
+         +3UhVh2TRG83DQBqMxZPhvwFqW8qJwf8YNB3LXbeUZFTgqqHGaPGAj3MOUhvyHo+Sp
+         Zsmudql/15T/ywV0IqW/tLd1o4WDlqqfbUQtBPSGETCMZ4oWePo8Z9Pofqyxl7tEeS
+         SYfKJPFf25T+A==
+Received: by mail-ed1-f46.google.com with SMTP id z5so9184529edd.3;
+        Mon, 29 Nov 2021 08:30:07 -0800 (PST)
+X-Gm-Message-State: AOAM533oVq4uKMgd0GZEv/PYeCMsp0F0/MXnvicoWby6WrPpZFwF+fsZ
+        6K+MLnqgCDDOkLzZidPXCHvlF7mmzO4MHNfkIg==
+X-Google-Smtp-Source: ABdhPJwdi2obd94NfZySI0D4j9hUUyc1bSXXDIqrRsdfdsaKo0dvxFRXe6oTS5gvFLyxMSrK1FPA3wGf7etLHoFZGRM=
+X-Received: by 2002:a17:906:fcbb:: with SMTP id qw27mr60632167ejb.320.1638203406208;
+ Mon, 29 Nov 2021 08:30:06 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <dae68360-456e-3db8-57ed-2287dc7cfd57@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfC2+WimnYT4jDoL/5Qj39vMuFzShQz7FE/Z8sP1XkxBcrbdPos5MDmBJUX4HG5hh+ebK3KAL0how8VdRfqKsNrF/aWMVS2LsH/RZ6zyMVg9un5zPZZoN
- XpWsgys9jMAvtyErhZCjCg6c2qhQ+1ryfHitGjvwSIq5/z+GPvn8Trh3JpwusaUYelmuQOw2GUitDYe0RYkp4D3mLVXw0OnHmiwx+4fe8w/7q5wJwvTomNpJ
- RvxQo74zbj9Agg42zgej+InyJTDpxrNNx/mrojuEwwl4wApu4ST1yBYJnBnay9L9MUd2JBbfZbybNuev6n+VxbA0jqan6TpaUXOZMhe8s6zXc/u8Spgbevwh
- 9ZrFmJjLHacRXAUklqpbukFqImaltYXulxze8paExwJkEn6GWfP8Ugsf9jQmusZmVhIEQd9+Ec99+fR1zFkK+QkYq6FVavA+WR9oUwBVQlDnMIAQHOZLJjvp
- otERI3O0iDAgTl5EZdtf7dN4utkZsrZpvLi8k6HhcXHI+PQzJS4Aas31z6ZtCWB3H+IFlnoEXGhgwvOA2WaMwM4E6ftEDDfx4ugg6iQy40iiIU9wRElp/BN+
- 1L2+DjRbjnQnZYFTnm6f5Bm+PYSmRi2LVrVvuLTLCRtX1gYD58LEPYbY6XKhdwVes39RaJNEhwK4dC0kSU3jWJF6qnrRDnvVPi5GYWDbzXQLqzhCD07w8Cyn
- mgrkecLsHm8q471VM2FCy03c+/h6WDPublFMtL/ySznu61+FmUMDh4MrgwBY8EOLyvbI3tDnECr0J223wqwHMpLYKCTrvfsPDv5mhiWdg7JJycF0kukdo9WS
- +d/fkpVfyZe6uh431ToarZWHxPmF3B9FAZdPXfouVHuOBzpV+Pdm/y66C7BACVeSJ7mkyNedf/uG8K5coWzFH6OSWlxKNBAiXqV1qfX6pXrwuhFO+VfyT1ph
- tK6Xf/dA4Eq5QYjFtXbrPcZUCYJ5drhXeQTIE3Sqx1sFYqrVaI6OfdJKfri3Y/VQBRVuPxC5esevDY0AEBxqnXhbd/OHAy3lNN2ed2wC2Gi7NBglCsPvYTIj
- wNSHJHBqkWZds8O5IqlT4MxLNfDNRUjkPEDCZTJ3wQ5sIsRQ6G5/LeofgvkQSHRXAcwrPTSqAiUIWl+k2ItjIeC/vfPHKzM0TR4=
+References: <1635487055-18494-1-git-send-email-lh.kuo@sunplus.com>
+ <1636444705-17883-1-git-send-email-lh.kuo@sunplus.com> <1636444705-17883-3-git-send-email-lh.kuo@sunplus.com>
+ <YaQu3dCQD4FG7ete@robh.at.kernel.org> <f5607fa7ad9c49a7bfcce02eac834838@sphcmbx02.sunplus.com.tw>
+In-Reply-To: <f5607fa7ad9c49a7bfcce02eac834838@sphcmbx02.sunplus.com.tw>
+From:   Rob Herring <robh@kernel.org>
+Date:   Mon, 29 Nov 2021 10:29:53 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqK=7ma_LwMMoW7yfVoBfPN0hBJsPbp4ojtk0kt3k=+O1w@mail.gmail.com>
+Message-ID: <CAL_JsqK=7ma_LwMMoW7yfVoBfPN0hBJsPbp4ojtk0kt3k=+O1w@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] devicetree bindings mmc Add bindings doc for
+ Sunplus SP7021
+To:     =?UTF-8?B?TGggS3VvIOmDreWKm+ixqg==?= <lh.Kuo@sunplus.com>
+Cc:     "LH.Kuo" <lhjeff911@gmail.com>,
+        "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
+        "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "qinjian@cqplus1.com" <qinjian@cqplus1.com>,
+        =?UTF-8?B?V2VsbHMgTHUg5ZGC6Iqz6aiw?= <wells.lu@sunplus.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Jesse, Fabio,
+On Sun, Nov 28, 2021 at 11:30 PM Lh Kuo =E9=83=AD=E5=8A=9B=E8=B1=AA <lh.Kuo=
+@sunplus.com> wrote:
+>
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - sunplus,sp7021-card1
+> > > +      - sunplus,sp7021-sdio
+> >
+> > What's the difference between these 2 blocks?
+> >
+>
+> One for SD card One for SDIO
 
-On 28/11/21 21:52, Jesse Taube wrote:
-> 
-> 
-> On 11/28/21 15:50, Fabio Estevam wrote:
->> On Thu, Nov 25, 2021 at 6:14 PM Jesse Taube <mr.bossman075@gmail.com> wrote:
->>>
->>> From: Jesse Taube <mr.bossman075@gmail.com>
->>>
->>> This patch adds initial clock driver support for the i.MXRT series.
+If the programming model is the same, then it should be the same
+compatible string. We have various properties to handle differences
+like bus width, card detect or not, etc.
 
-Also the commit log must be modified according(Summary+body).
+> > > +  reg:
+> > > +    items:
+> > > +      - description: Base address and length of the SD/SDIO register=
+s
+> >
+> > Just 'maxItems: 1' is sufficient.
+> >
+> > > +
+> > > +  interrupts:
+> > > +    maxItems: 1
+> > > +
+> > > +  clocks:
+> > > +    maxItems: 1
+> > > +
+> > > +  resets:
+> > > +    maxItems: 1
+> > > +
+> > > +  pinctrl-names:
+> > > +    description:
+> > > +      A pinctrl state named "default" must be defined.
+> > > +    const: default
+> > > +
+> > > +  pinctrl-0:
+> > > +    description:
+> > > +      A phandle to the default pinctrl state.
+> > > +
+> > > +  max-frequency: true
+> > > +
+> > > +allOf:
+> > > +  - $ref: "mmc-controller.yaml"
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - interrupts
+> > > +  - clocks
+> > > +  - resets
+> > > +  - pinctrl-names
+> > > +  - pinctrl-0
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/clock/sp-sp7021.h>
+> > > +    #include <dt-bindings/reset/sp-sp7021.h>
+> > > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > > +    mmc1: mmc@9C003e80 {
+> >
+> > Use lower case hex.
+>
+> Do you mean as follows? ?
+>
+> mmc1: mmc@3e80 {
 
-Thank you
--- 
-Giulio Benetti
-Benetti Engineering sas
+No, 'mmc@9c003e80 {'
 
->>> Signed-off-by: Jesse Taube <Mr.Bossman075@gmail.com>
->>> Suggested-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
->>> ---
->>> V1->V2:
->>> * Kconfig: Add new line
->>> * clk-imxrt.c: Remove unused const
->>> * clk-imxrt.c: Remove set parents
->>> * clk-imxrt.c: Use fsl,imxrt-anatop for anatop base address
->>> V2->V3:
->>> * Remove unused ANATOP_BASE_ADDR
->>> * Move to hw API
->>> * Add GPT's own clock
->>> * Add SEMC clocks to set muxing to CRITICAL
->>> ---
->>>    drivers/clk/imx/Kconfig     |   4 +
->>>    drivers/clk/imx/Makefile    |   1 +
->>>    drivers/clk/imx/clk-imxrt.c | 156 ++++++++++++++++++++++++++++++++++++
->>
->> Wouldn't it be better to name it clk-imxrt1050.c instead?
-> we can have multiple imxrt versions in there like the other IMX clk
-> drivers, is this okay?
->>
+You also don't need 'mmc1'.
 
+> > > +       compatible =3D "sunplus,sp7021-card1";
+> > > +       reg =3D <0x9c003e80 0x280>;
+> > > +       interrupts =3D <21 IRQ_TYPE_LEVEL_HIGH>;
+> > > +       clocks =3D <&clkc CARD_CTL1>;
+> > > +       resets =3D <&rstc RST_CARD_CTL1>;
+> > > +       pinctrl-names =3D "default";
+> > > +       pinctrl-0 =3D <&mmc1_mux &mmc1_mux_cd>;
+> > > +       max-frequency =3D <52000000>;
+> > > +    };
+> > > +    sdio: mmc@9C008400 {
+> >
+>
+> Do you mean as follows? ?
+>
+> mmc1: mmc@8400 {
+>
+>
+> > Use lower case hex.
+> >
+> > > +       compatible =3D "sunplus,sp7021-sdio";
+>
