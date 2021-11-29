@@ -2,125 +2,119 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42587461A62
-	for <lists+linux-mmc@lfdr.de>; Mon, 29 Nov 2021 15:53:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04751461621
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Nov 2021 14:21:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239555AbhK2O46 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Nov 2021 09:56:58 -0500
-Received: from smtpcmd14161.aruba.it ([62.149.156.161]:56934 "EHLO
-        smtpcmd14161.aruba.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240640AbhK2Oy6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Nov 2021 09:54:58 -0500
-Received: from [192.168.50.18] ([146.241.138.59])
-        by Aruba Outgoing Smtp  with ESMTPSA
-        id rSUYmwZPnrIRlrSUZmkupp; Sun, 28 Nov 2021 23:17:54 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-        t=1638137874; bh=aXY7K66LArue7ekBfUqC+O3Vdu3DF45DOCQggVHhyRk=;
-        h=Subject:To:From:Date:MIME-Version:Content-Type;
-        b=UWFMkiSsKQ62KY+0ZURyD6NV1IdL1jjXBcAjrqYTEE7wNQN3tR/3plBoFRl5Ymo9R
-         XdqL6804DiwhYuUrxfCjxoLtDxrlexLUjPjMzPphMcHQvejZNlErXgIocjFwb5BveM
-         uKZRBszKtpbKIn99ZaSStwtUV0M4Vn7/SaGIDfbh5TJaEPIxhTOldS1rBY0FcN9jYk
-         vy4iDf7ox+ZK7PCY0a+RqgJi1gRitzGTPBUkS90y5rQ+4tBVARx/tXovG+j5B3l3nh
-         Fb2NKuGqmbVxEcmQN2J18zlZ4+0SGUgvN0BJF64Be+wfqVL8sOov9cVBJ7itP+l8av
-         J/EPoY0WuV66w==
-Subject: Re: [PATCH v3 07/13] clk: imx: Add initial support for i.MXRT clock
- driver
-To:     Jesse Taube <mr.bossman075@gmail.com>,
-        Fabio Estevam <festevam@gmail.com>
-Cc:     NXP Linux Team <linux-imx@nxp.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Dong Aisheng <aisheng.dong@nxp.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        soc@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Abel Vesa <abel.vesa@nxp.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-serial@vger.kernel.org
-References: <20211125211443.1150135-1-Mr.Bossman075@gmail.com>
- <20211125211443.1150135-8-Mr.Bossman075@gmail.com>
- <CAOMZO5Dqo6c=4nGCOakMKG8fn=V1HA7-O26t3GmwWtD-FbZiPg@mail.gmail.com>
- <dae68360-456e-3db8-57ed-2287dc7cfd57@gmail.com>
-From:   Giulio Benetti <giulio.benetti@benettiengineering.com>
-Message-ID: <de705094-1b8c-3950-b7f5-f7150b525ea5@benettiengineering.com>
-Date:   Sun, 28 Nov 2021 23:17:50 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S235448AbhK2NZO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Nov 2021 08:25:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51990 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1377787AbhK2NXN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Nov 2021 08:23:13 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CF23C08EC38
+        for <linux-mmc@vger.kernel.org>; Mon, 29 Nov 2021 04:04:22 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id b40so43955954lfv.10
+        for <linux-mmc@vger.kernel.org>; Mon, 29 Nov 2021 04:04:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=spcw4s/t5vXRqX14aFkjLOdh3EnyptdkGvm2wA8iHDo=;
+        b=UJmO8T/5ZPY0QkzK/rITkboI5iF7QVEhEKPoaFNA7rpLFRkaE+xiFf42b1gWopw5Wy
+         u8W7lg7/2TDhHfgQwU/75LsBOXAEyXKvjl+K3CyGDUJKIcUk1Cr5RUvZfUVQeSslSPTe
+         SiwDiyDJwvXoGAYQH7ldAmrd+N48zKGEpuKASkwgWUiU6f8Zxs5j6QKcJp5Ahgc1fORO
+         L61YrGeOYJh8Q49Bn4sccvvz9Y8ys32sg//9X09ifPMtAmJTgn2nz2qbdDcb6zZn6AzH
+         Dei6eJbWRRewjUCPLeojKi8FXSyrZ98T+uxZepmLlDweC0KsZr2GoXZlKm7Fw0mMhHnc
+         Kegg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=spcw4s/t5vXRqX14aFkjLOdh3EnyptdkGvm2wA8iHDo=;
+        b=pdlfeYEQMr7ZlR/jYF3zMkcsr6q6p0wDOcmv06inghvyiECAbq//dPhASuKGhd1UPr
+         5QUWv13qw+vy+LHV/mtsFixw/2ux0aQmWxGIb1ZgjY/tSzybXwvSlk92e+hj37so4yJo
+         nBjQAo5ZkHQR2hB5HqkIWrLFkvdzpEtA4gi4rhIfq46IX/LZXigPh2fIukXFKf+NSgNI
+         76hjV11TJX3+mngVoIrLQC9pW8rwDsznV0uyq/YGeE1Mi84jmAsff5fYNWEgL2jvOFDA
+         TLBgUcodCrFX7pcXCyKm7D3ZW9vfUKqKBvxMiL5U1a2qPSNzEu6l8NXN+S5W2gaOb5Yk
+         kAwQ==
+X-Gm-Message-State: AOAM530VfMfN3h1bd2NRjwG1mQ3LzDU4SYwBF3QdMSjIKZQjargVQrDc
+        oVUpwvd1x5VdSVYBogwwulv97ukBhDl+nyduEwhYNw==
+X-Google-Smtp-Source: ABdhPJzdnnYrIAJAYCgeajj+X+gN4r7hEwLi5rIG3QsxT0jr9149a6dMPeWbvtBS9ezYeIE0+oMZrH3VTjjoCCwoYrE=
+X-Received: by 2002:ac2:4bc1:: with SMTP id o1mr47615431lfq.254.1638187460201;
+ Mon, 29 Nov 2021 04:04:20 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <dae68360-456e-3db8-57ed-2287dc7cfd57@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfC2+WimnYT4jDoL/5Qj39vMuFzShQz7FE/Z8sP1XkxBcrbdPos5MDmBJUX4HG5hh+ebK3KAL0how8VdRfqKsNrF/aWMVS2LsH/RZ6zyMVg9un5zPZZoN
- XpWsgys9jMAvtyErhZCjCg6c2qhQ+1ryfHitGjvwSIq5/z+GPvn8Trh3JpwusaUYelmuQOw2GUitDYe0RYkp4D3mLVXw0OnHmiwx+4fe8w/7q5wJwvTomNpJ
- RvxQo74zbj9Agg42zgej+InyJTDpxrNNx/mrojuEwwl4wApu4ST1yBYJnBnay9L9MUd2JBbfZbybNuev6n+VxbA0jqan6TpaUXOZMhe8s6zXc/u8Spgbevwh
- 9ZrFmJjLHacRXAUklqpbukFqImaltYXulxze8paExwJkEn6GWfP8Ugsf9jQmusZmVhIEQd9+Ec99+fR1zFkK+QkYq6FVavA+WR9oUwBVQlDnMIAQHOZLJjvp
- otERI3O0iDAgTl5EZdtf7dN4utkZsrZpvLi8k6HhcXHI+PQzJS4Aas31z6ZtCWB3H+IFlnoEXGhgwvOA2WaMwM4E6ftEDDfx4ugg6iQy40iiIU9wRElp/BN+
- 1L2+DjRbjnQnZYFTnm6f5Bm+PYSmRi2LVrVvuLTLCRtX1gYD58LEPYbY6XKhdwVes39RaJNEhwK4dC0kSU3jWJF6qnrRDnvVPi5GYWDbzXQLqzhCD07w8Cyn
- mgrkecLsHm8q471VM2FCy03c+/h6WDPublFMtL/ySznu61+FmUMDh4MrgwBY8EOLyvbI3tDnECr0J223wqwHMpLYKCTrvfsPDv5mhiWdg7JJycF0kukdo9WS
- +d/fkpVfyZe6uh431ToarZWHxPmF3B9FAZdPXfouVHuOBzpV+Pdm/y66C7BACVeSJ7mkyNedf/uG8K5coWzFH6OSWlxKNBAiXqV1qfX6pXrwuhFO+VfyT1ph
- tK6Xf/dA4Eq5QYjFtXbrPcZUCYJ5drhXeQTIE3Sqx1sFYqrVaI6OfdJKfri3Y/VQBRVuPxC5esevDY0AEBxqnXhbd/OHAy3lNN2ed2wC2Gi7NBglCsPvYTIj
- wNSHJHBqkWZds8O5IqlT4MxLNfDNRUjkPEDCZTJ3wQ5sIsRQ6G5/LeofgvkQSHRXAcwrPTSqAiUIWl+k2ItjIeC/vfPHKzM0TR4=
+References: <20211116105109.3830-1-oleg@kaa.org.ua> <20211126144750.11537-1-oleg@kaa.org.ua>
+In-Reply-To: <20211126144750.11537-1-oleg@kaa.org.ua>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 29 Nov 2021 13:03:44 +0100
+Message-ID: <CAPDyKFpOdj-wrO2Kht-gt3ivLW1CjkJan8e+Pwuwyy9AYOekxQ@mail.gmail.com>
+Subject: Re: [PATCH v2] Replace strncpy() usage by printf()
+To:     Oleh Kravchenko <oleg@kaa.org.ua>
+Cc:     linux-mmc@vger.kernel.org, chrisball@gmail.com,
+        patchwork-bot@kernel.org, Avri Altman <avri.altman@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Jesse, Fabio,
++ Avri
 
-On 28/11/21 21:52, Jesse Taube wrote:
-> 
-> 
-> On 11/28/21 15:50, Fabio Estevam wrote:
->> On Thu, Nov 25, 2021 at 6:14 PM Jesse Taube <mr.bossman075@gmail.com> wrote:
->>>
->>> From: Jesse Taube <mr.bossman075@gmail.com>
->>>
->>> This patch adds initial clock driver support for the i.MXRT series.
+On Fri, 26 Nov 2021 at 15:48, Oleh Kravchenko <oleg@kaa.org.ua> wrote:
+>
+> Manpage of strncpy() says:
+> If there is no null byte among the first n bytes of src,
+> the string placed in dest will not be null-terminated.
+>
+> Put \0 to the end of the buffer to ensure that
+> the destination string is NULL-terminated.
 
-Also the commit log must be modified according(Summary+body).
+Please update the commit message to reflect what the patch really
+does, as the above is no longer correct.
 
-Thank you
--- 
-Giulio Benetti
-Benetti Engineering sas
+>
+> This patch also fixes a compile error with a newer version of GCC.
+>
+> Signed-off-by: Oleh Kravchenko <oleg@kaa.org.ua>
 
->>> Signed-off-by: Jesse Taube <Mr.Bossman075@gmail.com>
->>> Suggested-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
->>> ---
->>> V1->V2:
->>> * Kconfig: Add new line
->>> * clk-imxrt.c: Remove unused const
->>> * clk-imxrt.c: Remove set parents
->>> * clk-imxrt.c: Use fsl,imxrt-anatop for anatop base address
->>> V2->V3:
->>> * Remove unused ANATOP_BASE_ADDR
->>> * Move to hw API
->>> * Add GPT's own clock
->>> * Add SEMC clocks to set muxing to CRITICAL
->>> ---
->>>    drivers/clk/imx/Kconfig     |   4 +
->>>    drivers/clk/imx/Makefile    |   1 +
->>>    drivers/clk/imx/clk-imxrt.c | 156 ++++++++++++++++++++++++++++++++++++
->>
->> Wouldn't it be better to name it clk-imxrt1050.c instead?
-> we can have multiple imxrt versions in there like the other IMX clk
-> drivers, is this okay?
->>
+At next submission, please also add Avri Altman <avri.altman@wdc.com>,
+who co-maintains the mmc-utils.
 
+> ---
+>  mmc_cmds.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+>
+> diff --git a/mmc_cmds.c b/mmc_cmds.c
+> index 73bd32a..753fcd9 100644
+> --- a/mmc_cmds.c
+> +++ b/mmc_cmds.c
+> @@ -1392,7 +1392,6 @@ int do_read_extcsd(int nargs, char **argv)
+>         __u32 regl;
+>         int fd, ret;
+>         char *device;
+> -       char lbuf[10];
+>         const char *str;
+>
+>         if (nargs != 2) {
+> @@ -1834,9 +1833,7 @@ int do_read_extcsd(int nargs, char **argv)
+>         }
+>
+>         if (ext_csd_rev >= 7) {
+> -                memset(lbuf, 0, sizeof(lbuf));
+> -               strncpy(lbuf, (char*)&ext_csd[EXT_CSD_FIRMWARE_VERSION], 8);
+> -               printf("eMMC Firmware Version: %s\n", lbuf);
+> +               printf("eMMC Firmware Version: %.*s\n", 8, (char*)&ext_csd[EXT_CSD_FIRMWARE_VERSION]);
+
+This looks good to me. However, I suggest you skip the dynamic length
+format. Just use %.8s.
+
+
+>                 printf("eMMC Life Time Estimation A [EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A]: 0x%02x\n",
+>                         ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A]);
+>                 printf("eMMC Life Time Estimation B [EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_B]: 0x%02x\n",
+> --
+> 2.32.0
+>
+
+Kind regards
+Uffe
