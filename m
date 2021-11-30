@@ -2,100 +2,101 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB3434638F8
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Nov 2021 16:03:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69D6F463A60
+	for <lists+linux-mmc@lfdr.de>; Tue, 30 Nov 2021 16:42:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245724AbhK3PGp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 30 Nov 2021 10:06:45 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:51916 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243588AbhK3O5h (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Nov 2021 09:57:37 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 09EC2B81A21;
-        Tue, 30 Nov 2021 14:54:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB26C53FCF;
-        Tue, 30 Nov 2021 14:54:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638284052;
-        bh=Qqwpqs1P4RB8XLiDq9NEORR5zJ582JHVP48kdWjhepo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dN6Z4Oynk/DR1DXBgzBJE/JHVYtYmJPlVnY3cE38p1q32d9yLE1YL4PLUNDVvfDqv
-         r0a+0snI4WZ+l1n5+vPm+PiHGCixZmPQB34XsXoEYonKBcIk8w8MqkRpTWcwdU3hWX
-         AcdtCYCV4Csxy77ktvS6rdPvkoR9RC8W6OUO5lhEgY1wybUUZif9SrXbaCFwZRuKeu
-         WeFj+JCaQ9fAgeZY3SkjlHCcsAZ1x2V821bW04m96WXkAyYRfViWJuS2xB/Jj3cxGH
-         aTamssI7LIUCbtvYQvhutdzqVltStchAgUPWPygC1G3UxGg85YxLrj4qarhF1LIhyD
-         RxZU1ov2i1Ifg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jon Hunter <jonathanh@nvidia.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>,
-        andriy.shevchenko@linux.intel.com, akpm@linux-foundation.org,
-        linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 5/9] mmc: spi: Add device-tree SPI IDs
-Date:   Tue, 30 Nov 2021 09:53:58 -0500
-Message-Id: <20211130145402.947049-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211130145402.947049-1-sashal@kernel.org>
-References: <20211130145402.947049-1-sashal@kernel.org>
+        id S239129AbhK3Ppp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 30 Nov 2021 10:45:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45082 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241817AbhK3Ppn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Nov 2021 10:45:43 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45A1C061748
+        for <linux-mmc@vger.kernel.org>; Tue, 30 Nov 2021 07:42:23 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id z8so41940357ljz.9
+        for <linux-mmc@vger.kernel.org>; Tue, 30 Nov 2021 07:42:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VLnNhnEYNV8q9lKuRUq33ECpv8wxGYpMJDT++q2LbNg=;
+        b=GUCw8SAvbdrpTPp3CmZJCCecx5b5Mz7v0kScyycARv/UwEAWNyPJSod20Otjms26ks
+         N1CHkqEiNRAAaWfJAAA3PFTYqZT47cH6vFKbYXnuvUz9yNIvq3MyTcKIGGId0vnkh/3T
+         UO/RV4HfhG3CRkQ56NEaRsm+3xNWmK8pLuDVnIQZabC+4yAYBPBaqqIgfNG3SaofLRYM
+         nmJQZaFQPTpPCnsbN1MTu6f2gdzOmEZb5rAv2DtsI4FCmCfVb2yxFxsZLtw6oh6fCmAm
+         3TmSvfqCzgv/5zDjpLwv/JfiVy42IU45MxUBglEptCjr26LR4rO94Rnk+NFamX0C6Gsx
+         dwAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VLnNhnEYNV8q9lKuRUq33ECpv8wxGYpMJDT++q2LbNg=;
+        b=25lNtYkGncZasDXH/q0fFpaOtFjflQzxUI05zRyl5V1R6PilWXuWSMjwPkoVTV0nAh
+         tYeXu0REmUpWyDCQlJSIWWORXOLagk5AcDDDj2AmeAwR9oj/0MG+LrqowhR5+9AHlpLe
+         dMeaRUR3Sp0CJUJMMknnRqZU7p0TR4Hb88s97xdpc5qbMQ1tnH52xzfZZTqosxcINNm2
+         xd8qejjKANqfpI8omn8maJyI53R+Ql1Pg/NQBEAO7i6qfGSIeygJ1a5evtlOEsXRhcjl
+         +uji74+A9rZxVtycpjNFs1k3IIzQJNaP+9WmyPLhorn/X5HF6fM5wO9Mtkm76BGRHMKc
+         7h+g==
+X-Gm-Message-State: AOAM533BxHPyT2rR84AM8K5z9PFezw0AOfZF/6HOkCASa6caoIimUqDy
+        o30RAM4iLOwwOTuiMuVKxo451Ho+lyDFFax5HdFggwhknng=
+X-Google-Smtp-Source: ABdhPJzZ1pUCvQmKX4wa5/rUgkVndDTXO7AiAxnLty7lZELaRPzfbzDL6/DpdoE6FBRmjHqqQydcTYKSt4yK5jW1ToE=
+X-Received: by 2002:a2e:a22a:: with SMTP id i10mr56747034ljm.16.1638286941938;
+ Tue, 30 Nov 2021 07:42:21 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20211130132309.18246-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20211130132309.18246-1-wsa+renesas@sang-engineering.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 30 Nov 2021 16:41:45 +0100
+Message-ID: <CAPDyKFrW51fsQ_3bULiSqnJdnok37xcYkvWsxKLm0=vXdCG-8A@mail.gmail.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi: initialize variable properly when tuning
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Jon Hunter <jonathanh@nvidia.com>
+On Tue, 30 Nov 2021 at 14:23, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+>
+> 'cmd_error' is not necessarily initialized on some error paths in
+> mmc_send_tuning(). Initialize it.
+>
+> Fixes: 2c9017d0b5d3 ("mmc: renesas_sdhi: abort tuning when timeout detected")
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 5f719948b5d43eb39356e94e8d0b462568915381 ]
+Applied for fixes, thanks!
 
-Commit 5fa6863ba692 ("spi: Check we have a spi_device_id for each DT
-compatible") added a test to check that every SPI driver has a
-spi_device_id for each DT compatiable string defined by the driver
-and warns if the spi_device_id is missing. The spi_device_id is
-missing for the MMC SPI driver and the following warning is now seen.
+Kind regards
+Uffe
 
- WARNING KERN SPI driver mmc_spi has no spi_device_id for mmc-spi-slot
 
-Fix this by adding the necessary spi_device_id.
-
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20211115113813.238044-1-jonathanh@nvidia.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/mmc/host/mmc_spi.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index b52489a67097e..a3e049248be8d 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -1523,6 +1523,12 @@ static int mmc_spi_remove(struct spi_device *spi)
- 	return 0;
- }
- 
-+static const struct spi_device_id mmc_spi_dev_ids[] = {
-+	{ "mmc-spi-slot"},
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(spi, mmc_spi_dev_ids);
-+
- static const struct of_device_id mmc_spi_of_match_table[] = {
- 	{ .compatible = "mmc-spi-slot", },
- 	{},
-@@ -1534,6 +1540,7 @@ static struct spi_driver mmc_spi_driver = {
- 		.name =		"mmc_spi",
- 		.of_match_table = mmc_spi_of_match_table,
- 	},
-+	.id_table =	mmc_spi_dev_ids,
- 	.probe =	mmc_spi_probe,
- 	.remove =	mmc_spi_remove,
- };
--- 
-2.33.0
-
+> ---
+>
+> Tested on a Salvator-XS (R-Car M3N), tuning still works.
+>
+> Ulf, this is a bugfix, can you take it via your tree for this cycle
+> please?
+>
+>  drivers/mmc/host/renesas_sdhi_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+> index a4407f391f66..f5b2684ad805 100644
+> --- a/drivers/mmc/host/renesas_sdhi_core.c
+> +++ b/drivers/mmc/host/renesas_sdhi_core.c
+> @@ -673,7 +673,7 @@ static int renesas_sdhi_execute_tuning(struct mmc_host *mmc, u32 opcode)
+>
+>         /* Issue CMD19 twice for each tap */
+>         for (i = 0; i < 2 * priv->tap_num; i++) {
+> -               int cmd_error;
+> +               int cmd_error = 0;
+>
+>                 /* Set sampling clock position */
+>                 sd_scc_write32(host, priv, SH_MOBILE_SDHI_SCC_TAPSET, i % priv->tap_num);
+> --
+> 2.30.2
+>
