@@ -2,35 +2,32 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEDCE463901
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Nov 2021 16:03:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB3434638F8
+	for <lists+linux-mmc@lfdr.de>; Tue, 30 Nov 2021 16:03:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245760AbhK3PGr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 30 Nov 2021 10:06:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244757AbhK3PCl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Nov 2021 10:02:41 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9765FC08EA6B;
-        Tue, 30 Nov 2021 06:53:57 -0800 (PST)
+        id S245724AbhK3PGp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 30 Nov 2021 10:06:45 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:51916 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243588AbhK3O5h (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Nov 2021 09:57:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5FBACB81A49;
-        Tue, 30 Nov 2021 14:53:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF1DC53FCD;
-        Tue, 30 Nov 2021 14:53:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 09EC2B81A21;
+        Tue, 30 Nov 2021 14:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB26C53FCF;
+        Tue, 30 Nov 2021 14:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638284035;
-        bh=E8BWnQYnYmlbf6je5saWpo3lQ9xgV995EMyI1rYeBBQ=;
+        s=k20201202; t=1638284052;
+        bh=Qqwpqs1P4RB8XLiDq9NEORR5zJ582JHVP48kdWjhepo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R4B51whu6+9QQSXV0Y7hAxTJjotQQ93L5edRiS7UcauqehjFEzVsNQWkBJJuj4cAF
-         OJ9XPNMTMSFnlNAoinEIl9AxZiPBM435JerZE9+kG6At31VPZf68ixw4UHGkVT+/En
-         pFi5UnWM10b4LugEdAYswTlcLnKZl2Ckw1BZo6KLJRBdOFlQ+wwyHcyHxpB9g+Z7ix
-         FHtQrxjEJkE3OfN8CetFOs4Vq9nrdFPmRjRP1ioVOYWTUztIwXqL+HpQhNrypY/QpT
-         LywxPOSuzVxgk4FFk4MfXZlcbgSnOO+C5OmEBq9Q+Y4JcPYsNWCz3rWGFtZpV76lNU
-         pSrEVHSfmNlMQ==
+        b=dN6Z4Oynk/DR1DXBgzBJE/JHVYtYmJPlVnY3cE38p1q32d9yLE1YL4PLUNDVvfDqv
+         r0a+0snI4WZ+l1n5+vPm+PiHGCixZmPQB34XsXoEYonKBcIk8w8MqkRpTWcwdU3hWX
+         AcdtCYCV4Csxy77ktvS6rdPvkoR9RC8W6OUO5lhEgY1wybUUZif9SrXbaCFwZRuKeu
+         WeFj+JCaQ9fAgeZY3SkjlHCcsAZ1x2V821bW04m96WXkAyYRfViWJuS2xB/Jj3cxGH
+         aTamssI7LIUCbtvYQvhutdzqVltStchAgUPWPygC1G3UxGg85YxLrj4qarhF1LIhyD
+         RxZU1ov2i1Ifg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jon Hunter <jonathanh@nvidia.com>,
@@ -38,12 +35,12 @@ Cc:     Jon Hunter <jonathanh@nvidia.com>,
         Sasha Levin <sashal@kernel.org>,
         andriy.shevchenko@linux.intel.com, akpm@linux-foundation.org,
         linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 07/12] mmc: spi: Add device-tree SPI IDs
-Date:   Tue, 30 Nov 2021 09:53:35 -0500
-Message-Id: <20211130145341.946891-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 5/9] mmc: spi: Add device-tree SPI IDs
+Date:   Tue, 30 Nov 2021 09:53:58 -0500
+Message-Id: <20211130145402.947049-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211130145341.946891-1-sashal@kernel.org>
-References: <20211130145341.946891-1-sashal@kernel.org>
+In-Reply-To: <20211130145402.947049-1-sashal@kernel.org>
+References: <20211130145402.947049-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -75,10 +72,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+)
 
 diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 279d5da6e54b0..d0b8220515103 100644
+index b52489a67097e..a3e049248be8d 100644
 --- a/drivers/mmc/host/mmc_spi.c
 +++ b/drivers/mmc/host/mmc_spi.c
-@@ -1534,6 +1534,12 @@ static int mmc_spi_remove(struct spi_device *spi)
+@@ -1523,6 +1523,12 @@ static int mmc_spi_remove(struct spi_device *spi)
  	return 0;
  }
  
@@ -91,7 +88,7 @@ index 279d5da6e54b0..d0b8220515103 100644
  static const struct of_device_id mmc_spi_of_match_table[] = {
  	{ .compatible = "mmc-spi-slot", },
  	{},
-@@ -1545,6 +1551,7 @@ static struct spi_driver mmc_spi_driver = {
+@@ -1534,6 +1540,7 @@ static struct spi_driver mmc_spi_driver = {
  		.name =		"mmc_spi",
  		.of_match_table = mmc_spi_of_match_table,
  	},
