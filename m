@@ -2,218 +2,145 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0EF94657D9
-	for <lists+linux-mmc@lfdr.de>; Wed,  1 Dec 2021 21:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF4AB465846
+	for <lists+linux-mmc@lfdr.de>; Wed,  1 Dec 2021 22:19:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353415AbhLAU5d (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 1 Dec 2021 15:57:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50738 "EHLO
+        id S1344053AbhLAVWw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 1 Dec 2021 16:22:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353232AbhLAUz2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 1 Dec 2021 15:55:28 -0500
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3660C06174A;
-        Wed,  1 Dec 2021 12:52:07 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id z6so18649904plk.6;
-        Wed, 01 Dec 2021 12:52:07 -0800 (PST)
+        with ESMTP id S1344010AbhLAVWw (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 1 Dec 2021 16:22:52 -0500
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32C7C061574
+        for <linux-mmc@vger.kernel.org>; Wed,  1 Dec 2021 13:19:30 -0800 (PST)
+Received: by mail-io1-xd34.google.com with SMTP id z18so32754094iof.5
+        for <linux-mmc@vger.kernel.org>; Wed, 01 Dec 2021 13:19:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Z+SJkx7gZpNSKY4hP5L7YJpSZTXuOMEA5gcyCCsEvsg=;
-        b=HlQUEM8THquWt6x0dLOJGG/7ST0cRNjhD2RO0NxDe9QDgSRYzpjnChlTkF+gPXhz62
-         qVgHu+jifwqKySgi9hwWXucaQbivTi3wBwJEieRnadI95e+5Dzfjd4spx/f3E6IqpqwR
-         lpSQZy00/0SlBL4eK7QRcv0WUfW3zqgVt8QkZZ4J1ibQiZi36+bieo67cjUPwRDAwDIB
-         R5Jq3sfjH22mxgMpjYrqRm/mwO/ZJfGXda01W/4VRt2MREcIyfQBQraq40rIlrfsV825
-         6Vm5O3PqWnB00RDHSa+RE2CtLEJCLuX2Q1TVb91F/wl1g5qZk69eWgpneUfXRnExaumJ
-         zG1Q==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MVbfKm2smLVX7EsOzYxeqw8e6/GNH2NpDw3hCe87mYY=;
+        b=XQT/dgOlrx3TkIkPBdmDKpck7E7VSu+Bm3t8Yst5lYwiMXxUbtCNQuvvKLMhVkOaDW
+         tFC0kX2sduksceTOxQGW68MZj1pTqrebRH0KXG8On0lFVJ4udnX674SCbKnxA9iaDubt
+         kun0e3brRxFqVY+UtJlcdrhWd9ETa0bBjRNdE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Z+SJkx7gZpNSKY4hP5L7YJpSZTXuOMEA5gcyCCsEvsg=;
-        b=h1lVr1At93Gj6bXPHRuhpVmU00IYelLkhCvt0QPbG3kdErq9ypb3UtL3zGrWTMIY/L
-         MUkbUx5OKXfWt9uSD3XexvK94o8HrfVqQa7yrwJC3cigDSZQa5J2zOBJ1211mpE1g8hK
-         YTjV/vhtHUJCtHk9KzzTH3dr7cq2JUvd2MtoTEUZQH2YP12Ht8EpkRZ9748koikRPtgy
-         ON2+6+of5CAZtGzRUEOSlTY8z0wR+ivrj0zZevOmsNWosmcIurEGdp4ZguKt3AN0UvY0
-         X2YvyVU11Bsgd6SC1GYMegMA/lWBdRgA9kKSca00D16ZgpOhgWvP7qVcxFArmvH4j6Fb
-         sdhQ==
-X-Gm-Message-State: AOAM532mYqSlR60Gxf0MsbX9+Ithp8/F1LeHO4bftgRZ+9abgDctxRsm
-        ABpDKrtzhH2Xb6m7cecK3rObQ8JnG1Q=
-X-Google-Smtp-Source: ABdhPJycFkYcanZu711/X/cGVfD11g1lE+wluwV3VRtNHqKIZWwA+CdO5KEBLg047YADwpUvmJSe5Q==
-X-Received: by 2002:a17:90b:19c8:: with SMTP id nm8mr725245pjb.163.1638391926915;
-        Wed, 01 Dec 2021 12:52:06 -0800 (PST)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id p20sm729117pfw.96.2021.12.01.12.52.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Dec 2021 12:52:06 -0800 (PST)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     devicetree@vger.kernel.org
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        bcm-kernel-feedback-list@broadcom.com (maintainer:BROADCOM BCM7XXX ARM
-        ARCHITECTURE), Gregory Fong <gregory.0xf0@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Al Cooper <alcooperx@gmail.com>,
-        Doug Berger <opendmb@gmail.com>,
-        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
-        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list),
-        linux-gpio@vger.kernel.org (open list:GPIO SUBSYSTEM),
-        linux-arm-kernel@lists.infradead.org (moderated list:BROADCOM BCM7XXX
-        ARM ARCHITECTURE),
-        linux-mmc@vger.kernel.org (open list:MULTIMEDIA CARD (MMC), SECURE
-        DIGITAL (SD) AND...),
-        linux-pwm@vger.kernel.org (open list:PWM SUBSYSTEM),
-        linux-crypto@vger.kernel.org (open list:HARDWARE RANDOM NUMBER
-        GENERATOR CORE),
-        linux-rtc@vger.kernel.org (open list:REAL TIME CLOCK (RTC) SUBSYSTEM),
-        linux-pm@vger.kernel.org (open list:THERMAL),
-        linux-usb@vger.kernel.org (open list:USB SUBSYSTEM)
-Subject: [PATCH 14/14] dt-bindings: usb: Convert BDC to YAML
-Date:   Wed,  1 Dec 2021 12:51:10 -0800
-Message-Id: <20211201205110.41656-15-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211201205110.41656-1-f.fainelli@gmail.com>
-References: <20211201205110.41656-1-f.fainelli@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MVbfKm2smLVX7EsOzYxeqw8e6/GNH2NpDw3hCe87mYY=;
+        b=p0aVWQZ376srqv6UWzJ05dBn0xmqwahJvufjiUvKfq9opTtGOzfX0yaRmHa/sODUlK
+         ConvTA/M3OgUlgTp4GkutOQysdQlKiDctbJzcdfGbC+lMIiKdVHPgG+g+drB6evEFTg+
+         3hAdH1X3BjkCel/BH73nshN8VT9PtbB0+0oCGWzVxY7oNxZYxUPDfTsoFtN5MWAG0k0Q
+         h1JAnCklSbWNBM3U3d2jtynVLuVyXxOjyERl4Af8nmSGu2YZT/mdAX/fwE3UlfjvPWhU
+         NlDowHyp7o66RnnCqexEl6HsJGeZju3CRx9UsTdIsDJxrGfuF3U9WZvlHG6hdC7EJZUk
+         zC5A==
+X-Gm-Message-State: AOAM530YmQbNPoAn1+SPkXD6YbRdNMA7q9CYAHyJNklTNSo76ibh4M5l
+        9otGHcRwzW+jdWifzzcKZV8jiwXoP2hyJw==
+X-Google-Smtp-Source: ABdhPJx/vuBsvDyDFK6J2yp6Dngu7MnDfKHROqy5EPQTUwtlmYmniJXwjLJofxh4ql+gyJfc5ali0A==
+X-Received: by 2002:a05:6602:2c46:: with SMTP id x6mr10729203iov.38.1638393569925;
+        Wed, 01 Dec 2021 13:19:29 -0800 (PST)
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com. [209.85.166.179])
+        by smtp.gmail.com with ESMTPSA id l6sm632083iln.24.2021.12.01.13.19.29
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Dec 2021 13:19:29 -0800 (PST)
+Received: by mail-il1-f179.google.com with SMTP id r2so26800040ilb.10
+        for <linux-mmc@vger.kernel.org>; Wed, 01 Dec 2021 13:19:29 -0800 (PST)
+X-Received: by 2002:a05:6e02:12ed:: with SMTP id l13mr10144997iln.165.1638393568924;
+ Wed, 01 Dec 2021 13:19:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAA=hcWT_dmKU1Uj4YmJ_rxZ+HsCVOEYJLSH-h3B3qqNhC1xi-g@mail.gmail.com>
+ <CAD=FV=V3n95DNXFd4mHpkAAKapCs5UWZXUkw=1vWpfn6oXfouA@mail.gmail.com>
+ <CAA=hcWS91uL4kRK8r1uJ_2YLXi1ZuB067ACVPTDZKnF53jgrRQ@mail.gmail.com> <CAA=hcWR+9rsoy-dCnpai+fw_+JcO6X6oMBNPHJGqpuRy8mJszw@mail.gmail.com>
+In-Reply-To: <CAA=hcWR+9rsoy-dCnpai+fw_+JcO6X6oMBNPHJGqpuRy8mJszw@mail.gmail.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Wed, 1 Dec 2021 13:19:17 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=XMR33LONcyuvfLzJNd7vKB7vmiE1VSC_QArXA+Hy4Nsw@mail.gmail.com>
+Message-ID: <CAD=FV=XMR33LONcyuvfLzJNd7vKB7vmiE1VSC_QArXA+Hy4Nsw@mail.gmail.com>
+Subject: Re: mwifiex reset buggy
+To:     Jupiter <jupiter.hce@gmail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Amitkumar Karwar <amitkumar.karwar@nxp.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Convert the Broadcom BDC device controller Device Tree binding to YAML
-to help with validation.
+Hi,
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- .../devicetree/bindings/usb/brcm,bdc.txt      | 29 ------------
- .../devicetree/bindings/usb/brcm,bdc.yaml     | 46 +++++++++++++++++++
- MAINTAINERS                                   |  2 +-
- 3 files changed, 47 insertions(+), 30 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/usb/brcm,bdc.txt
- create mode 100644 Documentation/devicetree/bindings/usb/brcm,bdc.yaml
+On Mon, Nov 22, 2021 at 8:39 PM Jupiter <jupiter.hce@gmail.com> wrote:
+>
+> Hi Doug,
+>
+> I have updated the kernel to 5.10.59 which should be guaranteed to
+> include your reset patch.
+>
+> But I could not connect to the WiFi.
+>
+> #  ifconfig mlan0 up
+> [10262.988302] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+>  (1) failed: -110
+> [10262.996049] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+> [10263.007337] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+>  (2) failed: -110
+> [10263.015299] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+> [10263.021675] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+>  (3) failed: -110
+> [10263.029839] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+> [10263.035386] mwifiex_sdio mmc0:0001:1: DNLD_CMD: host to card failed
+>
+> # echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
+> [10517.451193] mwifiex_sdio mmc0:0001:1: Resetting per request
+> [10517.479235] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+>  (1) failed: -110
+> [10517.490283] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+> [10517.498995] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+>  (2) failed: -110
+> [10517.509257] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+> [10517.517649] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+>  (3) failed: -110
+> [10517.527838] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+> [10517.533765] mwifiex_sdio mmc0:0001:1: DNLD_CMD: host to card failed
+>
+> [10529.871099] mwifiex_sdio mmc0:0001:1: cmd_wait_q terminated: -110
+> [10529.883401] mwifiex_sdio mmc0:0001:1: PREP_CMD: FW in reset state
+> [10529.890488] mwifiex_sdio mmc0:0001:1: deleting the crypto keys
+> [10529.896573] mwifiex_sdio mmc0:0001:1: PREP_CMD: FW in reset state
+> [10529.903316] mwifiex_sdio mmc0:0001:1: deleting the crypto keys
+>
+> [10530.014334] mwifiex_sdio mmc0:0001:1: DNLD_CMD: host to card failed
+> [10530.049847] mwifiex_sdio mmc0:0001:1: info: shutdown mwifiex...
+> [10530.239910] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+> [10530.247919] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+> [10530.268721] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+> [10531.665962] mwifiex_sdio mmc0:0001:1: info: FW download over, size
+> 255988 bytes
+> [10531.911608] mwifiex_sdio mmc0:0001:1: WLAN FW is active
+> [10531.964352] mwifiex_sdio mmc0:0001:1: CMD_RESP: cmd 0x242 error, result=0x2
+> [10531.971894] mwifiex_sdio mmc0:0001:1: mwifiex_process_cmdresp: cmd
+> 0x242 failed during       initialization
+> [10532.125947] mwifiex_sdio mmc0:0001:1: info: MWIFIEX VERSION:
+> mwifiex 1.0 (14.68.36.p204)
+> [10532.134573] mwifiex_sdio mmc0:0001:1: driver_version = mwifiex 1.0
+> (14.68.36.p204)
+>
+> Again, the /sys/kernel/debug/mwifiex/mlan0 is removed, it is
+> completely broken for both WiFi modem reset and
+> /sys/kernel/debug/mwifiex/mlan0/reset, let me know your advice to
+> debug it or modify mwifiex source files.
 
-diff --git a/Documentation/devicetree/bindings/usb/brcm,bdc.txt b/Documentation/devicetree/bindings/usb/brcm,bdc.txt
-deleted file mode 100644
-index c9f52b97cef1..000000000000
---- a/Documentation/devicetree/bindings/usb/brcm,bdc.txt
-+++ /dev/null
-@@ -1,29 +0,0 @@
--Broadcom USB Device Controller (BDC)
--====================================
--
--Required properties:
--
--- compatible: must be one of:
--                "brcm,bdc-udc-v2"
--                "brcm,bdc"
--- reg: the base register address and length
--- interrupts: the interrupt line for this controller
--
--Optional properties:
--
--On Broadcom STB platforms, these properties are required:
--
--- phys: phandle to one or two USB PHY blocks
--        NOTE: Some SoC's have a single phy and some have
--        USB 2.0 and USB 3.0 phys
--- clocks: phandle to the functional clock of this block
--
--Example:
--
--        bdc@f0b02000 {
--                compatible = "brcm,bdc-udc-v2";
--                reg = <0xf0b02000 0xfc4>;
--                interrupts = <0x0 0x60 0x0>;
--                phys = <&usbphy_0 0x0>;
--                clocks = <&sw_usbd>;
--        };
-diff --git a/Documentation/devicetree/bindings/usb/brcm,bdc.yaml b/Documentation/devicetree/bindings/usb/brcm,bdc.yaml
-new file mode 100644
-index 000000000000..48831b62ab31
---- /dev/null
-+++ b/Documentation/devicetree/bindings/usb/brcm,bdc.yaml
-@@ -0,0 +1,46 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/usb/brcm,bdc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Broadcom USB Device Controller (BDC)
-+
-+maintainers:
-+  - Al Cooper <alcooperx@gmail.com>
-+  - Florian Fainelli <f.fainelli@gmail.com>
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - brcm,bdc-udc-v2
-+          - brcm,bdc
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts: true
-+
-+  phys:
-+    $ref: "/schemas/types.yaml#/definitions/phandle-array"
-+
-+  clocks:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+        bdc@f0b02000 {
-+                compatible = "brcm,bdc-udc-v2";
-+                reg = <0xf0b02000 0xfc4>;
-+                interrupts = <0x0 0x60 0x0>;
-+                phys = <&usbphy_0 0x0>;
-+                clocks = <&sw_usbd>;
-+        };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 11808be8e128..2f657775eb59 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3690,7 +3690,7 @@ M:	Al Cooper <alcooperx@gmail.com>
- L:	linux-usb@vger.kernel.org
- L:	bcm-kernel-feedback-list@broadcom.com
- S:	Maintained
--F:	Documentation/devicetree/bindings/usb/brcm,bdc.txt
-+F:	Documentation/devicetree/bindings/usb/brcm,bdc.yaml
- F:	drivers/usb/gadget/udc/bdc/
- 
- BROADCOM BMIPS CPUFREQ DRIVER
--- 
-2.25.1
+Sorry, I think you're on your own here. I've only briefly touched upon
+the Marvell reset code when I ran into trouble with it in the past but
+it's definitely not something I have any real inside knowledge about.
+My only suggestions would be to somehow get someone from Marvell (now
+NXP I guess?) to help you debug or perhaps the people you got your
+module from have some technical contacts that can help rope in someone
+to help?
 
+-Doug
