@@ -2,167 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AED38464302
-	for <lists+linux-mmc@lfdr.de>; Wed,  1 Dec 2021 00:25:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FA2D464755
+	for <lists+linux-mmc@lfdr.de>; Wed,  1 Dec 2021 07:45:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345506AbhK3X3O (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 30 Nov 2021 18:29:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39130 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345470AbhK3X14 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 30 Nov 2021 18:27:56 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 406B0C06175C;
-        Tue, 30 Nov 2021 15:24:35 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id z7so23591530lfi.11;
-        Tue, 30 Nov 2021 15:24:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Ops+ixvINP38o4nA4ikQm5GyykwXVWsU0qQPTLJ2ovo=;
-        b=YMJPx1WkfQ4OtvgoHiEOjNWPEVjmn3npVavgDBfRcNtJDkNDsT+oIhWmoM6O2vWsFz
-         kDfpD5FcITyBnC2WuMVLxKEi13AvMRCTzq0ziSJJ3GMHqJ1GZeh8mmMiENZw293W3hoh
-         mbjG8N3cb1e8+k4AUPL9nxcldnvXDRrUQDXPA3FfG9zQRX7TFmzQA3LU3Pn+zelGrqP8
-         fv2bDd75irm5uKgrOxMJjI+jzBDGrK+24gXvFS/BW4cpb9k9r83dMlJxIcZqWCHapD78
-         iKuBfdBjVqeMBg+gCfa2Vok8CbbEsYlGoOkCBJ4lOIKW2mr0wPEl0jmVvU8ud2k8B4w1
-         eM8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Ops+ixvINP38o4nA4ikQm5GyykwXVWsU0qQPTLJ2ovo=;
-        b=Abqyu988mDzSCna70Gtbr9nclNj1MJbFOddNxUmfjsFL2qK/bO/hjt+y/1Y0UuDInJ
-         mMWUCl1kMxxPpiz57lkwQUF0fsV+WjZ+J3cSGg9LkX5ZFcT2mge+w+kyCxtOB418J0cG
-         izsPJpmxA/7z/cQLp65wpnhKmCSo0jgIjllU4DAMfddN/neFRfAG6wG3wHFuql/U9DcS
-         nYWlaLYhmat2Xcv0nzn7/IN0kAaUJizLpnSmURT5h+HBvLQxqcVQXgm5UNBmDAaubXm1
-         mGZUJzItGhYKPt7VvJPvxmweNSv04JF8+zE4h+yQ8JCiuLfIbTGubD3GdlQadNT9u1vH
-         3QKA==
-X-Gm-Message-State: AOAM531WaB0BUy6dIOxPLpIr1KyyLSMTsipzWUkRCJHSg0tkAwHsP5SD
-        xTzsIWf+FOcC2+rx9Wu2s3AZEFsjZtA=
-X-Google-Smtp-Source: ABdhPJwYhMt2gMhwNZLB8J5sGborl43HOmKpzseUac+5sucFsKDv4qipP1jfRU2yxx/VOb5FtiCQaA==
-X-Received: by 2002:ac2:491e:: with SMTP id n30mr2284370lfi.97.1638314673603;
-        Tue, 30 Nov 2021 15:24:33 -0800 (PST)
-Received: from localhost.localdomain (94-29-46-111.dynamic.spd-mgts.ru. [94.29.46.111])
-        by smtp.gmail.com with ESMTPSA id x199sm1860735lff.284.2021.11.30.15.24.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Nov 2021 15:24:33 -0800 (PST)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Nishanth Menon <nm@ti.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Michael Turquette <mturquette@baylibre.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-mmc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-clk@vger.kernel.org, David Heidelberg <david@ixit.cz>
-Subject: [PATCH v16 40/40] ARM: tegra20/30: Disable unused host1x hardware
-Date:   Wed,  1 Dec 2021 02:23:47 +0300
-Message-Id: <20211130232347.950-41-digetx@gmail.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211130232347.950-1-digetx@gmail.com>
-References: <20211130232347.950-1-digetx@gmail.com>
+        id S239775AbhLAGsi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 1 Dec 2021 01:48:38 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:40362 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229492AbhLAGsi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 1 Dec 2021 01:48:38 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 964151FD58;
+        Wed,  1 Dec 2021 06:45:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1638341116; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tMhHLjMDal40aoJPgixW4AZWOZicKmK6zULWZcT34w0=;
+        b=bR1Haya9j6KKtmezsJOqIuJOv84iymar9dU0waJJV++gGLOprPsuiEZzQkfA/07SyDIk1G
+        NDmy8nfp5NJFHkrfbP6QNJiCptL9hEqNHH6/2pe+04PXFZryo15STKTPApf9hmB0j2LZfc
+        srNqY2A/nVCapYP/9l6IpXvmL6RucmI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1638341116;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tMhHLjMDal40aoJPgixW4AZWOZicKmK6zULWZcT34w0=;
+        b=Zyy9lQ9v6ZSkldI9XKKBzbi46QYKGNM+XzDlCooLFbF0YzO2PDR/jOk88xwrCz67eyyV+L
+        gW5/wwlPC9nK4TDQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6977113425;
+        Wed,  1 Dec 2021 06:45:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id dzxkGPwZp2F4CAAAMHmgww
+        (envelope-from <hare@suse.de>); Wed, 01 Dec 2021 06:45:16 +0000
+Subject: Re: [PATCH v2 3/3] blk-crypto: show crypto capabilities in sysfs
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-mmc@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bart Van Assche <bvanassche@acm.org>
+References: <20211130040306.148925-1-ebiggers@kernel.org>
+ <20211130040306.148925-4-ebiggers@kernel.org>
+ <8745aed7-d4b6-eb8d-60ad-f4d768d62a62@suse.de>
+ <YaXVXU77yvKUyVwg@sol.localdomain>
+From:   Hannes Reinecke <hare@suse.de>
+Message-ID: <ea5db68e-8d2b-b242-bf81-9fce29cdde83@suse.de>
+Date:   Wed, 1 Dec 2021 07:45:14 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
+In-Reply-To: <YaXVXU77yvKUyVwg@sol.localdomain>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-MPE, VI, EPP and ISP were never used and we don't have drivers for them.
-Since these modules are enabled by default in a device-tree, a device is
-created for them, blocking voltage scaling because there is no driver to
-bind, and thus, state of PMC driver is never synced. Disable them.
+On 11/30/21 8:40 AM, Eric Biggers wrote:
+> On Tue, Nov 30, 2021 at 07:49:54AM +0100, Hannes Reinecke wrote:
+>>>     - "modes" is a sub-subdirectory, since there may be multiple supported
+>>>       crypto modes, and sysfs is supposed to have one value per file.
+>>>
+>> Why do you have a sub-directory here?
+>>  From what I can see, that subdirectory just contains the supported modes, so
+>> wouldn't it be easier to create individual files like 'mode_<modename>'
+>> instead of a subdirectory?
+> 
+> It is a group of attributes, so it makes sense to group them together rather
+> than put them all in the parent directory alongside other attributes.  It also
+> allows the use of proper names like "AES-256-XTS" rather than weird names like
+> "mode_AES-256-XTS" or "mode_aes_256_xts".
+> 
+Right.
 
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- arch/arm/boot/dts/tegra20.dtsi | 4 ++++
- arch/arm/boot/dts/tegra30.dtsi | 8 ++++++++
- 2 files changed, 12 insertions(+)
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-diff --git a/arch/arm/boot/dts/tegra20.dtsi b/arch/arm/boot/dts/tegra20.dtsi
-index 7b69ffc57abe..8010b40d7377 100644
---- a/arch/arm/boot/dts/tegra20.dtsi
-+++ b/arch/arm/boot/dts/tegra20.dtsi
-@@ -59,6 +59,7 @@ mpe@54040000 {
- 			reset-names = "mpe";
- 			power-domains = <&pd_mpe>;
- 			operating-points-v2 = <&mpe_dvfs_opp_table>;
-+			status = "disabled";
- 		};
- 
- 		vi@54080000 {
-@@ -70,6 +71,7 @@ vi@54080000 {
- 			reset-names = "vi";
- 			power-domains = <&pd_venc>;
- 			operating-points-v2 = <&vi_dvfs_opp_table>;
-+			status = "disabled";
- 		};
- 
- 		epp@540c0000 {
-@@ -81,6 +83,7 @@ epp@540c0000 {
- 			reset-names = "epp";
- 			power-domains = <&pd_core>;
- 			operating-points-v2 = <&epp_dvfs_opp_table>;
-+			status = "disabled";
- 		};
- 
- 		isp@54100000 {
-@@ -91,6 +94,7 @@ isp@54100000 {
- 			resets = <&tegra_car 23>;
- 			reset-names = "isp";
- 			power-domains = <&pd_venc>;
-+			status = "disabled";
- 		};
- 
- 		gr2d@54140000 {
-diff --git a/arch/arm/boot/dts/tegra30.dtsi b/arch/arm/boot/dts/tegra30.dtsi
-index 96d1c5688248..c8b22ec30ef0 100644
---- a/arch/arm/boot/dts/tegra30.dtsi
-+++ b/arch/arm/boot/dts/tegra30.dtsi
-@@ -145,6 +145,8 @@ mpe@54040000 {
- 			operating-points-v2 = <&mpe_dvfs_opp_table>;
- 
- 			iommus = <&mc TEGRA_SWGROUP_MPE>;
-+
-+			status = "disabled";
- 		};
- 
- 		vi@54080000 {
-@@ -158,6 +160,8 @@ vi@54080000 {
- 			operating-points-v2 = <&vi_dvfs_opp_table>;
- 
- 			iommus = <&mc TEGRA_SWGROUP_VI>;
-+
-+			status = "disabled";
- 		};
- 
- 		epp@540c0000 {
-@@ -171,6 +175,8 @@ epp@540c0000 {
- 			operating-points-v2 = <&epp_dvfs_opp_table>;
- 
- 			iommus = <&mc TEGRA_SWGROUP_EPP>;
-+
-+			status = "disabled";
- 		};
- 
- 		isp@54100000 {
-@@ -183,6 +189,8 @@ isp@54100000 {
- 			power-domains = <&pd_venc>;
- 
- 			iommus = <&mc TEGRA_SWGROUP_ISP>;
-+
-+			status = "disabled";
- 		};
- 
- 		gr2d@54140000 {
+Cheers,
+
+Hannes
 -- 
-2.33.1
-
+Dr. Hannes Reinecke                Kernel Storage Architect
+hare@suse.de                              +49 911 74053 688
+SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
+HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
