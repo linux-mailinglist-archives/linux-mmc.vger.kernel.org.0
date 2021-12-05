@@ -2,135 +2,63 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF2654688E4
-	for <lists+linux-mmc@lfdr.de>; Sun,  5 Dec 2021 02:37:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE8E6468C0C
+	for <lists+linux-mmc@lfdr.de>; Sun,  5 Dec 2021 17:07:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230468AbhLEBk6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 4 Dec 2021 20:40:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
+        id S235424AbhLEQKe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 5 Dec 2021 11:10:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230204AbhLEBk6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 4 Dec 2021 20:40:58 -0500
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99B65C061751;
-        Sat,  4 Dec 2021 17:37:31 -0800 (PST)
-Received: by mail-qt1-x833.google.com with SMTP id p19so7352651qtw.12;
-        Sat, 04 Dec 2021 17:37:31 -0800 (PST)
+        with ESMTP id S235364AbhLEQKe (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 5 Dec 2021 11:10:34 -0500
+Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE28C0613F8
+        for <linux-mmc@vger.kernel.org>; Sun,  5 Dec 2021 08:07:07 -0800 (PST)
+Received: by mail-yb1-xb41.google.com with SMTP id g17so24329885ybe.13
+        for <linux-mmc@vger.kernel.org>; Sun, 05 Dec 2021 08:07:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=4XnN3BtFVU8ghBOYYkiMwp/csK2JKCL9fo3KK/aQk7k=;
-        b=fCuL/VEp2R3hi5iSgCP7KywisRaM7G0wmX3+tXzPOiO79pPKjThNL6qIfaYF6aTble
-         0pr6ysnd3FPghZLnaiB6/QhjbUYLqHtcXlE0j+JZ/FfD6AYkGRtzOdrvsWwvqrI9XeoT
-         +h2jJPrGQEWX2mtvt2KCCgCYoAYVSl3QgDGs/Qj6SaUcO8mmKYzBHz31UfJt1nqz//UN
-         PgRTpgQ97uN5hX5ZzEWrcdUAozEokD6LCEpEUCp0lto+E4ojWjO5ozH6nnneaufs4Iik
-         nyNjMhYFk/7hx6QMVFRtFoipDGCNWYjYb/ohVqj7ucTeOJM4szEqo5cCfr/o2OK/TdMt
-         UZ9g==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
+        b=d1W86/lSRxVHYlf15UgFJdQnCtlQ7B2RQoWcOQF5YAQ5ntR/8MacHeOxoEDxHn2H37
+         XZQ9JwvJ+DE/zGN6+9GLAWnvUxQWzv08zioiZgcRRByusqvm8jA5mA4qTi24ApX35w+L
+         skhxN4mfSs+TCAV1nanfeF8pq6gUMXpDmqSB8aofn//JT7sjiDprfGf5KibnNwsI7zfl
+         7kPljLD6WCdgYinQklKSaxR9Jljb0oFzp3i/cqdakVCpoNnad5ssANKJeReaYESr1rgn
+         +DLVh2vqdIOYG0/Lz9qY/goAitszZzuf0zcu8Trb6IgWwyGu3p41P/+ANLuXQqRtuSwo
+         QDuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4XnN3BtFVU8ghBOYYkiMwp/csK2JKCL9fo3KK/aQk7k=;
-        b=2Dc21ZDVqiAnxpH3gNx28Lr0HkNk0R/BPT9Q0+A6ktVEu+fv0LsCt8CSG7xT70zzPc
-         EakNPTHuQVgwthpwOYGMfV26N4rankloSvHB7Op7jD1uaPjvd3t/3F2iW+f/VH8iLU4E
-         tMthYFAZrZBJXo7y/cJDizl1fkjvfkziifkx9z5zId1jvBMQIbFJWSrzhFWBi+dX3PyG
-         1+z8XlSf8bUaV9KF9dTHMkjShB+tnImRxm63w7FtQ7l0XkKj8XX1aAj9q9lmSYxLQP3Q
-         3jri8Pe3y5o6B6K7L48q7QiGbGBMCS2CQHdSFZXSie3bY0w4je1i5+zMTIaWE/vyk+5L
-         ud6A==
-X-Gm-Message-State: AOAM5300VtQPJlfKMfT6EV1hRLktC1PSYGzzz9qarwvBdd/oifRjPsxy
-        oKwnCyVZuRRvqRXrEu38FIg=
-X-Google-Smtp-Source: ABdhPJwdcd6NoupRoRqC9vjxhs8CpzPE21N9vtEI52hr8riGPIPhrn0+Xuvk6R2SkQPvFGemRVPK5A==
-X-Received: by 2002:ac8:5b82:: with SMTP id a2mr30216325qta.519.1638668250697;
-        Sat, 04 Dec 2021 17:37:30 -0800 (PST)
-Received: from glsvmlin.ini.cmu.edu (GLSVMLIN.INI.CMU.EDU. [128.2.16.9])
-        by smtp.gmail.com with ESMTPSA id j126sm4609048qke.103.2021.12.04.17.37.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Dec 2021 17:37:30 -0800 (PST)
-Date:   Sat, 4 Dec 2021 20:37:22 -0500
-From:   "Gabriel L. Somlo" <gsomlo@gmail.com>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, robh+dt@kernel.org,
-        devicetree@vger.kernel.org, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, kgugala@antmicro.com,
-        mholenko@antmicro.com, krakoczy@antmicro.com,
-        mdudek@internships.antmicro.com, paulus@ozlabs.org, joel@jms.id.au,
-        shorne@gmail.com, geert@linux-m68k.org,
-        david.abdurachmanov@sifive.com, florent@enjoy-digital.fr
-Subject: Re: [PATCH v2 3/3] mmc: Add driver for LiteX's LiteSDCard interface
-Message-ID: <YawX0qne+wRTXMeY@glsvmlin.ini.cmu.edu>
-References: <20211204204121.2367127-1-gsomlo@gmail.com>
- <20211204204121.2367127-4-gsomlo@gmail.com>
- <e99ad542-14f6-2a06-a83e-c5f4e945303c@infradead.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
+        b=W1BOxKpx7Z+syJtH96uy4paXUljUcr7mRZM1xBvZo/pfvYQcZzdNkn/mKd2T8N4UH5
+         jZQiW0ZuZyPt41TGS9YIrubUkSnwEdUwnG3sj+mzWCY2qQdWm9qIFyp3pRgW2oj+kcsN
+         BRHA5/n+LNUcVziO1JpwuLsh7rY9eGSYE5ExUdDMtLXQB7ZUse1XJn/DApFzTvuIcv9U
+         jKm6hg3NvWVFB3xcIIJ9LmHF+orKEyv6q73wU9rANTEzVCb2qzacwinWuWLJt9obJhea
+         PZLUxPfPaoH2ctDzUUSLl2uhIvzBW0TwoBpOy8MAHStDJ3mnnv9o+g3K1F8wJFPLxjCN
+         JMug==
+X-Gm-Message-State: AOAM531gNjxi5VFkSa+8BVzdNGJnxb522fcJ+XI0RC5lBLOMzlKbCRUc
+        zYXbSqGS7rBz2Ggo7sAoBurz7MQ7KRurg8+UlCE=
+X-Google-Smtp-Source: ABdhPJyGT7mT0rr8rfvZUC9+VFRfuB9wP1JJWVAyIF1DsSb4CGltlLkLn1ZQcVwguNpkK9Fo+UvsL8ypM8pyQRLr2nE=
+X-Received: by 2002:a25:2f03:: with SMTP id v3mr8259579ybv.557.1638720425697;
+ Sun, 05 Dec 2021 08:07:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e99ad542-14f6-2a06-a83e-c5f4e945303c@infradead.org>
-X-Clacks-Overhead: GNU Terry Pratchett
+Received: by 2002:a05:7000:6c43:0:0:0:0 with HTTP; Sun, 5 Dec 2021 08:07:05
+ -0800 (PST)
+Reply-To: lawrencetansanco.y@gmail.com
+From:   Lawrence Tansanco Yacouba <lt11002234@gmail.com>
+Date:   Sun, 5 Dec 2021 16:07:05 +0000
+Message-ID: <CAOU6XAprj49MDzf96S0-8AVi-kYdKeuy2ehHLoPpmtBGB3LPTg@mail.gmail.com>
+Subject: THANKS FOR YOUR RESPONSE AND GOD BLESS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Randy,
+.
+I will like to disclose something very important to you,
+get back for more details please.
 
-Thanks for the feedback!
-
-On Sat, Dec 04, 2021 at 12:57:32PM -0800, Randy Dunlap wrote:
-> Hi Gabriel--
-> 
-> On 12/4/21 12:41, Gabriel Somlo wrote:
-> > +MODULE_DESCRIPTION("LiteX SDCard driver");
-> > +MODULE_AUTHOR("Antmicro <www.antmicro.com>");
-> 
-> Admittedly it's not documented, but we would prefer to have some contact info
-> in MODULE_AUTHOR(), like an email address or a person's name.
-> 
-> <linux/module.h> says:
-> 
-> /*
->  * Author(s), use "Name <email>" or just "Name", for multiple
->  * authors use multiple MODULE_AUTHOR() statements/lines.
->  */
-> #define MODULE_AUTHOR(_author) MODULE_INFO(author, _author)
-
-OK, so my plan is to add the following MODULE_AUTHOR() statements:
-
-	MODULE_AUTHOR("Antmicro <contact@antmicro.com>");
-	MODULE_AUTHOR("Kamil Rakoczy <krakoczy@antmicro.com>");
-	MODULE_AUTHOR("Maciej Dudek <mdudek@internships.antmicro.com>");
-	MODULE_AUTHOR("Paul Mackerras <paulus@ozlabs.org>");
-	MODULE_AUTHOR("Gabriel Somlo <gsomlo@gmail.com>");
-
-Antmicro folks: Kamil, Maciej, Mateusz, Karol: I'm not exactly clear
-on how you all prefer to be credited but I could either:
-
-	1. leave just the first line for Antmicro-the-company, with the
-	   "contact@..." email instead of the website URL, or
-
-	2. leave just the developer lines (Kamil and Maciej), or
-
-	3. leave all three lines as currently shown above.
-
-I'll queue that up for v3, once I hear back from you.
-
-> > +MODULE_LICENSE("GPL v2");
-> 
-> 
-> Also, it's up to the MMC maintainer (Ulf), but the function signature
-> style that is used in this driver is not the preferred style.
-> 
-> E.g.:
-> 
-> +static int
-> +litex_set_bus_width(struct litex_mmc_host *host)
-> +{
-> 
-> should be
-> 
-> +static int litex_set_bus_width(struct litex_mmc_host *host)
-> +{
-
-Done, and also queued up for v3.
-
-Thanks again,
---Gabriel
+Regards.
+Mr Lawrence Tansanco Y.
