@@ -2,87 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4895346AE0A
-	for <lists+linux-mmc@lfdr.de>; Mon,  6 Dec 2021 23:59:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC03C46AEA2
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 Dec 2021 00:51:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376919AbhLFXCu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 6 Dec 2021 18:02:50 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:25287 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1376929AbhLFXCo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Dec 2021 18:02:44 -0500
+        id S1377606AbhLFXzH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 6 Dec 2021 18:55:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39626 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1377635AbhLFXzG (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Dec 2021 18:55:06 -0500
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74B80C061746;
+        Mon,  6 Dec 2021 15:51:37 -0800 (PST)
+Received: by mail-qv1-xf2c.google.com with SMTP id m17so11449060qvx.8;
+        Mon, 06 Dec 2021 15:51:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1638831555; x=1670367555;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version;
-  bh=Ue4j4uhm1swKWHsP5swU+lpTqR0o0aLaH/vHm0ED9Xc=;
-  b=ad6rULnG6q02l8dIRnJ7OwVqPpCyFrwDlqOQvwGawN6eW1em7u2j1Enf
-   1RT8POt1x87ra9/twRa96J1mFqHzsXqsAF7/CyTvrTw6Ui7/ZKpW1n9xJ
-   U1gpItjSvEdYbclYsqutrKsxEvOCu/bv7atHNO50w18W09sLzn7yfFiF9
-   o=;
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 06 Dec 2021 14:59:14 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2021 14:59:14 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Mon, 6 Dec 2021 14:59:13 -0800
-Received: from gabriel.qualcomm.com (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Mon, 6 Dec 2021
- 14:59:13 -0800
-From:   Gaurav Kashyap <quic_gaurkash@quicinc.com>
-To:     <linux-scsi@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-CC:     <linux-mmc@vger.kernel.org>, <linux-block@vger.kernel.org>,
-        <linux-fscrypt@vger.kernel.org>, <thara.gopinath@linaro.org>,
-        <quic_neersoni@quicinc.com>, <dineshg@quicinc.com>,
-        Gaurav Kashyap <quic_gaurkash@quicinc.com>
-Subject: [PATCH 10/10] arm64: dts: qcom: sm8350: add ice and hwkm mappings
-Date:   Mon, 6 Dec 2021 14:57:25 -0800
-Message-ID: <20211206225725.77512-11-quic_gaurkash@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211206225725.77512-1-quic_gaurkash@quicinc.com>
-References: <20211206225725.77512-1-quic_gaurkash@quicinc.com>
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=irxdvYSeAdtdlqYqZPtlOv4U0i5Fz2HAUzP2/GQnZ7o=;
+        b=NarHRNNY3zmdDjao/09C3SOmn/+Ta3Pdhvyo9ztKamruOrHXEicP5DSpy6YzI3Cigj
+         yum/jpZfNhtj1XVeRSX3sy8IYol8JOJZdT57sB8801Z0DzX3GPO98IPMQbIHuiuL8MuF
+         DYI6DFmiZVm6HGtc7Byu2amBgL5EGYoHKfZxQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=irxdvYSeAdtdlqYqZPtlOv4U0i5Fz2HAUzP2/GQnZ7o=;
+        b=iKnNp/24SBmnb+/f3E0f4PQc/dCBR1IgM/9XScyH7xqX6egUTLmp7fXXvTECHqTEwR
+         vIqrr3G1aTqEhxUhDUHp96TG3LokAXN+2xKzbKKHNEutf8WgedaixQyagsDgh1FmlL3U
+         Y4/rQOzbWpqKjlV2mEM0LDBnxkDzAoFocVq+Kk3jTINyasSI2aHJxfE/lrRzSZHNagw9
+         RlLAPG+8OHuXH2CTKW+tvjDdg2GPVrRlm33D6bnY9A1HMHnFelyOZfV9OTwXgqKDldO0
+         oOeo2kNcE3jEt7riOtTqOQAqDnhe1ZZbk9BLRw5MhcDIAkiO403+zXHQgN0ox09PsaSj
+         0NjA==
+X-Gm-Message-State: AOAM5303rkIDb0omN4d/Oe5tgP5nQG0VhZYHovlNnM0KJM3/meq8X7zH
+        OefbA6v0xwEfDe3SDeAUppKjRJ2of24DARmePQE=
+X-Google-Smtp-Source: ABdhPJzm8mA7wmNlXOpZ/141+GMdDuCroCHT1aZ4XA3yEiqKTvaonCc/SHd8mjMJ+tONbkBnaVC/ADrd6mTnhNm9puY=
+X-Received: by 2002:ad4:5ce8:: with SMTP id iv8mr41121845qvb.21.1638834696527;
+ Mon, 06 Dec 2021 15:51:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+References: <20211203234155.2319803-1-gsomlo@gmail.com> <20211203234155.2319803-4-gsomlo@gmail.com>
+ <CACPK8XfO_8=vgedmZddz1YmWbyxiM1-azF_j88wEBHzXnP6y_g@mail.gmail.com> <CAMuHMdXxO-CP0Ao8q8r4Gw5e5FzCznhSxt2JWz13zbnt2tnzVQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdXxO-CP0Ao8q8r4Gw5e5FzCznhSxt2JWz13zbnt2tnzVQ@mail.gmail.com>
+From:   Joel Stanley <joel@jms.id.au>
+Date:   Mon, 6 Dec 2021 23:51:22 +0000
+Message-ID: <CACPK8XdF6WQDj9X1Nr0Hf6EzPkQtXBo75dj_WPsFq6nzfWPUrA@mail.gmail.com>
+Subject: Re: [PATCH v1 3/3] mmc: Add driver for LiteX's LiteSDCard interface
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc:     Gabriel Somlo <gsomlo@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Karol Gugala <kgugala@antmicro.com>,
+        Mateusz Holenko <mholenko@antmicro.com>,
+        Kamil Rakoczy <krakoczy@antmicro.com>,
+        mdudek@internships.antmicro.com,
+        Paul Mackerras <paulus@ozlabs.org>,
+        Stafford Horne <shorne@gmail.com>,
+        david.abdurachmanov@sifive.com,
+        Florent Kermarrec <florent@enjoy-digital.fr>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add register mappings for ICE (Inline Crypto Engine) and
-HWKM (Hardware Key Manager) slave, which are both part
-of the UFS controller for sm8350.
+On Mon, 6 Dec 2021 at 12:16, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 
-These are required for inline storage encryption using
-hardware wrapped key.
+> > > +       depends on OF && LITEX
+> >
+> > I don't like having litex drivers depend on the LITEX kconfig. The
+> > symbol is not user visible, and to enable it we need to build in the
+> > litex controller driver, which platforms may or may not have.
+> >
+> > The microwatt platform is an example of a SoC that embeds some LITEX
+> > IP, but may or may not be a litex SoC.
+>
+> I do like the LITEX dependency, as it allows us to gate off a bunch of
+> related drivers, and avoid annoying users with questions about them,
+> using a single symbol.
 
-Signed-off-by: Gaurav Kashyap <quic_gaurkash@quicinc.com>
----
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+I appreciate your concern.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index e91cd8a5e535..8e15524731b3 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -1019,7 +1019,10 @@
- 		ufs_mem_hc: ufshc@1d84000 {
- 			compatible = "qcom,sm8350-ufshc", "qcom,ufshc",
- 				     "jedec,ufs-2.0";
--			reg = <0 0x01d84000 0 0x3000>;
-+			reg = <0 0x01d84000 0 0x3000>,
-+			      <0 0x01d88000 0 0x8000>,
-+			      <0 0x01d90000 0 0x9000>;
-+			reg-names = "ufs_mem", "ice", "ice_hwkm";
- 			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
- 			phys = <&ufs_mem_phy_lanes>;
- 			phy-names = "ufsphy";
--- 
-2.17.1
+We could do this:
 
+        depends on PPC_MICROWATT || LITEX || COMPILE_TEST
+
+It's unfortunate that kconfig doesn't let us describe the difference
+between "this driver requires this symbol" as it won't build and "this
+driver is only useful when this symbol is enabled". Traditionally I
+write kconfig to represent only the former, whereas you prefer both.
+
+> Originally, people told me the system controller is always present,
+> hence the current logic to have LITEX_SOC_CONTROLLER visible, and
+> an invisible LITEX (which is shorter to type) for individual drivers
+> to depend on.
+
+That's another option. I think LITEX either needs to become visible,
+become selected by microwatt, or we adopt the proposal I made above
+for the litex drivers that the microwatt soc uses.
