@@ -2,103 +2,97 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAC6146B800
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 Dec 2021 10:51:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3821846BC22
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 Dec 2021 14:05:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234440AbhLGJyy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 Dec 2021 04:54:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35688 "EHLO
+        id S236832AbhLGNJY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 Dec 2021 08:09:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234505AbhLGJyw (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Dec 2021 04:54:52 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7D7C0698CC;
-        Tue,  7 Dec 2021 01:51:11 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 5830CCE1A2A;
-        Tue,  7 Dec 2021 09:51:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0365AC341C1;
-        Tue,  7 Dec 2021 09:51:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1638870667;
-        bh=t0UaL5ptrXo0DEWrnydiPDnfduthGVFkCZnCDXLVv54=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=x6kq6j8zv0tB+CddNhxmP62n1huZ8A22s0Mpld4jQzw9LJ5VG8qjkSQ2hFkKMXgdA
-         PCC18DHlCTINQPrkhWYXheeeQfMRH7kSx+GETTJE0O+TFOnnmABhRk69vkCYdnI1gf
-         ErCKwgAPOGycirNbsTMxCab+GWVlICwSA3mQkxxo=
-Date:   Tue, 7 Dec 2021 10:51:04 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Nishad Kamdar <nishadkamdar@gmail.com>
-Cc:     Avri Altman <Avri.Altman@wdc.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Bean Huo <beanhuo@micron.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Huijin Park <huijin.park@samsung.com>,
-        Yue Hu <huyue2@yulong.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Christian =?iso-8859-1?Q?L=F6hle?= <CLoehle@hyperstone.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mmc: core: Add support for the eMMC RTC feature in
- mmc_ops
-Message-ID: <Ya8uiOq3MGGKRB5n@kroah.com>
-References: <20211205191009.32454-1-nishadkamdar@gmail.com>
- <DM6PR04MB657527FCF325EA9760032DA5FC6E9@DM6PR04MB6575.namprd04.prod.outlook.com>
- <20211207093009.GA11794@nishad>
- <DM6PR04MB6575BF4FC2DE49885D0EEDF0FC6E9@DM6PR04MB6575.namprd04.prod.outlook.com>
- <20211207094304.GA11969@nishad>
+        with ESMTP id S232599AbhLGNJY (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Dec 2021 08:09:24 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09663C061574
+        for <linux-mmc@vger.kernel.org>; Tue,  7 Dec 2021 05:05:54 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1muaAA-0007ZU-Oh; Tue, 07 Dec 2021 14:05:42 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1muaA8-003EEC-Ka; Tue, 07 Dec 2021 14:05:39 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1muaA7-0004ej-Fz; Tue, 07 Dec 2021 14:05:39 +0100
+Date:   Tue, 7 Dec 2021 14:05:39 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     lizhe <sensor1010@163.com>
+Cc:     ulf.hansson@linaro.org, srinivas.pandruvada@linux.intel.com,
+        pali@kernel.org, TheSven73@gmail.com, lznuaa@gmail.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers/mmc/core/bus: Remove redundant driver match
+ function
+Message-ID: <20211207130539.r4zdbyh76kiiid4o@pengutronix.de>
+References: <20211207095029.96387-1-sensor1010@163.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kgftqftmrcsxvhor"
 Content-Disposition: inline
-In-Reply-To: <20211207094304.GA11969@nishad>
+In-Reply-To: <20211207095029.96387-1-sensor1010@163.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Dec 07, 2021 at 03:13:08PM +0530, Nishad Kamdar wrote:
-> On Tue, Dec 07, 2021 at 09:33:46AM +0000, Avri Altman wrote:
-> > > On Tue, Dec 07, 2021 at 08:28:42AM +0000, Avri Altman wrote:
-> > > >
-> > > > > This patch adds support to set the RTC information in the eMMC
-> > > > > device. This is based on the JEDEC specification.
-> > > > >
-> > > > > There is no way however, to read the RTC time from the device. Hence
-> > > > > we rely on the response of the CMD49 to confirm the completion of
-> > > > > the operation.
-> > > > >
-> > > > > This patch has been tested successfully with the ioctl interface.
-> > > > > This patch has also been tested suceessfully with all the three
-> > > > > RTC_INFO_TYPEs.
-> > > > If this is triggered from user-space via ioctl anyway, Why do we need
-> > > > this command to be implemented in the kernel?
-> > > > Why not just add this to mmc-utils?
-> > > >
-> > > > Thanks,
-> > > > Avri
-> > > As per the spec, B51: Section 6.6.35:
-> > > Providing RTC info may be useful for internal maintainance operations.
-> > > And the host should send it on the following events:
-> > > - power-up
-> > > - wake-up
-> > > - Periodically
-> > > Hence IMO, the Kernel would be the right place of peforming this operation.
-> > But your patch doesn't do that, is it?
-> >
-> Yes, That's because this operation may be device specific. In order to know when
-> to call this function may require eMMC firmware info.
-> This patch only adds support so that if the info is made available
-> in the future, a separate patch can be added to introduce the calling mechanism.
 
-We do not add code that is not actually used in the kernel tree.
+--kgftqftmrcsxvhor
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Please submit a user of this new function, otherwise there is no need
-for it at all.
+On Tue, Dec 07, 2021 at 01:50:29AM -0800, lizhe wrote:
+> If there is no driver match function, the driver core assumes
+> that each candidate pair (driver, device) matches. See function
+> driver_match_device().
+>=20
+> Drop the mmc bus's match function that always returned 1 and
+> so implements the same behaviour as when there is no match
+> function.
+>=20
+> Signed-off-by: lizhe <sensor1010@163.com>
 
-thanks,
+Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-greg k-h
+If you want to make it easier for maintainers to take your patches,
+consider using -v2 for git send-email (or git format-patch) the next
+time.
+
+Best regards and thanks
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--kgftqftmrcsxvhor
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmGvXBUACgkQwfwUeK3K
+7AlKBwf9FxVQIGM6u2nURsuCrG1EH0cROtww75N7Vh3nYFI5/FMdHliUpsmnHPDo
+Y4McC5H/KG9PUAIrUM8lRRG3DSi8t3KG6lL0N6OXrLKuiKighSlMTDrwSwLCcdMB
+FPlHceGZe4JjEFnaIv85prtb7v3Kb4G+4Yuj6kwU9hwyhoX/XkVB5L+bEsP7kHxI
+f3V0xE+jszjLraH0OE5W/8+6AUhUisZ7kDqaDDqI43KDv6z00NCcknkXSsQ7tUfM
+B6OJdHrJQsv8ExI1ZWem3kiSVIk8gfUAVgdZ/oVwd83FE5BFsmsehK/Alxb6xwh2
+kHjeUhXABkZ1pwTFr3sk7DBApPr7ZA==
+=5y5l
+-----END PGP SIGNATURE-----
+
+--kgftqftmrcsxvhor--
