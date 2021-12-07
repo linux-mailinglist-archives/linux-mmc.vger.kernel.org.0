@@ -2,130 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 078DD46BD5E
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 Dec 2021 15:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CBEC46BE7B
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 Dec 2021 15:59:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237453AbhLGOUG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 Dec 2021 09:20:06 -0500
-Received: from mail-ua1-f43.google.com ([209.85.222.43]:45995 "EHLO
-        mail-ua1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233173AbhLGOUG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Dec 2021 09:20:06 -0500
-Received: by mail-ua1-f43.google.com with SMTP id ay21so26771577uab.12;
-        Tue, 07 Dec 2021 06:16:35 -0800 (PST)
+        id S238378AbhLGPBw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 Dec 2021 10:01:52 -0500
+Received: from mail-ot1-f53.google.com ([209.85.210.53]:42929 "EHLO
+        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238357AbhLGPBt (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Dec 2021 10:01:49 -0500
+Received: by mail-ot1-f53.google.com with SMTP id 47-20020a9d0332000000b005798ac20d72so18339311otv.9;
+        Tue, 07 Dec 2021 06:58:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Y3eDX+gpnEq1669Ts/beSqCBQNSVYxfxcA34YiglXSA=;
-        b=fIxpYezftDitCY4ftfMvO20uom4m7QIIIq1LJMDFjJrfqYFOqJrIHVs8R/yDSjpx/R
-         Vm+z5zJ+mhKQkIF2HL36uFSrYr5+JEcD6d6CLmOhWxQ0equ+dZfo1DwDO1BsjS8l3xCY
-         5uQO5K7FAnb7Pj2JncKL8C25drCxFna0sfsXv+oHFjfdFBZnJiP3uqwodDbLUJVFAKLs
-         MCl9CONE7Btg0kZ4yTEV5amPR8aAa1rr2n0tlp8flXyKokPdQbZAwxVcDchg1XSv0YJK
-         2R4MKFxvCHsq3bX6CT2Y+QGPeuoQ+gKhzby69QzkL2cKXFc4qymUXi3XxJZd8TUrEfn+
-         slhg==
-X-Gm-Message-State: AOAM530cBeJOcwl6cAVwcKQP/S4urZw3dBhou7IpWU887uF9039+UEhg
-        wav13SvOMTQ++tUpxu0OHY/LEo497TDC+A==
-X-Google-Smtp-Source: ABdhPJyZUVlsTZIGqNBrz7I1oMrd6LrKXp9FVAVh88pSfGzVLgZ8WgOKOFgghaSzpCYvbHGFN4lTbg==
-X-Received: by 2002:ab0:72c8:: with SMTP id g8mr50666400uap.86.1638886595229;
-        Tue, 07 Dec 2021 06:16:35 -0800 (PST)
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
-        by smtp.gmail.com with ESMTPSA id u11sm6175306vkl.53.2021.12.07.06.16.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Dec 2021 06:16:34 -0800 (PST)
-Received: by mail-ua1-f54.google.com with SMTP id j14so26730715uan.10;
-        Tue, 07 Dec 2021 06:16:34 -0800 (PST)
-X-Received: by 2002:a05:6102:3232:: with SMTP id x18mr44607890vsf.38.1638886594465;
- Tue, 07 Dec 2021 06:16:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20211204204121.2367127-1-gsomlo@gmail.com> <20211204204121.2367127-4-gsomlo@gmail.com>
- <CAMuHMdXkmJ8qxk48AaiC=o0x4manGrL2-J3W0v8GkTaoFoAXuw@mail.gmail.com> <Ya9rSz4KJTwiy830@errol.ini.cmu.edu>
-In-Reply-To: <Ya9rSz4KJTwiy830@errol.ini.cmu.edu>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 7 Dec 2021 15:16:22 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWQryaYmbaakx3oFHMcuN4==ScPJBmxzbp+ewVqiqnbDQ@mail.gmail.com>
-Message-ID: <CAMuHMdWQryaYmbaakx3oFHMcuN4==ScPJBmxzbp+ewVqiqnbDQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] mmc: Add driver for LiteX's LiteSDCard interface
-To:     "Gabriel L. Somlo" <gsomlo@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Karol Gugala <kgugala@antmicro.com>,
-        Mateusz Holenko <mholenko@antmicro.com>,
-        Kamil Rakoczy <krakoczy@antmicro.com>,
-        mdudek@internships.antmicro.com,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Stafford Horne <shorne@gmail.com>,
-        david.abdurachmanov@sifive.com,
-        Florent Kermarrec <florent@enjoy-digital.fr>,
-        Randy Dunlap <rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=qKYU7RahhB+pR8vQVfzVcVag502QdQMLxyNdGvE2daw=;
+        b=Be8BSG4iikqo0jti6eTs+ebFJlmOULObTuL5JUZ7bKHBkgbh1WUI1Sk8Zl9OECnUsA
+         KLIcp6MAW9kDzI20NIM/brR+DV7YtkoGM3T0lkoZNjOjmvwVX4hFZLjz6R3im00jvWB0
+         tUrsVU3ZiCk2GvDYkjh5/jqc2vV/SaJmPs2din9N06zwSepFtsMa6knKAKXg44Oelrc5
+         KRxLfKOLdslj6x3eeMzd6HcvjGihIQOuUgqjtoOITYyEDfa7X98TamUiVFtiwx12Shhq
+         Q8wxRcPLNlx4vNc3lgy3yinzdgebYcxdnR2ofVwuHzZUSHbyAazU5rJLVPlvPMmMMTJC
+         cE2Q==
+X-Gm-Message-State: AOAM53154mnT6lUy3yH4EuAO/2e3B68Qns4hRYyWBumaVMrd5iUxe2CA
+        VhQ57Glf9t/BwldUrqrbGQ==
+X-Google-Smtp-Source: ABdhPJyYE5pmNsF0pLu5NUJNgDOTEC8MDLniUWmR0RgVVyGo6aPd5+BUcZ7eVNYaJVTXCG/mVKM0/w==
+X-Received: by 2002:a9d:6855:: with SMTP id c21mr36846388oto.357.1638889097578;
+        Tue, 07 Dec 2021 06:58:17 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id s2sm2778290otr.69.2021.12.07.06.58.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Dec 2021 06:58:16 -0800 (PST)
+Received: (nullmailer pid 5800 invoked by uid 1000);
+        Tue, 07 Dec 2021 14:58:10 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Marc Zyngier <maz@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Doug Berger <opendmb@gmail.com>,
+        linux-usb@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-mmc@vger.kernel.org, Al Cooper <alcooperx@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>, linux-pm@vger.kernel.org,
+        linux-crypto@vger.kernel.org, Markus Mayer <mmayer@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lee Jones <lee.jones@linaro.org>, linux-gpio@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, linux-rtc@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, Gregory Fong <gregory.0xf0@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Scott Branden <sbranden@broadcom.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-ide@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+In-Reply-To: <20211206182616.2089677-6-f.fainelli@gmail.com>
+References: <20211206182616.2089677-1-f.fainelli@gmail.com> <20211206182616.2089677-6-f.fainelli@gmail.com>
+Subject: Re: [PATCH v2 05/14] dt-bindings: gpio: Convert Broadcom STB GPIO to YAML
+Date:   Tue, 07 Dec 2021 08:58:10 -0600
+Message-Id: <1638889090.698687.5799.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Gabriel,
+On Mon, 06 Dec 2021 10:26:07 -0800, Florian Fainelli wrote:
+> Convert the Broadcom STB GPIO Device Tree binding to YAML to help with
+> validation.
+> 
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> ---
+>  .../bindings/gpio/brcm,brcmstb-gpio.txt       |  83 --------------
+>  .../bindings/gpio/brcm,brcmstb-gpio.yaml      | 105 ++++++++++++++++++
+>  MAINTAINERS                                   |   2 +-
+>  3 files changed, 106 insertions(+), 84 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/gpio/brcm,brcmstb-gpio.txt
+>  create mode 100644 Documentation/devicetree/bindings/gpio/brcm,brcmstb-gpio.yaml
+> 
 
-On Tue, Dec 7, 2021 at 3:10 PM Gabriel L. Somlo <gsomlo@gmail.com> wrote:
-> On Mon, Dec 06, 2021 at 01:24:49PM +0100, Geert Uytterhoeven wrote:
-> > On Sat, Dec 4, 2021 at 9:41 PM Gabriel Somlo <gsomlo@gmail.com> wrote:
-> > > LiteX (https://github.com/enjoy-digital/litex) is a SoC framework
-> > > that targets FPGAs. LiteSDCard is a small footprint, configurable
-> > > SDCard core commonly used in LiteX designs.
-> > >
-> > > The driver was first written in May 2020 and has been maintained
-> > > cooperatively by the LiteX community. Thanks to all contributors!
-> > >
-> > > Co-developed-by: Kamil Rakoczy <krakoczy@antmicro.com>
-> > > Signed-off-by: Kamil Rakoczy <krakoczy@antmicro.com>
-> > > Co-developed-by: Maciej Dudek <mdudek@internships.antmicro.com>
-> > > Signed-off-by: Maciej Dudek <mdudek@internships.antmicro.com>
-> > > Co-developed-by: Paul Mackerras <paulus@ozlabs.org>
-> > > Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-> > > Signed-off-by: Gabriel Somlo <gsomlo@gmail.com>
+Running 'make dtbs_check' with the schema in this patch gives the
+following warnings. Consider if they are expected or the schema is
+incorrect. These may not be new warnings.
 
-> > > +       host->clock = 0;
-> > > +       cpu = of_get_next_cpu_node(NULL);
-> > > +       ret = of_property_read_u32(cpu, "clock-frequency", &host->freq);
-> > > +       of_node_put(cpu);
-> > > +       if (ret) {
-> > > +               dev_err(&pdev->dev, "No \"clock-frequency\" property in DT\n");
-> > > +               goto err_free_host;
-> > > +       }
-> >
-> > This looks fragile.
-> > Shouldn't the clock be obtained from a clock property in the mmc
-> > device node, pointing to a clock provider?
-> > How does the real clock tree look like?
->
-> In a full LiteX SoC, the main sys_clock is used for cpu, buses, and as a
-> input source for peripherals such as LiteSDCard (which then further
-> subdivides it to obtain a 12.5--50.0 MHz sd_clock.
->
-> But since we're considering supporting LiteSDCard as an independent IP
-> block, the "source clock" frequency should indeed be specified as a DT
-> property in the MMC device node. (I'll have to add that to the list of
-> updates for litex_json2dts_linux.py as well, once we settle on what it
-> will look like -- I'll try to make the change and corresponding update
-> to the devicetree bindings doc for v3).
->
-> LMK what you think.
+Note that it is not yet a requirement to have 0 warnings for dtbs_check.
+This will change in the future.
 
-Ideally there should be a "clocks" property with a phandle pointing to a
-clock controller node (compatible with "litex,clk").
+Full log is available here: https://patchwork.ozlabs.org/patch/1564132
 
-How does drivers/tty/serial/liteuart.c handle this? Oh, it doesn't ;-)
 
-Gr{oetje,eeting}s,
+gpio@4172c0: interrupts-extended: [[6, 6], [7, 5]] is too long
+	arch/arm/boot/dts/bcm7445-bcm97445svmb.dt.yaml
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
