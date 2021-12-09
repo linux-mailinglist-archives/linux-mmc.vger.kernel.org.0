@@ -2,84 +2,97 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6597946F4E8
-	for <lists+linux-mmc@lfdr.de>; Thu,  9 Dec 2021 21:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE8CC46F57F
+	for <lists+linux-mmc@lfdr.de>; Thu,  9 Dec 2021 22:02:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231917AbhLIUbe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 9 Dec 2021 15:31:34 -0500
-Received: from smtp2.axis.com ([195.60.68.18]:13580 "EHLO smtp2.axis.com"
+        id S231417AbhLIVFg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 9 Dec 2021 16:05:36 -0500
+Received: from smtp1.axis.com ([195.60.68.17]:23525 "EHLO smtp1.axis.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229850AbhLIUbe (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 9 Dec 2021 15:31:34 -0500
+        id S231410AbhLIVFf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 9 Dec 2021 16:05:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1639081681;
-  x=1670617681;
-  h=date:to:cc:subject:message-id:references:mime-version:
-   content-transfer-encoding:in-reply-to:from;
-  bh=YyxODeDg+LRyAxMywwCmG089O/PaAP6cnlIZ8WqKBL8=;
-  b=J8o1qyweYVNODuOn5kQ30kqm/W9xotrupeOZPrpUMnjXazpyGj55PXEv
-   6RJi4g57HspvXNAxYKnZ9lVdmO1uraHSuCye6SzdZ8nbK2ngwyuZ4mOnA
-   uVn/wuSAFooQQBs+/zTIczYw44KhGnz2pDbJrChnipKR7oywgtQiD8Raw
-   yFJes9eXk3zyh2kx4A6NueKT1gLi9NsIVf9uYBleG8Q0rt++VSOV+TdWD
-   x08tttdDBRvP3xu25BwPywJ4KvlguwvCIV8oslwccpdDgz+D6DTBXMJUe
-   mS8RlgnlPh8oYz1ntQFyS/tPzUiNCv7Vd9G/8Zn/s+I7s20C0jsGPzQiJ
-   A==;
-Date:   Thu, 9 Dec 2021 21:27:59 +0100
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-CC:     =?iso-8859-1?Q?M=E5rten?= Lindahl <Marten.Lindahl@axis.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+  d=axis.com; q=dns/txt; s=axis-central1; t=1639083722;
+  x=1670619722;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=93/+LLpiktB1vEtOv3HETEt9oZrYau4Eoqt+n7GsuvE=;
+  b=gkh1b9W606GStsQW2+RIeJFZYqWkFH4AkW52VlR//iMNkiKLiusH12mg
+   OrjA0ACl23XOFr7/yVMukB1BLJFlokmr4M2mxuRIj8Barr3jIcFM0jVk1
+   9sRajmYEcA0747ShPst3hNxiLAa1YaBpUSEw+sYfBWQ8yhIisrGDWPlf8
+   NBc84Dtm2NyrgrHcpfxeAFJoA2pcQNPgUjxiEzS+K3Y2cZMgPRmrUxNtW
+   VrElNGGrI9dXsO4BSvvfuILT++Nyc+dSKMz7/X4qAezQW8U+Swt3movjl
+   FpXhrLtYd91UyKAmFEXRIztVBE8nsTWY5+yv79Z3Qb/TmCwtHG6Uz5X0D
+   Q==;
+From:   =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Doug Anderson <dianders@google.com>, kernel <kernel@axis.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>
+CC:     Doug Anderson <dianders@google.com>, <kernel@axis.com>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>
-Subject: Re: [PATCH v3 2/4] mmc: dw_mmc-exynos: Add support for ARTPEC-8
-Message-ID: <20211209202758.GB8509@axis.com>
-References: <20211209164558.13729-1-marten.lindahl@axis.com>
- <20211209164558.13729-3-marten.lindahl@axis.com>
- <cf76cbaa-5ea8-ebf1-73eb-7b99dc02f2c0@canonical.com>
+        <linux-samsung-soc@vger.kernel.org>,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
+Subject: [PATCH v4 0/4] Add ARTPEC-8 support to DWMMC controller
+Date:   Thu, 9 Dec 2021 21:54:52 +0100
+Message-ID: <20211209205456.11027-1-marten.lindahl@axis.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cf76cbaa-5ea8-ebf1-73eb-7b99dc02f2c0@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From:   Marten Lindahl <martenli@axis.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Dec 09, 2021 at 07:28:12PM +0100, Krzysztof Kozlowski wrote:
-> On 09/12/2021 17:45, Mårten Lindahl wrote:
-> > The ARTPEC-8 SoC has a DWMMC controller that is compatible with the
-> > Exynos 7 version v2.70a. The main differences from Exynos 7 is that it
-> > does not support HS400 and has extended data read timeout.
-> > 
-> > This patch adds compatibility string "axis,artpec8-dw-mshc" for
-> > ARTPEC-8, and DW_MCI_TYPE_ARTPEC8 is added to the dw_mci_exynos_type.
-> > 
-> > Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-> > ---
-> > 
-> > v2:
-> >  - Change compatible string vendor prefix
-> > 
-> >  drivers/mmc/host/dw_mmc-exynos.c | 47 ++++++++++++++++++++++++--------
-> >  1 file changed, 36 insertions(+), 11 deletions(-)
-> >
+Hi!
 
-Hi Krzysztof!
-> 
-> Here you dropped my tag as well.
+The ARTPEC-8 SoC has a DWMMC controller that is compatible with the
+Exynos 7 version v2.70a. The main differences from Exynos 7 is that it
+does not support HS400 and has an extended data read timeout. To run
+this controller we need to add compatibility for ARTPEC-8, because we
+need to separate the configuration of the TMOUT register from the non
+ARTPEC-8 versions.
 
-I'm very sorry. I will of course add it right away.
+This patchset is dependent on 2 changes that has been added to the mmc
+git next branch, but has not yet been merged to mainline:
+
+Patch 2 of this patchset depends on commit 0e6f2c4c2072b ("mmc: dw_mmc:
+add common capabilities to replace caps").
+
+Patch 3 of this patchset depends on commit d5bc33487eab3 ("mmc: dw_mmc:
+Allow lower TMOUT value than maximum").
 
 Kind regards
-Mårten
-> 
-> Best regards,
-> Krzysztof
+MÃ¥rten Lindahl
+
+Changes in v2:
+ - Change compatible string vendor prefix
+ - Removed unnecessary comment
+ - Change 1<<0 to BIT(0)
+
+Changes in v3:
+ - Add callback for implementation specific control of data timeout
+ - Add callback for implementation specific read of cycle count for
+   data timeout.
+ - Move definition of DW_MMC_QUIRK_EXTENDED_TMOUT from patch 3/4 to
+   patch 4/4.
+
+Changes in v4:
+ - Add Reviewed-by and Acked-by tags from Krzysztof Kozlowski
+
+MÃ¥rten Lindahl (4):
+  dt-bindings: mmc: exynos-dw-mshc: Add support for ARTPEC-8
+  mmc: dw_mmc-exynos: Add support for ARTPEC-8
+  mmc: dw_mmc: Add driver callbacks for data read timeout
+  mmc: dw_mmc: Do not wait for DTO in case of error
+
+ .../bindings/mmc/exynos-dw-mshc.txt           |   2 +
+ drivers/mmc/host/dw_mmc-exynos.c              | 101 ++++++++++++++++--
+ drivers/mmc/host/dw_mmc.c                     |  21 +++-
+ drivers/mmc/host/dw_mmc.h                     |  10 ++
+ 4 files changed, 122 insertions(+), 12 deletions(-)
+
+-- 
+2.20.1
+
