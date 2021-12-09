@@ -2,28 +2,28 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE8CC46F57F
-	for <lists+linux-mmc@lfdr.de>; Thu,  9 Dec 2021 22:02:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A79146F564
+	for <lists+linux-mmc@lfdr.de>; Thu,  9 Dec 2021 21:59:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231417AbhLIVFg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 9 Dec 2021 16:05:36 -0500
-Received: from smtp1.axis.com ([195.60.68.17]:23525 "EHLO smtp1.axis.com"
+        id S231573AbhLIVCe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 9 Dec 2021 16:02:34 -0500
+Received: from smtp2.axis.com ([195.60.68.18]:28277 "EHLO smtp2.axis.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231410AbhLIVFf (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Thu, 9 Dec 2021 16:05:35 -0500
+        id S229505AbhLIVCe (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Thu, 9 Dec 2021 16:02:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1639083722;
-  x=1670619722;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=93/+LLpiktB1vEtOv3HETEt9oZrYau4Eoqt+n7GsuvE=;
-  b=gkh1b9W606GStsQW2+RIeJFZYqWkFH4AkW52VlR//iMNkiKLiusH12mg
-   OrjA0ACl23XOFr7/yVMukB1BLJFlokmr4M2mxuRIj8Barr3jIcFM0jVk1
-   9sRajmYEcA0747ShPst3hNxiLAa1YaBpUSEw+sYfBWQ8yhIisrGDWPlf8
-   NBc84Dtm2NyrgrHcpfxeAFJoA2pcQNPgUjxiEzS+K3Y2cZMgPRmrUxNtW
-   VrElNGGrI9dXsO4BSvvfuILT++Nyc+dSKMz7/X4qAezQW8U+Swt3movjl
-   FpXhrLtYd91UyKAmFEXRIztVBE8nsTWY5+yv79Z3Qb/TmCwtHG6Uz5X0D
-   Q==;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1639083540;
+  x=1670619540;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QmD3AuY/nFM7k+lgLyZOUw4foDKoYXZZ/7XSpW0mJrM=;
+  b=VhuE9x8IEFxqAce6yvuxridl8YsxRCGpMSRUsHbtL6vufm5y6IPE3YiL
+   hG6Uue01FIg/0htCEjP5FnV3qVmip4CXq6OJgIZ+m22RWbKyfRSNSTnUb
+   I7gDRwrO1+cjVyMpwj0jtVayRthQ6vnIfT7HOR/iMUBIJygjvGBZ23GCm
+   WbuaIeUDBMMxwgLTT2wbZEEM9WJSjI0DiT9bo/8oYpuDaWHiRuUERCqs0
+   U5rbV6obqH4vUOcSSsTuxN5VOLAHOWhdkn1GIF+9IkLKvucsdvMPP7jbN
+   x3U54dLQ1+kzCTJFR8Ei1QpqIV+zl731cjtLemZi0OdUDBAaLvszvRtra
+   A==;
 From:   =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -34,10 +34,12 @@ CC:     Doug Anderson <dianders@google.com>, <kernel@axis.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-samsung-soc@vger.kernel.org>,
         =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
-Subject: [PATCH v4 0/4] Add ARTPEC-8 support to DWMMC controller
-Date:   Thu, 9 Dec 2021 21:54:52 +0100
-Message-ID: <20211209205456.11027-1-marten.lindahl@axis.com>
+Subject: [PATCH v4 1/4] dt-bindings: mmc: exynos-dw-mshc: Add support for ARTPEC-8
+Date:   Thu, 9 Dec 2021 21:54:53 +0100
+Message-ID: <20211209205456.11027-2-marten.lindahl@axis.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20211209205456.11027-1-marten.lindahl@axis.com>
+References: <20211209205456.11027-1-marten.lindahl@axis.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -45,54 +47,38 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi!
-
 The ARTPEC-8 SoC has a DWMMC controller that is compatible with the
 Exynos 7 version v2.70a. The main differences from Exynos 7 is that it
-does not support HS400 and has an extended data read timeout. To run
-this controller we need to add compatibility for ARTPEC-8, because we
-need to separate the configuration of the TMOUT register from the non
-ARTPEC-8 versions.
+does not support HS400 and has extended data read timeout.
 
-This patchset is dependent on 2 changes that has been added to the mmc
-git next branch, but has not yet been merged to mainline:
+Add compatibility string "axis,artpec8-dw-mshc" for ARTPEC-8.
 
-Patch 2 of this patchset depends on commit 0e6f2c4c2072b ("mmc: dw_mmc:
-add common capabilities to replace caps").
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+---
 
-Patch 3 of this patchset depends on commit d5bc33487eab3 ("mmc: dw_mmc:
-Allow lower TMOUT value than maximum").
-
-Kind regards
-Mårten Lindahl
-
-Changes in v2:
+v2:
  - Change compatible string vendor prefix
- - Removed unnecessary comment
- - Change 1<<0 to BIT(0)
 
-Changes in v3:
- - Add callback for implementation specific control of data timeout
- - Add callback for implementation specific read of cycle count for
-   data timeout.
- - Move definition of DW_MMC_QUIRK_EXTENDED_TMOUT from patch 3/4 to
-   patch 4/4.
+v3 -> v4:
+ - Add Krzysztof's Reviewed-by tag
 
-Changes in v4:
- - Add Reviewed-by and Acked-by tags from Krzysztof Kozlowski
+ Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Mårten Lindahl (4):
-  dt-bindings: mmc: exynos-dw-mshc: Add support for ARTPEC-8
-  mmc: dw_mmc-exynos: Add support for ARTPEC-8
-  mmc: dw_mmc: Add driver callbacks for data read timeout
-  mmc: dw_mmc: Do not wait for DTO in case of error
-
- .../bindings/mmc/exynos-dw-mshc.txt           |   2 +
- drivers/mmc/host/dw_mmc-exynos.c              | 101 ++++++++++++++++--
- drivers/mmc/host/dw_mmc.c                     |  21 +++-
- drivers/mmc/host/dw_mmc.h                     |  10 ++
- 4 files changed, 122 insertions(+), 12 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt b/Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt
+index 0419a63f73a0..753e9d7d8956 100644
+--- a/Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt
++++ b/Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt
+@@ -22,6 +22,8 @@ Required Properties:
+ 	  specific extensions.
+ 	- "samsung,exynos7-dw-mshc-smu": for controllers with Samsung Exynos7
+ 	  specific extensions having an SMU.
++	- "axis,artpec8-dw-mshc": for controllers with ARTPEC-8 specific
++	  extensions.
+ 
+ * samsung,dw-mshc-ciu-div: Specifies the divider value for the card interface
+   unit (ciu) clock. This property is applicable only for Exynos5 SoC's and
 -- 
 2.20.1
 
