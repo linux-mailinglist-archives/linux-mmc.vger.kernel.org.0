@@ -2,79 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E69047136E
-	for <lists+linux-mmc@lfdr.de>; Sat, 11 Dec 2021 11:50:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CAB74716FC
+	for <lists+linux-mmc@lfdr.de>; Sat, 11 Dec 2021 22:58:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230384AbhLKKuW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 11 Dec 2021 05:50:22 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:53448 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbhLKKuW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Dec 2021 05:50:22 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id C2591CE2F5A;
-        Sat, 11 Dec 2021 10:50:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA3EC341C6;
-        Sat, 11 Dec 2021 10:50:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1639219817;
-        bh=oULXXNjKX1XrkECFAxfwuHzkSGlYBJuKuwLL+fq0ybU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lCuk5L40IwsyzelUSyACjQrrJkVNXgI7MGWK/RCMTsn5u/O9rRUVhOJ34Lqzsly46
-         6NBR8M2iFMo8pKARNaMazD1OxhxP/1QUcP2QbAWTGyX1r42djjr35cR1irS1793dDg
-         ihHd4lnlq3G2z6rhWuquWigmawyvNOrI6iYk4bEM=
-Date:   Sat, 11 Dec 2021 11:50:11 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Bart Van Assche <bvanassche@acm.org>
-Cc:     Eric Biggers <ebiggers@kernel.org>, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-mmc@vger.kernel.org,
-        Hannes Reinecke <hare@suse.de>
-Subject: Re: [PATCH v3 3/3] blk-crypto: show crypto capabilities in sysfs
-Message-ID: <YbSCYyAv1SmYy7mz@kroah.com>
-References: <20211208013534.136590-1-ebiggers@kernel.org>
- <20211208013534.136590-4-ebiggers@kernel.org>
- <6ff4d074-7508-4f4c-de06-f36899668168@acm.org>
- <YbKT/lcp6iZ+lD4n@sol.localdomain>
- <YbL2uUqV0GWFOitE@kroah.com>
- <cb29756b-8b21-5b4d-f107-b5573945d7ab@acm.org>
+        id S231614AbhLKV6X (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 11 Dec 2021 16:58:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54064 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231631AbhLKV6U (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Dec 2021 16:58:20 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA830C0617A1
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Dec 2021 13:58:19 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id w1so40362444edc.6
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Dec 2021 13:58:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
+        b=SOBkDHN1upt351fJGA10IENq8Lskn6OtfiA/mtFXWwbxNo6rK0VqMIikUbNdR10QL9
+         NEz57nH7+DwD4ui2QjR5G0PDUg/x30DeYlpAViKmfLpj6c8owgTXHIRe2HlXrWJIYspc
+         p1qexb7VgQzyxOs2U317jKWC2PVt5FsJQNP/qzuU8HlodfKZxoIrg2Y5u0+UlgiuF7n+
+         KF6xHlFhNhhV0WZH+n1XpQNFkro1//sIniT/eC7+Qq7omDixZHJ42uWefxucVRQsgqoP
+         MP9jAyQEdDJw2KiXunMshfyB4wcDGfWvxehuLHSr6op0i/Er4qRI4zT2OKxsbV2QjSnP
+         PYpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
+        b=351EVhOBDPJIOCoVPRLo6WdoFKcYJUk6A6oNI5vPnaoSOSBVwZrm/dXUlwefCcv64w
+         7XOmhuba+GAkGVsH/NE9VWpm1u+dbfvti4I18c86RdFzIB/N7p/wrvxqnnCyO5/5NGv6
+         fPJI6ax6JTV44xOPqaaSC03R3oeZp7jY/6sO6bhFi9HxepQKpoIs961CEIPoxOj3gq25
+         kHb0d7fx2JBNaJrpeI6x84O7JRFpdeRu/5E4d00tyu/3AAU6mV0ymzuRl5CNNEdMyuGH
+         s0J3whS8AGCKf/GhxuZMjMQAhHvhDVVtpoH/LbuEwv99vyua5IQqT3bboBaBjMVIGPSM
+         Uezw==
+X-Gm-Message-State: AOAM533P0Nkh2KpmUddIxQr82aCAk/hTDtg91muzTZmDBsDRrv6kWTFA
+        ZeP9CW8PSQ07eAmy62C+KD/6QqVYtTWiKqlTGw8=
+X-Google-Smtp-Source: ABdhPJxTVLquc00JfCv8xmVg6F+Df36Ax6F8m8eI1vWHtjjPBaUzu2dvtxl/29t2QJINStCFpJhLct20UqzajIEroTA=
+X-Received: by 2002:a17:907:6da2:: with SMTP id sb34mr33325880ejc.509.1639259897490;
+ Sat, 11 Dec 2021 13:58:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cb29756b-8b21-5b4d-f107-b5573945d7ab@acm.org>
+Reply-To: martinafrancis022@gmail.com
+Sender: rebeccaalhajidangombe@gmail.com
+Received: by 2002:a17:907:94d3:0:0:0:0 with HTTP; Sat, 11 Dec 2021 13:58:16
+ -0800 (PST)
+From:   Martina Francis <martinafrancis61@gmail.com>
+Date:   Sat, 11 Dec 2021 13:58:16 -0800
+X-Google-Sender-Auth: QI6h_ccu4Os7HpLN5lf7FmNkMqQ
+Message-ID: <CANadOMYJBdKak2aObykULF4gdU88=OTR03g+XDqpCofMfFracg@mail.gmail.com>
+Subject: Bom Dia meu querido
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Dec 10, 2021 at 09:29:41AM -0800, Bart Van Assche wrote:
-> On 12/9/21 10:42 PM, Greg Kroah-Hartman wrote:
-> > A single hex value makes sense to me.
-> 
-> Hi Greg,
-> 
-> I'm not enthusiast about this approach because:
-> (a) A single hex value can be confused with a number. Reporting a bitfield in
->     hex format is not sufficient to prevent confusion with a number.
+--=20
+Bom Dia meu querido,
+Como vai voc=C3=AA hoje, meu nome =C3=A9 Dona Martina Francis, uma vi=C3=BA=
+va doente.
+Eu tenho um fundo de doa=C3=A7=C3=A3o de ($ 2.700.000,00 USD) MILH=C3=95ES =
+que quero
+doar atrav=C3=A9s de voc=C3=AA para ajudar os =C3=B3rf=C3=A3os, vi=C3=BAvas=
+, deficientes
+f=C3=ADsicos e casas de caridade.
 
-Each sysfs file has their own "units" or values, or whatever.  So a hex
-number or bitfield or something else is fine.
+Por favor, volte para mim imediatamente ap=C3=B3s ler esta mensagem para
+obter mais detalhes sobre esta agenda humanit=C3=A1ria.
 
-Again, single value, no need to parse, is the key here.
+Deus te aben=C3=A7oe enquanto espero sua resposta.
+Sua irm=C3=A3.
 
-> (b) No other block layer sysfs attribute follows this encoding scheme.
-
-Then follow what they do.  Do they have multiple values in a single
-file?  If so, they are broken and we should change that.
-
-> (c) This encoding enforces the restriction that data unit sizes are a power of
->     two. Is there anything fundamental in encryption that restricts data unit
->     sizes to a power of two? I don't know the answer myself.
-
-Again, you all can pick the rules you want for this file, if you want to
-have bitfields, wonderful!  If you want to make it an enum, wonderful!
-
-thanks,
-
-greg k-h
+Sra. Martina Francis.
