@@ -2,78 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CAB74716FC
-	for <lists+linux-mmc@lfdr.de>; Sat, 11 Dec 2021 22:58:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C42DF4718F6
+	for <lists+linux-mmc@lfdr.de>; Sun, 12 Dec 2021 08:02:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231614AbhLKV6X (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 11 Dec 2021 16:58:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54064 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231631AbhLKV6U (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Dec 2021 16:58:20 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA830C0617A1
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Dec 2021 13:58:19 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id w1so40362444edc.6
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Dec 2021 13:58:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
-        b=SOBkDHN1upt351fJGA10IENq8Lskn6OtfiA/mtFXWwbxNo6rK0VqMIikUbNdR10QL9
-         NEz57nH7+DwD4ui2QjR5G0PDUg/x30DeYlpAViKmfLpj6c8owgTXHIRe2HlXrWJIYspc
-         p1qexb7VgQzyxOs2U317jKWC2PVt5FsJQNP/qzuU8HlodfKZxoIrg2Y5u0+UlgiuF7n+
-         KF6xHlFhNhhV0WZH+n1XpQNFkro1//sIniT/eC7+Qq7omDixZHJ42uWefxucVRQsgqoP
-         MP9jAyQEdDJw2KiXunMshfyB4wcDGfWvxehuLHSr6op0i/Er4qRI4zT2OKxsbV2QjSnP
-         PYpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
-        b=351EVhOBDPJIOCoVPRLo6WdoFKcYJUk6A6oNI5vPnaoSOSBVwZrm/dXUlwefCcv64w
-         7XOmhuba+GAkGVsH/NE9VWpm1u+dbfvti4I18c86RdFzIB/N7p/wrvxqnnCyO5/5NGv6
-         fPJI6ax6JTV44xOPqaaSC03R3oeZp7jY/6sO6bhFi9HxepQKpoIs961CEIPoxOj3gq25
-         kHb0d7fx2JBNaJrpeI6x84O7JRFpdeRu/5E4d00tyu/3AAU6mV0ymzuRl5CNNEdMyuGH
-         s0J3whS8AGCKf/GhxuZMjMQAhHvhDVVtpoH/LbuEwv99vyua5IQqT3bboBaBjMVIGPSM
-         Uezw==
-X-Gm-Message-State: AOAM533P0Nkh2KpmUddIxQr82aCAk/hTDtg91muzTZmDBsDRrv6kWTFA
-        ZeP9CW8PSQ07eAmy62C+KD/6QqVYtTWiKqlTGw8=
-X-Google-Smtp-Source: ABdhPJxTVLquc00JfCv8xmVg6F+Df36Ax6F8m8eI1vWHtjjPBaUzu2dvtxl/29t2QJINStCFpJhLct20UqzajIEroTA=
-X-Received: by 2002:a17:907:6da2:: with SMTP id sb34mr33325880ejc.509.1639259897490;
- Sat, 11 Dec 2021 13:58:17 -0800 (PST)
+        id S229554AbhLLHCW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 12 Dec 2021 02:02:22 -0500
+Received: from marcansoft.com ([212.63.210.85]:59154 "EHLO mail.marcansoft.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229545AbhLLHCV (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sun, 12 Dec 2021 02:02:21 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: hector@marcansoft.com)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 4D6E642598;
+        Sun, 12 Dec 2021 07:02:15 +0000 (UTC)
+From:   Hector Martin <marcan@marcan.st>
+To:     Ben Chuang <benchuanggli@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+        Marc Zyngier <maz@kernel.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 0/2] Hi folks,
+Date:   Sun, 12 Dec 2021 16:02:08 +0900
+Message-Id: <20211212070210.141664-1-marcan@marcan.st>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Reply-To: martinafrancis022@gmail.com
-Sender: rebeccaalhajidangombe@gmail.com
-Received: by 2002:a17:907:94d3:0:0:0:0 with HTTP; Sat, 11 Dec 2021 13:58:16
- -0800 (PST)
-From:   Martina Francis <martinafrancis61@gmail.com>
-Date:   Sat, 11 Dec 2021 13:58:16 -0800
-X-Google-Sender-Auth: QI6h_ccu4Os7HpLN5lf7FmNkMqQ
-Message-ID: <CANadOMYJBdKak2aObykULF4gdU88=OTR03g+XDqpCofMfFracg@mail.gmail.com>
-Subject: Bom Dia meu querido
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
---=20
-Bom Dia meu querido,
-Como vai voc=C3=AA hoje, meu nome =C3=A9 Dona Martina Francis, uma vi=C3=BA=
-va doente.
-Eu tenho um fundo de doa=C3=A7=C3=A3o de ($ 2.700.000,00 USD) MILH=C3=95ES =
-que quero
-doar atrav=C3=A9s de voc=C3=AA para ajudar os =C3=B3rf=C3=A3os, vi=C3=BAvas=
-, deficientes
-f=C3=ADsicos e casas de caridade.
+Hi folks,
 
-Por favor, volte para mim imediatamente ap=C3=B3s ler esta mensagem para
-obter mais detalhes sobre esta agenda humanit=C3=A1ria.
+This short series adds a few quirks needed to make the card readers in
+Apple M1 Pro/Max MacBook laptops work properly.
 
-Deus te aben=C3=A7oe enquanto espero sua resposta.
-Sua irm=C3=A3.
+The first patch should be straightforward; it just allows configuring
+the CD/WP polarity based on device tree settings. There is already a
+standard DT binding for this.
 
-Sra. Martina Francis.
+The second patch works around an issue with 8/16-bit MMIO reads that
+only affects these platforms, for some reason.
+
+Changes since v1:
+
+- Also applied workaround to GL9750
+- Fixed checkpatch warnings
+
+Hector Martin (2):
+  mmc: sdhci-pci-gli: GL9755: Support for CD/WP inversion on OF
+    platforms
+  mmc: sdhci-pci-gli: GL975[50]: Issue 8/16-bit MMIO reads as 32-bit
+    reads.
+
+ drivers/mmc/host/sdhci-pci-gli.c | 42 ++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
+
+-- 
+2.33.0
+
