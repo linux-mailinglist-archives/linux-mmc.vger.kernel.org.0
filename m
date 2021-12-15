@@ -2,102 +2,117 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 354D7475A7F
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 Dec 2021 15:18:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F115D475C64
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 Dec 2021 16:55:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243295AbhLOOSX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 Dec 2021 09:18:23 -0500
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:33392 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S237528AbhLOOSW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Dec 2021 09:18:22 -0500
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1BF9JQ9C011420;
-        Wed, 15 Dec 2021 15:17:57 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=selector1;
- bh=KgEN0FRgdT1cJ5AXMmY5RUzHd3EhRYCA7X2wqmj5vvc=;
- b=6Wp+V5vYPW9IY1+KGwifxkAD+hGrekVz5qWE4W2E2hcgDf/mgYPodhklJwSqUTUva/Pb
- rj0gpzXoTA5oJq9f2UoB6PmWN9IIqV/HF08ZsdKXVf3VnaXXTKlJGnc538QCN35RtqU3
- QBFHlsmQMwjsCT6PThphksFG5wzcjOA31LxSOUO5rdyZrITeq9HTUS/a53BKyn5pYe2g
- reTW9GWlRGJIRqjWYOVzF7UU7fdiJswCmp25mmekdT+vVbyocaMX7TNBY2G6XxBa4VFJ
- 3IfSkMmrop3JSnmm5AL83ix8nT6NF7wAkAuDVlTjr0r9hZZEif2Ud6qqp0XkrfDgg1/+ 4w== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3cy79j42k7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Dec 2021 15:17:57 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 29465100034;
-        Wed, 15 Dec 2021 15:17:57 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 20EC621EB8F;
-        Wed, 15 Dec 2021 15:17:57 +0100 (CET)
-Received: from localhost (10.75.127.44) by SFHDAG2NODE2.st.com (10.75.127.5)
- with Microsoft SMTP Server (TLS) id 15.0.1497.26; Wed, 15 Dec 2021 15:17:56
- +0100
-From:   Yann Gautier <yann.gautier@foss.st.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        <u.kleine-koenig@pengutronix.de>, Marek Vasut <marex@denx.de>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        Ludovic Barre <ludovic.barre@foss.st.com>,
-        <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>
-CC:     Yann Gautier <yann.gautier@foss.st.com>
-Subject: [PATCH 4/4] mmc: mmci: add hs200 support for stm32 sdmmc
-Date:   Wed, 15 Dec 2021 15:17:27 +0100
-Message-ID: <20211215141727.4901-5-yann.gautier@foss.st.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211215141727.4901-1-yann.gautier@foss.st.com>
-References: <20211215141727.4901-1-yann.gautier@foss.st.com>
+        id S244253AbhLOPzk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 Dec 2021 10:55:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42212 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244245AbhLOPzj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Dec 2021 10:55:39 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB285C06173E;
+        Wed, 15 Dec 2021 07:55:38 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id a18so39013817wrn.6;
+        Wed, 15 Dec 2021 07:55:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=R67lTnWwXbUTzFzCGUUL+WExD12deXb0Qh98T1uTW0w=;
+        b=OhHVBsH+JSjXGRjWW3dS71NC/5sbYxFPZeF0Q4crce9RPU1G+fwh5oGbAJmZOtYSDn
+         yjuE+M/vGo+HcrEQy22dlJU89eYUIQKX9sy91E3wHpbdRpvBDG7E9pqh+KnpWWxUSq9v
+         PNF4kbB9qDszar6MdLFK6vUT3qHSmSkZinyZ9tTuRpB9k8dn911giQKHsHtqs8Ub7qfH
+         d+kpMd6Mn09M8+dSrQ6c/fZrNlAwgj2PLcnx4Skskb/YzyUvtGrwTTyqbbEG/OT3HkPf
+         3zJ8bhxulq+9LmiMbMGftBQwPezCtnNWvi9+c4T4qCyJR3jP+j7uHUtw5ctkZOex5L9X
+         70hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=R67lTnWwXbUTzFzCGUUL+WExD12deXb0Qh98T1uTW0w=;
+        b=sHHcAsmUjlzPDcQmpUcHYEWzDHwclvEfs/QMK4iRWxkeFCQLhMnd1hSl1pZMh8AdR2
+         YIyxH57lgz0pVB2uTGAsHgo2ihxGo9EClg6HyXl2xzPMUJcBd528Znr0OzSHg4pToYeX
+         uuQjuGDDQ/Wz0bqeiNbhQAiVOTOohfEpLbnnVx32YT3Q/txiVzXRykczoYfjVyBuZA4A
+         dIWfBUqbc8XRjntCVQx6Nx5qwnRULtZ3jF/bKQmy8fffjJFJ+/vSXjjVKtc3uEqNqBHP
+         EtRXxf/x+SdSMKnY3h9FDEsIZ94nwSAlEFakeB6oPE2+HeMDVZBYuIkz/Q1i3XxBzd4N
+         8ctA==
+X-Gm-Message-State: AOAM533EILDOO9SFdZxZP07B661BqVHsly5rnNjGK/7/BZsEOUR4MQHy
+        yZ6KtbUR4syzhdnLBo1RNh0=
+X-Google-Smtp-Source: ABdhPJxHztDvenoHWfBqOVDnmyiUgaQWSSLPpt6XX3/VYHhw8RSChI7rhoZIlA+1HRtQtKu2hou5Tg==
+X-Received: by 2002:a5d:6488:: with SMTP id o8mr5000272wri.631.1639583737576;
+        Wed, 15 Dec 2021 07:55:37 -0800 (PST)
+Received: from orome ([193.209.96.43])
+        by smtp.gmail.com with ESMTPSA id n7sm2363354wro.68.2021.12.15.07.55.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Dec 2021 07:55:36 -0800 (PST)
+Date:   Wed, 15 Dec 2021 16:55:32 +0100
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Jonathan Hunter <jonathanh@nvidia.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Nishanth Menon <nm@ti.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-mmc@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-clk@vger.kernel.org, David Heidelberg <david@ixit.cz>
+Subject: Re: [PATCH v16 00/40] NVIDIA Tegra power management patches for 5.17
+Message-ID: <YboP9IFMUrUnEzrU@orome>
+References: <20211130232347.950-1-digetx@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2021-12-15_09,2021-12-14_01,2021-12-02_01
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="HWWUr3zWZyjxMtnU"
+Content-Disposition: inline
+In-Reply-To: <20211130232347.950-1-digetx@gmail.com>
+User-Agent: Mutt/2.1.3 (987dde4c) (2021-09-10)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Use feedback clock for HS200 mode, as for SDR104.
-The HS200 mode can be enabled through DT by using mmc-hs200-1_8v.
-It is possible to use it on STM32MP13, but not STM32MP15 platforms.
 
-Signed-off-by: Ludovic Barre <ludovic.barre@foss.st.com>
-Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
----
- drivers/mmc/host/mmci_stm32_sdmmc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+--HWWUr3zWZyjxMtnU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/mmc/host/mmci_stm32_sdmmc.c b/drivers/mmc/host/mmci_stm32_sdmmc.c
-index a75d3dd34d18..9c13f2c31365 100644
---- a/drivers/mmc/host/mmci_stm32_sdmmc.c
-+++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
-@@ -241,11 +241,12 @@ static void mmci_sdmmc_set_clkreg(struct mmci_host *host, unsigned int desired)
- 
- 	/*
- 	 * SDMMC_FBCK is selected when an external Delay Block is needed
--	 * with SDR104.
-+	 * with SDR104 or HS200.
- 	 */
- 	if (host->mmc->ios.timing >= MMC_TIMING_UHS_SDR50) {
- 		clk |= MCI_STM32_CLK_BUSSPEED;
--		if (host->mmc->ios.timing == MMC_TIMING_UHS_SDR104) {
-+		if (host->mmc->ios.timing == MMC_TIMING_UHS_SDR104 ||
-+		    host->mmc->ios.timing == MMC_TIMING_MMC_HS200) {
- 			clk &= ~MCI_STM32_CLK_SEL_MSK;
- 			clk |= MCI_STM32_CLK_SELFBCK;
- 		}
--- 
-2.17.1
+On Wed, Dec 01, 2021 at 02:23:07AM +0300, Dmitry Osipenko wrote:
+> This series adds runtime PM support to Tegra drivers and enables core
+> voltage scaling for Tegra20/30 SoCs, resolving overheating troubles.
+>=20
+> All patches in this series are interdependent and should go via Tegra tree
+> for simplicity.
 
+So these can be applied in any order without breaking anything?
+
+Thierry
+
+--HWWUr3zWZyjxMtnU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmG6D/QACgkQ3SOs138+
+s6HzZw//SGRlSbxYGcf2puc+SV4jxqHgVmBVp8biQjzJoeSIatV6B+8n7NAvS0x/
+qMBw7S5I7uFy8rqsIUHNQI929PW2XNbz2H8qid5UjtDVlUo5ir1qtVgvH8HYQruX
+l+PlVayuhBblIEemscYhMNeuyKgrAMeho9ZnnJjITvMVBKRGOxGp38RUgf+Tzrpc
+lF7KIxOcm9FoYTeLxAiVFKtI6Evkt+xJbEvqxkIpaNAzo/AvX6ognGeUQCg7USWu
+v2Km4gqjV0bvZUi+HlMPnYGAFpt3X9ws5NCR5ED4huHislttMacNlkfWGpHw/KkU
+/VJlYrSnlpJkppzOio+g91qdXXlTfXpa3g5ZHSOLqsNFOPFppN9PU9K2DhwFN3Ej
+mNIVbs8Oarq/bJdCftc6dX9saiL9AdKCD1MJO+XgsJuHtQ4FkJHnxMk/p8m9KH33
+HurZ3qmVir9YQh9kyE3MVT95o3gSR+M6hpPcSDiCf4g9XjwvEfJ+sDSg7B8lmM+0
+ZYOmkLu0iLKGOLOn/gBU9Z/Zw9Kw2iW2J/glHU4E5/GI2MNgs99GQPOwyFEq6AvQ
+B4V/SN10i1F0RzeuqsFacfr25c9UGwcXUDNxJqebib27ZRhcGkwu53tEBqYWXep9
+7MAMtQ8il969lajf/1tAlUVPR6AXLiuGcKgZZTEcDUReMvR4Dqk=
+=drq6
+-----END PGP SIGNATURE-----
+
+--HWWUr3zWZyjxMtnU--
