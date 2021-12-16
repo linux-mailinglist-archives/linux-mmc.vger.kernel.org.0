@@ -2,85 +2,211 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85A3D47708D
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Dec 2021 12:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 828B547725D
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Dec 2021 13:57:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233060AbhLPLmX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Dec 2021 06:42:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60072 "EHLO
+        id S237069AbhLPM55 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Dec 2021 07:57:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233072AbhLPLmR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Dec 2021 06:42:17 -0500
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED4EC061799
-        for <linux-mmc@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
-Received: by mail-qk1-x72a.google.com with SMTP id l25so13693364qkl.5
-        for <linux-mmc@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=RYToo8NyNPhlgiHYmZ1ikup312GHYFKKh+SoiQn5DFM08VhX1fCTukNf+Ub7gXZH+R
-         Fdt5I+ZO38LiZ7aX4HrBDtCguvWjGt4+jG/EN+k0G3h02B6emUjwzPzxnL4uWQz6AWTD
-         WqO7wKZcX2hj88TEq1skHq9q03JmZTMsDYFAuzRyTE65aq8YfmTLKW6klN/Aemrjl5Su
-         VOqZm/oCKsPxxvibvSdyBq0qcyBC7yt8asycNVxLymhtuzVbvkdkv8HRw/7WHA5ZhBTe
-         lfMRM7TjowGzvp5BFYZjQfF4jcwfD0Oa7xMNuJL1tGpMndUewyeeM3+DNYanGu61M7GC
-         kNpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=wid+IfdIzhZ8i3GPa9qzb5P8hJ1o7Emehg4EhQ5cAD2jNXDougG3a+SDyhHzSnFkAi
-         FpAfgOlF0FXskvpLsFB4xglBh7lnmK2Rlu2srGaMJrSfOzVgqNT6DutA3eleUfsjJfbz
-         OLLJAeOpQEYtxH7pNRzndbwVfiycsEAzMzI8cYBfmHTBF4lh7QHjCTOdFdli78i3JK+e
-         +VjaFetHDFdUrxNdqEAshKpS1n5v0Imswzu4Pxdld+pFa1aUs5fxLJr+dDp2xTblXg8D
-         Cq2LVpuHC6BmTU6GBl8v/BuUOoUuT7AQZgldr/gmfQBKxReOij+MB5MKgJbcH5884dHM
-         uZgw==
-X-Gm-Message-State: AOAM533ENo89cNFSxndE6sNnlqBkCu8UWqflSCsYW74346fJ/omafW8t
-        Y/KRB17auzX3Wn9NuE+tXKrvqojSX7nThEbzgYk=
-X-Google-Smtp-Source: ABdhPJxYJ2zBl8EMgF/vH/Si0uACMgpOTf1urUCOAwYb4fXYvwfKJa3PKYFOZBbaDpp9AFOjwJ3sIeVfeVjNcnbyBfg=
-X-Received: by 2002:a05:620a:bc3:: with SMTP id s3mr11727889qki.197.1639654936129;
- Thu, 16 Dec 2021 03:42:16 -0800 (PST)
+        with ESMTP id S237085AbhLPM55 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Dec 2021 07:57:57 -0500
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE5EEC061574;
+        Thu, 16 Dec 2021 04:57:56 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: kholk11)
+        with ESMTPSA id AE4C81F4581D
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
+        t=1639659475; bh=upDPcbxBYutQtszG8wB8h6Plz3y3C270hIXAtcwT3uc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lT/N3y1Q5eNFji0fTHTbRaij5rW4KmqMjOG7yMWOHj60FPDJwqHv+X5HvhWnwfXS3
+         WeRBEOLCLJ5nMGmbNZmtKH3MvnbILVM9CVlmjTXMI8Pk07Na1R0C7RDdsdN/8zha+i
+         gQwkNB4OoMu+HX+RFW52IQjOPpIlj/CTNtmREpxH0BoSmZ1qxi2UmjAwzTqz8HFXq2
+         LdpCdozpnZhMbFZyP/Qanp+lGnsDQ5hcmppGXIHk1R1B/NoEgcdiXRBpaca/4Fu4nE
+         0Cm4S6ynIXNMjscrya3BRNAKEC65mVWpRiZ9P0+9Py3fb7F5gS2+CuWFd3AM01PJI/
+         2LWHk3tqo1KFg==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     chaotian.jing@mediatek.com
+Cc:     ulf.hansson@linaro.org, matthias.bgg@gmail.com,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 1/5] mmc: mtk-sd: Use readl_poll_timeout instead of open-coded polling
+Date:   Thu, 16 Dec 2021 13:57:44 +0100
+Message-Id: <20211216125748.179602-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:15
- -0800 (PST)
-Reply-To: selviasantiago1@gmail.com
-From:   Selvia Santiago <mariamatinez119@gmail.com>
-Date:   Thu, 16 Dec 2021 11:42:15 +0000
-Message-ID: <CAONDhKPUij_8sWOmcDAVKuHSL7avy+Ti7bOVRu6x__3ouvD7kw@mail.gmail.com>
-Subject: Urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Replace all instances of open-coded while loops for polling registers
+with calls to readl_poll_timeout() and, while at it, also fix some
+possible infinite loop instances.
+
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+---
+ drivers/mmc/host/mtk-sd.c | 64 ++++++++++++++++++++++++---------------
+ 1 file changed, 39 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index 632775217d35..d5a9c269d492 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -636,12 +636,11 @@ static void msdc_reset_hw(struct msdc_host *host)
+ 	u32 val;
+ 
+ 	sdr_set_bits(host->base + MSDC_CFG, MSDC_CFG_RST);
+-	while (readl(host->base + MSDC_CFG) & MSDC_CFG_RST)
+-		cpu_relax();
++	readl_poll_timeout(host->base + MSDC_CFG, val, !(val & MSDC_CFG_RST), 0, 0);
+ 
+ 	sdr_set_bits(host->base + MSDC_FIFOCS, MSDC_FIFOCS_CLR);
+-	while (readl(host->base + MSDC_FIFOCS) & MSDC_FIFOCS_CLR)
+-		cpu_relax();
++	readl_poll_timeout(host->base + MSDC_FIFOCS, val,
++			   !(val & MSDC_FIFOCS_CLR), 0, 0);
+ 
+ 	val = readl(host->base + MSDC_INT);
+ 	writel(val, host->base + MSDC_INT);
+@@ -814,8 +813,9 @@ static void msdc_gate_clock(struct msdc_host *host)
+ 	clk_disable_unprepare(host->h_clk);
+ }
+ 
+-static void msdc_ungate_clock(struct msdc_host *host)
++static int msdc_ungate_clock(struct msdc_host *host)
+ {
++	u32 val;
+ 	int ret;
+ 
+ 	clk_prepare_enable(host->h_clk);
+@@ -825,11 +825,11 @@ static void msdc_ungate_clock(struct msdc_host *host)
+ 	ret = clk_bulk_prepare_enable(MSDC_NR_CLOCKS, host->bulk_clks);
+ 	if (ret) {
+ 		dev_err(host->dev, "Cannot enable pclk/axi/ahb clock gates\n");
+-		return;
++		return ret;
+ 	}
+ 
+-	while (!(readl(host->base + MSDC_CFG) & MSDC_CFG_CKSTB))
+-		cpu_relax();
++	return readl_poll_timeout(host->base + MSDC_CFG, val,
++				  (val & MSDC_CFG_CKSTB), 1, 20000);
+ }
+ 
+ static void msdc_set_mclk(struct msdc_host *host, unsigned char timing, u32 hz)
+@@ -840,6 +840,7 @@ static void msdc_set_mclk(struct msdc_host *host, unsigned char timing, u32 hz)
+ 	u32 div;
+ 	u32 sclk;
+ 	u32 tune_reg = host->dev_comp->pad_tune_reg;
++	u32 val;
+ 
+ 	if (!hz) {
+ 		dev_dbg(host->dev, "set mclk to 0\n");
+@@ -920,8 +921,7 @@ static void msdc_set_mclk(struct msdc_host *host, unsigned char timing, u32 hz)
+ 	else
+ 		clk_prepare_enable(clk_get_parent(host->src_clk));
+ 
+-	while (!(readl(host->base + MSDC_CFG) & MSDC_CFG_CKSTB))
+-		cpu_relax();
++	readl_poll_timeout(host->base + MSDC_CFG, val, (val & MSDC_CFG_CKSTB), 0, 0);
+ 	sdr_set_bits(host->base + MSDC_CFG, MSDC_CFG_CKPDN);
+ 	mmc->actual_clock = sclk;
+ 	host->mclk = hz;
+@@ -1231,13 +1231,13 @@ static bool msdc_cmd_done(struct msdc_host *host, int events,
+ static inline bool msdc_cmd_is_ready(struct msdc_host *host,
+ 		struct mmc_request *mrq, struct mmc_command *cmd)
+ {
+-	/* The max busy time we can endure is 20ms */
+-	unsigned long tmo = jiffies + msecs_to_jiffies(20);
++	u32 val;
++	int ret;
+ 
+-	while ((readl(host->base + SDC_STS) & SDC_STS_CMDBUSY) &&
+-			time_before(jiffies, tmo))
+-		cpu_relax();
+-	if (readl(host->base + SDC_STS) & SDC_STS_CMDBUSY) {
++	/* The max busy time we can endure is 20ms */
++	ret = readl_poll_timeout_atomic(host->base + SDC_STS, val,
++					!(val & SDC_STS_CMDBUSY), 1, 20000);
++	if (ret) {
+ 		dev_err(host->dev, "CMD bus busy detected\n");
+ 		host->error |= REQ_CMD_BUSY;
+ 		msdc_cmd_done(host, MSDC_INT_CMDTMO, mrq, cmd);
+@@ -1245,12 +1245,10 @@ static inline bool msdc_cmd_is_ready(struct msdc_host *host,
+ 	}
+ 
+ 	if (mmc_resp_type(cmd) == MMC_RSP_R1B || cmd->data) {
+-		tmo = jiffies + msecs_to_jiffies(20);
+ 		/* R1B or with data, should check SDCBUSY */
+-		while ((readl(host->base + SDC_STS) & SDC_STS_SDCBUSY) &&
+-				time_before(jiffies, tmo))
+-			cpu_relax();
+-		if (readl(host->base + SDC_STS) & SDC_STS_SDCBUSY) {
++		ret = readl_poll_timeout_atomic(host->base + SDC_STS, val,
++						!(val & SDC_STS_SDCBUSY), 1, 20000);
++		if (ret) {
+ 			dev_err(host->dev, "Controller busy detected\n");
+ 			host->error |= REQ_CMD_BUSY;
+ 			msdc_cmd_done(host, MSDC_INT_CMDTMO, mrq, cmd);
+@@ -1376,6 +1374,8 @@ static bool msdc_data_xfer_done(struct msdc_host *host, u32 events,
+ 	    (MSDC_INT_XFER_COMPL | MSDC_INT_DATCRCERR | MSDC_INT_DATTMO
+ 	     | MSDC_INT_DMA_BDCSERR | MSDC_INT_DMA_GPDCSERR
+ 	     | MSDC_INT_DMA_PROTECT);
++	u32 val;
++	int ret;
+ 
+ 	spin_lock_irqsave(&host->lock, flags);
+ 	done = !host->data;
+@@ -1392,8 +1392,14 @@ static bool msdc_data_xfer_done(struct msdc_host *host, u32 events,
+ 				readl(host->base + MSDC_DMA_CFG));
+ 		sdr_set_field(host->base + MSDC_DMA_CTRL, MSDC_DMA_CTRL_STOP,
+ 				1);
+-		while (readl(host->base + MSDC_DMA_CFG) & MSDC_DMA_CFG_STS)
+-			cpu_relax();
++
++		ret = readl_poll_timeout_atomic(host->base + MSDC_DMA_CFG, val,
++						!(val & MSDC_DMA_CFG_STS), 1, 20000);
++		if (ret) {
++			dev_dbg(host->dev, "DMA stop timed out\n");
++			return false;
++		}
++
+ 		sdr_clr_bits(host->base + MSDC_INTEN, data_ints_mask);
+ 		dev_dbg(host->dev, "DMA stop\n");
+ 
+@@ -2674,7 +2680,11 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 	spin_lock_init(&host->lock);
+ 
+ 	platform_set_drvdata(pdev, mmc);
+-	msdc_ungate_clock(host);
++	ret = msdc_ungate_clock(host);
++	if (ret) {
++		dev_err(&pdev->dev, "Cannot ungate clocks!\n");
++		goto release_mem;
++	}
+ 	msdc_init_hw(host);
+ 
+ 	if (mmc->caps2 & MMC_CAP2_CQE) {
+@@ -2833,8 +2843,12 @@ static int __maybe_unused msdc_runtime_resume(struct device *dev)
+ {
+ 	struct mmc_host *mmc = dev_get_drvdata(dev);
+ 	struct msdc_host *host = mmc_priv(mmc);
++	int ret;
++
++	ret = msdc_ungate_clock(host);
++	if (ret)
++		return ret;
+ 
+-	msdc_ungate_clock(host);
+ 	msdc_restore_reg(host);
+ 	return 0;
+ }
 -- 
-Urgent
+2.33.1
 
-I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
-suffering from long time illness (Cancer), there is funds I inherited
-from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
-Million Dollars) which he deposited in bank before his death, I need a
-honest and Faithful person that can use these funds for humanity work.
-
-I took this decision because I don't have any child that will inherit
-this money and I don't want a situation where this money will be used
-in an ungodly way. That is why I am taking this decision, and my
-doctor has confirmed to me that I have less than two weeks to live,
-having known my condition I decided to donate this fund to a charity
-or individual that will utilize this money to assist the poor and the
-needy in accordance to my instructions.
-
-I want you to use 70% of this funds for orphanages, school, church,
-widows, propagating the word and other humanity works,The remaining
-30% should be yours for your efforts as the new beneficiary.
-
-Please if you would be able to use these funds for humanity work
-kindly reply me. As soon as I have received your response, I will give
-you further directives on how you are to go about the claims of the
-said funds.
-
-Remain blessed.
-Mrs Selvia Santiago.
