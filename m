@@ -2,96 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE73476F6E
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Dec 2021 12:05:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85A3D47708D
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Dec 2021 12:42:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236380AbhLPLFD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Dec 2021 06:05:03 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:55160 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbhLPLFD (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Dec 2021 06:05:03 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 41B2EB82322;
-        Thu, 16 Dec 2021 11:05:01 +0000 (UTC)
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id A79D3C36AE6;
-        Thu, 16 Dec 2021 11:04:56 +0000 (UTC)
-Date:   Thu, 16 Dec 2021 11:10:21 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, list@opendingux.net,
-        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH 2/5] PM: core: Redefine pm_ptr() macro
-Message-ID: <20211216111021.7b3eaada@jic23-huawei>
-In-Reply-To: <20211207002102.26414-3-paul@crapouillou.net>
-References: <20211207002102.26414-1-paul@crapouillou.net>
-        <20211207002102.26414-3-paul@crapouillou.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S233060AbhLPLmX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Dec 2021 06:42:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60072 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233072AbhLPLmR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Dec 2021 06:42:17 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED4EC061799
+        for <linux-mmc@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id l25so13693364qkl.5
+        for <linux-mmc@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=RYToo8NyNPhlgiHYmZ1ikup312GHYFKKh+SoiQn5DFM08VhX1fCTukNf+Ub7gXZH+R
+         Fdt5I+ZO38LiZ7aX4HrBDtCguvWjGt4+jG/EN+k0G3h02B6emUjwzPzxnL4uWQz6AWTD
+         WqO7wKZcX2hj88TEq1skHq9q03JmZTMsDYFAuzRyTE65aq8YfmTLKW6klN/Aemrjl5Su
+         VOqZm/oCKsPxxvibvSdyBq0qcyBC7yt8asycNVxLymhtuzVbvkdkv8HRw/7WHA5ZhBTe
+         lfMRM7TjowGzvp5BFYZjQfF4jcwfD0Oa7xMNuJL1tGpMndUewyeeM3+DNYanGu61M7GC
+         kNpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=wid+IfdIzhZ8i3GPa9qzb5P8hJ1o7Emehg4EhQ5cAD2jNXDougG3a+SDyhHzSnFkAi
+         FpAfgOlF0FXskvpLsFB4xglBh7lnmK2Rlu2srGaMJrSfOzVgqNT6DutA3eleUfsjJfbz
+         OLLJAeOpQEYtxH7pNRzndbwVfiycsEAzMzI8cYBfmHTBF4lh7QHjCTOdFdli78i3JK+e
+         +VjaFetHDFdUrxNdqEAshKpS1n5v0Imswzu4Pxdld+pFa1aUs5fxLJr+dDp2xTblXg8D
+         Cq2LVpuHC6BmTU6GBl8v/BuUOoUuT7AQZgldr/gmfQBKxReOij+MB5MKgJbcH5884dHM
+         uZgw==
+X-Gm-Message-State: AOAM533ENo89cNFSxndE6sNnlqBkCu8UWqflSCsYW74346fJ/omafW8t
+        Y/KRB17auzX3Wn9NuE+tXKrvqojSX7nThEbzgYk=
+X-Google-Smtp-Source: ABdhPJxYJ2zBl8EMgF/vH/Si0uACMgpOTf1urUCOAwYb4fXYvwfKJa3PKYFOZBbaDpp9AFOjwJ3sIeVfeVjNcnbyBfg=
+X-Received: by 2002:a05:620a:bc3:: with SMTP id s3mr11727889qki.197.1639654936129;
+ Thu, 16 Dec 2021 03:42:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:15
+ -0800 (PST)
+Reply-To: selviasantiago1@gmail.com
+From:   Selvia Santiago <mariamatinez119@gmail.com>
+Date:   Thu, 16 Dec 2021 11:42:15 +0000
+Message-ID: <CAONDhKPUij_8sWOmcDAVKuHSL7avy+Ti7bOVRu6x__3ouvD7kw@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue,  7 Dec 2021 00:20:59 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
+-- 
+Urgent
 
-> The pm_ptr() macro was previously conditionally defined, according to
-> the value of the CONFIG_PM option. This meant that the pointed structure
-> was either referenced (if CONFIG_PM was set), or never referenced (if
-> CONFIG_PM was not set), causing it to be detected as unused by the
-> compiler.
-> 
-> This worked fine, but required the __maybe_unused compiler attribute to
-> be used to every symbol pointed to by a pointer wrapped with pm_ptr().
-> 
-> We can do better. With this change, the pm_ptr() is now defined the
-> same, independently of the value of CONFIG_PM. It now uses the (?:)
-> ternary operator to conditionally resolve to its argument. Since the
-> condition is known at compile time, the compiler will then choose to
-> discard the unused symbols, which won't need to be tagged with
-> __maybe_unused anymore.
-> 
-> This pm_ptr() macro is usually used with pointers to dev_pm_ops
-> structures created with SIMPLE_DEV_PM_OPS() or similar macros. These do
-> use a __maybe_unused flag, which is now useless with this change, so it
-> later can be removed. However in the meantime it causes no harm, and all
-> the drivers still compile fine with the new pm_ptr() macro.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
+suffering from long time illness (Cancer), there is funds I inherited
+from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
+Million Dollars) which he deposited in bank before his death, I need a
+honest and Faithful person that can use these funds for humanity work.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I took this decision because I don't have any child that will inherit
+this money and I don't want a situation where this money will be used
+in an ungodly way. That is why I am taking this decision, and my
+doctor has confirmed to me that I have less than two weeks to live,
+having known my condition I decided to donate this fund to a charity
+or individual that will utilize this money to assist the poor and the
+needy in accordance to my instructions.
 
-> ---
->  include/linux/pm.h | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/include/linux/pm.h b/include/linux/pm.h
-> index 1d8209c09686..b88ac7dcf2a2 100644
-> --- a/include/linux/pm.h
-> +++ b/include/linux/pm.h
-> @@ -373,11 +373,7 @@ const struct dev_pm_ops __maybe_unused name = { \
->  	SET_RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn) \
->  }
->  
-> -#ifdef CONFIG_PM
-> -#define pm_ptr(_ptr) (_ptr)
-> -#else
-> -#define pm_ptr(_ptr) NULL
-> -#endif
-> +#define pm_ptr(_ptr) PTR_IF(IS_ENABLED(CONFIG_PM), (_ptr))
->  
->  /*
->   * PM_EVENT_ messages
+I want you to use 70% of this funds for orphanages, school, church,
+widows, propagating the word and other humanity works,The remaining
+30% should be yours for your efforts as the new beneficiary.
 
+Please if you would be able to use these funds for humanity work
+kindly reply me. As soon as I have received your response, I will give
+you further directives on how you are to go about the claims of the
+said funds.
+
+Remain blessed.
+Mrs Selvia Santiago.
