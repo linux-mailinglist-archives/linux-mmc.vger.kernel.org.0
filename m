@@ -2,103 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B0F479E89
-	for <lists+linux-mmc@lfdr.de>; Sun, 19 Dec 2021 01:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F36D47A12B
+	for <lists+linux-mmc@lfdr.de>; Sun, 19 Dec 2021 16:34:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231407AbhLSAYZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 18 Dec 2021 19:24:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40042 "EHLO
+        id S236019AbhLSPe4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 19 Dec 2021 10:34:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbhLSAYZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 18 Dec 2021 19:24:25 -0500
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A56C061574
-        for <linux-mmc@vger.kernel.org>; Sat, 18 Dec 2021 16:24:24 -0800 (PST)
-Received: by mail-qk1-x733.google.com with SMTP id d21so5971675qkl.3
-        for <linux-mmc@vger.kernel.org>; Sat, 18 Dec 2021 16:24:24 -0800 (PST)
+        with ESMTP id S231787AbhLSPez (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 19 Dec 2021 10:34:55 -0500
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BBDDC061574;
+        Sun, 19 Dec 2021 07:34:55 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id a9so14853618wrr.8;
+        Sun, 19 Dec 2021 07:34:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
+        d=googlemail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=ttyGAnC6DkJUu9yUKghQOutRdQihW4nBSca09uaHzXk=;
-        b=NmPlmGPYDdSW2bXQrEPaAkpMk3nxXl0y3QnQgymW9b1gdV/fY4rw+yQ0CQrgNNuSOg
-         mUbq68f/09xpLLxThPJu9KZHsfhHDVw+sgxxnJfM1KyQdw0gDV2cb//4CFec4eWUHswz
-         1bljYP5PygpeLw++rwJ1zjx0ECC5QQcB3f8og9s0Rsc9qCwTbGQ9NxdwQaL2pFnkCE8k
-         6V6HnPh1ocmExue1TDmnTAnXVtVEl6qAqxXkOjpGhpZrEjCkXFiSGbm9jBAOG7IufQBJ
-         YUp4aapfghOr6SIdVvjuzH7KfVl/T/J6LmGFirCEI5i2XRSIJaH84Ba8CLOxEo5rqWqr
-         n3BQ==
+        bh=8dfUL1c2VpDlpvRYp5J5tnSJmcolhRv7cYP/WcyTXpE=;
+        b=P979BzXr3RvgooocRWemgZtMWBE1vmonRBBpWRWPBLJdnSm2YDpt5AWwBj942XdlRj
+         CdHrU58tMcKYZps7MJsO/Tjhf7jIT3CD+1nmQMAYYUpBtLG6bI3rkD+FA1RnIvihJlh1
+         KoZ0mvBbeJjBDttpkHy+yG1Ua4GCOI0xe6KeIlVXaphyFLTUVl80Z8hgQ8lECUy3d9to
+         aRT68rBoHzyiFk3wVutHwzoCTuljfqHZhLK7E2AITRHyMtbf2whuAXUyfKo5sDK0KK8+
+         nYeSCQhsX860SGCYBrkTJ5muXFaqNO/MqsDTpRSks60FCkFsPHRXTncZHeWvKjRZRvqa
+         VUkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=ttyGAnC6DkJUu9yUKghQOutRdQihW4nBSca09uaHzXk=;
-        b=WsD9ZXWaeieEQzn/9j6k8m9foavKAn/snfc+V38xxlVW4463TFFaNPKOga5VF0LcXO
-         YVjRAt/ZykDlhlzsjuP9TuF5+eLQX/tgTK8l0uzHYQMD59sq3/3SeW34MvVM4fryehyK
-         fqBczh0J2pDeBZZrXE5+jf1OuNnZjVCEitwAI5Yd8Cw0tmHVNdxB1Zef1bUZ2ZWqdVb5
-         rzK/tImIQU3l3EJH/WWmnva5BICwNYIVE20TG7e17iyM2YMAGzxvga7+GEuwUxYVvx9D
-         b7lL93JSZuG0nZ0KdywilZX+morecMX61oIPjg4BpnOowoBITkMgdBP8e1ltyPBjLT09
-         bbYQ==
-X-Gm-Message-State: AOAM5307VhmANEV9dfpGOpMbCh0L5XAa0P6YX1LIfRCpL8lOSmLiVNi1
-        Ddp2XuJcGqAE0S+00M29mcJ/f5XSJ3+P5qy8WMY=
-X-Google-Smtp-Source: ABdhPJzcmnGqGvFKrcqsRyy2FdX0EXiS43NPexJZyywvkY4SWMXIAPqwVFRCh3/gTRn2RewuqL1gLOLq0DRsEUtfE3U=
-X-Received: by 2002:ae9:f716:: with SMTP id s22mr5957504qkg.212.1639873463484;
- Sat, 18 Dec 2021 16:24:23 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8dfUL1c2VpDlpvRYp5J5tnSJmcolhRv7cYP/WcyTXpE=;
+        b=LV7/kaFZPNPNGYtjfAjNo1/i+HXyhnI9VeIo84tMzlxMlJy6E+TvkrkiSFX7vZ05j5
+         OlIdAgKfmbIikW9l7FQWaSt4qJMAVuqXU7gnzA7JT82ol6k8nBd6MWIxjFK9eSmmeVOC
+         aYslWzOYBKPecfEcIxgA+agzcc404Mj3CYCykMD13q3JBk/we4sfqZcl7bxBRjR2E5Xv
+         oP23FoUYPQEYaNRrabMr4ovAHs944lMVKh2ffkjH6EbTTxJb1v+oycBvWq5WGKNe1zn9
+         KFdzVPqrbmzSwDmsoNAVusiXOc64l30B86C3qhDuSzJa0O9SVe6kK1mHXm9sEjY1FGX+
+         Ihpg==
+X-Gm-Message-State: AOAM5324QezU5rbFVRiDh8Nbgvvyw0oSeJS/XQlMNMxh6zEdQbKCqBxE
+        rhCBPRQYZWEPAGGfkQ/i1qwwl4rfP+c=
+X-Google-Smtp-Source: ABdhPJwB7cEhF+bnXpjr5aVYXXD8l0Z47msYuTlJCyoYNFxn5ax7p6hw3dg5/wQrpgfhKAQvqdoASg==
+X-Received: by 2002:adf:bbd2:: with SMTP id z18mr10007446wrg.118.1639928093752;
+        Sun, 19 Dec 2021 07:34:53 -0800 (PST)
+Received: from localhost.localdomain (dynamic-2a01-0c22-721d-8f00-f22f-74ff-fe21-0725.c22.pool.telefonica.de. [2a01:c22:721d:8f00:f22f:74ff:fe21:725])
+        by smtp.googlemail.com with ESMTPSA id d2sm9262020wrw.26.2021.12.19.07.34.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Dec 2021 07:34:53 -0800 (PST)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-mmc@vger.kernel.org, linux-amlogic@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        ulf.hansson@linaro.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH v2 0/2] mmc: meson-mx-sdhc: two fixes
+Date:   Sun, 19 Dec 2021 16:34:40 +0100
+Message-Id: <20211219153442.463863-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received: by 2002:a05:6214:2405:0:0:0:0 with HTTP; Sat, 18 Dec 2021 16:24:22
- -0800 (PST)
-Reply-To: mrsbastienmarion@gmail.com
-From:   Mrs Bastien Marion <ikennaikenna140@gmail.com>
-Date:   Sun, 19 Dec 2021 00:24:22 +0000
-Message-ID: <CAE52L4sMmZvMzPbfFz8p00kBcDwhJhdyCV2TwGmO8u0NOeRzAw@mail.gmail.com>
-Subject: Greetings, this is humanitarian work
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-I'AM SUFFERING FROM CANCER OF THE HEART
+The first patch in this series fixes Broadcom SDIO wifi cards (using
+the brcmfmac driver) on Meson8 SoCs. Meson8b with Realtek (RTL8723BS)
+SDIO wifi is unaffected by this (it worked fine before). Testing was
+done (on the S82 board) in private by a user who wants to remain
+anonymous.
 
-Dear Friend.
+The second patch in this series is a minor cleanup which I found when
+working on the first patch.
 
-Greetings to you in the name of the Lord God Almighty am Mrs Bastien Marion
-From (Paris) France, but am based in Burkina Faso Africa for eight
-years now as a business woman dealing on gold exportation and cotton
-Sales. But I have been suffering from this deadly disease called
-cancer for long and the doctor just said I have just few weeks to
-live.
+Changes since v1 [0]:
+- Drop SD_IO_RW_DIRECT from the first patch since it has nothing to do
+  with the actual problem. That command was carried over from the
+  vendor driver. The patch description was also updated accordingly.
+  Thanks to Ulf for spotting this!
+- Add a comment to the manual_stop variable as suggested by Ulf
 
-I know it will be difficult for you to believe my story now,
-but this is the situation I found myself in, it=E2=80=99s not my desire to =
-be
-on a sick bed today but God knows best,
 
-Now that I am about to end the race like this, without any family
-Members and no child. I have $6.8 Million US DOLLARS in BANK OF AFRICA
-(B.O.A) Burkina Faso it=E2=80=99s all my life savings, I instructed the Ban=
-k
-to give it to St Andrews Missionary and Home Kizito Orphanage in
-Burkina Faso. But my mind is not at rest because i do not trust them,
-I am writing this letter now through the help of my computer beside my
-sick bed.
+[0] https://patchwork.kernel.org/project/linux-amlogic/cover/20211212145956.1423755-1-martin.blumenstingl@googlemail.com/
 
-I will instruct the bank to transfer this fund to you as a foreigner
-but you have to promise me that you will take 40 Percent(%) of the
-total money for your personal use While 60 Percent (%) of the money
-will go to charity, Orphanage and less Privileges" people in the
-street and helping the Needy. I grew up as an Orphan and I don't have
-anybody as my family member, just to Endeavour that the house of God
-is maintained. Am doing this so that God will forgive my sins and
-accept my soul because this sickness has suffered me so much.
 
-As soon as I receive your reply I shall give you the contact of the
-bank and I will also instruct my Bank Manager to issue you an
-authority letter that will prove you the present beneficiary of the
-money in the bank that is if you assure me that you will act
-accordingly as I Stated herein.
+Martin Blumenstingl (2):
+  mmc: meson-mx-sdhc: Set MANUAL_STOP for multi-block SDIO commands
+  mmc: meson-mx-sdhc: Drop unused MESON_SDHC_NUM_BUILTIN_CLKS macro
 
-I look forward to getting a reply from you.
+ drivers/mmc/host/meson-mx-sdhc-clkc.c |  2 --
+ drivers/mmc/host/meson-mx-sdhc-mmc.c  | 16 ++++++++++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-Thanks and God bless you,
-Mrs Bastien Marion.
+-- 
+2.34.1
+
