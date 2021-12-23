@@ -2,26 +2,26 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63FD647E6AC
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 Dec 2021 18:12:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1D1047E6B1
+	for <lists+linux-mmc@lfdr.de>; Thu, 23 Dec 2021 18:12:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349423AbhLWRMN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 Dec 2021 12:12:13 -0500
-Received: from mxout02.lancloud.ru ([45.84.86.82]:49934 "EHLO
-        mxout02.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349424AbhLWRMJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Dec 2021 12:12:09 -0500
+        id S1349416AbhLWRMP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 23 Dec 2021 12:12:15 -0500
+Received: from mxout01.lancloud.ru ([45.84.86.81]:41330 "EHLO
+        mxout01.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349420AbhLWRMK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Dec 2021 12:12:10 -0500
 Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout02.lancloud.ru B955E2022B81
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout01.lancloud.ru 5F6222024192
 Received: from LanCloud
 Received: from LanCloud
 Received: from LanCloud
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
-CC:     Nicolas Pitre <nico@fluxnic.net>
-Subject: [PATCH RFC 04/13] mmc: mvsdio: fix deferred probing
-Date:   Thu, 23 Dec 2021 20:11:53 +0300
-Message-ID: <20211223171202.8224-5-s.shtylyov@omp.ru>
+CC:     Aaro Koskinen <aaro.koskinen@iki.fi>, <linux-omap@vger.kernel.org>
+Subject: [PATCH RFC 05/13] mmc: omap: fix deferred probing
+Date:   Thu, 23 Dec 2021 20:11:54 +0300
+Message-ID: <20211223171202.8224-6-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20211223171202.8224-1-s.shtylyov@omp.ru>
 References: <20211223171202.8224-1-s.shtylyov@omp.ru>
@@ -43,22 +43,22 @@ error codes upstream.
 Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
 Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 ---
- drivers/mmc/host/mvsdio.c | 2 +-
+ drivers/mmc/host/omap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/mvsdio.c b/drivers/mmc/host/mvsdio.c
-index 629efbe639c4..b4f6a0a2fcb5 100644
---- a/drivers/mmc/host/mvsdio.c
-+++ b/drivers/mmc/host/mvsdio.c
-@@ -704,7 +704,7 @@ static int mvsd_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
+index 5e5af34090f1..ecf2a68d0e84 100644
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -1343,7 +1343,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
+ 
  	irq = platform_get_irq(pdev, 0);
  	if (irq < 0)
 -		return -ENXIO;
 +		return irq;
  
- 	mmc = mmc_alloc_host(sizeof(struct mvsd_host), &pdev->dev);
- 	if (!mmc) {
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	host->virt_base = devm_ioremap_resource(&pdev->dev, res);
 -- 
 2.26.3
 
