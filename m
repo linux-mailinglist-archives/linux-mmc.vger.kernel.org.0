@@ -2,26 +2,27 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8726E47E6B3
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 Dec 2021 18:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90EE847E6B6
+	for <lists+linux-mmc@lfdr.de>; Thu, 23 Dec 2021 18:12:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349427AbhLWRMQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 Dec 2021 12:12:16 -0500
-Received: from mxout02.lancloud.ru ([45.84.86.82]:49954 "EHLO
-        mxout02.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349428AbhLWRMK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Dec 2021 12:12:10 -0500
+        id S1349439AbhLWRMR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 23 Dec 2021 12:12:17 -0500
+Received: from mxout03.lancloud.ru ([45.84.86.113]:34958 "EHLO
+        mxout03.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349401AbhLWRML (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Dec 2021 12:12:11 -0500
 Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout02.lancloud.ru AB35D2022B92
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout03.lancloud.ru 2FA0F20326BE
 Received: from LanCloud
 Received: from LanCloud
 Received: from LanCloud
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
-CC:     Adrian Hunter <adrian.hunter@intel.com>
-Subject: [PATCH RFC 09/13] mmc: sdhci-acpi: fix deferred probing
-Date:   Thu, 23 Dec 2021 20:11:58 +0300
-Message-ID: <20211223171202.8224-10-s.shtylyov@omp.ru>
+CC:     Adrian Hunter <adrian.hunter@intel.com>,
+        Viresh Kumar <vireshk@kernel.org>
+Subject: [PATCH RFC 10/13] mmc: sdhci-spear: fix deferred probing
+Date:   Thu, 23 Dec 2021 20:11:59 +0300
+Message-ID: <20211223171202.8224-11-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20211223171202.8224-1-s.shtylyov@omp.ru>
 References: <20211223171202.8224-1-s.shtylyov@omp.ru>
@@ -35,30 +36,33 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The driver overrides the error codes returned by platform_get_irq() to
--EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the
-error codes upstream.
+The driver overrides the error codes and IRQ0 returned by platform_get_irq()
+to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the error
+codes upstream. IRQ0 is no longer returned by platform_get_irq(), so we now
+can safely ignore it...
 
-Fixes: 1b7ba57ecc86 ("mmc: sdhci-acpi: Handle return value of platform_get_irq")
+Fixes: 682798a596a6 ("mmc: sdhci-spear: Handle return value of platform_get_irq")
 Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 ---
- drivers/mmc/host/sdhci-acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-spear.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index f1ef0d28b0dd..1fa1d2a7bfc9 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -898,7 +898,7 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
- 	host->ops	= &sdhci_acpi_ops_dflt;
- 	host->irq	= platform_get_irq(pdev, 0);
- 	if (host->irq < 0) {
--		err = -EINVAL;
-+		err = host->irq;
- 		goto err_free;
+diff --git a/drivers/mmc/host/sdhci-spear.c b/drivers/mmc/host/sdhci-spear.c
+index d463e2fd5b1a..c79035727b20 100644
+--- a/drivers/mmc/host/sdhci-spear.c
++++ b/drivers/mmc/host/sdhci-spear.c
+@@ -65,8 +65,8 @@ static int sdhci_probe(struct platform_device *pdev)
+ 	host->hw_name = "sdhci";
+ 	host->ops = &sdhci_pltfm_ops;
+ 	host->irq = platform_get_irq(pdev, 0);
+-	if (host->irq <= 0) {
+-		ret = -EINVAL;
++	if (host->irq < 0) {
++		ret = host->irq;
+ 		goto err_host;
  	}
- 
+ 	host->quirks = SDHCI_QUIRK_BROKEN_ADMA;
 -- 
 2.26.3
 
