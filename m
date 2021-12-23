@@ -2,27 +2,25 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90EE847E6B6
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 Dec 2021 18:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F39E447E6B4
+	for <lists+linux-mmc@lfdr.de>; Thu, 23 Dec 2021 18:12:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349439AbhLWRMR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 Dec 2021 12:12:17 -0500
-Received: from mxout03.lancloud.ru ([45.84.86.113]:34958 "EHLO
-        mxout03.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349401AbhLWRML (ORCPT
+        id S1349428AbhLWRMQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 23 Dec 2021 12:12:16 -0500
+Received: from mxout04.lancloud.ru ([45.84.86.114]:55838 "EHLO
+        mxout04.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349431AbhLWRML (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Dec 2021 12:12:11 -0500
 Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout03.lancloud.ru 2FA0F20326BE
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout04.lancloud.ru 8A742209FA3B
 Received: from LanCloud
 Received: from LanCloud
 Received: from LanCloud
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
-CC:     Adrian Hunter <adrian.hunter@intel.com>,
-        Viresh Kumar <vireshk@kernel.org>
-Subject: [PATCH RFC 10/13] mmc: sdhci-spear: fix deferred probing
-Date:   Thu, 23 Dec 2021 20:11:59 +0300
-Message-ID: <20211223171202.8224-11-s.shtylyov@omp.ru>
+Subject: [PATCH RFC 11/13] mmc: sh_mmcif: fix deferred probing
+Date:   Thu, 23 Dec 2021 20:12:00 +0300
+Message-ID: <20211223171202.8224-12-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20211223171202.8224-1-s.shtylyov@omp.ru>
 References: <20211223171202.8224-1-s.shtylyov@omp.ru>
@@ -36,33 +34,30 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The driver overrides the error codes and IRQ0 returned by platform_get_irq()
-to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the error
-codes upstream. IRQ0 is no longer returned by platform_get_irq(), so we now
-can safely ignore it...
+The driver overrides the error codes returned by platform_get_irq() to
+-ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the
+error codes upstream.
 
-Fixes: 682798a596a6 ("mmc: sdhci-spear: Handle return value of platform_get_irq")
+Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
 Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 ---
- drivers/mmc/host/sdhci-spear.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sh_mmcif.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-spear.c b/drivers/mmc/host/sdhci-spear.c
-index d463e2fd5b1a..c79035727b20 100644
---- a/drivers/mmc/host/sdhci-spear.c
-+++ b/drivers/mmc/host/sdhci-spear.c
-@@ -65,8 +65,8 @@ static int sdhci_probe(struct platform_device *pdev)
- 	host->hw_name = "sdhci";
- 	host->ops = &sdhci_pltfm_ops;
- 	host->irq = platform_get_irq(pdev, 0);
--	if (host->irq <= 0) {
--		ret = -EINVAL;
-+	if (host->irq < 0) {
-+		ret = host->irq;
- 		goto err_host;
- 	}
- 	host->quirks = SDHCI_QUIRK_BROKEN_ADMA;
+diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
+index bcc595c70a9f..e12fe29b275c 100644
+--- a/drivers/mmc/host/sh_mmcif.c
++++ b/drivers/mmc/host/sh_mmcif.c
+@@ -1398,7 +1398,7 @@ static int sh_mmcif_probe(struct platform_device *pdev)
+ 	irq[0] = platform_get_irq(pdev, 0);
+ 	irq[1] = platform_get_irq_optional(pdev, 1);
+ 	if (irq[0] < 0)
+-		return -ENXIO;
++		return irq[0];
+ 
+ 	reg = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(reg))
 -- 
 2.26.3
 
