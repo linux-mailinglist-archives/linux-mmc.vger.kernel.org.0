@@ -2,85 +2,60 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A39A47E7C5
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 Dec 2021 19:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BECCD47E7D8
+	for <lists+linux-mmc@lfdr.de>; Thu, 23 Dec 2021 19:58:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244750AbhLWSsT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 Dec 2021 13:48:19 -0500
-Received: from pb-smtp20.pobox.com ([173.228.157.52]:52364 "EHLO
-        pb-smtp20.pobox.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349902AbhLWSsS (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Dec 2021 13:48:18 -0500
-Received: from pb-smtp20.pobox.com (unknown [127.0.0.1])
-        by pb-smtp20.pobox.com (Postfix) with ESMTP id EDDD01593E8;
-        Thu, 23 Dec 2021 13:48:17 -0500 (EST)
-        (envelope-from nico@fluxnic.net)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=pobox.com; h=date:from
-        :to:cc:subject:in-reply-to:message-id:references:mime-version
-        :content-type; s=sasl; bh=GQP+fb7ki0DT7/gypiWXs00zHpe+qshPJ6b4aV
-        /54hE=; b=YP3Jaew0HhZmUXc6xS/jRkWGB3pldU+wyeVotd3YI+GMwQ5o8+3xAx
-        hmg9q0SVIGEAJD6KujJ/OreH4qqNfKpws3uIjzjc0sNyRnhFYQC9gJ5cmvQEf1SO
-        /IO6cs+zF55bv0AnCIKT8/6hfhr7T2mRVZ/usAj8gOK+CHp91ApPs=
-Received: from pb-smtp20.sea.icgroup.com (unknown [127.0.0.1])
-        by pb-smtp20.pobox.com (Postfix) with ESMTP id E6C9A1593E5;
-        Thu, 23 Dec 2021 13:48:17 -0500 (EST)
-        (envelope-from nico@fluxnic.net)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=fluxnic.net;
- h=date:from:to:cc:subject:in-reply-to:message-id:references:mime-version:content-type; s=2016-12.pbsmtp; bh=GQP+fb7ki0DT7/gypiWXs00zHpe+qshPJ6b4aV/54hE=; b=rWP2+B22nRAWRWW4bQY3ryj6SdpGfNr1tEZtlPC8xQwk6d8wW/xL9LEtjsRjfq28Km5oQ3DFTJQx0z9LwOHfYs84NAoBKsH76hO/5s45jWjqUAhxCLernwoa7zuwn+pUPUW+RWCBi3+V1/n/h6vs2lf8ydjOPFpEkKuVJvfjFxE=
-Received: from yoda.home (unknown [96.21.170.108])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by pb-smtp20.pobox.com (Postfix) with ESMTPSA id B11EC1593E4;
-        Thu, 23 Dec 2021 13:48:13 -0500 (EST)
-        (envelope-from nico@fluxnic.net)
-Received: from xanadu.home (xanadu.home [192.168.2.2])
-        by yoda.home (Postfix) with ESMTPSA id 885E22DA0065;
-        Thu, 23 Dec 2021 13:48:11 -0500 (EST)
-Date:   Thu, 23 Dec 2021 13:48:11 -0500 (EST)
-From:   Nicolas Pitre <nico@fluxnic.net>
-To:     Sergey Shtylyov <s.shtylyov@omp.ru>
-cc:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-Subject: Re: [PATCH RFC 04/13] mmc: mvsdio: fix deferred probing
-In-Reply-To: <20211223171202.8224-5-s.shtylyov@omp.ru>
-Message-ID: <337r530-or86-p158-p6n8-9760s8rp353s@syhkavp.arg>
-References: <20211223171202.8224-1-s.shtylyov@omp.ru> <20211223171202.8224-5-s.shtylyov@omp.ru>
+        id S244847AbhLWS6u (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 23 Dec 2021 13:58:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229616AbhLWS6t (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Dec 2021 13:58:49 -0500
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89751C061756
+        for <linux-mmc@vger.kernel.org>; Thu, 23 Dec 2021 10:58:49 -0800 (PST)
+Received: by mail-pj1-x1035.google.com with SMTP id j6-20020a17090a588600b001a78a5ce46aso9564406pji.0
+        for <linux-mmc@vger.kernel.org>; Thu, 23 Dec 2021 10:58:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
+        b=PbE0SVEAgV8C5p0Yv8eXolnB1LZ2xLlmE7r7IdFVrOyv/z08YSjx+rgztrnrCqIBK4
+         Uenf1t9Wxh6hLD+YF+d3UEZFLwdwxqiq3JMcMb42wcUqMFZXFSmloC/yOQY1txmZ3R35
+         Q+R9SkJr3AGUwTfhXBHKdk7Ezp7UPcxV3hEBFMlJ4lQwo6g5gu9fDCanXncGzUIBxgH5
+         mxue6UR4pK/m6GjuixJ/JUSEKyVgCokZTWZVzo9feTvceo6GikT+83qdHU2Zt04RF1eE
+         Cl37WVtU7WYFcjclwKFurKQ1peVwDMFAhEsKDSGY1Bj5l6vNLbkvqB+86KcElWfl8Hex
+         r1dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
+        b=1vIwOaOTx67jyGiJm5PNzcJ4tpJF/i363+PFLYSy7eTWioR3drr04EiMMmav/a6yOJ
+         u5ZgA+lji5cU37RvYXy1HnVtAHZb3O/s3VwyT8f0SGjMi3kbfrHbAHOOZcwZFdL+UYZi
+         YELQyYFPiW/Va7LOpNOnE8rtGTaevjSycKRzHqN8cn0nOwGVe5Vps2de4fAJFO5IMyW9
+         zvMhJbd6ORoWDphcApfEGHx2VxNq7j7ShP4DrRrIFr0X6LZdBrowR9j+tHsdvGHj/RdB
+         P/lKW8Gis40BUygX0kEwaLXdRHFLpR/9IZeFnayK/VTYW22471OwggqwS+hleEPBiqGj
+         TxEw==
+X-Gm-Message-State: AOAM531kZnh+LShrqoAPd/RIx4GJPcL9mJRgKj0TETxz2xGbZyk+DCM8
+        jo+yy4/rGXub92tvhtzbA5C/Ho2yKM2HVX5mjFs=
+X-Google-Smtp-Source: ABdhPJwtSO8bcLczAqOwHXUujVULh/b2UJgTHL1G/5xxXvjR67IegIDZPfBsqTt/udp6TfQ3n5BYKcsFi6+96JrV4XU=
+X-Received: by 2002:a17:90b:180a:: with SMTP id lw10mr4277289pjb.57.1640285928645;
+ Thu, 23 Dec 2021 10:58:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Pobox-Relay-ID: E224301A-6420-11EC-AB3F-C85A9F429DF0-78420484!pb-smtp20.pobox.com
+Received: by 2002:a05:6a20:789d:b0:68:7657:a7bf with HTTP; Thu, 23 Dec 2021
+ 10:58:47 -0800 (PST)
+Reply-To: revfrpaulwilliams2@gmail.com
+From:   "Rev. Fr. Paul Williams" <melindagatesfoundation53@gmail.com>
+Date:   Fri, 24 Dec 2021 00:28:47 +0530
+Message-ID: <CAMk=7SS-LLac+JFDryxkwdDZ1Ndf8XjBi54TKr+NmktKCyO+pg@mail.gmail.com>
+Subject: Donation From Williams Foundation.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 23 Dec 2021, Sergey Shtylyov wrote:
-
-> The driver overrides the error codes returned by platform_get_irq() to
-> -ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
-> permanently instead of the deferred probing. Switch to propagating the
-> error codes upstream.
-> 
-> Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
-> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-
-Acked-by: Nicolas Pitre <nico@fluxnic.net>
-
-> ---
->  drivers/mmc/host/mvsdio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/mvsdio.c b/drivers/mmc/host/mvsdio.c
-> index 629efbe639c4..b4f6a0a2fcb5 100644
-> --- a/drivers/mmc/host/mvsdio.c
-> +++ b/drivers/mmc/host/mvsdio.c
-> @@ -704,7 +704,7 @@ static int mvsd_probe(struct platform_device *pdev)
->  	}
->  	irq = platform_get_irq(pdev, 0);
->  	if (irq < 0)
-> -		return -ENXIO;
-> +		return irq;
->  
->  	mmc = mmc_alloc_host(sizeof(struct mvsd_host), &pdev->dev);
->  	if (!mmc) {
-> -- 
-> 2.26.3
-> 
-> 
+Contact Rev. Fr. Paul Williams Immediately For A Charity Donation Of
+$6,200,000.00 United States Dollars At E-Mail:
+revfrpaulwilliams2@gmail.com
