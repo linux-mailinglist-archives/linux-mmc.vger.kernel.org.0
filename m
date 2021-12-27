@@ -2,100 +2,178 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5F047FD99
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 Dec 2021 14:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D176F4802C3
+	for <lists+linux-mmc@lfdr.de>; Mon, 27 Dec 2021 18:28:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237136AbhL0Nga (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 Dec 2021 08:36:30 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:54808
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237018AbhL0NgV (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Dec 2021 08:36:21 -0500
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 5109B402E4
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Dec 2021 13:36:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1640612179;
-        bh=qeUVo4OnQnEXa4nRM+7z4OtDYprQ+PGgnySdBFiipc4=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version;
-        b=CYea4KZ31hAkjDgt0+PlIfGNFqxFTdF7u3go8iGnUwcceFR/9cLVAdqY0iwkzrlXe
-         YkwYi6Rf3GGalqXNy+semRP9yRErp3vGhsrOikBCH3Az54Q4A70qhBtzqQ4LED5cNj
-         CrchDmOXmVIoqupF6HMINJIdaRngqNEwltBzZi1uK7tVBRiZThszS5UGNvV7+U7hBE
-         8oAIlI4NaBFcGtHDYfMBqMA+3fTeOyX7BaSt3Yznmg7i1lxwXyG8ukB9LPcMbrbS7p
-         0NafaxFlhnHCqWNFUqZzQfksiwHAqapSLTQfwstbU5lMSZvieBvl4C/1/LgVjtmYk4
-         bZXsBN4ccMzXA==
-Received: by mail-lj1-f198.google.com with SMTP id g27-20020a2e391b000000b0022d8f41fa9aso4544257lja.18
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Dec 2021 05:36:19 -0800 (PST)
+        id S230191AbhL0R2c (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 Dec 2021 12:28:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35204 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229508AbhL0R2b (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Dec 2021 12:28:31 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B5F4C06173E;
+        Mon, 27 Dec 2021 09:28:31 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id w16so64148171edc.11;
+        Mon, 27 Dec 2021 09:28:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fvswGQErb/IXWp0Ujxv53FZ/wcn6vDPizJMswGWYt8k=;
+        b=aEMf3nbv9x24qgp4OFEQiFZrAXHzGkp7M3MCwIk4+HnvH3pFPlLBWPibXCATBAB7DP
+         vdfVC5yi2yOPNyV8uSN4FQXnET0HHVlXNmBzYMsz5celB929zqcc+wq/DWXuLSiIo8XI
+         kn4uMfielj16oEo/6WczySrmt6COrDTwJyzXPqll3HP4tfqvwi+0I34rMInWidzeFqPK
+         EuWZRDPEJr6Un5PnLSlZSEF5pdYuUNfaH+kmOVtcAzGJ7pqh+XkJ3uLpC867HRXqX3Xe
+         oKSzX0mgDL4QlclhTiPS6tC08q6usMTM/aQCNgUrJnRNOTqkZ6R6HdJcgNeG5mSz2UE4
+         3XPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=qeUVo4OnQnEXa4nRM+7z4OtDYprQ+PGgnySdBFiipc4=;
-        b=Kkh2dkxxT65wKIl1r/LmpH2p2mC+6W4qN4vdXq9ZTAw293taCJb5jN8AD0e/M9ZP0U
-         dTY4t9/n/XI3yY8uvgZDt5eUiwjfGLsMKUE0aZoJYOryV/s+TdYwmNITBQfCTEkGSNqp
-         2RcOxAnbQoAXy/BVLU4lNFKG3vY5oMkG+uwvB4eK3+aVHQXZW9BQUlCAHMKItvBb3wwM
-         QNK6AgR6HiIP5fDHtOodIatHMLR/1M/nl0r947a1A/Yc9KJGU/oJZpCcwdbDDX6eUiVf
-         KbXj9lJjnXEko2DI+DZlWrO6DQ9ldPLtyNg5ZBEsEuoJNPOUBVgbY7NTCPlIemxCVcK4
-         YG6A==
-X-Gm-Message-State: AOAM530iBpqrWw/HmTSgd5JnomLR8h9zXCMrJyu0vWohuVtLeY/v+iPb
-        GjJVygA4cTMq8DVGIbs4ZatwRPDas7+MCwLc4MXdWYXp82bM14fQA+vKrdk2zgXKZtRT894t0ty
-        Tx97MXRcchqcZ8oM8CKLA5oo3sSkO/1Kza6uakg==
-X-Received: by 2002:a2e:96c2:: with SMTP id d2mr8014836ljj.440.1640612177478;
-        Mon, 27 Dec 2021 05:36:17 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxowczEi1Ufuu3a5uE9n7r+scZ4hrAOHPBdBSBWoRBxEBxNhEbBQq3slkbnAQ2d3v3tOxf9Og==
-X-Received: by 2002:a2e:96c2:: with SMTP id d2mr8014815ljj.440.1640612177153;
-        Mon, 27 Dec 2021 05:36:17 -0800 (PST)
-Received: from krzk-bin.lan (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
-        by smtp.gmail.com with ESMTPSA id g18sm800107ljj.124.2021.12.27.05.36.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Dec 2021 05:36:16 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Dinh Nguyen <dinguyen@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Subject: [PATCH 19/19] arm64: dts: agilex: align mmc node names with dtschema
-Date:   Mon, 27 Dec 2021 14:35:58 +0100
-Message-Id: <20211227133558.135185-13-krzysztof.kozlowski@canonical.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211227133131.134369-1-krzysztof.kozlowski@canonical.com>
-References: <20211227133131.134369-1-krzysztof.kozlowski@canonical.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fvswGQErb/IXWp0Ujxv53FZ/wcn6vDPizJMswGWYt8k=;
+        b=MKdg5jsLh2jP7gee67uxQecmMLDqgTUId8tACahXFMkwy3W+PIQYJqnSG6XGPXE7vt
+         MTm8Y3qgLjacoS2sDwm/8E3S6jV//twmsf+/NawlIC9g5UcGLxcGnra6rELKibOxulIf
+         KG59MHLjVWbDty+307gsEgMPTuhUHvkLQ33O7AMXna+2c5R5m4b4hpxm/hENixwWb+Dn
+         ex/XaUfgYCti1Sj6jRCKljexDwZLafOIZyYfgUJ3y1GG1gtyt0Lvdj009xZHIwuQqjC3
+         X/aqWnlphQhjab1y5p5ekbhdnItb5kWd2yh79EFDNPn5OTeLvPev7kQbCGsMhaT1GA9P
+         w4Pw==
+X-Gm-Message-State: AOAM531FmcHoWr6hby63XS+C/vwuAjbb5XonhNpF7218YjJtPiJbNB4n
+        UKmSp58JViLwz+PiGv2x586Dw5/2y6/mGicWHNc=
+X-Google-Smtp-Source: ABdhPJwMGxE07ANpk+vQAh+chlk8FEfyr4VtcPtxTYO2uTEqvp91J9JDPq3tRLAak0uFSD/dsB9drtwjBOUh92a1XeY=
+X-Received: by 2002:a05:6402:2ce:: with SMTP id b14mr17294314edx.122.1640626110012;
+ Mon, 27 Dec 2021 09:28:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211227083641.12538-1-axe.yang@mediatek.com> <20211227083641.12538-4-axe.yang@mediatek.com>
+In-Reply-To: <20211227083641.12538-4-axe.yang@mediatek.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 27 Dec 2021 19:27:53 +0200
+Message-ID: <CAHp75VcVx4Yf69TEoSy8GL-he9ZAW+yvoH8-DXAotQ3Mwx7n2A@mail.gmail.com>
+Subject: Re: [PATCH v1 3/3] mmc: mediatek: add support for SDIO eint irq
+To:     Axe Yang <axe.yang@mediatek.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Satya Tangirala <satyat@google.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Lucas Stach <dev@lynxeye.de>,
+        Eric Biggers <ebiggers@google.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        Yue Hu <huyue2@yulong.com>, Tian Tao <tiantao6@hisilicon.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The Synopsys DW MSHC bindings require node name to be 'mmc':
+On Mon, Dec 27, 2021 at 6:46 PM Axe Yang <axe.yang@mediatek.com> wrote:
 
-  dwmmc0@ff808000: $nodename:0: 'dwmmc0@ff808000' does not match '^mmc(@.*)?$'
+...
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
----
- arch/arm64/boot/dts/intel/socfpga_agilex.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> +       if (mmc->card && !mmc->card->cccr.enable_async_int) {
+> +               if (enb)
 
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-index 163f33b46e4f..0a37821af9aa 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-@@ -300,7 +300,7 @@ i2c4: i2c@ffc02c00 {
- 			status = "disabled";
- 		};
- 
--		mmc: dwmmc0@ff808000 {
-+		mmc: mmc@ff808000 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			compatible = "altr,socfpga-dw-mshc";
+Spell it fully, i.e. enable.
+
+
+> +                       pm_runtime_get_noresume(host->dev);
+> +               else
+> +                       pm_runtime_put_noidle(host->dev);
+> +       }
+
+...
+
+> +       int ret = 0;
+
+Redundant assignment, see below.
+
+...
+
+> +       desc = devm_gpiod_get_index(host->dev, "eint", 0, GPIOD_IN);
+
+Why _index variant? By default devm_gpiod_get() uses 0 for index.
+
+> +       if (IS_ERR(desc))
+> +               return PTR_ERR(desc);
+
+...
+
+> +       irq = gpiod_to_irq(desc);
+
+ret = ...
+if (ret < 0)
+  ...handle error...
+
+> +       if (irq >= 0) {
+
+(for the record, 0 is never returned by gpiod_to_irq() according to
+all its versions).
+
+> +               irq_set_status_flags(irq, IRQ_NOAUTOEN);
+
+Use corresponding flag:
+https://elixir.bootlin.com/linux/latest/source/include/linux/interrupt.h#L83
+
+> +               ret = devm_request_threaded_irq(host->dev, irq, NULL, msdc_sdio_eint_irq,
+> +                                               IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+> +                                               "sdio-eint", host);
+> +       } else {
+> +               ret = irq;
+> +       }
+> +
+> +       host->eint_irq = irq;
+
+Is it okay if you assign garbage here in case of error?
+
+> +       return ret;
+
+...
+
+> +       host->pins_eint = pinctrl_lookup_state(host->pinctrl, "state_eint");
+> +       if (IS_ERR(host->pins_eint)) {
+> +               dev_dbg(&pdev->dev, "Cannot find pinctrl eint!\n");
+> +       } else {
+> +               host->pins_dat1 = pinctrl_lookup_state(host->pinctrl, "state_dat1");
+> +               if (IS_ERR(host->pins_dat1)) {
+
+> +                       ret = PTR_ERR(host->pins_dat1);
+> +                       dev_err(&pdev->dev, "Cannot find pinctrl dat1!\n");
+
+ret = dev_err_probe(...); ?
+
+> +                       goto host_free;
+> +               }
+> +       }
+
+...
+
+> +       if (!IS_ERR(host->pins_eint)) {
+
+I'm wondering if you can use a pattern "error check first"?
+
+> +               disable_irq(host->irq);
+> +               pinctrl_select_state(host->pinctrl, host->pins_eint);
+> +               spin_lock_irqsave(&host->lock, flags);
+> +               if (host->sdio_irq_cnt == 0) {
+> +                       enable_irq(host->eint_irq);
+> +                       enable_irq_wake(host->eint_irq);
+> +                       host->sdio_irq_cnt++;
+> +               }
+> +               sdr_clr_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
+> +               spin_unlock_irqrestore(&host->lock, flags);
+> +       }
+
 -- 
-2.32.0
-
+With Best Regards,
+Andy Shevchenko
