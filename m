@@ -2,175 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CFC24823EE
-	for <lists+linux-mmc@lfdr.de>; Fri, 31 Dec 2021 13:15:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7B748274E
+	for <lists+linux-mmc@lfdr.de>; Sat,  1 Jan 2022 11:40:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229489AbhLaMPK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 31 Dec 2021 07:15:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41854 "EHLO
+        id S232251AbiAAKk3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 1 Jan 2022 05:40:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230021AbhLaMPJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 31 Dec 2021 07:15:09 -0500
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E44C06173F
-        for <linux-mmc@vger.kernel.org>; Fri, 31 Dec 2021 04:15:09 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id u13so59872157lff.12
-        for <linux-mmc@vger.kernel.org>; Fri, 31 Dec 2021 04:15:09 -0800 (PST)
+        with ESMTP id S229624AbiAAKk3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 1 Jan 2022 05:40:29 -0500
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E38CC061574;
+        Sat,  1 Jan 2022 02:40:29 -0800 (PST)
+Received: by mail-pf1-x443.google.com with SMTP id b22so25404920pfb.5;
+        Sat, 01 Jan 2022 02:40:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qA48Fk3mQBHDUQYEpc8DXFnUfIf/OAvjGHgizTaa2Rs=;
-        b=Dd9Hc2hoiQD56GDie5hYLl56IxuoyREYBA/QBeDuW83mVjBF5S+ttDPs1ypjV4KY5n
-         qQu7LWeBnYgsbZSY2UxPPyQ3jo9jzhIttuWh1bOjR9cTe+8JsG8E7ZmtQftPeo5NXKHr
-         3rCPvkwjP0dw5HR3BOFRrrCMW+7TnJAPQtuh0FNkbPWMxaOxdGWNnKlS24qgWQx/X6H5
-         l1PJYZtl/omcNOe4fOlTxilJUGUOta8YRQHjLkVaL5meRIvLnnTnA2Ct3XVZmyZwS1U/
-         jEAZDY1ICBe35GQQcLdzEqftwDKpQXdJA31/eFYrBqrwT8NfUhGHeIQQGk9RHvF9l1eT
-         gW/A==
+        d=gmail.com; s=20210112;
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=dhFaFNGf9P/hgzfpigNOAcNefTeR7Csml9+Bh/hdy/w=;
+        b=gur2PGVIvTui7quEeHmQ3cVIeJ9fS/o4r5Iq99mH6QEDDatKg9P+RkYiFEDM7i/2el
+         zRBAoUasR8HKZ390y/MgM8OMIOYXtZPg8cKYznRF5frEylS84VFCt8x1ebzDjyQumgBq
+         xwOpvNioSDIwiFxJZicGctZH0xQ55mr2NksOc74aFUaakmwQqAgrdyULZLYC+mZPlba4
+         2r3UoJhsh6NytK3nwWZ5n6DfxbqEOXyOLVuvUmZ8d2Btrd4vsOvilKxl+YXShZ0lHoEn
+         dp456WpcmAy+83VsUkH8wQqXTmxybBQJJsEhtoLpZIxWsYNaOpPocTy8P/VOxsaPOW1O
+         fimw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qA48Fk3mQBHDUQYEpc8DXFnUfIf/OAvjGHgizTaa2Rs=;
-        b=WTbuvvl80O4BqieXPeA4cpjqnBTAFek84zmIKFwh6rpIN0LvcG+zU4kSGbOAalGxfh
-         amkwIMCfa2IrD9mQSSSMPinxwGyfhqs4zI4OtwkNWeuEg9XG83etvpnJS3RysaO9CRzm
-         d2u8IonDJ/t9Xe9bpjL88x2v7NCWyoGtrTlpAA0aSlVEkn697Va5aJfEWdCk/wY9Lbyl
-         f19v1JA/BKIVebjw7g+4QFA+Kt3oz+hy09P6XByZh2eSjHOeAtTqSUvmk5EcoBsiOgBR
-         wmP5yDXmw36WAGxssmVgBePlkAarpZXZeJsEJevFePF1D/IPHFFRC8yb5LuVb/ROc6+b
-         JAag==
-X-Gm-Message-State: AOAM530rWlhXjW4Q2vMIXpJK3v+LEscJAMValW5dS7ghN4OFanzYk3gT
-        TkMxP5pTonBoObDmdzj45F1XnINnRGLGsjKsYP0jiw==
-X-Google-Smtp-Source: ABdhPJxB39SYIrqnEbN1Ilx/4u6YrucaTYRt8Dnw/aiO1ez8cHGoyYDvdb9NnCiH6rmQEcuBQzLFiuVZRWuE+q1QEq8=
-X-Received: by 2002:a19:6748:: with SMTP id e8mr2099004lfj.358.1640952907072;
- Fri, 31 Dec 2021 04:15:07 -0800 (PST)
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=dhFaFNGf9P/hgzfpigNOAcNefTeR7Csml9+Bh/hdy/w=;
+        b=sg1pA1+zjhxo+BYb0qf44NTtDgJEJZWZnss45c+PJL0ed2RLblYE3qnPrKEmiNgtOu
+         UkPjUl5pHuKoRcl1QRogRerl+kGYXrYNo+HfBCjYJsm9Ghh4BYto2pc+dBqrnNpCPZjG
+         syif5zkENuOAMqBQdiWXgySrkUbb5aj7P7Dsu6MycrE0XmSKJbIvsY4wZg6ZvlHoAnl7
+         6VUX412gUv+LUx/k68At5/HciEeYCxMS2rrxRhJzKmxt5P+SC12f6egZihyMwyNsgByJ
+         Q+hx5Zin26TC/L+ckoQauk6dGUFV9Ev6Tl/YlOlziiUnl//1Mp2s4SFHfviFkTshmd5e
+         /8Jw==
+X-Gm-Message-State: AOAM533HJhYgVdvAY6DbILSUxI14LlnvP/4jNyp8d/1cbLO7uIYbLT7O
+        DzmCj68taYuJt05LLb4Wg8M=
+X-Google-Smtp-Source: ABdhPJxIX5yALOCDI9RvjqKJxF51BtOT/8pYy6k874njL/E7nTcmWv66Qtz92yGLqa+Wbp70RaoIqA==
+X-Received: by 2002:a63:455f:: with SMTP id u31mr34246470pgk.537.1641033628759;
+        Sat, 01 Jan 2022 02:40:28 -0800 (PST)
+Received: from [192.168.0.153] ([143.244.48.136])
+        by smtp.gmail.com with ESMTPSA id s35sm26832835pfw.193.2022.01.01.02.40.21
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Sat, 01 Jan 2022 02:40:28 -0800 (PST)
+Message-ID: <61d02f9c.1c69fb81.dee2a.a92f@mx.google.com>
+From:   hyaibe56@gmail.com
+X-Google-Original-From: suport.prilend@gmail.com
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20211222030634.33816-1-michael@allwinnertech.com>
- <CAPDyKFoNuWX76Haq0MfvukbHR8mMq0rX7qC+o_ZhEAxAwwpBbQ@mail.gmail.com> <2021123116275961132724@allwinnertech.com>
-In-Reply-To: <2021123116275961132724@allwinnertech.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 31 Dec 2021 13:14:30 +0100
-Message-ID: <CAPDyKFpnTk9Ky-zr-dakTZJr1N_65_6py9=3_78vwOR930apEQ@mail.gmail.com>
-Subject: Re: Re: [PATCH 1/3] mmc:sunxi-mmc:add support on discrete device
- power supply
-To:     "michael@allwinnertech.com" <michael@allwinnertech.com>
-Cc:     mripard <mripard@kernel.org>, wens <wens@csie.org>,
-        samuel <samuel@sholland.org>,
-        "andre.przywara" <andre.przywara@arm.com>,
-        "jernej.skrabec" <jernej.skrabec@gmail.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-sunxi <linux-sunxi@lists.linux.dev>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: RE:
+To:     Recipients <suport.prilend@gmail.com>
+Date:   Sat, 01 Jan 2022 12:40:12 +0200
+Reply-To: andres.stemmet1@gmail.com
+X-Mailer: TurboMailer 2
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 31 Dec 2021 at 09:28, michael@allwinnertech.com
-<michael@allwinnertech.com> wrote:
->
-> > From: Ulf Hansson
-> > Date: 2021-12-29 00:49
-> > To: Michael Wu
-> > CC: mripard; wens; samuel; andre.przywara; jernej.skrabec; linux-mmc; linux-arm-kernel; linux-sunxi; linux-kernel
-> > Subject: Re: [PATCH 1/3] mmc:sunxi-mmc:add support on discrete device power supply
-> > On Wed, 22 Dec 2021 at 04:07, Michael Wu <michael@allwinnertech.com> wrote:
-> > >
-> > > Because some platform has no regulator, only use discrete devices
-> > > to supply power,For this situation, to use sd/mmc card, we add ocr manually
-> > >
-> > > Signed-off-by: Michael Wu <michael@allwinnertech.com>
-> > > ---
-> > >  drivers/mmc/host/sunxi-mmc.c | 8 ++++++++
-> > >  1 file changed, 8 insertions(+)
-> > >
-> > > diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
-> > > index 2702736a1c57..afeefead6501 100644
-> > > --- a/drivers/mmc/host/sunxi-mmc.c
-> > > +++ b/drivers/mmc/host/sunxi-mmc.c
-> > > @@ -1300,6 +1300,14 @@ static int sunxi_mmc_resource_request(struct sunxi_mmc_host *host,
-> > >         if (ret)
-> > >                 return ret;
-> > >
-> > > +       /**
-> > > +        * Some platforms has no regulator. Discrete devices are used instead.
-> > > +        * To support sd/mmc card, we need to add ocr manually.
-> > > +        */
-> > > +       if (!host->mmc->ocr_avail)
-> > > +               host->mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34;
-> > > +
-> >
-> > Rather than doing this, I suggest you hook up a fixed vmmc regulator in the DTS.
-> >
-> > Nevertheless, it seems reasonable to check that the ocr_avail gets set
-> > up correctly. And if it doesn't, perhaps we should print a warning and
-> > return an error code.
-> >
-> > > +
-> > >         host->reg_base = devm_platform_ioremap_resource(pdev, 0);
-> > >         if (IS_ERR(host->reg_base))
-> > >                 return PTR_ERR(host->reg_base);
-> >
-> > Kind regards
-> > Uffe
->
-> Dear Uffe,
-> Thanks for your suggestion. It is a better solution.
-> I've modified my patch. Please check if it's reasonable. If it is, I'll re-sumbit it later.
->
-> ---
-> Subject: [PATCH v2] mmc: sunxi-mmc: check ocr_avail on resource request
->
-> Some platforms have no regulator, discrete power devices are used instead.
-> However, sunxi_mmc_probe does not catch this exception when regulator is
-> absent in DTS. This leads to sd or eMMC init failure.
-> To solve this, a fixed vmmc regulator must be hooked up in DTS, like this:
-> reg_dummy_vmmc: dummy_vmmc {
->         compatible = "regulator-fixed";
->         regulator-name = "dummy-vmmc";
->         regulator-min-microvolt = <500000>;
->         regulator-max-microvolt = <3500000>;
+I want to confide in you to finalize this transaction of mutual benefits. I=
+t may seem strange to you, but it is real. This is a transaction that has n=
+o risk at all, due process shall be followed and it shall be carried out un=
+der the ambit of the financial laws. Being the Chief Financial Officer, BP =
+Plc. I want to trust and put in your care Eighteen Million British Pounds S=
+terling, The funds were acquired from an over-invoiced payment from a past =
+contract executed in one of my departments. I can't successfully achieve th=
+is transaction without presenting you as foreign contractor who will provid=
+e a bank account to receive the funds.
 
-The min/max should be set to the same value as you can't really change
-the voltage levels.
+Documentation for the claim of the funds will be legally processed and docu=
+mented, so I will need your full cooperation on this matter for our mutual =
+benefits. We will discuss details if you are interested to work with me to =
+secure this funds. I will appreciate your prompt response in every bit of o=
+ur communication. Stay Blessed and Stay Safe.
 
-If you know the voltage level that is supplied for your platform, then
-state this value - otherwise I would suggest picking 3.3V, which is
-rather commonly used for MMC/SD.
+Best Regards
 
-> };
-> mmc0:mmc@4020000 {
->         compatible = "allwinner,sun50i-a100-emmc";
->         device_type = "mmc0";
->         vmmc-supply = <&reg_dummy_vmmc>;
-> }
-> In this patch, we print an error message and abort the probe process if
-> the regulator is not specified in DTS.
->
-> Signed-off-by: Michael Wu <michael@allwinnertech.com>
-> ---
->
-> diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
-> index 2702736..0da74bd 100644
-> --- a/drivers/mmc/host/sunxi-mmc.c
-> +++ b/drivers/mmc/host/sunxi-mmc.c
-> @@ -1300,6 +1300,11 @@
->         if (ret)
->                 return ret;
->
-> +       if (!host->mmc->ocr_avail) {
-> +               dev_err(&pdev->dev, "Could not get mmc regulator\n");
-> +               return -EINVAL;
-> +       }
-> +
->         host->reg_base = devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(host->reg_base))
->                 return PTR_ERR(host->reg_base);
->
-> Best Regards,
-> Michael Wu
 
-Yep, this looks good to me!
+Tel: +44 7537 185910
+Andres  Stemmet
+Email: andres.stemmet1@gmail.com  =
 
-Kind regards
-Uffe
+Chief financial officer
+BP Petroleum p.l.c.
+
+                                                                           =
+                        Copyright =A9 1996-2021
+
