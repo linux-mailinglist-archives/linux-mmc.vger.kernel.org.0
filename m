@@ -2,64 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 209BF4827A2
-	for <lists+linux-mmc@lfdr.de>; Sat,  1 Jan 2022 13:58:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43E6F482F00
+	for <lists+linux-mmc@lfdr.de>; Mon,  3 Jan 2022 09:25:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232403AbiAAM6T (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 1 Jan 2022 07:58:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48658 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232402AbiAAM6T (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 1 Jan 2022 07:58:19 -0500
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD3C9C061574
-        for <linux-mmc@vger.kernel.org>; Sat,  1 Jan 2022 04:58:18 -0800 (PST)
-Received: by mail-yb1-xb2c.google.com with SMTP id k69so70796764ybf.1
-        for <linux-mmc@vger.kernel.org>; Sat, 01 Jan 2022 04:58:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
-        b=PubhZ6hOxqD0EMsyQ4WzmRpX2uip/CeKPqzJGt1NS7v1mupDF5zBFOxFHL7JCLAVx+
-         1hdVx6tfrBR3Qjv65EVJJSgdDzPmfWXGZaldtSjvQU16bjjlJQibwReU+75Vla/fAdfm
-         XC+MLpSRBeUsTBuEPp5pJfqAkgMh/1Ey08duUT1xVsbpsjQBIODT82xEskH3+XSbOPix
-         6E07A6Dq7q6Y0FF+00oe0/iwInC01FquUC3NulaGRwPvqvQsBbftxvEsoyKn+MYMFDX8
-         UZaDbxIQATRpEL5HxZ68ET2rfaqwuSJxMaLaq7naOzKgBH9TdLXOwWBLtXW6DiXBLV6c
-         ZLvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
-        b=LAl9H9ncW77EwxkH8QZylszep88H5ULx/n8M/QH06VfPtJ3O0djGedu1udxU+zYpwq
-         JUJ4VNukKvXpXIfF/bPMhubHsJXKjIQk0/wB6DZPdxXntSuYqzh91epQn+4EgwDsf3h3
-         Ty+HPe+2fNQgdfABTq+Y+q4CC56I1ju1NGRMTfnPrRhSgn9iTs8fNhsYuieTbZK5p30/
-         I28jP1iV9pSCSlGh2K+rWn1Zmxwh6PlAfHCahRmhqR5YajA4Momr08zCh9n7E0ygJnok
-         /+ygf0dNlPDep6YuXkwT/84hxX0CJwA5D5yjQGm0QJYnmaCkLdUSsEHlYzAMtV28ji7D
-         lWGw==
-X-Gm-Message-State: AOAM532GCm7M8W0T9nZIvVuIaONGcSmhIPmDAPGXPqBDnrCUb/Ayc6Lx
-        FKI6ffr+5CVmPy4Qqb4kSxemPoqf6LaPBhiYQi4=
-X-Google-Smtp-Source: ABdhPJxE4NdqD5WgdTn0F2G06/VRQA0+AIZREoJNoYeRaCTDCkKWNEiX8xNjUVbJGOpoJm3B7k3uwFYMEJs9sPMkNa4=
-X-Received: by 2002:a25:4244:: with SMTP id p65mr45069956yba.464.1641041897223;
- Sat, 01 Jan 2022 04:58:17 -0800 (PST)
+        id S230488AbiACIZr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 3 Jan 2022 03:25:47 -0500
+Received: from mga17.intel.com ([192.55.52.151]:50699 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232071AbiACIZq (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Mon, 3 Jan 2022 03:25:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641198346; x=1672734346;
+  h=subject:to:references:from:message-id:date:mime-version:
+   in-reply-to:content-transfer-encoding;
+  bh=FnLeG+RVwwX07zEWpejGrN1LSdZCJY2+zDTyWhtdQfo=;
+  b=XFw9QwJoWtjxOmA0FD4L3xZpNi+2Ds0Lo4WNmm4agL44RLubX/ku5C5H
+   r8kSEicwbpwRLCUWS3pB4upyVuaqw4stzM5ub0UNeNT+2vJdwygG/kvvO
+   b5q6oXC75WKa7z+/z7w2ULSRK4FYeMSgbnDTJ4wOCVS0pDhhnISOhWp1Z
+   0oSL2MR/5OSO/igJ4nnsSGMh5es6Q0E2ByHmTrGhXWFMfh/e1GJdyoVCH
+   Kl3l1jUq9k+uoji2D+uhhBpB1nWmEW7dR0woO67/FgAMu6OPYUxKBfHwZ
+   XcNbtY3gQOuejC2j5Fq3BPvlPtMhemDEchX3+WoxhxpB0K7DGXFboIUJa
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10215"; a="222703239"
+X-IronPort-AV: E=Sophos;i="5.88,257,1635231600"; 
+   d="scan'208";a="222703239"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2022 00:25:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,257,1635231600"; 
+   d="scan'208";a="525481979"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.92]) ([10.237.72.92])
+  by orsmga008.jf.intel.com with ESMTP; 03 Jan 2022 00:25:43 -0800
+Subject: Re: [PATCH RFC 09/13] mmc: sdhci-acpi: fix deferred probing
+To:     Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+References: <20211223171202.8224-1-s.shtylyov@omp.ru>
+ <20211223171202.8224-10-s.shtylyov@omp.ru>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <7bc4f1ac-dab3-ad09-5f48-dccec6cd71e0@intel.com>
+Date:   Mon, 3 Jan 2022 10:25:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.14.0
 MIME-Version: 1.0
-Received: by 2002:a05:7010:5e97:b0:1e5:b7fb:3947 with HTTP; Sat, 1 Jan 2022
- 04:58:16 -0800 (PST)
-Reply-To: dravasmith27@gmail.com
-From:   Dr Ava Smith <gracebanneth@gmail.com>
-Date:   Sat, 1 Jan 2022 04:58:16 -0800
-Message-ID: <CABo=7A2FJz6f-Y_2zFdLFoMfzmSL9hdaK+=Tn8-+ZTLG9HPpzQ@mail.gmail.com>
-Subject: GREETINGS FROM DR AVA SMITH
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20211223171202.8224-10-s.shtylyov@omp.ru>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
--- 
-Hello Dear,
-how are you today?hope you are fine
-My name is Dr Ava Smith ,Am an English and French nationalities.
-I will give you pictures and more details about me as soon as i hear from you
-Thanks
-Ava
+On 23/12/2021 19:11, Sergey Shtylyov wrote:
+> The driver overrides the error codes returned by platform_get_irq() to
+> -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
+> permanently instead of the deferred probing. Switch to propagating the
+> error codes upstream.
+> 
+> Fixes: 1b7ba57ecc86 ("mmc: sdhci-acpi: Handle return value of platform_get_irq")
+> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
+> ---
+>  drivers/mmc/host/sdhci-acpi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
+> index f1ef0d28b0dd..1fa1d2a7bfc9 100644
+> --- a/drivers/mmc/host/sdhci-acpi.c
+> +++ b/drivers/mmc/host/sdhci-acpi.c
+> @@ -898,7 +898,7 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
+>  	host->ops	= &sdhci_acpi_ops_dflt;
+>  	host->irq	= platform_get_irq(pdev, 0);
+>  	if (host->irq < 0) {
+> -		err = -EINVAL;
+> +		err = host->irq;
+>  		goto err_free;
+>  	}
+>  
+> 
+
