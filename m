@@ -2,78 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE187483BCD
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jan 2022 07:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5248E483FA8
+	for <lists+linux-mmc@lfdr.de>; Tue,  4 Jan 2022 11:12:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231667AbiADGDd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 4 Jan 2022 01:03:33 -0500
-Received: from out28-5.mail.aliyun.com ([115.124.28.5]:43073 "EHLO
-        out28-5.mail.aliyun.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230181AbiADGDc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jan 2022 01:03:32 -0500
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.1070646|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00848475-0.00139035-0.990125;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047207;MF=michael@allwinnertech.com;NM=1;PH=DS;RN=11;RT=11;SR=0;TI=SMTPD_---.MWR.1lZ_1641276209;
-Received: from sunxibot.allwinnertech.com(mailfrom:michael@allwinnertech.com fp:SMTPD_---.MWR.1lZ_1641276209)
-          by smtp.aliyun-inc.com(10.147.41.199);
-          Tue, 04 Jan 2022 14:03:29 +0800
-From:   Michael Wu <michael@allwinnertech.com>
-To:     ulf.hansson@linaro.org, mripard@kernel.org, wens@csie.org,
-        samuel@sholland.org, andre.przywara@arm.com
-Cc:     jernej.skrabec@gmail.com, linux-mmc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        linux-kernel@vger.kernel.org,
-        Michael Wu <michael@allwinnertech.com>
-Subject: [PATCH v2] mmc: sunxi-mmc: check ocr_avail on resource request
-Date:   Tue,  4 Jan 2022 14:03:25 +0800
-Message-Id: <20220104060325.3957-1-michael@allwinnertech.com>
-X-Mailer: git-send-email 2.29.0
+        id S229527AbiADKMm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 4 Jan 2022 05:12:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51212 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229486AbiADKMl (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 4 Jan 2022 05:12:41 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79828C061761
+        for <linux-mmc@vger.kernel.org>; Tue,  4 Jan 2022 02:12:41 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id a203-20020a1c7fd4000000b003457874263aso22417480wmd.2
+        for <linux-mmc@vger.kernel.org>; Tue, 04 Jan 2022 02:12:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=qNsoy+BipNO4jrhuoxubzFvDR0AapCAN1Hq7BeMdmYM=;
+        b=WSZ+qmuPc1pbosgJiORDiyqPGR6jD6kMdkA0iMCFElO7+bO6jtdlZKpkhY2IvoRiNl
+         c91CIFmw2ys9VNW2A1yqB6goMcgiC44KTsIRvhslvgzmWodRkb2KygGr24JICRIHvaqK
+         dH1+w2X3l5JJoTkxLcwFcTmiQP28O7SLhMOyXiSNaDREPdazCipsIWvlXIHafv9vgzTM
+         REwNNPLpODnnsCLFq4umapbYjR3wLR8QdR+1+BGOOdZL0SUezEA/QjHtaKeYMMKgglqV
+         CboMPkAdQjMfjdRLHzwmm/WNYRQCluqVKmxJUnQdg2ofNUWPMMG/hCYazO4C2yRjoJbG
+         UWzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=qNsoy+BipNO4jrhuoxubzFvDR0AapCAN1Hq7BeMdmYM=;
+        b=Xn6HKKIfobYupP0s2KLRgH0KwXD1bI4IvUljARC6eYFHoM5J8/1dPJ1xp/eiCg5YSo
+         EuFIibD5T7XYVOcvMsUdjobSWrBE6LLWdlzcUpT/NkREFND7TU0hFgKgilHLG1Gb9vEo
+         IKmMI2NBMUKY5Ryd4/ZtvQI4WaKRSxOjabvUdYYwX8f04ShVfjNj30Ytfb9UsHh1619l
+         lM4AP/NbW563ZPbQwK3IX1M7yOOMdpHK16flW4b+xMGiAdy9tUCfpvpOvjK+0/FQnZh5
+         FHiUUwNp4Jt3iaIwcp6YLSwuou1WdR3pkr1ysZkZgJ7gvUPtOfmnaRSJ6m+aM3aD0ORK
+         tY9Q==
+X-Gm-Message-State: AOAM530BDxaHxcF1zfSSH5hfHB4Lieeee7fMKGJaxfLZoeDnEo5NQF1k
+        C3bjnTt8ZVKyJqxB21b9HuUzsirzfdJUSrYA/pQ=
+X-Google-Smtp-Source: ABdhPJzREzfvGPbu5Siu13zUqfRaelJ05tCYjOfFa5Rjwmr+gg0GnjZQV8CoHrchw0CTj5gj0mhedf4+t2792pMFsnk=
+X-Received: by 2002:a1c:2397:: with SMTP id j145mr42041929wmj.113.1641291160027;
+ Tue, 04 Jan 2022 02:12:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:600c:3549:0:0:0:0 with HTTP; Tue, 4 Jan 2022 02:12:39
+ -0800 (PST)
+Reply-To: fionahill.usa@hotmail.com
+From:   Fiona Hill <gracedesmond2020@gmail.com>
+Date:   Tue, 4 Jan 2022 02:12:39 -0800
+Message-ID: <CAL7hghu7sUu4--zHxR3s4eia1b30DSf_4QaYaP+9r4i8SSo7ww@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Some platforms have no regulator, discrete power devices are used instead.
-However, sunxi_mmc_probe does not catch this exception when regulator is
-absent in DTS. This leads to sd or eMMC init failure.
-
-To solve this, a fixed vmmc regulator must be hooked up in DTS, like this:
-reg_dummy_vmmc: dummy_vmmc {
-	compatible = "regulator-fixed";
-	regulator-name = "dummy-vmmc";
-	regulator-min-microvolt = <3300000>;
-	regulator-max-microvolt = <3300000>;
-};
-
-mmc0:mmc@4020000 {
-	compatible = "allwinner,sun50i-a100-emmc";
-	device_type = "mmc0";
-	vmmc-supply = <&reg_dummy_vmmc>;
-}
-
-In this patch, we print an error message and abort the probe process if
-the regulator is not specified in DTS.
-
-Signed-off-by: Michael Wu <michael@allwinnertech.com>
----
- drivers/mmc/host/sunxi-mmc.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
-index 2702736a1c57..0da74bddaf87 100644
---- a/drivers/mmc/host/sunxi-mmc.c
-+++ b/drivers/mmc/host/sunxi-mmc.c
-@@ -1300,6 +1300,11 @@ static int sunxi_mmc_resource_request(struct sunxi_mmc_host *host,
- 	if (ret)
- 		return ret;
- 
-+	if (!host->mmc->ocr_avail) {
-+		dev_err(&pdev->dev, "Could not get mmc regulator\n");
-+		return -EINVAL;
-+	}
-+
- 	host->reg_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(host->reg_base))
- 		return PTR_ERR(host->reg_base);
 -- 
-2.29.0
+Hello,
 
+Happy new year to you. Please  did you receive my message i send to you?
