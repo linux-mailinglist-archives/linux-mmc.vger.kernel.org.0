@@ -2,63 +2,63 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18E17487AFE
-	for <lists+linux-mmc@lfdr.de>; Fri,  7 Jan 2022 18:08:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72FC6487B0C
+	for <lists+linux-mmc@lfdr.de>; Fri,  7 Jan 2022 18:10:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240371AbiAGRIo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 7 Jan 2022 12:08:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52402 "EHLO
+        id S240427AbiAGRKw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 7 Jan 2022 12:10:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbiAGRIo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Jan 2022 12:08:44 -0500
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5218C061574;
-        Fri,  7 Jan 2022 09:08:43 -0800 (PST)
-Received: by mail-qt1-x82f.google.com with SMTP id p19so6087756qtw.12;
-        Fri, 07 Jan 2022 09:08:43 -0800 (PST)
+        with ESMTP id S229546AbiAGRKv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 7 Jan 2022 12:10:51 -0500
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D634C061574;
+        Fri,  7 Jan 2022 09:10:51 -0800 (PST)
+Received: by mail-qv1-xf31.google.com with SMTP id ke6so6072505qvb.1;
+        Fri, 07 Jan 2022 09:10:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=/KmFkCQhiuJDYLQ5vDqx3U8zA386ODsq4fI34sKnpVI=;
-        b=DGZm+2HxjHzqRxNDagjXIyfnHt46WUrj1Q2oLLwOMYtwwV3+N3Mv/mci0abvzSvQ5L
-         wVXzA0E/e31aqoaEu2Tzeo+Kb8peMjkNEIon/7XhafqkqiBGuvJdHE69G05nWGujjl+K
-         09UZwF6XUCOS0KizuvJYUVYYYXGmUwIk7qUwlJ01oc/WsWzjuQhC+Y6B9FXczpeMCbGa
-         UBLadQ+avwchVgP9cOunSZ87usPI2lYcwYIHm1UxNC0aQRhfc3+c7lBRpWU5HxiHOUK9
-         WtgFv0hxDY7LTcxhPGRc9IqdKftBMMqyb3uaLnhiLk0/Uc1LviZoxn0OgqKxXiRPPCcG
-         MgeA==
+        bh=CQeOlLCDwTUWT4aHoIX+Tl/vt/o3ydujZpt+IG8ji9o=;
+        b=MN+wDZvDCVstCeiWA2YeXT3PijQokfHKgV1F2ai5OxQch3mrrz1oxmOs0y27C9F/HT
+         9VfK6vApgdne54cWg9KacJE5D9PANAyKsgUXv3AljKqFEtWLZ19BdQqy0yNJHaIM3V1f
+         lIBLs7nMzwWkBjPOwt9s/rJqLLLeiy1210/2e+240pHCquPPdTg2ldePhg2EFeMRUTdq
+         T+foYM1vWCI97A3IHd1ZdupxUJzssK4iLrBYdSUYJNmUrd4tQ2yHDxY/2II7+FTHvfrN
+         MNJvxR1+zT4STnOAUBC2P/QAbpuyBaXGtKm2hatWkz2GTNpVe1m+qHH404GPUyHl9s+g
+         0bdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=/KmFkCQhiuJDYLQ5vDqx3U8zA386ODsq4fI34sKnpVI=;
-        b=qqS+UldW3B2F++rAKQSm+heU483Gz0Uirz306UgYH4AaiHkO+b2XXF4vtvmhVwrBp7
-         CV28OWZGF/YznAXsCdtE/xk4n7jWfO5e26qB/+cuFF3VnM0oUx1ilHd7IAK5De+vU+a5
-         2a5dbQWOLZ9inCgtWMy+6Yk1pa57R21a/tbpg/FglCv2Cf7u+bUGJJbkFZiYNeDiaYEx
-         M3UUQbgiPnSvhXoHD2b3bbsoX0dc6V5z/ZEyROmFk6jbxO3Kh/iZn4PO2JcI0Ddy9b4s
-         iytxl1wirhJqas6ewJqJ9vRN3nzqrGjWlgr/HsNIHpQP9HvtPWYI0xfHNcfcsATIjMuf
-         hxCw==
-X-Gm-Message-State: AOAM531f2bpLaRCrwIeD8UbKhLCLMugC40kO9AzHcJ9Iiq05OD5OTfJq
-        bWkHaKeg+ZjBo30uSjMlYqQCa4fgvcotXA2J
-X-Google-Smtp-Source: ABdhPJwm7yQiaibjkDYnlN1r+z9+bTcgB6CYX+/sJfJI/a/RxjvTfDQcUIqFAk1mtNYvPy50piAhzQ==
-X-Received: by 2002:a05:622a:1812:: with SMTP id t18mr874570qtc.214.1641575322687;
-        Fri, 07 Jan 2022 09:08:42 -0800 (PST)
+        bh=CQeOlLCDwTUWT4aHoIX+Tl/vt/o3ydujZpt+IG8ji9o=;
+        b=bI7oZlVvXL95nvrIVUBBwvQPCkCAZNH3eir+Bo4m1vd2F9/QwXWF20dKPDWQTf6MQk
+         WWhlz/ClSuuvW+JBGivIQzb36Zc89GD4+2IZzOlTH4FUly1u8h7jjmRJtAhG21+sUlQT
+         AYsOTXywpnNXvfCTfe+5L+2CNk2uuolLn2Inq9Jr//T/+htXS8xNxgNAfbvp9FT4Dqf1
+         +8zISnsdIb+wkCeuhCyHivwf3w2BptpA9VYshPUM9HnQWwePB3b/hLfpdGVV6cAprVGe
+         a92Vzmb/i+PU6jwGwNuyBOgf7thZTEfskvr8DUoA8F688bjg2JvV6VWa/3Pl6aEiNGwg
+         x7Bw==
+X-Gm-Message-State: AOAM530YHuJ87TLn+q4euygkN2td1ZXvu+sqhLlem//VcR6n1RPVH0YF
+        t9O4+1HjzExTks04LGoHWv0=
+X-Google-Smtp-Source: ABdhPJzqQ8WBIUS1yQHKGq/YO4CQVewilOpCcagVc4TS3zCB4ydZ9xt4m09Wx9jXnYezwXqwJm6pYw==
+X-Received: by 2002:ad4:5c63:: with SMTP id i3mr58612127qvh.5.1641575450603;
+        Fri, 07 Jan 2022 09:10:50 -0800 (PST)
 Received: from errol.ini.cmu.edu (pool-108-39-235-221.pitbpa.fios.verizon.net. [108.39.235.221])
-        by smtp.gmail.com with ESMTPSA id t5sm3603559qtp.60.2022.01.07.09.08.41
+        by smtp.gmail.com with ESMTPSA id h19sm4166710qth.63.2022.01.07.09.10.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jan 2022 09:08:42 -0800 (PST)
-Date:   Fri, 7 Jan 2022 12:08:40 -0500
+        Fri, 07 Jan 2022 09:10:50 -0800 (PST)
+Date:   Fri, 7 Jan 2022 12:10:47 -0500
 From:   "Gabriel L. Somlo" <gsomlo@gmail.com>
-To:     andy.shevchenko@gmail.com
+To:     ulf.hansson@linaro.org
 Cc:     robh+dt@kernel.org, devicetree@vger.kernel.org,
-        ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         kgugala@antmicro.com, mholenko@antmicro.com, krakoczy@antmicro.com,
         mdudek@internships.antmicro.com, paulus@ozlabs.org, joel@jms.id.au,
         shorne@gmail.com, geert@linux-m68k.org,
         david.abdurachmanov@sifive.com, florent@enjoy-digital.fr,
-        rdunlap@infradead.org, linux-kernel@vger.kernel.org
+        rdunlap@infradead.org, andy.shevchenko@gmail.com
 Subject: Re: [PATCH v7 3/3] mmc: Add driver for LiteX's LiteSDCard interface
-Message-ID: <YdhzmE8eBsvkRCBn@errol.ini.cmu.edu>
+Message-ID: <Ydh0F8r7I5YKhbF0@errol.ini.cmu.edu>
 References: <20220107170616.2041589-1-gsomlo@gmail.com>
  <20220107170616.2041589-4-gsomlo@gmail.com>
 MIME-Version: 1.0
@@ -70,9 +70,9 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Andy,
+Hi Ulf,
 
-A couple of remaining questions regarding your review inline, below:
+Couple of follow-up questions inline, below:
 
 On Fri, Jan 07, 2022 at 12:06:16PM -0500, Gabriel Somlo wrote:
 > LiteX (https://github.com/enjoy-digital/litex) is a SoC framework
@@ -224,11 +224,7 @@ On Fri, Jan 07, 2022 at 12:06:16PM -0500, Gabriel Somlo wrote:
 > + * Copyright (C) 2020-2021 Gabriel Somlo <gsomlo@gmail.com>
 > + *
 > + */
-
-It looked to me like you thought I should `#include <linux/bits.h>` here
-(even though I'm not getting any compiler warnings regarding it). If so,
-why? If not, apologies for the misunderstanding :)
-
+> +
 > +#include <linux/clk.h>
 > +#include <linux/delay.h>
 > +#include <linux/dma-mapping.h>
@@ -294,7 +290,10 @@ why? If not, apologies for the misunderstanding :)
 > +#define LITEX_MMC_OCR (MMC_VDD_27_28 | MMC_VDD_28_29 | MMC_VDD_29_30 | \
 > +		       MMC_VDD_30_31 | MMC_VDD_31_32 | MMC_VDD_32_33 | \
 > +		       MMC_VDD_33_34 | MMC_VDD_34_35 | MMC_VDD_35_36)
-> +
+
+I'd like to hear back from you on what you think of this, and, more
+importantly, the place it's referenced further below...
+
 > +struct litex_mmc_host {
 > +	struct mmc_host *mmc;
 > +	struct platform_device *dev;
@@ -810,7 +809,23 @@ why? If not, apologies for the misunderstanding :)
 > +
 > +	/* Allow full generic 2.7-3.6V range; no software tuning available */
 > +	mmc->ocr_avail = LITEX_MMC_OCR;
-> +
+
+...here. Per the "Part 1 Simplified"/"Physical Layer Simplified Spec."
+at https://www.sdcard.org/downloads/pls/ (page 85 of the pdf document),
+I'm hard-coding the 2.7-3.6V range as valid, and the hardware offers no
+interface for tuning or configuring voltage via software in any way
+whatsoever.
+
+IMHO it's cleaner to hardcode something like that in the driver rather
+than pretend it's configurable via DTS only to hard-code it *there*
+using a (dummy) voltage regulator.
+
+But I'm certainly willing to be educated if you think I'm wrong, so
+please let me know.
+
+Thanks much,
+--Gabriel
+
 > +	mmc->ops = &litex_mmc_ops;
 > +
 > +	/*
@@ -850,11 +865,7 @@ why? If not, apologies for the misunderstanding :)
 > +	mmc_free_host(mmc);
 > +	return ret;
 > +}
-
-Any more ordering or devm vs. non-devm mixing violations here? If so,
-can you please link me to an example or some docs where I ould figure
-out what it is I'm still doing wrong?
-
+> +
 > +static int litex_mmc_remove(struct platform_device *pdev)
 > +{
 > +	struct litex_mmc_host *host = dev_get_drvdata(&pdev->dev);
@@ -867,9 +878,7 @@ out what it is I'm still doing wrong?
 > +
 > +	return 0;
 > +}
-
-Ditto here...
-
+> +
 > +static const struct of_device_id litex_match[] = {
 > +	{ .compatible = "litex,mmc" },
 > +	{ }
@@ -882,15 +891,6 @@ Ditto here...
 > +	.driver = {
 > +		.name = "litex-mmc",
 > +		.of_match_table = of_match_ptr(litex_match),
-
-You said "Wrong usage of of_match_ptr()" here, and all I have to go by
-is a bunch of other `drivers/mmc/host/*.c` files that use it in a
-similar way, so can you please clarify and/or provide an example of how
-to do it properly?
-
-Thanks much,
---Gabriel
-
 > +	},
 > +};
 > +module_platform_driver(litex_mmc_driver);
