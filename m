@@ -2,58 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6903488518
-	for <lists+linux-mmc@lfdr.de>; Sat,  8 Jan 2022 18:48:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCDF04886FE
+	for <lists+linux-mmc@lfdr.de>; Sun,  9 Jan 2022 00:51:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbiAHRsM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 8 Jan 2022 12:48:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38754 "EHLO
+        id S231178AbiAHXva (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 8 Jan 2022 18:51:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229928AbiAHRsL (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 8 Jan 2022 12:48:11 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8140C06173F;
-        Sat,  8 Jan 2022 09:48:10 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id j6so35265213edw.12;
-        Sat, 08 Jan 2022 09:48:10 -0800 (PST)
+        with ESMTP id S230191AbiAHXva (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 8 Jan 2022 18:51:30 -0500
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A18CC06173F;
+        Sat,  8 Jan 2022 15:51:30 -0800 (PST)
+Received: by mail-qk1-x72e.google.com with SMTP id 131so10603973qkk.2;
+        Sat, 08 Jan 2022 15:51:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HKLi8ROSD1N0wXToisA4xUpZ4tz7KIbvKJEjlY+zaMA=;
-        b=PcqwM7NAXcRYpLPiEYfz8ZW5rmZxpmtXiai7y6zR+n4NY3My0rbQigrJBCedZ/3eOu
-         wI/l1T+lA0cMqcOenXQCOSVOVy8wUMIn4j+kys9sbU01qzjmrSNfk9Hx4u2VN5PktxSd
-         s9h1Ztclpvqx0V8qlFfWyJiE0OilijmlZ9tpsRiiyz4MX+XLIR+Kss1QFd6RU/ETrANN
-         /j7PuJmGhgKufed9GjyC7hJlcDPe7gfnPWde1f7ZRcU+qxKOP8JgKGDMdf4d7rP7DOq8
-         kWXs9BnYca0Kvhu+hztSbUUswZ/0Z6YzQfMw0aKfnRqsG6nB/vs2qo4EnhJ6ia+mxe7l
-         NHKg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=iGeVrl5hxkXsgar4Td7HcCi64u2Dd4z9ULlAQfYLQns=;
+        b=JFEf8HIYNIlRidbPVBRlruDv/cs2unbjbK015EmXVexO+vAtpP2Bgvw5ffbvK84oYA
+         8j70FNVMhPQzp/2XwOsGaA4eYXc4S3fcDzlXvTcg7Zy/uS9HGbqn9bcTKbc7ZTusZb/3
+         ePHVLEy3E6vTsKIn/ZFca246FpDvom+EFZuQZv/JOwHVcxtJumh5oAqY+RJ5FwuXOKV3
+         JNY3BE5W+sRiHnBiZtfp4rj/IsWNbcz34zf21Xsdd2MTBA2TEz3v649HfdZSFEcsWGEY
+         udRf9H6mkmM+2WHmovLovcFs5w1K/sY34mSbPx1xrcewin7bphgloKh6GFMdf1RJu+/u
+         qn8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HKLi8ROSD1N0wXToisA4xUpZ4tz7KIbvKJEjlY+zaMA=;
-        b=a5oQaB6GJPLnysoScdF2s3l3BdWuanLFO9R57h2/4vSN6Pv4aW/N4mnu4q6TtmeNaw
-         ueizkgOaP4VCmyOLdesqQ2BTCMDUK9czMesZxVIgSl+a/pCJeVkrMbkOtAP2WRgbgis5
-         jbgE9+WmS/K7wWDhPlgWFkOS2D+7LIprgFdzTHofN/Tqa3HNihtRo2cI9/JJ79EL/OvX
-         vleENNF16rNoXHyt5lXXPB1SLwrqgUREcmZBG2i150aU93dORlV5JmK3y4GZ8oZ7AqpY
-         DzsqBFNA90rq0xWKECACmE0cQSW8i2LW8zNfdZNLFxFB7O6qsoVE70oLWLYqlrZgr2Xv
-         IIgA==
-X-Gm-Message-State: AOAM530ZsT4/ihUpEpwsxHUOR/SLFVpFjShqBmNCOmjeOz7uggwIAJ/r
-        sFNBv2Fl0Xw9+n92dsTgjwPW0zdjDW9lF/2Jd+c=
-X-Google-Smtp-Source: ABdhPJyanEkx9eiDlQV1xTggUJn4Revs/1UtDujKoh9WRgpTMrFstm6S1BQMKo9gsk+Y+tQTRTagKlu9TPLuX8AsFnk=
-X-Received: by 2002:a17:906:3ed0:: with SMTP id d16mr52555537ejj.636.1641664089284;
- Sat, 08 Jan 2022 09:48:09 -0800 (PST)
-MIME-Version: 1.0
-References: <20220107233458.2326512-1-gsomlo@gmail.com> <20220107233458.2326512-4-gsomlo@gmail.com>
- <CAHp75VcHnHpX1=ojmFnujqkf55aS1ePiVW4kKydTJQe=dXbwbQ@mail.gmail.com>
- <YdjvlA7rqQoZe44F@errol.ini.cmu.edu> <CAHp75Vf7o1g0FTAd+Zo6TMzDN3C2nGLhbDo0OJ9Cmwcxm=Kc8Q@mail.gmail.com>
- <YdmPho2GpVcvWUgU@errol.ini.cmu.edu>
-In-Reply-To: <YdmPho2GpVcvWUgU@errol.ini.cmu.edu>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 8 Jan 2022 19:47:32 +0200
-Message-ID: <CAHp75VcSenjpZdA_wujKju5rHr8bAw2VjfL8RMKb7RW6Zmz4QA@mail.gmail.com>
-Subject: Re: [PATCH v8 3/3] mmc: Add driver for LiteX's LiteSDCard interface
-To:     "Gabriel L. Somlo" <gsomlo@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=iGeVrl5hxkXsgar4Td7HcCi64u2Dd4z9ULlAQfYLQns=;
+        b=X+rxTRkP3yMjFDlOu6NEdAyoFLTGzt+mx9TlNUTIWdR60FjAD6BDBjaDsLy12AeWst
+         MWXYFDIu25a4yH8N2URLJKFWZFT2z2lPRig22mTMH1UntNeWvkTjcPX4QNOrNHvAFpUJ
+         iuDij3Q/NEgbMAJJP63SanCW5d9LTnPieJdghQRc5zIG/Ex9Uz1NBXWrUSI0BsHQX/hq
+         aRI3AQ+lFCcjBiW63ODDvROIkwUd+DmkQSNzF+7+i+CCxrq4+V/j/fx8q5UfAnS0XinK
+         y47GVSP0UIUb8I8LcqKVnocl3FsAd7U5qfELmCPNUDRVIZreGJMHXU3zbGiEQ6E1jHH3
+         vyOQ==
+X-Gm-Message-State: AOAM530im/NM79lZjUYbVONNUtzXZpt216V2bAjnfWB3Fd1W81ouF7fA
+        OqFaf3ANv6dRXRhccAuq6grsQsBooAL4uMeh
+X-Google-Smtp-Source: ABdhPJxZgO+ounp7QfK6llV/f2bIce4l5G+anmz+/+gtcKrqTddAFswI3pA9lTdXrmHBvEsyy8r+cw==
+X-Received: by 2002:a05:620a:430a:: with SMTP id u10mr48650392qko.552.1641685889090;
+        Sat, 08 Jan 2022 15:51:29 -0800 (PST)
+Received: from errol.ini.cmu.edu (pool-108-39-235-221.pitbpa.fios.verizon.net. [108.39.235.221])
+        by smtp.gmail.com with ESMTPSA id bm12sm1807726qkb.86.2022.01.08.15.51.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Jan 2022 15:51:28 -0800 (PST)
+Date:   Sat, 8 Jan 2022 18:51:26 -0500
+From:   "Gabriel L. Somlo" <gsomlo@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
@@ -70,51 +66,77 @@ Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "david.abdurachmanov@sifive.com" <david.abdurachmanov@sifive.com>,
         "florent@enjoy-digital.fr" <florent@enjoy-digital.fr>,
         "rdunlap@infradead.org" <rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v8 3/3] mmc: Add driver for LiteX's LiteSDCard interface
+Message-ID: <YdojfnOXxT0ZISNB@errol.ini.cmu.edu>
+References: <20220107233458.2326512-1-gsomlo@gmail.com>
+ <20220107233458.2326512-4-gsomlo@gmail.com>
+ <CAHp75VcHnHpX1=ojmFnujqkf55aS1ePiVW4kKydTJQe=dXbwbQ@mail.gmail.com>
+ <YdjvlA7rqQoZe44F@errol.ini.cmu.edu>
+ <CAHp75Vf7o1g0FTAd+Zo6TMzDN3C2nGLhbDo0OJ9Cmwcxm=Kc8Q@mail.gmail.com>
+ <YdmPho2GpVcvWUgU@errol.ini.cmu.edu>
+ <CAHp75VcSenjpZdA_wujKju5rHr8bAw2VjfL8RMKb7RW6Zmz4QA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcSenjpZdA_wujKju5rHr8bAw2VjfL8RMKb7RW6Zmz4QA@mail.gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, Jan 8, 2022 at 3:20 PM Gabriel L. Somlo <gsomlo@gmail.com> wrote:
-> On Sat, Jan 08, 2022 at 01:26:08PM +0200, Andy Shevchenko wrote:
-> > On Sat, Jan 8, 2022 at 3:57 AM Gabriel L. Somlo <gsomlo@gmail.com> wrote:
-> > > On Sat, Jan 08, 2022 at 01:54:07AM +0200, Andy Shevchenko wrote:
-> > > > On Saturday, January 8, 2022, Gabriel Somlo <gsomlo@gmail.com> wrote:
-
-...
-
-> > > >     +       u32 div;
-> > > >     +
-> > > >     +       div = freq ? host->ref_clk / freq : 256U;
+On Sat, Jan 08, 2022 at 07:47:32PM +0200, Andy Shevchenko wrote:
+> On Sat, Jan 8, 2022 at 3:20 PM Gabriel L. Somlo <gsomlo@gmail.com> wrote:
+> > On Sat, Jan 08, 2022 at 01:26:08PM +0200, Andy Shevchenko wrote:
+> > > On Sat, Jan 8, 2022 at 3:57 AM Gabriel L. Somlo <gsomlo@gmail.com> wrote:
+> > > > On Sat, Jan 08, 2022 at 01:54:07AM +0200, Andy Shevchenko wrote:
+> > > > > On Saturday, January 8, 2022, Gabriel Somlo <gsomlo@gmail.com> wrote:
+> 
+> ...
+> 
+> > > > >     +       u32 div;
+> > > > >     +
+> > > > >     +       div = freq ? host->ref_clk / freq : 256U;
+> > > > >
+> > > > >     +       div = roundup_pow_of_two(div);
+> > > > >     +       div = clamp(div, 2U, 256U);
+> > > > >
+> > > > > Logically seems to me that you may join these two together, because clamped
+> > > > > range is power-of-2 one.
 > > > >
-> > > >     +       div = roundup_pow_of_two(div);
-> > > >     +       div = clamp(div, 2U, 256U);
+> > > > `div` needs to be a power-of-2 when written to the LITEX_PHY_CLOCKERDIV
+> > > > register (below). And clamp() will just enforce a min/max range, so if
+> > > > (div = ref_clk / freq) ends up e.g., 5, I need both roundup_pow_of_two()
+> > > > to bump it to 8, and clamp() to enforce that it's between 2 and 256.
 > > > >
-> > > > Logically seems to me that you may join these two together, because clamped
-> > > > range is power-of-2 one.
+> > > > Unless you mean I should simply write it like:
+> > > >
+> > > >         div = clamp(roundup_pow_of_two(div), 2U, 256U);
+> > > >
+> > > > ... as a single line?
 > > >
-> > > `div` needs to be a power-of-2 when written to the LITEX_PHY_CLOCKERDIV
-> > > register (below). And clamp() will just enforce a min/max range, so if
-> > > (div = ref_clk / freq) ends up e.g., 5, I need both roundup_pow_of_two()
-> > > to bump it to 8, and clamp() to enforce that it's between 2 and 256.
-> > >
-> > > Unless you mean I should simply write it like:
-> > >
-> > >         div = clamp(roundup_pow_of_two(div), 2U, 256U);
-> > >
-> > > ... as a single line?
+> > > Yes, that's what I meant.
 > >
-> > Yes, that's what I meant.
->
-> Turns out, clamp really hates being passed roundup_pow_of_two()
-> directly (see below). I think it's probably better if we leave
-> them as-is, to avoid going the explicit cast route which Geert
-> recommended against.
+> > Turns out, clamp really hates being passed roundup_pow_of_two()
+> > directly (see below). I think it's probably better if we leave
+> > them as-is, to avoid going the explicit cast route which Geert
+> > recommended against.
+> 
+> I see, then ignore my comment on this matter in v9.
+> Perhaps add a comment in the code explaining that roundup_pow_of_two()
+> may not be unified with clamp()?
 
-I see, then ignore my comment on this matter in v9.
-Perhaps add a comment in the code explaining that roundup_pow_of_two()
-may not be unified with clamp()?
+I worry that commenting on why things are not done some other way at
+that location would detract from the legibility of the code itself.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Perhaps we could use a cast after all, and write it out like this:
+
+	div = clamp((u32)roundup_pow_of_two(div), 2U, 256U);
+
+which compiles fine without any warnings, accomplishes your "do it in
+a single line" desired behavior, and doesn't require me commenting on
+which linux library functions do or don't work well with others... :)
+
+Geert, what do you think?
+
+Thanks,
+--Gabriel
