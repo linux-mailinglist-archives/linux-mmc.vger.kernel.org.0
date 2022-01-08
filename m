@@ -2,153 +2,198 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51451488521
-	for <lists+linux-mmc@lfdr.de>; Sat,  8 Jan 2022 18:55:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E81D5488513
+	for <lists+linux-mmc@lfdr.de>; Sat,  8 Jan 2022 18:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233577AbiAHRz3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 8 Jan 2022 12:55:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40314 "EHLO
+        id S229964AbiAHRn6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 8 Jan 2022 12:43:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230249AbiAHRz3 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 8 Jan 2022 12:55:29 -0500
-X-Greylist: delayed 1332 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 08 Jan 2022 09:55:28 PST
-Received: from balrog.mythic-beasts.com (balrog.mythic-beasts.com [IPv6:2a00:1098:0:82:1000:0:2:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A058C061401;
-        Sat,  8 Jan 2022 09:55:28 -0800 (PST)
-Received: from [81.101.6.87] (port=34286 helo=jic23-huawei)
-        by balrog.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <jic23@jic23.retrosnub.co.uk>)
-        id 1n6Faq-0001DM-Oj; Sat, 08 Jan 2022 17:33:33 +0000
-Date:   Sat, 8 Jan 2022 17:38:51 +0000
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
-        Pavel Machek <pavel@ucw.cz>, list@opendingux.net,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-pm@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 3/6] PM: core: Add EXPORT[_GPL]_SIMPLE_DEV_PM_OPS
- macros
-Message-ID: <20220108173825.08ebf8ba@jic23-huawei>
-In-Reply-To: <20220107181723.54392-4-paul@crapouillou.net>
-References: <20220107181723.54392-1-paul@crapouillou.net>
-        <20220107181723.54392-4-paul@crapouillou.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        with ESMTP id S229949AbiAHRn5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 8 Jan 2022 12:43:57 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8387EC06173F;
+        Sat,  8 Jan 2022 09:43:57 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id o6so35413316edc.4;
+        Sat, 08 Jan 2022 09:43:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZcQfWwMsghwScclCB7tIK4EIlld/CkiQ2JNewUzLag8=;
+        b=gOtyYhkaoeyXc9CsYntBmNljOHCUv3yTbUIUH4wiKPN/IdBT3QQQnTZjP7PUw7yKpx
+         dyCOtotGEt6oFMpFZK//zYND0lXQEgTkxiaNoVXXfhbZ/WsNkVVs1622VsQOkpw855Xf
+         4RuTfpsGXzzBsKshOT1WhYGWGwOvdzbQh+Ej4qsFxczbZ2MKKGRwDV+beCIv2K3f5guH
+         mRCcv0eTJA+CjZhJ7npUyBRDzipOsZ5whZsrtYOMUapb+Bmgnftn63CWNwYwarUXP3p+
+         ZIimfSgge/LVoNEFLz3TBtvwPMCQxnmAZjBuHxoamdf1jOArVXT1VIKmmS2gRurtY9WJ
+         EVww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZcQfWwMsghwScclCB7tIK4EIlld/CkiQ2JNewUzLag8=;
+        b=fAduNIOVSBi4QcB9pQ25Y89o8Ne/iA86NP9HU07/MgTYjcMoExX/g4fXETUTjmVxD0
+         jwhT1iaF05N3CwlcisA+QXhtQ3cmA8lDRi4dKrAIX3pxvYbrbwwjmC69QVGOuRyus9JQ
+         W0iKQqdXCGhn6ZK8fl6VMqYfngt+PZF2UfvKSImB6Akmhr3dTZw99KBDXiRQQEW5HyqP
+         RuTCue4/3B8UheYPOGxoWuuyywt453FYOoUcmT8YQgSNnnhOmhYSDjakYSeaVsCSKlYQ
+         zPMp3djdGuvW6SvM3T/4HqIIHKPaCOE1MdWpQbFHfW5c0p0t/2en6Rn74UppHhUfVGQT
+         cvKw==
+X-Gm-Message-State: AOAM5321ZAH1ufXeSakPjyALnFdB8N/22/vSqt78CmxtQ6/O+QXhJvX9
+        QqXJ+b5U7HxxCM83PgEIBJ1V0htVjCQrqwqc+xMWZ6bWrOMtPMq7
+X-Google-Smtp-Source: ABdhPJx5rPtY1jXDZ0YljyluPabYaOm0Bv7it0vmPSxlQWPLBS/JUQzpNEfzaQWMFyuIDNiJmPCNCAIK/G6Cs+SYwfk=
+X-Received: by 2002:a05:6402:12c4:: with SMTP id k4mr65442760edx.218.1641663836100;
+ Sat, 08 Jan 2022 09:43:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-BlackCat-Spam-Score: 19
-X-Spam-Status: No, score=1.9
+References: <20220108161134.2419279-1-gsomlo@gmail.com> <20220108161134.2419279-4-gsomlo@gmail.com>
+In-Reply-To: <20220108161134.2419279-4-gsomlo@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 8 Jan 2022 19:43:19 +0200
+Message-ID: <CAHp75VeEvT-_47gKFAYdz-BR9y=KLEw2uMbRxYKo1rLQSQEfyg@mail.gmail.com>
+Subject: Re: [PATCH v9 3/3] mmc: Add driver for LiteX's LiteSDCard interface
+To:     Gabriel Somlo <gsomlo@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Karol Gugala <kgugala@antmicro.com>,
+        Mateusz Holenko <mholenko@antmicro.com>,
+        Kamil Rakoczy <krakoczy@antmicro.com>,
+        mdudek@internships.antmicro.com,
+        Paul Mackerras <paulus@ozlabs.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Stafford Horne <shorne@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        david.abdurachmanov@sifive.com,
+        Florent Kermarrec <florent@enjoy-digital.fr>,
+        Randy Dunlap <rdunlap@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri,  7 Jan 2022 18:17:20 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
+On Sat, Jan 8, 2022 at 6:11 PM Gabriel Somlo <gsomlo@gmail.com> wrote:
+>
+> LiteX (https://github.com/enjoy-digital/litex) is a SoC framework
+> that targets FPGAs. LiteSDCard is a small footprint, configurable
+> SDCard core commonly used in LiteX designs.
+>
+> The driver was first written in May 2020 and has been maintained
+> cooperatively by the LiteX community. Thanks to all contributors!
 
-> These macros are defined conditionally, according to CONFIG_PM:
-> - if CONFIG_PM is enabled, these macros resolve to
->   DEFINE_SIMPLE_DEV_PM_OPS(), and the dev_pm_ops symbol will be
->   exported.
-> 
-> - if CONFIG_PM is disabled, these macros will result in a dummy static
->   dev_pm_ops to be created with the __maybe_unused flag. The dev_pm_ops
->   will then be discarded by the compiler, along with the provided
->   callback functions if they are not used anywhere else.
-> 
-> In the second case, the symbol is not exported, which should be
-> perfectly fine - users of the symbol should all use the pm_ptr() or
-> pm_sleep_ptr() macro, so the dev_pm_ops marked as "extern" in the
-> client's code will never be accessed.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Thanks for an update, my comments below.
 
-Hi Paul,
+...
 
-Can definitely be a follow up rather than needing to be in this series
-but an EXPORT_NS_[_GPL]_SIMPLE_DEV_PM_OPS() will be needed as I suspect
-a lot of the places that export pm_ops structures will have their exports
-moved to a namespace at somepoint.
+> +#include <linux/bits.h>
+> +#include <linux/clk.h>
+> +#include <linux/delay.h>
+> +#include <linux/dma-mapping.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/litex.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
 
-That can easily go in with the first user though rather than needing
-to be rushed in now.
+> +#include <linux/mmc/host.h>
+> +#include <linux/mmc/mmc.h>
+> +#include <linux/mmc/sd.h>
 
-Jonathan
+I would move this group of headers...
 
-> ---
-> 
-> Notes:
->     v2: Remove useless empty line
->     v3: - Reorder the code to have non-private macros together in the file
->         - Add comment about the necesity to use the new export macro when
->           the dev_pm_ops has to be exported
-> 
->  include/linux/pm.h | 35 ++++++++++++++++++++++++++++++++---
->  1 file changed, 32 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/pm.h b/include/linux/pm.h
-> index 8e13387e70ec..8279af2c538a 100644
-> --- a/include/linux/pm.h
-> +++ b/include/linux/pm.h
-> @@ -8,6 +8,7 @@
->  #ifndef _LINUX_PM_H
->  #define _LINUX_PM_H
->  
-> +#include <linux/export.h>
->  #include <linux/list.h>
->  #include <linux/workqueue.h>
->  #include <linux/spinlock.h>
-> @@ -357,14 +358,42 @@ struct dev_pm_ops {
->  #define SET_RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn)
->  #endif
->  
-> +#define _DEFINE_DEV_PM_OPS(name, \
-> +			   suspend_fn, resume_fn, \
-> +			   runtime_suspend_fn, runtime_resume_fn, idle_fn) \
-> +const struct dev_pm_ops name = { \
-> +	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> +	RUNTIME_PM_OPS(runtime_suspend_fn, runtime_resume_fn, idle_fn) \
+> +#include <linux/platform_device.h>
+> +
+
+...somewhere here to show that this driver belongs to the MMC subsystem.
+
+...
+
+> +#define LITEX_MMC_OCR (MMC_VDD_27_28 | MMC_VDD_28_29 | MMC_VDD_29_30 | \
+> +                      MMC_VDD_30_31 | MMC_VDD_31_32 | MMC_VDD_32_33 | \
+> +                      MMC_VDD_33_34 | MMC_VDD_34_35 | MMC_VDD_35_36)
+
+Seems to me this is identical to
+https://elixir.bootlin.com/linux/latest/source/drivers/mmc/host/au1xmmc.c#L72
+
+And may be reused in
+https://elixir.bootlin.com/linux/latest/source/drivers/mmc/host/vub300.c#L2168.
+
+Perhaps it makes sense to have
+
+#define MMC_VDD_27_36 ...
+
+in mmc.h?
+
+In any case, it can be postponed, just a side note for the future improvements.
+
+...
+
+> +       /* Ensure bus width will be set (again) upon card (re)insertion */
+> +       if (ret == 0)
+> +               host->is_bus_width_set = false;
+> +
+> +       return ret;
+
+Please, switch to standard pattern, i.e.
+
+  if (ret)
+    return ret;
+  ...
+  return 0;
+
+...
+
+> +       u32 div;
+> +
+> +       div = freq ? host->ref_clk / freq : 256U;
+
+> +       div = roundup_pow_of_two(div);
+> +       div = clamp(div, 2U, 256U);
+
+Not sure why it becomes two lines again.
+
+...
+
+> +       ret = devm_add_action_or_reset(dev,
+> +                                      (void(*)(void *))mmc_free_host, mmc);
+
+One line?
+An actually preferable way is to define a separate wrapper function
+and use it here without any casting.
+
+> +       if (ret) {
+
+> +               dev_err(dev, "Failed to register mmc_free_host action\n");
+> +               return ret;
+
+return dev_err_probe(...);
+
+> +       }
+
+...
+
+> +       clk = devm_clk_get(dev, NULL);
+> +       if (IS_ERR(clk)) {
+
+> +               ret = dev_err_probe(dev, PTR_ERR(clk), "can't get clock\n");
+> +               return ret;
+
+    return dev_err_probe(...);
+
+> +       }
+
+...
+
+> +       ret = mmc_add_host(mmc);
+> +
+> +       return ret;
+
+It's now
+
+    return mmc_add_host(...);
+
 > +}
-> +
-> +#ifdef CONFIG_PM
-> +#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
-> +			   runtime_resume_fn, idle_fn, sec) \
-> +	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
-> +			   runtime_resume_fn, idle_fn); \
-> +	_EXPORT_SYMBOL(name, sec)
-> +#else
-> +#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
-> +			   runtime_resume_fn, idle_fn, sec) \
-> +static __maybe_unused _DEFINE_DEV_PM_OPS(__static_##name, suspend_fn, \
-> +					 resume_fn, runtime_suspend_fn, \
-> +					 runtime_resume_fn, idle_fn)
-> +#endif
-> +
->  /*
->   * Use this if you want to use the same suspend and resume callbacks for suspend
->   * to RAM and hibernation.
-> + *
-> + * If the underlying dev_pm_ops struct symbol has to be exported, use
-> + * EXPORT_SIMPLE_DEV_PM_OPS() or EXPORT_GPL_SIMPLE_DEV_PM_OPS() instead.
->   */
->  #define DEFINE_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> -const struct dev_pm_ops name = { \
-> -	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> -}
-> +	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
-> +
-> +#define EXPORT_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "")
-> +#define EXPORT_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "_gpl")
->  
->  /* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
->  #define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
 
+-- 
+With Best Regards,
+Andy Shevchenko
