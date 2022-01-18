@@ -2,45 +2,45 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B490849196C
-	for <lists+linux-mmc@lfdr.de>; Tue, 18 Jan 2022 03:54:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44138491972
+	for <lists+linux-mmc@lfdr.de>; Tue, 18 Jan 2022 03:54:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245723AbiARCyE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Jan 2022 21:54:04 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:51720 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347833AbiARCnI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jan 2022 21:43:08 -0500
+        id S1346481AbiARCyI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Jan 2022 21:54:08 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:41988 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349866AbiARCug (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Jan 2022 21:50:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A23FEB811CF;
-        Tue, 18 Jan 2022 02:43:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48122C36AE3;
-        Tue, 18 Jan 2022 02:43:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D09460C41;
+        Tue, 18 Jan 2022 02:50:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF5EC36AE3;
+        Tue, 18 Jan 2022 02:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642473784;
-        bh=B2YGg1HiTboR3+vNlNEgYYE4wVzcEZ6wXCmA6wwvLOg=;
+        s=k20201202; t=1642474235;
+        bh=kw73XIG6NLQUBFBdk9cnkGcu9RvWgb4ZUByxLPUXsyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uGYH2riCg4VFVBItBV8J6aZvKLtcy37vQzHVCvJM4aPaK+r0Uuxi+msoiShlwbR80
-         bb732f09gQNPzhLYse5o5S9XoVJ8iENhjOx9GxesCD1IZkMENJa2NKiZQbxLNwM29Y
-         A/WLPZeyVjf68LEnY9aMCPFisWQqUxZ9p3f3EOjCvcCF9DsUUkmzRXQ/D4dArBVNli
-         Jy302qYSnS6F1nHSb8E2ojlHjkLVSE1MNJUaYMEq5/lqEVAnr0DXV7KDG5d/eNCUgW
-         pVs1auOGRSQFhz1/d3WiIDLKKVMu94ngg3TAM4RMVG/Anh1Fv14y9ENWrG2tzvi3jU
-         SXeYOhGoMeedw==
+        b=S5syCwjd5uA5EfQ7K4VivZe1l9rK4E0Fu9/b0XgtS5UNpGUT4sNAMbwYy6tlQuPLK
+         NVs0j6DY++mKU2ZB5xy133ELEJloV5s2tuICaAF7D0wryeam/36XyZVsvg3BSO8t81
+         sT6Tdoyrdp6Ax/+E62eLaPmINF+AQyMf02fS/AFRrZ4bBqFux0+zFu/veTFIcK5eam
+         VN8doWKhd5zHrEXFFd0b4oM71EUIJ7PcKpCIbhx3GpAoYoagADui3yBwIJKbS3BPus
+         TBalwcCLyIK6CSjiNNvn/Mk4TliTeY4w2lPDwDS2craU8CotGjhx9h8rm4tjG/+Frv
+         b5Mex919GOopQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Sasha Levin <sashal@kernel.org>, linus.walleij@linaro.org,
-        tiantao6@hisilicon.com, kwmad.kim@samsung.com, huyue2@yulong.com,
+        Sasha Levin <sashal@kernel.org>, huyue2@yulong.com,
+        tiantao6@hisilicon.com, linus.walleij@linaro.org,
         linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 070/116] mmc: core: Fixup storing of OCR for MMC_QUIRK_NONSTD_SDIO
-Date:   Mon, 17 Jan 2022 21:39:21 -0500
-Message-Id: <20220118024007.1950576-70-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 35/56] mmc: core: Fixup storing of OCR for MMC_QUIRK_NONSTD_SDIO
+Date:   Mon, 17 Jan 2022 21:48:47 -0500
+Message-Id: <20220118024908.1953673-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220118024007.1950576-1-sashal@kernel.org>
-References: <20220118024007.1950576-1-sashal@kernel.org>
+In-Reply-To: <20220118024908.1953673-1-sashal@kernel.org>
+References: <20220118024908.1953673-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -77,10 +77,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index 1b0853a82189a..99a4ce68d82f1 100644
+index 7568cea559220..bf0a0ef60d6b4 100644
 --- a/drivers/mmc/core/sdio.c
 +++ b/drivers/mmc/core/sdio.c
-@@ -708,6 +708,8 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
+@@ -631,6 +631,8 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
  	if (host->ops->init_card)
  		host->ops->init_card(host, card);
  
@@ -89,9 +89,9 @@ index 1b0853a82189a..99a4ce68d82f1 100644
  	/*
  	 * If the host and card support UHS-I mode request the card
  	 * to switch to 1.8V signaling level.  No 1.8v signalling if
-@@ -820,7 +822,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
- 			goto mismatch;
- 		}
+@@ -737,7 +739,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
+ 
+ 		card = oldcard;
  	}
 -	card->ocr = ocr_card;
 +
