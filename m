@@ -2,60 +2,66 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE36E493A04
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jan 2022 13:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFBB4493ABC
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jan 2022 13:59:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349070AbiASMEj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 19 Jan 2022 07:04:39 -0500
-Received: from smtp25.cstnet.cn ([159.226.251.25]:41182 "EHLO cstnet.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S240915AbiASMEh (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
-        Wed, 19 Jan 2022 07:04:37 -0500
-Received: from localhost.localdomain (unknown [124.16.138.126])
-        by APP-05 (Coremail) with SMTP id zQCowAA3PABB_udhWluFBg--.43483S2;
-        Wed, 19 Jan 2022 20:04:17 +0800 (CST)
-From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
-To:     ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Subject: Re: Re: [PATCH] mmc: sh_mmcif: Check for null res pointer
-Date:   Wed, 19 Jan 2022 20:04:16 +0800
-Message-Id: <20220119120416.1427018-1-jiasheng@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+        id S1354488AbiASM6v (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 19 Jan 2022 07:58:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52488 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354470AbiASM6v (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 19 Jan 2022 07:58:51 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28544C06161C
+        for <linux-mmc@vger.kernel.org>; Wed, 19 Jan 2022 04:58:51 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id c24so8404949edy.4
+        for <linux-mmc@vger.kernel.org>; Wed, 19 Jan 2022 04:58:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=5AsGrA4DlL+PCBChvj92hqjB0hfn92LRQaKu0Z47lw0=;
+        b=jNK2vTZp9FxHvggETJ47cqb1t4Atm4HGltciJPUogZXe/cToAuuKnhERYSCNZF5z0A
+         TISa9qYfbqq2avOumjE0ux8kIajLlz50pTqq0BaSFtlpvG6LNYfjA2Unzz1CB/BsxZf9
+         IetTV7S2uv3/msRir/AmOYeozjWayYTGH7yN7xAv9T3Ds2K9diDp0M4VFrnwDT0kEcJK
+         jJMihBFMcofHQuIrzaVbP3Lin9rYY0sdEsTE7yNAYYdIbO8FkfdvavXxPT6xJKssx5Ka
+         2Nud00+QMOxDo6dwgxHwptyiTr3XNvfkY9Fzzrx10qdZkVICrYRGL9lENvXMAqJADVsp
+         GI2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=5AsGrA4DlL+PCBChvj92hqjB0hfn92LRQaKu0Z47lw0=;
+        b=kcmrsgNitwHViTSLRrhCXYQMkj9z4t0q0z+5TaNLpMfvPSUMflw2jZvgXwFRgqS/tE
+         LHcfBbfERFhq0IM8qy5QXGrNeHH7qoZ+oveH4RvLHqoIXuRSzJy3ANeS51OCcpWLst9t
+         3cB3DoHqVIeYbP2c5WwGbrEeMWCSMSqp1WBe8/rxVbjmHSsJvOv3uUF/xfasSgByb0g/
+         txwSY3Fsd+JiTYkaBysHNq3U8XRc5mlUw0hTHzFo+yNzOrXKiXlG7XMijqQaXj8l9vcA
+         W7z5aHpzmNlaIZBpifjLqkYqJh8BevGrgQL/Rd4rFKBay8w44f5817coKdqzrH4EYa6C
+         w2aA==
+X-Gm-Message-State: AOAM531eVQkzz7TZIfHmX2bwYg1ZpYUXGrsvskSvWgEK8fqOkCIlxTgb
+        oaXgxlIpIkJGJTYXpr6tCazluY5Zc8DTbArtqt0=
+X-Google-Smtp-Source: ABdhPJzkw1Re617SUAOg4g1/aa3x4FPxKkwE+qa8EY56M4gfzcD4uECnJEZ+LwudwDU5K+NPKTqszMgxw5FSDDIwds0=
+X-Received: by 2002:a17:906:e8f:: with SMTP id p15mr5644333ejf.625.1642597129344;
+ Wed, 19 Jan 2022 04:58:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowAA3PABB_udhWluFBg--.43483S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-        VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYe7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E
-        6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-        kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8I
-        cVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2js
-        IEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE
-        5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeV
-        CFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l
-        c2xSY4AK67AK6ryUMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
-        0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWU
-        AVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
-        CY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvEx4A2jsIE
-        14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa
-        7VUb8sqJUUUUU==
-X-Originating-IP: [124.16.138.126]
-X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
+Received: by 2002:a17:907:6d16:0:0:0:0 with HTTP; Wed, 19 Jan 2022 04:58:48
+ -0800 (PST)
+Reply-To: mrsbillchantallawrence2@gmail.com
+From:   MRS BILL CHANTAL LAWRANCE <aamadchantal001@gmail.com>
+Date:   Wed, 19 Jan 2022 04:58:48 -0800
+Message-ID: <CA+svXzgEKQCuUPwhnCF55vRXGL02GHnFS+bWBe5s5r374uzuPw@mail.gmail.com>
+Subject: DEAR FRIEND
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On wed, Jan 19, 2022 at 02:13:13AM +0800, Ulf Hansson wrote:
->> Fixes: 27cbd7e815a8 ("mmc: sh_mmcif: rework dma channel handling")
->
-> I think this fixes tag is wrong. The problem seems to have been there
-> way before this point.
->
-> I suggest we instead just tag it for stable - and then let it be
-> applied to whatever kernel version it can. Does it make sense to you?
+dear
 
-Thanks, I have already changed the fixes tag to 'v5.16' and sent a v2.
+You have been compensated with the sum of 5.1 million dollars in this
+united nation the payment will be Issue into ATM visa card and send to
+you from the Santander bank of Spain we need your address passport and
+your whatsapp number.
+Thanks
 
-Sincerely thanks,
-Jiang
-
+Mrs. bill Chantal
