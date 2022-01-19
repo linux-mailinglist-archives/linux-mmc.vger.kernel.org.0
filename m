@@ -2,44 +2,42 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B57064937FE
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jan 2022 11:13:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D543C493891
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jan 2022 11:32:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353483AbiASKLw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 19 Jan 2022 05:11:52 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:41912 "EHLO
+        id S1353875AbiASKcp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 19 Jan 2022 05:32:45 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:46348 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1353474AbiASKLv (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 19 Jan 2022 05:11:51 -0500
-X-UUID: b0ba83a4b0f0412b94a673a793878491-20220119
-X-UUID: b0ba83a4b0f0412b94a673a793878491-20220119
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        with ESMTP id S1353769AbiASKcV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 19 Jan 2022 05:32:21 -0500
+X-UUID: 4a9bd75550104cf1befcf222462c9adf-20220119
+X-UUID: 4a9bd75550104cf1befcf222462c9adf-20220119
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
         (envelope-from <axe.yang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 599025123; Wed, 19 Jan 2022 18:11:47 +0800
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 460754678; Wed, 19 Jan 2022 18:32:17 +0800
 Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 19 Jan 2022 18:11:45 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Wed, 19 Jan 2022 18:32:16 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb01.mediatek.inc
  (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 19 Jan
- 2022 18:11:45 +0800
-Received: from mhfsdcap04 (10.17.3.154) by mtkcas11.mediatek.inc
+ 2022 18:32:15 +0800
+Received: from localhost.localdomain (10.17.3.154) by mtkcas10.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 19 Jan 2022 18:11:44 +0800
-Message-ID: <068c965a0243486f0e1cabbafb8904a6a8ddcc9f.camel@mediatek.com>
-Subject: Re: [RESEND v3 3/3] mmc: mediatek: add support for SDIO eint IRQ
+ Transport; Wed, 19 Jan 2022 18:32:14 +0800
 From:   Axe Yang <axe.yang@mediatek.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Ulf Hansson <ulf.hansson@linaro.org>,
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Chaotian Jing <chaotian.jing@mediatek.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "Yoshihiro Shimoda" <yoshihiro.shimoda.uh@renesas.com>,
+        Adrian Hunter <adrian.hunter@intel.com>
+CC:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
         Satya Tangirala <satyat@google.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Lucas Stach <dev@lynxeye.de>,
+        Axe Yang <axe.yang@mediatek.com>, Lucas Stach <dev@lynxeye.de>,
         Eric Biggers <ebiggers@google.com>,
         Andrew Jeffery <andrew@aj.id.au>,
         Stephen Boyd <swboyd@chromium.org>,
@@ -49,83 +47,39 @@ CC:     Ulf Hansson <ulf.hansson@linaro.org>,
         <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Yong Mao <yong.mao@mediatek.com>
-Date:   Wed, 19 Jan 2022 18:11:43 +0800
-In-Reply-To: <CAHp75VdkKYujGZOdGkLK-tzC9q+RjkX59fFZe5cHajGOnDdL2w@mail.gmail.com>
-References: <20220117082539.18713-1-axe.yang@mediatek.com>
-         <20220117082539.18713-4-axe.yang@mediatek.com>
-         <CAHp75VdkKYujGZOdGkLK-tzC9q+RjkX59fFZe5cHajGOnDdL2w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v4 0/3] mmc: mediatek: add support for SDIO eint IRQ 
+Date:   Wed, 19 Jan 2022 18:32:09 +0800
+Message-ID: <20220119103212.13158-1-axe.yang@mediatek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
 X-MTK:  N
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 2022-01-18 at 11:18 +0200, Andy Shevchenko wrote:
-> On Mon, Jan 17, 2022 at 7:33 PM Axe Yang <axe.yang@mediatek.com>
-> wrote:
-> > 
-> > Add support for eint IRQ when MSDC is used as an SDIO host. This
-> > feature requires SDIO device support async IRQ function. With this
-> > feature, SDIO host can be awakened by SDIO card in suspend state,
-> > without additional pin.
-> > 
-> > MSDC driver will time-share the SDIO DAT1 pin. During suspend, MSDC
-> > turn off clock and switch SDIO DAT1 pin to GPIO mode. And during
-> > resume, switch GPIO function back to DAT1 mode then turn on clock.
-> > 
-> > Some device tree property should be added or modified in MSDC node
-> > to support SDIO eint IRQ. Pinctrls named state_dat1 and state_eint
-> > are mandatory. And cap-sdio-async-irq flag is necessary since this
-> > feature depends on asynchronous interrupt:
-> >         &mmcX {
-> >                 ...
-> >                 pinctrl-names = "default", "state_uhs",
-> > "state_eint",
-> >                                 "state_dat1";
-> >                 ...
-> >                 pinctrl-2 = <&mmc2_pins_eint>;
-> >                 pinctrl-3 = <&mmc2_pins_dat1>;
-> >                 ...
-> >                 cap-sdio-async-irq;
-> >                 ...
-> >         };
-> 
-> ...
-> 
-> > +static irqreturn_t msdc_sdio_eint_irq(int irq, void *dev_id)
-> > +{
-> > +       struct msdc_host *host = dev_id;
-> > +       struct mmc_host *mmc = mmc_from_priv(host);
-> > +       unsigned long flags;
-> 
-> Same Q as per v2. Why do you need this?
-> 
-> Yes, you did the first step to the answer, but I want you to go
-> deeper
-> and tell me why you need the spin_lock_irqsave() variant.
 
-You are right, no need to save/restore flags in irq handler.
-Will fix it in new version.
-Thanks.
+Change in v4:
+- add MMC_CAP2_SDIO_ASYNC_IRQ judge before lookup eint pinctrl
+- replace spin_lock_irqsave() variant with spin_lock() in eint irq handler
 
-> 
-> > +       spin_lock_irqsave(&host->lock, flags);
-> > +       if (likely(host->sdio_irq_cnt > 0)) {
-> > +               disable_irq_nosync(host->eint_irq);
-> > +               disable_irq_wake(host->eint_irq);
-> > +               host->sdio_irq_cnt--;
-> > +       }
-> > +       spin_unlock_irqrestore(&host->lock, flags);
-> > +
-> > +       sdio_signal_irq(mmc);
-> > +
-> > +       return IRQ_HANDLED;
-> > +}
-> 
-> 
+Axe Yang (3):
+  dt-bindings: mmc: add cap-sdio-async-irq flag
+  mmc: core: Add support for SDIO async interrupt
+  mmc: mediatek: add support for SDIO eint IRQ
+
+ .../bindings/mmc/mmc-controller.yaml          |   5 +
+ drivers/mmc/core/host.c                       |   2 +
+ drivers/mmc/core/sdio.c                       |  17 +++
+ drivers/mmc/host/mtk-sd.c                     | 124 ++++++++++++++++--
+ include/linux/mmc/card.h                      |   3 +-
+ include/linux/mmc/host.h                      |   1 +
+ include/linux/mmc/sdio.h                      |   5 +
+ 7 files changed, 148 insertions(+), 9 deletions(-)
+
+-- 
+2.25.1
+
 
