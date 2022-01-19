@@ -2,66 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFBB4493ABC
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jan 2022 13:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCB12493BB0
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jan 2022 15:05:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354488AbiASM6v (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 19 Jan 2022 07:58:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52488 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354470AbiASM6v (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 19 Jan 2022 07:58:51 -0500
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28544C06161C
-        for <linux-mmc@vger.kernel.org>; Wed, 19 Jan 2022 04:58:51 -0800 (PST)
-Received: by mail-ed1-x529.google.com with SMTP id c24so8404949edy.4
-        for <linux-mmc@vger.kernel.org>; Wed, 19 Jan 2022 04:58:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=5AsGrA4DlL+PCBChvj92hqjB0hfn92LRQaKu0Z47lw0=;
-        b=jNK2vTZp9FxHvggETJ47cqb1t4Atm4HGltciJPUogZXe/cToAuuKnhERYSCNZF5z0A
-         TISa9qYfbqq2avOumjE0ux8kIajLlz50pTqq0BaSFtlpvG6LNYfjA2Unzz1CB/BsxZf9
-         IetTV7S2uv3/msRir/AmOYeozjWayYTGH7yN7xAv9T3Ds2K9diDp0M4VFrnwDT0kEcJK
-         jJMihBFMcofHQuIrzaVbP3Lin9rYY0sdEsTE7yNAYYdIbO8FkfdvavXxPT6xJKssx5Ka
-         2Nud00+QMOxDo6dwgxHwptyiTr3XNvfkY9Fzzrx10qdZkVICrYRGL9lENvXMAqJADVsp
-         GI2A==
+        id S1355023AbiASOFe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 19 Jan 2022 09:05:34 -0500
+Received: from mail-ot1-f42.google.com ([209.85.210.42]:36445 "EHLO
+        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350177AbiASOFd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 19 Jan 2022 09:05:33 -0500
+Received: by mail-ot1-f42.google.com with SMTP id l64-20020a9d1b46000000b005983a0a8aaaso3234801otl.3;
+        Wed, 19 Jan 2022 06:05:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=5AsGrA4DlL+PCBChvj92hqjB0hfn92LRQaKu0Z47lw0=;
-        b=kcmrsgNitwHViTSLRrhCXYQMkj9z4t0q0z+5TaNLpMfvPSUMflw2jZvgXwFRgqS/tE
-         LHcfBbfERFhq0IM8qy5QXGrNeHH7qoZ+oveH4RvLHqoIXuRSzJy3ANeS51OCcpWLst9t
-         3cB3DoHqVIeYbP2c5WwGbrEeMWCSMSqp1WBe8/rxVbjmHSsJvOv3uUF/xfasSgByb0g/
-         txwSY3Fsd+JiTYkaBysHNq3U8XRc5mlUw0hTHzFo+yNzOrXKiXlG7XMijqQaXj8l9vcA
-         W7z5aHpzmNlaIZBpifjLqkYqJh8BevGrgQL/Rd4rFKBay8w44f5817coKdqzrH4EYa6C
-         w2aA==
-X-Gm-Message-State: AOAM531eVQkzz7TZIfHmX2bwYg1ZpYUXGrsvskSvWgEK8fqOkCIlxTgb
-        oaXgxlIpIkJGJTYXpr6tCazluY5Zc8DTbArtqt0=
-X-Google-Smtp-Source: ABdhPJzkw1Re617SUAOg4g1/aa3x4FPxKkwE+qa8EY56M4gfzcD4uECnJEZ+LwudwDU5K+NPKTqszMgxw5FSDDIwds0=
-X-Received: by 2002:a17:906:e8f:: with SMTP id p15mr5644333ejf.625.1642597129344;
- Wed, 19 Jan 2022 04:58:49 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=bA4lXk3bs4g992PO5jXPShXJCU4RdXIJFPt9TWuZvi8=;
+        b=Lo6knvrEtX/KFxyzA+UatqyecN5QpsDx2jKbnR1JQMxQ3bcNJo2x7FK73GNXu5GXKJ
+         yYKgWYLv3Bat1xQyACduvR5yesnyxdLIJfPRBbevYtjGJsI8kYT/DOOYXjL4eHBBbO+R
+         PLniaDtYQ3EnG1myqvhtQ9umRFjZiBTV9NmLO55lvCDwusqs/bUeElRp1FFgrQfTDGdY
+         8TLqyog2EgnFi0R7fgBlahwrkhILuvZfoneSBbGHBwdr49kCMrv9LuLonkP8wmVhid9G
+         LrC4t4Vfu7eWUshQDt5zg/W0OFja7Agx6wEVdsLyyXhbsHORSnKbbu/FijTfSa3Q8HTv
+         jOHg==
+X-Gm-Message-State: AOAM533yzZCwRxbFMdylPqi/P2zCj4YKcGZvxEJierkhhM8qc7yIHZyq
+        DfAcTMxlnUx7ejQu/JXr8w==
+X-Google-Smtp-Source: ABdhPJz+nPpKZ1wx/9MZBe3c2PWe70YAUIasbvLv9Mx8j0isWcefeBYdwrdxEdCzSxpX+Pr8JGIYZw==
+X-Received: by 2002:a9d:e88:: with SMTP id 8mr6044843otj.276.1642601132546;
+        Wed, 19 Jan 2022 06:05:32 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id 186sm10018818oig.28.2022.01.19.06.05.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jan 2022 06:05:31 -0800 (PST)
+Received: (nullmailer pid 3480173 invoked by uid 1000);
+        Wed, 19 Jan 2022 14:05:27 -0000
+Date:   Wed, 19 Jan 2022 08:05:27 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jesse Taube <mr.bossman075@gmail.com>
+Cc:     aisheng.dong@nxp.com, nobuhiro1.iwamatsu@toshiba.co.jp,
+        Mr.Bossman075@gmail.com, linux-kernel@vger.kernel.org,
+        kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+        arnd@arndb.de, gregkh@linuxfoundation.org, adrian.hunter@intel.com,
+        abel.vesa@nxp.com, linux-serial@vger.kernel.org,
+        shawnguo@kernel.org, olof@lixom.net,
+        giulio.benetti@benettiengineering.com, linux-gpio@vger.kernel.org,
+        linux-clk@vger.kernel.org, linus.walleij@linaro.org,
+        festevam@gmail.com, sboyd@kernel.org, linux@armlinux.org.uk,
+        mturquette@baylibre.com, robh+dt@kernel.org,
+        ulf.hansson@linaro.org, stefan@agner.ch, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, soc@kernel.org, jirislaby@kernel.org,
+        linux-imx@nxp.com, s.hauer@pengutronix.de
+Subject: Re: [PATCH v8 2/7] ARM: dts: imxrt1050-pinfunc: Add pinctrl binding
+ header
+Message-ID: <YegapycPxDdgTlXQ@robh.at.kernel.org>
+References: <20220111212606.2072669-1-Mr.Bossman075@gmail.com>
+ <20220111215415.2075257-1-Mr.Bossman075@gmail.com>
+ <20220111215415.2075257-3-Mr.Bossman075@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a17:907:6d16:0:0:0:0 with HTTP; Wed, 19 Jan 2022 04:58:48
- -0800 (PST)
-Reply-To: mrsbillchantallawrence2@gmail.com
-From:   MRS BILL CHANTAL LAWRANCE <aamadchantal001@gmail.com>
-Date:   Wed, 19 Jan 2022 04:58:48 -0800
-Message-ID: <CA+svXzgEKQCuUPwhnCF55vRXGL02GHnFS+bWBe5s5r374uzuPw@mail.gmail.com>
-Subject: DEAR FRIEND
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220111215415.2075257-3-Mr.Bossman075@gmail.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-dear
+On Tue, 11 Jan 2022 16:54:10 -0500, Jesse Taube wrote:
+> From: Jesse Taube <mr.bossman075@gmail.com>
+> 
+> Add binding header for i.MXRT1050 pinctrl device tree.
+> 
+> Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
+> Signed-off-by: Jesse Taube <Mr.Bossman075@gmail.com>
+> [Jesse: move pinfunc from dt-bindings to dts folder]
+> ---
+> V1->V2:
+> * Move pinfunc from dt-binding to dts
+> * Change subject and description
+> * Change licence to "GPL-2.0+ OR MIT"
+> V2->V3:
+> * Change License comment style
+> V3->V4:
+> * Nothing done
+> V4->V5:
+> * Nothing done
+> V5->V6:
+> * Nothing done
+> V6->V7:
+> * Nothing done
+> V7->V8:
+> * Nothing done
+> ---
+>  arch/arm/boot/dts/imxrt1050-pinfunc.h | 993 ++++++++++++++++++++++++++
+>  1 file changed, 993 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/imxrt1050-pinfunc.h
+> 
 
-You have been compensated with the sum of 5.1 million dollars in this
-united nation the payment will be Issue into ATM visa card and send to
-you from the Santander bank of Spain we need your address passport and
-your whatsapp number.
-Thanks
-
-Mrs. bill Chantal
+Acked-by: Rob Herring <robh@kernel.org>
