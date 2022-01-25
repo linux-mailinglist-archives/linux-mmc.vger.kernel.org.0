@@ -2,315 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1E249AC81
-	for <lists+linux-mmc@lfdr.de>; Tue, 25 Jan 2022 07:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB95B49AD0C
+	for <lists+linux-mmc@lfdr.de>; Tue, 25 Jan 2022 08:08:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355354AbiAYGkN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Tue, 25 Jan 2022 01:40:13 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:45513 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1354099AbiAYGhx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 25 Jan 2022 01:37:53 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 20P6bSwY5011973, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 20P6bSwY5011973
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 25 Jan 2022 14:37:28 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 25 Jan 2022 14:37:27 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Mon, 24 Jan 2022 22:37:27 -0800
-Received: from RTEXMBS01.realtek.com.tw ([fe80::472:6d76:b35d:421e]) by
- RTEXMBS01.realtek.com.tw ([fe80::472:6d76:b35d:421e%5]) with mapi id
- 15.01.2308.020; Tue, 25 Jan 2022 14:37:27 +0800
-From:   Ricky WU <ricky_wu@realtek.com>
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
-CC:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        Thomas Hebb <tommyhebb@gmail.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v6 1/4] mmc: rtsx: Use pm_runtime_{get,put}() to handle runtime PM
-Thread-Topic: [PATCH v6 1/4] mmc: rtsx: Use pm_runtime_{get,put}() to handle
- runtime PM
-Thread-Index: AQHYEa903hqeGpf0tUOwpFCX1CCXxKxzRdPQ
-Date:   Tue, 25 Jan 2022 06:37:27 +0000
-Message-ID: <e17921f54f3640bdba3212803b020ae0@realtek.com>
-References: <20220121014039.1693208-1-kai.heng.feng@canonical.com>
- <20220125055010.1866563-1-kai.heng.feng@canonical.com>
-In-Reply-To: <20220125055010.1866563-1-kai.heng.feng@canonical.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.22.81.97]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/1/25_=3F=3F_03:54:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1392110AbiAYHGN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 25 Jan 2022 02:06:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46102 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1392081AbiAYHDK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 25 Jan 2022 02:03:10 -0500
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97B67C02B87A
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Jan 2022 21:41:52 -0800 (PST)
+Received: by mail-yb1-xb32.google.com with SMTP id g14so58278822ybs.8
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Jan 2022 21:41:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=omchJdYJcVvbnbx3iWDsqNfzfvgFxRY5UV8d5JFHFd0Qxp4Fs99oOTWbnsLJvmkGLO
+         KJ9h0aIZipzZCxLYUC1EbKJQXjsTnrYD4skWPu5L6KEa7WwksJ/DgfAKn2I//FvNz16e
+         yvRSMjBJIkfJOiN7QosmIFzfX6t0OymUxXq/kzoldmt5Tk4SMXy3poAlzZfnj4tLqkCO
+         r1uVZjBjIcfKcTHUm4yIRwmNGijXGA0OAhFYRol/6hiAAZJ37V1K6a3bLM+XpGdFXGos
+         hPiIHyT9XSW8aiVFGjIdHRgRcnWLHkX21ZW87GvspRwlXlL9xuI6dXFZXWxBZnRTJWgA
+         Bk5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=PVBbHYWrrwRKHL/mlve8PPiKxdwk2rgvM+fOCkU2X5xB7gujjiME+7mn/pp+c0vTba
+         8lfm39dKGz45c/gttS21Nx8swCWSi19Tcx+472jRm9IF8VyHZDpsianj9goVzF/eYamq
+         iZocAwtpeVBqpmMbcuj1G937dV2/KdaFRlhyknt1okxBWZcQdorVPA6uWhikf+tWdCmQ
+         f893RRkTLuUd4NTqjTM/hjRLPXqeHpWD4Ols0qYDWoNEKuPGNjiFcLZVtsBMIh7aH+zh
+         jjmQ3E1+mI7+gV/5YahAKPVT7ViCNLZf/OrPcvxPi7Rn22F50b7kUVWp+5MjNd/S85id
+         rBWg==
+X-Gm-Message-State: AOAM533PdMJa/ycTGkxQhFwPnG6WZ3Xtu11g0Ydvzj/J1lxxJTlGvpJf
+        qNiW0N5qcu3rDIJsEZhixsunfkTICO46biKMOPXHRihWnl0=
+X-Google-Smtp-Source: ABdhPJwywiwyTtOCXfovmJIEM7Vqt+PFDzMW3tzxRj90P3fJDPhIlV2jOd/vI9WPw47eCab8Z7S4n4qldrLRD5Ly+Sc=
+X-Received: by 2002:a25:d783:: with SMTP id o125mr27594671ybg.710.1643089301256;
+ Mon, 24 Jan 2022 21:41:41 -0800 (PST)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+Received: by 2002:a05:7000:ad9d:0:0:0:0 with HTTP; Mon, 24 Jan 2022 21:41:40
+ -0800 (PST)
+Reply-To: danielseyba@yahoo.com
+From:   Seyba Daniel <mrssuzaramaling19@gmail.com>
+Date:   Tue, 25 Jan 2022 06:41:40 +0100
+Message-ID: <CAKN-9XgQjuMspSnu-F01fv+Bgr6eZEygpsR3pZ-5cF=m78av-Q@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-> -----Original Message-----
-> From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> Sent: Tuesday, January 25, 2022 1:50 PM
-> To: arnd@arndb.de; gregkh@linuxfoundation.org; ulf.hansson@linaro.org
-> Cc: linux-pm@vger.kernel.org; Kai-Heng Feng <kai.heng.feng@canonical.com>;
-> Ricky WU <ricky_wu@realtek.com>; Thomas Hebb <tommyhebb@gmail.com>;
-> linux-mmc@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: [PATCH v6 1/4] mmc: rtsx: Use pm_runtime_{get,put}() to handle
-> runtime PM
-> 
-> Commit 5b4258f6721f ("misc: rtsx: rts5249 support runtime PM") doesn't use
-> pm_runtime_{get,put}() helpers when it should, so the RPM refcount keeps at
-> zero, hence its parent driver, rtsx_pci, has to do lots of weird tricks to keep it
-> from runtime suspending.
-> 
-> So use those helpers at right places to properly manage runtime PM.
-> 
-> Fixes: 5b4258f6721f ("misc: rtsx: rts5249 support runtime PM")
-> Cc: Ricky WU <ricky_wu@realtek.com>
-Tested-by: Ricky WU <ricky_wu@realtek.com>
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> ---
-> v6:
->  - Change the auto suspend delay to 200ms as Realtek suggested.
-> 
-> v5:
->  - Revert back to v3 as Realtek suggested.
-> 
-> v4:
->  - Decrease the autosuspend delay to 200ms for more power saving.
-> 
-> v3:
-> v2:
->  - No change.
-> 
->  drivers/mmc/host/rtsx_pci_sdmmc.c | 44 +++++++++++++++++++++++--------
->  1 file changed, 33 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c
-> b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> index 58cfaffa3c2d8..2a3f14afe9f83 100644
-> --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-> +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> @@ -806,6 +806,7 @@ static void sd_request(struct work_struct *work)
->  	struct mmc_request *mrq = host->mrq;
->  	struct mmc_command *cmd = mrq->cmd;
->  	struct mmc_data *data = mrq->data;
-> +	struct device *dev = &host->pdev->dev;
-> 
->  	unsigned int data_size = 0;
->  	int err;
-> @@ -822,6 +823,7 @@ static void sd_request(struct work_struct *work)
->  	}
-> 
->  	mutex_lock(&pcr->pcr_mutex);
-> +	pm_runtime_get_sync(dev);
-> 
->  	rtsx_pci_start_run(pcr);
-> 
-> @@ -858,6 +860,8 @@ static void sd_request(struct work_struct *work)
->  			data->bytes_xfered = data->blocks * data->blksz;
->  	}
-> 
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
->  	mutex_unlock(&pcr->pcr_mutex);
-> 
->  finish:
-> @@ -1080,6 +1084,7 @@ static void sdmmc_set_ios(struct mmc_host *mmc,
-> struct mmc_ios *ios)  {
->  	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
->  	struct rtsx_pcr *pcr = host->pcr;
-> +	struct device *dev = &host->pdev->dev;
-> 
->  	if (host->eject)
->  		return;
-> @@ -1088,6 +1093,7 @@ static void sdmmc_set_ios(struct mmc_host *mmc,
-> struct mmc_ios *ios)
->  		return;
-> 
->  	mutex_lock(&pcr->pcr_mutex);
-> +	pm_runtime_get_sync(dev);
-> 
->  	rtsx_pci_start_run(pcr);
-> 
-> @@ -1121,6 +1127,8 @@ static void sdmmc_set_ios(struct mmc_host *mmc,
-> struct mmc_ios *ios)
->  	rtsx_pci_switch_clock(pcr, ios->clock, host->ssc_depth,
->  			host->initial_mode, host->double_clk, host->vpclk);
-> 
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
->  	mutex_unlock(&pcr->pcr_mutex);
->  }
-> 
-> @@ -1128,6 +1136,7 @@ static int sdmmc_get_ro(struct mmc_host *mmc)
-> {
->  	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
->  	struct rtsx_pcr *pcr = host->pcr;
-> +	struct device *dev = &host->pdev->dev;
->  	int ro = 0;
->  	u32 val;
-> 
-> @@ -1135,6 +1144,7 @@ static int sdmmc_get_ro(struct mmc_host *mmc)
->  		return -ENOMEDIUM;
-> 
->  	mutex_lock(&pcr->pcr_mutex);
-> +	pm_runtime_get_sync(dev);
-> 
->  	rtsx_pci_start_run(pcr);
-> 
-> @@ -1144,6 +1154,8 @@ static int sdmmc_get_ro(struct mmc_host *mmc)
->  	if (val & SD_WRITE_PROTECT)
->  		ro = 1;
-> 
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
->  	mutex_unlock(&pcr->pcr_mutex);
-> 
->  	return ro;
-> @@ -1153,6 +1165,7 @@ static int sdmmc_get_cd(struct mmc_host *mmc)
-> {
->  	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
->  	struct rtsx_pcr *pcr = host->pcr;
-> +	struct device *dev = &host->pdev->dev;
->  	int cd = 0;
->  	u32 val;
-> 
-> @@ -1160,6 +1173,7 @@ static int sdmmc_get_cd(struct mmc_host *mmc)
->  		return cd;
-> 
->  	mutex_lock(&pcr->pcr_mutex);
-> +	pm_runtime_get_sync(dev);
-> 
->  	rtsx_pci_start_run(pcr);
-> 
-> @@ -1169,6 +1183,8 @@ static int sdmmc_get_cd(struct mmc_host *mmc)
->  	if (val & SD_EXIST)
->  		cd = 1;
-> 
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
->  	mutex_unlock(&pcr->pcr_mutex);
-> 
->  	return cd;
-> @@ -1251,6 +1267,7 @@ static int sdmmc_switch_voltage(struct mmc_host
-> *mmc, struct mmc_ios *ios)  {
->  	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
->  	struct rtsx_pcr *pcr = host->pcr;
-> +	struct device *dev = &host->pdev->dev;
->  	int err = 0;
->  	u8 voltage;
-> 
-> @@ -1265,6 +1282,7 @@ static int sdmmc_switch_voltage(struct mmc_host
-> *mmc, struct mmc_ios *ios)
->  		return err;
-> 
->  	mutex_lock(&pcr->pcr_mutex);
-> +	pm_runtime_get_sync(dev);
-> 
->  	rtsx_pci_start_run(pcr);
-> 
-> @@ -1294,6 +1312,8 @@ static int sdmmc_switch_voltage(struct mmc_host
-> *mmc, struct mmc_ios *ios)
->  	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
->  			SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP, 0);
-> 
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
->  	mutex_unlock(&pcr->pcr_mutex);
-> 
->  	return err;
-> @@ -1303,6 +1323,7 @@ static int sdmmc_execute_tuning(struct mmc_host
-> *mmc, u32 opcode)  {
->  	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
->  	struct rtsx_pcr *pcr = host->pcr;
-> +	struct device *dev = &host->pdev->dev;
->  	int err = 0;
-> 
->  	if (host->eject)
-> @@ -1313,6 +1334,7 @@ static int sdmmc_execute_tuning(struct mmc_host
-> *mmc, u32 opcode)
->  		return err;
-> 
->  	mutex_lock(&pcr->pcr_mutex);
-> +	pm_runtime_get_sync(dev);
-> 
->  	rtsx_pci_start_run(pcr);
-> 
-> @@ -1345,6 +1367,8 @@ static int sdmmc_execute_tuning(struct mmc_host
-> *mmc, u32 opcode)
->  		err = sd_change_phase(host, DDR50_RX_PHASE(pcr), true);
-> 
->  out:
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
->  	mutex_unlock(&pcr->pcr_mutex);
-> 
->  	return err;
-> @@ -1495,12 +1519,12 @@ static int rtsx_pci_sdmmc_drv_probe(struct
-> platform_device *pdev)
-> 
->  	realtek_init_host(host);
-> 
-> -	if (pcr->rtd3_en) {
-> -		pm_runtime_set_autosuspend_delay(&pdev->dev, 5000);
-> -		pm_runtime_use_autosuspend(&pdev->dev);
-> -		pm_runtime_enable(&pdev->dev);
-> -	}
-> -
-> +	pm_runtime_no_callbacks(&pdev->dev);
-> +	pm_runtime_set_active(&pdev->dev);
-> +	pm_runtime_enable(&pdev->dev);
-> +	pm_runtime_set_autosuspend_delay(&pdev->dev, 200);
-> +	pm_runtime_mark_last_busy(&pdev->dev);
-> +	pm_runtime_use_autosuspend(&pdev->dev);
-> 
->  	mmc_add_host(mmc);
-> 
-> @@ -1521,11 +1545,6 @@ static int rtsx_pci_sdmmc_drv_remove(struct
-> platform_device *pdev)
->  	pcr->slots[RTSX_SD_CARD].card_event = NULL;
->  	mmc = host->mmc;
-> 
-> -	if (pcr->rtd3_en) {
-> -		pm_runtime_dont_use_autosuspend(&pdev->dev);
-> -		pm_runtime_disable(&pdev->dev);
-> -	}
-> -
->  	cancel_work_sync(&host->work);
-> 
->  	mutex_lock(&host->host_mutex);
-> @@ -1548,6 +1567,9 @@ static int rtsx_pci_sdmmc_drv_remove(struct
-> platform_device *pdev)
-> 
->  	flush_work(&host->work);
-> 
-> +	pm_runtime_dont_use_autosuspend(&pdev->dev);
-> +	pm_runtime_disable(&pdev->dev);
-> +
->  	mmc_free_host(mmc);
-> 
->  	dev_dbg(&(pdev->dev),
-> --
-> 2.33.1
+Hello,
 
+I am so sorry contacting you in this means especially when we have never
+met before. I urgently seek your service to represent me in investing in
+your region / country and you will be rewarded for your service without
+affecting your present job with very little time invested in it.
+
+My interest is in buying real estate, private schools or companies with
+potentials for rapid growth in long terms.
+
+So please confirm interest by responding back.
+
+My dearest regards
+
+Seyba Daniel
