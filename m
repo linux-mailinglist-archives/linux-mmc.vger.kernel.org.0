@@ -2,79 +2,114 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 594624A413A
-	for <lists+linux-mmc@lfdr.de>; Mon, 31 Jan 2022 12:03:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 881C64A497E
+	for <lists+linux-mmc@lfdr.de>; Mon, 31 Jan 2022 15:39:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239719AbiAaLDU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 31 Jan 2022 06:03:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43492 "EHLO
+        id S238859AbiAaOjp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 31 Jan 2022 09:39:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358512AbiAaLBl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 31 Jan 2022 06:01:41 -0500
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A713EC0613B8
-        for <linux-mmc@vger.kernel.org>; Mon, 31 Jan 2022 03:00:08 -0800 (PST)
-Received: by mail-il1-x142.google.com with SMTP id i1so11032151ils.5
-        for <linux-mmc@vger.kernel.org>; Mon, 31 Jan 2022 03:00:08 -0800 (PST)
+        with ESMTP id S238906AbiAaOjo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 31 Jan 2022 09:39:44 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E9FFC06173D
+        for <linux-mmc@vger.kernel.org>; Mon, 31 Jan 2022 06:39:44 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id u14so27228470lfo.11
+        for <linux-mmc@vger.kernel.org>; Mon, 31 Jan 2022 06:39:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
-        b=Ozk//2swZ4n+9EW8l8AJE1MTLlpoaCXK3xzfpPFLIseBsOa2jBlUIXPufJKZWOZJb1
-         LZYSIA+qJrwb7cNfMphudC5bBa0wGV8S3gL6kVVbqGkOdt0B4XP1yUbpKkdrSgOk4SCw
-         v1C0S0LKRkjJnU7f896SEI1wlEalwFx9Rgq5irerJa96uqZolG/hVsfTboEhp5Wo262X
-         Bw5DjIfp6f3BMZuUcN/21CQmX+e0cBVKV6O17yhSY33CkiO9iN1/rQChZ0P/9curfp6q
-         4Ae69srjWBiOD2IQLksGh38ZmWapdFwCTJxNZE6Fdwc1T0xvGWym84r63rPu354BmJN+
-         Mxew==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qzKdvDWI9cfPi4ztVSGxYkBmrqKhHHJF23hXiByBnDU=;
+        b=E/PA4Gz5Ivfh437Err49tSH/yazlUur3pqzJa27lvXl1M9+J/QDuV3toSkQnz+Jskl
+         Jd3/qtkEZ6jzbb+VwEUuMWc6w6mgJ9kOKUaW6MtMoyYQeE07t9k8q3nxVYv8RzA558nC
+         u+msb7MptubGrtAq5/Zihy+IQdWygGTUH7iXrzpRX8bk93/6B/2zkIjJ8lVTDf0miCb4
+         ZblPe8ZooX7mhVKQqxQrTlbL/bg9xKVQMwUZylSNiTBpaBeZaHUAZaaHUXKO3od/9N+X
+         pWUeHFzhIsN6j5WdhGMWxy+0xcY/VWV9f54siehUeyLQeJLHuorLjvUDmg+kQ/iespaq
+         EDEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
-        b=X53fZZ7fXtQBjGrmsEOo2qacTa5UHu2uV6QCeTJhnFoKlN5hB5G7naCWQBGNueMerX
-         Vh+P4qG4MvNfH73PS+DwNy9HAlZymLFit8/TOfmtjKVcRFx3ejXE4Hp3+PAdCNYyNKP1
-         0uvnB3hNsk2oTuaKQqjvqSxUZXW3rJcEBxkzA97vf5z300Lwvk1BUkGnfiicGrXflWs7
-         ULqT7nas4lXNld+C3GpqcdN1/+kGHe5XitBd2RxsdQ7ZjpVAXMbBQzT7acpf3IL4nBe5
-         7v6W+CapSDdUz8cHfTBDHac6LL/eVTtGOu1dhQjHF8b03a/NT7aBbEuCkBoNncaIWIv1
-         P+6w==
-X-Gm-Message-State: AOAM533DwME3cUVuFbL+ZZR0ph5h+15aMdz26/AljG9EkJqcy5dUU2Pc
-        5Lb+KhmIR4GRFJVCOp+47LPpr3vHGiLrvHixwv0=
-X-Google-Smtp-Source: ABdhPJwTER/p0YcvOwwJid91RzPvkEw8DmHtUlVRny5nV0kksgWcR6ScIqwhpLtpjii0MFHZVgmhnLw6wJn43CXNw30=
-X-Received: by 2002:a92:ca4f:: with SMTP id q15mr10723189ilo.181.1643626807913;
- Mon, 31 Jan 2022 03:00:07 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qzKdvDWI9cfPi4ztVSGxYkBmrqKhHHJF23hXiByBnDU=;
+        b=RRNDVT3WIkGDpYK7nvV5estPuWKpjgfG+j5h/rhdZpqL7+YHtvY+eEKO0Zc6SfaB3k
+         W15Si0TG+JultIMrVdOciQXDPzh5wJYQT7fzq6bfdozXjqzBgEQxEBGXeCOVOuxQGW11
+         UEpFhhsbwCYnrlpJFTHZjMx4CqPr548TnYmFQMPTPTv3Emqr3rYFlaMum/FQZbU4TEBl
+         Ey58QpexE0eFHDaA7fGVsw86tVp7W/VAjR+HEZCU+LL81R/brx3efYpsKmF1G7uAjLjZ
+         951zWnlLCZceYdWYPbOCH0DvM7Yv4lSaE72Bj16eFhAX+u3qvfpAZBhTvQOv5K2Hi3En
+         DoTA==
+X-Gm-Message-State: AOAM530Aqg57zxOLQDNmjI+We3w10KNQN1Od8KEFyDCYnil3aH1XgC0B
+        Na5ffWPr6ZaUT7PMW49rV5azubK9joVvsNxV3pMBXw==
+X-Google-Smtp-Source: ABdhPJzr4AKuGZb0oc8Yf7NlZTAeVKsk1H3sQ+ng+YzTmdG0pZdvebsY68Y4jem072HHkTrkeurPblMrSmZ1lgc5BZE=
+X-Received: by 2002:a05:6512:3b9a:: with SMTP id g26mr14254558lfv.71.1643639982851;
+ Mon, 31 Jan 2022 06:39:42 -0800 (PST)
 MIME-Version: 1.0
-Reply-To: daniellakyle60@gmail.com
-Sender: drdanielmorris11111@gmail.com
-Received: by 2002:a05:6638:1248:0:0:0:0 with HTTP; Mon, 31 Jan 2022 03:00:07
- -0800 (PST)
-From:   Mrs daniell akyle <daniellakyle60@gmail.com>
-Date:   Mon, 31 Jan 2022 12:00:07 +0100
-X-Google-Sender-Auth: juhwXopT4FowK4J6T8rApuMl0w4
-Message-ID: <CAKFcj-OsHQc6b32Puiy4zbkpRh0TFP-Vu0BdoENoHiCXtxRwQQ@mail.gmail.com>
-Subject: Ahoj
-To:     undisclosed-recipients:;
+References: <20220127071638.4057899-1-gregkh@linuxfoundation.org>
+In-Reply-To: <20220127071638.4057899-1-gregkh@linuxfoundation.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 31 Jan 2022 15:39:06 +0100
+Message-ID: <CAPDyKFqt0aeLL1K3wRR1HF4Lf6t6UU94PmMxXys5Wc6fYjDBdA@mail.gmail.com>
+Subject: Re: [PATCH v2] moxart: fix potential use-after-free on remove path
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, Xiyu Yang <xiyuyang19@fudan.edu.cn>,
+        Xin Xiong <xiongx18@fudan.edu.cn>,
+        Xin Tan <tanxin.ctf@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        linux-mmc@vger.kernel.org, stable <stable@vger.kernel.org>,
+        whitehat002 <hackyzh002@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Pozdravy
-Jmenuji se pan=C3=AD Daniella Kyleov=C3=A1, je mi 58 let
-Filip=C3=ADny. V sou=C4=8Dasn=C3=A9 dob=C4=9B jsem hospitalizov=C3=A1n na F=
-ilip=C3=ADn=C3=A1ch, kde jsem
-podstupuje l=C3=A9=C4=8Dbu akutn=C3=ADho karcinomu j=C3=ADcnu. jsem um=C3=
-=ADraj=C3=ADc=C3=AD,
-vdova, kter=C3=A1 se rozhodla darovat =C4=8D=C3=A1st sv=C3=A9ho majetku spo=
-lehliv=C3=A9 osob=C4=9B
-kter=C3=A1 tyto pen=C3=ADze pou=C5=BEije na pomoc chud=C3=BDm a m=C3=A9n=C4=
-=9B privilegovan=C3=BDm. Chci
-poskytnout dar ve v=C3=BD=C5=A1i 3 700 000 =C2=A3 na sirotky nebo charitati=
-vn=C3=AD organizace
-ve va=C5=A1=C3=AD oblasti. Zvl=C3=A1dne=C5=A1 to? Pokud jste ochotni tuto n=
-ab=C3=ADdku p=C5=99ijmout
-a ud=C4=9Blejte p=C5=99esn=C4=9B tak, jak v=C3=A1m =C5=99=C3=ADk=C3=A1m, pa=
-k se mi vra=C5=A5te pro dal=C5=A1=C3=AD vysv=C4=9Btlen=C3=AD.
-pozdravy
-Pan=C3=AD Daniella Kyleov=C3=A1
+On Thu, 27 Jan 2022 at 08:16, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> It was reported that the mmc host structure could be accessed after it
+> was freed in moxart_remove(), so fix this by saving the base register of
+> the device and using it instead of the pointer dereference.
+>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Xiyu Yang <xiyuyang19@fudan.edu.cn>
+> Cc: Xin Xiong <xiongx18@fudan.edu.cn>
+> Cc: Xin Tan <tanxin.ctf@gmail.com>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: Yang Li <yang.lee@linux.alibaba.com>
+> Cc: linux-mmc@vger.kernel.org
+> Cc: stable <stable@vger.kernel.org>
+> Reported-by: whitehat002 <hackyzh002@gmail.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+Applied for fixes, thanks!
+
+Kind regards
+Uffe
+
+> ---
+> v2: changed to only move mmc_free_host() call as per Ulf's request
+>
+>  drivers/mmc/host/moxart-mmc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/host/moxart-mmc.c b/drivers/mmc/host/moxart-mmc.c
+> index 16d1c7a43d33..b6eb75f4bbfc 100644
+> --- a/drivers/mmc/host/moxart-mmc.c
+> +++ b/drivers/mmc/host/moxart-mmc.c
+> @@ -705,12 +705,12 @@ static int moxart_remove(struct platform_device *pdev)
+>         if (!IS_ERR_OR_NULL(host->dma_chan_rx))
+>                 dma_release_channel(host->dma_chan_rx);
+>         mmc_remove_host(mmc);
+> -       mmc_free_host(mmc);
+>
+>         writel(0, host->base + REG_INTERRUPT_MASK);
+>         writel(0, host->base + REG_POWER_CONTROL);
+>         writel(readl(host->base + REG_CLOCK_CONTROL) | CLK_OFF,
+>                host->base + REG_CLOCK_CONTROL);
+> +       mmc_free_host(mmc);
+>
+>         return 0;
+>  }
+> --
+> 2.35.0
+>
