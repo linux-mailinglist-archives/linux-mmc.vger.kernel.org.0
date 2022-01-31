@@ -2,90 +2,140 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 352654A51C0
-	for <lists+linux-mmc@lfdr.de>; Mon, 31 Jan 2022 22:41:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 281D44A5288
+	for <lists+linux-mmc@lfdr.de>; Mon, 31 Jan 2022 23:43:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381150AbiAaVlK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 31 Jan 2022 16:41:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51772 "EHLO
+        id S234440AbiAaWni (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 31 Jan 2022 17:43:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381262AbiAaVjG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 31 Jan 2022 16:39:06 -0500
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222AAC061777
-        for <linux-mmc@vger.kernel.org>; Mon, 31 Jan 2022 13:38:21 -0800 (PST)
-Received: by mail-oi1-x244.google.com with SMTP id s185so29420303oie.3
-        for <linux-mmc@vger.kernel.org>; Mon, 31 Jan 2022 13:38:21 -0800 (PST)
+        with ESMTP id S229870AbiAaWni (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 31 Jan 2022 17:43:38 -0500
+Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50E87C06173B
+        for <linux-mmc@vger.kernel.org>; Mon, 31 Jan 2022 14:43:38 -0800 (PST)
+Received: by mail-oo1-xc36.google.com with SMTP id c7-20020a4ad207000000b002e7ab4185d2so3575479oos.6
+        for <linux-mmc@vger.kernel.org>; Mon, 31 Jan 2022 14:43:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=RcCyF58LaRxi/j1nHAT0ApLeXmQ9s66f3iMVqhPacvY=;
-        b=dEuqzCa7Zlz6s4mRGbRbRWXXanD59qsT+xmKk7tBbCVL8shmNgt9pnuL3r3GZQALql
-         Y63DqHUGCnZO0yzAtzp7ZNS2CuC8pMKUMaMtNqE3s9gB45FDt9/C7CdeYDqwmv7HZJbj
-         h6fZit5aG7dGp8FvXKTscfcGshyIKAGZl/Y4NFvWe+GDkg5MDDBzPsbgzyvzZ7B1mfX4
-         ltlQ0tRJrdsWlCdvxMPpvS+PhwNDM1Zp7MYHnfnHzWMTP4bbhrhxbQSB0Xw9LPR0gSp/
-         L2Vas/DZH4ZiZyplfhihUfOHaOD2GjtH1tg3ZI6lVgxDcwRnl8d4U3qCI5tj+07J/ZXk
-         SzvA==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=yX/YWQ2F2e81Xwl7jttAWwJX0hjqq2GEo6RpoBFupaE=;
+        b=vfFnO0qBgoNjcKKMsAi/QdbQDYRqVl+e0ovhz1YJEmfDXIJTHFLajFCfy4a/29VKiK
+         dCquWo1ULDCUPxTlldxNc+tt8SXRztecqlSswaH+6ta/g8TxE6LAX7cOpYyDMx3Ux8wF
+         PDdy0mfS4w2MZfWV94dvZWPDCavyZ8a92IzrMJ2BxgXKKmEcYLtELACElRAkkVagd0AE
+         3oWAuqlMHxwy/xFshv34BToc/9x2Aw7b14u2szcGtcqrrxYDbtBHgMTxV7BRFy9iVC70
+         +u4Claci5p6RTS3K8Ow4IpkFMs/Ah+9lnAMG30eqGldxYGVp3V6NZiUD+cBE+akEEurO
+         c39w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=RcCyF58LaRxi/j1nHAT0ApLeXmQ9s66f3iMVqhPacvY=;
-        b=67Et/1F4e+49ymGdF8nVRpTQF9sNIgGANygcfLDolqKfcxtjISycc4gpoX8qy5PUss
-         OgAepmDRLs5QNE4MqPVB8rvzQwVVXEfJwftGcY98NHOfxorbTWoEEhdTemJnvsCd0ohu
-         yRd+VsMo54ACZXHC1h7NSqJQOrhxH4OSOzEG969/yfYr4jWcKESOhKheqBuFF/o91bld
-         scKx4K0i9c9NXDuZ4UwMV5XqKwsQ7zmaBwBTG3QKAfNPHMLkAmYrheL13F1WyuInNAVV
-         uv7WgDgvZJCExp2SSjO13C8I7xQDv87pz+INfxHQkA6qMZklefA3rGIFqFalJuqbmd/m
-         x2/w==
-X-Gm-Message-State: AOAM530XhC761c8rWMDiF+3Wyz9nrrMcaNdfrTJkiTTlvce6JkRFRIPs
-        ojLTG/bTPu1wwzgD/batCx+vfCgXHERfnSIx6XaXPZBwRWqnqQ==
-X-Google-Smtp-Source: ABdhPJzjG4nHBnpm1YeRsvfpKVsM6nmNJIeFJaztEJrNHMe+iyJctx1iGavTAT23A2IhS4j6LtYbunRiUquAn1xj08o=
-X-Received: by 2002:a54:4490:: with SMTP id v16mr14818764oiv.157.1643665089421;
- Mon, 31 Jan 2022 13:38:09 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=yX/YWQ2F2e81Xwl7jttAWwJX0hjqq2GEo6RpoBFupaE=;
+        b=mD7qqZiSu2UyIzyLJgirTt7t/vsE493TPe5/gdyx9aCqdjEnJyPjvOoaahFL/QG4dU
+         CiWViKQz8kmI2e3mHLS/uSlpak35TzkbkQFT37vFKQGA9m89yP5/d1V64kUmMKA4ES7v
+         lzgojNZiTN/XSYGmGLZk1g4LwVLpClu7+tIB248msLje5M7ScUmIEfsKoQcyVyiSQU4f
+         4Ot/SmRi82jItNhzAxcfs90jNEdSDwS5x9Ewm14tyuLkaHl7a34CKIQSiwJC3q8PvsMb
+         L2fnP2v73vIBt6YplPA/OskoQqCFCLpGKQuKxo8TQ+g1qIJh/4w+hTTBj9zBX2hR5fwr
+         trmA==
+X-Gm-Message-State: AOAM5309XvbNtWjo9nzs0+tu9hf0bMHPefpYrM7RsENESyM0c6pb05t3
+        yx/hR/oGULIEdM3gV/blnWo1xA==
+X-Google-Smtp-Source: ABdhPJw0/vA1k6EMzBnpDb3zSUhXhlmDS2Ml8ZV6QIGWT9ZbfXaCadYTGpIHmQ2Vbq0owZnAxdAkEA==
+X-Received: by 2002:a4a:e0d8:: with SMTP id e24mr11256827oot.56.1643669017662;
+        Mon, 31 Jan 2022 14:43:37 -0800 (PST)
+Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
+        by smtp.gmail.com with ESMTPSA id c26sm7516092otn.34.2022.01.31.14.43.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Jan 2022 14:43:37 -0800 (PST)
+Date:   Mon, 31 Jan 2022 16:43:35 -0600
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Petr Vorel <petr.vorel@gmail.com>
+Cc:     linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konradybcio@gmail.com>,
+        Jean Thomas <virgule@jeanthomas.me>,
+        Alexey Minnekhanov <alexeymin@postmarketos.org>,
+        Andy Gross <agross@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Taniya Das <tdas@codeaurora.org>, linux-mmc@vger.kernel.org
+Subject: Re: [PATCH 5/6] arm64: dts: qcom: msm8994-huawei-angler: Add
+ sdhc{1,2} definitions
+Message-ID: <YfhmF6FKV9/6YfAL@builder.lan>
+References: <20220113233358.17972-1-petr.vorel@gmail.com>
+ <20220113233358.17972-6-petr.vorel@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a4a:c30d:0:0:0:0:0 with HTTP; Mon, 31 Jan 2022 13:38:09
- -0800 (PST)
-Reply-To: westerunion909@gmail.com
-From:   "Antonia Lloyd." <anthonylloydatmxxx04@gmail.com>
-Date:   Mon, 31 Jan 2022 13:38:09 -0800
-Message-ID: <CAExPwBBpihjV-rv_-+hYqb1WD3wpSWx81B_Q3ES15U3TXSPsyw@mail.gmail.com>
-Subject: Dear Email ID Owner.(USD$4000 IMF COMPENSATION FUND TO PICK UP TODAY).
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220113233358.17972-6-petr.vorel@gmail.com>
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dear Email ID Owner.
+On Thu 13 Jan 17:33 CST 2022, Petr Vorel wrote:
 
-The IMF is compensating all the email address that was funds as one of
-the ward win Victims and your email address and your name is among the
-listed one of approved to pay the sum of $3.6 million U.S Dollars. We
-have concluded to effect your own payment through Western Union Money
-Transfer for easy pick-up of those funds in good condition,$4000 twice
-daily,till the $3.6 million is completely transferred to you.We now
-need your information where we will be sending the funds,such
-as;Receiver name(Your full Name)address and phone number.Contact
-Western Union agent with this Email: ( westerunion995@gmail.com  ) for
-your payment fund.
+> Although downstream supports HS400, there are overclocking warnings when
+> using mmc-hs400-1_8v:
+> 
+> mmc0: Card appears overclocked; req 200000000 Hz, actual 384000000 Hz
+> mmc0: Card appears overclocked; req 200000000 Hz, actual 384000000 Hz
+> mmc0: Card appears overclocked; req 200000000 Hz, actual 384000000 Hz
+> mmc0: Card appears overclocked; req 400000000 Hz, actual 768000000 Hz
+> mmc0: Card appears overclocked; req 400000000 Hz, actual 768000000 Hz
+> mmc0: new HS400 MMC card at address 0001
+> 
+> Using HS200 (i.e. mmc-hs200-1_8v or mmc-ddr-1_8v) would reduce them:
+> 
+> mmc0: Card appears overclocked; req 200000000 Hz, actual 384000000 Hz
+> mmc0: Card appears overclocked; req 200000000 Hz, actual 384000000 Hz
+> mmc0: new HS200 MMC card at address 0001
+> 
+> But as the problem is probably elsewhere (bullhead behaves the same),
+> keep mmc-hs400-1_8v.
+> 
+> Angler does not have SD card, thus explicitly disable sdhc2.
+> 
+> Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
+> ---
+>  .../dts/qcom/msm8994-huawei-angler-rev-101.dts   | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts b/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
+> index 0e3dd48f0dbf..5ce3dc169bb4 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
+> @@ -7,6 +7,7 @@
+>  /dts-v1/;
+>  
+>  #include "msm8994.dtsi"
+> +#include <dt-bindings/gpio/gpio.h>
+>  
+>  /* Angler's firmware does not report where the memory is allocated */
+>  /delete-node/ &cont_splash_mem;
+> @@ -41,3 +42,18 @@ serial@f991e000 {
+>  &tlmm {
+>  	gpio-reserved-ranges = <85 4>;
+>  };
+> +
+> +/*
+> + * Although downstream supports also HS400 there are fewer overclocking
+> + * warnings when used DDR, also LK bootloader reports DDR mode.
+> + */
+> +&sdhc1 {
+> +	status = "okay";
+> +
+> +	mmc-hs400-1_8v;
+> +};
+> +
+> +/* Angler does not have SD card */
+> +&sdhc2 {
 
-Ms.Maria Zatto
-E-mail:westerunion995@gmail.com
-Telephone: +229 682 97 169
+But isn't &sdhc2 already disabled from msm8992.dtsi and msm8994.dtsi?
 
-Contact Ms.Maria,immediately you get this mail through western union
-email address above to enable her speed-up.your payment and release
-the $4000 dollars MTCN today for you to pick up the payment OK.
+Regards,
+Bjorn
 
-You are expected to provide us with the details as prescribed below to
-enable safe and easy release of your funds today.
-
-(1)Your Full name:
-(2)Your Phone number:
-(3)Your Country:
-(4)Your Age:
-
-Thank you,
-Dr.Antonia Lloyd.
-Contact Dir.Western Union Money Transfer,
-Cotonou-Benin Republic.
+> +	status = "disabled";
+> +};
+> -- 
+> 2.34.1
+> 
