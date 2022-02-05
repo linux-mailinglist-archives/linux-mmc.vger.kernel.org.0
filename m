@@ -2,83 +2,122 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E10F4AA315
-	for <lists+linux-mmc@lfdr.de>; Fri,  4 Feb 2022 23:21:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 621F64AAC92
+	for <lists+linux-mmc@lfdr.de>; Sat,  5 Feb 2022 21:57:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348888AbiBDWVo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 4 Feb 2022 17:21:44 -0500
-Received: from mail-oo1-f48.google.com ([209.85.161.48]:38488 "EHLO
-        mail-oo1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348884AbiBDWVo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 4 Feb 2022 17:21:44 -0500
-Received: by mail-oo1-f48.google.com with SMTP id i10-20020a4aab0a000000b002fccf890d5fso6235636oon.5;
-        Fri, 04 Feb 2022 14:21:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=VSSqlk1OwbpfMCFflvyzMx5ImvnYHmqQIDxXeCyLZws=;
-        b=ih4pQoNFT9Q6Rsqbz7fay34HBoHssB7nOSF9OoueXB5jHmy5TMxNnO9z3FZ8IOdb11
-         wbYj75HozNp15KEB8XwXTPst5+D1YcOqaD6NTqxiurmK/XvBkQh8IbNTtIkK4zPUDrVx
-         G4KABHxDNt0DqleFAFqA+aP00G3+N/6FhRxgNGKuFz71PMrz79VO3+9+HxMWZ2JpZk8l
-         1qrS8C/JMfTfBLEz/O8nxHx+6Cq5Hxyz2B2Sz29AgKoahN0J68o+Mk7JhztAw/ytJWcz
-         irKdHhC4l3NYWmo08ftIBASb5nlK3BVVkiS7V+laWcki0xhPZsJAFvCYylVt6IuiYMJI
-         f8Pw==
-X-Gm-Message-State: AOAM533zEND7xMcCOEomcJCBM6576kHnRO0wlWN4A2o/OcxfUddgKG7K
-        ajcR3XCl3VHxeyDDkAlxYw==
-X-Google-Smtp-Source: ABdhPJzBiBKs5CGPfpkFRLuyyWzKtB05ObCQJbQKHDPTM77tzihcGsXN38Eqvb7S3cWiaJbAXwJdoQ==
-X-Received: by 2002:a05:6870:a242:: with SMTP id g2mr1230497oai.305.1644013303426;
-        Fri, 04 Feb 2022 14:21:43 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id a13sm1023373oan.11.2022.02.04.14.21.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Feb 2022 14:21:42 -0800 (PST)
-Received: (nullmailer pid 3287001 invoked by uid 1000);
-        Fri, 04 Feb 2022 22:21:41 -0000
-Date:   Fri, 4 Feb 2022 16:21:41 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Axe Yang <axe.yang@mediatek.com>
-Cc:     linux-mediatek@lists.infradead.org,
-        Stephen Boyd <swboyd@chromium.org>,
-        Kiwoong Kim <kwmad.kim@samsung.com>,
-        linux-kernel@vger.kernel.org,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        devicetree@vger.kernel.org, Eric Biggers <ebiggers@google.com>,
-        linux-arm-kernel@lists.infradead.org,
+        id S1359693AbiBEU5R (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 5 Feb 2022 15:57:17 -0500
+Received: from mx2.freebsd.org ([96.47.72.81]:22372 "EHLO mx2.freebsd.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1352676AbiBEU5Q (ORCPT <rfc822;linux-mmc@vger.kernel.org>);
+        Sat, 5 Feb 2022 15:57:16 -0500
+Received: from mx1.freebsd.org (mx1.freebsd.org [IPv6:2610:1c1:1:606c::19:1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits)
+         client-signature RSA-PSS (4096 bits))
+        (Client CN "mx1.freebsd.org", Issuer "R3" (verified OK))
+        by mx2.freebsd.org (Postfix) with ESMTPS id 2B0DD7662E;
+        Sat,  5 Feb 2022 20:57:12 +0000 (UTC)
+        (envelope-from marius@freebsd.org)
+Received: from freefall.freebsd.org (freefall.freebsd.org [96.47.72.132])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "freefall.freebsd.org", Issuer "R3" (verified OK))
+        by mx1.freebsd.org (Postfix) with ESMTPS id 4Jrl8S0RZGz4k6h;
+        Sat,  5 Feb 2022 20:57:12 +0000 (UTC)
+        (envelope-from marius@freebsd.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
+        t=1644094632;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=m+fupKVUT/hO2gLKe1/gKpJtcKq6h1c+tLbZJMFOnnA=;
+        b=ZaR0bUasGYfLy6p7+1rXss1zK81GOkU+9bmJrPWomreJq93pwl8Evwtg5Od9YRonrSqcWk
+        ZwScxhd7qCv0ADmYEq25yxPiI2DWx2+MzUr1qK8nGvxu5XFHTo/yShGrcPYB5b6Su0wUqS
+        inCezkCrb7r5WFWVAAcJLJaql87W21kr1JqwHAv6IfNwSdi1aaW3BFAd0m5YxWsiC7n93D
+        6Spk7HPuJ3jWqi9EVs/MZntcppEexJ9ejeaQzSVDK1Lw/OaZvjvqR4OmB7nUaUbfy9F3si
+        wWPN5QYNLVFwy3D9F5Zahixy0306YhWb7dFaabFxGujDcjh4u9jg7mDE8FYSOA==
+Received: by freefall.freebsd.org (Postfix, from userid 1018)
+        id E9CE938E3; Sat,  5 Feb 2022 20:57:11 +0000 (UTC)
+From:   Marius Strobl <marius@FreeBSD.org>
+To:     linux-mmc@vger.kernel.org
+Cc:     Avri Altman <avri.altman@wdc.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Tian Tao <tiantao6@hisilicon.com>,
-        Lucas Stach <dev@lynxeye.de>, Yue Hu <huyue2@yulong.com>,
-        angelogioacchino.delregno@collabora.com,
-        Satya Tangirala <satyat@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-mmc@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] dt-bindings: mmc: add cap-sdio-async-irq flag
-Message-ID: <Yf2m9Y0DAo3rVlyR@robh.at.kernel.org>
-References: <20220121071942.11601-1-axe.yang@mediatek.com>
- <20220121071942.11601-2-axe.yang@mediatek.com>
+        Marius Strobl <marius@FreeBSD.org>
+Subject: [PATCH 1/3] mmc-utils: manpage: Document -c option for partitioning commands
+Date:   Sat,  5 Feb 2022 20:56:45 +0000
+Message-Id: <20220205205647.7677-1-marius@FreeBSD.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220121071942.11601-2-axe.yang@mediatek.com>
+Content-Transfer-Encoding: 8bit
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
+        s=dkim; t=1644094632;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=m+fupKVUT/hO2gLKe1/gKpJtcKq6h1c+tLbZJMFOnnA=;
+        b=cI7tmYuqH+TfZb5Qw8ACg4EJbfHEjkxwupfThcRsU08LNklE7jUJXoxl2KGPnSkSGMMAPe
+        IxFCL308gOE+3q9emOu9XU2+wtL3QOdIyRfk3OQsfXxn8Af2lQao6WLLTMx/3JKzEAA7lh
+        rPlJGjRTvl96nW43bRGIpd9+VKz+J89cCTdUfByVcx0+c9g7ASFIMHAAnvdm58/UGDQFBK
+        WMowAfmeHZ1GDTTK4JIVUIkL12jULi+of7dU1jb+v20DsBiHlY4rhaTsyqhIdYQGpTpM1y
+        Qyr32O+bMur9rkc6bXiUIMrexwisOoDc0DoJIYjedgK9zNN8iClWwgrnDsi5iQ==
+ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1644094632; a=rsa-sha256; cv=none;
+        b=Nhip4NE2fjlUzucn7yKYT/AhUHjREHfDbw/IgFcczcRJHLBnv96ARJC2uiKhx13DNZ3gvE
+        Q7EGcmUo3tcL9s8pIE6e54EByXjSZpYcXK+P192+/HvIPAqRlXJfu9qQ9wOrnFydYx42BB
+        YQLypEMAAs3IMwqOvlN7asjFfznAJfPPoQXtKJW5Iwu1551D+DkqdKNRGNwJfxV7pxqtcZ
+        gu0EcEamMJQg21uUvMbaf5qvt025w48k195iZwfViQcZtKtnC7AMPpJDpTG82dXJTdKfXF
+        JoQaRiAGGcuzDmk046S8zSkEOB9FMbOoexSxLLvk87OKmp4jJ0vv8e9PeqXhkg==
+ARC-Authentication-Results: i=1;
+        mx1.freebsd.org;
+        none
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 21 Jan 2022 15:19:40 +0800, Axe Yang wrote:
-> Asynchronous interrupt is a mechanism that allow SDIO devices alarm
-> interrupt when host stop providing clock to card. Add a DT flag to
-> enable this feature if it is supported by SDIO card.
-> 
-> Signed-off-by: Axe Yang <axe.yang@mediatek.com>
-> ---
->  Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+The 'continue' option was added in commit 752072dafe9c ("Add -c option
+for partitioning commands).
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Marius Strobl <marius@FreeBSD.org>
+---
+ man/mmc.1 | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/man/mmc.1 b/man/mmc.1
+index bdb6f09..bccabf3 100644
+--- a/man/mmc.1
++++ b/man/mmc.1
+@@ -30,21 +30,24 @@ This sets the eMMC to be write-protected until next boot.
+ Set the eMMC data sector size to 4KB by disabling emulation on
+ <device>.
+ .TP
+-.BR "gp create <-y|-n> <length KiB> <partition> <enh_attr> <ext_attr> <device>"
++.BR "gp create <-y|-n|-c> <length KiB> <partition> <enh_attr> <ext_attr> <device>"
+ create general purpose partition for the <device>.
+-Dry-run only unless -y is passed.
++Dry-run only unless -y or -c is passed.
++Use -c if more partitioning settings are still to come.
+ To set enhanced attribute to general partition being created set <enh_attr> to 1 else set it to 0.
+ To set extended attribute to general partition set <ext_attr> to 1,2 else set it to 0.
+ NOTE!  This is a one-time programmable (unreversible) change.
+ .TP
+-.BR "enh_area set <-y|-n> <start KiB> <length KiB> <device>"
++.BR "enh_area set <-y|-n|-c> <start KiB> <length KiB> <device>"
+ Enable the enhanced user area for the <device>.
+-Dry-run only unless -y is passed.
++Dry-run only unless -y or -c is passed.
++Use -c if more partitioning settings are still to come.
+ NOTE!  This is a one-time programmable (unreversible) change.
+ .TP
+-.BR "write_reliability set <-y|-n> <partition> <device>"
++.BR "write_reliability set <-y|-n|-c> <partition> <device>"
+ Enable write reliability per partition for the <device>.
+-Dry-run only unless -y is passed.
++Dry-run only unless -y or -c is passed.
++Use -c if more partitioning settings are still to come.
+ NOTE!  This is a one-time programmable (unreversible) change.
+ .TP
+ .BR "status get <device>"
+-- 
+2.31.1
+
