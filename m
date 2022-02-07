@@ -2,64 +2,41 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A20C4ABD78
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Feb 2022 13:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 648A84ACA12
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Feb 2022 21:11:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243703AbiBGLqY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 7 Feb 2022 06:46:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37326 "EHLO
+        id S236166AbiBGUH6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 7 Feb 2022 15:07:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384387AbiBGL2C (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Feb 2022 06:28:02 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA44C03E946
-        for <linux-mmc@vger.kernel.org>; Mon,  7 Feb 2022 03:26:09 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id o17so19088723ljp.1
-        for <linux-mmc@vger.kernel.org>; Mon, 07 Feb 2022 03:26:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=77jDirKALASyuRe4H7SNos8+ceiZ5NwhVHAmzpu0zXA=;
-        b=YPG3HSxJDHKgSkLNtEZkTejuMRlS5t3d0YDL/GSegkBzscg/AzU0bbVAoAAIj2jYRj
-         aESr+4jgMaypMMIwM0Ho5vk5lfe7AUCINgESqbh1fjUuJHPGg3TszyV9MJG6Lsx9dlG3
-         lCaRevSAg68VQeJAGT8TYNZOWHv6gIYm98eYHsENIigae8mIHGqX3XT+TvMmFQm0D9fW
-         /EE7CB+EcTk3UXcfQR7OYRRuguM8pdwxYbFoHj/sP2ROwqrJ3r8MCdyqv+9f9NO1uHKL
-         /AqLLS18OjZzcg8UtTf+WhTvI7hSJ77JkNZ/92/dzIGYzYoMqlbKlUrJU0TXu15+UwRl
-         zg/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=77jDirKALASyuRe4H7SNos8+ceiZ5NwhVHAmzpu0zXA=;
-        b=f9CQZdywbdnelx2uZ8/UkFPQ3iASeKeJ3FDOBWqFqmzlMvwPNxkCI7uwEVedvd42M1
-         wQoLfkDWWxQOYpXjLYD2kiYoMCZ60EavCqdS0n1mjE32GGC8/98B6twu/cUR+DFpF8W8
-         12Ee9F1XYfL+pxgoksK/s2VwMMaFkheDMKYDl6rYv1TgEUTQLDw7ReJeDNDGBRS1N9Pl
-         +OvEBxZ0cvZSVUr8AkYAOJ47sE5GZA+vf5GEmvWWEfmyLSZbfMEV4SpMFYvwTv4AnEeV
-         XQHOcRSnJvvF94LK1v+aWXIqKx/8NyL7h4MShhK2RQ0r9gNU673lAz5wNu4sinUMvRs3
-         Ya9Q==
-X-Gm-Message-State: AOAM532HVJrRtwzMESm6Vg3vh7diWdsKEcBf/gU5WicGRdh3Afhr9BUe
-        sHNbTPbad2LYpilKxfttLOVX5A==
-X-Google-Smtp-Source: ABdhPJx1YHEx8hiT2J0YS7cHvuzQ34b5CoCNxheFV1HDcYv0oDChcf6LpLrWcy+v2YVfAhzHSCjOWg==
-X-Received: by 2002:a05:651c:d4:: with SMTP id 20mr8530119ljr.132.1644233168232;
-        Mon, 07 Feb 2022 03:26:08 -0800 (PST)
-Received: from localhost.localdomain (h-155-4-129-21.NA.cust.bahnhof.se. [155.4.129.21])
-        by smtp.gmail.com with ESMTPSA id z20sm1530066ljj.103.2022.02.07.03.26.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Feb 2022 03:26:07 -0800 (PST)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [GIT PULL] MMC fixes for v5.17-rc4
-Date:   Mon,  7 Feb 2022 12:26:05 +0100
-Message-Id: <20220207112605.246647-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S241328AbiBGUEZ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Feb 2022 15:04:25 -0500
+X-Greylist: delayed 427 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 12:04:19 PST
+Received: from mxout04.lancloud.ru (mxout04.lancloud.ru [45.84.86.114])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A455C0401E5
+        for <linux-mmc@vger.kernel.org>; Mon,  7 Feb 2022 12:04:19 -0800 (PST)
+Received: from LanCloud
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout04.lancloud.ru DEAEA20AD380
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: [PATCH] mmc: core: use sysfs_emit() instead of sprintf()
+To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
+Organization: Open Mobile Platform
+Message-ID: <7e700e17-7caf-ee87-c817-9119d19a135f@omp.ru>
+Date:   Mon, 7 Feb 2022 22:57:07 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.11.198]
+X-ClientProxiedBy: LFEXT01.lancloud.ru (fd00:f066::141) To
+ LFEX1907.lancloud.ru (fd00:f066::207)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,51 +44,192 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Linus,
+sprintf() (still used in the MMC core for the sysfs output) is vulnerable
+to the buffer overflow.  Use the new-fangled sysfs_emit() instead.
 
-Here's a PR with a couple of MMC fixes intended for v5.17-rc4. Details about the
-highlights are as usual found in the signed tag.
+Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+analysis tool.
 
-Please pull this in!
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-Kind regards
-Ulf Hansson
+---
+This patch is against the 'next' branch of Ulf Hansson's 'mmc.git' repo.
 
+ drivers/mmc/core/bus.c      |    8 ++++----
+ drivers/mmc/core/bus.h      |    3 ++-
+ drivers/mmc/core/mmc.c      |   16 ++++++++--------
+ drivers/mmc/core/sd.c       |   22 ++++++++++------------
+ drivers/mmc/core/sdio.c     |    4 ++--
+ drivers/mmc/core/sdio_bus.c |    6 +++---
+ 6 files changed, 29 insertions(+), 30 deletions(-)
 
-The following changes since commit e783362eb54cd99b2cac8b3a9aeac942e6f6ac07:
-
-  Linux 5.17-rc1 (2022-01-23 10:12:53 +0200)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.17-rc1
-
-for you to fetch changes up to bd2db32e7c3e35bd4d9b8bbff689434a50893546:
-
-  moxart: fix potential use-after-free on remove path (2022-01-31 15:36:34 +0100)
-
-----------------------------------------------------------------
-MMC core:
- - Fix support for SD Power off notification
-
-MMC host:
- - moxart: Fix potential use-after-free on remove path
- - sdhci-of-esdhc: Fix error path when setting dma mask
- - sh_mmcif: Fix potential NULL pointer dereference
-
-----------------------------------------------------------------
-Andrey Skvortsov (1):
-      mmc: core: Wait for command setting 'Power Off Notification' bit to complete
-
-Greg Kroah-Hartman (1):
-      moxart: fix potential use-after-free on remove path
-
-Jiasheng Jiang (2):
-      mmc: sdhci-of-esdhc: Check for error num after setting mask
-      mmc: sh_mmcif: Check for null res pointer
-
- drivers/mmc/core/sd.c             | 8 +++++++-
- drivers/mmc/host/moxart-mmc.c     | 2 +-
- drivers/mmc/host/sdhci-of-esdhc.c | 8 ++++++--
- drivers/mmc/host/sh_mmcif.c       | 3 +++
- 4 files changed, 17 insertions(+), 4 deletions(-)
+Index: mmc/drivers/mmc/core/bus.c
+===================================================================
+--- mmc.orig/drivers/mmc/core/bus.c
++++ mmc/drivers/mmc/core/bus.c
+@@ -34,13 +34,13 @@ static ssize_t type_show(struct device *
+ 
+ 	switch (card->type) {
+ 	case MMC_TYPE_MMC:
+-		return sprintf(buf, "MMC\n");
++		return sysfs_emit(buf, "MMC\n");
+ 	case MMC_TYPE_SD:
+-		return sprintf(buf, "SD\n");
++		return sysfs_emit(buf, "SD\n");
+ 	case MMC_TYPE_SDIO:
+-		return sprintf(buf, "SDIO\n");
++		return sysfs_emit(buf, "SDIO\n");
+ 	case MMC_TYPE_SD_COMBO:
+-		return sprintf(buf, "SDcombo\n");
++		return sysfs_emit(buf, "SDcombo\n");
+ 	default:
+ 		return -EFAULT;
+ 	}
+Index: mmc/drivers/mmc/core/bus.h
+===================================================================
+--- mmc.orig/drivers/mmc/core/bus.h
++++ mmc/drivers/mmc/core/bus.h
+@@ -9,6 +9,7 @@
+ #define _MMC_CORE_BUS_H
+ 
+ #include <linux/device.h>
++#include <linux/sysfs.h>
+ 
+ struct mmc_host;
+ struct mmc_card;
+@@ -17,7 +18,7 @@ struct mmc_card;
+ static ssize_t mmc_##name##_show (struct device *dev, struct device_attribute *attr, char *buf)	\
+ {										\
+ 	struct mmc_card *card = mmc_dev_to_card(dev);				\
+-	return sprintf(buf, fmt, args);						\
++	return sysfs_emit(buf, fmt, args);					\
+ }										\
+ static DEVICE_ATTR(name, S_IRUGO, mmc_##name##_show, NULL)
+ 
+Index: mmc/drivers/mmc/core/mmc.c
+===================================================================
+--- mmc.orig/drivers/mmc/core/mmc.c
++++ mmc/drivers/mmc/core/mmc.c
+@@ -11,6 +11,7 @@
+ #include <linux/of.h>
+ #include <linux/slab.h>
+ #include <linux/stat.h>
++#include <linux/sysfs.h>
+ #include <linux/pm_runtime.h>
+ 
+ #include <linux/mmc/host.h>
+@@ -812,12 +813,11 @@ static ssize_t mmc_fwrev_show(struct dev
+ {
+ 	struct mmc_card *card = mmc_dev_to_card(dev);
+ 
+-	if (card->ext_csd.rev < 7) {
+-		return sprintf(buf, "0x%x\n", card->cid.fwrev);
+-	} else {
+-		return sprintf(buf, "0x%*phN\n", MMC_FIRMWARE_LEN,
+-			       card->ext_csd.fwrev);
+-	}
++	if (card->ext_csd.rev < 7)
++		return sysfs_emit(buf, "0x%x\n", card->cid.fwrev);
++	else
++		return sysfs_emit(buf, "0x%*phN\n", MMC_FIRMWARE_LEN,
++				  card->ext_csd.fwrev);
+ }
+ 
+ static DEVICE_ATTR(fwrev, S_IRUGO, mmc_fwrev_show, NULL);
+@@ -830,10 +830,10 @@ static ssize_t mmc_dsr_show(struct devic
+ 	struct mmc_host *host = card->host;
+ 
+ 	if (card->csd.dsr_imp && host->dsr_req)
+-		return sprintf(buf, "0x%x\n", host->dsr);
++		return sysfs_emit(buf, "0x%x\n", host->dsr);
+ 	else
+ 		/* return default DSR value */
+-		return sprintf(buf, "0x%x\n", 0x404);
++		return sysfs_emit(buf, "0x%x\n", 0x404);
+ }
+ 
+ static DEVICE_ATTR(dsr, S_IRUGO, mmc_dsr_show, NULL);
+Index: mmc/drivers/mmc/core/sd.c
+===================================================================
+--- mmc.orig/drivers/mmc/core/sd.c
++++ mmc/drivers/mmc/core/sd.c
+@@ -708,18 +708,16 @@ MMC_DEV_ATTR(ocr, "0x%08x\n", card->ocr)
+ MMC_DEV_ATTR(rca, "0x%04x\n", card->rca);
+ 
+ 
+-static ssize_t mmc_dsr_show(struct device *dev,
+-                           struct device_attribute *attr,
+-                           char *buf)
++static ssize_t mmc_dsr_show(struct device *dev, struct device_attribute *attr,
++			    char *buf)
+ {
+-       struct mmc_card *card = mmc_dev_to_card(dev);
+-       struct mmc_host *host = card->host;
++	struct mmc_card *card = mmc_dev_to_card(dev);
++	struct mmc_host *host = card->host;
+ 
+-       if (card->csd.dsr_imp && host->dsr_req)
+-               return sprintf(buf, "0x%x\n", host->dsr);
+-       else
+-               /* return default DSR value */
+-               return sprintf(buf, "0x%x\n", 0x404);
++	if (card->csd.dsr_imp && host->dsr_req)
++		return sysfs_emit(buf, "0x%x\n", host->dsr);
++	/* return default DSR value */
++	return sysfs_emit(buf, "0x%x\n", 0x404);
+ }
+ 
+ static DEVICE_ATTR(dsr, S_IRUGO, mmc_dsr_show, NULL);
+@@ -735,9 +733,9 @@ static ssize_t info##num##_show(struct d
+ 												\
+ 	if (num > card->num_info)								\
+ 		return -ENODATA;								\
+-	if (!card->info[num-1][0])								\
++	if (!card->info[num - 1][0])								\
+ 		return 0;									\
+-	return sprintf(buf, "%s\n", card->info[num-1]);						\
++	return sysfs_emit(buf, "%s\n", card->info[num - 1]);					\
+ }												\
+ static DEVICE_ATTR_RO(info##num)
+ 
+Index: mmc/drivers/mmc/core/sdio.c
+===================================================================
+--- mmc.orig/drivers/mmc/core/sdio.c
++++ mmc/drivers/mmc/core/sdio.c
+@@ -40,9 +40,9 @@ static ssize_t info##num##_show(struct d
+ 												\
+ 	if (num > card->num_info)								\
+ 		return -ENODATA;								\
+-	if (!card->info[num-1][0])								\
++	if (!card->info[num - 1][0])								\
+ 		return 0;									\
+-	return sprintf(buf, "%s\n", card->info[num-1]);						\
++	return sysfs_emit(buf, "%s\n", card->info[num - 1]);					\
+ }												\
+ static DEVICE_ATTR_RO(info##num)
+ 
+Index: mmc/drivers/mmc/core/sdio_bus.c
+===================================================================
+--- mmc.orig/drivers/mmc/core/sdio_bus.c
++++ mmc/drivers/mmc/core/sdio_bus.c
+@@ -35,7 +35,7 @@ field##_show(struct device *dev, struct
+ 	struct sdio_func *func;						\
+ 									\
+ 	func = dev_to_sdio_func (dev);					\
+-	return sprintf(buf, format_string, args);			\
++	return sysfs_emit(buf, format_string, args);			\
+ }									\
+ static DEVICE_ATTR_RO(field)
+ 
+@@ -52,9 +52,9 @@ static ssize_t info##num##_show(struct d
+ 												\
+ 	if (num > func->num_info)								\
+ 		return -ENODATA;								\
+-	if (!func->info[num-1][0])								\
++	if (!func->info[num - 1][0])								\
+ 		return 0;									\
+-	return sprintf(buf, "%s\n", func->info[num-1]);						\
++	return sysfs_emit(buf, "%s\n", func->info[num - 1]);					\
+ }												\
+ static DEVICE_ATTR_RO(info##num)
+ 
