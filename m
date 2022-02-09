@@ -1,33 +1,33 @@
 Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B320F4AFD28
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Feb 2022 20:18:13 +0100 (CET)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id CDE2A4AFD54
+	for <lists+linux-mmc@lfdr.de>; Wed,  9 Feb 2022 20:27:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229944AbiBITRW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Feb 2022 14:17:22 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:49752 "EHLO
+        id S234697AbiBIT0J (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 9 Feb 2022 14:26:09 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:47158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbiBITRW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Feb 2022 14:17:22 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF668DD5BD08;
-        Wed,  9 Feb 2022 11:17:16 -0800 (PST)
+        with ESMTP id S234815AbiBIT0A (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Feb 2022 14:26:00 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1D72C1DC703;
+        Wed,  9 Feb 2022 11:19:14 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 540E361921;
-        Wed,  9 Feb 2022 19:15:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30876C340E7;
-        Wed,  9 Feb 2022 19:15:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E6F48B821BD;
+        Wed,  9 Feb 2022 19:15:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164FEC340E7;
+        Wed,  9 Feb 2022 19:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1644434135;
+        s=korg; t=1644434155;
         bh=NoYfRKvg94/26C90i9BW28UUtPlRTuDUjNMESDy43NU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lurLDJaOzVoHjbvt1XsYNjs6yItcm9ZzfEsn9zigGlyXqmWr1XSIndE1FL0Fc9LXD
-         NhiKKc3p59Ut7VA74XzLYiE0xOGGENAb50garFRf5bDFwRoM9v7ATHZT/EVngmKpJR
-         DvCmzOWnXtV0S8Pce6bMRKRsJ4NAkrETR00MfzXU=
+        b=eTWlEXS/0Y35dKA6PiAmObkPYW8FIkFAGa5rkK2HXeL0K6PLYOfI3JCvLq6YhLsf4
+         gxCQcwDh6VswUCtApPplS3CYreRgaQEkROKYf6rfdM8rWXaz3LGgosyHwhVsVw9PcG
+         EMQ90KJKTrE7Fk++tX2HMDk2AwzHTHTIYnW1eOok=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,15 +38,13 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Tony Lindgren <tony@atomide.com>,
         Yang Li <yang.lee@linux.alibaba.com>,
         linux-mmc@vger.kernel.org, whitehat002 <hackyzh002@gmail.com>
-Subject: [PATCH 5.15 1/5] moxart: fix potential use-after-free on remove path
-Date:   Wed,  9 Feb 2022 20:14:26 +0100
-Message-Id: <20220209191250.030905483@linuxfoundation.org>
+Subject: [PATCH 5.16 2/5] moxart: fix potential use-after-free on remove path
+Date:   Wed,  9 Feb 2022 20:14:34 +0100
+Message-Id: <20220209191249.977151443@linuxfoundation.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220209191249.980911721@linuxfoundation.org>
-References: <20220209191249.980911721@linuxfoundation.org>
+In-Reply-To: <20220209191249.887150036@linuxfoundation.org>
+References: <20220209191249.887150036@linuxfoundation.org>
 User-Agent: quilt/0.66
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
