@@ -2,32 +2,32 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D8E34AFD2B
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Feb 2022 20:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B320F4AFD28
+	for <lists+linux-mmc@lfdr.de>; Wed,  9 Feb 2022 20:18:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233400AbiBITRn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Feb 2022 14:17:43 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:50978 "EHLO
+        id S229944AbiBITRW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 9 Feb 2022 14:17:22 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:49752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233374AbiBITRj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Feb 2022 14:17:39 -0500
+        with ESMTP id S229573AbiBITRW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Feb 2022 14:17:22 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C7C5C0DE7D8;
-        Wed,  9 Feb 2022 11:17:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF668DD5BD08;
+        Wed,  9 Feb 2022 11:17:16 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5ABC61938;
-        Wed,  9 Feb 2022 19:15:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58E2C340E7;
-        Wed,  9 Feb 2022 19:15:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 540E361921;
+        Wed,  9 Feb 2022 19:15:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30876C340E7;
+        Wed,  9 Feb 2022 19:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1644434124;
-        bh=doDB2uOge/0eFsvsZ3gymCVqHyVcqN9XDLRmz9p8KJ0=;
+        s=korg; t=1644434135;
+        bh=NoYfRKvg94/26C90i9BW28UUtPlRTuDUjNMESDy43NU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GvOTk5nlN7hSky5QTEEOI7nfJUuxRjEQHa3y860SMNhXlROhdrRIpr6H86k0idhm3
-         Vc/L6clnK6sTsDHA8fxvZ7K8RCXUtNtupIK5thKmpiqA3OGi2aWJBPconzCH5dDfHD
-         LPpFcDtezyhd3itWezNVWblmxMH8Oe8ll4+3euWE=
+        b=lurLDJaOzVoHjbvt1XsYNjs6yItcm9ZzfEsn9zigGlyXqmWr1XSIndE1FL0Fc9LXD
+         NhiKKc3p59Ut7VA74XzLYiE0xOGGENAb50garFRf5bDFwRoM9v7ATHZT/EVngmKpJR
+         DvCmzOWnXtV0S8Pce6bMRKRsJ4NAkrETR00MfzXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,12 +38,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Tony Lindgren <tony@atomide.com>,
         Yang Li <yang.lee@linux.alibaba.com>,
         linux-mmc@vger.kernel.org, whitehat002 <hackyzh002@gmail.com>
-Subject: [PATCH 5.10 1/3] moxart: fix potential use-after-free on remove path
-Date:   Wed,  9 Feb 2022 20:14:19 +0100
-Message-Id: <20220209191248.941605067@linuxfoundation.org>
+Subject: [PATCH 5.15 1/5] moxart: fix potential use-after-free on remove path
+Date:   Wed,  9 Feb 2022 20:14:26 +0100
+Message-Id: <20220209191250.030905483@linuxfoundation.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220209191248.892853405@linuxfoundation.org>
-References: <20220209191248.892853405@linuxfoundation.org>
+In-Reply-To: <20220209191249.980911721@linuxfoundation.org>
+References: <20220209191249.980911721@linuxfoundation.org>
 User-Agent: quilt/0.66
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -87,7 +87,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/mmc/host/moxart-mmc.c
 +++ b/drivers/mmc/host/moxart-mmc.c
-@@ -708,12 +708,12 @@ static int moxart_remove(struct platform
+@@ -705,12 +705,12 @@ static int moxart_remove(struct platform
  	if (!IS_ERR_OR_NULL(host->dma_chan_rx))
  		dma_release_channel(host->dma_chan_rx);
  	mmc_remove_host(mmc);
