@@ -1,33 +1,33 @@
 Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D8C24AFD75
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Feb 2022 20:29:51 +0100 (CET)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 9B1AF4AFD1F
+	for <lists+linux-mmc@lfdr.de>; Wed,  9 Feb 2022 20:18:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233828AbiBIT1b (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Feb 2022 14:27:31 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:47006 "EHLO
+        id S229696AbiBITR3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 9 Feb 2022 14:17:29 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:50102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234327AbiBIT0r (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Feb 2022 14:26:47 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72AB7E00E266;
-        Wed,  9 Feb 2022 11:19:16 -0800 (PST)
+        with ESMTP id S233098AbiBITR0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Feb 2022 14:17:26 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40C26C0F8692;
+        Wed,  9 Feb 2022 11:17:21 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3A180B8238D;
-        Wed,  9 Feb 2022 19:15:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A48C340E7;
-        Wed,  9 Feb 2022 19:15:00 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0868AB82399;
+        Wed,  9 Feb 2022 19:15:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382E9C340E7;
+        Wed,  9 Feb 2022 19:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1644434100;
+        s=korg; t=1644434112;
         bh=dCxPR4JBeSv02HURTnL42udmBp2yb2pJ1Ew0FokUAEM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zwE9JROxVTYQOo5PkARElkaSznCXNHyGVg3VjEtiNGl1HxJ4Fq8nsFP4xZerAvBN9
-         Ocn2OiF9JilSnRl05REjzCniWQPsxtdJYqUE2xj64fAyKPWn0m7f/1PmeOmB7FDMA9
-         plHbVrjJa7zaaAhnheXS5KIw3hbUWCkZEKZFHpto=
+        b=kqbuinsX3+4H6y7jzBhRE5piA+qUZMz2QPFsSb9yF+yBp4s3jVive7d657Ww194af
+         Aw43WzAL4SebE7wit/Y/gnEWwzDsiGIhMO2d9dtYwgIuSwz7AUVt8v8Mjfy2po3f6A
+         +ga/dZDC+I+fKL8hmZuZ3hAcTdbcm+EP3EZQ1ySc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,12 +38,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Tony Lindgren <tony@atomide.com>,
         Yang Li <yang.lee@linux.alibaba.com>,
         linux-mmc@vger.kernel.org, whitehat002 <hackyzh002@gmail.com>
-Subject: [PATCH 4.14 2/3] moxart: fix potential use-after-free on remove path
-Date:   Wed,  9 Feb 2022 20:13:39 +0100
-Message-Id: <20220209191248.739254160@linuxfoundation.org>
+Subject: [PATCH 4.19 2/2] moxart: fix potential use-after-free on remove path
+Date:   Wed,  9 Feb 2022 20:14:04 +0100
+Message-Id: <20220209191248.685713468@linuxfoundation.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220209191248.659458918@linuxfoundation.org>
-References: <20220209191248.659458918@linuxfoundation.org>
+In-Reply-To: <20220209191248.596319706@linuxfoundation.org>
+References: <20220209191248.596319706@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
