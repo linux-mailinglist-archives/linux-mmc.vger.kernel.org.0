@@ -2,89 +2,73 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D86B4B8A8C
-	for <lists+linux-mmc@lfdr.de>; Wed, 16 Feb 2022 14:44:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58A6B4B9471
+	for <lists+linux-mmc@lfdr.de>; Thu, 17 Feb 2022 00:23:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234364AbiBPNoM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 16 Feb 2022 08:44:12 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57648 "EHLO
+        id S238238AbiBPXX4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 16 Feb 2022 18:23:56 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233782AbiBPNoM (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 16 Feb 2022 08:44:12 -0500
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 673911F6BAF;
-        Wed, 16 Feb 2022 05:43:59 -0800 (PST)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 21GDhpB7077211;
-        Wed, 16 Feb 2022 07:43:51 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1645019031;
-        bh=yq8pr2L8RupSYOTXWkiybuvOd6NqNBy13xsFwsS9Ej8=;
-        h=From:To:CC:Subject:Date;
-        b=m00X+TKc39sArhM6cbLNIzirgoedqylr5tzY9Le6vW24dT2YKMfEnjqKyMPsXejws
-         snJdSC9GgnO2HGUW0qZ4iWhKFaHcxlzAAzX7P5NO0g/Z1hJpaKUQOm270M1xcWUiyq
-         Ys+8lzMww2Jgps/+2JuSebXZ9Q5XE4CAT99Xdiho=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 21GDhpeX118429
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Feb 2022 07:43:51 -0600
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 16
- Feb 2022 07:43:51 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Wed, 16 Feb 2022 07:43:51 -0600
-Received: from gsaswath-HP-ProBook-640-G5.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 21GDhmdq033503;
-        Wed, 16 Feb 2022 07:43:48 -0600
-From:   Aswath Govindraju <a-govindraju@ti.com>
-CC:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] dt-bindings: mmc: sdhci-am654: Add compatible string for AM62 SoC
-Date:   Wed, 16 Feb 2022 19:13:46 +0530
-Message-ID: <20220216134346.11029-1-a-govindraju@ti.com>
-X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S237046AbiBPXX4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 16 Feb 2022 18:23:56 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 429822AAB34;
+        Wed, 16 Feb 2022 15:23:43 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0B4761BCB;
+        Wed, 16 Feb 2022 23:23:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 47E52C004E1;
+        Wed, 16 Feb 2022 23:23:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645053822;
+        bh=XExZdz5pl9QjWMM9CBl3plsUR1PcI7ogKu+Fs3YgVi0=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=jP3uNtddpIHSAi4yg3RDZgNBzXigJoVhBkUtbAXkBmCpXiuqxNe/q/s01UfBa7LMn
+         svpD4Q3NabPWCywpNEJJjWxgGAaYkcAWQyY2j0YkNv8jXi0t+QB96+/cNPOtUSGL1g
+         Xm3q/V5h7geaNuEkPlO09ZhxPsxnc86k6o4qVSkXydbrY0A4oArOvc4irAYEe0DA2m
+         f+wGzSgVaJr3kI4T1KuQV0VRpnnK3ytVYQgcE04EqQvpA1wdIb0EYB5sE2GJ5eex/j
+         A9bKln9tpVBF5Wvq/P8h2PS5opTlZZUy1K1y50kW0amYrYxlqzSBEBm3IyiuKeluFW
+         o/yROEfgo8yIw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 36A83E5D07D;
+        Wed, 16 Feb 2022 23:23:42 +0000 (UTC)
+Subject: Re: [GIT PULL] MMC fixes for v5.17-rc5
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20220216101733.193534-1-ulf.hansson@linaro.org>
+References: <20220216101733.193534-1-ulf.hansson@linaro.org>
+X-PR-Tracked-List-Id: <linux-mmc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20220216101733.193534-1-ulf.hansson@linaro.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.17-rc1-2
+X-PR-Tracked-Commit-Id: 54309fde1a352ad2674ebba004a79f7d20b9f037
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: f71077a4d84bbe8c7b91b7db7c4ef815755ac5e3
+Message-Id: <164505382221.13100.12638078753532183842.pr-tracker-bot@kernel.org>
+Date:   Wed, 16 Feb 2022 23:23:42 +0000
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add compatible string for AM62 SoC in device tree binding of AM654
-SDHCI module as the same IP is used.
+The pull request you sent on Wed, 16 Feb 2022 11:17:33 +0100:
 
-Signed-off-by: Aswath Govindraju <a-govindraju@ti.com>
----
- Documentation/devicetree/bindings/mmc/sdhci-am654.yaml | 1 +
- 1 file changed, 1 insertion(+)
+> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v5.17-rc1-2
 
-diff --git a/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml b/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
-index 9fbf16b3bc8d..0566493c4def 100644
---- a/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
-+++ b/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
-@@ -21,6 +21,7 @@ properties:
-       - const: ti,j721e-sdhci-4bit
-       - const: ti,am64-sdhci-8bit
-       - const: ti,am64-sdhci-4bit
-+      - const: ti,am62-sdhci
-       - items:
-           - const: ti,j7200-sdhci-8bit
-           - const: ti,j721e-sdhci-8bit
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/f71077a4d84bbe8c7b91b7db7c4ef815755ac5e3
+
+Thank you!
+
 -- 
-2.17.1
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
