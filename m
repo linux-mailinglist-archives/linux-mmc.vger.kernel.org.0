@@ -2,118 +2,78 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF784BFD74
-	for <lists+linux-mmc@lfdr.de>; Tue, 22 Feb 2022 16:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E10514C0CDE
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Feb 2022 07:59:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233593AbiBVPuL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 22 Feb 2022 10:50:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
+        id S238451AbiBWG72 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 23 Feb 2022 01:59:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232248AbiBVPuK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Feb 2022 10:50:10 -0500
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37D0446B20
-        for <linux-mmc@vger.kernel.org>; Tue, 22 Feb 2022 07:49:45 -0800 (PST)
-Received: by mail-lj1-x233.google.com with SMTP id v22so18341693ljh.7
-        for <linux-mmc@vger.kernel.org>; Tue, 22 Feb 2022 07:49:45 -0800 (PST)
+        with ESMTP id S233368AbiBWG71 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Feb 2022 01:59:27 -0500
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CAE4EF58
+        for <linux-mmc@vger.kernel.org>; Tue, 22 Feb 2022 22:58:59 -0800 (PST)
+Received: by mail-oi1-x22a.google.com with SMTP id j2so17232421oie.7
+        for <linux-mmc@vger.kernel.org>; Tue, 22 Feb 2022 22:58:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NZZm6qWe1SwIb8KcDfZKZw7LrmnA+xYk4KC1Fi2iiNE=;
-        b=jA1SbpiMI50DskuXEcULhrcfAjfibrqLpVBH3lqP1WwhyFGAF1jl4QMYw604Vx1F9q
-         mABbjxiYoPiSIukSqdDGQGVACjoj7FV/Fgv2DZLtQIPHEgdeJoLtTTfScDhQGkE7m99g
-         dr8nVAJQBVZtgAvqZo2tk9v5PNjx/2B6V3rQOKpfCfQkbixc3YqlEwWhWZulvqYBcY2W
-         7JdY752tB7ucvHNYzoQN5mxFvCGDEGvSOynjbuXjg/rpMVHKFh22UChIChVNIDTtidSE
-         doCqXCFTE4b/lM46YRaQLsIrcPPDEDaFBPVtQSIoCfXxrVL0yu5l48CYksa/mV1VbXa4
-         w5gw==
+        d=cerclemallorca-org.20210112.gappssmtp.com; s=20210112;
+        h=from:reply-to:mime-version:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hRYmFiQorCA1GkHAsgNXSN1gfPsqLlp/sCZza5USlfQ=;
+        b=CEY3Z7ExvwMC3+pRPgGvSM05XwmF0n8RBjUpvRNgUEqVN+nIfw6Y2WqlTQ4CuYXI1i
+         qX+VCby0/HQqCNTirpbFu+LQfgm0OrvKgtOsS1IE1vJkef2CdVqbpqS5Q/ny8oyAMaxz
+         h8Ujzky9uKYs75szrdL8/+JakH8nJtL3W2qpuN4mfdg+jLesHuhE6f4CIzehMVpzioXE
+         qUMIP0i4i59OgUOR6LsV1Jh0Ry1xmYBLnslLTJOiqdrURoXSR4ca7qTRPxY9k4AsMOJH
+         SUIXPs2gcGi29ARyT+AyamOkkiZrEOaXtGQbliKQ8fhcJPqUwe+HPlvSQoIYeffSvXJH
+         ylug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NZZm6qWe1SwIb8KcDfZKZw7LrmnA+xYk4KC1Fi2iiNE=;
-        b=3VWFn4ekw4SKkHzqqDdMhK1f6mE9j6/PgBexRw/DjMz8WwOTynvpdrPV8hl00cFSxU
-         qJ+ALGxNoY6EN1pBBRvS4I5f2elsaJ+tchLQZMyRnYUobKRC8FI82dakT0/gOnNI1/VN
-         6OeAM8zaUn19jWbShTyq9+zKRBRvsZ7J2kXyK+tEdSW6QEnbuxB8iLbk4MGGn+WdMGW4
-         xkmEZpNTPfaabxNBBd3TddmEV3DL+SlHGvYgNDbm/t5OvOn0vvqZjq4dh1bnJX4Y2ypE
-         fMJs0RAgK/hMlr7lyW2w8Bbj5zUpg0p5gy51Dl/cJRnazvCobpjYfjpCB7BN5Iyz3u7f
-         x0Jw==
-X-Gm-Message-State: AOAM530UYSacCydKvW08QrzFy2kuAyXA1A5QWPaDhs9ilwt4PBgDeEJx
-        IrYiOAFkxDpI/OGqiK/ghwsnMYcbckwIaHNveJ4S0w==
-X-Google-Smtp-Source: ABdhPJxYfUXFM+iKqXhXbTywYwmn9Khlzeo+cKheqXmeD90PcADvNxqnaj2q13pvIyXLd8v98tx/p5QVeBa5F0jQIVc=
-X-Received: by 2002:a2e:9cc5:0:b0:239:da6e:290d with SMTP id
- g5-20020a2e9cc5000000b00239da6e290dmr18128143ljj.4.1645544983573; Tue, 22 Feb
- 2022 07:49:43 -0800 (PST)
+        h=x-gm-message-state:from:reply-to:mime-version:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=hRYmFiQorCA1GkHAsgNXSN1gfPsqLlp/sCZza5USlfQ=;
+        b=HQxO+1hBvjkcXia5Nt5e4kcfsmwWY5qPnMD3kEzQ27YwlCXh6z+3uCTFVDvtbDO47t
+         sLLvOhqbBYDLdasWJRiXcyA3OC57n50DvOYbR4tujmrOwzKj5TuNOEVzhuLocloZqhCO
+         G5UMajDT63H20BiskDyBGi8D/Xxx4I+zkgkcKPTg5LTOofdtBoDIdag3HqMp3kKE5Bfn
+         88SF22yxgfXTvotiW22AiwWkIzIImEKhD8cuwvuGGCUdxH0x3AhajzvwhxDHmjJ2XzXL
+         Y9mQT+qXy6KtT1oZrCfHrc0GFuJwyYdKpJDvTxLinTkPm1nb2TEzSXquNeoTSptk80Ma
+         ccDw==
+X-Gm-Message-State: AOAM5300agfQp8fu2yGlYfcrPSNrwH+FZGuFL9JXLtzMaHrECvi30ZPm
+        NefeYER9xQVQpQc5Ri6M7Cn6AbpbDTh4oFMI7ATz7kmaUUz45g==
+X-Google-Smtp-Source: ABdhPJwOBdY2YW8MMQFYEujTMLj23yZSSHydhwoEgmXCVd6BWPooI7YU/lKU36+QESGS06yPCqyr85InvAToxa6uXFA=
+X-Received: by 2002:aca:3446:0:b0:2ce:6ee7:2d18 with SMTP id
+ b67-20020aca3446000000b002ce6ee72d18mr3963982oia.326.1645599538685; Tue, 22
+ Feb 2022 22:58:58 -0800 (PST)
+Received: from 729955949434 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 22 Feb 2022 22:58:58 -0800
+From:   =?UTF-8?Q?Cercle_d=E2=80=99Economia_de_Mallorca?= 
+        <tic@cerclemallorca.org>
+Reply-To: cercle@cerclemallorca.es
+X-Mailer: WPMailSMTP/Mailer/gmail 3.3.0
 MIME-Version: 1.0
-References: <20220210224933.379149-1-yury.norov@gmail.com> <20220210224933.379149-30-yury.norov@gmail.com>
- <CAPDyKFqvYhPTenGEH=LZyJXb5rJKbyeds4rH+aRN=u6JH_eJ5A@mail.gmail.com> <CAAH8bW9X4HGNDW9xY1zA8d0O0ty7kh_zcOKBDu88FL8uWEFAkA@mail.gmail.com>
-In-Reply-To: <CAAH8bW9X4HGNDW9xY1zA8d0O0ty7kh_zcOKBDu88FL8uWEFAkA@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 22 Feb 2022 16:49:06 +0100
-Message-ID: <CAPDyKFrHo30Nak3aet1CgABH6_K6BuGq=C7O9Y3Vxk3FD8H9Fg@mail.gmail.com>
-Subject: Re: [PATCH 29/49] memstick: replace bitmap_weight with
- bitmap_weight_eq where appropriate
-To:     Yury Norov <yury.norov@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        David Laight <david.laight@aculab.com>,
-        Joe Perches <joe@perches.com>, Dennis Zhou <dennis@kernel.org>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Alexey Klimov <aklimov@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Alex Dubov <oakad@yahoo.com>, Jens Axboe <axboe@kernel.dk>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Colin Ian King <colin.king@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Shubhankar Kuranagatti <shubhankarvk@gmail.com>,
-        linux-mmc@vger.kernel.org,
-        Shubhankar Kuranagatti <shubhankar.vk@gmail.com>
+Date:   Tue, 22 Feb 2022 22:58:58 -0800
+Message-ID: <CAN_rQh49UMLsi-2p3mJghrrFQ1XsLi=jUVdf_NUyBCb0GPGEEA@mail.gmail.com>
+Subject: Solicitud de socio
+To:     linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SHORT_SHORTNER,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLACK autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 17 Feb 2022 at 17:55, Yury Norov <yury.norov@gmail.com> wrote:
->
-> On Thu, Feb 17, 2022 at 7:39 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > On Fri, 11 Feb 2022 at 00:55, Yury Norov <yury.norov@gmail.com> wrote:
-> > >
-> > > msb_validate_used_block_bitmap() calls bitmap_weight() to compare the
-> > > weight of bitmap with a given number. We can do it more efficiently with
-> > > bitmap_weight_eq because conditional bitmap_weight may stop traversing the
-> > > bitmap earlier, as soon as condition is (or can't be) met.
-> > >
-> > > Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> > > Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > > Acked-by: Shubhankar Kuranagatti <shubhankar.vk@gmail.com>
-> >
-> > Applied for next, thanks!
->
-> Hi Ulf,
->
-> This patch depends on patch 26/49 "bitmap: add bitmap_weight_{cmp, eq,
-> gt, ge, lt, le} functions"
-> from this series. Can you  make sure you applied them together? Or I can
-> apply it later.
+Buen d=C3=ADa =E2=9D=A4=EF=B8=8F You have unread messages from Ashley (2)! =
+Click Here:
+https://clck.ru/btETq?ykt7 =E2=9D=A4=EF=B8=8F 61om6xol:
 
-I can't apply them, unless there is an immutable branch being shared
-between the different trees.
+Hemos recibido su solicitud para ser miembro del Cercle de Mallorca
+Si tiene alguna duda puede contactar:
 
-Therefore I have dropped the patch for now.
-
-Kind regards
-Uffe
+971 71 71 67
+cercle@cerclemallorca.org
