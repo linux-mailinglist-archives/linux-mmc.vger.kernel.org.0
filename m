@@ -2,69 +2,63 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E74FB4C4513
-	for <lists+linux-mmc@lfdr.de>; Fri, 25 Feb 2022 13:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C56C64C4B70
+	for <lists+linux-mmc@lfdr.de>; Fri, 25 Feb 2022 17:56:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234992AbiBYM5T (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 25 Feb 2022 07:57:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36872 "EHLO
+        id S243201AbiBYQzs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 25 Feb 2022 11:55:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235676AbiBYM5S (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Feb 2022 07:57:18 -0500
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DA561AD92;
-        Fri, 25 Feb 2022 04:56:44 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id u16so4589964pfg.12;
-        Fri, 25 Feb 2022 04:56:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=b1LY+l/NhS0rChpc29wsrXNSMavIR38WPUl22nfsuvU=;
-        b=Q8ZCobSxyCZV0r4UV8bGTLo7sV2CxiV6G/eLc6DB0ZhfQQ76MFVHFensMok1LwVLV6
-         GoijSrV5mJCeCa74dWnhEfN0S4/XLlWNJqggx7rpERt/T7bqh6iTCOWCCm9v2r9w7U0d
-         vbf6R2oqriln62nbxRFI0smE7tvje7RpUKMJ4rEfMwaFOSr/tQ+wOTXeT2VyQhuuqvHi
-         BG0CDMKjxKtXs0clDRR+O7OzMgRkBog5IQDzduySVw1MlQVr/4q1vLuKIb0zW7qpnXSk
-         fIRODV3LgiOiYQ2KWSxTNmQ4NsenegpHhCxKAWlp3oBnyDcMe1TYSEOD3CxULXi0d+VC
-         rHVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=b1LY+l/NhS0rChpc29wsrXNSMavIR38WPUl22nfsuvU=;
-        b=ySyzECVkM3po1ZWmbEDX8jUWKEu+CFte02IvLggcQ4xfv4Jd/koIuTw0t2RUpGg2tf
-         Fj5KEN5XksT/+bKxGSUjskkWEMwsxtvbs4JPokN83WARhU8iJW4Pe3vTnUOMMFPxeojX
-         5zwjqzbAS9Mwq6k8gZ81wwv3iY1qNRepPOw1QF5K1LWHw1zMu0rItD8EOkhArbOGvL/A
-         YJt4Vq3CHRvtoW3+E3wUR0fRKpkrSZCX9W+a7XVut00B9G8O3eGg6lPTCQsUFFFfLEwn
-         Q/difBABZTyu1EDFhnonCqu62bttIBYAZ0CFB/HZ7JoT5qw13kFLCpAj8lgseuHifhOx
-         REQA==
-X-Gm-Message-State: AOAM53399mIqF2vHya1t1i4Ewf88zzrj2vtxNzi6b0WnrI3MENB1sCkY
-        f4ZBX3Ya+X/gaez5hgZ95Yo=
-X-Google-Smtp-Source: ABdhPJz2FHOtgTXQRyEO/C1MJGjAUxyNf8zsQubMNGWR/75ZbnhnxbaWn5+W2LEZRY/6jTB4ReHPjg==
-X-Received: by 2002:a63:9351:0:b0:375:8d1a:4766 with SMTP id w17-20020a639351000000b003758d1a4766mr5343059pgm.102.1645793804114;
-        Fri, 25 Feb 2022 04:56:44 -0800 (PST)
-Received: from arch-pc.genesyslogic.com.tw (60-251-58-169.hinet-ip.hinet.net. [60.251.58.169])
-        by smtp.gmail.com with ESMTPSA id t27-20020aa7939b000000b004ce11b956absm2994660pfe.186.2022.02.25.04.56.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Feb 2022 04:56:43 -0800 (PST)
-From:   Ben Chuang <benchuanggli@gmail.com>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        greg.tu@genesyslogic.com.tw, ben.chuang@genesyslogic.com.tw,
-        SeanHY.Chen@genesyslogic.com.tw,
-        Ben Chuang <benchuanggli@gmail.com>,
-        Kevin Chang <kevin.chang@lcfuturecenter.com>
-Subject: [PATCH] mmc: sdhci-pci-gli: Add runtime PM for GL9763E
-Date:   Fri, 25 Feb 2022 20:55:53 +0800
-Message-Id: <20220225125553.1185108-2-benchuanggli@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220225125553.1185108-1-benchuanggli@gmail.com>
-References: <20220225125553.1185108-1-benchuanggli@gmail.com>
+        with ESMTP id S241873AbiBYQzn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Feb 2022 11:55:43 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082D91E6953;
+        Fri, 25 Feb 2022 08:55:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645808111; x=1677344111;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a/2QHHN/ETWTPtmCEfGXBl9buOitSAcfb/bJHn2KyY0=;
+  b=aEtKsCDGlXMH+++MMqQOG1eb2JKVNPnIchpUA7Pn4EeVmtTFyOPlwRi/
+   Ilqpgpb28m9jcp/DlbzGPESomgkChUTuva5sA8Bd/CpwMwLIOCpEiCyXK
+   SY+EhDyV57W5AxuAssbPuPmd7WJpnYlf68+nnmSnHzAaBxYh35c5nYX5J
+   4G9npQ7GRcVRdefsQ7RUxdFmxBDwb3wcWifVa0ZiJrMjNwsZ2GkStFihi
+   KW0w9ND5ZznU7vRRj7J6waYsSw+lUmUJBJzoiY8IFPSXLP+3ke3HCu/oz
+   LBIg8XQXetQ5DHTX3pF/QpDYDvKIsrCjaAc+EamfV8irEO+LZGKjzS0YA
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10268"; a="250112543"
+X-IronPort-AV: E=Sophos;i="5.90,136,1643702400"; 
+   d="scan'208";a="250112543"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2022 08:55:10 -0800
+X-IronPort-AV: E=Sophos;i="5.90,136,1643702400"; 
+   d="scan'208";a="640169939"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2022 08:55:07 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nNdrG-008GpT-3G;
+        Fri, 25 Feb 2022 18:54:18 +0200
+Date:   Fri, 25 Feb 2022 18:54:17 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jia-Ju Bai <baijiaju1990@gmail.com>
+Cc:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
+        yoshihiro.shimoda.uh@renesas.com, adrian.hunter@intel.com,
+        swboyd@chromium.org, dev@lynxeye.de, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mmc: core: check the return value of
+ wakeup_source_register()
+Message-ID: <YhkJuZb7PfGvmRTY@smile.fi.intel.com>
+References: <20220225121858.25638-1-baijiaju1990@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220225121858.25638-1-baijiaju1990@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,89 +66,18 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+On Fri, Feb 25, 2022 at 04:18:58AM -0800, Jia-Ju Bai wrote:
+> The function wakeup_source_register() in mmc_alloc_host() can fail, so
+> its return value should be checked.
 
-Add runtime PM for GL9763E and disable PLL in runtime suspend. So power
-gated of upstream port can be enabled.
+NAK.
 
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Tested-by: Kevin Chang <kevin.chang@lcfuturecenter.com>
----
- drivers/mmc/host/sdhci-pci-gli.c | 54 ++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+This doesn't explain why this resource must be non-optional.
 
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index 97035d77c18c..cf99b6af792d 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -873,6 +873,55 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
- 	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
- }
- 
-+#ifdef CONFIG_PM
-+static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
-+{
-+	struct sdhci_pci_slot *slot = chip->slots[0];
-+	struct sdhci_host *host = slot->host;
-+	u16 clock;
-+
-+	clock = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+	clock &= ~(SDHCI_CLOCK_PLL_EN | SDHCI_CLOCK_CARD_EN);
-+	sdhci_writew(host, clock, SDHCI_CLOCK_CONTROL);
-+
-+	return 0;
-+}
-+
-+static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
-+{
-+	struct sdhci_pci_slot *slot = chip->slots[0];
-+	struct sdhci_host *host = slot->host;
-+	ktime_t timeout;
-+	u16 clock;
-+
-+	clock = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+
-+	clock |= SDHCI_CLOCK_PLL_EN;
-+	clock &= ~SDHCI_CLOCK_INT_STABLE;
-+	sdhci_writew(host, clock, SDHCI_CLOCK_CONTROL);
-+
-+	timeout = ktime_add_ms(ktime_get(), 150);
-+	while (1) {
-+		bool timedout = ktime_after(ktime_get(), timeout);
-+
-+		clock = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+		if (clock & SDHCI_CLOCK_INT_STABLE)
-+			break;
-+		if (timedout) {
-+			pr_err("%s: PLL clock never stabilised.\n",
-+			       mmc_hostname(host->mmc));
-+			sdhci_dumpregs(host);
-+			break;
-+		}
-+		udelay(10);
-+	}
-+	clock |= SDHCI_CLOCK_CARD_EN;
-+	sdhci_writew(host, clock, SDHCI_CLOCK_CONTROL);
-+
-+	return 0;
-+}
-+#endif
-+
- static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
- {
- 	struct pci_dev *pdev = slot->chip->pdev;
-@@ -982,6 +1031,11 @@ const struct sdhci_pci_fixes sdhci_gl9763e = {
- #ifdef CONFIG_PM_SLEEP
- 	.resume		= sdhci_cqhci_gli_resume,
- 	.suspend	= sdhci_cqhci_gli_suspend,
-+#endif
-+#ifdef CONFIG_PM
-+	.runtime_suspend = gl9763e_runtime_suspend,
-+	.runtime_resume  = gl9763e_runtime_resume,
-+	.allow_runtime_pm = true,
- #endif
- 	.add_host       = gl9763e_add_host,
- };
+One should not dumbly use the robots.
+
 -- 
-2.35.1
+With Best Regards,
+Andy Shevchenko
+
 
