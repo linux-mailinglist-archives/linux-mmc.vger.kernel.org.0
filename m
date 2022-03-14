@@ -2,79 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0D7D4D8A27
-	for <lists+linux-mmc@lfdr.de>; Mon, 14 Mar 2022 17:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCAA94D8EB9
+	for <lists+linux-mmc@lfdr.de>; Mon, 14 Mar 2022 22:32:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231164AbiCNQxl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 14 Mar 2022 12:53:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33540 "EHLO
+        id S245288AbiCNVdY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 14 Mar 2022 17:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230130AbiCNQxl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 14 Mar 2022 12:53:41 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7AEE31DDC;
-        Mon, 14 Mar 2022 09:52:30 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22EFW2gq028526;
-        Mon, 14 Mar 2022 17:51:56 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=OgL45lCtzMLvFBjJYcMhcxi0KbvD1Hrix4VnKyQb4TM=;
- b=SfHbOVFJnQgkKxdEV3p6l49I5F05fQhDxkAtt0O2vxecr3ucpPvZMNzEsbNf/EYU1dso
- IlLlES1Jdqsi2Dq2ZFpS4FafD5gtOKsMEpLEb2XP+k/RawSWg6l57P6a21AoB+avWFNN
- kWHl6YNiYGidCDH5JChWbLNZd3N5U66K+4mzTn54gugfanmnDBdUXGTE2rz/lXvHJBhv
- VE/MC9RXuC5ZaqEFcHE2fnlDMplx/kX/OdtyUMhmiIpG6FLCEVC595PSe8mGP4BFo5G7
- qSODp0G/W0lIqx7sWjSl8tlHpRhrLBiahV6VXLvpKYGTwzcxQQSSOak+0Y2ioQQwwMCW Uw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3et89dgnyk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Mar 2022 17:51:55 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 2A1D610002A;
-        Mon, 14 Mar 2022 17:51:55 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1FDAD22FA5A;
-        Mon, 14 Mar 2022 17:51:55 +0100 (CET)
-Received: from [10.201.21.172] (10.75.127.45) by SFHDAG2NODE2.st.com
- (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.26; Mon, 14 Mar
- 2022 17:51:54 +0100
-Message-ID: <ce29e53a-59ff-000a-6b88-0b7ae538c515@foss.st.com>
-Date:   Mon, 14 Mar 2022 17:51:53 +0100
+        with ESMTP id S245264AbiCNVdX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 14 Mar 2022 17:33:23 -0400
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [IPv6:2001:df5:b000:5::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E02D338AD
+        for <linux-mmc@vger.kernel.org>; Mon, 14 Mar 2022 14:32:12 -0700 (PDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 734802C06C6;
+        Mon, 14 Mar 2022 21:32:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1647293527;
+        bh=RkXxbfpxz60sVinFQqrsDITL8geh/kJ2X57zBM2mDPM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=In19C3dXzVgwGr5PhKZkb5Yy3bTLcfN1vn2xzyL+pbty/VNKEQQXFRyx7/olVmGIt
+         WEGHEwAG4dWs7iiY55QdUv4agc5Ka81npkwUtHzRVJhX91Cln6ht8s7gB3gnjwB0bh
+         9kuaWTiZAiL6N5LJ2+LPUCEYjaqDi7EZZAy6rirdPH8A3G5P73lrNXZ6yy93mEWQMD
+         zvHiG4qdUO2UVqR0BF1J74vI4x7LQOrgnra/xrvQkGBh/QtHf6RKYi+0yYyJ49QanN
+         1nCK2sZ2jXlbrIY7rGAfRB85FzDxu+VjT5dKFBRwQIZOl11xroMrfmaBQKGlHDN/gZ
+         EGFWIl1gfw3Uw==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+        id <B622fb4570000>; Tue, 15 Mar 2022 10:32:07 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
+        by pat.atlnz.lc (Postfix) with ESMTP id 0704C13EE36;
+        Tue, 15 Mar 2022 10:32:07 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+        id DF60C2A2678; Tue, 15 Mar 2022 10:32:03 +1300 (NZDT)
+From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
+To:     huziji@marvell.com, ulf.hansson@linaro.org, robh+dt@kernel.org,
+        davem@davemloft.net, kuba@kernel.org, linus.walleij@linaro.org,
+        catalin.marinas@arm.com, will@kernel.org, andrew@lunn.ch,
+        gregory.clement@bootlin.com, sebastian.hesselbarth@gmail.com,
+        adrian.hunter@intel.com, thomas.petazzoni@bootlin.com,
+        kostap@marvell.com, robert.marko@sartura.hr
+Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH v2 0/8] arm64: mvebu: Support for Marvell 98DX2530 (and variants)
+Date:   Tue, 15 Mar 2022 10:31:35 +1300
+Message-Id: <20220314213143.2404162-1-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2] mmc: mmci: manage MMC_PM_KEEP_POWER per variant config
-Content-Language: en-US
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ludovic Barre <ludovic.barre@foss.st.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Marek Vasut <marex@denx.de>, <kernel@dh-electronics.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Grzegorz Szymaszek <gszymaszek@short.pl>
-References: <20220314095225.53563-1-yann.gautier@foss.st.com>
- <20220314125554.190574-1-yann.gautier@foss.st.com>
- <CAPDyKFruN9Xwk4uqFumwBdcn4SjKQcSQVBbALa3kVxY4mVzOnQ@mail.gmail.com>
- <9e4fbf6a-1309-3aee-fcb0-be7c2c683892@foss.st.com>
- <CAPDyKFq2Du1UWpvRFpVF_qL65SP0DfEV872U9Xe-9i7xKxXhqg@mail.gmail.com>
-From:   Yann Gautier <yann.gautier@foss.st.com>
-In-Reply-To: <CAPDyKFq2Du1UWpvRFpVF_qL65SP0DfEV872U9Xe-9i7xKxXhqg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-14_12,2022-03-14_02,2022-02-23_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=Cfh2G4jl c=1 sm=1 tr=0 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=o8Y5sQTvuykA:10 a=vfzu8PMGQmK49s0qG5oA:9
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,127 +67,48 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 3/14/22 17:18, Ulf Hansson wrote:
-> On Mon, 14 Mar 2022 at 15:34, Yann Gautier <yann.gautier@foss.st.com> wrote:
->>
->> On 3/14/22 14:03, Ulf Hansson wrote:
->>> On Mon, 14 Mar 2022 at 13:56, Yann Gautier <yann.gautier@foss.st.com> wrote:
->>>>
->>>> Add a disable_keep_power field in variant_data struct. The
->>>> MMC_PM_KEEP_POWER flag will be enabled if disable_keep_power is not set.
->>>> It is only set to true for stm32_sdmmc variants.
->>>>
->>>> The issue was seen on STM32MP157C-DK2 board, which embeds a wifi chip.
->>>> It doesn't correctly support low power on this board. The Wifi chip
->>>> awaits an always-on regulator, but it was connected to v3v3 which is off
->>>> in low-power sequence. MMC_PM_KEEP_POWER should then be disabled.
->>>
->>> Just to make sure I get this correct.
->>>
->>> Why can't the regulator stay on during system suspend? The point is,
->>> we don't need an always on regulator to cope with this.
->>>
->>> Kind regards
->>> Uffe
->>
->> Hi Ulf,
->>
->> This v3v3 regulator powers most of the devices on this board. So we need
->> to switch it off to gain power in suspend mode.
-> 
-> I see. Thanks for sharing that information.
-> 
-> The MMC_PM_KEEP_POWER flag is there to describe what is supported by
-> the platform/host. It doesn't mean that the card *must* stay powered
-> on during system suspend. Instead that depends on whether system
-> wakeup for the SDIO/WiFi is supported too - and if that is enabled by
-> userspace. If not, the regulator will be turned off for the SDIO card
-> during system suspend.
-> 
-> Assuming the regulator is implemented as a proper regulator and can
-> remain on during system suspend, the right thing would be to keep the
-> MMC_PM_KEEP_POWER flag around.
-> 
-> Kind regards
-> Uffe
-> 
+This series adds support for the Marvell 98DX2530 SoC which is the Contro=
+l and
+Management CPU integrated into the AlleyCat5/AlleyCat5X series of Marvell
+switches.
 
-OK, but in the wifi driver we use on this platform (brcmfmac), the 
-suspend/resume functions (brcmf_ops_sdio_suspend/brcmf_ops_sdio_resume) 
-use the flag to check regu was off, and then call probe function during 
-resume, to re-init Wifi chip and reload its firmware.
+The CPU core is an ARM Cortex-A55 with neon, simd and crypto extensions.
 
+This is fairly similar to the Armada-3700 SoC so most of the required
+peripherals are already supported. This series adds a devicetree and pinc=
+trl
+driver for the SoC and the RD-AC5X-32G16HVG6HLG reference board.
 
-Best regards,
-Yann
+Chris Packham (8):
+  dt-bindings: pinctrl: mvebu: Document bindings for AC5
+  dt-bindings: net: mvneta: Add marvell,armada-ac5-neta
+  dt-bindings: mmc: xenon: add AC5 compatible string
+  pinctrl: mvebu: pinctrl driver for 98DX2530 SoC
+  net: mvneta: Add support for 98DX2530 Ethernet port
+  mmc: xenon: add AC5 compatible string
+  arm64: dts: marvell: Add Armada 98DX2530 SoC and RD-AC5X board
+  arm64: marvell: enable the 98DX2530 pinctrl driver
 
->>
->>
->> Yann
->>
->>>
->>>>
->>>> The flag can still be enabled through DT property:
->>>> keep-power-in-suspend.
->>>>
->>>> Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
->>>> ---
->>>> Update in v2:
->>>> Reword commit message to better explain the issue.
->>>>
->>>> Resend the patch alone. It was previoulsy in a series [1] for which the
->>>> other patches will be reworked.
->>>>
->>>> [1] https://lore.kernel.org/lkml/20220304135134.47827-1-yann.gautier@foss.st.com/
->>>>
->>>>    drivers/mmc/host/mmci.c | 5 ++++-
->>>>    drivers/mmc/host/mmci.h | 1 +
->>>>    2 files changed, 5 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
->>>> index 45b8608c935c..0e2f2f5d6a52 100644
->>>> --- a/drivers/mmc/host/mmci.c
->>>> +++ b/drivers/mmc/host/mmci.c
->>>> @@ -274,6 +274,7 @@ static struct variant_data variant_stm32_sdmmc = {
->>>>           .busy_detect            = true,
->>>>           .busy_detect_flag       = MCI_STM32_BUSYD0,
->>>>           .busy_detect_mask       = MCI_STM32_BUSYD0ENDMASK,
->>>> +       .disable_keep_power     = true,
->>>>           .init                   = sdmmc_variant_init,
->>>>    };
->>>>
->>>> @@ -301,6 +302,7 @@ static struct variant_data variant_stm32_sdmmcv2 = {
->>>>           .busy_detect            = true,
->>>>           .busy_detect_flag       = MCI_STM32_BUSYD0,
->>>>           .busy_detect_mask       = MCI_STM32_BUSYD0ENDMASK,
->>>> +       .disable_keep_power     = true,
->>>>           .init                   = sdmmc_variant_init,
->>>>    };
->>>>
->>>> @@ -2172,7 +2174,8 @@ static int mmci_probe(struct amba_device *dev,
->>>>           host->stop_abort.flags = MMC_RSP_R1B | MMC_CMD_AC;
->>>>
->>>>           /* We support these PM capabilities. */
->>>> -       mmc->pm_caps |= MMC_PM_KEEP_POWER;
->>>> +       if (!variant->disable_keep_power)
->>>> +               mmc->pm_caps |= MMC_PM_KEEP_POWER;
->>>>
->>>>           /*
->>>>            * We can do SGIO
->>>> diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
->>>> index e1a9b96a3396..2cad1ef9766a 100644
->>>> --- a/drivers/mmc/host/mmci.h
->>>> +++ b/drivers/mmc/host/mmci.h
->>>> @@ -361,6 +361,7 @@ struct variant_data {
->>>>           u32                     opendrain;
->>>>           u8                      dma_lli:1;
->>>>           u32                     stm32_idmabsize_mask;
->>>> +       u8                      disable_keep_power:1;
->>>>           void (*init)(struct mmci_host *host);
->>>>    };
->>>>
->>>> --
->>>> 2.25.1
->>>>
->>
+ .../bindings/mmc/marvell,xenon-sdhci.txt      |  52 +++
+ .../bindings/net/marvell-armada-370-neta.txt  |   1 +
+ .../bindings/pinctrl/marvell,ac5-pinctrl.yaml |  70 ++++
+ arch/arm64/Kconfig.platforms                  |   2 +
+ arch/arm64/boot/dts/marvell/Makefile          |   1 +
+ .../boot/dts/marvell/armada-98dx2530.dtsi     | 343 ++++++++++++++++++
+ arch/arm64/boot/dts/marvell/rd-ac5x.dts       |  62 ++++
+ drivers/mmc/host/sdhci-xenon.c                |   1 +
+ drivers/mmc/host/sdhci-xenon.h                |   3 +-
+ drivers/net/ethernet/marvell/mvneta.c         |  13 +
+ drivers/pinctrl/mvebu/Kconfig                 |   4 +
+ drivers/pinctrl/mvebu/Makefile                |   1 +
+ drivers/pinctrl/mvebu/pinctrl-ac5.c           | 226 ++++++++++++
+ 13 files changed, 778 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/marvell,ac5=
+-pinctrl.yaml
+ create mode 100644 arch/arm64/boot/dts/marvell/armada-98dx2530.dtsi
+ create mode 100644 arch/arm64/boot/dts/marvell/rd-ac5x.dts
+ create mode 100644 drivers/pinctrl/mvebu/pinctrl-ac5.c
+
+--=20
+2.35.1
 
