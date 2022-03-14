@@ -2,142 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F31794D7F38
-	for <lists+linux-mmc@lfdr.de>; Mon, 14 Mar 2022 10:55:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DEC34D7FAC
+	for <lists+linux-mmc@lfdr.de>; Mon, 14 Mar 2022 11:18:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238301AbiCNJ4F (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 14 Mar 2022 05:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38444 "EHLO
+        id S238476AbiCNKTS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 14 Mar 2022 06:19:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238304AbiCNJz1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 14 Mar 2022 05:55:27 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 698893969B;
-        Mon, 14 Mar 2022 02:53:20 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22E8TvNB025967;
-        Mon, 14 Mar 2022 10:52:44 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=selector1;
- bh=pUSzcWf/L+OKxAki1hJsdcsg6/HMBg3ULewIOq5J2xo=;
- b=JKH3CvO+B2SYcNCqlYBQhTeGBVkao5q5TsquduHUhnsW7Dx/8DGjoZ7K/iUv0WdTy6lM
- +2vReM0o71dBjrbs4KqhA3LiHcP/5xvIslgj8ld4DA9J9FZbTh/OpGKJYtJ5HlW5oP1C
- L4wc45NvZ8I22ILrchuYWeGoZnWBO67+vYKfthgHeCKiGYt9I66RloRlvkoNzecGyUTm
- xokdH0AWxLzTg3b3m4A0QfvR/NSz0+w6JfomDdpHa2zlf/T4Ry0NQrs8pF+ueou+WBga
- cntR8esU4+W4ZEpfImFAqP0EGBwuRyK60IbNK7PU84F2IHoy3v/ORBnD1R3pcxM7fbK/ sg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3erk9k1agt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Mar 2022 10:52:44 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 050FE10002A;
-        Mon, 14 Mar 2022 10:52:42 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 22057216EE6;
-        Mon, 14 Mar 2022 10:52:42 +0100 (CET)
-Received: from localhost (10.75.127.48) by SFHDAG2NODE2.st.com (10.75.127.5)
- with Microsoft SMTP Server (TLS) id 15.0.1497.26; Mon, 14 Mar 2022 10:52:41
- +0100
-From:   Yann Gautier <yann.gautier@foss.st.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ludovic Barre <ludovic.barre@foss.st.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Marek Vasut <marex@denx.de>, <kernel@dh-electronics.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Grzegorz Szymaszek <gszymaszek@short.pl>,
-        Yann Gautier <yann.gautier@foss.st.com>
-Subject: [PATCH RESEND] mmc: mmci: manage MMC_PM_KEEP_POWER per variant config
-Date:   Mon, 14 Mar 2022 10:52:25 +0100
-Message-ID: <20220314095225.53563-1-yann.gautier@foss.st.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S238470AbiCNKTR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 14 Mar 2022 06:19:17 -0400
+Received: from mail-yw1-x1142.google.com (mail-yw1-x1142.google.com [IPv6:2607:f8b0:4864:20::1142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075AC240A2
+        for <linux-mmc@vger.kernel.org>; Mon, 14 Mar 2022 03:18:07 -0700 (PDT)
+Received: by mail-yw1-x1142.google.com with SMTP id 00721157ae682-2dc348dab52so156687267b3.6
+        for <linux-mmc@vger.kernel.org>; Mon, 14 Mar 2022 03:18:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
+        b=QLLsRy/dmyqoI0RxbutlRZI/KB6PQe9IvOCU+8CAeBQGMyqmF6/tAgeCdcEdZZWTQR
+         +lM4dx52NBCcTyQ2m0WfXEwW0vNy/Q2h5+2c+HanumuiwHWZmSKPKFlw44pXKTJtml+R
+         dwkeF3hAq1OG1XPpJqiioazUaaQX+JYj0dZPXjKsK11KQt1mm6NBeApJvW01vlTwCTmr
+         0zavqxu3N8bMBLwVdJob1TzN3h9Ad2e2PR9EIiqawtuU/tja8f0QInngMnTjQrwOBH97
+         yAIfAPxmHT/edHFTmHy/X6VQzKIXHrAJ5+snD7BUcPM2WrhmxfSgG3hq1NGxgIWRcIi2
+         0/fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
+        b=ivHNHTTpkrXDb9yp5uZSLn8fTcW3lv0YovZyDSrLkd6xDxj4QvuoHPqeI4xUeF/b1V
+         bMXSQpBVpcG1zaTITO8a5ppcSXsPosJJHJRK1cknwpT+xO5DG+C0+xDim5an3nFgQ4gR
+         ad+T7RnukFqBE4FfMQK5KsDdqdbZtXuhhY2nAbogspf0zF6SlHN/SZ1cCbM7J9GmjPGV
+         lbKzRUzVl84+zBw8gtcx4I2eDmwAQGk1NtUtJtcZxrlNXdepHo2BBt9DzI+K1mQlOHDP
+         6eNGYkH2cXhyif3uXSwEJx5YZtM5gMnjh2bfUjV4HPa3ym0Hrgh+0k1t6ao0IdNul0+G
+         gNkA==
+X-Gm-Message-State: AOAM533mMQMmmR8r1ALG12cZxYbUbT35G7h0uDgkO0GaM7P2PAA7Iwcx
+        SVdkkE7XCO7VXdHXiU3Xy3Icq0Dhm0EBvjZQcNc=
+X-Google-Smtp-Source: ABdhPJxt3sbAxxrwf4Yfrv8UBK0gVaHR239NIWyNSkIxk2Sc5EP6VOe5GgMUyXsnR38oFmRN2oH1ymMI9cBZdKCj6G0=
+X-Received: by 2002:a81:738a:0:b0:2dc:2bf4:76b0 with SMTP id
+ o132-20020a81738a000000b002dc2bf476b0mr17333592ywc.296.1647253085893; Mon, 14
+ Mar 2022 03:18:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.48]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-14_04,2022-03-11_02,2022-02-23_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7000:664e:0:0:0:0 with HTTP; Mon, 14 Mar 2022 03:18:05
+ -0700 (PDT)
+Reply-To: lawrencetansanco.y@gmail.com
+From:   Lawrence Tansanco Yacouba <ltansancoy@gmail.com>
+Date:   Mon, 14 Mar 2022 10:18:05 +0000
+Message-ID: <CAK5Y89B_nM=NB3F74FU=OkW46S8+sqUpfZMbv5ei+DSF9F90LA@mail.gmail.com>
+Subject: THANKS FOR YOUR RESPONSE AND GOD BLESS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add a disable_keep_power field in variant_data struct. The
-MMC_PM_KEEP_POWER flag will be enabled if disable_keep_power is not set.
-It is only set to true for stm32_sdmmc variants.
+.
+I will like to disclose something very important to you,
+get back for more details please.
 
-The issue was seen on STM32MP157C-DK2 board, which embeds a wifi chip.
-It doesn't correctly support low power, and we need to unbind the wifi
-driver before a suspend sequence. But the wifi chip firmware is then
-lost, and the communication with SDIO fails if MMC_PM_KEEP_POWER is
-enabled.
-The flag can still be enabled through DT property: keep-power-in-suspend.
-
-Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
----
-Resend the patch alone. It was previoulsy in a series [1] for which the
-other patches will be reworked.
-
-[1] https://lore.kernel.org/lkml/20220304135134.47827-1-yann.gautier@foss.st.com/
-
- drivers/mmc/host/mmci.c | 5 ++++-
- drivers/mmc/host/mmci.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 45b8608c935c..0e2f2f5d6a52 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -274,6 +274,7 @@ static struct variant_data variant_stm32_sdmmc = {
- 	.busy_detect		= true,
- 	.busy_detect_flag	= MCI_STM32_BUSYD0,
- 	.busy_detect_mask	= MCI_STM32_BUSYD0ENDMASK,
-+	.disable_keep_power	= true,
- 	.init			= sdmmc_variant_init,
- };
- 
-@@ -301,6 +302,7 @@ static struct variant_data variant_stm32_sdmmcv2 = {
- 	.busy_detect		= true,
- 	.busy_detect_flag	= MCI_STM32_BUSYD0,
- 	.busy_detect_mask	= MCI_STM32_BUSYD0ENDMASK,
-+	.disable_keep_power	= true,
- 	.init			= sdmmc_variant_init,
- };
- 
-@@ -2172,7 +2174,8 @@ static int mmci_probe(struct amba_device *dev,
- 	host->stop_abort.flags = MMC_RSP_R1B | MMC_CMD_AC;
- 
- 	/* We support these PM capabilities. */
--	mmc->pm_caps |= MMC_PM_KEEP_POWER;
-+	if (!variant->disable_keep_power)
-+		mmc->pm_caps |= MMC_PM_KEEP_POWER;
- 
- 	/*
- 	 * We can do SGIO
-diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
-index e1a9b96a3396..2cad1ef9766a 100644
---- a/drivers/mmc/host/mmci.h
-+++ b/drivers/mmc/host/mmci.h
-@@ -361,6 +361,7 @@ struct variant_data {
- 	u32			opendrain;
- 	u8			dma_lli:1;
- 	u32			stm32_idmabsize_mask;
-+	u8			disable_keep_power:1;
- 	void (*init)(struct mmci_host *host);
- };
- 
--- 
-2.25.1
-
+Regards.
+Mr Lawrence Tansanco Y.
