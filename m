@@ -2,72 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DEC34D7FAC
-	for <lists+linux-mmc@lfdr.de>; Mon, 14 Mar 2022 11:18:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97DFB4D7FE7
+	for <lists+linux-mmc@lfdr.de>; Mon, 14 Mar 2022 11:32:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238476AbiCNKTS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 14 Mar 2022 06:19:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
+        id S238439AbiCNKeB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 14 Mar 2022 06:34:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238470AbiCNKTR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 14 Mar 2022 06:19:17 -0400
-Received: from mail-yw1-x1142.google.com (mail-yw1-x1142.google.com [IPv6:2607:f8b0:4864:20::1142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075AC240A2
-        for <linux-mmc@vger.kernel.org>; Mon, 14 Mar 2022 03:18:07 -0700 (PDT)
-Received: by mail-yw1-x1142.google.com with SMTP id 00721157ae682-2dc348dab52so156687267b3.6
-        for <linux-mmc@vger.kernel.org>; Mon, 14 Mar 2022 03:18:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
-        b=QLLsRy/dmyqoI0RxbutlRZI/KB6PQe9IvOCU+8CAeBQGMyqmF6/tAgeCdcEdZZWTQR
-         +lM4dx52NBCcTyQ2m0WfXEwW0vNy/Q2h5+2c+HanumuiwHWZmSKPKFlw44pXKTJtml+R
-         dwkeF3hAq1OG1XPpJqiioazUaaQX+JYj0dZPXjKsK11KQt1mm6NBeApJvW01vlTwCTmr
-         0zavqxu3N8bMBLwVdJob1TzN3h9Ad2e2PR9EIiqawtuU/tja8f0QInngMnTjQrwOBH97
-         yAIfAPxmHT/edHFTmHy/X6VQzKIXHrAJ5+snD7BUcPM2WrhmxfSgG3hq1NGxgIWRcIi2
-         0/fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
-        b=ivHNHTTpkrXDb9yp5uZSLn8fTcW3lv0YovZyDSrLkd6xDxj4QvuoHPqeI4xUeF/b1V
-         bMXSQpBVpcG1zaTITO8a5ppcSXsPosJJHJRK1cknwpT+xO5DG+C0+xDim5an3nFgQ4gR
-         ad+T7RnukFqBE4FfMQK5KsDdqdbZtXuhhY2nAbogspf0zF6SlHN/SZ1cCbM7J9GmjPGV
-         lbKzRUzVl84+zBw8gtcx4I2eDmwAQGk1NtUtJtcZxrlNXdepHo2BBt9DzI+K1mQlOHDP
-         6eNGYkH2cXhyif3uXSwEJx5YZtM5gMnjh2bfUjV4HPa3ym0Hrgh+0k1t6ao0IdNul0+G
-         gNkA==
-X-Gm-Message-State: AOAM533mMQMmmR8r1ALG12cZxYbUbT35G7h0uDgkO0GaM7P2PAA7Iwcx
-        SVdkkE7XCO7VXdHXiU3Xy3Icq0Dhm0EBvjZQcNc=
-X-Google-Smtp-Source: ABdhPJxt3sbAxxrwf4Yfrv8UBK0gVaHR239NIWyNSkIxk2Sc5EP6VOe5GgMUyXsnR38oFmRN2oH1ymMI9cBZdKCj6G0=
-X-Received: by 2002:a81:738a:0:b0:2dc:2bf4:76b0 with SMTP id
- o132-20020a81738a000000b002dc2bf476b0mr17333592ywc.296.1647253085893; Mon, 14
- Mar 2022 03:18:05 -0700 (PDT)
+        with ESMTP id S236630AbiCNKeA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 14 Mar 2022 06:34:00 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6751230F;
+        Mon, 14 Mar 2022 03:32:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647253970; x=1678789970;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tcH7GGg15JCUBMXBBEr4A+gzUlR4DzpJ44QMDaHKhXo=;
+  b=A9UqD0DW9K+S/CvEXXSZVh2smEJ6SObgjqDf2xwJiJ156wqXF6kdH8Dd
+   IsnXq0g+GAKC5bvUEuEHgnIaEHsHhnc4odPUXkIygMc7+h6oFuC3/MqaH
+   dwGpMF7LIVpWhn53OdS48+pVJK+2h1rTFaCQYyxz7mUM8sitteejWSZhK
+   /gXs8bf5MGq0evoU1A6+lEn25rPbXzsfgWOKTliNK5qwEnrWIHRr62vUB
+   OFHQJ7LViTcDJFwfS5c0RMNoQHEaiFg2xV+x+/msJ4W2N7RYwLeF23Zy3
+   +sfDKq6Cd+j0Y6swoOvrsCnWhcyWdfTLbF9BNQWrve+mOMV8M+G4Dle8d
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10285"; a="255941815"
+X-IronPort-AV: E=Sophos;i="5.90,180,1643702400"; 
+   d="scan'208";a="255941815"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 03:32:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,180,1643702400"; 
+   d="scan'208";a="580067063"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.92]) ([10.237.72.92])
+  by orsmga001.jf.intel.com with ESMTP; 14 Mar 2022 03:32:45 -0700
+Message-ID: <4436fbb9-32fa-82f0-bf99-344b9bfddf78@intel.com>
+Date:   Mon, 14 Mar 2022 12:32:45 +0200
 MIME-Version: 1.0
-Received: by 2002:a05:7000:664e:0:0:0:0 with HTTP; Mon, 14 Mar 2022 03:18:05
- -0700 (PDT)
-Reply-To: lawrencetansanco.y@gmail.com
-From:   Lawrence Tansanco Yacouba <ltansancoy@gmail.com>
-Date:   Mon, 14 Mar 2022 10:18:05 +0000
-Message-ID: <CAK5Y89B_nM=NB3F74FU=OkW46S8+sqUpfZMbv5ei+DSF9F90LA@mail.gmail.com>
-Subject: THANKS FOR YOUR RESPONSE AND GOD BLESS
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.5.0
+Subject: Re: [PATCH] mmc: block: enable cache-flushing when mmc cache is on
+Content-Language: en-US
+To:     Avri Altman <Avri.Altman@wdc.com>,
+        Michael Wu <michael@allwinnertech.com>, ulf.hansson@linaro.org,
+        beanhuo@micron.com, porzio@gmail.com
+Cc:     lixiang <lixiang@allwinnertech.com>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220312044315.7994-1-michael@allwinnertech.com>
+ <DM6PR04MB6575D203B92955D9A913576CFC0F9@DM6PR04MB6575.namprd04.prod.outlook.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <DM6PR04MB6575D203B92955D9A913576CFC0F9@DM6PR04MB6575.namprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-.
-I will like to disclose something very important to you,
-get back for more details please.
+On 14/03/2022 09:26, Avri Altman wrote:
+> Hi,
+>> The mmc core enable cache on default. But it only enables cache-flushing
+>> when host supports cmd23 and eMMC supports reliable write.
+>> For hosts which do not support cmd23 or eMMCs which do not support
+>> reliable write, the cache can not be flushed by `sync` command.
+>> This may leads to cache data lost.
+>> This patch enables cache-flushing as long as cache is enabled, no matter host
+>> supports cmd23 and/or eMMC supports reliable write or not.
+> I looked in the spec and indeed couldn't find why enabling cache is dependent of cmd23/reliable write.
+> Nor I was able to find the original commit log.
 
-Regards.
-Mr Lawrence Tansanco Y.
+Reliable write was added first, so it might have been an oversight:
+
+commit 881d1c25f765938a95def5afe39486ce39f9fc96
+Author: Seungwon Jeon <tgih.jun@samsung.com>
+Date:   Fri Oct 14 14:03:21 2011 +0900
+
+    mmc: core: Add cache control for eMMC4.5 device
+    
+    This patch adds cache feature of eMMC4.5 Spec.
+    If device supports cache capability, host can utilize some specific
+    operations.
+    
+    Signed-off-by: Seungwon Jeon <tgih.jun@samsung.com>
+    Signed-off-by: Jaehoon Chung <jh80.chung@samsung.com>
+    Signed-off-by: Chris Ball <cjb@laptop.org>
+
+
+
+> 
+> Please allow few days to ask internally.
+> 
+> Thanks,
+> Avri
+
