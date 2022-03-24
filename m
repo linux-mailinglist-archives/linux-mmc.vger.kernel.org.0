@@ -2,159 +2,778 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6E04E5DA2
-	for <lists+linux-mmc@lfdr.de>; Thu, 24 Mar 2022 04:40:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D6004E5E83
+	for <lists+linux-mmc@lfdr.de>; Thu, 24 Mar 2022 07:09:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348039AbiCXDmQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 23 Mar 2022 23:42:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57676 "EHLO
+        id S232683AbiCXGKs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 24 Mar 2022 02:10:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346350AbiCXDmP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 23 Mar 2022 23:42:15 -0400
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70072.outbound.protection.outlook.com [40.107.7.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 487D09681B;
-        Wed, 23 Mar 2022 20:40:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SiSjzG2aAWLFhTxxiOZNbWbe70lX3iiEwssq64m0kRcYHw3kGxTF7KEZ3lHSKK3PRdCo9+Asc6QmaICrWCrEdtGYuPFCdZdsQ07OH2Yd7IUzQtRHBY31JgwQFo49MVJi2kxLgk8ahYHHBq3iYOnOi84MiCVMeGkHZ2O+cw32uQDW2xz53qddj401UcBByahsdIM7Wn3F6klyvpV4HdQROOdmDOouemI+ba0SC20hdTdQa2NMsW99N0OjMyM1Xk6HeBD2IAug8KbbHzw1oFRqzDzVGuPhszqeSftZFIdOM3YrtBNt/7EpSJqrj1CtOdWXWP9uR7hsTmW2LGgzqfautw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=txssf5WBWQAUvbrHdcME+qenEx8vebQQQgbVSjhS8ks=;
- b=emKHGLLqZ3tWdEU8Kq2E2wplVHVXAeWgLHr9qTtbGRQ3PFyvyvrbsyNbueDpTSb0hC5Nzpqb++45juC6W4Avnw9L/a1JaEQylHVr0HoFPJLsXMZSVuF6r4Z+ONt+CbA0D6pRfJpocPqbHkgj0N8wRDSX8LJrEOCP14qizWvMRxjs2/8YwT7c8IwM+3LR2PNGcy4oRjChIIL2ndTqWnNzLkprZKqS7xq8vJDSJ05gIthJjkMN3LIBOv7J1f8x0mfyy75Nkk0TqChecJDS0FBBODhy5fbhKho7d+3OSJOxuoKdJ/tFJLPQrHMasxu7AtAM4CiFo8/k2WDK9BsK1GVZKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=txssf5WBWQAUvbrHdcME+qenEx8vebQQQgbVSjhS8ks=;
- b=IFgAKTSpcXcJM7F64sJTmc7x9n9x+zlMmJrWMxniExfr0Vrasv5CnhhFtz5NRmpLRGO0N6icJxS+yPt6IFgQ5lci/WZWR2nnj4Z77gSxBPlZegVSpAHsLfM06kcfRAZTV07Gceu8Eb+7X7B7uJR3uozg/Rv2TAVuHevvGdKjX2Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by DBAPR04MB7223.eurprd04.prod.outlook.com (2603:10a6:10:1a4::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5102.18; Thu, 24 Mar
- 2022 03:40:38 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::1d8b:d8d8:ca2b:efff]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::1d8b:d8d8:ca2b:efff%3]) with mapi id 15.20.5102.018; Thu, 24 Mar 2022
- 03:40:38 +0000
-From:   "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To:     ulf.hansson@linaro.org, robh+dt@kernel.org, krzk+dt@kernel.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, wg@grandegger.com,
-        mkl@pengutronix.de, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com, qiangqing.zhang@nxp.com
-Cc:     kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-can@vger.kernel.org, netdev@vger.kernel.org,
-        Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH 4/4] dt-bindings: net: imx-dwmac: introduce nvmem property
-Date:   Thu, 24 Mar 2022 12:20:24 +0800
-Message-Id: <20220324042024.26813-5-peng.fan@oss.nxp.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220324042024.26813-1-peng.fan@oss.nxp.com>
-References: <20220324042024.26813-1-peng.fan@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0172.apcprd01.prod.exchangelabs.com
- (2603:1096:4:28::28) To DU0PR04MB9417.eurprd04.prod.outlook.com
- (2603:10a6:10:358::11)
+        with ESMTP id S232070AbiCXGKr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Mar 2022 02:10:47 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A28FB3F899
+        for <linux-mmc@vger.kernel.org>; Wed, 23 Mar 2022 23:09:14 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-2e5757b57caso40417997b3.4
+        for <linux-mmc@vger.kernel.org>; Wed, 23 Mar 2022 23:09:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=myP6PcWlkz+g7JLpxNShW2/qLFohQN6/LHBz4yYCtkc=;
+        b=X9cl4uBThrz/ReIezQEIcSIlBXUJMMLLR+Dv+WCSQgWOhbZDqKWh8al3lbBKxbZIBx
+         bJzpk7JRtQAD+0v7yQkPykPCyiLB/C9X18TOxoqD6u4EYK6pKwYtMW+QubbQSk4ybWjM
+         Fr2E469KE4q+6fR17F44iTJGWNhjAUvR+EoNm3gwedADQGx/p5WeYmDXVSvT0tv/2JIn
+         LCshZmb7cNzst7VvlPFEXngDnjehcsgQPB0KYOBvWzmgKbxiMyAAuWRcFHv3n33FMutn
+         vBDGwDQDj7SnYgsHwPcS43XcYQi+wSdjUr5AH8bvgl5JKl+44FstiC9SiBGL7+HMnRCM
+         yqIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=myP6PcWlkz+g7JLpxNShW2/qLFohQN6/LHBz4yYCtkc=;
+        b=a6anPVwgiaLS2foAHfF+OFnZnMgB0fIonVjuS/9ITr9u9cCRDHXQSEYLVKbSEU3d8v
+         me6W3dLaDOnqUBGeE8UC1yqsBb0gHmOeF/8IxaD7Agin/uFO3dtkV5UJMUinshh5DDvS
+         /8/gHL2Gm2WJ+Xpqk4xoG9iwsvId6yr5PMxyr+squN5OxW7h9U3i/Hei/rcjYkwA+8cs
+         SlaftN+MgH8tMOiGM4clyvXC+WDynDWHU4d4OOm9zHOUGRkVAjEXfP6LfPptVIY4F740
+         fQ3TpSFHbQH/CY/gEE4h/YRyYCB+Z7QSrkzV9tVxT9+crP/Jsa9n76tPY/ETXW+6JjwW
+         asig==
+X-Gm-Message-State: AOAM531URQQuRpjyECNBoF1UejV8r+65XfZKOJoIkOPd3XFPxjjJRisy
+        MeltEFMm4bocvMnk7k5CFvAr8NAaGQKsfcXPvO004d5IodY=
+X-Google-Smtp-Source: ABdhPJyGRLrklIk5Ak0BchRqF0luDJ8VpdMICa1OFO3GUtmIC77g+XrS9BNGuhSThGa/L7l+sz06wTvKwBu6d3HT85w=
+X-Received: by 2002:a81:74e:0:b0:2e5:c468:367b with SMTP id
+ 75-20020a81074e000000b002e5c468367bmr3220240ywh.509.1648102153582; Wed, 23
+ Mar 2022 23:09:13 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 37063a00-d1d9-465e-3a77-08da0d480ff1
-X-MS-TrafficTypeDiagnostic: DBAPR04MB7223:EE_
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-Microsoft-Antispam-PRVS: <DBAPR04MB722368650DFCF0AAD8FE5D17C9199@DBAPR04MB7223.eurprd04.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Mxxd1289k4autllXNAa5xKZhSHub8AWCJB2SIDeGvAMldjiQ4RItMvvESKZXhNBkub1FljysvN1fn5uf2B0ok26o8F9sz5Peh/u41TRebN+NK1F5jkmqwspx/U/8HoPzM50NyzTdpm50S/ljJuA2yzh6ybIUdF518jshZvB1oPrggeEdyrXgpNhFcEFjiMZZFMvuwxi7xW5emFVpbHdMlMPHjfvpkSJRhU1y79YA+j1BazPhCIDtgiGhv9R4LA+L141ezNtYCC3M+xUEWh2upg7pxxCZ3BTAS2XzhmIOj3m31y99/Y2UYM64KK8xK+2s3esz5TZDPL7NSWrEmFRkTMRB0wJ+ogswtHYNEpa7FTtcYqDZWPNvc/sGnPWJT/LdukSsCzPA3XVE+r6kySgrShhj6bc7JyublsscZesXSzb+4FD+QzKt0a4Sl9lmcc9EqkRUM+YpgV96bvpVljcUUA/+cCHhNLSLJKn5dR/BwQMOzYzrBrxsviOsacq8+QeAgsLnZirxvCSqSeldMRW4pGdcSgXJblf9EFaMowV/+pN6mMNTPBpiuVMlkkiidK6CIZIsJvpiYAT+t5JksY0PsKmVG1o3RXlInieTRs7ve14uXPApNUbx8XKiw1BrZGmkFyjemZl3L47WX6xfXT9Evm/sUUfLgqy1sMATl5KpJU7hBWXqGLFJWVbZ7qG91q2uVxus8F+U5l9kZ2ocpCw9Asdl6eIZOx1WXbDjYWWOTAc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(508600001)(6486002)(1076003)(52116002)(6506007)(6512007)(26005)(2616005)(186003)(316002)(8676002)(4326008)(66946007)(6666004)(66556008)(66476007)(921005)(38350700002)(8936002)(2906002)(7416002)(5660300002)(38100700002)(86362001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Njz5U1A5065KlSrBcGF9Uzs0N4k/uBaa2a43XT4zemnGRWbDywiBNrK1BAKG?=
- =?us-ascii?Q?718QLslPDxCx+ARrVIjZBobc1LwDNndrdZRIidU4WMff0UOYr4BrSPxtUzQX?=
- =?us-ascii?Q?BKNMYGFXjOx3iwnXD/bRg/G9d4I3CL8zLHp3+ahvVzqroO17/yEbYeol2Qbm?=
- =?us-ascii?Q?PMWawlD/FBliHbicTZug2/Tw8MP2CNIa7/o0UsoLNfUuPFHiHyXiyPQVoBg4?=
- =?us-ascii?Q?M2u6zPZ4xft42mpD5zErkkINOY8FKdhmUVnBnxGE1hVxXpDZIW7OtYT1GIq0?=
- =?us-ascii?Q?UKmlP/dFHGwnHxipNPeV0oNEkKI+t5GMPuxpycwZwtdiSGJYPUdXH5QrP7e2?=
- =?us-ascii?Q?jhhrCdImleIz4g4qoZY0+pe5iovyegTPXJt+2oC2le99AfL2wDuCmLBH/mLT?=
- =?us-ascii?Q?MAFHyNhRUawzzWGRq0xxz2kEUZl/2+mthK9IP/UkEhEegQ8te4SEpNgd/cFb?=
- =?us-ascii?Q?Ad54UQwy/sHLSL7FuS7q4dIEgso/urhsmsfk5hAfB1oEq9xx76f24GgFfEpF?=
- =?us-ascii?Q?zIfNNNtQ8zn151bOhGT3h+p5TipQ4yKpjS/zlBSs+OzwQeJOTElDgchL6iTo?=
- =?us-ascii?Q?5f26Eor3V7FKPwqlU5oQ5XtkDRrv5U7Xu6JQYg627C+eZMEC/l/K7ng5oU9s?=
- =?us-ascii?Q?gfVF4ymstjwWJmgYRolT+lKP2A6JyCRCvOYzukbyWsTC7Vo9dqXni2zlhypa?=
- =?us-ascii?Q?6gE0qFlYTGp46Yu5aW9ksdcTWTmwbohHzV+9blXYYSdHfKmfzkvkIW4mlPEF?=
- =?us-ascii?Q?aPGDcPtGxfSMdo5QSXQnkcbmZAN8r68+1EWvTcORMX1nRY6ONbGnqrN76tdA?=
- =?us-ascii?Q?V3leLhAxer7gXPk/9JIL+qZWtXH92/kDvPOzSjDcgdYnziOH7hOrC4yFKInk?=
- =?us-ascii?Q?sRMfIEHv4/lFNfaij3cdtZtmvnwhItlVINuYVkdK9oi1tscK1uzs/0lzsFkw?=
- =?us-ascii?Q?MQC3ahb7q4sedaYfFJIidYxqjCVn16LApjpKxqq7RUsmbCYUoqht7JyTVTKS?=
- =?us-ascii?Q?Tm1R7sEwYl1mFaAJSH23iBI+0nC9wYrx4DQQtRlBbE/fTIwQo+r3WreFPfli?=
- =?us-ascii?Q?8Xc3yj+yc1ZXxpt11WKzS8t+XKQvKbeCetpasBALlZrJtlyGo1nEnf2ekBNT?=
- =?us-ascii?Q?hULf/o03X6Y7WYI4fkjjktVXfGebVJ32DOOEvxsdeBPmZQDAJueTlXA9plx6?=
- =?us-ascii?Q?lXvSQdrtz41irKJf/DQQgaxZL0C2jSzneoIqtxbYhMLtr5lV5T80+sjLoTjg?=
- =?us-ascii?Q?CXsAMMb9strGvlsVF044MT+IIE6LWH+xuNYxMujY6G0HLceCDOss3zT31ect?=
- =?us-ascii?Q?bSweqQGuwDAHVC0GqTDS9E5YnptWEmqgLVUKQ5XwDkPyMPSBFvKCNM9EtJ6k?=
- =?us-ascii?Q?ov9R7Z5L/6y8jKU2dsD+7eqfTtl+qY2vWy4ubZtTD2e+Wf/4T2B4ZitWio66?=
- =?us-ascii?Q?g6hmchD7nOX3vTj5qNHJz+tMnXJ6sd/zIi/ICc95V3RcfyaKRnqN3yMNWEwp?=
- =?us-ascii?Q?4bCV5dbJsrwwHRW7dCVw7GnukPKi5rIvNS1bsvw+/bYZBnHXAC3s1O1HoJcw?=
- =?us-ascii?Q?0VqMLqHFJiL8Ssj995NgzseF1H5WGIWuJEaSNubXcYjNS5pwi9niZ0hXuptL?=
- =?us-ascii?Q?++ttvzeXkvLl6WC6ZZ2pKk3gLR9jB/4DPAExOt+ZEGCSRvK42QFkxuOjcmgZ?=
- =?us-ascii?Q?BdnZwVRZsBv5nPvESnTVblyqww8M4U87FyLl/Q2VpC5eEj157E+gsDy0EcM1?=
- =?us-ascii?Q?AP3WOloALQ=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 37063a00-d1d9-465e-3a77-08da0d480ff1
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2022 03:40:38.6056
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z9J3QwtTFYlv+bwwrjbPCfs6bDOIIgZSAOX0C4A3GbQdEyi2qk0MwX9djrh8yU1EFardnGNBpNKl4DkI7+06dg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7223
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220222033931.237638-1-jasonlai.genesyslogic@gmail.com>
+ <20220222033931.237638-7-jasonlai.genesyslogic@gmail.com> <CAPDyKFoDkxg1b0k4s_+F+eS8EUVM9ZabiwNc4VVQuCexLWNpsw@mail.gmail.com>
+ <20220324012929.GA6955@laputa>
+In-Reply-To: <20220324012929.GA6955@laputa>
+From:   Lai Jason <jasonlai.genesyslogic@gmail.com>
+Date:   Thu, 24 Mar 2022 14:09:02 +0800
+Message-ID: <CAG0XXUFgfTH+=zJQrfxkXBEF1Ex+jZ-rnF8JZn-8CdvZ72Lj2Q@mail.gmail.com>
+Subject: Re: [PATCH V3 6/7] mmc: Implement content of UHS-II card
+ initialization functions
+To:     AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Jason Lai <jasonlai.genesyslogic@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>, dlunev@chromium.org,
+        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+        =?UTF-8?B?R3JlZ1R1W+adnOWVn+i7kl0=?= <greg.tu@genesyslogic.com.tw>,
+        Jason Lai <Jason.Lai@genesyslogic.com.tw>,
+        otis.wu@genesyslogic.com.tw
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Peng Fan <peng.fan@nxp.com>
+On Thu, Mar 24, 2022 at 9:29 AM AKASHI Takahiro
+<takahiro.akashi@linaro.org> wrote:
+>
+> On Wed, Mar 23, 2022 at 05:15:59PM +0100, Ulf Hansson wrote:
+> > On Tue, 22 Feb 2022 at 04:40, Jason Lai <jasonlai.genesyslogic@gmail.com> wrote:
+> > >
+> > > From: Jason Lai <jason.lai@genesyslogic.com.tw>
+> > >
+> > > UHS-II card initialization flow is divided into 2 categories: PHY & Card.
+> > > Part 1 - PHY Initialization:
+> > >          Every host controller may need their own avtivation operation to
+> > >          establish LINK between controller and card. So we add a new member
+> > >          function(uhs2_detect_init) in struct mmc_host_ops for host
+> > >          controller use.
+> > > Part 2 - Card Initialization:
+> > >          This part can be divided into 6 substeps.
+> > >          1. Send UHS-II CCMD DEVICE_INIT to card.
+> > >          2. Send UHS-II CCMD ENUMERATE to card.
+> > >          3. Send UHS-II Native Read CCMD to obtain capabilities in CFG_REG
+> > >             of card.
+> > >          4. Host compares capabilities of host controller and card, then
+> > >             write the negotiated values to Setting field in CFG_REG of card
+> > >             through UHS-II Native Write CCMD.
+> > >          5. Switch host controller's clock to Range B if it is supported by
+> > >             both host controller and card.
+> > >          6. Execute legacy SD initialization flow.
+> > > Part 3 - Provide a function to tranaform legacy SD command packet into
+> > >          UHS-II SD-TRAN DCMD packet.
+> > >
+> > > Most of the code added above came from Intel's original patch[3].
+> > >
+> > > [3]
+> > > https://patchwork.kernel.org/project/linux-mmc/patch/1419672479-30852-2-
+> > > git-send-email-yi.y.sun@intel.com/
+>
+> To honor the original work, we should add Intel's copyright notice here
+> as I did before.
+>
+> -Takahiro Akashi
+>
+>
+> > > Signed-off-by: Jason Lai <jason.lai@genesyslogic.com.tw>
+> > > ---
+> > >  drivers/mmc/core/sd_uhs2.c | 835 ++++++++++++++++++++++++++++++++++++-
+> > >  1 file changed, 817 insertions(+), 18 deletions(-)
+> > >
+> > > diff --git a/drivers/mmc/core/sd_uhs2.c b/drivers/mmc/core/sd_uhs2.c
+> > > index 800957f74632..f1e8e30301eb 100644
+> > > --- a/drivers/mmc/core/sd_uhs2.c
+> > > +++ b/drivers/mmc/core/sd_uhs2.c
+> > > @@ -3,6 +3,7 @@
+> > >   * Copyright (C) 2021 Linaro Ltd
+> > >   *
+> > >   * Author: Ulf Hansson <ulf.hansson@linaro.org>
+> > > + * Author: Jason Lai <jason.lai@genesyslogic.com.tw>
 
-To i.MX8M Family variants, dwmac maybe fused out. Bootloader could use
-this property to read out the fuse value and mark the node status
-at runtime.
+Do you mean to add copyright information listed below here?
+* Copyright (C) 2020 Linaro Limited
+* Author: Ulf Hansson <ulf.hansson@linaro.org>
+* Copyright (C) 2014 Intel Corp, All Rights Reserved.
+* Copyright (C) 2020 Genesys Logic, Inc.
+* Authors: Jason Lai <jason.lai@genesyslogic.com.tw>
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml | 9 +++++++++
- 1 file changed, 9 insertions(+)
+-Jason Lai
 
-diff --git a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-index 011363166789..911e510d14c6 100644
---- a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-+++ b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-@@ -62,6 +62,15 @@ properties:
-       Should be phandle/offset pair. The phandle to the syscon node which
-       encompases the GPR register, and the offset of the GPR register.
- 
-+  nvmem-cells:
-+    maxItems: 1
-+    description:
-+      Nvmem data cell that indicate whether this IP is fused or not.
-+
-+  nvmem-cell-names:
-+    items:
-+      - const: fused
-+
-   snps,rmii_refclk_ext:
-     $ref: /schemas/types.yaml#/definitions/flag
-     description:
--- 
-2.35.1
-
+> > >   *
+> > >   * Support for SD UHS-II cards
+> > >   */
+> > > @@ -10,19 +11,31 @@
+> > >
+> > >  #include <linux/mmc/host.h>
+> > >  #include <linux/mmc/card.h>
+> > > +#include <linux/mmc/mmc.h>
+> > > +#include <linux/mmc/sd_uhs2.h>
+> > >
+> > >  #include "core.h"
+> > >  #include "bus.h"
+> > > +#include "card.h"
+> > >  #include "sd.h"
+> > > +#include "sd_ops.h"
+> > >  #include "mmc_ops.h"
+> > > +#include "sd_uhs2.h"
+> > >
+> > >  static const unsigned int sd_uhs2_freqs[] = { 52000000, 26000000 };
+> > >
+> > >  static int sd_uhs2_set_ios(struct mmc_host *host)
+> > >  {
+> > >         struct mmc_ios *ios = &host->ios;
+> > > +       int err = 0;
+> > >
+> > > -       return host->ops->uhs2_set_ios(host, ios);
+> > > +       pr_debug("%s: clock %uHz powermode %u Vdd %u timing %u\n",
+> > > +                mmc_hostname(host), ios->clock, ios->power_mode, ios->vdd,
+> > > +                ios->timing);
+> > > +
+> > > +       host->ops->set_ios(host, ios);
+> >
+> > We discussed using the ->set_ios() callback in a previous version. To
+> > repeat myself, I don't think it's a good idea. UHS-II needs an
+> > entirely different power sequence than the legacy interface(s), hence
+> > I think it's simply cleaner to separate them.
+> >
+> > To move forward, I see two options.
+> > 1) Use only the ->uhs2_host_operation() ops.
+> > 2) Use a combination of the ->uhs2_set_ios() ops and the
+> > ->uhs2_host_operation() ops.
+> >
+> > Both options work for me. However, perhaps if you could incorporate
+> > the changes done on the host driver at next submission, it becomes
+> > easier for me to understand what makes best sense.
+> >
+> > > +
+> > > +       return err;
+> > >  }
+> > >
+> > >  static int sd_uhs2_power_up(struct mmc_host *host)
+> > > @@ -45,6 +58,43 @@ static void sd_uhs2_power_off(struct mmc_host *host)
+> > >         sd_uhs2_set_ios(host);
+> > >  }
+> >
+> > [...]
+> >
+> > >
+> > >  /*
+> > > @@ -61,6 +119,77 @@ static int sd_uhs2_phy_init(struct mmc_host *host)
+> > >   */
+> > >  static int sd_uhs2_dev_init(struct mmc_host *host)
+> > >  {
+> > > +       struct mmc_command cmd = {0};
+> > > +       struct uhs2_command uhs2_cmd = {};
+> > > +       u32 cnt;
+> > > +       u32 dap, gap, resp_gap;
+> > > +       u16 header = 0, arg = 0;
+> >
+> > No need to initiate these.
+> >
+> > > +       u32 payload[1];
+> >
+> > u32?
+> >
+> > > +       u8 plen = 1;
+> > > +       u8 gd = 0, cf = 1;
+> > > +       u8 resp[6] = {0};
+> > > +       u8 resp_len = 6;
+> >
+> > Many of these variables are just constant numbers. If it makes sense
+> > to add definitions for them, then please do that instead. If not, just
+> > give the value directly in the code.
+> >
+> > For example: plen = 1; (I assume that is payload length). This can
+> > just be given as an in-parameter to sd_uhs2_cmd_assemble(), without
+> > further explanation.
+> >
+> > The point is, sd_uhs2_cmd_assemble() should have a well described
+> > description of its in-parameters, so no need for further descriptions,
+> > I think.
+> >
+> > This comment applies to all the new code/functions that are added in
+> > the $subject patch. Please go through all of the code and fix this.
+> >
+> >
+> > > +       int err;
+> > > +
+> > > +       dap = host->uhs2_caps.dap;
+> > > +       gap = host->uhs2_caps.gap;
+> > > +
+> > > +       header = UHS2_NATIVE_PACKET | UHS2_PACKET_TYPE_CCMD;
+> > > +       arg = ((UHS2_DEV_CMD_DEVICE_INIT & 0xFF) << 8) |
+> > > +              UHS2_NATIVE_CMD_WRITE |
+> > > +              UHS2_NATIVE_CMD_PLEN_4B |
+> > > +              (UHS2_DEV_CMD_DEVICE_INIT >> 8);
+> > > +
+> > > +       /*
+> > > +        * Refer to UHS-II Addendum Version 1.02 section 6.3.1.
+> > > +        * Max. time from DEVICE_INIT CCMD EOP reception on Device
+> > > +        * Rx to its SOP transmission on Device Tx(Tfwd_init_cmd) is
+> > > +        * 1 second.
+> > > +        */
+> > > +       cmd.busy_timeout = 1000;
+> > > +
+> > > +       /*
+> > > +        * Refer to UHS-II Addendum Version 1.02 section 6.2.6.3.
+> > > +        * When the number of the DEVICE_INIT commands is reach to
+> > > +        * 30 tiems, Host shall stop issuing DEVICE_INIT command
+> > > +        * and regard it as an error.
+> > > +        */
+> > > +       for (cnt = 0; cnt < 30; cnt++) {
+> > > +               payload[0] = ((dap & 0xF) << 12) |
+> > > +                             (cf << 11)         |
+> > > +                             ((gd & 0xF) << 4)  |
+> > > +                             (gap & 0xF);
+> >
+> > To me, it looks like the payload data deserves to be explained a bit.
+> > Perhaps you can add a comment explaining what pieces it consists of so
+> > this becomes more clear?
+> >
+> > > +
+> > > +               sd_uhs2_cmd_assemble(&cmd, &uhs2_cmd, header, arg,  payload, plen, resp, resp_len);
+> > > +
+> > > +               err = mmc_wait_for_cmd(host, &cmd, 0);
+> > > +
+> > > +               if (err) {
+> > > +                       pr_err("%s: %s: UHS2 CMD send fail, err= 0x%x!\n",
+> > > +                              mmc_hostname(host), __func__, err);
+> > > +                       return -EIO;
+> >
+> > Why do you override the original error code that was returned from
+> > mmc_wait_for_cmd()?
+> >
+> > Normally it's preferred to keep the error code, unless there is good
+> > reason not to.
+> >
+> > Again, I won't add more comments like this in the code from the
+> > $subject patch. But please go through it all to avoid this kind of
+> > thing.
+> >
+> > > +               }
+> > > +
+> > > +               if (resp[3] != (UHS2_DEV_CMD_DEVICE_INIT & 0xFF)) {
+> > > +                       pr_err("%s: DEVICE_INIT response is wrong!\n",
+> > > +                              mmc_hostname(host));
+> > > +                       return -EIO;
+> > > +               }
+> > > +
+> > > +               if (resp[5] & 0x8) {
+> > > +                       host->uhs2_caps.group_desc = gd;
+> > > +                       break;
+> >
+> > I suggest you do a return 0 here. In this way you can skip the check
+> > "if (cnt == 30)" below and just return an error code instead.
+> >
+> > > +               }
+> > > +               resp_gap = resp[4] & 0x0F;
+> > > +               if (gap == resp_gap)
+> > > +                       gd++;
+> > > +       }
+> > > +       if (cnt == 30) {
+> > > +               pr_err("%s: DEVICE_INIT fail, already 30 times!\n",
+> > > +                      mmc_hostname(host));
+> > > +               return -EIO;
+> > > +       }
+> > > +
+> > >         return 0;
+> > >  }
+> > >
+> >
+> > >  static int sd_uhs2_config_read(struct mmc_host *host, struct mmc_card *card)
+> > >  {
+> > > +       struct mmc_command cmd = {0};
+> > > +       struct uhs2_command uhs2_cmd = {};
+> > > +       u16 header = 0, arg = 0;
+> > > +       u32 cap;
+> > > +       int err;
+> > > +
+> > > +       header = UHS2_NATIVE_PACKET |
+> > > +                UHS2_PACKET_TYPE_CCMD |
+> > > +                card->uhs2_config.node_id;
+> > > +       arg = ((UHS2_DEV_CONFIG_GEN_CAPS & 0xFF) << 8) |
+> > > +              UHS2_NATIVE_CMD_READ |
+> > > +              UHS2_NATIVE_CMD_PLEN_4B |
+> > > +              (UHS2_DEV_CONFIG_GEN_CAPS >> 8);
+> > > +
+> > > +       /* There is no payload because per spec, there should be
+> > > +        * no payload field for read CCMD.
+> > > +        * Plen is set in arg. Per spec, plen for read CCMD
+> > > +        * represents the len of read data which is assigned in payload
+> > > +        * of following RES (p136).
+> > > +        */
+> > > +       sd_uhs2_cmd_assemble(&cmd, &uhs2_cmd, header, arg, NULL, 0, NULL, 0);
+> >
+> > We are reading the configuration data here and onwards, piece by
+> > piece. Perhaps if you can add a small comment about each piece we are
+> > reading, before each call to mmc_wait_for_cmd(), that can help to
+> > easier understand what goes on.
+> >
+> > [...]
+> >
+> > >  static int sd_uhs2_config_write(struct mmc_host *host, struct mmc_card *card)
+> > >  {
+> > > +       struct mmc_command cmd = {0};
+> > > +       struct uhs2_command uhs2_cmd = {};
+> > > +       u16 header = 0, arg = 0;
+> > > +       u32 payload[2];
+> > > +       u8 nMinDataGap;
+> > > +       u8 plen;
+> > > +       int err;
+> > > +       u8 resp[5] = {0};
+> > > +       u8 resp_len = 5;
+> > > +
+> > > +       header = UHS2_NATIVE_PACKET |
+> > > +                UHS2_PACKET_TYPE_CCMD | card->uhs2_config.node_id;
+> > > +       arg = ((UHS2_DEV_CONFIG_GEN_SET & 0xFF) << 8) |
+> > > +              UHS2_NATIVE_CMD_WRITE |
+> > > +              UHS2_NATIVE_CMD_PLEN_8B |
+> > > +              (UHS2_DEV_CONFIG_GEN_SET >> 8);
+> > > +
+> > > +       if (card->uhs2_config.n_lanes == UHS2_DEV_CONFIG_2L_HD_FD &&
+> > > +           host->uhs2_caps.n_lanes == UHS2_DEV_CONFIG_2L_HD_FD) {
+> > > +               /* Support HD */
+> > > +               host->uhs2_caps.flags |= MMC_UHS2_2L_HD;
+> >
+> > How is the uhs2_caps.flags field intended to be used? To me it looks
+> > like a way for the mmc core to exchange status/configuration
+> > information about the initialization process of the card, with the mmc
+> > host driver. Perhaps there is more too. Is that correct?
+> >
+> > If so, I think it looks quite similar for what we have in the struct
+> > mmc_ios, for the legacy interface(s). I am not saying we should use
+> > that, just trying to understand what would suit best here.
+> >
+> > > +               nMinDataGap = 1;
+> > > +       } else {
+> > > +               /* Only support 2L-FD so far */
+> > > +               host->uhs2_caps.flags &= ~MMC_UHS2_2L_HD;
+> > > +               nMinDataGap = 3;
+> > > +       }
+> > > +
+> > > +       /*
+> > > +        * Most UHS-II cards only support FD and 2L-HD mode. Other lane numbers
+> > > +        * defined in UHS-II addendem Ver1.01 are optional.
+> > > +        */
+> > > +       host->uhs2_caps.n_lanes_set = UHS2_DEV_CONFIG_GEN_SET_2L_FD_HD;
+> > > +       card->uhs2_config.n_lanes_set = UHS2_DEV_CONFIG_GEN_SET_2L_FD_HD;
+> >
+> > [...]
+> >
+> > > +static int sd_uhs2_go_dormant(struct mmc_host *host, bool hibernate, u32 node_id)
+> > > +{
+> >
+> > Looks like the in-parameter "hibernate" is superfluous, as it's always
+> > set to "false" by the caller.
+> >
+> > > +       struct mmc_command cmd = {0};
+> > > +       struct uhs2_command uhs2_cmd = {};
+> > > +       u16 header = 0, arg = 0;
+> > > +       u32 payload[1];
+> > > +       u8 plen = 1;
+> > > +       int err;
+> > > +
+> > > +       /* Disable Normal INT */
+> > > +       if (!host->ops->uhs2_host_operation(host, UHS2_DISABLE_INT)) {
+> > > +               pr_err("%s: %s: UHS2 DISABLE_INT fail!\n",
+> > > +                      mmc_hostname(host), __func__);
+> > > +               return -EIO;
+> > > +       }
+> > > +
+> > > +       header = UHS2_NATIVE_PACKET | UHS2_PACKET_TYPE_CCMD | node_id;
+> > > +
+> > > +       arg = ((UHS2_DEV_CMD_GO_DORMANT_STATE & 0xFF) << 8) |
+> > > +               UHS2_NATIVE_CMD_WRITE |
+> > > +               UHS2_NATIVE_CMD_PLEN_4B |
+> > > +               (UHS2_DEV_CMD_GO_DORMANT_STATE >> 8);
+> > > +
+> > > +       if (hibernate)
+> > > +               payload[0] = UHS2_DEV_CMD_DORMANT_HIBER;
+> > > +
+> > > +       sd_uhs2_cmd_assemble(&cmd, &uhs2_cmd, header, arg, payload, plen, NULL, 0);
+> > > +
+> > > +       err = mmc_wait_for_cmd(host, &cmd, 0);
+> > > +       if (err) {
+> > > +               pr_err("%s: %s: UHS2 CMD send fail, err= 0x%x!\n",
+> > > +                      mmc_hostname(host), __func__, err);
+> > > +               return -EIO;
+> > > +       }
+> > > +
+> > > +       /* Check Dormant State in Present */
+> > > +       if (!host->ops->uhs2_host_operation(host, UHS2_CHECK_DORMANT)) {
+> > > +               pr_err("%s: %s: UHS2 GO_DORMANT_STATE fail!\n",
+> > > +                      mmc_hostname(host), __func__);
+> > > +               return -EIO;
+> > > +       }
+> > > +
+> > > +       host->ops->uhs2_host_operation(host, UHS2_DISABLE_CLK);
+> > > +
+> > >         return 0;
+> > >  }
+> > >
+> > > +static int sd_uhs2_change_speed(struct mmc_host *host, u32 node_id)
+> > > +{
+> > > +       struct mmc_command cmd = {0};
+> > > +       struct uhs2_command uhs2_cmd = {};
+> > > +       u16 header = 0, arg = 0;
+> > > +       int err;
+> > > +       int timeout = 100;
+> > > +
+> > > +       /* Change Speed Range at controller side. */
+> > > +       if (!host->ops->uhs2_host_operation(host, UHS2_SET_SPEED_B)) {
+> > > +               pr_err("%s: %s: UHS2 SET_SPEED fail!\n",
+> > > +                      mmc_hostname(host), __func__);
+> > > +               return -EIO;
+> > > +       }
+> > > +
+> > > +       err = sd_uhs2_go_dormant(host, false, node_id);
+> > > +       if (err) {
+> > > +               pr_err("%s: %s: UHS2 GO_DORMANT_STATE fail, err= 0x%x!\n",
+> > > +                      mmc_hostname(host), __func__, err);
+> > > +               return -EIO;
+> > > +       }
+> > > +
+> > > +       /* restore sd clock */
+> > > +       mmc_delay(5);
+> > > +       host->ops->uhs2_host_operation(host, UHS2_ENABLE_CLK);
+> >
+> > I think the code can be a bit better structured here. More precisely,
+> > since sd_uhs2_go_dormant() is the one that calls
+> > ->uhs2_host_operation(host, UHS2_DISABLE_INT) and
+> > ->uhs2_host_operation(host, UHS2_DISABLE_CLK), it's then up to
+> > sd_uhs2_change_speed() to restore these changes.
+> >
+> > To me, it would be more clear if both enabling and disabling of the
+> > clock /interrupt are managed in sd_uhs2_change_speed().
+> >
+> > > +
+> > > +       /* Enable Normal INT */
+> > > +       if (!host->ops->uhs2_host_operation(host, UHS2_ENABLE_INT)) {
+> > > +               pr_err("%s: %s: UHS2 ENABLE_INT fail!\n",
+> > > +                      mmc_hostname(host), __func__);
+> > > +               return -EIO;
+> > > +       }
+> > > +
+> > > +       /*
+> > > +        * According to UHS-II Addendum Version 1.01, chapter 6.2.3, wait card
+> > > +        * switch to Active State
+> > > +        */
+> > > +       header = UHS2_NATIVE_PACKET | UHS2_PACKET_TYPE_CCMD | node_id;
+> > > +       arg = ((UHS2_DEV_CONFIG_GEN_SET & 0xFF) << 8) |
+> > > +               UHS2_NATIVE_CMD_READ |
+> > > +               UHS2_NATIVE_CMD_PLEN_8B |
+> > > +               (UHS2_DEV_CONFIG_GEN_SET >> 8);
+> > > +       do {
+> > > +               sd_uhs2_cmd_assemble(&cmd, &uhs2_cmd, header, arg, NULL, 0, NULL, 0);
+> > > +               err = mmc_wait_for_cmd(host, &cmd, 0);
+> > > +               if (err) {
+> > > +                       pr_err("%s: %s: UHS2 CMD send fail, err= 0x%x!\n",
+> > > +                              mmc_hostname(host), __func__, err);
+> > > +                       return -EIO;
+> > > +               }
+> > > +
+> > > +               if (cmd.resp[1] & UHS2_DEV_CONFIG_GEN_SET_CFG_COMPLETE)
+> > > +                       break;
+> > > +
+> > > +               timeout--;
+> > > +               if (timeout == 0) {
+> > > +                       pr_err("%s: %s: Not switch to Active in 100 ms\n",
+> > > +                              mmc_hostname(host), __func__);
+> > > +                       return -EIO;
+> > > +               }
+> > > +
+> > > +               mmc_delay(1);
+> > > +       } while (1);
+> >
+> > We really want to avoid these kinds of polling loops, for several
+> > reasons. Please convert into using __mmc_poll_for_busy() instead.
+> >
+> > > +
+> > > +       return 0;
+> > > +}
+> > > +
+> > > +static int sd_uhs2_get_ro(struct mmc_host *host)
+> > > +{
+> > > +       int ro;
+> > > +
+> > > +       /*
+> > > +        * Some systems don't feature a write-protect pin and don't need one.
+> > > +        * E.g. because they only have micro-SD card slot. For those systems
+> > > +        * assume that the SD card is always read-write.
+> > > +        */
+> > > +       if (host->caps2 & MMC_CAP2_NO_WRITE_PROTECT)
+> > > +               return 0;
+> > > +
+> > > +       if (!host->ops->get_ro)
+> > > +               return -1;
+> > > +
+> > > +       ro = host->ops->get_ro(host);
+> > > +
+> > > +       return ro;
+> >
+> > This can be replaced with mmc_sd_get_ro(). Let's avoid the open coding
+> > and make that function being shared instead.
+> >
+> > > +}
+> > > +
+> > >  /*
+> > >   * Initialize the UHS-II card through the SD-TRAN transport layer. This enables
+> > >   * commands/requests to be backwards compatible through the legacy SD protocol.
+> > > @@ -107,9 +696,127 @@ static int sd_uhs2_config_write(struct mmc_host *host, struct mmc_card *card)
+> > >   */
+> > >  static int sd_uhs2_legacy_init(struct mmc_host *host, struct mmc_card *card)
+> > >  {
+> > > +       int err;
+> > > +       u32 cid[4];
+> > > +       u32 ocr;
+> > > +       u32 rocr = 0;
+> > > +       int ro;
+> > > +
+> > > +       WARN_ON(!host->claimed);
+> >
+> > Drop this, it's an internal function, we should know that the host is
+> > claimed before calling sd_uhs2_legacy_init().
+> >
+> > > +
+> > > +       /* Send CMD0 to reset SD card */
+> > > +       mmc_go_idle(host);
+> > > +
+> > > +       /* Send CMD8 to communicate SD interface operation condition */
+> > > +       err = mmc_send_if_cond(host, host->ocr_avail);
+> > > +       if (err) {
+> > > +               pr_err("%s: %s: SEND_IF_COND fail!\n",
+> > > +                      mmc_hostname(host), __func__);
+> >
+> > Please drop these prints for every command/operation that fails. We
+> > already have trace/debug options for commands/requests.
+> >
+> > This applies to all the below code as well (perhaps there are few
+> > cases not covered by the existing trace/debug support, those may be
+> > converted to pr_debug().
+> >
+> > > +               return err;
+> > > +       }
+> > > +
+> > > +       /*
+> > > +        * Probe SD card working voltage.
+> > > +        */
+> > > +       err = mmc_send_app_op_cond(host, 0, &ocr);
+> > > +       if (err) {
+> > > +               pr_err("%s: %s: SD_SEND_OP_COND fail!\n",
+> > > +                      mmc_hostname(host), __func__);
+> > > +               return err;
+> > > +       }
+> > > +       card->ocr = ocr;
+> > > +
+> > > +       /*
+> > > +        * Some SD cards claims an out of spec VDD voltage range. Let's treat
+> > > +        * these bits as being in-valid and especially also bit7.
+> > > +        */
+> > > +       ocr &= ~0x7FFF;
+> > > +       rocr = mmc_select_voltage(host, ocr);
+> >
+> > If the host has MMC_CAP2_FULL_PWR_CYCLE set, mmc_select_voltage() may
+> > end up calling mmc_power_cycle(). This is not going to work for
+> > UHS-II.
+> >
+> > Either we need to modify mmc_select_voltage() so it becomes aware that
+> > it can be called for UHS-II initialization, allowing it to avoid the
+> > path to mmc_power_cycle() - or simply open code the part from
+> > mmc_select_voltage() for UHS-II here. I think I prefer the latter.
+> >
+> > > +
+> > > +       /*
+> > > +        * Some cards have zero value of rocr in UHS-II mode. Assign host's
+> > > +        * ocr value to rocr.
+> > > +        */
+> > > +       if (!rocr) {
+> > > +               if (host->ocr_avail) {
+> > > +                       rocr = host->ocr_avail;
+> >
+> > host->ocr_avail should really be checked in when the host driver calls
+> > mmc_add_host(). It must not be zero, then we should let mmc_add_host()
+> > return an error code. I look into this and send a patch for this
+> > separately.
+> >
+> > In other words, you should not need to check it here, but just trust that's set.
+> >
+> > > +               } else {
+> > > +                       pr_err("%s: %s: there is no valid OCR.\n",
+> > > +                              mmc_hostname(host), __func__);
+> > > +                       return -EINVAL;
+> > > +               }
+> > > +       }
+> > > +
+> > > +       /* Wait SD power on ready */
+> > > +       ocr = rocr;
+> > > +       err = mmc_send_app_op_cond(host, ocr, &rocr);
+> > > +       if (err) {
+> > > +               pr_err("%s: %s: SD_SEND_OP_COND fail!\n", mmc_hostname(host),
+> > > +                      __func__);
+> > > +               return err;
+> > > +       }
+> > > +
+> > > +       err = mmc_send_cid(host, cid);
+> > > +       if (err) {
+> > > +               pr_err("%s: %s: SD_SEND_CID fail!\n", mmc_hostname(host),
+> > > +                      __func__);
+> > > +               return err;
+> > > +       }
+> > > +       memcpy(card->raw_cid, cid, sizeof(card->raw_cid));
+> > > +
+> > > +       /*
+> > > +        * Call the optional HC's init_card function to handle quirks.
+> > > +        */
+> > > +       if (host->ops->init_card)
+> > > +               host->ops->init_card(host, card);
+> >
+> > This can be removed, as it's only for the legacy interface, I think.
+> >
+> > > +
+> > > +       /*
+> > > +        * For native busses:  get card RCA and quit open drain mode.
+> > > +        */
+> > > +       err = mmc_send_relative_addr(host, &card->rca);
+> > > +       if (err) {
+> > > +               pr_err("%s: %s: SD_SEND_RCA fail!\n", mmc_hostname(host),
+> > > +                      __func__);
+> > > +               return err;
+> > > +       }
+> > > +
+> > > +       err = mmc_sd_get_csd(card);
+> > > +       if (err) {
+> > > +               pr_err("%s: %s: SD_SEND_CSD fail!\n", mmc_hostname(host),
+> > > +                      __func__);
+> > > +               return err;
+> > > +       }
+> > > +
+> > > +       /*
+> > > +        * Select card, as all following commands rely on that.
+> > > +        */
+> > > +       err = mmc_select_card(card);
+> > > +       if (err) {
+> > > +               pr_err("%s: %s: SD_SEL_DSEL fail!\n", mmc_hostname(host),
+> > > +                      __func__);
+> > > +               return err;
+> > > +       }
+> > > +
+> > > +       /*
+> > > +        * Check if read-only switch is active.
+> > > +        */
+> > > +       ro = sd_uhs2_get_ro(host);
+> > > +       if (ro < 0) {
+> > > +               pr_warn("%s: host does not support read-only switch, assuming write-enable\n",
+> > > +                       mmc_hostname(host));
+> > > +       } else if (ro > 0) {
+> > > +               mmc_card_set_readonly(card);
+> > > +       }
+> > > +
+> > >         return 0;
+> > >  }
+> > >
+> > > +static void sd_uhs2_remove(struct mmc_host *host)
+> > > +{
+> > > +       mmc_remove_card(host->card);
+> > > +       host->card = NULL;
+> > > +}
+> > > +
+> > >  /*
+> > >   * Allocate the data structure for the mmc_card and run the UHS-II specific
+> > >   * initialization sequence.
+> > > @@ -121,16 +828,21 @@ static int sd_uhs2_init_card(struct mmc_host *host)
+> > >         int err;
+> > >
+> > >         err = sd_uhs2_dev_init(host);
+> > > -       if (err)
+> > > +       if (err) {
+> > > +               pr_err("%s: UHS2 DEVICE_INIT fail!\n", mmc_hostname(host));
+> > >                 return err;
+> > > +       }
+> > >
+> > >         err = sd_uhs2_enum(host, &node_id);
+> > > -       if (err)
+> > > +       if (err) {
+> > > +               pr_err("%s: UHS2 ENUMERATE fail!\n", mmc_hostname(host));
+> > >                 return err;
+> > > +       }
+> > >
+> > >         card = mmc_alloc_card(host, &sd_type);
+> > >         if (IS_ERR(card))
+> > >                 return PTR_ERR(card);
+> > > +       host->card = card;
+> > >
+> > >         card->uhs2_config.node_id = node_id;
+> > >         card->type = MMC_TYPE_SD;
+> > > @@ -139,6 +851,16 @@ static int sd_uhs2_init_card(struct mmc_host *host)
+> > >         if (err)
+> > >                 goto err;
+> > >
+> > > +       /* Change to Speed Range B if it is supported */
+> > > +       if (host->uhs2_caps.flags & MMC_UHS2_SPEED_B) {
+> > > +               err = sd_uhs2_change_speed(host, node_id);
+> > > +               if (err) {
+> > > +                       pr_err("%s: %s: UHS2 sd_uhs2_change_speed() fail!\n",
+> > > +                              mmc_hostname(host), __func__);
+> > > +                       return err;
+> > > +               }
+> > > +       }
+> > > +
+> > >         err = sd_uhs2_config_write(host, card);
+> > >         if (err)
+> > >                 goto err;
+> > > @@ -147,20 +869,13 @@ static int sd_uhs2_init_card(struct mmc_host *host)
+> > >         if (err)
+> > >                 goto err;
+> > >
+> > > -       host->card = card;
+> > >         return 0;
+> > >
+> > >  err:
+> > > -       mmc_remove_card(card);
+> > > +       sd_uhs2_remove(host);
+> > >         return err;
+> > >  }
+> >
+> > [...]
+> >
+> > Kind regards
+> > Uffe
