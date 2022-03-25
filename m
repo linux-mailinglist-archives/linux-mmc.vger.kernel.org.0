@@ -2,78 +2,60 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22DE14E66F1
-	for <lists+linux-mmc@lfdr.de>; Thu, 24 Mar 2022 17:24:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80E224E6B72
+	for <lists+linux-mmc@lfdr.de>; Fri, 25 Mar 2022 01:08:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242598AbiCXQZq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 24 Mar 2022 12:25:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
+        id S1356883AbiCYAJc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 24 Mar 2022 20:09:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351666AbiCXQZp (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Mar 2022 12:25:45 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 705D03D4A8;
-        Thu, 24 Mar 2022 09:24:12 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22OEsKmn012509;
-        Thu, 24 Mar 2022 17:23:52 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=kKmBnOfc0CnmBG1n6w5J+DiHVP5s4O6THfvfi6fXr88=;
- b=XfGDv01oQ5a/zhM/o8KrNMMA7+CxC5ls5fTRREjjtSpFOdKcycgv+7IBF722KycCyNii
- p6TfdFlZojfKDk8uPpngdyBvLyYUs71AD0jGDQa/C/eIpu7SfD2p6Qx4RQnDo5fzvqeI
- dagA+/eNHVuG+pTAFphrqjgV734j3bPXjVI/tpC3ejz8AsOMwOoi0zOQc9cMeSRXzFzZ
- 1rKXPPyYeuea9UOr6J8gTyxE6FY7PHDUBTj+gNulAFC+frBEDzyYvizHUjfeZMmKIX0g
- QagrQJzCwa0Xz4c0Pcwb8foOPHLXWuKUi+6KqD6nkbws1ALXEfVsWTGENUS/mcsJnDxv pA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ew6xkuewr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 24 Mar 2022 17:23:52 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DE7FC10002A;
-        Thu, 24 Mar 2022 17:23:49 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D428723713E;
-        Thu, 24 Mar 2022 17:23:49 +0100 (CET)
-Received: from [10.211.7.7] (10.75.127.48) by SFHDAG2NODE2.st.com
- (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.26; Thu, 24 Mar
- 2022 17:23:49 +0100
-Message-ID: <668661ca-271b-9a4f-6482-62f1b0190bb2@foss.st.com>
-Date:   Thu, 24 Mar 2022 17:23:27 +0100
+        with ESMTP id S1356852AbiCYAJb (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Mar 2022 20:09:31 -0400
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF505BBE05
+        for <linux-mmc@vger.kernel.org>; Thu, 24 Mar 2022 17:07:57 -0700 (PDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id EEA742C0185;
+        Fri, 25 Mar 2022 00:07:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1648166874;
+        bh=+SFIg7fa1NM+TS4dHaC6vNTZ/+6jBhDgLI6tjzA8d38=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ts/jmE7Rbz810AoCpY10+PncVMhVT0f9cKSm0zyN4lgXR/a/IECAbpHt1pz9CtXQ1
+         7BKfbnalfXM8c9j1maBWzDvApzSxzMFw3ei9tKmj3/6pUil/ZcsO2Fy35H/tPZmr5A
+         15sXb2sPegqzvnS6pOOb5UkTA7aiIBRIoZBjICwgpEqi9yWVD0GTX3Dib/DYZWNRc1
+         +W+1v+o8lq1Py7M8R5JGC62ySbm1x+1SiVSWfRFePp61oWwZTTaxi2XS1UTuqGDyVX
+         MY4E2QjsmGRiZwxOvx/To1jZPlHsxrY8nUNXkQRIoM5I4/ShYNU2ySM63ZFo33Xwzp
+         GZk/eWFKMuvsw==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+        id <B623d07d90000>; Fri, 25 Mar 2022 13:07:53 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
+        by pat.atlnz.lc (Postfix) with ESMTP id 98E9213EDD7;
+        Fri, 25 Mar 2022 13:07:53 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+        id 8DAF62A2679; Fri, 25 Mar 2022 13:07:49 +1300 (NZDT)
+From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
+To:     ulf.hansson@linaro.org, robh+dt@kernel.org, huziji@marvell.com,
+        andrew@lunn.ch, gregory.clement@bootlin.com,
+        sebastian.hesselbarth@gmail.com
+Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH v3 0/3] mmc: xenon: Convert to JSON schema
+Date:   Fri, 25 Mar 2022 13:07:42 +1300
+Message-Id: <20220325000745.1708610-1-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 2/2] mmc: mmci: stm32: use a buffer for unaligned DMA
- requests
-Content-Language: en-US
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Christophe Kerello <christophe.kerello@foss.st.com>,
-        Ludovic Barre <ludovic.barre@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20220317111944.116148-1-yann.gautier@foss.st.com>
- <20220317111944.116148-3-yann.gautier@foss.st.com>
- <CAPDyKFqzzKgLHWiy26QW0hvM9kZEATS_c2mXkTuGiFpPaW8YKw@mail.gmail.com>
-From:   Yann Gautier <yann.gautier@foss.st.com>
-In-Reply-To: <CAPDyKFqzzKgLHWiy26QW0hvM9kZEATS_c2mXkTuGiFpPaW8YKw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.48]
-X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-24_04,2022-03-24_01,2022-02-23_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=Cfh2G4jl c=1 sm=1 tr=0 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=o8Y5sQTvuykA:10 a=gY6W4IOjc_lc-HF-ILsA:9
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,191 +63,31 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 3/24/22 12:55, Ulf Hansson wrote:
-> On Thu, 17 Mar 2022 at 12:19, Yann Gautier <yann.gautier@foss.st.com> wrote:
->>
->> In SDIO mode, the sg list for requests can be unaligned with what the
->> STM32 SDMMC internal DMA can support. In that case, instead of failing,
->> use a temporary bounce buffer to copy from/to the sg list.
->> This buffer is limited to 1MB. But for that we need to also limit
->> max_req_size to 1MB. It has not shown any throughput penalties for
->> SD-cards or eMMC.
->>
->> Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
->> ---
->>   drivers/mmc/host/mmci_stm32_sdmmc.c | 80 +++++++++++++++++++++++------
->>   1 file changed, 63 insertions(+), 17 deletions(-)
->>
->> diff --git a/drivers/mmc/host/mmci_stm32_sdmmc.c b/drivers/mmc/host/mmci_stm32_sdmmc.c
->> index 4566d7fc9055..a4414e32800f 100644
->> --- a/drivers/mmc/host/mmci_stm32_sdmmc.c
->> +++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
->> @@ -43,6 +43,9 @@ struct sdmmc_lli_desc {
->>   struct sdmmc_idma {
->>          dma_addr_t sg_dma;
->>          void *sg_cpu;
->> +       dma_addr_t bounce_dma_addr;
->> +       void *bounce_buf;
->> +       bool use_bounce_buffer;
->>   };
->>
->>   struct sdmmc_dlyb {
->> @@ -54,6 +57,7 @@ struct sdmmc_dlyb {
->>   static int sdmmc_idma_validate_data(struct mmci_host *host,
->>                                      struct mmc_data *data)
->>   {
->> +       struct sdmmc_idma *idma = host->dma_priv;
->>          struct scatterlist *sg;
->>          int i;
->>
->> @@ -61,21 +65,23 @@ static int sdmmc_idma_validate_data(struct mmci_host *host,
->>           * idma has constraints on idmabase & idmasize for each element
->>           * excepted the last element which has no constraint on idmasize
->>           */
->> +       idma->use_bounce_buffer = false;
->>          for_each_sg(data->sg, sg, data->sg_len - 1, i) {
->>                  if (!IS_ALIGNED(sg->offset, sizeof(u32)) ||
->>                      !IS_ALIGNED(sg->length, SDMMC_IDMA_BURST)) {
->> -                       dev_err(mmc_dev(host->mmc),
->> +                       dev_dbg(mmc_dev(host->mmc),
->>                                  "unaligned scatterlist: ofst:%x length:%d\n",
->>                                  data->sg->offset, data->sg->length);
->> -                       return -EINVAL;
->> +                       idma->use_bounce_buffer = true;
->> +                       return 0;
->>                  }
->>          }
->>
->>          if (!IS_ALIGNED(sg->offset, sizeof(u32))) {
->> -               dev_err(mmc_dev(host->mmc),
->> +               dev_dbg(mmc_dev(host->mmc),
->>                          "unaligned last scatterlist: ofst:%x length:%d\n",
->>                          data->sg->offset, data->sg->length);
->> -               return -EINVAL;
->> +               idma->use_bounce_buffer = true;
->>          }
->>
->>          return 0;
->> @@ -84,18 +90,29 @@ static int sdmmc_idma_validate_data(struct mmci_host *host,
->>   static int _sdmmc_idma_prep_data(struct mmci_host *host,
->>                                   struct mmc_data *data)
->>   {
->> -       int n_elem;
->> +       struct sdmmc_idma *idma = host->dma_priv;
->>
->> -       n_elem = dma_map_sg(mmc_dev(host->mmc),
->> -                           data->sg,
->> -                           data->sg_len,
->> -                           mmc_get_dma_dir(data));
->> +       if (idma->use_bounce_buffer) {
->> +               if (data->flags & MMC_DATA_WRITE) {
->> +                       unsigned int xfer_bytes = data->blksz * data->blocks;
->>
->> -       if (!n_elem) {
->> -               dev_err(mmc_dev(host->mmc), "dma_map_sg failed\n");
->> -               return -EINVAL;
->> -       }
->> +                       sg_copy_to_buffer(data->sg, data->sg_len,
->> +                                         idma->bounce_buf, xfer_bytes);
->> +                       dma_wmb();
->> +               }
->> +       } else {
->> +               int n_elem;
->> +
->> +               n_elem = dma_map_sg(mmc_dev(host->mmc),
->> +                                   data->sg,
->> +                                   data->sg_len,
->> +                                   mmc_get_dma_dir(data));
->>
->> +               if (!n_elem) {
->> +                       dev_err(mmc_dev(host->mmc), "dma_map_sg failed\n");
->> +                       return -EINVAL;
->> +               }
->> +       }
->>          return 0;
->>   }
->>
->> @@ -112,8 +129,19 @@ static int sdmmc_idma_prep_data(struct mmci_host *host,
->>   static void sdmmc_idma_unprep_data(struct mmci_host *host,
->>                                     struct mmc_data *data, int err)
->>   {
->> -       dma_unmap_sg(mmc_dev(host->mmc), data->sg, data->sg_len,
->> -                    mmc_get_dma_dir(data));
->> +       struct sdmmc_idma *idma = host->dma_priv;
->> +
->> +       if (idma->use_bounce_buffer) {
->> +               if (data->flags & MMC_DATA_READ) {
->> +                       unsigned int xfer_bytes = data->blksz * data->blocks;
->> +
->> +                       sg_copy_from_buffer(data->sg, data->sg_len,
->> +                                           idma->bounce_buf, xfer_bytes);
->> +               }
->> +       } else {
->> +               dma_unmap_sg(mmc_dev(host->mmc), data->sg, data->sg_len,
->> +                            mmc_get_dma_dir(data));
->> +       }
->>   }
->>
->>   static int sdmmc_idma_setup(struct mmci_host *host)
->> @@ -137,6 +165,16 @@ static int sdmmc_idma_setup(struct mmci_host *host)
->>                  host->mmc->max_segs = SDMMC_LLI_BUF_LEN /
->>                          sizeof(struct sdmmc_lli_desc);
->>                  host->mmc->max_seg_size = host->variant->stm32_idmabsize_mask;
->> +
->> +               host->mmc->max_req_size = SZ_1M;
->> +               idma->bounce_buf = dmam_alloc_coherent(dev,
->> +                                                      host->mmc->max_req_size,
->> +                                                      &idma->bounce_dma_addr,
->> +                                                      GFP_KERNEL);
->> +               if (!idma->bounce_buf) {
->> +                       dev_err(dev, "Unable to map allocate DMA bounce buffer.\n");
->> +                       return -ENOMEM;
-> 
-Hi Ulf,
+This series converts the xenon-sdhci-binding to JSON schema. There are so=
+me
+schema violations with the clock nodes for the existing dts. It's unclear
+whether the ap806/ap807 actually need the 2nd clock but the change that
+introduced the requirement to the old binding was fairly explicit about t=
+his
+being required for cp110 and ap806.
 
-> If we fail to allocate the 1M bounce buffer, then we end up always
-> using a PIO based mode, right?
-> 
-> Perhaps we can allow the above allocation to fail, but then limit us
-> to use DMA only when the buffers are properly aligned? Would that
-> work?
-> 
-We have never supported PIO mode with STM32 variant.
-We only support DMA single buffer or DMA LLI.
-As we cannot have DMA LLI for unaligned access, we'll default to single 
-mode.
-If allocation fails, it then won't work.
-Maybe we shouldn't fail here, and just check idma->bounce_buf in 
-validate data function. If buffer is not allocated, we just return 
--EINVAL as it was done before.
+Chris Packham (3):
+  arm64: dts: marvell: Update sdhci node names to match schema
+  dt-bindings: mmc: xenon: Convert to JSON schema
+  dt-bindings: mmc: xenon: add marvell,sdhci-xenon compatible
 
-Best regards,
-Yann
+ .../bindings/mmc/marvell,xenon-sdhci.txt      | 173 -----------
+ .../bindings/mmc/marvell,xenon-sdhci.yaml     | 276 ++++++++++++++++++
+ MAINTAINERS                                   |   2 +-
+ arch/arm64/boot/dts/marvell/armada-37xx.dtsi  |   4 +-
+ arch/arm64/boot/dts/marvell/armada-ap80x.dtsi |   2 +-
+ arch/arm64/boot/dts/marvell/armada-cp11x.dtsi |   2 +-
+ 6 files changed, 281 insertions(+), 178 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/mmc/marvell,xenon-s=
+dhci.txt
+ create mode 100644 Documentation/devicetree/bindings/mmc/marvell,xenon-s=
+dhci.yaml
 
->> +               }
->>          } else {
->>                  host->mmc->max_segs = 1;
->>                  host->mmc->max_seg_size = host->mmc->max_req_size;
->> @@ -154,8 +192,16 @@ static int sdmmc_idma_start(struct mmci_host *host, unsigned int *datactrl)
->>          struct scatterlist *sg;
->>          int i;
->>
->> -       if (!host->variant->dma_lli || data->sg_len == 1) {
->> -               writel_relaxed(sg_dma_address(data->sg),
->> +       if (!host->variant->dma_lli || data->sg_len == 1 ||
->> +           idma->use_bounce_buffer) {
->> +               u32 dma_addr;
->> +
->> +               if (idma->use_bounce_buffer)
->> +                       dma_addr = idma->bounce_dma_addr;
->> +               else
->> +                       dma_addr = sg_dma_address(data->sg);
->> +
->> +               writel_relaxed(dma_addr,
->>                                 host->base + MMCI_STM32_IDMABASE0R);
->>                  writel_relaxed(MMCI_STM32_IDMAEN,
->>                                 host->base + MMCI_STM32_IDMACTRLR);
-> 
-> Kind regards
-> Uffe
+--=20
+2.35.1
 
