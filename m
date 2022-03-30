@@ -2,89 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 188464EBEB1
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Mar 2022 12:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9804EC0F7
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Mar 2022 13:55:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244839AbiC3K1V (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Mar 2022 06:27:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59154 "EHLO
+        id S1344154AbiC3Lzj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Mar 2022 07:55:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245331AbiC3K1T (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Mar 2022 06:27:19 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD89525E327
-        for <linux-mmc@vger.kernel.org>; Wed, 30 Mar 2022 03:25:34 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id p12-20020a05600c430c00b0038cbdf52227so3152056wme.2
-        for <linux-mmc@vger.kernel.org>; Wed, 30 Mar 2022 03:25:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=HIWpi/8D1djUzx7THE7n67oIfPKGmrvE/SwlU2lSkLA=;
-        b=lUWULG+IN08a/hn4fiOqt6bNpyrGelQJQQY1CO+dbSwLUb9LqmiaxxfEyaUmS1WD1E
-         6Jh9UUc1S9Faj6gbNsE1UGXowCMXW9fox/hH8ydwEozmwmjHofa2kmtOeViq1U77opI2
-         vWjMN/479f4tpGR1N/HBWVWKoSWriXnn5aTNLupu48ytgHgQfKXB5xNZ6wMEw6E/rd2f
-         tga/3YYw9x4s3e7bXWWAxkM0GhNB8rXBdc0zwV20vnf/aqnBi6V5jV5sUyOQnWEhRkAA
-         gGWeg1S5vX7034R0tAt8JAAr98CdjhB+5x56eT4ZrVkfDpatE41YlX20jXiou0JSMMot
-         gnrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=HIWpi/8D1djUzx7THE7n67oIfPKGmrvE/SwlU2lSkLA=;
-        b=z1LijzJthyMLyQschhtCh1MUIhhPlExdjXnE1FNR1iVwjL8EAQk5CVyecjx3G+xTR0
-         kABePguWM7FrmJfCfRXxXRLubN07m8rNY0TOI8ySNJ3UKkMCXBau/Om+7U+Ayj1wPhBU
-         2t9zQnP3QyhLqGee12AHxEZt8refKf54sP/I1fwXDcLTcvVOx/QXWTCcaH+N7REY6owp
-         X64aAM/QBjeh5EDXq0aKUZxOkP8ZKMq4WNer/6syIdM6mWOP9Ma9qvppdUwKwWyIBW52
-         8xh5vicjQYxLgu82D/fiq0OgAZtcWc6ZSVs/9K1PIsc2lCDDksZUd6wi+a06EWraPG/c
-         xDsA==
-X-Gm-Message-State: AOAM533C1AalniBjkTiLlREBmP7C20TqriLftMm5QJGDUR2gpWJw4VqW
-        uHW7bl7QOKu/ysADwnwpaXDcTQ==
-X-Google-Smtp-Source: ABdhPJyG1sVXUz6I5tf6C8RXiwYzb3kTwXz6SO1D1h3jIBPDn8sAoDtDK/poWTpvBTCo65fGctX0OA==
-X-Received: by 2002:a05:600c:34c5:b0:38c:30e3:1e6c with SMTP id d5-20020a05600c34c500b0038c30e31e6cmr3824774wmq.144.1648635933279;
-        Wed, 30 Mar 2022 03:25:33 -0700 (PDT)
-Received: from [192.168.86.34] (cpc90716-aztw32-2-0-cust825.18-1.cable.virginm.net. [86.26.103.58])
-        by smtp.googlemail.com with ESMTPSA id g10-20020a5d46ca000000b00203fd86e198sm16609627wrs.96.2022.03.30.03.25.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Mar 2022 03:25:32 -0700 (PDT)
-Message-ID: <b59fd0f0-cedd-dc48-52bf-090358ce7786@linaro.org>
-Date:   Wed, 30 Mar 2022 11:25:30 +0100
+        with ESMTP id S1344194AbiC3Lwi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Mar 2022 07:52:38 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70CF41BB7B2;
+        Wed, 30 Mar 2022 04:48:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B5B72B81C3A;
+        Wed, 30 Mar 2022 11:48:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0513C3410F;
+        Wed, 30 Mar 2022 11:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648640903;
+        bh=jpH1FFqHwA9Rcvx435BbU8+Ijry2x5lxT/g9E4on9Sg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ODqttJv+7yJVSqB2V3Q/mCsMbqviH19yiU9X1vU4Bt/s5wrYXIGFG+NyBQJLgTdpK
+         fzvDX/nQoPUILjg93L7Qywj7KXsJu5Nnf3PawSa6sXTUz36XF8LGESRmjDUk8YJwbC
+         k6EnwYf9oVJoamsy1/JHzENALok2CIg6Ma/tHslMpDPFIV870fZ97fydhGstgfv5um
+         1OhjC+Mqa+h7tdbHBMSJSLpnb7TnPoH2ebDVIKjs4s2n3D1xLLI6OjHsXeuSyouIx5
+         bdSY9KT4QMNMFI/tWM31fi6n4lDy9tHVN4PjOE1f9F19MuXwqdrMvf7EyXH5H090et
+         XzQoq5cmiCNWg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.17 62/66] mmc: host: Return an error when ->enable_sdio_irq() ops is missing
+Date:   Wed, 30 Mar 2022 07:46:41 -0400
+Message-Id: <20220330114646.1669334-62-sashal@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220330114646.1669334-1-sashal@kernel.org>
+References: <20220330114646.1669334-1-sashal@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 1/3] dt-bindings: mmc: mmci: add a property to disable DMA
- LLI
-Content-Language: en-US
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>
-Cc:     Yann Gautier <yann.gautier@foss.st.com>, ulf.hansson@linaro.org,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        Ludovic Barre <ludovic.barre@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Marek Vasut <marex@denx.de>, kernel@dh-electronics.com,
-        Grzegorz Szymaszek <gszymaszek@short.pl>
-References: <20220304135134.47827-1-yann.gautier@foss.st.com>
- <20220304135134.47827-2-yann.gautier@foss.st.com>
- <CACRpkdYQz+-im3n-r0_8RKL7so2bHS=aZobty4BbzixmPzms-Q@mail.gmail.com>
- <0bc53018-fce4-4104-fa47-6e60d2367d69@foss.st.com>
- <20220329153114.GA58120@thinkpad>
- <71b10ce2-7b87-14d5-c8e4-3a4598c889e0@foss.st.com>
- <20220329173322.GC58120@thinkpad>
- <CACRpkdaiOhMGzuWPwoRLZ05HyM8BO_-cZt4TiAqAYQvDaJA-mA@mail.gmail.com>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <CACRpkdaiOhMGzuWPwoRLZ05HyM8BO_-cZt4TiAqAYQvDaJA-mA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -93,36 +55,58 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
+[ Upstream commit d6c9219ca1139b74541b2a98cee47a3426d754a9 ]
 
-On 29/03/2022 22:16, Linus Walleij wrote:
-> On Tue, Mar 29, 2022 at 7:33 PM Manivannan Sadhasivam <mani@kernel.org> wrote:
->> [Yann]
->>> As for Prabhakar's answer, the IDMA here is inside our IP, and not used in
->>> any other IP. So I'm not sure it is really relevant to move that to another
->>> dmaengine driver.
->>
->> Okay, I think this justification makes sense. I was worried of DMA IPs that get
->> sandwiched into many peripherals like the one on Renesas platforms. It turned
->> out that each subsystem has to add internal DMA support for it :/
-> 
-> That is a justified worry.
-> 
-> Qualcomm has "BAM DMA" (I think it is called?) which is added to each IP
-> that needs DMA. drivers/mmc/host/mmci_qcom_dml.c
-> It's for older Qualcomm platforms but I *think* it is actually not just used
-> for the MMCI, just noone ever got around to adding it to any other
-> peripheral? Srini do you know?
+Even if the current WARN() notifies the user that something is severely
+wrong, we can still end up in a PANIC() when trying to invoke the missing
+->enable_sdio_irq() ops. Therefore, let's also return an error code and
+prevent the host from being added.
 
-There are multiple instances of BAM (Bus access manager) on Qcom SoC, 
-some of these instances are dedicated for each peripheral instance.
-In this particular case we have 4 instances of BAM each of which are 
-dedicated to 4 instances of SD Controllers.
+While at it, move the code into a separate function to prepare for
+subsequent changes and for further host caps validations.
 
-BAM dmaengine is used across many Qualcomm peripheral drivers.
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20220303165142.129745-1-ulf.hansson@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mmc/core/host.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---srini
+diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
+index cf140f4ec864..d739e2b631fe 100644
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -588,6 +588,16 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
+ 
+ EXPORT_SYMBOL(mmc_alloc_host);
+ 
++static int mmc_validate_host_caps(struct mmc_host *host)
++{
++	if (host->caps & MMC_CAP_SDIO_IRQ && !host->ops->enable_sdio_irq) {
++		dev_warn(host->parent, "missing ->enable_sdio_irq() ops\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ /**
+  *	mmc_add_host - initialise host hardware
+  *	@host: mmc host
+@@ -600,8 +610,9 @@ int mmc_add_host(struct mmc_host *host)
+ {
+ 	int err;
+ 
+-	WARN_ON((host->caps & MMC_CAP_SDIO_IRQ) &&
+-		!host->ops->enable_sdio_irq);
++	err = mmc_validate_host_caps(host);
++	if (err)
++		return err;
+ 
+ 	err = device_add(&host->class_dev);
+ 	if (err)
+-- 
+2.34.1
 
-> 
-> Yours,
-> Linus Walleij
