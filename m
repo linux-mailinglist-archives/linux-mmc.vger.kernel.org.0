@@ -2,45 +2,45 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 747CA4EC183
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Mar 2022 13:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BC1A4EC131
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Mar 2022 13:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245255AbiC3Lzh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Mar 2022 07:55:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56232 "EHLO
+        id S1344081AbiC3Lzj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Mar 2022 07:55:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345687AbiC3Ly4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Mar 2022 07:54:56 -0400
+        with ESMTP id S1345906AbiC3LzL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Mar 2022 07:55:11 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85625261DD3;
-        Wed, 30 Mar 2022 04:51:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE4CD26C2FB;
+        Wed, 30 Mar 2022 04:52:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 29F3FB81C25;
-        Wed, 30 Mar 2022 11:51:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46569C340F2;
-        Wed, 30 Mar 2022 11:51:16 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A1454B81C24;
+        Wed, 30 Mar 2022 11:52:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB83C36AE7;
+        Wed, 30 Mar 2022 11:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648641076;
-        bh=jpH1FFqHwA9Rcvx435BbU8+Ijry2x5lxT/g9E4on9Sg=;
+        s=k20201202; t=1648641139;
+        bh=+VcnWK6RdiXDGyC+txKRR/jNyYOqSekq6T4uv9dDmug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VoyyspTVbyHZOr92I1O5IUm1KP7Z4vnEkXKnQ5UQGhz2cEDeskyTNiEsRBiEIhJ4V
-         u15uXQLyQKZavcw5lpfOHU+EVq1Hjz/b1K4XvQi+tsbr8rK7nUlZGsBMCllTiF2+cW
-         kXkIlBNnak1dZ0OT7YZc0Zuo7K9lzOD5p/7qj7CQKEUz+JJy2iQ6h7MBrhp60OfU2I
-         NfTD76/IqJas9hXhL4OzjBivEU58QWPGK5r+7nl/r5b02JlEWi00Cld9vy8wP5ZjMQ
-         BoPdR//zf7SUGcJ9P5E2JOT5oOoF/fx8FvPwmBckdbQRnmHHLG51NXY/Z3FjGDich7
-         b5uh/SRUUNKaA==
+        b=K0mmJmwS5jQ9tuxh/IvDaAVY4ITGBT+bD1JfvNbuPf1Kl71bwM0VEIX+1RMNdRy0+
+         AvC+IOT9q9AdEoZOR55W7+uIc/GvWd4bmWeNwdL9acSYXdPu4Qv/jf/s8bUe7XtPVe
+         ZZfb3gg/Zk4NDgKbqH03tMMBfOuo99Ng/MMIjJ8zVwDercbdfxIjRC5HyU0xt++/B1
+         U1v5etzrMKfFpNbJQKU1AEUZWRiGTnXc565OOr4CuWM2dQHWG/5DHrjSBa2EjRkYas
+         9/b8ppyMh0nfcjFKcipBbRKWR2ONhe6bK66++MAawszrEmsH/FVTBVsXdI0eyZEnwN
+         sTGa5CWdaH/aA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 47/50] mmc: host: Return an error when ->enable_sdio_irq() ops is missing
-Date:   Wed, 30 Mar 2022 07:50:01 -0400
-Message-Id: <20220330115005.1671090-47-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 34/37] mmc: host: Return an error when ->enable_sdio_irq() ops is missing
+Date:   Wed, 30 Mar 2022 07:51:19 -0400
+Message-Id: <20220330115122.1671763-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220330115005.1671090-1-sashal@kernel.org>
-References: <20220330115005.1671090-1-sashal@kernel.org>
+In-Reply-To: <20220330115122.1671763-1-sashal@kernel.org>
+References: <20220330115122.1671763-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -75,10 +75,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
-index cf140f4ec864..d739e2b631fe 100644
+index 864c8c205ff7..03e2f965a96a 100644
 --- a/drivers/mmc/core/host.c
 +++ b/drivers/mmc/core/host.c
-@@ -588,6 +588,16 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
+@@ -513,6 +513,16 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
  
  EXPORT_SYMBOL(mmc_alloc_host);
  
@@ -95,7 +95,7 @@ index cf140f4ec864..d739e2b631fe 100644
  /**
   *	mmc_add_host - initialise host hardware
   *	@host: mmc host
-@@ -600,8 +610,9 @@ int mmc_add_host(struct mmc_host *host)
+@@ -525,8 +535,9 @@ int mmc_add_host(struct mmc_host *host)
  {
  	int err;
  
