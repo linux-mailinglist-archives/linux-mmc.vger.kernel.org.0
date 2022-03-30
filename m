@@ -2,322 +2,145 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59B0E4EBCC2
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Mar 2022 10:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EDBA4EBDF0
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Mar 2022 11:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244363AbiC3Icy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Mar 2022 04:32:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33246 "EHLO
+        id S244989AbiC3Jri (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Mar 2022 05:47:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244378AbiC3Icx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Mar 2022 04:32:53 -0400
+        with ESMTP id S244983AbiC3Jrh (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Mar 2022 05:47:37 -0400
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D020A67D30;
-        Wed, 30 Mar 2022 01:31:07 -0700 (PDT)
-X-UUID: 0a2dc8e823c448b6969f839923224d56-20220330
-X-UUID: 0a2dc8e823c448b6969f839923224d56-20220330
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF92CF4BF;
+        Wed, 30 Mar 2022 02:45:47 -0700 (PDT)
+X-UUID: 3b7bccc9dad7465d8f011f68b3e3b3a9-20220330
+X-UUID: 3b7bccc9dad7465d8f011f68b3e3b3a9-20220330
 Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <chaotian.jing@mediatek.com>)
+        (envelope-from <tinghan.shen@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1612304775; Wed, 30 Mar 2022 16:31:00 +0800
+        with ESMTP id 1003070810; Wed, 30 Mar 2022 17:45:41 +0800
 Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Wed, 30 Mar 2022 16:30:59 +0800
-Received: from mhfsdcap04 (10.17.3.154) by mtkcas11.mediatek.inc
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 30 Mar 2022 17:45:40 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 30 Mar 2022 16:30:58 +0800
-Message-ID: <6f5a47588dd0b9293c8bc6ba1fc6794ab57d6ac7.camel@mediatek.com>
-Subject: Re: [PATCH v9 3/3] mmc: mediatek: add support for SDIO eint wakup
- IRQ
-From:   Chaotian Jing <chaotian.jing@mediatek.com>
-To:     Axe Yang <axe.yang@mediatek.com>,
+ Transport; Wed, 30 Mar 2022 17:45:39 +0800
+From:   Tinghan Shen <tinghan.shen@mediatek.com>
+To:     Chaotian Jing <chaotian.jing@mediatek.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>
-CC:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Satya Tangirala <satyat@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Lucas Stach <dev@lynxeye.de>,
-        Eric Biggers <ebiggers@google.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Kiwoong Kim <kwmad.kim@samsung.com>,
-        Yue Hu <huyue2@yulong.com>, Tian Tao <tiantao6@hisilicon.com>,
+        AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Wenbin Mei <wenbin.mei@mediatek.com>
+CC:     <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-mediatek@lists.infradead.org>,
-        Yong Mao <yong.mao@mediatek.com>
-Date:   Wed, 30 Mar 2022 16:30:58 +0800
-In-Reply-To: <20220329032913.8750-4-axe.yang@mediatek.com>
-References: <20220329032913.8750-1-axe.yang@mediatek.com>
-         <20220329032913.8750-4-axe.yang@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        <Project_Global_Chrome_Upstream_Group@mediatek.com>,
+        <ryder.lee@kernel.org>, <wenst@chromium.org>,
+        <chunfeng.yun@mediatek.com>,
+        Tinghan Shen <tinghan.shen@mediatek.com>
+Subject: [PATCH v13 0/2] Add basic SoC support for mediatek mt8195
+Date:   Wed, 30 Mar 2022 17:45:30 +0800
+Message-ID: <20220330094532.21721-1-tinghan.shen@mediatek.com>
+X-Mailer: git-send-email 2.15.GIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 2022-03-29 at 11:29 +0800, Axe Yang wrote:
-> Add support for eint IRQ when MSDC is used as an SDIO host. This
-> feature requires SDIO device support async IRQ function. With this
-> feature, SDIO host can be awakened by SDIO card in suspend state,
-> without additional pin.
-> 
-> MSDC driver will time-share the SDIO DAT1 pin. During suspend, MSDC
-> turn off clock and switch SDIO DAT1 pin to GPIO mode. And during
-> resume, switch GPIO function back to DAT1 mode then turn on clock.
-> 
-> Some device tree property should be added or modified in MSDC node
-> to support SDIO eint IRQ. Pinctrls "state_eint" is mandatory. Since
-> this feature depends on asynchronous interrupts, "wakeup-source",
-> "keep-power-in-suspend" and "cap-sdio-irq" flags are necessary, and
-> the interrupts list should be extended:
->         &mmcX {
-> 		...
-> 		interrupts-extended = <...>,
->                               	      <&pio xxx
-> IRQ_TYPE_LEVEL_LOW>;
->                 ...
->                 pinctrl-names = "default", "state_uhs", "state_eint";
->                 ...
->                 pinctrl-2 = <&mmc2_pins_eint>;
->                 ...
->                 cap-sdio-irq;
-> 		keep-power-in-suspend;
-> 		wakeup-source;
->                 ...
->         };
-> 
-> Co-developed-by: Yong Mao <yong.mao@mediatek.com>
-> Signed-off-by: Yong Mao <yong.mao@mediatek.com>
-> Signed-off-by: Axe Yang <axe.yang@mediatek.com>
-  Acked-by: Chaotian Jing <chaotian.jing@mediatek.com>
-> ---
->  drivers/mmc/host/mtk-sd.c | 94 +++++++++++++++++++++++++++++++++++
-> ----
->  1 file changed, 86 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-> index 65037e1d7723..2905d7134243 100644
-> --- a/drivers/mmc/host/mtk-sd.c
-> +++ b/drivers/mmc/host/mtk-sd.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
-> - * Copyright (c) 2014-2015 MediaTek Inc.
-> + * Copyright (c) 2014-2015, 2022 MediaTek Inc.
->   * Author: Chaotian.Jing <chaotian.jing@mediatek.com>
->   */
->  
-> @@ -20,6 +20,7 @@
->  #include <linux/platform_device.h>
->  #include <linux/pm.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/pm_wakeirq.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/slab.h>
->  #include <linux/spinlock.h>
-> @@ -440,8 +441,11 @@ struct msdc_host {
->  	struct pinctrl *pinctrl;
->  	struct pinctrl_state *pins_default;
->  	struct pinctrl_state *pins_uhs;
-> +	struct pinctrl_state *pins_eint;
->  	struct delayed_work req_timeout;
->  	int irq;		/* host interrupt */
-> +	int eint_irq;		/* interrupt from sdio device for
-> waking up system */
-> +	int sdio_wake_irq_depth;
->  	struct reset_control *reset;
->  
->  	struct clk *src_clk;	/* msdc source clock */
-> @@ -465,6 +469,7 @@ struct msdc_host {
->  	bool hs400_tuning;	/* hs400 mode online tuning */
->  	bool internal_cd;	/* Use internal card-detect logic */
->  	bool cqhci;		/* support eMMC hw cmdq */
-> +	bool sdio_eint_ready;	/* Ready to support SDIO eint
-> interrupt */
->  	struct msdc_save_para save_para; /* used when gate HCLK */
->  	struct msdc_tune_para def_tune_para; /* default tune setting */
->  	struct msdc_tune_para saved_tune_para; /* tune result of
-> CMD21/CMD19 */
-> @@ -1527,10 +1532,12 @@ static void msdc_enable_sdio_irq(struct
-> mmc_host *mmc, int enb)
->  	__msdc_enable_sdio_irq(host, enb);
->  	spin_unlock_irqrestore(&host->lock, flags);
->  
-> -	if (enb)
-> -		pm_runtime_get_noresume(host->dev);
-> -	else
-> -		pm_runtime_put_noidle(host->dev);
-> +	if (mmc->card && !mmc_card_enable_async_irq(mmc->card)) {
-> +		if (enb)
-> +			pm_runtime_get_noresume(host->dev);
-> +		else
-> +			pm_runtime_put_noidle(host->dev);
-> +	}
->  }
->  
->  static irqreturn_t msdc_cmdq_irq(struct msdc_host *host, u32 intsts)
-> @@ -2631,6 +2638,18 @@ static int msdc_drv_probe(struct
-> platform_device *pdev)
->  		goto host_free;
->  	}
->  
-> +	/* Support for SDIO eint irq ? */
-> +	if (mmc->pm_caps & MMC_PM_WAKE_SDIO_IRQ) {
-> +		host->pins_eint = pinctrl_lookup_state(host->pinctrl,
-> "state_eint");
-> +		if (IS_ERR(host->pins_eint)) {
-> +			ret = dev_err_probe(&pdev->dev, PTR_ERR(host-
-> >pins_eint),
-> +					    "Cannot find pinctrl
-> eint!\n");
-> +			goto host_free;
-> +		}
-> +
-> +		host->sdio_eint_ready = true;
-> +	}
-> +
->  	msdc_of_property_parse(pdev, host);
->  
->  	host->dev = &pdev->dev;
-> @@ -2722,6 +2741,21 @@ static int msdc_drv_probe(struct
-> platform_device *pdev)
->  	if (ret)
->  		goto release;
->  
-> +	if (host->sdio_eint_ready) {
-> +		host->eint_irq = irq_of_parse_and_map(host->dev-
-> >of_node, 1);
-> +		ret = host->eint_irq ?
-> dev_pm_set_dedicated_wake_irq(host->dev, host->eint_irq) :
-> +		      -ENODEV;
-> +
-> +		if (ret) {
-> +			dev_err(host->dev, "Failed to register data1
-> eint irq!\n");
-> +			goto release;
-> +		}
-> +
-> +		dev_pm_disable_wake_irq(host->dev);
-> +		pinctrl_select_state(host->pinctrl, host->pins_uhs);
-> +	}
-> +
-> +	device_init_wakeup(host->dev, true);
->  	pm_runtime_set_active(host->dev);
->  	pm_runtime_set_autosuspend_delay(host->dev,
-> MTK_MMC_AUTOSUSPEND_DELAY);
->  	pm_runtime_use_autosuspend(host->dev);
-> @@ -2734,6 +2768,7 @@ static int msdc_drv_probe(struct
-> platform_device *pdev)
->  	return 0;
->  end:
->  	pm_runtime_disable(host->dev);
-> +	dev_pm_clear_wake_irq(host->dev);
->  release:
->  	platform_set_drvdata(pdev, NULL);
->  	msdc_deinit_hw(host);
-> @@ -2845,6 +2880,16 @@ static int __maybe_unused
-> msdc_runtime_suspend(struct device *dev)
->  	struct msdc_host *host = mmc_priv(mmc);
->  
->  	msdc_save_reg(host);
-> +
-> +	if (host->sdio_eint_ready) {
-> +		disable_irq(host->irq);
-> +		pinctrl_select_state(host->pinctrl, host->pins_eint);
-> +		if (host->sdio_wake_irq_depth == 0) {
-> +			dev_pm_enable_wake_irq(dev);
-> +			host->sdio_wake_irq_depth++;
-> +		}
-> +		sdr_clr_bits(host->base + SDC_CFG, SDC_CFG_SDIOIDE);
-> +	}
->  	msdc_gate_clock(host);
->  	return 0;
->  }
-> @@ -2860,12 +2905,25 @@ static int __maybe_unused
-> msdc_runtime_resume(struct device *dev)
->  		return ret;
->  
->  	msdc_restore_reg(host);
-> +
-> +	if (host->sdio_eint_ready) {
-> +		if (host->sdio_wake_irq_depth > 0) {
-> +			dev_pm_disable_wake_irq(dev);
-> +			host->sdio_wake_irq_depth--;
-> +			sdr_set_bits(host->base + SDC_CFG,
-> SDC_CFG_SDIOIDE);
-> +		} else {
-> +			sdr_clr_bits(host->base + MSDC_INTEN,
-> MSDC_INTEN_SDIOIRQ);
-> +		}
-> +		pinctrl_select_state(host->pinctrl, host->pins_uhs);
-> +		enable_irq(host->irq);
-> +	}
->  	return 0;
->  }
->  
-> -static int __maybe_unused msdc_suspend(struct device *dev)
-> +static int __maybe_unused msdc_suspend_noirq(struct device *dev)
->  {
->  	struct mmc_host *mmc = dev_get_drvdata(dev);
-> +	struct msdc_host *host = mmc_priv(mmc);
->  	int ret;
->  
->  	if (mmc->caps2 & MMC_CAP2_CQE) {
-> @@ -2874,16 +2932,36 @@ static int __maybe_unused msdc_suspend(struct
-> device *dev)
->  			return ret;
->  	}
->  
-> +	if (host->sdio_eint_ready)
-> +		enable_irq_wake(host->eint_irq);
-> +
->  	return pm_runtime_force_suspend(dev);
->  }
->  
-> -static int __maybe_unused msdc_resume(struct device *dev)
-> +static int __maybe_unused msdc_resume_noirq(struct device *dev)
->  {
-> +	struct mmc_host *mmc = dev_get_drvdata(dev);
-> +	struct msdc_host *host = mmc_priv(mmc);
-> +
-> +	if (host->sdio_eint_ready) {
-> +		disable_irq_wake(host->eint_irq);
-> +
-> +		/*
-> +		 * In noirq resume stage, msdc_runtime_resume()
-> +		 * won't be called, so disalbe wake irq here
-> +		 * to block dedicated wake irq handler callback.
-> +		 */
-> +		if (likely(host->sdio_wake_irq_depth > 0)) {
-> +			dev_pm_disable_wake_irq(dev);
-> +			host->sdio_wake_irq_depth--;
-> +		}
-> +	}
-> +
->  	return pm_runtime_force_resume(dev);
->  }
->  
->  static const struct dev_pm_ops msdc_dev_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(msdc_suspend, msdc_resume)
-> +	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(msdc_suspend_noirq,
-> msdc_resume_noirq)
->  	SET_RUNTIME_PM_OPS(msdc_runtime_suspend, msdc_runtime_resume,
-> NULL)
->  };
->  
+This series adds basic SoC support for Mediatek's SoC MT8195.
+
+---
+Changes in v13:
+  - add more description of reg items in mtk-sd.yaml
+Changes in v12:
+  - update mtk-sd.yaml to extend reg property and fix yamllint error
+  - add xhci nodes and move xhci3 property (usb2-lpm-disable) to evb.dts
+Changes in v11:
+  - rebase on 5.17-rc4
+Changes in v10:
+  - clean CC list
+Changes in v9:
+  - remove duplicated cpus dt-bindings patch in v8
+Changes in v8:
+  - v7 mediatek,spi-mtk-nor.yaml patch is applied in branch for-5.17 at 
+    kernel/git/broonie/spi.git
+  - v7 pinctrl-mt8195.yaml patch is applied in branch for-next at 
+    kernel/git/linusw/linux-pinctrl.git
+  - add cortex-a78 compatible to cpus dt-bindings
+  - add mediatek,drive-strength-adv property to pinctrl dt-bindings
+  - fix evb dts
+    - remove i2c nodes with disabled status from dts
+    - fix pin properties not match pinctrl dt-bindings
+    - remove unnecessary u3port*
+  - fix dtsi
+    - fix node format
+    - reorder oscillator* nodes 
+    - fix node name of cpu idle nodes
+    - remove clock-frequency property in the timer node
+    - reorder clock and clock names in usb nodes
+Changes in v7:
+  - refine title of spi-nor dt-bindings patch
+  - refine commit message of pinctrl dt-bindings patch
+  - update pinctrl-mt8195.yaml
+    - change property pattern from 'pins' to '^pins'
+    - update examples with new property in descriptions
+    - add new example
+  - drop '_' from node names of pinctrl subnodes in mt8195-evb.dts
+Changes in v6:
+  - rebase on 5.16-rc1
+  - add new clock name to spi-nor dt-bindings
+  - add "pins" property in pinctrl dt-bindings
+  - fix fails of dtbs_checks
+    - remove "arm,armv8" not matched in yaml from cpu compatile
+    - fix node name of xhci
+    - remvoe xhci upstreaming wakeup properties
+    - remove xhci unused properties address-cells and size-cells
+    - fix node name of ufs-phy 
+    - fix node name of spi-nor
+    - fix node name and sub-nodes of pinctrl
+    - fix mmc compatible
+Changes in v5:
+  - enable basic nodes in mt8195-evb.dts
+  - remove dedicated clock nodes
+  - add mmc2 node
+  - fix interrupt number of pinctrl node
+  - update clock nodes to apply internal fixes
+  - add dt-bindings for perficfg node
+
+v4 thread:
+https://lore.kernel.org/all/20210922093303.23720-2-seiya.wang@mediatek.com/
+v3 thread:
+https://lore.kernel.org/all/20210601075350.31515-2-seiya.wang@mediatek.com/
+v2 thread:
+https://lore.kernel.org/all/20210319023427.16711-10-seiya.wang@mediatek.com/
+v1 thread:
+https://lore.kernel.org/all/20210316111443.3332-11-seiya.wang@mediatek.com/
+---
+
+Tinghan Shen (2):
+  dt-bindings: mmc: mtk-sd: increase reg items
+  arm64: dts: Add mediatek SoC mt8195 and evaluation board
+
+ .../devicetree/bindings/mmc/mtk-sd.yaml       |   15 +-
+ arch/arm64/boot/dts/mediatek/Makefile         |    1 +
+ arch/arm64/boot/dts/mediatek/mt8195-evb.dts   |  173 +++
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi      | 1045 +++++++++++++++++
+ 4 files changed, 1233 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/mediatek/mt8195-evb.dts
+ create mode 100644 arch/arm64/boot/dts/mediatek/mt8195.dtsi
+
+-- 
+2.18.0
 
