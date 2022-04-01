@@ -2,48 +2,45 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B344EF76C
-	for <lists+linux-mmc@lfdr.de>; Fri,  1 Apr 2022 18:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E4AD4EF7E6
+	for <lists+linux-mmc@lfdr.de>; Fri,  1 Apr 2022 18:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348126AbiDAP5C (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 1 Apr 2022 11:57:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43658 "EHLO
+        id S235171AbiDAQaM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 1 Apr 2022 12:30:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354642AbiDAPpd (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 1 Apr 2022 11:45:33 -0400
+        with ESMTP id S1348969AbiDAQ2E (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 1 Apr 2022 12:28:04 -0400
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91E86A029
-        for <linux-mmc@vger.kernel.org>; Fri,  1 Apr 2022 08:20:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 853E924BD0
+        for <linux-mmc@vger.kernel.org>; Fri,  1 Apr 2022 09:01:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
         date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=k1; bh=FEFxfssSSTU22YXch7aVrtelpaE7
-        WagHES7sL502rZY=; b=Ziz9m6B1gzVQe1cPSM8+XVqJcbrztrHyNP2UDvUnVShN
-        YuGTd2peo4vynJTtteFDOswuel+Y7bM4mTdxJaYN/LI2Pasebj+8s2WNjdk6fpuh
-        wUcgUUtgi7xxCveP53JS9iMpewnH6/wni9mHNKzxmVB1fvnRI4siVf6YTqbdUiw=
-Received: (qmail 784814 invoked from network); 1 Apr 2022 17:20:50 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 1 Apr 2022 17:20:50 +0200
-X-UD-Smtp-Session: l3s3148p1@s/7hUpnbNKYgAQnoAGGbAFirbAEmXd1u
-Date:   Fri, 1 Apr 2022 17:20:49 +0200
+        :content-type:in-reply-to; s=k1; bh=U9mglw3sp1c6pqKAgLM4I/FuCr3Z
+        1BAfVXkgJrKDtg8=; b=Q9/8ssP2OOXjaMTB8JYfM8BWRTrG9VQldVanfMLAHCyj
+        2EvQZ7CSyZGmLOS7LoLqN8xnAOyxjJI6Bc/Ac/qZNH1EWHtbLxvC/IL9KCju+NVV
+        pqFfqDSt6BrAE43ZY5vOdQVJ6pcudDDrdD9amX+OB1B0Q5wJIHzeCBBBEJBrNw8=
+Received: (qmail 794846 invoked from network); 1 Apr 2022 18:01:03 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 1 Apr 2022 18:01:03 +0200
+X-UD-Smtp-Session: l3s3148p1@xqGv4pnbbKYgAQnoAGGbAFirbAEmXd1u
+Date:   Fri, 1 Apr 2022 18:01:03 +0200
 From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH 2/6] mmc: renesas_sdhi: R-Car D3 also has no HS400
-Message-ID: <YkcYUatquGqQHynX@ninjato>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH] mmc: renesas_sdhi: Add missing checks for the presence
+ of quirks
+Message-ID: <Ykchv+A4jijyOtbT@ninjato>
 Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-References: <20220320123016.57991-1-wsa+renesas@sang-engineering.com>
- <20220320123016.57991-3-wsa+renesas@sang-engineering.com>
- <CAMuHMdUso+a2UqMTZByGQryj+GvT4go4GB9EOM60D1Ue9oMi_A@mail.gmail.com>
- <YkcTQCZceQcRQo5A@ninjato>
- <CAMuHMdWDPncJ7Rny6ZOxbgUMnTJPzyu6kmmYUUPkHVfuqi=7NA@mail.gmail.com>
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+References: <cc3178c2ff60f640f4d5a071d51f6b0b1db37656.1648822020.git.geert+renesas@glider.be>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zRyTQKlt48aTGFvG"
+        protocol="application/pgp-signature"; boundary="XPcqMus7IWjHyVZr"
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdWDPncJ7Rny6ZOxbgUMnTJPzyu6kmmYUUPkHVfuqi=7NA@mail.gmail.com>
+In-Reply-To: <cc3178c2ff60f640f4d5a071d51f6b0b1db37656.1648822020.git.geert+renesas@glider.be>
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
@@ -55,40 +52,59 @@ List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
 
---zRyTQKlt48aTGFvG
+--XPcqMus7IWjHyVZr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Apr 01, 2022 at 04:09:28PM +0200, Geert Uytterhoeven wrote:
+> When running on an system without any quirks (e.g. R-Car V3U), the
+> kernel crashes with a NULL pointer dereference:
+>=20
+>     Unable to handle kernel NULL pointer dereference at virtual address 0=
+000000000000002
+>     ...
+>     Hardware name: Renesas Falcon CPU and Breakout boards based on r8a779=
+a0 (DT)
+>     Workqueue: events_freezable mmc_rescan
+>     ...
+>     Call trace:
+>      renesas_sdhi_internal_dmac_start_dma+0x54/0x12c
+>      tmio_process_mrq+0x124/0x274
+>=20
+> Fix this by adding the missing checks for the validatity of the
+> priv->quirks pointer.
+>=20
+> Fixes: dce2ba8b2ee8cef6 ("mmc: renesas_sdhi: make 'dmac_only_one_rx' a qu=
+irk")
+> Fixes: d4bfa17a655c6de2 ("mmc: renesas_sdhi: make 'fixed_addr_mode' a qui=
+rk")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Thanks for catching this!
+
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
 
-> BTW, SDHI0 and SDHI1 don't have the DS signal neither.
-> Does that mean we never support HS400 on these?
-
-Yes, those don't even support eMMC.
-
-> We do have SD0H and SD1H clocks.
-> Upstream DTS uses at most sd-uhs-sdr104 on SDHI[01].
-
-Yes, SDnH (and SCC) is also needed for SDR104.
-
-
---zRyTQKlt48aTGFvG
+--XPcqMus7IWjHyVZr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJHGFEACgkQFA3kzBSg
-KbaiMhAAlPO2o/VoeXigCGmDrnKFz+QOl8rQa0+s/+yjT7mvLmEs4G5EmaYweRcv
-tiVcMjYqGvj3PPK2/B/k50akz1SxDick2KrOOShwQuUb0amAcX8VwWAWIsaQG6Eo
-cDMKsYGZqSDtRSVTzu/8A00zMzLuL3vi+4QK28XLnScJj385veRq/EP9k4qaYpmF
-sh8EJ/C2J5Weq3REDSxiBD3CYMRurxlsPtyqjOj1Ld0mFlOza/+jN0Befrafg4rS
-yoD5TmKVm/bOgxMZBUx6g9eTyyYqw94nHnePXt6iDYSp5wEDCGeVMyGQ8SBdA8bG
-MveI96dExvS6Gt8RTBbhAVyA6Qi8qtkKPP7vPzRV2X8+71TpqmyO2Q6gt8cx25km
-3ED5w9JTwqrInqteaYYO8FIA1reiWwYmr4SL7cL9WthLmcWstdLhwDjfXbk6DsCV
-Ts7+PO73oqVuGaaStmVlezDyW9N71Xy9h92qtn/qXrZOxOcoZE+dyrHXPis/Eu41
-YRUBbgJnpvFxbQ1xkAZrNrDyExbJSf1WYI7IkDsYpQnNgGyE2DEMXNOD/vmy+iUJ
-zPw90FMCKs9sL3AX9ReeHfI3zXfVUHoIYeZOtuIMxrp1LgJ7tp81d2xfkOXSrSEv
-0dz9c7aw6cYjMD+jZDD+zewIGsasYSrWY7S6EYvrOzfJIsZwN58=
-=UH/u
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJHIb4ACgkQFA3kzBSg
+KbYUig//YrC0ADFQuB6sipgrC3SEYoflvJs4zX/0TwFG6mAtfHRkqD5oG6FCheDy
+Nb3irOdej8JrogtQDWDeiwILKln0JllBm5idrupDczO23ur6wFKvAAwjaBS1vcd5
+9nzbJgCpspsLkPwJKJgA65NCqZ5Q6wy2DsAeYm1SfTp29rZNd5KHh/3iBpBHboK0
+HC00gP+Ce8Y4dZZRFXO58HD0zW1hZOnSzJCYI1pS2VHD8/SOapyzdSwNkgouSt/H
+UnlrO/ILRfRo3Vhd6/O3VA+inuLbG5pjegS8HjhE7q/6wTvP7vJx+D7445PasQeU
+DGyEiJsT/bS43eLW/ARNT3o8i7bRIFQssD2MrA7ANFAYCN0m4PkC6wItnHy98EfV
+gElmyPRTRkRCnBC7cfCgDWw4e5OfDPFwk90ghc8Ts8Qu5WpxLJlHbvQvi+1pVfnc
+N4ssEfzJ3j8VYHQIWK7k7B9QpQWu0WYlRBgl9N10/9TbqIDmStM9OSCFyfp7IDIf
+D0VSNas1xaRMZ+BdayK6bvmHsIKxVwFHe6zgiTpILQj2C64YmTCh4P5DzCCgzK1t
+J3BKKcF5HrK8X9O+m9CF9alqExxMc59UcBMacnvRZucUKs+5vf64bGSxzcFcsBg6
+QoNsmqktT6a5Mtg6vFDr6QhVispFBsPctEVQ0DdD3ebK15mkjS8=
+=STW6
 -----END PGP SIGNATURE-----
 
---zRyTQKlt48aTGFvG--
+--XPcqMus7IWjHyVZr--
