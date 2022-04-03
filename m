@@ -2,164 +2,70 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74C644F0617
-	for <lists+linux-mmc@lfdr.de>; Sat,  2 Apr 2022 22:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 848ED4F06DA
+	for <lists+linux-mmc@lfdr.de>; Sun,  3 Apr 2022 05:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344226AbiDBUOe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 2 Apr 2022 16:14:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52786 "EHLO
+        id S231356AbiDCDH3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 2 Apr 2022 23:07:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239817AbiDBUOe (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 2 Apr 2022 16:14:34 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77C551017D2
-        for <linux-mmc@vger.kernel.org>; Sat,  2 Apr 2022 13:12:41 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id r64so3603439wmr.4
-        for <linux-mmc@vger.kernel.org>; Sat, 02 Apr 2022 13:12:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=235ThmLY/OVM1F4sGmmgGyNEXw4TutBGz+wfTPM6Ezw=;
-        b=Cas6JHBkmCdF0GwcUU5QKOb+Sux8akmYDZH6laNOP59TCjA0pxhAvURsbet2GknsEB
-         0FylV/t4GYIz1vmY41D2vHCn3UzdxddfEveGTayYafYNRFwOmlAg73MnIZ1WoJ8p1J6M
-         qmWhHwIgeBtEsq5UTufZH6+u9tARe1W2dMFu/3ofsFpGARJBhDFU6pBqIlUyn1AVfa8n
-         DcAX9XeRxS89OjUS/fx/NlN+xRllNfMhPSjQDNu5MPwg2ppg+0wXJnUvKBDrJkUx8LxE
-         lB+lTNiTWMF15TpY8bcAbCmRoLzlcesC1W7Z7GH6xY66f7zxFs4NuoSuxta8Klw3urbA
-         zV9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=235ThmLY/OVM1F4sGmmgGyNEXw4TutBGz+wfTPM6Ezw=;
-        b=DNQg0Tsa9Poj3ll5v6UQLNCdrBtIutPW7z22jHM1XaMtghhSsyCHKEUaBYyhIEQNSe
-         FsdPX5vSRtwrdi4qZibBrkok7m7MDIDn3CElh+IctWf3eVVlZN3Mn1EjdZZpS1IjTwYA
-         uS4seTQScGbsAgdVTI+HZimo3GS8an7U5Xa0XAkF4FF0924JGxq91mY45jNnoFGXs/Mv
-         30UqZ1zrZBISYW2CwQ/JHisKTbfVBs6l3l6cIpe7dxstJGijA/U4KoVKsx/NnVDNJevG
-         Ew5FRj7g+VzSB8tydXMkZ30h9HhoBhLP5bfnu42S6qbHJot5rLxW6hf8bGLpyEcmRaio
-         3sPg==
-X-Gm-Message-State: AOAM531R39IXR/EoieQCfR8oMy+/xqhiz/o950XWAIlsyftJvxTvPMaO
-        umcTxA7dTP5fHB9jMwcR3ljNpg==
-X-Google-Smtp-Source: ABdhPJyVuEQmPjKz6+OoclhGClbXdqVtWWvLy2mu+DTaZ4xpHRVhCMsAwmv2SlZXnn0GLs1qmJVe+g==
-X-Received: by 2002:a7b:cd13:0:b0:38b:f39c:1181 with SMTP id f19-20020a7bcd13000000b0038bf39c1181mr13973422wmj.20.1648930360071;
-        Sat, 02 Apr 2022 13:12:40 -0700 (PDT)
-Received: from [192.168.0.171] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id b15-20020a05600018af00b002057c72d45fsm6675904wri.77.2022.04.02.13.12.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 Apr 2022 13:12:39 -0700 (PDT)
-Message-ID: <a66f17c6-cec6-3eb8-92df-9990d74dd122@linaro.org>
-Date:   Sat, 2 Apr 2022 22:12:38 +0200
+        with ESMTP id S231194AbiDCDH3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 2 Apr 2022 23:07:29 -0400
+X-Greylist: delayed 311 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 02 Apr 2022 20:05:34 PDT
+Received: from mta-out-06.alice.it (mta-out-06.alice.it [217.169.118.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DFBDB2FFE8
+        for <linux-mmc@vger.kernel.org>; Sat,  2 Apr 2022 20:05:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alice.it; s=20211207; t=1648955134; 
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        h=Reply-To:From:To:Date:Message-ID:MIME-Version;
+        b=Fk1fGsACQ7uHdXz06UFXEght5ExT1vFi4NfOrPbu48LixT6VHpeMirURnrl2OXpXDr/coWH15vGx8s+BzLtk6Up3QeY3DvzQgMO96sajVRzTP5GZQRPJSQApNYlx/kLx3EA8k1HKqhl7eJrJ7K59FeroTj9uAhzJA7o0toZ7PouCPg65Q1K61706Qd/Sj3T/a0P2tJ6abdDJFWN3T7PN7nG9ntvUHfXsomF/v7evcz6+90WukFCC76mKYeU5qD2lPyBoGKalu2frlPUzpc/VfUXDwvR54gpMwvb9tI2FyvNphbGbr37fl/Ej22bgcGwE3Ueui6dVP+cfExj3PvpbPg==
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvvddrudeiledgiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuvffgnffgvefqoffkvfetnffktedpqfgfvfenuceurghilhhouhhtmecufedtudenucfgmhhpthihuchsuhgsjhgvtghtucdluddtmdengfhmphhthicusghougihucdlhedtmdenucfjughrpehrhffvfffkggestddtfedttddttdenucfhrhhomhephggvuchhrghvvgcurghnuchofhhfvghruchtohcuihhnvhgvshhtuchinhcuhihouhhrucgtohhunhhtrhihuchunhguvghrucgruchjohhinhhtuchvvghnthhurhgvuchprghrthhnvghrshhhihhpuchplhgvrghsvgcurhgvphhlhicufhhorhcumhhorhgvucguvghtrghilhhsuceofhgpphgvnhhnrgesrghlihgtvgdrihhtqeenucggtffrrghtthgvrhhnpeehjeetgefhleetiedtkeelfffgjeeugeegleekueffgfegtdekkeeifedvvdffteenucfkphepudejiedrvddvjedrvdegvddrudeltdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegrlhhitggvrdhithdpihhnvghtpedujeeirddvvdejrddvgedvrdduledtpdhmrghilhhfrhhomhepfhgpphgvnhhnrgesrghlihgtvgdrihhtpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqmhhmtgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-RazorGate-Vade-Verdict: clean 60
+X-RazorGate-Vade-Classification: clean
+Received: from alice.it (176.227.242.190) by mta-out-06.alice.it (5.8.807.04) (authenticated as f_penna@alice.it)
+        id 623C9D2100ECF563 for linux-mmc@vger.kernel.org; Sun, 3 Apr 2022 05:00:21 +0200
+Reply-To: dougfield20@inbox.lv
+From:   We have an offer to invest in your country under a
+         joint venture partnership please reply for more
+         details <f_penna@alice.it>
+To:     linux-mmc@vger.kernel.org
+Date:   02 Apr 2022 20:00:20 -0700
+Message-ID: <20220402200020.BFA50F0D7CF25313@alice.it>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH V3 1/3] dt-bindings: mmc: imx-esdhc: Update compatible
- fallbacks
-Content-Language: en-US
-To:     Adam Ford <aford173@gmail.com>, linux-mmc@vger.kernel.org
-Cc:     haibo.chen@nxp.com, aford@beaconembedded.com,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20220402193942.744737-1-aford173@gmail.com>
- <20220402193942.744737-2-aford173@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220402193942.744737-2-aford173@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,BODY_EMPTY,
+        DKIM_INVALID,DKIM_SIGNED,EMPTY_MESSAGE,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,MISSING_SUBJECT,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.7 RCVD_IN_DNSWL_LOW RBL: Sender listed at https://www.dnswl.org/,
+        *       low trust
+        *      [217.169.118.12 listed in list.dnswl.org]
+        *  0.0 RCVD_IN_MSPIKE_L3 RBL: Low reputation (-3)
+        *      [217.169.118.12 listed in bl.mailspike.net]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5003]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [f_penna[at]alice.it]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [dougfield20[at]inbox.lv]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  2.3 EMPTY_MESSAGE Message appears to have no textual parts and no
+        *      Subject: text
+        *  1.8 MISSING_SUBJECT Missing Subject: header
+        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
+        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blacklisted
+        *  0.0 BODY_EMPTY No body text in message
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 02/04/2022 21:39, Adam Ford wrote:
-> The SDHC controller in the imx8mn and imx8mp have the same controller
-> as the imx8mm which is slightly different than that of the imx7d.
-> Using the fallback of the imx8mm enables the controllers to support
-> HS400-ES which is not available on the imx7d. After discussion with NXP,
-> it turns out that the imx8qm should fall back to the imx8qxp, because
-> those have some additional flags not present in the imx8mm.
-> 
-> Suggested-by: haibo.chen@nxp.com
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-> ---
-> V3:  Marked the imx7d-usdhc as deprecated when there are better
->      fallback options or the fallback isn't needed.
->      Leave the deprecated fallback in the YAML to prevent errors
->      Remove Reviewed-by from Krzysztof Kozlowski due to the above
-> 
-> V2:  Update the table per recomendation from Haibo.
-> 
-> diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> index 7dbbcae9485c..11f039320d79 100644
-> --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> @@ -34,23 +34,34 @@ properties:
->            - fsl,imx6ull-usdhc
->            - fsl,imx7d-usdhc
->            - fsl,imx7ulp-usdhc
-> +          - fsl,imx8mm-usdhc
-> +          - fsl,imx8qxp-usdhc
->            - fsl,imxrt1050-usdhc
->            - nxp,s32g2-usdhc
->        - items:
->            - enum:
->                - fsl,imx8mm-usdhc
-> +              - fsl,imx8mq-usdhc
-> +            # fsl,imx7d-usdhc fallback is deprecated for imx8mm-usdhc
-> +          - const: fsl,imx7d-usdhc
-
-Instead of comment use (I think on the same level as items):
-
-deprecated: true
-
-> +      - items:
-> +          - enum:
->                - fsl,imx8mn-usdhc
->                - fsl,imx8mp-usdhc
-
-So if this is a deprecated list, where is a proper one? The list with
-this enum + imx8mm?
-
-IOW, you need to list here:
-1. Old combinations with "deprecated: true"
-2. New combinations.
-
-> -              - fsl,imx8mq-usdhc
-> -              - fsl,imx8qm-usdhc
-> -              - fsl,imx8qxp-usdhc
-> +          - const: fsl,imx8mm-usdhc
-> +            # fsl,imx7d-usdhc fallback is deprecated
->            - const: fsl,imx7d-usdhc
->        - items:
->            - enum:
-> -              - fsl,imx93-usdhc
->                - fsl,imx8ulp-usdhc
-> +              - fsl,imx93-usdhc
->            - const: fsl,imx8mm-usdhc
-> -
-> +      - items:
-> +          - enum:
-> +              - fsl,imx8qm-usdhc
-> +          - const: fsl,imx8qxp-usdhc
-> +            # fsl,imx7d-usdhc fallback is deprecated
-> +          - const: fsl,imx7d-usdhc
->    reg:
->      maxItems: 1
->  
-
-
-Best regards,
-Krzysztof
