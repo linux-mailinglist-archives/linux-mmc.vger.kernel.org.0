@@ -2,112 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB8E4F434F
-	for <lists+linux-mmc@lfdr.de>; Tue,  5 Apr 2022 23:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0FFF4F52A3
+	for <lists+linux-mmc@lfdr.de>; Wed,  6 Apr 2022 04:55:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235183AbiDEPEp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 5 Apr 2022 11:04:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47912 "EHLO
+        id S1442384AbiDFC4h (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 5 Apr 2022 22:56:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239570AbiDEN4t (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 5 Apr 2022 09:56:49 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75E4EB12
-        for <linux-mmc@vger.kernel.org>; Tue,  5 Apr 2022 05:56:39 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id k21so23120967lfe.4
-        for <linux-mmc@vger.kernel.org>; Tue, 05 Apr 2022 05:56:39 -0700 (PDT)
+        with ESMTP id S1452390AbiDEPyv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 5 Apr 2022 11:54:51 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5EF150463;
+        Tue,  5 Apr 2022 07:54:34 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id h16so8188245wmd.0;
+        Tue, 05 Apr 2022 07:54:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=RGi3wdqEmb8bOd+XtGboC+n40TEtF0S3Ny1xAXSWPpw=;
-        b=qUent6wGui7nCIEVw9WbCQAr1HMcwKn0ulXfuo6ucPOZB9RuGM0I3RNYHNgYmU18qf
-         2E0TBJc/667dA3RMGQu9G+uluOhBEJ5ZHHa/0Dg3OOdQjv6ZNkHK3w2Tc0A3QsQdASH5
-         Wx4QzkIGUqOD287+KDgdcFYdL3WNTkcxdQMS1kWSN1x6OrN5c73DGfWZyXI4ekebinTj
-         Efe5HxgcRJFy7NXNZwW01najt1HneNBBx/TzsKH52QV6/Aju/csCU7XnKSfjZTYTPmex
-         3ugbXkIWuiXejOkNlEUMvhUDp6YbiBVgZ6FqH0YXnsgWEpFh5Ou5+lhhkp33toJdOkij
-         NsIw==
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-transfer-encoding:user-agent:mime-version;
+        bh=ZgloS23OHbbWJmMWCBBuxDQhTcLsXy3usgzVwJSOKgk=;
+        b=IZ5zhCimPIiAsz0DRrHxkz6PkwkjPuFniWAHfKJziaaJrfFbpYjZuJGaMF8O541WDU
+         fa7nFrPAgZOkHDqMa5NV4j64ioctuzTP5KY4v+CVHa9ie5efzsdPBr4rWv6xDankrbod
+         mNPxtwYZpOlyz/xP0BvwAB8foKwqOEH/JvEw/XYo1Y46hh/IwSZEZxPO+gn3CEKqAmch
+         Y3txROz/BrhKCeVLZkVoGtq43FsJyivRvYQFmbFijwCqmXKBxVzn1Q2j/Ln4F9kuHVAp
+         jR0ukyxQE8zRFZwsQDtJ6m+7pxEnjySQoxVjt53r9IfHzTHd7mS+46i0C96usXJzF8aV
+         lBgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=RGi3wdqEmb8bOd+XtGboC+n40TEtF0S3Ny1xAXSWPpw=;
-        b=we+Q3rSvWqrxN/btYiagi4QSBcwTtDmMZyBbNnuZqCoIaS2eiwwkYalxPWzN93JMWY
-         oULjtQ2IRuGE3I5t3C7L5SX51gwqEZPPy1oj+ca0dVAdv2nQKUAuNBKuHM89sKVV3kLQ
-         P+AjRUgIp0tMmkNe0unpYuhONZwyA3XwpApQY9V6EJOTqCFER5SxwjifIER9Oj6DPHXE
-         Ig0+xvoBAlyjsFcAT/TnPVau846TspCgTigesUFX1i2bIfx089pv7z8V+zqonWX/3jnO
-         WI/7z82aO+52IrpbyjIPDN99H0Yicjo7ENW1amJLoGvuKCOeX+ny8jQvjhuOj0d0lTBB
-         exqw==
-X-Gm-Message-State: AOAM531ukeo5RC2xDYM9QqaaTYPl+la9DtTjR06g/ReZwtRk8CWKBhNm
-        Ii141J7r8kYYTZLPUQpNSRU68r9VKqHT/fq85bxUEQ==
-X-Google-Smtp-Source: ABdhPJyPnt90BGsp9MQfi8pMUfikS551+uaydptc6Mr6i289uBfmsYBBLH7TZFDhHmNkQM8iXvEVUs7GJlUn3tTOUXc=
-X-Received: by 2002:ac2:4e98:0:b0:448:3039:d170 with SMTP id
- o24-20020ac24e98000000b004483039d170mr2713577lfr.233.1649163396464; Tue, 05
- Apr 2022 05:56:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20c6efa9a4c7423bbfb9352705c4a53a@hyperstone.com>
- <5eaae8e215d84dd3a4f7e09782478a29@hyperstone.com> <YkW1qGY3uJPhrmf1@smile.fi.intel.com>
- <c1726b6966e74c9fa9fb4a6ac56dedf9@hyperstone.com>
-In-Reply-To: <c1726b6966e74c9fa9fb4a6ac56dedf9@hyperstone.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 5 Apr 2022 14:56:00 +0200
-Message-ID: <CAPDyKFr=5HyNPc0Ly8ARHCk5hk2vWe4QEG=qu4iRYiGC1TD7LA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mmc: mmc_spi: enable Highspeed for above 25MHz
-To:     =?UTF-8?Q?Christian_L=C3=B6hle?= <CLoehle@hyperstone.com>
-Cc:     "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "adrian.hunter@intel.com" <adrian.hunter@intel.com>
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:content-transfer-encoding:user-agent:mime-version;
+        bh=ZgloS23OHbbWJmMWCBBuxDQhTcLsXy3usgzVwJSOKgk=;
+        b=mD9DXTXxunSCKZZ2wRhKgxM4yk5bnee8yjTpmJ3zJXfFEHgRGOTYB9vDzeH+nW9z5V
+         wa/OMZm5rf7xCcmx62k7il0kAq5dCA7eA5SfXiCNKF6ub8PNtl5Lz2q6CCe5Si00wajj
+         qJiY/jGFIPsplv+l/hsYnsxTsyK3v25T6bNkCeNj3uCzjpvVQVqR6pw8RSmL4A4PEuUW
+         PzVRiYICMSe85ImDLt00FUvJgu6MtX/srW+TTC4hNziqgPefpczP+4MZKwtFuKCTRhu6
+         QP6KZ+D+9e1magMrvMC6f77MvBH33GxGxyds1mAyPbxwNJie6qgMVGP3VeUQv21wE6Bd
+         lNPQ==
+X-Gm-Message-State: AOAM53176nZ0gGA3m/lwXGmITVLTcx+NMvp5+9bdaRBQkYasEMJVL7x5
+        eNBy74t7VyPBO3YN0n6FOGw=
+X-Google-Smtp-Source: ABdhPJzuEe7OsLIY9AfwcG+I3E3XAqgVLzqCt8GNajGHJBJi7D2qTPcOGnYa5vyjo04qwdEoRMmBPA==
+X-Received: by 2002:a7b:c341:0:b0:37b:c619:c9f4 with SMTP id l1-20020a7bc341000000b0037bc619c9f4mr3536266wmj.38.1649170473374;
+        Tue, 05 Apr 2022 07:54:33 -0700 (PDT)
+Received: from [192.168.3.2] (p5dd1ed70.dip0.t-ipconnect.de. [93.209.237.112])
+        by smtp.googlemail.com with ESMTPSA id i14-20020a0560001ace00b00203da1fa749sm17662993wry.72.2022.04.05.07.54.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Apr 2022 07:54:32 -0700 (PDT)
+Message-ID: <8b3ce88f65fd11523a4d2daab3c617f7089eb1ce.camel@gmail.com>
+Subject: Re: [PATCH  v2 0/4] rpmb subsystem, uapi and virtio-rpmb driver
+From:   Bean Huo <huobean@gmail.com>
+To:     Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+        linux-kernel@vger.kernel.org
+Cc:     maxim.uvarov@linaro.org, joakim.bech@linaro.org,
+        ulf.hansson@linaro.org, ilias.apalodimas@linaro.org,
+        arnd@linaro.org, ruchika.gupta@linaro.org, tomas.winkler@intel.com,
+        yang.huang@intel.com, bing.zhu@intel.com,
+        Matti.Moell@opensynergy.com, hmo@opensynergy.com,
+        linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org
+Date:   Tue, 05 Apr 2022 16:54:32 +0200
+In-Reply-To: <20220405093759.1126835-1-alex.bennee@linaro.org>
+References: <20220405093759.1126835-1-alex.bennee@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.0-1 
+MIME-Version: 1.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 5 Apr 2022 at 11:20, Christian L=C3=B6hle <CLoehle@hyperstone.com> =
-wrote:
->
-> Understood and sure, then I'll take 2/2 back.
-> @Ulf, would you like a v2 just containing 1/2 or is it fine like this?
+Hi Alex,
 
-It's fine as is, I will pick up patch1 very soon.
+Thanks for this unified RPMB interface, I wanted to verify this on our
+UFS, it seems you didn't add the UFS access interface in this version=20
+from your userspace tools, right?
 
-Kind regards
-Uffe
 
->
->
->
->
-> From: andriy.shevchenko@linux.intel.com <andriy.shevchenko@linux.intel.co=
-m>
-> Sent: Thursday, March 31, 2022 4:07 PM
-> To: Christian L=C3=B6hle
-> Cc: Ulf Hansson; linux-kernel@vger.kernel.org; linux-mmc@vger.kernel.org;=
- adrian.hunter@intel.com; digetx@gmail.com; avri.altman@wdc.com
-> Subject: Re: [PATCH 2/2] mmc: mmc_spi: enable Highspeed for above 25MHz
->
-> On Thu, Mar 31, 2022 at 07:29:37AM +0000, Christian L=C3=B6hle wrote:
-> > Any setup supporting more than 25MHz is able to utilize
-> > highspeed, so enable it even when not explicitly specified.
->
-> I'm not sure about this. I prefer to be on the safer side, i.e.
-> follow only what is supplied by firmware (ACPI / DT).
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
->     =3D
-> Hyperstone GmbH | Reichenaustr. 39a  | 78467 Konstanz
-> Managing Director: Dr. Jan Peter Berns.
-> Commercial register of local courts: Freiburg HRB381782
->
+Kind regards,
+Bean
