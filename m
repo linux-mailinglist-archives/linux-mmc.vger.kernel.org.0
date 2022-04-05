@@ -2,110 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4FBA4F52A0
-	for <lists+linux-mmc@lfdr.de>; Wed,  6 Apr 2022 04:55:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5156A4F52A2
+	for <lists+linux-mmc@lfdr.de>; Wed,  6 Apr 2022 04:55:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbiDFC4S (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 5 Apr 2022 22:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34334 "EHLO
+        id S1441983AbiDFC43 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 5 Apr 2022 22:56:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1458020AbiDERFV (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 5 Apr 2022 13:05:21 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E5099969E;
-        Tue,  5 Apr 2022 10:03:22 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id ot30so18069581ejb.12;
-        Tue, 05 Apr 2022 10:03:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=FdSCliDZ7y34gZ+1XXQqplq5BHBXI8/zjaKCt3n8WuY=;
-        b=ENTS4odAznIeIHoHtSEu1ZKMCfX2DpQLnUpz2y0sl+WRpZMOLqgow6YaWv7vFm/sbL
-         5EFeM47ie6KhM41GyHOuX+697NJqRL4tBfij+Sr7UzQWX1gX+Curkmco1gop1cQwlxLd
-         OvyUg8aTb5wiLCJBBt6ouWI4DRkJ6kQ9VaVp4jL2M3TJ6EVU4sWJE2wh1CfIIkD8Rd+z
-         xNeo7kn43fkN3gGJD/Fy949N4B+ambl+CFUASPW0ekG/g+jGhuLaLOpm+98dCoVxSblN
-         ZIIyBgAwq94xgF7EKjxE2SlgOAM2ZvgB2I2AUAM5qByzxUckonQlN8N7Sp4VyNZvprQo
-         jjzw==
+        with ESMTP id S1455045AbiDEXia (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 5 Apr 2022 19:38:30 -0400
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 695E71C1EFC;
+        Tue,  5 Apr 2022 14:59:41 -0700 (PDT)
+Received: by mail-pf1-f175.google.com with SMTP id w7so686269pfu.11;
+        Tue, 05 Apr 2022 14:59:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=FdSCliDZ7y34gZ+1XXQqplq5BHBXI8/zjaKCt3n8WuY=;
-        b=OaH0y7NzkhNrK9iYye2dF/5J96VNUoo5NoodKXb3BavQZuaZq4zpaLvukUEwKXxsOw
-         vvRC3KEdoqqWyn70U47ArUFPD6ZFEtfp0qG7z7cb8RamWeUPyhrDWibv33fQEGpQjevn
-         UvQ7x+WSMGPS6wvkFyW1FbFC4GwEOiE4/A6wgLHgTRp4USzhMRcAuiDMdn3moEAPWspP
-         SwsXgT5Qq1qNSOXejhMFpQP1uYekb32aV6dcscN0jKAM8WFfCBvPLSFZIFuSZk3wA98D
-         rqhYGgAWKphcr1/RJWtbT9FdmMchdDykmDgjt710mQAt9OwQG1k8KngLPRXtOnRRVpny
-         0d4A==
-X-Gm-Message-State: AOAM533FcshzqzYaxaOUrO0z1i/SJo4nWypszIduFgzCIVZM5l70dXVt
-        iiDS9jGvkQiXtPa7Dmmqq9o=
-X-Google-Smtp-Source: ABdhPJyeGeuae0b4tOgaXYZ/f7Hp7bTVMfkFRf4fWcB3qvU4PwQHV0bxr3esnA33saHL5j4dayu6OA==
-X-Received: by 2002:a17:907:9805:b0:6db:4c33:7883 with SMTP id ji5-20020a170907980500b006db4c337883mr4581508ejc.555.1649178200980;
-        Tue, 05 Apr 2022 10:03:20 -0700 (PDT)
-Received: from [192.168.3.2] (p5dd1ed70.dip0.t-ipconnect.de. [93.209.237.112])
-        by smtp.googlemail.com with ESMTPSA id w9-20020a50d989000000b0041cc3b9b43asm3839271edj.30.2022.04.05.10.03.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Apr 2022 10:03:20 -0700 (PDT)
-Message-ID: <aeb64d1c4bbddfd8463c07a40ab1fc78be0d158d.camel@gmail.com>
-Subject: Re: [PATCH  v2 0/4] rpmb subsystem, uapi and virtio-rpmb driver
-From:   Bean Huo <huobean@gmail.com>
-To:     Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, maxim.uvarov@linaro.org,
-        joakim.bech@linaro.org, ulf.hansson@linaro.org,
-        ilias.apalodimas@linaro.org, arnd@linaro.org,
-        ruchika.gupta@linaro.org, tomas.winkler@intel.com,
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=4kuF8230aMW6d0OsvBIcvsWtoggvqTBCLky46GdsMso=;
+        b=uCos0OFGfekxx1r7cUdeZFojtRe3uJRfTog6bC9lA2shkArq6WCjWyBGCHRpRlEP60
+         S0sEa3dvcwA5QHO+8g4QMjiTaCwwmGVXb9RHOg8ynXu6UbtH4Q/51F7NGFAwxj1X0UHp
+         Gz/CgvyqRqxwKGjJ+75STKGmaGES9spvq60jp9VRGsrbVapzB4zXps95OGau1xDay70n
+         gOM8wsNNU78Oh1zFOzs/SsbdmmGiNYu5NZaVAa2Wx+O2mVHD2Ni/NSmF/hkfrD/Sy0JY
+         GhUTNID3AFCPn13T5TpemaMdjvqr2wc2+HihWMP4ATA1HRPeq0aohRWq9CLuffxq203K
+         dp7Q==
+X-Gm-Message-State: AOAM530RMPgBc6D/hethQ+MmNOkwa5S3nGyDHSxdiQSLS44pCyldIHKg
+        +T3vGo40vEo10phaP7Po8Ow=
+X-Google-Smtp-Source: ABdhPJwhBcPZ+gmGsaAc0wPUsqNrHhpguaqtod46qQyGAJ7EPIMuVpxIgk7lPW3RP5xTG3XVxTRk2w==
+X-Received: by 2002:a63:5144:0:b0:382:11ef:7962 with SMTP id r4-20020a635144000000b0038211ef7962mr4530436pgl.171.1649195980716;
+        Tue, 05 Apr 2022 14:59:40 -0700 (PDT)
+Received: from ?IPV6:2601:647:4000:d7:feaa:14ff:fe9d:6dbd? ([2601:647:4000:d7:feaa:14ff:fe9d:6dbd])
+        by smtp.gmail.com with ESMTPSA id g12-20020a056a001a0c00b004e1307b249csm16991028pfv.69.2022.04.05.14.59.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Apr 2022 14:59:39 -0700 (PDT)
+Message-ID: <d01942c2-e600-b789-e613-9ead8c11d94a@acm.org>
+Date:   Tue, 5 Apr 2022 14:59:37 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2 1/4] rpmb: add Replay Protected Memory Block (RPMB)
+ subsystem
+Content-Language: en-US
+To:     =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+        linux-kernel@vger.kernel.org
+Cc:     maxim.uvarov@linaro.org, joakim.bech@linaro.org,
+        ulf.hansson@linaro.org, ilias.apalodimas@linaro.org,
+        arnd@linaro.org, ruchika.gupta@linaro.org, tomas.winkler@intel.com,
         yang.huang@intel.com, bing.zhu@intel.com,
         Matti.Moell@opensynergy.com, hmo@opensynergy.com,
-        linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org
-Date:   Tue, 05 Apr 2022 19:03:18 +0200
-In-Reply-To: <87r16bk013.fsf@linaro.org>
+        linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Arnd Bergmann <arnd.bergmann@linaro.org>,
+        Eric Biggers <ebiggers@kernel.org>
 References: <20220405093759.1126835-1-alex.bennee@linaro.org>
-         <8b3ce88f65fd11523a4d2daab3c617f7089eb1ce.camel@gmail.com>
-         <87r16bk013.fsf@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.0-1 
-MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+ <20220405093759.1126835-2-alex.bennee@linaro.org>
+From:   Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20220405093759.1126835-2-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 2022-04-05 at 16:43 +0100, Alex Benn=C3=A9e wrote:
->=20
-> Bean Huo <huobean@gmail.com> writes:
->=20
-> > Hi Alex,
-> >=20
-> > Thanks for this unified RPMB interface, I wanted to verify this on
-> > our
-> > UFS, it seems you didn't add the UFS access interface in this
-> > version=20
-> > from your userspace tools, right?
->=20
-> No I didn't but it should be easy enough to add some function pointer
-> redirection everywhere one of the op_* functions calls a vrpmb_*
-> function. Do you already have a UFS RPMB device driver?
->=20
+On 4/5/22 02:37, Alex Bennée wrote:
+> +int rpmb_get_write_count(struct rpmb_dev *rdev, int len, u8 *request, int rlen, u8 *resp)
+> +{
+> +	int err;
+> +
+> +	if (!rdev)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&rdev->lock);
+> +	err = -EOPNOTSUPP;
+> +	if (rdev->ops && rdev->ops->get_write_count)
+> +		err = rdev->ops->get_write_count(rdev->dev.parent, rdev->target,
+> +						 len, request, rlen, resp);
+> +	mutex_unlock(&rdev->lock);
+> +
+> +	return err;
+> +}
 
-Hi Alex,
-Thanks for your feedback.
+The names rpmb_get_write_count() and get_write_count() look confusing to 
+me since these functions query the write counter. How about adding "er" 
+at the end of both function names?
 
-We now access UFS RPMB through the RPMB LUN BSG device, RPMB is a well-
-known LU and we have a userspace tool to access it.
+Are there any plans to add an implementation of struct rpmb_ops for UFS 
+devices?
 
-I see that if we're going to use your interface, "static struct
-rpmb_ops" should be registered from a lower-level driver, for example
-in a UFS driver, yes there should be no problem with this registration,
-but I don't know with the current way Compared, what are the advantages
-to add a driver. maybe the main advantage is that we will have an
-unified user space tool for RPMB. right?
+Thanks,
 
-Kind regards,
-Bean
+Bart.
