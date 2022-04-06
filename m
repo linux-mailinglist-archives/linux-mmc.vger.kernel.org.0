@@ -2,107 +2,67 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B3004F5EBE
-	for <lists+linux-mmc@lfdr.de>; Wed,  6 Apr 2022 15:04:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D9434F5FF7
+	for <lists+linux-mmc@lfdr.de>; Wed,  6 Apr 2022 15:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230378AbiDFMtU (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 6 Apr 2022 08:49:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55644 "EHLO
+        id S232209AbiDFNNw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 6 Apr 2022 09:13:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231440AbiDFMs2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 6 Apr 2022 08:48:28 -0400
-Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3664AF78F
-        for <linux-mmc@vger.kernel.org>; Wed,  6 Apr 2022 01:52:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1649235166; x=1680771166;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LFM3dJ4XtmmQmpjm/ADKwYliPf/iPacGMSt9/3x5IFU=;
-  b=hmhLN3V5Z6I/dn0yqIgflvVCJzkcT0OG42JXTzhuKlithAaWuoMFy5k1
-   PxqIU97/5aoxQWEl03MvKvQ4y+HieZ1mhtNVYm2PxiUQIkj6ADANNPgYI
-   qRyTmcV+yOYApZ80cHLmOsitoiv0ASq2aHeADxtS7fy83UXvYBnuqPY5L
-   G9RwisIuGeyJ0qLPczRLOdGGjgdXFykgZQmvwXANVyhf7tVFMRN2no8Df
-   jYMWFWOiVsejgWa7Duz/lSs35ckMQC4Y+rlUJze+dM9kEeH0ebWUvDr0S
-   nqjfSW7RZbg0jski/seH1sHngdreweombUZRq9k03qX9kaeuchnAVBnpo
-   A==;
-X-IronPort-AV: E=Sophos;i="5.90,239,1643644800"; 
-   d="scan'208";a="196092192"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 06 Apr 2022 16:52:44 +0800
-IronPort-SDR: dwnIDMoatSqozpoxs/BJMGiMuCOuMcS+kOJUbDCnO5kNMibEVxVsy5/A+fUiYmNZVh1NfJJp9M
- vKXEsHCnRlGcwAulMwCnYuAk4uNHBeDOQjL6dIps61dO+a0S1XzSA1hz73kYlZB/HCrg4EtRly
- c8/o+kNW59fzQtK8PNJ5NJMXSWtsYT29dsEneV8ex7wj5qfXm1FkAPTPrwlcxS21f8tKv0wgxq
- kPRgX45Zmfh7yacthdviDz4lYlX3U+cxrhTr3rYvKuPHy5tK/3Fuy32T+selY4HIasrAJUBZ29
- JPDfD1N+hX8vhgDO2wcaPV7s
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Apr 2022 01:24:14 -0700
-IronPort-SDR: +hWrtyH/IB6Ir78eHeJXxGIUr7JLTUY6y+roXeUp1hHmfRkpPUuYvOCrWCKbTM/JNOfnEG1IK1
- mIJdjBXDwy6O8vaJnMyShQUSap4rXlKb26l4oiGWERouFDkHNPc3wtQAyQ1Q7GwUxvULrKKKd7
- 0drrC3xvIJC/Ym+umiTaksI9c4SCSLGqvCiP6DbkMp8Bwio/wSH3XbLD2Ua4rq82GSOhbrziuN
- +Mdh0Xw2JT75vxDf1SHWz3Kof37Fs7yb1SWVC0sWGq8T7/B6SqwXq8Ts1fuX2Eyy2hCntk/8R8
- yh8=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Apr 2022 01:52:43 -0700
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4KYJDn6GBzz1SVpD
-        for <linux-mmc@vger.kernel.org>; Wed,  6 Apr 2022 01:52:41 -0700 (PDT)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1649235160; x=1651827161; bh=LFM3dJ4XtmmQmpjm/ADKwYliPf/iPacGMSt
-        9/3x5IFU=; b=FzUociJ5h7WAQTsg6/of1WcVO/OsM8WZr8TGwq4XsiCjPsWYnIG
-        8/w+gKZQabfM5/6lPmJQreKk5Ou6wFCFKuKzU34LNEBfiEEQgQdKgaFRiQjCbS+v
-        bXmYOK12GNp/Ja0XBlu9I1309M6iplipC0iSH4zUASq/4DY1Z1ntJWZZ2gnz7v04
-        gr+tHwiyI12IKqfvshI8zep4+bgj/F03PH6lDam0sCy+54uxyIAUOpes7fa1mbqW
-        oKbTS+GZl8C4hDtpg8QtlcOVicbeOAAs2w8xnnXnZGy/42U80yMH8z7K4uMfNY4W
-        C4OWYxx5B6+JAZVIxV0TMfw3Lljnnr2SA9w==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id G4skvsVK6YkQ for <linux-mmc@vger.kernel.org>;
-        Wed,  6 Apr 2022 01:52:40 -0700 (PDT)
-Received: from [10.149.53.254] (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4KYJDg4WyPz1Rvlx;
-        Wed,  6 Apr 2022 01:52:35 -0700 (PDT)
-Message-ID: <ea3d14cb-00ea-8d7b-4615-9347fdd7aa27@opensource.wdc.com>
-Date:   Wed, 6 Apr 2022 17:52:34 +0900
+        with ESMTP id S233595AbiDFNMt (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 6 Apr 2022 09:12:49 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 085B14E1D1E;
+        Wed,  6 Apr 2022 02:49:44 -0700 (PDT)
+X-UUID: 61da098c1a8f4141b6812e69d4ab8532-20220406
+X-UUID: 61da098c1a8f4141b6812e69d4ab8532-20220406
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <axe.yang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1250012946; Wed, 06 Apr 2022 17:38:39 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Wed, 6 Apr 2022 17:38:38 +0800
+Received: from mhfsdcap04 (10.17.3.154) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 6 Apr 2022 17:38:37 +0800
+Message-ID: <d7c0b9573e32d68c25444e48e6df1bba0eb64262.camel@mediatek.com>
+Subject: Re: [PATCH v9 1/3] dt-bindings: mmc: mtk-sd: extend interrupts and
+ pinctrls properties
+From:   Axe Yang <axe.yang@mediatek.com>
+To:     Rob Herring <robh@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Chaotian Jing <chaotian.jing@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        "Yoshihiro Shimoda" <yoshihiro.shimoda.uh@renesas.com>,
+        Satya Tangirala <satyat@google.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Lucas Stach <dev@lynxeye.de>,
+        Eric Biggers <ebiggers@google.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        Yue Hu <huyue2@yulong.com>, Tian Tao <tiantao6@hisilicon.com>,
+        <angelogioacchino.delregno@collabora.com>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Date:   Wed, 6 Apr 2022 17:38:37 +0800
+In-Reply-To: <Ykc53EmCaA7TadRK@robh.at.kernel.org>
+References: <20220329032913.8750-1-axe.yang@mediatek.com>
+         <20220329032913.8750-2-axe.yang@mediatek.com>
+         <CAPDyKFqoTN1pF-L6qCHxpdMCmPtHP0aHHaDURN2QJsN3v+wZBw@mail.gmail.com>
+         <Ykc53EmCaA7TadRK@robh.at.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 14/27] block: add a bdev_max_zone_append_sectors helper
-Content-Language: en-US
-To:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Cc:     dm-devel@redhat.com, linux-xfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-block@vger.kernel.org, drbd-dev@lists.linbit.com,
-        nbd@other.debian.org, ceph-devel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-bcache@vger.kernel.org,
-        linux-raid@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-nvme@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        cluster-devel@redhat.com, jfs-discussion@lists.sourceforge.net,
-        linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
-        ocfs2-devel@oss.oracle.com, linux-mm@kvack.org
-References: <20220406060516.409838-1-hch@lst.de>
- <20220406060516.409838-15-hch@lst.de>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <20220406060516.409838-15-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -110,73 +70,84 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 4/6/22 15:05, Christoph Hellwig wrote:
-> Add a helper to check the max supported sectors for zone append based on
-> the block_device instead of having to poke into the block layer internal
-> request_queue.
+On Fri, 2022-04-01 at 12:43 -0500, Rob Herring wrote:
+> On Fri, Apr 01, 2022 at 11:22:13AM +0200, Ulf Hansson wrote:
+> > On Tue, 29 Mar 2022 at 05:29, Axe Yang <axe.yang@mediatek.com>
+> > wrote:
+> > > 
+> > > Extend interrupts and pinctrls for SDIO wakeup interrupt feature.
+> > > This feature allow SDIO devices alarm asynchronous interrupt to
+> > > host
+> > > even when host stop providing clock to SDIO card. An extra wakeup
+> > > interrupt and pinctrl states for SDIO DAT1 pin state switching
+> > > are
+> > > required in this scenario.
+> > > 
+> > > Signed-off-by: Axe Yang <axe.yang@mediatek.com>
+> > > ---
+> > >  .../devicetree/bindings/mmc/mtk-sd.yaml         | 17
+> > > ++++++++++++++++-
+> > >  1 file changed, 16 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
+> > > b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
+> > > index 297ada03e3de..3872a6ce2867 100644
+> > > --- a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
+> > > +++ b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
+> > > @@ -69,12 +69,22 @@ properties:
+> > >        - const: ahb_cg
+> > > 
+> > >    interrupts:
+> > > -    maxItems: 1
+> > > +    description:
+> > > +      Should at least contain MSDC GIC interrupt. To support
+> > > SDIO in-band wakeup, an extended
+> > > +      interrupt is required and be configured as wakeup source
+> > > irq.
+> > 
+> > If I understand correctly, the extended interrupt (a GPIO irq) may
+> > not
+> > necessarily share the same interrupt parent as the primary device
+> > interrupt.
+> > 
+> > Perhaps it's then better to extend this with "interrupts-extended"
+> > instead. See Documentation/devicetree/bindings/interrupt-
+> > controller/interrupts.txt.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->   drivers/nvme/target/zns.c | 3 +--
->   fs/zonefs/super.c         | 3 +--
->   include/linux/blkdev.h    | 6 ++++++
->   3 files changed, 8 insertions(+), 4 deletions(-)
+> 'interrupts-extended' is interchangeable with 'interrupts'. For
+> schemas, 
+> use 'interrupts' and the tools take care of supporting both forms.
 > 
-> diff --git a/drivers/nvme/target/zns.c b/drivers/nvme/target/zns.c
-> index e34718b095504..82b61acf7a72b 100644
-> --- a/drivers/nvme/target/zns.c
-> +++ b/drivers/nvme/target/zns.c
-> @@ -34,8 +34,7 @@ static int validate_conv_zones_cb(struct blk_zone *z,
->   
->   bool nvmet_bdev_zns_enable(struct nvmet_ns *ns)
->   {
-> -	struct request_queue *q = ns->bdev->bd_disk->queue;
-> -	u8 zasl = nvmet_zasl(queue_max_zone_append_sectors(q));
-> +	u8 zasl = nvmet_zasl(bdev_max_zone_append_sectors(ns->bdev));
->   	struct gendisk *bd_disk = ns->bdev->bd_disk;
->   	int ret;
->   
-> diff --git a/fs/zonefs/super.c b/fs/zonefs/super.c
-> index 3614c7834007d..7a63807b736c4 100644
-> --- a/fs/zonefs/super.c
-> +++ b/fs/zonefs/super.c
-> @@ -678,13 +678,12 @@ static ssize_t zonefs_file_dio_append(struct kiocb *iocb, struct iov_iter *from)
->   	struct inode *inode = file_inode(iocb->ki_filp);
->   	struct zonefs_inode_info *zi = ZONEFS_I(inode);
->   	struct block_device *bdev = inode->i_sb->s_bdev;
-> -	unsigned int max;
-> +	unsigned int max = bdev_max_zone_append_sectors(bdev);
->   	struct bio *bio;
->   	ssize_t size;
->   	int nr_pages;
->   	ssize_t ret;
->   
-> -	max = queue_max_zone_append_sectors(bdev_get_queue(bdev));
->   	max = ALIGN_DOWN(max << SECTOR_SHIFT, inode->i_sb->s_blocksize);
->   	iov_iter_truncate(from, max);
->   
-> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-> index a433798c3343e..f8c50b77543eb 100644
-> --- a/include/linux/blkdev.h
-> +++ b/include/linux/blkdev.h
-> @@ -1188,6 +1188,12 @@ static inline unsigned int queue_max_zone_append_sectors(const struct request_qu
->   	return min(l->max_zone_append_sectors, l->max_sectors);
->   }
->   
-> +static inline unsigned int
-> +bdev_max_zone_append_sectors(struct block_device *bdev)
-> +{
-> +	return queue_max_zone_append_sectors(bdev_get_queue(bdev));
-> +}
-> +
->   static inline unsigned queue_logical_block_size(const struct request_queue *q)
->   {
->   	int retval = 512;
 
-Looks good.
+hello Ulf, you are right, the wakeup interrupt(parent is &pio) do not
+share same parent as primary interrupt(parent is &gic). And as you
+said, I am using "interrupts-extended" to declare the wakeup irq, see
+commit message in patch 3/3:
+         &mmcX {
+                 ...
+                 interrupts-extended = <...>,
+                                       <&pio xxx IRQ_TYPE_LEVEL_LOW>;
+                 ...
+                 pinctrl-names = "default", "state_uhs", "state_eint";
+                 ...
+                 pinctrl-2 = <&mmc2_pins_eint>;
+                 ...
+                 cap-sdio-irq;
+                 keep-power-in-suspend;
+                 wakeup-source;
+                 ...
+         };
 
-Acked-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+But the wakup interrupt is for SDIO only, in most instances, MSDC is
+been used as eMMC/SD card host, they do not need this interrupt. So as
+Rob suggested, I think we'd better keep using 'interrupts'. And I will
+update the description for 'interrupts', suggest to use 'interrupts-
+extended' to declare SDIO wakeup interrupt.
 
--- 
-Damien Le Moal
-Western Digital Research
+And 'interrupt-names' is a good idea, I will add this property to
+document too. Thank you for the advice.
+
+Regards,
+Axe
+
+
