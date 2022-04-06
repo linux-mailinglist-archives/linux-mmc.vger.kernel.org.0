@@ -2,50 +2,50 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B3BA4F6EAA
-	for <lists+linux-mmc@lfdr.de>; Thu,  7 Apr 2022 01:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62F414F6EBF
+	for <lists+linux-mmc@lfdr.de>; Thu,  7 Apr 2022 01:38:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237970AbiDFXjX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 6 Apr 2022 19:39:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59484 "EHLO
+        id S238009AbiDFXjn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 6 Apr 2022 19:39:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237898AbiDFXjT (ORCPT
+        with ESMTP id S237991AbiDFXjT (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Wed, 6 Apr 2022 19:39:19 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D84271FF23A
-        for <linux-mmc@vger.kernel.org>; Wed,  6 Apr 2022 16:37:15 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id z16so3919533pfh.3
-        for <linux-mmc@vger.kernel.org>; Wed, 06 Apr 2022 16:37:15 -0700 (PDT)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7634A1FF42D
+        for <linux-mmc@vger.kernel.org>; Wed,  6 Apr 2022 16:37:17 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id n18so3358937plg.5
+        for <linux-mmc@vger.kernel.org>; Wed, 06 Apr 2022 16:37:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=pensando.io; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=vwEJdK6mP4HLwzlF0NPpDB80vAiIJPOce5ra0JhLa38=;
-        b=GlwNdB8zBVCXaFx26HpKx7WELFJMmt4kNuhMN8vvHeN5vX0zCQdLS3NJDz8Fn5CnHW
-         3xeqY1ZBMDisFyF4etaO1RPGXFVSlD8jEj2q1YJ3qTyZ1S2gizpIv5zBXI+afVoYmVUP
-         Ko4jbM0TFMXDMw8zydt1oduC4mvUu9q7FExp1ZVzvm4wdcFWJJ0LV46x0JzoFEJ1zcgW
-         MV8/FqqM20hcX0EwicLISB+WCDT8k4wl6u8qEPs+7VZEAhCyVqBEy58v2s+igTNztzXd
-         z7Da+eVH7UfNXRSFD574IS0YzwbxtFXX3YBUIDv/vN5fRZSmMxrvWla9q2U5jvwa90yi
-         RyCA==
+        bh=MgwUzux9l9MfjkfiPyLThjf7TEJ7a+1kv720LXWdL0c=;
+        b=h3rzaO/ehbfZ3kl2FGqKxW6CKni734T3jpG3x+dhqbWIx0ekxvMJytn06tsYtavlKS
+         p7odvwy7v3WOQFdQ+vTa6dwdAxbRBySInSfsw4+BBw6Xok7WEWgHy7uuYd4mkVKhJI3A
+         QYge0VgdY5Ua0NStPSbitgP35D1VdCR1LWosIfyACxiSrcYRr/4TBTjBGpFXZNF7PHAN
+         ZgDm6vBGthjIXGD7vnJZhMg1USt7k6pniK5j4hENo9d8uyBLlAVJiXOlkyUrAH4dVzGw
+         qST0RXzc1ZnJqNsu9iRuwPVHItUL0EN323XjyJzmygDPKZZuVOZjk7ULU1eLwL71oShJ
+         iOrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=vwEJdK6mP4HLwzlF0NPpDB80vAiIJPOce5ra0JhLa38=;
-        b=I+W5djjPnVFoB36SBwnfM1r6Q0C9CqOTbc7PPKcoz0+lj1nHzJuIupTiZf3HwSwlHw
-         pN0W6I3e3Tyt9aR1PLAJWPTxwbPFO0J4ANtRfmpaMOVikj84b8tqzn5vQh/KWxbT7Lxy
-         fJZtn6u5x/6vcW1oZDJN+Rgp5dPHXKpz0jSlvjuckQqgyYZ6PHGjm/6XV1fHLYva/yyg
-         awJ8v/z6qQ+Fe7scOkB2vhojX959Jr77zRiL1N4eRS6LzqwVkLMI0Jx/H7PBcw/eXCdr
-         AGaoC7qMUAKe7Nk2/eSe4rj2h0wwHfMrfhsEaiaUqxZQiiriyf6PivekWd722CBTP3dn
-         pl6w==
-X-Gm-Message-State: AOAM533eJCiPD6ZRUErNQTwQne8Mhxf0CjKAQarcm1RSB0+yvTH1Bk8O
-        rFNwEVWAvooerajsEoHozL7zvA==
-X-Google-Smtp-Source: ABdhPJyxcbTU9ZBcO9y89jqsqr4/jfNurjGIi6t4DNl6SvL7WcLDdfJNS9GAdP8Mq6nLARE8qXq19A==
-X-Received: by 2002:a65:57cc:0:b0:384:3370:e161 with SMTP id q12-20020a6557cc000000b003843370e161mr8998868pgr.364.1649288235387;
-        Wed, 06 Apr 2022 16:37:15 -0700 (PDT)
+        bh=MgwUzux9l9MfjkfiPyLThjf7TEJ7a+1kv720LXWdL0c=;
+        b=uebDR6HX08WvZvayhxrKJRmI9IwGWY6V/jDX21lAkC4ltg6txw8FaeBfaHJqmARM5+
+         g+Fy5r1DVxM16NOFOWoKmMlYcdObBSKUmgf4eRCpCKqdcVsZpBuU52SHh1qmFeEwc9PQ
+         JCrNMTT7TLMpE/1nwDMMV3N3VXbbACAPui+FBbhnjF4SYW6IJ7WJkU4Yvv81sJQ1NaFt
+         oKKGSJNxKjnkdviL4W0xtY7JSPmBjAOjZzzumqrcJirUnlfrAPPfKJcEWToVxBHjEDeb
+         F+6yGbncV6mulB+2eLR9+areBoK51xV/peDjeVlsSgZ5twDuEB2a4B1g4wbepGpzh4qq
+         XFww==
+X-Gm-Message-State: AOAM530Y977E/pt/u2yfQUB0pyk7XrEJabKpeurBSKsj5LWkjTwl5cKs
+        j1HER+IubFlclNM6uvFlR/F6Cw==
+X-Google-Smtp-Source: ABdhPJzBI/AgQUtI42LRmJQIG6o/7UZtBtE27V6Ss9Y15BjgUkXheWJ0cSmnrjtHxtCg+5UlMXWc5Q==
+X-Received: by 2002:a17:90b:1642:b0:1c6:c6d0:fbfa with SMTP id il2-20020a17090b164200b001c6c6d0fbfamr12403634pjb.218.1649288237042;
+        Wed, 06 Apr 2022 16:37:17 -0700 (PDT)
 Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id m21-20020a17090a7f9500b001c97c6bcaf4sm6903667pjl.39.2022.04.06.16.37.13
+        by smtp.gmail.com with ESMTPSA id m21-20020a17090a7f9500b001c97c6bcaf4sm6903667pjl.39.2022.04.06.16.37.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Apr 2022 16:37:14 -0700 (PDT)
+        Wed, 06 Apr 2022 16:37:16 -0700 (PDT)
 From:   Brad Larson <brad@pensando.io>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     arnd@arndb.de, linus.walleij@linaro.org, bgolaszewski@baylibre.com,
@@ -54,9 +54,9 @@ Cc:     arnd@arndb.de, linus.walleij@linaro.org, bgolaszewski@baylibre.com,
         brad@pensando.io, dac2@pensando.io, linux-gpio@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-mmc@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 06/11] MAINTAINERS: Add entry for PENSANDO
-Date:   Wed,  6 Apr 2022 16:36:43 -0700
-Message-Id: <20220406233648.21644-7-brad@pensando.io>
+Subject: [PATCH 07/11] arm64: Add config for Pensando SoC platforms
+Date:   Wed,  6 Apr 2022 16:36:44 -0700
+Message-Id: <20220406233648.21644-8-brad@pensando.io>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220406233648.21644-1-brad@pensando.io>
 References: <20220406233648.21644-1-brad@pensando.io>
@@ -69,34 +69,40 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add entry for PENSANDO maintainer and files
+Add ARCH_PENSANDO configuration option for Pensando SoC
+based platforms.
 
 Signed-off-by: Brad Larson <brad@pensando.io>
 ---
 Change from V3:
-- Change Maintained to Supported
+- Fix a typo on interface max speed
 
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/Kconfig.platforms | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4cb7fd127e68..456d50921b3a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2509,6 +2509,13 @@ S:	Maintained
- W:	http://hackndev.com
- F:	arch/arm/mach-pxa/palmz72.*
+diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+index 30b123cde02c..e3b5557e1049 100644
+--- a/arch/arm64/Kconfig.platforms
++++ b/arch/arm64/Kconfig.platforms
+@@ -203,6 +203,18 @@ config ARCH_MXC
+ 	  This enables support for the ARMv8 based SoCs in the
+ 	  NXP i.MX family.
  
-+ARM/PENSANDO ARM64 ARCHITECTURE
-+M:	Brad Larson <brad@pensando.io>
-+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-+S:	Supported
-+F:	Documentation/devicetree/bindings/*/pensando*
-+F:	arch/arm64/boot/dts/pensando/
++config ARCH_PENSANDO
++	bool "Pensando Platforms"
++	help
++	  This enables support for the ARMv8 based Pensando SoC
++	  family to include the Elba SoC.
 +
- ARM/PLEB SUPPORT
- M:	Peter Chubb <pleb@gelato.unsw.edu.au>
- S:	Maintained
++	  Pensando SoCs support a range of Distributed Services
++	  Cards in PCIe format installed into servers.  The Elba
++	  SoC includes 16 A-72 CPU cores, 144 programmable P4
++	  cores for a minimal latency/jitter datapath, and network
++	  interfaces up to 200 Gb/s.
++
+ config ARCH_QCOM
+ 	bool "Qualcomm Platforms"
+ 	select GPIOLIB
 -- 
 2.17.1
 
