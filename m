@@ -2,61 +2,62 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A749B4F6591
-	for <lists+linux-mmc@lfdr.de>; Wed,  6 Apr 2022 18:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECADF4F6626
+	for <lists+linux-mmc@lfdr.de>; Wed,  6 Apr 2022 19:06:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238031AbiDFQkt (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 6 Apr 2022 12:40:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51286 "EHLO
+        id S238054AbiDFRDn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 6 Apr 2022 13:03:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238147AbiDFQkd (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 6 Apr 2022 12:40:33 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE57A25FD6F
-        for <linux-mmc@vger.kernel.org>; Wed,  6 Apr 2022 06:59:37 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id t25so4246608lfg.7
-        for <linux-mmc@vger.kernel.org>; Wed, 06 Apr 2022 06:59:37 -0700 (PDT)
+        with ESMTP id S238738AbiDFRCn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 6 Apr 2022 13:02:43 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F48248C270
+        for <linux-mmc@vger.kernel.org>; Wed,  6 Apr 2022 07:50:25 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id a30so3505517ljq.13
+        for <linux-mmc@vger.kernel.org>; Wed, 06 Apr 2022 07:50:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=1+/9uGNU/c0SUbZVyjyQElYWMN/Sm+TEsoVZ+LA9Dwg=;
-        b=sznZSgTKnvb3REJi+cKW4bbvW2SCuFJQeNMNdl1UK7abPOiMjmtBnyzm3jiH38FVML
-         VSaVoJ5E6zEvkyXLndR+PxA6JfqZOwO6KtDnV3hez/Arx1Wtr4A25zH315UtaVoxDi5P
-         qFcS703uo8+eCkYtqLlPLafWcmeP+ifwLeVAe03BNOLF4H9lxO5ZZe/Xf4Bpls+X/DMu
-         SShkA7IapxBRcfJHuqFR9okeFEiN4BDX3egCL6iDe31BuBf0v17dtMD/P7kpjJ+Y20yR
-         kJplnuy3A6Uz2FV4BzeDv41iVYc/oyvyhoZWTayKoXIDk9gF2f/VcI5GAXVJ06lwcs26
-         fryA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UGnLkTqCELTBFaSqMXTfWHZuWgTtkPCAkZqgsLO5Kg8=;
+        b=QO1SBDU20mwhil2dNyoItjQRcPfzmAt1Lu/Jgd5Z6pMa0P5Y3vDnaSDvLwlLktAM0s
+         PngBw2IZjX0lmzelI40JlKFI4VtvGY4l+7ggY7BPg48KXQdsaLyGSfUxceybx5g97tSV
+         W39WKKIrxplFlPVKK9nNIUwmZuoP3tczjH8ua6A23IeZ7R+vKrBGV/CWgczAVJ4dTr15
+         oHpH9QWHEaNV+hz8MBKoFT82bDVvC3ZvtzEerYamAkjTRs14q8RYlNqjAEY8eEHmfTQf
+         72FNgOEcgqzgMYBeolpay33rQsS6awSE59sD7K7xb+tzkXOr4fth9cFTWiAb2QEekJiv
+         265A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=1+/9uGNU/c0SUbZVyjyQElYWMN/Sm+TEsoVZ+LA9Dwg=;
-        b=cJXExESXp3XfBBHn+1pGnF5xEBo8IWi/ZoxRZedm9Jlk/wMewQW0Iz1UkzYh+N6UrS
-         wAWsQnSoDqt4bsVHTyMksqzL81epr/lV9mcBiuOriQncEtzjY3BEU+YbEL22yH1dyo6C
-         m4/5hvnreaNt72nV8sESjWF+tWb2oXC5bY9GEi+Rfri9pyiHh81xuRBVHLdr+wY7tU+y
-         ZY5HguInHC7QkQ+LPMcZhYHF2gKT3E73JN6w+dafV3wXazQsiAhGZOV/zy11oU+tNaph
-         /U05OWjrl6aia0PBZtqQAjY3ReOC9LzjvR5ZAJktQS9LgskqhXsYvTNwiAL2MrHRtROs
-         1g+A==
-X-Gm-Message-State: AOAM533KI+9X/lUPkyssteAeEfMIlyXY/GrW1eRt5V4h4uw73Lwm/Uzn
-        1J+u+ETB5JGbbr0wtBKWt7V8h4my6Q6gKSOIw0i8kIHY5G0=
-X-Google-Smtp-Source: ABdhPJy+0n1cWazIOvM6G43K7umQC1gfmdgukS3y10rRQbQb5twaDBgVfSuwfuLHCtMeQCgHu4RbYXGpEVOB3q64a7Q=
-X-Received: by 2002:ac2:4e98:0:b0:448:3039:d170 with SMTP id
- o24-20020ac24e98000000b004483039d170mr6407391lfr.233.1649253576150; Wed, 06
- Apr 2022 06:59:36 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=UGnLkTqCELTBFaSqMXTfWHZuWgTtkPCAkZqgsLO5Kg8=;
+        b=GW7F13SPow5DSYThSv40yhabUn1YEOFKepV3MAVQINz+VVaIH7+G93vIhpeFECI+lu
+         lEBj/nzKyHqFtmZbf6zJ+N1BcCD5PPpKohdGrRP3wRsYaTiY0IXejlX7bb6zMbrvzjYc
+         uYfpzPQ9OjHRFa/SRKocXKplGrHnVYzUQDCuNXzkgOwTshgweLQ2Oen2Io326VW7rhoZ
+         ggpL8LNZ0ofQ+0rXhej373ySG8/7e68RSSIoWvL7TIEgflFi1sUZGBGmE6qEd44Q1IV1
+         OWq9xYQrG18z/hJ/0ynZjkdNPARdh1TCZAAov/0+zSIVSdJKI5mlNFzSboKinRp3QIg/
+         V/Eg==
+X-Gm-Message-State: AOAM531LbOXCxxTaMa/7KVQtlXLVj6JvFo4GMIwy8s0Qhjuh/kzIxgFK
+        Rd/ZLoz1LfsVzCLZ61GXnFrIwtAUuJjU4eflkXx/xw==
+X-Google-Smtp-Source: ABdhPJxvvBQ5AibBUrHQG5pwBKe7uNSo6RJTvLK3rzdgI8ek8VR+r/hnNLoH6wHR1lBxQc7vPOZ7/KfkFj5WLVKnIt0=
+X-Received: by 2002:a2e:9048:0:b0:249:78bb:375e with SMTP id
+ n8-20020a2e9048000000b0024978bb375emr5584753ljg.229.1649256622309; Wed, 06
+ Apr 2022 07:50:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220321115059.21803-1-wsa+renesas@sang-engineering.com>
- <20220321115059.21803-9-wsa+renesas@sang-engineering.com> <CAPDyKFqwgxhRPBabxfUTC+8UVegWrTg3F0nRn3PoToiO2DWtvQ@mail.gmail.com>
- <Yk1JA4TWO9bTt0kb@ninjato>
-In-Reply-To: <Yk1JA4TWO9bTt0kb@ninjato>
+References: <20220403145133.93583-1-bhupesh.sharma@linaro.org>
+In-Reply-To: <20220403145133.93583-1-bhupesh.sharma@linaro.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 6 Apr 2022 15:58:59 +0200
-Message-ID: <CAPDyKFpMAE9mYXUBEsVSm-9EHAC-o5hTxgKNUjYYvo0dzqfEZg@mail.gmail.com>
-Subject: Re: [RFC PATCH 08/10] mmc: core: improve API to make clear hw_reset
- from bus_ops is for cards
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Wed, 6 Apr 2022 16:49:45 +0200
+Message-ID: <CAPDyKFp2U0MgrJYeV9T=fJ+82+2OP-VT1rSqgbyrAQM2E9ssfw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] dt-bindings: mmc: sdhci-msm: Add compatible string
+ for sm8150
+To:     Bhupesh Sharma <bhupesh.sharma@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, bhupesh.linux@gmail.com,
+        agross@kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, bjorn.andersson@linaro.org,
+        Rob Herring <robh@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -68,34 +69,35 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 6 Apr 2022 at 10:02, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
+On Sun, 3 Apr 2022 at 16:51, Bhupesh Sharma <bhupesh.sharma@linaro.org> wrote:
 >
+> Add sm8150 SoC specific compatible strings for qcom-sdhci controller.
 >
-> > > To make it unambiguous that bus_ops->hw_reset() is for cards and not for
-> > > controllers, we a) add 'card' to the function name and b) make the
-> > > function argument mmc_card instead of mmc_host. All users are converted,
-> > > too.
-> >
-> > Again b) is sufficient in my opinion. All bus_ops are for cards, while
-> > host_ops are for hosts.
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Rob Herring <robh@kernel.org>
+> Signed-off-by: Bhupesh Sharma <bhupesh.sharma@linaro.org>
+> ---
+>  Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> Okay, this argument I buy right away.
->
-> > Also, there may be some corner cases where b) can't be done, like the
-> > ->remove() bus_ops for example. In that case, we either have to make
-> > more re-structuring of the code of simply live with that there may be
-> > some special cases.
->
-> With the above argument, I could even imaging to simply drop this patch?
-> That keeps 'host' consistently as the default argument? All given that
-> 'bus_ops' are for cards anyway.
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
+> index 6216ed777343..35a7d78da213 100644
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
+> @@ -25,6 +25,7 @@ Required properties:
+>                 "qcom,sc7280-sdhci", "qcom,sdhci-msm-v5";
+>                 "qcom,sdm845-sdhci", "qcom,sdhci-msm-v5"
+>                 "qcom,sdx55-sdhci", "qcom,sdhci-msm-v5";
+> +               "qcom,sm8150-sdhci", "qcom,sdhci-msm-v5"
+>                 "qcom,sm8250-sdhci", "qcom,sdhci-msm-v5"
+>         NOTE that some old device tree files may be floating around that only
+>         have the string "qcom,sdhci-msm-v4" without the SoC compatible string
 
-I have no strong opinion around this.
+Even if this is a trivial change to the existing DT bindings, I would
+really like to see all mmc bindings getting converted to the new (not
+so new any more) yaml format.
 
-Perhaps one simply needs to make a patch to convert them (most of
-them) to take a "card" as an in-parameter to really see if that
-improves the understanding of code.
+Would you mind having a look and doing this conversion?
 
 Kind regards
 Uffe
