@@ -2,190 +2,115 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 472924F82B2
-	for <lists+linux-mmc@lfdr.de>; Thu,  7 Apr 2022 17:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8D64F82EF
+	for <lists+linux-mmc@lfdr.de>; Thu,  7 Apr 2022 17:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230501AbiDGPXs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 7 Apr 2022 11:23:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49230 "EHLO
+        id S1344711AbiDGP1o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 7 Apr 2022 11:27:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235575AbiDGPXr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 7 Apr 2022 11:23:47 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2CE820216A
-        for <linux-mmc@vger.kernel.org>; Thu,  7 Apr 2022 08:21:46 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id p15so10226239lfk.8
-        for <linux-mmc@vger.kernel.org>; Thu, 07 Apr 2022 08:21:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lVkm9qWZaxkSOk1edwSKzBnvsIAgiibtRlbXNRFG43k=;
-        b=FZtHbnOitKxj13t1VMazZHmSOqMQqgIs0T/8m2cxTO5Pwh5/hb1QhN9pslTJR0wTvp
-         jhfOeNaC8dRRxyXvfkMRe5PlDArz7+Izfl6bG01uT6N7QUpNxxIpfRrh1CqhFFNG4RT2
-         Bt+CWdgx05DlNb8kpvNV+WgPTbaAfZmvSTFG0hZQYT+Op3PV3dh3is66AjxniXuCjDnZ
-         AM2OYvKOa34uW+ITrDR/69t5FOuLsWsQBXEZVJSI3MtP6gUfxClsp4eXbLcp93jdBTmJ
-         BfpQ20J+xJNxnR3GOgrSBpWHR4PjdpHsihnRDYElxWAnSiZ+jKDzivE4nbcz5O+t3p9X
-         FLHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lVkm9qWZaxkSOk1edwSKzBnvsIAgiibtRlbXNRFG43k=;
-        b=yGYX01Bvv7WvCTlSYpWoOMUvB15rqAZAO3v5d559mG4nWCF+bA3zcfz6DfkM/mfmcy
-         5bBDvfxab+BnyTn3jxKgeaT47CGTUqMoWT/TKYSwJl2rOrDg44wESssv5WiOtqWe4CkI
-         N4ytH7Uf4uSWzvSmiQ6yx/fvK62d4vAVbv6epPvIfwnwzFMRpoBay3et5XgekwZVv7/q
-         gNhdwWVv04UVGiZR0jiXTyKJTaK4SXJJU/w8vglRJStnCNiaLuQzTRnVoZfAfIXJmCuW
-         8QoxiSOycR2lFq/jZXkjA0uFDb0EiRGD7jvPny3CTqaPcJJckUT/iN7y6+14sX4sJXJY
-         bbTQ==
-X-Gm-Message-State: AOAM530YvVLmKy9Eul93l8htAymzC6vmFzkd3rj6pVHenJwOlBdoVN/k
-        XYD2HpBkDDbN417VBNdMj91MUfqTKKQsugwNPY0LSOG4EpMPrw==
-X-Google-Smtp-Source: ABdhPJxGxSU8cTRbDWah9/Qh28l4wjtJ6mpdIiiPuBEo4FfFD49gVrQzVQzQAjtcYMxDKKMsZQ0c9Ws/phAYmt33yMw=
-X-Received: by 2002:a19:5012:0:b0:44a:a22d:2d49 with SMTP id
- e18-20020a195012000000b0044aa22d2d49mr9928140lfb.254.1649344905008; Thu, 07
- Apr 2022 08:21:45 -0700 (PDT)
+        with ESMTP id S1344630AbiDGP1n (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 7 Apr 2022 11:27:43 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11478220325;
+        Thu,  7 Apr 2022 08:25:36 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id B53392129B;
+        Thu,  7 Apr 2022 15:25:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1649345134;
+        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+         cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=u5NLYRb0iRWqH+wp45tMsxWQ+2lcKX7UH+x3jrUc4CM=;
+        b=gyRKbvUTSeCHD0kZFeha6b8GtwnfMcBVdpUrcZUXAMFpgjyGa2cKvGcE+1LQgsvJsr0yFR
+        VJy4sQoNdJcuIc7oMupD7ITgqoAKAsjuZZusxwRbFTjJc52vRJgP/0hGLJXdzVq3P3r19L
+        5WyRvzygj8B2JBXB13wX08lyO4vdhmc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1649345134;
+        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+         cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=u5NLYRb0iRWqH+wp45tMsxWQ+2lcKX7UH+x3jrUc4CM=;
+        b=h4c6BQrPPD9W33KeeEtgIxkffE6SxGamCvLBsxsw2FlmdG/K+M8MV8ruvANXF9Az9aOJRY
+        CNJk3HEoegzTiHDg==
+Received: from ds.suse.cz (ds.suse.cz [10.100.12.205])
+        by relay2.suse.de (Postfix) with ESMTP id A2CECA3B94;
+        Thu,  7 Apr 2022 15:25:34 +0000 (UTC)
+Received: by ds.suse.cz (Postfix, from userid 10065)
+        id 7459CDA80E; Thu,  7 Apr 2022 17:21:32 +0200 (CEST)
+Date:   Thu, 7 Apr 2022 17:21:32 +0200
+From:   David Sterba <dsterba@suse.cz>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Jens Axboe <axboe@kernel.dk>, dm-devel@redhat.com,
+        linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-block@vger.kernel.org,
+        drbd-dev@lists.linbit.com, nbd@other.debian.org,
+        ceph-devel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-bcache@vger.kernel.org,
+        linux-raid@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-nvme@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        cluster-devel@redhat.com, jfs-discussion@lists.sourceforge.net,
+        linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
+        ocfs2-devel@oss.oracle.com, linux-mm@kvack.org
+Subject: Re: [PATCH 10/27] block: add a bdev_nonrot helper
+Message-ID: <20220407152132.GI15609@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+Mail-Followup-To: dsterba@suse.cz, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@kernel.dk>, dm-devel@redhat.com,
+        linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-block@vger.kernel.org,
+        drbd-dev@lists.linbit.com, nbd@other.debian.org,
+        ceph-devel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-bcache@vger.kernel.org,
+        linux-raid@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-nvme@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        cluster-devel@redhat.com, jfs-discussion@lists.sourceforge.net,
+        linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
+        ocfs2-devel@oss.oracle.com, linux-mm@kvack.org
+References: <20220406060516.409838-1-hch@lst.de>
+ <20220406060516.409838-11-hch@lst.de>
 MIME-Version: 1.0
-References: <20220222033931.237638-1-jasonlai.genesyslogic@gmail.com>
- <20220222033931.237638-8-jasonlai.genesyslogic@gmail.com> <CAPDyKFoOxZqf7YB5nFSuGCYs1+pjYC4eVZkYQ_um9j8PCm3YFg@mail.gmail.com>
- <CAG0XXUHnEcrjXOqE1rH=pYLK9AzqtMryfdCT0P5T9fTVDKjv2Q@mail.gmail.com>
-In-Reply-To: <CAG0XXUHnEcrjXOqE1rH=pYLK9AzqtMryfdCT0P5T9fTVDKjv2Q@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 7 Apr 2022 17:21:08 +0200
-Message-ID: <CAPDyKFqBzLo95Rie4HUrxQS_=EwJp1sEJNRoQWy=MgV+N6q9Yw@mail.gmail.com>
-Subject: Re: [PATCH V3 7/7] mmc: core: Support UHS-II card access
-To:     Lai Jason <jasonlai.genesyslogic@gmail.com>
-Cc:     AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>, dlunev@chromium.org,
-        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-        =?UTF-8?B?R3JlZ1R1W+adnOWVn+i7kl0=?= <greg.tu@genesyslogic.com.tw>,
-        Jason Lai <Jason.Lai@genesyslogic.com.tw>,
-        otis.wu@genesyslogic.com.tw
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220406060516.409838-11-hch@lst.de>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 7 Apr 2022 at 13:00, Lai Jason <jasonlai.genesyslogic@gmail.com> wrote:
->
-> Hi Uffe,
->
-> On Thu, Mar 24, 2022 at 12:23 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > On Tue, 22 Feb 2022 at 04:40, Jason Lai <jasonlai.genesyslogic@gmail.com> wrote:
-> > >
-> > > From: Jason Lai <jason.lai@genesyslogic.com.tw>
-> > >
-> > > Embed UHS-II access functionality into the MMC request processing flow.
-> > >
-> > > Signed-off-by: Jason Lai <jason.lai@genesyslogic.com.tw>
-> > > ---
-> > >  drivers/mmc/core/core.c | 26 ++++++++++++++++++++++++--
-> > >  1 file changed, 24 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-> > > index fc3d8d61a97c..d2dcaa64bf27 100644
-> > > --- a/drivers/mmc/core/core.c
-> > > +++ b/drivers/mmc/core/core.c
-> > > @@ -31,6 +31,7 @@
-> > >  #include <linux/mmc/mmc.h>
-> > >  #include <linux/mmc/sd.h>
-> > >  #include <linux/mmc/slot-gpio.h>
-> > > +#include <linux/mmc/sd_uhs2.h>
-> > >
-> > >  #define CREATE_TRACE_POINTS
-> > >  #include <trace/events/mmc.h>
-> > > @@ -42,6 +43,7 @@
-> > >  #include "host.h"
-> > >  #include "sdio_bus.h"
-> > >  #include "pwrseq.h"
-> > > +#include "sd_uhs2.h"
-> > >
-> > >  #include "mmc_ops.h"
-> > >  #include "sd_ops.h"
-> > > @@ -335,6 +337,8 @@ static int mmc_mrq_prep(struct mmc_host *host, struct mmc_request *mrq)
-> > >
-> > >  int mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
-> > >  {
-> > > +       struct uhs2_command uhs2_cmd;
-> > > +       u32 payload[4]; /* for maximum size */
-> > >         int err;
-> > >
-> > >         init_completion(&mrq->cmd_completion);
-> > > @@ -352,6 +356,13 @@ int mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
-> > >         if (err)
-> > >                 return err;
-> > >
-> > > +       if (host->uhs2_caps.flags & MMC_UHS2_SUPPORT &&
-> > > +           host->uhs2_caps.flags & MMC_UHS2_INITIALIZED) {
-> > > +               uhs2_cmd.payload = payload;
-> > > +               mrq->cmd->uhs2_cmd = &uhs2_cmd;
-> > > +               sd_uhs2_prepare_cmd(host, mrq);
-> > > +       }
-> > > +
-> > >         led_trigger_event(host->led, LED_FULL);
-> > >         __mmc_start_request(host, mrq);
-> > >
-> > > @@ -431,6 +442,8 @@ EXPORT_SYMBOL(mmc_wait_for_req_done);
-> > >   */
-> > >  int mmc_cqe_start_req(struct mmc_host *host, struct mmc_request *mrq)
-> > >  {
-> > > +       struct uhs2_command uhs2_cmd;
-> > > +       u32 payload[4]; /* for maximum size */
-> > >         int err;
-> > >
-> > >         /*
-> > > @@ -451,6 +464,13 @@ int mmc_cqe_start_req(struct mmc_host *host, struct mmc_request *mrq)
-> > >         if (err)
-> > >                 goto out_err;
-> > >
-> > > +       if (host->uhs2_caps.flags & MMC_UHS2_SUPPORT &&
-> > > +           host->uhs2_caps.flags & MMC_UHS2_INITIALIZED) {
-> > > +               uhs2_cmd.payload = payload;
-> > > +               mrq->cmd->uhs2_cmd = &uhs2_cmd;
-> > > +               sd_uhs2_prepare_cmd(host, mrq);
-> > > +       }
-> > > +
-> > >         err = host->cqe_ops->cqe_request(host, mrq);
-> > >         if (err)
-> > >                 goto out_err;
-> > > @@ -899,8 +919,10 @@ static inline void mmc_set_ios(struct mmc_host *host)
-> > >   */
-> > >  void mmc_set_chip_select(struct mmc_host *host, int mode)
-> > >  {
-> > > -       host->ios.chip_select = mode;
-> > > -       mmc_set_ios(host);
-> > > +       if (!(host->uhs2_caps.flags & MMC_UHS2_INITIALIZED)) {
-> > > +               host->ios.chip_select = mode;
-> > > +               mmc_set_ios(host);
-> > > +       }
-> >
-> > As I stated for patch6, rather than having these hacks spread out into
-> > the legacy code, we must not allow the ->set_ios() ops to be invoked
-> > when UHS-II is being used/initialized.
-> >
->
-> After checking sd_uhs2.c, mmc_set_chip_select() is called in mmc_go_idle()
-> and mmc_go_idle() is called in sd_uhs2_legacy_init(). Hence, I issue CMD0
-> directly in sd_uhs2_legacy_init().
+On Wed, Apr 06, 2022 at 08:04:59AM +0200, Christoph Hellwig wrote:
+> Add a helper to check the nonrot flag based on the block_device instead
+> of having to poke into the block layer internal request_queue.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  block/ioctl.c                       | 2 +-
+>  drivers/block/loop.c                | 2 +-
+>  drivers/md/dm-table.c               | 4 +---
+>  drivers/md/md.c                     | 3 +--
+>  drivers/md/raid1.c                  | 2 +-
+>  drivers/md/raid10.c                 | 2 +-
+>  drivers/md/raid5.c                  | 2 +-
+>  drivers/target/target_core_file.c   | 3 +--
+>  drivers/target/target_core_iblock.c | 2 +-
 
-That works as a simple solution. But an even better option would be to
-re-factor mmc_go_idle(), which then can avoid the open coding. Along
-the lines like this:
+For
 
-1) Add a new function, _mmc_go_idle(struct mmc_host *host, bool
-chip_select) - which is in principle the same as mmc_go_idle() as
-today.
-2) From mmc_go_idle() call _mmc_go_idle(host, true).
-3) From uhs2 specific code, call  _mmc_go_idle(host, false).
+>  fs/btrfs/volumes.c                  | 4 ++--
 
-[...]
-
-Kind regards
-Uffe
+Acked-by: David Sterba <dsterba@suse.com>
