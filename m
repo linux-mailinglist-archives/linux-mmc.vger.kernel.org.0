@@ -2,73 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D5544FB660
-	for <lists+linux-mmc@lfdr.de>; Mon, 11 Apr 2022 10:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B0924FB87C
+	for <lists+linux-mmc@lfdr.de>; Mon, 11 Apr 2022 11:52:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244233AbiDKIyo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Apr 2022 04:54:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55358 "EHLO
+        id S1344769AbiDKJyL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Apr 2022 05:54:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234411AbiDKIyn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Apr 2022 04:54:43 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A5EF3886;
-        Mon, 11 Apr 2022 01:52:30 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id u15so10739779ejf.11;
-        Mon, 11 Apr 2022 01:52:30 -0700 (PDT)
+        with ESMTP id S1345006AbiDKJxM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Apr 2022 05:53:12 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7359B41987;
+        Mon, 11 Apr 2022 02:50:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=/SgmTjMqwtpk9caKkdwZC1qgaJ93uCKltxtYXdsY3Zk=;
-        b=hy2lG+uIpqMnLHr5GnQAr3ZpIZ07xlSJn20AQ8Fyj2ofzgW/4jYO+I7vyAy1klX6AE
-         8jn26V3p3UyhHi9/fApNZ+l+OoZUfnBTbO7+17bFKkQvlbwSjncB9R4+5DzkdGoejDas
-         QkW7Kb+d67Je+tfroWqlRZERA2hLJa0YuOXQjB0KplUqqjEJXqb+4OMNo4eDx2JX0GNs
-         +/MRwPXyqMkynn5J0g2KAmHWqHqrh2tc3NGXL6xL3am/M3QsNcjyqAcoTgrydvgakwO+
-         uxc4e9tQ7CljBytSt4t4JpcZD9Atj1DcmDAfW8dpVEEDMA86MCkaz+yq2Y3d7ozpvVlS
-         NzhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=/SgmTjMqwtpk9caKkdwZC1qgaJ93uCKltxtYXdsY3Zk=;
-        b=B1jOCNEOd/KT9i7vxN/E5zuEVu4OLunFmM3EaM9zXxc1+5U+fktI7FIG5KhDv8Nc/N
-         aQtqwzTzJcLiZOKLVneCscmvaRayk01b+iHzgnqC92iaFVVYNZW7LIjt2besCXrRYb71
-         eThdOpNeeI+9xIzD3FpHIPU2bWMGHfERwTfnfDOkkAUcWYdd6+M8+cB9eE85H4xMkFv/
-         QWUQlMNh1D5PuSaXtncOOuzPNeSZObHArvSrVz6JZFBd1cj3OTQeolCLwlAAGdySsba0
-         kTT3MmtmQ0W02awLDAJ5C/TYkFWBHZMJ2G1SxyJVLSN8nwe1SMqOFh9ELKdtesXFRF9/
-         1TdA==
-X-Gm-Message-State: AOAM530nk5vIiqzBsjIrO5q78CWIcUIEtrFQcfQrUeeoGGA9X2fWhGMX
-        q10lixsqSx66kAnK2kmNM84hgQwlC/cv1Q==
-X-Google-Smtp-Source: ABdhPJxtEH7X77p4Qu0gHE8RrBYJRq3oWHQTGANgRa6aJ3uym9t9+HWTRWe/qHBwPHLki6yw/nYYgg==
-X-Received: by 2002:a17:907:6095:b0:6e7:cc3f:c33d with SMTP id ht21-20020a170907609500b006e7cc3fc33dmr22587785ejc.570.1649667148711;
-        Mon, 11 Apr 2022 01:52:28 -0700 (PDT)
-Received: from [192.168.3.2] (p5dd1ed70.dip0.t-ipconnect.de. [93.209.237.112])
-        by smtp.googlemail.com with ESMTPSA id x4-20020a170906b08400b006e493cb583esm11598540ejy.47.2022.04.11.01.52.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Apr 2022 01:52:28 -0700 (PDT)
-Message-ID: <9ac83fe9bc33cce4b8691d49bdd155587196a62a.camel@gmail.com>
-Subject: Re: [PATCH v1] mmc-utils: Add General command CMD56 read support
-From:   Bean Huo <huobean@gmail.com>
-To:     Avri Altman <Avri.Altman@wdc.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "adrian.hunter@intel.com" <adrian.hunter@intel.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jakob.rossler@nokia.com" <jakob.rossler@nokia.com>,
-        "sperson@micron.com" <sperson@micron.com>,
-        Bean Huo <beanhuo@micron.com>
-Date:   Mon, 11 Apr 2022 10:52:27 +0200
-In-Reply-To: <DM6PR04MB6575816F943FB2F0D4099CDFFCE89@DM6PR04MB6575.namprd04.prod.outlook.com>
-References: <20220408174832.303915-1-huobean@gmail.com>
-         <DM6PR04MB6575816F943FB2F0D4099CDFFCE89@DM6PR04MB6575.namprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.0-1 
-MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1649670650; x=1681206650;
+  h=from:to:cc:subject:date:message-id;
+  bh=FwIfYF2sW0uBB3HT6Ujtl39ujKcPOfiLJ8Kif3t6TUQ=;
+  b=DibQT0sMxRRdRNiRMr6MTO7VxEiJ6jJ1YruitlRGncKFX6wkwzN5rFsm
+   C4OnZpJme3tXaEJvyL8zrbNcuauLqpsJMiEYTiw518Dfl04zxZ0/GEg6I
+   YcGewp6+vvQDyGwIzmi0gQfL+/ufTfntIpVcfHfjkc8LwlRzzEpgMoZg7
+   Y=;
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 11 Apr 2022 02:50:49 -0700
+X-QCInternal: smtphost
+Received: from ironmsg02-blr.qualcomm.com ([10.86.208.131])
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 11 Apr 2022 02:50:47 -0700
+X-QCInternal: smtphost
+Received: from hu-rohiagar-hyd.qualcomm.com (HELO hu-sgudaval-hyd.qualcomm.com) ([10.213.106.138])
+  by ironmsg02-blr.qualcomm.com with ESMTP; 11 Apr 2022 15:20:24 +0530
+Received: by hu-sgudaval-hyd.qualcomm.com (Postfix, from userid 3970568)
+        id 76E3C3A9B; Mon, 11 Apr 2022 15:20:23 +0530 (+0530)
+From:   Rohit Agarwal <quic_rohiagar@quicinc.com>
+To:     will@kernel.org, robin.murphy@arm.com, joro@8bytes.org,
+        robh+dt@kernel.org, krzk+dt@kernel.org, ulf.hansson@linaro.org,
+        agross@kernel.org, bjorn.andersson@linaro.org
+Cc:     manivannan.sadhasivam@linaro.org,
+        linux-arm-kernel@lists.infradead.org,
+        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Rohit Agarwal <quic_rohiagar@quicinc.com>
+Subject: [PATCH v2 0/7] SDX65 devicetree updates
+Date:   Mon, 11 Apr 2022 15:20:08 +0530
+Message-Id: <1649670615-21268-1-git-send-email-quic_rohiagar@quicinc.com>
+X-Mailer: git-send-email 2.7.4
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,25 +57,33 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 2022-04-09 at 09:03 +0000, Avri Altman wrote:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memset(&idata, 0, sizeof(idata));
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 idata.write_flag =3D 0;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 idata.opcode =3D MMC_GEN_CMD;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 idata.arg =3D arg;
-> Practically arg is not needed, because bits[1..31] are meaningless.
-> Maybe just set: idata.arg =3D 1;
->=20
-> Thanks,
-> Avri
-Thanks for your review.
+Hello,
 
-you are right arg is not needed according to eMMC spec.  But as I
-mentioned in the commit message, for the universal use. we need it for
-the vendor-specific arg. I will change it that its arg will be 1 by
-default if the user doesn't specific arg.
+This series adds devicetree nodes for SDX65. It adds reserved memory 
+nodes, SDHCI, smmu and tcsr mutex support.
 
-Kind regards,
-Bean
+Changes from v1:
+ - Addressed Mani's Comments and made necessary.
+ - Rebased on top of v5.18-rc2.
 
+Thanks,
+Rohit.
 
- =20
+Rohit Agarwal (7):
+  ARM: dts: qcom: sdx65: Add reserved memory nodes
+  dt-bindings: mmc: sdhci-msm: Document the SDX65 compatible
+  ARM: dts: qcom: sdx65: Add support for SDHCI controller
+  dt-bindings: arm-smmu: Add binding for SDX65 SMMU
+  ARM: dts: qcom: sdx65: Enable ARM SMMU
+  ARM: dts: qcom: sdx65: Add support for TCSR Mutex
+  ARM: dts: qcom: sdx65: Add Shared memory manager support
+
+ .../devicetree/bindings/iommu/arm,smmu.yaml        |   1 +
+ .../devicetree/bindings/mmc/sdhci-msm.txt          |   1 +
+ arch/arm/boot/dts/qcom-sdx65-mtp.dts               |  21 ++++
+ arch/arm/boot/dts/qcom-sdx65.dtsi                  | 110 +++++++++++++++++++++
+ 4 files changed, 133 insertions(+)
+
+-- 
+2.7.4
+
