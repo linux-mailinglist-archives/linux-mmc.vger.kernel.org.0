@@ -2,97 +2,83 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2664E4FB3EF
-	for <lists+linux-mmc@lfdr.de>; Mon, 11 Apr 2022 08:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45A1E4FB413
+	for <lists+linux-mmc@lfdr.de>; Mon, 11 Apr 2022 08:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245046AbiDKGp1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Apr 2022 02:45:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60242 "EHLO
+        id S245115AbiDKG60 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Apr 2022 02:58:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239551AbiDKGp0 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Apr 2022 02:45:26 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48AEF28E0A
-        for <linux-mmc@vger.kernel.org>; Sun, 10 Apr 2022 23:43:13 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id t11so1754832eju.13
-        for <linux-mmc@vger.kernel.org>; Sun, 10 Apr 2022 23:43:13 -0700 (PDT)
+        with ESMTP id S231882AbiDKG6Z (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Apr 2022 02:58:25 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DC102A709;
+        Sun, 10 Apr 2022 23:56:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=9Vqofv8LVUK572dtLwE2D5FeqaGv/N4ekUHyn/Cn/j4=;
-        b=aRz4swXmDsmqG+eRKSkI/ahoMX3Z/0+3/IdbMM9Lc8OPR1+PvFaMloi9d8ln3cWg1D
-         fFa/a0RWMJLhAh8AiAl8S2dClrHropyKIfUjkgkRthdMuU+jYXmerQW/KdHYaRcf1rBK
-         CCN7muKJixe3xgYs5WsNpQuTbNg4VzM9Zeqml/lFLdEdpAxRTGtOuNiFIxcm1vZZhf+G
-         252ZiFnVbmNeSq+Nn5IxQVq/zM2fzoJ4I9gC8ctsVGkBsWVRvCC+LL6aj38kxjUBa2Z5
-         LfYm0F8UjsTmCJZt/sNQFTGYlI8S1rkqmmN8XrYAcxe5d7jKHYSJw8gOaOUiZ4e5VxdK
-         xuaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=9Vqofv8LVUK572dtLwE2D5FeqaGv/N4ekUHyn/Cn/j4=;
-        b=MrS9+qlRTwJlUWM+ZK45zyBs2vzjrESorBBXuAH1rLqjWkF/UALg+cWUPXYbjIcxxz
-         E6zuP81eT/C+iggWiQCofD9qIa51zowMJjDcVoH2JdS5DmUqvEC3Ltu0jR53ZaU9yaVD
-         uv6RAobYtQ+hRb05C6IAPZ0N2oUjp/FdhMswHYUzu8KCCkU9ZWAsrT6v1yruxCHA2Q9s
-         MueUi2X22PTv0ziLR4pPdkn+YAfvFaCP48nQbF45h6qkqItomiacUo4lNOh48cqo4pKS
-         AyiIh/qp+13WV8V4xUSMWdF5NfR76tEqxTLfZGINWkh8qeUkABE2b7rm6uQ2cYlIp2QF
-         iC3w==
-X-Gm-Message-State: AOAM533MjTZ8qbeopqLndB6JaKkJMeFfLYBLCXiF1ykOJ14YW9Ynu5mG
-        srwtrRpI3Fi1gx/dQmqwF4iHLg==
-X-Google-Smtp-Source: ABdhPJzpt5TX2Bie3ZJ+Cp3TofE0dqCbXEJt2VD5MxF5GDj+HJBKryEeNGbKNr4zbFYPpiSY/t5VMQ==
-X-Received: by 2002:a17:907:a40b:b0:6da:b4a1:33fa with SMTP id sg11-20020a170907a40b00b006dab4a133famr27713766ejc.22.1649659391560;
-        Sun, 10 Apr 2022 23:43:11 -0700 (PDT)
-Received: from [192.168.0.191] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id e9-20020a17090618e900b006e8669f3941sm2985013ejf.209.2022.04.10.23.43.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Apr 2022 23:43:11 -0700 (PDT)
-Message-ID: <ae5326a7-076a-f7a8-f6af-6efb4de0ea7e@linaro.org>
-Date:   Mon, 11 Apr 2022 08:43:09 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH V4 3/3] arm64: dts: imx8mp: Enable HS400-ES
-Content-Language: en-US
-To:     Adam Ford <aford173@gmail.com>, linux-mmc@vger.kernel.org
-Cc:     aford@beaconembedded.com, Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20220410193544.1745684-1-aford173@gmail.com>
- <20220410193544.1745684-3-aford173@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220410193544.1745684-3-aford173@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1649660173; x=1681196173;
+  h=from:to:cc:subject:date:message-id;
+  bh=aRKhlH11BYG4D30HiNuvL9KWitrjNW8cRlhyWm2s6Sg=;
+  b=r5Vkc6Hn25zxcY1woyXjZM/DjGcESDU0ZnX7iyxGW94PAjVskshWO0sq
+   zHiTt917zSovvQhuzXqaZkQiyYeAfITAnMfurpgoPtXM9Y7Dewz6FKnV6
+   PkL5tlwITtycskVj9t1tim7C/RP2ksqeqrwse9q1OgPqOXEtXaQJqIl3l
+   g=;
+Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
+  by alexa-out.qualcomm.com with ESMTP; 10 Apr 2022 23:56:13 -0700
+X-QCInternal: smtphost
+Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
+  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 10 Apr 2022 23:56:11 -0700
+X-QCInternal: smtphost
+Received: from hu-rohiagar-hyd.qualcomm.com (HELO hu-sgudaval-hyd.qualcomm.com) ([10.213.106.138])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 11 Apr 2022 12:25:51 +0530
+Received: by hu-sgudaval-hyd.qualcomm.com (Postfix, from userid 3970568)
+        id A84B437D9; Mon, 11 Apr 2022 12:25:50 +0530 (+0530)
+From:   Rohit Agarwal <quic_rohiagar@quicinc.com>
+To:     will@kernel.org, robin.murphy@arm.com, joro@8bytes.org,
+        robh+dt@kernel.org, krzk+dt@kernel.org, ulf.hansson@linaro.org,
+        agross@kernel.org, bjorn.andersson@linaro.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Rohit Agarwal <quic_rohiagar@quicinc.com>
+Subject: [PATCH 0/7] SDX65 devicetree updates
+Date:   Mon, 11 Apr 2022 12:25:36 +0530
+Message-Id: <1649660143-22400-1-git-send-email-quic_rohiagar@quicinc.com>
+X-Mailer: git-send-email 2.7.4
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 10/04/2022 21:35, Adam Ford wrote:
-> The SDHC controller in the imx8mp has the same controller
-> as the imx8mm which supports HS400-ES. Change the compatible
-> fallback to imx8mm to enable it, but keep the imx7d-usdhc
-> to prevent breaking backwards compatibility.
-> 
-> Signed-off-by: Adam Ford <aford173@gmail.com>
+Hello,
 
+This series adds devicetree nodes for SDX65. It adds
+reserved memory nodes, SDHCI, smmu and tcsr mutex support.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Thanks,
+Rohit.
 
+Rohit Agarwal (7):
+  ARM: dts: qcom: sdx65: Add reserved memory nodes
+  dt-bindings: mmc: sdhci-msm: Document the SDX65 compatible
+  ARM: dts: qcom: sdx65: Add support for SDHCI controller
+  dt-bindings: arm-smmu: Add binding for SDX65 SMMU
+  ARM: dts: qcom: sdx65: Enable ARM SMMU
+  ARM: dts: qcom: sdx65: Add support for TCSR Mutex
+  ARM: dts: qcom: sdx65: Add Shared memory manager support
 
-Best regards,
-Krzysztof
+ .../devicetree/bindings/iommu/arm,smmu.yaml        |   1 +
+ .../devicetree/bindings/mmc/sdhci-msm.txt          |   1 +
+ arch/arm/boot/dts/qcom-sdx65-mtp.dts               |  21 ++++
+ arch/arm/boot/dts/qcom-sdx65.dtsi                  | 110 +++++++++++++++++++++
+ 4 files changed, 133 insertions(+)
+
+-- 
+2.7.4
+
