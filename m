@@ -2,51 +2,60 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CF354FDC40
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Apr 2022 13:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEDF64FDC83
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Apr 2022 13:05:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbiDLKQG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Apr 2022 06:16:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35772 "EHLO
+        id S231992AbiDLKbR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Apr 2022 06:31:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378027AbiDLJ7d (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Apr 2022 05:59:33 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02FBC31907
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Apr 2022 02:04:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=k1; bh=2CAhY7IKumQJVlwImdkuwFw7Nd0T
-        SrqAcUxKb8rI2mc=; b=1NxaPaVQGS8PUNc7Vz+gLp7ce5zd0ZaNCeU50UvFEjQj
-        qowJd3MhGt81FnJSZavswtuwjyAd4HGRHgvZAPNvz7V4wcPt4QVqvjqG2FXvjbgh
-        LxjQfb88mxJdaSIfpuvTca43jlFyYeUEkoVkNGiJeL2AYAwJAKH1HJlhS9PkkX0=
-Received: (qmail 974035 invoked from network); 12 Apr 2022 11:04:42 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 12 Apr 2022 11:04:42 +0200
-X-UD-Smtp-Session: l3s3148p1@0JXDWXHcwOYgAQnoAGZ4AFi7qjeMIP6q
-Date:   Tue, 12 Apr 2022 11:04:38 +0200
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: Re: RZ/G2M Hangs when booting some SD cards
-Message-ID: <YlVApjtNOBLgA0hy@ninjato>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Adam Ford <aford173@gmail.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-References: <CAHCN7xK_fr_gREVsOzN=atcS08mwufr-=7q1JAN=CCyVk_k-dA@mail.gmail.com>
- <YlR9TCeV8FJVu38U@ninjato>
- <CAHCN7xLso6kwWxeT3VuRQBcs9oKZMctGbsWmd1T=mwgHx0T+SA@mail.gmail.com>
+        with ESMTP id S1358429AbiDLKS7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Apr 2022 06:18:59 -0400
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDA07C78C;
+        Tue, 12 Apr 2022 02:16:20 -0700 (PDT)
+Received: by mail-qt1-f176.google.com with SMTP id ay4so2781349qtb.11;
+        Tue, 12 Apr 2022 02:16:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vb/exwohC5cqMpKn9cySsv+5hXcFSt6tITGqK0qhvEs=;
+        b=teg71CknfoVJRSLoZ+OLA2CnR8d2kDBCsLiuEuSD5WI2f9Sij2B+zNefGwrJJ51LtO
+         aTjvsx/MUHqDXVmG/IcLe8YqmN5PdQ+3Cr0HxWtze0mjOhLcLdK7o//FieZmuKZm801D
+         LxlhgrOg42lWO3C6liJ9a/4/7zV/GFwdhZMgYv7sp1/KTzAYdGXjy5sXjNRnVSOLAmD/
+         LkxpFBUfPY2u6Ww2uYI9VKV44BxWom5+sPjsrxkxnLZ9EZffBfUHNVrQ48x8/bg8NqeG
+         ciRxk/CTYN0YRx9gJONrqNYW1+LQfyCQJLVqVYfBdaXUzBRH/eB/a2WmJSDZH30FyzNo
+         qZ0w==
+X-Gm-Message-State: AOAM533Hpz60iaFbGhiUh0UFsB7mhomSICGAEYDg8cg0ypqEF9U9Ere4
+        6iHN+BDaFtcjJVItHL9rGt6PYItp0aaEpuTL
+X-Google-Smtp-Source: ABdhPJx8B//x2UQUJInXTyWdFEbdHOMBR9uc4R6GGe9r8sPxOdCCrFn30GbsNTqe6U/j3D7InGDX+Q==
+X-Received: by 2002:ac8:43cc:0:b0:2eb:dc8a:d5c5 with SMTP id w12-20020ac843cc000000b002ebdc8ad5c5mr2456949qtn.663.1649754979220;
+        Tue, 12 Apr 2022 02:16:19 -0700 (PDT)
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com. [209.85.219.182])
+        by smtp.gmail.com with ESMTPSA id p16-20020a05622a13d000b002e227782e9asm26730974qtk.14.2022.04.12.02.16.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Apr 2022 02:16:19 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id j2so32113520ybu.0;
+        Tue, 12 Apr 2022 02:16:18 -0700 (PDT)
+X-Received: by 2002:a25:c049:0:b0:634:6751:e8d2 with SMTP id
+ c70-20020a25c049000000b006346751e8d2mr26209411ybf.6.1649754978717; Tue, 12
+ Apr 2022 02:16:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vhXuqUUAmMzNR8hx"
-Content-Disposition: inline
-In-Reply-To: <CAHCN7xLso6kwWxeT3VuRQBcs9oKZMctGbsWmd1T=mwgHx0T+SA@mail.gmail.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+References: <20220407063114.1433-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20220407063114.1433-1-wsa+renesas@sang-engineering.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 12 Apr 2022 11:16:07 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV=_QBTzd=yzD0kwvi2gNOp+oj3VjRursynto-Nbt4cLA@mail.gmail.com>
+Message-ID: <CAMuHMdV=_QBTzd=yzD0kwvi2gNOp+oj3VjRursynto-Nbt4cLA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sh_mmcif: move platform_data header to proper location
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,69 +63,46 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Hi Wolfram,
 
---vhXuqUUAmMzNR8hx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Thu, Apr 7, 2022 at 4:33 PM Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+> We have a dedicated directory for platform_data meanwhile, don't spoil
+> the MMC directory with it.
+>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Hi Adam,
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+One minor nit below.
 
-> I have cards that fail 100% on my RZ//G2M.  I have an N and H as well,
-> but I haven't tested them yet.
+> --- a/drivers/mmc/host/sh_mmcif.c
+> +++ b/drivers/mmc/host/sh_mmcif.c
+> @@ -43,13 +43,13 @@
+>  #include <linux/mmc/host.h>
+>  #include <linux/mmc/mmc.h>
+>  #include <linux/mmc/sdio.h>
+> -#include <linux/mmc/sh_mmcif.h>
+>  #include <linux/mmc/slot-gpio.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/mutex.h>
+>  #include <linux/of_device.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/platform_data/sh_mmcif.h>
 
-That would be helpful to do. The board which fails for me is Salvator-X
-with an M3-W SoC, so that matches your G2M. The other SoCs work fine for
-me.
+Is this intended to be sorted? a < e.
 
-> Unfortunately, a colleague of mine tested positive for covid-19, which
-> prompted several of us to get tests, and I received a positive test,
-> so I cannot go back to the office for at least 5 days.  (I am feeling
-> fine today)
+>  #include <linux/pm_qos.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/sh_dma.h>
 
-Oh, get well and negative soon then!
+Gr{oetje,eeting}s,
 
-> I was given permission to ship one out if you're interested but I have
-> to wait until next week to test anything or ship anything. Please
-> don't feel obligated to accept the card,but I know it can be easier to
-> have actual hardware.
+                        Geert
 
-That would be awesome if you could send me a card which regularly fails.
-Thank you! I'll try to reproduce the issue again today but if it fails,
-then I'll wait for the card to arrive.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-> Thanks for responding.  I'll try to get card info / part number from
-> my colleague.
-
-Great, thanks. It will be interesting to know. My experience with cards
-is that they may differ from one batch to the other, though. So, it is
-not guaranteed that I'll see the same issues when I purchase card with
-the same name.
-
-Anyhow, I'll report back with results from today.
-
-All the best,
-
-   Wolfram
-
-
---vhXuqUUAmMzNR8hx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJVQKMACgkQFA3kzBSg
-KbYWhA/+Jqge+WsFWodyAcvjj9vqsNpSa+i1YvF3R6tAfguQzex2m063DPk50u0O
-sm1Hsndg1CoRIjRc+hYoWnUG3oZvr/WSixQzLBK5SctsJnvuYAEOPLjkrvmPnFfz
-v0eEzdmqaoQwz3Yu6vl+hiTIdG8Gp+FSIcxUSEDat1Ex6Zw0yEBZNmxLG94SMeJg
-rnqHno9g0QENpKZKHb1p+YlRpUy7J4guUEA7Bk0xGJCHg7s8iGvhWKpUzsbT/FRX
-2kDfSMR3gAKddoJF+McvB2juq3VDx4XtrXoAIpKvQI/+eA0185kgoe+6Kzrh11Gu
-KYYODOM0LlwfznEo155fH83aA1rGhzCyHvPmEnyGM7abyWiCi5cBfy2dLxfB4HMW
-ej3ZMNtPUT1Q+Yi4LnhUF+MFUzeEZOspZ75hgGeznZrWpu45cXh0sZeQc4uxt0x0
-Gd4FpFUwUwTpcLzQX2DTn+kFrZFdvhroPrnwbCZl3HZmasv+PomjtKfu+jdlAuE+
-fVDFBV7rF32C4+9UWVt5XYi9q4xhDTMHK8haFeJI99vjpcF0XsEcDVixS4JVnVXP
-dnE6SNvGg/McYJrfX9WJ3Etj/8NDYTRFP7C8daGcxwW2alj72mUI5kU6r7rOVCBB
-qH+xsWDIDPFSH/AnZ3+UlBS190W+kdT4kr+EMN4sOzXUTGtAeFA=
-=fKg+
------END PGP SIGNATURE-----
-
---vhXuqUUAmMzNR8hx--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
