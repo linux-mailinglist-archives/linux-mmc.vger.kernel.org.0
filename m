@@ -2,147 +2,83 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1A9E4FDC86
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Apr 2022 13:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 039874FDE7A
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Apr 2022 13:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241804AbiDLKb1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Apr 2022 06:31:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43802 "EHLO
+        id S1350872AbiDLLvB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Apr 2022 07:51:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381421AbiDLK3T (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Apr 2022 06:29:19 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D99C580CD
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Apr 2022 02:31:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding; s=k1; bh=pXpt/O0wt40ELy2VjiVcNMr4U+X
-        Bfk5SDzhV9fM2Egk=; b=JonB2GfC1bYb3hU/Pm+B/VVayEli2jf5gVR+JuHgVI9
-        0QU1Z1rg+w/ylhmfkssV9mzymBRYToStQ9jqBqjrgUPM2KkGAqoTwbnK1plACiO9
-        nVMgRySQ10W7FikM2QDbyLs5FNnesUrNhNVnvAK8KOyXHkF1EnZXwkwM0UAObKtc
-        =
-Received: (qmail 981999 invoked from network); 12 Apr 2022 11:31:30 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 12 Apr 2022 11:31:30 +0200
-X-UD-Smtp-Session: l3s3148p1@jLPGuXHcAucgAQnoAGZ4AFi7qjeMIP6q
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mmc: sh_mmcif: move platform_data header to proper location
-Date:   Tue, 12 Apr 2022 11:31:02 +0200
-Message-Id: <20220412093102.3428-1-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S1355021AbiDLLtJ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Apr 2022 07:49:09 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B62FFF67;
+        Tue, 12 Apr 2022 03:32:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1649759553; x=1681295553;
+  h=from:to:cc:subject:date:message-id;
+  bh=MMIUO1AN7gN05AzZCun/kXzznO7BJ9UyKv14hpLUruU=;
+  b=p0d/Zx108iEl4D63i2ebDkuQp/QO9gO9orIW5Pay78JrPzuLZoLZxbRB
+   KRWBthGIdWJjyTyPohCbej2NNxtIgSlVtr85yt/hdcLWbNNuiwCDOAAYW
+   s6SCqstHOge8Em5Mg3BRsoemHX79ctnmokY6qKLtCWwPEMv6g6gaJYvAT
+   E=;
+Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
+  by alexa-out.qualcomm.com with ESMTP; 12 Apr 2022 03:32:33 -0700
+X-QCInternal: smtphost
+Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
+  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/AES256-SHA; 12 Apr 2022 03:32:30 -0700
+X-QCInternal: smtphost
+Received: from c-sbhanu-linux.qualcomm.com ([10.242.50.201])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 12 Apr 2022 16:02:11 +0530
+Received: by c-sbhanu-linux.qualcomm.com (Postfix, from userid 2344807)
+        id 934595963; Tue, 12 Apr 2022 16:02:10 +0530 (IST)
+From:   Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
+To:     ulf.hansson@linaro.org, robh+dt@kernel.org, krzk+dt@kernel.org,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, linux-arm-msm@vger.kernel.org
+Cc:     quic_rampraka@quicinc.com, quic_pragalla@quicinc.com,
+        quic_sartgarg@quicinc.com, quic_nitirawa@quicinc.com,
+        quic_sayalil@quicinc.com,
+        Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
+Subject: [PATCH V4 0/2] Add reset entries for SDCC controllers
+Date:   Tue, 12 Apr 2022 16:02:06 +0530
+Message-Id: <1649759528-15125-1-git-send-email-quic_c_sbhanu@quicinc.com>
+X-Mailer: git-send-email 2.7.4
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-We have a dedicated directory for platform_data meanwhile, don't spoil
-the MMC directory with it.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
+Changes since V3:
+	- Removed reset-names from bindings and DT file as suggested by
+	  Stephen Boyd.
+	- Removed comments for resets as suggested by Stephen Boyd.
 
-Change since v1: fixed sorting of includes in the MMCIF driver
-		 (Thanks Geert!)
+Changes since V2:
+	- Updated commit subject and comments in dtsi file.
+	- Added resets entry in sdhci-msm dt-bindings.
 
-I don't have the HW to test this but the buildbots are happy with this
-change. I checked that they actually tested the SH builds. To make the
-patch more readable, I used the -M (rename) feature of git-format-patch.
+Changes since V1:
+	- Updated commit message, subject and comments in dtsi file as
+	  suggested by Krzysztof Kozlowski.
 
- arch/sh/boards/board-sh7757lcr.c                | 2 +-
- arch/sh/boards/mach-ecovec24/setup.c            | 2 +-
- arch/sh/boot/romimage/mmcif-sh7724.c            | 2 +-
- drivers/mmc/host/sh_mmcif.c                     | 2 +-
- include/linux/{mmc => platform_data}/sh_mmcif.h | 2 --
- 5 files changed, 4 insertions(+), 6 deletions(-)
- rename include/linux/{mmc => platform_data}/sh_mmcif.h (99%)
+Shaik Sajida Bhanu (2):
+  dt-bindings: mmc: sdhci-msm: Add gcc resets strings
+  arm64: dts: qcom: sc7280: Add reset entries for SDCC controllers
 
-diff --git a/arch/sh/boards/board-sh7757lcr.c b/arch/sh/boards/board-sh7757lcr.c
-index c32b4c6229d3..f39c8196efdf 100644
---- a/arch/sh/boards/board-sh7757lcr.c
-+++ b/arch/sh/boards/board-sh7757lcr.c
-@@ -16,7 +16,7 @@
- #include <linux/io.h>
- #include <linux/mfd/tmio.h>
- #include <linux/mmc/host.h>
--#include <linux/mmc/sh_mmcif.h>
-+#include <linux/platform_data/sh_mmcif.h>
- #include <linux/sh_eth.h>
- #include <linux/sh_intc.h>
- #include <linux/usb/renesas_usbhs.h>
-diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
-index 4c9522dd351f..674da7ebd8b7 100644
---- a/arch/sh/boards/mach-ecovec24/setup.c
-+++ b/arch/sh/boards/mach-ecovec24/setup.c
-@@ -19,7 +19,7 @@
- #include <linux/memblock.h>
- #include <linux/mfd/tmio.h>
- #include <linux/mmc/host.h>
--#include <linux/mmc/sh_mmcif.h>
-+#include <linux/platform_data/sh_mmcif.h>
- #include <linux/mtd/physmap.h>
- #include <linux/gpio.h>
- #include <linux/gpio/machine.h>
-diff --git a/arch/sh/boot/romimage/mmcif-sh7724.c b/arch/sh/boot/romimage/mmcif-sh7724.c
-index 6595b6b45bf1..d30123d859e0 100644
---- a/arch/sh/boot/romimage/mmcif-sh7724.c
-+++ b/arch/sh/boot/romimage/mmcif-sh7724.c
-@@ -8,7 +8,7 @@
-  * for more details.
-  */
- 
--#include <linux/mmc/sh_mmcif.h>
-+#include <linux/platform_data/sh_mmcif.h>
- #include <mach/romimage.h>
- 
- #define MMCIF_BASE      (void __iomem *)0xa4ca0000
-diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
-index 5f9ebf045b1c..0fd4c9d644dd 100644
---- a/drivers/mmc/host/sh_mmcif.c
-+++ b/drivers/mmc/host/sh_mmcif.c
-@@ -43,12 +43,12 @@
- #include <linux/mmc/host.h>
- #include <linux/mmc/mmc.h>
- #include <linux/mmc/sdio.h>
--#include <linux/mmc/sh_mmcif.h>
- #include <linux/mmc/slot-gpio.h>
- #include <linux/mod_devicetable.h>
- #include <linux/mutex.h>
- #include <linux/of_device.h>
- #include <linux/pagemap.h>
-+#include <linux/platform_data/sh_mmcif.h>
- #include <linux/platform_device.h>
- #include <linux/pm_qos.h>
- #include <linux/pm_runtime.h>
-diff --git a/include/linux/mmc/sh_mmcif.h b/include/linux/platform_data/sh_mmcif.h
-similarity index 99%
-rename from include/linux/mmc/sh_mmcif.h
-rename to include/linux/platform_data/sh_mmcif.h
-index e25533b95d9f..6eb914f958f9 100644
---- a/include/linux/mmc/sh_mmcif.h
-+++ b/include/linux/platform_data/sh_mmcif.h
-@@ -1,7 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * include/linux/mmc/sh_mmcif.h
-- *
-  * platform data for eMMC driver
-  *
-  * Copyright (C) 2010 Renesas Solutions Corp.
+ Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 5 +++++
+ arch/arm64/boot/dts/qcom/sc7280.dtsi                | 4 ++++
+ 2 files changed, 9 insertions(+)
+
 -- 
-2.30.2
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member 
+of Code Aurora Forum, hosted by The Linux Foundation
 
