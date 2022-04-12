@@ -2,46 +2,43 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F5AD4FDC7F
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Apr 2022 13:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1A9E4FDC86
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Apr 2022 13:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235335AbiDLKbJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Apr 2022 06:31:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59666 "EHLO
+        id S241804AbiDLKb1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Apr 2022 06:31:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379643AbiDLKTq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Apr 2022 06:19:46 -0400
+        with ESMTP id S1381421AbiDLK3T (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Apr 2022 06:29:19 -0400
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7047BBB
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Apr 2022 02:23:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D99C580CD
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Apr 2022 02:31:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=k1; bh=hGN3hbcr46V0pF/9JiBvXu2YhE7A
-        2TWOogM7BL0HuyA=; b=zZhbEnUZq6eIR3HqnMZyFZLZhYZe/KzlIqyOxf6aQCdk
-        Hs11Sb8YvbBxwvvYplrrM/RDYhINVCVBRe/bQ6iqFhoypJz6Ckhu7iV5MNdykHHU
-        bl2pM46A0lShTtT54ipYBsddC88qRPZHoV8RRSYZQKgkgkhYT4ZF6OmR/Hw5J4c=
-Received: (qmail 979298 invoked from network); 12 Apr 2022 11:23:00 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 12 Apr 2022 11:23:00 +0200
-X-UD-Smtp-Session: l3s3148p1@YeVem3HcAOcgAQnoAGZ4AFi7qjeMIP6q
-Date:   Tue, 12 Apr 2022 11:22:59 +0200
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=pXpt/O0wt40ELy2VjiVcNMr4U+X
+        Bfk5SDzhV9fM2Egk=; b=JonB2GfC1bYb3hU/Pm+B/VVayEli2jf5gVR+JuHgVI9
+        0QU1Z1rg+w/ylhmfkssV9mzymBRYToStQ9jqBqjrgUPM2KkGAqoTwbnK1plACiO9
+        nVMgRySQ10W7FikM2QDbyLs5FNnesUrNhNVnvAK8KOyXHkF1EnZXwkwM0UAObKtc
+        =
+Received: (qmail 981999 invoked from network); 12 Apr 2022 11:31:30 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 12 Apr 2022 11:31:30 +0200
+X-UD-Smtp-Session: l3s3148p1@jLPGuXHcAucgAQnoAGZ4AFi7qjeMIP6q
 From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH] mmc: sh_mmcif: move platform_data header to proper
- location
-Message-ID: <YlVE8785QA4JjyTs@ninjato>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-References: <20220407063114.1433-1-wsa+renesas@sang-engineering.com>
- <CAMuHMdV=_QBTzd=yzD0kwvi2gNOp+oj3VjRursynto-Nbt4cLA@mail.gmail.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mmc: sh_mmcif: move platform_data header to proper location
+Date:   Tue, 12 Apr 2022 11:31:02 +0200
+Message-Id: <20220412093102.3428-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="uCf1cxL/q58P0jnc"
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdV=_QBTzd=yzD0kwvi2gNOp+oj3VjRursynto-Nbt4cLA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
@@ -52,40 +49,100 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+We have a dedicated directory for platform_data meanwhile, don't spoil
+the MMC directory with it.
 
---uCf1cxL/q58P0jnc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
 
+Change since v1: fixed sorting of includes in the MMCIF driver
+		 (Thanks Geert!)
 
-> >  #include <linux/platform_device.h>
-> > +#include <linux/platform_data/sh_mmcif.h>
->=20
-> Is this intended to be sorted? a < e.
+I don't have the HW to test this but the buildbots are happy with this
+change. I checked that they actually tested the SH builds. To make the
+patch more readable, I used the -M (rename) feature of git-format-patch.
 
-Yes, can be argued. I was giving the subdirectory a priority, but
-probably keeping the lexical sorting is better.
+ arch/sh/boards/board-sh7757lcr.c                | 2 +-
+ arch/sh/boards/mach-ecovec24/setup.c            | 2 +-
+ arch/sh/boot/romimage/mmcif-sh7724.c            | 2 +-
+ drivers/mmc/host/sh_mmcif.c                     | 2 +-
+ include/linux/{mmc => platform_data}/sh_mmcif.h | 2 --
+ 5 files changed, 4 insertions(+), 6 deletions(-)
+ rename include/linux/{mmc => platform_data}/sh_mmcif.h (99%)
 
+diff --git a/arch/sh/boards/board-sh7757lcr.c b/arch/sh/boards/board-sh7757lcr.c
+index c32b4c6229d3..f39c8196efdf 100644
+--- a/arch/sh/boards/board-sh7757lcr.c
++++ b/arch/sh/boards/board-sh7757lcr.c
+@@ -16,7 +16,7 @@
+ #include <linux/io.h>
+ #include <linux/mfd/tmio.h>
+ #include <linux/mmc/host.h>
+-#include <linux/mmc/sh_mmcif.h>
++#include <linux/platform_data/sh_mmcif.h>
+ #include <linux/sh_eth.h>
+ #include <linux/sh_intc.h>
+ #include <linux/usb/renesas_usbhs.h>
+diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
+index 4c9522dd351f..674da7ebd8b7 100644
+--- a/arch/sh/boards/mach-ecovec24/setup.c
++++ b/arch/sh/boards/mach-ecovec24/setup.c
+@@ -19,7 +19,7 @@
+ #include <linux/memblock.h>
+ #include <linux/mfd/tmio.h>
+ #include <linux/mmc/host.h>
+-#include <linux/mmc/sh_mmcif.h>
++#include <linux/platform_data/sh_mmcif.h>
+ #include <linux/mtd/physmap.h>
+ #include <linux/gpio.h>
+ #include <linux/gpio/machine.h>
+diff --git a/arch/sh/boot/romimage/mmcif-sh7724.c b/arch/sh/boot/romimage/mmcif-sh7724.c
+index 6595b6b45bf1..d30123d859e0 100644
+--- a/arch/sh/boot/romimage/mmcif-sh7724.c
++++ b/arch/sh/boot/romimage/mmcif-sh7724.c
+@@ -8,7 +8,7 @@
+  * for more details.
+  */
+ 
+-#include <linux/mmc/sh_mmcif.h>
++#include <linux/platform_data/sh_mmcif.h>
+ #include <mach/romimage.h>
+ 
+ #define MMCIF_BASE      (void __iomem *)0xa4ca0000
+diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
+index 5f9ebf045b1c..0fd4c9d644dd 100644
+--- a/drivers/mmc/host/sh_mmcif.c
++++ b/drivers/mmc/host/sh_mmcif.c
+@@ -43,12 +43,12 @@
+ #include <linux/mmc/host.h>
+ #include <linux/mmc/mmc.h>
+ #include <linux/mmc/sdio.h>
+-#include <linux/mmc/sh_mmcif.h>
+ #include <linux/mmc/slot-gpio.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/mutex.h>
+ #include <linux/of_device.h>
+ #include <linux/pagemap.h>
++#include <linux/platform_data/sh_mmcif.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_qos.h>
+ #include <linux/pm_runtime.h>
+diff --git a/include/linux/mmc/sh_mmcif.h b/include/linux/platform_data/sh_mmcif.h
+similarity index 99%
+rename from include/linux/mmc/sh_mmcif.h
+rename to include/linux/platform_data/sh_mmcif.h
+index e25533b95d9f..6eb914f958f9 100644
+--- a/include/linux/mmc/sh_mmcif.h
++++ b/include/linux/platform_data/sh_mmcif.h
+@@ -1,7 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ /*
+- * include/linux/mmc/sh_mmcif.h
+- *
+  * platform data for eMMC driver
+  *
+  * Copyright (C) 2010 Renesas Solutions Corp.
+-- 
+2.30.2
 
---uCf1cxL/q58P0jnc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJVRPMACgkQFA3kzBSg
-KbZw8Q//dc+SlqRHHEF3pRSFUsf9USM+Hbn2FtioP4KZeC2W2F9vxGfbnVdH1SUF
-4jBHHR7EG62EDi0Dleb3cxP7FkOT2QFiVqUriqwy5blGKeuXIlmQ/mBVTaeibpGJ
-D6eYP4YS0dJe6Uj/Zh5qBkH+fHYOoCn19LyTGpVAtQIjzotEouZXMWCyTgiyee2H
-O6F8yOLKANx7HL2qmu9G02EcCSRW9/jLHm0NzCsa9s0CDPtduEA36EiH96+ZiHlY
-gXVi2oB/DkLPi9AJ6yz9iUS6446DCI3Ypw/T+S1ky3qdeJ2nyC9/V4aSK2SGnbuX
-BwUw2aDU84ENH6R7G76oJuTm/1njR0FXfgKiL6G7Z7+FNdlGyLUU0aTbqslMcVkw
-+n4FEiRt3VXjGmNEPaoUSOBG5GyaO3LpP6Ox59wL1GNX3d/QlxByd+fw7XJcnxRp
-mF4Awboumc5phDd4/hX90Jjc0U/lP4vTtMpeNVJ7soroBbF8wiJGT01yH+74lXQE
-ExAl3upxJelMTzB24d47G++7Tzj7S2qKYCbBKV7D3IJGsD4qxW2I6WeUrsuW4VSZ
-Il1HU0Eke1PpunOUCbOe33EJJ1xZbuqaVVjzy9w3HIErLHeqZA2EMvsrGhck7kQ5
-owpgzGYbYjDxW5BWIFGJpw8DRzlJUPntEc1ztwHWD0hgnHQ7W7k=
-=+juU
------END PGP SIGNATURE-----
-
---uCf1cxL/q58P0jnc--
