@@ -2,76 +2,69 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 278AA4FE060
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Apr 2022 14:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36BE74FE0A9
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Apr 2022 14:45:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347572AbiDLMkT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Apr 2022 08:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37126 "EHLO
+        id S1353181AbiDLMpf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Apr 2022 08:45:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354883AbiDLMio (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Apr 2022 08:38:44 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA416351D
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Apr 2022 04:59:02 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id bv19so13825614ejb.6
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Apr 2022 04:59:02 -0700 (PDT)
+        with ESMTP id S1351338AbiDLMpV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Apr 2022 08:45:21 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F20B276655
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Apr 2022 05:10:01 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id h14so26697990lfl.2
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Apr 2022 05:10:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=WaJAMSrJDoo9/Hssj5JitI09tEE075kukXq21wu/5L0=;
-        b=nhcJ8zGYc/klHu9Y8GsxATSJikwbOFEWekXMlCmX5sxb9li4oSg9PGeeUbXZGFy8Nc
-         IXF5LFi7P0i3sbGcyqTvlFaWkyCfUMMmV/v91H3n5Hu+RZY7L5gwySHmiar1TezMG0dA
-         PNMJMjqsuVe9EzVY1D7+Oboem+blu2muLkNlfajeYd5kD1SMJnhKX/RsWGsQq+wGma65
-         X/shOW3/nET3zNJ2Rg1QlOEeSAe6DcHQyQStm4D0XuYkN6yN7vot6ngbuLu99m6XKXbk
-         Pz26pbFrolE9LlRnkGAHyePGw6JGBezdYLs0FYzZaEI5H+6ffUb7F4PP8Y0YUwstuYwL
-         P5yg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=nPnzcyNV3A/4UYBzWHKTKf4kIp6tVvkH+WsDEXjDC24=;
+        b=lDM2BhUHoH9Y+RgQ9Bejy2VOEq3wZBs2rmgzsGi+vSzCT9TnP/8p3Wpupm7r3FXUdb
+         8tJJOEslIMEHSsBsANKpcplIDLfo2t7FROT/4UUxv3JT5Lfof+D9K6xXjn9GZ0IX18I5
+         i5wr6Qmz7ObO0Z+1rOwSjltkoXo5eguNJmHBQ0fa0oyubBBMv3A9dg2++8Ec6PZJ0G6g
+         y8bArUarnYMM3yVpAzhImHBpfpz9qai/H6kAyrM6mEe2xFj9adjKuacadXwFgwMhFpvV
+         SAPoPZa4ThafUqA6nzvJQrfLxbQOIbgW/dCztPJCl6GvdP3vuHEWyLDxZm7vzyMxUnUO
+         qV1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=WaJAMSrJDoo9/Hssj5JitI09tEE075kukXq21wu/5L0=;
-        b=xc28xVFlNovJpa6oqnS4qEzb2MPmS7lE/cOHzOv3tBYmD0jHwl2uXENA49C2XOa9/k
-         Jvd8gsTB8REiWLRN49pSCaj5Lvd+i52WbVTKMEewkrIxX124oOErNtFiP3PZKrsu60qs
-         ISK5Voh2CqB45q7HDWhyL8DiuWeWswUA8JinBXZE1gjAfvnwj8ojbq7aiItkPSVaT0pR
-         q4nYb5XzB+7VOC2pFUY+ir3S0Hw/02cNglVgzzRSKiKMVHieAuVoB6qIilOW3qXhhBgM
-         X+UtWc6PMnF9g1VvKRzHMNxDFU053jTx6MYMMEHnDli1sZLaUaqEmk90S/Gj4lZtCSsO
-         w+9Q==
-X-Gm-Message-State: AOAM5325cWAR5Y3wxV7/Qn4dN0oAyVJetUv5wGRFdMlB/QJE2LY4OP19
-        9K/YHk11JibHCvyHrdIhUaKnLQ==
-X-Google-Smtp-Source: ABdhPJziQxoyCTOQu+uWYcATEWIVf2W413EKsvJ+OhevBIrRejTHf3dVPmpga24MDq56YcGwUd2kmA==
-X-Received: by 2002:a17:906:af7b:b0:6e8:8123:78ab with SMTP id os27-20020a170906af7b00b006e8812378abmr10912595ejb.434.1649764741569;
-        Tue, 12 Apr 2022 04:59:01 -0700 (PDT)
-Received: from [192.168.0.195] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id w6-20020a170906d20600b006ca00cb99e0sm12989864ejz.34.2022.04.12.04.59.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Apr 2022 04:59:01 -0700 (PDT)
-Message-ID: <e278c563-d333-5b79-04b8-406d845ae165@linaro.org>
-Date:   Tue, 12 Apr 2022 13:59:00 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nPnzcyNV3A/4UYBzWHKTKf4kIp6tVvkH+WsDEXjDC24=;
+        b=MerF/OdMEzQ+G2zdey/qQHe0tIuoJpSAostt8X2XJjC6+MmCBsxtR+DLC0MUY169ev
+         dH4MborL103H7zgD25DeBARkSIbJdEgkTOYi/riAraHZD1YWuyI2jK2owxfkr020H6Zu
+         /tRwESD8tCoaYRA5nBqYjXhywYGLiYDPUO5LUSrwp2Tm0cKDnILm/ecdmpkHFtQi7Kua
+         51D1pQvmEdVHQoq10rgpmbNt2ztxnrpv8PXkVYBYqFhF0kq105p27vdF1fpr4nUP9yYy
+         f9f5Q1EMmdYpxzVZr9RlhuaSNaZnzr7YzQWBpoYRt3db//QTSnOySWxOd5HHwBKNR4W1
+         K9cQ==
+X-Gm-Message-State: AOAM533UyxtTJRNv05u6gMWil8S/Xxx9IJSaQY3o8KQyA7wThvskrbgw
+        HR7zVbYKfiYmTbdp+E998qKsVVk0jUdc592UI4Lhbg==
+X-Google-Smtp-Source: ABdhPJw+QK0ioHa/IORYPR20pHaGiyG//MIdGQmMFH88fHxyhrzPKtKt7GOnvFjngT2GteOSQr2B4Jw9WZ+8GibsNMQ=
+X-Received: by 2002:ac2:4bcf:0:b0:46b:ae4d:2855 with SMTP id
+ o15-20020ac24bcf000000b0046bae4d2855mr4980780lfq.184.1649765396161; Tue, 12
+ Apr 2022 05:09:56 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH V4 1/2] dt-bindings: mmc: sdhci-msm: Add gcc resets
- strings
-Content-Language: en-US
-To:     Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>,
-        ulf.hansson@linaro.org, robh+dt@kernel.org, krzk+dt@kernel.org,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, linux-arm-msm@vger.kernel.org
-Cc:     quic_rampraka@quicinc.com, quic_pragalla@quicinc.com,
-        quic_sartgarg@quicinc.com, quic_nitirawa@quicinc.com,
-        quic_sayalil@quicinc.com
-References: <1649759528-15125-1-git-send-email-quic_c_sbhanu@quicinc.com>
- <1649759528-15125-2-git-send-email-quic_c_sbhanu@quicinc.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <1649759528-15125-2-git-send-email-quic_c_sbhanu@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+References: <20220410193544.1745684-1-aford173@gmail.com>
+In-Reply-To: <20220410193544.1745684-1-aford173@gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 12 Apr 2022 14:09:20 +0200
+Message-ID: <CAPDyKFpWMmteaJ3Afz2TD4ba2iE-0vf4VJ_V-kkEE332OzywpQ@mail.gmail.com>
+Subject: Re: [PATCH V4 1/3] dt-bindings: mmc: imx-esdhc: Update compatible fallbacks
+To:     Adam Ford <aford173@gmail.com>
+Cc:     linux-mmc@vger.kernel.org, aford@beaconembedded.com,
+        haibo.chen@nxp.com, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <Kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,18 +73,89 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 12/04/2022 12:32, Shaik Sajida Bhanu wrote:
-> Add gcc hardware reset supported strings for qcom-sdhci controller.
-> 
-> Signed-off-by: Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
+On Sun, 10 Apr 2022 at 21:35, Adam Ford <aford173@gmail.com> wrote:
+>
+> The SDHC controller in the imx8mn and imx8mp have the same controller
+> as the imx8mm which is slightly different than that of the imx7d.
+>
+> Using the fallback of the imx8mm enables the controllers to support
+> HS400-ES which is not available on the imx7d. After discussion with NXP,
+> it turns out that the imx8qm should fall back to the imx8qxp, because
+> those have some additional flags not present in the imx8mm.
+>
+> Mark the current state of the fallbacks as deprecated, and add the
+> proper fallbacks so in the future, the deprecated combination can be
+> removed and prevent any future devices from using the wrong fallback.
+>
+> Suggested-by: haibo.chen@nxp.com
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+
+Applied for next, thanks!
+
+Kind regards
+Uffe
+
+
 > ---
->  Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-
-Best regards,
-Krzysztof
+> V4:  Mark deprecated items with "deprecated: true" instead of a comment
+> V3:  Add support for the interim fallback on imx8mn and imx8mp where
+>      they both fallback to imx8mm, but keep the imx7d to prevent any
+>      breakage.
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> index 7dbbcae9485c..58447095f000 100644
+> --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> @@ -34,22 +34,46 @@ properties:
+>            - fsl,imx6ull-usdhc
+>            - fsl,imx7d-usdhc
+>            - fsl,imx7ulp-usdhc
+> +          - fsl,imx8mm-usdhc
+>            - fsl,imxrt1050-usdhc
+>            - nxp,s32g2-usdhc
+> +      - items:
+> +          - enum:
+> +              - fsl,imx8mq-usdhc
+> +          - const: fsl,imx7d-usdhc
+> +      - items:
+> +          - enum:
+> +              - fsl,imx8mn-usdhc
+> +              - fsl,imx8mp-usdhc
+> +              - fsl,imx93-usdhc
+> +              - fsl,imx8ulp-usdhc
+> +          - const: fsl,imx8mm-usdhc
+> +      - items:
+> +          - enum:
+> +              - fsl,imx8qm-usdhc
+> +          - const: fsl,imx8qxp-usdhc
+>        - items:
+>            - enum:
+>                - fsl,imx8mm-usdhc
+>                - fsl,imx8mn-usdhc
+>                - fsl,imx8mp-usdhc
+> -              - fsl,imx8mq-usdhc
+>                - fsl,imx8qm-usdhc
+>                - fsl,imx8qxp-usdhc
+>            - const: fsl,imx7d-usdhc
+> +        deprecated: true
+>        - items:
+>            - enum:
+> -              - fsl,imx93-usdhc
+> -              - fsl,imx8ulp-usdhc
+> +              - fsl,imx8mn-usdhc
+> +              - fsl,imx8mp-usdhc
+>            - const: fsl,imx8mm-usdhc
+> +          - const: fsl,imx7d-usdhc
+> +        deprecated: true
+> +      - items:
+> +          - enum:
+> +              - fsl,imx8qm-usdhc
+> +          - const: fsl,imx8qxp-usdhc
+> +          - const: fsl,imx7d-usdhc
+> +        deprecated: true
+>
+>    reg:
+>      maxItems: 1
+> --
+> 2.34.1
+>
