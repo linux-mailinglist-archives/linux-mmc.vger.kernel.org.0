@@ -2,82 +2,81 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C02C501A77
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Apr 2022 19:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FF38501A82
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Apr 2022 19:53:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343919AbiDNRxO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Apr 2022 13:53:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46528 "EHLO
+        id S1343993AbiDNRyJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Apr 2022 13:54:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343931AbiDNRxN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Apr 2022 13:53:13 -0400
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76DA8EA754;
-        Thu, 14 Apr 2022 10:50:48 -0700 (PDT)
-Received: by mail-oi1-f177.google.com with SMTP id b188so6155252oia.13;
-        Thu, 14 Apr 2022 10:50:48 -0700 (PDT)
+        with ESMTP id S1343977AbiDNRx6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Apr 2022 13:53:58 -0400
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF3BEA763;
+        Thu, 14 Apr 2022 10:51:30 -0700 (PDT)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-ddfa38f1c1so5976788fac.11;
+        Thu, 14 Apr 2022 10:51:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=Gp1UQaeAUFHUmZt7KJQtTaDbqEgS8GIsE7NBeOPlykc=;
-        b=yWu+lO1f+sxrnN2TrMfqaD/MIfFG3ODL9jNKiDXO9YdmM7Ej0Tjbd9JZWRwa18JYjv
-         VuPAAEPCaRuk0RdtfsiXxyKSMkcSPwTZd2lWi/mg5BSWbz2xDwsmieACzQnZpWeAZbV4
-         ChNghX3YnFV9fN++MyXYJk0qmiH723po9pt7d5Tctbt7N7w9HYb2Ay4yIvfZwq6fYpa0
-         yh0Apfxsm2jelt+Ap8jF9onJ+9YJPNfCNsVtDRfMHYJWYop18zVn8H/W1MYQfNPp5GQS
-         X0ayG2bd/UytLH0YUodI4o0K2UrQbSN7nDTqF4/96lWGhOV/LlB7g4tKH6kSujo2j3Un
-         dcxg==
-X-Gm-Message-State: AOAM531TKuOI3BYJXru3Mz2q9xYur0v5ObLLQfXY0tHdrCEtIIvacL1f
-        WYdHDy2RN1pcPXWl+XAbBA==
-X-Google-Smtp-Source: ABdhPJwmLAk/ZemFazWzMfXV6Baqk65MFZCVYcK2ITCgH70geCs74ZOtJeb1URftFeedrkn/I6NRow==
-X-Received: by 2002:a05:6808:124f:b0:321:855d:5b19 with SMTP id o15-20020a056808124f00b00321855d5b19mr1870495oiv.30.1649958647785;
-        Thu, 14 Apr 2022 10:50:47 -0700 (PDT)
+        bh=DEI45G4jfdbLSLjK6F+n7UUuOmq9pwFT5soFbJ9qWrA=;
+        b=i4shKFO0PU7GNvQNI2WW03fSzG2RT5nXceVYvQvopOYuiAMV7cLICqQWnigjTL2+Cl
+         r2OH2LqO2K14zAd1fmzYe0BqsUGf98Qq1rd4rxe6IWZliP+sZhmytWWx0E1H3sHdAbUP
+         oEmJzgVVZVvhtVk/jz/xmKN/Df+Xk+rw5Oe9WmX4td5d2PvE5GkeQH/KfTXxCeDoUhEu
+         I7OVgogKHBMRAWXkINMZvZ0ubyX0A3C5Sr2T6Kl2QiNf1Z0ikPSB6g0+FAKxWC/AbSDy
+         Va9Cu7Jj6oxLFDVZrIEdE2IZL9SzcYY2imoOxH/iJiago3CU1Vp7iUygjm8JPNXavD6N
+         Xd7A==
+X-Gm-Message-State: AOAM531aBbU7dDl1f3FWFzy/e2aEQXVVlx4gXFiNEOYGTuzXlVDJMujQ
+        dfAwDkcnQb9JcRU7eL2v+MJJiJT5hg==
+X-Google-Smtp-Source: ABdhPJxDRDHbf/842fJuBWcyzVoT6YVdh1vmmWxgq2DyQr5CdgXiXnV4EA6kD1bGnC8psumRBaM8/w==
+X-Received: by 2002:a05:6870:6192:b0:e1:dcc4:e0e8 with SMTP id a18-20020a056870619200b000e1dcc4e0e8mr2085666oah.58.1649958689349;
+        Thu, 14 Apr 2022 10:51:29 -0700 (PDT)
 Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id o18-20020a9d7652000000b005cbf6f5d7c5sm267475otl.21.2022.04.14.10.50.46
+        by smtp.gmail.com with ESMTPSA id w133-20020acadf8b000000b002ef9fa2ba84sm266647oig.12.2022.04.14.10.51.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Apr 2022 10:50:47 -0700 (PDT)
-Received: (nullmailer pid 2303359 invoked by uid 1000);
-        Thu, 14 Apr 2022 17:50:46 -0000
-Date:   Thu, 14 Apr 2022 12:50:46 -0500
+        Thu, 14 Apr 2022 10:51:29 -0700 (PDT)
+Received: (nullmailer pid 2304505 invoked by uid 1000);
+        Thu, 14 Apr 2022 17:51:28 -0000
+Date:   Thu, 14 Apr 2022 12:51:28 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     Abel Vesa <abel.vesa@nxp.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        NXP Linux Team <linux-imx@nxp.com>, netdev@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH v6 12/13] dt-bindings: usb: ci-hdrc-usb2: Add i.MX8DXL
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-mmc@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v6 13/13] dt-bindings: usb: usbmisc-imx: Add i.MX8DXL
  compatible string
-Message-ID: <Ylhe9qXRhghSxUQp@robh.at.kernel.org>
+Message-ID: <YlhfIAqBvZM7k67Z@robh.at.kernel.org>
 References: <20220413103356.3433637-1-abel.vesa@nxp.com>
- <20220413103356.3433637-13-abel.vesa@nxp.com>
+ <20220413103356.3433637-14-abel.vesa@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220413103356.3433637-13-abel.vesa@nxp.com>
+In-Reply-To: <20220413103356.3433637-14-abel.vesa@nxp.com>
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 13 Apr 2022 13:33:55 +0300, Abel Vesa wrote:
-> Add i.MX8DXL compatible string to ci-hdrc-usb2 bindings
-> documentation.
+On Wed, 13 Apr 2022 13:33:56 +0300, Abel Vesa wrote:
+> Add i.MX8DXL compatible string to the usbmisc-imx bindings.
 > 
 > Signed-off-by: Abel Vesa <abel.vesa@nxp.com>
 > ---
->  Documentation/devicetree/bindings/usb/ci-hdrc-usb2.txt | 1 +
+>  Documentation/devicetree/bindings/usb/usbmisc-imx.txt | 1 +
 >  1 file changed, 1 insertion(+)
 > 
 
