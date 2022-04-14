@@ -2,82 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FF38501A82
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Apr 2022 19:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5451E501ED7
+	for <lists+linux-mmc@lfdr.de>; Fri, 15 Apr 2022 01:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343993AbiDNRyJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Apr 2022 13:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47414 "EHLO
+        id S1345432AbiDNXIm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Apr 2022 19:08:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343977AbiDNRx6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Apr 2022 13:53:58 -0400
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF3BEA763;
-        Thu, 14 Apr 2022 10:51:30 -0700 (PDT)
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-ddfa38f1c1so5976788fac.11;
-        Thu, 14 Apr 2022 10:51:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=DEI45G4jfdbLSLjK6F+n7UUuOmq9pwFT5soFbJ9qWrA=;
-        b=i4shKFO0PU7GNvQNI2WW03fSzG2RT5nXceVYvQvopOYuiAMV7cLICqQWnigjTL2+Cl
-         r2OH2LqO2K14zAd1fmzYe0BqsUGf98Qq1rd4rxe6IWZliP+sZhmytWWx0E1H3sHdAbUP
-         oEmJzgVVZVvhtVk/jz/xmKN/Df+Xk+rw5Oe9WmX4td5d2PvE5GkeQH/KfTXxCeDoUhEu
-         I7OVgogKHBMRAWXkINMZvZ0ubyX0A3C5Sr2T6Kl2QiNf1Z0ikPSB6g0+FAKxWC/AbSDy
-         Va9Cu7Jj6oxLFDVZrIEdE2IZL9SzcYY2imoOxH/iJiago3CU1Vp7iUygjm8JPNXavD6N
-         Xd7A==
-X-Gm-Message-State: AOAM531aBbU7dDl1f3FWFzy/e2aEQXVVlx4gXFiNEOYGTuzXlVDJMujQ
-        dfAwDkcnQb9JcRU7eL2v+MJJiJT5hg==
-X-Google-Smtp-Source: ABdhPJxDRDHbf/842fJuBWcyzVoT6YVdh1vmmWxgq2DyQr5CdgXiXnV4EA6kD1bGnC8psumRBaM8/w==
-X-Received: by 2002:a05:6870:6192:b0:e1:dcc4:e0e8 with SMTP id a18-20020a056870619200b000e1dcc4e0e8mr2085666oah.58.1649958689349;
-        Thu, 14 Apr 2022 10:51:29 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id w133-20020acadf8b000000b002ef9fa2ba84sm266647oig.12.2022.04.14.10.51.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Apr 2022 10:51:29 -0700 (PDT)
-Received: (nullmailer pid 2304505 invoked by uid 1000);
-        Thu, 14 Apr 2022 17:51:28 -0000
-Date:   Thu, 14 Apr 2022 12:51:28 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Abel Vesa <abel.vesa@nxp.com>
-Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-mmc@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v6 13/13] dt-bindings: usb: usbmisc-imx: Add i.MX8DXL
- compatible string
-Message-ID: <YlhfIAqBvZM7k67Z@robh.at.kernel.org>
-References: <20220413103356.3433637-1-abel.vesa@nxp.com>
- <20220413103356.3433637-14-abel.vesa@nxp.com>
+        with ESMTP id S1347430AbiDNXIl (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Apr 2022 19:08:41 -0400
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [IPv6:2001:df5:b000:5::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFCE198F7C
+        for <linux-mmc@vger.kernel.org>; Thu, 14 Apr 2022 16:06:13 -0700 (PDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 331F02C02EB;
+        Thu, 14 Apr 2022 23:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1649977570;
+        bh=QMOImhl/kNS0gQ0GSE27P0W8zdDKCfw1R+mRixl3y0I=;
+        h=From:To:Cc:Subject:Date:From;
+        b=r4jGRX3ZJkFx8A+XdSa8ISnr7i/IwMD9l0+WMgLdCLu2tuWbmPoMXvcAWSv/tqyHH
+         l6TUQcUWhbFtpnIgCv9SlvB9UoZHseQNx3whoYz1lcIAELg+t4ZTe3xUf8MKh9yBaJ
+         es891XOjEnbuOLjOnUf/ps1dQ0phRJBFeIS0KLOyo6XT6eVgFyImv5dGgZOfeTh4Sv
+         bNiHpK7nkPlvzsyinDDutsHrNDc5h2ddqCd1UlVXfJYauzxoxT9g1HEXvk5Ig3B0OV
+         +7k8jTafBExDuSyX1xnWo8Apzx01QeJ+bfx1KHvD3RDz+lbJuXdkIaAZvOq4qZrEjS
+         yt+z9lkCtM6vw==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+        id <B6258a8e20000>; Fri, 15 Apr 2022 11:06:10 +1200
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
+        by pat.atlnz.lc (Postfix) with ESMTP id 0778513EE37;
+        Fri, 15 Apr 2022 11:06:10 +1200 (NZST)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+        id A5A0A2A2679; Fri, 15 Apr 2022 11:06:06 +1200 (NZST)
+From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
+To:     ulf.hansson@linaro.org, robh+dt@kernel.org, krzk+dt@kernel.org,
+        andrew@lunn.ch, gregory.clement@bootlin.com,
+        sebastian.hesselbarth@gmail.com
+Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH 0/4] dt-bindings: mmc: Convert orion/dove bindings to JSON schema
+Date:   Fri, 15 Apr 2022 11:05:59 +1200
+Message-Id: <20220414230603.567049-1-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220413103356.3433637-14-abel.vesa@nxp.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=L59jvNb8 c=1 sm=1 tr=0 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=z0gMJWrwH1QA:10 a=rAFvr4r3g9_3rt3GYfIA:9
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 13 Apr 2022 13:33:56 +0300, Abel Vesa wrote:
-> Add i.MX8DXL compatible string to the usbmisc-imx bindings.
-> 
-> Signed-off-by: Abel Vesa <abel.vesa@nxp.com>
-> ---
->  Documentation/devicetree/bindings/usb/usbmisc-imx.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
+This is a small series converting the device tree bindings for the orion =
+and
+dove sdhci controllers to JSON schema.
 
-Acked-by: Rob Herring <robh@kernel.org>
+The first 2 patches update the dtsi files to use a node name enforces by =
+the
+schema. The next 2 patches convert the old text binding to JSON schema.
+
+Chris Packham (4):
+  ARM: dts: mvebu: Update mvsdio node names to match schema
+  ARM: dts: dove: Update sdio-host node names to match schema
+  dt-bindings: mmc: convert orion-sdio to JSON schema
+  dt-bindings: mmc: convert sdhci-dove to JSON schema
+
+ .../bindings/mmc/marvell,dove-sdhci.yaml      | 38 ++++++++++++++++
+ .../bindings/mmc/marvell,orion-sdio.yaml      | 43 +++++++++++++++++++
+ .../devicetree/bindings/mmc/orion-sdio.txt    | 16 -------
+ .../devicetree/bindings/mmc/sdhci-dove.txt    | 14 ------
+ arch/arm/boot/dts/armada-370-xp.dtsi          |  2 +-
+ arch/arm/boot/dts/armada-375.dtsi             |  2 +-
+ arch/arm/boot/dts/dove.dtsi                   |  4 +-
+ arch/arm/boot/dts/kirkwood-6192.dtsi          |  2 +-
+ arch/arm/boot/dts/kirkwood-6281.dtsi          |  2 +-
+ arch/arm/boot/dts/kirkwood-6282.dtsi          |  2 +-
+ 10 files changed, 88 insertions(+), 37 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mmc/marvell,dove-sd=
+hci.yaml
+ create mode 100644 Documentation/devicetree/bindings/mmc/marvell,orion-s=
+dio.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mmc/orion-sdio.txt
+ delete mode 100644 Documentation/devicetree/bindings/mmc/sdhci-dove.txt
+
+--=20
+2.35.1
+
