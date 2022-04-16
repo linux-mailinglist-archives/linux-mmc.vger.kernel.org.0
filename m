@@ -2,106 +2,79 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E40695034F3
-	for <lists+linux-mmc@lfdr.de>; Sat, 16 Apr 2022 09:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D48E503611
+	for <lists+linux-mmc@lfdr.de>; Sat, 16 Apr 2022 12:52:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230224AbiDPHwx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 16 Apr 2022 03:52:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44108 "EHLO
+        id S229845AbiDPKzT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 16 Apr 2022 06:55:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbiDPHwZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 16 Apr 2022 03:52:25 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B56B8100751
-        for <linux-mmc@vger.kernel.org>; Sat, 16 Apr 2022 00:49:38 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id t4so10101588pgc.1
-        for <linux-mmc@vger.kernel.org>; Sat, 16 Apr 2022 00:49:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=bJd2DIgtyK+bZCVQpMa9XLiI7bVnFQgVFeGzbZ6bXamjrEFIUCNaIDR9YpvR5iTRQC
-         EoRjHn2hxdGgHpTmUXoJLhLdkz8kw8CpdMkf+RjOM2yxgJf0M2w5tnzpw0NiczM9cGQm
-         aTRY2J48j2+AVBVM6ZplapTERLwB7sqpQHn0KTPy+GATyEE1HlWbU25nZewZyTln9PiO
-         eb2iuPe3VcoLkYjZ6tmC44EeIcF1BzRiek/y+/+gg720T1wEvd/5m2iOgdTIUS3isI5Z
-         q2z1OdX/gYACU6OexrbNcXzEKBC+MKUq0Bm7V68HpmeyS3D5tFhEEP1iOfnkPKJo7x6w
-         XtNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=Jc0hNx+ABwY544LNc+FjYYwLR0+kx//L1/CuXOdd0v9cG17iQukuX3nfrAvKjeYijA
-         C/ePURhMwi6vfo5nXYGfPML0ZG+xt+3vR0WGgV/WYO4wXOadhtJbtjRn7an6pNBJpe4c
-         ExvY3Be/08bOrb2g0B5mFE/FpnB6yr1ZStmQ4CZPTaUiO3LPRs3BiOD/3+qn8XvcCD7V
-         q7NZZ62kFMM+419uUteKO6qMSDzdNbd++/QiNSfEAjcwlvW8EgBzMQ8bvfXl39rN+3H+
-         jsVLXx5O9vl4DKHAB19owhX5c3uTSUWViZ3nvg7FefC9taoY1DWTVRIJZ/IL+gth+AvG
-         Vf9Q==
-X-Gm-Message-State: AOAM532mvnXH+beMt4D4GmcXgmQ7XhvcIuli6UCIebcyC0z+Tg15CgHv
-        Axsar0Vo2K5VOWXE3n3L6btBOM9KdutWgjZBNDLk/nmaOL0=
-X-Google-Smtp-Source: ABdhPJzPQ782jxaaybf4v05kBQtFRTzv0MMrux20NcZ4Q10XmGrK6dnUIabFDBNBmBOv8fFyQY5zqzYAgf4Cnc3KaCc=
-X-Received: by 2002:a92:508:0:b0:2cb:ebd8:a76b with SMTP id
- q8-20020a920508000000b002cbebd8a76bmr1009500ile.156.1650095366830; Sat, 16
- Apr 2022 00:49:26 -0700 (PDT)
+        with ESMTP id S229575AbiDPKzS (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 16 Apr 2022 06:55:18 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8063A5CF
+        for <linux-mmc@vger.kernel.org>; Sat, 16 Apr 2022 03:52:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B116DB802BD
+        for <linux-mmc@vger.kernel.org>; Sat, 16 Apr 2022 10:52:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1549C385A1
+        for <linux-mmc@vger.kernel.org>; Sat, 16 Apr 2022 10:52:43 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Cw88ybCX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1650106362;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=G/cMntdOv78MLKetYV5P/cihm6SFTsJS7OHfJXItwl8=;
+        b=Cw88ybCXqpeRxWbfH4By3HM4W4TBo0PfJKsFi8Td1FdI0Guvu23j2/ufxFmyWYDQzjomkn
+        bIZmE7K1nmMo5y6ToRNvFDGssyfI1GcuxtF2UPKfUyyp9MMBflHQclqfR9Qk33Tupj6RZY
+        9UuKqElFViSbLj+/wkmdZvIXFmQGHUo=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 34bd8808 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO)
+        for <linux-mmc@vger.kernel.org>;
+        Sat, 16 Apr 2022 10:52:41 +0000 (UTC)
+Received: by mail-yb1-f177.google.com with SMTP id t67so18173229ybi.2
+        for <linux-mmc@vger.kernel.org>; Sat, 16 Apr 2022 03:52:41 -0700 (PDT)
+X-Gm-Message-State: AOAM532i0Y+F/fzADfk6T3ynl1jwpS+2F9QnqNYs/s1lxtdjzDAERkmD
+        zEZDHPk9aKFJDDvTStuFV0CtTXqQOUygn/33A00=
+X-Google-Smtp-Source: ABdhPJzUqjXFiOH8LyjnEqZXNXvQxQXpom9gc2nRMRXlrr8HkpZum1/sT/ec4V4nxB346eN1LJKry0zdmnGT+895zHM=
+X-Received: by 2002:a05:6902:10c2:b0:63e:986:494e with SMTP id
+ w2-20020a05690210c200b0063e0986494emr2545939ybu.267.1650106360798; Sat, 16
+ Apr 2022 03:52:40 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6638:1309:0:0:0:0 with HTTP; Sat, 16 Apr 2022 00:49:26
- -0700 (PDT)
-Reply-To: daniel.seyba@yahoo.com
-From:   Seyba Daniel <royhalton13@gmail.com>
-Date:   Sat, 16 Apr 2022 09:49:26 +0200
-Message-ID: <CALSxb2w9zQYotuLcRSCPns53ksvT9UrEMVx-1Cp1f8RE7er3cA@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
+References: <20220415222931.481352-1-linus.walleij@linaro.org>
+In-Reply-To: <20220415222931.481352-1-linus.walleij@linaro.org>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Sat, 16 Apr 2022 12:52:29 +0200
+X-Gmail-Original-Message-ID: <CAHmME9pL3wySZVp+-HA7O_BVyu=a1aEeVAvFaKYRXg=8vp96VQ@mail.gmail.com>
+Message-ID: <CAHmME9pL3wySZVp+-HA7O_BVyu=a1aEeVAvFaKYRXg=8vp96VQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: core: Add CIDs for cards to the entropy pool
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        "Theodore Ts'o" <tytso@mit.edu>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:542 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [royhalton13[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [royhalton13[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+Hi Linus,
 
-I am so sorry contacting you in this means especially when we have never
-met before. I urgently seek your service to represent me in investing in
-your region / country and you will be rewarded for your service without
-affecting your present job with very little time invested in it.
+This seems like a pretty nice idea. It seems like a lot of small
+embedded boards are fairly deterministic and have lots of identical
+board information, with possibly the only thing differing
+board-to-board on firstboot being whatever serial number is baked into
+the SD card. And the input pool only ever accumulates with
+add_device_randomness(), so in the worst case, this won't hurt
+anything. So:
 
-My interest is in buying real estate, private schools or companies with
-potentials for rapid growth in long terms.
+Acked-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-So please confirm interest by responding back.
-
-My dearest regards
-
-Seyba Daniel
+Jason
