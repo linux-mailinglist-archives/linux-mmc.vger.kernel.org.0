@@ -2,101 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 940F85045B6
-	for <lists+linux-mmc@lfdr.de>; Sun, 17 Apr 2022 00:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 449B5504724
+	for <lists+linux-mmc@lfdr.de>; Sun, 17 Apr 2022 10:35:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232020AbiDPWu3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 16 Apr 2022 18:50:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55848 "EHLO
+        id S231263AbiDQIhr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 17 Apr 2022 04:37:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbiDPWu3 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 16 Apr 2022 18:50:29 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F86F3CFCB
-        for <linux-mmc@vger.kernel.org>; Sat, 16 Apr 2022 15:47:55 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id bn33so13071805ljb.6
-        for <linux-mmc@vger.kernel.org>; Sat, 16 Apr 2022 15:47:55 -0700 (PDT)
+        with ESMTP id S233653AbiDQIhp (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 17 Apr 2022 04:37:45 -0400
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ACB01ADB6
+        for <linux-mmc@vger.kernel.org>; Sun, 17 Apr 2022 01:35:09 -0700 (PDT)
+Received: by mail-vk1-xa44.google.com with SMTP id 76so3225211vkc.7
+        for <linux-mmc@vger.kernel.org>; Sun, 17 Apr 2022 01:35:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hdMN3k0Sjf7cBpT9HSc70WSDqmmm9h4hh0kYHkQwaQc=;
-        b=P2fw/flztEvlMJydzoAnU1R8oowS35EJUEOjItpuFquRKHOuxLdVzNgcwYsbryg/xy
-         n50ZCNN+9JAB86MuQShX24+xi5q51olGRL8x82dGImjZxxvQtNfCYoeBXqO+NHYPqnOX
-         N2WE9rFajc5ALo+4WUmLA6adtMEGX++toyTM9uZgJ98UnznarMex256UZyaCbcGyyT2P
-         1E1+RrWXGxEI9S4HtyRZO1REydaaiAit9oUFIxYVzxDi5Md83ZAjIeii1H6v4fTDa9j6
-         HsaAFzMP2RbtFxm4KJJyDwKg7CRwnctYENdsXbmkbmZgPMHMmhVytfOWct/W5fU2V2Dh
-         mbmg==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=z+v8ugHyK4Bi1bsAOtuex5rzJWIULuLfF++ZnJg6JJs=;
+        b=oNJc2INf8Rhr5FB/7dmVLUtXIN32Zpr+JOws5mZo8yLIZkx20k3ktobg4cFsyHfo10
+         opyovUTmrMqZBrjIIPL8dwM3Cl42hbyZvaLR8TbrZDbPh7rgV94AneypUIz7gx5LvazE
+         zDLFkcDX1nbPbvLE1YDjvnnDO6sd+MeRRKk7hJojVtPLOuB8iX7Tisqm37Yqye5BOvOD
+         qrtEmC9HZPFnF8UhgjxviHDBiEkp+KFrjrNS6AiUfUOujeKcrIPlTDjJJypvibkN2ZRc
+         Fcc5bL7t8fX01QLLow126XRV2cU5sFntAnAB/7YbhrXrCEA2hg1PeuWagasZGrwW/+fq
+         MCiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hdMN3k0Sjf7cBpT9HSc70WSDqmmm9h4hh0kYHkQwaQc=;
-        b=OHuXxr2E6hwnfahP2rOb7w7UBYOIq9yKiA/pIAdG7A+1AgYwlb3Ns6tUjAmmF5n4f3
-         RHIdqt4pmlEtq4V8S7GxHvlJ+TLWUiRDjGEwutEhOinj7KcDQoudbURCN9/Eammg93BU
-         NOdVEn29KeFIQo/j1lEvly/V+vzlko5vqgE73gUIQrZLeoocbyu1/2VyLwOBPuzHotjs
-         Y/pf5JRdjwR6TARSSPVKN3pTI0cH0dnOOfouDmPe5S95q3/jQ7VZBUqruNF4vEojKKPj
-         xva6Usd9/EDxLzMAbF0U4VQQRQ1xmbt+1Omfvty0S54VRpaO0axTebT5e0tmSsXWReHK
-         oRag==
-X-Gm-Message-State: AOAM532e26WSfMN/4+hGPMI/jZTUcyPcCm6z0IPcte38/NkljsyJ1MyK
-        JmwjYH9rw6zsUyoxr76vaTg7UVrREnwnhw==
-X-Google-Smtp-Source: ABdhPJxk8n3TREbst8mNkEvgl03nwTeVsrpCNrNUUPzZgVNi6EjHWioWeK/C5L62H8xw3/B2SnDa4g==
-X-Received: by 2002:a2e:9c9:0:b0:24d:ab7d:808f with SMTP id 192-20020a2e09c9000000b0024dab7d808fmr3031088ljj.330.1650149273063;
-        Sat, 16 Apr 2022 15:47:53 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id d5-20020a056512320500b0046ed7bf92b7sm707015lfe.177.2022.04.16.15.47.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Apr 2022 15:47:52 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] mmc: mmci: Break IRQ status loop when all zero
-Date:   Sun, 17 Apr 2022 00:45:49 +0200
-Message-Id: <20220416224549.627623-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.35.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=z+v8ugHyK4Bi1bsAOtuex5rzJWIULuLfF++ZnJg6JJs=;
+        b=y6FhzzlK1fIyIRA7j7mEUsrM/a6aeRWDD7xSE7vRhY2ccugoaxBcCOZDiMhVoFPRuV
+         xnI2sdyL9umCOrd99/HwPLyYB3loFDM1q5ew4MCfbS9N/co9GkpwiODJqfBIKWOopdPH
+         Zz2ByR01k++IaQqVF+D3mH7t2ko4QULWTJIOeY6Mj3v8fo1Brn2XrsOg2rMM7XXVulrN
+         iB9YF5KviQWtIO5lbbaYpqodpb/16Szt1qW6prMvAkeKX2y962RusMmOue5TrZW3iK/o
+         KIFGuQhAqc0X9S+tp4W45k1ZEeXpcorUv4bnw67pEJqDL+dtHLKwp1t0MI7WeHK/u/eF
+         rsvg==
+X-Gm-Message-State: AOAM5337TbloBRhnNeVTMi84n5ng5IcAeiCAU6Zp0kwLR6VfG+wwLLhp
+        fzKQPECk6dZiaUSlfRKIzai/KDTNkhMNhmRUEAk=
+X-Google-Smtp-Source: ABdhPJw9Xt2OFrIK7hURg4kp9HjRikv5sLzHEzVl1NzDr5ZjkMyPbwTBECFNWcwqZlk35V3UQisOkE0Lf5eHqEkQTho=
+X-Received: by 2002:a1f:5105:0:b0:345:252e:b0f5 with SMTP id
+ f5-20020a1f5105000000b00345252eb0f5mr1463329vkb.22.1650184508047; Sun, 17 Apr
+ 2022 01:35:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:612c:2303:b0:2a3:2b46:b7d with HTTP; Sun, 17 Apr 2022
+ 01:35:07 -0700 (PDT)
+Reply-To: markwillima00@gmail.com
+From:   Mark <muhammadsuleima888@gmail.com>
+Date:   Sun, 17 Apr 2022 01:35:07 -0700
+Message-ID: <CANCcrFBrB3Qw8Ab_hBy19n0Ch6+XNpkXj3PjXKrc26cej7s+Kg@mail.gmail.com>
+Subject: Re: Greetings!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:a44 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [markwillima00[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [muhammadsuleima888[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [muhammadsuleima888[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-We iterate an extra time through the IRQ status handling
-loop despite nothing had fired. Enabling the debug prints:
+Hello,
 
-mmci-pl18x 80005000.mmc: op 01 arg 00000000 flags 000000e1
-mmci-pl18x 80005000.mmc: irq0 (data+cmd) 00000001
-mmci-pl18x 80005000.mmc: irq0 (data+cmd) 00000000
-mmci-pl18x 80005000.mmc: op 01 arg 40ff8080 flags 000000e1
-mmci-pl18x 80005000.mmc: irq0 (data+cmd) 00000001
-mmci-pl18x 80005000.mmc: irq0 (data+cmd) 00000000
+The HSBC Bank is a financial institution in United Kingdom. We
+promotes long-term,sustainable and broad-based economic growth in
+developing and emerging countries by providing financial support like
+loans and investment to large, small and
+medium-sized companies (SMEs) as well as fast-growing enterprises
+which in turn helps to create secure and permanent jobs and reduce
+poverty.
 
-It is pointless to loop through the function when status
-is zero. Just break the loop if the status is zero.
+If you need fund to promotes your business, project(Project Funding),
+Loan, planning, budgeting and expansion of your business(s) , do not
+hesitate to indicate your interest as we are here to serve you better
+by granting your request.
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/mmc/host/mmci.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 45b8608c935c..f3cf3152a397 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -1619,6 +1619,8 @@ static irqreturn_t mmci_irq(int irq, void *dev_id)
- 
- 	do {
- 		status = readl(host->base + MMCISTATUS);
-+		if (!status)
-+			break;
- 
- 		if (host->singleirq) {
- 			if (status & host->mask1_reg)
--- 
-2.35.1
-
+Thank you
+Mr:Mark
