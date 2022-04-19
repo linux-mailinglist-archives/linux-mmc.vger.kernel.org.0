@@ -2,48 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53660506BEA
-	for <lists+linux-mmc@lfdr.de>; Tue, 19 Apr 2022 14:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26974506CC9
+	for <lists+linux-mmc@lfdr.de>; Tue, 19 Apr 2022 14:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242963AbiDSMON (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 19 Apr 2022 08:14:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33572 "EHLO
+        id S241774AbiDSMxx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 19 Apr 2022 08:53:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231913AbiDSMOM (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Apr 2022 08:14:12 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72E0833C;
-        Tue, 19 Apr 2022 05:11:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=AVVgfhe2WqFqFGz2SLYTDi0cBb+WfI1xgQSW8Ne/OwE=; b=hPJe6yE7VorouF495183w8yIkV
-        jqidu3GwW2TImUtxkVhVzc5epsrs0zft4ojn9tkI8OhpmMP6KlFe9wqcVJq+4i6tS1ir1Iy18BQmj
-        OJtjJXD5pFWrff0/YY2EMi8XxOF/lkQ312y9O87uLYxyREMCgIBIeyHc+RvCxoY8qAJg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1ngmhU-00GUfC-GY; Tue, 19 Apr 2022 14:11:20 +0200
-Date:   Tue, 19 Apr 2022 14:11:20 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc:     ulf.hansson@linaro.org, robh+dt@kernel.org, krzk+dt@kernel.org,
-        gregory.clement@bootlin.com, sebastian.hesselbarth@gmail.com,
-        adrian.hunter@intel.com, nico@fluxnic.net,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 4/4] dt-bindings: mmc: convert sdhci-dove to JSON
- schema
-Message-ID: <Yl6m6LSnkBzuUBq6@lunn.ch>
-References: <20220419024611.1327525-1-chris.packham@alliedtelesis.co.nz>
- <20220419024611.1327525-5-chris.packham@alliedtelesis.co.nz>
+        with ESMTP id S237698AbiDSMxv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 19 Apr 2022 08:53:51 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C492A36B7B
+        for <linux-mmc@vger.kernel.org>; Tue, 19 Apr 2022 05:51:08 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 21so21167215edv.1
+        for <linux-mmc@vger.kernel.org>; Tue, 19 Apr 2022 05:51:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=frK4ELbA3jfI5PJwRqa6vMvLk5oMvD1W9mfa1RZXlWU=;
+        b=iSaPxjgEQzTUtSGUwhPyGHNLCcobELAXeGfD7Q95TlAkiCffIpiQ4yVfYMJcRRxkje
+         GpUOPDTt6sL1KQs+FapySmJnjOIlxHXohMlHMZc43QgnAfzRklFEmVTo1TIHY9n2GPxH
+         9JvU6mNGHM1bgOkZaItOByOkPKZ3Cowai7PxDYGI6WjYRGIZ/EwZs0XB5YRRArarZr9U
+         y1wrjw3kth/7gGeARdBk1xI5nMlW5IHoCfZD6z+CIvodql1ZwSSr/KWna//jkglnpL2Q
+         2/1wnimzNLmcUQASrFKOgjQPMapdk15tkfy9623vwPZlA8ct9pFfMqjA6QNs7w/Epstk
+         OL+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=frK4ELbA3jfI5PJwRqa6vMvLk5oMvD1W9mfa1RZXlWU=;
+        b=3zlfo7NJ6B9uKQokN4PKIE+gh9J6lXqn3lkgi3q6axfwU9wWlQ3KDYC3n7fwRj2m8p
+         fbAmrKZ2ZKUJys17LXT5VS7v2G3DSu8epoaxrfE+IIkb7xEV/9OrNJ6k0HQt6rOPGxMF
+         s3H7HlZzl+G/qWWNmb4j+KxnsLIVoPqceDTyMThLOKtKTlQa/9oZ4CR+/82d5UaXDb3F
+         CgC0NbKXWjW1VTgzxUAL4Ul4PYoby0OXXWSmD2//eHMSlcV//CFT/6jglGwDctVm0pod
+         74nSoM01qVMBC5VL8/pAXrNYgzUmD4u9Y8ET6m9bQPTa7X+HVk4bVP1e9Vcs4jMCWzo3
+         zQzw==
+X-Gm-Message-State: AOAM533b+ZIdap6fhSoglNZLsBJu0byuEddmzn+Fm7LNVm4STC/n2hNd
+        on6DlCdzgB5qGCZ6s4TTejpaFhr8e+oP8UHV9B8Jl9Z+hn8=
+X-Google-Smtp-Source: ABdhPJzWtNi3kq/d3Ti0EmgTW4/gcmCMWBUuMN3+tckamA2qyotYFDwmbZP2BBgJlrK2IuccnzKKITSeGxvTMHmJn7w=
+X-Received: by 2002:a50:d4d9:0:b0:41d:6ee0:80d with SMTP id
+ e25-20020a50d4d9000000b0041d6ee0080dmr16948642edj.254.1650372667043; Tue, 19
+ Apr 2022 05:51:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220419024611.1327525-5-chris.packham@alliedtelesis.co.nz>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+References: <CAHCN7xK_fr_gREVsOzN=atcS08mwufr-=7q1JAN=CCyVk_k-dA@mail.gmail.com>
+ <YlR9TCeV8FJVu38U@ninjato> <CAHCN7xLso6kwWxeT3VuRQBcs9oKZMctGbsWmd1T=mwgHx0T+SA@mail.gmail.com>
+ <YlVApjtNOBLgA0hy@ninjato> <YlWUV1SW4lVLjIZi@shikoro>
+In-Reply-To: <YlWUV1SW4lVLjIZi@shikoro>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Tue, 19 Apr 2022 07:50:56 -0500
+Message-ID: <CAHCN7xLLsXikG=8zSM=udqnqwvbkqkSLH8iYcuLiLVvHa=LPPQ@mail.gmail.com>
+Subject: Re: RZ/G2M Hangs when booting some SD cards
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Adam Ford <aford173@gmail.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,14 +68,50 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Apr 19, 2022 at 02:46:11PM +1200, Chris Packham wrote:
-> Convert the sdhci-dove binding to JSON schema. The optional clocks
-> property was not in the original binding document but has been in the
-> dove.dtsi since commit 5b03df9ace68 ("ARM: dove: switch to DT clock
-> providers").
-> 
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+On Tue, Apr 12, 2022 at 10:01 AM Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+>
+>
+> > Anyhow, I'll report back with results from today.
+>
+> So, no news here. When the board is "cold" (hasn't been used for some
+> days), probing the SD card occasionally fails, but after some reboots it
+> just works. I don't see a pattern.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+From what I have been able to determine, the U-Boot code explicitly
+disables DMA during the tuning phase:
 
-    Andrew
+<snip>
+/* Force PIO for the tuning */
+caps = priv->caps;
+priv->caps &= ~TMIO_SD_CAP_DMA_INTERNAL;
+
+ret = mmc_send_tuning(mmc, opcode, NULL);
+
+priv->caps = caps;
+
+if (ret == 0)
+taps |= BIT(i);
+<snip>
+
+When doing this, the value of taps is non-zero.  For this card, it is fefe
+In U-Boot smpcmp is also the save value.
+
+However, Linux does not disable the DMA, and the value of taps is zero
+and the tuning ultimately fails.
+
+I did some experiments to attempt to disable it, but when I do, it
+usually ends up hanging or a kernel panic.
+
+Does anyone have a suggestion on how I can properly attempt to disable
+the DMA and use PIO during the tuning phase to see if this fixes the
+micro SD card initialization issue I'm seeing.
+
+If I manually set taps  to match priv->smpcmp when taps=0, the microSD
+card enumerates correctly.
+
+thanks
+
+adam
+
+>
