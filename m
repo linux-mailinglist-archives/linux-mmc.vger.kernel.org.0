@@ -2,108 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE3C950C0CC
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Apr 2022 22:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B829B50C1D9
+	for <lists+linux-mmc@lfdr.de>; Sat, 23 Apr 2022 00:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbiDVUtl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 22 Apr 2022 16:49:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56678 "EHLO
+        id S230350AbiDVWCH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 22 Apr 2022 18:02:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbiDVUtj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 Apr 2022 16:49:39 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CC9209F14;
-        Fri, 22 Apr 2022 12:46:47 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id r13so18310431ejd.5;
-        Fri, 22 Apr 2022 12:46:47 -0700 (PDT)
+        with ESMTP id S231135AbiDVWCG (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 Apr 2022 18:02:06 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E9A12CC6C1
+        for <linux-mmc@vger.kernel.org>; Fri, 22 Apr 2022 13:44:56 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id r12-20020a056830418c00b006054e1142acso6290406otu.7
+        for <linux-mmc@vger.kernel.org>; Fri, 22 Apr 2022 13:44:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=ZCXJRqepiMM/X9hpIQkod6J8jYQslsEZGb/W6+1iH/k=;
-        b=RH5YZrNy8Q1mztwF9P/pwiNXS6D591Ntr4cchSnhtXGAu64sjpjVUAMBw5lVeefIYw
-         HRXQ1kk4F38u8J59nALbQbIjDbQUlQJlxbpsTUm4/ExfB7pOas09F3qFiZyWhsK5//sl
-         D/kD1o0ZM7easuXgenJA6h1b+ERBHND7HPRat0YMVP9tudxi1IZrt4QlcoQdEM/dusLO
-         dps+IghE4w0K7533CPxfl6vvkxzD/3OWl1o8TcyoW3AaZyeVfUGuQKdiUM2FxLsmaOjT
-         jX0wkFGn/oLo62qOFod7ITzBPsy0159gqdCHObrfV0as4s4HplE5UR30AqaetWqo+tuX
-         CMag==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0JRCh/BqOi4YkLGUiJfecYURU86aNbte4r9osUN03Ek=;
+        b=CBGTb4d3eS7HJsTVlLbQoizdcgj00FRfmsbMjOINCCIgO/lh/nw8HFb5PtXjHizyAi
+         BYZ+XVlLA6yn5KwojjjMps9Uw9kqcWQDjdEkeaNPwRettOULYGjgSkpIY7XNeOVgjp4A
+         FIE3gEgnj+PkohreuAOunK9gW7Al2WCCKjSjTUSlVHG/1U5fxBJSxNvMJGAczW6PjXoh
+         y4AV9yCqVYPPG6eAHwjn1K7OVRJaWNnRZmQ5k+B+yQJzKfxtyAomy7dOiJ4j6TfHe3jQ
+         knLd0SPuH892Kmh/jfFnbYPiifqBIPHRECqY5lA5x4ux6cXe213gkYziWEoSlo2BOORF
+         LlXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=ZCXJRqepiMM/X9hpIQkod6J8jYQslsEZGb/W6+1iH/k=;
-        b=gKYqiqfw3iVCQ95TovxjB5RWa+xm9pq5g5t+MSkE/+lrCxC3KJjM8jUD2yVdh+wvt0
-         c7485WgsKqRyFiQs2QLlP9ZJQVTm1FZOz28TfWKSgQ7zBpahd8fH6o223yfTzc0p3MtW
-         sh1uqSeeX2g36SxE27lRZiCZfp2GyrvS/ZVIYOwN6RP02wmfHHUJdz+5Avnr1Q57AxfH
-         qMO/7+4xdAwjlFXXAWj/HYB0lMr1uni+V3ribQrkIFwtlq2ixpHPLxVO0aMlL7BuAT1h
-         MRVwy4qYEoTwKFyhIng/wgZtgC7bUwkWO041V2g6m7EwsL4lscGyS7gvjSyeMuEg5waW
-         Iv/Q==
-X-Gm-Message-State: AOAM530Kanvj6oksPIRpKBAb7zZpbj+XH58gsdwXI2MFDOgUp5hznB7t
-        8KTLC9OsVznW12aOpV17/5s=
-X-Google-Smtp-Source: ABdhPJxUtMgv25FIn09RV/7NRmkZDcevxB8TMyX5SE3JHCN430+3rMGO2oaLb4bp0K7i4ZueYS3aUQ==
-X-Received: by 2002:a17:906:7f02:b0:6cf:86d8:c31c with SMTP id d2-20020a1709067f0200b006cf86d8c31cmr5794948ejr.518.1650656506654;
-        Fri, 22 Apr 2022 12:41:46 -0700 (PDT)
-Received: from [192.168.3.2] (p5dd1ed70.dip0.t-ipconnect.de. [93.209.237.112])
-        by smtp.googlemail.com with ESMTPSA id r17-20020a1709067fd100b006e88d3eefe6sm1037735ejs.205.2022.04.22.12.41.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Apr 2022 12:41:46 -0700 (PDT)
-Message-ID: <c5f33892dbce61b267cc74dca50e0fae5d1270e9.camel@gmail.com>
-Subject: Re: [PATCH v2 RESENT] mmc-utils: Add General command CMD56 read
- support
-From:   Bean Huo <huobean@gmail.com>
-To:     ulf.hansson@linaro.org, adrian.hunter@intel.com,
-        jakob.rossler@nokia.com, Avri.Altman@wdc.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bean Huo <beanhuo@micron.com>
-Date:   Fri, 22 Apr 2022 21:41:45 +0200
-In-Reply-To: <20220417111622.621650-1-huobean@gmail.com>
-References: <20220417111622.621650-1-huobean@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.0-1 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0JRCh/BqOi4YkLGUiJfecYURU86aNbte4r9osUN03Ek=;
+        b=ZSvcy/D2rDP79SltAfAhWApM05b5b3Vw42EkMRCgCSr7MNcwlToPYLVC3YwV54KaL3
+         RuCbWNJkvc4MqtyeFaEQ8a5RyYcbzxsPpH3ODdtvBaE00JiCFeLfH1kfG4DhNG7Gba2l
+         Nmatm71tijCDLWwxEdP+dE3oTQFYJOt5dPKSjnvDCrtFSRrVSJi8ppfL0WLBpVQ1H9Kq
+         hCFcDpxlBsMSm8z0PAH0zYlJRdtGwC4xvoIWT/Hv9zr9I+Ej5dZ5PvDD4AqEZN7P6cLW
+         brLlJNUsApEkj8VdWeaJtTStpazOiyh3/VWBnjNRTh5+W0jIBfRHaonIIhGNG4wlHJOM
+         AEpQ==
+X-Gm-Message-State: AOAM533kzkj37Rn8l3Cj6Je3ozU6sZOu3lSx4gR+9MWOUoqNtW+/UYxJ
+        soiUiYhk7pF/clSE2bzqrcATFLXNOrKylVkEUre2sdz4Pa4=
+X-Google-Smtp-Source: ABdhPJw9gNNFIjL44oXwYR0XZt26gSCXKZ91nXCIwqis42lHTyFg4ODQiziVUiiGspHnYemb6VnQASFqhnYF8zKxMxw=
+X-Received: by 2002:a0d:f0c3:0:b0:2f4:d291:9dde with SMTP id
+ z186-20020a0df0c3000000b002f4d2919ddemr6790754ywe.437.1650659758236; Fri, 22
+ Apr 2022 13:35:58 -0700 (PDT)
 MIME-Version: 1.0
+References: <20220422170920.401914-1-sebastian.reichel@collabora.com> <20220422170920.401914-15-sebastian.reichel@collabora.com>
+In-Reply-To: <20220422170920.401914-15-sebastian.reichel@collabora.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 22 Apr 2022 22:35:47 +0200
+Message-ID: <CACRpkda-yLgH7mC6GkMgh5e3+c+4cBrRc9Ryist+zYJh2z9_Sw@mail.gmail.com>
+Subject: Re: [PATCHv1 14/19] gpio: rockchip: add support for rk3588
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc:     Heiko Stuebner <heiko@sntech.de>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@lists.collabora.co.uk,
+        Jianqun Xu <jay.xu@rock-chips.com>, kernel@collabora.com
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 2022-04-17 at 13:16 +0200, Bean Huo wrote:
-> From: Bean Huo <beanhuo@micron.com>
->=20
-> We can use GEN_CMD (CMD56) to read a=C2=A0 data block with vendor-specifi=
-c
-> format and meaning, which is very helpful and useful for customers to
-> analyze device health. This patch is to add support for this command.
->=20
-> At the same time, in order to make CMD56 universal, let more users of
-> mmc-utils can benefit from this. We will allow the user to enter
-> [arg]
-> for special commands. Because some eMMC vendors provide an additional
-> set of commands beyond the GEN_CMD (CMD56) definition in the JEDEC
-> specification. These additional commands are implemented using
-> generic
-> CMD56 commands, and they return a wealth of useful information about
-> the
-> state of the NAND device. For these special purposes, the [31:1]stuff
-> bits in the CMD56 argument are used. You can refer to=C2=A0 Micron eMMC
-> "TN-FC-32: e=C2=B7MMC Device Health Report" as an example.
->=20
-> I didn't add data parsing, just print the raw data as it is vendor-
-> specific.
->=20
-> Signed-off-by: Bean Huo <beanhuo@micron.com>
-> Acked-by: Avri Altman <Avri.Altman@wdc.com>
-> Tested-by: Rossler Jakob (Nokia - DE/Ulm) <jakob.rossler@nokia.com>
-> ---
+On Fri, Apr 22, 2022 at 7:09 PM Sebastian Reichel
+<sebastian.reichel@collabora.com> wrote:
 
-Hi Ullf,
+> From: Jianqun Xu <jay.xu@rock-chips.com>
+>
+> Add V2.1 rockchip gpio controller type, which is part of the
+> RK3588 SoC.
+>
+> Signed-off-by: Jianqun Xu <jay.xu@rock-chips.com>
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-Would you be willing to merge this patch into your mmc-utils git repo?
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Kind regards,
-Bean
+This looks like something that can just be merged to Bartosz
+tree as there are no dependencies on the other patches.
+
+Yours,
+Linus Walleij
