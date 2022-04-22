@@ -2,73 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21C2D50BE8B
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Apr 2022 19:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F33D750BF74
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Apr 2022 20:28:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230371AbiDVR2L (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 22 Apr 2022 13:28:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47644 "EHLO
+        id S230314AbiDVS2y (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 22 Apr 2022 14:28:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231422AbiDVR2H (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 Apr 2022 13:28:07 -0400
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 449356174;
-        Fri, 22 Apr 2022 10:25:07 -0700 (PDT)
-Received: by mail-oi1-x22a.google.com with SMTP id z2so9764784oic.6;
-        Fri, 22 Apr 2022 10:25:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=lexdz5hngsBhmPhxr+sTw6q5KgJQRlPt5Z2EPIdm99Y=;
-        b=Zungingls9hmWdfS+naDCyI78V9iY7Kxhf998yiIEnbKfvh65fB5UCRIm2ZmWkr8w2
-         T1Dhsg8BkQoXpFnY4x/6vNroeCzYECnLuVeRWFTVf/ejjUMReASMLojXMqRFB3Mf/OVx
-         du6rJG+6BgML4bBFVVLuFhc8Hd3Rh3sXRLqkrouyoMYJNqwTDWdVGqmX1uPguJNvkRF7
-         li3P65TV6/0FVU4Q9SkA7FVKpsQQwAGVpczon4b77QPX4wge/3YAoTI8ZH+vP05XiFqy
-         jbqy0gdDKI8G0WCIL07AmY44NViEOwuDm7xkxsKIzo5/SDUENVATCrdHgX93ldB4sOnO
-         E5Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=lexdz5hngsBhmPhxr+sTw6q5KgJQRlPt5Z2EPIdm99Y=;
-        b=2Yx47Xg7nYEe3ymhxfhv+UZUkuYhswzz9iVhIMiCHXATGuCgOZMLXk3JZ6+9AIlzh9
-         dF9TTGxR1jNbqrikBSZDtGfNVjvXI0LM/dGVJwYYHYATDa5EE8wtqokxNWb/XwYi8lOR
-         AeUBKJIDwZgsMSo7SGWlueOIxmE8e43s+IjIHNLOyH/tn29xdBl3PTocNB9g3VNRq63Y
-         6exeFCveKkQA4QhrZpgfbzVUdrVp0cMKGjxeom3EP+3foeVxtQQtoR7/756czd/xPjC6
-         FW6I+z6ai/E0cRSdGq07mVoN+A3yHwfzr8cVRiZHwujUtD2DHrVMnx3CgDNQ87zP6hvY
-         oJlw==
-X-Gm-Message-State: AOAM532z+tN55npXU6/uv9XmP2ChAmrUvPqBl2YX2le5JUTGruT6w5BF
-        G+8vjgaeFLzJiwOXrAbRDufw8mXfZ+Q=
-X-Google-Smtp-Source: ABdhPJxMDJKIgmMcJcU/zvtD4vcC/XckcDFIRR7sN1EmVmwCkp085QTP+g0ejuORKvaEYxobPEHqNA==
-X-Received: by 2002:a17:90a:a82:b0:1c9:ef95:486 with SMTP id 2-20020a17090a0a8200b001c9ef950486mr17219039pjw.93.1650647702829;
-        Fri, 22 Apr 2022 10:15:02 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id d21-20020a056a0010d500b004fd9ee64134sm3166611pfu.74.2022.04.22.10.15.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Apr 2022 10:15:02 -0700 (PDT)
-Message-ID: <39f813e9-13d8-db15-1fcb-a93b27e46798@gmail.com>
-Date:   Fri, 22 Apr 2022 10:14:58 -0700
+        with ESMTP id S230054AbiDVS2l (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 22 Apr 2022 14:28:41 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2FAEA8167D;
+        Fri, 22 Apr 2022 11:25:46 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0CE041FB;
+        Fri, 22 Apr 2022 11:16:23 -0700 (PDT)
+Received: from [10.57.80.98] (unknown [10.57.80.98])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 362863F73B;
+        Fri, 22 Apr 2022 11:16:19 -0700 (PDT)
+Message-ID: <36551341-60f5-8b61-59d1-176ece8204d6@arm.com>
+Date:   Fri, 22 Apr 2022 19:16:13 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 3/5] mmc: sdhci-brcmstb: Enable Clock Gating to save power
-Content-Language: en-US
-To:     Kamal Dasu <kdasu.kdev@gmail.com>, ulf.hansson@linaro.org,
-        robh+dt@kernel.org, krzk+dt@kernel.org, alcooperx@gmail.com
-Cc:     f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
-        adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20220421182803.6495-1-kdasu.kdev@gmail.com>
- <20220421182803.6495-4-kdasu.kdev@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20220421182803.6495-4-kdasu.kdev@gmail.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCHv1 18/19] arm64: dts: rockchip: Add base DT for rk3588 SoC
+Content-Language: en-GB
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Heiko Stuebner <heiko@sntech.de>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@lists.collabora.co.uk,
+        Kever Yang <kever.yang@rock-chips.com>, kernel@collabora.com,
+        Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+        Elaine Zhang <zhangqing@rock-chips.com>,
+        Sugar Zhang <sugar.zhang@rock-chips.com>
+References: <20220422170920.401914-1-sebastian.reichel@collabora.com>
+ <20220422170920.401914-19-sebastian.reichel@collabora.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20220422170920.401914-19-sebastian.reichel@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,19 +61,327 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 4/21/22 11:28, Kamal Dasu wrote:
-> From: Al Cooper <alcooperx@gmail.com>
+On 2022-04-22 18:09, Sebastian Reichel wrote:
+> From: Kever Yang <kever.yang@rock-chips.com>
 > 
-> Enabling this feature will allow the controller to stop the bus
-> clock when the bus is idle. The feature is not part of the standard
-> and is unique to newer Arasan cores and is enabled with a bit in a
-> vendor specific register. This feature will only be enabled for
-> non-removable devices because they don't switch the voltage and
-> clock gating breaks SD Card volatge switching.
+> This initial version supports (single core) CPU, dma, interrupts, timers,
+> UART and SDHCI. In short - everything necessary to boot Linux on this
+> system on chip.
 > 
-> Signed-off-by: Al Cooper <alcooperx@gmail.com>
-> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+> The DT is split into rk3588 and rk3588s, which is a reduced version
+> (i.e. with less peripherals) of the former.
+> 
+> Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+> Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+> Signed-off-by: Sugar Zhang <sugar.zhang@rock-chips.com>
+> Signed-off-by: Kever Yang <kever.yang@rock-chips.com>
+> [rebase, squash and reword commit message]
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> ---
+>   arch/arm64/boot/dts/rockchip/rk3588.dtsi  |   6 +
+>   arch/arm64/boot/dts/rockchip/rk3588s.dtsi | 501 ++++++++++++++++++++++
+>   include/dt-bindings/clock/rk3588-cru.h    |   1 +
+>   3 files changed, 508 insertions(+)
+>   create mode 100644 arch/arm64/boot/dts/rockchip/rk3588.dtsi
+>   create mode 100644 arch/arm64/boot/dts/rockchip/rk3588s.dtsi
+> 
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3588.dtsi b/arch/arm64/boot/dts/rockchip/rk3588.dtsi
+> new file mode 100644
+> index 000000000000..ddb3ccff1299
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/rockchip/rk3588.dtsi
+> @@ -0,0 +1,6 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
+> + */
+> +
+> +#include "rk3588s.dtsi"
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3588s.dtsi b/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
+> new file mode 100644
+> index 000000000000..f7d3ad4384b3
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
+> @@ -0,0 +1,501 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
+> + */
+> +
+> +#include <dt-bindings/clock/rk3588-cru.h>
+> +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +/ {
+> +	compatible = "rockchip,rk3588";
+> +
+> +	interrupt-parent = <&gic>;
+> +	#address-cells = <2>;
+> +	#size-cells = <2>;
+> +
+> +	aliases {
+> +		serial0 = &uart0;
+> +		serial1 = &uart1;
+> +		serial2 = &uart2;
+> +		serial3 = &uart3;
+> +		serial4 = &uart4;
+> +		serial5 = &uart5;
+> +		serial6 = &uart6;
+> +		serial7 = &uart7;
+> +		serial8 = &uart8;
+> +		serial9 = &uart9;
+> +	};
+> +
+> +	clocks {
+> +		compatible = "simple-bus";
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+I'm pretty sure that doing clocks as fake buses fell out of favour long ago.
+
+> +
+> +		spll: spll {
+> +			compatible = "fixed-clock";
+> +			#clock-cells = <0>;
+> +			clock-frequency = <702000000>;
+> +			clock-output-names = "spll";
+> +		};
+> +
+> +		xin24m: xin24m {
+> +			compatible = "fixed-clock";
+> +			#clock-cells = <0>;
+> +			clock-frequency = <24000000>;
+> +			clock-output-names = "xin24m";
+> +		};
+> +
+> +		xin32k: xin32k {
+> +			compatible = "fixed-clock";
+> +			#clock-cells = <0>;
+> +			clock-frequency = <32768>;
+> +			clock-output-names = "xin32k";
+> +		};
+
+Do those two really belong in the SoC DTSI? On previous SoCs they're 
+typically external inputs, and while the 24MHz is usually a crystal 
+which can be largely taken for granted, the 32KHz is often provided by 
+an RTC chip or similar which might need proper modelling.
+
+> +	};
+> +
+> +	cpus {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		cpu-map {
+> +			cluster0 {
+> +				core0 {
+> +					cpu = <&cpu_l0>;
+> +				};
+> +			};
+> +		};
+> +
+> +		cpu_l0: cpu@0 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a55";
+> +			reg = <0x0>;
+> +			enable-method = "psci";
+> +			capacity-dmips-mhz = <530>;
+> +			clocks = <&scmi_clk SCMI_CLK_CPUL>;
+> +			i-cache-size = <32768>;
+> +			i-cache-line-size = <64>;
+> +			i-cache-sets = <128>;
+> +			d-cache-size = <32768>;
+> +			d-cache-line-size = <64>;
+> +			d-cache-sets = <128>;
+> +			next-level-cache = <&l2_cache_l0>;
+> +			#cooling-cells = <2>;
+> +			dynamic-power-coefficient = <228>;
+> +		};
+
+Is there any particular reason for not including more of the CPUs?
+
+> +
+> +		l2_cache_l0: l2-cache-l0 {
+> +			compatible = "cache";
+> +			cache-size = <131072>;
+> +			cache-line-size = <64>;
+> +			cache-sets = <512>;
+> +			next-level-cache = <&l3_cache>;
+> +		};
+> +
+> +		l3_cache: l3-cache {
+> +			compatible = "cache";
+> +			cache-size = <3145728>;
+> +			cache-line-size = <64>;
+> +			cache-sets = <4096>;
+> +		};
+> +	};
+> +
+> +	arm-pmu {
+> +		compatible = "arm,armv8-pmuv3";
+
+Please use the correct Cortex-A55 compatible.
+
+> +		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_LOW>;
+> +		interrupt-affinity = <&cpu_l0>;
+
+Is affinity meaningful for a single CPU? If this is going to need to be 
+a partitioned PPI once the Cortex-A76 PMU shows up as well, start as you 
+mean to go on.
+
+> +	};
+> +
+> +	firmware {
+> +		optee: optee {
+> +			compatible = "linaro,optee-tz";
+> +			method = "smc";
+> +		};
+> +
+> +		scmi: scmi {
+> +			compatible = "arm,scmi-smc";
+> +			shmem = <&scmi_shmem>;
+> +			arm,smc-id = <0x82000010>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			scmi_clk: protocol@14 {
+> +				reg = <0x14>;
+> +				#clock-cells = <1>;
+> +
+> +				assigned-clocks = <&scmi_clk SCMI_SPLL>;
+> +				assigned-clock-rates = <700000000>;
+> +			};
+> +
+> +			scmi_reset: protocol@16 {
+> +				reg = <0x16>;
+> +				#reset-cells = <1>;
+> +			};
+> +		};
+> +
+> +		sdei: sdei {
+> +			compatible = "arm,sdei-1.0";
+> +			method = "smc";
+> +		};
+> +	};
+> +
+> +	psci {
+> +		compatible = "arm,psci-1.0";
+> +		method = "smc";
+> +	};
+> +
+> +	timer {
+> +		compatible = "arm,armv8-timer";
+> +		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>,
+> +			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>,
+> +			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>,
+> +			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
+
+A mask representing all 4 of one (of 8) CPUs, for a GICv2 which we don't 
+have? I doubt it ;)
+
+> +	};
+> +
+> +	sram@10f000 {
+> +		compatible = "mmio-sram";
+> +		reg = <0x0 0x0010f000 0x0 0x100>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0 0x0 0x0010f000 0x100>;
+> +
+> +		scmi_shmem: sram@0 {
+> +			compatible = "arm,scmi-shmem";
+> +			reg = <0x0 0x100>;
+> +		};
+> +	};
+> +
+> +	php_grf: syscon@fd5b0000 {
+> +		compatible = "rockchip,rk3588-php-grf", "syscon";
+> +		reg = <0x0 0xfd5b0000 0x0 0x1000>;
+> +	};
+> +
+> +	ioc: syscon@fd5f0000 {
+> +		compatible = "rockchip,rk3588-ioc", "syscon";
+> +		reg = <0x0 0xfd5f0000 0x0 0x10000>;
+> +	};
+> +
+> +	syssram: sram@fd600000 {
+> +		compatible = "mmio-sram";
+> +		reg = <0x0 0xfd600000 0x0 0x100000>;
+> +
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0x0 0x0 0xfd600000 0x100000>;
+> +	};
+> +
+> +	cru: clock-controller@fd7c0000 {
+> +		compatible = "rockchip,rk3588-cru";
+> +		rockchip,grf = <&php_grf>;
+> +		reg = <0x0 0xfd7c0000 0x0 0x5c000>;
+> +		#clock-cells = <1>;
+> +		#reset-cells = <1>;
+> +
+> +		assigned-clocks =
+> +			<&cru PLL_PPLL>, <&cru PLL_AUPLL>,
+> +			<&cru PLL_NPLL>, <&cru PLL_GPLL>,
+> +			<&cru ACLK_CENTER_ROOT>,
+> +			<&cru HCLK_CENTER_ROOT>, <&cru ACLK_CENTER_LOW_ROOT>,
+> +			<&cru ACLK_TOP_ROOT>, <&cru PCLK_TOP_ROOT>,
+> +			<&cru ACLK_LOW_TOP_ROOT>, <&cru PCLK_PMU0_ROOT>,
+> +			<&cru HCLK_PMU_CM0_ROOT>, <&cru ACLK_VOP>,
+> +			<&cru ACLK_BUS_ROOT>, <&cru CLK_150M_SRC>,
+> +			<&cru CLK_GPU>;
+> +		assigned-clock-rates =
+> +			<100000000>, <786432000>,
+> +			<850000000>, <1188000000>,
+> +			<702000000>,
+> +			<400000000>, <500000000>,
+> +			<800000000>, <100000000>,
+> +			<400000000>, <100000000>,
+> +			<200000000>, <500000000>,
+> +			<375000000>, <150000000>,
+> +			<200000000>;
+> +	};
+> +
+> +	sdhci: mmc@fe2e0000 {
+> +		compatible = "rockchip,rk3588-dwcmshc", "snps,dwcmshc-sdhci";
+> +		reg = <0x0 0xfe2e0000 0x0 0x10000>;
+> +		interrupts = <GIC_SPI 205 IRQ_TYPE_LEVEL_HIGH>;
+> +		assigned-clocks = <&cru BCLK_EMMC>, <&cru TMCLK_EMMC>, <&cru CCLK_EMMC>;
+> +		assigned-clock-rates = <200000000>, <24000000>, <200000000>;
+> +		clocks = <&cru CCLK_EMMC>, <&cru HCLK_EMMC>,
+> +			 <&cru ACLK_EMMC>, <&cru BCLK_EMMC>,
+> +			 <&cru TMCLK_EMMC>;
+> +		clock-names = "core", "bus", "axi", "block", "timer";
+> +		resets = <&cru SRST_C_EMMC>, <&cru SRST_H_EMMC>,
+> +			 <&cru SRST_A_EMMC>, <&cru SRST_B_EMMC>,
+> +			 <&cru SRST_T_EMMC>;
+> +		reset-names = "core", "bus", "axi", "block", "timer";
+> +		max-frequency = <200000000>;
+> +		status = "disabled";
+> +	};
+> +
+> +	gic: interrupt-controller@fe600000 {
+> +		compatible = "arm,gic-v3";
+> +		reg = <0x0 0xfe600000 0 0x10000>, /* GICD */
+> +		      <0x0 0xfe680000 0 0x100000>; /* GICR */
+> +		interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
+> +		interrupt-controller;
+> +		#interrupt-cells = <3>;
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +
+> +		its: interrupt-controller@fe640000 {
+> +			compatible = "arm,gic-v3-its";
+> +			msi-controller;
+> +			#msi-cells = <1>;
+> +			reg = <0x0 0xfe640000 0x0 0x20000>;
+> +		};
+> +	};
+
+Does the ITS (and other bits related to GIC memory accesses) actually 
+work, or will we have more of the same issues as RK356x?
+
+Thanks,
+Robin.
