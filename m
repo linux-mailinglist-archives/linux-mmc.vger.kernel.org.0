@@ -2,72 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 483A850E492
-	for <lists+linux-mmc@lfdr.de>; Mon, 25 Apr 2022 17:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CF9B50E50B
+	for <lists+linux-mmc@lfdr.de>; Mon, 25 Apr 2022 18:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242926AbiDYPlp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 25 Apr 2022 11:41:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55102 "EHLO
+        id S243165AbiDYQEX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 25 Apr 2022 12:04:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239227AbiDYPlp (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 25 Apr 2022 11:41:45 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F21A444A17;
-        Mon, 25 Apr 2022 08:38:40 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id z99so18897591ede.5;
-        Mon, 25 Apr 2022 08:38:40 -0700 (PDT)
+        with ESMTP id S243152AbiDYQEW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 25 Apr 2022 12:04:22 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92BADBC94;
+        Mon, 25 Apr 2022 09:01:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=lyKb4FdguiCq+rrS9QTQp8nb4hp+SYmLFGLR3Wa4zP0=;
-        b=oR0hgVe+fDdxZD9+CK6avbwwxst9IxTbsMtLq6aW8nl049044HLXTgVi9nHCY+Qc5n
-         GMmxTLe9j6AsomYiIspYq9X9YCBjYb3QrCgO8e75oi5Ip2iR02r/0xDDKIkN8H1V6398
-         DH6oUE+7acEJ3s3LcKhnf8heFGPMFI6NahiyzttiY/ZuPZH/iQpUsjjgiZ72ISHVHT2z
-         2KB4ViwjkhWkcWf4b6u6ZOACe4oj+ACgcDAqUtvRFigC8GlOAdb8EKLWIFqsR7uj3FgR
-         CfhJl9XUC0NooRA5BFTahfsDuLxzdbTtqP56TE5L6rOke5C+YgB+2Mi4TOTlVYB2TmN7
-         BiMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=lyKb4FdguiCq+rrS9QTQp8nb4hp+SYmLFGLR3Wa4zP0=;
-        b=GBTYKmbqkeGLzq3wFKY/CMyvV7QxKtKR5bD+arH4cYqF4BeE/dFaaf5aEGIR4TwtZN
-         rm+tbsdfctJ5SA43z7fIcfIsNBABGv8jtH457FcvrZvC2t5X+VGcy7PSt0LRrVXydX4w
-         QBrunsuARKjiDk926aYpEYpIJ0sMi3iAARPO+Mjn9dXSw1iULXAhZxHhb+giNmsgvx0h
-         I3lDkJrgXk5DAs+Fdi9juTHAkWlo4Oz0ureTAlgi/N0u99V0oCcGWQVev8U7h5vyFUsV
-         oferHz6cwmJUyns6yKIzsoMhm3/OhZ4u9VbU4GDc7G3r6B0vzhf4OOvGfw2LSm4z5JFJ
-         MGqA==
-X-Gm-Message-State: AOAM531+TUjW1FgYyskCTcm4Eklbdmlxz7nKJ2MfjHTX+6CXAtgZWLo8
-        d+qkOfpi6y04aUge2eXDCIA=
-X-Google-Smtp-Source: ABdhPJy7/i2EjP7Cft8S7OWZdF41cMgkZwTrPEfilPCAN8PeG/6lORkVjz6ueYqKFCMOyADTntHYyA==
-X-Received: by 2002:a05:6402:1e93:b0:424:1b50:688d with SMTP id f19-20020a0564021e9300b004241b50688dmr19810193edf.405.1650901119465;
-        Mon, 25 Apr 2022 08:38:39 -0700 (PDT)
-Received: from kista.localnet (cpe-86-58-32-107.static.triera.net. [86.58.32.107])
-        by smtp.gmail.com with ESMTPSA id e22-20020a170906505600b006da7d71f25csm3747575ejk.41.2022.04.25.08.38.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Apr 2022 08:38:39 -0700 (PDT)
-From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
-        Samuel Holland <samuel@sholland.org>
-Cc:     Samuel Holland <samuel@sholland.org>,
-        Andre Przywara <andre.przywara@arm.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Maxime Ripard <maxime@cerno.tech>,
-        Yangtao Li <frank@allwinnertech.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH] mmc: sunxi-mmc: Fix DMA descriptors allocated above 32 bits
-Date:   Mon, 25 Apr 2022 17:38:37 +0200
-Message-ID: <7372337.EvYhyI6sBW@kista>
-In-Reply-To: <20220424231751.32053-1-samuel@sholland.org>
-References: <20220424231751.32053-1-samuel@sholland.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1650902478; x=1682438478;
+  h=from:to:cc:subject:date:message-id;
+  bh=x8+BsrF0nyGjYvButLrl2VvdspR3FlxWvFjFP8NJGHA=;
+  b=r9LrlhkBqYCfspSUTRNlAB0WywO3yeic4Q+HZjXlmYAA+q8WrqdNZbHL
+   18JinRbuVr6ZD8lq3rAgmfJD1gHjOiF7pGbz9K0D5sVt18nH4N7GSMYUy
+   vOEyAMpM1XkR3S/bY1fgTf+fw2k42S0S3VT6CT4ZuYjx2utFF3kZUoL+X
+   Y=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 25 Apr 2022 09:01:18 -0700
+X-QCInternal: smtphost
+Received: from ironmsg02-blr.qualcomm.com ([10.86.208.131])
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 25 Apr 2022 09:01:16 -0700
+X-QCInternal: smtphost
+Received: from c-sbhanu-linux.qualcomm.com ([10.242.50.201])
+  by ironmsg02-blr.qualcomm.com with ESMTP; 25 Apr 2022 21:30:46 +0530
+Received: by c-sbhanu-linux.qualcomm.com (Postfix, from userid 2344807)
+        id 98883B77; Mon, 25 Apr 2022 21:30:45 +0530 (IST)
+From:   Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        wsa+renesas@sang-engineering.com, yoshihiro.shimoda.uh@renesas.com,
+        linus.walleij@linaro.org, digetx@gmail.com,
+        briannorris@chromium.org, quic_riteshh@quicinc.com
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        quic_asutoshd@quicinc.com, quic_rampraka@quicinc.com,
+        quic_pragalla@quicinc.com, quic_sartgarg@quicinc.com,
+        quic_nitirawa@quicinc.com, quic_sayalil@quicinc.com,
+        Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
+Subject: [PATCH V5 0/5] mmc: add error statistics for eMMC and SD card
+Date:   Mon, 25 Apr 2022 21:30:38 +0530
+Message-Id: <1650902443-26357-1-git-send-email-quic_c_sbhanu@quicinc.com>
+X-Mailer: git-send-email 2.7.4
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,46 +57,68 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dne ponedeljek, 25. april 2022 ob 01:17:50 CEST je Samuel Holland napisal(a):
-> Newer variants of the MMC controller support a 34-bit physical address
-> space by using word addresses instead of byte addresses. However, the
-> code truncates the DMA descriptor address to 32 bits before applying the
-> shift. This breaks DMA for descriptors allocated above the 32-bit limit.
-> 
-> Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller")
-> Signed-off-by: Samuel Holland <samuel@sholland.org>
+Changes since V4:
+	- Defined new macro to increment err_stats members when error occured
+	  as suggested by Adrain Hunter.
+	- Called err_stats members increment function after printing the error
+	  as suggested by Adrain Hunter.
+	- Considered INDEX and END_BIT errors same as CRC errors as suggested
+	  by Adrain Hunter.
+	- Removed Null check for host in debug fs functions and Reordered
+	  err_stats declarationas suggested by Adrain Hunter.
+	- Removed err_state variable stuff and updated err_state debug fs entry
+	  based on the err_stats members state as suggested by Adrain Hunter.
 
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Changes since V3:
+	- Dropped error stats feature flag as suggested by Adrain Hunter.
+	- Separated error state related changes in separate patches as
+	  suggested by Adrain Hunter.
+	  [PATCH V4 4/7] : error state debug fs
+	  [PATCH V4 5/7] : error state enable function
+	  [PATCH V4 6/7] : error state enable in error case
+	- Note: we are enabling error state before calling sdhci_dumpregs
+	  we couldn't add the err state in error stats array as err state
+	  is not error type.
+	- Corrected Signed-off-by order as suggested by Bjron Andersson.
+	- Moved error state enable code from sdhci_dumpregs to error
+	  conditions as suggested by Adrain Hunter
 
-Best regards,
-Jernej
+Changes since V2:
+	- Removed userspace error stats clear debug fs entry as suggested
+	  by Adrain Hunter.
+	- Split patch into 4 patches
+	  [PATCH V3 1/4] : sdhci driver
+	  [PATCH V3 2/4] : debug fs entries
+	  [PATCH V3 3/4] : core driver
+	  [PATCH V3 4/4] : cqhci driver
+	- Used for loop to print error messages instead of using printf
+	  statements for all error messages as suggested by Adrain Hunter.
+	- Introduced one flag to enable error stats feature, if any other
+	  client wants to use this feature, they need to enable that flag.
+	- Moved reset command timeout error statement to card init flow
+	  as suggested by Adrain Hunter.
 
-> ---
-> 
->  drivers/mmc/host/sunxi-mmc.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
-> index c62afd212692..46f9e2923d86 100644
-> --- a/drivers/mmc/host/sunxi-mmc.c
-> +++ b/drivers/mmc/host/sunxi-mmc.c
-> @@ -377,8 +377,9 @@ static void sunxi_mmc_init_idma_des(struct 
-sunxi_mmc_host *host,
->  		pdes[i].buf_addr_ptr1 =
->  			cpu_to_le32(sg_dma_address(&data->sg[i]) >>
->  				    host->cfg->idma_des_shift);
-> -		pdes[i].buf_addr_ptr2 = cpu_to_le32((u32)next_desc >>
-> -						    host-
->cfg->idma_des_shift);
-> +		pdes[i].buf_addr_ptr2 =
-> +			cpu_to_le32(next_desc >>
-> +				    host->cfg->idma_des_shift);
->  	}
->  
->  	pdes[0].config |= cpu_to_le32(SDXC_IDMAC_DES0_FD);
-> -- 
-> 2.35.1
-> 
-> 
+Changes since V1:
+	- Removed sysfs entry for eMMC and SD card error statistics and added
+	  debugfs entry as suggested by Adrian Hunter and Ulf Hansson.
 
+Shaik Sajida Bhanu (5):
+  mmc: core: Capture eMMC and SD card errors
+  mmc: sdhci: Capture eMMC and SD card errors
+  mmc: debugfs: Add debug fs entry for mmc driver
+  mmc: debugfs: Add debug fs error state entry for mmc driver
+  mmc: cqhci: Capture eMMC and SD card errors
+
+ drivers/mmc/core/core.c       |  6 ++++
+ drivers/mmc/core/debugfs.c    | 81 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/mmc/host/cqhci-core.c |  9 ++++-
+ drivers/mmc/host/sdhci.c      | 54 ++++++++++++++++++++++-------
+ drivers/mmc/host/sdhci.h      |  3 ++
+ include/linux/mmc/host.h      | 26 ++++++++++++++
+ include/linux/mmc/mmc.h       |  6 ++++
+ 7 files changed, 171 insertions(+), 14 deletions(-)
+
+-- 
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member 
+of Code Aurora Forum, hosted by The Linux Foundation
 
