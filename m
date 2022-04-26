@@ -2,114 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7637951063A
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Apr 2022 20:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 171D55106D8
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Apr 2022 20:26:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353080AbiDZSGR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Apr 2022 14:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59520 "EHLO
+        id S243787AbiDZS3v (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Apr 2022 14:29:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353593AbiDZSGQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Apr 2022 14:06:16 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 712D327CFA
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Apr 2022 11:03:08 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-e93bbb54f9so7506248fac.12
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Apr 2022 11:03:08 -0700 (PDT)
+        with ESMTP id S1351471AbiDZS3u (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Apr 2022 14:29:50 -0400
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92F94338B5
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Apr 2022 11:26:42 -0700 (PDT)
+Received: by mail-io1-xd2f.google.com with SMTP id h8so1051484iov.12
+        for <linux-mmc@vger.kernel.org>; Tue, 26 Apr 2022 11:26:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gtLzLFLewrXQHTJbVImCCDYJrynuyEbueRUS2ATV0U0=;
-        b=AjrbAV8MeBG1TftKOze/fLl/wHpmQ8Rhq7SRWYnnk6QRX7wdha+JlYrp5O7tTdMzUy
-         WqrpM6F+WjaAZwYZpZ2mDTaX4XSFH+e3nzwvRyoi/VCGEQvOsNrYC0eoZTvSLoRw7PaA
-         6QSCdsZtqCQElCl5khit+DPERPtXiRGy1ElHY=
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=3s1PAi7yaAKLLAwJqzdidADYs8xi+3Y8OeD8v9frsHc=;
+        b=XpYBmrmLBjqS+MFAMICt2BGkzCdQlLFQ/jht6JIBVCTIM9a/5tWDscDB/pLzdX2bnt
+         f0uxPTUHRSjTNlkAbt3Ni2Z4qgwBaLClOgf6uM4rzxJFdAR+viSFyG9eIeI0Ugtr4GmV
+         p3N1wClUAEiYELK1V7kWp4sly57L2131ZZk6aBnpPnqEZBHObeD2GutfdUbojtcH1bJp
+         AxnKBwcPDr7TXXO+AA982woqXiTpI69XcJq4NLGgPjT9AD5aIm7SnZJROeKxjJIqp3Qa
+         mywDaycsVm/2fHvDcvSdGpxccHpuCGQk9JjpOA0bn9m87c9hMHxJWozVV8nZKfc3M4j5
+         9bKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gtLzLFLewrXQHTJbVImCCDYJrynuyEbueRUS2ATV0U0=;
-        b=6O5Jchp0Lbcy4U/yMMoExVaw1Qk6oUD/Ygrb0SPIA3LzZYLDgEzAU7jhcZAjFMJVg2
-         afU6VsVDPkUPgK+UO8posyJXpDWhUJCyP+5jy5VPIRopnpeWM8JpseMID+lzLGoO4fXk
-         a1b7UhxRbVV9oqfTcuKF2TwSLe5cS/8uVKHw7zFYoJUsYoiPAQqwv1RAwY7xVSubYFbu
-         Nh2U3RbZ6glQlH7iguQWoLHRnL7thJk+N6A3gv3crxOsftnx5sh5yxeWQakmKsbgM5fn
-         e2iS4M8PIOCkqV9i5Y3jMRwVpQddxxIU+1LfAhLUVkg6MNaE35v3EMYmFzG1qts3nxBQ
-         9mXQ==
-X-Gm-Message-State: AOAM532bXPMXcLwHejd523I2eLvl73XqJL3x6vp1cRC1zW9t4/7hQmRb
-        ZE6wT+JRCmVtnfy8zibkze8lCpvzV8etgg==
-X-Google-Smtp-Source: ABdhPJyW9crLrM+PqfkpPGRZxNWYy4fK3gYo13mjZrdiBIAtDMKEcGTyUePKFLyFXlx7wnlRso1eAg==
-X-Received: by 2002:a05:6870:c692:b0:e9:5368:10df with SMTP id cv18-20020a056870c69200b000e9536810dfmr3506033oab.182.1650996187061;
-        Tue, 26 Apr 2022 11:03:07 -0700 (PDT)
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com. [209.85.161.46])
-        by smtp.gmail.com with ESMTPSA id l8-20020a056808020800b0032575bca0e5sm68734oie.46.2022.04.26.11.03.04
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Apr 2022 11:03:04 -0700 (PDT)
-Received: by mail-oo1-f46.google.com with SMTP id e7-20020a4aaac7000000b00330e3ddfd4bso3522725oon.8
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Apr 2022 11:03:04 -0700 (PDT)
-X-Received: by 2002:a4a:141:0:b0:353:d3c1:8aa with SMTP id 62-20020a4a0141000000b00353d3c108aamr8682441oor.64.1650996184119;
- Tue, 26 Apr 2022 11:03:04 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=3s1PAi7yaAKLLAwJqzdidADYs8xi+3Y8OeD8v9frsHc=;
+        b=430XqDsQpqEfFvtvgu6iNqrDQ3hDqr7p4tPFFDhJI5h7UXROVhunMlEshiDIsWxbFL
+         DFYJ9Vha/K7+ZJRF/rp0objhY+3EYPrEBJLak8skCoyf2RSeF8icGOSKCXmq4Zd3PzJB
+         2IwYQXYzpOz+EXSYy1ryLJ5x4ai4hVP1QZhJTOrxnBZRMt7ENy+AZGs49AtQDWdMjLOV
+         JcZHEl89Bx04Ue0U9erWY/iE2QKaZLF9RN+o1ojzWf/5XGKErMZt8Hxy/M7RqPKPejkB
+         nNwm+UhBNtorfvR99QaMRiH4DmvuVAxMpti1BnIJ8iHx4PqP/rZ/v9UUbfQDKxacE6Zb
+         e1iA==
+X-Gm-Message-State: AOAM531ObUDoMw774HcOk+WAOn33zkX/Z6UMVkhAJ0nKzz2HL7Z0ypK6
+        cghyf/qTqxJiXQ/SglqMvJ3mXCDMVR6ZHdpk8Ew=
+X-Google-Smtp-Source: ABdhPJxq7tqsIchF5O9ka52FH+plIESV4cuACRFBoBbN+AjqUMueDPd+Vz12a+dUDX65MRCfBp4O7bMzhlDKxV68NqE=
+X-Received: by 2002:a05:6638:2103:b0:32a:a4f8:6e6e with SMTP id
+ n3-20020a056638210300b0032aa4f86e6emr10835827jaj.81.1650997601970; Tue, 26
+ Apr 2022 11:26:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <1650964532-9379-1-git-send-email-quic_spathi@quicinc.com>
-In-Reply-To: <1650964532-9379-1-git-send-email-quic_spathi@quicinc.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 26 Apr 2022 11:02:52 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXMkzrqkDdb=y4DpK5Ot=XFtj6aAv7-mSBoGP5rDJZanpA@mail.gmail.com>
-Message-ID: <CA+ASDXMkzrqkDdb=y4DpK5Ot=XFtj6aAv7-mSBoGP5rDJZanpA@mail.gmail.com>
-Subject: Re: [PATCH V1] mmc: core: Select HS mode in device first and then in
- the host
-To:     Srinivasarao Pathipati <quic_spathi@quicinc.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, avri.altman@wdc.com,
-        Linus Walleij <linus.walleij@linaro.org>,
-        vbadigan@codeaurora.org, Shawn Lin <shawn.lin@rock-chips.com>,
-        s.shtylyov@omp.ru, merez@codeaurora.org,
-        wsa+renesas@sang-engineering.com, sayalil@codeaurora.org,
-        linux-mmc@vger.kernel.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Kishor Krishna Bhat <quic_kishkris@quicinc.com>,
-        kamasali <quic_kamasali@quicinc.com>
+Received: by 2002:a6b:b747:0:0:0:0:0 with HTTP; Tue, 26 Apr 2022 11:26:41
+ -0700 (PDT)
+Reply-To: sgtkaylamanthey50@gmail.com
+From:   Sgt Kayla Mantheym <kristengriest2255@gmail.com>
+Date:   Tue, 26 Apr 2022 18:26:41 +0000
+Message-ID: <CAOAm3Rmj2_EuR8+nVazuq5cUQAAif_FXjvrhHcyzYw2+qx0N8w@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:d2f listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4792]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [kristengriest2255[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [sgtkaylamanthey50[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [kristengriest2255[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
-
-On Tue, Apr 26, 2022 at 2:16 AM Srinivasarao Pathipati
-<quic_spathi@quicinc.com> wrote:
->
-> From: Sayali Lokhande <sayalil@codeaurora.org>
->
-> While switching from hs400 to hs200 mode, high speed mode
-> timing should be selected in the device before changing the
-> clock frequency in the host. But current implementation,
-> (mmc_hs400_to_hs200) first updates the frequency in the host
-> and then updates mode in the device. This is a spec violation.
-> Hence update the sequence to comply with the spec.
-
-I'm a bit new to interpreting eMMC specs, but are you sure this is a
-violation? In JESD84-B51, I see:
-
-"The bus frequency can be changed at any time (under the restrictions
-of maximum data transfer frequency, defined by the Device, and the
-identification frequency defined by the standard document)."
-
-I think that suggests we can lower the host clock first, and then
-lower the device timing. And (according to my limited knowledge) that
-makes sense too: the device timing is a "maximum" (to some extent) and
-we're free to run the host bus somewhat slower.
-
-And on the flip side: it sounds like you may be _introducing_ a spec
-violation (that we'll be running the host faster than the device
-timing, briefly)?
-
-Apologies if I'm off base. But you did CC me ;)
-
-Regards,
-Brian
+Hell=C3=B3, hogy vagy ma, rem=C3=A9lem, j=C3=B3l vagy, j=C3=B3 eg=C3=A9szs=
+=C3=A9ggel, megkaptad az
+utols=C3=B3 =C3=BCzenetem?
