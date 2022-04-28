@@ -2,104 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91B06512E04
-	for <lists+linux-mmc@lfdr.de>; Thu, 28 Apr 2022 10:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF788512E14
+	for <lists+linux-mmc@lfdr.de>; Thu, 28 Apr 2022 10:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238181AbiD1ISL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 28 Apr 2022 04:18:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35192 "EHLO
+        id S239889AbiD1IVm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 28 Apr 2022 04:21:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343987AbiD1ISH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 Apr 2022 04:18:07 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24947C244
-        for <linux-mmc@vger.kernel.org>; Thu, 28 Apr 2022 01:14:53 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id g23so4578173edy.13
-        for <linux-mmc@vger.kernel.org>; Thu, 28 Apr 2022 01:14:53 -0700 (PDT)
+        with ESMTP id S1344001AbiD1IVi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 28 Apr 2022 04:21:38 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD7C998F64
+        for <linux-mmc@vger.kernel.org>; Thu, 28 Apr 2022 01:18:21 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id a21so4632328edb.1
+        for <linux-mmc@vger.kernel.org>; Thu, 28 Apr 2022 01:18:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=7sCR5DX1ji5mpaJHkRF1LwUVBfUg54Tiue1jbz2GHmE=;
-        b=yWPnV07PwtqjpFNx4B/iWowQlEnqGkz3cWC+tJAj2NyQYgheIg/UMx/0o6boJfDaxD
-         uZAgDH+Iv1pm9sFnCKTRFJ/o3h6VtEwovNXWhZfsKker25csmOG7KAIDVRpaTclq45ic
-         XgagJmAF/avSy2yDH+C2E8b158SLPNrVg2oZJilFaSbgfzhLJzH6Q6Q7dYEDvwazN3in
-         eygfrzJA9UCoQ4BXV0tF6Vnzk+BdQaBD2UcrfBambPIw17/tOeAp3PQaOQeN8ye4y2jb
-         nJcLOwkxZsu1cd0QvXgCxgtTJghwsaNcUivqILHC/VW3Y4DBl9NUl6qVeIQhtYVCTH2q
-         FFqg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=n6DTGfTof5sYzGDiXrMP1vMIYG1Ilv6ThHsoRQn6zzQ=;
+        b=DqxLNGi/xicx1g7puca5JU7KmIbbdaRlKjOMF1YlAi8Pl03hv2z3u8widpCctheFVC
+         7ldIRJrZgsEnwln2E3gAZBIR1oPdzjL2jzLSW6zggZ4BSER+3ONecAOGoXuaHahojOLj
+         LNLDSn9YwYBu+sxv998eqpVCuLw3lU5hCAHi6O4pnTIwFU6Txm07mKXCb7kS43Sq3vi1
+         t49zhSxfmrkVhBhcPBhG0NtqY+lQPnimbRbkghy8fIHV5wk0hPEaSwk6hLDXE7dbbBVd
+         hh5+Jd3Q0n/vDLZAkdH/gdnhJQud+aUN4hWIeR/l+D6Avs5OC4/iaSmBfB9MWOCwITmR
+         oo/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=7sCR5DX1ji5mpaJHkRF1LwUVBfUg54Tiue1jbz2GHmE=;
-        b=7E34dmwLyVamzHs6gxYAxJ83An0eUrd12so09sO7qvgIVQRmJib0A2Wlcq7JwARiIL
-         HFht0H24MDaoX112gV+C4ymUKrx7FXqijeEf8rq/JOlF/+UXp01Bz1KzRCYeH1n2W6Kr
-         zycUbzoylOdDVi86eLHeC/lTz9LPrgnxbt3VvxBMWTlhJjMVey/E3j8Hhfu5YZFEG7kl
-         Z/J9kOBnRsILe0HPvGUqjR+W5buuSLn41++tsaV5yTSA86wzTAkyBtfNX0/lnF/rNjL9
-         EuUCyTYBM6gv6m1A+NF6UC43lxwdm7mrfa9+txLXPv4StfiYo1zCFWtzCOFCmsGfFh4h
-         nadA==
-X-Gm-Message-State: AOAM531BoTEoTDfclqTQswRFnlxQecDBSBGghdU0Vcv+gd10reHsfVyW
-        zgDp/a3+ax/rgML1EoQTBlPo2w==
-X-Google-Smtp-Source: ABdhPJxiRLV/HKvAqWcQxnWXyLkNRBERVVl74Pc6h3mSxdH3dRF42MWaLcXuy0+shDo4/RWnOdo3pQ==
-X-Received: by 2002:a05:6402:4396:b0:426:1bac:ec8e with SMTP id o22-20020a056402439600b004261bacec8emr6169477edc.127.1651133692353;
-        Thu, 28 Apr 2022 01:14:52 -0700 (PDT)
-Received: from [192.168.0.161] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id q7-20020a170906540700b006d5eca5c9cfsm8012426ejo.191.2022.04.28.01.14.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Apr 2022 01:14:51 -0700 (PDT)
-Message-ID: <96fd3054-17b1-db42-9a44-a60485243807@linaro.org>
-Date:   Thu, 28 Apr 2022 10:14:51 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v2 3/4] dt-bindings: mmc: Add Broadcom optional sdio_freq
- clock
-Content-Language: en-US
-To:     Kamal Dasu <kdasu.kdev@gmail.com>, ulf.hansson@linaro.org,
-        robh+dt@kernel.org, krzk+dt@kernel.org, alcooperx@gmail.com
-Cc:     f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
-        adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20220427180853.35970-1-kdasu.kdev@gmail.com>
- <20220427180853.35970-4-kdasu.kdev@gmail.com>
+        bh=n6DTGfTof5sYzGDiXrMP1vMIYG1Ilv6ThHsoRQn6zzQ=;
+        b=a9nWzKBceu5CVeUNrMrbPkMhpMo9U0ruXt/Ef1qZBQqV5T0bTrMLOoPk1VUtQ3v9Jk
+         8dG0kIAyMyXCAuUtWcz/Kw1fRUB4t8yo0pllwnC1tncsc794Bn43j/CqJItuhWQUQiYQ
+         E1HYbgsblCRSRIgnj65zcJlHG9zvhcKVkNBnwBIhIo8+Tv1vCcaVTiaB1fWmPDVkwJ/6
+         /FYHJJcKCn2jvpW8F5rJ8sJH1dYbSX22nJzUQbSCALfIgJ+qcHCTqcCtdBY/6IZh4CJ5
+         4AZPQDsdY2MMyFhWWUQCY+uph9oEkRcUTq8Vh5LyJMI+VO7kXxTwEg36qwNXg2aXVGN1
+         hFVg==
+X-Gm-Message-State: AOAM532LaPOk1HmVRAC+HOjQf0+dXtofxjX7+A7QjU585nPhh5Q2r+O9
+        aR57yPv2yjIhd51AB62wfXyLmg==
+X-Google-Smtp-Source: ABdhPJzI1dVgNMP8B2mGDFiv76P/6lIOuogOVY09/RMyn4Ngcb0VYTUD2iJ4jMWfkJ6hiZ4u/AIbNQ==
+X-Received: by 2002:a05:6402:35c5:b0:426:1bd8:94ea with SMTP id z5-20020a05640235c500b004261bd894eamr5937347edc.40.1651133900398;
+        Thu, 28 Apr 2022 01:18:20 -0700 (PDT)
+Received: from localhost.localdomain (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id n10-20020a170906700a00b006efdb748e8dsm8007744ejj.88.2022.04.28.01.18.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Apr 2022 01:18:19 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220427180853.35970-4-kdasu.kdev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom Kernel Team <bcm-kernel-feedback-list@broadcom.com>,
+        Al Cooper <alcooperx@gmail.com>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/2] dt-bindings: mmc: brcm,sdhci-brcmstb: correct number of reg entries
+Date:   Thu, 28 Apr 2022 10:18:16 +0200
+Message-Id: <20220428081817.35382-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.32.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 27/04/2022 20:08, Kamal Dasu wrote:
-> The 72116B0 has improved SDIO controllers that allow the max clock
-> rate to be increased from a max of 100MHz to a max of 150MHz.
-> Optional "sdio_freq" clock is used to drive the bus clock if present
-> optional property "max-frequency" specifies a base clock frequency
-> in Hz that overrides the base clock frequency in the CAPS registers.
-> 
-> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
-> ---
->  .../bindings/mmc/brcm,sdhci-brcmstb.yaml      | 24 +++++++++++++++----
->  1 file changed, 19 insertions(+), 5 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/mmc/brcm,sdhci-brcmstb.yaml b/Documentation/devicetree/bindings/mmc/brcm,sdhci-brcmstb.yaml
-> index dccd5ad96981..bf716c0cf096 100644
-> --- a/Documentation/devicetree/bindings/mmc/brcm,sdhci-brcmstb.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/brcm,sdhci-brcmstb.yaml
-> @@ -10,8 +10,6 @@ maintainers:
->    - Al Cooper <alcooperx@gmail.com>
->    - Florian Fainelli <f.fainelli@gmail.com>
->  
-> -allOf:
-> -  - $ref: mmc-controller.yaml#
-You also leave here too many blank lines.
+The binding should not allow infinite number of 'reg' entries, so add
+strict limit.
 
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/mmc/brcm,sdhci-brcmstb.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/mmc/brcm,sdhci-brcmstb.yaml b/Documentation/devicetree/bindings/mmc/brcm,sdhci-brcmstb.yaml
+index dccd5ad96981..54a0edab5f8c 100644
+--- a/Documentation/devicetree/bindings/mmc/brcm,sdhci-brcmstb.yaml
++++ b/Documentation/devicetree/bindings/mmc/brcm,sdhci-brcmstb.yaml
+@@ -31,7 +31,7 @@ properties:
+           - const: brcm,sdhci-brcmstb
+ 
+   reg:
+-    minItems: 2
++    maxItems: 2
+ 
+   reg-names:
+     items:
+-- 
+2.32.0
+
