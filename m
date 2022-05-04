@@ -2,65 +2,68 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E38A8519D26
-	for <lists+linux-mmc@lfdr.de>; Wed,  4 May 2022 12:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3AD5519D36
+	for <lists+linux-mmc@lfdr.de>; Wed,  4 May 2022 12:40:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348274AbiEDKmH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 4 May 2022 06:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
+        id S1348360AbiEDKmQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 4 May 2022 06:42:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348294AbiEDKmE (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 May 2022 06:42:04 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580912A718
-        for <linux-mmc@vger.kernel.org>; Wed,  4 May 2022 03:38:19 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 17so1132504lji.1
-        for <linux-mmc@vger.kernel.org>; Wed, 04 May 2022 03:38:19 -0700 (PDT)
+        with ESMTP id S1348332AbiEDKmF (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 May 2022 06:42:05 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C8729CBD
+        for <linux-mmc@vger.kernel.org>; Wed,  4 May 2022 03:38:23 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 4so1104597ljw.11
+        for <linux-mmc@vger.kernel.org>; Wed, 04 May 2022 03:38:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=xzd4OnTUAsEYtJcnIhTTpNw2Yky9MP4XqoNUTULsUQI=;
-        b=kSVtfyHf7tg8/sLpM/0/dLnjG9ImmFlBRkxbtoZ2tfUcHYrVqaNmrVKuKh4wbeICwy
-         5MBNMZCqXh+L8XxSJN7CSx031QRCUAZXQvS2DaoQPn5/OSIVVxIuuBjAMnNEABmM7YwQ
-         2zm+bHQaqAd6yMuqsavlMsklJfGW/woWqFUP6w0ol517lN0v/T8kGyPMWndRf7gP1s5J
-         NVIk3hNAbqVCoNBTrR0NUQ6OoEt6GksUT19Zlfu2KehIRJRD3ihPeClAuPAINjKMgXHP
-         +7SCwycjSCIQMGv4jCsXQw+NohKhsKb2ghGv+ram05aUOx/ISepA/y6u2y/NnXo4eULc
-         Rrtg==
+        bh=e0/S6UE8kVYqDNad7z3pjtRuJgpmgvfwcT2yCsHCfEM=;
+        b=d6aE1Ig3kJW12Aq8yvux6ub9aoclrmtZQHodl+2SCNC1TTVIXN2a1xcOKMo477nJZM
+         SYZJZnn/rjIOvYvEOSZT2kWMjKEd/8O9GrUloItb29+AVGSwuBw0s/OUfTYXbcaMixgr
+         YNdnKaRQiFPHQ7yd004TWRlTGlB0KKgMZmgrAK40rawynkvyzNHrt1WmQDTyww2hh6T1
+         0b5cqCZJLb3MbtQZRn/PlJnEglVfDAvFBFIL0iCsix5AuCHH0lYC3TxNE4GqR6oPAIeM
+         7uvfx97tO7AaevpDLUPVRb3LwkpkblXSYQxj3xyFGg6TspgCo8DqCwfyq7yJZe63eq64
+         1jxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=xzd4OnTUAsEYtJcnIhTTpNw2Yky9MP4XqoNUTULsUQI=;
-        b=37VMSE6bvW4oT86cKr7KAC4sFh98F9k1Emlv/S1ONRZo99IP4Bu4jfFZqMRGZgM7nW
-         RpE5kUtslnu8He9RRqE8Z4ymk+odkBBWREJH+cP+e5fZ7J4jjBt2h+GZLBUccQo29MGe
-         GpaxSllTXWrjRiBbbbbKByV4g9/z/u/SDEzB4Yeef+fl33WYaZWz21eVgiuHcWUDz1/p
-         nm8P6drP1pDnGo8kSmyjcwURV9Q8ONmc/kpbVXth947bmvs4dZ13gOXZ2x/nb7PSZWAX
-         ndu/riGkgPmm/8aHlRDtyvMZ2AVYYFWDjQ9ObNSd7ogWC02GXpY2hlWne0mX2WFEtTUZ
-         h44g==
-X-Gm-Message-State: AOAM532efjeCkLpWuiaGPT4tj9U6MxxAJf5Ec6aPB4QbKcUvyP0H78OG
-        h6rvJ/EqFyDm6IK3efXeNeav6bWCboAmAUO6sAu/49Nf3us=
-X-Google-Smtp-Source: ABdhPJyBywRSIyt7pALugnYtqinczQCbJyAuSG22YjxDVCMSbWyXlAOWVeYTDVaw4tknpDuWK26kA6zmnb4HoVTFLNI=
-X-Received: by 2002:a05:651c:a12:b0:250:5abe:4ec4 with SMTP id
- k18-20020a05651c0a1200b002505abe4ec4mr7487747ljq.4.1651660698910; Wed, 04 May
- 2022 03:38:18 -0700 (PDT)
+        bh=e0/S6UE8kVYqDNad7z3pjtRuJgpmgvfwcT2yCsHCfEM=;
+        b=GWBqjEaGu6PNQrXh8N8fjYULlGZeubS7LK/hn0fXKfozd5hCTbwwALkQoYRQikcgMX
+         yVpdBFWbg+JarRVSibOTh91tLyRnhxHjOcu+5iGWyuv95Tlwk66yQiet8JW52aUQ/e0e
+         tR880WwZnELMms4nW3cumHMax5udAjKjz2jHwzIm648I259udzZ9uBZZsC0tPbLsckNx
+         ItxcsJ7kMH/JmdWGVvj1tP9z4mfzXDrNdn5pgM3DAuQU8mV0zQSJ7XVYTN+qQwhpjAYK
+         vgQX+huKrUNt7QEbnz4RVmRCn/8g1ebKjB38rGBbPK7gSJtVha871zathvtWEqDsk1PK
+         HGTQ==
+X-Gm-Message-State: AOAM5327npFDS7+pkni4BG6DAeFc58PimbtaBxgGybjI0KRKQnocbCcT
+        RAV8KcDdiFY/aU3JJr9kxCLNJ/tGH/tdnkgR6fpg3w==
+X-Google-Smtp-Source: ABdhPJxNdFWS/wru3JHuLyOEikz5IC7uPf4QUB9vcB6u578vrjN4goN8ah7xYQTsnbdk4O0TiH3kqranj+niTENGv8M=
+X-Received: by 2002:a05:651c:988:b0:24a:c21f:7057 with SMTP id
+ b8-20020a05651c098800b0024ac21f7057mr12487369ljq.16.1651660703238; Wed, 04
+ May 2022 03:38:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220429220833.873672-1-bhupesh.sharma@linaro.org>
-In-Reply-To: <20220429220833.873672-1-bhupesh.sharma@linaro.org>
+References: <1651480665-14978-1-git-send-email-quic_rohiagar@quicinc.com> <1651480665-14978-2-git-send-email-quic_rohiagar@quicinc.com>
+In-Reply-To: <1651480665-14978-2-git-send-email-quic_rohiagar@quicinc.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 4 May 2022 12:37:42 +0200
-Message-ID: <CAPDyKFp+wJ8aQk4ZNLzg+O4yp_Jw-JyMSW+5F_dhiHrri=j8RA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] mmc: sdhci-msm: Convert dt-binding to yaml & add
- support for sm8150
-To:     Bhupesh Sharma <bhupesh.sharma@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, bhupesh.linux@gmail.com,
-        agross@kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org
+Date:   Wed, 4 May 2022 12:37:46 +0200
+Message-ID: <CAPDyKFqmPdzR-RrQUf2bkr6KnSNVUt4uS5Tj31ug+y95ZSXhxA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] dt-bindings: mmc: sdhci-msm: Document the SDX65 compatible
+To:     Rohit Agarwal <quic_rohiagar@quicinc.com>
+Cc:     will@kernel.org, robin.murphy@arm.com, joro@8bytes.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        agross@kernel.org, bjorn.andersson@linaro.org,
+        adrian.hunter@intel.com, bhupesh.sharma@linaro.org,
+        linux-arm-kernel@lists.infradead.org,
+        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,20 +71,12 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sat, 30 Apr 2022 at 00:08, Bhupesh Sharma <bhupesh.sharma@linaro.org> wrote:
+On Mon, 2 May 2022 at 10:38, Rohit Agarwal <quic_rohiagar@quicinc.com> wrote:
 >
-> This patchset converts the Qualcomm 'sdhci-msm' device-tree binding
-> to yaml format and also adds support for sm8150 Qualcomm Soc.
+> The SDHCI controller on SDX65 is based on MSM SDHCI v5 IP. Hence,
+> document the compatible with "qcom,sdhci-msm-v5" as the fallback.
 >
-> This patchset is dependent on the qcom dts fixes sent via a separate
-> patchset (see [1]), to make sure that the 'make dtbs_check' and
-> 'make dt_binding_check' work well and Rob's bot is happy as well.
->
-> [1]. https://lore.kernel.org/linux-arm-msm/20220429214420.854335-1-bhupesh.sharma@linaro.org/
->
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Signed-off-by: Rohit Agarwal <quic_rohiagar@quicinc.com>
 
 Applied for next, thanks!
 
@@ -89,20 +84,22 @@ Kind regards
 Uffe
 
 
+> ---
+>  Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> Bhupesh Sharma (4):
->   dt-bindings: mmc/sdhci-msm: Convert bindings to yaml
->   mmc: host/sdhci-msm: Add SoC specific compatibles
->   dt-bindings: mmc: sdhci-msm: Add compatible string for sm8150
->   mmc: host/sdhci-msm: Add compatible string check for sm8150
->
->  .../devicetree/bindings/mmc/sdhci-msm.txt     | 123 -----------
->  .../devicetree/bindings/mmc/sdhci-msm.yaml    | 193 ++++++++++++++++++
->  drivers/mmc/host/sdhci-msm.c                  |  24 +++
->  3 files changed, 217 insertions(+), 123 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/mmc/sdhci-msm.txt
->  create mode 100644 Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
->
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+> index da42a88..e423633 100644
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+> @@ -33,6 +33,7 @@ properties:
+>                - qcom,sdm630-sdhci
+>                - qcom,sdm845-sdhci
+>                - qcom,sdx55-sdhci
+> +              - qcom,sdx65-sdhci
+>                - qcom,sm6125-sdhci
+>                - qcom,sm6350-sdhci
+>                - qcom,sm8150-sdhci
 > --
-> 2.35.1
+> 2.7.4
 >
