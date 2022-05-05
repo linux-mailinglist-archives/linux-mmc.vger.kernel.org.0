@@ -2,100 +2,107 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72E8651B466
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 May 2022 02:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C17051B751
+	for <lists+linux-mmc@lfdr.de>; Thu,  5 May 2022 07:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232856AbiEEAGq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 4 May 2022 20:06:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43010 "EHLO
+        id S243089AbiEEFGl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 5 May 2022 01:06:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350159AbiEDX6x (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 4 May 2022 19:58:53 -0400
-Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C625419E
-        for <linux-mmc@vger.kernel.org>; Wed,  4 May 2022 16:54:12 -0700 (PDT)
-Received: by mail-yb1-xb41.google.com with SMTP id m128so5054788ybm.5
-        for <linux-mmc@vger.kernel.org>; Wed, 04 May 2022 16:54:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
-        b=Dn1MT8x7p4Rbn+pctwVkt7IgIdUxT0LRLjox/JaF9ttsZ2N8sUUglHFRxQa3sl75aK
-         h1U1JpCoOjPff8rV+LL0edQuBh+YvYlTbZ4zx127Qa80qMcS49J0d2nS2s7mVVadwp/M
-         vGp6wV8qQhR9tMRiQjyWHIJslgvG4HigF7p24aLxixJ1l99K68kLikab9Y0HgtSpkDYW
-         0+riuhXlj9dAnGs04evyYz4sFXKtm0FlJKiBI2Dtbo7ebvKr6E7XJkxgxzCXhReMwL1D
-         yv9OUeo9KjH+/RIlVXefhsYivAQRdlwo604eWoXrrvRFVxcSgXwgPis+UtVhyLpBWx3z
-         WyWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
-        b=t7BwGNzdtNJRwsPf2JT4Z+D1Y/ZSMcZARhqGodxoirCEw5JB3acVEVT2dWgDZvkKkU
-         QqikVchD42wCROmWOfkzY89z/lYqpEkH4J3sZ/hmdVwbe1lLwqv6sHw2bRRlmYGfpAFc
-         Slgquvx8qjmP5b4lopkgLiQK2ZzDxh+UI+BvnF/QSpxYXqPJzo3rwe1h3VznDHrxNQ1M
-         xvN6yPNx9B7Wr4F8VwcS7lW/lA5gkIsiY44wCNZGYRhxZ+vsyaK00gcJMlOuLRNWjNtZ
-         dx7zhjonQCJxd/R4wm1HBT91cnho4mHjFhibyzr3hZegX+MKxMlaXwoV2fEjEj5/nnQj
-         WU3Q==
-X-Gm-Message-State: AOAM530Hn71EYxDM5IojBo0hE8zopaRl411NfMDwiZ5LzFPzVW7sUNAp
-        j7NfQnS3P2VCR+KFqFRPfhtaVDJYYI8oKUXxD4Vd73yZOviryw==
-X-Google-Smtp-Source: ABdhPJyXbFHNtxfp8+qt+M9kuv/iG7XfFeFFPd7I4/fmpdxuycMtmf6dIJw5ghtZAT2CwgvAVE/kUl0HxsirxLIU8v0=
-X-Received: by 2002:a9d:6b16:0:b0:605:e0eb:d3d6 with SMTP id
- g22-20020a9d6b16000000b00605e0ebd3d6mr8263208otp.213.1651708440302; Wed, 04
- May 2022 16:54:00 -0700 (PDT)
+        with ESMTP id S230522AbiEEFGk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 May 2022 01:06:40 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 154E448897;
+        Wed,  4 May 2022 22:03:00 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 651BB80B0;
+        Thu,  5 May 2022 04:59:39 +0000 (UTC)
+Date:   Thu, 5 May 2022 08:02:58 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Yegor Yefremov <yegorslists@googlemail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>, linux-mmc@vger.kernel.org
+Subject: Re: Linux 5.18.x: sdhci issue
+Message-ID: <YnNagtAtSudCum75@atomide.com>
+References: <CAGm1_ktMOwwhhgVWj3DpCib-WpRzhkjE4d4DN74mz6kdwJk6BA@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6802:1a9:0:0:0:0 with HTTP; Wed, 4 May 2022 16:53:59
- -0700 (PDT)
-Reply-To: ortegainvestmmentforrealinvest@gmail.com
-From:   Info <joybhector64@gmail.com>
-Date:   Thu, 5 May 2022 05:23:59 +0530
-Message-ID: <CAP7KLYgH9LcKHS-KgR0zObHAgC6Fr3D+dOJSbDKurTc_12+iFw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b41 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5004]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [joybhector64[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [joybhector64[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGm1_ktMOwwhhgVWj3DpCib-WpRzhkjE4d4DN74mz6kdwJk6BA@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
--- 
-I am an investor. I came from the USA and I have many investments all
-over the world.
+Hi,
 
-I want you to partner with me to invest in your country I am into many
-investment such as real Estate or buying of properties i can also
-invest money in any of existing business with equity royalty or by %
-percentage so on,
-Warm regards
+* Yegor Yefremov <yegorslists@googlemail.com> [220504 09:12]:
+> Hi Tony, all,
+> 
+> During the kernel boot I see the following error. The device is still
+> working afterwards. 5.17.5 shows the same behavior. Is this a known
+> issue?
+
+Thanks for reporting it, I was not aware of this one. Might be worth
+bisecting. Adding linux-mmc and Ulf.
+
+Regards,
+
+Tony
+
+> [    3.734570] sdhci-omap 48060000.mmc: Got CD GPIO
+> [    3.739989] INFO: trying to register non-static key.
+> [    3.744991] The code is fine but needs lockdep annotation, or maybe
+> [    3.751286] you didn't initialize this object before use?
+> [    3.756707] turning off the locking correctness validator.
+> [    3.762221] CPU: 0 PID: 8 Comm: kworker/u2:0 Not tainted 5.18.0-rc5 #1
+> [    3.768787] Hardware name: Generic AM33XX (Flattened Device Tree)
+> [    3.774913] Workqueue: events_unbound async_run_entry_fn
+> [    3.780283]  unwind_backtrace from show_stack+0x10/0x14
+> [    3.785555]  show_stack from dump_stack_lvl+0x58/0x70
+> [    3.790643]  dump_stack_lvl from register_lock_class+0x4ec/0x55c
+> [    3.796695]  register_lock_class from __lock_acquire+0x60/0x2bd4
+> [    3.802738]  __lock_acquire from lock_acquire.part.0+0xb0/0x248
+> [    3.808695]  lock_acquire.part.0 from _raw_spin_lock_irqsave+0x4c/0x68
+> [    3.815265]  _raw_spin_lock_irqsave from sdhci_init+0x34/0xf4
+> [    3.821051]  sdhci_init from sdhci_runtime_resume_host+0x3c/0x1bc
+> [    3.827180]  sdhci_runtime_resume_host from
+> sdhci_omap_runtime_resume+0x108/0x110
+> [    3.834710]  sdhci_omap_runtime_resume from __rpm_callback+0x3c/0x148
+> [    3.841197]  __rpm_callback from rpm_callback+0x50/0x54
+> [    3.846453]  rpm_callback from rpm_resume+0x518/0x71c
+> [    3.851534]  rpm_resume from __pm_runtime_resume+0x50/0x68
+> [    3.857052]  __pm_runtime_resume from sdhci_omap_probe+0x1e4/0x7a8
+> [    3.863270]  sdhci_omap_probe from platform_probe+0x58/0xbc
+> [    3.868886]  platform_probe from really_probe.part.0+0x9c/0x290
+> [    3.874843]  really_probe.part.0 from __driver_probe_device+0xa0/0x138
+> [    3.881409]  __driver_probe_device from driver_probe_device+0x30/0x10c
+> [    3.887975]  driver_probe_device from __device_attach_driver+0xb0/0xf8
+> [    3.894540]  __device_attach_driver from bus_for_each_drv+0x80/0xd0
+> [    3.900845]  bus_for_each_drv from __device_attach_async_helper+0xac/0xe0
+> [    3.907672]  __device_attach_async_helper from async_run_entry_fn+0x20/0xb0
+> [    3.914675]  async_run_entry_fn from process_one_work+0x284/0x72c
+> [    3.920811]  process_one_work from worker_thread+0x28/0x4b0
+> [    3.926418]  worker_thread from kthread+0xe4/0x104
+> [    3.931243]  kthread from ret_from_fork+0x14/0x28
+> [    3.935977] Exception stack(0xd0035fb0 to 0xd0035ff8)
+> [    3.941056] 5fa0:                                     00000000
+> 00000000 00000000 00000000
+> [    3.949274] 5fc0: 00000000 00000000 00000000 00000000 00000000
+> 00000000 00000000 00000000
+> [    3.957491] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+> [    3.964359] sdhci-omap 48060000.mmc: supply pbias not found, using
+> dummy regulator
+> [    3.972468] sdhci-omap 48060000.mmc: supply vqmmc not found, using
+> dummy regulator
+> [    3.982478] sdhci-omap 481d8000.mmc: supply pbias not found, using
+> dummy regulator
+> [    3.990665] sdhci-omap 481d8000.mmc: supply vqmmc not found, using
+> dummy regulator
+> 
+> Regards,
+> Yegor
