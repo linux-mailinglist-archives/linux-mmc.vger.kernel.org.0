@@ -2,331 +2,154 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BF4651F8BE
-	for <lists+linux-mmc@lfdr.de>; Mon,  9 May 2022 12:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9792951F8EF
+	for <lists+linux-mmc@lfdr.de>; Mon,  9 May 2022 12:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231579AbiEIJw6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 May 2022 05:52:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58756 "EHLO
+        id S231340AbiEIJxE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Mon, 9 May 2022 05:53:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238436AbiEIJjg (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 May 2022 05:39:36 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765B063AF;
-        Mon,  9 May 2022 02:35:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1652088941; x=1683624941;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=syR8P+mt9QV8tucBeUOXhbjWsl8FndzQFvO1w3uDjk0=;
-  b=eTifIH9VIWOtAUOrkB02Qmu/zlr6DknyVt14HUwPFihxVNeUfx4O3fQ4
-   ccCggsA6FxB4GgI7x6MgRjqRH3upU2u7oybYqdqjBftQSTzyMVaDu/7Zz
-   acaeeTO0lPTEt2ULlBfp6+yVPwOJ9AQMb5hAojXXsgN6JtyyC2S4lghPt
-   4=;
-Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
-  by alexa-out.qualcomm.com with ESMTP; 09 May 2022 02:35:02 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 02:35:00 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 9 May 2022 02:35:01 -0700
-Received: from [10.216.5.153] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+        with ESMTP id S239702AbiEIJrL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 May 2022 05:47:11 -0400
+X-Greylist: delayed 417 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 09 May 2022 02:43:16 PDT
+Received: from mail4.swissbit.com (mail4.swissbit.com [176.95.1.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8B415F6C9;
+        Mon,  9 May 2022 02:43:15 -0700 (PDT)
+Received: from mail4.swissbit.com (localhost [127.0.0.1])
+        by DDEI (Postfix) with ESMTP id 07083123105;
+        Mon,  9 May 2022 11:35:26 +0200 (CEST)
+Received: from mail4.swissbit.com (localhost [127.0.0.1])
+        by DDEI (Postfix) with ESMTP id EB509122CB2;
+        Mon,  9 May 2022 11:35:25 +0200 (CEST)
+X-TM-AS-ERS: 10.149.2.84-127.5.254.253
+X-TM-AS-SMTP: 1.0 ZXguc3dpc3NiaXQuY29t Y2xvZWhsZUBoeXBlcnN0b25lLmNvbQ==
+X-DDEI-TLS-USAGE: Used
+Received: from ex.swissbit.com (SBDEEX02.sbitdom.lan [10.149.2.84])
+        by mail4.swissbit.com (Postfix) with ESMTPS;
+        Mon,  9 May 2022 11:35:25 +0200 (CEST)
+Received: from sbdeex02.sbitdom.lan (10.149.2.84) by sbdeex02.sbitdom.lan
+ (10.149.2.84) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Mon, 9 May 2022
- 02:34:55 -0700
-Message-ID: <6b37e1a4-e9f4-5812-f97e-b216a3828c65@quicinc.com>
-Date:   Mon, 9 May 2022 15:04:50 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH V5 2/5] mmc: sdhci: Capture eMMC and SD card errors
+ 11:35:25 +0200
+Received: from sbdeex02.sbitdom.lan ([fe80::e0eb:ade8:2d90:1f74]) by
+ sbdeex02.sbitdom.lan ([fe80::e0eb:ade8:2d90:1f74%8]) with mapi id
+ 15.02.0986.022; Mon, 9 May 2022 11:35:25 +0200
+From:   =?iso-8859-1?Q?Christian_L=F6hle?= <CLoehle@hyperstone.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Ricky WU <ricky_wu@realtek.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] mmc: rtsx: add 74 Clocks in power on flow
+Thread-Topic: [PATCH] mmc: rtsx: add 74 Clocks in power on flow
+Thread-Index: AQHYJ7nTpeKajlBmYU+vTOb/+dRQe6ypG9+AgG2fl+Q=
+Date:   Mon, 9 May 2022 09:35:25 +0000
+Message-ID: <add6c326a5b04525965ffa1e9e96ea41@hyperstone.com>
+References: <fb7cda69c5c244dfa579229ee2f0da83@realtek.com>,<CAPDyKFrYWgCbwk6-hNZjtx4mdn7Sx1NJLie+f8wEjS==_HXR5Q@mail.gmail.com>
+In-Reply-To: <CAPDyKFrYWgCbwk6-hNZjtx4mdn7Sx1NJLie+f8wEjS==_HXR5Q@mail.gmail.com>
+Accept-Language: en-US, de-DE
 Content-Language: en-US
-To:     Adrian Hunter <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>,
-        <wsa+renesas@sang-engineering.com>,
-        <yoshihiro.shimoda.uh@renesas.com>, <linus.walleij@linaro.org>,
-        <digetx@gmail.com>, <briannorris@chromium.org>,
-        <quic_riteshh@quicinc.com>
-CC:     <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_asutoshd@quicinc.com>, <quic_rampraka@quicinc.com>,
-        <quic_pragalla@quicinc.com>, <quic_sartgarg@quicinc.com>,
-        <quic_nitirawa@quicinc.com>, <quic_sayalil@quicinc.com>,
-        Liangliang Lu <quic_luliang@quicinc.com>,
-        "Bao D . Nguyen" <quic_nguyenb@quicinc.com>
-References: <1650902443-26357-1-git-send-email-quic_c_sbhanu@quicinc.com>
- <1650902443-26357-3-git-send-email-quic_c_sbhanu@quicinc.com>
- <d643e80e-a7a7-818f-5d75-09d198e1a5b3@intel.com>
-From:   "Sajida Bhanu (Temp)" <quic_c_sbhanu@quicinc.com>
-In-Reply-To: <d643e80e-a7a7-818f-5d75-09d198e1a5b3@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.153.3.143]
+Content-Type: text/plain;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-TMASE-Version: DDEI-5.1-9.0.1002-26882.007
+X-TMASE-Result: 10--21.318200-10.000000
+X-TMASE-MatchedRID: UWn79NfEZzbUL3YCMmnG4pTQgFTHgkhZScHI0MnRcnTIgofMgahPrYCn
+        q9qtGcvVjTHLiFqxqhm2KCeDXdB69Y55DpFecYIWlVHM/F6YkvTVBDonH99+VujMOEZ5AL0S/L4
+        h+S8DcywHKWdS7YRsIh1lVnMIIO2K9UAJ6IWwBzJO5y1KmK5bJRSLgSFq3Tnj31GU/N5W5BAtiA
+        i8BOx+l8NoTajpI9VwnoDMZQbqsQl/4m4yZXmXb5JEUO2qIzlLphwRT0LbbAmwxkbalTMB8+aLX
+        qTzHpREq9YyptElK5dM8DiwR/6/zYGAri4HrOLbl2fRVpVyo6TNc6i32ftlfJ6wS1w7uEucdGUC
+        TIBLOQkCpRJ64odw58pjK4dbPxs8aDAi8sBNMoFWdFebWIc3VsRB0bsfrpPIqxB32o9eGclVaBF
+        ytIQUtw==
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+X-TMASE-INERTIA: 0-0;;;;
+X-TMASE-XGENCLOUD: ee30acec-bfe6-4faf-832d-d57c413d171d-0-0-200-0
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+Can we get 1f311c94aabdb419c28e3147bcc8ab89269f1a7e merged into the stable tree?
+I have some compatibility issues on Realtek chips because of the missing initialization clocks.
 
-Thank you for the review.
+Thanks!
+Regards,
+Christian
 
-Please find the review comments.
 
-Thanks,
 
-Sajida
-
-On 4/26/2022 1:21 PM, Adrian Hunter wrote:
-> On 25/04/22 19:00, Shaik Sajida Bhanu wrote:
->> Add changes to capture eMMC and SD card errors.
->> This is useful for debug and testing.
->>
->> Signed-off-by: Liangliang Lu <quic_luliang@quicinc.com>
->> Signed-off-by: Sayali Lokhande <quic_sayalil@quicinc.com>
->> Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
->> Signed-off-by: Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
-> Looks good.  A couple of minor comments.
-Thank you
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Sent: Monday, February 28, 2022 5:12 PM
+To: Ricky WU
+Cc: gregkh@linuxfoundation.org; kai.heng.feng@canonical.com; tommyhebb@gmail.com; linux-mmc@vger.kernel.org; linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mmc: rtsx: add 74 Clocks in power on flow
+    
+On Tue, 22 Feb 2022 at 08:28, Ricky WU <ricky_wu@realtek.com> wrote:
 >
->> ---
->>   drivers/mmc/host/sdhci.c | 54 ++++++++++++++++++++++++++++++++++++------------
->>   drivers/mmc/host/sdhci.h |  3 +++
->>   include/linux/mmc/mmc.h  |  6 ++++++
->>   3 files changed, 50 insertions(+), 13 deletions(-)
->>
->> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
->> index 2215202..1cda28ba 100644
->> --- a/drivers/mmc/host/sdhci.c
->> +++ b/drivers/mmc/host/sdhci.c
->> @@ -224,6 +224,7 @@ void sdhci_reset(struct sdhci_host *host, u8 mask)
->>   		if (timedout) {
->>   			pr_err("%s: Reset 0x%x never completed.\n",
->>   				mmc_hostname(host->mmc), (int)mask);
->> +			sdhci_err_stats_inc(host, CTRL_TIMEOUT);
->>   			sdhci_dumpregs(host);
->>   			return;
->>   		}
->> @@ -1716,6 +1717,7 @@ static bool sdhci_send_command_retry(struct sdhci_host *host,
->>   		if (!timeout--) {
->>   			pr_err("%s: Controller never released inhibit bit(s).\n",
->>   			       mmc_hostname(host->mmc));
->> +			sdhci_err_stats_inc(host, CTRL_TIMEOUT);
->>   			sdhci_dumpregs(host);
->>   			cmd->error = -EIO;
->>   			return false;
->> @@ -1965,6 +1967,7 @@ void sdhci_enable_clk(struct sdhci_host *host, u16 clk)
->>   		if (timedout) {
->>   			pr_err("%s: Internal clock never stabilised.\n",
->>   			       mmc_hostname(host->mmc));
->> +			sdhci_err_stats_inc(host, CTRL_TIMEOUT);
->>   			sdhci_dumpregs(host);
->>   			return;
->>   		}
->> @@ -1987,6 +1990,7 @@ void sdhci_enable_clk(struct sdhci_host *host, u16 clk)
->>   			if (timedout) {
->>   				pr_err("%s: PLL clock never stabilised.\n",
->>   				       mmc_hostname(host->mmc));
->> +				sdhci_err_stats_inc(host, CTRL_TIMEOUT);
->>   				sdhci_dumpregs(host);
->>   				return;
->>   			}
->> @@ -3161,6 +3165,7 @@ static void sdhci_timeout_timer(struct timer_list *t)
->>   	if (host->cmd && !sdhci_data_line_cmd(host->cmd)) {
->>   		pr_err("%s: Timeout waiting for hardware cmd interrupt.\n",
->>   		       mmc_hostname(host->mmc));
->> +		sdhci_err_stats_inc(host, REQ_TIMEOUT);
->>   		sdhci_dumpregs(host);
->>   
->>   		host->cmd->error = -ETIMEDOUT;
->> @@ -3183,6 +3188,7 @@ static void sdhci_timeout_data_timer(struct timer_list *t)
->>   	    (host->cmd && sdhci_data_line_cmd(host->cmd))) {
->>   		pr_err("%s: Timeout waiting for hardware interrupt.\n",
->>   		       mmc_hostname(host->mmc));
->> +		sdhci_err_stats_inc(host, REQ_TIMEOUT);
->>   		sdhci_dumpregs(host);
->>   
->>   		if (host->data) {
->> @@ -3234,17 +3240,21 @@ static void sdhci_cmd_irq(struct sdhci_host *host, u32 intmask, u32 *intmask_p)
->>   			return;
->>   		pr_err("%s: Got command interrupt 0x%08x even though no command operation was in progress.\n",
->>   		       mmc_hostname(host->mmc), (unsigned)intmask);
->> +		sdhci_err_stats_inc(host, UNEXPECTED_IRQ);
->>   		sdhci_dumpregs(host);
->>   		return;
->>   	}
->>   
->>   	if (intmask & (SDHCI_INT_TIMEOUT | SDHCI_INT_CRC |
->>   		       SDHCI_INT_END_BIT | SDHCI_INT_INDEX)) {
->> -		if (intmask & SDHCI_INT_TIMEOUT)
->> +		if (intmask & SDHCI_INT_TIMEOUT) {
->>   			host->cmd->error = -ETIMEDOUT;
->> -		else
->> +			sdhci_err_stats_inc(host, CMD_TIMEOUT);
->> +		} else {
->>   			host->cmd->error = -EILSEQ;
->> -
->> +			if (!mmc_op_tuning(host->cmd->opcode))
->> +				sdhci_err_stats_inc(host, CMD_CRC);
->> +		}
->>   		/* Treat data command CRC error the same as data CRC error */
->>   		if (host->cmd->data &&
->>   		    (intmask & (SDHCI_INT_CRC | SDHCI_INT_TIMEOUT)) ==
->> @@ -3266,6 +3276,8 @@ static void sdhci_cmd_irq(struct sdhci_host *host, u32 intmask, u32 *intmask_p)
->>   			  -ETIMEDOUT :
->>   			  -EILSEQ;
->>   
->> +		sdhci_err_stats_inc(host, AUTO_CMD);
->> +
->>   		if (sdhci_auto_cmd23(host, mrq)) {
->>   			mrq->sbc->error = err;
->>   			__sdhci_finish_mrq(host, mrq);
->> @@ -3342,6 +3354,7 @@ static void sdhci_data_irq(struct sdhci_host *host, u32 intmask)
->>   			if (intmask & SDHCI_INT_DATA_TIMEOUT) {
->>   				host->data_cmd = NULL;
->>   				data_cmd->error = -ETIMEDOUT;
->> +				sdhci_err_stats_inc(host, CMD_TIMEOUT);
->>   				__sdhci_finish_mrq(host, data_cmd->mrq);
->>   				return;
->>   			}
->> @@ -3370,23 +3383,29 @@ static void sdhci_data_irq(struct sdhci_host *host, u32 intmask)
->>   
->>   		pr_err("%s: Got data interrupt 0x%08x even though no data operation was in progress.\n",
->>   		       mmc_hostname(host->mmc), (unsigned)intmask);
->> +		sdhci_err_stats_inc(host, UNEXPECTED_IRQ);
->>   		sdhci_dumpregs(host);
->>   
->>   		return;
->>   	}
->>   
->> -	if (intmask & SDHCI_INT_DATA_TIMEOUT)
->> +	if (intmask & SDHCI_INT_DATA_TIMEOUT) {
->>   		host->data->error = -ETIMEDOUT;
->> -	else if (intmask & SDHCI_INT_DATA_END_BIT)
->> +		sdhci_err_stats_inc(host, DAT_TIMEOUT);
->> +	} else if (intmask & SDHCI_INT_DATA_END_BIT)
->>   		host->data->error = -EILSEQ;
-> Seems to be missing here:
+> After 1ms stabilizing the voltage time
+> add "Host provides at least 74 Clocks
+> before issuing first command" that is
+> spec definition
 >
-> 		sdhci_err_stats_inc(host, DAT_CRC);
+> Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+> ---
+>  drivers/mmc/host/rtsx_pci_sdmmc.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
-> Also it would be nice to have braces {} on all arms of if-else-if
-> Can use checkpatch.pl --strict to see where
-Sure Thank you
+> diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
+> index 2a3f14afe9f8..e016d720e453 100644
+> --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
+> +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+> @@ -940,10 +940,17 @@ static int sd_power_on(struct realtek_pci_sdmmc *host)
+>         if (err < 0)
+>                 return err;
 >
->>   	else if ((intmask & SDHCI_INT_DATA_CRC) &&
->>   		SDHCI_GET_CMD(sdhci_readw(host, SDHCI_COMMAND))
->> -			!= MMC_BUS_TEST_R)
->> +			!= MMC_BUS_TEST_R) {
->>   		host->data->error = -EILSEQ;
->> +		if (!mmc_op_tuning(host->cmd->opcode))
->> +			sdhci_err_stats_inc(host, DAT_CRC);
->> +	}
->>   	else if (intmask & SDHCI_INT_ADMA_ERROR) {
->>   		pr_err("%s: ADMA error: 0x%08x\n", mmc_hostname(host->mmc),
->>   		       intmask);
->>   		sdhci_adma_show_error(host);
->> +		sdhci_err_stats_inc(host, ADMA);
->>   		host->data->error = -EIO;
->>   		if (host->ops->adma_workaround)
->>   			host->ops->adma_workaround(host, intmask);
->> @@ -3584,6 +3603,7 @@ static irqreturn_t sdhci_irq(int irq, void *dev_id)
->>   	if (unexpected) {
->>   		pr_err("%s: Unexpected interrupt 0x%08x.\n",
->>   			   mmc_hostname(host->mmc), unexpected);
->> +		sdhci_err_stats_inc(host, UNEXPECTED_IRQ);
->>   		sdhci_dumpregs(host);
->>   	}
->>   
->> @@ -3905,20 +3925,27 @@ bool sdhci_cqe_irq(struct sdhci_host *host, u32 intmask, int *cmd_error,
->>   	if (!host->cqe_on)
->>   		return false;
->>   
->> -	if (intmask & (SDHCI_INT_INDEX | SDHCI_INT_END_BIT | SDHCI_INT_CRC))
->> +	if (intmask & (SDHCI_INT_INDEX | SDHCI_INT_END_BIT | SDHCI_INT_CRC)) {
->>   		*cmd_error = -EILSEQ;
->> -	else if (intmask & SDHCI_INT_TIMEOUT)
->> +		if (!mmc_op_tuning(host->cmd->opcode))
->> +			sdhci_err_stats_inc(host, CMD_CRC);
->> +	} else if (intmask & SDHCI_INT_TIMEOUT) {
->>   		*cmd_error = -ETIMEDOUT;
->> -	else
->> +		sdhci_err_stats_inc(host, CMD_TIMEOUT);
->> +	} else
->>   		*cmd_error = 0;
->>   
->> -	if (intmask & (SDHCI_INT_DATA_END_BIT | SDHCI_INT_DATA_CRC))
->> +	if (intmask & (SDHCI_INT_DATA_END_BIT | SDHCI_INT_DATA_CRC)) {
->>   		*data_error = -EILSEQ;
->> -	else if (intmask & SDHCI_INT_DATA_TIMEOUT)
->> +		if (!mmc_op_tuning(host->cmd->opcode))
->> +			sdhci_err_stats_inc(host, DAT_CRC);
->> +	} else if (intmask & SDHCI_INT_DATA_TIMEOUT) {
->>   		*data_error = -ETIMEDOUT;
->> -	else if (intmask & SDHCI_INT_ADMA_ERROR)
->> +		sdhci_err_stats_inc(host, DAT_TIMEOUT);
->> +	} else if (intmask & SDHCI_INT_ADMA_ERROR) {
->>   		*data_error = -EIO;
->> -	else
->> +		sdhci_err_stats_inc(host, ADMA);
->> +	} else
->>   		*data_error = 0;
->>   
->>   	/* Clear selected interrupts. */
->> @@ -3934,6 +3961,7 @@ bool sdhci_cqe_irq(struct sdhci_host *host, u32 intmask, int *cmd_error,
->>   		sdhci_writel(host, intmask, SDHCI_INT_STATUS);
->>   		pr_err("%s: CQE: Unexpected interrupt 0x%08x.\n",
->>   		       mmc_hostname(host->mmc), intmask);
->> +		sdhci_err_stats_inc(host, UNEXPECTED_IRQ);
->>   		sdhci_dumpregs(host);
->>   	}
->>   
->> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
->> index d7929d7..95a08f0 100644
->> --- a/drivers/mmc/host/sdhci.h
->> +++ b/drivers/mmc/host/sdhci.h
->> @@ -356,6 +356,9 @@ struct sdhci_adma2_64_desc {
->>    */
->>   #define MMC_CMD_TRANSFER_TIME	(10 * NSEC_PER_MSEC) /* max 10 ms */
->>   
->> +#define sdhci_err_stats_inc(host, err_name) \
->> +	mmc_debugfs_err_stats_inc((host)->mmc, MMC_ERR_##err_name)
->> +
->>   enum sdhci_cookie {
->>   	COOKIE_UNMAPPED,
->>   	COOKIE_PRE_MAPPED,	/* mapped by sdhci_pre_req() */
->> diff --git a/include/linux/mmc/mmc.h b/include/linux/mmc/mmc.h
->> index d9a65c6..9c50bc4 100644
->> --- a/include/linux/mmc/mmc.h
->> +++ b/include/linux/mmc/mmc.h
->> @@ -99,6 +99,12 @@ static inline bool mmc_op_multi(u32 opcode)
->>   	       opcode == MMC_READ_MULTIPLE_BLOCK;
->>   }
->>   
->> +static inline bool mmc_op_tuning(u32 opcode)
->> +{
->> +	return opcode == MMC_SEND_TUNING_BLOCK ||
->> +			opcode == MMC_SEND_TUNING_BLOCK_HS200;
->> +}
->> +
->>   /*
->>    * MMC_SWITCH argument format:
->>    *
-> There does not seem to be any:
+> +       mdelay(1);
+> +
+>         err = rtsx_pci_write_register(pcr, CARD_OE, SD_OUTPUT_EN, SD_OUTPUT_EN);
+>         if (err < 0)
+>                 return err;
 >
-> 	sdhci_err_stats_inc(host, TUNING);
->
-> MMC_ERR_TUNING does not seem to get used.
+> +       /* send init 74 clocks */
+> +       rtsx_pci_write_register(pcr, SD_BUS_STAT, SD_CLK_TOGGLE_EN, SD_CLK_TOGGLE_EN);
+> +       mdelay(5);
+> +       rtsx_pci_write_register(pcr, SD_BUS_STAT, SD_CLK_TOGGLE_EN, 0);
+> +
+>         if (PCI_PID(pcr) == PID_5261) {
+>                 /*
+>                  * If test mode is set switch to SD Express mandatorily,
 
-Yes... Thank you for pointing.
+As you probably are aware of, the mmc core uses three power states
+(MMC_POWER_ON, MMC_POWER_UP and MMC_POWER_OFF) to manage the
+initialization, while it invokes the ->set_ios() callback for the mmc
+host driver. During these steps the core also tries to manage the
+different delays that are needed according to the eMMC/SD specs. You
+may have a look at mmc_power_up() in drivers/mmc/core/core.c. In the
+rtsx case, MMC_POWER_ON and MMC_POWER_UP are treated as one single
+step.
 
-We need to update this, will update this in patch set.
+Moreover, it has turned out that some mmc HWs are actually controlling
+these delays during the initialization themselves, which makes the
+delays in the core superfluous. Therefore we have made the delays
+configurable for host drivers. For DT based platforms, we have the DT
+property "post-power-on-delay-ms" and for others, it's perfectly fine
+to update host->power_delay_ms before calling mmc_add_host().
+
+Would it be possible to take advantage of the above "features" from
+the core, to avoid hard coded and superfluous delays?
+
+Kind regards
+Uffe
+    =
+Hyperstone GmbH | Reichenaustr. 39a  | 78467 Konstanz
+Managing Director: Dr. Jan Peter Berns.
+Commercial register of local courts: Freiburg HRB381782
 
