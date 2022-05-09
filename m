@@ -2,73 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E32DE51F8DF
-	for <lists+linux-mmc@lfdr.de>; Mon,  9 May 2022 12:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DB2551F8E5
+	for <lists+linux-mmc@lfdr.de>; Mon,  9 May 2022 12:00:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229717AbiEIJxC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 9 May 2022 05:53:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36420 "EHLO
+        id S231334AbiEIJxb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 9 May 2022 05:53:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240057AbiEIJsL (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 May 2022 05:48:11 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28566AE266;
-        Mon,  9 May 2022 02:44:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1652089458; x=1683625458;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LHL52xpf9fNO2i40bs+m4ylQ6avZ700ivayzAClrluA=;
-  b=VvCFg2x9v6WXDtpufiSDRZuNY8tEyjYs0OcQRgZ/6he9iDei/m3sdcrX
-   wXvhbc6RSYaf8L183YLR6TzIcck6eyxj9ekI1VlRci2RftOjLvo72LX3B
-   UWPirkn3GdXis3fRexhKH9hTXoRR7nyLV0iO7ZKh8Y1kWvtB9JIvRiz+U
-   4=;
-Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
-  by alexa-out.qualcomm.com with ESMTP; 09 May 2022 02:44:18 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 02:44:17 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 9 May 2022 02:44:16 -0700
-Received: from [10.216.5.153] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Mon, 9 May 2022
- 02:44:11 -0700
-Message-ID: <42d7cbc9-06ec-20c3-71fb-23edb451ff9c@quicinc.com>
-Date:   Mon, 9 May 2022 15:14:08 +0530
+        with ESMTP id S235012AbiEIJwd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 9 May 2022 05:52:33 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ECFA217FFD;
+        Mon,  9 May 2022 02:48:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B68ADB80ECC;
+        Mon,  9 May 2022 09:47:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D6BC385A8;
+        Mon,  9 May 2022 09:47:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1652089674;
+        bh=AQzLlgxL+QKSf+Gp2j0UjXMY67cETeD08hwYn9V6kwg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HPVtGnjsn6xkzzPyv+15gHKmKoQXcq0SlLaDbQVe9IJaFYBaD437PrzA4tiMZ0eTh
+         h4bk2H/h7V67MRFlvIDdYQml9ZbY5+6YH4fBaiY7Bm/6zRTsA3x1eHY4fta8fZtnaP
+         /caZ60s5u8kni5S7/G2L+8FbcBDZHYOnMMBNdPl4=
+Date:   Mon, 9 May 2022 11:47:51 +0200
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     Christian =?iso-8859-1?Q?L=F6hle?= <CLoehle@hyperstone.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Ricky WU <ricky_wu@realtek.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] mmc: rtsx: add 74 Clocks in power on flow
+Message-ID: <YnjjR8pouD4KtHtT@kroah.com>
+References: <fb7cda69c5c244dfa579229ee2f0da83@realtek.com>
+ <CAPDyKFrYWgCbwk6-hNZjtx4mdn7Sx1NJLie+f8wEjS==_HXR5Q@mail.gmail.com>
+ <add6c326a5b04525965ffa1e9e96ea41@hyperstone.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH V5 4/5] mmc: debugfs: Add debug fs error state entry for
- mmc driver
-Content-Language: en-US
-To:     Adrian Hunter <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>,
-        <wsa+renesas@sang-engineering.com>,
-        <yoshihiro.shimoda.uh@renesas.com>, <linus.walleij@linaro.org>,
-        <digetx@gmail.com>, <briannorris@chromium.org>,
-        <quic_riteshh@quicinc.com>
-CC:     <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_asutoshd@quicinc.com>, <quic_rampraka@quicinc.com>,
-        <quic_pragalla@quicinc.com>, <quic_sartgarg@quicinc.com>,
-        <quic_nitirawa@quicinc.com>, <quic_sayalil@quicinc.com>,
-        Liangliang Lu <quic_luliang@quicinc.com>,
-        "Bao D . Nguyen" <quic_nguyenb@quicinc.com>
-References: <1650902443-26357-1-git-send-email-quic_c_sbhanu@quicinc.com>
- <1650902443-26357-5-git-send-email-quic_c_sbhanu@quicinc.com>
- <ce5582e3-0d8d-f1cf-0d23-8fbf17226775@intel.com>
- <3459875e-782d-d2bd-ba1f-c945e22e312e@intel.com>
-From:   "Sajida Bhanu (Temp)" <quic_c_sbhanu@quicinc.com>
-In-Reply-To: <3459875e-782d-d2bd-ba1f-c945e22e312e@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+In-Reply-To: <add6c326a5b04525965ffa1e9e96ea41@hyperstone.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,80 +55,23 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+A: http://en.wikipedia.org/wiki/Top_post
+Q: Were do I find info about this thing called top-posting?
+A: Because it messes up the order in which people normally read text.
+Q: Why is top-posting such a bad thing?
+A: Top-posting.
+Q: What is the most annoying thing in e-mail?
 
-Thank you for review.
+A: No.
+Q: Should I include quotations after my reply?
 
-Please find the inline comments.
+http://daringfireball.net/2007/07/on_top
 
-Thanks,
+On Mon, May 09, 2022 at 09:35:25AM +0000, Christian Löhle wrote:
+> Can we get 1f311c94aabdb419c28e3147bcc8ab89269f1a7e merged into the stable tree?
 
-Sajida
+Which stable branches do you want this added to?
 
-On 4/26/2022 1:28 PM, Adrian Hunter wrote:
-> On 26/04/22 10:54, Adrian Hunter wrote:
->> On 25/04/22 19:00, Shaik Sajida Bhanu wrote:
->>> Add debug fs entry error state to query eMMC and SD card errors statistics.
->>> If any errors occurred in eMMC and SD card driver level then
->>> err_state value will be set to 1.
->>>
->>> Signed-off-by: Liangliang Lu <quic_luliang@quicinc.com>
->>> Signed-off-by: Sayali Lokhande <quic_sayalil@quicinc.com>
->>> Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
->>> Signed-off-by: Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
->>> ---
->>>   drivers/mmc/core/debugfs.c | 25 +++++++++++++++++++++++++
->>>   1 file changed, 25 insertions(+)
->>>
->>> diff --git a/drivers/mmc/core/debugfs.c b/drivers/mmc/core/debugfs.c
->>> index 6aa5a60..2f5b63f 100644
->>> --- a/drivers/mmc/core/debugfs.c
->>> +++ b/drivers/mmc/core/debugfs.c
->>> @@ -222,6 +222,29 @@ static int mmc_clock_opt_set(void *data, u64 val)
->>>   
->>>   DEFINE_DEBUGFS_ATTRIBUTE(mmc_clock_fops, mmc_clock_opt_get, mmc_clock_opt_set,
->>>   	"%llu\n");
->> A blank line would be nice here
->>
->>> +static int mmc_err_state_get(void *data, u64 *val)
->>> +{
->>> +	struct mmc_host *host = data;
->>> +
->>> +	if (!host)
->>> +		return -EINVAL;
->>> +
->> I am not sure why you have left out some err_stats[].
->> Why not all of them?  At least, it needs a comment to explain.
->>
->>> +	*val = host->err_stats[MMC_ERR_REQ_TIMEOUT] ||
->>> +	       host->err_stats[MMC_ERR_ADMA] ||
->>> +	       host->err_stats[MMC_ERR_CTRL_TIMEOUT] ||
->>> +	       host->err_stats[MMC_ERR_UNEXPECTED_IRQ] ||
->>> +	       host->err_stats[MMC_ERR_CMDQ_RED] ||
->>> +	       host->err_stats[MMC_ERR_CMDQ_GCE] ||
->>> +	       host->err_stats[MMC_ERR_CMDQ_ICCE] ||
->>> +	       host->err_stats[MMC_ERR_DAT_TIMEOUT] ||
->>> +	       host->err_stats[MMC_ERR_DAT_CRC] ||
->>> +	       host->err_stats[MMC_ERR_CMD_CRC] ||
->>> +	       host->err_stats[MMC_ERR_CMD_TIMEOUT];
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +DEFINE_SIMPLE_ATTRIBUTE(mmc_err_state, mmc_err_state_get, NULL, "%llu\n");
-> Also, if possible, please use DEFINE_DEBUGFS_ATTRIBUTE / debugfs_create_file_unsafe
-> in this case
-Sure.. will useÂ  DEFINE_DEBUGFS_ATTRIBUTE
->
->>>   
->>>   static int mmc_err_stats_show(struct seq_file *file, void *data)
->>>   {
->>> @@ -289,6 +312,8 @@ void mmc_add_host_debugfs(struct mmc_host *host)
->>>   	debugfs_create_file_unsafe("clock", S_IRUSR | S_IWUSR, root, host,
->>>   				   &mmc_clock_fops);
->>>   
->>> +	debugfs_create_file("err_state", 0600, root, host,
->>> +			    &mmc_err_state);
->>>   	debugfs_create_file("err_stats", 0600, root, host,
->>>   			    &mmc_err_stats_fops);
->>>   
+thanks,
+
+greg k-h
