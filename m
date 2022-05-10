@@ -2,97 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BA1A52118C
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 May 2022 11:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A8D8521219
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 May 2022 12:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234113AbiEJKBP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 10 May 2022 06:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49264 "EHLO
+        id S235099AbiEJKZx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 10 May 2022 06:25:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239384AbiEJKBN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 May 2022 06:01:13 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6820EF68BC
-        for <linux-mmc@vger.kernel.org>; Tue, 10 May 2022 02:57:16 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id bu29so28386174lfb.0
-        for <linux-mmc@vger.kernel.org>; Tue, 10 May 2022 02:57:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=m3iAFIP4OMSq8KQP1j7SVBKWO8n8BXwTBCZYgtGpfJA=;
-        b=XOD7CIe6QugAPdXy/D2qzQ5VXi+F6iYQdFliexYWfpHfAYJDAUSnbDQbscvnT4GGK6
-         Re07x2ZupXs1kMpVXVwuOYHGNJpYf3Q+Jup4+CPzthqLCgX04CdkGLgduw+yf2en6zA7
-         0IxxQwWRCtQa1CAz/CvK6IWdFHR1BeCzgSFFXF/DRmLF05DOp/zKnwVd8VpUi5Imvmvr
-         XQMt4QLUsDI//XK7Ot/uI+9d3l3k1fIizTaUzsZ6PxjP7bU94s46R19FYs2mXWQ6auM1
-         G9plVmfpa0aCToSvaQKVihswo4QH3Jd4iZnnHkI0y/rVZyzFnE2o1td4eGaA77KDeynC
-         PyJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=m3iAFIP4OMSq8KQP1j7SVBKWO8n8BXwTBCZYgtGpfJA=;
-        b=uDHEU35xHbY2WWumaVRM4hS1VL0dK8bUPFXx29q5Y9dtvyMGewMx7MeemybNsu9x0S
-         fsfwEXHbqY4z1jbyeZDsJuleaqWVZkn39MyQvM9icJV4n+h8kh38xKDy3zZuYuuPKUAs
-         jgwJCvHq42ixtjsjRdmQ4tMilroQnY0TZZLk3dLwHUeI5rcgEWuVHmbvy+gHM1R0XacE
-         T+BbK52peiPvJ7jj5sRMb1HW1SuB0lybPAobVkWeqr3JVUY8mkwOfQ36g+pSNoQ3GgCn
-         KTO1mu4m8YZAYzUSzveRzjTCgsrsSHwFqEyeFF0OkMbEjusu4MCP/G1cd8Ac6Ao7G//2
-         ysAQ==
-X-Gm-Message-State: AOAM5338B3DCk0HIMgNEP5O9ismCKisxYyCS5ZyxzYn5gEOzN90y8pXY
-        d1P+P6LkmW55SLlMgmM2+BlV3z96rzcFpHtvRcGyrXdyH1e96w==
-X-Google-Smtp-Source: ABdhPJxL4NKh539TGVeg+05mFm/Hb3XS/hD+s1HzPp85CNXNX/uhcWbw2ohXqvPy/MEwQ1plCcnOwdrzkrItgvgf78U=
-X-Received: by 2002:ac2:4646:0:b0:472:108e:51af with SMTP id
- s6-20020ac24646000000b00472108e51afmr16072941lfo.184.1652176634708; Tue, 10
- May 2022 02:57:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <fb7cda69c5c244dfa579229ee2f0da83@realtek.com> <CAPDyKFrYWgCbwk6-hNZjtx4mdn7Sx1NJLie+f8wEjS==_HXR5Q@mail.gmail.com>
- <add6c326a5b04525965ffa1e9e96ea41@hyperstone.com> <YnjjR8pouD4KtHtT@kroah.com>
- <050affc68f7f4861b35a1ab96e228fec@hyperstone.com>
-In-Reply-To: <050affc68f7f4861b35a1ab96e228fec@hyperstone.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 10 May 2022 11:56:38 +0200
-Message-ID: <CAPDyKFqh15PFKza8vQpaq7HK_DH3w4q8AvpskZv=vzNYfSdqJQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: rtsx: add 74 Clocks in power on flow
-To:     =?UTF-8?Q?Christian_L=C3=B6hle?= <CLoehle@hyperstone.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-Cc:     Ricky WU <ricky_wu@realtek.com>,
+        with ESMTP id S239069AbiEJKZw (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 10 May 2022 06:25:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A857311160;
+        Tue, 10 May 2022 03:21:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 622D7B81CAA;
+        Tue, 10 May 2022 10:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3B8C385A6;
+        Tue, 10 May 2022 10:21:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1652178112;
+        bh=gAjifDgmErvB7Ohd5eWWNEANiA0Fs18UZL4x6ru3AH4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=2BKH1JPob8OCiPbFTU9lGdfN+p/tSG1yduIfAYT9gzhO1rdAnmI8yoSRknzARcKcr
+         CKvhkitNdhOf9Y3C7i6+9UMCd5GZS9z5SWp2YvHhiMIS+dktk3B7Za+kUID3qLfi5N
+         VimKNEaXLezKTUlBAQzoztiOuAM0vOJ2ePx4kdxs=
+Date:   Tue, 10 May 2022 12:21:49 +0200
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Christian =?iso-8859-1?Q?L=F6hle?= <CLoehle@hyperstone.com>,
+        Ricky WU <ricky_wu@realtek.com>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Subject: Re: [PATCH] mmc: rtsx: add 74 Clocks in power on flow
+Message-ID: <Yno8va9rzRfXnRDG@kroah.com>
+References: <fb7cda69c5c244dfa579229ee2f0da83@realtek.com>
+ <CAPDyKFrYWgCbwk6-hNZjtx4mdn7Sx1NJLie+f8wEjS==_HXR5Q@mail.gmail.com>
+ <add6c326a5b04525965ffa1e9e96ea41@hyperstone.com>
+ <YnjjR8pouD4KtHtT@kroah.com>
+ <050affc68f7f4861b35a1ab96e228fec@hyperstone.com>
+ <CAPDyKFqh15PFKza8vQpaq7HK_DH3w4q8AvpskZv=vzNYfSdqJQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPDyKFqh15PFKza8vQpaq7HK_DH3w4q8AvpskZv=vzNYfSdqJQ@mail.gmail.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 9 May 2022 at 12:12, Christian L=C3=B6hle <CLoehle@hyperstone.com> =
-wrote:
->
-> >> Can we get 1f311c94aabdb419c28e3147bcc8ab89269f1a7e merged into the st=
-able tree?
+On Tue, May 10, 2022 at 11:56:38AM +0200, Ulf Hansson wrote:
+> On Mon, 9 May 2022 at 12:12, Christian Löhle <CLoehle@hyperstone.com> wrote:
 > >
-> >Which stable branches do you want this added to?
+> > >> Can we get 1f311c94aabdb419c28e3147bcc8ab89269f1a7e merged into the stable tree?
+> > >
+> > >Which stable branches do you want this added to?
+> > >
+> > >thanks,
+> > >
+> > >greg k-h
 > >
-> >thanks,
-> >
-> >greg k-h
->
-> From what I can tell the issue is present since the addition of the drive=
-r in ff984e57d36e8
-> So I would suggest adding them to all? Maybe Ricky and Ulf could comment?
+> > From what I can tell the issue is present since the addition of the driver in ff984e57d36e8
+> > So I would suggest adding them to all? Maybe Ricky and Ulf could comment?
+> 
+> That seems correct.
+> 
+> Although, it's likely that 1f311c94aabd doesn't apply to older stable
+> trees, but I guess we can try and see how it goes.
+> 
+> Perhaps an even better option is that you submit a backported patch to
+> Greg for those stable kernels you want it to be applied to.
 
-That seems correct.
+It only applies cleanly to 5.17.y and 5.15.y, so I've added it there.
+If anyone wants it to be added to older kernels, they need to provide
+working backports.
 
-Although, it's likely that 1f311c94aabd doesn't apply to older stable
-trees, but I guess we can try and see how it goes.
+thanks,
 
-Perhaps an even better option is that you submit a backported patch to
-Greg for those stable kernels you want it to be applied to.
-
-Kind regards
-Uffe
+greg k-h
