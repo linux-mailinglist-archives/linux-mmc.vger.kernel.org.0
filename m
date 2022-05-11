@@ -2,104 +2,151 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44DDC522B51
-	for <lists+linux-mmc@lfdr.de>; Wed, 11 May 2022 06:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FF9F522C8B
+	for <lists+linux-mmc@lfdr.de>; Wed, 11 May 2022 08:47:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241209AbiEKEkk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 11 May 2022 00:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44024 "EHLO
+        id S242311AbiEKGqb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 11 May 2022 02:46:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238154AbiEKEjj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 May 2022 00:39:39 -0400
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A80F71514C9
-        for <linux-mmc@vger.kernel.org>; Tue, 10 May 2022 21:39:24 -0700 (PDT)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-e656032735so1551995fac.0
-        for <linux-mmc@vger.kernel.org>; Tue, 10 May 2022 21:39:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
-         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
-         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
-         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
-         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
-         wrQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=gcj8B29GzA1RhUVrzOmnAkwbjLFy556EO1IvMqWqnz1AEUCUdYIj6gpVk/44UQbmxD
-         I5vd0+69EpkTJYTYEGPH+Dkb5GciQf0wcoSJ3o8JcjyG4QVUPS3LOerxmfgueI5ZcciJ
-         qwP1QYPUqbnCNFTpej2CRPh+TMSBNKTxEh5Fq0gYFKsgYF/zz2LAzu4+B/gpJtaTHbnf
-         ZIA8WlDtKOi6QTalw9nyiMjBI0eBMDlTWg/WzCJM8Wg5QaN5D/czbyc27TxmdBuXc6r9
-         CjtWZvUDSO8/EFkob/8bjDq9O1vK5qWvOQ6k7QdqADghCEAdBv7pzhC0mFelI2WLfEQq
-         AGRQ==
-X-Gm-Message-State: AOAM532nQG3/3pTgRd9h1h4zOWBsJs2Jk7QsT/dTOk3cAesnvCgvaDix
-        2uwdd5ydC+XcskBVTZO9MvrFwVOf/y/3i8MTYQoOQC7JJgFTRw==
-X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
-X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
- gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
- May 2022 21:39:11 -0700 (PDT)
+        with ESMTP id S242315AbiEKGq1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 11 May 2022 02:46:27 -0400
+Received: from smtp2.math.uni-bielefeld.de (smtp2.math.uni-bielefeld.de [129.70.45.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED0F533A37;
+        Tue, 10 May 2022 23:46:22 -0700 (PDT)
+Received: from math.uni-bielefeld.de (kvm01.math.uni-bielefeld.de [129.70.45.15])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by smtp2.math.uni-bielefeld.de (Postfix) with ESMTPSA id 8825060283;
+        Wed, 11 May 2022 08:46:18 +0200 (CEST)
+Date:   Wed, 11 May 2022 08:46:17 +0200
+From:   Jean Rene Dawin <jdawin@math.uni-bielefeld.de>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Huijin Park <huijin.park@samsung.com>,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
+Subject: Re: [PATCH] mmc: core: Restore (almost) the busy polling for
+ MMC_SEND_OP_COND
+Message-ID: <20220511064617.GA28982@math.uni-bielefeld.de>
+References: <20220304105656.149281-1-ulf.hansson@linaro.org>
+ <CAPDyKFr1PzSaiKqB4ZoqTS_8bGsEH=aB3ARhxyGu+cYeRqeBew@mail.gmail.com>
+ <20220504054652.GA7851@math.uni-bielefeld.de>
+ <CAPDyKFrBVyYx+BybGR2P8paS6qA=V2EHAXH+vPUc9JzxoXn6+g@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
- -0700 (PDT)
-From:   Private Mail <privatemail1961@gmail.com>
-Date:   Tue, 10 May 2022 21:39:10 -0700
-Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
-Subject: Have you had this? It is for your Benefit
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
-        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFrBVyYx+BybGR2P8paS6qA=V2EHAXH+vPUc9JzxoXn6+g@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Our Ref: BG/WA0151/2022
+Ulf Hansson wrote on Wed  4/05/22 11:08:
+> On Wed, 4 May 2022 at 07:46, Jean Rene Dawin
+> <jdawin@math.uni-bielefeld.de> wrote:
+> >
+> > Ulf Hansson wrote on Mon  7/03/22 13:17:
+> > > On Fri, 4 Mar 2022 at 11:57, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > > >
+> > > > Commit 76bfc7ccc2fa ("mmc: core: adjust polling interval for CMD1"),
+> > > > significantly decreased the polling period from ~10-12ms into just a couple
+> > > > of us. The purpose was to decrease the total time spent in the busy polling
+> > > > loop, but unfortunate it has lead to problems, that causes eMMC cards to
+> > > > never gets out busy and thus fails to be initialized.
+> > > >
+> > > > To fix the problem, but also to try to keep some of the new improved
+> > > > behaviour, let's start by using a polling period of 1-2ms, which then
+> > > > increases for each loop, according to common polling loop in
+> > > > __mmc_poll_for_busy().
+> > > >
+> > > > Reported-by: Jean Rene Dawin <jdawin@math.uni-bielefeld.de>
+> > > > Reported-by: H. Nikolaus Schaller <hns@goldelico.com>
+> > > > Cc: Huijin Park <huijin.park@samsung.com>
+> > > > Fixes: 76bfc7ccc2fa ("mmc: core: adjust polling interval for CMD1")
+> > > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > > > ---
+> > > >
+> > > > Jean Rene and H. Nikolaus, if this doesn't work, please try extending the
+> > > > the MMC_OP_COND_PERIOD_US a bit, to so see if we can find a value that always
+> > > > works.
+> > > >
+> > > > Kind regards
+> > > > Uffe
+> >
+> > >
+> > > Applied for fixes and by adding two tested-by tags from you, thanks!
+> > >
+> > > Kind regards
+> > > Uffe
+> >
+> > Hi,
+> >
+> > with the current value of MMC_OP_COND_PERIOD_US = 1ms I still see
+> >
+> > mmc1: Card stuck being busy! __mmc_poll_for_busy
+> > mmc1: error -110 doing runtime resume
+> >
+> > regularly. The same with 2ms. Setting it to 4ms makes the messages go
+> > away. Would it be ok to increase MMC_OP_COND_PERIOD_US to 4ms?
+> 
+> It doesn't look like we have a very good alternative - unless the
+> problem is tied to a particular type of eMMC card, is it? (If so, we
+> can add a card-quirk).
+> 
+> The only other option I see, would then be to add a generic DT
+> property for eMMCs, that allows us to specify the OP_COND polling
+> period for it. See
+> Documentation/devicetree/bindings/mmc/mmc-card.yaml.
+> 
+> Kind regards
+> Uffe
 
-Dear Beneficiary
+Hi,
 
-Subject: An Estate of US$15.8 Million
+I tested 2 beaglebones now - one with Micron eMMC and the other with Kingston.
+With the Kingston chip I don't get the errors. So it seems to be card specific.
 
-Blount and Griffin Genealogical Investigators specializes in probate
-research to locate missing heirs and beneficiaries to estates in the
-United Kingdom and Europe.
+Grepping for mmc in dmesg gives the following.
 
-We can also help you find wills, obtain copies of certificates, help
-you to administer an estate, as well as calculating how an estate,
-intestacy or trust should be distributed.
+Beaglebone with Micron eMMC:
 
-You may be entitled to a large pay out for an inheritance in Europe
-worth US$15.8 million. We have discovered an estate belonging to the
-late Depositor has remained unclaimed since he died in 2011 and we
-have strong reasons to believe you are the closest living relative to
-the deceased we can find.
+  sdhci-omap 481d8000.mmc: supply pbias not found, using dummy regulator
+  sdhci-omap 481d8000.mmc: supply vqmmc not found, using dummy regulator
+  mmc1: SDHCI controller on 481d8000.mmc [481d8000.mmc] using External DMA
+  mmc1: new high speed MMC card at address 0001
+  mmcblk1: mmc1:0001 MMC04G 3.66 GiB
+   mmcblk1: p1
+  mmcblk1boot0: mmc1:0001 MMC04G 1.00 MiB
+  mmcblk1boot1: mmc1:0001 MMC04G 1.00 MiB
+  mmcblk1rpmb: mmc1:0001 MMC04G 128 KiB, chardev (247:0)
+  sdhci-omap 48060000.mmc: Got CD GPIO
+  sdhci-omap 48060000.mmc: supply pbias not found, using dummy regulator
+  sdhci-omap 48060000.mmc: supply vqmmc not found, using dummy regulator
+  mmc0: SDHCI controller on 48060000.mmc [48060000.mmc] using External DMA
 
-You may unknowingly be the heir of this person who died without
-leaving a will (intestate). We will conduct a probate research to
-prove your entitlement, and can submit a claim on your behalf all at
-no risk to yourselves.
 
-Our service fee of 10% will be paid to us after you have received the estate.
+Beaglebone with Kingston eMMC:
 
-The estate transfer process should take just a matter of days as we
-have the mechanism and expertise to get this done very quickly. This
-message may come to you as a shock, however we hope to work with you
-to transfer the estate to you as quickly as possible.
+  sdhci-omap 481d8000.mmc: supply pbias not found, using dummy regulator
+  sdhci-omap 481d8000.mmc: supply vqmmc not found, using dummy regulator
+  mmc1: SDHCI controller on 481d8000.mmc [481d8000.mmc] using External DMA
+  mmc1: new high speed MMC card at address 0001
+  mmcblk1: mmc1:0001 M62704 3.56 GiB
+   mmcblk1: p1
+  mmcblk1boot0: mmc1:0001 M62704 2.00 MiB
+  mmcblk1boot1: mmc1:0001 M62704 2.00 MiB
+  mmcblk1rpmb: mmc1:0001 M62704 512 KiB, chardev (247:0)
+  sdhci-omap 48060000.mmc: Got CD GPIO
+  sdhci-omap 48060000.mmc: supply pbias not found, using dummy regulator
+  sdhci-omap 48060000.mmc: supply vqmmc not found, using dummy regulator
+  mmc0: SDHCI controller on 48060000.mmc [48060000.mmc] using External DMA
 
-Feel free to email our senior case worker Mr. Malcolm Casey on email:
-malcolmcasey68@yahoo.com for further discussions.
+Is this enough information to identify the mmc card?
 
-With warm regards,
-
-Mr. Blount W. Gort, CEO.
-Blount and Griffin Associates Inc
+Regards,
+Jean Rene
