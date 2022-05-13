@@ -2,72 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C565524FDD
-	for <lists+linux-mmc@lfdr.de>; Thu, 12 May 2022 16:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D624F525CDE
+	for <lists+linux-mmc@lfdr.de>; Fri, 13 May 2022 10:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355254AbiELOVs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 12 May 2022 10:21:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35356 "EHLO
+        id S241067AbiEMIKS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 13 May 2022 04:10:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355225AbiELOVe (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 12 May 2022 10:21:34 -0400
-Received: from mail.pekanbaru.go.id (mail.pekanbaru.go.id [103.131.245.194])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C553C62BED
-        for <linux-mmc@vger.kernel.org>; Thu, 12 May 2022 07:21:28 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.pekanbaru.go.id (Postfix) with ESMTP id A4E7D9342DD;
-        Thu, 12 May 2022 10:45:50 +0700 (WIB)
-Received: from mail.pekanbaru.go.id ([127.0.0.1])
-        by localhost (mail.pekanbaru.go.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id X-DJ7Ha2aPzd; Thu, 12 May 2022 10:45:50 +0700 (WIB)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.pekanbaru.go.id (Postfix) with ESMTP id B062096DF4F;
-        Thu, 12 May 2022 10:45:47 +0700 (WIB)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.pekanbaru.go.id B062096DF4F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pekanbaru.go.id;
-        s=EA5C5C9E-4206-11EC-835B-1ADACEA726A0; t=1652327147;
-        bh=WgQd2bW8hb2KeIDNbeIeW1Bb4lp6m29iibMhAQT/egc=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=GOXui29W7Xv233cJTQNerm2KvaiItxMe2Z4yWgcJE36IsvpwILK9gsI3HUSZMggOI
-         OSgmNPowvgk+tvLmfZkB8N58MPD8T9x0iqOksVFn52GBciwbDpgD2t0uHvhPYYzHew
-         xqbklOC6m1Pu6KHTrR5+gYnpZBQv+Wm+DJ+q1lBCSsfJhGwxNTquCAadJMjxMVMZEc
-         oxbT64sUaj8XyFZWOr//A1+n4mcjgzYObcwh6RZGzpECQF1R7/ZtpBSd6r0rsz4i18
-         lewSMxK3rxsy5apKIfx842PtK02PmC4SlxBC7HoUmE/9Ol/TjsiCfrQMzC0QFiPrtX
-         Jvyl2BYBIx0Sg==
-X-Virus-Scanned: amavisd-new at mail.pekanbaru.go.id
-Received: from mail.pekanbaru.go.id ([127.0.0.1])
-        by localhost (mail.pekanbaru.go.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id r_VKWf8-8r5K; Thu, 12 May 2022 10:45:47 +0700 (WIB)
-Received: from [192.168.15.101] (unknown [41.79.219.176])
-        by mail.pekanbaru.go.id (Postfix) with ESMTPSA id 4638C98ADDC;
-        Thu, 12 May 2022 10:45:36 +0700 (WIB)
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S1357650AbiEMIKQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 13 May 2022 04:10:16 -0400
+Received: from mail.coredeal.pl (mail.coredeal.pl [51.75.73.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3BC2A5E97
+        for <linux-mmc@vger.kernel.org>; Fri, 13 May 2022 01:10:15 -0700 (PDT)
+Received: by mail.coredeal.pl (Postfix, from userid 1002)
+        id 91885A2187; Fri, 13 May 2022 08:06:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coredeal.pl; s=mail;
+        t=1652429224; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
+        h=Date:From:To:Subject:From;
+        b=WRNOY32vhRIbzNFIm1ZrNYqK+8xKI+wEX8u8CSCHb0ucs0PtmxGOwJT3m/7sUVngA
+         s3P9KqczzsHSBq2o1IdZSp6Y+jNqagNy+cYDLYbrWp0ZJKUxQUZ9PU9wpEZPamB6P1
+         VC1qSgrK1T+v7M2R1TrvtdeeoIx90F0sYYElEHFxXe+rAyPZEZBq4NvYEjC1pi+8EK
+         ewcpnqt62EjnvGTp4RgWc/aHy7hpq1SQgaQAWFDeM3D1FwfwRojGelZIn8A7FYjKX6
+         giTa85pWeqTTpiNitEx5r4RXjX8QeBYiHbHOQ7WGqllaP9a4zd4+PFfiSjQDDjH2wD
+         2jZesMP8ALG1w==
+Received: by mail.coredeal.pl for <linux-mmc@vger.kernel.org>; Fri, 13 May 2022 08:05:55 GMT
+Message-ID: <20220513064500-0.1.33.o0im.0.3tjy1snkcn@coredeal.pl>
+Date:   Fri, 13 May 2022 08:05:55 GMT
+From:   "Krzysztof Maj" <krzysztof.maj@coredeal.pl>
+To:     <linux-mmc@vger.kernel.org>
+Subject: Biznesowy angielski
+X-Mailer: mail.coredeal.pl
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Awaiting your response 
-To:     Recipients <waterproject@pekanbaru.go.id>
-From:   waterproject@pekanbaru.go.id
-Date:   Thu, 12 May 2022 04:45:29 +0100
-Reply-To: test@hostnextdoor.com
-Message-Id: <20220512034537.4638C98ADDC@mail.pekanbaru.go.id>
-X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_BL_SPAMCOP_NET,
-        RCVD_IN_SBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi =
+Dzie=C5=84 dobry,=20
+
+czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
+swoich pracownik=C3=B3w?
+
+Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
+w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
+ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
+=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
+
+Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
+=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
+re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
+o=C5=BCliwo=C5=9Bci biznesowe.=20
+
+Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
+ kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
+za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
+=2E
+
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
+w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
 
 
-Did you get my previous email? I have attempted over 3 times to open up com=
-munication with you. Please acknowledge if you receive this email. =
-
-
-Regards
-Morten Friis
+Pozdrawiam
+Krzysztof Maj
