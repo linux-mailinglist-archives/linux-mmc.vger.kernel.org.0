@@ -2,70 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE44352A7D6
-	for <lists+linux-mmc@lfdr.de>; Tue, 17 May 2022 18:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93EF552AA85
+	for <lists+linux-mmc@lfdr.de>; Tue, 17 May 2022 20:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350871AbiEQQXg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 May 2022 12:23:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37000 "EHLO
+        id S1352049AbiEQSV3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 May 2022 14:21:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350874AbiEQQXf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 May 2022 12:23:35 -0400
-X-Greylist: delayed 2254 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 17 May 2022 09:23:34 PDT
-Received: from mail.neweas.com (mail.neweas.com [162.19.155.127])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DA583B550
-        for <linux-mmc@vger.kernel.org>; Tue, 17 May 2022 09:23:33 -0700 (PDT)
-Received: by mail.neweas.com (Postfix, from userid 1002)
-        id 8D3A522C3E; Tue, 17 May 2022 15:45:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neweas.com; s=mail;
-        t=1652802359; bh=qQhd+6rcOH+OhrNQ6A9OWLCE/79cwvyTtb6LUe1aYuU=;
-        h=Date:From:To:Subject:From;
-        b=kuduz6DuK7X9pTX/cDLrMZp1aQS7cQ+fC6wdN3LYXwKrN8Ccd9WMVrIjUhG3dp9eA
-         MqfHlxhVM9ZqukQaqKPxPVOypAqqT/yECL3/fUK7VwEvi4tcBDs278WBLSwVBY4kvZ
-         FnDZMlLbCii/s4Q4UeBStHM2unp/j/LQ9H758fMpUAXtyqARfg+ox1RrzQR155sG1q
-         JKUjkeskXUXsvb9jrX1hVLeIk2kRNNS/JN1UvmAn4WBqFjpH8IzjogfXEiNXJvijhi
-         pNpwsZ0w++W19vMbQ0Yn7LGOvgZuLibE+BAS3GllFmE2q+Qd1XUpTr3n1Vss2yDto6
-         p55vycVQjk+XA==
-Received: by mail.neweas.com for <linux-mmc@vger.kernel.org>; Tue, 17 May 2022 15:45:46 GMT
-Message-ID: <20220517141500-0.1.f.zkt.0.ou64345bq3@neweas.com>
-Date:   Tue, 17 May 2022 15:45:46 GMT
-From:   "Luca Gauthier" <luca.gauthier@neweas.com>
-To:     <linux-mmc@vger.kernel.org>
-Subject: New collaboration
-X-Mailer: mail.neweas.com
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S1352160AbiEQSV0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 May 2022 14:21:26 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD0118382;
+        Tue, 17 May 2022 11:21:23 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id c2so344054plh.2;
+        Tue, 17 May 2022 11:21:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=qbw25+h7kWDog71rHZzhe0jgB5ZXhGJ80dI1qj26a2E=;
+        b=jns8GOvBKf2iy29Y4pWAi0edGa/n1B8RKqdCa3GF4kjyDobrPXxmV4CR31LVxILl5U
+         qGwsSa/+iuf34FPzDUKsnOu/zykXusFDYpbHt+ntD4XaRYSqDKXapLh0aNO6t72Ht6uk
+         Tvh4t4YNhxzXZ64nZ36L8uie2aJuxHp8Oe6cTYYlw2eau6PGgPX1eG0md8Ctxi0Oq+2s
+         OXDVGmR2aXmBhi3yIlZPIxAOHclHsmWbAOz4dXlRPdQmlOrfzQp+5hieN7xP2S3wGMNw
+         5QRXISjo23dbitsGD/lUkSCMwKgTfJK7yL0YBv8r8VMwnnI+t9L0tUc1TWWQ+/d2a1dM
+         3EYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=qbw25+h7kWDog71rHZzhe0jgB5ZXhGJ80dI1qj26a2E=;
+        b=M55/mwvZkjT6fnkxEE6pzkuMZZPtprSspd7WMDlQRgWMH4bBQ2jWY05h6duIFMMk6D
+         /df/Zf/2Mg7T53wx/8Z56Abi83lXAKec1x1YeJEa/SQ8/pxF2MUlOfbvy208oNn2UbSF
+         4rSP1xul9sIw+VQhWVvgXQxRx/X0w+f6ZXpA5KoYroJxOR3o5emZ3+bAw4v0UHeCkTEv
+         PjDwmqe4FBIYWQPUWr1CnyHt0wfG/SWJOwlRPrp9kvC2G3/kS8q5fZ90GcbUzZsuxOWt
+         W2dFQegfiMKaotYhUY4INJm2kL7Uof4Ss8y27obUNdta7zj+KauYik5WM8KNEMDqYNmE
+         gB+Q==
+X-Gm-Message-State: AOAM530urSzyOD/VrmksmoVCNUhMktrz77pOGaZwcJw3HrlmJjwzOCAz
+        lJu9XDuIUzsS9S4vIwR7QyA=
+X-Google-Smtp-Source: ABdhPJyzmanT7BNcKgKRPoWkD7vYl/HN30uKWadjeG4e6e4zXHZcl5D/+Bsv/x08Wc5ufcCJtfjvZA==
+X-Received: by 2002:a17:90a:9505:b0:1df:2162:2bb5 with SMTP id t5-20020a17090a950500b001df21622bb5mr18019441pjo.73.1652811683409;
+        Tue, 17 May 2022 11:21:23 -0700 (PDT)
+Received: from mail.broadcom.net ([192.19.11.250])
+        by smtp.gmail.com with ESMTPSA id 125-20020a630383000000b003f5e0c264bcsm837641pgd.66.2022.05.17.11.21.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 May 2022 11:21:23 -0700 (PDT)
+From:   Kamal Dasu <kdasu.kdev@gmail.com>
+To:     ulf.hansson@linaro.org, robh+dt@kernel.org, krzk+dt@kernel.org,
+        alcooperx@gmail.com
+Cc:     f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Kamal Dasu <kdasu.kdev@gmail.com>
+Subject: [PATCH v2 0/2]  mmc: sdhci-brcmstb: Add support for optional sdio_freq clock
+Date:   Tue, 17 May 2022 14:04:33 -0400
+Message-Id: <20220517180435.29940-1-kdasu.kdev@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
+v2 changes :
+- Added Reviewed-by tag to PATCH v2 1/2
+- In PATCH v2 2/2 Used host->mmc->f_max instead of parsing the device
+  tree again, /s/clock-frequency/max-frequency in commit message 
 
-are you looking for more business clients?
+v1 Changes :
+Sending the remaining 2 patches separately after implementing review comments
+for the patches 3/4 and 4/4 as part of the following:
+"mmc: sdhci-brcmstb: host controller clock enhancements"
+https://lore.kernel.org/linux-arm-kernel/96fd3054-17b1-db42-9a44-a60485243807@linaro.org/t/
+changes are rebased over
+git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git refs/heads/next
 
-We would like to start working with you as a partner in acquiring or exch=
-anging leads, which directly translates into mutual benefits in the form =
-of an increased client portfolio.
+tested brcm,sdhci-brcmstb.yaml and driver with and without sdio_freq clock.
 
-We work in the sector of internet marketing and as one of the first in Eu=
-rope SEO Agencies we=E2=80=99ve introduced the SEO 360 service which allo=
-ws your clients to gain the access to original SEO consultations.
+Al Cooper (1):
+  mmc: sdhci-brcmstb: Add ability to increase max clock rate for 72116b0
 
-By choosing to work with us you receive support in achieving your busines=
-s goals, and help in handling Digital Marketing for your clients.
+Kamal Dasu (1):
+  dt-bindings: mmc: Add Broadcom optional sdio_freq clock
 
-We support over 237 partner companies. We have one of the biggest executi=
-ve departments in Europe at our disposal, we=E2=80=99ve prepared over 200=
-0 campaigns in Europe and 200 in the USA and Canada.
+ .../bindings/mmc/brcm,sdhci-brcmstb.yaml      | 25 +++++++++++++----
+ drivers/mmc/host/sdhci-brcmstb.c              | 28 +++++++++++++++++++
+ 2 files changed, 47 insertions(+), 6 deletions(-)
 
-Are you interested in the details of our partnership programme?
+-- 
+2.17.1
 
-Yours sincerely,
-Luca Gauthier
