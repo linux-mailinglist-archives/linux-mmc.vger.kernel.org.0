@@ -2,63 +2,70 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B543952AA8D
-	for <lists+linux-mmc@lfdr.de>; Tue, 17 May 2022 20:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C54DC52AA24
+	for <lists+linux-mmc@lfdr.de>; Tue, 17 May 2022 20:10:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351449AbiEQSWD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 May 2022 14:22:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
+        id S1351872AbiEQSJQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 May 2022 14:09:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233638AbiEQSVz (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 May 2022 14:21:55 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4477619F8B;
-        Tue, 17 May 2022 11:21:40 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id ev18so7512459pjb.4;
-        Tue, 17 May 2022 11:21:40 -0700 (PDT)
+        with ESMTP id S1351885AbiEQSJQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 May 2022 14:09:16 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543454EF70;
+        Tue, 17 May 2022 11:09:15 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id qe3-20020a17090b4f8300b001dc24e4da73so2318909pjb.1;
+        Tue, 17 May 2022 11:09:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=gfNE+jsBlh9BNefkHevdeU8gbP6/3y3vCQYKDZXj4Ys=;
-        b=ismjAffrM0Q6B2lFKAcU5kHfnWHsoQtY0jH6z+mcWDjAQBM04jte2fmNn38AGxc6mw
-         nOPlhtlueQajG9TQyq6Fo3GI3WMxmGFqrhBCT6lLCNylv4Xje9f3lfeRvpNHALNsdfzH
-         ttYt/pqcrw4UNRpn51SDjvkrvCBiUyveVKMz6i3+8F5IR3GoZGAsJUOyQ/p/nAM4NrMf
-         Klb/MQzk2rQhhXDHmpcxt2GKmOXurgyefNnF++bcoaPvFpv3DKTGUS6GIqUeUrFnuNK5
-         EcZHas7W/q53C8KngQkdnqeG+z0WYwdvkQnwFpcGJGxnLg0+LEb0ALTda+zw/fhdxpbr
-         9Ayg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Sk+5mSaR9rPPKXkfYc0/VsJM1xTQzkpsddohoa/KxaY=;
+        b=iGPK/GwXeGKXb+JpJA46iSyhnPvw8ykFkQnXHIOb+nnJMZMZNEpCOO5aAaPTON9dL0
+         /arpk5OBwqIkFqJYwu8moP1z3ie3HWE4S9Su3w+237xAGMDlSsrMPNk684b19W459JFh
+         TeukQRXDrrk607aSndZ/R1d9EAiqRw/hzyxU+Bl78iiOCytDyNbfOmVKdwl9G9ZbtL94
+         IT2LRNjS3SgdiT5EcB4zjn0d1SS6f3ngmYD2l7LVkaXOxa8kYtEBKXCdxZUYp3Z5Nw4M
+         5B/QLrscfUylDB+CXuodZ4cgJAjI57t7M+Zb171soqJXr+iVLY4nd84qfn9iB26jTmyv
+         Rc/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=gfNE+jsBlh9BNefkHevdeU8gbP6/3y3vCQYKDZXj4Ys=;
-        b=1OYJU7XpOFRDTF5DnTlWWjS/qq01F8zg9yd1CNYRUhJ9Nj4DYO6M+uPuFWgeVorzF+
-         3qK0bq//0NHagHcEUQwE6H63mFGLLYlQiJsIFyVF+HJKDnCDdSIYbhI/9tnmeqeae1Fe
-         u6XmPaKxhLv/Qa4JyBg0JJOObWPjwQ9phvr9oFZPWtp7w5xxl8zQCcGLUPZyCHk6kZXi
-         vtske6Wsl/bF7NTheat5JqaiGjqmffKHb5Nf7r1deVSaPmvMEzFXVqxVIzeR5VnKqxW0
-         sJ6caCbT+/qi+bXiUfMmacUeTH6QMCcJJFFR5JsgC2E5IYamQqwpn8Xzz/ezW6dICmkD
-         r9qQ==
-X-Gm-Message-State: AOAM532ogYuuN6AxjTFFEdiZhzF/H5fx85DwfcxoaXDgniRv4HX3WqOC
-        Z/zg8zAxPyG3YD9Xm/ntIRo=
-X-Google-Smtp-Source: ABdhPJwjAHkl3HBNbIqOh9aVEZVP0xLlvh1xSgh6JYuLlEEj7Kfs8DybX8TEuqKINe7y+BHall6l/Q==
-X-Received: by 2002:a17:903:240a:b0:14e:dad4:5ce4 with SMTP id e10-20020a170903240a00b0014edad45ce4mr24157104plo.125.1652811699765;
-        Tue, 17 May 2022 11:21:39 -0700 (PDT)
-Received: from mail.broadcom.net ([192.19.11.250])
-        by smtp.gmail.com with ESMTPSA id 125-20020a630383000000b003f5e0c264bcsm837641pgd.66.2022.05.17.11.21.37
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Sk+5mSaR9rPPKXkfYc0/VsJM1xTQzkpsddohoa/KxaY=;
+        b=trBJ58vCc0eRdjN/MnvENKhAbmz51iysFfGD6wnGvZoajGGbM4wjrdtZV/ibi/lzC9
+         QsSrKtnTykuyROV2rPU49Gw+ny8yRXbe3BFphoGH7CtegBygNd1K9ZsqsyWfBBG0MmdP
+         7b938tlhC90W3BUfMpcnUPbGfxFBQ+A6gLV5xtDkMm8xeyv3qUWM1JsdEAxxwIaQ6PDg
+         m+fIMVblpusTBUd63m8EHX6eBUTobiuDqcUw60hrxCoJp41VU9wiAJpsPHctQkVlOm+H
+         Ep7RMiPFH2rP6K94xgUfd7PlqgFzIHDWnyMV/SFlKKud46uqQHo0jMxDA+vJToKYzNIC
+         Km+w==
+X-Gm-Message-State: AOAM533xzE7adj4MSwESiUwG6Yxhr4P1Qeeuw6GhXthsPJsqdVCa5BQn
+        7L/n2H0cBhYqeExqAXkKjMacBd8Jt4Q=
+X-Google-Smtp-Source: ABdhPJzpEwYEZEmjNkNxL3JHREQJ8h2a9XP7Q653MwGhOMDaN/ejTYzEuPprsM0feUFY+7Epvc+R8g==
+X-Received: by 2002:a17:90a:7e94:b0:1da:3b47:b00e with SMTP id j20-20020a17090a7e9400b001da3b47b00emr38237513pjl.222.1652810954452;
+        Tue, 17 May 2022 11:09:14 -0700 (PDT)
+Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id i5-20020a056a00224500b0050dc7628160sm46854pfu.58.2022.05.17.11.09.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 May 2022 11:21:39 -0700 (PDT)
-From:   Kamal Dasu <kdasu.kdev@gmail.com>
-To:     ulf.hansson@linaro.org, robh+dt@kernel.org, krzk+dt@kernel.org,
-        alcooperx@gmail.com
-Cc:     f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
-        adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Kamal Dasu <kdasu.kdev@gmail.com>
-Subject: [PATCH v2 2/2] mmc: sdhci-brcmstb: Add ability to increase max clock rate for 72116b0
-Date:   Tue, 17 May 2022 14:04:35 -0400
-Message-Id: <20220517180435.29940-3-kdasu.kdev@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220517180435.29940-1-kdasu.kdev@gmail.com>
-References: <20220517180435.29940-1-kdasu.kdev@gmail.com>
+        Tue, 17 May 2022 11:09:14 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     stable@vger.kernel.org
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bean Huo <beanhuo@micron.com>,
+        Nishad Kamdar <nishadkamdar@gmail.com>,
+        =?UTF-8?q?Christian=20L=C3=B6hle?= <CLoehle@hyperstone.com>,
+        linux-mmc@vger.kernel.org (open list:MULTIMEDIA CARD (MMC), SECURE
+        DIGITAL (SD) AND...), linux-kernel@vger.kernel.org (open list),
+        alcooperx@gmail.com, kdasu.kdev@gmail.com
+Subject: [PATCH stable 5.4 0/3] MMC timeout back ports
+Date:   Tue, 17 May 2022 11:09:08 -0700
+Message-Id: <20220517180911.246016-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -69,69 +76,29 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Al Cooper <alcooperx@gmail.com>
+These 3 commits from upstream allow us to have more fine grained control
+over the MMC command timeouts and this solves the following timeouts
+that we have seen on our systems across suspend/resume cycles:
 
-The 72116B0 has improved SDIO controllers that allow the max clock
-rate to be increased from a max of 100MHz to a max of 150MHz. The
-driver will need to get the clock and increase it's default rate
-and override the caps register, that still indicates a max of 100MHz.
-The new clock will be named "sdio_freq" in the DT node's "clock-names"
-list. The driver will use a DT property, "max-frequency", to
-enable this functionality and will get the actual rate in MHz
-from the property to allow various speeds to be requested.
+[   14.907496] usb usb2: root hub lost power or was reset
+[   15.216232] usb 1-1: reset high-speed USB device number 2 using
+xhci-hcd
+[   15.485812] bcmgenet 8f00000.ethernet eth0: Link is Down
+[   15.525328] mmc1: error -110 doing runtime resume
+[   15.531864] OOM killer enabled.
 
-Signed-off-by: Al Cooper <alcooperx@gmail.com>
-Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
----
- drivers/mmc/host/sdhci-brcmstb.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Thanks!
 
-diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-index 8eb57de48e0c..bb614a5e1ea4 100644
---- a/drivers/mmc/host/sdhci-brcmstb.c
-+++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -250,6 +250,8 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
- 	struct sdhci_pltfm_host *pltfm_host;
- 	const struct of_device_id *match;
- 	struct sdhci_brcmstb_priv *priv;
-+	struct clk *master_clk;
-+	u32 actual_clock_mhz;
- 	struct sdhci_host *host;
- 	struct resource *iomem;
- 	struct clk *clk;
-@@ -330,6 +332,32 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
- 	if (match_priv->flags & BRCMSTB_MATCH_FLAGS_BROKEN_TIMEOUT)
- 		host->quirks |= SDHCI_QUIRK_BROKEN_TIMEOUT_VAL;
- 
-+	/* Change the base clock frequency if the DT property exists */
-+	if (!(host->mmc->f_max))
-+		goto add_host;
-+
-+	master_clk = devm_clk_get(&pdev->dev, "sdio_freq");
-+	if (IS_ERR(master_clk)) {
-+		dev_warn(&pdev->dev, "Clock for \"sdio_freq\" not found\n");
-+		goto add_host;
-+	} else {
-+		res = clk_prepare_enable(master_clk);
-+		if (res)
-+			goto err;
-+	}
-+
-+	/* set improved clock rate */
-+	clk_set_rate(master_clk, host->mmc->f_max);
-+	actual_clock_mhz = clk_get_rate(master_clk) / 1000000;
-+
-+	host->caps &= ~SDHCI_CLOCK_V3_BASE_MASK;
-+	host->caps |= (actual_clock_mhz << SDHCI_CLOCK_BASE_SHIFT);
-+	/* Disable presets because they are now incorrect */
-+	host->quirks2 |= SDHCI_QUIRK2_PRESET_VALUE_BROKEN;
-+	dev_dbg(&pdev->dev, "Base Clock Frequency changed to %dMHz\n",
-+		actual_clock_mhz);
-+
-+add_host:
- 	res = sdhci_brcmstb_add_host(host, priv);
- 	if (res)
- 		goto err;
+Ulf Hansson (3):
+  mmc: core: Specify timeouts for BKOPS and CACHE_FLUSH for eMMC
+  mmc: block: Use generic_cmd6_time when modifying
+    INAND_CMD38_ARG_EXT_CSD
+  mmc: core: Default to generic_cmd6_time as timeout in __mmc_switch()
+
+ drivers/mmc/core/block.c   |  6 +++---
+ drivers/mmc/core/mmc_ops.c | 25 +++++++++++++------------
+ 2 files changed, 16 insertions(+), 15 deletions(-)
+
 -- 
-2.17.1
+2.25.1
 
