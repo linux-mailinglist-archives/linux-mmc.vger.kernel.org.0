@@ -2,74 +2,54 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 183AD52ACBE
-	for <lists+linux-mmc@lfdr.de>; Tue, 17 May 2022 22:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4379E52B2E7
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 May 2022 09:10:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352936AbiEQU3k (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 May 2022 16:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55120 "EHLO
+        id S231833AbiERHCv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 18 May 2022 03:02:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232740AbiEQU3j (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 May 2022 16:29:39 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA3552B08;
-        Tue, 17 May 2022 13:29:38 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id x12so245065pgj.7;
-        Tue, 17 May 2022 13:29:38 -0700 (PDT)
+        with ESMTP id S231826AbiERHCv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 18 May 2022 03:02:51 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5AB49C9A;
+        Wed, 18 May 2022 00:02:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=65h11tGj1iWpBlAz3WOrhUCPRsx45J5QDY1+WaKKjvs=;
-        b=Ya2CJNcEq/WE5/MB9aSGfgmnTFc9FO+paOQnawgbV6G9r9hqPJUM6TKjOnly0vbJwl
-         HrYQoQlepYyawN364LM7Y+xDSVunP+aSq2PQmo2lHYs+3FEfN/xpbtwWmDWkRsRe9tFx
-         w/awtT4sxEbcIC/cMmAbdarmLYf/xcuoEZ3UMzetg0xkToZ9rGnVX5vunKEKQm+Uy+mP
-         n/OPSLvkQf2tlXKSFEzC9Lrn3TzFnHfJS4vG10PB5VXlw7ygeFe3H0Ki5cX/PWnHnW6n
-         BikinXcQhJKAsR1dwbk2TOi8vanlkQYB76EDigPlayIdHzN4ulV+E++QN3RwoINUrK3T
-         jrtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=65h11tGj1iWpBlAz3WOrhUCPRsx45J5QDY1+WaKKjvs=;
-        b=WXC35SNwFh/OpapjNxz9iuET7LvmbgBLHMpyiWJ8LSmP6Fa3zeRdVmTQHbkZSWNI4R
-         vTdEncIKU+BrwAGhijDv71bP+Dcxz90KggKuph5QyVJ53klV3N5aGscpguYQFSswZcli
-         2mirJNbeEZE9s1Npkf9s9cD5t22V3ddNE/ODf+rWeNSRSI79OhUsmUwqp9IRLvVUqLIq
-         EtnXAgMPMyxKH4nEaPSBj/lzoyRbD2Hg3o8CoZJAPmLOf4twNaK1twC0MF2OooRrlRqM
-         zs6K1r+11xyLc0K+Qzhfot5qhhJmeW+xlHCtvNQYQuE82niLZCbha8e55iF8Hhy0v/R9
-         e92Q==
-X-Gm-Message-State: AOAM530ziwqI0K911+eqihf/vHHRA/9jZV0vFf5ThWIE7/BcTr+3b6Sz
-        9Y4vxsAGGxZYihknKwX9yqlIlP4TLjA=
-X-Google-Smtp-Source: ABdhPJxzTzusNzfBW0Cq/DEdmC++0N4V6Fzn1SbBka5eA7h92x6Imd7X9QLuZ6uQ24LCWEuG61ywYg==
-X-Received: by 2002:a63:d301:0:b0:3c1:7361:b260 with SMTP id b1-20020a63d301000000b003c17361b260mr21186445pgg.367.1652819377688;
-        Tue, 17 May 2022 13:29:37 -0700 (PDT)
-Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
-        by smtp.gmail.com with ESMTPSA id b19-20020a17090a991300b001df4a0e9357sm39788pjp.12.2022.05.17.13.29.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 May 2022 13:29:37 -0700 (PDT)
-Message-ID: <146fb86f-c66d-4c72-d953-a73271d855f4@gmail.com>
-Date:   Tue, 17 May 2022 13:29:35 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v2 2/2] mmc: sdhci-brcmstb: Add ability to increase max
- clock rate for 72116b0
-Content-Language: en-US
-To:     Kamal Dasu <kdasu.kdev@gmail.com>, ulf.hansson@linaro.org,
-        robh+dt@kernel.org, krzk+dt@kernel.org, alcooperx@gmail.com
-Cc:     bcm-kernel-feedback-list@broadcom.com, adrian.hunter@intel.com,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20220517180435.29940-1-kdasu.kdev@gmail.com>
- <20220517180435.29940-3-kdasu.kdev@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20220517180435.29940-3-kdasu.kdev@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1652857370; x=1684393370;
+  h=from:to:cc:subject:date:message-id;
+  bh=nzQ3RoBzLKBVe4TrsaQAFS0ucwOnGWtgxEuRqF2awk0=;
+  b=KYbMm00Q8K97PWU63sISGmjXIsKJeZh8rFn50Xj2Oy9VNL+JRtY+8iq+
+   OxQiyU5Dupq5rJoDByAfMaeG3LD2c1FEnNd36d1pSNYh4cuKQkJyFVf5z
+   J+kjRqdK2wDkbXfJcN6GDNzmJTWoPphBouBaAAAqP4/eO4zPG7xutaPH1
+   w=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 18 May 2022 00:02:49 -0700
+X-QCInternal: smtphost
+Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 18 May 2022 00:02:47 -0700
+X-QCInternal: smtphost
+Received: from c-sbhanu-linux.qualcomm.com ([10.242.50.201])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 18 May 2022 12:32:24 +0530
+Received: by c-sbhanu-linux.qualcomm.com (Postfix, from userid 2344807)
+        id 9B68B1756; Wed, 18 May 2022 12:32:22 +0530 (IST)
+From:   Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        wsa+renesas@sang-engineering.com, shawn.lin@rock-chips.com,
+        yoshihiro.shimoda.uh@renesas.com, digetx@gmail.com,
+        quic_asutoshd@quicinc.com
+Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, quic_rampraka@quicinc.com,
+        quic_pragalla@quicinc.com, quic_sartgarg@quicinc.com,
+        quic_nitirawa@quicinc.com, quic_sayalil@quicinc.com,
+        Rajeshwari Ravindra Kamble <c_rkambl@qti.qualcomm.com>
+Subject: [PATCH V6 0/5] mmc: add error statistics for eMMC and SD card
+Date:   Wed, 18 May 2022 12:32:15 +0530
+Message-Id: <1652857340-6040-1-git-send-email-quic_c_sbhanu@quicinc.com>
+X-Mailer: git-send-email 2.7.4
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,84 +57,77 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Kamal,
+From: Rajeshwari Ravindra Kamble <c_rkambl@qti.qualcomm.com>
 
-On 5/17/2022 11:04 AM, Kamal Dasu wrote:
-> From: Al Cooper <alcooperx@gmail.com>
-> 
-> The 72116B0 has improved SDIO controllers that allow the max clock
-> rate to be increased from a max of 100MHz to a max of 150MHz. The
-> driver will need to get the clock and increase it's default rate
-> and override the caps register, that still indicates a max of 100MHz.
-> The new clock will be named "sdio_freq" in the DT node's "clock-names"
-> list. The driver will use a DT property, "max-frequency", to
-> enable this functionality and will get the actual rate in MHz
-> from the property to allow various speeds to be requested.
-> 
-> Signed-off-by: Al Cooper <alcooperx@gmail.com>
-> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
-> ---
->   drivers/mmc/host/sdhci-brcmstb.c | 28 ++++++++++++++++++++++++++++
->   1 file changed, 28 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-> index 8eb57de48e0c..bb614a5e1ea4 100644
-> --- a/drivers/mmc/host/sdhci-brcmstb.c
-> +++ b/drivers/mmc/host/sdhci-brcmstb.c
-> @@ -250,6 +250,8 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
->   	struct sdhci_pltfm_host *pltfm_host;
->   	const struct of_device_id *match;
->   	struct sdhci_brcmstb_priv *priv;
-> +	struct clk *master_clk;
-> +	u32 actual_clock_mhz;
->   	struct sdhci_host *host;
->   	struct resource *iomem;
->   	struct clk *clk;
-> @@ -330,6 +332,32 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
->   	if (match_priv->flags & BRCMSTB_MATCH_FLAGS_BROKEN_TIMEOUT)
->   		host->quirks |= SDHCI_QUIRK_BROKEN_TIMEOUT_VAL;
->   
-> +	/* Change the base clock frequency if the DT property exists */
-> +	if (!(host->mmc->f_max))
-> +		goto add_host;
-> +
-> +	master_clk = devm_clk_get(&pdev->dev, "sdio_freq");
+Changes since V5:
+	- Considered all error stats enums to set error state.
+	- Added missed tuning error related code changes which was
+	  missed in patch set V5 as Adrain Hunter pointed.
+	- Replaced DEFINE_SIMPLE_ATTRIBUTE with DEFINE_DEBUGFS_ATTRIBUTE
+	  as suggested by Adrain Hunter.
+	  
+Changes since V4:
+	- Defined new macro to increment err_stats members when error occured
+	  as suggested by Adrain Hunter.
+	- Called err_stats members increment function after printing the error
+	  as suggested by Adrain Hunter.
+	- Considered INDEX and END_BIT errors same as CRC errors as suggested
+	  by Adrain Hunter.
+	- Removed Null check for host in debug fs functions and Reordered
+	  err_stats declarationas suggested by Adrain Hunter.
+	- Removed err_state variable stuff and updated err_state debug fs entry
+	  based on the err_stats members state as suggested by Adrain Hunter.
 
-This looks like a candidate for devm_clk_get_optional() since the clock 
-is optional. Then you can call clk_prepare_enable() unconditionally even 
-if it is NULL/non-existent.
+Changes since V3:
+	- Dropped error stats feature flag as suggested by Adrain Hunter.
+	- Separated error state related changes in separate patches as
+	  suggested by Adrain Hunter.
+	  [PATCH V4 4/7] : error state debug fs
+	  [PATCH V4 5/7] : error state enable function
+	  [PATCH V4 6/7] : error state enable in error case
+	- Note: we are enabling error state before calling sdhci_dumpregs
+	  we couldn't add the err state in error stats array as err state
+	  is not error type.
+	- Corrected Signed-off-by order as suggested by Bjron Andersson.
+	- Moved error state enable code from sdhci_dumpregs to error
+	  conditions as suggested by Adrain Hunter
 
-> +	if (IS_ERR(master_clk)) {
-> +		dev_warn(&pdev->dev, "Clock for \"sdio_freq\" not found\n");
-> +		goto add_host;
-> +	} else {
-> +		res = clk_prepare_enable(master_clk);
-> +		if (res)
-> +			goto err;
+Changes since V2:
+	- Removed userspace error stats clear debug fs entry as suggested
+	  by Adrain Hunter.
+	- Split patch into 4 patches
+	  [PATCH V3 1/4] : sdhci driver
+	  [PATCH V3 2/4] : debug fs entries
+	  [PATCH V3 3/4] : core driver
+	  [PATCH V3 4/4] : cqhci driver
+	- Used for loop to print error messages instead of using printf
+	  statements for all error messages as suggested by Adrain Hunter.
+	- Introduced one flag to enable error stats feature, if any other
+	  client wants to use this feature, they need to enable that flag.
+	- Moved reset command timeout error statement to card init flow
+	  as suggested by Adrain Hunter.
 
-It looks like we may be leaving the clock enabled even when we did not 
-want to (e.g.: error path) and do not we need to turn if off, 
-respectively turn it back on in .suspend() and .resume()?
+Changes since V1:
+	- Removed sysfs entry for eMMC and SD card error statistics and added
+	  debugfs entry as suggested by Adrian Hunter and Ulf Hansson.
 
-> +	}
-> +
-> +	/* set improved clock rate */
-> +	clk_set_rate(master_clk, host->mmc->f_max);
-> +	actual_clock_mhz = clk_get_rate(master_clk) / 1000000;
-> +
-> +	host->caps &= ~SDHCI_CLOCK_V3_BASE_MASK;
-> +	host->caps |= (actual_clock_mhz << SDHCI_CLOCK_BASE_SHIFT);
-> +	/* Disable presets because they are now incorrect */
-> +	host->quirks2 |= SDHCI_QUIRK2_PRESET_VALUE_BROKEN;
-> +	dev_dbg(&pdev->dev, "Base Clock Frequency changed to %dMHz\n",
-> +		actual_clock_mhz);
-> +
-> +add_host:
->   	res = sdhci_brcmstb_add_host(host, priv);
->   	if (res)
->   		goto err;
+Shaik Sajida Bhanu (5):
+  mmc: core: Capture eMMC and SD card errors
+  mmc: sdhci: Capture eMMC and SD card errors
+  mmc: debugfs: Add debug fs entry for mmc driver
+  mmc: debugfs: Add debug fs error state entry for mmc driver
+  mmc: cqhci: Capture eMMC and SD card errors
 
-It looks like we would need to unwind the clk_prepare_enable(master_clk) 
-in case of failures here.
+ drivers/mmc/core/core.c       | 10 +++++-
+ drivers/mmc/core/debugfs.c    | 79 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/mmc/host/cqhci-core.c |  9 ++++-
+ drivers/mmc/host/sdhci.c      | 59 ++++++++++++++++++++++++--------
+ drivers/mmc/host/sdhci.h      |  3 ++
+ include/linux/mmc/host.h      | 26 ++++++++++++++
+ include/linux/mmc/mmc.h       |  6 ++++
+ 7 files changed, 175 insertions(+), 17 deletions(-)
+
 -- 
-Florian
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member 
+of Code Aurora Forum, hosted by The Linux Foundation
+
