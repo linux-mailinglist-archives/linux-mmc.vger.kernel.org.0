@@ -2,98 +2,177 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4B6652FD64
-	for <lists+linux-mmc@lfdr.de>; Sat, 21 May 2022 16:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 883A6530A33
+	for <lists+linux-mmc@lfdr.de>; Mon, 23 May 2022 10:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355282AbiEUOkw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 21 May 2022 10:40:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41620 "EHLO
+        id S229548AbiEWHXz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 23 May 2022 03:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbiEUOkv (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 21 May 2022 10:40:51 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F65BC5D;
-        Sat, 21 May 2022 07:40:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F1BF9B80022;
-        Sat, 21 May 2022 14:40:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133D3C385A5;
-        Sat, 21 May 2022 14:40:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1653144047;
-        bh=Z+EJAEeWaRR0EPfhpiHD0bZq+LhpCrhD3EDm2tLhqfU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qV+MaZslsub/l1lnAjC2Gmm56x00oPFkmue0Q4RO1P36ZRxT07FMsq81dk2+hFbeA
-         KvlA4/A4NWwLuoYwmfD2OwB6tM6KUZf8uMbqLgaboXUlz9Wu6us6HXWjsBUhgDDaye
-         zQs0YBoC0zEiLgjGWz6xt2I1CfTJB36bQSXLeYnw=
-Date:   Sat, 21 May 2022 16:40:44 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     stable@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bean Huo <beanhuo@micron.com>,
-        Nishad Kamdar <nishadkamdar@gmail.com>,
-        Christian =?iso-8859-1?Q?L=F6hle?= <CLoehle@hyperstone.com>,
-        "open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..." 
-        <linux-mmc@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>, alcooperx@gmail.com,
-        kdasu.kdev@gmail.com
-Subject: Re: [PATCH stable 4.19 0/3] MMC timeout back ports
-Message-ID: <Yoj57NDDiQblR5aT@kroah.com>
-References: <20220517182211.249775-1-f.fainelli@gmail.com>
- <1392eba8-d869-aa1a-b154-cec870017115@gmail.com>
- <1892af53-5d83-ac8a-1180-970bf07e8889@gmail.com>
+        with ESMTP id S229944AbiEWHXZ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 May 2022 03:23:25 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C37B431935;
+        Mon, 23 May 2022 00:15:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1653290106; x=1684826106;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vJCMQiIR7liz2b404hqMCKac/tqlSpulijF21UcO9eI=;
+  b=g3EOpxy8eNhxB6L1zDDq8fs0cn6ov5nuuKc3dRJ2kdWWVujZT0Hv4ytb
+   NCChtkD/vrBQ4n4a5kGZPlx9QKEAMRgZrSyeuf6s8ZZGU6CIl5BFQD2UV
+   HfFhI+xPMVcPwY7VA1qXZxIVkw1YLoiZipYcucs8pZ7Iu/BumKtddcTDw
+   XnHaU1IDB2j0yjIJaGDYFQL0KHq+mBM1D2sMgKuSXFAN1VDVXvG94M/XV
+   gUfc9r97yZY2PqiWoM782mjYU7GQTK+YEyd5fVI6FpM6GPQF3Rt39/pz+
+   IMtebzwiFvs9rE3WpHq4TlZauyZF3kIcNY/hc/7/YlQ5F9Ttbm8EfaDGY
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10355"; a="336190510"
+X-IronPort-AV: E=Sophos;i="5.91,245,1647327600"; 
+   d="scan'208";a="336190510"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2022 00:14:51 -0700
+X-IronPort-AV: E=Sophos;i="5.91,245,1647327600"; 
+   d="scan'208";a="600488440"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.56.27])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2022 00:14:46 -0700
+Message-ID: <23b27e40-5b6d-22cb-8e87-19e7378db849@intel.com>
+Date:   Mon, 23 May 2022 10:14:41 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1892af53-5d83-ac8a-1180-970bf07e8889@gmail.com>
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.9.1
+Subject: Re: [PATCH V6 1/5] mmc: core: Capture eMMC and SD card errors
+Content-Language: en-US
+To:     Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>,
+        ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
+        shawn.lin@rock-chips.com, yoshihiro.shimoda.uh@renesas.com,
+        digetx@gmail.com, quic_asutoshd@quicinc.com
+Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, quic_rampraka@quicinc.com,
+        quic_pragalla@quicinc.com, quic_sartgarg@quicinc.com,
+        quic_nitirawa@quicinc.com, quic_sayalil@quicinc.com,
+        Liangliang Lu <quic_luliang@quicinc.com>,
+        "Bao D . Nguyen" <quic_nguyenb@quicinc.com>
+References: <1652857340-6040-1-git-send-email-quic_c_sbhanu@quicinc.com>
+ <1652857340-6040-2-git-send-email-quic_c_sbhanu@quicinc.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <1652857340-6040-2-git-send-email-quic_c_sbhanu@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, May 19, 2022 at 12:04:59PM -0700, Florian Fainelli wrote:
+On 18/05/22 10:02, Shaik Sajida Bhanu wrote:
+> Add changes to capture eMMC and SD card errors.
+> This is useful for debug and testing.
 > 
-> 
-> On 5/19/2022 10:38 AM, Florian Fainelli wrote:
-> > 
-> > 
-> > On 5/17/2022 11:22 AM, Florian Fainelli wrote:
-> > > These 3 commits from upstream allow us to have more fine grained control
-> > > over the MMC command timeouts and this solves the following timeouts
-> > > that we have seen on our systems across suspend/resume cycles:
-> > > 
-> > > [   14.907496] usb usb2: root hub lost power or was reset
-> > > [   15.216232] usb 1-1: reset high-speed USB device number 2 using
-> > > xhci-hcd
-> > > [   15.485812] bcmgenet 8f00000.ethernet eth0: Link is Down
-> > > [   15.525328] mmc1: error -110 doing runtime resume
-> > > [   15.531864] OOM killer enabled.
-> > > 
-> > > Thanks!
-> > 
-> > Looks like I managed to introduce a build warning due to the unused
-> > timeout variable, let me submit a fresher version for 4.19, 4.14 and
-> > 4.9.
-> 
-> Only v4.19 and v4.14 required a v2, you can find both here:
-> 
-> https://lore.kernel.org/lkml/20220519184536.370540-1-f.fainelli@gmail.com/T/#t
-> 
-> https://lore.kernel.org/lkml/20220519190030.377695-1-f.fainelli@gmail.com/T/#t
-> 
-> Sorry about that, I will build with W=1 in the future to notice those set
-> but unused variable warnings.
+> Signed-off-by: Liangliang Lu <quic_luliang@quicinc.com>
+> Signed-off-by: Sayali Lokhande <quic_sayalil@quicinc.com>
+> Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+> Signed-off-by: Ram Prakash Gupta <quic_rampraka@quicinc.com>
+> Signed-off-by: Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
 
-I've queued up the updates now, thanks.
+Seems to need to be re-based on Ulf's next branch:
 
-greg k-h
+	git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git next
+
+Otherwise:
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
+> ---
+>  drivers/mmc/core/core.c  | 10 +++++++++-
+>  include/linux/mmc/host.h | 26 ++++++++++++++++++++++++++
+>  2 files changed, 35 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+> index 368f104..5db5adf 100644
+> --- a/drivers/mmc/core/core.c
+> +++ b/drivers/mmc/core/core.c
+> @@ -943,9 +943,11 @@ int mmc_execute_tuning(struct mmc_card *card)
+>  	}
+>  
+>  	/* Only print error when we don't check for card removal */
+> -	if (!host->detect_change)
+> +	if (!host->detect_change) {
+>  		pr_err("%s: tuning execution failed: %d\n",
+>  			mmc_hostname(host), err);
+> +		mmc_debugfs_err_stats_inc(host, MMC_ERR_TUNING);
+> +	}
+>  
+>  	return err;
+>  }
+> @@ -2242,6 +2244,12 @@ void mmc_rescan(struct work_struct *work)
+>  		if (freqs[i] <= host->f_min)
+>  			break;
+>  	}
+> +
+> +	/*
+> +	 * Ignore the command timeout errors observed during
+> +	 * the card init as those are excepted.
+> +	 */
+> +	host->err_stats[MMC_ERR_CMD_TIMEOUT] = 0;
+>  	mmc_release_host(host);
+>  
+>   out:
+> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> index 0c0c9a0..0d7c0f7 100644
+> --- a/include/linux/mmc/host.h
+> +++ b/include/linux/mmc/host.h
+> @@ -93,6 +93,25 @@ struct mmc_clk_phase_map {
+>  
+>  struct mmc_host;
+>  
+> +enum mmc_err_stat {
+> +	MMC_ERR_CMD_TIMEOUT,
+> +	MMC_ERR_CMD_CRC,
+> +	MMC_ERR_DAT_TIMEOUT,
+> +	MMC_ERR_DAT_CRC,
+> +	MMC_ERR_AUTO_CMD,
+> +	MMC_ERR_ADMA,
+> +	MMC_ERR_TUNING,
+> +	MMC_ERR_CMDQ_RED,
+> +	MMC_ERR_CMDQ_GCE,
+> +	MMC_ERR_CMDQ_ICCE,
+> +	MMC_ERR_REQ_TIMEOUT,
+> +	MMC_ERR_CMDQ_REQ_TIMEOUT,
+> +	MMC_ERR_ICE_CFG,
+> +	MMC_ERR_CTRL_TIMEOUT,
+> +	MMC_ERR_UNEXPECTED_IRQ,
+> +	MMC_ERR_MAX,
+> +};
+> +
+>  struct mmc_host_ops {
+>  	/*
+>  	 * It is optional for the host to implement pre_req and post_req in
+> @@ -498,6 +517,7 @@ struct mmc_host {
+>  	/* Host Software Queue support */
+>  	bool			hsq_enabled;
+>  
+> +	u32			err_stats[MMC_ERR_MAX];
+>  	unsigned long		private[] ____cacheline_aligned;
+>  };
+>  
+> @@ -632,6 +652,12 @@ static inline enum dma_data_direction mmc_get_dma_dir(struct mmc_data *data)
+>  	return data->flags & MMC_DATA_WRITE ? DMA_TO_DEVICE : DMA_FROM_DEVICE;
+>  }
+>  
+> +static inline void mmc_debugfs_err_stats_inc(struct mmc_host *host,
+> +					     enum mmc_err_stat stat)
+> +{
+> +	host->err_stats[stat] += 1;
+> +}
+> +
+>  int mmc_send_tuning(struct mmc_host *host, u32 opcode, int *cmd_error);
+>  int mmc_send_abort_tuning(struct mmc_host *host, u32 opcode);
+>  
+
