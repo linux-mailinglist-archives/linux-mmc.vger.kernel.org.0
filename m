@@ -2,146 +2,66 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41CA2530AAF
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 May 2022 10:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58D41530C13
+	for <lists+linux-mmc@lfdr.de>; Mon, 23 May 2022 11:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231233AbiEWHwn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 23 May 2022 03:52:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49674 "EHLO
+        id S231937AbiEWIcm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 23 May 2022 04:32:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231235AbiEWHwl (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 May 2022 03:52:41 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA04C2A;
-        Mon, 23 May 2022 00:52:38 -0700 (PDT)
-X-UUID: e872954f6e174e2797e08568db490e37-20220523
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.5,REQID:1e7946c2-d70e-4544-ab36-c554dcb667a4,OB:0,LO
-        B:10,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,AC
-        TION:release,TS:45
-X-CID-INFO: VERSION:1.1.5,REQID:1e7946c2-d70e-4544-ab36-c554dcb667a4,OB:0,LOB:
-        10,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:45
-X-CID-META: VersionHash:2a19b09,CLOUDID:805133e3-edbf-4bd4-8a34-dfc5f7bb086d,C
-        OID:9dcc2d6235fe,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,QS:0,BEC:nil
-X-UUID: e872954f6e174e2797e08568db490e37-20220523
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <axe.yang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 802858127; Mon, 23 May 2022 15:52:32 +0800
-Received: from MTKMBS07N2.mediatek.inc (172.21.101.141) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Mon, 23 May 2022 15:52:30 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 23 May 2022 15:52:30 +0800
-Received: from mhfsdcap04 (10.17.3.154) by mtkmbs11n1.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.2.792.3 via Frontend
- Transport; Mon, 23 May 2022 15:52:29 +0800
-Message-ID: <c6cca70d59ce38db24936fbcaf2d0ceb1d01727b.camel@mediatek.com>
-Subject: Re: [PATCH v10 1/3] dt-bindings: mmc: mtk-sd: extend interrupts and
- pinctrls properties
-From:   Axe Yang <axe.yang@mediatek.com>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Chaotian Jing" <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>
-CC:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Satya Tangirala <satyat@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Lucas Stach <dev@lynxeye.de>,
-        Eric Biggers <ebiggers@google.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Kiwoong Kim <kwmad.kim@samsung.com>,
-        Yue Hu <huyue2@yulong.com>, Tian Tao <tiantao6@hisilicon.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Date:   Mon, 23 May 2022 15:52:28 +0800
-In-Reply-To: <d8de6b98-23a3-1991-8ceb-24098c38c335@collabora.com>
-References: <20220519111323.14586-1-axe.yang@mediatek.com>
-         <20220519111323.14586-2-axe.yang@mediatek.com>
-         <d8de6b98-23a3-1991-8ceb-24098c38c335@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        with ESMTP id S231931AbiEWIcd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 23 May 2022 04:32:33 -0400
+X-Greylist: delayed 987 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 May 2022 01:32:31 PDT
+Received: from mail.tireplot.pl (mail.tireplot.pl [46.183.184.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73DD81C913
+        for <linux-mmc@vger.kernel.org>; Mon, 23 May 2022 01:32:30 -0700 (PDT)
+Received: by mail.tireplot.pl (Postfix, from userid 1001)
+        id 567DB4B23F; Mon, 23 May 2022 10:06:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tireplot.pl; s=mail;
+        t=1653293282; bh=Rfzvu4C+yJ1wyuJ4V+t/udh6cgYEQVnY6S5ltO4wdNg=;
+        h=Date:From:To:Subject:From;
+        b=E4uK2kw72ESldl6uwB7WIaszaRJYaQTqIFztR/VGw6mzOj9V37x0MSQemxtqLI4M1
+         6cg/Bxk0Q+WoNk7zbOBgCNmTpBGN15JtusFfliiNNHEyhMTY2Gxog80ABHZsHccaga
+         5XIHLINANSIxPdCka/BlLkmKKUzZHvD7rhRG2QZCxBuz1E8TUMyoKSJ0ujVuKyetaY
+         gnqNi4b1IeQqeYlnLn7iyUhDiGR9famQXZxbE7rP3+HxO86irNIvXdSk7ha+Xfm9SK
+         ya3OxaRC/g/7oktURQNTN29pm4X9kzmnmAgviJqJMVPRMlDbyW1QKqqN6LLc5S0Ubp
+         3EGvOe5mHpvEw==
+Received: by mail.tireplot.pl for <linux-mmc@vger.kernel.org>; Mon, 23 May 2022 08:05:32 GMT
+Message-ID: <20220523084501-0.1.2k.fy0w.0.8f7sc6nf7h@tireplot.pl>
+Date:   Mon, 23 May 2022 08:05:32 GMT
+From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
+        <arkadiusz.sokolowski@tireplot.pl>
+To:     <linux-mmc@vger.kernel.org>
+Subject: Koszty instalacji fotowoltaicznej
+X-Mailer: mail.tireplot.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 2022-05-19 at 13:18 +0200, AngeloGioacchino Del Regno wrote:
-> Il 19/05/22 13:13, Axe Yang ha scritto:
-> > Extend interrupts and pinctrls for SDIO wakeup interrupt feature.
-> > This feature allow SDIO devices alarm asynchronous interrupt to
-> > host
-> > even when host stop providing clock to SDIO card. An extra wakeup
-> > interrupt and pinctrl states for SDIO DAT1 pin state switching are
-> > required in this scenario.
-> > 
-> > Signed-off-by: Axe Yang <axe.yang@mediatek.com>
-> > ---
-> >   .../devicetree/bindings/mmc/mtk-sd.yaml       | 53
-> > ++++++++++++++++++-
-> >   1 file changed, 52 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> > b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> > index 2a2e9fa8c188..b068ab67a054 100644
-> > --- a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> > +++ b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> > @@ -72,12 +72,26 @@ properties:
-> >         - const: ahb_cg
-> >   
-> >     interrupts:
-> > -    maxItems: 1
-> > +    description:
-> > +      Should at least contain MSDC GIC interrupt. To support SDIO
-> > in-band wakeup, an extended
-> > +      interrupt is required and be configured as wakeup source
-> > irq.
-> > +    minItems: 1
-> > +    maxItems: 2
-> > +
-> > +  interrupt-names:
-> > +    items:
-> > +      - const: msdc_irq
-> >   
-> 
-> That ain't right. You have two interrupts, so you describe two
-> interrupts:
-> 
-> interrupt-names:
->    minItems: 1
->    items:
->      - const: msdc
->      - const: sdio-wakeup
-> 
-Fixed in v11.
+Dzie=C5=84 dobry,
 
-> ...also, I personally don't like the "_irq" suffix: we're specifying
-> interrupts in
-> interrupt-names, so it sounds a bit redundant.
-> 
-> You're free to keep it, if you really like it though.
+stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
+ obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99. =20
 
-Totally agree with that. The suffix is removed in v11.
+Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
+acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
+ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
 
-Regards,
-Axe
+Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
+=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
+=2E
 
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
+
+Pozdrawiam
+Arkadiusz Soko=C5=82owski
