@@ -1,124 +1,153 @@
 Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from out1.vger.email (unknown [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 068CC533CA4
-	for <lists+linux-mmc@lfdr.de>; Wed, 25 May 2022 14:29:18 +0200 (CEST)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 76982533F52
+	for <lists+linux-mmc@lfdr.de>; Wed, 25 May 2022 16:36:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241405AbiEYM2v (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 25 May 2022 08:28:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51762 "EHLO
+        id S230492AbiEYOgP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 25 May 2022 10:36:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238624AbiEYM2u (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 May 2022 08:28:50 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D8D46D3B5;
-        Wed, 25 May 2022 05:28:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1653481730; x=1685017730;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=FwtFR9xmp2GlSe86mLIUtQ+27qGOvB2x+BZIKUG5EzM=;
-  b=VfyN7CTC7Lk2ZCl0y5wo6WqF8ZeAOgTZlwaDQcJ4AxrgYRPgVG/SUyXM
-   Nwv0Qba0ESukRI33hjsJS2RRuDBm2itn94sROsQE9L9eTr8+tN+0pEptT
-   UPWu1CO70V2ZTSNZN+dp/6q5f0rvFcSupKaLIXWZiJQt+C/f26Cg7HWzy
-   E=;
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 25 May 2022 05:28:50 -0700
-X-QCInternal: smtphost
-Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 25 May 2022 05:28:48 -0700
-X-QCInternal: smtphost
-Received: from c-sbhanu-linux.qualcomm.com ([10.242.50.201])
-  by ironmsg01-blr.qualcomm.com with ESMTP; 25 May 2022 17:58:30 +0530
-Received: by c-sbhanu-linux.qualcomm.com (Postfix, from userid 2344807)
-        id C837116F8; Wed, 25 May 2022 17:58:28 +0530 (IST)
-From:   Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, p.zabel@pengutronix.de,
-        chris@printf.net, venkatg@codeaurora.org, gdjakov@mm-sol.com,
-        quic_asutoshd@quicinc.com
-Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, quic_rampraka@quicinc.com,
-        quic_pragalla@quicinc.com, quic_sartgarg@quicinc.com,
-        quic_nitirawa@quicinc.com, quic_sayalil@quicinc.com,
-        Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>,
-        Liangliang Lu <quic_luliang@quicinc.com>,
-        "Bao D . Nguyen" <quic_nguyenb@quicinc.com>
-Subject: [PATCH V7 4/4] mmc: debugfs: Add debug fs error state entry for mmc driver
-Date:   Wed, 25 May 2022 17:58:21 +0530
-Message-Id: <1653481701-19642-5-git-send-email-quic_c_sbhanu@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1653481701-19642-1-git-send-email-quic_c_sbhanu@quicinc.com>
-References: <1653481701-19642-1-git-send-email-quic_c_sbhanu@quicinc.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231761AbiEYOgO (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 May 2022 10:36:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 836E61E3CE
+        for <linux-mmc@vger.kernel.org>; Wed, 25 May 2022 07:36:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1653489371;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=7eghtolzwl0drnd0tYSGSUnL+HRSRExNXVsg8ngNKhI=;
+        b=dtUpmzdyaEK5JvRMu2hMUyT9Qdohxn41hwLKJeE2PtLn5e0W4OCVje1uVdyFmnnFyTka5N
+        fCAboL6/L9VFkkbYF2ODh9rKGxUcPWpyfE4qqFYAgPY8abV5UqJBsdOY8/iUwFoeH08pra
+        gpt9olBOGuQ3iLY5uOXWt+hDY46KUyw=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-482-dH-7GMT3P1Wh4rOdr0nFOg-1; Wed, 25 May 2022 10:36:07 -0400
+X-MC-Unique: dH-7GMT3P1Wh4rOdr0nFOg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE8161C00ACB;
+        Wed, 25 May 2022 14:36:06 +0000 (UTC)
+Received: from T590 (ovpn-8-19.pek2.redhat.com [10.72.8.19])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 90B35112131B;
+        Wed, 25 May 2022 14:36:01 +0000 (UTC)
+Date:   Wed, 25 May 2022 22:35:56 +0800
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Jens Axboe <axboe@kernel.dk>, Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-block@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-scsi@vger.kernel.org
+Subject: Re: [PATCH 11/14] block: remove GENHD_FL_EXT_DEVT
+Message-ID: <Yo4+zEnrBTnoEMCz@T590>
+References: <20211122130625.1136848-1-hch@lst.de>
+ <20211122130625.1136848-12-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211122130625.1136848-12-hch@lst.de>
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.3
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add debug fs entry error state to query eMMC and SD card errors statistics.
-If any errors occurred in eMMC and SD card driver level then
-err_state value will be set to 1.
+Hi Christoph,
 
-Signed-off-by: Liangliang Lu <quic_luliang@quicinc.com>
-Signed-off-by: Sayali Lokhande <quic_sayalil@quicinc.com>
-Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-Signed-off-by: Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
----
- drivers/mmc/core/debugfs.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+On Mon, Nov 22, 2021 at 02:06:22PM +0100, Christoph Hellwig wrote:
+> All modern drivers can support extra partitions using the extended
+> dev_t.  In fact except for the ioctl method drivers never even see
+> partitions in normal operation.
+> 
+> So remove the GENHD_FL_EXT_DEVT and allow extra partitions for all
+> block devices that do support partitions, and require those that
+> do not support partitions to explicit disallow them using
+> GENHD_FL_NO_PART.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  block/genhd.c                  |  6 +++---
+>  block/partitions/core.c        |  9 ++++-----
+>  drivers/block/amiflop.c        |  1 +
+>  drivers/block/ataflop.c        |  1 +
+>  drivers/block/brd.c            |  1 -
+>  drivers/block/drbd/drbd_main.c |  1 +
+>  drivers/block/floppy.c         |  1 +
+>  drivers/block/loop.c           |  1 -
+>  drivers/block/null_blk/main.c  |  1 -
+>  drivers/block/paride/pcd.c     |  1 +
+>  drivers/block/paride/pf.c      |  1 +
+>  drivers/block/pktcdvd.c        |  2 +-
+>  drivers/block/ps3vram.c        |  1 +
+>  drivers/block/rbd.c            |  6 ++----
+>  drivers/block/swim.c           |  1 +
+>  drivers/block/swim3.c          |  2 +-
+>  drivers/block/virtio_blk.c     |  1 -
+>  drivers/block/z2ram.c          |  1 +
+>  drivers/block/zram/zram_drv.c  |  1 +
+>  drivers/cdrom/gdrom.c          |  1 +
+>  drivers/md/dm.c                |  1 +
+>  drivers/md/md.c                |  5 -----
+>  drivers/mmc/core/block.c       |  1 -
+>  drivers/mtd/ubi/block.c        |  1 +
+>  drivers/scsi/sd.c              |  1 -
+>  drivers/scsi/sr.c              |  1 +
+>  include/linux/genhd.h          | 28 +++++-----------------------
+>  27 files changed, 30 insertions(+), 48 deletions(-)
+> 
+> diff --git a/block/genhd.c b/block/genhd.c
+> index 09abd41249fd4..e9346fae48ad4 100644
+> --- a/block/genhd.c
+> +++ b/block/genhd.c
+> @@ -376,7 +376,7 @@ int disk_scan_partitions(struct gendisk *disk, fmode_t mode)
+>  {
+>  	struct block_device *bdev;
+>  
+> -	if (!disk_part_scan_enabled(disk))
+> +	if (disk->flags & GENHD_FL_NO_PART)
+>  		return -EINVAL;
+>  	if (disk->open_partitions)
+>  		return -EBUSY;
+> @@ -438,7 +438,6 @@ int __must_check device_add_disk(struct device *parent, struct gendisk *disk,
+>  			return ret;
+>  		disk->major = BLOCK_EXT_MAJOR;
+>  		disk->first_minor = ret;
+> -		disk->flags |= GENHD_FL_EXT_DEVT;
+>  	}
+>  
+>  	ret = disk_alloc_events(disk);
+> @@ -872,7 +871,8 @@ static ssize_t disk_ext_range_show(struct device *dev,
+>  {
+>  	struct gendisk *disk = dev_to_disk(dev);
+>  
+> -	return sprintf(buf, "%d\n", disk_max_parts(disk));
+> +	return sprintf(buf, "%d\n",
+> +		(disk->flags & GENHD_FL_NO_PART) ? 1 : DISK_MAX_PARTS);
 
-diff --git a/drivers/mmc/core/debugfs.c b/drivers/mmc/core/debugfs.c
-index f9fb51f..d8ff66f 100644
---- a/drivers/mmc/core/debugfs.c
-+++ b/drivers/mmc/core/debugfs.c
-@@ -234,6 +234,27 @@ static int mmc_clock_opt_set(void *data, u64 val)
- DEFINE_SIMPLE_ATTRIBUTE(mmc_clock_fops, mmc_clock_opt_get, mmc_clock_opt_set,
- 	"%llu\n");
- 
-+static int mmc_err_state_get(void *data, u64 *val)
-+{
-+	struct mmc_host *host = data;
-+	int i;
-+
-+	if (!host)
-+		return -EINVAL;
-+
-+	*val = 0;
-+	for (i = 0; i < MMC_ERR_MAX; i++) {
-+		if (host->err_stats[i]) {
-+			*val = 1;
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(mmc_err_state, mmc_err_state_get, NULL, "%llu\n");
-+
- static int mmc_err_stats_show(struct seq_file *file, void *data)
- {
- 	struct mmc_host *host = (struct mmc_host *)file->private;
-@@ -309,6 +330,10 @@ void mmc_add_host_debugfs(struct mmc_host *host)
- 			&mmc_clock_fops))
- 		goto err_node;
- 
-+	if (!debugfs_create_file_unsafe("err_state", 0600, root, host,
-+			&mmc_err_state))
-+		goto err_node;
-+
- 	if (!debugfs_create_file("err_stats", 0600, root, host,
- 			&mmc_err_stats_fops))
- 		goto err_node;
--- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member 
-of Code Aurora Forum, hosted by The Linux Foundation
+The above change breaks parted on loop, which reads 'ext_range' to add
+partitions.
+
+Follows the test case:
+
+	fallocate -l 4096M loop0.img
+	losetup /dev/loop0 loop0.img
+	parted -s /dev/loop0 mklabel MSDOS
+	parted -s /dev/loop0 mkpart pri 1 1248
+
+Since this patch is merged, /dev/loop0p1 can't be created any more
+by above script.
+
+
+
+Thanks,
+Ming
 
