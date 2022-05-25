@@ -2,108 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC85B5344A8
-	for <lists+linux-mmc@lfdr.de>; Wed, 25 May 2022 22:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0BFB534532
+	for <lists+linux-mmc@lfdr.de>; Wed, 25 May 2022 22:48:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344390AbiEYUGj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 25 May 2022 16:06:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54148 "EHLO
+        id S235227AbiEYUr7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 25 May 2022 16:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236448AbiEYUGh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 May 2022 16:06:37 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 838A45593
-        for <linux-mmc@vger.kernel.org>; Wed, 25 May 2022 13:06:35 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id y24so5354561wmq.5
-        for <linux-mmc@vger.kernel.org>; Wed, 25 May 2022 13:06:35 -0700 (PDT)
+        with ESMTP id S229824AbiEYUr6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 May 2022 16:47:58 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D85674FD
+        for <linux-mmc@vger.kernel.org>; Wed, 25 May 2022 13:47:57 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-2fee010f509so227074547b3.11
+        for <linux-mmc@vger.kernel.org>; Wed, 25 May 2022 13:47:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pensando.io; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5MlRh8v/O/wHhNLDVqNAGwAJO3u/nvYhL6suQln4qMM=;
-        b=aOtG+77g4SUVZr8bbvfMI4s7jJQI5gdHfJc7aakPzg+lNkGNOOQVJV9iG4Yu/jIe3/
-         QbmCPdfeXzcf5y/4GD8DI74dKjylTbj6yE5dszfna3WO92tO3psktxusV3598aleUFYq
-         6H1cCeAlBOFu3Va+kmZhuRKXO39pTz4MvBX3soqViH7SE3lZthU3f7oHiFWMBQ0Mc3k+
-         nSwL7XWWbT3FArlMgP4a3hyS7DfL6PQZDPlYYkm+NsWMmmjAr3cXFnn9+kjPnlIb1n6d
-         qwgLFiy3/gBjTWnjPyLyJOmMCNivCq0vgmMJcwttRd3X2eybN1mqziJcEI/6rKIvaeeh
-         7K2Q==
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=+uyh4vUIYntN7Mid2B5fbgguOxBR2RiHnKBh7A4r37I=;
+        b=PnromsGSl/VyCqJRnnJHQGv2emL8SwMg8ftXDY1M1kfjEHhbW+SFcNbx3DogMg04Y9
+         /oZIr62MobI8ksksf+p9sBio2Dq2yBIBPcLJ3b1SShimWCeBsnvQbeReD0NRZ7Om0Lst
+         q1lisGYBsy1KTkD8a/a+P3V6h5TEOEvizQbKOIY52MNwlZwBpCdF++HQA7VleD8dxYmT
+         47CCQBdH112dj3BW1XZfHpBYhUz6nflHJwVhKJ1dOqZAhIGbRVTP42myeLGtiu1ATKwe
+         DXnDVSRqAyDH9FmgiIci81QGTqI4p/Sz0r5xM/GwgFW8dm98Yai8Vi1EO7F7NXK45ral
+         Mg0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5MlRh8v/O/wHhNLDVqNAGwAJO3u/nvYhL6suQln4qMM=;
-        b=fajbZ/y0VWJtcgHDZ+hyIPc49PEgoSzVYv1JhXXii/ZAmGX53eKhP/CkopFx3URGmg
-         bKwR2bVJwmUdknLkMO8O+iICLTW5zF8VRwlNVNiRGM6vfcveKplCam5OlggPEBxle457
-         8P37PSNM5f3MKJLvYgUC2swzWxm9aRsSkQ4BmQrin8zrmaoyM9T4ylt0RkZzGPA6wA8r
-         yBHcS297lIjBNieaJGQ6N8tH//J3tWlwb5HusHcmIUarMW45IOcI27Gra87cYVfeylav
-         9gGLnkoUL+BNu6W+WwlDIgTI1M2kK5ACrGa/jSMMIHOBDOxZR5uV9i6lOCX5z2QNr9lH
-         7U/Q==
-X-Gm-Message-State: AOAM532zCikVWmgwh/DHmlCuBc9RS+R66sWICItZ9jl8DhD3xDVef+O1
-        L95lt6b93Xz9jdn3Sk+sW703q31PjMD2sIm2nfG/HA==
-X-Google-Smtp-Source: ABdhPJzwmm4iFgAvq41IWkRIMaeSW61oQACieHYUK5Pp+Z5/usjraflqW/p2zQWTbtlA0quoR70s8kdRGnwXUQJemek=
-X-Received: by 2002:a05:600c:3515:b0:394:8c7e:fbde with SMTP id
- h21-20020a05600c351500b003948c7efbdemr9559357wmq.165.1653509194127; Wed, 25
- May 2022 13:06:34 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=+uyh4vUIYntN7Mid2B5fbgguOxBR2RiHnKBh7A4r37I=;
+        b=tinH2rDH67FMRMGpnxxiF6y1xCu9lmA/zbcfYvRzwf4bqD6ggyZcTGyaFqS5+8bnZv
+         XbUrdsDPC6cqjGxG1AMTSyVR8XMshhSkuhuO9sn/edCx15+H1vxZQc/504va8K2mFFU7
+         3NXTP6nw6fVKjeR3hOFpDjqwcXkUQlO6FqMeuFRjK/pmYRuZS8HkxFZHrjZMkj89/usm
+         4VriqUB6+SZBX8Sg75+G4SFao3hxcnEc89046ce1gQcZYYtUcd15CK3UC8eBve1dDMX/
+         c/s664msIWjNhb69LzkbhzpUYYrlU4sovGSwP5vG8F+/UpUM4pj2nnHNxlCBTfrjkiIo
+         YboQ==
+X-Gm-Message-State: AOAM533x8G0sE1fleXemUrIn3LJ1sWPmXvLL92WygR7LGtNdswSBpxAZ
+        dGGkwC0y6/SDQnAA2hNI4qlYVP3TJEDBO4EhMBI=
+X-Google-Smtp-Source: ABdhPJwSUXt4OSD1heOIQ3zIbqBs1JquJNu8NtOAfWl74I7duJ3I9S+mgyYgK4KvmN58QkVh9RTAkFFWkd3+8Flvjy4=
+X-Received: by 2002:a81:1f8b:0:b0:2f8:5846:445e with SMTP id
+ f133-20020a811f8b000000b002f85846445emr35075611ywf.50.1653511677047; Wed, 25
+ May 2022 13:47:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220406233648.21644-1-brad@pensando.io> <20220406233648.21644-12-brad@pensando.io>
- <20220412112239.cucvqqlfsdpjnzju@mobilestation>
-In-Reply-To: <20220412112239.cucvqqlfsdpjnzju@mobilestation>
-From:   Brad Larson <brad@pensando.io>
-Date:   Wed, 25 May 2022 13:06:23 -0700
-Message-ID: <CAK9rFnz9a_21Bc9yyUqqmQET_o6g5XK6=mfZVv9jUp4dNxCx4w@mail.gmail.com>
-Subject: Re: [PATCH 11/11] arm64: dts: Add Pensando Elba SoC support
-To:     Serge Semin <fancer.lancer@gmail.com>
-Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Olof Johansson <olof@lixom.net>,
-        David Clear <dac2@pensando.io>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Received: by 2002:a05:7110:3682:b0:17b:2b7b:c035 with HTTP; Wed, 25 May 2022
+ 13:47:56 -0700 (PDT)
+From:   Colina Fernando <colinafernando724@gmail.com>
+Date:   Wed, 25 May 2022 22:47:56 +0200
+Message-ID: <CAP7Hh1-qYQ=wBUq_p5pXQrtkN1XpxJSADCpbiay82rCojSvQDg@mail.gmail.com>
+Subject: Bitte kontaktaufnahme Erforderlich !!! Please Contact Required !!!
+To:     contact@firstdiamondbk.com
+Cc:     info@firstdiamondbk.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Sergey,
+Guten Tag,
 
-On Tue, Apr 12, 2022 at 4:22 AM Serge Semin <fancer.lancer@gmail.com> wrote:
->
-> On Wed, Apr 06, 2022 at 04:36:48PM -0700, Brad Larson wrote:
+Ich habe mich nur gefragt, ob Sie meine vorherige E-Mail bekommen
 
-> > +             spi0: spi@2800 {
-> > +                     compatible = "pensando,elba-spi";
-> > +                     reg = <0x0 0x2800 0x0 0x100>;
->
-> > +                     pensando,syscon-spics = <&mssoc 0x2468>;
->
-> I am wondering do you really need to define the
-> "pensando,syscon-spics" property as accepting a phandle with an
-> additional argument? That would have been justified if you had at
-> least two SPI controllers with different CS override registers. AFAICS
-> you've got only one here. So you can simplify the bindings by defining
-> the property like "pensando,syscon" (with no "spics" suffix) which
-> accepts the syscon phandle alone. Respective SPICS offset can be
-> locally declared in the driver as a macro with respective name.
+haben ?
 
-Yes this can be simplified and doing that in updated patchset.  Only this
-API call is needed in dw_spi_elba_init().
+Ich habe versucht, Sie per E-Mail zu erreichen.
 
-syscon_regmap_lookup_by_phandle(np, "pensando,syscon");
+Kommen Sie bitte schnell zu mir zur=C3=BCck, es ist sehr wichtig.
 
-Regards,
-Brad
+Danke
+
+Fernando Colina
+
+colinafernando724@gmail.com
+
+
+
+
+----------------------------------
+
+
+
+
+Good Afternoon,
+
+I was just wondering if you got my Previous E-mail
+have ?
+
+I tried to reach you by E-mail.
+
+Please come back to me quickly, it is very Important.
+
+Thanks
+
+Fernando Colina
+
+colinafernando724@gmail.com
