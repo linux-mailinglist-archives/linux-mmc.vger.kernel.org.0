@@ -2,109 +2,90 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D43A538495
-	for <lists+linux-mmc@lfdr.de>; Mon, 30 May 2022 17:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7851D5385D1
+	for <lists+linux-mmc@lfdr.de>; Mon, 30 May 2022 18:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240277AbiE3PSI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 30 May 2022 11:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58090 "EHLO
+        id S240904AbiE3QDD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 30 May 2022 12:03:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240989AbiE3PR4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 May 2022 11:17:56 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 280D89B1B4
-        for <linux-mmc@vger.kernel.org>; Mon, 30 May 2022 07:19:45 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id 62so3071234iov.4
-        for <linux-mmc@vger.kernel.org>; Mon, 30 May 2022 07:19:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
-        b=GBPTKh0zCZu9oVylk7LcjIGeh/aOcA7SYtfyTNeMo3eWo3otAt1xcDN8aUh2dxtl6V
-         NJxfKENaQYPouW0CyUvsibDIwZUUiUjXGMN6z5EQMX+B8UGrAEssVprzjvSwuW9+hiEV
-         tMRuznT9zE4q27VryjVLXeZJ7Yd5/lUSBZ4AZut+LDRU5ExksWM9hJdFKt/s2P2oRGw1
-         1bv9p1CodU8djWylyRAAriEFa88slUppKhOgaVUrDEZh/DjTV55F9hjYkR+oLnl4UUll
-         fXQxbyzhvLb4vnqVJj37S2PuatZrCxSzFUi8aF+k6kRM/aLAPbDyJLvru6GjwHcVd9Wt
-         DUgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
-        b=XUdVxLc+AkSENq0u0dhN5obB92EVPTs6jw+QpcIHmu/GLS+HKIYWUIvToad8UBD84A
-         nrRrPab1F5ToNiAmaVWJZecGOq/onbdFcEZu8Y4xtJvDvPER2cm9Xx+31ohHOeZfxzlC
-         TMGcuvfvb1rghcNGLp3ETYZHDpFN7eqXbrmpBJUy8yZyB+UKTwXgf9D7tusYWdZWwD8S
-         fwgSBQ2y2WJA1PZuDVwreKvWDThTpB1xfL25rYqSlUYb4zkG9RoZrChHeYIbeNeL0SHi
-         1779tO/zvUyjuSRAMIt1NK/7a60Zrs4cIkCuVZik8xXkHCN/kWwkaQsXi/9Gb5/Dmp48
-         HrWg==
-X-Gm-Message-State: AOAM533R0MHNTcC7A6LA1X8bTyc1AC4twN5HvDm58QDNn5YqlJK4iVoe
-        nQXtC2mqkUwdjk0nfnvnkEW7+qXEPdSsfKO28XA=
-X-Google-Smtp-Source: ABdhPJygbUw7M+ueM1SHdL9rGBPJpknk7hANUmNNOPpWNeAYNGhkZBhbvYbB/m8BFH9NV2VR9QttXhdvIhivkcfv7rc=
-X-Received: by 2002:a05:6602:26ce:b0:649:5967:ca14 with SMTP id
- g14-20020a05660226ce00b006495967ca14mr24917858ioo.97.1653920383644; Mon, 30
- May 2022 07:19:43 -0700 (PDT)
+        with ESMTP id S242724AbiE3QCd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 May 2022 12:02:33 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3EC93;
+        Mon, 30 May 2022 09:02:23 -0700 (PDT)
+X-UUID: 4827a7887c5a489aa9649e311c4d8c30-20220531
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:c7243481-68b2-439e-9beb-cecbb626aa87,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:14,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
+        ION:release,TS:14
+X-CID-META: VersionHash:2a19b09,CLOUDID:2f7bceb8-3c45-407b-8f66-25095432a27a,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:3,EDM:-3,IP:nil,URL:0,File:nil
+        ,QS:0,BEC:nil
+X-UUID: 4827a7887c5a489aa9649e311c4d8c30-20220531
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+        (envelope-from <miles.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 68746084; Tue, 31 May 2022 00:02:16 +0800
+Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Tue, 31 May 2022 00:02:15 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 31 May 2022 00:02:15 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 31 May 2022 00:02:15 +0800
+From:   Miles Chen <miles.chen@mediatek.com>
+To:     <fparent@baylibre.com>
+CC:     <chaotian.jing@mediatek.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, <linux-mmc@vger.kernel.org>,
+        <matthias.bgg@gmail.com>, <ulf.hansson@linaro.org>
+Subject: Re: [PATCH] mmc: mtk-sd: fix typo
+Date:   Tue, 31 May 2022 00:02:15 +0800
+Message-ID: <20220530160215.8749-1-miles.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20220530123857.692076-1-fparent@baylibre.com>
+References: <20220530123857.692076-1-fparent@baylibre.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6622:f06:0:0:0:0 with HTTP; Mon, 30 May 2022 07:19:43
- -0700 (PDT)
-Reply-To: barristerbenjamin221@gmail.com
-From:   Attorney Amadou <koadaidrissa1@gmail.com>
-Date:   Mon, 30 May 2022 07:19:43 -0700
-Message-ID: <CAOh7+P9xtnTHc7YODNDJ-h_78vEpnsVFaq7XYQwRC6YNPaaz1g@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_99,BAYES_999,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:d44 listed in]
-        [list.dnswl.org]
-        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [koadaidrissa1[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [barristerbenjamin221[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [koadaidrissa1[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-SGVsbG8gZGVhciBmcmllbmQuDQoNClBsZWFzZSBJIHdpbGwgbG92ZSB0byBkaXNjdXNzIHNvbWV0
-aGluZyB2ZXJ5IGltcG9ydGFudCB3aXRoIHlvdSwgSQ0Kd2lsbCBhcHByZWNpYXRlIGl0IGlmIHlv
-dSBncmFudCBtZSBhdWRpZW5jZS4NCg0KU2luY2VyZWx5Lg0KQmFycmlzdGVyIEFtYWRvdSBCZW5q
-YW1pbiBFc3EuDQouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4NCuimquaEm+OB
-quOCi+WPi+S6uuOAgeOBk+OCk+OBq+OBoeOBr+OAgg0KDQrnp4Hjga/jgYLjgarjgZ/jgajpnZ7l
-uLjjgavph43opoHjgarjgZPjgajjgavjgaTjgYTjgaboqbHjgZflkIjjgYbjga7jgYzlpKflpb3j
-gY3jgafjgZnjgIHjgYLjgarjgZ/jgYznp4HjgavogbTooYbjgpLkuI7jgYjjgabjgY/jgozjgozj
-gbDnp4Hjga/jgZ3jgozjgpLmhJ/orJ3jgZfjgb7jgZnjgIINCg0K5b+D44GL44KJ44CCDQrjg5Dj
-g6rjgrnjgr/jg7zjgqLjg57jg4njgqXjg5njg7Pjgrjjg6Pjg5/jg7NFc3HjgIINCg==
+>Fix a typo: Fianl -> Final.
+>
+>Signed-off-by: Fabien Parent <fparent@baylibre.com>
+
+Reviewed-by: Miles Chen <miles.chen@mediatek.com> 
+
+>---
+> drivers/mmc/host/mtk-sd.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+>index 195dc897188b..c7d196f805ec 100644
+>--- a/drivers/mmc/host/mtk-sd.c
+>+++ b/drivers/mmc/host/mtk-sd.c
+>@@ -2318,7 +2318,7 @@ static int msdc_execute_hs400_tuning(struct mmc_host *mmc, struct mmc_card *card
+> 	else
+> 		val = readl(host->base + PAD_DS_TUNE);
+> 
+>-	dev_info(host->dev, "Fianl PAD_DS_TUNE: 0x%x\n", val);
+>+	dev_info(host->dev, "Final PAD_DS_TUNE: 0x%x\n", val);
+> 
+> 	return 0;
+> 
+>-- 
+>2.36.1
+
+
