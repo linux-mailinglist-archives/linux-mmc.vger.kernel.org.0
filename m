@@ -2,77 +2,222 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F9FE5385D7
-	for <lists+linux-mmc@lfdr.de>; Mon, 30 May 2022 18:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEC80538678
+	for <lists+linux-mmc@lfdr.de>; Mon, 30 May 2022 18:59:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232572AbiE3QHO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 30 May 2022 12:07:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44026 "EHLO
+        id S238944AbiE3Q66 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 30 May 2022 12:58:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbiE3QHN (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 May 2022 12:07:13 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CBAB579BF
-        for <linux-mmc@vger.kernel.org>; Mon, 30 May 2022 09:07:09 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id bf44so1893346lfb.0
-        for <linux-mmc@vger.kernel.org>; Mon, 30 May 2022 09:07:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=s7095fKF5kyad6EgVhyo3ZHYESRpknTbw0cpB1kzGkw=;
-        b=AxYl/sTFiUymHH5ZF75PwgFT1HMD0iflH08sXbFIJ/Qg+YrdtHMItNmDP9YdfStkJa
-         jyeLtv+ro0x/+IRAhyZhlh284JyOzeJSc58x5H+CIsvm2qKl2KwNuGS3gjnV/8t6SNO8
-         6IL9TqxOCzIun72T1TNv+44g5OMdgo3se8E1FBxDBkPnVdDASoO1gaixRe5vM49FOuqu
-         Lz1EDmFCOMznQ3j0W7ayx/WngXMf8kkbquTqgr7QYsTkVA9UtumtkOta296BvNffHhRI
-         VemD5r2hAS1IyhifdmZMWOEJbi7/k2+EYEB7tTIgztfP0YXDs9YsgDeUFBcpdj2pk9uE
-         stMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=s7095fKF5kyad6EgVhyo3ZHYESRpknTbw0cpB1kzGkw=;
-        b=6IodqoAy5oVIDvydFOkIC1UhpbFI3eYklUZrI0Ftnfz02dvuON3sZvFrKQ+iu8Rhl6
-         LW2EXiulDgpnT9wgK9Gn9p0FPoaVlTi6BFWKBCeeYz6W1m6RoFtzo+9ZQp9B+WbKRd5v
-         4SOY6vH2WgX73YDnxkaHKACHYU0Btc8m5ZcrlzovhXNDfj5ud8Dy3kqqqdBTydebSomw
-         FgM1d+7uWdqsYMFEAS0C/sFWBYxrMdtuLgsTJ0jbvQ1bMRxZqhdonCCyQIkjfr1KhfWQ
-         Z7F9Yx3aZja7FBX+ZJJaQHNGPAOQlcqEszStkPQuIRJ5YSAvQiN3L39dpoKxjTLu+ggm
-         4ytQ==
-X-Gm-Message-State: AOAM530VOXurm25bSk9csEG4aSicRvyjh72yKAH5oS3XwPL1+oYtRLY4
-        dnFJYVCQjlRfTBjF6y8fxAHWzEv+fihmZuX68BE=
-X-Google-Smtp-Source: ABdhPJwT3dRU6dH1/Fmc4bFS2wkwLBkf2LlFMgm/ULMwPnYkbAV3cJ4HAs6ALV5JRVoJAV1R63FtHBAKP4jq5Q89e48=
-X-Received: by 2002:a05:6512:48e:b0:477:c024:1a1c with SMTP id
- v14-20020a056512048e00b00477c0241a1cmr41318533lfq.100.1653926827534; Mon, 30
- May 2022 09:07:07 -0700 (PDT)
-MIME-Version: 1.0
-Sender: kamianthonylw@gmail.com
-Received: by 2002:a05:6520:244a:b0:1d0:556f:f332 with HTTP; Mon, 30 May 2022
- 09:07:06 -0700 (PDT)
-From:   Charles Renata <advocatecharlesranata.chembers@gmail.com>
-Date:   Mon, 30 May 2022 16:07:06 +0000
-X-Google-Sender-Auth: WB_odcvxjkaNiTw-9ZVR6k0C8Wo
-Message-ID: <CANVCc0Aord61i1igSZ+eat6uPViftQfDnGi5u6O9jNGj7u87Sw@mail.gmail.com>
-Subject: Warm wishes,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=2.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
-        MILLION_USD,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: **
+        with ESMTP id S238922AbiE3Q64 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 May 2022 12:58:56 -0400
+X-Greylist: delayed 182 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 30 May 2022 09:58:55 PDT
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56CE48A072
+        for <linux-mmc@vger.kernel.org>; Mon, 30 May 2022 09:58:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1653929748;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=Message-Id:To:Cc:Subject:Date:From:Cc:Date:From:Subject:Sender;
+    bh=3stp/0ZU+iCDZnHMwdfUDlVByYs+4oPnlnDY02SV4QE=;
+    b=J+BmhvkW2r5Tp7brxW57HQc+WtIYnBopbETIufk52yfnEvEFZ5As8kM5YKq4bAeGYz
+    Lq9pdn7aVwRmbiF4vU+XGkAtqEeSjMpZlu9OgnNTYuhqhJDRhN56iQcrsCy7aAA81dzw
+    tKltgUOZ7AM3AO/f8TdkxL+cZTQiFvB69uQqeP2hIgaPuOyCRMbhETDw+QesRd8hk6gk
+    bPC30m21FHJXIbRuc8VIOTsZ5uBngHNsAPoOYkGnKMdUTK1nGq49uY78BPNuS6X/nUjz
+    gxZRcK2VBNtjVmjF9bPGvvHE1QotP/2rYvjPo36gnYBVQeUC+djtXht5AhSB5vDVEQqo
+    yawQ==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7gpw91N5y2S3iMIVeg=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+    by smtp.strato.de (RZmta 47.44.0 DYNA|AUTH)
+    with ESMTPSA id e48d97y4UGtlN5H
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Mon, 30 May 2022 18:55:47 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+Content-Type: text/plain;
+        charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
+Date:   Mon, 30 May 2022 18:55:46 +0200
+Subject: BUG in mmc: core: Disable card detect during shutdown
+Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        kernel@pyra-handheld.com, aTc <atc@k-n-p.org>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-mmc@vger.kernel.org
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Message-Id: <55A0788B-03E8-457E-B093-40FD93F1B9F3@goldelico.com>
+X-Mailer: Apple Mail (2.3445.104.21)
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,TRACKER_ID,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Warm Wishes.
+Hi Ulf,
+users did report a strange issue that the OMAP5 based Pyra does not
+shutdown if a kernel 5.10.116 is used.
 
-I am barrister Charles Renata, I am contacting you again to confirm if
-you have received my previous email regarding my late client's
-estimated inheritance of ($13.6 Million USD). I am writing to you
-because you have the same surname as my late client.
+Someone did a bisect and found that reverting
 
-Respond for further information
-Sincerely,
-Charles Renata (lawyer)
+0d66b395210c5084c2b7324945062c1d1f95487a
+
+resp. upstream
+
+66c915d09b942fb3b2b0cb2f56562180901fba17
+
+solves it.
+
+I could now confirm that it also happens with v5.18.0.
+But interestingly only on the Pyra handheld device and not
+on the omap5evm (which is supported by mainline).
+
+The symptom is:
+
+a) without revert
+
+root@letux:~# poweroff
+
+Broadcast message from root@letux (console) (Sat Jan  1 01:08:25 2000):
+
+The system is going down for system halt NOW!
+INIT: Sending processes the TERM signal
+root@letux:~# [info] Using makefile-style concurrent boot in runlevel 0.
+[....] Stopping cgroup management proxy daemon: cgproxy[....] Stopping =
+cgroup management daemon: cgmanager[....] Stop[ ok bluetooth: =
+/usr/sbin/bluetoothd.
+[FAIL] Stopping ISC DHCP server: dhcpd failed!
+dhcpcd[3055]: sending signal 15 to pid 2976
+dhcpcd[3055]: waiting for pid 2976 to exit
+[ ok ] Shutting down ALSA...done.
+[ ok ] Asking all remaining processes to terminate...done.
+[ ok ] All processes ended within 2 seconds...done.
+[ ok [[c[....] Stopping enhanced syslogd: rsyslogd.
+[ ok ....] Deconfiguring network interfaces...done.
+^[[c[info] Saving the system clock.
+[info] Hardware Clock updated to Sat Jan  1 01:08:30 UTC 2000.
+[ ok ] Deactivating swap...done.
+^[[c[   77.289332] EXT4-fs (mmcblk0p2): re-mounted. Quota mode: none.
+[info] Will now halt.
+
+b) with reverting your patch
+
+root@letux:~# uname -a
+Linux letux 5.18.0-letux-lpae+ #9678 SMP PREEMPT Mon May 30 18:02:28 =
+CEST 2022 armv7l GNU/Linux
+root@letux:~# poweroff
+
+Broadcast message from root@letux (console) (Sat Jan  1 01:39:15 2000):
+
+The system is going down for system halt NOW!
+INIT: Sending processes the TERM signal
+root@letux:~# [info] Using makefile-style concurrent boot in runlevel 0.
+[FAIL] Stopping cgroup management proxy daemon: cgproxy[....] Stopping =
+ISC DHCP server: dhcpd failed!
+[....] Stopping cgroup management daemon: cgmanagerdhcpcd[3100]: sending =
+signal 15 to pid 3013
+dhcpcd[3100]: waiting for pid 3013 to exit
+[ ok ] Stopping bluetooth: /usr/sbin/bluetoothd.
+[ ok ] Shutting down ALSA...done.
+[ ok ] Asking all remaining processes to terminate...done.
+[ ok ] All processes ended within 3 seconds...done.
+[ ok [[c[....] Stopping enhanced syslogd: rsyslogd.
+[ ok ....] Deconfiguring network interfaces...done.
+^[[c[info] Saving the system clock.
+[info] Hardware Clock updated to Sat Jan  1 01:39:21 UTC 2000.
+[ ok ] Deactivating swap...done.
+^[[c[   44.563256] EXT4-fs (mmcblk0p2): re-mounted. Quota mode: none.
+[info] Will now halt.
+[   46.917534] reboot: Power down
+
+
+What I suspect is that we have multiple mmc interfaces and have
+card detect wired up in the Pyra while it is ignored in the
+EVM. Is it possible that __mmc_stop_host() never returns in
+.shutdown_pre if card detect is set up (and potentially
+shut down earlier)?
+
+Setup of mmc is done in omap5-board-common.dtsi and omap5.dtsi.
+
+Out Pyra has a non-upstream device tree where we use
+omap5-board-common.dtsi and overwrite it by e.g.
+
+&mmc4 { /* second (u)SD slot (SDIO capable) */
+	status =3D "okay";
+	vmmc-supply =3D <&ldo2_reg>;
+	pinctrl-names =3D "default";
+	pinctrl-0 =3D <&mmc4_pins>;
+	bus-width =3D <4>;
+	cd-gpios =3D <&gpio3 13 GPIO_ACTIVE_LOW>;	/* gpio3_77 */
+	wp-gpios =3D <&gpio3 15 GPIO_ACTIVE_HIGH>;	/* gpio3_79 */
+};
+
+But I have tried to remove the cd-gpois and wp-gpois. Or make the
+mmc interface being disabled (but I may not have catched everything
+in first place).
+
+Then I added some printk to mmc_stop_host() and __mmc_stop_host().
+
+mmc_stop_host() is not called but __mmc_stop_host() is called 4 times.
+There are 4 active MMC interfaces in the Pyra - 3 for (=C2=B5)SD slots
+and one for an SDIO WLAN module.
+
+Now it looks as if 3 of them are properly teared down (two of them
+seem to have host->slot.cd_irq >=3D 0) but on the fourth call
+cancel_delayed_work_sync(&host->detect); does not return. This is
+likely the location of the stall why we don't see a "reboot: Power down"
+
+Any ideas?
+
+BR and thanks,
+Nikolaus
+
+printk hack:
+
+void __mmc_stop_host(struct mmc_host *host)
+{
+printk("%s 1\n", __func__);
+	if (host->slot.cd_irq >=3D 0) {
+printk("%s 2\n", __func__);
+		mmc_gpio_set_cd_wake(host, false);
+printk("%s 3\n", __func__);
+		disable_irq(host->slot.cd_irq);
+printk("%s 4\n", __func__);
+	}
+
+	host->rescan_disable =3D 1;
+printk("%s 5\n", __func__);
+	cancel_delayed_work_sync(&host->detect);
+printk("%s 6\n", __func__);
+}
+
+resulting log:
+
+[info] Will now halt.
+[  282.780929] __mmc_stop_host 1
+[  282.784276] __mmc_stop_host 2
+[  282.787735] __mmc_stop_host 3
+[  282.791030] __mmc_stop_host 4
+[  282.794235] __mmc_stop_host 5
+[  282.797369] __mmc_stop_host 6
+[  282.800918] __mmc_stop_host 1
+[  282.804269] __mmc_stop_host 5
+[  282.807541] __mmc_stop_host 6
+[  282.810715] __mmc_stop_host 1
+[  282.813842] __mmc_stop_host 2
+[  282.816984] __mmc_stop_host 3
+[  282.820175] __mmc_stop_host 4
+[  282.823302] __mmc_stop_host 5
+[  282.826449] __mmc_stop_host 6
+[  282.830941] __mmc_stop_host 1
+[  282.834076] __mmc_stop_host 5
+
+--- here should be another __mmc_stop_host 6
+--- and reboot: Power down=
