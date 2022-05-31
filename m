@@ -2,117 +2,142 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6BE95391EC
-	for <lists+linux-mmc@lfdr.de>; Tue, 31 May 2022 15:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EF59539228
+	for <lists+linux-mmc@lfdr.de>; Tue, 31 May 2022 15:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344794AbiEaNjb (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 31 May 2022 09:39:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58296 "EHLO
+        id S240521AbiEaNvA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 31 May 2022 09:51:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344805AbiEaNjU (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 31 May 2022 09:39:20 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19C0198088
-        for <linux-mmc@vger.kernel.org>; Tue, 31 May 2022 06:39:16 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id y32so21532470lfa.6
-        for <linux-mmc@vger.kernel.org>; Tue, 31 May 2022 06:39:16 -0700 (PDT)
+        with ESMTP id S1344868AbiEaNun (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 31 May 2022 09:50:43 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8528855B8
+        for <linux-mmc@vger.kernel.org>; Tue, 31 May 2022 06:50:38 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id x17so9726134wrg.6
+        for <linux-mmc@vger.kernel.org>; Tue, 31 May 2022 06:50:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Woo8oKshTzh9S1tak5uSOyrCGP/mtqNmhpMc/8wYggk=;
-        b=OFDvFn31/wu3lfug6gv87ucAtyVKBEO1I/1Waqyh6F/j07OSi00oe9ClePLZr0WYLg
-         zQhIMZivQm3z839Yi58bpaO1eRHB0x1WEjHxLeF0jIw0IW8SRCJvovpfJyg5b1jL8LJ3
-         y8LbfXr13DKxczo+6XDURGzTbhgPmR1BKmkJFRpv2nAYnRzG20EykhRe3301dYV3bRr/
-         +F7kSINIQUlyoD4LI7WBkEOEIgQXy+Zae5Van3EdCeQdh+Bpg76eBdbjmxcgAIxQd0LD
-         it7KiUWsght1Sg99iMODMylbXiiYmb/DJlmslxA2w/0hRZwD2ry4DSneh98C0pL9jpwR
-         B1sA==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ks9vTtzXL1NzJuLhvcv/lBf9sH/I8oroEcUXJQecJiY=;
+        b=xtZHSA3K85YeP1R8TqJTezh1l7AboO67QnJbxmUxYsSKR3b9HMFsTp1QD4TVZvKYD1
+         HykwJkz0IW4fwjPH1Z0l9xH3Oif1Qyz4EObPsiwZXnAXo/kCZCKI8eI5xsuJ7HgXtaXN
+         igvkGmpchkyuuMO2tdAR159F7tqSL4KCQk76eOzZ0gnvace+L6L/D7RGtYizyiAxNH/H
+         U1OOXHiLwvj0PnjQ9PmyWuR1utFiONwi7NGx9h2FLtpNKsKkOyd7zUg6Z7fPPuvzo2+J
+         OzV184qkC3Q1grDw1sZEiE1et3kV/ow2A5Uy2HR/6AQuE2OaglwYGrTIwCVgkLMJpI+J
+         hYNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Woo8oKshTzh9S1tak5uSOyrCGP/mtqNmhpMc/8wYggk=;
-        b=xsMe02prbS569taYLTqAAdCqKwZuBZBPdpaccB1QvxJ+poUGJSalw83ZRxwldINokU
-         xIL1V8K8man9e966zucTbFiNJxAlX8gRq1SUiF0VfAG0CvbW7zLSWkTGub0qP8Vw23jB
-         svqJ+3wRRo7sbwQJShBg0xXPPgYWzW1Hl71NCkRxRa2XDRvdDrY1QUNyoqpz1IDjtxuj
-         2F8TotuVLx6XscrcYZau8Btl8fMI4aTqesCZ4ms8DNjiz3hs3D+CFk0TrK+U+mfeTlrP
-         mBDZtGViUOQenZIfg2PNCgs37eC+XuFgG2x2RNCRZivPt77GYO8rgLUKwjtE/27DxsoH
-         QwhA==
-X-Gm-Message-State: AOAM530d82+8Hqq4oClVYlzYDxxpmBWPgp8PXd6LF2jewmqxeqfAcGBg
-        Saya5+4FJ62S/GfgiERl/hZE2K2QuATeuKwN834MXQ==
-X-Google-Smtp-Source: ABdhPJxn1r3MgXJ2C/wc5i1LUO0VYa92fq0hsD61WN7c9DWQuUy4e52MgQnLD+H3DWIDUT8Kmcg4eTj8+At65oR2rc8=
-X-Received: by 2002:a05:6512:3b0e:b0:478:7c53:4d0a with SMTP id
- f14-20020a0565123b0e00b004787c534d0amr28793645lfv.373.1654004354233; Tue, 31
- May 2022 06:39:14 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ks9vTtzXL1NzJuLhvcv/lBf9sH/I8oroEcUXJQecJiY=;
+        b=Uv8duipnCintwPLh92ra8ElLZSML7kezbmZJuurlJ0NFgm+7sHVXK1y3r0fyegceRg
+         5kCD7pR9ZP/ISS+Dm8D7GyVzeWoZ03NK+necRwdA7GkVKMwiukPAa4QvH11tpxTmAs0L
+         HAbu14bpD5hHt5StJiut8sk4g0Pr6F1ufQD7cL8pJl9V0lFHNONZEItbqdiTAAbWeUa0
+         b4KN1qQM5A/R7o78QfBYOO1f3llfyzkqKC9QKt+oKtGCdH7Q1PfoAgDnpa+6dDA+XJ4R
+         vATlevBa6+L7IKUprmj6V/4ibY2sONDC74+6mkN2Z+oaW++Un4DwDEG8w1avMxbrRl2H
+         hl0A==
+X-Gm-Message-State: AOAM530ewb49m0mMaRaffdAqQv8SbATxGyszqKlQlw5JpHOw/G+hbbUn
+        bb3tVm3ps8x2O3EXpeMInYfKxA==
+X-Google-Smtp-Source: ABdhPJzh0ABvRvzeW4VNDfDT+jgXlefhQRDjukiBBkCf5v7KqylLxZRg6Qya21tyLqyBuT1Kzn3OQA==
+X-Received: by 2002:a5d:6f1d:0:b0:20f:ff40:263f with SMTP id ay29-20020a5d6f1d000000b0020fff40263fmr25172992wrb.626.1654005037132;
+        Tue, 31 May 2022 06:50:37 -0700 (PDT)
+Received: from localhost.localdomain ([88.160.162.107])
+        by smtp.gmail.com with ESMTPSA id l11-20020a05600c1d0b00b00394351e35edsm2404806wms.26.2022.05.31.06.50.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 May 2022 06:50:36 -0700 (PDT)
+From:   Fabien Parent <fparent@baylibre.com>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        vkoul@kernel.org, qii.wang@mediatek.com, matthias.bgg@gmail.com,
+        jic23@kernel.org, chaotian.jing@mediatek.com,
+        ulf.hansson@linaro.org, srinivas.kandagatla@linaro.org,
+        chunfeng.yun@mediatek.com, broonie@kernel.org,
+        wim@linux-watchdog.org, linux@roeck-us.net
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        Fabien Parent <fparent@baylibre.com>
+Subject: [PATCH 00/17] Add support for MT8365 EVK board
+Date:   Tue, 31 May 2022 15:50:09 +0200
+Message-Id: <20220531135026.238475-1-fparent@baylibre.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-References: <20220520114242.150235-1-benchuanggli@gmail.com>
-In-Reply-To: <20220520114242.150235-1-benchuanggli@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 31 May 2022 15:38:37 +0200
-Message-ID: <CAPDyKFoQP=4OSwcjj6bJOxDXvrWjqwi-MpvpMe4L5ftWwkEhFQ@mail.gmail.com>
-Subject: Re: [RESEND, PATCH] mmc: sdhci-pci-gli: Fix GL9763E runtime PM when
- the system resumes from suspend
-To:     Ben Chuang <benchuanggli@gmail.com>
-Cc:     adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, greg.tu@genesyslogic.com.tw,
-        ben.chuang@genesyslogic.com.tw, SeanHY.Chen@genesyslogic.com.tw,
-        jason.lai@genesyslogic.com.tw, victor.shih@genesyslogic.com.tw,
-        kane.chen@intel.corp-partner.google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 20 May 2022 at 13:43, Ben Chuang <benchuanggli@gmail.com> wrote:
->
-> When the system resumes from suspend (S3 or S4), the power mode is
-> MMC_POWER_OFF. In this status, gl9763e_runtime_resume() should not enable
-> PLL. Add a condition to this function to enable PLL only when the power
-> mode is MMC_POWER_ON.
->
-> Fixes: d607667bb8fa (mmc: sdhci-pci-gli: Add runtime PM for GL9763E)
-> Signed-off-by: Ben Chuang <benchuanggli@gmail.com>
+This patch series adds support for the MT8365 EVK board.
 
-Sorry for the delay, I have been out traveling. Unfortunately this
-didn't make it for v5.18, although I have queued it up for v5.19 and
-added a stable tag.
+This series has dependencies on the following series:
+https://patchwork.kernel.org/project/linux-mediatek/list/?series=646256
+https://patchwork.kernel.org/project/linux-mediatek/list/?series=646091
+https://patchwork.kernel.org/project/linux-mediatek/list/?series=646083
+https://patchwork.kernel.org/project/linux-mediatek/list/?series=646081
+https://patchwork.kernel.org/project/linux-mediatek/list/?series=646076
+https://patchwork.kernel.org/project/linux-mediatek/list/?series=646068
+https://patchwork.kernel.org/project/linux-mediatek/list/?series=646020
+https://patchwork.kernel.org/project/linux-mediatek/list/?series=646052
+https://lore.kernel.org/r/20220504091923.2219-2-rex-bc.chen@mediatek.com 
+https://lore.kernel.org/r/20220512062622.31484-2-chunfeng.yun@mediatek.com 
+https://lore.kernel.org/r/20220512062622.31484-1-chunfeng.yun@mediatek.com
+https://lore.kernel.org/r/20220524115019.97246-1-angelogioacchino.delregno@collabora.com
+https://lore.kernel.org/all/20220127015857.9868-1-biao.huang@mediatek.com/
 
-Thanks and kind regards
-Uffe
+Fabien Parent (17):
+  dt-bindings: i2c: i2c-mt65xx: add binding for MT8365 SoC
+  dt-bindings: memory: add mt8365 SoC binding documentation
+  dt-bindings: mmc: mtk-sd: add bindings for MT8365 SoC
+  dt-bindings: arm: mediatek: Add binding for mt8365-evk board
+  dt-bindings: dma: mediatek,uart-dma: add MT8365 bindings
+  dt-bindings: iio: adc: mediatek: add MT8365 SoC bindings
+  dt-bindings: nvmem: mediatek,efuse: add MT8365 bindings
+  dt-bindings: watchdog: mtk-wdt: Add MT8365 SoC bindings
+  dt-bindings: spi: mt65xx: add MT8365 SoC bindings
+  dt-bindings: serial: mediatek: add MT8365 bindings
+  dt-bindings: phy: mediatek,dsi-phy: Add MT8365 SoC bindings
+  dt-bindings: phy: mediatek,tphy: add MT8365 SoC bindings
+  dt-bindings: usb: mediatek,mtu3: add MT8365 SoC bindings
+  dt-bindings: usb: mediatek,mtk-xhci: add MT8365 SoC bindings
+  arm64: dts: mediatek: add mt6357 device-tree
+  arm64: dts: mediatek: add mt8365 device-tree
+  arm64: dts: mediatek: add mt8365-evk board device-tree
 
+ .../devicetree/bindings/arm/mediatek.yaml     |    4 +
+ .../bindings/dma/mediatek,uart-dma.yaml       |    1 +
+ .../devicetree/bindings/i2c/i2c-mt65xx.yaml   |    4 +
+ .../iio/adc/mediatek,mt2701-auxadc.yaml       |    1 +
+ .../mediatek,smi-common.yaml                  |    6 +
+ .../memory-controllers/mediatek,smi-larb.yaml |    6 +
+ .../devicetree/bindings/mmc/mtk-sd.yaml       |    3 +
+ .../bindings/nvmem/mediatek,efuse.yaml        |    1 +
+ .../bindings/phy/mediatek,dsi-phy.yaml        |    4 +
+ .../bindings/phy/mediatek,tphy.yaml           |    1 +
+ .../bindings/serial/mediatek,uart.yaml        |    1 +
+ .../bindings/spi/mediatek,spi-mt65xx.yaml     |    1 +
+ .../bindings/usb/mediatek,mtk-xhci.yaml       |    1 +
+ .../bindings/usb/mediatek,mtu3.yaml           |    1 +
+ .../devicetree/bindings/watchdog/mtk-wdt.txt  |    1 +
+ arch/arm64/boot/dts/mediatek/Makefile         |    1 +
+ arch/arm64/boot/dts/mediatek/mt6357.dtsi      |  272 +++++
+ arch/arm64/boot/dts/mediatek/mt8365-evk.dts   |  578 +++++++++
+ arch/arm64/boot/dts/mediatek/mt8365.dtsi      | 1047 +++++++++++++++++
+ 19 files changed, 1934 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/mediatek/mt6357.dtsi
+ create mode 100644 arch/arm64/boot/dts/mediatek/mt8365-evk.dts
+ create mode 100644 arch/arm64/boot/dts/mediatek/mt8365.dtsi
 
-> ---
-> Hi,
->
-> Sorry, resend this patch because typo two email addresses.
-> Sorry for Adrian and Kane.
->
-> Best regards,
-> Ben
-> ---
->  drivers/mmc/host/sdhci-pci-gli.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-> index d09728c37d03..d81e5dc90e15 100644
-> --- a/drivers/mmc/host/sdhci-pci-gli.c
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -972,6 +972,9 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
->         struct sdhci_host *host = slot->host;
->         u16 clock;
->
-> +       if (host->mmc->ios.power_mode != MMC_POWER_ON)
-> +               return 0;
-> +
->         clock = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
->
->         clock |= SDHCI_CLOCK_PLL_EN;
-> --
-> 2.36.0
->
+-- 
+2.36.1
+
