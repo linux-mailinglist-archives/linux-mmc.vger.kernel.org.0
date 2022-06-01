@@ -2,93 +2,69 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A76053A922
-	for <lists+linux-mmc@lfdr.de>; Wed,  1 Jun 2022 16:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0B853AFE0
+	for <lists+linux-mmc@lfdr.de>; Thu,  2 Jun 2022 00:51:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355184AbiFAO07 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 1 Jun 2022 10:26:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51588 "EHLO
+        id S230441AbiFAVDA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 1 Jun 2022 17:03:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355620AbiFAO0n (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 1 Jun 2022 10:26:43 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1262ACD0
-        for <linux-mmc@vger.kernel.org>; Wed,  1 Jun 2022 07:20:52 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id g12so2174460lja.3
-        for <linux-mmc@vger.kernel.org>; Wed, 01 Jun 2022 07:20:51 -0700 (PDT)
+        with ESMTP id S230099AbiFAVC7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 1 Jun 2022 17:02:59 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A9F0230942
+        for <linux-mmc@vger.kernel.org>; Wed,  1 Jun 2022 14:02:57 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-e5e433d66dso4338266fac.5
+        for <linux-mmc@vger.kernel.org>; Wed, 01 Jun 2022 14:02:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/qDPxqxtAnqx70yomMz4iKcG/suKMrIdMG5mPCftR2g=;
-        b=gVFN2d29Ob2IsoQslrcbptF3svKScdiHyFPmNr10CFxhknhNn7gqwsCr9mypdHMeuG
-         I7gk65CFQNFA2oKopvqa13ri4A88g45f4vVdOURoytvhrtLUr9CcFjTCUiQugHnnOXiX
-         1jOT8/raJcsgiLpvcIgBcyfQdYnhYIoFsUlynR1Cm5PJGCFH8ubju+VXnv+qmsEJ41uz
-         nRA+RsZVOyGUxogebV8INdIHtxPZrKXyGasyf9ReRz6j850wBTV6UhXNjlxn7RYN70N/
-         ahpY3ajNR6s6gcsLlhKnHBHSwtFNLicEaHdRprD/mwMZ8dQV35aorV1pkxL10dFefyNR
-         NCfQ==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
+         :subject:to;
+        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
+        b=DxxMd4k8tG1Z+DI+JxuL9225Cp+S+uInl/poXMcuMZiTQV1c8XJNPCuJB0EN9Fm1lJ
+         tjqO15tZbiRtkiZc869kqZb+gTGwGsofr4Ks/EzA24HoqZkeukApCRLbeWaJgYbzN6Uj
+         DJcyUaN0vgzLiaJiK8SKJwd17XWuJUN7X4OrSO+zy2q+txFdEpb8ifoCAb/ECnGeqxQV
+         22+OgKU21rrXICCeKXN25GVJHEIOuX810V30PW3f8Y111fShlwSlQkBARV9N87g0aoLJ
+         wQNCoaF08Ng768jLDvSBCHYHS21HkQkWfLc+tM30B/O2SgLendb0dLrFE3BY6UlGqUm0
+         gBYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/qDPxqxtAnqx70yomMz4iKcG/suKMrIdMG5mPCftR2g=;
-        b=hqlB3uUY4XiuRKpRBF/lFjdhDWo0o4m5K9rG5rDCqat9ikDjjjkXxlLhxLDWUuAacI
-         Buyz+INkPp3J2ccBDfQ6D2n5tooH9ci+4jbnKc/p5iRYfVHxCax3mgyIkuPiKawL2rw3
-         PVaE4JBuEFD+7NIFuX6gpd4kHApI5rFjMR0VaQRYLQDy5iSMjh0x0B9qQefmrpAnKPRc
-         qFmr000MWEvD5dhYbWeiNlyXG5ZZaaMDKmHzkZLOz/LE2Wn5vHGrZFnBaFmhYRQ0JMrD
-         z0FmD4DXdiqMjswmK4y27qAOs26VpLvoC3R7iRsbGCuIAUFjYde0L45yfP753OYh30s7
-         9UlQ==
-X-Gm-Message-State: AOAM532p6E54CapQcrSqk0VIVrf/htyIqgMSTz/NSz2cC9fvT7UyWl3i
-        p35pFMfjMIOrvW9Bq8nlRI8++bdxb66aW6vpLvjzgA==
-X-Google-Smtp-Source: ABdhPJyHLe+8u5VYlCGJLP8Qc+G0asgDycWaaA6EZ0mEacenGngsM1+d36udkKA5adI89ZmSgyxTW2xZap3Rb49TyUQ=
-X-Received: by 2002:a2e:9e54:0:b0:250:d6c8:c2a6 with SMTP id
- g20-20020a2e9e54000000b00250d6c8c2a6mr40310597ljk.16.1654093250356; Wed, 01
- Jun 2022 07:20:50 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
+         :from:date:message-id:subject:to;
+        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
+        b=MuUez0MIB1L6bK+floTPifqPONsmgCuPgH7BkahJRjjrM1awJZXEIjYRmRkCKoejvU
+         W7Zep2QqAsXrlbFFfcD3D87WizHz20y8+bvM1LCWgjEHOOS5+UC9+X/d/1ePNHh7x11p
+         OAOBfokjGYIESGADAL5nMeIJdNd9DfrnjeW/S2hrZawfVf80guU7MQnSIR0fzX5RbeWX
+         gBo9Xvm6vtrdMlDADnFjaaKcIBod8tNxRyBPZN4I00nFtiiDskVd5YJbqy8ltsF3w9+U
+         OuGnO1mRia327YYl3XEbOia2kM056RCyM7QAwYnNzxjUpaAWUhURrWTHEM+FbZKx25uW
+         +miw==
+X-Gm-Message-State: AOAM531vKvMRUvUZh80FFbqIh6fDWDlmiGHI0c8z4UCA7sjPrOLVyVep
+        9MYXTbqZ19pK4LM5wt5xoO7H4vuLf0W4wXOEciPrOxE+NWw=
+X-Google-Smtp-Source: ABdhPJxRHJ7PowqzwP8FVf7Pao2siL9+mp8F+vsKwg9Hvlld1uXwEH8+vzJyu5zLQk9d57eu+g6BtXkHW1P4ce0P3TA=
+X-Received: by 2002:a05:6870:4619:b0:f1:e78d:fd54 with SMTP id
+ z25-20020a056870461900b000f1e78dfd54mr18175523oao.195.1654111088174; Wed, 01
+ Jun 2022 12:18:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220526014204.2873107-1-robh@kernel.org> <CAPDyKFoh5FyRDxr22XnkOd76MG4YjkvqL039=+qHGZKwfdFquw@mail.gmail.com>
- <20220601140429.GA3909718-robh@kernel.org>
-In-Reply-To: <20220601140429.GA3909718-robh@kernel.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 1 Jun 2022 16:20:14 +0200
-Message-ID: <CAPDyKFoDfBCFrdvDunCm4a2v_A=UzVMJvHyNN6XAdjjQ=gzkvg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: mmc: Fix unevaluatedProperties warnings in examples
-To:     Rob Herring <robh@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Hu Ziji <huziji@marvell.com>, Al Cooper <alcooperx@gmail.com>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Received: by 2002:a05:6358:3601:b0:a3:2139:251d with HTTP; Wed, 1 Jun 2022
+ 12:18:07 -0700 (PDT)
+Reply-To: johnwinery@online.ee
+In-Reply-To: <CAFqHCSSUC0MpbjYK8d-GCxOG4b6Qbk2uH3+xQDZte6cPBsxLGA@mail.gmail.com>
+References: <CAFqHCSSUC0MpbjYK8d-GCxOG4b6Qbk2uH3+xQDZte6cPBsxLGA@mail.gmail.com>
+From:   johnwinery <alicejohnson8974@gmail.com>
+Date:   Wed, 1 Jun 2022 12:18:07 -0700
+Message-ID: <CAFqHCSTLW5uHwBqcyU-qn7_jF2jtwt2-CjgdN8-B9nAn9yi+vg@mail.gmail.com>
+Subject: Re:
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 1 Jun 2022 at 16:04, Rob Herring <robh@kernel.org> wrote:
->
-> On Wed, Jun 01, 2022 at 02:46:21PM +0200, Ulf Hansson wrote:
-> > On Thu, 26 May 2022 at 03:42, Rob Herring <robh@kernel.org> wrote:
-> > >
-> > > The 'unevaluatedProperties' schema checks is not fully working and doesn't
-> > > catch some cases where there's a $ref to another schema. A fix is pending,
-> > > but results in new warnings in examples. Fix the warnings by removing
-> > > spurious properties or adding a missing property to the schema.
-> > >
-> > > Signed-off-by: Rob Herring <robh@kernel.org>
-> >
-> > Queued for v5.20 on the devel branch, thanks!
->
-> Can you take for 5.19 instead so I can enable this in dtschema sooner
-> rather than later?
-
-Sure! I have moved the patch to the fixes branch now.
-
-Kind regards
-Uffe
+Greeting ,I had written an earlier mail to you but without response
