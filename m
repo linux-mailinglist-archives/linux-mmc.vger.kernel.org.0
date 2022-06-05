@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6306253DBA6
-	for <lists+linux-mmc@lfdr.de>; Sun,  5 Jun 2022 15:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0599853DBA8
+	for <lists+linux-mmc@lfdr.de>; Sun,  5 Jun 2022 15:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244925AbiFENdZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 5 Jun 2022 09:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53592 "EHLO
+        id S244177AbiFENdd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 5 Jun 2022 09:33:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243967AbiFENdX (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 5 Jun 2022 09:33:23 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 254BC38DAD
-        for <linux-mmc@vger.kernel.org>; Sun,  5 Jun 2022 06:33:22 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id m32-20020a05600c3b2000b0039756bb41f2so6601908wms.3
-        for <linux-mmc@vger.kernel.org>; Sun, 05 Jun 2022 06:33:22 -0700 (PDT)
+        with ESMTP id S1343725AbiFENd1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 5 Jun 2022 09:33:27 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D37E839169
+        for <linux-mmc@vger.kernel.org>; Sun,  5 Jun 2022 06:33:24 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id q26so6018503wra.1
+        for <linux-mmc@vger.kernel.org>; Sun, 05 Jun 2022 06:33:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=conchuod.ie; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Mkd6aXMnIDerQLoHrLWEjvYyGr3xupK+E9ATz84tnuI=;
-        b=bl8GOPL/9Anc8bPUu5kO48+tI7Y4tEopw6WUpip5A2dIGh4+3aRt3lXY6dwxGUPfYq
-         A85sZXax9VvKJ2EQXrR5PlrIa0KsLMDvcy/mz9qEdfd+BmbG25/QnoIB9sZmm40B+B4n
-         1YPl6h5ocUoGZSOPLgCeMIctRYnP5Hc+4W/XhCkRghlvw20ny4WKudQTxVKKimVFmrmd
-         UK71jcEk6sEQAt/v41CfLGm2yUNAHj2MJq/maynD7W0Q20Jzd2xtuJQ/Ne/P2PWEcWrt
-         VczdkTgTYJ6vt/Sf8SXiE/qglL9oHLPoWDG/T45cwdSr8bgOj9G0EHASeO5yecZ5b6Fd
-         cYEg==
+        bh=qvovknsG3pTwsXPXVn/vDXoAWBD8w8aZsXWfzyMtSBs=;
+        b=NETA3GgPfVm66DpPaF2S0nTHcRlk3BDIbRN52sR4sT6nmMn3x8IhGjo7skosK2o2Rw
+         0yYBfruS2m6oFrSu91XMhZEWRJlnF+hKkihrEeIyIS+lSymdFYTDyeQX3c9lecWfIfx+
+         UCkpuQHSKoYkbEXyjYI/3ZF9VjqP0oNBRgQXs3NoqsN7tLB8hVnqXjoP6A1y9QxPlOsw
+         ufvA269uijRyeoA2gNbGtQVH+/gYVCrqWuQfZ+CLHOrycRMDP2LwV6HsVu2GZTfUyyH7
+         2SvjMSpxa8kKULKjRuh09rMb9w/KMnSRMKihpk0bT6XI7vcMmtgf9agmS8Cx9CnLpEUh
+         gU1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Mkd6aXMnIDerQLoHrLWEjvYyGr3xupK+E9ATz84tnuI=;
-        b=A7QA0DABcix4JvL1Z/+dG4iC3+vYijq+W17hBbYD/lUeXxo0rbmqTndo0xd+ZWFFqv
-         KhIpQCvO6p0s/YCl2YfmVi++SPjK/r/L8UofC91JSRSIRz9arnll/scxBUGWp/eaJfrn
-         NCsOSbIAHXYsN5QSdUk3V1IuQqJkzaINszRF97bezwaZBQkLjkL9Wvl6/J5688tFOmRc
-         etSAwYUZiGT7rpoyxyvOrnzlczY/sGSCR2UfiMI8lkxCCp6v7rf0tJTzXu13g9DA2PIy
-         yjOKkjzuatwghaPmZ6K2YxZpAcYdudpParOXiWB9feLwdMaotzemfxECP3EsmUf3ZbcO
-         EC5A==
-X-Gm-Message-State: AOAM532B2WG/LMu8uIvULf7j+CXR/SINxeDAZFNXNIjoyh4bhs8HDbmJ
-        dvZ3gy/i+Yumo6liZQQ51qNzOw==
-X-Google-Smtp-Source: ABdhPJzmtD/Gqhq7VtIjO7czq3hs4rt6LGJN9waxCjTI4IbAjjLaG5Fwrvpsj4ytTsG1+gypnWX5rQ==
-X-Received: by 2002:a05:600c:4e91:b0:397:8870:a3e9 with SMTP id f17-20020a05600c4e9100b003978870a3e9mr44366442wmq.141.1654436001738;
-        Sun, 05 Jun 2022 06:33:21 -0700 (PDT)
+        bh=qvovknsG3pTwsXPXVn/vDXoAWBD8w8aZsXWfzyMtSBs=;
+        b=pS5BzmEOiVVGV8dffdIe1s9e5WdLYrlImSInv2rqJGXem7rO7MVCVrLkCqlTgFrYCi
+         hEfSXALQBqR40TwfV309AuX0SkrPyQeVvxfERL3SM2Ez89oDFCci1+K8c4X+q+XZ6bxw
+         bA5WrNzKWrzyAq4Fer4qzA8CO87szLlH9siXdGuG3F10jS3MUMOYc5njZv87ZYz0cXGB
+         jZWivVwC98EyINYF+QHWEH9uBKPh/T7zxBuxBBBDIoRCyMHPVcMD5+JJMci/EimM+ZP9
+         1DPLdt7rW55NCi1IKhZsXHLqyHMXe2ojxnmBlLYt2z0nNupaKN6C5NdNB1/65w3ieuqj
+         TVMA==
+X-Gm-Message-State: AOAM533Ssks8JdLNCIzoAiofENYr+kstTPSDeCbF+0EC+tlTudSyzpol
+        Lw2P5yoM50lnF1ZqNUc93ZDbpQ==
+X-Google-Smtp-Source: ABdhPJyYqVnx0lY8GU7GcUNjnB/0IheYVlGhFGrMvBppFTA/r5QA2twLfKyEZ/k7oTzicp7A7Zjlkw==
+X-Received: by 2002:a05:6000:168b:b0:20f:d4bd:cbc3 with SMTP id y11-20020a056000168b00b0020fd4bdcbc3mr17543214wrd.580.1654436003025;
+        Sun, 05 Jun 2022 06:33:23 -0700 (PDT)
 Received: from henark71.. ([51.37.234.167])
-        by smtp.gmail.com with ESMTPSA id n187-20020a1c27c4000000b0039c151298b7sm18217076wmn.10.2022.06.05.06.33.20
+        by smtp.gmail.com with ESMTPSA id n187-20020a1c27c4000000b0039c151298b7sm18217076wmn.10.2022.06.05.06.33.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jun 2022 06:33:21 -0700 (PDT)
+        Sun, 05 Jun 2022 06:33:22 -0700 (PDT)
 From:   mail@conchuod.ie
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -63,9 +63,9 @@ Cc:     Conor Dooley <conor.dooley@microchip.com>,
         linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         linux-riscv@lists.infradead.org,
         Atul Khare <atulkhare@rivosinc.com>
-Subject: [PATCH v1 5/6] MAINTAINERS: convert da9063 to yaml
-Date:   Sun,  5 Jun 2022 14:33:00 +0100
-Message-Id: <20220605133300.376161-6-mail@conchuod.ie>
+Subject: [PATCH v1 6/6] riscv: dts: sifive: "fix" pmic watchdog node name
+Date:   Sun,  5 Jun 2022 14:33:01 +0100
+Message-Id: <20220605133300.376161-7-mail@conchuod.ie>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220605133300.376161-1-mail@conchuod.ie>
 References: <20220605133300.376161-1-mail@conchuod.ie>
@@ -73,7 +73,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,26 +83,27 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 From: Conor Dooley <conor.dooley@microchip.com>
 
-As the da9063 dt-binding has been converted to yaml, update the
-maintainers entry for it.
+After converting the pmic watchdog binding to yaml, dtbs_check complains
+that the node name doesn't match the binding. "Fix" it.
 
 Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f799cf34ea52..8e51bc154584 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5805,6 +5805,7 @@ W:	http://www.dialog-semiconductor.com/products
- F:	Documentation/devicetree/bindings/input/da90??-onkey.txt
- F:	Documentation/devicetree/bindings/input/dlg,da72??.txt
- F:	Documentation/devicetree/bindings/mfd/da90*.txt
-+F:	Documentation/devicetree/bindings/mfd/da90*.yaml
- F:	Documentation/devicetree/bindings/regulator/dlg,da9*.yaml
- F:	Documentation/devicetree/bindings/regulator/da92*.txt
- F:	Documentation/devicetree/bindings/regulator/slg51000.txt
+diff --git a/arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts b/arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts
+index c4ed9efdff03..1f386b07a832 100644
+--- a/arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts
++++ b/arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts
+@@ -90,7 +90,7 @@ rtc {
+ 			compatible = "dlg,da9063-rtc";
+ 		};
+ 
+-		wdt {
++		watchdog {
+ 			compatible = "dlg,da9063-watchdog";
+ 		};
+ 
 -- 
 2.36.1
 
