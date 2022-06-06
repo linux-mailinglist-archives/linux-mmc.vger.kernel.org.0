@@ -2,64 +2,76 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F405553E5FD
-	for <lists+linux-mmc@lfdr.de>; Mon,  6 Jun 2022 19:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DE2753EB2A
+	for <lists+linux-mmc@lfdr.de>; Mon,  6 Jun 2022 19:09:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240592AbiFFPZw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 6 Jun 2022 11:25:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46004 "EHLO
+        id S240724AbiFFP0S (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 6 Jun 2022 11:26:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240570AbiFFPZv (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Jun 2022 11:25:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D684F1CD343;
-        Mon,  6 Jun 2022 08:25:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42B7A61522;
-        Mon,  6 Jun 2022 15:25:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F90C341CB;
-        Mon,  6 Jun 2022 15:25:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654529149;
-        bh=mkHtdDuPA882sz437T9Aas24sScBzzwqd23tLOmUZUM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iD0RdBcPQOmeIKn8T1RxIq3nexv2+8rPfXggaB/DzObHMdtqVQwB14KGbS8Bgjwym
-         LI4FIOOcuyOqQHhMYT2RHsi3Yx2/tgnDORn+Rw5hdy+Lx8R1rOJAXCbsZcGKCjBNGE
-         KP+b5g9dYCEF3wR9GQbm3kbSLNqiuxyVD0vIdL1Q3y+f9sLP4zu2KHVBRXaM4FEiE7
-         MgoorE998lOfjV2hvHJcRvdgyJRqIubcnSHQep416fm0sd00MZnJceWEkr4CcMiuDk
-         cg/wbyZygNSpwA2XoixSz8yOYVsEWwoZpuqb7JgwKGxw+1xG+KLO0s+iNMwCIY5kpz
-         3Cxvwh0f6JIGQ==
-Received: from mchehab by mail.kernel.org with local (Exim 4.95)
-        (envelope-from <mchehab@kernel.org>)
-        id 1nyEby-0012P5-4x;
-        Mon, 06 Jun 2022 16:25:46 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
+        with ESMTP id S240705AbiFFP0N (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Jun 2022 11:26:13 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02E64328ED7
+        for <linux-mmc@vger.kernel.org>; Mon,  6 Jun 2022 08:26:10 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id i17-20020a7bc951000000b0039c4760ec3fso1976418wml.0
+        for <linux-mmc@vger.kernel.org>; Mon, 06 Jun 2022 08:26:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=conchuod.ie; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oggV4sOjieyiC3zjEdHQHSt2OuXT3mEVI982IJ/c+54=;
+        b=NaB7ujjGsLox+28AdLK9IidwX+NJOkUleLjf4urIgEJUy6CHXhH2EePr22m74qQdEA
+         79mv33qy/xswvfwMxz168siPdwUK7Krz2iUEUbL9+0RK6LltHN1Qqo1e2xXu3s9VCK/z
+         NIJWNpW8d1FTfwhqQ7UccQcdKWY7CLUuNH3z7hTLi+k5MVHte1kWZZOptTtRM2sWmlwW
+         pXAtWMrUN74gUFYtK/9l2Xp7uV0zy5f7NglOI//BfmebbOrBcDQL5jVG6NmVlz/J+oZD
+         dLBPOOPbqxl3xt2MG/bFypavTjAOyw++V0cBBF7Bnu8/rcewEjYER1C7DDYUalMDV95C
+         IAZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oggV4sOjieyiC3zjEdHQHSt2OuXT3mEVI982IJ/c+54=;
+        b=T65viTuzJWPRio7pQtSJmZJYDTA7qeoPqlIUmkPsOqp55EI+Lva/H5vAV1Z0HnzHfC
+         ll301YHsX5KGSXhIhXmjWT6U7Dsg4fn0n4opNqw8ajZXWHhptMj2NjsmOZ8bQW1Uop58
+         Fuplw6yaMQAahDKdifEY2CWKcNIgvAmxFa5x7uONV0edSODUM9MTn0TOb2iKKK0MxBe7
+         QE3lEIOyJNxcKCDevjeRGu7siQmNlLdTUxc6VrONSHUHDlEPy6SNTqcmnF7RihOYiWR8
+         22cogDnoApFLLMeIBg4m9AUV/BgOnp5YFA91oTCxGcqVENJhigWderUUTRmm/tFzz9n3
+         3qoQ==
+X-Gm-Message-State: AOAM533CKHJdJNUQVS/IiN0wHpb9IxWBoEk0UVvNjxWZqjVhbsonQpll
+        vF4Tkey9Am9ItuZ0MWIUeL2k4w==
+X-Google-Smtp-Source: ABdhPJxQXtq89heOMKFlrzvEzPMju6ZggXxjIjVWhm/vncfRX5ffcbpunfZrkktl/6NLqBfuUMH5Dw==
+X-Received: by 2002:a05:600c:5021:b0:397:54e1:8274 with SMTP id n33-20020a05600c502100b0039754e18274mr52631051wmr.15.1654529169099;
+        Mon, 06 Jun 2022 08:26:09 -0700 (PDT)
+Received: from henark71.. ([51.37.234.167])
+        by smtp.gmail.com with ESMTPSA id h1-20020adffd41000000b002103aebe8absm15623944wrs.93.2022.06.06.08.26.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jun 2022 08:26:08 -0700 (PDT)
+From:   Conor Dooley <mail@conchuod.ie>
+To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sam Protsenko <semen.protsenko@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Lee Jones <lee.jones@linaro.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Steve Twiss <stwiss.opensource@diasemi.com>
+Cc:     Conor Dooley <conor.dooley@microchip.com>,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: [PATCH 06/23] dt-bindings: mmc: exynos-dw-mshc: update samsung,pinctrl.yaml reference
-Date:   Mon,  6 Jun 2022 16:25:28 +0100
-Message-Id: <5c937793dd7aec30da4964b39561072ae184f89b.1654529011.git.mchehab@kernel.org>
+        linux-riscv@lists.infradead.org,
+        Atul Khare <atulkhare@rivosinc.com>
+Subject: [PATCH v2 0/4] clear riscv dtbs_check errors
+Date:   Mon,  6 Jun 2022 16:25:54 +0100
+Message-Id: <20220606152557.438771-1-mail@conchuod.ie>
 X-Mailer: git-send-email 2.36.1
-In-Reply-To: <cover.1654529011.git.mchehab@kernel.org>
-References: <cover.1654529011.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,36 +79,42 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Changeset af030d83da1d ("dt-bindings: pinctrl: samsung: convert to dtschema")
-renamed: bindings/pinctrl/samsung-pinctrl.txt
-to: bindings/pinctrl/samsung-pinctrl.yaml, splitting it into multiple
-files.
+From: Conor Dooley <conor.dooley@microchip.com>
 
-Update exynos-dw-mshc.txt accordingly.
+Hey,
+Couple conversions from txt to yaml here with the intent of fixing the
+the dtbs_check warnings for riscv when building with "defconfig".
+Atul Khare already sent patches for the gpio-line-names & cache-sets
+(which went awol) and will clear the remaining two errors.
 
-Fixes: af030d83da1d ("dt-bindings: pinctrl: samsung: convert to dtschema")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
+Thanks,
+Conor.
 
-To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
-See [PATCH 00/23] at: https://lore.kernel.org/all/cover.1654529011.git.mchehab@kernel.org/
+Conor Dooley (4):
+  dt-bindings: mmc: convert mmc-spi-slot to yaml
+  dt-bindings: i2c: convert ocores binding to yaml
+  dt-bindings: mfd: convert da9063 to yaml
+  riscv: dts: sifive: "fix" pmic watchdog node name
 
- Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../devicetree/bindings/i2c/i2c-ocores.txt    |  78 -----------
+ .../bindings/i2c/opencores,i2c-ocores.yaml    | 123 ++++++++++++++++
+ .../devicetree/bindings/mfd/da9063.txt        | 114 ---------------
+ .../devicetree/bindings/mfd/dlg,da9063.yaml   | 132 ++++++++++++++++++
+ .../devicetree/bindings/mmc/mmc-spi-slot.txt  |  29 ----
+ .../devicetree/bindings/mmc/mmc-spi-slot.yaml |  79 +++++++++++
+ .../devicetree/bindings/trivial-devices.yaml  |   2 -
+ MAINTAINERS                                   |   3 +-
+ .../boot/dts/sifive/hifive-unmatched-a00.dts  |   2 +-
+ 9 files changed, 337 insertions(+), 225 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/i2c/i2c-ocores.txt
+ create mode 100644 Documentation/devicetree/bindings/i2c/opencores,i2c-ocores.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mfd/da9063.txt
+ create mode 100644 Documentation/devicetree/bindings/mfd/dlg,da9063.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mmc/mmc-spi-slot.txt
+ create mode 100644 Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml
 
-diff --git a/Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt b/Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt
-index 753e9d7d8956..985b781f0a48 100644
---- a/Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt
-+++ b/Documentation/devicetree/bindings/mmc/exynos-dw-mshc.txt
-@@ -64,7 +64,7 @@ Required properties for a slot (Deprecated - Recommend to use one slot per host)
-   rest of the gpios (depending on the bus-width property) are the data lines in
-   no particular order. The format of the gpio specifier depends on the gpio
-   controller.
--(Deprecated - Refer to Documentation/devicetree/bindings/pinctrl/samsung-pinctrl.txt)
-+(Deprecated - Refer to Documentation/devicetree/bindings/pinctrl/samsung,pinctrl.yaml)
- 
- Example:
- 
+
+base-commit: f2906aa863381afb0015a9eb7fefad885d4e5a56
 -- 
 2.36.1
 
