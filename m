@@ -2,187 +2,131 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E905D53F995
-	for <lists+linux-mmc@lfdr.de>; Tue,  7 Jun 2022 11:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24CFF53F9BF
+	for <lists+linux-mmc@lfdr.de>; Tue,  7 Jun 2022 11:29:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239044AbiFGJ1O (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 7 Jun 2022 05:27:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38258 "EHLO
+        id S237045AbiFGJ26 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 7 Jun 2022 05:28:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232984AbiFGJ1N (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Jun 2022 05:27:13 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C0B19F95
-        for <linux-mmc@vger.kernel.org>; Tue,  7 Jun 2022 02:27:09 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id be31so27365120lfb.10
-        for <linux-mmc@vger.kernel.org>; Tue, 07 Jun 2022 02:27:09 -0700 (PDT)
+        with ESMTP id S239538AbiFGJ2O (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 7 Jun 2022 05:28:14 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D6C522DE
+        for <linux-mmc@vger.kernel.org>; Tue,  7 Jun 2022 02:28:12 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id r1so1560683ybd.4
+        for <linux-mmc@vger.kernel.org>; Tue, 07 Jun 2022 02:28:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bycnujn+C+TNXArQgDaRYNKXnzzQ5tOqUsTDh+BoVXc=;
-        b=t8p26q3E/L/TgZvfOS55JAOsz9xPuki8ovvsGEs+DFidMo0+nC5q87KialHMbXXUx2
-         NZBSPLKbAm5cIgCaNWSfYwSt4fnlLecR64L71ARiiI5CPS1aqqzrxJvXB6IKLY3WXNuu
-         5SHFPVTF0HSOWo8rE6sQ/WkS4a9ZCwX0/c1KlNkUzxFzcQXCYtwlIQpkRlh9O9h7hD2c
-         lzKWKa/el8B4Cs+eVSyH6vN291VP71o6gwb8Ctk7TpGDvbmiVIQea1yApDwP5aGLX40A
-         Z49d4wqGHGA6mOLOnxNUVdf0Mj1739Iv+QtyQf++UoZ8BECNUCN8dDbnFukVMBX5uYds
-         kbDQ==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=ohM259uqobJqtM7gttWurWj7P+4iDfPJquHax95olDY=;
+        b=gujHBVxqWIlmngbJHwwatlrY6K2BhXGLJOXKENebOL4hOCXVjvoa+7rQ+wCwOuo7nz
+         8e28HbaszMFtjrNu2xJwHUtJo1p0vWs5cPK29M2FpYQX1yrDGputAW1tF1NfmP59wawm
+         4ciGU9SnxDgRMb84mTOs96+/9zN97uENfqj9/+eZfuG77h5pSaMszmbmnWOwi9m+gNzd
+         5NtwsZACk2ULSP0cRt0MdNUxBuwzIbCfzmloCBb/Ue1QhCyZ8f6GEgrTXVIY7durHnKk
+         UWQF6j7yHnTlxlvI9xCgSzii4NusQH9ADfpyzQwiF9b+OrCBSH3adFs9TwqclNBk9aQF
+         O14A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bycnujn+C+TNXArQgDaRYNKXnzzQ5tOqUsTDh+BoVXc=;
-        b=OBbT7/+d8AU/nnltBpoVyMZic1Z88XcZS0yckkhThP03pSOqo08eyaZOEbGnR9jL5+
-         /12ddTZTVrArO9Y15lH1vLltJkM60CJiVitIffr9BbPJURTyX3Gf/9frwpYfusjUIQ5U
-         VocZWoNZj9NU9MyZKjmry6C5POSI2EVdhbdo6eGjDlcbJu1j9xoc72OJb9AexVqLgGtp
-         ZOByslTH1ONjNq3wJ3Kagwb5qcAiodf6Yk7uTvlHIq0zn5TbKNxfSPSsP5RnSLhE4eVD
-         OFLeaErrOz90wz2GuzMqG572UB4af9q99QAUOFSuya7ICt4A5Vj0m0x8dsoV7Prnx9YI
-         EfcQ==
-X-Gm-Message-State: AOAM532yEj0WXn2uMLbYLB7m61j+4nSsOYtLpebbVwVPXdkvrDXwp9Ot
-        ssAasE/zqc1jOrNOyoYnaXFDKbfQTXMPCFFFiiQIYQ==
-X-Google-Smtp-Source: ABdhPJxQISkP4fpMf2Tx4GQZOz5bRQyTzJ8vaUdWMeVJt9giKQNrG2uqpo97Sb9v8bOTq0hPO8Lyk67AS9Huf+RLHh4=
-X-Received: by 2002:a05:6512:403:b0:479:1627:a9b7 with SMTP id
- u3-20020a056512040300b004791627a9b7mr15454828lfk.233.1654594027813; Tue, 07
- Jun 2022 02:27:07 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=ohM259uqobJqtM7gttWurWj7P+4iDfPJquHax95olDY=;
+        b=X7TRMxvrSLxfICkxkZXweq09OslxqwoB1whoXe+ejj9Og6K1h4E5GftkvunOTDE4Bf
+         8CM4yAp4m4TTMvHprKv55OSumoS1uJMge7qfWh+mSKHghnOF0GxXsaNTvk9TArG++53S
+         jbo28qaNn2EczC2NET0z++57UNd1f3BDnTClpi0ntU+uPdFf6TRtbAylV8FXw6zfzucG
+         KRcdZG/x4O8MZ/LBHQZkLgEvbpzrrTLOIpuseSioAqNzFK72FmvlXRCTNurap/2ZWxuU
+         AFg9WokAYHuPQHubqq06lBqDqmCuOTdikUeag3KfYdC7kIYN2yEWJIJ0tXBVt9Me1ZW6
+         5g8w==
+X-Gm-Message-State: AOAM5332aLdEW/FiPfOelK/glGjLYPOczgLUb55IRpDMQkDFl1B9oPft
+        GdClgUw+CsJP9j2f04N6vQBCAGz72Ek+IJA9panGDHr6zG6/dp7k
+X-Google-Smtp-Source: ABdhPJxTYNOyqQTj+pRtv7B26L++zgaw4oyR9fAzq9Xjy/qi86fDOL5mMOdKcDA6Petw4QZgBH7CHdeaexgYk1On3ls=
+X-Received: by 2002:a05:6830:919:b0:60a:fe63:e321 with SMTP id
+ v25-20020a056830091900b0060afe63e321mr11494607ott.227.1654594080399; Tue, 07
+ Jun 2022 02:28:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220525015140.384-1-axe.yang@mediatek.com> <20220525015140.384-2-axe.yang@mediatek.com>
- <CAPDyKFr25qbAb9DdCpu6Cp9NyK35YAv745Duw_ht7BQc+pQF=A@mail.gmail.com> <c46ef886f908067d10b1cb9f37b3e41e6157c71d.camel@mediatek.com>
-In-Reply-To: <c46ef886f908067d10b1cb9f37b3e41e6157c71d.camel@mediatek.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 7 Jun 2022 11:26:31 +0200
-Message-ID: <CAPDyKFp1ibzg2FO9m_m9quqPRew9jOtLJRSF80VTi0cesjhBqw@mail.gmail.com>
-Subject: Re: [RESEND v12 1/3] dt-bindings: mmc: mtk-sd: extend interrupts and
- pinctrls properties
-To:     Axe Yang <axe.yang@mediatek.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Satya Tangirala <satyat@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Lucas Stach <dev@lynxeye.de>,
-        Eric Biggers <ebiggers@google.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Kiwoong Kim <kwmad.kim@samsung.com>,
-        Yue Hu <huyue2@yulong.com>, Tian Tao <tiantao6@hisilicon.com>,
-        angelogioacchino.delregno@collabora.com, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Project_Global_Chrome_Upstream_Group@mediatek.com
+Received: by 2002:a05:6358:99a5:b0:a2:a1fa:9308 with HTTP; Tue, 7 Jun 2022
+ 02:28:00 -0700 (PDT)
+Reply-To: robertbaileys_spende@aol.com
+From:   Robert Baileys <mercymiji.j@gmail.com>
+Date:   Tue, 7 Jun 2022 11:28:00 +0200
+Message-ID: <CAAD1zOZ9bCDqBnjmbC3dQfgC=P2zTqAS=TP3q5qK5TFB5=Q9dQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b31 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mercymiji.j[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 7 Jun 2022 at 10:24, Axe Yang <axe.yang@mediatek.com> wrote:
->
-> On Fri, 2022-06-03 at 09:28 +0200, Ulf Hansson wrote:
-> > On Wed, 25 May 2022 at 03:51, Axe Yang <axe.yang@mediatek.com> wrote:
-> > >
-> > > Extend interrupts and pinctrls for SDIO wakeup interrupt feature.
-> > > This feature allow SDIO devices alarm asynchronous interrupt to
-> > > host
-> > > even when host stop providing clock to SDIO card. An extra wakeup
-> > > interrupt and pinctrl states for SDIO DAT1 pin state switching are
-> > > required in this scenario.
-> > >
-> > > Reviewed-by: AngeloGioacchino Del Regno <
-> > > angelogioacchino.delregno@collabora.com>
-> > > Signed-off-by: Axe Yang <axe.yang@mediatek.com>
-> > > ---
-> > >  .../devicetree/bindings/mmc/mtk-sd.yaml       | 50
-> > > ++++++++++++++++++-
-> > >  1 file changed, 49 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> > > b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> > > index 2a2e9fa8c188..e83bf10281d6 100644
-> > > --- a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> > > +++ b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> > > @@ -72,12 +72,27 @@ properties:
-> > >        - const: ahb_cg
-> > >
-> > >    interrupts:
-> > > -    maxItems: 1
-> > > +    description:
-> > > +      Should at least contain MSDC GIC interrupt. To support SDIO
-> > > in-band wakeup, an extended
-> > > +      interrupt is required and be configured as wakeup source
-> > > irq.
-> > > +    minItems: 1
-> > > +    maxItems: 2
-> > > +
-> > > +  interrupt-names:
-> > > +    items:
-> > > +      - const: msdc
-> > > +      - const: sdio_wakeup
-> > >
-> > >    pinctrl-names:
-> > > +    description:
-> > > +      Should at least contain default and state_uhs. To support
-> > > SDIO in-band wakeup, dat1 pin
-> > > +      will be switched between GPIO mode and SDIO DAT1 mode,
-> > > state_eint and state_dat1 are
-> > > +      mandatory in this scenarios.
-> > > +    minItems: 2
-> > >      items:
-> > >        - const: default
-> > >        - const: state_uhs
-> > > +      - const: state_eint
-> >
-> > Don't you need something along the lines of the below instead? I mean
-> > the "state_eint" isn't always needed, right?
-> >
-> > oneOf:
-> >   - items:
-> >       - const: default
-> >       - const: state_uhs
-> >     - items:
-> >         - const: default
-> >         - const: state_uhs
-> >         - const: state_eint
-> >
-> No, it is not always needed.
-> As Rob said, the 'minItems: 2' makes the 3rd item optional.
-> Combine 'minItems' and 'description' fields, it is easy for others to
-> understand how to set pinctrl related properities.
+--=20
+Hallo, lieber Beg=C3=BCnstigter,
 
-Yes, I agree.
+Sie haben diese E-Mail von der Robert Bailey Foundation erhalten. Ich
+bin ein pensionierter Regierungsangestellter aus Harlem und ein
+Powerball-Lotterie-Jackpot-Gewinner von 343,8 Millionen Dollar. Ich
+bin der gr=C3=B6=C3=9Fte Jackpot-Gewinner in der Geschichte der New York Lo=
+ttery
+in Amerika. Ich habe diesen Wettbewerb am 27. Oktober 2018 gewonnen
+und m=C3=B6chte Ihnen mitteilen, dass Google in Kooperation mit Microsoft
+Ihre "E-Mail-Adresse" f=C3=BCr meine Anfrage hat und diese 3.000.000,00
+Millionen Euro kosten wird. Ich spende diese 3 Millionen Euro an Sie,
+um auch Wohlt=C3=A4tigkeitsorganisationen und armen Menschen in Ihrer
+Gemeinde zu helfen, damit wir die Welt zu einem besseren Ort f=C3=BCr alle
+machen k=C3=B6nnen. Bitte besuchen Sie die folgende Website f=C3=BCr weiter=
+e
+Informationen, damit Sie diesen 3 Mio. EUR Ausgaben nicht skeptisch
+gegen=C3=BCberstehen.
+https://nypost.com/2018/11/14/meet-the-winner-of-the-biggest-lottery-jackpo=
+t-in-new-york-history/Sie
+Weitere Best=C3=A4tigungen kann ich auch auf meinem Youtube suchen:
+https://www.youtube.com/watch?v=3DH5vT18Ysavc
+Bitte antworten Sie mir per E-Mail (robertbaileys_spende@aol.com).
+Sie m=C3=BCssen diese E-Mail sofort beantworten, damit die =C3=BCberweisend=
+e
+Bank mit dem Erhalt dieser Spende in H=C3=B6he von 3.000.000,00 Millionen
+Euro beginnen kann.
+Bitte kontaktieren Sie die untenstehende E-Mail-Adresse f=C3=BCr weitere
+Informationen, damit Sie diese Spende von der =C3=BCberweisenden Bank
+erhalten k=C3=B6nnen. E-Mail: robertbaileys_spende@aol.com
 
->
-> Anyway, If you insist 'oneOf' is the better way, I can update that in
-> next version. What do you think?
+Gr=C3=BC=C3=9Fe,
+Robert Bailey
+* * * * * * * * * * * * * * * *
 
-I am fine with it as is, sorry for the noise.
-
->
-> And thanks to your comment, I found a mistake in 'description', I
-> should remove descriptions related to 'state_dat1', and I will update
-> that in next version.
-
-Okay.
-
->
-> And do you have any comment on patch 2/3 and 3/3?
-
-Sorry for the delay, I will have a look asap.
-
->
->
-> Regards,
-> Axe
->
->
-
-Kind regards
-Uffe
+Powerball-Jackpot-Gewinner
+E-Mail: robertbaileys_spende@aol.com
