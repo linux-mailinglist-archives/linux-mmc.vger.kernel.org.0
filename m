@@ -2,83 +2,83 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AED9542F02
-	for <lists+linux-mmc@lfdr.de>; Wed,  8 Jun 2022 13:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82798542F86
+	for <lists+linux-mmc@lfdr.de>; Wed,  8 Jun 2022 13:57:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237904AbiFHLR1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 8 Jun 2022 07:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37176 "EHLO
+        id S238384AbiFHL5n (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 8 Jun 2022 07:57:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237780AbiFHLR0 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 8 Jun 2022 07:17:26 -0400
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39E17384CDB;
-        Wed,  8 Jun 2022 04:17:24 -0700 (PDT)
-Received: by mail-qk1-f169.google.com with SMTP id o73so10270314qke.7;
-        Wed, 08 Jun 2022 04:17:24 -0700 (PDT)
+        with ESMTP id S238380AbiFHL5m (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 8 Jun 2022 07:57:42 -0400
+Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569333AA57
+        for <linux-mmc@vger.kernel.org>; Wed,  8 Jun 2022 04:57:40 -0700 (PDT)
+Received: by mail-vk1-xa31.google.com with SMTP id n203so1590308vke.7
+        for <linux-mmc@vger.kernel.org>; Wed, 08 Jun 2022 04:57:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=RqvhwLxpoWsPOdPHLQ+kBu2OEWvgdFg9DMc+/a8ko9E=;
+        b=VOSoC8T7R4zExXwbHDP8cJk6USbdWqGuhT3FRbCISv70RfEUkp5fuVXTzZtO4TwLwH
+         w3cJLuxX2z6Y9WDLtLPZfefmjdwuekbMLVZfTx/vhk3+dFoNUW1jXp8Olt6NC+Z0X+d2
+         xX90cP45Bv/2E1FL9gX+v/IGzIY5CpJWVu4xNAT+fKgdjHYcC4gs5vkjLj6T590EqrvS
+         NgiuJvHkSV5id/N1TZ0jAtprKfg+IIBVO/7pDjAltof0zOG1kdeBeZpwqA2G0mpZXcRP
+         /MdaG9R65hfe5xjUfYrl11cCyPkTxW5xB2WNSZQvIGQWp5c3QDL2kGx57sC4pyHm6gqM
+         vBkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nLJ7chKHyiO7PE6NS7EjPn0VMZXhEx3i2ZBaw0w7Dz4=;
-        b=2R8ZofLnA43iKSZscVNwH2Z5NXsi+yXM3410rm5goPVhDBgPxiKzg7yDC4jMXFA2do
-         Ha/MjvJxVr6hibLW+AwM0XkkEhLTnIcr1isQ4sPLLMhtlyjGXwxbpj/KRThULT7HL+rY
-         pdDPCSjBMJJzLxtoyzL9a0X5TqSA2TNEkRH5HvC1OHoFNcUtDDK1Ne0I1FVs3UTaSCbC
-         PeaXcxiS4LgLhXe2b6YU2z5nmUPwx1LMtIKus/9Iit3E2sNENWPvsERXgabiLyTqa77t
-         55lNNnClKARUqBV+KOG3g8ZeRG+qnl9A+dft6n+t9lP4HwsP1+b6xDuQvqSHB64ccbn1
-         2xIw==
-X-Gm-Message-State: AOAM532KCS0++iVyil5tNmS6pAp8T0yu4Aoi4NFKe4i+5C/u7ct+4dRR
-        U4JO8nh7yGYhU3VMmk8eju0z3lKr2jbOvw==
-X-Google-Smtp-Source: ABdhPJzusVNEr10lvvwsV74TSTKil10dwRnwub1jBUPA+rTgU49l+KjJd5qqz2hAM7ZI/juyyMmFFw==
-X-Received: by 2002:a05:620a:3714:b0:6a5:564b:222f with SMTP id de20-20020a05620a371400b006a5564b222fmr22591208qkb.648.1654687043119;
-        Wed, 08 Jun 2022 04:17:23 -0700 (PDT)
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
-        by smtp.gmail.com with ESMTPSA id f2-20020a05620a408200b006a6ab8f761csm10734551qko.62.2022.06.08.04.17.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jun 2022 04:17:22 -0700 (PDT)
-Received: by mail-yb1-f170.google.com with SMTP id w2so35950342ybi.7;
-        Wed, 08 Jun 2022 04:17:22 -0700 (PDT)
-X-Received: by 2002:a25:d748:0:b0:65c:6b00:55af with SMTP id
- o69-20020a25d748000000b0065c6b0055afmr33412057ybg.365.1654687042524; Wed, 08
- Jun 2022 04:17:22 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=RqvhwLxpoWsPOdPHLQ+kBu2OEWvgdFg9DMc+/a8ko9E=;
+        b=PBu4ly4s+6mg9/REnvHCQ50bIVk2Xsj6XqSkez0z7C87FD3NSFnkTWWBlh5U1IOmF1
+         fR9BPlbs9zNADXKe7fJLFhFrZtJo6qUao4XIZ5uHCpYz2IAv1gecRiP3ofJQd+y8Nsqp
+         yVPYnzBkLMu+0V/G7KDkEPhhiGqNHyoiicCHbtBZg65cdbYIRNo2gggSAK87k+yO4hZx
+         d7YSoObkxt9GmoXtoYkPysdZnBYJvF+duvNbEJYy7Z69+AKLXi+qTjs+K/W5eXvLxskE
+         gES1MMdhRftzCkMnMR6i1bKTqbCbhDXLoC6Kb/70yPlmjj+jMOQI/L4ls9LVw++5rbvw
+         msrA==
+X-Gm-Message-State: AOAM531G7F+J+A9s7HuLPdDNW1fuLIn+jNurve8mJlhLnDC5juDxuBqo
+        6oxlkazPwvZO72ghyqD7jtteg2ynT7uJn+j2K2o=
+X-Google-Smtp-Source: ABdhPJwhXs4LTQIz5wU5bEKs4qkrvQesa4rhnYrO5eUnbJhmy1IrDTjmA4g2r8cQa7LD0WPUOU2iDfFAC1sX29d+iZw=
+X-Received: by 2002:ac5:c902:0:b0:35d:aee2:dc50 with SMTP id
+ t2-20020ac5c902000000b0035daee2dc50mr8746117vkl.23.1654689458534; Wed, 08 Jun
+ 2022 04:57:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220608094831.8242-1-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20220608094831.8242-1-wsa+renesas@sang-engineering.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 8 Jun 2022 13:17:11 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUF0jBDvO6F-7a8BGMdw+P1O+1_6wKmvpN7CKUc69b_AQ@mail.gmail.com>
-Message-ID: <CAMuHMdUF0jBDvO6F-7a8BGMdw+P1O+1_6wKmvpN7CKUc69b_AQ@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: mmc: renesas,sdhi: R-Car V3U is R-Car Gen4
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Sender: ceciliajosephallan@gmail.com
+Received: by 2002:a05:612c:78a:b0:2c5:1b92:cec with HTTP; Wed, 8 Jun 2022
+ 04:57:37 -0700 (PDT)
+From:   Sophia Erick <sdltdkggl3455@gmail.com>
+Date:   Wed, 8 Jun 2022 13:57:37 +0200
+X-Google-Sender-Auth: R_KEHA93MkSJm4fGk7pATVk24x8
+Message-ID: <CAMGypkNH=qjyVQ_FVUY+WwkYFXoJQmSnKG3gZ0xNyYJNhGzwKw@mail.gmail.com>
+Subject: HELLO
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_95,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FROM_LOCAL_NOVOWEL,HK_RANDOM_FROM,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,
+        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Jun 8, 2022 at 12:39 PM Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
-> Despite the name, R-Car V3U is the first member of the R-Car Gen4
-> family.  Hence move its compatible value to the R-Car Gen4 section.
->
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Hello ,
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+It is my pleasure to communicate with you, I know that this message
+will be a surprise to you my name is Mrs. Sophia Erick, I am diagnosed
+with ovarian cancer which my doctor have confirmed that I have only
+some weeks to live so I have decided you handover the sum of( Eleven
+Million Dollars) through I decided handover the money in my account to
+you for help of the orphanage homes and the needy once
 
-Gr{oetje,eeting}s,
+Please   kindly reply me here as soon as possible to enable me give
+you more information but before handing over my details to you please
+assure me that you will only take 30%  of the money and share the rest
+to the poor orphanage home and the needy once, thank you am waiting to
+hear from you
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Mrs Sophia Erick.
