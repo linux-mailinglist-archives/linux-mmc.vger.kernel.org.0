@@ -2,81 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC54543FFC
-	for <lists+linux-mmc@lfdr.de>; Thu,  9 Jun 2022 01:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8260B543FF7
+	for <lists+linux-mmc@lfdr.de>; Thu,  9 Jun 2022 01:40:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234424AbiFHXkK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 8 Jun 2022 19:40:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33390 "EHLO
+        id S233901AbiFHXj7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 8 Jun 2022 19:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233612AbiFHXj7 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 8 Jun 2022 19:39:59 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8880D169DF4
-        for <linux-mmc@vger.kernel.org>; Wed,  8 Jun 2022 16:39:35 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id n197so9608070qke.1
-        for <linux-mmc@vger.kernel.org>; Wed, 08 Jun 2022 16:39:35 -0700 (PDT)
+        with ESMTP id S233790AbiFHXj5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 8 Jun 2022 19:39:57 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7EF16B2D0
+        for <linux-mmc@vger.kernel.org>; Wed,  8 Jun 2022 16:39:43 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id d128so8824874qkg.8
+        for <linux-mmc@vger.kernel.org>; Wed, 08 Jun 2022 16:39:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to:cc;
-        bh=kc8hDtKnDcjkjtnpKv99miwrNZ1mscnVCOSjHJGhRR0=;
-        b=TGdTe8ftgW2E2QSXLDATWBAXq3sauk3KYSj6BMlJLGO6AIyIfhb5n1gjvAikC5sfj1
-         pnF2q+aa3J49SlWeHoe8utIJbft2tfdvJWfSA/DWdGmQ81xwpFbbShsO99rjEfX37VOJ
-         O7nf0OOCHhgW59XOZB2AYutoUpxS75uohsXNuBYCQ74OZWV0IkfqStkyQpIXIgp5Yu/X
-         /b47CaBvS9tF2RvKGzD2OXWMoCKHHF/JqW3mtCMGdzWVyYoNxEJonBGyxomdCDOnzKP5
-         Wm0OipG0BCiWNN5Q3OyAx5VK7fAStBf4WuoirjR9Gnpdd0r+CJ+NosZexvzLXB8JwqtT
-         YXTQ==
+        bh=4bA3l8NMW5sqINO1r/1lERkOkDyuT51+2Y6gy5uYSqQ=;
+        b=mXaDkRe8akpJUduhvftHXEgn4sTGP0eEV2OaV+blJVeqoLJU1FEsR+FaDtaokIeTFo
+         2lK9ZQ4Btqss0RkOkxW3x432KfPG90WprbHJVWggfQXq/JRB2Eq9KakDyq54PxapLUsb
+         hc6YdA++zF2yvpOYXxd4kGmXlP5tGj74azeYSpCXzSP0+1Vit7dY6IoOTH7fSQqlIj1s
+         yee9YeuMp2V1s6EzXiZugIO5erzHwONKUBaKeFuAOfghBQjn4RHqP8EMP8KRQjpuqLhj
+         j/JyfzkL+nHfEYgjqoadJF0gmOwtxWmOPdx8NHbKw5rZr5qqyAIjW29A8Wlv2ZY5Mo2g
+         8Bzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=kc8hDtKnDcjkjtnpKv99miwrNZ1mscnVCOSjHJGhRR0=;
-        b=7/jHFobptZQdi3wAkQZfwwLpQ6BNwDoYxF6v+aAG7dQwWAC6YIg/rAxVcL+vaa5SZp
-         Mta3+K58EZ2uBkrqlox7kn7iHf+NEvYz7zuYWvNmY0xpDcX24CVhUO+lyE/3D3uoa805
-         MjClxEuLicAOkvsxDtZqNk2gwI5AfhsFB14bcYZZYVkMJ3wbthh0abfCf7zuiscXmAmn
-         qrg8JHPssaeDoRVyCBBCN0I4UEbx/hWcbo3MrhmXoRsOz6oR0RxCYreluQNzdsBTFcIp
-         hdcFruS/UDO9JByhK07VkX45smKjnQlPzDRFBhLm7NkYnOMCl4UxE3MgXj+6hdW79tIm
-         8rrw==
-X-Gm-Message-State: AOAM530HThi1rPonBUiyDYY4H+xOU97vvEzRJWt2hcTRo9BX+qrqVybZ
-        jkvQ1HPB3L4fOpJIz3VB4NqxNQ6U6eeN1WwQGZW0JA==
-X-Google-Smtp-Source: ABdhPJwwoi0drQjkYJ1j2Qdt6XiU3x2RVVqapgseeDGRMrMmyQCzzXLwavj3DbqQ68d+IFyAWbxsz4ReHsk+ofIZ0q4=
-X-Received: by 2002:a05:620a:1911:b0:6a6:e8e9:70cd with SMTP id
- bj17-20020a05620a191100b006a6e8e970cdmr6816152qkb.627.1654731574196; Wed, 08
- Jun 2022 16:39:34 -0700 (PDT)
+        bh=4bA3l8NMW5sqINO1r/1lERkOkDyuT51+2Y6gy5uYSqQ=;
+        b=ZGU82jOnulmmpo3VDL1k8VDHtm/moZzEl6KmiNkuWVTP9yTePB5gDHpKmBZ4dMh13H
+         n5w03SrOanJU/gwm4US+JCDQGIsiHna+2/xPXboyGML10YVN9GvfMZ4o8nhFCcosfp09
+         dNQWuW3i2tSyTEsLMqk01hNNoBjFoKIu4q2Flvwlz1JeJ4ZWtPMuJU2rU2LcTJAkdPcC
+         5ToDow1a7xgs9LyQNxhNljNCZOXQy1aSlRf8yc+pHbQ1FDtHT0pzsehRUaxDGC566H1E
+         6UmWKaD1HxM5L6f0G/6c0gxEHZvZxTKVrSEeax/I7a5aOc32GV0mzjFSaaSIYI3IapLH
+         +EiQ==
+X-Gm-Message-State: AOAM530PFIMZeVMlU4upjTxnFPbNv5tbRpnyx0Cp5J7q9BmELz9eAvyU
+        BWfAxlBEXnm+6OxV8BiNT5Wi0dtQW+a5E4yrjwIuDA==
+X-Google-Smtp-Source: ABdhPJwxVJsLtov+PvfiuEXEacNmD+Ogc8ArgM4bwUX+jOqXRNefAAAkqXzWVsoVgFJ+AB4KhEa/eKHzBy+/FzxL2p0=
+X-Received: by 2002:a37:9b09:0:b0:6a6:b23e:8534 with SMTP id
+ d9-20020a379b09000000b006a6b23e8534mr14825420qke.214.1654731582051; Wed, 08
+ Jun 2022 16:39:42 -0700 (PDT)
 MIME-Version: 1.0
 From:   Atul Khare <atulkhare@rivosinc.com>
-Date:   Wed, 8 Jun 2022 16:39:23 -0700
-Message-ID: <CABMhjYp3xUyQ9q6nXHvEA2zuzhYi0ETn6UETeH1apWf2n2eP7A@mail.gmail.com>
-Subject: [PATCH v2 0/2] dt-bindings: sifive: fix dt-schema errors
+Date:   Wed, 8 Jun 2022 16:39:31 -0700
+Message-ID: <CABMhjYq8WbHcA=8dRxHVy=-NhL3+GaRKsBb3X2bG2-6Azd2S1g@mail.gmail.com>
+Subject: [PATCH v2 1/2] dt-bindings: sifive: add cache-set value of 2048
 To:     Palmer Dabbelt <palmer@rivosinc.com>,
+        Conor Dooley <Conor.Dooley@microchip.com>,
         Atul Khare <atulkhare@rivosinc.com>
-Cc:     Conor Dooley <conor.dooley@microchip.com>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+Cc:     linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         linux-riscv@lists.infradead.org, Rob Herring <robh@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The patch series fixes dt-schema validation errors that can be reproduced
-using the following: make ARCH=riscv defconfig; make ARCH=riscv
-dt_binding_check dtbs_check
+Fixes Running device tree schema validation error messages like
+'... cache-sets:0:0: 1024 was expected'.
 
-This is a rebased version of https://tinyurl.com/yvdvmsjd, and excludes
-two patches that are now redundant.
+The existing bindings had a single enumerated value of 1024, which
+trips up the dt-schema checks. The ISA permits any arbitrary power
+of two for the cache-sets value, but we decided to add the single
+additional value of 2048 because we couldn't spot an obvious way
+to express the constraint in the schema.
 
-Atul Khare (2):
-  dt-bindings: sifive: add cache-set value of 2048
-  dt-bindings: sifive: add gpio-line-names
-
- Documentation/devicetree/bindings/gpio/sifive,gpio.yaml      | 3 +++
+Signed-off-by: Atul Khare <atulkhare@rivosinc.com>
+---
+Changes since v1 [1]: Rebased on latest version
+[1]: https://tinyurl.com/yvdvmsjd
+---
+---
  Documentation/devicetree/bindings/riscv/sifive-l2-cache.yaml | 4 +++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/Documentation/devicetree/bindings/riscv/sifive-l2-cache.yaml
+b/Documentation/devicetree/bindings/riscv/sifive-l2-cache.yaml
+index e2d330bd4608..309517b78e84 100644
+--- a/Documentation/devicetree/bindings/riscv/sifive-l2-cache.yaml
++++ b/Documentation/devicetree/bindings/riscv/sifive-l2-cache.yaml
+@@ -46,7 +46,9 @@ properties:
+     const: 2
+
+   cache-sets:
+-    const: 1024
++    # Note: Technically this can be any power of 2, but we didn't see
+an obvious way
++    # to express the constraint in Yaml
++    enum: [1024, 2048]
+
+   cache-size:
+     const: 2097152
 --
 2.34.1
