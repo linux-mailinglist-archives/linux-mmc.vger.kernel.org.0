@@ -2,140 +2,83 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 905ED544567
-	for <lists+linux-mmc@lfdr.de>; Thu,  9 Jun 2022 10:13:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2FA3544638
+	for <lists+linux-mmc@lfdr.de>; Thu,  9 Jun 2022 10:47:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235660AbiFIINS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 9 Jun 2022 04:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54446 "EHLO
+        id S241884AbiFIIrS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 9 Jun 2022 04:47:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232251AbiFIINR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 9 Jun 2022 04:13:17 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8285EDE6
-        for <linux-mmc@vger.kernel.org>; Thu,  9 Jun 2022 01:13:16 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id q1so45945249ejz.9
-        for <linux-mmc@vger.kernel.org>; Thu, 09 Jun 2022 01:13:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=0XYuJwlWcPhF5wKwZj6AX0M1ehVlcZ8wjqHIDg46ZGY=;
-        b=EV/DomxXS21W3StJ7TvuHijfw2cs47/ctB2bRMZrMuFXc5UMH7tKjjR9uSqrRQX3Nb
-         Yw282h93xRrPEcW3j3LPkFdGcq2+qHJLpKPx/AP5xFXNfBXStWZ1svCG/BFbXhHdb8GS
-         Ycbvm8piP9LqsEXyaatybKn7hGXqnzl0pJHzvrwjwxl4XUMeRVYhgLw7YiwdR5G/wlWn
-         kgT+x7mL1Fr0URTg+AGyKVtVS/dZsG4j4OvPT7yjNDla4nF/HZdtsH8jEYgizwEjx+Qf
-         c1PcU1eyPBc92HP1qOHccRZEMPmUeAQXn9nKp4dnwAnFg8mKncGAVaz/3+2x4miK0nSh
-         XSyA==
+        with ESMTP id S241916AbiFIIqF (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 9 Jun 2022 04:46:05 -0400
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47951145586;
+        Thu,  9 Jun 2022 01:44:19 -0700 (PDT)
+Received: by mail-qv1-f51.google.com with SMTP id cv1so16095947qvb.5;
+        Thu, 09 Jun 2022 01:44:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=0XYuJwlWcPhF5wKwZj6AX0M1ehVlcZ8wjqHIDg46ZGY=;
-        b=NOGjkXf1IHAdQTShlCU031Zy9wky42LxwJHU+Y9U1j8jKJfO/585dzWhVtsxihFN6m
-         4WDWnaO7VthWL+egEElzS4vYICf5KtwZZYplfqZyK4Pe+BMKrkJf04ZlpexcPGsSWY8/
-         WPVDIteaBIe8gfSLcutDsAEEs49YazzYpqw25OkeTgHl263HeWugmc060TGLPQjhY8kP
-         St0u/7aY1wOGoP/i7G6QWfFOIiHE9eCRt8o5cHSfvZTTIzT4nYZ+K9bKsV+quivt4Vs7
-         AvoxI0nnVu0znSaeVHr9V6FqUr5AQXH4T0ASAuPyrK5jUsyyMBnlIcU4Sgkt1nck0Bj7
-         U1yQ==
-X-Gm-Message-State: AOAM533hf3TVMJLMibMsLs034E8yObzUutI0+/nfgLwRt/dPP9+398BH
-        R2xBfejId7cw8TptBgExn+O3lNNxB7z/YLmo2SA=
-X-Google-Smtp-Source: ABdhPJx52pSKtX9UrbCcV85SCVRZ2WwxB7gUs5FO1FCc4sV0ha9ILIDbtBg9ouBgsGiWfGceFdlLaF6Gol/LNuFeVtU=
-X-Received: by 2002:a17:906:1d1:b0:711:f5fa:4114 with SMTP id
- 17-20020a17090601d100b00711f5fa4114mr6011996ejj.228.1654762394663; Thu, 09
- Jun 2022 01:13:14 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+kgfuOl15O7T9RHCgfbIYRFe22lq8CT5xow4SaejHkE=;
+        b=25Dw2M/Udvo3NObQuIXOEAy6zDbHL1CSwfqUJDLeiRqv0qDmCFuF4aaiISrwwCIG6Y
+         tWQFzP23X+522uOG38UdmA1zCj3EBXxCxEjdMgo1TXQJ4x1wsvm2d8mtltyMLPxPhE/o
+         oZ0Wwa1Uj9VGdMGajo12tTyEOQ3iUKhNKpnzr78fGI/rYVF9/tIpRZUpnGq3hFckSlMx
+         w/b1DMt8uMjS6pZ0cgpy4byOhWYEEnABkE5BmWEB+NurwX7qpQSJ+LHIjdlp9DhNjVDK
+         nb/vbpbh3lBGcyTJMHSR8FvcFWUBwH9+aDrQy0ruQon2CAzvp9I2hfQ0Aei1SJkaaFiJ
+         JCUw==
+X-Gm-Message-State: AOAM531zEKa4fFiHF06G0SmFqvKeY6NC75wXQwApoTO5VuJQ5PYcbo+R
+        VysvzwVIc642Dm4BHHAyU+WVoEYibjdXPg==
+X-Google-Smtp-Source: ABdhPJxaLdvyC4HAApUZMgSwM34CuGEwT6Ve2V+ikHOxu8Ih7Bhr2aUEECFYw2Vd6jxrIZggpMq4qA==
+X-Received: by 2002:a05:6214:2aac:b0:46b:b44c:8e4d with SMTP id js12-20020a0562142aac00b0046bb44c8e4dmr11174923qvb.124.1654764258055;
+        Thu, 09 Jun 2022 01:44:18 -0700 (PDT)
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
+        by smtp.gmail.com with ESMTPSA id bm32-20020a05620a19a000b006a6d20386f6sm7365724qkb.42.2022.06.09.01.44.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Jun 2022 01:44:17 -0700 (PDT)
+Received: by mail-yb1-f169.google.com with SMTP id w2so40609923ybi.7;
+        Thu, 09 Jun 2022 01:44:17 -0700 (PDT)
+X-Received: by 2002:a05:6902:905:b0:64a:2089:f487 with SMTP id
+ bu5-20020a056902090500b0064a2089f487mr38963282ybb.202.1654764257410; Thu, 09
+ Jun 2022 01:44:17 -0700 (PDT)
 MIME-Version: 1.0
-Sender: wizguy687@gmail.com
-Received: by 2002:a17:907:970e:0:0:0:0 with HTTP; Thu, 9 Jun 2022 01:13:13
- -0700 (PDT)
-From:   Dina Mckenna <dinamckenna1894@gmail.com>
-Date:   Thu, 9 Jun 2022 08:13:13 +0000
-X-Google-Sender-Auth: TlLqc5Vp0z6MsN3wlkxkKM4cuC8
-Message-ID: <CAGNBjBecnha7R_Do+BG9ePEJ7bPMd2isSsGL34J5Q-vtQG48tg@mail.gmail.com>
-Subject: Please need your urgent assistance,
-To:     undisclosed-recipients:;
+References: <20220603233300.21789-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20220603233300.21789-1-wsa+renesas@sang-engineering.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 9 Jun 2022 10:44:06 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV2pH9HE+33cqgoROneunkcdefv2ts3hkHNA54fThfzLw@mail.gmail.com>
+Message-ID: <CAMuHMdV2pH9HE+33cqgoROneunkcdefv2ts3hkHNA54fThfzLw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: renesas_sdhi: add R-Car Gen4 fallback compatibility string
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_60,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_MONEY,URG_BIZ autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:62b listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.7067]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [wizguy687[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [wizguy687[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.6 URG_BIZ Contains urgent matter
-        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello my dear,
+On Mon, Jun 6, 2022 at 7:58 AM Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+> For now, Gen4 is treated the same as Gen3. But we still want a seperate
+> fallback just in case.
+>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
- I sent this mail praying it will get to you in a good condition of
-health, since I myself are in a very critical health condition in
-which I sleep every night without knowing if I may be alive to see the
-next day. I bring peace and love to you.. It is by the grace of God, I
-had no choice than to do what is lawful and right in the sight of God
-for eternal life and in the sight of man, for witness of God=E2=80=99s merc=
-y
-and glory upon my life. I am Mrs. Dina Howley. Mckenna, a widow. I am
-suffering from a long time brain tumor, It has defiled all forms of
-medical treatment, and right now I have about a few months to leave,
-according to medical experts. The situation has gotten complicated
-recently with my inability to hear proper, am communicating with you
-with the help of the chief nurse herein the hospital, from all
-indication my conditions is really deteriorating and it is quite
-obvious that, according to my doctors they have advised me that I may
-not live too long, Because this illness has gotten to a very bad
-stage. I plead that you will not expose or betray this trust and
-confidence that I am about to repose on you for the mutual benefit of
-the orphans and the less privilege. I have some funds I inherited from
-my late husband, the sum of ($ 11,000,000.00, Eleven Million Dollars).
-Having known my condition, I decided to donate this fund to you
-believing that you will utilize it the way i am going to instruct
-herein. I need you to assist me and reclaim this money and use it for
-Charity works therein your country  for orphanages and gives justice
-and help to the poor, needy and widows says The Lord." Jeremiah
-22:15-16.=E2=80=9C and also build schools for less privilege that will be
-named after my late husband if possible and to promote the word of God
-and the effort that the house of God is maintained. I do not want a
-situation where this money will be used in an ungodly manner. That's
-why I'm taking this decision. I'm not afraid of death, so I know where
-I'm going. I accept this decision because I do not have any child who
-will inherit this money after I die.. Please I want your sincerely and
-urgent answer to know if you will be able to execute this project for
-the glory of God, and I will give you more information on how the fund
-will be transferred to your bank account. May the grace, peace, love
-and the truth in the Word of God be with you and all those that you
-love and care for.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-I'm waiting for your immediate reply.
+Gr{oetje,eeting}s,
 
-May God Bless you,
-Mrs. Dina Howley. Mckenna.
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
