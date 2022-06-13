@@ -2,45 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D4CF54992C
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 Jun 2022 18:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8FFC549DE9
+	for <lists+linux-mmc@lfdr.de>; Mon, 13 Jun 2022 21:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244571AbiFMQMT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 Jun 2022 12:12:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51908 "EHLO
+        id S1344107AbiFMTm1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 13 Jun 2022 15:42:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236451AbiFMQMB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Jun 2022 12:12:01 -0400
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4D52C110;
-        Mon, 13 Jun 2022 07:05:15 -0700 (PDT)
-Received: from ip5b412258.dynamic.kabel-deutschland.de ([91.65.34.88] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <heiko@sntech.de>)
-        id 1o0kgr-0000p1-1u; Mon, 13 Jun 2022 16:05:13 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     palmer@dabbelt.com, palmer@rivosinc.com,
-        linux-riscv@lists.infradead.org
-Cc:     Conor.Dooley@microchip.com, linux-i2c@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lee.jones@linaro.org, robh+dt@kernel.org,
-        linux-mmc@vger.kernel.org, paul.walmsley@sifive.com,
-        atulkhare@rivosinc.com, support.opensource@diasemi.com,
-        andrew@lunn.ch, krzysztof.kozlowski@linaro.org,
-        stwiss.opensource@diasemi.com, linux-riscv@lists.infradead.org,
-        aou@eecs.berkeley.edu, ulf.hansson@linaro.org,
-        krzysztof.kozlowski+dt@linaro.org, Conor.Dooley@microchip.com
-Subject: Re: [PATCH v3 4/4] riscv: dts: sifive: "fix" pmic watchdog node name
-Date:   Mon, 13 Jun 2022 16:05:12 +0200
-Message-ID: <2247394.ElGaqSPkdT@diego>
-In-Reply-To: <ee29eefa-9206-b84a-e27c-4e4388865db0@microchip.com>
-References: <20220606201343.514391-1-mail@conchuod.ie> <20220606201343.514391-5-mail@conchuod.ie> <ee29eefa-9206-b84a-e27c-4e4388865db0@microchip.com>
+        with ESMTP id S1344627AbiFMTmD (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Jun 2022 15:42:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB406129A;
+        Mon, 13 Jun 2022 11:11:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DB1461224;
+        Mon, 13 Jun 2022 18:11:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F9EC34114;
+        Mon, 13 Jun 2022 18:11:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1655143881;
+        bh=r/uQoIAptd2kdH1sDPm8Dl5Ok9Z2t+kx5mOqVHxzwHY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oRlwMuHdrdha/YRPgL48dWRuDAB2I+9v1s68B6cwvOAFMGYE45MgdO9fFWO9Yddvt
+         7DM6HxgbVaNSjdfQ+MwWTP1sy7QY3kmC09577rVITa+zQBgEJIaecUzizPBRbfIV1d
+         eRHxJRS18mV2I8+Epp866LNxbCPbzPhozn+8iwJE=
+Date:   Mon, 13 Jun 2022 20:11:18 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Yongqin Liu <yongqin.liu@linaro.org>
+Cc:     stable@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Benjamin Copeland <benjamin.copeland@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>,
+        Alistair Delva <adelva@google.com>,
+        Steve Muckle <smuckle@google.com>,
+        Todd Kjos <tkjos@google.com>,
+        "Bajjuri, Praneeth" <praneeth@ti.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        linux-mmc@vger.kernel.org, linux-block@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: Please help cherry pick four mmc related changes into the 4.14
+ stable kernel
+Message-ID: <Yqd9xjOiOapfBt/A@kroah.com>
+References: <CAMSo37WW9veYH6=tHqUR2pa_7YX1UuzHqLBHit60P2QyzQmCEw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMSo37WW9veYH6=tHqUR2pa_7YX1UuzHqLBHit60P2QyzQmCEw@mail.gmail.com>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,56 +61,59 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Am Montag, 13. Juni 2022, 15:33:49 CEST schrieb Conor.Dooley@microchip.com:
+On Wed, Jun 08, 2022 at 01:09:54AM +0800, Yongqin Liu wrote:
+> Hi, All
 > 
-> On 06/06/2022 21:13, Conor Dooley wrote:
-> > From: Conor Dooley <conor.dooley@microchip.com>
-> > 
-> > After converting the pmic watchdog binding to yaml, dtbs_check complains
-> > that the node name doesn't match the binding. "Fix" it.
+> With the 4.14.281 version[1], there were three mmc related changes merged,
+> but that causes one boot failure with the X15 Android builds, a problem
+> similar to one reported before here[2].
+> After being confirmed with Ulf Hansson, and verified with the X15 Android build,
+> it needs to have the following four commits cherry-picked to the 4.14
+> branch as well.
 > 
-> Hey Palmer,
-> The three dt-binding changes were accepted - do I need to poke SiFive to
-> ack the dts change or are you fine just taking it?
-
-I don't think a node-name has relevance to vendor decisions ;-) .
-
-Looking at bindings/watchdog/watchdog.yaml we clearly see that
-the node name is always watchdog or watchdog@foo, so this change
-is clearly correct.
-
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-
-
-> Thanks,
-> Conor.
+>     4f32b45c9a2c mmc: core: Allow host controllers to require R1B for CMD6
+>     5fc615c1e3eb mmc: core: Respect MMC_CAP_NEED_RSP_BUSY for erase/trim/discard
+>     d091259b8d7a mmc: core: Respect MMC_CAP_NEED_RSP_BUSY for eMMC sleep command
+>     23161bed631a mmc: sdhci-omap: Fix busy detection by enabling
+> MMC_CAP_NEED_RSP_BUSY
 > 
-> > 
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> > ---
-> >   arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts b/arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts
-> > index c4ed9efdff03..1f386b07a832 100644
-> > --- a/arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts
-> > +++ b/arch/riscv/boot/dts/sifive/hifive-unmatched-a00.dts
-> > @@ -90,7 +90,7 @@ rtc {
-> >   			compatible = "dlg,da9063-rtc";
-> >   		};
-> >   
-> > -		wdt {
-> > +		watchdog {
-> >   			compatible = "dlg,da9063-watchdog";
-> >   		};
-> >   
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+> The above four commits are from the 4.19 branch, as they are a little
+> easier to be cherry-picked
+> into the 4.14 branch, compared to the commits from the mainline branch.
+> (I have confirmed that the four commits are all in 4.19, 5.4, 5.10 and
+> mainline branches already).
 > 
+> Saying that, there will be still one merge conflict reported when
+> cherry picking the commit of
+> 4f32b45c9a2c, it's easy to resolve though.
+> To avoid the merge conflict, it could be done like this as well:
+> 1. revert the 327b6689898b commit from 4.14 first, so that the commits in step#2
+>     could be cherry-picked without any problem
+>         327b6689898b mmc: core: Default to generic_cmd6_time as
+> timeout in __mmc_switch()
+> 2. git cherry-pick the following commits from 4.19 into the 4.14 branch
+>         4f32b45c9a2c mmc: core: Allow host controllers to require R1B for CMD6
+>         5fc615c1e3eb mmc: core: Respect MMC_CAP_NEED_RSP_BUSY for
+> erase/trim/discard
+>         d091259b8d7a mmc: core: Respect MMC_CAP_NEED_RSP_BUSY for eMMC
+> sleep command
+>         23161bed631a mmc: sdhci-omap: Fix busy detection by enabling
+> MMC_CAP_NEED_RSP_BUSY
+>         26c6f614cf02 mmc: mmc: core: Default to generic_cmd6_time as
+> timeout in __mmc_switch()
+>     The last commit of 26c6f614cf02 is for the revert in step#1.
+> 
+> I am not sure which way is more convenient for the maintenance work
+> here, so just list both of them here
+> for your information.
+> And please let me know if there is anything else I could help on this
+> cherry pick work here.
 
+Please send properly backported patches to us, trying to do the revert
+and fixup like you describe above is going to be hard to verify I got it
+right.  A series of patches is best as that way we know you tested it
+properly and sent us the correct patches.
 
+thanks,
 
-
+greg k-h
