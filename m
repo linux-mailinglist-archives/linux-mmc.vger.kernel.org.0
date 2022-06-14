@@ -2,243 +2,179 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC3E454A00B
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 Jun 2022 22:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F8254AC77
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Jun 2022 10:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244251AbiFMUra (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 13 Jun 2022 16:47:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52630 "EHLO
+        id S1355879AbiFNIuJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Jun 2022 04:50:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343573AbiFMUqh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 13 Jun 2022 16:46:37 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 714DF3EA96
-        for <linux-mmc@vger.kernel.org>; Mon, 13 Jun 2022 12:57:54 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id d129so6484578pgc.9
-        for <linux-mmc@vger.kernel.org>; Mon, 13 Jun 2022 12:57:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pensando.io; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=G5AngU4fQLL9tjwfd3M8P7vnWfa9NLIJ0sasw1HKwk0=;
-        b=mu1MQUUbKSIWTjXFuH9p5fRtMkj/uh3ZnxEfSrme86jAyFfjIy8octcKZ3zNAX4x9c
-         wUnkb7Pm31XhRwRRyE6LbmkkeaxcoeBZLDkixXYqfV794DjWNfiz/mGlQTvWSqTEWWtv
-         GqC866XldQ6zuRlUQUd+E5wwXlgg7da2ICjTbSTrIUNFOls4Cp/NjO1QggHYfg77Vqmv
-         IOItahUEcwJuZw6gpYbkDj2XO+1nM5uvTzeN/Dupw9QpUJ/TRJOBFLDZ2IoP3JOosR4g
-         GHdndKKc4nnSC2cdovhjFcFaV5s1rSJBMKihXZMEouUOTHk2CEILhcxWgL9eChYN+kBi
-         bBZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=G5AngU4fQLL9tjwfd3M8P7vnWfa9NLIJ0sasw1HKwk0=;
-        b=pvgHn2ZjKQcnI3a1iU+0fRumjr+901m9imDhkepRv/hvkEwkUxlY5wdNksLm54hfPC
-         fAdEAtwmEGdDDeVOW9HbedDvKU7wb5cJ3RonFQmNOYJ+l+cXYrU1pT7/NxMQyzUsoZYR
-         ST2YX4NAIscluDWozOcsTlCRpEK+CE8TolHMxH+P0fFhmxLAzuyF3L7GLBFzwlJCtJEa
-         oOpEO07Qe0hDsE2aP7jQcc8U+RXhFWTaXdvw7onykS5W3oLlIEBOsAW9XSk1DC+IDk3v
-         A+zn2zWvb+Fp5dHFFyOfLdvy4A3yPrZUdk0mMGCPzEsUSTYd8JbMfHiMb0x7Kf/rrE43
-         5exw==
-X-Gm-Message-State: AOAM531jtVwMpINEP4oBXbIdGOOZ9AbNNDqlISjzAwu4lWxRL047yl0O
-        g4QQmMCQbSkiN9Ob8+qqaQ+elCDCbvMlwA==
-X-Google-Smtp-Source: ABdhPJxT9PVmJkPQk+jDaeQ8grX7yokwcmvdH5gzlVI7dBpN2UU5iRmzY3Wcu+fC+042xx6yhf2Z3A==
-X-Received: by 2002:a63:2cd7:0:b0:3fe:1c0a:75ce with SMTP id s206-20020a632cd7000000b003fe1c0a75cemr1128278pgs.602.1655150274127;
-        Mon, 13 Jun 2022 12:57:54 -0700 (PDT)
-Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id q21-20020a170902edd500b0016797c33b6csm5509357plk.116.2022.06.13.12.57.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 12:57:53 -0700 (PDT)
-From:   Brad Larson <brad@pensando.io>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        adrian.hunter@intel.com, alcooperx@gmail.com,
-        andy.shevchenko@gmail.com, arnd@arndb.de, brad@pensando.io,
-        blarson@amd.com, brijeshkumar.singh@amd.com,
-        catalin.marinas@arm.com, gsomlo@gmail.com, gerg@linux-m68k.org,
-        krzk@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        lee.jones@linaro.org, broonie@kernel.org,
-        yamada.masahiro@socionext.com, p.zabel@pengutronix.de,
-        piotrs@cadence.com, p.yadav@ti.com, rdunlap@infradead.org,
-        robh+dt@kernel.org, samuel@sholland.org, fancer.lancer@gmail.com,
-        suravee.suthikulpanit@amd.com, thomas.lendacky@amd.com,
-        ulf.hansson@linaro.org, will@kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v5 15/15] reset: elbasr: Add AMD Pensando Elba SR Reset Controller
-Date:   Mon, 13 Jun 2022 12:56:58 -0700
-Message-Id: <20220613195658.5607-16-brad@pensando.io>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220613195658.5607-1-brad@pensando.io>
+        with ESMTP id S1355895AbiFNItj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Jun 2022 04:49:39 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 294DF13CF1;
+        Tue, 14 Jun 2022 01:49:34 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 25E8mpFE060385;
+        Tue, 14 Jun 2022 03:48:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1655196531;
+        bh=CDf43wcE6wSh3PzlVgmbjR8Np/ai78l/H7vjoYFhOkU=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=lH+zrL9aZF6hMI1zQYVIj2+YAy4Re0EqZyoS7NsF2LqIU9ht70kczMRbjJSE8pthm
+         DhgCLWbwKjpURMKaDAoU/ylwKjfHqil5RSj+wwKMHzI7dMxQN8gz3PX79kePwTFMBC
+         HT7btcyrJ8HyjPgyLWxPQP8N9AS2B8O5Hew3Q7kw=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 25E8mpXD097757
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 14 Jun 2022 03:48:51 -0500
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 14
+ Jun 2022 03:48:50 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Tue, 14 Jun 2022 03:48:50 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 25E8mnC0016187;
+        Tue, 14 Jun 2022 03:48:50 -0500
+Date:   Tue, 14 Jun 2022 14:18:49 +0530
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     Brad Larson <brad@pensando.io>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <adrian.hunter@intel.com>, <alcooperx@gmail.com>,
+        <andy.shevchenko@gmail.com>, <arnd@arndb.de>, <blarson@amd.com>,
+        <brijeshkumar.singh@amd.com>, <catalin.marinas@arm.com>,
+        <gsomlo@gmail.com>, <gerg@linux-m68k.org>, <krzk@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <lee.jones@linaro.org>,
+        <broonie@kernel.org>, <yamada.masahiro@socionext.com>,
+        <p.zabel@pengutronix.de>, <piotrs@cadence.com>,
+        <rdunlap@infradead.org>, <robh+dt@kernel.org>,
+        <samuel@sholland.org>, <fancer.lancer@gmail.com>,
+        <suravee.suthikulpanit@amd.com>, <thomas.lendacky@amd.com>,
+        <ulf.hansson@linaro.org>, <will@kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v5 11/15] spi: cadence-quadspi: Add compatible for AMD
+ Pensando Elba SoC
+Message-ID: <20220614084849.oodxh6cthysga5iq@ti.com>
 References: <20220613195658.5607-1-brad@pensando.io>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+ <20220613195658.5607-12-brad@pensando.io>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20220613195658.5607-12-brad@pensando.io>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Brad Larson <blarson@amd.com>
+Hi Brad,
 
-This patch adds the reset controller functionality for the
-AMD Pensando Elba System Resource Chip.
+On 13/06/22 12:56PM, Brad Larson wrote:
+> From: Brad Larson <blarson@amd.com>
+> 
+> The AMD Pensando Elba SoC has the Cadence QSPI controller integrated.
+> 
+> The quirk CQSPI_NEEDS_APB_AHB_HAZARD_WAR is added and if enabled
+> a dummy readback from the controller is performed to ensure
+> synchronization.
+> 
+> Signed-off-by: Brad Larson <blarson@amd.com>
+> ---
+>  drivers/spi/spi-cadence-quadspi.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+> index 72b1a5a2298c..ebb77ea8e6ba 100644
+> --- a/drivers/spi/spi-cadence-quadspi.c
+> +++ b/drivers/spi/spi-cadence-quadspi.c
+> @@ -39,6 +39,7 @@
+>  #define CQSPI_DISABLE_DAC_MODE		BIT(1)
+>  #define CQSPI_SUPPORT_EXTERNAL_DMA	BIT(2)
+>  #define CQSPI_NO_SUPPORT_WR_COMPLETION	BIT(3)
+> +#define CQSPI_NEEDS_APB_AHB_HAZARD_WAR	BIT(4)
+>  
+>  /* Capabilities */
+>  #define CQSPI_SUPPORTS_OCTAL		BIT(0)
+> @@ -87,6 +88,7 @@ struct cqspi_st {
+>  	bool			use_dma_read;
+>  	u32			pd_dev_id;
+>  	bool			wr_completion;
+> +	bool			apb_ahb_hazard;
+>  };
+>  
+>  struct cqspi_driver_platdata {
+> @@ -952,6 +954,13 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
+>  	if (cqspi->wr_delay)
+>  		ndelay(cqspi->wr_delay);
+>  
+> +	/*
+> +	 * If a hazard exists between the APB and AHB interfaces, perform a
+> +	 * dummy readback from the controller to ensure synchronization.
+> +	 */
 
-Signed-off-by: Brad Larson <blarson@amd.com>
----
- drivers/reset/Kconfig                         |  9 ++
- drivers/reset/Makefile                        |  1 +
- drivers/reset/reset-elbasr.c                  | 94 +++++++++++++++++++
- .../reset/amd,pensando-elba-reset.h           | 11 +++
- 4 files changed, 115 insertions(+)
- create mode 100644 drivers/reset/reset-elbasr.c
- create mode 100644 include/dt-bindings/reset/amd,pensando-elba-reset.h
+This is needed for TI's SoCs as well. APB and AHB accesses are 
+independent of each other on the interconnect and can be racy. I wrote a 
+couple patches [0][1] to fix this on TI's fork. I never got around to 
+sending them upstream. It would be great if you can pick those up. They 
+fix the race in all paths, not just indirect write.
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 93c8d07ee328..13f5a8ca0f03 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -66,6 +66,15 @@ config RESET_BRCMSTB_RESCAL
- 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
- 	  BCM7216.
- 
-+config RESET_ELBASR
-+	tristate "Pensando Elba System Resource reset controller"
-+	depends on MFD_PENSANDO_ELBASR || COMPILE_TEST
-+	help
-+	  This option enables support for the external reset functions
-+	  on the Pensando Elba System Resource Chip.  Reset control
-+	  of peripherals is accessed over SPI to the system resource
-+	  chip device registers using CS0.
-+
- config RESET_HSDK
- 	bool "Synopsys HSDK Reset Driver"
- 	depends on HAS_IOMEM
-diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-index a80a9c4008a7..c0fe12b9950e 100644
---- a/drivers/reset/Makefile
-+++ b/drivers/reset/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_RESET_BCM6345) += reset-bcm6345.o
- obj-$(CONFIG_RESET_BERLIN) += reset-berlin.o
- obj-$(CONFIG_RESET_BRCMSTB) += reset-brcmstb.o
- obj-$(CONFIG_RESET_BRCMSTB_RESCAL) += reset-brcmstb-rescal.o
-+obj-$(CONFIG_RESET_ELBASR) += reset-elbasr.o
- obj-$(CONFIG_RESET_HSDK) += reset-hsdk.o
- obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
- obj-$(CONFIG_RESET_INTEL_GW) += reset-intel-gw.o
-diff --git a/drivers/reset/reset-elbasr.c b/drivers/reset/reset-elbasr.c
-new file mode 100644
-index 000000000000..6e429cb11466
---- /dev/null
-+++ b/drivers/reset/reset-elbasr.c
-@@ -0,0 +1,94 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (c) 2022 AMD Pensando
-+ */
-+
-+#include <linux/mfd/pensando-elbasr.h>
-+#include <linux/platform_device.h>
-+#include <linux/reset-controller.h>
-+#include <linux/regmap.h>
-+#include <linux/err.h>
-+#include <linux/of.h>
-+
-+#include <dt-bindings/reset/amd,pensando-elba-reset.h>
-+
-+struct elbasr_reset {
-+	struct reset_controller_dev rcdev;
-+	struct regmap *regmap;
-+};
-+
-+static inline struct elbasr_reset *to_elbasr_rst(struct reset_controller_dev *rc)
-+{
-+	return container_of(rc, struct elbasr_reset, rcdev);
-+}
-+
-+static inline int elbasr_reset_shift(unsigned long id)
-+{
-+	switch (id) {
-+	case EMMC_HW_RESET:
-+		return 6;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int elbasr_reset_assert(struct reset_controller_dev *rcdev,
-+			       unsigned long id)
-+{
-+	struct elbasr_reset *elbar = to_elbasr_rst(rcdev);
-+	u32 mask = 1 << elbasr_reset_shift(id);
-+
-+	return regmap_update_bits(elbar->regmap, ELBASR_CTRL0_REG, mask, mask);
-+}
-+
-+static int elbasr_reset_deassert(struct reset_controller_dev *rcdev,
-+				 unsigned long id)
-+{
-+	struct elbasr_reset *elbar = to_elbasr_rst(rcdev);
-+	u32 mask = 1 << elbasr_reset_shift(id);
-+
-+	return regmap_update_bits(elbar->regmap, ELBASR_CTRL0_REG, mask, 0);
-+}
-+
-+static const struct reset_control_ops elbasr_reset_ops = {
-+	.assert	= elbasr_reset_assert,
-+	.deassert = elbasr_reset_deassert,
-+};
-+
-+static int elbasr_reset_probe(struct platform_device *pdev)
-+{
-+	struct elbasr_data *elbasr = dev_get_drvdata(pdev->dev.parent);
-+	struct elbasr_reset *elbar;
-+	int ret;
-+
-+	elbar = devm_kzalloc(&pdev->dev, sizeof(struct elbasr_reset),
-+			     GFP_KERNEL);
-+	if (!elbar)
-+		return -ENOMEM;
-+
-+	elbar->rcdev.owner = THIS_MODULE;
-+	elbar->rcdev.nr_resets = ELBASR_NR_RESETS;
-+	elbar->rcdev.ops = &elbasr_reset_ops;
-+	elbar->rcdev.of_node = pdev->dev.of_node;
-+	elbar->regmap = elbasr->elbasr_regs;
-+
-+	platform_set_drvdata(pdev, elbar);
-+
-+	ret = devm_reset_controller_register(&pdev->dev, &elbar->rcdev);
-+
-+	return ret;
-+}
-+
-+static const struct of_device_id elba_reset_dt_match[] = {
-+	{ .compatible = "amd,pensando-elbasr-reset", },
-+	{ /* sentinel */ },
-+};
-+
-+static struct platform_driver elbasr_reset_driver = {
-+	.probe	= elbasr_reset_probe,
-+	.driver = {
-+		.name = "pensando_elbasr_reset",
-+		.of_match_table	= elba_reset_dt_match,
-+	},
-+};
-+builtin_platform_driver(elbasr_reset_driver);
-diff --git a/include/dt-bindings/reset/amd,pensando-elba-reset.h b/include/dt-bindings/reset/amd,pensando-elba-reset.h
-new file mode 100644
-index 000000000000..68d69a98e750
---- /dev/null
-+++ b/include/dt-bindings/reset/amd,pensando-elba-reset.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: (GPL-2.0+ OR MIT) */
-+/*
-+ * Copyright (c) 2022, AMD Pensando
-+ */
-+
-+#ifndef _DT_BINDINGS_RESET_AMD_PENSANDO_ELBA_RESET_H
-+#define _DT_BINDINGS_RESET_AMD_PENSANDO_ELBA_RESET_H
-+
-+#define EMMC_HW_RESET		0
-+
-+#endif
+I would also prefer if we do this unconditionally. I don't think it has 
+much downside even on platforms that do not strictly need this.
+
+[0] https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/drivers/spi/spi-cadence-quadspi.c?h=ti-linux-5.10.y&id=027f03a8512086e5ef05dc4e4ff53b2628848f95
+[1] https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/drivers/spi/spi-cadence-quadspi.c?h=ti-linux-5.10.y&id=4c367e58bab7d3f9c470c3778441f73546f20398
+
+> +	if (cqspi->apb_ahb_hazard)
+> +		(void)readl(reg_base + CQSPI_REG_INDIRECTWR);
+> +
+>  	while (remaining > 0) {
+>  		size_t write_words, mod_bytes;
+>  
+> @@ -1667,6 +1676,8 @@ static int cqspi_probe(struct platform_device *pdev)
+>  			cqspi->use_dma_read = true;
+>  		if (ddata->quirks & CQSPI_NO_SUPPORT_WR_COMPLETION)
+>  			cqspi->wr_completion = false;
+> +		if (ddata->quirks & CQSPI_NEEDS_APB_AHB_HAZARD_WAR)
+> +			cqspi->apb_ahb_hazard = true;
+>  
+>  		if (of_device_is_compatible(pdev->dev.of_node,
+>  					    "xlnx,versal-ospi-1.0"))
+> @@ -1789,6 +1800,10 @@ static const struct cqspi_driver_platdata versal_ospi = {
+>  	.get_dma_status = cqspi_get_versal_dma_status,
+>  };
+>  
+> +static const struct cqspi_driver_platdata pen_cdns_qspi = {
+> +	.quirks = CQSPI_NEEDS_APB_AHB_HAZARD_WAR | CQSPI_DISABLE_DAC_MODE,
+> +};
+> +
+>  static const struct of_device_id cqspi_dt_ids[] = {
+>  	{
+>  		.compatible = "cdns,qspi-nor",
+> @@ -1814,6 +1829,10 @@ static const struct of_device_id cqspi_dt_ids[] = {
+>  		.compatible = "intel,socfpga-qspi",
+>  		.data = &socfpga_qspi,
+>  	},
+> +	{
+> +		.compatible = "amd,pensando-elba-qspi",
+> +		.data = &pen_cdns_qspi,
+> +	},
+>  	{ /* end of table */ }
+>  };
+>  
+> -- 
+> 2.17.1
+> 
+
 -- 
-2.17.1
-
+Regards,
+Pratyush Yadav
+Texas Instruments Inc.
