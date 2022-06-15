@@ -2,68 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A2B554D006
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 Jun 2022 19:35:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 759E954D00F
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 Jun 2022 19:35:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349948AbiFOReD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 Jun 2022 13:34:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46424 "EHLO
+        id S1352107AbiFOReE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 Jun 2022 13:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357936AbiFORdm (ORCPT
+        with ESMTP id S1357945AbiFORdm (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Jun 2022 13:33:42 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A406C52518
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:34 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id a29so20031547lfk.2
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:34 -0700 (PDT)
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C64C18
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:40 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 20so19978907lfz.8
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=rEBSyXeCbmBUBcCDVrlaJF/sb3hQ6cDD+mTYpXhaT5Y=;
-        b=NHk1jGKwkU2BrG33SfVEnhC0RF9ehEMIxRspkW9YY0bIyXGTIr7Wd9t+5XEZncbb2w
-         Po2euByjQ9qiAh3cOvXZ68Z2NYJEsgK/cqwcuqgjLpcaF/M4EI7uKed+Qz2XwjSRWnK5
-         A7FAIGoMw8pseVV+w6+VmsmAGl/+hCeCipcX0MSWeWCHimBHaA70MKvO04pr5zfmw5HG
-         +3wlOonEgbO/H9EimUhVVT1Ihcd822/7PbCDjOxC7tsls2izvotRwFP2A51p90v/77Rz
-         xV99fIS+FSqF5r0jujwn2gdxaaprTDad65FSN63dEagRi1nTFBBt/2vscajcg9aZv8u4
-         CHtg==
+         :cc;
+        bh=vcHVsoWguVVLX6D1o9p6ROzYq6Vx8lJC3ceKckv3Ay4=;
+        b=pL1t+th8AsvavKWoWyXCwlHfo4w+BpNrHX/+qZpCkcTcFTvkBhwcJhH6kLrcco5aIT
+         dMzV/4EDZ8W90wOEFxWwC4NuUOkwQG4f/I10x8tN41xmww9Qga+ps7Pyjw6RtKbT1XPt
+         kDclqWzNDQCZL9dVuKvQTuQgtzAjRmw0jHYTat5C1cGwTAgZ/dEbnu6PLJgyDFATORuX
+         kk6OnLexf+I6OeWxz2D7zQR0Z7nL2i0ea9Uh1Mb35r1YssNbBJu/cAyH0QMvBTcdIg+T
+         nVXA9qlfHiPNPtzBEwHt+bM/nl7ITcCXM42nGHqUvGNbgABm7P2bP7zzvLq3RAwCTmbS
+         6uBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=rEBSyXeCbmBUBcCDVrlaJF/sb3hQ6cDD+mTYpXhaT5Y=;
-        b=hf2sOL4zkfREzbFevJd4MfNnicnsibqYNNH/K2Vuf4A0LXVKFPeIWaxcI7610tPD3Z
-         gDN5hM9tgjvKWlpYg4nGeq9m4E3Rvu6COvmle65Xt2cbuE4bmfrDlz8uLJjVMrEabw5V
-         ga4uY6sROrGMw4IWyEvMc2dpH59AATsmbb0crxzEB0NmIMALMTxCjWZvGWQS0CgmCM0O
-         CVxaI8OdVrptQT63jsgnV2PLx+l6HQ0p5Ez+abp7UhOBEvk2UZrKoDlkaXl0aWpfp9au
-         KdtTQUx7hWTxp/I8CSarJHrjQukSW0VHcLcyj0jJKVq+w4Bqupc5JkjuCcc5AlNAbLal
-         taug==
-X-Gm-Message-State: AJIora9alvjzuYXtO5RElr4tv8szBycYxslkkourmqd/P7HJ6nIr9Hzo
-        pAfnctSm+u4M4fPORdvbr60QqWQJnyicw7Stl2rfVw==
-X-Google-Smtp-Source: AGRyM1sWRqYe+A4qepiU6K08Gk2UDWKSsUHbIH4KwHmf8+CbMzbiIK6O9l48yMlOhTn4bi5DWqmSSxXBKjEklcsVy0U=
-X-Received: by 2002:a05:6512:403:b0:479:1627:a9b7 with SMTP id
- u3-20020a056512040300b004791627a9b7mr343348lfk.233.1655314413654; Wed, 15 Jun
- 2022 10:33:33 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=vcHVsoWguVVLX6D1o9p6ROzYq6Vx8lJC3ceKckv3Ay4=;
+        b=Oy58OnKQj+reZt5dQ9IEPIzTjkyeHRBu66yiAOIVG4Ya09FbhMKlphtJOXZAuEXeMB
+         1DOE0TMy1OaPkuW/3RumbYYElGm2/X/q1B8PiMPm/n05Ovo1HCOqky7FN7AEw8eeV7bJ
+         DJq8SlZyXoem9/R0MFksfAswc+I1skuGUBX7sqsjRpTSeDnnoetR9tSCUkHsxpoRBgud
+         wDKy0ThiMoq6ibhck67JCkPI0wElFr2U/z5MZiKGPF8OotYHU9cBLlYpvxWUi2y11Xu+
+         JhXFk4nAOl1BIwqx+LUGDnUnng7qYdSQFdkHobrbVOcZQWlA1/VrYJl4vB4U6HeNuFkK
+         /gvQ==
+X-Gm-Message-State: AJIora8cUVtJDZm9BXTk1VfaFrDTp9wj+pwIqWwjUu79ypYUEgaOPKK7
+        I2vUwZ3xcn9qiHP9jWoQ7pPOQSq8zs7Y3/RdpQsvJg==
+X-Google-Smtp-Source: AGRyM1syp1olg9wmO7O9Qx4xXKGJ5Ujb7iIbPyJx9BtqoyO1ka7CEAlVv9TnzuhTfveTUdS/L89RxjTf47ju1VaOxuI=
+X-Received: by 2002:ac2:4bcc:0:b0:479:16a9:897 with SMTP id
+ o12-20020ac24bcc000000b0047916a90897mr327943lfq.71.1655314419080; Wed, 15 Jun
+ 2022 10:33:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220610211257.102071-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20220610211257.102071-1-u.kleine-koenig@pengutronix.de>
+References: <20220613092907.2502-1-jason.lai@genesyslogic.com.tw>
+In-Reply-To: <20220613092907.2502-1-jason.lai@genesyslogic.com.tw>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 15 Jun 2022 10:32:57 -0700
-Message-ID: <CAPDyKFr35sr7RFpv4S0eosY4BT1r0te083rdan_tRq0T+7agJA@mail.gmail.com>
-Subject: Re: [PATCH 1/5] mmc: dw_mmc: exynos: Obviously always return success
- in remove callback
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        kernel@pengutronix.de, Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 15 Jun 2022 10:33:03 -0700
+Message-ID: <CAPDyKFp7N61WQYYVT_fBgXYGPUbLWTbu6AL4Jyt=n45bEzuZXQ@mail.gmail.com>
+Subject: Re: [PATCH V2] mmc: host: Improve READ/WRITE Performance of GL9763E
+To:     Jason Lai <jasonlai.genesyslogic@gmail.com>
+Cc:     adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
+        ben.chuang@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw,
+        SeanHY.chen@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
+        victor.shih@genesyslogic.com.tw,
+        Renius Chen <reniuschengl@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,50 +68,105 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 10 Jun 2022 at 14:13, Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
+On Mon, 13 Jun 2022 at 02:29, Jason Lai <jasonlai.genesyslogic@gmail.com> wrote:
 >
-> dw_mci_pltfm_remove() returns 0 unconditionally and returning an error
-> in a platform remove callback isn't very sensible. (The only effect of
-> the latter is that the device core emits a generic warning and then
-> removes the device anyhow.)
+> From: Jason Lai <jasonlai.genesyslogic@gmail.com>
 >
-> So return 0 unconditionally to make it obvious there is no error
-> forwarded to the upper layers.
+> To improve READ/WRITE performance and take battery life into account, we
+> turn on GL9763E L1 negotiation before entering runtime suspend and turn
+> off GL9763E L1 negotiation while executing runtime resume. That is to say,
+> GL9763E will not enter L1 state when executing I/O requests and enter L1
+> state when PCIe bus idle.
 >
-> This is a preparation for making platform remove callbacks return void.
->
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> Signed-off-by: Renius Chen <reniuschengl@gmail.com>
+> Signed-off-by: Jason Lai <jason.lai@genesyslogic.com.tw>
 
-This one and the other 4 patches in the series, applied for next. Thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/dw_mmc-exynos.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/mmc/host/dw_mmc-exynos.c b/drivers/mmc/host/dw_mmc-e=
-xynos.c
-> index ca5be4445ae0..9f20ac524c8b 100644
-> --- a/drivers/mmc/host/dw_mmc-exynos.c
-> +++ b/drivers/mmc/host/dw_mmc-exynos.c
-> @@ -670,7 +670,9 @@ static int dw_mci_exynos_remove(struct platform_devic=
-e *pdev)
->         pm_runtime_set_suspended(&pdev->dev);
->         pm_runtime_put_noidle(&pdev->dev);
+> This patch is the follow-up to the patch [1] and adopt Ulf's comment.
 >
-> -       return dw_mci_pltfm_remove(pdev);
-> +       dw_mci_pltfm_remove(pdev);
+> Due to flaws in hardware design, GL9763E takes long time to exit from L1
+> state. The I/O performance will suffer severe impact if it often enter
+> and exit L1 state during I/O requests.
+>
+> [1] https://patchwork.kernel.org/project/linux-mmc/list/?series=646869
+>
+> ---
+>  drivers/mmc/host/sdhci-pci-gli.c | 34 ++++++++++++++++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+>
+> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+> index d09728c37d03..69bc3d614e15 100644
+> --- a/drivers/mmc/host/sdhci-pci-gli.c
+> +++ b/drivers/mmc/host/sdhci-pci-gli.c
+> @@ -95,6 +95,9 @@
+>  #define PCIE_GLI_9763E_SCR      0x8E0
+>  #define   GLI_9763E_SCR_AXI_REQ           BIT(9)
+>
+> +#define PCIE_GLI_9763E_CFG       0x8A0
+> +#define   GLI_9763E_CFG_LPSN_DIS   BIT(12)
 > +
-> +       return 0;
+>  #define PCIE_GLI_9763E_CFG2      0x8A4
+>  #define   GLI_9763E_CFG2_L1DLY     GENMASK(28, 19)
+>  #define   GLI_9763E_CFG2_L1DLY_MID 0x54
+> @@ -818,6 +821,31 @@ static void sdhci_gl9763e_dumpregs(struct mmc_host *mmc)
+>         sdhci_dumpregs(mmc_priv(mmc));
 >  }
 >
->  static const struct dev_pm_ops dw_mci_exynos_pmops =3D {
+> +static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
+> +{
+> +       struct pci_dev *pdev = slot->chip->pdev;
+> +       u32 value;
+> +
+> +       pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
+> +       value &= ~GLI_9763E_VHS_REV;
+> +       value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_W);
+> +       pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+> +
+> +       pci_read_config_dword(pdev, PCIE_GLI_9763E_CFG, &value);
+> +
+> +       if (enable)
+> +               value &= ~GLI_9763E_CFG_LPSN_DIS;
+> +       else
+> +               value |= GLI_9763E_CFG_LPSN_DIS;
+> +
+> +       pci_write_config_dword(pdev, PCIE_GLI_9763E_CFG, value);
+> +
+> +       pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
+> +       value &= ~GLI_9763E_VHS_REV;
+> +       value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
+> +       pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+> +}
+> +
+>  static void sdhci_gl9763e_cqe_pre_enable(struct mmc_host *mmc)
+>  {
+>         struct cqhci_host *cq_host = mmc->cqe_private;
+> @@ -959,6 +987,9 @@ static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
+>         struct sdhci_host *host = slot->host;
+>         u16 clock;
 >
-> base-commit: f2906aa863381afb0015a9eb7fefad885d4e5a56
+> +       /* Enable LPM negotiation to allow entering L1 state */
+> +       gl9763e_set_low_power_negotiation(slot, true);
+> +
+>         clock = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
+>         clock &= ~(SDHCI_CLOCK_PLL_EN | SDHCI_CLOCK_CARD_EN);
+>         sdhci_writew(host, clock, SDHCI_CLOCK_CONTROL);
+> @@ -989,6 +1020,9 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
+>         clock |= SDHCI_CLOCK_CARD_EN;
+>         sdhci_writew(host, clock, SDHCI_CLOCK_CONTROL);
+>
+> +       /* Disable LPM negotiation to avoid entering L1 state. */
+> +       gl9763e_set_low_power_negotiation(slot, false);
+> +
+>         return 0;
+>  }
+>  #endif
 > --
 > 2.36.1
 >
