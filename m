@@ -2,68 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34E6C54D011
+	by mail.lfdr.de (Postfix) with ESMTP id C50A154D013
 	for <lists+linux-mmc@lfdr.de>; Wed, 15 Jun 2022 19:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356200AbiFOReH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 Jun 2022 13:34:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46174 "EHLO
+        id S241863AbiFORd7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 Jun 2022 13:33:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350967AbiFORdG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Jun 2022 13:33:06 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD2F6554
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:02 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id d19so14061326lji.10
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:02 -0700 (PDT)
+        with ESMTP id S1356203AbiFORdM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Jun 2022 13:33:12 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C40AE034
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:08 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id a29so20031547lfk.2
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Pn84S9DZzXxuly9v146DUPCGGjqgx99QTtCb7s6xuUs=;
-        b=NFIV6fKm7Y9uSgvDnJB+dClVCg5cH8LbPheNuIlMpEInJU/Uqhcp+J8Y9PlgjkfjeP
-         4yCbYyX0WeMNUQjeJbiFilRt7njH25a3ObFEPKG/OgDdzb/9nTQavwgPZQmIYkJq29o9
-         cA1M4US1DoTNT2ePaURbfvZ6M4VAgPKwOORogeFGaYg/GJ4eMicg61E/avW6MFEtI6nh
-         wTpHoSwqUnpSS2b7ZZEibAh5pPSO+J9vQQ9R5/52wkxlxryZRpyJ8Oesl4yWNZqJEI98
-         qjK3TrX/SvMBqUf8vmjf37f0wBem4JOV5+gol04Rqk4RHMaF7Ee2AUS/sgLo2elMWfAL
-         AOCg==
+        bh=BUgb1Pe+Veiyc1nTiM+3RHjRjGi5/SPESrYXTvlvRXM=;
+        b=lpR1a6RXGTDYt15+E4r+yT/00L0A4FILcJrq9e4gJPPiJGz8QAfETf2g5D6di8fvHn
+         J7GYA5sGsmbXV1u5SNJL5nWEPhzVX9ZXAjWr5VcvJQ0QBm3w638+rgeLfqMyuZUP5CRT
+         r9SPqKoElpgdab66HMhgghETs7CMYZtopX0XmpOttnoAR0blC+IH5taRCOCMo4iB/KoE
+         qUUzUvsG3ufiyzwVJK6NnhM84AON/2kpAlzWNHC3BSqlk7afGRPSo17RXmbHzkXIoRYt
+         7XYKtBjLhYjNOkRgR2MCdY7hGcXJabBbejZpsZgZMup2oxjIiJOlOwjYl5DnMbmO/jBX
+         kHpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Pn84S9DZzXxuly9v146DUPCGGjqgx99QTtCb7s6xuUs=;
-        b=mI1qKOr2WbAIXBzBTkTRFeOS0Wl56csstv8ry3SzYh1EPAlE3JAcOtpIyz1JKsEfIu
-         iwRAtVbaS2GkiWv058BqkLRBCKghmtnTT4qKT7ip/pJFge3upWwk73osP6DzNgl9rAji
-         f/RdnWER1PaKZ0SG2JOVgbi2QjUuJ5BlGdtZYGMs8r2+YGRP0Lxd93yXKlpaiyiiuX6D
-         duOvN+wRxi6lwTUORPghHqbSIZxdPiqdLFQgVIk8kGMR+psJC+uyZzWAkItA3R3uX7Uw
-         vXTXam0bveoEf8OuD9c6H8OzHAhbsPsnledC+T29SzX//OBf1X6ADn+RCoZ445WhlzpA
-         vy9w==
-X-Gm-Message-State: AJIora/SG+9tGicGLywN8I+OZ4E6pa4kbsQ6yuCkQ18Koq3rL4lva04f
-        mG050+Smtfcfd19FewUnlbu+NVtJ+08M6gBpuCD5yA==
-X-Google-Smtp-Source: AGRyM1txepgaizMwVw73ONVyUnmhvFi3eeueNr1BNnbmn6/tCWPAL2c1jjq1+2UsozQMb4jMoAzAccnZApQZiPMWBIg=
-X-Received: by 2002:a05:651c:1a1e:b0:258:f021:8020 with SMTP id
- by30-20020a05651c1a1e00b00258f0218020mr440285ljb.273.1655314381160; Wed, 15
- Jun 2022 10:33:01 -0700 (PDT)
+        bh=BUgb1Pe+Veiyc1nTiM+3RHjRjGi5/SPESrYXTvlvRXM=;
+        b=T6io7wRXrOkcYRDtidoq94F3CacX9k9iFXnoggv/LkdLJgPcIqENsE2Fa4K1XDKbmi
+         92rCw91CPMpxD37WLRYYpNWQVfuZHQaNO28NLrBcBxolN/622SD0WmfjnE1Akoldm+wQ
+         LQ0mlTVfp05gOpp+rMUs865iyn6G3tFdTjTmTxSrwMoXJHYOfKtuFHOI7zVxlftxLkBC
+         eMLwGfz8icQUQFtohPxhdFWMgPAt1+d0fWOFuy3Bd+zK+b1v9mSzieksi3/jtrDpQmkf
+         D1OALBSNEAW+hGKaYlGXz47Yjtloaim7ZO6aTJVZUfsOr1JoRHORca4qh/6mrxoe/TOp
+         5GIw==
+X-Gm-Message-State: AJIora9bQYjeu4PdmqMTiVUwIpQ4Bghf31REndjS3OmoH7mqTJclV3il
+        27lOom5Iv7ZaiE0gCqXlIYz9H4+LinOmyLZN7tVjCw==
+X-Google-Smtp-Source: AGRyM1uzZT5qbrIVqoqKo8NrzQAAiEbammbNVYH24ado8DrBIjHZ7ZONn86vPSD9rtjZsUL6eGAog6NNERQEcawmriM=
+X-Received: by 2002:a05:6512:303:b0:479:1baf:7e5b with SMTP id
+ t3-20020a056512030300b004791baf7e5bmr348682lfp.184.1655314386647; Wed, 15 Jun
+ 2022 10:33:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220608090152.179395-1-weiyongjun1@huawei.com>
-In-Reply-To: <20220608090152.179395-1-weiyongjun1@huawei.com>
+References: <20220608094831.8242-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20220608094831.8242-1-wsa+renesas@sang-engineering.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 15 Jun 2022 10:32:23 -0700
-Message-ID: <CAPDyKFqkLCmYLvOfPUMpw=GObGGMaCVEeYYgDDuLWp2wpNgBfg@mail.gmail.com>
-Subject: Re: [PATCH -next] mmc: debugfs: Fix file release memory leak
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Liangliang Lu <quic_luliang@quicinc.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
-        Sayali Lokhande <quic_sayalil@quicinc.com>,
-        Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-mmc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
+Date:   Wed, 15 Jun 2022 10:32:29 -0700
+Message-ID: <CAPDyKFqFuZxeGcrBQFL3KM4o4rTSqEQkmW_9YuQ6Fm5pUZtvHQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: mmc: renesas,sdhi: R-Car V3U is R-Car Gen4
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,14 +64,13 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 8 Jun 2022 at 01:43, Wei Yongjun <weiyongjun1@huawei.com> wrote:
+On Wed, 8 Jun 2022 at 10:22, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 >
-> When using single_open() for opening, single_release() should be
-> used instead of seq_release(), otherwise there is a memory leak.
+> Despite the name, R-Car V3U is the first member of the R-Car Gen4
+> family.  Hence move its compatible value to the R-Car Gen4 section.
 >
-> Fixes: c835a6debf06 ("mmc: debugfs: Add debug fs entry for mmc driver")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
 Applied for next, thanks!
 
@@ -87,19 +79,32 @@ Uffe
 
 
 > ---
->  drivers/mmc/core/debugfs.c | 1 +
->  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/mmc/core/debugfs.c b/drivers/mmc/core/debugfs.c
-> index 75e98ec88fb9..fe6808771bc7 100644
-> --- a/drivers/mmc/core/debugfs.c
-> +++ b/drivers/mmc/core/debugfs.c
-> @@ -295,6 +295,7 @@ static const struct file_operations mmc_err_stats_fops = {
->         .open   = mmc_err_stats_open,
->         .read   = seq_read,
->         .write  = mmc_err_stats_write,
-> +       .release = single_release,
->  };
+> Depends on "[PATCH] dt-bindings: mmc: renesas,sdhi: Document R-Car S4-8
+> and generic Gen4 support" which is already in mmc/next.
 >
->  void mmc_add_host_debugfs(struct mmc_host *host)
+>  Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> index b46a90eb2063..d5b29728704b 100644
+> --- a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> @@ -56,13 +56,13 @@ properties:
+>                - renesas,sdhi-r8a77980  # R-Car V3H
+>                - renesas,sdhi-r8a77990  # R-Car E3
+>                - renesas,sdhi-r8a77995  # R-Car D3
+> -              - renesas,sdhi-r8a779a0  # R-Car V3U
+>                - renesas,sdhi-r9a07g043 # RZ/G2UL
+>                - renesas,sdhi-r9a07g044 # RZ/G2{L,LC}
+>                - renesas,sdhi-r9a07g054 # RZ/V2L
+>            - const: renesas,rcar-gen3-sdhi # R-Car Gen3 or RZ/G2
+>        - items:
+>            - enum:
+> +              - renesas,sdhi-r8a779a0  # R-Car V3U
+>                - renesas,sdhi-r8a779f0  # R-Car S4-8
+>            - const: renesas,rcar-gen4-sdhi # R-Car Gen4
+>
+> --
+> 2.35.1
 >
