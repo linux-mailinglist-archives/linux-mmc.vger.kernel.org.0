@@ -2,61 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 759E954D00F
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 Jun 2022 19:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B621854D005
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 Jun 2022 19:35:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352107AbiFOReE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 Jun 2022 13:34:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46436 "EHLO
+        id S1345636AbiFOReC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 Jun 2022 13:34:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357945AbiFORdm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Jun 2022 13:33:42 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C64C18
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:40 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 20so19978907lfz.8
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:40 -0700 (PDT)
+        with ESMTP id S1358002AbiFORdr (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Jun 2022 13:33:47 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 524FEE025
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:46 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id a29so20031547lfk.2
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 10:33:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vcHVsoWguVVLX6D1o9p6ROzYq6Vx8lJC3ceKckv3Ay4=;
-        b=pL1t+th8AsvavKWoWyXCwlHfo4w+BpNrHX/+qZpCkcTcFTvkBhwcJhH6kLrcco5aIT
-         dMzV/4EDZ8W90wOEFxWwC4NuUOkwQG4f/I10x8tN41xmww9Qga+ps7Pyjw6RtKbT1XPt
-         kDclqWzNDQCZL9dVuKvQTuQgtzAjRmw0jHYTat5C1cGwTAgZ/dEbnu6PLJgyDFATORuX
-         kk6OnLexf+I6OeWxz2D7zQR0Z7nL2i0ea9Uh1Mb35r1YssNbBJu/cAyH0QMvBTcdIg+T
-         nVXA9qlfHiPNPtzBEwHt+bM/nl7ITcCXM42nGHqUvGNbgABm7P2bP7zzvLq3RAwCTmbS
-         6uBw==
+        bh=3Rr2/eFmxSAglu7fgH0ivcyA6RJfSroBIvj7zrPlOBU=;
+        b=HFHHH4bG6XUFH+LKI17JGgJ8AKrAJBHUzfbDn3x4RDSDfoQY0M6TAKHWcCaT0yhnyg
+         BG3C8lBlZbJzJ17vopxWHWk1LB8Vt42BDaGOM/UilOyXwiwtbRrQnl3pYnHkdxx8xeRr
+         DWJGdvPU0pjyFq8ADPhI0Y8sXT3A6wygCnyZTaLtXGWsYBDzcAjnu7wLT+faXGXCbKAY
+         1L2KMdzSUYHXjl1RpXVFrlbdFfTy/zJGW67Be8fZdcx3Qm5mDEMzHGtmgxvroQ9HkZwe
+         yZKwx5oxqfqfh6AdAZR61io6dsb8hxhiaNBRs6PO04kG7GzuXvAvyg+lhxj/34I35f2I
+         rndA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vcHVsoWguVVLX6D1o9p6ROzYq6Vx8lJC3ceKckv3Ay4=;
-        b=Oy58OnKQj+reZt5dQ9IEPIzTjkyeHRBu66yiAOIVG4Ya09FbhMKlphtJOXZAuEXeMB
-         1DOE0TMy1OaPkuW/3RumbYYElGm2/X/q1B8PiMPm/n05Ovo1HCOqky7FN7AEw8eeV7bJ
-         DJq8SlZyXoem9/R0MFksfAswc+I1skuGUBX7sqsjRpTSeDnnoetR9tSCUkHsxpoRBgud
-         wDKy0ThiMoq6ibhck67JCkPI0wElFr2U/z5MZiKGPF8OotYHU9cBLlYpvxWUi2y11Xu+
-         JhXFk4nAOl1BIwqx+LUGDnUnng7qYdSQFdkHobrbVOcZQWlA1/VrYJl4vB4U6HeNuFkK
-         /gvQ==
-X-Gm-Message-State: AJIora8cUVtJDZm9BXTk1VfaFrDTp9wj+pwIqWwjUu79ypYUEgaOPKK7
-        I2vUwZ3xcn9qiHP9jWoQ7pPOQSq8zs7Y3/RdpQsvJg==
-X-Google-Smtp-Source: AGRyM1syp1olg9wmO7O9Qx4xXKGJ5Ujb7iIbPyJx9BtqoyO1ka7CEAlVv9TnzuhTfveTUdS/L89RxjTf47ju1VaOxuI=
-X-Received: by 2002:ac2:4bcc:0:b0:479:16a9:897 with SMTP id
- o12-20020ac24bcc000000b0047916a90897mr327943lfq.71.1655314419080; Wed, 15 Jun
- 2022 10:33:39 -0700 (PDT)
+        bh=3Rr2/eFmxSAglu7fgH0ivcyA6RJfSroBIvj7zrPlOBU=;
+        b=g4ob1mWVMK1AybqNBQKoKSokDxi4nb+cNt/r/dpNAOJZ8Z9H4M+CvZUTSR7OXxLhVR
+         mTFWQgG0weo8Gfzaa7n5WsJ8hzNjwDYUzHJMsSzG3zmoUDNzhZLXJqCtJBaXn0aUXwep
+         EZu5g7TKUhS/AASZ0KC4BEszIMDdo+qJUw4ndPmbhWAAOMKfJ0Iou6eQqeCYrBLqK9Bf
+         KTTsH2muienmur+aGqm9wAWIhs79VK+VnwFbzQFFtjJgzDqgLumOtox8MNsGdjBvQ3ME
+         P8n/yhaQqzgsCcESDFNFwh7q9HXkhao1UkpBMqU7wkaGhPaNjlB8QcClDbCsTvw8rWGp
+         LZkg==
+X-Gm-Message-State: AJIora8UWIixu60raFg44BnK86O2AsxXTk3C+3P6HPVeZtKrvXJajHuz
+        yUrGvHf8jVprC+mTUijF01HaXJBfCNGZ/QAowBzs8S0wyFH+pw==
+X-Google-Smtp-Source: AGRyM1vRuShCsbq4w/fiDCkBOJhXMwRtkt/9aZmNJtPKoMFMDk9OvBZz2yhq88m+xvY9yFgkiCk//6NZUCNC6p7TjJc=
+X-Received: by 2002:ac2:54b9:0:b0:479:a29:c1ec with SMTP id
+ w25-20020ac254b9000000b004790a29c1ecmr341871lfk.358.1655314425841; Wed, 15
+ Jun 2022 10:33:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220613092907.2502-1-jason.lai@genesyslogic.com.tw>
-In-Reply-To: <20220613092907.2502-1-jason.lai@genesyslogic.com.tw>
+References: <20220614113905.1458715-1-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20220614113905.1458715-1-alexander.stein@ew.tq-group.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 15 Jun 2022 10:33:03 -0700
-Message-ID: <CAPDyKFp7N61WQYYVT_fBgXYGPUbLWTbu6AL4Jyt=n45bEzuZXQ@mail.gmail.com>
-Subject: Re: [PATCH V2] mmc: host: Improve READ/WRITE Performance of GL9763E
-To:     Jason Lai <jasonlai.genesyslogic@gmail.com>
-Cc:     adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
-        ben.chuang@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw,
-        SeanHY.chen@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
-        victor.shih@genesyslogic.com.tw,
-        Renius Chen <reniuschengl@gmail.com>
+Date:   Wed, 15 Jun 2022 10:33:08 -0700
+Message-ID: <CAPDyKFpnYRCRbeY-cP3gH+tVTHMCkoxyBhb+xLHxjsg=kx2YWw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mmc: host: Do not evaluate HS400 capabilities if bus
+ has no MMC capability
+To:     Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc:     linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -68,18 +65,13 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 13 Jun 2022 at 02:29, Jason Lai <jasonlai.genesyslogic@gmail.com> wrote:
+On Tue, 14 Jun 2022 at 04:39, Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
 >
-> From: Jason Lai <jasonlai.genesyslogic@gmail.com>
+> If 'no-mmc' is set but 'no-mmc-hs400' is not, this warning is raised.
+> Specifying 'no-mmc' should be enough though.
 >
-> To improve READ/WRITE performance and take battery life into account, we
-> turn on GL9763E L1 negotiation before entering runtime suspend and turn
-> off GL9763E L1 negotiation while executing runtime resume. That is to say,
-> GL9763E will not enter L1 state when executing I/O requests and enter L1
-> state when PCIe bus idle.
->
-> Signed-off-by: Renius Chen <reniuschengl@gmail.com>
-> Signed-off-by: Jason Lai <jason.lai@genesyslogic.com.tw>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
 Applied for next, thanks!
 
@@ -88,85 +80,22 @@ Uffe
 
 
 > ---
+>  drivers/mmc/core/host.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> This patch is the follow-up to the patch [1] and adopt Ulf's comment.
+> diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
+> index 2ed2b4d5e5a5..0fd91f749b3a 100644
+> --- a/drivers/mmc/core/host.c
+> +++ b/drivers/mmc/core/host.c
+> @@ -599,7 +599,7 @@ static int mmc_validate_host_caps(struct mmc_host *host)
+>         }
 >
-> Due to flaws in hardware design, GL9763E takes long time to exit from L1
-> state. The I/O performance will suffer severe impact if it often enter
-> and exit L1 state during I/O requests.
->
-> [1] https://patchwork.kernel.org/project/linux-mmc/list/?series=646869
->
-> ---
->  drivers/mmc/host/sdhci-pci-gli.c | 34 ++++++++++++++++++++++++++++++++
->  1 file changed, 34 insertions(+)
->
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-> index d09728c37d03..69bc3d614e15 100644
-> --- a/drivers/mmc/host/sdhci-pci-gli.c
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -95,6 +95,9 @@
->  #define PCIE_GLI_9763E_SCR      0x8E0
->  #define   GLI_9763E_SCR_AXI_REQ           BIT(9)
->
-> +#define PCIE_GLI_9763E_CFG       0x8A0
-> +#define   GLI_9763E_CFG_LPSN_DIS   BIT(12)
-> +
->  #define PCIE_GLI_9763E_CFG2      0x8A4
->  #define   GLI_9763E_CFG2_L1DLY     GENMASK(28, 19)
->  #define   GLI_9763E_CFG2_L1DLY_MID 0x54
-> @@ -818,6 +821,31 @@ static void sdhci_gl9763e_dumpregs(struct mmc_host *mmc)
->         sdhci_dumpregs(mmc_priv(mmc));
->  }
->
-> +static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
-> +{
-> +       struct pci_dev *pdev = slot->chip->pdev;
-> +       u32 value;
-> +
-> +       pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
-> +       value &= ~GLI_9763E_VHS_REV;
-> +       value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_W);
-> +       pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
-> +
-> +       pci_read_config_dword(pdev, PCIE_GLI_9763E_CFG, &value);
-> +
-> +       if (enable)
-> +               value &= ~GLI_9763E_CFG_LPSN_DIS;
-> +       else
-> +               value |= GLI_9763E_CFG_LPSN_DIS;
-> +
-> +       pci_write_config_dword(pdev, PCIE_GLI_9763E_CFG, value);
-> +
-> +       pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
-> +       value &= ~GLI_9763E_VHS_REV;
-> +       value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
-> +       pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
-> +}
-> +
->  static void sdhci_gl9763e_cqe_pre_enable(struct mmc_host *mmc)
->  {
->         struct cqhci_host *cq_host = mmc->cqe_private;
-> @@ -959,6 +987,9 @@ static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
->         struct sdhci_host *host = slot->host;
->         u16 clock;
->
-> +       /* Enable LPM negotiation to allow entering L1 state */
-> +       gl9763e_set_low_power_negotiation(slot, true);
-> +
->         clock = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
->         clock &= ~(SDHCI_CLOCK_PLL_EN | SDHCI_CLOCK_CARD_EN);
->         sdhci_writew(host, clock, SDHCI_CLOCK_CONTROL);
-> @@ -989,6 +1020,9 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
->         clock |= SDHCI_CLOCK_CARD_EN;
->         sdhci_writew(host, clock, SDHCI_CLOCK_CONTROL);
->
-> +       /* Disable LPM negotiation to avoid entering L1 state. */
-> +       gl9763e_set_low_power_negotiation(slot, false);
-> +
->         return 0;
->  }
->  #endif
+>         if (caps2 & (MMC_CAP2_HS400_ES | MMC_CAP2_HS400) &&
+> -           !(caps & MMC_CAP_8_BIT_DATA)) {
+> +           !(caps & MMC_CAP_8_BIT_DATA) && !(caps2 & MMC_CAP2_NO_MMC)) {
+>                 dev_warn(dev, "drop HS400 support since no 8-bit bus\n");
+>                 host->caps2 = caps2 & ~MMC_CAP2_HS400_ES & ~MMC_CAP2_HS400;
+>         }
 > --
-> 2.36.1
+> 2.25.1
 >
