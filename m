@@ -2,156 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE9554D4B8
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jun 2022 00:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA46554DBD2
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jun 2022 09:34:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239710AbiFOWso (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 Jun 2022 18:48:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34310 "EHLO
+        id S229605AbiFPHdv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Jun 2022 03:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237675AbiFOWsn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Jun 2022 18:48:43 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BAB936B7F
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 15:48:42 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id c2so21167116lfk.0
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Jun 2022 15:48:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=42g8IFLodr5G+mXemIufY8nNh/UNIcbK1ku75HLKQ5w=;
-        b=Y5JDp07Ctph2K+sXWBkHvHDnuGFyqUKKVfCLxfsNUpapcMCl5HkiDnX0abyAs2EWZE
-         IcKHu7tHLMIo5FavjMglrapQAAkAEqz+cEU1oh4RmtDN6hrHnuin1gOdVYc4y3BFKHfT
-         jJ7wXv8nOSG5LP8+3L6NxcMB8fqHRNDEItteTIFWyZiLjXFg7pDpHVJCK7Rf/2IA+1Ob
-         vaJYpbAY2MPrVPo+HR/yOwLYFsHI/W6n9kWvPGZxJqjQ02kg9J2IoANbR6IQThvGglkK
-         Fef6eHZihjT7ornSp/mG9yuv2auQ7xjbttB6NDrrr+xUvONrnCDxOTpidYEV1lqOtZBb
-         CYEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=42g8IFLodr5G+mXemIufY8nNh/UNIcbK1ku75HLKQ5w=;
-        b=mpccLWW934guDsdE0pSs6jjqAnunI5j5qpS0JMKpGVrQvE1eynKD/AlSIG+mob+lvY
-         1ROJaDO7XN5LT1di25JNHgKCFdDPBlnb9zSzv4gjzBj1Fc3bYFfH7mzYIL1GUzddPxib
-         HoG9mMl8hhFKGfsOg7NcO94DMtn+TCwRDLgbVnI1YlMcmr1b5zyYCXqK5VanpVnTYveH
-         kLopXvUvLNGhu+uBwj7yAq3psagbHQFNtKcIdoZR7UUbtIRjpANkOnbSD+xP12QfXNqz
-         1r4QhCsu6WoHOldWnMyqrfm+eMDQ170DAWidD/2rR5g06P27igRUorBUAhYylCklKz7p
-         cAOg==
-X-Gm-Message-State: AJIora9LGTgRS0qtE2IHV7Vv7H7uk3lKVmAsclcCe/Jo7K3sJlVsVbN/
-        ClfnqAcux2vB109T0NSwsVA5p5K88uiqJB7gbRXK5g==
-X-Google-Smtp-Source: AGRyM1uqktRFwXLRGh8UNfnGFqAGqpZBn4pxI9CZ65tJiItaPSC0RQdT5gXMc9hhO+fQU/jdojC8S37efQk2eE1kvCg=
-X-Received: by 2002:a05:6512:303:b0:479:1baf:7e5b with SMTP id
- t3-20020a056512030300b004791baf7e5bmr992290lfp.184.1655333320836; Wed, 15 Jun
- 2022 15:48:40 -0700 (PDT)
+        with ESMTP id S1359452AbiFPHdm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Jun 2022 03:33:42 -0400
+Received: from me-region.ru (email.me-region.ru [178.238.126.75])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 3680E55B3
+        for <linux-mmc@vger.kernel.org>; Thu, 16 Jun 2022 00:33:26 -0700 (PDT)
+Received: from rmail.major-express.ru (rmail [127.0.0.1])
+        by me-region.ru (Postfix) with ESMTP id 4B4CD2BE7CB
+        for <linux-mmc@vger.kernel.org>; Thu, 16 Jun 2022 10:33:24 +0300 (MSK)
+Authentication-Results: rmail.major-express.ru (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)" header.d=me-region.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=me-region.ru; h=
+        reply-to:date:date:from:from:to:subject:subject
+        :content-description:content-transfer-encoding:mime-version
+        :content-type:content-type; s=dkim; t=1655364803; x=1656228804;
+         bh=q+AB6wTcFowTQDN3yBj6V7w56hj7BQnkh6i5A0MwiTQ=; b=MWQBVwZBK86T
+        jJfosSEquN8aHbw8XsIim55Y+l2ENkTvC5zC2DEerRK/z/KOL15LlHXl6Y7nFZ9A
+        JKnh+QTV6ohQkQpK7DJVFz60pkMzJ0B4AzfY8nrPVVe0QP10vVY4K1W4Ityvi79D
+        4IKhCw2gjDiqxnVrmywmgpQZkd1+teA=
+X-Virus-Scanned: Debian amavisd-new at rmail
+Received: from me-region.ru ([127.0.0.1])
+        by rmail.major-express.ru (rmail.major-express.ru [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id VvRw3cQnZNLr for <linux-mmc@vger.kernel.org>;
+        Thu, 16 Jun 2022 10:33:23 +0300 (MSK)
+Received: from [2.56.59.106] (unknown [2.56.59.106])
+        by me-region.ru (Postfix) with ESMTPSA id BF86A2B166B;
+        Wed, 15 Jun 2022 12:33:17 +0300 (MSK)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <1650963852-4173-1-git-send-email-quic_spathi@quicinc.com>
- <CAPDyKFo7H=fOiX49gttrKO3gwe=ddYMjdgrO_xSnnZjZh7P7ZA@mail.gmail.com>
- <MWHPR0201MB3466C629ECABC8FD6B009276E3D79@MWHPR0201MB3466.namprd02.prod.outlook.com>
- <ea318551ec0b43429ce47bfac9ebf285@quicinc.com>
-In-Reply-To: <ea318551ec0b43429ce47bfac9ebf285@quicinc.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 15 Jun 2022 15:48:03 -0700
-Message-ID: <CAPDyKFq2-Jwii_aMbsqYNM_Dq0-MMEEtUYnNKGbQgvDL+M-wdw@mail.gmail.com>
-Subject: Re: [PATCH V1] mmc: core: Add partial initialization support
-To:     "Sarthak Garg (QUIC)" <quic_sartgarg@quicinc.com>
-Cc:     "Kamasali Satyanarayan (Consultant) (QUIC)" 
-        <quic_kamasali@quicinc.com>,
-        "avri.altman@wdc.com" <avri.altman@wdc.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "shawn.lin@rock-chips.com" <shawn.lin@rock-chips.com>,
-        "merez@codeaurora.org" <merez@codeaurora.org>,
-        "s.shtylyov@omp.ru" <s.shtylyov@omp.ru>,
-        "huijin.park@samsung.com" <huijin.park@samsung.com>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        "digetx@gmail.com" <digetx@gmail.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Veerabhadrarao Badiganti <vbadigan@codeaurora.org>,
-        Shaik Sajida Bhanu <sbhanu@codeaurora.org>,
-        "quic_spathi@quicinc.com" <quic_spathi@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Good day, 93.189.94.68
+To:     Recipients <postmaster@me-region.ru>
+From:   "Lynn Page" <postmaster@me-region.ru>
+Date:   Wed, 15 Jun 2022 02:33:04 -0700
+Reply-To: lewislekan@outlook.com
+Message-Id: <20220616073324.4B4CD2BE7CB@me-region.ru>
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,RCVD_IN_BL_SPAMCOP_NET,
+        RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
+        *      bl.spamcop.net
+        *      [Blocked - see <https://www.spamcop.net/bl.shtml?2.56.59.106>]
+        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
+        *      [178.238.126.75 listed in wl.mailspike.net]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [178.238.126.75 listed in bl.score.senderscore.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 24 May 2022 at 07:37, Sarthak Garg (QUIC)
-<quic_sartgarg@quicinc.com> wrote:
->
-> Hi Ulf,
->
-> Please find the gains seen on micron and kingston eMMC parts below with partial initialization feature (These are the averaged numbers) :
->
-> 1) Micron eMMC (ManfID 0x13)
->
-> Partial init                            Full Init
->
-> a) _mmc_resume:                         _mmc_resume :
->
-> Total time : 62ms                       Total time : 84ms
-> (Decrease % from full init = ~26%)
+Good day,
 
-Alright, so we gained around 22ms. Not too bad.
+This email will come to your as surprise, i will like to discuss Business P=
+roposal with u Kindly get back to me asap
 
->
-> Breakup :
-> mmc_claim_host_time: 0.2ms              mmc_claim_host_time: 0.1ms
-> mmc_power_up_time: 33ms         mmc_power_up_time: 33ms
-> mmc_sleepawake_time: 28ms               mmc_init_card_time: 50ms
-> mmc_partial_init_time: 1ms
->
-> b) _mmc_suspend:                        _mmc_suspend:
->
-> Total time: 5ms                         Total time: 7.5ms
-> mmc_claim_host_time: 0.5ms              mmc_claim_host_time: 1ms
-> mmc_flush_cache_time : 1.5 ms   mmc_flush_cache_time : 2.5 ms
-> mmc_sleep_time: 1.5ms           mmc_sleep_time: 2ms
-> mmc_power_off_time: 1.5ms               mmc_power_off_time: 1.5ms
-
-The suspend time shouldn't really differ. Or is there a reason for this?
-
->
->
-> 2) Kingston eMMC (ManfID 0x70)
->
-> Partial init                            Full Init
->
-> a) _mmc_resume:                 _mmc_resume :
-> Total time : 46ms                       Total time : 62ms
-> (Decrease % from full init = ~25%)
->
-> Breakup :
-> mmc_claim_host_time: 0.2ms              mmc_claim_host_time: 0.2ms
-> mmc_power_up_time: 30ms         mmc_power_up_time: 30ms
-> mmc_sleepawake_time: 14ms               mmc_init_card_time: 31ms
-> mmc_partial_init_time: 2ms
->
->
-> b) _mmc_suspend:                        _mmc_suspend:
-> Total time : 5ms                        Total: 5ms
->
-> Breakup :
-> mmc_claim_host_time: 0.5ms              mmc_claim_host_time: 0.5ms
-> mmc_flush_cache_time : 1.5 ms   mmc_flush_cache_time : 1.5 ms
-> mmc_sleep_time: 1.5ms           mmc_sleep_time: 1ms
-> mmc_power_off_time: 1.5ms               mmc_power_off_time: 1.5ms
->
-> Did some minor modifications as well to this patchset as per avri's comment which I'll post as V2.
-> Please let me know your inputs about these numbers.
-
-Thanks for posting these numbers, much appreciated! Please try to
-include some of the data as part of the commit message as I think it's
-valuable information.
-
-When it comes to reviewing the code, I am awaiting your v2 then.
-
-[...]
-
-Kind regards
-Uffe
+Mrs.Lynn Page
