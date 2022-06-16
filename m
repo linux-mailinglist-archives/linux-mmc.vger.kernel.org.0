@@ -2,80 +2,97 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA46554DBD2
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jun 2022 09:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2925354DB64
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Jun 2022 09:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbiFPHdv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Jun 2022 03:33:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48666 "EHLO
+        id S1350136AbiFPHSN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Jun 2022 03:18:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359452AbiFPHdm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Jun 2022 03:33:42 -0400
-Received: from me-region.ru (email.me-region.ru [178.238.126.75])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 3680E55B3
-        for <linux-mmc@vger.kernel.org>; Thu, 16 Jun 2022 00:33:26 -0700 (PDT)
-Received: from rmail.major-express.ru (rmail [127.0.0.1])
-        by me-region.ru (Postfix) with ESMTP id 4B4CD2BE7CB
-        for <linux-mmc@vger.kernel.org>; Thu, 16 Jun 2022 10:33:24 +0300 (MSK)
-Authentication-Results: rmail.major-express.ru (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)" header.d=me-region.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=me-region.ru; h=
-        reply-to:date:date:from:from:to:subject:subject
-        :content-description:content-transfer-encoding:mime-version
-        :content-type:content-type; s=dkim; t=1655364803; x=1656228804;
-         bh=q+AB6wTcFowTQDN3yBj6V7w56hj7BQnkh6i5A0MwiTQ=; b=MWQBVwZBK86T
-        jJfosSEquN8aHbw8XsIim55Y+l2ENkTvC5zC2DEerRK/z/KOL15LlHXl6Y7nFZ9A
-        JKnh+QTV6ohQkQpK7DJVFz60pkMzJ0B4AzfY8nrPVVe0QP10vVY4K1W4Ityvi79D
-        4IKhCw2gjDiqxnVrmywmgpQZkd1+teA=
-X-Virus-Scanned: Debian amavisd-new at rmail
-Received: from me-region.ru ([127.0.0.1])
-        by rmail.major-express.ru (rmail.major-express.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id VvRw3cQnZNLr for <linux-mmc@vger.kernel.org>;
-        Thu, 16 Jun 2022 10:33:23 +0300 (MSK)
-Received: from [2.56.59.106] (unknown [2.56.59.106])
-        by me-region.ru (Postfix) with ESMTPSA id BF86A2B166B;
-        Wed, 15 Jun 2022 12:33:17 +0300 (MSK)
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S229535AbiFPHSN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Jun 2022 03:18:13 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1AE67275E2;
+        Thu, 16 Jun 2022 00:18:11 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 71086812F;
+        Thu, 16 Jun 2022 07:13:19 +0000 (UTC)
+Date:   Thu, 16 Jun 2022 10:18:05 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Yegor Yefremov <yegorslists@googlemail.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-mmc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: Linux 5.18.x: sdhci issue
+Message-ID: <YqrZLWp4Nyhd5v1d@atomide.com>
+References: <CAGm1_ktMOwwhhgVWj3DpCib-WpRzhkjE4d4DN74mz6kdwJk6BA@mail.gmail.com>
+ <YnNagtAtSudCum75@atomide.com>
+ <CAGm1_ktACExigtZUYFWria8=cxhy6x6vDGpLcaZAvnE9G3Bz_A@mail.gmail.com>
+ <YqmTXqXLala7Li/+@atomide.com>
+ <CAGm1_kvM0p=T4L4vDpXj2quMCPqoBidztsLaAsKYCYCGpvVnng@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Good day, 93.189.94.68
-To:     Recipients <postmaster@me-region.ru>
-From:   "Lynn Page" <postmaster@me-region.ru>
-Date:   Wed, 15 Jun 2022 02:33:04 -0700
-Reply-To: lewislekan@outlook.com
-Message-Id: <20220616073324.4B4CD2BE7CB@me-region.ru>
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,RCVD_IN_BL_SPAMCOP_NET,
-        RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?2.56.59.106>]
-        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
-        *      [178.238.126.75 listed in wl.mailspike.net]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [178.238.126.75 listed in bl.score.senderscore.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGm1_kvM0p=T4L4vDpXj2quMCPqoBidztsLaAsKYCYCGpvVnng@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Good day,
+* Yegor Yefremov <yegorslists@googlemail.com> [220615 08:54]:
+> Hi Tony,
+> 
+> On Wed, Jun 15, 2022 at 10:08 AM Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > * Yegor Yefremov <yegorslists@googlemail.com> [220615 09:40]:
+> > > Hi Tony, Ulf,
+> > >
+> > > On Thu, May 5, 2022 at 7:03 AM Tony Lindgren <tony@atomide.com> wrote:
+> > > >
+> > > > Hi,
+> > > >
+> > > > * Yegor Yefremov <yegorslists@googlemail.com> [220504 09:12]:
+> > > > > Hi Tony, all,
+> > > > >
+> > > > > During the kernel boot I see the following error. The device is still
+> > > > > working afterwards. 5.17.5 shows the same behavior. Is this a known
+> > > > > issue?
+> > > >
+> > > > Thanks for reporting it, I was not aware of this one. Might be worth
+> > > > bisecting. Adding linux-mmc and Ulf.
+> > >
+> > > This is my bisect result:
+> > >
+> > > f433e8aac6b94218394c6e7b80bb89e4e79c9549 is the first bad commit
+> > > commit f433e8aac6b94218394c6e7b80bb89e4e79c9549
+> > > Author: Tony Lindgren <tony@atomide.com>
+> > > Date:   Fri Oct 15 13:47:18 2021 +0300
+> > >
+> > >     mmc: sdhci-omap: Implement PM runtime functions
+> > >
+> > >     Implement PM runtime functions and enable autosuspend.
+> > >
+> > >     Note that we save context in probe to avoid restoring invalid context
+> > >     on the first resume. For system suspend, we have the new PM runtime
+> > >     functions do most of the work.
+> > >
+> > >     Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > >     Link: https://lore.kernel.org/r/20211015104720.52240-5-tony@atomide.com
+> > >     Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> >
+> > OK thanks this makes sense based on what Arnd replied a few days ago.
+> >
+> > Regards,
+> 
+> Your patch did the trick: all warnings/errors are gone. Thanks
+> everyone for the help.
 
-This email will come to your as surprise, i will like to discuss Business P=
-roposal with u Kindly get back to me asap
+OK thanks for testing, will send out a proper patch today for this.
 
-Mrs.Lynn Page
+Regards,
+
+Tony
